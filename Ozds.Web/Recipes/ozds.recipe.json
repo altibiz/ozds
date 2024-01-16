@@ -1,0 +1,36 @@
+{
+  "name": "AltiBiz Ods",
+  "displayName": "AltiBiz Ozds",
+  "description": "Ozds Startup recipe",
+  "author": "Team Zero",
+  "website": "https://www.altibiz.com",
+  "version": "1.0.0",
+  "issetuprecipe": true,
+  "categories": [ "default" ],
+  "tags": [ "developer", "default" ],
+  "steps": [
+    {
+      "name": "feature",
+      "enable": [
+        // Modules
+        "OrchardCore.Admin",
+        "OrchardCore.Features",
+        "OrchardCore.Navigation",
+        "OrchardCore.Resources",
+        "OrchardCore.Roles",
+        "OrchardCore.Settings",
+        "OrchardCore.Themes",
+        "OrchardCore.Users",
+
+        // Themes
+        "TheAdmin",
+        "SafeMode"
+      ]
+    },
+    {
+      "name": "themes",
+      "admin": "TheAdmin",
+      "site": "SafeMode"
+    }
+  ]
+}

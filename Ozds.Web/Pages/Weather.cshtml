@@ -1,0 +1,8 @@
+﻿@page "/app/weather"
+@{
+  Layout="_Blazor";
+}
+@using Ozds.Blazor.Pages.Applications.Email
+@(await Html.RenderComponentAsync<Email>(RenderMode.Server))
+
+<!-- Rough showcase of how to render a component directly-->
