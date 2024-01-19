@@ -1,1 +1,5 @@
-# OZDS fork of MESS system
+# OZDS
+
+## Documentation
+
+Documentation can be found [here](docs/index.md).

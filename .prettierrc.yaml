@@ -1,0 +1,8 @@
+# yaml-language-server: $schema=https://json.schemastore.org/prettierrc.json
+
+printWidth: 80
+tabWidth: 2
+useTabs: false
+trailingComma: all
+endOfLine: lf
+proseWrap: always

@@ -1,0 +1,23 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "debug-server",
+      "type": "coreclr",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/Ozds.Server/bin/Debug/net8.0/Ozds.Server.dll",
+      "preLaunchTask": "build",
+      "cwd": "${workspaceFolder}/src/Ozds.Server",
+      "stopAtEntry": false,
+      "requireExactSource": false,
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DOTNET_ENVIRONMENT": "Development",
+        "ORCHARD_APP_DATA": "${workspaceFolder}/App_Data"
+      },
+      "logging": {
+        "moduleLoad": false
+      }
+    }
+  ]
+}

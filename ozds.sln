@@ -1,0 +1,65 @@
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{BC858C4F-5539-45B6-A121-4AF26867BF65}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ozds.Client", "src\Ozds.Client\Ozds.Client.csproj", "{EFD484D3-B1FA-43BD-B5C1-2197E4EBDDE6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ozds.Server", "src\Ozds.Server\Ozds.Server.csproj", "{A780093D-934E-4C0A-8BBE-919AF785488D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{5F6924FE-A760-44B3-B547-1CEAA1871AB1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ozds.Fake", "scripts\Ozds.Fake\Ozds.Fake.csproj", "{AB280BE9-4283-4149-9524-863B380D13F8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{E1085836-4BB2-4E03-AEB7-06A1F9B30D86}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ozds.Business.Test", "test\Ozds.Business.Test\Ozds.Business.Test.csproj", "{7B3D76ED-149E-4A93-889C-6CAED647AA9C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ozds.Data", "src\Ozds.Data\Ozds.Data.csproj", "{3F95AE0E-DF6F-443A-84B6-B8C17406486E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ozds.Business", "src\Ozds.Business\Ozds.Business.csproj", "{6AF9A920-5EE9-4A9D-8901-5BAA04D5DB01}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EFD484D3-B1FA-43BD-B5C1-2197E4EBDDE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFD484D3-B1FA-43BD-B5C1-2197E4EBDDE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFD484D3-B1FA-43BD-B5C1-2197E4EBDDE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFD484D3-B1FA-43BD-B5C1-2197E4EBDDE6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A780093D-934E-4C0A-8BBE-919AF785488D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A780093D-934E-4C0A-8BBE-919AF785488D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A780093D-934E-4C0A-8BBE-919AF785488D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A780093D-934E-4C0A-8BBE-919AF785488D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB280BE9-4283-4149-9524-863B380D13F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB280BE9-4283-4149-9524-863B380D13F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB280BE9-4283-4149-9524-863B380D13F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB280BE9-4283-4149-9524-863B380D13F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B3D76ED-149E-4A93-889C-6CAED647AA9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B3D76ED-149E-4A93-889C-6CAED647AA9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B3D76ED-149E-4A93-889C-6CAED647AA9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B3D76ED-149E-4A93-889C-6CAED647AA9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F95AE0E-DF6F-443A-84B6-B8C17406486E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F95AE0E-DF6F-443A-84B6-B8C17406486E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F95AE0E-DF6F-443A-84B6-B8C17406486E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F95AE0E-DF6F-443A-84B6-B8C17406486E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6AF9A920-5EE9-4A9D-8901-5BAA04D5DB01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AF9A920-5EE9-4A9D-8901-5BAA04D5DB01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AF9A920-5EE9-4A9D-8901-5BAA04D5DB01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AF9A920-5EE9-4A9D-8901-5BAA04D5DB01}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{EFD484D3-B1FA-43BD-B5C1-2197E4EBDDE6} = {BC858C4F-5539-45B6-A121-4AF26867BF65}
+		{A780093D-934E-4C0A-8BBE-919AF785488D} = {BC858C4F-5539-45B6-A121-4AF26867BF65}
+		{AB280BE9-4283-4149-9524-863B380D13F8} = {5F6924FE-A760-44B3-B547-1CEAA1871AB1}
+		{7B3D76ED-149E-4A93-889C-6CAED647AA9C} = {E1085836-4BB2-4E03-AEB7-06A1F9B30D86}
+		{3F95AE0E-DF6F-443A-84B6-B8C17406486E} = {BC858C4F-5539-45B6-A121-4AF26867BF65}
+		{6AF9A920-5EE9-4A9D-8901-5BAA04D5DB01} = {BC858C4F-5539-45B6-A121-4AF26867BF65}
+	EndGlobalSection
+EndGlobal

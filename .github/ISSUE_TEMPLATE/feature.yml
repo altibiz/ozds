@@ -1,0 +1,29 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-issue-forms.json
+
+name: Feature
+title: Feature
+description: Request a new feature
+labels: [feature]
+assignees: HrvojeJuric
+body:
+  - type: textarea
+    attributes:
+      label: Idea
+      description: |
+        Description of the new feature and why it is necessary. Use images if you can.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Acceptance criteria
+      description: |
+        A list of criteria that needs to be fullfilled in the PR to close this issue.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Implementation
+      description: |
+        Description of how the feature should be implemented.
+    validations:
+      required: false

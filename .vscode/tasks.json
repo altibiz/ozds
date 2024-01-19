@@ -1,0 +1,26 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build-server",
+      "command": "dotnet",
+      "problemMatcher": "$msCompile",
+      "type": "process",
+      "args": [
+        "build",
+        "${workspaceFolder}/src/Ozds.Server/Ozds.Server.csproj",
+        "--configuration",
+        "Debug",
+        "--property:GenerateFullPaths=true",
+        "--consoleloggerparameters:ErrorsOnly"
+      ],
+      "options": {
+        "env": {
+          "ASPNETCORE_ENVIRONMENT": "Development",
+          "DOTNET_ENVIRONMENT": "Development",
+          "ORCHARD_APP_DATA": "${workspaceFolder}/App_Data"
+        }
+      }
+    }
+  ]
+}

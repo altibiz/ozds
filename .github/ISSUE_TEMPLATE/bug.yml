@@ -1,0 +1,41 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-issue-forms.json
+
+name: Bug
+title: Bug
+description: Issue a bug report
+labels: [bug]
+assignees: HrvojeJuric
+body:
+  - type: textarea
+    attributes:
+      label: Problem
+      description: |
+        Short description of the problem and why it needs to be solved.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Steps to reproduce
+      description: |
+        Steps to take to reproduce the bug.
+
+        Please be descriptive and use images if you can.
+      placeholder: |
+        1. Click on 'Meters'
+        2. Meter X is not shown
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Acceptance criteria
+      description: |
+        A list of criteria that needs to be fullfilled in the PR to close this issue.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Implementation
+      description: |
+        Describe how the bug fix should be implemented.
+    validations:
+      required: false

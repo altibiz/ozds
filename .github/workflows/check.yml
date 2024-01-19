@@ -1,0 +1,34 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+
+name: Check
+
+on: [pull_request]
+
+jobs:
+  check:
+    name: check
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: extractions/setup-just@v1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/setup-dotnet@v3
+        with:
+          global-json-file: global.json
+      - name: ci
+        run: just ci
+
+      - name: format
+        run: just format
+      - name: commit
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: format
+          branch: ${{ github.head_ref }}
+      - name: lint
+        run: just lint
+      - name: test
+        run: just test

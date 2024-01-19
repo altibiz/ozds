@@ -1,0 +1,41 @@
+root = true
+
+# TODO: disable all on generated files and remove rules for those here
+
+[*]
+end_of_line = lf
+charset = utf-8
+max_line_length = 80
+indent_style = space
+indent_size = 2
+tab_width = 2
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.{cs,cshtml,razor}]
+csharp_prefer_braces = true
+
+csharp_style_var_for_built_in_types = true
+csharp_style_var_when_type_is_apparent = true
+csharp_style_var_elsewhere = true
+
+csharp_style_unused_value_expression_statement_preference = discard_variable
+
+# allow unused expression result
+dotnet_diagnostic.IDE0058.severity = none
+
+csharp_style_namespace_declarations = file_scoped
+csharp_namespace_body = file_scoped
+
+# allow underscores in names for measuring units
+dotnet_diagnostic.CA1707.severity = none
+
+csharp_braces_for_ifelse = required
+csharp_braces_for_for = required
+csharp_braces_for_foreach = required
+csharp_braces_for_while = required
+csharp_braces_for_dowhile = required
+csharp_braces_for_using = required
+csharp_braces_for_lock = required
+csharp_braces_for_fixed = required
+csharp_braces_redundant = true

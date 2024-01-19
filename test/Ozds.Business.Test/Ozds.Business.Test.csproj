@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <ItemGroup>
+    <ProjectReference Include="../../src/Ozds.Business/Ozds.Business.csproj" />
+  </ItemGroup>
+
+</Project>

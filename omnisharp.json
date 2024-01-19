@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json.schemastore.org/omnisharp.json",
+  "FormattingOptions": {
+    "EnableEditorConfigSupport": true,
+    "OrganizeImports": true
+  },
+  "RenameOptions": {
+    "RenameInComments": false,
+    "RenameOverloads": false,
+    "RenameInStrings": false
+  },
+  "RoslynExtensionsOptions": {
+    "enableDecompilationSupport": true,
+    "enableImportCompletion": true,
+    "enableAnalyzersSupport": true
+  },
+  "FileOptions": {
+    "excludeSearchPatterns": [
+      "**/.git/**/*",
+      "**/.nuget/**/*",
+      "**/obj/**/*",
+      "**/bin/**/*",
+      "**/Migrations/**/*"
+    ]
+  },
+  "msbuild": {
+    "EnablePackageAutoRestore": true
+  }
+}

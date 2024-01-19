@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <OrchardVersion>1.8.1</OrchardVersion>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="OrchardCore.Admin" Version="$(OrchardVersion)" />
+		<PackageReference Include="OrchardCore.Application.Mvc.Targets" Version="$(OrchardVersion)" />
+		<PackageReference Include="OrchardCore.Features" Version="$(OrchardVersion)" />
+		<PackageReference Include="OrchardCore.Infrastructure" Version="$(OrchardVersion)" />
+		<PackageReference Include="OrchardCore.Navigation" Version="$(OrchardVersion)" />
+		<PackageReference Include="OrchardCore.Recipes" Version="$(OrchardVersion)" />
+		<PackageReference Include="OrchardCore.Resources" Version="$(OrchardVersion)" />
+		<PackageReference Include="OrchardCore.Roles" Version="$(OrchardVersion)" />
+		<PackageReference Include="OrchardCore.Settings" Version="$(OrchardVersion)" />
+		<PackageReference Include="OrchardCore.Setup" Version="$(OrchardVersion)" />
+		<PackageReference Include="OrchardCore.Tenants" Version="$(OrchardVersion)" />
+		<PackageReference Include="OrchardCore.Themes" Version="$(OrchardVersion)" />
+		<PackageReference Include="OrchardCore.Users" Version="$(OrchardVersion)" />
+		<PackageReference Include="SafeMode" Version="$(OrchardVersion)" />
+		<PackageReference Include="TheAdmin" Version="$(OrchardVersion)" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="../../src/Ozds.Client/Ozds.Client.csproj" />
+	  <ProjectReference Include="../../src/Ozds.Business/Ozds.Business.csproj" />
+	  <ProjectReference Include="../../src/Ozds.Data/Ozds.Data.csproj" />
+	</ItemGroup>
+
+</Project>
