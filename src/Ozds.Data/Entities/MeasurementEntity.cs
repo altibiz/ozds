@@ -2,11 +2,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Ozds.Data.Entities;
 
-public abstract class HypertableEntity
+public abstract class MeasurementEntity
 {
   [NotMapped] private DateTimeOffset _timestamp;
 
-  [Column(TypeName = "text")] public string Source { get; set; } = default!;
+  [HypertableColumn]
+  public string Source { get; set; } = default!;
 
   [HypertableColumn]
   [Column(TypeName = "timestamptz")]
@@ -14,13 +15,5 @@ public abstract class HypertableEntity
   {
     get => _timestamp.ToUniversalTime();
     set => _timestamp = value.ToUniversalTime();
-  }
-
-  [Column(TypeName = "bigint")]
-  public long Milliseconds
-  {
-    get => Timestamp.Ticks / TimeSpan.TicksPerMillisecond;
-    // NOTE: https://stackoverflow.com/a/52367289
-    private set { }
   }
 }

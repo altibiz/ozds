@@ -1,0 +1,4 @@
+[editor]
+text-width = 80
+default-line-ending = "lf"
+insert-final-newline = true

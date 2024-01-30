@@ -5,15 +5,13 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Data;
 
-public class OzdsDbClient(OzdsDbContext context)
+public partial class OzdsDbClient(OzdsDbContext context)
 {
-  private readonly OzdsDbContext _context = context;
-
   public async Task MigrateAsync()
   {
-    await _context.Database.MigrateAsync();
+    await context.Database.MigrateAsync();
 
-    var entityTypes = _context.Model.GetEntityTypes();
+    var entityTypes = context.Model.GetEntityTypes();
     foreach (var entityType in entityTypes)
     {
       var tableName = entityType.GetTableName();
@@ -22,24 +20,42 @@ public class OzdsDbClient(OzdsDbContext context)
         continue;
       }
 
-      foreach (var property in entityType.GetProperties())
-      {
-        if (
-          property.PropertyInfo?.GetCustomAttribute(
-            typeof(HypertableColumnAttribute)
-          )
-          is null
+      var hypertableProperties = entityType
+        .GetProperties()
+        .Where(property => property.PropertyInfo
+          ?.GetCustomAttribute(typeof(HypertableColumnAttribute))
+          is not null
         )
-        {
-          continue;
-        }
+        .ToList();
 
-        var columnName = property.GetColumnName();
+      if (hypertableProperties.Count == 0)
+      {
+        continue;
+      }
+
+      var firstProperty = hypertableProperties[0];
+      var restProperties = hypertableProperties[1..];
+
+      try
+      {
+#pragma warning disable EF1002
+        _ = await context.Database.ExecuteSqlRawAsync(
+          $"SELECT create_hypertable('\"{tableName}\"', '{firstProperty.GetColumnName()}');"
+        );
+#pragma warning restore EF1002
+      }
+      catch (PostgresException exception) when (exception.SqlState == "TS110")
+      {
+        // NOTE: already a hypertable
+      }
+
+      foreach (var property in restProperties)
+      {
         try
         {
 #pragma warning disable EF1002
-          await _context.Database.ExecuteSqlRawAsync(
-            $"SELECT create_hypertable('\"{tableName}\"', '{columnName}');"
+          _ = await context.Database.ExecuteSqlRawAsync(
+            $"SELECT add_dimension('\"{tableName}\"', '{property.GetColumnName()}');"
           );
 #pragma warning restore EF1002
         }

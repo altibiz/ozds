@@ -6,7 +6,7 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Data;
 
-public class OzdsDbContext : DbContext
+public partial class OzdsDbContext : DbContext
 {
   private static readonly MethodInfo HasPostgresEnumMethod =
     typeof(NpgsqlModelBuilderExtensions)
@@ -18,39 +18,33 @@ public class OzdsDbContext : DbContext
       )
     ?? throw new InvalidOperationException("HasPostgresEnum method not found");
 
-  public DbSet<AbbMeasurementEntity> AbbMeasurements { get; set; } = default!;
-
-  public DbSet<SchneiderMeasurementEntity> SchneiderMeasurements { get; set; } =
-    default!;
-
-  protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-  {
-    optionsBuilder.UseNpgsql(
+  protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) =>
+    _ = optionsBuilder.UseNpgsql(
       "Server=localhost;Port=5432;User Id=ozds;Password=ozds;Database=ozds");
-  }
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
-    modelBuilder.HasPostgresExtension("timescaledb");
+    _ = modelBuilder.HasPostgresExtension("timescaledb");
 
+    CreateEnumPropertyTypes(modelBuilder, typeof(IdEntity));
     CreateEntitiesWithBase(
       modelBuilder,
-      typeof(HypertableEntity),
+      typeof(IdEntity),
       entity =>
       {
-        entity.HasKey(
-          nameof(HypertableEntity.Source),
-          nameof(HypertableEntity.Timestamp)
-        );
+        _ = entity.HasKey(nameof(IdEntity.Id));
+      }
+    );
 
-        entity.HasIndex(
-          nameof(HypertableEntity.Source),
-          nameof(HypertableEntity.Timestamp)
-        );
-
-        entity.HasIndex(
-          nameof(HypertableEntity.Source),
-          nameof(HypertableEntity.Milliseconds)
+    CreateEnumPropertyTypes(modelBuilder, typeof(MeasurementEntity));
+    CreateEntitiesWithBase(
+      modelBuilder,
+      typeof(MeasurementEntity),
+      entity =>
+      {
+        _ = entity.HasKey(
+          nameof(MeasurementEntity.Source),
+          nameof(MeasurementEntity.Timestamp)
         );
       }
     );
