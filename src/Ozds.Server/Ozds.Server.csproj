@@ -15,6 +15,7 @@
 		<PackageReference Include="OrchardCore.Roles" Version="$(OrchardVersion)" />
 		<PackageReference Include="OrchardCore.Settings" Version="$(OrchardVersion)" />
 		<PackageReference Include="OrchardCore.Setup" Version="$(OrchardVersion)" />
+		<PackageReference Include="OrchardCore.AutoSetup" Version="$(OrchardVersion)" />
 		<PackageReference Include="OrchardCore.Tenants" Version="$(OrchardVersion)" />
 		<PackageReference Include="OrchardCore.Themes" Version="$(OrchardVersion)" />
 		<PackageReference Include="OrchardCore.Users" Version="$(OrchardVersion)" />
