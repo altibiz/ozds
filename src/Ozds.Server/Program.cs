@@ -6,68 +6,55 @@ using Ozds.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services
-  .AddOrchardCore()
-  .AddCommands()
-  .AddSecurity()
-  .AddMvc()
-  .AddIdGeneration()
-  .AddEmailAddressValidator()
-  .AddSetupFeatures("OrchardCore.AutoSetup")
-  .AddDataAccess()
-  .AddDataStorage()
-  .AddBackgroundService()
-  .AddScripting()
-  .AddTheming()
-  .AddCaching()
-  .ConfigureServices(s => s
-    .AddResourceManagement()
-    .AddTagHelpers<LinkTagHelper>()
-    .AddTagHelpers<MetaTagHelper>()
-    .AddTagHelpers<ResourcesTagHelper>()
-    .AddTagHelpers<ScriptTagHelper>()
-    .AddTagHelpers<StyleTagHelper>()
-  );
+builder.Services.AddOrchardCore()
+    .AddCommands()
+    .AddSecurity()
+    .AddMvc()
+    .AddIdGeneration()
+    .AddEmailAddressValidator()
+    .AddSetupFeatures("OrchardCore.Setup")
+    .AddDataAccess()
+    .AddDataStorage()
+    .AddBackgroundService()
+    .AddScripting()
 
-builder.Services
-  .AddRazorComponents()
-  .AddInteractiveServerComponents();
+    .AddTheming()
+    //.AddLiquidViews()
+    .AddCaching()
+    .ConfigureServices(services => services
+        .AddRecipes())
+
+    // OrchardCoreBuilder is not available in OrchardCore.ResourceManagement as it has to
+    // remain independent from OrchardCore.
+    .ConfigureServices(s =>
+    {
+      s.AddResourceManagement();
+
+      s.AddTagHelpers<LinkTagHelper>();
+      s.AddTagHelpers<MetaTagHelper>();
+      s.AddTagHelpers<ResourcesTagHelper>();
+      s.AddTagHelpers<ScriptTagHelper>();
+      s.AddTagHelpers<StyleTagHelper>();
+    });
+// Fallback redirect to Admin dashboard
+
+// Add services to the container.
+builder.Services.AddRazorComponents()
+    .AddInteractiveServerComponents();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddMudServices();
-
-builder.Services.AddScoped<OzdsDbContext>();
-builder.Services.AddScoped<OzdsDbClient>();
-
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
 {
-  _ = app.UseExceptionHandler("/Error");
-  _ = app.UseHsts();
+  app.UseExceptionHandler("/Error");
+  // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+  app.UseHsts();
 }
-
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseAntiforgery();
-app.UseOrchardCore(app =>
-{
-  _ = app.UseStaticFiles(new StaticFileOptions
-  {
-    FileProvider =
-      new ManifestEmbeddedFileProvider(typeof(IServerSideBlazorBuilder)
-        .Assembly)
-  });
-});
-
-app
-  .MapRazorComponents<Ozds.Client.App>()
-  .AddInteractiveServerRenderMode();
+app.UseOrchardCore();
 app.MapBlazorHub("/app/_blazor");
 
-await using (var scope = app.Services.CreateAsyncScope())
-{
-  var dbClient = scope.ServiceProvider.GetRequiredService<OzdsDbClient>();
-  await dbClient.MigrateAsync();
-}
-
-await app.RunAsync();
+app.Run();

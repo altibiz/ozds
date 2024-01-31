@@ -1,0 +1,6 @@
+﻿@page "/app/{*rest}"
+@using Ozds.Client
+@{
+    Layout = "_Blazor";
+}
+@(await Html.RenderComponentAsync<App>(RenderMode.Server))
