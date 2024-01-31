@@ -19,7 +19,6 @@ builder.Services
   .AddScripting()
   .AddTheming()
   .AddCaching()
-  .ConfigureServices(services => services.AddRecipes())
   .ConfigureServices(s => s
     .AddResourceManagement()
     .AddTagHelpers<LinkTagHelper>()
@@ -42,14 +41,16 @@ var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
 {
-  app.UseExceptionHandler("/Error");
-  app.UseHsts();
+  _ = app.UseExceptionHandler("/Error");
+  _ = app.UseHsts();
 }
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseAntiforgery();
 app.UseOrchardCore();
+
+app.MapRazorComponents<Ozds.Client.App>();
 app.MapBlazorHub("/app/_blazor");
 
 await using (var scope = app.Services.CreateAsyncScope())
