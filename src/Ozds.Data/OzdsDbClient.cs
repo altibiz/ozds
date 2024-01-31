@@ -33,36 +33,38 @@ public partial class OzdsDbClient(OzdsDbContext context)
         continue;
       }
 
-      var firstProperty = hypertableProperties[0];
-      var restProperties = hypertableProperties[1..];
+      var timeProperty = hypertableProperties.FirstOrDefault(property =>
+        property.DeclaringType.ClrType == typeof(DateTime) ||
+        property.DeclaringType.ClrType == typeof(DateTimeOffset)
+      );
+      if (timeProperty is null)
+      {
+        continue;
+      }
+
+      var restProperties = hypertableProperties
+        .Where(property => property != timeProperty)
+        .ToList();
+
+      var createHypertableColumnArgs = restProperties.Count is 0
+        ? $"'\"{tableName}\"', '{timeProperty.GetColumnName()}'"
+        : $"'\"{tableName}\"', '{timeProperty.GetColumnName()}', '{string.Join("', '", restProperties.Select(property => property.GetColumnName()))}'";
+
+      var createHypertableChunkingArgs = restProperties.Count is 0
+        ? $"chunk_time_interval => INTERVAL '1 day'"
+        : $"chunk_time_interval => INTERVAL '1 day', partitioning_column => '{restProperties.First().GetColumnName()}'";
 
       try
       {
 #pragma warning disable EF1002
         _ = await context.Database.ExecuteSqlRawAsync(
-          $"SELECT create_hypertable('\"{tableName}\"', '{firstProperty.GetColumnName()}');"
+          $"SELECT create_hypertable({createHypertableColumnArgs}, {createHypertableChunkingArgs});"
         );
 #pragma warning restore EF1002
       }
       catch (PostgresException exception) when (exception.SqlState == "TS110")
       {
         // NOTE: already a hypertable
-      }
-
-      foreach (var property in restProperties)
-      {
-        try
-        {
-#pragma warning disable EF1002
-          _ = await context.Database.ExecuteSqlRawAsync(
-            $"SELECT add_dimension('\"{tableName}\"', '{property.GetColumnName()}');"
-          );
-#pragma warning restore EF1002
-        }
-        catch (PostgresException exception) when (exception.SqlState == "TS110")
-        {
-          // NOTE: already a hypertable
-        }
       }
     }
   }
