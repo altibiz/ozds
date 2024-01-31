@@ -5,7 +5,8 @@ using Ozds.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddOrchardCore()
+builder.Services
+  .AddOrchardCore()
   .AddCommands()
   .AddSecurity()
   .AddMvc()
@@ -19,18 +20,17 @@ builder.Services.AddOrchardCore()
   .AddTheming()
   .AddCaching()
   .ConfigureServices(services => services.AddRecipes())
-  .ConfigureServices(s =>
-  {
-    s.AddResourceManagement();
+  .ConfigureServices(s => s
+    .AddResourceManagement()
+    .AddTagHelpers<LinkTagHelper>()
+    .AddTagHelpers<MetaTagHelper>()
+    .AddTagHelpers<ResourcesTagHelper>()
+    .AddTagHelpers<ScriptTagHelper>()
+    .AddTagHelpers<StyleTagHelper>()
+  );
 
-    s.AddTagHelpers<LinkTagHelper>();
-    s.AddTagHelpers<MetaTagHelper>();
-    s.AddTagHelpers<ResourcesTagHelper>();
-    s.AddTagHelpers<ScriptTagHelper>();
-    s.AddTagHelpers<StyleTagHelper>();
-  });
-
-builder.Services.AddRazorComponents()
+builder.Services
+  .AddRazorComponents()
   .AddInteractiveServerComponents();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddMudServices();
