@@ -1,7 +1,7 @@
 {
-  "name": "Ozds",
-  "displayName": "Ozds",
-  "description": "Ozds Startup recipe",
+  "name": "ozds",
+  "displayName": "OZDS",
+  "description": "OZDS startup recipe",
   "author": "AltiBiz",
   "website": "https://www.altibiz.com",
   "version": "1.0.0",
