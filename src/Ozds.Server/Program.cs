@@ -1,3 +1,4 @@
+using Microsoft.Extensions.FileProviders;
 using MudBlazor.Services;
 using OrchardCore.Recipes;
 using OrchardCore.ResourceManagement.TagHelpers;
@@ -48,9 +49,19 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseAntiforgery();
-app.UseOrchardCore();
+app.UseOrchardCore(app =>
+{
+  _ = app.UseStaticFiles(new StaticFileOptions
+  {
+    FileProvider =
+      new ManifestEmbeddedFileProvider(typeof(IServerSideBlazorBuilder)
+        .Assembly)
+  });
+});
 
-app.MapRazorComponents<Ozds.Client.App>();
+app
+  .MapRazorComponents<Ozds.Client.App>()
+  .AddInteractiveServerRenderMode();
 app.MapBlazorHub("/app/_blazor");
 
 await using (var scope = app.Services.CreateAsyncScope())
