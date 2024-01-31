@@ -12,7 +12,7 @@ builder.Services.AddOrchardCore()
     .AddMvc()
     .AddIdGeneration()
     .AddEmailAddressValidator()
-    .AddSetupFeatures("OrchardCore.Setup")
+    .AddSetupFeatures("OrchardCore.AutoSetup")
     .AddDataAccess()
     .AddDataStorage()
     .AddBackgroundService()
@@ -21,8 +21,6 @@ builder.Services.AddOrchardCore()
     .AddTheming()
     //.AddLiquidViews()
     .AddCaching()
-    .ConfigureServices(services => services
-        .AddRecipes())
 
     // OrchardCoreBuilder is not available in OrchardCore.ResourceManagement as it has to
     // remain independent from OrchardCore.
