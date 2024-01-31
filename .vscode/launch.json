@@ -6,7 +6,7 @@
       "type": "coreclr",
       "request": "launch",
       "program": "${workspaceFolder}/src/Ozds.Server/bin/Debug/net8.0/Ozds.Server.dll",
-      "preLaunchTask": "build",
+      "preLaunchTask": "build-server",
       "cwd": "${workspaceFolder}/src/Ozds.Server",
       "stopAtEntry": false,
       "requireExactSource": false,
@@ -24,7 +24,7 @@
       "type": "coreclr",
       "request": "launch",
       "program": "${workspaceFolder}/src/Ozds.Server/bin/Debug/net8.0/Ozds.Server.dll",
-      "preLaunchTask": "build",
+      "preLaunchTask": "build-server",
       "cwd": "${workspaceFolder}/src/Ozds.Server",
       "stopAtEntry": false,
       "requireExactSource": false,
@@ -47,14 +47,13 @@
       "type": "coreclr",
       "request": "launch",
       "program": "${workspaceFolder}/scripts/Ozds.Fake/bin/Debug/net8.0/Ozds.Fake.dll",
-      "preLaunchTask": "build",
+      "preLaunchTask": "build-fake",
       "cwd": "${workspaceFolder}/scripts/Ozds.Fake",
       "stopAtEntry": false,
       "requireExactSource": false,
       "env": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "DOTNET_ENVIRONMENT": "Development",
-        "ORCHARD_APP_DATA": "${workspaceFolder}/App_Data"
+        "DOTNET_ENVIRONMENT": "Development"
       },
       "logging": {
         "moduleLoad": false
@@ -65,14 +64,13 @@
       "type": "coreclr",
       "request": "launch",
       "program": "${workspaceFolder}/scripts/Ozds.Fake/bin/Debug/net8.0/Ozds.Fake.dll",
-      "preLaunchTask": "build",
+      "preLaunchTask": "build-fake",
       "cwd": "${workspaceFolder}/scripts/Ozds.Fake",
       "stopAtEntry": false,
       "requireExactSource": false,
       "env": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "DOTNET_ENVIRONMENT": "Development",
-        "ORCHARD_APP_DATA": "${workspaceFolder}/App_Data"
+        "DOTNET_ENVIRONMENT": "Development"
       },
       "logging": {
         "moduleLoad": false

@@ -21,6 +21,26 @@
           "ORCHARD_APP_DATA": "${workspaceFolder}/App_Data"
         }
       }
+    },
+    {
+      "label": "build-fake",
+      "command": "dotnet",
+      "problemMatcher": "$msCompile",
+      "type": "process",
+      "args": [
+        "build",
+        "${workspaceFolder}/scripts/Ozds.Fake/Ozds.Fake.csproj",
+        "--configuration",
+        "Debug",
+        "--property:GenerateFullPaths=true",
+        "--consoleloggerparameters:ErrorsOnly"
+      ],
+      "options": {
+        "env": {
+          "ASPNETCORE_ENVIRONMENT": "Development",
+          "DOTNET_ENVIRONMENT": "Development"
+        }
+      }
     }
   ]
 }
