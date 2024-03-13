@@ -15,8 +15,7 @@
     "editor.defaultFormatter": "ms-dotnettools.csharp"
   },
   "[aspnetcorerazor]": {
-    "editor.defaultFormatter": "ms-dotnettools.csharp",
-    "editor.formatOnSave": false
+    "editor.defaultFormatter": "ms-dotnettools.csharp"
   },
   "files.encoding": "utf8",
   "files.eol": "\n",
