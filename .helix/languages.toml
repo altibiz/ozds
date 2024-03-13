@@ -3,6 +3,7 @@ nil = { command = "nil" }
 taplo = { command = "taplo", args = ["lsp", "stdio"] }
 yaml-language-server = { command = "yaml-language-server", args = ["--stdio"] }
 marksman = { command = "marksman", args = ["server"] }
+# rzls = { command = "rzls" }
 
 [language-server.omnisharp]
 command = "OmniSharp"
@@ -29,16 +30,16 @@ name = "c-sharp"
 language-servers = ["omnisharp"]
 auto-format = true
 
-[[language]]
-name = "razor"
-scope = "source.razor"
-injection-regex = "razor"
-file-types = ["razor", "cshtml"]
-roots = ["sln", "csproj"]
-# block-comment-tokens = { start = "@*", end = "*@" }
-indent = { tab-width = 2, unit = " " }
-language-servers = ["omnisharp"]
-auto-format = true
+# [[language]]
+# name = "razor"
+# scope = "source.razor"
+# injection-regex = "razor"
+# file-types = ["razor", "cshtml"]
+# roots = ["sln", "csproj"]
+# # block-comment-tokens = { start = "@*", end = "*@" }
+# indent = { tab-width = 2, unit = " " }
+# language-servers = ["rzls"]
+# auto-format = true
 
 [[language]]
 name = "yaml"
