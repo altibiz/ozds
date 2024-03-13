@@ -6,59 +6,86 @@ namespace Ozds.Data;
 
 public partial class OzdsDbClient
 {
-  public async Task CreateRepresentative(RepresentativeModel model) =>
+  public async Task CreateRepresentative(RepresentativeModel model)
+  {
     await context.Representatives.AddAsync(RepresentativeToEntity(model));
+  }
 
-  public async Task<RepresentativeModel?> ReadRepresentative(string id) =>
-    await context.Representatives.FirstOrDefaultAsync(entity => entity.Id == id) is { } entity
+  public async Task<RepresentativeModel?> ReadRepresentative(string id)
+  {
+    return await context.Representatives.FirstOrDefaultAsync(entity =>
+      entity.Id == id) is { } entity
       ? RepresentativeToModel(entity)
       : null;
+  }
 
-  public async Task UpdateRepresentative(RepresentativeModel model) =>
-    await context.Representatives.SingleUpdateAsync(RepresentativeToEntity(model));
+  public async Task UpdateRepresentative(RepresentativeModel model)
+  {
+    await context.Representatives.SingleUpdateAsync(
+      RepresentativeToEntity(model));
+  }
 
-  public async Task DeleteRepresentative(string id) =>
+  public async Task DeleteRepresentative(string id)
+  {
     await context.Representatives.DeleteByKeyAsync(id);
+  }
 
-  public async Task<RepresentativeModel?> ReadUserRepresentative(string id) =>
-    await context.Representatives.FirstOrDefaultAsync(entity => entity.UserId == id) is { } entity
+  public async Task<RepresentativeModel?> ReadUserRepresentative(string id)
+  {
+    return await context.Representatives.FirstOrDefaultAsync(entity =>
+      entity.UserId == id) is { } entity
       ? RepresentativeToModel(entity)
       : null;
+  }
 
-  public async Task<RepresentativeModel?> ReadOperatorRepresentative() =>
-    await context.Representatives.FirstOrDefaultAsync(entity => entity.IsOperatorRepresentative) is { } entity
+  public async Task<RepresentativeModel?> ReadOperatorRepresentative()
+  {
+    return await context.Representatives.FirstOrDefaultAsync(entity =>
+      entity.IsOperatorRepresentative) is { } entity
       ? RepresentativeToModel(entity)
       : null;
+  }
 
-  public async Task<List<RepresentativeModel>> ReadTenantRepresentatives(string id) =>
-    (await context.Representatives
-      .Where(entity => entity.Tenants.Any(tenant => tenant.Id == id))
-      .ToListAsync())
+  public async Task<List<RepresentativeModel>> ReadTenantRepresentatives(
+    string id)
+  {
+    return (await context.Representatives
+        .Where(entity => entity.Tenants.Any(tenant => tenant.Id == id))
+        .ToListAsync())
       .Select(RepresentativeToModel)
       .ToList();
+  }
 
-  public async Task<List<RepresentativeModel>> ReadSubnetRepresentatives(string id) =>
-    (await context.Representatives
-      .Where(entity => entity.Subnets.Any(tenant => tenant.Id == id))
-      .ToListAsync())
+  public async Task<List<RepresentativeModel>> ReadSubnetRepresentatives(
+    string id)
+  {
+    return (await context.Representatives
+        .Where(entity => entity.Subnets.Any(tenant => tenant.Id == id))
+        .ToListAsync())
       .Select(RepresentativeToModel)
       .ToList();
+  }
 
-  private static RepresentativeModel RepresentativeToModel(RepresentativeEntity entity) =>
-    new(
-      Id: entity.Id,
-      UserId: entity.UserId,
-      Name: entity.Name,
-      SocialSecurityNumber: entity.SocialSecurityNumber,
-      Address: entity.Address,
-      City: entity.City,
-      PostalCode: entity.PostalCode,
-      Email: entity.Email,
-      PhoneNumber: entity.PhoneNumber
+  private static RepresentativeModel RepresentativeToModel(
+    RepresentativeEntity entity)
+  {
+    return new RepresentativeModel(
+      entity.Id,
+      entity.UserId,
+      entity.Name,
+      entity.SocialSecurityNumber,
+      entity.Address,
+      entity.City,
+      entity.PostalCode,
+      entity.Email,
+      entity.PhoneNumber
     );
+  }
 
-  private static RepresentativeEntity RepresentativeToEntity(RepresentativeModel model) =>
-    new()
+  private static RepresentativeEntity RepresentativeToEntity(
+    RepresentativeModel model)
+  {
+    return new RepresentativeEntity
     {
       Id = model.Id,
       UserId = model.UserId,
@@ -70,4 +97,5 @@ public partial class OzdsDbClient
       Email = model.Email,
       PhoneNumber = model.PhoneNumber
     };
+  }
 }

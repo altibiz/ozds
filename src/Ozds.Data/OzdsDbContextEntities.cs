@@ -9,5 +9,7 @@ public partial class OzdsDbContext : DbContext
   public DbSet<SubnetEntity> Subnets { get; set; } = default!;
   public DbSet<RepresentativeEntity> Representatives { get; set; } = default!;
   public DbSet<AbbMeasurementEntity> AbbMeasurements { get; set; } = default!;
-  public DbSet<SchneiderMeasurementEntity> SchneiderMeasurements { get; set; } = default!;
+
+  public DbSet<SchneiderMeasurementEntity> SchneiderMeasurements { get; set; } =
+    default!;
 }

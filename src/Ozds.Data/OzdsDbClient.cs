@@ -23,7 +23,7 @@ public partial class OzdsDbClient(OzdsDbContext context)
       var hypertableProperties = entityType
         .GetProperties()
         .Where(property => property.PropertyInfo
-          ?.GetCustomAttribute(typeof(HypertableColumnAttribute))
+            ?.GetCustomAttribute(typeof(HypertableColumnAttribute))
           is not null
         )
         .ToList();
@@ -51,7 +51,7 @@ public partial class OzdsDbClient(OzdsDbContext context)
         : $"'\"{tableName}\"', '{timeProperty.GetColumnName()}', '{string.Join("', '", restProperties.Select(property => property.GetColumnName()))}'";
 
       var createHypertableChunkingArgs = restProperties.Count is 0
-        ? $"chunk_time_interval => INTERVAL '1 day'"
+        ? "chunk_time_interval => INTERVAL '1 day'"
         : $"chunk_time_interval => INTERVAL '1 day', partitioning_column => '{restProperties.First().GetColumnName()}'";
 
       try

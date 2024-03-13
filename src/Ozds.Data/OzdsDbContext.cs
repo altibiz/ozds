@@ -18,9 +18,11 @@ public partial class OzdsDbContext : DbContext
       )
     ?? throw new InvalidOperationException("HasPostgresEnum method not found");
 
-  protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) =>
+  protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+  {
     _ = optionsBuilder.UseNpgsql(
       "Server=localhost;Port=5432;User Id=ozds;Password=ozds;Database=ozds");
+  }
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
@@ -30,10 +32,7 @@ public partial class OzdsDbContext : DbContext
     CreateEntitiesWithBase(
       modelBuilder,
       typeof(IdEntity),
-      entity =>
-      {
-        _ = entity.HasKey(nameof(IdEntity.Id));
-      }
+      entity => { _ = entity.HasKey(nameof(IdEntity.Id)); }
     );
 
     CreateEnumPropertyTypes(modelBuilder, typeof(MeasurementEntity));
