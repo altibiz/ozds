@@ -67,7 +67,7 @@ public partial class OzdsDbContext : DbContext
           var genericMethod = HasPostgresEnumMethod.MakeGenericMethod(enumType);
           genericMethod.Invoke(
             null,
-            [modelBuilder, null, null, null]
+            new[] { modelBuilder, null, null, null }
           );
         }
       }

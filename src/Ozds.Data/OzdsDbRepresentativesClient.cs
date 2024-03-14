@@ -8,12 +8,12 @@ public partial class OzdsDbClient
 {
   public async Task CreateRepresentative(RepresentativeModel model)
   {
-    await context.Representatives.AddAsync(RepresentativeToEntity(model));
+    await _context.Representatives.AddAsync(RepresentativeToEntity(model));
   }
 
   public async Task<RepresentativeModel?> ReadRepresentative(string id)
   {
-    return await context.Representatives.FirstOrDefaultAsync(entity =>
+    return await _context.Representatives.FirstOrDefaultAsync(entity =>
       entity.Id == id) is { } entity
       ? RepresentativeToModel(entity)
       : null;
@@ -21,18 +21,18 @@ public partial class OzdsDbClient
 
   public async Task UpdateRepresentative(RepresentativeModel model)
   {
-    await context.Representatives.SingleUpdateAsync(
+    await _context.Representatives.SingleUpdateAsync(
       RepresentativeToEntity(model));
   }
 
   public async Task DeleteRepresentative(string id)
   {
-    await context.Representatives.DeleteByKeyAsync(id);
+    await _context.Representatives.DeleteByKeyAsync(id);
   }
 
   public async Task<RepresentativeModel?> ReadUserRepresentative(string id)
   {
-    return await context.Representatives.FirstOrDefaultAsync(entity =>
+    return await _context.Representatives.FirstOrDefaultAsync(entity =>
       entity.UserId == id) is { } entity
       ? RepresentativeToModel(entity)
       : null;
@@ -40,7 +40,7 @@ public partial class OzdsDbClient
 
   public async Task<RepresentativeModel?> ReadOperatorRepresentative()
   {
-    return await context.Representatives.FirstOrDefaultAsync(entity =>
+    return await _context.Representatives.FirstOrDefaultAsync(entity =>
       entity.IsOperatorRepresentative) is { } entity
       ? RepresentativeToModel(entity)
       : null;
@@ -49,7 +49,7 @@ public partial class OzdsDbClient
   public async Task<List<RepresentativeModel>> ReadTenantRepresentatives(
     string id)
   {
-    return (await context.Representatives
+    return (await _context.Representatives
         .Where(entity => entity.Tenants.Any(tenant => tenant.Id == id))
         .ToListAsync())
       .Select(RepresentativeToModel)
@@ -59,7 +59,7 @@ public partial class OzdsDbClient
   public async Task<List<RepresentativeModel>> ReadSubnetRepresentatives(
     string id)
   {
-    return (await context.Representatives
+    return (await _context.Representatives
         .Where(entity => entity.Subnets.Any(tenant => tenant.Id == id))
         .ToListAsync())
       .Select(RepresentativeToModel)
