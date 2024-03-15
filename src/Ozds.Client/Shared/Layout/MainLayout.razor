@@ -1,7 +1,6 @@
 @inherits LayoutComponentBase
-
-@using MudBlazor.ThemeManager
 @using Theme = Theme
+@using MudBlazor.ThemeManager
 
 <main>
   <MudThemeProvider Theme="_themeManagerTheme.Theme"/>
@@ -33,8 +32,7 @@
 @code {
   private readonly ThemeManagerTheme _themeManagerTheme = new();
 
-  [CascadingParameter]
-  private Task<AuthenticationState>? _authenticationStateTask { get; set; }
+  [CascadingParameter] private Task<AuthenticationState>? _authenticationStateTask { get; set; }
 
   protected override void OnInitialized()
   {
@@ -43,4 +41,5 @@
     _themeManagerTheme.FontFamily = "Roboto";
     _themeManagerTheme.DefaultBorderRadius = 3;
   }
+
 }

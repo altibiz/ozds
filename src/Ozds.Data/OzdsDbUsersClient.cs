@@ -7,7 +7,8 @@ namespace Ozds.Data;
 
 public partial class OzdsDbClient
 {
-  public async Task<UserModel?> ReadUserFromClaimsPrincipal(ClaimsPrincipal principal)
+  public async Task<UserModel?> ReadUserFromClaimsPrincipal(
+    ClaimsPrincipal principal)
   {
     return await _userManager.GetUserAsync(principal) is { } user
       ? UserToModel(user)
@@ -21,7 +22,8 @@ public partial class OzdsDbClient
       : null;
   }
 
-  public async Task<List<MaybeRepresentingUserModel>?> ReadUserRepresentatives(int skip = 0, int take = TakeLimit)
+  public async Task<List<MaybeRepresentingUserModel>?> ReadUserRepresentatives(
+    int skip = 0, int take = TakeLimit)
   {
     var users = await _userManager.Users
       .Skip(skip)
@@ -36,13 +38,15 @@ public partial class OzdsDbClient
 
     return users.Select(user => new MaybeRepresentingUserModel(
       UserToModel(user),
-      representatives.Find(representative => representative.UserId == user.UserId) is { } representative
+      representatives.Find(representative =>
+        representative.UserId == user.UserId) is { } representative
         ? RepresentativeToModel(representative)
         : null
     )).ToList();
   }
 
-  public async Task<RepresentativeModel?> ReadRepresentativeByUser(string userId)
+  public async Task<RepresentativeModel?> ReadRepresentativeByUser(
+    string userId)
   {
     return await _context.Representatives.FirstOrDefaultAsync(entity =>
       entity.UserId == userId) is { } entity
@@ -50,7 +54,8 @@ public partial class OzdsDbClient
       : null;
   }
 
-  public async Task<RepresentingUserModel?> ReadRepresentingUserByUser(string userId)
+  public async Task<RepresentingUserModel?> ReadRepresentingUserByUser(
+    string userId)
   {
     var user = await _userManager.FindByIdAsync(userId);
     if (user is null)
@@ -58,16 +63,20 @@ public partial class OzdsDbClient
       return null;
     }
 
-    var representative = await _context.Representatives.FirstOrDefaultAsync(entity => entity.UserId == userId);
+    var representative =
+      await _context.Representatives.FirstOrDefaultAsync(entity =>
+        entity.UserId == userId);
     if (representative is null)
     {
       return null;
     }
 
-    return new(UserToModel(user), RepresentativeToModel(representative));
+    return new RepresentingUserModel(UserToModel(user),
+      RepresentativeToModel(representative));
   }
 
-  public async Task<MaybeRepresentingUserModel?> ReadMaybeRepresentingUserByUser(string userId)
+  public async Task<MaybeRepresentingUserModel?>
+    ReadMaybeRepresentingUserByUser(string userId)
   {
     var user = await _userManager.FindByIdAsync(userId);
     if (user is null)
@@ -75,18 +84,24 @@ public partial class OzdsDbClient
       return null;
     }
 
-    var representative = await _context.Representatives.FirstOrDefaultAsync(entity => entity.UserId == userId);
+    var representative =
+      await _context.Representatives.FirstOrDefaultAsync(entity =>
+        entity.UserId == userId);
     if (representative is null)
     {
-      return new(UserToModel(user), null);
+      return new MaybeRepresentingUserModel(UserToModel(user), null);
     }
 
-    return new(UserToModel(user), RepresentativeToModel(representative));
+    return new MaybeRepresentingUserModel(UserToModel(user),
+      RepresentativeToModel(representative));
   }
 
-  public async Task<RepresentingUserModel?> ReadUserRepresentingUserByRepresentative(string id)
+  public async Task<RepresentingUserModel?>
+    ReadUserRepresentingUserByRepresentative(string id)
   {
-    var representative = await _context.Representatives.FirstOrDefaultAsync(entity => entity.Id == id);
+    var representative =
+      await _context.Representatives.FirstOrDefaultAsync(entity =>
+        entity.Id == id);
     if (representative is null)
     {
       return null;
@@ -98,7 +113,8 @@ public partial class OzdsDbClient
       return null;
     }
 
-    return new(UserToModel(user), RepresentativeToModel(representative));
+    return new RepresentingUserModel(UserToModel(user),
+      RepresentativeToModel(representative));
   }
 
   private static UserModel UserToModel(User user)

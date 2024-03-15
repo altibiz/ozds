@@ -21,7 +21,7 @@ builder.Services
   .AddTheming()
   .AddCaching()
   .ConfigureServices(services => services
-  .AddOzdsDbClient()
+    .AddOzdsDbClient()
     .AddResourceManagement()
     .AddTagHelpers<LinkTagHelper>()
     .AddTagHelpers<MetaTagHelper>()

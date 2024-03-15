@@ -1,6 +1,4 @@
 @using MudBlazor.ThemeManager
-@using System.Security.Claims
-
 <MudLayout>
   <MudAppBar Elevation="4">
     <MudHidden Breakpoint="Breakpoint.MdAndUp">
@@ -10,7 +8,7 @@
         Edge="Edge.Start"
         OnClick="e => DrawerToggle()"/>
     </MudHidden>
-    <img src="helb.svg" alt="HELB" />
+    <img src="helb.svg" alt="HELB"/>
     <MudSpacer/>
     <MudMenu AnchorOrigin="Origin.CenterLeft" Dense="true" Class="mt-1 ml-4">
       <ActivatorContent>
@@ -48,14 +46,11 @@
 </MudLayout>
 
 @code {
-  [CascadingParameter]
-  public UserState? UserState { get; set; } = default!;
+  [CascadingParameter] public UserState? UserState { get; set; } = default!;
 
-  [Parameter]
-  public ThemeManagerTheme ThemeManagerTheme { get; set; } = default!;
+  [Parameter] public ThemeManagerTheme ThemeManagerTheme { get; set; } = default!;
 
-  [Parameter]
-  public RenderFragment Body { get; set; } = default!;
+  [Parameter] public RenderFragment Body { get; set; } = default!;
 
   public bool _drawerOpen = true;
 
@@ -63,4 +58,5 @@
   {
     _drawerOpen = !_drawerOpen;
   }
+
 }

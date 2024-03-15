@@ -1,68 +1,65 @@
 @typeparam TState
 
 if (State.IsLoading) {
-  if (Progress is not null) {
-    @Progress
-    return;
-  }
+if (Progress is not null) {
+@Progress
+return;
+}
 
-  <MudProgressCircular />
-  return;
+<MudProgressCircular/>
+return;
 }
 
 if (State.Error is not null) {
-  if (Error is not null) {
-    @Error(State.Error!)
-    return;
-  }
+if (Error is not null) {
+@Error(State.Error!)
+return;
+}
 
-  <MudAlert Severity="Severity.Error">
-    @State.Error
-  </MudAlert>
-  return;
+<MudAlert Severity="Severity.Error">
+  @State.Error
+</MudAlert>
+return;
 }
 
 if (State.Value is null) {
-  if (NotLoaded is not null) {
-    @NotFound
-    return;
-  }
+if (NotLoaded is not null) {
+@NotFound
+return;
+}
 
-  <NotFound />
-  return;
+<NotFound/>
+return;
 }
 
 @Found(State.Value!)
 
 @code {
-  [Parameter]
-  public LoadingState<TState> State { get; set; } = default!;
+  [Parameter] public LoadingState<TState> State { get; set; } = default!;
 
-  [Parameter]
-  public Func<Task<TState?>>? Load { get; set; }
+  [Parameter] public Func<Task<TState?>>? Load { get; set; }
 
-  [Parameter]
-  public RenderFragment? Progress { get; set; } = default!;
+  [Parameter] public RenderFragment? Progress { get; set; } = default!;
 
-  [Parameter]
-  public RenderFragment<string> Error { get; set; } = default!;
+  [Parameter] public RenderFragment<string> Error { get; set; } = default!;
 
-  [Parameter]
-  public RenderFragment? NotFound { get; set; } = default!;
+  [Parameter] public RenderFragment? NotFound { get; set; } = default!;
 
-  [Parameter]
-  public RenderFragment<TState> Found { get; set; } = default!;
+  [Parameter] public RenderFragment<TState> Found { get; set; } = default!;
 
   protected override async Task OnInitializedAsync()
   {
     if (Load is not null)
     {
-      try {
+      try
+      {
         State = State.WithValue(await Load());
       }
-      catch (Exception e) {
+      catch (Exception e)
+      {
         State = State.WithError(e.Message);
       }
     }
   }
+
 }

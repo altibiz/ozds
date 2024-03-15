@@ -12,16 +12,26 @@ namespace Ozds.Client.Shared.Layout;
 
 public partial class MainLayout
 {
-  public record NavigationDescriptor(string Title, string Route);
+  private LoadingState<RepresentativeState> _representativeState = new();
+
+  private LoadingState<UserState> _userState = new();
+
+  [Inject] private NavigationManager NavigationManager { get; set; } = default!;
+
+  [Inject] private ILogger<MainLayout> Logger { get; set; } = default!;
+
+  [Inject] private ServiceProvider Services { get; set; } = default!;
 
   public static IEnumerable<NavigationDescriptor> GetNavigationDescriptors()
   {
     foreach (var type in typeof(App).Assembly.GetTypes())
     {
-      if (type.GetCustomAttribute(typeof(RouteAttribute)) is RouteAttribute routeAttribute
-        && type.GetCustomAttribute(typeof(NavigationAttribute)) is NavigationAttribute navigationAttribute)
+      if (type.GetCustomAttribute(typeof(RouteAttribute)) is RouteAttribute
+            routeAttribute
+          && type.GetCustomAttribute(typeof(NavigationAttribute)) is
+            NavigationAttribute navigationAttribute)
       {
-        if (navigationAttribute.Title is { } title)
+        if (navigationAttribute.Title is { })
         {
           yield return new NavigationDescriptor(
             navigationAttribute.Title,
@@ -31,19 +41,6 @@ public partial class MainLayout
       }
     }
   }
-
-  [Inject]
-  private NavigationManager NavigationManager { get; set; } = default!;
-
-  [Inject]
-  private ILogger<MainLayout> Logger { get; set; } = default!;
-
-  [Inject]
-  private ServiceProvider Services { get; set; } = default!;
-
-  private LoadingState<UserState> _userState = new();
-
-  private LoadingState<RepresentativeState> _representativeState = new();
 
   protected override async Task OnInitializedAsync()
   {
@@ -63,7 +60,8 @@ public partial class MainLayout
     var userId = claimsPrincipal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
     if (userId is null)
     {
-      _userState = _userState.WithError("Claims principal does not contain a user id.");
+      _userState =
+        _userState.WithError("Claims principal does not contain a user id.");
       return;
     }
 
@@ -73,16 +71,21 @@ public partial class MainLayout
       _userState = _userState.NotFound();
       return;
     }
-    _userState = _userState.WithValue(new UserState(maybeRepresentingUser.User));
+
+    _userState =
+      _userState.WithValue(new UserState(maybeRepresentingUser.User));
     if (maybeRepresentingUser.Representative is null)
     {
       _representativeState = _representativeState.NotFound();
       return;
     }
-    _representativeState = _representativeState.WithValue(new RepresentativeState(maybeRepresentingUser.Representative));
+
+    _representativeState = _representativeState.WithValue(
+      new RepresentativeState(maybeRepresentingUser.Representative));
   }
 
-  private async Task<MaybeRepresentingUserModel?> ReadMaybeRepresentingUser(string userId)
+  private async Task<MaybeRepresentingUserModel?> ReadMaybeRepresentingUser(
+    string userId)
   {
     await using var scope = Services.CreateAsyncScope();
     var client = scope.ServiceProvider.GetRequiredService<OzdsDbClient>();
@@ -104,4 +107,6 @@ public partial class MainLayout
       );
     }
   }
+
+  public record NavigationDescriptor(string Title, string Route);
 }

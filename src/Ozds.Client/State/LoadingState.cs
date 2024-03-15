@@ -6,7 +6,18 @@ public record LoadingState<T>(
   T? Value = default
 )
 {
-  public LoadingState<T> WithError(string? error) => this with { IsLoading = false, Error = error };
-  public LoadingState<T> WithValue(T? value) => this with { IsLoading = false, Value = value };
-  public LoadingState<T> NotFound() => this with { IsLoading = false };
+  public LoadingState<T> WithError(string? error)
+  {
+    return this with { IsLoading = false, Error = error };
+  }
+
+  public LoadingState<T> WithValue(T? value)
+  {
+    return this with { IsLoading = false, Value = value };
+  }
+
+  public LoadingState<T> NotFound()
+  {
+    return this with { IsLoading = false };
+  }
 }

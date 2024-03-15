@@ -5,11 +5,12 @@ namespace Ozds.Client.Extensions;
 
 public static class IServiceCollectionExtensions
 {
-  public static IServiceCollection AddCascadingMaybeRepresentingUserState(this IServiceCollection services)
+  public static IServiceCollection AddCascadingMaybeRepresentingUserState(
+    this IServiceCollection services)
   {
     services.AddCascadingAuthenticationState();
-    services.AddCascadingValue((_) => default(UserState));
-    services.AddCascadingValue((_) => default(RepresentativeState));
+    services.AddCascadingValue(_ => default(UserState));
+    services.AddCascadingValue(_ => default(RepresentativeState));
     return services;
   }
 }

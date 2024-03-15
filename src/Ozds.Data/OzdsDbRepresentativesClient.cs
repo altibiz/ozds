@@ -45,7 +45,8 @@ public partial class OzdsDbClient
   )
   {
     return (await _context.Representatives
-        .Where(entity => entity.NetworkUsers.Any(networkUser => networkUser.Id == id))
+        .Where(entity =>
+          entity.NetworkUsers.Any(networkUser => networkUser.Id == id))
         .Skip(skip)
         .Take(take)
         .ToListAsync())
@@ -60,7 +61,8 @@ public partial class OzdsDbClient
   )
   {
     return (await _context.Representatives
-        .Where(entity => entity.Locations.Any(networkUser => networkUser.Id == id))
+        .Where(entity =>
+          entity.Locations.Any(networkUser => networkUser.Id == id))
         .Skip(skip)
         .Take(take)
         .ToListAsync())
