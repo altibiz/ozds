@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
+using OrchardCore.Users;
 using OrchardCore.Users.Models;
 using Ozds.Data.Models;
 
@@ -30,7 +31,7 @@ public partial class OzdsDbClient
       .Take(take)
       .ToListAsync();
 
-    var userIds = users.Select(user => user.UserId).ToList();
+    var userIds = users.Select(user => GetUserId(user)).ToList();
 
     var representatives = await _context.Representatives
       .Where(entity => userIds.Contains(entity.UserId))
@@ -39,7 +40,7 @@ public partial class OzdsDbClient
     return users.Select(user => new MaybeRepresentingUserModel(
       UserToModel(user),
       representatives.Find(representative =>
-        representative.UserId == user.UserId) is { } representative
+        representative.UserId == GetUserId(user)) is { } representative
         ? RepresentativeToModel(representative)
         : null
     )).ToList();
@@ -117,13 +118,26 @@ public partial class OzdsDbClient
       RepresentativeToModel(representative));
   }
 
-  private static UserModel UserToModel(User user)
+  private static UserModel UserToModel(IUser abstractUser)
   {
-    return new UserModel(
-      user.UserId,
-      user.UserName,
-      user.Email,
-      user.RoleNames.ToList()
-    );
+    return abstractUser is User user
+      ? new UserModel(
+        user.UserId,
+        user.UserName,
+        user.Email,
+        user.RoleNames.ToList()
+      )
+      : throw new InvalidOperationException(
+        "User is not an Orchard Core user"
+      );
+  }
+
+  private static string GetUserId(IUser abstractUser)
+  {
+    return abstractUser is User user
+      ? user.UserId
+      : throw new InvalidOperationException(
+        "User is not an Orchard Core user"
+      );
   }
 }

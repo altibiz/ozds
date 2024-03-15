@@ -10,7 +10,7 @@ using Ozds.Data.Models;
 
 namespace Ozds.Client.Shared.Layout;
 
-public partial class MainLayout
+public partial class MainLayout : LayoutComponentBase
 {
   private LoadingState<RepresentativeState> _representativeState = new();
 
@@ -20,7 +20,7 @@ public partial class MainLayout
 
   [Inject] private ILogger<MainLayout> Logger { get; set; } = default!;
 
-  [Inject] private ServiceProvider Services { get; set; } = default!;
+  [Inject] private IServiceProvider Services { get; set; } = default!;
 
   public static IEnumerable<NavigationDescriptor> GetNavigationDescriptors()
   {
@@ -53,15 +53,14 @@ public partial class MainLayout
     var claimsPrincipal = authenticationState?.User;
     if (claimsPrincipal is null)
     {
-      RedirectTo("/login");
+      RedirectTo("/login?returnUrl=/app");
       return;
     }
 
     var userId = claimsPrincipal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
     if (userId is null)
     {
-      _userState =
-        _userState.WithError("Claims principal does not contain a user id.");
+      RedirectTo("/login?returnUrl=/app");
       return;
     }
 

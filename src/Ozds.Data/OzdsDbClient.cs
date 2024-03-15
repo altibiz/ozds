@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using OrchardCore.Users.Models;
+using OrchardCore.Users;
 
 namespace Ozds.Data;
 
@@ -10,16 +10,13 @@ public partial class OzdsDbClient
 
   private readonly OzdsDbContext _context;
 
-  private readonly UserManager<User> _userManager;
+  private readonly UserManager<IUser> _userManager;
 
-  public OzdsDbClient(OzdsDbContext context, UserManager<User> userManager)
+  public OzdsDbClient(OzdsDbContext context, UserManager<IUser> userManager)
   {
     _context = context;
     _userManager = userManager;
-  }
 
-  public async Task MigrateAsync()
-  {
-    await _context.Database.MigrateAsync();
+    _context.Database.Migrate();
   }
 }

@@ -1,6 +1,10 @@
 @typeparam TState
 
-if (State.IsLoading) {
+@if (State is null) {
+  return;
+}
+
+@if (State.IsLoading) {
 if (Progress is not null) {
 @Progress
 return;
@@ -10,7 +14,7 @@ return;
 return;
 }
 
-if (State.Error is not null) {
+@if (State.Error is not null) {
 if (Error is not null) {
 @Error(State.Error!)
 return;
@@ -22,33 +26,39 @@ return;
 return;
 }
 
-if (State.Value is null) {
-if (NotLoaded is not null) {
+@if (State.Value is null) {
+if (NotFound is not null) {
 @NotFound
 return;
 }
 
-<NotFound/>
+<NotFound />
 return;
 }
 
+@if (Found is not null) {
 @Found(State.Value!)
+}
 
 @code {
-  [Parameter] public LoadingState<TState> State { get; set; } = default!;
+  [Parameter] public LoadingState<TState>? State { get; set; }
 
   [Parameter] public Func<Task<TState?>>? Load { get; set; }
 
-  [Parameter] public RenderFragment? Progress { get; set; } = default!;
+  [Parameter] public RenderFragment? Progress { get; set; }
 
-  [Parameter] public RenderFragment<string> Error { get; set; } = default!;
+  [Parameter] public RenderFragment<string>? Error { get; set; }
 
-  [Parameter] public RenderFragment? NotFound { get; set; } = default!;
+  [Parameter] public RenderFragment? NotFound { get; set; }
 
-  [Parameter] public RenderFragment<TState> Found { get; set; } = default!;
+  [Parameter] public RenderFragment<TState>? Found { get; set; }
 
   protected override async Task OnInitializedAsync()
   {
+    if (State is null) {
+      return;
+    }
+
     if (Load is not null)
     {
       try
