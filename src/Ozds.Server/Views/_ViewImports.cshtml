@@ -1,7 +1,3 @@
-@inherits OrchardCore.DisplayManagement.Razor.RazorPage<TModel>
-@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@addTagHelper *, OrchardCore.DisplayManagement
-@addTagHelper *, OrchardCore.ResourceManagement
 @using System.Globalization
 @using Microsoft.Extensions.Localization
 @using Microsoft.AspNetCore.Authorization
@@ -14,3 +10,9 @@
 @using OrchardCore.Users.TimeZone
 @using OrchardCore.Users.TimeZone.ViewModels
 @using OrchardCore.Workflows.Helpers
+
+@inherits OrchardCore.DisplayManagement.Razor.RazorPage<TModel>
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, OrchardCore.DisplayManagement
+@addTagHelper *, OrchardCore.ResourceManagement

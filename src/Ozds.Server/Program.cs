@@ -6,8 +6,6 @@ using Ozds.Data.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddOzdsDbClient();
-
 builder.Services
   .AddOrchardCore()
   .AddCommands()
@@ -22,7 +20,8 @@ builder.Services
   .AddScripting()
   .AddTheming()
   .AddCaching()
-  .ConfigureServices(s => s
+  .ConfigureServices(services => services
+  .AddOzdsDbClient()
     .AddResourceManagement()
     .AddTagHelpers<LinkTagHelper>()
     .AddTagHelpers<MetaTagHelper>()
@@ -34,7 +33,6 @@ builder.Services
 builder.Services
   .AddRazorComponents()
   .AddInteractiveServerComponents();
-
 builder.Services.AddServerSideBlazor();
 builder.Services.AddMudServices();
 builder.Services.AddCascadingMaybeRepresentingUserState();
