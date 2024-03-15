@@ -1,5 +1,4 @@
 @inherits LayoutComponentBase
-@using Theme = Theme
 
 <main>
   <MudThemeProvider Theme="_theme"/>
@@ -31,5 +30,5 @@
 @code {
   [CascadingParameter] private Task<AuthenticationState>? _authenticationStateTask { get; set; }
 
-  private readonly Theme _theme = new();
+  private readonly Ozds.Client.Theme _theme = new();
 }

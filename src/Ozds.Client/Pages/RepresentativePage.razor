@@ -1,6 +1,7 @@
-@page "/representative/{id}"
+@page "/client/pages/representative/{id}"
 @attribute [Navigation(RouteValue = "id", Parents = new[] { typeof(RepresentativesPage) })]
-@attribute [StreamRendering]
+@* @attribute [Authorize] *@
+@* @attribute [StreamRendering] *@
 @using Microsoft.Extensions.DependencyInjection
 @using Ozds.Data.Models
 @using Ozds.Data
@@ -8,7 +9,9 @@
 
 <Loading
   State="@(new LoadingState<RepresentingUserModel>())"
-  Load="@(async () => (await ScopedServices.GetRequiredService<OzdsDbClient>().ReadUserRepresentingUserByRepresentative(Id))!)">
+  Load="@(async () => (await ScopedServices
+    .GetRequiredService<OzdsDbClient>()
+    .ReadRepresentingUserByUserId(Id))!)">
   <Found>
     @context
   </Found>

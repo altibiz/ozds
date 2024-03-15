@@ -1,8 +1,8 @@
 using System.Reflection;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Ozds.Client.Attributes;
 using Ozds.Client.State;
 using Ozds.Data;
@@ -18,9 +18,12 @@ public partial class MainLayout : LayoutComponentBase
 
   [Inject] private NavigationManager NavigationManager { get; set; } = default!;
 
-  [Inject] private ILogger<MainLayout> Logger { get; set; } = default!;
-
   [Inject] private IServiceProvider Services { get; set; } = default!;
+
+  public MainLayout(IHttpContextAccessor httpContextAccessor) : base()
+  {
+    Console.WriteLine(httpContextAccessor.HttpContext?.User.Identity?.Name);
+  }
 
   public static IEnumerable<NavigationDescriptor> GetNavigationDescriptors()
   {
@@ -53,18 +56,15 @@ public partial class MainLayout : LayoutComponentBase
     var claimsPrincipal = authenticationState?.User;
     if (claimsPrincipal is null)
     {
-      RedirectTo("/login?returnUrl=/app");
-      return;
+      throw new InvalidOperationException("No claims principal found.");
     }
-
-    var userId = claimsPrincipal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-    if (userId is null)
+    if (claimsPrincipal.Identity?.IsAuthenticated is false)
     {
-      RedirectTo("/login?returnUrl=/app");
+      NavigationManager.NavigateTo("/login?returnUrl=/client/pages/dashboard");
       return;
     }
 
-    var maybeRepresentingUser = await ReadMaybeRepresentingUser(userId);
+    var maybeRepresentingUser = await ReadMaybeRepresentingUser(claimsPrincipal);
     if (maybeRepresentingUser is null)
     {
       _userState = _userState.NotFound();
@@ -84,27 +84,11 @@ public partial class MainLayout : LayoutComponentBase
   }
 
   private async Task<MaybeRepresentingUserModel?> ReadMaybeRepresentingUser(
-    string userId)
+    ClaimsPrincipal claimsPrincipal)
   {
     await using var scope = Services.CreateAsyncScope();
     var client = scope.ServiceProvider.GetRequiredService<OzdsDbClient>();
-    return await client.ReadMaybeRepresentingUserByUser(userId);
-  }
-
-  private void RedirectTo(string route)
-  {
-    try
-    {
-      NavigationManager.NavigateTo(route, true);
-    }
-    catch (Exception exception)
-    {
-      Logger.LogError(
-        "Error redirecting to {}: {}",
-        route,
-        exception.Message
-      );
-    }
+    return await client.ReadMaybeRepresentingUserByClaimsPrincipal(claimsPrincipal);
   }
 
   public record NavigationDescriptor(string Title, string Route);

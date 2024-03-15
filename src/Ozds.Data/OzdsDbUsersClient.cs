@@ -8,22 +8,7 @@ namespace Ozds.Data;
 
 public partial class OzdsDbClient
 {
-  public async Task<UserModel?> ReadUserFromClaimsPrincipal(
-    ClaimsPrincipal principal)
-  {
-    return await _userManager.GetUserAsync(principal) is { } user
-      ? UserToModel(user)
-      : null;
-  }
-
-  public async Task<UserModel?> ReadUser(string userId)
-  {
-    return await _userManager.FindByIdAsync(userId) is { } user
-      ? UserToModel(user)
-      : null;
-  }
-
-  public async Task<List<MaybeRepresentingUserModel>?> ReadUserRepresentatives(
+  public async Task<List<MaybeRepresentingUserModel>?> ReadMaybeRepresentingUsers(
     int skip = 0, int take = TakeLimit)
   {
     var users = await _userManager.Users
@@ -46,7 +31,22 @@ public partial class OzdsDbClient
     )).ToList();
   }
 
-  public async Task<RepresentativeModel?> ReadRepresentativeByUser(
+  public async Task<UserModel?> ReadUserByClaimsPrincipal(
+    ClaimsPrincipal principal)
+  {
+    return await _userManager.GetUserAsync(principal) is { } user
+      ? UserToModel(user)
+      : null;
+  }
+
+  public async Task<UserModel?> ReadUserByUserId(string userId)
+  {
+    return await _userManager.FindByIdAsync(userId) is { } user
+      ? UserToModel(user)
+      : null;
+  }
+
+  public async Task<RepresentativeModel?> ReadRepresentativeByUserId(
     string userId)
   {
     return await _context.Representatives.FirstOrDefaultAsync(entity =>
@@ -55,7 +55,30 @@ public partial class OzdsDbClient
       : null;
   }
 
-  public async Task<RepresentingUserModel?> ReadRepresentingUserByUser(
+  public async Task<RepresentingUserModel?>
+    ReadRepresentingUserByClaimsPrincipal(ClaimsPrincipal claimsPrincipal)
+  {
+    var user = await _userManager.GetUserAsync(claimsPrincipal);
+    if (user is null)
+    {
+      return null;
+    }
+
+    var representative =
+      await _context.Representatives.FirstOrDefaultAsync(entity =>
+        entity.UserId == GetUserId(user));
+    if (representative is null)
+    {
+      return null;
+    }
+
+    return new RepresentingUserModel(
+      UserToModel(user),
+      RepresentativeToModel(representative)
+    );
+  }
+
+  public async Task<RepresentingUserModel?> ReadRepresentingUserByUserId(
     string userId)
   {
     var user = await _userManager.FindByIdAsync(userId);
@@ -76,29 +99,8 @@ public partial class OzdsDbClient
       RepresentativeToModel(representative));
   }
 
-  public async Task<MaybeRepresentingUserModel?>
-    ReadMaybeRepresentingUserByUser(string userId)
-  {
-    var user = await _userManager.FindByIdAsync(userId);
-    if (user is null)
-    {
-      return null;
-    }
-
-    var representative =
-      await _context.Representatives.FirstOrDefaultAsync(entity =>
-        entity.UserId == userId);
-    if (representative is null)
-    {
-      return new MaybeRepresentingUserModel(UserToModel(user), null);
-    }
-
-    return new MaybeRepresentingUserModel(UserToModel(user),
-      RepresentativeToModel(representative));
-  }
-
   public async Task<RepresentingUserModel?>
-    ReadUserRepresentingUserByRepresentative(string id)
+    ReadRepresentingUserByRepresentativeId(string id)
   {
     var representative =
       await _context.Representatives.FirstOrDefaultAsync(entity =>
@@ -115,6 +117,48 @@ public partial class OzdsDbClient
     }
 
     return new RepresentingUserModel(UserToModel(user),
+      RepresentativeToModel(representative));
+  }
+
+  public async Task<MaybeRepresentingUserModel?>
+    ReadMaybeRepresentingUserByClaimsPrincipal(ClaimsPrincipal claimsPrincipal)
+  {
+    var user = await _userManager.GetUserAsync(claimsPrincipal);
+    if (user is null)
+    {
+      return null;
+    }
+
+    var representative =
+      await _context.Representatives.FirstOrDefaultAsync(entity =>
+        entity.UserId == GetUserId(user));
+    if (representative is null)
+    {
+      return new MaybeRepresentingUserModel(UserToModel(user), null);
+    }
+
+    return new MaybeRepresentingUserModel(UserToModel(user),
+      RepresentativeToModel(representative));
+  }
+
+  public async Task<MaybeRepresentingUserModel?>
+    ReadMaybeRepresentingUserByUserId(string userId)
+  {
+    var user = await _userManager.FindByIdAsync(userId);
+    if (user is null)
+    {
+      return null;
+    }
+
+    var representative =
+      await _context.Representatives.FirstOrDefaultAsync(entity =>
+        entity.UserId == userId);
+    if (representative is null)
+    {
+      return new MaybeRepresentingUserModel(UserToModel(user), null);
+    }
+
+    return new MaybeRepresentingUserModel(UserToModel(user),
       RepresentativeToModel(representative));
   }
 

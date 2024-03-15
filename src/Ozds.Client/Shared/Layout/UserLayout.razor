@@ -12,7 +12,7 @@
     <MudMenu AnchorOrigin="Origin.CenterLeft" Dense="true" Class="mt-1 ml-4">
       <ActivatorContent>
         <MudItem Class="mx-2">
-          @UserState
+          @UserState?.User.UserName
         </MudItem>
         <MudIcon Icon="@Icons.Material.Filled.Person"/>
       </ActivatorContent>

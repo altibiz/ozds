@@ -22,7 +22,6 @@
 	<ItemGroup>
 	  <ProjectReference Include="../../src/Ozds.Client/Ozds.Client.csproj" />
 	  <ProjectReference Include="../../src/Ozds.Business/Ozds.Business.csproj" />
-	  <ProjectReference Include="../../src/Ozds.Data/Ozds.Data.csproj" />
 	</ItemGroup>
 
 </Project>
