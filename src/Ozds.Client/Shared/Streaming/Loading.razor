@@ -1,43 +1,51 @@
 @typeparam TState
 
-@if (State is null) {
+@if (State is null)
+{
   return;
 }
 
-@if (State.IsLoading) {
-if (Progress is not null) {
-@Progress
-return;
+@if (State.IsLoading)
+{
+  if (Progress is not null)
+  {
+    @Progress
+    return;
+  }
+
+  <MudProgressCircular/>
+  return;
 }
 
-<MudProgressCircular/>
-return;
+@if (State.Error is not null)
+{
+  if (Error is not null)
+  {
+    @Error(State.Error!)
+    return;
+  }
+
+  <MudAlert Severity="Severity.Error">
+    @State.Error
+  </MudAlert>
+  return;
 }
 
-@if (State.Error is not null) {
-if (Error is not null) {
-@Error(State.Error!)
-return;
+@if (State.Value is null)
+{
+  if (NotFound is not null)
+  {
+    @NotFound
+    return;
+  }
+
+  <NotFound/>
+  return;
 }
 
-<MudAlert Severity="Severity.Error">
-  @State.Error
-</MudAlert>
-return;
-}
-
-@if (State.Value is null) {
-if (NotFound is not null) {
-@NotFound
-return;
-}
-
-<NotFound />
-return;
-}
-
-@if (Found is not null) {
-@Found(State.Value!)
+@if (Found is not null)
+{
+  @Found(State.Value!)
 }
 
 @code {
@@ -55,7 +63,8 @@ return;
 
   protected override async Task OnInitializedAsync()
   {
-    if (State is null) {
+    if (State is null)
+    {
       return;
     }
 

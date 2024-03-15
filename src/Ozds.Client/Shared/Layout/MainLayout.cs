@@ -31,7 +31,7 @@ public partial class MainLayout : LayoutComponentBase
           && type.GetCustomAttribute(typeof(NavigationAttribute)) is
             NavigationAttribute navigationAttribute)
       {
-        if (navigationAttribute.Title is { })
+        if (navigationAttribute.Title is not null)
         {
           yield return new NavigationDescriptor(
             navigationAttribute.Title,
