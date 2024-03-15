@@ -1,4 +1,4 @@
-namespace Ozds.Data.Entities;
+namespace Ozds.Data.Entities.Base;
 
 public abstract class IdEntity
 {

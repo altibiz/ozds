@@ -1,14 +1,13 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Ozds.Data.Entities;
+namespace Ozds.Data.Entities.Base;
 
 public abstract class MeasurementEntity
 {
   [NotMapped] private DateTimeOffset _timestamp;
 
-  [HypertableColumn] public string Source { get; set; } = default!;
+  public string Source { get; set; } = default!;
 
-  [HypertableColumn]
   [Column(TypeName = "timestamptz")]
   public DateTimeOffset Timestamp
   {

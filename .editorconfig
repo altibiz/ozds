@@ -27,9 +27,6 @@ dotnet_diagnostic.IDE0058.severity = none
 csharp_style_namespace_declarations = file_scoped
 csharp_namespace_body = file_scoped
 
-# allow underscores in names for measuring units
-dotnet_diagnostic.CA1707.severity = none
-
 csharp_braces_for_ifelse = required
 csharp_braces_for_for = required
 csharp_braces_for_foreach = required

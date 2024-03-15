@@ -1,0 +1,66 @@
+@using MudBlazor.ThemeManager
+@using System.Security.Claims
+
+<MudLayout>
+  <MudAppBar Elevation="4">
+    <MudHidden Breakpoint="Breakpoint.MdAndUp">
+      <MudIconButton
+        Icon="@Icons.Material.Outlined.Menu"
+        Color="MudColor.Inherit"
+        Edge="Edge.Start"
+        OnClick="e => DrawerToggle()"/>
+    </MudHidden>
+    <img src="helb.svg" alt="HELB" />
+    <MudSpacer/>
+    <MudMenu AnchorOrigin="Origin.CenterLeft" Dense="true" Class="mt-1 ml-4">
+      <ActivatorContent>
+        <MudItem Class="mx-2">
+          @UserState
+        </MudItem>
+        <MudIcon Icon="@Icons.Material.Filled.Person"/>
+      </ActivatorContent>
+      <ChildContent>
+        <MudListItem Text="Account" Icon="@Icons.Material.Outlined.Person" Href="account" ForceLoad="true"/>
+        <MudListItem Text="Logout" Icon="@Icons.Material.Outlined.Login" Href="login" ForceLoad="true"/>
+      </ChildContent>
+    </MudMenu>
+  </MudAppBar>
+  <MudDrawer @bind-Open="_drawerOpen" Elevation="25" ClipMode="ThemeManagerTheme.DrawerClipMode">
+    <MudNavMenu>
+      @foreach (var route in MainLayout.GetNavigationDescriptors())
+      {
+        <MudNavLink Href="@route.Route">
+          @route.Title
+        </MudNavLink>
+      }
+    </MudNavMenu>
+  </MudDrawer>
+  <MudMainContent>
+    <MudHidden Breakpoint="Breakpoint.SmAndDown">
+      <MudToolBar DisableGutters="true">
+        <MudIconButton Icon="@Icons.Material.Outlined.Menu" Color="MudColor.Inherit" OnClick="@(e => DrawerToggle())" Class="ml-3"/>
+      </MudToolBar>
+    </MudHidden>
+    <MudContainer MaxWidth="MaxWidth.Large" Class="mt-4">
+      @Body
+    </MudContainer>
+  </MudMainContent>
+</MudLayout>
+
+@code {
+  [CascadingParameter]
+  public UserState? UserState { get; set; } = default!;
+
+  [Parameter]
+  public ThemeManagerTheme ThemeManagerTheme { get; set; } = default!;
+
+  [Parameter]
+  public RenderFragment Body { get; set; } = default!;
+
+  public bool _drawerOpen = true;
+
+  void DrawerToggle()
+  {
+    _drawerOpen = !_drawerOpen;
+  }
+}

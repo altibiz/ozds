@@ -2,7 +2,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Ozds.Data.Entities;
+using Ozds.Data.Entities.Base;
 
 namespace Ozds.Data;
 

@@ -1,5 +1,6 @@
 using MudBlazor.Services;
 using OrchardCore.ResourceManagement.TagHelpers;
+using Ozds.Client.Extensions;
 using Ozds.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -36,6 +37,7 @@ builder.Services
 
 builder.Services.AddServerSideBlazor();
 builder.Services.AddMudServices();
+builder.Services.AddCascadingMaybeRepresentingUserState();
 
 var app = builder.Build();
 

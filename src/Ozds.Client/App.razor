@@ -2,17 +2,13 @@
 
 <Router AppAssembly="@typeof(App).Assembly">
   <Found Context="routeData">
-    <RouteView
+    <AuthorizeRouteView
       RouteData="@routeData"
-      DefaultLayout="@typeof(Layout)"/>
+      DefaultLayout="@typeof(MainLayout)"/>
   </Found>
   <NotFound>
-    <LayoutView Layout="@typeof(Layout)">
-      <MudContainer MaxWidth="MaxWidth.Small">
-        <MudText Typo="Typo.h5">
-          The page you were looking for doesn't exist.
-        </MudText>
-      </MudContainer>
+    <LayoutView Layout="@typeof(MainLayout)">
+      <NotFound />
     </LayoutView>
   </NotFound>
 </Router>

@@ -30,14 +30,6 @@ public partial class OzdsDbClient
     await _context.Representatives.DeleteByKeyAsync(id);
   }
 
-  public async Task<RepresentativeModel?> ReadUserRepresentative(string id)
-  {
-    return await _context.Representatives.FirstOrDefaultAsync(entity =>
-      entity.UserId == id) is { } entity
-      ? RepresentativeToModel(entity)
-      : null;
-  }
-
   public async Task<RepresentativeModel?> ReadOperatorRepresentative()
   {
     return await _context.Representatives.FirstOrDefaultAsync(entity =>
@@ -46,21 +38,31 @@ public partial class OzdsDbClient
       : null;
   }
 
-  public async Task<List<RepresentativeModel>> ReadTenantRepresentatives(
-    string id)
+  public async Task<List<RepresentativeModel>> ReadNetworkUserRepresentatives(
+    string id,
+    int skip = 0,
+    int take = TakeLimit
+  )
   {
     return (await _context.Representatives
-        .Where(entity => entity.Tenants.Any(tenant => tenant.Id == id))
+        .Where(entity => entity.NetworkUsers.Any(networkUser => networkUser.Id == id))
+        .Skip(skip)
+        .Take(take)
         .ToListAsync())
       .Select(RepresentativeToModel)
       .ToList();
   }
 
-  public async Task<List<RepresentativeModel>> ReadSubnetRepresentatives(
-    string id)
+  public async Task<List<RepresentativeModel>> ReadLocationRepresentatives(
+    string id,
+    int skip = 0,
+    int take = TakeLimit
+  )
   {
     return (await _context.Representatives
-        .Where(entity => entity.Subnets.Any(tenant => tenant.Id == id))
+        .Where(entity => entity.Locations.Any(networkUser => networkUser.Id == id))
+        .Skip(skip)
+        .Take(take)
         .ToListAsync())
       .Select(RepresentativeToModel)
       .ToList();

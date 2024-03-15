@@ -1,0 +1,46 @@
+@inherits LayoutComponentBase
+
+@using MudBlazor.ThemeManager
+@using Theme = Theme
+
+<main>
+  <MudThemeProvider Theme="_themeManagerTheme.Theme"/>
+  <MudDialogProvider/>
+  <MudSnackbarProvider/>
+
+  <Loading State="_userState">
+    <Found Context="user">
+      <CascadingValue Value="user">
+        <UserLayout>
+          <Loading State="_representativeState">
+            <Found Context="representative">
+              <CascadingValue Value="representative">
+                <RepresentativeLayout>
+                  @Body
+                </RepresentativeLayout>
+              </CascadingValue>
+            </Found>
+            <NotFound>
+              @Body
+            </NotFound>
+          </Loading>
+        </UserLayout>
+      </CascadingValue>
+    </Found>
+  </Loading>
+</main>
+
+@code {
+  private readonly ThemeManagerTheme _themeManagerTheme = new();
+
+  [CascadingParameter]
+  private Task<AuthenticationState>? _authenticationStateTask { get; set; }
+
+  protected override void OnInitialized()
+  {
+    _themeManagerTheme.Theme = new Theme();
+    _themeManagerTheme.DrawerClipMode = DrawerClipMode.Always;
+    _themeManagerTheme.FontFamily = "Roboto";
+    _themeManagerTheme.DefaultBorderRadius = 3;
+  }
+}

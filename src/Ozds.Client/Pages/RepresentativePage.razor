@@ -1,0 +1,23 @@
+@page "/representative/{id}"
+@attribute [Navigation(RouteValue = "id", Parents = new[] { typeof(RepresentativesPage) })]
+@attribute [StreamRendering]
+@using Ozds.Data
+@using Ozds.Data.Models
+@using Microsoft.Extensions.DependencyInjection
+@inherits OwningComponentBase
+
+<Loading
+    State="@(new LoadingState<RepresentingUserModel>())"
+    Load="@(async () =>
+      (await ScopedServices
+        .GetRequiredService<OzdsDbClient>()
+        .ReadUserRepresentingUserByRepresentative(Id))!
+    )">
+  <Found>
+    @context
+  </Found>
+</Loading>
+
+@code {
+  [Parameter] public string Id { get; set; } = default!;
+}
