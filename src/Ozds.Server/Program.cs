@@ -2,11 +2,11 @@ using MudBlazor.Services;
 using OrchardCore.ResourceManagement.TagHelpers;
 using Ozds.Client.Extensions;
 using Ozds.Data;
+using Ozds.Data.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddScoped<OzdsDbContext>();
-builder.Services.AddScoped<OzdsDbClient>();
+builder.Services.AddOzdsDbClient();
 
 builder.Services
   .AddOrchardCore()

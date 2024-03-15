@@ -12,4 +12,8 @@
     <NoDefaultLaunchSettingsFile>true</NoDefaultLaunchSettingsFile>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <OrchardVersion>1.8.1</OrchardVersion>
+  </PropertyGroup>
+
 </Project>
