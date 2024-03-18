@@ -14,5 +14,6 @@ builder.Services
     .MapOzdsClient("App", "Index", "/app"));
 
 var app = builder.Build();
+app.UseStaticFiles();
 app.UseOrchardCore();
 await app.RunAsync();
