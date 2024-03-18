@@ -33,7 +33,7 @@ public partial class MainLayout : LayoutComponentBase
         {
           yield return new NavigationDescriptor(
             navigationAttribute.Title,
-            $"~{routeAttribute.Template}"
+            "/app" + routeAttribute.Template
           );
         }
       }

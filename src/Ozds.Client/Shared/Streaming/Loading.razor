@@ -49,7 +49,7 @@
 }
 
 @code {
-  [Parameter] public LoadingState<TState>? State { get; set; }
+  [Parameter] public LoadingState<TState>? State { get; set; } = new();
 
   [Parameter] public Func<Task<TState?>>? Load { get; set; }
 

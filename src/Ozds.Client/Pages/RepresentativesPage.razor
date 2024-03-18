@@ -1,3 +1,11 @@
 @page "/representatives"
+@using Ozds.Data
 @attribute [Navigation(Title = "Representatives")]
 @attribute [Authorize]
+@inherits OwningComponentBase<OzdsDbClient>
+
+<Loading Load="@(() => Service.ReadMaybeRepresentingUsers())">
+  <Found>
+    @context
+  </Found>
+</Loading>
