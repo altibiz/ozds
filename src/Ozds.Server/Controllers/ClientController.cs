@@ -6,6 +6,6 @@ public class ClientController : Controller
 {
   public IActionResult Index()
   {
-    return View("Client");
+    return View();
   }
 }
