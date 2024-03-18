@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Ozds.Server.Controllers;
 
-public class ClientController : Controller
+public class AppController : Controller
 {
   public IActionResult Index()
   {

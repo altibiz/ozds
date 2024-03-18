@@ -10,15 +10,10 @@ builder.Services
     .AddOzdsClient(builder.Environment.IsDevelopment())
     .AddOzdsBusinessClient()
     .AddOzdsDataClient())
-  .Configure((_, endpoints) => endpoints.MapBlazorHub("/app/_blazor"))
   .Configure((_, endpoints) => endpoints
-    .MapAreaControllerRoute(
-      name: "App",
-      areaName: "Ozds.Server",
-      pattern: "/app/{**catchall}",
-      defaults: new { controller = "Client", action = "Index" }
-    ));
+    .MapOzdsClient("App", "Index", "/app"));
 
 var app = builder.Build();
+app.UseStaticFiles();
 app.UseOrchardCore();
 await app.RunAsync();

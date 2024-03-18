@@ -55,7 +55,8 @@ public partial class MainLayout : LayoutComponentBase
     }
     if (claimsPrincipal.Identity?.IsAuthenticated is false)
     {
-      NavigationManager.NavigateTo("/login?returnUrl=/client/pages/dashboard");
+      // TODO: remove hardcoding of /app here
+      NavigationManager.NavigateTo($"/login?returnUrl=/app");
       return;
     }
 
