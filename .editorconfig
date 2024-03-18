@@ -24,9 +24,6 @@ csharp_style_unused_value_expression_statement_preference = discard_variable
 # allow unused expression result
 dotnet_diagnostic.IDE0058.severity = none
 
-csharp_style_namespace_declarations = file_scoped
-csharp_namespace_body = file_scoped
-
 csharp_braces_for_ifelse = required
 csharp_braces_for_for = required
 csharp_braces_for_foreach = required
@@ -36,3 +33,10 @@ csharp_braces_for_using = required
 csharp_braces_for_lock = required
 csharp_braces_for_fixed = required
 csharp_braces_redundant = true
+
+csharp_style_namespace_declarations = file_scoped
+csharp_namespace_body = file_scoped
+csharp_method_or_operator_body = block_body
+csharp_local_function_body = block_body
+csharp_constructor_or_destructor_body = block_body
+csharp_accessor_owner_body = accessors_with_block_body

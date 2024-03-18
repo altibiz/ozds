@@ -1,6 +1,5 @@
 using Ozds.Business.Extensions;
 using Ozds.Client.Extensions;
-using Ozds.Data.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services
@@ -8,8 +7,7 @@ builder.Services
   .AddSetupFeatures("OrchardCore.AutoSetup")
   .ConfigureServices(services => services
     .AddOzdsClient(builder.Environment.IsDevelopment())
-    .AddOzdsBusinessClient()
-    .AddOzdsDataClient())
+    .AddOzdsBusinessClient())
   .Configure((_, endpoints) => endpoints
     .MapOzdsClient("App", "Index", "/app"));
 

@@ -1,4 +1,4 @@
-using Ozds.Data.Models;
+using Ozds.Business.Models;
 
 namespace Ozds.Client.State;
 

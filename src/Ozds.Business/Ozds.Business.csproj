@@ -8,4 +8,8 @@
 	  <ProjectReference Include="../../src/Ozds.Data/Ozds.Data.csproj" />
 	</ItemGroup>
 
+  <ItemGroup>
+		<PackageReference Include="OrchardCore.Users" Version="$(OrchardVersion)" />
+  </ItemGroup>
+
 </Project>

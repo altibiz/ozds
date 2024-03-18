@@ -1,11 +1,33 @@
 @page "/representatives"
-@using Ozds.Data
+@using Ozds.Business.Queries
 @attribute [Navigation(Title = "Representatives")]
 @attribute [Authorize]
-@inherits OwningComponentBase<OzdsDbClient>
+@inherits OwningComponentBase<OzdsRelationalQueries>
 
-<Loading Load="@(() => Service.ReadMaybeRepresentingUsers())">
+<Loading Load="@(() => Service.MaybeRepresentingUsers(pageNumber: _page))">
   <Found>
-    @context
+    @foreach (var maybeRepresentingUser in context.Items)
+    {
+      <MudCard>
+        <MudCardContent>
+          <MudText Typo="Typo.h6">
+            @maybeRepresentingUser.User.UserName
+          </MudText>
+          <MudText>
+            @maybeRepresentingUser.User.Email
+          </MudText>
+        </MudCardContent>
+      </MudCard>
+    }
+
+    <MudPagination
+      class="mt-4"
+      @bind-Selected="_page"
+      PageSize="QueryConstants.DefaultPageSize"
+      TotalItems="context.TotalCount" />
   </Found>
 </Loading>
+
+@code {
+  private int _page = 1;
+}

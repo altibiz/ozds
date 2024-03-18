@@ -1,4 +1,4 @@
-namespace Ozds.Data.Models;
+namespace Ozds.Business.Models;
 
 public record RepresentingUserModel(
   UserModel User,

@@ -1,12 +1,11 @@
 using System.Reflection;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Ozds.Business.Models;
+using Ozds.Business.Queries;
 using Ozds.Client.Attributes;
 using Ozds.Client.State;
-using Ozds.Data;
-using Ozds.Data.Models;
 
 namespace Ozds.Client.Shared.Layout;
 
@@ -83,8 +82,8 @@ public partial class MainLayout : LayoutComponentBase
     ClaimsPrincipal claimsPrincipal)
   {
     await using var scope = Services.CreateAsyncScope();
-    var client = scope.ServiceProvider.GetRequiredService<OzdsDbClient>();
-    return await client.ReadMaybeRepresentingUserByClaimsPrincipal(claimsPrincipal);
+    var query = scope.ServiceProvider.GetRequiredService<OzdsRelationalQueries>();
+    return await query.MaybeRepresentingUserByClaimsPrincipal(claimsPrincipal);
   }
 
   public record NavigationDescriptor(string Title, string Route);
