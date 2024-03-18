@@ -1,3 +1,4 @@
+using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 
@@ -9,16 +10,17 @@ public static class IEndpointRouteBuilderExtensions
     this IEndpointRouteBuilder endpoints,
     string controller,
     string action,
-    string prefix = "/app"
+    string prefix
   )
   {
-    endpoints.MapBlazorHub(prefix + "/_blazor");
     endpoints.MapAreaControllerRoute(
       name: "Ozds.Client",
-      areaName: "Ozds.Client",
+      areaName: Assembly.GetCallingAssembly().GetName().Name
+        ?? throw new InvalidOperationException("Assembly name not found"),
       pattern: prefix + "/{**catchall}",
       defaults: new { controller, action }
     );
+    endpoints.MapBlazorHub(prefix + "/_blazor");
 
     return endpoints;
   }
