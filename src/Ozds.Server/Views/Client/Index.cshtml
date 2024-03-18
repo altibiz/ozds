@@ -8,14 +8,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
     <!-- NOTE: we put all css and fonts here because Blazor doesn't handle assets like this well -->
-    <link rel="icon" type="image/png" href="favicon.png"/>
+    <link rel="icon" type="image/ico" href="favicon.ico"/>
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet"/>
     <link href="/_content/MudBlazor/MudBlazor.min.css?v=6.11.1" rel="stylesheet"/>
     <link href="/_content/MudBlazor.ThemeManager/MudBlazorThemeManager.css" rel="stylesheet"/>
-    <base href="/client/"/>
+    <base href="/app/"/>
 
-    <!-- FIXME: this breaks it -->
-    @* @(await Html.RenderComponentAsync<Microsoft.AspNetCore.Components.Web.HeadOutlet>(RenderMode.Server)) *@
+    @(await Html.RenderComponentAsync<Microsoft.AspNetCore.Components.Web.HeadOutlet>(RenderMode.Server))
   </head>
 
   <body>

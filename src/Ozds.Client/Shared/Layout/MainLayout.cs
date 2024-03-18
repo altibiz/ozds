@@ -20,11 +20,6 @@ public partial class MainLayout : LayoutComponentBase
 
   [Inject] private IServiceProvider Services { get; set; } = default!;
 
-  public MainLayout(IHttpContextAccessor httpContextAccessor) : base()
-  {
-    Console.WriteLine(httpContextAccessor.HttpContext?.User.Identity?.Name);
-  }
-
   public static IEnumerable<NavigationDescriptor> GetNavigationDescriptors()
   {
     foreach (var type in typeof(App).Assembly.GetTypes())
@@ -38,7 +33,7 @@ public partial class MainLayout : LayoutComponentBase
         {
           yield return new NavigationDescriptor(
             navigationAttribute.Title,
-            routeAttribute.Template
+            $"~{routeAttribute.Template}"
           );
         }
       }

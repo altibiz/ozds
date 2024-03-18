@@ -1,22 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
 	<ItemGroup>
-		<PackageReference Include="OrchardCore.Admin" Version="$(OrchardVersion)" />
-		<PackageReference Include="OrchardCore.Application.Mvc.Targets" Version="$(OrchardVersion)" />
-		<PackageReference Include="OrchardCore.Features" Version="$(OrchardVersion)" />
-		<PackageReference Include="OrchardCore.Infrastructure" Version="$(OrchardVersion)" />
-		<PackageReference Include="OrchardCore.Navigation" Version="$(OrchardVersion)" />
-		<PackageReference Include="OrchardCore.Recipes" Version="$(OrchardVersion)" />
-		<PackageReference Include="OrchardCore.Resources" Version="$(OrchardVersion)" />
-		<PackageReference Include="OrchardCore.Roles" Version="$(OrchardVersion)" />
-		<PackageReference Include="OrchardCore.Settings" Version="$(OrchardVersion)" />
-		<PackageReference Include="OrchardCore.Setup" Version="$(OrchardVersion)" />
-		<PackageReference Include="OrchardCore.AutoSetup" Version="$(OrchardVersion)" />
-		<PackageReference Include="OrchardCore.Tenants" Version="$(OrchardVersion)" />
-		<PackageReference Include="OrchardCore.Themes" Version="$(OrchardVersion)" />
-		<PackageReference Include="OrchardCore.Users" Version="$(OrchardVersion)" />
-		<PackageReference Include="SafeMode" Version="$(OrchardVersion)" />
-		<PackageReference Include="TheAdmin" Version="$(OrchardVersion)" />
+    <PackageReference Include="OrchardCore.Application.Cms.Targets" Version="$(OrchardVersion)" />
 	</ItemGroup>
 
 	<ItemGroup>

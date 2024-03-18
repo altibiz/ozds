@@ -7,7 +7,7 @@
         Edge="Edge.Start"
         OnClick="e => DrawerToggle()"/>
     </MudHidden>
-    <img src="helb.svg" alt="HELB"/>
+    <img src="~/helb.svg" alt="HELB"/>
     <MudSpacer/>
     <MudMenu AnchorOrigin="Origin.CenterLeft" Dense="true" Class="mt-1 ml-4">
       <ActivatorContent>
@@ -39,7 +39,7 @@
       </MudToolBar>
     </MudHidden>
     <MudContainer MaxWidth="MaxWidth.Large" Class="mt-4">
-      @Body
+      @ChildContent
     </MudContainer>
   </MudMainContent>
 </MudLayout>
@@ -47,7 +47,7 @@
 @code {
   [CascadingParameter] public UserState? UserState { get; set; } = default!;
 
-  [Parameter] public RenderFragment? Body { get; set; } = default!;
+  [Parameter] public RenderFragment? ChildContent { get; set; } = default!;
 
   public bool _drawerOpen = true;
 

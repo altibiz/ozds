@@ -1,7 +1,7 @@
-@page "/client/pages/representative/{id}"
+@page "/representative/{id}"
 @attribute [Navigation(RouteValue = "id", Parents = new[] { typeof(RepresentativesPage) })]
-@* @attribute [Authorize] *@
-@* @attribute [StreamRendering] *@
+@attribute [Authorize]
+@attribute [StreamRendering]
 @using Microsoft.Extensions.DependencyInjection
 @using Ozds.Data.Models
 @using Ozds.Data
