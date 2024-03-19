@@ -1,8 +1,7 @@
 @page "/representatives"
-@using Ozds.Business.Queries
 @attribute [Navigation(Title = "Representatives")]
 @attribute [Authorize]
-@inherits OwningComponentBase<OzdsRelationalQueries>
+@inherits OwningComponentBase<Ozds.Business.Queries.OzdsRelationalQueries>
 
 <Loading Load="@(() => Service.MaybeRepresentingUsers(pageNumber: _page))">
   <Found>
@@ -24,7 +23,7 @@
       class="mt-4"
       @bind-Selected="_page"
       PageSize="QueryConstants.DefaultPageSize"
-      TotalItems="context.TotalCount" />
+      TotalItems="context.TotalCount"/>
   </Found>
 </Loading>
 

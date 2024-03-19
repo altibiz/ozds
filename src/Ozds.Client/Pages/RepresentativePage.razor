@@ -1,9 +1,8 @@
 @page "/representative/{id}"
-@using Ozds.Business.Queries
 @attribute [Navigation(RouteValue = "id", Parents = new[] { typeof(RepresentativesPage) })]
 @attribute [Authorize]
 @attribute [StreamRendering]
-@inherits OwningComponentBase<OzdsRelationalQueries>
+@inherits OwningComponentBase<Ozds.Business.Queries.OzdsRelationalQueries>
 
 <Loading
   Load="@(async () => (await Service.RepresentingUserByRepresentativeId(Id))!)">

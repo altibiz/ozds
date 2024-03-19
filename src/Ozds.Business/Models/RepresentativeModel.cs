@@ -16,8 +16,9 @@ public record RepresentativeModel(
 
 public static class RepresentativeModelExtensions
 {
-  public static RepresentativeEntity ToEntity(this RepresentativeModel model) =>
-    new()
+  public static RepresentativeEntity ToEntity(this RepresentativeModel model)
+  {
+    return new RepresentativeEntity
     {
       Id = model.Id,
       UserId = model.UserId,
@@ -29,9 +30,11 @@ public static class RepresentativeModelExtensions
       Email = model.Email,
       PhoneNumber = model.PhoneNumber
     };
+  }
 
-  public static RepresentativeModel ToModel(this RepresentativeEntity model) =>
-    new(
+  public static RepresentativeModel ToModel(this RepresentativeEntity model)
+  {
+    return new RepresentativeModel(
       model.Id,
       model.UserId,
       model.Name,
@@ -42,4 +45,5 @@ public static class RepresentativeModelExtensions
       model.Email,
       model.PhoneNumber
     );
+  }
 }

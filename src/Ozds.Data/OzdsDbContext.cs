@@ -28,28 +28,27 @@ public partial class OzdsDbContext : DbContext
   {
     _ = modelBuilder.HasPostgresExtension("timescaledb");
 
-    CreateEnumPropertyTypes(modelBuilder, typeof(IdEntity));
     CreateEntitiesWithBase(
       modelBuilder,
       typeof(IdEntity),
-      entity => { _ = entity.HasKey(nameof(IdEntity.Id)); }
+      entity => entity.HasKey(nameof(IdEntity.Id))
     );
 
-    CreateEnumPropertyTypes(modelBuilder, typeof(MeasurementEntity));
     CreateEntitiesWithBase(
       modelBuilder,
       typeof(MeasurementEntity),
-      entity =>
-      {
-        _ = entity.HasKey(
-          nameof(MeasurementEntity.Source),
-          nameof(MeasurementEntity.Timestamp)
-        );
-      }
+      entity => entity.HasKey(
+        nameof(MeasurementEntity.Source),
+        nameof(MeasurementEntity.Timestamp)
+      )
     );
   }
 
-  protected void CreateEnumPropertyTypes(ModelBuilder modelBuilder, Type @base)
+  protected void CreateEntitiesWithBase(
+    ModelBuilder builder,
+    Type @base,
+    Action<EntityTypeBuilder>? configuration = null
+  )
   {
     foreach (
       var entityType in GetType().Assembly
@@ -67,28 +66,11 @@ public partial class OzdsDbContext : DbContext
           var genericMethod = HasPostgresEnumMethod.MakeGenericMethod(enumType);
           genericMethod.Invoke(
             null,
-            new[] { modelBuilder, null, null, null }
+            new[] { builder, null, null, null }
           );
         }
       }
-    }
-  }
 
-  protected void CreateEntitiesWithBase(
-    ModelBuilder builder,
-    Type @base,
-    Action<EntityTypeBuilder>? configuration = null
-  )
-  {
-    foreach (
-      var entityType in GetType().Assembly
-        .GetTypes()
-        .Where(
-          type => type.IsClass && !type.IsAbstract && type.IsAssignableTo(@base)
-        )
-    )
-    {
-      var entityParameter = Expression.Parameter(entityType);
       configuration?.Invoke(builder.Entity(entityType));
     }
   }

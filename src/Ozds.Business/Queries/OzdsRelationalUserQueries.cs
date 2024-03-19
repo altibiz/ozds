@@ -35,10 +35,11 @@ public partial class OzdsRelationalQueries
       : null;
   }
 
-  public async Task<PaginatedList<MaybeRepresentingUserModel>> MaybeRepresentingUsers(
-    Expression<Func<UserIndex, bool>>? filter = null,
-    int pageNumber = QueryConstants.StartingPage,
-    int pageCount = QueryConstants.DefaultPageCount)
+  public async Task<PaginatedList<MaybeRepresentingUserModel>>
+    MaybeRepresentingUsers(
+      Expression<Func<UserIndex, bool>>? filter = null,
+      int pageNumber = QueryConstants.StartingPage,
+      int pageCount = QueryConstants.DefaultPageCount)
   {
     var users = await _session
       .Query<User, UserIndex>()
@@ -96,7 +97,8 @@ public partial class OzdsRelationalQueries
           ? representative.ToModel()
           : null
       ))
-      .Where(maybeRepresentingUser => maybeRepresentingUser.Representative is not null)
+      .Where(maybeRepresentingUser =>
+        maybeRepresentingUser.Representative is not null)
       .Select(maybeRepresentingUser => new RepresentingUserModel(
         maybeRepresentingUser.User,
         maybeRepresentingUser.Representative!
@@ -216,6 +218,6 @@ public partial class OzdsRelationalQueries
     return new MaybeRepresentingUserModel(
       user.ToModel(),
       representative.ToModel()
-      );
+    );
   }
 }

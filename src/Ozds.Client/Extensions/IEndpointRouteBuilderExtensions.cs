@@ -14,11 +14,11 @@ public static class IEndpointRouteBuilderExtensions
   )
   {
     endpoints.MapAreaControllerRoute(
-      name: "Ozds.Client",
-      areaName: Assembly.GetCallingAssembly().GetName().Name
-        ?? throw new InvalidOperationException("Assembly name not found"),
-      pattern: prefix + "/{**catchall}",
-      defaults: new { controller, action }
+      "Ozds.Client",
+      Assembly.GetCallingAssembly().GetName().Name
+      ?? throw new InvalidOperationException("Assembly name not found"),
+      prefix + "/{**catchall}",
+      new { controller, action }
     );
     endpoints.MapBlazorHub(prefix + "/_blazor");
 

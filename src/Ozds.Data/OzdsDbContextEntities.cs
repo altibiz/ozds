@@ -9,8 +9,8 @@ public partial class OzdsDbContext : DbContext
   public DbSet<LocationEntity> Locations { get; set; } = default!;
   public DbSet<RepresentativeEntity> Representatives { get; set; } = default!;
 
-  public DbSet<AbbMeasurementEntity> AbbMeasurements { get; set; } = default!;
+  public DbSet<AbbB2xMeasurementEntity> AbbB2xMeasurements { get; set; } = default!;
 
-  public DbSet<SchneiderMeasurementEntity> SchneiderMeasurements { get; set; } =
+  public DbSet<SchneideriEM3xxxMeasurementEntity> SchneideriEM3xxxMeasurements { get; set; } =
     default!;
 }

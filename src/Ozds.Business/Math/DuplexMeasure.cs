@@ -2,11 +2,13 @@ using System.Numerics;
 
 namespace Ozds.Business.Math;
 
-public record ImportExportDuplexMeasure(PhasicMeasure Import, PhasicMeasure Export) : DuplexMeasure;
+public record ImportExportDuplexMeasure(
+  PhasicMeasure Import,
+  PhasicMeasure Export) : DuplexMeasure;
 
 public record NetDuplexMeasure(PhasicMeasure TrueNet) : DuplexMeasure;
 
-public record DuplexMeasure() :
+public record DuplexMeasure :
   IAdditionOperators<DuplexMeasure, float, DuplexMeasure>,
   ISubtractionOperators<DuplexMeasure, float, DuplexMeasure>,
   IMultiplyOperators<DuplexMeasure, float, DuplexMeasure>,
@@ -22,130 +24,181 @@ public record DuplexMeasure() :
 {
   public static readonly DuplexMeasure Null = new();
 
-  public PhasicMeasure DuplexNet => this switch
+  public PhasicMeasure DuplexNet
   {
-    ImportExportDuplexMeasure importExport => importExport.Import - importExport.Export,
-    NetDuplexMeasure net => net.TrueNet,
-    _ => PhasicMeasure.Null
-  };
+    get
+    {
+      return this switch
+      {
+        ImportExportDuplexMeasure importExport => importExport.Import -
+                                                  importExport.Export,
+        NetDuplexMeasure net => net.TrueNet,
+        _ => PhasicMeasure.Null
+      };
+    }
+  }
 
-  public static DuplexMeasure operator +(DuplexMeasure lhs, float rhs) => lhs switch
+  public static DuplexMeasure operator +(DuplexMeasure lhs, DuplexMeasure rhs)
   {
-    ImportExportDuplexMeasure importExport => new ImportExportDuplexMeasure(
-      importExport.Import + rhs,
-      importExport.Export + rhs
-    ),
-    NetDuplexMeasure net => new NetDuplexMeasure(net.TrueNet + rhs),
-    _ => new()
-  };
+    return (lhs, rhs) switch
+    {
+      (ImportExportDuplexMeasure lhsImportExport, ImportExportDuplexMeasure
+        rhsImportExport) => new ImportExportDuplexMeasure(
+          lhsImportExport.Import + rhsImportExport.Import,
+          lhsImportExport.Export + rhsImportExport.Export
+        ),
+      (NetDuplexMeasure lhsNet, NetDuplexMeasure rhsNet) =>
+        new NetDuplexMeasure(lhsNet.TrueNet + rhsNet.TrueNet),
+      _ => new DuplexMeasure()
+    };
+  }
 
-  public static DuplexMeasure operator -(DuplexMeasure lhs, float rhs) => lhs switch
+  public static DuplexMeasure operator +(DuplexMeasure lhs, float rhs)
   {
-    ImportExportDuplexMeasure importExport => new ImportExportDuplexMeasure(
-      importExport.Import - rhs,
-      importExport.Export - rhs
-    ),
-    NetDuplexMeasure net => new NetDuplexMeasure(net.TrueNet - rhs),
-    _ => new()
-  };
+    return lhs switch
+    {
+      ImportExportDuplexMeasure importExport => new ImportExportDuplexMeasure(
+        importExport.Import + rhs,
+        importExport.Export + rhs
+      ),
+      NetDuplexMeasure net => new NetDuplexMeasure(net.TrueNet + rhs),
+      _ => new DuplexMeasure()
+    };
+  }
 
-  public static DuplexMeasure operator *(DuplexMeasure lhs, float rhs) => lhs switch
+  public static DuplexMeasure operator +(DuplexMeasure lhs, PhasicMeasure rhs)
   {
-    ImportExportDuplexMeasure importExport => new ImportExportDuplexMeasure(
-      importExport.Import * rhs,
-      importExport.Export * rhs
-    ),
-    NetDuplexMeasure net => new NetDuplexMeasure(net.TrueNet * rhs),
-    _ => new()
-  };
+    return lhs switch
+    {
+      ImportExportDuplexMeasure importExport => new ImportExportDuplexMeasure(
+        importExport.Import + rhs,
+        importExport.Export + rhs
+      ),
+      NetDuplexMeasure net => new NetDuplexMeasure(net.TrueNet + rhs),
+      _ => new DuplexMeasure()
+    };
+  }
 
-  public static DuplexMeasure operator /(DuplexMeasure lhs, float rhs) => lhs switch
+  public static DuplexMeasure operator /(DuplexMeasure lhs, DuplexMeasure rhs)
   {
-    ImportExportDuplexMeasure importExport => new ImportExportDuplexMeasure(
-      importExport.Import / rhs,
-      importExport.Export / rhs
-    ),
-    NetDuplexMeasure net => new NetDuplexMeasure(net.TrueNet / rhs),
-    _ => new()
-  };
+    return (lhs, rhs) switch
+    {
+      (ImportExportDuplexMeasure lhsImportExport, ImportExportDuplexMeasure
+        rhsImportExport) => new ImportExportDuplexMeasure(
+          lhsImportExport.Import / rhsImportExport.Import,
+          lhsImportExport.Export / rhsImportExport.Export
+        ),
+      (NetDuplexMeasure lhsNet, NetDuplexMeasure rhsNet) =>
+        new NetDuplexMeasure(lhsNet.TrueNet / rhsNet.TrueNet),
+      _ => new DuplexMeasure()
+    };
+  }
 
-  public static DuplexMeasure operator +(DuplexMeasure lhs, PhasicMeasure rhs) => lhs switch
+  public static DuplexMeasure operator /(DuplexMeasure lhs, float rhs)
   {
-    ImportExportDuplexMeasure importExport => new ImportExportDuplexMeasure(
-      importExport.Import + rhs,
-      importExport.Export + rhs
-    ),
-    NetDuplexMeasure net => new NetDuplexMeasure(net.TrueNet + rhs),
-    _ => new()
-  };
+    return lhs switch
+    {
+      ImportExportDuplexMeasure importExport => new ImportExportDuplexMeasure(
+        importExport.Import / rhs,
+        importExport.Export / rhs
+      ),
+      NetDuplexMeasure net => new NetDuplexMeasure(net.TrueNet / rhs),
+      _ => new DuplexMeasure()
+    };
+  }
 
-  public static DuplexMeasure operator -(DuplexMeasure lhs, PhasicMeasure rhs) => lhs switch
+  public static DuplexMeasure operator /(DuplexMeasure lhs, PhasicMeasure rhs)
   {
-    ImportExportDuplexMeasure importExport => new ImportExportDuplexMeasure(
-      importExport.Import - rhs,
-      importExport.Export - rhs
-    ),
-    NetDuplexMeasure net => new NetDuplexMeasure(net.TrueNet - rhs),
-    _ => new()
-  };
+    return lhs switch
+    {
+      ImportExportDuplexMeasure importExport => new ImportExportDuplexMeasure(
+        importExport.Import / rhs,
+        importExport.Export / rhs
+      ),
+      NetDuplexMeasure net => new NetDuplexMeasure(net.TrueNet / rhs),
+      _ => new DuplexMeasure()
+    };
+  }
 
-  public static DuplexMeasure operator *(DuplexMeasure lhs, PhasicMeasure rhs) => lhs switch
+  public static DuplexMeasure operator *(DuplexMeasure lhs, DuplexMeasure rhs)
   {
-    ImportExportDuplexMeasure importExport => new ImportExportDuplexMeasure(
-      importExport.Import * rhs,
-      importExport.Export * rhs
-    ),
-    NetDuplexMeasure net => new NetDuplexMeasure(net.TrueNet * rhs),
-    _ => new()
-  };
+    return (lhs, rhs) switch
+    {
+      (ImportExportDuplexMeasure lhsImportExport, ImportExportDuplexMeasure
+        rhsImportExport) => new ImportExportDuplexMeasure(
+          lhsImportExport.Import * rhsImportExport.Import,
+          lhsImportExport.Export * rhsImportExport.Export
+        ),
+      (NetDuplexMeasure lhsNet, NetDuplexMeasure rhsNet) =>
+        new NetDuplexMeasure(lhsNet.TrueNet * rhsNet.TrueNet),
+      _ => new DuplexMeasure()
+    };
+  }
 
-  public static DuplexMeasure operator /(DuplexMeasure lhs, PhasicMeasure rhs) => lhs switch
+  public static DuplexMeasure operator *(DuplexMeasure lhs, float rhs)
   {
-    ImportExportDuplexMeasure importExport => new ImportExportDuplexMeasure(
-      importExport.Import / rhs,
-      importExport.Export / rhs
-    ),
-    NetDuplexMeasure net => new NetDuplexMeasure(net.TrueNet / rhs),
-    _ => new()
-  };
+    return lhs switch
+    {
+      ImportExportDuplexMeasure importExport => new ImportExportDuplexMeasure(
+        importExport.Import * rhs,
+        importExport.Export * rhs
+      ),
+      NetDuplexMeasure net => new NetDuplexMeasure(net.TrueNet * rhs),
+      _ => new DuplexMeasure()
+    };
+  }
 
-  public static DuplexMeasure operator +(DuplexMeasure lhs, DuplexMeasure rhs) => (lhs, rhs) switch
+  public static DuplexMeasure operator *(DuplexMeasure lhs, PhasicMeasure rhs)
   {
-    (ImportExportDuplexMeasure lhsImportExport, ImportExportDuplexMeasure rhsImportExport) => new ImportExportDuplexMeasure(
-      lhsImportExport.Import + rhsImportExport.Import,
-      lhsImportExport.Export + rhsImportExport.Export
-    ),
-    (NetDuplexMeasure lhsNet, NetDuplexMeasure rhsNet) => new NetDuplexMeasure(lhsNet.TrueNet + rhsNet.TrueNet),
-    _ => new()
-  };
+    return lhs switch
+    {
+      ImportExportDuplexMeasure importExport => new ImportExportDuplexMeasure(
+        importExport.Import * rhs,
+        importExport.Export * rhs
+      ),
+      NetDuplexMeasure net => new NetDuplexMeasure(net.TrueNet * rhs),
+      _ => new DuplexMeasure()
+    };
+  }
 
-  public static DuplexMeasure operator -(DuplexMeasure lhs, DuplexMeasure rhs) => (lhs, rhs) switch
+  public static DuplexMeasure operator -(DuplexMeasure lhs, DuplexMeasure rhs)
   {
-    (ImportExportDuplexMeasure lhsImportExport, ImportExportDuplexMeasure rhsImportExport) => new ImportExportDuplexMeasure(
-      lhsImportExport.Import - rhsImportExport.Import,
-      lhsImportExport.Export - rhsImportExport.Export
-    ),
-    (NetDuplexMeasure lhsNet, NetDuplexMeasure rhsNet) => new NetDuplexMeasure(lhsNet.TrueNet - rhsNet.TrueNet),
-    _ => new()
-  };
+    return (lhs, rhs) switch
+    {
+      (ImportExportDuplexMeasure lhsImportExport, ImportExportDuplexMeasure
+        rhsImportExport) => new ImportExportDuplexMeasure(
+          lhsImportExport.Import - rhsImportExport.Import,
+          lhsImportExport.Export - rhsImportExport.Export
+        ),
+      (NetDuplexMeasure lhsNet, NetDuplexMeasure rhsNet) =>
+        new NetDuplexMeasure(lhsNet.TrueNet - rhsNet.TrueNet),
+      _ => new DuplexMeasure()
+    };
+  }
 
-  public static DuplexMeasure operator *(DuplexMeasure lhs, DuplexMeasure rhs) => (lhs, rhs) switch
+  public static DuplexMeasure operator -(DuplexMeasure lhs, float rhs)
   {
-    (ImportExportDuplexMeasure lhsImportExport, ImportExportDuplexMeasure rhsImportExport) => new ImportExportDuplexMeasure(
-      lhsImportExport.Import * rhsImportExport.Import,
-      lhsImportExport.Export * rhsImportExport.Export
-    ),
-    (NetDuplexMeasure lhsNet, NetDuplexMeasure rhsNet) => new NetDuplexMeasure(lhsNet.TrueNet * rhsNet.TrueNet),
-    _ => new()
-  };
+    return lhs switch
+    {
+      ImportExportDuplexMeasure importExport => new ImportExportDuplexMeasure(
+        importExport.Import - rhs,
+        importExport.Export - rhs
+      ),
+      NetDuplexMeasure net => new NetDuplexMeasure(net.TrueNet - rhs),
+      _ => new DuplexMeasure()
+    };
+  }
 
-  public static DuplexMeasure operator /(DuplexMeasure lhs, DuplexMeasure rhs) => (lhs, rhs) switch
+  public static DuplexMeasure operator -(DuplexMeasure lhs, PhasicMeasure rhs)
   {
-    (ImportExportDuplexMeasure lhsImportExport, ImportExportDuplexMeasure rhsImportExport) => new ImportExportDuplexMeasure(
-      lhsImportExport.Import / rhsImportExport.Import,
-      lhsImportExport.Export / rhsImportExport.Export
-    ),
-    (NetDuplexMeasure lhsNet, NetDuplexMeasure rhsNet) => new NetDuplexMeasure(lhsNet.TrueNet / rhsNet.TrueNet),
-    _ => new()
-  };
+    return lhs switch
+    {
+      ImportExportDuplexMeasure importExport => new ImportExportDuplexMeasure(
+        importExport.Import - rhs,
+        importExport.Export - rhs
+      ),
+      NetDuplexMeasure net => new NetDuplexMeasure(net.TrueNet - rhs),
+      _ => new DuplexMeasure()
+    };
+  }
 }

@@ -8,18 +8,21 @@ namespace Ozds.Business.Queries;
 
 public partial class OzdsRelationalQueries
 {
-  public async Task<RepresentativeModel?> RepresentativeById(string id) =>
-    await _context.Representatives.FirstOrDefaultAsync(entity =>
+  public async Task<RepresentativeModel?> RepresentativeById(string id)
+  {
+    return await _context.Representatives.FirstOrDefaultAsync(entity =>
       entity.Id == id) is { } entity
       ? entity.ToModel()
       : null;
+  }
 
   public async Task<PaginatedList<RepresentativeModel>> OperatorRepresentatives(
     Expression<Func<RepresentativeEntity, bool>>? filter = null,
     int pageNumber = QueryConstants.StartingPage,
     int pageCount = QueryConstants.DefaultPageCount
-  ) =>
-    await _context.Representatives
+  )
+  {
+    return await _context.Representatives
       .Where(entity => entity.IsOperatorRepresentative)
       .QueryPaged(
         RepresentativeModelExtensions.ToModel,
@@ -27,34 +30,42 @@ public partial class OzdsRelationalQueries
         pageNumber,
         pageCount
       );
+  }
 
-  public async Task<PaginatedList<RepresentativeModel>> NetworkUserRepresentatives(
-    string id,
-    Expression<Func<RepresentativeEntity, bool>>? filter = null,
-    int pageNumber = QueryConstants.StartingPage,
-    int pageCount = QueryConstants.DefaultPageCount
-  ) =>
-    await _context.Representatives
-      .Where(entity => entity.NetworkUsers.Any(networkUser => networkUser.Id == id))
+  public async Task<PaginatedList<RepresentativeModel>>
+    NetworkUserRepresentatives(
+      string id,
+      Expression<Func<RepresentativeEntity, bool>>? filter = null,
+      int pageNumber = QueryConstants.StartingPage,
+      int pageCount = QueryConstants.DefaultPageCount
+    )
+  {
+    return await _context.Representatives
+      .Where(entity =>
+        entity.NetworkUsers.Any(networkUser => networkUser.Id == id))
       .QueryPaged(
         RepresentativeModelExtensions.ToModel,
         filter,
         pageNumber,
         pageCount
       );
+  }
 
   public async Task<PaginatedList<RepresentativeModel>> LocationRepresentatives(
     string id,
     Expression<Func<RepresentativeEntity, bool>>? filter = null,
     int pageNumber = QueryConstants.StartingPage,
     int pageCount = QueryConstants.DefaultPageCount
-  ) =>
-    await _context.Representatives
-      .Where(entity => entity.Locations.Any(networkUser => networkUser.Id == id))
+  )
+  {
+    return await _context.Representatives
+      .Where(entity =>
+        entity.Locations.Any(networkUser => networkUser.Id == id))
       .QueryPaged(
         RepresentativeModelExtensions.ToModel,
         filter,
         pageNumber,
         pageCount
       );
+  }
 }

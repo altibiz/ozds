@@ -7,7 +7,7 @@ jbcleanuplog := absolute_path('.jb/cleanup.log')
 jbinspectlog := absolute_path('.jb/inspect.log')
 artifacts := absolute_path('artifacts')
 appdata := absolute_path('App_Data')
-servercsproj := absolute_path('src/Ozds.Server/Ozds.Server.csproj') 
+servercsproj := absolute_path('src/Ozds.Server/Ozds.Server.csproj')
 datacsproj := absolute_path('src/Ozds.Data/Ozds.Data.csproj')
 fakecsproj := absolute_path('scripts/Ozds.Fake/Ozds.Fake.csproj')
 
@@ -41,7 +41,7 @@ format:
     --verbosity=ERROR \
     --caches-home="{{jbcache}}" \
     -o="{{jbcleanuplog}}" \
-    --exclude='**/.git/**/*;**/.nuget/**/*;**/obj/**/*;**/bin/**/*;**/Migrations/**/*'
+    --exclude='**/.git/**/*;**/.nuget/**/*;**/obj/**/*;**/bin/**/*'
 
   dotnet format "{{sln}}" \
     --no-restore \
@@ -50,8 +50,7 @@ format:
     --exclude '**/.git/**/*' \
     --exclude '**/.nuget/**/*' \
     --exclude '**/obj/**/*' \
-    --exclude '**/bin/**/*' \
-    --exclude '**/Migrations/**/*'
+    --exclude '**/bin/**/*'
 
 lint:
   prettier --check \
@@ -65,7 +64,7 @@ lint:
     --verbosity=ERROR \
     --caches-home="{{jbcache}}" \
     -o="{{jbinspectlog}}" \
-    --exclude='**/.git/**/*;**/.nuget/**/*;**/obj/**/*;**/bin/**/*;**/Migrations/**/*'
+    --exclude='**/.git/**/*;**/.nuget/**/*;**/obj/**/*;**/bin/**/*'
 
   dotnet format "{{sln}}" \
     --verify-no-changes \
@@ -75,8 +74,7 @@ lint:
     --exclude '**/.git/**/*' \
     --exclude '**/.nuget/**/*' \
     --exclude '**/obj/**/*' \
-    --exclude '**/bin/**/*' \
-    --exclude '**/Migrations/**/*'
+    --exclude '**/bin/**/*'
 
 test *args:
   dotnet test "{{sln}}" {{args}}

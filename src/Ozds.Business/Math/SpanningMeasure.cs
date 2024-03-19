@@ -5,12 +5,12 @@ namespace Ozds.Business.Math;
 public record MinMaxSpanningMeasure<T>(T TrueMin, T TrueMax)
   : SpanningMeasure<T>
   where T :
-    ISubtractionOperators<T, T, T>,
-    IMultiplyOperators<T, float, T>,
-    IDivisionOperators<T, float, T>,
-    new();
+  ISubtractionOperators<T, T, T>,
+  IMultiplyOperators<T, float, T>,
+  IDivisionOperators<T, float, T>,
+  new();
 
-public record SpanningMeasure<T>() where T :
+public record SpanningMeasure<T> where T :
   ISubtractionOperators<T, T, T>,
   IMultiplyOperators<T, float, T>,
   IDivisionOperators<T, float, T>,
@@ -18,21 +18,42 @@ public record SpanningMeasure<T>() where T :
 {
   public static readonly SpanningMeasure<T> Null = new();
 
-  public T SpanMin => this switch
+  public T SpanMin
   {
-    MinMaxSpanningMeasure<T> minMax => minMax.TrueMin,
-    _ => new()
-  };
+    get
+    {
+      return this switch
+      {
+        MinMaxSpanningMeasure<T> minMax => minMax.TrueMin,
+        _ => new T()
+      };
+    }
+  }
 
-  public T SpanMax => this switch
+  public T SpanMax
   {
-    MinMaxSpanningMeasure<T> minMax => minMax.TrueMax,
-    _ => new()
-  };
+    get
+    {
+      return this switch
+      {
+        MinMaxSpanningMeasure<T> minMax => minMax.TrueMax,
+        _ => new T()
+      };
+    }
+  }
 
-  public T SpanDiff => SpanMax - SpanMin;
+  public T SpanDiff
+  {
+    get { return SpanMax - SpanMin; }
+  }
 
-  public T SpanIntegral(float y) => SpanDiff * y;
+  public T SpanIntegral(float y)
+  {
+    return SpanDiff * y;
+  }
 
-  public T SpanDifferential(float y) => SpanDiff / y;
+  public T SpanDifferential(float y)
+  {
+    return SpanDiff / y;
+  }
 }

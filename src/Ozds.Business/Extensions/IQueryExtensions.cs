@@ -7,7 +7,8 @@ namespace Ozds.Business.Extensions;
 
 public static class IQueryExtensions
 {
-  public static async Task<PaginatedList<TModel>> QueryPaged<TIndex, TEntity, TModel>(
+  public static async Task<PaginatedList<TModel>> QueryPaged<TIndex, TEntity,
+    TModel>(
     this IQuery<TEntity, TIndex> queryable,
     Func<TEntity, TModel> toModel,
     Expression<Func<TIndex, bool>>? filter,
@@ -19,7 +20,8 @@ public static class IQueryExtensions
   {
     var query = queryable.Where(filter ?? (_ => true));
     var count = await query.CountAsync();
-    var items = await queryable.Skip((pageNumber - 1) * pageSize).Take(pageSize).ListAsync();
+    var items = await queryable.Skip((pageNumber - 1) * pageSize).Take(pageSize)
+      .ListAsync();
     return items.Select(toModel).ToPaginatedList(count);
   }
 }

@@ -16,7 +16,8 @@ public static class IQueryableExtensions
   {
     var query = queryable.Where(filter ?? (_ => true));
     var count = await query.CountAsync();
-    var items = await queryable.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+    var items = await queryable.Skip((pageNumber - 1) * pageSize).Take(pageSize)
+      .ToListAsync();
     return items.Select(toModel).ToPaginatedList(count);
   }
 }

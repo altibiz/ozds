@@ -47,19 +47,16 @@ public partial class MainLayout : LayoutComponentBase
     }
 
     var authenticationState = await _authenticationStateTask;
-    var claimsPrincipal = authenticationState?.User;
-    if (claimsPrincipal is null)
-    {
-      throw new InvalidOperationException("No claims principal found.");
-    }
+    var claimsPrincipal = (authenticationState?.User) ?? throw new InvalidOperationException("No claims principal found.");
     if (claimsPrincipal.Identity?.IsAuthenticated is false)
     {
       // TODO: remove hardcoding of /app here
-      NavigationManager.NavigateTo($"/login?returnUrl=/app");
+      NavigationManager.NavigateTo("/login?returnUrl=/app");
       return;
     }
 
-    var maybeRepresentingUser = await ReadMaybeRepresentingUser(claimsPrincipal);
+    var maybeRepresentingUser =
+      await ReadMaybeRepresentingUser(claimsPrincipal);
     if (maybeRepresentingUser is null)
     {
       _userState = _userState.NotFound();
@@ -82,7 +79,8 @@ public partial class MainLayout : LayoutComponentBase
     ClaimsPrincipal claimsPrincipal)
   {
     await using var scope = Services.CreateAsyncScope();
-    var query = scope.ServiceProvider.GetRequiredService<OzdsRelationalQueries>();
+    var query =
+      scope.ServiceProvider.GetRequiredService<OzdsRelationalQueries>();
     return await query.MaybeRepresentingUserByClaimsPrincipal(claimsPrincipal);
   }
 

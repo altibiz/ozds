@@ -1,3 +1,4 @@
+@using Theme = Ozds.Client.Theme
 @inherits LayoutComponentBase
 
 <main>
@@ -30,5 +31,5 @@
 @code {
   [CascadingParameter] private Task<AuthenticationState>? _authenticationStateTask { get; set; }
 
-  private readonly Ozds.Client.Theme _theme = new();
+  private readonly Theme _theme = new();
 }

@@ -6,7 +6,7 @@ using ISession = YesSql.ISession;
 
 namespace Ozds.Business.Queries;
 
-public partial class OzdsRelationalQueries
+public class OzdsTimeseriesQueries
 {
   private readonly OzdsDbContext _context;
 
@@ -14,7 +14,7 @@ public partial class OzdsRelationalQueries
 
   private readonly UserManager<IUser> _userManager;
 
-  public OzdsRelationalQueries(OzdsDbContext context,
+  public OzdsTimeseriesQueries(OzdsDbContext context,
     UserManager<IUser> userManager, ISession session)
   {
     _context = context;
