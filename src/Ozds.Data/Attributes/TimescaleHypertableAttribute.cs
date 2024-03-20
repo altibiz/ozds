@@ -22,6 +22,7 @@ public class TimescaleMigrationSqlGenerator : NpgsqlMigrationsSqlGenerator
 #pragma warning restore EF1001
   ) : base(dependencies, options)
   {
+    throw new InvalidCastException("here");
   }
 
   protected override void Generate(
@@ -53,15 +54,25 @@ public class TimescaleMigrationSqlGenerator : NpgsqlMigrationsSqlGenerator
        )
        .Aggregate(
           builder,
-         (builder, x) => builder
-          .AppendLine(
-            $"""
-              SELECT create_hypertable(
-                '\"{x.Entity.GetTableName()}\"',
-                '{x.Property.GetColumnName()}'
-              );
-            """
-          ));
+          (builder, x) =>
+          {
+            builder
+            .AppendLine(
+              $"""
+                SELECT create_hypertable(
+                  '\"{x.Entity.GetTableName()}\"',
+                  '{x.Property.GetColumnName()}'
+                );
+              """
+            );
+
+            if (terminate)
+            {
+              EndStatement(builder);
+            }
+
+            return builder;
+          });
   }
 }
 

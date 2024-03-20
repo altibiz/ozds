@@ -7,12 +7,9 @@ namespace Ozds.Data;
 
 public partial class OzdsDbContext : DbContext
 {
-  public OzdsDbContext(DbContextOptions<OzdsDbContext> options) : base(options)
-  {
-  }
-
   protected override void OnConfiguring(DbContextOptionsBuilder dbContextOptionsBuilder) =>
     dbContextOptionsBuilder
+      .UseNpgsql("Host=localhost;Database=ozds;Username=ozds;Password=ozds")
       .ReplaceService<IMigrationsSqlGenerator, TimescaleMigrationSqlGenerator>()
       .UseSnakeCaseNamingConvention();
 
