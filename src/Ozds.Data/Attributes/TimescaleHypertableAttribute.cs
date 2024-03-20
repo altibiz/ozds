@@ -1,9 +1,11 @@
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Infrastructure.Internal;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata.Internal;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Migrations;
 
 namespace Ozds.Data.Attributes;
@@ -44,6 +46,44 @@ public static class TimescaleHypertableAttributeExtensions
       );
 }
 
+public class TimescaleMigrationsAnnotationProvider : MigrationsAnnotationProvider
+{
+  public TimescaleMigrationsAnnotationProvider(
+#pragma warning disable EF1001
+    MigrationsAnnotationProviderDependencies dependencies
+#pragma warning restore EF1001
+  ) : base(dependencies)
+  {
+  }
+
+  public override IEnumerable<IAnnotation> ForRename(IColumn column)
+  {
+    return For(column, base.ForRename(column));
+  }
+
+  public override IEnumerable<IAnnotation> ForRemove(IColumn column)
+  {
+    return For(column, base.ForRemove(column));
+  }
+
+  protected virtual IEnumerable<IAnnotation> For(
+    IColumn column,
+    IEnumerable<IAnnotation> annotations
+  )
+  {
+    if (column.FindAnnotation("TimescaleHypertable")?.Value is { } value)
+    {
+      annotations = annotations.Append(
+        new Annotation(
+          "TimescaleHypertable",
+          value
+        )
+      );
+    }
+    return annotations;
+  }
+}
+
 public class TimescaleMigrationSqlGenerator : NpgsqlMigrationsSqlGenerator
 {
   public TimescaleMigrationSqlGenerator(
@@ -75,6 +115,34 @@ public class TimescaleMigrationSqlGenerator : NpgsqlMigrationsSqlGenerator
     {
       builder.Append(
         $"SELECT create_hypertable('\"{operation.Name}\"', '{column.Name}')"
+      );
+
+      if (terminate)
+      {
+        builder.AppendLine(";");
+        EndStatement(builder);
+      }
+    }
+  }
+
+  protected override void Generate(
+    AddColumnOperation operation,
+    IModel? model,
+    MigrationCommandListBuilder builder,
+    bool terminate = true
+  )
+  {
+    base.Generate(
+      operation,
+      model,
+      builder,
+      terminate
+    );
+
+    if (operation.FindAnnotation("TimescaleHypertable")?.Value is true)
+    {
+      builder.Append(
+        $"SELECT create_hypertable('\"{operation.Table}\"', '{operation.Name}')"
       );
 
       if (terminate)
