@@ -1,11 +1,21 @@
+using System.Numerics;
+
 namespace Ozds.Business.Math;
 
-public record TriPhasicMeasure(float ValueL1, float ValueL2, float ValueL3)
+public record class TriPhasicMeasure(float ValueL1, float ValueL2, float ValueL3)
   : PhasicMeasure;
 
-public record SinglePhasicMeasure(float Value) : PhasicMeasure;
+public record class SinglePhasicMeasure(float Value) : PhasicMeasure;
 
-public record PhasicMeasure
+public record class PhasicMeasure :
+  IAdditionOperators<PhasicMeasure, float, PhasicMeasure>,
+  ISubtractionOperators<PhasicMeasure, float, PhasicMeasure>,
+  IMultiplyOperators<PhasicMeasure, float, PhasicMeasure>,
+  IDivisionOperators<PhasicMeasure, float, PhasicMeasure>,
+  IAdditionOperators<PhasicMeasure, PhasicMeasure, PhasicMeasure>,
+  ISubtractionOperators<PhasicMeasure, PhasicMeasure, PhasicMeasure>,
+  IMultiplyOperators<PhasicMeasure, PhasicMeasure, PhasicMeasure>,
+  IDivisionOperators<PhasicMeasure, PhasicMeasure, PhasicMeasure>
 {
   public static readonly PhasicMeasure Null = new();
 

@@ -1,8 +1,11 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+using Ozds.Data.Attributes;
 
 namespace Ozds.Data.Entities.Base;
 
+[PrimaryKey(nameof(Timestamp), nameof(Source))]
 public abstract class MeasurementEntity
 {
   [NotMapped] private DateTimeOffset _timestamp;
@@ -11,7 +14,7 @@ public abstract class MeasurementEntity
   public string Source { get; set; } = default!;
 
   [Required]
-  [Column(TypeName = "timestamptz")]
+  [TimescaleHypertable]
   public DateTimeOffset Timestamp
   {
     get { return _timestamp.ToUniversalTime(); }

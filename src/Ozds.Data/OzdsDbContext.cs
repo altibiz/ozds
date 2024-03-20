@@ -1,77 +1,22 @@
-using System.Linq.Expressions;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Ozds.Data.Entities.Base;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
+using Ozds.Data.Attributes;
 
 namespace Ozds.Data;
 
 public partial class OzdsDbContext : DbContext
 {
-  private static readonly MethodInfo HasPostgresEnumMethod =
-    typeof(NpgsqlModelBuilderExtensions)
-      .GetMethods()
-      .First(
-        method =>
-          method.IsGenericMethod
-          && method.Name == nameof(NpgsqlModelBuilderExtensions.HasPostgresEnum)
-      )
-    ?? throw new InvalidOperationException("HasPostgresEnum method not found");
+  protected override void OnConfiguring(DbContextOptionsBuilder dbContextOptionsBuilder) =>
+    dbContextOptionsBuilder
+      .UseNpgsql(this.GetService<IConfiguration>().GetConnectionString("Ozds"))
+      .ReplaceService<IMigrationsSqlGenerator, TimescaleMigrationSqlGenerator>()
+      .UseSnakeCaseNamingConvention();
 
-  protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-  {
-    _ = optionsBuilder.UseNpgsql(
-      "Server=localhost;Port=5432;User Id=ozds;Password=ozds;Database=ozds");
-  }
-
-  protected override void OnModelCreating(ModelBuilder modelBuilder)
-  {
-    _ = modelBuilder.HasPostgresExtension("timescaledb");
-
-    CreateEntitiesWithBase(
-      modelBuilder,
-      typeof(IdEntity),
-      entity => entity.HasKey(nameof(IdEntity.Id))
-    );
-
-    CreateEntitiesWithBase(
-      modelBuilder,
-      typeof(MeasurementEntity),
-      entity => entity.HasKey(
-        nameof(MeasurementEntity.Source),
-        nameof(MeasurementEntity.Timestamp)
-      )
-    );
-  }
-
-  protected void CreateEntitiesWithBase(
-    ModelBuilder builder,
-    Type @base,
-    Action<EntityTypeBuilder>? configuration = null
-  )
-  {
-    foreach (
-      var entityType in GetType().Assembly
-        .GetTypes()
-        .Where(
-          type => type.IsClass && !type.IsAbstract && type.IsAssignableTo(@base)
-        )
-    )
-    {
-      foreach (var property in entityType.GetProperties())
-      {
-        if (property.PropertyType.IsEnum)
-        {
-          var enumType = property.PropertyType;
-          var genericMethod = HasPostgresEnumMethod.MakeGenericMethod(enumType);
-          genericMethod.Invoke(
-            null,
-            new[] { builder, null, null, null }
-          );
-        }
-      }
-
-      configuration?.Invoke(builder.Entity(entityType));
-    }
-  }
+  protected override void OnModelCreating(ModelBuilder modelBuilder) =>
+    modelBuilder
+      .HasPostgresExtension("timescaledb")
+      .ApplyPostgresqlEnums()
+      .ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 }

@@ -2,7 +2,7 @@ using System.Numerics;
 
 namespace Ozds.Business.Math;
 
-public record MinMaxSpanningMeasure<T>(T TrueMin, T TrueMax)
+public record class MinMaxSpanningMeasure<T>(T TrueMin, T TrueMax)
   : SpanningMeasure<T>
   where T :
   ISubtractionOperators<T, T, T>,
@@ -10,7 +10,7 @@ public record MinMaxSpanningMeasure<T>(T TrueMin, T TrueMax)
   IDivisionOperators<T, float, T>,
   new();
 
-public record SpanningMeasure<T> where T :
+public record class SpanningMeasure<T> where T :
   ISubtractionOperators<T, T, T>,
   IMultiplyOperators<T, float, T>,
   IDivisionOperators<T, float, T>,

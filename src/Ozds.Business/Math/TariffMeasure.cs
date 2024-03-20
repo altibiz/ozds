@@ -2,12 +2,12 @@ using System.Numerics;
 
 namespace Ozds.Business.Math;
 
-public record BinaryTariffMeasure(DuplexMeasure T1, DuplexMeasure T2)
+public record class BinaryTariffMeasure(DuplexMeasure T1, DuplexMeasure T2)
   : TariffMeasure;
 
-public record UnaryTariffMeasure(DuplexMeasure T0) : TariffMeasure;
+public record class UnaryTariffMeasure(DuplexMeasure T0) : TariffMeasure;
 
-public record TariffMeasure :
+public record class TariffMeasure :
   IAdditionOperators<TariffMeasure, float, TariffMeasure>,
   ISubtractionOperators<TariffMeasure, float, TariffMeasure>,
   IMultiplyOperators<TariffMeasure, float, TariffMeasure>,

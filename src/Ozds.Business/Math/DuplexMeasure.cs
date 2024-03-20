@@ -2,13 +2,13 @@ using System.Numerics;
 
 namespace Ozds.Business.Math;
 
-public record ImportExportDuplexMeasure(
+public record class ImportExportDuplexMeasure(
   PhasicMeasure Import,
   PhasicMeasure Export) : DuplexMeasure;
 
-public record NetDuplexMeasure(PhasicMeasure TrueNet) : DuplexMeasure;
+public record class NetDuplexMeasure(PhasicMeasure TrueNet) : DuplexMeasure;
 
-public record DuplexMeasure :
+public record class DuplexMeasure :
   IAdditionOperators<DuplexMeasure, float, DuplexMeasure>,
   ISubtractionOperators<DuplexMeasure, float, DuplexMeasure>,
   IMultiplyOperators<DuplexMeasure, float, DuplexMeasure>,
