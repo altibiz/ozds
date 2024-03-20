@@ -10,9 +10,15 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Migrations;
 
 namespace Ozds.Data.Attributes;
 
-[AttributeUsage(AttributeTargets.Property)]
+[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
 public class TimescaleHypertableAttribute : Attribute
 {
+  public string TimeColumn { get; }
+
+  public TimescaleHypertableAttribute(string timeColumn)
+  {
+    TimeColumn = timeColumn;
+  }
 }
 
 public static class TimescaleHypertableAttributeExtensions
@@ -20,26 +26,19 @@ public static class TimescaleHypertableAttributeExtensions
   public static ModelBuilder ApplyTimescaleHypertables(this ModelBuilder builder) =>
     builder.Model
       .GetEntityTypes()
-      .SelectMany(entity => entity
-        .GetProperties()
-        .Select(property => new
-        {
-          Entity = entity,
-          Property = property
-        })
-      )
-      .Where(
-        x =>
-          x.Property.PropertyInfo?.GetCustomAttribute<TimescaleHypertableAttribute>() is { }
-      )
+      .Select(entity => new
+      {
+        Entity = entity,
+        Attribute = entity.ClrType.GetCustomAttribute<TimescaleHypertableAttribute>()
+      })
+      .Where(x => x.Attribute is { })
       .Aggregate(
         builder,
         (builder, x) =>
         {
           builder
             .Entity(x.Entity.ClrType)
-            .Property(x.Property.Name)
-            .HasAnnotation("TimescaleHypertable", true);
+            .HasAnnotation("TimescaleHypertable", x.Attribute!.TimeColumn);
 
           return builder;
         }
@@ -59,7 +58,7 @@ public class TimescaleRelationalAnnotationProvider : NpgsqlAnnotationProvider
   }
 
   public override IEnumerable<IAnnotation> For(
-    IColumn column,
+    ITable table,
     bool designTime
   )
   {
@@ -67,19 +66,32 @@ public class TimescaleRelationalAnnotationProvider : NpgsqlAnnotationProvider
     {
       return Enumerable.Empty<IAnnotation>();
     }
-
 #pragma warning disable EF1001
-    var annotations = base.For(column, designTime);
+    var annotations = base.For(table, designTime);
 #pragma warning restore EF1001
-    if (column.FindAnnotation("TimescaleHypertable")?.Value is { } value)
+
+    var mappingTypeAttributes = table.EntityTypeMappings
+      .Select(mapping => new
+      {
+        Mapping = mapping,
+        // NOTE: this is the exact way that annotations get added in
+        // NOTE: do not change this
+        Annotation = mapping.TypeBase
+          .GetAnnotations()
+          .FirstOrDefault(annotation => annotation.Name == "TimescaleHypertable")
+      });
+
+    if (mappingTypeAttributes.FirstOrDefault(x => x is { Annotation.Value: string }) is { Annotation.Value: string } x &&
+      x.Mapping.ColumnMappings.FirstOrDefault(column => column.Property.Name == x.Annotation.Value as string)?.Column.Name is { } timeColumn)
     {
       annotations = annotations.Append(
         new Annotation(
           "TimescaleHypertable",
-          value
+          timeColumn
         )
       );
     }
+
     return annotations;
   }
 }
@@ -109,40 +121,10 @@ public class TimescaleMigrationSqlGenerator : NpgsqlMigrationsSqlGenerator
       terminate
     );
 
-    if (operation.Columns
-      .Find(column => column
-        .FindAnnotation("TimescaleHypertable")?.Value is true) is { } column)
+    if (operation.FindAnnotation("TimescaleHypertable")?.Value is string column)
     {
       builder.Append(
-        $"SELECT create_hypertable('\"{operation.Name}\"', '{column.Name}')"
-      );
-
-      if (terminate)
-      {
-        builder.AppendLine(";");
-        EndStatement(builder);
-      }
-    }
-  }
-
-  protected override void Generate(
-    AddColumnOperation operation,
-    IModel? model,
-    MigrationCommandListBuilder builder,
-    bool terminate = true
-  )
-  {
-    base.Generate(
-      operation,
-      model,
-      builder,
-      terminate
-    );
-
-    if (operation.FindAnnotation("TimescaleHypertable")?.Value is true)
-    {
-      builder.Append(
-        $"SELECT create_hypertable('\"{operation.Table}\"', '{operation.Name}')"
+        $"SELECT create_hypertable('\"{operation.Name}\"', '{column}')"
       );
 
       if (terminate)

@@ -5,6 +5,7 @@ using Ozds.Data.Attributes;
 
 namespace Ozds.Data.Entities.Base;
 
+[TimescaleHypertable(nameof(Timestamp))]
 [PrimaryKey(nameof(Timestamp), nameof(Source))]
 public abstract class MeasurementEntity
 {
@@ -14,7 +15,6 @@ public abstract class MeasurementEntity
   public string Source { get; set; } = default!;
 
   [Required]
-  [TimescaleHypertable]
   public DateTimeOffset Timestamp
   {
     get { return _timestamp.ToUniversalTime(); }
