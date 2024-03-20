@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Ozds.Data.Attributes;
 using Ozds.Data.Extensions;
 
+// TODO: make all applications work with UseTimescale
+
 namespace Ozds.Data;
 
 public partial class OzdsDbContext : DbContext
