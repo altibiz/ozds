@@ -1,5 +1,3 @@
-using System.Reflection;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
@@ -22,7 +20,6 @@ public class TimescaleMigrationSqlGenerator : NpgsqlMigrationsSqlGenerator
 #pragma warning restore EF1001
   ) : base(dependencies, options)
   {
-    throw new InvalidCastException("here");
   }
 
   protected override void Generate(
@@ -39,40 +36,18 @@ public class TimescaleMigrationSqlGenerator : NpgsqlMigrationsSqlGenerator
       terminate
     );
 
-    model?
-      .GetEntityTypes()
-       .SelectMany(entity => entity
-         .GetProperties()
-         .Select(property => new
-         {
-           Entity = entity,
-           Property = property
-         })
-       )
-       .Where(
-         x => x.Property.PropertyInfo?.GetCustomAttribute<TimescaleHypertableAttribute>() is { }
-       )
-       .Aggregate(
-          builder,
-          (builder, x) =>
-          {
-            builder
-            .AppendLine(
-              $"""
-                SELECT create_hypertable(
-                  '\"{x.Entity.GetTableName()}\"',
-                  '{x.Property.GetColumnName()}'
-                );
-              """
-            );
+    if (operation.Columns.Find(column => column.FindAnnotation("TimescaleHypertableAttribute") is { }) is { } column)
+    {
+      builder.Append(
+        $"SELECT create_hypertable('\"{operation.Name}\"', '{column.Name}')"
+      );
 
-            if (terminate)
-            {
-              EndStatement(builder);
-            }
-
-            return builder;
-          });
+      if (terminate)
+      {
+        builder.AppendLine(";");
+        EndStatement(builder);
+      }
+    }
   }
 }
 
