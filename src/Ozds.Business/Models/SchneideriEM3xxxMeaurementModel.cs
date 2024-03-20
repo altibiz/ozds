@@ -1,4 +1,5 @@
 using Ozds.Business.Math;
+using Ozds.Data.Entities;
 
 namespace Ozds.Business.Models;
 
@@ -152,4 +153,62 @@ public record SchneideriEM3xxxMeasurementModel(
       );
     }
   }
+}
+
+public static class SchneideriEM3xxxMeasurementModelExtensions
+{
+  public static SchneideriEM3xxxMeasurementModel ToModel(
+    this SchneideriEM3xxxMeasurementEntity entity) =>
+    new(
+      entity.Source,
+      entity.Timestamp,
+      entity.VoltageL1_V,
+      entity.VoltageL2_V,
+      entity.VoltageL3_V,
+      entity.CurrentL1_A,
+      entity.CurrentL2_A,
+      entity.CurrentL3_A,
+      entity.ActivePowerL1_W,
+      entity.ActivePowerL2_W,
+      entity.ActivePowerL3_W,
+      entity.ReactivePowerTotal_VAR,
+      entity.ApparentPowerTotal_VA,
+      entity.ActiveEnergyImportL1_Wh,
+      entity.ActiveEnergyImportL2_Wh,
+      entity.ActiveEnergyImportL3_Wh,
+      entity.ActiveEnergyImportTotal_Wh,
+      entity.ActiveEnergyExportTotal_Wh,
+      entity.ReactiveEnergyImportTotal_VARh,
+      entity.ReactiveEnergyExportTotal_VARh,
+      entity.ActiveEnergyImportTotalT1_Wh,
+      entity.ActiveEnergyImportTotalT2_Wh
+    );
+
+  public static SchneideriEM3xxxMeasurementEntity ToEntity(
+    this SchneideriEM3xxxMeasurementModel model) =>
+    new()
+    {
+      Source = model.Source,
+      Timestamp = model.Timestamp,
+      VoltageL1_V = model.VoltageL1_V,
+      VoltageL2_V = model.VoltageL2_V,
+      VoltageL3_V = model.VoltageL3_V,
+      CurrentL1_A = model.CurrentL1_A,
+      CurrentL2_A = model.CurrentL2_A,
+      CurrentL3_A = model.CurrentL3_A,
+      ActivePowerL1_W = model.ActivePowerL1_W,
+      ActivePowerL2_W = model.ActivePowerL2_W,
+      ActivePowerL3_W = model.ActivePowerL3_W,
+      ReactivePowerTotal_VAR = model.ReactivePowerTotal_VAR,
+      ApparentPowerTotal_VA = model.ApparentPowerTotal_VA,
+      ActiveEnergyImportL1_Wh = model.ActiveEnergyImportL1_Wh,
+      ActiveEnergyImportL2_Wh = model.ActiveEnergyImportL2_Wh,
+      ActiveEnergyImportL3_Wh = model.ActiveEnergyImportL3_Wh,
+      ActiveEnergyImportTotal_Wh = model.ActiveEnergyImportTotal_Wh,
+      ActiveEnergyExportTotal_Wh = model.ActiveEnergyExportTotal_Wh,
+      ReactiveEnergyImportTotal_VARh = model.ReactiveEnergyImportTotal_VARh,
+      ReactiveEnergyExportTotal_VARh = model.ReactiveEnergyExportTotal_VARh,
+      ActiveEnergyImportTotalT1_Wh = model.ActiveEnergyImportTotalT1_Wh,
+      ActiveEnergyImportTotalT2_Wh = model.ActiveEnergyImportTotalT2_Wh
+    };
 }

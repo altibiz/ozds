@@ -119,5 +119,13 @@ public class AbbB2xMeasurementEntity : MeasurementEntity
   [Column("reactive_energy_export_total_varh")]
   [Required]
   public float ReactiveEnergyExportTotal_VARh { get; set; }
+
+  [Column("active_energy_import_total_t1_wh")]
+  [Required]
+  public float ActiveEnergyImportTotalT1_Wh { get; set; } = default;
+
+  [Column("active_energy_import_total_t2_wh")]
+  [Required]
+  public float ActiveEnergyImportTotalT2_Wh { get; set; } = default;
 #pragma warning restore CA1707
 }

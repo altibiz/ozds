@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Ozds.Business.Math;
 
 namespace Ozds.Business.Models;
@@ -31,8 +32,11 @@ public record AbbB2xAggregateModel(
   float ActiveEnergyImportTotalT1Max_Wh,
   float ActiveEnergyImportTotalT2Min_Wh,
   float ActiveEnergyImportTotalT2Max_Wh
-) : IAggregate
+) : IAggregate<AbbB2xAggregateModel>
 {
+  static Expression<Func<AbbB2xAggregateModel, AbbB2xAggregateModel, AbbB2xAggregateModel>> IAggregate<AbbB2xAggregateModel>.UpsertExpression =>
+    _upsertExpression.Value;
+
   string IMeasurement.Source
   {
     get { return Source; }
@@ -163,4 +167,74 @@ public record AbbB2xAggregateModel(
       );
     }
   }
+
+  private static readonly Lazy<Expression<Func<AbbB2xAggregateModel, AbbB2xAggregateModel, AbbB2xAggregateModel>>> _upsertExpression =
+    new(() =>
+      (AbbB2xAggregateModel lhs, AbbB2xAggregateModel rhs) =>
+          new(
+            lhs.Source,
+            lhs.Timestamp,
+            lhs.TimeSpan,
+            lhs.AggregateCount + rhs.AggregateCount,
+            (lhs.VoltageL1Avg_V * lhs.AggregateCount + rhs.VoltageL1Avg_V * rhs.AggregateCount) /
+              (lhs.AggregateCount + rhs.AggregateCount),
+            (lhs.VoltageL2Avg_V * lhs.AggregateCount + rhs.VoltageL2Avg_V * rhs.AggregateCount) /
+              (lhs.AggregateCount + rhs.AggregateCount),
+            (lhs.VoltageL3Avg_V * lhs.AggregateCount + rhs.VoltageL3Avg_V * rhs.AggregateCount) /
+              (lhs.AggregateCount + rhs.AggregateCount),
+            (lhs.CurrentL1Avg_A * lhs.AggregateCount + rhs.CurrentL1Avg_A * rhs.AggregateCount) /
+              (lhs.AggregateCount + rhs.AggregateCount),
+            (lhs.CurrentL2Avg_A * lhs.AggregateCount + rhs.CurrentL2Avg_A * rhs.AggregateCount) /
+              (lhs.AggregateCount + rhs.AggregateCount),
+            (lhs.CurrentL3Avg_A * lhs.AggregateCount + rhs.CurrentL3Avg_A * rhs.AggregateCount) /
+              (lhs.AggregateCount + rhs.AggregateCount),
+            (lhs.ActivePowerL1Avg_W * lhs.AggregateCount + rhs.ActivePowerL1Avg_W * rhs.AggregateCount) /
+              (lhs.AggregateCount + rhs.AggregateCount),
+            (lhs.ActivePowerL2Avg_W * lhs.AggregateCount + rhs.ActivePowerL2Avg_W * rhs.AggregateCount) /
+              (lhs.AggregateCount + rhs.AggregateCount),
+            (lhs.ActivePowerL3Avg_W * lhs.AggregateCount + rhs.ActivePowerL3Avg_W * rhs.AggregateCount) /
+              (lhs.AggregateCount + rhs.AggregateCount),
+            (lhs.ReactivePowerL1Avg_VAR * lhs.AggregateCount + rhs.ReactivePowerL1Avg_VAR * rhs.AggregateCount) /
+              (lhs.AggregateCount + rhs.AggregateCount),
+            (lhs.ReactivePowerL2Avg_VAR * lhs.AggregateCount + rhs.ReactivePowerL2Avg_VAR * rhs.AggregateCount) /
+              (lhs.AggregateCount + rhs.AggregateCount),
+            (lhs.ReactivePowerL3Avg_VAR * lhs.AggregateCount + rhs.ReactivePowerL3Avg_VAR * rhs.AggregateCount) /
+              (lhs.AggregateCount + rhs.AggregateCount),
+            lhs.ActiveEnergyImportTotalMin_Wh > rhs.ActiveEnergyImportTotalMin_Wh
+              ? rhs.ActiveEnergyImportTotalMin_Wh
+              : lhs.ActiveEnergyImportTotalMin_Wh,
+            lhs.ActiveEnergyImportTotalMax_Wh < rhs.ActiveEnergyImportTotalMax_Wh
+              ? rhs.ActiveEnergyImportTotalMax_Wh
+              : lhs.ActiveEnergyImportTotalMax_Wh,
+            lhs.ActiveEnergyExportTotalMin_Wh > rhs.ActiveEnergyExportTotalMin_Wh
+              ? rhs.ActiveEnergyExportTotalMin_Wh
+              : lhs.ActiveEnergyExportTotalMin_Wh,
+            lhs.ActiveEnergyExportTotalMax_Wh < rhs.ActiveEnergyExportTotalMax_Wh
+              ? rhs.ActiveEnergyExportTotalMax_Wh
+              : lhs.ActiveEnergyExportTotalMax_Wh,
+            lhs.ReactiveEnergyImportTotalMin_VARh > rhs.ReactiveEnergyImportTotalMin_VARh
+              ? rhs.ReactiveEnergyImportTotalMin_VARh
+              : lhs.ReactiveEnergyImportTotalMin_VARh,
+            lhs.ReactiveEnergyImportTotalMax_VARh < rhs.ReactiveEnergyImportTotalMax_VARh
+              ? rhs.ReactiveEnergyImportTotalMax_VARh
+              : lhs.ReactiveEnergyImportTotalMax_VARh,
+            lhs.ReactiveEnergyExportTotalMin_VARh > rhs.ReactiveEnergyExportTotalMin_VARh
+              ? rhs.ReactiveEnergyExportTotalMin_VARh
+              : lhs.ReactiveEnergyExportTotalMin_VARh,
+            lhs.ReactiveEnergyExportTotalMax_VARh < rhs.ReactiveEnergyExportTotalMax_VARh
+              ? rhs.ReactiveEnergyExportTotalMax_VARh
+              : lhs.ReactiveEnergyExportTotalMax_VARh,
+            lhs.ActiveEnergyImportTotalT1Min_Wh > rhs.ActiveEnergyImportTotalT1Min_Wh
+              ? rhs.ActiveEnergyImportTotalT1Min_Wh
+              : lhs.ActiveEnergyImportTotalT1Min_Wh,
+            lhs.ActiveEnergyImportTotalT1Max_Wh < rhs.ActiveEnergyImportTotalT1Max_Wh
+              ? rhs.ActiveEnergyImportTotalT1Max_Wh
+              : lhs.ActiveEnergyImportTotalT1Max_Wh,
+            lhs.ActiveEnergyImportTotalT2Min_Wh > rhs.ActiveEnergyImportTotalT2Min_Wh
+              ? rhs.ActiveEnergyImportTotalT2Min_Wh
+              : lhs.ActiveEnergyImportTotalT2Min_Wh,
+            lhs.ActiveEnergyImportTotalT2Max_Wh < rhs.ActiveEnergyImportTotalT2Max_Wh
+              ? rhs.ActiveEnergyImportTotalT2Max_Wh
+              : lhs.ActiveEnergyImportTotalT2Max_Wh
+          ));
 }
