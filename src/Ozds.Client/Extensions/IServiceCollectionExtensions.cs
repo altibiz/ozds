@@ -7,7 +7,9 @@ namespace Ozds.Client.Extensions;
 public static class IServiceCollectionExtensions
 {
   public static IServiceCollection AddOzdsClient(
-    this IServiceCollection services, bool isDevelopment)
+    this IServiceCollection services,
+    bool isDevelopment
+  )
   {
     services
       .AddRazorComponents()

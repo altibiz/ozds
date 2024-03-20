@@ -7,7 +7,8 @@ builder.Services
   .AddSetupFeatures("OrchardCore.AutoSetup")
   .ConfigureServices(services => services
     .AddOzdsClient(builder.Environment.IsDevelopment())
-    .AddOzdsBusinessClient())
+    .AddOzdsBusinessClient(builder.Configuration.GetConnectionString("Ozds")
+      ?? throw new InvalidOperationException("No Ozds connection string found.")))
   .Configure((_, endpoints) => endpoints
     .MapOzdsClient("App", "Index", "/app"));
 
