@@ -1,5 +1,6 @@
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Ozds.Data.Attributes;
 
@@ -11,6 +12,7 @@ public partial class OzdsDbContext : DbContext
     dbContextOptionsBuilder
       .UseNpgsql("Host=localhost;Database=ozds;Username=ozds;Password=ozds")
       .ReplaceService<IMigrationsSqlGenerator, TimescaleMigrationSqlGenerator>()
+      .ReplaceService<IRelationalAnnotationProvider, TimescaleRelationalAnnotationProvider>()
       .UseSnakeCaseNamingConvention();
 
   protected override void OnModelCreating(ModelBuilder modelBuilder) =>

@@ -46,31 +46,31 @@ public static class TimescaleHypertableAttributeExtensions
       );
 }
 
-public class TimescaleMigrationsAnnotationProvider : MigrationsAnnotationProvider
-{
-  public TimescaleMigrationsAnnotationProvider(
 #pragma warning disable EF1001
-    MigrationsAnnotationProviderDependencies dependencies
+public class TimescaleRelationalAnnotationProvider : NpgsqlAnnotationProvider
 #pragma warning restore EF1001
+{
+  public TimescaleRelationalAnnotationProvider(
+    RelationalAnnotationProviderDependencies dependencies
+#pragma warning disable EF1001
   ) : base(dependencies)
+#pragma warning restore EF1001
   {
   }
 
-  public override IEnumerable<IAnnotation> ForRename(IColumn column)
-  {
-    return For(column, base.ForRename(column));
-  }
-
-  public override IEnumerable<IAnnotation> ForRemove(IColumn column)
-  {
-    return For(column, base.ForRemove(column));
-  }
-
-  protected virtual IEnumerable<IAnnotation> For(
+  public override IEnumerable<IAnnotation> For(
     IColumn column,
-    IEnumerable<IAnnotation> annotations
+    bool designTime
   )
   {
+    if (!designTime)
+    {
+      return Enumerable.Empty<IAnnotation>();
+    }
+
+#pragma warning disable EF1001
+    var annotations = base.For(column, designTime);
+#pragma warning restore EF1001
     if (column.FindAnnotation("TimescaleHypertable")?.Value is { } value)
     {
       annotations = annotations.Append(
