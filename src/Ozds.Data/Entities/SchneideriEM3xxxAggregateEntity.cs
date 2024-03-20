@@ -1,9 +1,19 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Ozds.Data.Entities.Base;
 
 namespace Ozds.Data.Entities;
 
-public class SchneideriEM3xxxAggregateEntity : MeasurementEntity
+[Table("schneider_iem3xxx_quarter_hourly_aggregate")]
+public class SchneideriEM3xxxQuarterHourlyAggregateEntity : SchneideriEM3xxxAggregateEntity { }
+
+[Table("schneider_iem3xxx_daily_aggregate")]
+public class SchneideriEM3xxxDailyAggregateEntity : SchneideriEM3xxxAggregateEntity { }
+
+[Table("schneider_iem3xxx_monthly_aggregate")]
+public class SchneideriEM3xxxMonthlyAggregateEntity : SchneideriEM3xxxAggregateEntity { }
+
+public abstract class SchneideriEM3xxxAggregateEntity : MeasurementEntity
 {
 #pragma warning disable CA1707
   [Required]
