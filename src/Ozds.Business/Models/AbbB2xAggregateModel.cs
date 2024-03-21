@@ -134,12 +134,12 @@ public record AbbB2xAggregateModel(
     }
   }
 
-  SpanningMeasure<DuplexMeasure> IAggregate.ApparentEnergySpan_VAh
+  SpanningMeasure IAggregate.ApparentEnergySpan_VAh
   {
-    get { return SpanningMeasure<DuplexMeasure>.Null; }
+    get { return SpanningMeasure.Null; }
   }
 
-  SpanningMeasure<TariffMeasure> IAggregate.TariffEnergySpan_Wh
+  SpanningMeasure IAggregate.TariffEnergySpan_Wh
   {
     get
     {

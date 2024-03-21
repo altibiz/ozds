@@ -48,137 +48,172 @@ public record AbbB2xMeasurementModel(
     get { return Timestamp; }
   }
 
-  DuplexMeasure IMeasurement.Current_A
+  TariffMeasure IMeasurement.Current_A
   {
     get
     {
-      return new NetDuplexMeasure(
-        new TriPhasicMeasure(CurrentL1_A, CurrentL2_A, CurrentL3_A)
-      );
-    }
-  }
-
-  DuplexMeasure IMeasurement.Voltage_V
-  {
-    get
-    {
-      return new NetDuplexMeasure(
-        new TriPhasicMeasure(VoltageL1_V, VoltageL2_V, VoltageL3_V)
-      );
-    }
-  }
-
-  DuplexMeasure IMeasurement.ActivePower_W
-  {
-    get
-    {
-      return new NetDuplexMeasure(
-        new TriPhasicMeasure(
-          ActivePowerL1_W,
-          ActivePowerL2_W,
-          ActivePowerL3_W
+      return new UnaryTariffMeasure(
+        new NetDuplexMeasure(
+          new TriPhasicMeasure(CurrentL1_A, CurrentL2_A, CurrentL3_A)
         )
       );
     }
   }
 
-  DuplexMeasure IMeasurement.ReactivePower_VAR
+  TariffMeasure IMeasurement.Voltage_V
   {
     get
     {
-      return new NetDuplexMeasure(
-        new TriPhasicMeasure(
-          ReactivePowerL1_VAR,
-          ReactivePowerL2_VAR,
-          ReactivePowerL3_VAR
+      return new UnaryTariffMeasure(
+        new NetDuplexMeasure(
+          new TriPhasicMeasure(VoltageL1_V, VoltageL2_V, VoltageL3_V)
         )
       );
     }
   }
 
-  DuplexMeasure IMeasurement.ApparentPower_VA
+  TariffMeasure IMeasurement.ActivePower_W
   {
-    get { return DuplexMeasure.Null; }
+    get
+    {
+      return new UnaryTariffMeasure(
+        new NetDuplexMeasure(
+          new TriPhasicMeasure(
+            ActivePowerL1_W,
+            ActivePowerL2_W,
+            ActivePowerL3_W
+          )
+        )
+      );
+    }
   }
 
-  DuplexMeasure IMeasurement.ActiveEnergyCumulative_Wh
+  TariffMeasure IMeasurement.ReactivePower_VAR
+  {
+    get
+    {
+      return new UnaryTariffMeasure(
+        new NetDuplexMeasure(
+          new TriPhasicMeasure(
+            ReactivePowerL1_VAR,
+            ReactivePowerL2_VAR,
+            ReactivePowerL3_VAR
+          )
+        )
+      );
+    }
+  }
+
+  TariffMeasure IMeasurement.ApparentPower_VA
+  {
+    get { return TariffMeasure.Null; }
+  }
+
+  TariffMeasure IMeasurement.ActiveEnergyCumulative_Wh
   {
     get
     {
       return ActiveEnergyImportL1_Wh is not 0
-             && ActiveEnergyImportL2_Wh is not 0
-             && ActiveEnergyImportL3_Wh is not 0
-             && ActiveEnergyExportL1_Wh is not 0
-             && ActiveEnergyExportL2_Wh is not 0
-             && ActiveEnergyExportL3_Wh is not 0
-        ? new ImportExportDuplexMeasure(
-          new TriPhasicMeasure(
-            ActiveEnergyImportL1_Wh,
-            ActiveEnergyImportL2_Wh,
-            ActiveEnergyImportL3_Wh
-          ),
-          new TriPhasicMeasure(
-            ActiveEnergyExportL1_Wh,
-            ActiveEnergyExportL2_Wh,
-            ActiveEnergyExportL3_Wh
-          )
-        )
-        : new ImportExportDuplexMeasure(
-          new SinglePhasicMeasure(ActiveEnergyImportTotal_Wh),
-          new SinglePhasicMeasure(ActiveEnergyExportTotal_Wh)
-        );
+             || ActiveEnergyImportL2_Wh is not 0
+             || ActiveEnergyImportL3_Wh is not 0
+             || ActiveEnergyExportL1_Wh is not 0
+             || ActiveEnergyExportL2_Wh is not 0
+             || ActiveEnergyExportL3_Wh is not 0
+        ? new CompositeTariffMeasure(new() {
+            new UnaryTariffMeasure(
+              new CompositeDuplexMeasure(new() {
+                new ImportExportDuplexMeasure(
+                  new TriPhasicMeasure(
+                    ActiveEnergyImportL1_Wh,
+                    ActiveEnergyImportL2_Wh,
+                    ActiveEnergyImportL3_Wh
+                  ),
+                  new TriPhasicMeasure(
+                    ActiveEnergyExportL1_Wh,
+                    ActiveEnergyExportL2_Wh,
+                    ActiveEnergyExportL3_Wh
+                  )
+                ),
+                new ImportExportDuplexMeasure(
+                  new SinglePhasicMeasure(ActiveEnergyImportTotal_Wh),
+                  new SinglePhasicMeasure(ActiveEnergyExportTotal_Wh)
+                )
+              })
+            ),
+            new BinaryTariffMeasure(
+              new ImportExportDuplexMeasure(
+                new SinglePhasicMeasure(ActiveEnergyImportTotalT1_Wh),
+                PhasicMeasure.Null
+              ),
+              new ImportExportDuplexMeasure(
+                new SinglePhasicMeasure(ActiveEnergyImportTotalT2_Wh),
+                PhasicMeasure.Null
+              )
+            )
+          })
+        : new CompositeTariffMeasure(new() {
+            new UnaryTariffMeasure(
+              new ImportExportDuplexMeasure(
+                new SinglePhasicMeasure(ActiveEnergyImportTotal_Wh),
+                new SinglePhasicMeasure(ActiveEnergyExportTotal_Wh)
+              )
+            ),
+            new BinaryTariffMeasure(
+              new ImportExportDuplexMeasure(
+                new SinglePhasicMeasure(ActiveEnergyImportTotalT1_Wh),
+                PhasicMeasure.Null
+              ),
+              new ImportExportDuplexMeasure(
+                new SinglePhasicMeasure(ActiveEnergyImportTotalT2_Wh),
+                PhasicMeasure.Null
+              )
+            )
+          });
     }
   }
 
-  DuplexMeasure IMeasurement.ReactiveEnergyCumulative_VARh
+  TariffMeasure IMeasurement.ReactiveEnergyCumulative_VARh
   {
     get
     {
       return ReactiveEnergyImportL1_VARh is not 0
-             && ReactiveEnergyImportL2_VARh is not 0
-             && ReactiveEnergyImportL3_VARh is not 0
-             && ReactiveEnergyExportL1_VARh is not 0
-             && ReactiveEnergyExportL2_VARh is not 0
-             && ReactiveEnergyExportL3_VARh is not 0
-        ? new ImportExportDuplexMeasure(
-          new TriPhasicMeasure(
-            ReactiveEnergyImportL1_VARh,
-            ReactiveEnergyImportL2_VARh,
-            ReactiveEnergyImportL3_VARh
-          ),
-          new TriPhasicMeasure(
-            ReactiveEnergyExportL1_VARh,
-            ReactiveEnergyExportL2_VARh,
-            ReactiveEnergyExportL3_VARh
+             || ReactiveEnergyImportL2_VARh is not 0
+             || ReactiveEnergyImportL3_VARh is not 0
+             || ReactiveEnergyExportL1_VARh is not 0
+             || ReactiveEnergyExportL2_VARh is not 0
+             || ReactiveEnergyExportL3_VARh is not 0
+        ? new UnaryTariffMeasure(
+            new CompositeDuplexMeasure(new() {
+              new ImportExportDuplexMeasure(
+                new TriPhasicMeasure(
+                  ReactiveEnergyImportL1_VARh,
+                  ReactiveEnergyImportL2_VARh,
+                  ReactiveEnergyImportL3_VARh
+                ),
+                new TriPhasicMeasure(
+                  ReactiveEnergyExportL1_VARh,
+                  ReactiveEnergyExportL2_VARh,
+                  ReactiveEnergyExportL3_VARh
+                )
+              ),
+              new ImportExportDuplexMeasure(
+                new SinglePhasicMeasure(ReactiveEnergyImportTotal_VARh),
+                new SinglePhasicMeasure(ReactiveEnergyExportTotal_VARh)
+              )
+            })
           )
-        )
-        : new ImportExportDuplexMeasure(
-          new SinglePhasicMeasure(ReactiveEnergyImportTotal_VARh),
-          new SinglePhasicMeasure(ReactiveEnergyExportTotal_VARh)
-        );
+        : new UnaryTariffMeasure(
+            new ImportExportDuplexMeasure(
+              new SinglePhasicMeasure(ReactiveEnergyImportTotal_VARh),
+              new SinglePhasicMeasure(ReactiveEnergyExportTotal_VARh)
+            )
+          );
     }
   }
 
-  DuplexMeasure IMeasurement.ApparentEnergyCumulative_VAh
+  TariffMeasure IMeasurement.ApparentEnergyCumulative_VAh
   {
-    get { return DuplexMeasure.Null; }
-  }
-
-  TariffMeasure IMeasurement.TariffEnergyCumulative_Wh
-  {
-    get
-    {
-      return new BinaryTariffMeasure(
-        new ImportExportDuplexMeasure(
-          new SinglePhasicMeasure(ActiveEnergyImportTotalT1_Wh),
-          PhasicMeasure.Null
-        ),
-        new ImportExportDuplexMeasure(
-          new SinglePhasicMeasure(ActiveEnergyImportTotalT2_Wh),
-          PhasicMeasure.Null
-        )
-      );
-    }
+    get { return TariffMeasure.Null; }
   }
 }
 
@@ -186,7 +221,7 @@ public static class AbbB2xMeasurementModelExtensions
 {
   public static AbbB2xMeasurementModel ToModel(this AbbB2xMeasurementEntity entity) =>
     new(
-      entity.Source,
+      entity.Meter.Id,
       entity.Timestamp,
       entity.VoltageL1_V,
       entity.VoltageL2_V,
@@ -223,7 +258,7 @@ public static class AbbB2xMeasurementModelExtensions
   public static AbbB2xMeasurementEntity ToEntity(this AbbB2xMeasurementModel model) =>
     new()
     {
-      Source = model.Source,
+      Meter = new AbbB2xMeterEntity { Id = model.Source },
       Timestamp = model.Timestamp,
       VoltageL1_V = model.VoltageL1_V,
       VoltageL2_V = model.VoltageL2_V,

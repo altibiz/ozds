@@ -8,124 +8,124 @@ namespace Ozds.Data.Entities;
 public class AbbB2xMeasurementEntity : MeasurementEntity<AbbB2xMeterEntity>
 {
 #pragma warning disable CA1707
-  [Column("voltage_l1_v")]
+  [Column("voltage_l1_any_t0_v")]
   [Required]
-  public float VoltageL1_V { get; set; }
+  public float VoltageL1AnyT0_V { get; set; }
 
-  [Column("voltage_l2_v")]
+  [Column("voltage_l2_any_t0_v")]
   [Required]
-  public float VoltageL2_V { get; set; }
+  public float VoltageL2AnyT0_V { get; set; }
 
-  [Column("voltage_l3_v")]
+  [Column("voltage_l3_any_t0_v")]
   [Required]
-  public float VoltageL3_V { get; set; }
+  public float VoltageL3AnyT0_V { get; set; }
 
-  [Column("current_l1_a")]
+  [Column("current_l1_any_t0_a")]
   [Required]
-  public float CurrentL1_A { get; set; }
+  public float CurrentL1AnyT0_A { get; set; }
 
-  [Column("current_l2_a")]
+  [Column("current_l2_any_t0_a")]
   [Required]
-  public float CurrentL2_A { get; set; }
+  public float CurrentL2AnyT0_A { get; set; }
 
-  [Column("current_l3_a")]
+  [Column("current_l3_any_t0_a")]
   [Required]
-  public float CurrentL3_A { get; set; }
+  public float CurrentL3AnyT0_A { get; set; }
 
-  [Column("active_power_l1_w")]
+  [Column("active_power_l1_any_t0_w")]
   [Required]
-  public float ActivePowerL1_W { get; set; }
+  public float ActivePowerL1NetT0_W { get; set; }
 
-  [Column("active_power_l2_w")]
+  [Column("active_power_l2_any_t0_w")]
   [Required]
-  public float ActivePowerL2_W { get; set; }
+  public float ActivePowerL2NetT0_W { get; set; }
 
-  [Column("active_power_l3_w")]
+  [Column("active_power_l3_any_t0_w")]
   [Required]
-  public float ActivePowerL3_W { get; set; }
+  public float ActivePowerL3NetT0_W { get; set; }
 
-  [Column("reactive_power_l1_var")]
+  [Column("reactive_power_l1_any_t0_var")]
   [Required]
-  public float ReactivePowerL1_VAR { get; set; }
+  public float ReactivePowerL1NetT0_VAR { get; set; }
 
-  [Column("reactive_power_l2_var")]
+  [Column("reactive_power_l2_any_t0_var")]
   [Required]
-  public float ReactivePowerL2_VAR { get; set; }
+  public float ReactivePowerL2NetT0_VAR { get; set; }
 
-  [Column("reactive_power_l3_var")]
+  [Column("reactive_power_l3_any_t0_var")]
   [Required]
-  public float ReactivePowerL3_VAR { get; set; }
+  public float ReactivePowerL3NetT0_VAR { get; set; }
 
-  [Column("active_energy_import_l1_wh")]
+  [Column("active_energy_l1_import_t0_wh")]
   [Required]
-  public float ActiveEnergyImportL1_Wh { get; set; }
+  public float ActiveEnergyL1ImportT0_Wh { get; set; }
 
-  [Column("active_energy_import_l2_wh")]
+  [Column("active_energy_l2_import_t0_wh")]
   [Required]
-  public float ActiveEnergyImportL2_Wh { get; set; }
+  public float ActiveEnergyL2ImportT0_Wh { get; set; }
 
-  [Column("active_energy_import_l3_wh")]
+  [Column("active_energy_l3_import_t0_wh")]
   [Required]
-  public float ActiveEnergyImportL3_Wh { get; set; }
+  public float ActiveEnergyL3ImportT0_Wh { get; set; }
 
-  [Column("active_energy_export_l1_wh")]
+  [Column("active_energy_l1_export_t0_wh")]
   [Required]
-  public float ActiveEnergyExportL1_Wh { get; set; }
+  public float ActiveEnergyL1ExportT0_Wh { get; set; }
 
-  [Column("active_energy_export_l2_wh")]
+  [Column("active_energy_l2_export_t0_wh")]
   [Required]
-  public float ActiveEnergyExportL2_Wh { get; set; }
+  public float ActiveEnergyL2ExportT0_Wh { get; set; }
 
-  [Column("active_energy_export_l3_wh")]
+  [Column("active_energy_l3_export_t0_wh")]
   [Required]
-  public float ActiveEnergyExportL3_Wh { get; set; }
+  public float ActiveEnergyL3ExportT0_Wh { get; set; }
 
-  [Column("reactive_energy_import_l1_varh")]
+  [Column("reactive_energy_l1_import_t0_varh")]
   [Required]
-  public float ReactiveEnergyImportL1_VARh { get; set; }
+  public float ReactiveEnergyL1ImportT0_VARh { get; set; }
 
-  [Column("reactive_energy_import_l2_varh")]
+  [Column("reactive_energy_l2_import_t0_varh")]
   [Required]
-  public float ReactiveEnergyImportL2_VARh { get; set; }
+  public float ReactiveEnergyL2ImportT0_VARh { get; set; }
 
-  [Column("reactive_energy_import_l3_varh")]
+  [Column("reactive_energy_l3_import_t0_varh")]
   [Required]
-  public float ReactiveEnergyImportL3_VARh { get; set; }
+  public float ReactiveEnergyL3ImportT0_VARh { get; set; }
 
-  [Column("reactive_energy_export_l1_varh")]
+  [Column("reactive_energy_l1_export_t0_varh")]
   [Required]
-  public float ReactiveEnergyExportL1_VARh { get; set; }
+  public float ReactiveEnergyL1ExportT0_VARh { get; set; }
 
-  [Column("reactive_energy_export_l2_varh")]
+  [Column("reactive_energy_l2_export_t0_varh")]
   [Required]
-  public float ReactiveEnergyExportL2_VARh { get; set; }
+  public float ReactiveEnergyL2ExportT0_VARh { get; set; }
 
-  [Column("reactive_energy_export_l3_varh")]
+  [Column("reactive_energy_l3_export_t0_varh")]
   [Required]
-  public float ReactiveEnergyExportL3_VARh { get; set; }
+  public float ReactiveEnergyL3ExportT0_VARh { get; set; }
 
-  [Column("active_energy_import_total_wh")]
+  [Column("active_energy_total_import_t0_wh")]
   [Required]
-  public float ActiveEnergyImportTotal_Wh { get; set; }
+  public float ActiveEnergyTotalImportT0_Wh { get; set; }
 
-  [Column("active_energy_export_total_wh")]
+  [Column("active_energy_total_export_t0_wh")]
   [Required]
-  public float ActiveEnergyExportTotal_Wh { get; set; }
+  public float ActiveEnergyTotalExportT0_Wh { get; set; }
 
-  [Column("reactive_energy_import_total_varh")]
+  [Column("reactive_energy_total_import_t0_varh")]
   [Required]
-  public float ReactiveEnergyImportTotal_VARh { get; set; }
+  public float ReactiveEnergyTotalImportT0_VARh { get; set; }
 
-  [Column("reactive_energy_export_total_varh")]
+  [Column("reactive_energy_total_export_t0_varh")]
   [Required]
-  public float ReactiveEnergyExportTotal_VARh { get; set; }
+  public float ReactiveEnergyTotalExportT0_VARh { get; set; }
 
-  [Column("active_energy_import_total_t1_wh")]
+  [Column("active_energy_total_import_t1_wh")]
   [Required]
-  public float ActiveEnergyImportTotalT1_Wh { get; set; } = default;
+  public float ActiveEnergyTotalImportT1_Wh { get; set; } = default;
 
-  [Column("active_energy_import_total_t2_wh")]
+  [Column("active_energy_total_import_t2_wh")]
   [Required]
-  public float ActiveEnergyImportTotalT2_Wh { get; set; } = default;
+  public float ActiveEnergyTotalImportT2_Wh { get; set; } = default;
 #pragma warning restore CA1707
 }

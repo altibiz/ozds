@@ -6,21 +6,19 @@ public interface IMeasurement
 
   public DateTimeOffset Timestamp { get; }
 
-  public DuplexMeasure Current_A { get; }
+  public TariffMeasure Current_A { get; }
 
-  public DuplexMeasure Voltage_V { get; }
+  public TariffMeasure Voltage_V { get; }
 
-  public DuplexMeasure ActivePower_W { get; }
+  public TariffMeasure ActivePower_W { get; }
 
-  public DuplexMeasure ReactivePower_VAR { get; }
+  public TariffMeasure ReactivePower_VAR { get; }
 
-  public DuplexMeasure ApparentPower_VA { get; }
+  public TariffMeasure ApparentPower_VA { get; }
 
-  public DuplexMeasure ActiveEnergyCumulative_Wh { get; }
+  public TariffMeasure ActiveEnergyCumulative_Wh { get; }
 
-  public DuplexMeasure ReactiveEnergyCumulative_VARh { get; }
+  public TariffMeasure ReactiveEnergyCumulative_VARh { get; }
 
-  public DuplexMeasure ApparentEnergyCumulative_VAh { get; }
-
-  public TariffMeasure TariffEnergyCumulative_Wh { get; }
+  public TariffMeasure ApparentEnergyCumulative_VAh { get; }
 }

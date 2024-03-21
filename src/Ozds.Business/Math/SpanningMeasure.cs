@@ -1,58 +1,49 @@
-using System.Numerics;
-
 namespace Ozds.Business.Math;
 
-public record class MinMaxSpanningMeasure<T>(T TrueMin, T TrueMax)
-  : SpanningMeasure<T>
-  where T :
-  ISubtractionOperators<T, T, T>,
-  IMultiplyOperators<T, float, T>,
-  IDivisionOperators<T, float, T>,
-  new();
+public record class MinMaxSpanningMeasure(TariffMeasure TrueMin, TariffMeasure TrueMax)
+  : SpanningMeasure;
 
-public record class SpanningMeasure<T> where T :
-  ISubtractionOperators<T, T, T>,
-  IMultiplyOperators<T, float, T>,
-  IDivisionOperators<T, float, T>,
-  new()
+public record class NullSpanningMeasure() : SpanningMeasure;
+
+public abstract record class SpanningMeasure
 {
-  public static readonly SpanningMeasure<T> Null = new();
+  public static readonly SpanningMeasure Null = new NullSpanningMeasure();
 
-  public T SpanMin
+  public TariffMeasure SpanMin
   {
     get
     {
       return this switch
       {
-        MinMaxSpanningMeasure<T> minMax => minMax.TrueMin,
-        _ => new T()
+        MinMaxSpanningMeasure minMax => minMax.TrueMin,
+        _ => TariffMeasure.Null
       };
     }
   }
 
-  public T SpanMax
+  public TariffMeasure SpanMax
   {
     get
     {
       return this switch
       {
-        MinMaxSpanningMeasure<T> minMax => minMax.TrueMax,
-        _ => new T()
+        MinMaxSpanningMeasure minMax => minMax.TrueMax,
+        _ => TariffMeasure.Null
       };
     }
   }
 
-  public T SpanDiff
+  public TariffMeasure SpanDiff
   {
     get { return SpanMax - SpanMin; }
   }
 
-  public T SpanIntegral(float y)
+  public TariffMeasure SpanIntegral(float y)
   {
     return SpanDiff * y;
   }
 
-  public T SpanDifferential(float y)
+  public TariffMeasure SpanDifferential(float y)
   {
     return SpanDiff / y;
   }

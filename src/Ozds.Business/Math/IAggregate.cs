@@ -6,15 +6,15 @@ public interface IAggregate : IMeasurement
 
   public long AggregateCount { get; }
 
-  public SpanningMeasure<DuplexMeasure> ActiveEnergySpan_Wh { get; }
+  public SpanningMeasure ActiveEnergySpan_Wh { get; }
 
-  public SpanningMeasure<DuplexMeasure> ReactiveEnergySpan_VARh { get; }
+  public SpanningMeasure ReactiveEnergySpan_VARh { get; }
 
-  public SpanningMeasure<DuplexMeasure> ApparentEnergySpan_VAh { get; }
+  public SpanningMeasure ApparentEnergySpan_VAh { get; }
 
-  public SpanningMeasure<TariffMeasure> TariffEnergySpan_Wh { get; }
+  public SpanningMeasure TariffEnergySpan_Wh { get; }
 
-  DuplexMeasure IMeasurement.ActivePower_W
+  TariffMeasure IMeasurement.ActivePower_W
   {
     get
     {
@@ -22,7 +22,7 @@ public interface IAggregate : IMeasurement
     }
   }
 
-  DuplexMeasure IMeasurement.ReactivePower_VAR
+  TariffMeasure IMeasurement.ReactivePower_VAR
   {
     get
     {
@@ -31,7 +31,7 @@ public interface IAggregate : IMeasurement
     }
   }
 
-  DuplexMeasure IMeasurement.ApparentPower_VA
+  TariffMeasure IMeasurement.ApparentPower_VA
   {
     get
     {
@@ -40,23 +40,18 @@ public interface IAggregate : IMeasurement
     }
   }
 
-  DuplexMeasure IMeasurement.ActiveEnergyCumulative_Wh
+  TariffMeasure IMeasurement.ActiveEnergyCumulative_Wh
   {
     get { return ActiveEnergySpan_Wh.SpanMax; }
   }
 
-  DuplexMeasure IMeasurement.ReactiveEnergyCumulative_VARh
+  TariffMeasure IMeasurement.ReactiveEnergyCumulative_VARh
   {
     get { return ReactiveEnergySpan_VARh.SpanMax; }
   }
 
-  DuplexMeasure IMeasurement.ApparentEnergyCumulative_VAh
+  TariffMeasure IMeasurement.ApparentEnergyCumulative_VAh
   {
     get { return ApparentEnergySpan_VAh.SpanMax; }
-  }
-
-  TariffMeasure IMeasurement.TariffEnergyCumulative_Wh
-  {
-    get { return TariffEnergySpan_Wh.SpanMax; }
   }
 }
