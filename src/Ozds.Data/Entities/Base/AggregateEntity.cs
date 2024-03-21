@@ -1,11 +1,15 @@
-using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace Ozds.Data.Entities.Base;
 
-public abstract class AggregateEntity : MeasurementEntity
+[PrimaryKey(nameof(Interval), nameof(Timestamp), nameof(Meter))]
+public abstract class AggregateEntity<T> : MeasurementEntity<T>
+  where T : MeterEntity
 {
-  public long AggregateCount { get; set; }
+  [Required]
+  public long Count { get; set; }
 
-  [NotMapped]
-  public abstract TimeSpan Interval { get; }
+  [Required]
+  public TimeSpan Interval { get; }
 }

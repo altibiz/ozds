@@ -6,13 +6,13 @@ using Ozds.Data.Attributes;
 namespace Ozds.Data.Entities.Base;
 
 [TimescaleHypertable(nameof(Timestamp))]
-[PrimaryKey(nameof(Timestamp), nameof(Source))]
-public abstract class MeasurementEntity
+[PrimaryKey(nameof(Timestamp), nameof(Meter))]
+public abstract class MeasurementEntity<T> where T : MeterEntity
 {
   [NotMapped] private DateTimeOffset _timestamp;
 
   [Required]
-  public string Source { get; set; } = default!;
+  public virtual T Meter { get; set; } = default!;
 
   [Required]
   public DateTimeOffset Timestamp

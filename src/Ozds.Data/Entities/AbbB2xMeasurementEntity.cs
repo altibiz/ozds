@@ -4,8 +4,8 @@ using Ozds.Data.Entities.Base;
 
 namespace Ozds.Data.Entities;
 
-[Table("abb_b2x_measurement")]
-public class AbbB2xMeasurementEntity : MeasurementEntity
+[Table("abb_b2x_measurements")]
+public class AbbB2xMeasurementEntity : MeasurementEntity<AbbB2xMeterEntity>
 {
 #pragma warning disable CA1707
   [Column("voltage_l1_v")]

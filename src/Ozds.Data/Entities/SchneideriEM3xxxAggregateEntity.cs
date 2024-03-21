@@ -4,25 +4,8 @@ using Ozds.Data.Entities.Base;
 
 namespace Ozds.Data.Entities;
 
-[Table("schneider_iem3xxx_quarter_hourly_aggregate")]
-public class SchneideriEM3xxxQuarterHourlyAggregateEntity : SchneideriEM3xxxAggregateEntity
-{
-  public TimeSpan Interval => TimeSpan.FromMinutes(15);
-}
-
-[Table("schneider_iem3xxx_daily_aggregate")]
-public class SchneideriEM3xxxDailyAggregateEntity : SchneideriEM3xxxAggregateEntity
-{
-  public TimeSpan Interval => TimeSpan.FromDays(1);
-}
-
-[Table("schneider_iem3xxx_monthly_aggregate")]
-public class SchneideriEM3xxxMonthlyAggregateEntity : SchneideriEM3xxxAggregateEntity
-{
-  public TimeSpan Interval => TimeSpan.FromDays(30);
-}
-
-public abstract class SchneideriEM3xxxAggregateEntity : MeasurementEntity
+[Table("schneider_iem3xxx_aggregates")]
+public class SchneideriEM3xxxAggregateEntity : MeasurementEntity<SchneideriEM3xxxMeterEntity>
 {
 #pragma warning disable CA1707
   [Column("voltage_l1_avg_v")]

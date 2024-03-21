@@ -1,13 +1,4 @@
-using System.Linq.Expressions;
-
 namespace Ozds.Business.Math;
-
-public interface IAggregate<T> : IAggregate where T : IAggregate<T>
-{
-  public static abstract Expression<Func<T, T, T>> UpsertExpression { get; }
-
-  public static Func<T, T, T> Upsert => T.UpsertExpression.Compile();
-}
 
 public interface IAggregate : IMeasurement
 {
@@ -68,13 +59,4 @@ public interface IAggregate : IMeasurement
   {
     get { return TariffEnergySpan_Wh.SpanMax; }
   }
-}
-
-public static class IAggregateExtensions
-{
-  public static IEnumerable<T> UpsertRange<T>(this IEnumerable<T> aggregates)
-    where T : IAggregate<T> =>
-    aggregates
-      .GroupBy(aggregate => (aggregate.Source, aggregate.Timestamp, aggregate.TimeSpan))
-      .Select(group => group.Aggregate((a, b) => IAggregate<T>.Upsert(a, b)));
 }

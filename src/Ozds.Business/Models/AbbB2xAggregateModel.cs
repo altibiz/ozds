@@ -32,9 +32,9 @@ public record AbbB2xAggregateModel(
   float ActiveEnergyImportTotalT1Max_Wh,
   float ActiveEnergyImportTotalT2Min_Wh,
   float ActiveEnergyImportTotalT2Max_Wh
-) : IAggregate<AbbB2xAggregateModel>
+) : IUpsertAggregate<AbbB2xAggregateModel>
 {
-  static Expression<Func<AbbB2xAggregateModel, AbbB2xAggregateModel, AbbB2xAggregateModel>> IAggregate<AbbB2xAggregateModel>.UpsertExpression =>
+  static Expression<Func<AbbB2xAggregateModel, AbbB2xAggregateModel, AbbB2xAggregateModel>> IUpsertAggregate<AbbB2xAggregateModel>.UpsertExpression =>
     _upsertExpression.Value;
 
   string IMeasurement.Source

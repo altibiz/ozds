@@ -31,9 +31,9 @@ public record SchneideriEM3xxxAggregateModel(
   float ActiveEnergyImportTotalT1Max_Wh,
   float ActiveEnergyImportTotalT2Min_Wh,
   float ActiveEnergyImportTotalT2Max_Wh
-) : IAggregate<SchneideriEM3xxxAggregateModel>
+) : IUpsertAggregate<SchneideriEM3xxxAggregateModel>
 {
-  static Expression<Func<SchneideriEM3xxxAggregateModel, SchneideriEM3xxxAggregateModel, SchneideriEM3xxxAggregateModel>> IAggregate<SchneideriEM3xxxAggregateModel>.UpsertExpression =>
+  static Expression<Func<SchneideriEM3xxxAggregateModel, SchneideriEM3xxxAggregateModel, SchneideriEM3xxxAggregateModel>> IUpsertAggregate<SchneideriEM3xxxAggregateModel>.UpsertExpression =>
     _upsertExpression.Value;
 
   string IMeasurement.Source

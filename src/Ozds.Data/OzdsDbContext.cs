@@ -12,6 +12,7 @@ public partial class OzdsDbContext : DbContext
   protected override void OnConfiguring(DbContextOptionsBuilder dbContextOptionsBuilder) =>
     dbContextOptionsBuilder
       .UseTimescale("Host=localhost;Database=ozds;Username=ozds;Password=ozds")
+      .UseLazyLoadingProxies()
       .UseSnakeCaseNamingConvention();
 
   protected override void OnModelCreating(ModelBuilder modelBuilder) =>
