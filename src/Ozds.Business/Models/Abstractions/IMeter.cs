@@ -10,5 +10,5 @@ public interface IMeter
 
   public IMeterCapabilities Capabilities { get; }
 
-  public IMeterValidator Validator { get; }
+  public IMeasurementValidator Validator { get; }
 }

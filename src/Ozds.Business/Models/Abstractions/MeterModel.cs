@@ -8,5 +8,5 @@ public abstract record MeterModel(
 {
   public abstract IMeterCapabilities Capabilities { get; }
 
-  public abstract IMeterValidator Validator { get; }
+  public abstract IMeasurementValidator Validator { get; }
 }
