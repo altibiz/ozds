@@ -219,6 +219,40 @@ public record AbbB2xMeasurementModel(
 
 public static class AbbB2xMeasurementModelExtensions
 {
+  public static AbbB2xAggregateModel ToAggregate(
+    this AbbB2xMeasurementModel measurement,
+    TimeSpan timeSpan) =>
+    new(
+      measurement.Source,
+      measurement.Timestamp,
+      timeSpan,
+      1,
+      measurement.VoltageL1AnyT0_V,
+      measurement.VoltageL2AnyT0_V,
+      measurement.VoltageL3AnyT0_V,
+      measurement.CurrentL1AnyT0_A,
+      measurement.CurrentL2AnyT0_A,
+      measurement.CurrentL3AnyT0_A,
+      measurement.ActivePowerL1NetT0_W,
+      measurement.ActivePowerL2NetT0_W,
+      measurement.ActivePowerL3NetT0_W,
+      measurement.ReactivePowerL1NetT0_VAR,
+      measurement.ReactivePowerL2NetT0_VAR,
+      measurement.ReactivePowerL3NetT0_VAR,
+      measurement.ActiveEnergyTotalImportT0_Wh,
+      measurement.ActiveEnergyTotalImportT0_Wh,
+      measurement.ActiveEnergyTotalExportT0_Wh,
+      measurement.ActiveEnergyTotalExportT0_Wh,
+      measurement.ReactiveEnergyTotalImportT0_VARh,
+      measurement.ReactiveEnergyTotalImportT0_VARh,
+      measurement.ReactiveEnergyTotalExportT0_VARh,
+      measurement.ReactiveEnergyTotalExportT0_VARh,
+      measurement.ActiveEnergyTotalImportT1_Wh,
+      measurement.ActiveEnergyTotalImportT1_Wh,
+      measurement.ActiveEnergyTotalImportT2_Wh,
+      measurement.ActiveEnergyTotalImportT2_Wh
+    );
+
   public static AbbB2xMeasurementModel ToModel(this AbbB2xMeasurementEntity entity) =>
     new(
       entity.Meter.Id,
