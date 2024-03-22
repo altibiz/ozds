@@ -4,15 +4,13 @@ public interface IAggregate : IMeasurement
 {
   public TimeSpan TimeSpan { get; }
 
-  public long AggregateCount { get; }
+  public long Count { get; }
 
   public SpanningMeasure ActiveEnergySpan_Wh { get; }
 
   public SpanningMeasure ReactiveEnergySpan_VARh { get; }
 
   public SpanningMeasure ApparentEnergySpan_VAh { get; }
-
-  public SpanningMeasure TariffEnergySpan_Wh { get; }
 
   TariffMeasure IMeasurement.ActivePower_W
   {
