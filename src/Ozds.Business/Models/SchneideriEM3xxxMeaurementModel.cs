@@ -38,7 +38,7 @@ public record SchneideriEM3xxxMeasurementModel(
     get { return Timestamp; }
   }
 
-  DuplexMeasure IMeasurement.Current_A
+  TariffMeasure IMeasurement.Current_A
   {
     get
     {
@@ -48,7 +48,7 @@ public record SchneideriEM3xxxMeasurementModel(
     }
   }
 
-  DuplexMeasure IMeasurement.Voltage_V
+  TariffMeasure IMeasurement.Voltage_V
   {
     get
     {
@@ -58,7 +58,7 @@ public record SchneideriEM3xxxMeasurementModel(
     }
   }
 
-  DuplexMeasure IMeasurement.ActivePower_W
+  TariffMeasure IMeasurement.ActivePower_W
   {
     get
     {
@@ -72,7 +72,7 @@ public record SchneideriEM3xxxMeasurementModel(
     }
   }
 
-  DuplexMeasure IMeasurement.ReactivePower_VAR
+  TariffMeasure IMeasurement.ReactivePower_VAR
   {
     get
     {
@@ -84,7 +84,7 @@ public record SchneideriEM3xxxMeasurementModel(
     }
   }
 
-  DuplexMeasure IMeasurement.ApparentPower_VA
+  TariffMeasure IMeasurement.ApparentPower_VA
   {
     get
     {
@@ -97,7 +97,7 @@ public record SchneideriEM3xxxMeasurementModel(
   }
 
 
-  DuplexMeasure IMeasurement.ActiveEnergyCumulative_Wh
+  TariffMeasure IMeasurement.ActiveEnergyCumulative_Wh
   {
     get
     {
@@ -121,7 +121,7 @@ public record SchneideriEM3xxxMeasurementModel(
     }
   }
 
-  DuplexMeasure IMeasurement.ReactiveEnergyCumulative_VARh
+  TariffMeasure IMeasurement.ReactiveEnergyCumulative_VARh
   {
     get
     {
@@ -132,7 +132,7 @@ public record SchneideriEM3xxxMeasurementModel(
     }
   }
 
-  DuplexMeasure IMeasurement.ApparentEnergyCumulative_VAh
+  TariffMeasure IMeasurement.ApparentEnergyCumulative_VAh
   {
     get { return DuplexMeasure.Null; }
   }

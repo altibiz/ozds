@@ -8,6 +8,5 @@ public partial class OzdsTimeseriesMutations
     AbbB2xMeasurementModel model
   )
   {
-    await _context.AbbB2xAggregates.Upsert(model, cancellationToken);
   }
 }

@@ -1,6 +1,8 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Ozds.Data.Entities.Base;
 
+// TODO: more clear naming for properties
+
 namespace Ozds.Data.Entities;
 
 public class AbbB2xMeterEntity : MeterEntity
