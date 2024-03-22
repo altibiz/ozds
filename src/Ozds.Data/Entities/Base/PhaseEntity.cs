@@ -1,6 +1,6 @@
 namespace Ozds.Data.Entities.Base;
 
-public enum Phase
+public enum PhaseEntity
 {
   L1,
   L2,

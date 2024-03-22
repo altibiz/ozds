@@ -1,8 +1,10 @@
-namespace Ozds.Business.Math;
+using Ozds.Business.Math;
+
+namespace Ozds.Business.Models.Abstractions;
 
 public interface IAggregate : IMeasurement
 {
-  public TimeSpan TimeSpan { get; }
+  public TimeSpan Interval { get; }
 
   public long Count { get; }
 
@@ -16,7 +18,7 @@ public interface IAggregate : IMeasurement
   {
     get
     {
-      return ActiveEnergySpan_Wh.SpanDifferential((float)TimeSpan.TotalHours);
+      return ActiveEnergySpan_Wh.SpanDifferential((float)Interval.TotalHours);
     }
   }
 
@@ -25,7 +27,7 @@ public interface IAggregate : IMeasurement
     get
     {
       return ReactiveEnergySpan_VARh.SpanDifferential(
-        (float)TimeSpan.TotalHours);
+        (float)Interval.TotalHours);
     }
   }
 
@@ -34,7 +36,7 @@ public interface IAggregate : IMeasurement
     get
     {
       return ApparentEnergySpan_VAh.SpanDifferential(
-        (float)TimeSpan.TotalHours);
+        (float)Interval.TotalHours);
     }
   }
 

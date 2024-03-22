@@ -1,10 +1,11 @@
 using Ozds.Business.Math;
+using Ozds.Business.Models.Abstractions;
 using Ozds.Data.Entities;
 
 namespace Ozds.Business.Models;
 
 public record SchneideriEM3xxxMeasurementModel(
-  string Source,
+  string MeterId,
   DateTimeOffset Timestamp,
   float VoltageL1AnyT0_V,
   float VoltageL2AnyT0_V,
@@ -26,19 +27,9 @@ public record SchneideriEM3xxxMeasurementModel(
   float ReactiveEnergyTotalExportT0_VARh,
   float ActiveEnergyTotalImportT1_Wh,
   float ActiveEnergyTotalImportT2_Wh
-) : IMeasurement
+) : MeasurementModel(MeterId, Timestamp)
 {
-  string IMeasurement.Source
-  {
-    get { return Source; }
-  }
-
-  DateTimeOffset IMeasurement.Timestamp
-  {
-    get { return Timestamp; }
-  }
-
-  TariffMeasure IMeasurement.Current_A
+  public override TariffMeasure Current_A
   {
     get
     {
@@ -54,7 +45,7 @@ public record SchneideriEM3xxxMeasurementModel(
     }
   }
 
-  TariffMeasure IMeasurement.Voltage_V
+  public override TariffMeasure Voltage_V
   {
     get
     {
@@ -70,7 +61,7 @@ public record SchneideriEM3xxxMeasurementModel(
     }
   }
 
-  TariffMeasure IMeasurement.ActivePower_W
+  public override TariffMeasure ActivePower_W
   {
     get
     {
@@ -86,7 +77,7 @@ public record SchneideriEM3xxxMeasurementModel(
     }
   }
 
-  TariffMeasure IMeasurement.ReactivePower_VAR
+  public override TariffMeasure ReactivePower_VAR
   {
     get
     {
@@ -100,7 +91,7 @@ public record SchneideriEM3xxxMeasurementModel(
     }
   }
 
-  TariffMeasure IMeasurement.ApparentPower_VA
+  public override TariffMeasure ApparentPower_VA
   {
     get
     {
@@ -115,7 +106,7 @@ public record SchneideriEM3xxxMeasurementModel(
   }
 
 
-  TariffMeasure IMeasurement.ActiveEnergyCumulative_Wh
+  public override TariffMeasure ActiveEnergyCumulative_Wh
   {
     get
     {
@@ -169,7 +160,7 @@ public record SchneideriEM3xxxMeasurementModel(
     }
   }
 
-  TariffMeasure IMeasurement.ReactiveEnergyCumulative_VARh
+  public override TariffMeasure ReactiveEnergyCumulative_VARh
   {
     get
     {
@@ -182,7 +173,7 @@ public record SchneideriEM3xxxMeasurementModel(
     }
   }
 
-  TariffMeasure IMeasurement.ApparentEnergyCumulative_VAh
+  public override TariffMeasure ApparentEnergyCumulative_VAh
   {
     get { return TariffMeasure.Null; }
   }
@@ -194,7 +185,7 @@ public static class SchneideriEM3xxxMeasurementModelExtensions
     this SchneideriEM3xxxMeasurementModel measurement,
     TimeSpan timeSpan) =>
     new(
-      measurement.Source,
+      measurement.MeterId,
       measurement.Timestamp,
       timeSpan,
       1,
@@ -254,7 +245,7 @@ public static class SchneideriEM3xxxMeasurementModelExtensions
     this SchneideriEM3xxxMeasurementModel model) =>
     new()
     {
-      Meter = new() { Id = model.Source },
+      Meter = new() { Id = model.MeterId },
       Timestamp = model.Timestamp,
       VoltageL1AnyT0_V = model.VoltageL1AnyT0_V,
       VoltageL2AnyT0_V = model.VoltageL2AnyT0_V,

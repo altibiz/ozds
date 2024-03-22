@@ -11,5 +11,5 @@ public abstract class AggregateEntity<T> : MeasurementEntity<T>
   public long Count { get; set; }
 
   [Required]
-  public TimeSpan Interval { get; }
+  public TimeSpan Interval { get; set; }
 }

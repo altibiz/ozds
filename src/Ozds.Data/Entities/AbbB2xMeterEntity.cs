@@ -35,6 +35,6 @@ public class AbbB2xMeterEntity : MeterEntity
   [Column("connection_power_w")]
   public float ConnectionPower_W { get; set; } = default!;
 
-  public List<Phase> Phases { get; set; } = default!;
+  public List<PhaseEntity> Phases { get; set; } = default!;
 #pragma warning restore CA1707
 }

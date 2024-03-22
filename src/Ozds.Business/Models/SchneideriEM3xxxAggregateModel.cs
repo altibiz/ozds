@@ -1,13 +1,15 @@
 using Ozds.Business.Math;
+using Ozds.Business.Models.Abstractions;
+using Ozds.Data.Entities;
 
 namespace Ozds.Business.Models;
 
 using IUpsertAggregate = IUpsertAggregate<SchneideriEM3xxxAggregateModel>;
 
 public record SchneideriEM3xxxAggregateModel(
-  string Source,
+  string MeterId,
   DateTimeOffset Timestamp,
-  TimeSpan TimeSpan,
+  TimeSpan Interval,
   long Count,
   float VoltageL1AnyT0Avg_V,
   float VoltageL2AnyT0Avg_V,
@@ -32,23 +34,13 @@ public record SchneideriEM3xxxAggregateModel(
   float ActiveEnergyTotalImportT1Max_Wh,
   float ActiveEnergyTotalImportT2Min_Wh,
   float ActiveEnergyTotalImportT2Max_Wh
-) : IUpsertAggregate
+) : AggregateModel(MeterId, Timestamp, Interval, Count), IUpsertAggregate
 {
   static IUpsertAggregate.UpsertExpressionHolder IUpsertAggregate.UpsertExpression => _upsertExpression.Value;
 
   static IUpsertAggregate.UpsertHolder IUpsertAggregate.Upsert => _upsert.Value;
 
-  string IMeasurement.Source
-  {
-    get { return Source; }
-  }
-
-  DateTimeOffset IMeasurement.Timestamp
-  {
-    get { return Timestamp; }
-  }
-
-  TariffMeasure IMeasurement.Current_A
+  public override TariffMeasure Current_A
   {
     get
     {
@@ -64,7 +56,7 @@ public record SchneideriEM3xxxAggregateModel(
     }
   }
 
-  TariffMeasure IMeasurement.Voltage_V
+  public override TariffMeasure Voltage_V
   {
     get
     {
@@ -80,51 +72,63 @@ public record SchneideriEM3xxxAggregateModel(
     }
   }
 
-  TariffMeasure IMeasurement.ActivePower_W
+  public override TariffMeasure ActivePower_W
   {
     get
     {
-      return new UnaryTariffMeasure(
-        new NetDuplexMeasure(
-          new TriPhasicMeasure(
-            ActivePowerL1NetT0Avg_W,
-            ActivePowerL2NetT0Avg_W,
-            ActivePowerL3NetT0Avg_W
+      return new CompositeTariffMeasure(new()
+      {
+        base.ActivePower_W,
+        new UnaryTariffMeasure(
+          new NetDuplexMeasure(
+            new TriPhasicMeasure(
+              ActivePowerL1NetT0Avg_W,
+              ActivePowerL2NetT0Avg_W,
+              ActivePowerL3NetT0Avg_W
+            )
           )
         )
-      );
+      });
     }
   }
 
-  TariffMeasure IMeasurement.ReactivePower_VAR
+  public override TariffMeasure ReactivePower_VAR
   {
     get
     {
-      return new UnaryTariffMeasure(
-        new NetDuplexMeasure(
-          new SinglePhasicMeasure(
-            ReactivePowerTotalNetT0Avg_VAR
+      return new CompositeTariffMeasure(new()
+      {
+        base.ReactivePower_VAR,
+        new UnaryTariffMeasure(
+          new NetDuplexMeasure(
+            new SinglePhasicMeasure(
+              ReactivePowerTotalNetT0Avg_VAR
+            )
           )
         )
-      );
+      });
     }
   }
 
-  TariffMeasure IMeasurement.ApparentPower_VA
+  public override TariffMeasure ApparentPower_VA
   {
     get
     {
-      return new UnaryTariffMeasure(
-        new NetDuplexMeasure(
-          new SinglePhasicMeasure(
-            ApparentPowerTotalNetT0Avg_VA
+      return new CompositeTariffMeasure(new()
+      {
+        base.ApparentPower_VA,
+        new UnaryTariffMeasure(
+          new NetDuplexMeasure(
+            new SinglePhasicMeasure(
+              ApparentPowerTotalNetT0Avg_VA
+            )
           )
         )
-      );
+      });
     }
   }
 
-  SpanningMeasure IAggregate.ActiveEnergySpan_Wh
+  public override SpanningMeasure ActiveEnergySpan_Wh
   {
     get
     {
@@ -145,7 +149,7 @@ public record SchneideriEM3xxxAggregateModel(
     }
   }
 
-  SpanningMeasure IAggregate.ReactiveEnergySpan_VARh
+  public override SpanningMeasure ReactiveEnergySpan_VARh
   {
     get
     {
@@ -166,7 +170,7 @@ public record SchneideriEM3xxxAggregateModel(
     }
   }
 
-  SpanningMeasure IAggregate.ApparentEnergySpan_VAh
+  public override SpanningMeasure ApparentEnergySpan_VAh
   {
     get { return SpanningMeasure.Null; }
   }
@@ -175,9 +179,9 @@ public record SchneideriEM3xxxAggregateModel(
     new(() =>
       new((SchneideriEM3xxxAggregateModel lhs, SchneideriEM3xxxAggregateModel rhs) =>
         new(
-          lhs.Source,
+          lhs.MeterId,
           lhs.Timestamp,
-          lhs.TimeSpan,
+          lhs.Interval,
           lhs.Count + rhs.Count,
           (lhs.VoltageL1AnyT0Avg_V * lhs.Count
             + rhs.VoltageL1AnyT0Avg_V * rhs.Count)
@@ -266,4 +270,72 @@ public record SchneideriEM3xxxAggregateModel(
 
   private static readonly Lazy<IUpsertAggregate.UpsertHolder> _upsert =
     new(() => new(_upsertExpression.Value.Value.Compile()));
+}
+
+public static class SchneideriEM3xxxAggregateModelExtensions
+{
+  public static SchneideriEM3xxxAggregateEntity ToEntity(
+    this SchneideriEM3xxxAggregateModel model) =>
+    new()
+    {
+      Meter = new() { Id = model.MeterId },
+      Timestamp = model.Timestamp,
+      Interval = model.Interval,
+      Count = model.Count,
+      VoltageL1AnyT0Avg_V = model.VoltageL1AnyT0Avg_V,
+      VoltageL2AnyT0Avg_V = model.VoltageL2AnyT0Avg_V,
+      VoltageL3AnyT0Avg_V = model.VoltageL3AnyT0Avg_V,
+      CurrentL1AnyT0Avg_A = model.CurrentL1AnyT0Avg_A,
+      CurrentL2AnyT0Avg_A = model.CurrentL2AnyT0Avg_A,
+      CurrentL3AnyT0Avg_A = model.CurrentL3AnyT0Avg_A,
+      ActivePowerL1NetT0Avg_W = model.ActivePowerL1NetT0Avg_W,
+      ActivePowerL2NetT0Avg_W = model.ActivePowerL2NetT0Avg_W,
+      ActivePowerL3NetT0Avg_W = model.ActivePowerL3NetT0Avg_W,
+      ReactivePowerTotalNetT0Avg_VAR = model.ReactivePowerTotalNetT0Avg_VAR,
+      ApparentPowerTotalNetT0Avg_VA = model.ApparentPowerTotalNetT0Avg_VA,
+      ActiveEnergyTotalImportT0Min_Wh = model.ActiveEnergyTotalImportT0Min_Wh,
+      ActiveEnergyTotalImportT0Max_Wh = model.ActiveEnergyTotalImportT0Max_Wh,
+      ActiveEnergyTotalExportT0Min_Wh = model.ActiveEnergyTotalExportT0Min_Wh,
+      ActiveEnergyTotalExportT0Max_Wh = model.ActiveEnergyTotalExportT0Max_Wh,
+      ReactiveEnergyTotalImportT0Min_VARh = model.ReactiveEnergyTotalImportT0Min_VARh,
+      ReactiveEnergyTotalImportT0Max_VARh = model.ReactiveEnergyTotalImportT0Max_VARh,
+      ReactiveEnergyTotalExportT0Min_VARh = model.ReactiveEnergyTotalExportT0Min_VARh,
+      ReactiveEnergyTotalExportT0Max_VARh = model.ReactiveEnergyTotalExportT0Max_VARh,
+      ActiveEnergyTotalImportT1Min_Wh = model.ActiveEnergyTotalImportT1Min_Wh,
+      ActiveEnergyTotalImportT1Max_Wh = model.ActiveEnergyTotalImportT1Max_Wh,
+      ActiveEnergyTotalImportT2Min_Wh = model.ActiveEnergyTotalImportT2Min_Wh,
+      ActiveEnergyTotalImportT2Max_Wh = model.ActiveEnergyTotalImportT2Max_Wh
+    };
+
+  public static SchneideriEM3xxxAggregateModel ToModel(
+    this SchneideriEM3xxxAggregateEntity entity) =>
+    new(
+      entity.Meter.Id,
+      entity.Timestamp,
+      entity.Interval,
+      entity.Count,
+      entity.VoltageL1AnyT0Avg_V,
+      entity.VoltageL2AnyT0Avg_V,
+      entity.VoltageL3AnyT0Avg_V,
+      entity.CurrentL1AnyT0Avg_A,
+      entity.CurrentL2AnyT0Avg_A,
+      entity.CurrentL3AnyT0Avg_A,
+      entity.ActivePowerL1NetT0Avg_W,
+      entity.ActivePowerL2NetT0Avg_W,
+      entity.ActivePowerL3NetT0Avg_W,
+      entity.ReactivePowerTotalNetT0Avg_VAR,
+      entity.ApparentPowerTotalNetT0Avg_VA,
+      entity.ActiveEnergyTotalImportT0Min_Wh,
+      entity.ActiveEnergyTotalImportT0Max_Wh,
+      entity.ActiveEnergyTotalExportT0Min_Wh,
+      entity.ActiveEnergyTotalExportT0Max_Wh,
+      entity.ReactiveEnergyTotalImportT0Min_VARh,
+      entity.ReactiveEnergyTotalImportT0Max_VARh,
+      entity.ReactiveEnergyTotalExportT0Min_VARh,
+      entity.ReactiveEnergyTotalExportT0Max_VARh,
+      entity.ActiveEnergyTotalImportT1Min_Wh,
+      entity.ActiveEnergyTotalImportT1Max_Wh,
+      entity.ActiveEnergyTotalImportT2Min_Wh,
+      entity.ActiveEnergyTotalImportT2Max_Wh
+    );
 }

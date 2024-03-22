@@ -1,6 +1,6 @@
 using System.Linq.Expressions;
 
-namespace Ozds.Business.Math;
+namespace Ozds.Business.Models.Abstractions;
 
 public interface IUpsertAggregate<T> : IAggregate where T : IUpsertAggregate<T>
 {
@@ -18,6 +18,6 @@ public static class IUpsertAggregateExtensions
   public static IEnumerable<T> UpsertRange<T>(this IEnumerable<T> aggregates)
     where T : IUpsertAggregate<T> =>
     aggregates
-      .GroupBy(aggregate => (aggregate.Source, aggregate.Timestamp, aggregate.TimeSpan))
+      .GroupBy(aggregate => (aggregate.MeterId, aggregate.Timestamp, aggregate.Interval))
       .Select(group => group.Aggregate((a, b) => T.Upsert.Value(a, b)));
 }

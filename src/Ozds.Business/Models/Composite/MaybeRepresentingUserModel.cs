@@ -1,4 +1,4 @@
-namespace Ozds.Business.Models;
+namespace Ozds.Business.Models.Composite;
 
 public record MaybeRepresentingUserModel(
   UserModel User,

@@ -1,5 +1,3 @@
-using System.Numerics;
-
 namespace Ozds.Business.Math;
 
 public record class CompositeTariffMeasure(List<TariffMeasure> Measures) : TariffMeasure

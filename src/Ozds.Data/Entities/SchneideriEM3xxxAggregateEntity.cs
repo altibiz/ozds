@@ -54,50 +54,50 @@ public class SchneideriEM3xxxAggregateEntity : AggregateEntity<SchneideriEM3xxxM
 
   [Column("active_energy_total_import_t0_min_wh")]
   [Required]
-  public decimal ActiveEnergyTotalImportT0Min_Wh { get; set; } = default!;
+  public float ActiveEnergyTotalImportT0Min_Wh { get; set; } = default!;
 
   [Column("active_energy_total_import_t0_max_wh")]
   [Required]
-  public decimal ActiveEnergyTotalImportT0Max_Wh { get; set; } = default!;
+  public float ActiveEnergyTotalImportT0Max_Wh { get; set; } = default!;
 
   [Column("active_energy_total_export_t0_min_wh")]
   [Required]
-  public decimal ActiveEnergyTotalExportT0Min_Wh { get; set; } = default!;
+  public float ActiveEnergyTotalExportT0Min_Wh { get; set; } = default!;
 
   [Column("active_energy_total_export_t0_max_wh")]
   [Required]
-  public decimal ActiveEnergyTotalExportT0Max_Wh { get; set; } = default!;
+  public float ActiveEnergyTotalExportT0Max_Wh { get; set; } = default!;
 
   [Column("reactive_energy_total_import_t0_min_varh")]
   [Required]
-  public decimal ReactiveEnergyTotalImportT0Min_VARh { get; set; } = default!;
+  public float ReactiveEnergyTotalImportT0Min_VARh { get; set; } = default!;
 
   [Column("reactive_energy_total_import_t0_max_varh")]
   [Required]
-  public decimal ReactiveEnergyTotalImportT0Max_VARh { get; set; } = default!;
+  public float ReactiveEnergyTotalImportT0Max_VARh { get; set; } = default!;
 
   [Column("reactive_energy_total_export_t0_min_varh")]
   [Required]
-  public decimal ReactiveEnergyTotalExportT0Min_VARh { get; set; } = default!;
+  public float ReactiveEnergyTotalExportT0Min_VARh { get; set; } = default!;
 
   [Column("reactive_energy_total_export_t0_max_varh")]
   [Required]
-  public decimal ReactiveEnergyTotalExportT0Max_VARh { get; set; } = default!;
+  public float ReactiveEnergyTotalExportT0Max_VARh { get; set; } = default!;
 
   [Column("active_energy_total_import_t1_min_wh")]
   [Required]
-  public decimal ActiveEnergyTotalImportT1Min_Wh { get; set; } = default!;
+  public float ActiveEnergyTotalImportT1Min_Wh { get; set; } = default!;
 
   [Column("active_energy_total_import_t1_max_wh")]
   [Required]
-  public decimal ActiveEnergyTotalImportT1Max_Wh { get; set; } = default!;
+  public float ActiveEnergyTotalImportT1Max_Wh { get; set; } = default!;
 
   [Column("active_energy_total_import_t2_min_wh")]
   [Required]
-  public decimal ActiveEnergyTotalImportT2Min_Wh { get; set; } = default!;
+  public float ActiveEnergyTotalImportT2Min_Wh { get; set; } = default!;
 
   [Column("active_energy_total_import_t2_max_wh")]
   [Required]
-  public decimal ActiveEnergyTotalImportT2Max_Wh { get; set; } = default!;
+  public float ActiveEnergyTotalImportT2Max_Wh { get; set; } = default!;
 #pragma warning disable CA1707
 }

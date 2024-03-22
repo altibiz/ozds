@@ -1,8 +1,10 @@
-namespace Ozds.Business.Math;
+using Ozds.Business.Math;
+
+namespace Ozds.Business.Models.Abstractions;
 
 public interface IMeasurement
 {
-  public string Source { get; }
+  public string MeterId { get; }
 
   public DateTimeOffset Timestamp { get; }
 
