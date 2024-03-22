@@ -1,40 +1,42 @@
-using System.Linq.Expressions;
 using Ozds.Business.Math;
 
 namespace Ozds.Business.Models;
+
+using IUpsertAggregate = IUpsertAggregate<SchneideriEM3xxxAggregateModel>;
 
 public record SchneideriEM3xxxAggregateModel(
   string Source,
   DateTimeOffset Timestamp,
   TimeSpan TimeSpan,
-  long AggregateCount,
-  float VoltageL1Avg_V,
-  float VoltageL2Avg_V,
-  float VoltageL3Avg_V,
-  float CurrentL1Avg_A,
-  float CurrentL2Avg_A,
-  float CurrentL3Avg_A,
-  float ActivePowerL1Avg_W,
-  float ActivePowerL2Avg_W,
-  float ActivePowerL3Avg_W,
-  float ReactivePowerTotalAvg_VAR,
-  float ApparentPowerTotalAvg_VA,
-  float ActiveEnergyImportTotalMin_Wh,
-  float ActiveEnergyImportTotalMax_Wh,
-  float ActiveEnergyExportTotalMin_Wh,
-  float ActiveEnergyExportTotalMax_Wh,
-  float ReactiveEnergyImportTotalMin_VARh,
-  float ReactiveEnergyImportTotalMax_VARh,
-  float ReactiveEnergyExportTotalMin_VARh,
-  float ReactiveEnergyExportTotalMax_VARh,
-  float ActiveEnergyImportTotalT1Min_Wh,
-  float ActiveEnergyImportTotalT1Max_Wh,
-  float ActiveEnergyImportTotalT2Min_Wh,
-  float ActiveEnergyImportTotalT2Max_Wh
-) : IUpsertAggregate<SchneideriEM3xxxAggregateModel>
+  long Count,
+  float VoltageL1AnyT0Avg_V,
+  float VoltageL2AnyT0Avg_V,
+  float VoltageL3AnyT0Avg_V,
+  float CurrentL1AnyT0Avg_A,
+  float CurrentL2AnyT0Avg_A,
+  float CurrentL3AnyT0Avg_A,
+  float ActivePowerL1NetT0Avg_W,
+  float ActivePowerL2NetT0Avg_W,
+  float ActivePowerL3NetT0Avg_W,
+  float ReactivePowerTotalNetT0Avg_VAR,
+  float ApparentPowerTotalNetT0Avg_VA,
+  float ActiveEnergyTotalImportT0Min_Wh,
+  float ActiveEnergyTotalImportT0Max_Wh,
+  float ActiveEnergyTotalExportT0Min_Wh,
+  float ActiveEnergyTotalExportT0Max_Wh,
+  float ReactiveEnergyTotalImportT0Min_VARh,
+  float ReactiveEnergyTotalImportT0Max_VARh,
+  float ReactiveEnergyTotalExportT0Min_VARh,
+  float ReactiveEnergyTotalExportT0Max_VARh,
+  float ActiveEnergyTotalImportT1Min_Wh,
+  float ActiveEnergyTotalImportT1Max_Wh,
+  float ActiveEnergyTotalImportT2Min_Wh,
+  float ActiveEnergyTotalImportT2Max_Wh
+) : IUpsertAggregate
 {
-  static Expression<Func<SchneideriEM3xxxAggregateModel, SchneideriEM3xxxAggregateModel, SchneideriEM3xxxAggregateModel>> IUpsertAggregate<SchneideriEM3xxxAggregateModel>.UpsertExpression =>
-    _upsertExpression.Value;
+  static IUpsertAggregate.UpsertExpressionHolder IUpsertAggregate.UpsertExpression => _upsertExpression.Value;
+
+  static IUpsertAggregate.UpsertHolder IUpsertAggregate.Upsert => _upsert.Value;
 
   string IMeasurement.Source
   {
@@ -46,197 +48,222 @@ public record SchneideriEM3xxxAggregateModel(
     get { return Timestamp; }
   }
 
-  DuplexMeasure IMeasurement.Current_A
+  TariffMeasure IMeasurement.Current_A
   {
     get
     {
-      return new NetDuplexMeasure(
-        new TriPhasicMeasure(CurrentL1Avg_A, CurrentL2Avg_A, CurrentL3Avg_A)
-      );
-    }
-  }
-
-  DuplexMeasure IMeasurement.Voltage_V
-  {
-    get
-    {
-      return new NetDuplexMeasure(
-        new TriPhasicMeasure(VoltageL1Avg_V, VoltageL2Avg_V, VoltageL3Avg_V)
-      );
-    }
-  }
-
-  DuplexMeasure IMeasurement.ActivePower_W
-  {
-    get
-    {
-      return new NetDuplexMeasure(
-        new TriPhasicMeasure(
-          ActivePowerL1Avg_W,
-          ActivePowerL2Avg_W,
-          ActivePowerL3Avg_W
-        )
-      );
-    }
-  }
-
-  DuplexMeasure IMeasurement.ReactivePower_VAR
-  {
-    get
-    {
-      return new NetDuplexMeasure(
-        new SinglePhasicMeasure(
-          ReactivePowerTotalAvg_VAR
-        )
-      );
-    }
-  }
-
-  DuplexMeasure IMeasurement.ApparentPower_VA
-  {
-    get
-    {
-      return new NetDuplexMeasure(
-        new SinglePhasicMeasure(
-          ApparentPowerTotalAvg_VA
-        )
-      );
-    }
-  }
-
-  SpanningMeasure<DuplexMeasure> IAggregate.ActiveEnergySpan_Wh
-  {
-    get
-    {
-      return new MinMaxSpanningMeasure<DuplexMeasure>(
-        new ImportExportDuplexMeasure(
-          new SinglePhasicMeasure(ActiveEnergyImportTotalMin_Wh),
-          new SinglePhasicMeasure(ActiveEnergyExportTotalMin_Wh)
-        ),
-        new ImportExportDuplexMeasure(
-          new SinglePhasicMeasure(ActiveEnergyImportTotalMax_Wh),
-          new SinglePhasicMeasure(ActiveEnergyExportTotalMax_Wh)
-        )
-      );
-    }
-  }
-
-  SpanningMeasure<DuplexMeasure> IAggregate.ReactiveEnergySpan_VARh
-  {
-    get
-    {
-      return new MinMaxSpanningMeasure<DuplexMeasure>(
-        new ImportExportDuplexMeasure(
-          new SinglePhasicMeasure(ReactiveEnergyImportTotalMin_VARh),
-          new SinglePhasicMeasure(ReactiveEnergyExportTotalMin_VARh)
-        ),
-        new ImportExportDuplexMeasure(
-          new SinglePhasicMeasure(ReactiveEnergyImportTotalMax_VARh),
-          new SinglePhasicMeasure(ReactiveEnergyExportTotalMax_VARh)
-        )
-      );
-    }
-  }
-
-  SpanningMeasure<DuplexMeasure> IAggregate.ApparentEnergySpan_VAh
-  {
-    get { return SpanningMeasure<DuplexMeasure>.Null; }
-  }
-
-  SpanningMeasure<TariffMeasure> IAggregate.TariffEnergySpan_Wh
-  {
-    get
-    {
-      return new MinMaxSpanningMeasure<TariffMeasure>(
-        new BinaryTariffMeasure(
-          new ImportExportDuplexMeasure(
-            new SinglePhasicMeasure(ActiveEnergyImportTotalT1Min_Wh),
-            PhasicMeasure.Null
-          ),
-          new ImportExportDuplexMeasure(
-            new SinglePhasicMeasure(ActiveEnergyImportTotalT2Min_Wh),
-            PhasicMeasure.Null
-          )
-        ),
-        new BinaryTariffMeasure(
-          new ImportExportDuplexMeasure(
-            new SinglePhasicMeasure(ActiveEnergyImportTotalT1Max_Wh),
-            PhasicMeasure.Null
-          ),
-          new ImportExportDuplexMeasure(
-            new SinglePhasicMeasure(ActiveEnergyImportTotalT2Max_Wh),
-            PhasicMeasure.Null
+      return new UnaryTariffMeasure(
+        new AnyDuplexMeasure(
+          new TriPhasicMeasure(
+            CurrentL1AnyT0Avg_A,
+            CurrentL2AnyT0Avg_A,
+            CurrentL3AnyT0Avg_A
           )
         )
       );
     }
   }
 
-  private static readonly Lazy<Expression<Func<SchneideriEM3xxxAggregateModel, SchneideriEM3xxxAggregateModel, SchneideriEM3xxxAggregateModel>>> _upsertExpression =
+  TariffMeasure IMeasurement.Voltage_V
+  {
+    get
+    {
+      return new UnaryTariffMeasure(
+        new AnyDuplexMeasure(
+          new TriPhasicMeasure(
+            VoltageL1AnyT0Avg_V,
+            VoltageL2AnyT0Avg_V,
+            VoltageL3AnyT0Avg_V
+          )
+        )
+      );
+    }
+  }
+
+  TariffMeasure IMeasurement.ActivePower_W
+  {
+    get
+    {
+      return new UnaryTariffMeasure(
+        new NetDuplexMeasure(
+          new TriPhasicMeasure(
+            ActivePowerL1NetT0Avg_W,
+            ActivePowerL2NetT0Avg_W,
+            ActivePowerL3NetT0Avg_W
+          )
+        )
+      );
+    }
+  }
+
+  TariffMeasure IMeasurement.ReactivePower_VAR
+  {
+    get
+    {
+      return new UnaryTariffMeasure(
+        new NetDuplexMeasure(
+          new SinglePhasicMeasure(
+            ReactivePowerTotalNetT0Avg_VAR
+          )
+        )
+      );
+    }
+  }
+
+  TariffMeasure IMeasurement.ApparentPower_VA
+  {
+    get
+    {
+      return new UnaryTariffMeasure(
+        new NetDuplexMeasure(
+          new SinglePhasicMeasure(
+            ApparentPowerTotalNetT0Avg_VA
+          )
+        )
+      );
+    }
+  }
+
+  SpanningMeasure IAggregate.ActiveEnergySpan_Wh
+  {
+    get
+    {
+      return new MinMaxSpanningMeasure(
+        new UnaryTariffMeasure(
+          new ImportExportDuplexMeasure(
+            new SinglePhasicMeasure(ActiveEnergyTotalImportT0Min_Wh),
+            new SinglePhasicMeasure(ActiveEnergyTotalExportT0Min_Wh)
+          )
+        ),
+        new UnaryTariffMeasure(
+          new ImportExportDuplexMeasure(
+            new SinglePhasicMeasure(ActiveEnergyTotalImportT0Max_Wh),
+            new SinglePhasicMeasure(ActiveEnergyTotalExportT0Max_Wh)
+          )
+        )
+      );
+    }
+  }
+
+  SpanningMeasure IAggregate.ReactiveEnergySpan_VARh
+  {
+    get
+    {
+      return new MinMaxSpanningMeasure(
+        new UnaryTariffMeasure(
+          new ImportExportDuplexMeasure(
+            new SinglePhasicMeasure(ReactiveEnergyTotalImportT0Min_VARh),
+            new SinglePhasicMeasure(ReactiveEnergyTotalExportT0Min_VARh)
+          )
+        ),
+        new UnaryTariffMeasure(
+          new ImportExportDuplexMeasure(
+            new SinglePhasicMeasure(ReactiveEnergyTotalImportT0Max_VARh),
+            new SinglePhasicMeasure(ReactiveEnergyTotalExportT0Max_VARh)
+          )
+        )
+      );
+    }
+  }
+
+  SpanningMeasure IAggregate.ApparentEnergySpan_VAh
+  {
+    get { return SpanningMeasure.Null; }
+  }
+
+  private static readonly Lazy<IUpsertAggregate.UpsertExpressionHolder> _upsertExpression =
     new(() =>
-      (SchneideriEM3xxxAggregateModel lhs, SchneideriEM3xxxAggregateModel rhs) =>
-          new(
-            lhs.Source,
-            lhs.Timestamp,
-            lhs.TimeSpan,
-            lhs.AggregateCount + rhs.AggregateCount,
-            (lhs.VoltageL1Avg_V * lhs.AggregateCount + rhs.VoltageL1Avg_V * rhs.AggregateCount) /
-              (lhs.AggregateCount + rhs.AggregateCount),
-            (lhs.VoltageL2Avg_V * lhs.AggregateCount + rhs.VoltageL2Avg_V * rhs.AggregateCount) /
-              (lhs.AggregateCount + rhs.AggregateCount),
-            (lhs.VoltageL3Avg_V * lhs.AggregateCount + rhs.VoltageL3Avg_V * rhs.AggregateCount) /
-              (lhs.AggregateCount + rhs.AggregateCount),
-            (lhs.CurrentL1Avg_A * lhs.AggregateCount + rhs.CurrentL1Avg_A * rhs.AggregateCount) /
-              (lhs.AggregateCount + rhs.AggregateCount),
-            (lhs.CurrentL2Avg_A * lhs.AggregateCount + rhs.CurrentL2Avg_A * rhs.AggregateCount) /
-              (lhs.AggregateCount + rhs.AggregateCount),
-            (lhs.CurrentL3Avg_A * lhs.AggregateCount + rhs.CurrentL3Avg_A * rhs.AggregateCount) /
-              (lhs.AggregateCount + rhs.AggregateCount),
-            (lhs.ActivePowerL1Avg_W * lhs.AggregateCount + rhs.ActivePowerL1Avg_W * rhs.AggregateCount) /
-              (lhs.AggregateCount + rhs.AggregateCount),
-            (lhs.ActivePowerL2Avg_W * lhs.AggregateCount + rhs.ActivePowerL2Avg_W * rhs.AggregateCount) /
-              (lhs.AggregateCount + rhs.AggregateCount),
-            (lhs.ActivePowerL3Avg_W * lhs.AggregateCount + rhs.ActivePowerL3Avg_W * rhs.AggregateCount) /
-              (lhs.AggregateCount + rhs.AggregateCount),
-            (lhs.ReactivePowerTotalAvg_VAR * lhs.AggregateCount + rhs.ReactivePowerTotalAvg_VAR * rhs.AggregateCount) /
-              (lhs.AggregateCount + rhs.AggregateCount),
-            (lhs.ApparentPowerTotalAvg_VA * lhs.AggregateCount + rhs.ApparentPowerTotalAvg_VA * rhs.AggregateCount) /
-              (lhs.AggregateCount + rhs.AggregateCount),
-            lhs.ActiveEnergyImportTotalMin_Wh > rhs.ActiveEnergyImportTotalMin_Wh
-              ? rhs.ActiveEnergyImportTotalMin_Wh
-              : lhs.ActiveEnergyImportTotalMin_Wh,
-            lhs.ActiveEnergyImportTotalMax_Wh < rhs.ActiveEnergyImportTotalMax_Wh
-              ? rhs.ActiveEnergyImportTotalMax_Wh
-              : lhs.ActiveEnergyImportTotalMax_Wh,
-            lhs.ActiveEnergyExportTotalMin_Wh > rhs.ActiveEnergyExportTotalMin_Wh
-              ? rhs.ActiveEnergyExportTotalMin_Wh
-              : lhs.ActiveEnergyExportTotalMin_Wh,
-            lhs.ActiveEnergyExportTotalMax_Wh < rhs.ActiveEnergyExportTotalMax_Wh
-              ? rhs.ActiveEnergyExportTotalMax_Wh
-              : lhs.ActiveEnergyExportTotalMax_Wh,
-            lhs.ReactiveEnergyImportTotalMin_VARh > rhs.ReactiveEnergyImportTotalMin_VARh
-              ? rhs.ReactiveEnergyImportTotalMin_VARh
-              : lhs.ReactiveEnergyImportTotalMin_VARh,
-            lhs.ReactiveEnergyImportTotalMax_VARh < rhs.ReactiveEnergyImportTotalMax_VARh
-              ? rhs.ReactiveEnergyImportTotalMax_VARh
-              : lhs.ReactiveEnergyImportTotalMax_VARh,
-            lhs.ReactiveEnergyExportTotalMin_VARh > rhs.ReactiveEnergyExportTotalMin_VARh
-              ? rhs.ReactiveEnergyExportTotalMin_VARh
-              : lhs.ReactiveEnergyExportTotalMin_VARh,
-            lhs.ReactiveEnergyExportTotalMax_VARh < rhs.ReactiveEnergyExportTotalMax_VARh
-              ? rhs.ReactiveEnergyExportTotalMax_VARh
-              : lhs.ReactiveEnergyExportTotalMax_VARh,
-            lhs.ActiveEnergyImportTotalT1Min_Wh > rhs.ActiveEnergyImportTotalT1Min_Wh
-              ? rhs.ActiveEnergyImportTotalT1Min_Wh
-              : lhs.ActiveEnergyImportTotalT1Min_Wh,
-            lhs.ActiveEnergyImportTotalT1Max_Wh < rhs.ActiveEnergyImportTotalT1Max_Wh
-              ? rhs.ActiveEnergyImportTotalT1Max_Wh
-              : lhs.ActiveEnergyImportTotalT1Max_Wh,
-            lhs.ActiveEnergyImportTotalT2Min_Wh > rhs.ActiveEnergyImportTotalT2Min_Wh
-              ? rhs.ActiveEnergyImportTotalT2Min_Wh
-              : lhs.ActiveEnergyImportTotalT2Min_Wh,
-            lhs.ActiveEnergyImportTotalT2Max_Wh < rhs.ActiveEnergyImportTotalT2Max_Wh
-              ? rhs.ActiveEnergyImportTotalT2Max_Wh
-              : lhs.ActiveEnergyImportTotalT2Max_Wh
-          ));
+      new((SchneideriEM3xxxAggregateModel lhs, SchneideriEM3xxxAggregateModel rhs) =>
+        new(
+          lhs.Source,
+          lhs.Timestamp,
+          lhs.TimeSpan,
+          lhs.Count + rhs.Count,
+          (lhs.VoltageL1AnyT0Avg_V * lhs.Count
+            + rhs.VoltageL1AnyT0Avg_V * rhs.Count)
+            / (lhs.Count + rhs.Count),
+          (lhs.VoltageL2AnyT0Avg_V * lhs.Count
+            + rhs.VoltageL2AnyT0Avg_V * rhs.Count)
+            / (lhs.Count + rhs.Count),
+          (lhs.VoltageL3AnyT0Avg_V * lhs.Count
+            + rhs.VoltageL3AnyT0Avg_V * rhs.Count)
+            / (lhs.Count + rhs.Count),
+          (lhs.CurrentL1AnyT0Avg_A * lhs.Count
+            + rhs.CurrentL1AnyT0Avg_A * rhs.Count)
+            / (lhs.Count + rhs.Count),
+          (lhs.CurrentL2AnyT0Avg_A * lhs.Count
+            + rhs.CurrentL2AnyT0Avg_A * rhs.Count)
+            / (lhs.Count + rhs.Count),
+          (lhs.CurrentL3AnyT0Avg_A * lhs.Count
+            + rhs.CurrentL3AnyT0Avg_A * rhs.Count)
+            / (lhs.Count + rhs.Count),
+          (lhs.ActivePowerL1NetT0Avg_W * lhs.Count
+            + rhs.ActivePowerL1NetT0Avg_W * rhs.Count)
+            / (lhs.Count + rhs.Count),
+          (lhs.ActivePowerL2NetT0Avg_W * lhs.Count
+            + rhs.ActivePowerL2NetT0Avg_W * rhs.Count)
+            / (lhs.Count + rhs.Count),
+          (lhs.ActivePowerL3NetT0Avg_W * lhs.Count
+            + rhs.ActivePowerL3NetT0Avg_W * rhs.Count)
+            / (lhs.Count + rhs.Count),
+          (lhs.ReactivePowerTotalNetT0Avg_VAR * lhs.Count
+            + rhs.ReactivePowerTotalNetT0Avg_VAR * rhs.Count)
+            / (lhs.Count + rhs.Count),
+          (lhs.ApparentPowerTotalNetT0Avg_VA * lhs.Count
+            + rhs.ApparentPowerTotalNetT0Avg_VA * rhs.Count)
+            / (lhs.Count + rhs.Count),
+          lhs.ActiveEnergyTotalImportT0Min_Wh >
+            rhs.ActiveEnergyTotalImportT0Min_Wh
+            ? rhs.ActiveEnergyTotalImportT0Min_Wh
+            : lhs.ActiveEnergyTotalImportT0Min_Wh,
+          lhs.ActiveEnergyTotalImportT0Max_Wh <
+            rhs.ActiveEnergyTotalImportT0Max_Wh
+            ? rhs.ActiveEnergyTotalImportT0Max_Wh
+            : lhs.ActiveEnergyTotalImportT0Max_Wh,
+          lhs.ActiveEnergyTotalExportT0Min_Wh >
+            rhs.ActiveEnergyTotalExportT0Min_Wh
+            ? rhs.ActiveEnergyTotalExportT0Min_Wh
+            : lhs.ActiveEnergyTotalExportT0Min_Wh,
+          lhs.ActiveEnergyTotalExportT0Max_Wh <
+            rhs.ActiveEnergyTotalExportT0Max_Wh
+            ? rhs.ActiveEnergyTotalExportT0Max_Wh
+            : lhs.ActiveEnergyTotalExportT0Max_Wh,
+          lhs.ReactiveEnergyTotalImportT0Min_VARh >
+            rhs.ReactiveEnergyTotalImportT0Min_VARh
+            ? rhs.ReactiveEnergyTotalImportT0Min_VARh
+            : lhs.ReactiveEnergyTotalImportT0Min_VARh,
+          lhs.ReactiveEnergyTotalImportT0Max_VARh <
+            rhs.ReactiveEnergyTotalImportT0Max_VARh
+            ? rhs.ReactiveEnergyTotalImportT0Max_VARh
+            : lhs.ReactiveEnergyTotalImportT0Max_VARh,
+          lhs.ReactiveEnergyTotalExportT0Min_VARh >
+            rhs.ReactiveEnergyTotalExportT0Min_VARh
+            ? rhs.ReactiveEnergyTotalExportT0Min_VARh
+            : lhs.ReactiveEnergyTotalExportT0Min_VARh,
+          lhs.ReactiveEnergyTotalExportT0Max_VARh <
+            rhs.ReactiveEnergyTotalExportT0Max_VARh
+            ? rhs.ReactiveEnergyTotalExportT0Max_VARh
+            : lhs.ReactiveEnergyTotalExportT0Max_VARh,
+          lhs.ActiveEnergyTotalImportT1Min_Wh >
+            rhs.ActiveEnergyTotalImportT1Min_Wh
+            ? rhs.ActiveEnergyTotalImportT1Min_Wh
+            : lhs.ActiveEnergyTotalImportT1Min_Wh,
+          lhs.ActiveEnergyTotalImportT1Max_Wh <
+            rhs.ActiveEnergyTotalImportT1Max_Wh
+            ? rhs.ActiveEnergyTotalImportT1Max_Wh
+            : lhs.ActiveEnergyTotalImportT1Max_Wh,
+          lhs.ActiveEnergyTotalImportT2Min_Wh >
+            rhs.ActiveEnergyTotalImportT2Min_Wh
+            ? rhs.ActiveEnergyTotalImportT2Min_Wh
+            : lhs.ActiveEnergyTotalImportT2Min_Wh,
+          lhs.ActiveEnergyTotalImportT2Max_Wh <
+            rhs.ActiveEnergyTotalImportT2Max_Wh
+            ? rhs.ActiveEnergyTotalImportT2Max_Wh
+            : lhs.ActiveEnergyTotalImportT2Max_Wh
+        )
+      )
+    );
+
+  private static readonly Lazy<IUpsertAggregate.UpsertHolder> _upsert =
+    new(() => new(_upsertExpression.Value.Value.Compile()));
 }
