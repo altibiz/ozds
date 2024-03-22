@@ -32,27 +32,31 @@ public class AbbB2xAggregateEntity : AggregateEntity<AbbB2xMeterEntity>
   [Required]
   public float CurrentL3AnyT0Avg_A { get; set; }
 
-  [Column("active_power_l1_any_t0_avg_w")]
+  [Column("active_power_l1_net_t0_avg_w")]
   [Required]
-  public float ActivePowerL1AnyT0Avg_W { get; set; }
+  public float ActivePowerL1NetT0Avg_W { get; set; }
 
-  [Column("active_power_l2_any_t0_avg_w")]
+  [Column("active_power_l2_net_t0_avg_w")]
   [Required]
-  public float ActivePowerL2AnyT0Avg_W { get; set; }
+  public float ActivePowerL2NetT0Avg_W { get; set; }
 
-  [Column("active_power_l3_any_t0_avg_w")]
+  [Column("active_power_l3_net_t0_avg_w")]
   [Required]
-  public float ActivePowerL3AnyT0Avg_W { get; set; }
+  public float ActivePowerL3NetT0Avg_W { get; set; }
 
-  [Column("reactive_power_l1_any_t0_avg_var")]
+  [Column("reactive_power_l1_net_t0_avg_var")]
   [Required]
-  public float ReactivePowerTotalAnyT0Avg_VAR { get; set; }
+  public float ReactivePowerL1NetT0Avg_VAR { get; set; }
 
-  [Column("reactive_power_l2_any_t0_avg_var")]
+  [Column("reactive_power_l2_net_t0_avg_var")]
   [Required]
-  public float ApparentPowerTotalAnyT0Avg_VA { get; set; }
+  public float ReactivePowerL2NetT0Avg_VAR { get; set; }
 
-  [Column("reactive_power_l3_any_t0_avg_var")]
+  [Column("reactive_power_l3_net_t0_avg_var")]
+  [Required]
+  public float ReactivePowerL3NetT0Avg_VAR { get; set; }
+
+  [Column("active_energy_total_import_t0_min_wh")]
   [Required]
   public float ActiveEnergyTotalImportT0Min_Wh { get; set; }
 

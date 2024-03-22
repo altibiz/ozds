@@ -32,15 +32,15 @@ public class SchneideriEM3xxxMeasurementEntity : MeasurementEntity<SchneideriEM3
   [Required]
   public float CurrentL3AnyT0_A { get; set; }
 
-  [Column("active_power_l1_any_t0_w")]
+  [Column("active_power_l1_net_t0_w")]
   [Required]
   public float ActivePowerL1NetT0_W { get; set; }
 
-  [Column("active_power_l2_any_t0_w")]
+  [Column("active_power_l2_net_t0_w")]
   [Required]
   public float ActivePowerL2NetT0_W { get; set; }
 
-  [Column("active_power_l3_any_t0_w")]
+  [Column("active_power_l3_net_t0_w")]
   [Required]
   public float ActivePowerL3NetT0_W { get; set; }
 

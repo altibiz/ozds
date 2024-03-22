@@ -32,15 +32,15 @@ public class SchneideriEM3xxxAggregateEntity : AggregateEntity<SchneideriEM3xxxM
   [Required]
   public float CurrentL3AnyT0Avg_A { get; set; }
 
-  [Column("active_power_l1_any_t0_avg_w")]
+  [Column("active_power_l1_net_t0_avg_w")]
   [Required]
   public float ActivePowerL1NetT0Avg_W { get; set; }
 
-  [Column("active_power_l2_any_t0_avg_w")]
+  [Column("active_power_l2_net_t0_avg_w")]
   [Required]
   public float ActivePowerL2NetT0Avg_W { get; set; }
 
-  [Column("active_power_l3_any_t0_avg_w")]
+  [Column("active_power_l3_net_t0_avg_w")]
   [Required]
   public float ActivePowerL3NetT0Avg_W { get; set; }
 
