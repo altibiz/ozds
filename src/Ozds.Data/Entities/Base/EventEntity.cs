@@ -1,18 +1,17 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 using Ozds.Data.Attributes;
 
 namespace Ozds.Data.Entities.Base;
 
 [TimescaleHypertable(nameof(Timestamp))]
-[PrimaryKey(nameof(Timestamp), nameof(Meter))]
-public abstract class MeasurementEntity<T> : ReadonlyEntity where T : MeterEntity
+[Table("events")]
+public abstract class EventEntity : ReadonlyEntity
 {
-  [NotMapped] private DateTimeOffset _timestamp;
+  [Key]
+  public string Id { get; set; } = default!;
 
-  [Required]
-  public virtual T Meter { get; set; } = default!;
+  [NotMapped] private DateTimeOffset _timestamp;
 
   [Required]
   public DateTimeOffset Timestamp
@@ -20,4 +19,9 @@ public abstract class MeasurementEntity<T> : ReadonlyEntity where T : MeterEntit
     get { return _timestamp.ToUniversalTime(); }
     set { _timestamp = value.ToUniversalTime(); }
   }
+
+  [Required]
+  public LevelEntity Level { get; set; } = default!;
+
+  public string Description { get; set; } = default!;
 }

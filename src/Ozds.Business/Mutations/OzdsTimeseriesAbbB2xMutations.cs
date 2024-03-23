@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Ozds.Business.Models;
 
 namespace Ozds.Business.Mutations;
@@ -8,5 +9,6 @@ public partial class OzdsTimeseriesMutations
     AbbB2xMeasurementModel model
   )
   {
+    var validationResults = model.Validate(new ValidationContext(this));
   }
 }

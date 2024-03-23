@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Ozds.Business.Math;
 
 namespace Ozds.Business.Models.Abstractions;
@@ -22,4 +23,6 @@ public abstract record MeasurementModel(
   public abstract TariffMeasure ReactiveEnergyCumulative_VARh { get; }
 
   public abstract TariffMeasure ApparentEnergyCumulative_VAh { get; }
+
+  public abstract IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
 }

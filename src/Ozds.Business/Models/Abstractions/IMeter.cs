@@ -1,6 +1,9 @@
+using System.ComponentModel.DataAnnotations;
+using Ozds.Business.Capabilities.Abstractions;
+
 namespace Ozds.Business.Models.Abstractions;
 
-public interface IMeter
+public interface IMeter : IValidatableObject
 {
   public string Id { get; }
 
@@ -8,7 +11,5 @@ public interface IMeter
 
   public string? LocationMeasurementLocationId { get; }
 
-  public IMeterCapabilities Capabilities { get; }
-
-  public IMeasurementValidator Validator { get; }
+  public ICapabilities Capabilities { get; }
 }

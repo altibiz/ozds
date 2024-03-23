@@ -1,9 +1,13 @@
+using System.ComponentModel.DataAnnotations;
+using Ozds.Business.Capabilities;
+using Ozds.Business.Capabilities.Abstractions;
 using Ozds.Business.Models.Abstractions;
 
 namespace Ozds.Business.Models;
 
 public record AbbB2xMeterModel(
   string Id,
+  bool IsDeleted,
   string? NetworkUserMeasurementLocationId,
   string? LocationMeasurementLocationId,
   float MinVoltage_V,
@@ -18,6 +22,15 @@ public record AbbB2xMeterModel(
   List<PhaseModel> Phases
 ) : MeterModel(
   Id,
+  IsDeleted,
   NetworkUserMeasurementLocationId,
   LocationMeasurementLocationId
-);
+)
+{
+  public override ICapabilities Capabilities => new AbbB2xCapabilities();
+
+  public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+  {
+    throw new NotImplementedException();
+  }
+}

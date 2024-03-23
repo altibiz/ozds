@@ -2,7 +2,7 @@ using Ozds.Data.Entities.Base;
 
 namespace Ozds.Data.Entities;
 
-public class NetworkUserEntity : IdEntity
+public class NetworkUserEntity : SoftDeletableEntity
 {
   public virtual List<RepresentativeEntity> Representatives { get; set; } = default!;
 

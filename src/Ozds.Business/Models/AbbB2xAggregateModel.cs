@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Ozds.Business.Math;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Data.Entities;
@@ -156,6 +157,11 @@ public record AbbB2xAggregateModel(
   public override SpanningMeasure ApparentEnergySpan_VAh
   {
     get { return SpanningMeasure.Null; }
+  }
+
+  public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+  {
+    throw new NotImplementedException();
   }
 
   private static readonly Lazy<IUpsertAggregate.UpsertExpressionHolder> _upsertExpression =

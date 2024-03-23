@@ -1,5 +1,8 @@
+using Ozds.Data.Attributes;
+
 namespace Ozds.Data.Entities.Base;
 
+[PostgresqlEnum]
 public enum PhaseEntity
 {
   L1,

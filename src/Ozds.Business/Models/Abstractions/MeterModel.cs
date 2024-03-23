@@ -1,12 +1,13 @@
+using Ozds.Business.Capabilities.Abstractions;
+
 namespace Ozds.Business.Models.Abstractions;
 
 public abstract record MeterModel(
   string Id,
+  bool IsDeleted,
   string? NetworkUserMeasurementLocationId,
   string? LocationMeasurementLocationId
-) : IMeter
+) : SoftDeletableModel(Id, IsDeleted), IMeter
 {
-  public abstract IMeterCapabilities Capabilities { get; }
-
-  public abstract IMeasurementValidator Validator { get; }
+  public abstract ICapabilities Capabilities { get; }
 }

@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Ozds.Business.Math;
 
 namespace Ozds.Business.Models.Abstractions;
@@ -59,4 +60,6 @@ public abstract record AggregateModel(
   {
     get { return ApparentEnergySpan_VAh.SpanMax; }
   }
+
+  public abstract IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
 }

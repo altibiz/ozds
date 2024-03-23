@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Ozds.Business.Math;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Data.Entities;
@@ -176,6 +177,11 @@ public record SchneideriEM3xxxMeasurementModel(
   public override TariffMeasure ApparentEnergyCumulative_VAh
   {
     get { return TariffMeasure.Null; }
+  }
+
+  public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+  {
+    throw new NotImplementedException();
   }
 }
 

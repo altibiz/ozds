@@ -3,7 +3,7 @@ using Ozds.Data.Entities.Base;
 
 namespace Ozds.Data.Entities;
 
-public class RepresentativeEntity : IdEntity
+public class RepresentativeEntity : SoftDeletableEntity
 {
   [Required]
   public string UserId { get; set; } = default!;
@@ -14,6 +14,8 @@ public class RepresentativeEntity : IdEntity
   public List<NetworkUserEntity> NetworkUsers { get; set; } = new();
 
   public List<LocationEntity> Locations { get; set; } = new();
+
+  public List<RepresentativeEventEntity> Events { get; set; } = new();
 
   [Required]
   public string Name { get; set; } = default!;
