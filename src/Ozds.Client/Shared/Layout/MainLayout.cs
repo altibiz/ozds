@@ -2,7 +2,7 @@ using System.Reflection;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
-using Ozds.Business.Models;
+using Ozds.Business.Models.Composite;
 using Ozds.Business.Queries;
 using Ozds.Client.Attributes;
 using Ozds.Client.State;

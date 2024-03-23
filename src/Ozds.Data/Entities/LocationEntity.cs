@@ -2,7 +2,7 @@ using Ozds.Data.Entities.Base;
 
 namespace Ozds.Data.Entities;
 
-public class LocationEntity : SoftDeletableEntity
+public class LocationEntity : AuditableEntity
 {
   public virtual List<RepresentativeEntity> Representatives { get; set; } = default!;
 

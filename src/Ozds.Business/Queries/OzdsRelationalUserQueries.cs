@@ -5,6 +5,7 @@ using OrchardCore.Users.Indexes;
 using OrchardCore.Users.Models;
 using Ozds.Business.Extensions;
 using Ozds.Business.Models;
+using Ozds.Business.Models.Composite;
 using YesSql;
 
 namespace Ozds.Business.Queries;
@@ -30,7 +31,7 @@ public partial class OzdsRelationalQueries
     string userId)
   {
     return await _context.Representatives.FirstOrDefaultAsync(entity =>
-      entity.UserId == userId) is { } entity
+      entity.Id == userId) is { } entity
       ? entity.ToModel()
       : null;
   }
@@ -54,14 +55,14 @@ public partial class OzdsRelationalQueries
       .ToList();
 
     var representatives = await _context.Representatives
-      .Where(entity => userIds.Contains(entity.UserId))
+      .Where(entity => userIds.Contains(entity.Id))
       .ToListAsync();
 
     return users.Items
       .Select(user => new MaybeRepresentingUserModel(
         user,
         representatives.Find(representative =>
-          representative.UserId == user.Id) is { } representative
+          representative.Id == user.Id) is { } representative
           ? representative.ToModel()
           : null
       ))
@@ -81,19 +82,19 @@ public partial class OzdsRelationalQueries
         pageNumber,
         pageCount
       );
-    var userIds = users.Items
+    var ids = users.Items
       .Select(user => user.Id)
       .ToList();
 
     var representatives = await _context.Representatives
-      .Where(entity => userIds.Contains(entity.UserId))
+      .Where(entity => ids.Contains(entity.Id))
       .ToListAsync();
 
     return users.Items
       .Select(user => new MaybeRepresentingUserModel(
         user,
         representatives.Find(representative =>
-          representative.UserId == user.Id) is { } representative
+          representative.Id == user.Id) is { } representative
           ? representative.ToModel()
           : null
       ))
@@ -117,7 +118,7 @@ public partial class OzdsRelationalQueries
 
     var representative =
       await _context.Representatives.FirstOrDefaultAsync(entity =>
-        entity.UserId == user.GetUserId());
+        entity.Id == user.GetId());
     if (representative is null)
     {
       return null;
@@ -130,9 +131,9 @@ public partial class OzdsRelationalQueries
   }
 
   public async Task<RepresentingUserModel?> RepresentingUserByUserId(
-    string userId)
+    string id)
   {
-    var user = await _userManager.FindByIdAsync(userId);
+    var user = await _userManager.FindByIdAsync(id);
     if (user is null)
     {
       return null;
@@ -140,7 +141,7 @@ public partial class OzdsRelationalQueries
 
     var representative =
       await _context.Representatives.FirstOrDefaultAsync(entity =>
-        entity.UserId == userId);
+        entity.Id == id);
     if (representative is null)
     {
       return null;
@@ -163,7 +164,7 @@ public partial class OzdsRelationalQueries
       return null;
     }
 
-    var user = await _userManager.FindByIdAsync(representative.UserId);
+    var user = await _userManager.FindByIdAsync(representative.Id);
     if (user is null)
     {
       return null;
@@ -186,7 +187,7 @@ public partial class OzdsRelationalQueries
 
     var representative =
       await _context.Representatives.FirstOrDefaultAsync(entity =>
-        entity.UserId == user.GetUserId());
+        entity.Id == user.GetId());
     if (representative is null)
     {
       return new MaybeRepresentingUserModel(user.ToModel(), null);
@@ -199,9 +200,9 @@ public partial class OzdsRelationalQueries
   }
 
   public async Task<MaybeRepresentingUserModel?>
-    MaybeRepresentingUserByUserId(string userId)
+    MaybeRepresentingUserByUserId(string id)
   {
-    var user = await _userManager.FindByIdAsync(userId);
+    var user = await _userManager.FindByIdAsync(id);
     if (user is null)
     {
       return null;
@@ -209,7 +210,7 @@ public partial class OzdsRelationalQueries
 
     var representative =
       await _context.Representatives.FirstOrDefaultAsync(entity =>
-        entity.UserId == userId);
+        entity.Id == id);
     if (representative is null)
     {
       return new MaybeRepresentingUserModel(user.ToModel(), null);

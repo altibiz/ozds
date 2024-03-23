@@ -7,7 +7,6 @@ namespace Ozds.Business.Models;
 public record RepresentativeModel(
   string Id,
   bool IsDeleted,
-  string UserId,
   string Name,
   string SocialSecurityNumber,
   string Address,
@@ -15,7 +14,7 @@ public record RepresentativeModel(
   string PostalCode,
   string Email,
   string PhoneNumber
-) : SoftDeletableModel(Id, IsDeleted)
+) : AuditableModel(Id, IsDeleted)
 {
   public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
   {
@@ -31,7 +30,6 @@ public static class RepresentativeModelExtensions
     {
       Id = model.Id,
       IsDeleted = model.IsDeleted,
-      UserId = model.UserId,
       Name = model.Name,
       SocialSecurityNumber = model.SocialSecurityNumber,
       Address = model.Address,
@@ -47,7 +45,6 @@ public static class RepresentativeModelExtensions
     return new RepresentativeModel(
       entity.Id,
       entity.IsDeleted,
-      entity.UserId,
       entity.Name,
       entity.SocialSecurityNumber,
       entity.Address,

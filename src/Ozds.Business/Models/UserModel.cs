@@ -26,7 +26,7 @@ public static class UserModelExtensions
       );
   }
 
-  public static string GetUserId(this IUser abstractUser)
+  public static string GetId(this IUser abstractUser)
   {
     return abstractUser is User user
       ? user.UserId

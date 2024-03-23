@@ -5,7 +5,7 @@ using Ozds.Data.Entities.Base;
 
 namespace Ozds.Data.Entities;
 
-public class LocationInvoiceEntity : SoftDeletableEntity
+public class LocationInvoiceEntity : AuditableEntity
 {
   public virtual LocationEntity Location { get; set; } = default!;
 }

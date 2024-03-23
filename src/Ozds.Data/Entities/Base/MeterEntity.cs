@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Ozds.Data.Entities.Base;
 
 [Table("meters")]
-public abstract class MeterEntity : SoftDeletableEntity
+public abstract class MeterEntity : AuditableEntity
 {
   public virtual NetworkUserMeasurementLocationEntity? NetworkUserMeasurementLocation { get; set; } = default!;
 

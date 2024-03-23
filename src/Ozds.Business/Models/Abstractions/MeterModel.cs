@@ -7,7 +7,7 @@ public abstract record MeterModel(
   bool IsDeleted,
   string? NetworkUserMeasurementLocationId,
   string? LocationMeasurementLocationId
-) : SoftDeletableModel(Id, IsDeleted), IMeter
+) : AuditableModel(Id, IsDeleted), IMeter
 {
   public abstract ICapabilities Capabilities { get; }
 }

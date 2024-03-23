@@ -3,11 +3,8 @@ using Ozds.Data.Entities.Base;
 
 namespace Ozds.Data.Entities;
 
-public class RepresentativeEntity : SoftDeletableEntity
+public class RepresentativeEntity : AuditableEntity
 {
-  [Required]
-  public string UserId { get; set; } = default!;
-
   [Required]
   public bool IsOperatorRepresentative { get; set; } = default!;
 

@@ -5,7 +5,7 @@ using Ozds.Data.Entities.Base;
 
 namespace Ozds.Data.Entities;
 
-public class NetworkUserInvoiceEntity : SoftDeletableEntity
+public class NetworkUserInvoiceEntity : AuditableEntity
 {
   public virtual NetworkUserEntity NetworkUser { get; set; } = default!;
 }
