@@ -1,11 +1,12 @@
+using System.ComponentModel.DataAnnotations.Schema;
 using Ozds.Data.Entities.Base;
-
-// TODO: figure out how to slap on all the necessary entities without
-// ef core automatically making relationships
 
 namespace Ozds.Data.Entities;
 
-public class LocationInvoiceEntity : AuditableEntity
+public class LocationInvoiceEntity : InvoiceEntity
 {
+  [ForeignKey(nameof(Location))]
+  public string LocationId { get; set; } = default!;
+
   public virtual LocationEntity Location { get; set; } = default!;
 }

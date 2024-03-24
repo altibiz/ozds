@@ -3,8 +3,7 @@ using Ozds.Data.Entities.Base;
 
 namespace Ozds.Data.Entities;
 
-[Table("measurement_validators")]
-public abstract class MeasurementValidatorEntity : AuditableEntity
+public class MessengerEventEntity : EventEntity
 {
   [ForeignKey(nameof(Meter))]
   public string MeterId { get; set; } = default!;

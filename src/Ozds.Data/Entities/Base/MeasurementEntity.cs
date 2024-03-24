@@ -11,6 +11,9 @@ public abstract class MeasurementEntity<T> : ReadonlyEntity where T : MeterEntit
 {
   [NotMapped] private DateTimeOffset _timestamp;
 
+  [ForeignKey(nameof(Meter))]
+  public string MeterId { get; set; } = default!;
+
   [Required]
   public virtual T Meter { get; set; } = default!;
 

@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Ozds.Data.Attributes;
+using Ozds.Data.Entities.Enums;
 
 namespace Ozds.Data.Entities.Base;
 

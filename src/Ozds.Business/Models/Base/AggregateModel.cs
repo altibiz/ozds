@@ -1,7 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using Ozds.Business.Math;
+using Ozds.Business.Models.Abstractions;
 
-namespace Ozds.Business.Models.Abstractions;
+namespace Ozds.Business.Models.Base;
 
 public abstract record AggregateModel(
   string MeterId,

@@ -8,11 +8,13 @@ public class RepresentativeEntity : AuditableEntity
   [Required]
   public bool IsOperatorRepresentative { get; set; } = default!;
 
-  public List<NetworkUserEntity> NetworkUsers { get; set; } = new();
+  public ICollection<NetworkUserEntity> NetworkUsers { get; set; } = default!;
 
-  public List<LocationEntity> Locations { get; set; } = new();
+  public ICollection<LocationEntity> Locations { get; set; } = default!;
 
-  public List<RepresentativeEventEntity> Events { get; set; } = new();
+  public ICollection<RepresentativeEventEntity> Events { get; set; } = default!;
+
+  public ICollection<RepresentativeAuditEventEntity> AuditEvents { get; set; } = default!;
 
   [Required]
   public string Name { get; set; } = default!;
