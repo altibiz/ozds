@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Ozds.Business.Math;
 using Ozds.Business.Models.Base;
+using Ozds.Business.Models.Enums;
 using Ozds.Data.Entities;
 
 namespace Ozds.Business.Models;
@@ -33,6 +34,11 @@ public record SchneideriEM3xxxMeasurementModel(
   Timestamp: Timestamp
 )
 {
+  public override object ToDbEntity()
+  {
+    return this.ToEntity();
+  }
+
   public override TariffMeasure Current_A
   {
     get
@@ -110,7 +116,7 @@ public record SchneideriEM3xxxMeasurementModel(
   }
 
 
-  public override TariffMeasure ActiveEnergyCumulative_Wh
+  public override TariffMeasure ActiveEnergy_Wh
   {
     get
     {
@@ -164,7 +170,7 @@ public record SchneideriEM3xxxMeasurementModel(
     }
   }
 
-  public override TariffMeasure ReactiveEnergyCumulative_VARh
+  public override TariffMeasure ReactiveEnergy_VARh
   {
     get
     {
@@ -177,7 +183,7 @@ public record SchneideriEM3xxxMeasurementModel(
     }
   }
 
-  public override TariffMeasure ApparentEnergyCumulative_VAh
+  public override TariffMeasure ApparentEnergy_VAh
   {
     get { return TariffMeasure.Null; }
   }
@@ -192,11 +198,11 @@ public static class SchneideriEM3xxxMeasurementModelExtensions
 {
   public static SchneideriEM3xxxAggregateModel ToAggregate(
     this SchneideriEM3xxxMeasurementModel measurement,
-    TimeSpan timeSpan) =>
+    IntervalModel interval) =>
     new(
       measurement.MeterId,
       measurement.Timestamp,
-      timeSpan,
+      interval,
       1,
       measurement.VoltageL1AnyT0_V,
       measurement.VoltageL2AnyT0_V,
@@ -254,7 +260,7 @@ public static class SchneideriEM3xxxMeasurementModelExtensions
     this SchneideriEM3xxxMeasurementModel model) =>
     new()
     {
-      Meter = new() { Id = model.MeterId },
+      MeterId = model.MeterId,
       Timestamp = model.Timestamp,
       VoltageL1AnyT0_V = model.VoltageL1AnyT0_V,
       VoltageL2AnyT0_V = model.VoltageL2AnyT0_V,

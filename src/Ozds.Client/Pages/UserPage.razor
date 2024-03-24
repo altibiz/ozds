@@ -2,7 +2,7 @@
 @attribute [Navigation(RouteValue = "id", Parents = new[] { typeof(RepresentativesPage) })]
 @attribute [Authorize]
 @attribute [StreamRendering]
-@inherits OwningComponentBase<Ozds.Business.Queries.OzdsRelationalQueries>
+@inherits OwningComponentBase<Ozds.Business.Queries.OzdsAuditableQueries>
 
 <Loading
   Load="@(async () => (await Service.MaybeRepresentingUserByUserId(Id))!)">

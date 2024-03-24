@@ -15,7 +15,13 @@ public record RepresentativeEventModel(
   Timestamp: Timestamp,
   Level: Level,
   Description: Description
-);
+)
+{
+  public override object ToDbEntity()
+  {
+    return this.ToEntity();
+  }
+};
 
 public static class RepresentativeEventModelExtensions
 {

@@ -20,14 +20,16 @@ public abstract record MeasurementModel<T>(
 
   public abstract TariffMeasure ApparentPower_VA { get; }
 
-  public abstract TariffMeasure ActiveEnergyCumulative_Wh { get; }
+  public abstract TariffMeasure ActiveEnergy_Wh { get; }
 
-  public abstract TariffMeasure ReactiveEnergyCumulative_VARh { get; }
+  public abstract TariffMeasure ReactiveEnergy_VARh { get; }
 
-  public abstract TariffMeasure ApparentEnergyCumulative_VAh { get; }
+  public abstract TariffMeasure ApparentEnergy_VAh { get; }
 
   public virtual IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
   {
     throw new NotImplementedException();
   }
+
+  public abstract object ToDbEntity();
 }

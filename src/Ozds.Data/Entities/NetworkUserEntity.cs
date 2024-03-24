@@ -13,7 +13,6 @@ public class NetworkUserEntity : AuditableEntity
 
   public virtual LocationEntity Location { get; set; } = default!;
 
-  [CascadeSoftDelete]
   public virtual ICollection<NetworkUserMeasurementLocationEntity> MeasurementLocations { get; set; } = default!;
 
   public virtual ICollection<NetworkUserInvoiceEntity> Invoices { get; set; } = default!;

@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using Ozds.Business.Math;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Base;
+using Ozds.Business.Models.Enums;
 using Ozds.Data.Entities;
 
 namespace Ozds.Business.Models;
@@ -11,7 +12,7 @@ using IUpsertAggregate = IUpsertAggregate<SchneideriEM3xxxAggregateModel>;
 public record SchneideriEM3xxxAggregateModel(
   string MeterId,
   DateTimeOffset Timestamp,
-  TimeSpan Interval,
+  IntervalModel Interval,
   long Count,
   float VoltageL1AnyT0Avg_V,
   float VoltageL2AnyT0Avg_V,
@@ -43,6 +44,11 @@ public record SchneideriEM3xxxAggregateModel(
   Count: Count
 ), IUpsertAggregate
 {
+  public override object ToDbEntity()
+  {
+    return this.ToEntity();
+  }
+
   static IUpsertAggregate.UpsertExpressionHolder IUpsertAggregate.UpsertExpression => _upsertExpression.Value;
 
   static IUpsertAggregate.UpsertHolder IUpsertAggregate.Upsert => _upsert.Value;
@@ -290,9 +296,9 @@ public static class SchneideriEM3xxxAggregateModelExtensions
     this SchneideriEM3xxxAggregateModel model) =>
     new()
     {
-      Meter = new() { Id = model.MeterId },
+      MeterId = model.MeterId,
       Timestamp = model.Timestamp,
-      Interval = model.Interval,
+      Interval = model.Interval.ToEntity(),
       Count = model.Count,
       VoltageL1AnyT0Avg_V = model.VoltageL1AnyT0Avg_V,
       VoltageL2AnyT0Avg_V = model.VoltageL2AnyT0Avg_V,
@@ -322,9 +328,9 @@ public static class SchneideriEM3xxxAggregateModelExtensions
   public static SchneideriEM3xxxAggregateModel ToModel(
     this SchneideriEM3xxxAggregateEntity entity) =>
     new(
-      entity.Meter.Id,
+      entity.MeterId,
       entity.Timestamp,
-      entity.Interval,
+      entity.Interval.ToModel(),
       entity.Count,
       entity.VoltageL1AnyT0Avg_V,
       entity.VoltageL2AnyT0Avg_V,

@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using OrchardCore.Users;
 using Ozds.Data;
+using ISession = YesSql.ISession;
 
-namespace Ozds.Business.Mutations;
+namespace Ozds.Business.Queries;
 
-public partial class OzdsTimeseriesMutations
+public partial class OzdsAuditableQueries
 {
   private readonly OzdsDbContext _context;
 
@@ -13,13 +13,11 @@ public partial class OzdsTimeseriesMutations
 
   private readonly UserManager<IUser> _userManager;
 
-  public OzdsTimeseriesMutations(OzdsDbContext context,
+  public OzdsAuditableQueries(OzdsDbContext context,
     UserManager<IUser> userManager, ISession session)
   {
     _context = context;
     _userManager = userManager;
     _session = session;
-
-    _context.Database.Migrate();
   }
 }

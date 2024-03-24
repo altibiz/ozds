@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Ozds.Business.Math;
 using Ozds.Business.Models.Base;
+using Ozds.Business.Models.Enums;
 using Ozds.Data.Entities;
 
 namespace Ozds.Business.Models;
@@ -43,6 +44,11 @@ public record AbbB2xMeasurementModel(
   Timestamp: Timestamp
 )
 {
+  public override object ToDbEntity()
+  {
+    return this.ToEntity();
+  }
+
   public override TariffMeasure Current_A
   {
     get
@@ -104,7 +110,7 @@ public record AbbB2xMeasurementModel(
     get { return TariffMeasure.Null; }
   }
 
-  public override TariffMeasure ActiveEnergyCumulative_Wh
+  public override TariffMeasure ActiveEnergy_Wh
   {
     get
     {
@@ -167,7 +173,7 @@ public record AbbB2xMeasurementModel(
     }
   }
 
-  public override TariffMeasure ReactiveEnergyCumulative_VARh
+  public override TariffMeasure ReactiveEnergy_VARh
   {
     get
     {
@@ -206,7 +212,7 @@ public record AbbB2xMeasurementModel(
     }
   }
 
-  public override TariffMeasure ApparentEnergyCumulative_VAh
+  public override TariffMeasure ApparentEnergy_VAh
   {
     get { return TariffMeasure.Null; }
   }
@@ -221,11 +227,11 @@ public static class AbbB2xMeasurementModelExtensions
 {
   public static AbbB2xAggregateModel ToAggregate(
     this AbbB2xMeasurementModel measurement,
-    TimeSpan timeSpan) =>
+    IntervalModel interval) =>
     new(
       measurement.MeterId,
       measurement.Timestamp,
-      timeSpan,
+      interval,
       1,
       measurement.VoltageL1AnyT0_V,
       measurement.VoltageL2AnyT0_V,
@@ -255,7 +261,7 @@ public static class AbbB2xMeasurementModelExtensions
 
   public static AbbB2xMeasurementModel ToModel(this AbbB2xMeasurementEntity entity) =>
     new(
-      entity.Meter.Id,
+      entity.MeterId,
       entity.Timestamp,
       entity.VoltageL1AnyT0_V,
       entity.VoltageL2AnyT0_V,
@@ -292,7 +298,7 @@ public static class AbbB2xMeasurementModelExtensions
   public static AbbB2xMeasurementEntity ToEntity(this AbbB2xMeasurementModel model) =>
     new()
     {
-      Meter = new() { Id = model.MeterId },
+      MeterId = model.MeterId,
       Timestamp = model.Timestamp,
       VoltageL1AnyT0_V = model.VoltageL1AnyT0_V,
       VoltageL2AnyT0_V = model.VoltageL2AnyT0_V,

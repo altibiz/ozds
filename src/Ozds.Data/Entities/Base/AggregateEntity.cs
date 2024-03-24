@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
+using Ozds.Data.Entities.Enums;
 
 namespace Ozds.Data.Entities.Base;
 
@@ -11,5 +12,5 @@ public abstract class AggregateEntity<T> : MeasurementEntity<T>
   public long Count { get; set; }
 
   [Required]
-  public TimeSpan Interval { get; set; }
+  public IntervalEntity Interval { get; set; }
 }

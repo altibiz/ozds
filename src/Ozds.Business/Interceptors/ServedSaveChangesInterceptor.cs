@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
-namespace Ozds.Data.Interceptors;
+namespace Ozds.Business.Interceptors;
 
 public class ServedSaveChangesInterceptor : SaveChangesInterceptor
 {

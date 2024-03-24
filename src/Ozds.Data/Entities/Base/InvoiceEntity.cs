@@ -7,7 +7,7 @@ using Ozds.Data.Attributes;
 
 namespace Ozds.Data.Entities.Base;
 
-[TimescaleHypertable(nameof(Timestamp))]
+[TimescaleHypertable(nameof(IssuedOn))]
 [Table("invoices")]
 public class InvoiceEntity : ReadonlyEntity
 {
@@ -17,11 +17,16 @@ public class InvoiceEntity : ReadonlyEntity
   [NotMapped] private DateTimeOffset _timestamp;
 
   [Required]
-  public DateTimeOffset Timestamp
+  public DateTimeOffset IssuedOn
   {
     get { return _timestamp.ToUniversalTime(); }
     set { _timestamp = value.ToUniversalTime(); }
   }
+
+  [ForeignKey(nameof(IssuedBy))]
+  public string? IssuedById { get; set; }
+
+  public virtual RepresentativeEntity? IssuedBy { get; set; }
 
   public DateTimeOffset FromDate { get; set; } = default!;
 

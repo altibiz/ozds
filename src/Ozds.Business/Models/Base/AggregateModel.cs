@@ -1,15 +1,16 @@
 using System.ComponentModel.DataAnnotations;
 using Ozds.Business.Math;
 using Ozds.Business.Models.Abstractions;
+using Ozds.Business.Models.Enums;
 
 namespace Ozds.Business.Models.Base;
 
 public abstract record AggregateModel(
   string MeterId,
   DateTimeOffset Timestamp,
-  TimeSpan Interval,
+  IntervalModel Interval,
   long Count
-) : IAggregate
+) : IAggregate, IModel
 {
   public abstract TariffMeasure Current_A { get; }
 
@@ -25,7 +26,7 @@ public abstract record AggregateModel(
   {
     get
     {
-      return ActiveEnergySpan_Wh.SpanDifferential((float)Interval.TotalHours);
+      return ActiveEnergySpan_Wh.SpanDifferential((float)Interval.ToTimeSpan(Timestamp).TotalHours);
     }
   }
 
@@ -33,8 +34,7 @@ public abstract record AggregateModel(
   {
     get
     {
-      return ReactiveEnergySpan_VARh.SpanDifferential(
-        (float)Interval.TotalHours);
+      return ReactiveEnergySpan_VARh.SpanDifferential((float)Interval.ToTimeSpan(Timestamp).TotalHours);
     }
   }
 
@@ -42,25 +42,26 @@ public abstract record AggregateModel(
   {
     get
     {
-      return ApparentEnergySpan_VAh.SpanDifferential(
-        (float)Interval.TotalHours);
+      return ApparentEnergySpan_VAh.SpanDifferential((float)Interval.ToTimeSpan(Timestamp).TotalHours);
     }
   }
 
-  public virtual TariffMeasure ActiveEnergyCumulative_Wh
+  public virtual TariffMeasure ActiveEnergy_Wh
   {
     get { return ActiveEnergySpan_Wh.SpanMax; }
   }
 
-  public virtual TariffMeasure ReactiveEnergyCumulative_VARh
+  public virtual TariffMeasure ReactiveEnergy_VARh
   {
     get { return ReactiveEnergySpan_VARh.SpanMax; }
   }
 
-  public virtual TariffMeasure ApparentEnergyCumulative_VAh
+  public virtual TariffMeasure ApparentEnergy_VAh
   {
     get { return ApparentEnergySpan_VAh.SpanMax; }
   }
 
   public abstract IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+
+  public abstract object ToDbEntity();
 }

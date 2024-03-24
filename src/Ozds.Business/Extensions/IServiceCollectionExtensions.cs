@@ -1,3 +1,4 @@
+using System.Reflection;
 using Ozds.Business.Mutations;
 using Ozds.Business.Queries;
 using Ozds.Data;
@@ -17,10 +18,21 @@ public static class IServiceCollectionExtensions
           .GetConnectionString("Ozds") ?? throw new InvalidOperationException(
           "Ozds connection string not found")
       )
-      .AddServedSaveChangesInterceptorsFromAssembly(typeof(OzdsDbContext).Assembly, services)
+      .AddServedSaveChangesInterceptorsFromAssembly(
+        Assembly.GetExecutingAssembly(),
+        services
+      )
     );
-    services.AddScoped<OzdsRelationalQueries>();
-    services.AddScoped<OzdsRelationalMutations>();
+
+    services.AddScoped<OzdsAuditableMutations>();
+    services.AddScoped<OzdsEventMutations>();
+    services.AddScoped<OzdsInvoiceMutations>();
+    services.AddScoped<OzdsMeasurementMutations>();
+
+    services.AddScoped<OzdsAuditableQueries>();
+    services.AddScoped<OzdsEventQueries>();
+    services.AddScoped<OzdsMeasurementQueries>();
+    services.AddScoped<OzdsInvoiceQueries>();
 
     return services;
   }

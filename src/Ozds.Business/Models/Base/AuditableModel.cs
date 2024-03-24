@@ -1,5 +1,4 @@
 using Ozds.Business.Models.Abstractions;
-using Ozds.Data.Entities.Base;
 
 namespace Ozds.Business.Models.Base;
 

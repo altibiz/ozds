@@ -8,7 +8,7 @@ using Ozds.Data.Entities.Enums;
 
 // TODO: audit db errors and such
 
-namespace Ozds.Data.Interceptors;
+namespace Ozds.Business.Interceptors;
 
 public class AuditingInterceptor : ServedSaveChangesInterceptor
 {

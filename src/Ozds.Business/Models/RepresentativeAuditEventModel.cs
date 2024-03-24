@@ -17,7 +17,13 @@ public record RepresentativeAuditEventModel(
   Level: Level,
   Audit: Audit,
   Description: Description
-);
+)
+{
+  public override object ToDbEntity()
+  {
+    return this.ToEntity();
+  }
+};
 
 public static class RepresentativeAuditEventModelExtensions
 {

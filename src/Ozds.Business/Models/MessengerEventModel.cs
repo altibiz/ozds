@@ -15,7 +15,14 @@ public record MessengerEventModel(
   Timestamp: Timestamp,
   Level: Level,
   Description: Description
-);
+)
+{
+  public override object ToDbEntity()
+  {
+    return this.ToEntity();
+  }
+
+}
 
 public static class MessengerEventModelExtensions
 {

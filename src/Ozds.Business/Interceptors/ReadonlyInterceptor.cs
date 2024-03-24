@@ -4,7 +4,7 @@ using Ozds.Data.Entities.Base;
 
 // TODO: check if this is the right way to do it
 
-namespace Ozds.Data.Interceptors;
+namespace Ozds.Business.Interceptors;
 
 public class ReadonlyInterceptor : ServedSaveChangesInterceptor
 {

@@ -3,7 +3,7 @@ using Ozds.Business.Math;
 
 namespace Ozds.Business.Models.Abstractions;
 
-public interface IMeasurement : IValidatableObject
+public interface IMeasurement : IValidatableObject, IModel
 {
   public string MeterId { get; }
 
@@ -19,9 +19,9 @@ public interface IMeasurement : IValidatableObject
 
   public TariffMeasure ApparentPower_VA { get; }
 
-  public TariffMeasure ActiveEnergyCumulative_Wh { get; }
+  public TariffMeasure ActiveEnergy_Wh { get; }
 
-  public TariffMeasure ReactiveEnergyCumulative_VARh { get; }
+  public TariffMeasure ReactiveEnergy_VARh { get; }
 
-  public TariffMeasure ApparentEnergyCumulative_VAh { get; }
+  public TariffMeasure ApparentEnergy_VAh { get; }
 }

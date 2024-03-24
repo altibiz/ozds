@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using Ozds.Business.Math;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Base;
+using Ozds.Business.Models.Enums;
 using Ozds.Data.Entities;
 
 namespace Ozds.Business.Models;
@@ -11,7 +12,7 @@ using IUpsertAggregate = IUpsertAggregate<AbbB2xAggregateModel>;
 public record AbbB2xAggregateModel(
   string MeterId,
   DateTimeOffset Timestamp,
-  TimeSpan Interval,
+  IntervalModel Interval,
   long Count,
   float VoltageL1AnyT0Avg_V,
   float VoltageL2AnyT0Avg_V,
@@ -44,6 +45,11 @@ public record AbbB2xAggregateModel(
   Count: Count
 ), IUpsertAggregate
 {
+  public override object ToDbEntity()
+  {
+    return this.ToEntity();
+  }
+
   static IUpsertAggregate.UpsertExpressionHolder IUpsertAggregate.UpsertExpression => _upsertExpression.Value;
 
   static IUpsertAggregate.UpsertHolder IUpsertAggregate.Upsert => _upsert.Value;
@@ -275,9 +281,9 @@ public static class AbbB2xAggregateModelExtensions
   public static AbbB2xAggregateEntity ToEntity(this AbbB2xAggregateModel model) =>
     new()
     {
-      Meter = new() { Id = model.MeterId },
+      MeterId = model.MeterId,
       Timestamp = model.Timestamp,
-      Interval = model.Interval,
+      Interval = model.Interval.ToEntity(),
       Count = model.Count,
       VoltageL1AnyT0Avg_V = model.VoltageL1AnyT0Avg_V,
       VoltageL2AnyT0Avg_V = model.VoltageL2AnyT0Avg_V,
@@ -307,9 +313,9 @@ public static class AbbB2xAggregateModelExtensions
 
   public static AbbB2xAggregateModel ToModel(this AbbB2xAggregateEntity entity) =>
     new(
-      entity.Meter.Id,
+      entity.MeterId,
       entity.Timestamp,
-      entity.Interval,
+      entity.Interval.ToModel(),
       entity.Count,
       entity.VoltageL1AnyT0Avg_V,
       entity.VoltageL2AnyT0Avg_V,

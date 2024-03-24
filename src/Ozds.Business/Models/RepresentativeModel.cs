@@ -33,6 +33,11 @@ public record RepresentativeModel(
   DeletedById: DeletedById
 )
 {
+  public override object ToDbEntity()
+  {
+    return this.ToEntity();
+  }
+
   public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
   {
     throw new NotImplementedException();

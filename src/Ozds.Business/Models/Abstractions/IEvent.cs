@@ -2,7 +2,7 @@ using Ozds.Business.Models.Enums;
 
 namespace Ozds.Business.Models.Abstractions;
 
-public interface IEvent
+public interface IEvent : IModel
 {
   public string Id { get; }
 

@@ -6,12 +6,74 @@ using OrchardCore.Users.Models;
 using Ozds.Business.Extensions;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Composite;
+using Ozds.Data.Entities;
 using YesSql;
 
 namespace Ozds.Business.Queries;
 
-public partial class OzdsRelationalQueries
+public partial class OzdsAuditableQueries
 {
+  public async Task<RepresentativeModel?> RepresentativeById(string id)
+  {
+    return await _context.Representatives.FirstOrDefaultAsync(entity =>
+      entity.Id == id) is { } entity
+      ? entity.ToModel()
+      : null;
+  }
+
+  public async Task<PaginatedList<RepresentativeModel>> OperatorRepresentatives(
+    Expression<Func<RepresentativeEntity, bool>>? filter = null,
+    int pageNumber = QueryConstants.StartingPage,
+    int pageCount = QueryConstants.DefaultPageCount
+  )
+  {
+    return await _context.Representatives
+      .Where(entity => entity.IsOperatorRepresentative)
+      .QueryPaged(
+        RepresentativeModelExtensions.ToModel,
+        filter,
+        pageNumber,
+        pageCount
+      );
+  }
+
+  public async Task<PaginatedList<RepresentativeModel>>
+    NetworkUserRepresentatives(
+      string id,
+      Expression<Func<RepresentativeEntity, bool>>? filter = null,
+      int pageNumber = QueryConstants.StartingPage,
+      int pageCount = QueryConstants.DefaultPageCount
+    )
+  {
+    return await _context.Representatives
+      .Where(entity =>
+        entity.NetworkUsers.Any(networkUser => networkUser.Id == id))
+      .QueryPaged(
+        RepresentativeModelExtensions.ToModel,
+        filter,
+        pageNumber,
+        pageCount
+      );
+  }
+
+  public async Task<PaginatedList<RepresentativeModel>> LocationRepresentatives(
+    string id,
+    Expression<Func<RepresentativeEntity, bool>>? filter = null,
+    int pageNumber = QueryConstants.StartingPage,
+    int pageCount = QueryConstants.DefaultPageCount
+  )
+  {
+    return await _context.Representatives
+      .Where(entity =>
+        entity.Locations.Any(networkUser => networkUser.Id == id))
+      .QueryPaged(
+        RepresentativeModelExtensions.ToModel,
+        filter,
+        pageNumber,
+        pageCount
+      );
+  }
+
   public async Task<UserModel?> UserByClaimsPrincipal(
     ClaimsPrincipal principal)
   {

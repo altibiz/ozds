@@ -3,7 +3,7 @@ using Ozds.Business.Models.Enums;
 
 namespace Ozds.Business.Models.Base;
 
-public record AuditEventModel(
+public abstract record AuditEventModel(
   string Id,
   DateTimeOffset Timestamp,
   LevelModel Level,
