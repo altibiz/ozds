@@ -1,9 +1,6 @@
-using Ozds.Business.Capabilities.Abstractions;
-using Ozds.Business.Models.Abstractions;
-
 namespace Ozds.Business.Models.Base;
 
-public abstract record MeterModel(
+public abstract record CatalogueModel(
   string Id,
   string Title,
   DateTimeOffset CreatedOn,
@@ -13,12 +10,7 @@ public abstract record MeterModel(
   bool IsDeleted,
   DateTimeOffset? DeletedOn,
   string? DeletedById,
-  string MeasurementLocationId,
-  string CatalogueId,
-  string MessengerId,
-  string MeasurementValidatorId,
-  float ConnectionPower_W,
-  List<PhaseModel> Phases
+  string LocationId
 ) : AuditableModel(
   Id: Id,
   Title: Title,
@@ -29,7 +21,4 @@ public abstract record MeterModel(
   IsDeleted: IsDeleted,
   DeletedOn: DeletedOn,
   DeletedById: DeletedById
-), IMeter
-{
-  public abstract ICapabilities Capabilities { get; }
-}
+);

@@ -38,7 +38,10 @@ public record AbbB2xMeasurementModel(
   float ReactiveEnergyTotalExportT0_VARh,
   float ActiveEnergyTotalImportT1_Wh,
   float ActiveEnergyTotalImportT2_Wh
-) : MeasurementModel(MeterId, Timestamp)
+) : MeasurementModel<AbbB2xMeasurementValidatorModel>(
+  MeterId: MeterId,
+  Timestamp: Timestamp
+)
 {
   public override TariffMeasure Current_A
   {

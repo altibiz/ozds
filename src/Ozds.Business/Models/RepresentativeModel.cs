@@ -7,12 +7,12 @@ namespace Ozds.Business.Models;
 public record RepresentativeModel(
   string Id,
   string Title,
-  DateTimeOffset CreationDate,
+  DateTimeOffset CreatedOn,
   string? CreatedById,
-  DateTimeOffset? LastUpdateDate,
+  DateTimeOffset? LastUpdatedOn,
   string? LastUpdatedById,
   bool IsDeleted,
-  DateTimeOffset? DeletionDate,
+  DateTimeOffset? DeletedOn,
   string? DeletedById,
   string Name,
   string SocialSecurityNumber,
@@ -22,15 +22,15 @@ public record RepresentativeModel(
   string Email,
   string PhoneNumber
 ) : AuditableModel(
-  Id,
-  Title,
-  CreationDate,
-  CreatedById,
-  LastUpdateDate,
-  LastUpdatedById,
-  IsDeleted,
-  DeletionDate,
-  DeletedById
+  Id: Id,
+  Title: Title,
+  CreatedOn: CreatedOn,
+  CreatedById: CreatedById,
+  LastUpdatedOn: LastUpdatedOn,
+  LastUpdatedById: LastUpdatedById,
+  IsDeleted: IsDeleted,
+  DeletedOn: DeletedOn,
+  DeletedById: DeletedById
 )
 {
   public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
@@ -47,12 +47,12 @@ public static class RepresentativeModelExtensions
     {
       Id = model.Id,
       Title = model.Title,
-      CreatedOn = model.CreationDate,
+      CreatedOn = model.CreatedOn,
       CreatedById = model.CreatedById,
-      LastUpdatedOn = model.LastUpdateDate,
+      LastUpdatedOn = model.LastUpdatedOn,
       LastUpdatedById = model.LastUpdatedById,
       IsDeleted = model.IsDeleted,
-      DeletedOn = model.DeletionDate,
+      DeletedOn = model.DeletedOn,
       DeletedById = model.DeletedById,
       Name = model.Name,
       SocialSecurityNumber = model.SocialSecurityNumber,

@@ -1,6 +1,12 @@
 namespace Ozds.Business.Models.Abstractions;
 
-public interface IMeasurementValidator : IAuditable
+public interface IMeasurementValidator
 {
-  public string? Validate(IMeasurement measurement, string Property);
+  public string MeterId { get; }
+}
+
+public interface IMeasurementValidator<T> : IMeasurementValidator
+  where T : IMeasurement
+{
+  public string? Validate(T measurement, string property);
 }

@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 using Ozds.Data.Attributes;
 using Ozds.Data.Entities.Enums;
 

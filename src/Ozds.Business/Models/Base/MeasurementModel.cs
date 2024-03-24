@@ -4,10 +4,11 @@ using Ozds.Business.Models.Abstractions;
 
 namespace Ozds.Business.Models.Base;
 
-public abstract record MeasurementModel(
+public abstract record MeasurementModel<T>(
   string MeterId,
   DateTimeOffset Timestamp
 ) : IMeasurement
+  where T : IMeasurementValidator
 {
   public abstract TariffMeasure Current_A { get; }
 
@@ -25,5 +26,8 @@ public abstract record MeasurementModel(
 
   public abstract TariffMeasure ApparentEnergyCumulative_VAh { get; }
 
-  public abstract IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+  public virtual IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+  {
+    throw new NotImplementedException();
+  }
 }

@@ -40,12 +40,12 @@ public class SchneideriEM3xxxMeasurementValidatorEntity : MeasurementValidatorEn
   [Required]
   public float MaxReactivePower_VAR { get; set; } = default!;
 
-  [Column("min_apparent_power_var")]
+  [Column("min_apparent_power_va")]
   [Required]
-  public float MinApparentPower_VAR { get; set; } = default!;
+  public float MinApparentPower_VA { get; set; } = default!;
 
-  [Column("max_apparent_power_var")]
+  [Column("max_apparent_power_va")]
   [Required]
-  public float MaxApparentPower_VAR { get; set; } = default!;
+  public float MaxApparentPower_VA { get; set; } = default!;
 #pragma warning restore CA1707
 }

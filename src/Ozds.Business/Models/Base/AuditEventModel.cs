@@ -9,4 +9,9 @@ public record AuditEventModel(
   LevelModel Level,
   string Description,
   AuditModel Audit
-) : EventModel(Id, Timestamp, Level, Description), IAuditEvent;
+) : EventModel(
+  Id: Id,
+  Timestamp: Timestamp,
+  Level: Level,
+  Description: Description
+), IAuditEvent;

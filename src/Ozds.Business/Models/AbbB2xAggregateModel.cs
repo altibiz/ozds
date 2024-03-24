@@ -37,7 +37,12 @@ public record AbbB2xAggregateModel(
   float ActiveEnergyTotalImportT1Max_Wh,
   float ActiveEnergyTotalImportT2Min_Wh,
   float ActiveEnergyTotalImportT2Max_Wh
-) : AggregateModel(MeterId, Timestamp, Interval, Count), IUpsertAggregate
+) : AggregateModel(
+  MeterId: MeterId,
+  Timestamp: Timestamp,
+  Interval: Interval,
+  Count: Count
+), IUpsertAggregate
 {
   static IUpsertAggregate.UpsertExpressionHolder IUpsertAggregate.UpsertExpression => _upsertExpression.Value;
 

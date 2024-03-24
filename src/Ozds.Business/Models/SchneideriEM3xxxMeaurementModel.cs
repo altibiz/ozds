@@ -28,7 +28,10 @@ public record SchneideriEM3xxxMeasurementModel(
   float ReactiveEnergyTotalExportT0_VARh,
   float ActiveEnergyTotalImportT1_Wh,
   float ActiveEnergyTotalImportT2_Wh
-) : MeasurementModel(MeterId, Timestamp)
+) : MeasurementModel<SchneideriEM3xxxMeasurementValidatorModel>(
+  MeterId: MeterId,
+  Timestamp: Timestamp
+)
 {
   public override TariffMeasure Current_A
   {

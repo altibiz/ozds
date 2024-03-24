@@ -1,15 +1,19 @@
 using Ozds.Business.Models.Abstractions;
+using Ozds.Data.Entities.Base;
 
 namespace Ozds.Business.Models.Base;
 
 public abstract record AuditableModel(
   string Id,
   string Title,
-  DateTimeOffset CreationDate,
+  DateTimeOffset CreatedOn,
   string? CreatedById,
-  DateTimeOffset? LastUpdateDate,
+  DateTimeOffset? LastUpdatedOn,
   string? LastUpdatedById,
   bool IsDeleted,
-  DateTimeOffset? DeletionDate,
+  DateTimeOffset? DeletedOn,
   string? DeletedById
-) : IdentifiableModel(Id, Title), IAuditable;
+) : IdentifiableModel(
+  Id: Id,
+  Title: Title
+), IAuditable;

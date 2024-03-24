@@ -1,9 +1,8 @@
-using Ozds.Business.Capabilities.Abstractions;
 using Ozds.Business.Models.Abstractions;
 
 namespace Ozds.Business.Models.Base;
 
-public abstract record MeterModel(
+public abstract record MeasurementValidatorModel<T>(
   string Id,
   string Title,
   DateTimeOffset CreatedOn,
@@ -13,12 +12,7 @@ public abstract record MeterModel(
   bool IsDeleted,
   DateTimeOffset? DeletedOn,
   string? DeletedById,
-  string MeasurementLocationId,
-  string CatalogueId,
-  string MessengerId,
-  string MeasurementValidatorId,
-  float ConnectionPower_W,
-  List<PhaseModel> Phases
+  string MeterId
 ) : AuditableModel(
   Id: Id,
   Title: Title,
@@ -29,7 +23,8 @@ public abstract record MeterModel(
   IsDeleted: IsDeleted,
   DeletedOn: DeletedOn,
   DeletedById: DeletedById
-), IMeter
+), IMeasurementValidator<T>
+  where T : IMeasurement
 {
-  public abstract ICapabilities Capabilities { get; }
+  public abstract string? Validate(T measurement, string property);
 }

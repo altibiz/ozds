@@ -9,33 +9,35 @@ namespace Ozds.Business.Models;
 public record AbbB2xMeterModel(
   string Id,
   string Title,
-  DateTimeOffset CreationDate,
+  DateTimeOffset CreatedOn,
   string? CreatedById,
-  DateTimeOffset? LastUpdateDate,
+  DateTimeOffset? LastUpdatedOn,
   string? LastUpdatedById,
   bool IsDeleted,
-  DateTimeOffset? DeletionDate,
+  DateTimeOffset? DeletedOn,
   string? DeletedById,
-  string? NetworkUserMeasurementLocationId,
-  string? LocationMeasurementLocationId,
-  string? MessengerId,
+  string MeasurementLocationId,
+  string CatalogueId,
+  string MessengerId,
+  string MeasurementValidatorId,
   float ConnectionPower_W,
   List<PhaseModel> Phases
 ) : MeterModel(
-  Id,
-  Title,
-  CreationDate,
-  CreatedById,
-  LastUpdateDate,
-  LastUpdatedById,
-  IsDeleted,
-  DeletionDate,
-  DeletedById,
-  NetworkUserMeasurementLocationId,
-  LocationMeasurementLocationId,
-  MessengerId,
-  ConnectionPower_W,
-  Phases
+  Id: Id,
+  Title: Title,
+  CreatedOn: CreatedOn,
+  CreatedById: CreatedById,
+  LastUpdatedOn: LastUpdatedOn,
+  LastUpdatedById: LastUpdatedById,
+  IsDeleted: IsDeleted,
+  DeletedOn: DeletedOn,
+  DeletedById: DeletedById,
+  MeasurementLocationId: MeasurementLocationId,
+  CatalogueId: CatalogueId,
+  MessengerId: MessengerId,
+  MeasurementValidatorId: MeasurementValidatorId,
+  ConnectionPower_W: ConnectionPower_W,
+  Phases: Phases
 )
 {
   public override ICapabilities Capabilities => new AbbB2xCapabilities();
@@ -48,30 +50,28 @@ public record AbbB2xMeterModel(
 
 public static class AbbB2xMeterModelExtensions
 {
-  public static AbbB2xMeterEntity ToEntity(this AbbB2xMeterModel model)
-  {
-    return new AbbB2xMeterEntity
+  public static AbbB2xMeterEntity ToEntity(this AbbB2xMeterModel model) =>
+    new()
     {
       Id = model.Id,
       Title = model.Title,
-      CreatedOn = model.CreationDate,
+      CreatedOn = model.CreatedOn,
       CreatedById = model.CreatedById,
-      LastUpdatedOn = model.LastUpdateDate,
+      LastUpdatedOn = model.LastUpdatedOn,
       LastUpdatedById = model.LastUpdatedById,
       IsDeleted = model.IsDeleted,
-      DeletedOn = model.DeletionDate,
+      DeletedOn = model.DeletedOn,
       DeletedById = model.DeletedById,
-      NetworkUserMeasurementLocationId = model.NetworkUserMeasurementLocationId,
-      LocationMeasurementLocationId = model.LocationMeasurementLocationId,
+      MeasurementLocationId = model.MeasurementLocationId,
+      CatalogueId = model.CatalogueId,
       MessengerId = model.MessengerId,
+      MeasurementValidatorId = model.MeasurementValidatorId,
       ConnectionPower_W = model.ConnectionPower_W,
-      Phases = model.Phases.Select(phase => phase.ToEntity()).ToList()
+      Phases = model.Phases.Select(p => p.ToEntity()).ToList()
     };
-  }
 
-  public static AbbB2xMeterModel ToModel(this AbbB2xMeterEntity entity)
-  {
-    return new AbbB2xMeterModel(
+  public static AbbB2xMeterModel ToModel(this AbbB2xMeterEntity entity) =>
+    new(
       entity.Id,
       entity.Title,
       entity.CreatedOn,
@@ -81,11 +81,11 @@ public static class AbbB2xMeterModelExtensions
       entity.IsDeleted,
       entity.DeletedOn,
       entity.DeletedById,
-      entity.NetworkUserMeasurementLocationId,
-      entity.LocationMeasurementLocationId,
+      entity.MeasurementLocationId,
+      entity.CatalogueId,
       entity.MessengerId,
+      entity.MeasurementValidatorId,
       entity.ConnectionPower_W,
-      entity.Phases.Select(phase => phase.ToModel()).ToList()
+      entity.Phases.Select(p => p.ToModel()).ToList()
     );
-  }
 }
