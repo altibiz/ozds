@@ -59,6 +59,8 @@ lint:
     --cache --cache-strategy metadata \
     "{{root}}"
 
+  dotnet build "{{sln}}"
+
   dotnet jb inspectcode "{{sln}}" \
     --no-build \
     --verbosity=ERROR \
