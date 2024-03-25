@@ -1,11 +1,8 @@
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Identity;
-using OrchardCore.Users;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Data;
-using ISession = YesSql.ISession;
 
-// TODO: special checks for representative models
+// TODO: check representative model user id
 
 namespace Ozds.Business.Mutations;
 
@@ -13,16 +10,9 @@ public class OzdsAuditableMutations
 {
   private readonly OzdsDbContext _context;
 
-  private readonly ISession _session;
-
-  private readonly UserManager<IUser> _userManager;
-
-  public OzdsAuditableMutations(OzdsDbContext context,
-    UserManager<IUser> userManager, ISession session)
+  public OzdsAuditableMutations(OzdsDbContext context)
   {
     _context = context;
-    _session = session;
-    _userManager = userManager;
   }
 
   public async Task SaveChanges()

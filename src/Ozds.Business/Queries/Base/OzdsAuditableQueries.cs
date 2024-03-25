@@ -1,11 +1,8 @@
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using OrchardCore.Users;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Data;
 using Ozds.Data.Entities.Base;
-using ISession = YesSql.ISession;
 
 namespace Ozds.Business.Queries.Base;
 
@@ -13,16 +10,9 @@ public class OzdsAuditableQueries
 {
   protected readonly OzdsDbContext context;
 
-  protected readonly ISession session;
-
-  protected readonly UserManager<IUser> userManager;
-
-  public OzdsAuditableQueries(OzdsDbContext context,
-    UserManager<IUser> userManager, ISession session)
+  public OzdsAuditableQueries(OzdsDbContext context)
   {
     this.context = context;
-    this.userManager = userManager;
-    this.session = session;
   }
 
   public async Task<T?> ReadSingle<T>(string id) where T : class, IAuditable

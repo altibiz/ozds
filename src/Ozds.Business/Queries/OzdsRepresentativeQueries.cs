@@ -19,12 +19,19 @@ namespace Ozds.Business.Queries;
 
 public class OzdsRepresentativeQueries : OzdsAuditableQueries
 {
+
+  private readonly ISession _session;
+
+  private readonly UserManager<IUser> _userManager;
+
   public OzdsRepresentativeQueries(
     OzdsDbContext context,
     UserManager<IUser> userManager,
     ISession session
-  ) : base(context, userManager, session)
+  ) : base(context)
   {
+    _session = session;
+    _userManager = userManager;
   }
 
   public async Task<RepresentativeModel?> RepresentativeById(string id)
@@ -91,14 +98,14 @@ public class OzdsRepresentativeQueries : OzdsAuditableQueries
   public async Task<UserModel?> UserByClaimsPrincipal(
     ClaimsPrincipal principal)
   {
-    return await userManager.GetUserAsync(principal) is { } user
+    return await _userManager.GetUserAsync(principal) is { } user
       ? user.ToModel()
       : null;
   }
 
   public async Task<UserModel?> UserByUserId(string userId)
   {
-    return await userManager.FindByIdAsync(userId) is { } user
+    return await _userManager.FindByIdAsync(userId) is { } user
       ? user.ToModel()
       : null;
   }
@@ -118,7 +125,7 @@ public class OzdsRepresentativeQueries : OzdsAuditableQueries
       int pageNumber = QueryConstants.StartingPage,
       int pageCount = QueryConstants.DefaultPageCount)
   {
-    var users = await session
+    var users = await _session
       .Query<User, UserIndex>()
       .QueryPaged(
         UserModelExtensions.ToModel,
@@ -150,7 +157,7 @@ public class OzdsRepresentativeQueries : OzdsAuditableQueries
     int pageNumber = QueryConstants.StartingPage,
     int pageCount = QueryConstants.DefaultPageCount)
   {
-    var users = await session
+    var users = await _session
       .Query<User, UserIndex>()
       .QueryPaged(
         UserModelExtensions.ToModel,
@@ -186,7 +193,7 @@ public class OzdsRepresentativeQueries : OzdsAuditableQueries
   public async Task<RepresentingUserModel?>
     RepresentingUserByClaimsPrincipal(ClaimsPrincipal claimsPrincipal)
   {
-    var user = await userManager.GetUserAsync(claimsPrincipal);
+    var user = await _userManager.GetUserAsync(claimsPrincipal);
     if (user is null)
     {
       return null;
@@ -209,7 +216,7 @@ public class OzdsRepresentativeQueries : OzdsAuditableQueries
   public async Task<RepresentingUserModel?> RepresentingUserByUserId(
     string id)
   {
-    var user = await userManager.FindByIdAsync(id);
+    var user = await _userManager.FindByIdAsync(id);
     if (user is null)
     {
       return null;
@@ -240,7 +247,7 @@ public class OzdsRepresentativeQueries : OzdsAuditableQueries
       return null;
     }
 
-    var user = await userManager.FindByIdAsync(representative.Id);
+    var user = await _userManager.FindByIdAsync(representative.Id);
     if (user is null)
     {
       return null;
@@ -255,7 +262,7 @@ public class OzdsRepresentativeQueries : OzdsAuditableQueries
   public async Task<MaybeRepresentingUserModel?>
     MaybeRepresentingUserByClaimsPrincipal(ClaimsPrincipal claimsPrincipal)
   {
-    var user = await userManager.GetUserAsync(claimsPrincipal);
+    var user = await _userManager.GetUserAsync(claimsPrincipal);
     if (user is null)
     {
       return null;
@@ -278,7 +285,7 @@ public class OzdsRepresentativeQueries : OzdsAuditableQueries
   public async Task<MaybeRepresentingUserModel?>
     MaybeRepresentingUserByUserId(string id)
   {
-    var user = await userManager.FindByIdAsync(id);
+    var user = await _userManager.FindByIdAsync(id);
     if (user is null)
     {
       return null;
