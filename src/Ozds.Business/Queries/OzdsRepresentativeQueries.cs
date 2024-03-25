@@ -19,7 +19,6 @@ namespace Ozds.Business.Queries;
 
 public class OzdsRepresentativeQueries : OzdsAuditableQueries
 {
-
   private readonly ISession _session;
 
   private readonly UserManager<IUser> _userManager;

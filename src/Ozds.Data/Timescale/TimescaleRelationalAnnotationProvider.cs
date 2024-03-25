@@ -45,8 +45,8 @@ public class TimescaleRelationalAnnotationProvider : NpgsqlAnnotationProvider
             x is { Annotation.Value: string }) is
       { Annotation.Value: string } x &&
         x.Mapping.ColumnMappings.FirstOrDefault(column =>
-            column.Property.Name == x.Annotation.Value as string)?.Column
-          .Name is
+              column.Property.Name == x.Annotation.Value as string)?.Column
+            .Name is
         { } timeColumn)
     {
       annotations = annotations.Append(
