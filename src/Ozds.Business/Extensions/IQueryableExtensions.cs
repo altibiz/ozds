@@ -1,6 +1,6 @@
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
-using Ozds.Business.Queries;
+using Ozds.Business.Queries.Abstractions;
 
 namespace Ozds.Business.Extensions;
 

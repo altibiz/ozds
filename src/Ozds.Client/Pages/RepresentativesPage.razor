@@ -1,7 +1,7 @@
 @page "/representatives"
 @attribute [Navigation(Title = "Representatives")]
 @attribute [Authorize]
-@inherits OwningComponentBase<Ozds.Business.Queries.OzdsAuditableQueries>
+@inherits OwningComponentBase<Ozds.Business.Queries.OzdsRepresentativeQueries>
 
 <Loading Load="@(() => Service.MaybeRepresentingUsers(pageNumber: _page))">
   <Found>

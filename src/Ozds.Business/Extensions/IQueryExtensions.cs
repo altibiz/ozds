@@ -1,5 +1,5 @@
 using System.Linq.Expressions;
-using Ozds.Business.Queries;
+using Ozds.Business.Queries.Abstractions;
 using YesSql;
 using YesSql.Indexes;
 
