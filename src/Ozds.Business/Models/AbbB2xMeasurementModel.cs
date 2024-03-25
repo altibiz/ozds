@@ -40,8 +40,8 @@ public record AbbB2xMeasurementModel(
   float ActiveEnergyTotalImportT1_Wh,
   float ActiveEnergyTotalImportT2_Wh
 ) : MeasurementModel<AbbB2xMeasurementValidatorModel>(
-  MeterId: MeterId,
-  Timestamp: Timestamp
+  MeterId,
+  Timestamp
 )
 {
   public override TariffMeasure Current_A
@@ -50,7 +50,8 @@ public record AbbB2xMeasurementModel(
     {
       return new UnaryTariffMeasure(
         new AnyDuplexMeasure(
-          new TriPhasicMeasure(CurrentL1AnyT0_A, CurrentL2AnyT0_A, CurrentL3AnyT0_A)
+          new TriPhasicMeasure(CurrentL1AnyT0_A, CurrentL2AnyT0_A,
+            CurrentL3AnyT0_A)
         )
       );
     }
@@ -62,7 +63,8 @@ public record AbbB2xMeasurementModel(
     {
       return new UnaryTariffMeasure(
         new AnyDuplexMeasure(
-          new TriPhasicMeasure(VoltageL1AnyT0_V, VoltageL2AnyT0_V, VoltageL3AnyT0_V)
+          new TriPhasicMeasure(VoltageL1AnyT0_V, VoltageL2AnyT0_V,
+            VoltageL3AnyT0_V)
         )
       );
     }
@@ -115,56 +117,60 @@ public record AbbB2xMeasurementModel(
              || ActiveEnergyL1ExportT0_Wh is not 0
              || ActiveEnergyL2ExportT0_Wh is not 0
              || ActiveEnergyL3ExportT0_Wh is not 0
-        ? new CompositeTariffMeasure(new() {
-            new UnaryTariffMeasure(
-              new ImportExportDuplexMeasure(
-                new CompositePhasicMeasure(new() {
-                  new TriPhasicMeasure(
-                    ActiveEnergyL1ImportT0_Wh,
-                    ActiveEnergyL2ImportT0_Wh,
-                    ActiveEnergyL3ImportT0_Wh
-                  ),
-                  new SinglePhasicMeasure(ActiveEnergyTotalImportT0_Wh),
-                }),
-                new CompositePhasicMeasure(new() {
-                  new TriPhasicMeasure(
-                    ActiveEnergyL1ExportT0_Wh,
-                    ActiveEnergyL2ExportT0_Wh,
-                    ActiveEnergyL3ExportT0_Wh
-                  ),
-                  new SinglePhasicMeasure(ActiveEnergyTotalExportT0_Wh)
-                })
-              )
-            ),
-            new BinaryTariffMeasure(
-              new ImportExportDuplexMeasure(
-                new SinglePhasicMeasure(ActiveEnergyTotalImportT1_Wh),
-                PhasicMeasure.Null
-              ),
-              new ImportExportDuplexMeasure(
-                new SinglePhasicMeasure(ActiveEnergyTotalImportT2_Wh),
-                PhasicMeasure.Null
-              )
-            )
-          })
-        : new CompositeTariffMeasure(new() {
-            new UnaryTariffMeasure(
-              new ImportExportDuplexMeasure(
-                new SinglePhasicMeasure(ActiveEnergyTotalImportT0_Wh),
+        ? new CompositeTariffMeasure(new List<TariffMeasure>
+        {
+          new UnaryTariffMeasure(
+            new ImportExportDuplexMeasure(
+              new CompositePhasicMeasure(new List<PhasicMeasure>
+              {
+                new TriPhasicMeasure(
+                  ActiveEnergyL1ImportT0_Wh,
+                  ActiveEnergyL2ImportT0_Wh,
+                  ActiveEnergyL3ImportT0_Wh
+                ),
+                new SinglePhasicMeasure(ActiveEnergyTotalImportT0_Wh)
+              }),
+              new CompositePhasicMeasure(new List<PhasicMeasure>
+              {
+                new TriPhasicMeasure(
+                  ActiveEnergyL1ExportT0_Wh,
+                  ActiveEnergyL2ExportT0_Wh,
+                  ActiveEnergyL3ExportT0_Wh
+                ),
                 new SinglePhasicMeasure(ActiveEnergyTotalExportT0_Wh)
-              )
-            ),
-            new BinaryTariffMeasure(
-              new ImportExportDuplexMeasure(
-                new SinglePhasicMeasure(ActiveEnergyTotalImportT1_Wh),
-                PhasicMeasure.Null
-              ),
-              new ImportExportDuplexMeasure(
-                new SinglePhasicMeasure(ActiveEnergyTotalImportT2_Wh),
-                PhasicMeasure.Null
-              )
+              })
             )
-          });
+          ),
+          new BinaryTariffMeasure(
+            new ImportExportDuplexMeasure(
+              new SinglePhasicMeasure(ActiveEnergyTotalImportT1_Wh),
+              PhasicMeasure.Null
+            ),
+            new ImportExportDuplexMeasure(
+              new SinglePhasicMeasure(ActiveEnergyTotalImportT2_Wh),
+              PhasicMeasure.Null
+            )
+          )
+        })
+        : new CompositeTariffMeasure(new List<TariffMeasure>
+        {
+          new UnaryTariffMeasure(
+            new ImportExportDuplexMeasure(
+              new SinglePhasicMeasure(ActiveEnergyTotalImportT0_Wh),
+              new SinglePhasicMeasure(ActiveEnergyTotalExportT0_Wh)
+            )
+          ),
+          new BinaryTariffMeasure(
+            new ImportExportDuplexMeasure(
+              new SinglePhasicMeasure(ActiveEnergyTotalImportT1_Wh),
+              PhasicMeasure.Null
+            ),
+            new ImportExportDuplexMeasure(
+              new SinglePhasicMeasure(ActiveEnergyTotalImportT2_Wh),
+              PhasicMeasure.Null
+            )
+          )
+        });
     }
   }
 
@@ -179,31 +185,33 @@ public record AbbB2xMeasurementModel(
              || ReactiveEnergyL2ExportT0_VARh is not 0
              || ReactiveEnergyL3ExportT0_VARh is not 0
         ? new UnaryTariffMeasure(
-            new ImportExportDuplexMeasure(
-              new CompositePhasicMeasure(new() {
-                new TriPhasicMeasure(
-                  ReactiveEnergyL1ImportT0_VARh,
-                  ReactiveEnergyL2ImportT0_VARh,
-                  ReactiveEnergyL3ImportT0_VARh
-                ),
-                new SinglePhasicMeasure(ReactiveEnergyTotalImportT0_VARh),
-              }),
-              new CompositePhasicMeasure(new() {
-                new TriPhasicMeasure(
-                  ReactiveEnergyL1ExportT0_VARh,
-                  ReactiveEnergyL2ExportT0_VARh,
-                  ReactiveEnergyL3ExportT0_VARh
-                ),
-                new SinglePhasicMeasure(ReactiveEnergyTotalExportT0_VARh)
-              })
-            )
-          )
-        : new UnaryTariffMeasure(
-            new ImportExportDuplexMeasure(
-              new SinglePhasicMeasure(ReactiveEnergyTotalImportT0_VARh),
+          new ImportExportDuplexMeasure(
+            new CompositePhasicMeasure(new List<PhasicMeasure>
+            {
+              new TriPhasicMeasure(
+                ReactiveEnergyL1ImportT0_VARh,
+                ReactiveEnergyL2ImportT0_VARh,
+                ReactiveEnergyL3ImportT0_VARh
+              ),
+              new SinglePhasicMeasure(ReactiveEnergyTotalImportT0_VARh)
+            }),
+            new CompositePhasicMeasure(new List<PhasicMeasure>
+            {
+              new TriPhasicMeasure(
+                ReactiveEnergyL1ExportT0_VARh,
+                ReactiveEnergyL2ExportT0_VARh,
+                ReactiveEnergyL3ExportT0_VARh
+              ),
               new SinglePhasicMeasure(ReactiveEnergyTotalExportT0_VARh)
-            )
-          );
+            })
+          )
+        )
+        : new UnaryTariffMeasure(
+          new ImportExportDuplexMeasure(
+            new SinglePhasicMeasure(ReactiveEnergyTotalImportT0_VARh),
+            new SinglePhasicMeasure(ReactiveEnergyTotalExportT0_VARh)
+          )
+        );
     }
   }
 
@@ -212,7 +220,8 @@ public record AbbB2xMeasurementModel(
     get { return TariffMeasure.Null; }
   }
 
-  public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+  public override IEnumerable<ValidationResult> Validate(
+    ValidationContext validationContext)
   {
     throw new NotImplementedException();
   }
@@ -222,8 +231,9 @@ public static class AbbB2xMeasurementModelExtensions
 {
   public static AbbB2xAggregateModel ToAggregate(
     this AbbB2xMeasurementModel measurement,
-    IntervalModel interval) =>
-    new(
+    IntervalModel interval)
+  {
+    return new AbbB2xAggregateModel(
       measurement.MeterId,
       measurement.Timestamp,
       interval,
@@ -253,9 +263,12 @@ public static class AbbB2xMeasurementModelExtensions
       measurement.ActiveEnergyTotalImportT2_Wh,
       measurement.ActiveEnergyTotalImportT2_Wh
     );
+  }
 
-  public static AbbB2xMeasurementModel ToModel(this AbbB2xMeasurementEntity entity) =>
-    new(
+  public static AbbB2xMeasurementModel ToModel(
+    this AbbB2xMeasurementEntity entity)
+  {
+    return new AbbB2xMeasurementModel(
       entity.MeterId,
       entity.Timestamp,
       entity.VoltageL1AnyT0_V,
@@ -289,9 +302,12 @@ public static class AbbB2xMeasurementModelExtensions
       entity.ActiveEnergyTotalImportT1_Wh,
       entity.ActiveEnergyTotalImportT2_Wh
     );
+  }
 
-  public static AbbB2xMeasurementEntity ToEntity(this AbbB2xMeasurementModel model) =>
-    new()
+  public static AbbB2xMeasurementEntity ToEntity(
+    this AbbB2xMeasurementModel model)
+  {
+    return new AbbB2xMeasurementEntity
     {
       MeterId = model.MeterId,
       Timestamp = model.Timestamp,
@@ -326,4 +342,5 @@ public static class AbbB2xMeasurementModelExtensions
       ActiveEnergyTotalImportT1_Wh = model.ActiveEnergyTotalImportT1_Wh,
       ActiveEnergyTotalImportT2_Wh = model.ActiveEnergyTotalImportT2_Wh
     };
+  }
 }

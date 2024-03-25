@@ -17,6 +17,5 @@ public class RegulatoryCatalogueEntity : CatalogueEntity
   [Column("business_usage_fee_price_eur")]
   public float BusinessUsageFeePrice_EUR { get; set; }
 
-  [Column("tax_rate_percent")]
-  public float TaxRate_Percent { get; set; }
+  [Column("tax_rate_percent")] public float TaxRate_Percent { get; set; }
 }

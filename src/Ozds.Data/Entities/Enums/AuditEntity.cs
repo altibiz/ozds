@@ -9,4 +9,4 @@ public enum AuditEntity
   Creation,
   Modification,
   Deletion
-};
+}

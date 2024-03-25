@@ -11,5 +11,6 @@ public abstract record InvoiceModel(
   DateTimeOffset ToDate
 ) : IInvoice
 {
-  public abstract IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+  public abstract IEnumerable<ValidationResult> Validate(
+    ValidationContext validationContext);
 }

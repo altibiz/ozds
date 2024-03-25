@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations.Schema;
-using Ozds.Data.Attributes;
 using Ozds.Data.Entities.Enums;
 
 namespace Ozds.Data.Entities.Base;
@@ -10,7 +9,8 @@ public abstract class MeterEntity : AuditableEntity
   [ForeignKey(nameof(MeasurementLocation))]
   public string MeasurementLocationId { get; set; } = default!;
 
-  public virtual MeasurementLocationEntity MeasurementLocation { get; set; } = default!;
+  public virtual MeasurementLocationEntity MeasurementLocation { get; set; } =
+    default!;
 
   [ForeignKey(nameof(Catalogue))]
   public string CatalogueId { get; set; } = default!;

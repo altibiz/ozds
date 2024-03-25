@@ -9,7 +9,7 @@ using ISession = YesSql.ISession;
 
 namespace Ozds.Business.Mutations;
 
-public partial class OzdsAuditableMutations
+public class OzdsAuditableMutations
 {
   private readonly OzdsDbContext _context;
 

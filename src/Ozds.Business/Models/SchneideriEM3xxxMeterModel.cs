@@ -23,26 +23,30 @@ public record SchneideriEM3xxxMeterModel(
   float ConnectionPower_W,
   List<PhaseModel> Phases
 ) : MeterModel(
-  Id: Id,
-  Title: Title,
-  CreatedOn: CreatedOn,
-  CreatedById: CreatedById,
-  LastUpdatedOn: LastUpdatedOn,
-  LastUpdatedById: LastUpdatedById,
-  IsDeleted: IsDeleted,
-  DeletedOn: DeletedOn,
-  DeletedById: DeletedById,
-  MeasurementLocationId: MeasurementLocationId,
-  CatalogueId: CatalogueId,
-  MessengerId: MessengerId,
-  MeasurementValidatorId: MeasurementValidatorId,
-  ConnectionPower_W: ConnectionPower_W,
-  Phases: Phases
+  Id,
+  Title,
+  CreatedOn,
+  CreatedById,
+  LastUpdatedOn,
+  LastUpdatedById,
+  IsDeleted,
+  DeletedOn,
+  DeletedById,
+  MeasurementLocationId,
+  CatalogueId,
+  MessengerId,
+  MeasurementValidatorId,
+  ConnectionPower_W,
+  Phases
 )
 {
-  public override ICapabilities Capabilities => new SchneideriEM3xxxCapabilities();
+  public override ICapabilities Capabilities
+  {
+    get { return new SchneideriEM3xxxCapabilities(); }
+  }
 
-  public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+  public override IEnumerable<ValidationResult> Validate(
+    ValidationContext validationContext)
   {
     throw new NotImplementedException();
   }
@@ -50,8 +54,10 @@ public record SchneideriEM3xxxMeterModel(
 
 public static class SchneideriEM3xxxMeterModelExtensions
 {
-  public static SchneideriEM3xxxMeterEntity ToEntity(this SchneideriEM3xxxMeterModel model) =>
-    new()
+  public static SchneideriEM3xxxMeterEntity ToEntity(
+    this SchneideriEM3xxxMeterModel model)
+  {
+    return new SchneideriEM3xxxMeterEntity
     {
       Id = model.Id,
       Title = model.Title,
@@ -69,9 +75,12 @@ public static class SchneideriEM3xxxMeterModelExtensions
       ConnectionPower_W = model.ConnectionPower_W,
       Phases = model.Phases.Select(phase => phase.ToEntity()).ToList()
     };
+  }
 
-  public static SchneideriEM3xxxMeterModel ToModel(this SchneideriEM3xxxMeterEntity entity) =>
-    new(
+  public static SchneideriEM3xxxMeterModel ToModel(
+    this SchneideriEM3xxxMeterEntity entity)
+  {
+    return new SchneideriEM3xxxMeterModel(
       entity.Id,
       entity.Title,
       entity.CreatedOn,
@@ -88,4 +97,5 @@ public static class SchneideriEM3xxxMeterModelExtensions
       entity.ConnectionPower_W,
       entity.Phases.Select(phase => phase.ToModel()).ToList()
     );
+  }
 }

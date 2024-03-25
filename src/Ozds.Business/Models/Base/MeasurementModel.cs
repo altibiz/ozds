@@ -26,7 +26,8 @@ public abstract record MeasurementModel<T>(
 
   public abstract TariffMeasure ApparentEnergy_VAh { get; }
 
-  public virtual IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+  public virtual IEnumerable<ValidationResult> Validate(
+    ValidationContext validationContext)
   {
     throw new NotImplementedException();
   }

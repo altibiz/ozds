@@ -27,7 +27,8 @@ public class ReadonlyInterceptor : ServedSaveChangesInterceptor
     CancellationToken cancellationToken = default
   )
   {
-    return ValueTask.FromResult(PreventReadonlyModifications(eventData, result));
+    return ValueTask.FromResult(
+      PreventReadonlyModifications(eventData, result));
   }
 
   public InterceptionResult<int> PreventReadonlyModifications(

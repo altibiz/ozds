@@ -26,24 +26,26 @@ public record SchneideriEM3xxxMeasurementValidatorModel(
   float MinApparentPower_VA,
   float MaxApparentPower_VA
 ) : MeasurementValidatorModel<SchneideriEM3xxxMeasurementModel>(
-  Id: Id,
-  Title: Title,
-  CreatedOn: CreatedOn,
-  CreatedById: CreatedById,
-  LastUpdatedOn: LastUpdatedOn,
-  LastUpdatedById: LastUpdatedById,
-  IsDeleted: IsDeleted,
-  DeletedOn: DeletedOn,
-  DeletedById: DeletedById,
-  MeterId: MeterId
+  Id,
+  Title,
+  CreatedOn,
+  CreatedById,
+  LastUpdatedOn,
+  LastUpdatedById,
+  IsDeleted,
+  DeletedOn,
+  DeletedById,
+  MeterId
 )
 {
-  public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+  public override IEnumerable<ValidationResult> Validate(
+    ValidationContext validationContext)
   {
     throw new NotImplementedException();
   }
 
-  public override string? Validate(SchneideriEM3xxxMeasurementModel measurement, string property)
+  public override string? Validate(SchneideriEM3xxxMeasurementModel measurement,
+    string property)
   {
     throw new NotImplementedException();
   }
@@ -51,8 +53,10 @@ public record SchneideriEM3xxxMeasurementValidatorModel(
 
 public static class SchneideriEM3xxxMeasurementValidatorModelExtensions
 {
-  public static SchneideriEM3xxxMeasurementValidatorModel ToModel(this SchneideriEM3xxxMeasurementValidatorEntity entity) =>
-    new(
+  public static SchneideriEM3xxxMeasurementValidatorModel ToModel(
+    this SchneideriEM3xxxMeasurementValidatorEntity entity)
+  {
+    return new SchneideriEM3xxxMeasurementValidatorModel(
       entity.Id,
       entity.Title,
       entity.CreatedOn,
@@ -74,9 +78,12 @@ public static class SchneideriEM3xxxMeasurementValidatorModelExtensions
       entity.MinApparentPower_VA,
       entity.MaxApparentPower_VA
     );
+  }
 
-  public static SchneideriEM3xxxMeasurementValidatorEntity ToEntity(this SchneideriEM3xxxMeasurementValidatorModel model) =>
-    new()
+  public static SchneideriEM3xxxMeasurementValidatorEntity ToEntity(
+    this SchneideriEM3xxxMeasurementValidatorModel model)
+  {
+    return new SchneideriEM3xxxMeasurementValidatorEntity
     {
       Id = model.Id,
       Title = model.Title,
@@ -99,4 +106,5 @@ public static class SchneideriEM3xxxMeasurementValidatorModelExtensions
       MinApparentPower_VA = model.MinApparentPower_VA,
       MaxApparentPower_VA = model.MaxApparentPower_VA
     };
+  }
 }

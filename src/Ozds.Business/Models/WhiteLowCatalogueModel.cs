@@ -20,19 +20,20 @@ public record WhiteLowCatalogueModel(
   float ReactiveEnergyTotalImportT0Price_EUR,
   float MeterFeePrice_EUR
 ) : CatalogueModel(
-  Id: Id,
-  Title: Title,
-  CreatedOn: CreatedOn,
-  CreatedById: CreatedById,
-  LastUpdatedOn: LastUpdatedOn,
-  LastUpdatedById: LastUpdatedById,
-  IsDeleted: IsDeleted,
-  DeletedOn: DeletedOn,
-  DeletedById: DeletedById,
-  LocationId: LocationId
+  Id,
+  Title,
+  CreatedOn,
+  CreatedById,
+  LastUpdatedOn,
+  LastUpdatedById,
+  IsDeleted,
+  DeletedOn,
+  DeletedById,
+  LocationId
 )
 {
-  public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+  public override IEnumerable<ValidationResult> Validate(
+    ValidationContext validationContext)
   {
     throw new NotImplementedException();
   }
@@ -40,8 +41,10 @@ public record WhiteLowCatalogueModel(
 
 public static class WhiteLowCatalogueModelExtensions
 {
-  public static WhiteLowCatalogueModel ToModel(this WhiteLowCatalogueEntity entity) =>
-    new(
+  public static WhiteLowCatalogueModel ToModel(
+    this WhiteLowCatalogueEntity entity)
+  {
+    return new WhiteLowCatalogueModel(
       entity.Id,
       entity.Title,
       entity.CreatedOn,
@@ -57,9 +60,12 @@ public static class WhiteLowCatalogueModelExtensions
       entity.ReactiveEnergyTotalImportT0Price_EUR,
       entity.MeterFeePrice_EUR
     );
+  }
 
-  public static WhiteLowCatalogueEntity ToEntity(this WhiteLowCatalogueModel model) =>
-    new()
+  public static WhiteLowCatalogueEntity ToEntity(
+    this WhiteLowCatalogueModel model)
+  {
+    return new WhiteLowCatalogueEntity
     {
       Id = model.Id,
       Title = model.Title,
@@ -71,9 +77,13 @@ public static class WhiteLowCatalogueModelExtensions
       DeletedOn = model.DeletedOn,
       DeletedById = model.DeletedById,
       LocationId = model.LocationId,
-      ActiveEnergyTotalImportT1Price_EUR = model.ActiveEnergyTotalImportT1Price_EUR,
-      ActiveEnergyTotalImportT2Price_EUR = model.ActiveEnergyTotalImportT2Price_EUR,
-      ReactiveEnergyTotalImportT0Price_EUR = model.ReactiveEnergyTotalImportT0Price_EUR,
+      ActiveEnergyTotalImportT1Price_EUR =
+        model.ActiveEnergyTotalImportT1Price_EUR,
+      ActiveEnergyTotalImportT2Price_EUR =
+        model.ActiveEnergyTotalImportT2Price_EUR,
+      ReactiveEnergyTotalImportT0Price_EUR =
+        model.ReactiveEnergyTotalImportT0Price_EUR,
       MeterFeePrice_EUR = model.MeterFeePrice_EUR
     };
+  }
 }

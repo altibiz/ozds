@@ -47,7 +47,9 @@ public partial class MainLayout : LayoutComponentBase
     }
 
     var authenticationState = await _authenticationStateTask;
-    var claimsPrincipal = (authenticationState?.User) ?? throw new InvalidOperationException("No claims principal found.");
+    var claimsPrincipal = authenticationState?.User ??
+                          throw new InvalidOperationException(
+                            "No claims principal found.");
     if (claimsPrincipal.Identity?.IsAuthenticated is false)
     {
       // TODO: remove hardcoding of /app here

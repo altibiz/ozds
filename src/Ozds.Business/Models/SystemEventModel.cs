@@ -10,28 +10,32 @@ public record SystemEventModel(
   LevelModel Level,
   string Description
 ) : EventModel(
-  Id: Id,
-  Timestamp: Timestamp,
-  Level: Level,
-  Description: Description
+  Id,
+  Timestamp,
+  Level,
+  Description
 );
 
 public static class SystemEventModelExtensions
 {
-  public static SystemEventModel ToModel(this SystemEventEntity entity) =>
-    new(
-      Id: entity.Id,
-      Timestamp: entity.Timestamp,
-      Level: entity.Level.ToModel(),
-      Description: entity.Description
+  public static SystemEventModel ToModel(this SystemEventEntity entity)
+  {
+    return new SystemEventModel(
+      entity.Id,
+      entity.Timestamp,
+      entity.Level.ToModel(),
+      entity.Description
     );
+  }
 
-  public static SystemEventEntity ToEntity(this SystemEventModel model) =>
-    new()
+  public static SystemEventEntity ToEntity(this SystemEventModel model)
+  {
+    return new SystemEventEntity
     {
       Id = model.Id,
       Timestamp = model.Timestamp,
       Level = model.Level.ToEntity(),
       Description = model.Description
     };
+  }
 }

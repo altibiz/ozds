@@ -17,19 +17,20 @@ public record NetworkUserMeasurementLocationModel(
   string MeterId,
   string NetworkUserId
 ) : MeasurementLocationModel(
-  Id: Id,
-  Title: Title,
-  CreatedOn: CreatedOn,
-  CreatedById: CreatedById,
-  LastUpdatedOn: LastUpdatedOn,
-  LastUpdatedById: LastUpdatedById,
-  IsDeleted: IsDeleted,
-  DeletedOn: DeletedOn,
-  DeletedById: DeletedById,
-  MeterId: MeterId
+  Id,
+  Title,
+  CreatedOn,
+  CreatedById,
+  LastUpdatedOn,
+  LastUpdatedById,
+  IsDeleted,
+  DeletedOn,
+  DeletedById,
+  MeterId
 )
 {
-  public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+  public override IEnumerable<ValidationResult> Validate(
+    ValidationContext validationContext)
   {
     throw new NotImplementedException();
   }
@@ -37,8 +38,10 @@ public record NetworkUserMeasurementLocationModel(
 
 public static class NetworkUserMeasurementLocationModelExtensions
 {
-  public static NetworkUserMeasurementLocationModel ToModel(this NetworkUserMeasurementLocationEntity entity) =>
-    new(
+  public static NetworkUserMeasurementLocationModel ToModel(
+    this NetworkUserMeasurementLocationEntity entity)
+  {
+    return new NetworkUserMeasurementLocationModel(
       entity.Id,
       entity.Title,
       entity.CreatedOn,
@@ -51,9 +54,12 @@ public static class NetworkUserMeasurementLocationModelExtensions
       entity.MeterId,
       entity.NetworkUserId
     );
+  }
 
-  public static NetworkUserMeasurementLocationEntity ToEntity(this NetworkUserMeasurementLocationModel model) =>
-    new()
+  public static NetworkUserMeasurementLocationEntity ToEntity(
+    this NetworkUserMeasurementLocationModel model)
+  {
+    return new NetworkUserMeasurementLocationEntity
     {
       Id = model.Id,
       Title = model.Title,
@@ -67,4 +73,5 @@ public static class NetworkUserMeasurementLocationModelExtensions
       MeterId = model.MeterId,
       NetworkUserId = model.NetworkUserId
     };
+  }
 }

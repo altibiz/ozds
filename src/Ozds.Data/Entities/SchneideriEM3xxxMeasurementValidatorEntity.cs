@@ -5,12 +5,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Ozds.Data.Entities;
 
-public class SchneideriEM3xxxMeasurementValidatorEntity : MeasurementValidatorEntity
+public class
+  SchneideriEM3xxxMeasurementValidatorEntity : MeasurementValidatorEntity
 {
 #pragma warning disable CA1707
-  [Column("min_voltage_v")]
-  [Required]
-  public float MinVoltage_V { get; set; }
+  [Column("min_voltage_v")][Required] public float MinVoltage_V { get; set; }
 
   [Column("max_voltage_v")]
   [Required]

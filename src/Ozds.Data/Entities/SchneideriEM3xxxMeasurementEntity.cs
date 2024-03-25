@@ -5,7 +5,9 @@ using Ozds.Data.Entities.Base;
 namespace Ozds.Data.Entities;
 
 [Table("schneider_iem3xxx_measurements")]
-public class SchneideriEM3xxxMeasurementEntity : MeasurementEntity<SchneideriEM3xxxMeterEntity>
+public class
+  SchneideriEM3xxxMeasurementEntity : MeasurementEntity<
+  SchneideriEM3xxxMeterEntity>
 {
 #pragma warning disable CA1707
   [Column("voltage_l1_any_t0_v")]

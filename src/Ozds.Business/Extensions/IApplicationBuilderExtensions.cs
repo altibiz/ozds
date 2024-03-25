@@ -5,9 +5,11 @@ namespace Ozds.Business.Extensions;
 
 public static class IApplicationBuilderExtensions
 {
-  public static IApplicationBuilder MigrateOzdsData(this IApplicationBuilder app)
+  public static IApplicationBuilder MigrateOzdsData(
+    this IApplicationBuilder app)
   {
-    app.ApplicationServices.GetRequiredService<OzdsDbContext>().Database.Migrate();
+    app.ApplicationServices.GetRequiredService<OzdsDbContext>().Database
+      .Migrate();
     return app;
   }
 }

@@ -23,14 +23,23 @@ public partial class OzdsDbContext : DbContext
 
   public DbSet<MeterEntity> Meters { get; set; } = default!;
 
-  public DbSet<AbbB2xMeasurementEntity> AbbB2xMeasurements { get; set; } = default!;
+  public DbSet<AbbB2xMeasurementEntity> AbbB2xMeasurements { get; set; } =
+    default!;
 
   public DbSet<AbbB2xAggregateEntity> AbbB2xAggregates { get; set; } = default!;
 
-  public DbSet<SchneideriEM3xxxMeasurementEntity> SchneideriEM3xxxMeasurements { get; set; } =
+  public DbSet<SchneideriEM3xxxMeasurementEntity> SchneideriEM3xxxMeasurements
+  {
+    get;
+    set;
+  } =
     default!;
 
-  public DbSet<SchneideriEM3xxxAggregateEntity> SchneideriEM3xxxAggregates { get; set; } =
+  public DbSet<SchneideriEM3xxxAggregateEntity> SchneideriEM3xxxAggregates
+  {
+    get;
+    set;
+  } =
     default!;
 
   public DbSet<EventEntity> Events { get; set; } = default!;

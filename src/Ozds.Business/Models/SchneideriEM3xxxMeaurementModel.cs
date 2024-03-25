@@ -30,8 +30,8 @@ public record SchneideriEM3xxxMeasurementModel(
   float ActiveEnergyTotalImportT1_Wh,
   float ActiveEnergyTotalImportT2_Wh
 ) : MeasurementModel<SchneideriEM3xxxMeasurementValidatorModel>(
-  MeterId: MeterId,
-  Timestamp: Timestamp
+  MeterId,
+  Timestamp
 )
 {
   public override TariffMeasure Current_A
@@ -118,50 +118,50 @@ public record SchneideriEM3xxxMeasurementModel(
       return ActiveEnergyL1ImportT0_Wh is not 0
              && ActiveEnergyL2ImportT0_Wh is not 0
              && ActiveEnergyL3ImportT0_Wh is not 0
-        ? new CompositeTariffMeasure(new()
-          {
-            new UnaryTariffMeasure(
-              new ImportExportDuplexMeasure(
-                new TriPhasicMeasure(
-                  ActiveEnergyL1ImportT0_Wh,
-                  ActiveEnergyL2ImportT0_Wh,
-                  ActiveEnergyL3ImportT0_Wh
-                ),
-                new SinglePhasicMeasure(
-                  ActiveEnergyTotalExportT0_Wh
-                )
-              )
-            ),
-            new BinaryTariffMeasure(
-              new ImportExportDuplexMeasure(
-                new SinglePhasicMeasure(ActiveEnergyTotalImportT1_Wh),
-                PhasicMeasure.Null
+        ? new CompositeTariffMeasure(new List<TariffMeasure>
+        {
+          new UnaryTariffMeasure(
+            new ImportExportDuplexMeasure(
+              new TriPhasicMeasure(
+                ActiveEnergyL1ImportT0_Wh,
+                ActiveEnergyL2ImportT0_Wh,
+                ActiveEnergyL3ImportT0_Wh
               ),
-              new ImportExportDuplexMeasure(
-                new SinglePhasicMeasure(ActiveEnergyTotalImportT2_Wh),
-                PhasicMeasure.Null
+              new SinglePhasicMeasure(
+                ActiveEnergyTotalExportT0_Wh
               )
             )
-          })
-        : new CompositeTariffMeasure(new()
-          {
-            new UnaryTariffMeasure(
-              new ImportExportDuplexMeasure(
-                new SinglePhasicMeasure(ActiveEnergyTotalImportT0_Wh),
-                new SinglePhasicMeasure(ActiveEnergyTotalExportT0_Wh)
-              )
+          ),
+          new BinaryTariffMeasure(
+            new ImportExportDuplexMeasure(
+              new SinglePhasicMeasure(ActiveEnergyTotalImportT1_Wh),
+              PhasicMeasure.Null
             ),
-            new BinaryTariffMeasure(
-              new ImportExportDuplexMeasure(
-                new SinglePhasicMeasure(ActiveEnergyTotalImportT1_Wh),
-                PhasicMeasure.Null
-              ),
-              new ImportExportDuplexMeasure(
-                new SinglePhasicMeasure(ActiveEnergyTotalImportT2_Wh),
-                PhasicMeasure.Null
-              )
+            new ImportExportDuplexMeasure(
+              new SinglePhasicMeasure(ActiveEnergyTotalImportT2_Wh),
+              PhasicMeasure.Null
             )
-          });
+          )
+        })
+        : new CompositeTariffMeasure(new List<TariffMeasure>
+        {
+          new UnaryTariffMeasure(
+            new ImportExportDuplexMeasure(
+              new SinglePhasicMeasure(ActiveEnergyTotalImportT0_Wh),
+              new SinglePhasicMeasure(ActiveEnergyTotalExportT0_Wh)
+            )
+          ),
+          new BinaryTariffMeasure(
+            new ImportExportDuplexMeasure(
+              new SinglePhasicMeasure(ActiveEnergyTotalImportT1_Wh),
+              PhasicMeasure.Null
+            ),
+            new ImportExportDuplexMeasure(
+              new SinglePhasicMeasure(ActiveEnergyTotalImportT2_Wh),
+              PhasicMeasure.Null
+            )
+          )
+        });
     }
   }
 
@@ -183,7 +183,8 @@ public record SchneideriEM3xxxMeasurementModel(
     get { return TariffMeasure.Null; }
   }
 
-  public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+  public override IEnumerable<ValidationResult> Validate(
+    ValidationContext validationContext)
   {
     throw new NotImplementedException();
   }
@@ -193,8 +194,9 @@ public static class SchneideriEM3xxxMeasurementModelExtensions
 {
   public static SchneideriEM3xxxAggregateModel ToAggregate(
     this SchneideriEM3xxxMeasurementModel measurement,
-    IntervalModel interval) =>
-    new(
+    IntervalModel interval)
+  {
+    return new SchneideriEM3xxxAggregateModel(
       measurement.MeterId,
       measurement.Timestamp,
       interval,
@@ -223,10 +225,12 @@ public static class SchneideriEM3xxxMeasurementModelExtensions
       measurement.ActiveEnergyTotalImportT2_Wh,
       measurement.ActiveEnergyTotalImportT2_Wh
     );
+  }
 
   public static SchneideriEM3xxxMeasurementModel ToModel(
-    this SchneideriEM3xxxMeasurementEntity entity) =>
-    new(
+    this SchneideriEM3xxxMeasurementEntity entity)
+  {
+    return new SchneideriEM3xxxMeasurementModel(
       entity.Meter.Id,
       entity.Timestamp,
       entity.VoltageL1AnyT0_V,
@@ -250,10 +254,12 @@ public static class SchneideriEM3xxxMeasurementModelExtensions
       entity.ActiveEnergyTotalImportT1_Wh,
       entity.ActiveEnergyTotalImportT2_Wh
     );
+  }
 
   public static SchneideriEM3xxxMeasurementEntity ToEntity(
-    this SchneideriEM3xxxMeasurementModel model) =>
-    new()
+    this SchneideriEM3xxxMeasurementModel model)
+  {
+    return new SchneideriEM3xxxMeasurementEntity
     {
       MeterId = model.MeterId,
       Timestamp = model.Timestamp,
@@ -278,4 +284,5 @@ public static class SchneideriEM3xxxMeasurementModelExtensions
       ActiveEnergyTotalImportT1_Wh = model.ActiveEnergyTotalImportT1_Wh,
       ActiveEnergyTotalImportT2_Wh = model.ActiveEnergyTotalImportT2_Wh
     };
+  }
 }

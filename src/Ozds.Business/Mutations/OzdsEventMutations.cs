@@ -3,7 +3,7 @@ using Ozds.Data;
 
 namespace Ozds.Business.Mutations;
 
-public partial class OzdsEventMutations
+public class OzdsEventMutations
 {
   private readonly OzdsDbContext _context;
 

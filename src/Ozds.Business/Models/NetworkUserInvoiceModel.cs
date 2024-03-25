@@ -12,14 +12,15 @@ public record NetworkUserInvoiceModel(
   DateTimeOffset ToDate,
   string NetworkUserId
 ) : InvoiceModel(
-  Id: Id,
-  IssuedOn: IssuedOn,
-  IssuedById: IssuedById,
-  FromDate: FromDate,
-  ToDate: ToDate
+  Id,
+  IssuedOn,
+  IssuedById,
+  FromDate,
+  ToDate
 )
 {
-  public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+  public override IEnumerable<ValidationResult> Validate(
+    ValidationContext validationContext)
   {
     throw new NotImplementedException();
   }
@@ -27,8 +28,10 @@ public record NetworkUserInvoiceModel(
 
 public static class NetworkUserInvoiceModelExtensions
 {
-  public static NetworkUserInvoiceModel ToModel(this NetworkUserInvoiceEntity entity) =>
-    new(
+  public static NetworkUserInvoiceModel ToModel(
+    this NetworkUserInvoiceEntity entity)
+  {
+    return new NetworkUserInvoiceModel(
       entity.Id,
       entity.IssuedOn,
       entity.IssuedById,
@@ -36,9 +39,12 @@ public static class NetworkUserInvoiceModelExtensions
       entity.ToDate,
       entity.NetworkUserId
     );
+  }
 
-  public static NetworkUserInvoiceEntity ToEntity(this NetworkUserInvoiceModel model) =>
-    new()
+  public static NetworkUserInvoiceEntity ToEntity(
+    this NetworkUserInvoiceModel model)
+  {
+    return new NetworkUserInvoiceEntity
     {
       Id = model.Id,
       IssuedOn = model.IssuedOn,
@@ -47,4 +53,5 @@ public static class NetworkUserInvoiceModelExtensions
       ToDate = model.ToDate,
       NetworkUserId = model.NetworkUserId
     };
+  }
 }

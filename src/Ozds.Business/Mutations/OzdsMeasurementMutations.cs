@@ -4,7 +4,7 @@ using Ozds.Data;
 
 namespace Ozds.Business.Mutations;
 
-public partial class OzdsMeasurementMutations
+public class OzdsMeasurementMutations
 {
   private readonly OzdsDbContext _context;
 

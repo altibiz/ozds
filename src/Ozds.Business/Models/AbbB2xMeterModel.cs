@@ -23,26 +23,30 @@ public record AbbB2xMeterModel(
   float ConnectionPower_W,
   List<PhaseModel> Phases
 ) : MeterModel(
-  Id: Id,
-  Title: Title,
-  CreatedOn: CreatedOn,
-  CreatedById: CreatedById,
-  LastUpdatedOn: LastUpdatedOn,
-  LastUpdatedById: LastUpdatedById,
-  IsDeleted: IsDeleted,
-  DeletedOn: DeletedOn,
-  DeletedById: DeletedById,
-  MeasurementLocationId: MeasurementLocationId,
-  CatalogueId: CatalogueId,
-  MessengerId: MessengerId,
-  MeasurementValidatorId: MeasurementValidatorId,
-  ConnectionPower_W: ConnectionPower_W,
-  Phases: Phases
+  Id,
+  Title,
+  CreatedOn,
+  CreatedById,
+  LastUpdatedOn,
+  LastUpdatedById,
+  IsDeleted,
+  DeletedOn,
+  DeletedById,
+  MeasurementLocationId,
+  CatalogueId,
+  MessengerId,
+  MeasurementValidatorId,
+  ConnectionPower_W,
+  Phases
 )
 {
-  public override ICapabilities Capabilities => new AbbB2xCapabilities();
+  public override ICapabilities Capabilities
+  {
+    get { return new AbbB2xCapabilities(); }
+  }
 
-  public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+  public override IEnumerable<ValidationResult> Validate(
+    ValidationContext validationContext)
   {
     throw new NotImplementedException();
   }
@@ -50,8 +54,9 @@ public record AbbB2xMeterModel(
 
 public static class AbbB2xMeterModelExtensions
 {
-  public static AbbB2xMeterEntity ToEntity(this AbbB2xMeterModel model) =>
-    new()
+  public static AbbB2xMeterEntity ToEntity(this AbbB2xMeterModel model)
+  {
+    return new AbbB2xMeterEntity
     {
       Id = model.Id,
       Title = model.Title,
@@ -69,9 +74,11 @@ public static class AbbB2xMeterModelExtensions
       ConnectionPower_W = model.ConnectionPower_W,
       Phases = model.Phases.Select(p => p.ToEntity()).ToList()
     };
+  }
 
-  public static AbbB2xMeterModel ToModel(this AbbB2xMeterEntity entity) =>
-    new(
+  public static AbbB2xMeterModel ToModel(this AbbB2xMeterEntity entity)
+  {
+    return new AbbB2xMeterModel(
       entity.Id,
       entity.Title,
       entity.CreatedOn,
@@ -88,4 +95,5 @@ public static class AbbB2xMeterModelExtensions
       entity.ConnectionPower_W,
       entity.Phases.Select(p => p.ToModel()).ToList()
     );
+  }
 }

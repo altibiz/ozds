@@ -28,7 +28,7 @@ public static class DateTimeOffsetExtensions
   )
   {
     dateTimeOffset = dateTimeOffset.ToOffset(DefaultOffset);
-    int quarterHour = dateTimeOffset.Minute / 15;
+    var quarterHour = dateTimeOffset.Minute / 15;
     return new DateTimeOffset(
       dateTimeOffset.Year,
       dateTimeOffset.Month,
@@ -126,17 +126,17 @@ public static class DateTimeOffsetExtensions
   {
     dateTimeOffset = dateTimeOffset.ToOffset(DefaultOffset);
     return Enumerable
-    .Range(1, 12).Select(month =>
-     new DateTimeOffset(
-        dateTimeOffset.Year,
-        month,
-        1,
-        0,
-        0,
-        0,
-        dateTimeOffset.Offset
-      )
-      .ToUniversalTime()
-    );
+      .Range(1, 12).Select(month =>
+        new DateTimeOffset(
+            dateTimeOffset.Year,
+            month,
+            1,
+            0,
+            0,
+            0,
+            dateTimeOffset.Offset
+          )
+          .ToUniversalTime()
+      );
   }
 }

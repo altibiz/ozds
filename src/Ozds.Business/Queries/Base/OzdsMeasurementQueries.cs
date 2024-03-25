@@ -24,11 +24,17 @@ public class OzdsMeasurementQueries
   ) where T : class, IMeasurement
   {
     var queryable = EntityModelTypeMapper.GetDbSet(context, typeof(T));
-    var filtered = whereClauses.Aggregate(queryable, (current, clause) => current.WhereDynamic(clause));
-    var timeFiltered = filtered.Where(x => (x as AggregateEntity)!.Timestamp >= fromDate && (x as AggregateEntity)!.Timestamp < toDate);
+    var filtered = whereClauses.Aggregate(queryable,
+      (current, clause) => current.WhereDynamic(clause));
+    var timeFiltered = filtered.Where(x =>
+      (x as AggregateEntity)!.Timestamp >= fromDate &&
+      (x as AggregateEntity)!.Timestamp < toDate);
     var count = await timeFiltered.CountAsync();
-    var ordered = timeFiltered.OrderByDescending(x => (x as MeasurementEntity)!.Timestamp);
-    var items = await ordered.Skip((pageNumber - 1) * pageCount).Take(pageCount).ToListAsync();
-    return items.Select(item => EntityModelTypeMapper.ToModel<T>(item)).ToPaginatedList(count);
+    var ordered =
+      timeFiltered.OrderByDescending(x => (x as MeasurementEntity)!.Timestamp);
+    var items = await ordered.Skip((pageNumber - 1) * pageCount).Take(pageCount)
+      .ToListAsync();
+    return items.Select(item => EntityModelTypeMapper.ToModel<T>(item))
+      .ToPaginatedList(count);
   }
 }

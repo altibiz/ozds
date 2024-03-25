@@ -1,59 +1,92 @@
 namespace Ozds.Business.Math;
 
-public record class CompositeTariffMeasure(List<TariffMeasure> Measures) : TariffMeasure
+public record class CompositeTariffMeasure(List<TariffMeasure> Measures)
+  : TariffMeasure
 {
-  public T FromMostAccurate<T>(Func<TariffMeasure, T> selector, T @default) =>
-    Measures.FirstOrDefault(measure => measure is BinaryTariffMeasure) is { } binary
+  public T FromMostAccurate<T>(Func<TariffMeasure, T> selector, T @default)
+  {
+    return Measures.FirstOrDefault(measure => measure is BinaryTariffMeasure) is
+    { } binary
       ? selector(binary)
-      : Measures.FirstOrDefault(measure => measure is UnaryTariffMeasure) is { } unary
-      ? selector(unary)
-      : @default;
+      : Measures.FirstOrDefault(measure => measure is UnaryTariffMeasure) is
+      { } unary
+        ? selector(unary)
+        : @default;
+  }
 
-  public CompositeTariffMeasure Select(Func<TariffMeasure, TariffMeasure> selector) =>
-    new(Measures.Select(selector).ToList());
+  public CompositeTariffMeasure Select(
+    Func<TariffMeasure, TariffMeasure> selector)
+  {
+    return new CompositeTariffMeasure(Measures.Select(selector).ToList());
+  }
 
   public CompositeTariffMeasure Zip(PhasicMeasure other,
-    Func<TariffMeasure, PhasicMeasure, TariffMeasure> selector) =>
-    other switch
+    Func<TariffMeasure, PhasicMeasure, TariffMeasure> selector)
+  {
+    return other switch
     {
-      CompositePhasicMeasure otherComposite => new(Measures.Zip(otherComposite.Measures, selector).ToList()),
-      _ => new(Measures.Zip(Enumerable.Repeat(other, Measures.Count), selector).ToList())
+      CompositePhasicMeasure otherComposite => new CompositeTariffMeasure(
+        Measures.Zip(otherComposite.Measures, selector).ToList()),
+      _ => new CompositeTariffMeasure(Measures
+        .Zip(Enumerable.Repeat(other, Measures.Count), selector)
+        .ToList())
     };
+  }
 
   public CompositeTariffMeasure Zip(DuplexMeasure other,
-    Func<TariffMeasure, DuplexMeasure, TariffMeasure> selector) =>
-    other switch
+    Func<TariffMeasure, DuplexMeasure, TariffMeasure> selector)
+  {
+    return other switch
     {
-      CompositeDuplexMeasure otherComposite => new(Measures.Zip(otherComposite.Measures, selector).ToList()),
-      _ => new(Measures.Zip(Enumerable.Repeat(other, Measures.Count), selector).ToList())
+      CompositeDuplexMeasure otherComposite => new CompositeTariffMeasure(
+        Measures.Zip(otherComposite.Measures, selector).ToList()),
+      _ => new CompositeTariffMeasure(Measures
+        .Zip(Enumerable.Repeat(other, Measures.Count), selector)
+        .ToList())
     };
+  }
 
   public CompositeTariffMeasure Zip(TariffMeasure other,
-    Func<TariffMeasure, TariffMeasure, TariffMeasure> selector) =>
-    other switch
+    Func<TariffMeasure, TariffMeasure, TariffMeasure> selector)
+  {
+    return other switch
     {
-      CompositeTariffMeasure otherComposite => new(Measures.Zip(otherComposite.Measures, selector).ToList()),
-      _ => new(Measures.Zip(Enumerable.Repeat(other, Measures.Count), selector).ToList())
+      CompositeTariffMeasure otherComposite => new CompositeTariffMeasure(
+        Measures.Zip(otherComposite.Measures, selector).ToList()),
+      _ => new CompositeTariffMeasure(Measures
+        .Zip(Enumerable.Repeat(other, Measures.Count), selector)
+        .ToList())
     };
+  }
 }
 
 public static class CompositeTariffMeasureExtensions
 {
-  public static CompositeTariffMeasure ZipTariff(this CompositePhasicMeasure lhs, TariffMeasure rhs,
-    Func<PhasicMeasure, TariffMeasure, TariffMeasure> selector) =>
-    rhs switch
+  public static CompositeTariffMeasure ZipTariff(
+    this CompositePhasicMeasure lhs, TariffMeasure rhs,
+    Func<PhasicMeasure, TariffMeasure, TariffMeasure> selector)
+  {
+    return rhs switch
     {
-      CompositeTariffMeasure rhsComposite => new CompositeTariffMeasure(lhs.Measures.Zip(rhsComposite.Measures, selector).ToList()),
-      _ => new CompositeTariffMeasure(lhs.Measures.Select(measure => selector(measure, rhs)).ToList())
+      CompositeTariffMeasure rhsComposite => new CompositeTariffMeasure(
+        lhs.Measures.Zip(rhsComposite.Measures, selector).ToList()),
+      _ => new CompositeTariffMeasure(lhs.Measures
+        .Select(measure => selector(measure, rhs)).ToList())
     };
+  }
 
-  public static CompositeTariffMeasure ZipTariff(this CompositeDuplexMeasure lhs, TariffMeasure rhs,
-    Func<DuplexMeasure, TariffMeasure, TariffMeasure> selector) =>
-    rhs switch
+  public static CompositeTariffMeasure ZipTariff(
+    this CompositeDuplexMeasure lhs, TariffMeasure rhs,
+    Func<DuplexMeasure, TariffMeasure, TariffMeasure> selector)
+  {
+    return rhs switch
     {
-      CompositeTariffMeasure rhsComposite => new CompositeTariffMeasure(lhs.Measures.Zip(rhsComposite.Measures, selector).ToList()),
-      _ => new CompositeTariffMeasure(lhs.Measures.Select(measure => selector(measure, rhs)).ToList())
+      CompositeTariffMeasure rhsComposite => new CompositeTariffMeasure(
+        lhs.Measures.Zip(rhsComposite.Measures, selector).ToList()),
+      _ => new CompositeTariffMeasure(lhs.Measures
+        .Select(measure => selector(measure, rhs)).ToList())
     };
+  }
 }
 
 public record class BinaryTariffMeasure(DuplexMeasure T1, DuplexMeasure T2)
@@ -61,7 +94,7 @@ public record class BinaryTariffMeasure(DuplexMeasure T1, DuplexMeasure T2)
 
 public record class UnaryTariffMeasure(DuplexMeasure T0) : TariffMeasure;
 
-public record class NullTariffMeasure() : TariffMeasure;
+public record class NullTariffMeasure : TariffMeasure;
 
 public abstract record class TariffMeasure
 {
@@ -73,7 +106,8 @@ public abstract record class TariffMeasure
     {
       return this switch
       {
-        CompositeTariffMeasure composite => composite.Measures.FirstOrDefault(measure => measure is UnaryTariffMeasure) is UnaryTariffMeasure unary
+        CompositeTariffMeasure composite => composite.Measures.FirstOrDefault(
+          measure => measure is UnaryTariffMeasure) is UnaryTariffMeasure unary
           ? unary.T0
           : DuplexMeasure.Null,
         BinaryTariffMeasure binary => binary.T1 + binary.T2,
@@ -89,7 +123,9 @@ public abstract record class TariffMeasure
     {
       return this switch
       {
-        CompositeTariffMeasure composite => composite.Measures.FirstOrDefault(measure => measure is BinaryTariffMeasure) is BinaryTariffMeasure binary
+        CompositeTariffMeasure composite => composite.Measures.FirstOrDefault(
+            measure => measure is BinaryTariffMeasure) is BinaryTariffMeasure
+          binary
           ? binary
           : new BinaryTariffMeasure(DuplexMeasure.Null, DuplexMeasure.Null),
         BinaryTariffMeasure binary => binary,
@@ -102,7 +138,8 @@ public abstract record class TariffMeasure
   {
     return lhs switch
     {
-      CompositeTariffMeasure composite => composite.Select(measure => measure + rhs),
+      CompositeTariffMeasure composite => composite.Select(measure =>
+        measure + rhs),
       UnaryTariffMeasure unary => new UnaryTariffMeasure(unary.T0 + rhs),
       BinaryTariffMeasure binary => new BinaryTariffMeasure(binary.T1 + rhs,
         binary.T2 + rhs),
@@ -114,7 +151,8 @@ public abstract record class TariffMeasure
   {
     return lhs switch
     {
-      CompositeTariffMeasure composite => composite.Select(measure => measure - rhs),
+      CompositeTariffMeasure composite => composite.Select(measure =>
+        measure - rhs),
       UnaryTariffMeasure unary => new UnaryTariffMeasure(unary.T0 - rhs),
       BinaryTariffMeasure binary => new BinaryTariffMeasure(binary.T1 - rhs,
         binary.T2 - rhs),
@@ -126,7 +164,8 @@ public abstract record class TariffMeasure
   {
     return lhs switch
     {
-      CompositeTariffMeasure composite => composite.Select(measure => measure * rhs),
+      CompositeTariffMeasure composite => composite.Select(measure =>
+        measure * rhs),
       UnaryTariffMeasure unary => new UnaryTariffMeasure(unary.T0 * rhs),
       BinaryTariffMeasure binary => new BinaryTariffMeasure(binary.T1 * rhs,
         binary.T2 * rhs),
@@ -138,7 +177,8 @@ public abstract record class TariffMeasure
   {
     return lhs switch
     {
-      CompositeTariffMeasure composite => composite.Select(measure => measure / rhs),
+      CompositeTariffMeasure composite => composite.Select(measure =>
+        measure / rhs),
       UnaryTariffMeasure unary => new UnaryTariffMeasure(unary.T0 / rhs),
       BinaryTariffMeasure binary => new BinaryTariffMeasure(binary.T1 / rhs,
         binary.T2 / rhs),
@@ -150,7 +190,8 @@ public abstract record class TariffMeasure
   {
     return rhs switch
     {
-      CompositeTariffMeasure composite => composite.Select(measure => lhs + measure),
+      CompositeTariffMeasure composite => composite.Select(measure =>
+        lhs + measure),
       UnaryTariffMeasure unary => new UnaryTariffMeasure(lhs + unary.T0),
       BinaryTariffMeasure binary => new BinaryTariffMeasure(lhs + binary.T1,
         lhs + binary.T2),
@@ -162,7 +203,8 @@ public abstract record class TariffMeasure
   {
     return rhs switch
     {
-      CompositeTariffMeasure composite => composite.Select(measure => lhs - measure),
+      CompositeTariffMeasure composite => composite.Select(measure =>
+        lhs - measure),
       UnaryTariffMeasure unary => new UnaryTariffMeasure(lhs - unary.T0),
       BinaryTariffMeasure binary => new BinaryTariffMeasure(lhs - binary.T1,
         lhs - binary.T2),
@@ -174,7 +216,8 @@ public abstract record class TariffMeasure
   {
     return rhs switch
     {
-      CompositeTariffMeasure composite => composite.Select(measure => lhs * measure),
+      CompositeTariffMeasure composite => composite.Select(measure =>
+        lhs * measure),
       UnaryTariffMeasure unary => new UnaryTariffMeasure(lhs * unary.T0),
       BinaryTariffMeasure binary => new BinaryTariffMeasure(lhs * binary.T1,
         lhs * binary.T2),
@@ -186,7 +229,8 @@ public abstract record class TariffMeasure
   {
     return rhs switch
     {
-      CompositeTariffMeasure composite => composite.Select(measure => lhs / measure),
+      CompositeTariffMeasure composite => composite.Select(measure =>
+        lhs / measure),
       UnaryTariffMeasure unary => new UnaryTariffMeasure(lhs / unary.T0),
       BinaryTariffMeasure binary => new BinaryTariffMeasure(lhs / binary.T1,
         lhs / binary.T2),
@@ -198,9 +242,12 @@ public abstract record class TariffMeasure
   {
     return (lhs, rhs) switch
     {
-      (CompositeTariffMeasure composite, _) => composite.Zip(rhs, (lhs, rhs) => lhs + rhs),
-      (_, CompositePhasicMeasure composite) => composite.ZipTariff(lhs, (rhs, lhs) => lhs + rhs),
-      (BinaryTariffMeasure binary, _) => new BinaryTariffMeasure(binary.T1 + rhs, binary.T2 + rhs),
+      (CompositeTariffMeasure composite, _) => composite.Zip(rhs,
+        (lhs, rhs) => lhs + rhs),
+      (_, CompositePhasicMeasure composite) => composite.ZipTariff(lhs,
+        (rhs, lhs) => lhs + rhs),
+      (BinaryTariffMeasure binary, _) => new BinaryTariffMeasure(
+        binary.T1 + rhs, binary.T2 + rhs),
       (UnaryTariffMeasure unary, _) => new UnaryTariffMeasure(unary.T0 + rhs),
       _ => Null
     };
@@ -210,9 +257,12 @@ public abstract record class TariffMeasure
   {
     return (lhs, rhs) switch
     {
-      (CompositeTariffMeasure composite, _) => composite.Zip(rhs, (lhs, rhs) => lhs - rhs),
-      (_, CompositePhasicMeasure composite) => composite.ZipTariff(lhs, (rhs, lhs) => lhs - rhs),
-      (BinaryTariffMeasure binary, _) => new BinaryTariffMeasure(binary.T1 - rhs, binary.T2 - rhs),
+      (CompositeTariffMeasure composite, _) => composite.Zip(rhs,
+        (lhs, rhs) => lhs - rhs),
+      (_, CompositePhasicMeasure composite) => composite.ZipTariff(lhs,
+        (rhs, lhs) => lhs - rhs),
+      (BinaryTariffMeasure binary, _) => new BinaryTariffMeasure(
+        binary.T1 - rhs, binary.T2 - rhs),
       (UnaryTariffMeasure unary, _) => new UnaryTariffMeasure(unary.T0 - rhs),
       _ => Null
     };
@@ -222,9 +272,12 @@ public abstract record class TariffMeasure
   {
     return (lhs, rhs) switch
     {
-      (CompositeTariffMeasure composite, _) => composite.Zip(rhs, (lhs, rhs) => lhs * rhs),
-      (_, CompositePhasicMeasure composite) => composite.ZipTariff(lhs, (rhs, lhs) => lhs * rhs),
-      (BinaryTariffMeasure binary, _) => new BinaryTariffMeasure(binary.T1 * rhs, binary.T2 * rhs),
+      (CompositeTariffMeasure composite, _) => composite.Zip(rhs,
+        (lhs, rhs) => lhs * rhs),
+      (_, CompositePhasicMeasure composite) => composite.ZipTariff(lhs,
+        (rhs, lhs) => lhs * rhs),
+      (BinaryTariffMeasure binary, _) => new BinaryTariffMeasure(
+        binary.T1 * rhs, binary.T2 * rhs),
       (UnaryTariffMeasure unary, _) => new UnaryTariffMeasure(unary.T0 * rhs),
       _ => Null
     };
@@ -234,9 +287,12 @@ public abstract record class TariffMeasure
   {
     return (lhs, rhs) switch
     {
-      (CompositeTariffMeasure composite, _) => composite.Zip(rhs, (lhs, rhs) => lhs / rhs),
-      (_, CompositePhasicMeasure composite) => composite.ZipTariff(lhs, (rhs, lhs) => lhs / rhs),
-      (BinaryTariffMeasure binary, _) => new BinaryTariffMeasure(binary.T1 / rhs, binary.T2 / rhs),
+      (CompositeTariffMeasure composite, _) => composite.Zip(rhs,
+        (lhs, rhs) => lhs / rhs),
+      (_, CompositePhasicMeasure composite) => composite.ZipTariff(lhs,
+        (rhs, lhs) => lhs / rhs),
+      (BinaryTariffMeasure binary, _) => new BinaryTariffMeasure(
+        binary.T1 / rhs, binary.T2 / rhs),
       (UnaryTariffMeasure unary, _) => new UnaryTariffMeasure(unary.T0 / rhs),
       _ => Null
     };
@@ -246,9 +302,12 @@ public abstract record class TariffMeasure
   {
     return (lhs, rhs) switch
     {
-      (CompositePhasicMeasure composite, _) => composite.ZipTariff(rhs, (lhs, rhs) => lhs + rhs),
-      (_, CompositeTariffMeasure composite) => composite.Zip(lhs, (rhs, lhs) => lhs + rhs),
-      (_, BinaryTariffMeasure binary) => new BinaryTariffMeasure(lhs + binary.T1, lhs + binary.T2),
+      (CompositePhasicMeasure composite, _) => composite.ZipTariff(rhs,
+        (lhs, rhs) => lhs + rhs),
+      (_, CompositeTariffMeasure composite) => composite.Zip(lhs,
+        (rhs, lhs) => lhs + rhs),
+      (_, BinaryTariffMeasure binary) => new BinaryTariffMeasure(
+        lhs + binary.T1, lhs + binary.T2),
       (_, UnaryTariffMeasure unary) => new UnaryTariffMeasure(lhs + unary.T0),
       _ => Null
     };
@@ -258,9 +317,12 @@ public abstract record class TariffMeasure
   {
     return (lhs, rhs) switch
     {
-      (CompositePhasicMeasure composite, _) => composite.ZipTariff(rhs, (lhs, rhs) => lhs - rhs),
-      (_, CompositeTariffMeasure composite) => composite.Zip(lhs, (rhs, lhs) => lhs - rhs),
-      (_, BinaryTariffMeasure binary) => new BinaryTariffMeasure(lhs - binary.T1, lhs - binary.T2),
+      (CompositePhasicMeasure composite, _) => composite.ZipTariff(rhs,
+        (lhs, rhs) => lhs - rhs),
+      (_, CompositeTariffMeasure composite) => composite.Zip(lhs,
+        (rhs, lhs) => lhs - rhs),
+      (_, BinaryTariffMeasure binary) => new BinaryTariffMeasure(
+        lhs - binary.T1, lhs - binary.T2),
       (_, UnaryTariffMeasure unary) => new UnaryTariffMeasure(lhs - unary.T0),
       _ => Null
     };
@@ -270,9 +332,12 @@ public abstract record class TariffMeasure
   {
     return (lhs, rhs) switch
     {
-      (CompositePhasicMeasure composite, _) => composite.ZipTariff(rhs, (lhs, rhs) => lhs * rhs),
-      (_, CompositeTariffMeasure composite) => composite.Zip(lhs, (rhs, lhs) => lhs * rhs),
-      (_, BinaryTariffMeasure binary) => new BinaryTariffMeasure(lhs * binary.T1, lhs * binary.T2),
+      (CompositePhasicMeasure composite, _) => composite.ZipTariff(rhs,
+        (lhs, rhs) => lhs * rhs),
+      (_, CompositeTariffMeasure composite) => composite.Zip(lhs,
+        (rhs, lhs) => lhs * rhs),
+      (_, BinaryTariffMeasure binary) => new BinaryTariffMeasure(
+        lhs * binary.T1, lhs * binary.T2),
       (_, UnaryTariffMeasure unary) => new UnaryTariffMeasure(lhs * unary.T0),
       _ => Null
     };
@@ -282,9 +347,12 @@ public abstract record class TariffMeasure
   {
     return (lhs, rhs) switch
     {
-      (CompositePhasicMeasure composite, _) => composite.ZipTariff(rhs, (lhs, rhs) => lhs / rhs),
-      (_, CompositeTariffMeasure composite) => composite.Zip(lhs, (rhs, lhs) => lhs / rhs),
-      (_, BinaryTariffMeasure binary) => new BinaryTariffMeasure(lhs / binary.T1, lhs * binary.T2),
+      (CompositePhasicMeasure composite, _) => composite.ZipTariff(rhs,
+        (lhs, rhs) => lhs / rhs),
+      (_, CompositeTariffMeasure composite) => composite.Zip(lhs,
+        (rhs, lhs) => lhs / rhs),
+      (_, BinaryTariffMeasure binary) => new BinaryTariffMeasure(
+        lhs / binary.T1, lhs * binary.T2),
       (_, UnaryTariffMeasure unary) => new UnaryTariffMeasure(lhs / unary.T0),
       _ => Null
     };
@@ -294,10 +362,13 @@ public abstract record class TariffMeasure
   {
     return (lhs, rhs) switch
     {
-      (CompositeTariffMeasure composite, _) => composite.Zip(rhs, (lhs, rhs) => lhs + rhs),
-      (_, CompositeDuplexMeasure composite) => composite.ZipTariff(lhs, (rhs, lhs) => lhs + rhs),
+      (CompositeTariffMeasure composite, _) => composite.Zip(rhs,
+        (lhs, rhs) => lhs + rhs),
+      (_, CompositeDuplexMeasure composite) => composite.ZipTariff(lhs,
+        (rhs, lhs) => lhs + rhs),
       (UnaryTariffMeasure unary, _) => new UnaryTariffMeasure(unary.T0 + rhs),
-      (BinaryTariffMeasure binary, _) => new BinaryTariffMeasure(binary.T1 + rhs,
+      (BinaryTariffMeasure binary, _) => new BinaryTariffMeasure(
+        binary.T1 + rhs,
         binary.T2 + rhs),
       _ => Null
     };
@@ -307,10 +378,13 @@ public abstract record class TariffMeasure
   {
     return (lhs, rhs) switch
     {
-      (CompositeTariffMeasure composite, _) => composite.Zip(rhs, (lhs, rhs) => lhs - rhs),
-      (_, CompositeDuplexMeasure composite) => composite.ZipTariff(lhs, (rhs, lhs) => lhs - rhs),
+      (CompositeTariffMeasure composite, _) => composite.Zip(rhs,
+        (lhs, rhs) => lhs - rhs),
+      (_, CompositeDuplexMeasure composite) => composite.ZipTariff(lhs,
+        (rhs, lhs) => lhs - rhs),
       (UnaryTariffMeasure unary, _) => new UnaryTariffMeasure(unary.T0 - rhs),
-      (BinaryTariffMeasure binary, _) => new BinaryTariffMeasure(binary.T1 - rhs,
+      (BinaryTariffMeasure binary, _) => new BinaryTariffMeasure(
+        binary.T1 - rhs,
         binary.T2 - rhs),
       _ => Null
     };
@@ -320,10 +394,13 @@ public abstract record class TariffMeasure
   {
     return (lhs, rhs) switch
     {
-      (CompositeTariffMeasure composite, _) => composite.Zip(rhs, (lhs, rhs) => lhs * rhs),
-      (_, CompositeDuplexMeasure composite) => composite.ZipTariff(lhs, (rhs, lhs) => lhs * rhs),
+      (CompositeTariffMeasure composite, _) => composite.Zip(rhs,
+        (lhs, rhs) => lhs * rhs),
+      (_, CompositeDuplexMeasure composite) => composite.ZipTariff(lhs,
+        (rhs, lhs) => lhs * rhs),
       (UnaryTariffMeasure unary, _) => new UnaryTariffMeasure(unary.T0 * rhs),
-      (BinaryTariffMeasure binary, _) => new BinaryTariffMeasure(binary.T1 * rhs,
+      (BinaryTariffMeasure binary, _) => new BinaryTariffMeasure(
+        binary.T1 * rhs,
         binary.T2 * rhs),
       _ => Null
     };
@@ -333,10 +410,13 @@ public abstract record class TariffMeasure
   {
     return (lhs, rhs) switch
     {
-      (CompositeTariffMeasure composite, _) => composite.Zip(rhs, (lhs, rhs) => lhs / rhs),
-      (_, CompositeDuplexMeasure composite) => composite.ZipTariff(lhs, (rhs, lhs) => lhs / rhs),
+      (CompositeTariffMeasure composite, _) => composite.Zip(rhs,
+        (lhs, rhs) => lhs / rhs),
+      (_, CompositeDuplexMeasure composite) => composite.ZipTariff(lhs,
+        (rhs, lhs) => lhs / rhs),
       (UnaryTariffMeasure unary, _) => new UnaryTariffMeasure(unary.T0 / rhs),
-      (BinaryTariffMeasure binary, _) => new BinaryTariffMeasure(binary.T1 / rhs,
+      (BinaryTariffMeasure binary, _) => new BinaryTariffMeasure(
+        binary.T1 / rhs,
         binary.T2 / rhs),
       _ => Null
     };
@@ -346,10 +426,13 @@ public abstract record class TariffMeasure
   {
     return (lhs, rhs) switch
     {
-      (CompositeDuplexMeasure composite, _) => composite.ZipTariff(rhs, (lhs, rhs) => lhs + rhs),
-      (_, CompositeTariffMeasure composite) => composite.Zip(lhs, (rhs, lhs) => lhs + rhs),
+      (CompositeDuplexMeasure composite, _) => composite.ZipTariff(rhs,
+        (lhs, rhs) => lhs + rhs),
+      (_, CompositeTariffMeasure composite) => composite.Zip(lhs,
+        (rhs, lhs) => lhs + rhs),
       (_, UnaryTariffMeasure unary) => new UnaryTariffMeasure(lhs + unary.T0),
-      (_, BinaryTariffMeasure binary) => new BinaryTariffMeasure(lhs + binary.T1,
+      (_, BinaryTariffMeasure binary) => new BinaryTariffMeasure(
+        lhs + binary.T1,
         lhs + binary.T2),
       _ => Null
     };
@@ -359,10 +442,13 @@ public abstract record class TariffMeasure
   {
     return (lhs, rhs) switch
     {
-      (CompositeDuplexMeasure composite, _) => composite.ZipTariff(rhs, (lhs, rhs) => lhs - rhs),
-      (_, CompositeTariffMeasure composite) => composite.Zip(lhs, (rhs, lhs) => lhs - rhs),
+      (CompositeDuplexMeasure composite, _) => composite.ZipTariff(rhs,
+        (lhs, rhs) => lhs - rhs),
+      (_, CompositeTariffMeasure composite) => composite.Zip(lhs,
+        (rhs, lhs) => lhs - rhs),
       (_, UnaryTariffMeasure unary) => new UnaryTariffMeasure(lhs - unary.T0),
-      (_, BinaryTariffMeasure binary) => new BinaryTariffMeasure(lhs - binary.T1,
+      (_, BinaryTariffMeasure binary) => new BinaryTariffMeasure(
+        lhs - binary.T1,
         lhs - binary.T2),
       _ => Null
     };
@@ -372,10 +458,13 @@ public abstract record class TariffMeasure
   {
     return (lhs, rhs) switch
     {
-      (CompositeDuplexMeasure composite, _) => composite.ZipTariff(rhs, (lhs, rhs) => lhs * rhs),
-      (_, CompositeTariffMeasure composite) => composite.Zip(lhs, (rhs, lhs) => lhs * rhs),
+      (CompositeDuplexMeasure composite, _) => composite.ZipTariff(rhs,
+        (lhs, rhs) => lhs * rhs),
+      (_, CompositeTariffMeasure composite) => composite.Zip(lhs,
+        (rhs, lhs) => lhs * rhs),
       (_, UnaryTariffMeasure unary) => new UnaryTariffMeasure(lhs * unary.T0),
-      (_, BinaryTariffMeasure binary) => new BinaryTariffMeasure(lhs * binary.T1,
+      (_, BinaryTariffMeasure binary) => new BinaryTariffMeasure(
+        lhs * binary.T1,
         lhs * binary.T2),
       _ => Null
     };
@@ -385,10 +474,13 @@ public abstract record class TariffMeasure
   {
     return (lhs, rhs) switch
     {
-      (CompositeDuplexMeasure composite, _) => composite.ZipTariff(rhs, (lhs, rhs) => lhs / rhs),
-      (_, CompositeTariffMeasure composite) => composite.Zip(lhs, (rhs, lhs) => lhs / rhs),
+      (CompositeDuplexMeasure composite, _) => composite.ZipTariff(rhs,
+        (lhs, rhs) => lhs / rhs),
+      (_, CompositeTariffMeasure composite) => composite.Zip(lhs,
+        (rhs, lhs) => lhs / rhs),
       (_, UnaryTariffMeasure unary) => new UnaryTariffMeasure(lhs / unary.T0),
-      (_, BinaryTariffMeasure binary) => new BinaryTariffMeasure(lhs / binary.T1,
+      (_, BinaryTariffMeasure binary) => new BinaryTariffMeasure(
+        lhs / binary.T1,
         lhs / binary.T2),
       _ => Null
     };

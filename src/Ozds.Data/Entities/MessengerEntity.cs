@@ -14,5 +14,6 @@ public class MessengerEntity : AuditableEntity
 
   public virtual ICollection<MeterEntity> Meters { get; set; } = default!;
 
-  public virtual ICollection<MessengerEventEntity> Events { get; set; } = default!;
+  public virtual ICollection<MessengerEventEntity> Events { get; set; } =
+    default!;
 }

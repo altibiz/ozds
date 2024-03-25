@@ -10,15 +10,24 @@ public class PostgresqlEnumAttribute : Attribute
 
 public static class PostgresqlEnumAttributeExtensions
 {
-  public static ModelBuilder ApplyPostgresqlEnums(this ModelBuilder builder) =>
-    builder.Model
+  private static readonly MethodInfo HasPostgresEnumMethod =
+    typeof(NpgsqlModelBuilderExtensions)
+      .GetMethods()
+      .First(
+        method =>
+          method.IsGenericMethod
+          && method.Name == nameof(NpgsqlModelBuilderExtensions.HasPostgresEnum)
+      );
+
+  public static ModelBuilder ApplyPostgresqlEnums(this ModelBuilder builder)
+  {
+    return builder.Model
       .GetEntityTypes()
       .SelectMany(entityType => entityType.GetProperties())
       .Where(
         property =>
           property.PropertyInfo?.PropertyType is { } type &&
-          type.GetCustomAttribute<PostgresqlEnumAttribute>() is { }
-      )
+          type.GetCustomAttribute<PostgresqlEnumAttribute>() is not null)
       .Aggregate(
         builder,
         (builder, property) =>
@@ -33,14 +42,5 @@ public static class PostgresqlEnumAttributeExtensions
           return builder;
         }
       );
-
-  private static readonly MethodInfo HasPostgresEnumMethod =
-    typeof(NpgsqlModelBuilderExtensions)
-      .GetMethods()
-      .First(
-        method =>
-          method.IsGenericMethod
-          && method.Name == nameof(NpgsqlModelBuilderExtensions.HasPostgresEnum)
-      );
+  }
 }
-

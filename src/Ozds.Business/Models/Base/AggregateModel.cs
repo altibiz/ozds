@@ -26,7 +26,8 @@ public abstract record AggregateModel(
   {
     get
     {
-      return ActiveEnergySpan_Wh.SpanDifferential((float)Interval.ToTimeSpan(Timestamp).TotalHours);
+      return ActiveEnergySpan_Wh.SpanDifferential(
+        (float)Interval.ToTimeSpan(Timestamp).TotalHours);
     }
   }
 
@@ -34,7 +35,8 @@ public abstract record AggregateModel(
   {
     get
     {
-      return ReactiveEnergySpan_VARh.SpanDifferential((float)Interval.ToTimeSpan(Timestamp).TotalHours);
+      return ReactiveEnergySpan_VARh.SpanDifferential(
+        (float)Interval.ToTimeSpan(Timestamp).TotalHours);
     }
   }
 
@@ -42,7 +44,8 @@ public abstract record AggregateModel(
   {
     get
     {
-      return ApparentEnergySpan_VAh.SpanDifferential((float)Interval.ToTimeSpan(Timestamp).TotalHours);
+      return ApparentEnergySpan_VAh.SpanDifferential(
+        (float)Interval.ToTimeSpan(Timestamp).TotalHours);
     }
   }
 
@@ -61,5 +64,6 @@ public abstract record AggregateModel(
     get { return ApparentEnergySpan_VAh.SpanMax; }
   }
 
-  public abstract IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+  public abstract IEnumerable<ValidationResult> Validate(
+    ValidationContext validationContext);
 }

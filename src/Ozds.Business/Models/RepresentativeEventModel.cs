@@ -11,25 +11,30 @@ public record RepresentativeEventModel(
   string Description,
   string RepresentativeId
 ) : EventModel(
-  Id: Id,
-  Timestamp: Timestamp,
-  Level: Level,
-  Description: Description
+  Id,
+  Timestamp,
+  Level,
+  Description
 );
 
 public static class RepresentativeEventModelExtensions
 {
-  public static RepresentativeEventModel ToModel(this RepresentativeEventEntity entity) =>
-    new(
-      Id: entity.Id,
-      Timestamp: entity.Timestamp,
-      Level: entity.Level.ToModel(),
-      Description: entity.Description,
-      RepresentativeId: entity.RepresentativeId
+  public static RepresentativeEventModel ToModel(
+    this RepresentativeEventEntity entity)
+  {
+    return new RepresentativeEventModel(
+      entity.Id,
+      entity.Timestamp,
+      entity.Level.ToModel(),
+      entity.Description,
+      entity.RepresentativeId
     );
+  }
 
-  public static RepresentativeEventEntity ToEntity(this RepresentativeEventModel model) =>
-    new()
+  public static RepresentativeEventEntity ToEntity(
+    this RepresentativeEventModel model)
+  {
+    return new RepresentativeEventEntity
     {
       Id = model.Id,
       Timestamp = model.Timestamp,
@@ -37,4 +42,5 @@ public static class RepresentativeEventModelExtensions
       Description = model.Description,
       RepresentativeId = model.RepresentativeId
     };
+  }
 }

@@ -18,7 +18,8 @@ public class OzdsInvoiceQueries
   public async Task<T?> ReadSingle<T>(string id) where T : class, IInvoice
   {
     var queryable = EntityModelTypeMapper.GetDbSet(context, typeof(T));
-    var item = await queryable.FirstOrDefaultAsync(x => (x as InvoiceEntity)!.Id == id);
+    var item =
+      await queryable.FirstOrDefaultAsync(x => (x as InvoiceEntity)!.Id == id);
     return item is null ? null : EntityModelTypeMapper.ToModel<T>(item);
   }
 
@@ -31,12 +32,16 @@ public class OzdsInvoiceQueries
   ) where T : class, IEvent
   {
     var queryable = EntityModelTypeMapper.GetDbSet(context, typeof(T));
-    var filtered = whereClauses.Aggregate(queryable, (current, clause) => current.WhereDynamic(clause));
+    var filtered = whereClauses.Aggregate(queryable,
+      (current, clause) => current.WhereDynamic(clause));
     var count = await filtered.CountAsync();
-    var orderedByDesc = orderByDescClauses.Aggregate(filtered, (current, clause) => current.OrderByDescendingDynamic(clause));
-    var orderedByAsc = orderByAscClauses.Aggregate(orderedByDesc, (current, clause) => current.OrderByDynamic(clause));
-    var items = await orderedByAsc.Skip((pageNumber - 1) * pageCount).Take(pageCount).ToListAsync();
-    return items.Select(item => EntityModelTypeMapper.ToModel<T>(item)).ToPaginatedList(count);
+    var orderedByDesc = orderByDescClauses.Aggregate(filtered,
+      (current, clause) => current.OrderByDescendingDynamic(clause));
+    var orderedByAsc = orderByAscClauses.Aggregate(orderedByDesc,
+      (current, clause) => current.OrderByDynamic(clause));
+    var items = await orderedByAsc.Skip((pageNumber - 1) * pageCount)
+      .Take(pageCount).ToListAsync();
+    return items.Select(item => EntityModelTypeMapper.ToModel<T>(item))
+      .ToPaginatedList(count);
   }
 }
-

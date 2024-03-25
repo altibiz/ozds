@@ -7,26 +7,31 @@ namespace Ozds.Business.Extensions;
 
 public static class DbContextOptionsBuilderExtensions
 {
-  public static DbContextOptionsBuilder AddServedSaveChangesInterceptorsFromAssembly(
-    this DbContextOptionsBuilder builder,
-    Assembly assembly,
-    IServiceProvider serviceProvider
-  ) => builder.AddInterceptors(
-    assembly
-      .GetTypes()
-      .Where(type => type.IsSubclassOf(typeof(ServedSaveChangesInterceptor)))
-      .Select(type =>
-      {
-        try
+  public static DbContextOptionsBuilder
+    AddServedSaveChangesInterceptorsFromAssembly(
+      this DbContextOptionsBuilder builder,
+      Assembly assembly,
+      IServiceProvider serviceProvider
+    )
+  {
+    return builder.AddInterceptors(
+      assembly
+        .GetTypes()
+        .Where(type => type.IsSubclassOf(typeof(ServedSaveChangesInterceptor)))
+        .Select(type =>
         {
-          return (IInterceptor?)Activator.CreateInstance(type, serviceProvider);
-        }
-        catch (Exception)
-        {
-          return null;
-        }
-      })
-      .Where(interceptor => interceptor is not null)
-      .OfType<IInterceptor>()
-      .ToArray());
+          try
+          {
+            return (IInterceptor?)Activator.CreateInstance(type,
+              serviceProvider);
+          }
+          catch (Exception)
+          {
+            return null;
+          }
+        })
+        .Where(interceptor => interceptor is not null)
+        .OfType<IInterceptor>()
+        .ToArray());
+  }
 }

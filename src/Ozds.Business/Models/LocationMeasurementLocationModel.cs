@@ -17,19 +17,20 @@ public record LocationMeasurementLocationModel(
   string MeterId,
   string LocationId
 ) : MeasurementLocationModel(
-  Id: Id,
-  Title: Title,
-  CreatedOn: CreatedOn,
-  CreatedById: CreatedById,
-  LastUpdatedOn: LastUpdatedOn,
-  LastUpdatedById: LastUpdatedById,
-  IsDeleted: IsDeleted,
-  DeletedOn: DeletedOn,
-  DeletedById: DeletedById,
-  MeterId: MeterId
+  Id,
+  Title,
+  CreatedOn,
+  CreatedById,
+  LastUpdatedOn,
+  LastUpdatedById,
+  IsDeleted,
+  DeletedOn,
+  DeletedById,
+  MeterId
 )
 {
-  public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+  public override IEnumerable<ValidationResult> Validate(
+    ValidationContext validationContext)
   {
     throw new NotImplementedException();
   }
@@ -37,8 +38,10 @@ public record LocationMeasurementLocationModel(
 
 public static class LocationMeasurementLocationModelExtensions
 {
-  public static LocationMeasurementLocationModel ToModel(this LocationMeasurementLocationEntity entity) =>
-    new(
+  public static LocationMeasurementLocationModel ToModel(
+    this LocationMeasurementLocationEntity entity)
+  {
+    return new LocationMeasurementLocationModel(
       entity.Id,
       entity.Title,
       entity.CreatedOn,
@@ -51,9 +54,12 @@ public static class LocationMeasurementLocationModelExtensions
       entity.MeterId,
       entity.LocationId
     );
+  }
 
-  public static LocationMeasurementLocationEntity ToEntity(this LocationMeasurementLocationModel model) =>
-    new()
+  public static LocationMeasurementLocationEntity ToEntity(
+    this LocationMeasurementLocationModel model)
+  {
+    return new LocationMeasurementLocationEntity
     {
       Id = model.Id,
       Title = model.Title,
@@ -67,4 +73,5 @@ public static class LocationMeasurementLocationModelExtensions
       MeterId = model.MeterId,
       LocationId = model.LocationId
     };
+  }
 }

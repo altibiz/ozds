@@ -51,7 +51,7 @@ public class AuditingInterceptor : ServedSaveChangesInterceptor
       .Entries<AuditableEntity>()
       .ToList();
 
-    foreach (EntityEntry<AuditableEntity> auditable in entries)
+    foreach (var auditable in entries)
     {
       if (auditable.State is EntityState.Added)
       {
@@ -158,9 +158,11 @@ public class AuditingInterceptor : ServedSaveChangesInterceptor
 
   private string? GetRepresentativeId()
   {
-    if (_serviceProvider.GetService<IHttpContextAccessor>() is { } httpContextAccessor)
+    if (_serviceProvider.GetService<IHttpContextAccessor>() is
+      { } httpContextAccessor)
     {
-      return httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
+      return httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes
+        .NameIdentifier);
     }
 
     return null;
@@ -168,31 +170,38 @@ public class AuditingInterceptor : ServedSaveChangesInterceptor
 
   private bool IsDevelopment()
   {
-    return _serviceProvider.GetService<IHostEnvironment>() is { } hostEnvironment
-      && hostEnvironment.IsDevelopment();
+    return _serviceProvider.GetService<IHostEnvironment>() is
+    { } hostEnvironment
+           && hostEnvironment.IsDevelopment();
   }
 
-  private static string CreateAddedMessage(EntityEntry entry) =>
-    entry.Properties
+  private static string CreateAddedMessage(EntityEntry entry)
+  {
+    return entry.Properties
       .Aggregate(
         $"Inserting {entry.Metadata.DisplayName()} with ",
         (auditString, property) => auditString +
-          $"{property.Metadata.Name}: '{property.CurrentValue}' ");
+                                   $"{property.Metadata.Name}: '{property.CurrentValue}' ");
+  }
 
-  private static string CreateModifiedMessage(EntityEntry entry) =>
-    entry.Properties
+  private static string CreateModifiedMessage(EntityEntry entry)
+  {
+    return entry.Properties
       .Where(property =>
         property.IsModified || property.Metadata.IsPrimaryKey())
       .Aggregate(
         $"Updating {entry.Metadata.DisplayName()} with ",
         (auditString, property) => auditString +
-          $"{property.Metadata.Name}: '{property.CurrentValue}' ");
+                                   $"{property.Metadata.Name}: '{property.CurrentValue}' ");
+  }
 
-  private static string CreateDeletedMessage(EntityEntry entry) =>
-    entry.Properties
+  private static string CreateDeletedMessage(EntityEntry entry)
+  {
+    return entry.Properties
       .Where(property => property.Metadata.IsPrimaryKey())
       .Aggregate(
         $"Deleting {entry.Metadata.DisplayName()} with ",
         (auditString, property) => auditString +
-          $"{property.Metadata.Name}: '{property.CurrentValue}' ");
+                                   $"{property.Metadata.Name}: '{property.CurrentValue}' ");
+  }
 }

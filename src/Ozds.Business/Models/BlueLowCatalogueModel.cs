@@ -19,19 +19,20 @@ public record BlueLowCatalogueModel(
   float ReactiveEnergyTotalImportT0Price_EUR,
   float MeterFeePrice_EUR
 ) : CatalogueModel(
-  Id: Id,
-  Title: Title,
-  CreatedOn: CreatedOn,
-  CreatedById: CreatedById,
-  LastUpdatedOn: LastUpdatedOn,
-  LastUpdatedById: LastUpdatedById,
-  IsDeleted: IsDeleted,
-  DeletedOn: DeletedOn,
-  DeletedById: DeletedById,
-  LocationId: LocationId
+  Id,
+  Title,
+  CreatedOn,
+  CreatedById,
+  LastUpdatedOn,
+  LastUpdatedById,
+  IsDeleted,
+  DeletedOn,
+  DeletedById,
+  LocationId
 )
 {
-  public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+  public override IEnumerable<ValidationResult> Validate(
+    ValidationContext validationContext)
   {
     throw new NotImplementedException();
   }
@@ -39,8 +40,10 @@ public record BlueLowCatalogueModel(
 
 public static class BlueLowCatalogueModelExtensions
 {
-  public static BlueLowCatalogueModel ToModel(this BlueLowCatalogueEntity entity) =>
-    new(
+  public static BlueLowCatalogueModel ToModel(
+    this BlueLowCatalogueEntity entity)
+  {
+    return new BlueLowCatalogueModel(
       entity.Id,
       entity.Title,
       entity.CreatedOn,
@@ -55,9 +58,12 @@ public static class BlueLowCatalogueModelExtensions
       entity.ReactiveEnergyTotalImportT0Price_EUR,
       entity.MeterFeePrice_EUR
     );
+  }
 
-  public static BlueLowCatalogueEntity ToEntity(this BlueLowCatalogueModel model) =>
-    new()
+  public static BlueLowCatalogueEntity ToEntity(
+    this BlueLowCatalogueModel model)
+  {
+    return new BlueLowCatalogueEntity
     {
       Id = model.Id,
       Title = model.Title,
@@ -69,8 +75,11 @@ public static class BlueLowCatalogueModelExtensions
       DeletedOn = model.DeletedOn,
       DeletedById = model.DeletedById,
       LocationId = model.LocationId,
-      ActiveEnergyTotalImportT0Price_EUR = model.ActiveEnergyTotalImportT0Price_EUR,
-      ReactiveEnergyTotalImportT0Price_EUR = model.ReactiveEnergyTotalImportT0Price_EUR,
+      ActiveEnergyTotalImportT0Price_EUR =
+        model.ActiveEnergyTotalImportT0Price_EUR,
+      ReactiveEnergyTotalImportT0Price_EUR =
+        model.ReactiveEnergyTotalImportT0Price_EUR,
       MeterFeePrice_EUR = model.MeterFeePrice_EUR
     };
+  }
 }

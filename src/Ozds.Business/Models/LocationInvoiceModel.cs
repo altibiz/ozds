@@ -12,14 +12,15 @@ public record LocationInvoiceModel(
   DateTimeOffset ToDate,
   string LocationId
 ) : InvoiceModel(
-  Id: Id,
-  IssuedOn: IssuedOn,
-  IssuedById: IssuedById,
-  FromDate: FromDate,
-  ToDate: ToDate
+  Id,
+  IssuedOn,
+  IssuedById,
+  FromDate,
+  ToDate
 )
 {
-  public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+  public override IEnumerable<ValidationResult> Validate(
+    ValidationContext validationContext)
   {
     throw new NotImplementedException();
   }
@@ -27,8 +28,9 @@ public record LocationInvoiceModel(
 
 public static class LocationInvoiceModelExtensions
 {
-  public static LocationInvoiceModel ToModel(this LocationInvoiceEntity entity) =>
-    new(
+  public static LocationInvoiceModel ToModel(this LocationInvoiceEntity entity)
+  {
+    return new LocationInvoiceModel(
       entity.Id,
       entity.IssuedOn,
       entity.IssuedById,
@@ -36,9 +38,11 @@ public static class LocationInvoiceModelExtensions
       entity.ToDate,
       entity.LocationId
     );
+  }
 
-  public static LocationInvoiceEntity ToEntity(this LocationInvoiceModel model) =>
-    new()
+  public static LocationInvoiceEntity ToEntity(this LocationInvoiceModel model)
+  {
+    return new LocationInvoiceEntity
     {
       Id = model.Id,
       IssuedOn = model.IssuedOn,
@@ -47,4 +51,5 @@ public static class LocationInvoiceModelExtensions
       ToDate = model.ToDate,
       LocationId = model.LocationId
     };
+  }
 }

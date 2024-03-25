@@ -37,11 +37,17 @@ public class TimescaleRelationalAnnotationProvider : NpgsqlAnnotationProvider
         // NOTE: do not change this
         Annotation = mapping.TypeBase
           .GetAnnotations()
-          .FirstOrDefault(annotation => annotation.Name == "TimescaleHypertable")
+          .FirstOrDefault(
+            annotation => annotation.Name == "TimescaleHypertable")
       });
 
-    if (mappingTypeAttributes.FirstOrDefault(x => x is { Annotation.Value: string }) is { Annotation.Value: string } x &&
-      x.Mapping.ColumnMappings.FirstOrDefault(column => column.Property.Name == x.Annotation.Value as string)?.Column.Name is { } timeColumn)
+    if (mappingTypeAttributes.FirstOrDefault(x =>
+            x is { Annotation.Value: string }) is
+      { Annotation.Value: string } x &&
+        x.Mapping.ColumnMappings.FirstOrDefault(column =>
+            column.Property.Name == x.Annotation.Value as string)?.Column
+          .Name is
+        { } timeColumn)
     {
       annotations = annotations.Append(
         new Annotation(

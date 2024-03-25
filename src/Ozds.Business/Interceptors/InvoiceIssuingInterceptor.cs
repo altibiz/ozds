@@ -8,15 +8,20 @@ namespace Ozds.Business.Interceptors;
 public class InvoiceIssuingInterceptor : ServedSaveChangesInterceptor
 {
   public InvoiceIssuingInterceptor(IServiceProvider serviceProvider)
-    : base(serviceProvider) { }
+    : base(serviceProvider)
+  {
+  }
 
-  public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
+  public override InterceptionResult<int> SavingChanges(
+    DbContextEventData eventData, InterceptionResult<int> result)
   {
     IssueInvoices(eventData);
     return base.SavingChanges(eventData, result);
   }
 
-  public override ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData, InterceptionResult<int> result, CancellationToken cancellationToken = default)
+  public override ValueTask<InterceptionResult<int>> SavingChangesAsync(
+    DbContextEventData eventData, InterceptionResult<int> result,
+    CancellationToken cancellationToken = default)
   {
     IssueInvoices(eventData);
     return base.SavingChangesAsync(eventData, result, cancellationToken);
@@ -48,9 +53,11 @@ public class InvoiceIssuingInterceptor : ServedSaveChangesInterceptor
 
   private string? GetRepresentativeId()
   {
-    if (_serviceProvider.GetService<IHttpContextAccessor>() is { } httpContextAccessor)
+    if (_serviceProvider.GetService<IHttpContextAccessor>() is
+      { } httpContextAccessor)
     {
-      return httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
+      return httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes
+        .NameIdentifier);
     }
 
     return null;

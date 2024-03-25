@@ -11,26 +11,31 @@ public record SystemAuditEventModel(
   string Description,
   AuditModel Audit
 ) : AuditEventModel(
-  Id: Id,
-  Timestamp: Timestamp,
-  Level: Level,
-  Description: Description,
-  Audit: Audit
+  Id,
+  Timestamp,
+  Level,
+  Description,
+  Audit
 );
 
 public static class SystemAuditEventModelExtensions
 {
-  public static SystemAuditEventModel ToModel(this SystemAuditEventEntity entity) =>
-    new(
-      Id: entity.Id,
-      Timestamp: entity.Timestamp,
-      Level: entity.Level.ToModel(),
-      Description: entity.Description,
-      Audit: entity.Audit.ToModel()
+  public static SystemAuditEventModel ToModel(
+    this SystemAuditEventEntity entity)
+  {
+    return new SystemAuditEventModel(
+      entity.Id,
+      entity.Timestamp,
+      entity.Level.ToModel(),
+      entity.Description,
+      entity.Audit.ToModel()
     );
+  }
 
-  public static SystemAuditEventEntity ToEntity(this SystemAuditEventModel model) =>
-    new()
+  public static SystemAuditEventEntity ToEntity(
+    this SystemAuditEventModel model)
+  {
+    return new SystemAuditEventEntity
     {
       Id = model.Id,
       Timestamp = model.Timestamp,
@@ -38,4 +43,5 @@ public static class SystemAuditEventModelExtensions
       Description = model.Description,
       Audit = model.Audit.ToEntity()
     };
+  }
 }

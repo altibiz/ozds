@@ -11,10 +11,9 @@ namespace Ozds.Data.Entities.Base;
 [Table("invoices")]
 public class InvoiceEntity : ReadonlyEntity
 {
-  [Key]
-  public string Id { get; set; } = default!;
-
   [NotMapped] private DateTimeOffset _timestamp;
+
+  [Key] public string Id { get; set; } = default!;
 
   [Required]
   public DateTimeOffset IssuedOn
@@ -23,8 +22,7 @@ public class InvoiceEntity : ReadonlyEntity
     set { _timestamp = value.ToUniversalTime(); }
   }
 
-  [ForeignKey(nameof(IssuedBy))]
-  public string? IssuedById { get; set; }
+  [ForeignKey(nameof(IssuedBy))] public string? IssuedById { get; set; }
 
   public virtual RepresentativeEntity? IssuedBy { get; set; }
 

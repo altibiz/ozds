@@ -24,24 +24,26 @@ public record AbbB2xMeasurementValidatorModel(
   float MinReactivePower_VAR,
   float MaxReactivePower_VAR
 ) : MeasurementValidatorModel<AbbB2xMeasurementModel>(
-  Id: Id,
-  Title: Title,
-  CreatedOn: CreatedOn,
-  CreatedById: CreatedById,
-  LastUpdatedOn: LastUpdatedOn,
-  LastUpdatedById: LastUpdatedById,
-  IsDeleted: IsDeleted,
-  DeletedOn: DeletedOn,
-  DeletedById: DeletedById,
-  MeterId: MeterId
+  Id,
+  Title,
+  CreatedOn,
+  CreatedById,
+  LastUpdatedOn,
+  LastUpdatedById,
+  IsDeleted,
+  DeletedOn,
+  DeletedById,
+  MeterId
 )
 {
-  public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+  public override IEnumerable<ValidationResult> Validate(
+    ValidationContext validationContext)
   {
     throw new NotImplementedException();
   }
 
-  public override string? Validate(AbbB2xMeasurementModel measurement, string property)
+  public override string? Validate(AbbB2xMeasurementModel measurement,
+    string property)
   {
     throw new NotImplementedException();
   }
@@ -49,8 +51,10 @@ public record AbbB2xMeasurementValidatorModel(
 
 public static class AbbB2xMeasurementValidatorModelExtensions
 {
-  public static AbbB2xMeasurementValidatorModel ToModel(this AbbB2xMeasurementValidatorEntity entity) =>
-    new(
+  public static AbbB2xMeasurementValidatorModel ToModel(
+    this AbbB2xMeasurementValidatorEntity entity)
+  {
+    return new AbbB2xMeasurementValidatorModel(
       entity.Id,
       entity.Title,
       entity.CreatedOn,
@@ -70,9 +74,12 @@ public static class AbbB2xMeasurementValidatorModelExtensions
       entity.MinReactivePower_VAR,
       entity.MaxReactivePower_VAR
     );
+  }
 
-  public static AbbB2xMeasurementValidatorEntity ToEntity(this AbbB2xMeasurementValidatorModel model) =>
-    new()
+  public static AbbB2xMeasurementValidatorEntity ToEntity(
+    this AbbB2xMeasurementValidatorModel model)
+  {
+    return new AbbB2xMeasurementValidatorEntity
     {
       Id = model.Id,
       Title = model.Title,
@@ -93,4 +100,5 @@ public static class AbbB2xMeasurementValidatorModelExtensions
       MinReactivePower_VAR = model.MinReactivePower_VAR,
       MaxReactivePower_VAR = model.MaxReactivePower_VAR
     };
+  }
 }

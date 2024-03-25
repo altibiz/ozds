@@ -19,11 +19,10 @@ public abstract class MeasurementEntity : ReadonlyEntity
 }
 
 [PrimaryKey(nameof(Timestamp), nameof(MeterId))]
-public abstract class MeasurementEntity<T> : MeasurementEntity where T : MeterEntity
+public abstract class MeasurementEntity<T> : MeasurementEntity
+  where T : MeterEntity
 {
-  [ForeignKey(nameof(Meter))]
-  public string MeterId { get; set; } = default!;
+  [ForeignKey(nameof(Meter))] public string MeterId { get; set; } = default!;
 
-  [Required]
-  public virtual T Meter { get; set; } = default!;
+  [Required] public virtual T Meter { get; set; } = default!;
 }

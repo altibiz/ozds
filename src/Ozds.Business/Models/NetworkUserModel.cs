@@ -16,18 +16,19 @@ public record NetworkUserModel(
   string? DeletedById,
   string LocationId
 ) : AuditableModel(
-  Id: Id,
-  Title: Title,
-  CreatedOn: CreatedOn,
-  CreatedById: CreatedById,
-  LastUpdatedOn: LastUpdatedOn,
-  LastUpdatedById: LastUpdatedById,
-  IsDeleted: IsDeleted,
-  DeletedOn: DeletedOn,
-  DeletedById: DeletedById
+  Id,
+  Title,
+  CreatedOn,
+  CreatedById,
+  LastUpdatedOn,
+  LastUpdatedById,
+  IsDeleted,
+  DeletedOn,
+  DeletedById
 )
 {
-  public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+  public override IEnumerable<ValidationResult> Validate(
+    ValidationContext validationContext)
   {
     throw new NotImplementedException();
   }
@@ -35,8 +36,9 @@ public record NetworkUserModel(
 
 public static class NetworkUserModelExtensions
 {
-  public static NetworkUserModel ToModel(this NetworkUserEntity entity) =>
-    new(
+  public static NetworkUserModel ToModel(this NetworkUserEntity entity)
+  {
+    return new NetworkUserModel(
       entity.Id,
       entity.Title,
       entity.CreatedOn,
@@ -48,9 +50,11 @@ public static class NetworkUserModelExtensions
       entity.DeletedById,
       entity.LocationId
     );
+  }
 
-  public static NetworkUserEntity ToEntity(this NetworkUserModel model) =>
-    new()
+  public static NetworkUserEntity ToEntity(this NetworkUserModel model)
+  {
+    return new NetworkUserEntity
     {
       Id = model.Id,
       Title = model.Title,
@@ -63,4 +67,5 @@ public static class NetworkUserModelExtensions
       DeletedById = model.DeletedById,
       LocationId = model.LocationId
     };
+  }
 }

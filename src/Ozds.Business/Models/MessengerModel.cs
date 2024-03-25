@@ -16,18 +16,19 @@ public record MessengerModel(
   string? DeletedById,
   string LocationId
 ) : AuditableModel(
-  Id: Id,
-  Title: Title,
-  CreatedOn: CreatedOn,
-  CreatedById: CreatedById,
-  LastUpdatedOn: LastUpdatedOn,
-  LastUpdatedById: LastUpdatedById,
-  IsDeleted: IsDeleted,
-  DeletedOn: DeletedOn,
-  DeletedById: DeletedById
+  Id,
+  Title,
+  CreatedOn,
+  CreatedById,
+  LastUpdatedOn,
+  LastUpdatedById,
+  IsDeleted,
+  DeletedOn,
+  DeletedById
 )
 {
-  public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+  public override IEnumerable<ValidationResult> Validate(
+    ValidationContext validationContext)
   {
     throw new NotImplementedException();
   }
@@ -35,8 +36,9 @@ public record MessengerModel(
 
 public static class MessengerModelExtensions
 {
-  public static MessengerModel ToModel(this MessengerEntity entity) =>
-    new(
+  public static MessengerModel ToModel(this MessengerEntity entity)
+  {
+    return new MessengerModel(
       entity.Id,
       entity.Title,
       entity.CreatedOn,
@@ -48,9 +50,11 @@ public static class MessengerModelExtensions
       entity.DeletedById,
       entity.LocationId
     );
+  }
 
-  public static MessengerEntity ToEntity(this MessengerModel model) =>
-    new()
+  public static MessengerEntity ToEntity(this MessengerModel model)
+  {
+    return new MessengerEntity
     {
       Id = model.Id,
       Title = model.Title,
@@ -63,4 +67,5 @@ public static class MessengerModelExtensions
       DeletedById = model.DeletedById,
       LocationId = model.LocationId
     };
+  }
 }

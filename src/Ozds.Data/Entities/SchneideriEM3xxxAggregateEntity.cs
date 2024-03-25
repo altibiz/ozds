@@ -5,7 +5,8 @@ using Ozds.Data.Entities.Base;
 namespace Ozds.Data.Entities;
 
 [Table("schneider_iem3xxx_aggregates")]
-public class SchneideriEM3xxxAggregateEntity : AggregateEntity<SchneideriEM3xxxMeterEntity>
+public class
+  SchneideriEM3xxxAggregateEntity : AggregateEntity<SchneideriEM3xxxMeterEntity>
 {
 #pragma warning disable CA1707
   [Column("voltage_l1_any_t0_avg_v")]

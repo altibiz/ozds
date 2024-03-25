@@ -21,19 +21,20 @@ public record RegulatoryCatalogueModel(
   float BusinessUsageFeePrice_EUR,
   float TaxRate_Percent
 ) : CatalogueModel(
-  Id: Id,
-  Title: Title,
-  CreatedOn: CreatedOn,
-  CreatedById: CreatedById,
-  LastUpdatedOn: LastUpdatedOn,
-  LastUpdatedById: LastUpdatedById,
-  IsDeleted: IsDeleted,
-  DeletedOn: DeletedOn,
-  DeletedById: DeletedById,
-  LocationId: LocationId
+  Id,
+  Title,
+  CreatedOn,
+  CreatedById,
+  LastUpdatedOn,
+  LastUpdatedById,
+  IsDeleted,
+  DeletedOn,
+  DeletedById,
+  LocationId
 )
 {
-  public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+  public override IEnumerable<ValidationResult> Validate(
+    ValidationContext validationContext)
   {
     throw new NotImplementedException();
   }
@@ -41,8 +42,10 @@ public record RegulatoryCatalogueModel(
 
 public static class RegulatoryCatalogueModelExtensions
 {
-  public static RegulatoryCatalogueModel ToModel(this RegulatoryCatalogueEntity entity) =>
-    new(
+  public static RegulatoryCatalogueModel ToModel(
+    this RegulatoryCatalogueEntity entity)
+  {
+    return new RegulatoryCatalogueModel(
       entity.Id,
       entity.Title,
       entity.CreatedOn,
@@ -59,9 +62,12 @@ public static class RegulatoryCatalogueModelExtensions
       entity.BusinessUsageFeePrice_EUR,
       entity.TaxRate_Percent
     );
+  }
 
-  public static RegulatoryCatalogueEntity ToEntity(this RegulatoryCatalogueModel model) =>
-    new()
+  public static RegulatoryCatalogueEntity ToEntity(
+    this RegulatoryCatalogueModel model)
+  {
+    return new RegulatoryCatalogueEntity
     {
       Id = model.Id,
       Title = model.Title,
@@ -73,10 +79,13 @@ public static class RegulatoryCatalogueModelExtensions
       DeletedOn = model.DeletedOn,
       DeletedById = model.DeletedById,
       LocationId = model.LocationId,
-      ActiveEnergyTotalImportT1Price_EUR = model.ActiveEnergyTotalImportT1Price_EUR,
-      ActiveEnergyTotalImportT2Price_EUR = model.ActiveEnergyTotalImportT2Price_EUR,
+      ActiveEnergyTotalImportT1Price_EUR =
+        model.ActiveEnergyTotalImportT1Price_EUR,
+      ActiveEnergyTotalImportT2Price_EUR =
+        model.ActiveEnergyTotalImportT2Price_EUR,
       RenewableEnergyFeePrice_EUR = model.RenewableEnergyFeePrice_EUR,
       BusinessUsageFeePrice_EUR = model.BusinessUsageFeePrice_EUR,
       TaxRate_Percent = model.TaxRate_Percent
     };
+  }
 }

@@ -13,6 +13,6 @@ public abstract record AuditableModel(
   DateTimeOffset? DeletedOn,
   string? DeletedById
 ) : IdentifiableModel(
-  Id: Id,
-  Title: Title
+  Id,
+  Title
 ), IAuditable;

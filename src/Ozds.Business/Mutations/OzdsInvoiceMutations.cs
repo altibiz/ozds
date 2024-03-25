@@ -4,7 +4,7 @@ using Ozds.Data;
 
 namespace Ozds.Business.Mutations;
 
-public partial class OzdsInvoiceMutations
+public class OzdsInvoiceMutations
 {
   private readonly OzdsDbContext _context;
 

@@ -10,8 +10,8 @@ public abstract record AuditEventModel(
   string Description,
   AuditModel Audit
 ) : EventModel(
-  Id: Id,
-  Timestamp: Timestamp,
-  Level: Level,
-  Description: Description
+  Id,
+  Timestamp,
+  Level,
+  Description
 ), IAuditEvent;

@@ -8,15 +8,20 @@ namespace Ozds.Data;
 
 public partial class OzdsDbContext : DbContext
 {
-  protected override void OnConfiguring(DbContextOptionsBuilder dbContextOptionsBuilder) =>
+  protected override void OnConfiguring(
+    DbContextOptionsBuilder dbContextOptionsBuilder)
+  {
     dbContextOptionsBuilder
       .UseLazyLoadingProxies()
       .UseSnakeCaseNamingConvention();
+  }
 
-  protected override void OnModelCreating(ModelBuilder modelBuilder) =>
+  protected override void OnModelCreating(ModelBuilder modelBuilder)
+  {
     modelBuilder
       .HasPostgresExtension("timescaledb")
       .ApplyPostgresqlEnums()
       .ApplyTimescaleHypertables()
       .ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+  }
 }

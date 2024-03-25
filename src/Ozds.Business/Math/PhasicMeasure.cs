@@ -1,32 +1,48 @@
 namespace Ozds.Business.Math;
 
-public record class CompositePhasicMeasure(List<PhasicMeasure> Measures) : PhasicMeasure
+public record class CompositePhasicMeasure(List<PhasicMeasure> Measures)
+  : PhasicMeasure
 {
-  public T FromMostAccurate<T>(Func<PhasicMeasure, T> selector, T @default) =>
-    Measures.FirstOrDefault(measure => measure is TriPhasicMeasure) is { } tri
+  public T FromMostAccurate<T>(Func<PhasicMeasure, T> selector, T @default)
+  {
+    return Measures.FirstOrDefault(measure => measure is TriPhasicMeasure) is
+    { } tri
       ? selector(tri)
-      : Measures.FirstOrDefault(measure => measure is SinglePhasicMeasure) is { } single
-      ? selector(single)
-      : @default;
+      : Measures.FirstOrDefault(measure => measure is SinglePhasicMeasure) is
+      { } single
+        ? selector(single)
+        : @default;
+  }
 
-  public CompositePhasicMeasure Select(Func<PhasicMeasure, PhasicMeasure> selector) =>
-    new(Measures.Select(selector).ToList());
+  public CompositePhasicMeasure Select(
+    Func<PhasicMeasure, PhasicMeasure> selector)
+  {
+    return new CompositePhasicMeasure(Measures.Select(selector).ToList());
+  }
 
   public CompositePhasicMeasure Zip(PhasicMeasure other,
-    Func<PhasicMeasure, PhasicMeasure, PhasicMeasure> selector) =>
-    other switch
+    Func<PhasicMeasure, PhasicMeasure, PhasicMeasure> selector)
+  {
+    return other switch
     {
-      CompositePhasicMeasure otherComposite => new(Measures.Zip(otherComposite.Measures, selector).ToList()),
-      _ => new(Measures.Zip(Enumerable.Repeat(other, Measures.Count), selector).ToList())
+      CompositePhasicMeasure otherComposite => new CompositePhasicMeasure(
+        Measures.Zip(otherComposite.Measures, selector).ToList()),
+      _ => new CompositePhasicMeasure(Measures
+        .Zip(Enumerable.Repeat(other, Measures.Count), selector)
+        .ToList())
     };
+  }
 }
 
-public record class TriPhasicMeasure(float ValueL1, float ValueL2, float ValueL3)
+public record class TriPhasicMeasure(
+  float ValueL1,
+  float ValueL2,
+  float ValueL3)
   : PhasicMeasure;
 
 public record class SinglePhasicMeasure(float Value) : PhasicMeasure;
 
-public record class NullPhasicMeasure() : PhasicMeasure;
+public record class NullPhasicMeasure : PhasicMeasure;
 
 public abstract record class PhasicMeasure
 {
@@ -38,7 +54,8 @@ public abstract record class PhasicMeasure
     {
       return this switch
       {
-        CompositePhasicMeasure composite => composite.FromMostAccurate(measure => measure.PhaseSum, 0),
+        CompositePhasicMeasure composite => composite.FromMostAccurate(
+          measure => measure.PhaseSum, 0),
         TriPhasicMeasure tri => tri.ValueL1 + tri.ValueL2 + tri.ValueL3,
         SinglePhasicMeasure single => single.Value,
         _ => 0
@@ -52,7 +69,8 @@ public abstract record class PhasicMeasure
     {
       return this switch
       {
-        CompositePhasicMeasure composite => composite.FromMostAccurate(measure => measure.PhaseAverage, 0),
+        CompositePhasicMeasure composite => composite.FromMostAccurate(
+          measure => measure.PhaseAverage, 0),
         TriPhasicMeasure tri => (tri.ValueL1 + tri.ValueL2 + tri.ValueL3) / 3,
         SinglePhasicMeasure single => single.Value,
         _ => 0
@@ -66,7 +84,8 @@ public abstract record class PhasicMeasure
     {
       return this switch
       {
-        CompositePhasicMeasure composite => composite.FromMostAccurate(measure => measure.PhasePeak, 0),
+        CompositePhasicMeasure composite => composite.FromMostAccurate(
+          measure => measure.PhasePeak, 0),
         TriPhasicMeasure tri => tri.ValueL1 > tri.ValueL2
           ? tri.ValueL1 > tri.ValueL3
             ? tri.ValueL1
@@ -84,7 +103,8 @@ public abstract record class PhasicMeasure
   {
     return lhs switch
     {
-      CompositePhasicMeasure composite => composite.Select(measure => measure + rhs),
+      CompositePhasicMeasure composite => composite.Select(measure =>
+        measure + rhs),
       TriPhasicMeasure tri => new TriPhasicMeasure(tri.ValueL1 + rhs,
         tri.ValueL2 + rhs, tri.ValueL3 + rhs),
       SinglePhasicMeasure single => new SinglePhasicMeasure(single.Value + rhs),
@@ -96,7 +116,8 @@ public abstract record class PhasicMeasure
   {
     return lhs switch
     {
-      CompositePhasicMeasure composite => composite.Select(measure => measure - rhs),
+      CompositePhasicMeasure composite => composite.Select(measure =>
+        measure - rhs),
       TriPhasicMeasure tri => new TriPhasicMeasure(tri.ValueL1 - rhs,
         tri.ValueL2 - rhs, tri.ValueL3 - rhs),
       SinglePhasicMeasure single => new SinglePhasicMeasure(single.Value - rhs),
@@ -108,7 +129,8 @@ public abstract record class PhasicMeasure
   {
     return lhs switch
     {
-      CompositePhasicMeasure composite => composite.Select(measure => measure * rhs),
+      CompositePhasicMeasure composite => composite.Select(measure =>
+        measure * rhs),
       TriPhasicMeasure tri => new TriPhasicMeasure(tri.ValueL1 * rhs,
         tri.ValueL2 * rhs, tri.ValueL3 * rhs),
       SinglePhasicMeasure single => new SinglePhasicMeasure(single.Value * rhs),
@@ -120,7 +142,8 @@ public abstract record class PhasicMeasure
   {
     return lhs switch
     {
-      CompositePhasicMeasure composite => composite.Select(measure => measure / rhs),
+      CompositePhasicMeasure composite => composite.Select(measure =>
+        measure / rhs),
       TriPhasicMeasure tri => new TriPhasicMeasure(tri.ValueL1 / rhs,
         tri.ValueL2 / rhs, tri.ValueL3 / rhs),
       SinglePhasicMeasure single => new SinglePhasicMeasure(single.Value / rhs),
@@ -132,7 +155,8 @@ public abstract record class PhasicMeasure
   {
     return rhs switch
     {
-      CompositePhasicMeasure composite => composite.Select(measure => lhs + composite),
+      CompositePhasicMeasure composite => composite.Select(measure =>
+        lhs + composite),
       TriPhasicMeasure tri => new TriPhasicMeasure(lhs + tri.ValueL1,
         lhs + tri.ValueL2, lhs + tri.ValueL3),
       SinglePhasicMeasure single => new SinglePhasicMeasure(lhs + single.Value),
@@ -144,7 +168,8 @@ public abstract record class PhasicMeasure
   {
     return rhs switch
     {
-      CompositePhasicMeasure composite => composite.Select(measure => lhs - composite),
+      CompositePhasicMeasure composite => composite.Select(measure =>
+        lhs - composite),
       TriPhasicMeasure tri => new TriPhasicMeasure(lhs - tri.ValueL1,
         lhs - tri.ValueL2, lhs - tri.ValueL3),
       SinglePhasicMeasure single => new SinglePhasicMeasure(lhs - single.Value),
@@ -156,7 +181,8 @@ public abstract record class PhasicMeasure
   {
     return rhs switch
     {
-      CompositePhasicMeasure composite => composite.Select(measure => lhs * composite),
+      CompositePhasicMeasure composite => composite.Select(measure =>
+        lhs * composite),
       TriPhasicMeasure tri => new TriPhasicMeasure(lhs * tri.ValueL1,
         lhs * tri.ValueL2, lhs * tri.ValueL3),
       SinglePhasicMeasure single => new SinglePhasicMeasure(lhs * single.Value),
@@ -168,7 +194,8 @@ public abstract record class PhasicMeasure
   {
     return rhs switch
     {
-      CompositePhasicMeasure composite => composite.Select(measure => lhs / composite),
+      CompositePhasicMeasure composite => composite.Select(measure =>
+        lhs / composite),
       TriPhasicMeasure tri => new TriPhasicMeasure(lhs / tri.ValueL1,
         lhs / tri.ValueL2, lhs / tri.ValueL3),
       SinglePhasicMeasure single => new SinglePhasicMeasure(lhs / single.Value),

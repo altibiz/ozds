@@ -12,27 +12,32 @@ public record RepresentativeAuditEventModel(
   AuditModel Audit,
   string RepresentativeId
 ) : AuditEventModel(
-  Id: Id,
-  Timestamp: Timestamp,
-  Level: Level,
+  Id,
+  Timestamp,
+  Level,
   Audit: Audit,
   Description: Description
 );
 
 public static class RepresentativeAuditEventModelExtensions
 {
-  public static RepresentativeAuditEventModel ToModel(this RepresentativeAuditEventEntity entity) =>
-    new(
-      Id: entity.Id,
-      Timestamp: entity.Timestamp,
-      Level: entity.Level.ToModel(),
-      Description: entity.Description,
-      Audit: entity.Audit.ToModel(),
-      RepresentativeId: entity.RepresentativeId
+  public static RepresentativeAuditEventModel ToModel(
+    this RepresentativeAuditEventEntity entity)
+  {
+    return new RepresentativeAuditEventModel(
+      entity.Id,
+      entity.Timestamp,
+      entity.Level.ToModel(),
+      entity.Description,
+      entity.Audit.ToModel(),
+      entity.RepresentativeId
     );
+  }
 
-  public static RepresentativeAuditEventEntity ToEntity(this RepresentativeAuditEventModel model) =>
-    new()
+  public static RepresentativeAuditEventEntity ToEntity(
+    this RepresentativeAuditEventModel model)
+  {
+    return new RepresentativeAuditEventEntity
     {
       Id = model.Id,
       Timestamp = model.Timestamp,
@@ -41,4 +46,5 @@ public static class RepresentativeAuditEventModelExtensions
       Audit = model.Audit.ToEntity(),
       RepresentativeId = model.RepresentativeId
     };
+  }
 }

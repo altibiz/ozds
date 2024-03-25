@@ -5,28 +5,31 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ozds.Data.Attributes;
 
-[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
+[AttributeUsage(AttributeTargets.Class)]
 public class TimescaleHypertableAttribute : Attribute
 {
-  public string TimeColumn { get; }
-
   public TimescaleHypertableAttribute(string timeColumn)
   {
     TimeColumn = timeColumn;
   }
+
+  public string TimeColumn { get; }
 }
 
 public static class TimescaleHypertableAttributeExtensions
 {
-  public static ModelBuilder ApplyTimescaleHypertables(this ModelBuilder builder) =>
-    builder.Model
+  public static ModelBuilder ApplyTimescaleHypertables(
+    this ModelBuilder builder)
+  {
+    return builder.Model
       .GetEntityTypes()
       .Select(entity => new
       {
         Entity = entity,
-        Attribute = entity.ClrType.GetCustomAttribute<TimescaleHypertableAttribute>()
+        Attribute = entity.ClrType
+          .GetCustomAttribute<TimescaleHypertableAttribute>()
       })
-      .Where(x => x.Attribute is { })
+      .Where(x => x.Attribute is not null)
       .Aggregate(
         builder,
         (builder, x) =>
@@ -38,4 +41,5 @@ public static class TimescaleHypertableAttributeExtensions
           return builder;
         }
       );
+  }
 }

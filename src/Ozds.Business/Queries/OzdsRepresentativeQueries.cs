@@ -13,6 +13,7 @@ using Ozds.Business.Queries.Base;
 using Ozds.Data;
 using Ozds.Data.Entities;
 using YesSql;
+using ISession = YesSql.ISession;
 
 namespace Ozds.Business.Queries;
 
@@ -21,7 +22,7 @@ public class OzdsRepresentativeQueries : OzdsAuditableQueries
   public OzdsRepresentativeQueries(
     OzdsDbContext context,
     UserManager<IUser> userManager,
-    YesSql.ISession session
+    ISession session
   ) : base(context, userManager, session)
   {
   }

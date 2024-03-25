@@ -10,8 +10,12 @@ public static class DbContextOptionsBuilderExtensions
   public static DbContextOptionsBuilder UseTimescale(
     this DbContextOptionsBuilder builder,
     string connectionString
-  ) => builder
-    .UseNpgsql(connectionString)
-    .ReplaceService<IMigrationsSqlGenerator, TimescaleMigrationSqlGenerator>()
-    .ReplaceService<IRelationalAnnotationProvider, TimescaleRelationalAnnotationProvider>();
+  )
+  {
+    return builder
+      .UseNpgsql(connectionString)
+      .ReplaceService<IMigrationsSqlGenerator, TimescaleMigrationSqlGenerator>()
+      .ReplaceService<IRelationalAnnotationProvider,
+        TimescaleRelationalAnnotationProvider>();
+  }
 }

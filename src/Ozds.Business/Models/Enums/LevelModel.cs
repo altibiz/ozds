@@ -24,7 +24,8 @@ public static class LeveLModelExtensions
       LevelEntity.Warning => LevelModel.Warning,
       LevelEntity.Error => LevelModel.Error,
       LevelEntity.Critical => LevelModel.Critical,
-      _ => throw new ArgumentOutOfRangeException(nameof(levelEntity), levelEntity, null)
+      _ => throw new ArgumentOutOfRangeException(nameof(levelEntity),
+        levelEntity, null)
     };
   }
 
@@ -38,7 +39,8 @@ public static class LeveLModelExtensions
       LevelModel.Warning => LevelEntity.Warning,
       LevelModel.Error => LevelEntity.Error,
       LevelModel.Critical => LevelEntity.Critical,
-      _ => throw new ArgumentOutOfRangeException(nameof(levelModel), levelModel, null)
+      _ => throw new ArgumentOutOfRangeException(nameof(levelModel), levelModel,
+        null)
     };
   }
 }

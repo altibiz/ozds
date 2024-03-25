@@ -21,18 +21,19 @@ public record LocationModel(
   string RedLowCatalogueId,
   string RegulatoryCatalogueId
 ) : AuditableModel(
-  Id: Id,
-  Title: Title,
-  CreatedOn: CreatedOn,
-  CreatedById: CreatedById,
-  LastUpdatedOn: LastUpdatedOn,
-  LastUpdatedById: LastUpdatedById,
-  IsDeleted: IsDeleted,
-  DeletedOn: DeletedOn,
-  DeletedById: DeletedById
+  Id,
+  Title,
+  CreatedOn,
+  CreatedById,
+  LastUpdatedOn,
+  LastUpdatedById,
+  IsDeleted,
+  DeletedOn,
+  DeletedById
 )
 {
-  public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+  public override IEnumerable<ValidationResult> Validate(
+    ValidationContext validationContext)
   {
     throw new NotImplementedException();
   }
@@ -40,8 +41,9 @@ public record LocationModel(
 
 public static class LocationModelExtensions
 {
-  public static LocationModel ToModel(this LocationEntity entity) =>
-    new(
+  public static LocationModel ToModel(this LocationEntity entity)
+  {
+    return new LocationModel(
       entity.Id,
       entity.Title,
       entity.CreatedOn,
@@ -58,9 +60,11 @@ public static class LocationModelExtensions
       entity.RedLowCatalogueId,
       entity.RegulatoryCatalogueId
     );
+  }
 
-  public static LocationEntity ToEntity(this LocationModel model) =>
-    new()
+  public static LocationEntity ToEntity(this LocationModel model)
+  {
+    return new LocationEntity
     {
       Id = model.Id,
       Title = model.Title,
@@ -78,4 +82,5 @@ public static class LocationModelExtensions
       RedLowCatalogueId = model.RedLowCatalogueId,
       RegulatoryCatalogueId = model.RegulatoryCatalogueId
     };
+  }
 }

@@ -1,9 +1,11 @@
 namespace Ozds.Business.Math;
 
-public record class MinMaxSpanningMeasure(TariffMeasure TrueMin, TariffMeasure TrueMax)
+public record class MinMaxSpanningMeasure(
+  TariffMeasure TrueMin,
+  TariffMeasure TrueMax)
   : SpanningMeasure;
 
-public record class NullSpanningMeasure() : SpanningMeasure;
+public record class NullSpanningMeasure : SpanningMeasure;
 
 public abstract record class SpanningMeasure
 {
