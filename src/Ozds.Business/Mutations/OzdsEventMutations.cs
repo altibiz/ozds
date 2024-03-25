@@ -19,6 +19,6 @@ public partial class OzdsEventMutations
 
   public void Create(IEvent @event)
   {
-    _context.Add(@event.ToDbEntity());
+    _context.Add(EntityModelTypeMapper.ToEntity(@event));
   }
 }

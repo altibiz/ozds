@@ -10,7 +10,7 @@ public abstract record AggregateModel(
   DateTimeOffset Timestamp,
   IntervalModel Interval,
   long Count
-) : IAggregate, IModel
+) : IAggregate
 {
   public abstract TariffMeasure Current_A { get; }
 
@@ -62,6 +62,4 @@ public abstract record AggregateModel(
   }
 
   public abstract IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
-
-  public abstract object ToDbEntity();
 }

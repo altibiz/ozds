@@ -8,7 +8,4 @@ public abstract record EventModel(
   DateTimeOffset Timestamp,
   LevelModel Level,
   string Description
-) : IEvent
-{
-  public abstract object ToDbEntity();
-}
+) : IEvent;

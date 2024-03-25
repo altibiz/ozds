@@ -40,11 +40,6 @@ public record SchneideriEM3xxxMeterModel(
   Phases: Phases
 )
 {
-  public override object ToDbEntity()
-  {
-    return this.ToEntity();
-  }
-
   public override ICapabilities Capabilities => new SchneideriEM3xxxCapabilities();
 
   public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

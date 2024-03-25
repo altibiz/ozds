@@ -28,7 +28,7 @@ public partial class OzdsMeasurementMutations
       return validationResults;
     }
 
-    _context.Add(measurement.ToDbEntity());
+    _context.Add(EntityModelTypeMapper.ToEntity(measurement));
     return null;
   }
 }

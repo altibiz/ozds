@@ -1,6 +1,7 @@
 using System.Reflection;
 using Ozds.Business.Mutations;
 using Ozds.Business.Queries;
+using Ozds.Business.Queries.Base;
 using Ozds.Data;
 using Ozds.Data.Extensions;
 
@@ -32,7 +33,10 @@ public static class IServiceCollectionExtensions
     services.AddScoped<OzdsAuditableQueries>();
     services.AddScoped<OzdsEventQueries>();
     services.AddScoped<OzdsMeasurementQueries>();
+    services.AddScoped<OzdsAggregateQueries>();
     services.AddScoped<OzdsInvoiceQueries>();
+
+    services.AddScoped<OzdsRepresentativeQueries>();
 
     return services;
   }

@@ -40,7 +40,7 @@ public partial class OzdsAuditableMutations
       return validationResults;
     }
 
-    _context.Add(auditable.ToDbEntity());
+    _context.Add(EntityModelTypeMapper.ToEntity(auditable));
     return null;
   }
 
@@ -54,12 +54,12 @@ public partial class OzdsAuditableMutations
       return validationResults;
     }
 
-    _context.Update(auditable.ToDbEntity());
+    _context.Update(EntityModelTypeMapper.ToEntity(auditable));
     return null;
   }
 
   public void Delete(IAuditable auditable)
   {
-    _context.Remove(auditable.ToDbEntity());
+    _context.Remove(EntityModelTypeMapper.ToEntity(auditable));
   }
 }

@@ -1,6 +1,6 @@
 namespace Ozds.Business.Models.Abstractions;
 
-public interface IAuditable : IIdentifiable, IModel
+public interface IAuditable : IIdentifiable
 {
   public DateTimeOffset CreatedOn { get; }
 

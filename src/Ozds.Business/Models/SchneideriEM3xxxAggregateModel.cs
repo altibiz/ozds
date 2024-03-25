@@ -44,11 +44,6 @@ public record SchneideriEM3xxxAggregateModel(
   Count: Count
 ), IUpsertAggregate
 {
-  public override object ToDbEntity()
-  {
-    return this.ToEntity();
-  }
-
   static IUpsertAggregate.UpsertExpressionHolder IUpsertAggregate.UpsertExpression => _upsertExpression.Value;
 
   static IUpsertAggregate.UpsertHolder IUpsertAggregate.Upsert => _upsert.Value;

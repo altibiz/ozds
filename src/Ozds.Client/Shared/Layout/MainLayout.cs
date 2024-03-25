@@ -80,7 +80,7 @@ public partial class MainLayout : LayoutComponentBase
   {
     await using var scope = Services.CreateAsyncScope();
     var query =
-      scope.ServiceProvider.GetRequiredService<OzdsAuditableQueries>();
+      scope.ServiceProvider.GetRequiredService<OzdsRepresentativeQueries>();
     return await query.MaybeRepresentingUserByClaimsPrincipal(claimsPrincipal);
   }
 

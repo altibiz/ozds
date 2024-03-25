@@ -28,7 +28,7 @@ public partial class OzdsInvoiceMutations
       return validationResults;
     }
 
-    _context.Add(invoice.ToDbEntity());
+    _context.Add(EntityModelTypeMapper.ToEntity(invoice));
     return null;
   }
 }

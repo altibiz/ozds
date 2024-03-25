@@ -12,6 +12,4 @@ public abstract record InvoiceModel(
 ) : IInvoice
 {
   public abstract IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
-
-  public abstract object ToDbEntity();
 }

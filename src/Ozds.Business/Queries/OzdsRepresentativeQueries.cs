@@ -1,21 +1,34 @@
 using System.Linq.Expressions;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using OrchardCore.Users;
 using OrchardCore.Users.Indexes;
 using OrchardCore.Users.Models;
 using Ozds.Business.Extensions;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Composite;
+using Ozds.Business.Queries.Abstractions;
+using Ozds.Business.Queries.Base;
+using Ozds.Data;
 using Ozds.Data.Entities;
 using YesSql;
 
 namespace Ozds.Business.Queries;
 
-public partial class OzdsAuditableQueries
+public class OzdsRepresentativeQueries : OzdsAuditableQueries
 {
+  public OzdsRepresentativeQueries(
+    OzdsDbContext context,
+    UserManager<IUser> userManager,
+    YesSql.ISession session
+  ) : base(context, userManager, session)
+  {
+  }
+
   public async Task<RepresentativeModel?> RepresentativeById(string id)
   {
-    return await _context.Representatives.FirstOrDefaultAsync(entity =>
+    return await context.Representatives.FirstOrDefaultAsync(entity =>
       entity.Id == id) is { } entity
       ? entity.ToModel()
       : null;
@@ -27,7 +40,7 @@ public partial class OzdsAuditableQueries
     int pageCount = QueryConstants.DefaultPageCount
   )
   {
-    return await _context.Representatives
+    return await context.Representatives
       .Where(entity => entity.IsOperatorRepresentative)
       .QueryPaged(
         RepresentativeModelExtensions.ToModel,
@@ -45,7 +58,7 @@ public partial class OzdsAuditableQueries
       int pageCount = QueryConstants.DefaultPageCount
     )
   {
-    return await _context.Representatives
+    return await context.Representatives
       .Where(entity =>
         entity.NetworkUsers.Any(networkUser => networkUser.Id == id))
       .QueryPaged(
@@ -63,7 +76,7 @@ public partial class OzdsAuditableQueries
     int pageCount = QueryConstants.DefaultPageCount
   )
   {
-    return await _context.Representatives
+    return await context.Representatives
       .Where(entity =>
         entity.Locations.Any(networkUser => networkUser.Id == id))
       .QueryPaged(
@@ -77,14 +90,14 @@ public partial class OzdsAuditableQueries
   public async Task<UserModel?> UserByClaimsPrincipal(
     ClaimsPrincipal principal)
   {
-    return await _userManager.GetUserAsync(principal) is { } user
+    return await userManager.GetUserAsync(principal) is { } user
       ? user.ToModel()
       : null;
   }
 
   public async Task<UserModel?> UserByUserId(string userId)
   {
-    return await _userManager.FindByIdAsync(userId) is { } user
+    return await userManager.FindByIdAsync(userId) is { } user
       ? user.ToModel()
       : null;
   }
@@ -92,7 +105,7 @@ public partial class OzdsAuditableQueries
   public async Task<RepresentativeModel?> RepresentativeByUserId(
     string userId)
   {
-    return await _context.Representatives.FirstOrDefaultAsync(entity =>
+    return await context.Representatives.FirstOrDefaultAsync(entity =>
       entity.Id == userId) is { } entity
       ? entity.ToModel()
       : null;
@@ -104,7 +117,7 @@ public partial class OzdsAuditableQueries
       int pageNumber = QueryConstants.StartingPage,
       int pageCount = QueryConstants.DefaultPageCount)
   {
-    var users = await _session
+    var users = await session
       .Query<User, UserIndex>()
       .QueryPaged(
         UserModelExtensions.ToModel,
@@ -116,7 +129,7 @@ public partial class OzdsAuditableQueries
       .Select(user => user.Id)
       .ToList();
 
-    var representatives = await _context.Representatives
+    var representatives = await context.Representatives
       .Where(entity => userIds.Contains(entity.Id))
       .ToListAsync();
 
@@ -136,7 +149,7 @@ public partial class OzdsAuditableQueries
     int pageNumber = QueryConstants.StartingPage,
     int pageCount = QueryConstants.DefaultPageCount)
   {
-    var users = await _session
+    var users = await session
       .Query<User, UserIndex>()
       .QueryPaged(
         UserModelExtensions.ToModel,
@@ -148,7 +161,7 @@ public partial class OzdsAuditableQueries
       .Select(user => user.Id)
       .ToList();
 
-    var representatives = await _context.Representatives
+    var representatives = await context.Representatives
       .Where(entity => ids.Contains(entity.Id))
       .ToListAsync();
 
@@ -172,14 +185,14 @@ public partial class OzdsAuditableQueries
   public async Task<RepresentingUserModel?>
     RepresentingUserByClaimsPrincipal(ClaimsPrincipal claimsPrincipal)
   {
-    var user = await _userManager.GetUserAsync(claimsPrincipal);
+    var user = await userManager.GetUserAsync(claimsPrincipal);
     if (user is null)
     {
       return null;
     }
 
     var representative =
-      await _context.Representatives.FirstOrDefaultAsync(entity =>
+      await context.Representatives.FirstOrDefaultAsync(entity =>
         entity.Id == user.GetId());
     if (representative is null)
     {
@@ -195,14 +208,14 @@ public partial class OzdsAuditableQueries
   public async Task<RepresentingUserModel?> RepresentingUserByUserId(
     string id)
   {
-    var user = await _userManager.FindByIdAsync(id);
+    var user = await userManager.FindByIdAsync(id);
     if (user is null)
     {
       return null;
     }
 
     var representative =
-      await _context.Representatives.FirstOrDefaultAsync(entity =>
+      await context.Representatives.FirstOrDefaultAsync(entity =>
         entity.Id == id);
     if (representative is null)
     {
@@ -219,14 +232,14 @@ public partial class OzdsAuditableQueries
     RepresentingUserByRepresentativeId(string id)
   {
     var representative =
-      await _context.Representatives.FirstOrDefaultAsync(entity =>
+      await context.Representatives.FirstOrDefaultAsync(entity =>
         entity.Id == id);
     if (representative is null)
     {
       return null;
     }
 
-    var user = await _userManager.FindByIdAsync(representative.Id);
+    var user = await userManager.FindByIdAsync(representative.Id);
     if (user is null)
     {
       return null;
@@ -241,14 +254,14 @@ public partial class OzdsAuditableQueries
   public async Task<MaybeRepresentingUserModel?>
     MaybeRepresentingUserByClaimsPrincipal(ClaimsPrincipal claimsPrincipal)
   {
-    var user = await _userManager.GetUserAsync(claimsPrincipal);
+    var user = await userManager.GetUserAsync(claimsPrincipal);
     if (user is null)
     {
       return null;
     }
 
     var representative =
-      await _context.Representatives.FirstOrDefaultAsync(entity =>
+      await context.Representatives.FirstOrDefaultAsync(entity =>
         entity.Id == user.GetId());
     if (representative is null)
     {
@@ -264,14 +277,14 @@ public partial class OzdsAuditableQueries
   public async Task<MaybeRepresentingUserModel?>
     MaybeRepresentingUserByUserId(string id)
   {
-    var user = await _userManager.FindByIdAsync(id);
+    var user = await userManager.FindByIdAsync(id);
     if (user is null)
     {
       return null;
     }
 
     var representative =
-      await _context.Representatives.FirstOrDefaultAsync(entity =>
+      await context.Representatives.FirstOrDefaultAsync(entity =>
         entity.Id == id);
     if (representative is null)
     {

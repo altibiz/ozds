@@ -38,11 +38,6 @@ public record SchneideriEM3xxxMeasurementValidatorModel(
   MeterId: MeterId
 )
 {
-  public override object ToDbEntity()
-  {
-    return this.ToEntity();
-  }
-
   public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
   {
     throw new NotImplementedException();

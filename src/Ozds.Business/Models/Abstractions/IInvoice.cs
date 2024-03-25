@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Ozds.Business.Models.Abstractions;
 
-public interface IInvoice : IValidatableObject, IModel
+public interface IInvoice : IValidatableObject
 {
   DateTimeOffset IssuedOn { get; }
 

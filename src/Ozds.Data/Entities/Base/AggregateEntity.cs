@@ -1,16 +1,37 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using Ozds.Data.Attributes;
 using Ozds.Data.Entities.Enums;
 
 namespace Ozds.Data.Entities.Base;
 
-[PrimaryKey(nameof(Interval), nameof(Timestamp), nameof(Meter))]
-public abstract class AggregateEntity<T> : MeasurementEntity<T>
-  where T : MeterEntity
+[TimescaleHypertable(nameof(Timestamp))]
+public abstract class AggregateEntity : ReadonlyEntity
 {
+  [NotMapped] private DateTimeOffset _timestamp;
+
+  [Required]
+  public DateTimeOffset Timestamp
+  {
+    get { return _timestamp.ToUniversalTime(); }
+    set { _timestamp = value.ToUniversalTime(); }
+  }
+
   [Required]
   public long Count { get; set; }
 
   [Required]
   public IntervalEntity Interval { get; set; }
+}
+
+[PrimaryKey(nameof(Timestamp), nameof(Interval), nameof(MeterId))]
+public abstract class AggregateEntity<T> : AggregateEntity
+  where T : MeterEntity
+{
+  [ForeignKey(nameof(Meter))]
+  public string MeterId { get; set; } = default!;
+
+  [Required]
+  public virtual T Meter { get; set; } = default!;
 }

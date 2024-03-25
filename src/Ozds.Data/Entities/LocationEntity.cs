@@ -12,7 +12,6 @@ public class LocationEntity : AuditableEntity
 
   public virtual ICollection<MessengerEntity> Messengers { get; set; } = default!;
 
-  [CascadeSoftDelete]
   [ForeignKey(nameof(MeasurementLocation))]
   public string MeasurementLocationId { get; set; } = default!;
 
@@ -20,31 +19,26 @@ public class LocationEntity : AuditableEntity
 
   public virtual ICollection<LocationInvoiceEntity> Invoices { get; set; } = default!;
 
-  [CascadeSoftDelete]
   [ForeignKey(nameof(WhiteMediumCatalogue))]
   public string WhiteMediumCatalogueId { get; set; } = default!;
 
   public virtual WhiteMediumCatalogueEntity WhiteMediumCatalogue { get; set; } = default!;
 
-  [CascadeSoftDelete]
   [ForeignKey(nameof(BlueLowCatalogue))]
   public string BlueLowCatalogueId { get; set; } = default!;
 
   public virtual BlueLowCatalogueEntity BlueLowCatalogue { get; set; } = default!;
 
-  [CascadeSoftDelete]
   [ForeignKey(nameof(WhiteLowCatalogue))]
   public string WhiteLowCatalogueId { get; set; } = default!;
 
   public virtual WhiteLowCatalogueEntity WhiteLowCatalogue { get; set; } = default!;
 
-  [CascadeSoftDelete]
   [ForeignKey(nameof(RedLowCatalogue))]
   public string RedLowCatalogueId { get; set; } = default!;
 
   public virtual RedLowCatalogueEntity RedLowCatalogue { get; set; } = default!;
 
-  [CascadeSoftDelete]
   [ForeignKey(nameof(RegulatoryCatalogue))]
   public string RegulatoryCatalogueId { get; set; } = default!;
 

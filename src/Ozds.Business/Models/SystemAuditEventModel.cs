@@ -16,13 +16,7 @@ public record SystemAuditEventModel(
   Level: Level,
   Description: Description,
   Audit: Audit
-)
-{
-  public override object ToDbEntity()
-  {
-    return this.ToEntity();
-  }
-};
+);
 
 public static class SystemAuditEventModelExtensions
 {

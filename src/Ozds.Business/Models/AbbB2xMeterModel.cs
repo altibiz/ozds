@@ -40,11 +40,6 @@ public record AbbB2xMeterModel(
   Phases: Phases
 )
 {
-  public override object ToDbEntity()
-  {
-    return this.ToEntity();
-  }
-
   public override ICapabilities Capabilities => new AbbB2xCapabilities();
 
   public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

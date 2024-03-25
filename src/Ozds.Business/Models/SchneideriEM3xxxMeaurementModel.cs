@@ -34,11 +34,6 @@ public record SchneideriEM3xxxMeasurementModel(
   Timestamp: Timestamp
 )
 {
-  public override object ToDbEntity()
-  {
-    return this.ToEntity();
-  }
-
   public override TariffMeasure Current_A
   {
     get

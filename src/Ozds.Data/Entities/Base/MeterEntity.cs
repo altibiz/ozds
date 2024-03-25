@@ -31,7 +31,6 @@ public abstract class MeterEntity : AuditableEntity
 public abstract class MeterEntity<T> : MeterEntity
   where T : MeasurementValidatorEntity
 {
-  [CascadeSoftDelete]
   [ForeignKey(nameof(MeasurementValidator))]
   public string MeasurementValidatorId { get; set; } = default!;
 

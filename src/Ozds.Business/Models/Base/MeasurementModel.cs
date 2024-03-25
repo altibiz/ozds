@@ -30,6 +30,4 @@ public abstract record MeasurementModel<T>(
   {
     throw new NotImplementedException();
   }
-
-  public abstract object ToDbEntity();
 }

@@ -44,11 +44,6 @@ public record AbbB2xMeasurementModel(
   Timestamp: Timestamp
 )
 {
-  public override object ToDbEntity()
-  {
-    return this.ToEntity();
-  }
-
   public override TariffMeasure Current_A
   {
     get

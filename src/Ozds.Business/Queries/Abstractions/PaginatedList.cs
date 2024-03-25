@@ -1,4 +1,4 @@
-namespace Ozds.Business.Queries;
+namespace Ozds.Business.Queries.Abstractions;
 
 public record PaginatedList<T>(
   List<T> Items,
