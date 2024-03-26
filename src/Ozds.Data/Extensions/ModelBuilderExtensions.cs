@@ -25,23 +25,30 @@ public abstract class InheritedEntityTypeConfiguration<T> : IModelConfiguration
 
   public void Configure(ModelBuilder modelBuilder)
   {
-    Console.WriteLine(
-      string.Join(
-", ",
-  typeof(T).Assembly
-      .GetTypes()
-      .Where(type => !type.IsAbstract && !type.IsGenericType && type.IsSubclassOf(typeof(T)))
-      .Select(type => type.Name)
-      )
-
-    );
+    var configure = GetType()
+      .GetMethods()
+      .FirstOrDefault(m => m.Name == nameof(Configure) && m.IsGenericMethod)
+        ?? throw new InvalidOperationException("Method not found");
+    var entity = modelBuilder.GetType().GetMethods()
+      .FirstOrDefault(m => m.Name == nameof(ModelBuilder.Entity) && m.IsGenericMethod)
+        ?? throw new InvalidOperationException("Method not found");
     _ = typeof(T).Assembly
       .GetTypes()
-      .Where(type => !type.IsAbstract && !type.IsGenericType && type.IsSubclassOf(typeof(T)))
+      .Where(type =>
+        !type.IsAbstract &&
+        !type.IsGenericType &&
+        type.IsClass &&
+        type.IsSubclassOf(typeof(T)))
       .Aggregate(modelBuilder, (modelBuilder, type) =>
       {
-        var method = GetType().GetMethod(nameof(Configure), 1, new[] { typeof(EntityTypeBuilder<>).MakeGenericType(type) });
-        method?.Invoke(this, new object[] { modelBuilder.Entity(type) });
+        configure
+          .MakeGenericMethod(type)
+          .Invoke(
+          this,
+          new object[] {
+            entity.MakeGenericMethod(type).Invoke(modelBuilder, null)
+              ?? throw new InvalidOperationException("Entity not found")
+          });
         return modelBuilder;
       });
   }
@@ -63,7 +70,6 @@ public static class ModelBuilderExtensions
         (modelBuilder, type) =>
         {
           var config = Activator.CreateInstance(type) as IModelConfiguration;
-          Console.WriteLine(type.Name);
           config?.Configure(modelBuilder);
           return modelBuilder;
         }
