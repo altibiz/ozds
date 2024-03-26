@@ -3,7 +3,8 @@ using Ozds.Data.Entities.Enums;
 
 namespace Ozds.Data.Entities.Base;
 
-public class AuditEventEntity : EventEntity
+[Table("events")]
+public abstract class AuditEventEntity : EventEntity
 {
   [ForeignKey(nameof(AuditableEntity))]
   public string AuditableEntityId { get; set; } = default!;

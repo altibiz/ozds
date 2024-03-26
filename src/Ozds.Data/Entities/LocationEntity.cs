@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Ozds.Data.Entities.Base;
+using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities;
 
@@ -59,9 +59,9 @@ public class LocationEntity : AuditableEntity
     default!;
 }
 
-public class LocationEntityTypeConfiguration : IEntityTypeConfiguration<LocationEntity>
+public class LocationEntityTypeConfiguration : EntityTypeConfiguration<LocationEntity>
 {
-  public void Configure(EntityTypeBuilder<LocationEntity> builder)
+  public override void Configure(EntityTypeBuilder<LocationEntity> builder)
   {
     builder
       .HasMany(e => e.Representatives)

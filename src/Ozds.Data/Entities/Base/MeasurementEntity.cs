@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Ozds.Data.Attributes;
 using Ozds.Data.Extensions;
 
@@ -28,10 +29,19 @@ public abstract class MeasurementEntity<T> : MeasurementEntity
   [Required] public virtual T Meter { get; set; } = default!;
 }
 
-public class MeasurementModelConfiguration : IModelConfiguration
+public class MeasurementEntityConfiguration : EntityTypeConfiguration<MeasurementEntity>
 {
-  public void Configure(ModelBuilder modelBuilder)
+  public override void Configure(EntityTypeBuilder<MeasurementEntity> builder)
   {
+    builder.UseTptMappingStrategy();
+  }
+}
+
+public class MeasurementModelConfiguration : InheritedEntityTypeConfiguration<MeasurementEntity>
+{
+  public override void Configure<T>(EntityTypeBuilder<T> builder) where T : class
+  {
+    builder.UseTptMappingStrategy();
   }
 }
 

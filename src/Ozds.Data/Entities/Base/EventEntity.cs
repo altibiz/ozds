@@ -4,9 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Ozds.Data.Attributes;
 using Ozds.Data.Entities.Enums;
+using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
 
+[Table("events")]
 [TimescaleHypertable(nameof(Timestamp))]
 public abstract class EventEntity : ReadonlyEntity
 {
@@ -26,9 +28,9 @@ public abstract class EventEntity : ReadonlyEntity
   public string Description { get; set; } = default!;
 }
 
-public class EventEntityTypeConfiguration : IEntityTypeConfiguration<EventEntity>
+public class EventInheritedEntityTypeConfiguration : InheritedEntityTypeConfiguration<EventEntity>
 {
-  public void Configure(EntityTypeBuilder<EventEntity> builder)
+  public override void Configure<T>(EntityTypeBuilder<T> builder)
   {
     builder.ToTable("events").HasDiscriminator<int>("kind");
   }

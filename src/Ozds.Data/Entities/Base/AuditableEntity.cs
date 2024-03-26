@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
 
@@ -30,9 +31,9 @@ public abstract class AuditableEntity : IdentifiableEntity
   public virtual ICollection<AuditEventEntity> Audits { get; set; } = default!;
 }
 
-public class AuditableEntityConfiguration : IEntityTypeConfiguration<AuditableEntity>
+public class AuditableEntityConfiguration : EntityTypeConfiguration<AuditableEntity>
 {
-  public void Configure(EntityTypeBuilder<AuditableEntity> builder)
+  public override void Configure(EntityTypeBuilder<AuditableEntity> builder)
   {
     builder.UseTptMappingStrategy();
     builder.HasOne(x => x.CreatedBy)

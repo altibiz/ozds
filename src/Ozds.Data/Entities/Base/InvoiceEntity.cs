@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Ozds.Data.Attributes;
+using Ozds.Data.Extensions;
 
 // TODO: figure out how to slap on all the necessary entities without
 // ef core automatically making relationships
@@ -10,6 +11,7 @@ using Ozds.Data.Attributes;
 
 namespace Ozds.Data.Entities.Base;
 
+[Table("invoices")]
 [TimescaleHypertable(nameof(IssuedOn))]
 public class InvoiceEntity : ReadonlyEntity
 {
@@ -33,9 +35,9 @@ public class InvoiceEntity : ReadonlyEntity
   public DateTimeOffset ToDate { get; set; } = default!;
 }
 
-public class InvoiceEntityTypeConfiguration : IEntityTypeConfiguration<InvoiceEntity>
+public class InvoiceEntityTypeConfiguration : InheritedEntityTypeConfiguration<InvoiceEntity>
 {
-  public void Configure(EntityTypeBuilder<InvoiceEntity> builder)
+  public override void Configure<T>(EntityTypeBuilder<T> builder) where T : class
   {
     builder.ToTable("invoices").HasDiscriminator<int>("kind");
   }

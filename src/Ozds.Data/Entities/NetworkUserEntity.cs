@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Ozds.Data.Entities.Base;
+using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities;
 
@@ -24,9 +24,9 @@ public class NetworkUserEntity : AuditableEntity
     default!;
 }
 
-public class NetworkUserEntityTypeConfiguration : IEntityTypeConfiguration<NetworkUserEntity>
+public class NetworkUserEntityTypeConfiguration : EntityTypeConfiguration<NetworkUserEntity>
 {
-  public void Configure(EntityTypeBuilder<NetworkUserEntity> builder)
+  public override void Configure(EntityTypeBuilder<NetworkUserEntity> builder)
   {
     builder
       .HasMany(e => e.Representatives)
