@@ -1,0 +1,178 @@
+@inject NavigationManager NavigationManager
+
+@if(_shownInvoices is not null && _shownInvoices.Count() > 0){
+@* MOBILE *@
+          <MudHidden Breakpoint="Breakpoint.LgAndUp">
+      <MudText Typo="Typo.h4" Class="d-flex">
+        @T["Računi"]
+      </MudText>
+    <MudTextField Class="" ValueChanged="EventCallback.Factory.Create<string>(this, Filter)" Label="Pretraži" Variant="Variant.Text"></MudTextField>
+    @foreach(MobileData dataStruct in _shownInvoices.Where(x => x.show == true).ToList()){
+      <MudPaper Elevation="2" Class="ma-1">
+      <MudStack Spacing="0">
+            <MudGrid Class="d-flex pa-2">
+              <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: medium;">
+                @T["Broj Računa"]: @dataStruct.invoice.NetworkUserId
+              </MudItem>
+              <MudItem xs="2" Class="d-flex align-center  justify-end">
+                <MudIconButton OnClick="() => InspectInvoice(dataStruct.invoice)" Icon="@Icons.Material.Filled.RemoveRedEye" Color="MudBlazor.Color.Primary"/>
+              </MudItem>
+              <MudItem xs="6" Class="d-flex align-center justify-start" Style="font-size: medium;">
+                @T["Od"]: @(DateString(dataStruct.invoice.FromDate))
+              </MudItem>
+              <MudItem xs="6" Class="d-flex align-center justify-start" Style="font-size: medium;">
+                @T["Do"]: @(DateString(dataStruct.invoice.ToDate))
+              </MudItem>
+              <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large; font-weight:bold;">
+                @T["Iznos"]:@(DecimalString(1234m)) EUR
+              </MudItem>
+                <MudItem xs="2" Class="d-flex align-center justify-end">
+                  <MudIconButton OnClick="() => OnExpandCollapseClick(dataStruct.invoice.Id)" Icon="@(dataStruct.expand ? Icons.Material.Filled.KeyboardArrowUp : Icons.Material.Filled.KeyboardArrowDown)" Color="MudBlazor.Color.Default"/>
+                </MudItem>
+            </MudGrid>
+
+        <MudCollapse Class="py-2" Expanded="_shownInvoices.Where(x => x.invoice.Id == dataStruct.invoice.Id).First().expand">
+                <MudStack>
+                  <MudDivider DividerType="DividerType.Middle" Class="mt-2"/>
+                  <MudContainer>
+                    @T["Korisnik (mreže)"]: @(dataStruct.invoice.NetworkUserId)
+                  </MudContainer>
+                </MudStack>
+        </MudCollapse>
+      </MudStack>
+      </MudPaper>
+    }
+          </MudHidden>
+
+
+@* DESKTOP *@
+          <MudHidden Breakpoint="Breakpoint.MdAndDown">
+            <MudDataGrid
+  T="NetworkUserInvoiceModel"
+  MultiSelection="true"
+  Items="@_invoices"
+  SortMode="SortMode.Multiple"
+  Filterable="true"
+  QuickFilter="@_quickFilter">
+  <ToolBarContent>
+    <MudText Typo="Typo.h4">@T["Računi"]</MudText>
+    <MudSpacer />
+    <MudTextField
+      @bind-Value="_searchString"
+      Placeholder="Search"
+      Adornment="Adornment.Start"
+      Immediate="true"
+      AdornmentIcon="@Icons.Material.Filled.Search"
+      IconSize="MudBlazor.Size.Medium"
+      Class="mt-0">
+    </MudTextField>
+  </ToolBarContent>
+  <Columns >
+    <PropertyColumn
+      CellStyle="font-size: large;"
+      Property="x => x.NetworkUserId"
+      Title='@T["Korisnik (mreže)"]' Sortable="false"/>
+    <PropertyColumn
+      CellStyle="font-size: x-large; text-align: end !important;"
+      Property="x => 1234m"
+      Title='@T["Iznos"]'>
+          <CellTemplate>
+              @(DecimalString(1234m) + " EUR")
+          </CellTemplate>
+      </PropertyColumn>
+    <PropertyColumn
+      CellStyle="font-size: large;"
+      Property="x => DateString(x.FromDate)"
+      Title='@T["Od"]' />
+    <PropertyColumn
+      CellStyle="font-size: large;"
+      Property="x => DateString(x.ToDate)"
+      Title='@T["Do"]' />
+    <PropertyColumn
+      CellStyle="font-size: large;"
+      Property="x => x.NetworkUserId"
+      Sortable="false"
+      Title='@T["Broj Računa"]' />
+    <TemplateColumn CellClass="d-flex justify-center"  Sortable="false" Filterable="false">
+        <CellTemplate>
+            <MudStack Row>
+              <MudButton OnClick="() => InspectInvoice(context.Item)" Variant="Variant.Filled" Color="MudBlazor.Color.Primary">
+                @T["Pregled"]
+              </MudButton>
+            </MudStack>
+        </CellTemplate>
+    </TemplateColumn>
+  </Columns>
+  <PagerContent>
+    <MudDataGridPager T="NetworkUserInvoiceModel" />
+  </PagerContent>
+</MudDataGrid>
+          </MudHidden>
+}
+
+@code {
+  [CascadingParameter] public UserState user { get; set; } = default!;
+  [CascadingParameter] public RepresentativeState representative { get; set; } = default!;
+  public string SearchString { get; set; } = "";
+  private class MobileData {
+    public NetworkUserInvoiceModel invoice = default!;
+    public bool expand;
+    public bool show;
+  }
+  List<MobileData> _shownInvoices = new();
+  private string? _searchString;
+  private IEnumerable<NetworkUserInvoiceModel>? _invoices;
+  protected override async Task OnInitializedAsync()
+  {
+    if(user.User.Roles.Contains("NetworkUser")){
+      // Find all _invoices tied to this user, decending by FromDate
+    }
+    else if(user.User.Roles.Contains("Location")){
+      // Find all network users that belong to this location, then find all _invoices tied to thous user, decending by FromDate
+    }
+    else if(user.User.Roles.Contains("Operator")){
+      // Find all _invoices tied to this user, decending by FromDate
+    }
+    if(_invoices is not null){
+      foreach(var invoice in _invoices){
+        _shownInvoices.Add( new() { invoice = invoice, expand = false, show = true});
+      }
+    }
+  }
+  private void OnExpandCollapseClick(string invoiceId) {
+    var a = _shownInvoices.Where(x => x.invoice.Id == invoiceId).FirstOrDefault();
+    if (a != null)
+    {
+        a.expand = !a.expand;
+    }
+  }
+  private Func<NetworkUserInvoiceModel, bool> _quickFilter => x =>
+  {
+    if (string.IsNullOrWhiteSpace(_searchString))
+      return true;
+
+    if (x.NetworkUserId.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
+      return true;
+
+    return false;
+  };
+  private void InspectInvoice(NetworkUserInvoiceModel item) {
+      NavigationManager.NavigateTo($"invoice/{item.Id}");
+  }
+  private Task Filter(string value) {
+    SearchString = value;
+    foreach (var inv in _shownInvoices)
+    {
+      if(value.Trim() != ""){
+        inv.show = false;
+      }
+    };
+    var a = _shownInvoices.Where(x => x.invoice.NetworkUserId.Contains(value, StringComparison.InvariantCultureIgnoreCase)).ToList();
+    foreach (var inv in a)
+    {
+        inv.show = true;
+    };
+    StateHasChanged();
+    return Task.CompletedTask;
+  }
+}

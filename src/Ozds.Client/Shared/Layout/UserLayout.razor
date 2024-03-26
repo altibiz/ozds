@@ -39,15 +39,13 @@
       </MudToolBar>
     </MudHidden>
     <MudContainer MaxWidth="MaxWidth.Large" Class="mt-4">
-      @ChildContent
+      @Body
     </MudContainer>
   </MudMainContent>
 </MudLayout>
 
 @code {
   [CascadingParameter] public UserState? UserState { get; set; } = default!;
-
-  [Parameter] public RenderFragment? ChildContent { get; set; } = default!;
 
   public bool _drawerOpen = true;
 

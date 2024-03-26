@@ -5,11 +5,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Ozds.Business.Models.Composite;
 using Ozds.Business.Queries;
 using Ozds.Client.Attributes;
+using Ozds.Client.Base;
 using Ozds.Client.State;
 
 namespace Ozds.Client.Shared.Layout;
 
-public partial class MainLayout : LayoutComponentBase
+public partial class MainLayout : OzdsLayoutComponentBase
 {
   private LoadingState<RepresentativeState> _representativeState = new();
 
