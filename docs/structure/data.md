@@ -8,4 +8,7 @@ file).
 
 ## Entities
 
-## Queries
+```mermaid
+erDiagram
+
+```

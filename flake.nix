@@ -42,6 +42,7 @@
             usql
             just
             nodePackages.prettier
+            # nodePackages.remark
             nodePackages.yaml-language-server
             nodePackages.vscode-langservers-extracted
             marksman

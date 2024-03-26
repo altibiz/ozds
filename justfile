@@ -18,12 +18,13 @@ default: prepare
 prepare:
   dotnet tool restore
   prettier --version || npm install -g prettier
-  dotnet restore
+  # remark --version || npm install -g remark
   docker compose up -d
 
 ci:
   dotnet tool restore
   prettier --version || npm install -g prettier
+  # remark --version || npm install -g remark
 
 dev *args:
   dotnet watch --project "{{servercsproj}}" {{args}}
