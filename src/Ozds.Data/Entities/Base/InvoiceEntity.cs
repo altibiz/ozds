@@ -11,9 +11,8 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
 
-[Table("invoices")]
 [TimescaleHypertable(nameof(IssuedOn))]
-public class InvoiceEntity : ReadonlyEntity
+public abstract class InvoiceEntity : ReadonlyEntity
 {
   [NotMapped] private DateTimeOffset _timestamp;
 
@@ -39,6 +38,9 @@ public class InvoiceEntityTypeConfiguration : InheritedEntityTypeConfiguration<I
 {
   public override void Configure<T>(EntityTypeBuilder<T> builder) where T : class
   {
-    builder.ToTable("invoices").HasDiscriminator<int>("kind");
+    builder
+      .UseTphMappingStrategy()
+      .ToTable("invoices")
+      .HasDiscriminator<int>("kind");
   }
 }

@@ -29,19 +29,11 @@ public abstract class MeasurementEntity<T> : MeasurementEntity
   [Required] public virtual T Meter { get; set; } = default!;
 }
 
-public class MeasurementEntityConfiguration : EntityTypeConfiguration<MeasurementEntity>
-{
-  public override void Configure(EntityTypeBuilder<MeasurementEntity> builder)
-  {
-    builder.UseTptMappingStrategy();
-  }
-}
-
 public class MeasurementModelConfiguration : InheritedEntityTypeConfiguration<MeasurementEntity>
 {
-  public override void Configure<T>(EntityTypeBuilder<T> builder) where T : class
+  public override void Configure<T>(EntityTypeBuilder<T> builder)
   {
-    builder.UseTptMappingStrategy();
+    builder.UseTpcMappingStrategy();
   }
 }
 

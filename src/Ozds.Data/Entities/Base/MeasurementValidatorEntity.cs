@@ -18,6 +18,9 @@ public class MeasurementValidatorEntityTypeConfiguration : EntityTypeConfigurati
 {
   public override void Configure(EntityTypeBuilder<MeasurementValidatorEntity> builder)
   {
-    builder.ToTable("measurement_validators").HasDiscriminator<int>("kind");
+    builder
+      .UseTphMappingStrategy()
+      .ToTable("measurement_validators")
+      .HasDiscriminator<int>("kind");
   }
 }

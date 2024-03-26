@@ -16,7 +16,7 @@ public class IdentifiableEntityTypeConfiguration : EntityTypeConfiguration<Ident
 {
   public override void Configure(EntityTypeBuilder<IdentifiableEntity> builder)
   {
-    builder.UseTptMappingStrategy();
+    builder.UseTpcMappingStrategy();
   }
 }
 

@@ -18,6 +18,9 @@ public class CatalogueEntityTypeConfiguration : EntityTypeConfiguration<Catalogu
 {
   public override void Configure(EntityTypeBuilder<CatalogueEntity> builder)
   {
-    builder.ToTable("catalogues").HasDiscriminator<int>("kind");
+    builder
+      .UseTphMappingStrategy()
+      .ToTable("catalogues")
+      .HasDiscriminator<int>("kind");
   }
 }

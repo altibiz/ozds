@@ -34,18 +34,10 @@ public abstract class AggregateEntity<T> : AggregateEntity
   [Required] public virtual T Meter { get; set; } = default!;
 }
 
-public class AggregateEntityConfiguration : EntityTypeConfiguration<AggregateEntity>
+public class AggregateModelConfiguration : InheritedEntityTypeConfiguration<AggregateEntity>
 {
-  public override void Configure(EntityTypeBuilder<AggregateEntity> builder)
+  public override void Configure<T>(EntityTypeBuilder<T> builder)
   {
-    builder.UseTptMappingStrategy();
-  }
-}
-
-public class InheritedAggregateModelConfiguration : InheritedEntityTypeConfiguration<AggregateEntity>
-{
-  public override void Configure<T>(EntityTypeBuilder<T> builder) where T : class
-  {
-    builder.UseTptMappingStrategy();
+    builder.UseTpcMappingStrategy();
   }
 }
