@@ -26,6 +26,7 @@ public abstract class MeasurementEntity<T> : MeasurementEntity
 {
   [ForeignKey(nameof(Meter))] public string MeterId { get; set; } = default!;
 
+  // FIXME: global filter on deleted meters prevents this from being required
   [Required] public virtual T Meter { get; set; } = default!;
 }
 

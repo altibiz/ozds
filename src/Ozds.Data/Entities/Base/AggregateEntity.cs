@@ -31,6 +31,7 @@ public abstract class AggregateEntity<T> : AggregateEntity
 {
   [ForeignKey(nameof(Meter))] public string MeterId { get; set; } = default!;
 
+  // FIXME: global filter on deleted meters prevents this from being required
   [Required] public virtual T Meter { get; set; } = default!;
 }
 

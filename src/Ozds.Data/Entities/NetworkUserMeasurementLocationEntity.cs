@@ -5,8 +5,5 @@ namespace Ozds.Data.Entities;
 
 public class NetworkUserMeasurementLocationEntity : MeasurementLocationEntity
 {
-  [ForeignKey(nameof(NetworkUser))]
-  public string NetworkUserId { get; set; } = default!;
-
   public virtual NetworkUserEntity NetworkUser { get; set; } = default!;
 }

@@ -14,7 +14,6 @@ public record BlueLowCatalogueModel(
   bool IsDeleted,
   DateTimeOffset? DeletedOn,
   string? DeletedById,
-  string LocationId,
   float ActiveEnergyTotalImportT0Price_EUR,
   float ReactiveEnergyTotalImportT0Price_EUR,
   float MeterFeePrice_EUR
@@ -27,8 +26,7 @@ public record BlueLowCatalogueModel(
   LastUpdatedById,
   IsDeleted,
   DeletedOn,
-  DeletedById,
-  LocationId
+  DeletedById
 )
 {
   public override IEnumerable<ValidationResult> Validate(
@@ -53,7 +51,6 @@ public static class BlueLowCatalogueModelExtensions
       entity.IsDeleted,
       entity.DeletedOn,
       entity.DeletedById,
-      entity.LocationId,
       entity.ActiveEnergyTotalImportT0Price_EUR,
       entity.ReactiveEnergyTotalImportT0Price_EUR,
       entity.MeterFeePrice_EUR
@@ -74,7 +71,6 @@ public static class BlueLowCatalogueModelExtensions
       IsDeleted = model.IsDeleted,
       DeletedOn = model.DeletedOn,
       DeletedById = model.DeletedById,
-      LocationId = model.LocationId,
       ActiveEnergyTotalImportT0Price_EUR =
         model.ActiveEnergyTotalImportT0Price_EUR,
       ReactiveEnergyTotalImportT0Price_EUR =

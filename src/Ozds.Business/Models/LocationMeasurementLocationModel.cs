@@ -14,8 +14,7 @@ public record LocationMeasurementLocationModel(
   bool IsDeleted,
   DateTimeOffset? DeletedOn,
   string? DeletedById,
-  string MeterId,
-  string LocationId
+  string MeterId
 ) : MeasurementLocationModel(
   Id,
   Title,
@@ -51,8 +50,7 @@ public static class LocationMeasurementLocationModelExtensions
       entity.IsDeleted,
       entity.DeletedOn,
       entity.DeletedById,
-      entity.MeterId,
-      entity.LocationId
+      entity.MeterId
     );
   }
 
@@ -71,7 +69,6 @@ public static class LocationMeasurementLocationModelExtensions
       DeletedOn = model.DeletedOn,
       DeletedById = model.DeletedById,
       MeterId = model.MeterId,
-      LocationId = model.LocationId
     };
   }
 }

@@ -44,6 +44,13 @@ public class AuditableEntityConfiguration : InheritedEntityTypeConfiguration<Aud
     builder.HasOne(x => x.DeletedBy)
       .WithMany()
       .HasForeignKey(x => x.DeletedById);
-    builder.HasQueryFilter(x => !x.IsDeleted);
+
+    if (typeof(T).BaseType!.IsAbstract)
+    {
+      // FIXME: this filter breaks some required relationships
+      // maybe remove it and add it to specific entities or
+      // manually filter out deleted entities in queries
+      builder.HasQueryFilter(x => !x.IsDeleted);
+    }
   }
 }

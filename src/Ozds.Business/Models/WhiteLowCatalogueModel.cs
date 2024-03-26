@@ -14,7 +14,6 @@ public record WhiteLowCatalogueModel(
   bool IsDeleted,
   DateTimeOffset? DeletedOn,
   string? DeletedById,
-  string LocationId,
   float ActiveEnergyTotalImportT1Price_EUR,
   float ActiveEnergyTotalImportT2Price_EUR,
   float ReactiveEnergyTotalImportT0Price_EUR,
@@ -28,8 +27,7 @@ public record WhiteLowCatalogueModel(
   LastUpdatedById,
   IsDeleted,
   DeletedOn,
-  DeletedById,
-  LocationId
+  DeletedById
 )
 {
   public override IEnumerable<ValidationResult> Validate(
@@ -54,7 +52,6 @@ public static class WhiteLowCatalogueModelExtensions
       entity.IsDeleted,
       entity.DeletedOn,
       entity.DeletedById,
-      entity.LocationId,
       entity.ActiveEnergyTotalImportT1Price_EUR,
       entity.ActiveEnergyTotalImportT2Price_EUR,
       entity.ReactiveEnergyTotalImportT0Price_EUR,
@@ -76,7 +73,6 @@ public static class WhiteLowCatalogueModelExtensions
       IsDeleted = model.IsDeleted,
       DeletedOn = model.DeletedOn,
       DeletedById = model.DeletedById,
-      LocationId = model.LocationId,
       ActiveEnergyTotalImportT1Price_EUR =
         model.ActiveEnergyTotalImportT1Price_EUR,
       ActiveEnergyTotalImportT2Price_EUR =

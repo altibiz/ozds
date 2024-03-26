@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ozds.Data.Attributes;
 
-[AttributeUsage(AttributeTargets.Class)]
+[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
 public class TimescaleHypertableAttribute : Attribute
 {
   public TimescaleHypertableAttribute(string timeColumn)

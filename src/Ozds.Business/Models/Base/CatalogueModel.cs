@@ -9,8 +9,7 @@ public abstract record CatalogueModel(
   string? LastUpdatedById,
   bool IsDeleted,
   DateTimeOffset? DeletedOn,
-  string? DeletedById,
-  string LocationId
+  string? DeletedById
 ) : AuditableModel(
   Id,
   Title,

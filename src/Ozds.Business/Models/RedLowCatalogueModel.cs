@@ -14,7 +14,6 @@ public record RedLowCatalogueModel(
   bool IsDeleted,
   DateTimeOffset? DeletedOn,
   string? DeletedById,
-  string LocationId,
   float ActiveEnergyTotalImportT1Price_EUR,
   float ActiveEnergyTotalImportT2Price_EUR,
   float MaxActivePowerTotalImportT1Price_EUR,
@@ -29,8 +28,7 @@ public record RedLowCatalogueModel(
   LastUpdatedById,
   IsDeleted,
   DeletedOn,
-  DeletedById,
-  LocationId
+  DeletedById
 )
 {
   public override IEnumerable<ValidationResult> Validate(
@@ -54,7 +52,6 @@ public static class RedLowCatalogueModelExtensions
       entity.IsDeleted,
       entity.DeletedOn,
       entity.DeletedById,
-      entity.LocationId,
       entity.ActiveEnergyTotalImportT1Price_EUR,
       entity.ActiveEnergyTotalImportT2Price_EUR,
       entity.MaxActivePowerTotalImportT1Price_EUR,
@@ -76,7 +73,6 @@ public static class RedLowCatalogueModelExtensions
       IsDeleted = model.IsDeleted,
       DeletedOn = model.DeletedOn,
       DeletedById = model.DeletedById,
-      LocationId = model.LocationId,
       ActiveEnergyTotalImportT1Price_EUR =
         model.ActiveEnergyTotalImportT1Price_EUR,
       ActiveEnergyTotalImportT2Price_EUR =

@@ -14,7 +14,6 @@ public record RegulatoryCatalogueModel(
   bool IsDeleted,
   DateTimeOffset? DeletedOn,
   string? DeletedById,
-  string LocationId,
   float ActiveEnergyTotalImportT1Price_EUR,
   float ActiveEnergyTotalImportT2Price_EUR,
   float RenewableEnergyFeePrice_EUR,
@@ -29,8 +28,7 @@ public record RegulatoryCatalogueModel(
   LastUpdatedById,
   IsDeleted,
   DeletedOn,
-  DeletedById,
-  LocationId
+  DeletedById
 )
 {
   public override IEnumerable<ValidationResult> Validate(
@@ -55,7 +53,6 @@ public static class RegulatoryCatalogueModelExtensions
       entity.IsDeleted,
       entity.DeletedOn,
       entity.DeletedById,
-      entity.LocationId,
       entity.ActiveEnergyTotalImportT1Price_EUR,
       entity.ActiveEnergyTotalImportT2Price_EUR,
       entity.RenewableEnergyFeePrice_EUR,
@@ -78,7 +75,6 @@ public static class RegulatoryCatalogueModelExtensions
       IsDeleted = model.IsDeleted,
       DeletedOn = model.DeletedOn,
       DeletedById = model.DeletedById,
-      LocationId = model.LocationId,
       ActiveEnergyTotalImportT1Price_EUR =
         model.ActiveEnergyTotalImportT1Price_EUR,
       ActiveEnergyTotalImportT2Price_EUR =

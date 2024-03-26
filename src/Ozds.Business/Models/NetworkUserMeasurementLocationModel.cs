@@ -14,8 +14,7 @@ public record NetworkUserMeasurementLocationModel(
   bool IsDeleted,
   DateTimeOffset? DeletedOn,
   string? DeletedById,
-  string MeterId,
-  string NetworkUserId
+  string MeterId
 ) : MeasurementLocationModel(
   Id,
   Title,
@@ -51,8 +50,7 @@ public static class NetworkUserMeasurementLocationModelExtensions
       entity.IsDeleted,
       entity.DeletedOn,
       entity.DeletedById,
-      entity.MeterId,
-      entity.NetworkUserId
+      entity.MeterId
     );
   }
 
@@ -71,7 +69,6 @@ public static class NetworkUserMeasurementLocationModelExtensions
       DeletedOn = model.DeletedOn,
       DeletedById = model.DeletedById,
       MeterId = model.MeterId,
-      NetworkUserId = model.NetworkUserId
     };
   }
 }
