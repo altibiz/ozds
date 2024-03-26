@@ -1,6 +1,7 @@
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Ozds.Data.Attributes;
+using Ozds.Data.Extensions;
 
 // TODO: make all applications work with UseTimescale
 
@@ -29,6 +30,7 @@ public partial class OzdsDbContext : DbContext
       .HasPostgresExtension("timescaledb")
       .ApplyPostgresqlEnums()
       .ApplyTimescaleHypertables()
+      .ApplyModelConfigurationsFromAssembly(Assembly.GetExecutingAssembly())
       .ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
     base.OnModelCreating(modelBuilder);

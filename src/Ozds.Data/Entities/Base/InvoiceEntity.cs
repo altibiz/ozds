@@ -6,6 +6,7 @@ using Ozds.Data.Attributes;
 
 // TODO: figure out how to slap on all the necessary entities without
 // ef core automatically making relationships
+// TODO: use complex properties
 
 namespace Ozds.Data.Entities.Base;
 

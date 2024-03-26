@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Ozds.Data.Attributes;
 using Ozds.Data.Entities.Enums;
+using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
 
@@ -33,11 +34,10 @@ public abstract class AggregateEntity<T> : AggregateEntity
   [Required] public virtual T Meter { get; set; } = default!;
 }
 
-public class AggregateEntityTypeConfiguration : IEntityTypeConfiguration<AggregateEntity>
+public class AggregateModelConfiguration : IModelConfiguration
 {
-  public void Configure(EntityTypeBuilder<AggregateEntity> builder)
+  public void Configure(ModelBuilder modelBuilder)
   {
-    builder.UseTptMappingStrategy();
   }
 }
 
