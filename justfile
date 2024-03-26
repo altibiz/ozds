@@ -1,3 +1,5 @@
+set windows-shell := ["pwsh.exe", "-c"]
+
 root := absolute_path('')
 sln := absolute_path('ozds.sln')
 gitignore := absolute_path('.gitignore')
@@ -15,13 +17,13 @@ default: prepare
 
 prepare:
   dotnet tool restore
-  prettier --version &>/dev/null || npm install -g prettier
+  prettier --version || npm install -g prettier
   dotnet restore
   docker compose up -d
 
 ci:
   dotnet tool restore
-  prettier --version &>/dev/null || npm install -g prettier
+  prettier --version || npm install -g prettier
 
 dev *args:
   dotnet watch --project "{{servercsproj}}" {{args}}

@@ -37,7 +37,9 @@ Install [just](https://github.com/casey/just#packages),
 [docker](https://docs.docker.com/engine/install/),
 [node](https://nodejs.org/en/download) and
 [dotnet](https://github.com/dotnet/core/blob/main/release-notes/8.0/8.0.1/8.0.1.md?WT.mc_id=dotnet-35129-website)
-and run `just prepare` from the command line.
+and run `just prepare` from the command line. If on Windows please make sure you
+have `pwsh.exe` installed by running `pwsh -v` on the command line and if not
+[install it](https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows).
 
 ### How do I start developing OZDS?
 
