@@ -1,4 +1,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Ozds.Data.Entities.Base;
 
 namespace Ozds.Data.Entities;
@@ -55,4 +57,14 @@ public class LocationEntity : AuditableEntity
 
   public virtual RegulatoryCatalogueEntity RegulatoryCatalogue { get; set; } =
     default!;
+}
+
+public class LocationEntityTypeConfiguration : IEntityTypeConfiguration<LocationEntity>
+{
+  public void Configure(EntityTypeBuilder<LocationEntity> builder)
+  {
+    builder
+      .HasMany(e => e.Representatives)
+      .WithMany(e => e.Locations);
+  }
 }

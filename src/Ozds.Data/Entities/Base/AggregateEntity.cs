@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Ozds.Data.Attributes;
 using Ozds.Data.Entities.Enums;
 
@@ -31,3 +32,12 @@ public abstract class AggregateEntity<T> : AggregateEntity
 
   [Required] public virtual T Meter { get; set; } = default!;
 }
+
+public class AggregateEntityTypeConfiguration : IEntityTypeConfiguration<AggregateEntity>
+{
+  public void Configure(EntityTypeBuilder<AggregateEntity> builder)
+  {
+    builder.UseTptMappingStrategy();
+  }
+}
+

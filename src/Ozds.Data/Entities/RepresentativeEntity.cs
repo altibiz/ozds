@@ -7,13 +7,13 @@ public class RepresentativeEntity : AuditableEntity
 {
   [Required] public bool IsOperatorRepresentative { get; set; } = default!;
 
-  public ICollection<NetworkUserEntity> NetworkUsers { get; set; } = default!;
+  public virtual ICollection<NetworkUserEntity> NetworkUsers { get; set; } = default!;
 
-  public ICollection<LocationEntity> Locations { get; set; } = default!;
+  public virtual ICollection<LocationEntity> Locations { get; set; } = default!;
 
-  public ICollection<RepresentativeEventEntity> Events { get; set; } = default!;
+  public virtual ICollection<RepresentativeEventEntity> Events { get; set; } = default!;
 
-  public ICollection<RepresentativeAuditEventEntity> AuditEvents { get; set; } =
+  public virtual ICollection<RepresentativeAuditEventEntity> AuditEvents { get; set; } =
     default!;
 
   [Required] public string Name { get; set; } = default!;

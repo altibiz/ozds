@@ -30,11 +30,20 @@ public abstract class AuditableEntity : IdentifiableEntity
   public virtual ICollection<AuditEventEntity> Audits { get; set; } = default!;
 }
 
-public class
-  SoftDeletableEntityConfiguration : IEntityTypeConfiguration<AuditableEntity>
+public class AuditableEntityConfiguration : IEntityTypeConfiguration<AuditableEntity>
 {
   public void Configure(EntityTypeBuilder<AuditableEntity> builder)
   {
+    builder.UseTptMappingStrategy();
+    builder.HasOne(x => x.CreatedBy)
+      .WithMany()
+      .HasForeignKey(x => x.CreatedById);
+    builder.HasOne(x => x.LastUpdatedBy)
+      .WithMany()
+      .HasForeignKey(x => x.LastUpdatedById);
+    builder.HasOne(x => x.DeletedBy)
+      .WithMany()
+      .HasForeignKey(x => x.DeletedById);
     builder.HasQueryFilter(x => !x.IsDeleted);
   }
 }

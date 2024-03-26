@@ -1,4 +1,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Ozds.Data.Entities.Base;
 
 namespace Ozds.Data.Entities;
@@ -20,4 +22,14 @@ public class NetworkUserEntity : AuditableEntity
 
   public virtual ICollection<NetworkUserInvoiceEntity> Invoices { get; set; } =
     default!;
+}
+
+public class NetworkUserEntityTypeConfiguration : IEntityTypeConfiguration<NetworkUserEntity>
+{
+  public void Configure(EntityTypeBuilder<NetworkUserEntity> builder)
+  {
+    builder
+      .HasMany(e => e.Representatives)
+      .WithMany(e => e.NetworkUsers);
+  }
 }

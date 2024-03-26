@@ -1,9 +1,10 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Ozds.Data.Entities.Enums;
 
 namespace Ozds.Data.Entities.Base;
 
-[Table("meters")]
 public abstract class MeterEntity : AuditableEntity
 {
   [ForeignKey(nameof(MeasurementLocation))]
@@ -35,4 +36,12 @@ public abstract class MeterEntity<T> : MeterEntity
   public string MeasurementValidatorId { get; set; } = default!;
 
   public virtual T MeasurementValidator { get; set; } = default!;
+}
+
+public class MeterEntityTypeConfiguration : IEntityTypeConfiguration<MeterEntity>
+{
+  public void Configure(EntityTypeBuilder<MeterEntity> builder)
+  {
+    builder.ToTable("meters").HasDiscriminator<int>("kind");
+  }
 }

@@ -25,6 +25,13 @@
                 usql pg://ozds:ozds@localhost/ozds?sslmode=disable "$@"
               '';
             };
+            mermerd = pkgs.writeShellApplication {
+              name = "mermerd";
+              runtimeInputs = [ pkgs.mermerd ];
+              text = ''
+                mermerd --connectionString postgresql://ozds:ozds@localhost:5432/ozds "$@"
+              '';
+            };
           in
           [
             # Nix
@@ -41,6 +48,7 @@
             # Misc
             usql
             just
+            mermerd
             nodePackages.prettier
             # nodePackages.remark
             nodePackages.yaml-language-server

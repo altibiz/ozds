@@ -1,5 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Ozds.Data.Attributes;
 
 // TODO: figure out how to slap on all the necessary entities without
@@ -8,7 +10,6 @@ using Ozds.Data.Attributes;
 namespace Ozds.Data.Entities.Base;
 
 [TimescaleHypertable(nameof(IssuedOn))]
-[Table("invoices")]
 public class InvoiceEntity : ReadonlyEntity
 {
   [NotMapped] private DateTimeOffset _timestamp;
@@ -29,4 +30,12 @@ public class InvoiceEntity : ReadonlyEntity
   public DateTimeOffset FromDate { get; set; } = default!;
 
   public DateTimeOffset ToDate { get; set; } = default!;
+}
+
+public class InvoiceEntityTypeConfiguration : IEntityTypeConfiguration<InvoiceEntity>
+{
+  public void Configure(EntityTypeBuilder<InvoiceEntity> builder)
+  {
+    builder.ToTable("invoices").HasDiscriminator<int>("kind");
+  }
 }

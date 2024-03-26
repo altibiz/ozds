@@ -12,6 +12,7 @@ appdata := absolute_path('App_Data')
 servercsproj := absolute_path('src/Ozds.Server/Ozds.Server.csproj')
 datacsproj := absolute_path('src/Ozds.Data/Ozds.Data.csproj')
 fakecsproj := absolute_path('scripts/Ozds.Fake/Ozds.Fake.csproj')
+schema := absolute_path('docs/structure/data/schema.md')
 
 default: prepare
 
@@ -92,6 +93,17 @@ migrate name:
     --output-dir Migrations \
     --namespace Ozds.Data.Migrations \
     "{{name}}"
+
+  dotnet \
+    --startup-project "{{servercsproj}}" \
+    --project "{{datacsproj}}" \
+    database update
+
+  mermerd \
+    --schema public \
+    --useAllTables \
+    --encloseWithMermaidBackticks \
+    --outputFileName "{{schema}}"
 
 publish *args:
   dotnet publish "{{sln}}" \
