@@ -8,8 +8,9 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
 
+[Table("events")]
 [TimescaleHypertable(nameof(Timestamp))]
-public abstract class EventEntity : ReadonlyEntity
+public class EventEntity : ReadonlyEntity
 {
   [NotMapped] private DateTimeOffset _timestamp;
 
@@ -27,7 +28,7 @@ public abstract class EventEntity : ReadonlyEntity
   public string Description { get; set; } = default!;
 }
 
-public abstract class AuditEventEntity : EventEntity
+public class AuditEventEntity : EventEntity
 {
   [ForeignKey(nameof(AuditableEntity))]
   public string AuditableEntityId { get; set; } = default!;
@@ -37,13 +38,12 @@ public abstract class AuditEventEntity : EventEntity
   public AuditEntity Audit { get; set; } = default!;
 }
 
-public class EventInheritedEntityTypeConfiguration : InheritedEntityTypeConfiguration<EventEntity>
+public class EventEntityTypeConfiguration : EntityTypeConfiguration<EventEntity>
 {
-  public override void Configure<T>(EntityTypeBuilder<T> builder)
+  public override void Configure(EntityTypeBuilder<EventEntity> builder)
   {
     builder
       .UseTphMappingStrategy()
-      .ToTable("events")
-      .HasDiscriminator<int>("kind");
+      .HasDiscriminator<string>("kind");
   }
 }

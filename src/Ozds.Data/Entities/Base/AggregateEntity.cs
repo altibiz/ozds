@@ -34,7 +34,7 @@ public abstract class AggregateEntity<T> : AggregateEntity
   [Required] public virtual T Meter { get; set; } = default!;
 }
 
-public class AggregateModelConfiguration : InheritedEntityTypeConfiguration<AggregateEntity>
+public class AggregateEntityTypeConfiguration : InheritedEntityTypeConfiguration<AggregateEntity>
 {
   public override void Configure<T>(EntityTypeBuilder<T> builder)
   {

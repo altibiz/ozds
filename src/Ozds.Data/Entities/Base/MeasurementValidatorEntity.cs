@@ -7,7 +7,7 @@ using Ozds.Data.Extensions;
 namespace Ozds.Data.Entities;
 
 [Table("measurement_validators")]
-public abstract class MeasurementValidatorEntity : AuditableEntity
+public class MeasurementValidatorEntity : AuditableEntity
 {
   [ForeignKey(nameof(Meter))] public string MeterId { get; set; } = default!;
 
@@ -20,7 +20,6 @@ public class MeasurementValidatorEntityTypeConfiguration : EntityTypeConfigurati
   {
     builder
       .UseTphMappingStrategy()
-      .ToTable("measurement_validators")
-      .HasDiscriminator<int>("kind");
+      .HasDiscriminator<string>("kind");
   }
 }

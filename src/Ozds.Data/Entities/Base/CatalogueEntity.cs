@@ -6,7 +6,7 @@ using Ozds.Data.Extensions;
 namespace Ozds.Data.Entities.Base;
 
 [Table("catalogues")]
-public abstract class CatalogueEntity : AuditableEntity
+public class CatalogueEntity : AuditableEntity
 {
   [ForeignKey(nameof(Location))]
   public string LocationId { get; set; } = default!;
@@ -14,13 +14,12 @@ public abstract class CatalogueEntity : AuditableEntity
   public virtual LocationEntity Location { get; set; } = default!;
 }
 
-public class CatalogueEntityTypeConfiguration : EntityTypeConfiguration<CatalogueEntity>
+public class CatalogueEntityTypeConfiguration : InheritedEntityTypeConfiguration<CatalogueEntity>
 {
-  public override void Configure(EntityTypeBuilder<CatalogueEntity> builder)
+  public override void Configure<T>(EntityTypeBuilder<T> builder)
   {
     builder
       .UseTphMappingStrategy()
-      .ToTable("catalogues")
-      .HasDiscriminator<int>("kind");
+      .HasDiscriminator<string>("kind");
   }
 }

@@ -29,7 +29,7 @@ public abstract class MeasurementEntity<T> : MeasurementEntity
   [Required] public virtual T Meter { get; set; } = default!;
 }
 
-public class MeasurementModelConfiguration : InheritedEntityTypeConfiguration<MeasurementEntity>
+public class MeasurementEntityTypeConfiguration : InheritedEntityTypeConfiguration<MeasurementEntity>
 {
   public override void Configure<T>(EntityTypeBuilder<T> builder)
   {

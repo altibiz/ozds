@@ -36,11 +36,8 @@ public abstract class InvoiceEntity : ReadonlyEntity
 
 public class InvoiceEntityTypeConfiguration : InheritedEntityTypeConfiguration<InvoiceEntity>
 {
-  public override void Configure<T>(EntityTypeBuilder<T> builder) where T : class
+  public override void Configure<T>(EntityTypeBuilder<T> builder)
   {
-    builder
-      .UseTphMappingStrategy()
-      .ToTable("invoices")
-      .HasDiscriminator<int>("kind");
+    builder.UseTpcMappingStrategy();
   }
 }

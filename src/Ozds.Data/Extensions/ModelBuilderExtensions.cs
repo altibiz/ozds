@@ -25,9 +25,19 @@ public abstract class InheritedEntityTypeConfiguration<T> : IModelConfiguration
 
   public void Configure(ModelBuilder modelBuilder)
   {
+    Console.WriteLine(
+      string.Join(
+", ",
+  typeof(T).Assembly
+      .GetTypes()
+      .Where(type => !type.IsAbstract && !type.IsGenericType && type.IsSubclassOf(typeof(T)))
+      .Select(type => type.Name)
+      )
+
+    );
     _ = typeof(T).Assembly
       .GetTypes()
-      .Where(type => !type.IsAbstract && type.IsSubclassOf(typeof(T)))
+      .Where(type => !type.IsAbstract && !type.IsGenericType && type.IsSubclassOf(typeof(T)))
       .Aggregate(modelBuilder, (modelBuilder, type) =>
       {
         var method = GetType().GetMethod(nameof(Configure), 1, new[] { typeof(EntityTypeBuilder<>).MakeGenericType(type) });
@@ -52,7 +62,9 @@ public static class ModelBuilderExtensions
         modelBuilder,
         (modelBuilder, type) =>
         {
-          (Activator.CreateInstance(type) as IModelConfiguration)?.Configure(modelBuilder);
+          var config = Activator.CreateInstance(type) as IModelConfiguration;
+          Console.WriteLine(type.Name);
+          config?.Configure(modelBuilder);
           return modelBuilder;
         }
       );

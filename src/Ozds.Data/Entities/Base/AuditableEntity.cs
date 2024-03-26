@@ -1,10 +1,10 @@
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
 
+[NotMapped]
 public abstract class AuditableEntity : IdentifiableEntity
 {
   public DateTimeOffset CreatedOn { get; set; } = DateTimeOffset.UtcNow;
@@ -31,11 +31,10 @@ public abstract class AuditableEntity : IdentifiableEntity
   public virtual ICollection<AuditEventEntity> Audits { get; set; } = default!;
 }
 
-public class AuditableEntityConfiguration : EntityTypeConfiguration<AuditableEntity>
+public class AuditableEntityConfiguration : InheritedEntityTypeConfiguration<AuditableEntity>
 {
-  public override void Configure(EntityTypeBuilder<AuditableEntity> builder)
+  public override void Configure<T>(EntityTypeBuilder<T> builder)
   {
-    builder.UseTptMappingStrategy();
     builder.HasOne(x => x.CreatedBy)
       .WithMany()
       .HasForeignKey(x => x.CreatedById);
