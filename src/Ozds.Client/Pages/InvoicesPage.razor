@@ -1,0 +1,13 @@
+@page "/invoices"
+@attribute [Navigation(Title = "Računi")]
+
+
+@if (user is null) {
+  return;
+}
+
+<InvoicesTable />
+
+@code {
+  [CascadingParameter] public UserState user { get; set; } = default!;
+}

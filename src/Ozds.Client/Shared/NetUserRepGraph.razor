@@ -1,0 +1,136 @@
+@using Ozds.Business.Time;
+
+@if(_graphValues is not null){
+@* MOBILE *@
+   <MudHidden Breakpoint="Breakpoint.MdAndUp">
+            <MudContainer Class="d-flex flex-column" MaxWidth="MaxWidth.Small">
+              @if(_graphValues is not null ){
+                <ApexChart TItem="ChartDataL"
+                  XAxisType="XAxisType.Datetime"
+                  Options="graphOptionsMob"
+                  @ref="chart">
+                      <ApexPointSeries TItem="ChartDataL"
+                      Items="@_graphValues"
+                      Name="Potrošnja"
+                      SeriesType="SeriesType.Area"
+                      XValue='x => DateTimeGraph(x.date)'
+                      YValue="x => x.value"
+                    />
+                </ApexChart>
+              }
+            </MudContainer>
+  </MudHidden>
+
+
+
+@* DESKTOP *@
+  <MudHidden Breakpoint="Breakpoint.SmAndDown">
+    @if(_graphValues is not null ){
+      <ApexChart TItem="ChartDataL"
+        XAxisType="XAxisType.Datetime"
+        Options="graphOptions"
+        @ref="chart">
+            <ApexPointSeries TItem="ChartDataL"
+            Items="@_graphValues"
+            Name="Potrošnja"
+            SeriesType="SeriesType.Area"
+            XValue='x => DateTimeGraph(x.date)'
+            YValue="x => x.value"
+          />
+      </ApexChart>
+    }
+  </MudHidden>
+}
+
+
+@code {
+    [CascadingParameter] public UserState user { get; set; } = default!;
+    [CascadingParameter] public RepresentativeState representative { get; set; } = default!;
+    private ApexChartOptions<ChartDataL> graphOptions = new();
+    private ApexChartOptions<ChartDataL> graphOptionsMob = new();
+    public IEnumerable<ChartDataL>? _graphValues;
+    public List<ChartDataL> _totalConsumption = new();
+    public record ChartDataL(decimal value, string name, DateTimeOffset date, string source);
+    private ApexChart<ChartDataL> chart = default!;
+    private DateTimeOffset startOfThisYear = DateTimeOffset.UtcNow.GetStartOfYear();
+    private DateTimeOffset now = DateTime.UtcNow;
+    protected override async Task OnInitializedAsync()
+    {
+      graphOptionsMob= new ApexChartOptions<ChartDataL>() {
+        Grid = new Grid
+        {
+            BorderColor = "#e7e7e7",
+            Row = new GridRow
+            {
+                Colors = new List<string> { "#f3f3f3", "transparent" },
+                Opacity = 0.5d
+            }
+        }
+        };
+      graphOptions= new ApexChartOptions<ChartDataL>() {
+        Grid = new Grid
+        {
+            BorderColor = "#e7e7e7",
+            Row = new GridRow
+            {
+                Colors = new List<string> { "#f3f3f3", "transparent" },
+                Opacity = 0.5d
+            }
+        }
+        };
+      graphOptions.Chart = new Chart
+      {
+        Toolbar = new ApexCharts.Toolbar
+        {
+            Tools = new Tools { Zoomin = false, Zoomout = false, Download = false, Pan = false, Selection = false }
+        }
+      };
+      graphOptions.Tooltip = new ApexCharts.Tooltip { X = new TooltipX { Format = @"dd. MM. yyyy." } };
+      graphOptionsMob.Tooltip = new ApexCharts.Tooltip { X = new TooltipX { Format = @"dd. MM. yyyy." } };
+      graphOptionsMob.Yaxis = new List<YAxis>();
+      graphOptions.Yaxis = new List<YAxis>();
+      graphOptionsMob.Xaxis = new XAxis();
+
+      graphOptionsMob.Yaxis.Add(new YAxis
+            {
+                Show = false,
+                Labels = new YAxisLabels(){
+                  Formatter = "function(val, index) { return val.toFixed(0);}"
+                  }
+            });
+      graphOptions.Yaxis.Add(new YAxis()
+            {
+              Labels = new YAxisLabels(){
+                Formatter = "function(val, index) { return val.toFixed(0);}"
+                }
+            });
+      graphOptionsMob.Xaxis = new XAxis()
+            {
+                Labels = new XAxisLabels(){
+                  Format = @"dd. MM."
+                 }
+            };
+      graphOptionsMob.Chart = new Chart
+            {
+                Toolbar = new ApexCharts.Toolbar
+                {
+                    Tools = new Tools { Zoomin = false, Zoomout = false, Download = false, Pan = false, Selection = false}
+                }
+            };
+      graphOptions.Xaxis = new XAxis()
+            {
+                Labels = new XAxisLabels(){
+                  Format = @"dd. MM."
+                 }
+            };
+      graphOptions.Chart = new Chart
+            {
+                Toolbar = new ApexCharts.Toolbar
+                {
+                    Tools = new Tools { Zoomin = false, Zoomout = false, Download = false, Pan = false, Selection = false}
+                }
+            };
+
+
+    }
+}

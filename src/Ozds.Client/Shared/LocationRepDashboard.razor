@@ -1,0 +1,273 @@
+@using Ozds.Business.Time;
+
+@inject NavigationManager NavigationManager;
+
+@* MOBILE *@
+  <MudHidden Breakpoint="Breakpoint.MdAndUp">
+    <MudGrid Class="my-3 pa-1">
+        <MudItem xs="12" Class="pa-1">
+          <MudPaper Class="d-flex align-center justify-stat mud-width-full pa-1 pb-3 flex-column">
+            <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
+              <MudText Typo="Typo.h6">
+                @T["Potrošnja prethodni mjesc:"]
+              </MudText>
+            </MudItem>
+            <MudContainer Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
+              <MudText Typo="Typo.h4">
+                  @(_totalLastMonthConsumption is null ? null : DecimalString((decimal)_totalLastMonthConsumption/1000, 0) + " kWh")
+              </MudText>
+            </MudContainer>
+          </MudPaper>
+        </MudItem>
+        <MudItem xs="12" Class="pa-1">
+          <MudPaper Class="d-flex align-center justify-stat mud-width-full pa-1 pb-3 flex-column">
+            <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
+              <MudText Typo="Typo.h6">
+                @T["Potrošnja u tekućem mjesecu:"]
+              </MudText>
+            </MudItem>
+            <MudContainer Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
+              <MudText Typo="Typo.h4">
+                  @(_totalConsumption is null ? null : DecimalString((decimal)_totalConsumption/1000, 0) + " kWh")
+              </MudText>
+            </MudContainer>
+          </MudPaper>
+        </MudItem>
+        <MudItem xs="12" Class="pa-1">
+          <MudPaper Class="d-flex align-center justify-stat mud-width-full pa-1 pb-3 flex-column">
+            <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
+              <MudText Typo="Typo.h6">
+                @T["Trenutna snaga:"]
+              </MudText>
+            </MudItem>
+            <MudContainer Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
+              <MudText Typo="Typo.h4">
+                  @(_totalLastPower is null ? null : DecimalString((decimal)_totalLastPower/1000, 2) + " kW")
+              </MudText>
+            </MudContainer>
+          </MudPaper>
+        </MudItem>
+    </MudGrid>
+
+
+
+      <MudText Typo="Typo.h4" Class="d-flex">
+        @(T["Tvoje lokacije"])
+      </MudText>
+      @foreach(ExpandThing dataStruct in _shownSubnets.Where(x => x.show == true).ToList()){
+      <MudPaper Elevation="2" Class="ma-1">
+        <MudStack Spacing="0">
+          <MudGrid Class="d-flex pa-2">
+            <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
+              @T["Lokacija"]: @dataStruct.data.location.Title
+            </MudItem>
+            <MudItem xs="2" Class="d-flex align-center justify-end">
+              <MudIconButton OnClick="() => InspectLocation(dataStruct.data.location)" Icon="@Icons.Material.Filled.RemoveRedEye" Color="MudBlazor.Color.Primary"/>
+            </MudItem>
+            <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
+              @T["Potrošnja u tekućem mjesecu"]: @(dataStruct.data.consumption is null ? null : DecimalString((decimal)dataStruct.data.consumption/1000, 0) + " kWh")
+            </MudItem>
+            <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
+              @T["Potrošnja u prethodnom mjesecu"]: @(dataStruct.data.lastMonthConsumption is null ? null : DecimalString((decimal)dataStruct.data.lastMonthConsumption/1000, 0) + " kWh")
+            </MudItem>
+            <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
+              @T["Trenutna snaga"]: @(dataStruct.data.lastPower is null ? null : DecimalString((decimal)dataStruct.data.lastPower/1000, 2) + " kW")
+            </MudItem>
+          </MudGrid>
+        </MudStack>
+      </MudPaper>
+      }
+  </MudHidden>
+
+
+@* DESKTOP *@
+  <MudHidden Breakpoint="Breakpoint.SmAndDown">
+    <MudGrid Class="my-3">
+        <MudItem xs="4">
+          <MudPaper Class="mud-width-full d-flex flex-column justify-space-between pa-4" Height="320px">
+            <MudItem Class="" Style="font-size: large; font-weight: bold;">
+              <MudText Typo="Typo.h5">
+                @(T["Potrošnja u tekućem mjesecu:"])
+              </MudText>
+            </MudItem>
+            <MudContainer Class="d-flex align-end justify-center pb-10" MaxWidth="MaxWidth.Small">
+              <MudText Typo="Typo.h1">
+                  @(_totalConsumption is null ? null : DecimalString((decimal)_totalConsumption/1000, 0))
+              </MudText>
+              <MudText Typo="Typo.h4" Class="mb-3 ml-1">kWh</MudText>
+            </MudContainer>
+          </MudPaper>
+        </MudItem>
+        <MudItem xs="4">
+          <MudPaper Class="mud-width-full d-flex flex-column justify-space-between pa-4" Height="320px">
+            <MudItem Class="" Style="font-size: large; font-weight: bold;">
+              <MudText Typo="Typo.h5">
+                @(T["Potrošnja u prethodnom mjesecu:"])
+              </MudText>
+            </MudItem>
+            <MudContainer Class="d-flex align-end justify-center pb-10" MaxWidth="MaxWidth.Small">
+              <MudText Typo="Typo.h1">
+                  @(_totalLastMonthConsumption is null ? null : DecimalString((decimal)_totalLastMonthConsumption/1000, 0))
+              </MudText>
+              <MudText Typo="Typo.h4" Class="mb-3 ml-1">kWh</MudText>
+            </MudContainer>
+          </MudPaper>
+        </MudItem>
+        <MudItem xs="4">
+          <MudPaper Class="mud-width-full d-flex flex-column justify-space-between pa-4" Height="320px">
+            <MudItem Class="" Style="font-size: large; font-weight: bold;">
+              <MudText Typo="Typo.h5">
+                @(T["Trenutna snaga:"])
+              </MudText>
+            </MudItem>
+            <MudContainer Class="d-flex align-end justify-center pb-10" MaxWidth="MaxWidth.Small">
+              <MudText Typo="Typo.h1">
+                  @(_totalLastPower is null ? null : DecimalString((decimal)_totalLastPower/1000, 2))
+              </MudText>
+              <MudText Typo="Typo.h4" Class="mb-3 ml-1">kW</MudText>
+            </MudContainer>
+          </MudPaper>
+        </MudItem>
+    </MudGrid>
+
+
+
+    <MudDataGrid
+      T="TabularData"
+      MultiSelection="true"
+      Items="@_dataStruct"
+      SortMode="SortMode.Multiple"
+      Filterable="true"
+      QuickFilter="@_quickFilter">
+      <ToolBarContent>
+        <MudText Typo="Typo.h4">@T["Tvoje lokacije"]</MudText>
+        <MudSpacer />
+        <MudTextField
+          @bind-Value="_searchString"
+          Placeholder="@T["Pretraži"]"
+          Adornment="Adornment.Start"
+          Immediate="true"
+          AdornmentIcon="@Icons.Material.Filled.Search"
+          IconSize="MudBlazor.Size.Medium"
+          Class="mt-0">
+        </MudTextField>
+      </ToolBarContent>
+      <Columns>
+        <TemplateColumn Title="@T["Lokacije"]"
+
+           >
+            <CellTemplate>
+                <MudStack Row>
+                  <MudButton OnClick="() => InspectLocation(context.Item.location)" Variant="Variant.Outlined" Color="MudBlazor.Color.Primary">
+                    @context.Item.location.Title
+                  </MudButton>
+                </MudStack>
+            </CellTemplate>
+        </TemplateColumn>
+      <PropertyColumn
+        CellStyle="font-size: x-large;"
+        Property="x => x.consumption"
+        Title='@T["Potrošnja u tekućem mjesecu"]'>
+            <CellTemplate>
+                @(context.Item.consumption is null ? null : DecimalString((decimal)context.Item.consumption/1000, 0) + " kWh")
+            </CellTemplate>
+      </PropertyColumn>
+      <PropertyColumn
+        CellStyle="font-size: x-large;"
+        Property="x => x.consumption"
+        Title='@T["Potrošnja u prethodnom mjesecu"]'>
+            <CellTemplate>
+                @(context.Item.lastMonthConsumption is null ? null : DecimalString((decimal)context.Item.lastMonthConsumption/1000, 0) + " kWh")
+            </CellTemplate>
+      </PropertyColumn>
+      <PropertyColumn
+        CellStyle="font-size: x-large;"
+        Property="x => x.consumption"
+        Title='@T["Trenutna snaga"]'>
+            <CellTemplate>
+                @(context.Item.lastPower is null ? null : DecimalString((decimal)context.Item.lastPower/1000, 2) + " kW")
+            </CellTemplate>
+      </PropertyColumn>
+      </Columns>
+      <PagerContent>
+        <MudDataGridPager T="TabularData" />
+      </PagerContent>
+    </MudDataGrid>
+  </MudHidden>
+
+
+
+
+@code {
+    [CascadingParameter] public UserState user { get; set; } = default!;
+    [CascadingParameter] public RepresentativeState representative { get; set; } = default!;
+    private (decimal? First, decimal? Last, DateTimeOffset FirstDate) _startEnd;
+    private (decimal? First, decimal? Last, DateTimeOffset FirstDate) _startEndLastMonth = new(0, 0, DateTime.UtcNow);
+    private string? _searchString;
+    private IEnumerable<LocationModel>? _locations;
+    private IEnumerable<MeterModel>? _meters;
+    public record struct TabularData(LocationModel location, decimal? consumption, decimal? lastMonthConsumption, decimal? lastPower);
+    private decimal? _diagnostics = 0;
+    private decimal? _lastMonthDiagnostics = 0;
+    private decimal? _lastMeasurements = 0;
+    private decimal? _totalConsumption = 0;
+    private decimal? _totalLastMonthConsumption = 0;
+    private decimal? _totalLastPower = 0;
+    private List<TabularData> _dataStruct = new List<TabularData>();
+    private IReadOnlyList<SpanningMeasure>? _spanningMeasurements;
+    private DateTimeOffset nowMonth = DateTimeOffset.UtcNow.GetStartOfMonth();
+    private DateTimeOffset lastMonth = DateTimeOffset.UtcNow.GetStartOfLastMonth();
+    private DateTimeOffset now = DateTimeOffset.UtcNow;
+    protected override async Task OnInitializedAsync()
+    {
+
+    }
+
+  private Func<TabularData, bool> _quickFilter => x =>
+  {
+    if (string.IsNullOrWhiteSpace(_searchString))
+      return true;
+
+    if (x.location.Title.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
+      return true;
+
+    return false;
+  };
+
+  private void InspectLocation(LocationModel item) {
+      NavigationManager.NavigateTo($"location/{item.Id}");
+  }
+
+
+@* MOBILE *@
+  public string TextValue { get; set; } = "";
+  private class ExpandThing {
+    public TabularData data = default!;
+    public bool expand;
+    public bool show;
+  }
+  List<ExpandThing> _shownSubnets = new();
+  private void OnExpandCollapseClick(string id) {
+    var a = _shownSubnets.Where(x => x.data.location.Id == id).FirstOrDefault();
+    if (a != null)
+    {
+        a.expand = !a.expand;
+    }
+  }
+  private Task Filter(string value) {
+    TextValue = value;
+    foreach (var inv in _shownSubnets)
+    {
+      if(value.Trim() != ""){
+        inv.show = false;
+      }
+    };
+    var a = _shownSubnets.Where(x => x.data.location.Title.Contains(value, StringComparison.InvariantCultureIgnoreCase)).ToList();
+    foreach (var inv in a)
+    {
+        inv.show = true;
+    };
+    StateHasChanged();
+    return Task.CompletedTask;
+  }
+}

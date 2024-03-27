@@ -1,4 +1,4 @@
-
+@using Ozds.Business.Time;
 
 @inject NavigationManager NavigationManager
 
@@ -147,8 +147,8 @@
     private string? _searchString;
     private IReadOnlyList<SpanningMeasure>? _spanningMeasurements;
     private IReadOnlyList<SpanningMeasure>? _lastMonthSpanningMeasurements;
-    private DateTimeOffset startOfThisMonth = DateTimeOffset.UtcNow;
-    private DateTimeOffset startOfLastMonth = DateTimeOffset.UtcNow;
+    private DateTimeOffset startOfThisMonth = DateTimeOffset.UtcNow.GetStartOfMonth();
+    private DateTimeOffset startOfLastMonth = DateTimeOffset.UtcNow.GetStartOfLastMonth();
     private DateTimeOffset now = DateTime.UtcNow;
     private List<TabularData> _partialDataStruct = new();
     private List<TabularData> _dataStruct = new();
@@ -170,8 +170,8 @@
       }
       else if(user.User.Roles.Contains("Location") || user.User.Roles.Contains("Operator")){
         // Find all _locations tied to this user
-        // Find all _networkUsers tied to _locations
-        // Find all _meters tied to _networkUsers
+        // Find all _networkUsers tied to this user
+        // Find all _meters tied to this user
       }
       if(_locations is not null && _networkUsers is not null && _meters is not null ){
         foreach(var location in _locations){
@@ -213,13 +213,13 @@
     return false;
   };
   private void InspectNetworkUser(NetworkUserModel item) {
-      NavigationManager.NavigateTo($"rep/{item.Id}");
+      NavigationManager.NavigateTo($"network-user/{item.Id}");
   }
   private void InspectLocation(LocationModel item) {
       NavigationManager.NavigateTo($"location/{item.Id}");
   }
   private void InspectMeter(MeterModel item) {
-      NavigationManager.NavigateTo($"app/omm/{item.Id}");
+      NavigationManager.NavigateTo($"meter/{item.Id}");
   }
 
 @* MOBILE *@
@@ -232,7 +232,10 @@
   List<ExpandThing> _shownOMMs = new();
   private void OnExpandCollapseClick(string id) {
     var a = _shownOMMs.Where(x => x.data.meter.Id == id).FirstOrDefault();
-    a.expand = !a.expand;
+    if (a != null)
+    {
+        a.expand = !a.expand;
+    }
   }
   private Task Filter(string value) {
     TextValue = value;

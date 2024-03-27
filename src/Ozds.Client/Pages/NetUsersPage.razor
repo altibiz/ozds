@@ -1,0 +1,12 @@
+@page "/network-users"
+@attribute [Navigation(Title = "Korisnici mereže")]
+
+@if (user is null) {
+  return;
+}
+
+<NetUsersTable />
+
+@code {
+  [CascadingParameter] public UserState user { get; set; } = default!;
+}

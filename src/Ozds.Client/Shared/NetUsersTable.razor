@@ -1,0 +1,191 @@
+@using Ozds.Business.Time;
+
+@inject NavigationManager NavigationManager;
+
+
+@* MOBILE *@
+  <MudHidden Breakpoint="Breakpoint.MdAndUp">
+      <MudText Typo="Typo.h4" Class="d-flex">
+        @(T["Korisnici mreže"])
+      </MudText>
+      <MudTextField Class="" ValueChanged="EventCallback.Factory.Create<string>(this, Filter)" Label="Pretraži korisnike lokacije" Variant="Variant.Text"></MudTextField>
+      @foreach(ExpandThing dataStruct in _shownTenants.Where(x => x.show == true).ToList()){
+      <MudPaper Elevation="2" Class="ma-1">
+        <MudStack Spacing="0">
+          <MudGrid Class="d-flex pa-2">
+            <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
+              @T["Korisnik lokacije"]: @dataStruct.data.networkUser.Title
+            </MudItem>
+            <MudItem xs="2" Class="d-flex align-center justify-end">
+              <MudIconButton OnClick="() => InspectNetworkUser(dataStruct.data.networkUser)" Icon="@Icons.Material.Filled.RemoveRedEye" Color="MudBlazor.Color.Primary"/>
+            </MudItem>
+            <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large;">
+              @T["Potrošnja u tekućem mjesecu"]: @(DecimalString(dataStruct.data.totalConsumption/1000, 0) + " kWh")
+            </MudItem>
+            <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large;">
+              @T["Potrošnja u prethodnom mjesecu"]: @(DecimalString(dataStruct.data.lastMonthTotalConsumption/1000, 0) + " kWh")
+            </MudItem>
+            <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large;">
+              @T["Iznos računa u prethodnom mjesecu"]: @(dataStruct.data.lastMonthInvoicesTotal == 0m ? T["Račun u izradi..."] : DecimalString(dataStruct.data.lastMonthInvoicesTotal) + " EUR")
+            </MudItem>
+            @if(!user.User.Roles.Contains("Operator")){
+            <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large;">
+              <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Primary">
+                  <form method="post" action="@($"admin/IssueInvoice/{dataStruct.data.networkUser.Id}")">
+                      <button type="submit">@T["Izdati Račun"]</button>
+                  </form>
+              </MudButton>
+            </MudItem>
+            }
+          </MudGrid>
+        </MudStack>
+      </MudPaper>
+      }
+  </MudHidden>
+
+
+@* DESKTOP *@
+  <MudHidden Breakpoint="Breakpoint.SmAndDown">
+    <MudDataGrid
+  T="TabularData"
+  MultiSelection="true"
+  Items="@_dataStruct"
+  SortMode="SortMode.Multiple"
+  Filterable="true"
+  QuickFilter="@_quickFilter">
+  <ToolBarContent>
+    <MudText Typo="Typo.h4">@T["Korisnici mreže"]</MudText>
+    <MudSpacer />
+    <MudTextField
+      @bind-Value="_searchString"
+      Placeholder="Search"
+      Adornment="Adornment.Start"
+      Immediate="true"
+      AdornmentIcon="@Icons.Material.Filled.Search"
+      IconSize="MudBlazor.Size.Medium"
+      Class="mt-0">
+    </MudTextField>
+  </ToolBarContent>
+  <Columns>
+    <TemplateColumn Title="@T["Korisnici mreže"]" Sortable="false">
+        <CellTemplate>
+            <MudStack Row>
+              <MudButton OnClick="() => InspectNetworkUser(context.Item.networkUser)" Variant="Variant.Outlined" Color="MudBlazor.Color.Primary">
+                @context.Item.networkUser.Title
+              </MudButton>
+            </MudStack>
+        </CellTemplate>
+    </TemplateColumn>
+    <PropertyColumn
+    CellStyle="font-size: x-large;"
+    Property="x => x.totalConsumption"
+    Title='@T["Potrošnja u tekućem mjesecu"]'>
+          <CellTemplate>
+                @(DecimalString(context.Item.totalConsumption/1000, 0) + " kWh")
+          </CellTemplate>
+      </PropertyColumn>
+      <PropertyColumn
+      CellStyle="font-size: x-large;"
+      Property="x => x.lastMonthTotalConsumption"
+      Title='@T["Potrošnja u prethodnom mjesecu"]'>
+          <CellTemplate>
+                @(DecimalString(context.Item.lastMonthTotalConsumption/1000, 0) + " kWh")
+          </CellTemplate>
+      </PropertyColumn>
+    <PropertyColumn
+    CellStyle="font-size: x-large;"
+    Property="x => x.lastMonthInvoicesTotal"
+    Title='@T["Iznos računa u prethodnom mjesecu"]'>
+          <CellTemplate>
+                @(context.Item.lastMonthInvoicesTotal == 0m ? T["Račun u izradi..."] : DecimalString(context.Item.lastMonthInvoicesTotal) + " EUR")
+          </CellTemplate>
+      </PropertyColumn>
+
+    @if(!user.User.Roles.Contains("Operator")){
+    <TemplateColumn CellClass="d-flex justify-end">
+          <CellTemplate>
+              <MudStack Row>
+                <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Primary">
+                    <form method="post" action="@($"admin/IssueInvoice/{context.Item.networkUser.Id}")">
+                        <button type="submit">@T["Izdati Račun"]</button>
+                    </form>
+                </MudButton>
+              </MudStack>
+          </CellTemplate>
+      </TemplateColumn>
+      }
+  </Columns>
+  <PagerContent>
+    <MudDataGridPager T="TabularData" />
+  </PagerContent>
+</MudDataGrid>
+  </MudHidden>
+@code {
+    [CascadingParameter] public UserState user { get; set; } = default!;
+    [CascadingParameter] public RepresentativeState representative { get; set; } = default!;
+    private (decimal? First, decimal? Last, DateTimeOffset FirstDate) _startEnd;
+    private (decimal? First, decimal? Last, DateTimeOffset FirstDate) _startEndLastMonth;
+    private string? _searchString;
+    private decimal _totalConsumption = 0;
+    private decimal _lastMonthTotalConsumption = 0;
+    private decimal _lastMonthInvoicesTotal = 0;
+    public record struct TabularData(NetworkUserModel networkUser, decimal totalConsumption, decimal lastMonthTotalConsumption, decimal lastMonthInvoicesTotal);
+    private List<TabularData> _dataStruct = new List<TabularData>();
+    private IEnumerable<NetworkUserModel>? _networkUsers;
+    private IEnumerable<LocationModel>? _locations;
+    private IReadOnlyList<SpanningMeasure>? _spanningMeasurements;
+    private DateTimeOffset startOfThisMonth = DateTimeOffset.UtcNow.GetStartOfMonth();
+    private DateTimeOffset startOfLastMonth = DateTimeOffset.UtcNow.GetStartOfLastMonth();
+    private DateTimeOffset now = DateTimeOffset.UtcNow;
+    protected override async Task OnInitializedAsync()
+    {
+    }
+    private Func<TabularData, bool> _quickFilter => x =>
+  {
+     if (string.IsNullOrWhiteSpace(_searchString))
+         return true;
+
+     if (x.networkUser.Title.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
+         return true;
+
+     return false;
+  };
+  private void InspectNetworkUser(NetworkUserModel item) {
+      NavigationManager.NavigateTo($"network-user/{item.Id}");
+  }
+  private void InspectLocation(LocationModel item) {
+      NavigationManager.NavigateTo($"location/{item.Id}");
+  }
+
+@* MOBILE *@
+  public string TextValue { get; set; } = "";
+  private class ExpandThing {
+    public TabularData data;
+    public bool expand;
+    public bool show;
+  }
+  List<ExpandThing> _shownTenants = new();
+  private void OnExpandCollapseClick(string id) {
+    var a = _shownTenants.Where(x => x.data.networkUser.Id == id).FirstOrDefault();
+    if (a != null)
+    {
+        a.expand = !a.expand;
+    }
+  }
+  private Task Filter(string value) {
+    TextValue = value;
+    foreach (var inv in _shownTenants)
+    {
+      if(value.Trim() != ""){
+        inv.show = false;
+      }
+    };
+    var a = _shownTenants.Where(x => x.data.networkUser.Title.Contains(value, StringComparison.InvariantCultureIgnoreCase)).ToList();
+    foreach (var inv in a)
+    {
+        inv.show = true;
+    };
+    StateHasChanged();
+    return Task.CompletedTask;
+  }
+}

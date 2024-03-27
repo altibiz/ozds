@@ -1,0 +1,178 @@
+@using Ozds.Business.Time;
+
+@if(_dataStruct is not null ){
+@* MOBILE *@
+  <MudHidden Breakpoint="Breakpoint.MdAndUp">
+    <MudGrid Class="my-3 pa-1">
+      <MudItem xs="12" Class="pa-1">
+          <MeterGraph />
+        </MudItem>
+        <MudItem xs="12" Class="pa-1">
+          <MeterGage />
+        </MudItem>
+    </MudGrid>
+
+      <MudText Typo="Typo.h4" Class="d-flex">
+        @(T["Brojilo"] + ": " + Source)
+      </MudText>
+      @foreach(ExpandThing dataStruct in _shownOMMs.Where(x => x.show == true).ToList()){
+      <MudPaper Elevation="2" Class="ma-1">
+        <MudStack Spacing="0">
+          <MudGrid Class="d-flex pa-2">
+              <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
+                @T["Obračunsko razdoblje"]: @(dataStruct.data.month + "/" + dataStruct.data.year)
+              </MudItem>
+              <MudItem xs="2" Class="d-flex align-center justify-end">
+                <MudIconButton OnClick="() => OnExpandCollapseClick(dataStruct.data.year, dataStruct.data.month)" Icon="@(dataStruct.expand ? Icons.Material.Filled.KeyboardArrowUp : Icons.Material.Filled.KeyboardArrowDown)" Color="MudBlazor.Color.Default"/>
+              </MudItem>
+          </MudGrid>
+          <MudCollapse Class="py-1" Expanded="_shownOMMs.Where(x => x.data.year == dataStruct.data.year).Where(x => x.data.month == dataStruct.data.month).First().expand">
+            <MudStack>
+              <MudDivider DividerType="DividerType.Middle" Class="mt-2"/>
+              <MudContainer>
+                @T["Prvo očitanje"]:
+                @if(dataStruct.data.monthEndTotal is not null)
+                @(DecimalString((decimal)dataStruct.data.monthEndTotal/1000, 0)) kWh
+              </MudContainer>
+              <MudContainer>
+                @T["Zadnje očitanje"]:
+                @if(dataStruct.data.monthStartTotal is not null)
+                @(DecimalString((decimal)dataStruct.data.monthStartTotal/1000, 0)) kWh
+              </MudContainer>
+              <MudContainer Style="font-size: large; font-weight:bold;">
+                @T["Ukupna potrošnja"]:
+                @if(dataStruct.data.monthStartTotal is not null && dataStruct.data.monthEndTotal is not null)
+                @(DecimalString((decimal)(dataStruct.data.monthStartTotal - dataStruct.data.monthEndTotal)/1000, 0)) kWh
+              </MudContainer>
+              <MudContainer Style="font-weight:bold;">
+                @T["Maksimalna snaga"]:
+                @(DecimalString((dataStruct.data.maxPower)/1000, 2) + " kW")
+              </MudContainer>
+            </MudStack>
+          </MudCollapse>
+        </MudStack>
+      </MudPaper>
+      }
+  </MudHidden>
+
+
+
+@* DESKTOP *@
+  <MudHidden Breakpoint="Breakpoint.SmAndDown">
+<MudDataGrid
+  T="TabularData"
+  MultiSelection="true"
+  Items="@_dataStruct"
+  SortMode="SortMode.Multiple">
+  <ToolBarContent>
+    <MudText Typo="Typo.h4">@(T["Brojilo"] + ": " + Source)</MudText>
+    <MudSpacer />
+    <MudTextField
+      @bind-Value="_searchString"
+      Placeholder="@T["Pretraži"]"
+      Adornment="Adornment.Start"
+      Immediate="true"
+      AdornmentIcon="@Icons.Material.Filled.Search"
+      IconSize="MudBlazor.Size.Medium"
+      Class="mt-0">
+    </MudTextField>
+  </ToolBarContent>
+  <Columns>
+    <PropertyColumn
+      CellStyle="font-size: x-large;"
+      Property="x => x.month"
+      Title='@T["Obračunsko razdoblje"]'>
+          <CellTemplate>
+                @(context.Item.month + "/" + context.Item.year)
+          </CellTemplate>
+      </PropertyColumn>
+    <PropertyColumn
+      CellStyle="font-size: x-large;"
+      Property="x => x.monthEndTotal"
+      Title='@T["Prvo očitanje"]'>
+          <CellTemplate>
+                @if(context.Item.monthEndTotal is not null)
+                @(DecimalString((decimal)context.Item.monthEndTotal/1000, 0) + " kWh")
+          </CellTemplate>
+      </PropertyColumn>
+    <PropertyColumn
+      CellStyle="font-size: x-large;"
+      Property="x => x.monthStartTotal"
+      Title='@T["Zadnje očitanje"]'>
+          <CellTemplate>
+                @if(context.Item.monthStartTotal is not null)
+                @(DecimalString((decimal)context.Item.monthStartTotal/1000, 0) + " kWh")
+          </CellTemplate>
+      </PropertyColumn>
+    <PropertyColumn
+      CellStyle="font-size: xx-large;"
+      Property="x => x.monthStartTotal - x.monthEndTotal"
+      Title='@T["Ukupna potrošnja"]'>
+          <CellTemplate>
+                @if(context.Item.monthStartTotal is not null && context.Item.monthEndTotal is not null)
+                @(DecimalString((decimal)(context.Item.monthStartTotal - context.Item.monthEndTotal)/1000, 0) + " kWh")
+          </CellTemplate>
+      </PropertyColumn>
+    <PropertyColumn
+      CellStyle="font-size: x-large;"
+      Property="x => x.maxPower"
+      Title='@T["Maksimalna snaga"]'>
+          <CellTemplate>
+                @(DecimalString((context.Item.maxPower)/1000, 2) + " kW")
+          </CellTemplate>
+      </PropertyColumn>
+  </Columns>
+  <PagerContent>
+    <MudDataGridPager T="TabularData" />
+  </PagerContent>
+</MudDataGrid>
+
+    <MudGrid Class="my-3">
+        <MudItem xs="6">
+          <MeterGage />
+        </MudItem>
+        <MudItem xs="6">
+          <MeterGraph />
+        </MudItem>
+    </MudGrid>
+  </MudHidden>
+}
+@code {
+
+    [Parameter]
+    public string Source { get; set; } = "abb";
+    public string TextValue { get; set; } = "";
+    private MeterModel? _meter;
+    private string? _searchString;
+    private List<TabularData> _dataStruct = new List<TabularData>();
+    private (decimal? First, decimal? Last, DateTimeOffset FirstDate) _startEnd;
+    public record ChartData(decimal? L1, decimal? L2, decimal? L3, DateTimeOffset date);
+    public record struct TabularData(string year, string month, decimal? monthStartTotal, decimal? monthEndTotal, decimal maxPower);
+    private string _month = "-1";
+    private string _year = "-1";
+    private decimal thisMonthMaxPower = 0m;
+    private IReadOnlyList<SpanningMeasure>? _spanningMeasurements;
+    private DateTimeOffset startOfThisYear = DateTimeOffset.UtcNow.GetStartOfYear();
+    private DateTimeOffset startOfThisMonth = DateTimeOffset.UtcNow.GetStartOfMonth();
+    private DateTimeOffset now = DateTime.UtcNow;
+    private class ExpandThing {
+      public TabularData data;
+      public bool expand;
+      public bool show;
+    }
+    List<ExpandThing> _shownOMMs = new();
+    protected override async Task OnInitializedAsync()
+    {
+      foreach (var month in startOfThisYear.GetThisYearMonthStarts().Reverse()){
+        _startEnd = new();
+        thisMonthMaxPower = 0m;
+        _month = "00";
+        _year = "00";
+      }
+    }
+  private void OnExpandCollapseClick(string year, string month) {
+      var a = _shownOMMs.Where(x => x.data.year == year).Where(x => x.data.month == month).FirstOrDefault();
+      if(a is not null)
+        a.expand = !a.expand;
+  }
+}

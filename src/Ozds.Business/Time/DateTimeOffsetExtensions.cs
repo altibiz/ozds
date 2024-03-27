@@ -1,4 +1,4 @@
-namespace Mess.Prelude.Extensions.Timestamps;
+namespace Ozds.Business.Time;
 
 public static class DateTimeOffsetExtensions
 {

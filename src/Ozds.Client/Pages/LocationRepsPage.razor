@@ -1,0 +1,12 @@
+@page "/location-reps"
+@attribute [Navigation(Title = "Vlasnici lokacija")]
+
+@if (user is null) {
+  return;
+}
+
+<LocationRepsTable />
+
+@code {
+  [CascadingParameter] public UserState user { get; set; } = default!;
+}

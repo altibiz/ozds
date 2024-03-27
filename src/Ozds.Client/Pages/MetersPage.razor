@@ -1,0 +1,12 @@
+@page "/meters"
+@attribute [Navigation(Title = "Mjerna mjesta")]
+
+@if (user is null) {
+  return;
+}
+
+<MetersTable />
+
+@code {
+  [CascadingParameter] public UserState user { get; set; } = default!;
+}

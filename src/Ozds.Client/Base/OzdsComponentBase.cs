@@ -1,5 +1,5 @@
 using System.Globalization;
-using Mess.Prelude.Extensions.Timestamps;
+using Ozds.Business.Time;
 using Microsoft.AspNetCore.Components;
 
 namespace Ozds.Client.Base;
@@ -38,5 +38,9 @@ public abstract class OzdsComponentBase : ComponentBase
       .ToOffset(DateTimeOffsetExtensions.DefaultOffset);
 
     return withTimezone.ToString("dd. MM. yyyy.", cultureInfo);
+  }
+  protected DateTimeOffset DateTimeGraph(DateTimeOffset dateTimeOffset)
+  {
+    return dateTimeOffset.UtcDateTime.Add(DateTimeOffsetExtensions.DefaultOffset);
   }
 }

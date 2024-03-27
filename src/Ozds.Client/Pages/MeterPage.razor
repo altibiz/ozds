@@ -1,0 +1,10 @@
+@page "/meter/{source}"
+
+<MeterDetailsTable Source="@Source"/>
+@* abb schneider *@
+
+@code {
+    [Parameter]
+    public string Source { get; set; } = "abb";
+}
+
