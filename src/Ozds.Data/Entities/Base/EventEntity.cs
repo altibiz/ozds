@@ -8,7 +8,6 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
 
-[TimescaleHypertable(nameof(Timestamp))]
 public class EventEntity : ReadonlyEntity
 {
   [NotMapped] private DateTimeOffset _timestamp;
