@@ -31,11 +31,25 @@ public class TimescaleMigrationSqlGenerator : NpgsqlMigrationsSqlGenerator
       terminate
     );
 
-    if (operation.FindAnnotation("TimescaleHypertable")?.Value is string column)
+    if (operation.FindAnnotation("TimescaleHypertable")?.Value is string columnsString)
     {
-      builder.Append(
-        $"SELECT create_hypertable('\"{operation.Name}\"', '{column}')"
+      var columns = columnsString.Split(",");
+      var timeColumn = columns.FirstOrDefault();
+      if (timeColumn is null)
+      {
+        return;
+      }
+      var spaceColumns = columns.Skip(1);
+
+      builder.AppendLine(
+        $"SELECT create_hypertable('\"{operation.Name}\"', '{timeColumn}');"
       );
+      foreach (var spaceColumn in spaceColumns)
+      {
+        builder.AppendLine(
+          $"SELECT add_dimension('\"{operation.Name}\"', '{spaceColumn}');"
+        );
+      }
 
       if (terminate)
       {

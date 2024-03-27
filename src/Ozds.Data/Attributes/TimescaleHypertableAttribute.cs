@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Text;
 using Microsoft.EntityFrameworkCore;
 
 // TODO: continuous aggregate attributes like this one
@@ -8,12 +9,18 @@ namespace Ozds.Data.Attributes;
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
 public class TimescaleHypertableAttribute : Attribute
 {
-  public TimescaleHypertableAttribute(string timeColumn)
+  public TimescaleHypertableAttribute(string timeColumn, params string[] spaceColumns)
   {
     TimeColumn = timeColumn;
+    SpaceColumns = spaceColumns;
   }
 
   public string TimeColumn { get; }
+
+  public string[] SpaceColumns
+  {
+    get;
+  }
 }
 
 public static class TimescaleHypertableAttributeExtensions
@@ -34,9 +41,18 @@ public static class TimescaleHypertableAttributeExtensions
         builder,
         (builder, x) =>
         {
+          var timeColumn = x.Attribute!.TimeColumn;
+          var spaceColumns = x.Attribute!.SpaceColumns;
+
+          var @value = timeColumn;
+          if (spaceColumns.Length > 0)
+          {
+            @value += $",{string.Join(",", spaceColumns)}";
+          }
+
           builder
             .Entity(x.Entity.ClrType)
-            .HasAnnotation("TimescaleHypertable", x.Attribute!.TimeColumn);
+            .HasAnnotation("TimescaleHypertable", @value);
 
           return builder;
         }

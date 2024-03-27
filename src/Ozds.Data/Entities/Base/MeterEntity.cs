@@ -6,7 +6,6 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
 
-[Table("meters")]
 public class MeterEntity : AuditableEntity
 {
   [ForeignKey(nameof(MeasurementLocation))]
@@ -40,12 +39,13 @@ public class MeterEntity<T> : MeterEntity
   public virtual T MeasurementValidator { get; set; } = default!;
 }
 
-public class MeterInheritedEntityTypeConfiguration : EntityTypeConfiguration<MeterEntity>
+public class MeterInheritedEntityTypeConfiguration : ConcreteHierarchyEntityTypeConfiguration<MeterEntity>
 {
-  public override void Configure(EntityTypeBuilder<MeterEntity> builder)
+  public override void Configure<T>(EntityTypeBuilder<T> builder)
   {
     builder
       .UseTphMappingStrategy()
+      .ToTable("meters")
       .HasDiscriminator<string>("kind");
   }
 }

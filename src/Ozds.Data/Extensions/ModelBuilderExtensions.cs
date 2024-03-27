@@ -18,7 +18,7 @@ public abstract class EntityTypeConfiguration<T> : IModelConfiguration
     Configure(modelBuilder.Entity<T>());
 }
 
-public abstract class InheritedEntityTypeConfiguration<T> : IModelConfiguration
+public abstract class ConcreteHierarchyEntityTypeConfiguration<T> : IModelConfiguration
   where T : class
 {
   public abstract void Configure<U>(EntityTypeBuilder<U> builder) where U : class, T;
@@ -38,7 +38,7 @@ public abstract class InheritedEntityTypeConfiguration<T> : IModelConfiguration
         !type.IsAbstract &&
         !type.IsGenericType &&
         type.IsClass &&
-        type.IsSubclassOf(typeof(T)))
+        (type.IsSubclassOf(typeof(T)) || type == typeof(T)))
       .Aggregate(modelBuilder, (modelBuilder, type) =>
       {
         configure

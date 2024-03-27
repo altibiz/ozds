@@ -1,9 +1,11 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Ozds.Data.Attributes;
 using Ozds.Data.Entities.Base;
 
 namespace Ozds.Data.Entities;
 
+[TimescaleHypertable(nameof(Timestamp))]
 [Table("abb_b2x_aggregates")]
 public class AbbB2xAggregateEntity : AggregateEntity<AbbB2xMeterEntity>
 {

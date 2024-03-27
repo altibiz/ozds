@@ -34,7 +34,7 @@ public abstract class InvoiceEntity : ReadonlyEntity
   public DateTimeOffset ToDate { get; set; } = default!;
 }
 
-public class InvoiceEntityTypeConfiguration : InheritedEntityTypeConfiguration<InvoiceEntity>
+public class InvoiceEntityTypeConfiguration : ConcreteHierarchyEntityTypeConfiguration<InvoiceEntity>
 {
   public override void Configure<T>(EntityTypeBuilder<T> builder)
   {

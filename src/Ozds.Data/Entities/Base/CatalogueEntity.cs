@@ -1,22 +1,21 @@
-using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
 
-[Table("catalogues")]
 public class CatalogueEntity : AuditableEntity
 {
   public virtual LocationEntity Location { get; set; } = default!;
 }
 
-public class CatalogueEntityTypeConfiguration : EntityTypeConfiguration<CatalogueEntity>
+public class CatalogueEntityTypeConfiguration : ConcreteHierarchyEntityTypeConfiguration<CatalogueEntity>
 {
-  public override void Configure(EntityTypeBuilder<CatalogueEntity> builder)
+  public override void Configure<T>(EntityTypeBuilder<T> builder)
   {
     builder
       .UseTphMappingStrategy()
+      .ToTable("catalogues")
       .HasDiscriminator<string>("kind");
   }
 }

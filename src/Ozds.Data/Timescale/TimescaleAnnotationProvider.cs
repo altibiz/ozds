@@ -29,45 +29,61 @@ public class TimescaleAnnotationProvider : NpgsqlAnnotationProvider
     var annotations = base.For(table, designTime);
 #pragma warning restore EF1001
 
-    Console.WriteLine(
-      string.Join(
-        "\n",
-        table.EntityTypeMappings
-          .Where(mapping => mapping.TypeBase.Name.Contains("Aggregate"))
-          .Select(mapping =>
-            mapping.TypeBase.Name
-            + " => "
-            + string.Join(
-                ", ",
-                mapping.TypeBase
-                  .GetAnnotations()
-                  .Select(annotation =>
-                    $"{annotation.Name}: {annotation.Value}")
-              )
-         )
-      )
-    );
-
-    var mappingTypeAttributes =
-    table.EntityTypeMappings
+    var annotation = table.EntityTypeMappings
       .Select(mapping => new
       {
         Mapping = mapping,
         // NOTE: this is the exact way that annotations get added in
         // NOTE: do not change this
-        Annotation = mapping.TypeBase
+        Value = (mapping.TypeBase
           .GetAnnotations()
           .FirstOrDefault(
-            annotation => annotation.Name == "TimescaleHypertable")
-      });
+            annotation =>
+              annotation.Name == "TimescaleHypertable" &&
+              annotation.Value is string)
+          ?.Value as string)!
+      })
+      .FirstOrDefault(x => x.Value is not null);
 
-    if (mappingTypeAttributes.FirstOrDefault(x =>
-            x is { Annotation.Value: string }) is
-      { Annotation.Value: string } x &&
-        x.Mapping.ColumnMappings.FirstOrDefault(column =>
-              column.Property.Name == x.Annotation.Value as string)?.Column
-            .Name is
-        { } timeColumn)
+    if (annotation is null)
+    {
+      return annotations;
+    }
+
+    var clrColumns = annotation.Value.Split(",");
+    var clrTimeColumn = clrColumns.FirstOrDefault();
+    if (clrTimeColumn is null)
+    {
+      return annotations;
+    }
+    var clrSpaceColumns = clrColumns.Skip(1);
+
+    var timeColumn = annotation.Mapping.ColumnMappings
+      .FirstOrDefault(column => column.Property.Name == clrTimeColumn)?
+      .Column.Name;
+    if (timeColumn is null)
+    {
+      return annotations;
+    }
+    var spaceColumns = clrSpaceColumns
+      .Select(clrSpaceColumn => annotation.Mapping.ColumnMappings
+        .FirstOrDefault(column => column.Property.Name == clrSpaceColumn)
+        ?.Column.Name
+      )
+      .Where(column => column is not null)
+      .OfType<string>()
+      .ToList();
+
+    if (spaceColumns.Count > 0)
+    {
+      annotations = annotations.Append(
+        new Annotation(
+          "TimescaleHypertable",
+          $"{timeColumn},{string.Join(",", spaceColumns)}"
+        )
+      );
+    }
+    else
     {
       annotations = annotations.Append(
         new Annotation(

@@ -7,7 +7,8 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
 
-[TimescaleHypertable(nameof(Timestamp))]
+[TimescaleHypertable(nameof(Timestamp), nameof(MeterId))]
+[PrimaryKey(nameof(Timestamp), nameof(MeterId))]
 public abstract class MeasurementEntity : ReadonlyEntity
 {
   [NotMapped] private DateTimeOffset _timestamp;
@@ -18,23 +19,22 @@ public abstract class MeasurementEntity : ReadonlyEntity
     get { return _timestamp.ToUniversalTime(); }
     set { _timestamp = value.ToUniversalTime(); }
   }
+
+  [ForeignKey("Meter")] public string MeterId { get; set; } = default!;
 }
 
-[PrimaryKey(nameof(Timestamp), nameof(MeterId))]
 public abstract class MeasurementEntity<T> : MeasurementEntity
   where T : MeterEntity
 {
-  [ForeignKey(nameof(Meter))] public string MeterId { get; set; } = default!;
 
   // FIXME: global filter on deleted meters prevents this from being required
   [Required] public virtual T Meter { get; set; } = default!;
 }
 
-public class MeasurementEntityTypeConfiguration : InheritedEntityTypeConfiguration<MeasurementEntity>
+public class MeasurementEntityTypeConfiguration : ConcreteHierarchyEntityTypeConfiguration<MeasurementEntity>
 {
   public override void Configure<T>(EntityTypeBuilder<T> builder)
   {
     builder.UseTpcMappingStrategy();
   }
 }
-

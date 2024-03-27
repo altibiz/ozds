@@ -94,10 +94,11 @@ migrate name:
     --namespace Ozds.Data.Migrations \
     "{{name}}"
 
-  dotnet \
+  dotnet ef \
     --startup-project "{{servercsproj}}" \
     --project "{{datacsproj}}" \
-    database update
+    database update \
+    "{{name}}"
 
   mermerd \
     --schema public \

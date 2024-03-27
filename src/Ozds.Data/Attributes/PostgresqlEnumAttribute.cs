@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ozds.Data.Attributes;
 
-[AttributeUsage(AttributeTargets.Enum)]
+[AttributeUsage(AttributeTargets.Enum, AllowMultiple = false, Inherited = true)]
 public class PostgresqlEnumAttribute : Attribute
 {
 }
