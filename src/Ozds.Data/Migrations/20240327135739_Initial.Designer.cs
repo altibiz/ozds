@@ -12,7 +12,7 @@ using Ozds.Data;
 namespace Ozds.Data.Migrations
 {
     [DbContext(typeof(OzdsDbContext))]
-    [Migration("20240327135549_Initial")]
+    [Migration("20240327135739_Initial")]
     partial class Initial
     {
         /// <inheritdoc />

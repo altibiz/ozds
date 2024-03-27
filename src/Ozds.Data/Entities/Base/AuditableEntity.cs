@@ -45,12 +45,12 @@ public class AuditableEntityConfiguration : ConcreteHierarchyEntityTypeConfigura
       .WithMany()
       .HasForeignKey(x => x.DeletedById);
 
-    if (typeof(T).BaseType!.IsAbstract)
-    {
-      // FIXME: this filter breaks some required relationships
-      // maybe remove it and add it to specific entities or
-      // manually filter out deleted entities in queries
-      builder.HasQueryFilter(x => !x.IsDeleted);
-    }
+    // FIXME: this filter breaks some required relationships
+    // maybe remove it and add it to specific entities or
+    // manually filter out deleted entities in queries
+    // if (typeof(T).BaseType!.IsAbstract)
+    // {
+    //   builder.HasQueryFilter(x => !x.IsDeleted);
+    // }
   }
 }
