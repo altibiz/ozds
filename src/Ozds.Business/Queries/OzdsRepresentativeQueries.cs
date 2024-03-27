@@ -12,6 +12,7 @@ using Ozds.Business.Queries.Abstractions;
 using Ozds.Business.Queries.Base;
 using Ozds.Data;
 using Ozds.Data.Entities;
+using Ozds.Data.Entities.Enums;
 using YesSql;
 using ISession = YesSql.ISession;
 
@@ -48,7 +49,7 @@ public class OzdsRepresentativeQueries : OzdsAuditableQueries
   )
   {
     return await context.Representatives
-      .Where(entity => entity.IsOperatorRepresentative)
+      .Where(entity => entity.Role == RoleEntity.OperatorRepresentative)
       .QueryPaged(
         RepresentativeModelExtensions.ToModel,
         filter,

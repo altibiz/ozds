@@ -256,12 +256,12 @@ erDiagram
         text email
         text id PK
         boolean is_deleted
-        boolean is_operator_representative
         text last_updated_by_id FK
         timestamp_with_time_zone last_updated_on
         text name
         text phone_number
         text postal_code
+        integer role
         text social_security_number
         text title
     }

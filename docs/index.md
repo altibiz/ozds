@@ -14,7 +14,7 @@ information you need.
 - [Scripts](docs/scripts.md)
 - [Project structure](docs/structure/index.md)
   - [Testing](docs/structure/test.md)
-  - [Database schema](docs/structure/data.md)
+  - [Database schema](docs/structure/data/index.md)
   - [Business layer](docs/structure/business.md)
   - [Server](docs/structure/server.md)
   - [Client](docs/structure/client.md)

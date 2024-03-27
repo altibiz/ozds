@@ -16,6 +16,7 @@ namespace Ozds.Data.Migrations
                 .Annotation("Npgsql:Enum:interval_entity", "quarter_hour,day,month")
                 .Annotation("Npgsql:Enum:level_entity", "trace,debug,info,warning,error,critical")
                 .Annotation("Npgsql:Enum:phase_entity", "l1,l2,l3")
+                .Annotation("Npgsql:Enum:role_entity", "operator_representative,location_representative,network_user_representative")
                 .Annotation("Npgsql:PostgresExtension:timescaledb", ",,");
 
             migrationBuilder.CreateTable(
@@ -23,7 +24,7 @@ namespace Ozds.Data.Migrations
                 columns: table => new
                 {
                     id = table.Column<string>(type: "text", nullable: false),
-                    is_operator_representative = table.Column<bool>(type: "boolean", nullable: false),
+                    role = table.Column<int>(type: "integer", nullable: false),
                     name = table.Column<string>(type: "text", nullable: false),
                     social_security_number = table.Column<string>(type: "text", nullable: false),
                     address = table.Column<string>(type: "text", nullable: false),

@@ -1,11 +1,12 @@
 using System.ComponentModel.DataAnnotations;
 using Ozds.Data.Entities.Base;
+using Ozds.Data.Entities.Enums;
 
 namespace Ozds.Data.Entities;
 
 public class RepresentativeEntity : AuditableEntity
 {
-  [Required] public bool IsOperatorRepresentative { get; set; } = default!;
+  [Required] public RoleEntity Role { get; set; }
 
   public virtual ICollection<NetworkUserEntity> NetworkUsers { get; set; } = default!;
 

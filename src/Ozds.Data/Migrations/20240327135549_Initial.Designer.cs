@@ -12,7 +12,7 @@ using Ozds.Data;
 namespace Ozds.Data.Migrations
 {
     [DbContext(typeof(OzdsDbContext))]
-    [Migration("20240327125947_Initial")]
+    [Migration("20240327135549_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -30,6 +30,7 @@ namespace Ozds.Data.Migrations
             NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "interval_entity", new[] { "quarter_hour", "day", "month" });
             NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "level_entity", new[] { "trace", "debug", "info", "warning", "error", "critical" });
             NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "phase_entity", new[] { "l1", "l2", "l3" });
+            NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "role_entity", new[] { "operator_representative", "location_representative", "network_user_representative" });
             NpgsqlModelBuilderExtensions.HasPostgresExtension(modelBuilder, "timescaledb");
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
@@ -1029,10 +1030,6 @@ namespace Ozds.Data.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("is_deleted");
 
-                    b.Property<bool>("IsOperatorRepresentative")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_operator_representative");
-
                     b.Property<string>("LastUpdatedById")
                         .HasColumnType("text")
                         .HasColumnName("last_updated_by_id");
@@ -1055,6 +1052,10 @@ namespace Ozds.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("postal_code");
+
+                    b.Property<int>("Role")
+                        .HasColumnType("integer")
+                        .HasColumnName("role");
 
                     b.Property<string>("SocialSecurityNumber")
                         .IsRequired()

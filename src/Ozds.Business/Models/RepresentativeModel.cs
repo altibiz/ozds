@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Ozds.Business.Models.Base;
+using Ozds.Business.Models.Enums;
 using Ozds.Data.Entities;
 
 namespace Ozds.Business.Models;
@@ -14,6 +15,7 @@ public record RepresentativeModel(
   bool IsDeleted,
   DateTimeOffset? DeletedOn,
   string? DeletedById,
+  RoleModel Role,
   string Name,
   string SocialSecurityNumber,
   string Address,
@@ -55,6 +57,7 @@ public static class RepresentativeModelExtensions
       IsDeleted = model.IsDeleted,
       DeletedOn = model.DeletedOn,
       DeletedById = model.DeletedById,
+      Role = model.Role.ToEntity(),
       Name = model.Name,
       SocialSecurityNumber = model.SocialSecurityNumber,
       Address = model.Address,
@@ -77,6 +80,7 @@ public static class RepresentativeModelExtensions
       entity.IsDeleted,
       entity.DeletedOn,
       entity.DeletedById,
+      entity.Role.ToModel(),
       entity.Name,
       entity.SocialSecurityNumber,
       entity.Address,
