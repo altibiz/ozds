@@ -2,7 +2,6 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Ozds.Data;
@@ -12,11 +11,9 @@ using Ozds.Data;
 namespace Ozds.Data.Migrations
 {
     [DbContext(typeof(OzdsDbContext))]
-    [Migration("20240327135739_Initial")]
-    partial class Initial
+    partial class OzdsDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1535,26 +1532,15 @@ namespace Ozds.Data.Migrations
                 {
                     b.HasBaseType("Ozds.Data.Entities.Base.EventEntity");
 
-                    b.Property<string>("MessengerEntityId")
-                        .HasColumnType("text")
-                        .HasColumnName("messenger_entity_id");
-
                     b.Property<string>("MessengerId")
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("messenger_id");
 
-                    b.HasIndex("MessengerEntityId")
-                        .HasDatabaseName("ix_events_messenger_entity_id1");
-
                     b.HasIndex("MessengerId")
                         .HasDatabaseName("ix_events_messenger_id");
 
-                    b.ToTable("events", null, t =>
-                        {
-                            t.Property("MessengerEntityId")
-                                .HasColumnName("messenger_event_entity_messenger_entity_id");
-                        });
+                    b.ToTable("events", (string)null);
 
                     b.HasDiscriminator<string>("kind").HasValue("MessengerEventEntity");
                 });
@@ -2251,17 +2237,12 @@ namespace Ozds.Data.Migrations
 
             modelBuilder.Entity("Ozds.Data.Entities.MessengerEventEntity", b =>
                 {
-                    b.HasOne("Ozds.Data.Entities.MessengerEntity", null)
+                    b.HasOne("Ozds.Data.Entities.MessengerEntity", "Messenger")
                         .WithMany("Events")
-                        .HasForeignKey("MessengerEntityId")
-                        .HasConstraintName("fk_events_messengers_messenger_entity_id1");
-
-                    b.HasOne("Ozds.Data.Entities.Base.MeterEntity", "Messenger")
-                        .WithMany()
                         .HasForeignKey("MessengerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_events_meters_messenger_id");
+                        .HasConstraintName("fk_events_messengers_messenger_id");
 
                     b.Navigation("Messenger");
                 });

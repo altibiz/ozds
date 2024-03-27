@@ -208,7 +208,6 @@ namespace Ozds.Data.Migrations
                     representative_entity_id = table.Column<string>(type: "text", nullable: true),
                     representative_id = table.Column<string>(type: "text", nullable: true),
                     messenger_id = table.Column<string>(type: "text", nullable: true),
-                    messenger_event_entity_messenger_entity_id = table.Column<string>(type: "text", nullable: true),
                     representative_event_entity_representative_id = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
@@ -775,11 +774,6 @@ namespace Ozds.Data.Migrations
                 column: "messenger_entity_id");
 
             migrationBuilder.CreateIndex(
-                name: "ix_events_messenger_entity_id1",
-                table: "events",
-                column: "messenger_event_entity_messenger_entity_id");
-
-            migrationBuilder.CreateIndex(
                 name: "ix_events_messenger_id",
                 table: "events",
                 column: "messenger_id");
@@ -1085,17 +1079,10 @@ namespace Ozds.Data.Migrations
                 principalColumn: "id");
 
             migrationBuilder.AddForeignKey(
-                name: "fk_events_messengers_messenger_entity_id1",
-                table: "events",
-                column: "messenger_event_entity_messenger_entity_id",
-                principalTable: "messengers",
-                principalColumn: "id");
-
-            migrationBuilder.AddForeignKey(
-                name: "fk_events_meters_messenger_id",
+                name: "fk_events_messengers_messenger_id",
                 table: "events",
                 column: "messenger_id",
-                principalTable: "meters",
+                principalTable: "messengers",
                 principalColumn: "id",
                 onDelete: ReferentialAction.Cascade);
 
