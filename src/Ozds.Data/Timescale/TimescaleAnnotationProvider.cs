@@ -56,7 +56,9 @@ public class TimescaleAnnotationProvider : NpgsqlAnnotationProvider
     {
       return annotations;
     }
-    var clrSpaceColumns = clrColumns.Skip(1);
+    var space = clrColumns.LastOrDefault()?.Split(":");
+    var clrSpaceColumn = space?.FirstOrDefault();
+    var spacePartitioning = space?.LastOrDefault();
 
     var timeColumn = annotation.Mapping.ColumnMappings
       .FirstOrDefault(column => column.Property.Name == clrTimeColumn)?
@@ -65,21 +67,16 @@ public class TimescaleAnnotationProvider : NpgsqlAnnotationProvider
     {
       return annotations;
     }
-    var spaceColumns = clrSpaceColumns
-      .Select(clrSpaceColumn => annotation.Mapping.ColumnMappings
-        .FirstOrDefault(column => column.Property.Name == clrSpaceColumn)
-        ?.Column.Name
-      )
-      .Where(column => column is not null)
-      .OfType<string>()
-      .ToList();
+    var spaceColumn = annotation.Mapping.ColumnMappings
+      .FirstOrDefault(column => column.Property.Name == clrSpaceColumn)?
+      .Column.Name;
 
-    if (spaceColumns.Count > 0)
+    if (spaceColumn is not null && spacePartitioning is not null)
     {
       annotations = annotations.Append(
         new Annotation(
           "TimescaleHypertable",
-          $"{timeColumn},{string.Join(",", spaceColumns)}"
+          $"{timeColumn},{spaceColumn}:{spacePartitioning}"
         )
       );
     }

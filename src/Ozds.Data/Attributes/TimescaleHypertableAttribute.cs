@@ -9,15 +9,32 @@ namespace Ozds.Data.Attributes;
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
 public class TimescaleHypertableAttribute : Attribute
 {
-  public TimescaleHypertableAttribute(string timeColumn, params string[] spaceColumns)
+  public TimescaleHypertableAttribute(
+    string timeColumn,
+    string spaceColumn,
+    string spacePartitioning
+  )
   {
     TimeColumn = timeColumn;
-    SpaceColumns = spaceColumns;
+    SpaceColumn = spaceColumn;
+    SpacePartitioning = spacePartitioning;
+  }
+
+  public TimescaleHypertableAttribute(
+    string timeColumn
+  )
+  {
+    TimeColumn = timeColumn;
   }
 
   public string TimeColumn { get; }
 
-  public string[] SpaceColumns
+  public string? SpaceColumn
+  {
+    get;
+  }
+
+  public string? SpacePartitioning
   {
     get;
   }
@@ -42,12 +59,13 @@ public static class TimescaleHypertableAttributeExtensions
         (builder, x) =>
         {
           var timeColumn = x.Attribute!.TimeColumn;
-          var spaceColumns = x.Attribute!.SpaceColumns;
+          var spaceColumn = x.Attribute!.SpaceColumn;
+          var spacePartitioning = x.Attribute!.SpacePartitioning;
 
           var @value = timeColumn;
-          if (spaceColumns.Length > 0)
+          if (spaceColumn is not null && spacePartitioning is not null)
           {
-            @value += $",{string.Join(",", spaceColumns)}";
+            @value += $",{spaceColumn}:{spacePartitioning}";
           }
 
           builder

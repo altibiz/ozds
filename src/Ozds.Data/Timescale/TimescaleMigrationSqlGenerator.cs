@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Infrastructure.Internal;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Migrations;
 
+// TODO: make number of partitions configurable
+// NOTE: for now hardcored to 2 because we have two meter types
+
 namespace Ozds.Data.Timescale;
 
 public class TimescaleMigrationSqlGenerator : NpgsqlMigrationsSqlGenerator
@@ -39,15 +42,23 @@ public class TimescaleMigrationSqlGenerator : NpgsqlMigrationsSqlGenerator
       {
         return;
       }
-      var spaceColumns = columns.Skip(1);
+      var space = columns.LastOrDefault()?.Split(":");
+      var spaceColumn = space?.FirstOrDefault();
+      var spacePartitioning = space?.LastOrDefault();
 
       builder.AppendLine(
         $"SELECT create_hypertable('\"{operation.Name}\"', '{timeColumn}');"
       );
-      foreach (var spaceColumn in spaceColumns)
+      if (spaceColumn is not null && spacePartitioning is not null)
       {
         builder.AppendLine(
-          $"SELECT add_dimension('\"{operation.Name}\"', '{spaceColumn}');"
+          $"""
+          SELECT add_dimension(
+            '"{operation.Name}"',
+            '{spaceColumn}',
+            {spacePartitioning}
+          );
+          """
         );
       }
 
