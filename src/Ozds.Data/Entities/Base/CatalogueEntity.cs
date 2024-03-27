@@ -11,9 +11,9 @@ public class CatalogueEntity : AuditableEntity
   public virtual LocationEntity Location { get; set; } = default!;
 }
 
-public class CatalogueEntityTypeConfiguration : InheritedEntityTypeConfiguration<CatalogueEntity>
+public class CatalogueEntityTypeConfiguration : EntityTypeConfiguration<CatalogueEntity>
 {
-  public override void Configure<T>(EntityTypeBuilder<T> builder)
+  public override void Configure(EntityTypeBuilder<CatalogueEntity> builder)
   {
     builder
       .UseTphMappingStrategy()

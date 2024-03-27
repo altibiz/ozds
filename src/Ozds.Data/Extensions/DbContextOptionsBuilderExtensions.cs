@@ -16,6 +16,6 @@ public static class DbContextOptionsBuilderExtensions
       .UseNpgsql(connectionString)
       .ReplaceService<IMigrationsSqlGenerator, TimescaleMigrationSqlGenerator>()
       .ReplaceService<IRelationalAnnotationProvider,
-        TimescaleRelationalAnnotationProvider>();
+        TimescaleAnnotationProvider>();
   }
 }

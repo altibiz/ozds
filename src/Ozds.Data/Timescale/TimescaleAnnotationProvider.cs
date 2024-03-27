@@ -5,10 +5,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata.Internal;
 namespace Ozds.Data.Timescale;
 
 #pragma warning disable EF1001
-public class TimescaleRelationalAnnotationProvider : NpgsqlAnnotationProvider
+public class TimescaleAnnotationProvider : NpgsqlAnnotationProvider
 #pragma warning restore EF1001
 {
-  public TimescaleRelationalAnnotationProvider(
+  public TimescaleAnnotationProvider(
     RelationalAnnotationProviderDependencies dependencies
 #pragma warning disable EF1001
   ) : base(dependencies)
@@ -29,7 +29,27 @@ public class TimescaleRelationalAnnotationProvider : NpgsqlAnnotationProvider
     var annotations = base.For(table, designTime);
 #pragma warning restore EF1001
 
-    var mappingTypeAttributes = table.EntityTypeMappings
+    Console.WriteLine(
+      string.Join(
+        "\n",
+        table.EntityTypeMappings
+          .Where(mapping => mapping.TypeBase.Name.Contains("Aggregate"))
+          .Select(mapping =>
+            mapping.TypeBase.Name
+            + " => "
+            + string.Join(
+                ", ",
+                mapping.TypeBase
+                  .GetAnnotations()
+                  .Select(annotation =>
+                    $"{annotation.Name}: {annotation.Value}")
+              )
+         )
+      )
+    );
+
+    var mappingTypeAttributes =
+    table.EntityTypeMappings
       .Select(mapping => new
       {
         Mapping = mapping,
