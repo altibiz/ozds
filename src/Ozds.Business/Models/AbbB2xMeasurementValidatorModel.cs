@@ -36,17 +36,6 @@ public record AbbB2xMeasurementValidatorModel(
   MeterId
 )
 {
-  public override IEnumerable<ValidationResult> Validate(
-    ValidationContext validationContext)
-  {
-    throw new NotImplementedException();
-  }
-
-  public override string? Validate(AbbB2xMeasurementModel measurement,
-    string property)
-  {
-    throw new NotImplementedException();
-  }
 }
 
 public static class AbbB2xMeasurementValidatorModelExtensions

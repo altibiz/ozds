@@ -219,12 +219,6 @@ public record AbbB2xMeasurementModel(
   {
     get { return TariffMeasure.Null; }
   }
-
-  public override IEnumerable<ValidationResult> Validate(
-    ValidationContext validationContext)
-  {
-    throw new NotImplementedException();
-  }
 }
 
 public static class AbbB2xMeasurementModelExtensions

@@ -1,9 +1,9 @@
-@page "/user/{id}"
+@page "/user/{id}/edit"
 @attribute [Navigation(RouteValue = "id", Parents = new[] { typeof(UsersPage) })]
 @attribute [Authorize]
 @attribute [StreamRendering]
 
-<MaybeRepresentingUser Id="@Id" />
+<MaybeRepresentingUserEdit Id="@Id" />
 
 @code {
   [Parameter] public string? Id { get; set; }

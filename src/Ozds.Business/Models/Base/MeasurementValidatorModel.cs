@@ -26,5 +26,8 @@ public abstract record MeasurementValidatorModel<T>(
 ), IMeasurementValidator<T>
   where T : IMeasurement
 {
-  public abstract string? Validate(T measurement, string property);
+  public virtual string? Validate(T measurement, string property)
+  {
+    return null;
+  }
 }

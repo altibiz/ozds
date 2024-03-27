@@ -44,12 +44,6 @@ public record SchneideriEM3xxxMeterModel(
   {
     get { return new SchneideriEM3xxxCapabilities(); }
   }
-
-  public override IEnumerable<ValidationResult> Validate(
-    ValidationContext validationContext)
-  {
-    throw new NotImplementedException();
-  }
 }
 
 public static class SchneideriEM3xxxMeterModelExtensions

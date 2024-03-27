@@ -4,27 +4,27 @@
   ?? await ScopedServices
     .GetRequiredService<OzdsRepresentativeQueries>()
     .MaybeRepresentingUserByUserId(Id))!)">
-  <Found>
+  <Found Context="model">
     <MudText Typo="Typo.h5">User</MudText>
     <MudPaper>
       <MudGrid>
         <MudItem xs="12" sm="6">
           <MudText Typo="Typo.body1">Id</MudText>
-          <MudText Typo="Typo.body2">@context.User.UserName</MudText>
+          <MudText Typo="Typo.body2">@model.User.UserName</MudText>
         </MudItem>
         <MudItem xs="12" sm="6">
           <MudText Typo="Typo.body1">Email</MudText>
-          <MudText Typo="Typo.body2">@context.User.Email</MudText>
+          <MudText Typo="Typo.body2">@model.User.Email</MudText>
         </MudItem>
       </MudGrid>
     </MudPaper>
-    @if (context.Representative is not null)
+    @if (model.Representative is not null)
     {
       <EditForm
           Model="@editModel"
           OnValidSubmit="@(() => ScopedServices
             .GetRequiredService<OzdsAuditableMutations>()
-            .Update(context.Representative with {
+            .Update(model.Representative with {
               Role = editModel.Role,
               Name = editModel.Name,
               SocialSecurityNumber = editModel.SocialSecurityNumber,
@@ -35,67 +35,67 @@
               PhoneNumber = editModel.PhoneNumber
             }))">
         <DataAnnotationsValidator />
-          <MudCard>
-            <MudCardContent>
-              <MudTextField
-                  Label="Title"
-                  @bind-Value="editModel.Title"
-                  For="@(() => editModel.Title)"/>
-              <MudSelect
-                  T="RoleModel"
-                  Label="Coffee"
-                  AnchorOrigin="Origin.BottomCenter"
-                  @bind-Value="editModel.Role"
-                  For="@(() => editModel.Role)">
-                <MudSelectItem Value="@RoleModel.OperatorRepresentative">
-                  Operator Representative
-                </MudSelectItem>
-                <MudSelectItem Value="@RoleModel.LocationRepresentative">
-                  Location Representative
-                </MudSelectItem>
-                <MudSelectItem Value="@RoleModel.NetworkUserRepresentative">
-                  Network User Representative
-                </MudSelectItem>
-              </MudSelect>
-              <MudTextField
-                  Label="Name"
-                  @bind-Value="editModel.Name"
-                  For="@(() => editModel.Name)"/>
-              <MudTextField
-                  Label="SocialSecurityNumber"
-                  @bind-Value="editModel.SocialSecurityNumber"
-                  For="@(() => editModel.SocialSecurityNumber)"/>
-              <MudTextField
-                  Label="Address"
-                  @bind-Value="editModel.Address"
-                  For="@(() => editModel.Address)"/>
-              <MudTextField
-                  Label="City"
-                  @bind-Value="editModel.City"
-                  For="@(() => editModel.City)"/>
-              <MudTextField
-                  Label="PostalCode"
-                  @bind-Value="editModel.PostalCode"
-                  For="@(() => editModel.PostalCode)"/>
-              <MudTextField
-                  Label="Email"
-                  @bind-Value="editModel.Email"
-                  For="@(() => editModel.Email)"/>
-              <MudTextField
-                  Label="PhoneNumber"
-                  @bind-Value="editModel.PhoneNumber"
-                  For="@(() => editModel.PhoneNumber)"/>
-            </MudCardContent>
-            <MudCardActions>
-              <MudButton
-                  ButtonType="ButtonType.Submit"
-                  Variant="Variant.Filled"
-                  Color="MudColor.Primary"
-                  Class="ml-auto">
-                Update
-              </MudButton>
-            </MudCardActions>
-          </MudCard>
+        <MudCard>
+          <MudCardContent>
+            <MudTextField
+                Label="Title"
+                @bind-Value="editModel.Title"
+                For="@(() => editModel.Title)"/>
+            <MudSelect
+                T="RoleModel"
+                Label="Coffee"
+                AnchorOrigin="Origin.BottomCenter"
+                @bind-Value="editModel.Role"
+                For="@(() => editModel.Role)">
+              <MudSelectItem Value="@RoleModel.OperatorRepresentative">
+                Operator Representative
+              </MudSelectItem>
+              <MudSelectItem Value="@RoleModel.LocationRepresentative">
+                Location Representative
+              </MudSelectItem>
+              <MudSelectItem Value="@RoleModel.NetworkUserRepresentative">
+                Network User Representative
+              </MudSelectItem>
+            </MudSelect>
+            <MudTextField
+                Label="Name"
+                @bind-Value="editModel.Name"
+                For="@(() => editModel.Name)"/>
+            <MudTextField
+                Label="SocialSecurityNumber"
+                @bind-Value="editModel.SocialSecurityNumber"
+                For="@(() => editModel.SocialSecurityNumber)"/>
+            <MudTextField
+                Label="Address"
+                @bind-Value="editModel.Address"
+                For="@(() => editModel.Address)"/>
+            <MudTextField
+                Label="City"
+                @bind-Value="editModel.City"
+                For="@(() => editModel.City)"/>
+            <MudTextField
+                Label="PostalCode"
+                @bind-Value="editModel.PostalCode"
+                For="@(() => editModel.PostalCode)"/>
+            <MudTextField
+                Label="Email"
+                @bind-Value="editModel.Email"
+                For="@(() => editModel.Email)"/>
+            <MudTextField
+                Label="PhoneNumber"
+                @bind-Value="editModel.PhoneNumber"
+                For="@(() => editModel.PhoneNumber)"/>
+          </MudCardContent>
+          <MudCardActions>
+            <MudButton
+                ButtonType="ButtonType.Submit"
+                Variant="Variant.Filled"
+                Color="MudColor.Primary"
+                Class="ml-auto">
+              Update
+            </MudButton>
+          </MudCardActions>
+        </MudCard>
       </EditForm>
     }
     else {
@@ -104,7 +104,7 @@
           OnValidSubmit="@(() => ScopedServices
             .GetRequiredService<OzdsAuditableMutations>()
             .Create(new RepresentativeModel(
-              Id: context.User.Id,
+              Id: model.User.Id,
               Title: editModel.Title,
               CreatedOn: DateTimeOffset.UtcNow,
               CreatedById: null,
@@ -123,67 +123,67 @@
               PhoneNumber: editModel.PhoneNumber
             )))">
         <DataAnnotationsValidator />
-          <MudCard>
-            <MudCardContent>
-              <MudTextField
-                  Label="Title"
-                  @bind-Value="editModel.Title"
-                  For="@(() => editModel.Title)"/>
-              <MudSelect
-                  T="RoleModel"
-                  Label="Coffee"
-                  AnchorOrigin="Origin.BottomCenter"
-                  @bind-Value="editModel.Role"
-                  For="@(() => editModel.Role)">
-                <MudSelectItem Value="@RoleModel.OperatorRepresentative">
-                  Operator Representative
-                </MudSelectItem>
-                <MudSelectItem Value="@RoleModel.LocationRepresentative">
-                  Location Representative
-                </MudSelectItem>
-                <MudSelectItem Value="@RoleModel.NetworkUserRepresentative">
-                  Network User Representative
-                </MudSelectItem>
-              </MudSelect>
-              <MudTextField
-                  Label="Name"
-                  @bind-Value="editModel.Name"
-                  For="@(() => editModel.Name)"/>
-              <MudTextField
-                  Label="SocialSecurityNumber"
-                  @bind-Value="editModel.SocialSecurityNumber"
-                  For="@(() => editModel.SocialSecurityNumber)"/>
-              <MudTextField
-                  Label="Address"
-                  @bind-Value="editModel.Address"
-                  For="@(() => editModel.Address)"/>
-              <MudTextField
-                  Label="City"
-                  @bind-Value="editModel.City"
-                  For="@(() => editModel.City)"/>
-              <MudTextField
-                  Label="PostalCode"
-                  @bind-Value="editModel.PostalCode"
-                  For="@(() => editModel.PostalCode)"/>
-              <MudTextField
-                  Label="Email"
-                  @bind-Value="editModel.Email"
-                  For="@(() => editModel.Email)"/>
-              <MudTextField
-                  Label="PhoneNumber"
-                  @bind-Value="editModel.PhoneNumber"
-                  For="@(() => editModel.PhoneNumber)"/>
-            </MudCardContent>
-            <MudCardActions>
-                <MudButton
-                    ButtonType="ButtonType.Submit"
-                    Variant="Variant.Filled"
-                    Color="MudColor.Primary"
-                    Class="ml-auto">
-                  Create
-                </MudButton>
-            </MudCardActions>
-          </MudCard>
+        <MudCard>
+          <MudCardContent>
+            <MudTextField
+                Label="Title"
+                @bind-Value="editModel.Title"
+                For="@(() => editModel.Title)"/>
+            <MudSelect
+                T="RoleModel"
+                Label="Coffee"
+                AnchorOrigin="Origin.BottomCenter"
+                @bind-Value="editModel.Role"
+                For="@(() => editModel.Role)">
+              <MudSelectItem Value="@RoleModel.OperatorRepresentative">
+                Operator Representative
+              </MudSelectItem>
+              <MudSelectItem Value="@RoleModel.LocationRepresentative">
+                Location Representative
+              </MudSelectItem>
+              <MudSelectItem Value="@RoleModel.NetworkUserRepresentative">
+                Network User Representative
+              </MudSelectItem>
+            </MudSelect>
+            <MudTextField
+                Label="Name"
+                @bind-Value="editModel.Name"
+                For="@(() => editModel.Name)"/>
+            <MudTextField
+                Label="SocialSecurityNumber"
+                @bind-Value="editModel.SocialSecurityNumber"
+                For="@(() => editModel.SocialSecurityNumber)"/>
+            <MudTextField
+                Label="Address"
+                @bind-Value="editModel.Address"
+                For="@(() => editModel.Address)"/>
+            <MudTextField
+                Label="City"
+                @bind-Value="editModel.City"
+                For="@(() => editModel.City)"/>
+            <MudTextField
+                Label="PostalCode"
+                @bind-Value="editModel.PostalCode"
+                For="@(() => editModel.PostalCode)"/>
+            <MudTextField
+                Label="Email"
+                @bind-Value="editModel.Email"
+                For="@(() => editModel.Email)"/>
+            <MudTextField
+                Label="PhoneNumber"
+                @bind-Value="editModel.PhoneNumber"
+                For="@(() => editModel.PhoneNumber)"/>
+          </MudCardContent>
+          <MudCardActions>
+              <MudButton
+                  ButtonType="ButtonType.Submit"
+                  Variant="Variant.Filled"
+                  Color="MudColor.Primary"
+                  Class="ml-auto">
+                Create
+              </MudButton>
+          </MudCardActions>
+        </MudCard>
       </EditForm>
     }
   </Found>

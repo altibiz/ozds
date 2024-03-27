@@ -28,6 +28,5 @@ public class AggregateCreationInterceptor : ServedSaveChangesInterceptor
 
   private void CreateAggregates(DbContextEventData eventData)
   {
-    throw new NotImplementedException();
   }
 }

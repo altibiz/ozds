@@ -28,11 +28,6 @@ public record LocationMeasurementLocationModel(
   MeterId
 )
 {
-  public override IEnumerable<ValidationResult> Validate(
-    ValidationContext validationContext)
-  {
-    throw new NotImplementedException();
-  }
 }
 
 public static class LocationMeasurementLocationModelExtensions

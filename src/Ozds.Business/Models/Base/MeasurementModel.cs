@@ -29,6 +29,6 @@ public abstract record MeasurementModel<T>(
   public virtual IEnumerable<ValidationResult> Validate(
     ValidationContext validationContext)
   {
-    throw new NotImplementedException();
+    return Enumerable.Empty<ValidationResult>();
   }
 }

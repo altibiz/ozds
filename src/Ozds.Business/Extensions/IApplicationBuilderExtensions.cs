@@ -8,8 +8,8 @@ public static class IApplicationBuilderExtensions
   public static IApplicationBuilder MigrateOzdsData(
     this IApplicationBuilder app)
   {
-    app.ApplicationServices.GetRequiredService<OzdsDbContext>().Database
-      .Migrate();
+    using var scope = app.ApplicationServices.CreateScope();
+    scope.ServiceProvider.GetRequiredService<OzdsDbContext>().Database.Migrate();
     return app;
   }
 }

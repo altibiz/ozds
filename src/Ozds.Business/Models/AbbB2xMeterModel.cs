@@ -44,12 +44,6 @@ public record AbbB2xMeterModel(
   {
     get { return new AbbB2xCapabilities(); }
   }
-
-  public override IEnumerable<ValidationResult> Validate(
-    ValidationContext validationContext)
-  {
-    throw new NotImplementedException();
-  }
 }
 
 public static class AbbB2xMeterModelExtensions

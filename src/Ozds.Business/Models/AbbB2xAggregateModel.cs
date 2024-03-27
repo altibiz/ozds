@@ -276,12 +276,6 @@ public record AbbB2xAggregateModel(
   {
     get { return SpanningMeasure.Null; }
   }
-
-  public override IEnumerable<ValidationResult> Validate(
-    ValidationContext validationContext)
-  {
-    throw new NotImplementedException();
-  }
 }
 
 public static class AbbB2xAggregateModelExtensions

@@ -38,17 +38,6 @@ public record SchneideriEM3xxxMeasurementValidatorModel(
   MeterId
 )
 {
-  public override IEnumerable<ValidationResult> Validate(
-    ValidationContext validationContext)
-  {
-    throw new NotImplementedException();
-  }
-
-  public override string? Validate(SchneideriEM3xxxMeasurementModel measurement,
-    string property)
-  {
-    throw new NotImplementedException();
-  }
 }
 
 public static class SchneideriEM3xxxMeasurementValidatorModelExtensions

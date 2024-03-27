@@ -8,5 +8,5 @@ public class MessengerEventEntity : EventEntity
   [ForeignKey(nameof(Messenger))]
   public string MessengerId { get; set; } = default!;
 
-  public virtual MeterEntity Messenger { get; set; } = default!;
+  public virtual MessengerEntity Messenger { get; set; } = default!;
 }

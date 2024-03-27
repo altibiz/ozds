@@ -64,6 +64,9 @@ public abstract record AggregateModel(
     get { return ApparentEnergySpan_VAh.SpanMax; }
   }
 
-  public abstract IEnumerable<ValidationResult> Validate(
-    ValidationContext validationContext);
+  public virtual IEnumerable<ValidationResult> Validate(
+    ValidationContext validationContext)
+  {
+    return Enumerable.Empty<ValidationResult>();
+  }
 }

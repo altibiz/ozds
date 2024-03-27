@@ -288,12 +288,6 @@ public record SchneideriEM3xxxAggregateModel(
   {
     get { return SpanningMeasure.Null; }
   }
-
-  public override IEnumerable<ValidationResult> Validate(
-    ValidationContext validationContext)
-  {
-    throw new NotImplementedException();
-  }
 }
 
 public static class SchneideriEM3xxxAggregateModelExtensions

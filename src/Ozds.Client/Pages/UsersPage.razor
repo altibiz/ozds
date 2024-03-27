@@ -7,7 +7,8 @@
   <Found>
     @foreach (var maybeRepresentingUser in context.Items)
     {
-      var href = $"/representatives/{maybeRepresentingUser.User.Id}";
+      var href = $"user/{maybeRepresentingUser.User.Id}";
+      var editHref = $"user/{maybeRepresentingUser.User.Id}/edit";
 
       <MudCard>
         <MudCardContent>
@@ -21,6 +22,9 @@
         <MudCardActions>
           <MudNavLink Href="@href">
             Details
+          </MudNavLink>
+          <MudNavLink Href="@editHref">
+            Edit
           </MudNavLink>
         </MudCardActions>
       </MudCard>

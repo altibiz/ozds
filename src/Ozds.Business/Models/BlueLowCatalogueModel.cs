@@ -29,11 +29,6 @@ public record BlueLowCatalogueModel(
   DeletedById
 )
 {
-  public override IEnumerable<ValidationResult> Validate(
-    ValidationContext validationContext)
-  {
-    throw new NotImplementedException();
-  }
 }
 
 public static class BlueLowCatalogueModelExtensions

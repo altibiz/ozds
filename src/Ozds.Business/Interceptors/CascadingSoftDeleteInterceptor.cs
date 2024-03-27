@@ -26,6 +26,5 @@ public class CascadingSoftDeleteInterceptor : ServedSaveChangesInterceptor
 
   private void AddCascadingSoftDeletes(DbContextEventData eventData)
   {
-    throw new NotImplementedException();
   }
 }

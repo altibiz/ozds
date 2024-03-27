@@ -182,12 +182,6 @@ public record SchneideriEM3xxxMeasurementModel(
   {
     get { return TariffMeasure.Null; }
   }
-
-  public override IEnumerable<ValidationResult> Validate(
-    ValidationContext validationContext)
-  {
-    throw new NotImplementedException();
-  }
 }
 
 public static class SchneideriEM3xxxMeasurementModelExtensions
