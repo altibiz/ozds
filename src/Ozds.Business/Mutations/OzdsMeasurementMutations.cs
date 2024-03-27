@@ -4,7 +4,7 @@ using Ozds.Data;
 
 namespace Ozds.Business.Mutations;
 
-public class OzdsMeasurementMutations
+public class OzdsMeasurementMutations : IDisposable, IAsyncDisposable
 {
   private readonly OzdsDbContext _context;
 
@@ -13,9 +13,21 @@ public class OzdsMeasurementMutations
     _context = context;
   }
 
-  public async Task SaveChanges()
+  public void ClearChanges()
+  {
+    _context.ChangeTracker.Clear();
+  }
+
+  public void Dispose()
+  {
+    _context.SaveChanges();
+    GC.SuppressFinalize(this);
+  }
+
+  public async ValueTask DisposeAsync()
   {
     await _context.SaveChangesAsync();
+    GC.SuppressFinalize(this);
   }
 
   public List<ValidationResult>? Create(IMeasurement measurement)

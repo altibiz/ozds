@@ -6,7 +6,7 @@ using Ozds.Data;
 
 namespace Ozds.Business.Mutations;
 
-public class OzdsAuditableMutations
+public class OzdsAuditableMutations : IDisposable, IAsyncDisposable
 {
   private readonly OzdsDbContext _context;
 
@@ -15,9 +15,21 @@ public class OzdsAuditableMutations
     _context = context;
   }
 
-  public async Task SaveChanges()
+  public void ClearChanges()
+  {
+    _context.ChangeTracker.Clear();
+  }
+
+  public void Dispose()
+  {
+    _context.SaveChanges();
+    GC.SuppressFinalize(this);
+  }
+
+  public async ValueTask DisposeAsync()
   {
     await _context.SaveChangesAsync();
+    GC.SuppressFinalize(this);
   }
 
   public List<ValidationResult>? Create(IAuditable auditable)
