@@ -8,7 +8,9 @@ namespace Ozds.Data.Entities;
 
 public class MeasurementValidatorEntity : AuditableEntity
 {
-  [ForeignKey(nameof(Meter))] public string MeterId { get; set; } = default!;
+  [ForeignKey(nameof(Meter))]
+  [Column(TypeName = "bigint")]
+  public string MeterId { get; set; } = default!;
 
   public virtual MeterEntity Meter { get; set; } = default!;
 }

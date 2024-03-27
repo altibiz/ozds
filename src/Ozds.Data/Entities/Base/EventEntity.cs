@@ -2,7 +2,6 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Ozds.Data.Attributes;
 using Ozds.Data.Entities.Enums;
 using Ozds.Data.Extensions;
 
@@ -12,7 +11,10 @@ public class EventEntity : ReadonlyEntity
 {
   [NotMapped] private DateTimeOffset _timestamp;
 
-  [Key] public string Id { get; set; } = default!;
+  [Key]
+  [Column(TypeName = "bigint")]
+  [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+  public string Id { get; set; } = default!;
 
   [Required]
   public DateTimeOffset Timestamp
@@ -29,6 +31,7 @@ public class EventEntity : ReadonlyEntity
 public class AuditEventEntity : EventEntity
 {
   [ForeignKey(nameof(AuditableEntity))]
+  [Column(TypeName = "bigint")]
   public string AuditableEntityId { get; set; } = default!;
 
   public virtual AuditableEntity AuditableEntity { get; set; } = default!;

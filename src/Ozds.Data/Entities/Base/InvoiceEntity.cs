@@ -12,7 +12,10 @@ public abstract class InvoiceEntity : ReadonlyEntity
 {
   [NotMapped] private DateTimeOffset _timestamp;
 
-  [Key] public string Id { get; set; } = default!;
+  [Key]
+  [Column(TypeName = "bigint")]
+  [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+  public string Id { get; set; } = default!;
 
   [Required]
   public DateTimeOffset IssuedOn

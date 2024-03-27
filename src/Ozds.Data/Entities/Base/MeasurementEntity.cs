@@ -24,7 +24,9 @@ public abstract class MeasurementEntity : ReadonlyEntity
 public abstract class MeasurementEntity<T> : MeasurementEntity
   where T : MeterEntity
 {
-  [ForeignKey(nameof(Meter))] public string MeterId { get; set; } = default!;
+  [ForeignKey(nameof(Meter))]
+  [Column(TypeName = "bigint")]
+  public string MeterId { get; set; } = default!;
 
   [Required] public virtual T Meter { get; set; } = default!;
 }

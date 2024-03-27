@@ -29,7 +29,9 @@ public abstract class AggregateEntity : ReadonlyEntity
 public abstract class AggregateEntity<T> : AggregateEntity
   where T : MeterEntity
 {
-  [ForeignKey(nameof(MeterId))] public string MeterId { get; set; } = default!;
+  [ForeignKey(nameof(MeterId))]
+  [Column(TypeName = "bigint")]
+  public string MeterId { get; set; } = default!;
 
   [Required] public virtual T Meter { get; set; } = default!;
 }

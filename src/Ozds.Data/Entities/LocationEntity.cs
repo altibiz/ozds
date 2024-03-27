@@ -18,6 +18,7 @@ public class LocationEntity : AuditableEntity
     default!;
 
   [ForeignKey(nameof(MeasurementLocation))]
+  [Column(TypeName = "bigint")]
   public string MeasurementLocationId { get; set; } = default!;
 
   public virtual LocationMeasurementLocationEntity MeasurementLocation
@@ -30,29 +31,34 @@ public class LocationEntity : AuditableEntity
     default!;
 
   [ForeignKey(nameof(WhiteMediumCatalogue))]
+  [Column(TypeName = "bigint")]
   public string WhiteMediumCatalogueId { get; set; } = default!;
 
   public virtual WhiteMediumCatalogueEntity WhiteMediumCatalogue { get; set; } =
     default!;
 
   [ForeignKey(nameof(BlueLowCatalogue))]
+  [Column(TypeName = "bigint")]
   public string BlueLowCatalogueId { get; set; } = default!;
 
   public virtual BlueLowCatalogueEntity BlueLowCatalogue { get; set; } =
     default!;
 
   [ForeignKey(nameof(WhiteLowCatalogue))]
+  [Column(TypeName = "bigint")]
   public string WhiteLowCatalogueId { get; set; } = default!;
 
   public virtual WhiteLowCatalogueEntity WhiteLowCatalogue { get; set; } =
     default!;
 
   [ForeignKey(nameof(RedLowCatalogue))]
+  [Column(TypeName = "bigint")]
   public string RedLowCatalogueId { get; set; } = default!;
 
   public virtual RedLowCatalogueEntity RedLowCatalogue { get; set; } = default!;
 
   [ForeignKey(nameof(RegulatoryCatalogue))]
+  [Column(TypeName = "bigint")]
   public string RegulatoryCatalogueId { get; set; } = default!;
 
   public virtual RegulatoryCatalogueEntity RegulatoryCatalogue { get; set; } =

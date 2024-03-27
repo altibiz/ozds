@@ -30,7 +30,8 @@ public partial class OzdsDbContext : DbContext
       .HasPostgresExtension("timescaledb")
       .ApplyModelConfigurationsFromAssembly(Assembly.GetExecutingAssembly())
       .ApplyPostgresqlEnums()
-      .ApplyTimescaleHypertables();
+      .ApplyTimescaleHypertables()
+      .UseIdentityAlwaysColumns();
 
     base.OnModelCreating(modelBuilder);
   }
