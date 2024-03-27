@@ -1,4 +1,4 @@
-@page "/representatives"
+@page "/users"
 @attribute [Navigation(Title = "Representatives")]
 @attribute [Authorize]
 @inherits OwningComponentBase<OzdsRepresentativeQueries>
@@ -7,6 +7,8 @@
   <Found>
     @foreach (var maybeRepresentingUser in context.Items)
     {
+      var href = $"/representatives/{maybeRepresentingUser.User.Id}";
+
       <MudCard>
         <MudCardContent>
           <MudText Typo="Typo.h6">
@@ -16,6 +18,11 @@
             @maybeRepresentingUser.User.Email
           </MudText>
         </MudCardContent>
+        <MudCardActions>
+          <MudNavLink Href="@href">
+            Details
+          </MudNavLink>
+        </MudCardActions>
       </MudCard>
     }
 

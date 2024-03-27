@@ -1,16 +1,10 @@
-@page "/user/{id}"
-@attribute [Navigation(RouteValue = "id", Parents = new[] { typeof(RepresentativesPage) })]
+@page "/user/{Id}"
+@attribute [Navigation(RouteValue = "Id", Parents = new[] { typeof(UsersPage) })]
 @attribute [Authorize]
 @attribute [StreamRendering]
-@inherits OwningComponentBase<OzdsRepresentativeQueries>
 
-<Loading
-  Load="@(async () => (await Service.MaybeRepresentingUserByUserId(Id))!)">
-  <Found>
-    @context
-  </Found>
-</Loading>
+<MaybeRepresentingUser Id="@Id" />
 
 @code {
-  [Parameter] public string Id { get; set; } = default!;
+  [Parameter] public string? Id { get; set; }
 }
