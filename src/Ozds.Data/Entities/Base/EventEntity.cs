@@ -26,7 +26,6 @@ public class EventEntity : ReadonlyEntity
   public string Description { get; set; } = default!;
 }
 
-[TimescaleHypertable(nameof(Timestamp), nameof(AuditableEntityId), "number_partitions => 10")]
 public class AuditEventEntity : EventEntity
 {
   [ForeignKey(nameof(AuditableEntity))]
