@@ -8,7 +8,7 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
 
-[TimescaleHypertable(nameof(Timestamp), nameof(MeterId))]
+[TimescaleHypertable(nameof(Timestamp), nameof(MeterId), "number_partitions => 2")]
 [PrimaryKey(nameof(Timestamp), nameof(Interval), nameof(MeterId))]
 public abstract class AggregateEntity : ReadonlyEntity
 {
