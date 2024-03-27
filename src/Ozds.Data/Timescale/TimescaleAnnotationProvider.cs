@@ -56,9 +56,9 @@ public class TimescaleAnnotationProvider : NpgsqlAnnotationProvider
     {
       return annotations;
     }
-    var space = clrColumns.LastOrDefault()?.Split(":");
+    var space = clrColumns.Skip(1).FirstOrDefault()?.Split(":");
     var clrSpaceColumn = space?.FirstOrDefault();
-    var spacePartitioning = space?.LastOrDefault();
+    var spacePartitioning = space?.Skip(1).FirstOrDefault();
 
     var timeColumn = annotation.Mapping.ColumnMappings
       .FirstOrDefault(column => column.Property.Name == clrTimeColumn)?

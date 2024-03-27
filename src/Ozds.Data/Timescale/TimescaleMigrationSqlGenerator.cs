@@ -42,9 +42,9 @@ public class TimescaleMigrationSqlGenerator : NpgsqlMigrationsSqlGenerator
       {
         return;
       }
-      var space = columns.LastOrDefault()?.Split(":");
+      var space = columns.Skip(1).FirstOrDefault()?.Split(":");
       var spaceColumn = space?.FirstOrDefault();
-      var spacePartitioning = space?.LastOrDefault();
+      var spacePartitioning = space?.Skip(1).FirstOrDefault();
 
       builder.AppendLine(
         $"SELECT create_hypertable('\"{operation.Name}\"', '{timeColumn}');"
