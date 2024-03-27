@@ -53,7 +53,6 @@ public class TimescaleMigrationSqlGenerator : NpgsqlMigrationsSqlGenerator
 
       if (terminate)
       {
-        builder.AppendLine(";");
         EndStatement(builder);
       }
     }

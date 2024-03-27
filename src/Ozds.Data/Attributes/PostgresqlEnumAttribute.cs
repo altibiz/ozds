@@ -23,17 +23,18 @@ public static class PostgresqlEnumAttributeExtensions
   {
     return builder.Model
       .GetEntityTypes()
-      .SelectMany(entityType => entityType.GetProperties())
-      .Where(
-        property =>
-          property.PropertyInfo?.PropertyType is { } type &&
-          type.GetCustomAttribute<PostgresqlEnumAttribute>() is not null)
+      .SelectMany(entityType => entityType
+        .GetProperties()
+        .SelectMany(property =>
+          property.PropertyInfo?.PropertyType is { } type
+            ? RecursivelyFindPostgresqlEnumTypes(type)
+            : Enumerable.Empty<Type>()))
       .Aggregate(
         builder,
-        (builder, property) =>
+        (builder, type) =>
         {
           HasPostgresEnumMethod
-            .MakeGenericMethod(property.PropertyInfo!.PropertyType)
+            .MakeGenericMethod(type)
             .Invoke(
               null,
               new[] { builder, null, null, null }
@@ -42,5 +43,24 @@ public static class PostgresqlEnumAttributeExtensions
           return builder;
         }
       );
+  }
+
+  private static IEnumerable<Type> RecursivelyFindPostgresqlEnumTypes(Type type)
+  {
+    if (type.GetCustomAttribute<PostgresqlEnumAttribute>() is not null)
+    {
+      yield return type;
+    }
+
+    if (type.IsGenericType)
+    {
+      foreach (var genericArgument in type.GetGenericArguments())
+      {
+        foreach (var nestedType in RecursivelyFindPostgresqlEnumTypes(genericArgument))
+        {
+          yield return nestedType;
+        }
+      }
+    }
   }
 }
