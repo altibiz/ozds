@@ -1,0 +1,230 @@
+@inherits OwningComponentBase
+
+<Loading Load="@(async () => (Model
+  ?? await ScopedServices
+    .GetRequiredService<OzdsRepresentativeQueries>()
+    .MaybeRepresentingUserByUserId(Id))!)">
+  <Found>
+    <MudText Typo="Typo.h5">User</MudText>
+    <MudPaper>
+      <MudGrid>
+        <MudItem xs="12" sm="6">
+          <MudText Typo="Typo.body1">Id</MudText>
+          <MudText Typo="Typo.body2">@context.User.UserName</MudText>
+        </MudItem>
+        <MudItem xs="12" sm="6">
+          <MudText Typo="Typo.body1">Email</MudText>
+          <MudText Typo="Typo.body2">@context.User.Email</MudText>
+        </MudItem>
+      </MudGrid>
+    </MudPaper>
+    @if (context.Representative is not null)
+    {
+      <EditForm
+          Model="@editModel"
+          OnValidSubmit="@(() => ScopedServices
+            .GetRequiredService<OzdsAuditableMutations>()
+            .Update(context.Representative with {
+              Role = editModel.Role,
+              Name = editModel.Name,
+              SocialSecurityNumber = editModel.SocialSecurityNumber,
+              Address = editModel.Address,
+              City = editModel.City,
+              PostalCode = editModel.PostalCode,
+              Email = editModel.Email,
+              PhoneNumber = editModel.PhoneNumber
+            }))">
+        <DataAnnotationsValidator />
+          <MudCard>
+            <MudCardContent>
+              <MudTextField
+                  Label="Title"
+                  @bind-Value="editModel.Title"
+                  For="@(() => editModel.Title)"/>
+              <MudSelect
+                  T="RoleModel"
+                  Label="Coffee"
+                  AnchorOrigin="Origin.BottomCenter"
+                  @bind-Value="editModel.Role"
+                  For="@(() => editModel.Role)">
+                <MudSelectItem Value="@RoleModel.OperatorRepresentative">
+                  Operator Representative
+                </MudSelectItem>
+                <MudSelectItem Value="@RoleModel.LocationRepresentative">
+                  Location Representative
+                </MudSelectItem>
+                <MudSelectItem Value="@RoleModel.NetworkUserRepresentative">
+                  Network User Representative
+                </MudSelectItem>
+              </MudSelect>
+              <MudTextField
+                  Label="Name"
+                  @bind-Value="editModel.Name"
+                  For="@(() => editModel.Name)"/>
+              <MudTextField
+                  Label="SocialSecurityNumber"
+                  @bind-Value="editModel.SocialSecurityNumber"
+                  For="@(() => editModel.SocialSecurityNumber)"/>
+              <MudTextField
+                  Label="Address"
+                  @bind-Value="editModel.Address"
+                  For="@(() => editModel.Address)"/>
+              <MudTextField
+                  Label="City"
+                  @bind-Value="editModel.City"
+                  For="@(() => editModel.City)"/>
+              <MudTextField
+                  Label="PostalCode"
+                  @bind-Value="editModel.PostalCode"
+                  For="@(() => editModel.PostalCode)"/>
+              <MudTextField
+                  Label="Email"
+                  @bind-Value="editModel.Email"
+                  For="@(() => editModel.Email)"/>
+              <MudTextField
+                  Label="PhoneNumber"
+                  @bind-Value="editModel.PhoneNumber"
+                  For="@(() => editModel.PhoneNumber)"/>
+            </MudCardContent>
+            <MudCardActions>
+              <MudButton
+                  ButtonType="ButtonType.Submit"
+                  Variant="Variant.Filled"
+                  Color="MudColor.Primary"
+                  Class="ml-auto">
+                Update
+              </MudButton>
+            </MudCardActions>
+          </MudCard>
+      </EditForm>
+    }
+    else {
+      <EditForm
+          Model="@editModel"
+          OnValidSubmit="@(() => ScopedServices
+            .GetRequiredService<OzdsAuditableMutations>()
+            .Create(new RepresentativeModel(
+              Id: context.User.Id,
+              Title: editModel.Title,
+              CreatedOn: DateTimeOffset.UtcNow,
+              CreatedById: null,
+              LastUpdatedOn: null,
+              LastUpdatedById: null,
+              IsDeleted: false,
+              DeletedOn: null,
+              DeletedById: null,
+              Role: editModel.Role,
+              Name: editModel.Name,
+              SocialSecurityNumber: editModel.SocialSecurityNumber,
+              Address: editModel.Address,
+              City: editModel.City,
+              PostalCode: editModel.PostalCode,
+              Email: editModel.Email,
+              PhoneNumber: editModel.PhoneNumber
+            )))">
+        <DataAnnotationsValidator />
+          <MudCard>
+            <MudCardContent>
+              <MudTextField
+                  Label="Title"
+                  @bind-Value="editModel.Title"
+                  For="@(() => editModel.Title)"/>
+              <MudSelect
+                  T="RoleModel"
+                  Label="Coffee"
+                  AnchorOrigin="Origin.BottomCenter"
+                  @bind-Value="editModel.Role"
+                  For="@(() => editModel.Role)">
+                <MudSelectItem Value="@RoleModel.OperatorRepresentative">
+                  Operator Representative
+                </MudSelectItem>
+                <MudSelectItem Value="@RoleModel.LocationRepresentative">
+                  Location Representative
+                </MudSelectItem>
+                <MudSelectItem Value="@RoleModel.NetworkUserRepresentative">
+                  Network User Representative
+                </MudSelectItem>
+              </MudSelect>
+              <MudTextField
+                  Label="Name"
+                  @bind-Value="editModel.Name"
+                  For="@(() => editModel.Name)"/>
+              <MudTextField
+                  Label="SocialSecurityNumber"
+                  @bind-Value="editModel.SocialSecurityNumber"
+                  For="@(() => editModel.SocialSecurityNumber)"/>
+              <MudTextField
+                  Label="Address"
+                  @bind-Value="editModel.Address"
+                  For="@(() => editModel.Address)"/>
+              <MudTextField
+                  Label="City"
+                  @bind-Value="editModel.City"
+                  For="@(() => editModel.City)"/>
+              <MudTextField
+                  Label="PostalCode"
+                  @bind-Value="editModel.PostalCode"
+                  For="@(() => editModel.PostalCode)"/>
+              <MudTextField
+                  Label="Email"
+                  @bind-Value="editModel.Email"
+                  For="@(() => editModel.Email)"/>
+              <MudTextField
+                  Label="PhoneNumber"
+                  @bind-Value="editModel.PhoneNumber"
+                  For="@(() => editModel.PhoneNumber)"/>
+            </MudCardContent>
+            <MudCardActions>
+                <MudButton
+                    ButtonType="ButtonType.Submit"
+                    Variant="Variant.Filled"
+                    Color="MudColor.Primary"
+                    Class="ml-auto">
+                  Create
+                </MudButton>
+            </MudCardActions>
+          </MudCard>
+      </EditForm>
+    }
+  </Found>
+</Loading>
+
+@code {
+  [Parameter]
+  public string Id { get; set; } = default!;
+
+  [Parameter]
+  public MaybeRepresentingUserModel? Model { get; set; }
+
+  private EditModel editModel = new EditModel();
+
+  private class EditModel
+  {
+    [Required]
+    public string Title { get; set; } = default!;
+
+    [Required]
+    public RoleModel Role { get; set; } = default!;
+
+    [Required]
+    public string Name { get; set; } = default!;
+
+    [Required]
+    public string SocialSecurityNumber { get; set; } = default!;
+
+    [Required]
+    public string Address { get; set; } = default!;
+
+    [Required]
+    public string City { get; set; } = default!;
+
+    [Required]
+    public string PostalCode { get; set; } = default!;
+
+    [Required]
+    public string Email { get; set; } = default!;
+
+    [Required]
+    public string PhoneNumber { get; set; } = default!;
+  }
+}
