@@ -17,7 +17,6 @@ public class RepresentativeEventEntityConfiguration : EntityTypeConfiguration<Re
   {
     builder.HasOne(nameof(RepresentativeEventEntity.Representative))
       .WithMany(nameof(RepresentativeEntity.Events))
-      .HasForeignKey(nameof(RepresentativeEventEntity.RepresentativeId))
-      .IsRequired();
+      .HasForeignKey(nameof(RepresentativeEventEntity.RepresentativeId));
   }
 }
