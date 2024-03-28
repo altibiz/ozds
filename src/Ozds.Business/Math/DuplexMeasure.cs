@@ -94,6 +94,23 @@ public abstract record class DuplexMeasure
     }
   }
 
+  public PhasicMeasure DuplexAny
+  {
+    get
+    {
+      return this switch
+      {
+        CompositeDuplexMeasure composite => composite.FromMostAccurate(
+          measure => measure.DuplexAny, PhasicMeasure.Null),
+        ImportExportDuplexMeasure importExport => importExport.Import -
+                                                  importExport.Export,
+        NetDuplexMeasure net => net.TrueNet,
+        AnyDuplexMeasure net => net.Value,
+        _ => PhasicMeasure.Null
+      };
+    }
+  }
+
   public static DuplexMeasure operator +(DuplexMeasure lhs, float rhs)
   {
     return lhs switch

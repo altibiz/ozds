@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using Ozds.Business.Capabilities;
 using Ozds.Business.Capabilities.Abstractions;
 using Ozds.Business.Models.Base;
@@ -6,39 +5,7 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Models;
 
-public record SchneideriEM3xxxMeterModel(
-  string Id,
-  string Title,
-  DateTimeOffset CreatedOn,
-  string? CreatedById,
-  DateTimeOffset? LastUpdatedOn,
-  string? LastUpdatedById,
-  bool IsDeleted,
-  DateTimeOffset? DeletedOn,
-  string? DeletedById,
-  string MeasurementLocationId,
-  string CatalogueId,
-  string MessengerId,
-  string MeasurementValidatorId,
-  float ConnectionPower_W,
-  List<PhaseModel> Phases
-) : MeterModel(
-  Id,
-  Title,
-  CreatedOn,
-  CreatedById,
-  LastUpdatedOn,
-  LastUpdatedById,
-  IsDeleted,
-  DeletedOn,
-  DeletedById,
-  MeasurementLocationId,
-  CatalogueId,
-  MessengerId,
-  MeasurementValidatorId,
-  ConnectionPower_W,
-  Phases
-)
+public class SchneideriEM3xxxMeterModel : MeterModel
 {
   public override ICapabilities Capabilities
   {
@@ -74,22 +41,23 @@ public static class SchneideriEM3xxxMeterModelExtensions
   public static SchneideriEM3xxxMeterModel ToModel(
     this SchneideriEM3xxxMeterEntity entity)
   {
-    return new SchneideriEM3xxxMeterModel(
-      entity.Id,
-      entity.Title,
-      entity.CreatedOn,
-      entity.CreatedById,
-      entity.LastUpdatedOn,
-      entity.LastUpdatedById,
-      entity.IsDeleted,
-      entity.DeletedOn,
-      entity.DeletedById,
-      entity.MeasurementLocationId,
-      entity.CatalogueId,
-      entity.MessengerId,
-      entity.MeasurementValidatorId,
-      entity.ConnectionPower_W,
-      entity.Phases.Select(phase => phase.ToModel()).ToList()
-    );
+    return new SchneideriEM3xxxMeterModel()
+    {
+      Id = entity.Id,
+      Title = entity.Title,
+      CreatedOn = entity.CreatedOn,
+      CreatedById = entity.CreatedById,
+      LastUpdatedOn = entity.LastUpdatedOn,
+      LastUpdatedById = entity.LastUpdatedById,
+      IsDeleted = entity.IsDeleted,
+      DeletedOn = entity.DeletedOn,
+      DeletedById = entity.DeletedById,
+      MeasurementLocationId = entity.MeasurementLocationId,
+      CatalogueId = entity.CatalogueId,
+      MessengerId = entity.MessengerId,
+      MeasurementValidatorId = entity.MeasurementValidatorId,
+      ConnectionPower_W = entity.ConnectionPower_W,
+      Phases = entity.Phases.Select(phase => phase.ToModel()).ToList()
+    };
   }
 }

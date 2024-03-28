@@ -3,15 +3,7 @@ using Ozds.Business.Models.Enums;
 
 namespace Ozds.Business.Models.Base;
 
-public abstract record AuditEventModel(
-  string Id,
-  DateTimeOffset Timestamp,
-  LevelModel Level,
-  string Description,
-  AuditModel Audit
-) : EventModel(
-  Id,
-  Timestamp,
-  Level,
-  Description
-), IAuditEvent;
+public abstract class AuditEventModel : EventModel, IAuditEvent
+{
+  public required AuditModel Audit { get; init; }
+}

@@ -5,13 +5,17 @@ using Ozds.Business.Models.Enums;
 
 namespace Ozds.Business.Models.Base;
 
-public abstract record AggregateModel(
-  string MeterId,
-  DateTimeOffset Timestamp,
-  IntervalModel Interval,
-  long Count
-) : IAggregate
+public abstract class AggregateModel : IAggregate
 {
+  [Required]
+  public required string MeterId { get; set; }
+  [Required]
+  public required DateTimeOffset Timestamp { get; init; } = DateTimeOffset.UtcNow;
+  [Required]
+  public required IntervalModel Interval { get; init; }
+  [Required]
+  public required long Count { get; init; } = 0;
+
   public abstract TariffMeasure Current_A { get; }
 
   public abstract TariffMeasure Voltage_V { get; }
@@ -67,6 +71,29 @@ public abstract record AggregateModel(
   public virtual IEnumerable<ValidationResult> Validate(
     ValidationContext validationContext)
   {
-    return Enumerable.Empty<ValidationResult>();
+    if (validationContext.ObjectInstance != this)
+    {
+      yield break;
+    }
+
+    if (
+      validationContext.MemberName is null or nameof(Count) &&
+      Count < 0
+    )
+    {
+      yield return new ValidationResult(
+        "Count must be greater than or equal to zero",
+        new[] { nameof(Count) });
+    }
+
+    if (
+      validationContext.MemberName is null or nameof(Timestamp) &&
+      Timestamp > DateTimeOffset.UtcNow
+    )
+    {
+      yield return new ValidationResult(
+        "Timestamp must be in the past",
+        new[] { nameof(Timestamp) });
+    }
   }
 }

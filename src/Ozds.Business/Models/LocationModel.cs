@@ -4,57 +4,44 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Models;
 
-public record LocationModel(
-  string Id,
-  string Title,
-  DateTimeOffset CreatedOn,
-  string? CreatedById,
-  DateTimeOffset? LastUpdatedOn,
-  string? LastUpdatedById,
-  bool IsDeleted,
-  DateTimeOffset? DeletedOn,
-  string? DeletedById,
-  string MeasurementLocationId,
-  string WhiteMediumCatalogueId,
-  string BlueLowCatalogueId,
-  string WhiteLowCatalogueId,
-  string RedLowCatalogueId,
-  string RegulatoryCatalogueId
-) : AuditableModel(
-  Id,
-  Title,
-  CreatedOn,
-  CreatedById,
-  LastUpdatedOn,
-  LastUpdatedById,
-  IsDeleted,
-  DeletedOn,
-  DeletedById
-)
+public class LocationModel : AuditableModel
 {
+  [Required]
+  public required string MeasurementLocationId { get; set; }
+  [Required]
+  public required string WhiteMediumCatalogueId { get; set; }
+  [Required]
+  public required string BlueLowCatalogueId { get; set; }
+  [Required]
+  public required string WhiteLowCatalogueId { get; set; }
+  [Required]
+  public required string RedLowCatalogueId { get; set; }
+  [Required]
+  public required string RegulatoryCatalogueId { get; set; }
 }
 
 public static class LocationModelExtensions
 {
   public static LocationModel ToModel(this LocationEntity entity)
   {
-    return new LocationModel(
-      entity.Id,
-      entity.Title,
-      entity.CreatedOn,
-      entity.CreatedById,
-      entity.LastUpdatedOn,
-      entity.LastUpdatedById,
-      entity.IsDeleted,
-      entity.DeletedOn,
-      entity.DeletedById,
-      entity.MeasurementLocationId,
-      entity.WhiteMediumCatalogueId,
-      entity.BlueLowCatalogueId,
-      entity.WhiteLowCatalogueId,
-      entity.RedLowCatalogueId,
-      entity.RegulatoryCatalogueId
-    );
+    return new LocationModel()
+    {
+      Id = entity.Id,
+      Title = entity.Title,
+      CreatedOn = entity.CreatedOn,
+      CreatedById = entity.CreatedById,
+      LastUpdatedOn = entity.LastUpdatedOn,
+      LastUpdatedById = entity.LastUpdatedById,
+      IsDeleted = entity.IsDeleted,
+      DeletedOn = entity.DeletedOn,
+      DeletedById = entity.DeletedById,
+      MeasurementLocationId = entity.MeasurementLocationId,
+      WhiteMediumCatalogueId = entity.WhiteMediumCatalogueId,
+      BlueLowCatalogueId = entity.BlueLowCatalogueId,
+      WhiteLowCatalogueId = entity.WhiteLowCatalogueId,
+      RedLowCatalogueId = entity.RedLowCatalogueId,
+      RegulatoryCatalogueId = entity.RegulatoryCatalogueId
+    };
   }
 
   public static LocationEntity ToEntity(this LocationModel model)

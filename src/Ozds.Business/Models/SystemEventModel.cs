@@ -4,28 +4,19 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Models;
 
-public record SystemEventModel(
-  string Id,
-  DateTimeOffset Timestamp,
-  LevelModel Level,
-  string Description
-) : EventModel(
-  Id,
-  Timestamp,
-  Level,
-  Description
-);
+public class SystemEventModel : EventModel { }
 
 public static class SystemEventModelExtensions
 {
   public static SystemEventModel ToModel(this SystemEventEntity entity)
   {
-    return new SystemEventModel(
-      entity.Id,
-      entity.Timestamp,
-      entity.Level.ToModel(),
-      entity.Description
-    );
+    return new SystemEventModel()
+    {
+      Id = entity.Id,
+      Timestamp = entity.Timestamp,
+      Level = entity.Level.ToModel(),
+      Description = entity.Description
+    };
   }
 
   public static SystemEventEntity ToEntity(this SystemEventModel model)

@@ -99,6 +99,27 @@ public abstract record class PhasicMeasure
     }
   }
 
+  public float PhaseTrough
+  {
+    get
+    {
+      return this switch
+      {
+        CompositePhasicMeasure composite => composite.FromMostAccurate(
+          measure => measure.PhaseTrough, 0),
+        TriPhasicMeasure tri => tri.ValueL1 < tri.ValueL2
+          ? tri.ValueL1 < tri.ValueL3
+            ? tri.ValueL1
+            : tri.ValueL3
+          : tri.ValueL2 < tri.ValueL3
+            ? tri.ValueL2
+            : tri.ValueL3,
+        SinglePhasicMeasure single => single.Value,
+        _ => 0
+      };
+    }
+  }
+
   public static PhasicMeasure operator +(PhasicMeasure lhs, float rhs)
   {
     return lhs switch

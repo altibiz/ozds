@@ -1,37 +1,30 @@
+using System.ComponentModel.DataAnnotations;
 using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Enums;
 using Ozds.Data.Entities;
 
 namespace Ozds.Business.Models;
 
-public record RepresentativeAuditEventModel(
-  string Id,
-  DateTimeOffset Timestamp,
-  LevelModel Level,
-  string Description,
-  AuditModel Audit,
-  string RepresentativeId
-) : AuditEventModel(
-  Id,
-  Timestamp,
-  Level,
-  Audit: Audit,
-  Description: Description
-);
+public class RepresentativeAuditEventModel : AuditEventModel
+{
+  [Required]
+  public required string RepresentativeId { get; set; }
+}
 
 public static class RepresentativeAuditEventModelExtensions
 {
   public static RepresentativeAuditEventModel ToModel(
     this RepresentativeAuditEventEntity entity)
   {
-    return new RepresentativeAuditEventModel(
-      entity.Id,
-      entity.Timestamp,
-      entity.Level.ToModel(),
-      entity.Description,
-      entity.Audit.ToModel(),
-      entity.RepresentativeId
-    );
+    return new RepresentativeAuditEventModel()
+    {
+      Id = entity.Id,
+      Timestamp = entity.Timestamp,
+      Level = entity.Level.ToModel(),
+      Description = entity.Description,
+      Audit = entity.Audit.ToModel(),
+      RepresentativeId = entity.RepresentativeId
+    };
   }
 
   public static RepresentativeAuditEventEntity ToEntity(

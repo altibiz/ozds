@@ -4,33 +4,23 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Models;
 
-public record RegulatoryCatalogueModel(
-  string Id,
-  string Title,
-  DateTimeOffset CreatedOn,
-  string? CreatedById,
-  DateTimeOffset? LastUpdatedOn,
-  string? LastUpdatedById,
-  bool IsDeleted,
-  DateTimeOffset? DeletedOn,
-  string? DeletedById,
-  float ActiveEnergyTotalImportT1Price_EUR,
-  float ActiveEnergyTotalImportT2Price_EUR,
-  float RenewableEnergyFeePrice_EUR,
-  float BusinessUsageFeePrice_EUR,
-  float TaxRate_Percent
-) : CatalogueModel(
-  Id,
-  Title,
-  CreatedOn,
-  CreatedById,
-  LastUpdatedOn,
-  LastUpdatedById,
-  IsDeleted,
-  DeletedOn,
-  DeletedById
-)
+public class RegulatoryCatalogueModel : CatalogueModel
 {
+  [Required]
+  [Range(0, double.MaxValue)]
+  public required float ActiveEnergyTotalImportT1Price_EUR { get; set; }
+  [Required]
+  [Range(0, double.MaxValue)]
+  public required float ActiveEnergyTotalImportT2Price_EUR { get; set; }
+  [Required]
+  [Range(0, double.MaxValue)]
+  public required float RenewableEnergyFeePrice_EUR { get; set; }
+  [Required]
+  [Range(0, double.MaxValue)]
+  public required float BusinessUsageFeePrice_EUR { get; set; }
+  [Required]
+  [Range(0, double.MaxValue)]
+  public required float TaxRate_Percent { get; set; }
 }
 
 public static class RegulatoryCatalogueModelExtensions
@@ -38,22 +28,23 @@ public static class RegulatoryCatalogueModelExtensions
   public static RegulatoryCatalogueModel ToModel(
     this RegulatoryCatalogueEntity entity)
   {
-    return new RegulatoryCatalogueModel(
-      entity.Id,
-      entity.Title,
-      entity.CreatedOn,
-      entity.CreatedById,
-      entity.LastUpdatedOn,
-      entity.LastUpdatedById,
-      entity.IsDeleted,
-      entity.DeletedOn,
-      entity.DeletedById,
-      entity.ActiveEnergyTotalImportT1Price_EUR,
-      entity.ActiveEnergyTotalImportT2Price_EUR,
-      entity.RenewableEnergyFeePrice_EUR,
-      entity.BusinessUsageFeePrice_EUR,
-      entity.TaxRate_Percent
-    );
+    return new RegulatoryCatalogueModel()
+    {
+      Id = entity.Id,
+      Title = entity.Title,
+      CreatedOn = entity.CreatedOn,
+      CreatedById = entity.CreatedById,
+      LastUpdatedOn = entity.LastUpdatedOn,
+      LastUpdatedById = entity.LastUpdatedById,
+      IsDeleted = entity.IsDeleted,
+      DeletedOn = entity.DeletedOn,
+      DeletedById = entity.DeletedById,
+      ActiveEnergyTotalImportT1Price_EUR = entity.ActiveEnergyTotalImportT1Price_EUR,
+      ActiveEnergyTotalImportT2Price_EUR = entity.ActiveEnergyTotalImportT2Price_EUR,
+      RenewableEnergyFeePrice_EUR = entity.RenewableEnergyFeePrice_EUR,
+      BusinessUsageFeePrice_EUR = entity.BusinessUsageFeePrice_EUR,
+      TaxRate_Percent = entity.TaxRate_Percent
+    };
   }
 
   public static RegulatoryCatalogueEntity ToEntity(

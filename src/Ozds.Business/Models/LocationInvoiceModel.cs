@@ -4,35 +4,25 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Models;
 
-public record LocationInvoiceModel(
-  string Id,
-  DateTimeOffset IssuedOn,
-  string? IssuedById,
-  DateTimeOffset FromDate,
-  DateTimeOffset ToDate,
-  string LocationId
-) : InvoiceModel(
-  Id,
-  IssuedOn,
-  IssuedById,
-  FromDate,
-  ToDate
-)
+public class LocationInvoiceModel : InvoiceModel
 {
+  [Required]
+  public required string LocationId { get; set; }
 }
 
 public static class LocationInvoiceModelExtensions
 {
   public static LocationInvoiceModel ToModel(this LocationInvoiceEntity entity)
   {
-    return new LocationInvoiceModel(
-      entity.Id,
-      entity.IssuedOn,
-      entity.IssuedById,
-      entity.FromDate,
-      entity.ToDate,
-      entity.LocationId
-    );
+    return new LocationInvoiceModel()
+    {
+      Id = entity.Id,
+      IssuedOn = entity.IssuedOn,
+      IssuedById = entity.IssuedById,
+      FromDate = entity.FromDate,
+      ToDate = entity.ToDate,
+      LocationId = entity.LocationId
+    };
   }
 
   public static LocationInvoiceEntity ToEntity(this LocationInvoiceModel model)

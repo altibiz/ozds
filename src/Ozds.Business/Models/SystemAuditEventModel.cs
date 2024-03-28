@@ -4,32 +4,21 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Models;
 
-public record SystemAuditEventModel(
-  string Id,
-  DateTimeOffset Timestamp,
-  LevelModel Level,
-  string Description,
-  AuditModel Audit
-) : AuditEventModel(
-  Id,
-  Timestamp,
-  Level,
-  Description,
-  Audit
-);
+public class SystemAuditEventModel : AuditEventModel { }
 
 public static class SystemAuditEventModelExtensions
 {
   public static SystemAuditEventModel ToModel(
     this SystemAuditEventEntity entity)
   {
-    return new SystemAuditEventModel(
-      entity.Id,
-      entity.Timestamp,
-      entity.Level.ToModel(),
-      entity.Description,
-      entity.Audit.ToModel()
-    );
+    return new SystemAuditEventModel()
+    {
+      Id = entity.Id,
+      Timestamp = entity.Timestamp,
+      Level = entity.Level.ToModel(),
+      Description = entity.Description,
+      Audit = entity.Audit.ToModel()
+    };
   }
 
   public static SystemAuditEventEntity ToEntity(

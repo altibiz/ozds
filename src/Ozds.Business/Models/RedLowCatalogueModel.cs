@@ -4,55 +4,46 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Models;
 
-public record RedLowCatalogueModel(
-  string Id,
-  string Title,
-  DateTimeOffset CreatedOn,
-  string? CreatedById,
-  DateTimeOffset? LastUpdatedOn,
-  string? LastUpdatedById,
-  bool IsDeleted,
-  DateTimeOffset? DeletedOn,
-  string? DeletedById,
-  float ActiveEnergyTotalImportT1Price_EUR,
-  float ActiveEnergyTotalImportT2Price_EUR,
-  float MaxActivePowerTotalImportT1Price_EUR,
-  float ReactiveEnergyTotalImportT0Price_EUR,
-  float MeterFeePrice_EUR
-) : CatalogueModel(
-  Id,
-  Title,
-  CreatedOn,
-  CreatedById,
-  LastUpdatedOn,
-  LastUpdatedById,
-  IsDeleted,
-  DeletedOn,
-  DeletedById
-)
+public class RedLowCatalogueModel : CatalogueModel
 {
+  [Required]
+  [Range(0, double.MaxValue)]
+  public required float ActiveEnergyTotalImportT1Price_EUR { get; set; }
+  [Required]
+  [Range(0, double.MaxValue)]
+  public required float ActiveEnergyTotalImportT2Price_EUR { get; set; }
+  [Required]
+  [Range(0, double.MaxValue)]
+  public required float MaxActivePowerTotalImportT1Price_EUR { get; set; }
+  [Required]
+  [Range(0, double.MaxValue)]
+  public required float ReactiveEnergyTotalImportT0Price_EUR { get; set; }
+  [Required]
+  [Range(0, double.MaxValue)]
+  public required float MeterFeePrice_EUR { get; set; }
 }
 
 public static class RedLowCatalogueModelExtensions
 {
   public static RedLowCatalogueModel ToModel(this RedLowCatalogueEntity entity)
   {
-    return new RedLowCatalogueModel(
-      entity.Id,
-      entity.Title,
-      entity.CreatedOn,
-      entity.CreatedById,
-      entity.LastUpdatedOn,
-      entity.LastUpdatedById,
-      entity.IsDeleted,
-      entity.DeletedOn,
-      entity.DeletedById,
-      entity.ActiveEnergyTotalImportT1Price_EUR,
-      entity.ActiveEnergyTotalImportT2Price_EUR,
-      entity.MaxActivePowerTotalImportT1Price_EUR,
-      entity.ReactiveEnergyTotalImportT0Price_EUR,
-      entity.MeterFeePrice_EUR
-    );
+    return new RedLowCatalogueModel()
+    {
+      Id = entity.Id,
+      Title = entity.Title,
+      CreatedOn = entity.CreatedOn,
+      CreatedById = entity.CreatedById,
+      LastUpdatedOn = entity.LastUpdatedOn,
+      LastUpdatedById = entity.LastUpdatedById,
+      IsDeleted = entity.IsDeleted,
+      DeletedOn = entity.DeletedOn,
+      DeletedById = entity.DeletedById,
+      ActiveEnergyTotalImportT1Price_EUR = entity.ActiveEnergyTotalImportT1Price_EUR,
+      ActiveEnergyTotalImportT2Price_EUR = entity.ActiveEnergyTotalImportT2Price_EUR,
+      MaxActivePowerTotalImportT1Price_EUR = entity.MaxActivePowerTotalImportT1Price_EUR,
+      ReactiveEnergyTotalImportT0Price_EUR = entity.ReactiveEnergyTotalImportT0Price_EUR,
+      MeterFeePrice_EUR = entity.MeterFeePrice_EUR
+    };
   }
 
   public static RedLowCatalogueEntity ToEntity(this RedLowCatalogueModel model)

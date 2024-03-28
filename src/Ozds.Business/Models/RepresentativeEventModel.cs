@@ -1,34 +1,29 @@
+using System.ComponentModel.DataAnnotations;
 using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Enums;
 using Ozds.Data.Entities;
 
 namespace Ozds.Business.Models;
 
-public record RepresentativeEventModel(
-  string Id,
-  DateTimeOffset Timestamp,
-  LevelModel Level,
-  string Description,
-  string RepresentativeId
-) : EventModel(
-  Id,
-  Timestamp,
-  Level,
-  Description
-);
+public class RepresentativeEventModel : EventModel
+{
+  [Required]
+  public required string RepresentativeId { get; set; }
+}
 
 public static class RepresentativeEventModelExtensions
 {
   public static RepresentativeEventModel ToModel(
     this RepresentativeEventEntity entity)
   {
-    return new RepresentativeEventModel(
-      entity.Id,
-      entity.Timestamp,
-      entity.Level.ToModel(),
-      entity.Description,
-      entity.RepresentativeId
-    );
+    return new RepresentativeEventModel()
+    {
+      Id = entity.Id,
+      Timestamp = entity.Timestamp,
+      Level = entity.Level.ToModel(),
+      Description = entity.Description,
+      RepresentativeId = entity.RepresentativeId
+    };
   }
 
   public static RepresentativeEventEntity ToEntity(
