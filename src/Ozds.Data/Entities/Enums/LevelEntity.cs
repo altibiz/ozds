@@ -1,8 +1,8 @@
-using Ozds.Data.Attributes;
+using Microsoft.EntityFrameworkCore;
+using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Enums;
 
-[PostgresqlEnum]
 public enum LevelEntity
 {
   /// <summary>
@@ -36,4 +36,12 @@ public enum LevelEntity
   ///   migration failures.
   /// </summary>
   Critical
+}
+
+public class LevelEntityTypeConfiguration : IModelConfiguration
+{
+  public void Configure(ModelBuilder modelBuilder)
+  {
+    modelBuilder.HasPostgresEnum<LevelEntity>();
+  }
 }

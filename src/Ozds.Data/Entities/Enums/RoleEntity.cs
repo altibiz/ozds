@@ -1,8 +1,8 @@
-using Ozds.Data.Attributes;
+using Microsoft.EntityFrameworkCore;
+using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Enums;
 
-[PostgresqlEnum]
 public enum RoleEntity
 {
   OperatorRepresentative,
@@ -10,4 +10,12 @@ public enum RoleEntity
   LocationRepresentative,
 
   NetworkUserRepresentative
+}
+
+public class RoleEntityTypeConfiguration : IModelConfiguration
+{
+  public void Configure(ModelBuilder modelBuilder)
+  {
+    modelBuilder.HasPostgresEnum<RoleEntity>();
+  }
 }

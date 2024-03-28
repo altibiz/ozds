@@ -19,7 +19,7 @@ public static class PostgresqlEnumAttributeExtensions
           && method.Name == nameof(NpgsqlModelBuilderExtensions.HasPostgresEnum)
       );
 
-  public static ModelBuilder ApplyPostgresqlEnums(this ModelBuilder builder)
+  public static ModelBuilder ApplyPostgresqlEnumAttributes(this ModelBuilder builder)
   {
     return builder.Model
       .GetEntityTypes()

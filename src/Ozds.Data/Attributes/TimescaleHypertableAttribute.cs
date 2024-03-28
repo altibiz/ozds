@@ -1,6 +1,7 @@
 using System.Reflection;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 // TODO: continuous aggregate attributes like this one
 
@@ -42,7 +43,7 @@ public class TimescaleHypertableAttribute : Attribute
 
 public static class TimescaleHypertableAttributeExtensions
 {
-  public static ModelBuilder ApplyTimescaleHypertables(
+  public static ModelBuilder ApplyTimescaleHypertableAttributes(
     this ModelBuilder builder)
   {
     return builder.Model
@@ -62,18 +63,30 @@ public static class TimescaleHypertableAttributeExtensions
           var spaceColumn = x.Attribute!.SpaceColumn;
           var spacePartitioning = x.Attribute!.SpacePartitioning;
 
-          var @value = timeColumn;
-          if (spaceColumn is not null && spacePartitioning is not null)
-          {
-            @value += $",{spaceColumn}:{spacePartitioning}";
-          }
-
           builder
             .Entity(x.Entity.ClrType)
-            .HasAnnotation("TimescaleHypertable", @value);
+            .HasTimescaleHypertable(timeColumn, spaceColumn, spacePartitioning);
 
           return builder;
         }
       );
+  }
+
+  public static EntityTypeBuilder HasTimescaleHypertable(
+    this EntityTypeBuilder builder,
+    string timeColumn,
+    string? spaceColumn = null,
+    string? spacePartitioning = null
+  )
+  {
+    var @value = timeColumn;
+    if (spaceColumn is not null && spacePartitioning is not null)
+    {
+      @value += $",{spaceColumn}:{spacePartitioning}";
+    }
+
+    builder.Metadata.AddAnnotation("TimescaleHypertable", @value);
+
+    return builder;
   }
 }

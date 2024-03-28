@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Ozds.Data.Entities.Base;
 using Ozds.Data.Entities.Enums;
@@ -8,7 +9,7 @@ namespace Ozds.Data.Entities;
 
 public class RepresentativeEntity : AuditableEntity
 {
-  [Required] public RoleEntity Role { get; set; }
+  public RoleEntity Role { get; set; }
 
   public virtual ICollection<NetworkUserEntity> NetworkUsers { get; set; } = default!;
 
@@ -19,17 +20,27 @@ public class RepresentativeEntity : AuditableEntity
   public virtual ICollection<RepresentativeAuditEventEntity> AuditEvents { get; set; } =
     default!;
 
-  [Required] public string Name { get; set; } = default!;
+  public string Name { get; set; } = default!;
 
-  [Required] public string SocialSecurityNumber { get; set; } = default!;
+  public string SocialSecurityNumber { get; set; } = default!;
 
-  [Required] public string Address { get; set; } = default!;
+  public string Address { get; set; } = default!;
 
-  [Required] public string City { get; set; } = default!;
+  public string PostalCode { get; set; } = default!;
 
-  [Required] public string PostalCode { get; set; } = default!;
+  public string Email { get; set; } = default!;
 
-  [Required] public string Email { get; set; } = default!;
+  public string PhoneNumber { get; set; } = default!;
+}
 
-  [Required] public string PhoneNumber { get; set; } = default!;
+public class RepresentativeEntityTypeConfiguration : EntityTypeConfiguration<RepresentativeEntity>
+{
+  public override void Configure(EntityTypeBuilder<RepresentativeEntity> builder)
+  {
+    builder
+      .Property(nameof(RepresentativeEntity.Id))
+      .ValueGeneratedNever()
+      .HasColumnType("string")
+      .HasConversion<string>();
+  }
 }

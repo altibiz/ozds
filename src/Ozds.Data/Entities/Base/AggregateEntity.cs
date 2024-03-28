@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Ozds.Data.Attributes;
@@ -10,30 +8,18 @@ namespace Ozds.Data.Entities.Base;
 
 public abstract class AggregateEntity : ReadonlyEntity
 {
-  [NotMapped] private DateTimeOffset _timestamp;
+  public DateTimeOffset Timestamp { get; set; }
 
-  [Required]
-  public DateTimeOffset Timestamp
-  {
-    get { return _timestamp.ToUniversalTime(); }
-    set { _timestamp = value.ToUniversalTime(); }
-  }
+  public long Count { get; set; }
 
-  [Required] public long Count { get; set; }
-
-  [Required] public IntervalEntity Interval { get; set; }
+  public IntervalEntity Interval { get; set; }
 }
 
-[TimescaleHypertable(nameof(Timestamp), nameof(MeterId), "number_partitions => 2")]
-[PrimaryKey(nameof(Timestamp), nameof(Interval), nameof(MeterId))]
-public abstract class AggregateEntity<T> : AggregateEntity
-  where T : MeterEntity
+public abstract class AggregateEntity<T> : AggregateEntity where T : MeterEntity
 {
-  [ForeignKey(nameof(MeterId))]
-  [Column(TypeName = "bigint")]
   public string MeterId { get; set; } = default!;
 
-  [Required] public virtual T Meter { get; set; } = default!;
+  public virtual T Meter { get; set; } = default!;
 }
 
 public class AggregateEntityTypeConfiguration : ConcreteHierarchyEntityTypeConfiguration<AggregateEntity>
@@ -41,5 +27,29 @@ public class AggregateEntityTypeConfiguration : ConcreteHierarchyEntityTypeConfi
   public override void Configure<T>(EntityTypeBuilder<T> builder)
   {
     builder.UseTpcMappingStrategy();
+
+    builder.HasKey(
+      nameof(AggregateEntity.Timestamp),
+      nameof(AggregateEntity.Interval),
+      nameof(AggregateEntity<MeterEntity>.MeterId)
+    );
+
+    builder.HasTimescaleHypertable(
+      nameof(AggregateEntity.Timestamp),
+      nameof(AggregateEntity<MeterEntity>.MeterId),
+      "number_partitions => 2"
+    );
+
+    builder
+      .HasOne(nameof(AggregateEntity<MeterEntity>.Meter))
+      .WithMany()
+      .HasForeignKey(nameof(AggregateEntity<MeterEntity>.MeterId));
+
+    builder
+      .Property(x => x.Timestamp)
+      .HasConversion(
+        x => x.ToUniversalTime(),
+        x => x.ToUniversalTime()
+      );
   }
 }

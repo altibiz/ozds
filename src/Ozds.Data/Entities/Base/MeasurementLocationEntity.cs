@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Ozds.Data.Extensions;
@@ -7,8 +6,6 @@ namespace Ozds.Data.Entities.Base;
 
 public class MeasurementLocationEntity : AuditableEntity
 {
-  [ForeignKey(nameof(Meter))]
-  [Column(TypeName = "bigint")]
   public string MeterId { get; set; } = default!;
 
   public virtual MeterEntity Meter { get; set; } = default!;
@@ -22,5 +19,10 @@ public class MeasurementLocationEntityTypeConfiguration : ConcreteHierarchyEntit
       .UseTphMappingStrategy()
       .ToTable("measurement_locations")
       .HasDiscriminator<string>("kind");
+
+    builder
+      .HasOne(nameof(MeasurementLocationEntity.Meter))
+      .WithOne(nameof(MeterEntity<MeasurementEntity, AggregateEntity, MeasurementValidatorEntity>.MeasurementLocation))
+      .HasForeignKey(nameof(MeasurementLocationEntity.MeterId));
   }
 }

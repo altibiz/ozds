@@ -1,7 +1,6 @@
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Ozds.Data.Entities.Enums;
 using Ozds.Data.Extensions;
 
@@ -9,34 +8,13 @@ namespace Ozds.Data.Entities.Base;
 
 public class EventEntity : ReadonlyEntity
 {
-  [NotMapped] private DateTimeOffset _timestamp;
-
-  [Key]
-  [Column(TypeName = "bigint")]
-  [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
   public string Id { get; set; } = default!;
 
-  [Required]
-  public DateTimeOffset Timestamp
-  {
-    get { return _timestamp.ToUniversalTime(); }
-    set { _timestamp = value.ToUniversalTime(); }
-  }
+  public DateTimeOffset Timestamp { get; set; } = default!;
 
-  [Required] public LevelEntity Level { get; set; } = default!;
+  public LevelEntity Level { get; set; } = default!;
 
   public string Description { get; set; } = default!;
-}
-
-public class AuditEventEntity : EventEntity
-{
-  [ForeignKey(nameof(AuditableEntity))]
-  [Column(TypeName = "bigint")]
-  public string AuditableEntityId { get; set; } = default!;
-
-  public virtual AuditableEntity AuditableEntity { get; set; } = default!;
-
-  public AuditEntity Audit { get; set; } = default!;
 }
 
 public class EventEntityTypeConfiguration : ConcreteHierarchyEntityTypeConfiguration<EventEntity>
@@ -47,5 +25,21 @@ public class EventEntityTypeConfiguration : ConcreteHierarchyEntityTypeConfigura
       .UseTphMappingStrategy()
       .ToTable("events")
       .HasDiscriminator<string>("kind");
+
+    builder
+      .HasKey(nameof(InvoiceEntity.Id));
+
+    builder
+      .Property(nameof(InvoiceEntity.Id))
+      .ValueGeneratedOnAdd()
+      .HasColumnType("bigint")
+      .HasConversion<StringToNumberConverter<long>>();
+
+    builder
+      .Property(x => x.Timestamp)
+      .HasConversion(
+        x => x.ToUniversalTime(),
+        x => x.ToUniversalTime()
+      );
   }
 }

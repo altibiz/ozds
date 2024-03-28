@@ -1,7 +1,6 @@
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Ozds.Data.Extensions;
 
 // TODO: copy entities via complex properties
@@ -10,21 +9,12 @@ namespace Ozds.Data.Entities.Base;
 
 public abstract class InvoiceEntity : ReadonlyEntity
 {
-  [NotMapped] private DateTimeOffset _timestamp;
 
-  [Key]
-  [Column(TypeName = "bigint")]
-  [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
   public string Id { get; set; } = default!;
 
-  [Required]
-  public DateTimeOffset IssuedOn
-  {
-    get { return _timestamp.ToUniversalTime(); }
-    set { _timestamp = value.ToUniversalTime(); }
-  }
+  public DateTimeOffset IssuedOn { get; set; } = default!;
 
-  [ForeignKey(nameof(IssuedBy))] public string? IssuedById { get; set; }
+  public string? IssuedById { get; set; }
 
   public virtual RepresentativeEntity? IssuedBy { get; set; }
 
@@ -38,5 +28,26 @@ public class InvoiceEntityTypeConfiguration : ConcreteHierarchyEntityTypeConfigu
   public override void Configure<T>(EntityTypeBuilder<T> builder)
   {
     builder.UseTpcMappingStrategy();
+
+    builder
+      .HasKey(nameof(InvoiceEntity.Id));
+
+    builder
+      .Property(nameof(InvoiceEntity.Id))
+      .ValueGeneratedOnAdd()
+      .HasColumnType("bigint")
+      .HasConversion<StringToNumberConverter<long>>();
+
+    builder
+      .Property(x => x.IssuedOn)
+      .HasConversion(
+        x => x.ToUniversalTime(),
+        x => x.ToUniversalTime()
+      );
+
+    builder
+      .HasOne(nameof(InvoiceEntity.IssuedBy))
+      .WithMany()
+      .HasForeignKey(nameof(InvoiceEntity.IssuedById));
   }
 }

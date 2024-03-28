@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Ozds.Data.Entities.Base;
@@ -6,13 +5,16 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities;
 
-public class MeasurementValidatorEntity : AuditableEntity
+public abstract class MeasurementValidatorEntity : AuditableEntity
 {
-  [ForeignKey(nameof(Meter))]
-  [Column(TypeName = "bigint")]
+}
+
+public abstract class MeasurementValidatorEntity<TMeter> : MeasurementValidatorEntity
+  where TMeter : MeterEntity
+{
   public string MeterId { get; set; } = default!;
 
-  public virtual MeterEntity Meter { get; set; } = default!;
+  public virtual TMeter Meter { get; set; } = default!;
 }
 
 public class MeasurementValidatorEntityTypeConfiguration : ConcreteHierarchyEntityTypeConfiguration<MeasurementValidatorEntity>
@@ -23,5 +25,10 @@ public class MeasurementValidatorEntityTypeConfiguration : ConcreteHierarchyEnti
       .UseTphMappingStrategy()
       .ToTable("measurement_validators")
       .HasDiscriminator<string>("kind");
+
+    builder
+      .HasOne(nameof(MeasurementValidatorEntity<MeterEntity>.Meter))
+      .WithOne(nameof(MeterEntity<MeasurementEntity, AggregateEntity, MeasurementValidatorEntity<MeterEntity>>.MeasurementValidator))
+      .HasForeignKey(nameof(MeasurementValidatorEntity<MeterEntity>.MeterId));
   }
 }

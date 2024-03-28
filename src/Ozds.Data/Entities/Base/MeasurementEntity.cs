@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Ozds.Data.Attributes;
@@ -9,26 +7,15 @@ namespace Ozds.Data.Entities.Base;
 
 public abstract class MeasurementEntity : ReadonlyEntity
 {
-  [NotMapped] private DateTimeOffset _timestamp;
-
-  [Required]
-  public DateTimeOffset Timestamp
-  {
-    get { return _timestamp.ToUniversalTime(); }
-    set { _timestamp = value.ToUniversalTime(); }
-  }
+  public DateTimeOffset Timestamp { get; set; }
 }
 
-[TimescaleHypertable(nameof(Timestamp), nameof(MeterId), "number_partitions => 2")]
-[PrimaryKey(nameof(Timestamp), nameof(MeterId))]
 public abstract class MeasurementEntity<T> : MeasurementEntity
   where T : MeterEntity
 {
-  [ForeignKey(nameof(Meter))]
-  [Column(TypeName = "bigint")]
   public string MeterId { get; set; } = default!;
 
-  [Required] public virtual T Meter { get; set; } = default!;
+  public virtual T Meter { get; set; } = default!;
 }
 
 public class MeasurementEntityTypeConfiguration : ConcreteHierarchyEntityTypeConfiguration<MeasurementEntity>
@@ -36,5 +23,28 @@ public class MeasurementEntityTypeConfiguration : ConcreteHierarchyEntityTypeCon
   public override void Configure<T>(EntityTypeBuilder<T> builder)
   {
     builder.UseTpcMappingStrategy();
+
+    builder.HasKey(
+      nameof(MeasurementEntity.Timestamp),
+      nameof(MeasurementEntity<MeterEntity>.MeterId)
+    );
+
+    builder.HasTimescaleHypertable(
+      nameof(MeasurementEntity.Timestamp),
+      nameof(MeasurementEntity<MeterEntity>.MeterId),
+      "number_partitions => 2"
+    );
+
+    builder
+      .HasOne(nameof(MeasurementEntity<MeterEntity>.Meter))
+      .WithMany()
+      .HasForeignKey(nameof(MeasurementEntity<MeterEntity>.MeterId));
+
+    builder
+      .Property(x => x.Timestamp)
+      .HasConversion(
+        x => x.ToUniversalTime(),
+        x => x.ToUniversalTime()
+      );
   }
 }

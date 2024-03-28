@@ -1,5 +1,6 @@
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Ozds.Data.Extensions;
 
 // TODO: more clear naming for properties
 
@@ -8,43 +9,61 @@ namespace Ozds.Data.Entities;
 public class
   SchneideriEM3xxxMeasurementValidatorEntity : MeasurementValidatorEntity
 {
-#pragma warning disable CA1707
-  [Column("min_voltage_v")][Required] public float MinVoltage_V { get; set; }
-
-  [Column("max_voltage_v")]
-  [Required]
+  public float MinVoltage_V { get; set; }
   public float MaxVoltage_V { get; set; } = default!;
-
-  [Column("min_current_a")]
-  [Required]
   public float MinCurrent_A { get; set; } = default!;
-
-  [Column("max_current_a")]
-  [Required]
   public float MaxCurrent_A { get; set; } = default!;
-
-  [Column("min_active_power_w")]
-  [Required]
   public float MinActivePower_W { get; set; } = default!;
-
-  [Column("max_active_power_w")]
-  [Required]
   public float MaxActivePower_W { get; set; } = default!;
-
-  [Column("min_reactive_power_var")]
-  [Required]
   public float MinReactivePower_VAR { get; set; } = default!;
-
-  [Column("max_reactive_power_var")]
-  [Required]
   public float MaxReactivePower_VAR { get; set; } = default!;
-
-  [Column("min_apparent_power_va")]
-  [Required]
   public float MinApparentPower_VA { get; set; } = default!;
-
-  [Column("max_apparent_power_va")]
-  [Required]
   public float MaxApparentPower_VA { get; set; } = default!;
 #pragma warning restore CA1707
+}
+
+public class SchneideriEM3xxxMeasurementValidatorEntityTypeConfiguration : EntityTypeConfiguration<SchneideriEM3xxxMeasurementValidatorEntity>
+{
+  public override void Configure(EntityTypeBuilder<SchneideriEM3xxxMeasurementValidatorEntity> builder)
+  {
+    builder
+      .Property(nameof(SchneideriEM3xxxMeasurementValidatorEntity.MinVoltage_V))
+      .HasColumnName("min_voltage_v");
+
+    builder
+      .Property(nameof(SchneideriEM3xxxMeasurementValidatorEntity.MaxVoltage_V))
+      .HasColumnName("max_voltage_v");
+
+    builder
+      .Property(nameof(SchneideriEM3xxxMeasurementValidatorEntity.MinCurrent_A))
+      .HasColumnName("min_current_a");
+
+    builder
+      .Property(nameof(SchneideriEM3xxxMeasurementValidatorEntity.MaxCurrent_A))
+      .HasColumnName("max_current_a");
+
+    builder
+      .Property(nameof(SchneideriEM3xxxMeasurementValidatorEntity.MinActivePower_W))
+      .HasColumnName("min_active_power_w");
+
+    builder
+      .Property(nameof(SchneideriEM3xxxMeasurementValidatorEntity.MaxActivePower_W))
+      .HasColumnName("max_active_power_w");
+
+    builder
+      .Property(nameof(SchneideriEM3xxxMeasurementValidatorEntity.MinReactivePower_VAR))
+      .HasColumnName("min_reactive_power_var");
+
+    builder
+      .Property(nameof(SchneideriEM3xxxMeasurementValidatorEntity.MaxReactivePower_VAR))
+      .HasColumnName("max_reactive_power_var");
+
+    builder
+      .Property(nameof(SchneideriEM3xxxMeasurementValidatorEntity.MinApparentPower_VA))
+      .HasColumnName("min_apparent_power_va");
+
+    builder
+      .Property(nameof(SchneideriEM3xxxMeasurementValidatorEntity.MaxApparentPower_VA))
+      .HasColumnName("max_apparent_power_va");
+  }
 }

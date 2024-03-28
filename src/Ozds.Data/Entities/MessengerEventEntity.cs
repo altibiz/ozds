@@ -1,13 +1,28 @@
-using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Ozds.Data.Entities.Base;
+using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities;
 
 public class MessengerEventEntity : EventEntity
 {
-  [ForeignKey(nameof(Messenger))]
-  [Column(TypeName = "bigint")]
   public string MessengerId { get; set; } = default!;
-
   public virtual MessengerEntity Messenger { get; set; } = default!;
+}
+
+public class MessengerEventEntityTypeConfiguration : EntityTypeConfiguration<MessengerEventEntity>
+{
+  public override void Configure(EntityTypeBuilder<MessengerEventEntity> builder)
+  {
+    builder
+      .HasOne(nameof(MessengerEventEntity.Messenger))
+      .WithMany(nameof(MessengerEntity.Events))
+      .HasForeignKey(nameof(MessengerEventEntity.MessengerId));
+
+    builder
+      .Property(nameof(MessengerEventEntity.MessengerId))
+      .HasColumnType("bigint")
+      .HasConversion<long>();
+  }
 }

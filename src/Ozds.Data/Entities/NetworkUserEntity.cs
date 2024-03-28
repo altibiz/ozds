@@ -1,4 +1,4 @@
-using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Ozds.Data.Entities.Base;
 using Ozds.Data.Extensions;
@@ -7,22 +7,11 @@ namespace Ozds.Data.Entities;
 
 public class NetworkUserEntity : AuditableEntity
 {
-  public virtual ICollection<RepresentativeEntity>
-    Representatives
-  { get; set; } = default!;
-
-  [ForeignKey(nameof(Location))]
-  [Column(TypeName = "bigint")]
+  public virtual ICollection<RepresentativeEntity> Representatives { get; set; } = default!;
   public string LocationId { get; set; } = default!;
-
   public virtual LocationEntity Location { get; set; } = default!;
-
-  public virtual ICollection<NetworkUserMeasurementLocationEntity>
-    MeasurementLocations
-  { get; set; } = default!;
-
-  public virtual ICollection<NetworkUserInvoiceEntity> Invoices { get; set; } =
-    default!;
+  public virtual ICollection<NetworkUserMeasurementLocationEntity> MeasurementLocations { get; set; } = default!;
+  public virtual ICollection<NetworkUserInvoiceEntity> Invoices { get; set; } = default!;
 }
 
 public class NetworkUserEntityTypeConfiguration : EntityTypeConfiguration<NetworkUserEntity>
@@ -30,7 +19,25 @@ public class NetworkUserEntityTypeConfiguration : EntityTypeConfiguration<Networ
   public override void Configure(EntityTypeBuilder<NetworkUserEntity> builder)
   {
     builder
-      .HasMany(e => e.Representatives)
-      .WithMany(e => e.NetworkUsers);
+      .HasMany(nameof(NetworkUserEntity.Representatives))
+      .WithMany(nameof(RepresentativeEntity.NetworkUsers));
+
+    builder
+      .HasOne(nameof(NetworkUserEntity.Location))
+      .WithMany(nameof(LocationEntity.NetworkUsers))
+      .HasForeignKey(nameof(NetworkUserEntity.LocationId));
+
+    builder
+      .HasMany(nameof(NetworkUserEntity.MeasurementLocations))
+      .WithOne(nameof(NetworkUserMeasurementLocationEntity.NetworkUser));
+
+    builder
+      .HasMany(nameof(NetworkUserEntity.Invoices))
+      .WithOne(nameof(NetworkUserInvoiceEntity.NetworkUser));
+
+    builder
+      .Property(nameof(NetworkUserEntity.LocationId))
+      .HasColumnType("bigint")
+      .HasConversion<long>();
   }
 }

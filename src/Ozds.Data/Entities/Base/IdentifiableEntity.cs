@@ -1,15 +1,29 @@
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
 
-[NotMapped]
 public abstract class IdentifiableEntity
 {
-  [Key]
-  [Column(TypeName = "bigint")]
-  [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
   public string Id { get; set; } = default!;
 
   public string Title { get; set; } = default!;
+}
+
+public class IdentifiableEntityConfiguration : ConcreteHierarchyEntityTypeConfiguration<IdentifiableEntity>
+{
+  public override void Configure<T>(EntityTypeBuilder<T> builder)
+  {
+
+    builder
+      .HasKey(nameof(InvoiceEntity.Id));
+
+    builder
+      .Property(nameof(InvoiceEntity.Id))
+      .ValueGeneratedOnAdd()
+      .HasColumnType("bigint")
+      .HasConversion<StringToNumberConverter<long>>();
+  }
 }
