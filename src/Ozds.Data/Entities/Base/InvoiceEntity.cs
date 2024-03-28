@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Ozds.Data.Extensions;
 
 // TODO: copy entities via complex properties
@@ -33,10 +32,10 @@ public class InvoiceEntityTypeConfiguration : ConcreteHierarchyEntityTypeConfigu
 
     builder
       .Property(nameof(InvoiceEntity.Id))
-      .ValueGeneratedOnAdd()
-      .UseIdentityAlwaysColumn()
       .HasColumnType("bigint")
-      .HasConversion<long>();
+      .HasConversion<long>()
+      .ValueGeneratedOnAdd()
+      .UseIdentityAlwaysColumn();
 
     builder
       .Property(x => x.IssuedOn)

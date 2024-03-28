@@ -26,10 +26,10 @@ public class IdentifiableEntityConfiguration : ConcreteHierarchyEntityTypeConfig
     {
       builder
         .Property(nameof(IdentifiableEntity.Id))
-        .UseIdentityAlwaysColumn()
-        .ValueGeneratedOnAdd()
         .HasColumnType("bigint")
-        .HasConversion<long>();
+        .HasConversion<long>()
+        .ValueGeneratedOnAdd()
+        .UseIdentityAlwaysColumn();
     }
   }
 
