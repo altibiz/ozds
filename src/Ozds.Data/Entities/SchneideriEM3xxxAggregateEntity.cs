@@ -8,6 +8,7 @@ namespace Ozds.Data.Entities;
 public class
   SchneideriEM3xxxAggregateEntity : AggregateEntity<SchneideriEM3xxxMeterEntity>
 {
+#pragma warning disable CA1707
   public float VoltageL1AnyT0Avg_V { get; set; }
   public float VoltageL2AnyT0Avg_V { get; set; }
   public float VoltageL3AnyT0Avg_V { get; set; }
@@ -31,7 +32,7 @@ public class
   public float ActiveEnergyTotalImportT1Max_Wh { get; set; } = default!;
   public float ActiveEnergyTotalImportT2Min_Wh { get; set; } = default!;
   public float ActiveEnergyTotalImportT2Max_Wh { get; set; } = default!;
-#pragma warning disable CA1707
+#pragma warning restore CA1707
 }
 
 public class SchneideriEM3xxxAggregateEntityTypeConfiguration : EntityTypeConfiguration<SchneideriEM3xxxAggregateEntity>
