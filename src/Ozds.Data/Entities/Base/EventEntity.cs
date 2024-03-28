@@ -8,7 +8,9 @@ namespace Ozds.Data.Entities.Base;
 
 public class EventEntity : ReadonlyEntity
 {
-  public string Id { get; set; } = default!;
+  private readonly long _id;
+
+  public virtual string Id { get => _id.ToString(); init => _id = long.Parse(value); }
 
   public DateTimeOffset Timestamp { get; set; } = default!;
 
@@ -34,10 +36,11 @@ public class EventEntityTypeHierarchyConfiguration : ConcreteHierarchyEntityType
       .ToTable("events")
       .HasDiscriminator<string>("kind");
 
+    builder.Ignore(nameof(EventEntity.Id));
     builder
-      .Property(nameof(EventEntity.Id))
+      .Property("_id")
       .HasColumnType("bigint")
-      .HasConversion<long>()
+      .HasColumnName("id")
       .ValueGeneratedOnAdd()
       .UseIdentityAlwaysColumn();
 

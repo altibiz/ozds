@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Ozds.Data.Entities.Base;
@@ -9,6 +8,10 @@ namespace Ozds.Data.Entities;
 
 public class RepresentativeEntity : AuditableEntity
 {
+  private string _representativeId = default!;
+
+  public override string Id { get => _representativeId; init => _representativeId = value; }
+
   public RoleEntity Role { get; set; }
 
   public virtual ICollection<NetworkUserEntity> NetworkUsers { get; set; } = default!;
@@ -39,10 +42,12 @@ public class RepresentativeEntityTypeConfiguration : EntityTypeConfiguration<Rep
 {
   public override void Configure(EntityTypeBuilder<RepresentativeEntity> builder)
   {
+    builder.HasKey("_representativeId");
+    builder.Ignore(nameof(RepresentativeEntity.Id));
     builder
-      .Property(nameof(RepresentativeEntity.Id))
+      .Property("_representativeId")
       .ValueGeneratedNever()
-      .HasColumnType("string")
-      .HasConversion<string>();
+      .HasColumnName("id")
+      .HasColumnType("text");
   }
 }
