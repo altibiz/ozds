@@ -21,11 +21,16 @@ public class IdentifiableEntityConfiguration : ConcreteHierarchyEntityTypeConfig
       builder.HasKey(nameof(IdentifiableEntity.Id));
     }
 
-    builder
-      .Property(nameof(IdentifiableEntity.Id))
-      .ValueGeneratedOnAdd()
-      .HasColumnType("bigint")
-      .HasConversion<StringToNumberConverter<long>>();
+
+    if (typeof(T) != typeof(RepresentativeEntity))
+    {
+      builder
+        .Property(nameof(IdentifiableEntity.Id))
+        .UseIdentityAlwaysColumn()
+        .ValueGeneratedOnAdd()
+        .HasColumnType("bigint")
+        .HasConversion<long>();
+    }
   }
 
   private static bool AlreadyHasKey(Type type)

@@ -37,8 +37,9 @@ public class EventEntityTypeHierarchyConfiguration : ConcreteHierarchyEntityType
     builder
       .Property(nameof(EventEntity.Id))
       .ValueGeneratedOnAdd()
+      .UseIdentityAlwaysColumn()
       .HasColumnType("bigint")
-      .HasConversion<StringToNumberConverter<long>>();
+      .HasConversion<long>();
 
     builder
       .Property(x => x.Timestamp)

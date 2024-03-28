@@ -34,8 +34,9 @@ public class InvoiceEntityTypeConfiguration : ConcreteHierarchyEntityTypeConfigu
     builder
       .Property(nameof(InvoiceEntity.Id))
       .ValueGeneratedOnAdd()
+      .UseIdentityAlwaysColumn()
       .HasColumnType("bigint")
-      .HasConversion<StringToNumberConverter<long>>();
+      .HasConversion<long>();
 
     builder
       .Property(x => x.IssuedOn)
