@@ -4,30 +4,10 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Models;
 
-public record NetworkUserMeasurementLocationModel(
-  string Id,
-  string Title,
-  DateTimeOffset CreatedOn,
-  string? CreatedById,
-  DateTimeOffset? LastUpdatedOn,
-  string? LastUpdatedById,
-  bool IsDeleted,
-  DateTimeOffset? DeletedOn,
-  string? DeletedById,
-  string MeterId
-) : MeasurementLocationModel(
-  Id,
-  Title,
-  CreatedOn,
-  CreatedById,
-  LastUpdatedOn,
-  LastUpdatedById,
-  IsDeleted,
-  DeletedOn,
-  DeletedById,
-  MeterId
-)
+public class NetworkUserMeasurementLocationModel : MeasurementLocationModel
 {
+  [Required]
+  public required string NetworkUserId { get; set; }
 }
 
 public static class NetworkUserMeasurementLocationModelExtensions
@@ -35,18 +15,20 @@ public static class NetworkUserMeasurementLocationModelExtensions
   public static NetworkUserMeasurementLocationModel ToModel(
     this NetworkUserMeasurementLocationEntity entity)
   {
-    return new NetworkUserMeasurementLocationModel(
-      entity.Id,
-      entity.Title,
-      entity.CreatedOn,
-      entity.CreatedById,
-      entity.LastUpdatedOn,
-      entity.LastUpdatedById,
-      entity.IsDeleted,
-      entity.DeletedOn,
-      entity.DeletedById,
-      entity.MeterId
-    );
+    return new NetworkUserMeasurementLocationModel()
+    {
+      Id = entity.Id,
+      Title = entity.Title,
+      CreatedOn = entity.CreatedOn,
+      CreatedById = entity.CreatedById,
+      LastUpdatedOn = entity.LastUpdatedOn,
+      LastUpdatedById = entity.LastUpdatedById,
+      IsDeleted = entity.IsDeleted,
+      DeletedOn = entity.DeletedOn,
+      DeletedById = entity.DeletedById,
+      MeterId = entity.MeterId,
+      NetworkUserId = entity.NetworkUserId
+    };
   }
 
   public static NetworkUserMeasurementLocationEntity ToEntity(

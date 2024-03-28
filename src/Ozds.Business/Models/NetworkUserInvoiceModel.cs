@@ -4,21 +4,10 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Models;
 
-public record NetworkUserInvoiceModel(
-  string Id,
-  DateTimeOffset IssuedOn,
-  string? IssuedById,
-  DateTimeOffset FromDate,
-  DateTimeOffset ToDate,
-  string NetworkUserId
-) : InvoiceModel(
-  Id,
-  IssuedOn,
-  IssuedById,
-  FromDate,
-  ToDate
-)
+public class NetworkUserInvoiceModel : InvoiceModel
 {
+  [Required]
+  public required string NetworkUserId { get; set; }
 }
 
 public static class NetworkUserInvoiceModelExtensions
@@ -26,14 +15,15 @@ public static class NetworkUserInvoiceModelExtensions
   public static NetworkUserInvoiceModel ToModel(
     this NetworkUserInvoiceEntity entity)
   {
-    return new NetworkUserInvoiceModel(
-      entity.Id,
-      entity.IssuedOn,
-      entity.IssuedById,
-      entity.FromDate,
-      entity.ToDate,
-      entity.NetworkUserId
-    );
+    return new NetworkUserInvoiceModel()
+    {
+      Id = entity.Id,
+      IssuedOn = entity.IssuedOn,
+      IssuedById = entity.IssuedById,
+      FromDate = entity.FromDate,
+      ToDate = entity.ToDate,
+      NetworkUserId = entity.NetworkUserId
+    };
   }
 
   public static NetworkUserInvoiceEntity ToEntity(

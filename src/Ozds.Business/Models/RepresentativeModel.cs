@@ -24,6 +24,30 @@ public class RepresentativeModel : AuditableModel
   [Phone]
   public required string PhoneNumber { get; set; }
 
+  public static RepresentativeModel New(UserModel user)
+  {
+    return new RepresentativeModel
+    {
+      Id = user.Id,
+      Title = user.UserName,
+      CreatedOn = DateTimeOffset.UtcNow,
+      CreatedById = null,
+      LastUpdatedOn = null,
+      LastUpdatedById = null,
+      IsDeleted = false,
+      DeletedOn = null,
+      DeletedById = null,
+      Role = RoleModel.NetworkUserRepresentative,
+      Name = user.UserName,
+      SocialSecurityNumber = string.Empty,
+      Address = string.Empty,
+      City = string.Empty,
+      PostalCode = string.Empty,
+      Email = user.Email,
+      PhoneNumber = string.Empty
+    };
+  }
+
   public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
   {
     foreach (var result in base.Validate(validationContext))
