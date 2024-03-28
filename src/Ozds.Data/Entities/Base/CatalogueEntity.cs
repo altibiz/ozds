@@ -25,6 +25,6 @@ public class CatalogueEntityTypeConfiguration : ConcreteHierarchyEntityTypeConfi
     builder
       .HasOne(nameof(CatalogueEntity.Location))
       .WithOne()
-      .HasForeignKey(nameof(CatalogueEntity), nameof(CatalogueEntity.LocationId));
+      .HasForeignKey(typeof(T).Name, nameof(CatalogueEntity.LocationId));
   }
 }

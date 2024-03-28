@@ -10,7 +10,7 @@ public abstract class MeasurementEntity : ReadonlyEntity
   public DateTimeOffset Timestamp { get; set; }
 }
 
-public abstract class MeasurementEntity<T> : MeasurementEntity
+public class MeasurementEntity<T> : MeasurementEntity
   where T : MeterEntity
 {
   public string MeterId { get; set; } = default!;
@@ -22,12 +22,12 @@ public class MeasurementEntityTypeConfiguration : ConcreteHierarchyEntityTypeCon
 {
   public override void Configure<T>(EntityTypeBuilder<T> builder)
   {
-    builder.UseTpcMappingStrategy();
-
     builder.HasKey(
       nameof(MeasurementEntity.Timestamp),
       nameof(MeasurementEntity<MeterEntity>.MeterId)
     );
+
+    builder.UseTpcMappingStrategy();
 
     builder.HasTimescaleHypertable(
       nameof(MeasurementEntity.Timestamp),

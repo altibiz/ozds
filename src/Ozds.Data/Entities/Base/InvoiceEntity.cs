@@ -27,10 +27,9 @@ public class InvoiceEntityTypeConfiguration : ConcreteHierarchyEntityTypeConfigu
 {
   public override void Configure<T>(EntityTypeBuilder<T> builder)
   {
-    builder.UseTpcMappingStrategy();
+    builder.HasKey(nameof(InvoiceEntity.Id));
 
-    builder
-      .HasKey(nameof(InvoiceEntity.Id));
+    builder.UseTpcMappingStrategy();
 
     builder
       .Property(nameof(InvoiceEntity.Id))

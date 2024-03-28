@@ -15,7 +15,7 @@ public abstract class AggregateEntity : ReadonlyEntity
   public IntervalEntity Interval { get; set; }
 }
 
-public abstract class AggregateEntity<T> : AggregateEntity where T : MeterEntity
+public class AggregateEntity<T> : AggregateEntity where T : MeterEntity
 {
   public string MeterId { get; set; } = default!;
 
@@ -26,13 +26,13 @@ public class AggregateEntityTypeConfiguration : ConcreteHierarchyEntityTypeConfi
 {
   public override void Configure<T>(EntityTypeBuilder<T> builder)
   {
-    builder.UseTpcMappingStrategy();
-
     builder.HasKey(
       nameof(AggregateEntity.Timestamp),
       nameof(AggregateEntity.Interval),
       nameof(AggregateEntity<MeterEntity>.MeterId)
     );
+
+    builder.UseTpcMappingStrategy();
 
     builder.HasTimescaleHypertable(
       nameof(AggregateEntity.Timestamp),

@@ -9,7 +9,7 @@ public abstract class MeasurementValidatorEntity : AuditableEntity
 {
 }
 
-public abstract class MeasurementValidatorEntity<TMeter> : MeasurementValidatorEntity
+public class MeasurementValidatorEntity<TMeter> : MeasurementValidatorEntity
   where TMeter : MeterEntity
 {
   public string MeterId { get; set; } = default!;

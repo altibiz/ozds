@@ -25,7 +25,7 @@ public class MeterEntity : AuditableEntity
   public List<PhaseEntity> Phases { get; set; } = default!;
 }
 
-public abstract class MeterEntity<
+public class MeterEntity<
     TMeasurement,
     TAggregate,
     TMeasurementValidator
@@ -60,7 +60,7 @@ public class MeterInheritedEntityTypeConfiguration : ConcreteHierarchyEntityType
     builder
       .HasOne(nameof(MeterEntity.MeasurementLocation))
       .WithOne(nameof(MeasurementLocationEntity.Meter))
-      .HasForeignKey(nameof(MeterEntity), nameof(MeterEntity.MeasurementLocationId));
+      .HasForeignKey(typeof(T).Name, nameof(MeterEntity.MeasurementLocationId));
 
     builder
       .HasOne(nameof(MeterEntity.Catalogue))

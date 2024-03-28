@@ -17,7 +17,15 @@ public class EventEntity : ReadonlyEntity
   public string Description { get; set; } = default!;
 }
 
-public class EventEntityTypeConfiguration : ConcreteHierarchyEntityTypeConfiguration<EventEntity>
+public class EventEntityTypeConfiguration : EntityTypeConfiguration<EventEntity>
+{
+  public override void Configure(EntityTypeBuilder<EventEntity> builder)
+  {
+    builder.HasKey(nameof(EventEntity.Id));
+  }
+}
+
+public class EventEntityTypeHierarchyConfiguration : ConcreteHierarchyEntityTypeConfiguration<EventEntity>
 {
   public override void Configure<T>(EntityTypeBuilder<T> builder)
   {
@@ -27,10 +35,7 @@ public class EventEntityTypeConfiguration : ConcreteHierarchyEntityTypeConfigura
       .HasDiscriminator<string>("kind");
 
     builder
-      .HasKey(nameof(InvoiceEntity.Id));
-
-    builder
-      .Property(nameof(InvoiceEntity.Id))
+      .Property(nameof(EventEntity.Id))
       .ValueGeneratedOnAdd()
       .HasColumnType("bigint")
       .HasConversion<StringToNumberConverter<long>>();

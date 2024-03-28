@@ -16,14 +16,31 @@ public class IdentifiableEntityConfiguration : ConcreteHierarchyEntityTypeConfig
 {
   public override void Configure<T>(EntityTypeBuilder<T> builder)
   {
+    if (!AlreadyHasKey(typeof(T)))
+    {
+      builder.HasKey(nameof(IdentifiableEntity.Id));
+    }
 
     builder
-      .HasKey(nameof(InvoiceEntity.Id));
-
-    builder
-      .Property(nameof(InvoiceEntity.Id))
+      .Property(nameof(IdentifiableEntity.Id))
       .ValueGeneratedOnAdd()
       .HasColumnType("bigint")
       .HasConversion<StringToNumberConverter<long>>();
+  }
+
+  private static bool AlreadyHasKey(Type type)
+  {
+    for (
+      var currentType = type.BaseType;
+      currentType != null;
+      currentType = currentType.BaseType)
+    {
+      if (currentType is not { IsAbstract: true } and not { IsGenericType: true })
+      {
+        return true;
+      }
+    }
+
+    return false;
   }
 }
