@@ -17,7 +17,18 @@ public class MeasurementValidatorEntity<TMeter> : MeasurementValidatorEntity
   public virtual TMeter Meter { get; set; } = default!;
 }
 
-public class MeasurementValidatorEntityTypeConfiguration : ConcreteHierarchyEntityTypeConfiguration<MeasurementValidatorEntity>
+public class MeasurementValidatorTypeConfiguration : EntityTypeConfiguration<MeasurementValidatorEntity>
+{
+  public override void Configure(EntityTypeBuilder<MeasurementValidatorEntity> builder)
+  {
+    builder
+      .UseTphMappingStrategy()
+      .ToTable("measurement_validators")
+      .HasDiscriminator<string>("kind");
+  }
+}
+
+public class MeasurementValidatorEntityTypeHierarchyConfiguration : ConcreteHierarchyEntityTypeConfiguration<MeasurementValidatorEntity>
 {
   public override void Configure<T>(EntityTypeBuilder<T> builder)
   {
