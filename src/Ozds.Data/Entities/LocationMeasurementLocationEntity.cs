@@ -17,8 +17,8 @@ public class LocationMeasurementLocationEntityTypeConfiguration : EntityTypeConf
   {
     builder
       .HasOne(nameof(LocationMeasurementLocationEntity.Location))
-      .WithOne(nameof(LocationEntity.MeasurementLocation))
-      .HasForeignKey(nameof(LocationEntity.MeasurementLocationId));
+      .WithMany(nameof(LocationEntity.MeasurementLocations))
+      .HasForeignKey(nameof(LocationMeasurementLocationEntity.LocationId));
 
     builder
       .Property(nameof(LocationMeasurementLocationEntity.LocationId))

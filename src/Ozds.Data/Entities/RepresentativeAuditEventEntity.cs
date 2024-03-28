@@ -15,7 +15,8 @@ public class RepresentativeAuditEventEntityConfiguration : EntityTypeConfigurati
 {
   public override void Configure(EntityTypeBuilder<RepresentativeAuditEventEntity> builder)
   {
-    builder.HasOne(nameof(RepresentativeAuditEventEntity.Representative))
+    builder
+      .HasOne(nameof(RepresentativeAuditEventEntity.Representative))
       .WithMany(nameof(RepresentativeEntity.AuditEvents))
       .HasForeignKey(nameof(RepresentativeAuditEventEntity.RepresentativeId));
   }

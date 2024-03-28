@@ -11,7 +11,7 @@ public class LocationEntity : AuditableEntity
   public virtual ICollection<NetworkUserEntity> NetworkUsers { get; set; } = default!;
   public virtual ICollection<MessengerEntity> Messengers { get; set; } = default!;
   public string MeasurementLocationId { get; set; } = default!;
-  public virtual LocationMeasurementLocationEntity MeasurementLocation { get; set; } = default!;
+  public virtual ICollection<LocationMeasurementLocationEntity> MeasurementLocations { get; set; } = default!;
   public virtual ICollection<LocationInvoiceEntity> Invoices { get; set; } = default!;
   public string WhiteMediumCatalogueId { get; set; } = default!;
   public virtual WhiteMediumCatalogueEntity WhiteMediumCatalogue { get; set; } = default!;
@@ -42,9 +42,8 @@ public class LocationEntityTypeConfiguration : EntityTypeConfiguration<LocationE
       .WithOne(nameof(MessengerEntity.Location));
 
     builder
-      .HasOne(nameof(LocationEntity.MeasurementLocation))
-      .WithOne(nameof(LocationMeasurementLocationEntity.Location))
-      .HasForeignKey(nameof(LocationEntity.MeasurementLocationId));
+      .HasMany(nameof(LocationEntity.MeasurementLocations))
+      .WithOne(nameof(LocationMeasurementLocationEntity.Location));
 
     builder
       .HasMany(nameof(LocationEntity.Invoices))
@@ -53,22 +52,22 @@ public class LocationEntityTypeConfiguration : EntityTypeConfiguration<LocationE
     builder
       .HasOne(nameof(LocationEntity.WhiteMediumCatalogue))
       .WithOne(nameof(WhiteMediumCatalogueEntity.Location))
-      .HasForeignKey(nameof(LocationEntity.WhiteMediumCatalogueId));
+      .HasForeignKey(nameof(LocationEntity), nameof(LocationEntity.WhiteMediumCatalogueId));
 
     builder
       .HasOne(nameof(LocationEntity.BlueLowCatalogue))
       .WithOne(nameof(BlueLowCatalogueEntity.Location))
-      .HasForeignKey(nameof(LocationEntity.BlueLowCatalogueId));
+      .HasForeignKey(nameof(LocationEntity), nameof(LocationEntity.BlueLowCatalogueId));
 
     builder
       .HasOne(nameof(LocationEntity.WhiteLowCatalogue))
       .WithOne(nameof(WhiteLowCatalogueEntity.Location))
-      .HasForeignKey(nameof(LocationEntity.WhiteLowCatalogueId));
+      .HasForeignKey(nameof(LocationEntity), nameof(LocationEntity.WhiteLowCatalogueId));
 
     builder
       .HasOne(nameof(LocationEntity.RedLowCatalogue))
       .WithOne(nameof(RedLowCatalogueEntity.Location))
-      .HasForeignKey(nameof(LocationEntity.RedLowCatalogueId));
+      .HasForeignKey(nameof(LocationEntity), nameof(LocationEntity.RedLowCatalogueId));
 
     builder
       .Property(nameof(LocationEntity.MeasurementLocationId))

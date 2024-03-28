@@ -23,6 +23,6 @@ public class MeasurementLocationEntityTypeConfiguration : ConcreteHierarchyEntit
     builder
       .HasOne(nameof(MeasurementLocationEntity.Meter))
       .WithOne(nameof(MeterEntity<MeasurementEntity, AggregateEntity, MeasurementValidatorEntity>.MeasurementLocation))
-      .HasForeignKey(nameof(MeasurementLocationEntity.MeterId));
+      .HasForeignKey(nameof(MeasurementLocationEntity), nameof(MeasurementLocationEntity.MeterId));
   }
 }

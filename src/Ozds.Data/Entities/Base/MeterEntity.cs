@@ -60,7 +60,7 @@ public class MeterInheritedEntityTypeConfiguration : ConcreteHierarchyEntityType
     builder
       .HasOne(nameof(MeterEntity.MeasurementLocation))
       .WithOne(nameof(MeasurementLocationEntity.Meter))
-      .HasForeignKey(nameof(MeterEntity.MeasurementLocationId));
+      .HasForeignKey(nameof(MeterEntity), nameof(MeterEntity.MeasurementLocationId));
 
     builder
       .HasOne(nameof(MeterEntity.Catalogue))
@@ -91,7 +91,7 @@ public class MeterInheritedEntityTypeConfiguration : ConcreteHierarchyEntityType
       builder
         .HasOne(nameof(MeterEntity<MeasurementEntity, AggregateEntity, MeasurementValidatorEntity>.MeasurementValidator))
         .WithOne(nameof(MeasurementValidatorEntity<MeterEntity>.Meter))
-        .HasForeignKey(nameof(MeterEntity<MeasurementEntity, AggregateEntity, MeasurementValidatorEntity>.MeasurementValidatorId));
+        .HasForeignKey(typeof(T).Name, nameof(MeterEntity<MeasurementEntity, AggregateEntity, MeasurementValidatorEntity>.MeasurementValidatorId));
     }
   }
 }

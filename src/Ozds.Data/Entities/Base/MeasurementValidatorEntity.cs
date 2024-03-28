@@ -29,6 +29,6 @@ public class MeasurementValidatorEntityTypeConfiguration : ConcreteHierarchyEnti
     builder
       .HasOne(nameof(MeasurementValidatorEntity<MeterEntity>.Meter))
       .WithOne(nameof(MeterEntity<MeasurementEntity, AggregateEntity, MeasurementValidatorEntity<MeterEntity>>.MeasurementValidator))
-      .HasForeignKey(nameof(MeasurementValidatorEntity<MeterEntity>.MeterId));
+      .HasForeignKey(typeof(T).Name, nameof(MeasurementValidatorEntity<MeterEntity>.MeterId));
   }
 }
