@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Enums;
 
@@ -8,4 +9,11 @@ public abstract record EventModel(
   DateTimeOffset Timestamp,
   LevelModel Level,
   string Description
-) : IEvent;
+) : IEvent
+{
+  public virtual IEnumerable<ValidationResult> Validate(
+    ValidationContext validationContext)
+  {
+    return Enumerable.Empty<ValidationResult>();
+  }
+}

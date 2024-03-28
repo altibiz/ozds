@@ -1,8 +1,9 @@
+using System.ComponentModel.DataAnnotations;
 using Ozds.Business.Models.Enums;
 
 namespace Ozds.Business.Models.Abstractions;
 
-public interface IEvent
+public interface IEvent : IValidatableObject
 {
   public string Id { get; }
 

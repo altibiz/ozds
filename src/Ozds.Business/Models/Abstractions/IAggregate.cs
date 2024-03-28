@@ -1,9 +1,10 @@
+using System.ComponentModel.DataAnnotations;
 using Ozds.Business.Math;
 using Ozds.Business.Models.Enums;
 
 namespace Ozds.Business.Models.Abstractions;
 
-public interface IAggregate
+public interface IAggregate : IValidatableObject
 {
   public string MeterId { get; }
 
