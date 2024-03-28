@@ -4,24 +4,25 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Models;
 
-public class AbbB2xMeasurementValidatorModel : MeasurementValidatorModel<AbbB2xMeasurementModel>
+public class
+  AbbB2xMeasurementValidatorModel : MeasurementValidatorModel<
+  AbbB2xMeasurementModel>
 {
-  [Required]
-  public required float MinVoltage_V { get; init; }
-  [Required]
-  public required float MaxVoltage_V { get; init; }
-  [Required]
-  public required float MinCurrent_A { get; init; }
-  [Required]
-  public required float MaxCurrent_A { get; init; }
-  [Required]
-  public required float MinActivePower_W { get; init; }
-  [Required]
-  public required float MaxActivePower_W { get; init; }
-  [Required]
-  public required float MinReactivePower_VAR { get; init; }
-  [Required]
-  public required float MaxReactivePower_VAR { get; init; }
+  [Required] public required float MinVoltage_V { get; init; }
+
+  [Required] public required float MaxVoltage_V { get; init; }
+
+  [Required] public required float MinCurrent_A { get; init; }
+
+  [Required] public required float MaxCurrent_A { get; init; }
+
+  [Required] public required float MinActivePower_W { get; init; }
+
+  [Required] public required float MaxActivePower_W { get; init; }
+
+  [Required] public required float MinReactivePower_VAR { get; init; }
+
+  [Required] public required float MaxReactivePower_VAR { get; init; }
 
   public override IEnumerable<ValidationResult> ValidateMeasurement(
     AbbB2xMeasurementModel measurement,
@@ -78,8 +79,10 @@ public class AbbB2xMeasurementValidatorModel : MeasurementValidatorModel<AbbB2xM
 
     if (
       memberName is null or nameof(AbbB2xAggregateModel.ActivePower_W) &&
-      measurement.ActivePower_W.TariffUnary.DuplexAny.PhaseSum < MinActivePower_W * 3 &&
-      measurement.ActivePower_W.TariffUnary.DuplexAny.PhaseTrough < MinActivePower_W
+      measurement.ActivePower_W.TariffUnary.DuplexAny.PhaseSum <
+      MinActivePower_W * 3 &&
+      measurement.ActivePower_W.TariffUnary.DuplexAny.PhaseTrough <
+      MinActivePower_W
     )
     {
       yield return new ValidationResult(
@@ -90,8 +93,10 @@ public class AbbB2xMeasurementValidatorModel : MeasurementValidatorModel<AbbB2xM
 
     if (
       memberName is null or nameof(AbbB2xAggregateModel.ActivePower_W) &&
-      measurement.ActivePower_W.TariffUnary.DuplexAny.PhaseSum > MaxActivePower_W * 3 &&
-      measurement.ActivePower_W.TariffUnary.DuplexAny.PhasePeak > MaxActivePower_W
+      measurement.ActivePower_W.TariffUnary.DuplexAny.PhaseSum >
+      MaxActivePower_W * 3 &&
+      measurement.ActivePower_W.TariffUnary.DuplexAny.PhasePeak >
+      MaxActivePower_W
     )
     {
       yield return new ValidationResult(
@@ -102,8 +107,10 @@ public class AbbB2xMeasurementValidatorModel : MeasurementValidatorModel<AbbB2xM
 
     if (
       memberName is null or nameof(AbbB2xAggregateModel.ReactivePower_VAR) &&
-      measurement.ReactivePower_VAR.TariffUnary.DuplexAny.PhaseSum < MinReactivePower_VAR * 3 &&
-      measurement.ReactivePower_VAR.TariffUnary.DuplexAny.PhaseTrough < MinReactivePower_VAR
+      measurement.ReactivePower_VAR.TariffUnary.DuplexAny.PhaseSum <
+      MinReactivePower_VAR * 3 &&
+      measurement.ReactivePower_VAR.TariffUnary.DuplexAny.PhaseTrough <
+      MinReactivePower_VAR
     )
     {
       yield return new ValidationResult(
@@ -114,8 +121,10 @@ public class AbbB2xMeasurementValidatorModel : MeasurementValidatorModel<AbbB2xM
 
     if (
       memberName is null or nameof(AbbB2xAggregateModel.ReactivePower_VAR) &&
-      measurement.ReactivePower_VAR.TariffUnary.DuplexAny.PhaseSum > MaxReactivePower_VAR * 3 &&
-      measurement.ReactivePower_VAR.TariffUnary.DuplexAny.PhasePeak > MaxReactivePower_VAR
+      measurement.ReactivePower_VAR.TariffUnary.DuplexAny.PhaseSum >
+      MaxReactivePower_VAR * 3 &&
+      measurement.ReactivePower_VAR.TariffUnary.DuplexAny.PhasePeak >
+      MaxReactivePower_VAR
     )
     {
       yield return new ValidationResult(
@@ -131,7 +140,7 @@ public static class AbbB2xMeasurementValidatorModelExtensions
   public static AbbB2xMeasurementValidatorModel ToModel(
     this AbbB2xMeasurementValidatorEntity entity)
   {
-    return new AbbB2xMeasurementValidatorModel()
+    return new AbbB2xMeasurementValidatorModel
     {
       Id = entity.Id,
       Title = entity.Title,

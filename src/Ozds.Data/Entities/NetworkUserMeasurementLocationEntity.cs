@@ -11,14 +11,18 @@ public class NetworkUserMeasurementLocationEntity : MeasurementLocationEntity
   public virtual NetworkUserEntity NetworkUser { get; set; } = default!;
 }
 
-public class NetworkUserMeasurementLocationEntityTypeConfiguration : EntityTypeConfiguration<NetworkUserMeasurementLocationEntity>
+public class
+  NetworkUserMeasurementLocationEntityTypeConfiguration :
+  EntityTypeConfiguration<NetworkUserMeasurementLocationEntity>
 {
-  public override void Configure(EntityTypeBuilder<NetworkUserMeasurementLocationEntity> builder)
+  public override void Configure(
+    EntityTypeBuilder<NetworkUserMeasurementLocationEntity> builder)
   {
     builder
       .HasOne(nameof(NetworkUserMeasurementLocationEntity.NetworkUser))
       .WithMany(nameof(NetworkUserEntity.MeasurementLocations))
-      .HasForeignKey(nameof(NetworkUserMeasurementLocationEntity.NetworkUserId));
+      .HasForeignKey(nameof(NetworkUserMeasurementLocationEntity
+        .NetworkUserId));
 
     builder
       .Property(nameof(NetworkUserMeasurementLocationEntity.NetworkUserId))

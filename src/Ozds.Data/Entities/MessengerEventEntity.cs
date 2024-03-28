@@ -11,9 +11,12 @@ public class MessengerEventEntity : EventEntity
   public virtual MessengerEntity Messenger { get; set; } = default!;
 }
 
-public class MessengerEventEntityTypeConfiguration : EntityTypeConfiguration<MessengerEventEntity>
+public class
+  MessengerEventEntityTypeConfiguration : EntityTypeConfiguration<
+  MessengerEventEntity>
 {
-  public override void Configure(EntityTypeBuilder<MessengerEventEntity> builder)
+  public override void Configure(
+    EntityTypeBuilder<MessengerEventEntity> builder)
   {
     builder
       .HasOne(nameof(MessengerEventEntity.Messenger))

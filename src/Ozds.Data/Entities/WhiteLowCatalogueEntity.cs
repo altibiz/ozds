@@ -15,20 +15,26 @@ public class WhiteLowCatalogueEntity : CatalogueEntity
 #pragma warning restore CA1707
 }
 
-public class WhiteLowCatalogueEntityTypeConfiguration : EntityTypeConfiguration<WhiteLowCatalogueEntity>
+public class
+  WhiteLowCatalogueEntityTypeConfiguration : EntityTypeConfiguration<
+  WhiteLowCatalogueEntity>
 {
-  public override void Configure(EntityTypeBuilder<WhiteLowCatalogueEntity> builder)
+  public override void Configure(
+    EntityTypeBuilder<WhiteLowCatalogueEntity> builder)
   {
     builder
-      .Property(nameof(WhiteLowCatalogueEntity.ActiveEnergyTotalImportT1Price_EUR))
+      .Property(nameof(WhiteLowCatalogueEntity
+        .ActiveEnergyTotalImportT1Price_EUR))
       .HasColumnName("active_energy_total_import_t1_price_eur");
 
     builder
-      .Property(nameof(WhiteLowCatalogueEntity.ActiveEnergyTotalImportT2Price_EUR))
+      .Property(nameof(WhiteLowCatalogueEntity
+        .ActiveEnergyTotalImportT2Price_EUR))
       .HasColumnName("active_energy_total_import_t2_price_eur");
 
     builder
-      .Property(nameof(WhiteLowCatalogueEntity.ReactiveEnergyTotalImportT0Price_EUR))
+      .Property(nameof(WhiteLowCatalogueEntity
+        .ReactiveEnergyTotalImportT0Price_EUR))
       .HasColumnName("reactive_energy_total_import_t0_price_eur");
 
     builder

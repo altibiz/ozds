@@ -7,15 +7,14 @@ namespace Ozds.Business.Models;
 
 public class MessengerEventModel : EventModel
 {
-  [Required]
-  public required string MessengerId { get; set; }
-};
+  [Required] public required string MessengerId { get; set; }
+}
 
 public static class MessengerEventModelExtensions
 {
   public static MessengerEventModel ToModel(this MessengerEventEntity entity)
   {
-    return new MessengerEventModel()
+    return new MessengerEventModel
     {
       Id = entity.Id,
       Timestamp = entity.Timestamp,

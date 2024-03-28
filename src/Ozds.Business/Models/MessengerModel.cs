@@ -12,7 +12,7 @@ public static class MessengerModelExtensions
 {
   public static MessengerModel ToModel(this MessengerEntity entity)
   {
-    return new MessengerModel()
+    return new MessengerModel
     {
       Id = entity.Id,
       Title = entity.Title,

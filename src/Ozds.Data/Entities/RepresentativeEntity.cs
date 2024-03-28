@@ -8,19 +8,23 @@ namespace Ozds.Data.Entities;
 
 public class RepresentativeEntity : AuditableEntity
 {
-  private string _representativeId = default!;
-
-  public override string Id { get => _representativeId; init => _representativeId = value; }
+  public override string Id { get; init; } = default!;
 
   public RoleEntity Role { get; set; }
 
-  public virtual ICollection<NetworkUserEntity> NetworkUsers { get; set; } = default!;
+  public virtual ICollection<NetworkUserEntity> NetworkUsers { get; set; } =
+    default!;
 
   public virtual ICollection<LocationEntity> Locations { get; set; } = default!;
 
-  public virtual ICollection<RepresentativeEventEntity> Events { get; set; } = default!;
+  public virtual ICollection<RepresentativeEventEntity> Events { get; set; } =
+    default!;
 
-  public virtual ICollection<RepresentativeAuditEventEntity> AuditEvents { get; set; } =
+  public virtual ICollection<RepresentativeAuditEventEntity> AuditEvents
+  {
+    get;
+    set;
+  } =
     default!;
 
   public string Name { get; set; } = default!;
@@ -38,9 +42,12 @@ public class RepresentativeEntity : AuditableEntity
   public string PhoneNumber { get; set; } = default!;
 }
 
-public class RepresentativeEntityTypeConfiguration : EntityTypeConfiguration<RepresentativeEntity>
+public class
+  RepresentativeEntityTypeConfiguration : EntityTypeConfiguration<
+  RepresentativeEntity>
 {
-  public override void Configure(EntityTypeBuilder<RepresentativeEntity> builder)
+  public override void Configure(
+    EntityTypeBuilder<RepresentativeEntity> builder)
   {
     builder.HasKey("_representativeId");
     builder.Ignore(nameof(RepresentativeEntity.Id));

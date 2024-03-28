@@ -9,15 +9,19 @@ public class WhiteMediumCatalogueModel : CatalogueModel
   [Required]
   [Range(0, double.MaxValue)]
   public required float ActiveEnergyTotalImportT1Price_EUR { get; set; }
+
   [Required]
   [Range(0, double.MaxValue)]
   public required float ActiveEnergyTotalImportT2Price_EUR { get; set; }
+
   [Required]
   [Range(0, double.MaxValue)]
   public required float MaxActivePowerTotalImportT1Price_EUR { get; set; }
+
   [Required]
   [Range(0, double.MaxValue)]
   public required float ReactiveEnergyTotalImportT0Price_EUR { get; set; }
+
   [Required]
   [Range(0, double.MaxValue)]
   public required float MeterFeePrice_EUR { get; set; }
@@ -28,7 +32,7 @@ public static class WhiteMediumCatalogueModelExtensions
   public static WhiteMediumCatalogueModel ToModel(
     this WhiteMediumCatalogueEntity entity)
   {
-    return new WhiteMediumCatalogueModel()
+    return new WhiteMediumCatalogueModel
     {
       Id = entity.Id,
       Title = entity.Title,
@@ -39,10 +43,14 @@ public static class WhiteMediumCatalogueModelExtensions
       IsDeleted = entity.IsDeleted,
       DeletedOn = entity.DeletedOn,
       DeletedById = entity.DeletedById,
-      ActiveEnergyTotalImportT1Price_EUR = entity.ActiveEnergyTotalImportT1Price_EUR,
-      ActiveEnergyTotalImportT2Price_EUR = entity.ActiveEnergyTotalImportT2Price_EUR,
-      MaxActivePowerTotalImportT1Price_EUR = entity.MaxActivePowerTotalImportT1Price_EUR,
-      ReactiveEnergyTotalImportT0Price_EUR = entity.ReactiveEnergyTotalImportT0Price_EUR,
+      ActiveEnergyTotalImportT1Price_EUR =
+        entity.ActiveEnergyTotalImportT1Price_EUR,
+      ActiveEnergyTotalImportT2Price_EUR =
+        entity.ActiveEnergyTotalImportT2Price_EUR,
+      MaxActivePowerTotalImportT1Price_EUR =
+        entity.MaxActivePowerTotalImportT1Price_EUR,
+      ReactiveEnergyTotalImportT0Price_EUR =
+        entity.ReactiveEnergyTotalImportT0Price_EUR,
       MeterFeePrice_EUR = entity.MeterFeePrice_EUR
     };
   }

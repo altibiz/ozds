@@ -13,7 +13,9 @@ public class CatalogueEntity : AuditableEntity
   public virtual ICollection<MeterEntity> Meters { get; set; } = default!;
 }
 
-public class CatalogueEntityTypeConfiguration : ConcreteHierarchyEntityTypeConfiguration<CatalogueEntity>
+public class
+  CatalogueEntityTypeConfiguration : ConcreteHierarchyEntityTypeConfiguration<
+  CatalogueEntity>
 {
   public override void Configure<T>(EntityTypeBuilder<T> builder)
   {

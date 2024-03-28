@@ -12,26 +12,29 @@ public interface IModelConfiguration
 public abstract class EntityTypeConfiguration<T> : IModelConfiguration
   where T : class
 {
-  public abstract void Configure(EntityTypeBuilder<T> builder);
-
-  public void Configure(ModelBuilder modelBuilder) =>
+  public void Configure(ModelBuilder modelBuilder)
+  {
     Configure(modelBuilder.Entity<T>());
+  }
+
+  public abstract void Configure(EntityTypeBuilder<T> builder);
 }
 
-public abstract class ConcreteHierarchyEntityTypeConfiguration<T> : IModelConfiguration
+public abstract class
+  ConcreteHierarchyEntityTypeConfiguration<T> : IModelConfiguration
   where T : class
 {
-  public abstract void Configure<U>(EntityTypeBuilder<U> builder) where U : class, T;
-
   public void Configure(ModelBuilder modelBuilder)
   {
     var configure = GetType()
-      .GetMethods()
-      .FirstOrDefault(m => m.Name == nameof(Configure) && m.IsGenericMethod)
-        ?? throw new InvalidOperationException("Method not found");
+                      .GetMethods()
+                      .FirstOrDefault(m =>
+                        m.Name == nameof(Configure) && m.IsGenericMethod)
+                    ?? throw new InvalidOperationException("Method not found");
     var entity = modelBuilder.GetType().GetMethods()
-      .FirstOrDefault(m => m.Name == nameof(ModelBuilder.Entity) && m.IsGenericMethod)
-        ?? throw new InvalidOperationException("Method not found");
+                   .FirstOrDefault(m =>
+                     m.Name == nameof(ModelBuilder.Entity) && m.IsGenericMethod)
+                 ?? throw new InvalidOperationException("Method not found");
     _ = typeof(T).Assembly
       .GetTypes()
       .Where(type =>
@@ -44,14 +47,18 @@ public abstract class ConcreteHierarchyEntityTypeConfiguration<T> : IModelConfig
         configure
           .MakeGenericMethod(type)
           .Invoke(
-          this,
-          new object[] {
-            entity.MakeGenericMethod(type).Invoke(modelBuilder, null)
+            this,
+            new[]
+            {
+              entity.MakeGenericMethod(type).Invoke(modelBuilder, null)
               ?? throw new InvalidOperationException("Entity not found")
-          });
+            });
         return modelBuilder;
       });
   }
+
+  public abstract void Configure<U>(EntityTypeBuilder<U> builder)
+    where U : class, T;
 }
 
 public static class ModelBuilderExtensions
@@ -59,8 +66,9 @@ public static class ModelBuilderExtensions
   public static ModelBuilder ApplyModelConfigurationsFromAssembly(
     this ModelBuilder modelBuilder,
     Assembly assembly
-  ) =>
-    assembly
+  )
+  {
+    return assembly
       .GetTypes()
       .Where(type => !type.IsAbstract && type
         .GetInterfaces()
@@ -74,4 +82,5 @@ public static class ModelBuilderExtensions
           return modelBuilder;
         }
       );
+  }
 }

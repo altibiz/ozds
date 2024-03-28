@@ -22,7 +22,9 @@ public class AggregateEntity<T> : AggregateEntity where T : MeterEntity
   public virtual T Meter { get; set; } = default!;
 }
 
-public class AggregateEntityTypeConfiguration : ConcreteHierarchyEntityTypeConfiguration<AggregateEntity>
+public class
+  AggregateEntityTypeConfiguration : ConcreteHierarchyEntityTypeConfiguration<
+  AggregateEntity>
 {
   public override void Configure<T>(EntityTypeBuilder<T> builder)
   {

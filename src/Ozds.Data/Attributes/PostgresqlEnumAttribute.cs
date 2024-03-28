@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ozds.Data.Attributes;
 
-[AttributeUsage(AttributeTargets.Enum, AllowMultiple = false, Inherited = true)]
+[AttributeUsage(AttributeTargets.Enum)]
 public class PostgresqlEnumAttribute : Attribute
 {
 }
@@ -19,7 +19,8 @@ public static class PostgresqlEnumAttributeExtensions
           && method.Name == nameof(NpgsqlModelBuilderExtensions.HasPostgresEnum)
       );
 
-  public static ModelBuilder ApplyPostgresqlEnumAttributes(this ModelBuilder builder)
+  public static ModelBuilder ApplyPostgresqlEnumAttributes(
+    this ModelBuilder builder)
   {
     return builder.Model
       .GetEntityTypes()
@@ -56,7 +57,8 @@ public static class PostgresqlEnumAttributeExtensions
     {
       foreach (var genericArgument in type.GetGenericArguments())
       {
-        foreach (var nestedType in RecursivelyFindPostgresqlEnumTypes(genericArgument))
+        foreach (var nestedType in RecursivelyFindPostgresqlEnumTypes(
+                   genericArgument))
         {
           yield return nestedType;
         }

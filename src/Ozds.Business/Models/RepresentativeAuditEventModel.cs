@@ -7,8 +7,7 @@ namespace Ozds.Business.Models;
 
 public class RepresentativeAuditEventModel : AuditEventModel
 {
-  [Required]
-  public required string RepresentativeId { get; set; }
+  [Required] public required string RepresentativeId { get; set; }
 }
 
 public static class RepresentativeAuditEventModelExtensions
@@ -16,7 +15,7 @@ public static class RepresentativeAuditEventModelExtensions
   public static RepresentativeAuditEventModel ToModel(
     this RepresentativeAuditEventEntity entity)
   {
-    return new RepresentativeAuditEventModel()
+    return new RepresentativeAuditEventModel
     {
       Id = entity.Id,
       Timestamp = entity.Timestamp,

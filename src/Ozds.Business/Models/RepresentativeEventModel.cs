@@ -7,8 +7,7 @@ namespace Ozds.Business.Models;
 
 public class RepresentativeEventModel : EventModel
 {
-  [Required]
-  public required string RepresentativeId { get; set; }
+  [Required] public required string RepresentativeId { get; set; }
 }
 
 public static class RepresentativeEventModelExtensions
@@ -16,7 +15,7 @@ public static class RepresentativeEventModelExtensions
   public static RepresentativeEventModel ToModel(
     this RepresentativeEventEntity entity)
   {
-    return new RepresentativeEventModel()
+    return new RepresentativeEventModel
     {
       Id = entity.Id,
       Timestamp = entity.Timestamp,

@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using Ozds.Business.Models.Base;
 using Ozds.Data.Entities;
 
@@ -13,7 +12,7 @@ public static class NetworkUserModelExtensions
 {
   public static NetworkUserModel ToModel(this NetworkUserEntity entity)
   {
-    return new NetworkUserModel()
+    return new NetworkUserModel
     {
       Id = entity.Id,
       Title = entity.Title,

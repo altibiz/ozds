@@ -6,15 +6,14 @@ namespace Ozds.Business.Models;
 
 public class LocationInvoiceModel : InvoiceModel
 {
-  [Required]
-  public required string LocationId { get; set; }
+  [Required] public required string LocationId { get; set; }
 }
 
 public static class LocationInvoiceModelExtensions
 {
   public static LocationInvoiceModel ToModel(this LocationInvoiceEntity entity)
   {
-    return new LocationInvoiceModel()
+    return new LocationInvoiceModel
     {
       Id = entity.Id,
       IssuedOn = entity.IssuedOn,

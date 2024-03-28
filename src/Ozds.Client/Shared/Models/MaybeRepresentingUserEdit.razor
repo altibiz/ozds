@@ -1,8 +1,9 @@
 @inject NavigationManager NavigationManager
 @inherits OwningComponentBase
 
-@if (LoadingState.Value is null) {
-  <MudProgressCircular />
+@if (LoadingState.Value is null)
+{
+  <MudProgressCircular/>
   return;
 }
 
@@ -26,21 +27,21 @@
 }
 
 <EditForm
-    LoadingState.Value="@LoadingState.Value.Representative"
-    OnValidSubmit="Submit">
-  <DataAnnotationsValidator />
+  LoadingState.Value="@LoadingState.Value.Representative"
+  OnValidSubmit="Submit">
+  <DataAnnotationsValidator/>
   <MudCard>
     <MudCardContent>
       <MudTextField
-          Label="Title"
-          @bind-Value="LoadingState.Value.Representative.Title"
-          For="@(() => LoadingState.Value.Representative.Title)"/>
+        Label="Title"
+        @bind-Value="LoadingState.Value.Representative.Title"
+        For="@(() => LoadingState.Value.Representative.Title)"/>
       <MudSelect
-          T="RoleModel"
-          Label="Coffee"
-          AnchorOrigin="Origin.BottomCenter"
-          @bind-Value="LoadingState.Value.Representative.Role"
-          For="@(() => LoadingState.Value.Representative.Role)">
+        T="RoleModel"
+        Label="Coffee"
+        AnchorOrigin="Origin.BottomCenter"
+        @bind-Value="LoadingState.Value.Representative.Role"
+        For="@(() => LoadingState.Value.Representative.Role)">
         <MudSelectItem Value="@RoleModel.OperatorRepresentative">
           Operator Representative
         </MudSelectItem>
@@ -52,40 +53,40 @@
         </MudSelectItem>
       </MudSelect>
       <MudTextField
-          Label="Name"
-          @bind-Value="LoadingState.Value.Representative.Name"
-          For="@(() => LoadingState.Value.Representative.Name)"/>
+        Label="Name"
+        @bind-Value="LoadingState.Value.Representative.Name"
+        For="@(() => LoadingState.Value.Representative.Name)"/>
       <MudTextField
-          Label="SocialSecurityNumber"
-          @bind-Value="LoadingState.Value.Representative.SocialSecurityNumber"
-          For="@(() => LoadingState.Value.Representative.SocialSecurityNumber)"/>
+        Label="SocialSecurityNumber"
+        @bind-Value="LoadingState.Value.Representative.SocialSecurityNumber"
+        For="@(() => LoadingState.Value.Representative.SocialSecurityNumber)"/>
       <MudTextField
-          Label="Address"
-          @bind-Value="LoadingState.Value.Representative.Address"
-          For="@(() => LoadingState.Value.Representative.Address)"/>
+        Label="Address"
+        @bind-Value="LoadingState.Value.Representative.Address"
+        For="@(() => LoadingState.Value.Representative.Address)"/>
       <MudTextField
-          Label="City"
-          @bind-Value="LoadingState.Value.Representative.City"
-          For="@(() => LoadingState.Value.Representative.City)"/>
+        Label="City"
+        @bind-Value="LoadingState.Value.Representative.City"
+        For="@(() => LoadingState.Value.Representative.City)"/>
       <MudTextField
-          Label="PostalCode"
-          @bind-Value="LoadingState.Value.Representative.PostalCode"
-          For="@(() => LoadingState.Value.Representative.PostalCode)"/>
+        Label="PostalCode"
+        @bind-Value="LoadingState.Value.Representative.PostalCode"
+        For="@(() => LoadingState.Value.Representative.PostalCode)"/>
       <MudTextField
-          Label="Email"
-          @bind-Value="LoadingState.Value.Representative.Email"
-          For="@(() => LoadingState.Value.Representative.Email)"/>
+        Label="Email"
+        @bind-Value="LoadingState.Value.Representative.Email"
+        For="@(() => LoadingState.Value.Representative.Email)"/>
       <MudTextField
-          Label="PhoneNumber"
-          @bind-Value="LoadingState.Value.Representative.PhoneNumber"
-          For="@(() => LoadingState.Value.Representative.PhoneNumber)"/>
+        Label="PhoneNumber"
+        @bind-Value="LoadingState.Value.Representative.PhoneNumber"
+        For="@(() => LoadingState.Value.Representative.PhoneNumber)"/>
     </MudCardContent>
     <MudCardActions>
       <MudButton
-          ButtonType="ButtonType.Submit"
-          Variant="Variant.Filled"
-          Color="MudColor.Primary"
-          Class="ml-auto">
+        ButtonType="ButtonType.Submit"
+        Variant="Variant.Filled"
+        Color="MudColor.Primary"
+        Class="ml-auto">
         Update
       </MudButton>
     </MudCardActions>
@@ -93,11 +94,9 @@
 </EditForm>
 
 @code {
-  [Parameter]
-  public string Id { get; set; } = default!;
+  [Parameter] public string Id { get; set; } = default!;
 
-  [Parameter]
-  public MaybeRepresentingUserModel? Model { get; set; }
+  [Parameter] public MaybeRepresentingUserModel? Model { get; set; }
 
   private LoadingState<MaybeRepresentingUserModel> LoadingState { get; set; } = new();
 
@@ -159,4 +158,5 @@
       _create = true;
     }
   }
+
 }

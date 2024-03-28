@@ -34,7 +34,8 @@ public class TimescaleMigrationSqlGenerator : NpgsqlMigrationsSqlGenerator
       terminate
     );
 
-    if (operation.FindAnnotation("TimescaleHypertable")?.Value is string columnsString)
+    if (operation.FindAnnotation("TimescaleHypertable")?.Value is string
+        columnsString)
     {
       var columns = columnsString.Split(",");
       var timeColumn = columns.FirstOrDefault();
@@ -42,6 +43,7 @@ public class TimescaleMigrationSqlGenerator : NpgsqlMigrationsSqlGenerator
       {
         return;
       }
+
       var space = columns.Skip(1).FirstOrDefault()?.Split(":");
       var spaceColumn = space?.FirstOrDefault();
       var spacePartitioning = space?.Skip(1).FirstOrDefault();
@@ -53,12 +55,12 @@ public class TimescaleMigrationSqlGenerator : NpgsqlMigrationsSqlGenerator
       {
         builder.AppendLine(
           $"""
-          SELECT add_dimension(
-            '"{operation.Name}"',
-            '{spaceColumn}',
-            {spacePartitioning}
-          );
-          """
+           SELECT add_dimension(
+             '"{operation.Name}"',
+             '{spaceColumn}',
+             {spacePartitioning}
+           );
+           """
         );
       }
 

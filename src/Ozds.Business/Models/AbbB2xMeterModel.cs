@@ -39,7 +39,7 @@ public static class AbbB2xMeterModelExtensions
 
   public static AbbB2xMeterModel ToModel(this AbbB2xMeterEntity entity)
   {
-    return new AbbB2xMeterModel()
+    return new AbbB2xMeterModel
     {
       Id = entity.Id,
       Title = entity.Title,

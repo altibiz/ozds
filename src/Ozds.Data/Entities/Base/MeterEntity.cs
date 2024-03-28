@@ -26,24 +26,28 @@ public class MeterEntity : AuditableEntity
 }
 
 public class MeterEntity<
-    TMeasurement,
-    TAggregate,
-    TMeasurementValidator
+  TMeasurement,
+  TAggregate,
+  TMeasurementValidator
 > : MeterEntity
   where TMeasurement : MeasurementEntity
   where TAggregate : AggregateEntity
   where TMeasurementValidator : MeasurementValidatorEntity
 {
-  public virtual ICollection<TMeasurement> Measurements { get; set; } = default!;
+  public virtual ICollection<TMeasurement> Measurements { get; set; } =
+    default!;
 
   public virtual ICollection<TAggregate> Aggregates { get; set; } = default!;
 
   public string MeasurementValidatorId { get; set; } = default!;
 
-  public virtual TMeasurementValidator MeasurementValidator { get; set; } = default!;
+  public virtual TMeasurementValidator MeasurementValidator { get; set; } =
+    default!;
 }
 
-public class MeterInheritedEntityTypeConfiguration : ConcreteHierarchyEntityTypeConfiguration<MeterEntity>
+public class
+  MeterInheritedEntityTypeConfiguration :
+  ConcreteHierarchyEntityTypeConfiguration<MeterEntity>
 {
   public override void Configure<T>(EntityTypeBuilder<T> builder)
   {
@@ -79,19 +83,31 @@ public class MeterInheritedEntityTypeConfiguration : ConcreteHierarchyEntityType
     if (typeof(T) != typeof(MeterEntity))
     {
       builder
-        .HasMany(nameof(MeterEntity<MeasurementEntity, AggregateEntity, MeasurementValidatorEntity>.Measurements))
+        .HasMany(
+          nameof(MeterEntity<MeasurementEntity, AggregateEntity,
+            MeasurementValidatorEntity>.Measurements))
         .WithOne(nameof(MeasurementEntity<MeterEntity>.Meter))
-        .HasForeignKey(nameof(MeterEntity<MeasurementEntity, AggregateEntity, MeasurementValidatorEntity>.MessengerId));
+        .HasForeignKey(
+          nameof(MeterEntity<MeasurementEntity, AggregateEntity,
+            MeasurementValidatorEntity>.MessengerId));
 
       builder
-        .HasMany(nameof(MeterEntity<MeasurementEntity, AggregateEntity, MeasurementValidatorEntity>.Aggregates))
+        .HasMany(
+          nameof(MeterEntity<MeasurementEntity, AggregateEntity,
+            MeasurementValidatorEntity>.Aggregates))
         .WithOne(nameof(AggregateEntity<MeterEntity>.Meter))
-        .HasForeignKey(nameof(MeterEntity<MeasurementEntity, AggregateEntity, MeasurementValidatorEntity>.MessengerId));
+        .HasForeignKey(
+          nameof(MeterEntity<MeasurementEntity, AggregateEntity,
+            MeasurementValidatorEntity>.MessengerId));
 
       builder
-        .HasOne(nameof(MeterEntity<MeasurementEntity, AggregateEntity, MeasurementValidatorEntity>.MeasurementValidator))
+        .HasOne(
+          nameof(MeterEntity<MeasurementEntity, AggregateEntity,
+            MeasurementValidatorEntity>.MeasurementValidator))
         .WithOne(nameof(MeasurementValidatorEntity<MeterEntity>.Meter))
-        .HasForeignKey(typeof(T).Name, nameof(MeterEntity<MeasurementEntity, AggregateEntity, MeasurementValidatorEntity>.MeasurementValidatorId));
+        .HasForeignKey(typeof(T).Name,
+          nameof(MeterEntity<MeasurementEntity, AggregateEntity,
+            MeasurementValidatorEntity>.MeasurementValidatorId));
     }
   }
 }

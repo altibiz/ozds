@@ -11,9 +11,12 @@ public class LocationMeasurementLocationEntity : MeasurementLocationEntity
   public virtual LocationEntity Location { get; set; } = default!;
 }
 
-public class LocationMeasurementLocationEntityTypeConfiguration : EntityTypeConfiguration<LocationMeasurementLocationEntity>
+public class
+  LocationMeasurementLocationEntityTypeConfiguration : EntityTypeConfiguration<
+  LocationMeasurementLocationEntity>
 {
-  public override void Configure(EntityTypeBuilder<LocationMeasurementLocationEntity> builder)
+  public override void Configure(
+    EntityTypeBuilder<LocationMeasurementLocationEntity> builder)
   {
     builder
       .HasOne(nameof(LocationMeasurementLocationEntity.Location))

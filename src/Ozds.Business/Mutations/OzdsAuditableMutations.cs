@@ -15,9 +15,10 @@ public class OzdsAuditableMutations : IDisposable, IAsyncDisposable
     _context = context;
   }
 
-  public void ClearChanges()
+  public async ValueTask DisposeAsync()
   {
-    _context.ChangeTracker.Clear();
+    await _context.SaveChangesAsync();
+    GC.SuppressFinalize(this);
   }
 
   public void Dispose()
@@ -26,10 +27,9 @@ public class OzdsAuditableMutations : IDisposable, IAsyncDisposable
     GC.SuppressFinalize(this);
   }
 
-  public async ValueTask DisposeAsync()
+  public void ClearChanges()
   {
-    await _context.SaveChangesAsync();
-    GC.SuppressFinalize(this);
+    _context.ChangeTracker.Clear();
   }
 
   public List<ValidationResult>? Create(IAuditable auditable)

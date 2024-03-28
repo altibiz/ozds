@@ -20,24 +20,27 @@ public class
   public float ActivePowerL3NetT0Avg_W { get; set; }
   public float ReactivePowerTotalNetT0Avg_VAR { get; set; }
   public float ApparentPowerTotalNetT0Avg_VA { get; set; }
-  public float ActiveEnergyTotalImportT0Min_Wh { get; set; } = default!;
-  public float ActiveEnergyTotalImportT0Max_Wh { get; set; } = default!;
-  public float ActiveEnergyTotalExportT0Min_Wh { get; set; } = default!;
-  public float ActiveEnergyTotalExportT0Max_Wh { get; set; } = default!;
-  public float ReactiveEnergyTotalImportT0Min_VARh { get; set; } = default!;
-  public float ReactiveEnergyTotalImportT0Max_VARh { get; set; } = default!;
-  public float ReactiveEnergyTotalExportT0Min_VARh { get; set; } = default!;
-  public float ReactiveEnergyTotalExportT0Max_VARh { get; set; } = default!;
-  public float ActiveEnergyTotalImportT1Min_Wh { get; set; } = default!;
-  public float ActiveEnergyTotalImportT1Max_Wh { get; set; } = default!;
-  public float ActiveEnergyTotalImportT2Min_Wh { get; set; } = default!;
-  public float ActiveEnergyTotalImportT2Max_Wh { get; set; } = default!;
+  public float ActiveEnergyTotalImportT0Min_Wh { get; set; }
+  public float ActiveEnergyTotalImportT0Max_Wh { get; set; }
+  public float ActiveEnergyTotalExportT0Min_Wh { get; set; }
+  public float ActiveEnergyTotalExportT0Max_Wh { get; set; }
+  public float ReactiveEnergyTotalImportT0Min_VARh { get; set; }
+  public float ReactiveEnergyTotalImportT0Max_VARh { get; set; }
+  public float ReactiveEnergyTotalExportT0Min_VARh { get; set; }
+  public float ReactiveEnergyTotalExportT0Max_VARh { get; set; }
+  public float ActiveEnergyTotalImportT1Min_Wh { get; set; }
+  public float ActiveEnergyTotalImportT1Max_Wh { get; set; }
+  public float ActiveEnergyTotalImportT2Min_Wh { get; set; }
+  public float ActiveEnergyTotalImportT2Max_Wh { get; set; }
 #pragma warning restore CA1707
 }
 
-public class SchneideriEM3xxxAggregateEntityTypeConfiguration : EntityTypeConfiguration<SchneideriEM3xxxAggregateEntity>
+public class
+  SchneideriEM3xxxAggregateEntityTypeConfiguration : EntityTypeConfiguration<
+  SchneideriEM3xxxAggregateEntity>
 {
-  public override void Configure(EntityTypeBuilder<SchneideriEM3xxxAggregateEntity> builder)
+  public override void Configure(
+    EntityTypeBuilder<SchneideriEM3xxxAggregateEntity> builder)
   {
     builder.ToTable("schneider_iem3xxx_aggregates");
 
@@ -78,59 +81,73 @@ public class SchneideriEM3xxxAggregateEntityTypeConfiguration : EntityTypeConfig
       .HasColumnName("active_power_l3_net_t0_avg_w");
 
     builder
-      .Property(nameof(SchneideriEM3xxxAggregateEntity.ReactivePowerTotalNetT0Avg_VAR))
+      .Property(nameof(SchneideriEM3xxxAggregateEntity
+        .ReactivePowerTotalNetT0Avg_VAR))
       .HasColumnName("reactive_power_total_net_t0_avg_var");
 
     builder
-      .Property(nameof(SchneideriEM3xxxAggregateEntity.ApparentPowerTotalNetT0Avg_VA))
+      .Property(nameof(SchneideriEM3xxxAggregateEntity
+        .ApparentPowerTotalNetT0Avg_VA))
       .HasColumnName("apparent_power_total_net_t0_avg_va");
 
     builder
-      .Property(nameof(SchneideriEM3xxxAggregateEntity.ActiveEnergyTotalImportT0Min_Wh))
+      .Property(nameof(SchneideriEM3xxxAggregateEntity
+        .ActiveEnergyTotalImportT0Min_Wh))
       .HasColumnName("active_energy_total_import_t0_min_wh");
 
     builder
-      .Property(nameof(SchneideriEM3xxxAggregateEntity.ActiveEnergyTotalImportT0Max_Wh))
+      .Property(nameof(SchneideriEM3xxxAggregateEntity
+        .ActiveEnergyTotalImportT0Max_Wh))
       .HasColumnName("active_energy_total_import_t0_max_wh");
 
     builder
-      .Property(nameof(SchneideriEM3xxxAggregateEntity.ActiveEnergyTotalExportT0Min_Wh))
+      .Property(nameof(SchneideriEM3xxxAggregateEntity
+        .ActiveEnergyTotalExportT0Min_Wh))
       .HasColumnName("active_energy_total_export_t0_min_wh");
 
     builder
-      .Property(nameof(SchneideriEM3xxxAggregateEntity.ActiveEnergyTotalExportT0Max_Wh))
+      .Property(nameof(SchneideriEM3xxxAggregateEntity
+        .ActiveEnergyTotalExportT0Max_Wh))
       .HasColumnName("active_energy_total_export_t0_max_wh");
 
     builder
-      .Property(nameof(SchneideriEM3xxxAggregateEntity.ReactiveEnergyTotalImportT0Min_VARh))
+      .Property(nameof(SchneideriEM3xxxAggregateEntity
+        .ReactiveEnergyTotalImportT0Min_VARh))
       .HasColumnName("reactive_energy_total_import_t0_min_varh");
 
     builder
-      .Property(nameof(SchneideriEM3xxxAggregateEntity.ReactiveEnergyTotalImportT0Max_VARh))
+      .Property(nameof(SchneideriEM3xxxAggregateEntity
+        .ReactiveEnergyTotalImportT0Max_VARh))
       .HasColumnName("reactive_energy_total_import_t0_max_varh");
 
     builder
-      .Property(nameof(SchneideriEM3xxxAggregateEntity.ReactiveEnergyTotalExportT0Min_VARh))
+      .Property(nameof(SchneideriEM3xxxAggregateEntity
+        .ReactiveEnergyTotalExportT0Min_VARh))
       .HasColumnName("reactive_energy_total_export_t0_min_varh");
 
     builder
-      .Property(nameof(SchneideriEM3xxxAggregateEntity.ReactiveEnergyTotalExportT0Max_VARh))
+      .Property(nameof(SchneideriEM3xxxAggregateEntity
+        .ReactiveEnergyTotalExportT0Max_VARh))
       .HasColumnName("reactive_energy_total_export_t0_max_varh");
 
     builder
-      .Property(nameof(SchneideriEM3xxxAggregateEntity.ActiveEnergyTotalImportT1Min_Wh))
+      .Property(nameof(SchneideriEM3xxxAggregateEntity
+        .ActiveEnergyTotalImportT1Min_Wh))
       .HasColumnName("active_energy_total_import_t1_min_wh");
 
     builder
-      .Property(nameof(SchneideriEM3xxxAggregateEntity.ActiveEnergyTotalImportT1Max_Wh))
+      .Property(nameof(SchneideriEM3xxxAggregateEntity
+        .ActiveEnergyTotalImportT1Max_Wh))
       .HasColumnName("active_energy_total_import_t1_max_wh");
 
     builder
-      .Property(nameof(SchneideriEM3xxxAggregateEntity.ActiveEnergyTotalImportT2Min_Wh))
+      .Property(nameof(SchneideriEM3xxxAggregateEntity
+        .ActiveEnergyTotalImportT2Min_Wh))
       .HasColumnName("active_energy_total_import_t2_min_wh");
 
     builder
-      .Property(nameof(SchneideriEM3xxxAggregateEntity.ActiveEnergyTotalImportT2Max_Wh))
+      .Property(nameof(SchneideriEM3xxxAggregateEntity
+        .ActiveEnergyTotalImportT2Max_Wh))
       .HasColumnName("active_energy_total_import_t2_max_wh");
   }
 }

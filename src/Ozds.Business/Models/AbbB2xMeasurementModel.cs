@@ -6,68 +6,70 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Models;
 
-public class AbbB2xMeasurementModel : MeasurementModel<AbbB2xMeasurementValidatorModel>
+public class
+  AbbB2xMeasurementModel : MeasurementModel<AbbB2xMeasurementValidatorModel>
 {
-  [Required]
-  public required float VoltageL1AnyT0_V { get; init; }
-  [Required]
-  public required float VoltageL2AnyT0_V { get; init; }
-  [Required]
-  public required float VoltageL3AnyT0_V { get; init; }
-  [Required]
-  public required float CurrentL1AnyT0_A { get; init; }
-  [Required]
-  public required float CurrentL2AnyT0_A { get; init; }
-  [Required]
-  public required float CurrentL3AnyT0_A { get; init; }
-  [Required]
-  public required float ActivePowerL1NetT0_W { get; init; }
-  [Required]
-  public required float ActivePowerL2NetT0_W { get; init; }
-  [Required]
-  public required float ActivePowerL3NetT0_W { get; init; }
-  [Required]
-  public required float ReactivePowerL1NetT0_VAR { get; init; }
-  [Required]
-  public required float ReactivePowerL2NetT0_VAR { get; init; }
-  [Required]
-  public required float ReactivePowerL3NetT0_VAR { get; init; }
-  [Required]
-  public required float ActiveEnergyL1ImportT0_Wh { get; init; }
-  [Required]
-  public required float ActiveEnergyL2ImportT0_Wh { get; init; }
-  [Required]
-  public required float ActiveEnergyL3ImportT0_Wh { get; init; }
-  [Required]
-  public required float ActiveEnergyL1ExportT0_Wh { get; init; }
-  [Required]
-  public required float ActiveEnergyL2ExportT0_Wh { get; init; }
-  [Required]
-  public required float ActiveEnergyL3ExportT0_Wh { get; init; }
-  [Required]
-  public required float ReactiveEnergyL1ImportT0_VARh { get; init; }
-  [Required]
-  public required float ReactiveEnergyL2ImportT0_VARh { get; init; }
-  [Required]
-  public required float ReactiveEnergyL3ImportT0_VARh { get; init; }
-  [Required]
-  public required float ReactiveEnergyL1ExportT0_VARh { get; init; }
-  [Required]
-  public required float ReactiveEnergyL2ExportT0_VARh { get; init; }
-  [Required]
-  public required float ReactiveEnergyL3ExportT0_VARh { get; init; }
-  [Required]
-  public required float ActiveEnergyTotalImportT0_Wh { get; init; }
-  [Required]
-  public required float ActiveEnergyTotalExportT0_Wh { get; init; }
+  [Required] public required float VoltageL1AnyT0_V { get; init; }
+
+  [Required] public required float VoltageL2AnyT0_V { get; init; }
+
+  [Required] public required float VoltageL3AnyT0_V { get; init; }
+
+  [Required] public required float CurrentL1AnyT0_A { get; init; }
+
+  [Required] public required float CurrentL2AnyT0_A { get; init; }
+
+  [Required] public required float CurrentL3AnyT0_A { get; init; }
+
+  [Required] public required float ActivePowerL1NetT0_W { get; init; }
+
+  [Required] public required float ActivePowerL2NetT0_W { get; init; }
+
+  [Required] public required float ActivePowerL3NetT0_W { get; init; }
+
+  [Required] public required float ReactivePowerL1NetT0_VAR { get; init; }
+
+  [Required] public required float ReactivePowerL2NetT0_VAR { get; init; }
+
+  [Required] public required float ReactivePowerL3NetT0_VAR { get; init; }
+
+  [Required] public required float ActiveEnergyL1ImportT0_Wh { get; init; }
+
+  [Required] public required float ActiveEnergyL2ImportT0_Wh { get; init; }
+
+  [Required] public required float ActiveEnergyL3ImportT0_Wh { get; init; }
+
+  [Required] public required float ActiveEnergyL1ExportT0_Wh { get; init; }
+
+  [Required] public required float ActiveEnergyL2ExportT0_Wh { get; init; }
+
+  [Required] public required float ActiveEnergyL3ExportT0_Wh { get; init; }
+
+  [Required] public required float ReactiveEnergyL1ImportT0_VARh { get; init; }
+
+  [Required] public required float ReactiveEnergyL2ImportT0_VARh { get; init; }
+
+  [Required] public required float ReactiveEnergyL3ImportT0_VARh { get; init; }
+
+  [Required] public required float ReactiveEnergyL1ExportT0_VARh { get; init; }
+
+  [Required] public required float ReactiveEnergyL2ExportT0_VARh { get; init; }
+
+  [Required] public required float ReactiveEnergyL3ExportT0_VARh { get; init; }
+
+  [Required] public required float ActiveEnergyTotalImportT0_Wh { get; init; }
+
+  [Required] public required float ActiveEnergyTotalExportT0_Wh { get; init; }
+
   [Required]
   public required float ReactiveEnergyTotalImportT0_VARh { get; init; }
+
   [Required]
   public required float ReactiveEnergyTotalExportT0_VARh { get; init; }
-  [Required]
-  public required float ActiveEnergyTotalImportT1_Wh { get; init; }
-  [Required]
-  public required float ActiveEnergyTotalImportT2_Wh { get; init; }
+
+  [Required] public required float ActiveEnergyTotalImportT1_Wh { get; init; }
+
+  [Required] public required float ActiveEnergyTotalImportT2_Wh { get; init; }
 
   public override TariffMeasure Current_A
   {
@@ -252,7 +254,7 @@ public static class AbbB2xMeasurementModelExtensions
     this AbbB2xMeasurementModel measurement,
     IntervalModel interval)
   {
-    return new AbbB2xAggregateModel()
+    return new AbbB2xAggregateModel
     {
       MeterId = measurement.MeterId,
       Timestamp = measurement.Timestamp,
@@ -270,17 +272,28 @@ public static class AbbB2xMeasurementModelExtensions
       ReactivePowerL1NetT0Avg_VAR = measurement.ReactivePowerL1NetT0_VAR,
       ReactivePowerL2NetT0Avg_VAR = measurement.ReactivePowerL2NetT0_VAR,
       ReactivePowerL3NetT0Avg_VAR = measurement.ReactivePowerL3NetT0_VAR,
-      ActiveEnergyTotalImportT0Min_Wh = measurement.ActiveEnergyTotalImportT0_Wh,
-      ActiveEnergyTotalImportT0Max_Wh = measurement.ActiveEnergyTotalImportT0_Wh,
-      ActiveEnergyTotalExportT0Min_Wh = measurement.ActiveEnergyTotalExportT0_Wh,
-      ActiveEnergyTotalExportT0Max_Wh = measurement.ActiveEnergyTotalExportT0_Wh,
-      ReactiveEnergyTotalImportT0Min_VARh = measurement.ReactiveEnergyTotalImportT0_VARh,
-      ReactiveEnergyTotalImportT0Max_VARh = measurement.ReactiveEnergyTotalImportT0_VARh,
-      ReactiveEnergyTotalExportT0Min_VARh = measurement.ReactiveEnergyTotalExportT0_VARh,
-      ReactiveEnergyTotalExportT0Max_VARh = measurement.ReactiveEnergyTotalExportT0_VARh,
-      ActiveEnergyTotalImportT1Min_Wh = measurement.ActiveEnergyTotalImportT1_Wh,
-      ActiveEnergyTotalImportT1Max_Wh = measurement.ActiveEnergyTotalImportT1_Wh,
-      ActiveEnergyTotalImportT2Min_Wh = measurement.ActiveEnergyTotalImportT2_Wh,
+      ActiveEnergyTotalImportT0Min_Wh =
+        measurement.ActiveEnergyTotalImportT0_Wh,
+      ActiveEnergyTotalImportT0Max_Wh =
+        measurement.ActiveEnergyTotalImportT0_Wh,
+      ActiveEnergyTotalExportT0Min_Wh =
+        measurement.ActiveEnergyTotalExportT0_Wh,
+      ActiveEnergyTotalExportT0Max_Wh =
+        measurement.ActiveEnergyTotalExportT0_Wh,
+      ReactiveEnergyTotalImportT0Min_VARh =
+        measurement.ReactiveEnergyTotalImportT0_VARh,
+      ReactiveEnergyTotalImportT0Max_VARh =
+        measurement.ReactiveEnergyTotalImportT0_VARh,
+      ReactiveEnergyTotalExportT0Min_VARh =
+        measurement.ReactiveEnergyTotalExportT0_VARh,
+      ReactiveEnergyTotalExportT0Max_VARh =
+        measurement.ReactiveEnergyTotalExportT0_VARh,
+      ActiveEnergyTotalImportT1Min_Wh =
+        measurement.ActiveEnergyTotalImportT1_Wh,
+      ActiveEnergyTotalImportT1Max_Wh =
+        measurement.ActiveEnergyTotalImportT1_Wh,
+      ActiveEnergyTotalImportT2Min_Wh =
+        measurement.ActiveEnergyTotalImportT2_Wh,
       ActiveEnergyTotalImportT2Max_Wh = measurement.ActiveEnergyTotalImportT2_Wh
     };
   }
@@ -288,7 +301,7 @@ public static class AbbB2xMeasurementModelExtensions
   public static AbbB2xMeasurementModel ToModel(
     this AbbB2xMeasurementEntity entity)
   {
-    return new AbbB2xMeasurementModel()
+    return new AbbB2xMeasurementModel
     {
       MeterId = entity.MeterId,
       Timestamp = entity.Timestamp,
@@ -318,8 +331,10 @@ public static class AbbB2xMeasurementModelExtensions
       ReactiveEnergyL3ExportT0_VARh = entity.ReactiveEnergyL3ExportT0_VARh,
       ActiveEnergyTotalImportT0_Wh = entity.ActiveEnergyTotalImportT0_Wh,
       ActiveEnergyTotalExportT0_Wh = entity.ActiveEnergyTotalExportT0_Wh,
-      ReactiveEnergyTotalImportT0_VARh = entity.ReactiveEnergyTotalImportT0_VARh,
-      ReactiveEnergyTotalExportT0_VARh = entity.ReactiveEnergyTotalExportT0_VARh,
+      ReactiveEnergyTotalImportT0_VARh =
+        entity.ReactiveEnergyTotalImportT0_VARh,
+      ReactiveEnergyTotalExportT0_VARh =
+        entity.ReactiveEnergyTotalExportT0_VARh,
       ActiveEnergyTotalImportT1_Wh = entity.ActiveEnergyTotalImportT1_Wh,
       ActiveEnergyTotalImportT2_Wh = entity.ActiveEnergyTotalImportT2_Wh
     };

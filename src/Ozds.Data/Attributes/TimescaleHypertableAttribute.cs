@@ -1,5 +1,4 @@
 using System.Reflection;
-using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -7,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Ozds.Data.Attributes;
 
-[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
+[AttributeUsage(AttributeTargets.Class)]
 public class TimescaleHypertableAttribute : Attribute
 {
   public TimescaleHypertableAttribute(
@@ -30,15 +29,9 @@ public class TimescaleHypertableAttribute : Attribute
 
   public string TimeColumn { get; }
 
-  public string? SpaceColumn
-  {
-    get;
-  }
+  public string? SpaceColumn { get; }
 
-  public string? SpacePartitioning
-  {
-    get;
-  }
+  public string? SpacePartitioning { get; }
 }
 
 public static class TimescaleHypertableAttributeExtensions
@@ -79,13 +72,13 @@ public static class TimescaleHypertableAttributeExtensions
     string? spacePartitioning = null
   )
   {
-    var @value = timeColumn;
+    var value = timeColumn;
     if (spaceColumn is not null && spacePartitioning is not null)
     {
-      @value += $",{spaceColumn}:{spacePartitioning}";
+      value += $",{spaceColumn}:{spacePartitioning}";
     }
 
-    builder.Metadata.AddAnnotation("TimescaleHypertable", @value);
+    builder.Metadata.AddAnnotation("TimescaleHypertable", value);
 
     return builder;
   }

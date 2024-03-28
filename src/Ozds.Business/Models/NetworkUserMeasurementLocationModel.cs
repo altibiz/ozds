@@ -6,8 +6,7 @@ namespace Ozds.Business.Models;
 
 public class NetworkUserMeasurementLocationModel : MeasurementLocationModel
 {
-  [Required]
-  public required string NetworkUserId { get; set; }
+  [Required] public required string NetworkUserId { get; set; }
 }
 
 public static class NetworkUserMeasurementLocationModelExtensions
@@ -15,7 +14,7 @@ public static class NetworkUserMeasurementLocationModelExtensions
   public static NetworkUserMeasurementLocationModel ToModel(
     this NetworkUserMeasurementLocationEntity entity)
   {
-    return new NetworkUserMeasurementLocationModel()
+    return new NetworkUserMeasurementLocationModel
     {
       Id = entity.Id,
       Title = entity.Title,
@@ -45,7 +44,7 @@ public static class NetworkUserMeasurementLocationModelExtensions
       IsDeleted = model.IsDeleted,
       DeletedOn = model.DeletedOn,
       DeletedById = model.DeletedById,
-      MeterId = model.MeterId,
+      MeterId = model.MeterId
     };
   }
 }

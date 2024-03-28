@@ -17,9 +17,12 @@ public class MeasurementValidatorEntity<TMeter> : MeasurementValidatorEntity
   public virtual TMeter Meter { get; set; } = default!;
 }
 
-public class MeasurementValidatorTypeConfiguration : EntityTypeConfiguration<MeasurementValidatorEntity>
+public class
+  MeasurementValidatorTypeConfiguration : EntityTypeConfiguration<
+  MeasurementValidatorEntity>
 {
-  public override void Configure(EntityTypeBuilder<MeasurementValidatorEntity> builder)
+  public override void Configure(
+    EntityTypeBuilder<MeasurementValidatorEntity> builder)
   {
     builder
       .UseTphMappingStrategy()
@@ -28,7 +31,8 @@ public class MeasurementValidatorTypeConfiguration : EntityTypeConfiguration<Mea
   }
 }
 
-public class MeasurementValidatorEntityTypeHierarchyConfiguration : ConcreteHierarchyEntityTypeConfiguration<MeasurementValidatorEntity>
+public class MeasurementValidatorEntityTypeHierarchyConfiguration :
+  ConcreteHierarchyEntityTypeConfiguration<MeasurementValidatorEntity>
 {
   public override void Configure<T>(EntityTypeBuilder<T> builder)
   {
@@ -39,7 +43,10 @@ public class MeasurementValidatorEntityTypeHierarchyConfiguration : ConcreteHier
 
     builder
       .HasOne(nameof(MeasurementValidatorEntity<MeterEntity>.Meter))
-      .WithOne(nameof(MeterEntity<MeasurementEntity, AggregateEntity, MeasurementValidatorEntity<MeterEntity>>.MeasurementValidator))
-      .HasForeignKey(typeof(T).Name, nameof(MeasurementValidatorEntity<MeterEntity>.MeterId));
+      .WithOne(
+        nameof(MeterEntity<MeasurementEntity, AggregateEntity,
+          MeasurementValidatorEntity<MeterEntity>>.MeasurementValidator))
+      .HasForeignKey(typeof(T).Name,
+        nameof(MeasurementValidatorEntity<MeterEntity>.MeterId));
   }
 }

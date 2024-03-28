@@ -11,9 +11,12 @@ public class NetworkUserInvoiceEntity : InvoiceEntity
   public virtual NetworkUserEntity NetworkUser { get; set; } = default!;
 }
 
-public class NetworkUserInvoiceEntityTypeConfiguration : EntityTypeConfiguration<NetworkUserInvoiceEntity>
+public class
+  NetworkUserInvoiceEntityTypeConfiguration : EntityTypeConfiguration<
+  NetworkUserInvoiceEntity>
 {
-  public override void Configure(EntityTypeBuilder<NetworkUserInvoiceEntity> builder)
+  public override void Configure(
+    EntityTypeBuilder<NetworkUserInvoiceEntity> builder)
   {
     builder
       .HasOne(nameof(NetworkUserInvoiceEntity.NetworkUser))

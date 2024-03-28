@@ -6,25 +6,24 @@ namespace Ozds.Business.Models;
 
 public class LocationModel : AuditableModel
 {
-  [Required]
-  public required string MeasurementLocationId { get; set; }
-  [Required]
-  public required string WhiteMediumCatalogueId { get; set; }
-  [Required]
-  public required string BlueLowCatalogueId { get; set; }
-  [Required]
-  public required string WhiteLowCatalogueId { get; set; }
-  [Required]
-  public required string RedLowCatalogueId { get; set; }
-  [Required]
-  public required string RegulatoryCatalogueId { get; set; }
+  [Required] public required string MeasurementLocationId { get; set; }
+
+  [Required] public required string WhiteMediumCatalogueId { get; set; }
+
+  [Required] public required string BlueLowCatalogueId { get; set; }
+
+  [Required] public required string WhiteLowCatalogueId { get; set; }
+
+  [Required] public required string RedLowCatalogueId { get; set; }
+
+  [Required] public required string RegulatoryCatalogueId { get; set; }
 }
 
 public static class LocationModelExtensions
 {
   public static LocationModel ToModel(this LocationEntity entity)
   {
-    return new LocationModel()
+    return new LocationModel
     {
       Id = entity.Id,
       Title = entity.Title,

@@ -6,8 +6,7 @@ namespace Ozds.Business.Models;
 
 public class NetworkUserInvoiceModel : InvoiceModel
 {
-  [Required]
-  public required string NetworkUserId { get; set; }
+  [Required] public required string NetworkUserId { get; set; }
 }
 
 public static class NetworkUserInvoiceModelExtensions
@@ -15,7 +14,7 @@ public static class NetworkUserInvoiceModelExtensions
   public static NetworkUserInvoiceModel ToModel(
     this NetworkUserInvoiceEntity entity)
   {
-    return new NetworkUserInvoiceModel()
+    return new NetworkUserInvoiceModel
     {
       Id = entity.Id,
       IssuedOn = entity.IssuedOn,

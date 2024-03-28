@@ -9,15 +9,19 @@ public class RegulatoryCatalogueModel : CatalogueModel
   [Required]
   [Range(0, double.MaxValue)]
   public required float ActiveEnergyTotalImportT1Price_EUR { get; set; }
+
   [Required]
   [Range(0, double.MaxValue)]
   public required float ActiveEnergyTotalImportT2Price_EUR { get; set; }
+
   [Required]
   [Range(0, double.MaxValue)]
   public required float RenewableEnergyFeePrice_EUR { get; set; }
+
   [Required]
   [Range(0, double.MaxValue)]
   public required float BusinessUsageFeePrice_EUR { get; set; }
+
   [Required]
   [Range(0, double.MaxValue)]
   public required float TaxRate_Percent { get; set; }
@@ -28,7 +32,7 @@ public static class RegulatoryCatalogueModelExtensions
   public static RegulatoryCatalogueModel ToModel(
     this RegulatoryCatalogueEntity entity)
   {
-    return new RegulatoryCatalogueModel()
+    return new RegulatoryCatalogueModel
     {
       Id = entity.Id,
       Title = entity.Title,
@@ -39,8 +43,10 @@ public static class RegulatoryCatalogueModelExtensions
       IsDeleted = entity.IsDeleted,
       DeletedOn = entity.DeletedOn,
       DeletedById = entity.DeletedById,
-      ActiveEnergyTotalImportT1Price_EUR = entity.ActiveEnergyTotalImportT1Price_EUR,
-      ActiveEnergyTotalImportT2Price_EUR = entity.ActiveEnergyTotalImportT2Price_EUR,
+      ActiveEnergyTotalImportT1Price_EUR =
+        entity.ActiveEnergyTotalImportT1Price_EUR,
+      ActiveEnergyTotalImportT2Price_EUR =
+        entity.ActiveEnergyTotalImportT2Price_EUR,
       RenewableEnergyFeePrice_EUR = entity.RenewableEnergyFeePrice_EUR,
       BusinessUsageFeePrice_EUR = entity.BusinessUsageFeePrice_EUR,
       TaxRate_Percent = entity.TaxRate_Percent

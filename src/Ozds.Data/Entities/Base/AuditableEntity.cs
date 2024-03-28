@@ -28,7 +28,9 @@ public abstract class AuditableEntity : IdentifiableEntity
   public virtual ICollection<AuditEventEntity> Audits { get; set; } = default!;
 }
 
-public class AuditableEntityConfiguration : ConcreteHierarchyEntityTypeConfiguration<AuditableEntity>
+public class
+  AuditableEntityConfiguration : ConcreteHierarchyEntityTypeConfiguration<
+  AuditableEntity>
 {
   public override void Configure<T>(EntityTypeBuilder<T> builder)
   {

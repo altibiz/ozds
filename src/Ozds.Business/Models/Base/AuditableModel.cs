@@ -6,7 +6,9 @@ namespace Ozds.Business.Models.Base;
 public abstract class AuditableModel : IdentifiableModel, IAuditable
 {
   [Required]
-  public required DateTimeOffset CreatedOn { get; init; } = DateTimeOffset.UtcNow;
+  public required DateTimeOffset CreatedOn { get; init; } =
+    DateTimeOffset.UtcNow;
+
   public required string? CreatedById { get; init; }
   public required DateTimeOffset? LastUpdatedOn { get; init; }
   public required string? LastUpdatedById { get; init; }
@@ -14,7 +16,8 @@ public abstract class AuditableModel : IdentifiableModel, IAuditable
   public required DateTimeOffset? DeletedOn { get; init; }
   public required string? DeletedById { get; init; }
 
-  public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+  public override IEnumerable<ValidationResult> Validate(
+    ValidationContext validationContext)
   {
     foreach (var validationResult in base.Validate(validationContext))
     {
@@ -27,7 +30,8 @@ public abstract class AuditableModel : IdentifiableModel, IAuditable
     }
 
     if (
-      (validationContext.MemberName is null or nameof(IsDeleted) or nameof(DeletedOn)) &&
+      validationContext.MemberName is null or nameof(IsDeleted)
+        or nameof(DeletedOn) &&
       IsDeleted && !DeletedOn.HasValue
     )
     {
@@ -37,7 +41,8 @@ public abstract class AuditableModel : IdentifiableModel, IAuditable
     }
 
     if (
-      (validationContext.MemberName is null or nameof(LastUpdatedOn) or nameof(DeletedOn)) &&
+      validationContext.MemberName is null or nameof(LastUpdatedOn)
+        or nameof(DeletedOn) &&
       LastUpdatedOn > DeletedOn
     )
     {
@@ -47,7 +52,8 @@ public abstract class AuditableModel : IdentifiableModel, IAuditable
     }
 
     if (
-      (validationContext.MemberName is null or nameof(CreatedOn) or nameof(LastUpdatedOn)) &&
+      validationContext.MemberName is null or nameof(CreatedOn)
+        or nameof(LastUpdatedOn) &&
       CreatedOn > LastUpdatedOn
     )
     {
@@ -57,7 +63,7 @@ public abstract class AuditableModel : IdentifiableModel, IAuditable
     }
 
     if (
-      (validationContext.MemberName is null or nameof(CreatedOn)) &&
+      validationContext.MemberName is null or nameof(CreatedOn) &&
       CreatedOn > DateTimeOffset.UtcNow
     )
     {
@@ -67,7 +73,7 @@ public abstract class AuditableModel : IdentifiableModel, IAuditable
     }
 
     if (
-      (validationContext.MemberName is null or nameof(LastUpdatedOn)) &&
+      validationContext.MemberName is null or nameof(LastUpdatedOn) &&
       LastUpdatedOn > DateTimeOffset.UtcNow
     )
     {
@@ -77,7 +83,7 @@ public abstract class AuditableModel : IdentifiableModel, IAuditable
     }
 
     if (
-      (validationContext.MemberName is null or nameof(DeletedOn)) &&
+      validationContext.MemberName is null or nameof(DeletedOn) &&
       DeletedOn > DateTimeOffset.UtcNow
     )
     {

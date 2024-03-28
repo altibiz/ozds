@@ -36,14 +36,17 @@ public class AbbB2xMeasurementEntity : MeasurementEntity<AbbB2xMeterEntity>
   public float ActiveEnergyTotalExportT0_Wh { get; set; }
   public float ReactiveEnergyTotalImportT0_VARh { get; set; }
   public float ReactiveEnergyTotalExportT0_VARh { get; set; }
-  public float ActiveEnergyTotalImportT1_Wh { get; set; } = default;
-  public float ActiveEnergyTotalImportT2_Wh { get; set; } = default;
+  public float ActiveEnergyTotalImportT1_Wh { get; set; }
+  public float ActiveEnergyTotalImportT2_Wh { get; set; }
 #pragma warning restore CA1707
 }
 
-public class AbbB2xMeasurementEntityTypeConfiguration : EntityTypeConfiguration<AbbB2xMeasurementEntity>
+public class
+  AbbB2xMeasurementEntityTypeConfiguration : EntityTypeConfiguration<
+  AbbB2xMeasurementEntity>
 {
-  public override void Configure(EntityTypeBuilder<AbbB2xMeasurementEntity> builder)
+  public override void Configure(
+    EntityTypeBuilder<AbbB2xMeasurementEntity> builder)
   {
     builder.ToTable("abb_b2x_measurements");
 
@@ -152,11 +155,13 @@ public class AbbB2xMeasurementEntityTypeConfiguration : EntityTypeConfiguration<
       .HasColumnName("active_energy_total_export_t0_wh");
 
     builder
-      .Property(nameof(AbbB2xMeasurementEntity.ReactiveEnergyTotalImportT0_VARh))
+      .Property(
+        nameof(AbbB2xMeasurementEntity.ReactiveEnergyTotalImportT0_VARh))
       .HasColumnName("reactive_energy_total_import_t0_varh");
 
     builder
-      .Property(nameof(AbbB2xMeasurementEntity.ReactiveEnergyTotalExportT0_VARh))
+      .Property(
+        nameof(AbbB2xMeasurementEntity.ReactiveEnergyTotalExportT0_VARh))
       .HasColumnName("reactive_energy_total_export_t0_varh");
 
     builder

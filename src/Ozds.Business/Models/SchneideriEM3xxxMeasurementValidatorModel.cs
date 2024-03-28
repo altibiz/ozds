@@ -4,28 +4,29 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Models;
 
-public class SchneideriEM3xxxMeasurementValidatorModel : MeasurementValidatorModel<SchneideriEM3xxxMeasurementModel>
+public class
+  SchneideriEM3xxxMeasurementValidatorModel : MeasurementValidatorModel<
+  SchneideriEM3xxxMeasurementModel>
 {
-  [Required]
-  public required float MinVoltage_V { get; init; }
-  [Required]
-  public required float MaxVoltage_V { get; init; }
-  [Required]
-  public required float MinCurrent_A { get; init; }
-  [Required]
-  public required float MaxCurrent_A { get; init; }
-  [Required]
-  public required float MinActivePower_W { get; init; }
-  [Required]
-  public required float MaxActivePower_W { get; init; }
-  [Required]
-  public required float MinReactivePower_VAR { get; init; }
-  [Required]
-  public required float MaxReactivePower_VAR { get; init; }
-  [Required]
-  public required float MinApparentPower_VA { get; init; }
-  [Required]
-  public required float MaxApparentPower_VA { get; init; }
+  [Required] public required float MinVoltage_V { get; init; }
+
+  [Required] public required float MaxVoltage_V { get; init; }
+
+  [Required] public required float MinCurrent_A { get; init; }
+
+  [Required] public required float MaxCurrent_A { get; init; }
+
+  [Required] public required float MinActivePower_W { get; init; }
+
+  [Required] public required float MaxActivePower_W { get; init; }
+
+  [Required] public required float MinReactivePower_VAR { get; init; }
+
+  [Required] public required float MaxReactivePower_VAR { get; init; }
+
+  [Required] public required float MinApparentPower_VA { get; init; }
+
+  [Required] public required float MaxApparentPower_VA { get; init; }
 
   public override IEnumerable<ValidationResult> ValidateMeasurement(
     SchneideriEM3xxxMeasurementModel measurement,
@@ -81,9 +82,12 @@ public class SchneideriEM3xxxMeasurementValidatorModel : MeasurementValidatorMod
     }
 
     if (
-      memberName is null or nameof(SchneideriEM3xxxAggregateModel.ActivePower_W) &&
-      measurement.ActivePower_W.TariffUnary.DuplexAny.PhaseSum < MinActivePower_W * 3 &&
-      measurement.ActivePower_W.TariffUnary.DuplexAny.PhaseTrough < MinActivePower_W
+      memberName is null
+        or nameof(SchneideriEM3xxxAggregateModel.ActivePower_W) &&
+      measurement.ActivePower_W.TariffUnary.DuplexAny.PhaseSum <
+      MinActivePower_W * 3 &&
+      measurement.ActivePower_W.TariffUnary.DuplexAny.PhaseTrough <
+      MinActivePower_W
     )
     {
       yield return new ValidationResult(
@@ -93,9 +97,12 @@ public class SchneideriEM3xxxMeasurementValidatorModel : MeasurementValidatorMod
     }
 
     if (
-      memberName is null or nameof(SchneideriEM3xxxAggregateModel.ActivePower_W) &&
-      measurement.ActivePower_W.TariffUnary.DuplexAny.PhaseSum > MaxActivePower_W * 3 &&
-      measurement.ActivePower_W.TariffUnary.DuplexAny.PhasePeak > MaxActivePower_W
+      memberName is null
+        or nameof(SchneideriEM3xxxAggregateModel.ActivePower_W) &&
+      measurement.ActivePower_W.TariffUnary.DuplexAny.PhaseSum >
+      MaxActivePower_W * 3 &&
+      measurement.ActivePower_W.TariffUnary.DuplexAny.PhasePeak >
+      MaxActivePower_W
     )
     {
       yield return new ValidationResult(
@@ -105,9 +112,12 @@ public class SchneideriEM3xxxMeasurementValidatorModel : MeasurementValidatorMod
     }
 
     if (
-      memberName is null or nameof(SchneideriEM3xxxAggregateModel.ReactivePower_VAR) &&
-      measurement.ReactivePower_VAR.TariffUnary.DuplexAny.PhaseSum < MinReactivePower_VAR * 3 &&
-      measurement.ReactivePower_VAR.TariffUnary.DuplexAny.PhaseTrough < MinReactivePower_VAR
+      memberName is null
+        or nameof(SchneideriEM3xxxAggregateModel.ReactivePower_VAR) &&
+      measurement.ReactivePower_VAR.TariffUnary.DuplexAny.PhaseSum <
+      MinReactivePower_VAR * 3 &&
+      measurement.ReactivePower_VAR.TariffUnary.DuplexAny.PhaseTrough <
+      MinReactivePower_VAR
     )
     {
       yield return new ValidationResult(
@@ -117,9 +127,12 @@ public class SchneideriEM3xxxMeasurementValidatorModel : MeasurementValidatorMod
     }
 
     if (
-      memberName is null or nameof(SchneideriEM3xxxAggregateModel.ReactivePower_VAR) &&
-      measurement.ReactivePower_VAR.TariffUnary.DuplexAny.PhaseSum > MaxReactivePower_VAR * 3 &&
-      measurement.ReactivePower_VAR.TariffUnary.DuplexAny.PhasePeak > MaxReactivePower_VAR
+      memberName is null
+        or nameof(SchneideriEM3xxxAggregateModel.ReactivePower_VAR) &&
+      measurement.ReactivePower_VAR.TariffUnary.DuplexAny.PhaseSum >
+      MaxReactivePower_VAR * 3 &&
+      measurement.ReactivePower_VAR.TariffUnary.DuplexAny.PhasePeak >
+      MaxReactivePower_VAR
     )
     {
       yield return new ValidationResult(
@@ -129,9 +142,12 @@ public class SchneideriEM3xxxMeasurementValidatorModel : MeasurementValidatorMod
     }
 
     if (
-      memberName is null or nameof(SchneideriEM3xxxAggregateModel.ApparentPower_VA) &&
-      measurement.ApparentPower_VA.TariffUnary.DuplexAny.PhaseSum < MinApparentPower_VA * 3 &&
-      measurement.ApparentPower_VA.TariffUnary.DuplexAny.PhaseTrough < MinApparentPower_VA
+      memberName is null
+        or nameof(SchneideriEM3xxxAggregateModel.ApparentPower_VA) &&
+      measurement.ApparentPower_VA.TariffUnary.DuplexAny.PhaseSum <
+      MinApparentPower_VA * 3 &&
+      measurement.ApparentPower_VA.TariffUnary.DuplexAny.PhaseTrough <
+      MinApparentPower_VA
     )
     {
       yield return new ValidationResult(
@@ -141,9 +157,12 @@ public class SchneideriEM3xxxMeasurementValidatorModel : MeasurementValidatorMod
     }
 
     if (
-      memberName is null or nameof(SchneideriEM3xxxAggregateModel.ApparentPower_VA) &&
-      measurement.ApparentPower_VA.TariffUnary.DuplexAny.PhaseSum > MaxApparentPower_VA * 3 &&
-      measurement.ApparentPower_VA.TariffUnary.DuplexAny.PhasePeak > MaxApparentPower_VA
+      memberName is null
+        or nameof(SchneideriEM3xxxAggregateModel.ApparentPower_VA) &&
+      measurement.ApparentPower_VA.TariffUnary.DuplexAny.PhaseSum >
+      MaxApparentPower_VA * 3 &&
+      measurement.ApparentPower_VA.TariffUnary.DuplexAny.PhasePeak >
+      MaxApparentPower_VA
     )
     {
       yield return new ValidationResult(
@@ -159,7 +178,7 @@ public static class SchneideriEM3xxxMeasurementValidatorModelExtensions
   public static SchneideriEM3xxxMeasurementValidatorModel ToModel(
     this SchneideriEM3xxxMeasurementValidatorEntity entity)
   {
-    return new SchneideriEM3xxxMeasurementValidatorModel()
+    return new SchneideriEM3xxxMeasurementValidatorModel
     {
       Id = entity.Id,
       Title = entity.Title,

@@ -6,24 +6,28 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities;
 
-public class SchneideriEM3xxxMeasurementValidatorEntity : MeasurementValidatorEntity<SchneideriEM3xxxMeterEntity>
+public class
+  SchneideriEM3xxxMeasurementValidatorEntity : MeasurementValidatorEntity<
+  SchneideriEM3xxxMeterEntity>
 {
   public float MinVoltage_V { get; set; }
-  public float MaxVoltage_V { get; set; } = default!;
-  public float MinCurrent_A { get; set; } = default!;
-  public float MaxCurrent_A { get; set; } = default!;
-  public float MinActivePower_W { get; set; } = default!;
-  public float MaxActivePower_W { get; set; } = default!;
-  public float MinReactivePower_VAR { get; set; } = default!;
-  public float MaxReactivePower_VAR { get; set; } = default!;
-  public float MinApparentPower_VA { get; set; } = default!;
-  public float MaxApparentPower_VA { get; set; } = default!;
+  public float MaxVoltage_V { get; set; }
+  public float MinCurrent_A { get; set; }
+  public float MaxCurrent_A { get; set; }
+  public float MinActivePower_W { get; set; }
+  public float MaxActivePower_W { get; set; }
+  public float MinReactivePower_VAR { get; set; }
+  public float MaxReactivePower_VAR { get; set; }
+  public float MinApparentPower_VA { get; set; }
+  public float MaxApparentPower_VA { get; set; }
 #pragma warning restore CA1707
 }
 
-public class SchneideriEM3xxxMeasurementValidatorEntityTypeConfiguration : EntityTypeConfiguration<SchneideriEM3xxxMeasurementValidatorEntity>
+public class SchneideriEM3xxxMeasurementValidatorEntityTypeConfiguration :
+  EntityTypeConfiguration<SchneideriEM3xxxMeasurementValidatorEntity>
 {
-  public override void Configure(EntityTypeBuilder<SchneideriEM3xxxMeasurementValidatorEntity> builder)
+  public override void Configure(
+    EntityTypeBuilder<SchneideriEM3xxxMeasurementValidatorEntity> builder)
   {
     builder
       .Property(nameof(SchneideriEM3xxxMeasurementValidatorEntity.MinVoltage_V))
@@ -42,27 +46,33 @@ public class SchneideriEM3xxxMeasurementValidatorEntityTypeConfiguration : Entit
       .HasColumnName("max_current_a");
 
     builder
-      .Property(nameof(SchneideriEM3xxxMeasurementValidatorEntity.MinActivePower_W))
+      .Property(nameof(SchneideriEM3xxxMeasurementValidatorEntity
+        .MinActivePower_W))
       .HasColumnName("min_active_power_w");
 
     builder
-      .Property(nameof(SchneideriEM3xxxMeasurementValidatorEntity.MaxActivePower_W))
+      .Property(nameof(SchneideriEM3xxxMeasurementValidatorEntity
+        .MaxActivePower_W))
       .HasColumnName("max_active_power_w");
 
     builder
-      .Property(nameof(SchneideriEM3xxxMeasurementValidatorEntity.MinReactivePower_VAR))
+      .Property(nameof(SchneideriEM3xxxMeasurementValidatorEntity
+        .MinReactivePower_VAR))
       .HasColumnName("min_reactive_power_var");
 
     builder
-      .Property(nameof(SchneideriEM3xxxMeasurementValidatorEntity.MaxReactivePower_VAR))
+      .Property(nameof(SchneideriEM3xxxMeasurementValidatorEntity
+        .MaxReactivePower_VAR))
       .HasColumnName("max_reactive_power_var");
 
     builder
-      .Property(nameof(SchneideriEM3xxxMeasurementValidatorEntity.MinApparentPower_VA))
+      .Property(nameof(SchneideriEM3xxxMeasurementValidatorEntity
+        .MinApparentPower_VA))
       .HasColumnName("min_apparent_power_va");
 
     builder
-      .Property(nameof(SchneideriEM3xxxMeasurementValidatorEntity.MaxApparentPower_VA))
+      .Property(nameof(SchneideriEM3xxxMeasurementValidatorEntity
+        .MaxApparentPower_VA))
       .HasColumnName("max_apparent_power_va");
   }
 }

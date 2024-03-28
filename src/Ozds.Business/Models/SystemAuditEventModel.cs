@@ -4,14 +4,16 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Models;
 
-public class SystemAuditEventModel : AuditEventModel { }
+public class SystemAuditEventModel : AuditEventModel
+{
+}
 
 public static class SystemAuditEventModelExtensions
 {
   public static SystemAuditEventModel ToModel(
     this SystemAuditEventEntity entity)
   {
-    return new SystemAuditEventModel()
+    return new SystemAuditEventModel
     {
       Id = entity.Id,
       Timestamp = entity.Timestamp,

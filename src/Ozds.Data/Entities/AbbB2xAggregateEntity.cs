@@ -35,9 +35,12 @@ public class AbbB2xAggregateEntity : AggregateEntity<AbbB2xMeterEntity>
 #pragma warning restore CA1707
 }
 
-public class AbbB2xAggregateEntityTypeConfiguration : EntityTypeConfiguration<AbbB2xAggregateEntity>
+public class
+  AbbB2xAggregateEntityTypeConfiguration : EntityTypeConfiguration<
+  AbbB2xAggregateEntity>
 {
-  public override void Configure(EntityTypeBuilder<AbbB2xAggregateEntity> builder)
+  public override void Configure(
+    EntityTypeBuilder<AbbB2xAggregateEntity> builder)
   {
     builder.ToTable("abb_b2x_aggregates");
 
@@ -106,19 +109,23 @@ public class AbbB2xAggregateEntityTypeConfiguration : EntityTypeConfiguration<Ab
       .HasColumnName("active_energy_total_export_t0_max_wh");
 
     builder
-      .Property(nameof(AbbB2xAggregateEntity.ReactiveEnergyTotalImportT0Min_VARh))
+      .Property(
+        nameof(AbbB2xAggregateEntity.ReactiveEnergyTotalImportT0Min_VARh))
       .HasColumnName("reactive_energy_total_import_t0_min_varh");
 
     builder
-      .Property(nameof(AbbB2xAggregateEntity.ReactiveEnergyTotalImportT0Max_VARh))
+      .Property(
+        nameof(AbbB2xAggregateEntity.ReactiveEnergyTotalImportT0Max_VARh))
       .HasColumnName("reactive_energy_total_import_t0_max_varh");
 
     builder
-      .Property(nameof(AbbB2xAggregateEntity.ReactiveEnergyTotalExportT0Min_VARh))
+      .Property(
+        nameof(AbbB2xAggregateEntity.ReactiveEnergyTotalExportT0Min_VARh))
       .HasColumnName("reactive_energy_total_export_t0_min_varh");
 
     builder
-      .Property(nameof(AbbB2xAggregateEntity.ReactiveEnergyTotalExportT0Max_VARh))
+      .Property(
+        nameof(AbbB2xAggregateEntity.ReactiveEnergyTotalExportT0Max_VARh))
       .HasColumnName("reactive_energy_total_export_t0_max_varh");
 
     builder

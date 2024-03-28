@@ -6,22 +6,22 @@ namespace Ozds.Business.Models.Base;
 
 public abstract class MeterModel : AuditableModel, IMeter
 {
-  [Required]
-  public required string MeasurementLocationId { get; set; }
-  [Required]
-  public required string CatalogueId { get; set; }
-  [Required]
-  public required string MessengerId { get; set; }
-  [Required]
-  public required string MeasurementValidatorId { get; set; }
-  [Required]
-  public required float ConnectionPower_W { get; set; }
-  [Required]
-  public required List<PhaseModel> Phases { get; set; } = new();
+  [Required] public required float ConnectionPower_W { get; set; }
+
+  [Required] public required List<PhaseModel> Phases { get; set; } = new();
+
+  [Required] public required string MeasurementLocationId { get; set; }
+
+  [Required] public required string CatalogueId { get; set; }
+
+  [Required] public required string MessengerId { get; set; }
+
+  [Required] public required string MeasurementValidatorId { get; set; }
 
   public abstract ICapabilities Capabilities { get; }
 
-  public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+  public override IEnumerable<ValidationResult> Validate(
+    ValidationContext validationContext)
   {
     foreach (var validationResult in base.Validate(validationContext))
     {

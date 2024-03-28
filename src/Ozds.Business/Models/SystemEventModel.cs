@@ -4,13 +4,15 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Models;
 
-public class SystemEventModel : EventModel { }
+public class SystemEventModel : EventModel
+{
+}
 
 public static class SystemEventModelExtensions
 {
   public static SystemEventModel ToModel(this SystemEventEntity entity)
   {
-    return new SystemEventModel()
+    return new SystemEventModel
     {
       Id = entity.Id,
       Timestamp = entity.Timestamp,

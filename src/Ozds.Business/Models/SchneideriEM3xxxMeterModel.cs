@@ -41,7 +41,7 @@ public static class SchneideriEM3xxxMeterModelExtensions
   public static SchneideriEM3xxxMeterModel ToModel(
     this SchneideriEM3xxxMeterEntity entity)
   {
-    return new SchneideriEM3xxxMeterModel()
+    return new SchneideriEM3xxxMeterModel
     {
       Id = entity.Id,
       Title = entity.Title,

@@ -6,23 +6,28 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities;
 
-public class AbbB2xMeasurementValidatorEntity : MeasurementValidatorEntity<AbbB2xMeterEntity>
+public class
+  AbbB2xMeasurementValidatorEntity : MeasurementValidatorEntity<
+  AbbB2xMeterEntity>
 {
 #pragma warning disable CA1707
   public float MinVoltage_V { get; set; }
-  public float MaxVoltage_V { get; set; } = default!;
-  public float MinCurrent_A { get; set; } = default!;
-  public float MaxCurrent_A { get; set; } = default!;
-  public float MinActivePower_W { get; set; } = default!;
-  public float MaxActivePower_W { get; set; } = default!;
-  public float MinReactivePower_VAR { get; set; } = default!;
-  public float MaxReactivePower_VAR { get; set; } = default!;
+  public float MaxVoltage_V { get; set; }
+  public float MinCurrent_A { get; set; }
+  public float MaxCurrent_A { get; set; }
+  public float MinActivePower_W { get; set; }
+  public float MaxActivePower_W { get; set; }
+  public float MinReactivePower_VAR { get; set; }
+  public float MaxReactivePower_VAR { get; set; }
 #pragma warning restore CA1707
 }
 
-public class AbbB2xMeasurementValidatorEntityTypeConfiguration : EntityTypeConfiguration<AbbB2xMeasurementValidatorEntity>
+public class
+  AbbB2xMeasurementValidatorEntityTypeConfiguration : EntityTypeConfiguration<
+  AbbB2xMeasurementValidatorEntity>
 {
-  public override void Configure(EntityTypeBuilder<AbbB2xMeasurementValidatorEntity> builder)
+  public override void Configure(
+    EntityTypeBuilder<AbbB2xMeasurementValidatorEntity> builder)
   {
     builder
       .Property(nameof(AbbB2xMeasurementValidatorEntity.MinVoltage_V))

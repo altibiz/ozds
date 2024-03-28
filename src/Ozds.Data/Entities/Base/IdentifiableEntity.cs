@@ -8,12 +8,18 @@ public abstract class IdentifiableEntity
 {
   private readonly long _id;
 
-  public virtual string Id { get => _id.ToString(); init => _id = long.Parse(value); }
+  public virtual string Id
+  {
+    get { return _id.ToString(); }
+    init { _id = long.Parse(value); }
+  }
 
   public string Title { get; set; } = default!;
 }
 
-public class IdentifiableEntityConfiguration : ConcreteHierarchyEntityTypeConfiguration<IdentifiableEntity>
+public class
+  IdentifiableEntityConfiguration : ConcreteHierarchyEntityTypeConfiguration<
+  IdentifiableEntity>
 {
   public override void Configure<T>(EntityTypeBuilder<T> builder)
   {
@@ -41,7 +47,8 @@ public class IdentifiableEntityConfiguration : ConcreteHierarchyEntityTypeConfig
       currentType != null;
       currentType = currentType.BaseType)
     {
-      if (currentType is not { IsAbstract: true } and not { IsGenericType: true })
+      if (currentType is not { IsAbstract: true } and not
+        { IsGenericType: true })
       {
         return true;
       }

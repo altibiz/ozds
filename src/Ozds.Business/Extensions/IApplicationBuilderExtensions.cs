@@ -9,7 +9,8 @@ public static class IApplicationBuilderExtensions
     this IApplicationBuilder app)
   {
     using var scope = app.ApplicationServices.CreateScope();
-    scope.ServiceProvider.GetRequiredService<OzdsDbContext>().Database.Migrate();
+    scope.ServiceProvider.GetRequiredService<OzdsDbContext>().Database
+      .Migrate();
     return app;
   }
 }

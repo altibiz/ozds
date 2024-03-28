@@ -16,24 +16,31 @@ public class WhiteMediumCatalogueEntity : CatalogueEntity
 #pragma warning restore CA1707
 }
 
-public class WhiteMediumCatalogueEntityTypeConfiguration : EntityTypeConfiguration<WhiteMediumCatalogueEntity>
+public class
+  WhiteMediumCatalogueEntityTypeConfiguration : EntityTypeConfiguration<
+  WhiteMediumCatalogueEntity>
 {
-  public override void Configure(EntityTypeBuilder<WhiteMediumCatalogueEntity> builder)
+  public override void Configure(
+    EntityTypeBuilder<WhiteMediumCatalogueEntity> builder)
   {
     builder
-      .Property(nameof(WhiteMediumCatalogueEntity.ActiveEnergyTotalImportT1Price_EUR))
+      .Property(nameof(WhiteMediumCatalogueEntity
+        .ActiveEnergyTotalImportT1Price_EUR))
       .HasColumnName("active_energy_total_import_t1_price_eur");
 
     builder
-      .Property(nameof(WhiteMediumCatalogueEntity.ActiveEnergyTotalImportT2Price_EUR))
+      .Property(nameof(WhiteMediumCatalogueEntity
+        .ActiveEnergyTotalImportT2Price_EUR))
       .HasColumnName("active_energy_total_import_t2_price_eur");
 
     builder
-      .Property(nameof(WhiteMediumCatalogueEntity.MaxActivePowerTotalImportT1Price_EUR))
+      .Property(nameof(WhiteMediumCatalogueEntity
+        .MaxActivePowerTotalImportT1Price_EUR))
       .HasColumnName("max_active_power_total_import_t1_price_eur");
 
     builder
-      .Property(nameof(WhiteMediumCatalogueEntity.ReactiveEnergyTotalImportT0Price_EUR))
+      .Property(nameof(WhiteMediumCatalogueEntity
+        .ReactiveEnergyTotalImportT0Price_EUR))
       .HasColumnName("reactive_energy_total_import_t0_price_eur");
 
     builder

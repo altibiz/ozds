@@ -16,16 +16,21 @@ public class RegulatoryCatalogueEntity : CatalogueEntity
 #pragma warning restore CA1707
 }
 
-public class RegulatoryCatalogueEntityTypeConfiguration : EntityTypeConfiguration<RegulatoryCatalogueEntity>
+public class
+  RegulatoryCatalogueEntityTypeConfiguration : EntityTypeConfiguration<
+  RegulatoryCatalogueEntity>
 {
-  public override void Configure(EntityTypeBuilder<RegulatoryCatalogueEntity> builder)
+  public override void Configure(
+    EntityTypeBuilder<RegulatoryCatalogueEntity> builder)
   {
     builder
-      .Property(nameof(RegulatoryCatalogueEntity.ActiveEnergyTotalImportT1Price_EUR))
+      .Property(nameof(RegulatoryCatalogueEntity
+        .ActiveEnergyTotalImportT1Price_EUR))
       .HasColumnName("active_energy_total_import_t1_price_eur");
 
     builder
-      .Property(nameof(RegulatoryCatalogueEntity.ActiveEnergyTotalImportT2Price_EUR))
+      .Property(nameof(RegulatoryCatalogueEntity
+        .ActiveEnergyTotalImportT2Price_EUR))
       .HasColumnName("active_energy_total_import_t2_price_eur");
 
     builder

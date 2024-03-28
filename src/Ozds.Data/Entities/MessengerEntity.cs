@@ -12,10 +12,13 @@ public class MessengerEntity : AuditableEntity
   public string LocationId { get; set; } = default!;
   public virtual LocationEntity Location { get; set; } = default!;
   public virtual ICollection<MeterEntity> Meters { get; set; } = default!;
-  public virtual ICollection<MessengerEventEntity> Events { get; set; } = default!;
+
+  public virtual ICollection<MessengerEventEntity> Events { get; set; } =
+    default!;
 }
 
-public class MessengerEntityTypeConfiguration : EntityTypeConfiguration<MessengerEntity>
+public class
+  MessengerEntityTypeConfiguration : EntityTypeConfiguration<MessengerEntity>
 {
   public override void Configure(EntityTypeBuilder<MessengerEntity> builder)
   {

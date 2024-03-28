@@ -1,9 +1,6 @@
 @inherits OwningComponentBase
 
-<Loading Load="@(async () => (Model
-  ?? await ScopedServices
-    .GetRequiredService<OzdsRepresentativeQueries>()
-    .MaybeRepresentingUserByUserId(Id))!)">
+<Loading Load="@(async () => (Model ?? await ScopedServices.GetRequiredService<OzdsRepresentativeQueries>().MaybeRepresentingUserByUserId(Id))!)">
   <Found>
     <MudText Typo="Typo.h5">User</MudText>
     <MudPaper>
@@ -42,9 +39,7 @@
 </Loading>
 
 @code {
-  [Parameter]
-  public string Id { get; set; } = default!;
+  [Parameter] public string Id { get; set; } = default!;
 
-  [Parameter]
-  public MaybeRepresentingUserModel? Model { get; set; }
+  [Parameter] public MaybeRepresentingUserModel? Model { get; set; }
 }

@@ -11,7 +11,8 @@ public class MeasurementLocationEntity : AuditableEntity
   public virtual MeterEntity Meter { get; set; } = default!;
 }
 
-public class MeasurementLocationEntityTypeConfiguration : ConcreteHierarchyEntityTypeConfiguration<MeasurementLocationEntity>
+public class MeasurementLocationEntityTypeConfiguration :
+  ConcreteHierarchyEntityTypeConfiguration<MeasurementLocationEntity>
 {
   public override void Configure<T>(EntityTypeBuilder<T> builder)
   {
@@ -22,7 +23,9 @@ public class MeasurementLocationEntityTypeConfiguration : ConcreteHierarchyEntit
 
     builder
       .HasOne(nameof(MeasurementLocationEntity.Meter))
-      .WithOne(nameof(MeterEntity<MeasurementEntity, AggregateEntity, MeasurementValidatorEntity>.MeasurementLocation))
+      .WithOne(
+        nameof(MeterEntity<MeasurementEntity, AggregateEntity,
+          MeasurementValidatorEntity>.MeasurementLocation))
       .HasForeignKey(typeof(T).Name, nameof(MeasurementLocationEntity.MeterId));
   }
 }

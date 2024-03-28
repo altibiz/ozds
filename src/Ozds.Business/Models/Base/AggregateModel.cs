@@ -7,14 +7,15 @@ namespace Ozds.Business.Models.Base;
 
 public abstract class AggregateModel : IAggregate
 {
+  [Required] public required string MeterId { get; set; }
+
   [Required]
-  public required string MeterId { get; set; }
-  [Required]
-  public required DateTimeOffset Timestamp { get; init; } = DateTimeOffset.UtcNow;
-  [Required]
-  public required IntervalModel Interval { get; init; }
-  [Required]
-  public required long Count { get; init; } = 0;
+  public required DateTimeOffset Timestamp { get; init; } =
+    DateTimeOffset.UtcNow;
+
+  [Required] public required IntervalModel Interval { get; init; }
+
+  [Required] public required long Count { get; init; } = 0;
 
   public abstract TariffMeasure Current_A { get; }
 

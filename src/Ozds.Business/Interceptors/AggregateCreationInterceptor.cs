@@ -26,7 +26,7 @@ public class AggregateCreationInterceptor : ServedSaveChangesInterceptor
     return base.SavingChangesAsync(eventData, result, cancellationToken);
   }
 
-  private void CreateAggregates(DbContextEventData eventData)
+  private static void CreateAggregates(DbContextEventData eventData)
   {
   }
 }

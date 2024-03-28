@@ -18,7 +18,9 @@ public class MeasurementEntity<T> : MeasurementEntity
   public virtual T Meter { get; set; } = default!;
 }
 
-public class MeasurementEntityTypeConfiguration : ConcreteHierarchyEntityTypeConfiguration<MeasurementEntity>
+public class
+  MeasurementEntityTypeConfiguration : ConcreteHierarchyEntityTypeConfiguration<
+  MeasurementEntity>
 {
   public override void Configure<T>(EntityTypeBuilder<T> builder)
   {

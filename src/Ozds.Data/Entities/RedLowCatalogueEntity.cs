@@ -16,24 +16,31 @@ public class RedLowCatalogueEntity : CatalogueEntity
 #pragma warning restore CA1707
 }
 
-public class RedLowCatalogueEntityTypeConfiguration : EntityTypeConfiguration<RedLowCatalogueEntity>
+public class
+  RedLowCatalogueEntityTypeConfiguration : EntityTypeConfiguration<
+  RedLowCatalogueEntity>
 {
-  public override void Configure(EntityTypeBuilder<RedLowCatalogueEntity> builder)
+  public override void Configure(
+    EntityTypeBuilder<RedLowCatalogueEntity> builder)
   {
     builder
-      .Property(nameof(RedLowCatalogueEntity.ActiveEnergyTotalImportT1Price_EUR))
+      .Property(
+        nameof(RedLowCatalogueEntity.ActiveEnergyTotalImportT1Price_EUR))
       .HasColumnName("active_energy_total_import_t1_price_eur");
 
     builder
-      .Property(nameof(RedLowCatalogueEntity.ActiveEnergyTotalImportT2Price_EUR))
+      .Property(
+        nameof(RedLowCatalogueEntity.ActiveEnergyTotalImportT2Price_EUR))
       .HasColumnName("active_energy_total_import_t2_price_eur");
 
     builder
-      .Property(nameof(RedLowCatalogueEntity.MaxActivePowerTotalImportT1Price_EUR))
+      .Property(nameof(RedLowCatalogueEntity
+        .MaxActivePowerTotalImportT1Price_EUR))
       .HasColumnName("max_active_power_total_import_t1_price_eur");
 
     builder
-      .Property(nameof(RedLowCatalogueEntity.ReactiveEnergyTotalImportT0Price_EUR))
+      .Property(nameof(RedLowCatalogueEntity
+        .ReactiveEnergyTotalImportT0Price_EUR))
       .HasColumnName("active_energy_total_import_t1_price_eur");
 
     builder

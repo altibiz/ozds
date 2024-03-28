@@ -6,48 +6,50 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Models;
 
-public class SchneideriEM3xxxMeasurementModel : MeasurementModel<SchneideriEM3xxxMeasurementValidatorModel>
+public class SchneideriEM3xxxMeasurementModel : MeasurementModel<
+  SchneideriEM3xxxMeasurementValidatorModel>
 {
-  [Required]
-  public required float VoltageL1AnyT0_V { get; init; }
-  [Required]
-  public required float VoltageL2AnyT0_V { get; init; }
-  [Required]
-  public required float VoltageL3AnyT0_V { get; init; }
-  [Required]
-  public required float CurrentL1AnyT0_A { get; init; }
-  [Required]
-  public required float CurrentL2AnyT0_A { get; init; }
-  [Required]
-  public required float CurrentL3AnyT0_A { get; init; }
-  [Required]
-  public required float ActivePowerL1NetT0_W { get; init; }
-  [Required]
-  public required float ActivePowerL2NetT0_W { get; init; }
-  [Required]
-  public required float ActivePowerL3NetT0_W { get; init; }
-  [Required]
-  public required float ReactivePowerTotalNetT0_VAR { get; init; }
-  [Required]
-  public required float ApparentPowerTotalNetT0_VA { get; init; }
-  [Required]
-  public required float ActiveEnergyL1ImportT0_Wh { get; init; }
-  [Required]
-  public required float ActiveEnergyL2ImportT0_Wh { get; init; }
-  [Required]
-  public required float ActiveEnergyL3ImportT0_Wh { get; init; }
-  [Required]
-  public required float ActiveEnergyTotalImportT0_Wh { get; init; }
-  [Required]
-  public required float ActiveEnergyTotalExportT0_Wh { get; init; }
+  [Required] public required float VoltageL1AnyT0_V { get; init; }
+
+  [Required] public required float VoltageL2AnyT0_V { get; init; }
+
+  [Required] public required float VoltageL3AnyT0_V { get; init; }
+
+  [Required] public required float CurrentL1AnyT0_A { get; init; }
+
+  [Required] public required float CurrentL2AnyT0_A { get; init; }
+
+  [Required] public required float CurrentL3AnyT0_A { get; init; }
+
+  [Required] public required float ActivePowerL1NetT0_W { get; init; }
+
+  [Required] public required float ActivePowerL2NetT0_W { get; init; }
+
+  [Required] public required float ActivePowerL3NetT0_W { get; init; }
+
+  [Required] public required float ReactivePowerTotalNetT0_VAR { get; init; }
+
+  [Required] public required float ApparentPowerTotalNetT0_VA { get; init; }
+
+  [Required] public required float ActiveEnergyL1ImportT0_Wh { get; init; }
+
+  [Required] public required float ActiveEnergyL2ImportT0_Wh { get; init; }
+
+  [Required] public required float ActiveEnergyL3ImportT0_Wh { get; init; }
+
+  [Required] public required float ActiveEnergyTotalImportT0_Wh { get; init; }
+
+  [Required] public required float ActiveEnergyTotalExportT0_Wh { get; init; }
+
   [Required]
   public required float ReactiveEnergyTotalImportT0_VARh { get; init; }
+
   [Required]
   public required float ReactiveEnergyTotalExportT0_VARh { get; init; }
-  [Required]
-  public required float ActiveEnergyTotalImportT1_Wh { get; init; }
-  [Required]
-  public required float ActiveEnergyTotalImportT2_Wh { get; init; }
+
+  [Required] public required float ActiveEnergyTotalImportT1_Wh { get; init; }
+
+  [Required] public required float ActiveEnergyTotalImportT2_Wh { get; init; }
 
   public override TariffMeasure Current_A
   {
@@ -205,7 +207,7 @@ public static class SchneideriEM3xxxMeasurementModelExtensions
     this SchneideriEM3xxxMeasurementModel measurement,
     IntervalModel interval)
   {
-    return new SchneideriEM3xxxAggregateModel()
+    return new SchneideriEM3xxxAggregateModel
     {
       MeterId = measurement.MeterId,
       Timestamp = measurement.Timestamp,
@@ -222,17 +224,28 @@ public static class SchneideriEM3xxxMeasurementModelExtensions
       ActivePowerL3NetT0Avg_W = measurement.ActivePowerL3NetT0_W,
       ReactivePowerTotalNetT0Avg_VAR = measurement.ReactivePowerTotalNetT0_VAR,
       ApparentPowerTotalNetT0Avg_VA = measurement.ApparentPowerTotalNetT0_VA,
-      ActiveEnergyTotalImportT0Min_Wh = measurement.ActiveEnergyTotalImportT0_Wh,
-      ActiveEnergyTotalImportT0Max_Wh = measurement.ActiveEnergyTotalImportT0_Wh,
-      ActiveEnergyTotalExportT0Min_Wh = measurement.ActiveEnergyTotalExportT0_Wh,
-      ActiveEnergyTotalExportT0Max_Wh = measurement.ActiveEnergyTotalExportT0_Wh,
-      ReactiveEnergyTotalImportT0Min_VARh = measurement.ReactiveEnergyTotalImportT0_VARh,
-      ReactiveEnergyTotalImportT0Max_VARh = measurement.ReactiveEnergyTotalImportT0_VARh,
-      ReactiveEnergyTotalExportT0Min_VARh = measurement.ReactiveEnergyTotalExportT0_VARh,
-      ReactiveEnergyTotalExportT0Max_VARh = measurement.ReactiveEnergyTotalExportT0_VARh,
-      ActiveEnergyTotalImportT1Min_Wh = measurement.ActiveEnergyTotalImportT1_Wh,
-      ActiveEnergyTotalImportT1Max_Wh = measurement.ActiveEnergyTotalImportT1_Wh,
-      ActiveEnergyTotalImportT2Min_Wh = measurement.ActiveEnergyTotalImportT2_Wh,
+      ActiveEnergyTotalImportT0Min_Wh =
+        measurement.ActiveEnergyTotalImportT0_Wh,
+      ActiveEnergyTotalImportT0Max_Wh =
+        measurement.ActiveEnergyTotalImportT0_Wh,
+      ActiveEnergyTotalExportT0Min_Wh =
+        measurement.ActiveEnergyTotalExportT0_Wh,
+      ActiveEnergyTotalExportT0Max_Wh =
+        measurement.ActiveEnergyTotalExportT0_Wh,
+      ReactiveEnergyTotalImportT0Min_VARh =
+        measurement.ReactiveEnergyTotalImportT0_VARh,
+      ReactiveEnergyTotalImportT0Max_VARh =
+        measurement.ReactiveEnergyTotalImportT0_VARh,
+      ReactiveEnergyTotalExportT0Min_VARh =
+        measurement.ReactiveEnergyTotalExportT0_VARh,
+      ReactiveEnergyTotalExportT0Max_VARh =
+        measurement.ReactiveEnergyTotalExportT0_VARh,
+      ActiveEnergyTotalImportT1Min_Wh =
+        measurement.ActiveEnergyTotalImportT1_Wh,
+      ActiveEnergyTotalImportT1Max_Wh =
+        measurement.ActiveEnergyTotalImportT1_Wh,
+      ActiveEnergyTotalImportT2Min_Wh =
+        measurement.ActiveEnergyTotalImportT2_Wh,
       ActiveEnergyTotalImportT2Max_Wh = measurement.ActiveEnergyTotalImportT2_Wh
     };
   }
@@ -240,7 +253,7 @@ public static class SchneideriEM3xxxMeasurementModelExtensions
   public static SchneideriEM3xxxMeasurementModel ToModel(
     this SchneideriEM3xxxMeasurementEntity entity)
   {
-    return new SchneideriEM3xxxMeasurementModel()
+    return new SchneideriEM3xxxMeasurementModel
     {
       MeterId = entity.MeterId,
       Timestamp = entity.Timestamp,
@@ -260,8 +273,10 @@ public static class SchneideriEM3xxxMeasurementModelExtensions
       ActiveEnergyL3ImportT0_Wh = entity.ActiveEnergyL3ImportT0_Wh,
       ActiveEnergyTotalImportT0_Wh = entity.ActiveEnergyTotalImportT0_Wh,
       ActiveEnergyTotalExportT0_Wh = entity.ActiveEnergyTotalExportT0_Wh,
-      ReactiveEnergyTotalImportT0_VARh = entity.ReactiveEnergyTotalImportT0_VARh,
-      ReactiveEnergyTotalExportT0_VARh = entity.ReactiveEnergyTotalExportT0_VARh,
+      ReactiveEnergyTotalImportT0_VARh =
+        entity.ReactiveEnergyTotalImportT0_VARh,
+      ReactiveEnergyTotalExportT0_VARh =
+        entity.ReactiveEnergyTotalExportT0_VARh,
       ActiveEnergyTotalImportT1_Wh = entity.ActiveEnergyTotalImportT1_Wh,
       ActiveEnergyTotalImportT2_Wh = entity.ActiveEnergyTotalImportT2_Wh
     };

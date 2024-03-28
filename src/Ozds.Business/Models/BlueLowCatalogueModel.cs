@@ -9,9 +9,11 @@ public class BlueLowCatalogueModel : CatalogueModel
   [Required]
   [Range(0, double.MaxValue)]
   public required float ActiveEnergyTotalImportT0Price_EUR { get; set; }
+
   [Required]
   [Range(0, double.MaxValue)]
   public required float ReactiveEnergyTotalImportT0Price_EUR { get; set; }
+
   [Required]
   [Range(0, double.MaxValue)]
   public required float MeterFeePrice_EUR { get; set; }
@@ -22,7 +24,7 @@ public static class BlueLowCatalogueModelExtensions
   public static BlueLowCatalogueModel ToModel(
     this BlueLowCatalogueEntity entity)
   {
-    return new BlueLowCatalogueModel()
+    return new BlueLowCatalogueModel
     {
       Id = entity.Id,
       Title = entity.Title,
@@ -33,8 +35,10 @@ public static class BlueLowCatalogueModelExtensions
       IsDeleted = entity.IsDeleted,
       DeletedOn = entity.DeletedOn,
       DeletedById = entity.DeletedById,
-      ActiveEnergyTotalImportT0Price_EUR = entity.ActiveEnergyTotalImportT0Price_EUR,
-      ReactiveEnergyTotalImportT0Price_EUR = entity.ReactiveEnergyTotalImportT0Price_EUR,
+      ActiveEnergyTotalImportT0Price_EUR =
+        entity.ActiveEnergyTotalImportT0Price_EUR,
+      ReactiveEnergyTotalImportT0Price_EUR =
+        entity.ReactiveEnergyTotalImportT0Price_EUR,
       MeterFeePrice_EUR = entity.MeterFeePrice_EUR
     };
   }

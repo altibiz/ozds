@@ -11,9 +11,12 @@ public class LocationInvoiceEntity : InvoiceEntity
   public virtual LocationEntity Location { get; set; } = default!;
 }
 
-public class LocationInvoiceEntityTypeConfiguration : EntityTypeConfiguration<LocationInvoiceEntity>
+public class
+  LocationInvoiceEntityTypeConfiguration : EntityTypeConfiguration<
+  LocationInvoiceEntity>
 {
-  public override void Configure(EntityTypeBuilder<LocationInvoiceEntity> builder)
+  public override void Configure(
+    EntityTypeBuilder<LocationInvoiceEntity> builder)
   {
     builder
       .HasOne(nameof(LocationInvoiceEntity.Location))

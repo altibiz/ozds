@@ -14,16 +14,21 @@ public class BlueLowCatalogueEntity : CatalogueEntity
 #pragma warning restore CA1707
 }
 
-public class BlueLowCatalogueEntityTypeConfiguration : EntityTypeConfiguration<BlueLowCatalogueEntity>
+public class
+  BlueLowCatalogueEntityTypeConfiguration : EntityTypeConfiguration<
+  BlueLowCatalogueEntity>
 {
-  public override void Configure(EntityTypeBuilder<BlueLowCatalogueEntity> builder)
+  public override void Configure(
+    EntityTypeBuilder<BlueLowCatalogueEntity> builder)
   {
     builder
-      .Property(nameof(BlueLowCatalogueEntity.ActiveEnergyTotalImportT0Price_EUR))
+      .Property(
+        nameof(BlueLowCatalogueEntity.ActiveEnergyTotalImportT0Price_EUR))
       .HasColumnName("active_energy_total_import_t0_price_eur");
 
     builder
-      .Property(nameof(BlueLowCatalogueEntity.ReactiveEnergyTotalImportT0Price_EUR))
+      .Property(nameof(BlueLowCatalogueEntity
+        .ReactiveEnergyTotalImportT0Price_EUR))
       .HasColumnName("active_energy_total_import_t1_price_eur");
 
     builder

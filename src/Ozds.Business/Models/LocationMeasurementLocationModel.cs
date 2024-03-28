@@ -12,7 +12,7 @@ public static class LocationMeasurementLocationModelExtensions
   public static LocationMeasurementLocationModel ToModel(
     this LocationMeasurementLocationEntity entity)
   {
-    return new LocationMeasurementLocationModel()
+    return new LocationMeasurementLocationModel
     {
       Id = entity.Id,
       Title = entity.Title,
@@ -41,7 +41,7 @@ public static class LocationMeasurementLocationModelExtensions
       IsDeleted = model.IsDeleted,
       DeletedOn = model.DeletedOn,
       DeletedById = model.DeletedById,
-      MeterId = model.MeterId,
+      MeterId = model.MeterId
     };
   }
 }

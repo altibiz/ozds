@@ -10,7 +10,11 @@ public abstract class InvoiceEntity : ReadonlyEntity
 {
   private readonly long _id;
 
-  public virtual string Id { get => _id.ToString(); init => _id = long.Parse(value); }
+  public virtual string Id
+  {
+    get { return _id.ToString(); }
+    init { _id = long.Parse(value); }
+  }
 
   public DateTimeOffset IssuedOn { get; set; } = DateTimeOffset.UtcNow;
 
@@ -23,7 +27,9 @@ public abstract class InvoiceEntity : ReadonlyEntity
   public DateTimeOffset ToDate { get; set; } = default!;
 }
 
-public class InvoiceEntityTypeConfiguration : ConcreteHierarchyEntityTypeConfiguration<InvoiceEntity>
+public class
+  InvoiceEntityTypeConfiguration : ConcreteHierarchyEntityTypeConfiguration<
+  InvoiceEntity>
 {
   public override void Configure<T>(EntityTypeBuilder<T> builder)
   {

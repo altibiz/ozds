@@ -7,22 +7,21 @@ namespace Ozds.Business.Models;
 
 public class RepresentativeModel : AuditableModel
 {
-  [Required]
-  public required RoleModel Role { get; set; }
-  [Required]
-  public required string Name { get; set; }
-  [Required]
-  public required string SocialSecurityNumber { get; set; }
-  [Required]
-  public required string Address { get; set; }
-  [Required]
-  public required string City { get; set; }
-  [Required]
-  public required string PostalCode { get; set; }
-  [EmailAddress]
-  public required string Email { get; set; }
-  [Phone]
-  public required string PhoneNumber { get; set; }
+  [Required] public required RoleModel Role { get; set; }
+
+  [Required] public required string Name { get; set; }
+
+  [Required] public required string SocialSecurityNumber { get; set; }
+
+  [Required] public required string Address { get; set; }
+
+  [Required] public required string City { get; set; }
+
+  [Required] public required string PostalCode { get; set; }
+
+  [EmailAddress] public required string Email { get; set; }
+
+  [Phone] public required string PhoneNumber { get; set; }
 
   public static RepresentativeModel New(UserModel user)
   {
@@ -48,7 +47,8 @@ public class RepresentativeModel : AuditableModel
     };
   }
 
-  public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+  public override IEnumerable<ValidationResult> Validate(
+    ValidationContext validationContext)
   {
     foreach (var result in base.Validate(validationContext))
     {
@@ -129,7 +129,7 @@ public static class RepresentativeModelExtensions
 
   public static RepresentativeModel ToModel(this RepresentativeEntity entity)
   {
-    return new RepresentativeModel()
+    return new RepresentativeModel
     {
       Id = entity.Id,
       Title = entity.Title,
