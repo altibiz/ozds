@@ -6,7 +6,7 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities;
 
-public class AbbB2xMeasurementValidatorEntity : MeasurementValidatorEntity
+public class AbbB2xMeasurementValidatorEntity : MeasurementValidatorEntity<AbbB2xMeterEntity>
 {
 #pragma warning disable CA1707
   public float MinVoltage_V { get; set; }

@@ -6,8 +6,7 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities;
 
-public class
-  SchneideriEM3xxxMeasurementValidatorEntity : MeasurementValidatorEntity
+public class SchneideriEM3xxxMeasurementValidatorEntity : MeasurementValidatorEntity<SchneideriEM3xxxMeterEntity>
 {
   public float MinVoltage_V { get; set; }
   public float MaxVoltage_V { get; set; } = default!;

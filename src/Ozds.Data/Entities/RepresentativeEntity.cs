@@ -28,6 +28,8 @@ public class RepresentativeEntity : AuditableEntity
 
   public string PostalCode { get; set; } = default!;
 
+  public string City { get; set; } = default!;
+
   public string Email { get; set; } = default!;
 
   public string PhoneNumber { get; set; } = default!;
