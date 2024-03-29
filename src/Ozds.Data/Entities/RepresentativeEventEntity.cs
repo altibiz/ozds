@@ -26,6 +26,6 @@ public class
 
     builder
       .Property(nameof(RepresentativeAuditEventEntity.RepresentativeId))
-      .HasColumnName("RepresentativeId");
+      .HasColumnName("representative_id");
   }
 }

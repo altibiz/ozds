@@ -29,7 +29,7 @@ public class AuditEventEntityTypeHierarchyConfiguration :
         nameof(AuditEventEntity.AuditableEntityType),
         nameof(AuditEventEntity.AuditableEntityId)
       },
-      "ix_auditevententity_auditableentitytype_auditableentityid"
+      "ix_events_auditable_entity_type_auditable_entity_id"
     );
 
     builder.HasIndex(
@@ -37,7 +37,7 @@ public class AuditEventEntityTypeHierarchyConfiguration :
         nameof(AuditEventEntity.AuditableEntityTable),
         nameof(AuditEventEntity.AuditableEntityId)
       },
-      "ix_auditevententity_auditableentitytable_auditableentityid"
+      "ix_events_auditable_entity_table_auditable_entity_id"
     );
   }
 }

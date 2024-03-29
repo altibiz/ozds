@@ -94,6 +94,7 @@ erDiagram
     }
 
     events {
+        text RepresentativeId FK
         integer audit
         text auditable_entity_id
         text auditable_entity_table
@@ -103,8 +104,6 @@ erDiagram
         character_varying kind
         integer level
         text messenger_id FK
-        text representative_event_entity_representative_id FK
-        text representative_id FK
         timestamp_with_time_zone timestamp
     }
 
@@ -323,8 +322,7 @@ erDiagram
     locations }o--|| catalogues : "white_medium_catalogue_id"
     meters }o--|| catalogues : "catalogue_id"
     events }o--|| messengers : "messenger_id"
-    events }o--|| representatives : "representative_event_entity_representative_id"
-    events }o--|| representatives : "representative_id"
+    events }o--|| representatives : "RepresentativeId"
     location_entity_representative_entity }o--|| locations : "locations_id"
     location_entity_representative_entity }o--|| representatives : "representatives_string_id"
     location_invoices }o--|| locations : "location_id"
