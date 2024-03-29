@@ -1,10 +1,15 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
 
-public abstract class AuditableEntity : IdentifiableEntity
+public abstract class AuditableEntity
 {
+  public string Id { get; init; } = default!;
+
+  public string Title { get; set; } = default!;
+
   public DateTimeOffset CreatedOn { get; set; } = DateTimeOffset.UtcNow;
 
   public string? CreatedById { get; set; }
@@ -40,6 +45,30 @@ public class
     }
 
     var builder = modelBuilder.Entity(type);
+
+    if (type.BaseType == typeof(AuditableEntity))
+    {
+      builder.HasKey(nameof(AuditableEntity.Id));
+    }
+
+    if (type == typeof(RepresentativeEntity))
+    {
+      builder
+        .Property(nameof(AuditableEntity.Id))
+        .ValueGeneratedNever()
+        .HasColumnName("id")
+        .HasColumnType("text");
+    }
+    else
+    {
+      builder
+        .Property(nameof(AuditableEntity.Id))
+        .HasColumnType("bigint")
+        .HasColumnName("id")
+        .HasConversion<StringToNumberConverter<long>>()
+        .ValueGeneratedOnAdd()
+        .UseIdentityAlwaysColumn();
+    }
 
     builder
       .HasOne(nameof(AuditableEntity.CreatedBy))
