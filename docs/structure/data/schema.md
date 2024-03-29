@@ -72,7 +72,6 @@ erDiagram
     }
 
     catalogues {
-        bigint _location_id FK
         real active_energy_total_import_t0_price_eur
         real active_energy_total_import_t1_price_eur
         real active_energy_total_import_t2_price_eur
@@ -86,6 +85,7 @@ erDiagram
         character_varying kind
         text last_updated_by_id FK
         timestamp_with_time_zone last_updated_on
+        bigint location_id FK
         real max_active_power_total_import_t1_price_eur
         real meter_fee_price_eur
         real reactive_energy_total_import_t0_price_eur
@@ -123,11 +123,11 @@ erDiagram
     }
 
     location_invoices {
-        bigint _location_id FK
         timestamp_with_time_zone from_date
         bigint id PK
         text issued_by_id FK
         timestamp_with_time_zone issued_on
+        bigint location_id FK
         timestamp_with_time_zone to_date
     }
 
@@ -155,8 +155,6 @@ erDiagram
     }
 
     measurement_locations {
-        bigint _location_id FK
-        bigint _network_user_id FK
         text created_by_id FK
         timestamp_with_time_zone created_on
         text deleted_by_id FK
@@ -166,7 +164,9 @@ erDiagram
         character_varying kind
         text last_updated_by_id FK
         timestamp_with_time_zone last_updated_on
+        bigint location_id FK
         text meter_id
+        bigint network_user_id FK
         text title
     }
 
@@ -196,7 +196,6 @@ erDiagram
     }
 
     messengers {
-        bigint _location_id FK
         text created_by_id FK
         timestamp_with_time_zone created_on
         text deleted_by_id FK
@@ -205,13 +204,12 @@ erDiagram
         boolean is_deleted
         text last_updated_by_id FK
         timestamp_with_time_zone last_updated_on
+        bigint location_id FK
         text title
     }
 
     meters {
-        bigint _catalogue_id FK
-        bigint _measurement_location_id FK
-        bigint _measurement_validator_id FK
+        bigint catalogue_id FK
         real connection_power_w
         text created_by_id FK
         timestamp_with_time_zone created_on
@@ -223,9 +221,10 @@ erDiagram
         character_varying kind
         text last_updated_by_id FK
         timestamp_with_time_zone last_updated_on
+        bigint measurement_location_id FK
+        bigint measurement_validator_id FK
         text messenger_id FK
         ARRAY phases
-        bigint schneideri_em3xxx_meter_entity__measurement_validator_id FK
         text title
     }
 
@@ -235,11 +234,11 @@ erDiagram
     }
 
     network_user_invoices {
-        bigint _network_user_id FK
         timestamp_with_time_zone from_date
         bigint id PK
         text issued_by_id FK
         timestamp_with_time_zone issued_on
+        bigint network_user_id FK
         timestamp_with_time_zone to_date
     }
 
@@ -333,7 +332,7 @@ erDiagram
 
     abb_b2x_aggregates }o--|| meters : "meter_id"
     abb_b2x_measurements }o--|| meters : "meter_id"
-    catalogues }o--|| locations : "_location_id"
+    catalogues }o--|| locations : "location_id"
     catalogues }o--|| representatives : "created_by_id"
     catalogues }o--|| representatives : "deleted_by_id"
     catalogues }o--|| representatives : "last_updated_by_id"
@@ -343,7 +342,7 @@ erDiagram
     locations }o--|| catalogues : "regulatory_catalogue_id1"
     locations }o--|| catalogues : "white_low_catalogue_id1"
     locations }o--|| catalogues : "white_medium_catalogue_id1"
-    meters }o--|| catalogues : "_catalogue_id"
+    meters }o--|| catalogues : "catalogue_id"
     events }o--|| locations : "location_entity_id"
     events }o--|| measurement_locations : "measurement_location_entity_id"
     events }o--|| measurement_validators : "measurement_validator_entity_id"
@@ -356,24 +355,23 @@ erDiagram
     events }o--|| representatives : "representative_id"
     location_entity_representative_entity }o--|| locations : "locations_id"
     location_entity_representative_entity }o--|| representatives : "representatives_string_id"
-    location_invoices }o--|| locations : "_location_id"
+    location_invoices }o--|| locations : "location_id"
     location_invoices }o--|| representatives : "issued_by_id"
     locations }o--|| representatives : "created_by_id"
     locations }o--|| representatives : "deleted_by_id"
     locations }o--|| representatives : "last_updated_by_id"
-    measurement_locations }o--|| locations : "_location_id"
-    messengers }o--|| locations : "_location_id"
+    measurement_locations }o--|| locations : "location_id"
+    messengers }o--|| locations : "location_id"
     network_users }o--|| locations : "_location_id"
-    measurement_locations }o--|| network_users : "_network_user_id"
+    measurement_locations }o--|| network_users : "network_user_id"
     measurement_locations }o--|| representatives : "created_by_id"
     measurement_locations }o--|| representatives : "deleted_by_id"
     measurement_locations }o--|| representatives : "last_updated_by_id"
-    meters }o--|| measurement_locations : "_measurement_location_id"
+    meters }o--|| measurement_locations : "measurement_location_id"
     measurement_validators }o--|| representatives : "created_by_id"
     measurement_validators }o--|| representatives : "deleted_by_id"
     measurement_validators }o--|| representatives : "last_updated_by_id"
-    meters }o--|| measurement_validators : "_measurement_validator_id"
-    meters }o--|| measurement_validators : "schneideri_em3xxx_meter_entity__measurement_validator_id"
+    meters }o--|| measurement_validators : "measurement_validator_id"
     messengers }o--|| representatives : "created_by_id"
     messengers }o--|| representatives : "deleted_by_id"
     messengers }o--|| representatives : "last_updated_by_id"
@@ -385,7 +383,7 @@ erDiagram
     schneider_iem3xxx_measurements }o--|| meters : "meter_id"
     network_user_entity_representative_entity }o--|| network_users : "network_users_id"
     network_user_entity_representative_entity }o--|| representatives : "representatives_string_id"
-    network_user_invoices }o--|| network_users : "_network_user_id"
+    network_user_invoices }o--|| network_users : "network_user_id"
     network_user_invoices }o--|| representatives : "issued_by_id"
     network_users }o--|| representatives : "created_by_id"
     network_users }o--|| representatives : "deleted_by_id"

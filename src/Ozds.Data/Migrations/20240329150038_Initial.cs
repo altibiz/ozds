@@ -198,7 +198,7 @@ namespace Ozds.Data.Migrations
                 {
                     id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityAlwaysColumn),
-                    _location_id = table.Column<long>(type: "bigint", nullable: false),
+                    location_id = table.Column<long>(type: "bigint", nullable: false),
                     kind = table.Column<string>(type: "character varying(34)", maxLength: 34, nullable: false),
                     active_energy_total_import_t0_price_eur = table.Column<float>(type: "real", nullable: true),
                     active_energy_total_import_t1_price_eur = table.Column<float>(type: "real", nullable: true),
@@ -344,7 +344,7 @@ namespace Ozds.Data.Migrations
                 {
                     id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityAlwaysColumn),
-                    _location_id = table.Column<long>(type: "bigint", nullable: false),
+                    location_id = table.Column<long>(type: "bigint", nullable: false),
                     issued_on = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     issued_by_id = table.Column<string>(type: "text", nullable: true),
                     from_date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
@@ -354,8 +354,8 @@ namespace Ozds.Data.Migrations
                 {
                     table.PrimaryKey("pk_location_invoices", x => x.id);
                     table.ForeignKey(
-                        name: "fk_location_invoices_locations__location_id",
-                        column: x => x._location_id,
+                        name: "fk_location_invoices_locations_location_id",
+                        column: x => x.location_id,
                         principalTable: "locations",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
@@ -371,7 +371,7 @@ namespace Ozds.Data.Migrations
                 columns: table => new
                 {
                     id = table.Column<string>(type: "text", nullable: false),
-                    _location_id = table.Column<long>(type: "bigint", nullable: false),
+                    location_id = table.Column<long>(type: "bigint", nullable: false),
                     title = table.Column<string>(type: "text", nullable: false),
                     created_on = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     created_by_id = table.Column<string>(type: "text", nullable: true),
@@ -385,8 +385,8 @@ namespace Ozds.Data.Migrations
                 {
                     table.PrimaryKey("pk_messengers", x => x.id);
                     table.ForeignKey(
-                        name: "fk_messengers_locations__location_id",
-                        column: x => x._location_id,
+                        name: "fk_messengers_locations_location_id",
+                        column: x => x.location_id,
                         principalTable: "locations",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
@@ -457,8 +457,8 @@ namespace Ozds.Data.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityAlwaysColumn),
                     meter_id = table.Column<string>(type: "text", nullable: false),
                     kind = table.Column<string>(type: "character varying(55)", maxLength: 55, nullable: false),
-                    _location_id = table.Column<long>(type: "bigint", nullable: true),
-                    _network_user_id = table.Column<long>(type: "bigint", nullable: true),
+                    location_id = table.Column<long>(type: "bigint", nullable: true),
+                    network_user_id = table.Column<long>(type: "bigint", nullable: true),
                     title = table.Column<string>(type: "text", nullable: false),
                     created_on = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     created_by_id = table.Column<string>(type: "text", nullable: true),
@@ -472,14 +472,14 @@ namespace Ozds.Data.Migrations
                 {
                     table.PrimaryKey("pk_measurement_locations", x => x.id);
                     table.ForeignKey(
-                        name: "fk_measurement_locations_locations__location_id",
-                        column: x => x._location_id,
+                        name: "fk_measurement_locations_locations_location_id",
+                        column: x => x.location_id,
                         principalTable: "locations",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "fk_measurement_locations_network_users__network_user_id",
-                        column: x => x._network_user_id,
+                        name: "fk_measurement_locations_network_users_network_user_id",
+                        column: x => x.network_user_id,
                         principalTable: "network_users",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
@@ -530,7 +530,7 @@ namespace Ozds.Data.Migrations
                 {
                     id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityAlwaysColumn),
-                    _network_user_id = table.Column<long>(type: "bigint", nullable: false),
+                    network_user_id = table.Column<long>(type: "bigint", nullable: false),
                     issued_on = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     issued_by_id = table.Column<string>(type: "text", nullable: true),
                     from_date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
@@ -540,8 +540,8 @@ namespace Ozds.Data.Migrations
                 {
                     table.PrimaryKey("pk_network_user_invoices", x => x.id);
                     table.ForeignKey(
-                        name: "fk_network_user_invoices_network_users__network_user_id",
-                        column: x => x._network_user_id,
+                        name: "fk_network_user_invoices_network_users_network_user_id",
+                        column: x => x.network_user_id,
                         principalTable: "network_users",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
@@ -559,13 +559,12 @@ namespace Ozds.Data.Migrations
                     id = table.Column<string>(type: "text", nullable: false),
                     id1 = table.Column<string>(type: "text", nullable: false),
                     messenger_id = table.Column<string>(type: "text", nullable: false),
-                    _measurement_location_id = table.Column<long>(type: "bigint", nullable: false),
-                    _catalogue_id = table.Column<long>(type: "bigint", nullable: false),
+                    measurement_location_id = table.Column<long>(type: "bigint", nullable: false),
+                    catalogue_id = table.Column<long>(type: "bigint", nullable: false),
                     connection_power_w = table.Column<float>(type: "real", nullable: false),
                     phases = table.Column<int[]>(type: "integer[]", nullable: false),
                     kind = table.Column<string>(type: "character varying(34)", maxLength: 34, nullable: false),
-                    _measurement_validator_id = table.Column<long>(type: "bigint", nullable: true),
-                    schneideri_em3xxx_meter_entity__measurement_validator_id = table.Column<long>(type: "bigint", nullable: true),
+                    measurement_validator_id = table.Column<long>(type: "bigint", nullable: true),
                     title = table.Column<string>(type: "text", nullable: false),
                     created_on = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     created_by_id = table.Column<string>(type: "text", nullable: true),
@@ -580,25 +579,19 @@ namespace Ozds.Data.Migrations
                     table.PrimaryKey("pk_meters", x => x.id);
                     table.ForeignKey(
                         name: "fk_meters_catalogues__catalogue_id",
-                        column: x => x._catalogue_id,
+                        column: x => x.catalogue_id,
                         principalTable: "catalogues",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "fk_meters_measurement_locations__measurement_location_id",
-                        column: x => x._measurement_location_id,
+                        column: x => x.measurement_location_id,
                         principalTable: "measurement_locations",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "fk_meters_measurement_validators__measurement_validator_id",
-                        column: x => x._measurement_validator_id,
-                        principalTable: "measurement_validators",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "fk_meters_measurement_validators__measurement_validator_id1",
-                        column: x => x.schneideri_em3xxx_meter_entity__measurement_validator_id,
+                        column: x => x.measurement_validator_id,
                         principalTable: "measurement_validators",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
@@ -810,7 +803,7 @@ namespace Ozds.Data.Migrations
             migrationBuilder.CreateIndex(
                 name: "ix_catalogues__location_id",
                 table: "catalogues",
-                column: "_location_id",
+                column: "location_id",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -891,7 +884,7 @@ namespace Ozds.Data.Migrations
             migrationBuilder.CreateIndex(
                 name: "ix_location_invoices__location_id",
                 table: "location_invoices",
-                column: "_location_id");
+                column: "location_id");
 
             migrationBuilder.CreateIndex(
                 name: "ix_location_invoices_issued_by_id",
@@ -939,16 +932,6 @@ namespace Ozds.Data.Migrations
                 column: "white_medium_catalogue_id1");
 
             migrationBuilder.CreateIndex(
-                name: "ix_measurement_locations__location_id",
-                table: "measurement_locations",
-                column: "_location_id");
-
-            migrationBuilder.CreateIndex(
-                name: "ix_measurement_locations__network_user_id",
-                table: "measurement_locations",
-                column: "_network_user_id");
-
-            migrationBuilder.CreateIndex(
                 name: "ix_measurement_locations_created_by_id",
                 table: "measurement_locations",
                 column: "created_by_id");
@@ -962,6 +945,16 @@ namespace Ozds.Data.Migrations
                 name: "ix_measurement_locations_last_updated_by_id",
                 table: "measurement_locations",
                 column: "last_updated_by_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_measurement_locations_location_id",
+                table: "measurement_locations",
+                column: "location_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_measurement_locations_network_user_id",
+                table: "measurement_locations",
+                column: "network_user_id");
 
             migrationBuilder.CreateIndex(
                 name: "ix_measurement_validators_created_by_id",
@@ -981,7 +974,7 @@ namespace Ozds.Data.Migrations
             migrationBuilder.CreateIndex(
                 name: "ix_messengers__location_id",
                 table: "messengers",
-                column: "_location_id");
+                column: "location_id");
 
             migrationBuilder.CreateIndex(
                 name: "ix_messengers_created_by_id",
@@ -1001,24 +994,18 @@ namespace Ozds.Data.Migrations
             migrationBuilder.CreateIndex(
                 name: "ix_meters__catalogue_id",
                 table: "meters",
-                column: "_catalogue_id");
+                column: "catalogue_id");
 
             migrationBuilder.CreateIndex(
                 name: "ix_meters__measurement_location_id",
                 table: "meters",
-                column: "_measurement_location_id",
+                column: "measurement_location_id",
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "ix_meters__measurement_validator_id",
                 table: "meters",
-                column: "_measurement_validator_id",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "ix_meters__measurement_validator_id1",
-                table: "meters",
-                column: "schneideri_em3xxx_meter_entity__measurement_validator_id",
+                column: "measurement_validator_id",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -1049,7 +1036,7 @@ namespace Ozds.Data.Migrations
             migrationBuilder.CreateIndex(
                 name: "ix_network_user_invoices__network_user_id",
                 table: "network_user_invoices",
-                column: "_network_user_id");
+                column: "network_user_id");
 
             migrationBuilder.CreateIndex(
                 name: "ix_network_user_invoices_issued_by_id",
@@ -1120,7 +1107,7 @@ namespace Ozds.Data.Migrations
             migrationBuilder.AddForeignKey(
                 name: "fk_catalogues_locations__location_id",
                 table: "catalogues",
-                column: "_location_id",
+                column: "location_id",
                 principalTable: "locations",
                 principalColumn: "id",
                 onDelete: ReferentialAction.Cascade);

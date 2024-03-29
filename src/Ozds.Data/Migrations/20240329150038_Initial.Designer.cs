@@ -12,7 +12,7 @@ using Ozds.Data;
 namespace Ozds.Data.Migrations
 {
     [DbContext(typeof(OzdsDbContext))]
-    [Migration("20240329132538_Initial")]
+    [Migration("20240329150038_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -382,7 +382,7 @@ namespace Ozds.Data.Migrations
 
                     b.Property<long>("_locationId")
                         .HasColumnType("bigint")
-                        .HasColumnName("_location_id");
+                        .HasColumnName("location_id");
 
                     b.Property<string>("kind")
                         .IsRequired()
@@ -583,11 +583,11 @@ namespace Ozds.Data.Migrations
 
                     b.Property<long>("_catalogueId")
                         .HasColumnType("bigint")
-                        .HasColumnName("_catalogue_id");
+                        .HasColumnName("catalogue_id");
 
                     b.Property<long>("_measurementLocationId")
                         .HasColumnType("bigint")
-                        .HasColumnName("_measurement_location_id");
+                        .HasColumnName("measurement_location_id");
 
                     b.Property<string>("kind")
                         .IsRequired()
@@ -787,7 +787,7 @@ namespace Ozds.Data.Migrations
 
                     b.Property<long>("_locationId")
                         .HasColumnType("bigint")
-                        .HasColumnName("_location_id");
+                        .HasColumnName("location_id");
 
                     b.HasKey("_id")
                         .HasName("pk_location_invoices");
@@ -909,7 +909,7 @@ namespace Ozds.Data.Migrations
 
                     b.Property<long>("_locationId")
                         .HasColumnType("bigint")
-                        .HasColumnName("_location_id");
+                        .HasColumnName("location_id");
 
                     b.HasKey("_stringId")
                         .HasName("pk_messengers");
@@ -1020,7 +1020,7 @@ namespace Ozds.Data.Migrations
 
                     b.Property<long>("_networkUserId")
                         .HasColumnType("bigint")
-                        .HasColumnName("_network_user_id");
+                        .HasColumnName("network_user_id");
 
                     b.HasKey("_id")
                         .HasName("pk_network_user_invoices");
@@ -1637,10 +1637,10 @@ namespace Ozds.Data.Migrations
 
                     b.Property<long>("_locationId")
                         .HasColumnType("bigint")
-                        .HasColumnName("_location_id");
+                        .HasColumnName("location_id");
 
                     b.HasIndex("_locationId")
-                        .HasDatabaseName("ix_measurement_locations__location_id");
+                        .HasDatabaseName("ix_measurement_locations_location_id");
 
                     b.ToTable("measurement_locations", (string)null);
 
@@ -1653,10 +1653,10 @@ namespace Ozds.Data.Migrations
 
                     b.Property<long>("_networkUserId")
                         .HasColumnType("bigint")
-                        .HasColumnName("_network_user_id");
+                        .HasColumnName("network_user_id");
 
                     b.HasIndex("_networkUserId")
-                        .HasDatabaseName("ix_measurement_locations__network_user_id");
+                        .HasDatabaseName("ix_measurement_locations_network_user_id");
 
                     b.ToTable("measurement_locations", (string)null);
 
@@ -1668,8 +1668,9 @@ namespace Ozds.Data.Migrations
                     b.HasBaseType("Ozds.Data.Entities.Base.MeterEntity");
 
                     b.Property<long>("_measurementValidatorId")
+                        .ValueGeneratedOnUpdateSometimes()
                         .HasColumnType("bigint")
-                        .HasColumnName("_measurement_validator_id");
+                        .HasColumnName("measurement_validator_id");
 
                     b.HasIndex("_measurementValidatorId")
                         .IsUnique()
@@ -1689,20 +1690,18 @@ namespace Ozds.Data.Migrations
                     b.HasBaseType("Ozds.Data.Entities.Base.MeterEntity");
 
                     b.Property<long>("_measurementValidatorId")
+                        .ValueGeneratedOnUpdateSometimes()
                         .HasColumnType("bigint")
-                        .HasColumnName("_measurement_validator_id");
+                        .HasColumnName("measurement_validator_id");
 
                     b.HasIndex("_measurementValidatorId")
                         .IsUnique()
-                        .HasDatabaseName("ix_meters__measurement_validator_id1");
+                        .HasDatabaseName("ix_meters__measurement_validator_id");
 
                     b.ToTable("meters", null, t =>
                         {
                             t.Property("Id")
                                 .HasColumnName("id1");
-
-                            t.Property("_measurementValidatorId")
-                                .HasColumnName("schneideri_em3xxx_meter_entity__measurement_validator_id");
                         });
 
                     b.HasDiscriminator().HasValue("SchneideriEM3xxxMeterEntity");
@@ -2101,7 +2100,7 @@ namespace Ozds.Data.Migrations
                         .HasForeignKey("_locationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_location_invoices_locations__location_id");
+                        .HasConstraintName("fk_location_invoices_locations_location_id");
 
                     b.Navigation("IssuedBy");
 
@@ -2154,7 +2153,7 @@ namespace Ozds.Data.Migrations
                         .HasForeignKey("_locationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_messengers_locations__location_id");
+                        .HasConstraintName("fk_messengers_locations_location_id");
 
                     b.Navigation("CreatedBy");
 
@@ -2210,7 +2209,7 @@ namespace Ozds.Data.Migrations
                         .HasForeignKey("_networkUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_network_user_invoices_network_users__network_user_id");
+                        .HasConstraintName("fk_network_user_invoices_network_users_network_user_id");
 
                     b.Navigation("IssuedBy");
 
@@ -2339,7 +2338,7 @@ namespace Ozds.Data.Migrations
                         .HasForeignKey("_locationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_measurement_locations_locations__location_id");
+                        .HasConstraintName("fk_measurement_locations_locations_location_id");
 
                     b.Navigation("Location");
                 });
@@ -2351,7 +2350,7 @@ namespace Ozds.Data.Migrations
                         .HasForeignKey("_networkUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_measurement_locations_network_users__network_user_id");
+                        .HasConstraintName("fk_measurement_locations_network_users_network_user_id");
 
                     b.Navigation("NetworkUser");
                 });
@@ -2375,7 +2374,7 @@ namespace Ozds.Data.Migrations
                         .HasForeignKey("Ozds.Data.Entities.SchneideriEM3xxxMeterEntity", "_measurementValidatorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_meters_measurement_validators__measurement_validator_id1");
+                        .HasConstraintName("fk_meters_measurement_validators__measurement_validator_id");
 
                     b.Navigation("MeasurementValidator");
                 });
