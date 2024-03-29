@@ -28,12 +28,12 @@ public abstract class InvoiceEntity : ReadonlyEntity
 }
 
 public class
-  InvoiceEntityTypeConfiguration : ConcreteHierarchyEntityTypeConfiguration<
+  InvoiceEntityTypeConfiguration : EntityTypeHierarchyConfiguration<
   InvoiceEntity>
 {
-  public override void Configure<T>(EntityTypeBuilder<T> builder)
+  public override void ConfigureConcrete<T>(EntityTypeBuilder<T> builder)
   {
-    builder.HasKey(nameof(InvoiceEntity.Id));
+    builder.HasKey("_id");
 
     builder.UseTpcMappingStrategy();
 

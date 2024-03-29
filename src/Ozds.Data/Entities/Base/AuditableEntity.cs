@@ -29,10 +29,10 @@ public abstract class AuditableEntity : IdentifiableEntity
 }
 
 public class
-  AuditableEntityConfiguration : ConcreteHierarchyEntityTypeConfiguration<
+  AuditableEntityConfiguration : EntityTypeHierarchyConfiguration<
   AuditableEntity>
 {
-  public override void Configure<T>(EntityTypeBuilder<T> builder)
+  public override void ConfigureConcrete<T>(EntityTypeBuilder<T> builder)
   {
     builder
       .HasOne(nameof(AuditableEntity.CreatedBy))

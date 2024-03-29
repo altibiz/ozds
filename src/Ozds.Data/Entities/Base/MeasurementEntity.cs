@@ -19,10 +19,10 @@ public class MeasurementEntity<T> : MeasurementEntity
 }
 
 public class
-  MeasurementEntityTypeConfiguration : ConcreteHierarchyEntityTypeConfiguration<
+  MeasurementEntityTypeConfiguration : EntityTypeHierarchyConfiguration<
   MeasurementEntity>
 {
-  public override void Configure<T>(EntityTypeBuilder<T> builder)
+  public override void ConfigureConcrete<T>(EntityTypeBuilder<T> builder)
   {
     builder.HasKey(
       nameof(MeasurementEntity.Timestamp),

@@ -12,9 +12,9 @@ public class MeasurementLocationEntity : AuditableEntity
 }
 
 public class MeasurementLocationEntityTypeConfiguration :
-  ConcreteHierarchyEntityTypeConfiguration<MeasurementLocationEntity>
+  EntityTypeHierarchyConfiguration<MeasurementLocationEntity>
 {
-  public override void Configure<T>(EntityTypeBuilder<T> builder)
+  public override void ConfigureConcrete<T>(EntityTypeBuilder<T> builder)
   {
     builder
       .UseTphMappingStrategy()

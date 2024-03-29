@@ -26,22 +26,26 @@ public class EventEntityTypeConfiguration : EntityTypeConfiguration<EventEntity>
 {
   public override void Configure(EntityTypeBuilder<EventEntity> builder)
   {
-    builder.HasKey(nameof(EventEntity.Id));
+    builder.HasKey("_id");
   }
 }
 
 public class
   EventEntityTypeHierarchyConfiguration :
-  ConcreteHierarchyEntityTypeConfiguration<EventEntity>
+  EntityTypeHierarchyConfiguration<EventEntity>
 {
-  public override void Configure<T>(EntityTypeBuilder<T> builder)
+  public override void Configure<TEntity>(EntityTypeBuilder<TEntity> builder)
+  {
+    builder.Ignore(nameof(EventEntity.Id));
+  }
+
+  public override void ConfigureConcrete<T>(EntityTypeBuilder<T> builder)
   {
     builder
       .UseTphMappingStrategy()
       .ToTable("events")
       .HasDiscriminator<string>("kind");
 
-    builder.Ignore(nameof(EventEntity.Id));
     builder
       .Property("_id")
       .HasColumnType("bigint")

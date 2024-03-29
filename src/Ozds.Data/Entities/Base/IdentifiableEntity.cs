@@ -18,10 +18,18 @@ public abstract class IdentifiableEntity
 }
 
 public class
-  IdentifiableEntityConfiguration : ConcreteHierarchyEntityTypeConfiguration<
+  IdentifiableEntityConfiguration : EntityTypeHierarchyConfiguration<
   IdentifiableEntity>
 {
-  public override void Configure<T>(EntityTypeBuilder<T> builder)
+  public override void Configure<TEntity>(EntityTypeBuilder<TEntity> builder)
+  {
+    if (typeof(TEntity) != typeof(RepresentativeEntity))
+    {
+      builder.Ignore(nameof(IdentifiableEntity.Id));
+    }
+  }
+
+  public override void ConfigureConcrete<T>(EntityTypeBuilder<T> builder)
   {
     if (!AlreadyHasKey(typeof(T)))
     {
@@ -30,7 +38,6 @@ public class
 
     if (typeof(T) != typeof(RepresentativeEntity))
     {
-      builder.Ignore(nameof(IdentifiableEntity.Id));
       builder
         .Property("_id")
         .HasColumnType("bigint")

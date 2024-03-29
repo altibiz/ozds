@@ -47,9 +47,9 @@ public class MeterEntity<
 
 public class
   MeterInheritedEntityTypeConfiguration :
-  ConcreteHierarchyEntityTypeConfiguration<MeterEntity>
+  EntityTypeHierarchyConfiguration<MeterEntity>
 {
-  public override void Configure<T>(EntityTypeBuilder<T> builder)
+  public override void ConfigureConcrete<T>(EntityTypeBuilder<T> builder)
   {
     builder
       .UseTphMappingStrategy()

@@ -23,10 +23,10 @@ public class AggregateEntity<T> : AggregateEntity where T : MeterEntity
 }
 
 public class
-  AggregateEntityTypeConfiguration : ConcreteHierarchyEntityTypeConfiguration<
+  AggregateEntityTypeConfiguration : EntityTypeHierarchyConfiguration<
   AggregateEntity>
 {
-  public override void Configure<T>(EntityTypeBuilder<T> builder)
+  public override void ConfigureConcrete<T>(EntityTypeBuilder<T> builder)
   {
     builder.HasKey(
       nameof(AggregateEntity.Timestamp),

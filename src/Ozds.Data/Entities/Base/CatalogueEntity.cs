@@ -14,10 +14,10 @@ public class CatalogueEntity : AuditableEntity
 }
 
 public class
-  CatalogueEntityTypeConfiguration : ConcreteHierarchyEntityTypeConfiguration<
+  CatalogueEntityTypeConfiguration : EntityTypeHierarchyConfiguration<
   CatalogueEntity>
 {
-  public override void Configure<T>(EntityTypeBuilder<T> builder)
+  public override void ConfigureConcrete<T>(EntityTypeBuilder<T> builder)
   {
     builder
       .UseTphMappingStrategy()

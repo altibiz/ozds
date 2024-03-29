@@ -32,9 +32,9 @@ public class
 }
 
 public class MeasurementValidatorEntityTypeHierarchyConfiguration :
-  ConcreteHierarchyEntityTypeConfiguration<MeasurementValidatorEntity>
+  EntityTypeHierarchyConfiguration<MeasurementValidatorEntity>
 {
-  public override void Configure<T>(EntityTypeBuilder<T> builder)
+  public override void ConfigureConcrete<T>(EntityTypeBuilder<T> builder)
   {
     builder
       .UseTphMappingStrategy()
