@@ -74,11 +74,6 @@ public class
       .HasForeignKey("_catalogueId");
 
     builder
-      .Property(nameof(MeterEntity.Id))
-      .HasColumnType("text")
-      .HasConversion((Type?)null);
-
-    builder
       .Property(nameof(MeterEntity.ConnectionPower_W))
       .HasColumnName("connection_power_w");
 
