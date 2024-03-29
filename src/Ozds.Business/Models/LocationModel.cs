@@ -6,8 +6,6 @@ namespace Ozds.Business.Models;
 
 public class LocationModel : AuditableModel
 {
-  [Required] public required string MeasurementLocationId { get; set; }
-
   [Required] public required string WhiteMediumCatalogueId { get; set; }
 
   [Required] public required string BlueLowCatalogueId { get; set; }
@@ -34,7 +32,6 @@ public static class LocationModelExtensions
       IsDeleted = entity.IsDeleted,
       DeletedOn = entity.DeletedOn,
       DeletedById = entity.DeletedById,
-      MeasurementLocationId = entity.MeasurementLocationId,
       WhiteMediumCatalogueId = entity.WhiteMediumCatalogueId,
       BlueLowCatalogueId = entity.BlueLowCatalogueId,
       WhiteLowCatalogueId = entity.WhiteLowCatalogueId,
@@ -56,7 +53,6 @@ public static class LocationModelExtensions
       IsDeleted = model.IsDeleted,
       DeletedOn = model.DeletedOn,
       DeletedById = model.DeletedById,
-      MeasurementLocationId = model.MeasurementLocationId,
       WhiteMediumCatalogueId = model.WhiteMediumCatalogueId,
       BlueLowCatalogueId = model.BlueLowCatalogueId,
       WhiteLowCatalogueId = model.WhiteLowCatalogueId,
