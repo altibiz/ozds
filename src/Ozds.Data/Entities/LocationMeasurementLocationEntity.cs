@@ -25,5 +25,8 @@ public class
       .HasForeignKey("_locationId");
 
     builder.Ignore(nameof(LocationMeasurementLocationEntity.LocationId));
+    builder
+      .Property("_locationId")
+      .HasColumnName("location_id");
   }
 }

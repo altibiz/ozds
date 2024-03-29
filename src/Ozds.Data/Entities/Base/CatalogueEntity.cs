@@ -44,5 +44,8 @@ public class
       .HasForeignKey(type.Name, "_locationId");
 
     builder.Ignore(nameof(CatalogueEntity.LocationId));
+    builder
+      .Property("_locationId")
+      .HasColumnName("location_id");
   }
 }

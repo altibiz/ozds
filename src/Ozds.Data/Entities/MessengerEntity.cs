@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Ozds.Data.Entities.Base;
 using Ozds.Data.Extensions;
@@ -38,5 +39,8 @@ public class
       .WithOne(nameof(MessengerEventEntity.Messenger));
 
     builder.Ignore(nameof(MessengerEntity.LocationId));
+    builder
+      .Property("_locationId")
+      .HasColumnName("location_id");
   }
 }

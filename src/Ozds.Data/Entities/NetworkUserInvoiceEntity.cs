@@ -25,5 +25,8 @@ public class
       .HasForeignKey("_networkUserId");
 
     builder.Ignore(nameof(NetworkUserInvoiceEntity.NetworkUserId));
+    builder
+      .Property("_networkUserId")
+      .HasColumnName("network_user_id");
   }
 }

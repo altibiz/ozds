@@ -95,8 +95,14 @@ public class
       .HasColumnName("connection_power_w");
 
     builder.Ignore(nameof(MeterEntity.MeasurementLocationId));
+    builder
+      .Property("_measurementLocationId")
+      .HasColumnName("measurement_location_id");
 
     builder.Ignore(nameof(MeterEntity.CatalogueId));
+    builder
+      .Property("_catalogueId")
+      .HasColumnName("catalogue_id");
 
     if (type != typeof(MeterEntity))
     {
@@ -121,6 +127,9 @@ public class
 
       builder.Ignore(nameof(MeterEntity<MeasurementEntity, AggregateEntity,
         MeasurementValidatorEntity>.MeasurementValidatorId));
+      builder
+        .Property("_measurementValidatorId")
+        .HasColumnName("measurement_validator_id");
     }
   }
 }
