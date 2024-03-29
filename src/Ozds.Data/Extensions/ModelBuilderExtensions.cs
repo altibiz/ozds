@@ -34,7 +34,6 @@ public abstract class EntityTypeHierarchyConfiguration<TBase> : IModelConfigurat
       .Where(type =>
         !type.IsGenericType &&
         type.IsClass &&
-        !type.IsAbstract &&
         typeof(TBase).IsAssignableFrom(type))
       .OrderBy(type =>
       {
@@ -75,8 +74,7 @@ public static class ModelBuilderExtensions
   {
     return assembly
       .GetTypes()
-      .Where(type => !type.IsAbstract
-        && typeof(IModelConfiguration).IsAssignableFrom(type))
+      .Where(type => !type.IsAbstract && typeof(IModelConfiguration).IsAssignableFrom(type))
       .Aggregate(
         modelBuilder,
         (modelBuilder, type) =>

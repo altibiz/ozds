@@ -1,4 +1,3 @@
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Ozds.Data.Entities.Base;
 using Ozds.Data.Extensions;
@@ -11,8 +10,8 @@ public class MessengerEntity : AuditableEntity
 {
   private string _stringId = default!;
   public override string Id { get => _stringId; init => _stringId = value; }
-
-  public string LocationId { get; set; } = default!;
+  private long _locationId = default!;
+  public virtual string LocationId { get => _locationId.ToString(); init => _locationId = long.Parse(value); }
   public virtual LocationEntity Location { get; set; } = default!;
   public virtual ICollection<MeterEntity> Meters { get; set; } = default!;
 
@@ -28,7 +27,7 @@ public class
     builder
       .HasOne(nameof(MessengerEntity.Location))
       .WithMany(nameof(LocationEntity.Messengers))
-      .HasForeignKey(nameof(MessengerEntity.LocationId));
+      .HasForeignKey("_locationId");
 
     builder
       .HasMany(nameof(MessengerEntity.Meters))
@@ -38,9 +37,6 @@ public class
       .HasMany(nameof(MessengerEntity.Events))
       .WithOne(nameof(MessengerEventEntity.Messenger));
 
-    builder
-      .Property(nameof(MessengerEntity.LocationId))
-      .HasColumnType("bigint")
-      .HasConversion<long>();
+    builder.Ignore(nameof(MessengerEntity.LocationId));
   }
 }

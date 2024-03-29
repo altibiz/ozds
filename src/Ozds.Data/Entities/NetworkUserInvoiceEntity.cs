@@ -7,7 +7,8 @@ namespace Ozds.Data.Entities;
 
 public class NetworkUserInvoiceEntity : InvoiceEntity
 {
-  public string NetworkUserId { get; set; } = default!;
+  private long _networkUserId = default!;
+  public virtual string NetworkUserId { get => _networkUserId.ToString(); init => _networkUserId = long.Parse(value); }
   public virtual NetworkUserEntity NetworkUser { get; set; } = default!;
 }
 
@@ -21,11 +22,8 @@ public class
     builder
       .HasOne(nameof(NetworkUserInvoiceEntity.NetworkUser))
       .WithMany(nameof(NetworkUserEntity.Invoices))
-      .HasForeignKey(nameof(NetworkUserInvoiceEntity.NetworkUserId));
+      .HasForeignKey("_networkUserId");
 
-    builder
-      .Property(nameof(NetworkUserInvoiceEntity.NetworkUserId))
-      .HasColumnType("bigint")
-      .HasConversion<long>();
+    builder.Ignore(nameof(NetworkUserInvoiceEntity.NetworkUserId));
   }
 }

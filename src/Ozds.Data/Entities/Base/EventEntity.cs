@@ -18,19 +18,6 @@ public class EventEntity : ReadonlyEntity
   public string Description { get; set; } = default!;
 }
 
-public class EventEntityTypeConfiguration : EntityTypeConfiguration<EventEntity>
-{
-  public override void Configure(EntityTypeBuilder<EventEntity> builder)
-  {
-    builder
-      .UseTphMappingStrategy()
-      .ToTable("events")
-      .HasDiscriminator<string>("kind");
-
-    builder.HasKey(nameof(EventEntity.Id));
-  }
-}
-
 public class
   EventEntityTypeHierarchyConfiguration :
   EntityTypeHierarchyConfiguration<EventEntity>
@@ -43,6 +30,11 @@ public class
     {
       builder.HasKey("_id");
     }
+
+    builder
+      .UseTphMappingStrategy()
+      .ToTable("events")
+      .HasDiscriminator<string>("kind");
 
     builder.Ignore(nameof(InvoiceEntity.Id));
     builder

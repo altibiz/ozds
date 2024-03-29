@@ -7,7 +7,8 @@ namespace Ozds.Data.Entities;
 
 public class NetworkUserMeasurementLocationEntity : MeasurementLocationEntity
 {
-  public string NetworkUserId { get; set; } = default!;
+  private long _networkUserId = default!;
+  public virtual string NetworkUserId { get => _networkUserId.ToString(); init => _networkUserId = long.Parse(value); }
   public virtual NetworkUserEntity NetworkUser { get; set; } = default!;
 }
 
@@ -21,12 +22,8 @@ public class
     builder
       .HasOne(nameof(NetworkUserMeasurementLocationEntity.NetworkUser))
       .WithMany(nameof(NetworkUserEntity.MeasurementLocations))
-      .HasForeignKey(nameof(NetworkUserMeasurementLocationEntity
-        .NetworkUserId));
+      .HasForeignKey("_networkUserId");
 
-    builder
-      .Property(nameof(NetworkUserMeasurementLocationEntity.NetworkUserId))
-      .HasColumnType("bigint")
-      .HasConversion<long>();
+    builder.Ignore(nameof(NetworkUserMeasurementLocationEntity.NetworkUserId));
   }
 }

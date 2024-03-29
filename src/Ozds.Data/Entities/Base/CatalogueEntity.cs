@@ -6,7 +6,9 @@ namespace Ozds.Data.Entities.Base;
 
 public class CatalogueEntity : AuditableEntity
 {
-  public string LocationId { get; set; } = default!;
+  private long _locationId = default!;
+
+  public virtual string LocationId { get => _locationId.ToString(); init => _locationId = long.Parse(value); }
 
   public virtual LocationEntity Location { get; set; } = default!;
 
@@ -39,6 +41,8 @@ public class
     builder
       .HasOne(nameof(CatalogueEntity.Location))
       .WithOne()
-      .HasForeignKey(type.Name, nameof(CatalogueEntity.LocationId));
+      .HasForeignKey(type.Name, "_locationId");
+
+    builder.Ignore(nameof(CatalogueEntity.LocationId));
   }
 }

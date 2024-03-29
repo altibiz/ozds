@@ -23,20 +23,20 @@ public class MeasurementValidatorEntityTypeHierarchyConfiguration :
   {
     var builder = modelBuilder.Entity(type);
 
-    if (type == typeof(MeasurementValidatorEntity))
+    builder
+      .UseTphMappingStrategy()
+      .ToTable("measurement_validators")
+      .HasDiscriminator<string>("kind");
+
+    if (type != typeof(MeasurementValidatorEntity))
     {
       builder
-        .UseTphMappingStrategy()
-        .ToTable("measurement_validators")
-        .HasDiscriminator<string>("kind");
+        .HasOne(nameof(MeasurementValidatorEntity<MeterEntity>.Meter))
+        .WithOne(
+          nameof(MeterEntity<MeasurementEntity, AggregateEntity,
+            MeasurementValidatorEntity<MeterEntity>>.MeasurementValidator))
+        .HasForeignKey(type.Name,
+          nameof(MeasurementValidatorEntity<MeterEntity>.MeterId));
     }
-
-    builder
-      .HasOne(nameof(MeasurementValidatorEntity<MeterEntity>.Meter))
-      .WithOne(
-        nameof(MeterEntity<MeasurementEntity, AggregateEntity,
-          MeasurementValidatorEntity<MeterEntity>>.MeasurementValidator))
-      .HasForeignKey(type.Name,
-        nameof(MeasurementValidatorEntity<MeterEntity>.MeterId));
   }
 }

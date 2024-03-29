@@ -1,4 +1,3 @@
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Ozds.Data.Entities.Base;
 using Ozds.Data.Extensions;
@@ -22,10 +21,5 @@ public class
       .HasOne(nameof(MessengerEventEntity.Messenger))
       .WithMany(nameof(MessengerEntity.Events))
       .HasForeignKey(nameof(MessengerEventEntity.MessengerId));
-
-    builder
-      .Property(nameof(MessengerEventEntity.MessengerId))
-      .HasColumnType("bigint")
-      .HasConversion<long>();
   }
 }

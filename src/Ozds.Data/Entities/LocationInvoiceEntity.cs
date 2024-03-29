@@ -7,7 +7,8 @@ namespace Ozds.Data.Entities;
 
 public class LocationInvoiceEntity : InvoiceEntity
 {
-  public string LocationId { get; set; } = default!;
+  private long _locationId = default!;
+  public virtual string LocationId { get => _locationId.ToString(); init => _locationId = long.Parse(value); }
   public virtual LocationEntity Location { get; set; } = default!;
 }
 
@@ -21,11 +22,8 @@ public class
     builder
       .HasOne(nameof(LocationInvoiceEntity.Location))
       .WithMany(nameof(LocationEntity.Invoices))
-      .HasForeignKey(nameof(LocationInvoiceEntity.LocationId));
+      .HasForeignKey("_locationId");
 
-    builder
-      .Property(nameof(LocationInvoiceEntity.LocationId))
-      .HasColumnType("bigint")
-      .HasConversion<long>();
+    builder.Ignore(nameof(LocationInvoiceEntity.LocationId));
   }
 }

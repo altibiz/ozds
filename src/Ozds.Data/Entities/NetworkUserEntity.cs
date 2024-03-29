@@ -11,7 +11,8 @@ public class NetworkUserEntity : AuditableEntity
     Representatives
   { get; set; } = default!;
 
-  public string LocationId { get; set; } = default!;
+  private readonly long _locationId = default!;
+  public virtual string LocationId { get => _locationId.ToString(); init => _locationId = long.Parse(value); }
   public virtual LocationEntity Location { get; set; } = default!;
 
   public virtual ICollection<NetworkUserMeasurementLocationEntity>
@@ -35,7 +36,7 @@ public class
     builder
       .HasOne(nameof(NetworkUserEntity.Location))
       .WithMany(nameof(LocationEntity.NetworkUsers))
-      .HasForeignKey(nameof(NetworkUserEntity.LocationId));
+      .HasForeignKey("_locationId");
 
     builder
       .HasMany(nameof(NetworkUserEntity.MeasurementLocations))
@@ -45,9 +46,6 @@ public class
       .HasMany(nameof(NetworkUserEntity.Invoices))
       .WithOne(nameof(NetworkUserInvoiceEntity.NetworkUser));
 
-    builder
-      .Property(nameof(NetworkUserEntity.LocationId))
-      .HasColumnType("bigint")
-      .HasConversion<long>();
+    builder.Ignore(nameof(NetworkUserEntity.LocationId));
   }
 }
