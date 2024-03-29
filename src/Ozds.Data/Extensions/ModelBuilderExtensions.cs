@@ -27,83 +27,42 @@ public abstract class EntityTypeHierarchyConfiguration<TBase> : IModelConfigurat
   {
     var configure = GetType()
                       .GetMethods()
-                      .FirstOrDefault(m =>
-                        m.Name == nameof(Configure) && m.IsGenericMethod)
+                      .FirstOrDefault(m => m.Name == nameof(Configure))
                     ?? throw new InvalidOperationException("Method not found");
-    var configureConcrete = GetType()
-                      .GetMethods()
-                      .FirstOrDefault(m =>
-                        m.Name == nameof(ConfigureConcrete) && m.IsGenericMethod)
-                    ?? throw new InvalidOperationException("Method not found");
-    var configureAbstract = GetType()
-                      .GetMethods()
-                      .FirstOrDefault(m =>
-                        m.Name == nameof(ConfigureAbstract) && m.IsGenericMethod)
-                    ?? throw new InvalidOperationException("Method not found");
-    var entity = modelBuilder.GetType().GetMethods()
-                   .FirstOrDefault(m =>
-                     m.Name == nameof(ModelBuilder.Entity) && m.IsGenericMethod)
-                 ?? throw new InvalidOperationException("Method not found");
     _ = typeof(TBase).Assembly
       .GetTypes()
       .Where(type =>
         !type.IsGenericType &&
         type.IsClass &&
-        (type.IsSubclassOf(typeof(TBase)) || type == typeof(TBase)))
+        !type.IsAbstract &&
+        typeof(TBase).IsAssignableFrom(type))
+      .OrderBy(type =>
+      {
+        var level = 0;
+        for (
+          var currentType = type.BaseType;
+          currentType != null;
+          currentType = currentType.BaseType)
+        {
+          level++;
+        }
+        return level;
+      })
       .Aggregate(modelBuilder, (modelBuilder, type) =>
       {
         configure
-          .MakeGenericMethod(type)
           .Invoke(
             this,
-            new[]
+            new object[]
             {
-              entity.MakeGenericMethod(type).Invoke(modelBuilder, null)
-              ?? throw new InvalidOperationException("Entity not found")
+              modelBuilder,
+              type
             });
-        if (type.IsAbstract)
-        {
-          configureAbstract
-            .MakeGenericMethod(type)
-            .Invoke(
-              this,
-              new[]
-              {
-                entity.MakeGenericMethod(type).Invoke(modelBuilder, null)
-                ?? throw new InvalidOperationException("Entity not found")
-              });
-        }
-        else
-        {
-          configureConcrete
-            .MakeGenericMethod(type)
-            .Invoke(
-              this,
-              new[]
-              {
-                entity.MakeGenericMethod(type).Invoke(modelBuilder, null)
-                ?? throw new InvalidOperationException("Entity not found")
-              });
-        }
         return modelBuilder;
       });
   }
-  public virtual void Configure<TEntity>(
-    EntityTypeBuilder<TEntity> builder
-  ) where TEntity : class, TBase
+  public virtual void Configure(ModelBuilder modelBuilder, Type entity)
   {
-  }
-
-  public virtual void ConfigureAbstract<TAbstract>(
-    EntityTypeBuilder<TAbstract> builder
-  ) where TAbstract : class, TBase
-  {
-  }
-
-  public virtual void ConfigureConcrete<TConcrete>(EntityTypeBuilder<TConcrete> builder)
-    where TConcrete : class, TBase
-  {
-
   }
 }
 
@@ -116,9 +75,8 @@ public static class ModelBuilderExtensions
   {
     return assembly
       .GetTypes()
-      .Where(type => !type.IsAbstract && type
-        .GetInterfaces()
-        .Any(@interface => @interface == typeof(IModelConfiguration)))
+      .Where(type => !type.IsAbstract
+        && typeof(IModelConfiguration).IsAssignableFrom(type))
       .Aggregate(
         modelBuilder,
         (modelBuilder, type) =>

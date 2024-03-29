@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Ozds.Data.Entities.Base;
 using Ozds.Data.Extensions;
 
@@ -17,36 +16,27 @@ public class MeasurementValidatorEntity<TMeter> : MeasurementValidatorEntity
   public virtual TMeter Meter { get; set; } = default!;
 }
 
-public class
-  MeasurementValidatorTypeConfiguration : EntityTypeConfiguration<
-  MeasurementValidatorEntity>
-{
-  public override void Configure(
-    EntityTypeBuilder<MeasurementValidatorEntity> builder)
-  {
-    builder
-      .UseTphMappingStrategy()
-      .ToTable("measurement_validators")
-      .HasDiscriminator<string>("kind");
-  }
-}
-
 public class MeasurementValidatorEntityTypeHierarchyConfiguration :
   EntityTypeHierarchyConfiguration<MeasurementValidatorEntity>
 {
-  public override void ConfigureConcrete<T>(EntityTypeBuilder<T> builder)
+  public override void Configure(ModelBuilder modelBuilder, Type type)
   {
-    builder
-      .UseTphMappingStrategy()
-      .ToTable("measurement_validators")
-      .HasDiscriminator<string>("kind");
+    var builder = modelBuilder.Entity(type);
+
+    if (type == typeof(MeasurementValidatorEntity))
+    {
+      builder
+        .UseTphMappingStrategy()
+        .ToTable("measurement_validators")
+        .HasDiscriminator<string>("kind");
+    }
 
     builder
       .HasOne(nameof(MeasurementValidatorEntity<MeterEntity>.Meter))
       .WithOne(
         nameof(MeterEntity<MeasurementEntity, AggregateEntity,
           MeasurementValidatorEntity<MeterEntity>>.MeasurementValidator))
-      .HasForeignKey(typeof(T).Name,
+      .HasForeignKey(type.Name,
         nameof(MeasurementValidatorEntity<MeterEntity>.MeterId));
   }
 }

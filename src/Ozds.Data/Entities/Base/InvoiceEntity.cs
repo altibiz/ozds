@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Ozds.Data.Extensions;
 
 // TODO: copy entities via complex properties
@@ -8,13 +9,7 @@ namespace Ozds.Data.Entities.Base;
 
 public abstract class InvoiceEntity : ReadonlyEntity
 {
-  private readonly long _id;
-
-  public virtual string Id
-  {
-    get { return _id.ToString(); }
-    init { _id = long.Parse(value); }
-  }
+  public string Id { get; init; } = default!;
 
   public DateTimeOffset IssuedOn { get; set; } = DateTimeOffset.UtcNow;
 
@@ -28,25 +23,30 @@ public abstract class InvoiceEntity : ReadonlyEntity
 }
 
 public class
-  InvoiceEntityTypeConfiguration : EntityTypeHierarchyConfiguration<
+  InvoiceEntityTypeHierarchyConfiguration : EntityTypeHierarchyConfiguration<
   InvoiceEntity>
 {
-  public override void ConfigureConcrete<T>(EntityTypeBuilder<T> builder)
+  public override void Configure(ModelBuilder modelBuilder, Type type)
   {
-    builder.HasKey("_id");
+    if (type == typeof(InvoiceEntity))
+    {
+      return;
+    }
 
-    builder.UseTpcMappingStrategy();
+    var builder = modelBuilder.Entity(type);
 
-    builder.Ignore(nameof(EventEntity.Id));
+    builder.HasKey(nameof(InvoiceEntity.Id));
+
     builder
-      .Property("_id")
+      .Property(nameof(InvoiceEntity.Id))
       .HasColumnType("bigint")
       .HasColumnName("id")
+      .HasConversion<StringToNumberConverter<long>>()
       .ValueGeneratedOnAdd()
       .UseIdentityAlwaysColumn();
 
     builder
-      .Property(x => x.IssuedOn)
+      .Property<DateTimeOffset>(nameof(InvoiceEntity.IssuedOn))
       .HasConversion(
         x => x.ToUniversalTime(),
         x => x.ToUniversalTime()

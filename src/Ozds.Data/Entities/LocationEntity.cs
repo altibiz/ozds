@@ -99,6 +99,12 @@ public class
         nameof(LocationEntity.RedLowCatalogueId));
 
     builder
+      .HasOne(nameof(LocationEntity.RegulatoryCatalogue))
+      .WithOne(nameof(RegulatoryCatalogueEntity.Location))
+      .HasForeignKey(nameof(LocationEntity),
+        nameof(LocationEntity.RegulatoryCatalogueId));
+
+    builder
       .Property(nameof(LocationEntity.MeasurementLocationId))
       .HasColumnType("bigint")
       .HasConversion<long>();
@@ -120,6 +126,11 @@ public class
 
     builder
       .Property(nameof(LocationEntity.RedLowCatalogueId))
+      .HasColumnType("bigint")
+      .HasConversion<long>();
+
+    builder
+      .Property(nameof(LocationEntity.RegulatoryCatalogueId))
       .HasColumnType("bigint")
       .HasConversion<long>();
   }

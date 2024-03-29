@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Ozds.Data.Attributes;
 using Ozds.Data.Extensions;
 
@@ -8,28 +7,33 @@ namespace Ozds.Data.Entities.Base;
 public abstract class MeasurementEntity : ReadonlyEntity
 {
   public DateTimeOffset Timestamp { get; set; }
+
+  public string MeterId { get; set; } = default!;
 }
 
 public class MeasurementEntity<T> : MeasurementEntity
   where T : MeterEntity
 {
-  public string MeterId { get; set; } = default!;
-
   public virtual T Meter { get; set; } = default!;
 }
 
 public class
-  MeasurementEntityTypeConfiguration : EntityTypeHierarchyConfiguration<
+  MeasurementEntityTypeHierarchyConfiguration : EntityTypeHierarchyConfiguration<
   MeasurementEntity>
 {
-  public override void ConfigureConcrete<T>(EntityTypeBuilder<T> builder)
+  public override void Configure(ModelBuilder modelBuilder, Type type)
   {
+    if (type == typeof(MeasurementEntity))
+    {
+      return;
+    }
+
+    var builder = modelBuilder.Entity(type);
+
     builder.HasKey(
       nameof(MeasurementEntity.Timestamp),
-      nameof(MeasurementEntity<MeterEntity>.MeterId)
+      nameof(MeasurementEntity.MeterId)
     );
-
-    builder.UseTpcMappingStrategy();
 
     builder.HasTimescaleHypertable(
       nameof(MeasurementEntity.Timestamp),
@@ -43,7 +47,7 @@ public class
       .HasForeignKey(nameof(MeasurementEntity<MeterEntity>.MeterId));
 
     builder
-      .Property(x => x.Timestamp)
+      .Property<DateTimeOffset>(nameof(MeasurementEntity.Timestamp))
       .HasConversion(
         x => x.ToUniversalTime(),
         x => x.ToUniversalTime()

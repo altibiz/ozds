@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore;
 using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
@@ -32,8 +32,15 @@ public class
   AuditableEntityConfiguration : EntityTypeHierarchyConfiguration<
   AuditableEntity>
 {
-  public override void ConfigureConcrete<T>(EntityTypeBuilder<T> builder)
+  public override void Configure(ModelBuilder modelBuilder, Type type)
   {
+    if (type == typeof(AuditableEntity))
+    {
+      return;
+    }
+
+    var builder = modelBuilder.Entity(type);
+
     builder
       .HasOne(nameof(AuditableEntity.CreatedBy))
       .WithMany()

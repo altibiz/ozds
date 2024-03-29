@@ -1,66 +1,54 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
 
 public abstract class IdentifiableEntity
 {
-  private readonly long _id;
-
-  public virtual string Id
-  {
-    get { return _id.ToString(); }
-    init { _id = long.Parse(value); }
-  }
+  public string Id { get; init; } = default!;
 
   public string Title { get; set; } = default!;
 }
 
 public class
-  IdentifiableEntityConfiguration : EntityTypeHierarchyConfiguration<
+  IdentifiableEntityTypeHierarchyConfiguration : EntityTypeHierarchyConfiguration<
   IdentifiableEntity>
 {
-  public override void Configure<TEntity>(EntityTypeBuilder<TEntity> builder)
+  public override void Configure(ModelBuilder modelBuilder, Type type)
   {
-    if (typeof(TEntity) != typeof(RepresentativeEntity))
+    if (
+      type == typeof(IdentifiableEntity)
+      || type == typeof(AuditableEntity)
+    )
     {
-      builder.Ignore(nameof(IdentifiableEntity.Id));
-    }
-  }
-
-  public override void ConfigureConcrete<T>(EntityTypeBuilder<T> builder)
-  {
-    if (!AlreadyHasKey(typeof(T)))
-    {
-      builder.HasKey("_id");
+      return;
     }
 
-    if (typeof(T) != typeof(RepresentativeEntity))
+    var builder = modelBuilder.Entity(type);
+
+    if (type.BaseType == typeof(AuditableEntity))
+    {
+      builder.HasKey(nameof(IdentifiableEntity.Id));
+    }
+
+    if (type == typeof(RepresentativeEntity))
     {
       builder
-        .Property("_id")
+        .Property(nameof(IdentifiableEntity.Id))
+        .ValueGeneratedNever()
+        .HasColumnName("id")
+        .HasColumnType("text");
+    }
+    else
+    {
+      builder
+        .Property(nameof(IdentifiableEntity.Id))
         .HasColumnType("bigint")
         .HasColumnName("id")
+        .HasConversion<StringToNumberConverter<long>>()
         .ValueGeneratedOnAdd()
         .UseIdentityAlwaysColumn();
     }
-  }
-
-  private static bool AlreadyHasKey(Type type)
-  {
-    for (
-      var currentType = type.BaseType;
-      currentType != null;
-      currentType = currentType.BaseType)
-    {
-      if (currentType is not { IsAbstract: true } and not
-        { IsGenericType: true })
-      {
-        return true;
-      }
-    }
-
-    return false;
   }
 }

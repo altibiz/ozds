@@ -49,12 +49,17 @@ public class
   MeterInheritedEntityTypeConfiguration :
   EntityTypeHierarchyConfiguration<MeterEntity>
 {
-  public override void ConfigureConcrete<T>(EntityTypeBuilder<T> builder)
+  public override void Configure(ModelBuilder modelBuilder, Type type)
   {
-    builder
-      .UseTphMappingStrategy()
-      .ToTable("meters")
-      .HasDiscriminator<string>("kind");
+    var builder = modelBuilder.Entity(type);
+
+    if (type == typeof(MeterEntity))
+    {
+      builder
+        .UseTphMappingStrategy()
+        .ToTable("meters")
+        .HasDiscriminator<string>("kind");
+    }
 
     builder
       .HasOne(nameof(MeterEntity.Messenger))
@@ -64,7 +69,7 @@ public class
     builder
       .HasOne(nameof(MeterEntity.MeasurementLocation))
       .WithOne(nameof(MeasurementLocationEntity.Meter))
-      .HasForeignKey(typeof(T).Name, nameof(MeterEntity.MeasurementLocationId));
+      .HasForeignKey(type.Name, nameof(MeterEntity.MeasurementLocationId));
 
     builder
       .HasOne(nameof(MeterEntity.Catalogue))
@@ -80,7 +85,7 @@ public class
       .Property(nameof(MeterEntity.ConnectionPower_W))
       .HasColumnName("connection_power_w");
 
-    if (typeof(T) != typeof(MeterEntity))
+    if (type != typeof(MeterEntity))
     {
       builder
         .HasMany(
@@ -105,7 +110,7 @@ public class
           nameof(MeterEntity<MeasurementEntity, AggregateEntity,
             MeasurementValidatorEntity>.MeasurementValidator))
         .WithOne(nameof(MeasurementValidatorEntity<MeterEntity>.Meter))
-        .HasForeignKey(typeof(T).Name,
+        .HasForeignKey(type.Name,
           nameof(MeterEntity<MeasurementEntity, AggregateEntity,
             MeasurementValidatorEntity>.MeasurementValidatorId));
     }

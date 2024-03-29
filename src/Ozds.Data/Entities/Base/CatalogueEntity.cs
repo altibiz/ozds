@@ -13,20 +13,32 @@ public class CatalogueEntity : AuditableEntity
   public virtual ICollection<MeterEntity> Meters { get; set; } = default!;
 }
 
+public class CatalogueEntityTypeConfiguration : EntityTypeConfiguration<CatalogueEntity>
+{
+  public override void Configure(EntityTypeBuilder<CatalogueEntity> builder)
+  {
+  }
+}
+
 public class
-  CatalogueEntityTypeConfiguration : EntityTypeHierarchyConfiguration<
+  CatalogueEntityTypeHierarchyConfiguration : EntityTypeHierarchyConfiguration<
   CatalogueEntity>
 {
-  public override void ConfigureConcrete<T>(EntityTypeBuilder<T> builder)
+  public override void Configure(ModelBuilder modelBuilder, Type type)
   {
-    builder
-      .UseTphMappingStrategy()
-      .ToTable("catalogues")
-      .HasDiscriminator<string>("kind");
+    var builder = modelBuilder.Entity(type);
+
+    if (type == typeof(CatalogueEntity))
+    {
+      builder
+        .UseTphMappingStrategy()
+        .ToTable("catalogues")
+        .HasDiscriminator<string>("kind");
+    }
 
     builder
       .HasOne(nameof(CatalogueEntity.Location))
       .WithOne()
-      .HasForeignKey(typeof(T).Name, nameof(CatalogueEntity.LocationId));
+      .HasForeignKey(type.Name, nameof(CatalogueEntity.LocationId));
   }
 }
