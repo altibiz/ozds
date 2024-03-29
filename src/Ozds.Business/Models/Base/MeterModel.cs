@@ -10,8 +10,6 @@ public abstract class MeterModel : AuditableModel, IMeter
 
   [Required] public required List<PhaseModel> Phases { get; set; } = new();
 
-  [Required] public required string MeasurementLocationId { get; set; }
-
   [Required] public required string CatalogueId { get; set; }
 
   [Required] public required string MessengerId { get; set; }

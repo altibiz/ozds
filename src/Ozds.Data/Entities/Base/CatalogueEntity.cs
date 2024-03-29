@@ -6,10 +6,6 @@ namespace Ozds.Data.Entities.Base;
 
 public class CatalogueEntity : AuditableEntity
 {
-  private long _locationId = default!;
-
-  public virtual string LocationId { get => _locationId.ToString(); init => _locationId = long.Parse(value); }
-
   public virtual LocationEntity Location { get; set; } = default!;
 
   public virtual ICollection<MeterEntity> Meters { get; set; } = default!;
@@ -30,22 +26,9 @@ public class
   {
     var builder = modelBuilder.Entity(type);
 
-    if (type == typeof(CatalogueEntity))
-    {
-      builder
-        .UseTphMappingStrategy()
-        .ToTable("catalogues")
-        .HasDiscriminator<string>("kind");
-    }
-
     builder
-      .HasOne(nameof(CatalogueEntity.Location))
-      .WithOne()
-      .HasForeignKey(type.Name, "_locationId");
-
-    builder.Ignore(nameof(CatalogueEntity.LocationId));
-    builder
-      .Property("_locationId")
-      .HasColumnName("location_id");
+      .UseTphMappingStrategy()
+      .ToTable("catalogues")
+      .HasDiscriminator<string>("kind");
   }
 }

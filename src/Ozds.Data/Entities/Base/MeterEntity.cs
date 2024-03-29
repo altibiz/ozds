@@ -14,10 +14,6 @@ public class MeterEntity : AuditableEntity
 
   public virtual MessengerEntity Messenger { get; set; } = default!;
 
-  private long _measurementLocationId = default!;
-
-  public virtual string MeasurementLocationId { get => _measurementLocationId.ToString(); init => _measurementLocationId = long.Parse(value); }
-
   public virtual MeasurementLocationEntity MeasurementLocation { get; set; } =
     default!;
 
@@ -73,11 +69,6 @@ public class
       .HasForeignKey(nameof(MeterEntity.MessengerId));
 
     builder
-      .HasOne(nameof(MeterEntity.MeasurementLocation))
-      .WithOne(nameof(MeasurementLocationEntity.Meter))
-      .HasForeignKey(type.Name, "_measurementLocationId");
-
-    builder
       .HasOne(nameof(MeterEntity.Catalogue))
       .WithMany(nameof(CatalogueEntity.Meters))
       .HasForeignKey("_catalogueId");
@@ -90,11 +81,6 @@ public class
     builder
       .Property(nameof(MeterEntity.ConnectionPower_W))
       .HasColumnName("connection_power_w");
-
-    builder.Ignore(nameof(MeterEntity.MeasurementLocationId));
-    builder
-      .Property("_measurementLocationId")
-      .HasColumnName("measurement_location_id");
 
     builder.Ignore(nameof(MeterEntity.CatalogueId));
     builder

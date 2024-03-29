@@ -4,8 +4,6 @@ namespace Ozds.Business.Models.Abstractions;
 
 public interface IMeter : IAuditable
 {
-  public string MeasurementLocationId { get; }
-
   public string MessengerId { get; }
 
   public string CatalogueId { get; }

@@ -7,8 +7,6 @@ public abstract class MeasurementValidatorModel<T> : AuditableModel,
   IMeasurementValidator
   where T : IMeasurement
 {
-  [Required] public required string MeterId { get; set; }
-
   public override IEnumerable<ValidationResult> Validate(
     ValidationContext validationContext)
   {

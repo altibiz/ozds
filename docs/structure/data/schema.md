@@ -85,7 +85,6 @@ erDiagram
         character_varying kind
         text last_updated_by_id FK
         timestamp_with_time_zone last_updated_on
-        bigint location_id FK
         real max_active_power_total_import_t1_price_eur
         real meter_fee_price_eur
         real reactive_energy_total_import_t0_price_eur
@@ -132,8 +131,7 @@ erDiagram
     }
 
     locations {
-        bigint blue_low_catalogue_id
-        bigint blue_low_catalogue_id1 FK
+        bigint blue_low_catalogue_id FK
         text created_by_id FK
         timestamp_with_time_zone created_on
         text deleted_by_id FK
@@ -142,16 +140,11 @@ erDiagram
         boolean is_deleted
         text last_updated_by_id FK
         timestamp_with_time_zone last_updated_on
-        bigint measurement_location_id
-        bigint red_low_catalogue_id
-        bigint red_low_catalogue_id1 FK
-        bigint regulatory_catalogue_id
-        bigint regulatory_catalogue_id1 FK
+        bigint red_low_catalogue_id FK
+        bigint regulatory_catalogue_id FK
         text title
-        bigint white_low_catalogue_id
-        bigint white_low_catalogue_id1 FK
-        bigint white_medium_catalogue_id
-        bigint white_medium_catalogue_id1 FK
+        bigint white_low_catalogue_id FK
+        bigint white_medium_catalogue_id FK
     }
 
     measurement_locations {
@@ -165,7 +158,7 @@ erDiagram
         text last_updated_by_id FK
         timestamp_with_time_zone last_updated_on
         bigint location_id FK
-        text meter_id
+        text meter_id FK
         bigint network_user_id FK
         text title
     }
@@ -185,13 +178,11 @@ erDiagram
         real max_current_a
         real max_reactive_power_var
         real max_voltage_v
-        text meter_id
         real min_active_power_w
         real min_apparent_power_va
         real min_current_a
         real min_reactive_power_var
         real min_voltage_v
-        text schneideri_em3xxx_measurement_validator_entity_meter_id
         text title
     }
 
@@ -221,7 +212,6 @@ erDiagram
         character_varying kind
         text last_updated_by_id FK
         timestamp_with_time_zone last_updated_on
-        bigint measurement_location_id FK
         bigint measurement_validator_id FK
         text messenger_id FK
         ARRAY phases
@@ -243,7 +233,6 @@ erDiagram
     }
 
     network_users {
-        bigint _location_id FK
         text created_by_id FK
         timestamp_with_time_zone created_on
         text deleted_by_id FK
@@ -252,6 +241,7 @@ erDiagram
         boolean is_deleted
         text last_updated_by_id FK
         timestamp_with_time_zone last_updated_on
+        bigint location_id FK
         text title
     }
 
@@ -332,16 +322,15 @@ erDiagram
 
     abb_b2x_aggregates }o--|| meters : "meter_id"
     abb_b2x_measurements }o--|| meters : "meter_id"
-    catalogues }o--|| locations : "location_id"
     catalogues }o--|| representatives : "created_by_id"
     catalogues }o--|| representatives : "deleted_by_id"
     catalogues }o--|| representatives : "last_updated_by_id"
     events }o--|| catalogues : "catalogue_entity_id"
-    locations }o--|| catalogues : "blue_low_catalogue_id1"
-    locations }o--|| catalogues : "red_low_catalogue_id1"
-    locations }o--|| catalogues : "regulatory_catalogue_id1"
-    locations }o--|| catalogues : "white_low_catalogue_id1"
-    locations }o--|| catalogues : "white_medium_catalogue_id1"
+    locations }o--|| catalogues : "blue_low_catalogue_id"
+    locations }o--|| catalogues : "red_low_catalogue_id"
+    locations }o--|| catalogues : "regulatory_catalogue_id"
+    locations }o--|| catalogues : "white_low_catalogue_id"
+    locations }o--|| catalogues : "white_medium_catalogue_id"
     meters }o--|| catalogues : "catalogue_id"
     events }o--|| locations : "location_entity_id"
     events }o--|| measurement_locations : "measurement_location_entity_id"
@@ -362,12 +351,12 @@ erDiagram
     locations }o--|| representatives : "last_updated_by_id"
     measurement_locations }o--|| locations : "location_id"
     messengers }o--|| locations : "location_id"
-    network_users }o--|| locations : "_location_id"
+    network_users }o--|| locations : "location_id"
+    measurement_locations }o--|| meters : "meter_id"
     measurement_locations }o--|| network_users : "network_user_id"
     measurement_locations }o--|| representatives : "created_by_id"
     measurement_locations }o--|| representatives : "deleted_by_id"
     measurement_locations }o--|| representatives : "last_updated_by_id"
-    meters }o--|| measurement_locations : "measurement_location_id"
     measurement_validators }o--|| representatives : "created_by_id"
     measurement_validators }o--|| representatives : "deleted_by_id"
     measurement_validators }o--|| representatives : "last_updated_by_id"

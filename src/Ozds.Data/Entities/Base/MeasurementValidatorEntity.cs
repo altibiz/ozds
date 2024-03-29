@@ -11,8 +11,6 @@ public abstract class MeasurementValidatorEntity : AuditableEntity
 public class MeasurementValidatorEntity<TMeter> : MeasurementValidatorEntity
   where TMeter : MeterEntity
 {
-  public string MeterId { get; set; } = default!;
-
   public virtual TMeter Meter { get; set; } = default!;
 }
 
@@ -27,16 +25,5 @@ public class MeasurementValidatorEntityTypeHierarchyConfiguration :
       .UseTphMappingStrategy()
       .ToTable("measurement_validators")
       .HasDiscriminator<string>("kind");
-
-    if (type != typeof(MeasurementValidatorEntity))
-    {
-      builder
-        .HasOne(nameof(MeasurementValidatorEntity<MeterEntity>.Meter))
-        .WithOne(
-          nameof(MeterEntity<MeasurementEntity, AggregateEntity,
-            MeasurementValidatorEntity<MeterEntity>>.MeasurementValidator))
-        .HasForeignKey(type.Name,
-          nameof(MeasurementValidatorEntity<MeterEntity>.MeterId));
-    }
   }
 }
