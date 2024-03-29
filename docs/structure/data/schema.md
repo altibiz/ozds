@@ -207,7 +207,6 @@ erDiagram
         text deleted_by_id FK
         timestamp_with_time_zone deleted_on
         text id PK
-        text id1
         boolean is_deleted
         character_varying kind
         text last_updated_by_id FK
