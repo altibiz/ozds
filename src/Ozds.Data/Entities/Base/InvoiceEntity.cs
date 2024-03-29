@@ -1,6 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Ozds.Data.Extensions;
 
 // TODO: copy entities via complex properties
@@ -35,14 +33,12 @@ public class
 
     var builder = modelBuilder.Entity(type);
 
-    builder.HasKey(nameof(InvoiceEntity.Id));
-
+    builder.HasKey("_id");
+    builder.Ignore(nameof(InvoiceEntity.Id));
     builder
-      .Property(nameof(InvoiceEntity.Id))
-      .HasColumnType("bigint")
+      .Property("_id")
       .HasColumnName("id")
-      .HasConversion<StringToNumberConverter<long>>()
-      .ValueGeneratedOnAdd()
+      .HasColumnType("bigint")
       .UseIdentityAlwaysColumn();
 
     builder

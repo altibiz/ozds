@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Ozds.Data.Entities.Enums;
 using Ozds.Data.Extensions;
 
@@ -7,6 +6,9 @@ namespace Ozds.Data.Entities.Base;
 
 public class MeterEntity : AuditableEntity
 {
+  private string _stringId = default!;
+  public override string Id { get => _stringId; init => _stringId = value; }
+
   public string MessengerId { get; set; } = default!;
 
   public virtual MessengerEntity Messenger { get; set; } = default!;

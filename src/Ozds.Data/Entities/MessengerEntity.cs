@@ -9,6 +9,9 @@ namespace Ozds.Data.Entities;
 
 public class MessengerEntity : AuditableEntity
 {
+  private string _stringId = default!;
+  public override string Id { get => _stringId; init => _stringId = value; }
+
   public string LocationId { get; set; } = default!;
   public virtual LocationEntity Location { get; set; } = default!;
   public virtual ICollection<MeterEntity> Meters { get; set; } = default!;

@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Ozds.Data.Entities.Enums;
 using Ozds.Data.Extensions;
 
@@ -38,12 +37,12 @@ public class
   {
     var builder = modelBuilder.Entity(type);
 
+    builder.HasKey("_id");
+    builder.Ignore(nameof(InvoiceEntity.Id));
     builder
-      .Property(nameof(EventEntity.Id))
-      .HasConversion<StringToNumberConverter<long>>()
-      .HasColumnType("bigint")
+      .Property("_id")
       .HasColumnName("id")
-      .ValueGeneratedOnAdd()
+      .HasColumnType("bigint")
       .UseIdentityAlwaysColumn();
 
     builder

@@ -5,6 +5,9 @@ namespace Ozds.Data.Entities;
 
 public class RepresentativeEntity : AuditableEntity
 {
+  private string _stringId = default!;
+  public override string Id { get => _stringId; init => _stringId = value; }
+
   public RoleEntity Role { get; set; }
 
   public virtual ICollection<NetworkUserEntity> NetworkUsers { get; set; } =
