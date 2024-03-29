@@ -7,7 +7,9 @@ namespace Ozds.Data.Entities.Base;
 
 public abstract class InvoiceEntity : ReadonlyEntity
 {
-  public string Id { get; init; } = default!;
+  private long _id = default!;
+
+  public virtual string Id { get => _id.ToString(); init => _id = long.Parse(value); }
 
   public DateTimeOffset IssuedOn { get; set; } = DateTimeOffset.UtcNow;
 

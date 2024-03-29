@@ -7,7 +7,9 @@ namespace Ozds.Data.Entities.Base;
 
 public class EventEntity : ReadonlyEntity
 {
-  public string Id { get; init; } = default!;
+  private long _id = default!;
+
+  public virtual string Id { get => _id.ToString(); init => _id = long.Parse(value); }
 
   public DateTimeOffset Timestamp { get; set; }
 
@@ -37,7 +39,11 @@ public class
   {
     var builder = modelBuilder.Entity(type);
 
-    builder.HasKey("_id");
+    if (type == typeof(EventEntity))
+    {
+      builder.HasKey("_id");
+    }
+
     builder.Ignore(nameof(InvoiceEntity.Id));
     builder
       .Property("_id")
