@@ -47,5 +47,8 @@ public class
       .WithOne(nameof(NetworkUserInvoiceEntity.NetworkUser));
 
     builder.Ignore(nameof(NetworkUserEntity.LocationId));
+    builder
+      .Property("_locationId")
+      .HasColumnName("location_id");
   }
 }

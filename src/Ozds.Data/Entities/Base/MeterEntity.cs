@@ -62,13 +62,10 @@ public class
   {
     var builder = modelBuilder.Entity(type);
 
-    if (type == typeof(MeterEntity))
-    {
-      builder
-        .UseTphMappingStrategy()
-        .ToTable("meters")
-        .HasDiscriminator<string>("kind");
-    }
+    builder
+      .UseTphMappingStrategy()
+      .ToTable("meters")
+      .HasDiscriminator<string>("kind");
 
     builder
       .HasOne(nameof(MeterEntity.Messenger))
