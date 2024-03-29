@@ -98,19 +98,11 @@ erDiagram
         text auditable_entity_id
         text auditable_entity_table
         text auditable_entity_type
-        bigint catalogue_entity_id FK
         text description
         bigint id PK
         character_varying kind
         integer level
-        bigint location_entity_id FK
-        bigint measurement_location_entity_id FK
-        bigint measurement_validator_entity_id FK
-        text messenger_entity_string_id FK
         text messenger_id FK
-        text meter_entity_string_id FK
-        bigint network_user_entity_id FK
-        text representative_entity_string_id FK
         text representative_event_entity_representative_id FK
         text representative_id FK
         timestamp_with_time_zone timestamp
@@ -324,21 +316,13 @@ erDiagram
     catalogues }o--|| representatives : "created_by_id"
     catalogues }o--|| representatives : "deleted_by_id"
     catalogues }o--|| representatives : "last_updated_by_id"
-    events }o--|| catalogues : "catalogue_entity_id"
     locations }o--|| catalogues : "blue_low_catalogue_id"
     locations }o--|| catalogues : "red_low_catalogue_id"
     locations }o--|| catalogues : "regulatory_catalogue_id"
     locations }o--|| catalogues : "white_low_catalogue_id"
     locations }o--|| catalogues : "white_medium_catalogue_id"
     meters }o--|| catalogues : "catalogue_id"
-    events }o--|| locations : "location_entity_id"
-    events }o--|| measurement_locations : "measurement_location_entity_id"
-    events }o--|| measurement_validators : "measurement_validator_entity_id"
-    events }o--|| messengers : "messenger_entity_string_id"
     events }o--|| messengers : "messenger_id"
-    events }o--|| meters : "meter_entity_string_id"
-    events }o--|| network_users : "network_user_entity_id"
-    events }o--|| representatives : "representative_entity_string_id"
     events }o--|| representatives : "representative_event_entity_representative_id"
     events }o--|| representatives : "representative_id"
     location_entity_representative_entity }o--|| locations : "locations_id"

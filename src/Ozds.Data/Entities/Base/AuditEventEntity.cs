@@ -1,4 +1,6 @@
+using Microsoft.EntityFrameworkCore;
 using Ozds.Data.Entities.Enums;
+using Ozds.Data.Extensions;
 
 // TODO: extension method for querying auditable entities from these events
 
@@ -13,4 +15,29 @@ public class AuditEventEntity : EventEntity
   public string AuditableEntityTable { get; set; } = default!;
 
   public AuditEntity Audit { get; set; } = default!;
+}
+
+public class AuditEventEntityTypeHierarchyConfiguration :
+  EntityTypeHierarchyConfiguration<AuditEventEntity>
+{
+  public override void Configure(ModelBuilder modelBuilder, Type type)
+  {
+    var builder = modelBuilder.Entity(type);
+
+    builder.HasIndex(
+      new[] {
+        nameof(AuditEventEntity.AuditableEntityType),
+        nameof(AuditEventEntity.AuditableEntityId)
+      },
+      "ix_auditevententity_auditableentitytype_auditableentityid"
+    );
+
+    builder.HasIndex(
+      new[] {
+        nameof(AuditEventEntity.AuditableEntityTable),
+        nameof(AuditEventEntity.AuditableEntityId)
+      },
+      "ix_auditevententity_auditableentitytable_auditableentityid"
+    );
+  }
 }

@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Ozds.Data.Entities.Base;
 using Ozds.Data.Extensions;
@@ -22,5 +23,9 @@ public class
       .HasOne(nameof(RepresentativeEventEntity.Representative))
       .WithMany(nameof(RepresentativeEntity.Events))
       .HasForeignKey(nameof(RepresentativeEventEntity.RepresentativeId));
+
+    builder
+      .Property(nameof(RepresentativeAuditEventEntity.RepresentativeId))
+      .HasColumnName("RepresentativeId");
   }
 }

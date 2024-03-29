@@ -30,8 +30,6 @@ public abstract class AuditableEntity
   public string? DeletedById { get; set; }
 
   public virtual RepresentativeEntity? DeletedBy { get; set; }
-
-  public virtual ICollection<AuditEventEntity> Audits { get; set; } = default!;
 }
 
 public class
