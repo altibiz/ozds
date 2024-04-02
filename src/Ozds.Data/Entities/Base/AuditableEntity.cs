@@ -8,14 +8,6 @@ public abstract class AuditableEntity : IIdentifiableEntity
 {
   private readonly long _id;
 
-  public virtual string Id
-  {
-    get { return _id.ToString(); }
-    init { _id = long.Parse(value); }
-  }
-
-  public string Title { get; set; } = default!;
-
   public DateTimeOffset CreatedOn { get; set; } = DateTimeOffset.UtcNow;
 
   public string? CreatedById { get; set; }
@@ -35,6 +27,14 @@ public abstract class AuditableEntity : IIdentifiableEntity
   public string? DeletedById { get; set; }
 
   public virtual RepresentativeEntity? DeletedBy { get; set; }
+
+  public virtual string Id
+  {
+    get { return _id.ToString(); }
+    init { _id = long.Parse(value); }
+  }
+
+  public string Title { get; set; } = default!;
 }
 
 public class

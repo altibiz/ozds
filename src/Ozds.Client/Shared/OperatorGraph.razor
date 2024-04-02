@@ -1,256 +1,275 @@
-
-@if(_graphValues is not null){
-@* MOBILE *@
-   <MudHidden Breakpoint="Breakpoint.MdAndUp">
-          <MudPaper Class="d-flex align-center justify-stat mud-width-full pa-1 pb-3 flex-column">
-            <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
-              @(_leftDataTitle + T[" za"] + ": " + _leftTitle)
-            </MudItem>
-            <MudContainer Class="d-flex flex-column" MaxWidth="MaxWidth.Small">
-              @if(_graphValues is not null ){
-                <ApexChart TItem="ChartDataL"
-                  XAxisType="XAxisType.Datetime"
-                  Options="graphLOptionsMob"
-                  @ref="chart">
-                    @for(int i = 0; i < leftLineCount ; i++){
-                      var j = i;
-                      <ApexPointSeries TItem="ChartDataL"
-                      Items="@_graphValues"
-                      Name="@_graphValues.Select(x => x.names[j]).FirstOrDefault()"
-                      SeriesType="SeriesType.Line"
-                      XValue='x => DateTimeGraph(x.date)'
-                      YValue="x => x.values[j]"
-                      Stroke="@(ColorGraph(j))"
-                    />
-                    }
-                    @if(leftLineCount == 0){
-                      <ApexPointSeries TItem="ChartDataL"
-                      Items="@_graphValues"
-                      Name="n/a"
-                      SeriesType="SeriesType.Line"
-                      XValue='x => DateTimeGraph(x.date)'
-                      YValue="x => 0"
-                      Stroke="@(ColorGraph(0))"
-                    />
-                    }
-                </ApexChart>
-                <MudItem Class="d-flex flex-column justify-center gap-2">
-                  <MudAutocomplete Class="pa-4 mt-0" T="string" Label="Brojila" Value="_leftTitle" ValueChanged="e => LeftMenuItemClicked(e)" SearchFunc="@Search" ToStringFunc="@(e=> e==null?null : $"{e}")" />
-                  <MudMenu Dense="true" Variant="Variant.Filled" Color="MudBlazor.Color.Primary">
-                    <ActivatorContent>
-                      <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Primary">
-                        @_leftDataTitle
-                        <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowDown" />
-                      </MudButton>
-                    </ActivatorContent>
-                    <ChildContent>
-                      @foreach(var type in _displayType){
-                        <MudMenuItem OnClick="@(() => LeftMenuDataItemClicked(type))">@type</MudMenuItem>
-                      }
-                    </ChildContent>
-                  </MudMenu>
-                  <MudMenu Dense="true" Variant="Variant.Filled" Color="MudBlazor.Color.Primary">
-                    <ActivatorContent>
-                      <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Primary">
-                        @_leftTimeTitle
-                        <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowDown" />
-                      </MudButton>
-                    </ActivatorContent>
-                    <ChildContent>
-                      <MudMenuItem OnClick="@(() => MenuItemClicked("Scale1"))">15 min</MudMenuItem>
-                      <MudMenuItem OnClick="@(() => MenuItemClicked("Scale2"))">1 h</MudMenuItem>
-                      <MudMenuItem OnClick="@(() => MenuItemClicked("Scale3"))">6 h</MudMenuItem>
-                      <MudMenuItem OnClick="@(() => MenuItemClicked("Scale4"))">24 h</MudMenuItem>
-                    </ChildContent>
-                  </MudMenu>
-                </MudItem>
-              }
-            </MudContainer>
-          </MudPaper>
+@using Color = MudBlazor.Color
+@if (_graphValues is not null)
+{
+  @* MOBILE *@
+  <MudHidden Breakpoint="Breakpoint.MdAndUp">
+    <MudPaper Class="d-flex align-center justify-stat mud-width-full pa-1 pb-3 flex-column">
+      <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
+        @(_leftDataTitle + T[" za"] + ": " + _leftTitle)
+      </MudItem>
+      <MudContainer Class="d-flex flex-column" MaxWidth="MaxWidth.Small">
+        @if (_graphValues is not null)
+        {
+          <ApexChart TItem="ChartDataL"
+                     XAxisType="XAxisType.Datetime"
+                     Options="graphLOptionsMob"
+                     @ref="chart">
+            @for (var i = 0; i < leftLineCount; i++)
+            {
+              var j = i;
+              <ApexPointSeries TItem="ChartDataL"
+                               Items="@_graphValues"
+                               Name="@_graphValues.Select(x => x.names[j]).FirstOrDefault()"
+                               SeriesType="SeriesType.Line"
+                               XValue='x => DateTimeGraph(x.date)'
+                               YValue="x => x.values[j]"
+                               Stroke="@(ColorGraph(j))"/>
+            }
+            @if (leftLineCount == 0)
+            {
+              <ApexPointSeries TItem="ChartDataL"
+                               Items="@_graphValues"
+                               Name="n/a"
+                               SeriesType="SeriesType.Line"
+                               XValue='x => DateTimeGraph(x.date)'
+                               YValue="x => 0"
+                               Stroke="@(ColorGraph(0))"/>
+            }
+          </ApexChart>
+          <MudItem Class="d-flex flex-column justify-center gap-2">
+            <MudAutocomplete Class="pa-4 mt-0" T="string" Label="Brojila" Value="_leftTitle" ValueChanged="e => LeftMenuItemClicked(e)" SearchFunc="@Search" ToStringFunc="@(e => e == null ? null : $"{e}")"/>
+            <MudMenu Dense="true" Variant="Variant.Filled" Color="Color.Primary">
+              <ActivatorContent>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary">
+                  @_leftDataTitle
+                  <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowDown"/>
+                </MudButton>
+              </ActivatorContent>
+              <ChildContent>
+                @foreach (var type in _displayType)
+                {
+                  <MudMenuItem OnClick="@(() => LeftMenuDataItemClicked(type))">@type</MudMenuItem>
+                }
+              </ChildContent>
+            </MudMenu>
+            <MudMenu Dense="true" Variant="Variant.Filled" Color="Color.Primary">
+              <ActivatorContent>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary">
+                  @_leftTimeTitle
+                  <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowDown"/>
+                </MudButton>
+              </ActivatorContent>
+              <ChildContent>
+                <MudMenuItem OnClick="@(() => MenuItemClicked("Scale1"))">15 min</MudMenuItem>
+                <MudMenuItem OnClick="@(() => MenuItemClicked("Scale2"))">1 h</MudMenuItem>
+                <MudMenuItem OnClick="@(() => MenuItemClicked("Scale3"))">6 h</MudMenuItem>
+                <MudMenuItem OnClick="@(() => MenuItemClicked("Scale4"))">24 h</MudMenuItem>
+              </ChildContent>
+            </MudMenu>
+          </MudItem>
+        }
+      </MudContainer>
+    </MudPaper>
   </MudHidden>
 
 
-
-@* DESKTOP *@
+  @* DESKTOP *@
   <MudHidden Breakpoint="Breakpoint.SmAndDown">
-          <MudPaper Class="d-flex align-center justify-center mud-width-full py-8 px-8 flex-column" Height="525px">
-            <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
-              @(_leftDataTitle + " za: " + _leftTitle)
-            </MudItem>
-            <MudContainer Class="d-flex flex-column" MaxWidth="MaxWidth.Medium">
-              @if(_graphValues is not null ){
-                <ApexChart TItem="ChartDataL"
-                  XAxisType="XAxisType.Datetime"
-                  Options="graphLOptions"
-                  @ref="chart">
-                    @for(int i = 0; i < leftLineCount ; i++){
-                      var j = i;
-                      <ApexPointSeries TItem="ChartDataL"
-                      Items="@_graphValues"
-                      Name="@_graphValues.Select(x => x.names[j]).FirstOrDefault()"
-                      SeriesType="SeriesType.Line"
-                      XValue='x => DateTimeGraph(x.date)'
-                      YValue="x => x.values[j]"
-                      Stroke="@(ColorGraph(j))"
-                    />
-                    }
-                    @if(leftLineCount == 0){
-                      <ApexPointSeries TItem="ChartDataL"
-                      Items="@_graphValues"
-                      Name="n/a"
-                      SeriesType="SeriesType.Line"
-                      XValue='x => DateTimeGraph(x.date)'
-                      YValue="x => 0"
-                      Stroke="@(ColorGraph(0))"
-                    />
-                    }
-                </ApexChart>
-                <MudItem Class="d-flex flex-row justify-center gap-2">
-                  <MudMenu Dense="true" Variant="Variant.Filled" Color="MudBlazor.Color.Primary">
-                    <ActivatorContent>
-                      <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Primary">
-                        @_leftDataTitle
-                        <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowDown" />
-                      </MudButton>
-                    </ActivatorContent>
-                    <ChildContent>
-                      @foreach(var type in _displayType){
-                        <MudMenuItem OnClick="@(() => LeftMenuDataItemClicked(type))">@type</MudMenuItem>
-                      }
-                    </ChildContent>
-                  </MudMenu>
-                  <MudMenu Dense="true" Variant="Variant.Filled" Color="MudBlazor.Color.Primary">
-                    <ActivatorContent>
-                      <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Primary">
-                        @_leftTimeTitle
-                        <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowDown" />
-                      </MudButton>
-                    </ActivatorContent>
-                    <ChildContent>
-                      <MudMenuItem OnClick="@(() => MenuItemClicked("Scale1"))">15 min</MudMenuItem>
-                      <MudMenuItem OnClick="@(() => MenuItemClicked("Scale2"))">1 h</MudMenuItem>
-                      <MudMenuItem OnClick="@(() => MenuItemClicked("Scale3"))">6 h</MudMenuItem>
-                      <MudMenuItem OnClick="@(() => MenuItemClicked("Scale4"))">24 h</MudMenuItem>
-                    </ChildContent>
-                  </MudMenu>
-                </MudItem>
-                <MudAutocomplete Class="pa-4 mt-0" T="string" Label="Brojila" Value="_leftTitle" ValueChanged="e => LeftMenuItemClicked(e)" SearchFunc="@Search" ToStringFunc="@(e=> e==null?null : $"{e}")" />
-              }
-            </MudContainer>
-          </MudPaper>
+    <MudPaper Class="d-flex align-center justify-center mud-width-full py-8 px-8 flex-column" Height="525px">
+      <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
+        @(_leftDataTitle + " za: " + _leftTitle)
+      </MudItem>
+      <MudContainer Class="d-flex flex-column" MaxWidth="MaxWidth.Medium">
+        @if (_graphValues is not null)
+        {
+          <ApexChart TItem="ChartDataL"
+                     XAxisType="XAxisType.Datetime"
+                     Options="graphLOptions"
+                     @ref="chart">
+            @for (var i = 0; i < leftLineCount; i++)
+            {
+              var j = i;
+              <ApexPointSeries TItem="ChartDataL"
+                               Items="@_graphValues"
+                               Name="@_graphValues.Select(x => x.names[j]).FirstOrDefault()"
+                               SeriesType="SeriesType.Line"
+                               XValue='x => DateTimeGraph(x.date)'
+                               YValue="x => x.values[j]"
+                               Stroke="@(ColorGraph(j))"/>
+            }
+            @if (leftLineCount == 0)
+            {
+              <ApexPointSeries TItem="ChartDataL"
+                               Items="@_graphValues"
+                               Name="n/a"
+                               SeriesType="SeriesType.Line"
+                               XValue='x => DateTimeGraph(x.date)'
+                               YValue="x => 0"
+                               Stroke="@(ColorGraph(0))"/>
+            }
+          </ApexChart>
+          <MudItem Class="d-flex flex-row justify-center gap-2">
+            <MudMenu Dense="true" Variant="Variant.Filled" Color="Color.Primary">
+              <ActivatorContent>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary">
+                  @_leftDataTitle
+                  <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowDown"/>
+                </MudButton>
+              </ActivatorContent>
+              <ChildContent>
+                @foreach (var type in _displayType)
+                {
+                  <MudMenuItem OnClick="@(() => LeftMenuDataItemClicked(type))">@type</MudMenuItem>
+                }
+              </ChildContent>
+            </MudMenu>
+            <MudMenu Dense="true" Variant="Variant.Filled" Color="Color.Primary">
+              <ActivatorContent>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary">
+                  @_leftTimeTitle
+                  <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowDown"/>
+                </MudButton>
+              </ActivatorContent>
+              <ChildContent>
+                <MudMenuItem OnClick="@(() => MenuItemClicked("Scale1"))">15 min</MudMenuItem>
+                <MudMenuItem OnClick="@(() => MenuItemClicked("Scale2"))">1 h</MudMenuItem>
+                <MudMenuItem OnClick="@(() => MenuItemClicked("Scale3"))">6 h</MudMenuItem>
+                <MudMenuItem OnClick="@(() => MenuItemClicked("Scale4"))">24 h</MudMenuItem>
+              </ChildContent>
+            </MudMenu>
+          </MudItem>
+          <MudAutocomplete Class="pa-4 mt-0" T="string" Label="Brojila" Value="_leftTitle" ValueChanged="e => LeftMenuItemClicked(e)" SearchFunc="@Search" ToStringFunc="@(e => e == null ? null : $"{e}")"/>
+        }
+      </MudContainer>
+    </MudPaper>
   </MudHidden>
 }
 
 
 @code {
-    [CascadingParameter] public UserState user { get; set; } = default!;
-    [CascadingParameter] public RepresentativeState representative { get; set; } = default!;
-    public string TextValue { get; set; } = "";
-    private ApexChartOptions<ChartDataL> graphLOptions = new();
-    private ApexChartOptions<ChartDataL> graphLOptionsMob = new();
-    private List<string> _displayType = new List<string>{
-      "Napon", "Struja", "Radna snaga", "Jalova Snaga", "Prividna snaga"
-    };
-    public int timeSpanMins = 15;
-    public int leftLineCount = 0;
-    public int rightLineCount = 0;
-    public IEnumerable<ChartDataL>? _graphValues;
-    public IEnumerable<ChartDataL>? _rowData;
-    private string _leftTitle = "";
-    private string _leftDataTitle = "";
-    private string _leftTimeTitle = "15 min";
-    public record ChartDataL(decimal[] values, string[] names, DateTimeOffset date, string source);
-    private ApexChart<ChartDataL> chart = default!;
-    private IEnumerable<MeterModel>? _meters;
-    private class ExpandThing {
-      public MeterModel device = default!;
-      public bool show;
-    }
-    private List<ExpandThing> _shownIoTDevices = new();
-    private List<string> _ioTDeviceNames = new();
-    protected override async Task OnInitializedAsync()
+  [CascadingParameter] public UserState user { get; set; } = default!;
+  [CascadingParameter] public RepresentativeState representative { get; set; } = default!;
+  public string TextValue { get; set; } = "";
+  private ApexChartOptions<ChartDataL> graphLOptions = new();
+  private ApexChartOptions<ChartDataL> graphLOptionsMob = new();
+
+  private List<string> _displayType = new()
+  {
+    "Napon", "Struja", "Radna snaga", "Jalova Snaga", "Prividna snaga"
+  };
+
+  public int timeSpanMins = 15;
+  public int leftLineCount = 0;
+  public int rightLineCount = 0;
+  public IEnumerable<ChartDataL>? _graphValues;
+  public IEnumerable<ChartDataL>? _rowData;
+  private string _leftTitle = "";
+  private string _leftDataTitle = "";
+  private string _leftTimeTitle = "15 min";
+
+  public record ChartDataL(decimal[] values, string[] names, DateTimeOffset date, string source);
+
+  private ApexChart<ChartDataL> chart = default!;
+  private IEnumerable<MeterModel>? _meters;
+
+  private class ExpandThing
+  {
+    public MeterModel device = default!;
+    public bool show;
+  }
+
+  private List<ExpandThing> _shownIoTDevices = new();
+  private List<string> _ioTDeviceNames = new();
+
+  protected override async Task OnInitializedAsync()
+  {
+    graphLOptionsMob = new ApexChartOptions<ChartDataL>
     {
-      graphLOptionsMob= new ApexChartOptions<ChartDataL>() {
-        Grid = new Grid
-        {
-            BorderColor = "#e7e7e7",
-            Row = new GridRow
-            {
-                Colors = new List<string> { "#f3f3f3", "transparent" },
-                Opacity = 0.5d
-            }
-        }
-        };
-      graphLOptions= new ApexChartOptions<ChartDataL>() {
-        Grid = new Grid
-        {
-            BorderColor = "#e7e7e7",
-            Row = new GridRow
-            {
-                Colors = new List<string> { "#f3f3f3", "transparent" },
-                Opacity = 0.5d
-            }
-        }
-        };
-      graphLOptions.Yaxis = new();
-      graphLOptions.Yaxis.Add(new YAxis()
-            {
-              Labels = new YAxisLabels(){
-                Formatter = "function(val, index) { return val.toFixed(0); }"
-                }
-            });
-      graphLOptions.Chart = new Chart
+      Grid = new Grid
       {
-        Toolbar = new ApexCharts.Toolbar
+        BorderColor = "#e7e7e7",
+        Row = new GridRow
         {
-          Tools = new Tools { Zoomin = true, Zoomout = false, Zoom = false, Download = false, Pan = true, Selection = false }
+          Colors = new List<string> { "#f3f3f3", "transparent" },
+          Opacity = 0.5d
         }
-      };
-      graphLOptions.Tooltip = new ApexCharts.Tooltip { X = new TooltipX { Format = @"HH:mm:ss" } };
-      graphLOptionsMob.Tooltip = new ApexCharts.Tooltip { X = new TooltipX { Format = @"GG:mm:ss" } };
-      graphLOptionsMob.Yaxis = new List<YAxis>();
-      graphLOptionsMob.Xaxis = new XAxis();
+      }
+    };
+    graphLOptions = new ApexChartOptions<ChartDataL>
+    {
+      Grid = new Grid
+      {
+        BorderColor = "#e7e7e7",
+        Row = new GridRow
+        {
+          Colors = new List<string> { "#f3f3f3", "transparent" },
+          Opacity = 0.5d
+        }
+      }
+    };
+    graphLOptions.Yaxis = new List<YAxis>();
+    graphLOptions.Yaxis.Add(new YAxis
+    {
+      Labels = new YAxisLabels
+      {
+        Formatter = "function(val, index) { return val.toFixed(0); }"
+      }
+    });
+    graphLOptions.Chart = new Chart
+    {
+      Toolbar = new Toolbar
+      {
+        Tools = new Tools { Zoomin = true, Zoomout = false, Zoom = false, Download = false, Pan = true, Selection = false }
+      }
+    };
+    graphLOptions.Tooltip = new Tooltip { X = new TooltipX { Format = @"HH:mm:ss" } };
+    graphLOptionsMob.Tooltip = new Tooltip { X = new TooltipX { Format = @"GG:mm:ss" } };
+    graphLOptionsMob.Yaxis = new List<YAxis>();
+    graphLOptionsMob.Xaxis = new XAxis();
 
-      graphLOptionsMob.Yaxis.Add(new YAxis
-            {
-                Show = false,
-                Labels = new YAxisLabels(){
-                  Formatter = "function(val, index) { return val.toFixed(0); }"
-                }
-            });
-      graphLOptionsMob.Xaxis = new XAxis()
-            {
-              Labels = new XAxisLabels(){ Show = false }
-            };
-      graphLOptionsMob.Chart = new Chart
-            {
-                Toolbar = new ApexCharts.Toolbar
-                {
-                  Tools = new Tools { Zoomin = true, Zoomout = false, Zoom = false, Download = false, Pan = true, Selection = false }
-                }
-            };
-
-
-    }
+    graphLOptionsMob.Yaxis.Add(new YAxis
+    {
+      Show = false,
+      Labels = new YAxisLabels
+      {
+        Formatter = "function(val, index) { return val.toFixed(0); }"
+      }
+    });
+    graphLOptionsMob.Xaxis = new XAxis
+    {
+      Labels = new XAxisLabels { Show = false }
+    };
+    graphLOptionsMob.Chart = new Chart
+    {
+      Toolbar = new Toolbar
+      {
+        Tools = new Tools { Zoomin = true, Zoomout = false, Zoom = false, Download = false, Pan = true, Selection = false }
+      }
+    };
+  }
 
   private async Task LeftMenuItemClicked(string source)
   {
-    if(source.StartsWith("abb")){
-      _displayType = new List<string>{"Napon", "Struja", "Radna snaga", "Jalova Snaga"};
-      if(_leftDataTitle == "Prividna snaga")
+    if (source.StartsWith("abb"))
+    {
+      _displayType = new List<string> { "Napon", "Struja", "Radna snaga", "Jalova Snaga" };
+      if (_leftDataTitle == "Prividna snaga")
         _leftDataTitle = "Jalova Snaga";
     }
-    else if(source.StartsWith("schneider")){
-      _displayType = new List<string>{"Napon", "Struja", "Radna snaga", "Jalova Snaga", "Prividna snaga"};
+    else if (source.StartsWith("schneider"))
+    {
+      _displayType = new List<string> { "Napon", "Struja", "Radna snaga", "Jalova Snaga", "Prividna snaga" };
     }
+
     _leftTitle = source;
     await LeftMenuDataItemClicked(_leftDataTitle);
   }
 
-  private async Task GetValues(string source, string type){
+  private async Task GetValues(string source, string type)
+  {
     IReadOnlyList<SpanningMeasure>? _spanningMeasurements;
 
-    switch(type)
+    switch (type)
     {
       case "Struja":
         break;
@@ -262,15 +281,15 @@
         break;
       case "Prividna snaga":
         break;
-      default:
-        break;
     }
+
     StateHasChanged();
-    await chart.UpdateSeriesAsync(true);
+    await chart.UpdateSeriesAsync();
   }
+
   private async Task LeftMenuDataItemClicked(string type)
   {
-    switch(type)
+    switch (type)
     {
       case "Struja":
         _leftDataTitle = "Struja";
@@ -282,83 +301,105 @@
         _leftDataTitle = "Napon";
         break;
       case "Jalova Snaga":
-        if(_leftTitle.StartsWith("abb")){
+        if (_leftTitle.StartsWith("abb"))
+        {
         }
-        else if(_leftTitle.StartsWith("schneider")){
+        else if (_leftTitle.StartsWith("schneider"))
+        {
         }
+
         _leftDataTitle = "Jalova Snaga";
         break;
       case "Prividna snaga":
-        if(_leftTitle.StartsWith("abb")){
+        if (_leftTitle.StartsWith("abb"))
+        {
         }
-        else if(_leftTitle.StartsWith("schneider")){
+        else if (_leftTitle.StartsWith("schneider"))
+        {
         }
+
         _leftDataTitle = "Prividna snaga";
         break;
-      default:
-        break;
     }
-    await GetValues(_leftTitle, _leftDataTitle);
-  }
-  private async Task MenuItemClicked(string item)
-  {
-      switch(item)
-      {
-        case "Scale1":
-            timeSpanMins = 15;
-            _leftTimeTitle = "15 min";
-            break;
-        case "Scale2":
-            timeSpanMins = 60;
-            _leftTimeTitle = "1 h";
-            break;
-        case "Scale3":
-            timeSpanMins = 60 * 6;
-            _leftTimeTitle = "6 h";
-            break;
-        case "Scale4":
-            timeSpanMins = 60 * 24;
-            _leftTimeTitle = "24 h";
-            break;
-      }
+
     await GetValues(_leftTitle, _leftDataTitle);
   }
 
-  private ApexCharts.SeriesStroke ColorGraph(int index){
-    if(index==0){
-        return new ApexCharts.SeriesStroke { Color = "#673AB7", Width = 4};
-      }
-    if(index==1){
-        return new ApexCharts.SeriesStroke { Color = "#FB8C00", Width = 4};
-      }
-    if(index==2){
-        return new ApexCharts.SeriesStroke { Color = "#00897B", Width = 4};
-      }
-    return new ApexCharts.SeriesStroke { Color = "#FB8C00", Width = 4};
+  private async Task MenuItemClicked(string item)
+  {
+    switch (item)
+    {
+      case "Scale1":
+        timeSpanMins = 15;
+        _leftTimeTitle = "15 min";
+        break;
+      case "Scale2":
+        timeSpanMins = 60;
+        _leftTimeTitle = "1 h";
+        break;
+      case "Scale3":
+        timeSpanMins = 60 * 6;
+        _leftTimeTitle = "6 h";
+        break;
+      case "Scale4":
+        timeSpanMins = 60 * 24;
+        _leftTimeTitle = "24 h";
+        break;
+    }
+
+    await GetValues(_leftTitle, _leftDataTitle);
+  }
+
+  private SeriesStroke ColorGraph(int index)
+  {
+    if (index == 0)
+    {
+      return new SeriesStroke { Color = "#673AB7", Width = 4 };
+    }
+
+    if (index == 1)
+    {
+      return new SeriesStroke { Color = "#FB8C00", Width = 4 };
+    }
+
+    if (index == 2)
+    {
+      return new SeriesStroke { Color = "#00897B", Width = 4 };
+    }
+
+    return new SeriesStroke { Color = "#FB8C00", Width = 4 };
   }
 
   @* Search *@
-  private Task Filter(string value) {
+  private Task Filter(string value)
+  {
     TextValue = value;
     foreach (var inv in _shownIoTDevices)
     {
-      if(value.Trim() != ""){
+      if (value.Trim() != "")
+      {
         inv.show = false;
       }
-    };
+    }
+
+    ;
     var a = _shownIoTDevices.Where(x => x.device.Title.Contains(value, StringComparison.InvariantCultureIgnoreCase)).ToList();
     foreach (var inv in a)
     {
-        inv.show = true;
-    };
+      inv.show = true;
+    }
+
+    ;
     StateHasChanged();
     return Task.CompletedTask;
   }
+
   private async Task<IEnumerable<string>> Search(string value)
   {
-      // if text is null or empty, show complete list
-      if (string.IsNullOrEmpty(value))
-          return _ioTDeviceNames;
-      return _ioTDeviceNames.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+    // if text is null or empty, show complete list
+    if (string.IsNullOrEmpty(value))
+      return _ioTDeviceNames;
+    return _ioTDeviceNames.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
   }
+
 }

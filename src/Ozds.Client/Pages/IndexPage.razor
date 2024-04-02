@@ -2,41 +2,45 @@
 @attribute [Navigation(Title = "Dashboard")]
 @attribute [Authorize]
 
-@if (user is null) {
+@if (user is null)
+{
   return;
 }
-@if (user.User.Roles.Contains("NetworkUser")) {
-  <NetUserRepDashboard />
-  <MetersTable />
+@if (user.User.Roles.Contains("NetworkUser"))
+{
+  <NetUserRepDashboard/>
+  <MetersTable/>
 }
-@if (user.User.Roles.Contains("Location")) {
-  <LocationRepDashboard />
+@if (user.User.Roles.Contains("Location"))
+{
+  <LocationRepDashboard/>
 }
-@if (user.User.Roles.Contains("Operator")) {
-@* MOBILE *@
+@if (user.User.Roles.Contains("Operator"))
+{
+  @* MOBILE *@
   <MudHidden Breakpoint="Breakpoint.MdAndUp">
     <MudGrid Class="my-3 pa-1">
-        <MudItem xs="12" Class="pa-1">
-          <OperatorGraph />
-        </MudItem>
-        <MudItem xs="12" Class="pa-1">
-          <OperatorGraph />
-        </MudItem>
+      <MudItem xs="12" Class="pa-1">
+        <OperatorGraph/>
+      </MudItem>
+      <MudItem xs="12" Class="pa-1">
+        <OperatorGraph/>
+      </MudItem>
     </MudGrid>
   </MudHidden>
-@* DESKTOP *@
+  @* DESKTOP *@
   <MudHidden Breakpoint="Breakpoint.SmAndDown">
     <MudGrid Class="my-3 pa-1">
-        <MudItem xs="6" Class="pa-1">
-          <OperatorGraph />
-        </MudItem>
-        <MudItem xs="6" Class="pa-1">
-          <OperatorGraph />
-        </MudItem>
+      <MudItem xs="6" Class="pa-1">
+        <OperatorGraph/>
+      </MudItem>
+      <MudItem xs="6" Class="pa-1">
+        <OperatorGraph/>
+      </MudItem>
     </MudGrid>
   </MudHidden>
   <LocationsTable/>
-  <InvoicesTable />
+  <InvoicesTable/>
 }
 
 @code {

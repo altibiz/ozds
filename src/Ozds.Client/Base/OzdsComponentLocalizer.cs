@@ -4,9 +4,6 @@ public class OzdsComponentLocalizer
 {
   public string this[string unlocalized]
   {
-    get
-    {
-      return unlocalized;
-    }
+    get { return unlocalized; }
   }
 }

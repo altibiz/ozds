@@ -24,8 +24,8 @@ public class OzdsMeasurementQueries
   ) where T : class, IMeasurement
   {
     var queryable = EntityModelTypeMapper.GetDbSet(context, typeof(T))
-      as IQueryable<MeasurementEntity>
-      ?? throw new InvalidOperationException();
+                      as IQueryable<MeasurementEntity>
+                    ?? throw new InvalidOperationException();
     var filtered = whereClauses.Aggregate(queryable,
       (current, clause) => current.WhereDynamic(clause));
     var timeFiltered = filtered

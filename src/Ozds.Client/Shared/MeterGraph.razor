@@ -1,189 +1,197 @@
-@using System.Timers;
+@using System.Timers
+@using Color = MudBlazor.Color
 @implements IDisposable
 
-@if(_graphValues is not null){
-@* MOBILE *@
-   <MudHidden Breakpoint="Breakpoint.MdAndUp">
-          <MudPaper Class="d-flex align-center justify-stat mud-width-full pa-1 pb-3 flex-column">
-            <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
-              @(_dataTitle + T[" za"] + ": " + Source)
-            </MudItem>
-            <MudContainer Class="d-flex flex-column" MaxWidth="MaxWidth.Small">
-              @if(_graphValues is not null ){
-                <ApexChart TItem="ChartData"
-                  XAxisType="XAxisType.Datetime"
-                  Options="graphOptionsMob"
-                  @ref="chart">
-                    @for(int i = 0; i < lineCount ; i++){
-                      var j = i;
-                      <ApexPointSeries TItem="ChartData"
-                      Items="@_graphValues"
-                      Name="@_graphValues.Select(x => x.names[j]).FirstOrDefault()"
-                      SeriesType="SeriesType.Line"
-                      XValue='x => DateTimeGraph(x.date)'
-                      YValue="x => x.values[j]"
-                      Stroke="@(ColorGraph(j))"
-                    />
-                    }
-                    @if(lineCount == 0){
-                      <ApexPointSeries TItem="ChartData"
-                      Items="@_graphValues"
-                      Name="n/a"
-                      SeriesType="SeriesType.Line"
-                      XValue='x => DateTimeGraph(x.date)'
-                      YValue="x => 0"
-                      Stroke="@(ColorGraph(0))"
-                    />
-                    }
-                </ApexChart>
-                <MudItem Class="d-flex flex-column justify-center gap-2">
-                  <MudMenu Dense="true" Variant="Variant.Filled" Color="MudBlazor.Color.Primary">
-                    <ActivatorContent>
-                      <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Primary">
-                        @_dataTitle
-                        <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowDown" />
-                      </MudButton>
-                    </ActivatorContent>
-                    <ChildContent>
-                      @foreach(var type in _displayType){
-                        <MudMenuItem OnClick="@(() => DataMenuItemClicked(type))">@type</MudMenuItem>
-                      }
-                    </ChildContent>
-                  </MudMenu>
-                  <MudMenu Dense="true" Variant="Variant.Filled" Color="MudBlazor.Color.Primary">
-                    <ActivatorContent>
-                      <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Primary">
-                        @_timeTitle
-                        <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowDown" />
-                      </MudButton>
-                    </ActivatorContent>
-                    <ChildContent>
-                      <MudMenuItem OnClick="@(() => TimeMenuItemClicked("Scale1"))">15 min</MudMenuItem>
-                      <MudMenuItem OnClick="@(() => TimeMenuItemClicked("Scale2"))">1 h</MudMenuItem>
-                      <MudMenuItem OnClick="@(() => TimeMenuItemClicked("Scale3"))">6 h</MudMenuItem>
-                      <MudMenuItem OnClick="@(() => TimeMenuItemClicked("Scale4"))">24 h</MudMenuItem>
-                    </ChildContent>
-                  </MudMenu>
-                </MudItem>
-              }
-            </MudContainer>
-          </MudPaper>
+@if (_graphValues is not null)
+{
+  @* MOBILE *@
+  <MudHidden Breakpoint="Breakpoint.MdAndUp">
+    <MudPaper Class="d-flex align-center justify-stat mud-width-full pa-1 pb-3 flex-column">
+      <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
+        @(_dataTitle + T[" za"] + ": " + Source)
+      </MudItem>
+      <MudContainer Class="d-flex flex-column" MaxWidth="MaxWidth.Small">
+        @if (_graphValues is not null)
+        {
+          <ApexChart TItem="ChartData"
+                     XAxisType="XAxisType.Datetime"
+                     Options="graphOptionsMob"
+                     @ref="chart">
+            @for (var i = 0; i < lineCount; i++)
+            {
+              var j = i;
+              <ApexPointSeries TItem="ChartData"
+                               Items="@_graphValues"
+                               Name="@_graphValues.Select(x => x.names[j]).FirstOrDefault()"
+                               SeriesType="SeriesType.Line"
+                               XValue='x => DateTimeGraph(x.date)'
+                               YValue="x => x.values[j]"
+                               Stroke="@(ColorGraph(j))"/>
+            }
+            @if (lineCount == 0)
+            {
+              <ApexPointSeries TItem="ChartData"
+                               Items="@_graphValues"
+                               Name="n/a"
+                               SeriesType="SeriesType.Line"
+                               XValue='x => DateTimeGraph(x.date)'
+                               YValue="x => 0"
+                               Stroke="@(ColorGraph(0))"/>
+            }
+          </ApexChart>
+          <MudItem Class="d-flex flex-column justify-center gap-2">
+            <MudMenu Dense="true" Variant="Variant.Filled" Color="Color.Primary">
+              <ActivatorContent>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary">
+                  @_dataTitle
+                  <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowDown"/>
+                </MudButton>
+              </ActivatorContent>
+              <ChildContent>
+                @foreach (var type in _displayType)
+                {
+                  <MudMenuItem OnClick="@(() => DataMenuItemClicked(type))">@type</MudMenuItem>
+                }
+              </ChildContent>
+            </MudMenu>
+            <MudMenu Dense="true" Variant="Variant.Filled" Color="Color.Primary">
+              <ActivatorContent>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary">
+                  @_timeTitle
+                  <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowDown"/>
+                </MudButton>
+              </ActivatorContent>
+              <ChildContent>
+                <MudMenuItem OnClick="@(() => TimeMenuItemClicked("Scale1"))">15 min</MudMenuItem>
+                <MudMenuItem OnClick="@(() => TimeMenuItemClicked("Scale2"))">1 h</MudMenuItem>
+                <MudMenuItem OnClick="@(() => TimeMenuItemClicked("Scale3"))">6 h</MudMenuItem>
+                <MudMenuItem OnClick="@(() => TimeMenuItemClicked("Scale4"))">24 h</MudMenuItem>
+              </ChildContent>
+            </MudMenu>
+          </MudItem>
+        }
+      </MudContainer>
+    </MudPaper>
   </MudHidden>
 
 
-
-@* DESKTOP *@
+  @* DESKTOP *@
   <MudHidden Breakpoint="Breakpoint.SmAndDown">
-          <MudPaper Class="d-flex align-center justify-center mud-width-full py-8 px-8 flex-column" Height="450px">
-            <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
-              @(_dataTitle + " za: " + Source)
-            </MudItem>
-            <MudContainer Class="d-flex flex-column" MaxWidth="MaxWidth.Medium">
-              @if(_graphValues is not null ){
-                <ApexChart TItem="ChartData"
-                  Options="graphOptions"
-                  @ref="chart">
-                    @for(int i = 0; i < lineCount ; i++){
-                      var j = i;
-                      <ApexPointSeries TItem="ChartData"
-                      Items="@_graphValues"
-                      Name="@_graphValues.Select(x => x.names[j]).FirstOrDefault()"
-                      SeriesType="SeriesType.Line"
-                      XValue='x => DateTimeGraph(x.date)'
-                      YValue="x => x.values[j]"
-                      Stroke="@(ColorGraph(j))"
-                    />
-                    }
-                    @if(lineCount == 0){
-                      <ApexPointSeries TItem="ChartData"
-                      Items="@_graphValues"
-                      Name="n/a"
-                      SeriesType="SeriesType.Line"
-                      XValue='x => DateTimeGraph(x.date)'
-                      YValue="x => 0"
-                      Stroke="@(ColorGraph(0))"
-                    />
-                    }
-                </ApexChart>
-                <MudItem Class="d-flex flex-row justify-center gap-2">
-                  <MudMenu Dense="true" Variant="Variant.Filled" Color="MudBlazor.Color.Primary">
-                    <ActivatorContent>
-                      <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Primary">
-                        @_dataTitle
-                        <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowDown" />
-                      </MudButton>
-                    </ActivatorContent>
-                    <ChildContent>
-                      @foreach(var type in _displayType){
-                        <MudMenuItem OnClick="@(() => DataMenuItemClicked(type))">@type</MudMenuItem>
-                      }
-                    </ChildContent>
-                  </MudMenu>
-                  <MudMenu Dense="true" Variant="Variant.Filled" Color="MudBlazor.Color.Primary">
-                    <ActivatorContent>
-                      <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Primary">
-                        @_timeTitle
-                        <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowDown" />
-                      </MudButton>
-                    </ActivatorContent>
-                    <ChildContent>
-                      <MudMenuItem OnClick="@(() => TimeMenuItemClicked("Scale1"))">15 min</MudMenuItem>
-                      <MudMenuItem OnClick="@(() => TimeMenuItemClicked("Scale2"))">1 h</MudMenuItem>
-                      <MudMenuItem OnClick="@(() => TimeMenuItemClicked("Scale3"))">6 h</MudMenuItem>
-                      <MudMenuItem OnClick="@(() => TimeMenuItemClicked("Scale4"))">24 h</MudMenuItem>
-                    </ChildContent>
-                  </MudMenu>
-                </MudItem>
-              }
-            </MudContainer>
-          </MudPaper>
+    <MudPaper Class="d-flex align-center justify-center mud-width-full py-8 px-8 flex-column" Height="450px">
+      <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
+        @(_dataTitle + " za: " + Source)
+      </MudItem>
+      <MudContainer Class="d-flex flex-column" MaxWidth="MaxWidth.Medium">
+        @if (_graphValues is not null)
+        {
+          <ApexChart TItem="ChartData"
+                     Options="graphOptions"
+                     @ref="chart">
+            @for (var i = 0; i < lineCount; i++)
+            {
+              var j = i;
+              <ApexPointSeries TItem="ChartData"
+                               Items="@_graphValues"
+                               Name="@_graphValues.Select(x => x.names[j]).FirstOrDefault()"
+                               SeriesType="SeriesType.Line"
+                               XValue='x => DateTimeGraph(x.date)'
+                               YValue="x => x.values[j]"
+                               Stroke="@(ColorGraph(j))"/>
+            }
+            @if (lineCount == 0)
+            {
+              <ApexPointSeries TItem="ChartData"
+                               Items="@_graphValues"
+                               Name="n/a"
+                               SeriesType="SeriesType.Line"
+                               XValue='x => DateTimeGraph(x.date)'
+                               YValue="x => 0"
+                               Stroke="@(ColorGraph(0))"/>
+            }
+          </ApexChart>
+          <MudItem Class="d-flex flex-row justify-center gap-2">
+            <MudMenu Dense="true" Variant="Variant.Filled" Color="Color.Primary">
+              <ActivatorContent>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary">
+                  @_dataTitle
+                  <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowDown"/>
+                </MudButton>
+              </ActivatorContent>
+              <ChildContent>
+                @foreach (var type in _displayType)
+                {
+                  <MudMenuItem OnClick="@(() => DataMenuItemClicked(type))">@type</MudMenuItem>
+                }
+              </ChildContent>
+            </MudMenu>
+            <MudMenu Dense="true" Variant="Variant.Filled" Color="Color.Primary">
+              <ActivatorContent>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary">
+                  @_timeTitle
+                  <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowDown"/>
+                </MudButton>
+              </ActivatorContent>
+              <ChildContent>
+                <MudMenuItem OnClick="@(() => TimeMenuItemClicked("Scale1"))">15 min</MudMenuItem>
+                <MudMenuItem OnClick="@(() => TimeMenuItemClicked("Scale2"))">1 h</MudMenuItem>
+                <MudMenuItem OnClick="@(() => TimeMenuItemClicked("Scale3"))">6 h</MudMenuItem>
+                <MudMenuItem OnClick="@(() => TimeMenuItemClicked("Scale4"))">24 h</MudMenuItem>
+              </ChildContent>
+            </MudMenu>
+          </MudItem>
+        }
+      </MudContainer>
+    </MudPaper>
   </MudHidden>
 }
 
 
 @code {
-    [Parameter]
-    public string Source { get; set; } = "abb";
-    private MeterModel? _meter;
-    AnnotationsYAxis? _annotation;
-    private ApexChartOptions<ChartData> graphOptions = new();
-    private ApexChartOptions<ChartData> graphOptionsMob = new();
-    private List<string> _displayType = new List<string>{
-      "Napon", "Struja", "Radna snaga", "Jalova snaga", "Prividna snaga"
-    };
-    public int timeSpanMins = 15;
-    public int lineCount = 0;
-    private float connectionMaxPower = 1000000f;
-    public IEnumerable<ChartData>? _graphValues;
-    private string _dataTitle = "";
-    private string _timeTitle = "15 min";
-    public record ChartData(decimal[] values, string[] names, DateTimeOffset date, string source);
-    private ApexChart<ChartData> chart = default!;
+  [Parameter] public string Source { get; set; } = "abb";
+  private MeterModel? _meter;
+  AnnotationsYAxis? _annotation;
+  private ApexChartOptions<ChartData> graphOptions = new();
+  private ApexChartOptions<ChartData> graphOptionsMob = new();
 
-    @* TIME STUFF *@
-    private bool timerInitialized;
-    private Timer timer;
-    private int updateMilisec = 10000;
-    private DateTimeOffset maxDate;
-    private int counter;
-    private DateTimeOffset now = DateTimeOffset.UtcNow;
+  private List<string> _displayType = new()
+  {
+    "Napon", "Struja", "Radna snaga", "Jalova snaga", "Prividna snaga"
+  };
 
-    protected override async Task OnInitializedAsync()
-    {
-      SetGraphOptionsStart();
+  public int timeSpanMins = 15;
+  public int lineCount = 0;
+  private float connectionMaxPower = 1000000f;
+  public IEnumerable<ChartData>? _graphValues;
+  private string _dataTitle = "";
+  private string _timeTitle = "15 min";
+
+  public record ChartData(decimal[] values, string[] names, DateTimeOffset date, string source);
+
+  private ApexChart<ChartData> chart = default!;
+
+  @* TIME STUFF *@
+  private bool timerInitialized;
+  private Timer timer;
+  private int updateMilisec = 10000;
+  private DateTimeOffset maxDate;
+  private int counter;
+  private DateTimeOffset now = DateTimeOffset.UtcNow;
+
+  protected override async Task OnInitializedAsync()
+  {
+    SetGraphOptionsStart();
 
 
+    await DataMenuItemClicked(_dataTitle);
 
-      await DataMenuItemClicked(_dataTitle);
+    SetAnnotationStart();
 
-      SetAnnotationStart();
-
-      await SetAnnotationGraphOptions();
-    }
+    await SetAnnotationGraphOptions();
+  }
 
   private async Task DataMenuItemClicked(string type)
   {
-    switch(type)
+    switch (type)
     {
       case "Struja":
         _dataTitle = "Struja";
@@ -195,17 +203,23 @@
         _dataTitle = "Napon";
         break;
       case "Jalova Snaga":
-        if(Source.StartsWith("abb")){
+        if (Source.StartsWith("abb"))
+        {
         }
-        else if(Source.StartsWith("schneider")){
+        else if (Source.StartsWith("schneider"))
+        {
         }
+
         _dataTitle = "Jalova Snaga";
         break;
       case "Prividna snaga":
-        if(Source.StartsWith("abb")){
+        if (Source.StartsWith("abb"))
+        {
         }
-        else if(Source.StartsWith("schneider")){
+        else if (Source.StartsWith("schneider"))
+        {
         }
+
         _dataTitle = "Prividna snaga";
         break;
       case "":
@@ -215,37 +229,41 @@
         _dataTitle = "none";
         break;
     }
-    await GetValues(_dataTitle, now.AddMinutes(- timeSpanMins), now);
+
+    await GetValues(_dataTitle, now.AddMinutes(-timeSpanMins), now);
   }
+
   private async Task TimeMenuItemClicked(string item)
   {
-      switch(item)
-      {
-        case "Scale1":
-            timeSpanMins = 15;
-            _timeTitle = "15 min";
-            break;
-        case "Scale2":
-            timeSpanMins = 60;
-            _timeTitle = "1 h";
-            break;
-        case "Scale3":
-            timeSpanMins = 60 * 6;
-            _timeTitle = "6 h";
-            break;
-        case "Scale4":
-            timeSpanMins = 60 * 24;
-            _timeTitle = "24 h";
-            break;
-      }
+    switch (item)
+    {
+      case "Scale1":
+        timeSpanMins = 15;
+        _timeTitle = "15 min";
+        break;
+      case "Scale2":
+        timeSpanMins = 60;
+        _timeTitle = "1 h";
+        break;
+      case "Scale3":
+        timeSpanMins = 60 * 6;
+        _timeTitle = "6 h";
+        break;
+      case "Scale4":
+        timeSpanMins = 60 * 24;
+        _timeTitle = "24 h";
+        break;
+    }
+
     SetGraphTimeRange();
-    await GetValues(_dataTitle, now.AddMinutes(- timeSpanMins), now);
+    await GetValues(_dataTitle, now.AddMinutes(-timeSpanMins), now);
   }
 
-  private async Task GetValues(string type, DateTimeOffset fromDate, DateTimeOffset toDate, bool reRenderChart = true){
+  private async Task GetValues(string type, DateTimeOffset fromDate, DateTimeOffset toDate, bool reRenderChart = true)
+  {
     IReadOnlyList<SpanningMeasure>? _spanningMeasurements;
 
-    switch(type)
+    switch (type)
     {
       case "Struja":
         break;
@@ -257,98 +275,127 @@
         break;
       case "Prividna snaga":
         break;
-      default:
-        break;
     }
-    if(chart is null){
+
+    if (chart is null)
+    {
       return;
     }
+
     InvokeAsync(() => StateHasChanged());
-    if(reRenderChart){
-      await chart.UpdateSeriesAsync(true);
+    if (reRenderChart)
+    {
+      await chart.UpdateSeriesAsync();
       await SetAnnotationGraphOptions();
     }
   }
 
 
+  private SeriesStroke ColorGraph(int index)
+  {
+    if (index == 0)
+    {
+      return new SeriesStroke { Color = "#673AB7", Width = 4 };
+    }
 
-  private ApexCharts.SeriesStroke ColorGraph(int index){
-    if(index==0){
-        return new ApexCharts.SeriesStroke { Color = "#673AB7", Width = 4};
-      }
-    if(index==1){
-        return new ApexCharts.SeriesStroke { Color = "#FB8C00", Width = 4};
-      }
-    if(index==2){
-        return new ApexCharts.SeriesStroke { Color = "#00897B", Width = 4};
-      }
-    if(index==3){
-        return new ApexCharts.SeriesStroke { Color = "#D81B60", Width = 4};
-      }
-    return new ApexCharts.SeriesStroke { Color = "#FB8C00", Width = 4};
+    if (index == 1)
+    {
+      return new SeriesStroke { Color = "#FB8C00", Width = 4 };
+    }
+
+    if (index == 2)
+    {
+      return new SeriesStroke { Color = "#00897B", Width = 4 };
+    }
+
+    if (index == 3)
+    {
+      return new SeriesStroke { Color = "#D81B60", Width = 4 };
+    }
+
+    return new SeriesStroke { Color = "#FB8C00", Width = 4 };
   }
-  private async Task SetAnnotationGraphOptions(){
-    if(_dataTitle == "Radna snaga"){
-      if(_graphValues is not null && _graphValues.Select(x => x.values[3]).ToList().Count > 0){
-          var graphMaxPower = _graphValues.MaxBy(x => x.values[3]).values[3];
-          graphOptions.Yaxis.Clear();
-          graphOptions.Yaxis.Add(new(){
-              Max = graphMaxPower * 1.5m,
-              Labels = new YAxisLabels(){
-                Formatter = "function(val, index) { return val.toFixed(0); }"
-                }
-             });
-          graphOptions.Annotations = new(){
-            Yaxis = new List<AnnotationsYAxis>(){_annotation}
-          };
 
-          graphOptionsMob.Yaxis.Clear();
-          graphOptionsMob.Yaxis.Add(new(){
-              Max = graphMaxPower * 1.5m,
-            Labels = new YAxisLabels(){
-              Formatter = "function(val, index) { return val.toFixed(0); }"
-              }
-            });
-          graphOptionsMob.Annotations = new(){
-            Yaxis = new List<AnnotationsYAxis>(){_annotation}
-          };
-      if(chart is null){
-        return;
-      }
-      await chart.RenderAsync();
-      await chart.AddYAxisAnnotationAsync(_annotation, true);
+  private async Task SetAnnotationGraphOptions()
+  {
+    if (_dataTitle == "Radna snaga")
+    {
+      if (_graphValues is not null && _graphValues.Select(x => x.values[3]).ToList().Count > 0)
+      {
+        var graphMaxPower = _graphValues.MaxBy(x => x.values[3]).values[3];
+        graphOptions.Yaxis.Clear();
+        graphOptions.Yaxis.Add(new YAxis
+        {
+          Max = graphMaxPower * 1.5m,
+          Labels = new YAxisLabels
+          {
+            Formatter = "function(val, index) { return val.toFixed(0); }"
+          }
+        });
+        graphOptions.Annotations = new Annotations
+        {
+          Yaxis = new List<AnnotationsYAxis> { _annotation }
+        };
+
+        graphOptionsMob.Yaxis.Clear();
+        graphOptionsMob.Yaxis.Add(new YAxis
+        {
+          Max = graphMaxPower * 1.5m,
+          Labels = new YAxisLabels
+          {
+            Formatter = "function(val, index) { return val.toFixed(0); }"
+          }
+        });
+        graphOptionsMob.Annotations = new Annotations
+        {
+          Yaxis = new List<AnnotationsYAxis> { _annotation }
+        };
+        if (chart is null)
+        {
+          return;
+        }
+
+        await chart.RenderAsync();
+        await chart.AddYAxisAnnotationAsync(_annotation, true);
       }
     }
-    else{
-      graphOptions.Annotations = new(){};
+    else
+    {
+      graphOptions.Annotations = new Annotations();
       graphOptions.Yaxis.Clear();
-      graphOptions.Yaxis.Add(new YAxis()
+      graphOptions.Yaxis.Add(new YAxis
         {
-          Labels = new YAxisLabels(){
+          Labels = new YAxisLabels
+          {
             Formatter = "function(val, index) { return val.toFixed(0); }"
           }
         }
       );
 
-      graphOptionsMob.Annotations = new(){};
+      graphOptionsMob.Annotations = new Annotations();
       graphOptionsMob.Yaxis.Clear();
-      graphOptionsMob.Yaxis.Add(new YAxis()
+      graphOptionsMob.Yaxis.Add(new YAxis
         {
-          Labels = new YAxisLabels(){
+          Labels = new YAxisLabels
+          {
             Formatter = "function(val, index) { return val.toFixed(0); }"
           }
         }
       );
-      if(chart is null){
+      if (chart is null)
+      {
         return;
       }
+
       await chart.ClearAnnotationsAsync();
       await chart.RenderAsync();
     }
   }
 
-  private void SetGraphOptionsStart(){
-    graphOptionsMob= new ApexChartOptions<ChartData>() {
+  private void SetGraphOptionsStart()
+  {
+    graphOptionsMob = new ApexChartOptions<ChartData>
+    {
       Grid = new Grid
       {
         BorderColor = "#e7e7e7",
@@ -359,75 +406,79 @@
         }
       }
     };
-    graphOptionsMob.Tooltip = new ApexCharts.Tooltip { X = new TooltipX { Format = @"HH:mm:ss" } };
+    graphOptionsMob.Tooltip = new Tooltip { X = new TooltipX { Format = @"HH:mm:ss" } };
     graphOptionsMob.Yaxis = new List<YAxis>();
     graphOptionsMob.Xaxis = new XAxis();
-    graphOptionsMob.Xaxis = new XAxis()
+    graphOptionsMob.Xaxis = new XAxis
     {
-      Labels = new XAxisLabels(){ Show = false },
+      Labels = new XAxisLabels { Show = false },
       Range = 60000 * timeSpanMins
     };
     graphOptionsMob.Chart = new Chart
     {
-      Toolbar = new ApexCharts.Toolbar
+      Toolbar = new Toolbar
       {
-          Tools = new Tools { Zoomin = false, Zoomout = false, Download = false, Pan = false, Selection = false}
+        Tools = new Tools { Zoomin = false, Zoomout = false, Download = false, Pan = false, Selection = false }
       }
     };
-    graphOptions= new ApexChartOptions<ChartData>() {
+    graphOptions = new ApexChartOptions<ChartData>
+    {
       Grid = new Grid
       {
         BorderColor = "#e7e7e7",
         Row = new GridRow
         {
-            Colors = new List<string> { "#f3f3f3", "transparent" },
-            Opacity = 0.5d
+          Colors = new List<string> { "#f3f3f3", "transparent" },
+          Opacity = 0.5d
         }
       }
-      };
+    };
     graphOptions.Chart = new Chart
     {
-      Toolbar = new ApexCharts.Toolbar
+      Toolbar = new Toolbar
       {
-        Tools = new Tools { Zoomin = false, Zoomout = false, Zoom = false,  Download = false, Pan = true, Selection = false }
+        Tools = new Tools { Zoomin = false, Zoomout = false, Zoom = false, Download = false, Pan = true, Selection = false }
       }
     };
-    graphOptions.Tooltip = new ApexCharts.Tooltip { X = new TooltipX { Format = @"HH:mm:ss" } };
+    graphOptions.Tooltip = new Tooltip { X = new TooltipX { Format = @"HH:mm:ss" } };
     graphOptions.Yaxis = new List<YAxis>();
     graphOptions.Xaxis = new XAxis();
-    graphOptions.Xaxis = new XAxis()
+    graphOptions.Xaxis = new XAxis
     {
       Type = XAxisType.Datetime,
-      AxisTicks = new AxisTicks(){},
+      AxisTicks = new AxisTicks(),
       Range = 60000 * timeSpanMins
     };
   }
 
-  private void SetGraphTimeRange(){
-    graphOptions.Xaxis = new XAxis()
+  private void SetGraphTimeRange()
+  {
+    graphOptions.Xaxis = new XAxis
     {
       Type = XAxisType.Datetime,
-      AxisTicks = new AxisTicks(){},
+      AxisTicks = new AxisTicks(),
       Range = 60000 * timeSpanMins
     };
 
-    graphOptionsMob.Xaxis = new XAxis()
+    graphOptionsMob.Xaxis = new XAxis
     {
-      Labels = new XAxisLabels(){ Show = false },
+      Labels = new XAxisLabels { Show = false },
       Range = 60000 * timeSpanMins
     };
   }
-  private void SetAnnotationStart(){
-      if (_meter is not null)
-        connectionMaxPower = _meter.ConnectionPower_W * 3;
+
+  private void SetAnnotationStart()
+  {
+    if (_meter is not null)
+      connectionMaxPower = _meter.ConnectionPower_W * 3;
 
     _annotation = new AnnotationsYAxis
     {
       Label = new Label
-        {
-            Text = T["PRIKLJUČNA SNAGA"],
-            Style = new Style { Background ="red", Color="white", FontSize="12px"}
-        },
+      {
+        Text = T["PRIKLJUČNA SNAGA"],
+        Style = new Style { Background = "red", Color = "white", FontSize = "12px" }
+      },
       Y = connectionMaxPower,
       BorderColor = "red",
       StrokeDashArray = 0
@@ -438,20 +489,22 @@
 
   protected override void OnAfterRender(bool firstRender)
   {
-      if (firstRender && !timerInitialized)
-      {
-          timerInitialized = true;
-          timer = new Timer(updateMilisec);
-          timer.Elapsed += async delegate { await UpdateChartSeries(); };
-          timer.Enabled = true;
-      }
+    if (firstRender && !timerInitialized)
+    {
+      timerInitialized = true;
+      timer = new Timer(updateMilisec);
+      timer.Elapsed += async delegate { await UpdateChartSeries(); };
+      timer.Enabled = true;
+    }
   }
 
   private async Task UpdateChartSeries()
   {
-    if(_graphValues is not null){
+    if (_graphValues is not null)
+    {
       var lastGraphValues = _graphValues.OrderByDescending(x => x.date).FirstOrDefault();
-      if(lastGraphValues is not null){
+      if (lastGraphValues is not null)
+      {
         await GetValues(_dataTitle, lastGraphValues.date, DateTimeOffset.UtcNow, false);
         await chart.AppendDataAsync(_graphValues);
       }
@@ -462,12 +515,12 @@
   {
     public bool Equals(ChartData x, ChartData y)
     {
-        return x.date == y.date;
+      return x.date == y.date;
     }
 
     public int GetHashCode(ChartData obj)
     {
-        return obj.date.GetHashCode();
+      return obj.date.GetHashCode();
     }
   }
 
@@ -476,4 +529,5 @@
     timer?.Dispose();
     timer = null;
   }
+
 }

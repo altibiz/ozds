@@ -40,8 +40,8 @@ public class OzdsRepresentativeQueries : OzdsAuditableQueries
     return await context.Representatives
       .WithId(id)
       .FirstOrDefaultAsync() is { } entity
-        ? entity.ToModel()
-        : null;
+      ? entity.ToModel()
+      : null;
   }
 
   public async Task<PaginatedList<RepresentativeModel>> OperatorRepresentatives(
@@ -116,8 +116,8 @@ public class OzdsRepresentativeQueries : OzdsAuditableQueries
     return await context.Representatives
       .WithId(userId)
       .FirstOrDefaultAsync() is { } entity
-        ? entity.ToModel()
-        : null;
+      ? entity.ToModel()
+      : null;
   }
 
   public async Task<PaginatedList<MaybeRepresentingUserModel>>

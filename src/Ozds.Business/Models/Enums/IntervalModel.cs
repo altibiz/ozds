@@ -1,4 +1,4 @@
-using Mess.Prelude.Extensions.Timestamps;
+using Ozds.Business.Time;
 using Ozds.Data.Entities.Enums;
 
 namespace Ozds.Business.Models.Enums;

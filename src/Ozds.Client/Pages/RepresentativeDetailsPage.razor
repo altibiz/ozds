@@ -1,10 +1,12 @@
 @page "/rep/{id}"
 
 
-@if (user is null || representative is null) {
+@if (user is null || representative is null)
+{
   return;
 }
-else if (_representative != null){
+@if (_representative != null)
+{
   <MudContainer MaxWidth="MaxWidth.ExtraSmall" Class="d-flex  flex-column" Style="float: left;">
     <MudText Class="d-flex align-center my-2" Typo="@Typo.h5">@_representative.Representative.Name</MudText>
     <MudPaper class="mt-2 px-4 py-2">
@@ -12,7 +14,7 @@ else if (_representative != null){
 
         <MudItem xs="12" sm="6">
           <MudText Typo="Typo.body1" Style="font-weight: bold;">
-          @T["Email"]:
+            @T["Email"]:
           </MudText>
         </MudItem>
         <MudItem xs="12" sm="6">
@@ -30,7 +32,7 @@ else if (_representative != null){
 
         <MudItem xs="12" sm="6">
           <MudText Typo="Typo.body1" Style="font-weight: bold;">
-          @T["Grad"]:
+            @T["Grad"]:
           </MudText>
         </MudItem>
         <MudItem xs="12" sm="6">
@@ -48,7 +50,7 @@ else if (_representative != null){
 
         <MudItem xs="12" sm="6">
           <MudText Typo="Typo.body1" Style="font-weight: bold;">
-          @T["OIB"]:
+            @T["OIB"]:
           </MudText>
         </MudItem>
         <MudItem xs="12" sm="6">
@@ -70,7 +72,7 @@ else if (_representative != null){
 }
 
 @code {
-  [Parameter] public string? id {get; set;}
+  [Parameter] public string? id { get; set; }
   [CascadingParameter] public UserState user { get; set; } = default!;
   [CascadingParameter] public RepresentativeState representative { get; set; } = default!;
   private RepresentativeState? _representative;
@@ -79,4 +81,5 @@ else if (_representative != null){
   {
     // !!! Find _representative by id
   }
+
 }

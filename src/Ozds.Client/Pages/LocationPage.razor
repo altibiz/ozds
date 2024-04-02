@@ -1,10 +1,12 @@
 @page "/location/{id}"
 
 
-@if (user is null) {
+@if (user is null)
+{
   return;
 }
-else if (_location != null){
+@if (_location != null)
+{
   <MudContainer MaxWidth="MaxWidth.ExtraSmall" Class="d-flex  flex-column" Style="float: left;">
     <MudText Class="d-flex align-center my-2" Typo="@Typo.h5">@_location.Title</MudText>
     <MudPaper class="mt-2 px-4 py-2">
@@ -12,7 +14,7 @@ else if (_location != null){
 
         <MudItem xs="12" sm="6">
           <MudText Typo="Typo.body1" Style="font-weight: bold;">
-          @T["Title"]:
+            @T["Title"]:
           </MudText>
         </MudItem>
         <MudItem xs="12" sm="6">
@@ -34,7 +36,7 @@ else if (_location != null){
 }
 
 @code {
-  [Parameter] public string? id {get; set;}
+  [Parameter] public string? id { get; set; }
   [CascadingParameter] public UserState user { get; set; } = default!;
   private LocationModel? _location;
 
@@ -42,4 +44,5 @@ else if (_location != null){
   {
     // !!! Find _location by id
   }
+
 }

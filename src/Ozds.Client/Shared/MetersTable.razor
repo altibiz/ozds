@@ -1,256 +1,302 @@
-@using Ozds.Business.Time;
-
+@using Ozds.Business.Time
+@using Color = MudBlazor.Color
+@using Size = MudBlazor.Size
 @inject NavigationManager NavigationManager
 
 @* MOBILE *@
-  <MudHidden Breakpoint="Breakpoint.MdAndUp">
-      <MudText Typo="Typo.h4" Class="d-flex">
-        @(T["Mjerna mjesta"])
-      </MudText>
-      <MudTextField Class="" ValueChanged="EventCallback.Factory.Create<string>(this, Filter)" Label="Pretraži submreže" Variant="Variant.Text"></MudTextField>
-      @foreach(ExpandThing dataStruct in _shownOMMs.Where(x => x.show == true).ToList()){
-      <MudPaper Elevation="2" Class="ma-1">
-        <MudStack Spacing="0">
-          <MudGrid Class="d-flex pa-2">
-            <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large;">
-              @T["Mjerna mjesta"]: <br> @dataStruct.data.meter.Title
-            </MudItem>
-            <MudItem xs="2" Class="d-flex align-center justify-end">
-              <MudIconButton OnClick="() => InspectMeter(dataStruct.data.meter)" Icon="@Icons.Material.Filled.RemoveRedEye" Color="MudBlazor.Color.Primary"/>
-            </MudItem>
+<MudHidden Breakpoint="Breakpoint.MdAndUp">
+  <MudText Typo="Typo.h4" Class="d-flex">
+    @(T["Mjerna mjesta"])
+  </MudText>
+  <MudTextField Class="" ValueChanged="EventCallback.Factory.Create<string>(this, Filter)" Label="Pretraži submreže" Variant="Variant.Text"></MudTextField>
+  @foreach (var dataStruct in _shownOMMs.Where(x => x.show).ToList())
+  {
+    <MudPaper Elevation="2" Class="ma-1">
+      <MudStack Spacing="0">
+        <MudGrid Class="d-flex pa-2">
+          <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large;">
+            @T["Mjerna mjesta"]: <br> @dataStruct.data.meter.Title
+          </MudItem>
+          <MudItem xs="2" Class="d-flex align-center justify-end">
+            <MudIconButton OnClick="() => InspectMeter(dataStruct.data.meter)" Icon="@Icons.Material.Filled.RemoveRedEye" Color="Color.Primary"/>
+          </MudItem>
+          <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
+            @T["Potrošnja u prethodnom mjesecu"]: <br>
+            @DecimalString(dataStruct.data.lastMonthUsage / 1000, 0) kWh
+          </MudItem>
+          <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
+            @T["Potrošnja u tekućem mjesecu"]: <br>
+            @DecimalString(dataStruct.data.thisMonthUsage / 1000, 0) kWh
+          </MudItem>
+          @if (dataStruct.data.lastMonthsPayment is not null)
+          {
             <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
-              @T["Potrošnja u prethodnom mjesecu"]: <br>
-              @DecimalString(dataStruct.data.lastMonthUsage/1000, 0) kWh
+              @T["Zbroj obračuna u prethodnom mjesecu"]: <br>
+              @DecimalString(dataStruct.data.lastMonthsPayment / 1000) EUR
             </MudItem>
-            <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
-              @T["Potrošnja u tekućem mjesecu"]: <br>
-              @DecimalString(dataStruct.data.thisMonthUsage/1000, 0) kWh
-            </MudItem>
-            @if(dataStruct.data.lastMonthsPayment is not null){
-              <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
-                @T["Zbroj obračuna u prethodnom mjesecu"]: <br>
-                @DecimalString(dataStruct.data.lastMonthsPayment/1000, 2) EUR
-              </MudItem>
-            }
-            <MudItem xs="2" Class="d-flex align-center justify-end">
-              <MudIconButton OnClick="() => OnExpandCollapseClick(dataStruct.data.meter.Id)" Icon="@(dataStruct.expand ? Icons.Material.Filled.KeyboardArrowUp : Icons.Material.Filled.KeyboardArrowDown)" Color="MudBlazor.Color.Default"/>
-            </MudItem>
-          </MudGrid>
+          }
+          <MudItem xs="2" Class="d-flex align-center justify-end">
+            <MudIconButton OnClick="() => OnExpandCollapseClick(dataStruct.data.meter.Id)" Icon="@(dataStruct.expand ? Icons.Material.Filled.KeyboardArrowUp : Icons.Material.Filled.KeyboardArrowDown)" Color="Color.Default"/>
+          </MudItem>
+        </MudGrid>
 
-          <MudCollapse Class="py-2" Expanded="_shownOMMs.Where(x => x.data.meter.Title == dataStruct.data.meter.Title).First().expand">
-            <MudStack>
-              <MudDivider DividerType="DividerType.Middle" Class="mt-2"/>
-              <MudContainer>
-                @T["Lokacije"]: @(dataStruct.data.location.Title)
-              </MudContainer>
-              <MudContainer>
-                @T["Korisnk lokacije"]: @(dataStruct.data.networkUser.Title)
-              </MudContainer>
-            </MudStack>
-          </MudCollapse>
-        </MudStack>
-      </MudPaper>
-      }
-  </MudHidden>
+        <MudCollapse Class="py-2" Expanded="_shownOMMs.Where(x => x.data.meter.Title == dataStruct.data.meter.Title).First().expand">
+          <MudStack>
+            <MudDivider DividerType="DividerType.Middle" Class="mt-2"/>
+            <MudContainer>
+              @T["Lokacije"]: @(dataStruct.data.location.Title)
+            </MudContainer>
+            <MudContainer>
+              @T["Korisnk lokacije"]: @(dataStruct.data.networkUser.Title)
+            </MudContainer>
+          </MudStack>
+        </MudCollapse>
+      </MudStack>
+    </MudPaper>
+  }
+</MudHidden>
 
 
 @* DESKTOP *@
-  <MudHidden Breakpoint="Breakpoint.SmAndDown">
-        <MudDataGrid
-      T="TabularData"
-      MultiSelection="true"
-      Items="@_dataStruct"
-      SortMode="SortMode.Multiple"
-      Filterable="true"
-      QuickFilter="@_quickFilter">
-      <ToolBarContent>
-        <MudText Typo="Typo.h4">@T["Mjerna mjesta"]</MudText>
-        <MudSpacer />
-        <MudTextField
-          @bind-Value="_searchString"
-          Placeholder="@T["Pretraži"]"
-          Adornment="Adornment.Start"
-          Immediate="true"
-          AdornmentIcon="@Icons.Material.Filled.Search"
-          IconSize="MudBlazor.Size.Medium"
-          Class="mt-0">
-        </MudTextField>
-      </ToolBarContent>
-      <Columns>
+<MudHidden Breakpoint="Breakpoint.SmAndDown">
+  <MudDataGrid
+    T="TabularData"
+    MultiSelection="true"
+    Items="@_dataStruct"
+    SortMode="SortMode.Multiple"
+    Filterable="true"
+    QuickFilter="@_quickFilter">
+    <ToolBarContent>
+      <MudText Typo="Typo.h4">@T["Mjerna mjesta"]</MudText>
+      <MudSpacer/>
+      <MudTextField
+        @bind-Value="_searchString"
+        Placeholder="@T["Pretraži"]"
+        Adornment="Adornment.Start"
+        Immediate="true"
+        AdornmentIcon="@Icons.Material.Filled.Search"
+        IconSize="Size.Medium"
+        Class="mt-0">
+      </MudTextField>
+    </ToolBarContent>
+    <Columns>
 
-        <TemplateColumn Title="@T["Lokacije"]" Sortable="false">
-            <CellTemplate>
-                <MudStack Row>
-                  <MudButton OnClick="() => InspectLocation(context.Item.location)" Variant="Variant.Outlined" Color="MudBlazor.Color.Primary">
-                    @context.Item.location.Title
-                  </MudButton>
-                </MudStack>
-            </CellTemplate>
-        </TemplateColumn>
+      <TemplateColumn Title="@T["Lokacije"]" Sortable="false">
+        <CellTemplate>
+          <MudStack Row>
+            <MudButton OnClick="() => InspectLocation(context.Item.location)" Variant="Variant.Outlined" Color="Color.Primary">
+              @context.Item.location.Title
+            </MudButton>
+          </MudStack>
+        </CellTemplate>
+      </TemplateColumn>
 
-        <TemplateColumn Title="@T["Korisnici mreže"]" Sortable="false">
-            <CellTemplate>
-                <MudStack Row>
-                  <MudButton OnClick="() => InspectNetworkUser(context.Item.networkUser)" Variant="Variant.Outlined" Color="MudBlazor.Color.Primary">
-                    @context.Item.networkUser.Title
-                  </MudButton>
-                </MudStack>
-            </CellTemplate>
-        </TemplateColumn>
+      <TemplateColumn Title="@T["Korisnici mreže"]" Sortable="false">
+        <CellTemplate>
+          <MudStack Row>
+            <MudButton OnClick="() => InspectNetworkUser(context.Item.networkUser)" Variant="Variant.Outlined" Color="Color.Primary">
+              @context.Item.networkUser.Title
+            </MudButton>
+          </MudStack>
+        </CellTemplate>
+      </TemplateColumn>
 
       <TemplateColumn Title="@T["Mjerna mjesta"]" Sortable="false">
-            <CellTemplate>
-                <MudStack Row>
-                  <MudButton OnClick="() => InspectMeter(context.Item.meter)" Variant="Variant.Filled" Color="MudBlazor.Color.Primary">
-                    @context.Item.meter.Title
-                  </MudButton>
-                </MudStack>
-            </CellTemplate>
-        </TemplateColumn>
+        <CellTemplate>
+          <MudStack Row>
+            <MudButton OnClick="() => InspectMeter(context.Item.meter)" Variant="Variant.Filled" Color="Color.Primary">
+              @context.Item.meter.Title
+            </MudButton>
+          </MudStack>
+        </CellTemplate>
+      </TemplateColumn>
 
-        <PropertyColumn
-          CellStyle="font-size: x-large;"
-          Property="x => x.lastMonthUsage"
-          Title='@T["Potrošnja u prethodnom mjesecu"]' >
-            <CellTemplate>
-              @(DecimalString(context.Item.lastMonthUsage/1000, 0) + " kWh")
-            </CellTemplate>
-        </PropertyColumn>
+      <PropertyColumn
+        CellStyle="font-size: x-large;"
+        Property="x => x.lastMonthUsage"
+        Title='@T["Potrošnja u prethodnom mjesecu"]'>
+        <CellTemplate>
+          @(DecimalString(context.Item.lastMonthUsage / 1000, 0) + " kWh")
+        </CellTemplate>
+      </PropertyColumn>
+      <PropertyColumn
+        CellStyle="font-size: x-large;"
+        Property="x => x.thisMonthUsage"
+        Title='@T["Potrošnja u tekućem mjesecu"]'>
+        <CellTemplate>
+          @(DecimalString(context.Item.thisMonthUsage / 1000, 0) + " kWh")
+        </CellTemplate>
+      </PropertyColumn>
+      @if (true)
+      {
         <PropertyColumn
           CellStyle="font-size: x-large;"
           Property="x => x.thisMonthUsage"
-          Title='@T["Potrošnja u tekućem mjesecu"]' >
+          Title='@T["Zbroj obračuna u prethodnom mjesecu"]'>
           <CellTemplate>
-              @(DecimalString(context.Item.thisMonthUsage/1000, 0) + " kWh")
+            @DecimalString(context.Item.lastMonthsPayment / 1000) EUR
           </CellTemplate>
         </PropertyColumn>
-        @if(true){
-          <PropertyColumn
-            CellStyle="font-size: x-large;"
-            Property="x => x.thisMonthUsage"
-            Title='@T["Zbroj obračuna u prethodnom mjesecu"]' >
-            <CellTemplate>
-                @DecimalString(context.Item.lastMonthsPayment/1000, 2) EUR
-            </CellTemplate>
-          </PropertyColumn>
-        }
-      </Columns>
-      <PagerContent>
-        <MudDataGridPager T="TabularData" />
-      </PagerContent>
-    </MudDataGrid>
-  </MudHidden>
+      }
+    </Columns>
+    <PagerContent>
+      <MudDataGridPager T="TabularData"/>
+    </PagerContent>
+  </MudDataGrid>
+</MudHidden>
 
 @code {
-    [CascadingParameter] public UserState user { get; set; } = default!;
-    [CascadingParameter] public RepresentativeState representative { get; set; } = default!;
-    private string? _searchString;
-    private IReadOnlyList<SpanningMeasure>? _spanningMeasurements;
-    private IReadOnlyList<SpanningMeasure>? _lastMonthSpanningMeasurements;
-    private DateTimeOffset startOfThisMonth = DateTimeOffset.UtcNow.GetStartOfMonth();
-    private DateTimeOffset startOfLastMonth = DateTimeOffset.UtcNow.GetStartOfLastMonth();
-    private DateTimeOffset now = DateTime.UtcNow;
-    private List<TabularData> _partialDataStruct = new();
-    private List<TabularData> _dataStruct = new();
-    private IEnumerable<LocationModel>? _locations;
-    private IEnumerable<NetworkUserModel>? _networkUsers;
-    private IEnumerable<MeterModel>? _meters;
-    private IEnumerable<NetworkUserInvoiceModel>? _invoices;
-    private List<(string, decimal?)> _lastTotalPerOMM = new List<(string, decimal?)>();
-    private (decimal? First, decimal? Last, DateTimeOffset FirstDate) _startEnd;
-    private (decimal? First, decimal? Last, DateTimeOffset FirstDate) _lastMonthStartEnd = new (0,0, DateTime.UtcNow);
-    public record struct TabularData(LocationModel location, NetworkUserModel networkUser, MeterModel meter, decimal thisMonthUsage = 0m, decimal lastMonthUsage = 0m, decimal? lastMonthsPayment = null);
-    protected override async Task OnInitializedAsync()
+  [CascadingParameter] public UserState user { get; set; } = default!;
+  [CascadingParameter] public RepresentativeState representative { get; set; } = default!;
+  private string? _searchString;
+  private IReadOnlyList<SpanningMeasure>? _spanningMeasurements;
+  private IReadOnlyList<SpanningMeasure>? _lastMonthSpanningMeasurements;
+  private DateTimeOffset startOfThisMonth = DateTimeOffset.UtcNow.GetStartOfMonth();
+  private DateTimeOffset startOfLastMonth = DateTimeOffset.UtcNow.GetStartOfLastMonth();
+  private DateTimeOffset now = DateTime.UtcNow;
+  private List<TabularData> _partialDataStruct = new();
+  private List<TabularData> _dataStruct = new();
+  private IEnumerable<LocationModel>? _locations;
+  private IEnumerable<NetworkUserModel>? _networkUsers;
+  private IEnumerable<MeterModel>? _meters;
+  private IEnumerable<NetworkUserInvoiceModel>? _invoices;
+  private List<(string, decimal?)> _lastTotalPerOMM = new();
+  private (decimal? First, decimal? Last, DateTimeOffset FirstDate) _startEnd;
+  private (decimal? First, decimal? Last, DateTimeOffset FirstDate) _lastMonthStartEnd = new(0, 0, DateTime.UtcNow);
+
+  public record struct TabularData(LocationModel location, NetworkUserModel networkUser, MeterModel meter, decimal thisMonthUsage = 0m, decimal lastMonthUsage = 0m, decimal? lastMonthsPayment = null);
+
+  protected override async Task OnInitializedAsync()
+  {
+    if (user.User.Roles.Contains("NetworkUser"))
     {
-      if(user.User.Roles.Contains("NetworkUser")){
-        // Find the location this user is tied to and add it to _locations
-        // Add this user to _networkUsers
-        // Find all _meters tied to this user
-        // Find all _invoices tied to this user
-      }
-      else if(user.User.Roles.Contains("Location") || user.User.Roles.Contains("Operator")){
-        // Find all _locations tied to this user
-        // Find all _networkUsers tied to this user
-        // Find all _meters tied to this user
-      }
-      if(_locations is not null && _networkUsers is not null && _meters is not null ){
-        foreach(var location in _locations){
-          foreach(var networkUser in _networkUsers){
-            foreach(var meter in _meters){
-              _partialDataStruct.Add( new(location, networkUser, meter) );
-            }
+      // Find the location this user is tied to and add it to _locations
+      // Add this user to _networkUsers
+      // Find all _meters tied to this user
+      // Find all _invoices tied to this user
+    }
+    else if (user.User.Roles.Contains("Location") || user.User.Roles.Contains("Operator"))
+    {
+      // Find all _locations tied to this user
+      // Find all _networkUsers tied to this user
+      // Find all _meters tied to this user
+    }
+
+    if (_locations is not null && _networkUsers is not null && _meters is not null)
+    {
+      foreach (var location in _locations)
+      {
+        foreach (var networkUser in _networkUsers)
+        {
+          foreach (var meter in _meters)
+          {
+            _partialDataStruct.Add(new TabularData(location, networkUser, meter));
           }
         }
-      }
-      if(_meters is not null){
-        foreach(var meter in _meters){
-          decimal _consumption = 0;
-          decimal _lastMonthConsumption = 0;
-          decimal? _lastMonthsPayment = null;
-          var _partialData = _partialDataStruct.Where(x => x.meter == meter).FirstOrDefault();
-          // Get all _spanningMeasurements for _meters between the startOfLastMonth and startOfThisMonth, decending by timestamp
-          // Calculate _consumption using _spanningMeasurements
-          // Get all _lastMonthSpanningMeasurements for _meters between the startOfThisMonth and now, decending by timestamp
-          // Calculate _lastMonthConsumption using _spanningMeasurements
-          if(_invoices is not null){
-            // Calculate _lastMonthsPayment by adding up all payments that were done for this meter between the startOfLastMonth and startOfThisMonth
-          }
-          _dataStruct.Add( new(_partialData.location, _partialData.networkUser, _partialData.meter, _consumption, _lastMonthConsumption, _lastMonthsPayment) );
-        }
-      }
-      foreach(var data in _dataStruct){
-        _shownOMMs.Add( new ExpandThing{data = data, show = true, expand = false});
       }
     }
-  private Func<TabularData, bool> _quickFilter => x =>
+
+    if (_meters is not null)
+    {
+      foreach (var meter in _meters)
+      {
+        decimal _consumption = 0;
+        decimal _lastMonthConsumption = 0;
+        decimal? _lastMonthsPayment = null;
+        var _partialData = _partialDataStruct.Where(x => x.meter == meter).FirstOrDefault();
+        // Get all _spanningMeasurements for _meters between the startOfLastMonth and startOfThisMonth, decending by timestamp
+        // Calculate _consumption using _spanningMeasurements
+        // Get all _lastMonthSpanningMeasurements for _meters between the startOfThisMonth and now, decending by timestamp
+        // Calculate _lastMonthConsumption using _spanningMeasurements
+        if (_invoices is not null)
+        {
+          // Calculate _lastMonthsPayment by adding up all payments that were done for this meter between the startOfLastMonth and startOfThisMonth
+        }
+
+        _dataStruct.Add(new TabularData(_partialData.location, _partialData.networkUser, _partialData.meter, _consumption, _lastMonthConsumption, _lastMonthsPayment));
+      }
+    }
+
+    foreach (var data in _dataStruct)
+    {
+      _shownOMMs.Add(new ExpandThing { data = data, show = true, expand = false });
+    }
+  }
+
+  private Func<TabularData, bool> _quickFilter
   {
-    if (string.IsNullOrWhiteSpace(_searchString))
-      return true;
+    get
+    {
+      return x =>
+      {
+        if (string.IsNullOrWhiteSpace(_searchString))
+          return true;
 
-    if (x.networkUser.Title.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
-      return true;
+        if (x.networkUser.Title.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
+          return true;
 
-    return false;
-  };
-  private void InspectNetworkUser(NetworkUserModel item) {
-      NavigationManager.NavigateTo($"network-user/{item.Id}");
-  }
-  private void InspectLocation(LocationModel item) {
-      NavigationManager.NavigateTo($"location/{item.Id}");
-  }
-  private void InspectMeter(MeterModel item) {
-      NavigationManager.NavigateTo($"meter/{item.Id}");
+        return false;
+      };
+    }
   }
 
-@* MOBILE *@
+  private void InspectNetworkUser(NetworkUserModel item)
+  {
+    NavigationManager.NavigateTo($"network-user/{item.Id}");
+  }
+
+  private void InspectLocation(LocationModel item)
+  {
+    NavigationManager.NavigateTo($"location/{item.Id}");
+  }
+
+  private void InspectMeter(MeterModel item)
+  {
+    NavigationManager.NavigateTo($"meter/{item.Id}");
+  }
+
+  @* MOBILE *@
   public string TextValue { get; set; } = "";
-  private class ExpandThing {
+
+  private class ExpandThing
+  {
     public TabularData data;
     public bool expand;
     public bool show;
   }
+
   List<ExpandThing> _shownOMMs = new();
-  private void OnExpandCollapseClick(string id) {
+
+  private void OnExpandCollapseClick(string id)
+  {
     var a = _shownOMMs.Where(x => x.data.meter.Id == id).FirstOrDefault();
     if (a != null)
     {
-        a.expand = !a.expand;
+      a.expand = !a.expand;
     }
   }
-  private Task Filter(string value) {
+
+  private Task Filter(string value)
+  {
     TextValue = value;
     foreach (var inv in _shownOMMs)
     {
-      if(value.Trim() != ""){
+      if (value.Trim() != "")
+      {
         inv.show = false;
       }
-    };
+    }
+
+    ;
     var a = _shownOMMs.Where(x => x.data.location.Title.Contains(value, StringComparison.InvariantCultureIgnoreCase)).ToList();
     foreach (var inv in a)
     {
-        inv.show = true;
-    };
+      inv.show = true;
+    }
+
+    ;
     StateHasChanged();
     return Task.CompletedTask;
   }
+
 }

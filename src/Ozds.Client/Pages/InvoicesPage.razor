@@ -2,11 +2,12 @@
 @attribute [Navigation(Title = "Računi")]
 
 
-@if (user is null) {
+@if (user is null)
+{
   return;
 }
 
-<InvoicesTable />
+<InvoicesTable/>
 
 @code {
   [CascadingParameter] public UserState user { get; set; } = default!;

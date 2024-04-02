@@ -24,8 +24,8 @@ public class OzdsEventQueries
   ) where T : class, IEvent
   {
     var queryable = EntityModelTypeMapper.GetDbSet(context, typeof(T))
-      as IQueryable<EventEntity>
-      ?? throw new InvalidOperationException();
+                      as IQueryable<EventEntity>
+                    ?? throw new InvalidOperationException();
     var filtered = whereClauses.Aggregate(queryable,
       (current, clause) => current.WhereDynamic(clause));
     var timeFiltered = filtered

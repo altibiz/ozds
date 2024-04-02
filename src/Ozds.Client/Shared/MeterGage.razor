@@ -1,98 +1,100 @@
-@using System.Timers;
+@using System.Timers
 @implements IDisposable
 
-@if(_measurements is not null){
-@* MOBILE *@
+@if (_measurements is not null)
+{
+  @* MOBILE *@
   <MudHidden Breakpoint="Breakpoint.MdAndUp">
-            <MudPaper Class="d-flex align-center justify-space-between mud-width-full pa-1 flex-column">
-              <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
-                @(T["Trenutna snaga"] + ": " + Source)
-              </MudItem>
-              <MudContainer MaxWidth="MaxWidth.Small">
-                      <ApexChart TItem="GageData"
-                                Options="gageOptions"
-                                @ref="gage"
-                                >
-                          <ApexPointSeries TItem="GageData"
-                                          Items="gageValue"
-                                          SeriesType=SeriesType.RadialBar
-                                          Name="@T["Potrošnja"]"
-                                          XValue="@(e => DecimalString((decimal)e.value/1000, 2) + " kW")"
-                                          YAggregate="@(e =>  Math.Round(e.First().percent, 2))"
-                                          OrderByDescending="e=>e.X" />
-                      </ApexChart>
-              </MudContainer>
-              <MudText Typo="Typo.body1" Style="font-weight: bold;margin-top: -30px;text-align: center; color: #adadad;" Class="m-0">
-                @T["U usporedbi s maksimalnom snagom u prethodnom mjesecu"] (@(DecimalString(connectionMaxPower/1000, 2) + " kW"))
-              </MudText>
-            </MudPaper>
+    <MudPaper Class="d-flex align-center justify-space-between mud-width-full pa-1 flex-column">
+      <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
+        @(T["Trenutna snaga"] + ": " + Source)
+      </MudItem>
+      <MudContainer MaxWidth="MaxWidth.Small">
+        <ApexChart TItem="GageData"
+                   Options="gageOptions"
+                   @ref="gage">
+          <ApexPointSeries TItem="GageData"
+                           Items="gageValue"
+                           SeriesType=SeriesType.RadialBar
+                           Name="@T["Potrošnja"]"
+                           XValue="@(e => DecimalString(e.value / 1000, 2) + " kW")"
+                           YAggregate="@(e => Math.Round(e.First().percent, 2))"
+                           OrderByDescending="e => e.X"/>
+        </ApexChart>
+      </MudContainer>
+      <MudText Typo="Typo.body1" Style="font-weight: bold;margin-top: -30px;text-align: center; color: #adadad;" Class="m-0">
+        @T["U usporedbi s maksimalnom snagom u prethodnom mjesecu"] (@(DecimalString(connectionMaxPower / 1000) + " kW"))
+      </MudText>
+    </MudPaper>
   </MudHidden>
 
 
-
-@* DESKTOP *@
+  @* DESKTOP *@
   <MudHidden Breakpoint="Breakpoint.SmAndDown">
-            <MudPaper Class="d-flex align-center justify-space-between mud-width-full py-8 px-8 flex-column" Height="450px">
-              <MudItem Class="d-flex" Style="font-size: large; font-weight: bold;">
-                @(T["Trenutna snaga"] + ": " + Source)
-              </MudItem>
-              <MudContainer MaxWidth="MaxWidth.Medium">
-                      <ApexChart TItem="GageData"
-                                Options="gageOptions"
-                                @ref="gage"
-                                >
-                          <ApexPointSeries TItem="GageData"
-                                          Items="gageValue"
-                                          SeriesType=SeriesType.RadialBar
-                                          Name="@T["Potrošnja"]"
-                                          XValue="@(e => DecimalString((decimal)e.value/1000, 2) + " kW")"
-                                          YAggregate="@(e =>  Math.Round(e.First().percent, 2))"
-                                          OrderByDescending="e=>e.X" />
-                      </ApexChart>
-              </MudContainer>
-              <MudText Typo="Typo.body1" Style="font-weight: bold;margin-top: -30px;text-align: center; color: #adadad;" Class="m-0">
-                @T["U usporedbi s maksimalnom snagom u prethodnom mjesecu"] <br> (@(DecimalString(connectionMaxPower/1000, 2) + " kW"))
-              </MudText>
-            </MudPaper>
+    <MudPaper Class="d-flex align-center justify-space-between mud-width-full py-8 px-8 flex-column" Height="450px">
+      <MudItem Class="d-flex" Style="font-size: large; font-weight: bold;">
+        @(T["Trenutna snaga"] + ": " + Source)
+      </MudItem>
+      <MudContainer MaxWidth="MaxWidth.Medium">
+        <ApexChart TItem="GageData"
+                   Options="gageOptions"
+                   @ref="gage">
+          <ApexPointSeries TItem="GageData"
+                           Items="gageValue"
+                           SeriesType=SeriesType.RadialBar
+                           Name="@T["Potrošnja"]"
+                           XValue="@(e => DecimalString(e.value / 1000, 2) + " kW")"
+                           YAggregate="@(e => Math.Round(e.First().percent, 2))"
+                           OrderByDescending="e => e.X"/>
+        </ApexChart>
+      </MudContainer>
+      <MudText Typo="Typo.body1" Style="font-weight: bold;margin-top: -30px;text-align: center; color: #adadad;" Class="m-0">
+        @T["U usporedbi s maksimalnom snagom u prethodnom mjesecu"] <br> (@(DecimalString(connectionMaxPower / 1000) + " kW"))
+      </MudText>
+    </MudPaper>
   </MudHidden>
 }
+
 @code {
 
-  [Parameter]
-  public string Source { get; set; } = "abb";
+  [Parameter] public string Source { get; set; } = "abb";
   private MeterModel? _meter;
   private ApexChart<GageData> gage = default!;
   private decimal thisMonthCurrentPower = 100000m;
-  private List<GageData> gageValue = new List<GageData>();
+  private List<GageData> gageValue = new();
   private ApexChartOptions<GageData> gageOptions = new();
   private decimal connectionMaxPower = 100000m;
   private IReadOnlyList<TariffMeasure>? _measurements;
-  private class GageData {
+
+  private class GageData
+  {
     public decimal value = 10;
     public decimal valueMax = 100000;
     public decimal percent = 50;
 
-    public GageData(decimal val, decimal max){
+    public GageData(decimal val, decimal max)
+    {
       value = val;
       valueMax = max;
-      if(valueMax <= 0){
+      if (valueMax <= 0)
+      {
         valueMax = 100000;
       }
-      percent = (value / valueMax) * 100;
+
+      percent = value / valueMax * 100;
     }
   }
 
-    @* TIME STUFF *@
-    private bool timerInitialized;
-    private Timer timer;
-    private int updateMilisec = 10000;
-    private DateTimeOffset maxDate;
-    private int counter;
-    private DateTimeOffset now = DateTimeOffset.UtcNow;
+  @* TIME STUFF *@
+  private bool timerInitialized;
+  private Timer timer;
+  private int updateMilisec = 10000;
+  private DateTimeOffset maxDate;
+  private int counter;
+  private DateTimeOffset now = DateTimeOffset.UtcNow;
+
   protected override async Task OnInitializedAsync()
   {
-
-
     SetGageOptionsStart();
 
     await GetValue();
@@ -100,21 +102,26 @@
     SetGageValue();
   }
 
-  private async Task GetValue(){
-
+  private async Task GetValue()
+  {
   }
-  private void SetGageValue(){
+
+  private void SetGageValue()
+  {
     gageValue.Add(new GageData(thisMonthCurrentPower, connectionMaxPower));
 
-    if((thisMonthCurrentPower / connectionMaxPower) > 1){
-      gageOptions.Colors = new List<string>(){"#E53935"};
+    if (thisMonthCurrentPower / connectionMaxPower > 1)
+    {
+      gageOptions.Colors = new List<string> { "#E53935" };
     }
-    else{
-      gageOptions.Colors = new List<string>(){"#1E88E5"};
+    else
+    {
+      gageOptions.Colors = new List<string> { "#1E88E5" };
     }
   }
 
-  private void SetGageOptionsStart(){
+  private void SetGageOptionsStart()
+  {
     gageOptions.PlotOptions = new PlotOptions { RadialBar = new PlotOptionsRadialBar { StartAngle = -90, EndAngle = 90 } };
   }
 
@@ -122,28 +129,32 @@
 
   protected override void OnAfterRender(bool firstRender)
   {
-      if (firstRender && !timerInitialized)
-      {
-          timerInitialized = true;
-          timer = new Timer(updateMilisec);
-          timer.Elapsed += async delegate { await UpdateChartSeries(); };
-          timer.Enabled = true;
-      }
+    if (firstRender && !timerInitialized)
+    {
+      timerInitialized = true;
+      timer = new Timer(updateMilisec);
+      timer.Elapsed += async delegate { await UpdateChartSeries(); };
+      timer.Enabled = true;
+    }
   }
 
   private async Task UpdateChartSeries()
   {
-      await GetValue();
-      gageValue = new List<GageData>(){new GageData(thisMonthCurrentPower, connectionMaxPower)};
-      if(gage is null){
-        return;
-      }
-      InvokeAsync(() => StateHasChanged());
-      await gage.UpdateOptionsAsync(false, true, false);
+    await GetValue();
+    gageValue = new List<GageData> { new(thisMonthCurrentPower, connectionMaxPower) };
+    if (gage is null)
+    {
+      return;
+    }
+
+    InvokeAsync(() => StateHasChanged());
+    await gage.UpdateOptionsAsync(false, true, false);
   }
+
   void IDisposable.Dispose()
   {
     timer?.Dispose();
     timer = null;
   }
+
 }

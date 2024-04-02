@@ -1,144 +1,143 @@
-@using Ozds.Business.Time;
-
+@using Ozds.Business.Time
 @* MOBILE *@
-   <MudHidden Breakpoint="Breakpoint.MdAndUp">
+<MudHidden Breakpoint="Breakpoint.MdAndUp">
 
-    <MudGrid Class="my-3 pa-1">
-        <MudItem xs="12" Class="pa-1">
-          <MudPaper Class="d-flex align-center justify-stat mud-width-full pa-1 pb-3 flex-column">
-            <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
-              <MudText Typo="Typo.h6">
-                @T["Potrošnja u tekućem mjesecu:"]
-              </MudText>
-            </MudItem>
-            <MudContainer Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
-              <MudText Typo="Typo.h4">
-                  @(DecimalString((decimal)_thisMonthTotal/1000, 0) + " kWh")
-              </MudText>
-            </MudContainer>
-          </MudPaper>
+  <MudGrid Class="my-3 pa-1">
+    <MudItem xs="12" Class="pa-1">
+      <MudPaper Class="d-flex align-center justify-stat mud-width-full pa-1 pb-3 flex-column">
+        <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
+          <MudText Typo="Typo.h6">
+            @T["Potrošnja u tekućem mjesecu:"]
+          </MudText>
         </MudItem>
+        <MudContainer Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
+          <MudText Typo="Typo.h4">
+            @(DecimalString(_thisMonthTotal / 1000, 0) + " kWh")
+          </MudText>
+        </MudContainer>
+      </MudPaper>
+    </MudItem>
 
-        <MudItem xs="12" Class="pa-1">
-          <MudPaper Class="d-flex align-center justify-stat mud-width-full pa-1 pb-3 flex-column">
-            <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
-              <MudText Typo="Typo.h6">
-                @T["Potrošnja prethodni mjesc:"]
-              </MudText>
-            </MudItem>
-            <MudContainer Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
-              <MudText Typo="Typo.h4">
-                  @(DecimalString((decimal)_lastMonthTotal/1000, 0) + " kWh")
-              </MudText>
-            </MudContainer>
-            <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
-              <MudText Typo="Typo.h6">
-                @T["Iznos računa u prethodnom mjesecu:"]
-              </MudText>
-            </MudItem>
-            <MudContainer Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
-              <MudText Typo="Typo.h6">
-                  @(lastMonthInvoicesTotal == 0m ? T["Račun u izradi..."] : DecimalString(lastMonthInvoicesTotal, 2) + " EUR")
-              </MudText>
-            </MudContainer>
-          </MudPaper>
+    <MudItem xs="12" Class="pa-1">
+      <MudPaper Class="d-flex align-center justify-stat mud-width-full pa-1 pb-3 flex-column">
+        <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
+          <MudText Typo="Typo.h6">
+            @T["Potrošnja prethodni mjesc:"]
+          </MudText>
         </MudItem>
-        <MudItem xs="12" Class="pa-1">
-          <MudPaper Class="d-flex align-center justify-stat mud-width-full pa-1 pb-3 flex-column">
-            <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
-              <MudText Typo="Typo.h6">
-                @(T["Potrošnja u godini do danas"] + T[" (kW):"])
-              </MudText>
-            </MudItem>
-              <NetUserRepGraph />
-          </MudPaper>
+        <MudContainer Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
+          <MudText Typo="Typo.h4">
+            @(DecimalString(_lastMonthTotal / 1000, 0) + " kWh")
+          </MudText>
+        </MudContainer>
+        <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
+          <MudText Typo="Typo.h6">
+            @T["Iznos računa u prethodnom mjesecu:"]
+          </MudText>
         </MudItem>
-    </MudGrid>
-  </MudHidden>
-
+        <MudContainer Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
+          <MudText Typo="Typo.h6">
+            @(lastMonthInvoicesTotal == 0m ? T["Račun u izradi..."] : DecimalString(lastMonthInvoicesTotal) + " EUR")
+          </MudText>
+        </MudContainer>
+      </MudPaper>
+    </MudItem>
+    <MudItem xs="12" Class="pa-1">
+      <MudPaper Class="d-flex align-center justify-stat mud-width-full pa-1 pb-3 flex-column">
+        <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
+          <MudText Typo="Typo.h6">
+            @(T["Potrošnja u godini do danas"] + T[" (kW):"])
+          </MudText>
+        </MudItem>
+        <NetUserRepGraph/>
+      </MudPaper>
+    </MudItem>
+  </MudGrid>
+</MudHidden>
 
 
 @* DESKTOP *@
-  <MudHidden Breakpoint="Breakpoint.SmAndDown">
-    <MudGrid Class="my-3">
-        <MudItem xs="4">
-          <MudPaper Class="mud-width-full d-flex flex-column justify-space-between pa-4" Height="320px">
-            <MudItem Class="" Style="font-size: large; font-weight: bold;">
-              <MudText Typo="Typo.h5">
-                @(T["Potrošnja u tekućem mjesecu:"])
-              </MudText>
-            </MudItem>
-            <MudContainer Class="d-flex align-end justify-center" MaxWidth="MaxWidth.Small">
-              <MudText Typo="Typo.h1">
-                  @(DecimalString(_thisMonthTotal/1000, 0))
-              </MudText>
-              <MudText Typo="Typo.h4" Class="mb-3 ml-1">kWh</MudText>
-            </MudContainer>
-            <MudItem Class="" Style="font-size: large; font-weight: bold;color: white;">
-              <MudText Typo="Typo.h6">
-                _____ ______ _ __________ _______:
-              </MudText>
-            </MudItem>
-            <MudItem Class="" Style="font-size: large; font-weight: bold;color: white;">
-              <MudText Typo="Typo.h6">
-                ____
-              </MudText>
-            </MudItem>
-          </MudPaper>
+<MudHidden Breakpoint="Breakpoint.SmAndDown">
+  <MudGrid Class="my-3">
+    <MudItem xs="4">
+      <MudPaper Class="mud-width-full d-flex flex-column justify-space-between pa-4" Height="320px">
+        <MudItem Class="" Style="font-size: large; font-weight: bold;">
+          <MudText Typo="Typo.h5">
+            @(T["Potrošnja u tekućem mjesecu:"])
+          </MudText>
         </MudItem>
-        <MudItem xs="4">
-          <MudPaper Class="mud-width-full d-flex flex-column justify-space-between pa-4" Height="320px">
-            <MudItem Class="" Style="font-size: large; font-weight: bold;">
-              <MudText Typo="Typo.h5">
-                @(T["Potrošnja u prethodnom mjesecu:"])
-              </MudText>
-            </MudItem>
-            <MudContainer Class="d-flex align-end justify-center" MaxWidth="MaxWidth.Small">
-              <MudText Typo="Typo.h1">
-                  @(DecimalString(_lastMonthTotal/1000, 0))
-              </MudText>
-              <MudText Typo="Typo.h4" Class="mb-3 ml-1">kWh</MudText>
-            </MudContainer>
-            <MudItem Class="" Style="font-size: large; font-weight: bold;">
-              <MudText Typo="Typo.h6">
-                @(T["Iznos računa u prethodnom mjesecu:"])
-              </MudText>
-            </MudItem>
-            <MudItem Class="" Style="font-size: large; font-weight: bold; align-self: center;">
-              <MudText Typo="Typo.h5">
-                @(lastMonthInvoicesTotal == 0m ? T["Račun u izradi..."] : DecimalString(lastMonthInvoicesTotal, 2) + " EUR")
-              </MudText>
-            </MudItem>
-          </MudPaper>
+        <MudContainer Class="d-flex align-end justify-center" MaxWidth="MaxWidth.Small">
+          <MudText Typo="Typo.h1">
+            @(DecimalString(_thisMonthTotal / 1000, 0))
+          </MudText>
+          <MudText Typo="Typo.h4" Class="mb-3 ml-1">kWh</MudText>
+        </MudContainer>
+        <MudItem Class="" Style="font-size: large; font-weight: bold;color: white;">
+          <MudText Typo="Typo.h6">
+            _____ ______ _ __________ _______:
+          </MudText>
         </MudItem>
-        <MudItem xs="4">
-          <MudPaper Class="mud-width-full pa-4" Height="320px">
-            <MudItem Class="" Style="font-size: large; font-weight: bold;">
-              <MudText Typo="Typo.h5">
-                @(T["Potrošnja u godini do danas"] + T[" (kW):"])
-              </MudText>
-            </MudItem>
-              <NetUserRepGraph />
-          </MudPaper>
+        <MudItem Class="" Style="font-size: large; font-weight: bold;color: white;">
+          <MudText Typo="Typo.h6">
+            ____
+          </MudText>
         </MudItem>
-    </MudGrid>
-  </MudHidden>
+      </MudPaper>
+    </MudItem>
+    <MudItem xs="4">
+      <MudPaper Class="mud-width-full d-flex flex-column justify-space-between pa-4" Height="320px">
+        <MudItem Class="" Style="font-size: large; font-weight: bold;">
+          <MudText Typo="Typo.h5">
+            @(T["Potrošnja u prethodnom mjesecu:"])
+          </MudText>
+        </MudItem>
+        <MudContainer Class="d-flex align-end justify-center" MaxWidth="MaxWidth.Small">
+          <MudText Typo="Typo.h1">
+            @(DecimalString(_lastMonthTotal / 1000, 0))
+          </MudText>
+          <MudText Typo="Typo.h4" Class="mb-3 ml-1">kWh</MudText>
+        </MudContainer>
+        <MudItem Class="" Style="font-size: large; font-weight: bold;">
+          <MudText Typo="Typo.h6">
+            @(T["Iznos računa u prethodnom mjesecu:"])
+          </MudText>
+        </MudItem>
+        <MudItem Class="" Style="font-size: large; font-weight: bold; align-self: center;">
+          <MudText Typo="Typo.h5">
+            @(lastMonthInvoicesTotal == 0m ? T["Račun u izradi..."] : DecimalString(lastMonthInvoicesTotal) + " EUR")
+          </MudText>
+        </MudItem>
+      </MudPaper>
+    </MudItem>
+    <MudItem xs="4">
+      <MudPaper Class="mud-width-full pa-4" Height="320px">
+        <MudItem Class="" Style="font-size: large; font-weight: bold;">
+          <MudText Typo="Typo.h5">
+            @(T["Potrošnja u godini do danas"] + T[" (kW):"])
+          </MudText>
+        </MudItem>
+        <NetUserRepGraph/>
+      </MudPaper>
+    </MudItem>
+  </MudGrid>
+</MudHidden>
 
 @code {
-    [CascadingParameter] public UserState user { get; set; } = default!;
-    [CascadingParameter] public RepresentativeState representative { get; set; } = default!;
-    private IEnumerable<MeterModel>? _ioTDevices;
-    private DateTimeOffset now = DateTimeOffset.UtcNow;
-    private DateTimeOffset startOfThisMonth = DateTimeOffset.UtcNow.GetStartOfMonth();
-    private DateTimeOffset startOfNextMonth = DateTimeOffset.UtcNow.GetStartOfNextMonth();
-    private DateTimeOffset lastMonth = DateTimeOffset.UtcNow.GetStartOfLastMonth();
-    private (decimal? First, decimal? Last, DateTimeOffset FirstDate) _startEnd;
-    private (decimal? First, decimal? Last, DateTimeOffset FirstDate) _startEndLastMonth = new(0, 0, DateTime.UtcNow);
-    private decimal _lastMonthTotal = 0;
-    private decimal _thisMonthTotal = 0;
-    decimal lastMonthInvoicesTotal = 0;
-    protected override async Task OnInitializedAsync()
-    {
+  [CascadingParameter] public UserState user { get; set; } = default!;
+  [CascadingParameter] public RepresentativeState representative { get; set; } = default!;
+  private IEnumerable<MeterModel>? _ioTDevices;
+  private DateTimeOffset now = DateTimeOffset.UtcNow;
+  private DateTimeOffset startOfThisMonth = DateTimeOffset.UtcNow.GetStartOfMonth();
+  private DateTimeOffset startOfNextMonth = DateTimeOffset.UtcNow.GetStartOfNextMonth();
+  private DateTimeOffset lastMonth = DateTimeOffset.UtcNow.GetStartOfLastMonth();
+  private (decimal? First, decimal? Last, DateTimeOffset FirstDate) _startEnd;
+  private (decimal? First, decimal? Last, DateTimeOffset FirstDate) _startEndLastMonth = new(0, 0, DateTime.UtcNow);
+  private decimal _lastMonthTotal = 0;
+  private decimal _thisMonthTotal = 0;
+  decimal lastMonthInvoicesTotal = 0;
 
-    }
+  protected override async Task OnInitializedAsync()
+  {
   }
+
+}

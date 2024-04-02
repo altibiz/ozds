@@ -9,6 +9,12 @@ public class EventEntity : IReadonlyEntity, IIdentifiableEntity
 {
   private readonly long _id;
 
+  public DateTimeOffset Timestamp { get; set; }
+
+  public LevelEntity Level { get; set; }
+
+  public string Description { get; set; } = default!;
+
   public virtual string Id
   {
     get { return _id.ToString(); }
@@ -16,12 +22,6 @@ public class EventEntity : IReadonlyEntity, IIdentifiableEntity
   }
 
   public string Title { get; set; } = default!;
-
-  public DateTimeOffset Timestamp { get; set; }
-
-  public LevelEntity Level { get; set; }
-
-  public string Description { get; set; } = default!;
 }
 
 public class

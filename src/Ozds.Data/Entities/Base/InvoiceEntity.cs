@@ -10,14 +10,6 @@ public abstract class InvoiceEntity : IReadonlyEntity, IIdentifiableEntity
 {
   private readonly long _id;
 
-  public virtual string Id
-  {
-    get { return _id.ToString(); }
-    init { _id = long.Parse(value); }
-  }
-
-  public string Title { get; set; } = default!;
-
   public DateTimeOffset IssuedOn { get; set; } = DateTimeOffset.UtcNow;
 
   public string? IssuedById { get; set; }
@@ -27,6 +19,14 @@ public abstract class InvoiceEntity : IReadonlyEntity, IIdentifiableEntity
   public DateTimeOffset FromDate { get; set; } = default!;
 
   public DateTimeOffset ToDate { get; set; } = default!;
+
+  public virtual string Id
+  {
+    get { return _id.ToString(); }
+    init { _id = long.Parse(value); }
+  }
+
+  public string Title { get; set; } = default!;
 }
 
 public class

@@ -24,8 +24,8 @@ public class OzdsAggregateQueries
   ) where T : class, IAggregate
   {
     var queryable = EntityModelTypeMapper.GetDbSet(context, typeof(T))
-      as IQueryable<AggregateEntity>
-      ?? throw new InvalidOperationException();
+                      as IQueryable<AggregateEntity>
+                    ?? throw new InvalidOperationException();
     var filtered = whereClauses.Aggregate(queryable,
       (current, clause) => current.WhereDynamic(clause));
     var timeFiltered = filtered

@@ -1,13 +1,17 @@
 using System.Globalization;
-using Ozds.Business.Time;
 using Microsoft.AspNetCore.Components;
+using Ozds.Business.Time;
 
 namespace Ozds.Client.Base;
 
 public abstract class OzdsComponentBase : ComponentBase
 {
-  public OzdsComponentLocalizer T => new();
-  protected string DecimalString(decimal? number, int places = 2)
+  public static OzdsComponentLocalizer T
+  {
+    get { return new OzdsComponentLocalizer(); }
+  }
+
+  protected static string DecimalString(decimal? number, int places = 2)
   {
     if (number is null)
     {
@@ -20,11 +24,11 @@ public abstract class OzdsComponentBase : ComponentBase
     numberFormatInfo.NumberGroupSeparator = ".";
     numberFormatInfo.NumberDecimalDigits = places;
 
-    decimal roundedNumber = Math.Round(number.Value, places);
+    var roundedNumber = Math.Round(number.Value, places);
     return roundedNumber.ToString("N", numberFormatInfo);
   }
 
-  protected string DateString(DateTimeOffset? dateTimeOffset)
+  protected static string DateString(DateTimeOffset? dateTimeOffset)
   {
     if (dateTimeOffset is null)
     {
@@ -39,8 +43,10 @@ public abstract class OzdsComponentBase : ComponentBase
 
     return withTimezone.ToString("dd. MM. yyyy.", cultureInfo);
   }
-  protected DateTimeOffset DateTimeGraph(DateTimeOffset dateTimeOffset)
+
+  protected static DateTimeOffset DateTimeGraph(DateTimeOffset dateTimeOffset)
   {
-    return dateTimeOffset.UtcDateTime.Add(DateTimeOffsetExtensions.DefaultOffset);
+    return dateTimeOffset.UtcDateTime.Add(
+      DateTimeOffsetExtensions.DefaultOffset);
   }
 }
