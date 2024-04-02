@@ -1,4 +1,5 @@
 using System.Reflection;
+using Ozds.Business.Iot;
 using Ozds.Business.Mutations;
 using Ozds.Business.Queries;
 using Ozds.Business.Queries.Base;
@@ -42,6 +43,8 @@ public static class IServiceCollectionExtensions
     services.AddScoped<OzdsRedLowCatalogueModelQueries>();
     services.AddScoped<OzdsWhiteLowCatalogueModelQueries>();
     services.AddScoped<OzdsWhiteMediumCatalogueModelQueries>();
+
+    services.AddScoped<OzdsIotHandler>();
 
     return services;
   }
