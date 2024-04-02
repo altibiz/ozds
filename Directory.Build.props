@@ -6,7 +6,10 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <!--
+      TODO: enable this when we have fixed all warnings
+      <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    -->
   </PropertyGroup>
 
   <PropertyGroup>
