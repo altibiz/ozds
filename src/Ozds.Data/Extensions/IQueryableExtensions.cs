@@ -5,6 +5,7 @@ using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Entities.Base;
 
 // TODO: cache compilations ?
+// TODO: in queries check that the calling type is accurate
 
 namespace Ozds.Data.Extensions;
 
