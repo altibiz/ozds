@@ -15,6 +15,8 @@ public class EventEntity : IReadonlyEntity, IIdentifiableEntity
     init { _id = long.Parse(value); }
   }
 
+  public string Title { get; set; } = default!;
+
   public DateTimeOffset Timestamp { get; set; }
 
   public LevelEntity Level { get; set; }

@@ -18,6 +18,7 @@ public static class RepresentativeEventModelExtensions
     return new RepresentativeEventModel
     {
       Id = entity.Id,
+      Title = entity.Title,
       Timestamp = entity.Timestamp,
       Level = entity.Level.ToModel(),
       Description = entity.Description,
@@ -31,6 +32,7 @@ public static class RepresentativeEventModelExtensions
     return new RepresentativeEventEntity
     {
       Id = model.Id,
+      Title = model.Title,
       Timestamp = model.Timestamp,
       Level = model.Level.ToEntity(),
       Description = model.Description,

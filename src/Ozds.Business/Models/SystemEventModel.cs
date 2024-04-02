@@ -15,6 +15,7 @@ public static class SystemEventModelExtensions
     return new SystemEventModel
     {
       Id = entity.Id,
+      Title = entity.Title,
       Timestamp = entity.Timestamp,
       Level = entity.Level.ToModel(),
       Description = entity.Description
@@ -26,6 +27,7 @@ public static class SystemEventModelExtensions
     return new SystemEventEntity
     {
       Id = model.Id,
+      Title = model.Title,
       Timestamp = model.Timestamp,
       Level = model.Level.ToEntity(),
       Description = model.Description

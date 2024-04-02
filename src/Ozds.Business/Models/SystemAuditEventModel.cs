@@ -16,6 +16,7 @@ public static class SystemAuditEventModelExtensions
     return new SystemAuditEventModel
     {
       Id = entity.Id,
+      Title = entity.Title,
       Timestamp = entity.Timestamp,
       Level = entity.Level.ToModel(),
       Description = entity.Description,
@@ -29,6 +30,7 @@ public static class SystemAuditEventModelExtensions
     return new SystemAuditEventEntity
     {
       Id = model.Id,
+      Title = model.Title,
       Timestamp = model.Timestamp,
       Level = model.Level.ToEntity(),
       Description = model.Description,

@@ -17,6 +17,7 @@ public static class MessengerEventModelExtensions
     return new MessengerEventModel
     {
       Id = entity.Id,
+      Title = entity.Title,
       Timestamp = entity.Timestamp,
       Level = entity.Level.ToModel(),
       Description = entity.Description,
@@ -29,6 +30,7 @@ public static class MessengerEventModelExtensions
     return new MessengerEventEntity
     {
       Id = model.Id,
+      Title = model.Title,
       Timestamp = model.Timestamp,
       Level = model.Level.ToEntity(),
       Description = model.Description,

@@ -8,6 +8,8 @@ public abstract class EventModel : IEvent
 {
   [Required] public required string Id { get; init; }
 
+  [Required] public required string Title { get; init; }
+
   [Required] public required DateTimeOffset Timestamp { get; init; }
 
   [Required] public required LevelModel Level { get; init; }

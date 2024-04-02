@@ -18,6 +18,7 @@ public static class RepresentativeAuditEventModelExtensions
     return new RepresentativeAuditEventModel
     {
       Id = entity.Id,
+      Title = entity.Title,
       Timestamp = entity.Timestamp,
       Level = entity.Level.ToModel(),
       Description = entity.Description,
@@ -32,6 +33,7 @@ public static class RepresentativeAuditEventModelExtensions
     return new RepresentativeAuditEventEntity
     {
       Id = model.Id,
+      Title = model.Title,
       Timestamp = model.Timestamp,
       Level = model.Level.ToEntity(),
       Description = model.Description,
