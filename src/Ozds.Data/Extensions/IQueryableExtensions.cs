@@ -46,7 +46,9 @@ public static class IQueryableExtensions
       || type.IsAssignableTo(typeof(MeterEntity));
     var fieldName = hasStringId ? "_stringId" : "_id";
     var field = type
-      .GetField(fieldName, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.FlattenHierarchy);
+      .GetField(fieldName,
+        BindingFlags.NonPublic | BindingFlags.Instance |
+        BindingFlags.FlattenHierarchy);
     var fieldExpression = Expression
       .Field(parameter, field
                         ?? throw new InvalidOperationException(

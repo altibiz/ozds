@@ -25,9 +25,7 @@ public class OzdsNetworkUserQueries
     {
       return networkUser.ToModel();
     }
-    else
-    {
-      return null;
-    }
+
+    return null;
   }
 }

@@ -8,6 +8,8 @@ using Ozds.Client.Attributes;
 using Ozds.Client.Base;
 using Ozds.Client.State;
 
+// TODO: remove hardcoding of /app here
+
 namespace Ozds.Client.Shared.Layout;
 
 public partial class MainLayout : OzdsLayoutComponentBase
@@ -53,7 +55,6 @@ public partial class MainLayout : OzdsLayoutComponentBase
                             "No claims principal found.");
     if (claimsPrincipal.Identity?.IsAuthenticated is false)
     {
-      // TODO: remove hardcoding of /app here
       NavigationManager.NavigateTo("/login?returnUrl=/app");
       return;
     }
@@ -89,3 +90,4 @@ public partial class MainLayout : OzdsLayoutComponentBase
 
   public record NavigationDescriptor(string Title, string Route);
 }
+// TODO: remove hardcoding of /app here

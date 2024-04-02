@@ -49,6 +49,11 @@ format:
     -o="{{jbcleanuplog}}" \
     --exclude='**/.git/**/*;**/.nuget/**/*;**/obj/**/*;**/bin/**/*'
 
+  dotnet roslynator fix "{{sln}}" \
+    --format \
+    --verbosity minimal \
+    --exclude='**/.git/**/*;**/.nuget/**/*;**/obj/**/*;**/bin/**/*'
+
   dotnet format "{{sln}}" \
     --no-restore \
     --verbosity minimal \
@@ -72,6 +77,10 @@ lint:
     --verbosity=ERROR \
     --caches-home="{{jbcache}}" \
     -o="{{jbinspectlog}}" \
+    --exclude='**/.git/**/*;**/.nuget/**/*;**/obj/**/*;**/bin/**/*'
+
+  dotnet roslynator analyze "{{sln}}" \
+    --verbosity minimal \
     --exclude='**/.git/**/*;**/.nuget/**/*;**/obj/**/*;**/bin/**/*'
 
   dotnet format "{{sln}}" \

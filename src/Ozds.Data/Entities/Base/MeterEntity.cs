@@ -6,9 +6,14 @@ namespace Ozds.Data.Entities.Base;
 
 public class MeterEntity : AuditableEntity
 {
+  private readonly long _catalogueId;
   protected readonly string _stringId = default!;
 
-  public override string Id { get => _stringId; init => _stringId = value; }
+  public override string Id
+  {
+    get { return _stringId; }
+    init { _stringId = value; }
+  }
 
   public string MessengerId { get; set; } = default!;
 
@@ -16,8 +21,6 @@ public class MeterEntity : AuditableEntity
 
   public virtual MeasurementLocationEntity MeasurementLocation { get; set; } =
     default!;
-
-  private readonly long _catalogueId;
 
   public virtual string CatalogueId
   {

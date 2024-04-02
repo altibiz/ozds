@@ -6,10 +6,10 @@ public record class CompositeTariffMeasure(List<TariffMeasure> Measures)
   public T FromMostAccurate<T>(Func<TariffMeasure, T> selector, T @default)
   {
     return Measures.FirstOrDefault(measure => measure is BinaryTariffMeasure) is
-    { } binary
+      { } binary
       ? selector(binary)
       : Measures.FirstOrDefault(measure => measure is UnaryTariffMeasure) is
-      { } unary
+        { } unary
         ? selector(unary)
         : @default;
   }

@@ -7,7 +7,11 @@ public class RepresentativeEntity : AuditableEntity
 {
   protected readonly string _stringId = default!;
 
-  public override string Id { get => _stringId; init => _stringId = value; }
+  public override string Id
+  {
+    get { return _stringId; }
+    init { _stringId = value; }
+  }
 
   public RoleEntity Role { get; set; }
 

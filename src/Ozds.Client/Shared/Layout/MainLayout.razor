@@ -10,20 +10,20 @@
       <CascadingValue Value="user">
         <UserLayout>
           <Body>
-            <Loading State="_representativeState">
-              <Found Context="representative">
-                <CascadingValue Value="representative">
-                  <RepresentativeLayout>
-                    <Body>
-                      @Body
-                    </Body>
-                  </RepresentativeLayout>
-                </CascadingValue>
-              </Found>
-              <NotFound>
-                @Body
-              </NotFound>
-            </Loading>
+          <Loading State="_representativeState">
+            <Found Context="representative">
+              <CascadingValue Value="representative">
+                <RepresentativeLayout>
+                  <Body>
+                  @Body
+                  </Body>
+                </RepresentativeLayout>
+              </CascadingValue>
+            </Found>
+            <NotFound>
+              @Body
+            </NotFound>
+          </Loading>
           </Body>
         </UserLayout>
       </CascadingValue>

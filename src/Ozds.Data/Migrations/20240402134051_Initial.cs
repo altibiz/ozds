@@ -1,4 +1,3 @@
-using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -10,6 +9,7 @@ namespace Ozds.Data.Migrations
   public partial class Initial : Migration
   {
     private static readonly string[] columns = new[] { "auditable_entity_table", "auditable_entity_id" };
+    private static readonly string[] columnsArray = new[] { "auditable_entity_type", "auditable_entity_id" };
 
     /// <inheritdoc />
     protected override void Up(MigrationBuilder migrationBuilder)
@@ -774,7 +774,7 @@ namespace Ozds.Data.Migrations
       migrationBuilder.CreateIndex(
           name: "ix_events_auditable_entity_type_auditable_entity_id",
           table: "events",
-          columns: new[] { "auditable_entity_type", "auditable_entity_id" });
+          columns: columnsArray);
 
       migrationBuilder.CreateIndex(
           name: "ix_events_messenger_id",

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Ozds.Data.Attributes;
 using Ozds.Data.Extensions;
 
-// TODO: make all applications work with UseTimescale
+// TODO: remove all the applications in favor of fluent API
 
 namespace Ozds.Data;
 

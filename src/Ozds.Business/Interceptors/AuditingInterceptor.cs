@@ -170,8 +170,7 @@ public class AuditingInterceptor : ServedSaveChangesInterceptor
 
   private string? GetRepresentativeId()
   {
-    if (_serviceProvider.GetService<IHttpContextAccessor>() is
-      { })
+    if (_serviceProvider.GetService<IHttpContextAccessor>() is not null)
     {
       return null;
       // return httpContextAccessor.HttpContext?.User
@@ -184,7 +183,7 @@ public class AuditingInterceptor : ServedSaveChangesInterceptor
   private bool IsDevelopment()
   {
     return _serviceProvider.GetService<IHostEnvironment>() is
-    { } hostEnvironment
+             { } hostEnvironment
            && hostEnvironment.IsDevelopment();
   }
 
