@@ -42,26 +42,10 @@ format:
     --cache --cache-strategy metadata \
     "{{root}}"
 
-  dotnet jb cleanupcode "{{sln}}" \
-    --no-build \
-    --verbosity=ERROR \
-    --caches-home="{{jbcache}}" \
-    -o="{{jbcleanuplog}}" \
-    --exclude='**/.git/**/*;**/.nuget/**/*;**/obj/**/*;**/bin/**/*'
-
   dotnet roslynator fix "{{sln}}" \
     --format \
     --verbosity minimal \
     --exclude='**/.git/**/*;**/.nuget/**/*;**/obj/**/*;**/bin/**/*'
-
-  dotnet format "{{sln}}" \
-    --no-restore \
-    --verbosity minimal \
-    --severity info \
-    --exclude '**/.git/**/*' \
-    --exclude '**/.nuget/**/*' \
-    --exclude '**/obj/**/*' \
-    --exclude '**/bin/**/*'
 
 lint:
   prettier --check \
@@ -72,17 +56,6 @@ lint:
 
   dotnet build "{{sln}}"
 
-  dotnet jb inspectcode "{{sln}}" \
-    --no-build \
-    --verbosity=ERROR \
-    --caches-home="{{jbcache}}" \
-    -o="{{jbinspectlog}}" \
-    --exclude='**/.git/**/*;**/.nuget/**/*;**/obj/**/*;**/bin/**/*'
-
-  dotnet roslynator analyze "{{sln}}" \
-    --verbosity minimal \
-    --exclude='**/.git/**/*;**/.nuget/**/*;**/obj/**/*;**/bin/**/*'
-
   dotnet format "{{sln}}" \
     --verify-no-changes \
     --no-restore \
@@ -92,6 +65,17 @@ lint:
     --exclude '**/.nuget/**/*' \
     --exclude '**/obj/**/*' \
     --exclude '**/bin/**/*'
+
+  dotnet roslynator analyze "{{sln}}" \
+    --verbosity minimal \
+    --exclude='**/.git/**/*;**/.nuget/**/*;**/obj/**/*;**/bin/**/*'
+
+  dotnet jb inspectcode "{{sln}}" \
+    --no-build \
+    --verbosity=ERROR \
+    --caches-home="{{jbcache}}" \
+    -o="{{jbinspectlog}}" \
+    --exclude='**/.git/**/*;**/.nuget/**/*;**/obj/**/*;**/bin/**/*'
 
 test *args:
   dotnet test "{{sln}}" {{args}}

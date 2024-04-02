@@ -6,10 +6,10 @@ public record class CompositePhasicMeasure(List<PhasicMeasure> Measures)
   public T FromMostAccurate<T>(Func<PhasicMeasure, T> selector, T @default)
   {
     return Measures.FirstOrDefault(measure => measure is TriPhasicMeasure) is
-      { } tri
+    { } tri
       ? selector(tri)
       : Measures.FirstOrDefault(measure => measure is SinglePhasicMeasure) is
-        { } single
+      { } single
         ? selector(single)
         : @default;
   }
