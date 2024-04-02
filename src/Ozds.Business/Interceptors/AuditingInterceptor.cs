@@ -169,8 +169,8 @@ public class AuditingInterceptor : ServedSaveChangesInterceptor
       { } httpContextAccessor)
     {
       return null;
-      return httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes
-        .NameIdentifier);
+      // return httpContextAccessor.HttpContext?.User
+      //   .FindFirstValue(ClaimTypes.NameIdentifier);
     }
 
     return null;
