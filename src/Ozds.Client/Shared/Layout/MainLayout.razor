@@ -9,18 +9,22 @@
     <Found Context="user">
       <CascadingValue Value="user">
         <UserLayout>
-          <Loading State="_representativeState">
-            <Found Context="representative">
-              <CascadingValue Value="representative">
-                <RepresentativeLayout>
-                  @Body
-                </RepresentativeLayout>
-              </CascadingValue>
-            </Found>
-            <NotFound>
-              @Body
-            </NotFound>
-          </Loading>
+          <Body>
+            <Loading State="_representativeState">
+              <Found Context="representative">
+                <CascadingValue Value="representative">
+                  <RepresentativeLayout>
+                    <Body>
+                      @Body
+                    </Body>
+                  </RepresentativeLayout>
+                </CascadingValue>
+              </Found>
+              <NotFound>
+                @Body
+              </NotFound>
+            </Loading>
+          </Body>
         </UserLayout>
       </CascadingValue>
     </Found>
