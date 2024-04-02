@@ -8,7 +8,6 @@ public interface IUpsertAggregate<T> : IAggregate where T : IUpsertAggregate<T>
 
   public static virtual UpsertHolder Upsert
   {
-    // ReSharper disable once ConvertClosureToMethodGroup
     get { return new UpsertHolder(T.UpsertExpression.Value.Compile()); }
   }
 
