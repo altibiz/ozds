@@ -424,6 +424,11 @@ namespace Ozds.Data.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("timestamp");
 
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("title");
+
                     b.Property<string>("kind")
                         .IsRequired()
                         .HasMaxLength(34)
@@ -722,6 +727,11 @@ namespace Ozds.Data.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("issued_on");
 
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("title");
+
                     b.Property<DateTimeOffset>("ToDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("to_date");
@@ -954,6 +964,11 @@ namespace Ozds.Data.Migrations
                     b.Property<DateTimeOffset>("IssuedOn")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("issued_on");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("title");
 
                     b.Property<DateTimeOffset>("ToDate")
                         .HasColumnType("timestamp with time zone")

@@ -105,6 +105,7 @@ erDiagram
         text messenger_id FK
         text representative_id FK
         timestamp_with_time_zone timestamp
+        text title
     }
 
     location_entity_representative_entity {
@@ -118,6 +119,7 @@ erDiagram
         text issued_by_id FK
         timestamp_with_time_zone issued_on
         bigint location_id FK
+        text title
         timestamp_with_time_zone to_date
     }
 
@@ -219,6 +221,7 @@ erDiagram
         text issued_by_id FK
         timestamp_with_time_zone issued_on
         bigint network_user_id FK
+        text title
         timestamp_with_time_zone to_date
     }
 
