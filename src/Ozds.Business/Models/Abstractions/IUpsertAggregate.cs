@@ -10,9 +10,7 @@ public interface IUpsertAggregate<T> : IAggregate where T : IUpsertAggregate<T>
 
   public static virtual UpsertHolder Upsert
   {
-    // @formatter:off
     get { return new UpsertHolder(T.UpsertExpression.Value.Compile()); }
-    // @formatter:on
   }
 
   public record UpsertExpressionHolder(Expression<Func<T, T, T>> Value);
