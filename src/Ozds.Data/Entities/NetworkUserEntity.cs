@@ -7,12 +7,18 @@ namespace Ozds.Data.Entities;
 
 public class NetworkUserEntity : AuditableEntity
 {
+  private readonly long _locationId;
+
   public virtual ICollection<RepresentativeEntity>
     Representatives
   { get; set; } = default!;
 
-  private readonly long _locationId = default!;
-  public virtual string LocationId { get => _locationId.ToString(); init => _locationId = long.Parse(value); }
+  public virtual string LocationId
+  {
+    get { return _locationId.ToString(); }
+    init { _locationId = long.Parse(value); }
+  }
+
   public virtual LocationEntity Location { get; set; } = default!;
 
   public virtual ICollection<NetworkUserMeasurementLocationEntity>

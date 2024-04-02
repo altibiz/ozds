@@ -5,9 +5,13 @@ namespace Ozds.Data.Entities.Base;
 
 public abstract class AuditableEntity
 {
-  private long _id = default!;
+  private readonly long _id;
 
-  public virtual string Id { get => _id.ToString(); init => _id = long.Parse(value); }
+  public virtual string Id
+  {
+    get { return _id.ToString(); }
+    init { _id = long.Parse(value); }
+  }
 
   public string Title { get; set; } = default!;
 
@@ -48,8 +52,8 @@ public class
     if (type.BaseType == typeof(AuditableEntity))
     {
       if (type == typeof(RepresentativeEntity)
-        || type == typeof(MeterEntity)
-        || type == typeof(MessengerEntity))
+          || type == typeof(MeterEntity)
+          || type == typeof(MessengerEntity))
       {
         builder.HasKey("_stringId");
       }
@@ -60,8 +64,8 @@ public class
     }
 
     if (type == typeof(RepresentativeEntity) ||
-      type.IsAssignableTo(typeof(MeterEntity)) ||
-      type.IsAssignableTo(typeof(MessengerEntity)))
+        type.IsAssignableTo(typeof(MeterEntity)) ||
+        type.IsAssignableTo(typeof(MessengerEntity)))
     {
       builder.Ignore("_id");
       builder.Ignore(nameof(AuditableEntity.Id));

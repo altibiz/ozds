@@ -6,9 +6,9 @@ namespace Ozds.Data.Entities.Base;
 
 public class MeterEntity : AuditableEntity
 {
-  private string _stringId = default!;
+  private readonly long _catalogueId;
 
-  public override string Id { get => _stringId; init => _stringId = value; }
+  public override string Id { get; init; } = default!;
 
   public string MessengerId { get; set; } = default!;
 
@@ -17,9 +17,11 @@ public class MeterEntity : AuditableEntity
   public virtual MeasurementLocationEntity MeasurementLocation { get; set; } =
     default!;
 
-  private long _catalogueId = default!;
-
-  public virtual string CatalogueId { get => _catalogueId.ToString(); init => _catalogueId = long.Parse(value); }
+  public virtual string CatalogueId
+  {
+    get { return _catalogueId.ToString(); }
+    init { _catalogueId = long.Parse(value); }
+  }
 
   public virtual CatalogueEntity Catalogue { get; set; } = default!;
 
@@ -37,14 +39,18 @@ public class MeterEntity<
   where TAggregate : AggregateEntity
   where TMeasurementValidator : MeasurementValidatorEntity
 {
+  private readonly long _measurementValidatorId;
+
   public virtual ICollection<TMeasurement> Measurements { get; set; } =
     default!;
 
   public virtual ICollection<TAggregate> Aggregates { get; set; } = default!;
 
-  private long _measurementValidatorId = default!;
-
-  public virtual string MeasurementValidatorId { get => _measurementValidatorId.ToString(); init => _measurementValidatorId = long.Parse(value); }
+  public virtual string MeasurementValidatorId
+  {
+    get { return _measurementValidatorId.ToString(); }
+    init { _measurementValidatorId = long.Parse(value); }
+  }
 
   public virtual TMeasurementValidator MeasurementValidator { get; set; } =
     default!;

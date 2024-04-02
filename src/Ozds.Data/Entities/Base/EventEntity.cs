@@ -6,9 +6,13 @@ namespace Ozds.Data.Entities.Base;
 
 public class EventEntity : ReadonlyEntity
 {
-  private long _id = default!;
+  private readonly long _id;
 
-  public virtual string Id { get => _id.ToString(); init => _id = long.Parse(value); }
+  public virtual string Id
+  {
+    get { return _id.ToString(); }
+    init { _id = long.Parse(value); }
+  }
 
   public DateTimeOffset Timestamp { get; set; }
 

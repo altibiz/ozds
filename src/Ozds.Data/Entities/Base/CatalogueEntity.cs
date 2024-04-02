@@ -11,7 +11,8 @@ public class CatalogueEntity : AuditableEntity
   public virtual ICollection<MeterEntity> Meters { get; set; } = default!;
 }
 
-public class CatalogueEntityTypeConfiguration : EntityTypeConfiguration<CatalogueEntity>
+public class
+  CatalogueEntityTypeConfiguration : EntityTypeConfiguration<CatalogueEntity>
 {
   public override void Configure(EntityTypeBuilder<CatalogueEntity> builder)
   {

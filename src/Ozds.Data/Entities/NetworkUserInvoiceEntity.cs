@@ -7,8 +7,14 @@ namespace Ozds.Data.Entities;
 
 public class NetworkUserInvoiceEntity : InvoiceEntity
 {
-  private long _networkUserId = default!;
-  public virtual string NetworkUserId { get => _networkUserId.ToString(); init => _networkUserId = long.Parse(value); }
+  private long _networkUserId;
+
+  public virtual string NetworkUserId
+  {
+    get { return _networkUserId.ToString(); }
+    init { _networkUserId = long.Parse(value); }
+  }
+
   public virtual NetworkUserEntity NetworkUser { get; set; } = default!;
 }
 

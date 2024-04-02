@@ -7,6 +7,16 @@ namespace Ozds.Data.Entities;
 
 public class LocationEntity : AuditableEntity
 {
+  private long _blueLowCatalogueId;
+
+  private long _redLowCatalogueId;
+
+  private long _regulatoryCatalogueId;
+
+  private long _whiteLowCatalogueId;
+
+  private long _whiteMediumCatalogueId;
+
   public virtual ICollection<RepresentativeEntity>
     Representatives
   { get; set; } = default!;
@@ -24,55 +34,45 @@ public class LocationEntity : AuditableEntity
   public virtual ICollection<LocationInvoiceEntity> Invoices { get; set; } =
     default!;
 
-  private long _whiteMediumCatalogueId = default!;
-
   public string WhiteMediumCatalogueId
   {
-    get => _whiteMediumCatalogueId.ToString();
-    init => _whiteMediumCatalogueId = long.Parse(value);
+    get { return _whiteMediumCatalogueId.ToString(); }
+    init { _whiteMediumCatalogueId = long.Parse(value); }
   }
 
   public virtual WhiteMediumCatalogueEntity WhiteMediumCatalogue { get; set; } =
     default!;
 
-  private long _blueLowCatalogueId = default!;
-
   public string BlueLowCatalogueId
   {
-    get => _blueLowCatalogueId.ToString();
-    init => _blueLowCatalogueId = long.Parse(value);
+    get { return _blueLowCatalogueId.ToString(); }
+    init { _blueLowCatalogueId = long.Parse(value); }
   }
 
   public virtual BlueLowCatalogueEntity BlueLowCatalogue { get; set; } =
     default!;
 
-  private long _whiteLowCatalogueId = default!;
-
   public string WhiteLowCatalogueId
   {
-    get => _whiteLowCatalogueId.ToString();
-    init => _whiteLowCatalogueId = long.Parse(value);
+    get { return _whiteLowCatalogueId.ToString(); }
+    init { _whiteLowCatalogueId = long.Parse(value); }
   }
 
   public virtual WhiteLowCatalogueEntity WhiteLowCatalogue { get; set; } =
     default!;
 
-  private long _redLowCatalogueId = default!;
-
   public string RedLowCatalogueId
   {
-    get => _redLowCatalogueId.ToString();
-    init => _redLowCatalogueId = long.Parse(value);
+    get { return _redLowCatalogueId.ToString(); }
+    init { _redLowCatalogueId = long.Parse(value); }
   }
 
   public virtual RedLowCatalogueEntity RedLowCatalogue { get; set; } = default!;
 
-  private long _regulatoryCatalogueId = default!;
-
   public string RegulatoryCatalogueId
   {
-    get => _regulatoryCatalogueId.ToString();
-    init => _regulatoryCatalogueId = long.Parse(value);
+    get { return _regulatoryCatalogueId.ToString(); }
+    init { _regulatoryCatalogueId = long.Parse(value); }
   }
 
   public virtual RegulatoryCatalogueEntity RegulatoryCatalogue { get; set; } =

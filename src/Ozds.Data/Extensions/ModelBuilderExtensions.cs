@@ -20,7 +20,8 @@ public abstract class EntityTypeConfiguration<TEntity> : IModelConfiguration
   public abstract void Configure(EntityTypeBuilder<TEntity> builder);
 }
 
-public abstract class EntityTypeHierarchyConfiguration<TBase> : IModelConfiguration
+public abstract class
+  EntityTypeHierarchyConfiguration<TBase> : IModelConfiguration
   where TBase : class
 {
   public void Configure(ModelBuilder modelBuilder)
@@ -45,6 +46,7 @@ public abstract class EntityTypeHierarchyConfiguration<TBase> : IModelConfigurat
         {
           level++;
         }
+
         return level;
       })
       .Aggregate(modelBuilder, (modelBuilder, type) =>
@@ -60,6 +62,7 @@ public abstract class EntityTypeHierarchyConfiguration<TBase> : IModelConfigurat
         return modelBuilder;
       });
   }
+
   public virtual void Configure(ModelBuilder modelBuilder, Type entity)
   {
   }
@@ -74,7 +77,8 @@ public static class ModelBuilderExtensions
   {
     return assembly
       .GetTypes()
-      .Where(type => !type.IsAbstract && typeof(IModelConfiguration).IsAssignableFrom(type))
+      .Where(type => !type.IsAbstract &&
+                     typeof(IModelConfiguration).IsAssignableFrom(type))
       .Aggregate(
         modelBuilder,
         (modelBuilder, type) =>

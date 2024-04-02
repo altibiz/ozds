@@ -18,7 +18,8 @@ public class MeasurementEntity<T> : MeasurementEntity
 }
 
 public class
-  MeasurementEntityTypeHierarchyConfiguration : EntityTypeHierarchyConfiguration<
+  MeasurementEntityTypeHierarchyConfiguration : EntityTypeHierarchyConfiguration
+<
   MeasurementEntity>
 {
   public override void Configure(ModelBuilder modelBuilder, Type type)

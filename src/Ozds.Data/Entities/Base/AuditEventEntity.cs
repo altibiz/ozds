@@ -25,7 +25,8 @@ public class AuditEventEntityTypeHierarchyConfiguration :
     var builder = modelBuilder.Entity(type);
 
     builder.HasIndex(
-      new[] {
+      new[]
+      {
         nameof(AuditEventEntity.AuditableEntityType),
         nameof(AuditEventEntity.AuditableEntityId)
       },
@@ -33,7 +34,8 @@ public class AuditEventEntityTypeHierarchyConfiguration :
     );
 
     builder.HasIndex(
-      new[] {
+      new[]
+      {
         nameof(AuditEventEntity.AuditableEntityTable),
         nameof(AuditEventEntity.AuditableEntityId)
       },

@@ -5,8 +5,7 @@ namespace Ozds.Data.Entities;
 
 public class RepresentativeEntity : AuditableEntity
 {
-  private string _stringId = default!;
-  public override string Id { get => _stringId; init => _stringId = value; }
+  public override string Id { get; init; } = default!;
 
   public RoleEntity Role { get; set; }
 

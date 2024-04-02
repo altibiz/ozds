@@ -7,8 +7,14 @@ namespace Ozds.Data.Entities;
 
 public class LocationInvoiceEntity : InvoiceEntity
 {
-  private long _locationId = default!;
-  public virtual string LocationId { get => _locationId.ToString(); init => _locationId = long.Parse(value); }
+  private long _locationId;
+
+  public virtual string LocationId
+  {
+    get { return _locationId.ToString(); }
+    init { _locationId = long.Parse(value); }
+  }
+
   public virtual LocationEntity Location { get; set; } = default!;
 }
 
