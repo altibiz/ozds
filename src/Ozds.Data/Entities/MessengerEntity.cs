@@ -9,8 +9,11 @@ namespace Ozds.Data.Entities;
 
 public class MessengerEntity : AuditableEntity
 {
+  private readonly string _stringId = default!;
+
+  public override string Id { get => _stringId; init => _stringId = value; }
+
   private long _locationId;
-  public override string Id { get; init; } = default!;
 
   public virtual string LocationId
   {
