@@ -17,6 +17,7 @@ public static class NetworkUserInvoiceModelExtensions
     return new NetworkUserInvoiceModel
     {
       Id = entity.Id,
+      Title = entity.Title,
       IssuedOn = entity.IssuedOn,
       IssuedById = entity.IssuedById,
       FromDate = entity.FromDate,
@@ -31,6 +32,7 @@ public static class NetworkUserInvoiceModelExtensions
     return new NetworkUserInvoiceEntity
     {
       Id = model.Id,
+      Title = model.Title,
       IssuedOn = model.IssuedOn,
       IssuedById = model.IssuedById,
       FromDate = model.FromDate,

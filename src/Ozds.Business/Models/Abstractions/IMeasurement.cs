@@ -3,7 +3,7 @@ using Ozds.Business.Math;
 
 namespace Ozds.Business.Models.Abstractions;
 
-public interface IMeasurement : IValidatableObject
+public interface IMeasurement : IValidatableObject, IReadonly
 {
   public string MeterId { get; }
 

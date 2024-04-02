@@ -23,18 +23,23 @@ public class OzdsAggregateQueries
     int pageCount = QueryConstants.DefaultPageCount
   ) where T : class, IAggregate
   {
-    var queryable = EntityModelTypeMapper.GetDbSet(context, typeof(T));
+    var queryable = EntityModelTypeMapper.GetDbSet(context, typeof(T))
+      as IQueryable<AggregateEntity>
+      ?? throw new InvalidOperationException();
     var filtered = whereClauses.Aggregate(queryable,
       (current, clause) => current.WhereDynamic(clause));
-    var timeFiltered = filtered.Where(x =>
-      (x as AggregateEntity)!.Timestamp >= fromDate &&
-      (x as AggregateEntity)!.Timestamp < toDate);
+    var timeFiltered = filtered
+      .Where(aggregate => aggregate.Timestamp >= fromDate)
+      .Where(aggregate => aggregate.Timestamp < toDate);
     var count = await timeFiltered.CountAsync();
-    var ordered =
-      timeFiltered.OrderByDescending(x => (x as AggregateEntity)!.Timestamp);
-    var items = await ordered.Skip((pageNumber - 1) * pageCount).Take(pageCount)
+    var ordered = timeFiltered
+      .OrderByDescending(aggregate => aggregate.Timestamp);
+    var items = await ordered
+      .Skip((pageNumber - 1) * pageCount)
+      .Take(pageCount)
       .ToListAsync();
-    return items.Select(item => EntityModelTypeMapper.ToModel<T>(item))
+    return items
+      .Select(EntityModelTypeMapper.ToModel<T>)
       .ToPaginatedList(count);
   }
 }

@@ -4,7 +4,7 @@ using Ozds.Business.Models.Enums;
 
 namespace Ozds.Business.Models.Abstractions;
 
-public interface IAggregate : IValidatableObject
+public interface IAggregate : IValidatableObject, IReadonly
 {
   public string MeterId { get; }
 

@@ -3,6 +3,7 @@ using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Data;
 using Ozds.Data.Entities.Base;
+using Ozds.Data.Extensions;
 
 namespace Ozds.Business.Queries.Base;
 
@@ -17,10 +18,10 @@ public class OzdsAuditableQueries
 
   public async Task<T?> ReadSingle<T>(string id) where T : class, IAuditable
   {
-    var queryable = EntityModelTypeMapper.GetDbSet(context, typeof(T));
-    var item =
-      await queryable.FirstOrDefaultAsync(x =>
-        (x as AuditableEntity)!.Id == id);
+    var queryable = EntityModelTypeMapper.GetDbSet(context, typeof(T))
+      as IQueryable<AuditableEntity>
+      ?? throw new InvalidOperationException();
+    var item = await queryable.WithId(id).FirstOrDefaultAsync();
     return item is null ? null : EntityModelTypeMapper.ToModel<T>(item);
   }
 

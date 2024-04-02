@@ -15,33 +15,31 @@ public class OzdsInvoiceQueries
     this.context = context;
   }
 
-  public async Task<T?> ReadSingle<T>(string id) where T : class, IInvoice
-  {
-    var queryable = EntityModelTypeMapper.GetDbSet(context, typeof(T));
-    var item =
-      await queryable.FirstOrDefaultAsync(x => (x as InvoiceEntity)!.Id == id);
-    return item is null ? null : EntityModelTypeMapper.ToModel<T>(item);
-  }
-
   public async Task<PaginatedList<T>> Read<T>(
     IEnumerable<string> whereClauses,
-    IEnumerable<string> orderByDescClauses,
-    IEnumerable<string> orderByAscClauses,
+    DateTimeOffset fromDate,
+    DateTimeOffset toDate,
     int pageNumber = QueryConstants.StartingPage,
     int pageCount = QueryConstants.DefaultPageCount
-  ) where T : class, IEvent
+  ) where T : class, IInvoice
   {
-    var queryable = EntityModelTypeMapper.GetDbSet(context, typeof(T));
+    var queryable = EntityModelTypeMapper.GetDbSet(context, typeof(T))
+      as IQueryable<InvoiceEntity>
+      ?? throw new InvalidOperationException();
     var filtered = whereClauses.Aggregate(queryable,
       (current, clause) => current.WhereDynamic(clause));
-    var count = await filtered.CountAsync();
-    var orderedByDesc = orderByDescClauses.Aggregate(filtered,
-      (current, clause) => current.OrderByDescendingDynamic(clause));
-    var orderedByAsc = orderByAscClauses.Aggregate(orderedByDesc,
-      (current, clause) => current.OrderByDynamic(clause));
-    var items = await orderedByAsc.Skip((pageNumber - 1) * pageCount)
-      .Take(pageCount).ToListAsync();
-    return items.Select(item => EntityModelTypeMapper.ToModel<T>(item))
+    var timeFiltered = filtered
+      .Where(invoice => invoice.IssuedOn >= fromDate)
+      .Where(invoice => invoice.IssuedOn < toDate);
+    var count = await timeFiltered.CountAsync();
+    var ordered = timeFiltered
+      .OrderByDescending(invoice => invoice.IssuedOn);
+    var items = await ordered
+      .Skip((pageNumber - 1) * pageCount)
+      .Take(pageCount)
+      .ToListAsync();
+    return items
+      .Select(EntityModelTypeMapper.ToModel<T>)
       .ToPaginatedList(count);
   }
 }

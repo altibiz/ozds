@@ -1,11 +1,12 @@
 using Microsoft.EntityFrameworkCore;
+using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Extensions;
 
 // TODO: copy entities via complex properties
 
 namespace Ozds.Data.Entities.Base;
 
-public abstract class InvoiceEntity : ReadonlyEntity
+public abstract class InvoiceEntity : IReadonlyEntity, IIdentifiableEntity
 {
   private readonly long _id;
 
@@ -14,6 +15,8 @@ public abstract class InvoiceEntity : ReadonlyEntity
     get { return _id.ToString(); }
     init { _id = long.Parse(value); }
   }
+
+  public string Title { get; set; } = default!;
 
   public DateTimeOffset IssuedOn { get; set; } = DateTimeOffset.UtcNow;
 

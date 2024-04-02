@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using Ozds.Data.Entities.Base;
+using Ozds.Data.Entities.Abstractions;
 
 // TODO: check if this is the right way to do it
 
@@ -42,7 +42,7 @@ public class ReadonlyInterceptor : ServedSaveChangesInterceptor
     }
 
     var entries = eventData.Context.ChangeTracker
-      .Entries<ReadonlyEntity>()
+      .Entries<IReadonlyEntity>()
       .ToList();
 
     foreach (var @readonly in entries)

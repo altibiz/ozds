@@ -3,10 +3,8 @@ using Ozds.Business.Models.Enums;
 
 namespace Ozds.Business.Models.Abstractions;
 
-public interface IEvent : IValidatableObject
+public interface IEvent : IValidatableObject, IIdentifiable, IReadonly
 {
-  public string Id { get; }
-
   public DateTimeOffset Timestamp { get; }
 
   public LevelModel Level { get; }

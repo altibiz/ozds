@@ -7,6 +7,8 @@ public abstract class InvoiceModel : IInvoice
 {
   [Required] public required string Id { get; set; }
 
+  [Required] public required string Title { get; set; }
+
   [Required] public required DateTimeOffset IssuedOn { get; set; }
 
   [Required] public required string? IssuedById { get; set; }

@@ -1,9 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
 
-public abstract class AuditableEntity
+public abstract class AuditableEntity : IIdentifiableEntity
 {
   private readonly long _id;
 

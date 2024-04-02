@@ -26,6 +26,7 @@ public static class IQueryableExtensions
   {
     var type = typeof(T);
     var parameter = Expression.Parameter(type);
+    var isAuditable = type.IsAssignableTo(typeof(AuditableEntity));
     var hasStringId =
       type.IsAssignableTo(typeof(RepresentativeEntity))
       || type.IsAssignableTo(typeof(MessengerEntity))
@@ -46,7 +47,7 @@ public static class IQueryableExtensions
   private static Expression<Func<T, bool>> MakeWithIdFromExpression<T>(ICollection<string> ids) where T : IIdentifiableEntity
   {
     var type = typeof(T);
-    var parameter = Expression.Parameter(type);
+    var parameter = Expression.Parameter(typeof(AuditableEntity));
     var hasStringId =
       type.IsAssignableTo(typeof(RepresentativeEntity))
       || type.IsAssignableTo(typeof(MessengerEntity))

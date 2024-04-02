@@ -15,29 +15,31 @@ public class OzdsEventQueries
     this.context = context;
   }
 
-  public async Task<T?> ReadSingle<T>(string id) where T : class, IEvent
-  {
-    var queryable = EntityModelTypeMapper.GetDbSet(context, typeof(T));
-    var item =
-      await queryable.FirstOrDefaultAsync(x => (x as EventEntity)!.Id == id);
-    return item is null ? null : EntityModelTypeMapper.ToModel<T>(item);
-  }
-
   public async Task<PaginatedList<T>> Read<T>(
     IEnumerable<string> whereClauses,
+    DateTimeOffset fromDate,
+    DateTimeOffset toDate,
     int pageNumber = QueryConstants.StartingPage,
     int pageCount = QueryConstants.DefaultPageCount
   ) where T : class, IEvent
   {
-    var queryable = EntityModelTypeMapper.GetDbSet(context, typeof(T));
+    var queryable = EntityModelTypeMapper.GetDbSet(context, typeof(T))
+      as IQueryable<EventEntity>
+      ?? throw new InvalidOperationException();
     var filtered = whereClauses.Aggregate(queryable,
       (current, clause) => current.WhereDynamic(clause));
-    var count = await filtered.CountAsync();
-    var ordered =
-      filtered.OrderByDescending(x => (x as EventEntity)!.Timestamp);
-    var items = await filtered.Skip((pageNumber - 1) * pageCount)
-      .Take(pageCount).ToListAsync();
-    return items.Select(item => EntityModelTypeMapper.ToModel<T>(item))
+    var timeFiltered = filtered
+      .Where(@event => @event.Timestamp >= fromDate)
+      .Where(@event => @event.Timestamp < toDate);
+    var count = await timeFiltered.CountAsync();
+    var ordered = timeFiltered
+      .OrderByDescending(@event => @event.Timestamp);
+    var items = await ordered
+      .Skip((pageNumber - 1) * pageCount)
+      .Take(pageCount)
+      .ToListAsync();
+    return items
+      .Select(EntityModelTypeMapper.ToModel<T>)
       .ToPaginatedList(count);
   }
 }
