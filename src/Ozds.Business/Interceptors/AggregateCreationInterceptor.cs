@@ -1,6 +1,7 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-
-// TODO: implement automatic insertion of aggregations
+using Ozds.Business.Models.Abstractions;
+using Ozds.Data.Entities.Base;
 
 namespace Ozds.Business.Interceptors;
 
@@ -26,7 +27,26 @@ public class AggregateCreationInterceptor : ServedSaveChangesInterceptor
     return base.SavingChangesAsync(eventData, result, cancellationToken);
   }
 
-  private static void CreateAggregates(DbContextEventData _)
+  private static void CreateAggregates(DbContextEventData eventData)
   {
+    var context = eventData.Context;
+    if (context is null)
+    {
+      return;
+    }
+
+    var aggregates = context.ChangeTracker.Entries<MeasurementEntity>()
+      .Where(entity => entity.State == EntityState.Added)
+      .Select(entity => entity.Entity)
+      .Select(EntityModelTypeMapper.ToModel)
+      .Select(EntityModelTypeMapper.ToAggregate)
+      .OfType<IAggregate>()
+      .UpsertRange()
+      .Select(EntityModelTypeMapper.ToEntity)
+      .ToList();
+    foreach (var aggregate in aggregates)
+    {
+      context.Add(aggregate);
+    }
   }
 }

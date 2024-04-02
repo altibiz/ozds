@@ -31,15 +31,41 @@ public static class EntityModelTypeMapper
       $"ToEntity method returned null for model {modelType.FullName}");
   }
 
-  public static T ToModel<T>(object entity) where T : class
+  public static object ToModel(object entity)
   {
-    var modelType = GetModelType(entity.GetType());
+    var entityType = entity.GetType();
+    var modelType = GetModelType(entityType);
     var modelConversionExtensions = GetModelConversionExtensionsType(modelType);
     var toModelMethod = modelConversionExtensions.GetMethod("ToModel") ??
                         throw new InvalidOperationException(
                           $"ToModel method not found in model conversion extensions type {modelConversionExtensions.FullName}");
     var model = toModelMethod.Invoke(null, new[] { entity });
-    return model as T ?? throw new InvalidOperationException(
+    return model ?? throw new InvalidOperationException(
+      $"ToModel method returned null for entity {entityType.FullName}");
+  }
+
+  public static T ToModel<T>(object entity) where T : class
+  {
+    return ToModel(entity) as T ?? throw new InvalidOperationException(
+      $"ToModel method returned null for entity {entity.GetType().FullName}");
+  }
+
+  public static object ToAggregate(object entity)
+  {
+    var entityType = entity.GetType();
+    var modelType = GetModelType(entityType);
+    var modelConversionExtensions = GetModelConversionExtensionsType(modelType);
+    var toModelMethod = modelConversionExtensions.GetMethod("ToAggregate") ??
+                        throw new InvalidOperationException(
+                          $"ToAggregate method not found in model conversion extensions type {modelConversionExtensions.FullName}");
+    var model = toModelMethod.Invoke(null, new[] { entity });
+    return model ?? throw new InvalidOperationException(
+      $"ToModel method returned null for entity {entityType.FullName}");
+  }
+
+  public static T ToAggregate<T>(object entity) where T : class
+  {
+    return ToAggregate(entity) as T ?? throw new InvalidOperationException(
       $"ToModel method returned null for entity {entity.GetType().FullName}");
   }
 
