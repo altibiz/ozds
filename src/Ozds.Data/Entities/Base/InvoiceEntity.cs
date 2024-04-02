@@ -8,7 +8,7 @@ namespace Ozds.Data.Entities.Base;
 
 public abstract class InvoiceEntity : IReadonlyEntity, IIdentifiableEntity
 {
-  private readonly long _id;
+  protected readonly long _id;
 
   public DateTimeOffset IssuedOn { get; set; } = DateTimeOffset.UtcNow;
 

@@ -6,7 +6,7 @@ namespace Ozds.Data.Entities.Base;
 
 public class MeterEntity : AuditableEntity
 {
-  private readonly string _stringId = default!;
+  protected readonly string _stringId = default!;
 
   public override string Id { get => _stringId; init => _stringId = value; }
 

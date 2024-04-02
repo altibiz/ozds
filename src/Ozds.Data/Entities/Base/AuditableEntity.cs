@@ -6,7 +6,7 @@ namespace Ozds.Data.Entities.Base;
 
 public abstract class AuditableEntity : IIdentifiableEntity
 {
-  private readonly long _id;
+  protected readonly long _id;
 
   public DateTimeOffset CreatedOn { get; set; } = DateTimeOffset.UtcNow;
 

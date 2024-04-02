@@ -37,6 +37,7 @@ public static class IServiceCollectionExtensions
     services.AddScoped<OzdsInvoiceQueries>();
 
     services.AddScoped<OzdsRepresentativeQueries>();
+    services.AddScoped<OzdsNetworkUserQueries>();
 
     return services;
   }

@@ -7,7 +7,7 @@ namespace Ozds.Data.Entities.Base;
 
 public class EventEntity : IReadonlyEntity, IIdentifiableEntity
 {
-  private readonly long _id;
+  protected readonly long _id;
 
   public DateTimeOffset Timestamp { get; set; }
 

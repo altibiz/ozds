@@ -1,3 +1,5 @@
+# TODO: rm -rf on windows
+
 set windows-shell := ["pwsh.exe", "-c"]
 
 root := absolute_path('')
@@ -118,14 +120,14 @@ publish *args:
 
 [confirm("This will clean app data and docker containers. Do you want to continue?")]
 clean:
-  rm -rf "{{appdata}}"
+  # rm -rf "{{appdata}}"
 
   docker compose down -v
   docker compose up -d
 
 [confirm("This will clean app data, docker containers and dotnet artifacts. Do you want to continue?")]
 purge:
-  rm -rf "{{appdata}}"
+  # rm -rf "{{appdata}}"
 
   git clean -Xdf \
     -e !.vscode/ \
