@@ -7,6 +7,7 @@ using Ozds.Data.Entities.Base;
 using Ozds.Data.Entities.Enums;
 
 // TODO: audit db errors and such
+// TODO: check if user is representative
 
 namespace Ozds.Business.Interceptors;
 
@@ -167,6 +168,7 @@ public class AuditingInterceptor : ServedSaveChangesInterceptor
     if (_serviceProvider.GetService<IHttpContextAccessor>() is
       { } httpContextAccessor)
     {
+      return null;
       return httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes
         .NameIdentifier);
     }

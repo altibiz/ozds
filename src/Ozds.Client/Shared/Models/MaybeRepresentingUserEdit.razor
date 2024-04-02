@@ -27,7 +27,7 @@
 }
 
 <EditForm
-  LoadingState.Value="@LoadingState.Value.Representative"
+  Model="@LoadingState.Value.Representative"
   OnValidSubmit="Submit">
   <DataAnnotationsValidator/>
   <MudCard>
@@ -112,11 +112,11 @@
     var mutations = ScopedServices.GetRequiredService<OzdsAuditableMutations>();
     if (_create)
     {
-      mutations.Update(LoadingState.Value.Representative);
+      mutations.Create(LoadingState.Value.Representative);
     }
     else
     {
-      mutations.Create(LoadingState.Value.Representative);
+      mutations.Update(LoadingState.Value.Representative);
     }
   }
 
