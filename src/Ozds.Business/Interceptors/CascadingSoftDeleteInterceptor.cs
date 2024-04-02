@@ -24,7 +24,7 @@ public class CascadingSoftDeleteInterceptor : ServedSaveChangesInterceptor
     return base.SavingChangesAsync(eventData, result, cancellationToken);
   }
 
-  private static void AddCascadingSoftDeletes(DbContextEventData eventData)
+  private static void AddCascadingSoftDeletes(DbContextEventData _)
   {
   }
 }
