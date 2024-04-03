@@ -2,9 +2,9 @@ namespace Ozds.Business.Conversion.Abstractions;
 
 public interface IModelEntityConverter
 {
-  public Type ModelType { get; }
+  bool CanConvertToEntity(Type modelType);
 
-  public Type EntityType { get; }
+  bool CanConvertToModel(Type entityType);
 
   object ToEntity(object model);
 

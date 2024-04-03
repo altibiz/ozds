@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Ozds.Business.Conversion.Abstractions;
 using Ozds.Business.Models.Abstractions;
+using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Entities.Base;
 
 namespace Ozds.Business.Interceptors;
@@ -27,7 +29,7 @@ public class AggregateCreationInterceptor : ServedSaveChangesInterceptor
     return await base.SavingChangesAsync(eventData, result, cancellationToken);
   }
 
-  private static async Task CreateAggregates(DbContextEventData eventData)
+  private async Task CreateAggregates(DbContextEventData eventData)
   {
     var context = eventData.Context;
     if (context is null)
@@ -53,27 +55,72 @@ public class AggregateCreationInterceptor : ServedSaveChangesInterceptor
         continue;
       }
 
-      await context
-        .UpsertRange(
-          context.ChangeTracker
-            .Entries()
-            .Where(entity => entity.Entity is MeasurementEntity)
-            .Where(entity => entity.State == EntityState.Added)
-            .Select(entity => entity.Entity)
-            .OfType<MeasurementEntity>()
-            .Select(EntityModelTypeMapper.ToModel)
-            .Select(EntityModelTypeMapper.ToAggregate)
-            .OfType<IAggregate>()
-            .UpsertRange()
-            .Select(EntityModelTypeMapper.ToEntity)
-            .OfType<AggregateEntity>())
-        .On(entity => new
+      var measurementAggregateConverters = _serviceProvider
+        .GetServices<IMeasurementAggregateConverter>();
+      var modelEntityConverters = _serviceProvider
+        .GetServices<IModelEntityConverter>();
+      var aggregateUpserters = _serviceProvider
+        .GetServices<IAggregateUpserter>();
+
+      var aggregates = context.ChangeTracker
+        .Entries()
+        .Where(entity => entity.State == EntityState.Added)
+        .Select(entity => entity.Entity)
+        .OfType<MeasurementEntity>()
+        .Select(entity => modelEntityConverters
+          .FirstOrDefault(converter => converter
+            .CanConvertToEntity(entity.GetType()))
+          ?.ToModel(entity))
+        .OfType<IMeasurement>()
+        .Select(model => measurementAggregateConverters
+          .FirstOrDefault(converter => converter
+            .CanConvertToAggregate(model.GetType()))
+          ?.ToAggregate(model))
+        .OfType<IAggregate>()
+        .GroupBy(aggregate => new
         {
-          entity.MeterId,
-          entity.Timestamp,
-          entity.Interval
+          Type = aggregate.GetType(),
+          aggregate.MeterId,
+          aggregate.Timestamp,
+          aggregate.Interval
         })
-        .RunAsync();
+        .Select(group => group
+          .Aggregate((lhs, rhs) => lhs is { } && rhs is { }
+            ? aggregateUpserters
+              .FirstOrDefault(upserter => upserter
+                .CanUpsertModel(group.Key.Type))
+              ?.UpsertModel(lhs, rhs)!
+            : default!))
+        .OfType<IAggregate>()
+        .Select(model => modelEntityConverters
+          .FirstOrDefault(converter => converter
+            .CanConvertToEntity(model.GetType()))
+          ?.ToEntity(model))
+        .OfType<IAggregateEntity>()
+        .GroupBy(entity => entity.GetType());
+
+      foreach (var group in aggregates)
+      {
+        var aggregateUpserter = _serviceProvider
+          .GetServices<IAggregateUpserter>()
+          .FirstOrDefault(upserter => upserter
+            .CanUpsertEntity(group.Key));
+        if (aggregateUpserter is null)
+        {
+          continue;
+        }
+
+        await context
+          .UpsertRange(group.ToArray())
+          .On(entity => new
+          {
+            entity.MeterId,
+            entity.Timestamp,
+            entity.Interval
+          })
+          .WhenMatched(aggregateUpserter.UpsertEntity)
+          .RunAsync();
+      }
     }
   }
 }

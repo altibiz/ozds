@@ -8,17 +8,17 @@ public abstract class ModelEntityConverter<TModel, TEntity> : TypeConverter, IMo
   where TModel : class
   where TEntity : class
 {
-  public Type ModelType => typeof(TModel);
+  protected abstract TEntity ToEntity(TModel model);
 
-  public Type EntityType => typeof(TEntity);
+  protected abstract TModel ToModel(TEntity entity);
+
+  public bool CanConvertToEntity(Type modelType) => modelType == typeof(TModel);
+
+  public bool CanConvertToModel(Type entityType) => entityType == typeof(TEntity);
 
   public object ToEntity(object model) => ToEntity(model as TModel ?? throw new ArgumentNullException(nameof(model)));
 
   public object ToModel(object entity) => ToModel(entity as TEntity ?? throw new ArgumentNullException(nameof(entity)));
-
-  public abstract TEntity ToEntity(TModel model);
-
-  public abstract TModel ToModel(TEntity entity);
 
   public override bool CanConvertFrom(ITypeDescriptorContext? context, Type sourceType) =>
     sourceType == typeof(TModel) || base.CanConvertFrom(context, sourceType);

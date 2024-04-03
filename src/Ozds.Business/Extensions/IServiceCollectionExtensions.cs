@@ -26,19 +26,20 @@ public static class IServiceCollectionExtensions
       )
     );
 
-    services.AddAssignableTo(typeof(IOzdsQueries));
-    services.AddAssignableTo(typeof(IOzdsMutations));
-    services.AddAssignableTo(typeof(IAggregateUpserter));
-    services.AddAssignableTo(typeof(IModelEntityConverter));
-    services.AddAssignableTo(typeof(IMeasurementAggregateConverter));
-    services.AddAssignableTo(typeof(IPushRequestMeasurementConverter));
+    services.AddScopedAssignableTo(typeof(IOzdsQueries));
+    services.AddScopedAssignableTo(typeof(IOzdsMutations));
 
+    services.AddTransientAssignableTo(typeof(IAggregateUpserter));
+    services.AddTransientAssignableTo(typeof(IModelEntityConverter));
+    services.AddTransientAssignableTo(typeof(IMeasurementAggregateConverter));
+    services.AddTransientAssignableTo(typeof(IPushRequestMeasurementConverter));
 
     services.AddScoped<OzdsIotHandler>();
 
     return services;
   }
-  private static void AddAssignableTo(
+
+  private static void AddScopedAssignableTo(
     this IServiceCollection services,
     Type assignableTo
   )
@@ -54,6 +55,25 @@ public static class IServiceCollectionExtensions
     foreach (var conversionType in conversionTypes)
     {
       services.AddScoped(conversionType);
+    }
+  }
+
+  private static void AddTransientAssignableTo(
+    this IServiceCollection services,
+    Type assignableTo
+  )
+  {
+    var conversionTypes = typeof(IServiceCollectionExtensions).Assembly
+      .GetTypes()
+      .Where(type =>
+        !type.IsAbstract &&
+        !type.IsClass &&
+        !type.IsGenericType &&
+        type.IsAssignableTo(assignableTo));
+
+    foreach (var conversionType in conversionTypes)
+    {
+      services.AddTransient(conversionType);
     }
   }
 }

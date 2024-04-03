@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Ozds.Business.Conversion.Abstractions;
 using Ozds.Business.Mutations.Agnostic;
 using Ozds.Business.Queries.Agnotic;
 
@@ -12,13 +13,17 @@ public class OzdsIotHandler
 
   private readonly IHttpContextAccessor _httpContextAccessor;
 
+  private readonly IServiceProvider _serviceProvider;
+
   public OzdsIotHandler(
     OzdsAuditableQueries auditableQueries,
-    IHttpContextAccessor httpContextAccessor
+    IHttpContextAccessor httpContextAccessor,
+    IServiceProvider serviceProvider
   )
   {
     _auditableQueries = auditableQueries;
     _httpContextAccessor = httpContextAccessor;
+    _serviceProvider = serviceProvider;
   }
 
   public async Task<bool> Authorize(string id, string request)
@@ -34,26 +39,23 @@ public class OzdsIotHandler
       return;
     }
 
+    var pushRequestMeasurementConverters = _serviceProvider
+      .GetServices<IPushRequestMeasurementConverter>();
+
     foreach (var item in messengerRequest.Measurements)
     {
-      if (item.MeterId.StartsWith("abb-b2x"))
+      var pushRequestMeasurementConverter = pushRequestMeasurementConverters
+        .FirstOrDefault(x => x.CanConvertToMeasurement(item.MeterId));
+
+      if (pushRequestMeasurementConverter == null)
       {
-        var deviceRequest = JsonSerializer.Deserialize<AbbB2xPushRequest>(item.Data);
-        if (deviceRequest == null)
-        {
-          continue;
-        }
-        _measurementMutations.Create(deviceRequest.ToModel(item.MeterId, item.Timestamp));
+        continue;
       }
-      else if (item.MeterId.StartsWith("schneider-iEM3xxx"))
-      {
-        var deviceRequest = JsonSerializer.Deserialize<SchneideriEM3xxxPushRequest>(item.Data);
-        if (deviceRequest == null)
-        {
-          continue;
-        }
-        _measurementMutations.Create(deviceRequest.ToModel(item.MeterId, item.Timestamp));
-      }
+
+      var measurement = pushRequestMeasurementConverter.ToMeasurement(
+        item.Data, item.MeterId, item.Timestamp
+      );
+      _measurementMutations.Create(measurement);
     }
   }
 

@@ -6,9 +6,9 @@ namespace Ozds.Business.Conversion.Abstractions;
 
 public interface IAggregateUpserter
 {
-  public Type ModelType { get; }
+  bool CanUpsertModel(Type modelType);
 
-  public Type EntityType { get; }
+  bool CanUpsertEntity(Type entityType);
 
   IAggregate UpsertModel(IAggregate lhs, IAggregate rhs);
 

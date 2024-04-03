@@ -1,10 +1,11 @@
+using System.Text.Json.Nodes;
+using Ozds.Business.Models.Abstractions;
+
 namespace Ozds.Business.Conversion.Abstractions;
 
 public interface IPushRequestMeasurementConverter
 {
-  Type PushRequestType { get; }
+  bool CanConvertToMeasurement(string meterId);
 
-  Type MeasurementType { get; }
-
-  object ToMeasurement(object pushRequest, string meterId, DateTimeOffset timestamp);
+  IMeasurement ToMeasurement(JsonObject pushRequest, string meterId, DateTimeOffset timestamp);
 }

@@ -1,16 +1,11 @@
-using System.ComponentModel;
-using System.Globalization;
 using Ozds.Business.Models.Abstractions;
+using Ozds.Business.Models.Enums;
 
 namespace Ozds.Business.Conversion.Abstractions;
 
 public interface IMeasurementAggregateConverter
 {
-  public Type AggregateType { get; }
+  bool CanConvertToAggregate(Type measurement);
 
-  public Type MeasurementType { get; }
-
-  IMeasurement ToMeasurement(IAggregate aggregate);
-
-  IAggregate ToAggregate(IMeasurement measurement);
+  IAggregate ToAggregate(IMeasurement measurement, IntervalModel interval);
 }

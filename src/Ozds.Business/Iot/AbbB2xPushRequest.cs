@@ -1,4 +1,3 @@
-using Ozds.Business.Abstractions;
 using Ozds.Business.Models;
 
 namespace Ozds.Business.Iot;
@@ -78,10 +77,4 @@ public static class AbbB2xPushRequestExtensions
       ActiveEnergyTotalImportT1_Wh = request.ActiveEnergyTotalImportT1_Wh,
       ActiveEnergyTotalImportT2_Wh = request.ActiveEnergyTotalImportT2_Wh
     };
-}
-
-public class AbbB2xPushRequestConverter : PushRequestMeasurementConverter<AbbB2xPushRequest, AbbB2xMeasurementModel>
-{
-  public override AbbB2xMeasurementModel ToMeasurement(AbbB2xPushRequest pushRequest, string meterId, DateTimeOffset timestamp) =>
-    pushRequest.ToModel(meterId, timestamp);
 }
