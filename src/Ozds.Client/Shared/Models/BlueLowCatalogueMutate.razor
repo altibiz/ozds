@@ -1,0 +1,114 @@
+@inject NavigationManager NavigationManager
+@inherits OzdsOwningComponentBase
+
+@if (LoadingState.Value is null)
+{
+  <MudProgressCircular/>
+  return;
+}
+
+<MudText Typo="Typo.h5">Plavi Niski Katalog</MudText>
+<MudPaper>
+  <MudGrid>
+    <MudItem xs="12" sm="6">
+      <MudText Typo="Typo.body1">Id</MudText>
+      <MudText Typo="Typo.body2">@LoadingState.Value.Id</MudText>
+    </MudItem>
+  </MudGrid>
+</MudPaper>
+
+@if (LoadingState.Value is null)
+{
+  return;
+}
+
+<EditForm
+  Model="@LoadingState.Value"
+  OnValidSubmit="Submit">
+  <DataAnnotationsValidator/>
+  <MudCard>
+    <MudCardContent>
+      <MudTextField
+        Label="Ime"
+        @bind-Value="LoadingState.Value.Title"
+        For="@(() => LoadingState.Value.Title)"/>
+      <MudTextField
+        Label="Lokacija"
+        @bind-Value="LoadingState.Value.ActiveEnergyTotalImportT0Price_EUR"
+        For="@(() => LoadingState.Value.ActiveEnergyTotalImportT0Price_EUR)"/>
+      <MudTextField
+        Label="Lokacija"
+        @bind-Value="LoadingState.Value.ReactiveEnergyTotalImportT0Price_EUR"
+        For="@(() => LoadingState.Value.ReactiveEnergyTotalImportT0Price_EUR)"/>
+      <MudTextField
+        Label="Lokacija"
+        @bind-Value="LoadingState.Value.MeterFeePrice_EUR"
+        For="@(() => LoadingState.Value.MeterFeePrice_EUR)"/>
+    </MudCardContent>
+    <ValidationSummary />
+    <MudCardActions>
+      <MudButton
+        ButtonType="ButtonType.Submit"
+        Variant="Variant.Filled"
+        Color="MudColor.Primary"
+        Class="ml-auto">
+        @if(_create){
+          <span>Create</span>
+        }
+        else{
+          <span>Update</span>
+        }
+      </MudButton>
+    </MudCardActions>
+  </MudCard>
+</EditForm>
+
+@code {
+  [Parameter] public string Id { get; set; } = default!;
+
+  [Parameter] public BlueLowCatalogueModel? Model { get; set; }
+
+  private LoadingState<BlueLowCatalogueModel> LoadingState { get; set; } = new();
+
+  private bool _create = false;
+
+  private void Submit()
+  {
+    var mutations = ScopedServices.GetRequiredService<OzdsAuditableMutations>();
+    if (LoadingState.Value is null)
+      return;
+    if (_create)
+    {
+      mutations.Create(LoadingState.Value);
+    }
+    else
+    {
+      mutations.Update(LoadingState.Value);
+    }
+  }
+
+  protected override void OnInitialized()
+  {
+    if (LoadingState.Value is not null)
+    {
+      LoadingState = LoadingState.WithValue(LoadingState.Value);
+    }
+  }
+
+  protected override async Task OnInitializedAsync()
+  {
+    if (LoadingState.Value is null && Id is not null)
+    {
+      LoadingState = LoadingState.WithValue(
+        await ScopedServices
+          .GetRequiredService<OzdsBlueLowCatalogueModelQueries>()
+          .BlueLowCatalogueById(Id));
+    }
+
+    if ( LoadingState.Value is null )
+    {
+      LoadingState = LoadingState.WithValue(BlueLowCatalogueModel.New());
+      _create = true;
+    }
+  }
+}
