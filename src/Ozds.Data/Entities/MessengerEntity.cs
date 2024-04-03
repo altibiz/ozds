@@ -11,13 +11,13 @@ public class MessengerEntity : AuditableEntity
 {
   protected readonly string _stringId = default!;
 
+  private long _locationId;
+
   public override string Id
   {
     get { return _stringId; }
     init { _stringId = value; }
   }
-
-  private long _locationId;
 
   public virtual string LocationId
   {
