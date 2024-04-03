@@ -1,7 +1,6 @@
 using System.Text.Json;
-using Ozds.Business.Models;
-using Ozds.Business.Mutations;
-using Ozds.Business.Queries.Base;
+using Ozds.Business.Mutations.Agnostic;
+using Ozds.Business.Queries.Agnotic;
 
 namespace Ozds.Business.Iot;
 

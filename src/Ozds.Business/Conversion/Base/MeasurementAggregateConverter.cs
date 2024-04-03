@@ -1,19 +1,9 @@
 using System.ComponentModel;
 using System.Globalization;
+using Ozds.Business.Conversion.Abstractions;
 using Ozds.Business.Models.Abstractions;
 
-namespace Ozds.Business.Conversion;
-
-public interface IMeasurementAggregateConverter
-{
-  public Type AggregateType { get; }
-
-  public Type MeasurementType { get; }
-
-  IMeasurement ToMeasurement(IAggregate aggregate);
-
-  IAggregate ToAggregate(IMeasurement measurement);
-}
+namespace Ozds.Business.Conversion.Base;
 
 public abstract class MeasurementAggregateConverter<TAggregate, TMeasurement> : TypeConverter, IMeasurementAggregateConverter
   where TAggregate : class, IAggregate

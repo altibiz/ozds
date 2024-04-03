@@ -5,7 +5,7 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
 
-public abstract class MeasurementEntity : IReadonlyEntity
+public abstract class MeasurementEntity : IMeasurementEntity
 {
   public DateTimeOffset Timestamp { get; set; }
 

@@ -1,12 +1,13 @@
 using System.ComponentModel.DataAnnotations;
 using Ozds.Business.Models.Abstractions;
+using Ozds.Business.Mutations.Abstractions;
 using Ozds.Data;
 
 // TODO: check representative model user id
 
-namespace Ozds.Business.Mutations;
+namespace Ozds.Business.Mutations.Agnostic;
 
-public class OzdsAuditableMutations : IDisposable, IAsyncDisposable
+public class OzdsAuditableMutations : IOzdsMutations
 {
   private readonly OzdsDbContext _context;
 

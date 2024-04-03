@@ -1,8 +1,8 @@
 using System.Reflection;
+using Ozds.Business.Conversion.Abstractions;
 using Ozds.Business.Iot;
-using Ozds.Business.Mutations;
-using Ozds.Business.Queries;
-using Ozds.Business.Queries.Base;
+using Ozds.Business.Mutations.Abstractions;
+using Ozds.Business.Queries.Abstractions;
 using Ozds.Data;
 using Ozds.Data.Extensions;
 
@@ -26,26 +26,34 @@ public static class IServiceCollectionExtensions
       )
     );
 
-    services.AddScoped<OzdsAuditableMutations>();
-    services.AddScoped<OzdsEventMutations>();
-    services.AddScoped<OzdsInvoiceMutations>();
-    services.AddScoped<OzdsMeasurementMutations>();
+    services.AddAssignableTo(typeof(IOzdsQueries));
+    services.AddAssignableTo(typeof(IOzdsMutations));
+    services.AddAssignableTo(typeof(IAggregateUpserter));
+    services.AddAssignableTo(typeof(IModelEntityConverter));
+    services.AddAssignableTo(typeof(IMeasurementAggregateConverter));
+    services.AddAssignableTo(typeof(IPushRequestMeasurementConverter));
 
-    services.AddScoped<OzdsAuditableQueries>();
-    services.AddScoped<OzdsEventQueries>();
-    services.AddScoped<OzdsMeasurementQueries>();
-    services.AddScoped<OzdsAggregateQueries>();
-    services.AddScoped<OzdsInvoiceQueries>();
-
-    services.AddScoped<OzdsRepresentativeQueries>();
-    services.AddScoped<OzdsNetworkUserQueries>();
-    services.AddScoped<OzdsBlueLowCatalogueModelQueries>();
-    services.AddScoped<OzdsRedLowCatalogueModelQueries>();
-    services.AddScoped<OzdsWhiteLowCatalogueModelQueries>();
-    services.AddScoped<OzdsWhiteMediumCatalogueModelQueries>();
 
     services.AddScoped<OzdsIotHandler>();
 
     return services;
+  }
+  private static void AddAssignableTo(
+    this IServiceCollection services,
+    Type assignableTo
+  )
+  {
+    var conversionTypes = typeof(IServiceCollectionExtensions).Assembly
+      .GetTypes()
+      .Where(type =>
+        !type.IsAbstract &&
+        !type.IsClass &&
+        !type.IsGenericType &&
+        type.IsAssignableTo(assignableTo));
+
+    foreach (var conversionType in conversionTypes)
+    {
+      services.AddScoped(conversionType);
+    }
   }
 }

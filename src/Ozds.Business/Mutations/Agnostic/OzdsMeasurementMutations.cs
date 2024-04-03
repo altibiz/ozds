@@ -1,10 +1,11 @@
 using System.ComponentModel.DataAnnotations;
 using Ozds.Business.Models.Abstractions;
+using Ozds.Business.Mutations.Abstractions;
 using Ozds.Data;
 
-namespace Ozds.Business.Mutations;
+namespace Ozds.Business.Mutations.Agnostic;
 
-public class OzdsMeasurementMutations : IDisposable, IAsyncDisposable
+public class OzdsMeasurementMutations : IOzdsMutations
 {
   private readonly OzdsDbContext _context;
 

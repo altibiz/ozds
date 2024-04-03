@@ -6,7 +6,7 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
 
-public abstract class AggregateEntity : IReadonlyEntity
+public abstract class AggregateEntity : IAggregateEntity
 {
   public DateTimeOffset Timestamp { get; set; }
 

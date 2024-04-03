@@ -1,18 +1,8 @@
 using System.ComponentModel;
 using System.Globalization;
+using Ozds.Business.Conversion.Abstractions;
 
-namespace Ozds.Business.Conversion;
-
-public interface IModelEntityConverter
-{
-  public Type ModelType { get; }
-
-  public Type EntityType { get; }
-
-  object ToEntity(object model);
-
-  object ToModel(object entity);
-}
+namespace Ozds.Business.Conversion.Base;
 
 public abstract class ModelEntityConverter<TModel, TEntity> : TypeConverter, IModelEntityConverter
   where TModel : class

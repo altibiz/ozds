@@ -1,16 +1,6 @@
-using System.ComponentModel;
-using System.Globalization;
+using Ozds.Business.Conversion.Abstractions;
 
-namespace Ozds.Business.Conversion;
-
-public interface IPushRequestMeasurementConverter
-{
-  Type PushRequestType { get; }
-
-  Type MeasurementType { get; }
-
-  object ToMeasurement(object pushRequest, string meterId, DateTimeOffset timestamp);
-}
+namespace Ozds.Business.Conversion.Base;
 
 public abstract class PushRequestMeasurementConverter<TPushRequest, TMeasurement> : IPushRequestMeasurementConverter
   where TPushRequest : class

@@ -4,13 +4,13 @@ using Ozds.Business.Queries.Abstractions;
 using Ozds.Data;
 using Ozds.Data.Entities.Base;
 
-namespace Ozds.Business.Queries.Base;
+namespace Ozds.Business.Queries.Agnotic;
 
-public class OzdsMeasurementQueries
+public class OzdsEventQueries : IOzdsQueries
 {
   protected readonly OzdsDbContext context;
 
-  public OzdsMeasurementQueries(OzdsDbContext context)
+  public OzdsEventQueries(OzdsDbContext context)
   {
     this.context = context;
   }
@@ -21,19 +21,19 @@ public class OzdsMeasurementQueries
     DateTimeOffset toDate,
     int pageNumber = QueryConstants.StartingPage,
     int pageCount = QueryConstants.DefaultPageCount
-  ) where T : class, IMeasurement
+  ) where T : class, IEvent
   {
     var queryable = EntityModelTypeMapper.GetDbSet(context, typeof(T))
-                      as IQueryable<MeasurementEntity>
+                      as IQueryable<EventEntity>
                     ?? throw new InvalidOperationException();
     var filtered = whereClauses.Aggregate(queryable,
       (current, clause) => current.WhereDynamic(clause));
     var timeFiltered = filtered
-      .Where(measurement => measurement.Timestamp >= fromDate)
-      .Where(measurement => measurement.Timestamp < toDate);
+      .Where(@event => @event.Timestamp >= fromDate)
+      .Where(@event => @event.Timestamp < toDate);
     var count = await timeFiltered.CountAsync();
     var ordered = timeFiltered
-      .OrderByDescending(measurement => measurement.Timestamp);
+      .OrderByDescending(@event => @event.Timestamp);
     var items = await ordered
       .Skip((pageNumber - 1) * pageCount)
       .Take(pageCount)

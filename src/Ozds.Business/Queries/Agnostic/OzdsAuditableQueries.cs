@@ -5,9 +5,9 @@ using Ozds.Data;
 using Ozds.Data.Entities.Base;
 using Ozds.Data.Extensions;
 
-namespace Ozds.Business.Queries.Base;
+namespace Ozds.Business.Queries.Agnotic;
 
-public class OzdsAuditableQueries
+public class OzdsAuditableQueries : IOzdsQueries
 {
   protected readonly OzdsDbContext context;
 

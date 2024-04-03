@@ -40,23 +40,6 @@ public class AggregateCreationInterceptor : ServedSaveChangesInterceptor
       .Where(entityType => entityType.ClrType
         .IsAssignableTo(typeof(MeasurementEntity)));
 
-    async Task CreateAggregates<T>(IEnumerable<T> aggregates) where T : IUpsertAggregate<T>
-    {
-      await context
-        .UpsertRange(
-          aggregates
-            .Select(EntityModelTypeMapper.ToEntity)
-        )
-        .On(entity => new
-        {
-          entity.MeterId,
-          entity.Timestamp,
-          entity.Interval
-        })
-        .WhenMatched()
-        .RunAsync();
-    }
-
     foreach (var entityType in measurementEntityTypes)
     {
       var entities = context.ChangeTracker

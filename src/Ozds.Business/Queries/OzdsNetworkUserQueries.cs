@@ -1,11 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Models;
+using Ozds.Business.Queries.Abstractions;
 using Ozds.Data;
 using Ozds.Data.Extensions;
 
 namespace Ozds.Business.Queries;
 
-public class OzdsNetworkUserQueries
+public class OzdsNetworkUserQueries : IOzdsQueries
 {
   protected readonly OzdsDbContext context;
 

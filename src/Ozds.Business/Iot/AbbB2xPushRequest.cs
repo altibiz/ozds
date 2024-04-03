@@ -1,4 +1,4 @@
-using Ozds.Business.Conversion;
+using Ozds.Business.Abstractions;
 using Ozds.Business.Models;
 
 namespace Ozds.Business.Iot;
