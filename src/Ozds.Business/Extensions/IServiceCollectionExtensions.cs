@@ -39,6 +39,9 @@ public static class IServiceCollectionExtensions
     services.AddScoped<OzdsRepresentativeQueries>();
     services.AddScoped<OzdsNetworkUserQueries>();
     services.AddScoped<OzdsBlueLowCatalogueModelQueries>();
+    services.AddScoped<OzdsRedLowCatalogueModelQueries>();
+    services.AddScoped<OzdsWhiteLowCatalogueModelQueries>();
+    services.AddScoped<OzdsWhiteMediumCatalogueModelQueries>();
 
     return services;
   }

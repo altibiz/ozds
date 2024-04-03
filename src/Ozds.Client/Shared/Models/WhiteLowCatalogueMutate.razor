@@ -7,7 +7,7 @@
   return;
 }
 
-<MudText Typo="Typo.h5">Plavi Niski Katalog</MudText>
+<MudText Typo="Typo.h5">Bijeli Niski Katalog</MudText>
 <MudPaper>
   <MudGrid>
     <MudItem xs="12" sm="6">
@@ -33,11 +33,15 @@
         @bind-Value="LoadingState.Value.Title"
         For="@(() => LoadingState.Value.Title)"/>
       <MudTextField
-        Label="Cijena potrošnje aktivne energije u jednoj tarifi"
-        @bind-Value="LoadingState.Value.ActiveEnergyTotalImportT0Price_EUR"
-        For="@(() => LoadingState.Value.ActiveEnergyTotalImportT0Price_EUR)"/>
+        Label="Cijena potrošnje aktivne energije u dnevnoj tarifi"
+        @bind-Value="LoadingState.Value.ActiveEnergyTotalImportT1Price_EUR"
+        For="@(() => LoadingState.Value.ActiveEnergyTotalImportT1Price_EUR)"/>
       <MudTextField
-        Label="Cijena potrošnje raktivne energije u jednoj tarifi"
+        Label="Cijena potrošnje aktivne energije u noćnoj tarifi"
+        @bind-Value="LoadingState.Value.ActiveEnergyTotalImportT2Price_EUR"
+        For="@(() => LoadingState.Value.ActiveEnergyTotalImportT2Price_EUR)"/>
+      <MudTextField
+        Label="Cijena potrošnje reaktivne energije u jednoj tarifi"
         @bind-Value="LoadingState.Value.ReactiveEnergyTotalImportT0Price_EUR"
         For="@(() => LoadingState.Value.ReactiveEnergyTotalImportT0Price_EUR)"/>
       <MudTextField
@@ -66,9 +70,9 @@
 @code {
   [Parameter] public string Id { get; set; } = default!;
 
-  [Parameter] public BlueLowCatalogueModel? Model { get; set; }
+  [Parameter] public WhiteLowCatalogueModel? Model { get; set; }
 
-  private LoadingState<BlueLowCatalogueModel> LoadingState { get; set; } = new();
+  private LoadingState<WhiteLowCatalogueModel> LoadingState { get; set; } = new();
 
   private bool _create = false;
 
@@ -101,13 +105,13 @@
     {
       LoadingState = LoadingState.WithValue(
         await ScopedServices
-          .GetRequiredService<OzdsBlueLowCatalogueModelQueries>()
+          .GetRequiredService<OzdsWhiteLowCatalogueModelQueries>()
           .BlueLowCatalogueById(Id));
     }
 
     if ( LoadingState.Value is null )
     {
-      LoadingState = LoadingState.WithValue(BlueLowCatalogueModel.New());
+      LoadingState = LoadingState.WithValue(WhiteLowCatalogueModel.New());
       _create = true;
     }
   }
