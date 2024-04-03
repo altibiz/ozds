@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using Ozds.Business.Conversion.Abstractions;
+using Ozds.Business.Extensions;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Data;
@@ -9,47 +11,68 @@ namespace Ozds.Business.Queries.Agnotic;
 
 public class OzdsInvoiceQueries : IOzdsQueries
 {
-  protected readonly OzdsDbContext context;
+  private readonly OzdsDbContext _context;
 
-  public OzdsInvoiceQueries(OzdsDbContext context)
+  private readonly IServiceProvider _serviceProvider;
+
+  public OzdsInvoiceQueries(OzdsDbContext context, IServiceProvider serviceProvider)
   {
-    this.context = context;
+    _context = context;
+    _serviceProvider = serviceProvider;
   }
 
   public async Task<T?> ReadSingle<T>(string id) where T : class, IInvoice
   {
-    var queryable = EntityModelTypeMapper.GetDbSet(context, typeof(T))
+    var modelEntityConverter = _serviceProvider
+      .GetServices<IModelEntityConverter>()
+      .FirstOrDefault(converter => converter
+        .CanConvertToModel(typeof(T)));
+    if (modelEntityConverter is null)
+    {
+      throw new InvalidOperationException(
+        $"No model entity converter found for {typeof(T)}");
+    }
+
+    var queryable = _context.GetDbSet(typeof(T))
                       as IQueryable<InvoiceEntity>
                     ?? throw new InvalidOperationException();
     var item = await queryable.WithId(id).FirstOrDefaultAsync();
-    return item is null ? null : EntityModelTypeMapper.ToModel<T>(item);
+    return item is null ? null : modelEntityConverter.ToModel(item) as T;
   }
 
   public async Task<PaginatedList<T>> Read<T>(
     IEnumerable<string> whereClauses,
-    DateTimeOffset fromDate,
-    DateTimeOffset toDate,
+    IEnumerable<string> orderByDescClauses,
+    IEnumerable<string> orderByAscClauses,
     int pageNumber = QueryConstants.StartingPage,
     int pageCount = QueryConstants.DefaultPageCount
   ) where T : class, IInvoice
   {
-    var queryable = EntityModelTypeMapper.GetDbSet(context, typeof(T))
+    var modelEntityConverter = _serviceProvider
+      .GetServices<IModelEntityConverter>()
+      .FirstOrDefault(converter => converter
+        .CanConvertToModel(typeof(T)));
+    if (modelEntityConverter is null)
+    {
+      throw new InvalidOperationException(
+        $"No model entity converter found for {typeof(T)}");
+    }
+
+    var queryable = _context.GetDbSet(typeof(T))
                       as IQueryable<InvoiceEntity>
                     ?? throw new InvalidOperationException();
     var filtered = whereClauses.Aggregate(queryable,
       (current, clause) => current.WhereDynamic(clause));
-    var timeFiltered = filtered
-      .Where(invoice => invoice.IssuedOn >= fromDate)
-      .Where(invoice => invoice.IssuedOn < toDate);
-    var count = await timeFiltered.CountAsync();
-    var ordered = timeFiltered
-      .OrderByDescending(invoice => invoice.IssuedOn);
-    var items = await ordered
-      .Skip((pageNumber - 1) * pageCount)
-      .Take(pageCount)
-      .ToListAsync();
+    var count = await filtered.CountAsync();
+    var orderedByDesc = orderByDescClauses.Aggregate(filtered,
+      (current, clause) => current.OrderByDescendingDynamic(clause));
+    var orderedByAsc = orderByAscClauses.Aggregate(orderedByDesc,
+      (current, clause) => current.OrderByDynamic(clause));
+    var items = await orderedByAsc.Skip((pageNumber - 1) * pageCount)
+      .Take(pageCount).ToListAsync();
     return items
-      .Select(EntityModelTypeMapper.ToModel<T>)
+      .Select(item => modelEntityConverter.ToModel(item))
+      .OfType<T>()
       .ToPaginatedList(count);
   }
 }

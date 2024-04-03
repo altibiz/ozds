@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Ozds.Business.Conversion.Abstractions;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Mutations.Abstractions;
 using Ozds.Data;
@@ -11,9 +12,15 @@ public class OzdsAuditableMutations : IOzdsMutations
 {
   private readonly OzdsDbContext _context;
 
-  public OzdsAuditableMutations(OzdsDbContext context)
+  private readonly IServiceProvider _serviceProvider;
+
+  public OzdsAuditableMutations(
+    OzdsDbContext context,
+    IServiceProvider serviceProvider
+  )
   {
     _context = context;
+    _serviceProvider = serviceProvider;
   }
 
   public async ValueTask DisposeAsync()
@@ -33,36 +40,64 @@ public class OzdsAuditableMutations : IOzdsMutations
     _context.ChangeTracker.Clear();
   }
 
-  public List<ValidationResult>? Create(IAuditable auditable)
+  public void Create(IAuditable auditable)
   {
     var validationResults = auditable
       .Validate(new ValidationContext(this))
       .ToList();
     if (validationResults.Count is not 0)
     {
-      return validationResults;
+      throw new ValidationException(validationResults.First().ErrorMessage);
     }
 
-    _context.Add(EntityModelTypeMapper.ToEntity(auditable));
-    return null;
+    var modelEntityConverter = _serviceProvider
+      .GetServices<IModelEntityConverter>()
+      .FirstOrDefault(converter => converter
+        .CanConvertToEntity(auditable.GetType()));
+    if (modelEntityConverter is null)
+    {
+      throw new InvalidOperationException(
+        $"No model entity converter found for {auditable.GetType()}");
+    }
+
+    _context.Add(modelEntityConverter.ToEntity(auditable));
   }
 
-  public List<ValidationResult>? Update(IAuditable auditable)
+  public void Update(IAuditable auditable)
   {
     var validationResults = auditable
       .Validate(new ValidationContext(this))
       .ToList();
     if (validationResults.Count is not 0)
     {
-      return validationResults;
+      throw new ValidationException(validationResults.First().ErrorMessage);
     }
 
-    _context.Update(EntityModelTypeMapper.ToEntity(auditable));
-    return null;
+    var modelEntityConverter = _serviceProvider
+      .GetServices<IModelEntityConverter>()
+      .FirstOrDefault(converter => converter
+        .CanConvertToEntity(auditable.GetType()));
+    if (modelEntityConverter is null)
+    {
+      throw new InvalidOperationException(
+        $"No model entity converter found for {auditable.GetType()}");
+    }
+
+    _context.Update(modelEntityConverter.ToEntity(auditable));
   }
 
   public void Delete(IAuditable auditable)
   {
-    _context.Remove(EntityModelTypeMapper.ToEntity(auditable));
+    var modelEntityConverter = _serviceProvider
+      .GetServices<IModelEntityConverter>()
+      .FirstOrDefault(converter => converter
+        .CanConvertToEntity(auditable.GetType()));
+    if (modelEntityConverter is null)
+    {
+      throw new InvalidOperationException(
+        $"No model entity converter found for {auditable.GetType()}");
+    }
+
+    _context.Remove(modelEntityConverter.ToEntity(auditable));
   }
 }

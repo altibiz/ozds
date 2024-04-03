@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+using Ozds.Business.Conversion.Abstractions;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Mutations.Abstractions;
 using Ozds.Data;
@@ -8,9 +10,15 @@ public class OzdsEventMutations : IOzdsMutations
 {
   private readonly OzdsDbContext _context;
 
-  public OzdsEventMutations(OzdsDbContext context)
+  private readonly IServiceProvider _serviceProvider;
+
+  public OzdsEventMutations(
+    OzdsDbContext context,
+    IServiceProvider serviceProvider
+  )
   {
     _context = context;
+    _serviceProvider = serviceProvider;
   }
 
   public async ValueTask DisposeAsync()
@@ -32,6 +40,24 @@ public class OzdsEventMutations : IOzdsMutations
 
   public void Create(IEvent @event)
   {
-    _context.Add(EntityModelTypeMapper.ToEntity(@event));
+    var validationResults = @event
+      .Validate(new ValidationContext(this))
+      .ToList();
+    if (validationResults.Count is not 0)
+    {
+      throw new ValidationException(validationResults.First().ErrorMessage);
+    }
+
+    var modelEntityConverter = _serviceProvider
+      .GetServices<IModelEntityConverter>()
+      .FirstOrDefault(converter => converter
+        .CanConvertToEntity(@event.GetType()));
+    if (modelEntityConverter is null)
+    {
+      throw new InvalidOperationException(
+        $"No model entity converter found for {@event.GetType()}");
+    }
+
+    _context.Add(modelEntityConverter.ToEntity(@event));
   }
 }

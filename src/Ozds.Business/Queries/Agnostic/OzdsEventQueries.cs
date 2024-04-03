@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using Ozds.Business.Conversion.Abstractions;
+using Ozds.Business.Extensions;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Data;
@@ -8,11 +10,17 @@ namespace Ozds.Business.Queries.Agnotic;
 
 public class OzdsEventQueries : IOzdsQueries
 {
-  protected readonly OzdsDbContext context;
+  private readonly OzdsDbContext _context;
 
-  public OzdsEventQueries(OzdsDbContext context)
+  private readonly IServiceProvider _serviceProvider;
+
+  public OzdsEventQueries(
+    OzdsDbContext context,
+    IServiceProvider serviceProvider
+  )
   {
-    this.context = context;
+    _context = context;
+    _serviceProvider = serviceProvider;
   }
 
   public async Task<PaginatedList<T>> Read<T>(
@@ -23,23 +31,33 @@ public class OzdsEventQueries : IOzdsQueries
     int pageCount = QueryConstants.DefaultPageCount
   ) where T : class, IEvent
   {
-    var queryable = EntityModelTypeMapper.GetDbSet(context, typeof(T))
-                      as IQueryable<EventEntity>
+    var modelEntityConverter = _serviceProvider
+      .GetServices<IModelEntityConverter>()
+      .FirstOrDefault(converter => converter
+        .CanConvertToModel(typeof(T)));
+    if (modelEntityConverter is null)
+    {
+      throw new InvalidOperationException(
+        $"No model entity converter found for {typeof(T)}");
+    }
+
+    var queryable = _context.GetDbSet(typeof(T)) as IQueryable<EventEntity>
                     ?? throw new InvalidOperationException();
     var filtered = whereClauses.Aggregate(queryable,
       (current, clause) => current.WhereDynamic(clause));
     var timeFiltered = filtered
-      .Where(@event => @event.Timestamp >= fromDate)
-      .Where(@event => @event.Timestamp < toDate);
+      .Where(aggregate => aggregate.Timestamp >= fromDate)
+      .Where(aggregate => aggregate.Timestamp < toDate);
     var count = await timeFiltered.CountAsync();
     var ordered = timeFiltered
-      .OrderByDescending(@event => @event.Timestamp);
+      .OrderByDescending(aggregate => aggregate.Timestamp);
     var items = await ordered
       .Skip((pageNumber - 1) * pageCount)
       .Take(pageCount)
       .ToListAsync();
     return items
-      .Select(EntityModelTypeMapper.ToModel<T>)
+      .Select(modelEntityConverter.ToModel)
+      .OfType<T>()
       .ToPaginatedList(count);
   }
 }

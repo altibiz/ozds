@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using Ozds.Business.Conversion.Abstractions;
+using Ozds.Business.Extensions;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Data;
@@ -8,11 +10,17 @@ namespace Ozds.Business.Queries.Agnotic;
 
 public class OzdsAggregateQueries : IOzdsQueries
 {
-  protected readonly OzdsDbContext context;
+  private readonly OzdsDbContext _context;
 
-  public OzdsAggregateQueries(OzdsDbContext context)
+  private readonly IServiceProvider _serviceProvider;
+
+  public OzdsAggregateQueries(
+    OzdsDbContext context,
+    IServiceProvider serviceProvider
+  )
   {
-    this.context = context;
+    _context = context;
+    _serviceProvider = serviceProvider;
   }
 
   public async Task<PaginatedList<T>> Read<T>(
@@ -23,8 +31,17 @@ public class OzdsAggregateQueries : IOzdsQueries
     int pageCount = QueryConstants.DefaultPageCount
   ) where T : class, IAggregate
   {
-    var queryable = EntityModelTypeMapper.GetDbSet(context, typeof(T))
-                      as IQueryable<AggregateEntity>
+    var modelEntityConverter = _serviceProvider
+      .GetServices<IModelEntityConverter>()
+      .FirstOrDefault(converter => converter
+        .CanConvertToModel(typeof(T)));
+    if (modelEntityConverter is null)
+    {
+      throw new InvalidOperationException(
+        $"No model entity converter found for {typeof(T)}");
+    }
+
+    var queryable = _context.GetDbSet(typeof(T)) as IQueryable<AggregateEntity>
                     ?? throw new InvalidOperationException();
     var filtered = whereClauses.Aggregate(queryable,
       (current, clause) => current.WhereDynamic(clause));
@@ -39,7 +56,8 @@ public class OzdsAggregateQueries : IOzdsQueries
       .Take(pageCount)
       .ToListAsync();
     return items
-      .Select(EntityModelTypeMapper.ToModel<T>)
+      .Select(modelEntityConverter.ToModel)
+      .OfType<T>()
       .ToPaginatedList(count);
   }
 }

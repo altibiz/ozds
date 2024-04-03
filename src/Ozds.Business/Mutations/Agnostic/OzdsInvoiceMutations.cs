@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Ozds.Business.Conversion.Abstractions;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Mutations.Abstractions;
 using Ozds.Data;
@@ -9,9 +10,15 @@ public class OzdsInvoiceMutations : IOzdsMutations
 {
   private readonly OzdsDbContext _context;
 
-  public OzdsInvoiceMutations(OzdsDbContext context)
+  private readonly IServiceProvider _serviceProvider;
+
+  public OzdsInvoiceMutations(
+    OzdsDbContext context,
+    IServiceProvider serviceProvider
+  )
   {
     _context = context;
+    _serviceProvider = serviceProvider;
   }
 
   public async ValueTask DisposeAsync()
@@ -31,17 +38,26 @@ public class OzdsInvoiceMutations : IOzdsMutations
     _context.ChangeTracker.Clear();
   }
 
-  public List<ValidationResult>? Create(IInvoice invoice)
+  public void Create(IInvoice invoice)
   {
     var validationResults = invoice
-      .Validate(new ValidationContext(invoice))
+      .Validate(new ValidationContext(this))
       .ToList();
     if (validationResults.Count is not 0)
     {
-      return validationResults;
+      throw new ValidationException(validationResults.First().ErrorMessage);
     }
 
-    _context.Add(EntityModelTypeMapper.ToEntity(invoice));
-    return null;
+    var modelEntityConverter = _serviceProvider
+      .GetServices<IModelEntityConverter>()
+      .FirstOrDefault(converter => converter
+        .CanConvertToEntity(invoice.GetType()));
+    if (modelEntityConverter is null)
+    {
+      throw new InvalidOperationException(
+        $"No model entity converter found for {invoice.GetType()}");
+    }
+
+    _context.Add(modelEntityConverter.ToEntity(invoice));
   }
 }
