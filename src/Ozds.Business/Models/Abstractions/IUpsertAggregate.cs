@@ -1,23 +1,37 @@
 using System.Linq.Expressions;
 using System.Reflection;
+using Ozds.Data.Entities.Base;
 
 // TODO: cache compilations
 // TODO: optimize
 
 namespace Ozds.Business.Models.Abstractions;
 
-public interface IUpsertAggregate<T> : IAggregate where T : IUpsertAggregate<T>
+public interface IUpsertAggregate<TModel, TEntity> : IAggregate
+  where TModel : IUpsertAggregate<TModel, TEntity>
+  where TEntity : AggregateEntity
 {
   public static abstract UpsertExpressionHolder UpsertExpression { get; }
 
   public static virtual UpsertHolder Upsert
   {
-    get { return new UpsertHolder(T.UpsertExpression.Value.Compile()); }
+    get { return new UpsertHolder(TModel.UpsertExpression.Value.Compile()); }
   }
 
-  public record UpsertExpressionHolder(Expression<Func<T, T, T>> Value);
+  public static abstract UpsertRowExpressionHolder UpsertRowExpression { get; }
 
-  public record UpsertHolder(Func<T, T, T> Value);
+  public static virtual UpsertRowHolder UpsertRow
+  {
+    get { return new(TModel.UpsertRowExpression.Value.Compile()); }
+  }
+
+  public record UpsertExpressionHolder(Expression<Func<TModel, TModel, TModel>> Value);
+
+  public record UpsertHolder(Func<TModel, TModel, TModel> Value);
+
+  public record UpsertRowExpressionHolder(Expression<Func<TModel, TModel, TModel>> Value);
+
+  public record UpsertRowHolder(Func<TModel, TModel, TModel> Value);
 }
 
 public static class IUpsertAggregateExtensions
