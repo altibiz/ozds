@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
+// TODO: implement cascading soft delete
+
 namespace Ozds.Business.Interceptors;
 
 public class CascadingSoftDeleteInterceptor : ServedSaveChangesInterceptor

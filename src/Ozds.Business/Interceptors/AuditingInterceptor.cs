@@ -173,8 +173,7 @@ public class AuditingInterceptor : ServedSaveChangesInterceptor
     if (_serviceProvider.GetService<IHttpContextAccessor>() is not null)
     {
       return null;
-      // return httpContextAccessor.HttpContext?.User
-      //   .FindFirstValue(ClaimTypes.NameIdentifier);
+      // return httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
     }
 
     return null;

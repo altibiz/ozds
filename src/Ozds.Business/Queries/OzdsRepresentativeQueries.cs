@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using OrchardCore.Users;
 using OrchardCore.Users.Indexes;
 using OrchardCore.Users.Models;
+using Ozds.Business.Conversion;
 using Ozds.Business.Extensions;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Composite;
@@ -55,7 +56,7 @@ public class OzdsRepresentativeQueries : IOzdsQueries
     return await _context.Representatives
       .Where(entity => entity.Role == RoleEntity.OperatorRepresentative)
       .QueryPaged(
-        RepresentativeModelExtensions.ToModel,
+        RepresentativeModelEntityConverterExtensions.ToModel,
         filter,
         pageNumber,
         pageCount
@@ -73,7 +74,7 @@ public class OzdsRepresentativeQueries : IOzdsQueries
     return await _context.Representatives
       .Where(entity => entity.NetworkUsers.WithId(id).Any())
       .QueryPaged(
-        RepresentativeModelExtensions.ToModel,
+        RepresentativeModelEntityConverterExtensions.ToModel,
         filter,
         pageNumber,
         pageCount
@@ -90,7 +91,7 @@ public class OzdsRepresentativeQueries : IOzdsQueries
     return await _context.Representatives
       .Where(entity => entity.Locations.WithId(id).Any())
       .QueryPaged(
-        RepresentativeModelExtensions.ToModel,
+        RepresentativeModelEntityConverterExtensions.ToModel,
         filter,
         pageNumber,
         pageCount

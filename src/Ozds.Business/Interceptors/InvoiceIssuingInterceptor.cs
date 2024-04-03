@@ -1,7 +1,8 @@
-using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Ozds.Data.Entities.Base;
+
+// TODO: check if user is representative
 
 namespace Ozds.Business.Interceptors;
 
@@ -56,8 +57,8 @@ public class InvoiceIssuingInterceptor : ServedSaveChangesInterceptor
     if (_serviceProvider.GetService<IHttpContextAccessor>() is
       { } httpContextAccessor)
     {
-      return httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes
-        .NameIdentifier);
+      return null;
+      // return httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
     }
 
     return null;
