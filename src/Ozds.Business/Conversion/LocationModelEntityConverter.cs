@@ -4,13 +4,19 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Conversion;
 
-public class LocationModelEntityConverter : ModelEntityConverter<LocationModel, LocationEntity>
+public class
+  LocationModelEntityConverter : ModelEntityConverter<LocationModel,
+  LocationEntity>
 {
-  protected override LocationEntity ToEntity(LocationModel model) =>
-    model.ToEntity();
+  protected override LocationEntity ToEntity(LocationModel model)
+  {
+    return model.ToEntity();
+  }
 
-  protected override LocationModel ToModel(LocationEntity entity) =>
-    entity.ToModel();
+  protected override LocationModel ToModel(LocationEntity entity)
+  {
+    return entity.ToModel();
+  }
 }
 
 public static class LocationModelEntityConverterExtensions

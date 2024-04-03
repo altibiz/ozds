@@ -4,17 +4,23 @@ using Ozds.Business.Models.Abstractions;
 using Ozds.Data.Entities.Abstractions;
 
 namespace Ozds.Business.Conversion.Base;
+
 public abstract class AggregateUpserter<TModel, TEntity> : IAggregateUpserter
   where TModel : class, IAggregate
   where TEntity : class, IAggregateEntity
 {
-  protected abstract TModel UpsertConcreteModel(TModel lhs, TModel rhs);
+  protected abstract Expression<Func<TEntity, TEntity, TEntity>>
+    UpsertConcreteEntity { get; }
 
-  protected abstract Expression<Func<TEntity, TEntity, TEntity>> UpsertConcreteEntity { get; }
+  public bool CanUpsertModel(Type modelType)
+  {
+    return typeof(TModel).IsAssignableFrom(modelType);
+  }
 
-  public bool CanUpsertModel(Type modelType) => typeof(TModel).IsAssignableFrom(modelType);
-
-  public bool CanUpsertEntity(Type entityType) => typeof(TEntity).IsAssignableFrom(entityType);
+  public bool CanUpsertEntity(Type entityType)
+  {
+    return typeof(TEntity).IsAssignableFrom(entityType);
+  }
 
   public IAggregate UpsertModel(IAggregate lhs, IAggregate rhs)
   {
@@ -26,7 +32,8 @@ public abstract class AggregateUpserter<TModel, TEntity> : IAggregateUpserter
     );
   }
 
-  public Expression<Func<IAggregateEntity, IAggregateEntity, IAggregateEntity>> UpsertEntity
+  public Expression<Func<IAggregateEntity, IAggregateEntity, IAggregateEntity>>
+    UpsertEntity
   {
     get
     {
@@ -35,18 +42,27 @@ public abstract class AggregateUpserter<TModel, TEntity> : IAggregateUpserter
       var castExceptionExpression = Expression.Constant(castException);
       var castThrowExpression = Expression.Throw(castExceptionExpression);
       var lhsParamExpression = Expression.Parameter(typeof(IAggregateEntity));
-      var lhsCastExpression = Expression.TypeAs(lhsParamExpression, typeof(TEntity));
-      var lhsCoalesceExpression = Expression.Coalesce(lhsCastExpression, castThrowExpression);
+      var lhsCastExpression =
+        Expression.TypeAs(lhsParamExpression, typeof(TEntity));
+      var lhsCoalesceExpression =
+        Expression.Coalesce(lhsCastExpression, castThrowExpression);
       var rhsParamExpression = Expression.Parameter(typeof(IAggregateEntity));
-      var rhsCastExpression = Expression.TypeAs(rhsParamExpression, typeof(TEntity));
-      var rhsCoalesceExpression = Expression.Coalesce(rhsCastExpression, castThrowExpression);
-      var callExpression = Expression.Invoke(UpsertConcreteEntity, lhsCoalesceExpression, rhsCoalesceExpression);
-      var lambdaExpression = Expression.Lambda<Func<IAggregateEntity, IAggregateEntity, IAggregateEntity>>(
-        callExpression,
-        lhsParamExpression,
-        rhsParamExpression
-      );
+      var rhsCastExpression =
+        Expression.TypeAs(rhsParamExpression, typeof(TEntity));
+      var rhsCoalesceExpression =
+        Expression.Coalesce(rhsCastExpression, castThrowExpression);
+      var callExpression = Expression.Invoke(UpsertConcreteEntity,
+        lhsCoalesceExpression, rhsCoalesceExpression);
+      var lambdaExpression =
+        Expression
+          .Lambda<Func<IAggregateEntity, IAggregateEntity, IAggregateEntity>>(
+            callExpression,
+            lhsParamExpression,
+            rhsParamExpression
+          );
       return lambdaExpression;
     }
   }
+
+  protected abstract TModel UpsertConcreteModel(TModel lhs, TModel rhs);
 }

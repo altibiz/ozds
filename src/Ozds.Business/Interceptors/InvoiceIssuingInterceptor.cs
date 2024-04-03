@@ -54,8 +54,7 @@ public class InvoiceIssuingInterceptor : ServedSaveChangesInterceptor
 
   private string? GetRepresentativeId()
   {
-    if (_serviceProvider.GetService<IHttpContextAccessor>() is
-      { } httpContextAccessor)
+    if (_serviceProvider.GetService<IHttpContextAccessor>() is not null)
     {
       return null;
       // return httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);

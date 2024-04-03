@@ -1,12 +1,12 @@
 using System.Collections.Concurrent;
-using System.Text;
 using Ozds.Fake.Loaders.Abstractions;
 
 namespace Ozds.Fake.Loaders;
 
 public class ResourceCache
 {
-  private readonly ConcurrentDictionary<(string, Type), Lazy<Task<object>>> _cache = new();
+  private readonly ConcurrentDictionary<(string, Type), Lazy<Task<object>>>
+    _cache = new();
 
   private readonly IServiceProvider _serviceProvider;
 
@@ -17,20 +17,25 @@ public class ResourceCache
 
   public TOut Get<TLoader, TOut>(string name)
     where TLoader : ILoader<TOut>
-    where TOut : class => GetAsync<TLoader, TOut>(name).Result;
+    where TOut : class
+  {
+    return GetAsync<TLoader, TOut>(name).Result;
+  }
 
   public async Task<TOut> GetAsync<TLoader, TOut>(string name)
     where TLoader : ILoader<TOut>
-    where TOut : class =>
-    (await _cache.GetOrAdd(
+    where TOut : class
+  {
+    return (await _cache.GetOrAdd(
       (name, typeof(TLoader)),
-      _ => new(async () =>
+      _ => new Lazy<Task<object>>(async () =>
       {
         await using var stream = Load(name);
         var loader = _serviceProvider.GetRequiredService<TLoader>();
         return loader.Load(stream);
       })
     ).Value as TOut)!;
+  }
 
   private static Stream Load(string name)
   {

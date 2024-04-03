@@ -18,8 +18,7 @@ public class LocationEntity : AuditableEntity
   private long _whiteMediumCatalogueId;
 
   public virtual ICollection<RepresentativeEntity>
-    Representatives
-  { get; set; } = default!;
+    Representatives { get; set; } = default!;
 
   public virtual ICollection<NetworkUserEntity> NetworkUsers { get; set; } =
     default!;
@@ -28,8 +27,7 @@ public class LocationEntity : AuditableEntity
     default!;
 
   public virtual ICollection<LocationMeasurementLocationEntity>
-    MeasurementLocations
-  { get; set; } = default!;
+    MeasurementLocations { get; set; } = default!;
 
   public virtual ICollection<LocationInvoiceEntity> Invoices { get; set; } =
     default!;

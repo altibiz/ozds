@@ -4,16 +4,25 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Conversion;
 
-public class SchneideriEM3xxxMeasurementValidatorModelEntityConverter : ModelEntityConverter<SchneideriEM3xxxMeasurementValidatorModel, SchneideriEM3xxxMeasurementValidatorEntity>
+public class SchneideriEM3xxxMeasurementValidatorModelEntityConverter :
+  ModelEntityConverter<SchneideriEM3xxxMeasurementValidatorModel,
+    SchneideriEM3xxxMeasurementValidatorEntity>
 {
-  protected override SchneideriEM3xxxMeasurementValidatorEntity ToEntity(SchneideriEM3xxxMeasurementValidatorModel model) =>
-    model.ToEntity();
+  protected override SchneideriEM3xxxMeasurementValidatorEntity ToEntity(
+    SchneideriEM3xxxMeasurementValidatorModel model)
+  {
+    return model.ToEntity();
+  }
 
-  protected override SchneideriEM3xxxMeasurementValidatorModel ToModel(SchneideriEM3xxxMeasurementValidatorEntity entity) =>
-    entity.ToModel();
+  protected override SchneideriEM3xxxMeasurementValidatorModel ToModel(
+    SchneideriEM3xxxMeasurementValidatorEntity entity)
+  {
+    return entity.ToModel();
+  }
 }
 
-public static class SchneideriEM3xxxMeasurementValidatorModelEntityConverterExtensions
+public static class
+  SchneideriEM3xxxMeasurementValidatorModelEntityConverterExtensions
 {
   public static SchneideriEM3xxxMeasurementValidatorModel ToModel(
     this SchneideriEM3xxxMeasurementValidatorEntity entity)

@@ -1,5 +1,3 @@
-using Ozds.Business.Models;
-
 namespace Ozds.Business.Iot;
 
 public record AbbB2xPushRequest(

@@ -5,13 +5,18 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Conversion;
 
-public class RepresentativeModelEntityConverter : ModelEntityConverter<RepresentativeModel, RepresentativeEntity>
+public class RepresentativeModelEntityConverter : ModelEntityConverter<
+  RepresentativeModel, RepresentativeEntity>
 {
-  protected override RepresentativeEntity ToEntity(RepresentativeModel model) =>
-    model.ToEntity();
+  protected override RepresentativeEntity ToEntity(RepresentativeModel model)
+  {
+    return model.ToEntity();
+  }
 
-  protected override RepresentativeModel ToModel(RepresentativeEntity entity) =>
-    entity.ToModel();
+  protected override RepresentativeModel ToModel(RepresentativeEntity entity)
+  {
+    return entity.ToModel();
+  }
 }
 
 public static class RepresentativeModelEntityConverterExtensions

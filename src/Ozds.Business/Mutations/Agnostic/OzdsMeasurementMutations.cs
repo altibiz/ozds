@@ -49,15 +49,12 @@ public class OzdsMeasurementMutations : IOzdsMutations
     }
 
     var modelEntityConverter = _serviceProvider
-      .GetServices<IModelEntityConverter>()
-      .FirstOrDefault(converter => converter
-        .CanConvertToEntity(measurement.GetType()));
-    if (modelEntityConverter is null)
-    {
-      throw new InvalidOperationException(
-        $"No model entity converter found for {measurement.GetType()}");
-    }
-
+                                 .GetServices<IModelEntityConverter>()
+                                 .FirstOrDefault(converter => converter
+                                   .CanConvertToEntity(
+                                     measurement.GetType())) ??
+                               throw new InvalidOperationException(
+                                 $"No model entity converter found for {measurement.GetType()}");
     _context.Add(modelEntityConverter.ToEntity(measurement));
   }
 }

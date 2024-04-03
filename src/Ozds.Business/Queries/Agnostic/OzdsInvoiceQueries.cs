@@ -15,7 +15,8 @@ public class OzdsInvoiceQueries : IOzdsQueries
 
   private readonly IServiceProvider _serviceProvider;
 
-  public OzdsInvoiceQueries(OzdsDbContext context, IServiceProvider serviceProvider)
+  public OzdsInvoiceQueries(OzdsDbContext context,
+    IServiceProvider serviceProvider)
   {
     _context = context;
     _serviceProvider = serviceProvider;
@@ -26,13 +27,8 @@ public class OzdsInvoiceQueries : IOzdsQueries
     var modelEntityConverter = _serviceProvider
       .GetServices<IModelEntityConverter>()
       .FirstOrDefault(converter => converter
-        .CanConvertToModel(typeof(T)));
-    if (modelEntityConverter is null)
-    {
-      throw new InvalidOperationException(
-        $"No model entity converter found for {typeof(T)}");
-    }
-
+        .CanConvertToModel(typeof(T))) ?? throw new InvalidOperationException(
+      $"No model entity converter found for {typeof(T)}");
     var queryable = _context.GetDbSet(typeof(T))
                       as IQueryable<InvoiceEntity>
                     ?? throw new InvalidOperationException();
@@ -51,13 +47,8 @@ public class OzdsInvoiceQueries : IOzdsQueries
     var modelEntityConverter = _serviceProvider
       .GetServices<IModelEntityConverter>()
       .FirstOrDefault(converter => converter
-        .CanConvertToModel(typeof(T)));
-    if (modelEntityConverter is null)
-    {
-      throw new InvalidOperationException(
-        $"No model entity converter found for {typeof(T)}");
-    }
-
+        .CanConvertToModel(typeof(T))) ?? throw new InvalidOperationException(
+      $"No model entity converter found for {typeof(T)}");
     var queryable = _context.GetDbSet(typeof(T))
                       as IQueryable<InvoiceEntity>
                     ?? throw new InvalidOperationException();

@@ -4,13 +4,21 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Conversion;
 
-public class NetworkUserMeasurementLocationModelEntityConverter : ModelEntityConverter<NetworkUserMeasurementLocationModel, NetworkUserMeasurementLocationEntity>
+public class NetworkUserMeasurementLocationModelEntityConverter :
+  ModelEntityConverter<NetworkUserMeasurementLocationModel,
+    NetworkUserMeasurementLocationEntity>
 {
-  protected override NetworkUserMeasurementLocationEntity ToEntity(NetworkUserMeasurementLocationModel model) =>
-    model.ToEntity();
+  protected override NetworkUserMeasurementLocationEntity ToEntity(
+    NetworkUserMeasurementLocationModel model)
+  {
+    return model.ToEntity();
+  }
 
-  protected override NetworkUserMeasurementLocationModel ToModel(NetworkUserMeasurementLocationEntity entity) =>
-    entity.ToModel();
+  protected override NetworkUserMeasurementLocationModel ToModel(
+    NetworkUserMeasurementLocationEntity entity)
+  {
+    return entity.ToModel();
+  }
 }
 
 public static class NetworkUserMeasurementLocationModelEntityConverterExtensions

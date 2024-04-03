@@ -5,13 +5,21 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Conversion;
 
-public class SchneideriEM3xxxAggregateModelEntityConverter : ModelEntityConverter<SchneideriEM3xxxAggregateModel, SchneideriEM3xxxAggregateEntity>
+public class SchneideriEM3xxxAggregateModelEntityConverter :
+  ModelEntityConverter<SchneideriEM3xxxAggregateModel,
+    SchneideriEM3xxxAggregateEntity>
 {
-  protected override SchneideriEM3xxxAggregateEntity ToEntity(SchneideriEM3xxxAggregateModel model) =>
-    model.ToEntity();
+  protected override SchneideriEM3xxxAggregateEntity ToEntity(
+    SchneideriEM3xxxAggregateModel model)
+  {
+    return model.ToEntity();
+  }
 
-  protected override SchneideriEM3xxxAggregateModel ToModel(SchneideriEM3xxxAggregateEntity entity) =>
-    entity.ToModel();
+  protected override SchneideriEM3xxxAggregateModel ToModel(
+    SchneideriEM3xxxAggregateEntity entity)
+  {
+    return entity.ToModel();
+  }
 }
 
 public static class SchneideriEM3xxxAggregateModelEntityConverterExtensions

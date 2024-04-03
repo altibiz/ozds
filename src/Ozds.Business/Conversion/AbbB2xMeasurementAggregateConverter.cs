@@ -4,10 +4,14 @@ using Ozds.Business.Models.Enums;
 
 namespace Ozds.Business.Conversion;
 
-public class AbbB2xMeasurementAggregateConverter : MeasurementAggregateConverter<AbbB2xMeasurementModel, AbbB2xAggregateModel>
+public class AbbB2xMeasurementAggregateConverter : MeasurementAggregateConverter
+  <AbbB2xMeasurementModel, AbbB2xAggregateModel>
 {
-  protected override AbbB2xAggregateModel ToAggregate(AbbB2xMeasurementModel measurement, IntervalModel interval) =>
-    measurement.ToAggregate(interval);
+  protected override AbbB2xAggregateModel ToAggregate(
+    AbbB2xMeasurementModel measurement, IntervalModel interval)
+  {
+    return measurement.ToAggregate(interval);
+  }
 }
 
 public static class AbbB2xMeasurementAggregateConverterExtensions

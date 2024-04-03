@@ -4,13 +4,20 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Conversion;
 
-public class BlueLowCatalogueModelEntityConverter : ModelEntityConverter<BlueLowCatalogueModel, BlueLowCatalogueEntity>
+public class BlueLowCatalogueModelEntityConverter : ModelEntityConverter<
+  BlueLowCatalogueModel, BlueLowCatalogueEntity>
 {
-  protected override BlueLowCatalogueEntity ToEntity(BlueLowCatalogueModel model) =>
-    model.ToEntity();
+  protected override BlueLowCatalogueEntity ToEntity(
+    BlueLowCatalogueModel model)
+  {
+    return model.ToEntity();
+  }
 
-  protected override BlueLowCatalogueModel ToModel(BlueLowCatalogueEntity entity) =>
-    entity.ToModel();
+  protected override BlueLowCatalogueModel ToModel(
+    BlueLowCatalogueEntity entity)
+  {
+    return entity.ToModel();
+  }
 }
 
 public static class BlueLowCatalogueModelEntityConverterExtensions

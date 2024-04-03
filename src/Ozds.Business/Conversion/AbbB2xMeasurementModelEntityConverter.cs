@@ -5,13 +5,20 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Conversion;
 
-public class AbbB2xMeasurementModelEntityConverter : ModelEntityConverter<AbbB2xMeasurementModel, AbbB2xMeasurementEntity>
+public class AbbB2xMeasurementModelEntityConverter : ModelEntityConverter<
+  AbbB2xMeasurementModel, AbbB2xMeasurementEntity>
 {
-  protected override AbbB2xMeasurementEntity ToEntity(AbbB2xMeasurementModel model) =>
-    model.ToEntity();
+  protected override AbbB2xMeasurementEntity ToEntity(
+    AbbB2xMeasurementModel model)
+  {
+    return model.ToEntity();
+  }
 
-  protected override AbbB2xMeasurementModel ToModel(AbbB2xMeasurementEntity entity) =>
-    entity.ToModel();
+  protected override AbbB2xMeasurementModel ToModel(
+    AbbB2xMeasurementEntity entity)
+  {
+    return entity.ToModel();
+  }
 }
 
 public static class AbbB2xAggregateModelEntityConverterExtensions

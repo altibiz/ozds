@@ -182,7 +182,7 @@ public class AuditingInterceptor : ServedSaveChangesInterceptor
   private bool IsDevelopment()
   {
     return _serviceProvider.GetService<IHostEnvironment>() is
-    { } hostEnvironment
+             { } hostEnvironment
            && hostEnvironment.IsDevelopment();
   }
 

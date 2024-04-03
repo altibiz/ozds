@@ -4,13 +4,19 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Conversion;
 
-public class MessengerModelEntityConverter : ModelEntityConverter<MessengerModel, MessengerEntity>
+public class
+  MessengerModelEntityConverter : ModelEntityConverter<MessengerModel,
+  MessengerEntity>
 {
-  protected override MessengerEntity ToEntity(MessengerModel model) =>
-    model.ToEntity();
+  protected override MessengerEntity ToEntity(MessengerModel model)
+  {
+    return model.ToEntity();
+  }
 
-  protected override MessengerModel ToModel(MessengerEntity entity) =>
-    entity.ToModel();
+  protected override MessengerModel ToModel(MessengerEntity entity)
+  {
+    return entity.ToModel();
+  }
 }
 
 public static class MessengerModelEntityConverterExtensions

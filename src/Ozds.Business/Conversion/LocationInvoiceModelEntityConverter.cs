@@ -4,13 +4,18 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Conversion;
 
-public class LocationInvoiceModelEntityConverter : ModelEntityConverter<LocationInvoiceModel, LocationInvoiceEntity>
+public class LocationInvoiceModelEntityConverter : ModelEntityConverter<
+  LocationInvoiceModel, LocationInvoiceEntity>
 {
-  protected override LocationInvoiceEntity ToEntity(LocationInvoiceModel model) =>
-    model.ToEntity();
+  protected override LocationInvoiceEntity ToEntity(LocationInvoiceModel model)
+  {
+    return model.ToEntity();
+  }
 
-  protected override LocationInvoiceModel ToModel(LocationInvoiceEntity entity) =>
-    entity.ToModel();
+  protected override LocationInvoiceModel ToModel(LocationInvoiceEntity entity)
+  {
+    return entity.ToModel();
+  }
 }
 
 public static class LocationInvoiceModelEntityConverterExtensions

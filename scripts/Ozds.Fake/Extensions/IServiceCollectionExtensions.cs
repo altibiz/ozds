@@ -10,7 +10,8 @@ namespace Ozds.Fake.Extensions;
 
 public static class IServiceCollectionExtensions
 {
-  public static IServiceCollection AddGenerators(this IServiceCollection services)
+  public static IServiceCollection AddGenerators(
+    this IServiceCollection services)
   {
     services.AddScopedAssignableTo(typeof(IMeasurementGenerator));
     services.AddTransientAssignableTo(

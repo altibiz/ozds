@@ -34,15 +34,11 @@ public class OzdsMeasurementQueries : IOzdsQueries
     var modelEntityConverter = _serviceProvider
       .GetServices<IModelEntityConverter>()
       .FirstOrDefault(converter => converter
-        .CanConvertToModel(typeof(T)));
-    if (modelEntityConverter is null)
-    {
-      throw new InvalidOperationException(
-        $"No model entity converter found for {typeof(T)}");
-    }
-
-    var queryable = _context.GetDbSet(typeof(T)) as IQueryable<MeasurementEntity>
-                    ?? throw new InvalidOperationException();
+        .CanConvertToModel(typeof(T))) ?? throw new InvalidOperationException(
+      $"No model entity converter found for {typeof(T)}");
+    var queryable =
+      _context.GetDbSet(typeof(T)) as IQueryable<MeasurementEntity>
+      ?? throw new InvalidOperationException();
     var filtered = whereClauses.Aggregate(queryable,
       (current, clause) => current.WhereDynamic(clause));
     var timeFiltered = filtered

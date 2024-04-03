@@ -1,7 +1,6 @@
 using Ozds.Business.Capabilities;
 using Ozds.Business.Capabilities.Abstractions;
 using Ozds.Business.Models.Base;
-using Ozds.Data.Entities;
 
 namespace Ozds.Business.Models;
 

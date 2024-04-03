@@ -21,11 +21,10 @@ namespace Ozds.Business.Queries;
 
 public class OzdsRepresentativeQueries : IOzdsQueries
 {
+  private readonly OzdsDbContext _context;
   private readonly ISession _session;
 
   private readonly UserManager<IUser> _userManager;
-
-  private readonly OzdsDbContext _context;
 
   public OzdsRepresentativeQueries(
     OzdsDbContext context,

@@ -51,15 +51,11 @@ public class OzdsAuditableMutations : IOzdsMutations
     }
 
     var modelEntityConverter = _serviceProvider
-      .GetServices<IModelEntityConverter>()
-      .FirstOrDefault(converter => converter
-        .CanConvertToEntity(auditable.GetType()));
-    if (modelEntityConverter is null)
-    {
-      throw new InvalidOperationException(
-        $"No model entity converter found for {auditable.GetType()}");
-    }
-
+                                 .GetServices<IModelEntityConverter>()
+                                 .FirstOrDefault(converter => converter
+                                   .CanConvertToEntity(auditable.GetType())) ??
+                               throw new InvalidOperationException(
+                                 $"No model entity converter found for {auditable.GetType()}");
     _context.Add(modelEntityConverter.ToEntity(auditable));
   }
 
@@ -74,30 +70,22 @@ public class OzdsAuditableMutations : IOzdsMutations
     }
 
     var modelEntityConverter = _serviceProvider
-      .GetServices<IModelEntityConverter>()
-      .FirstOrDefault(converter => converter
-        .CanConvertToEntity(auditable.GetType()));
-    if (modelEntityConverter is null)
-    {
-      throw new InvalidOperationException(
-        $"No model entity converter found for {auditable.GetType()}");
-    }
-
+                                 .GetServices<IModelEntityConverter>()
+                                 .FirstOrDefault(converter => converter
+                                   .CanConvertToEntity(auditable.GetType())) ??
+                               throw new InvalidOperationException(
+                                 $"No model entity converter found for {auditable.GetType()}");
     _context.Update(modelEntityConverter.ToEntity(auditable));
   }
 
   public void Delete(IAuditable auditable)
   {
     var modelEntityConverter = _serviceProvider
-      .GetServices<IModelEntityConverter>()
-      .FirstOrDefault(converter => converter
-        .CanConvertToEntity(auditable.GetType()));
-    if (modelEntityConverter is null)
-    {
-      throw new InvalidOperationException(
-        $"No model entity converter found for {auditable.GetType()}");
-    }
-
+                                 .GetServices<IModelEntityConverter>()
+                                 .FirstOrDefault(converter => converter
+                                   .CanConvertToEntity(auditable.GetType())) ??
+                               throw new InvalidOperationException(
+                                 $"No model entity converter found for {auditable.GetType()}");
     _context.Remove(modelEntityConverter.ToEntity(auditable));
   }
 }

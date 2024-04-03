@@ -4,13 +4,21 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Conversion;
 
-public class AbbB2xMeasurementValidatorModelEntityConverter : ModelEntityConverter<AbbB2xMeasurementValidatorModel, AbbB2xMeasurementValidatorEntity>
+public class AbbB2xMeasurementValidatorModelEntityConverter :
+  ModelEntityConverter<AbbB2xMeasurementValidatorModel,
+    AbbB2xMeasurementValidatorEntity>
 {
-  protected override AbbB2xMeasurementValidatorEntity ToEntity(AbbB2xMeasurementValidatorModel model) =>
-    model.ToEntity();
+  protected override AbbB2xMeasurementValidatorEntity ToEntity(
+    AbbB2xMeasurementValidatorModel model)
+  {
+    return model.ToEntity();
+  }
 
-  protected override AbbB2xMeasurementValidatorModel ToModel(AbbB2xMeasurementValidatorEntity entity) =>
-    entity.ToModel();
+  protected override AbbB2xMeasurementValidatorModel ToModel(
+    AbbB2xMeasurementValidatorEntity entity)
+  {
+    return entity.ToModel();
+  }
 }
 
 public static class AbbB2xMeasurementValidatorModelEntityConverterExtensions

@@ -1,6 +1,3 @@
-using Ozds.Business.Conversion.Base;
-using Ozds.Business.Models;
-
 namespace Ozds.Business.Iot;
 
 public record SchneideriEM3xxxPushRequest(

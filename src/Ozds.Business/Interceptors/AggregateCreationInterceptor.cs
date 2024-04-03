@@ -90,7 +90,7 @@ public class AggregateCreationInterceptor : ServedSaveChangesInterceptor
           aggregate.Interval
         })
         .Select(group => group
-          .Aggregate((lhs, rhs) => lhs is { } && rhs is { }
+          .Aggregate((lhs, rhs) => lhs is not null && rhs is not null
             ? aggregateUpserters
               .FirstOrDefault(upserter => upserter
                 .CanUpsertModel(group.Key.Type))

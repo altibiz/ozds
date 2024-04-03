@@ -9,9 +9,9 @@ public class OzdsIotHandler
 {
   private readonly OzdsAuditableQueries _auditableQueries;
 
-  private readonly OzdsMeasurementMutations _measurementMutations;
-
   private readonly IHttpContextAccessor _httpContextAccessor;
+
+  private readonly OzdsMeasurementMutations _measurementMutations;
 
   private readonly IServiceProvider _serviceProvider;
 
@@ -26,17 +26,18 @@ public class OzdsIotHandler
     _serviceProvider = serviceProvider;
   }
 
-  public async Task<bool> Authorize(string id, string request)
+  public Task<bool> Authorize(string id, string request)
   {
-    return true;
+    return Task.FromResult(true);
   }
 
-  public async Task OnPush(string _, string request)
+  public Task OnPush(string _, string request)
   {
-    var messengerRequest = JsonSerializer.Deserialize<MessengerPushRequest>(request);
+    var messengerRequest =
+      JsonSerializer.Deserialize<MessengerPushRequest>(request);
     if (messengerRequest == null)
     {
-      return;
+      return Task.CompletedTask;
     }
 
     var pushRequestMeasurementConverters = _serviceProvider
@@ -57,7 +58,12 @@ public class OzdsIotHandler
       );
       _measurementMutations.Create(measurement);
     }
+
+    return Task.CompletedTask;
   }
 
-  public async Task OnPoll(string id, string request) { }
+  public Task OnPoll(string id, string request)
+  {
+    return Task.CompletedTask;
+  }
 }

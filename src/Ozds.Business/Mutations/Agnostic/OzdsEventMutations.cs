@@ -49,15 +49,11 @@ public class OzdsEventMutations : IOzdsMutations
     }
 
     var modelEntityConverter = _serviceProvider
-      .GetServices<IModelEntityConverter>()
-      .FirstOrDefault(converter => converter
-        .CanConvertToEntity(@event.GetType()));
-    if (modelEntityConverter is null)
-    {
-      throw new InvalidOperationException(
-        $"No model entity converter found for {@event.GetType()}");
-    }
-
+                                 .GetServices<IModelEntityConverter>()
+                                 .FirstOrDefault(converter => converter
+                                   .CanConvertToEntity(@event.GetType())) ??
+                               throw new InvalidOperationException(
+                                 $"No model entity converter found for {@event.GetType()}");
     _context.Add(modelEntityConverter.ToEntity(@event));
   }
 }

@@ -4,18 +4,27 @@ using Ozds.Business.Models.Enums;
 
 namespace Ozds.Business.Conversion.Base;
 
-public abstract class MeasurementAggregateConverter<TMeasurement, TAggregate> : IMeasurementAggregateConverter
+public abstract class
+  MeasurementAggregateConverter<TMeasurement, TAggregate> :
+  IMeasurementAggregateConverter
   where TAggregate : class, IAggregate
   where TMeasurement : class, IMeasurement
 {
-  protected abstract TAggregate ToAggregate(TMeasurement measurement, IntervalModel interval);
+  public bool CanConvertToAggregate(Type measurement)
+  {
+    return measurement == typeof(TMeasurement);
+  }
 
-  public bool CanConvertToAggregate(Type measurement) => measurement == typeof(TMeasurement);
-
-  public IAggregate ToAggregate(IMeasurement measurement, IntervalModel interval) =>
-    ToAggregate(
+  public IAggregate ToAggregate(IMeasurement measurement,
+    IntervalModel interval)
+  {
+    return ToAggregate(
       measurement as TMeasurement
-        ?? throw new ArgumentNullException(nameof(measurement)),
+      ?? throw new ArgumentNullException(nameof(measurement)),
       interval
     );
+  }
+
+  protected abstract TAggregate ToAggregate(TMeasurement measurement,
+    IntervalModel interval);
 }

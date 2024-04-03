@@ -42,11 +42,6 @@ format:
     --cache --cache-strategy metadata \
     "{{root}}"
 
-  dotnet roslynator fix "{{sln}}" \
-    --format \
-    --verbosity minimal \
-    --exclude='**/.git/**/*;**/.nuget/**/*;**/obj/**/*;**/bin/**/*'
-
   dotnet format "{{sln}}" \
     --no-restore \
     --verbosity minimal \
@@ -55,6 +50,11 @@ format:
     --exclude '**/.nuget/**/*' \
     --exclude '**/obj/**/*' \
     --exclude '**/bin/**/*'
+
+  dotnet roslynator fix "{{sln}}" \
+    --format \
+    --verbosity minimal \
+    --exclude='**/.git/**/*;**/.nuget/**/*;**/obj/**/*;**/bin/**/*'
 
   dotnet jb cleanupcode "{{sln}}" \
     --no-build \

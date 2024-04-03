@@ -4,15 +4,21 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Conversion;
 
-public class NetworkUserInvoiceModelEntityConverter : ModelEntityConverter<NetworkUserInvoiceModel, NetworkUserInvoiceEntity>
+public class NetworkUserInvoiceModelEntityConverter : ModelEntityConverter<
+  NetworkUserInvoiceModel, NetworkUserInvoiceEntity>
 {
-  protected override NetworkUserInvoiceEntity ToEntity(NetworkUserInvoiceModel model) =>
-    model.ToEntity();
+  protected override NetworkUserInvoiceEntity ToEntity(
+    NetworkUserInvoiceModel model)
+  {
+    return model.ToEntity();
+  }
 
-  protected override NetworkUserInvoiceModel ToModel(NetworkUserInvoiceEntity entity) =>
-    entity.ToModel();
+  protected override NetworkUserInvoiceModel ToModel(
+    NetworkUserInvoiceEntity entity)
+  {
+    return entity.ToModel();
+  }
 }
-
 
 public static class NetworkUserInvoiceModelEntityConverterExtensions
 {

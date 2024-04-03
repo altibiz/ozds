@@ -4,13 +4,20 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Conversion;
 
-public class SchneideriEM3xxxMeterModelEntityConverter : ModelEntityConverter<SchneideriEM3xxxMeterModel, SchneideriEM3xxxMeterEntity>
+public class SchneideriEM3xxxMeterModelEntityConverter : ModelEntityConverter<
+  SchneideriEM3xxxMeterModel, SchneideriEM3xxxMeterEntity>
 {
-  protected override SchneideriEM3xxxMeterEntity ToEntity(SchneideriEM3xxxMeterModel model) =>
-    model.ToEntity();
+  protected override SchneideriEM3xxxMeterEntity ToEntity(
+    SchneideriEM3xxxMeterModel model)
+  {
+    return model.ToEntity();
+  }
 
-  protected override SchneideriEM3xxxMeterModel ToModel(SchneideriEM3xxxMeterEntity entity) =>
-    entity.ToModel();
+  protected override SchneideriEM3xxxMeterModel ToModel(
+    SchneideriEM3xxxMeterEntity entity)
+  {
+    return entity.ToModel();
+  }
 }
 
 public static class SchneideriEM3xxxMeterModelEntityConverterExtensions

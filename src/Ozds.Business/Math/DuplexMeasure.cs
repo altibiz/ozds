@@ -9,10 +9,10 @@ public record class CompositeDuplexMeasure(List<DuplexMeasure> Measures)
       measure is ImportExportDuplexMeasure) is { } importExport
       ? selector(importExport)
       : Measures.FirstOrDefault(measure => measure is NetDuplexMeasure) is
-      { } net
+        { } net
         ? selector(net)
         : Measures.FirstOrDefault(measure => measure is AnyDuplexMeasure) is
-        { } any
+          { } any
           ? selector(any)
           : @default;
   }

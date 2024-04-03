@@ -4,13 +4,19 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Conversion;
 
-public class NetworkUserModelEntityConverter : ModelEntityConverter<NetworkUserModel, NetworkUserEntity>
+public class
+  NetworkUserModelEntityConverter : ModelEntityConverter<NetworkUserModel,
+  NetworkUserEntity>
 {
-  protected override NetworkUserEntity ToEntity(NetworkUserModel model) =>
-    model.ToEntity();
+  protected override NetworkUserEntity ToEntity(NetworkUserModel model)
+  {
+    return model.ToEntity();
+  }
 
-  protected override NetworkUserModel ToModel(NetworkUserEntity entity) =>
-    entity.ToModel();
+  protected override NetworkUserModel ToModel(NetworkUserEntity entity)
+  {
+    return entity.ToModel();
+  }
 }
 
 public static class NetworkUserModelEntityConverterExtensions

@@ -5,13 +5,19 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Conversion;
 
-public class SystemEventModelEntityConverter : ModelEntityConverter<SystemEventModel, SystemEventEntity>
+public class
+  SystemEventModelEntityConverter : ModelEntityConverter<SystemEventModel,
+  SystemEventEntity>
 {
-  protected override SystemEventEntity ToEntity(SystemEventModel model) =>
-    model.ToEntity();
+  protected override SystemEventEntity ToEntity(SystemEventModel model)
+  {
+    return model.ToEntity();
+  }
 
-  protected override SystemEventModel ToModel(SystemEventEntity entity) =>
-    entity.ToModel();
+  protected override SystemEventModel ToModel(SystemEventEntity entity)
+  {
+    return entity.ToModel();
+  }
 }
 
 public static class SystemEventModelExtensions

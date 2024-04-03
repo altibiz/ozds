@@ -9,14 +9,16 @@ using Ozds.Fake.Loaders;
 
 namespace Ozds.Fake.Generators.Base;
 
-public abstract class RepeatingCsvResourceMeasurementGenerator<TMeasurement> : IMeasurementGenerator
+public abstract class
+  RepeatingCsvResourceMeasurementGenerator<TMeasurement> : IMeasurementGenerator
   where TMeasurement : IMeasurementEntity
 {
   private readonly ResourceCache _resources;
 
   private readonly IServiceProvider _serviceProvider;
 
-  public RepeatingCsvResourceMeasurementGenerator(IServiceProvider serviceProvider)
+  public RepeatingCsvResourceMeasurementGenerator(
+    IServiceProvider serviceProvider)
   {
     _resources = serviceProvider.GetRequiredService<ResourceCache>();
     _serviceProvider = serviceProvider;
@@ -26,8 +28,10 @@ public abstract class RepeatingCsvResourceMeasurementGenerator<TMeasurement> : I
 
   protected abstract string MeterIdPrefix { get; }
 
-  public bool CanGenerateMeasurementsFor(string meterId) =>
-    meterId.StartsWith(MeterIdPrefix);
+  public bool CanGenerateMeasurementsFor(string meterId)
+  {
+    return meterId.StartsWith(MeterIdPrefix);
+  }
 
   public async Task<List<MessengerPushRequestMeasurement>> GenerateMeasurements(
     DateTimeOffset dateFrom,
@@ -52,7 +56,7 @@ public abstract class RepeatingCsvResourceMeasurementGenerator<TMeasurement> : I
         && record.Timestamp <= dateTo)
       .Select(entity => _serviceProvider
         .GetServices<IModelEntityConverter>()
-          .FirstOrDefault(c => c.CanConvertToModel(entity.GetType()))
+        .FirstOrDefault(c => c.CanConvertToModel(entity.GetType()))
         ?.ToModel(entity))
       .OfType<IMeasurement>()
       .Select(measurement =>
@@ -66,7 +70,8 @@ public abstract class RepeatingCsvResourceMeasurementGenerator<TMeasurement> : I
         }
 
         var timestamp = csvRecordsMinTimestamp.AddTicks(
-          (measurement.Timestamp - csvRecordsMinTimestamp).Ticks % csvRecordsTimeSpan.Ticks
+          (measurement.Timestamp - csvRecordsMinTimestamp).Ticks %
+          csvRecordsTimeSpan.Ticks
         );
 
         return new MessengerPushRequestMeasurement(

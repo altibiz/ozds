@@ -5,13 +5,20 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Conversion;
 
-public class RepresentativeAuditEventModelEntityConverter : ModelEntityConverter<RepresentativeAuditEventModel, RepresentativeAuditEventEntity>
+public class RepresentativeAuditEventModelEntityConverter : ModelEntityConverter
+  <RepresentativeAuditEventModel, RepresentativeAuditEventEntity>
 {
-  protected override RepresentativeAuditEventEntity ToEntity(RepresentativeAuditEventModel model) =>
-    model.ToEntity();
+  protected override RepresentativeAuditEventEntity ToEntity(
+    RepresentativeAuditEventModel model)
+  {
+    return model.ToEntity();
+  }
 
-  protected override RepresentativeAuditEventModel ToModel(RepresentativeAuditEventEntity entity) =>
-    entity.ToModel();
+  protected override RepresentativeAuditEventModel ToModel(
+    RepresentativeAuditEventEntity entity)
+  {
+    return entity.ToModel();
+  }
 }
 
 public static class RepresentativeAuditEventModelEntityConverterExtensions

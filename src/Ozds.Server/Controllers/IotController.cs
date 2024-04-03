@@ -12,7 +12,8 @@ public class IotController : ControllerBase
     _iotHandler = iotHandler;
   }
 
-  public async Task<IActionResult> Push([FromRoute] string id, [FromBody] string message)
+  public async Task<IActionResult> Push([FromRoute] string id,
+    [FromBody] string message)
   {
     if (!await _iotHandler.Authorize(id, message))
     {
@@ -24,7 +25,8 @@ public class IotController : ControllerBase
     return Ok();
   }
 
-  public async Task<IActionResult> Poll([FromRoute] string id, [FromBody] string message)
+  public async Task<IActionResult> Poll([FromRoute] string id,
+    [FromBody] string message)
   {
     if (!await _iotHandler.Authorize(id, message))
     {
