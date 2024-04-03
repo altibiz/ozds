@@ -47,6 +47,22 @@ format:
     --verbosity minimal \
     --exclude='**/.git/**/*;**/.nuget/**/*;**/obj/**/*;**/bin/**/*'
 
+  dotnet format "{{sln}}" \
+    --no-restore \
+    --verbosity minimal \
+    --severity info \
+    --exclude '**/.git/**/*' \
+    --exclude '**/.nuget/**/*' \
+    --exclude '**/obj/**/*' \
+    --exclude '**/bin/**/*'
+
+  dotnet jb cleanupcode "{{sln}}" \
+    --no-build \
+    --verbosity=ERROR \
+    --caches-home="{{jbcache}}" \
+    -o="{{jbinspectlog}}" \
+    --exclude='**/.git/**/*;**/.nuget/**/*;**/obj/**/*;**/bin/**/*'
+
 lint:
   prettier --check \
     --ignore-path "{{gitignore}}" \
