@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Ozds.Business.Conversion.Abstractions;
 using Ozds.Business.Models.Abstractions;
+using Ozds.Business.Models.Enums;
 using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Entities.Base;
 
@@ -72,10 +73,14 @@ public class AggregateCreationInterceptor : ServedSaveChangesInterceptor
             .CanConvertToEntity(entity.GetType()))
           ?.ToModel(entity))
         .OfType<IMeasurement>()
-        .Select(model => measurementAggregateConverters
-          .FirstOrDefault(converter => converter
-            .CanConvertToAggregate(model.GetType()))
-          ?.ToAggregate(model))
+        .SelectMany(model => typeof(IntervalModel)
+          .GetEnumValues()
+          .Cast<IntervalModel>()
+          .Select(interval =>
+            measurementAggregateConverters
+              .FirstOrDefault(converter => converter
+                .CanConvertToAggregate(model.GetType()))
+              ?.ToAggregate(model, interval)))
         .OfType<IAggregate>()
         .GroupBy(aggregate => new
         {
