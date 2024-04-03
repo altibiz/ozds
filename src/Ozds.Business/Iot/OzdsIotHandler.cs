@@ -45,7 +45,7 @@ public class OzdsIotHandler
     foreach (var item in messengerRequest.Measurements)
     {
       var pushRequestMeasurementConverter = pushRequestMeasurementConverters
-        .FirstOrDefault(x => x.CanConvertToMeasurement(item.MeterId));
+        .FirstOrDefault(x => x.CanConvert(item.MeterId));
 
       if (pushRequestMeasurementConverter == null)
       {

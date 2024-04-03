@@ -1,80 +1,52 @@
-var client = new HttpClient();
-var random = new Random();
-var now = DateTimeOffset.UtcNow;
+using Ozds.Business.Iot;
+using Ozds.Fake;
+using Ozds.Fake.Client;
+using Ozds.Fake.Extensions;
+using Ozds.Fake.Generators.Abstractions;
 
-var schneiderPushRequest = new
-{
-  voltageL1_V = random.NextDouble() * 1000,
-  voltageL2_V = random.NextDouble() * 1000,
-  voltageL3_V = random.NextDouble() * 1000,
-  currentL1_A = random.NextDouble() * 1000,
-  currentL2_A = random.NextDouble() * 1000,
-  currentL3_A = random.NextDouble() * 1000,
-  activePowerL1_W = random.NextDouble() * 1000,
-  activePowerL2_W = random.NextDouble() * 1000,
-  activePowerL3_W = random.NextDouble() * 1000,
-  reactivePowerTotal_VAR = random.NextDouble() * 1000,
-  apparentPowerTotal_VA = random.NextDouble() * 1000,
-  activeEnergyImportL1_Wh = random.NextDouble() * 1000,
-  activeEnergyImportL2_Wh = random.NextDouble() * 1000,
-  activeEnergyImportL3_Wh = random.NextDouble() * 1000,
-  activeEnergyImportTotal_Wh = random.NextDouble() * 1000,
-  activeEnergyExportTotal_Wh = random.NextDouble() * 1000,
-  reactiveEnergyImportTotal_VARh = random.NextDouble() * 1000,
-  reactiveEnergyExportTotal_VARh = random.NextDouble() * 1000
-};
+var options = Options.Parse(args);
 
-var abbPushRequest = new
-{
-  voltageL1_V = random.NextDouble() * 1000,
-  voltageL2_V = random.NextDouble() * 1000,
-  voltageL3_V = random.NextDouble() * 1000,
-  currentL1_A = random.NextDouble() * 1000,
-  currentL2_A = random.NextDouble() * 1000,
-  currentL3_A = random.NextDouble() * 1000,
-  activePowerL1_W = random.NextDouble() * 1000,
-  activePowerL2_W = random.NextDouble() * 1000,
-  activePowerL3_W = random.NextDouble() * 1000,
-  reactivePowerL1_VAR = random.NextDouble() * 1000,
-  reactivePowerL2_VAR = random.NextDouble() * 1000,
-  reactivePowerL3_VAR = random.NextDouble() * 1000,
-  activePowerImportL1_Wh = random.NextDouble() * 1000,
-  activePowerImportL2_Wh = random.NextDouble() * 1000,
-  activePowerImportL3_Wh = random.NextDouble() * 1000,
-  activePowerExportL1_Wh = random.NextDouble() * 1000,
-  activePowerExportL2_Wh = random.NextDouble() * 1000,
-  activePowerExportL3_Wh = random.NextDouble() * 1000,
-  reactivePowerImportL1_VARh = random.NextDouble() * 1000,
-  reactivePowerImportL2_VARh = random.NextDouble() * 1000,
-  reactivePowerImportL3_VARh = random.NextDouble() * 1000,
-  reactivePowerExportL1_VARh = random.NextDouble() * 1000,
-  reactivePowerExportL2_VARh = random.NextDouble() * 1000,
-  reactivePowerExportL3_VARh = random.NextDouble() * 1000,
-  activeEnergyImportTotal_Wh = random.NextDouble() * 1000,
-  activeEnergyExportTotal_Wh = random.NextDouble() * 1000,
-  reactiveEnergyImportTotal_VARh = random.NextDouble() * 1000,
-  reactiveEnergyExportTotal_VARh = random.NextDouble() * 1000
-};
+var serviceCollection = new ServiceCollection();
 
-var pidgeonPushRequest = new
+serviceCollection.AddLoaders();
+serviceCollection.AddGenerators();
+serviceCollection.AddClient();
+
+#pragma warning disable ASP0000
+var serviceProvider = serviceCollection.BuildServiceProvider();
+#pragma warning restore ASP0000
+
+while (true)
 {
-  timestamp = now,
-  measurements = new[]
+  var now = DateTimeOffset.UtcNow;
+  var lastMinute = now.AddMinutes(-1);
+  var pushClient = serviceProvider.GetRequiredService<OzdsPushClient>();
+  var generators = serviceProvider.GetServices<IMeasurementGenerator>();
+
+  var measurements = new List<MessengerPushRequestMeasurement>();
+  foreach (var meterId in options.MeterIds)
   {
-    new
+    foreach (var generator in generators)
     {
-      deviceId = "abb",
-      timestamp = now,
-      data = abbPushRequest as dynamic
-    },
-    new
-    {
-      deviceId = "schneider",
-      timestamp = now,
-      data = schneiderPushRequest as dynamic
+      if (generator.CanGenerateMeasurementsFor(meterId))
+      {
+        measurements.AddRange(await generator
+          .GenerateMeasurements(lastMinute, now, meterId));
+      }
     }
   }
-};
 
-await client.PostAsJsonAsync("http://localhost:5000/push/schneider",
-  pidgeonPushRequest);
+  var request = new MessengerPushRequest(
+    now,
+    measurements.ToArray()
+  );
+
+  await pushClient.Push(
+    options.BaseUrl,
+    options.MessengerId,
+    options.ApiKey,
+    request
+  );
+
+  await Task.Delay(1000 * 60);
+}

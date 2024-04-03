@@ -1,0 +1,82 @@
+using System.Reflection;
+using Ozds.Business.Conversion.Abstractions;
+using Ozds.Fake.Client;
+using Ozds.Fake.Generators.Abstractions;
+using Ozds.Fake.Loaders;
+
+// TODO: figure out how to discover generic types
+
+namespace Ozds.Fake.Extensions;
+
+public static class IServiceCollectionExtensions
+{
+  public static IServiceCollection AddGenerators(this IServiceCollection services)
+  {
+    services.AddScopedAssignableTo(typeof(IMeasurementGenerator));
+    services.AddTransientAssignableTo(
+      typeof(IPushRequestMeasurementConverter),
+      typeof(IPushRequestMeasurementConverter).Assembly
+    );
+    services.AddTransientAssignableTo(
+      typeof(IModelEntityConverter),
+      typeof(IModelEntityConverter).Assembly
+    );
+    return services;
+  }
+
+  public static IServiceCollection AddLoaders(this IServiceCollection services)
+  {
+    services.AddTransient(typeof(CsvLoader<>));
+    services.AddSingleton(typeof(ResourceCache));
+    return services;
+  }
+
+  public static IServiceCollection AddClient(this IServiceCollection services)
+  {
+    services.AddHttpClient();
+    services.AddScoped(typeof(OzdsPushClient));
+    return services;
+  }
+
+  private static void AddScopedAssignableTo(
+    this IServiceCollection services,
+    Type assignableTo,
+    Assembly? assembly = null
+  )
+  {
+    assembly ??= typeof(IServiceCollectionExtensions).Assembly;
+    var conversionTypes = assembly
+      .GetTypes()
+      .Where(type =>
+        !type.IsAbstract &&
+        !type.IsClass &&
+        !type.IsGenericType &&
+        type.IsAssignableTo(assignableTo));
+
+    foreach (var conversionType in conversionTypes)
+    {
+      services.AddScoped(conversionType);
+    }
+  }
+
+  private static void AddTransientAssignableTo(
+    this IServiceCollection services,
+    Type assignableTo,
+    Assembly? assembly = null
+  )
+  {
+    assembly ??= typeof(IServiceCollectionExtensions).Assembly;
+    var conversionTypes = assembly
+      .GetTypes()
+      .Where(type =>
+        !type.IsAbstract &&
+        !type.IsClass &&
+        !type.IsGenericType &&
+        type.IsAssignableTo(assignableTo));
+
+    foreach (var conversionType in conversionTypes)
+    {
+      services.AddTransient(conversionType);
+    }
+  }
+}

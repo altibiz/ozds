@@ -20,4 +20,8 @@
     <OrchardVersion>1.8.1</OrchardVersion>
   </PropertyGroup>
 
+  <ItemGroup>
+    <EmbeddedResource Include="Resources/**/*" />
+  </ItemGroup>
+
 </Project>

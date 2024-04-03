@@ -12,7 +12,9 @@ public abstract class PushRequestMeasurementConverter<TPushRequest, TMeasurement
 
   protected abstract TMeasurement ToMeasurement(TPushRequest pushRequest, string meterId, DateTimeOffset timestamp);
 
-  public bool CanConvertToMeasurement(string meterId)
+  protected abstract TPushRequest ToPushRequest(TMeasurement measurement);
+
+  public bool CanConvert(string meterId)
   {
     return meterId.StartsWith(MeterIdPrefix);
   }
@@ -24,4 +26,10 @@ public abstract class PushRequestMeasurementConverter<TPushRequest, TMeasurement
       meterId,
       timestamp
     );
+
+  public JsonObject ToPushRequest(IMeasurement measurement) =>
+    JsonSerializer.SerializeToNode(
+      ToPushRequest(measurement as TMeasurement
+        ?? throw new ArgumentNullException(nameof(measurement)))) as JsonObject
+      ?? throw new ArgumentNullException(nameof(measurement));
 }
