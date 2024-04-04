@@ -29,9 +29,7 @@ public class OzdsWhiteLowCatalogueModelQueries : IOzdsQueries
     {
       return catalogueModel.ToModel();
     }
-    else
-    {
-      return null;
-    }
+
+    return null;
   }
 }

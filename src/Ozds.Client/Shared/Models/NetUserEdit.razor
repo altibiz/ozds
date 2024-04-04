@@ -37,17 +37,19 @@
         @bind-Value="LoadingState.Value.LocationId"
         For="@(() => LoadingState.Value.LocationId)"/>
     </MudCardContent>
-    <ValidationSummary />
+    <ValidationSummary/>
     <MudCardActions>
       <MudButton
         ButtonType="ButtonType.Submit"
         Variant="Variant.Filled"
         Color="MudColor.Primary"
         Class="ml-auto">
-        @if(_create){
+        @if (_create)
+        {
           <span>Create</span>
         }
-        else{
+        else
+        {
           <span>Update</span>
         }
       </MudButton>
@@ -62,7 +64,7 @@
 
   private LoadingState<NetworkUserModel> LoadingState { get; set; } = new();
 
-  private bool _create = false;
+  private bool _create;
 
   private void Submit()
   {
@@ -97,10 +99,11 @@
           .NetworkUserById(Id));
     }
 
-    if ( LoadingState.Value is null )
+    if (LoadingState.Value is null)
     {
       LoadingState = LoadingState.WithValue(NetworkUserModel.New());
       _create = true;
     }
   }
+
 }

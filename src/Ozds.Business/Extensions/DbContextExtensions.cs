@@ -88,7 +88,7 @@ public static class DbContextExtensions
   )
   {
     var entry = context.ChangeTracker.Entries().FirstOrDefault(predicate)
-      ?? context.Entry(factory());
+                ?? context.Entry(factory());
     action(entry);
   }
 

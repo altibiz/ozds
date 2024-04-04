@@ -29,9 +29,7 @@ public class OzdsBlueLowCatalogueModelQueries : IOzdsQueries
     {
       return catalogueModel.ToModel();
     }
-    else
-    {
-      return null;
-    }
+
+    return null;
   }
 }

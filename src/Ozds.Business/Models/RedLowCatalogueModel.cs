@@ -24,6 +24,7 @@ public class RedLowCatalogueModel : CatalogueModel
   [Required]
   [Range(0, double.MaxValue)]
   public required float MeterFeePrice_EUR { get; set; }
+
   public static RedLowCatalogueModel New()
   {
     return new RedLowCatalogueModel
@@ -41,7 +42,7 @@ public class RedLowCatalogueModel : CatalogueModel
       ActiveEnergyTotalImportT2Price_EUR = 0,
       MaxActivePowerTotalImportT1Price_EUR = 0,
       ReactiveEnergyTotalImportT0Price_EUR = 0,
-      MeterFeePrice_EUR = 0,
+      MeterFeePrice_EUR = 0
     };
   }
 }

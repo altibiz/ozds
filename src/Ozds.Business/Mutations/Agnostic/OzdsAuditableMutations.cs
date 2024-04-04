@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Conversion.Abstractions;
 using Ozds.Business.Extensions;
 using Ozds.Business.Models.Abstractions;

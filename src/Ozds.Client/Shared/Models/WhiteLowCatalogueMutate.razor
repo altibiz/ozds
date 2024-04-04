@@ -49,17 +49,19 @@
         @bind-Value="LoadingState.Value.MeterFeePrice_EUR"
         For="@(() => LoadingState.Value.MeterFeePrice_EUR)"/>
     </MudCardContent>
-    <ValidationSummary />
+    <ValidationSummary/>
     <MudCardActions>
       <MudButton
         ButtonType="ButtonType.Submit"
         Variant="Variant.Filled"
         Color="MudColor.Primary"
         Class="ml-auto">
-        @if(_create){
+        @if (_create)
+        {
           <span>Create</span>
         }
-        else{
+        else
+        {
           <span>Update</span>
         }
       </MudButton>
@@ -74,7 +76,7 @@
 
   private LoadingState<WhiteLowCatalogueModel> LoadingState { get; set; } = new();
 
-  private bool _create = false;
+  private bool _create;
 
   private void Submit()
   {
@@ -109,10 +111,11 @@
           .BlueLowCatalogueById(Id));
     }
 
-    if ( LoadingState.Value is null )
+    if (LoadingState.Value is null)
     {
       LoadingState = LoadingState.WithValue(WhiteLowCatalogueModel.New());
       _create = true;
     }
   }
+
 }
