@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Conversion.Abstractions;
+using Ozds.Business.Extensions;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Mutations.Abstractions;
 using Ozds.Data;
@@ -57,7 +58,7 @@ public class OzdsAuditableMutations : IOzdsMutations
                                    .CanConvertToEntity(auditable.GetType())) ??
                                throw new InvalidOperationException(
                                  $"No model entity converter found for {auditable.GetType()}");
-    _context.Entry(modelEntityConverter.ToEntity(auditable)).State = EntityState.Added;
+    _context.AddTracked(modelEntityConverter.ToEntity(auditable));
   }
 
   public void Update(IAuditable auditable)
@@ -76,7 +77,7 @@ public class OzdsAuditableMutations : IOzdsMutations
                                    .CanConvertToEntity(auditable.GetType())) ??
                                throw new InvalidOperationException(
                                  $"No model entity converter found for {auditable.GetType()}");
-    _context.Update(modelEntityConverter.ToEntity(auditable));
+    _context.UpdateTracked(modelEntityConverter.ToEntity(auditable));
   }
 
   public void Delete(IAuditable auditable)
@@ -87,6 +88,6 @@ public class OzdsAuditableMutations : IOzdsMutations
                                    .CanConvertToEntity(auditable.GetType())) ??
                                throw new InvalidOperationException(
                                  $"No model entity converter found for {auditable.GetType()}");
-    _context.Remove(modelEntityConverter.ToEntity(auditable));
+    _context.DeleteTracked(modelEntityConverter.ToEntity(auditable));
   }
 }
