@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Conversion.Abstractions;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Mutations.Abstractions;
@@ -56,7 +57,7 @@ public class OzdsAuditableMutations : IOzdsMutations
                                    .CanConvertToEntity(auditable.GetType())) ??
                                throw new InvalidOperationException(
                                  $"No model entity converter found for {auditable.GetType()}");
-    _context.Add(modelEntityConverter.ToEntity(auditable));
+    _context.Entry(modelEntityConverter.ToEntity(auditable)).State = EntityState.Added;
   }
 
   public void Update(IAuditable auditable)
