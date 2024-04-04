@@ -48,8 +48,8 @@ public static class IServiceCollectionExtensions
       .GetTypes()
       .Where(type =>
         !type.IsAbstract &&
-        !type.IsClass &&
         !type.IsGenericType &&
+        type.IsClass &&
         type.IsAssignableTo(assignableTo));
 
     foreach (var conversionType in conversionTypes)
@@ -67,8 +67,8 @@ public static class IServiceCollectionExtensions
       .GetTypes()
       .Where(type =>
         !type.IsAbstract &&
-        !type.IsClass &&
         !type.IsGenericType &&
+        type.IsClass &&
         type.IsAssignableTo(assignableTo));
 
     foreach (var conversionType in conversionTypes)
