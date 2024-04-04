@@ -1,10 +1,10 @@
 @page "/network-user/{id}"
-@attribute [Navigation(RouteValue = "id", Parents = new[] { typeof(UsersPage) })]
+@attribute [Navigation( Title = "Form", Parents = new[] { typeof(UsersPage) })]
 @attribute [StreamRendering]
 
 @* <NetUserView Id="@Id"/> *@
 <WhiteMediumCatalogueMutate Id="@Id"/>
 
 @code {
-  [Parameter] public string? Id { get; set; }
+  [Parameter] public string? Id { get; set; } = "-1";
 }

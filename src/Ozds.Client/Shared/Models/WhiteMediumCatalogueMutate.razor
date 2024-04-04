@@ -41,7 +41,7 @@
         @bind-Value="LoadingState.Value.ActiveEnergyTotalImportT2Price_EUR"
         For="@(() => LoadingState.Value.ActiveEnergyTotalImportT2Price_EUR)"/>
       <MudTextField
-        Label="Cijena maksimalne potrošnje aktivne energije u dnevnoj tarifi"
+        Label="Cijena aktivne snage u dnevnoj tarifi"
         @bind-Value="LoadingState.Value.MaxActivePowerTotalImportT1Price_EUR"
         For="@(() => LoadingState.Value.MaxActivePowerTotalImportT1Price_EUR)"/>
       <MudTextField
@@ -105,7 +105,7 @@
 
   protected override async Task OnInitializedAsync()
   {
-    if (LoadingState.Value is null && Id is not null)
+    if (LoadingState.Value is null && Id is not null && long.TryParse(Id, out _))
     {
       LoadingState = LoadingState.WithValue(
         await ScopedServices
