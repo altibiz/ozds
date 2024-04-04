@@ -20,14 +20,6 @@ public class InvoiceIssuingInterceptor : ServedSaveChangesInterceptor
     return base.SavingChanges(eventData, result);
   }
 
-  public override ValueTask<InterceptionResult<int>> SavingChangesAsync(
-    DbContextEventData eventData, InterceptionResult<int> result,
-    CancellationToken cancellationToken = default)
-  {
-    IssueInvoices(eventData);
-    return base.SavingChangesAsync(eventData, result, cancellationToken);
-  }
-
   private void IssueInvoices(DbContextEventData eventData)
   {
     if (eventData.Context is null)

@@ -18,14 +18,6 @@ public class CascadingSoftDeleteInterceptor : ServedSaveChangesInterceptor
     return base.SavingChanges(eventData, result);
   }
 
-  public override ValueTask<InterceptionResult<int>> SavingChangesAsync(
-    DbContextEventData eventData, InterceptionResult<int> result,
-    CancellationToken cancellationToken = default)
-  {
-    AddCascadingSoftDeletes(eventData);
-    return base.SavingChangesAsync(eventData, result, cancellationToken);
-  }
-
   private static void AddCascadingSoftDeletes(DbContextEventData _)
   {
   }

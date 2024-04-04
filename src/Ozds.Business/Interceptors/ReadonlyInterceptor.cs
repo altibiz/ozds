@@ -21,16 +21,6 @@ public class ReadonlyInterceptor : ServedSaveChangesInterceptor
     return PreventReadonlyModifications(eventData, result);
   }
 
-  public override ValueTask<InterceptionResult<int>> SavingChangesAsync(
-    DbContextEventData eventData,
-    InterceptionResult<int> result,
-    CancellationToken cancellationToken = default
-  )
-  {
-    return ValueTask.FromResult(
-      PreventReadonlyModifications(eventData, result));
-  }
-
   public InterceptionResult<int> PreventReadonlyModifications(
     DbContextEventData eventData,
     InterceptionResult<int> result

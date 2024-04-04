@@ -26,16 +26,6 @@ public class AuditingInterceptor : ServedSaveChangesInterceptor
     return base.SavingChanges(eventData, result);
   }
 
-  public override ValueTask<InterceptionResult<int>> SavingChangesAsync(
-    DbContextEventData eventData,
-    InterceptionResult<int> result,
-    CancellationToken cancellationToken = default
-  )
-  {
-    Audit(eventData);
-    return base.SavingChangesAsync(eventData, result, cancellationToken);
-  }
-
   public void Audit(DbContextEventData eventData)
   {
     if (eventData.Context is null)
@@ -182,7 +172,7 @@ public class AuditingInterceptor : ServedSaveChangesInterceptor
   private bool IsDevelopment()
   {
     return _serviceProvider.GetService<IHostEnvironment>() is
-             { } hostEnvironment
+    { } hostEnvironment
            && hostEnvironment.IsDevelopment();
   }
 
