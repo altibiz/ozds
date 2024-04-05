@@ -7,7 +7,7 @@
   return;
 }
 
-<MudText Typo="Typo.h5">Korisnik mreže</MudText>
+<MudText Typo="Typo.h5">Regulaciski katalog</MudText>
 <MudPaper>
   <MudGrid>
     <MudItem xs="12" sm="6">
@@ -29,25 +29,29 @@
   <MudCard>
     <MudCardContent>
       <MudTextField
-        Label="Ime"
+        Label="Naziv"
         @bind-Value="LoadingState.Value.Title"
         For="@(() => LoadingState.Value.Title)"/>
       <MudTextField
-        Label="Lokacija"
-        @bind-Value="LoadingState.Value.LocationId"
-        For="@(() => LoadingState.Value.LocationId)"/>
-      @* <MudSelect
-        T="RoleModel"
-        Label="Lokacija"
-        AnchorOrigin="Origin.BottomCenter"
-        @bind-Value="LoadingState.Value.LocationId"
-        For="@(() => LoadingState.Value.LocationId)">
-        @foreach(var location in _locations){
-          <MudSelectItem Value="location.Id">
-            @location.Title
-          </MudSelectItem>
-        } *@
-      @* </MudSelect> *@
+        Label="Cijena potrošnje aktivne energije u dnevnoj tarifi"
+        @bind-Value="LoadingState.Value.ActiveEnergyTotalImportT1Price_EUR"
+        For="@(() => LoadingState.Value.ActiveEnergyTotalImportT1Price_EUR)"/>
+      <MudTextField
+        Label="Cijena potrošnje aktivne energije u noćnoj tarifi"
+        @bind-Value="LoadingState.Value.ActiveEnergyTotalImportT2Price_EUR"
+        For="@(() => LoadingState.Value.ActiveEnergyTotalImportT2Price_EUR)"/>
+      <MudTextField
+        Label="Cijena naknade za obnovljivu energiju"
+        @bind-Value="LoadingState.Value.RenewableEnergyFeePrice_EUR"
+        For="@(() => LoadingState.Value.RenewableEnergyFeePrice_EUR)"/>
+      <MudTextField
+        Label="Cijena naknade za poslovnu upotrebu"
+        @bind-Value="LoadingState.Value.BusinessUsageFeePrice_EUR"
+        For="@(() => LoadingState.Value.BusinessUsageFeePrice_EUR)"/>
+      <MudTextField
+        Label="Porez"
+        @bind-Value="LoadingState.Value.TaxRate_Percent"
+        For="@(() => LoadingState.Value.TaxRate_Percent)"/>
     </MudCardContent>
     <ValidationSummary/>
     <MudCardActions>
@@ -72,12 +76,11 @@
 @code {
   [Parameter] public string Id { get; set; } = default!;
 
-  [Parameter] public NetworkUserModel? Model { get; set; }
+  [Parameter] public RegulatoryCatalogueModel? Model { get; set; }
 
-  private LoadingState<NetworkUserModel> LoadingState { get; set; } = new();
+  private LoadingState<RegulatoryCatalogueModel> LoadingState { get; set; } = new();
 
-  private bool _create;
-  private List<LocationModel> _locations;
+  private bool _create = false;
 
   private void Submit()
   {
@@ -104,21 +107,17 @@
 
   protected override async Task OnInitializedAsync()
   {
-    @* _locations = await ScopedServices
-      .GetRequiredService<OzdsLocationQueries>()
-      .GetAll() *@
-
-    if (LoadingState.Value is null && Id is not null)
+    if (LoadingState.Value is null && Id is not null && long.TryParse(Id, out _))
     {
       LoadingState = LoadingState.WithValue(
         await ScopedServices
-          .GetRequiredService<OzdsNetworkUserQueries>()
-          .NetworkUserById(Id));
+          .GetRequiredService<OzdsRegulatoryCatalogueModelQueries>()
+          .RegulatoryCatalogueById(Id));
     }
 
     if (LoadingState.Value is null)
     {
-      LoadingState = LoadingState.WithValue(NetworkUserModel.New());
+      LoadingState = LoadingState.WithValue(RegulatoryCatalogueModel.New());
       _create = true;
     }
   }

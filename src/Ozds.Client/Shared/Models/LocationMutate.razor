@@ -1,0 +1,164 @@
+@inject NavigationManager NavigationManager
+@inherits OzdsOwningComponentBase
+
+@if (LoadingState.Value is null)
+{
+  <MudProgressCircular/>
+  return;
+}
+
+<MudText Typo="Typo.h5">Lokacija</MudText>
+<MudPaper>
+  <MudGrid>
+    <MudItem xs="12" sm="6">
+      <MudText Typo="Typo.body1">Id</MudText>
+      <MudText Typo="Typo.body2">@LoadingState.Value.Id</MudText>
+    </MudItem>
+  </MudGrid>
+</MudPaper>
+
+<EditForm
+  Model="@LoadingState.Value"
+  OnValidSubmit="Submit">
+  <DataAnnotationsValidator/>
+  <MudCard>
+    <MudCardContent>
+      <MudTextField
+        Label="Ime"
+        @bind-Value="LoadingState.Value.Title"
+        For="@(() => LoadingState.Value.Title)"/>
+      <MudSelect
+        Label="_whiteMediumCatalogues"
+        AnchorOrigin="Origin.BottomCenter"
+        @bind-Value="LoadingState.Value.WhiteMediumCatalogueId"
+        For="@(() => LoadingState.Value.WhiteMediumCatalogueId)">
+        @foreach(var catalog in _whiteMediumCatalogues){
+          <MudSelectItem Value="catalog.Id">
+            @catalog.Title
+          </MudSelectItem>
+        }
+      </MudSelect>
+      <MudSelect
+        Label="_blueLowCatalogues"
+        AnchorOrigin="Origin.BottomCenter"
+        @bind-Value="LoadingState.Value.BlueLowCatalogueId"
+        For="@(() => LoadingState.Value.BlueLowCatalogueId)">
+        @foreach(var catalog in _blueLowCatalogues){
+          <MudSelectItem Value="catalog.Id">
+            @catalog.Title
+          </MudSelectItem>
+        }
+      </MudSelect>
+      <MudSelect
+        Label="_whiteLowCatalogues"
+        AnchorOrigin="Origin.BottomCenter"
+        @bind-Value="LoadingState.Value.WhiteLowCatalogueId"
+        For="@(() => LoadingState.Value.WhiteLowCatalogueId)">
+        @foreach(var catalog in _whiteLowCatalogues){
+          <MudSelectItem Value="catalog.Id">
+            @catalog.Title
+          </MudSelectItem>
+        }
+      </MudSelect>
+      <MudSelect
+        Label="_redLowCatalogues"
+        AnchorOrigin="Origin.BottomCenter"
+        @bind-Value="LoadingState.Value.RedLowCatalogueId"
+        For="@(() => LoadingState.Value.RedLowCatalogueId)">
+        @foreach(var catalog in _redLowCatalogues){
+          <MudSelectItem Value="catalog.Id">
+            @catalog.Title
+          </MudSelectItem>
+        }
+      </MudSelect>
+      <MudSelect
+        Label="_regulatoryCatalogues"
+        AnchorOrigin="Origin.BottomCenter"
+        @bind-Value="LoadingState.Value.RegulatoryCatalogueId"
+        For="@(() => LoadingState.Value.RegulatoryCatalogueId)">
+        @foreach(var catalog in _regulatoryCatalogues){
+          <MudSelectItem Value="catalog.Id">
+            @catalog.Title
+          </MudSelectItem>
+        }
+      </MudSelect>
+    </MudCardContent>
+    <ValidationSummary/>
+    <MudCardActions>
+      <MudButton
+        ButtonType="ButtonType.Submit"
+        Variant="Variant.Filled"
+        Color="MudColor.Primary"
+        Class="ml-auto">
+        @if (_create)
+        {
+          <span>Create</span>
+        }
+        else
+        {
+          <span>Update</span>
+        }
+      </MudButton>
+    </MudCardActions>
+  </MudCard>
+</EditForm>
+
+@code {
+  [Parameter] public string Id { get; set; } = default!;
+
+  [Parameter] public LocationModel? Model { get; set; }
+
+  private LoadingState<LocationModel> LoadingState { get; set; } = new();
+  private List<WhiteMediumCatalogueModel> _whiteMediumCatalogues;
+  private List<BlueLowCatalogueModel> _blueLowCatalogues;
+  private List<WhiteLowCatalogueModel> _whiteLowCatalogues;
+  private List<RedLowCatalogueModel> _redLowCatalogues;
+  private List<RegulatoryCatalogueModel> _regulatoryCatalogues;
+
+  private bool _create;
+
+  private void Submit()
+  {
+    var mutations = ScopedServices.GetRequiredService<OzdsAuditableMutations>();
+    if (LoadingState.Value is null)
+      return;
+    if (_create)
+    {
+      mutations.Create(LoadingState.Value);
+    }
+    else
+    {
+      mutations.Update(LoadingState.Value);
+    }
+  }
+
+  protected override void OnInitialized()
+  {
+    if (LoadingState.Value is not null)
+    {
+      LoadingState = LoadingState.WithValue(LoadingState.Value);
+    }
+  }
+
+  protected override async Task OnInitializedAsync()
+  {
+    var queries = ScopedServices.GetRequiredService<OzdsLocationModelQueries>();
+    _whiteMediumCatalogues = (await queries.GetWhiteMediumCatalogues("")).Items;
+    _blueLowCatalogues = (await queries.GetBlueLowCatalogues("")).Items;
+    _whiteLowCatalogues = (await queries.GetWhiteLowCatalogues("")).Items;
+    _redLowCatalogues = (await queries.GetRedLowCatalogues("")).Items;
+    _regulatoryCatalogues = (await queries.GetRegulatoryCatalogues("")).Items;
+
+    if (LoadingState.Value is null && Id is not null)
+    {
+      LoadingState = LoadingState.WithValue(await queries.LocationById(Id));
+    }
+
+    if (LoadingState.Value is null)
+    {
+      LoadingState = LoadingState.WithValue(LocationModel.New());
+      _create = true;
+    }
+  }
+
+}

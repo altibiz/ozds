@@ -41,7 +41,7 @@ public class
     builder
       .Property(nameof(RedLowCatalogueEntity
         .ReactiveEnergyTotalImportT0Price_EUR))
-      .HasColumnName("active_energy_total_import_t1_price_eur");
+      .HasColumnName("reactive_energy_total_import_t0_price_eur");
 
     builder
       .Property(nameof(RedLowCatalogueEntity.MeterFeePrice_EUR))
