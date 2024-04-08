@@ -1,36 +1,37 @@
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Conversion;
 using Ozds.Business.Models;
+using Ozds.Business.Models.Base;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Data;
+using Ozds.Data.Entities;
 using Ozds.Data.Extensions;
+using SQLitePCL;
 
 namespace Ozds.Business.Queries;
 
-public class OzdsNetworkUserQueries : IOzdsQueries
+public class OzdsMessengerModelQueries : IOzdsQueries
 {
   protected readonly OzdsDbContext context;
 
-  public OzdsNetworkUserQueries(OzdsDbContext context)
+  public OzdsMessengerModelQueries(OzdsDbContext context)
   {
     this.context = context;
   }
 
-  public async Task<NetworkUserModel?>
-    NetworkUserById(string id)
+  public async Task<MessengerModel?>
+    MessengerById(string id)
   {
-    var networkUser =
-      await context.NetworkUsers
+    var messengerEntity =
+      await context.Messengers
         .WithId(id)
         .FirstOrDefaultAsync();
-    if (networkUser is not null)
+    if (messengerEntity is not null)
     {
-      return networkUser.ToModel();
+      return messengerEntity.ToModel();
     }
-
     return null;
   }
-
   public async Task<PaginatedList<LocationModel>> GetLocations(
     string title,
     int pageNumber = QueryConstants.StartingPage,
@@ -50,3 +51,4 @@ public class OzdsNetworkUserQueries : IOzdsQueries
       .ToPaginatedList(count);
   }
 }
+

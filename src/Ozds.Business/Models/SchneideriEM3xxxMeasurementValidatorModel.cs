@@ -7,25 +7,51 @@ public class
   SchneideriEM3xxxMeasurementValidatorModel : MeasurementValidatorModel<
   SchneideriEM3xxxMeasurementModel>
 {
-  [Required] public required float MinVoltage_V { get; init; }
+  [Required] public required float MinVoltage_V { get; set; }
 
-  [Required] public required float MaxVoltage_V { get; init; }
+  [Required] public required float MaxVoltage_V { get; set; }
 
-  [Required] public required float MinCurrent_A { get; init; }
+  [Required] public required float MinCurrent_A { get; set; }
 
-  [Required] public required float MaxCurrent_A { get; init; }
+  [Required] public required float MaxCurrent_A { get; set; }
 
-  [Required] public required float MinActivePower_W { get; init; }
+  [Required] public required float MinActivePower_W { get; set; }
 
-  [Required] public required float MaxActivePower_W { get; init; }
+  [Required] public required float MaxActivePower_W { get; set; }
 
-  [Required] public required float MinReactivePower_VAR { get; init; }
+  [Required] public required float MinReactivePower_VAR { get; set; }
 
-  [Required] public required float MaxReactivePower_VAR { get; init; }
+  [Required] public required float MaxReactivePower_VAR { get; set; }
 
-  [Required] public required float MinApparentPower_VA { get; init; }
+  [Required] public required float MinApparentPower_VA { get; set; }
 
-  [Required] public required float MaxApparentPower_VA { get; init; }
+  [Required] public required float MaxApparentPower_VA { get; set; }
+
+  public static SchneideriEM3xxxMeasurementValidatorModel New()
+  {
+    return new SchneideriEM3xxxMeasurementValidatorModel
+    {
+      Id = default!,
+      Title = "",
+      CreatedOn = DateTimeOffset.UtcNow,
+      CreatedById = default,
+      LastUpdatedOn = default,
+      LastUpdatedById = default,
+      IsDeleted = false,
+      DeletedOn = default,
+      DeletedById = default,
+      MinVoltage_V = default,
+      MaxVoltage_V = default,
+      MinCurrent_A = default,
+      MaxCurrent_A = default,
+      MinActivePower_W = default,
+      MaxActivePower_W = default,
+      MinReactivePower_VAR = default,
+      MaxReactivePower_VAR = default,
+      MinApparentPower_VA = default,
+      MaxApparentPower_VA = default,
+    };
+  }
 
   public override IEnumerable<ValidationResult> ValidateMeasurement(
     SchneideriEM3xxxMeasurementModel measurement,

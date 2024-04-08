@@ -4,7 +4,7 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities;
 
-public abstract class MeasurementValidatorEntity : AuditableEntity
+public class MeasurementValidatorEntity : AuditableEntity
 {
 }
 

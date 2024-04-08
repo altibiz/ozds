@@ -26,6 +26,9 @@ public partial class OzdsDbContext : DbContext
 
   public DbSet<MeterEntity> Meters { get; set; } = default!;
 
+  public DbSet<MeasurementValidatorEntity> MeasurementValidators { get; set; } =
+    default!;
+
   public DbSet<AbbB2xMeasurementEntity> AbbB2xMeasurements { get; set; } =
     default!;
 

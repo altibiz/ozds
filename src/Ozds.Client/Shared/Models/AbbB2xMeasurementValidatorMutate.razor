@@ -1,0 +1,137 @@
+@inject NavigationManager NavigationManager
+@inherits OzdsOwningComponentBase
+
+@if (LoadingState.Value is null)
+{
+  <MudProgressCircular/>
+  return;
+}
+
+<MudText Typo="Typo.h5">Abb B2x Validacija</MudText>
+<MudPaper>
+  <MudGrid>
+    <MudItem xs="12" sm="6">
+      <MudText Typo="Typo.body1">Id</MudText>
+      <MudText Typo="Typo.body2">@LoadingState.Value.Id</MudText>
+    </MudItem>
+  </MudGrid>
+</MudPaper>
+
+@if (LoadingState.Value is null)
+{
+  return;
+}
+
+<EditForm
+  Model="@LoadingState.Value"
+  OnValidSubmit="Submit">
+  <DataAnnotationsValidator/>
+  <MudCard>
+    <MudCardContent>
+      <MudTextField
+        Label="Naziv"
+        @bind-Value="LoadingState.Value.Title"
+        For="@(() => LoadingState.Value.Title)"/>
+      <MudTextField
+        Label="Minimalni napon"
+        @bind-Value="LoadingState.Value.MinVoltage_V"
+        For="@(() => LoadingState.Value.MinVoltage_V)"/>
+      <MudTextField
+        Label="Maksimalni napon"
+        @bind-Value="LoadingState.Value.MaxVoltage_V"
+        For="@(() => LoadingState.Value.MaxVoltage_V)"/>
+      <MudTextField
+        Label="Minimalna struja"
+        @bind-Value="LoadingState.Value.MinCurrent_A"
+        For="@(() => LoadingState.Value.MinCurrent_A)"/>
+      <MudTextField
+        Label="Maksimalna struja"
+        @bind-Value="LoadingState.Value.MaxCurrent_A"
+        For="@(() => LoadingState.Value.MaxCurrent_A)"/>
+      <MudTextField
+        Label="Minimalna aktivna snaga"
+        @bind-Value="LoadingState.Value.MinActivePower_W"
+        For="@(() => LoadingState.Value.MinActivePower_W)"/>
+      <MudTextField
+        Label="Maksimalna aktivna snaga"
+        @bind-Value="LoadingState.Value.MaxActivePower_W"
+        For="@(() => LoadingState.Value.MaxActivePower_W)"/>
+      <MudTextField
+        Label="Minimalna reaktivna snaga"
+        @bind-Value="LoadingState.Value.MinReactivePower_VAR"
+        For="@(() => LoadingState.Value.MinReactivePower_VAR)"/>
+      <MudTextField
+        Label="Maksimalna reaktivna snaga"
+        @bind-Value="LoadingState.Value.MaxReactivePower_VAR"
+        For="@(() => LoadingState.Value.MaxReactivePower_VAR)"/>
+    </MudCardContent>
+    <ValidationSummary/>
+    <MudCardActions>
+      <MudButton
+        ButtonType="ButtonType.Submit"
+        Variant="Variant.Filled"
+        Color="MudColor.Primary"
+        Class="ml-auto">
+        @if (_create)
+        {
+          <span>Create</span>
+        }
+        else
+        {
+          <span>Update</span>
+        }
+      </MudButton>
+    </MudCardActions>
+  </MudCard>
+</EditForm>
+
+@code {
+  [Parameter] public string Id { get; set; } = default!;
+
+  [Parameter] public AbbB2xMeasurementValidatorModel? Model { get; set; }
+
+  private LoadingState<AbbB2xMeasurementValidatorModel> LoadingState { get; set; } = new();
+
+  private bool _create;
+
+  private void Submit()
+  {
+    var mutations = ScopedServices.GetRequiredService<OzdsAuditableMutations>();
+    if (LoadingState.Value is null)
+      return;
+    if (_create)
+    {
+      mutations.Create(LoadingState.Value);
+    }
+    else
+    {
+      mutations.Update(LoadingState.Value);
+    }
+  }
+
+  protected override void OnInitialized()
+  {
+    if (LoadingState.Value is not null)
+    {
+      LoadingState = LoadingState.WithValue(LoadingState.Value);
+    }
+  }
+
+  protected override async Task OnInitializedAsync()
+  {
+    if (LoadingState.Value is null && Id is not null)
+    {
+      LoadingState = LoadingState.WithValue(
+        await ScopedServices
+          .GetRequiredService<OzdsAbbB2xMeasurementValidatorModelQueries>()
+          .AbbB2xMeasurementValidatorById(Id));
+    }
+
+    if (LoadingState.Value is null)
+    {
+      LoadingState = LoadingState.WithValue(AbbB2xMeasurementValidatorModel.New());
+      _create = true;
+    }
+  }
+
+}

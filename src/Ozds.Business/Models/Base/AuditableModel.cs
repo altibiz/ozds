@@ -6,15 +6,15 @@ namespace Ozds.Business.Models.Base;
 public abstract class AuditableModel : IdentifiableModel, IAuditable
 {
   [Required]
-  public required DateTimeOffset CreatedOn { get; init; } =
+  public required DateTimeOffset CreatedOn { get; set; } =
     DateTimeOffset.UtcNow;
 
-  public required string? CreatedById { get; init; }
-  public required DateTimeOffset? LastUpdatedOn { get; init; }
-  public required string? LastUpdatedById { get; init; }
-  public required bool IsDeleted { get; init; }
-  public required DateTimeOffset? DeletedOn { get; init; }
-  public required string? DeletedById { get; init; }
+  public required string? CreatedById { get; set; }
+  public required DateTimeOffset? LastUpdatedOn { get; set; }
+  public required string? LastUpdatedById { get; set; }
+  public required bool IsDeleted { get; set; }
+  public required DateTimeOffset? DeletedOn { get; set; }
+  public required string? DeletedById { get; set; }
 
   public override IEnumerable<ValidationResult> Validate(
     ValidationContext validationContext)

@@ -8,67 +8,67 @@ namespace Ozds.Business.Models;
 public class
   AbbB2xMeasurementModel : MeasurementModel<AbbB2xMeasurementValidatorModel>
 {
-  [Required] public required float VoltageL1AnyT0_V { get; init; }
+  [Required] public required float VoltageL1AnyT0_V { get; set; }
 
-  [Required] public required float VoltageL2AnyT0_V { get; init; }
+  [Required] public required float VoltageL2AnyT0_V { get; set; }
 
-  [Required] public required float VoltageL3AnyT0_V { get; init; }
+  [Required] public required float VoltageL3AnyT0_V { get; set; }
 
-  [Required] public required float CurrentL1AnyT0_A { get; init; }
+  [Required] public required float CurrentL1AnyT0_A { get; set; }
 
-  [Required] public required float CurrentL2AnyT0_A { get; init; }
+  [Required] public required float CurrentL2AnyT0_A { get; set; }
 
-  [Required] public required float CurrentL3AnyT0_A { get; init; }
+  [Required] public required float CurrentL3AnyT0_A { get; set; }
 
-  [Required] public required float ActivePowerL1NetT0_W { get; init; }
+  [Required] public required float ActivePowerL1NetT0_W { get; set; }
 
-  [Required] public required float ActivePowerL2NetT0_W { get; init; }
+  [Required] public required float ActivePowerL2NetT0_W { get; set; }
 
-  [Required] public required float ActivePowerL3NetT0_W { get; init; }
+  [Required] public required float ActivePowerL3NetT0_W { get; set; }
 
-  [Required] public required float ReactivePowerL1NetT0_VAR { get; init; }
+  [Required] public required float ReactivePowerL1NetT0_VAR { get; set; }
 
-  [Required] public required float ReactivePowerL2NetT0_VAR { get; init; }
+  [Required] public required float ReactivePowerL2NetT0_VAR { get; set; }
 
-  [Required] public required float ReactivePowerL3NetT0_VAR { get; init; }
+  [Required] public required float ReactivePowerL3NetT0_VAR { get; set; }
 
-  [Required] public required float ActiveEnergyL1ImportT0_Wh { get; init; }
+  [Required] public required float ActiveEnergyL1ImportT0_Wh { get; set; }
 
-  [Required] public required float ActiveEnergyL2ImportT0_Wh { get; init; }
+  [Required] public required float ActiveEnergyL2ImportT0_Wh { get; set; }
 
-  [Required] public required float ActiveEnergyL3ImportT0_Wh { get; init; }
+  [Required] public required float ActiveEnergyL3ImportT0_Wh { get; set; }
 
-  [Required] public required float ActiveEnergyL1ExportT0_Wh { get; init; }
+  [Required] public required float ActiveEnergyL1ExportT0_Wh { get; set; }
 
-  [Required] public required float ActiveEnergyL2ExportT0_Wh { get; init; }
+  [Required] public required float ActiveEnergyL2ExportT0_Wh { get; set; }
 
-  [Required] public required float ActiveEnergyL3ExportT0_Wh { get; init; }
+  [Required] public required float ActiveEnergyL3ExportT0_Wh { get; set; }
 
-  [Required] public required float ReactiveEnergyL1ImportT0_VARh { get; init; }
+  [Required] public required float ReactiveEnergyL1ImportT0_VARh { get; set; }
 
-  [Required] public required float ReactiveEnergyL2ImportT0_VARh { get; init; }
+  [Required] public required float ReactiveEnergyL2ImportT0_VARh { get; set; }
 
-  [Required] public required float ReactiveEnergyL3ImportT0_VARh { get; init; }
+  [Required] public required float ReactiveEnergyL3ImportT0_VARh { get; set; }
 
-  [Required] public required float ReactiveEnergyL1ExportT0_VARh { get; init; }
+  [Required] public required float ReactiveEnergyL1ExportT0_VARh { get; set; }
 
-  [Required] public required float ReactiveEnergyL2ExportT0_VARh { get; init; }
+  [Required] public required float ReactiveEnergyL2ExportT0_VARh { get; set; }
 
-  [Required] public required float ReactiveEnergyL3ExportT0_VARh { get; init; }
+  [Required] public required float ReactiveEnergyL3ExportT0_VARh { get; set; }
 
-  [Required] public required float ActiveEnergyTotalImportT0_Wh { get; init; }
+  [Required] public required float ActiveEnergyTotalImportT0_Wh { get; set; }
 
-  [Required] public required float ActiveEnergyTotalExportT0_Wh { get; init; }
-
-  [Required]
-  public required float ReactiveEnergyTotalImportT0_VARh { get; init; }
+  [Required] public required float ActiveEnergyTotalExportT0_Wh { get; set; }
 
   [Required]
-  public required float ReactiveEnergyTotalExportT0_VARh { get; init; }
+  public required float ReactiveEnergyTotalImportT0_VARh { get; set; }
 
-  [Required] public required float ActiveEnergyTotalImportT1_Wh { get; init; }
+  [Required]
+  public required float ReactiveEnergyTotalExportT0_VARh { get; set; }
 
-  [Required] public required float ActiveEnergyTotalImportT2_Wh { get; init; }
+  [Required] public required float ActiveEnergyTotalImportT1_Wh { get; set; }
+
+  [Required] public required float ActiveEnergyTotalImportT2_Wh { get; set; }
 
   public override TariffMeasure Current_A
   {

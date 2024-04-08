@@ -10,12 +10,12 @@ public abstract class AggregateModel : IAggregate
   [Required] public required string MeterId { get; set; }
 
   [Required]
-  public required DateTimeOffset Timestamp { get; init; } =
+  public required DateTimeOffset Timestamp { get; set; } =
     DateTimeOffset.UtcNow;
 
-  [Required] public required IntervalModel Interval { get; init; }
+  [Required] public required IntervalModel Interval { get; set; }
 
-  [Required] public required long Count { get; init; } = 0;
+  [Required] public required long Count { get; set; } = 0;
 
   public abstract TariffMeasure Current_A { get; }
 
