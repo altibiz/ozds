@@ -8,6 +8,8 @@ public class MeasurementLocationEntity : AuditableEntity
   public string MeterId { get; set; } = default!;
 
   public virtual MeterEntity Meter { get; set; } = default!;
+
+  public virtual ICollection<CalculationEntity> Calculations { get; set; } = default!;
 }
 
 public class MeasurementLocationEntityTypeHierarchyConfiguration :

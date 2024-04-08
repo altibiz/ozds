@@ -16,6 +16,16 @@ public class NetworkUserMeasurementLocationEntity : MeasurementLocationEntity
   }
 
   public virtual NetworkUserEntity NetworkUser { get; set; } = default!;
+
+  private readonly long _catalogueId;
+
+  public virtual string CatalogueId
+  {
+    get { return _catalogueId.ToString(); }
+    init { _catalogueId = long.Parse(value); }
+  }
+
+  public virtual CatalogueEntity Catalogue { get; set; } = default!;
 }
 
 public class
@@ -30,9 +40,19 @@ public class
       .WithMany(nameof(NetworkUserEntity.MeasurementLocations))
       .HasForeignKey("_networkUserId");
 
+    builder
+      .HasOne(nameof(NetworkUserMeasurementLocationEntity.Catalogue))
+      .WithMany(nameof(CatalogueEntity.Meters))
+      .HasForeignKey("_catalogueId");
+
     builder.Ignore(nameof(NetworkUserMeasurementLocationEntity.NetworkUserId));
     builder
       .Property("_networkUserId")
       .HasColumnName("network_user_id");
+
+    builder.Ignore(nameof(NetworkUserMeasurementLocationEntity.CatalogueId));
+    builder
+      .Property("_catalogueId")
+      .HasColumnName("catalogue_id");
   }
 }

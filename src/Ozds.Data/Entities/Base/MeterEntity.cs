@@ -6,7 +6,6 @@ namespace Ozds.Data.Entities.Base;
 
 public class MeterEntity : AuditableEntity
 {
-  private readonly long _catalogueId;
   protected readonly string _stringId = default!;
 
   public override string Id
@@ -15,24 +14,18 @@ public class MeterEntity : AuditableEntity
     init { _stringId = value; }
   }
 
-  public string MessengerId { get; set; } = default!;
+  public string? MessengerId { get; set; } = default!;
 
-  public virtual MessengerEntity Messenger { get; set; } = default!;
+  public virtual MessengerEntity? Messenger { get; set; } = default!;
 
-  public virtual MeasurementLocationEntity MeasurementLocation { get; set; } =
+  public virtual MeasurementLocationEntity? MeasurementLocation { get; set; } =
     default!;
-
-  public virtual string CatalogueId
-  {
-    get { return _catalogueId.ToString(); }
-    init { _catalogueId = long.Parse(value); }
-  }
-
-  public virtual CatalogueEntity Catalogue { get; set; } = default!;
 
   public float ConnectionPower_W { get; set; } = default!;
 
   public List<PhaseEntity> Phases { get; set; } = default!;
+
+  public virtual ICollection<CalculationEntity> Calculations { get; set; } = default!;
 }
 
 public class MeterEntity<
@@ -80,18 +73,8 @@ public class
       .HasForeignKey(nameof(MeterEntity.MessengerId));
 
     builder
-      .HasOne(nameof(MeterEntity.Catalogue))
-      .WithMany(nameof(CatalogueEntity.Meters))
-      .HasForeignKey("_catalogueId");
-
-    builder
       .Property(nameof(MeterEntity.ConnectionPower_W))
       .HasColumnName("connection_power_w");
-
-    builder.Ignore(nameof(MeterEntity.CatalogueId));
-    builder
-      .Property("_catalogueId")
-      .HasColumnName("catalogue_id");
 
     if (type != typeof(MeterEntity))
     {
