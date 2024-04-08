@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Conversion;
+using Ozds.Business.Models;
+using Ozds.Business.Models.Abstractions;
+using Ozds.Business.Models.Composite;
 using Ozds.Business.Models.Enums;
 using Ozds.Data;
 using Ozds.Data.Entities;
@@ -10,25 +13,6 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Business.Queries;
 
-public record OzdsCalculationSpecification(
-  string NetworkUserId,
-  string MeasurementLocationId,
-  string MeterId,
-  DateTimeOffset FromDate,
-  DateTimeOffset ToDate,
-  float ActiveEnergyTotalImportT1Min_Wh,
-  float ActiveEnergyTotalImportT1Max_Wh,
-  float ActiveEnergyTotalImportT2Min_Wh,
-  float ActiveEnergyTotalImportT2Max_Wh,
-  float ActiveEnergyTotalImportT0Min_Wh,
-  float ActiveEnergyTotalImportT0Max_Wh,
-  float ReactiveEnergyTotalImportT0Max_VARh,
-  float ReactiveEnergyTotalImportT0Min_VARh,
-  float ReactiveEnergyTotalExportT0Max_VARh,
-  float ReactiveEnergyTotalExportT0Min_VARh,
-  float ActivePowerTotalImportT1Max_W
-);
-
 public class OzdsBillingQueries
 {
   private readonly OzdsDbContext _dbContext;
@@ -38,13 +22,12 @@ public class OzdsBillingQueries
     _dbContext = dbContext;
   }
 
-  public async Task<List<OzdsCalculationSpecification>> GetBillingData(
+  public async Task<List<CalculationBasisModel>> CalculationSpecificationsByNetworkUser(
     string networkUserId,
     DateTimeOffset fromDate,
     DateTimeOffset toDate
-  )
-  {
-    var responses = await _dbContext.NetworkUsers
+  ) =>
+    (await _dbContext.NetworkUsers
       .WithId(networkUserId)
       .Join(
         _dbContext.MeasurementLocations.OfType<NetworkUserMeasurementLocationEntity>(),
@@ -64,7 +47,7 @@ public class OzdsBillingQueries
         {
           x.MeasurementLocation,
           x.NetworkUser,
-          Meter = meter
+          Meter = meter.ToModel()
         }
       )
       .GroupJoin(
@@ -106,50 +89,15 @@ public class OzdsBillingQueries
               .ToModel())
         }
       )
-      .ToListAsync();
-
-    return responses
-      .Select(response => new OzdsCalculationSpecification(
-          NetworkUserId: response.NetworkUser.Id,
-          MeasurementLocationId: response.MeasurementLocation.Id,
-          MeterId: response.Meter.Id,
-          FromDate: fromDate,
-          ToDate: toDate,
-          ActiveEnergyTotalImportT1Min_Wh: response.AbbB2xAggregates
-            .FirstOrDefault(x => x.Interval == IntervalModel.Month)!
-            .ActiveEnergyTotalImportT1Min_Wh,
-          ActiveEnergyTotalImportT1Max_Wh: response.AbbB2xAggregates
-            .FirstOrDefault(x => x.Interval == IntervalModel.Month)!
-            .ActiveEnergyTotalImportT1Max_Wh,
-          ActiveEnergyTotalImportT2Min_Wh: response.AbbB2xAggregates
-            .FirstOrDefault(x => x.Interval == IntervalModel.Month)!
-            .ActiveEnergyTotalImportT2Min_Wh,
-          ActiveEnergyTotalImportT2Max_Wh: response.AbbB2xAggregates
-            .FirstOrDefault(x => x.Interval == IntervalModel.Month)!
-            .ActiveEnergyTotalImportT2Max_Wh,
-          ActiveEnergyTotalImportT0Min_Wh: response.AbbB2xAggregates
-            .FirstOrDefault(x => x.Interval == IntervalModel.Month)!
-            .ActiveEnergyTotalImportT0Min_Wh,
-          ActiveEnergyTotalImportT0Max_Wh: response.AbbB2xAggregates
-            .FirstOrDefault(x => x.Interval == IntervalModel.Month)!
-            .ActiveEnergyTotalImportT0Max_Wh,
-          ReactiveEnergyTotalImportT0Max_VARh: response.AbbB2xAggregates
-            .FirstOrDefault(x => x.Interval == IntervalModel.Month)!
-            .ReactiveEnergyTotalImportT0Max_VARh,
-          ReactiveEnergyTotalImportT0Min_VARh: response.AbbB2xAggregates
-            .FirstOrDefault(x => x.Interval == IntervalModel.Month)!
-            .ReactiveEnergyTotalImportT0Min_VARh,
-          ReactiveEnergyTotalExportT0Max_VARh: response.AbbB2xAggregates
-            .FirstOrDefault(x => x.Interval == IntervalModel.Month)!
-            .ReactiveEnergyTotalExportT0Max_VARh,
-          ReactiveEnergyTotalExportT0Min_VARh: response.AbbB2xAggregates
-            .FirstOrDefault(x => x.Interval == IntervalModel.Month)!
-            .ReactiveEnergyTotalExportT0Min_VARh,
-          ActivePowerTotalImportT1Max_W: response.AbbB2xAggregates
-            .Where(x => x.Interval == IntervalModel.QuarterHour)
-            .Max(x => x.ActivePowerL1NetT0Avg_W)
-        )
-      )
+      .ToListAsync())
+      .Select(x => new CalculationBasisModel(
+        NetworkUser: x.NetworkUser,
+        MeasurementLocation: x.MeasurementLocation,
+        Meter: x.Meter,
+        Aggregates: Enumerable.Empty<IAggregate>()
+          .Concat(x.AbbB2xAggregates)
+          .Concat(x.SchneideriEM3xxxAggregates)
+          .ToList()
+      ))
       .ToList();
-  }
 }

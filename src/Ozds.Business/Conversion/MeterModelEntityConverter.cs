@@ -7,16 +7,17 @@ using Ozds.Data.Entities.Base;
 
 namespace Ozds.Business.Conversion;
 
-public class
-  MeterModelEntityConverter : ModelEntityConverter<MeterModel,
-  MeterEntity>
+public class MeterModelEntityConverter : ModelEntityConverter<
+  MeterModel, MeterEntity>
 {
-  protected override MeterEntity ToEntity(MeterModel model)
+  protected override MeterEntity ToEntity(
+    MeterModel model)
   {
     return model.ToEntity();
   }
 
-  protected override MeterModel ToModel(MeterEntity entity)
+  protected override MeterModel ToModel(
+    MeterEntity entity)
   {
     return entity.ToModel();
   }
@@ -26,27 +27,35 @@ public static class MeterModelEntityConverterExtensions
 {
   public static MeterEntity ToEntity(this MeterModel model)
   {
-    if (model is AbbB2xMeterModel abbB2XMeterModel)
+    if (model is AbbB2xMeterModel abbB2xMeterModel)
     {
-      return abbB2XMeterModel.ToEntity();
+      return abbB2xMeterModel.ToEntity();
     }
-    else if (model is SchneideriEM3xxxMeterModel schneideriEM3xxxMeterModel)
+    if (model is SchneideriEM3xxxMeterModel schneideriEM3xxxMeterModel)
     {
       return schneideriEM3xxxMeterModel.ToEntity();
     }
-    throw new InvalidOperationException("");
+
+    throw new NotSupportedException(
+      $"MeterModel type {model.GetType().Name} is not supported."
+    );
   }
 
   public static MeterModel ToModel(this MeterEntity entity)
   {
-    if (entity is AbbB2xMeterEntity abbB2XMeterEntity)
+    if (entity is AbbB2xMeterEntity abbB2xMeterEntity)
     {
-      return abbB2XMeterEntity.ToModel();
+      return abbB2xMeterEntity.ToModel();
     }
-    else if (entity is SchneideriEM3xxxMeterEntity schneideriEM3xxxMeterEntity)
+
+    if (entity is SchneideriEM3xxxMeterEntity schneideriEM3xxxMeterEntity)
     {
       return schneideriEM3xxxMeterEntity.ToModel();
     }
-    throw new InvalidOperationException("");
+
+    throw new NotSupportedException(
+      $"MeterEntity type {entity.GetType().Name} is not supported."
+    );
   }
 }
+
