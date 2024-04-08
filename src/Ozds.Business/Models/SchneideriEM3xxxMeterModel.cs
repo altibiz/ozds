@@ -10,4 +10,24 @@ public class SchneideriEM3xxxMeterModel : MeterModel
   {
     get { return new SchneideriEM3xxxCapabilities(); }
   }
+  public static SchneideriEM3xxxMeterModel New()
+  {
+    return new SchneideriEM3xxxMeterModel
+    {
+      Id = default!,
+      Title = "",
+      CreatedOn = DateTimeOffset.UtcNow,
+      CreatedById = default,
+      LastUpdatedOn = default,
+      LastUpdatedById = default,
+      IsDeleted = false,
+      DeletedOn = default,
+      DeletedById = default,
+      ConnectionPower_W = default,
+      Phases = default!,
+      CatalogueId = default!,
+      MessengerId = default!,
+      MeasurementValidatorId = default!,
+    };
+  }
 }

@@ -21,7 +21,7 @@ public class OzdsSchneideriEM3xxxMeasurementValidatorModelQueries : IOzdsQueries
     SchneideriEM3xxxMeasurementValidatorById(string id)
   {
     var validatorModel =
-      await context.MeasurementLocations
+      await context.MeasurementValidators
         .OfType<SchneideriEM3xxxMeasurementValidatorEntity>()
         .WithId(id)
         .FirstOrDefaultAsync();

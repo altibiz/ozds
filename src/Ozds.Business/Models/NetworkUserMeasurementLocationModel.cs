@@ -6,4 +6,21 @@ namespace Ozds.Business.Models;
 public class NetworkUserMeasurementLocationModel : MeasurementLocationModel
 {
   [Required] public required string NetworkUserId { get; set; }
+  public static NetworkUserMeasurementLocationModel New()
+  {
+    return new NetworkUserMeasurementLocationModel
+    {
+      Id = default!,
+      Title = "",
+      CreatedOn = DateTimeOffset.UtcNow,
+      CreatedById = default,
+      LastUpdatedOn = default,
+      LastUpdatedById = default,
+      IsDeleted = false,
+      DeletedOn = default,
+      DeletedById = default,
+      NetworkUserId = default!,
+      MeterId = default!,
+    };
+  }
 }

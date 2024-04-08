@@ -1,0 +1,125 @@
+@inject NavigationManager NavigationManager
+@inherits OzdsOwningComponentBase
+
+@if (LoadingState.Value is null)
+{
+  <MudProgressCircular/>
+  return;
+}
+
+<MudText Typo="Typo.h5">Korisnik mreže -> Brojilo</MudText>
+<MudPaper>
+  <MudGrid>
+    <MudItem xs="12" sm="6">
+      <MudText Typo="Typo.body1">Id</MudText>
+      <MudText Typo="Typo.body2">@LoadingState.Value.Id</MudText>
+    </MudItem>
+  </MudGrid>
+</MudPaper>
+
+<EditForm
+  Model="@LoadingState.Value"
+  OnValidSubmit="Submit">
+  <DataAnnotationsValidator/>
+  <MudCard>
+    <MudCardContent>
+      <MudTextField
+        Label="Ime"
+        @bind-Value="LoadingState.Value.Title"
+        For="@(() => LoadingState.Value.Title)"/>
+      <MudSelect
+        Label="Korisnici mreže"
+        AnchorOrigin="Origin.BottomCenter"
+        @bind-Value="LoadingState.Value.NetworkUserId"
+        For="@(() => LoadingState.Value.NetworkUserId)">
+        @foreach(var location in _netUsers){
+          <MudSelectItem Value="location.Id">
+            @location.Title
+          </MudSelectItem>
+        }
+      </MudSelect>
+      <MudSelect
+        Label="Brojilo"
+        AnchorOrigin="Origin.BottomCenter"
+        @bind-Value="LoadingState.Value.MeterId"
+        For="@(() => LoadingState.Value.MeterId)">
+        @foreach(var meter in _meters){
+          <MudSelectItem Value="meter.Id">
+            @meter.Title
+          </MudSelectItem>
+        }
+      </MudSelect>
+    </MudCardContent>
+    <ValidationSummary/>
+    <MudCardActions>
+      <MudButton
+        ButtonType="ButtonType.Submit"
+        Variant="Variant.Filled"
+        Color="MudColor.Primary"
+        Class="ml-auto">
+        @if (_create)
+        {
+          <span>Create</span>
+        }
+        else
+        {
+          <span>Update</span>
+        }
+      </MudButton>
+    </MudCardActions>
+  </MudCard>
+</EditForm>
+
+@code {
+  [Parameter] public string Id { get; set; } = default!;
+
+  [Parameter] public NetworkUserMeasurementLocationModel? Model { get; set; }
+
+  private LoadingState<NetworkUserMeasurementLocationModel> LoadingState { get; set; } = new();
+  private List<NetworkUserModel> _netUsers;
+  private List<MeterModel> _meters;
+
+  private bool _create;
+
+  private void Submit()
+  {
+    var mutations = ScopedServices.GetRequiredService<OzdsAuditableMutations>();
+    if (LoadingState.Value is null)
+      return;
+    if (_create)
+    {
+      mutations.Create(LoadingState.Value);
+    }
+    else
+    {
+      mutations.Update(LoadingState.Value);
+    }
+  }
+
+  protected override void OnInitialized()
+  {
+    if (LoadingState.Value is not null)
+    {
+      LoadingState = LoadingState.WithValue(LoadingState.Value);
+    }
+  }
+
+  protected override async Task OnInitializedAsync()
+  {
+    var queries = ScopedServices.GetRequiredService<OzdsNetworkUserMeasurementLocationModelQueries>();
+    _netUsers = (await queries.GetNetworkUsers("")).Items;
+    _meters = (await queries.GetMeters("")).Items;
+
+    if (LoadingState.Value is null && Id is not null)
+    {
+      LoadingState = LoadingState.WithValue(await queries.NetworkUserMeasurementLocationById(Id));
+    }
+
+    if (LoadingState.Value is null)
+    {
+      LoadingState = LoadingState.WithValue(NetworkUserMeasurementLocationModel.New());
+      _create = true;
+    }
+  }
+
+}

@@ -21,7 +21,7 @@ public class OzdsAbbB2xMeasurementValidatorModelQueries : IOzdsQueries
     AbbB2xMeasurementValidatorById(string id)
   {
     var validatorModel =
-      await context.MeasurementLocations
+      await context.MeasurementValidators
         .OfType<AbbB2xMeasurementValidatorEntity>()
         .WithId(id)
         .FirstOrDefaultAsync();

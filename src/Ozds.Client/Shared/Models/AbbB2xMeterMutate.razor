@@ -1,0 +1,142 @@
+@inject NavigationManager NavigationManager
+@inherits OzdsOwningComponentBase
+
+@if (LoadingState.Value is null)
+{
+  <MudProgressCircular/>
+  return;
+}
+
+<MudText Typo="Typo.h5">Abb B2x Brojilo</MudText>
+<MudPaper>
+  <MudGrid>
+    <MudItem xs="12" sm="6">
+      <MudText Typo="Typo.body1">Id</MudText>
+      <MudText Typo="Typo.body2">@LoadingState.Value.Id</MudText>
+    </MudItem>
+  </MudGrid>
+</MudPaper>
+
+<EditForm
+  Model="@LoadingState.Value"
+  OnValidSubmit="Submit">
+  <DataAnnotationsValidator/>
+  <MudCard>
+    <MudCardContent>
+      <MudTextField
+        Label="Ime"
+        @bind-Value="LoadingState.Value.Title"
+        For="@(() => LoadingState.Value.Title)"/>
+      <MudTextField
+        Label="Priključna snaga"
+        @bind-Value="LoadingState.Value.ConnectionPower_W"
+        For="@(() => LoadingState.Value.ConnectionPower_W)"/>
+      <MudSelect
+        Label="Pošiljatelj"
+        AnchorOrigin="Origin.BottomCenter"
+        @bind-Value="LoadingState.Value.MessengerId"
+        For="@(() => LoadingState.Value.MessengerId)">
+        @foreach(var messenger in _messengers){
+          <MudSelectItem Value="messenger.Id">
+            @messenger.Title
+          </MudSelectItem>
+        }
+      </MudSelect>
+      <MudSelect
+        Label="Katalog"
+        AnchorOrigin="Origin.BottomCenter"
+        @bind-Value="LoadingState.Value.CatalogueId"
+        For="@(() => LoadingState.Value.CatalogueId)">
+        @foreach(var catalog in _catalogues){
+          <MudSelectItem Value="catalog.Id">
+            @catalog.Title
+          </MudSelectItem>
+        }
+      </MudSelect>
+      <MudSelect
+        Label="Validator"
+        AnchorOrigin="Origin.BottomCenter"
+        @bind-Value="LoadingState.Value.MeasurementValidatorId"
+        For="@(() => LoadingState.Value.MeasurementValidatorId)">
+        @foreach(var validator in _validators){
+          <MudSelectItem Value="validator.Id">
+            @validator.Title
+          </MudSelectItem>
+        }
+      </MudSelect>
+    </MudCardContent>
+    <ValidationSummary/>
+    <MudCardActions>
+      <MudButton
+        ButtonType="ButtonType.Submit"
+        Variant="Variant.Filled"
+        Color="MudColor.Primary"
+        Class="ml-auto">
+        @if (_create)
+        {
+          <span>Create</span>
+        }
+        else
+        {
+          <span>Update</span>
+        }
+      </MudButton>
+    </MudCardActions>
+  </MudCard>
+</EditForm>
+
+@code {
+  [Parameter] public string Id { get; set; } = default!;
+
+  [Parameter] public AbbB2xMeterModel? Model { get; set; }
+
+  private LoadingState<AbbB2xMeterModel> LoadingState { get; set; } = new();
+  private List<MessengerModel> _messengers;
+  private List<CatalogueModel> _catalogues;
+  private List<AbbB2xMeasurementValidatorModel> _validators;
+
+  private bool _create;
+
+  private void Submit()
+  {
+    var mutations = ScopedServices.GetRequiredService<OzdsAuditableMutations>();
+    if (LoadingState.Value is null)
+      return;
+    if (_create)
+    {
+      mutations.Create(LoadingState.Value);
+    }
+    else
+    {
+      mutations.Update(LoadingState.Value);
+    }
+  }
+
+  protected override void OnInitialized()
+  {
+    if (LoadingState.Value is not null)
+    {
+      LoadingState = LoadingState.WithValue(LoadingState.Value);
+    }
+  }
+
+  protected override async Task OnInitializedAsync()
+  {
+    var queries = ScopedServices.GetRequiredService<OzdsAbbB2xMeterModelQueries>();
+    _messengers = (await queries.GetMessengers("")).Items;
+    _catalogues = (await queries.GetCatalogues("")).Items;
+    _validators = (await queries.GetValidators("")).Items;
+
+    if (LoadingState.Value is null && Id is not null)
+    {
+      LoadingState = LoadingState.WithValue(await queries.AbbB2xMeterById(Id));
+    }
+
+    if (LoadingState.Value is null)
+    {
+      LoadingState = LoadingState.WithValue(AbbB2xMeterModel.New());
+      _create = true;
+    }
+  }
+
+}

@@ -10,21 +10,21 @@ using SQLitePCL;
 
 namespace Ozds.Business.Queries;
 
-public class OzdsAbbB2xMeterModelQueries : IOzdsQueries
+public class OzdsSchneideriEM3xxxMeterModelQueries : IOzdsQueries
 {
   protected readonly OzdsDbContext context;
 
-  public OzdsAbbB2xMeterModelQueries(OzdsDbContext context)
+  public OzdsSchneideriEM3xxxMeterModelQueries(OzdsDbContext context)
   {
     this.context = context;
   }
 
-  public async Task<AbbB2xMeterModel?>
-    AbbB2xMeterById(string id)
+  public async Task<SchneideriEM3xxxMeterModel?>
+    SchneideriEM3xxxMeterById(string id)
   {
     var meterEntity =
       await context.Meters
-        .OfType<AbbB2xMeterEntity>()
+        .OfType<SchneideriEM3xxxMeterEntity>()
         .WithId(id)
         .FirstOrDefaultAsync();
     if (meterEntity is not null)
@@ -69,14 +69,14 @@ public class OzdsAbbB2xMeterModelQueries : IOzdsQueries
       .Select(item => item.ToModel())
       .ToPaginatedList(count);
   }
-  public async Task<PaginatedList<AbbB2xMeasurementValidatorModel>> GetValidators(
+  public async Task<PaginatedList<SchneideriEM3xxxMeasurementValidatorModel>> GetValidators(
     string title,
     int pageNumber = QueryConstants.StartingPage,
     int pageCount = QueryConstants.DefaultPageCount
   )
   {
     var filtered = context.MeasurementValidators
-      .OfType<AbbB2xMeasurementValidatorEntity>()
+      .OfType<SchneideriEM3xxxMeasurementValidatorEntity>()
       .Where(catalogue => catalogue.Title.StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered

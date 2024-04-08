@@ -5,26 +5,27 @@ using Ozds.Business.Models.Base;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Data;
 using Ozds.Data.Entities;
+using Ozds.Data.Entities.Base;
 using Ozds.Data.Extensions;
 using SQLitePCL;
 
 namespace Ozds.Business.Queries;
 
-public class OzdsAbbB2xMeterModelQueries : IOzdsQueries
+public class OzdsNetworkUserMeasurementLocationModelQueries : IOzdsQueries
 {
   protected readonly OzdsDbContext context;
 
-  public OzdsAbbB2xMeterModelQueries(OzdsDbContext context)
+  public OzdsNetworkUserMeasurementLocationModelQueries(OzdsDbContext context)
   {
     this.context = context;
   }
 
-  public async Task<AbbB2xMeterModel?>
-    AbbB2xMeterById(string id)
+  public async Task<NetworkUserMeasurementLocationModel?>
+    NetworkUserMeasurementLocationById(string id)
   {
     var meterEntity =
-      await context.Meters
-        .OfType<AbbB2xMeterEntity>()
+      await context.MeasurementLocations
+        .OfType<NetworkUserMeasurementLocationEntity>()
         .WithId(id)
         .FirstOrDefaultAsync();
     if (meterEntity is not null)
@@ -33,13 +34,13 @@ public class OzdsAbbB2xMeterModelQueries : IOzdsQueries
     }
     return null;
   }
-  public async Task<PaginatedList<MessengerModel>> GetMessengers(
+  public async Task<PaginatedList<NetworkUserModel>> GetNetworkUsers(
     string title,
     int pageNumber = QueryConstants.StartingPage,
     int pageCount = QueryConstants.DefaultPageCount
   )
   {
-    var filtered = context.Messengers
+    var filtered = context.NetworkUsers
       .Where(catalogue => catalogue.Title
         .StartsWith(title));
     var count = await filtered.CountAsync();
@@ -51,32 +52,13 @@ public class OzdsAbbB2xMeterModelQueries : IOzdsQueries
       .Select(item => item.ToModel())
       .ToPaginatedList(count);
   }
-  public async Task<PaginatedList<CatalogueModel>> GetCatalogues(
+  public async Task<PaginatedList<MeterModel>> GetMeters(
     string title,
     int pageNumber = QueryConstants.StartingPage,
     int pageCount = QueryConstants.DefaultPageCount
   )
   {
-    var filtered = context.Catalogues
-      .Where(catalogue => catalogue.Title
-        .StartsWith(title));
-    var count = await filtered.CountAsync();
-    var items = await filtered
-      .Skip((pageNumber - 1) * pageCount)
-      .Take(pageCount)
-      .ToListAsync();
-    return items
-      .Select(item => item.ToModel())
-      .ToPaginatedList(count);
-  }
-  public async Task<PaginatedList<AbbB2xMeasurementValidatorModel>> GetValidators(
-    string title,
-    int pageNumber = QueryConstants.StartingPage,
-    int pageCount = QueryConstants.DefaultPageCount
-  )
-  {
-    var filtered = context.MeasurementValidators
-      .OfType<AbbB2xMeasurementValidatorEntity>()
+    var filtered = context.Meters
       .Where(catalogue => catalogue.Title.StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered
