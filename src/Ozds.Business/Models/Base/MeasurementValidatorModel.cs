@@ -3,7 +3,11 @@ using Ozds.Business.Models.Abstractions;
 
 namespace Ozds.Business.Models.Base;
 
-public abstract class MeasurementValidatorModel<T> : AuditableModel,
+public abstract class MeasurementValidatorModel : AuditableModel
+{
+}
+
+public abstract class MeasurementValidatorModel<T> : MeasurementValidatorModel,
   IMeasurementValidator
   where T : IMeasurement
 {

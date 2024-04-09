@@ -16,6 +16,10 @@ public class NetworkUserInvoiceEntity : InvoiceEntity
   }
 
   public virtual NetworkUserEntity NetworkUser { get; set; } = default!;
+
+  public LocationEntity ArchivedLocation { get; set; } = default!;
+
+  public NetworkUserEntity ArchivedNetworkUser { get; set; } = default!;
 }
 
 public class
@@ -34,5 +38,11 @@ public class
     builder
       .Property("_networkUserId")
       .HasColumnName("network_user_id");
+
+    builder
+      .ComplexProperty(nameof(NetworkUserInvoiceEntity.ArchivedLocation));
+
+    builder
+      .ComplexProperty(nameof(NetworkUserInvoiceEntity.ArchivedNetworkUser));
   }
 }

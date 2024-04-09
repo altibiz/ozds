@@ -41,9 +41,25 @@ public class CalculationEntity : IReadonlyEntity, IIdentifiableEntity
     get { return _measurementLocationId.ToString(); }
     init { _measurementLocationId = long.Parse(value); }
   }
+
+  protected readonly long _invoiceId;
+
+  public virtual InvoiceEntity Invoice { get; set; } = default!;
+
+  public string InvoiceId
+  {
+    get { return _invoiceId.ToString(); }
+    init { _invoiceId = long.Parse(value); }
+  }
+
+  public decimal Total_EUR { get; set; }
+
+  public MeterEntity ArchivedMeter { get; set; } = default!;
+
+  public MeasurementLocationEntity ArchivedMeasurementLocation { get; set; } = default!;
 }
 
-public class CalculationEntity<TCatalogue> where TCatalogue : CatalogueEntity
+public class CalculationEntity<TCatalogue> : CalculationEntity where TCatalogue : CatalogueEntity
 {
   public virtual string CatalogueId { get; set; } = default!;
 
@@ -87,6 +103,17 @@ public class
       .HasForeignKey("_measurementLocationId");
 
     builder
+      .HasOne(nameof(CalculationEntity.Invoice))
+      .WithMany(nameof(InvoiceEntity.Calculations))
+      .HasForeignKey("_invoice");
+
+    builder
+      .ComplexProperty(nameof(CalculationEntity.ArchivedMeter));
+
+    builder
+      .ComplexProperty(nameof(CalculationEntity.ArchivedMeasurementLocation));
+
+    builder
       .Property<DateTimeOffset>(nameof(CalculationEntity.IssuedOn))
       .HasConversion(
         x => x.ToUniversalTime(),
@@ -97,6 +124,10 @@ public class
     builder
       .Property("_measurementLocationId")
       .HasColumnName("measurement_location_id");
+
+    builder
+      .Property(nameof(CalculationEntity.Total_EUR))
+      .HasColumnName("total_eur");
 
 
     if (type != typeof(CalculationEntity))

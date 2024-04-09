@@ -3,7 +3,7 @@ using Ozds.Business.Models.Enums;
 
 namespace Ozds.Business.Models.Abstractions;
 
-public interface IEvent : IValidatableObject, IIdentifiable, IReadonly
+public interface IEvent : IIdentifiable, IReadonly
 {
   public DateTimeOffset Timestamp { get; }
 

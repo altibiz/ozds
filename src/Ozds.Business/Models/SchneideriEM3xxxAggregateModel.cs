@@ -64,13 +64,13 @@ public class SchneideriEM3xxxAggregateModel : AggregateModel
   [Required]
   public required float ActiveEnergyTotalImportT2Max_Wh { get; set; }
 
-  public override TariffMeasure Current_A
+  public override TariffMeasure<float> Current_A
   {
     get
     {
-      return new UnaryTariffMeasure(
-        new AnyDuplexMeasure(
-          new TriPhasicMeasure(
+      return new UnaryTariffMeasure<float>(
+        new AnyDuplexMeasure<float>(
+          new TriPhasicMeasure<float>(
             CurrentL1AnyT0Avg_A,
             CurrentL2AnyT0Avg_A,
             CurrentL3AnyT0Avg_A
@@ -80,13 +80,13 @@ public class SchneideriEM3xxxAggregateModel : AggregateModel
     }
   }
 
-  public override TariffMeasure Voltage_V
+  public override TariffMeasure<float> Voltage_V
   {
     get
     {
-      return new UnaryTariffMeasure(
-        new AnyDuplexMeasure(
-          new TriPhasicMeasure(
+      return new UnaryTariffMeasure<float>(
+        new AnyDuplexMeasure<float>(
+          new TriPhasicMeasure<float>(
             VoltageL1AnyT0Avg_V,
             VoltageL2AnyT0Avg_V,
             VoltageL3AnyT0Avg_V
@@ -96,16 +96,16 @@ public class SchneideriEM3xxxAggregateModel : AggregateModel
     }
   }
 
-  public override TariffMeasure ActivePower_W
+  public override TariffMeasure<float> ActivePower_W
   {
     get
     {
-      return new CompositeTariffMeasure(new List<TariffMeasure>
+      return new CompositeTariffMeasure<float>(new List<TariffMeasure<float>>
       {
         base.ActivePower_W,
-        new UnaryTariffMeasure(
-          new NetDuplexMeasure(
-            new TriPhasicMeasure(
+        new UnaryTariffMeasure<float>(
+          new NetDuplexMeasure<float>(
+            new TriPhasicMeasure<float>(
               ActivePowerL1NetT0Avg_W,
               ActivePowerL2NetT0Avg_W,
               ActivePowerL3NetT0Avg_W
@@ -116,16 +116,16 @@ public class SchneideriEM3xxxAggregateModel : AggregateModel
     }
   }
 
-  public override TariffMeasure ReactivePower_VAR
+  public override TariffMeasure<float> ReactivePower_VAR
   {
     get
     {
-      return new CompositeTariffMeasure(new List<TariffMeasure>
+      return new CompositeTariffMeasure<float>(new List<TariffMeasure<float>>
       {
         base.ReactivePower_VAR,
-        new UnaryTariffMeasure(
-          new NetDuplexMeasure(
-            new SinglePhasicMeasure(
+        new UnaryTariffMeasure<float>(
+          new NetDuplexMeasure<float>(
+            new SinglePhasicMeasure<float>(
               ReactivePowerTotalNetT0Avg_VAR
             )
           )
@@ -134,16 +134,16 @@ public class SchneideriEM3xxxAggregateModel : AggregateModel
     }
   }
 
-  public override TariffMeasure ApparentPower_VA
+  public override TariffMeasure<float> ApparentPower_VA
   {
     get
     {
-      return new CompositeTariffMeasure(new List<TariffMeasure>
+      return new CompositeTariffMeasure<float>(new List<TariffMeasure<float>>
       {
         base.ApparentPower_VA,
-        new UnaryTariffMeasure(
-          new NetDuplexMeasure(
-            new SinglePhasicMeasure(
+        new UnaryTariffMeasure<float>(
+          new NetDuplexMeasure<float>(
+            new SinglePhasicMeasure<float>(
               ApparentPowerTotalNetT0Avg_VA
             )
           )
@@ -152,50 +152,50 @@ public class SchneideriEM3xxxAggregateModel : AggregateModel
     }
   }
 
-  public override SpanningMeasure ActiveEnergySpan_Wh
+  public override SpanningMeasure<float> ActiveEnergySpan_Wh
   {
     get
     {
-      return new MinMaxSpanningMeasure(
-        new UnaryTariffMeasure(
-          new ImportExportDuplexMeasure(
-            new SinglePhasicMeasure(ActiveEnergyTotalImportT0Min_Wh),
-            new SinglePhasicMeasure(ActiveEnergyTotalExportT0Min_Wh)
+      return new MinMaxSpanningMeasure<float>(
+        new UnaryTariffMeasure<float>(
+          new ImportExportDuplexMeasure<float>(
+            new SinglePhasicMeasure<float>(ActiveEnergyTotalImportT0Min_Wh),
+            new SinglePhasicMeasure<float>(ActiveEnergyTotalExportT0Min_Wh)
           )
         ),
-        new UnaryTariffMeasure(
-          new ImportExportDuplexMeasure(
-            new SinglePhasicMeasure(ActiveEnergyTotalImportT0Max_Wh),
-            new SinglePhasicMeasure(ActiveEnergyTotalExportT0Max_Wh)
+        new UnaryTariffMeasure<float>(
+          new ImportExportDuplexMeasure<float>(
+            new SinglePhasicMeasure<float>(ActiveEnergyTotalImportT0Max_Wh),
+            new SinglePhasicMeasure<float>(ActiveEnergyTotalExportT0Max_Wh)
           )
         )
       );
     }
   }
 
-  public override SpanningMeasure ReactiveEnergySpan_VARh
+  public override SpanningMeasure<float> ReactiveEnergySpan_VARh
   {
     get
     {
-      return new MinMaxSpanningMeasure(
-        new UnaryTariffMeasure(
-          new ImportExportDuplexMeasure(
-            new SinglePhasicMeasure(ReactiveEnergyTotalImportT0Min_VARh),
-            new SinglePhasicMeasure(ReactiveEnergyTotalExportT0Min_VARh)
+      return new MinMaxSpanningMeasure<float>(
+        new UnaryTariffMeasure<float>(
+          new ImportExportDuplexMeasure<float>(
+            new SinglePhasicMeasure<float>(ReactiveEnergyTotalImportT0Min_VARh),
+            new SinglePhasicMeasure<float>(ReactiveEnergyTotalExportT0Min_VARh)
           )
         ),
-        new UnaryTariffMeasure(
-          new ImportExportDuplexMeasure(
-            new SinglePhasicMeasure(ReactiveEnergyTotalImportT0Max_VARh),
-            new SinglePhasicMeasure(ReactiveEnergyTotalExportT0Max_VARh)
+        new UnaryTariffMeasure<float>(
+          new ImportExportDuplexMeasure<float>(
+            new SinglePhasicMeasure<float>(ReactiveEnergyTotalImportT0Max_VARh),
+            new SinglePhasicMeasure<float>(ReactiveEnergyTotalExportT0Max_VARh)
           )
         )
       );
     }
   }
 
-  public override SpanningMeasure ApparentEnergySpan_VAh
+  public override SpanningMeasure<float> ApparentEnergySpan_VAh
   {
-    get { return SpanningMeasure.Null; }
+    get { return SpanningMeasure<float>.Null; }
   }
 }

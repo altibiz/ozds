@@ -10,14 +10,9 @@ public partial class OzdsDbContext : DbContext
 
   public DbSet<LocationEntity> Locations { get; set; } = default!;
 
-  public DbSet<LocationInvoiceEntity> LocationInvoices { get; set; } = default!;
-
   public DbSet<CatalogueEntity> Catalogues { get; set; } = default!;
 
   public DbSet<NetworkUserEntity> NetworkUsers { get; set; } = default!;
-
-  public DbSet<NetworkUserInvoiceEntity> NetworkUserInvoices { get; set; } =
-    default!;
 
   public DbSet<MeasurementLocationEntity> MeasurementLocations { get; set; } =
     default!;
@@ -47,6 +42,13 @@ public partial class OzdsDbContext : DbContext
     set;
   } =
     default!;
+
+  public DbSet<LocationInvoiceEntity> LocationInvoices { get; set; } = default!;
+
+  public DbSet<NetworkUserInvoiceEntity> NetworkUserInvoices { get; set; } =
+    default!;
+
+  public DbSet<CalculationEntity> Calculations { get; set; } = default!;
 
   public DbSet<EventEntity> Events { get; set; } = default!;
 }

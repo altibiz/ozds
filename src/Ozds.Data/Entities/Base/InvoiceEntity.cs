@@ -27,6 +27,14 @@ public abstract class InvoiceEntity : IReadonlyEntity, IIdentifiableEntity
   }
 
   public string Title { get; set; } = default!;
+
+  public virtual ICollection<CalculationEntity> Calculations { get; set; } = default!;
+
+  public decimal Total_EUR { get; set; } = default!;
+
+  public decimal Tax_EUR { get; set; } = default!;
+
+  public decimal TotalWithTax_EUR { get; set; } = default!;
 }
 
 public class
@@ -61,5 +69,17 @@ public class
       .HasOne(nameof(InvoiceEntity.IssuedBy))
       .WithMany()
       .HasForeignKey(nameof(InvoiceEntity.IssuedById));
+
+    builder
+      .Property(nameof(InvoiceEntity.Total_EUR))
+      .HasColumnName("total_eur");
+
+    builder
+      .Property(nameof(InvoiceEntity.Tax_EUR))
+      .HasColumnName("tax_eur");
+
+    builder
+      .Property(nameof(InvoiceEntity.TotalWithTax_EUR))
+      .HasColumnName("total_with_tax_eur");
   }
 }

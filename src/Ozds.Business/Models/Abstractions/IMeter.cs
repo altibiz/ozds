@@ -4,9 +4,7 @@ namespace Ozds.Business.Models.Abstractions;
 
 public interface IMeter : IAuditable
 {
-  public string MessengerId { get; }
-
-  public string CatalogueId { get; }
+  public string? MessengerId { get; }
 
   public string MeasurementValidatorId { get; }
 

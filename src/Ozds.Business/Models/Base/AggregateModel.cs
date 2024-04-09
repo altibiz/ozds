@@ -17,17 +17,17 @@ public abstract class AggregateModel : IAggregate
 
   [Required] public required long Count { get; set; } = 0;
 
-  public abstract TariffMeasure Current_A { get; }
+  public abstract TariffMeasure<float> Current_A { get; }
 
-  public abstract TariffMeasure Voltage_V { get; }
+  public abstract TariffMeasure<float> Voltage_V { get; }
 
-  public abstract SpanningMeasure ActiveEnergySpan_Wh { get; }
+  public abstract SpanningMeasure<float> ActiveEnergySpan_Wh { get; }
 
-  public abstract SpanningMeasure ReactiveEnergySpan_VARh { get; }
+  public abstract SpanningMeasure<float> ReactiveEnergySpan_VARh { get; }
 
-  public abstract SpanningMeasure ApparentEnergySpan_VAh { get; }
+  public abstract SpanningMeasure<float> ApparentEnergySpan_VAh { get; }
 
-  public virtual TariffMeasure ActivePower_W
+  public virtual TariffMeasure<float> ActivePower_W
   {
     get
     {
@@ -36,7 +36,7 @@ public abstract class AggregateModel : IAggregate
     }
   }
 
-  public virtual TariffMeasure ReactivePower_VAR
+  public virtual TariffMeasure<float> ReactivePower_VAR
   {
     get
     {
@@ -45,7 +45,7 @@ public abstract class AggregateModel : IAggregate
     }
   }
 
-  public virtual TariffMeasure ApparentPower_VA
+  public virtual TariffMeasure<float> ApparentPower_VA
   {
     get
     {
@@ -54,17 +54,17 @@ public abstract class AggregateModel : IAggregate
     }
   }
 
-  public virtual TariffMeasure ActiveEnergy_Wh
+  public virtual TariffMeasure<float> ActiveEnergy_Wh
   {
     get { return ActiveEnergySpan_Wh.SpanMax; }
   }
 
-  public virtual TariffMeasure ReactiveEnergy_VARh
+  public virtual TariffMeasure<float> ReactiveEnergy_VARh
   {
     get { return ReactiveEnergySpan_VARh.SpanMax; }
   }
 
-  public virtual TariffMeasure ApparentEnergy_VAh
+  public virtual TariffMeasure<float> ApparentEnergy_VAh
   {
     get { return ApparentEnergySpan_VAh.SpanMax; }
   }

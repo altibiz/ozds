@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Conversion;
 using Ozds.Business.Models;
-using Ozds.Business.Models.Abstractions;
+using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Composite;
 using Ozds.Business.Models.Enums;
 using Ozds.Data;
@@ -22,7 +22,7 @@ public class OzdsBillingQueries
     _dbContext = dbContext;
   }
 
-  public async Task<List<CalculationBasisModel>> CalculationSpecificationsByNetworkUser(
+  public async Task<List<NetworkUserCalculationBasisModel>> CalculationBasesByNetworkUser(
     string networkUserId,
     DateTimeOffset fromDate,
     DateTimeOffset toDate
@@ -30,13 +30,19 @@ public class OzdsBillingQueries
     (await _dbContext.NetworkUsers
       .WithId(networkUserId)
       .Join(
-        _dbContext.MeasurementLocations.OfType<NetworkUserMeasurementLocationEntity>(),
+        _dbContext.MeasurementLocations
+          .OfType<NetworkUserMeasurementLocationEntity>()
+          .Include(x => x.Catalogue)
+          .Include(x => x.NetworkUser)
+          .Include(x => x.NetworkUser.Location),
         networkUser => networkUser.Id,
         measurementLocation => measurementLocation.NetworkUserId,
         (networkUser, measurementLocation) => new
         {
-          NetworkUser = networkUser.ToModel(),
-          MeasurementLocation = measurementLocation.ToModel()
+          Location = measurementLocation.NetworkUser.Location.ToModel(),
+          NetworkUser = measurementLocation.NetworkUser.ToModel(),
+          MeasurementLocation = measurementLocation.ToModel(),
+          Catalogue = measurementLocation.Catalogue.ToModel()
         }
       )
       .Join(
@@ -45,8 +51,10 @@ public class OzdsBillingQueries
         meter => meter.Id,
         (x, meter) => new
         {
-          x.MeasurementLocation,
+          x.Location,
           x.NetworkUser,
+          x.MeasurementLocation,
+          x.Catalogue,
           Meter = meter.ToModel()
         }
       )
@@ -61,9 +69,11 @@ public class OzdsBillingQueries
         aggregate => aggregate.MeterId,
         (x, abbB2xAggregates) => new
         {
-          x.Meter,
+          x.Location,
           x.NetworkUser,
+          x.Meter,
           x.MeasurementLocation,
+          x.Catalogue,
           AbbB2xAggregates = abbB2xAggregates
             .Select(abbB2xAggregate => abbB2xAggregate
               .ToModel())
@@ -80,9 +90,11 @@ public class OzdsBillingQueries
         aggregate => aggregate.MeterId,
         (x, schneideriEM3xxxAggregates) => new
         {
-          x.Meter,
+          x.Location,
           x.NetworkUser,
+          x.Meter,
           x.MeasurementLocation,
+          x.Catalogue,
           x.AbbB2xAggregates,
           SchneideriEM3xxxAggregates = schneideriEM3xxxAggregates
             .Select(schneideriEM3xxxAggregate => schneideriEM3xxxAggregate
@@ -90,14 +102,60 @@ public class OzdsBillingQueries
         }
       )
       .ToListAsync())
-      .Select(x => new CalculationBasisModel(
+      .Select(x => new NetworkUserCalculationBasisModel(
+        Location: x.Location,
         NetworkUser: x.NetworkUser,
         MeasurementLocation: x.MeasurementLocation,
         Meter: x.Meter,
-        Aggregates: Enumerable.Empty<IAggregate>()
+        Catalogue: x.Catalogue,
+        Aggregates: Enumerable.Empty<AggregateModel>()
           .Concat(x.AbbB2xAggregates)
           .Concat(x.SchneideriEM3xxxAggregates)
           .ToList()
       ))
       .ToList();
+
+  public async Task<NetworkUserInvoiceIssuingBasisModel> IssuingBasesByNetworkUser(
+    string networkUserId,
+    DateTimeOffset fromDate,
+    DateTimeOffset toDate
+  )
+  {
+    var networkUser = await _dbContext.NetworkUsers
+      .WithId(networkUserId)
+      .Include(x => x.Location)
+      .FirstOrDefaultAsync();
+    if (networkUser == null)
+    {
+      throw new InvalidOperationException("Network user not found");
+    }
+
+    var calculationBases = await CalculationBasesByNetworkUser(
+      networkUserId,
+      fromDate,
+      toDate
+    );
+
+    return new NetworkUserInvoiceIssuingBasisModel(
+      Location: networkUser.Location.ToModel(),
+      NetworkUser: networkUser.ToModel(),
+      FromDate: fromDate,
+      ToDate: toDate,
+      CalculationBases: calculationBases
+    );
+  }
+
+  public Task<List<LocationCalculationBasisModel>> CalculationBasesByLocation(
+    string locationId,
+    DateTimeOffset fromDate,
+    DateTimeOffset toDate
+  ) =>
+    throw new NotImplementedException();
+
+  public Task<LocationInvoiceIssuingBasisModel> IssuingBasesByLocation(
+    string locationId,
+    DateTimeOffset fromDate,
+    DateTimeOffset toDate
+  ) =>
+    throw new NotImplementedException();
 }

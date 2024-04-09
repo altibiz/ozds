@@ -14,25 +14,25 @@ public interface IAggregate : IValidatableObject, IReadonly
 
   public long Count { get; }
 
-  public TariffMeasure Current_A { get; }
+  public TariffMeasure<float> Current_A { get; }
 
-  public TariffMeasure Voltage_V { get; }
+  public TariffMeasure<float> Voltage_V { get; }
 
-  public TariffMeasure ActivePower_W { get; }
+  public TariffMeasure<float> ActivePower_W { get; }
 
-  public TariffMeasure ReactivePower_VAR { get; }
+  public TariffMeasure<float> ReactivePower_VAR { get; }
 
-  public TariffMeasure ApparentPower_VA { get; }
+  public TariffMeasure<float> ApparentPower_VA { get; }
 
-  public TariffMeasure ActiveEnergy_Wh { get; }
+  public TariffMeasure<float> ActiveEnergy_Wh { get; }
 
-  public TariffMeasure ReactiveEnergy_VARh { get; }
+  public TariffMeasure<float> ReactiveEnergy_VARh { get; }
 
-  public TariffMeasure ApparentEnergy_VAh { get; }
+  public TariffMeasure<float> ApparentEnergy_VAh { get; }
 
-  public SpanningMeasure ActiveEnergySpan_Wh { get; }
+  public SpanningMeasure<float> ActiveEnergySpan_Wh { get; }
 
-  public SpanningMeasure ReactiveEnergySpan_VARh { get; }
+  public SpanningMeasure<float> ReactiveEnergySpan_VARh { get; }
 
-  public SpanningMeasure ApparentEnergySpan_VAh { get; }
+  public SpanningMeasure<float> ApparentEnergySpan_VAh { get; }
 }

@@ -8,11 +8,11 @@ namespace Ozds.Data.Entities;
 public class RedLowCatalogueEntity : CatalogueEntity
 {
 #pragma warning disable CA1707
-  public float ActiveEnergyTotalImportT1Price_EUR { get; set; }
-  public float ActiveEnergyTotalImportT2Price_EUR { get; set; }
-  public float MaxActivePowerTotalImportT1Price_EUR { get; set; }
-  public float ReactiveEnergyTotalImportT0Price_EUR { get; set; }
-  public float MeterFeePrice_EUR { get; set; }
+  public decimal ActiveEnergyTotalImportT1Price_EUR { get; set; }
+  public decimal ActiveEnergyTotalImportT2Price_EUR { get; set; }
+  public decimal ActivePowerTotalImportT1Price_EUR { get; set; }
+  public decimal ReactiveEnergyTotalRampedT0Price_EUR { get; set; }
+  public decimal MeterFeePrice_EUR { get; set; }
 #pragma warning restore CA1707
 }
 
@@ -35,13 +35,13 @@ public class
 
     builder
       .Property(nameof(RedLowCatalogueEntity
-        .MaxActivePowerTotalImportT1Price_EUR))
-      .HasColumnName("max_active_power_total_import_t1_price_eur");
+        .ActivePowerTotalImportT1Price_EUR))
+      .HasColumnName("active_power_total_import_t1_price_eur");
 
     builder
       .Property(nameof(RedLowCatalogueEntity
-        .ReactiveEnergyTotalImportT0Price_EUR))
-      .HasColumnName("reactive_energy_total_import_t0_price_eur");
+        .ReactiveEnergyTotalRampedT0Price_EUR))
+      .HasColumnName("reactive_energy_total_ramped_t0_price_eur");
 
     builder
       .Property(nameof(RedLowCatalogueEntity.MeterFeePrice_EUR))

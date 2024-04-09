@@ -16,6 +16,8 @@ public class LocationInvoiceEntity : InvoiceEntity
   }
 
   public virtual LocationEntity Location { get; set; } = default!;
+
+  public LocationEntity ArchivedLocation { get; set; } = default!;
 }
 
 public class
@@ -34,5 +36,8 @@ public class
     builder
       .Property("_locationId")
       .HasColumnName("location_id");
+
+    builder
+      .ComplexProperty(nameof(LocationInvoiceEntity.ArchivedLocation));
   }
 }

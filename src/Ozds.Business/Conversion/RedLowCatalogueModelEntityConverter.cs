@@ -37,10 +37,10 @@ public static class RedLowCatalogueModelEntityConverterExtensions
         entity.ActiveEnergyTotalImportT1Price_EUR,
       ActiveEnergyTotalImportT2Price_EUR =
         entity.ActiveEnergyTotalImportT2Price_EUR,
-      MaxActivePowerTotalImportT1Price_EUR =
-        entity.MaxActivePowerTotalImportT1Price_EUR,
-      ReactiveEnergyTotalImportT0Price_EUR =
-        entity.ReactiveEnergyTotalImportT0Price_EUR,
+      ActivePowerTotalImportT1Price_EUR =
+        entity.ActivePowerTotalImportT1Price_EUR,
+      ReactiveEnergyTotalRampedT0Price_EUR =
+        entity.ReactiveEnergyTotalRampedT0Price_EUR,
       MeterFeePrice_EUR = entity.MeterFeePrice_EUR
     };
   }
@@ -62,10 +62,10 @@ public static class RedLowCatalogueModelEntityConverterExtensions
         model.ActiveEnergyTotalImportT1Price_EUR,
       ActiveEnergyTotalImportT2Price_EUR =
         model.ActiveEnergyTotalImportT2Price_EUR,
-      MaxActivePowerTotalImportT1Price_EUR =
-        model.MaxActivePowerTotalImportT1Price_EUR,
-      ReactiveEnergyTotalImportT0Price_EUR =
-        model.ReactiveEnergyTotalImportT0Price_EUR,
+      ActivePowerTotalImportT1Price_EUR =
+        model.ActivePowerTotalImportT1Price_EUR,
+      ReactiveEnergyTotalRampedT0Price_EUR =
+        model.ReactiveEnergyTotalRampedT0Price_EUR,
       MeterFeePrice_EUR = model.MeterFeePrice_EUR
     };
   }

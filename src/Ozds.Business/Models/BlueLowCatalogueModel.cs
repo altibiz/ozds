@@ -7,15 +7,15 @@ public class BlueLowCatalogueModel : CatalogueModel
 {
   [Required]
   [Range(0, double.MaxValue)]
-  public required float ActiveEnergyTotalImportT0Price_EUR { get; set; }
+  public required decimal ActiveEnergyTotalImportT0Price_EUR { get; set; }
 
   [Required]
   [Range(0, double.MaxValue)]
-  public required float ReactiveEnergyTotalImportT0Price_EUR { get; set; }
+  public required decimal ReactiveEnergyTotalRampedT0Price_EUR { get; set; }
 
   [Required]
   [Range(0, double.MaxValue)]
-  public required float MeterFeePrice_EUR { get; set; }
+  public required decimal MeterFeePrice_EUR { get; set; }
 
   public static BlueLowCatalogueModel New()
   {
@@ -31,7 +31,7 @@ public class BlueLowCatalogueModel : CatalogueModel
       DeletedOn = default,
       DeletedById = default,
       ActiveEnergyTotalImportT0Price_EUR = 0,
-      ReactiveEnergyTotalImportT0Price_EUR = 0,
+      ReactiveEnergyTotalRampedT0Price_EUR = 0,
       MeterFeePrice_EUR = 0
     };
   }

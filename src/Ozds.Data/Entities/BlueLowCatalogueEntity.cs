@@ -8,9 +8,9 @@ namespace Ozds.Data.Entities;
 public class BlueLowCatalogueEntity : CatalogueEntity
 {
 #pragma warning disable CA1707
-  public float ActiveEnergyTotalImportT0Price_EUR { get; set; }
-  public float ReactiveEnergyTotalImportT0Price_EUR { get; set; }
-  public float MeterFeePrice_EUR { get; set; }
+  public decimal ActiveEnergyTotalImportT0Price_EUR { get; set; }
+  public decimal ReactiveEnergyTotalRampedT0Price_EUR { get; set; }
+  public decimal MeterFeePrice_EUR { get; set; }
 #pragma warning restore CA1707
 }
 
@@ -28,7 +28,7 @@ public class
 
     builder
       .Property(nameof(BlueLowCatalogueEntity
-        .ReactiveEnergyTotalImportT0Price_EUR))
+        .ReactiveEnergyTotalRampedT0Price_EUR))
       .HasColumnName("active_energy_total_import_t1_price_eur");
 
     builder
