@@ -140,7 +140,7 @@
   private List<TabularData> _dataStruct = new();
   private IEnumerable<NetworkUserModel>? _networkUsers;
   private IEnumerable<LocationModel>? _locations;
-  private IReadOnlyList<SpanningMeasure>? _spanningMeasurements;
+  private IReadOnlyList<SpanningMeasure<float>>? _spanningMeasurements;
   private DateTimeOffset startOfThisMonth = DateTimeOffset.UtcNow.GetStartOfMonth();
   private DateTimeOffset startOfLastMonth = DateTimeOffset.UtcNow.GetStartOfLastMonth();
   private DateTimeOffset now = DateTimeOffset.UtcNow;

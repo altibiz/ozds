@@ -15,7 +15,7 @@ public abstract class CalculationModel : ICalculation
   [Required] public required string MeasurementLocationId { get; set; } = default!;
   [Required] public required string CatalogueId { get; set; } = default!;
 
-  [Required] public required IMeter ArchivedMeter { get; set; } = default!;
+  [Required] public required MeterModel ArchivedMeter { get; set; } = default!;
   [Required] public required MeasurementLocationModel ArchivedMeasurementLocation { get; set; } = default!;
   [Required] public required CatalogueModel ArchivedCatalogue { get; set; } = default!;
 

@@ -149,8 +149,8 @@
   [CascadingParameter] public UserState user { get; set; } = default!;
   [CascadingParameter] public RepresentativeState representative { get; set; } = default!;
   private string? _searchString;
-  private IReadOnlyList<SpanningMeasure>? _spanningMeasurements;
-  private IReadOnlyList<SpanningMeasure>? _lastMonthSpanningMeasurements;
+  private IReadOnlyList<SpanningMeasure<float>>? _spanningMeasurements;
+  private IReadOnlyList<SpanningMeasure<float>>? _lastMonthSpanningMeasurements;
   private DateTimeOffset startOfThisMonth = DateTimeOffset.UtcNow.GetStartOfMonth();
   private DateTimeOffset startOfLastMonth = DateTimeOffset.UtcNow.GetStartOfLastMonth();
   private DateTimeOffset now = DateTime.UtcNow;
@@ -206,7 +206,7 @@
         var _partialData = _partialDataStruct.Where(x => x.meter == meter).FirstOrDefault();
         // Get all _spanningMeasurements for _meters between the startOfLastMonth and startOfThisMonth, decending by timestamp
         // Calculate _consumption using _spanningMeasurements
-        // Get all _lastMonthSpanningMeasurements for _meters between the startOfThisMonth and now, decending by timestamp
+        // Get all _lastMonthSpanningMeasure<float>ments for _meters between the startOfThisMonth and now, decending by timestamp
         // Calculate _lastMonthConsumption using _spanningMeasurements
         if (_invoices is not null)
         {

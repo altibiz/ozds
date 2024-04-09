@@ -1,9 +1,7 @@
 
 using System.ComponentModel.DataAnnotations;
-using Ozds.Business.Conversion;
 using Ozds.Business.Math;
 using Ozds.Business.Models.Base;
-using Ozds.Data.Entities.Base;
 
 namespace Ozds.Business.Models;
 

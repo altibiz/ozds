@@ -30,7 +30,11 @@ public static class LocationInvoiceModelEntityConverterExtensions
       IssuedById = entity.IssuedById,
       FromDate = entity.FromDate,
       ToDate = entity.ToDate,
-      LocationId = entity.LocationId
+      LocationId = entity.LocationId,
+      ArchivedLocation = entity.ArchivedLocation.ToModel(),
+      Total_EUR = entity.Total_EUR,
+      Tax_EUR = entity.Tax_EUR,
+      TotalWithTax_EUR = entity.TotalWithTax_EUR
     };
   }
 
@@ -44,7 +48,11 @@ public static class LocationInvoiceModelEntityConverterExtensions
       IssuedById = model.IssuedById,
       FromDate = model.FromDate,
       ToDate = model.ToDate,
-      LocationId = model.LocationId
+      LocationId = model.LocationId,
+      ArchivedLocation = model.ArchivedLocation.ToEntity(),
+      Total_EUR = model.Total_EUR,
+      Tax_EUR = model.Tax_EUR,
+      TotalWithTax_EUR = model.TotalWithTax_EUR
     };
   }
 }

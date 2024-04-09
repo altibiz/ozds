@@ -54,6 +54,8 @@ public class CalculationEntity : IReadonlyEntity, IIdentifiableEntity
 
   public decimal Total_EUR { get; set; }
 
+  public CatalogueEntity ArchivedCatalogue { get; set; } = default!;
+
   public MeterEntity ArchivedMeter { get; set; } = default!;
 
   public MeasurementLocationEntity ArchivedMeasurementLocation { get; set; } = default!;
@@ -109,6 +111,9 @@ public class
 
     builder
       .ComplexProperty(nameof(CalculationEntity.ArchivedMeter));
+
+    builder
+      .ComplexProperty(nameof(CalculationEntity.ArchivedCatalogue));
 
     builder
       .ComplexProperty(nameof(CalculationEntity.ArchivedMeasurementLocation));

@@ -115,7 +115,7 @@ public class OzdsBillingQueries
       ))
       .ToList();
 
-  public async Task<NetworkUserInvoiceIssuingBasisModel> IssuingBasesByNetworkUser(
+  public async Task<NetworkUserInvoiceIssuingBasisModel> IssuingBasisForNetworkUser(
     string networkUserId,
     DateTimeOffset fromDate,
     DateTimeOffset toDate
@@ -152,7 +152,7 @@ public class OzdsBillingQueries
   ) =>
     throw new NotImplementedException();
 
-  public Task<LocationInvoiceIssuingBasisModel> IssuingBasesByLocation(
+  public Task<LocationInvoiceIssuingBasisModel> IssuingBasisForLocation(
     string locationId,
     DateTimeOffset fromDate,
     DateTimeOffset toDate

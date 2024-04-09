@@ -64,7 +64,7 @@
   private List<GageData> gageValue = new();
   private ApexChartOptions<GageData> gageOptions = new();
   private decimal connectionMaxPower = 100000m;
-  private IReadOnlyList<TariffMeasure>? _measurements;
+  private IReadOnlyList<TariffMeasure<float>>? _measurements;
 
   private class GageData
   {

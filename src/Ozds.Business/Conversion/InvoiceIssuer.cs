@@ -8,7 +8,7 @@ namespace Ozds.Business.Conversion;
 
 public class InvoiceIssuer : IInvoiceIssuer
 {
-  private IServiceProvider _serviceProvider;
+  private readonly IServiceProvider _serviceProvider;
 
   public InvoiceIssuer(IServiceProvider serviceProvider)
   {

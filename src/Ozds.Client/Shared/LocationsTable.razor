@@ -116,7 +116,7 @@
   public record struct TabularData(LocationModel location, decimal consumption, decimal lastMonthConsumption, decimal invoiceTotal);
 
   private List<TabularData> _dataStruct = new();
-  private IReadOnlyList<SpanningMeasure>? _spanningMeasurements;
+  private IReadOnlyList<SpanningMeasure<float>>? _spanningMeasurements;
   private DateTimeOffset nowMonth = DateTimeOffset.UtcNow.GetStartOfMonth();
   private DateTimeOffset lastMonth = DateTimeOffset.UtcNow.GetStartOfLastMonth();
   private DateTimeOffset now = DateTimeOffset.UtcNow;

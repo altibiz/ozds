@@ -10,7 +10,7 @@ public interface ICalculation : IReadonly, IIdentifiable
   public string MeterId { get; }
   public string MeasurementLocationId { get; }
   public string CatalogueId { get; }
-  public IMeter ArchivedMeter { get; }
+  public MeterModel ArchivedMeter { get; }
   public MeasurementLocationModel ArchivedMeasurementLocation { get; }
   public CatalogueModel ArchivedCatalogue { get; }
 

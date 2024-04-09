@@ -33,7 +33,12 @@ public static class NetworkUserInvoiceModelEntityConverterExtensions
       IssuedById = entity.IssuedById,
       FromDate = entity.FromDate,
       ToDate = entity.ToDate,
-      NetworkUserId = entity.NetworkUserId
+      NetworkUserId = entity.NetworkUserId,
+      Total_EUR = entity.Total_EUR,
+      Tax_EUR = entity.Tax_EUR,
+      TotalWithTax_EUR = entity.TotalWithTax_EUR,
+      ArchivedLocation = entity.ArchivedLocation.ToModel(),
+      ArchivedNetworkUser = entity.ArchivedNetworkUser.ToModel()
     };
   }
 
@@ -48,7 +53,12 @@ public static class NetworkUserInvoiceModelEntityConverterExtensions
       IssuedById = model.IssuedById,
       FromDate = model.FromDate,
       ToDate = model.ToDate,
-      NetworkUserId = model.NetworkUserId
+      NetworkUserId = model.NetworkUserId,
+      Total_EUR = model.Total_EUR,
+      Tax_EUR = model.Tax_EUR,
+      TotalWithTax_EUR = model.TotalWithTax_EUR,
+      ArchivedLocation = model.ArchivedLocation.ToEntity(),
+      ArchivedNetworkUser = model.ArchivedNetworkUser.ToEntity()
     };
   }
 }

@@ -212,7 +212,7 @@
   private decimal? _totalLastMonthConsumption = 0;
   private decimal? _totalLastPower = 0;
   private List<TabularData> _dataStruct = new();
-  private IReadOnlyList<SpanningMeasure>? _spanningMeasurements;
+  private IReadOnlyList<SpanningMeasure<float>>? _spanningMeasurements;
   private DateTimeOffset nowMonth = DateTimeOffset.UtcNow.GetStartOfMonth();
   private DateTimeOffset lastMonth = DateTimeOffset.UtcNow.GetStartOfLastMonth();
   private DateTimeOffset now = DateTimeOffset.UtcNow;

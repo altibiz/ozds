@@ -261,7 +261,7 @@
 
   private async Task GetValues(string type, DateTimeOffset fromDate, DateTimeOffset toDate, bool reRenderChart = true)
   {
-    IReadOnlyList<SpanningMeasure>? _spanningMeasurements;
+    IReadOnlyList<SpanningMeasure<float>>? _spanningMeasurements;
 
     switch (type)
     {
