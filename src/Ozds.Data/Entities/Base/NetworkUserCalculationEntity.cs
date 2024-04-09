@@ -51,7 +51,7 @@ public class NetworkUserCalculationEntity : IReadonlyEntity, IIdentifiableEntity
 
   public MeterEntity ArchivedMeter { get; set; } = default!;
 
-  public MeasurementLocationEntity ArchivedMeasurementLocation { get; set; } =
+  public NetworkUserMeasurementLocationEntity ArchivedMeasurementLocation { get; set; } =
     default!;
 
   public virtual string Id
@@ -66,7 +66,13 @@ public class NetworkUserCalculationEntity : IReadonlyEntity, IIdentifiableEntity
 public class NetworkUserCalculationEntity<TCatalogue> : NetworkUserCalculationEntity
   where TCatalogue : CatalogueEntity
 {
-  public virtual string CatalogueId { get; set; } = default!;
+  protected readonly long _catalogueId;
+
+  public string CatalogueId
+  {
+    get { return _catalogueId.ToString(); }
+    init { _catalogueId = long.Parse(value); }
+  }
 
   public virtual TCatalogue Catalogue { get; set; } = default!;
 }
@@ -82,7 +88,7 @@ public class
 
     builder
       .UseTphMappingStrategy()
-      .ToTable("calculations")
+      .ToTable("network_user_calculations")
       .HasDiscriminator<string>("kind");
 
     if (type == typeof(NetworkUserCalculationEntity))
@@ -118,13 +124,32 @@ public class
       .HasForeignKey("_networkUserId");
 
     builder
-      .ComplexProperty(nameof(NetworkUserCalculationEntity.ArchivedMeter));
+      .ComplexProperty(nameof(NetworkUserCalculationEntity.ArchivedMeter))
+      .Ignore(nameof(MeterEntity.LastUpdatedBy))
+      .Ignore(nameof(MeterEntity.CreatedBy))
+      .Ignore(nameof(MeterEntity.DeletedBy))
+      .Ignore(nameof(MeterEntity.MeasurementLocation))
+      .Ignore(nameof(MeterEntity.Messenger))
+      .Ignore(nameof(MeterEntity.NetworkUserCalculations));
 
     builder
-      .ComplexProperty(nameof(NetworkUserCalculationEntity.ArchivedCatalogue));
+      .ComplexProperty(nameof(NetworkUserCalculationEntity.ArchivedCatalogue))
+      .Ignore(nameof(CatalogueEntity.LastUpdatedBy))
+      .Ignore(nameof(CatalogueEntity.CreatedBy))
+      .Ignore(nameof(CatalogueEntity.DeletedBy))
+      .Ignore(nameof(CatalogueEntity.Location))
+      .Ignore(nameof(CatalogueEntity.MeasurementLocations))
+      .Ignore(nameof(CatalogueEntity.NetworkUserCalculations));
 
     builder
-      .ComplexProperty(nameof(NetworkUserCalculationEntity.ArchivedMeasurementLocation));
+      .ComplexProperty(nameof(NetworkUserCalculationEntity.ArchivedMeasurementLocation))
+      .Ignore(nameof(NetworkUserMeasurementLocationEntity.LastUpdatedBy))
+      .Ignore(nameof(NetworkUserMeasurementLocationEntity.CreatedBy))
+      .Ignore(nameof(NetworkUserMeasurementLocationEntity.DeletedBy))
+      .Ignore(nameof(NetworkUserMeasurementLocationEntity.Catalogue))
+      .Ignore(nameof(NetworkUserMeasurementLocationEntity.Meter))
+      .Ignore(nameof(NetworkUserMeasurementLocationEntity.NetworkUser))
+      .Ignore(nameof(NetworkUserMeasurementLocationEntity.NetworkUserCalculations));
 
     builder
       .Property<DateTimeOffset>(nameof(NetworkUserCalculationEntity.IssuedOn))
@@ -144,6 +169,10 @@ public class
       .HasColumnName("network_user_invoice_id");
 
     builder
+      .Property("_networkUserId")
+      .HasColumnName("network_user_id");
+
+    builder
       .Property(nameof(NetworkUserCalculationEntity.Total_EUR))
       .HasColumnName("total_eur");
 
@@ -153,7 +182,12 @@ public class
       builder
         .HasOne(nameof(NetworkUserCalculationEntity<CatalogueEntity>.Catalogue))
         .WithMany(nameof(CatalogueEntity.NetworkUserCalculations))
-        .HasForeignKey(nameof(NetworkUserCalculationEntity<CatalogueEntity>.CatalogueId));
+        .HasForeignKey("_catalogueId");
+
+      builder.Ignore(nameof(NetworkUserCalculationEntity<CatalogueEntity>.CatalogueId));
+      builder
+        .Property("_catalogueId")
+        .HasColumnName("catalogue_id");
     }
   }
 }

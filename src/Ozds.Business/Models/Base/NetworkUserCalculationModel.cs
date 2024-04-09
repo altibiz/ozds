@@ -29,7 +29,7 @@ public abstract class NetworkUserCalculationModel : INetworkUserCalculation
   [Required] public required MeterModel ArchivedMeter { get; set; } = default!;
 
   [Required]
-  public required MeasurementLocationModel ArchivedMeasurementLocation
+  public required NetworkUserMeasurementLocationModel ArchivedMeasurementLocation
   {
     get;
     set;

@@ -8,11 +8,11 @@ namespace Ozds.Data.Entities;
 public class RegulatoryCatalogueEntity : CatalogueEntity
 {
 #pragma warning disable CA1707
-  public float ActiveEnergyTotalImportT1Price_EUR { get; set; }
-  public float ActiveEnergyTotalImportT2Price_EUR { get; set; }
-  public float RenewableEnergyFeePrice_EUR { get; set; }
-  public float BusinessUsageFeePrice_EUR { get; set; }
-  public float TaxRate_Percent { get; set; }
+  public decimal ActiveEnergyTotalImportT1Price_EUR { get; set; }
+  public decimal ActiveEnergyTotalImportT2Price_EUR { get; set; }
+  public decimal RenewableEnergyFeePrice_EUR { get; set; }
+  public decimal BusinessUsageFeePrice_EUR { get; set; }
+  public decimal TaxRate_Percent { get; set; }
 #pragma warning restore CA1707
 }
 

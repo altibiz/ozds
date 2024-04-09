@@ -7,23 +7,23 @@ public class RegulatoryCatalogueModel : CatalogueModel
 {
   [Required]
   [Range(0, double.MaxValue)]
-  public required float ActiveEnergyTotalImportT1Price_EUR { get; set; }
+  public required decimal ActiveEnergyTotalImportT1Price_EUR { get; set; }
 
   [Required]
   [Range(0, double.MaxValue)]
-  public required float ActiveEnergyTotalImportT2Price_EUR { get; set; }
+  public required decimal ActiveEnergyTotalImportT2Price_EUR { get; set; }
 
   [Required]
   [Range(0, double.MaxValue)]
-  public required float RenewableEnergyFeePrice_EUR { get; set; }
+  public required decimal RenewableEnergyFeePrice_EUR { get; set; }
 
   [Required]
   [Range(0, double.MaxValue)]
-  public required float BusinessUsageFeePrice_EUR { get; set; }
+  public required decimal BusinessUsageFeePrice_EUR { get; set; }
 
   [Required]
   [Range(0, double.MaxValue)]
-  public required float TaxRate_Percent { get; set; }
+  public required decimal TaxRate_Percent { get; set; }
 
   public static RegulatoryCatalogueModel New()
   {

@@ -35,7 +35,7 @@ public class
     builder
       .Property(nameof(WhiteLowCatalogueEntity
         .ReactiveEnergyTotalRampedT0Price_EUR))
-      .HasColumnName("reactive_energy_total_abs_sum_t0_price_eur");
+      .HasColumnName("reactive_energy_total_ramped_t0_price_eur");
 
     builder
       .Property(nameof(WhiteLowCatalogueEntity.MeterFeePrice_EUR))

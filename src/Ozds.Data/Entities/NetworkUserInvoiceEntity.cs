@@ -41,8 +41,33 @@ public class
 
     builder
       .ComplexProperty(nameof(NetworkUserInvoiceEntity.ArchivedLocation));
+    builder
+      .ComplexProperty(nameof(LocationInvoiceEntity.ArchivedLocation))
+      .Ignore(nameof(LocationEntity.CreatedBy))
+      .Ignore(nameof(LocationEntity.LastUpdatedBy))
+      .Ignore(nameof(LocationEntity.DeletedBy))
+      .Ignore(nameof(LocationEntity.Invoices))
+      .Ignore(nameof(LocationEntity.BlueLowCatalogue))
+      .Ignore(nameof(LocationEntity.RedLowCatalogue))
+      .Ignore(nameof(LocationEntity.WhiteLowCatalogue))
+      .Ignore(nameof(LocationEntity.WhiteMediumCatalogue))
+      .Ignore(nameof(LocationEntity.RegulatoryCatalogue))
+      .Ignore(nameof(LocationEntity.Invoices))
+      .Ignore(nameof(LocationEntity.NetworkUsers))
+      .Ignore(nameof(LocationEntity.Messengers))
+      .Ignore(nameof(LocationEntity.MeasurementLocations))
+      .Ignore(nameof(LocationEntity.Representatives));
 
     builder
       .ComplexProperty(nameof(NetworkUserInvoiceEntity.ArchivedNetworkUser));
+    builder
+      .ComplexProperty(nameof(NetworkUserInvoiceEntity.ArchivedNetworkUser))
+      .Ignore(nameof(NetworkUserEntity.CreatedBy))
+      .Ignore(nameof(NetworkUserEntity.LastUpdatedBy))
+      .Ignore(nameof(NetworkUserEntity.DeletedBy))
+      .Ignore(nameof(NetworkUserEntity.Invoices))
+      .Ignore(nameof(NetworkUserEntity.MeasurementLocations))
+      .Ignore(nameof(NetworkUserEntity.Location))
+      .Ignore(nameof(NetworkUserEntity.Representatives));
   }
 }
