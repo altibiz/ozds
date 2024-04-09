@@ -5,10 +5,13 @@ using Ozds.Fake.Records;
 namespace Ozds.Fake.Conversion;
 
 public class SchneideriEM3xxxMeasurementRecordPushRequestConverter
-  : MeasurementRecordPushRequestConverter<SchneideriEM3xxxMeasurementRecord, SchneideriEM3xxxPushRequest>
+  : MeasurementRecordPushRequestConverter<SchneideriEM3xxxMeasurementRecord,
+    SchneideriEM3xxxPushRequest>
 {
-  protected override SchneideriEM3xxxPushRequest ConvertToPushRequest(SchneideriEM3xxxMeasurementRecord record) =>
-    new(
+  protected override SchneideriEM3xxxPushRequest ConvertToPushRequest(
+    SchneideriEM3xxxMeasurementRecord record)
+  {
+    return new SchneideriEM3xxxPushRequest(
       record.VoltageL1AnyT0_V,
       record.VoltageL2AnyT0_V,
       record.VoltageL3AnyT0_V,
@@ -30,4 +33,5 @@ public class SchneideriEM3xxxMeasurementRecordPushRequestConverter
       record.ActiveEnergyTotalImportT1_Wh,
       record.ActiveEnergyTotalImportT2_Wh
     );
+  }
 }

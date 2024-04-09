@@ -41,7 +41,7 @@ public class OzdsIotHandler
           PropertyNameCaseInsensitive = true
         });
     if (messengerRequest?.Measurements is null
-      || messengerRequest.Measurements.Length == 0)
+        || messengerRequest.Measurements.Length == 0)
     {
       return Task.CompletedTask;
     }

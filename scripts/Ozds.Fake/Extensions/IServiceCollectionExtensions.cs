@@ -1,6 +1,5 @@
 using System.Reflection;
 using Ozds.Business.Conversion.Abstractions;
-using Ozds.Data.Timescale;
 using Ozds.Fake.Client;
 using Ozds.Fake.Conversion.Abstractions;
 using Ozds.Fake.Generators.Abstractions;
@@ -36,7 +35,8 @@ public static class IServiceCollectionExtensions
 
   public static IServiceCollection AddRecords(this IServiceCollection services)
   {
-    services.AddScopedAssignableTo(typeof(IMeasurementRecordPushRequestConverter));
+    services.AddScopedAssignableTo(
+      typeof(IMeasurementRecordPushRequestConverter));
     return services;
   }
 

@@ -27,4 +27,3 @@ public class SchneideriEM3xxxMeasurementRecord : MeasurementRecord
   public required float ActiveEnergyTotalImportT2_Wh { get; set; }
 #pragma warning restore CA1707
 }
-
