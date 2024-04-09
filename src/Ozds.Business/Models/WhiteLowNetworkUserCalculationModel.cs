@@ -4,7 +4,7 @@ using Ozds.Business.Models.Base;
 
 namespace Ozds.Business.Models;
 
-public class RedLowCalculationModel : CalculationModel
+public class WhiteLowNetworkUserCalculationModel : NetworkUserCalculationModel
 {
   [Required]
   public required decimal ActiveEnergyTotalImportT1Min_Wh { get; set; }
@@ -35,18 +35,6 @@ public class RedLowCalculationModel : CalculationModel
 
   [Required]
   public required decimal ActiveEnergyTotalImportT2Total_EUR { get; set; }
-
-  [Required]
-  public required decimal ActivePowerTotalImportT1Peak_W { get; set; }
-
-  [Required]
-  public required decimal ActivePowerTotalImportT1Amount_W { get; set; }
-
-  [Required]
-  public required decimal ActivePowerTotalImportT1Price_EUR { get; set; }
-
-  [Required]
-  public required decimal ActivePowerTotalImportT1Total_EUR { get; set; }
 
   [Required]
   public required decimal ReactiveEnergyTotalImportT0Min_VARh { get; set; }
@@ -162,30 +150,11 @@ public class RedLowCalculationModel : CalculationModel
 
   public override SpanningMeasure<decimal> ActivePowerAmount_W
   {
-    get
-    {
-      return new PeakSpanningMeasure<decimal>(
-        new BinaryTariffMeasure<decimal>(
-          new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(ActivePowerTotalImportT1Amount_W),
-            new NullPhasicMeasure<decimal>()
-          ),
-          DuplexMeasure<decimal>.Null
-        )
-      );
-    }
+    get { return SpanningMeasure<decimal>.Null; }
   }
 
   public override TariffMeasure<decimal> ActivePowerPrice_EUR
   {
-    get
-    {
-      return new UnaryTariffMeasure<decimal>(
-        new ImportExportDuplexMeasure<decimal>(
-          new SinglePhasicMeasure<decimal>(ActivePowerTotalImportT1Price_EUR),
-          new NullPhasicMeasure<decimal>()
-        )
-      );
-    }
+    get { return TariffMeasure<decimal>.Null; }
   }
 }

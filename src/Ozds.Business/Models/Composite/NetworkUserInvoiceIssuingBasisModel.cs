@@ -5,5 +5,5 @@ public record NetworkUserInvoiceIssuingBasisModel(
   NetworkUserModel NetworkUser,
   DateTimeOffset FromDate,
   DateTimeOffset ToDate,
-  List<NetworkUserCalculationBasisModel> CalculationBases
+  List<NetworkUserNetworkUserCalculationBasisModel> NetworkUserCalculationBases
 );

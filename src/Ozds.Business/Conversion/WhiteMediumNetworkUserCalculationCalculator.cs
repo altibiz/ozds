@@ -6,20 +6,24 @@ using Ozds.Business.Models.Composite;
 namespace Ozds.Business.Conversion;
 
 public class
-  RedLowCalculationCalculator : CalculationCalculator<RedLowCatalogueModel>
+  WhiteMediumNetworkUserCalculationCalculator : NetworkUserCalculationCalculator<
+  WhiteMediumCatalogueModel>
 {
-  protected override CalculationModel CalculateForNetworkUser(
-    RedLowCatalogueModel catalogue,
-    NetworkUserCalculationBasisModel calculationBasis
+  protected override NetworkUserCalculationModel CalculateForNetworkUser(
+    WhiteMediumCatalogueModel catalogue,
+    NetworkUserNetworkUserCalculationBasisModel calculationBasis
   )
   {
     var aggregates = calculationBasis.Aggregates
       .OrderBy(a => a.Timestamp)
       .ToList();
 
-    var initial = new RedLowCalculationModel
+    var initial = new WhiteMediumNetworkUserCalculationModel
     {
       Id = default!,
+      ToDate = calculationBasis.ToDate,
+      FromDate = calculationBasis.FromDate,
+      NetworkUserInvoiceId = calculationBasis.NetworkUser.Id,
       Title =
         $"${catalogue.Title} calculation for {calculationBasis.NetworkUser.Title} at {calculationBasis.Location.Title}",
       MeterId = calculationBasis.Meter.Id,

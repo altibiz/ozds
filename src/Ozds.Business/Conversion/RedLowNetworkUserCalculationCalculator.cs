@@ -6,23 +6,26 @@ using Ozds.Business.Models.Composite;
 namespace Ozds.Business.Conversion;
 
 public class
-  WhiteLowCalculationCalculator : CalculationCalculator<WhiteLowCatalogueModel>
+  RedLowNetworkUserCalculationCalculator : NetworkUserCalculationCalculator<RedLowCatalogueModel>
 {
-  protected override CalculationModel CalculateForNetworkUser(
-    WhiteLowCatalogueModel catalogue,
-    NetworkUserCalculationBasisModel calculationBasis
+  protected override NetworkUserCalculationModel CalculateForNetworkUser(
+    RedLowCatalogueModel catalogue,
+    NetworkUserNetworkUserCalculationBasisModel calculationBasis
   )
   {
     var aggregates = calculationBasis.Aggregates
       .OrderBy(a => a.Timestamp)
       .ToList();
 
-    var initial = new WhiteLowCalculationModel
+    var initial = new RedLowNetworkUserCalculationModel
     {
       Id = default!,
       Title =
         $"${catalogue.Title} calculation for {calculationBasis.NetworkUser.Title} at {calculationBasis.Location.Title}",
       MeterId = calculationBasis.Meter.Id,
+      ToDate = calculationBasis.ToDate,
+      FromDate = calculationBasis.FromDate,
+      NetworkUserInvoiceId = calculationBasis.NetworkUser.Id,
       CatalogueId = catalogue.Id,
       MeasurementLocationId = calculationBasis.MeasurementLocation.Id,
       IssuedOn = DateTimeOffset.UtcNow,
@@ -48,6 +51,15 @@ public class
       ActiveEnergyTotalImportT2Price_EUR =
         catalogue.ActiveEnergyTotalImportT2Price_EUR,
       ActiveEnergyTotalImportT2Total_EUR = 0,
+      ActivePowerTotalImportT1Peak_W = (decimal)aggregates
+        .Select(aggregate =>
+          aggregate.ActivePower_W.TariffBinary.T1.DuplexImport.PhaseSum)
+        .Order()
+        .FirstOrDefault(),
+      ActivePowerTotalImportT1Amount_W = 0,
+      ActivePowerTotalImportT1Price_EUR =
+        catalogue.ActivePowerTotalImportT1Price_EUR,
+      ActivePowerTotalImportT1Total_EUR = 0,
       ReactiveEnergyTotalImportT0Min_VARh = (decimal)calculationBasis.Aggregates
         .FirstOrDefault()!.ReactiveEnergy_VARh.TariffUnary.DuplexImport
         .PhaseSum,
@@ -79,6 +91,12 @@ public class
     initial.ActiveEnergyTotalImportT2Total_EUR =
       (initial.ActiveEnergyAmount_Wh.SpanDiff * initial.ActiveEnergyPrice_EUR)
       .TariffBinary.T2.DuplexImport.PhaseSum;
+    initial.ActivePowerTotalImportT1Amount_W =
+      initial.ActivePowerAmount_W.SpanPeak.TariffBinary.T1.DuplexImport
+        .PhaseSum;
+    initial.ActivePowerTotalImportT1Total_EUR =
+      initial.ActivePowerAmount_W.SpanPeak.TariffBinary.T1.DuplexImport
+        .PhaseSum;
     initial.ReactiveEnergyTotalImportT0Amount_VARh =
       initial.ReactiveEnergyAmount_Wh.SpanDiff.TariffUnary.DuplexImport
         .PhaseSum;

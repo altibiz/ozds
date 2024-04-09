@@ -41,7 +41,7 @@ public class
 
     builder
       .HasOne(nameof(NetworkUserMeasurementLocationEntity.Catalogue))
-      .WithMany(nameof(CatalogueEntity.Meters))
+      .WithMany(nameof(CatalogueEntity.MeasurementLocations))
       .HasForeignKey("_catalogueId");
 
     builder.Ignore(nameof(NetworkUserMeasurementLocationEntity.NetworkUserId));

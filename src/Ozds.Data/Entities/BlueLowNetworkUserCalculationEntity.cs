@@ -6,7 +6,7 @@ using Ozds.Data.Extensions;
 namespace Ozds.Data.Entities;
 
 public class
-  BlueLowCalculationEntity : CalculationEntity<BlueLowCatalogueEntity>
+  BlueLowNetworkUserCalculationEntity : NetworkUserCalculationEntity<BlueLowCatalogueEntity>
 {
 #pragma warning disable CA1707
   public decimal ActiveEnergyTotalImportT0Min_Wh { get; set; }
@@ -28,79 +28,79 @@ public class
 }
 
 public class
-  BlueLowCalculationEntityTypeConfiguration : EntityTypeConfiguration<
-  BlueLowCalculationEntity>
+  BlueLowNetworkUserCalculationEntityTypeConfiguration : EntityTypeConfiguration<
+  BlueLowNetworkUserCalculationEntity>
 {
   public override void Configure(
-    EntityTypeBuilder<BlueLowCalculationEntity> builder)
+    EntityTypeBuilder<BlueLowNetworkUserCalculationEntity> builder)
   {
     builder
       .Property(
-        nameof(BlueLowCalculationEntity.ActiveEnergyTotalImportT0Min_Wh))
+        nameof(BlueLowNetworkUserCalculationEntity.ActiveEnergyTotalImportT0Min_Wh))
       .HasColumnName("active_energy_total_import_t2_min_wh");
 
     builder
       .Property(
-        nameof(BlueLowCalculationEntity.ActiveEnergyTotalImportT0Max_Wh))
+        nameof(BlueLowNetworkUserCalculationEntity.ActiveEnergyTotalImportT0Max_Wh))
       .HasColumnName("active_energy_total_import_t2_max_wh");
 
     builder
-      .Property(nameof(BlueLowCalculationEntity
+      .Property(nameof(BlueLowNetworkUserCalculationEntity
         .ActiveEnergyTotalImportT0Amount_Wh))
       .HasColumnName("active_energy_total_import_t2_amount_wh");
 
     builder
-      .Property(nameof(BlueLowCalculationEntity
+      .Property(nameof(BlueLowNetworkUserCalculationEntity
         .ActiveEnergyTotalImportT0Price_EUR))
       .HasColumnName("active_energy_total_import_t2_price_eur");
 
     builder
-      .Property(nameof(BlueLowCalculationEntity
+      .Property(nameof(BlueLowNetworkUserCalculationEntity
         .ActiveEnergyTotalImportT0Total_EUR))
       .HasColumnName("active_energy_total_import_t2_total_eur");
 
     builder
-      .Property(nameof(BlueLowCalculationEntity
+      .Property(nameof(BlueLowNetworkUserCalculationEntity
         .ReactiveEnergyTotalImportT0Min_VARh))
       .HasColumnName("reactive_energy_total_import_t0_min_varh");
 
     builder
-      .Property(nameof(BlueLowCalculationEntity
+      .Property(nameof(BlueLowNetworkUserCalculationEntity
         .ReactiveEnergyTotalImportT0Max_VARh))
       .HasColumnName("reactive_energy_total_import_t0_max_varh");
 
     builder
-      .Property(nameof(BlueLowCalculationEntity
+      .Property(nameof(BlueLowNetworkUserCalculationEntity
         .ReactiveEnergyTotalImportT0Amount_VARh))
       .HasColumnName("reactive_energy_total_import_t0_amount_varh");
 
     builder
-      .Property(nameof(BlueLowCalculationEntity
+      .Property(nameof(BlueLowNetworkUserCalculationEntity
         .ReactiveEnergyTotalExportT0Min_VARh))
       .HasColumnName("reactive_energy_total_export_t0_min_varh");
 
     builder
-      .Property(nameof(BlueLowCalculationEntity
+      .Property(nameof(BlueLowNetworkUserCalculationEntity
         .ReactiveEnergyTotalExportT0Max_VARh))
       .HasColumnName("reactive_energy_total_export_t0_max_varh");
 
     builder
-      .Property(nameof(BlueLowCalculationEntity
+      .Property(nameof(BlueLowNetworkUserCalculationEntity
         .ReactiveEnergyTotalExportT0Amount_VARh))
       .HasColumnName("reactive_energy_total_export_t0_amount_varh");
 
     builder
-      .Property(nameof(BlueLowCalculationEntity
+      .Property(nameof(BlueLowNetworkUserCalculationEntity
         .ReactiveEnergyTotalRampedT0Price_EUR))
       .HasColumnName("reactive_energy_total_ramped_t0_price_eur");
 
     builder
-      .Property(nameof(BlueLowCalculationEntity
+      .Property(nameof(BlueLowNetworkUserCalculationEntity
         .ReactiveEnergyTotalRampedT0Total_EUR))
       .HasColumnName("reactive_energy_total_ramped_t0_total_eur");
 
     builder
-      .Property(nameof(BlueLowCalculationEntity.MeterFeePrice_EUR))
+      .Property(nameof(BlueLowNetworkUserCalculationEntity.MeterFeePrice_EUR))
       .HasColumnName("meter_fee_price_eur");
   }
 }

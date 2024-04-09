@@ -1,7 +1,7 @@
 namespace Ozds.Business.Models.Composite;
 
 public record LocationInvoiceIssuingBasisModel(
-  List<LocationCalculationBasisModel> CalculationBases,
+  List<LocationNetworkUserCalculationBasisModel> NetworkUserCalculationBases,
   LocationModel Location,
   DateTimeOffset FromDate,
   DateTimeOffset ToDate

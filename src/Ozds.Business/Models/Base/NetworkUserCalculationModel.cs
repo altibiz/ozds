@@ -4,20 +4,27 @@ using Ozds.Business.Models.Abstractions;
 
 namespace Ozds.Business.Models.Base;
 
-public abstract class CalculationModel : ICalculation
+public abstract class NetworkUserCalculationModel : INetworkUserCalculation
 {
   [Required]
   public required DateTimeOffset IssuedOn { get; set; } = DateTimeOffset.UtcNow;
-
   [Required] public required string? IssuedById { get; set; } = default!;
+
   [Required] public required string Id { get; init; } = default!;
   [Required] public required string Title { get; set; } = default!;
+
+  [Required] public required DateTimeOffset FromDate { get; set; } = default!;
+  [Required] public required DateTimeOffset ToDate { get; set; } = default!;
+
   [Required] public required string MeterId { get; set; } = default!;
 
   [Required]
   public required string MeasurementLocationId { get; set; } = default!;
 
   [Required] public required string CatalogueId { get; set; } = default!;
+
+  [Required]
+  public required string NetworkUserInvoiceId { get; set; } = default!;
 
   [Required] public required MeterModel ArchivedMeter { get; set; } = default!;
 

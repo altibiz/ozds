@@ -3,13 +3,14 @@ using Ozds.Business.Models.Base;
 
 namespace Ozds.Business.Models.Abstractions;
 
-public interface ICalculation : IReadonly, IIdentifiable
+public interface INetworkUserCalculation : IReadonly, IIdentifiable
 {
   public DateTimeOffset IssuedOn { get; }
   public string? IssuedById { get; }
   public string MeterId { get; }
   public string MeasurementLocationId { get; }
   public string CatalogueId { get; }
+  public string NetworkUserInvoiceId { get; }
   public MeterModel ArchivedMeter { get; }
   public MeasurementLocationModel ArchivedMeasurementLocation { get; }
   public CatalogueModel ArchivedCatalogue { get; }

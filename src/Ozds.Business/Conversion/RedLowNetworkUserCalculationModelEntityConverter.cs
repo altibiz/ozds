@@ -4,36 +4,39 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Conversion;
 
-public class RedLowCalculationModelEntityConverter : ModelEntityConverter<
-  RedLowCalculationModel, RedLowCalculationEntity>
+public class RedLowNetworkUserCalculationModelEntityConverter : ModelEntityConverter<
+  RedLowNetworkUserCalculationModel, RedLowNetworkUserCalculationEntity>
 {
-  protected override RedLowCalculationEntity ToEntity(
-    RedLowCalculationModel model)
+  protected override RedLowNetworkUserCalculationEntity ToEntity(
+    RedLowNetworkUserCalculationModel model)
   {
     return model.ToEntity();
   }
 
-  protected override RedLowCalculationModel ToModel(
-    RedLowCalculationEntity entity)
+  protected override RedLowNetworkUserCalculationModel ToModel(
+    RedLowNetworkUserCalculationEntity entity)
   {
     return entity.ToModel();
   }
 }
 
-public static class RedLowCalculationModelEntityConverterExtensions
+public static class RedLowNetworkUserCalculationModelEntityConverterExtensions
 {
-  public static RedLowCalculationModel ToModel(
-    this RedLowCalculationEntity entity)
+  public static RedLowNetworkUserCalculationModel ToModel(
+    this RedLowNetworkUserCalculationEntity entity)
   {
-    return new RedLowCalculationModel
+    return new RedLowNetworkUserCalculationModel
     {
       Id = entity.Id,
       Title = entity.Title,
       IssuedOn = entity.IssuedOn,
       IssuedById = entity.IssuedById,
+      FromDate = entity.FromDate,
+      ToDate = entity.ToDate,
       MeterId = entity.MeterId,
       MeasurementLocationId = entity.MeasurementLocationId,
       CatalogueId = entity.CatalogueId,
+      NetworkUserInvoiceId = entity.NetworkUserInvoiceId,
       ArchivedMeasurementLocation =
         entity.ArchivedMeasurementLocation.ToModel(),
       ArchivedCatalogue = entity.ArchivedCatalogue.ToModel(),
@@ -79,22 +82,25 @@ public static class RedLowCalculationModelEntityConverterExtensions
         entity.ReactiveEnergyTotalRampedT0Price_EUR,
       ReactiveEnergyTotalRampedT0Total_EUR =
         entity.ReactiveEnergyTotalRampedT0Total_EUR,
-      MeterFeePrice_EUR = entity.MeterFeePrice_EUR
+      MeterFeePrice_EUR = entity.MeterFeePrice_EUR,
     };
   }
 
-  public static RedLowCalculationEntity ToEntity(
-    this RedLowCalculationModel model)
+  public static RedLowNetworkUserCalculationEntity ToEntity(
+    this RedLowNetworkUserCalculationModel model)
   {
-    return new RedLowCalculationEntity
+    return new RedLowNetworkUserCalculationEntity
     {
       Id = model.Id,
       Title = model.Title,
       IssuedOn = model.IssuedOn,
       IssuedById = model.IssuedById,
+      FromDate = model.FromDate,
+      ToDate = model.ToDate,
       MeterId = model.MeterId,
       MeasurementLocationId = model.MeasurementLocationId,
       CatalogueId = model.CatalogueId,
+      NetworkUserInvoiceId = model.NetworkUserInvoiceId,
       ArchivedMeasurementLocation =
         model.ArchivedMeasurementLocation.ToEntity(),
       ArchivedCatalogue = model.ArchivedCatalogue.ToEntity(),
@@ -139,7 +145,8 @@ public static class RedLowCalculationModelEntityConverterExtensions
         model.ReactiveEnergyTotalRampedT0Price_EUR,
       ReactiveEnergyTotalRampedT0Total_EUR =
         model.ReactiveEnergyTotalRampedT0Total_EUR,
-      MeterFeePrice_EUR = model.MeterFeePrice_EUR
+      MeterFeePrice_EUR = model.MeterFeePrice_EUR,
+      Total_EUR = model.Total_EUR.TariffSum.DuplexSum.PhaseSum
     };
   }
 }

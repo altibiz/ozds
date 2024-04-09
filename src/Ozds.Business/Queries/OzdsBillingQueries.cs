@@ -20,8 +20,8 @@ public class OzdsBillingQueries
     _dbContext = dbContext;
   }
 
-  public async Task<List<NetworkUserCalculationBasisModel>>
-    CalculationBasesByNetworkUser(
+  public async Task<List<NetworkUserNetworkUserCalculationBasisModel>>
+    NetworkUserCalculationBasesByNetworkUser(
       string networkUserId,
       DateTimeOffset fromDate,
       DateTimeOffset toDate
@@ -102,7 +102,9 @@ public class OzdsBillingQueries
           }
         )
         .ToListAsync())
-      .Select(x => new NetworkUserCalculationBasisModel(
+      .Select(x => new NetworkUserNetworkUserCalculationBasisModel(
+        FromDate: fromDate,
+        ToDate: toDate,
         Location: x.Location,
         NetworkUser: x.NetworkUser,
         MeasurementLocation: x.MeasurementLocation,
@@ -129,7 +131,7 @@ public class OzdsBillingQueries
                         .FirstOrDefaultAsync() ??
                       throw new InvalidOperationException(
                         "Network user not found");
-    var calculationBases = await CalculationBasesByNetworkUser(
+    var calculationBases = await NetworkUserCalculationBasesByNetworkUser(
       networkUserId,
       fromDate,
       toDate
@@ -144,7 +146,7 @@ public class OzdsBillingQueries
     );
   }
 
-  public Task<List<LocationCalculationBasisModel>> CalculationBasesByLocation(
+  public Task<List<LocationNetworkUserCalculationBasisModel>> NetworkUserCalculationBasesByLocation(
     string locationId,
     DateTimeOffset fromDate,
     DateTimeOffset toDate

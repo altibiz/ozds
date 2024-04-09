@@ -8,9 +8,9 @@ public class CatalogueEntity : AuditableEntity
 {
   public virtual LocationEntity Location { get; set; } = default!;
 
-  public virtual ICollection<MeterEntity> Meters { get; set; } = default!;
+  public virtual ICollection<MeasurementLocationEntity> MeasurementLocations { get; set; } = default!;
 
-  public virtual ICollection<CalculationEntity> Calculations { get; set; } =
+  public virtual ICollection<NetworkUserCalculationEntity> NetworkUserCalculations { get; set; } =
     default!;
 }
 

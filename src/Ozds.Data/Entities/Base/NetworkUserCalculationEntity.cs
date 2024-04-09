@@ -6,11 +6,9 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
 
-public class CalculationEntity : IReadonlyEntity, IIdentifiableEntity
+public class NetworkUserCalculationEntity : IReadonlyEntity, IIdentifiableEntity
 {
   protected readonly long _id;
-
-  protected readonly long _invoiceId;
 
   protected readonly long _measurementLocationId;
 
@@ -37,12 +35,14 @@ public class CalculationEntity : IReadonlyEntity, IIdentifiableEntity
     init { _measurementLocationId = long.Parse(value); }
   }
 
-  public virtual InvoiceEntity Invoice { get; set; } = default!;
+  protected readonly long _networkUserInvoiceId;
 
-  public string InvoiceId
+  public virtual NetworkUserInvoiceEntity NetworkUserInvoice { get; set; } = default!;
+
+  public string NetworkUserInvoiceId
   {
-    get { return _invoiceId.ToString(); }
-    init { _invoiceId = long.Parse(value); }
+    get { return _networkUserInvoiceId.ToString(); }
+    init { _networkUserInvoiceId = long.Parse(value); }
   }
 
   public decimal Total_EUR { get; set; }
@@ -63,7 +63,7 @@ public class CalculationEntity : IReadonlyEntity, IIdentifiableEntity
   public string Title { get; set; } = default!;
 }
 
-public class CalculationEntity<TCatalogue> : CalculationEntity
+public class NetworkUserCalculationEntity<TCatalogue> : NetworkUserCalculationEntity
   where TCatalogue : CatalogueEntity
 {
   public virtual string CatalogueId { get; set; } = default!;
@@ -72,9 +72,9 @@ public class CalculationEntity<TCatalogue> : CalculationEntity
 }
 
 public class
-  CalculationEntityTypeHierarchyConfiguration : EntityTypeHierarchyConfiguration
+  NetworkUserCalculationEntityTypeHierarchyConfiguration : EntityTypeHierarchyConfiguration
 <
-  CalculationEntity>
+  NetworkUserCalculationEntity>
 {
   public override void Configure(ModelBuilder modelBuilder, Type type)
   {
@@ -85,8 +85,12 @@ public class
       .ToTable("calculations")
       .HasDiscriminator<string>("kind");
 
-    builder.HasKey("_id");
-    builder.Ignore(nameof(CalculationEntity.Id));
+    if (type == typeof(NetworkUserCalculationEntity))
+    {
+      builder.HasKey("_id");
+    }
+
+    builder.Ignore(nameof(NetworkUserCalculationEntity.Id));
     builder
       .Property("_id")
       .HasColumnName("id")
@@ -94,57 +98,62 @@ public class
       .UseIdentityAlwaysColumn();
 
     builder
-      .HasOne(nameof(CalculationEntity.IssuedBy))
+      .HasOne(nameof(NetworkUserCalculationEntity.IssuedBy))
       .WithMany()
-      .HasForeignKey(nameof(CalculationEntity.IssuedById));
+      .HasForeignKey(nameof(NetworkUserCalculationEntity.IssuedById));
 
     builder
-      .HasOne(nameof(CalculationEntity.Meter))
-      .WithMany(nameof(MeterEntity.Calculations))
-      .HasForeignKey(nameof(CalculationEntity.MeterId));
+      .HasOne(nameof(NetworkUserCalculationEntity.Meter))
+      .WithMany(nameof(MeterEntity.NetworkUserCalculations))
+      .HasForeignKey(nameof(NetworkUserCalculationEntity.MeterId));
 
     builder
-      .HasOne(nameof(CalculationEntity.MeasurementLocation))
-      .WithMany(nameof(MeasurementLocationEntity.Calculations))
+      .HasOne(nameof(NetworkUserCalculationEntity.MeasurementLocation))
+      .WithMany(nameof(MeasurementLocationEntity.NetworkUserCalculations))
       .HasForeignKey("_measurementLocationId");
 
     builder
-      .HasOne(nameof(CalculationEntity.Invoice))
-      .WithMany(nameof(InvoiceEntity.Calculations))
-      .HasForeignKey("_invoice");
+      .HasOne(nameof(NetworkUserCalculationEntity.NetworkUserInvoice))
+      .WithMany(nameof(InvoiceEntity.NetworkUserCalculations))
+      .HasForeignKey("_networkUserId");
 
     builder
-      .ComplexProperty(nameof(CalculationEntity.ArchivedMeter));
+      .ComplexProperty(nameof(NetworkUserCalculationEntity.ArchivedMeter));
 
     builder
-      .ComplexProperty(nameof(CalculationEntity.ArchivedCatalogue));
+      .ComplexProperty(nameof(NetworkUserCalculationEntity.ArchivedCatalogue));
 
     builder
-      .ComplexProperty(nameof(CalculationEntity.ArchivedMeasurementLocation));
+      .ComplexProperty(nameof(NetworkUserCalculationEntity.ArchivedMeasurementLocation));
 
     builder
-      .Property<DateTimeOffset>(nameof(CalculationEntity.IssuedOn))
+      .Property<DateTimeOffset>(nameof(NetworkUserCalculationEntity.IssuedOn))
       .HasConversion(
         x => x.ToUniversalTime(),
         x => x.ToUniversalTime()
       );
 
-    builder.Ignore(nameof(CalculationEntity.MeasurementLocationId));
+    builder.Ignore(nameof(NetworkUserCalculationEntity.MeasurementLocationId));
     builder
       .Property("_measurementLocationId")
       .HasColumnName("measurement_location_id");
 
+    builder.Ignore(nameof(NetworkUserCalculationEntity.NetworkUserInvoiceId));
     builder
-      .Property(nameof(CalculationEntity.Total_EUR))
+      .Property("_networkUserInvoiceId")
+      .HasColumnName("network_user_invoice_id");
+
+    builder
+      .Property(nameof(NetworkUserCalculationEntity.Total_EUR))
       .HasColumnName("total_eur");
 
 
-    if (type != typeof(CalculationEntity))
+    if (type != typeof(NetworkUserCalculationEntity))
     {
       builder
-        .HasOne(nameof(CalculationEntity<CatalogueEntity>.Catalogue))
-        .WithMany(nameof(CatalogueEntity.Calculations))
-        .HasForeignKey(nameof(CalculationEntity<CatalogueEntity>.CatalogueId));
+        .HasOne(nameof(NetworkUserCalculationEntity<CatalogueEntity>.Catalogue))
+        .WithMany(nameof(CatalogueEntity.NetworkUserCalculations))
+        .HasForeignKey(nameof(NetworkUserCalculationEntity<CatalogueEntity>.CatalogueId));
     }
   }
 }

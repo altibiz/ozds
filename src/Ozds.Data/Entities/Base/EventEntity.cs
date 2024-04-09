@@ -42,7 +42,7 @@ public class
       .ToTable("events")
       .HasDiscriminator<string>("kind");
 
-    builder.Ignore(nameof(InvoiceEntity.Id));
+    builder.Ignore(nameof(EventEntity.Id));
     builder
       .Property("_id")
       .HasColumnName("id")

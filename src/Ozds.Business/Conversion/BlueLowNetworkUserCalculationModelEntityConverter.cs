@@ -4,36 +4,39 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Conversion;
 
-public class BlueLowCalculationModelEntityConverter : ModelEntityConverter<
-  BlueLowCalculationModel, BlueLowCalculationEntity>
+public class BlueLowNetworkUserCalculationModelEntityConverter : ModelEntityConverter<
+  BlueLowNetworkUserCalculationModel, BlueLowNetworkUserCalculationEntity>
 {
-  protected override BlueLowCalculationEntity ToEntity(
-    BlueLowCalculationModel model)
+  protected override BlueLowNetworkUserCalculationEntity ToEntity(
+    BlueLowNetworkUserCalculationModel model)
   {
     return model.ToEntity();
   }
 
-  protected override BlueLowCalculationModel ToModel(
-    BlueLowCalculationEntity entity)
+  protected override BlueLowNetworkUserCalculationModel ToModel(
+    BlueLowNetworkUserCalculationEntity entity)
   {
     return entity.ToModel();
   }
 }
 
-public static class BlueLowCalculationModelEntityConverterExtensions
+public static class BlueLowNetworkUserCalculationModelEntityConverterExtensions
 {
-  public static BlueLowCalculationModel ToModel(
-    this BlueLowCalculationEntity entity)
+  public static BlueLowNetworkUserCalculationModel ToModel(
+    this BlueLowNetworkUserCalculationEntity entity)
   {
-    return new BlueLowCalculationModel
+    return new BlueLowNetworkUserCalculationModel
     {
       Id = entity.Id,
       Title = entity.Title,
+      ToDate = entity.ToDate,
+      FromDate = entity.FromDate,
       IssuedOn = entity.IssuedOn,
       IssuedById = entity.IssuedById,
       MeterId = entity.MeterId,
       MeasurementLocationId = entity.MeasurementLocationId,
       CatalogueId = entity.CatalogueId,
+      NetworkUserInvoiceId = entity.NetworkUserInvoiceId,
       ArchivedMeasurementLocation =
         entity.ArchivedMeasurementLocation.ToModel(),
       ArchivedCatalogue = entity.ArchivedCatalogue.ToModel(),
@@ -68,15 +71,18 @@ public static class BlueLowCalculationModelEntityConverterExtensions
     };
   }
 
-  public static BlueLowCalculationEntity ToEntity(
-    this BlueLowCalculationModel model)
+  public static BlueLowNetworkUserCalculationEntity ToEntity(
+    this BlueLowNetworkUserCalculationModel model)
   {
-    return new BlueLowCalculationEntity
+    return new BlueLowNetworkUserCalculationEntity
     {
       Id = model.Id,
       Title = model.Title,
       IssuedOn = model.IssuedOn,
       IssuedById = model.IssuedById,
+      ToDate = model.ToDate,
+      FromDate = model.FromDate,
+      NetworkUserInvoiceId = model.NetworkUserInvoiceId,
       MeterId = model.MeterId,
       MeasurementLocationId = model.MeasurementLocationId,
       CatalogueId = model.CatalogueId,

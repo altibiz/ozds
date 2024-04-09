@@ -4,33 +4,36 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Conversion;
 
-public class WhiteMediumCalculationModelEntityConverter : ModelEntityConverter<
-  WhiteMediumCalculationModel, WhiteMediumCalculationEntity>
+public class WhiteLowNetworkUserCalculationModelEntityConverter : ModelEntityConverter<
+  WhiteLowNetworkUserCalculationModel, WhiteLowNetworkUserCalculationEntity>
 {
-  protected override WhiteMediumCalculationEntity ToEntity(
-    WhiteMediumCalculationModel model)
+  protected override WhiteLowNetworkUserCalculationEntity ToEntity(
+    WhiteLowNetworkUserCalculationModel model)
   {
     return model.ToEntity();
   }
 
-  protected override WhiteMediumCalculationModel ToModel(
-    WhiteMediumCalculationEntity entity)
+  protected override WhiteLowNetworkUserCalculationModel ToModel(
+    WhiteLowNetworkUserCalculationEntity entity)
   {
     return entity.ToModel();
   }
 }
 
-public static class WhiteMediumCalculationModelEntityConverterExtensions
+public static class WhiteLowNetworkUserCalculationModelEntityConverterExtensions
 {
-  public static WhiteMediumCalculationModel ToModel(
-    this WhiteMediumCalculationEntity entity)
+  public static WhiteLowNetworkUserCalculationModel ToModel(
+    this WhiteLowNetworkUserCalculationEntity entity)
   {
-    return new WhiteMediumCalculationModel
+    return new WhiteLowNetworkUserCalculationModel
     {
       Id = entity.Id,
       Title = entity.Title,
       IssuedOn = entity.IssuedOn,
       IssuedById = entity.IssuedById,
+      FromDate = entity.FromDate,
+      ToDate = entity.ToDate,
+      NetworkUserInvoiceId = entity.NetworkUserInvoiceId,
       MeterId = entity.MeterId,
       MeasurementLocationId = entity.MeasurementLocationId,
       CatalogueId = entity.CatalogueId,
@@ -54,13 +57,6 @@ public static class WhiteMediumCalculationModelEntityConverterExtensions
         entity.ActiveEnergyTotalImportT2Price_EUR,
       ActiveEnergyTotalImportT2Total_EUR =
         entity.ActiveEnergyTotalImportT2Total_EUR,
-      ActivePowerTotalImportT1Peak_W = entity.ActivePowerTotalImportT1Peak_W,
-      ActivePowerTotalImportT1Amount_W =
-        entity.ActivePowerTotalImportT1Amount_W,
-      ActivePowerTotalImportT1Price_EUR =
-        entity.ActivePowerTotalImportT1Price_EUR,
-      ActivePowerTotalImportT1Total_EUR =
-        entity.ActivePowerTotalImportT1Total_EUR,
       ReactiveEnergyTotalImportT0Min_VARh =
         entity.ReactiveEnergyTotalImportT0Min_VARh,
       ReactiveEnergyTotalImportT0Max_VARh =
@@ -83,15 +79,18 @@ public static class WhiteMediumCalculationModelEntityConverterExtensions
     };
   }
 
-  public static WhiteMediumCalculationEntity ToEntity(
-    this WhiteMediumCalculationModel model)
+  public static WhiteLowNetworkUserCalculationEntity ToEntity(
+    this WhiteLowNetworkUserCalculationModel model)
   {
-    return new WhiteMediumCalculationEntity
+    return new WhiteLowNetworkUserCalculationEntity
     {
       Id = model.Id,
       Title = model.Title,
       IssuedOn = model.IssuedOn,
       IssuedById = model.IssuedById,
+      ToDate = model.ToDate,
+      FromDate = model.FromDate,
+      NetworkUserInvoiceId = model.NetworkUserInvoiceId,
       MeterId = model.MeterId,
       MeasurementLocationId = model.MeasurementLocationId,
       CatalogueId = model.CatalogueId,
@@ -115,12 +114,6 @@ public static class WhiteMediumCalculationModelEntityConverterExtensions
         model.ActiveEnergyTotalImportT2Price_EUR,
       ActiveEnergyTotalImportT2Total_EUR =
         model.ActiveEnergyTotalImportT2Total_EUR,
-      ActivePowerTotalImportT1Peak_W = model.ActivePowerTotalImportT1Peak_W,
-      ActivePowerTotalImportT1Amount_W = model.ActivePowerTotalImportT1Amount_W,
-      ActivePowerTotalImportT1Price_EUR =
-        model.ActivePowerTotalImportT1Price_EUR,
-      ActivePowerTotalImportT1Total_EUR =
-        model.ActivePowerTotalImportT1Total_EUR,
       ReactiveEnergyTotalImportT0Min_VARh =
         model.ReactiveEnergyTotalImportT0Min_VARh,
       ReactiveEnergyTotalImportT0Max_VARh =

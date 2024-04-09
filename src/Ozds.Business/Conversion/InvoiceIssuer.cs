@@ -30,8 +30,8 @@ public class InvoiceIssuer : IInvoiceIssuer
   )
   {
     var calculators = _serviceProvider
-      .GetServices<ICalculationCalculator>();
-    var calculations = basis.CalculationBases.Select(
+      .GetServices<INetworkUserCalculationCalculator>();
+    var calculations = basis.NetworkUserCalculationBases.Select(
       basis => calculators
                  .FirstOrDefault(calculator => calculator
                    .CanCalculateForNetworkUser(basis))
@@ -64,7 +64,7 @@ public class InvoiceIssuer : IInvoiceIssuer
 
     return new CalculatedNetworkUserInvoiceModel(
       Invoice: initial,
-      Calculations: calculations.ToList()
+      NetworkUserCalculations: calculations.ToList()
     );
   }
 
