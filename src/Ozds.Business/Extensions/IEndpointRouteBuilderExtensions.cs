@@ -15,7 +15,7 @@ public static class IEndpointRouteBuilderExtensions
       "Ozds.Business",
       Assembly.GetCallingAssembly().GetName().Name
       ?? throw new InvalidOperationException("Assembly name not found"),
-      prefix + "/push/{messengerId}",
+      prefix + "/push/{id}",
       new { controller, action }
     );
 
