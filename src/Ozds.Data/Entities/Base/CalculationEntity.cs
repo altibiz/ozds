@@ -10,6 +10,10 @@ public class CalculationEntity : IReadonlyEntity, IIdentifiableEntity
 {
   protected readonly long _id;
 
+  protected readonly long _invoiceId;
+
+  protected readonly long _measurementLocationId;
+
   public DateTimeOffset IssuedOn { get; set; } = DateTimeOffset.UtcNow;
 
   public string? IssuedById { get; set; }
@@ -20,29 +24,18 @@ public class CalculationEntity : IReadonlyEntity, IIdentifiableEntity
 
   public DateTimeOffset ToDate { get; set; } = default!;
 
-  public virtual string Id
-  {
-    get { return _id.ToString(); }
-    init { _id = value is { } nonullValue ? long.Parse(nonullValue) : default; }
-  }
-
-  public string Title { get; set; } = default!;
-
   public virtual MeterEntity Meter { get; set; } = default!;
 
   public string MeterId { get; set; } = default!;
 
-  protected readonly long _measurementLocationId;
-
-  public virtual MeasurementLocationEntity MeasurementLocation { get; set; } = default!;
+  public virtual MeasurementLocationEntity MeasurementLocation { get; set; } =
+    default!;
 
   public string MeasurementLocationId
   {
     get { return _measurementLocationId.ToString(); }
     init { _measurementLocationId = long.Parse(value); }
   }
-
-  protected readonly long _invoiceId;
 
   public virtual InvoiceEntity Invoice { get; set; } = default!;
 
@@ -58,10 +51,20 @@ public class CalculationEntity : IReadonlyEntity, IIdentifiableEntity
 
   public MeterEntity ArchivedMeter { get; set; } = default!;
 
-  public MeasurementLocationEntity ArchivedMeasurementLocation { get; set; } = default!;
+  public MeasurementLocationEntity ArchivedMeasurementLocation { get; set; } =
+    default!;
+
+  public virtual string Id
+  {
+    get { return _id.ToString(); }
+    init { _id = value is { } nonullValue ? long.Parse(nonullValue) : default; }
+  }
+
+  public string Title { get; set; } = default!;
 }
 
-public class CalculationEntity<TCatalogue> : CalculationEntity where TCatalogue : CatalogueEntity
+public class CalculationEntity<TCatalogue> : CalculationEntity
+  where TCatalogue : CatalogueEntity
 {
   public virtual string CatalogueId { get; set; } = default!;
 
@@ -69,7 +72,8 @@ public class CalculationEntity<TCatalogue> : CalculationEntity where TCatalogue 
 }
 
 public class
-  CalculationEntityTypeHierarchyConfiguration : EntityTypeHierarchyConfiguration<
+  CalculationEntityTypeHierarchyConfiguration : EntityTypeHierarchyConfiguration
+<
   CalculationEntity>
 {
   public override void Configure(ModelBuilder modelBuilder, Type type)

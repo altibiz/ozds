@@ -24,9 +24,11 @@ public class MeasurementLocationModelEntityConverter : ModelEntityConverter<
 
 public static class MeasurementLocationModelEntityConverterExtensions
 {
-  public static MeasurementLocationEntity ToEntity(this MeasurementLocationModel model)
+  public static MeasurementLocationEntity ToEntity(
+    this MeasurementLocationModel model)
   {
-    if (model is NetworkUserMeasurementLocationModel networkUserMeasurementLocation)
+    if (model is NetworkUserMeasurementLocationModel
+        networkUserMeasurementLocation)
     {
       return networkUserMeasurementLocation.ToEntity();
     }
@@ -41,9 +43,11 @@ public static class MeasurementLocationModelEntityConverterExtensions
     );
   }
 
-  public static MeasurementLocationModel ToModel(this MeasurementLocationEntity entity)
+  public static MeasurementLocationModel ToModel(
+    this MeasurementLocationEntity entity)
   {
-    if (entity is NetworkUserMeasurementLocationEntity networkUserMeasurementLocation)
+    if (entity is NetworkUserMeasurementLocationEntity
+        networkUserMeasurementLocation)
     {
       return networkUserMeasurementLocation.ToModel();
     }
@@ -58,4 +62,3 @@ public static class MeasurementLocationModelEntityConverterExtensions
     );
   }
 }
-

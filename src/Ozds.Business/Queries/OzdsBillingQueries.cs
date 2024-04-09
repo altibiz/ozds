@@ -1,9 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Conversion;
-using Ozds.Business.Models;
 using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Composite;
-using Ozds.Business.Models.Enums;
 using Ozds.Data;
 using Ozds.Data.Entities;
 using Ozds.Data.Entities.Enums;
@@ -22,86 +20,88 @@ public class OzdsBillingQueries
     _dbContext = dbContext;
   }
 
-  public async Task<List<NetworkUserCalculationBasisModel>> CalculationBasesByNetworkUser(
-    string networkUserId,
-    DateTimeOffset fromDate,
-    DateTimeOffset toDate
-  ) =>
-    (await _dbContext.NetworkUsers
-      .WithId(networkUserId)
-      .Join(
-        _dbContext.MeasurementLocations
-          .OfType<NetworkUserMeasurementLocationEntity>()
-          .Include(x => x.Catalogue)
-          .Include(x => x.NetworkUser)
-          .Include(x => x.NetworkUser.Location),
-        networkUser => networkUser.Id,
-        measurementLocation => measurementLocation.NetworkUserId,
-        (networkUser, measurementLocation) => new
-        {
-          Location = measurementLocation.NetworkUser.Location.ToModel(),
-          NetworkUser = measurementLocation.NetworkUser.ToModel(),
-          MeasurementLocation = measurementLocation.ToModel(),
-          Catalogue = measurementLocation.Catalogue.ToModel()
-        }
-      )
-      .Join(
-        _dbContext.Meters,
-        x => x.MeasurementLocation.MeterId,
-        meter => meter.Id,
-        (x, meter) => new
-        {
-          x.Location,
-          x.NetworkUser,
-          x.MeasurementLocation,
-          x.Catalogue,
-          Meter = meter.ToModel()
-        }
-      )
-      .GroupJoin(
-        _dbContext.AbbB2xAggregates
-          .Where(x => x.Timestamp >= fromDate)
-          .Where(x => x.Timestamp <= toDate)
-          .Where(x =>
-            x.Interval == IntervalEntity.QuarterHour ||
-            x.Interval == IntervalEntity.Month),
-        x => x.Meter.Id,
-        aggregate => aggregate.MeterId,
-        (x, abbB2xAggregates) => new
-        {
-          x.Location,
-          x.NetworkUser,
-          x.Meter,
-          x.MeasurementLocation,
-          x.Catalogue,
-          AbbB2xAggregates = abbB2xAggregates
-            .Select(abbB2xAggregate => abbB2xAggregate
-              .ToModel())
-        }
-      )
-      .GroupJoin(
-        _dbContext.SchneideriEM3xxxAggregates
-          .Where(x => x.Timestamp >= fromDate)
-          .Where(x => x.Timestamp <= toDate)
-          .Where(x =>
-            x.Interval == IntervalEntity.QuarterHour ||
-            x.Interval == IntervalEntity.Month),
-        x => x.Meter.Id,
-        aggregate => aggregate.MeterId,
-        (x, schneideriEM3xxxAggregates) => new
-        {
-          x.Location,
-          x.NetworkUser,
-          x.Meter,
-          x.MeasurementLocation,
-          x.Catalogue,
-          x.AbbB2xAggregates,
-          SchneideriEM3xxxAggregates = schneideriEM3xxxAggregates
-            .Select(schneideriEM3xxxAggregate => schneideriEM3xxxAggregate
-              .ToModel())
-        }
-      )
-      .ToListAsync())
+  public async Task<List<NetworkUserCalculationBasisModel>>
+    CalculationBasesByNetworkUser(
+      string networkUserId,
+      DateTimeOffset fromDate,
+      DateTimeOffset toDate
+    )
+  {
+    return (await _dbContext.NetworkUsers
+        .WithId(networkUserId)
+        .Join(
+          _dbContext.MeasurementLocations
+            .OfType<NetworkUserMeasurementLocationEntity>()
+            .Include(x => x.Catalogue)
+            .Include(x => x.NetworkUser)
+            .Include(x => x.NetworkUser.Location),
+          networkUser => networkUser.Id,
+          measurementLocation => measurementLocation.NetworkUserId,
+          (networkUser, measurementLocation) => new
+          {
+            Location = measurementLocation.NetworkUser.Location.ToModel(),
+            NetworkUser = measurementLocation.NetworkUser.ToModel(),
+            MeasurementLocation = measurementLocation.ToModel(),
+            Catalogue = measurementLocation.Catalogue.ToModel()
+          }
+        )
+        .Join(
+          _dbContext.Meters,
+          x => x.MeasurementLocation.MeterId,
+          meter => meter.Id,
+          (x, meter) => new
+          {
+            x.Location,
+            x.NetworkUser,
+            x.MeasurementLocation,
+            x.Catalogue,
+            Meter = meter.ToModel()
+          }
+        )
+        .GroupJoin(
+          _dbContext.AbbB2xAggregates
+            .Where(x => x.Timestamp >= fromDate)
+            .Where(x => x.Timestamp <= toDate)
+            .Where(x =>
+              x.Interval == IntervalEntity.QuarterHour ||
+              x.Interval == IntervalEntity.Month),
+          x => x.Meter.Id,
+          aggregate => aggregate.MeterId,
+          (x, abbB2xAggregates) => new
+          {
+            x.Location,
+            x.NetworkUser,
+            x.Meter,
+            x.MeasurementLocation,
+            x.Catalogue,
+            AbbB2xAggregates = abbB2xAggregates
+              .Select(abbB2xAggregate => abbB2xAggregate
+                .ToModel())
+          }
+        )
+        .GroupJoin(
+          _dbContext.SchneideriEM3xxxAggregates
+            .Where(x => x.Timestamp >= fromDate)
+            .Where(x => x.Timestamp <= toDate)
+            .Where(x =>
+              x.Interval == IntervalEntity.QuarterHour ||
+              x.Interval == IntervalEntity.Month),
+          x => x.Meter.Id,
+          aggregate => aggregate.MeterId,
+          (x, schneideriEM3xxxAggregates) => new
+          {
+            x.Location,
+            x.NetworkUser,
+            x.Meter,
+            x.MeasurementLocation,
+            x.Catalogue,
+            x.AbbB2xAggregates,
+            SchneideriEM3xxxAggregates = schneideriEM3xxxAggregates
+              .Select(schneideriEM3xxxAggregate => schneideriEM3xxxAggregate
+                .ToModel())
+          }
+        )
+        .ToListAsync())
       .Select(x => new NetworkUserCalculationBasisModel(
         Location: x.Location,
         NetworkUser: x.NetworkUser,
@@ -114,22 +114,21 @@ public class OzdsBillingQueries
           .ToList()
       ))
       .ToList();
+  }
 
-  public async Task<NetworkUserInvoiceIssuingBasisModel> IssuingBasisForNetworkUser(
-    string networkUserId,
-    DateTimeOffset fromDate,
-    DateTimeOffset toDate
-  )
+  public async Task<NetworkUserInvoiceIssuingBasisModel>
+    IssuingBasisForNetworkUser(
+      string networkUserId,
+      DateTimeOffset fromDate,
+      DateTimeOffset toDate
+    )
   {
     var networkUser = await _dbContext.NetworkUsers
-      .WithId(networkUserId)
-      .Include(x => x.Location)
-      .FirstOrDefaultAsync();
-    if (networkUser == null)
-    {
-      throw new InvalidOperationException("Network user not found");
-    }
-
+                        .WithId(networkUserId)
+                        .Include(x => x.Location)
+                        .FirstOrDefaultAsync() ??
+                      throw new InvalidOperationException(
+                        "Network user not found");
     var calculationBases = await CalculationBasesByNetworkUser(
       networkUserId,
       fromDate,
@@ -137,11 +136,11 @@ public class OzdsBillingQueries
     );
 
     return new NetworkUserInvoiceIssuingBasisModel(
-      Location: networkUser.Location.ToModel(),
-      NetworkUser: networkUser.ToModel(),
-      FromDate: fromDate,
-      ToDate: toDate,
-      CalculationBases: calculationBases
+      networkUser.Location.ToModel(),
+      networkUser.ToModel(),
+      fromDate,
+      toDate,
+      calculationBases
     );
   }
 
@@ -149,13 +148,17 @@ public class OzdsBillingQueries
     string locationId,
     DateTimeOffset fromDate,
     DateTimeOffset toDate
-  ) =>
+  )
+  {
     throw new NotImplementedException();
+  }
 
   public Task<LocationInvoiceIssuingBasisModel> IssuingBasisForLocation(
     string locationId,
     DateTimeOffset fromDate,
     DateTimeOffset toDate
-  ) =>
+  )
+  {
     throw new NotImplementedException();
+  }
 }

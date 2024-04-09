@@ -10,7 +10,8 @@ public class CatalogueEntity : AuditableEntity
 
   public virtual ICollection<MeterEntity> Meters { get; set; } = default!;
 
-  public virtual ICollection<CalculationEntity> Calculations { get; set; } = default!;
+  public virtual ICollection<CalculationEntity> Calculations { get; set; } =
+    default!;
 }
 
 public class

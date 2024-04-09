@@ -5,7 +5,8 @@ namespace Ozds.Business.Conversion.Abstractions;
 
 public interface ICalculationCalculator
 {
-  bool CanCalculateForNetworkUser(NetworkUserCalculationBasisModel calculationBasis);
+  bool CanCalculateForNetworkUser(
+    NetworkUserCalculationBasisModel calculationBasis);
 
   bool CanCalculateForLocation(LocationCalculationBasisModel calculationBasis);
 

@@ -14,6 +14,7 @@ public class LocationModel : AuditableModel
   [Required] public required string RedLowCatalogueId { get; set; }
 
   [Required] public required string RegulatoryCatalogueId { get; set; }
+
   public static LocationModel New()
   {
     return new LocationModel
@@ -31,7 +32,7 @@ public class LocationModel : AuditableModel
       BlueLowCatalogueId = default!,
       WhiteLowCatalogueId = default!,
       RedLowCatalogueId = default!,
-      RegulatoryCatalogueId = default!,
+      RegulatoryCatalogueId = default!
     };
   }
 }

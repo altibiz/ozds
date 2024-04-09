@@ -5,19 +5,20 @@ namespace Ozds.Business.Math;
 public record class CompositeTariffMeasure<T>(List<TariffMeasure<T>> Measures)
   : TariffMeasure<T>
   where T : struct,
-    IComparisonOperators<T, T, bool>,
-    IAdditionOperators<T, T, T>,
-    ISubtractionOperators<T, T, T>,
-    IMultiplyOperators<T, T, T>,
-    IDivisionOperators<T, T, T>
+  IComparisonOperators<T, T, bool>,
+  IAdditionOperators<T, T, T>,
+  ISubtractionOperators<T, T, T>,
+  IMultiplyOperators<T, T, T>,
+  IDivisionOperators<T, T, T>
 {
   public U FromMostAccurate<U>(Func<TariffMeasure<T>, U> selector, U @default)
   {
-    return Measures.FirstOrDefault(measure => measure is BinaryTariffMeasure<T>) is
-    { } binary
+    return Measures.FirstOrDefault(measure => measure is BinaryTariffMeasure<T>)
+      is
+      { } binary
       ? selector(binary)
       : Measures.FirstOrDefault(measure => measure is UnaryTariffMeasure<T>) is
-      { } unary
+        { } unary
         ? selector(unary)
         : @default;
   }
@@ -73,7 +74,7 @@ public static class CompositeTariffMeasureExtensions
   public static CompositeTariffMeasure<T> ZipTariff<T>(
     this CompositePhasicMeasure<T> lhs, TariffMeasure<T> rhs,
     Func<PhasicMeasure<T>, TariffMeasure<T>, TariffMeasure<T>> selector)
-  where T : struct,
+    where T : struct,
     IComparisonOperators<T, T, bool>,
     IAdditionOperators<T, T, T>,
     ISubtractionOperators<T, T, T>,
@@ -92,7 +93,7 @@ public static class CompositeTariffMeasureExtensions
   public static CompositeTariffMeasure<T> ZipTariff<T>(
     this CompositeDuplexMeasure<T> lhs, TariffMeasure<T> rhs,
     Func<DuplexMeasure<T>, TariffMeasure<T>, TariffMeasure<T>> selector)
-  where T : struct,
+    where T : struct,
     IComparisonOperators<T, T, bool>,
     IAdditionOperators<T, T, T>,
     ISubtractionOperators<T, T, T>,
@@ -109,60 +110,43 @@ public static class CompositeTariffMeasureExtensions
   }
 }
 
-public record class BinaryTariffMeasure<T>(DuplexMeasure<T> T1, DuplexMeasure<T> T2)
+public record class BinaryTariffMeasure<T>(
+  DuplexMeasure<T> T1,
+  DuplexMeasure<T> T2)
   : TariffMeasure<T>
   where T : struct,
-    IComparisonOperators<T, T, bool>,
-    IAdditionOperators<T, T, T>,
-    ISubtractionOperators<T, T, T>,
-    IMultiplyOperators<T, T, T>,
-    IDivisionOperators<T, T, T>
-  ;
+  IComparisonOperators<T, T, bool>,
+  IAdditionOperators<T, T, T>,
+  ISubtractionOperators<T, T, T>,
+  IMultiplyOperators<T, T, T>,
+  IDivisionOperators<T, T, T>;
 
-public record class UnaryTariffMeasure<T>(DuplexMeasure<T> T0) : TariffMeasure<T>
+public record class UnaryTariffMeasure<T>(DuplexMeasure<T> T0)
+  : TariffMeasure<T>
   where T : struct,
-    IComparisonOperators<T, T, bool>,
-    IAdditionOperators<T, T, T>,
-    ISubtractionOperators<T, T, T>,
-    IMultiplyOperators<T, T, T>,
-    IDivisionOperators<T, T, T>
-;
+  IComparisonOperators<T, T, bool>,
+  IAdditionOperators<T, T, T>,
+  ISubtractionOperators<T, T, T>,
+  IMultiplyOperators<T, T, T>,
+  IDivisionOperators<T, T, T>;
 
 public record class NullTariffMeasure<T> : TariffMeasure<T>
   where T : struct,
-    IComparisonOperators<T, T, bool>,
-    IAdditionOperators<T, T, T>,
-    ISubtractionOperators<T, T, T>,
-    IMultiplyOperators<T, T, T>,
-    IDivisionOperators<T, T, T>
-;
+  IComparisonOperators<T, T, bool>,
+  IAdditionOperators<T, T, T>,
+  ISubtractionOperators<T, T, T>,
+  IMultiplyOperators<T, T, T>,
+  IDivisionOperators<T, T, T>;
 
 public abstract record class TariffMeasure<T>
   where T : struct,
-    IComparisonOperators<T, T, bool>,
-    IAdditionOperators<T, T, T>,
-    ISubtractionOperators<T, T, T>,
-    IMultiplyOperators<T, T, T>,
-    IDivisionOperators<T, T, T>
+  IComparisonOperators<T, T, bool>,
+  IAdditionOperators<T, T, T>,
+  ISubtractionOperators<T, T, T>,
+  IMultiplyOperators<T, T, T>,
+  IDivisionOperators<T, T, T>
 {
   public static readonly TariffMeasure<T> Null = new NullTariffMeasure<T>();
-
-  public TariffMeasure<U> ConvertPrimitiveTo<U>()
-    where U : struct,
-      IComparisonOperators<U, U, bool>,
-      IAdditionOperators<U, U, U>,
-      ISubtractionOperators<U, U, U>,
-      IMultiplyOperators<U, U, U>,
-      IDivisionOperators<U, U, U> =>
-    this switch
-    {
-      CompositeTariffMeasure<T> composite => new CompositeTariffMeasure<U>(
-        composite.Measures.Select(measure => measure.ConvertPrimitiveTo<U>()).ToList()),
-      BinaryTariffMeasure<T> binary => new BinaryTariffMeasure<U>(
-        binary.T1.ConvertPrimitiveTo<U>(), binary.T2.ConvertPrimitiveTo<U>()),
-      UnaryTariffMeasure<T> unary => new UnaryTariffMeasure<U>(unary.T0.ConvertPrimitiveTo<U>()),
-      _ => TariffMeasure<U>.Null
-    };
 
   public DuplexMeasure<T> TariffUnary
   {
@@ -170,10 +154,12 @@ public abstract record class TariffMeasure<T>
     {
       return this switch
       {
-        CompositeTariffMeasure<T> composite => composite.Measures.FirstOrDefault(
-          measure => measure is UnaryTariffMeasure<T>) is UnaryTariffMeasure<T> unary
-          ? unary.T0
-          : DuplexMeasure<T>.Null,
+        CompositeTariffMeasure<T> composite =>
+          composite.Measures.FirstOrDefault(
+              measure => measure is UnaryTariffMeasure<T>) is
+            UnaryTariffMeasure<T> unary
+            ? unary.T0
+            : DuplexMeasure<T>.Null,
         BinaryTariffMeasure<T> binary => binary.T1 + binary.T2,
         UnaryTariffMeasure<T> unary => unary.T0,
         _ => DuplexMeasure<T>.Null
@@ -187,23 +173,24 @@ public abstract record class TariffMeasure<T>
     {
       return this switch
       {
-        CompositeTariffMeasure<T> composite => composite.Measures.FirstOrDefault(
-            measure => measure is BinaryTariffMeasure<T>) is BinaryTariffMeasure<T>
-          binary
-          ? binary
-          : new BinaryTariffMeasure<T>(DuplexMeasure<T>.Null, DuplexMeasure<T>.Null),
+        CompositeTariffMeasure<T> composite =>
+          composite.Measures.FirstOrDefault(
+              measure => measure is BinaryTariffMeasure<T>) is
+            BinaryTariffMeasure<T>
+            binary
+            ? binary
+            : new BinaryTariffMeasure<T>(DuplexMeasure<T>.Null,
+              DuplexMeasure<T>.Null),
         BinaryTariffMeasure<T> binary => binary,
-        _ => new BinaryTariffMeasure<T>(DuplexMeasure<T>.Null, DuplexMeasure<T>.Null)
+        _ => new BinaryTariffMeasure<T>(DuplexMeasure<T>.Null,
+          DuplexMeasure<T>.Null)
       };
     }
   }
 
   public TariffMeasure<T> TariffAbs
   {
-    get
-    {
-      return Select(phasic => phasic.DuplexAbs);
-    }
+    get { return Select(phasic => phasic.DuplexAbs); }
   }
 
   public DuplexMeasure<T> TariffSum
@@ -221,15 +208,39 @@ public abstract record class TariffMeasure<T>
     }
   }
 
-  public TariffMeasure<T> Select(Func<DuplexMeasure<T>, DuplexMeasure<T>> selector)
+  public TariffMeasure<U> ConvertPrimitiveTo<U>()
+    where U : struct,
+    IComparisonOperators<U, U, bool>,
+    IAdditionOperators<U, U, U>,
+    ISubtractionOperators<U, U, U>,
+    IMultiplyOperators<U, U, U>,
+    IDivisionOperators<U, U, U>
+  {
+    return this switch
+    {
+      CompositeTariffMeasure<T> composite => new CompositeTariffMeasure<U>(
+        composite.Measures.Select(measure => measure.ConvertPrimitiveTo<U>())
+          .ToList()),
+      BinaryTariffMeasure<T> binary => new BinaryTariffMeasure<U>(
+        binary.T1.ConvertPrimitiveTo<U>(), binary.T2.ConvertPrimitiveTo<U>()),
+      UnaryTariffMeasure<T> unary => new UnaryTariffMeasure<U>(
+        unary.T0.ConvertPrimitiveTo<U>()),
+      _ => TariffMeasure<U>.Null
+    };
+  }
+
+  public TariffMeasure<T> Select(
+    Func<DuplexMeasure<T>, DuplexMeasure<T>> selector)
   {
     return this switch
     {
       CompositeTariffMeasure<T> composite => new CompositeTariffMeasure<T>(
-        composite.Measures.Select(measure => measure.Select(selector)).ToList()),
+        composite.Measures.Select(measure => measure.Select(selector))
+          .ToList()),
       BinaryTariffMeasure<T> binary => new BinaryTariffMeasure<T>(
         selector(binary.T1), selector(binary.T2)),
-      UnaryTariffMeasure<T> unary => new UnaryTariffMeasure<T>(selector(unary.T0)),
+      UnaryTariffMeasure<T> unary => new UnaryTariffMeasure<T>(
+        selector(unary.T0)),
       _ => Null
     };
   }
@@ -241,7 +252,8 @@ public abstract record class TariffMeasure<T>
       CompositeTariffMeasure<T> composite => composite.Select(measure =>
         measure + rhs),
       UnaryTariffMeasure<T> unary => new UnaryTariffMeasure<T>(unary.T0 + rhs),
-      BinaryTariffMeasure<T> binary => new BinaryTariffMeasure<T>(binary.T1 + rhs,
+      BinaryTariffMeasure<T> binary => new BinaryTariffMeasure<T>(
+        binary.T1 + rhs,
         binary.T2 + rhs),
       _ => Null
     };
@@ -254,7 +266,8 @@ public abstract record class TariffMeasure<T>
       CompositeTariffMeasure<T> composite => composite.Select(measure =>
         measure - rhs),
       UnaryTariffMeasure<T> unary => new UnaryTariffMeasure<T>(unary.T0 - rhs),
-      BinaryTariffMeasure<T> binary => new BinaryTariffMeasure<T>(binary.T1 - rhs,
+      BinaryTariffMeasure<T> binary => new BinaryTariffMeasure<T>(
+        binary.T1 - rhs,
         binary.T2 - rhs),
       _ => Null
     };
@@ -267,7 +280,8 @@ public abstract record class TariffMeasure<T>
       CompositeTariffMeasure<T> composite => composite.Select(measure =>
         measure * rhs),
       UnaryTariffMeasure<T> unary => new UnaryTariffMeasure<T>(unary.T0 * rhs),
-      BinaryTariffMeasure<T> binary => new BinaryTariffMeasure<T>(binary.T1 * rhs,
+      BinaryTariffMeasure<T> binary => new BinaryTariffMeasure<T>(
+        binary.T1 * rhs,
         binary.T2 * rhs),
       _ => Null
     };
@@ -280,7 +294,8 @@ public abstract record class TariffMeasure<T>
       CompositeTariffMeasure<T> composite => composite.Select(measure =>
         measure / rhs),
       UnaryTariffMeasure<T> unary => new UnaryTariffMeasure<T>(unary.T0 / rhs),
-      BinaryTariffMeasure<T> binary => new BinaryTariffMeasure<T>(binary.T1 / rhs,
+      BinaryTariffMeasure<T> binary => new BinaryTariffMeasure<T>(
+        binary.T1 / rhs,
         binary.T2 / rhs),
       _ => Null
     };
@@ -293,7 +308,8 @@ public abstract record class TariffMeasure<T>
       CompositeTariffMeasure<T> composite => composite.Select(measure =>
         lhs + measure),
       UnaryTariffMeasure<T> unary => new UnaryTariffMeasure<T>(lhs + unary.T0),
-      BinaryTariffMeasure<T> binary => new BinaryTariffMeasure<T>(lhs + binary.T1,
+      BinaryTariffMeasure<T> binary => new BinaryTariffMeasure<T>(
+        lhs + binary.T1,
         lhs + binary.T2),
       _ => Null
     };
@@ -306,7 +322,8 @@ public abstract record class TariffMeasure<T>
       CompositeTariffMeasure<T> composite => composite.Select(measure =>
         lhs - measure),
       UnaryTariffMeasure<T> unary => new UnaryTariffMeasure<T>(lhs - unary.T0),
-      BinaryTariffMeasure<T> binary => new BinaryTariffMeasure<T>(lhs - binary.T1,
+      BinaryTariffMeasure<T> binary => new BinaryTariffMeasure<T>(
+        lhs - binary.T1,
         lhs - binary.T2),
       _ => Null
     };
@@ -319,7 +336,8 @@ public abstract record class TariffMeasure<T>
       CompositeTariffMeasure<T> composite => composite.Select(measure =>
         lhs * measure),
       UnaryTariffMeasure<T> unary => new UnaryTariffMeasure<T>(lhs * unary.T0),
-      BinaryTariffMeasure<T> binary => new BinaryTariffMeasure<T>(lhs * binary.T1,
+      BinaryTariffMeasure<T> binary => new BinaryTariffMeasure<T>(
+        lhs * binary.T1,
         lhs * binary.T2),
       _ => Null
     };
@@ -332,13 +350,15 @@ public abstract record class TariffMeasure<T>
       CompositeTariffMeasure<T> composite => composite.Select(measure =>
         lhs / measure),
       UnaryTariffMeasure<T> unary => new UnaryTariffMeasure<T>(lhs / unary.T0),
-      BinaryTariffMeasure<T> binary => new BinaryTariffMeasure<T>(lhs / binary.T1,
+      BinaryTariffMeasure<T> binary => new BinaryTariffMeasure<T>(
+        lhs / binary.T1,
         lhs / binary.T2),
       _ => Null
     };
   }
 
-  public static TariffMeasure<T> operator +(TariffMeasure<T> lhs, PhasicMeasure<T> rhs)
+  public static TariffMeasure<T> operator +(TariffMeasure<T> lhs,
+    PhasicMeasure<T> rhs)
   {
     return (lhs, rhs) switch
     {
@@ -348,12 +368,14 @@ public abstract record class TariffMeasure<T>
         (rhs, lhs) => lhs + rhs),
       (BinaryTariffMeasure<T> binary, _) => new BinaryTariffMeasure<T>(
         binary.T1 + rhs, binary.T2 + rhs),
-      (UnaryTariffMeasure<T> unary, _) => new UnaryTariffMeasure<T>(unary.T0 + rhs),
+      (UnaryTariffMeasure<T> unary, _) => new UnaryTariffMeasure<T>(unary.T0 +
+        rhs),
       _ => Null
     };
   }
 
-  public static TariffMeasure<T> operator -(TariffMeasure<T> lhs, PhasicMeasure<T> rhs)
+  public static TariffMeasure<T> operator -(TariffMeasure<T> lhs,
+    PhasicMeasure<T> rhs)
   {
     return (lhs, rhs) switch
     {
@@ -363,12 +385,14 @@ public abstract record class TariffMeasure<T>
         (rhs, lhs) => lhs - rhs),
       (BinaryTariffMeasure<T> binary, _) => new BinaryTariffMeasure<T>(
         binary.T1 - rhs, binary.T2 - rhs),
-      (UnaryTariffMeasure<T> unary, _) => new UnaryTariffMeasure<T>(unary.T0 - rhs),
+      (UnaryTariffMeasure<T> unary, _) => new UnaryTariffMeasure<T>(unary.T0 -
+        rhs),
       _ => Null
     };
   }
 
-  public static TariffMeasure<T> operator *(TariffMeasure<T> lhs, PhasicMeasure<T> rhs)
+  public static TariffMeasure<T> operator *(TariffMeasure<T> lhs,
+    PhasicMeasure<T> rhs)
   {
     return (lhs, rhs) switch
     {
@@ -378,12 +402,14 @@ public abstract record class TariffMeasure<T>
         (rhs, lhs) => lhs * rhs),
       (BinaryTariffMeasure<T> binary, _) => new BinaryTariffMeasure<T>(
         binary.T1 * rhs, binary.T2 * rhs),
-      (UnaryTariffMeasure<T> unary, _) => new UnaryTariffMeasure<T>(unary.T0 * rhs),
+      (UnaryTariffMeasure<T> unary, _) => new UnaryTariffMeasure<T>(unary.T0 *
+        rhs),
       _ => Null
     };
   }
 
-  public static TariffMeasure<T> operator /(TariffMeasure<T> lhs, PhasicMeasure<T> rhs)
+  public static TariffMeasure<T> operator /(TariffMeasure<T> lhs,
+    PhasicMeasure<T> rhs)
   {
     return (lhs, rhs) switch
     {
@@ -393,12 +419,14 @@ public abstract record class TariffMeasure<T>
         (rhs, lhs) => lhs / rhs),
       (BinaryTariffMeasure<T> binary, _) => new BinaryTariffMeasure<T>(
         binary.T1 / rhs, binary.T2 / rhs),
-      (UnaryTariffMeasure<T> unary, _) => new UnaryTariffMeasure<T>(unary.T0 / rhs),
+      (UnaryTariffMeasure<T> unary, _) => new UnaryTariffMeasure<T>(unary.T0 /
+        rhs),
       _ => Null
     };
   }
 
-  public static TariffMeasure<T> operator +(PhasicMeasure<T> lhs, TariffMeasure<T> rhs)
+  public static TariffMeasure<T> operator +(PhasicMeasure<T> lhs,
+    TariffMeasure<T> rhs)
   {
     return (lhs, rhs) switch
     {
@@ -408,12 +436,14 @@ public abstract record class TariffMeasure<T>
         (rhs, lhs) => lhs + rhs),
       (_, BinaryTariffMeasure<T> binary) => new BinaryTariffMeasure<T>(
         lhs + binary.T1, lhs + binary.T2),
-      (_, UnaryTariffMeasure<T> unary) => new UnaryTariffMeasure<T>(lhs + unary.T0),
+      (_, UnaryTariffMeasure<T> unary) => new UnaryTariffMeasure<T>(
+        lhs + unary.T0),
       _ => Null
     };
   }
 
-  public static TariffMeasure<T> operator -(PhasicMeasure<T> lhs, TariffMeasure<T> rhs)
+  public static TariffMeasure<T> operator -(PhasicMeasure<T> lhs,
+    TariffMeasure<T> rhs)
   {
     return (lhs, rhs) switch
     {
@@ -423,12 +453,14 @@ public abstract record class TariffMeasure<T>
         (rhs, lhs) => lhs - rhs),
       (_, BinaryTariffMeasure<T> binary) => new BinaryTariffMeasure<T>(
         lhs - binary.T1, lhs - binary.T2),
-      (_, UnaryTariffMeasure<T> unary) => new UnaryTariffMeasure<T>(lhs - unary.T0),
+      (_, UnaryTariffMeasure<T> unary) => new UnaryTariffMeasure<T>(
+        lhs - unary.T0),
       _ => Null
     };
   }
 
-  public static TariffMeasure<T> operator *(PhasicMeasure<T> lhs, TariffMeasure<T> rhs)
+  public static TariffMeasure<T> operator *(PhasicMeasure<T> lhs,
+    TariffMeasure<T> rhs)
   {
     return (lhs, rhs) switch
     {
@@ -438,12 +470,14 @@ public abstract record class TariffMeasure<T>
         (rhs, lhs) => lhs * rhs),
       (_, BinaryTariffMeasure<T> binary) => new BinaryTariffMeasure<T>(
         lhs * binary.T1, lhs * binary.T2),
-      (_, UnaryTariffMeasure<T> unary) => new UnaryTariffMeasure<T>(lhs * unary.T0),
+      (_, UnaryTariffMeasure<T> unary) => new UnaryTariffMeasure<T>(
+        lhs * unary.T0),
       _ => Null
     };
   }
 
-  public static TariffMeasure<T> operator /(PhasicMeasure<T> lhs, TariffMeasure<T> rhs)
+  public static TariffMeasure<T> operator /(PhasicMeasure<T> lhs,
+    TariffMeasure<T> rhs)
   {
     return (lhs, rhs) switch
     {
@@ -453,12 +487,14 @@ public abstract record class TariffMeasure<T>
         (rhs, lhs) => lhs / rhs),
       (_, BinaryTariffMeasure<T> binary) => new BinaryTariffMeasure<T>(
         lhs / binary.T1, lhs * binary.T2),
-      (_, UnaryTariffMeasure<T> unary) => new UnaryTariffMeasure<T>(lhs / unary.T0),
+      (_, UnaryTariffMeasure<T> unary) => new UnaryTariffMeasure<T>(
+        lhs / unary.T0),
       _ => Null
     };
   }
 
-  public static TariffMeasure<T> operator +(TariffMeasure<T> lhs, DuplexMeasure<T> rhs)
+  public static TariffMeasure<T> operator +(TariffMeasure<T> lhs,
+    DuplexMeasure<T> rhs)
   {
     return (lhs, rhs) switch
     {
@@ -466,7 +502,8 @@ public abstract record class TariffMeasure<T>
         (lhs, rhs) => lhs + rhs),
       (_, CompositeDuplexMeasure<T> composite) => composite.ZipTariff(lhs,
         (rhs, lhs) => lhs + rhs),
-      (UnaryTariffMeasure<T> unary, _) => new UnaryTariffMeasure<T>(unary.T0 + rhs),
+      (UnaryTariffMeasure<T> unary, _) => new UnaryTariffMeasure<T>(unary.T0 +
+        rhs),
       (BinaryTariffMeasure<T> binary, _) => new BinaryTariffMeasure<T>(
         binary.T1 + rhs,
         binary.T2 + rhs),
@@ -474,7 +511,8 @@ public abstract record class TariffMeasure<T>
     };
   }
 
-  public static TariffMeasure<T> operator -(TariffMeasure<T> lhs, DuplexMeasure<T> rhs)
+  public static TariffMeasure<T> operator -(TariffMeasure<T> lhs,
+    DuplexMeasure<T> rhs)
   {
     return (lhs, rhs) switch
     {
@@ -482,7 +520,8 @@ public abstract record class TariffMeasure<T>
         (lhs, rhs) => lhs - rhs),
       (_, CompositeDuplexMeasure<T> composite) => composite.ZipTariff(lhs,
         (rhs, lhs) => lhs - rhs),
-      (UnaryTariffMeasure<T> unary, _) => new UnaryTariffMeasure<T>(unary.T0 - rhs),
+      (UnaryTariffMeasure<T> unary, _) => new UnaryTariffMeasure<T>(unary.T0 -
+        rhs),
       (BinaryTariffMeasure<T> binary, _) => new BinaryTariffMeasure<T>(
         binary.T1 - rhs,
         binary.T2 - rhs),
@@ -490,7 +529,8 @@ public abstract record class TariffMeasure<T>
     };
   }
 
-  public static TariffMeasure<T> operator *(TariffMeasure<T> lhs, DuplexMeasure<T> rhs)
+  public static TariffMeasure<T> operator *(TariffMeasure<T> lhs,
+    DuplexMeasure<T> rhs)
   {
     return (lhs, rhs) switch
     {
@@ -498,7 +538,8 @@ public abstract record class TariffMeasure<T>
         (lhs, rhs) => lhs * rhs),
       (_, CompositeDuplexMeasure<T> composite) => composite.ZipTariff(lhs,
         (rhs, lhs) => lhs * rhs),
-      (UnaryTariffMeasure<T> unary, _) => new UnaryTariffMeasure<T>(unary.T0 * rhs),
+      (UnaryTariffMeasure<T> unary, _) => new UnaryTariffMeasure<T>(unary.T0 *
+        rhs),
       (BinaryTariffMeasure<T> binary, _) => new BinaryTariffMeasure<T>(
         binary.T1 * rhs,
         binary.T2 * rhs),
@@ -506,7 +547,8 @@ public abstract record class TariffMeasure<T>
     };
   }
 
-  public static TariffMeasure<T> operator /(TariffMeasure<T> lhs, DuplexMeasure<T> rhs)
+  public static TariffMeasure<T> operator /(TariffMeasure<T> lhs,
+    DuplexMeasure<T> rhs)
   {
     return (lhs, rhs) switch
     {
@@ -514,7 +556,8 @@ public abstract record class TariffMeasure<T>
         (lhs, rhs) => lhs / rhs),
       (_, CompositeDuplexMeasure<T> composite) => composite.ZipTariff(lhs,
         (rhs, lhs) => lhs / rhs),
-      (UnaryTariffMeasure<T> unary, _) => new UnaryTariffMeasure<T>(unary.T0 / rhs),
+      (UnaryTariffMeasure<T> unary, _) => new UnaryTariffMeasure<T>(unary.T0 /
+        rhs),
       (BinaryTariffMeasure<T> binary, _) => new BinaryTariffMeasure<T>(
         binary.T1 / rhs,
         binary.T2 / rhs),
@@ -522,7 +565,8 @@ public abstract record class TariffMeasure<T>
     };
   }
 
-  public static TariffMeasure<T> operator +(DuplexMeasure<T> lhs, TariffMeasure<T> rhs)
+  public static TariffMeasure<T> operator +(DuplexMeasure<T> lhs,
+    TariffMeasure<T> rhs)
   {
     return (lhs, rhs) switch
     {
@@ -530,7 +574,8 @@ public abstract record class TariffMeasure<T>
         (lhs, rhs) => lhs + rhs),
       (_, CompositeTariffMeasure<T> composite) => composite.Zip(lhs,
         (rhs, lhs) => lhs + rhs),
-      (_, UnaryTariffMeasure<T> unary) => new UnaryTariffMeasure<T>(lhs + unary.T0),
+      (_, UnaryTariffMeasure<T> unary) => new UnaryTariffMeasure<T>(
+        lhs + unary.T0),
       (_, BinaryTariffMeasure<T> binary) => new BinaryTariffMeasure<T>(
         lhs + binary.T1,
         lhs + binary.T2),
@@ -538,7 +583,8 @@ public abstract record class TariffMeasure<T>
     };
   }
 
-  public static TariffMeasure<T> operator -(DuplexMeasure<T> lhs, TariffMeasure<T> rhs)
+  public static TariffMeasure<T> operator -(DuplexMeasure<T> lhs,
+    TariffMeasure<T> rhs)
   {
     return (lhs, rhs) switch
     {
@@ -546,7 +592,8 @@ public abstract record class TariffMeasure<T>
         (lhs, rhs) => lhs - rhs),
       (_, CompositeTariffMeasure<T> composite) => composite.Zip(lhs,
         (rhs, lhs) => lhs - rhs),
-      (_, UnaryTariffMeasure<T> unary) => new UnaryTariffMeasure<T>(lhs - unary.T0),
+      (_, UnaryTariffMeasure<T> unary) => new UnaryTariffMeasure<T>(
+        lhs - unary.T0),
       (_, BinaryTariffMeasure<T> binary) => new BinaryTariffMeasure<T>(
         lhs - binary.T1,
         lhs - binary.T2),
@@ -554,7 +601,8 @@ public abstract record class TariffMeasure<T>
     };
   }
 
-  public static TariffMeasure<T> operator *(DuplexMeasure<T> lhs, TariffMeasure<T> rhs)
+  public static TariffMeasure<T> operator *(DuplexMeasure<T> lhs,
+    TariffMeasure<T> rhs)
   {
     return (lhs, rhs) switch
     {
@@ -562,7 +610,8 @@ public abstract record class TariffMeasure<T>
         (lhs, rhs) => lhs * rhs),
       (_, CompositeTariffMeasure<T> composite) => composite.Zip(lhs,
         (rhs, lhs) => lhs * rhs),
-      (_, UnaryTariffMeasure<T> unary) => new UnaryTariffMeasure<T>(lhs * unary.T0),
+      (_, UnaryTariffMeasure<T> unary) => new UnaryTariffMeasure<T>(
+        lhs * unary.T0),
       (_, BinaryTariffMeasure<T> binary) => new BinaryTariffMeasure<T>(
         lhs * binary.T1,
         lhs * binary.T2),
@@ -570,7 +619,8 @@ public abstract record class TariffMeasure<T>
     };
   }
 
-  public static TariffMeasure<T> operator /(DuplexMeasure<T> lhs, TariffMeasure<T> rhs)
+  public static TariffMeasure<T> operator /(DuplexMeasure<T> lhs,
+    TariffMeasure<T> rhs)
   {
     return (lhs, rhs) switch
     {
@@ -578,7 +628,8 @@ public abstract record class TariffMeasure<T>
         (lhs, rhs) => lhs / rhs),
       (_, CompositeTariffMeasure<T> composite) => composite.Zip(lhs,
         (rhs, lhs) => lhs / rhs),
-      (_, UnaryTariffMeasure<T> unary) => new UnaryTariffMeasure<T>(lhs / unary.T0),
+      (_, UnaryTariffMeasure<T> unary) => new UnaryTariffMeasure<T>(
+        lhs / unary.T0),
       (_, BinaryTariffMeasure<T> binary) => new BinaryTariffMeasure<T>(
         lhs / binary.T1,
         lhs / binary.T2),
@@ -586,7 +637,8 @@ public abstract record class TariffMeasure<T>
     };
   }
 
-  public static TariffMeasure<T> operator +(TariffMeasure<T> lhs, TariffMeasure<T> rhs)
+  public static TariffMeasure<T> operator +(TariffMeasure<T> lhs,
+    TariffMeasure<T> rhs)
   {
     return (lhs, rhs) switch
     {
@@ -598,7 +650,8 @@ public abstract record class TariffMeasure<T>
     };
   }
 
-  public static TariffMeasure<T> operator -(TariffMeasure<T> lhs, TariffMeasure<T> rhs)
+  public static TariffMeasure<T> operator -(TariffMeasure<T> lhs,
+    TariffMeasure<T> rhs)
   {
     return (lhs, rhs) switch
     {
@@ -610,7 +663,8 @@ public abstract record class TariffMeasure<T>
     };
   }
 
-  public static TariffMeasure<T> operator *(TariffMeasure<T> lhs, TariffMeasure<T> rhs)
+  public static TariffMeasure<T> operator *(TariffMeasure<T> lhs,
+    TariffMeasure<T> rhs)
   {
     return (lhs, rhs) switch
     {
@@ -622,7 +676,8 @@ public abstract record class TariffMeasure<T>
     };
   }
 
-  public static TariffMeasure<T> operator /(TariffMeasure<T> lhs, TariffMeasure<T> rhs)
+  public static TariffMeasure<T> operator /(TariffMeasure<T> lhs,
+    TariffMeasure<T> rhs)
   {
     return (lhs, rhs) switch
     {

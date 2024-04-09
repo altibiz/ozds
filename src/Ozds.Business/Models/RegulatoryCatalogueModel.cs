@@ -24,6 +24,7 @@ public class RegulatoryCatalogueModel : CatalogueModel
   [Required]
   [Range(0, double.MaxValue)]
   public required float TaxRate_Percent { get; set; }
+
   public static RegulatoryCatalogueModel New()
   {
     return new RegulatoryCatalogueModel
@@ -41,7 +42,7 @@ public class RegulatoryCatalogueModel : CatalogueModel
       ActiveEnergyTotalImportT2Price_EUR = 0,
       RenewableEnergyFeePrice_EUR = 0,
       BusinessUsageFeePrice_EUR = 0,
-      TaxRate_Percent = 0,
+      TaxRate_Percent = 0
     };
   }
 }

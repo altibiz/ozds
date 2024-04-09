@@ -8,25 +8,31 @@ public abstract class CalculationCalculator<T> :
   ICalculationCalculator
   where T : CatalogueModel
 {
-  public bool CanCalculateForNetworkUser(NetworkUserCalculationBasisModel calculationBasis)
+  public bool CanCalculateForNetworkUser(
+    NetworkUserCalculationBasisModel calculationBasis)
   {
     return calculationBasis.Catalogue.GetType() == typeof(T);
   }
 
-  public bool CanCalculateForLocation(LocationCalculationBasisModel calculationBasis)
+  public bool CanCalculateForLocation(
+    LocationCalculationBasisModel calculationBasis)
   {
     throw new NotImplementedException();
   }
 
-  public CalculationModel CalculateForNetworkUser(NetworkUserCalculationBasisModel calculationBasis)
+  public CalculationModel CalculateForNetworkUser(
+    NetworkUserCalculationBasisModel calculationBasis)
   {
-    return CalculateForNetworkUser((T)calculationBasis.Catalogue, calculationBasis);
+    return CalculateForNetworkUser((T)calculationBasis.Catalogue,
+      calculationBasis);
   }
 
-  protected abstract CalculationModel CalculateForNetworkUser(T catalogue, NetworkUserCalculationBasisModel calculationBasis);
-
-  public CalculationModel CalculateForLocation(LocationCalculationBasisModel calculationBasis)
+  public CalculationModel CalculateForLocation(
+    LocationCalculationBasisModel calculationBasis)
   {
     throw new NotImplementedException();
   }
+
+  protected abstract CalculationModel CalculateForNetworkUser(T catalogue,
+    NetworkUserCalculationBasisModel calculationBasis);
 }

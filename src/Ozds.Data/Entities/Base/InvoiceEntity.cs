@@ -20,6 +20,15 @@ public abstract class InvoiceEntity : IReadonlyEntity, IIdentifiableEntity
 
   public DateTimeOffset ToDate { get; set; } = default!;
 
+  public virtual ICollection<CalculationEntity> Calculations { get; set; } =
+    default!;
+
+  public decimal Total_EUR { get; set; } = default!;
+
+  public decimal Tax_EUR { get; set; } = default!;
+
+  public decimal TotalWithTax_EUR { get; set; } = default!;
+
   public virtual string Id
   {
     get { return _id.ToString(); }
@@ -27,14 +36,6 @@ public abstract class InvoiceEntity : IReadonlyEntity, IIdentifiableEntity
   }
 
   public string Title { get; set; } = default!;
-
-  public virtual ICollection<CalculationEntity> Calculations { get; set; } = default!;
-
-  public decimal Total_EUR { get; set; } = default!;
-
-  public decimal Tax_EUR { get; set; } = default!;
-
-  public decimal TotalWithTax_EUR { get; set; } = default!;
 }
 
 public class

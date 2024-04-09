@@ -34,7 +34,8 @@ public static class WhiteLowCalculationModelEntityConverterExtensions
       MeterId = entity.MeterId,
       MeasurementLocationId = entity.MeasurementLocationId,
       CatalogueId = entity.CatalogueId,
-      ArchivedMeasurementLocation = entity.ArchivedMeasurementLocation.ToModel(),
+      ArchivedMeasurementLocation =
+        entity.ArchivedMeasurementLocation.ToModel(),
       ArchivedCatalogue = entity.ArchivedCatalogue.ToModel(),
       ArchivedMeter = entity.ArchivedMeter.ToModel(),
       ActiveEnergyTotalImportT1Min_Wh = entity.ActiveEnergyTotalImportT1Min_Wh,
@@ -71,7 +72,7 @@ public static class WhiteLowCalculationModelEntityConverterExtensions
         entity.ReactiveEnergyTotalRampedT0Price_EUR,
       ReactiveEnergyTotalRampedT0Total_EUR =
         entity.ReactiveEnergyTotalRampedT0Total_EUR,
-      MeterFeePrice_EUR = entity.MeterFeePrice_EUR,
+      MeterFeePrice_EUR = entity.MeterFeePrice_EUR
     };
   }
 
@@ -87,7 +88,8 @@ public static class WhiteLowCalculationModelEntityConverterExtensions
       MeterId = model.MeterId,
       MeasurementLocationId = model.MeasurementLocationId,
       CatalogueId = model.CatalogueId,
-      ArchivedMeasurementLocation = model.ArchivedMeasurementLocation.ToEntity(),
+      ArchivedMeasurementLocation =
+        model.ArchivedMeasurementLocation.ToEntity(),
       ArchivedCatalogue = model.ArchivedCatalogue.ToEntity(),
       ArchivedMeter = model.ArchivedMeter.ToEntity(),
       ActiveEnergyTotalImportT1Min_Wh = model.ActiveEnergyTotalImportT1Min_Wh,
@@ -124,7 +126,7 @@ public static class WhiteLowCalculationModelEntityConverterExtensions
         model.ReactiveEnergyTotalRampedT0Price_EUR,
       ReactiveEnergyTotalRampedT0Total_EUR =
         model.ReactiveEnergyTotalRampedT0Total_EUR,
-      MeterFeePrice_EUR = model.MeterFeePrice_EUR,
+      MeterFeePrice_EUR = model.MeterFeePrice_EUR
     };
   }
 }

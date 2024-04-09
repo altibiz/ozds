@@ -1,4 +1,3 @@
-using Ozds.Business.Models;
 using Ozds.Business.Models.Composite;
 
 namespace Ozds.Business.Conversion.Abstractions;
@@ -14,6 +13,6 @@ public interface IInvoiceIssuer
   );
 
   CalculatedLoactionInvoiceModel IssueForLocation(
-     LocationInvoiceIssuingBasisModel basis
+    LocationInvoiceIssuingBasisModel basis
   );
 }

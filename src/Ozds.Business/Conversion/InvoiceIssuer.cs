@@ -33,12 +33,12 @@ public class InvoiceIssuer : IInvoiceIssuer
       .GetServices<ICalculationCalculator>();
     var calculations = basis.CalculationBases.Select(
       basis => calculators
-        .FirstOrDefault(calculator => calculator
-          .CanCalculateForNetworkUser(basis))
-        ?.CalculateForNetworkUser(basis)
-          ?? throw new InvalidOperationException(
-            $"No calculator found for {basis.GetType().Name}"
-          )
+                 .FirstOrDefault(calculator => calculator
+                   .CanCalculateForNetworkUser(basis))
+                 ?.CalculateForNetworkUser(basis)
+               ?? throw new InvalidOperationException(
+                 $"No calculator found for {basis.GetType().Name}"
+               )
     );
 
     var total = calculations
@@ -46,7 +46,7 @@ public class InvoiceIssuer : IInvoiceIssuer
     var tax = total * 0.13M;
     var totalWithTax = total + tax;
 
-    var initial = new NetworkUserInvoiceModel()
+    var initial = new NetworkUserInvoiceModel
     {
       Id = default!,
       Title = "",

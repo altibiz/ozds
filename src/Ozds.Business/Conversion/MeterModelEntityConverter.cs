@@ -31,6 +31,7 @@ public static class MeterModelEntityConverterExtensions
     {
       return abbB2xMeterModel.ToEntity();
     }
+
     if (model is SchneideriEM3xxxMeterModel schneideriEM3xxxMeterModel)
     {
       return schneideriEM3xxxMeterModel.ToEntity();
@@ -58,4 +59,3 @@ public static class MeterModelEntityConverterExtensions
     );
   }
 }
-

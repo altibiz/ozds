@@ -5,7 +5,8 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities;
 
-public class WhiteLowCalculationEntity : CalculationEntity<WhiteLowCatalogueEntity>
+public class
+  WhiteLowCalculationEntity : CalculationEntity<WhiteLowCatalogueEntity>
 {
 #pragma warning disable CA1707
   public decimal ActiveEnergyTotalImportT1Min_Wh { get; set; }
@@ -31,80 +32,101 @@ public class WhiteLowCalculationEntity : CalculationEntity<WhiteLowCatalogueEnti
 #pragma warning restore CA1707
 }
 
-public class WhiteLowCalculationEntityTypeConfiguration : EntityTypeConfiguration<WhiteLowCalculationEntity>
+public class
+  WhiteLowCalculationEntityTypeConfiguration : EntityTypeConfiguration<
+  WhiteLowCalculationEntity>
 {
-  public override void Configure(EntityTypeBuilder<WhiteLowCalculationEntity> builder)
+  public override void Configure(
+    EntityTypeBuilder<WhiteLowCalculationEntity> builder)
   {
     builder
-      .Property(nameof(WhiteLowCalculationEntity.ActiveEnergyTotalImportT1Min_Wh))
+      .Property(
+        nameof(WhiteLowCalculationEntity.ActiveEnergyTotalImportT1Min_Wh))
       .HasColumnName("active_energy_total_import_t1_min_wh");
 
     builder
-      .Property(nameof(WhiteLowCalculationEntity.ActiveEnergyTotalImportT1Max_Wh))
+      .Property(
+        nameof(WhiteLowCalculationEntity.ActiveEnergyTotalImportT1Max_Wh))
       .HasColumnName("active_energy_total_import_t1_max_wh");
 
     builder
-      .Property(nameof(WhiteLowCalculationEntity.ActiveEnergyTotalImportT1Amount_Wh))
+      .Property(nameof(WhiteLowCalculationEntity
+        .ActiveEnergyTotalImportT1Amount_Wh))
       .HasColumnName("active_energy_total_import_t1_amount_wh");
 
     builder
-      .Property(nameof(WhiteLowCalculationEntity.ActiveEnergyTotalImportT1Price_EUR))
+      .Property(nameof(WhiteLowCalculationEntity
+        .ActiveEnergyTotalImportT1Price_EUR))
       .HasColumnName("active_energy_total_import_t1_price_eur");
 
     builder
-      .Property(nameof(WhiteLowCalculationEntity.ActiveEnergyTotalImportT1Total_EUR))
+      .Property(nameof(WhiteLowCalculationEntity
+        .ActiveEnergyTotalImportT1Total_EUR))
       .HasColumnName("active_energy_total_import_t1_total_eur");
 
     builder
-      .Property(nameof(WhiteLowCalculationEntity.ActiveEnergyTotalImportT2Min_Wh))
+      .Property(
+        nameof(WhiteLowCalculationEntity.ActiveEnergyTotalImportT2Min_Wh))
       .HasColumnName("active_energy_total_import_t2_min_wh");
 
     builder
-      .Property(nameof(WhiteLowCalculationEntity.ActiveEnergyTotalImportT2Max_Wh))
+      .Property(
+        nameof(WhiteLowCalculationEntity.ActiveEnergyTotalImportT2Max_Wh))
       .HasColumnName("active_energy_total_import_t2_max_wh");
 
     builder
-      .Property(nameof(WhiteLowCalculationEntity.ActiveEnergyTotalImportT2Amount_Wh))
+      .Property(nameof(WhiteLowCalculationEntity
+        .ActiveEnergyTotalImportT2Amount_Wh))
       .HasColumnName("active_energy_total_import_t2_amount_wh");
 
     builder
-      .Property(nameof(WhiteLowCalculationEntity.ActiveEnergyTotalImportT2Price_EUR))
+      .Property(nameof(WhiteLowCalculationEntity
+        .ActiveEnergyTotalImportT2Price_EUR))
       .HasColumnName("active_energy_total_import_t2_price_eur");
 
     builder
-      .Property(nameof(WhiteLowCalculationEntity.ActiveEnergyTotalImportT2Total_EUR))
+      .Property(nameof(WhiteLowCalculationEntity
+        .ActiveEnergyTotalImportT2Total_EUR))
       .HasColumnName("active_energy_total_import_t2_total_eur");
 
     builder
-      .Property(nameof(WhiteLowCalculationEntity.ReactiveEnergyTotalImportT0Min_VARh))
+      .Property(nameof(WhiteLowCalculationEntity
+        .ReactiveEnergyTotalImportT0Min_VARh))
       .HasColumnName("reactive_energy_total_import_t0_min_varh");
 
     builder
-      .Property(nameof(WhiteLowCalculationEntity.ReactiveEnergyTotalImportT0Max_VARh))
+      .Property(nameof(WhiteLowCalculationEntity
+        .ReactiveEnergyTotalImportT0Max_VARh))
       .HasColumnName("reactive_energy_total_import_t0_max_varh");
 
     builder
-      .Property(nameof(WhiteLowCalculationEntity.ReactiveEnergyTotalImportT0Amount_VARh))
+      .Property(nameof(WhiteLowCalculationEntity
+        .ReactiveEnergyTotalImportT0Amount_VARh))
       .HasColumnName("reactive_energy_total_import_t0_amount_varh");
 
     builder
-      .Property(nameof(WhiteLowCalculationEntity.ReactiveEnergyTotalExportT0Min_VARh))
+      .Property(nameof(WhiteLowCalculationEntity
+        .ReactiveEnergyTotalExportT0Min_VARh))
       .HasColumnName("reactive_energy_total_export_t0_min_varh");
 
     builder
-      .Property(nameof(WhiteLowCalculationEntity.ReactiveEnergyTotalExportT0Max_VARh))
+      .Property(nameof(WhiteLowCalculationEntity
+        .ReactiveEnergyTotalExportT0Max_VARh))
       .HasColumnName("reactive_energy_total_export_t0_max_varh");
 
     builder
-      .Property(nameof(WhiteLowCalculationEntity.ReactiveEnergyTotalExportT0Amount_VARh))
+      .Property(nameof(WhiteLowCalculationEntity
+        .ReactiveEnergyTotalExportT0Amount_VARh))
       .HasColumnName("reactive_energy_total_export_t0_amount_varh");
 
     builder
-      .Property(nameof(WhiteLowCalculationEntity.ReactiveEnergyTotalRampedT0Price_EUR))
+      .Property(nameof(WhiteLowCalculationEntity
+        .ReactiveEnergyTotalRampedT0Price_EUR))
       .HasColumnName("reactive_energy_total_ramped_t0_price_eur");
 
     builder
-      .Property(nameof(WhiteLowCalculationEntity.ReactiveEnergyTotalRampedT0Total_EUR))
+      .Property(nameof(WhiteLowCalculationEntity
+        .ReactiveEnergyTotalRampedT0Total_EUR))
       .HasColumnName("reactive_energy_total_ramped_t0_total_eur");
 
     builder

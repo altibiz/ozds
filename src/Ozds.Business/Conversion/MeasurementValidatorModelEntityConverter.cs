@@ -23,14 +23,16 @@ public class MeasurementValidatorModelEntityConverter : ModelEntityConverter<
 
 public static class MeasurementValidatorModelEntityConverterExtensions
 {
-  public static MeasurementValidatorEntity ToEntity(this MeasurementValidatorModel model)
+  public static MeasurementValidatorEntity ToEntity(
+    this MeasurementValidatorModel model)
   {
     if (model is AbbB2xMeasurementValidatorModel abbB2XMeasurementValidator)
     {
       return abbB2XMeasurementValidator.ToEntity();
     }
 
-    if (model is SchneideriEM3xxxMeasurementValidatorModel schneideriEM3XxxMeasurementValidator)
+    if (model is SchneideriEM3xxxMeasurementValidatorModel
+        schneideriEM3XxxMeasurementValidator)
     {
       return schneideriEM3XxxMeasurementValidator.ToEntity();
     }
@@ -40,14 +42,16 @@ public static class MeasurementValidatorModelEntityConverterExtensions
     );
   }
 
-  public static MeasurementValidatorModel ToModel(this MeasurementValidatorEntity entity)
+  public static MeasurementValidatorModel ToModel(
+    this MeasurementValidatorEntity entity)
   {
     if (entity is AbbB2xMeasurementValidatorEntity abbB2XMeasurementValidator)
     {
       return abbB2XMeasurementValidator.ToModel();
     }
 
-    if (entity is SchneideriEM3xxxMeasurementValidatorEntity schneideriEM3XxxMeasurementValidator)
+    if (entity is SchneideriEM3xxxMeasurementValidatorEntity
+        schneideriEM3XxxMeasurementValidator)
     {
       return schneideriEM3XxxMeasurementValidator.ToModel();
     }

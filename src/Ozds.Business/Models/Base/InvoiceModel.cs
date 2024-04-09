@@ -5,6 +5,11 @@ namespace Ozds.Business.Models.Base;
 
 public abstract class InvoiceModel : IInvoice
 {
+  [Required] public required decimal Total_EUR { get; set; }
+
+  [Required] public required decimal Tax_EUR { get; set; }
+
+  [Required] public required decimal TotalWithTax_EUR { get; set; }
   [Required] public required string Id { get; set; }
 
   [Required] public required string Title { get; set; }
@@ -16,12 +21,6 @@ public abstract class InvoiceModel : IInvoice
   [Required] public required DateTimeOffset FromDate { get; set; }
 
   [Required] public required DateTimeOffset ToDate { get; set; }
-
-  [Required] public required decimal Total_EUR { get; set; }
-
-  [Required] public required decimal Tax_EUR { get; set; }
-
-  [Required] public required decimal TotalWithTax_EUR { get; set; }
 
   public virtual IEnumerable<ValidationResult> Validate(
     ValidationContext validationContext)

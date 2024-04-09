@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using Ozds.Business.Models.Enums;
 
 namespace Ozds.Business.Models.Abstractions;

@@ -72,13 +72,13 @@ public static class DbContextExtensions
   )
   {
     return entry.Entity.GetType().IsAssignableFrom(entity.GetType()) &&
-      (entry.Metadata
-      .FindPrimaryKey()?.Properties
-      .All(property => property
-        .GetGetter()
-        .GetClrValue(entity)?.Equals(property
-          .GetGetter()
-          .GetClrValue(entry.Entity)) ?? false) ?? false);
+           (entry.Metadata
+             .FindPrimaryKey()?.Properties
+             .All(property => property
+               .GetGetter()
+               .GetClrValue(entity)?.Equals(property
+                 .GetGetter()
+                 .GetClrValue(entry.Entity)) ?? false) ?? false);
   }
 
   private static void AddOrUpdateEntry(
