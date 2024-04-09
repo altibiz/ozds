@@ -1,0 +1,5 @@
+outs:
+- md5: f9ebeaf7d13ec2e4ef847967e980a94f
+  size: 5366242
+  hash: md5
+  path: schneider-iEM3xxx-measurements.csv

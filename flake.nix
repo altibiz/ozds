@@ -36,7 +36,7 @@
           [
             # Version Control
             git
-            dvc
+            dvc-with-remotes
 
             # Nix
             nil
