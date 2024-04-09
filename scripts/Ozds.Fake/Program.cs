@@ -43,11 +43,16 @@ while (true)
 
   try
   {
-    await pushClient.Push(
+    var response = await pushClient.Push(
       options.BaseUrl,
       options.MessengerId,
       options.ApiKey,
       request
+    );
+
+    Console.WriteLine(
+      $"Pushed {measurements.Count} measurements to {options.BaseUrl} " +
+      $"with status code {response.StatusCode}"
     );
   }
   catch (Exception ex)

@@ -11,7 +11,7 @@ public class OzdsPushClient
     _httpClientFactory = httpClientFactory;
   }
 
-  public async Task Push(
+  public async Task<HttpResponseMessage> Push(
     string baseUrl,
     string messengerId,
     string apiKey,
@@ -23,6 +23,6 @@ public class OzdsPushClient
 
     var content = JsonContent.Create(request);
 
-    await client.PostAsync($"{baseUrl}/iot/push/{messengerId}", content);
+    return await client.PostAsync($"{baseUrl}/iot/push/{messengerId}", content);
   }
 }
