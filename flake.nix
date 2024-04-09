@@ -34,6 +34,10 @@
             };
           in
           [
+            # Version Control
+            git
+            dvc
+
             # Nix
             nil
             nixpkgs-fmt
