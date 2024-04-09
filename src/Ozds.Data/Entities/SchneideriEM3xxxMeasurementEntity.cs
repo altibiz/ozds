@@ -9,6 +9,7 @@ public class
   SchneideriEM3xxxMeasurementEntity : MeasurementEntity<
   SchneideriEM3xxxMeterEntity>
 {
+#pragma warning disable CA1707
   public float VoltageL1AnyT0_V { get; set; }
   public float VoltageL2AnyT0_V { get; set; }
   public float VoltageL3AnyT0_V { get; set; }
@@ -29,7 +30,7 @@ public class
   public float ReactiveEnergyTotalExportT0_VARh { get; set; }
   public float ActiveEnergyTotalImportT1_Wh { get; set; }
   public float ActiveEnergyTotalImportT2_Wh { get; set; }
-#pragma warning disable CA1707
+#pragma warning restore CA1707
 }
 
 public class

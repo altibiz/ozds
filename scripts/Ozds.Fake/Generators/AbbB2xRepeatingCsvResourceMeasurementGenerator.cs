@@ -1,10 +1,11 @@
-using Ozds.Data.Entities;
+using Ozds.Business.Models;
 using Ozds.Fake.Generators.Base;
+using Ozds.Fake.Records;
 
 namespace Ozds.Fake.Generators;
 
 public class AbbB2xRepeatingCsvResourceMeasurementGenerator :
-  RepeatingCsvResourceMeasurementGenerator<AbbB2xMeasurementEntity>
+  RepeatingCsvResourceMeasurementGenerator<AbbB2xMeasurementRecord>
 {
   public AbbB2xRepeatingCsvResourceMeasurementGenerator(
     IServiceProvider serviceProvider)

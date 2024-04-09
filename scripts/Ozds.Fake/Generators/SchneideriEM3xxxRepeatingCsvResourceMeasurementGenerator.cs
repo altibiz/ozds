@@ -1,10 +1,11 @@
-using Ozds.Data.Entities;
+using Ozds.Business.Models;
 using Ozds.Fake.Generators.Base;
+using Ozds.Fake.Records;
 
 namespace Ozds.Fake.Generators;
 
 public class SchneideriEM3xxxRepeatingCsvResourceMeasurementGenerator :
-  RepeatingCsvResourceMeasurementGenerator<SchneideriEM3xxxMeasurementEntity>
+  RepeatingCsvResourceMeasurementGenerator<SchneideriEM3xxxMeasurementRecord>
 {
   public SchneideriEM3xxxRepeatingCsvResourceMeasurementGenerator(
     IServiceProvider serviceProvider)

@@ -40,7 +40,7 @@ public class ResourceCache
   private static Stream Load(string name)
   {
     var assembly = typeof(ResourceCache).Assembly;
-    var fullName = $"{assembly.GetName().Name}.{name}";
+    var fullName = $"{assembly.GetName().Name}.Assets.{name}";
 
     var stream = assembly.GetManifestResourceStream(fullName) ??
                  throw new InvalidOperationException(

@@ -1,9 +1,10 @@
 using Ozds.Business.Conversion.Abstractions;
 using Ozds.Business.Iot;
 using Ozds.Business.Models.Abstractions;
-using Ozds.Data.Entities.Abstractions;
+using Ozds.Fake.Conversion.Abstractions;
 using Ozds.Fake.Generators.Abstractions;
 using Ozds.Fake.Loaders;
+using Ozds.Fake.Records.Abstractions;
 
 // TODO: check time logic here
 // TODO: fixup cumulatives
@@ -12,7 +13,7 @@ namespace Ozds.Fake.Generators.Base;
 
 public abstract class
   RepeatingCsvResourceMeasurementGenerator<TMeasurement> : IMeasurementGenerator
-  where TMeasurement : IMeasurementEntity
+  where TMeasurement : IMeasurementRecord
 {
   private readonly ResourceCache _resources;
 
@@ -55,16 +56,11 @@ public abstract class
       .Where(record =>
         record.Timestamp >= dateFrom
         && record.Timestamp <= dateTo)
-      .Select(entity => _serviceProvider
-        .GetServices<IModelEntityConverter>()
-        .FirstOrDefault(c => c.CanConvertToModel(entity.GetType()))
-        ?.ToModel(entity))
-      .OfType<IMeasurement>()
       .Select(measurement =>
       {
         var converter = _serviceProvider
-          .GetServices<IPushRequestMeasurementConverter>()
-          .FirstOrDefault(c => c.CanConvert(measurement.MeterId));
+          .GetServices<IMeasurementRecordPushRequestConverter>()
+          .FirstOrDefault(c => c.CanConvertToPushRequest(measurement));
         if (converter is null)
         {
           return null;
@@ -78,7 +74,7 @@ public abstract class
         return new MessengerPushRequestMeasurement(
           measurement.MeterId,
           timestamp,
-          converter.ToPushRequest(measurement)
+          converter.ConvertToPushRequest(measurement)
         );
       })
       .OfType<MessengerPushRequestMeasurement>()

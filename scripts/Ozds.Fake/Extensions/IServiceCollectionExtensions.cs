@@ -2,6 +2,7 @@ using System.Reflection;
 using Ozds.Business.Conversion.Abstractions;
 using Ozds.Data.Timescale;
 using Ozds.Fake.Client;
+using Ozds.Fake.Conversion.Abstractions;
 using Ozds.Fake.Generators.Abstractions;
 using Ozds.Fake.Loaders;
 
@@ -30,6 +31,12 @@ public static class IServiceCollectionExtensions
   {
     services.AddTransient(typeof(CsvLoader<>));
     services.AddSingleton(typeof(ResourceCache));
+    return services;
+  }
+
+  public static IServiceCollection AddRecords(this IServiceCollection services)
+  {
+    services.AddScopedAssignableTo(typeof(IMeasurementRecordPushRequestConverter));
     return services;
   }
 
