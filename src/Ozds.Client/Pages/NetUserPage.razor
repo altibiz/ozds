@@ -1,9 +1,8 @@
 @page "/network-user/{id}"
-@attribute [Navigation( Title = "Form", Parents = new[] { typeof(UsersPage) })]
 @attribute [StreamRendering]
 
 @* <NetUserView Id="@Id"/> *@
-<AbbB2xMeterMutate Id="@Id"/>
+<NetworkUserEdit Id="@Id"/>
 
 @code {
   [Parameter] public string? Id { get; set; } = "-1";

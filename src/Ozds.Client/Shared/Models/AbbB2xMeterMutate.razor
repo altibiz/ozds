@@ -47,11 +47,11 @@
         AnchorOrigin="Origin.BottomCenter"
         @bind-Value="LoadingState.Value.CatalogueId"
         For="@(() => LoadingState.Value.CatalogueId)">
-        @foreach(var catalog in _catalogues){
+        @* @foreach(var catalog in _catalogues){
           <MudSelectItem Value="catalog.Id">
             @catalog.Title
           </MudSelectItem>
-        }
+        } *@
       </MudSelect>
       <MudSelect
         Label="Validator"
@@ -124,7 +124,7 @@
   {
     var queries = ScopedServices.GetRequiredService<OzdsAbbB2xMeterModelQueries>();
     _messengers = (await queries.GetMessengers("")).Items;
-    _catalogues = (await queries.GetCatalogues("")).Items;
+    @* _catalogues = (await queries.GetCatalogues("")).Items; *@
     _validators = (await queries.GetValidators("")).Items;
 
     if (LoadingState.Value is null && Id is not null)
