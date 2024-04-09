@@ -12,7 +12,12 @@ public interface INetworkUserCalculation : IReadonly, IIdentifiable
   public string CatalogueId { get; }
   public string NetworkUserInvoiceId { get; }
   public MeterModel ArchivedMeter { get; }
-  public NetworkUserMeasurementLocationModel ArchivedMeasurementLocation { get; }
+
+  public NetworkUserMeasurementLocationModel ArchivedMeasurementLocation
+  {
+    get;
+  }
+
   public CatalogueModel ArchivedCatalogue { get; }
 
   public SpanningMeasure<decimal> ActiveEnergyAmount_Wh { get; }

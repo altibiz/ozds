@@ -12,7 +12,8 @@ public class OzdsSchneideriEM3xxxMeasurementValidatorModelQueries : IOzdsQueries
 {
   protected readonly OzdsDbContext context;
 
-  public OzdsSchneideriEM3xxxMeasurementValidatorModelQueries(OzdsDbContext context)
+  public OzdsSchneideriEM3xxxMeasurementValidatorModelQueries(
+    OzdsDbContext context)
   {
     this.context = context;
   }

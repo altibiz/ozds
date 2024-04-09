@@ -49,7 +49,7 @@ public class
       MinReactivePower_VAR = default,
       MaxReactivePower_VAR = default,
       MinApparentPower_VA = default,
-      MaxApparentPower_VA = default,
+      MaxApparentPower_VA = default
     };
   }
 

@@ -5,7 +5,9 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities;
 
-public class RedLowNetworkUserCalculationEntity : NetworkUserCalculationEntity<RedLowCatalogueEntity>
+public class
+  RedLowNetworkUserCalculationEntity : NetworkUserCalculationEntity<
+  RedLowCatalogueEntity>
 {
 #pragma warning disable CA1707
   public decimal ActiveEnergyTotalImportT1Min_Wh { get; set; }
@@ -43,11 +45,13 @@ public class
     EntityTypeBuilder<RedLowNetworkUserCalculationEntity> builder)
   {
     builder
-      .Property(nameof(RedLowNetworkUserCalculationEntity.ActiveEnergyTotalImportT1Min_Wh))
+      .Property(nameof(RedLowNetworkUserCalculationEntity
+        .ActiveEnergyTotalImportT1Min_Wh))
       .HasColumnName("active_energy_total_import_t1_min_wh");
 
     builder
-      .Property(nameof(RedLowNetworkUserCalculationEntity.ActiveEnergyTotalImportT1Max_Wh))
+      .Property(nameof(RedLowNetworkUserCalculationEntity
+        .ActiveEnergyTotalImportT1Max_Wh))
       .HasColumnName("active_energy_total_import_t1_max_wh");
 
     builder
@@ -66,11 +70,13 @@ public class
       .HasColumnName("active_energy_total_import_t1_total_eur");
 
     builder
-      .Property(nameof(RedLowNetworkUserCalculationEntity.ActiveEnergyTotalImportT2Min_Wh))
+      .Property(nameof(RedLowNetworkUserCalculationEntity
+        .ActiveEnergyTotalImportT2Min_Wh))
       .HasColumnName("active_energy_total_import_t2_min_wh");
 
     builder
-      .Property(nameof(RedLowNetworkUserCalculationEntity.ActiveEnergyTotalImportT2Max_Wh))
+      .Property(nameof(RedLowNetworkUserCalculationEntity
+        .ActiveEnergyTotalImportT2Max_Wh))
       .HasColumnName("active_energy_total_import_t2_max_wh");
 
     builder
@@ -89,22 +95,26 @@ public class
       .HasColumnName("active_energy_total_import_t2_total_eur");
 
     builder
-      .Property(nameof(RedLowNetworkUserCalculationEntity.ActivePowerTotalImportT1Peak_W))
+      .Property(nameof(RedLowNetworkUserCalculationEntity
+        .ActivePowerTotalImportT1Peak_W))
       .HasColumnName("max_active_power_total_import_t1_peak_w");
 
     builder
       .Property(
-        nameof(RedLowNetworkUserCalculationEntity.ActivePowerTotalImportT1Amount_W))
+        nameof(RedLowNetworkUserCalculationEntity
+          .ActivePowerTotalImportT1Amount_W))
       .HasColumnName("max_active_power_total_import_t1_amount_w");
 
     builder
       .Property(
-        nameof(RedLowNetworkUserCalculationEntity.ActivePowerTotalImportT1Price_EUR))
+        nameof(RedLowNetworkUserCalculationEntity
+          .ActivePowerTotalImportT1Price_EUR))
       .HasColumnName("max_active_power_total_import_t1_price_eur");
 
     builder
       .Property(
-        nameof(RedLowNetworkUserCalculationEntity.ActivePowerTotalImportT1Total_EUR))
+        nameof(RedLowNetworkUserCalculationEntity
+          .ActivePowerTotalImportT1Total_EUR))
       .HasColumnName("max_active_power_total_import_t1_total_eur");
 
     builder

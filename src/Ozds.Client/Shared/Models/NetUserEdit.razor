@@ -37,7 +37,8 @@
         AnchorOrigin="Origin.BottomCenter"
         @bind-Value="LoadingState.Value.LocationId"
         For="@(() => LoadingState.Value.LocationId)">
-        @foreach(var location in _locations){
+        @foreach (var location in _locations)
+        {
           <MudSelectItem Value="location.Id">
             @location.Title
           </MudSelectItem>
@@ -104,7 +105,7 @@
 
     if (LoadingState.Value is null && Id is not null)
     {
-      LoadingState = LoadingState.WithValue( await queries.NetworkUserById(Id));
+      LoadingState = LoadingState.WithValue(await queries.NetworkUserById(Id));
     }
 
     if (LoadingState.Value is null)

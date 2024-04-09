@@ -6,7 +6,8 @@ using Ozds.Data.Extensions;
 namespace Ozds.Data.Entities;
 
 public class
-  BlueLowNetworkUserCalculationEntity : NetworkUserCalculationEntity<BlueLowCatalogueEntity>
+  BlueLowNetworkUserCalculationEntity : NetworkUserCalculationEntity<
+  BlueLowCatalogueEntity>
 {
 #pragma warning disable CA1707
   public decimal ActiveEnergyTotalImportT0Min_Wh { get; set; }
@@ -28,7 +29,8 @@ public class
 }
 
 public class
-  BlueLowNetworkUserCalculationEntityTypeConfiguration : EntityTypeConfiguration<
+  BlueLowNetworkUserCalculationEntityTypeConfiguration : EntityTypeConfiguration
+<
   BlueLowNetworkUserCalculationEntity>
 {
   public override void Configure(
@@ -36,12 +38,14 @@ public class
   {
     builder
       .Property(
-        nameof(BlueLowNetworkUserCalculationEntity.ActiveEnergyTotalImportT0Min_Wh))
+        nameof(BlueLowNetworkUserCalculationEntity
+          .ActiveEnergyTotalImportT0Min_Wh))
       .HasColumnName("active_energy_total_import_t2_min_wh");
 
     builder
       .Property(
-        nameof(BlueLowNetworkUserCalculationEntity.ActiveEnergyTotalImportT0Max_Wh))
+        nameof(BlueLowNetworkUserCalculationEntity
+          .ActiveEnergyTotalImportT0Max_Wh))
       .HasColumnName("active_energy_total_import_t2_max_wh");
 
     builder

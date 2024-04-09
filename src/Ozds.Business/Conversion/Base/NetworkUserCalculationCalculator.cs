@@ -33,6 +33,7 @@ public abstract class NetworkUserCalculationCalculator<T> :
     throw new NotImplementedException();
   }
 
-  protected abstract NetworkUserCalculationModel CalculateForNetworkUser(T catalogue,
+  protected abstract NetworkUserCalculationModel CalculateForNetworkUser(
+    T catalogue,
     NetworkUserNetworkUserCalculationBasisModel calculationBasis);
 }

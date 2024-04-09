@@ -103,8 +103,8 @@ public class OzdsBillingQueries
         )
         .ToListAsync())
       .Select(x => new NetworkUserNetworkUserCalculationBasisModel(
-        FromDate: fromDate,
-        ToDate: toDate,
+        fromDate,
+        toDate,
         Location: x.Location,
         NetworkUser: x.NetworkUser,
         MeasurementLocation: x.MeasurementLocation,
@@ -146,11 +146,12 @@ public class OzdsBillingQueries
     );
   }
 
-  public Task<List<LocationNetworkUserCalculationBasisModel>> NetworkUserCalculationBasesByLocation(
-    string locationId,
-    DateTimeOffset fromDate,
-    DateTimeOffset toDate
-  )
+  public Task<List<LocationNetworkUserCalculationBasisModel>>
+    NetworkUserCalculationBasesByLocation(
+      string locationId,
+      DateTimeOffset fromDate,
+      DateTimeOffset toDate
+    )
   {
     throw new NotImplementedException();
   }

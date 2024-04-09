@@ -10,6 +10,7 @@ public class SchneideriEM3xxxMeterModel : MeterModel
   {
     get { return new SchneideriEM3xxxCapabilities(); }
   }
+
   public static SchneideriEM3xxxMeterModel New()
   {
     return new SchneideriEM3xxxMeterModel
@@ -26,7 +27,7 @@ public class SchneideriEM3xxxMeterModel : MeterModel
       ConnectionPower_W = default,
       Phases = default!,
       MessengerId = default!,
-      MeasurementValidatorId = default!,
+      MeasurementValidatorId = default!
     };
   }
 }

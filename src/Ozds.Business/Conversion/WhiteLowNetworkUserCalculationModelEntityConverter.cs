@@ -4,8 +4,9 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Conversion;
 
-public class WhiteLowNetworkUserCalculationModelEntityConverter : ModelEntityConverter<
-  WhiteLowNetworkUserCalculationModel, WhiteLowNetworkUserCalculationEntity>
+public class WhiteLowNetworkUserCalculationModelEntityConverter :
+  ModelEntityConverter<
+    WhiteLowNetworkUserCalculationModel, WhiteLowNetworkUserCalculationEntity>
 {
   protected override WhiteLowNetworkUserCalculationEntity ToEntity(
     WhiteLowNetworkUserCalculationModel model)

@@ -24,24 +24,29 @@ public class NetworkUserCalculationModelEntityConverter : ModelEntityConverter<
 
 public static class NetworkUserCalculationModelEntityConverterExtensions
 {
-  public static NetworkUserCalculationEntity ToEntity(this NetworkUserCalculationModel model)
+  public static NetworkUserCalculationEntity ToEntity(
+    this NetworkUserCalculationModel model)
   {
-    if (model is RedLowNetworkUserCalculationModel redLowNetworkUserCalculationModel)
+    if (model is RedLowNetworkUserCalculationModel
+        redLowNetworkUserCalculationModel)
     {
       return redLowNetworkUserCalculationModel.ToEntity();
     }
 
-    if (model is BlueLowNetworkUserCalculationModel blueLowNetworkUserCalculationModel)
+    if (model is BlueLowNetworkUserCalculationModel
+        blueLowNetworkUserCalculationModel)
     {
       return blueLowNetworkUserCalculationModel.ToEntity();
     }
 
-    if (model is WhiteLowNetworkUserCalculationModel whiteLowNetworkUserCalculationModel)
+    if (model is WhiteLowNetworkUserCalculationModel
+        whiteLowNetworkUserCalculationModel)
     {
       return whiteLowNetworkUserCalculationModel.ToEntity();
     }
 
-    if (model is WhiteMediumNetworkUserCalculationModel whiteMediumNetworkUserCalculationModel)
+    if (model is WhiteMediumNetworkUserCalculationModel
+        whiteMediumNetworkUserCalculationModel)
     {
       return whiteMediumNetworkUserCalculationModel.ToEntity();
     }
@@ -51,24 +56,29 @@ public static class NetworkUserCalculationModelEntityConverterExtensions
     );
   }
 
-  public static NetworkUserCalculationModel ToModel(this NetworkUserCalculationEntity entity)
+  public static NetworkUserCalculationModel ToModel(
+    this NetworkUserCalculationEntity entity)
   {
-    if (entity is RedLowNetworkUserCalculationEntity redLowNetworkUserCalculationEntity)
+    if (entity is RedLowNetworkUserCalculationEntity
+        redLowNetworkUserCalculationEntity)
     {
       return redLowNetworkUserCalculationEntity.ToModel();
     }
 
-    if (entity is BlueLowNetworkUserCalculationEntity blueLowNetworkUserCalculationEntity)
+    if (entity is BlueLowNetworkUserCalculationEntity
+        blueLowNetworkUserCalculationEntity)
     {
       return blueLowNetworkUserCalculationEntity.ToModel();
     }
 
-    if (entity is WhiteLowNetworkUserCalculationEntity whiteLowNetworkUserCalculationEntity)
+    if (entity is WhiteLowNetworkUserCalculationEntity
+        whiteLowNetworkUserCalculationEntity)
     {
       return whiteLowNetworkUserCalculationEntity.ToModel();
     }
 
-    if (entity is WhiteMediumNetworkUserCalculationEntity whiteMediumNetworkUserCalculationEntity)
+    if (entity is WhiteMediumNetworkUserCalculationEntity
+        whiteMediumNetworkUserCalculationEntity)
     {
       return whiteMediumNetworkUserCalculationEntity.ToModel();
     }

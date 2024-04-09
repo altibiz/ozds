@@ -7,7 +7,8 @@ using Ozds.Data.Extensions;
 namespace Ozds.Data.Entities;
 
 public class
-  SchneideriEM3xxxMeasurementValidatorEntity : MeasurementValidatorEntity<SchneideriEM3xxxMeterEntity>
+  SchneideriEM3xxxMeasurementValidatorEntity : MeasurementValidatorEntity<
+  SchneideriEM3xxxMeterEntity>
 {
 #pragma warning disable CA1707
   public float MinVoltage_V { get; set; }

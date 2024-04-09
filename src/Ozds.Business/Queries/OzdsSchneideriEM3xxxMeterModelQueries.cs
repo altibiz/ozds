@@ -1,12 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Conversion;
 using Ozds.Business.Models;
-using Ozds.Business.Models.Base;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Data;
 using Ozds.Data.Entities;
 using Ozds.Data.Extensions;
-using SQLitePCL;
 
 namespace Ozds.Business.Queries;
 
@@ -31,8 +29,10 @@ public class OzdsSchneideriEM3xxxMeterModelQueries : IOzdsQueries
     {
       return meterEntity.ToModel();
     }
+
     return null;
   }
+
   public async Task<PaginatedList<MessengerModel>> GetMessengers(
     string title,
     int pageNumber = QueryConstants.StartingPage,
@@ -51,6 +51,7 @@ public class OzdsSchneideriEM3xxxMeterModelQueries : IOzdsQueries
       .Select(item => item.ToModel())
       .ToPaginatedList(count);
   }
+
   // public async Task<PaginatedList<CatalogueModel>> GetCatalogues(
   //   string title,
   //   int pageNumber = QueryConstants.StartingPage,
@@ -69,11 +70,12 @@ public class OzdsSchneideriEM3xxxMeterModelQueries : IOzdsQueries
   //     .Select(item => item.ToModel())
   //     .ToPaginatedList(count);
   // }
-  public async Task<PaginatedList<SchneideriEM3xxxMeasurementValidatorModel>> GetValidators(
-    string title,
-    int pageNumber = QueryConstants.StartingPage,
-    int pageCount = QueryConstants.DefaultPageCount
-  )
+  public async Task<PaginatedList<SchneideriEM3xxxMeasurementValidatorModel>>
+    GetValidators(
+      string title,
+      int pageNumber = QueryConstants.StartingPage,
+      int pageCount = QueryConstants.DefaultPageCount
+    )
   {
     var filtered = context.MeasurementValidators
       .OfType<SchneideriEM3xxxMeasurementValidatorEntity>()
@@ -88,4 +90,3 @@ public class OzdsSchneideriEM3xxxMeterModelQueries : IOzdsQueries
       .ToPaginatedList(count);
   }
 }
-

@@ -6,7 +6,8 @@ using Ozds.Data.Extensions;
 namespace Ozds.Data.Entities;
 
 public class
-  WhiteLowNetworkUserCalculationEntity : NetworkUserCalculationEntity<WhiteLowCatalogueEntity>
+  WhiteLowNetworkUserCalculationEntity : NetworkUserCalculationEntity<
+  WhiteLowCatalogueEntity>
 {
 #pragma warning disable CA1707
   public decimal ActiveEnergyTotalImportT1Min_Wh { get; set; }
@@ -33,20 +34,23 @@ public class
 }
 
 public class
-  WhiteLowNetworkUserCalculationEntityTypeConfiguration : EntityTypeConfiguration<
-  WhiteLowNetworkUserCalculationEntity>
+  WhiteLowNetworkUserCalculationEntityTypeConfiguration :
+  EntityTypeConfiguration<
+    WhiteLowNetworkUserCalculationEntity>
 {
   public override void Configure(
     EntityTypeBuilder<WhiteLowNetworkUserCalculationEntity> builder)
   {
     builder
       .Property(
-        nameof(WhiteLowNetworkUserCalculationEntity.ActiveEnergyTotalImportT1Min_Wh))
+        nameof(WhiteLowNetworkUserCalculationEntity
+          .ActiveEnergyTotalImportT1Min_Wh))
       .HasColumnName("active_energy_total_import_t1_min_wh");
 
     builder
       .Property(
-        nameof(WhiteLowNetworkUserCalculationEntity.ActiveEnergyTotalImportT1Max_Wh))
+        nameof(WhiteLowNetworkUserCalculationEntity
+          .ActiveEnergyTotalImportT1Max_Wh))
       .HasColumnName("active_energy_total_import_t1_max_wh");
 
     builder
@@ -66,12 +70,14 @@ public class
 
     builder
       .Property(
-        nameof(WhiteLowNetworkUserCalculationEntity.ActiveEnergyTotalImportT2Min_Wh))
+        nameof(WhiteLowNetworkUserCalculationEntity
+          .ActiveEnergyTotalImportT2Min_Wh))
       .HasColumnName("active_energy_total_import_t2_min_wh");
 
     builder
       .Property(
-        nameof(WhiteLowNetworkUserCalculationEntity.ActiveEnergyTotalImportT2Max_Wh))
+        nameof(WhiteLowNetworkUserCalculationEntity
+          .ActiveEnergyTotalImportT2Max_Wh))
       .HasColumnName("active_energy_total_import_t2_max_wh");
 
     builder

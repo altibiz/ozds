@@ -5,9 +5,7 @@ using Ozds.Business.Models.Base;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Data;
 using Ozds.Data.Entities;
-using Ozds.Data.Entities.Base;
 using Ozds.Data.Extensions;
-using SQLitePCL;
 
 namespace Ozds.Business.Queries;
 
@@ -32,8 +30,10 @@ public class OzdsLocationMeasurementLocationModelQueries : IOzdsQueries
     {
       return meterEntity.ToModel();
     }
+
     return null;
   }
+
   public async Task<PaginatedList<LocationModel>> GetLocations(
     string title,
     int pageNumber = QueryConstants.StartingPage,
@@ -52,6 +52,7 @@ public class OzdsLocationMeasurementLocationModelQueries : IOzdsQueries
       .Select(item => item.ToModel())
       .ToPaginatedList(count);
   }
+
   public async Task<PaginatedList<MeterModel>> GetMeters(
     string title,
     int pageNumber = QueryConstants.StartingPage,
@@ -70,4 +71,3 @@ public class OzdsLocationMeasurementLocationModelQueries : IOzdsQueries
       .ToPaginatedList(count);
   }
 }
-

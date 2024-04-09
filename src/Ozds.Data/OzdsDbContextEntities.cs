@@ -48,7 +48,11 @@ public partial class OzdsDbContext : DbContext
   public DbSet<NetworkUserInvoiceEntity> NetworkUserInvoices { get; set; } =
     default!;
 
-  public DbSet<NetworkUserCalculationEntity> NetworkUserCalculations { get; set; } = default!;
+  public DbSet<NetworkUserCalculationEntity> NetworkUserCalculations
+  {
+    get;
+    set;
+  } = default!;
 
   public DbSet<EventEntity> Events { get; set; } = default!;
 }

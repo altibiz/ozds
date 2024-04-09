@@ -6,7 +6,8 @@ using Ozds.Business.Models.Composite;
 namespace Ozds.Business.Conversion;
 
 public class
-  BlueLowNetworkUserCalculationCalculator : NetworkUserCalculationCalculator<BlueLowCatalogueModel>
+  BlueLowNetworkUserCalculationCalculator : NetworkUserCalculationCalculator<
+  BlueLowCatalogueModel>
 {
   protected override NetworkUserCalculationModel CalculateForNetworkUser(
     BlueLowCatalogueModel catalogue,

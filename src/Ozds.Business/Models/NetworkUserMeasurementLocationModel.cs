@@ -7,6 +7,7 @@ public class NetworkUserMeasurementLocationModel : MeasurementLocationModel
 {
   [Required] public required string NetworkUserId { get; set; }
   [Required] public required string CatalogueId { get; set; }
+
   public static NetworkUserMeasurementLocationModel New()
   {
     return new NetworkUserMeasurementLocationModel
@@ -22,7 +23,7 @@ public class NetworkUserMeasurementLocationModel : MeasurementLocationModel
       DeletedById = default,
       NetworkUserId = default!,
       CatalogueId = default!,
-      MeterId = default!,
+      MeterId = default!
     };
   }
 }

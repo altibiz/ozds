@@ -9,7 +9,8 @@ public class MeasurementLocationEntity : AuditableEntity
 
   public virtual MeterEntity Meter { get; set; } = default!;
 
-  public virtual ICollection<NetworkUserCalculationEntity> NetworkUserCalculations { get; set; } =
+  public virtual ICollection<NetworkUserCalculationEntity>
+    NetworkUserCalculations { get; set; } =
     default!;
 }
 

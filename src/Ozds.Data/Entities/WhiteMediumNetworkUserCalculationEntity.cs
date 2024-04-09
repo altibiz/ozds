@@ -6,7 +6,8 @@ using Ozds.Data.Extensions;
 namespace Ozds.Data.Entities;
 
 public class
-  WhiteMediumNetworkUserCalculationEntity : NetworkUserCalculationEntity<WhiteMediumCatalogueEntity>
+  WhiteMediumNetworkUserCalculationEntity : NetworkUserCalculationEntity<
+  WhiteMediumCatalogueEntity>
 {
 #pragma warning disable CA1707
   public decimal ActiveEnergyTotalImportT1Min_Wh { get; set; }
@@ -37,8 +38,9 @@ public class
 }
 
 public class
-  WhiteMediumNetworkUserCalculationEntityTypeConfiguration : EntityTypeConfiguration<
-  WhiteMediumNetworkUserCalculationEntity>
+  WhiteMediumNetworkUserCalculationEntityTypeConfiguration :
+  EntityTypeConfiguration<
+    WhiteMediumNetworkUserCalculationEntity>
 {
   public override void Configure(
     EntityTypeBuilder<WhiteMediumNetworkUserCalculationEntity> builder)
@@ -154,7 +156,8 @@ public class
       .HasColumnName("reactive_energy_total_ramped_t0_total_eur");
 
     builder
-      .Property(nameof(WhiteMediumNetworkUserCalculationEntity.MeterFeePrice_EUR))
+      .Property(
+        nameof(WhiteMediumNetworkUserCalculationEntity.MeterFeePrice_EUR))
       .HasColumnName("meter_fee_price_eur");
   }
 }

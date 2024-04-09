@@ -6,6 +6,7 @@ namespace Ozds.Business.Models;
 public class LocationMeasurementLocationModel : MeasurementLocationModel
 {
   [Required] public required string LocationId { get; set; }
+
   public static LocationMeasurementLocationModel New()
   {
     return new LocationMeasurementLocationModel
@@ -20,7 +21,7 @@ public class LocationMeasurementLocationModel : MeasurementLocationModel
       DeletedOn = default,
       DeletedById = default,
       LocationId = default!,
-      MeterId = default!,
+      MeterId = default!
     };
   }
 }

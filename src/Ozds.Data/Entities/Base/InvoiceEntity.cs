@@ -20,7 +20,8 @@ public abstract class InvoiceEntity : IReadonlyEntity, IIdentifiableEntity
 
   public DateTimeOffset ToDate { get; set; } = default!;
 
-  public virtual ICollection<NetworkUserCalculationEntity> NetworkUserCalculations { get; set; } =
+  public virtual ICollection<NetworkUserCalculationEntity>
+    NetworkUserCalculations { get; set; } =
     default!;
 
   public decimal Total_EUR { get; set; } = default!;

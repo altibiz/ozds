@@ -12,6 +12,8 @@ public class NetworkUserCalculationEntity : IReadonlyEntity, IIdentifiableEntity
 
   protected readonly long _measurementLocationId;
 
+  protected readonly long _networkUserInvoiceId;
+
   public DateTimeOffset IssuedOn { get; set; } = DateTimeOffset.UtcNow;
 
   public string? IssuedById { get; set; }
@@ -35,9 +37,8 @@ public class NetworkUserCalculationEntity : IReadonlyEntity, IIdentifiableEntity
     init { _measurementLocationId = long.Parse(value); }
   }
 
-  protected readonly long _networkUserInvoiceId;
-
-  public virtual NetworkUserInvoiceEntity NetworkUserInvoice { get; set; } = default!;
+  public virtual NetworkUserInvoiceEntity NetworkUserInvoice { get; set; } =
+    default!;
 
   public string NetworkUserInvoiceId
   {
@@ -51,7 +52,11 @@ public class NetworkUserCalculationEntity : IReadonlyEntity, IIdentifiableEntity
 
   public MeterEntity ArchivedMeter { get; set; } = default!;
 
-  public NetworkUserMeasurementLocationEntity ArchivedMeasurementLocation { get; set; } =
+  public NetworkUserMeasurementLocationEntity ArchivedMeasurementLocation
+  {
+    get;
+    set;
+  } =
     default!;
 
   public virtual string Id
@@ -63,7 +68,8 @@ public class NetworkUserCalculationEntity : IReadonlyEntity, IIdentifiableEntity
   public string Title { get; set; } = default!;
 }
 
-public class NetworkUserCalculationEntity<TCatalogue> : NetworkUserCalculationEntity
+public class
+  NetworkUserCalculationEntity<TCatalogue> : NetworkUserCalculationEntity
   where TCatalogue : CatalogueEntity
 {
   protected readonly long _catalogueId;
@@ -78,9 +84,10 @@ public class NetworkUserCalculationEntity<TCatalogue> : NetworkUserCalculationEn
 }
 
 public class
-  NetworkUserCalculationEntityTypeHierarchyConfiguration : EntityTypeHierarchyConfiguration
-<
-  NetworkUserCalculationEntity>
+  NetworkUserCalculationEntityTypeHierarchyConfiguration :
+  EntityTypeHierarchyConfiguration
+  <
+    NetworkUserCalculationEntity>
 {
   public override void Configure(ModelBuilder modelBuilder, Type type)
   {
@@ -142,14 +149,16 @@ public class
       .Ignore(nameof(CatalogueEntity.NetworkUserCalculations));
 
     builder
-      .ComplexProperty(nameof(NetworkUserCalculationEntity.ArchivedMeasurementLocation))
+      .ComplexProperty(nameof(NetworkUserCalculationEntity
+        .ArchivedMeasurementLocation))
       .Ignore(nameof(NetworkUserMeasurementLocationEntity.LastUpdatedBy))
       .Ignore(nameof(NetworkUserMeasurementLocationEntity.CreatedBy))
       .Ignore(nameof(NetworkUserMeasurementLocationEntity.DeletedBy))
       .Ignore(nameof(NetworkUserMeasurementLocationEntity.Catalogue))
       .Ignore(nameof(NetworkUserMeasurementLocationEntity.Meter))
       .Ignore(nameof(NetworkUserMeasurementLocationEntity.NetworkUser))
-      .Ignore(nameof(NetworkUserMeasurementLocationEntity.NetworkUserCalculations));
+      .Ignore(nameof(NetworkUserMeasurementLocationEntity
+        .NetworkUserCalculations));
 
     builder
       .Property<DateTimeOffset>(nameof(NetworkUserCalculationEntity.IssuedOn))
@@ -184,7 +193,8 @@ public class
         .WithMany(nameof(CatalogueEntity.NetworkUserCalculations))
         .HasForeignKey("_catalogueId");
 
-      builder.Ignore(nameof(NetworkUserCalculationEntity<CatalogueEntity>.CatalogueId));
+      builder.Ignore(nameof(NetworkUserCalculationEntity<CatalogueEntity>
+        .CatalogueId));
       builder
         .Property("_catalogueId")
         .HasColumnName("catalogue_id");

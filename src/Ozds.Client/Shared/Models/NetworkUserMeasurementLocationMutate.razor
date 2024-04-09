@@ -32,7 +32,8 @@
         AnchorOrigin="Origin.BottomCenter"
         @bind-Value="LoadingState.Value.NetworkUserId"
         For="@(() => LoadingState.Value.NetworkUserId)">
-        @foreach(var location in _netUsers){
+        @foreach (var location in _netUsers)
+        {
           <MudSelectItem Value="location.Id">
             @location.Title
           </MudSelectItem>
@@ -43,7 +44,8 @@
         AnchorOrigin="Origin.BottomCenter"
         @bind-Value="LoadingState.Value.MeterId"
         For="@(() => LoadingState.Value.MeterId)">
-        @foreach(var meter in _meters){
+        @foreach (var meter in _meters)
+        {
           <MudSelectItem Value="meter.Id">
             @meter.Title
           </MudSelectItem>

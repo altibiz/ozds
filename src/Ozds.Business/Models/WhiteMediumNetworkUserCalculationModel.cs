@@ -4,7 +4,8 @@ using Ozds.Business.Models.Base;
 
 namespace Ozds.Business.Models;
 
-public class WhiteMediumNetworkUserCalculationModel : NetworkUserCalculationModel
+public class
+  WhiteMediumNetworkUserCalculationModel : NetworkUserCalculationModel
 {
   [Required]
   public required decimal ActiveEnergyTotalImportT1Min_Wh { get; set; }

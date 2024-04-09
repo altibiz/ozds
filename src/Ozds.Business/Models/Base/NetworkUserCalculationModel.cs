@@ -6,15 +6,16 @@ namespace Ozds.Business.Models.Base;
 
 public abstract class NetworkUserCalculationModel : INetworkUserCalculation
 {
+  [Required] public required DateTimeOffset FromDate { get; set; } = default!;
+  [Required] public required DateTimeOffset ToDate { get; set; } = default!;
+
   [Required]
   public required DateTimeOffset IssuedOn { get; set; } = DateTimeOffset.UtcNow;
+
   [Required] public required string? IssuedById { get; set; } = default!;
 
   [Required] public required string Id { get; init; } = default!;
   [Required] public required string Title { get; set; } = default!;
-
-  [Required] public required DateTimeOffset FromDate { get; set; } = default!;
-  [Required] public required DateTimeOffset ToDate { get; set; } = default!;
 
   [Required] public required string MeterId { get; set; } = default!;
 
@@ -29,11 +30,8 @@ public abstract class NetworkUserCalculationModel : INetworkUserCalculation
   [Required] public required MeterModel ArchivedMeter { get; set; } = default!;
 
   [Required]
-  public required NetworkUserMeasurementLocationModel ArchivedMeasurementLocation
-  {
-    get;
-    set;
-  } = default!;
+  public required NetworkUserMeasurementLocationModel
+    ArchivedMeasurementLocation { get; set; } = default!;
 
   [Required]
   public required CatalogueModel ArchivedCatalogue { get; set; } = default!;

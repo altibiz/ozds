@@ -36,7 +36,8 @@
         AnchorOrigin="Origin.BottomCenter"
         @bind-Value="LoadingState.Value.MessengerId"
         For="@(() => LoadingState.Value.MessengerId)">
-        @foreach(var messenger in _messengers){
+        @foreach (var messenger in _messengers)
+        {
           <MudSelectItem Value="messenger.Id">
             @messenger.Title
           </MudSelectItem>
@@ -47,7 +48,8 @@
         AnchorOrigin="Origin.BottomCenter"
         @bind-Value="LoadingState.Value.MeasurementValidatorId"
         For="@(() => LoadingState.Value.MeasurementValidatorId)">
-        @foreach(var validator in _validators){
+        @foreach (var validator in _validators)
+        {
           <MudSelectItem Value="validator.Id">
             @validator.Title
           </MudSelectItem>

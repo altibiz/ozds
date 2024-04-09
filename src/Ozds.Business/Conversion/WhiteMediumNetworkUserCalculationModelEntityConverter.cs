@@ -4,8 +4,10 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Conversion;
 
-public class WhiteMediumNetworkUserCalculationModelEntityConverter : ModelEntityConverter<
-  WhiteMediumNetworkUserCalculationModel, WhiteMediumNetworkUserCalculationEntity>
+public class WhiteMediumNetworkUserCalculationModelEntityConverter :
+  ModelEntityConverter<
+    WhiteMediumNetworkUserCalculationModel,
+    WhiteMediumNetworkUserCalculationEntity>
 {
   protected override WhiteMediumNetworkUserCalculationEntity ToEntity(
     WhiteMediumNetworkUserCalculationModel model)
@@ -20,7 +22,8 @@ public class WhiteMediumNetworkUserCalculationModelEntityConverter : ModelEntity
   }
 }
 
-public static class WhiteMediumNetworkUserCalculationModelEntityConverterExtensions
+public static class
+  WhiteMediumNetworkUserCalculationModelEntityConverterExtensions
 {
   public static WhiteMediumNetworkUserCalculationModel ToModel(
     this WhiteMediumNetworkUserCalculationEntity entity)

@@ -10,6 +10,7 @@ public class AbbB2xMeterModel : MeterModel
   {
     get { return new AbbB2xCapabilities(); }
   }
+
   public static AbbB2xMeterModel New()
   {
     return new AbbB2xMeterModel
@@ -26,7 +27,7 @@ public class AbbB2xMeterModel : MeterModel
       ConnectionPower_W = default,
       Phases = default!,
       MessengerId = default!,
-      MeasurementValidatorId = default!,
+      MeasurementValidatorId = default!
     };
   }
 }

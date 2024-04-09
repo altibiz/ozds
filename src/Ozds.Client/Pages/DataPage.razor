@@ -1,71 +1,73 @@
 @page "/data"
-@using Microsoft.Extensions.DependencyInjection
-@using Ozds.Client.Base
 
 @inject NavigationManager NavigationManager;
-@inherits OzdsOwningComponentBase
+@using Microsoft.Extensions.DependencyInjection
+@using Color = MudBlazor.Color
+@inherits Ozds.Client.Base.OzdsOwningComponentBase
 @attribute [Navigation( Title = "Data", Parents = new[] { typeof(UsersPage) })]
 @attribute [StreamRendering]
 
 <MudItem Class="d-flex">
-<MudAutocomplete
-  MaxItems="20"
-  Class="pa-4 mt-0"
-  T="string"
-  Label="Data type:"
-  Value="_dataSelected"
-  ValueChanged="e => Update(e)"
-  SearchFunc="@Search"
-  ToStringFunc="@(e => e == null ? null : $"{e}")"/>
-  <MudButton Class="ma-4" OnClick='() => Edit("-1")' Variant="Variant.Outlined" Color="MudBlazor.Color.Primary">
+  <MudAutocomplete
+    MaxItems="20"
+    Class="pa-4 mt-0"
+    T="string"
+    Label="Data type:"
+    Value="_dataSelected"
+    ValueChanged="e => Update(e)"
+    SearchFunc="@Search"
+    ToStringFunc="@(e => e == null ? null : $"{e}")"/>
+  <MudButton Class="ma-4" OnClick='() => Edit("-1")' Variant="Variant.Outlined" Color="Color.Primary">
     Create
   </MudButton>
 </MudItem>
 
 <MudDataGrid
-    T="TabularData"
-    MultiSelection="true"
-    Items="@_data"
-    SortMode="SortMode.Multiple"
-    Filterable="true"
-    QuickFilter="@_quickFilter">
-    <Columns>
-      <PropertyColumn
-        CellStyle="font-size: x-large;"
-        Property="x => x.title"
-        Title='@T["Ime"]'>
-        <CellTemplate>
-          @(context.Item.title)
-        </CellTemplate>
-      </PropertyColumn>
-      <PropertyColumn
-        CellStyle="font-size: x-large;"
-        Property="x => x.id"
-        Title='@T["Id"]'>
-        <CellTemplate>
-          @(context.Item.id)
-        </CellTemplate>
-      </PropertyColumn>
-      <TemplateColumn Sortable="false">
-        <CellTemplate>
-          <MudStack Row>
-            <MudButton OnClick="() => Edit(context.Item.id)" Variant="Variant.Outlined" Color="MudBlazor.Color.Primary">
-              Edit
-            </MudButton>
-          </MudStack>
-        </CellTemplate>
-      </TemplateColumn>
-    </Columns>
-    <PagerContent>
-      <MudDataGridPager T="TabularData"/>
-    </PagerContent>
-  </MudDataGrid>
+  T="TabularData"
+  MultiSelection="true"
+  Items="@_data"
+  SortMode="SortMode.Multiple"
+  Filterable="true"
+  QuickFilter="@_quickFilter">
+  <Columns>
+    <PropertyColumn
+      CellStyle="font-size: x-large;"
+      Property="x => x.title"
+      Title='@T["Ime"]'>
+      <CellTemplate>
+        @(context.Item.title)
+      </CellTemplate>
+    </PropertyColumn>
+    <PropertyColumn
+      CellStyle="font-size: x-large;"
+      Property="x => x.id"
+      Title='@T["Id"]'>
+      <CellTemplate>
+        @(context.Item.id)
+      </CellTemplate>
+    </PropertyColumn>
+    <TemplateColumn Sortable="false">
+      <CellTemplate>
+        <MudStack Row>
+          <MudButton OnClick="() => Edit(context.Item.id)" Variant="Variant.Outlined" Color="Color.Primary">
+            Edit
+          </MudButton>
+        </MudStack>
+      </CellTemplate>
+    </TemplateColumn>
+  </Columns>
+  <PagerContent>
+    <MudDataGridPager T="TabularData"/>
+  </PagerContent>
+</MudDataGrid>
 
 @code {
   private List<TabularData> _data = new();
+
   public record struct TabularData(string title, string id);
+
   private string _dataSelected = "Lokacije";
-  private List<string> _dataList = new();
+  private readonly List<string> _dataList = new();
   private OzdsDataQueries queries;
   private string _searchString;
 
@@ -97,66 +99,69 @@
       return _dataList;
     return _dataList.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
   }
+
   private async Task Update(string value)
   {
-    switch(value){
+    switch (value)
+    {
       case "Lokacije":
         var a = (await queries.GetLocations("")).Items;
-        _data = a.Select(x => new TabularData(title: x.Title, id: x.Id )).ToList();
+        _data = a.Select(x => new TabularData(x.Title, x.Id)).ToList();
         break;
       case "Korisnici mreže":
         var b = (await queries.GetNetworkUsers("")).Items;
-        _data = b.Select(x => new TabularData(title: x.Title, id: x.Id )).ToList();
+        _data = b.Select(x => new TabularData(x.Title, x.Id)).ToList();
         break;
       case "Crveni Niski Katalozi":
         var c = (await queries.GetRedLowCatalogues("")).Items;
-        _data = c.Select(x => new TabularData(title: x.Title, id: x.Id )).ToList();
+        _data = c.Select(x => new TabularData(x.Title, x.Id)).ToList();
         break;
       case "Plavi Niski Katalozi":
         var d = (await queries.GetBlueLowCatalogues("")).Items;
-        _data = d.Select(x => new TabularData(title: x.Title, id: x.Id )).ToList();
+        _data = d.Select(x => new TabularData(x.Title, x.Id)).ToList();
         break;
       case "Bijeli Niski Katalozi":
         var e = (await queries.GetWhiteLowCatalogues("")).Items;
-        _data = e.Select(x => new TabularData(title: x.Title, id: x.Id )).ToList();
+        _data = e.Select(x => new TabularData(x.Title, x.Id)).ToList();
         break;
       case "Bijeli Srednji Katalozi":
         var f = (await queries.GetWhiteMediumCatalogues("")).Items;
-        _data = f.Select(x => new TabularData(title: x.Title, id: x.Id )).ToList();
+        _data = f.Select(x => new TabularData(x.Title, x.Id)).ToList();
         break;
       case "Regulaciski Katalozi":
         var g = (await queries.GetRegulatoryCatalogues("")).Items;
-        _data = g.Select(x => new TabularData(title: x.Title, id: x.Id )).ToList();
+        _data = g.Select(x => new TabularData(x.Title, x.Id)).ToList();
         break;
       case "Pošiljatenji":
         var h = (await queries.GetMessengers("")).Items;
-        _data = h.Select(x => new TabularData(title: x.Title, id: x.Id )).ToList();
+        _data = h.Select(x => new TabularData(x.Title, x.Id)).ToList();
         break;
       case "Abb B2x validacija":
         var k = (await queries.GetAbbB2xMeasurementValidators("")).Items;
-        _data = k.Select(x => new TabularData(title: x.Title, id: x.Id )).ToList();
+        _data = k.Select(x => new TabularData(x.Title, x.Id)).ToList();
         break;
       case "Schneider iEM3xxx validacija":
         var l = (await queries.GetSchneideriEM3xxxMeasurementValidators("")).Items;
-        _data = l.Select(x => new TabularData(title: x.Title, id: x.Id )).ToList();
+        _data = l.Select(x => new TabularData(x.Title, x.Id)).ToList();
         break;
       case "Abb B2x brojilo":
         var n = (await queries.GetAbbB2xMeters("")).Items;
-        _data = n.Select(x => new TabularData(title: x.Title, id: x.Id )).ToList();
+        _data = n.Select(x => new TabularData(x.Title, x.Id)).ToList();
         break;
       case "Schneider iEM3xxx brojilo":
         var m = (await queries.GetSchneideriEM3xxxMeters("")).Items;
-        _data = m.Select(x => new TabularData(title: x.Title, id: x.Id )).ToList();
+        _data = m.Select(x => new TabularData(x.Title, x.Id)).ToList();
         break;
       case "Brojilo u Lokaciji":
         var i = (await queries.GetLocationMeasurementLocations("")).Items;
-        _data = i.Select(x => new TabularData(title: x.Title, id: x.Id )).ToList();
+        _data = i.Select(x => new TabularData(x.Title, x.Id)).ToList();
         break;
       case "Brojilo u Korisniku Mreže":
         var j = (await queries.GetNetworkUserMeasurementLocations("")).Items;
-        _data = j.Select(x => new TabularData(title: x.Title, id: x.Id )).ToList();
+        _data = j.Select(x => new TabularData(x.Title, x.Id)).ToList();
         break;
     }
+
     _dataSelected = value;
   }
 
@@ -176,9 +181,11 @@
       };
     }
   }
+
   private void Edit(string id)
   {
-    var typeString = _dataSelected.ToLower().Replace(' ','-');
+    var typeString = _dataSelected.ToLower().Replace(' ', '-');
     NavigationManager.NavigateTo($"data/{typeString}/{id}");
   }
+
 }

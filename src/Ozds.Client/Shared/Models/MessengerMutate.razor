@@ -32,7 +32,8 @@
         AnchorOrigin="Origin.BottomCenter"
         @bind-Value="LoadingState.Value.LocationId"
         For="@(() => LoadingState.Value.LocationId)">
-        @foreach(var location in _locations){
+        @foreach (var location in _locations)
+        {
           <MudSelectItem Value="location.Id">
             @location.Title
           </MudSelectItem>

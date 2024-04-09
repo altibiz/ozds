@@ -1,48 +1,49 @@
 @page "/data/{type}/{id}"
 @attribute [StreamRendering]
 
-@switch(Type){
+@switch (Type)
+{
   case "lokacije":
-    <LocationMutate Id="@Id" />
+    <LocationMutate Id="@Id"/>
     break;
   case "korisnici-mreže":
-    <NetUserEdit Id="@Id" />
+    <NetUserEdit Id="@Id"/>
     break;
   case "crveni-niski-katalozi":
-    <RedLowCatalogueMutate Id="@Id" />
+    <RedLowCatalogueMutate Id="@Id"/>
     break;
   case "plavi-niski-katalozi":
-    <BlueLowCatalogueMutate Id="@Id" />
+    <BlueLowCatalogueMutate Id="@Id"/>
     break;
   case "bijeli-niski-katalozi":
-    <WhiteLowCatalogueMutate Id="@Id" />
+    <WhiteLowCatalogueMutate Id="@Id"/>
     break;
   case "bijeli-srednji-katalozi":
-    <WhiteMediumCatalogueMutate Id="@Id" />
+    <WhiteMediumCatalogueMutate Id="@Id"/>
     break;
   case "regulaciski-katalozi":
-    <RegulatoryCatalogueMutate Id="@Id" />
+    <RegulatoryCatalogueMutate Id="@Id"/>
     break;
   case "pošiljatenji":
-    <MessengerMutate Id="@Id" />
+    <MessengerMutate Id="@Id"/>
     break;
   case "abb-b2x-validacija":
-    <AbbB2xMeasurementValidatorMutate Id="@Id" />
+    <AbbB2xMeasurementValidatorMutate Id="@Id"/>
     break;
   case "schneider-iem3xxx-validacija":
-    <SchneideriEM3xxxMeasurementValidatorMutate Id="@Id" />
+    <SchneideriEM3xxxMeasurementValidatorMutate Id="@Id"/>
     break;
   case "abb-b2x-brojilo":
-    <AbbB2xMeterMutate Id="@Id" />
+    <AbbB2xMeterMutate Id="@Id"/>
     break;
   case "schneider-iem3xxx-brojilo":
-    <SchneideriEM3xxxMeterMutate Id="@Id" />
+    <SchneideriEM3xxxMeterMutate Id="@Id"/>
     break;
   case "brojilo-u-lokaciji":
-    <LocationMeasurementLocationMutate Id="@Id" />
+    <LocationMeasurementLocationMutate Id="@Id"/>
     break;
   case "brojilo-u-korisniku-mreže":
-    <NetworkUserMeasurementLocationMutate Id="@Id" />
+    <NetworkUserMeasurementLocationMutate Id="@Id"/>
     break;
 }
 

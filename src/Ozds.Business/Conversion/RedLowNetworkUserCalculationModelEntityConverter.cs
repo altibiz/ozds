@@ -4,8 +4,9 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Conversion;
 
-public class RedLowNetworkUserCalculationModelEntityConverter : ModelEntityConverter<
-  RedLowNetworkUserCalculationModel, RedLowNetworkUserCalculationEntity>
+public class RedLowNetworkUserCalculationModelEntityConverter :
+  ModelEntityConverter<
+    RedLowNetworkUserCalculationModel, RedLowNetworkUserCalculationEntity>
 {
   protected override RedLowNetworkUserCalculationEntity ToEntity(
     RedLowNetworkUserCalculationModel model)
@@ -82,7 +83,7 @@ public static class RedLowNetworkUserCalculationModelEntityConverterExtensions
         entity.ReactiveEnergyTotalRampedT0Price_EUR,
       ReactiveEnergyTotalRampedT0Total_EUR =
         entity.ReactiveEnergyTotalRampedT0Total_EUR,
-      MeterFeePrice_EUR = entity.MeterFeePrice_EUR,
+      MeterFeePrice_EUR = entity.MeterFeePrice_EUR
     };
   }
 

@@ -8,7 +8,8 @@ public interface INetworkUserCalculationCalculator
   bool CanCalculateForNetworkUser(
     NetworkUserNetworkUserCalculationBasisModel calculationBasis);
 
-  bool CanCalculateForLocation(LocationNetworkUserCalculationBasisModel calculationBasis);
+  bool CanCalculateForLocation(
+    LocationNetworkUserCalculationBasisModel calculationBasis);
 
   NetworkUserCalculationModel CalculateForNetworkUser(
     NetworkUserNetworkUserCalculationBasisModel calculationBasis
