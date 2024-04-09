@@ -1,5 +1,6 @@
 using System.Reflection;
 using Ozds.Business.Conversion.Abstractions;
+using Ozds.Data.Timescale;
 using Ozds.Fake.Client;
 using Ozds.Fake.Generators.Abstractions;
 using Ozds.Fake.Loaders;
@@ -32,9 +33,12 @@ public static class IServiceCollectionExtensions
     return services;
   }
 
-  public static IServiceCollection AddClient(this IServiceCollection services)
+  public static IServiceCollection AddClient(
+    this IServiceCollection services,
+    int timeout = 3
+  )
   {
-    services.AddHttpClient();
+    services.AddHttpClient("Ozds.Fake", options => options.Timeout = TimeSpan.FromSeconds(timeout));
     services.AddScoped(typeof(OzdsPushClient));
     return services;
   }

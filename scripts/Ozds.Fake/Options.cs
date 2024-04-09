@@ -16,6 +16,12 @@ public class Options
   [Option('i', "meter-id", Required = false, HelpText = "Meter IDs.")]
   public IEnumerable<string> MeterIds { get; set; } = Array.Empty<string>();
 
+  [Option('t', "timeout", Required = false, HelpText = "Timeout in seconds.")]
+  public int Timeout_s { get; set; } = 3;
+
+  [Option('i', "interval", Required = false, HelpText = "Interval in seconds.")]
+  public int Interval_s { get; set; } = 60;
+
 
   public static Options Parse(string[] args)
   {

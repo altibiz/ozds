@@ -9,7 +9,8 @@ builder.Services
     .AddOzdsClient(builder.Environment.IsDevelopment())
     .AddOzdsBusinessClient())
   .Configure((_, endpoints) => endpoints
-    .MapOzdsClient("App", "Index", "/app"))
+    .MapOzdsClient("App", "Index", "/app")
+    .MapOzdsIot("Iot", "Push", "/iot"))
   .Configure(app => app
     .MigrateOzdsData());
 

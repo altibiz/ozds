@@ -23,6 +23,6 @@ public class OzdsPushClient
 
     var content = JsonContent.Create(request);
 
-    await client.PostAsync($"{baseUrl}/push/{messengerId}", content);
+    await client.PostAsync($"{baseUrl}/iot/push/{messengerId}", content);
   }
 }

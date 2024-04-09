@@ -10,7 +10,7 @@ var serviceCollection = new ServiceCollection();
 
 serviceCollection.AddLoaders();
 serviceCollection.AddGenerators();
-serviceCollection.AddClient();
+serviceCollection.AddClient(options.Timeout_s);
 
 #pragma warning disable ASP0000
 var serviceProvider = serviceCollection.BuildServiceProvider();
@@ -41,12 +41,22 @@ while (true)
     measurements.ToArray()
   );
 
-  await pushClient.Push(
-    options.BaseUrl,
-    options.MessengerId,
-    options.ApiKey,
-    request
-  );
+  try
+  {
+    await pushClient.Push(
+      options.BaseUrl,
+      options.MessengerId,
+      options.ApiKey,
+      request
+    );
+  }
+  catch (Exception ex)
+  {
+    Console.Error.WriteLine(ex);
+  }
 
-  await Task.Delay(1000 * 60);
+  await Task.Delay(
+    TimeSpan.FromSeconds(options.Interval_s)
+    - (DateTimeOffset.UtcNow - now)
+  );
 }
