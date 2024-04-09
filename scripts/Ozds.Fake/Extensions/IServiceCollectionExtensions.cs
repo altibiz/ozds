@@ -35,10 +35,15 @@ public static class IServiceCollectionExtensions
 
   public static IServiceCollection AddClient(
     this IServiceCollection services,
-    int timeout = 3
+    int timeout,
+    string baseUrl
   )
   {
-    services.AddHttpClient("Ozds.Fake", options => options.Timeout = TimeSpan.FromSeconds(timeout));
+    services.AddHttpClient("Ozds.Fake", options =>
+    {
+      options.Timeout = TimeSpan.FromSeconds(timeout);
+      options.BaseAddress = new Uri(baseUrl);
+    });
     services.AddScoped(typeof(OzdsPushClient));
     return services;
   }

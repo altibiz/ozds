@@ -34,8 +34,14 @@ public class OzdsIotHandler
   public Task OnPush(string _, string request)
   {
     var messengerRequest =
-      JsonSerializer.Deserialize<MessengerPushRequest>(request);
-    if (messengerRequest == null)
+      JsonSerializer.Deserialize<MessengerPushRequest>(
+        request,
+        new JsonSerializerOptions
+        {
+          PropertyNameCaseInsensitive = true
+        });
+    if (messengerRequest?.Measurements is null
+      || messengerRequest.Measurements.Length == 0)
     {
       return Task.CompletedTask;
     }

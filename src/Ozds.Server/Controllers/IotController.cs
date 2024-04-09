@@ -3,7 +3,8 @@ using Ozds.Business.Iot;
 
 namespace Ozds.Server.Controllers;
 
-public class IotController : ControllerBase
+[IgnoreAntiforgeryToken]
+public class IotController : Controller
 {
   private readonly OzdsIotHandler _iotHandler;
 
@@ -12,9 +13,13 @@ public class IotController : ControllerBase
     _iotHandler = iotHandler;
   }
 
-  public async Task<IActionResult> Push([FromRoute] string id,
-    [FromBody] string message)
+  [HttpPost]
+  public async Task<IActionResult> Push(string id)
   {
+    using var reader = new StreamReader(Request.Body);
+
+    var message = await reader.ReadToEndAsync();
+
     if (!await _iotHandler.Authorize(id, message))
     {
       return Unauthorized();

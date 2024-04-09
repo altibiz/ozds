@@ -12,7 +12,7 @@ public static class IEndpointRouteBuilderExtensions
   )
   {
     endpoints.MapAreaControllerRoute(
-      "Ozds.Business",
+      "Ozds.Business.Ios",
       Assembly.GetCallingAssembly().GetName().Name
       ?? throw new InvalidOperationException("Assembly name not found"),
       prefix + "/push/{id}",

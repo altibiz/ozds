@@ -8,9 +8,10 @@ var options = Options.Parse(args);
 
 var serviceCollection = new ServiceCollection();
 
+serviceCollection.AddLogging(builder => builder.AddConsole());
 serviceCollection.AddLoaders();
 serviceCollection.AddGenerators();
-serviceCollection.AddClient(options.Timeout_s);
+serviceCollection.AddClient(options.Timeout_s, options.BaseUrl);
 
 #pragma warning disable ASP0000
 var serviceProvider = serviceCollection.BuildServiceProvider();
@@ -41,24 +42,11 @@ while (true)
     measurements.ToArray()
   );
 
-  try
-  {
-    var response = await pushClient.Push(
-      options.BaseUrl,
-      options.MessengerId,
-      options.ApiKey,
-      request
-    );
-
-    Console.WriteLine(
-      $"Pushed {measurements.Count} measurements to {options.BaseUrl} " +
-      $"with status code {response.StatusCode}"
-    );
-  }
-  catch (Exception ex)
-  {
-    Console.Error.WriteLine(ex);
-  }
+  await pushClient.Push(
+    options.MessengerId,
+    options.ApiKey,
+    request
+  );
 
   await Task.Delay(
     TimeSpan.FromSeconds(options.Interval_s)
