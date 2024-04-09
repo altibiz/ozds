@@ -42,17 +42,6 @@
           </MudSelectItem>
         }
       </MudSelect>
-      @* <MudSelect
-        Label="Katalog"
-        AnchorOrigin="Origin.BottomCenter"
-        @bind-Value="LoadingState.Value.CatalogueId"
-        For="@(() => LoadingState.Value.CatalogueId)">
-        @foreach(var catalog in _catalogues){
-          <MudSelectItem Value="catalog.Id">
-            @catalog.Title
-          </MudSelectItem>
-        }
-      </MudSelect> *@
       <MudSelect
         Label="Validator"
         AnchorOrigin="Origin.BottomCenter"
@@ -92,7 +81,6 @@
 
   private LoadingState<SchneideriEM3xxxMeterModel> LoadingState { get; set; } = new();
   private List<MessengerModel> _messengers;
-  private List<CatalogueModel> _catalogues;
   private List<SchneideriEM3xxxMeasurementValidatorModel> _validators;
 
   private bool _create;
@@ -124,7 +112,6 @@
   {
     var queries = ScopedServices.GetRequiredService<OzdsSchneideriEM3xxxMeterModelQueries>();
     _messengers = (await queries.GetMessengers("")).Items;
-    @* _catalogues = (await queries.GetCatalogues("")).Items; *@
     _validators = (await queries.GetValidators("")).Items;
 
     if (LoadingState.Value is null && Id is not null)

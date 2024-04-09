@@ -25,7 +25,6 @@ public class SchneideriEM3xxxMeterModel : MeterModel
       DeletedById = default,
       ConnectionPower_W = default,
       Phases = default!,
-      CatalogueId = default!,
       MessengerId = default!,
       MeasurementValidatorId = default!,
     };

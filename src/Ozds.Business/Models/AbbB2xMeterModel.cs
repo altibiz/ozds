@@ -25,7 +25,6 @@ public class AbbB2xMeterModel : MeterModel
       DeletedById = default,
       ConnectionPower_W = default,
       Phases = default!,
-      CatalogueId = default!,
       MessengerId = default!,
       MeasurementValidatorId = default!,
     };
