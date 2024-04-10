@@ -52,8 +52,11 @@ while (true)
     request
   );
 
-  await Task.Delay(
+  var toWait =
     TimeSpan.FromSeconds(options.Interval_s)
-    - (DateTimeOffset.UtcNow - now)
-  );
+    - (DateTimeOffset.UtcNow - now);
+  if (toWait.TotalMilliseconds > 0)
+  {
+    await Task.Delay(toWait);
+  }
 }
