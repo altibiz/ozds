@@ -17,10 +17,12 @@ serviceCollection.AddClient(options.Timeout_s, options.BaseUrl);
 var serviceProvider = serviceCollection.BuildServiceProvider();
 #pragma warning restore ASP0000
 
+var now = DateTimeOffset.UtcNow;
+var lastPush = now;
 while (true)
 {
-  var now = DateTimeOffset.UtcNow;
-  var lastMinute = now.AddMinutes(-1);
+  now = DateTimeOffset.UtcNow;
+
   var pushClient = serviceProvider.GetRequiredService<OzdsPushClient>();
   var generators = serviceProvider.GetServices<IMeasurementGenerator>();
 
@@ -32,10 +34,12 @@ while (true)
       if (generator.CanGenerateMeasurementsFor(meterId))
       {
         measurements.AddRange(await generator
-          .GenerateMeasurements(lastMinute, now, meterId));
+          .GenerateMeasurements(lastPush, now, meterId));
       }
     }
   }
+
+  lastPush = now;
 
   var request = new MessengerPushRequest(
     now,
