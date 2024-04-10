@@ -11,20 +11,29 @@ namespace Ozds.Business.Extensions;
 public static class IServiceCollectionExtensions
 {
   public static IServiceCollection AddOzdsBusinessClient(
-    this IServiceCollection services
+    this IServiceCollection services,
+    bool IsDevelopment
   )
   {
-    services.AddDbContextFactory<OzdsDbContext>((services, options) => options
-      .UseTimescale(
-        services.GetRequiredService<IConfiguration>()
-          .GetConnectionString("Ozds") ?? throw new InvalidOperationException(
-          "Ozds connection string not found")
-      )
-      .AddServedSaveChangesInterceptorsFromAssembly(
-        Assembly.GetExecutingAssembly(),
-        services
-      )
-    );
+    services.AddDbContextFactory<OzdsDbContext>((services, options) =>
+    {
+      if (IsDevelopment)
+      {
+        options.EnableSensitiveDataLogging();
+        options.EnableDetailedErrors();
+      }
+
+      options
+        .UseTimescale(
+          services.GetRequiredService<IConfiguration>()
+            .GetConnectionString("Ozds") ?? throw new InvalidOperationException(
+            "Ozds connection string not found")
+        )
+        .AddServedSaveChangesInterceptorsFromAssembly(
+          Assembly.GetExecutingAssembly(),
+          services
+        );
+    });
 
     services.AddScopedAssignableTo(typeof(IOzdsQueries));
     services.AddScopedAssignableTo(typeof(IOzdsMutations));

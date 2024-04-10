@@ -143,11 +143,11 @@ public class AggregateCreationInterceptor : ServedSaveChangesInterceptor
   {
     await context
       .UpsertRange(aggregates.ToArray())
-      .On(entity => new
+      .On(aggregate => new
       {
-        entity.MeterId,
-        entity.Timestamp,
-        entity.Interval
+        aggregate.MeterId,
+        aggregate.Timestamp,
+        aggregate.Interval
       })
       .WhenMatched(
         upserter.UpsertEntity as Expression<Func<T, T, T>>

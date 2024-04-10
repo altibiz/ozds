@@ -7,7 +7,7 @@ builder.Services
   .AddSetupFeatures("OrchardCore.AutoSetup")
   .ConfigureServices(services => services
     .AddOzdsClient(builder.Environment.IsDevelopment())
-    .AddOzdsBusinessClient())
+    .AddOzdsBusinessClient(builder.Environment.IsDevelopment()))
   .Configure((_, endpoints) => endpoints
     .MapOzdsClient("App", "Index", "/app")
     .MapOzdsIot("Iot", "Push", "/iot"))
