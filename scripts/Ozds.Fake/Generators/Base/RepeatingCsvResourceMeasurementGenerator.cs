@@ -55,23 +55,23 @@ public abstract class
       .Where(record =>
         record.Timestamp >= dateFromCsv
         && record.Timestamp <= dateToCsv)
-      .Select(measurement =>
+      .Select(record =>
       {
         var converter = _serviceProvider
           .GetServices<IMeasurementRecordPushRequestConverter>()
-          .FirstOrDefault(c => c.CanConvertToPushRequest(measurement));
+          .FirstOrDefault(c => c.CanConvertToPushRequest(record));
         if (converter is null)
         {
           return null;
         }
-        var pushRequest = converter.ConvertToPushRequest(measurement);
+        var pushRequest = converter.ConvertToPushRequest(record);
         var timestamp = dateFrom.AddTicks(
-          (measurement.Timestamp - dateFromCsv).Ticks
+          (record.Timestamp - dateFromCsv).Ticks
         );
         pushRequest["Timestamp"] = timestamp;
 
         return new MessengerPushRequestMeasurement(
-          measurement.MeterId,
+          record.MeterId,
           now,
           pushRequest
         );
