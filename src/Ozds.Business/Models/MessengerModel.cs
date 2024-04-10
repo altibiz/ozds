@@ -23,4 +23,22 @@ public class MessengerModel : AuditableModel
       LocationId = default!
     };
   }
+
+  public override IEnumerable<ValidationResult> Validate(
+    ValidationContext validationContext)
+  {
+    foreach (var validationResult in base.Validate(validationContext))
+    {
+      yield return validationResult;
+    }
+
+    if (
+      validationContext.MemberName is null or nameof(Id) &&
+      Id is null)
+    {
+      yield return new ValidationResult(
+        "ID must be set",
+        new[] { nameof(Id) });
+    }
+  }
 }

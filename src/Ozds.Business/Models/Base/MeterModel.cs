@@ -8,7 +8,7 @@ public abstract class MeterModel : AuditableModel, IMeter
 {
   [Required] public required float ConnectionPower_W { get; set; }
 
-  [Required] public required List<PhaseModel> Phases { get; set; } = new();
+  [Required] public required HashSet<PhaseModel> Phases { get; set; } = new();
 
   [Required] public required string? MessengerId { get; set; }
 
@@ -22,6 +22,15 @@ public abstract class MeterModel : AuditableModel, IMeter
     foreach (var validationResult in base.Validate(validationContext))
     {
       yield return validationResult;
+    }
+
+    if (
+      validationContext.MemberName is null or nameof(Id) &&
+      Id is null)
+    {
+      yield return new ValidationResult(
+        "ID must be set",
+        new[] { nameof(Id) });
     }
 
     if (

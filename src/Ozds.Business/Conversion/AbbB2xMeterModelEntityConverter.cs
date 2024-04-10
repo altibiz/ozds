@@ -57,7 +57,7 @@ public static class AbbB2xMeterModelEntityConverterExtensions
       MessengerId = entity.MessengerId,
       MeasurementValidatorId = entity.MeasurementValidatorId,
       ConnectionPower_W = entity.ConnectionPower_W,
-      Phases = entity.Phases.Select(p => p.ToModel()).ToList()
+      Phases = entity.Phases.Select(p => p.ToModel()).ToHashSet()
     };
   }
 }

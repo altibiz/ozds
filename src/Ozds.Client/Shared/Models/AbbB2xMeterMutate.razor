@@ -24,6 +24,10 @@
   <MudCard>
     <MudCardContent>
       <MudTextField
+        Label="Id"
+        @bind-Value="LoadingState.Value.Id"
+        For="@(() => LoadingState.Value.Id)"/>
+      <MudTextField
         Label="Ime"
         @bind-Value="LoadingState.Value.Title"
         For="@(() => LoadingState.Value.Title)"/>
@@ -54,6 +58,22 @@
             @validator.Title
           </MudSelectItem>
         }
+      </MudSelect>
+      <MudSelect
+        T="PhaseModel"
+        Label="Faze"
+        AnchorOrigin="Origin.BottomCenter"
+        SelectedValuesChanged="@(e => LoadingState.Value.Phases = e.ToHashSet())"
+        MultiSelection="true">
+        <MudSelectItem Value="PhaseModel.L1">
+          L1
+        </MudSelectItem>
+        <MudSelectItem Value="PhaseModel.L2">
+          L2
+        </MudSelectItem>
+        <MudSelectItem Value="PhaseModel.L3">
+          L3
+        </MudSelectItem>
       </MudSelect>
     </MudCardContent>
     <ValidationSummary/>

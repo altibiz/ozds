@@ -24,6 +24,10 @@
   <MudCard>
     <MudCardContent>
       <MudTextField
+        Label="Id"
+        @bind-Value="LoadingState.Value.Id"
+        For="@(() => LoadingState.Value.Id)"/>
+      <MudTextField
         Label="Ime"
         @bind-Value="LoadingState.Value.Title"
         For="@(() => LoadingState.Value.Title)"/>

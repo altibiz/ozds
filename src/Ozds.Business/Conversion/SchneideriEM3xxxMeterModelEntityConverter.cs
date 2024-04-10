@@ -60,7 +60,7 @@ public static class SchneideriEM3xxxMeterModelEntityConverterExtensions
       MessengerId = entity.MessengerId,
       MeasurementValidatorId = entity.MeasurementValidatorId,
       ConnectionPower_W = entity.ConnectionPower_W,
-      Phases = entity.Phases.Select(phase => phase.ToModel()).ToList()
+      Phases = entity.Phases.Select(phase => phase.ToModel()).ToHashSet()
     };
   }
 }
