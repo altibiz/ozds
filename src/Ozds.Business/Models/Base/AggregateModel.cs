@@ -2,16 +2,33 @@ using System.ComponentModel.DataAnnotations;
 using Ozds.Business.Math;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Enums;
+using Ozds.Business.Time;
 
 namespace Ozds.Business.Models.Base;
 
 public abstract class AggregateModel : IAggregate
 {
+  private DateTimeOffset _timestamp;
+
   [Required] public required string MeterId { get; set; }
 
   [Required]
-  public required DateTimeOffset Timestamp { get; set; } =
-    DateTimeOffset.UtcNow;
+  public required DateTimeOffset Timestamp
+  {
+    get => _timestamp.ToUniversalTime();
+    set
+    {
+      _ = Interval switch
+      {
+        IntervalModel.QuarterHour => _timestamp = value.GetStartOfQuarterHour(),
+        IntervalModel.Day => _timestamp = value.GetStartOfDay(),
+        IntervalModel.Month => _timestamp = value.GetStartOfDay(),
+        _ => throw new InvalidOperationException(
+          $"Unsupported interval {Interval}"
+        )
+      };
+    }
+  }
 
   [Required] public required IntervalModel Interval { get; set; }
 

@@ -18,12 +18,14 @@ public class OzdsIotHandler
   public OzdsIotHandler(
     OzdsAuditableQueries auditableQueries,
     IHttpContextAccessor httpContextAccessor,
-    IServiceProvider serviceProvider
+    IServiceProvider serviceProvider,
+    OzdsMeasurementMutations measurementMutations
   )
   {
     _auditableQueries = auditableQueries;
     _httpContextAccessor = httpContextAccessor;
     _serviceProvider = serviceProvider;
+    _measurementMutations = measurementMutations;
   }
 
   public Task<bool> Authorize(string id, string request)
