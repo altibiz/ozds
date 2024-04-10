@@ -51,6 +51,7 @@
       "cwd": "${workspaceFolder}/scripts/Ozds.Fake",
       "stopAtEntry": false,
       "requireExactSource": false,
+      "args": ["--meter-ids", "abb-B2x-1624226", "schneider-iEM3xxx-19453067"],
       "env": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "DOTNET_ENVIRONMENT": "Development"

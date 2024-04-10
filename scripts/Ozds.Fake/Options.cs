@@ -13,7 +13,7 @@ public class Options
   [Option('m', "messenger-id", Required = false, HelpText = "Messenger ID.")]
   public string MessengerId { get; set; } = "messenger";
 
-  [Option('i', "meter-id", Required = false, HelpText = "Meter IDs.")]
+  [Option('i', "meter-ids", Required = false, HelpText = "Meter IDs.")]
   public IEnumerable<string> MeterIds { get; set; } = Array.Empty<string>();
 
   [Option('t', "timeout", Required = false, HelpText = "Timeout in seconds.")]
