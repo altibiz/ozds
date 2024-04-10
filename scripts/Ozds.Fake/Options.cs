@@ -19,7 +19,7 @@ public class Options
   [Option('t', "timeout", Required = false, HelpText = "Timeout in seconds.")]
   public int Timeout_s { get; set; } = 3;
 
-  [Option('i', "interval", Required = false, HelpText = "Interval in seconds.")]
+  [Option('n', "interval", Required = false, HelpText = "Interval in seconds.")]
   public int Interval_s { get; set; } = 60;
 
 

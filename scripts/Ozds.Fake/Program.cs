@@ -9,6 +9,7 @@ var options = Options.Parse(args);
 var serviceCollection = new ServiceCollection();
 
 serviceCollection.AddLogging(builder => builder.AddConsole());
+serviceCollection.AddRecords();
 serviceCollection.AddLoaders();
 serviceCollection.AddGenerators();
 serviceCollection.AddClient(options.Timeout_s, options.BaseUrl);

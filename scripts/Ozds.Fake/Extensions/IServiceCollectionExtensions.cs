@@ -35,7 +35,7 @@ public static class IServiceCollectionExtensions
 
   public static IServiceCollection AddRecords(this IServiceCollection services)
   {
-    services.AddScopedAssignableTo(
+    services.AddTransientAssignableTo(
       typeof(IMeasurementRecordPushRequestConverter));
     return services;
   }
