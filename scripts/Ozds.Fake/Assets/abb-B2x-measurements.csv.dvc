@@ -1,5 +1,5 @@
 outs:
-- md5: c10bae44769d8466e38b5e53a6827a2c
-  size: 5552042
+- md5: 04db8e742df0f52878eb07bb9a16554c
+  size: 5438069
   hash: md5
   path: abb-B2x-measurements.csv
