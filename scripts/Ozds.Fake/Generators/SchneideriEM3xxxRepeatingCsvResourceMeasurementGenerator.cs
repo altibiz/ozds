@@ -14,11 +14,11 @@ public class SchneideriEM3xxxRepeatingCsvResourceMeasurementGenerator :
 
   protected override string CsvResourceName
   {
-    get { return "abb-B2x-measurements.csv"; }
+    get { return "schneider-iEM3xxx-measurements.csv"; }
   }
 
   protected override string MeterIdPrefix
   {
-    get { return "abb-B2x"; }
+    get { return "schneider-iEM3xxx"; }
   }
 }
