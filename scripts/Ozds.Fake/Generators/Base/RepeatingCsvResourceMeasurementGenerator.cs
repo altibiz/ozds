@@ -39,21 +39,22 @@ public abstract class
     string meterId
   )
   {
+    var now = DateTimeOffset.UtcNow;
     var records = await _resources
       .GetAsync<CsvLoader<TMeasurement>, List<TMeasurement>>(CsvResourceName);
     var csvRecordsMinTimestamp = records.Min(record => record.Timestamp);
     var csvRecordsMaxTimestamp = records.Max(record => record.Timestamp);
     var csvRecordsTimeSpan = csvRecordsMaxTimestamp - csvRecordsMinTimestamp;
-    dateFrom = csvRecordsMinTimestamp.AddTicks(
+    var dateFromCsv = csvRecordsMinTimestamp.AddTicks(
       (dateFrom - csvRecordsMinTimestamp).Ticks % csvRecordsTimeSpan.Ticks
     );
-    dateTo = csvRecordsMinTimestamp.AddTicks(
+    var dateToCsv = csvRecordsMinTimestamp.AddTicks(
       (dateTo - csvRecordsMinTimestamp).Ticks % csvRecordsTimeSpan.Ticks
     );
     return records
       .Where(record =>
-        record.Timestamp >= dateFrom
-        && record.Timestamp <= dateTo)
+        record.Timestamp >= dateFromCsv
+        && record.Timestamp <= dateToCsv)
       .Select(measurement =>
       {
         var converter = _serviceProvider
@@ -63,16 +64,16 @@ public abstract class
         {
           return null;
         }
-
-        var timestamp = csvRecordsMinTimestamp.AddTicks(
-          (measurement.Timestamp - csvRecordsMinTimestamp).Ticks %
-          csvRecordsTimeSpan.Ticks
+        var pushRequest = converter.ConvertToPushRequest(measurement);
+        var timestamp = dateFrom.AddTicks(
+          (measurement.Timestamp - dateFromCsv).Ticks
         );
+        pushRequest["Timestamp"] = timestamp;
 
         return new MessengerPushRequestMeasurement(
           measurement.MeterId,
-          timestamp,
-          converter.ConvertToPushRequest(measurement)
+          now,
+          pushRequest
         );
       })
       .OfType<MessengerPushRequestMeasurement>()
