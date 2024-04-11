@@ -21,8 +21,7 @@ public class OzdsRegulatoryCatalogueModelQueries : IOzdsQueries
     RegulatoryCatalogueById(string id)
   {
     var catalogueModel =
-      await context.NetworkUserCatalogues
-        .OfType<RegulatoryCatalogueEntity>()
+      await context.RegulatoryCatalogues
         .WithId(id)
         .FirstOrDefaultAsync();
     if (catalogueModel is not null)

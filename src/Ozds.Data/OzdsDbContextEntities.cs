@@ -13,6 +13,9 @@ public partial class OzdsDbContext : DbContext
   public DbSet<NetworkUserCatalogueEntity> NetworkUserCatalogues { get; set; } =
     default!;
 
+  public DbSet<RegulatoryCatalogueEntity> RegulatoryCatalogues { get; set; } =
+    default!;
+
   public DbSet<NetworkUserEntity> NetworkUsers { get; set; } = default!;
 
   public DbSet<MeasurementLocationEntity> MeasurementLocations { get; set; } =
