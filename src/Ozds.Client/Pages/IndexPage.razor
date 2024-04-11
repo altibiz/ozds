@@ -1,21 +1,22 @@
 @page "/"
 @attribute [Navigation(Title = "Dashboard")]
 @attribute [Authorize]
+@using Ozds.Business.Models.Enums
 
 @if (user is null)
 {
   return;
 }
-@if (user.User.Roles.Contains("NetworkUser"))
+@if (representative.Representative.Role is RoleModel.NetworkUserRepresentative)
 {
   <NetUserRepDashboard/>
   <MetersTable/>
 }
-@if (user.User.Roles.Contains("Location"))
+@if (representative.Representative.Role is RoleModel.LocationRepresentative)
 {
   <LocationRepDashboard/>
 }
-@if (user.User.Roles.Contains("Operator"))
+@if (representative.Representative.Role is RoleModel.OperatorRepresentative)
 {
   @* MOBILE *@
   <MudHidden Breakpoint="Breakpoint.MdAndUp">
@@ -45,4 +46,6 @@
 
 @code {
   [CascadingParameter] public UserState user { get; set; } = default!;
+
+  [CascadingParameter] public RepresentativeState representative { get; set; } = default!;
 }
