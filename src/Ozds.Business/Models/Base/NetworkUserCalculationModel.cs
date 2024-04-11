@@ -22,7 +22,7 @@ public abstract class NetworkUserCalculationModel : INetworkUserCalculation
   [Required]
   public required string MeasurementLocationId { get; set; } = default!;
 
-  [Required] public required string CatalogueId { get; set; } = default!;
+  [Required] public required string NetworkUserCatalogueId { get; set; } = default!;
 
   [Required]
   public required string NetworkUserInvoiceId { get; set; } = default!;
@@ -31,10 +31,16 @@ public abstract class NetworkUserCalculationModel : INetworkUserCalculation
 
   [Required]
   public required NetworkUserMeasurementLocationModel
-    ArchivedMeasurementLocation { get; set; } = default!;
+    ArchivedMeasurementLocation
+  { get; set; } = default!;
 
   [Required]
-  public required CatalogueModel ArchivedCatalogue { get; set; } = default!;
+  public required NetworkUserCatalogueModel ArchivedUsageNetworkUserCatalogue { get; set; } = default!;
+
+  [Required]
+  public required RegulatoryCatalogueModel ArchivedSupplyRegulatoryCatalogue { get; set; } = default!;
+
+  public abstract string Kind { get; }
 
   public abstract SpanningMeasure<decimal> ActiveEnergyAmount_Wh { get; }
 
@@ -75,7 +81,6 @@ public abstract class NetworkUserCalculationModel : INetworkUserCalculation
         ReactiveEnergyRampedAmount_Wh * ReactiveEnergyPrice_EUR;
     }
   }
-
 
   public virtual IEnumerable<ValidationResult> Validate(
     ValidationContext validationContext)

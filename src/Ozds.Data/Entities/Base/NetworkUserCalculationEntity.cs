@@ -48,7 +48,10 @@ public class NetworkUserCalculationEntity : IReadonlyEntity, IIdentifiableEntity
 
   public decimal Total_EUR { get; set; }
 
-  public CatalogueEntity ArchivedCatalogue { get; set; } = default!;
+  public NetworkUserCatalogueEntity ArchivedExpenditureNetworkUserCatalogue { get; set; } = default!;
+
+  public RegulatoryCatalogueEntity ArchivedSupplyNetworkUserCatalogue { get; set; } =
+    default!;
 
   public MeterEntity ArchivedMeter { get; set; } = default!;
 
@@ -69,18 +72,28 @@ public class NetworkUserCalculationEntity : IReadonlyEntity, IIdentifiableEntity
 }
 
 public class
-  NetworkUserCalculationEntity<TCatalogue> : NetworkUserCalculationEntity
-  where TCatalogue : CatalogueEntity
+  NetworkUserCalculationEntity<TUsageNetworkUserCatalogue> : NetworkUserCalculationEntity
+  where TUsageNetworkUserCatalogue : NetworkUserCatalogueEntity
 {
-  protected readonly long _catalogueId;
+  protected readonly long _usageNetworkUserCatalogueId;
 
-  public string CatalogueId
+  public string UsageNetworkUserCatalogueId
   {
-    get { return _catalogueId.ToString(); }
-    init { _catalogueId = long.Parse(value); }
+    get { return _usageNetworkUserCatalogueId.ToString(); }
+    init { _usageNetworkUserCatalogueId = long.Parse(value); }
   }
 
-  public virtual TCatalogue Catalogue { get; set; } = default!;
+  public virtual TUsageNetworkUserCatalogue UsageNetworkUserCatalogue { get; set; } = default!;
+
+  protected readonly long _supplyRegulatoryCatalogueId;
+
+  public string SupplyRegulatoryCatalogueId
+  {
+    get { return _supplyRegulatoryCatalogueId.ToString(); }
+    init { _supplyRegulatoryCatalogueId = long.Parse(value); }
+  }
+
+  public virtual RegulatoryCatalogueEntity SupplyRegulatoryCatalogue { get; set; } = default!;
 }
 
 public class
@@ -140,13 +153,13 @@ public class
       .Ignore(nameof(MeterEntity.NetworkUserCalculations));
 
     builder
-      .ComplexProperty(nameof(NetworkUserCalculationEntity.ArchivedCatalogue))
-      .Ignore(nameof(CatalogueEntity.LastUpdatedBy))
-      .Ignore(nameof(CatalogueEntity.CreatedBy))
-      .Ignore(nameof(CatalogueEntity.DeletedBy))
-      .Ignore(nameof(CatalogueEntity.Location))
-      .Ignore(nameof(CatalogueEntity.MeasurementLocations))
-      .Ignore(nameof(CatalogueEntity.NetworkUserCalculations));
+      .ComplexProperty(nameof(NetworkUserCalculationEntity.ArchivedExpenditureNetworkUserCatalogue))
+      .Ignore(nameof(NetworkUserCatalogueEntity.LastUpdatedBy))
+      .Ignore(nameof(NetworkUserCatalogueEntity.CreatedBy))
+      .Ignore(nameof(NetworkUserCatalogueEntity.DeletedBy))
+      .Ignore(nameof(NetworkUserCatalogueEntity.Location))
+      .Ignore(nameof(NetworkUserCatalogueEntity.MeasurementLocations))
+      .Ignore(nameof(NetworkUserCatalogueEntity.NetworkUserCalculations));
 
     builder
       .ComplexProperty(nameof(NetworkUserCalculationEntity
@@ -154,7 +167,7 @@ public class
       .Ignore(nameof(NetworkUserMeasurementLocationEntity.LastUpdatedBy))
       .Ignore(nameof(NetworkUserMeasurementLocationEntity.CreatedBy))
       .Ignore(nameof(NetworkUserMeasurementLocationEntity.DeletedBy))
-      .Ignore(nameof(NetworkUserMeasurementLocationEntity.Catalogue))
+      .Ignore(nameof(NetworkUserMeasurementLocationEntity.NetworkUserCatalogue))
       .Ignore(nameof(NetworkUserMeasurementLocationEntity.Meter))
       .Ignore(nameof(NetworkUserMeasurementLocationEntity.NetworkUser))
       .Ignore(nameof(NetworkUserMeasurementLocationEntity
@@ -189,15 +202,26 @@ public class
     if (type != typeof(NetworkUserCalculationEntity))
     {
       builder
-        .HasOne(nameof(NetworkUserCalculationEntity<CatalogueEntity>.Catalogue))
-        .WithMany(nameof(CatalogueEntity.NetworkUserCalculations))
-        .HasForeignKey("_catalogueId");
+        .HasOne(nameof(NetworkUserCalculationEntity<NetworkUserCatalogueEntity>.UsageNetworkUserCatalogue))
+        .WithMany(nameof(NetworkUserCatalogueEntity.NetworkUserCalculations))
+        .HasForeignKey("_usageNetworkUserCatalogueId");
 
-      builder.Ignore(nameof(NetworkUserCalculationEntity<CatalogueEntity>
-        .CatalogueId));
+      builder.Ignore(nameof(NetworkUserCalculationEntity<NetworkUserCatalogueEntity>
+        .UsageNetworkUserCatalogueId));
       builder
-        .Property("_catalogueId")
-        .HasColumnName("catalogue_id");
+        .Property("_usageNetworkUserCatalogueId")
+        .HasColumnName("usage_network_user_catalogue_id");
+
+      builder
+        .HasOne(nameof(NetworkUserCalculationEntity<NetworkUserCatalogueEntity>.SupplyRegulatoryCatalogue))
+        .WithMany(nameof(RegulatoryCatalogueEntity.NetworkUserCalculations))
+        .HasForeignKey("_supplyRegulatoryCatalogueId");
+
+      builder.Ignore(nameof(NetworkUserCalculationEntity<NetworkUserCatalogueEntity>
+        .SupplyRegulatoryCatalogueId));
+      builder
+        .Property("_supplyRegulatoryCatalogueId")
+        .HasColumnName("supply_regulatory_catalogue_id");
     }
   }
 }

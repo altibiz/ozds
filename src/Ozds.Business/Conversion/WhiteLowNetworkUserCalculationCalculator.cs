@@ -7,11 +7,11 @@ namespace Ozds.Business.Conversion;
 
 public class
   WhiteLowNetworkUserCalculationCalculator : NetworkUserCalculationCalculator<
-  WhiteLowCatalogueModel>
+  WhiteLowNetworkUserCatalogueModel>
 {
   protected override NetworkUserCalculationModel CalculateForNetworkUser(
-    WhiteLowCatalogueModel catalogue,
-    NetworkUserNetworkUserCalculationBasisModel calculationBasis
+    WhiteLowNetworkUserCatalogueModel catalogue,
+    NetworkUserCalculationBasisModel calculationBasis
   )
   {
     var aggregates = calculationBasis.Aggregates
@@ -27,13 +27,13 @@ public class
       FromDate = calculationBasis.FromDate,
       NetworkUserInvoiceId = calculationBasis.NetworkUser.Id,
       MeterId = calculationBasis.Meter.Id,
-      CatalogueId = catalogue.Id,
+      NetworkUserCatalogueId = catalogue.Id,
       MeasurementLocationId = calculationBasis.MeasurementLocation.Id,
       IssuedOn = DateTimeOffset.UtcNow,
       IssuedById = default!,
       ArchivedMeter = calculationBasis.Meter,
       ArchivedMeasurementLocation = calculationBasis.MeasurementLocation,
-      ArchivedCatalogue = catalogue,
+      ArchivedNetworkUserCatalogue = catalogue,
       ActiveEnergyTotalImportT1Min_Wh = (decimal)calculationBasis.Aggregates
         .FirstOrDefault()!.ActiveEnergy_Wh.TariffBinary.T1.DuplexImport
         .PhaseSum,

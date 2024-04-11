@@ -72,9 +72,9 @@
 @code {
   [Parameter] public string Id { get; set; } = default!;
 
-  [Parameter] public WhiteLowCatalogueModel? Model { get; set; }
+  [Parameter] public WhiteLowNetworkUserCatalogueModel? Model { get; set; }
 
-  private LoadingState<WhiteLowCatalogueModel> LoadingState { get; set; } = new();
+  private LoadingState<WhiteLowNetworkUserCatalogueModel> LoadingState { get; set; } = new();
 
   private bool _create;
 
@@ -107,13 +107,13 @@
     {
       LoadingState = LoadingState.WithValue(
         await ScopedServices
-          .GetRequiredService<OzdsWhiteLowCatalogueModelQueries>()
-          .BlueLowCatalogueById(Id));
+          .GetRequiredService<OzdsWhiteLowNetworkUserCatalogueModelQueries>()
+          .BlueLowNetworkUserCatalogueById(Id));
     }
 
     if (LoadingState.Value is null)
     {
-      LoadingState = LoadingState.WithValue(WhiteLowCatalogueModel.New());
+      LoadingState = LoadingState.WithValue(WhiteLowNetworkUserCatalogueModel.New());
       _create = true;
     }
   }

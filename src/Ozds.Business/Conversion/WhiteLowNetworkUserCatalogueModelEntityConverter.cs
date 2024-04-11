@@ -4,28 +4,28 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Conversion;
 
-public class WhiteMediumCatalogueModelEntityConverter : ModelEntityConverter<
-  WhiteMediumCatalogueModel, WhiteMediumCatalogueEntity>
+public class WhiteLowNetworkUserCatalogueModelEntityConverter : ModelEntityConverter<
+  WhiteLowNetworkUserCatalogueModel, WhiteLowNetworkUserCatalogueEntity>
 {
-  protected override WhiteMediumCatalogueEntity ToEntity(
-    WhiteMediumCatalogueModel model)
+  protected override WhiteLowNetworkUserCatalogueEntity ToEntity(
+    WhiteLowNetworkUserCatalogueModel model)
   {
     return model.ToEntity();
   }
 
-  protected override WhiteMediumCatalogueModel ToModel(
-    WhiteMediumCatalogueEntity entity)
+  protected override WhiteLowNetworkUserCatalogueModel ToModel(
+    WhiteLowNetworkUserCatalogueEntity entity)
   {
     return entity.ToModel();
   }
 }
 
-public static class WhiteMediumCatalogueModelEntityConverterExtensions
+public static class WhiteLowNetworkUserCatalogueModelEntityConverterExtensions
 {
-  public static WhiteMediumCatalogueModel ToModel(
-    this WhiteMediumCatalogueEntity entity)
+  public static WhiteLowNetworkUserCatalogueModel ToModel(
+    this WhiteLowNetworkUserCatalogueEntity entity)
   {
-    return new WhiteMediumCatalogueModel
+    return new WhiteLowNetworkUserCatalogueModel
     {
       Id = entity.Id,
       Title = entity.Title,
@@ -40,18 +40,16 @@ public static class WhiteMediumCatalogueModelEntityConverterExtensions
         entity.ActiveEnergyTotalImportT1Price_EUR,
       ActiveEnergyTotalImportT2Price_EUR =
         entity.ActiveEnergyTotalImportT2Price_EUR,
-      ActivePowerTotalImportT1Price_EUR =
-        entity.ActivePowerTotalImportT1Price_EUR,
       ReactiveEnergyTotalRampedT0Price_EUR =
         entity.ReactiveEnergyTotalRampedT0Price_EUR,
       MeterFeePrice_EUR = entity.MeterFeePrice_EUR
     };
   }
 
-  public static WhiteMediumCatalogueEntity ToEntity(
-    this WhiteMediumCatalogueModel model)
+  public static WhiteLowNetworkUserCatalogueEntity ToEntity(
+    this WhiteLowNetworkUserCatalogueModel model)
   {
-    return new WhiteMediumCatalogueEntity
+    return new WhiteLowNetworkUserCatalogueEntity
     {
       Id = model.Id,
       Title = model.Title,
@@ -66,8 +64,6 @@ public static class WhiteMediumCatalogueModelEntityConverterExtensions
         model.ActiveEnergyTotalImportT1Price_EUR,
       ActiveEnergyTotalImportT2Price_EUR =
         model.ActiveEnergyTotalImportT2Price_EUR,
-      ActivePowerTotalImportT1Price_EUR =
-        model.ActivePowerTotalImportT1Price_EUR,
       ReactiveEnergyTotalRampedT0Price_EUR =
         model.ReactiveEnergyTotalRampedT0Price_EUR,
       MeterFeePrice_EUR = model.MeterFeePrice_EUR

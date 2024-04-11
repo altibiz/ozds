@@ -6,7 +6,7 @@ namespace Ozds.Business.Models;
 public class NetworkUserMeasurementLocationModel : MeasurementLocationModel
 {
   [Required] public required string NetworkUserId { get; set; }
-  [Required] public required string CatalogueId { get; set; }
+  [Required] public required string NetworkUserCatalogueId { get; set; }
 
   public static NetworkUserMeasurementLocationModel New()
   {
@@ -22,7 +22,7 @@ public class NetworkUserMeasurementLocationModel : MeasurementLocationModel
       DeletedOn = default,
       DeletedById = default,
       NetworkUserId = default!,
-      CatalogueId = default!,
+      NetworkUserCatalogueId = default!,
       MeterId = default!
     };
   }

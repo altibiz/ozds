@@ -4,7 +4,7 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
 
-public class CatalogueEntity : AuditableEntity
+public class NetworkUserCatalogueEntity : AuditableEntity
 {
   public virtual LocationEntity Location { get; set; } = default!;
 
@@ -15,21 +15,22 @@ public class CatalogueEntity : AuditableEntity
   } = default!;
 
   public virtual ICollection<NetworkUserCalculationEntity>
-    NetworkUserCalculations { get; set; } =
+    NetworkUserCalculations
+  { get; set; } =
     default!;
 }
 
 public class
-  CatalogueEntityTypeConfiguration : EntityTypeConfiguration<CatalogueEntity>
+  NetworkUserCatalogueEntityTypeConfiguration : EntityTypeConfiguration<NetworkUserCatalogueEntity>
 {
-  public override void Configure(EntityTypeBuilder<CatalogueEntity> builder)
+  public override void Configure(EntityTypeBuilder<NetworkUserCatalogueEntity> builder)
   {
   }
 }
 
 public class
-  CatalogueEntityTypeHierarchyConfiguration : EntityTypeHierarchyConfiguration<
-  CatalogueEntity>
+  NetworkUserCatalogueEntityTypeHierarchyConfiguration : EntityTypeHierarchyConfiguration<
+  NetworkUserCatalogueEntity>
 {
   public override void Configure(ModelBuilder modelBuilder, Type type)
   {
@@ -37,7 +38,7 @@ public class
 
     builder
       .UseTphMappingStrategy()
-      .ToTable("catalogues")
+      .ToTable("network_user_catalogues")
       .HasDiscriminator<string>("kind");
   }
 }

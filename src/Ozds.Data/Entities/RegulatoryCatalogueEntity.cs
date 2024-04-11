@@ -5,8 +5,15 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities;
 
-public class RegulatoryCatalogueEntity : CatalogueEntity
+public class RegulatoryCatalogueEntity : AuditableEntity
 {
+  public virtual LocationEntity Location { get; set; } = default!;
+
+  public virtual ICollection<NetworkUserCalculationEntity>
+    NetworkUserCalculations
+  { get; set; } =
+    default!;
+
 #pragma warning disable CA1707
   public decimal ActiveEnergyTotalImportT1Price_EUR { get; set; }
   public decimal ActiveEnergyTotalImportT2Price_EUR { get; set; }
@@ -23,6 +30,9 @@ public class
   public override void Configure(
     EntityTypeBuilder<RegulatoryCatalogueEntity> builder)
   {
+    builder
+      .ToTable("regulatory_catalogues");
+
     builder
       .Property(nameof(RegulatoryCatalogueEntity
         .ActiveEnergyTotalImportT1Price_EUR))

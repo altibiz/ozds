@@ -28,11 +28,11 @@
         @bind-Value="LoadingState.Value.Title"
         For="@(() => LoadingState.Value.Title)"/>
       <MudSelect
-        Label="_whiteMediumCatalogues"
+        Label="_whiteMediumNetworkUserCatalogues"
         AnchorOrigin="Origin.BottomCenter"
-        @bind-Value="LoadingState.Value.WhiteMediumCatalogueId"
-        For="@(() => LoadingState.Value.WhiteMediumCatalogueId)">
-        @foreach (var catalog in _whiteMediumCatalogues)
+        @bind-Value="LoadingState.Value.WhiteMediumNetworkUserCatalogueId"
+        For="@(() => LoadingState.Value.WhiteMediumNetworkUserCatalogueId)">
+        @foreach (var catalog in _whiteMediumNetworkUserCatalogues)
         {
           <MudSelectItem Value="catalog.Id">
             @catalog.Title
@@ -40,11 +40,11 @@
         }
       </MudSelect>
       <MudSelect
-        Label="_blueLowCatalogues"
+        Label="_blueLowNetworkUserCatalogues"
         AnchorOrigin="Origin.BottomCenter"
-        @bind-Value="LoadingState.Value.BlueLowCatalogueId"
-        For="@(() => LoadingState.Value.BlueLowCatalogueId)">
-        @foreach (var catalog in _blueLowCatalogues)
+        @bind-Value="LoadingState.Value.BlueLowNetworkUserCatalogueId"
+        For="@(() => LoadingState.Value.BlueLowNetworkUserCatalogueId)">
+        @foreach (var catalog in _blueLowNetworkUserCatalogues)
         {
           <MudSelectItem Value="catalog.Id">
             @catalog.Title
@@ -52,11 +52,11 @@
         }
       </MudSelect>
       <MudSelect
-        Label="_whiteLowCatalogues"
+        Label="_whiteLowNetworkUserCatalogues"
         AnchorOrigin="Origin.BottomCenter"
-        @bind-Value="LoadingState.Value.WhiteLowCatalogueId"
-        For="@(() => LoadingState.Value.WhiteLowCatalogueId)">
-        @foreach (var catalog in _whiteLowCatalogues)
+        @bind-Value="LoadingState.Value.WhiteLowNetworkUserCatalogueId"
+        For="@(() => LoadingState.Value.WhiteLowNetworkUserCatalogueId)">
+        @foreach (var catalog in _whiteLowNetworkUserCatalogues)
         {
           <MudSelectItem Value="catalog.Id">
             @catalog.Title
@@ -64,11 +64,11 @@
         }
       </MudSelect>
       <MudSelect
-        Label="_redLowCatalogues"
+        Label="_redLowNetworkUserCatalogues"
         AnchorOrigin="Origin.BottomCenter"
-        @bind-Value="LoadingState.Value.RedLowCatalogueId"
-        For="@(() => LoadingState.Value.RedLowCatalogueId)">
-        @foreach (var catalog in _redLowCatalogues)
+        @bind-Value="LoadingState.Value.RedLowNetworkUserCatalogueId"
+        For="@(() => LoadingState.Value.RedLowNetworkUserCatalogueId)">
+        @foreach (var catalog in _redLowNetworkUserCatalogues)
         {
           <MudSelectItem Value="catalog.Id">
             @catalog.Title
@@ -76,11 +76,11 @@
         }
       </MudSelect>
       <MudSelect
-        Label="_regulatoryCatalogues"
+        Label="_regulatoryNetworkUserCatalogues"
         AnchorOrigin="Origin.BottomCenter"
         @bind-Value="LoadingState.Value.RegulatoryCatalogueId"
         For="@(() => LoadingState.Value.RegulatoryCatalogueId)">
-        @foreach (var catalog in _regulatoryCatalogues)
+        @foreach (var catalog in _regulatoryNetworkUserCatalogues)
         {
           <MudSelectItem Value="catalog.Id">
             @catalog.Title
@@ -114,11 +114,11 @@
   [Parameter] public LocationModel? Model { get; set; }
 
   private LoadingState<LocationModel> LoadingState { get; set; } = new();
-  private List<WhiteMediumCatalogueModel> _whiteMediumCatalogues;
-  private List<BlueLowCatalogueModel> _blueLowCatalogues;
-  private List<WhiteLowCatalogueModel> _whiteLowCatalogues;
-  private List<RedLowCatalogueModel> _redLowCatalogues;
-  private List<RegulatoryCatalogueModel> _regulatoryCatalogues;
+  private List<WhiteMediumNetworkUserCatalogueModel> _whiteMediumNetworkUserCatalogues;
+  private List<BlueLowNetworkUserCatalogueModel> _blueLowNetworkUserCatalogues;
+  private List<WhiteLowNetworkUserCatalogueModel> _whiteLowNetworkUserCatalogues;
+  private List<RedLowNetworkUserCatalogueModel> _redLowNetworkUserCatalogues;
+  private List<RegulatoryCatalogueModel> _regulatoryNetworkUserCatalogues;
 
   private bool _create;
 
@@ -148,11 +148,11 @@
   protected override async Task OnInitializedAsync()
   {
     var queries = ScopedServices.GetRequiredService<OzdsLocationModelQueries>();
-    _whiteMediumCatalogues = (await queries.GetWhiteMediumCatalogues("")).Items;
-    _blueLowCatalogues = (await queries.GetBlueLowCatalogues("")).Items;
-    _whiteLowCatalogues = (await queries.GetWhiteLowCatalogues("")).Items;
-    _redLowCatalogues = (await queries.GetRedLowCatalogues("")).Items;
-    _regulatoryCatalogues = (await queries.GetRegulatoryCatalogues("")).Items;
+    _whiteMediumNetworkUserCatalogues = (await queries.GetWhiteMediumNetworkUserCatalogues("")).Items;
+    _blueLowNetworkUserCatalogues = (await queries.GetBlueLowNetworkUserCatalogues("")).Items;
+    _whiteLowNetworkUserCatalogues = (await queries.GetWhiteLowNetworkUserCatalogues("")).Items;
+    _redLowNetworkUserCatalogues = (await queries.GetRedLowNetworkUserCatalogues("")).Items;
+    _regulatoryNetworkUserCatalogues = (await queries.GetRegulatoryCatalogues("")).Items;
 
     if (LoadingState.Value is null && Id is not null)
     {

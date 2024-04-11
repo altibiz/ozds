@@ -7,7 +7,7 @@ public record LocationNetworkUserCalculationBasisModel(
   DateTimeOffset ToDate,
   LocationModel Location,
   LocationMeasurementLocationModel MeasurementLocation,
-  CatalogueModel Catalogue,
+  NetworkUserCatalogueModel NetworkUserCatalogue,
   MeterModel Meter,
   List<AggregateModel> Aggregates
 );

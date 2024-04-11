@@ -20,7 +20,7 @@ public class OzdsBillingQueries
     _dbContext = dbContext;
   }
 
-  public async Task<List<NetworkUserNetworkUserCalculationBasisModel>>
+  public async Task<List<NetworkUserCalculationBasisModel>>
     NetworkUserCalculationBasesByNetworkUser(
       string networkUserId,
       DateTimeOffset fromDate,
@@ -32,9 +32,10 @@ public class OzdsBillingQueries
         .Join(
           _dbContext.MeasurementLocations
             .OfType<NetworkUserMeasurementLocationEntity>()
-            .Include(x => x.Catalogue)
+            .Include(x => x.NetworkUserCatalogue)
             .Include(x => x.NetworkUser)
-            .Include(x => x.NetworkUser.Location),
+            .Include(x => x.NetworkUser.Location)
+            .Include(x => x.NetworkUser.Location.RegulatoryCatalogue),
           networkUser => networkUser.Id,
           measurementLocation => measurementLocation.NetworkUserId,
           (networkUser, measurementLocation) => new
@@ -42,7 +43,8 @@ public class OzdsBillingQueries
             Location = measurementLocation.NetworkUser.Location.ToModel(),
             NetworkUser = measurementLocation.NetworkUser.ToModel(),
             MeasurementLocation = measurementLocation.ToModel(),
-            Catalogue = measurementLocation.Catalogue.ToModel()
+            UsageNetworkUserCatalogue = measurementLocation.NetworkUserCatalogue.ToModel(),
+            SupplyRegulatoryCatalogue = measurementLocation.NetworkUser.Location.RegulatoryCatalogue.ToModel()
           }
         )
         .Join(
@@ -54,7 +56,8 @@ public class OzdsBillingQueries
             x.Location,
             x.NetworkUser,
             x.MeasurementLocation,
-            x.Catalogue,
+            x.UsageNetworkUserCatalogue,
+            x.SupplyRegulatoryCatalogue,
             Meter = meter.ToModel()
           }
         )
@@ -73,7 +76,8 @@ public class OzdsBillingQueries
             x.NetworkUser,
             x.Meter,
             x.MeasurementLocation,
-            x.Catalogue,
+            x.UsageNetworkUserCatalogue,
+            x.SupplyRegulatoryCatalogue,
             AbbB2xAggregates = abbB2xAggregates
               .Select(abbB2xAggregate => abbB2xAggregate
                 .ToModel())
@@ -94,7 +98,8 @@ public class OzdsBillingQueries
             x.NetworkUser,
             x.Meter,
             x.MeasurementLocation,
-            x.Catalogue,
+            x.UsageNetworkUserCatalogue,
+            x.SupplyRegulatoryCatalogue,
             x.AbbB2xAggregates,
             SchneideriEM3xxxAggregates = schneideriEM3xxxAggregates
               .Select(schneideriEM3xxxAggregate => schneideriEM3xxxAggregate
@@ -102,14 +107,15 @@ public class OzdsBillingQueries
           }
         )
         .ToListAsync())
-      .Select(x => new NetworkUserNetworkUserCalculationBasisModel(
+      .Select(x => new NetworkUserCalculationBasisModel(
         fromDate,
         toDate,
         Location: x.Location,
         NetworkUser: x.NetworkUser,
         MeasurementLocation: x.MeasurementLocation,
         Meter: x.Meter,
-        Catalogue: x.Catalogue,
+        UsageNetworkUserCatalogue: x.UsageNetworkUserCatalogue,
+        SupplyRegulatoryCatalogue: x.SupplyRegulatoryCatalogue,
         Aggregates: Enumerable.Empty<AggregateModel>()
           .Concat(x.AbbB2xAggregates)
           .Concat(x.SchneideriEM3xxxAggregates)

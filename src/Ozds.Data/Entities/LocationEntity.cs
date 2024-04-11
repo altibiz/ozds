@@ -7,18 +7,19 @@ namespace Ozds.Data.Entities;
 
 public class LocationEntity : AuditableEntity
 {
-  private long _blueLowCatalogueId;
+  private long _blueLowNetworkUserCatalogueId;
 
-  private long _redLowCatalogueId;
+  private long _redLowNetworkUserCatalogueId;
 
-  private long _regulatoryCatalogueId;
+  private long _regulatoryNetworkUserCatalogueId;
 
-  private long _whiteLowCatalogueId;
+  private long _whiteLowNetworkUserCatalogueId;
 
-  private long _whiteMediumCatalogueId;
+  private long _whiteMediumNetworkUserCatalogueId;
 
   public virtual ICollection<RepresentativeEntity>
-    Representatives { get; set; } = default!;
+    Representatives
+  { get; set; } = default!;
 
   public virtual ICollection<NetworkUserEntity> NetworkUsers { get; set; } =
     default!;
@@ -27,50 +28,51 @@ public class LocationEntity : AuditableEntity
     default!;
 
   public virtual ICollection<LocationMeasurementLocationEntity>
-    MeasurementLocations { get; set; } = default!;
+    MeasurementLocations
+  { get; set; } = default!;
 
   public virtual ICollection<LocationInvoiceEntity> Invoices { get; set; } =
     default!;
 
-  public string WhiteMediumCatalogueId
+  public string WhiteMediumNetworkUserCatalogueId
   {
-    get { return _whiteMediumCatalogueId.ToString(); }
-    init { _whiteMediumCatalogueId = long.Parse(value); }
+    get { return _whiteMediumNetworkUserCatalogueId.ToString(); }
+    init { _whiteMediumNetworkUserCatalogueId = long.Parse(value); }
   }
 
-  public virtual WhiteMediumCatalogueEntity WhiteMediumCatalogue { get; set; } =
+  public virtual WhiteMediumNetworkUserCatalogueEntity WhiteMediumNetworkUserCatalogue { get; set; } =
     default!;
 
-  public string BlueLowCatalogueId
+  public string BlueLowNetworkUserCatalogueId
   {
-    get { return _blueLowCatalogueId.ToString(); }
-    init { _blueLowCatalogueId = long.Parse(value); }
+    get { return _blueLowNetworkUserCatalogueId.ToString(); }
+    init { _blueLowNetworkUserCatalogueId = long.Parse(value); }
   }
 
-  public virtual BlueLowCatalogueEntity BlueLowCatalogue { get; set; } =
+  public virtual BlueLowNetworkUserCatalogueEntity BlueLowNetworkUserCatalogue { get; set; } =
     default!;
 
-  public string WhiteLowCatalogueId
+  public string WhiteLowNetworkUserCatalogueId
   {
-    get { return _whiteLowCatalogueId.ToString(); }
-    init { _whiteLowCatalogueId = long.Parse(value); }
+    get { return _whiteLowNetworkUserCatalogueId.ToString(); }
+    init { _whiteLowNetworkUserCatalogueId = long.Parse(value); }
   }
 
-  public virtual WhiteLowCatalogueEntity WhiteLowCatalogue { get; set; } =
+  public virtual WhiteLowNetworkUserCatalogueEntity WhiteLowNetworkUserCatalogue { get; set; } =
     default!;
 
-  public string RedLowCatalogueId
+  public string RedLowNetworkUserCatalogueId
   {
-    get { return _redLowCatalogueId.ToString(); }
-    init { _redLowCatalogueId = long.Parse(value); }
+    get { return _redLowNetworkUserCatalogueId.ToString(); }
+    init { _redLowNetworkUserCatalogueId = long.Parse(value); }
   }
 
-  public virtual RedLowCatalogueEntity RedLowCatalogue { get; set; } = default!;
+  public virtual RedLowNetworkUserCatalogueEntity RedLowNetworkUserCatalogue { get; set; } = default!;
 
   public string RegulatoryCatalogueId
   {
-    get { return _regulatoryCatalogueId.ToString(); }
-    init { _regulatoryCatalogueId = long.Parse(value); }
+    get { return _regulatoryNetworkUserCatalogueId.ToString(); }
+    init { _regulatoryNetworkUserCatalogueId = long.Parse(value); }
   }
 
   public virtual RegulatoryCatalogueEntity RegulatoryCatalogue { get; set; } =
@@ -103,53 +105,53 @@ public class
       .WithOne(nameof(LocationInvoiceEntity.Location));
 
     builder
-      .HasOne(nameof(LocationEntity.WhiteMediumCatalogue))
-      .WithOne(nameof(WhiteMediumCatalogueEntity.Location))
-      .HasForeignKey(nameof(LocationEntity), "_whiteMediumCatalogueId");
+      .HasOne(nameof(LocationEntity.WhiteMediumNetworkUserCatalogue))
+      .WithOne(nameof(WhiteMediumNetworkUserCatalogueEntity.Location))
+      .HasForeignKey(nameof(LocationEntity), "_whiteMediumNetworkUserCatalogueId");
 
     builder
-      .HasOne(nameof(LocationEntity.BlueLowCatalogue))
-      .WithOne(nameof(BlueLowCatalogueEntity.Location))
-      .HasForeignKey(nameof(LocationEntity), "_blueLowCatalogueId");
+      .HasOne(nameof(LocationEntity.BlueLowNetworkUserCatalogue))
+      .WithOne(nameof(BlueLowNetworkUserCatalogueEntity.Location))
+      .HasForeignKey(nameof(LocationEntity), "_blueLowNetworkUserCatalogueId");
 
     builder
-      .HasOne(nameof(LocationEntity.WhiteLowCatalogue))
-      .WithOne(nameof(WhiteLowCatalogueEntity.Location))
-      .HasForeignKey(nameof(LocationEntity), "_whiteLowCatalogueId");
+      .HasOne(nameof(LocationEntity.WhiteLowNetworkUserCatalogue))
+      .WithOne(nameof(WhiteLowNetworkUserCatalogueEntity.Location))
+      .HasForeignKey(nameof(LocationEntity), "_whiteLowNetworkUserCatalogueId");
 
     builder
-      .HasOne(nameof(LocationEntity.RedLowCatalogue))
-      .WithOne(nameof(RedLowCatalogueEntity.Location))
-      .HasForeignKey(nameof(LocationEntity), "_redLowCatalogueId");
+      .HasOne(nameof(LocationEntity.RedLowNetworkUserCatalogue))
+      .WithOne(nameof(RedLowNetworkUserCatalogueEntity.Location))
+      .HasForeignKey(nameof(LocationEntity), "_redLowNetworkUserCatalogueId");
 
     builder
       .HasOne(nameof(LocationEntity.RegulatoryCatalogue))
       .WithOne(nameof(RegulatoryCatalogueEntity.Location))
-      .HasForeignKey(nameof(LocationEntity), "_regulatoryCatalogueId");
+      .HasForeignKey(nameof(LocationEntity), "_regulatoryNetworkUserCatalogueId");
 
-    builder.Ignore(nameof(LocationEntity.WhiteMediumCatalogueId));
+    builder.Ignore(nameof(LocationEntity.WhiteMediumNetworkUserCatalogueId));
     builder
-      .Property("_whiteMediumCatalogueId")
+      .Property("_whiteMediumNetworkUserCatalogueId")
       .HasColumnName("white_medium_catalogue_id");
 
-    builder.Ignore(nameof(LocationEntity.BlueLowCatalogueId));
+    builder.Ignore(nameof(LocationEntity.BlueLowNetworkUserCatalogueId));
     builder
-      .Property("_blueLowCatalogueId")
+      .Property("_blueLowNetworkUserCatalogueId")
       .HasColumnName("blue_low_catalogue_id");
 
-    builder.Ignore(nameof(LocationEntity.WhiteLowCatalogueId));
+    builder.Ignore(nameof(LocationEntity.WhiteLowNetworkUserCatalogueId));
     builder
-      .Property("_whiteLowCatalogueId")
+      .Property("_whiteLowNetworkUserCatalogueId")
       .HasColumnName("white_low_catalogue_id");
 
-    builder.Ignore(nameof(LocationEntity.RedLowCatalogueId));
+    builder.Ignore(nameof(LocationEntity.RedLowNetworkUserCatalogueId));
     builder
-      .Property("_redLowCatalogueId")
+      .Property("_redLowNetworkUserCatalogueId")
       .HasColumnName("red_low_catalogue_id");
 
     builder.Ignore(nameof(LocationEntity.RegulatoryCatalogueId));
     builder
-      .Property("_regulatoryCatalogueId")
+      .Property("_regulatoryNetworkUserCatalogueId")
       .HasColumnName("regulatory_catalogue_id");
   }
 }

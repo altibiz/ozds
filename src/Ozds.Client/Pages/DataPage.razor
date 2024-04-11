@@ -113,19 +113,19 @@
         _data = b.Select(x => new TabularData(x.Title, x.Id)).ToList();
         break;
       case "Crveni Niski Katalozi":
-        var c = (await queries.GetRedLowCatalogues("")).Items;
+        var c = (await queries.GetRedLowNetworkUserCatalogues("")).Items;
         _data = c.Select(x => new TabularData(x.Title, x.Id)).ToList();
         break;
       case "Plavi Niski Katalozi":
-        var d = (await queries.GetBlueLowCatalogues("")).Items;
+        var d = (await queries.GetBlueLowNetworkUserCatalogues("")).Items;
         _data = d.Select(x => new TabularData(x.Title, x.Id)).ToList();
         break;
       case "Bijeli Niski Katalozi":
-        var e = (await queries.GetWhiteLowCatalogues("")).Items;
+        var e = (await queries.GetWhiteLowNetworkUserCatalogues("")).Items;
         _data = e.Select(x => new TabularData(x.Title, x.Id)).ToList();
         break;
       case "Bijeli Srednji Katalozi":
-        var f = (await queries.GetWhiteMediumCatalogues("")).Items;
+        var f = (await queries.GetWhiteMediumNetworkUserCatalogues("")).Items;
         _data = f.Select(x => new TabularData(x.Title, x.Id)).ToList();
         break;
       case "Regulaciski Katalozi":

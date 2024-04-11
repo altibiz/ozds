@@ -77,6 +77,8 @@ public class RedLowNetworkUserCalculationModel : NetworkUserCalculationModel
 
   [Required] public required decimal MeterFeePrice_EUR { get; set; }
 
+  public override string Kind => "Red Low Voltage";
+
   public override SpanningMeasure<decimal> ActiveEnergyAmount_Wh
   {
     get

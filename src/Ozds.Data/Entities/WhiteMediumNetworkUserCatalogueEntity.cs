@@ -5,7 +5,7 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities;
 
-public class RedLowCatalogueEntity : CatalogueEntity
+public class WhiteMediumNetworkUserCatalogueEntity : NetworkUserCatalogueEntity
 {
 #pragma warning disable CA1707
   public decimal ActiveEnergyTotalImportT1Price_EUR { get; set; }
@@ -17,34 +17,34 @@ public class RedLowCatalogueEntity : CatalogueEntity
 }
 
 public class
-  RedLowCatalogueEntityTypeConfiguration : EntityTypeConfiguration<
-  RedLowCatalogueEntity>
+  WhiteMediumNetworkUserCatalogueEntityTypeConfiguration : EntityTypeConfiguration<
+  WhiteMediumNetworkUserCatalogueEntity>
 {
   public override void Configure(
-    EntityTypeBuilder<RedLowCatalogueEntity> builder)
+    EntityTypeBuilder<WhiteMediumNetworkUserCatalogueEntity> builder)
   {
     builder
-      .Property(
-        nameof(RedLowCatalogueEntity.ActiveEnergyTotalImportT1Price_EUR))
+      .Property(nameof(WhiteMediumNetworkUserCatalogueEntity
+        .ActiveEnergyTotalImportT1Price_EUR))
       .HasColumnName("active_energy_total_import_t1_price_eur");
 
     builder
-      .Property(
-        nameof(RedLowCatalogueEntity.ActiveEnergyTotalImportT2Price_EUR))
+      .Property(nameof(WhiteMediumNetworkUserCatalogueEntity
+        .ActiveEnergyTotalImportT2Price_EUR))
       .HasColumnName("active_energy_total_import_t2_price_eur");
 
     builder
-      .Property(nameof(RedLowCatalogueEntity
+      .Property(nameof(WhiteMediumNetworkUserCatalogueEntity
         .ActivePowerTotalImportT1Price_EUR))
       .HasColumnName("active_power_total_import_t1_price_eur");
 
     builder
-      .Property(nameof(RedLowCatalogueEntity
+      .Property(nameof(WhiteMediumNetworkUserCatalogueEntity
         .ReactiveEnergyTotalRampedT0Price_EUR))
       .HasColumnName("reactive_energy_total_ramped_t0_price_eur");
 
     builder
-      .Property(nameof(RedLowCatalogueEntity.MeterFeePrice_EUR))
+      .Property(nameof(WhiteMediumNetworkUserCatalogueEntity.MeterFeePrice_EUR))
       .HasColumnName("meter_fee_price_eur");
   }
 }

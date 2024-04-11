@@ -78,6 +78,8 @@ public class
 
   [Required] public required decimal MeterFeePrice_EUR { get; set; }
 
+  public override string Kind => "White Medium Voltage";
+
   public override SpanningMeasure<decimal> ActiveEnergyAmount_Wh
   {
     get

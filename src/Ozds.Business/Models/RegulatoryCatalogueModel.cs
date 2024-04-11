@@ -3,7 +3,7 @@ using Ozds.Business.Models.Base;
 
 namespace Ozds.Business.Models;
 
-public class RegulatoryCatalogueModel : CatalogueModel
+public class RegulatoryCatalogueModel : AuditableModel
 {
   [Required]
   [Range(0, double.MaxValue)]

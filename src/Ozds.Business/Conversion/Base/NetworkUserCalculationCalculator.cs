@@ -6,34 +6,24 @@ namespace Ozds.Business.Conversion.Base;
 
 public abstract class NetworkUserCalculationCalculator<T> :
   INetworkUserCalculationCalculator
-  where T : CatalogueModel
+  where T : NetworkUserCatalogueModel
 {
   public bool CanCalculateForNetworkUser(
-    NetworkUserNetworkUserCalculationBasisModel calculationBasis)
+    NetworkUserCalculationBasisModel calculationBasis)
   {
-    return calculationBasis.Catalogue.GetType() == typeof(T);
-  }
-
-  public bool CanCalculateForLocation(
-    LocationNetworkUserCalculationBasisModel calculationBasis)
-  {
-    throw new NotImplementedException();
+    return calculationBasis.UsageNetworkUserCatalogue.GetType() == typeof(T);
   }
 
   public NetworkUserCalculationModel CalculateForNetworkUser(
-    NetworkUserNetworkUserCalculationBasisModel calculationBasis)
+    NetworkUserCalculationBasisModel calculationBasis)
   {
-    return CalculateForNetworkUser((T)calculationBasis.Catalogue,
+    var usageCalculation = CalculateForNetworkUser((T)calculationBasis.UsageNetworkUserCatalogue,
       calculationBasis);
-  }
 
-  public NetworkUserCalculationModel CalculateForLocation(
-    LocationNetworkUserCalculationBasisModel calculationBasis)
-  {
-    throw new NotImplementedException();
+    return usageCalculation;
   }
 
   protected abstract NetworkUserCalculationModel CalculateForNetworkUser(
     T catalogue,
-    NetworkUserNetworkUserCalculationBasisModel calculationBasis);
+    NetworkUserCalculationBasisModel calculationBasis);
 }

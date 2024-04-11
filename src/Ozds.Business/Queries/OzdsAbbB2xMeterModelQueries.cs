@@ -52,13 +52,13 @@ public class OzdsAbbB2xMeterModelQueries : IOzdsQueries
       .ToPaginatedList(count);
   }
 
-  // public async Task<PaginatedList<CatalogueModel>> GetCatalogues(
+  // public async Task<PaginatedList<NetworkUserCatalogueModel>> GetNetworkUserCatalogues(
   //   string title,
   //   int pageNumber = QueryConstants.StartingPage,
   //   int pageCount = QueryConstants.DefaultPageCount
   // )
   // {
-  //   var filtered = context.Catalogues
+  //   var filtered = context.NetworkUserCatalogues
   //     .Where(catalogue => catalogue.Title
   //       .StartsWith(title));
   //   var count = await filtered.CountAsync();

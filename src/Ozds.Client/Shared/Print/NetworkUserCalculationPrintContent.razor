@@ -1,0 +1,307 @@
+<style>
+  table {
+    border-spacing: 0;
+    border-collapse: collapse;
+    border: 2px solid black;
+  }
+
+  th {
+    background-color: #DDDDDD;
+  }
+
+  th, td {
+    border: 1px solid black;
+    padding: 2px;
+  }
+</style>
+
+<p>
+  <strong><u>SPECIFIKACIJA POTROŠNJE NA OBRAČUNSKIM MJERNIM MJESTIMA</u></strong>
+</p>
+<p style="margin-top: 0.8rem;">
+  Naziv obračunskom mjernog mjesta (OMM): @Calculation.ArchivedMeasurementLocation.Title
+</p>
+<p>
+  Broj obračunskog mjernog mjesta (OMM): @Calculation.ArchivedMeasurementLocation.Id
+</p>
+<p>
+  Tarifni model: @Calculation.Kind
+</p>
+<p style="margin-top: 1.2rem; margin-left: 0.8rem;">
+  <strong>A) NAKNADA ZA KORIŠTENJE MREŽE ZDS-a</strong>
+</p>
+<table style="margin-top: 0.8rem; width: 100%">
+  <colgroup>
+    <col style="width: 15%" />
+    <col style="width: 8%" />
+    <col style="width: 8%" />
+    <col style="width: 9%" />
+    <col style="width: 10%" />
+    <col style="width: 10%" />
+    <col style="width: 6%" />
+    <col style="width: 12%" />
+    <col style="width: 8%" />
+    <col style="width: 8%" />
+  </colgroup>
+  <thead>
+    <tr class="header">
+      <th>Broj brojila</th>
+      <th>Datum od</th>
+      <th>Datum do</th>
+      <th>Tarifna stavka</th>
+      <th>Stanje od</th>
+      <th>Stanje do</th>
+      <th>Status</th>
+      <th>Potrošak (kWh/kW/kVAR)</th>
+      <th>Jed.cijena (EUR)</th>
+      <th>Iznos (EUR)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="odd">
+      <td rowspan="@usageRowspan">
+        @(Calculation.ArchivedMeter.Id)
+      </td>
+      <td rowspan="@usageRowspan">
+        @(DateString(Invoice.FromDate))
+      </td>
+      <td rowspan="@usageRowspan">
+        @(DateString(Invoice.ToDate))
+      </td>
+      @(usageItems.FirstOrDefault() is { } usageItem ? renderItem(usageItem) : null)
+    </tr>
+    @if (usageItems.Length > 1) {
+      foreach (var item in usageItems[1..]) {
+        <tr>
+          @renderItem(item)
+        </tr>
+      }
+    }
+    @if (Calculation.Meter) {
+      <tr class="even">
+        <td colspan="4"><strong>Naknada za mjernu uslugu - MU</strong></td>
+        <td style="text-align: right;">1</td>
+        <td style="text-align: right;">@DecimalString(iotDeviceFee.UnitPrice, 3)</td>
+        <td style="text-align: right;">@DecimalString(iotDeviceFee.Total, 2)</td>
+      </tr>
+    }
+    <tr class="odd">
+      <td colspan="5"></td>
+      <td colspan="4">
+        <strong>Naknada za korištenje mreže ZDS-a - UKUPNO:</strong>
+      </td>
+      <td style="text-align: right;"><strong>@DecimalString(calculation.UsageExpenditure.Total, 2) EUR</strong></td>
+    </tr>
+  </tbody>
+</table>
+<p style="margin-top: 1.2rem; margin-left: 0.8rem;">
+  <strong>B) NAKNADA ZA OPSKRBU ELEKTRIČNOM ENERGIJOM</strong>
+</p>
+<table style="margin-top: 0.8rem;">
+  <colgroup>
+    <col style="width: 15%" />
+    <col style="width: 8%" />
+    <col style="width: 8%" />
+    <col style="width: 9%" />
+    <col style="width: 10%" />
+    <col style="width: 10%" />
+    <col style="width: 5%" />
+    <col style="width: 12%" />
+    <col style="width: 9%" />
+    <col style="width: 8%" />
+  </colgroup>
+  <thead>
+    <tr class="header">
+      <th>Broj brojila</th>
+      <th>Datum od</th>
+      <th>Datum do</th>
+      <th>Tarifna stavka</th>
+      <th>Stanje od</th>
+      <th>Stanje do</th>
+      <th>Status</th>
+      <th>Potrošak (kWh)</th>
+      <th>Jed.cijena (EUR)</th>
+      <th>Iznos (EUR)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="odd">
+      <td rowspan="@supplyRowspan">
+        @(calculation.IotDevice.As<IotDevicePart>().DeviceId.Text)
+      </td>
+      <td rowspan="@supplyRowspan">
+        @(DateString(Item.OzdsInvoicePart.Value.Data.From))
+      </td>
+      <td rowspan="@supplyRowspan">
+        @(DateString(Item.OzdsInvoicePart.Value.Data.To.AddDays(-1)))
+      </td>
+      @(supplyItems.FirstOrDefault() is { } supplyItem ? renderItem(supplyItem) : null)
+    </tr>
+    @if (supplyItems.Length > 1) {
+      foreach (var item in supplyItems[1..]) {
+        <tr>
+          @renderItem(item)
+        </tr>
+      }
+    }
+    <tr class="odd">
+      <td colspan="4"></td>
+      <td colspan="5">
+        <strong>Naknada za opskrbu električnom energijom - UKUPNO:</strong>
+      </td>
+      <td style="text-align: right;"><strong>@DecimalString(calculation.SupplyExpenditure.Total, 2) EUR</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+
+@code {
+  [Parameter]
+  public NetworkUserInvoiceModel Invoice { get; set; } = default!;
+
+  [Parameter]
+  public NetworkUserCalculationModel Calculation { get; set; } = default!;
+
+  private record ItemData(
+    string Name,
+    decimal? ValueFrom,
+    decimal? ValueTo,
+    decimal? ValueFromInductive,
+    decimal? ValueToInductive,
+    decimal? ValueFromCapacitative,
+    decimal? ValueToCapacitative,
+    string Status,
+    decimal Amount,
+    decimal Price,
+    decimal Total
+  );
+
+  private RenderFragment renderItem(ItemData item) =>
+    item.Name == "JEN" ?
+      @<Fragment>
+        <td><strong>@item.Name</strong></td>
+        <td style="padding: 0;">
+          <p style="border-bottom: 1px solid black; padding: 2px; display: flex; justify-content: space-between;">
+            <strong>
+              IND:
+            </strong>
+            <span>
+              @(item.ValueFromInductive is null ? null : DecimalString((decimal)item.ValueFromInductive, 2))
+            </span>
+          </p>
+          <p style="padding: 2px; display: flex; justify-content: space-between;">
+            <strong>
+              KAP:
+            </strong>
+            <span>
+              @(item.ValueFromCapacitative is null ? null : DecimalString((decimal)item.ValueFromCapacitative, 2))
+            </span>
+          </p>
+        </td>
+        <td style="padding: 0;">
+          <p style="border-bottom: 1px solid black; padding: 2px; display: flex; justify-content: space-between;">
+            <strong>
+              IND:
+            </strong>
+            <span>
+              @(item.ValueToInductive is null ? null : DecimalString((decimal)item.ValueToInductive, 2))
+            </span>
+          </p>
+          <p style="padding: 2px; display: flex; justify-content: space-between;">
+            <strong>
+              KAP:
+            </strong>
+            <span>
+              @(item.ValueToCapacitative is null ? null : DecimalString((decimal)item.ValueToCapacitative, 2))
+            </span>
+          </p>
+        </td>
+        <td style="text-align: center;">@item.Status</td>
+        <td style="text-align: right;">@DecimalString(item.Amount, 0)</td>
+        <td style="text-align: right;">@DecimalString(item.Price, 6)</td>
+        <td style="text-align: right;">@DecimalString(item.Total, 2)</td>
+      </Fragment>
+    : @<Fragment>
+        <td><strong>@item.Name</strong></td>
+        <td style="text-align: right;">@(item.ValueFrom is null ? null : DecimalString((decimal)item.ValueFrom, 2))</td>
+        <td style="text-align: right;">@(item.ValueTo is null ? null : DecimalString((decimal)item.ValueTo, 2))</td>
+        <td style="text-align: center;">@item.Status</td>
+        <td style="text-align: right;">@DecimalString(item.Amount, 0)</td>
+        <td style="text-align: right;">
+          @if (item.Name == "SVT")
+          {
+            @DecimalString(item.Price, 3)
+          }
+          else
+          {
+            @DecimalString(item.Price, 6)
+          }
+        </td>
+        <td style="text-align: right;">@DecimalString(item.Total, 2)</td>
+      </Fragment>;
+
+  private ItemData[]? _usageItems;
+
+  private ItemData[] usageItems => _usageItems ??=
+    (new[] {
+      ("MJT", calculation.UsageExpenditure.EnergyItem),
+      ("MVT", calculation.UsageExpenditure.HighEnergyItem),
+      ("MNT", calculation.UsageExpenditure.LowEnergyItem),
+      ("SVT", calculation.UsageExpenditure.MaxPowerItem),
+      ("JEN", calculation.UsageExpenditure.ReactiveEnergyItem),
+    })
+    .Select((i) => i switch {
+      (_, null) => null,
+      (var name, var item) =>
+        new ItemData(
+          Name: name,
+          ValueFrom: item.ValueFrom,
+          ValueTo: item.ValueTo,
+          ValueFromInductive: item.ValueFromInductive,
+          ValueToInductive: item.ValueToInductive,
+          ValueFromCapacitative: item.ValueFromCapacitative,
+          ValueToCapacitative: item.ValueToCapacitative,
+          Status: "O",
+          Amount: item.Amount,
+          Price: item.UnitPrice,
+          Total: item.Total
+        )
+    })
+    .Where(item => item is not null)
+    .Cast<ItemData>()
+    .ToArray();
+
+  private ItemData[]? _supplyItems;
+
+  private ItemData[] supplyItems => _supplyItems ??=
+    (new[] {
+      ("RVT", calculation.SupplyExpenditure.HighEnergyItem),
+      ("RNT", calculation.SupplyExpenditure.LowEnergyItem),
+      ("OIE", calculation.SupplyExpenditure.RenewableEnergyFee),
+      ("TRP", calculation.SupplyExpenditure.BusinessUsageFee),
+    })
+    .Select((i) => i switch {
+      (_, null) => null,
+      (var name, var item) =>
+        new ItemData(
+          Name: name,
+          ValueFrom: item.ValueFrom,
+          ValueTo: item.ValueTo,
+          ValueFromInductive: item.ValueFromInductive,
+          ValueToInductive: item.ValueToInductive,
+          ValueFromCapacitative: item.ValueFromCapacitative,
+          ValueToCapacitative: item.ValueToCapacitative,
+          Status: "O",
+          Amount: item.Amount,
+          Price: item.UnitPrice,
+          Total: item.Total
+        )
+    })
+    .Where(item => item is not null)
+    .Cast<ItemData>()
+    .ToArray();
+
+  private int usageRowspan => usageItems.Length == 0 ? 1 : usageItems.Length + 1;
+
+  private int supplyRowspan => supplyItems.Length == 0 ? 0 : supplyItems.Length;
+}

@@ -8,21 +8,21 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Business.Queries;
 
-public class OzdsBlueLowCatalogueModelQueries : IOzdsQueries
+public class OzdsWhiteMediumNetworkUserCatalogueModelQueries : IOzdsQueries
 {
   protected readonly OzdsDbContext context;
 
-  public OzdsBlueLowCatalogueModelQueries(OzdsDbContext context)
+  public OzdsWhiteMediumNetworkUserCatalogueModelQueries(OzdsDbContext context)
   {
     this.context = context;
   }
 
-  public async Task<BlueLowCatalogueModel?>
-    BlueLowCatalogueById(string id)
+  public async Task<WhiteMediumNetworkUserCatalogueModel?>
+    BlueLowNetworkUserCatalogueById(string id)
   {
     var catalogueModel =
-      await context.Catalogues
-        .OfType<BlueLowCatalogueEntity>()
+      await context.NetworkUserCatalogues
+        .OfType<WhiteMediumNetworkUserCatalogueEntity>()
         .WithId(id)
         .FirstOrDefaultAsync();
     if (catalogueModel is not null)

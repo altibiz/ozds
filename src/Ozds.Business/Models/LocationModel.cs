@@ -5,13 +5,13 @@ namespace Ozds.Business.Models;
 
 public class LocationModel : AuditableModel
 {
-  [Required] public required string WhiteMediumCatalogueId { get; set; }
+  [Required] public required string WhiteMediumNetworkUserCatalogueId { get; set; }
 
-  [Required] public required string BlueLowCatalogueId { get; set; }
+  [Required] public required string BlueLowNetworkUserCatalogueId { get; set; }
 
-  [Required] public required string WhiteLowCatalogueId { get; set; }
+  [Required] public required string WhiteLowNetworkUserCatalogueId { get; set; }
 
-  [Required] public required string RedLowCatalogueId { get; set; }
+  [Required] public required string RedLowNetworkUserCatalogueId { get; set; }
 
   [Required] public required string RegulatoryCatalogueId { get; set; }
 
@@ -28,10 +28,10 @@ public class LocationModel : AuditableModel
       IsDeleted = false,
       DeletedOn = default,
       DeletedById = default,
-      WhiteMediumCatalogueId = default!,
-      BlueLowCatalogueId = default!,
-      WhiteLowCatalogueId = default!,
-      RedLowCatalogueId = default!,
+      WhiteMediumNetworkUserCatalogueId = default!,
+      BlueLowNetworkUserCatalogueId = default!,
+      WhiteLowNetworkUserCatalogueId = default!,
+      RedLowNetworkUserCatalogueId = default!,
       RegulatoryCatalogueId = default!
     };
   }

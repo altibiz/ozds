@@ -34,10 +34,10 @@ public static class LocationModelEntityConverterExtensions
       IsDeleted = entity.IsDeleted,
       DeletedOn = entity.DeletedOn,
       DeletedById = entity.DeletedById,
-      WhiteMediumCatalogueId = entity.WhiteMediumCatalogueId,
-      BlueLowCatalogueId = entity.BlueLowCatalogueId,
-      WhiteLowCatalogueId = entity.WhiteLowCatalogueId,
-      RedLowCatalogueId = entity.RedLowCatalogueId,
+      WhiteMediumNetworkUserCatalogueId = entity.WhiteMediumNetworkUserCatalogueId,
+      BlueLowNetworkUserCatalogueId = entity.BlueLowNetworkUserCatalogueId,
+      WhiteLowNetworkUserCatalogueId = entity.WhiteLowNetworkUserCatalogueId,
+      RedLowNetworkUserCatalogueId = entity.RedLowNetworkUserCatalogueId,
       RegulatoryCatalogueId = entity.RegulatoryCatalogueId
     };
   }
@@ -55,10 +55,10 @@ public static class LocationModelEntityConverterExtensions
       IsDeleted = model.IsDeleted,
       DeletedOn = model.DeletedOn,
       DeletedById = model.DeletedById,
-      WhiteMediumCatalogueId = model.WhiteMediumCatalogueId,
-      BlueLowCatalogueId = model.BlueLowCatalogueId,
-      WhiteLowCatalogueId = model.WhiteLowCatalogueId,
-      RedLowCatalogueId = model.RedLowCatalogueId,
+      WhiteMediumNetworkUserCatalogueId = model.WhiteMediumNetworkUserCatalogueId,
+      BlueLowNetworkUserCatalogueId = model.BlueLowNetworkUserCatalogueId,
+      WhiteLowNetworkUserCatalogueId = model.WhiteLowNetworkUserCatalogueId,
+      RedLowNetworkUserCatalogueId = model.RedLowNetworkUserCatalogueId,
       RegulatoryCatalogueId = model.RegulatoryCatalogueId
     };
   }

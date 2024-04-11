@@ -3,7 +3,7 @@ using Ozds.Business.Models.Base;
 
 namespace Ozds.Business.Models;
 
-public class RedLowCatalogueModel : CatalogueModel
+public class WhiteMediumNetworkUserCatalogueModel : NetworkUserCatalogueModel
 {
   [Required]
   [Range(0, double.MaxValue)]
@@ -25,9 +25,9 @@ public class RedLowCatalogueModel : CatalogueModel
   [Range(0, double.MaxValue)]
   public required decimal MeterFeePrice_EUR { get; set; }
 
-  public static RedLowCatalogueModel New()
+  public static WhiteMediumNetworkUserCatalogueModel New()
   {
-    return new RedLowCatalogueModel
+    return new WhiteMediumNetworkUserCatalogueModel
     {
       Id = default!,
       Title = "",

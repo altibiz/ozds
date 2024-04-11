@@ -7,7 +7,7 @@
   return;
 }
 
-<MudText Typo="Typo.h5">Bijeli Srednji Katalog</MudText>
+<MudText Typo="Typo.h5">Crveni Niski Katalog</MudText>
 <MudPaper>
   <MudGrid>
     <MudItem xs="12" sm="6">
@@ -76,9 +76,9 @@
 @code {
   [Parameter] public string Id { get; set; } = default!;
 
-  [Parameter] public WhiteMediumCatalogueModel? Model { get; set; }
+  [Parameter] public RedLowNetworkUserCatalogueModel? Model { get; set; }
 
-  private LoadingState<WhiteMediumCatalogueModel> LoadingState { get; set; } = new();
+  private LoadingState<RedLowNetworkUserCatalogueModel> LoadingState { get; set; } = new();
 
   private bool _create;
 
@@ -107,17 +107,17 @@
 
   protected override async Task OnInitializedAsync()
   {
-    if (LoadingState.Value is null && Id is not null && long.TryParse(Id, out _))
+    if (LoadingState.Value is null && Id is not null)
     {
       LoadingState = LoadingState.WithValue(
         await ScopedServices
-          .GetRequiredService<OzdsWhiteMediumCatalogueModelQueries>()
-          .BlueLowCatalogueById(Id));
+          .GetRequiredService<OzdsRedLowNetworkUserCatalogueModelQueries>()
+          .BlueLowNetworkUserCatalogueById(Id));
     }
 
     if (LoadingState.Value is null)
     {
-      LoadingState = LoadingState.WithValue(WhiteMediumCatalogueModel.New());
+      LoadingState = LoadingState.WithValue(RedLowNetworkUserCatalogueModel.New());
       _create = true;
     }
   }

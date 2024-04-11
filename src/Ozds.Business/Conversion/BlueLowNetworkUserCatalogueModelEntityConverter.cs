@@ -4,25 +4,28 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Conversion;
 
-public class RedLowCatalogueModelEntityConverter : ModelEntityConverter<
-  RedLowCatalogueModel, RedLowCatalogueEntity>
+public class BlueLowNetworkUserCatalogueModelEntityConverter : ModelEntityConverter<
+  BlueLowNetworkUserCatalogueModel, BlueLowNetworkUserCatalogueEntity>
 {
-  protected override RedLowCatalogueEntity ToEntity(RedLowCatalogueModel model)
+  protected override BlueLowNetworkUserCatalogueEntity ToEntity(
+    BlueLowNetworkUserCatalogueModel model)
   {
     return model.ToEntity();
   }
 
-  protected override RedLowCatalogueModel ToModel(RedLowCatalogueEntity entity)
+  protected override BlueLowNetworkUserCatalogueModel ToModel(
+    BlueLowNetworkUserCatalogueEntity entity)
   {
     return entity.ToModel();
   }
 }
 
-public static class RedLowCatalogueModelEntityConverterExtensions
+public static class BlueLowNetworkUserCatalogueModelEntityConverterExtensions
 {
-  public static RedLowCatalogueModel ToModel(this RedLowCatalogueEntity entity)
+  public static BlueLowNetworkUserCatalogueModel ToModel(
+    this BlueLowNetworkUserCatalogueEntity entity)
   {
-    return new RedLowCatalogueModel
+    return new BlueLowNetworkUserCatalogueModel
     {
       Id = entity.Id,
       Title = entity.Title,
@@ -33,21 +36,18 @@ public static class RedLowCatalogueModelEntityConverterExtensions
       IsDeleted = entity.IsDeleted,
       DeletedOn = entity.DeletedOn,
       DeletedById = entity.DeletedById,
-      ActiveEnergyTotalImportT1Price_EUR =
-        entity.ActiveEnergyTotalImportT1Price_EUR,
-      ActiveEnergyTotalImportT2Price_EUR =
-        entity.ActiveEnergyTotalImportT2Price_EUR,
-      ActivePowerTotalImportT1Price_EUR =
-        entity.ActivePowerTotalImportT1Price_EUR,
+      ActiveEnergyTotalImportT0Price_EUR =
+        entity.ActiveEnergyTotalImportT0Price_EUR,
       ReactiveEnergyTotalRampedT0Price_EUR =
         entity.ReactiveEnergyTotalRampedT0Price_EUR,
       MeterFeePrice_EUR = entity.MeterFeePrice_EUR
     };
   }
 
-  public static RedLowCatalogueEntity ToEntity(this RedLowCatalogueModel model)
+  public static BlueLowNetworkUserCatalogueEntity ToEntity(
+    this BlueLowNetworkUserCatalogueModel model)
   {
-    return new RedLowCatalogueEntity
+    return new BlueLowNetworkUserCatalogueEntity
     {
       Id = model.Id,
       Title = model.Title,
@@ -58,12 +58,8 @@ public static class RedLowCatalogueModelEntityConverterExtensions
       IsDeleted = model.IsDeleted,
       DeletedOn = model.DeletedOn,
       DeletedById = model.DeletedById,
-      ActiveEnergyTotalImportT1Price_EUR =
-        model.ActiveEnergyTotalImportT1Price_EUR,
-      ActiveEnergyTotalImportT2Price_EUR =
-        model.ActiveEnergyTotalImportT2Price_EUR,
-      ActivePowerTotalImportT1Price_EUR =
-        model.ActivePowerTotalImportT1Price_EUR,
+      ActiveEnergyTotalImportT0Price_EUR =
+        model.ActiveEnergyTotalImportT0Price_EUR,
       ReactiveEnergyTotalRampedT0Price_EUR =
         model.ReactiveEnergyTotalRampedT0Price_EUR,
       MeterFeePrice_EUR = model.MeterFeePrice_EUR

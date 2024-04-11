@@ -5,7 +5,7 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities;
 
-public class BlueLowCatalogueEntity : CatalogueEntity
+public class BlueLowNetworkUserCatalogueEntity : NetworkUserCatalogueEntity
 {
 #pragma warning disable CA1707
   public decimal ActiveEnergyTotalImportT0Price_EUR { get; set; }
@@ -15,24 +15,24 @@ public class BlueLowCatalogueEntity : CatalogueEntity
 }
 
 public class
-  BlueLowCatalogueEntityTypeConfiguration : EntityTypeConfiguration<
-  BlueLowCatalogueEntity>
+  BlueLowNetworkUserCatalogueEntityTypeConfiguration : EntityTypeConfiguration<
+  BlueLowNetworkUserCatalogueEntity>
 {
   public override void Configure(
-    EntityTypeBuilder<BlueLowCatalogueEntity> builder)
+    EntityTypeBuilder<BlueLowNetworkUserCatalogueEntity> builder)
   {
     builder
       .Property(
-        nameof(BlueLowCatalogueEntity.ActiveEnergyTotalImportT0Price_EUR))
+        nameof(BlueLowNetworkUserCatalogueEntity.ActiveEnergyTotalImportT0Price_EUR))
       .HasColumnName("active_energy_total_import_t0_price_eur");
 
     builder
-      .Property(nameof(BlueLowCatalogueEntity
+      .Property(nameof(BlueLowNetworkUserCatalogueEntity
         .ReactiveEnergyTotalRampedT0Price_EUR))
       .HasColumnName("reactive_energy_total_ramped_t0_price_eur");
 
     builder
-      .Property(nameof(BlueLowCatalogueEntity.MeterFeePrice_EUR))
+      .Property(nameof(BlueLowNetworkUserCatalogueEntity.MeterFeePrice_EUR))
       .HasColumnName("meter_fee_price_eur");
   }
 }

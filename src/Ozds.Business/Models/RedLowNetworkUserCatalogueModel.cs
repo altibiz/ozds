@@ -3,7 +3,7 @@ using Ozds.Business.Models.Base;
 
 namespace Ozds.Business.Models;
 
-public class WhiteLowCatalogueModel : CatalogueModel
+public class RedLowNetworkUserCatalogueModel : NetworkUserCatalogueModel
 {
   [Required]
   [Range(0, double.MaxValue)]
@@ -15,15 +15,19 @@ public class WhiteLowCatalogueModel : CatalogueModel
 
   [Required]
   [Range(0, double.MaxValue)]
+  public required decimal ActivePowerTotalImportT1Price_EUR { get; set; }
+
+  [Required]
+  [Range(0, double.MaxValue)]
   public required decimal ReactiveEnergyTotalRampedT0Price_EUR { get; set; }
 
   [Required]
   [Range(0, double.MaxValue)]
   public required decimal MeterFeePrice_EUR { get; set; }
 
-  public static WhiteLowCatalogueModel New()
+  public static RedLowNetworkUserCatalogueModel New()
   {
-    return new WhiteLowCatalogueModel
+    return new RedLowNetworkUserCatalogueModel
     {
       Id = default!,
       Title = "",
@@ -36,6 +40,7 @@ public class WhiteLowCatalogueModel : CatalogueModel
       DeletedById = default,
       ActiveEnergyTotalImportT1Price_EUR = 0,
       ActiveEnergyTotalImportT2Price_EUR = 0,
+      ActivePowerTotalImportT1Price_EUR = 0,
       ReactiveEnergyTotalRampedT0Price_EUR = 0,
       MeterFeePrice_EUR = 0
     };

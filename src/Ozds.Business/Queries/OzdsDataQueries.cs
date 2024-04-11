@@ -54,14 +54,14 @@ public class OzdsDataQueries : IOzdsQueries
       .ToPaginatedList(count);
   }
 
-  public async Task<PaginatedList<RedLowCatalogueModel>> GetRedLowCatalogues(
+  public async Task<PaginatedList<RedLowNetworkUserCatalogueModel>> GetRedLowNetworkUserCatalogues(
     string title,
     int pageNumber = QueryConstants.StartingPage,
     int pageCount = QueryConstants.DefaultPageCount
   )
   {
-    var filtered = context.Catalogues
-      .OfType<RedLowCatalogueEntity>()
+    var filtered = context.NetworkUserCatalogues
+      .OfType<RedLowNetworkUserCatalogueEntity>()
       .Where(catalogue => catalogue.Title
         .StartsWith(title));
     var count = await filtered.CountAsync();
@@ -74,14 +74,14 @@ public class OzdsDataQueries : IOzdsQueries
       .ToPaginatedList(count);
   }
 
-  public async Task<PaginatedList<BlueLowCatalogueModel>> GetBlueLowCatalogues(
+  public async Task<PaginatedList<BlueLowNetworkUserCatalogueModel>> GetBlueLowNetworkUserCatalogues(
     string title,
     int pageNumber = QueryConstants.StartingPage,
     int pageCount = QueryConstants.DefaultPageCount
   )
   {
-    var filtered = context.Catalogues
-      .OfType<BlueLowCatalogueEntity>()
+    var filtered = context.NetworkUserCatalogues
+      .OfType<BlueLowNetworkUserCatalogueEntity>()
       .Where(catalogue => catalogue.Title
         .StartsWith(title));
     var count = await filtered.CountAsync();
@@ -94,15 +94,15 @@ public class OzdsDataQueries : IOzdsQueries
       .ToPaginatedList(count);
   }
 
-  public async Task<PaginatedList<WhiteLowCatalogueModel>>
-    GetWhiteLowCatalogues(
+  public async Task<PaginatedList<WhiteLowNetworkUserCatalogueModel>>
+    GetWhiteLowNetworkUserCatalogues(
       string title,
       int pageNumber = QueryConstants.StartingPage,
       int pageCount = QueryConstants.DefaultPageCount
     )
   {
-    var filtered = context.Catalogues
-      .OfType<WhiteLowCatalogueEntity>()
+    var filtered = context.NetworkUserCatalogues
+      .OfType<WhiteLowNetworkUserCatalogueEntity>()
       .Where(catalogue => catalogue.Title
         .StartsWith(title));
     var count = await filtered.CountAsync();
@@ -115,15 +115,15 @@ public class OzdsDataQueries : IOzdsQueries
       .ToPaginatedList(count);
   }
 
-  public async Task<PaginatedList<WhiteMediumCatalogueModel>>
-    GetWhiteMediumCatalogues(
+  public async Task<PaginatedList<WhiteMediumNetworkUserCatalogueModel>>
+    GetWhiteMediumNetworkUserCatalogues(
       string title,
       int pageNumber = QueryConstants.StartingPage,
       int pageCount = QueryConstants.DefaultPageCount
     )
   {
-    var filtered = context.Catalogues
-      .OfType<WhiteMediumCatalogueEntity>()
+    var filtered = context.NetworkUserCatalogues
+      .OfType<WhiteMediumNetworkUserCatalogueEntity>()
       .Where(catalogue => catalogue.Title
         .StartsWith(title));
     var count = await filtered.CountAsync();
@@ -143,7 +143,7 @@ public class OzdsDataQueries : IOzdsQueries
       int pageCount = QueryConstants.DefaultPageCount
     )
   {
-    var filtered = context.Catalogues
+    var filtered = context.NetworkUserCatalogues
       .OfType<RegulatoryCatalogueEntity>()
       .Where(catalogue => catalogue.Title
         .StartsWith(title));

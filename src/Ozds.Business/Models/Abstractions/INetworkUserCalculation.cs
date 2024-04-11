@@ -9,16 +9,19 @@ public interface INetworkUserCalculation : IReadonly, IIdentifiable
   public string? IssuedById { get; }
   public string MeterId { get; }
   public string MeasurementLocationId { get; }
-  public string CatalogueId { get; }
+  public string NetworkUserCatalogueId { get; }
   public string NetworkUserInvoiceId { get; }
   public MeterModel ArchivedMeter { get; }
+  public string Kind { get; }
 
   public NetworkUserMeasurementLocationModel ArchivedMeasurementLocation
   {
     get;
   }
 
-  public CatalogueModel ArchivedCatalogue { get; }
+  public NetworkUserCatalogueModel ArchivedUsageNetworkUserCatalogue { get; }
+
+  public RegulatoryCatalogueModel ArchivedSupplyRegulatoryCatalogue { get; }
 
   public SpanningMeasure<decimal> ActiveEnergyAmount_Wh { get; }
 

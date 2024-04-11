@@ -6,16 +6,9 @@ namespace Ozds.Business.Conversion.Abstractions;
 public interface INetworkUserCalculationCalculator
 {
   bool CanCalculateForNetworkUser(
-    NetworkUserNetworkUserCalculationBasisModel calculationBasis);
-
-  bool CanCalculateForLocation(
-    LocationNetworkUserCalculationBasisModel calculationBasis);
+    NetworkUserCalculationBasisModel calculationBasis);
 
   NetworkUserCalculationModel CalculateForNetworkUser(
-    NetworkUserNetworkUserCalculationBasisModel calculationBasis
-  );
-
-  NetworkUserCalculationModel CalculateForLocation(
-    LocationNetworkUserCalculationBasisModel calculationBasis
+    NetworkUserCalculationBasisModel calculationBasis
   );
 }
