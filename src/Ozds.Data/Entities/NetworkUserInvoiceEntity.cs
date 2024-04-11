@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Ozds.Data.Entities.Base;
 using Ozds.Data.Extensions;
 
@@ -40,34 +41,9 @@ public class
       .HasColumnName("network_user_id");
 
     builder
-      .ComplexProperty(nameof(NetworkUserInvoiceEntity.ArchivedLocation));
-    builder
-      .ComplexProperty(nameof(LocationInvoiceEntity.ArchivedLocation))
-      .Ignore(nameof(LocationEntity.CreatedBy))
-      .Ignore(nameof(LocationEntity.LastUpdatedBy))
-      .Ignore(nameof(LocationEntity.DeletedBy))
-      .Ignore(nameof(LocationEntity.Invoices))
-      .Ignore(nameof(LocationEntity.BlueLowNetworkUserCatalogue))
-      .Ignore(nameof(LocationEntity.RedLowNetworkUserCatalogue))
-      .Ignore(nameof(LocationEntity.WhiteLowNetworkUserCatalogue))
-      .Ignore(nameof(LocationEntity.WhiteMediumNetworkUserCatalogue))
-      .Ignore(nameof(LocationEntity.RegulatoryCatalogue))
-      .Ignore(nameof(LocationEntity.Invoices))
-      .Ignore(nameof(LocationEntity.NetworkUsers))
-      .Ignore(nameof(LocationEntity.Messengers))
-      .Ignore(nameof(LocationEntity.MeasurementLocations))
-      .Ignore(nameof(LocationEntity.Representatives));
+      .ArchivedProperty(nameof(LocationInvoiceEntity.ArchivedLocation));
 
     builder
-      .ComplexProperty(nameof(NetworkUserInvoiceEntity.ArchivedNetworkUser));
-    builder
-      .ComplexProperty(nameof(NetworkUserInvoiceEntity.ArchivedNetworkUser))
-      .Ignore(nameof(NetworkUserEntity.CreatedBy))
-      .Ignore(nameof(NetworkUserEntity.LastUpdatedBy))
-      .Ignore(nameof(NetworkUserEntity.DeletedBy))
-      .Ignore(nameof(NetworkUserEntity.Invoices))
-      .Ignore(nameof(NetworkUserEntity.MeasurementLocations))
-      .Ignore(nameof(NetworkUserEntity.Location))
-      .Ignore(nameof(NetworkUserEntity.Representatives));
+      .ArchivedProperty(nameof(NetworkUserInvoiceEntity.ArchivedNetworkUser));
   }
 }

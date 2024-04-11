@@ -161,44 +161,19 @@ public class
       .HasForeignKey("_networkUserId");
 
     builder
-      .ComplexProperty(nameof(NetworkUserCalculationEntity.ArchivedMeter))
-      .Ignore(nameof(MeterEntity.LastUpdatedBy))
-      .Ignore(nameof(MeterEntity.CreatedBy))
-      .Ignore(nameof(MeterEntity.DeletedBy))
-      .Ignore(nameof(MeterEntity.MeasurementLocation))
-      .Ignore(nameof(MeterEntity.Messenger))
-      .Ignore(nameof(MeterEntity.NetworkUserCalculations));
+      .ArchivedProperty(nameof(NetworkUserCalculationEntity.ArchivedMeter));
 
     builder
-      .ComplexProperty(nameof(NetworkUserCalculationEntity
-        .ArchivedUsageNetworkUserCatalogue))
-      .Ignore(nameof(NetworkUserCatalogueEntity.LastUpdatedBy))
-      .Ignore(nameof(NetworkUserCatalogueEntity.CreatedBy))
-      .Ignore(nameof(NetworkUserCatalogueEntity.DeletedBy))
-      .Ignore(nameof(NetworkUserCatalogueEntity.Location))
-      .Ignore(nameof(NetworkUserCatalogueEntity.MeasurementLocations))
-      .Ignore(nameof(NetworkUserCatalogueEntity.NetworkUserCalculations));
+      .ArchivedProperty(nameof(NetworkUserCalculationEntity
+        .ArchivedUsageNetworkUserCatalogue));
 
     builder
-      .ComplexProperty(nameof(NetworkUserCalculationEntity
-        .ArchivedSupplyRegulatoryCatalogue))
-      .Ignore(nameof(RegulatoryCatalogueEntity.LastUpdatedBy))
-      .Ignore(nameof(RegulatoryCatalogueEntity.CreatedBy))
-      .Ignore(nameof(RegulatoryCatalogueEntity.DeletedBy))
-      .Ignore(nameof(RegulatoryCatalogueEntity.Location))
-      .Ignore(nameof(RegulatoryCatalogueEntity.NetworkUserCalculations));
+      .ArchivedProperty(nameof(NetworkUserCalculationEntity
+        .ArchivedSupplyRegulatoryCatalogue));
 
     builder
-      .ComplexProperty(nameof(NetworkUserCalculationEntity
-        .ArchivedMeasurementLocation))
-      .Ignore(nameof(NetworkUserMeasurementLocationEntity.LastUpdatedBy))
-      .Ignore(nameof(NetworkUserMeasurementLocationEntity.CreatedBy))
-      .Ignore(nameof(NetworkUserMeasurementLocationEntity.DeletedBy))
-      .Ignore(nameof(NetworkUserMeasurementLocationEntity.NetworkUserCatalogue))
-      .Ignore(nameof(NetworkUserMeasurementLocationEntity.Meter))
-      .Ignore(nameof(NetworkUserMeasurementLocationEntity.NetworkUser))
-      .Ignore(nameof(NetworkUserMeasurementLocationEntity
-        .NetworkUserCalculations));
+      .ArchivedProperty(nameof(NetworkUserCalculationEntity
+        .ArchivedMeasurementLocation));
 
     builder
       .Property<DateTimeOffset>(nameof(NetworkUserCalculationEntity.IssuedOn))
