@@ -1,9 +1,9 @@
 using System.Linq.Expressions;
-using Ozds.Business.Conversion.Abstractions;
+using Ozds.Business.Aggregation.Abstractions;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Data.Entities.Abstractions;
 
-namespace Ozds.Business.Conversion.Base;
+namespace Ozds.Business.Aggregation.Base;
 
 public abstract class AggregateUpserter<TModel, TEntity> : IAggregateUpserter
   where TModel : class, IAggregate

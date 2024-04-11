@@ -1,31 +1,21 @@
-using Ozds.Business.Conversion.Abstractions;
+using Ozds.Business.Finance.Abstractions;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Composite;
 
 // TODO: tax rate from catalogue
 
-namespace Ozds.Business.Conversion;
+namespace Ozds.Business.Finance;
 
-public class InvoiceIssuer : IInvoiceIssuer
+public class NetworkUserInvoiceIssuer
 {
   private readonly IServiceProvider _serviceProvider;
 
-  public InvoiceIssuer(IServiceProvider serviceProvider)
+  public NetworkUserInvoiceIssuer(IServiceProvider serviceProvider)
   {
     _serviceProvider = serviceProvider;
   }
 
-  public bool CanIssueForNetworkUser(NetworkUserInvoiceIssuingBasisModel basis)
-  {
-    return true;
-  }
-
-  public bool CanIssueForLocation(LocationInvoiceIssuingBasisModel basis)
-  {
-    return true;
-  }
-
-  public CalculatedNetworkUserInvoiceModel IssueForNetworkUser(
+  public CalculatedNetworkUserInvoiceModel Issue(
     NetworkUserInvoiceIssuingBasisModel basis
   )
   {
@@ -34,8 +24,8 @@ public class InvoiceIssuer : IInvoiceIssuer
     var calculations = basis.NetworkUserCalculationBases.Select(
       basis => calculators
                  .FirstOrDefault(calculator => calculator
-                   .CanCalculateForNetworkUser(basis))
-                 ?.CalculateForNetworkUser(basis)
+                   .CanCalculate(basis))
+                 ?.Calculate(basis)
                ?? throw new InvalidOperationException(
                  $"No calculator found for {basis.GetType().Name}"
                )
@@ -66,12 +56,5 @@ public class InvoiceIssuer : IInvoiceIssuer
       Invoice: initial,
       NetworkUserCalculations: calculations.ToList()
     );
-  }
-
-  public CalculatedLoactionInvoiceModel IssueForLocation(
-    LocationInvoiceIssuingBasisModel basis
-  )
-  {
-    throw new NotImplementedException();
   }
 }

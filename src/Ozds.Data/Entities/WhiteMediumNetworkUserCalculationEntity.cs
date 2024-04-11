@@ -12,8 +12,8 @@ public class
   WhiteMediumNetworkUserCatalogueEntity>
 {
 #pragma warning disable CA1707
-  public ActiveEnergyTotalImportCalculationItemEntity ActiveEnergyImportT1 { get; set; } = default!;
-  public ActiveEnergyTotalImportCalculationItemEntity ActiveEnergyImportT2 { get; set; } = default!;
+  public ActiveEnergyTotalImportT1CalculationItemEntity ActiveEnergyTotalImportT1 { get; set; } = default!;
+  public ActiveEnergyTotalImportT2CalculationItemEntity ActiveEnergyTotalImportT2 { get; set; } = default!;
   public ActivePowerTotalImportT1PeakCalculationItemEntity ActivePowerTotalImportT1Peak { get; set; } = default!;
   public ReactiveEnergyTotalRampedT0CalculationItemEntity ReactiveEnergyTotalRampedT0 { get; set; } = default!;
   public decimal MeterFeePrice_EUR { get; set; }
@@ -28,12 +28,12 @@ public class
     EntityTypeBuilder<WhiteMediumNetworkUserCalculationEntity> builder)
   {
     builder
-      .ComplexProperty(nameof(WhiteMediumNetworkUserCalculationEntity.ActiveEnergyImportT1))
-      .ActiveEnergyImportCalculationItem(TariffEntity.T1);
+      .ComplexProperty(nameof(WhiteMediumNetworkUserCalculationEntity.ActiveEnergyTotalImportT1))
+      .ActiveEnergyImportCalculationItem();
 
     builder
-      .ComplexProperty(nameof(WhiteMediumNetworkUserCalculationEntity.ActiveEnergyImportT2))
-      .ActiveEnergyImportCalculationItem(TariffEntity.T2);
+      .ComplexProperty(nameof(WhiteMediumNetworkUserCalculationEntity.ActiveEnergyTotalImportT2))
+      .ActiveEnergyImportCalculationItem();
 
     builder
       .ComplexProperty(nameof(WhiteMediumNetworkUserCalculationEntity.ActivePowerTotalImportT1Peak))

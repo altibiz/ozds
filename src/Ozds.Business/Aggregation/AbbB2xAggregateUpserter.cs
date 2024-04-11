@@ -1,21 +1,20 @@
 using System.Linq.Expressions;
-using Ozds.Business.Conversion.Base;
+using Ozds.Business.Aggregation.Base;
 using Ozds.Business.Models;
 using Ozds.Data.Entities;
 
-namespace Ozds.Business.Conversion;
+namespace Ozds.Business.Aggregation;
 
-public class SchneideriEM3xxxAggregateUpserter : AggregateUpserter<
-  SchneideriEM3xxxAggregateModel, SchneideriEM3xxxAggregateEntity>
+public class AbbB2xAggregateUpserter : AggregateUpserter<AbbB2xAggregateModel,
+  AbbB2xAggregateEntity>
 {
   protected override
-    Expression<Func<SchneideriEM3xxxAggregateEntity,
-      SchneideriEM3xxxAggregateEntity, SchneideriEM3xxxAggregateEntity>>
-    UpsertConcreteEntity
+    Expression<Func<AbbB2xAggregateEntity, AbbB2xAggregateEntity,
+      AbbB2xAggregateEntity>> UpsertConcreteEntity
   {
     get
     {
-      return (lhs, rhs) => new SchneideriEM3xxxAggregateEntity
+      return (lhs, rhs) => new AbbB2xAggregateEntity
       {
         MeterId = lhs.MeterId,
         Timestamp = lhs.Timestamp,
@@ -51,13 +50,17 @@ public class SchneideriEM3xxxAggregateUpserter : AggregateUpserter<
                                    + rhs.ActivePowerL3NetT0Avg_W *
                                    rhs.Count)
                                   / (lhs.Count + rhs.Count),
-        ReactivePowerTotalNetT0Avg_VAR =
-          (lhs.ReactivePowerTotalNetT0Avg_VAR * lhs.Count
-           + rhs.ReactivePowerTotalNetT0Avg_VAR * rhs.Count)
+        ReactivePowerL1NetT0Avg_VAR =
+          (lhs.ReactivePowerL1NetT0Avg_VAR * lhs.Count
+           + rhs.ReactivePowerL1NetT0Avg_VAR * rhs.Count)
           / (lhs.Count + rhs.Count),
-        ApparentPowerTotalNetT0Avg_VA =
-          (lhs.ApparentPowerTotalNetT0Avg_VA * lhs.Count
-           + rhs.ApparentPowerTotalNetT0Avg_VA * rhs.Count)
+        ReactivePowerL2NetT0Avg_VAR =
+          (lhs.ReactivePowerL2NetT0Avg_VAR * lhs.Count
+           + rhs.ReactivePowerL2NetT0Avg_VAR * rhs.Count)
+          / (lhs.Count + rhs.Count),
+        ReactivePowerL3NetT0Avg_VAR =
+          (lhs.ReactivePowerL3NetT0Avg_VAR * lhs.Count
+           + rhs.ReactivePowerL3NetT0Avg_VAR * rhs.Count)
           / (lhs.Count + rhs.Count),
         ActiveEnergyTotalImportT0Min_Wh =
           lhs.ActiveEnergyTotalImportT0Min_Wh >
@@ -123,10 +126,10 @@ public class SchneideriEM3xxxAggregateUpserter : AggregateUpserter<
     }
   }
 
-  protected override SchneideriEM3xxxAggregateModel UpsertConcreteModel(
-    SchneideriEM3xxxAggregateModel lhs, SchneideriEM3xxxAggregateModel rhs)
+  protected override AbbB2xAggregateModel UpsertConcreteModel(
+    AbbB2xAggregateModel lhs, AbbB2xAggregateModel rhs)
   {
-    return new SchneideriEM3xxxAggregateModel
+    return new AbbB2xAggregateModel
     {
       MeterId = lhs.MeterId,
       Timestamp = lhs.Timestamp,
@@ -162,13 +165,17 @@ public class SchneideriEM3xxxAggregateUpserter : AggregateUpserter<
                                  + rhs.ActivePowerL3NetT0Avg_W *
                                  rhs.Count)
                                 / (lhs.Count + rhs.Count),
-      ReactivePowerTotalNetT0Avg_VAR =
-        (lhs.ReactivePowerTotalNetT0Avg_VAR * lhs.Count
-         + rhs.ReactivePowerTotalNetT0Avg_VAR * rhs.Count)
+      ReactivePowerL1NetT0Avg_VAR =
+        (lhs.ReactivePowerL1NetT0Avg_VAR * lhs.Count
+         + rhs.ReactivePowerL1NetT0Avg_VAR * rhs.Count)
         / (lhs.Count + rhs.Count),
-      ApparentPowerTotalNetT0Avg_VA =
-        (lhs.ApparentPowerTotalNetT0Avg_VA * lhs.Count
-         + rhs.ApparentPowerTotalNetT0Avg_VA * rhs.Count)
+      ReactivePowerL2NetT0Avg_VAR =
+        (lhs.ReactivePowerL2NetT0Avg_VAR * lhs.Count
+         + rhs.ReactivePowerL2NetT0Avg_VAR * rhs.Count)
+        / (lhs.Count + rhs.Count),
+      ReactivePowerL3NetT0Avg_VAR =
+        (lhs.ReactivePowerL3NetT0Avg_VAR * lhs.Count
+         + rhs.ReactivePowerL3NetT0Avg_VAR * rhs.Count)
         / (lhs.Count + rhs.Count),
       ActiveEnergyTotalImportT0Min_Wh =
         lhs.ActiveEnergyTotalImportT0Min_Wh >

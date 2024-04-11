@@ -1,4 +1,5 @@
 using Ozds.Business.Conversion.Base;
+using Ozds.Business.Conversion.Complex;
 using Ozds.Business.Models;
 using Ozds.Data.Entities;
 
@@ -36,56 +37,20 @@ public static class
       IssuedById = entity.IssuedById,
       FromDate = entity.FromDate,
       ToDate = entity.ToDate,
-      NetworkUserInvoiceId = entity.NetworkUserInvoiceId,
       MeterId = entity.MeterId,
       MeasurementLocationId = entity.MeasurementLocationId,
-      NetworkUserCatalogueId = entity.UsageNetworkUserCatalogueId,
-      ArchivedMeasurementLocation =
-        entity.ArchivedMeasurementLocation.ToModel(),
-      ArchivedNetworkUserCatalogue = entity.ArchivedExpenditureNetworkUserCatalogue.ToModel(),
+      UsageNetworkUserCatalogueId = entity.UsageNetworkUserCatalogueId,
+      SupplyRegulatoryCatalogueId = entity.SupplyRegulatoryCatalogueId,
+      NetworkUserInvoiceId = entity.NetworkUserInvoiceId,
+      ArchivedMeasurementLocation = entity.ArchivedMeasurementLocation.ToModel(),
+      ArchivedSupplyRegulatoryCatalogue = entity.ArchivedSupplyRegulatoryCatalogue.ToModel(),
+      ArchivedUsageNetworkUserCatalogue = entity.ArchivedUsageNetworkUserCatalogue.ToModel(),
       ArchivedMeter = entity.ArchivedMeter.ToModel(),
-      ActiveEnergyTotalImportT1Min_Wh = entity.ActiveEnergyTotalImportT1Min_Wh,
-      ActiveEnergyTotalImportT1Max_Wh = entity.ActiveEnergyTotalImportT1Max_Wh,
-      ActiveEnergyTotalImportT1Amount_Wh =
-        entity.ActiveEnergyTotalImportT1Amount_Wh,
-      ActiveEnergyTotalImportT1Price_EUR =
-        entity.ActiveEnergyTotalImportT1Price_EUR,
-      ActiveEnergyTotalImportT1Total_EUR =
-        entity.ActiveEnergyTotalImportT1Total_EUR,
-      ActiveEnergyTotalImportT2Min_Wh = entity.ActiveEnergyTotalImportT2Min_Wh,
-      ActiveEnergyTotalImportT2Max_Wh = entity.ActiveEnergyTotalImportT2Max_Wh,
-      ActiveEnergyTotalImportT2Amount_Wh =
-        entity.ActiveEnergyTotalImportT2Amount_Wh,
-      ActiveEnergyTotalImportT2Price_EUR =
-        entity.ActiveEnergyTotalImportT2Price_EUR,
-      ActiveEnergyTotalImportT2Total_EUR =
-        entity.ActiveEnergyTotalImportT2Total_EUR,
-      ActivePowerTotalImportT1Peak_W = entity.ActivePowerTotalImportT1Peak_W,
-      ActivePowerTotalImportT1Amount_W =
-        entity.ActivePowerTotalImportT1Amount_W,
-      ActivePowerTotalImportT1Price_EUR =
-        entity.ActivePowerTotalImportT1Price_EUR,
-      ActivePowerTotalImportT1Total_EUR =
-        entity.ActivePowerTotalImportT1Total_EUR,
-      ReactiveEnergyTotalImportT0Min_VARh =
-        entity.ReactiveEnergyTotalImportT0Min_VARh,
-      ReactiveEnergyTotalImportT0Max_VARh =
-        entity.ReactiveEnergyTotalImportT0Max_VARh,
-      ReactiveEnergyTotalImportT0Amount_VARh =
-        entity.ReactiveEnergyTotalImportT0Amount_VARh,
-      ReactiveEnergyTotalExportT0Min_VARh =
-        entity.ReactiveEnergyTotalExportT0Min_VARh,
-      ReactiveEnergyTotalExportT0Max_VARh =
-        entity.ReactiveEnergyTotalExportT0Max_VARh,
-      ReactiveEnergyTotalExportT0Amount_VARh =
-        entity.ReactiveEnergyTotalExportT0Amount_VARh,
-      ReactiveEnergyTotalRampedT0Amount_VARh =
-        entity.ReactiveEnergyTotalRampedT0Amount_VARh,
-      ReactiveEnergyTotalRampedT0Price_EUR =
-        entity.ReactiveEnergyTotalRampedT0Price_EUR,
-      ReactiveEnergyTotalRampedT0Total_EUR =
-        entity.ReactiveEnergyTotalRampedT0Total_EUR,
-      MeterFeePrice_EUR = entity.MeterFeePrice_EUR
+      ActiveEnergyTotalImportT1 = entity.ActiveEnergyTotalImportT1.ToModel(),
+      ActiveEnergyTotalImportT2 = entity.ActiveEnergyTotalImportT2.ToModel(),
+      ActivePowerTotalImportT1Peak = entity.ActivePowerTotalImportT1Peak.ToModel(),
+      ReactiveEnergyTotalRampedT0 = entity.ReactiveEnergyTotalRampedT0.ToModel(),
+      MeterFeePrice_EUR = entity.MeterFeePrice_EUR,
     };
   }
 
@@ -100,55 +65,20 @@ public static class
       IssuedById = model.IssuedById,
       FromDate = model.FromDate,
       ToDate = model.ToDate,
-      NetworkUserInvoiceId = model.NetworkUserInvoiceId,
       MeterId = model.MeterId,
       MeasurementLocationId = model.MeasurementLocationId,
-      UsageNetworkUserCatalogueId = model.NetworkUserCatalogueId,
-      ArchivedMeasurementLocation =
-        model.ArchivedMeasurementLocation.ToEntity(),
-      ArchivedExpenditureNetworkUserCatalogue = model.ArchivedNetworkUserCatalogue.ToEntity(),
+      UsageNetworkUserCatalogueId = model.UsageNetworkUserCatalogueId,
+      SupplyRegulatoryCatalogueId = model.SupplyRegulatoryCatalogueId,
+      NetworkUserInvoiceId = model.NetworkUserInvoiceId,
+      ArchivedMeasurementLocation = model.ArchivedMeasurementLocation.ToEntity(),
+      ArchivedSupplyRegulatoryCatalogue = model.ArchivedSupplyRegulatoryCatalogue.ToEntity(),
+      ArchivedUsageNetworkUserCatalogue = model.ArchivedUsageNetworkUserCatalogue.ToEntity(),
       ArchivedMeter = model.ArchivedMeter.ToEntity(),
-      ActiveEnergyTotalImportT1Min_Wh = model.ActiveEnergyTotalImportT1Min_Wh,
-      ActiveEnergyTotalImportT1Max_Wh = model.ActiveEnergyTotalImportT1Max_Wh,
-      ActiveEnergyTotalImportT1Amount_Wh =
-        model.ActiveEnergyTotalImportT1Amount_Wh,
-      ActiveEnergyTotalImportT1Price_EUR =
-        model.ActiveEnergyTotalImportT1Price_EUR,
-      ActiveEnergyTotalImportT1Total_EUR =
-        model.ActiveEnergyTotalImportT1Total_EUR,
-      ActiveEnergyTotalImportT2Min_Wh = model.ActiveEnergyTotalImportT2Min_Wh,
-      ActiveEnergyTotalImportT2Max_Wh = model.ActiveEnergyTotalImportT2Max_Wh,
-      ActiveEnergyTotalImportT2Amount_Wh =
-        model.ActiveEnergyTotalImportT2Amount_Wh,
-      ActiveEnergyTotalImportT2Price_EUR =
-        model.ActiveEnergyTotalImportT2Price_EUR,
-      ActiveEnergyTotalImportT2Total_EUR =
-        model.ActiveEnergyTotalImportT2Total_EUR,
-      ActivePowerTotalImportT1Peak_W = model.ActivePowerTotalImportT1Peak_W,
-      ActivePowerTotalImportT1Amount_W = model.ActivePowerTotalImportT1Amount_W,
-      ActivePowerTotalImportT1Price_EUR =
-        model.ActivePowerTotalImportT1Price_EUR,
-      ActivePowerTotalImportT1Total_EUR =
-        model.ActivePowerTotalImportT1Total_EUR,
-      ReactiveEnergyTotalImportT0Min_VARh =
-        model.ReactiveEnergyTotalImportT0Min_VARh,
-      ReactiveEnergyTotalImportT0Max_VARh =
-        model.ReactiveEnergyTotalImportT0Max_VARh,
-      ReactiveEnergyTotalImportT0Amount_VARh =
-        model.ReactiveEnergyTotalImportT0Amount_VARh,
-      ReactiveEnergyTotalExportT0Min_VARh =
-        model.ReactiveEnergyTotalExportT0Min_VARh,
-      ReactiveEnergyTotalExportT0Max_VARh =
-        model.ReactiveEnergyTotalExportT0Max_VARh,
-      ReactiveEnergyTotalExportT0Amount_VARh =
-        model.ReactiveEnergyTotalExportT0Amount_VARh,
-      ReactiveEnergyTotalRampedT0Amount_VARh =
-        model.ReactiveEnergyTotalRampedT0Amount_VARh,
-      ReactiveEnergyTotalRampedT0Price_EUR =
-        model.ReactiveEnergyTotalRampedT0Price_EUR,
-      ReactiveEnergyTotalRampedT0Total_EUR =
-        model.ReactiveEnergyTotalRampedT0Total_EUR,
-      MeterFeePrice_EUR = model.MeterFeePrice_EUR
+      ActiveEnergyTotalImportT1 = model.ActiveEnergyTotalImportT1.ToEntity(),
+      ActiveEnergyTotalImportT2 = model.ActiveEnergyTotalImportT2.ToEntity(),
+      ActivePowerTotalImportT1Peak = model.ActivePowerTotalImportT1Peak.ToEntity(),
+      ReactiveEnergyTotalRampedT0 = model.ReactiveEnergyTotalRampedT0.ToEntity(),
+      MeterFeePrice_EUR = model.MeterFeePrice_EUR,
     };
   }
 }

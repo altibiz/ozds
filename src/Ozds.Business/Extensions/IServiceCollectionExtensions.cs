@@ -1,5 +1,8 @@
 using System.Reflection;
+using Ozds.Business.Aggregation.Abstractions;
 using Ozds.Business.Conversion.Abstractions;
+using Ozds.Business.Finance;
+using Ozds.Business.Finance.Abstractions;
 using Ozds.Business.Iot;
 using Ozds.Business.Mutations.Abstractions;
 using Ozds.Business.Queries.Abstractions;
@@ -42,6 +45,10 @@ public static class IServiceCollectionExtensions
     services.AddTransientAssignableTo(typeof(IModelEntityConverter));
     services.AddTransientAssignableTo(typeof(IMeasurementAggregateConverter));
     services.AddTransientAssignableTo(typeof(IPushRequestMeasurementConverter));
+
+    services.AddTransient(typeof(NetworkUserInvoiceIssuer));
+    services.AddTransientAssignableTo(typeof(INetworkUserCalculationCalculator));
+    services.AddTransientAssignableTo(typeof(ICalculationItemCalculator));
 
     services.AddScoped<OzdsIotHandler>();
 

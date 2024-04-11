@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Ozds.Data.Entities.Base;
 using Ozds.Data.Entities.Complex;
-using Ozds.Data.Entities.Enums;
 using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities;
@@ -12,7 +11,7 @@ public class
   BlueLowNetworkUserCatalogueEntity>
 {
 #pragma warning disable CA1707
-  public ActiveEnergyTotalImportCalculationItemEntity ActiveEnergyImportT0 { get; set; } = default!;
+  public ActiveEnergyTotalImportT0CalculationItemEntity ActiveEnergyTotalImportT0 { get; set; } = default!;
   public ReactiveEnergyTotalRampedT0CalculationItemEntity ReactiveEnergyTotalRampedT0 { get; set; } = default!;
   public decimal MeterFeePrice_EUR { get; set; }
 #pragma warning restore CA1707
@@ -27,8 +26,8 @@ public class
     EntityTypeBuilder<BlueLowNetworkUserCalculationEntity> builder)
   {
     builder
-      .ComplexProperty(nameof(BlueLowNetworkUserCalculationEntity.ActiveEnergyImportT0))
-      .ActiveEnergyImportCalculationItem(TariffEntity.T0);
+      .ComplexProperty(nameof(BlueLowNetworkUserCalculationEntity.ActiveEnergyTotalImportT0))
+      .ActiveEnergyImportCalculationItem();
 
     builder
       .ComplexProperty(nameof(BlueLowNetworkUserCalculationEntity.ReactiveEnergyTotalRampedT0))

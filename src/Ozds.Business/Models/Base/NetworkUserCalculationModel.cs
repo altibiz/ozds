@@ -22,7 +22,9 @@ public abstract class NetworkUserCalculationModel : INetworkUserCalculation
   [Required]
   public required string MeasurementLocationId { get; set; } = default!;
 
-  [Required] public required string NetworkUserCatalogueId { get; set; } = default!;
+  [Required] public required string UsageNetworkUserCatalogueId { get; set; } = default!;
+
+  [Required] public required string SupplyRegulatoryCatalogueId { get; set; } = default!;
 
   [Required]
   public required string NetworkUserInvoiceId { get; set; } = default!;

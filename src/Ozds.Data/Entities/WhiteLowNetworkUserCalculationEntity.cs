@@ -12,8 +12,8 @@ public class
   WhiteLowNetworkUserCatalogueEntity>
 {
 #pragma warning disable CA1707
-  public ActiveEnergyTotalImportCalculationItemEntity ActiveEnergyImportT1 { get; set; } = default!;
-  public ActiveEnergyTotalImportCalculationItemEntity ActiveEnergyImportT2 { get; set; } = default!;
+  public ActiveEnergyTotalImportT1CalculationItemEntity ActiveEnergyTotalImportT1 { get; set; } = default!;
+  public ActiveEnergyTotalImportT2CalculationItemEntity ActiveEnergyTotalImportT2 { get; set; } = default!;
   public ReactiveEnergyTotalRampedT0CalculationItemEntity ReactiveEnergyTotalRampedT0 { get; set; } = default!;
   public decimal MeterFeePrice_EUR { get; set; }
 #pragma warning restore CA1707
@@ -27,12 +27,12 @@ public class
     EntityTypeBuilder<WhiteLowNetworkUserCalculationEntity> builder)
   {
     builder
-      .ComplexProperty(nameof(WhiteLowNetworkUserCalculationEntity.ActiveEnergyImportT1))
-      .ActiveEnergyImportCalculationItem(TariffEntity.T1);
+      .ComplexProperty(nameof(WhiteLowNetworkUserCalculationEntity.ActiveEnergyTotalImportT1))
+      .ActiveEnergyImportCalculationItem();
 
     builder
-      .ComplexProperty(nameof(WhiteLowNetworkUserCalculationEntity.ActiveEnergyImportT2))
-      .ActiveEnergyImportCalculationItem(TariffEntity.T2);
+      .ComplexProperty(nameof(WhiteLowNetworkUserCalculationEntity.ActiveEnergyTotalImportT2))
+      .ActiveEnergyImportCalculationItem();
 
     builder
       .ComplexProperty(nameof(WhiteLowNetworkUserCalculationEntity.ReactiveEnergyTotalRampedT0))

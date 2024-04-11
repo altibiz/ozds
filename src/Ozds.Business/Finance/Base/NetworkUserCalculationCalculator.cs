@@ -1,20 +1,20 @@
-using Ozds.Business.Conversion.Abstractions;
+using Ozds.Business.Finance.Abstractions;
 using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Composite;
 
-namespace Ozds.Business.Conversion.Base;
+namespace Ozds.Business.Finance.Base;
 
 public abstract class NetworkUserCalculationCalculator<T> :
   INetworkUserCalculationCalculator
   where T : NetworkUserCatalogueModel
 {
-  public bool CanCalculateForNetworkUser(
+  public bool CanCalculate(
     NetworkUserCalculationBasisModel calculationBasis)
   {
     return calculationBasis.UsageNetworkUserCatalogue.GetType() == typeof(T);
   }
 
-  public NetworkUserCalculationModel CalculateForNetworkUser(
+  public NetworkUserCalculationModel Calculate(
     NetworkUserCalculationBasisModel calculationBasis)
   {
     var usageCalculation = CalculateForNetworkUser((T)calculationBasis.UsageNetworkUserCatalogue,

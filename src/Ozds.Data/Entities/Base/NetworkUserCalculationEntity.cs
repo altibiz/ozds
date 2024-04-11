@@ -48,9 +48,9 @@ public class NetworkUserCalculationEntity : IReadonlyEntity, IIdentifiableEntity
 
   public decimal Total_EUR { get; set; }
 
-  public NetworkUserCatalogueEntity ArchivedExpenditureNetworkUserCatalogue { get; set; } = default!;
+  public NetworkUserCatalogueEntity ArchivedUsageNetworkUserCatalogue { get; set; } = default!;
 
-  public RegulatoryCatalogueEntity ArchivedSupplyNetworkUserCatalogue { get; set; } =
+  public RegulatoryCatalogueEntity ArchivedSupplyRegulatoryCatalogue { get; set; } =
     default!;
 
   public MeterEntity ArchivedMeter { get; set; } = default!;
@@ -69,6 +69,16 @@ public class NetworkUserCalculationEntity : IReadonlyEntity, IIdentifiableEntity
   }
 
   public string Title { get; set; } = default!;
+
+  protected readonly long _supplyRegulatoryCatalogueId;
+
+  public string SupplyRegulatoryCatalogueId
+  {
+    get { return _supplyRegulatoryCatalogueId.ToString(); }
+    init { _supplyRegulatoryCatalogueId = long.Parse(value); }
+  }
+
+  public virtual RegulatoryCatalogueEntity SupplyRegulatoryCatalogue { get; set; } = default!;
 }
 
 public class
@@ -84,16 +94,6 @@ public class
   }
 
   public virtual TUsageNetworkUserCatalogue UsageNetworkUserCatalogue { get; set; } = default!;
-
-  protected readonly long _supplyRegulatoryCatalogueId;
-
-  public string SupplyRegulatoryCatalogueId
-  {
-    get { return _supplyRegulatoryCatalogueId.ToString(); }
-    init { _supplyRegulatoryCatalogueId = long.Parse(value); }
-  }
-
-  public virtual RegulatoryCatalogueEntity SupplyRegulatoryCatalogue { get; set; } = default!;
 }
 
 public class
@@ -153,13 +153,21 @@ public class
       .Ignore(nameof(MeterEntity.NetworkUserCalculations));
 
     builder
-      .ComplexProperty(nameof(NetworkUserCalculationEntity.ArchivedExpenditureNetworkUserCatalogue))
+      .ComplexProperty(nameof(NetworkUserCalculationEntity.ArchivedUsageNetworkUserCatalogue))
       .Ignore(nameof(NetworkUserCatalogueEntity.LastUpdatedBy))
       .Ignore(nameof(NetworkUserCatalogueEntity.CreatedBy))
       .Ignore(nameof(NetworkUserCatalogueEntity.DeletedBy))
       .Ignore(nameof(NetworkUserCatalogueEntity.Location))
       .Ignore(nameof(NetworkUserCatalogueEntity.MeasurementLocations))
       .Ignore(nameof(NetworkUserCatalogueEntity.NetworkUserCalculations));
+
+    builder
+      .ComplexProperty(nameof(NetworkUserCalculationEntity.ArchivedSupplyRegulatoryCatalogue))
+      .Ignore(nameof(RegulatoryCatalogueEntity.LastUpdatedBy))
+      .Ignore(nameof(RegulatoryCatalogueEntity.CreatedBy))
+      .Ignore(nameof(RegulatoryCatalogueEntity.DeletedBy))
+      .Ignore(nameof(RegulatoryCatalogueEntity.Location))
+      .Ignore(nameof(RegulatoryCatalogueEntity.NetworkUserCalculations));
 
     builder
       .ComplexProperty(nameof(NetworkUserCalculationEntity
@@ -198,6 +206,16 @@ public class
       .Property(nameof(NetworkUserCalculationEntity.Total_EUR))
       .HasColumnName("total_eur");
 
+    builder
+      .HasOne(nameof(NetworkUserCalculationEntity.SupplyRegulatoryCatalogue))
+      .WithMany(nameof(RegulatoryCatalogueEntity.NetworkUserCalculations))
+      .HasForeignKey("_supplyRegulatoryCatalogueId");
+
+    builder.Ignore(nameof(NetworkUserCalculationEntity.SupplyRegulatoryCatalogueId));
+    builder
+      .Property("_supplyRegulatoryCatalogueId")
+      .HasColumnName("supply_regulatory_catalogue_id");
+
 
     if (type != typeof(NetworkUserCalculationEntity))
     {
@@ -211,17 +229,6 @@ public class
       builder
         .Property("_usageNetworkUserCatalogueId")
         .HasColumnName("usage_network_user_catalogue_id");
-
-      builder
-        .HasOne(nameof(NetworkUserCalculationEntity<NetworkUserCatalogueEntity>.SupplyRegulatoryCatalogue))
-        .WithMany(nameof(RegulatoryCatalogueEntity.NetworkUserCalculations))
-        .HasForeignKey("_supplyRegulatoryCatalogueId");
-
-      builder.Ignore(nameof(NetworkUserCalculationEntity<NetworkUserCatalogueEntity>
-        .SupplyRegulatoryCatalogueId));
-      builder
-        .Property("_supplyRegulatoryCatalogueId")
-        .HasColumnName("supply_regulatory_catalogue_id");
     }
   }
 }

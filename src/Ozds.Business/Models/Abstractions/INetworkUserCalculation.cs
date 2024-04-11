@@ -9,7 +9,8 @@ public interface INetworkUserCalculation : IReadonly, IIdentifiable
   public string? IssuedById { get; }
   public string MeterId { get; }
   public string MeasurementLocationId { get; }
-  public string NetworkUserCatalogueId { get; }
+  public string UsageNetworkUserCatalogueId { get; }
+  public string SupplyRegulatoryCatalogueId { get; }
   public string NetworkUserInvoiceId { get; }
   public MeterModel ArchivedMeter { get; }
   public string Kind { get; }

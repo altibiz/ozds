@@ -1,7 +1,7 @@
 using System.Linq.Expressions;
 using Ozds.Business.Models.Abstractions;
 
-namespace Ozds.Business.Conversion.Abstractions;
+namespace Ozds.Business.Aggregation.Abstractions;
 
 public interface IAggregateUpserter
 {
