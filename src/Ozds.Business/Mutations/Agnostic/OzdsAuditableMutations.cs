@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Ozds.Business.Conversion.Abstractions;
+using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Extensions;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Mutations.Abstractions;
@@ -13,15 +14,15 @@ public class OzdsAuditableMutations : IOzdsMutations
 {
   private readonly OzdsDbContext _context;
 
-  private readonly IServiceProvider _serviceProvider;
+  private readonly AgnosticModelEntityConverter _modelEntityConverter;
 
   public OzdsAuditableMutations(
     OzdsDbContext context,
-    IServiceProvider serviceProvider
+    AgnosticModelEntityConverter modelEntityConverter
   )
   {
     _context = context;
-    _serviceProvider = serviceProvider;
+    _modelEntityConverter = modelEntityConverter;
   }
 
   public async ValueTask DisposeAsync()
@@ -51,13 +52,7 @@ public class OzdsAuditableMutations : IOzdsMutations
       throw new ValidationException(validationResults.First().ErrorMessage);
     }
 
-    var modelEntityConverter = _serviceProvider
-                                 .GetServices<IModelEntityConverter>()
-                                 .FirstOrDefault(converter => converter
-                                   .CanConvertToEntity(auditable.GetType())) ??
-                               throw new InvalidOperationException(
-                                 $"No model entity converter found for {auditable.GetType()}");
-    _context.AddTracked(modelEntityConverter.ToEntity(auditable));
+    _context.AddTracked(_modelEntityConverter.ToEntity(auditable));
   }
 
   public void Update(IAuditable auditable)
@@ -70,23 +65,11 @@ public class OzdsAuditableMutations : IOzdsMutations
       throw new ValidationException(validationResults.First().ErrorMessage);
     }
 
-    var modelEntityConverter = _serviceProvider
-                                 .GetServices<IModelEntityConverter>()
-                                 .FirstOrDefault(converter => converter
-                                   .CanConvertToEntity(auditable.GetType())) ??
-                               throw new InvalidOperationException(
-                                 $"No model entity converter found for {auditable.GetType()}");
-    _context.UpdateTracked(modelEntityConverter.ToEntity(auditable));
+    _context.UpdateTracked(_modelEntityConverter.ToEntity(auditable));
   }
 
   public void Delete(IAuditable auditable)
   {
-    var modelEntityConverter = _serviceProvider
-                                 .GetServices<IModelEntityConverter>()
-                                 .FirstOrDefault(converter => converter
-                                   .CanConvertToEntity(auditable.GetType())) ??
-                               throw new InvalidOperationException(
-                                 $"No model entity converter found for {auditable.GetType()}");
-    _context.DeleteTracked(modelEntityConverter.ToEntity(auditable));
+    _context.DeleteTracked(_modelEntityConverter.ToEntity(auditable));
   }
 }

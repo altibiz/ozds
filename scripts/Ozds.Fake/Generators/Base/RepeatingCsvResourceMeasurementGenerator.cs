@@ -1,5 +1,5 @@
 using Ozds.Business.Iot;
-using Ozds.Fake.Conversion.Abstractions;
+using Ozds.Fake.Conversion.Agnostic;
 using Ozds.Fake.Generators.Abstractions;
 using Ozds.Fake.Loaders;
 using Ozds.Fake.Records.Abstractions;
@@ -15,13 +15,13 @@ public abstract class
 {
   private readonly ResourceCache _resources;
 
-  private readonly IServiceProvider _serviceProvider;
+  private readonly AgnosticMeasurementRecordPushRequestConverter _converter;
 
   public RepeatingCsvResourceMeasurementGenerator(
     IServiceProvider serviceProvider)
   {
     _resources = serviceProvider.GetRequiredService<ResourceCache>();
-    _serviceProvider = serviceProvider;
+    _converter = serviceProvider.GetRequiredService<AgnosticMeasurementRecordPushRequestConverter>();
   }
 
   protected abstract string CsvResourceName { get; }
@@ -57,14 +57,7 @@ public abstract class
         && record.Timestamp <= dateToCsv)
       .Select(record =>
       {
-        var converter = _serviceProvider
-          .GetServices<IMeasurementRecordPushRequestConverter>()
-          .FirstOrDefault(c => c.CanConvertToPushRequest(record));
-        if (converter is null)
-        {
-          return null;
-        }
-        var pushRequest = converter.ConvertToPushRequest(record);
+        var pushRequest = _converter.ConvertToPushRequest(record);
         var timestamp = dateFrom.AddTicks(
           (record.Timestamp - dateFromCsv).Ticks
         );

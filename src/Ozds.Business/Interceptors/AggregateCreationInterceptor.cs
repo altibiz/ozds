@@ -3,7 +3,10 @@ using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Ozds.Business.Aggregation.Abstractions;
+using Ozds.Business.Aggregation.Agnostic;
 using Ozds.Business.Conversion.Abstractions;
+using Ozds.Business.Conversion.Agnostic;
+using Ozds.Business.Conversion.Base;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Enums;
 using Ozds.Data;
@@ -48,12 +51,12 @@ public class AggregateCreationInterceptor : ServedSaveChangesInterceptor
 
     await using var aggregateScope = _serviceProvider.CreateAsyncScope();
 
-    var measurementAggregateConverters = aggregateScope.ServiceProvider
-      .GetServices<IMeasurementAggregateConverter>();
-    var modelEntityConverters = aggregateScope.ServiceProvider
-      .GetServices<IModelEntityConverter>();
-    var aggregateUpserters = aggregateScope.ServiceProvider
-      .GetServices<IAggregateUpserter>();
+    var aggregateConverter = aggregateScope.ServiceProvider
+      .GetRequiredService<AgnosticMeasurementAggregateConverter>();
+    var modelEntityConverter = aggregateScope.ServiceProvider
+      .GetRequiredService<AgnosticModelEntityConverter>();
+    var aggregateUpserter = aggregateScope.ServiceProvider
+      .GetRequiredService<AgnosticAggregateUpserter>();
     var aggregateContext = aggregateScope.ServiceProvider
       .GetRequiredService<OzdsDbContext>();
 
@@ -62,19 +65,12 @@ public class AggregateCreationInterceptor : ServedSaveChangesInterceptor
       .Where(entity => entity.State == EntityState.Added)
       .Select(entity => entity.Entity)
       .OfType<MeasurementEntity>()
-      .Select(entity => modelEntityConverters
-        .FirstOrDefault(converter => converter
-          .CanConvertToModel(entity.GetType()))
-        ?.ToModel(entity))
+      .Select(modelEntityConverter.ToModel)
       .OfType<IMeasurement>()
       .SelectMany(model => typeof(IntervalModel)
         .GetEnumValues()
         .Cast<IntervalModel>()
-        .Select(interval =>
-          measurementAggregateConverters
-            .FirstOrDefault(converter => converter
-              .CanConvertToAggregate(model.GetType()))
-            ?.ToAggregate(model, interval)))
+        .Select(interval => aggregateConverter.ToAggregate(model, interval)))
       .OfType<IAggregate>()
       .GroupBy(aggregate => new
       {
@@ -83,31 +79,13 @@ public class AggregateCreationInterceptor : ServedSaveChangesInterceptor
         aggregate.Timestamp,
         aggregate.Interval
       })
-      .Select(group => group
-        .Aggregate((lhs, rhs) => lhs is not null && rhs is not null
-          ? aggregateUpserters
-            .FirstOrDefault(upserter => upserter
-              .CanUpsertModel(group.Key.Type))
-            ?.UpsertModel(lhs, rhs)!
-          : default!))
-      .OfType<IAggregate>()
-      .Select(model => modelEntityConverters
-        .FirstOrDefault(converter => converter
-          .CanConvertToEntity(model.GetType()))
-        ?.ToEntity(model))
+      .Select(group => group.Aggregate(aggregateUpserter.UpsertModelAgnostic))
+      .Select(modelEntityConverter.ToEntity)
       .OfType<IAggregateEntity>()
       .GroupBy(entity => entity.GetType());
 
     foreach (var group in aggregates)
     {
-      var aggregateUpserter = aggregateUpserters
-        .FirstOrDefault(upserter => upserter
-          .CanUpsertEntity(group.Key));
-      if (aggregateUpserter is null)
-      {
-        continue;
-      }
-
       var enumerableCastMethod = typeof(Enumerable)
         .GetMethod(nameof(Enumerable.Cast),
           BindingFlags.Public | BindingFlags.Static)
@@ -139,7 +117,7 @@ public class AggregateCreationInterceptor : ServedSaveChangesInterceptor
   private static async Task UpsertAggregates<T>(
     DbContext context,
     IEnumerable<T> aggregates,
-    IAggregateUpserter upserter)
+    AgnosticAggregateUpserter upserter)
     where T : class, IAggregateEntity
   {
     await context
@@ -150,10 +128,7 @@ public class AggregateCreationInterceptor : ServedSaveChangesInterceptor
         aggregate.Timestamp,
         aggregate.Interval
       })
-      .WhenMatched(
-        upserter.UpsertEntity as Expression<Func<T, T, T>>
-        ?? throw new InvalidOperationException(
-            $"Upsert entity is not of type {typeof(T).Name}."))
+      .WhenMatched(upserter.UpsertEntity<T>())
       .RunAsync();
   }
 }

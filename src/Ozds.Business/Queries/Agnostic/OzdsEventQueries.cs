@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Ozds.Business.Conversion.Abstractions;
+using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Extensions;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Queries.Abstractions;
@@ -12,15 +12,15 @@ public class OzdsEventQueries : IOzdsQueries
 {
   private readonly OzdsDbContext _context;
 
-  private readonly IServiceProvider _serviceProvider;
+  private readonly AgnosticModelEntityConverter _modelEntityConverter;
 
   public OzdsEventQueries(
     OzdsDbContext context,
-    IServiceProvider serviceProvider
+    AgnosticModelEntityConverter modelEntityConverter
   )
   {
     _context = context;
-    _serviceProvider = serviceProvider;
+    _modelEntityConverter = modelEntityConverter;
   }
 
   public async Task<PaginatedList<T>> Read<T>(
@@ -31,11 +31,6 @@ public class OzdsEventQueries : IOzdsQueries
     int pageCount = QueryConstants.DefaultPageCount
   ) where T : class, IEvent
   {
-    var modelEntityConverter = _serviceProvider
-      .GetServices<IModelEntityConverter>()
-      .FirstOrDefault(converter => converter
-        .CanConvertToModel(typeof(T))) ?? throw new InvalidOperationException(
-      $"No model entity converter found for {typeof(T)}");
     var queryable = _context.GetDbSet(typeof(T)) as IQueryable<EventEntity>
                     ?? throw new InvalidOperationException();
     var filtered = whereClauses.Aggregate(queryable,
@@ -51,7 +46,7 @@ public class OzdsEventQueries : IOzdsQueries
       .Take(pageCount)
       .ToListAsync();
     return items
-      .Select(modelEntityConverter.ToModel)
+      .Select(_modelEntityConverter.ToModel)
       .OfType<T>()
       .ToPaginatedList(count);
   }

@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Ozds.Business.Conversion.Abstractions;
+using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Extensions;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Queries.Abstractions;
@@ -13,27 +13,24 @@ public class OzdsAuditableQueries : IOzdsQueries
 {
   private readonly OzdsDbContext _context;
 
-  private readonly IServiceProvider _serviceProvider;
+  private readonly AgnosticModelEntityConverter _modelEntityConverter;
 
-  public OzdsAuditableQueries(OzdsDbContext context,
-    IServiceProvider serviceProvider)
+  public OzdsAuditableQueries(
+    OzdsDbContext context,
+    AgnosticModelEntityConverter modelEntityConverter
+  )
   {
     _context = context;
-    _serviceProvider = serviceProvider;
+    _modelEntityConverter = modelEntityConverter;
   }
 
   public async Task<T?> ReadSingle<T>(string id) where T : class, IAuditable
   {
-    var modelEntityConverter = _serviceProvider
-      .GetServices<IModelEntityConverter>()
-      .FirstOrDefault(converter => converter
-        .CanConvertToModel(typeof(T))) ?? throw new InvalidOperationException(
-      $"No model entity converter found for {typeof(T)}");
     var queryable = _context.GetDbSet(typeof(T))
                       as IQueryable<AuditableEntity>
                     ?? throw new InvalidOperationException();
     var item = await queryable.WithId(id).FirstOrDefaultAsync();
-    return item is null ? null : modelEntityConverter.ToModel(item) as T;
+    return item is null ? null : _modelEntityConverter.ToModel(item) as T;
   }
 
   public async Task<PaginatedList<T>> Read<T>(
@@ -44,11 +41,6 @@ public class OzdsAuditableQueries : IOzdsQueries
     int pageCount = QueryConstants.DefaultPageCount
   ) where T : class, IAuditable
   {
-    var modelEntityConverter = _serviceProvider
-      .GetServices<IModelEntityConverter>()
-      .FirstOrDefault(converter => converter
-        .CanConvertToModel(typeof(T))) ?? throw new InvalidOperationException(
-      $"No model entity converter found for {typeof(T)}");
     var queryable = _context.GetDbSet(typeof(T))
                       as IQueryable<AuditableEntity>
                     ?? throw new InvalidOperationException();
@@ -62,7 +54,7 @@ public class OzdsAuditableQueries : IOzdsQueries
     var items = await orderedByAsc.Skip((pageNumber - 1) * pageCount)
       .Take(pageCount).ToListAsync();
     return items
-      .Select(item => modelEntityConverter.ToModel(item))
+      .Select(_modelEntityConverter.ToModel)
       .OfType<T>()
       .ToPaginatedList(count);
   }

@@ -1,8 +1,11 @@
 using System.Reflection;
 using Ozds.Business.Aggregation.Abstractions;
+using Ozds.Business.Aggregation.Agnostic;
 using Ozds.Business.Conversion.Abstractions;
+using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Finance;
 using Ozds.Business.Finance.Abstractions;
+using Ozds.Business.Finance.Agnostic;
 using Ozds.Business.Iot;
 using Ozds.Business.Mutations.Abstractions;
 using Ozds.Business.Queries.Abstractions;
@@ -42,13 +45,20 @@ public static class IServiceCollectionExtensions
     services.AddScopedAssignableTo(typeof(IOzdsMutations));
 
     services.AddTransientAssignableTo(typeof(IAggregateUpserter));
+    services.AddSingleton(typeof(AgnosticAggregateUpserter));
+
     services.AddTransientAssignableTo(typeof(IModelEntityConverter));
+    services.AddSingleton(typeof(AgnosticModelEntityConverter));
     services.AddTransientAssignableTo(typeof(IMeasurementAggregateConverter));
+    services.AddSingleton(typeof(AgnosticMeasurementAggregateConverter));
     services.AddTransientAssignableTo(typeof(IPushRequestMeasurementConverter));
+    services.AddSingleton(typeof(AgnosticPushRequestMeasurementConverter));
 
     services.AddTransient(typeof(NetworkUserInvoiceIssuer));
     services.AddTransientAssignableTo(typeof(INetworkUserCalculationCalculator));
+    services.AddSingleton(typeof(AgnosticNetworkUserCalculationCalculator));
     services.AddTransientAssignableTo(typeof(ICalculationItemCalculator));
+    services.AddSingleton(typeof(AgnosticCalculationItemCalculator));
 
     services.AddScoped<OzdsIotHandler>();
 

@@ -1,5 +1,5 @@
 using System.Text.Json;
-using Ozds.Business.Conversion.Abstractions;
+using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Mutations.Agnostic;
 using Ozds.Business.Queries.Agnotic;
 
@@ -13,18 +13,19 @@ public class OzdsIotHandler
 
   private readonly OzdsMeasurementMutations _measurementMutations;
 
-  private readonly IServiceProvider _serviceProvider;
+  private readonly AgnosticPushRequestMeasurementConverter _pushRequestMeasurementConverter;
+
 
   public OzdsIotHandler(
     OzdsAuditableQueries auditableQueries,
     IHttpContextAccessor httpContextAccessor,
-    IServiceProvider serviceProvider,
+    AgnosticPushRequestMeasurementConverter pushRequestMeasurementConverter,
     OzdsMeasurementMutations measurementMutations
   )
   {
     _auditableQueries = auditableQueries;
     _httpContextAccessor = httpContextAccessor;
-    _serviceProvider = serviceProvider;
+    _pushRequestMeasurementConverter = pushRequestMeasurementConverter;
     _measurementMutations = measurementMutations;
   }
 
@@ -48,20 +49,9 @@ public class OzdsIotHandler
       return Task.CompletedTask;
     }
 
-    var pushRequestMeasurementConverters = _serviceProvider
-      .GetServices<IPushRequestMeasurementConverter>();
-
     foreach (var item in messengerRequest.Measurements)
     {
-      var pushRequestMeasurementConverter = pushRequestMeasurementConverters
-        .FirstOrDefault(x => x.CanConvert(item.MeterId));
-
-      if (pushRequestMeasurementConverter == null)
-      {
-        continue;
-      }
-
-      var measurement = pushRequestMeasurementConverter.ToMeasurement(
+      var measurement = _pushRequestMeasurementConverter.ToMeasurement(
         item.Data, item.MeterId, item.Timestamp
       );
       _measurementMutations.Create(measurement);

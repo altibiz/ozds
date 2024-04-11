@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using Ozds.Business.Conversion.Abstractions;
+using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Mutations.Abstractions;
 using Ozds.Data;
@@ -10,15 +10,15 @@ public class OzdsInvoiceMutations : IOzdsMutations
 {
   private readonly OzdsDbContext _context;
 
-  private readonly IServiceProvider _serviceProvider;
+  private readonly AgnosticModelEntityConverter _modelEntityConverter;
 
   public OzdsInvoiceMutations(
     OzdsDbContext context,
-    IServiceProvider serviceProvider
+    AgnosticModelEntityConverter modelEntityConverter
   )
   {
     _context = context;
-    _serviceProvider = serviceProvider;
+    _modelEntityConverter = modelEntityConverter;
   }
 
   public async ValueTask DisposeAsync()
@@ -48,12 +48,6 @@ public class OzdsInvoiceMutations : IOzdsMutations
       throw new ValidationException(validationResults.First().ErrorMessage);
     }
 
-    var modelEntityConverter = _serviceProvider
-                                 .GetServices<IModelEntityConverter>()
-                                 .FirstOrDefault(converter => converter
-                                   .CanConvertToEntity(invoice.GetType())) ??
-                               throw new InvalidOperationException(
-                                 $"No model entity converter found for {invoice.GetType()}");
-    _context.Add(modelEntityConverter.ToEntity(invoice));
+    _context.Add(_modelEntityConverter.ToEntity(invoice));
   }
 }
