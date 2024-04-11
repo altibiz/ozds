@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -12,21 +13,33 @@ public static class EntityTypeBuilderExtensions
   {
     var complexPropertyBuilder = builder.ComplexProperty(propertyName);
 
-    foreach (var property in complexPropertyBuilder.Metadata.ComplexType.GetProperties())
+    var propertiesToIgnore = complexPropertyBuilder.Metadata
+      .ComplexType
+      .ClrType
+      .GetProperties()
+      .Where(property => property is { GetMethod.IsVirtual: true } or { GetMethod.IsAbstract: true })
+      .ToList();
+
+    var propertiesToShorten = complexPropertyBuilder.Metadata
+      .ComplexType
+      .ClrType
+      .GetProperties()
+      .Except(propertiesToIgnore)
+      .ToList();
+
+    foreach (var property in propertiesToIgnore)
     {
-      if (property.PropertyInfo is { GetMethod.IsVirtual: true } or { GetMethod.IsAbstract: true })
-      {
-        complexPropertyBuilder.Ignore(property.Name);
-      }
-      else
-      {
-        complexPropertyBuilder
-          .Property(property.Name)
-          .HasColumnName(
-            propertyName.Abbreviation()
-            + "_"
-            + property.Name.ToSnakeCase());
-      }
+      complexPropertyBuilder.Ignore(property.Name);
+    }
+
+    foreach (var property in propertiesToShorten)
+    {
+      complexPropertyBuilder
+        .Property(property.Name)
+        .HasColumnName(
+          propertyName.Abbreviation()
+          + "_"
+          + property.Name.ToSnakeCase());
     }
 
     return complexPropertyBuilder;
