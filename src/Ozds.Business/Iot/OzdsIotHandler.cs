@@ -13,7 +13,8 @@ public class OzdsIotHandler
 
   private readonly OzdsMeasurementMutations _measurementMutations;
 
-  private readonly AgnosticPushRequestMeasurementConverter _pushRequestMeasurementConverter;
+  private readonly AgnosticPushRequestMeasurementConverter
+    _pushRequestMeasurementConverter;
 
 
   public OzdsIotHandler(

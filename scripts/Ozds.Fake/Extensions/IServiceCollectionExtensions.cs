@@ -46,7 +46,8 @@ public static class IServiceCollectionExtensions
   {
     services.AddTransientAssignableTo(
       typeof(IMeasurementRecordPushRequestConverter));
-    services.AddSingleton(typeof(AgnosticMeasurementRecordPushRequestConverter));
+    services.AddSingleton(
+      typeof(AgnosticMeasurementRecordPushRequestConverter));
     return services;
   }
 

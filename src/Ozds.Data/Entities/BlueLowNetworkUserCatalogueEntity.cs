@@ -23,7 +23,8 @@ public class
   {
     builder
       .Property(
-        nameof(BlueLowNetworkUserCatalogueEntity.ActiveEnergyTotalImportT0Price_EUR))
+        nameof(BlueLowNetworkUserCatalogueEntity
+          .ActiveEnergyTotalImportT0Price_EUR))
       .HasColumnName("active_energy_total_import_t0_price_eur");
 
     builder

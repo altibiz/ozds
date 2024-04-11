@@ -4,15 +4,18 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Conversion;
 
-public class RedLowNetworkUserCatalogueModelEntityConverter : ModelEntityConverter<
-  RedLowNetworkUserCatalogueModel, RedLowNetworkUserCatalogueEntity>
+public class RedLowNetworkUserCatalogueModelEntityConverter :
+  ModelEntityConverter<
+    RedLowNetworkUserCatalogueModel, RedLowNetworkUserCatalogueEntity>
 {
-  protected override RedLowNetworkUserCatalogueEntity ToEntity(RedLowNetworkUserCatalogueModel model)
+  protected override RedLowNetworkUserCatalogueEntity ToEntity(
+    RedLowNetworkUserCatalogueModel model)
   {
     return model.ToEntity();
   }
 
-  protected override RedLowNetworkUserCatalogueModel ToModel(RedLowNetworkUserCatalogueEntity entity)
+  protected override RedLowNetworkUserCatalogueModel ToModel(
+    RedLowNetworkUserCatalogueEntity entity)
   {
     return entity.ToModel();
   }
@@ -20,7 +23,8 @@ public class RedLowNetworkUserCatalogueModelEntityConverter : ModelEntityConvert
 
 public static class RedLowNetworkUserCatalogueModelEntityConverterExtensions
 {
-  public static RedLowNetworkUserCatalogueModel ToModel(this RedLowNetworkUserCatalogueEntity entity)
+  public static RedLowNetworkUserCatalogueModel ToModel(
+    this RedLowNetworkUserCatalogueEntity entity)
   {
     return new RedLowNetworkUserCatalogueModel
     {
@@ -45,7 +49,8 @@ public static class RedLowNetworkUserCatalogueModelEntityConverterExtensions
     };
   }
 
-  public static RedLowNetworkUserCatalogueEntity ToEntity(this RedLowNetworkUserCatalogueModel model)
+  public static RedLowNetworkUserCatalogueEntity ToEntity(
+    this RedLowNetworkUserCatalogueModel model)
   {
     return new RedLowNetworkUserCatalogueEntity
     {

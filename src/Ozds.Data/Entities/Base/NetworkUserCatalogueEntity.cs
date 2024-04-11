@@ -15,22 +15,24 @@ public class NetworkUserCatalogueEntity : AuditableEntity
   } = default!;
 
   public virtual ICollection<NetworkUserCalculationEntity>
-    NetworkUserCalculations
-  { get; set; } =
+    NetworkUserCalculations { get; set; } =
     default!;
 }
 
 public class
-  NetworkUserCatalogueEntityTypeConfiguration : EntityTypeConfiguration<NetworkUserCatalogueEntity>
+  NetworkUserCatalogueEntityTypeConfiguration : EntityTypeConfiguration<
+  NetworkUserCatalogueEntity>
 {
-  public override void Configure(EntityTypeBuilder<NetworkUserCatalogueEntity> builder)
+  public override void Configure(
+    EntityTypeBuilder<NetworkUserCatalogueEntity> builder)
   {
   }
 }
 
 public class
-  NetworkUserCatalogueEntityTypeHierarchyConfiguration : EntityTypeHierarchyConfiguration<
-  NetworkUserCatalogueEntity>
+  NetworkUserCatalogueEntityTypeHierarchyConfiguration :
+  EntityTypeHierarchyConfiguration<
+    NetworkUserCatalogueEntity>
 {
   public override void Configure(ModelBuilder modelBuilder, Type type)
   {

@@ -31,10 +31,14 @@ public class OzdsLocationModelQueries : IOzdsQueries
         .FirstOrDefaultAsync();
     if (locationEntity is not null)
     {
-      var redLowNetworkUserCatalogue = locationEntity.RedLowNetworkUserCatalogue;
-      var blueLowNetworkUserCatalogue = locationEntity.BlueLowNetworkUserCatalogue;
-      var whiteLowNetworkUserCatalogue = locationEntity.WhiteLowNetworkUserCatalogue;
-      var whiteMediumNetworkUserCatalogue = locationEntity.WhiteMediumNetworkUserCatalogue;
+      var redLowNetworkUserCatalogue =
+        locationEntity.RedLowNetworkUserCatalogue;
+      var blueLowNetworkUserCatalogue =
+        locationEntity.BlueLowNetworkUserCatalogue;
+      var whiteLowNetworkUserCatalogue =
+        locationEntity.WhiteLowNetworkUserCatalogue;
+      var whiteMediumNetworkUserCatalogue =
+        locationEntity.WhiteMediumNetworkUserCatalogue;
       var regulatoryNetworkUserCatalogue = locationEntity.RegulatoryCatalogue;
       return locationEntity.ToModel();
     }
@@ -42,11 +46,12 @@ public class OzdsLocationModelQueries : IOzdsQueries
     return null;
   }
 
-  public async Task<PaginatedList<RedLowNetworkUserCatalogueModel>> GetRedLowNetworkUserCatalogues(
-    string title,
-    int pageNumber = QueryConstants.StartingPage,
-    int pageCount = QueryConstants.DefaultPageCount
-  )
+  public async Task<PaginatedList<RedLowNetworkUserCatalogueModel>>
+    GetRedLowNetworkUserCatalogues(
+      string title,
+      int pageNumber = QueryConstants.StartingPage,
+      int pageCount = QueryConstants.DefaultPageCount
+    )
   {
     var filtered = context.NetworkUserCatalogues
       .OfType<RedLowNetworkUserCatalogueEntity>()
@@ -62,11 +67,12 @@ public class OzdsLocationModelQueries : IOzdsQueries
       .ToPaginatedList(count);
   }
 
-  public async Task<PaginatedList<BlueLowNetworkUserCatalogueModel>> GetBlueLowNetworkUserCatalogues(
-    string title,
-    int pageNumber = QueryConstants.StartingPage,
-    int pageCount = QueryConstants.DefaultPageCount
-  )
+  public async Task<PaginatedList<BlueLowNetworkUserCatalogueModel>>
+    GetBlueLowNetworkUserCatalogues(
+      string title,
+      int pageNumber = QueryConstants.StartingPage,
+      int pageCount = QueryConstants.DefaultPageCount
+    )
   {
     var filtered = context.NetworkUserCatalogues
       .OfType<BlueLowNetworkUserCatalogueEntity>()

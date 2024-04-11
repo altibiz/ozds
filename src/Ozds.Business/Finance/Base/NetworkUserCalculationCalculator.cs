@@ -17,7 +17,8 @@ public abstract class NetworkUserCalculationCalculator<T> :
   public NetworkUserCalculationModel Calculate(
     NetworkUserCalculationBasisModel calculationBasis)
   {
-    var usageCalculation = CalculateForNetworkUser((T)calculationBasis.UsageNetworkUserCatalogue,
+    var usageCalculation = CalculateForNetworkUser(
+      (T)calculationBasis.UsageNetworkUserCatalogue,
       calculationBasis);
 
     return usageCalculation;

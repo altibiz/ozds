@@ -10,8 +10,7 @@ public abstract class AggregateUpserter<TModel, TEntity> : IAggregateUpserter
   where TEntity : class, IAggregateEntity
 {
   protected abstract Expression<Func<TEntity, TEntity, TEntity>>
-    UpsertConcreteEntity
-  { get; }
+    UpsertConcreteEntity { get; }
 
   public bool CanUpsertModel(Type modelType)
   {

@@ -24,24 +24,29 @@ public class NetworkUserCatalogueModelEntityConverter : ModelEntityConverter<
 
 public static class NetworkUserCatalogueModelEntityConverterExtensions
 {
-  public static NetworkUserCatalogueEntity ToEntity(this NetworkUserCatalogueModel model)
+  public static NetworkUserCatalogueEntity ToEntity(
+    this NetworkUserCatalogueModel model)
   {
-    if (model is RedLowNetworkUserCatalogueModel redLowNetworkUserCatalogueModel)
+    if (model is RedLowNetworkUserCatalogueModel
+        redLowNetworkUserCatalogueModel)
     {
       return redLowNetworkUserCatalogueModel.ToEntity();
     }
 
-    if (model is BlueLowNetworkUserCatalogueModel blueLowNetworkUserCatalogueModel)
+    if (model is BlueLowNetworkUserCatalogueModel
+        blueLowNetworkUserCatalogueModel)
     {
       return blueLowNetworkUserCatalogueModel.ToEntity();
     }
 
-    if (model is WhiteLowNetworkUserCatalogueModel whiteLowNetworkUserCatalogueModel)
+    if (model is WhiteLowNetworkUserCatalogueModel
+        whiteLowNetworkUserCatalogueModel)
     {
       return whiteLowNetworkUserCatalogueModel.ToEntity();
     }
 
-    if (model is WhiteMediumNetworkUserCatalogueModel whiteMediumNetworkUserCatalogueModel)
+    if (model is WhiteMediumNetworkUserCatalogueModel
+        whiteMediumNetworkUserCatalogueModel)
     {
       return whiteMediumNetworkUserCatalogueModel.ToEntity();
     }
@@ -51,24 +56,29 @@ public static class NetworkUserCatalogueModelEntityConverterExtensions
     );
   }
 
-  public static NetworkUserCatalogueModel ToModel(this NetworkUserCatalogueEntity entity)
+  public static NetworkUserCatalogueModel ToModel(
+    this NetworkUserCatalogueEntity entity)
   {
-    if (entity is RedLowNetworkUserCatalogueEntity redLowNetworkUserCatalogueEntity)
+    if (entity is RedLowNetworkUserCatalogueEntity
+        redLowNetworkUserCatalogueEntity)
     {
       return redLowNetworkUserCatalogueEntity.ToModel();
     }
 
-    if (entity is BlueLowNetworkUserCatalogueEntity blueLowNetworkUserCatalogueEntity)
+    if (entity is BlueLowNetworkUserCatalogueEntity
+        blueLowNetworkUserCatalogueEntity)
     {
       return blueLowNetworkUserCatalogueEntity.ToModel();
     }
 
-    if (entity is WhiteLowNetworkUserCatalogueEntity whiteLowNetworkUserCatalogueEntity)
+    if (entity is WhiteLowNetworkUserCatalogueEntity
+        whiteLowNetworkUserCatalogueEntity)
     {
       return whiteLowNetworkUserCatalogueEntity.ToModel();
     }
 
-    if (entity is WhiteMediumNetworkUserCatalogueEntity whiteMediumNetworkUserCatalogueEntity)
+    if (entity is WhiteMediumNetworkUserCatalogueEntity
+        whiteMediumNetworkUserCatalogueEntity)
     {
       return whiteMediumNetworkUserCatalogueEntity.ToModel();
     }

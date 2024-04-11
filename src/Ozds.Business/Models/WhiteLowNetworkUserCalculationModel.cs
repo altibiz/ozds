@@ -8,17 +8,23 @@ namespace Ozds.Business.Models;
 public class WhiteLowNetworkUserCalculationModel : NetworkUserCalculationModel
 {
   [Required]
-  public required ActiveEnergyTotalImportT1CalculationItemModel ActiveEnergyTotalImportT1 { get; set; } = default!;
+  public required ActiveEnergyTotalImportT1CalculationItemModel
+    ActiveEnergyTotalImportT1 { get; set; } = default!;
 
   [Required]
-  public required ActiveEnergyTotalImportT2CalculationItemModel ActiveEnergyTotalImportT2 { get; set; } = default!;
+  public required ActiveEnergyTotalImportT2CalculationItemModel
+    ActiveEnergyTotalImportT2 { get; set; } = default!;
 
   [Required]
-  public required ReactiveEnergyTotalRampedT0CalculationItemModel ReactiveEnergyTotalRampedT0 { get; set; } = default!;
+  public required ReactiveEnergyTotalRampedT0CalculationItemModel
+    ReactiveEnergyTotalRampedT0 { get; set; } = default!;
 
   [Required] public required decimal MeterFeePrice_EUR { get; set; }
 
-  public override string Kind => "White Low Voltage";
+  public override string Kind
+  {
+    get { return "White Low Voltage"; }
+  }
 
   public override SpanningMeasure<decimal> ActiveEnergyAmount_Wh
   {
@@ -97,7 +103,8 @@ public class WhiteLowNetworkUserCalculationModel : NetworkUserCalculationModel
     {
       return new UnaryTariffMeasure<decimal>(
         new AnyDuplexMeasure<decimal>(
-          new SinglePhasicMeasure<decimal>(ReactiveEnergyTotalRampedT0.Price_EUR)
+          new SinglePhasicMeasure<decimal>(
+            ReactiveEnergyTotalRampedT0.Price_EUR)
         )
       );
     }

@@ -13,15 +13,15 @@ public abstract class
   RepeatingCsvResourceMeasurementGenerator<TMeasurement> : IMeasurementGenerator
   where TMeasurement : IMeasurementRecord
 {
-  private readonly ResourceCache _resources;
-
   private readonly AgnosticMeasurementRecordPushRequestConverter _converter;
+  private readonly ResourceCache _resources;
 
   public RepeatingCsvResourceMeasurementGenerator(
     IServiceProvider serviceProvider)
   {
     _resources = serviceProvider.GetRequiredService<ResourceCache>();
-    _converter = serviceProvider.GetRequiredService<AgnosticMeasurementRecordPushRequestConverter>();
+    _converter = serviceProvider
+      .GetRequiredService<AgnosticMeasurementRecordPushRequestConverter>();
   }
 
   protected abstract string CsvResourceName { get; }

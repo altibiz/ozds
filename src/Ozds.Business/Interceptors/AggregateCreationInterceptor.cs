@@ -1,12 +1,8 @@
-using System.Linq.Expressions;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using Ozds.Business.Aggregation.Abstractions;
 using Ozds.Business.Aggregation.Agnostic;
-using Ozds.Business.Conversion.Abstractions;
 using Ozds.Business.Conversion.Agnostic;
-using Ozds.Business.Conversion.Base;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Enums;
 using Ozds.Data;
@@ -87,24 +83,25 @@ public class AggregateCreationInterceptor : ServedSaveChangesInterceptor
     foreach (var group in aggregates)
     {
       var enumerableCastMethod = typeof(Enumerable)
-        .GetMethod(nameof(Enumerable.Cast),
-          BindingFlags.Public | BindingFlags.Static)
-        ?.MakeGenericMethod(group.Key)
-        ?? throw new InvalidOperationException(
-          $"Cannot find method {nameof(Enumerable.Cast)}.");
+                                   .GetMethod(nameof(Enumerable.Cast),
+                                     BindingFlags.Public | BindingFlags.Static)
+                                   ?.MakeGenericMethod(group.Key)
+                                 ?? throw new InvalidOperationException(
+                                   $"Cannot find method {nameof(Enumerable.Cast)}.");
       var upsertAggregatesMethod = typeof(AggregateCreationInterceptor)
-        .GetMethod(nameof(UpsertAggregates),
-          BindingFlags.NonPublic | BindingFlags.Static)
-        ?.MakeGenericMethod(group.Key)
-        ?? throw new InvalidOperationException(
-          $"Cannot find method {nameof(UpsertAggregates)}.");
-      var result = upsertAggregatesMethod.Invoke(null, new object[]
+                                     .GetMethod(nameof(UpsertAggregates),
+                                       BindingFlags.NonPublic |
+                                       BindingFlags.Static)
+                                     ?.MakeGenericMethod(group.Key)
+                                   ?? throw new InvalidOperationException(
+                                     $"Cannot find method {nameof(UpsertAggregates)}.");
+      var result = upsertAggregatesMethod.Invoke(null, new[]
       {
-          aggregateContext,
-          enumerableCastMethod.Invoke(null, new object[] { group })
-            ?? throw new InvalidOperationException(
-              $"Cannot cast group to {group.Key.Name}."),
-          aggregateUpserter
+        aggregateContext,
+        enumerableCastMethod.Invoke(null, new object[] { group })
+        ?? throw new InvalidOperationException(
+          $"Cannot cast group to {group.Key.Name}."),
+        aggregateUpserter
       });
 
       if (result is Task task)

@@ -9,9 +9,11 @@ namespace Ozds.Business.Finance;
 
 public class NetworkUserInvoiceIssuer
 {
-  private readonly AgnosticNetworkUserCalculationCalculator _calculationCalculator;
+  private readonly AgnosticNetworkUserCalculationCalculator
+    _calculationCalculator;
 
-  public NetworkUserInvoiceIssuer(AgnosticNetworkUserCalculationCalculator calculationCalculator)
+  public NetworkUserInvoiceIssuer(
+    AgnosticNetworkUserCalculationCalculator calculationCalculator)
   {
     _calculationCalculator = calculationCalculator;
   }

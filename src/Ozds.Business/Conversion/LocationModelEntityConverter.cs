@@ -34,7 +34,8 @@ public static class LocationModelEntityConverterExtensions
       IsDeleted = entity.IsDeleted,
       DeletedOn = entity.DeletedOn,
       DeletedById = entity.DeletedById,
-      WhiteMediumNetworkUserCatalogueId = entity.WhiteMediumNetworkUserCatalogueId,
+      WhiteMediumNetworkUserCatalogueId =
+        entity.WhiteMediumNetworkUserCatalogueId,
       BlueLowNetworkUserCatalogueId = entity.BlueLowNetworkUserCatalogueId,
       WhiteLowNetworkUserCatalogueId = entity.WhiteLowNetworkUserCatalogueId,
       RedLowNetworkUserCatalogueId = entity.RedLowNetworkUserCatalogueId,
@@ -55,7 +56,8 @@ public static class LocationModelEntityConverterExtensions
       IsDeleted = model.IsDeleted,
       DeletedOn = model.DeletedOn,
       DeletedById = model.DeletedById,
-      WhiteMediumNetworkUserCatalogueId = model.WhiteMediumNetworkUserCatalogueId,
+      WhiteMediumNetworkUserCatalogueId =
+        model.WhiteMediumNetworkUserCatalogueId,
       BlueLowNetworkUserCatalogueId = model.BlueLowNetworkUserCatalogueId,
       WhiteLowNetworkUserCatalogueId = model.WhiteLowNetworkUserCatalogueId,
       RedLowNetworkUserCatalogueId = model.RedLowNetworkUserCatalogueId,

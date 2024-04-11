@@ -10,7 +10,8 @@ public partial class OzdsDbContext : DbContext
 
   public DbSet<LocationEntity> Locations { get; set; } = default!;
 
-  public DbSet<NetworkUserCatalogueEntity> NetworkUserCatalogues { get; set; } = default!;
+  public DbSet<NetworkUserCatalogueEntity> NetworkUserCatalogues { get; set; } =
+    default!;
 
   public DbSet<NetworkUserEntity> NetworkUsers { get; set; } = default!;
 

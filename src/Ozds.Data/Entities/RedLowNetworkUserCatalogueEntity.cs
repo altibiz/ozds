@@ -25,12 +25,14 @@ public class
   {
     builder
       .Property(
-        nameof(RedLowNetworkUserCatalogueEntity.ActiveEnergyTotalImportT1Price_EUR))
+        nameof(RedLowNetworkUserCatalogueEntity
+          .ActiveEnergyTotalImportT1Price_EUR))
       .HasColumnName("active_energy_total_import_t1_price_eur");
 
     builder
       .Property(
-        nameof(RedLowNetworkUserCatalogueEntity.ActiveEnergyTotalImportT2Price_EUR))
+        nameof(RedLowNetworkUserCatalogueEntity
+          .ActiveEnergyTotalImportT2Price_EUR))
       .HasColumnName("active_energy_total_import_t2_price_eur");
 
     builder

@@ -5,7 +5,8 @@ namespace Ozds.Business.Models;
 
 public class LocationModel : AuditableModel
 {
-  [Required] public required string WhiteMediumNetworkUserCatalogueId { get; set; }
+  [Required]
+  public required string WhiteMediumNetworkUserCatalogueId { get; set; }
 
   [Required] public required string BlueLowNetworkUserCatalogueId { get; set; }
 

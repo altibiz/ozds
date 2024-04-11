@@ -18,30 +18,39 @@ public class AgnosticAggregateUpserter
   public Expression<Func<TEntity, TEntity, TEntity>> UpsertEntity<TEntity>()
     where TEntity : class, IAggregateEntity
   {
-    return UpsertEntityAgnostic(typeof(TEntity)) as Expression<Func<TEntity, TEntity, TEntity>>
-      ?? throw new InvalidOperationException($"No upserter found for entity {typeof(TEntity)}.");
+    return UpsertEntityAgnostic(typeof(TEntity)) as
+             Expression<Func<TEntity, TEntity, TEntity>>
+           ?? throw new InvalidOperationException(
+             $"No upserter found for entity {typeof(TEntity)}.");
   }
 
   public LambdaExpression UpsertEntityAgnostic(Type entityType)
   {
     var upserters = _serviceProvider.GetServices<IAggregateUpserter>();
-    var upserter = upserters.FirstOrDefault(upserter => upserter.CanUpsertEntity(entityType));
+    var upserter =
+      upserters.FirstOrDefault(upserter =>
+        upserter.CanUpsertEntity(entityType));
     return upserter?.UpsertEntity
-      ?? throw new InvalidOperationException($"No upserter found for entity {entityType}.");
+           ?? throw new InvalidOperationException(
+             $"No upserter found for entity {entityType}.");
   }
 
   public TModel UpsertModel<TModel>(TModel lhs, TModel rhs)
     where TModel : class, IAggregate
   {
     return UpsertModelAgnostic(lhs, rhs) as TModel
-      ?? throw new InvalidOperationException($"No upserter found for model {typeof(TModel)}.");
+           ?? throw new InvalidOperationException(
+             $"No upserter found for model {typeof(TModel)}.");
   }
 
   public IAggregate UpsertModelAgnostic(IAggregate lhs, IAggregate rhs)
   {
     var upserters = _serviceProvider.GetServices<IAggregateUpserter>();
-    var upserter = upserters.FirstOrDefault(upserter => upserter.CanUpsertModel(lhs.GetType()) && upserter.CanUpsertModel(rhs.GetType()));
+    var upserter = upserters.FirstOrDefault(upserter =>
+      upserter.CanUpsertModel(lhs.GetType()) &&
+      upserter.CanUpsertModel(rhs.GetType()));
     return upserter?.UpsertModel(lhs, rhs)
-      ?? throw new InvalidOperationException($"No upserter found for models {lhs.GetType()} and {rhs.GetType()}.");
+           ?? throw new InvalidOperationException(
+             $"No upserter found for models {lhs.GetType()} and {rhs.GetType()}.");
   }
 }

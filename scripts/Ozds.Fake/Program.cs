@@ -28,7 +28,8 @@ while (true)
     now = DateTimeOffset.UtcNow;
 
     var pushClient = scope.ServiceProvider.GetRequiredService<OzdsPushClient>();
-    var generator = scope.ServiceProvider.GetRequiredService<AgnosticMeasurementGenerator>();
+    var generator = scope.ServiceProvider
+      .GetRequiredService<AgnosticMeasurementGenerator>();
 
     var measurements = new List<MessengerPushRequestMeasurement>();
     foreach (var meterId in options.MeterIds)

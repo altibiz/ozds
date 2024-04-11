@@ -15,7 +15,7 @@ public abstract class AggregateModel : IAggregate
   [Required]
   public required DateTimeOffset Timestamp
   {
-    get => _timestamp.ToUniversalTime();
+    get { return _timestamp.ToUniversalTime(); }
     set
     {
       _ = Interval switch

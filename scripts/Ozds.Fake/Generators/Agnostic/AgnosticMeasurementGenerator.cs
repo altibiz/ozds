@@ -19,8 +19,10 @@ public class AgnosticMeasurementGenerator
   )
   {
     var generators = _serviceProvider.GetServices<IMeasurementGenerator>();
-    var generator = generators.FirstOrDefault(g => g.CanGenerateMeasurementsFor(meterId));
+    var generator =
+      generators.FirstOrDefault(g => g.CanGenerateMeasurementsFor(meterId));
     return generator?.GenerateMeasurements(dateFrom, dateTo, meterId)
-      ?? throw new InvalidOperationException($"No generator found for meter {meterId}");
+           ?? throw new InvalidOperationException(
+             $"No generator found for meter {meterId}");
   }
 }

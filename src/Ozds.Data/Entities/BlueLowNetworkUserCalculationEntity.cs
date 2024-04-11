@@ -11,8 +11,12 @@ public class
   BlueLowNetworkUserCatalogueEntity>
 {
 #pragma warning disable CA1707
-  public ActiveEnergyTotalImportT0CalculationItemEntity ActiveEnergyTotalImportT0 { get; set; } = default!;
-  public ReactiveEnergyTotalRampedT0CalculationItemEntity ReactiveEnergyTotalRampedT0 { get; set; } = default!;
+  public ActiveEnergyTotalImportT0CalculationItemEntity
+    ActiveEnergyTotalImportT0 { get; set; } = default!;
+
+  public ReactiveEnergyTotalRampedT0CalculationItemEntity
+    ReactiveEnergyTotalRampedT0 { get; set; } = default!;
+
   public decimal MeterFeePrice_EUR { get; set; }
 #pragma warning restore CA1707
 }
@@ -26,11 +30,13 @@ public class
     EntityTypeBuilder<BlueLowNetworkUserCalculationEntity> builder)
   {
     builder
-      .ComplexProperty(nameof(BlueLowNetworkUserCalculationEntity.ActiveEnergyTotalImportT0))
+      .ComplexProperty(nameof(BlueLowNetworkUserCalculationEntity
+        .ActiveEnergyTotalImportT0))
       .ActiveEnergyImportCalculationItem();
 
     builder
-      .ComplexProperty(nameof(BlueLowNetworkUserCalculationEntity.ReactiveEnergyTotalRampedT0))
+      .ComplexProperty(nameof(BlueLowNetworkUserCalculationEntity
+        .ReactiveEnergyTotalRampedT0))
       .ReactiveEnergyTotalRampedT0CalculationItem();
 
     builder

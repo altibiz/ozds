@@ -18,19 +18,23 @@ public static class ActivePowerTotalImportT1PeakCalculationItemEntityExtensions
   )
   {
     builder
-      .Property(nameof(ActivePowerTotalImportT1PeakCalculationItemEntity.Peak_W))
-      .HasColumnName($"active_power_total_import_t1_peak_w");
+      .Property(
+        nameof(ActivePowerTotalImportT1PeakCalculationItemEntity.Peak_W))
+      .HasColumnName("active_power_total_import_t1_peak_w");
 
     builder
-      .Property(nameof(ActivePowerTotalImportT1PeakCalculationItemEntity.Amount_W))
-      .HasColumnName($"active_power_total_import_t1_amount_w");
+      .Property(nameof(ActivePowerTotalImportT1PeakCalculationItemEntity
+        .Amount_W))
+      .HasColumnName("active_power_total_import_t1_amount_w");
 
     builder
-      .Property(nameof(ActivePowerTotalImportT1PeakCalculationItemEntity.Price_EUR))
-      .HasColumnName($"active_power_total_import_t1_price_eur");
+      .Property(nameof(ActivePowerTotalImportT1PeakCalculationItemEntity
+        .Price_EUR))
+      .HasColumnName("active_power_total_import_t1_price_eur");
 
     builder
-      .Property(nameof(ActivePowerTotalImportT1PeakCalculationItemEntity.Total_EUR))
-      .HasColumnName($"active_power_total_import_t1_total_eur");
+      .Property(nameof(ActivePowerTotalImportT1PeakCalculationItemEntity
+        .Total_EUR))
+      .HasColumnName("active_power_total_import_t1_total_eur");
   }
 }

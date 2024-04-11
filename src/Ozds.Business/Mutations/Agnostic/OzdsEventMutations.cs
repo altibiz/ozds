@@ -47,6 +47,7 @@ public class OzdsEventMutations : IOzdsMutations
     {
       throw new ValidationException(validationResults.First().ErrorMessage);
     }
+
     _context.Add(_modelEntityConverter.ToEntity(@event));
   }
 }

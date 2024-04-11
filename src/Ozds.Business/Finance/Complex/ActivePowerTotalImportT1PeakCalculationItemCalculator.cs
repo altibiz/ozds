@@ -5,9 +5,11 @@ using Ozds.Business.Models.Composite;
 
 namespace Ozds.Business.Finance.Complex;
 
-public class ActivePowerTotalImportT1PeakCalculationItemCalculator : CalculationItemCalculator<ActivePowerTotalImportT1PeakCalculationItemModel>
+public class ActivePowerTotalImportT1PeakCalculationItemCalculator :
+  CalculationItemCalculator<ActivePowerTotalImportT1PeakCalculationItemModel>
 {
-  protected override ActivePowerTotalImportT1PeakCalculationItemModel CalculateConcrete(CalculationItemBasisModel calculationBasis)
+  protected override ActivePowerTotalImportT1PeakCalculationItemModel
+    CalculateConcrete(CalculationItemBasisModel calculationBasis)
   {
     var aggregates = calculationBasis.Aggregates
       .OrderBy(a => a.Timestamp)
@@ -15,7 +17,8 @@ public class ActivePowerTotalImportT1PeakCalculationItemCalculator : Calculation
 
     var amount = new PeakSpanningMeasure<decimal>(
       aggregates
-        .MaxBy(aggregate => aggregate.ActivePower_W.TariffBinary.T1.DuplexImport.PhaseSum)
+        .MaxBy(aggregate =>
+          aggregate.ActivePower_W.TariffBinary.T1.DuplexImport.PhaseSum)
         !.ActivePower_W.ConvertPrimitiveTo<decimal>()
     );
 

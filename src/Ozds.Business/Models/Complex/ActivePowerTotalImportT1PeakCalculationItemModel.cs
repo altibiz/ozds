@@ -4,16 +4,16 @@ using Ozds.Business.Models.Base;
 
 namespace Ozds.Business.Models.Complex;
 
-public class ActivePowerTotalImportT1PeakCalculationItemModel : CalculationItemModel
+public class
+  ActivePowerTotalImportT1PeakCalculationItemModel : CalculationItemModel
 {
-  [Required]
-  public required decimal Peak_W { get; set; }
-  [Required]
-  public required decimal Amount_W { get; set; }
-  [Required]
-  public required decimal Price_EUR { get; set; }
-  [Required]
-  public required decimal Total_EUR { get; set; }
+  [Required] public required decimal Peak_W { get; set; }
+
+  [Required] public required decimal Amount_W { get; set; }
+
+  [Required] public required decimal Price_EUR { get; set; }
+
+  [Required] public required decimal Total_EUR { get; set; }
 
   public override SpanningMeasure<decimal> Amount
   {

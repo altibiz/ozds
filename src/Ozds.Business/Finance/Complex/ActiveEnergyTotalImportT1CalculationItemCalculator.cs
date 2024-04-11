@@ -5,16 +5,19 @@ using Ozds.Business.Models.Composite;
 
 namespace Ozds.Business.Finance.Complex;
 
-public class ActiveEnergyTotalImportT1CalculationItemCalculator : CalculationItemCalculator<ActiveEnergyTotalImportT1CalculationItemModel>
+public class ActiveEnergyTotalImportT1CalculationItemCalculator :
+  CalculationItemCalculator<ActiveEnergyTotalImportT1CalculationItemModel>
 {
-  protected override ActiveEnergyTotalImportT1CalculationItemModel CalculateConcrete(CalculationItemBasisModel calculationBasis)
+  protected override ActiveEnergyTotalImportT1CalculationItemModel
+    CalculateConcrete(CalculationItemBasisModel calculationBasis)
   {
     var aggregates = calculationBasis.Aggregates
       .OrderBy(a => a.Timestamp)
       .ToList();
 
     var amount = new MinMaxSpanningMeasure<decimal>(
-      aggregates.FirstOrDefault()!.ActiveEnergy_Wh.ConvertPrimitiveTo<decimal>(),
+      aggregates.FirstOrDefault()!.ActiveEnergy_Wh
+        .ConvertPrimitiveTo<decimal>(),
       aggregates.LastOrDefault()!.ActiveEnergy_Wh.ConvertPrimitiveTo<decimal>()
     );
 
@@ -25,7 +28,7 @@ public class ActiveEnergyTotalImportT1CalculationItemCalculator : CalculationIte
       Amount_Wh = amount.SpanDiff.TariffBinary.T1.DuplexImport.PhaseSum,
       Price_EUR = calculationBasis.Price,
       Total_EUR = amount.SpanDiff.TariffBinary.T1.DuplexImport.PhaseSum
-        * calculationBasis.Price
+                  * calculationBasis.Price
     };
   }
 }

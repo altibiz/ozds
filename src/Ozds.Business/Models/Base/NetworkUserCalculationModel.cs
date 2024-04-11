@@ -22,9 +22,11 @@ public abstract class NetworkUserCalculationModel : INetworkUserCalculation
   [Required]
   public required string MeasurementLocationId { get; set; } = default!;
 
-  [Required] public required string UsageNetworkUserCatalogueId { get; set; } = default!;
+  [Required]
+  public required string UsageNetworkUserCatalogueId { get; set; } = default!;
 
-  [Required] public required string SupplyRegulatoryCatalogueId { get; set; } = default!;
+  [Required]
+  public required string SupplyRegulatoryCatalogueId { get; set; } = default!;
 
   [Required]
   public required string NetworkUserInvoiceId { get; set; } = default!;
@@ -33,14 +35,21 @@ public abstract class NetworkUserCalculationModel : INetworkUserCalculation
 
   [Required]
   public required NetworkUserMeasurementLocationModel
-    ArchivedMeasurementLocation
-  { get; set; } = default!;
+    ArchivedMeasurementLocation { get; set; } = default!;
 
   [Required]
-  public required NetworkUserCatalogueModel ArchivedUsageNetworkUserCatalogue { get; set; } = default!;
+  public required NetworkUserCatalogueModel ArchivedUsageNetworkUserCatalogue
+  {
+    get;
+    set;
+  } = default!;
 
   [Required]
-  public required RegulatoryCatalogueModel ArchivedSupplyRegulatoryCatalogue { get; set; } = default!;
+  public required RegulatoryCatalogueModel ArchivedSupplyRegulatoryCatalogue
+  {
+    get;
+    set;
+  } = default!;
 
   public abstract string Kind { get; }
 

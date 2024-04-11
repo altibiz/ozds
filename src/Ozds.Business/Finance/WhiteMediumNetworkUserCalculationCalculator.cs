@@ -8,12 +8,14 @@ using Ozds.Business.Models.Composite;
 namespace Ozds.Business.Finance;
 
 public class
-  WhiteMediumNetworkUserCalculationCalculator : NetworkUserCalculationCalculator<
+  WhiteMediumNetworkUserCalculationCalculator : NetworkUserCalculationCalculator
+<
   WhiteMediumNetworkUserCatalogueModel>
 {
   public readonly AgnosticCalculationItemCalculator _calculationItemCalculator;
 
-  public WhiteMediumNetworkUserCalculationCalculator(AgnosticCalculationItemCalculator calculationItemCalculator)
+  public WhiteMediumNetworkUserCalculationCalculator(
+    AgnosticCalculationItemCalculator calculationItemCalculator)
   {
     _calculationItemCalculator = calculationItemCalculator;
   }
@@ -26,20 +28,23 @@ public class
     var initial = new WhiteMediumNetworkUserCalculationModel
     {
       Id = default!,
-      Title = $"${catalogue.Title} calculation for {calculationBasis.NetworkUser.Title} at {calculationBasis.Location.Title}",
+      Title =
+        $"${catalogue.Title} calculation for {calculationBasis.NetworkUser.Title} at {calculationBasis.Location.Title}",
       MeterId = calculationBasis.Meter.Id,
       ToDate = calculationBasis.ToDate,
       FromDate = calculationBasis.FromDate,
       NetworkUserInvoiceId = calculationBasis.NetworkUser.Id,
       UsageNetworkUserCatalogueId = catalogue.Id,
-      SupplyRegulatoryCatalogueId = calculationBasis.SupplyRegulatoryCatalogue.Id,
+      SupplyRegulatoryCatalogueId =
+        calculationBasis.SupplyRegulatoryCatalogue.Id,
       MeasurementLocationId = calculationBasis.MeasurementLocation.Id,
       IssuedOn = DateTimeOffset.UtcNow,
       IssuedById = default!,
       ArchivedMeter = calculationBasis.Meter,
       ArchivedMeasurementLocation = calculationBasis.MeasurementLocation,
       ArchivedUsageNetworkUserCatalogue = catalogue,
-      ArchivedSupplyRegulatoryCatalogue = calculationBasis.SupplyRegulatoryCatalogue,
+      ArchivedSupplyRegulatoryCatalogue =
+        calculationBasis.SupplyRegulatoryCatalogue,
       ActiveEnergyTotalImportT1 = _calculationItemCalculator
         .Calculate<ActiveEnergyTotalImportT1CalculationItemModel>(
           new CalculationItemBasisModel(
@@ -68,7 +73,7 @@ public class
             catalogue.ReactiveEnergyTotalRampedT0Price_EUR
           )
         ),
-      MeterFeePrice_EUR = catalogue.MeterFeePrice_EUR,
+      MeterFeePrice_EUR = catalogue.MeterFeePrice_EUR
     };
 
     return initial;

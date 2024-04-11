@@ -4,8 +4,10 @@ using Ozds.Data.Entities.Complex;
 
 namespace Ozds.Business.Conversion.Complex;
 
-public class ActivePowerTotalImportT1PeakCalculationItemModelEntityConverter : ModelEntityConverter<
-  ActivePowerTotalImportT1PeakCalculationItemModel, ActivePowerTotalImportT1PeakCalculationItemEntity>
+public class ActivePowerTotalImportT1PeakCalculationItemModelEntityConverter :
+  ModelEntityConverter<
+    ActivePowerTotalImportT1PeakCalculationItemModel,
+    ActivePowerTotalImportT1PeakCalculationItemEntity>
 {
   protected override ActivePowerTotalImportT1PeakCalculationItemEntity ToEntity(
     ActivePowerTotalImportT1PeakCalculationItemModel model)
@@ -20,9 +22,11 @@ public class ActivePowerTotalImportT1PeakCalculationItemModelEntityConverter : M
   }
 }
 
-public static class ActivePowerTotalImportT1PeakCalculationItemModelEntityConverterExtensions
+public static class
+  ActivePowerTotalImportT1PeakCalculationItemModelEntityConverterExtensions
 {
-  public static ActivePowerTotalImportT1PeakCalculationItemEntity ToEntity(this ActivePowerTotalImportT1PeakCalculationItemModel model)
+  public static ActivePowerTotalImportT1PeakCalculationItemEntity ToEntity(
+    this ActivePowerTotalImportT1PeakCalculationItemModel model)
   {
     return new ActivePowerTotalImportT1PeakCalculationItemEntity
     {
@@ -33,7 +37,8 @@ public static class ActivePowerTotalImportT1PeakCalculationItemModelEntityConver
     };
   }
 
-  public static ActivePowerTotalImportT1PeakCalculationItemModel ToModel(this ActivePowerTotalImportT1PeakCalculationItemEntity entity)
+  public static ActivePowerTotalImportT1PeakCalculationItemModel ToModel(
+    this ActivePowerTotalImportT1PeakCalculationItemEntity entity)
   {
     return new ActivePowerTotalImportT1PeakCalculationItemModel
     {
@@ -44,4 +49,3 @@ public static class ActivePowerTotalImportT1PeakCalculationItemModelEntityConver
     };
   }
 }
-

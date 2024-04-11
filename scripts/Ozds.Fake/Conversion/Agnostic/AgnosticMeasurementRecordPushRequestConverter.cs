@@ -8,7 +8,8 @@ public class AgnosticMeasurementRecordPushRequestConverter
 {
   private readonly IServiceProvider _serviceProvider;
 
-  public AgnosticMeasurementRecordPushRequestConverter(IServiceProvider serviceProvider)
+  public AgnosticMeasurementRecordPushRequestConverter(
+    IServiceProvider serviceProvider)
   {
     _serviceProvider = serviceProvider;
   }
@@ -21,6 +22,7 @@ public class AgnosticMeasurementRecordPushRequestConverter
       .FirstOrDefault(c => c.CanConvertToPushRequest(record));
 
     return converter?.ConvertToPushRequest(record)
-      ?? throw new InvalidOperationException($"No converter found for {record.GetType()}");
+           ?? throw new InvalidOperationException(
+             $"No converter found for {record.GetType()}");
   }
 }

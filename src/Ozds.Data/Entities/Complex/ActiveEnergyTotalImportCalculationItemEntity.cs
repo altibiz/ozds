@@ -35,9 +35,15 @@ public static class ActiveEnergyImportCalculationItemEntityExtensions
   {
     var tariffColumnPart = builder.Metadata switch
     {
-      var metadata when metadata.ClrType == typeof(ActiveEnergyTotalImportT0CalculationItemEntity) => "t0",
-      var metadata when metadata.ClrType == typeof(ActiveEnergyTotalImportT1CalculationItemEntity) => "t1",
-      var metadata when metadata.ClrType == typeof(ActiveEnergyTotalImportT2CalculationItemEntity) => "t2",
+      var metadata when metadata.ClrType ==
+                        typeof(ActiveEnergyTotalImportT0CalculationItemEntity)
+        => "t0",
+      var metadata when metadata.ClrType ==
+                        typeof(ActiveEnergyTotalImportT1CalculationItemEntity)
+        => "t1",
+      var metadata when metadata.ClrType ==
+                        typeof(ActiveEnergyTotalImportT2CalculationItemEntity)
+        => "t2",
       _ => throw new InvalidOperationException("Unknown tariff type")
     };
 
@@ -51,14 +57,17 @@ public static class ActiveEnergyImportCalculationItemEntityExtensions
 
     builder
       .Property(nameof(ActiveEnergyTotalImportCalculationItemEntity.Amount_Wh))
-      .HasColumnName($"active_energy_total_import_{tariffColumnPart}_amount_wh");
+      .HasColumnName(
+        $"active_energy_total_import_{tariffColumnPart}_amount_wh");
 
     builder
       .Property(nameof(ActiveEnergyTotalImportCalculationItemEntity.Price_EUR))
-      .HasColumnName($"active_energy_total_import_{tariffColumnPart}_price_eur");
+      .HasColumnName(
+        $"active_energy_total_import_{tariffColumnPart}_price_eur");
 
     builder
       .Property(nameof(ActiveEnergyTotalImportCalculationItemEntity.Total_EUR))
-      .HasColumnName($"active_energy_total_import_{tariffColumnPart}_total_eur");
+      .HasColumnName(
+        $"active_energy_total_import_{tariffColumnPart}_total_eur");
   }
 }

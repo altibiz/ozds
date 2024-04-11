@@ -24,7 +24,8 @@ public class NetworkUserMeasurementLocationEntity : MeasurementLocationEntity
     init { _catalogueId = long.Parse(value); }
   }
 
-  public virtual NetworkUserCatalogueEntity NetworkUserCatalogue { get; set; } = default!;
+  public virtual NetworkUserCatalogueEntity NetworkUserCatalogue { get; set; } =
+    default!;
 }
 
 public class
@@ -49,7 +50,8 @@ public class
       .Property("_networkUserId")
       .HasColumnName("network_user_id");
 
-    builder.Ignore(nameof(NetworkUserMeasurementLocationEntity.NetworkUserCatalogueId));
+    builder.Ignore(nameof(NetworkUserMeasurementLocationEntity
+      .NetworkUserCatalogueId));
     builder
       .Property("_catalogueId")
       .HasColumnName("catalogue_id");

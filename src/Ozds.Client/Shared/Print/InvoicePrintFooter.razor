@@ -5,36 +5,35 @@
 </p>
 <table class="info-table" style="margin-top: 0.8rem; width: 100%;">
   <colgroup>
-    <col style="width: 71%" />
-    <col style="width: 28%" />
+    <col style="width: 71%"/>
+    <col style="width: 28%"/>
   </colgroup>
   <thead>
-    <tr>
-      <th style="text-align: left;">Operater: HELB d.o.o.</th>
-      <th></th>
-    </tr>
+  <tr>
+    <th style="text-align: left;">Operater: HELB d.o.o.</th>
+    <th></th>
+  </tr>
   </thead>
   <tbody>
-    <tr>
-      <td>Božjakovina, @(DateString(Invoice.IssuedOn))</td>
-      <td></td>
-    </tr>
-    <tr>
-      <td></td>
-      <td></td>
-    </tr>
-    <tr>
-      <td></td>
-      <td style="text-align: center;">Direktor</td>
-    </tr>
-    <tr>
-      <td></td>
-      <td style="text-align: center;">Stjepan Horvat</td>
-    </tr>
+  <tr>
+    <td>Božjakovina, @(DateString(Invoice.IssuedOn))</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td style="text-align: center;">Direktor</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td style="text-align: center;">Stjepan Horvat</td>
+  </tr>
   </tbody>
 </table>
 
 @code {
-  [Parameter]
-  public InvoiceModel Invoice { get; set; } = default!;
+  [Parameter] public InvoiceModel Invoice { get; set; } = default!;
 }

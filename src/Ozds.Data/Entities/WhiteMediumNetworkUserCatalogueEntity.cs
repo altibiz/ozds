@@ -17,8 +17,9 @@ public class WhiteMediumNetworkUserCatalogueEntity : NetworkUserCatalogueEntity
 }
 
 public class
-  WhiteMediumNetworkUserCatalogueEntityTypeConfiguration : EntityTypeConfiguration<
-  WhiteMediumNetworkUserCatalogueEntity>
+  WhiteMediumNetworkUserCatalogueEntityTypeConfiguration :
+  EntityTypeConfiguration<
+    WhiteMediumNetworkUserCatalogueEntity>
 {
   public override void Configure(
     EntityTypeBuilder<WhiteMediumNetworkUserCatalogueEntity> builder)

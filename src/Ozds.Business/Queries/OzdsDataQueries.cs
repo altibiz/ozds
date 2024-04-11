@@ -54,11 +54,12 @@ public class OzdsDataQueries : IOzdsQueries
       .ToPaginatedList(count);
   }
 
-  public async Task<PaginatedList<RedLowNetworkUserCatalogueModel>> GetRedLowNetworkUserCatalogues(
-    string title,
-    int pageNumber = QueryConstants.StartingPage,
-    int pageCount = QueryConstants.DefaultPageCount
-  )
+  public async Task<PaginatedList<RedLowNetworkUserCatalogueModel>>
+    GetRedLowNetworkUserCatalogues(
+      string title,
+      int pageNumber = QueryConstants.StartingPage,
+      int pageCount = QueryConstants.DefaultPageCount
+    )
   {
     var filtered = context.NetworkUserCatalogues
       .OfType<RedLowNetworkUserCatalogueEntity>()
@@ -74,11 +75,12 @@ public class OzdsDataQueries : IOzdsQueries
       .ToPaginatedList(count);
   }
 
-  public async Task<PaginatedList<BlueLowNetworkUserCatalogueModel>> GetBlueLowNetworkUserCatalogues(
-    string title,
-    int pageNumber = QueryConstants.StartingPage,
-    int pageCount = QueryConstants.DefaultPageCount
-  )
+  public async Task<PaginatedList<BlueLowNetworkUserCatalogueModel>>
+    GetBlueLowNetworkUserCatalogues(
+      string title,
+      int pageNumber = QueryConstants.StartingPage,
+      int pageCount = QueryConstants.DefaultPageCount
+    )
   {
     var filtered = context.NetworkUserCatalogues
       .OfType<BlueLowNetworkUserCatalogueEntity>()

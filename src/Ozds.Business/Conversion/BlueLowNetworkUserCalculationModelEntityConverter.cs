@@ -40,13 +40,17 @@ public static class BlueLowNetworkUserCalculationModelEntityConverterExtensions
       UsageNetworkUserCatalogueId = entity.UsageNetworkUserCatalogueId,
       SupplyRegulatoryCatalogueId = entity.SupplyRegulatoryCatalogueId,
       NetworkUserInvoiceId = entity.NetworkUserInvoiceId,
-      ArchivedMeasurementLocation = entity.ArchivedMeasurementLocation.ToModel(),
-      ArchivedSupplyRegulatoryCatalogue = entity.ArchivedSupplyRegulatoryCatalogue.ToModel(),
-      ArchivedUsageNetworkUserCatalogue = entity.ArchivedUsageNetworkUserCatalogue.ToModel(),
+      ArchivedMeasurementLocation =
+        entity.ArchivedMeasurementLocation.ToModel(),
+      ArchivedSupplyRegulatoryCatalogue =
+        entity.ArchivedSupplyRegulatoryCatalogue.ToModel(),
+      ArchivedUsageNetworkUserCatalogue =
+        entity.ArchivedUsageNetworkUserCatalogue.ToModel(),
       ArchivedMeter = entity.ArchivedMeter.ToModel(),
       ActiveEnergyTotalImportT0 = entity.ActiveEnergyTotalImportT0.ToModel(),
-      ReactiveEnergyTotalRampedT0 = entity.ReactiveEnergyTotalRampedT0.ToModel(),
-      MeterFeePrice_EUR = entity.MeterFeePrice_EUR,
+      ReactiveEnergyTotalRampedT0 =
+        entity.ReactiveEnergyTotalRampedT0.ToModel(),
+      MeterFeePrice_EUR = entity.MeterFeePrice_EUR
     };
   }
 
@@ -66,13 +70,17 @@ public static class BlueLowNetworkUserCalculationModelEntityConverterExtensions
       UsageNetworkUserCatalogueId = model.UsageNetworkUserCatalogueId,
       SupplyRegulatoryCatalogueId = model.SupplyRegulatoryCatalogueId,
       NetworkUserInvoiceId = model.NetworkUserInvoiceId,
-      ArchivedMeasurementLocation = model.ArchivedMeasurementLocation.ToEntity(),
-      ArchivedSupplyRegulatoryCatalogue = model.ArchivedSupplyRegulatoryCatalogue.ToEntity(),
-      ArchivedUsageNetworkUserCatalogue = model.ArchivedUsageNetworkUserCatalogue.ToEntity(),
+      ArchivedMeasurementLocation =
+        model.ArchivedMeasurementLocation.ToEntity(),
+      ArchivedSupplyRegulatoryCatalogue =
+        model.ArchivedSupplyRegulatoryCatalogue.ToEntity(),
+      ArchivedUsageNetworkUserCatalogue =
+        model.ArchivedUsageNetworkUserCatalogue.ToEntity(),
       ArchivedMeter = model.ArchivedMeter.ToEntity(),
       ActiveEnergyTotalImportT0 = model.ActiveEnergyTotalImportT0.ToEntity(),
-      ReactiveEnergyTotalRampedT0 = model.ReactiveEnergyTotalRampedT0.ToEntity(),
-      MeterFeePrice_EUR = model.MeterFeePrice_EUR,
+      ReactiveEnergyTotalRampedT0 =
+        model.ReactiveEnergyTotalRampedT0.ToEntity(),
+      MeterFeePrice_EUR = model.MeterFeePrice_EUR
     };
   }
 }

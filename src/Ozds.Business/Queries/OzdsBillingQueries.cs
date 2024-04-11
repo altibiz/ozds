@@ -43,8 +43,10 @@ public class OzdsBillingQueries
             Location = measurementLocation.NetworkUser.Location.ToModel(),
             NetworkUser = measurementLocation.NetworkUser.ToModel(),
             MeasurementLocation = measurementLocation.ToModel(),
-            UsageNetworkUserCatalogue = measurementLocation.NetworkUserCatalogue.ToModel(),
-            SupplyRegulatoryCatalogue = measurementLocation.NetworkUser.Location.RegulatoryCatalogue.ToModel()
+            UsageNetworkUserCatalogue =
+              measurementLocation.NetworkUserCatalogue.ToModel(),
+            SupplyRegulatoryCatalogue = measurementLocation.NetworkUser.Location
+              .RegulatoryCatalogue.ToModel()
           }
         )
         .Join(

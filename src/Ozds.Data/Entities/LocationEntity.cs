@@ -18,8 +18,7 @@ public class LocationEntity : AuditableEntity
   private long _whiteMediumNetworkUserCatalogueId;
 
   public virtual ICollection<RepresentativeEntity>
-    Representatives
-  { get; set; } = default!;
+    Representatives { get; set; } = default!;
 
   public virtual ICollection<NetworkUserEntity> NetworkUsers { get; set; } =
     default!;
@@ -28,8 +27,7 @@ public class LocationEntity : AuditableEntity
     default!;
 
   public virtual ICollection<LocationMeasurementLocationEntity>
-    MeasurementLocations
-  { get; set; } = default!;
+    MeasurementLocations { get; set; } = default!;
 
   public virtual ICollection<LocationInvoiceEntity> Invoices { get; set; } =
     default!;
@@ -40,7 +38,8 @@ public class LocationEntity : AuditableEntity
     init { _whiteMediumNetworkUserCatalogueId = long.Parse(value); }
   }
 
-  public virtual WhiteMediumNetworkUserCatalogueEntity WhiteMediumNetworkUserCatalogue { get; set; } =
+  public virtual WhiteMediumNetworkUserCatalogueEntity
+    WhiteMediumNetworkUserCatalogue { get; set; } =
     default!;
 
   public string BlueLowNetworkUserCatalogueId
@@ -49,7 +48,11 @@ public class LocationEntity : AuditableEntity
     init { _blueLowNetworkUserCatalogueId = long.Parse(value); }
   }
 
-  public virtual BlueLowNetworkUserCatalogueEntity BlueLowNetworkUserCatalogue { get; set; } =
+  public virtual BlueLowNetworkUserCatalogueEntity BlueLowNetworkUserCatalogue
+  {
+    get;
+    set;
+  } =
     default!;
 
   public string WhiteLowNetworkUserCatalogueId
@@ -58,7 +61,11 @@ public class LocationEntity : AuditableEntity
     init { _whiteLowNetworkUserCatalogueId = long.Parse(value); }
   }
 
-  public virtual WhiteLowNetworkUserCatalogueEntity WhiteLowNetworkUserCatalogue { get; set; } =
+  public virtual WhiteLowNetworkUserCatalogueEntity WhiteLowNetworkUserCatalogue
+  {
+    get;
+    set;
+  } =
     default!;
 
   public string RedLowNetworkUserCatalogueId
@@ -67,7 +74,11 @@ public class LocationEntity : AuditableEntity
     init { _redLowNetworkUserCatalogueId = long.Parse(value); }
   }
 
-  public virtual RedLowNetworkUserCatalogueEntity RedLowNetworkUserCatalogue { get; set; } = default!;
+  public virtual RedLowNetworkUserCatalogueEntity RedLowNetworkUserCatalogue
+  {
+    get;
+    set;
+  } = default!;
 
   public string RegulatoryCatalogueId
   {
@@ -107,7 +118,8 @@ public class
     builder
       .HasOne(nameof(LocationEntity.WhiteMediumNetworkUserCatalogue))
       .WithOne(nameof(WhiteMediumNetworkUserCatalogueEntity.Location))
-      .HasForeignKey(nameof(LocationEntity), "_whiteMediumNetworkUserCatalogueId");
+      .HasForeignKey(nameof(LocationEntity),
+        "_whiteMediumNetworkUserCatalogueId");
 
     builder
       .HasOne(nameof(LocationEntity.BlueLowNetworkUserCatalogue))
@@ -127,7 +139,8 @@ public class
     builder
       .HasOne(nameof(LocationEntity.RegulatoryCatalogue))
       .WithOne(nameof(RegulatoryCatalogueEntity.Location))
-      .HasForeignKey(nameof(LocationEntity), "_regulatoryNetworkUserCatalogueId");
+      .HasForeignKey(nameof(LocationEntity),
+        "_regulatoryNetworkUserCatalogueId");
 
     builder.Ignore(nameof(LocationEntity.WhiteMediumNetworkUserCatalogueId));
     builder

@@ -4,8 +4,10 @@ using Ozds.Data.Entities.Complex;
 
 namespace Ozds.Business.Conversion.Complex;
 
-public class ReactiveEnergyTotalRampedT0CalculationItemModelEntityConverter : ModelEntityConverter<
-  ReactiveEnergyTotalRampedT0CalculationItemModel, ReactiveEnergyTotalRampedT0CalculationItemEntity>
+public class ReactiveEnergyTotalRampedT0CalculationItemModelEntityConverter :
+  ModelEntityConverter<
+    ReactiveEnergyTotalRampedT0CalculationItemModel,
+    ReactiveEnergyTotalRampedT0CalculationItemEntity>
 {
   protected override ReactiveEnergyTotalRampedT0CalculationItemEntity ToEntity(
     ReactiveEnergyTotalRampedT0CalculationItemModel model)
@@ -20,9 +22,11 @@ public class ReactiveEnergyTotalRampedT0CalculationItemModelEntityConverter : Mo
   }
 }
 
-public static class ReactiveEnergyTotalRampedT0CalculationItemModelEntityConverterExtensions
+public static class
+  ReactiveEnergyTotalRampedT0CalculationItemModelEntityConverterExtensions
 {
-  public static ReactiveEnergyTotalRampedT0CalculationItemEntity ToEntity(this ReactiveEnergyTotalRampedT0CalculationItemModel model)
+  public static ReactiveEnergyTotalRampedT0CalculationItemEntity ToEntity(
+    this ReactiveEnergyTotalRampedT0CalculationItemModel model)
   {
     return new ReactiveEnergyTotalRampedT0CalculationItemEntity
     {
@@ -38,7 +42,8 @@ public static class ReactiveEnergyTotalRampedT0CalculationItemModelEntityConvert
     };
   }
 
-  public static ReactiveEnergyTotalRampedT0CalculationItemModel ToModel(this ReactiveEnergyTotalRampedT0CalculationItemEntity entity)
+  public static ReactiveEnergyTotalRampedT0CalculationItemModel ToModel(
+    this ReactiveEnergyTotalRampedT0CalculationItemEntity entity)
   {
     return new ReactiveEnergyTotalRampedT0CalculationItemModel
     {
@@ -54,4 +59,3 @@ public static class ReactiveEnergyTotalRampedT0CalculationItemModelEntityConvert
     };
   }
 }
-

@@ -55,7 +55,8 @@ public static class IServiceCollectionExtensions
     services.AddSingleton(typeof(AgnosticPushRequestMeasurementConverter));
 
     services.AddTransient(typeof(NetworkUserInvoiceIssuer));
-    services.AddTransientAssignableTo(typeof(INetworkUserCalculationCalculator));
+    services.AddTransientAssignableTo(
+      typeof(INetworkUserCalculationCalculator));
     services.AddSingleton(typeof(AgnosticNetworkUserCalculationCalculator));
     services.AddTransientAssignableTo(typeof(ICalculationItemCalculator));
     services.AddSingleton(typeof(AgnosticCalculationItemCalculator));
