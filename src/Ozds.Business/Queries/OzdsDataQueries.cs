@@ -145,8 +145,7 @@ public class OzdsDataQueries : IOzdsQueries
       int pageCount = QueryConstants.DefaultPageCount
     )
   {
-    var filtered = context.NetworkUserCatalogues
-      .OfType<RegulatoryCatalogueEntity>()
+    var filtered = context.RegulatoryCatalogues
       .Where(catalogue => catalogue.Title
         .StartsWith(title));
     var count = await filtered.CountAsync();
