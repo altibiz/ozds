@@ -11,7 +11,7 @@ public abstract class NetworkUserCalculationCalculator<T> :
   public bool CanCalculate(
     NetworkUserCalculationBasisModel calculationBasis)
   {
-    return calculationBasis.UsageNetworkUserCatalogue.GetType() == typeof(T);
+    return calculationBasis.UsageNetworkUserCatalogue.GetType().IsAssignableTo(typeof(T));
   }
 
   public NetworkUserCalculationModel Calculate(

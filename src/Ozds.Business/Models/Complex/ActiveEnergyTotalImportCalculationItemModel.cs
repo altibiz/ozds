@@ -18,7 +18,7 @@ public abstract class
   [Required] public required decimal Total_EUR { get; set; }
 }
 
-public class ActiveEnergyTotalImportT0CalculationItemModel
+public abstract class ActiveEnergyTotalImportT0CalculationItemModel
   : ActiveEnergyTotalImportCalculationItemModel
 {
   public override SpanningMeasure<decimal> Amount
@@ -41,22 +41,9 @@ public class ActiveEnergyTotalImportT0CalculationItemModel
       );
     }
   }
-
-  public override TariffMeasure<decimal> Price
-  {
-    get
-    {
-      return new UnaryTariffMeasure<decimal>(
-        new ImportExportDuplexMeasure<decimal>(
-          new SinglePhasicMeasure<decimal>(Price_EUR),
-          PhasicMeasure<decimal>.Null
-        )
-      );
-    }
-  }
 }
 
-public class ActiveEnergyTotalImportT1CalculationItemModel
+public abstract class ActiveEnergyTotalImportT1CalculationItemModel
   : ActiveEnergyTotalImportCalculationItemModel
 {
   public override SpanningMeasure<decimal> Amount
@@ -81,23 +68,9 @@ public class ActiveEnergyTotalImportT1CalculationItemModel
       );
     }
   }
-
-  public override TariffMeasure<decimal> Price
-  {
-    get
-    {
-      return new BinaryTariffMeasure<decimal>(
-        new ImportExportDuplexMeasure<decimal>(
-          new SinglePhasicMeasure<decimal>(Price_EUR),
-          PhasicMeasure<decimal>.Null
-        ),
-        DuplexMeasure<decimal>.Null
-      );
-    }
-  }
 }
 
-public class ActiveEnergyTotalImportT2CalculationItemModel
+public abstract class ActiveEnergyTotalImportT2CalculationItemModel
   : ActiveEnergyTotalImportCalculationItemModel
 {
   public override SpanningMeasure<decimal> Amount
@@ -122,16 +95,107 @@ public class ActiveEnergyTotalImportT2CalculationItemModel
       );
     }
   }
+}
 
-  public override TariffMeasure<decimal> Price
+public class UsageActiveEnergyTotalImportT0CalculationItemModel
+  : ActiveEnergyTotalImportT0CalculationItemModel
+{
+  public override string Kind => "MJT";
+
+  public override ExpenditureMeasure<decimal> Price
   {
     get
     {
-      return new BinaryTariffMeasure<decimal>(
-        DuplexMeasure<decimal>.Null,
-        new ImportExportDuplexMeasure<decimal>(
-          new SinglePhasicMeasure<decimal>(Price_EUR),
-          PhasicMeasure<decimal>.Null
+      return new UsageExpenditureMeasure<decimal>(
+        new UnaryTariffMeasure<decimal>(
+          new ImportExportDuplexMeasure<decimal>(
+            new SinglePhasicMeasure<decimal>(Price_EUR),
+            PhasicMeasure<decimal>.Null
+          )
+        )
+      );
+    }
+  }
+}
+
+public class UsageActiveEnergyTotalImportT1CalculationItemModel
+  : ActiveEnergyTotalImportT1CalculationItemModel
+{
+  public override string Kind => "MVT";
+
+  public override ExpenditureMeasure<decimal> Price
+  {
+    get
+    {
+      return new UsageExpenditureMeasure<decimal>(
+        new UnaryTariffMeasure<decimal>(
+          new ImportExportDuplexMeasure<decimal>(
+            new SinglePhasicMeasure<decimal>(Price_EUR),
+            PhasicMeasure<decimal>.Null
+          )
+        )
+      );
+    }
+  }
+}
+
+public class UsageActiveEnergyTotalImportT2CalculationItemModel
+  : ActiveEnergyTotalImportT2CalculationItemModel
+{
+  public override string Kind => "MNT";
+
+  public override ExpenditureMeasure<decimal> Price
+  {
+    get
+    {
+      return new UsageExpenditureMeasure<decimal>(
+        new UnaryTariffMeasure<decimal>(
+          new ImportExportDuplexMeasure<decimal>(
+            new SinglePhasicMeasure<decimal>(Price_EUR),
+            PhasicMeasure<decimal>.Null
+          )
+        )
+      );
+    }
+  }
+}
+
+public class SupplyActiveEnergyTotalImportT1CalculationItemModel
+  : ActiveEnergyTotalImportT2CalculationItemModel
+{
+  public override string Kind => "RVT";
+
+  public override ExpenditureMeasure<decimal> Price
+  {
+    get
+    {
+      return new SupplyExpenditureMeasure<decimal>(
+        new UnaryTariffMeasure<decimal>(
+          new ImportExportDuplexMeasure<decimal>(
+            new SinglePhasicMeasure<decimal>(Price_EUR),
+            PhasicMeasure<decimal>.Null
+          )
+        )
+      );
+    }
+  }
+}
+
+public class SupplyActiveEnergyTotalImportT2CalculationItemModel
+  : ActiveEnergyTotalImportT2CalculationItemModel
+{
+  public override string Kind => "RNT";
+
+  public override ExpenditureMeasure<decimal> Price
+  {
+    get
+    {
+      return new SupplyExpenditureMeasure<decimal>(
+        new UnaryTariffMeasure<decimal>(
+          new ImportExportDuplexMeasure<decimal>(
+            new SinglePhasicMeasure<decimal>(Price_EUR),
+            PhasicMeasure<decimal>.Null
+          )
         )
       );
     }

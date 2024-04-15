@@ -47,11 +47,15 @@ public static class WhiteLowNetworkUserCalculationModelEntityConverterExtensions
       ArchivedUsageNetworkUserCatalogue =
         entity.ArchivedUsageNetworkUserCatalogue.ToModel(),
       ArchivedMeter = entity.ArchivedMeter.ToModel(),
-      ActiveEnergyTotalImportT1 = entity.ActiveEnergyTotalImportT1.ToModel(),
-      ActiveEnergyTotalImportT2 = entity.ActiveEnergyTotalImportT2.ToModel(),
-      ReactiveEnergyTotalRampedT0 =
-        entity.ReactiveEnergyTotalRampedT0.ToModel(),
-      MeterFeePrice_EUR = entity.MeterFeePrice_EUR
+      UsageActiveEnergyTotalImportT1 = entity.UsageActiveEnergyTotalImportT1.ToModel(),
+      UsageActiveEnergyTotalImportT2 = entity.UsageActiveEnergyTotalImportT2.ToModel(),
+      UsageReactiveEnergyTotalRampedT0 =
+        entity.UsageReactiveEnergyTotalRampedT0.ToModel(),
+      UsageMeterFee = entity.UsageMeterFee.ToModel(),
+      SupplyActiveEnergyTotalImportT1 = entity.SupplyActiveEnergyTotalImportT1.ToModel(),
+      SupplyActiveEnergyTotalImportT2 = entity.SupplyActiveEnergyTotalImportT2.ToModel(),
+      SupplyBusinessUsageFee = entity.SupplyBusinessUsageFee.ToModel(),
+      SupplyRenewableEnergyFee = entity.SupplyRenewableEnergyFee.ToModel(),
     };
   }
 
@@ -78,9 +82,13 @@ public static class WhiteLowNetworkUserCalculationModelEntityConverterExtensions
       ArchivedUsageNetworkUserCatalogue =
         model.ArchivedUsageNetworkUserCatalogue.ToEntity(),
       ArchivedMeter = model.ArchivedMeter.ToEntity(),
-      ActiveEnergyTotalImportT1 = model.ActiveEnergyTotalImportT1.ToEntity(),
-      ActiveEnergyTotalImportT2 = model.ActiveEnergyTotalImportT2.ToEntity(),
-      MeterFeePrice_EUR = model.MeterFeePrice_EUR
+      UsageActiveEnergyTotalImportT1 = model.UsageActiveEnergyTotalImportT1.ToEntity(),
+      UsageActiveEnergyTotalImportT2 = model.UsageActiveEnergyTotalImportT2.ToEntity(),
+      UsageMeterFee = model.UsageMeterFee.ToEntity(),
+      SupplyActiveEnergyTotalImportT1 = model.SupplyActiveEnergyTotalImportT1.ToEntity(),
+      SupplyActiveEnergyTotalImportT2 = model.SupplyActiveEnergyTotalImportT2.ToEntity(),
+      SupplyBusinessUsageFee = model.SupplyBusinessUsageFee.ToEntity(),
+      SupplyRenewableEnergyFee = model.SupplyRenewableEnergyFee.ToEntity(),
     };
   }
 }

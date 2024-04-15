@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Ozds.Business.Math;
+using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Complex;
 
@@ -8,19 +9,26 @@ namespace Ozds.Business.Models;
 public class BlueLowNetworkUserCalculationModel : NetworkUserCalculationModel
 {
   [Required]
-  public required ActiveEnergyTotalImportT0CalculationItemModel
-    ActiveEnergyTotalImportT0 { get; set; } = default!;
+  public required UsageActiveEnergyTotalImportT0CalculationItemModel
+    UsageActiveEnergyTotalImportT0
+  { get; set; } = default!;
 
   [Required]
-  public required ReactiveEnergyTotalRampedT0CalculationItemModel
-    ReactiveEnergyTotalRampedT0 { get; set; } = default!;
-
-  [Required] public required decimal MeterFeePrice_EUR { get; set; }
+  public required UsageReactiveEnergyTotalRampedT0CalculationItemModel
+    UsageReactiveEnergyTotalRampedT0
+  { get; set; } = default!;
 
   public override string Kind
   {
     get { return "Blue Low Voltage"; }
   }
+
+  protected override IEnumerable<ICalculationItem> AdditionalUsageItems =>
+  new ICalculationItem[]
+  {
+    UsageActiveEnergyTotalImportT0,
+    UsageReactiveEnergyTotalRampedT0
+  };
 
   public override SpanningMeasure<decimal> ActiveEnergyAmount_Wh
   {
@@ -29,13 +37,13 @@ public class BlueLowNetworkUserCalculationModel : NetworkUserCalculationModel
       return new MinMaxSpanningMeasure<decimal>(
         new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(ActiveEnergyTotalImportT0.Min_Wh),
+            new SinglePhasicMeasure<decimal>(UsageActiveEnergyTotalImportT0.Min_Wh),
             new NullPhasicMeasure<decimal>()
           )
         ),
         new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(ActiveEnergyTotalImportT0.Max_Wh),
+            new SinglePhasicMeasure<decimal>(UsageActiveEnergyTotalImportT0.Max_Wh),
             new NullPhasicMeasure<decimal>()
           )
         )
@@ -43,14 +51,27 @@ public class BlueLowNetworkUserCalculationModel : NetworkUserCalculationModel
     }
   }
 
-  public override TariffMeasure<decimal> ActiveEnergyPrice_EUR
+  public override ExpenditureMeasure<decimal> ActiveEnergyPrice_EUR
   {
     get
     {
-      return new UnaryTariffMeasure<decimal>(
-        new ImportExportDuplexMeasure<decimal>(
-          new SinglePhasicMeasure<decimal>(ActiveEnergyTotalImportT0.Price_EUR),
-          new NullPhasicMeasure<decimal>()
+      return
+      new DualExpenditureMeasure<decimal>(
+        new UnaryTariffMeasure<decimal>(
+          new ImportExportDuplexMeasure<decimal>(
+            new SinglePhasicMeasure<decimal>(UsageActiveEnergyTotalImportT0.Price_EUR),
+            new NullPhasicMeasure<decimal>()
+          )
+        ),
+        new BinaryTariffMeasure<decimal>(
+          new ImportExportDuplexMeasure<decimal>(
+            new SinglePhasicMeasure<decimal>(SupplyActiveEnergyTotalImportT1.Price_EUR),
+            new NullPhasicMeasure<decimal>()
+          ),
+          new ImportExportDuplexMeasure<decimal>(
+            new SinglePhasicMeasure<decimal>(SupplyActiveEnergyTotalImportT2.Price_EUR),
+            new NullPhasicMeasure<decimal>()
+          )
         )
       );
     }
@@ -64,31 +85,33 @@ public class BlueLowNetworkUserCalculationModel : NetworkUserCalculationModel
         new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
             new SinglePhasicMeasure<decimal>(
-              ReactiveEnergyTotalRampedT0.ImportMin_VARh),
+              UsageReactiveEnergyTotalRampedT0.ImportMin_VARh),
             new SinglePhasicMeasure<decimal>(
-              ReactiveEnergyTotalRampedT0.ImportMax_VARh)
+              UsageReactiveEnergyTotalRampedT0.ImportMax_VARh)
           )
         ),
         new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
             new SinglePhasicMeasure<decimal>(
-              ReactiveEnergyTotalRampedT0.ImportMax_VARh),
+              UsageReactiveEnergyTotalRampedT0.ImportMax_VARh),
             new SinglePhasicMeasure<decimal>(
-              ReactiveEnergyTotalRampedT0.ExportMax_VARh)
+              UsageReactiveEnergyTotalRampedT0.ExportMax_VARh)
           )
         )
       );
     }
   }
 
-  public override TariffMeasure<decimal> ReactiveEnergyPrice_EUR
+  public override ExpenditureMeasure<decimal> ReactiveEnergyPrice_EUR
   {
     get
     {
-      return new UnaryTariffMeasure<decimal>(
-        new AnyDuplexMeasure<decimal>(
-          new SinglePhasicMeasure<decimal>(
-            ReactiveEnergyTotalRampedT0.Price_EUR)
+      return new UsageExpenditureMeasure<decimal>(
+        new UnaryTariffMeasure<decimal>(
+          new AnyDuplexMeasure<decimal>(
+            new SinglePhasicMeasure<decimal>(
+              UsageReactiveEnergyTotalRampedT0.Price_EUR)
+          )
         )
       );
     }
@@ -99,8 +122,8 @@ public class BlueLowNetworkUserCalculationModel : NetworkUserCalculationModel
     get { return SpanningMeasure<decimal>.Null; }
   }
 
-  public override TariffMeasure<decimal> ActivePowerPrice_EUR
+  public override ExpenditureMeasure<decimal> ActivePowerPrice_EUR
   {
-    get { return TariffMeasure<decimal>.Null; }
+    get { return ExpenditureMeasure<decimal>.Null; }
   }
 }

@@ -20,20 +20,22 @@ public class
   }
 
   protected override NetworkUserCalculationModel CalculateForNetworkUser(
-    BlueLowNetworkUserCatalogueModel catalogue,
+    BlueLowNetworkUserCatalogueModel usageCatalogue,
     NetworkUserCalculationBasisModel calculationBasis
   )
   {
+    var supplyCatalogue = calculationBasis.SupplyRegulatoryCatalogue;
+
     var initial = new BlueLowNetworkUserCalculationModel
     {
       Id = default!,
       Title =
-        $"${catalogue.Title} calculation for {calculationBasis.NetworkUser.Title} at {calculationBasis.Location.Title}",
+        $"${usageCatalogue.Title} calculation for {calculationBasis.NetworkUser.Title} at {calculationBasis.Location.Title}",
       MeterId = calculationBasis.Meter.Id,
       ToDate = calculationBasis.ToDate,
       FromDate = calculationBasis.FromDate,
       NetworkUserInvoiceId = calculationBasis.NetworkUser.Id,
-      UsageNetworkUserCatalogueId = catalogue.Id,
+      UsageNetworkUserCatalogueId = usageCatalogue.Id,
       SupplyRegulatoryCatalogueId =
         calculationBasis.SupplyRegulatoryCatalogue.Id,
       MeasurementLocationId = calculationBasis.MeasurementLocation.Id,
@@ -41,24 +43,58 @@ public class
       IssuedById = default!,
       ArchivedMeter = calculationBasis.Meter,
       ArchivedMeasurementLocation = calculationBasis.MeasurementLocation,
-      ArchivedUsageNetworkUserCatalogue = catalogue,
+      ArchivedUsageNetworkUserCatalogue = usageCatalogue,
       ArchivedSupplyRegulatoryCatalogue =
         calculationBasis.SupplyRegulatoryCatalogue,
-      ActiveEnergyTotalImportT0 = _calculationItemCalculator
-        .Calculate<ActiveEnergyTotalImportT0CalculationItemModel>(
+      UsageActiveEnergyTotalImportT0 = _calculationItemCalculator
+        .Calculate<UsageActiveEnergyTotalImportT0CalculationItemModel>(
           new CalculationItemBasisModel(
             calculationBasis.Aggregates,
-            catalogue.ActiveEnergyTotalImportT0Price_EUR
+            usageCatalogue.ActiveEnergyTotalImportT0Price_EUR
           )
         ),
-      ReactiveEnergyTotalRampedT0 = _calculationItemCalculator
-        .Calculate<ReactiveEnergyTotalRampedT0CalculationItemModel>(
+      UsageReactiveEnergyTotalRampedT0 = _calculationItemCalculator
+        .Calculate<UsageReactiveEnergyTotalRampedT0CalculationItemModel>(
           new CalculationItemBasisModel(
             calculationBasis.Aggregates,
-            catalogue.ReactiveEnergyTotalRampedT0Price_EUR
+            usageCatalogue.ReactiveEnergyTotalRampedT0Price_EUR
           )
         ),
-      MeterFeePrice_EUR = catalogue.MeterFeePrice_EUR
+      UsageMeterFee = _calculationItemCalculator
+        .Calculate<UsageMeterFeeCalculationItemModel>(
+          new CalculationItemBasisModel(
+            calculationBasis.Aggregates,
+            usageCatalogue.MeterFeePrice_EUR
+          )
+        ),
+      SupplyActiveEnergyTotalImportT1 = _calculationItemCalculator
+        .Calculate<SupplyActiveEnergyTotalImportT1CalculationItemModel>(
+          new CalculationItemBasisModel(
+            calculationBasis.Aggregates,
+            supplyCatalogue.ActiveEnergyTotalImportT1Price_EUR
+          )
+        ),
+      SupplyActiveEnergyTotalImportT2 = _calculationItemCalculator
+        .Calculate<SupplyActiveEnergyTotalImportT2CalculationItemModel>(
+          new CalculationItemBasisModel(
+            calculationBasis.Aggregates,
+            supplyCatalogue.ActiveEnergyTotalImportT2Price_EUR
+          )
+        ),
+      SupplyBusinessUsageFee = _calculationItemCalculator
+        .Calculate<SupplyBusinessUsageFeeCalculationItemModel>(
+          new CalculationItemBasisModel(
+            calculationBasis.Aggregates,
+            supplyCatalogue.BusinessUsageFeePrice_EUR
+          )
+        ),
+      SupplyRenewableEnergyFee = _calculationItemCalculator
+        .Calculate<SupplyRenewableEnergyFeeCalculationItemModel>(
+          new CalculationItemBasisModel(
+            calculationBasis.Aggregates,
+            supplyCatalogue.RenewableEnergyFeePrice_EUR
+          )
+        ),
     };
 
     return initial;

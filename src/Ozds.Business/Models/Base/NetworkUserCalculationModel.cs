@@ -1,6 +1,10 @@
 using System.ComponentModel.DataAnnotations;
 using Ozds.Business.Math;
 using Ozds.Business.Models.Abstractions;
+using Ozds.Business.Models.Complex;
+
+// TODO: Total_EUR as composite of this and going through items once
+// expenditure math is done
 
 namespace Ozds.Business.Models.Base;
 
@@ -35,7 +39,8 @@ public abstract class NetworkUserCalculationModel : INetworkUserCalculation
 
   [Required]
   public required NetworkUserMeasurementLocationModel
-    ArchivedMeasurementLocation { get; set; } = default!;
+    ArchivedMeasurementLocation
+  { get; set; } = default!;
 
   [Required]
   public required NetworkUserCatalogueModel ArchivedUsageNetworkUserCatalogue
@@ -51,11 +56,44 @@ public abstract class NetworkUserCalculationModel : INetworkUserCalculation
     set;
   } = default!;
 
+  [Required] public required UsageMeterFeeCalculationItemModel UsageMeterFee { get; set; } = default!;
+
+  [Required] public required SupplyActiveEnergyTotalImportT1CalculationItemModel SupplyActiveEnergyTotalImportT1 { get; set; } = default!;
+
+  [Required] public required SupplyActiveEnergyTotalImportT2CalculationItemModel SupplyActiveEnergyTotalImportT2 { get; set; } = default!;
+
+  [Required] public required SupplyBusinessUsageFeeCalculationItemModel SupplyBusinessUsageFee { get; set; } = default!;
+
+  [Required] public required SupplyRenewableEnergyFeeCalculationItemModel SupplyRenewableEnergyFee { get; set; } = default!;
+
   public abstract string Kind { get; }
+
+  protected abstract IEnumerable<ICalculationItem> AdditionalUsageItems { get; }
+
+  public virtual IEnumerable<ICalculationItem> UsageItems
+  {
+    get => AdditionalUsageItems
+      .ToArray()
+      .Concat(new ICalculationItem[]
+      {
+        UsageMeterFee
+      });
+  }
+
+  public virtual IEnumerable<ICalculationItem> SupplyItems
+  {
+    get => new ICalculationItem[]
+    {
+      SupplyActiveEnergyTotalImportT1,
+      SupplyActiveEnergyTotalImportT2,
+      SupplyBusinessUsageFee,
+      SupplyRenewableEnergyFee
+    };
+  }
 
   public abstract SpanningMeasure<decimal> ActiveEnergyAmount_Wh { get; }
 
-  public abstract TariffMeasure<decimal> ActiveEnergyPrice_EUR { get; }
+  public abstract ExpenditureMeasure<decimal> ActiveEnergyPrice_EUR { get; }
 
   public abstract SpanningMeasure<decimal> ReactiveEnergyAmount_Wh { get; }
 
@@ -76,20 +114,24 @@ public abstract class NetworkUserCalculationModel : INetworkUserCalculation
     }
   }
 
-  public abstract TariffMeasure<decimal> ReactiveEnergyPrice_EUR { get; }
+  public abstract ExpenditureMeasure<decimal> ReactiveEnergyPrice_EUR { get; }
 
   public abstract SpanningMeasure<decimal> ActivePowerAmount_W { get; }
 
-  public abstract TariffMeasure<decimal> ActivePowerPrice_EUR { get; }
+  public abstract ExpenditureMeasure<decimal> ActivePowerPrice_EUR { get; }
 
-  public virtual TariffMeasure<decimal> Total_EUR
+  public virtual ExpenditureMeasure<decimal> Total_EUR
   {
     get
     {
-      return
-        ActiveEnergyAmount_Wh.SpanDiff * ActiveEnergyPrice_EUR +
-        ActivePowerAmount_W.SpanPeak * ActivePowerPrice_EUR +
-        ReactiveEnergyRampedAmount_Wh * ReactiveEnergyPrice_EUR;
+      return new DualExpenditureMeasure<decimal>(
+        ActiveEnergyAmount_Wh.SpanDiff * ActiveEnergyPrice_EUR.ExpenditureUsage +
+        ReactiveEnergyRampedAmount_Wh * ReactiveEnergyPrice_EUR.ExpenditureUsage +
+        ActivePowerAmount_W.SpanDiff * ActivePowerPrice_EUR.ExpenditureUsage,
+        ActiveEnergyAmount_Wh.SpanDiff * ActiveEnergyPrice_EUR.ExpenditureSupply +
+        ReactiveEnergyRampedAmount_Wh * ReactiveEnergyPrice_EUR.ExpenditureSupply +
+        ActivePowerAmount_W.SpanDiff * ActivePowerPrice_EUR.ExpenditureSupply
+      );
     }
   }
 

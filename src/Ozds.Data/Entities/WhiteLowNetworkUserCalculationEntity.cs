@@ -11,16 +11,17 @@ public class
   WhiteLowNetworkUserCatalogueEntity>
 {
 #pragma warning disable CA1707
-  public ActiveEnergyTotalImportT1CalculationItemEntity
-    ActiveEnergyTotalImportT1 { get; set; } = default!;
+  public UsageActiveEnergyTotalImportT1CalculationItemEntity
+    UsageActiveEnergyTotalImportT1
+  { get; set; } = default!;
 
-  public ActiveEnergyTotalImportT2CalculationItemEntity
-    ActiveEnergyTotalImportT2 { get; set; } = default!;
+  public UsageActiveEnergyTotalImportT2CalculationItemEntity
+    UsageActiveEnergyTotalImportT2
+  { get; set; } = default!;
 
-  public ReactiveEnergyTotalRampedT0CalculationItemEntity
-    ReactiveEnergyTotalRampedT0 { get; set; } = default!;
-
-  public decimal MeterFeePrice_EUR { get; set; }
+  public UsageReactiveEnergyTotalRampedT0CalculationItemEntity
+    UsageReactiveEnergyTotalRampedT0
+  { get; set; } = default!;
 #pragma warning restore CA1707
 }
 
@@ -34,21 +35,17 @@ public class
   {
     builder
       .ComplexProperty(nameof(WhiteLowNetworkUserCalculationEntity
-        .ActiveEnergyTotalImportT1))
-      .ActiveEnergyImportCalculationItem();
+        .UsageActiveEnergyTotalImportT1))
+      .UsageActiveEnergyTotalImportT1CalculationItem();
 
     builder
       .ComplexProperty(nameof(WhiteLowNetworkUserCalculationEntity
-        .ActiveEnergyTotalImportT2))
-      .ActiveEnergyImportCalculationItem();
+        .UsageActiveEnergyTotalImportT2))
+      .UsageActiveEnergyTotalImportT2CalculationItem();
 
     builder
       .ComplexProperty(nameof(WhiteLowNetworkUserCalculationEntity
-        .ReactiveEnergyTotalRampedT0))
-      .ReactiveEnergyTotalRampedT0CalculationItem();
-
-    builder
-      .Property(nameof(WhiteLowNetworkUserCalculationEntity.MeterFeePrice_EUR))
-      .HasColumnName("meter_fee_price_eur");
+        .UsageReactiveEnergyTotalRampedT0))
+      .UsageReactiveEnergyTotalRampedT0CalculationItem();
   }
 }

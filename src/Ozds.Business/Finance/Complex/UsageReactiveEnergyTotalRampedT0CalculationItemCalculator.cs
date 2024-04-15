@@ -5,10 +5,10 @@ using Ozds.Business.Models.Composite;
 
 namespace Ozds.Business.Finance.Complex;
 
-public class ReactiveEnergyTotalRampedT0CalculationItemCalculator :
-  CalculationItemCalculator<ReactiveEnergyTotalRampedT0CalculationItemModel>
+public class UsageReactiveEnergyTotalRampedT0CalculationItemCalculator :
+  CalculationItemCalculator<UsageReactiveEnergyTotalRampedT0CalculationItemModel>
 {
-  protected override ReactiveEnergyTotalRampedT0CalculationItemModel
+  protected override UsageReactiveEnergyTotalRampedT0CalculationItemModel
     CalculateConcrete(CalculationItemBasisModel calculationBasis)
   {
     var aggregates = calculationBasis.Aggregates
@@ -39,7 +39,7 @@ public class ReactiveEnergyTotalRampedT0CalculationItemCalculator :
         ? DuplexMeasure<decimal>.Null
         : duplex);
 
-    return new ReactiveEnergyTotalRampedT0CalculationItemModel
+    return new UsageReactiveEnergyTotalRampedT0CalculationItemModel
     {
       ImportMin_VARh = reactiveAmount.SpanMin.TariffUnary.DuplexImport.PhaseSum,
       ImportMax_VARh = reactiveAmount.SpanMax.TariffUnary.DuplexImport.PhaseSum,

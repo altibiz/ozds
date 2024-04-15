@@ -12,7 +12,7 @@ public abstract class
 {
   public bool CanConvertToAggregate(Type measurement)
   {
-    return measurement == typeof(TMeasurement);
+    return measurement.IsAssignableTo(typeof(TMeasurement));
   }
 
   public IAggregate ToAggregate(IMeasurement measurement,

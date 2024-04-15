@@ -10,7 +10,7 @@ public abstract class
 {
   public bool CanCalculate(Type calculationType)
   {
-    return typeof(TCalculationItem) == calculationType;
+    return typeof(TCalculationItem).IsAssignableTo(calculationType);
   }
 
   public ICalculationItem Calculate(CalculationItemBasisModel calculationBasis)
