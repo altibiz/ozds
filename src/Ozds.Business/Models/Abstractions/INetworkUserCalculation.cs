@@ -24,6 +24,12 @@ public interface INetworkUserCalculation : IReadonly, IIdentifiable
 
   public RegulatoryCatalogueModel ArchivedSupplyRegulatoryCatalogue { get; }
 
+  public decimal UsageFeeTotal_EUR { get; }
+
+  public decimal SupplyFeeTotal_EUR { get; }
+
+  public decimal Total_EUR { get; }
+
   public IEnumerable<ICalculationItem> UsageItems { get; }
 
   public IEnumerable<ICalculationItem> SupplyItems { get; }
@@ -42,5 +48,5 @@ public interface INetworkUserCalculation : IReadonly, IIdentifiable
 
   public ExpenditureMeasure<decimal> ActivePowerPrice_EUR { get; }
 
-  public ExpenditureMeasure<decimal> Total_EUR { get; }
+  public ExpenditureMeasure<decimal> ComputedTotal_EUR { get; }
 }

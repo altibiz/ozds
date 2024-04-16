@@ -103,10 +103,11 @@
       <td colspan="4">
         <strong>Naknada za korištenje mreže ZDS-a - UKUPNO:</strong>
       </td>
-      <td style="text-align: right;"><strong>@DecimalString(
-        Calculation.Total_EUR.ExpenditureUsage.TariffSum.DuplexSum.PhaseSum,
-        2
-      ) EUR</strong></td>
+      <td style="text-align: right;">
+        <strong>
+          @DecimalString(Calculation.UsageFeeTotal_EUR, 2) EUR
+        </strong>
+      </td>
     </tr>
   </tbody>
 </table>
@@ -165,10 +166,11 @@
       <td colspan="5">
         <strong>Naknada za opskrbu električnom energijom - UKUPNO:</strong>
       </td>
-      <td style="text-align: right;"><strong>@DecimalString(
-        Calculation.Total_EUR.ExpenditureSupply.TariffSum.DuplexSum.PhaseSum,
-        2
-      ) EUR</strong></td>
+      <td style="text-align: right;">
+        <strong>
+          @DecimalString(Calculation.SupplyFeeTotal_EUR, 2) EUR
+        </strong>
+      </td>
     </tr>
   </tbody>
 </table>

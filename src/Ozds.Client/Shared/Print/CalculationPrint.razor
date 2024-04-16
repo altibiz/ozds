@@ -1,0 +1,29 @@
+<div class="page">
+  <div class="page-header">
+    <img src="Mess.Ozds/invoice-print-header-hrv.svg" />
+  </div>
+  <div class="page-content">
+    <CalculationPrintContent Calculation="@Calculation" />
+    <CalculationPrintAbbreviations />
+  </div>
+  <div class="page-footer">
+    <img src="/print/invoice-print-footer-hrv.svg" />
+  </div>
+</div>
+<div class="page-break"/>
+<div class="page">
+  <div class="page-header">
+    <img src="/print/invoice-print-header-hrv.svg" />
+  </div>
+  <div class="page-content">
+    <CalculationPrintFooter />
+  </div>
+  <div class="page-footer">
+    <img src="/print/invoice-print-footer-hrv.svg" />
+  </div>
+</div>
+
+@code {
+  [Parameter]
+  public CalculationItemModel Calculation { get; set; } = default!;
+}

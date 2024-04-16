@@ -35,7 +35,7 @@ public class NetworkUserInvoiceIssuer
 
     var total = calculations
       .Sum(calculation => calculation
-        .Total_EUR
+        .ComputedTotal_EUR
         .ExpenditureSum
         .TariffSum
         .DuplexSum

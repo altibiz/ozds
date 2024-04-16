@@ -66,6 +66,12 @@ public abstract class NetworkUserCalculationModel : INetworkUserCalculation
 
   [Required] public required SupplyRenewableEnergyFeeCalculationItemModel SupplyRenewableEnergyFee { get; set; } = default!;
 
+  [Required] public required decimal UsageFeeTotal_EUR { get; set; }
+
+  [Required] public required decimal SupplyFeeTotal_EUR { get; set; }
+
+  [Required] public required decimal Total_EUR { get; set; }
+
   public abstract string Kind { get; }
 
   protected abstract IEnumerable<ICalculationItem> AdditionalUsageItems { get; }
@@ -120,7 +126,7 @@ public abstract class NetworkUserCalculationModel : INetworkUserCalculation
 
   public abstract ExpenditureMeasure<decimal> ActivePowerPrice_EUR { get; }
 
-  public virtual ExpenditureMeasure<decimal> Total_EUR
+  public virtual ExpenditureMeasure<decimal> ComputedTotal_EUR
   {
     get
     {

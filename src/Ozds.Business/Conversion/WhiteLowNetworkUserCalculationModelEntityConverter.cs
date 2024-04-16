@@ -56,6 +56,9 @@ public static class WhiteLowNetworkUserCalculationModelEntityConverterExtensions
       SupplyActiveEnergyTotalImportT2 = entity.SupplyActiveEnergyTotalImportT2.ToModel(),
       SupplyBusinessUsageFee = entity.SupplyBusinessUsageFee.ToModel(),
       SupplyRenewableEnergyFee = entity.SupplyRenewableEnergyFee.ToModel(),
+      UsageFeeTotal_EUR = entity.UsageFeeTotal_EUR,
+      SupplyFeeTotal_EUR = entity.SupplyFeeTotal_EUR,
+      Total_EUR = entity.Total_EUR,
     };
   }
 
@@ -89,6 +92,9 @@ public static class WhiteLowNetworkUserCalculationModelEntityConverterExtensions
       SupplyActiveEnergyTotalImportT2 = model.SupplyActiveEnergyTotalImportT2.ToEntity(),
       SupplyBusinessUsageFee = model.SupplyBusinessUsageFee.ToEntity(),
       SupplyRenewableEnergyFee = model.SupplyRenewableEnergyFee.ToEntity(),
+      UsageFeeTotal_EUR = model.UsageFeeTotal_EUR,
+      SupplyFeeTotal_EUR = model.SupplyFeeTotal_EUR,
+      Total_EUR = model.Total_EUR,
     };
   }
 }
