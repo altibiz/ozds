@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Ozds.Business.Models.Base;
+using Ozds.Business.Models.Complex;
 using Ozds.Business.Models.Enums;
 
 namespace Ozds.Business.Models;
@@ -8,19 +9,7 @@ public class RepresentativeModel : AuditableModel
 {
   [Required] public required RoleModel Role { get; set; }
 
-  [Required] public required string Name { get; set; }
-
-  [Required] public required string SocialSecurityNumber { get; set; }
-
-  [Required] public required string Address { get; set; }
-
-  [Required] public required string City { get; set; }
-
-  [Required] public required string PostalCode { get; set; }
-
-  [EmailAddress] public required string Email { get; set; }
-
-  [Phone] public required string PhoneNumber { get; set; }
+  [Required] public required PhysicalPersonModel PhysicalPerson { get; set; } = default!;
 
   public static RepresentativeModel New(UserModel user)
   {
@@ -36,13 +25,7 @@ public class RepresentativeModel : AuditableModel
       DeletedOn = null,
       DeletedById = null,
       Role = RoleModel.NetworkUserRepresentative,
-      Name = user.UserName,
-      SocialSecurityNumber = string.Empty,
-      Address = string.Empty,
-      City = string.Empty,
-      PostalCode = string.Empty,
-      Email = user.Email,
-      PhoneNumber = string.Empty
+      PhysicalPerson = PhysicalPersonModel.New()
     };
   }
 
@@ -55,47 +38,13 @@ public class RepresentativeModel : AuditableModel
     }
 
     if (
-      validationContext.MemberName is null or nameof(SocialSecurityNumber) &&
-      SocialSecurityNumber.All(char.IsDigit) == false
+      validationContext.MemberName is null or nameof(PhysicalPerson)
     )
     {
-      yield return new ValidationResult(
-        "Social security number must contain only digits.",
-        new[] { nameof(SocialSecurityNumber) }
-      );
-    }
-
-    if (
-      validationContext.MemberName is null or nameof(SocialSecurityNumber) &&
-      SocialSecurityNumber.Length != 11
-    )
-    {
-      yield return new ValidationResult(
-        "Social security number must contain only digits.",
-        new[] { nameof(SocialSecurityNumber) }
-      );
-    }
-
-    if (
-      validationContext.MemberName is null or nameof(PostalCode) &&
-      PostalCode.All(char.IsDigit) == false
-    )
-    {
-      yield return new ValidationResult(
-        "Postal code must contain only digits.",
-        new[] { nameof(PostalCode) }
-      );
-    }
-
-    if (
-      validationContext.MemberName is null or nameof(PostalCode) &&
-      PostalCode.Length != 5
-    )
-    {
-      yield return new ValidationResult(
-        "Postal code must contain exactly 5 digits.",
-        new[] { nameof(PostalCode) }
-      );
+      foreach (var result in PhysicalPerson.Validate(validationContext))
+      {
+        yield return result;
+      }
     }
   }
 }

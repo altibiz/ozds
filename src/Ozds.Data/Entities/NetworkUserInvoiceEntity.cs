@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Ozds.Data.Entities.Base;
 using Ozds.Data.Extensions;
 
@@ -21,6 +20,32 @@ public class NetworkUserInvoiceEntity : InvoiceEntity
   public LocationEntity ArchivedLocation { get; set; } = default!;
 
   public NetworkUserEntity ArchivedNetworkUser { get; set; } = default!;
+
+  public RegulatoryCatalogueEntity ArchivedRegulatoryCatalogue { get; set; } = default!;
+
+  public decimal UsageActiveEnergyTotalImportT0Fee_EUR { get; set; } = default!;
+
+  public decimal UsageActiveEnergyTotalImportT1Fee_EUR { get; set; } = default!;
+
+  public decimal UsageActiveEnergyTotalImportT2Fee_EUR { get; set; } = default!;
+
+  public decimal UsageActivePowerTotalImportT1PeakFee_EUR { get; set; } = default!;
+
+  public decimal UsageReactiveEnergyTotalRampedT0Fee_EUR { get; set; } = default!;
+
+  public decimal UsageMeterFee_EUR { get; set; } = default!;
+
+  public decimal UsageFeeTotal_EUR { get; set; } = default!;
+
+  public decimal SupplyActiveEnergyTotalImportT1Fee_EUR { get; set; } = default!;
+
+  public decimal SupplyActiveEnergyTotalImportT2Fee_EUR { get; set; } = default!;
+
+  public decimal SupplyBusinessUsageFee_EUR { get; set; } = default!;
+
+  public decimal SupplyRenewableEnergyFee_EUR { get; set; } = default!;
+
+  public decimal SupplyFeeTotal_EUR { get; set; } = default!;
 }
 
 public class
@@ -45,5 +70,8 @@ public class
 
     builder
       .ArchivedProperty(nameof(NetworkUserInvoiceEntity.ArchivedNetworkUser));
+
+    builder
+      .ArchivedProperty(nameof(NetworkUserInvoiceEntity.ArchivedRegulatoryCatalogue));
   }
 }

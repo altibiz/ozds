@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Ozds.Data.Entities.Base;
+using Ozds.Data.Entities.Complex;
 using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities;
@@ -10,7 +11,8 @@ public class NetworkUserEntity : AuditableEntity
   private readonly long _locationId;
 
   public virtual ICollection<RepresentativeEntity>
-    Representatives { get; set; } = default!;
+    Representatives
+  { get; set; } = default!;
 
   public virtual string LocationId
   {
@@ -21,10 +23,13 @@ public class NetworkUserEntity : AuditableEntity
   public virtual LocationEntity Location { get; set; } = default!;
 
   public virtual ICollection<NetworkUserMeasurementLocationEntity>
-    MeasurementLocations { get; set; } = default!;
+    MeasurementLocations
+  { get; set; } = default!;
 
   public virtual ICollection<NetworkUserInvoiceEntity> Invoices { get; set; } =
     default!;
+
+  public LegalPersonEntity LegalPerson { get; set; } = default!;
 }
 
 public class
@@ -54,5 +59,7 @@ public class
     builder
       .Property("_locationId")
       .HasColumnName("location_id");
+
+    builder.ComplexProperty(nameof(NetworkUserEntity.LegalPerson));
   }
 }
