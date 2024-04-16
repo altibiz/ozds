@@ -3,8 +3,8 @@
     <img src="Mess.Ozds/invoice-print-header-hrv.svg" />
   </div>
   <div class="page-content">
-    <CalculationPrintContent Calculation="@Calculation" />
-    <CalculationPrintAbbreviations />
+    <NetworkUserCalculationPrintContent Calculation="@Calculation" />
+    <NetworkUserCalculationPrintAbbreviations />
   </div>
   <div class="page-footer">
     <img src="/print/invoice-print-footer-hrv.svg" />
@@ -25,5 +25,5 @@
 
 @code {
   [Parameter]
-  public CalculationItemModel Calculation { get; set; } = default!;
+  public NetworkUserCalculationModel Calculation { get; set; } = default!;
 }
