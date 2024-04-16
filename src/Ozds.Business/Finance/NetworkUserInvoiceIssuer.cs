@@ -57,6 +57,8 @@ public class NetworkUserInvoiceIssuer
       ToDate = basis.ToDate,
       ArchivedNetworkUser = basis.NetworkUser,
       ArchivedLocation = basis.Location,
+      ArchivedRegulatoryCatalogue = basis.RegulatoryCatalogue,
+      UsageActiveEnergyTotalImportT0Fee_EUR = usageActiveEnergyTotalImportT0Fee,
       Total_EUR = total,
       Tax_EUR = tax,
       TotalWithTax_EUR = totalWithTax
