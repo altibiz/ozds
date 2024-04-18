@@ -79,7 +79,7 @@ public static class EntityTypeBuilderExtensions
   {
     return string.Concat(
       name.Select((x, i) =>
-        i > 0 && char.IsUpper(x)
+        i > 0 && char.IsUpper(x) && !char.IsUpper(name[i - 1])
         ? "_" + x.ToString().ToLower()
         : x.ToString().ToLower()
       )
