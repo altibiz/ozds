@@ -7,6 +7,7 @@ using Ozds.Business.Models.Enums;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Data;
 using Ozds.Data.Entities;
+using Ozds.Data.Entities.Base;
 using Ozds.Data.Extensions;
 
 namespace Ozds.Business.Queries;
@@ -111,6 +112,13 @@ public class OzdsMeterTableQueries : IOzdsQueries
   //     .ToList();
   // }
 
+  private readonly struct NetworkUserMeasurementLocationJoin
+  {
+    public LocationModel Location { get; init; }
+    public NetworkUserModel NetworkUser { get; init; }
+    public NetworkUserMeasurementLocationModel MeasurementLocation { get; init; }
+  };
+
   public async Task<List<MeterTableViewModel>>
     ViewModelByNetworkUser(
       string networkUserId,
@@ -127,7 +135,9 @@ public class OzdsMeterTableQueries : IOzdsQueries
             .Include(x => x.NetworkUser)
             .Include(x => x.NetworkUser.Location)
             .Include(x => x.NetworkUser.Location.RegulatoryCatalogue),
-          (networkUser, measurementLocation) => new
+          context.PrimaryKeyOf<NetworkUserEntity>(),
+          context.ForeignKeyOf<NetworkUserMeasurementLocationEntity>(typeof(NetworkUserEntity)),
+          (networkUser, measurementLocation) => new NetworkUserMeasurementLocationJoin
           {
             Location = measurementLocation.NetworkUser.Location.ToModel(),
             NetworkUser = measurementLocation.NetworkUser.ToModel(),
@@ -136,8 +146,8 @@ public class OzdsMeterTableQueries : IOzdsQueries
         )
         .Join(
           context.Meters,
-          x => x.MeasurementLocation.MeterId,
-          meter => meter.Id,
+          context.ForeignKeyOf<NetworkUserMeasurementLocationJoin>(x => x.MeasurementLocation, typeof(MeterEntity)),
+          context.PrimaryKeyOf<MeterEntity>(),
           (x, meter) => new
           {
             x.Location,

@@ -35,6 +35,31 @@ public partial class OzdsDbContext
     return Expression.Lambda<Func<T, object>>(fieldExpression, parameter);
   }
 
+  public Func<T, object> PrimaryKeyOfCompiled<T>(Expression<Func<T, object>> prefix, Type type)
+  {
+    return PrimaryKeyOf(prefix, type).Compile();
+  }
+
+  public Expression<Func<T, object>> PrimaryKeyOf<T>(Expression<Func<T, object>> prefix, Type type)
+  {
+    var parameter = Expression.Parameter(typeof(T));
+    var hasStringId =
+      type.IsAssignableTo(typeof(RepresentativeEntity))
+      || type.IsAssignableTo(typeof(MessengerEntity))
+      || type.IsAssignableTo(typeof(MeterEntity));
+    var fieldName = hasStringId ? "_stringId" : "_id";
+    var field = type
+      .GetField(fieldName,
+        BindingFlags.NonPublic | BindingFlags.Instance |
+        BindingFlags.FlattenHierarchy);
+    var callExpression = Expression.Invoke(prefix, parameter);
+    var fieldExpression = Expression
+      .Field(callExpression, field
+                        ?? throw new InvalidOperationException(
+                          $"No {fieldName} field found in {type}"));
+    return Expression.Lambda<Func<T, object>>(fieldExpression, parameter);
+  }
+
   public Func<T, bool> PrimaryKeyEqualsCompiled<T>(string id)
   {
     return PrimaryKeyEquals<T>(id).Compile();
@@ -113,6 +138,24 @@ public partial class OzdsDbContext
     var fieldExpression = Expression.Field(parameter, field
       ?? throw new InvalidOperationException(
         $"No {joinType} field found in {type}"));
+    return Expression.Lambda<Func<T, object>>(fieldExpression, parameter);
+  }
+
+  public Func<T, object> ForeignKeyOfCompiled<T>(Expression<Func<T, object>> prefix, Type joinType)
+  {
+    return ForeignKeyOf(prefix, joinType).Compile();
+  }
+
+  public Expression<Func<T, object>> ForeignKeyOf<T>(Expression<Func<T, object>> prefix, Type joinType)
+  {
+    var parameter = Expression.Parameter(typeof(T));
+    var fieldName = $"_{char.ToLower(joinType.Name[0]) + joinType.Name[1..]}";
+    var field = typeof(T).GetField(fieldName,
+      BindingFlags.NonPublic | BindingFlags.Instance);
+    var callExpression = Expression.Invoke(prefix, parameter);
+    var fieldExpression = Expression.Field(callExpression, field
+      ?? throw new InvalidOperationException(
+        $"No {joinType} field found in {typeof(T)}"));
     return Expression.Lambda<Func<T, object>>(fieldExpression, parameter);
   }
 }
