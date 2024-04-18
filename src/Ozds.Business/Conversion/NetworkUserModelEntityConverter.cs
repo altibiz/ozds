@@ -1,4 +1,5 @@
 using Ozds.Business.Conversion.Base;
+using Ozds.Business.Conversion.Complex;
 using Ozds.Business.Models;
 using Ozds.Data.Entities;
 
@@ -34,7 +35,8 @@ public static class NetworkUserModelEntityConverterExtensions
       IsDeleted = entity.IsDeleted,
       DeletedOn = entity.DeletedOn,
       DeletedById = entity.DeletedById,
-      LocationId = entity.LocationId
+      LocationId = entity.LocationId,
+      LegalPerson = entity.LegalPerson.ToModel(),
     };
   }
 
@@ -51,7 +53,8 @@ public static class NetworkUserModelEntityConverterExtensions
       IsDeleted = model.IsDeleted,
       DeletedOn = model.DeletedOn,
       DeletedById = model.DeletedById,
-      LocationId = model.LocationId
+      LocationId = model.LocationId,
+      LegalPerson = model.LegalPerson.ToEntity(),
     };
   }
 }

@@ -1,4 +1,5 @@
 using Ozds.Business.Conversion.Base;
+using Ozds.Business.Conversion.Complex;
 using Ozds.Business.Models;
 using Ozds.Data.Entities;
 
@@ -39,7 +40,8 @@ public static class LocationModelEntityConverterExtensions
       BlueLowNetworkUserCatalogueId = entity.BlueLowNetworkUserCatalogueId,
       WhiteLowNetworkUserCatalogueId = entity.WhiteLowNetworkUserCatalogueId,
       RedLowNetworkUserCatalogueId = entity.RedLowNetworkUserCatalogueId,
-      RegulatoryCatalogueId = entity.RegulatoryCatalogueId
+      RegulatoryCatalogueId = entity.RegulatoryCatalogueId,
+      LegalPerson = entity.LegalPerson.ToModel(),
     };
   }
 
@@ -61,7 +63,8 @@ public static class LocationModelEntityConverterExtensions
       BlueLowNetworkUserCatalogueId = model.BlueLowNetworkUserCatalogueId,
       WhiteLowNetworkUserCatalogueId = model.WhiteLowNetworkUserCatalogueId,
       RedLowNetworkUserCatalogueId = model.RedLowNetworkUserCatalogueId,
-      RegulatoryCatalogueId = model.RegulatoryCatalogueId
+      RegulatoryCatalogueId = model.RegulatoryCatalogueId,
+      LegalPerson = model.LegalPerson.ToEntity(),
     };
   }
 }

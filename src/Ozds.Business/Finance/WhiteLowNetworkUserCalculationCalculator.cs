@@ -26,6 +26,82 @@ public class
   {
     var supplyCatalogue = calculationBasis.SupplyRegulatoryCatalogue;
 
+    var usageActiveEnergyTotalImportT1 = _calculationItemCalculator
+      .Calculate<UsageActiveEnergyTotalImportT1CalculationItemModel>(
+        new CalculationItemBasisModel(
+          calculationBasis.Aggregates,
+          usageCatalogue.ActiveEnergyTotalImportT1Price_EUR
+        )
+      );
+
+    var usageActiveEnergyTotalImportT2 = _calculationItemCalculator
+      .Calculate<UsageActiveEnergyTotalImportT2CalculationItemModel>(
+        new CalculationItemBasisModel(
+          calculationBasis.Aggregates,
+          usageCatalogue.ActiveEnergyTotalImportT2Price_EUR
+        )
+      );
+
+    var usageReactiveEnergyTotalRampedT0 = _calculationItemCalculator
+      .Calculate<UsageReactiveEnergyTotalRampedT0CalculationItemModel>(
+        new CalculationItemBasisModel(
+          calculationBasis.Aggregates,
+          usageCatalogue.ReactiveEnergyTotalRampedT0Price_EUR
+        )
+      );
+
+    var usageMeterFee = _calculationItemCalculator
+      .Calculate<UsageMeterFeeCalculationItemModel>(
+        new CalculationItemBasisModel(
+          calculationBasis.Aggregates,
+          usageCatalogue.MeterFeePrice_EUR
+        )
+      );
+
+    var usageFeeTotal =
+      usageActiveEnergyTotalImportT1.Total_EUR
+      + usageActiveEnergyTotalImportT2.Total_EUR
+      + usageReactiveEnergyTotalRampedT0.Total_EUR
+      + usageMeterFee.Total_EUR;
+
+    var supplyActiveEnergyTotalImportT1 = _calculationItemCalculator
+      .Calculate<SupplyActiveEnergyTotalImportT1CalculationItemModel>(
+        new CalculationItemBasisModel(
+          calculationBasis.Aggregates,
+          supplyCatalogue.ActiveEnergyTotalImportT1Price_EUR
+        )
+      );
+
+    var supplyActiveEnergyTotalImportT2 = _calculationItemCalculator
+      .Calculate<SupplyActiveEnergyTotalImportT2CalculationItemModel>(
+        new CalculationItemBasisModel(
+          calculationBasis.Aggregates,
+          supplyCatalogue.ActiveEnergyTotalImportT2Price_EUR
+        )
+      );
+
+    var supplyBusinessUsageFee = _calculationItemCalculator
+      .Calculate<SupplyBusinessUsageFeeCalculationItemModel>(
+        new CalculationItemBasisModel(
+          calculationBasis.Aggregates,
+          supplyCatalogue.BusinessUsageFeePrice_EUR
+        )
+      );
+
+    var supplyRenewableEnergyFee = _calculationItemCalculator
+      .Calculate<SupplyRenewableEnergyFeeCalculationItemModel>(
+        new CalculationItemBasisModel(
+          calculationBasis.Aggregates,
+          supplyCatalogue.RenewableEnergyFeePrice_EUR
+        )
+      );
+
+    var supplyFeeTotal =
+      supplyActiveEnergyTotalImportT1.Total_EUR
+      + supplyActiveEnergyTotalImportT2.Total_EUR
+      + supplyBusinessUsageFee.Total_EUR
+      + supplyRenewableEnergyFee.Total_EUR;
+
     var initial = new WhiteLowNetworkUserCalculationModel
     {
       Id = default!,
@@ -46,62 +122,17 @@ public class
       ArchivedUsageNetworkUserCatalogue = usageCatalogue,
       ArchivedSupplyRegulatoryCatalogue =
         calculationBasis.SupplyRegulatoryCatalogue,
-      UsageActiveEnergyTotalImportT1 = _calculationItemCalculator
-        .Calculate<UsageActiveEnergyTotalImportT1CalculationItemModel>(
-          new CalculationItemBasisModel(
-            calculationBasis.Aggregates,
-            usageCatalogue.ActiveEnergyTotalImportT1Price_EUR
-          )
-        ),
-      UsageActiveEnergyTotalImportT2 = _calculationItemCalculator
-        .Calculate<UsageActiveEnergyTotalImportT2CalculationItemModel>(
-          new CalculationItemBasisModel(
-            calculationBasis.Aggregates,
-            usageCatalogue.ActiveEnergyTotalImportT2Price_EUR
-          )
-        ),
-      UsageReactiveEnergyTotalRampedT0 = _calculationItemCalculator
-        .Calculate<UsageReactiveEnergyTotalRampedT0CalculationItemModel>(
-          new CalculationItemBasisModel(
-            calculationBasis.Aggregates,
-            usageCatalogue.ReactiveEnergyTotalRampedT0Price_EUR
-          )
-        ),
-      UsageMeterFee = _calculationItemCalculator
-        .Calculate<UsageMeterFeeCalculationItemModel>(
-          new CalculationItemBasisModel(
-            calculationBasis.Aggregates,
-            usageCatalogue.MeterFeePrice_EUR
-          )
-        ),
-      SupplyActiveEnergyTotalImportT1 = _calculationItemCalculator
-        .Calculate<SupplyActiveEnergyTotalImportT1CalculationItemModel>(
-          new CalculationItemBasisModel(
-            calculationBasis.Aggregates,
-            supplyCatalogue.ActiveEnergyTotalImportT1Price_EUR
-          )
-        ),
-      SupplyActiveEnergyTotalImportT2 = _calculationItemCalculator
-        .Calculate<SupplyActiveEnergyTotalImportT2CalculationItemModel>(
-          new CalculationItemBasisModel(
-            calculationBasis.Aggregates,
-            supplyCatalogue.ActiveEnergyTotalImportT2Price_EUR
-          )
-        ),
-      SupplyBusinessUsageFee = _calculationItemCalculator
-        .Calculate<SupplyBusinessUsageFeeCalculationItemModel>(
-          new CalculationItemBasisModel(
-            calculationBasis.Aggregates,
-            supplyCatalogue.BusinessUsageFeePrice_EUR
-          )
-        ),
-      SupplyRenewableEnergyFee = _calculationItemCalculator
-        .Calculate<SupplyRenewableEnergyFeeCalculationItemModel>(
-          new CalculationItemBasisModel(
-            calculationBasis.Aggregates,
-            supplyCatalogue.RenewableEnergyFeePrice_EUR
-          )
-        ),
+      UsageActiveEnergyTotalImportT1 = usageActiveEnergyTotalImportT1,
+      UsageActiveEnergyTotalImportT2 = usageActiveEnergyTotalImportT2,
+      UsageReactiveEnergyTotalRampedT0 = usageReactiveEnergyTotalRampedT0,
+      UsageMeterFee = usageMeterFee,
+      UsageFeeTotal_EUR = usageFeeTotal,
+      SupplyActiveEnergyTotalImportT1 = supplyActiveEnergyTotalImportT1,
+      SupplyActiveEnergyTotalImportT2 = supplyActiveEnergyTotalImportT2,
+      SupplyBusinessUsageFee = supplyBusinessUsageFee,
+      SupplyRenewableEnergyFee = supplyRenewableEnergyFee,
+      SupplyFeeTotal_EUR = supplyFeeTotal,
+      Total_EUR = usageFeeTotal + supplyFeeTotal
     };
 
     return initial;
