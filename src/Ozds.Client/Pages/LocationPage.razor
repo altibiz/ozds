@@ -1,7 +1,7 @@
-@page "/location/{id}"
+@page "/location/{Id}"
 
 
-@if (user is null)
+@* @if (user is null)
 {
   return;
 }
@@ -33,10 +33,13 @@
       </MudGrid>
     </MudPaper>
   </MudContainer>
-}
+} *@
+
+
+<LocationMutate Id="@Id"/>
 
 @code {
-  [Parameter] public string? id { get; set; }
+  [Parameter] public string? Id { get; set; }
   [CascadingParameter] public UserState user { get; set; } = default!;
   private LocationModel? _location;
 

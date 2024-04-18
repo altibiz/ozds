@@ -35,24 +35,26 @@
               <MudContainer>
                 @T["Prvo očitanje"]:
                 @if (dataStruct.data.monthEndTotal is not null)
-                  @(DecimalString((decimal)dataStruct.data.monthEndTotal / 1000, 0)) kWh
-              
+                  @(FloatString(dataStruct.data.monthEndTotal / 1000, 0)) kWh
+
               </MudContainer>
               <MudContainer>
                 @T["Zadnje očitanje"]:
                 @if (dataStruct.data.monthStartTotal is not null)
-                  @(DecimalString((decimal)dataStruct.data.monthStartTotal / 1000, 0)) kWh
-              
+                  @(FloatString(dataStruct.data.monthStartTotal / 1000, 0)) kWh
+
               </MudContainer>
               <MudContainer Style="font-size: large; font-weight:bold;">
                 @T["Ukupna potrošnja"]:
+                @* @if (dataStruct.data.monthStartTotal is not null && dataStruct.data.monthEndTotal is not null)
+                  @(FloatString((dataStruct.data.monthStartTotal - dataStruct.data.monthEndTotal) / 1000, 0)) kWh *@
                 @if (dataStruct.data.monthStartTotal is not null && dataStruct.data.monthEndTotal is not null)
-                  @(DecimalString((decimal)(dataStruct.data.monthStartTotal - dataStruct.data.monthEndTotal) / 1000, 0)) kWh
-              
+                  @(FloatString((dataStruct.data.monthStartTotal - dataStruct.data.monthEndTotal) , 0)) Wh
+
               </MudContainer>
               <MudContainer Style="font-weight:bold;">
                 @T["Maksimalna snaga"]:
-                @(DecimalString(dataStruct.data.maxPower / 1000) + " kW")
+                @(FloatString(dataStruct.data.maxPower, 0) + " W")
               </MudContainer>
             </MudStack>
           </MudCollapse>
@@ -97,8 +99,8 @@
           Title='@T["Prvo očitanje"]'>
           <CellTemplate>
             @if (context.Item.monthEndTotal is not null)
-              @(DecimalString((decimal)context.Item.monthEndTotal / 1000, 0) + " kWh")
-          
+              @(FloatString(context.Item.monthEndTotal / 1000, 0) + " kWh")
+
           </CellTemplate>
         </PropertyColumn>
         <PropertyColumn
@@ -107,8 +109,8 @@
           Title='@T["Zadnje očitanje"]'>
           <CellTemplate>
             @if (context.Item.monthStartTotal is not null)
-              @(DecimalString((decimal)context.Item.monthStartTotal / 1000, 0) + " kWh")
-          
+              @(FloatString(context.Item.monthStartTotal / 1000, 0) + " kWh")
+
           </CellTemplate>
         </PropertyColumn>
         <PropertyColumn
@@ -116,9 +118,11 @@
           Property="x => x.monthStartTotal - x.monthEndTotal"
           Title='@T["Ukupna potrošnja"]'>
           <CellTemplate>
+            @* @if (context.Item.monthStartTotal is not null && context.Item.monthEndTotal is not null)
+              @(FloatString((context.Item.monthStartTotal - context.Item.monthEndTotal) / 1000, 0) + " kWh") *@
             @if (context.Item.monthStartTotal is not null && context.Item.monthEndTotal is not null)
-              @(DecimalString((decimal)(context.Item.monthStartTotal - context.Item.monthEndTotal) / 1000, 0) + " kWh")
-          
+              @(FloatString((context.Item.monthStartTotal - context.Item.monthEndTotal), 0) + " Wh")
+
           </CellTemplate>
         </PropertyColumn>
         <PropertyColumn
@@ -126,7 +130,7 @@
           Property="x => x.maxPower"
           Title='@T["Maksimalna snaga"]'>
           <CellTemplate>
-            @(DecimalString(context.Item.maxPower / 1000) + " kW")
+            @(FloatString(context.Item.maxPower, 0) + " W")
           </CellTemplate>
         </PropertyColumn>
       </Columns>
@@ -153,15 +157,15 @@
   private MeterModel? _meter;
   private string? _searchString;
   private List<TabularData> _dataStruct = new();
-  private (decimal? First, decimal? Last, DateTimeOffset FirstDate) _startEnd;
+  private (float? First, float? Last, DateTimeOffset FirstDate) _startEnd;
 
-  public record ChartData(decimal? L1, decimal? L2, decimal? L3, DateTimeOffset date);
+  public record ChartData(float? L1, float? L2, float? L3, DateTimeOffset date);
 
-  public record struct TabularData(string year, string month, decimal? monthStartTotal, decimal? monthEndTotal, decimal maxPower);
+  public record struct TabularData(string year, string month, float? monthStartTotal, float? monthEndTotal, float maxPower);
 
   private string _month = "-1";
   private string _year = "-1";
-  private decimal thisMonthMaxPower = 0m;
+  private float thisMonthMaxPower = 0;
   private IReadOnlyList<SpanningMeasure<float>>? _spanningMeasurements;
   private DateTimeOffset startOfThisYear = DateTimeOffset.UtcNow.GetStartOfYear();
   private DateTimeOffset startOfThisMonth = DateTimeOffset.UtcNow.GetStartOfMonth();
@@ -178,12 +182,39 @@
 
   protected override async Task OnInitializedAsync()
   {
+    var aggregateQueries = ScopedServices.GetRequiredService<OzdsAggregateQueries>();
+    var test = await aggregateQueries.ReadAgnostic(new string[] { "x => x.Interval == 2 || x.Interval == 0" }, startOfThisYear, now, 1, 9000);
+    var measurePerMonth = test.OrderBy(x => x.Timestamp).Where(x => x.MeterId == Source).ToList();
+
     foreach (var month in startOfThisYear.GetThisYearMonthStarts().Reverse())
     {
-      _startEnd = new ValueTuple<decimal?, decimal?, DateTimeOffset>();
-      thisMonthMaxPower = 0m;
+      var measureThisMonthMonthly = measurePerMonth
+        .Where(x => x.Timestamp.Month == month.Month)
+        .Where(x => x.Interval == IntervalModel.Month)
+        .FirstOrDefault();
+      if (measureThisMonthMonthly is null)
+        continue;
+      var measureThisMonthQuarterHourlies = measurePerMonth
+        .Where(x => x.Timestamp.Month == month.Month)
+        .Where(x => x.Interval == IntervalModel.QuarterHour)
+        .ToList();
+      var a = measureThisMonthMonthly.ActiveEnergySpan_Wh.SpanMin.TariffUnary.DuplexImport.PhaseSum;
+      var b = measureThisMonthMonthly.ActiveEnergySpan_Wh.SpanMax.TariffUnary.DuplexImport.PhaseSum;
+      var c = 15;
+      _dataStruct.Add( new(){
+        year = month.ToString("yy"),
+        month = month.ToString("MM"),
+        monthStartTotal = b,
+        monthEndTotal = a,
+        maxPower = c
+         });
+      thisMonthMaxPower = 0;
       _month = "00";
       _year = "00";
+    }
+    foreach (var data in _dataStruct)
+    {
+      _shownOMMs.Add(new ExpandThing { data = data, show = true, expand = false });
     }
   }
 

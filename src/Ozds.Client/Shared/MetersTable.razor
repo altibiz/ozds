@@ -27,7 +27,8 @@
           </MudItem>
           <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
             @T["Potrošnja u tekućem mjesecu"]: <br>
-            @DecimalString(dataStruct.data.thisMonthUsage / 1000, 0) kWh
+            @* @DecimalString(dataStruct.data.thisMonthUsage / 1000, 0) kWh *@
+            @DecimalString(dataStruct.data.thisMonthUsage, 0) Wh
           </MudItem>
           @if (dataStruct.data.lastMonthsPayment is not null && true)
           {
@@ -125,7 +126,8 @@
         Property="x => x.thisMonthUsage"
         Title='@T["Potrošnja u tekućem mjesecu"]'>
         <CellTemplate>
-          @(DecimalString(context.Item.thisMonthUsage / 1000, 0) + " kWh")
+          @* @(DecimalString(context.Item.thisMonthUsage / 1000, 0) + " kWh") *@
+          @(DecimalString(context.Item.thisMonthUsage, 0) + " Wh")
         </CellTemplate>
       </PropertyColumn>
       @if (true)
@@ -175,8 +177,13 @@
     var test = await aggregateQueries.ReadAgnostic(new string[] { "x => x.Interval == 2" }, startOfThisMonth, now, 1, 9000);
     var meters = test.OrderBy(x => x.Timestamp).GroupBy(x => x.MeterId).ToList();
     foreach(var meter in meters){
-      var _thisMonthUsage = (decimal)meter.FirstOrDefault()!.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum * 1000;
-      _dataStruct.Add(new(){location = "test",networkUser = "test", meter = meter.Key, thisMonthUsage = _thisMonthUsage, lastMonthUsage = 0m, lastMonthsPayment = 0m});
+      var _thisMonthUsage = (decimal)meter.FirstOrDefault()!.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum;
+      if (_thisMonthUsage == 0){
+        var a = (decimal)meter.FirstOrDefault()!.ActiveEnergySpan_Wh.SpanMin.TariffUnary.DuplexImport.PhaseSum;
+        var b = (decimal)meter.FirstOrDefault()!.ActiveEnergySpan_Wh.SpanMax.TariffUnary.DuplexImport.PhaseSum;
+        _thisMonthUsage = b - a;
+      }
+      _dataStruct.Add(new(){location = "test",networkUser = "KorisnikTest", meter = meter.Key, thisMonthUsage = _thisMonthUsage, lastMonthUsage = 0m, lastMonthsPayment = 0m});
     }
     if (representative is null)
     {
@@ -204,7 +211,7 @@
         {
           foreach (var meter in meters)
           {
-            _partialDataStruct.Add(new TabularData("test", "test", meter.Key));
+            _partialDataStruct.Add(new TabularData("test", "KorisnikTest", meter.Key));
           }
         }
       }
@@ -256,12 +263,14 @@
 
   private void InspectNetworkUser(string item)
   {
-    NavigationManager.NavigateTo($"network-user/{item}");
+    @* NavigationManager.NavigateTo($"network-user/{item}"); *@
+    NavigationManager.NavigateTo($"network-user/1");
   }
 
   private void InspectLocation(string item)
   {
-    NavigationManager.NavigateTo($"location/{item}");
+    @* NavigationManager.NavigateTo($"location/{item}"); *@
+    NavigationManager.NavigateTo($"location/1");
   }
 
   private void InspectMeter(string item)
