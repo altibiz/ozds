@@ -4,7 +4,7 @@ using Ozds.Business.Models.Base;
 
 namespace Ozds.Business.Models.Complex;
 
-public class
+public abstract class
   ReactiveEnergyTotalRampedT0CalculationItemModel : CalculationItemModel
 {
   [Required] public required decimal ImportMin_VARh { get; set; }
@@ -45,14 +45,25 @@ public class
       );
     }
   }
+}
 
-  public override TariffMeasure<decimal> Price
+public class UsageReactiveEnergyTotalRampedT0CalculationItemModel
+  : ReactiveEnergyTotalRampedT0CalculationItemModel
+{
+  public override string Kind
+  {
+    get { return "JEN"; }
+  }
+
+  public override ExpenditureMeasure<decimal> Price
   {
     get
     {
-      return new UnaryTariffMeasure<decimal>(
-        new AnyDuplexMeasure<decimal>(
-          new SinglePhasicMeasure<decimal>(Price_EUR)
+      return new UsageExpenditureMeasure<decimal>(
+        new UnaryTariffMeasure<decimal>(
+          new AnyDuplexMeasure<decimal>(
+            new SinglePhasicMeasure<decimal>(Price_EUR)
+          )
         )
       );
     }

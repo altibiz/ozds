@@ -54,32 +54,16 @@
       </MudSelect>
       <MudTextField
         Label="Name"
-        @bind-Value="LoadingState.Value.Representative.Name"
-        For="@(() => LoadingState.Value.Representative.Name)"/>
-      <MudTextField
-        Label="SocialSecurityNumber"
-        @bind-Value="LoadingState.Value.Representative.SocialSecurityNumber"
-        For="@(() => LoadingState.Value.Representative.SocialSecurityNumber)"/>
-      <MudTextField
-        Label="Address"
-        @bind-Value="LoadingState.Value.Representative.Address"
-        For="@(() => LoadingState.Value.Representative.Address)"/>
-      <MudTextField
-        Label="City"
-        @bind-Value="LoadingState.Value.Representative.City"
-        For="@(() => LoadingState.Value.Representative.City)"/>
-      <MudTextField
-        Label="PostalCode"
-        @bind-Value="LoadingState.Value.Representative.PostalCode"
-        For="@(() => LoadingState.Value.Representative.PostalCode)"/>
+        @bind-Value="LoadingState.Value.Representative.PhysicalPerson.Name"
+        For="@(() => LoadingState.Value.Representative.PhysicalPerson.Name)"/>
       <MudTextField
         Label="Email"
-        @bind-Value="LoadingState.Value.Representative.Email"
-        For="@(() => LoadingState.Value.Representative.Email)"/>
+        @bind-Value="LoadingState.Value.Representative.PhysicalPerson.Email"
+        For="@(() => LoadingState.Value.Representative.PhysicalPerson.Email)"/>
       <MudTextField
         Label="PhoneNumber"
-        @bind-Value="LoadingState.Value.Representative.PhoneNumber"
-        For="@(() => LoadingState.Value.Representative.PhoneNumber)"/>
+        @bind-Value="LoadingState.Value.Representative.PhysicalPerson.PhoneNumber"
+        For="@(() => LoadingState.Value.Representative.PhysicalPerson.PhoneNumber)"/>
     </MudCardContent>
     <MudCardActions>
       <MudButton

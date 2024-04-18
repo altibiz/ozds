@@ -47,23 +47,24 @@
   [CascadingParameter] public RepresentativeState representative { get; set; } = default!;
   private ApexChartOptions<ChartData> graphOptions = new();
   private ApexChartOptions<ChartData> graphOptionsMob = new();
-  public IEnumerable<ChartData> _graphValues =  Enumerable.Empty<ChartData>();
+  public IEnumerable<ChartData> _graphValues = Enumerable.Empty<ChartData>();
   public List<ChartData> _totalConsumption = new();
 
   public record ChartData(decimal value, string name, DateTimeOffset date, string source);
 
   private ApexChart<ChartData> chart = default!;
-  private DateTimeOffset startOfThisYear = DateTimeOffset.UtcNow.GetStartOfYear();
-  private DateTimeOffset now = DateTime.UtcNow;
+  private readonly DateTimeOffset startOfThisYear = DateTimeOffset.UtcNow.GetStartOfYear();
+  private readonly DateTimeOffset now = DateTime.UtcNow;
 
   protected override async Task OnInitializedAsync()
   {
     var aggregateQueries = ScopedServices.GetRequiredService<OzdsAggregateQueries>();
-    var test = await aggregateQueries.ReadAgnostic(new string[] { "x => x.Interval == 0" }, startOfThisYear, now, 1, 9000);
+    var test = await aggregateQueries.ReadAgnostic(new[] { "x => x.Interval == 0" }, startOfThisYear, now, 1, 9000);
     var values = test.OrderBy(x => x.Timestamp).GroupBy(x => x.Timestamp).ToList();
-    foreach(var value in values){
+    foreach (var value in values)
+    {
       var val = (decimal)value.FirstOrDefault()!.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum * 1000;
-      _graphValues.Append(new ChartData(val,"test",value.Key,"test"));
+      _graphValues.Append(new ChartData(val, "test", value.Key, "test"));
     }
 
 

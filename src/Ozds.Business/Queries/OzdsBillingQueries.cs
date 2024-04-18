@@ -136,6 +136,7 @@ public class OzdsBillingQueries
     var networkUser = await _dbContext.NetworkUsers
                         .WithId(networkUserId)
                         .Include(x => x.Location)
+                        .Include(x => x.Location.RegulatoryCatalogue)
                         .FirstOrDefaultAsync() ??
                       throw new InvalidOperationException(
                         "Network user not found");
@@ -148,6 +149,7 @@ public class OzdsBillingQueries
     return new NetworkUserInvoiceIssuingBasisModel(
       networkUser.Location.ToModel(),
       networkUser.ToModel(),
+      networkUser.Location.RegulatoryCatalogue.ToModel(),
       fromDate,
       toDate,
       calculationBases

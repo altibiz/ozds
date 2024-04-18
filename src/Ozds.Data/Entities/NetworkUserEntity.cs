@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Ozds.Data.Entities.Base;
+using Ozds.Data.Entities.Complex;
 using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities;
@@ -25,6 +26,8 @@ public class NetworkUserEntity : AuditableEntity
 
   public virtual ICollection<NetworkUserInvoiceEntity> Invoices { get; set; } =
     default!;
+
+  public LegalPersonEntity LegalPerson { get; set; } = default!;
 }
 
 public class
@@ -54,5 +57,7 @@ public class
     builder
       .Property("_locationId")
       .HasColumnName("location_id");
+
+    builder.ComplexProperty(nameof(NetworkUserEntity.LegalPerson));
   }
 }

@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Conversion;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Composite;
-using Ozds.Business.Models.Enums;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Data;
 using Ozds.Data.Entities.Enums;
@@ -35,7 +34,6 @@ public class OzdsNetworkUserQueries : IOzdsQueries
   }
 
 
-
   public async Task<PaginatedList<LocationModel>> GetLocations(
     string title,
     int pageNumber = QueryConstants.StartingPage,
@@ -55,11 +53,12 @@ public class OzdsNetworkUserQueries : IOzdsQueries
       .ToPaginatedList(count);
   }
 
-  public async Task<PaginatedList<RepresentativeModel>> GetEligibleRepresentatives(
-    string title,
-    int pageNumber = QueryConstants.StartingPage,
-    int pageCount = QueryConstants.DefaultPageCount
-  )
+  public async Task<PaginatedList<RepresentativeModel>>
+    GetEligibleRepresentatives(
+      string title,
+      int pageNumber = QueryConstants.StartingPage,
+      int pageCount = QueryConstants.DefaultPageCount
+    )
   {
     var filtered = context.Representatives
       .Where(rep => rep.Title
@@ -93,6 +92,7 @@ public class OzdsNetworkUserQueries : IOzdsQueries
 
     return null;
   }
+
   public async Task<List<NetworkUserModel>>
     NetworkUserByRepresentativeId(string id)
   {
@@ -105,6 +105,7 @@ public class OzdsNetworkUserQueries : IOzdsQueries
     {
       return rep.NetworkUsers.Select(x => x.ToModel()).ToList();
     }
+
     return new List<NetworkUserModel>();
   }
 }

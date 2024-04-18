@@ -38,20 +38,6 @@ public class
       .HasColumnName("location_id");
 
     builder
-      .ComplexProperty(nameof(LocationInvoiceEntity.ArchivedLocation))
-      .Ignore(nameof(LocationEntity.CreatedBy))
-      .Ignore(nameof(LocationEntity.LastUpdatedBy))
-      .Ignore(nameof(LocationEntity.DeletedBy))
-      .Ignore(nameof(LocationEntity.Invoices))
-      .Ignore(nameof(LocationEntity.BlueLowNetworkUserCatalogue))
-      .Ignore(nameof(LocationEntity.RedLowNetworkUserCatalogue))
-      .Ignore(nameof(LocationEntity.WhiteLowNetworkUserCatalogue))
-      .Ignore(nameof(LocationEntity.WhiteMediumNetworkUserCatalogue))
-      .Ignore(nameof(LocationEntity.RegulatoryCatalogue))
-      .Ignore(nameof(LocationEntity.Invoices))
-      .Ignore(nameof(LocationEntity.NetworkUsers))
-      .Ignore(nameof(LocationEntity.Messengers))
-      .Ignore(nameof(LocationEntity.MeasurementLocations))
-      .Ignore(nameof(LocationEntity.Representatives));
+      .ArchivedProperty(nameof(LocationInvoiceEntity.ArchivedLocation));
   }
 }

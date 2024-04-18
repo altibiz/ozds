@@ -1,4 +1,3 @@
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Ozds.Data.Entities.Base;
 using Ozds.Data.Entities.Complex;
@@ -11,19 +10,17 @@ public class
   RedLowNetworkUserCatalogueEntity>
 {
 #pragma warning disable CA1707
-  public ActiveEnergyTotalImportT1CalculationItemEntity
-    ActiveEnergyTotalImportT1 { get; set; } = default!;
+  public UsageActiveEnergyTotalImportT1CalculationItemEntity
+    UsageActiveEnergyTotalImportT1 { get; set; } = default!;
 
-  public ActiveEnergyTotalImportT2CalculationItemEntity
-    ActiveEnergyTotalImportT2 { get; set; } = default!;
+  public UsageActiveEnergyTotalImportT2CalculationItemEntity
+    UsageActiveEnergyTotalImportT2 { get; set; } = default!;
 
-  public ActivePowerTotalImportT1PeakCalculationItemEntity
-    ActivePowerTotalImportT1Peak { get; set; } = default!;
+  public UsageActivePowerTotalImportT1PeakCalculationItemEntity
+    UsageActivePowerTotalImportT1Peak { get; set; } = default!;
 
-  public ReactiveEnergyTotalRampedT0CalculationItemEntity
-    ReactiveEnergyTotalRampedT0 { get; set; } = default!;
-
-  public decimal MeterFeePrice_EUR { get; set; }
+  public UsageReactiveEnergyTotalRampedT0CalculationItemEntity
+    UsageReactiveEnergyTotalRampedT0 { get; set; } = default!;
 #pragma warning restore CA1707
 }
 
@@ -36,26 +33,22 @@ public class
   {
     builder
       .ComplexProperty(nameof(RedLowNetworkUserCalculationEntity
-        .ActiveEnergyTotalImportT1))
-      .ActiveEnergyImportCalculationItem();
+        .UsageActiveEnergyTotalImportT1))
+      .UsageActiveEnergyTotalImportT1CalculationItem();
 
     builder
       .ComplexProperty(nameof(RedLowNetworkUserCalculationEntity
-        .ActiveEnergyTotalImportT2))
-      .ActiveEnergyImportCalculationItem();
+        .UsageActiveEnergyTotalImportT2))
+      .UsageActiveEnergyTotalImportT2CalculationItem();
 
     builder
       .ComplexProperty(nameof(RedLowNetworkUserCalculationEntity
-        .ActivePowerTotalImportT1Peak))
-      .ActivePowerTotalImportT1PeakCalculationItem();
+        .UsageActivePowerTotalImportT1Peak))
+      .UsageActivePowerTotalImportT1PeakCalculationItem();
 
     builder
       .ComplexProperty(nameof(RedLowNetworkUserCalculationEntity
-        .ReactiveEnergyTotalRampedT0))
-      .ReactiveEnergyTotalRampedT0CalculationItem();
-
-    builder
-      .Property(nameof(RedLowNetworkUserCalculationEntity.MeterFeePrice_EUR))
-      .HasColumnName("meter_fee_price_eur");
+        .UsageReactiveEnergyTotalRampedT0))
+      .UsageReactiveEnergyTotalRampedT0CalculationItem();
   }
 }

@@ -1,8 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Ozds.Data.Entities.Abstractions;
+using Ozds.Data.Entities.Complex;
 using Ozds.Data.Extensions;
-
-// TODO: copy entities via complex properties
 
 namespace Ozds.Data.Entities.Base;
 
@@ -48,6 +47,10 @@ public class NetworkUserCalculationEntity : IReadonlyEntity, IIdentifiableEntity
     init { _networkUserInvoiceId = long.Parse(value); }
   }
 
+  public decimal UsageFeeTotal_EUR { get; set; }
+
+  public decimal SupplyFeeTotal_EUR { get; set; }
+
   public decimal Total_EUR { get; set; }
 
   public NetworkUserCatalogueEntity ArchivedUsageNetworkUserCatalogue
@@ -83,6 +86,29 @@ public class NetworkUserCalculationEntity : IReadonlyEntity, IIdentifiableEntity
     get;
     set;
   } = default!;
+
+  public UsageMeterFeeCalculationItemEntity UsageMeterFee { get; set; } =
+    default!;
+
+  public SupplyActiveEnergyTotalImportT1CalculationItemEntity
+    SupplyActiveEnergyTotalImportT1 { get; set; } = default!;
+
+  public SupplyActiveEnergyTotalImportT2CalculationItemEntity
+    SupplyActiveEnergyTotalImportT2 { get; set; } = default!;
+
+  public SupplyBusinessUsageFeeCalculationItemEntity SupplyBusinessUsageFee
+  {
+    get;
+    set;
+  } =
+    default!;
+
+  public SupplyRenewableEnergyFeeCalculationItemEntity SupplyRenewableEnergyFee
+  {
+    get;
+    set;
+  } =
+    default!;
 
   public virtual string Id
   {
@@ -211,6 +237,24 @@ public class
       .Property("_supplyRegulatoryCatalogueId")
       .HasColumnName("supply_regulatory_catalogue_id");
 
+    builder.ComplexProperty(nameof(NetworkUserCalculationEntity.UsageMeterFee))
+      .UsageMeterFeeCalculationItem();
+
+    builder.ComplexProperty(nameof(NetworkUserCalculationEntity
+        .SupplyActiveEnergyTotalImportT1))
+      .SupplyActiveEnergyTotalImportT1CalculationItem();
+
+    builder.ComplexProperty(nameof(NetworkUserCalculationEntity
+        .SupplyActiveEnergyTotalImportT2))
+      .SupplyActiveEnergyTotalImportT2CalculationItem();
+
+    builder.ComplexProperty(nameof(NetworkUserCalculationEntity
+        .SupplyBusinessUsageFee))
+      .SupplyBusinessUsageCalculationItem();
+
+    builder.ComplexProperty(nameof(NetworkUserCalculationEntity
+        .SupplyRenewableEnergyFee))
+      .SupplyRenewableEnergyCalculationItem();
 
     if (type != typeof(NetworkUserCalculationEntity))
     {

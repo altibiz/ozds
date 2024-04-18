@@ -1,0 +1,313 @@
+<!-- TODO: remove summations and store directly on calculation -->
+
+<style>
+  table {
+    border-spacing: 0;
+    border-collapse: collapse;
+    border: 2px solid black;
+  }
+
+  th {
+    background-color: #DDDDDD;
+  }
+
+  th, td {
+    border: 1px solid black;
+    padding: 2px;
+  }
+
+  .inductive-label {
+    border-bottom: 1px solid black;
+    padding: 2px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .capacitative-label {
+    padding: 2px;
+    display: flex;
+    justify-content: space-between;
+  }
+</style>
+
+<p>
+  <strong>
+    <u>
+      SPECIFIKACIJA POTROŠNJE NA OBRAČUNSKIM MJERNIM MJESTIMA
+    </u>
+  </strong>
+</p>
+<p style="margin-top: 0.8rem;">
+  Naziv obračunskom mjernog mjesta (OMM):
+  @(Calculation.ArchivedMeasurementLocation.Title)
+</p>
+<p>
+  Broj obračunskog mjernog mjesta (OMM):
+  @(Calculation.ArchivedMeasurementLocation.Id)
+</p>
+<p>
+  Tarifni model: @(Calculation.Kind)
+</p>
+<p style="margin-top: 1.2rem; margin-left: 0.8rem;">
+  <strong>A) NAKNADA ZA KORIŠTENJE MREŽE ZDS-a</strong>
+</p>
+<table style="margin-top: 0.8rem; width: 100%">
+  <colgroup>
+    <col style="width: 15%"/>
+    <col style="width: 8%"/>
+    <col style="width: 8%"/>
+    <col style="width: 9%"/>
+    <col style="width: 10%"/>
+    <col style="width: 10%"/>
+    <col style="width: 6%"/>
+    <col style="width: 12%"/>
+    <col style="width: 8%"/>
+    <col style="width: 8%"/>
+  </colgroup>
+  <thead>
+  <tr class="header">
+    <th>Broj brojila</th>
+    <th>Datum od</th>
+    <th>Datum do</th>
+    <th>Tarifna stavka</th>
+    <th>Stanje od</th>
+    <th>Stanje do</th>
+    <th>Status</th>
+    <th>Potrošak (kWh/kW/kVAR)</th>
+    <th>Jed.cijena (EUR)</th>
+    <th>Iznos (EUR)</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr class="odd">
+    <td rowspan="@usageRowspan">
+      @(Calculation.ArchivedMeter.Id)
+    </td>
+    <td rowspan="@usageRowspan">
+      @DateString(Calculation.FromDate)
+    </td>
+    <td rowspan="@usageRowspan">
+      @DateString(Calculation.ToDate)
+    </td>
+    @(Calculation.UsageItems.FirstOrDefault() is { } usageItem
+      ? renderItem(usageItem)
+      : null)
+  </tr>
+  @foreach (var item in Calculation.UsageItems.Skip(1))
+  {
+    <tr>
+      @renderItem(item)
+    </tr>
+  }
+  <tr class="odd">
+    <td colspan="5"></td>
+    <td colspan="4">
+      <strong>Naknada za korištenje mreže ZDS-a - UKUPNO:</strong>
+    </td>
+    <td style="text-align: right;">
+      <strong>
+        @DecimalString(Calculation.UsageFeeTotal_EUR, 2) EUR
+      </strong>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<p style="margin-top: 1.2rem; margin-left: 0.8rem;">
+  <strong>B) NAKNADA ZA OPSKRBU ELEKTRIČNOM ENERGIJOM</strong>
+</p>
+<table style="margin-top: 0.8rem;">
+  <colgroup>
+    <col style="width: 15%"/>
+    <col style="width: 8%"/>
+    <col style="width: 8%"/>
+    <col style="width: 9%"/>
+    <col style="width: 10%"/>
+    <col style="width: 10%"/>
+    <col style="width: 5%"/>
+    <col style="width: 12%"/>
+    <col style="width: 9%"/>
+    <col style="width: 8%"/>
+  </colgroup>
+  <thead>
+  <tr class="header">
+    <th>Broj brojila</th>
+    <th>Datum od</th>
+    <th>Datum do</th>
+    <th>Tarifna stavka</th>
+    <th>Stanje od</th>
+    <th>Stanje do</th>
+    <th>Status</th>
+    <th>Potrošak (kWh)</th>
+    <th>Jed.cijena (EUR)</th>
+    <th>Iznos (EUR)</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr class="odd">
+    <td rowspan="@supplyRowspan">
+      @Calculation.ArchivedMeter.Id
+    </td>
+    <td rowspan="@supplyRowspan">
+      @DateString(Calculation.FromDate)
+    </td>
+    <td rowspan="@supplyRowspan">
+      @DateString(Calculation.ToDate)
+    </td>
+    @(Calculation.SupplyItems.FirstOrDefault() is { } supplyItem
+      ? renderItem(supplyItem)
+      : null)
+  </tr>
+  @foreach (var item in Calculation.SupplyItems.Skip(1))
+  {
+    <tr>
+      @renderItem(item)
+    </tr>
+  }
+  <tr class="odd">
+    <td colspan="4"></td>
+    <td colspan="5">
+      <strong>Naknada za opskrbu električnom energijom - UKUPNO:</strong>
+    </td>
+    <td style="text-align: right;">
+      <strong>
+        @DecimalString(Calculation.SupplyFeeTotal_EUR, 2) EUR
+      </strong>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+
+@code {
+  [Parameter] public NetworkUserCalculationModel Calculation { get; set; } = default!;
+
+  private int usageRowspan
+  {
+    get
+    {
+      var usageItemCount = Calculation.UsageItems.Count();
+      return usageItemCount == 0 ? 1 : usageItemCount;
+    }
+  }
+
+  private int supplyRowspan
+  {
+    get
+    {
+      var supplyItemCount = Calculation.SupplyItems.Count();
+      return supplyItemCount == 0 ? 1 : supplyItemCount;
+    }
+  }
+
+  private RenderFragment renderItem(ICalculationItem item) =>
+    item is ReactiveEnergyTotalRampedT0CalculationItemModel reactiveItem
+      ? @<Fragment>
+          <td>
+            <strong>JEN</strong>
+          </td>
+          <td style="padding: 0;">
+            <p class="inductive-label">
+              <strong>
+                IND:
+              </strong>
+              <span>
+                @DecimalString(reactiveItem.ImportMin_VARh, 2)
+              </span>
+            </p>
+            <p class="capacitative-label">
+              <strong>
+                KAP:
+              </strong>
+              <span>
+                @DecimalString(reactiveItem.ExportMin_VARh, 2)
+              </span>
+            </p>
+          </td>
+          <td style="padding: 0;">
+            <p class="inductive-label">
+              <strong>
+                IND:
+              </strong>
+              <span>
+                @DecimalString(reactiveItem.ImportMax_VARh, 2)
+              </span>
+            </p>
+            <p class="capacitative-label">
+              <strong>
+                KAP:
+              </strong>
+              <span>
+                @DecimalString(reactiveItem.ExportMax_VARh, 2)
+              </span>
+            </p>
+          </td>
+          <td style="text-align: center;">O</td>
+          <td style="text-align: right;">
+            @DecimalString(reactiveItem.Amount_VARh, 0)
+          </td>
+          <td style="text-align: right;">
+            @DecimalString(reactiveItem.Price_EUR, 6)
+          </td>
+          <td style="text-align: right;">
+            @DecimalString(reactiveItem.Total_EUR, 2)
+          </td>
+        </Fragment>
+      : item is ActiveEnergyTotalImportCalculationItemModel energyItem
+        ? @<Fragment>
+            <td>
+              <strong>@energyItem.Kind</strong>
+            </td>
+            <td style="text-align: right;">
+              @DecimalString(energyItem.Min_Wh, 2)
+            </td>
+            <td style="text-align: right;">
+              @DecimalString(energyItem.Max_Wh, 2)
+            </td>
+            <td style="text-align: center;">O</td>
+            <td style="text-align: right;">
+              @DecimalString(energyItem.Amount_Wh, 0)
+            </td>
+            <td style="text-align: right;">
+              @DecimalString(energyItem.Price_EUR, 6)
+            </td>
+            <td style="text-align: right;">
+              @DecimalString(energyItem.Total_EUR, 2)
+            </td>
+          </Fragment>
+        : item is ActivePowerTotalImportT1PeakCalculationItemModel powerItem
+          ? @<Fragment>
+              <td>
+                <strong>@powerItem.Kind</strong>
+              </td>
+              <td style="text-align: right;"></td>
+              <td style="text-align: right;"></td>
+              <td style="text-align: center;">O</td>
+              <td style="text-align: right;">
+                @DecimalString(powerItem.Amount_W, 0)
+              </td>
+              <td style="text-align: right;">
+                @DecimalString(powerItem.Price_EUR, 3)
+              </td>
+              <td style="text-align: right;">
+                @DecimalString(powerItem.Total_EUR, 2)
+              </td>
+            </Fragment>
+          : item is FeeCalculationItemModel feeItem
+            ? @<Fragment>
+                <td>
+                  <strong>Naknada za mjernu uslugu - MU</strong>
+                </td>
+                <td style="text-align: right;">
+                  @DecimalString(feeItem.Amount_N, 0)
+                </td>
+                <td style="text-align: right;">
+                  @DecimalString(feeItem.Price_EUR, 3)
+                </td>
+                <td style="text-align: right;">
+                  @DecimalString(feeItem.Total_EUR, 2)
+                </td>
+              </Fragment>
+            : throw new InvalidOperationException(
+              $"Unsupported item type: {item.GetType()}");
+
+}

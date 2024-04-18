@@ -47,10 +47,20 @@ public static class BlueLowNetworkUserCalculationModelEntityConverterExtensions
       ArchivedUsageNetworkUserCatalogue =
         entity.ArchivedUsageNetworkUserCatalogue.ToModel(),
       ArchivedMeter = entity.ArchivedMeter.ToModel(),
-      ActiveEnergyTotalImportT0 = entity.ActiveEnergyTotalImportT0.ToModel(),
-      ReactiveEnergyTotalRampedT0 =
-        entity.ReactiveEnergyTotalRampedT0.ToModel(),
-      MeterFeePrice_EUR = entity.MeterFeePrice_EUR
+      UsageActiveEnergyTotalImportT0 =
+        entity.UsageActiveEnergyTotalImportT0.ToModel(),
+      UsageReactiveEnergyTotalRampedT0 =
+        entity.UsageReactiveEnergyTotalRampedT0.ToModel(),
+      UsageMeterFee = entity.UsageMeterFee.ToModel(),
+      SupplyActiveEnergyTotalImportT1 =
+        entity.SupplyActiveEnergyTotalImportT1.ToModel(),
+      SupplyActiveEnergyTotalImportT2 =
+        entity.SupplyActiveEnergyTotalImportT2.ToModel(),
+      SupplyBusinessUsageFee = entity.SupplyBusinessUsageFee.ToModel(),
+      SupplyRenewableEnergyFee = entity.SupplyRenewableEnergyFee.ToModel(),
+      UsageFeeTotal_EUR = entity.UsageFeeTotal_EUR,
+      SupplyFeeTotal_EUR = entity.SupplyFeeTotal_EUR,
+      Total_EUR = entity.Total_EUR
     };
   }
 
@@ -77,10 +87,20 @@ public static class BlueLowNetworkUserCalculationModelEntityConverterExtensions
       ArchivedUsageNetworkUserCatalogue =
         model.ArchivedUsageNetworkUserCatalogue.ToEntity(),
       ArchivedMeter = model.ArchivedMeter.ToEntity(),
-      ActiveEnergyTotalImportT0 = model.ActiveEnergyTotalImportT0.ToEntity(),
-      ReactiveEnergyTotalRampedT0 =
-        model.ReactiveEnergyTotalRampedT0.ToEntity(),
-      MeterFeePrice_EUR = model.MeterFeePrice_EUR
+      UsageActiveEnergyTotalImportT0 =
+        model.UsageActiveEnergyTotalImportT0.ToEntity(),
+      UsageReactiveEnergyTotalRampedT0 =
+        model.UsageReactiveEnergyTotalRampedT0.ToEntity(),
+      UsageMeterFee = model.UsageMeterFee.ToEntity(),
+      SupplyActiveEnergyTotalImportT1 =
+        model.SupplyActiveEnergyTotalImportT1.ToEntity(),
+      SupplyActiveEnergyTotalImportT2 =
+        model.SupplyActiveEnergyTotalImportT2.ToEntity(),
+      SupplyBusinessUsageFee = model.SupplyBusinessUsageFee.ToEntity(),
+      SupplyRenewableEnergyFee = model.SupplyRenewableEnergyFee.ToEntity(),
+      UsageFeeTotal_EUR = model.UsageFeeTotal_EUR,
+      SupplyFeeTotal_EUR = model.SupplyFeeTotal_EUR,
+      Total_EUR = model.Total_EUR
     };
   }
 }

@@ -19,14 +19,17 @@ public class AgnosticModelEntityConverter
     {
       return typeof(SchneideriEM3xxxMeasurementEntity);
     }
+
     if (type == typeof(AbbB2xMeasurementModel))
     {
       return typeof(AbbB2xMeasurementEntity);
     }
+
     if (type == typeof(SchneideriEM3xxxAggregateModel))
     {
       return typeof(SchneideriEM3xxxAggregateEntity);
     }
+
     if (type == typeof(AbbB2xAggregateModel))
     {
       return typeof(AbbB2xAggregateEntity);

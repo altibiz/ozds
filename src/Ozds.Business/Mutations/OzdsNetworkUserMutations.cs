@@ -3,10 +3,8 @@ using Ozds.Business.Conversion;
 using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Extensions;
 using Ozds.Business.Models;
-using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Mutations.Abstractions;
 using Ozds.Data;
-using Ozds.Data.Entities;
 
 // TODO: check representative model user id
 
@@ -44,7 +42,8 @@ public class OzdsNetworkUserMutations : IOzdsMutations
     _context.ChangeTracker.Clear();
   }
 
-  public void CreateWithRepresentatives(NetworkUserModel netUser, IEnumerable<RepresentativeModel> reps)
+  public void CreateWithRepresentatives(NetworkUserModel netUser,
+    IEnumerable<RepresentativeModel> reps)
   {
     var validationResults = netUser
       .Validate(new ValidationContext(this))
@@ -60,7 +59,8 @@ public class OzdsNetworkUserMutations : IOzdsMutations
     _context.JoinTracked(entity, repEntities);
   }
 
-  public void UpdateWithRepresentatives(NetworkUserModel netUser, IEnumerable<RepresentativeModel> reps)
+  public void UpdateWithRepresentatives(NetworkUserModel netUser,
+    IEnumerable<RepresentativeModel> reps)
   {
     var validationResults = netUser
       .Validate(new ValidationContext(this))

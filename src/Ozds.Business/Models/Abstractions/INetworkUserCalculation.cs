@@ -24,19 +24,29 @@ public interface INetworkUserCalculation : IReadonly, IIdentifiable
 
   public RegulatoryCatalogueModel ArchivedSupplyRegulatoryCatalogue { get; }
 
+  public decimal UsageFeeTotal_EUR { get; }
+
+  public decimal SupplyFeeTotal_EUR { get; }
+
+  public decimal Total_EUR { get; }
+
+  public IEnumerable<ICalculationItem> UsageItems { get; }
+
+  public IEnumerable<ICalculationItem> SupplyItems { get; }
+
   public SpanningMeasure<decimal> ActiveEnergyAmount_Wh { get; }
 
-  public TariffMeasure<decimal> ActiveEnergyPrice_EUR { get; }
+  public ExpenditureMeasure<decimal> ActiveEnergyPrice_EUR { get; }
 
   public SpanningMeasure<decimal> ReactiveEnergyAmount_Wh { get; }
 
   public TariffMeasure<decimal> ReactiveEnergyRampedAmount_Wh { get; }
 
-  public TariffMeasure<decimal> ReactiveEnergyPrice_EUR { get; }
+  public ExpenditureMeasure<decimal> ReactiveEnergyPrice_EUR { get; }
 
   public SpanningMeasure<decimal> ActivePowerAmount_W { get; }
 
-  public TariffMeasure<decimal> ActivePowerPrice_EUR { get; }
+  public ExpenditureMeasure<decimal> ActivePowerPrice_EUR { get; }
 
-  public TariffMeasure<decimal> Total_EUR { get; }
+  public ExpenditureMeasure<decimal> ComputedTotal_EUR { get; }
 }

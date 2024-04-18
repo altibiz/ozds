@@ -2,6 +2,8 @@ using Ozds.Business.Conversion.Base;
 using Ozds.Business.Models.Complex;
 using Ozds.Data.Entities.Complex;
 
+// TODO: split for each concrete type
+
 namespace Ozds.Business.Conversion.Complex;
 
 public class ReactiveEnergyTotalRampedT0CalculationItemModelEntityConverter :
@@ -12,23 +14,33 @@ public class ReactiveEnergyTotalRampedT0CalculationItemModelEntityConverter :
   protected override ReactiveEnergyTotalRampedT0CalculationItemEntity ToEntity(
     ReactiveEnergyTotalRampedT0CalculationItemModel model)
   {
-    return model.ToEntity();
+    return model switch
+    {
+      UsageReactiveEnergyTotalRampedT0CalculationItemModel t0Model =>
+        t0Model.ToEntity(),
+      _ => throw new InvalidOperationException("Unknown tariff type")
+    };
   }
 
   protected override ReactiveEnergyTotalRampedT0CalculationItemModel ToModel(
     ReactiveEnergyTotalRampedT0CalculationItemEntity entity)
   {
-    return entity.ToModel();
+    return entity switch
+    {
+      UsageReactiveEnergyTotalRampedT0CalculationItemEntity t0Entity => t0Entity
+        .ToModel(),
+      _ => throw new InvalidOperationException("Unknown tariff type")
+    };
   }
 }
 
 public static class
   ReactiveEnergyTotalRampedT0CalculationItemModelEntityConverterExtensions
 {
-  public static ReactiveEnergyTotalRampedT0CalculationItemEntity ToEntity(
-    this ReactiveEnergyTotalRampedT0CalculationItemModel model)
+  public static UsageReactiveEnergyTotalRampedT0CalculationItemEntity ToEntity(
+    this UsageReactiveEnergyTotalRampedT0CalculationItemModel model)
   {
-    return new ReactiveEnergyTotalRampedT0CalculationItemEntity
+    return new UsageReactiveEnergyTotalRampedT0CalculationItemEntity
     {
       ImportMin_VARh = model.ImportMin_VARh,
       ImportMax_VARh = model.ImportMax_VARh,
@@ -42,10 +54,10 @@ public static class
     };
   }
 
-  public static ReactiveEnergyTotalRampedT0CalculationItemModel ToModel(
-    this ReactiveEnergyTotalRampedT0CalculationItemEntity entity)
+  public static UsageReactiveEnergyTotalRampedT0CalculationItemModel ToModel(
+    this UsageReactiveEnergyTotalRampedT0CalculationItemEntity entity)
   {
-    return new ReactiveEnergyTotalRampedT0CalculationItemModel
+    return new UsageReactiveEnergyTotalRampedT0CalculationItemModel
     {
       ImportMin_VARh = entity.ImportMin_VARh,
       ImportMax_VARh = entity.ImportMax_VARh,

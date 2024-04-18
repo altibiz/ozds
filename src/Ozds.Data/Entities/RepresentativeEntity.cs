@@ -1,5 +1,8 @@
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Ozds.Data.Entities.Base;
+using Ozds.Data.Entities.Complex;
 using Ozds.Data.Entities.Enums;
+using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities;
 
@@ -30,17 +33,16 @@ public class RepresentativeEntity : AuditableEntity
   } =
     default!;
 
-  public string Name { get; set; } = default!;
+  public PhysicalPersonEntity PhysicalPerson { get; set; } = default!;
+}
 
-  public string SocialSecurityNumber { get; set; } = default!;
-
-  public string Address { get; set; } = default!;
-
-  public string PostalCode { get; set; } = default!;
-
-  public string City { get; set; } = default!;
-
-  public string Email { get; set; } = default!;
-
-  public string PhoneNumber { get; set; } = default!;
+public class
+  RepresentativeEntityTypeConfiguration : EntityTypeConfiguration<
+  RepresentativeEntity>
+{
+  public override void Configure(
+    EntityTypeBuilder<RepresentativeEntity> builder)
+  {
+    builder.ComplexProperty(nameof(RepresentativeEntity.PhysicalPerson));
+  }
 }

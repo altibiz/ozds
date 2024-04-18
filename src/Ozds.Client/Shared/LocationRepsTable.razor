@@ -14,13 +14,13 @@
       <MudStack Spacing="0">
         <MudGrid Class="d-flex pa-2">
           <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large;">
-            @T["Lokacija"]: @dataStruct.data.Representative.Name
+            @T["Lokacija"]: @dataStruct.data.Representative.PhysicalPerson.Name
           </MudItem>
           <MudItem xs="2" Class="d-flex align-center justify-end">
             <MudIconButton OnClick="() => InspectLocation(dataStruct.data)" Icon="@Icons.Material.Filled.RemoveRedEye" Color="Color.Primary"/>
           </MudItem>
           <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large;">
-            @T["Vlasnik Lokacije"]: @(dataStruct.data.Representative.Name)
+            @T["Vlasnik Lokacije"]: @(dataStruct.data.Representative.PhysicalPerson.Name)
           </MudItem>
         </MudGrid>
       </MudStack>
@@ -55,13 +55,13 @@
         <CellTemplate>
           <MudStack Row>
             <MudButton OnClick="() => InspectLocation(context.Item)" Variant="Variant.Outlined" Color="Color.Primary">
-              @context.Item.Representative.Name
+              @context.Item.Representative.PhysicalPerson.Name
             </MudButton>
           </MudStack>
         </CellTemplate>
       </TemplateColumn>
       <PropertyColumn
-        Property="x => x.Representative.Name"
+        Property="x => x.Representative.PhysicalPerson.Name"
         Name='@T["Vlasnik Lokacije"]' Sortable="false"/>
     </Columns>
     <PagerContent>
@@ -89,7 +89,7 @@
         if (string.IsNullOrWhiteSpace(_searchString))
           return true;
 
-        if (x.Representative.Name.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
+        if (x.Representative.PhysicalPerson.Name.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
           return true;
 
         return false;
@@ -135,7 +135,7 @@
     }
 
     ;
-    var a = _shownSubnets.Where(x => x.data.Representative.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase)).ToList();
+    var a = _shownSubnets.Where(x => x.data.Representative.PhysicalPerson.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase)).ToList();
     foreach (var inv in a)
     {
       inv.show = true;

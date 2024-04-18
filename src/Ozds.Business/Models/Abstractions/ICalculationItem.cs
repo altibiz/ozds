@@ -6,5 +6,7 @@ public interface ICalculationItem
 {
   public SpanningMeasure<decimal> Amount { get; }
 
-  public TariffMeasure<decimal> Price { get; }
+  public ExpenditureMeasure<decimal> Price { get; }
+
+  public string Kind { get; }
 }

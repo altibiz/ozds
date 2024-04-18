@@ -48,7 +48,7 @@
         T="RepresentativeModel"
         Label="Korisnici"
         AnchorOrigin="Origin.BottomCenter"
-        ToStringFunc="(a) => a?.Name"
+        ToStringFunc="a => a?.PhysicalPerson.Name"
         MultiSelection="true"
         @bind-SelectedValues="_selectedRepsList">
         @foreach (var rep in _representatives)
@@ -59,8 +59,8 @@
         }
       </MudSelect>
       <MudItem Class="py-5">
-          <MudText Typo="Typo.subtitle2">Odabrani korisnici</MudText>
-          <MudText Typo="Typo.body2" Class="pl-4">@(string.Join(", ", _selectedRepsList.Select(x=>$"\"{x.Name}\"")))</MudText>
+        <MudText Typo="Typo.subtitle2">Odabrani korisnici</MudText>
+        <MudText Typo="Typo.body2" Class="pl-4">@(string.Join(", ", _selectedRepsList.Select(x => $"\"{x.PhysicalPerson.Name}\"")))</MudText>
       </MudItem>
     </MudCardContent>
     <ValidationSummary/>
@@ -143,4 +143,5 @@
       _create = true;
     }
   }
+
 }

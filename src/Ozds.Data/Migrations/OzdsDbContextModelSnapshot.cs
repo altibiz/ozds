@@ -565,6 +565,10 @@ namespace Ozds.Data.Migrations
                         .HasColumnType("text")
                         .HasColumnName("meter_id");
 
+                    b.Property<decimal>("SupplyFeeTotal_EUR")
+                        .HasColumnType("numeric")
+                        .HasColumnName("supply_fee_total_eur");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("text")
@@ -577,6 +581,10 @@ namespace Ozds.Data.Migrations
                     b.Property<decimal>("Total_EUR")
                         .HasColumnType("numeric")
                         .HasColumnName("total_eur");
+
+                    b.Property<decimal>("UsageFeeTotal_EUR")
+                        .HasColumnType("numeric")
+                        .HasColumnName("usage_fee_total_eur");
 
                     b.Property<long>("_measurementLocationId")
                         .HasColumnType("bigint")
@@ -690,15 +698,15 @@ namespace Ozds.Data.Migrations
 
                             b1.Property<decimal>("ActiveEnergyTotalImportT1Price_EUR")
                                 .HasColumnType("numeric")
-                                .HasColumnName("asrc_active_energy_total_import_t1_price__e_u_r");
+                                .HasColumnName("asrc_active_energy_total_import_t1_price__eur");
 
                             b1.Property<decimal>("ActiveEnergyTotalImportT2Price_EUR")
                                 .HasColumnType("numeric")
-                                .HasColumnName("asrc_active_energy_total_import_t2_price__e_u_r");
+                                .HasColumnName("asrc_active_energy_total_import_t2_price__eur");
 
                             b1.Property<decimal>("BusinessUsageFeePrice_EUR")
                                 .HasColumnType("numeric")
-                                .HasColumnName("asrc_business_usage_fee_price__e_u_r");
+                                .HasColumnName("asrc_business_usage_fee_price__eur");
 
                             b1.Property<string>("CreatedById")
                                 .HasColumnType("text")
@@ -730,7 +738,7 @@ namespace Ozds.Data.Migrations
 
                             b1.Property<decimal>("RenewableEnergyFeePrice_EUR")
                                 .HasColumnType("numeric")
-                                .HasColumnName("asrc_renewable_energy_fee_price__e_u_r");
+                                .HasColumnName("asrc_renewable_energy_fee_price__eur");
 
                             b1.Property<decimal>("TaxRate_Percent")
                                 .HasColumnType("numeric")
@@ -768,6 +776,107 @@ namespace Ozds.Data.Migrations
                             b1.Property<DateTimeOffset?>("LastUpdatedOn")
                                 .HasColumnType("timestamp with time zone")
                                 .HasColumnName("aunuc_last_updated_on");
+                        });
+
+                    b.ComplexProperty<Dictionary<string, object>>("SupplyActiveEnergyTotalImportT1", "Ozds.Data.Entities.Base.NetworkUserCalculationEntity.SupplyActiveEnergyTotalImportT1#SupplyActiveEnergyTotalImportT1CalculationItemEntity", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<decimal>("Amount_Wh")
+                                .HasColumnType("numeric")
+                                .HasColumnName("supply_active_energy_total_import_t1_amount_wh");
+
+                            b1.Property<decimal>("Max_Wh")
+                                .HasColumnType("numeric")
+                                .HasColumnName("supply_active_energy_total_import_t1_max_wh");
+
+                            b1.Property<decimal>("Min_Wh")
+                                .HasColumnType("numeric")
+                                .HasColumnName("supply_active_energy_total_import_t1_min_wh");
+
+                            b1.Property<decimal>("Price_EUR")
+                                .HasColumnType("numeric")
+                                .HasColumnName("supply_active_energy_total_import_t1_price_eur");
+
+                            b1.Property<decimal>("Total_EUR")
+                                .HasColumnType("numeric")
+                                .HasColumnName("supply_active_energy_total_import_t1_total_eur");
+                        });
+
+                    b.ComplexProperty<Dictionary<string, object>>("SupplyActiveEnergyTotalImportT2", "Ozds.Data.Entities.Base.NetworkUserCalculationEntity.SupplyActiveEnergyTotalImportT2#SupplyActiveEnergyTotalImportT2CalculationItemEntity", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<decimal>("Amount_Wh")
+                                .HasColumnType("numeric")
+                                .HasColumnName("supply_active_energy_total_import_t2_amount_wh");
+
+                            b1.Property<decimal>("Max_Wh")
+                                .HasColumnType("numeric")
+                                .HasColumnName("supply_active_energy_total_import_t2_max_wh");
+
+                            b1.Property<decimal>("Min_Wh")
+                                .HasColumnType("numeric")
+                                .HasColumnName("supply_active_energy_total_import_t2_min_wh");
+
+                            b1.Property<decimal>("Price_EUR")
+                                .HasColumnType("numeric")
+                                .HasColumnName("supply_active_energy_total_import_t2_price_eur");
+
+                            b1.Property<decimal>("Total_EUR")
+                                .HasColumnType("numeric")
+                                .HasColumnName("supply_active_energy_total_import_t2_total_eur");
+                        });
+
+                    b.ComplexProperty<Dictionary<string, object>>("SupplyBusinessUsageFee", "Ozds.Data.Entities.Base.NetworkUserCalculationEntity.SupplyBusinessUsageFee#SupplyBusinessUsageFeeCalculationItemEntity", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<decimal>("Amount_N")
+                                .HasColumnType("numeric")
+                                .HasColumnName("supply_business_usage_fee_amount");
+
+                            b1.Property<decimal>("Price_EUR")
+                                .HasColumnType("numeric")
+                                .HasColumnName("supply_business_usage_fee_price_eur");
+
+                            b1.Property<decimal>("Total_EUR")
+                                .HasColumnType("numeric")
+                                .HasColumnName("supply_business_usage_total_eur");
+                        });
+
+                    b.ComplexProperty<Dictionary<string, object>>("SupplyRenewableEnergyFee", "Ozds.Data.Entities.Base.NetworkUserCalculationEntity.SupplyRenewableEnergyFee#SupplyRenewableEnergyFeeCalculationItemEntity", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<decimal>("Amount_N")
+                                .HasColumnType("numeric")
+                                .HasColumnName("supply_renewable_energy_fee_amount");
+
+                            b1.Property<decimal>("Price_EUR")
+                                .HasColumnType("numeric")
+                                .HasColumnName("supply_renewable_energy_fee_price_eur");
+
+                            b1.Property<decimal>("Total_EUR")
+                                .HasColumnType("numeric")
+                                .HasColumnName("supply_renewable_energy_total_eur");
+                        });
+
+                    b.ComplexProperty<Dictionary<string, object>>("UsageMeterFee", "Ozds.Data.Entities.Base.NetworkUserCalculationEntity.UsageMeterFee#UsageMeterFeeCalculationItemEntity", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<decimal>("Amount_N")
+                                .HasColumnType("numeric")
+                                .HasColumnName("usage_meter_fee_amount");
+
+                            b1.Property<decimal>("Price_EUR")
+                                .HasColumnType("numeric")
+                                .HasColumnName("usage_meter_fee_price_eur");
+
+                            b1.Property<decimal>("Total_EUR")
+                                .HasColumnType("numeric")
+                                .HasColumnName("usage_meter_total_eur");
                         });
 
                     b.HasKey("_id")
@@ -927,6 +1036,46 @@ namespace Ozds.Data.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("white_medium_catalogue_id");
 
+                    b.ComplexProperty<Dictionary<string, object>>("LegalPerson", "Ozds.Data.Entities.LocationEntity.LegalPerson#LegalPersonEntity", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<string>("Address")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("legal_person_address");
+
+                            b1.Property<string>("City")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("legal_person_city");
+
+                            b1.Property<string>("Email")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("legal_person_email");
+
+                            b1.Property<string>("Name")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("legal_person_name");
+
+                            b1.Property<string>("PhoneNumber")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("legal_person_phone_number");
+
+                            b1.Property<string>("PostalCode")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("legal_person_postal_code");
+
+                            b1.Property<string>("SocialSecurityNumber")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("legal_person_social_security_number");
+                        });
+
                     b.HasKey("_id")
                         .HasName("pk_locations");
 
@@ -1015,65 +1164,95 @@ namespace Ozds.Data.Migrations
                             b1.Property<string>("BlueLowNetworkUserCatalogueId")
                                 .IsRequired()
                                 .HasColumnType("text")
-                                .HasColumnName("archived_location_blue_low_network_user_catalogue_id");
+                                .HasColumnName("al_blue_low_network_user_catalogue_id");
 
                             b1.Property<string>("CreatedById")
                                 .HasColumnType("text")
-                                .HasColumnName("archived_location_created_by_id");
+                                .HasColumnName("al_created_by_id");
 
                             b1.Property<DateTimeOffset>("CreatedOn")
                                 .HasColumnType("timestamp with time zone")
-                                .HasColumnName("archived_location_created_on");
+                                .HasColumnName("al_created_on");
 
                             b1.Property<string>("DeletedById")
                                 .HasColumnType("text")
-                                .HasColumnName("archived_location_deleted_by_id");
+                                .HasColumnName("al_deleted_by_id");
 
                             b1.Property<DateTimeOffset?>("DeletedOn")
                                 .HasColumnType("timestamp with time zone")
-                                .HasColumnName("archived_location_deleted_on");
-
-                            b1.Property<string>("Id")
-                                .IsRequired()
-                                .HasColumnType("text")
-                                .HasColumnName("archived_location_id");
+                                .HasColumnName("al_deleted_on");
 
                             b1.Property<bool>("IsDeleted")
                                 .HasColumnType("boolean")
-                                .HasColumnName("archived_location_is_deleted");
+                                .HasColumnName("al_is_deleted");
 
                             b1.Property<string>("LastUpdatedById")
                                 .HasColumnType("text")
-                                .HasColumnName("archived_location_last_updated_by_id");
+                                .HasColumnName("al_last_updated_by_id");
 
                             b1.Property<DateTimeOffset?>("LastUpdatedOn")
                                 .HasColumnType("timestamp with time zone")
-                                .HasColumnName("archived_location_last_updated_on");
+                                .HasColumnName("al_last_updated_on");
 
                             b1.Property<string>("RedLowNetworkUserCatalogueId")
                                 .IsRequired()
                                 .HasColumnType("text")
-                                .HasColumnName("archived_location_red_low_network_user_catalogue_id");
+                                .HasColumnName("al_red_low_network_user_catalogue_id");
 
                             b1.Property<string>("RegulatoryCatalogueId")
                                 .IsRequired()
                                 .HasColumnType("text")
-                                .HasColumnName("archived_location_regulatory_catalogue_id");
-
-                            b1.Property<string>("Title")
-                                .IsRequired()
-                                .HasColumnType("text")
-                                .HasColumnName("archived_location_title");
+                                .HasColumnName("al_regulatory_catalogue_id");
 
                             b1.Property<string>("WhiteLowNetworkUserCatalogueId")
                                 .IsRequired()
                                 .HasColumnType("text")
-                                .HasColumnName("archived_location_white_low_network_user_catalogue_id");
+                                .HasColumnName("al_white_low_network_user_catalogue_id");
 
                             b1.Property<string>("WhiteMediumNetworkUserCatalogueId")
                                 .IsRequired()
                                 .HasColumnType("text")
-                                .HasColumnName("archived_location_white_medium_network_user_catalogue_id");
+                                .HasColumnName("al_white_medium_network_user_catalogue_id");
+
+                            b1.ComplexProperty<Dictionary<string, object>>("LegalPerson", "Ozds.Data.Entities.LocationInvoiceEntity.ArchivedLocation#LocationEntity.LegalPerson#LegalPersonEntity", b2 =>
+                                {
+                                    b2.IsRequired();
+
+                                    b2.Property<string>("Address")
+                                        .IsRequired()
+                                        .HasColumnType("text")
+                                        .HasColumnName("al_lp_address");
+
+                                    b2.Property<string>("City")
+                                        .IsRequired()
+                                        .HasColumnType("text")
+                                        .HasColumnName("al_lp_city");
+
+                                    b2.Property<string>("Email")
+                                        .IsRequired()
+                                        .HasColumnType("text")
+                                        .HasColumnName("al_lp_email");
+
+                                    b2.Property<string>("Name")
+                                        .IsRequired()
+                                        .HasColumnType("text")
+                                        .HasColumnName("al_lp_name");
+
+                                    b2.Property<string>("PhoneNumber")
+                                        .IsRequired()
+                                        .HasColumnType("text")
+                                        .HasColumnName("al_lp_phone_number");
+
+                                    b2.Property<string>("PostalCode")
+                                        .IsRequired()
+                                        .HasColumnType("text")
+                                        .HasColumnName("al_lp_postal_code");
+
+                                    b2.Property<string>("SocialSecurityNumber")
+                                        .IsRequired()
+                                        .HasColumnType("text")
+                                        .HasColumnName("al_lp_social_security_number");
+                                });
                         });
 
                     b.HasKey("_id")
@@ -1262,6 +1441,46 @@ namespace Ozds.Data.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("location_id");
 
+                    b.ComplexProperty<Dictionary<string, object>>("LegalPerson", "Ozds.Data.Entities.NetworkUserEntity.LegalPerson#LegalPersonEntity", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<string>("Address")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("legal_person_address");
+
+                            b1.Property<string>("City")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("legal_person_city");
+
+                            b1.Property<string>("Email")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("legal_person_email");
+
+                            b1.Property<string>("Name")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("legal_person_name");
+
+                            b1.Property<string>("PhoneNumber")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("legal_person_phone_number");
+
+                            b1.Property<string>("PostalCode")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("legal_person_postal_code");
+
+                            b1.Property<string>("SocialSecurityNumber")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("legal_person_social_security_number");
+                        });
+
                     b.HasKey("_id")
                         .HasName("pk_network_users");
 
@@ -1301,6 +1520,26 @@ namespace Ozds.Data.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("issued_on");
 
+                    b.Property<decimal>("SupplyActiveEnergyTotalImportT1Fee_EUR")
+                        .HasColumnType("numeric")
+                        .HasColumnName("supply_active_energy_total_import_t1fee_eur");
+
+                    b.Property<decimal>("SupplyActiveEnergyTotalImportT2Fee_EUR")
+                        .HasColumnType("numeric")
+                        .HasColumnName("supply_active_energy_total_import_t2fee_eur");
+
+                    b.Property<decimal>("SupplyBusinessUsageFee_EUR")
+                        .HasColumnType("numeric")
+                        .HasColumnName("supply_business_usage_fee_eur");
+
+                    b.Property<decimal>("SupplyFeeTotal_EUR")
+                        .HasColumnType("numeric")
+                        .HasColumnName("supply_fee_total_eur");
+
+                    b.Property<decimal>("SupplyRenewableEnergyFee_EUR")
+                        .HasColumnType("numeric")
+                        .HasColumnName("supply_renewable_energy_fee_eur");
+
                     b.Property<decimal>("Tax_EUR")
                         .HasColumnType("numeric")
                         .HasColumnName("tax_eur");
@@ -1321,6 +1560,34 @@ namespace Ozds.Data.Migrations
                     b.Property<decimal>("Total_EUR")
                         .HasColumnType("numeric")
                         .HasColumnName("total_eur");
+
+                    b.Property<decimal>("UsageActiveEnergyTotalImportT0Fee_EUR")
+                        .HasColumnType("numeric")
+                        .HasColumnName("usage_active_energy_total_import_t0fee_eur");
+
+                    b.Property<decimal>("UsageActiveEnergyTotalImportT1Fee_EUR")
+                        .HasColumnType("numeric")
+                        .HasColumnName("usage_active_energy_total_import_t1fee_eur");
+
+                    b.Property<decimal>("UsageActiveEnergyTotalImportT2Fee_EUR")
+                        .HasColumnType("numeric")
+                        .HasColumnName("usage_active_energy_total_import_t2fee_eur");
+
+                    b.Property<decimal>("UsageActivePowerTotalImportT1PeakFee_EUR")
+                        .HasColumnType("numeric")
+                        .HasColumnName("usage_active_power_total_import_t1peak_fee_eur");
+
+                    b.Property<decimal>("UsageFeeTotal_EUR")
+                        .HasColumnType("numeric")
+                        .HasColumnName("usage_fee_total_eur");
+
+                    b.Property<decimal>("UsageMeterFee_EUR")
+                        .HasColumnType("numeric")
+                        .HasColumnName("usage_meter_fee_eur");
+
+                    b.Property<decimal>("UsageReactiveEnergyTotalRampedT0Fee_EUR")
+                        .HasColumnType("numeric")
+                        .HasColumnName("usage_reactive_energy_total_ramped_t0fee_eur");
 
                     b.Property<long>("_networkUserId")
                         .HasColumnType("bigint")
@@ -1382,6 +1649,46 @@ namespace Ozds.Data.Migrations
                                 .IsRequired()
                                 .HasColumnType("text")
                                 .HasColumnName("al_white_medium_network_user_catalogue_id");
+
+                            b1.ComplexProperty<Dictionary<string, object>>("LegalPerson", "Ozds.Data.Entities.NetworkUserInvoiceEntity.ArchivedLocation#LocationEntity.LegalPerson#LegalPersonEntity", b2 =>
+                                {
+                                    b2.IsRequired();
+
+                                    b2.Property<string>("Address")
+                                        .IsRequired()
+                                        .HasColumnType("text")
+                                        .HasColumnName("al_lp_address");
+
+                                    b2.Property<string>("City")
+                                        .IsRequired()
+                                        .HasColumnType("text")
+                                        .HasColumnName("al_lp_city");
+
+                                    b2.Property<string>("Email")
+                                        .IsRequired()
+                                        .HasColumnType("text")
+                                        .HasColumnName("al_lp_email");
+
+                                    b2.Property<string>("Name")
+                                        .IsRequired()
+                                        .HasColumnType("text")
+                                        .HasColumnName("al_lp_name");
+
+                                    b2.Property<string>("PhoneNumber")
+                                        .IsRequired()
+                                        .HasColumnType("text")
+                                        .HasColumnName("al_lp_phone_number");
+
+                                    b2.Property<string>("PostalCode")
+                                        .IsRequired()
+                                        .HasColumnType("text")
+                                        .HasColumnName("al_lp_postal_code");
+
+                                    b2.Property<string>("SocialSecurityNumber")
+                                        .IsRequired()
+                                        .HasColumnType("text")
+                                        .HasColumnName("al_lp_social_security_number");
+                                });
                         });
 
                     b.ComplexProperty<Dictionary<string, object>>("ArchivedNetworkUser", "Ozds.Data.Entities.NetworkUserInvoiceEntity.ArchivedNetworkUser#NetworkUserEntity", b1 =>
@@ -1415,6 +1722,99 @@ namespace Ozds.Data.Migrations
                             b1.Property<DateTimeOffset?>("LastUpdatedOn")
                                 .HasColumnType("timestamp with time zone")
                                 .HasColumnName("anu_last_updated_on");
+
+                            b1.ComplexProperty<Dictionary<string, object>>("LegalPerson", "Ozds.Data.Entities.NetworkUserInvoiceEntity.ArchivedNetworkUser#NetworkUserEntity.LegalPerson#LegalPersonEntity", b2 =>
+                                {
+                                    b2.IsRequired();
+
+                                    b2.Property<string>("Address")
+                                        .IsRequired()
+                                        .HasColumnType("text")
+                                        .HasColumnName("anu_lp_address");
+
+                                    b2.Property<string>("City")
+                                        .IsRequired()
+                                        .HasColumnType("text")
+                                        .HasColumnName("anu_lp_city");
+
+                                    b2.Property<string>("Email")
+                                        .IsRequired()
+                                        .HasColumnType("text")
+                                        .HasColumnName("anu_lp_email");
+
+                                    b2.Property<string>("Name")
+                                        .IsRequired()
+                                        .HasColumnType("text")
+                                        .HasColumnName("anu_lp_name");
+
+                                    b2.Property<string>("PhoneNumber")
+                                        .IsRequired()
+                                        .HasColumnType("text")
+                                        .HasColumnName("anu_lp_phone_number");
+
+                                    b2.Property<string>("PostalCode")
+                                        .IsRequired()
+                                        .HasColumnType("text")
+                                        .HasColumnName("anu_lp_postal_code");
+
+                                    b2.Property<string>("SocialSecurityNumber")
+                                        .IsRequired()
+                                        .HasColumnType("text")
+                                        .HasColumnName("anu_lp_social_security_number");
+                                });
+                        });
+
+                    b.ComplexProperty<Dictionary<string, object>>("ArchivedRegulatoryCatalogue", "Ozds.Data.Entities.NetworkUserInvoiceEntity.ArchivedRegulatoryCatalogue#RegulatoryCatalogueEntity", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<decimal>("ActiveEnergyTotalImportT1Price_EUR")
+                                .HasColumnType("numeric")
+                                .HasColumnName("arc_active_energy_total_import_t1_price__eur");
+
+                            b1.Property<decimal>("ActiveEnergyTotalImportT2Price_EUR")
+                                .HasColumnType("numeric")
+                                .HasColumnName("arc_active_energy_total_import_t2_price__eur");
+
+                            b1.Property<decimal>("BusinessUsageFeePrice_EUR")
+                                .HasColumnType("numeric")
+                                .HasColumnName("arc_business_usage_fee_price__eur");
+
+                            b1.Property<string>("CreatedById")
+                                .HasColumnType("text")
+                                .HasColumnName("arc_created_by_id");
+
+                            b1.Property<DateTimeOffset>("CreatedOn")
+                                .HasColumnType("timestamp with time zone")
+                                .HasColumnName("arc_created_on");
+
+                            b1.Property<string>("DeletedById")
+                                .HasColumnType("text")
+                                .HasColumnName("arc_deleted_by_id");
+
+                            b1.Property<DateTimeOffset?>("DeletedOn")
+                                .HasColumnType("timestamp with time zone")
+                                .HasColumnName("arc_deleted_on");
+
+                            b1.Property<bool>("IsDeleted")
+                                .HasColumnType("boolean")
+                                .HasColumnName("arc_is_deleted");
+
+                            b1.Property<string>("LastUpdatedById")
+                                .HasColumnType("text")
+                                .HasColumnName("arc_last_updated_by_id");
+
+                            b1.Property<DateTimeOffset?>("LastUpdatedOn")
+                                .HasColumnType("timestamp with time zone")
+                                .HasColumnName("arc_last_updated_on");
+
+                            b1.Property<decimal>("RenewableEnergyFeePrice_EUR")
+                                .HasColumnType("numeric")
+                                .HasColumnName("arc_renewable_energy_fee_price__eur");
+
+                            b1.Property<decimal>("TaxRate_Percent")
+                                .HasColumnType("numeric")
+                                .HasColumnName("arc_tax_rate__percent");
                         });
 
                     b.HasKey("_id")
@@ -1512,16 +1912,6 @@ namespace Ozds.Data.Migrations
                         .HasColumnType("text")
                         .HasColumnName("id");
 
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("address");
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("city");
-
                     b.Property<string>("CreatedById")
                         .HasColumnType("text")
                         .HasColumnName("created_by_id");
@@ -1538,11 +1928,6 @@ namespace Ozds.Data.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("deleted_on");
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("email");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean")
                         .HasColumnName("is_deleted");
@@ -1555,34 +1940,34 @@ namespace Ozds.Data.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("last_updated_on");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("name");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("phone_number");
-
-                    b.Property<string>("PostalCode")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("postal_code");
-
                     b.Property<int>("Role")
                         .HasColumnType("integer")
                         .HasColumnName("role");
-
-                    b.Property<string>("SocialSecurityNumber")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("social_security_number");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("title");
+
+                    b.ComplexProperty<Dictionary<string, object>>("PhysicalPerson", "Ozds.Data.Entities.RepresentativeEntity.PhysicalPerson#PhysicalPersonEntity", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<string>("Email")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("physical_person_email");
+
+                            b1.Property<string>("Name")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("physical_person_name");
+
+                            b1.Property<string>("PhoneNumber")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("physical_person_phone_number");
+                        });
 
                     b.HasKey("_stringId")
                         .HasName("pk_representatives");
@@ -1978,89 +2363,84 @@ namespace Ozds.Data.Migrations
                 {
                     b.HasBaseType("Ozds.Data.Entities.Base.NetworkUserCalculationEntity");
 
-                    b.Property<decimal>("MeterFeePrice_EUR")
-                        .ValueGeneratedOnUpdateSometimes()
-                        .HasColumnType("numeric")
-                        .HasColumnName("meter_fee_price_eur");
-
                     b.Property<long>("_usageNetworkUserCatalogueId")
                         .ValueGeneratedOnUpdateSometimes()
                         .HasColumnType("bigint")
                         .HasColumnName("usage_network_user_catalogue_id");
 
-                    b.ComplexProperty<Dictionary<string, object>>("ActiveEnergyTotalImportT0", "Ozds.Data.Entities.BlueLowNetworkUserCalculationEntity.ActiveEnergyTotalImportT0#ActiveEnergyTotalImportT0CalculationItemEntity", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("UsageActiveEnergyTotalImportT0", "Ozds.Data.Entities.BlueLowNetworkUserCalculationEntity.UsageActiveEnergyTotalImportT0#UsageActiveEnergyTotalImportT0CalculationItemEntity", b1 =>
                         {
                             b1.IsRequired();
 
                             b1.Property<decimal>("Amount_Wh")
                                 .HasColumnType("numeric")
-                                .HasColumnName("active_energy_total_import_t0_amount_wh");
+                                .HasColumnName("usage_active_energy_total_import_t0_amount_wh");
 
                             b1.Property<decimal>("Max_Wh")
                                 .HasColumnType("numeric")
-                                .HasColumnName("active_energy_total_import_t0_max_wh");
+                                .HasColumnName("usage_active_energy_total_import_t0_max_wh");
 
                             b1.Property<decimal>("Min_Wh")
                                 .HasColumnType("numeric")
-                                .HasColumnName("active_energy_total_import_t0_min_wh");
+                                .HasColumnName("usage_active_energy_total_import_t0_min_wh");
 
                             b1.Property<decimal>("Price_EUR")
                                 .HasColumnType("numeric")
-                                .HasColumnName("active_energy_total_import_t0_price_eur");
+                                .HasColumnName("usage_active_energy_total_import_t0_price_eur");
 
                             b1.Property<decimal>("Total_EUR")
                                 .HasColumnType("numeric")
-                                .HasColumnName("active_energy_total_import_t0_total_eur");
+                                .HasColumnName("usage_active_energy_total_import_t0_total_eur");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("ReactiveEnergyTotalRampedT0", "Ozds.Data.Entities.BlueLowNetworkUserCalculationEntity.ReactiveEnergyTotalRampedT0#ReactiveEnergyTotalRampedT0CalculationItemEntity", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("UsageReactiveEnergyTotalRampedT0", "Ozds.Data.Entities.BlueLowNetworkUserCalculationEntity.UsageReactiveEnergyTotalRampedT0#UsageReactiveEnergyTotalRampedT0CalculationItemEntity", b1 =>
                         {
                             b1.IsRequired();
 
                             b1.Property<decimal>("Amount_VARh")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("reactive_energy_total_ramped_t0_ramped_amount_varh");
+                                .HasColumnName("usage_reactive_energy_total_ramped_t0_ramped_amount_varh");
 
                             b1.Property<decimal>("ExportAmount_VARh")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("reactive_energy_total_ramped_t0_export_amount_varh");
+                                .HasColumnName("usage_reactive_energy_total_ramped_t0_export_amount_varh");
 
                             b1.Property<decimal>("ExportMax_VARh")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("reactive_energy_total_ramped_t0_export_max_varh");
+                                .HasColumnName("usage_reactive_energy_total_ramped_t0_export_max_varh");
 
                             b1.Property<decimal>("ExportMin_VARh")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("reactive_energy_total_ramped_t0_export_min_varh");
+                                .HasColumnName("usage_reactive_energy_total_ramped_t0_export_min_varh");
 
                             b1.Property<decimal>("ImportAmount_VARh")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("reactive_energy_total_ramped_t0_import_amount_varh");
+                                .HasColumnName("usage_reactive_energy_total_ramped_t0_import_amount_varh");
 
                             b1.Property<decimal>("ImportMax_VARh")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("reactive_energy_total_ramped_t0_import_max_varh");
+                                .HasColumnName("usage_reactive_energy_total_ramped_t0_import_max_varh");
 
                             b1.Property<decimal>("ImportMin_VARh")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("reactive_energy_total_ramped_t0_import_min_varh");
+                                .HasColumnName("usage_reactive_energy_total_ramped_t0_import_min_varh");
 
                             b1.Property<decimal>("Price_EUR")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("reactive_energy_total_ramped_t0_ramped_price_eur");
+                                .HasColumnName("usage_reactive_energy_total_ramped_t0_ramped_price_eur");
 
                             b1.Property<decimal>("Total_EUR")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("reactive_energy_total_ramped_t0_ramped_total_eur");
+                                .HasColumnName("usage_reactive_energy_total_ramped_t0_ramped_total_eur");
                         });
 
                     b.HasIndex("_usageNetworkUserCatalogueId")
@@ -2075,149 +2455,144 @@ namespace Ozds.Data.Migrations
                 {
                     b.HasBaseType("Ozds.Data.Entities.Base.NetworkUserCalculationEntity");
 
-                    b.Property<decimal>("MeterFeePrice_EUR")
-                        .ValueGeneratedOnUpdateSometimes()
-                        .HasColumnType("numeric")
-                        .HasColumnName("meter_fee_price_eur");
-
                     b.Property<long>("_usageNetworkUserCatalogueId")
                         .ValueGeneratedOnUpdateSometimes()
                         .HasColumnType("bigint")
                         .HasColumnName("usage_network_user_catalogue_id");
 
-                    b.ComplexProperty<Dictionary<string, object>>("ActiveEnergyTotalImportT1", "Ozds.Data.Entities.RedLowNetworkUserCalculationEntity.ActiveEnergyTotalImportT1#ActiveEnergyTotalImportT1CalculationItemEntity", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("UsageActiveEnergyTotalImportT1", "Ozds.Data.Entities.RedLowNetworkUserCalculationEntity.UsageActiveEnergyTotalImportT1#UsageActiveEnergyTotalImportT1CalculationItemEntity", b1 =>
                         {
                             b1.IsRequired();
 
                             b1.Property<decimal>("Amount_Wh")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("active_energy_total_import_t1_amount_wh");
+                                .HasColumnName("usage_active_energy_total_import_t1_amount_wh");
 
                             b1.Property<decimal>("Max_Wh")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("active_energy_total_import_t1_max_wh");
+                                .HasColumnName("usage_active_energy_total_import_t1_max_wh");
 
                             b1.Property<decimal>("Min_Wh")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("active_energy_total_import_t1_min_wh");
+                                .HasColumnName("usage_active_energy_total_import_t1_min_wh");
 
                             b1.Property<decimal>("Price_EUR")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("active_energy_total_import_t1_price_eur");
+                                .HasColumnName("usage_active_energy_total_import_t1_price_eur");
 
                             b1.Property<decimal>("Total_EUR")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("active_energy_total_import_t1_total_eur");
+                                .HasColumnName("usage_active_energy_total_import_t1_total_eur");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("ActiveEnergyTotalImportT2", "Ozds.Data.Entities.RedLowNetworkUserCalculationEntity.ActiveEnergyTotalImportT2#ActiveEnergyTotalImportT2CalculationItemEntity", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("UsageActiveEnergyTotalImportT2", "Ozds.Data.Entities.RedLowNetworkUserCalculationEntity.UsageActiveEnergyTotalImportT2#UsageActiveEnergyTotalImportT2CalculationItemEntity", b1 =>
                         {
                             b1.IsRequired();
 
                             b1.Property<decimal>("Amount_Wh")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("active_energy_total_import_t2_amount_wh");
+                                .HasColumnName("usage_active_energy_total_import_t2_amount_wh");
 
                             b1.Property<decimal>("Max_Wh")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("active_energy_total_import_t2_max_wh");
+                                .HasColumnName("usage_active_energy_total_import_t2_max_wh");
 
                             b1.Property<decimal>("Min_Wh")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("active_energy_total_import_t2_min_wh");
+                                .HasColumnName("usage_active_energy_total_import_t2_min_wh");
 
                             b1.Property<decimal>("Price_EUR")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("active_energy_total_import_t2_price_eur");
+                                .HasColumnName("usage_active_energy_total_import_t2_price_eur");
 
                             b1.Property<decimal>("Total_EUR")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("active_energy_total_import_t2_total_eur");
+                                .HasColumnName("usage_active_energy_total_import_t2_total_eur");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("ActivePowerTotalImportT1Peak", "Ozds.Data.Entities.RedLowNetworkUserCalculationEntity.ActivePowerTotalImportT1Peak#ActivePowerTotalImportT1PeakCalculationItemEntity", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("UsageActivePowerTotalImportT1Peak", "Ozds.Data.Entities.RedLowNetworkUserCalculationEntity.UsageActivePowerTotalImportT1Peak#UsageActivePowerTotalImportT1PeakCalculationItemEntity", b1 =>
                         {
                             b1.IsRequired();
 
                             b1.Property<decimal>("Amount_W")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("active_power_total_import_t1_amount_w");
+                                .HasColumnName("usage_active_power_total_import_t1_amount_w");
 
                             b1.Property<decimal>("Peak_W")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("active_power_total_import_t1_peak_w");
+                                .HasColumnName("usage_active_power_total_import_t1_peak_w");
 
                             b1.Property<decimal>("Price_EUR")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("active_power_total_import_t1_price_eur");
+                                .HasColumnName("usage_active_power_total_import_t1_price_eur");
 
                             b1.Property<decimal>("Total_EUR")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("active_power_total_import_t1_total_eur");
+                                .HasColumnName("usage_active_power_total_import_t1_total_eur");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("ReactiveEnergyTotalRampedT0", "Ozds.Data.Entities.RedLowNetworkUserCalculationEntity.ReactiveEnergyTotalRampedT0#ReactiveEnergyTotalRampedT0CalculationItemEntity", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("UsageReactiveEnergyTotalRampedT0", "Ozds.Data.Entities.RedLowNetworkUserCalculationEntity.UsageReactiveEnergyTotalRampedT0#UsageReactiveEnergyTotalRampedT0CalculationItemEntity", b1 =>
                         {
                             b1.IsRequired();
 
                             b1.Property<decimal>("Amount_VARh")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("reactive_energy_total_ramped_t0_ramped_amount_varh");
+                                .HasColumnName("usage_reactive_energy_total_ramped_t0_ramped_amount_varh");
 
                             b1.Property<decimal>("ExportAmount_VARh")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("reactive_energy_total_ramped_t0_export_amount_varh");
+                                .HasColumnName("usage_reactive_energy_total_ramped_t0_export_amount_varh");
 
                             b1.Property<decimal>("ExportMax_VARh")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("reactive_energy_total_ramped_t0_export_max_varh");
+                                .HasColumnName("usage_reactive_energy_total_ramped_t0_export_max_varh");
 
                             b1.Property<decimal>("ExportMin_VARh")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("reactive_energy_total_ramped_t0_export_min_varh");
+                                .HasColumnName("usage_reactive_energy_total_ramped_t0_export_min_varh");
 
                             b1.Property<decimal>("ImportAmount_VARh")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("reactive_energy_total_ramped_t0_import_amount_varh");
+                                .HasColumnName("usage_reactive_energy_total_ramped_t0_import_amount_varh");
 
                             b1.Property<decimal>("ImportMax_VARh")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("reactive_energy_total_ramped_t0_import_max_varh");
+                                .HasColumnName("usage_reactive_energy_total_ramped_t0_import_max_varh");
 
                             b1.Property<decimal>("ImportMin_VARh")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("reactive_energy_total_ramped_t0_import_min_varh");
+                                .HasColumnName("usage_reactive_energy_total_ramped_t0_import_min_varh");
 
                             b1.Property<decimal>("Price_EUR")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("reactive_energy_total_ramped_t0_ramped_price_eur");
+                                .HasColumnName("usage_reactive_energy_total_ramped_t0_ramped_price_eur");
 
                             b1.Property<decimal>("Total_EUR")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("reactive_energy_total_ramped_t0_ramped_total_eur");
+                                .HasColumnName("usage_reactive_energy_total_ramped_t0_ramped_total_eur");
                         });
 
                     b.HasIndex("_usageNetworkUserCatalogueId")
@@ -2232,124 +2607,119 @@ namespace Ozds.Data.Migrations
                 {
                     b.HasBaseType("Ozds.Data.Entities.Base.NetworkUserCalculationEntity");
 
-                    b.Property<decimal>("MeterFeePrice_EUR")
-                        .ValueGeneratedOnUpdateSometimes()
-                        .HasColumnType("numeric")
-                        .HasColumnName("meter_fee_price_eur");
-
                     b.Property<long>("_usageNetworkUserCatalogueId")
                         .ValueGeneratedOnUpdateSometimes()
                         .HasColumnType("bigint")
                         .HasColumnName("usage_network_user_catalogue_id");
 
-                    b.ComplexProperty<Dictionary<string, object>>("ActiveEnergyTotalImportT1", "Ozds.Data.Entities.WhiteLowNetworkUserCalculationEntity.ActiveEnergyTotalImportT1#ActiveEnergyTotalImportT1CalculationItemEntity", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("UsageActiveEnergyTotalImportT1", "Ozds.Data.Entities.WhiteLowNetworkUserCalculationEntity.UsageActiveEnergyTotalImportT1#UsageActiveEnergyTotalImportT1CalculationItemEntity", b1 =>
                         {
                             b1.IsRequired();
 
                             b1.Property<decimal>("Amount_Wh")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("active_energy_total_import_t1_amount_wh");
+                                .HasColumnName("usage_active_energy_total_import_t1_amount_wh");
 
                             b1.Property<decimal>("Max_Wh")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("active_energy_total_import_t1_max_wh");
+                                .HasColumnName("usage_active_energy_total_import_t1_max_wh");
 
                             b1.Property<decimal>("Min_Wh")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("active_energy_total_import_t1_min_wh");
+                                .HasColumnName("usage_active_energy_total_import_t1_min_wh");
 
                             b1.Property<decimal>("Price_EUR")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("active_energy_total_import_t1_price_eur");
+                                .HasColumnName("usage_active_energy_total_import_t1_price_eur");
 
                             b1.Property<decimal>("Total_EUR")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("active_energy_total_import_t1_total_eur");
+                                .HasColumnName("usage_active_energy_total_import_t1_total_eur");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("ActiveEnergyTotalImportT2", "Ozds.Data.Entities.WhiteLowNetworkUserCalculationEntity.ActiveEnergyTotalImportT2#ActiveEnergyTotalImportT2CalculationItemEntity", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("UsageActiveEnergyTotalImportT2", "Ozds.Data.Entities.WhiteLowNetworkUserCalculationEntity.UsageActiveEnergyTotalImportT2#UsageActiveEnergyTotalImportT2CalculationItemEntity", b1 =>
                         {
                             b1.IsRequired();
 
                             b1.Property<decimal>("Amount_Wh")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("active_energy_total_import_t2_amount_wh");
+                                .HasColumnName("usage_active_energy_total_import_t2_amount_wh");
 
                             b1.Property<decimal>("Max_Wh")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("active_energy_total_import_t2_max_wh");
+                                .HasColumnName("usage_active_energy_total_import_t2_max_wh");
 
                             b1.Property<decimal>("Min_Wh")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("active_energy_total_import_t2_min_wh");
+                                .HasColumnName("usage_active_energy_total_import_t2_min_wh");
 
                             b1.Property<decimal>("Price_EUR")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("active_energy_total_import_t2_price_eur");
+                                .HasColumnName("usage_active_energy_total_import_t2_price_eur");
 
                             b1.Property<decimal>("Total_EUR")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("active_energy_total_import_t2_total_eur");
+                                .HasColumnName("usage_active_energy_total_import_t2_total_eur");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("ReactiveEnergyTotalRampedT0", "Ozds.Data.Entities.WhiteLowNetworkUserCalculationEntity.ReactiveEnergyTotalRampedT0#ReactiveEnergyTotalRampedT0CalculationItemEntity", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("UsageReactiveEnergyTotalRampedT0", "Ozds.Data.Entities.WhiteLowNetworkUserCalculationEntity.UsageReactiveEnergyTotalRampedT0#UsageReactiveEnergyTotalRampedT0CalculationItemEntity", b1 =>
                         {
                             b1.IsRequired();
 
                             b1.Property<decimal>("Amount_VARh")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("reactive_energy_total_ramped_t0_ramped_amount_varh");
+                                .HasColumnName("usage_reactive_energy_total_ramped_t0_ramped_amount_varh");
 
                             b1.Property<decimal>("ExportAmount_VARh")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("reactive_energy_total_ramped_t0_export_amount_varh");
+                                .HasColumnName("usage_reactive_energy_total_ramped_t0_export_amount_varh");
 
                             b1.Property<decimal>("ExportMax_VARh")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("reactive_energy_total_ramped_t0_export_max_varh");
+                                .HasColumnName("usage_reactive_energy_total_ramped_t0_export_max_varh");
 
                             b1.Property<decimal>("ExportMin_VARh")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("reactive_energy_total_ramped_t0_export_min_varh");
+                                .HasColumnName("usage_reactive_energy_total_ramped_t0_export_min_varh");
 
                             b1.Property<decimal>("ImportAmount_VARh")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("reactive_energy_total_ramped_t0_import_amount_varh");
+                                .HasColumnName("usage_reactive_energy_total_ramped_t0_import_amount_varh");
 
                             b1.Property<decimal>("ImportMax_VARh")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("reactive_energy_total_ramped_t0_import_max_varh");
+                                .HasColumnName("usage_reactive_energy_total_ramped_t0_import_max_varh");
 
                             b1.Property<decimal>("ImportMin_VARh")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("reactive_energy_total_ramped_t0_import_min_varh");
+                                .HasColumnName("usage_reactive_energy_total_ramped_t0_import_min_varh");
 
                             b1.Property<decimal>("Price_EUR")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("reactive_energy_total_ramped_t0_ramped_price_eur");
+                                .HasColumnName("usage_reactive_energy_total_ramped_t0_ramped_price_eur");
 
                             b1.Property<decimal>("Total_EUR")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("reactive_energy_total_ramped_t0_ramped_total_eur");
+                                .HasColumnName("usage_reactive_energy_total_ramped_t0_ramped_total_eur");
                         });
 
                     b.HasIndex("_usageNetworkUserCatalogueId")
@@ -2364,149 +2734,144 @@ namespace Ozds.Data.Migrations
                 {
                     b.HasBaseType("Ozds.Data.Entities.Base.NetworkUserCalculationEntity");
 
-                    b.Property<decimal>("MeterFeePrice_EUR")
-                        .ValueGeneratedOnUpdateSometimes()
-                        .HasColumnType("numeric")
-                        .HasColumnName("meter_fee_price_eur");
-
                     b.Property<long>("_usageNetworkUserCatalogueId")
                         .ValueGeneratedOnUpdateSometimes()
                         .HasColumnType("bigint")
                         .HasColumnName("usage_network_user_catalogue_id");
 
-                    b.ComplexProperty<Dictionary<string, object>>("ActiveEnergyTotalImportT1", "Ozds.Data.Entities.WhiteMediumNetworkUserCalculationEntity.ActiveEnergyTotalImportT1#ActiveEnergyTotalImportT1CalculationItemEntity", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("UsageActiveEnergyTotalImportT1", "Ozds.Data.Entities.WhiteMediumNetworkUserCalculationEntity.UsageActiveEnergyTotalImportT1#UsageActiveEnergyTotalImportT1CalculationItemEntity", b1 =>
                         {
                             b1.IsRequired();
 
                             b1.Property<decimal>("Amount_Wh")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("active_energy_total_import_t1_amount_wh");
+                                .HasColumnName("usage_active_energy_total_import_t1_amount_wh");
 
                             b1.Property<decimal>("Max_Wh")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("active_energy_total_import_t1_max_wh");
+                                .HasColumnName("usage_active_energy_total_import_t1_max_wh");
 
                             b1.Property<decimal>("Min_Wh")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("active_energy_total_import_t1_min_wh");
+                                .HasColumnName("usage_active_energy_total_import_t1_min_wh");
 
                             b1.Property<decimal>("Price_EUR")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("active_energy_total_import_t1_price_eur");
+                                .HasColumnName("usage_active_energy_total_import_t1_price_eur");
 
                             b1.Property<decimal>("Total_EUR")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("active_energy_total_import_t1_total_eur");
+                                .HasColumnName("usage_active_energy_total_import_t1_total_eur");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("ActiveEnergyTotalImportT2", "Ozds.Data.Entities.WhiteMediumNetworkUserCalculationEntity.ActiveEnergyTotalImportT2#ActiveEnergyTotalImportT2CalculationItemEntity", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("UsageActiveEnergyTotalImportT2", "Ozds.Data.Entities.WhiteMediumNetworkUserCalculationEntity.UsageActiveEnergyTotalImportT2#UsageActiveEnergyTotalImportT2CalculationItemEntity", b1 =>
                         {
                             b1.IsRequired();
 
                             b1.Property<decimal>("Amount_Wh")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("active_energy_total_import_t2_amount_wh");
+                                .HasColumnName("usage_active_energy_total_import_t2_amount_wh");
 
                             b1.Property<decimal>("Max_Wh")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("active_energy_total_import_t2_max_wh");
+                                .HasColumnName("usage_active_energy_total_import_t2_max_wh");
 
                             b1.Property<decimal>("Min_Wh")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("active_energy_total_import_t2_min_wh");
+                                .HasColumnName("usage_active_energy_total_import_t2_min_wh");
 
                             b1.Property<decimal>("Price_EUR")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("active_energy_total_import_t2_price_eur");
+                                .HasColumnName("usage_active_energy_total_import_t2_price_eur");
 
                             b1.Property<decimal>("Total_EUR")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("active_energy_total_import_t2_total_eur");
+                                .HasColumnName("usage_active_energy_total_import_t2_total_eur");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("ActivePowerTotalImportT1Peak", "Ozds.Data.Entities.WhiteMediumNetworkUserCalculationEntity.ActivePowerTotalImportT1Peak#ActivePowerTotalImportT1PeakCalculationItemEntity", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("UsageActivePowerTotalImportT1Peak", "Ozds.Data.Entities.WhiteMediumNetworkUserCalculationEntity.UsageActivePowerTotalImportT1Peak#UsageActivePowerTotalImportT1PeakCalculationItemEntity", b1 =>
                         {
                             b1.IsRequired();
 
                             b1.Property<decimal>("Amount_W")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("active_power_total_import_t1_amount_w");
+                                .HasColumnName("usage_active_power_total_import_t1_amount_w");
 
                             b1.Property<decimal>("Peak_W")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("active_power_total_import_t1_peak_w");
+                                .HasColumnName("usage_active_power_total_import_t1_peak_w");
 
                             b1.Property<decimal>("Price_EUR")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("active_power_total_import_t1_price_eur");
+                                .HasColumnName("usage_active_power_total_import_t1_price_eur");
 
                             b1.Property<decimal>("Total_EUR")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("active_power_total_import_t1_total_eur");
+                                .HasColumnName("usage_active_power_total_import_t1_total_eur");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("ReactiveEnergyTotalRampedT0", "Ozds.Data.Entities.WhiteMediumNetworkUserCalculationEntity.ReactiveEnergyTotalRampedT0#ReactiveEnergyTotalRampedT0CalculationItemEntity", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("UsageReactiveEnergyTotalRampedT0", "Ozds.Data.Entities.WhiteMediumNetworkUserCalculationEntity.UsageReactiveEnergyTotalRampedT0#UsageReactiveEnergyTotalRampedT0CalculationItemEntity", b1 =>
                         {
                             b1.IsRequired();
 
                             b1.Property<decimal>("Amount_VARh")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("reactive_energy_total_ramped_t0_ramped_amount_varh");
+                                .HasColumnName("usage_reactive_energy_total_ramped_t0_ramped_amount_varh");
 
                             b1.Property<decimal>("ExportAmount_VARh")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("reactive_energy_total_ramped_t0_export_amount_varh");
+                                .HasColumnName("usage_reactive_energy_total_ramped_t0_export_amount_varh");
 
                             b1.Property<decimal>("ExportMax_VARh")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("reactive_energy_total_ramped_t0_export_max_varh");
+                                .HasColumnName("usage_reactive_energy_total_ramped_t0_export_max_varh");
 
                             b1.Property<decimal>("ExportMin_VARh")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("reactive_energy_total_ramped_t0_export_min_varh");
+                                .HasColumnName("usage_reactive_energy_total_ramped_t0_export_min_varh");
 
                             b1.Property<decimal>("ImportAmount_VARh")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("reactive_energy_total_ramped_t0_import_amount_varh");
+                                .HasColumnName("usage_reactive_energy_total_ramped_t0_import_amount_varh");
 
                             b1.Property<decimal>("ImportMax_VARh")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("reactive_energy_total_ramped_t0_import_max_varh");
+                                .HasColumnName("usage_reactive_energy_total_ramped_t0_import_max_varh");
 
                             b1.Property<decimal>("ImportMin_VARh")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("reactive_energy_total_ramped_t0_import_min_varh");
+                                .HasColumnName("usage_reactive_energy_total_ramped_t0_import_min_varh");
 
                             b1.Property<decimal>("Price_EUR")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("reactive_energy_total_ramped_t0_ramped_price_eur");
+                                .HasColumnName("usage_reactive_energy_total_ramped_t0_ramped_price_eur");
 
                             b1.Property<decimal>("Total_EUR")
                                 .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("numeric")
-                                .HasColumnName("reactive_energy_total_ramped_t0_ramped_total_eur");
+                                .HasColumnName("usage_reactive_energy_total_ramped_t0_ramped_total_eur");
                         });
 
                     b.HasIndex("_usageNetworkUserCatalogueId")

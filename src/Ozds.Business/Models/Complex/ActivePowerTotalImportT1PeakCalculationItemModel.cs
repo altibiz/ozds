@@ -4,7 +4,7 @@ using Ozds.Business.Models.Base;
 
 namespace Ozds.Business.Models.Complex;
 
-public class
+public abstract class
   ActivePowerTotalImportT1PeakCalculationItemModel : CalculationItemModel
 {
   [Required] public required decimal Peak_W { get; set; }
@@ -29,15 +29,26 @@ public class
       );
     }
   }
+}
 
-  public override TariffMeasure<decimal> Price
+public class UsageActivePowerTotalImportT1PeakCalculationItemModel
+  : ActivePowerTotalImportT1PeakCalculationItemModel
+{
+  public override string Kind
+  {
+    get { return "SVT"; }
+  }
+
+  public override ExpenditureMeasure<decimal> Price
   {
     get
     {
-      return new UnaryTariffMeasure<decimal>(
-        new ImportExportDuplexMeasure<decimal>(
-          new SinglePhasicMeasure<decimal>(Price_EUR),
-          PhasicMeasure<decimal>.Null
+      return new UsageExpenditureMeasure<decimal>(
+        new UnaryTariffMeasure<decimal>(
+          new ImportExportDuplexMeasure<decimal>(
+            new SinglePhasicMeasure<decimal>(Price_EUR),
+            PhasicMeasure<decimal>.Null
+          )
         )
       );
     }

@@ -1,4 +1,5 @@
 using Ozds.Business.Conversion.Base;
+using Ozds.Business.Conversion.Complex;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Enums;
 using Ozds.Data.Entities;
@@ -35,13 +36,7 @@ public static class RepresentativeModelEntityConverterExtensions
       DeletedOn = model.DeletedOn,
       DeletedById = model.DeletedById,
       Role = model.Role.ToEntity(),
-      Name = model.Name,
-      SocialSecurityNumber = model.SocialSecurityNumber,
-      Address = model.Address,
-      City = model.City,
-      PostalCode = model.PostalCode,
-      Email = model.Email,
-      PhoneNumber = model.PhoneNumber
+      PhysicalPerson = model.PhysicalPerson.ToEntity()
     };
   }
 
@@ -59,13 +54,7 @@ public static class RepresentativeModelEntityConverterExtensions
       DeletedOn = entity.DeletedOn,
       DeletedById = entity.DeletedById,
       Role = entity.Role.ToModel(),
-      Name = entity.Name,
-      SocialSecurityNumber = entity.SocialSecurityNumber,
-      Address = entity.Address,
-      City = entity.City,
-      PostalCode = entity.PostalCode,
-      Email = entity.Email,
-      PhoneNumber = entity.PhoneNumber
+      PhysicalPerson = entity.PhysicalPerson.ToModel()
     };
   }
 }

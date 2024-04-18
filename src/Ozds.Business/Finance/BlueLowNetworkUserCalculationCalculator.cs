@@ -20,20 +20,89 @@ public class
   }
 
   protected override NetworkUserCalculationModel CalculateForNetworkUser(
-    BlueLowNetworkUserCatalogueModel catalogue,
+    BlueLowNetworkUserCatalogueModel usageCatalogue,
     NetworkUserCalculationBasisModel calculationBasis
   )
   {
+    var supplyCatalogue = calculationBasis.SupplyRegulatoryCatalogue;
+
+    var usageActiveEnergyTotalImportT0 = _calculationItemCalculator
+      .Calculate<UsageActiveEnergyTotalImportT0CalculationItemModel>(
+        new CalculationItemBasisModel(
+          calculationBasis.Aggregates,
+          usageCatalogue.ActiveEnergyTotalImportT0Price_EUR
+        )
+      );
+
+    var usageReactiveEnergyTotalRampedT0 = _calculationItemCalculator
+      .Calculate<UsageReactiveEnergyTotalRampedT0CalculationItemModel>(
+        new CalculationItemBasisModel(
+          calculationBasis.Aggregates,
+          usageCatalogue.ReactiveEnergyTotalRampedT0Price_EUR
+        )
+      );
+
+    var usageMeterFee = _calculationItemCalculator
+      .Calculate<UsageMeterFeeCalculationItemModel>(
+        new CalculationItemBasisModel(
+          calculationBasis.Aggregates,
+          usageCatalogue.MeterFeePrice_EUR
+        )
+      );
+
+    var usageFeeTotal =
+      usageActiveEnergyTotalImportT0.Total_EUR
+      + usageReactiveEnergyTotalRampedT0.Total_EUR
+      + usageMeterFee.Total_EUR;
+
+    var supplyActiveEnergyTotalImportT1 = _calculationItemCalculator
+      .Calculate<SupplyActiveEnergyTotalImportT1CalculationItemModel>(
+        new CalculationItemBasisModel(
+          calculationBasis.Aggregates,
+          supplyCatalogue.ActiveEnergyTotalImportT1Price_EUR
+        )
+      );
+
+    var supplyActiveEnergyTotalImportT2 = _calculationItemCalculator
+      .Calculate<SupplyActiveEnergyTotalImportT2CalculationItemModel>(
+        new CalculationItemBasisModel(
+          calculationBasis.Aggregates,
+          supplyCatalogue.ActiveEnergyTotalImportT2Price_EUR
+        )
+      );
+
+    var supplyBusinessUsageFee = _calculationItemCalculator
+      .Calculate<SupplyBusinessUsageFeeCalculationItemModel>(
+        new CalculationItemBasisModel(
+          calculationBasis.Aggregates,
+          supplyCatalogue.BusinessUsageFeePrice_EUR
+        )
+      );
+
+    var supplyRenewableEnergyFee = _calculationItemCalculator
+      .Calculate<SupplyRenewableEnergyFeeCalculationItemModel>(
+        new CalculationItemBasisModel(
+          calculationBasis.Aggregates,
+          supplyCatalogue.RenewableEnergyFeePrice_EUR
+        )
+      );
+
+    var supplyFeeTotal =
+      supplyActiveEnergyTotalImportT1.Total_EUR
+      + supplyActiveEnergyTotalImportT2.Total_EUR
+      + supplyBusinessUsageFee.Total_EUR
+      + supplyRenewableEnergyFee.Total_EUR;
+
     var initial = new BlueLowNetworkUserCalculationModel
     {
       Id = default!,
       Title =
-        $"${catalogue.Title} calculation for {calculationBasis.NetworkUser.Title} at {calculationBasis.Location.Title}",
+        $"${usageCatalogue.Title} calculation for {calculationBasis.NetworkUser.Title} at {calculationBasis.Location.Title}",
       MeterId = calculationBasis.Meter.Id,
       ToDate = calculationBasis.ToDate,
       FromDate = calculationBasis.FromDate,
       NetworkUserInvoiceId = calculationBasis.NetworkUser.Id,
-      UsageNetworkUserCatalogueId = catalogue.Id,
+      UsageNetworkUserCatalogueId = usageCatalogue.Id,
       SupplyRegulatoryCatalogueId =
         calculationBasis.SupplyRegulatoryCatalogue.Id,
       MeasurementLocationId = calculationBasis.MeasurementLocation.Id,
@@ -41,24 +110,19 @@ public class
       IssuedById = default!,
       ArchivedMeter = calculationBasis.Meter,
       ArchivedMeasurementLocation = calculationBasis.MeasurementLocation,
-      ArchivedUsageNetworkUserCatalogue = catalogue,
+      ArchivedUsageNetworkUserCatalogue = usageCatalogue,
       ArchivedSupplyRegulatoryCatalogue =
         calculationBasis.SupplyRegulatoryCatalogue,
-      ActiveEnergyTotalImportT0 = _calculationItemCalculator
-        .Calculate<ActiveEnergyTotalImportT0CalculationItemModel>(
-          new CalculationItemBasisModel(
-            calculationBasis.Aggregates,
-            catalogue.ActiveEnergyTotalImportT0Price_EUR
-          )
-        ),
-      ReactiveEnergyTotalRampedT0 = _calculationItemCalculator
-        .Calculate<ReactiveEnergyTotalRampedT0CalculationItemModel>(
-          new CalculationItemBasisModel(
-            calculationBasis.Aggregates,
-            catalogue.ReactiveEnergyTotalRampedT0Price_EUR
-          )
-        ),
-      MeterFeePrice_EUR = catalogue.MeterFeePrice_EUR
+      UsageActiveEnergyTotalImportT0 = usageActiveEnergyTotalImportT0,
+      UsageReactiveEnergyTotalRampedT0 = usageReactiveEnergyTotalRampedT0,
+      UsageMeterFee = usageMeterFee,
+      UsageFeeTotal_EUR = usageFeeTotal,
+      SupplyActiveEnergyTotalImportT1 = supplyActiveEnergyTotalImportT1,
+      SupplyActiveEnergyTotalImportT2 = supplyActiveEnergyTotalImportT2,
+      SupplyBusinessUsageFee = supplyBusinessUsageFee,
+      SupplyRenewableEnergyFee = supplyRenewableEnergyFee,
+      SupplyFeeTotal_EUR = supplyFeeTotal,
+      Total_EUR = usageFeeTotal + supplyFeeTotal
     };
 
     return initial;

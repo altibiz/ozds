@@ -136,7 +136,8 @@
     {
       return;
     }
-    else if (representative.Representative.Role is RoleModel.NetworkUserRepresentative)
+
+    if (representative.Representative.Role is RoleModel.NetworkUserRepresentative)
     {
       // Find all _invoices tied to this user, decending by FromDate
     }

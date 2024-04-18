@@ -92,20 +92,25 @@ erDiagram
     }
 
     location_invoices {
-        text archived_location_blue_low_network_user_catalogue_id
-        text archived_location_created_by_id
-        timestamp_with_time_zone archived_location_created_on
-        text archived_location_deleted_by_id
-        timestamp_with_time_zone archived_location_deleted_on
-        text archived_location_id
-        boolean archived_location_is_deleted
-        text archived_location_last_updated_by_id
-        timestamp_with_time_zone archived_location_last_updated_on
-        text archived_location_red_low_network_user_catalogue_id
-        text archived_location_regulatory_catalogue_id
-        text archived_location_title
-        text archived_location_white_low_network_user_catalogue_id
-        text archived_location_white_medium_network_user_catalogue_id
+        text al_blue_low_network_user_catalogue_id
+        text al_created_by_id
+        timestamp_with_time_zone al_created_on
+        text al_deleted_by_id
+        timestamp_with_time_zone al_deleted_on
+        boolean al_is_deleted
+        text al_last_updated_by_id
+        timestamp_with_time_zone al_last_updated_on
+        text al_lp_address
+        text al_lp_city
+        text al_lp_email
+        text al_lp_name
+        text al_lp_phone_number
+        text al_lp_postal_code
+        text al_lp_social_security_number
+        text al_red_low_network_user_catalogue_id
+        text al_regulatory_catalogue_id
+        text al_white_low_network_user_catalogue_id
+        text al_white_medium_network_user_catalogue_id
         timestamp_with_time_zone from_date
         bigint id PK
         text issued_by_id FK
@@ -128,6 +133,13 @@ erDiagram
         boolean is_deleted
         text last_updated_by_id FK
         timestamp_with_time_zone last_updated_on
+        text legal_person_address
+        text legal_person_city
+        text legal_person_email
+        text legal_person_name
+        text legal_person_phone_number
+        text legal_person_postal_code
+        text legal_person_social_security_number
         bigint red_low_catalogue_id FK
         bigint regulatory_catalogue_id FK
         text title
@@ -206,25 +218,6 @@ erDiagram
     }
 
     network_user_calculations {
-        numeric active_energy_total_import_t0_amount_wh
-        numeric active_energy_total_import_t0_max_wh
-        numeric active_energy_total_import_t0_min_wh
-        numeric active_energy_total_import_t0_price_eur
-        numeric active_energy_total_import_t0_total_eur
-        numeric active_energy_total_import_t1_amount_wh
-        numeric active_energy_total_import_t1_max_wh
-        numeric active_energy_total_import_t1_min_wh
-        numeric active_energy_total_import_t1_price_eur
-        numeric active_energy_total_import_t1_total_eur
-        numeric active_energy_total_import_t2_amount_wh
-        numeric active_energy_total_import_t2_max_wh
-        numeric active_energy_total_import_t2_min_wh
-        numeric active_energy_total_import_t2_price_eur
-        numeric active_energy_total_import_t2_total_eur
-        numeric active_power_total_import_t1_amount_w
-        numeric active_power_total_import_t1_peak_w
-        numeric active_power_total_import_t1_price_eur
-        numeric active_power_total_import_t1_total_eur
         real am_connection_power__w
         text am_created_by_id
         timestamp_with_time_zone am_created_on
@@ -243,9 +236,9 @@ erDiagram
         text aml_last_updated_by_id
         timestamp_with_time_zone aml_last_updated_on
         text aml_meter_id
-        numeric asrc_active_energy_total_import_t1_price__e_u_r
-        numeric asrc_active_energy_total_import_t2_price__e_u_r
-        numeric asrc_business_usage_fee_price__e_u_r
+        numeric asrc_active_energy_total_import_t1_price__eur
+        numeric asrc_active_energy_total_import_t2_price__eur
+        numeric asrc_business_usage_fee_price__eur
         text asrc_created_by_id
         timestamp_with_time_zone asrc_created_on
         text asrc_deleted_by_id
@@ -253,7 +246,7 @@ erDiagram
         boolean asrc_is_deleted
         text asrc_last_updated_by_id
         timestamp_with_time_zone asrc_last_updated_on
-        numeric asrc_renewable_energy_fee_price__e_u_r
+        numeric asrc_renewable_energy_fee_price__eur
         numeric asrc_tax_rate__percent
         text aunuc_created_by_id
         timestamp_with_time_zone aunuc_created_on
@@ -269,24 +262,63 @@ erDiagram
         character_varying kind
         bigint location_invoice_entity_id FK
         bigint measurement_location_id FK
-        numeric meter_fee_price_eur
         text meter_id FK
         bigint network_user_id FK
         bigint network_user_invoice_id
-        numeric reactive_energy_total_ramped_t0_export_amount_varh
-        numeric reactive_energy_total_ramped_t0_export_max_varh
-        numeric reactive_energy_total_ramped_t0_export_min_varh
-        numeric reactive_energy_total_ramped_t0_import_amount_varh
-        numeric reactive_energy_total_ramped_t0_import_max_varh
-        numeric reactive_energy_total_ramped_t0_import_min_varh
-        numeric reactive_energy_total_ramped_t0_ramped_amount_varh
-        numeric reactive_energy_total_ramped_t0_ramped_price_eur
-        numeric reactive_energy_total_ramped_t0_ramped_total_eur
+        numeric supply_active_energy_total_import_t1_amount_wh
+        numeric supply_active_energy_total_import_t1_max_wh
+        numeric supply_active_energy_total_import_t1_min_wh
+        numeric supply_active_energy_total_import_t1_price_eur
+        numeric supply_active_energy_total_import_t1_total_eur
+        numeric supply_active_energy_total_import_t2_amount_wh
+        numeric supply_active_energy_total_import_t2_max_wh
+        numeric supply_active_energy_total_import_t2_min_wh
+        numeric supply_active_energy_total_import_t2_price_eur
+        numeric supply_active_energy_total_import_t2_total_eur
+        numeric supply_business_usage_fee_amount
+        numeric supply_business_usage_fee_price_eur
+        numeric supply_business_usage_total_eur
+        numeric supply_fee_total_eur
         bigint supply_regulatory_catalogue_id FK
+        numeric supply_renewable_energy_fee_amount
+        numeric supply_renewable_energy_fee_price_eur
+        numeric supply_renewable_energy_total_eur
         text title
         timestamp_with_time_zone to_date
         numeric total_eur
+        numeric usage_active_energy_total_import_t0_amount_wh
+        numeric usage_active_energy_total_import_t0_max_wh
+        numeric usage_active_energy_total_import_t0_min_wh
+        numeric usage_active_energy_total_import_t0_price_eur
+        numeric usage_active_energy_total_import_t0_total_eur
+        numeric usage_active_energy_total_import_t1_amount_wh
+        numeric usage_active_energy_total_import_t1_max_wh
+        numeric usage_active_energy_total_import_t1_min_wh
+        numeric usage_active_energy_total_import_t1_price_eur
+        numeric usage_active_energy_total_import_t1_total_eur
+        numeric usage_active_energy_total_import_t2_amount_wh
+        numeric usage_active_energy_total_import_t2_max_wh
+        numeric usage_active_energy_total_import_t2_min_wh
+        numeric usage_active_energy_total_import_t2_price_eur
+        numeric usage_active_energy_total_import_t2_total_eur
+        numeric usage_active_power_total_import_t1_amount_w
+        numeric usage_active_power_total_import_t1_peak_w
+        numeric usage_active_power_total_import_t1_price_eur
+        numeric usage_active_power_total_import_t1_total_eur
+        numeric usage_fee_total_eur
+        numeric usage_meter_fee_amount
+        numeric usage_meter_fee_price_eur
+        numeric usage_meter_total_eur
         bigint usage_network_user_catalogue_id FK
+        numeric usage_reactive_energy_total_ramped_t0_export_amount_varh
+        numeric usage_reactive_energy_total_ramped_t0_export_max_varh
+        numeric usage_reactive_energy_total_ramped_t0_export_min_varh
+        numeric usage_reactive_energy_total_ramped_t0_import_amount_varh
+        numeric usage_reactive_energy_total_ramped_t0_import_max_varh
+        numeric usage_reactive_energy_total_ramped_t0_import_min_varh
+        numeric usage_reactive_energy_total_ramped_t0_ramped_amount_varh
+        numeric usage_reactive_energy_total_ramped_t0_ramped_price_eur
+        numeric usage_reactive_energy_total_ramped_t0_ramped_total_eur
     }
 
     network_user_catalogues {
@@ -322,6 +354,13 @@ erDiagram
         boolean al_is_deleted
         text al_last_updated_by_id
         timestamp_with_time_zone al_last_updated_on
+        text al_lp_address
+        text al_lp_city
+        text al_lp_email
+        text al_lp_name
+        text al_lp_phone_number
+        text al_lp_postal_code
+        text al_lp_social_security_number
         text al_red_low_network_user_catalogue_id
         text al_regulatory_catalogue_id
         text al_white_low_network_user_catalogue_id
@@ -333,16 +372,47 @@ erDiagram
         boolean anu_is_deleted
         text anu_last_updated_by_id
         timestamp_with_time_zone anu_last_updated_on
+        text anu_lp_address
+        text anu_lp_city
+        text anu_lp_email
+        text anu_lp_name
+        text anu_lp_phone_number
+        text anu_lp_postal_code
+        text anu_lp_social_security_number
+        numeric arc_active_energy_total_import_t1_price__eur
+        numeric arc_active_energy_total_import_t2_price__eur
+        numeric arc_business_usage_fee_price__eur
+        text arc_created_by_id
+        timestamp_with_time_zone arc_created_on
+        text arc_deleted_by_id
+        timestamp_with_time_zone arc_deleted_on
+        boolean arc_is_deleted
+        text arc_last_updated_by_id
+        timestamp_with_time_zone arc_last_updated_on
+        numeric arc_renewable_energy_fee_price__eur
+        numeric arc_tax_rate__percent
         timestamp_with_time_zone from_date
         bigint id PK
         text issued_by_id FK
         timestamp_with_time_zone issued_on
         bigint network_user_id FK
+        numeric supply_active_energy_total_import_t1fee_eur
+        numeric supply_active_energy_total_import_t2fee_eur
+        numeric supply_business_usage_fee_eur
+        numeric supply_fee_total_eur
+        numeric supply_renewable_energy_fee_eur
         numeric tax_eur
         text title
         timestamp_with_time_zone to_date
         numeric total_eur
         numeric total_with_tax_eur
+        numeric usage_active_energy_total_import_t0fee_eur
+        numeric usage_active_energy_total_import_t1fee_eur
+        numeric usage_active_energy_total_import_t2fee_eur
+        numeric usage_active_power_total_import_t1peak_fee_eur
+        numeric usage_fee_total_eur
+        numeric usage_meter_fee_eur
+        numeric usage_reactive_energy_total_ramped_t0fee_eur
     }
 
     network_users {
@@ -354,6 +424,13 @@ erDiagram
         boolean is_deleted
         text last_updated_by_id FK
         timestamp_with_time_zone last_updated_on
+        text legal_person_address
+        text legal_person_city
+        text legal_person_email
+        text legal_person_name
+        text legal_person_phone_number
+        text legal_person_postal_code
+        text legal_person_social_security_number
         bigint location_id FK
         text title
     }
@@ -376,22 +453,18 @@ erDiagram
     }
 
     representatives {
-        text address
-        text city
         text created_by_id FK
         timestamp_with_time_zone created_on
         text deleted_by_id FK
         timestamp_with_time_zone deleted_on
-        text email
         text id PK
         boolean is_deleted
         text last_updated_by_id FK
         timestamp_with_time_zone last_updated_on
-        text name
-        text phone_number
-        text postal_code
+        text physical_person_email
+        text physical_person_name
+        text physical_person_phone_number
         integer role
-        text social_security_number
         text title
     }
 

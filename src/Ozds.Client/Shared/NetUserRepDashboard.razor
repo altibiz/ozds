@@ -1,5 +1,5 @@
-@inherits Ozds.Client.Base.OzdsOwningComponentBase
 @using Ozds.Business.Time
+@inherits Ozds.Client.Base.OzdsOwningComponentBase
 @* MOBILE *@
 <MudHidden Breakpoint="Breakpoint.MdAndUp">
 
@@ -143,15 +143,18 @@
   protected override async Task OnInitializedAsync()
   {
     var aggregateQueries = ScopedServices.GetRequiredService<OzdsAggregateQueries>();
-    var test = await aggregateQueries.ReadAgnostic(new string[] { "x => x.Interval == 2" }, startOfThisMonth, now, 1, 9000);
+    var test = await aggregateQueries.ReadAgnostic(new[] { "x => x.Interval == 2" }, startOfThisMonth, now, 1, 9000);
     var meters = test.OrderBy(x => x.Timestamp).GroupBy(x => x.MeterId).ToList();
-    foreach(var meter in meters){
+    foreach (var meter in meters)
+    {
       var _thisMonthUsage = (decimal)meter.FirstOrDefault()!.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum;
-      if (_thisMonthUsage == 0){
+      if (_thisMonthUsage == 0)
+      {
         var a = (decimal)meter.FirstOrDefault()!.ActiveEnergySpan_Wh.SpanMin.TariffUnary.DuplexImport.PhaseSum;
         var b = (decimal)meter.FirstOrDefault()!.ActiveEnergySpan_Wh.SpanMax.TariffUnary.DuplexImport.PhaseSum;
         _thisMonthUsage = b - a;
       }
+
       _thisMonthTotal += _thisMonthUsage;
     }
   }

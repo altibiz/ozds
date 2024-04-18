@@ -8,7 +8,7 @@
 @if (_representative != null)
 {
   <MudContainer MaxWidth="MaxWidth.ExtraSmall" Class="d-flex  flex-column" Style="float: left;">
-    <MudText Class="d-flex align-center my-2" Typo="@Typo.h5">@_representative.Representative.Name</MudText>
+    <MudText Class="d-flex align-center my-2" Typo="@Typo.h5">@_representative.Representative.PhysicalPerson.Name</MudText>
     <MudPaper class="mt-2 px-4 py-2">
       <MudGrid Spacing="3">
 
@@ -20,12 +20,12 @@
         <MudItem xs="12" sm="6">
           <MudHidden Breakpoint="Breakpoint.Xs">
             <MudText Type="Typo.body2" Align="MudAlign.Right">
-              @_representative.Representative.Email
+              @_representative.Representative.PhysicalPerson.Email
             </MudText>
           </MudHidden>
           <MudHidden Breakpoint="Breakpoint.SmAndUp">
             <MudText Type="Typo.body2" Align="MudAlign.Left">
-              @_representative.Representative.Email
+              @_representative.Representative.PhysicalPerson.Email
             </MudText>
           </MudHidden>
         </MudItem>
@@ -35,37 +35,6 @@
             @T["Grad"]:
           </MudText>
         </MudItem>
-        <MudItem xs="12" sm="6">
-          <MudHidden Breakpoint="Breakpoint.Xs">
-            <MudText Type="Typo.body2" Align="MudAlign.Right">
-              @_representative.Representative.PostalCode @_representative.Representative.City
-            </MudText>
-          </MudHidden>
-          <MudHidden Breakpoint="Breakpoint.SmAndUp">
-            <MudText Type="Typo.body2" Align="MudAlign.Left">
-              @_representative.Representative.PostalCode @_representative.Representative.City
-            </MudText>
-          </MudHidden>
-        </MudItem>
-
-        <MudItem xs="12" sm="6">
-          <MudText Typo="Typo.body1" Style="font-weight: bold;">
-            @T["OIB"]:
-          </MudText>
-        </MudItem>
-        <MudItem xs="12" sm="6">
-          <MudHidden Breakpoint="Breakpoint.Xs">
-            <MudText Type="Typo.body2" Align="MudAlign.Right">
-              @_representative.Representative.SocialSecurityNumber
-            </MudText>
-          </MudHidden>
-          <MudHidden Breakpoint="Breakpoint.SmAndUp">
-            <MudText Type="Typo.body2" Align="MudAlign.Left">
-              @_representative.Representative.SocialSecurityNumber
-            </MudText>
-          </MudHidden>
-        </MudItem>
-
       </MudGrid>
     </MudPaper>
   </MudContainer>

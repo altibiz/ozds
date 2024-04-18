@@ -5,10 +5,10 @@ using Ozds.Business.Models.Composite;
 
 namespace Ozds.Business.Finance.Complex;
 
-public class ActiveEnergyTotalImportT0CalculationItemCalculator :
-  CalculationItemCalculator<ActiveEnergyTotalImportT0CalculationItemModel>
+public class UsageActiveEnergyTotalImportT1CalculationItemCalculator :
+  CalculationItemCalculator<UsageActiveEnergyTotalImportT1CalculationItemModel>
 {
-  protected override ActiveEnergyTotalImportT0CalculationItemModel
+  protected override UsageActiveEnergyTotalImportT1CalculationItemModel
     CalculateConcrete(CalculationItemBasisModel calculationBasis)
   {
     var aggregates = calculationBasis.Aggregates
@@ -21,14 +21,14 @@ public class ActiveEnergyTotalImportT0CalculationItemCalculator :
       aggregates.LastOrDefault()!.ActiveEnergy_Wh.ConvertPrimitiveTo<decimal>()
     );
 
-    return new ActiveEnergyTotalImportT0CalculationItemModel
+    return new UsageActiveEnergyTotalImportT1CalculationItemModel
     {
-      Min_Wh = amount.SpanMin.TariffUnary.DuplexImport.PhaseSum,
-      Max_Wh = amount.SpanMax.TariffUnary.DuplexImport.PhaseSum,
-      Amount_Wh = amount.SpanDiff.TariffUnary.DuplexImport.PhaseSum,
+      Min_Wh = amount.SpanMin.TariffBinary.T1.DuplexImport.PhaseSum,
+      Max_Wh = amount.SpanMax.TariffBinary.T1.DuplexImport.PhaseSum,
+      Amount_Wh = amount.SpanDiff.TariffBinary.T1.DuplexImport.PhaseSum,
       Price_EUR = calculationBasis.Price,
-      Total_EUR = amount.SpanDiff.TariffUnary.DuplexImport.PhaseSum *
-                  calculationBasis.Price
+      Total_EUR = amount.SpanDiff.TariffBinary.T1.DuplexImport.PhaseSum
+                  * calculationBasis.Price
     };
   }
 }

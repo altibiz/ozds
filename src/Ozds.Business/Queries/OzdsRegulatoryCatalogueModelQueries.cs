@@ -3,7 +3,6 @@ using Ozds.Business.Conversion;
 using Ozds.Business.Models;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Data;
-using Ozds.Data.Entities;
 using Ozds.Data.Extensions;
 
 namespace Ozds.Business.Queries;
