@@ -1,4 +1,3 @@
-using System.Collections.Immutable;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -21,9 +20,10 @@ public static class EntityTypeBuilderExtensions
 
     var propertiesToArchive = complexPropertyBuilder.Metadata
       .ComplexType
+      .ClrType
       .GetProperties()
-      .Where(property => property.Name.EndsWith("Entity"))
-      .Select(property => property.PropertyInfo!)
+      .Where(property => property.PropertyType.Name.EndsWith("Entity"))
+      .Except(propertiesToIgnore)
       .ToList();
 
     var propertiesToShorten = complexPropertyBuilder.Metadata
@@ -41,6 +41,7 @@ public static class EntityTypeBuilderExtensions
 
     foreach (var property in propertiesToShorten)
     {
+      Console.WriteLine($"{propertyName} {property.Name}");
       complexPropertyBuilder
         .Property(property.Name)
         .HasColumnName(
