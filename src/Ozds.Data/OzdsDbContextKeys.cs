@@ -32,7 +32,10 @@ public partial class OzdsDbContext
       .Field(parameter, field
                         ?? throw new InvalidOperationException(
                           $"No {fieldName} field found in {type}"));
-    return Expression.Lambda<Func<T, object>>(fieldExpression, parameter);
+    return Expression.Lambda(fieldExpression, parameter)
+      as Expression<Func<T, object>>
+      ?? throw new InvalidOperationException(
+        $"Failed to create primary key expression for {type}");
   }
 
   public Func<T, object> PrimaryKeyOfCompiled<T>(Expression<Func<T, object>> prefix, Type type)
@@ -57,7 +60,10 @@ public partial class OzdsDbContext
       .Field(callExpression, field
                         ?? throw new InvalidOperationException(
                           $"No {fieldName} field found in {type}"));
-    return Expression.Lambda<Func<T, object>>(fieldExpression, parameter);
+    return Expression.Lambda(fieldExpression, parameter)
+      as Expression<Func<T, object>>
+      ?? throw new InvalidOperationException(
+        $"Failed to create primary key expression for {typeof(T)}");
   }
 
   public Func<T, bool> PrimaryKeyEqualsCompiled<T>(string id)
@@ -138,7 +144,10 @@ public partial class OzdsDbContext
     var fieldExpression = Expression.Field(parameter, field
       ?? throw new InvalidOperationException(
         $"No {joinType} field found in {type}"));
-    return Expression.Lambda<Func<T, object>>(fieldExpression, parameter);
+    return Expression.Lambda(fieldExpression, parameter)
+      as Expression<Func<T, object>>
+      ?? throw new InvalidOperationException(
+        $"Failed to create foreign key expression for {type}");
   }
 
   public Func<T, object> ForeignKeyOfCompiled<T>(Expression<Func<T, object>> prefix, Type joinType)
@@ -156,6 +165,9 @@ public partial class OzdsDbContext
     var fieldExpression = Expression.Field(callExpression, field
       ?? throw new InvalidOperationException(
         $"No {joinType} field found in {typeof(T)}"));
-    return Expression.Lambda<Func<T, object>>(fieldExpression, parameter);
+    return Expression.Lambda(fieldExpression, parameter)
+      as Expression<Func<T, object>>
+      ?? throw new InvalidOperationException(
+        $"Failed to create foreign key expression for {typeof(T)}");
   }
 }

@@ -173,8 +173,8 @@
   protected override async Task OnInitializedAsync()
   {
     var aggregateQueries = ScopedServices.GetRequiredService<OzdsAggregateQueries>();
-    @* var queries = ScopedServices.GetRequiredService<OzdsMeterTableQueries>(); *@
-    @* var test1 = await queries.ViewModelByNetworkUser("1", startOfThisMonth, now); *@
+    var queries = ScopedServices.GetRequiredService<OzdsMeterTableQueries>();
+    var test1 = await queries.ViewModelByNetworkUser("1", startOfThisMonth, now);
     var test = await aggregateQueries.ReadAgnostic(new string[] { "x => x.Interval == 2" }, startOfThisMonth, now, 1, 9000);
     var meters = test.OrderBy(x => x.Timestamp).GroupBy(x => x.MeterId).ToList();
     foreach (var meter in meters)
