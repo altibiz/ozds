@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Conversion;
 using Ozds.Business.Models;
+using Ozds.Business.Models.Composite;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Data;
 using Ozds.Data.Entities;
@@ -168,5 +169,23 @@ public class OzdsLocationModelQueries : IOzdsQueries
     return items
       .Select(item => item.ToModel())
       .ToPaginatedList(count);
+  }
+  public async Task<LocationWithRepresentativesModel?>
+    LocationWithRepresentativesById(string id)
+  {
+    var location =
+      await context.Locations
+        .WithId(id)
+        .Include(x => x.Representatives)
+        .FirstOrDefaultAsync();
+    if (location is not null)
+    {
+      return new LocationWithRepresentativesModel(
+        location.ToModel(),
+        location.Representatives.Select(x => x.ToModel()).ToList()
+      );
+    }
+
+    return null;
   }
 }

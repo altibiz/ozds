@@ -30,7 +30,7 @@
             @* @DecimalString(dataStruct.data.thisMonthUsage / 1000, 0) kWh *@
             @DecimalString(dataStruct.data.thisMonthUsage, 0) Wh
           </MudItem>
-          @if (dataStruct.data.lastMonthsPayment is not null && true)
+          @if (dataStruct.data.lastMonthsPayment is not null && false)
           {
             <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
               @T["Zbroj obračuna u prethodnom mjesecu"]: <br>
@@ -130,7 +130,7 @@
           @(DecimalString(context.Item.thisMonthUsage, 0) + " Wh")
         </CellTemplate>
       </PropertyColumn>
-      @if (true)
+      @if (false)
       {
         <PropertyColumn
           CellStyle="font-size: x-large;"
@@ -174,6 +174,8 @@
   protected override async Task OnInitializedAsync()
   {
     var aggregateQueries = ScopedServices.GetRequiredService<OzdsAggregateQueries>();
+    @* var queries = ScopedServices.GetRequiredService<OzdsMeterTableQueries>(); *@
+    @* var test1 = await queries.ViewModelByNetworkUser("1", startOfThisMonth, now); *@
     var test = await aggregateQueries.ReadAgnostic(new string[] { "x => x.Interval == 2" }, startOfThisMonth, now, 1, 9000);
     var meters = test.OrderBy(x => x.Timestamp).GroupBy(x => x.MeterId).ToList();
     foreach(var meter in meters){
@@ -191,6 +193,7 @@
     }
     else if (representative.Representative.Role is RoleModel.NetworkUserRepresentative)
     {
+
       // Find the location this user is tied to and add it to _locations
       // Add this user to _networkUsers
       // Find all _meters tied to this user

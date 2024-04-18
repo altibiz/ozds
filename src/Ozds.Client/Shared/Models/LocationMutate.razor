@@ -87,6 +87,24 @@
           </MudSelectItem>
         }
       </MudSelect>
+      @* <MudSelect
+        T="RepresentativeModel"
+        Label="Korisnici"
+        AnchorOrigin="Origin.BottomCenter"
+        ToStringFunc="(a) => a?.Name"
+        MultiSelection="true"
+        @bind-SelectedValues="_selectedRepsList">
+        @foreach (var rep in _representatives)
+        {
+          <MudSelectItem Value="@rep">
+            @rep.Title
+          </MudSelectItem>
+        }
+      </MudSelect>
+      <MudItem Class="py-5">
+          <MudText Typo="Typo.subtitle2">Odabrani korisnici</MudText>
+          <MudText Typo="Typo.body2" Class="pl-4">@(string.Join(", ", _selectedRepsList.Select(x=>$"\"{x.Name}\"")))</MudText>
+      </MudItem> *@
     </MudCardContent>
     <ValidationSummary/>
     <MudCardActions>
@@ -119,6 +137,8 @@
   private List<WhiteLowNetworkUserCatalogueModel> _whiteLowNetworkUserCatalogues;
   private List<RedLowNetworkUserCatalogueModel> _redLowNetworkUserCatalogues;
   private List<RegulatoryCatalogueModel> _regulatoryNetworkUserCatalogues;
+  @* private List<RepresentativeModel> _representatives;
+  private IEnumerable<RepresentativeModel> _selectedRepsList { get; set; } = new HashSet<RepresentativeModel>() { }; *@
 
   private bool _create;
 
@@ -153,11 +173,19 @@
     _whiteLowNetworkUserCatalogues = (await queries.GetWhiteLowNetworkUserCatalogues("")).Items;
     _redLowNetworkUserCatalogues = (await queries.GetRedLowNetworkUserCatalogues("")).Items;
     _regulatoryNetworkUserCatalogues = (await queries.GetRegulatoryCatalogues("")).Items;
+    @* _representatives = (await queries.GetEligibleRepresentatives("")).Items; *@
 
-    if (LoadingState.Value is null && Id is not null)
+    @* if (LoadingState.Value is null && Id is not null)
     {
-      LoadingState = LoadingState.WithValue(await queries.LocationById(Id));
-    }
+      var result = await queries.LocationWithRepresentativesById(Id);
+      if (result != null)
+      {
+          var (location, representatives) = result;
+          _selectedRepsList = representatives;
+          _representatives = _representatives.Select(x => representatives.FirstOrDefault(y => x.Id == y.Id) is { } y ? y : x).ToList();
+          LoadingState = LoadingState.WithValue(location);
+      }
+    } *@
 
     if (LoadingState.Value is null)
     {

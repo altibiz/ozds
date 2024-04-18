@@ -51,6 +51,18 @@
           </MudSelectItem>
         }
       </MudSelect>
+      <MudSelect
+        Label="Katalog"
+        AnchorOrigin="Origin.BottomCenter"
+        @bind-Value="LoadingState.Value.NetworkUserCatalogueId"
+        For="@(() => LoadingState.Value.NetworkUserCatalogueId)">
+        @foreach (var catalogue in _catalogue)
+        {
+          <MudSelectItem Value="catalogue.Id">
+            @catalogue.Title
+          </MudSelectItem>
+        }
+      </MudSelect>
     </MudCardContent>
     <ValidationSummary/>
     <MudCardActions>
@@ -79,6 +91,7 @@
 
   private LoadingState<NetworkUserMeasurementLocationModel> LoadingState { get; set; } = new();
   private List<NetworkUserModel> _netUsers;
+  private List<NetworkUserCatalogueModel> _catalogue;
   private List<MeterModel> _meters;
 
   private bool _create;
@@ -111,6 +124,7 @@
     var queries = ScopedServices.GetRequiredService<OzdsNetworkUserMeasurementLocationModelQueries>();
     _netUsers = (await queries.GetNetworkUsers("")).Items;
     _meters = (await queries.GetMeters("")).Items;
+    _catalogue = (await queries.GetCatalogues("")).Items;
 
     if (LoadingState.Value is null && Id is not null)
     {
@@ -125,3 +139,15 @@
   }
 
 }
+
+    using Ozds.Business.Models.Abstractions;
+
+#line default
+#line hidden
+#nullable disable
+
+    using Ozds.Business.Models.Abstractions;
+
+#line default
+#line hidden
+#nullable disable
