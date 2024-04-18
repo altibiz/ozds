@@ -5,6 +5,7 @@ namespace Ozds.Business.Models.Composite;
 public record MeterTableViewModel(
   LocationModel Location,
   NetworkUserModel NetworkUser,
+  MeasurementLocationModel MeasurementLocation,
   MeterModel Meter,
   List<AggregateModel> Aggregates
 );

@@ -114,9 +114,9 @@ public class OzdsMeterTableQueries : IOzdsQueries
 
   private readonly struct NetworkUserMeasurementLocationJoin
   {
-    public LocationModel Location { get; init; }
-    public NetworkUserModel NetworkUser { get; init; }
-    public NetworkUserMeasurementLocationModel MeasurementLocation { get; init; }
+    public LocationEntity Location { get; init; }
+    public NetworkUserEntity NetworkUser { get; init; }
+    public NetworkUserMeasurementLocationEntity MeasurementLocation { get; init; }
   };
 
   public async Task<List<MeterTableViewModel>>
@@ -139,27 +139,31 @@ public class OzdsMeterTableQueries : IOzdsQueries
           context.ForeignKeyOf<NetworkUserMeasurementLocationEntity>(typeof(NetworkUserEntity)),
           (networkUser, measurementLocation) => new NetworkUserMeasurementLocationJoin
           {
-            Location = measurementLocation.NetworkUser.Location.ToModel(),
-            NetworkUser = measurementLocation.NetworkUser.ToModel(),
-            MeasurementLocation = measurementLocation.ToModel()
+            Location = measurementLocation.NetworkUser.Location,
+            NetworkUser = measurementLocation.NetworkUser,
+            MeasurementLocation = measurementLocation
           }
         )
         .Join(
           context.Meters,
-          context.ForeignKeyOf<NetworkUserMeasurementLocationJoin>(x => x.MeasurementLocation, typeof(MeterEntity)),
+          context.ForeignKeyOf(
+            (NetworkUserMeasurementLocationJoin x) => x.MeasurementLocation,
+            typeof(MeterEntity)
+          ),
           context.PrimaryKeyOf<MeterEntity>(),
           (x, meter) => new
           {
             x.Location,
             x.NetworkUser,
             x.MeasurementLocation,
-            Meter = meter.ToModel()
+            Meter = meter
           }
         ).ToListAsync())
       .Select(x => new MeterTableViewModel(
-        x.Location,
-        x.NetworkUser,
-        x.Meter,
+        x.Location.ToModel(),
+        x.NetworkUser.ToModel(),
+        x.MeasurementLocation.ToModel(),
+        x.Meter.ToModel(),
         Enumerable.Empty<AggregateModel>().ToList()
       ))
       .ToList();
