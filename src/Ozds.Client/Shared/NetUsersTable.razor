@@ -30,7 +30,7 @@
           <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large;">
             @T["Iznos računa u prethodnom mjesecu"]: @(dataStruct.data.lastMonthInvoicesTotal == 0m ? T["Račun u izradi..."] : DecimalString(dataStruct.data.lastMonthInvoicesTotal) + " EUR")
           </MudItem>
-          @if (!user.User.Roles.Contains("Operator"))
+          @if (representative is not null && representative.Representative.Role is RoleModel.OperatorRepresentative)
           {
             <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large;">
               <MudButton Variant="Variant.Filled" Color="Color.Primary">
@@ -104,7 +104,7 @@
         </CellTemplate>
       </PropertyColumn>
 
-      @if (!user.User.Roles.Contains("Operator"))
+      @if (representative is not null && representative.Representative.Role is RoleModel.OperatorRepresentative)
       {
         <TemplateColumn CellClass="d-flex justify-end">
           <CellTemplate>

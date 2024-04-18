@@ -3,7 +3,7 @@
 @attribute [Authorize]
 @using Ozds.Business.Models.Enums
 
-@if (user is null)
+@if (user is null || representative is null)
 {
   return;
 }

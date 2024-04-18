@@ -22,7 +22,7 @@ public abstract class AggregateModel : IAggregate
       {
         IntervalModel.QuarterHour => _timestamp = value.GetStartOfQuarterHour(),
         IntervalModel.Day => _timestamp = value.GetStartOfDay(),
-        IntervalModel.Month => _timestamp = value.GetStartOfDay(),
+        IntervalModel.Month => _timestamp = value.GetStartOfMonth(),
         _ => throw new InvalidOperationException(
           $"Unsupported interval {Interval}"
         )

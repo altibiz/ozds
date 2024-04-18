@@ -1,3 +1,8 @@
+using System.Collections;
+using System.Diagnostics;
+using System.Linq.Expressions;
+using System.Reflection;
+using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
@@ -7,7 +12,7 @@ namespace Ozds.Business.Extensions;
 
 public static class DbContextExtensions
 {
-  public static DbSet<object>? GetDbSet(this DbContext context, Type type)
+  public static IQueryable<object>? GetDbSet(this DbContext context, Type type)
   {
     var method = typeof(DbContext)
       .GetMethods()
@@ -15,23 +20,18 @@ public static class DbContextExtensions
                            && m.IsGenericMethodDefinition
                            && m.GetParameters().Length == 0)
       ?.MakeGenericMethod(type);
-    return method?.Invoke(context, null) as DbSet<object>;
+    return method?.Invoke(context, null) as IQueryable<object>;
   }
+
 
   public static void AddTracked(
     this DbContext context,
     object entity
   )
   {
-    context.AddOrUpdateEntry(
-      entry => entry.HasSamePrimaryKey(entity),
-      () => entity,
-      entry =>
-      {
-        entry.CurrentValues.SetValues(entity);
-        entry.State = EntityState.Added;
-      }
-    );
+    var entry = context.FindEntry(entity);
+    entry.CurrentValues.SetValues(entity);
+    entry.State = EntityState.Added;
   }
 
   public static void UpdateTracked(
@@ -39,31 +39,57 @@ public static class DbContextExtensions
     object entity
   )
   {
-    context.AddOrUpdateEntry(
-      entry => entry.HasSamePrimaryKey(entity),
-      () => entity,
-      entry =>
-      {
-        entry.CurrentValues.SetValues(entity);
-        entry.State = EntityState.Modified;
-      }
-    );
+    var entry = context.FindEntry(entity);
+    entry.CurrentValues.SetValues(entity);
+    entry.State = EntityState.Modified;
   }
+
 
   public static void DeleteTracked(
     this DbContext context,
     object entity
   )
   {
-    context.AddOrUpdateEntry(
-      entry => entry.HasSamePrimaryKey(entity),
-      () => entity,
-      entry =>
-      {
-        entry.CurrentValues.SetValues(entity);
-        entry.State = EntityState.Added;
-      }
-    );
+    var entry = context.FindEntry(entity);
+    entry.State = EntityState.Deleted;
+  }
+
+  public static void JoinTracked<T>(
+    this DbContext context,
+    object entity,
+    ICollection<T> collection) where T : notnull
+  {
+    var entry = context.FindEntry(entity);
+
+    if (entry.Collections
+      .FirstOrDefault(collection =>
+        collection.Metadata.TargetEntityType.ClrType == typeof(T))
+      is not { } entryCollection)
+    {
+      throw new InvalidOperationException(
+        $"No collection of {typeof(T)} found on {entity.GetType()}");
+    }
+
+    entryCollection.CurrentValue = collection
+      .Select(entity => context.FindEntry(entity))
+      .Select(entry => entry.Entity)
+      .OfType<T>()
+      .ToList();
+  }
+
+  private static EntityEntry FindEntry(
+    this DbContext context,
+    object entity
+  )
+  {
+    var entry = context.ChangeTracker
+      .Entries()
+      .FirstOrDefault(entry => entry.HasSamePrimaryKey(entity));
+    if (entry is null)
+    {
+      return context.Entry(entity);
+    }
+    return entry;
   }
 
   private static bool HasSamePrimaryKey(
@@ -71,7 +97,12 @@ public static class DbContextExtensions
     object entity
   )
   {
-    return entry.Entity.GetType().IsAssignableFrom(entity.GetType()) &&
+    var entityTypeAssembly = entry.Entity.GetType().Assembly.FullName
+      ?? throw new InvalidOperationException("Entity type has no assembly.");
+    var entityType = entityTypeAssembly.StartsWith("DynamicProxyGenAssembly2") ?
+      entry.Entity.GetType().BaseType ?? throw new InvalidOperationException("Proxy has no base type.") :
+      entry.Entity.GetType();
+    return entityType.IsAssignableFrom(entity.GetType()) &&
            (entry.Metadata
              .FindPrimaryKey()?.Properties
              .All(property => property
@@ -79,29 +110,5 @@ public static class DbContextExtensions
                .GetClrValue(entity)?.Equals(property
                  .GetGetter()
                  .GetClrValue(entry.Entity)) ?? false) ?? false);
-  }
-
-  private static void AddOrUpdateEntry(
-    this DbContext context,
-    Func<EntityEntry, bool> predicate,
-    Func<object> factory,
-    Action<EntityEntry> action
-  )
-  {
-    var entry = context.ChangeTracker.Entries().FirstOrDefault(predicate)
-                ?? context.Entry(factory());
-    action(entry);
-  }
-
-  private static void AddOrUpdateEntries(
-    this DbContext context,
-    Func<EntityEntry, bool> predicate,
-    Action<EntityEntry> action
-  )
-  {
-    foreach (var entry in context.ChangeTracker.Entries().Where(predicate))
-    {
-      action(entry);
-    }
   }
 }

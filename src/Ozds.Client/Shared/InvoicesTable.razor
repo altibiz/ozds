@@ -132,15 +132,19 @@
 
   protected override async Task OnInitializedAsync()
   {
-    if (user.User.Roles.Contains("NetworkUser"))
+    if (representative is null)
+    {
+      return;
+    }
+    else if (representative.Representative.Role is RoleModel.NetworkUserRepresentative)
     {
       // Find all _invoices tied to this user, decending by FromDate
     }
-    else if (user.User.Roles.Contains("Location"))
+    else if (representative.Representative.Role is RoleModel.LocationRepresentative)
     {
       // Find all network users that belong to this location, then find all _invoices tied to thous user, decending by FromDate
     }
-    else if (user.User.Roles.Contains("Operator"))
+    else if (representative.Representative.Role is RoleModel.OperatorRepresentative)
     {
       // Find all _invoices tied to this user, decending by FromDate
     }

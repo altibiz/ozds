@@ -6,8 +6,7 @@ namespace Ozds.Business.Models;
 public record UserModel(
   string Id,
   string UserName,
-  string Email,
-  List<string> Roles
+  string Email
 );
 
 public static class UserModelExtensions
@@ -18,8 +17,7 @@ public static class UserModelExtensions
       ? new UserModel(
         user.UserId,
         user.UserName,
-        user.Email,
-        user.RoleNames.ToList()
+        user.Email
       )
       : throw new InvalidOperationException(
         "User is not an Orchard Core user"

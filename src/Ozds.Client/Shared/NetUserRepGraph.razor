@@ -6,11 +6,11 @@
     <MudContainer Class="d-flex flex-column" MaxWidth="MaxWidth.Small">
       @if (_graphValues is not null)
       {
-        <ApexChart TItem="ChartDataL"
+        <ApexChart TItem="ChartData"
                    XAxisType="XAxisType.Datetime"
                    Options="graphOptionsMob"
                    @ref="chart">
-          <ApexPointSeries TItem="ChartDataL"
+          <ApexPointSeries TItem="ChartData"
                            Items="@_graphValues"
                            Name="Potrošnja"
                            SeriesType="SeriesType.Area"
@@ -26,11 +26,11 @@
   <MudHidden Breakpoint="Breakpoint.SmAndDown">
     @if (_graphValues is not null)
     {
-      <ApexChart TItem="ChartDataL"
+      <ApexChart TItem="ChartData"
                  XAxisType="XAxisType.Datetime"
                  Options="graphOptions"
                  @ref="chart">
-        <ApexPointSeries TItem="ChartDataL"
+        <ApexPointSeries TItem="ChartData"
                          Items="@_graphValues"
                          Name="Potrošnja"
                          SeriesType="SeriesType.Area"
@@ -45,20 +45,29 @@
 @code {
   [CascadingParameter] public UserState user { get; set; } = default!;
   [CascadingParameter] public RepresentativeState representative { get; set; } = default!;
-  private ApexChartOptions<ChartDataL> graphOptions = new();
-  private ApexChartOptions<ChartDataL> graphOptionsMob = new();
-  public IEnumerable<ChartDataL>? _graphValues;
-  public List<ChartDataL> _totalConsumption = new();
+  private ApexChartOptions<ChartData> graphOptions = new();
+  private ApexChartOptions<ChartData> graphOptionsMob = new();
+  public IEnumerable<ChartData> _graphValues =  Enumerable.Empty<ChartData>();
+  public List<ChartData> _totalConsumption = new();
 
-  public record ChartDataL(decimal value, string name, DateTimeOffset date, string source);
+  public record ChartData(decimal value, string name, DateTimeOffset date, string source);
 
-  private ApexChart<ChartDataL> chart = default!;
+  private ApexChart<ChartData> chart = default!;
   private DateTimeOffset startOfThisYear = DateTimeOffset.UtcNow.GetStartOfYear();
   private DateTimeOffset now = DateTime.UtcNow;
 
   protected override async Task OnInitializedAsync()
   {
-    graphOptionsMob = new ApexChartOptions<ChartDataL>
+    var aggregateQueries = ScopedServices.GetRequiredService<OzdsAggregateQueries>();
+    var test = await aggregateQueries.ReadAgnostic(new string[] { "x => x.Interval == 0" }, startOfThisYear, now, 1, 9000);
+    var values = test.OrderBy(x => x.Timestamp).GroupBy(x => x.Timestamp).ToList();
+    foreach(var value in values){
+      var val = (decimal)value.FirstOrDefault()!.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum * 1000;
+      _graphValues.Append(new ChartData(val,"test",value.Key,"test"));
+    }
+
+
+    graphOptionsMob = new ApexChartOptions<ChartData>
     {
       Grid = new Grid
       {
@@ -70,7 +79,7 @@
         }
       }
     };
-    graphOptions = new ApexChartOptions<ChartDataL>
+    graphOptions = new ApexChartOptions<ChartData>
     {
       Grid = new Grid
       {

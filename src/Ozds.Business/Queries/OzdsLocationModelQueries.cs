@@ -4,6 +4,7 @@ using Ozds.Business.Models;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Data;
 using Ozds.Data.Entities;
+using Ozds.Data.Entities.Enums;
 using Ozds.Data.Extensions;
 
 namespace Ozds.Business.Queries;
@@ -140,6 +141,25 @@ public class OzdsLocationModelQueries : IOzdsQueries
     var filtered = context.RegulatoryCatalogues
       .Where(catalogue => catalogue.Title
         .StartsWith(title));
+    var count = await filtered.CountAsync();
+    var items = await filtered
+      .Skip((pageNumber - 1) * pageCount)
+      .Take(pageCount)
+      .ToListAsync();
+    return items
+      .Select(item => item.ToModel())
+      .ToPaginatedList(count);
+  }
+  public async Task<PaginatedList<RepresentativeModel>> GetEligibleRepresentatives(
+    string title,
+    int pageNumber = QueryConstants.StartingPage,
+    int pageCount = QueryConstants.DefaultPageCount
+  )
+  {
+    var filtered = context.Representatives
+      .Where(rep => rep.Title
+        .StartsWith(title))
+      .Where(rep => rep.Role == RoleEntity.LocationRepresentative);
     var count = await filtered.CountAsync();
     var items = await filtered
       .Skip((pageNumber - 1) * pageCount)

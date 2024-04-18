@@ -11,12 +11,12 @@ public abstract class ModelEntityConverter<TModel, TEntity> : TypeConverter,
 {
   public bool CanConvertToEntity(Type modelType)
   {
-    return modelType == typeof(TModel);
+    return modelType.IsAssignableTo(typeof(TModel));
   }
 
   public bool CanConvertToModel(Type entityType)
   {
-    return entityType == typeof(TEntity);
+    return entityType.IsAssignableTo(typeof(TEntity));
   }
 
   public object ToEntity(object model)
