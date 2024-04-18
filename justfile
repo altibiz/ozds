@@ -34,7 +34,7 @@ dev *args:
   dotnet watch --project "{{servercsproj}}" {{args}}
 
 fake *args:
-  dotnet run --project "{{fakecsproj}}" {{args}}
+  dotnet run --project "{{fakecsproj}}" -- {{args}}
 
 format:
   prettier --write \

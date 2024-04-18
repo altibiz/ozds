@@ -2,6 +2,16 @@ using CommandLine;
 
 namespace Ozds.Fake;
 
+public enum Seed
+{
+  Hour,
+  Day,
+  Week,
+  Month,
+  Season,
+  Year
+}
+
 public class Options
 {
   [Option('b', "base-url", Required = false, HelpText = "Base URL of the API.")]
@@ -22,9 +32,48 @@ public class Options
   [Option('n', "interval", Required = false, HelpText = "Interval in seconds.")]
   public int Interval_s { get; set; } = 60;
 
+  [Option('s', "seed", Required = false, HelpText = "Seed the database with a desired interval.")]
+  public Seed? Seed { get; set; } = default;
+
+  [Option('b', "batch-size", Required = false, HelpText = "Batch size.")]
+  public int BatchSize { get; set; } = 10000;
 
   public static Options Parse(string[] args)
   {
-    return Parser.Default.ParseArguments<Options>(args).Value;
+    try
+    {
+      var result = new Parser(with =>
+      {
+        with.CaseInsensitiveEnumValues = true;
+        with.AutoHelp = true;
+        with.AutoVersion = true;
+        with.HelpWriter = Console.Out;
+      }).ParseArguments<Options>(args);
+
+      if (result.Tag == ParserResultType.NotParsed)
+      {
+        if (result.Errors.Where(e => !e.StopsProcessing).Any())
+        {
+          foreach (var error in result.Errors)
+          {
+            Console.Error.WriteLine(error);
+          }
+          Environment.Exit(1);
+        }
+        else
+        {
+          Environment.Exit(0);
+        }
+      }
+
+      return result.Value;
+    }
+    catch (Exception ex)
+    {
+      Console.Error.WriteLine(ex.Message);
+      Environment.Exit(1);
+    }
+
+    return default!; // NOTE: unreachable
   }
 }

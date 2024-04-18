@@ -35,13 +35,19 @@ public class OzdsPushClient
 
     var content = JsonContent.Create(request);
 
-    try
+    var success = false;
+
+    while (!success)
     {
-      await client.PostAsync($"iot/push/{messengerId}", content);
-    }
-    catch (Exception ex)
-    {
-      _logger.LogError(ex, "Failed to push measurements");
+      try
+      {
+        var response = await client.PostAsync($"iot/push/{messengerId}", content);
+        success = response.IsSuccessStatusCode;
+      }
+      catch (Exception ex)
+      {
+        _logger.LogError(ex, "Failed to push measurements");
+      }
     }
   }
 }
