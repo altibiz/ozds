@@ -2,16 +2,15 @@ using System.Collections.Immutable;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
+// TODO: better way to find nested archivable properties
+
 namespace Ozds.Data.Extensions;
 
 public static class EntityTypeBuilderExtensions
 {
-  public static ComplexPropertyBuilder ArchivedProperty(
-    this EntityTypeBuilder builder,
-    string propertyName
-  )
+  public static ComplexPropertyBuilder Archived(this ComplexPropertyBuilder complexPropertyBuilder, string? propertyName = null)
   {
-    var complexPropertyBuilder = builder.ComplexProperty(propertyName);
+    propertyName ??= complexPropertyBuilder.Metadata.Name;
 
     var propertiesToIgnore = complexPropertyBuilder.Metadata
       .ComplexType
@@ -20,11 +19,19 @@ public static class EntityTypeBuilderExtensions
       .Where(property => property is { GetMethod.IsVirtual: true } or { GetMethod.IsAbstract: true })
       .ToList();
 
+    var propertiesToArchive = complexPropertyBuilder.Metadata
+      .ComplexType
+      .GetProperties()
+      .Where(property => property.Name.EndsWith("Entity"))
+      .Select(property => property.PropertyInfo!)
+      .ToList();
+
     var propertiesToShorten = complexPropertyBuilder.Metadata
       .ComplexType
       .ClrType
       .GetProperties()
       .Except(propertiesToIgnore)
+      .Except(propertiesToArchive)
       .ToList();
 
     foreach (var property in propertiesToIgnore)
@@ -42,7 +49,26 @@ public static class EntityTypeBuilderExtensions
           + property.Name.ToSnakeCase());
     }
 
+    foreach (var property in propertiesToArchive)
+    {
+      Console.WriteLine($"{propertyName} {property.Name}");
+      complexPropertyBuilder
+        .ComplexProperty(property.Name)
+        .Archived(propertyName.Abbreviation()
+          + "_"
+          + property.Name.Abbreviation());
+    }
+
     return complexPropertyBuilder;
+  }
+
+  public static ComplexPropertyBuilder ArchivedProperty(
+    this EntityTypeBuilder builder,
+    string propertyName
+  )
+  {
+    var complexPropertyBuilder = builder.ComplexProperty(propertyName);
+    return complexPropertyBuilder.Archived();
   }
 
   private static string Abbreviation(this string name)
