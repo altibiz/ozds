@@ -27,6 +27,7 @@ public static class IServiceCollectionExtensions
       {
         options.EnableSensitiveDataLogging();
         options.EnableDetailedErrors();
+        options.UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()));
       }
 
       options

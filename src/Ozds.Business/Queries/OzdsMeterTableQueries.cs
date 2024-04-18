@@ -117,6 +117,8 @@ public class OzdsMeterTableQueries : IOzdsQueries
     public LocationEntity Location { get; init; }
     public NetworkUserEntity NetworkUser { get; init; }
     public NetworkUserMeasurementLocationEntity MeasurementLocation { get; init; }
+    public NetworkUserCatalogueEntity NetworkUserCatalogue { get; init; }
+    public RegulatoryCatalogueEntity RegulatoryCatalogue { get; init; }
   };
 
   public async Task<List<MeterTableViewModel>>
@@ -126,22 +128,23 @@ public class OzdsMeterTableQueries : IOzdsQueries
       DateTimeOffset toDate
     )
   {
-    return (await context.NetworkUsers
+    var query = context.NetworkUsers
+        .Include(x => x.Location)
+        .Include(x => x.Location.RegulatoryCatalogue)
         .Where(context.PrimaryKeyEquals<NetworkUserEntity>(networkUserId))
         .Join(
           context.MeasurementLocations
             .OfType<NetworkUserMeasurementLocationEntity>()
-            .Include(x => x.NetworkUserCatalogue)
-            .Include(x => x.NetworkUser)
-            .Include(x => x.NetworkUser.Location)
-            .Include(x => x.NetworkUser.Location.RegulatoryCatalogue),
+            .Include(x => x.NetworkUserCatalogue),
           context.PrimaryKeyOf<NetworkUserEntity>(),
           context.ForeignKeyOf<NetworkUserMeasurementLocationEntity>(typeof(NetworkUserEntity)),
           (networkUser, measurementLocation) => new NetworkUserMeasurementLocationJoin
           {
-            Location = measurementLocation.NetworkUser.Location,
-            NetworkUser = measurementLocation.NetworkUser,
-            MeasurementLocation = measurementLocation
+            Location = networkUser.Location,
+            NetworkUser = networkUser,
+            MeasurementLocation = measurementLocation,
+            NetworkUserCatalogue = measurementLocation.NetworkUserCatalogue,
+            RegulatoryCatalogue = networkUser.Location.RegulatoryCatalogue
           }
         )
         .Join(
@@ -156,9 +159,12 @@ public class OzdsMeterTableQueries : IOzdsQueries
             x.Location,
             x.NetworkUser,
             x.MeasurementLocation,
+            x.NetworkUserCatalogue,
+            x.RegulatoryCatalogue,
             Meter = meter
           }
-        ).ToListAsync())
+        );
+    return (await query.ToListAsync())
       .Select(x => new MeterTableViewModel(
         x.Location.ToModel(),
         x.NetworkUser.ToModel(),
