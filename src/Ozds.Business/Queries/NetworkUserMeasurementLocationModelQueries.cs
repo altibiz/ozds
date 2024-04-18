@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Conversion;
 using Ozds.Business.Models;
+using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Base;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Data;
@@ -61,6 +62,23 @@ public class OzdsNetworkUserMeasurementLocationModelQueries : IOzdsQueries
   {
     var filtered = context.Meters
       .Where(catalogue => catalogue.Title.StartsWith(title));
+    var count = await filtered.CountAsync();
+    var items = await filtered
+      .Skip((pageNumber - 1) * pageCount)
+      .Take(pageCount)
+      .ToListAsync();
+    return items
+      .Select(item => item.ToModel())
+      .ToPaginatedList(count);
+  }
+
+  public async Task<PaginatedList<NetworkUserCatalogueModel>> GetCatalogues(
+    string title,
+    int pageNumber = QueryConstants.StartingPage,
+    int pageCount = QueryConstants.DefaultPageCount
+  )
+  {
+    var filtered = context.NetworkUserCatalogues;
     var count = await filtered.CountAsync();
     var items = await filtered
       .Skip((pageNumber - 1) * pageCount)
