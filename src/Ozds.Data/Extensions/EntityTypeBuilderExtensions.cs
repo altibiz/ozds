@@ -52,7 +52,6 @@ public static class EntityTypeBuilderExtensions
 
     foreach (var property in propertiesToArchive)
     {
-      Console.WriteLine($"{propertyName} {property.Name}");
       complexPropertyBuilder
         .ComplexProperty(property.Name)
         .Archived(propertyName.Abbreviation()
