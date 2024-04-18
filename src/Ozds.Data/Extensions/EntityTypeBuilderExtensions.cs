@@ -72,7 +72,9 @@ public static class EntityTypeBuilderExtensions
 
   private static string Abbreviation(this string name)
   {
-    return string.Concat(name.Where(char.IsUpper)).ToLower();
+    return string.Concat(
+      name.All(char.IsLower) ? name :
+      name.Where(char.IsUpper)).ToLower();
   }
 
   private static string ToSnakeCase(this string name)
