@@ -4,7 +4,8 @@ using Ozds.Data.Entities.Complex;
 
 namespace Ozds.Business.Conversion.Complex;
 
-public class PhysicalPersonModelEntityConverter : ModelEntityConverter<PhysicalPersonModel, PhysicalPersonEntity>
+public class PhysicalPersonModelEntityConverter : ModelEntityConverter<
+  PhysicalPersonModel, PhysicalPersonEntity>
 {
   protected override PhysicalPersonEntity ToEntity(PhysicalPersonModel model)
   {
@@ -25,7 +26,7 @@ public static class PhysicalPersonModelEntityConverterExtensions
     {
       Name = entity.Name,
       Email = entity.Email,
-      PhoneNumber = entity.PhoneNumber,
+      PhoneNumber = entity.PhoneNumber
     };
   }
 
@@ -35,7 +36,7 @@ public static class PhysicalPersonModelEntityConverterExtensions
     {
       Name = model.Name,
       Email = model.Email,
-      PhoneNumber = model.PhoneNumber,
+      PhoneNumber = model.PhoneNumber
     };
   }
 }

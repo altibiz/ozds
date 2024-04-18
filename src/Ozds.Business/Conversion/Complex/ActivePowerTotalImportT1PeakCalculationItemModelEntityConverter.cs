@@ -27,8 +27,9 @@ public class ActivePowerTotalImportT1PeakCalculationItemModelEntityConverter :
   {
     return entity switch
     {
-      UsageActivePowerTotalImportT1PeakCalculationItemEntity t1Entity => t1Entity
-        .ToModel(),
+      UsageActivePowerTotalImportT1PeakCalculationItemEntity t1Entity =>
+        t1Entity
+          .ToModel(),
       _ => throw new InvalidOperationException("Unknown tariff type")
     };
   }

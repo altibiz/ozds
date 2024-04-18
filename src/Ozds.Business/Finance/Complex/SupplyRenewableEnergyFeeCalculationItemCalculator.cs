@@ -7,9 +7,10 @@ namespace Ozds.Business.Finance.Complex;
 public class SupplyRenewableEnergyFeeCalculationItemCalculator :
   CalculationItemCalculator<SupplyRenewableEnergyFeeCalculationItemModel>
 {
-  protected override SupplyRenewableEnergyFeeCalculationItemModel CalculateConcrete(CalculationItemBasisModel calculationBasis)
+  protected override SupplyRenewableEnergyFeeCalculationItemModel
+    CalculateConcrete(CalculationItemBasisModel calculationBasis)
   {
-    return new()
+    return new SupplyRenewableEnergyFeeCalculationItemModel
     {
       Amount_N = 1,
       Price_EUR = calculationBasis.Price,

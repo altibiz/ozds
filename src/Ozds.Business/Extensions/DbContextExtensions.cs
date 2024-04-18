@@ -1,8 +1,3 @@
-using System.Collections;
-using System.Diagnostics;
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
@@ -62,9 +57,9 @@ public static class DbContextExtensions
     var entry = context.FindEntry(entity);
 
     if (entry.Collections
-      .FirstOrDefault(collection =>
-        collection.Metadata.TargetEntityType.ClrType == typeof(T))
-      is not { } entryCollection)
+          .FirstOrDefault(collection =>
+            collection.Metadata.TargetEntityType.ClrType == typeof(T))
+        is not { } entryCollection)
     {
       throw new InvalidOperationException(
         $"No collection of {typeof(T)} found on {entity.GetType()}");
@@ -89,6 +84,7 @@ public static class DbContextExtensions
     {
       return context.Entry(entity);
     }
+
     return entry;
   }
 
@@ -98,10 +94,12 @@ public static class DbContextExtensions
   )
   {
     var entityTypeAssembly = entry.Entity.GetType().Assembly.FullName
-      ?? throw new InvalidOperationException("Entity type has no assembly.");
-    var entityType = entityTypeAssembly.StartsWith("DynamicProxyGenAssembly2") ?
-      entry.Entity.GetType().BaseType ?? throw new InvalidOperationException("Proxy has no base type.") :
-      entry.Entity.GetType();
+                             ?? throw new InvalidOperationException(
+                               "Entity type has no assembly.");
+    var entityType = entityTypeAssembly.StartsWith("DynamicProxyGenAssembly2")
+      ? entry.Entity.GetType().BaseType ??
+        throw new InvalidOperationException("Proxy has no base type.")
+      : entry.Entity.GetType();
     return entityType.IsAssignableFrom(entity.GetType()) &&
            (entry.Metadata
              .FindPrimaryKey()?.Properties

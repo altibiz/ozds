@@ -100,7 +100,10 @@ public abstract class ActiveEnergyTotalImportT2CalculationItemModel
 public class UsageActiveEnergyTotalImportT0CalculationItemModel
   : ActiveEnergyTotalImportT0CalculationItemModel
 {
-  public override string Kind => "MJT";
+  public override string Kind
+  {
+    get { return "MJT"; }
+  }
 
   public override ExpenditureMeasure<decimal> Price
   {
@@ -121,7 +124,10 @@ public class UsageActiveEnergyTotalImportT0CalculationItemModel
 public class UsageActiveEnergyTotalImportT1CalculationItemModel
   : ActiveEnergyTotalImportT1CalculationItemModel
 {
-  public override string Kind => "MVT";
+  public override string Kind
+  {
+    get { return "MVT"; }
+  }
 
   public override ExpenditureMeasure<decimal> Price
   {
@@ -142,7 +148,10 @@ public class UsageActiveEnergyTotalImportT1CalculationItemModel
 public class UsageActiveEnergyTotalImportT2CalculationItemModel
   : ActiveEnergyTotalImportT2CalculationItemModel
 {
-  public override string Kind => "MNT";
+  public override string Kind
+  {
+    get { return "MNT"; }
+  }
 
   public override ExpenditureMeasure<decimal> Price
   {
@@ -163,7 +172,10 @@ public class UsageActiveEnergyTotalImportT2CalculationItemModel
 public class SupplyActiveEnergyTotalImportT1CalculationItemModel
   : ActiveEnergyTotalImportT2CalculationItemModel
 {
-  public override string Kind => "RVT";
+  public override string Kind
+  {
+    get { return "RVT"; }
+  }
 
   public override ExpenditureMeasure<decimal> Price
   {
@@ -184,7 +196,10 @@ public class SupplyActiveEnergyTotalImportT1CalculationItemModel
 public class SupplyActiveEnergyTotalImportT2CalculationItemModel
   : ActiveEnergyTotalImportT2CalculationItemModel
 {
-  public override string Kind => "RNT";
+  public override string Kind
+  {
+    get { return "RNT"; }
+  }
 
   public override ExpenditureMeasure<decimal> Price
   {

@@ -6,7 +6,8 @@ using Ozds.Business.Models.Composite;
 namespace Ozds.Business.Finance.Complex;
 
 public class UsageActivePowerTotalImportT1PeakCalculationItemCalculator :
-  CalculationItemCalculator<UsageActivePowerTotalImportT1PeakCalculationItemModel>
+  CalculationItemCalculator<
+    UsageActivePowerTotalImportT1PeakCalculationItemModel>
 {
   protected override UsageActivePowerTotalImportT1PeakCalculationItemModel
     CalculateConcrete(CalculationItemBasisModel calculationBasis)

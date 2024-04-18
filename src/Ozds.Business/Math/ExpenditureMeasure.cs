@@ -51,7 +51,8 @@ public abstract record class ExpenditureMeasure<T>
   IMultiplyOperators<T, T, T>,
   IDivisionOperators<T, T, T>
 {
-  public static readonly ExpenditureMeasure<T> Null = new NullExpenditureMeasure<T>();
+  public static readonly ExpenditureMeasure<T> Null =
+    new NullExpenditureMeasure<T>();
 
   public TariffMeasure<T> ExpenditureUsage
   {
@@ -103,8 +104,10 @@ public abstract record class ExpenditureMeasure<T>
   {
     return this switch
     {
-      UsageExpenditureMeasure<T> usage => new UsageExpenditureMeasure<U>(usage.TrueUsage.ConvertPrimitiveTo<U>()),
-      SupplyExpenditureMeasure<T> supply => new SupplyExpenditureMeasure<U>(supply.TrueSupply.ConvertPrimitiveTo<U>()),
+      UsageExpenditureMeasure<T> usage => new UsageExpenditureMeasure<U>(
+        usage.TrueUsage.ConvertPrimitiveTo<U>()),
+      SupplyExpenditureMeasure<T> supply => new SupplyExpenditureMeasure<U>(
+        supply.TrueSupply.ConvertPrimitiveTo<U>()),
       DualExpenditureMeasure<T> dual => new DualExpenditureMeasure<U>(
         dual.TrueUsage.ConvertPrimitiveTo<U>(),
         dual.TrueSupply.ConvertPrimitiveTo<U>()

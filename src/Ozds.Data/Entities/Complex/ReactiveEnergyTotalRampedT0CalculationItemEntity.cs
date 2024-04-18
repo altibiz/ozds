@@ -40,7 +40,8 @@ public static class ReactiveEnergyTotalRampedT0CalculationItemEntityExtensions
     builder
       .Property(nameof(ReactiveEnergyTotalRampedT0CalculationItemEntity
         .ImportAmount_VARh))
-      .HasColumnName("usage_reactive_energy_total_ramped_t0_import_amount_varh");
+      .HasColumnName(
+        "usage_reactive_energy_total_ramped_t0_import_amount_varh");
 
     builder
       .Property(nameof(ReactiveEnergyTotalRampedT0CalculationItemEntity
@@ -55,12 +56,14 @@ public static class ReactiveEnergyTotalRampedT0CalculationItemEntityExtensions
     builder
       .Property(nameof(ReactiveEnergyTotalRampedT0CalculationItemEntity
         .ExportAmount_VARh))
-      .HasColumnName("usage_reactive_energy_total_ramped_t0_export_amount_varh");
+      .HasColumnName(
+        "usage_reactive_energy_total_ramped_t0_export_amount_varh");
 
     builder
       .Property(nameof(ReactiveEnergyTotalRampedT0CalculationItemEntity
         .Amount_VARh))
-      .HasColumnName("usage_reactive_energy_total_ramped_t0_ramped_amount_varh");
+      .HasColumnName(
+        "usage_reactive_energy_total_ramped_t0_ramped_amount_varh");
 
     builder
       .Property(nameof(ReactiveEnergyTotalRampedT0CalculationItemEntity

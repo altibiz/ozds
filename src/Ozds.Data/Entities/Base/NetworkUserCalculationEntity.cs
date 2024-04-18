@@ -87,6 +87,29 @@ public class NetworkUserCalculationEntity : IReadonlyEntity, IIdentifiableEntity
     set;
   } = default!;
 
+  public UsageMeterFeeCalculationItemEntity UsageMeterFee { get; set; } =
+    default!;
+
+  public SupplyActiveEnergyTotalImportT1CalculationItemEntity
+    SupplyActiveEnergyTotalImportT1 { get; set; } = default!;
+
+  public SupplyActiveEnergyTotalImportT2CalculationItemEntity
+    SupplyActiveEnergyTotalImportT2 { get; set; } = default!;
+
+  public SupplyBusinessUsageFeeCalculationItemEntity SupplyBusinessUsageFee
+  {
+    get;
+    set;
+  } =
+    default!;
+
+  public SupplyRenewableEnergyFeeCalculationItemEntity SupplyRenewableEnergyFee
+  {
+    get;
+    set;
+  } =
+    default!;
+
   public virtual string Id
   {
     get { return _id.ToString(); }
@@ -94,26 +117,6 @@ public class NetworkUserCalculationEntity : IReadonlyEntity, IIdentifiableEntity
   }
 
   public string Title { get; set; } = default!;
-
-  public UsageMeterFeeCalculationItemEntity UsageMeterFee { get; set; } = default!;
-
-  public SupplyActiveEnergyTotalImportT1CalculationItemEntity SupplyActiveEnergyTotalImportT1
-  {
-    get;
-    set;
-  } = default!;
-
-  public SupplyActiveEnergyTotalImportT2CalculationItemEntity SupplyActiveEnergyTotalImportT2
-  {
-    get;
-    set;
-  } = default!;
-
-  public SupplyBusinessUsageFeeCalculationItemEntity SupplyBusinessUsageFee { get; set; } =
-    default!;
-
-  public SupplyRenewableEnergyFeeCalculationItemEntity SupplyRenewableEnergyFee { get; set; } =
-    default!;
 }
 
 public class
@@ -237,16 +240,20 @@ public class
     builder.ComplexProperty(nameof(NetworkUserCalculationEntity.UsageMeterFee))
       .UsageMeterFeeCalculationItem();
 
-    builder.ComplexProperty(nameof(NetworkUserCalculationEntity.SupplyActiveEnergyTotalImportT1))
+    builder.ComplexProperty(nameof(NetworkUserCalculationEntity
+        .SupplyActiveEnergyTotalImportT1))
       .SupplyActiveEnergyTotalImportT1CalculationItem();
 
-    builder.ComplexProperty(nameof(NetworkUserCalculationEntity.SupplyActiveEnergyTotalImportT2))
+    builder.ComplexProperty(nameof(NetworkUserCalculationEntity
+        .SupplyActiveEnergyTotalImportT2))
       .SupplyActiveEnergyTotalImportT2CalculationItem();
 
-    builder.ComplexProperty(nameof(NetworkUserCalculationEntity.SupplyBusinessUsageFee))
+    builder.ComplexProperty(nameof(NetworkUserCalculationEntity
+        .SupplyBusinessUsageFee))
       .SupplyBusinessUsageCalculationItem();
 
-    builder.ComplexProperty(nameof(NetworkUserCalculationEntity.SupplyRenewableEnergyFee))
+    builder.ComplexProperty(nameof(NetworkUserCalculationEntity
+        .SupplyRenewableEnergyFee))
       .SupplyRenewableEnergyCalculationItem();
 
     if (type != typeof(NetworkUserCalculationEntity))

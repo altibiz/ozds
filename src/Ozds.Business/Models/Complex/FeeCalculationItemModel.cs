@@ -27,7 +27,10 @@ public abstract class FeeCalculationItemModel : CalculationItemModel
 
 public class UsageMeterFeeCalculationItemModel : FeeCalculationItemModel
 {
-  public override string Kind => "MU";
+  public override string Kind
+  {
+    get { return "MU"; }
+  }
 
   public override ExpenditureMeasure<decimal> Price
   {
@@ -44,9 +47,13 @@ public class UsageMeterFeeCalculationItemModel : FeeCalculationItemModel
   }
 }
 
-public class SupplyBusinessUsageFeeCalculationItemModel : FeeCalculationItemModel
+public class
+  SupplyBusinessUsageFeeCalculationItemModel : FeeCalculationItemModel
 {
-  public override string Kind => "TRP";
+  public override string Kind
+  {
+    get { return "TRP"; }
+  }
 
   public override ExpenditureMeasure<decimal> Price
   {
@@ -63,9 +70,13 @@ public class SupplyBusinessUsageFeeCalculationItemModel : FeeCalculationItemMode
   }
 }
 
-public class SupplyRenewableEnergyFeeCalculationItemModel : FeeCalculationItemModel
+public class
+  SupplyRenewableEnergyFeeCalculationItemModel : FeeCalculationItemModel
 {
-  public override string Kind => "OIE";
+  public override string Kind
+  {
+    get { return "OIE"; }
+  }
 
   public override ExpenditureMeasure<decimal> Price
   {

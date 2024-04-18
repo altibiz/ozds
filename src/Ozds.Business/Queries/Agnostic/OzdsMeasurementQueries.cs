@@ -3,7 +3,6 @@ using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Extensions;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Abstractions;
-using Ozds.Business.Models.Base;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Data;
 using Ozds.Data.Entities.Base;
@@ -62,8 +61,12 @@ public class OzdsMeasurementQueries : IOzdsQueries
     int pageNumber = QueryConstants.StartingPage,
     int pageCount = QueryConstants.DefaultPageCount)
   {
-    var abbB2x = await Read<AbbB2xMeasurementModel>(whereClauses, fromDate, toDate, pageNumber, pageCount);
-    var schneideriEM3xxx = await Read<SchneideriEM3xxxMeasurementModel>(whereClauses, fromDate, toDate, pageNumber, pageCount);
-    return abbB2x.Items.Cast<IMeasurement>().Concat(schneideriEM3xxx.Items).ToList();
+    var abbB2x = await Read<AbbB2xMeasurementModel>(whereClauses, fromDate,
+      toDate, pageNumber, pageCount);
+    var schneideriEM3xxx =
+      await Read<SchneideriEM3xxxMeasurementModel>(whereClauses, fromDate,
+        toDate, pageNumber, pageCount);
+    return abbB2x.Items.Cast<IMeasurement>().Concat(schneideriEM3xxx.Items)
+      .ToList();
   }
 }

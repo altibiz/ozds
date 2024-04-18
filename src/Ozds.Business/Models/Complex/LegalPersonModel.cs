@@ -6,7 +6,8 @@ public class LegalPersonModel : IValidatableObject
 {
   [Required] public required string Name { get; set; } = default!;
 
-  [Required] public required string SocialSecurityNumber { get; set; } = default!;
+  [Required]
+  public required string SocialSecurityNumber { get; set; } = default!;
 
   [Required] public required string Address { get; set; } = default!;
 
@@ -15,24 +16,12 @@ public class LegalPersonModel : IValidatableObject
   [Required] public required string City { get; set; } = default!;
 
   [EmailAddress]
-  [Required] public required string Email { get; set; } = default!;
+  [Required]
+  public required string Email { get; set; } = default!;
 
   [Phone]
-  [Required] public required string PhoneNumber { get; set; } = default!;
-
-  public static LegalPersonModel New()
-  {
-    return new LegalPersonModel
-    {
-      Name = "",
-      SocialSecurityNumber = "",
-      Address = "",
-      PostalCode = "",
-      City = "",
-      Email = "",
-      PhoneNumber = ""
-    };
-  }
+  [Required]
+  public required string PhoneNumber { get; set; } = default!;
 
   public IEnumerable<ValidationResult> Validate(
     ValidationContext validationContext)
@@ -80,5 +69,19 @@ public class LegalPersonModel : IValidatableObject
         new[] { nameof(PostalCode) }
       );
     }
+  }
+
+  public static LegalPersonModel New()
+  {
+    return new LegalPersonModel
+    {
+      Name = "",
+      SocialSecurityNumber = "",
+      Address = "",
+      PostalCode = "",
+      City = "",
+      Email = "",
+      PhoneNumber = ""
+    };
   }
 }

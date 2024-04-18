@@ -49,20 +49,24 @@ public static class
       ArchivedUsageNetworkUserCatalogue =
         entity.ArchivedUsageNetworkUserCatalogue.ToModel(),
       ArchivedMeter = entity.ArchivedMeter.ToModel(),
-      UsageActiveEnergyTotalImportT1 = entity.UsageActiveEnergyTotalImportT1.ToModel(),
-      UsageActiveEnergyTotalImportT2 = entity.UsageActiveEnergyTotalImportT2.ToModel(),
+      UsageActiveEnergyTotalImportT1 =
+        entity.UsageActiveEnergyTotalImportT1.ToModel(),
+      UsageActiveEnergyTotalImportT2 =
+        entity.UsageActiveEnergyTotalImportT2.ToModel(),
       UsageActivePowerTotalImportT1Peak =
         entity.UsageActivePowerTotalImportT1Peak.ToModel(),
       UsageReactiveEnergyTotalRampedT0 =
         entity.UsageReactiveEnergyTotalRampedT0.ToModel(),
       UsageMeterFee = entity.UsageMeterFee.ToModel(),
-      SupplyActiveEnergyTotalImportT1 = entity.SupplyActiveEnergyTotalImportT1.ToModel(),
-      SupplyActiveEnergyTotalImportT2 = entity.SupplyActiveEnergyTotalImportT2.ToModel(),
+      SupplyActiveEnergyTotalImportT1 =
+        entity.SupplyActiveEnergyTotalImportT1.ToModel(),
+      SupplyActiveEnergyTotalImportT2 =
+        entity.SupplyActiveEnergyTotalImportT2.ToModel(),
       SupplyBusinessUsageFee = entity.SupplyBusinessUsageFee.ToModel(),
       SupplyRenewableEnergyFee = entity.SupplyRenewableEnergyFee.ToModel(),
       UsageFeeTotal_EUR = entity.UsageFeeTotal_EUR,
       SupplyFeeTotal_EUR = entity.SupplyFeeTotal_EUR,
-      Total_EUR = entity.Total_EUR,
+      Total_EUR = entity.Total_EUR
     };
   }
 
@@ -89,18 +93,24 @@ public static class
       ArchivedUsageNetworkUserCatalogue =
         model.ArchivedUsageNetworkUserCatalogue.ToEntity(),
       ArchivedMeter = model.ArchivedMeter.ToEntity(),
-      UsageActiveEnergyTotalImportT1 = model.UsageActiveEnergyTotalImportT1.ToEntity(),
-      UsageActiveEnergyTotalImportT2 = model.UsageActiveEnergyTotalImportT2.ToEntity(),
-      UsageActivePowerTotalImportT1Peak = model.UsageActivePowerTotalImportT1Peak.ToEntity(),
-      UsageReactiveEnergyTotalRampedT0 = model.UsageReactiveEnergyTotalRampedT0.ToEntity(),
+      UsageActiveEnergyTotalImportT1 =
+        model.UsageActiveEnergyTotalImportT1.ToEntity(),
+      UsageActiveEnergyTotalImportT2 =
+        model.UsageActiveEnergyTotalImportT2.ToEntity(),
+      UsageActivePowerTotalImportT1Peak =
+        model.UsageActivePowerTotalImportT1Peak.ToEntity(),
+      UsageReactiveEnergyTotalRampedT0 =
+        model.UsageReactiveEnergyTotalRampedT0.ToEntity(),
       UsageMeterFee = model.UsageMeterFee.ToEntity(),
-      SupplyActiveEnergyTotalImportT1 = model.SupplyActiveEnergyTotalImportT1.ToEntity(),
-      SupplyActiveEnergyTotalImportT2 = model.SupplyActiveEnergyTotalImportT2.ToEntity(),
+      SupplyActiveEnergyTotalImportT1 =
+        model.SupplyActiveEnergyTotalImportT1.ToEntity(),
+      SupplyActiveEnergyTotalImportT2 =
+        model.SupplyActiveEnergyTotalImportT2.ToEntity(),
       SupplyBusinessUsageFee = model.SupplyBusinessUsageFee.ToEntity(),
       SupplyRenewableEnergyFee = model.SupplyRenewableEnergyFee.ToEntity(),
       UsageFeeTotal_EUR = model.UsageFeeTotal_EUR,
       SupplyFeeTotal_EUR = model.SupplyFeeTotal_EUR,
-      Total_EUR = model.Total_EUR,
+      Total_EUR = model.Total_EUR
     };
   }
 }

@@ -10,25 +10,28 @@ public class BlueLowNetworkUserCalculationModel : NetworkUserCalculationModel
 {
   [Required]
   public required UsageActiveEnergyTotalImportT0CalculationItemModel
-    UsageActiveEnergyTotalImportT0
-  { get; set; } = default!;
+    UsageActiveEnergyTotalImportT0 { get; set; } = default!;
 
   [Required]
   public required UsageReactiveEnergyTotalRampedT0CalculationItemModel
-    UsageReactiveEnergyTotalRampedT0
-  { get; set; } = default!;
+    UsageReactiveEnergyTotalRampedT0 { get; set; } = default!;
 
   public override string Kind
   {
     get { return "Blue Low Voltage"; }
   }
 
-  protected override IEnumerable<ICalculationItem> AdditionalUsageItems =>
-  new ICalculationItem[]
+  protected override IEnumerable<ICalculationItem> AdditionalUsageItems
   {
-    UsageActiveEnergyTotalImportT0,
-    UsageReactiveEnergyTotalRampedT0
-  };
+    get
+    {
+      return new ICalculationItem[]
+      {
+        UsageActiveEnergyTotalImportT0,
+        UsageReactiveEnergyTotalRampedT0
+      };
+    }
+  }
 
   public override SpanningMeasure<decimal> ActiveEnergyAmount_Wh
   {
@@ -37,13 +40,15 @@ public class BlueLowNetworkUserCalculationModel : NetworkUserCalculationModel
       return new MinMaxSpanningMeasure<decimal>(
         new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(UsageActiveEnergyTotalImportT0.Min_Wh),
+            new SinglePhasicMeasure<decimal>(UsageActiveEnergyTotalImportT0
+              .Min_Wh),
             new NullPhasicMeasure<decimal>()
           )
         ),
         new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(UsageActiveEnergyTotalImportT0.Max_Wh),
+            new SinglePhasicMeasure<decimal>(UsageActiveEnergyTotalImportT0
+              .Max_Wh),
             new NullPhasicMeasure<decimal>()
           )
         )
@@ -56,24 +61,27 @@ public class BlueLowNetworkUserCalculationModel : NetworkUserCalculationModel
     get
     {
       return
-      new DualExpenditureMeasure<decimal>(
-        new UnaryTariffMeasure<decimal>(
-          new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(UsageActiveEnergyTotalImportT0.Price_EUR),
-            new NullPhasicMeasure<decimal>()
-          )
-        ),
-        new BinaryTariffMeasure<decimal>(
-          new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(SupplyActiveEnergyTotalImportT1.Price_EUR),
-            new NullPhasicMeasure<decimal>()
+        new DualExpenditureMeasure<decimal>(
+          new UnaryTariffMeasure<decimal>(
+            new ImportExportDuplexMeasure<decimal>(
+              new SinglePhasicMeasure<decimal>(UsageActiveEnergyTotalImportT0
+                .Price_EUR),
+              new NullPhasicMeasure<decimal>()
+            )
           ),
-          new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(SupplyActiveEnergyTotalImportT2.Price_EUR),
-            new NullPhasicMeasure<decimal>()
+          new BinaryTariffMeasure<decimal>(
+            new ImportExportDuplexMeasure<decimal>(
+              new SinglePhasicMeasure<decimal>(SupplyActiveEnergyTotalImportT1
+                .Price_EUR),
+              new NullPhasicMeasure<decimal>()
+            ),
+            new ImportExportDuplexMeasure<decimal>(
+              new SinglePhasicMeasure<decimal>(SupplyActiveEnergyTotalImportT2
+                .Price_EUR),
+              new NullPhasicMeasure<decimal>()
+            )
           )
-        )
-      );
+        );
     }
   }
 

@@ -11,20 +11,16 @@ public class
 {
 #pragma warning disable CA1707
   public UsageActiveEnergyTotalImportT1CalculationItemEntity
-    UsageActiveEnergyTotalImportT1
-  { get; set; } = default!;
+    UsageActiveEnergyTotalImportT1 { get; set; } = default!;
 
   public UsageActiveEnergyTotalImportT2CalculationItemEntity
-    UsageActiveEnergyTotalImportT2
-  { get; set; } = default!;
+    UsageActiveEnergyTotalImportT2 { get; set; } = default!;
 
   public UsageActivePowerTotalImportT1PeakCalculationItemEntity
-    UsageActivePowerTotalImportT1Peak
-  { get; set; } = default!;
+    UsageActivePowerTotalImportT1Peak { get; set; } = default!;
 
   public UsageReactiveEnergyTotalRampedT0CalculationItemEntity
-    UsageReactiveEnergyTotalRampedT0
-  { get; set; } = default!;
+    UsageReactiveEnergyTotalRampedT0 { get; set; } = default!;
 #pragma warning restore CA1707
 }
 

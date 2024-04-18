@@ -9,7 +9,8 @@ public class RepresentativeModel : AuditableModel
 {
   [Required] public required RoleModel Role { get; set; }
 
-  [Required] public required PhysicalPersonModel PhysicalPerson { get; set; } = default!;
+  [Required]
+  public required PhysicalPersonModel PhysicalPerson { get; set; } = default!;
 
   public static RepresentativeModel New(UserModel user)
   {

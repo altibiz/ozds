@@ -82,11 +82,13 @@ public static class ActiveEnergyImportCalculationItemEntityExtensions
   {
     builder
       .Property(nameof(ActiveEnergyTotalImportCalculationItemEntity.Min_Wh))
-      .HasColumnName($"{prefix}_active_energy_total_import_{tariffColumnPart}_min_wh");
+      .HasColumnName(
+        $"{prefix}_active_energy_total_import_{tariffColumnPart}_min_wh");
 
     builder
       .Property(nameof(ActiveEnergyTotalImportCalculationItemEntity.Max_Wh))
-      .HasColumnName($"{prefix}_active_energy_total_import_{tariffColumnPart}_max_wh");
+      .HasColumnName(
+        $"{prefix}_active_energy_total_import_{tariffColumnPart}_max_wh");
 
     builder
       .Property(nameof(ActiveEnergyTotalImportCalculationItemEntity.Amount_Wh))

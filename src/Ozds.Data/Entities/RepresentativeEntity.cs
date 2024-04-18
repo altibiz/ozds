@@ -36,9 +36,12 @@ public class RepresentativeEntity : AuditableEntity
   public PhysicalPersonEntity PhysicalPerson { get; set; } = default!;
 }
 
-public class RepresentativeEntityTypeConfiguration : EntityTypeConfiguration<RepresentativeEntity>
+public class
+  RepresentativeEntityTypeConfiguration : EntityTypeConfiguration<
+  RepresentativeEntity>
 {
-  public override void Configure(EntityTypeBuilder<RepresentativeEntity> builder)
+  public override void Configure(
+    EntityTypeBuilder<RepresentativeEntity> builder)
   {
     builder.ComplexProperty(nameof(RepresentativeEntity.PhysicalPerson));
   }

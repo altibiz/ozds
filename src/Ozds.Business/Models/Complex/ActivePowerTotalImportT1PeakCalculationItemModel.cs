@@ -34,7 +34,10 @@ public abstract class
 public class UsageActivePowerTotalImportT1PeakCalculationItemModel
   : ActivePowerTotalImportT1PeakCalculationItemModel
 {
-  public override string Kind => "SVT";
+  public override string Kind
+  {
+    get { return "SVT"; }
+  }
 
   public override ExpenditureMeasure<decimal> Price
   {

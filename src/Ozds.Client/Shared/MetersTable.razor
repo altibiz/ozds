@@ -1,5 +1,4 @@
 @using Color = MudBlazor.Color
-@using Ozds.Client.Base
 @using Size = MudBlazor.Size
 @using Ozds.Business.Time
 @inject NavigationManager NavigationManager
@@ -174,35 +173,37 @@
   protected override async Task OnInitializedAsync()
   {
     var aggregateQueries = ScopedServices.GetRequiredService<OzdsAggregateQueries>();
-    var test = await aggregateQueries.ReadAgnostic(new string[] { "x => x.Interval == 2" }, startOfThisMonth, now, 1, 9000);
+    var test = await aggregateQueries.ReadAgnostic(new[] { "x => x.Interval == 2" }, startOfThisMonth, now, 1, 9000);
     var meters = test.OrderBy(x => x.Timestamp).GroupBy(x => x.MeterId).ToList();
-    foreach(var meter in meters){
+    foreach (var meter in meters)
+    {
       var _thisMonthUsage = (decimal)meter.FirstOrDefault()!.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum;
-      if (_thisMonthUsage == 0){
+      if (_thisMonthUsage == 0)
+      {
         var a = (decimal)meter.FirstOrDefault()!.ActiveEnergySpan_Wh.SpanMin.TariffUnary.DuplexImport.PhaseSum;
         var b = (decimal)meter.FirstOrDefault()!.ActiveEnergySpan_Wh.SpanMax.TariffUnary.DuplexImport.PhaseSum;
         _thisMonthUsage = b - a;
       }
-      _dataStruct.Add(new(){location = "test",networkUser = "KorisnikTest", meter = meter.Key, thisMonthUsage = _thisMonthUsage, lastMonthUsage = 0m, lastMonthsPayment = 0m});
+
+      _dataStruct.Add(new TabularData { location = "test", networkUser = "KorisnikTest", meter = meter.Key, thisMonthUsage = _thisMonthUsage, lastMonthUsage = 0m, lastMonthsPayment = 0m });
     }
+
     if (representative is null)
     {
       return;
     }
-    else if (representative.Representative.Role is RoleModel.NetworkUserRepresentative)
+
+    if (representative.Representative.Role is RoleModel.NetworkUserRepresentative)
     {
       // Find the location this user is tied to and add it to _locations
       // Add this user to _networkUsers
       // Find all _meters tied to this user
       // Find all _invoices tied to this user
     }
-    else
-    {
-      // Find all _locations tied to this user
-      // Find all _networkUsers tied to this user
-      // Find all _meters tied to this user
-    }
 
+    // Find all _locations tied to this user
+    // Find all _networkUsers tied to this user
+    // Find all _meters tied to this user
     if (_locations is not null && _networkUsers is not null && _meters is not null)
     {
       foreach (var location in _locations)
@@ -264,13 +265,13 @@
   private void InspectNetworkUser(string item)
   {
     @* NavigationManager.NavigateTo($"network-user/{item}"); *@
-    NavigationManager.NavigateTo($"network-user/1");
+    NavigationManager.NavigateTo("network-user/1");
   }
 
   private void InspectLocation(string item)
   {
     @* NavigationManager.NavigateTo($"location/{item}"); *@
-    NavigationManager.NavigateTo($"location/1");
+    NavigationManager.NavigateTo("location/1");
   }
 
   private void InspectMeter(string item)

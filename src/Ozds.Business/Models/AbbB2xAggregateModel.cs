@@ -135,45 +135,46 @@ public class AbbB2xAggregateModel : AggregateModel
     get
     {
       return new MinMaxSpanningMeasure<float>(
-        new CompositeTariffMeasure<float>(new() {
+        new CompositeTariffMeasure<float>(new List<TariffMeasure<float>>
+        {
           new BinaryTariffMeasure<float>(
-          new ImportExportDuplexMeasure<float>(
-            new SinglePhasicMeasure<float>(ActiveEnergyTotalImportT1Min_Wh),
-            new NullPhasicMeasure<float>()
+            new ImportExportDuplexMeasure<float>(
+              new SinglePhasicMeasure<float>(ActiveEnergyTotalImportT1Min_Wh),
+              new NullPhasicMeasure<float>()
+            ),
+            new ImportExportDuplexMeasure<float>(
+              new SinglePhasicMeasure<float>(ActiveEnergyTotalImportT2Min_Wh),
+              new NullPhasicMeasure<float>()
+            )
           ),
 
-          new ImportExportDuplexMeasure<float>(
-            new SinglePhasicMeasure<float>(ActiveEnergyTotalImportT2Min_Wh),
-            new NullPhasicMeasure<float>()
+          new UnaryTariffMeasure<float>(
+            new ImportExportDuplexMeasure<float>(
+              new SinglePhasicMeasure<float>(ActiveEnergyTotalImportT0Min_Wh),
+              new SinglePhasicMeasure<float>(ActiveEnergyTotalExportT0Min_Wh)
+            )
           )
-          ),
-
-        new UnaryTariffMeasure<float>(
-          new ImportExportDuplexMeasure<float>(
-            new SinglePhasicMeasure<float>(ActiveEnergyTotalImportT0Min_Wh),
-            new SinglePhasicMeasure<float>(ActiveEnergyTotalExportT0Min_Wh)
-          )
-        )
         }),
-         new CompositeTariffMeasure<float>(new() {
+        new CompositeTariffMeasure<float>(new List<TariffMeasure<float>>
+        {
           new BinaryTariffMeasure<float>(
-          new ImportExportDuplexMeasure<float>(
-            new SinglePhasicMeasure<float>(ActiveEnergyTotalImportT1Max_Wh),
-            new NullPhasicMeasure<float>()
+            new ImportExportDuplexMeasure<float>(
+              new SinglePhasicMeasure<float>(ActiveEnergyTotalImportT1Max_Wh),
+              new NullPhasicMeasure<float>()
+            ),
+            new ImportExportDuplexMeasure<float>(
+              new SinglePhasicMeasure<float>(ActiveEnergyTotalImportT2Max_Wh),
+              new NullPhasicMeasure<float>()
+            )
           ),
 
-          new ImportExportDuplexMeasure<float>(
-            new SinglePhasicMeasure<float>(ActiveEnergyTotalImportT2Max_Wh),
-            new NullPhasicMeasure<float>()
+          new UnaryTariffMeasure<float>(
+            new ImportExportDuplexMeasure<float>(
+              new SinglePhasicMeasure<float>(ActiveEnergyTotalImportT0Max_Wh),
+              new SinglePhasicMeasure<float>(ActiveEnergyTotalExportT0Max_Wh)
+            )
           )
-          ),
-
-        new UnaryTariffMeasure<float>(
-          new ImportExportDuplexMeasure<float>(
-            new SinglePhasicMeasure<float>(ActiveEnergyTotalImportT0Max_Wh),
-            new SinglePhasicMeasure<float>(ActiveEnergyTotalExportT0Max_Wh)
-          )
-        )})
+        })
       );
     }
   }

@@ -14,11 +14,13 @@ public class UsageMeterFeeCalculationItemEntity : FeeCalculationItemEntity
 {
 }
 
-public class SupplyBusinessUsageFeeCalculationItemEntity : FeeCalculationItemEntity
+public class
+  SupplyBusinessUsageFeeCalculationItemEntity : FeeCalculationItemEntity
 {
 }
 
-public class SupplyRenewableEnergyFeeCalculationItemEntity : FeeCalculationItemEntity
+public class
+  SupplyRenewableEnergyFeeCalculationItemEntity : FeeCalculationItemEntity
 {
 }
 

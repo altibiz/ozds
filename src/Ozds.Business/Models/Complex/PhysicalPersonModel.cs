@@ -7,10 +7,18 @@ public class PhysicalPersonModel : IValidatableObject
   [Required] public required string Name { get; set; } = default!;
 
   [EmailAddress]
-  [Required] public required string Email { get; set; } = default!;
+  [Required]
+  public required string Email { get; set; } = default!;
 
   [Phone]
-  [Required] public required string PhoneNumber { get; set; } = default!;
+  [Required]
+  public required string PhoneNumber { get; set; } = default!;
+
+  public IEnumerable<ValidationResult> Validate(
+    ValidationContext validationContext)
+  {
+    yield break;
+  }
 
   public static PhysicalPersonModel New()
   {
@@ -20,11 +28,5 @@ public class PhysicalPersonModel : IValidatableObject
       Email = "",
       PhoneNumber = ""
     };
-  }
-
-  public IEnumerable<ValidationResult> Validate(
-    ValidationContext validationContext)
-  {
-    yield break;
   }
 }

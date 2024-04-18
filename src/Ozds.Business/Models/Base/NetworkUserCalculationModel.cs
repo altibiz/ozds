@@ -14,6 +14,28 @@ public abstract class NetworkUserCalculationModel : INetworkUserCalculation
   [Required] public required DateTimeOffset ToDate { get; set; } = default!;
 
   [Required]
+  public required UsageMeterFeeCalculationItemModel
+    UsageMeterFee { get; set; } = default!;
+
+  [Required]
+  public required SupplyActiveEnergyTotalImportT1CalculationItemModel
+    SupplyActiveEnergyTotalImportT1 { get; set; } = default!;
+
+  [Required]
+  public required SupplyActiveEnergyTotalImportT2CalculationItemModel
+    SupplyActiveEnergyTotalImportT2 { get; set; } = default!;
+
+  [Required]
+  public required SupplyBusinessUsageFeeCalculationItemModel
+    SupplyBusinessUsageFee { get; set; } = default!;
+
+  [Required]
+  public required SupplyRenewableEnergyFeeCalculationItemModel
+    SupplyRenewableEnergyFee { get; set; } = default!;
+
+  protected abstract IEnumerable<ICalculationItem> AdditionalUsageItems { get; }
+
+  [Required]
   public required DateTimeOffset IssuedOn { get; set; } = DateTimeOffset.UtcNow;
 
   [Required] public required string? IssuedById { get; set; } = default!;
@@ -39,8 +61,7 @@ public abstract class NetworkUserCalculationModel : INetworkUserCalculation
 
   [Required]
   public required NetworkUserMeasurementLocationModel
-    ArchivedMeasurementLocation
-  { get; set; } = default!;
+    ArchivedMeasurementLocation { get; set; } = default!;
 
   [Required]
   public required NetworkUserCatalogueModel ArchivedUsageNetworkUserCatalogue
@@ -56,16 +77,6 @@ public abstract class NetworkUserCalculationModel : INetworkUserCalculation
     set;
   } = default!;
 
-  [Required] public required UsageMeterFeeCalculationItemModel UsageMeterFee { get; set; } = default!;
-
-  [Required] public required SupplyActiveEnergyTotalImportT1CalculationItemModel SupplyActiveEnergyTotalImportT1 { get; set; } = default!;
-
-  [Required] public required SupplyActiveEnergyTotalImportT2CalculationItemModel SupplyActiveEnergyTotalImportT2 { get; set; } = default!;
-
-  [Required] public required SupplyBusinessUsageFeeCalculationItemModel SupplyBusinessUsageFee { get; set; } = default!;
-
-  [Required] public required SupplyRenewableEnergyFeeCalculationItemModel SupplyRenewableEnergyFee { get; set; } = default!;
-
   [Required] public required decimal UsageFeeTotal_EUR { get; set; }
 
   [Required] public required decimal SupplyFeeTotal_EUR { get; set; }
@@ -74,27 +85,31 @@ public abstract class NetworkUserCalculationModel : INetworkUserCalculation
 
   public abstract string Kind { get; }
 
-  protected abstract IEnumerable<ICalculationItem> AdditionalUsageItems { get; }
-
   public virtual IEnumerable<ICalculationItem> UsageItems
   {
-    get => AdditionalUsageItems
-      .ToArray()
-      .Concat(new ICalculationItem[]
-      {
-        UsageMeterFee
-      });
+    get
+    {
+      return AdditionalUsageItems
+        .ToArray()
+        .Concat(new ICalculationItem[]
+        {
+          UsageMeterFee
+        });
+    }
   }
 
   public virtual IEnumerable<ICalculationItem> SupplyItems
   {
-    get => new ICalculationItem[]
+    get
     {
-      SupplyActiveEnergyTotalImportT1,
-      SupplyActiveEnergyTotalImportT2,
-      SupplyBusinessUsageFee,
-      SupplyRenewableEnergyFee
-    };
+      return new ICalculationItem[]
+      {
+        SupplyActiveEnergyTotalImportT1,
+        SupplyActiveEnergyTotalImportT2,
+        SupplyBusinessUsageFee,
+        SupplyRenewableEnergyFee
+      };
+    }
   }
 
   public abstract SpanningMeasure<decimal> ActiveEnergyAmount_Wh { get; }
@@ -131,11 +146,15 @@ public abstract class NetworkUserCalculationModel : INetworkUserCalculation
     get
     {
       return new DualExpenditureMeasure<decimal>(
-        ActiveEnergyAmount_Wh.SpanDiff * ActiveEnergyPrice_EUR.ExpenditureUsage +
-        ReactiveEnergyRampedAmount_Wh * ReactiveEnergyPrice_EUR.ExpenditureUsage +
+        ActiveEnergyAmount_Wh.SpanDiff *
+        ActiveEnergyPrice_EUR.ExpenditureUsage +
+        ReactiveEnergyRampedAmount_Wh *
+        ReactiveEnergyPrice_EUR.ExpenditureUsage +
         ActivePowerAmount_W.SpanDiff * ActivePowerPrice_EUR.ExpenditureUsage,
-        ActiveEnergyAmount_Wh.SpanDiff * ActiveEnergyPrice_EUR.ExpenditureSupply +
-        ReactiveEnergyRampedAmount_Wh * ReactiveEnergyPrice_EUR.ExpenditureSupply +
+        ActiveEnergyAmount_Wh.SpanDiff *
+        ActiveEnergyPrice_EUR.ExpenditureSupply +
+        ReactiveEnergyRampedAmount_Wh *
+        ReactiveEnergyPrice_EUR.ExpenditureSupply +
         ActivePowerAmount_W.SpanDiff * ActivePowerPrice_EUR.ExpenditureSupply
       );
     }

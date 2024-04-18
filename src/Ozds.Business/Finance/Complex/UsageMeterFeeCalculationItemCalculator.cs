@@ -7,9 +7,10 @@ namespace Ozds.Business.Finance.Complex;
 public class UsageMeterFeeCalculationItemCalculator :
   CalculationItemCalculator<UsageMeterFeeCalculationItemModel>
 {
-  protected override UsageMeterFeeCalculationItemModel CalculateConcrete(CalculationItemBasisModel calculationBasis)
+  protected override UsageMeterFeeCalculationItemModel CalculateConcrete(
+    CalculationItemBasisModel calculationBasis)
   {
-    return new()
+    return new UsageMeterFeeCalculationItemModel
     {
       Amount_N = 1,
       Price_EUR = calculationBasis.Price,

@@ -150,11 +150,13 @@ public class OzdsLocationModelQueries : IOzdsQueries
       .Select(item => item.ToModel())
       .ToPaginatedList(count);
   }
-  public async Task<PaginatedList<RepresentativeModel>> GetEligibleRepresentatives(
-    string title,
-    int pageNumber = QueryConstants.StartingPage,
-    int pageCount = QueryConstants.DefaultPageCount
-  )
+
+  public async Task<PaginatedList<RepresentativeModel>>
+    GetEligibleRepresentatives(
+      string title,
+      int pageNumber = QueryConstants.StartingPage,
+      int pageCount = QueryConstants.DefaultPageCount
+    )
   {
     var filtered = context.Representatives
       .Where(rep => rep.Title

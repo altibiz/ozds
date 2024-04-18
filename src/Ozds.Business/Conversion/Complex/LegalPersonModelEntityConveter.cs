@@ -4,7 +4,9 @@ using Ozds.Data.Entities.Complex;
 
 namespace Ozds.Business.Conversion.Complex;
 
-public class LegalPersonModelEntityConverter : ModelEntityConverter<LegalPersonModel, LegalPersonEntity>
+public class
+  LegalPersonModelEntityConverter : ModelEntityConverter<LegalPersonModel,
+  LegalPersonEntity>
 {
   protected override LegalPersonEntity ToEntity(LegalPersonModel model)
   {
@@ -29,7 +31,7 @@ public static class LegalPersonModelEntityConverterExtensions
       Address = entity.Address,
       City = entity.City,
       PostalCode = entity.PostalCode,
-      SocialSecurityNumber = entity.SocialSecurityNumber,
+      SocialSecurityNumber = entity.SocialSecurityNumber
     };
   }
 
@@ -43,7 +45,7 @@ public static class LegalPersonModelEntityConverterExtensions
       Address = model.Address,
       City = model.City,
       PostalCode = model.PostalCode,
-      SocialSecurityNumber = model.SocialSecurityNumber,
+      SocialSecurityNumber = model.SocialSecurityNumber
     };
   }
 }

@@ -17,7 +17,8 @@ public class LocationModel : AuditableModel
 
   [Required] public required string RegulatoryCatalogueId { get; set; }
 
-  [Required] public required LegalPersonModel LegalPerson { get; set; } = default!;
+  [Required]
+  public required LegalPersonModel LegalPerson { get; set; } = default!;
 
   public static LocationModel New()
   {
@@ -41,7 +42,8 @@ public class LocationModel : AuditableModel
     };
   }
 
-  public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+  public override IEnumerable<ValidationResult> Validate(
+    ValidationContext validationContext)
   {
     if (
       validationContext.MemberName is null or nameof(LegalPerson)

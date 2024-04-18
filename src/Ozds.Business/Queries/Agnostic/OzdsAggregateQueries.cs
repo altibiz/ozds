@@ -1,14 +1,11 @@
 using Microsoft.EntityFrameworkCore;
-using NetTopologySuite.Index.HPRtree;
 using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Extensions;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Data;
-using Ozds.Data.Entities;
 using Ozds.Data.Entities.Base;
-using Ozds.Data.Entities.Enums;
 
 namespace Ozds.Business.Queries.Agnotic;
 
@@ -67,8 +64,12 @@ public class OzdsAggregateQueries : IOzdsQueries
     // AbbB2xAggregateEntity a = default!;
 
     // a.Interval == 2;
-    var abbB2x = await Read<AbbB2xAggregateModel>(whereClauses, fromDate, toDate, pageNumber, pageCount);
-    var schneideriEM3xxx = await Read<SchneideriEM3xxxAggregateModel>(whereClauses, fromDate, toDate, pageNumber, pageCount);
-    return abbB2x.Items.Cast<IAggregate>().Concat(schneideriEM3xxx.Items).ToList();
+    var abbB2x = await Read<AbbB2xAggregateModel>(whereClauses, fromDate,
+      toDate, pageNumber, pageCount);
+    var schneideriEM3xxx =
+      await Read<SchneideriEM3xxxAggregateModel>(whereClauses, fromDate, toDate,
+        pageNumber, pageCount);
+    return abbB2x.Items.Cast<IAggregate>().Concat(schneideriEM3xxx.Items)
+      .ToList();
   }
 }

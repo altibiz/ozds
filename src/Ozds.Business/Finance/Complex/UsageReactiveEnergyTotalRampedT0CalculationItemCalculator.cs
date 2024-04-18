@@ -6,7 +6,8 @@ using Ozds.Business.Models.Composite;
 namespace Ozds.Business.Finance.Complex;
 
 public class UsageReactiveEnergyTotalRampedT0CalculationItemCalculator :
-  CalculationItemCalculator<UsageReactiveEnergyTotalRampedT0CalculationItemModel>
+  CalculationItemCalculator<
+    UsageReactiveEnergyTotalRampedT0CalculationItemModel>
 {
   protected override UsageReactiveEnergyTotalRampedT0CalculationItemModel
     CalculateConcrete(CalculationItemBasisModel calculationBasis)

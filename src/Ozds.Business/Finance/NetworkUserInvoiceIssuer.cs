@@ -1,5 +1,4 @@
 using Ozds.Business.Finance.Agnostic;
-using Ozds.Business.Finance.Complex;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Complex;
@@ -66,11 +65,11 @@ public class NetworkUserInvoiceIssuer
       .Sum(item => item.Total_EUR);
 
     var usageFeeTotal = usageActiveEnergyTotalImportT0Fee
-      + usageActiveEnergyTotalImportT1Fee
-      + usageActiveEnergyTotalImportT2Fee
-      + usageActivePowerTotalImportT1PeakFee
-      + usageReactiveEnergyTotalRampedT0Fee
-      + usageMeterFee;
+                        + usageActiveEnergyTotalImportT1Fee
+                        + usageActiveEnergyTotalImportT2Fee
+                        + usageActivePowerTotalImportT1PeakFee
+                        + usageReactiveEnergyTotalRampedT0Fee
+                        + usageMeterFee;
 
     var supplyActiveEnergyTotalImportT1Fee = calculations
       .SelectMany(calculation => calculation.SupplyItems
@@ -93,9 +92,9 @@ public class NetworkUserInvoiceIssuer
       .Sum(item => item.Total_EUR);
 
     var supplyFeeTotal = supplyActiveEnergyTotalImportT1Fee
-      + supplyActiveEnergyTotalImportT2Fee
-      + supplyBusinessUsageFee
-      + supplyRenewableEnergyFee;
+                         + supplyActiveEnergyTotalImportT2Fee
+                         + supplyBusinessUsageFee
+                         + supplyRenewableEnergyFee;
 
     var total = usageFeeTotal + supplyFeeTotal;
     var tax = total * basis.RegulatoryCatalogue.TaxRate_Percent / 100M;
@@ -118,12 +117,16 @@ public class NetworkUserInvoiceIssuer
       UsageActiveEnergyTotalImportT0Fee_EUR = usageActiveEnergyTotalImportT0Fee,
       UsageActiveEnergyTotalImportT1Fee_EUR = usageActiveEnergyTotalImportT1Fee,
       UsageActiveEnergyTotalImportT2Fee_EUR = usageActiveEnergyTotalImportT2Fee,
-      UsageActivePowerTotalImportT1PeakFee_EUR = usageActivePowerTotalImportT1PeakFee,
-      UsageReactiveEnergyTotalRampedT0Fee_EUR = usageReactiveEnergyTotalRampedT0Fee,
+      UsageActivePowerTotalImportT1PeakFee_EUR =
+        usageActivePowerTotalImportT1PeakFee,
+      UsageReactiveEnergyTotalRampedT0Fee_EUR =
+        usageReactiveEnergyTotalRampedT0Fee,
       UsageMeterFee_EUR = usageMeterFee,
       UsageFeeTotal_EUR = usageFeeTotal,
-      SupplyActiveEnergyTotalImportT1Fee_EUR = supplyActiveEnergyTotalImportT1Fee,
-      SupplyActiveEnergyTotalImportT2Fee_EUR = supplyActiveEnergyTotalImportT2Fee,
+      SupplyActiveEnergyTotalImportT1Fee_EUR =
+        supplyActiveEnergyTotalImportT1Fee,
+      SupplyActiveEnergyTotalImportT2Fee_EUR =
+        supplyActiveEnergyTotalImportT2Fee,
       SupplyBusinessUsageFee_EUR = supplyBusinessUsageFee,
       SupplyRenewableEnergyFee_EUR = supplyRenewableEnergyFee,
       SupplyFeeTotal_EUR = supplyFeeTotal,

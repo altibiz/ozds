@@ -11,37 +11,38 @@ public class
 {
   [Required]
   public required UsageActiveEnergyTotalImportT1CalculationItemModel
-    UsageActiveEnergyTotalImportT1
-  { get; set; } = default!;
+    UsageActiveEnergyTotalImportT1 { get; set; } = default!;
 
   [Required]
   public required UsageActiveEnergyTotalImportT2CalculationItemModel
-    UsageActiveEnergyTotalImportT2
-  { get; set; } = default!;
+    UsageActiveEnergyTotalImportT2 { get; set; } = default!;
 
   [Required]
   public required UsageActivePowerTotalImportT1PeakCalculationItemModel
-    UsageActivePowerTotalImportT1Peak
-  { get; set; } = default!;
+    UsageActivePowerTotalImportT1Peak { get; set; } = default!;
 
   [Required]
   public required UsageReactiveEnergyTotalRampedT0CalculationItemModel
-    UsageReactiveEnergyTotalRampedT0
-  { get; set; } = default!;
+    UsageReactiveEnergyTotalRampedT0 { get; set; } = default!;
 
   public override string Kind
   {
     get { return "White Medium Voltage"; }
   }
 
-  protected override IEnumerable<ICalculationItem> AdditionalUsageItems =>
-    new ICalculationItem[]
+  protected override IEnumerable<ICalculationItem> AdditionalUsageItems
+  {
+    get
     {
-      UsageActiveEnergyTotalImportT1,
-      UsageActiveEnergyTotalImportT2,
-      UsageActivePowerTotalImportT1Peak,
-      UsageReactiveEnergyTotalRampedT0
-    };
+      return new ICalculationItem[]
+      {
+        UsageActiveEnergyTotalImportT1,
+        UsageActiveEnergyTotalImportT2,
+        UsageActivePowerTotalImportT1Peak,
+        UsageReactiveEnergyTotalRampedT0
+      };
+    }
+  }
 
   public override SpanningMeasure<decimal> ActiveEnergyAmount_Wh
   {
@@ -50,21 +51,25 @@ public class
       return new MinMaxSpanningMeasure<decimal>(
         new BinaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(UsageActiveEnergyTotalImportT1.Min_Wh),
+            new SinglePhasicMeasure<decimal>(UsageActiveEnergyTotalImportT1
+              .Min_Wh),
             new NullPhasicMeasure<decimal>()
           ),
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(UsageActiveEnergyTotalImportT2.Min_Wh),
+            new SinglePhasicMeasure<decimal>(UsageActiveEnergyTotalImportT2
+              .Min_Wh),
             new NullPhasicMeasure<decimal>()
           )
         ),
         new BinaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(UsageActiveEnergyTotalImportT2.Max_Wh),
+            new SinglePhasicMeasure<decimal>(UsageActiveEnergyTotalImportT2
+              .Max_Wh),
             new NullPhasicMeasure<decimal>()
           ),
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(UsageActiveEnergyTotalImportT2.Max_Wh),
+            new SinglePhasicMeasure<decimal>(UsageActiveEnergyTotalImportT2
+              .Max_Wh),
             new NullPhasicMeasure<decimal>()
           )
         )
@@ -79,21 +84,25 @@ public class
       return new DualExpenditureMeasure<decimal>(
         new BinaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(UsageActiveEnergyTotalImportT1.Price_EUR),
+            new SinglePhasicMeasure<decimal>(UsageActiveEnergyTotalImportT1
+              .Price_EUR),
             new NullPhasicMeasure<decimal>()
           ),
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(UsageActiveEnergyTotalImportT2.Price_EUR),
+            new SinglePhasicMeasure<decimal>(UsageActiveEnergyTotalImportT2
+              .Price_EUR),
             new NullPhasicMeasure<decimal>()
           )
         ),
         new BinaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(SupplyActiveEnergyTotalImportT1.Price_EUR),
+            new SinglePhasicMeasure<decimal>(SupplyActiveEnergyTotalImportT1
+              .Price_EUR),
             new NullPhasicMeasure<decimal>()
           ),
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(SupplyActiveEnergyTotalImportT2.Price_EUR),
+            new SinglePhasicMeasure<decimal>(SupplyActiveEnergyTotalImportT2
+              .Price_EUR),
             new NullPhasicMeasure<decimal>()
           )
         )

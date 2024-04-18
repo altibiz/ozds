@@ -7,7 +7,9 @@ namespace Ozds.Data.Extensions;
 
 public static class EntityTypeBuilderExtensions
 {
-  public static ComplexPropertyBuilder Archived(this ComplexPropertyBuilder complexPropertyBuilder, string? propertyName = null)
+  public static ComplexPropertyBuilder Archived(
+    this ComplexPropertyBuilder complexPropertyBuilder,
+    string? propertyName = null)
   {
     propertyName ??= complexPropertyBuilder.Metadata.Name;
 
@@ -15,7 +17,8 @@ public static class EntityTypeBuilderExtensions
       .ComplexType
       .ClrType
       .GetProperties()
-      .Where(property => property is { GetMethod.IsVirtual: true } or { GetMethod.IsAbstract: true })
+      .Where(property => property is { GetMethod.IsVirtual: true } or
+        { GetMethod.IsAbstract: true })
       .ToList();
 
     var propertiesToArchive = complexPropertyBuilder.Metadata
@@ -54,8 +57,8 @@ public static class EntityTypeBuilderExtensions
       complexPropertyBuilder
         .ComplexProperty(property.Name)
         .Archived(propertyName.Abbreviation()
-          + "_"
-          + property.Name.Abbreviation());
+                  + "_"
+                  + property.Name.Abbreviation());
     }
 
     return complexPropertyBuilder;
@@ -73,8 +76,7 @@ public static class EntityTypeBuilderExtensions
   private static string Abbreviation(this string name)
   {
     return string.Concat(
-      !name.Any(char.IsUpper) ? name :
-      name.Where(char.IsUpper)).ToLower();
+      !name.Any(char.IsUpper) ? name : name.Where(char.IsUpper)).ToLower();
   }
 
   private static string ToSnakeCase(this string name)
@@ -82,8 +84,8 @@ public static class EntityTypeBuilderExtensions
     return string.Concat(
       name.Select((x, i) =>
         i > 0 && char.IsUpper(x) && !char.IsUpper(name[i - 1])
-        ? "_" + x.ToString().ToLower()
-        : x.ToString().ToLower()
+          ? "_" + x.ToString().ToLower()
+          : x.ToString().ToLower()
       )
     );
   }

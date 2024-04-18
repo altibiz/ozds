@@ -8,7 +8,8 @@ public class NetworkUserModel : AuditableModel
 {
   [Required] public required string LocationId { get; set; }
 
-  [Required] public required LegalPersonModel LegalPerson { get; set; } = default!;
+  [Required]
+  public required LegalPersonModel LegalPerson { get; set; } = default!;
 
   public static NetworkUserModel New()
   {
@@ -28,7 +29,8 @@ public class NetworkUserModel : AuditableModel
     };
   }
 
-  public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+  public override IEnumerable<ValidationResult> Validate(
+    ValidationContext validationContext)
   {
     if (
       validationContext.MemberName is null or nameof(LegalPerson)
