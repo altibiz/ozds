@@ -29,7 +29,9 @@ public class OzdsAuditableQueries : IOzdsQueries
     var queryable = _context.GetDbSet(typeof(T))
                       as IQueryable<AuditableEntity>
                     ?? throw new InvalidOperationException();
-    var item = await queryable.WithId(id).FirstOrDefaultAsync();
+    var item = await queryable
+      .Where(_context.PrimaryKeyEquals<AuditableEntity>(id))
+      .FirstOrDefaultAsync();
     return item is null ? null : _modelEntityConverter.ToModel(item) as T;
   }
 

@@ -23,7 +23,7 @@ public class OzdsAbbB2xMeasurementValidatorModelQueries : IOzdsQueries
     var validatorModel =
       await context.MeasurementValidators
         .OfType<AbbB2xMeasurementValidatorEntity>()
-        .WithId(id)
+        .Where(context.PrimaryKeyEquals<AbbB2xMeasurementValidatorEntity>(id))
         .FirstOrDefaultAsync();
     if (validatorModel is not null)
     {

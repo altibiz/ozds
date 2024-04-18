@@ -4,6 +4,7 @@ using Ozds.Business.Models;
 using Ozds.Business.Models.Composite;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Data;
+using Ozds.Data.Entities;
 using Ozds.Data.Entities.Enums;
 using Ozds.Data.Extensions;
 
@@ -23,7 +24,7 @@ public class OzdsNetworkUserQueries : IOzdsQueries
   {
     var networkUser =
       await context.NetworkUsers
-        .WithId(id)
+        .Where(context.PrimaryKeyEquals<NetworkUserEntity>(id))
         .FirstOrDefaultAsync();
     if (networkUser is not null)
     {
@@ -79,7 +80,7 @@ public class OzdsNetworkUserQueries : IOzdsQueries
   {
     var networkUser =
       await context.NetworkUsers
-        .WithId(id)
+        .Where(context.PrimaryKeyEquals<NetworkUserEntity>(id))
         .Include(x => x.Representatives)
         .FirstOrDefaultAsync();
     if (networkUser is not null)
@@ -98,7 +99,7 @@ public class OzdsNetworkUserQueries : IOzdsQueries
   {
     var rep =
       await context.Representatives
-        .WithId(id)
+        .Where(context.PrimaryKeyEquals<RepresentativeEntity>(id))
         .Include(x => x.NetworkUsers)
         .FirstOrDefaultAsync();
     if (rep is not null)

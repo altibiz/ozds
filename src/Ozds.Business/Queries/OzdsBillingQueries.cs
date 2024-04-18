@@ -28,7 +28,7 @@ public class OzdsBillingQueries
     )
   {
     return (await _dbContext.NetworkUsers
-        .WithId(networkUserId)
+        .Where(_dbContext.PrimaryKeyEquals<NetworkUserEntity>(networkUserId))
         .Join(
           _dbContext.MeasurementLocations
             .OfType<NetworkUserMeasurementLocationEntity>()
@@ -36,8 +36,8 @@ public class OzdsBillingQueries
             .Include(x => x.NetworkUser)
             .Include(x => x.NetworkUser.Location)
             .Include(x => x.NetworkUser.Location.RegulatoryCatalogue),
-          networkUser => networkUser.Id,
-          measurementLocation => measurementLocation.NetworkUserId,
+          _dbContext.PrimaryKeyOf<NetworkUserEntity>(),
+          _dbContext.ForeignKeyOf<NetworkUserMeasurementLocationEntity>(typeof(NetworkUserEntity)),
           (networkUser, measurementLocation) => new
           {
             Location = measurementLocation.NetworkUser.Location.ToModel(),
@@ -134,7 +134,7 @@ public class OzdsBillingQueries
     )
   {
     var networkUser = await _dbContext.NetworkUsers
-                        .WithId(networkUserId)
+                        .Where(_dbContext.PrimaryKeyEquals<NetworkUserEntity>(networkUserId))
                         .Include(x => x.Location)
                         .Include(x => x.Location.RegulatoryCatalogue)
                         .FirstOrDefaultAsync() ??

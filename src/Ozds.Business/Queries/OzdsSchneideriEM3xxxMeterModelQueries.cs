@@ -23,7 +23,7 @@ public class OzdsSchneideriEM3xxxMeterModelQueries : IOzdsQueries
     var meterEntity =
       await context.Meters
         .OfType<SchneideriEM3xxxMeterEntity>()
-        .WithId(id)
+        .Where(context.PrimaryKeyEquals<SchneideriEM3xxxMeterEntity>(id))
         .FirstOrDefaultAsync();
     if (meterEntity is not null)
     {

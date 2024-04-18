@@ -23,7 +23,7 @@ public class OzdsBlueLowNetworkUserCatalogueModelQueries : IOzdsQueries
     var catalogueModel =
       await context.NetworkUserCatalogues
         .OfType<BlueLowNetworkUserCatalogueEntity>()
-        .WithId(id)
+        .Where(context.PrimaryKeyEquals<BlueLowNetworkUserCatalogueEntity>(id))
         .FirstOrDefaultAsync();
     if (catalogueModel is not null)
     {

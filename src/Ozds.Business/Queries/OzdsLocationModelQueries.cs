@@ -24,7 +24,7 @@ public class OzdsLocationModelQueries : IOzdsQueries
   {
     var locationEntity =
       await context.Locations
-        .WithId(id)
+        .Where(context.PrimaryKeyEquals<LocationEntity>(id))
         .Include(location => location.RedLowNetworkUserCatalogue)
         .Include(location => location.BlueLowNetworkUserCatalogue)
         .Include(location => location.WhiteLowNetworkUserCatalogue)
@@ -177,7 +177,7 @@ public class OzdsLocationModelQueries : IOzdsQueries
   {
     var location =
       await context.Locations
-        .WithId(id)
+        .Where(context.PrimaryKeyEquals<LocationEntity>(id))
         .Include(x => x.Representatives)
         .FirstOrDefaultAsync();
     if (location is not null)

@@ -3,6 +3,7 @@ using Ozds.Business.Conversion;
 using Ozds.Business.Models;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Data;
+using Ozds.Data.Entities;
 using Ozds.Data.Extensions;
 
 namespace Ozds.Business.Queries;
@@ -21,7 +22,7 @@ public class OzdsRegulatoryCatalogueModelQueries : IOzdsQueries
   {
     var catalogueModel =
       await context.RegulatoryCatalogues
-        .WithId(id)
+        .Where(context.PrimaryKeyEquals<RegulatoryCatalogueEntity>(id))
         .FirstOrDefaultAsync();
     if (catalogueModel is not null)
     {

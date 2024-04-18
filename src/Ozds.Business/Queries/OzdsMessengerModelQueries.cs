@@ -3,6 +3,7 @@ using Ozds.Business.Conversion;
 using Ozds.Business.Models;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Data;
+using Ozds.Data.Entities;
 using Ozds.Data.Extensions;
 
 namespace Ozds.Business.Queries;
@@ -21,7 +22,7 @@ public class OzdsMessengerModelQueries : IOzdsQueries
   {
     var messengerEntity =
       await context.Messengers
-        .WithId(id)
+        .Where(context.PrimaryKeyEquals<MessengerEntity>(id))
         .FirstOrDefaultAsync();
     if (messengerEntity is not null)
     {

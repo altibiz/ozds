@@ -23,7 +23,7 @@ public class OzdsWhiteMediumNetworkUserCatalogueModelQueries : IOzdsQueries
     var catalogueModel =
       await context.NetworkUserCatalogues
         .OfType<WhiteMediumNetworkUserCatalogueEntity>()
-        .WithId(id)
+        .Where(context.PrimaryKeyEquals<WhiteMediumNetworkUserCatalogueEntity>(id))
         .FirstOrDefaultAsync();
     if (catalogueModel is not null)
     {

@@ -23,7 +23,7 @@ public class OzdsAbbB2xMeterModelQueries : IOzdsQueries
     var meterEntity =
       await context.Meters
         .OfType<AbbB2xMeterEntity>()
-        .WithId(id)
+        .Where(context.PrimaryKeyEquals<AbbB2xMeterEntity>(id))
         .FirstOrDefaultAsync();
     if (meterEntity is not null)
     {

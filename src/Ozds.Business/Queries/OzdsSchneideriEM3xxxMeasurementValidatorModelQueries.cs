@@ -24,7 +24,7 @@ public class OzdsSchneideriEM3xxxMeasurementValidatorModelQueries : IOzdsQueries
     var validatorModel =
       await context.MeasurementValidators
         .OfType<SchneideriEM3xxxMeasurementValidatorEntity>()
-        .WithId(id)
+        .Where(context.PrimaryKeyEquals<SchneideriEM3xxxMeasurementValidatorEntity>(id))
         .FirstOrDefaultAsync();
     if (validatorModel is not null)
     {

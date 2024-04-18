@@ -7,7 +7,6 @@ using Ozds.Business.Models.Enums;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Data;
 using Ozds.Data.Entities;
-using Ozds.Data.Entities.Enums;
 using Ozds.Data.Extensions;
 
 namespace Ozds.Business.Queries;
@@ -120,7 +119,7 @@ public class OzdsMeterTableQueries : IOzdsQueries
     )
   {
     return (await context.NetworkUsers
-        .WithId(networkUserId)
+        .Where(context.PrimaryKeyEquals<NetworkUserEntity>(networkUserId))
         .Join(
           context.MeasurementLocations
             .OfType<NetworkUserMeasurementLocationEntity>()
@@ -128,8 +127,6 @@ public class OzdsMeterTableQueries : IOzdsQueries
             .Include(x => x.NetworkUser)
             .Include(x => x.NetworkUser.Location)
             .Include(x => x.NetworkUser.Location.RegulatoryCatalogue),
-          networkUser => networkUser.Id,
-          measurementLocation => measurementLocation.NetworkUserId,
           (networkUser, measurementLocation) => new
           {
             Location = measurementLocation.NetworkUser.Location.ToModel(),

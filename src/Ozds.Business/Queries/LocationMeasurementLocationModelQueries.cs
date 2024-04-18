@@ -24,7 +24,7 @@ public class OzdsLocationMeasurementLocationModelQueries : IOzdsQueries
     var meterEntity =
       await context.MeasurementLocations
         .OfType<LocationMeasurementLocationEntity>()
-        .WithId(id)
+        .Where(context.PrimaryKeyEquals<LocationMeasurementLocationEntity>(id))
         .FirstOrDefaultAsync();
     if (meterEntity is not null)
     {
