@@ -41,7 +41,6 @@ public static class EntityTypeBuilderExtensions
 
     foreach (var property in propertiesToShorten)
     {
-      Console.WriteLine($"{propertyName} {property.Name}");
       complexPropertyBuilder
         .Property(property.Name)
         .HasColumnName(
