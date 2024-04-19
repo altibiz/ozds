@@ -17,6 +17,12 @@
       });
       shell = { pkgs }:
         pkgs.mkShell {
+          PGHOST = "localhost";
+          PGPORT = "5432";
+          PGDATABASE = "ozds";
+          PGUSER = "ozds";
+          PGPASSWORD = "ozds";
+
           packages = with pkgs; let
             usql = pkgs.writeShellApplication {
               name = "usql";

@@ -16,6 +16,12 @@ datacsproj := absolute_path('src/Ozds.Data/Ozds.Data.csproj')
 fakecsproj := absolute_path('scripts/Ozds.Fake/Ozds.Fake.csproj')
 schema := absolute_path('docs/structure/data/schema.md')
 
+export PGHOST := "localhost"
+export PGPORT := "5432"
+export PGDATABASE := "ozds"
+export PGUSER := "ozds"
+export PGPASSWORD := "ozds"
+
 default: prepare
 
 prepare:
