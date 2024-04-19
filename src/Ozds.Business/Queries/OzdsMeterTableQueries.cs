@@ -137,7 +137,7 @@ public class OzdsMeterTableQueries : IOzdsQueries
             .OfType<NetworkUserMeasurementLocationEntity>()
             .Include(x => x.NetworkUserCatalogue),
           context.PrimaryKeyOf<NetworkUserEntity>(),
-          context.ForeignKeyOf<NetworkUserMeasurementLocationEntity>(typeof(NetworkUserEntity)),
+          context.ForeignKeyOf<NetworkUserMeasurementLocationEntity>(nameof(NetworkUserMeasurementLocationEntity.NetworkUserId)),
           (networkUser, measurementLocation) => new NetworkUserMeasurementLocationJoin
           {
             Location = networkUser.Location,

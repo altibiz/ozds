@@ -5,6 +5,7 @@ using Ozds.Data.Entities.Base;
 
 // TODO: through model
 // TODO: cache expressions/compilations
+// TODO: https://github.com/dotnet/efcore/issues/20604 for string casts
 
 namespace Ozds.Data;
 
@@ -17,26 +18,50 @@ public partial class OzdsDbContext
 
   public Expression<Func<T, object>> PrimaryKeyOf<T>()
   {
-    var type = typeof(T);
-    var parameter = Expression.Parameter(type);
-    var hasStringId =
-      type.IsAssignableTo(typeof(RepresentativeEntity))
-      || type.IsAssignableTo(typeof(MessengerEntity))
-      || type.IsAssignableTo(typeof(MeterEntity));
-    var fieldName = hasStringId ? "_stringId" : "_id";
-    var field = type
-      .GetField(fieldName,
-        BindingFlags.NonPublic | BindingFlags.Instance |
-        BindingFlags.FlattenHierarchy);
-    var fieldExpression = Expression
-      .Field(parameter, field
-                        ?? throw new InvalidOperationException(
-                          $"No {fieldName} field found in {type}"));
-    var castExpression = Expression.Convert(fieldExpression, typeof(object));
-    return Expression.Lambda(castExpression, parameter)
-      as Expression<Func<T, object>>
+    var entityType = Model.FindEntityType(typeof(T))
       ?? throw new InvalidOperationException(
-        $"Failed to create primary key expression for {type}");
+        $"No entity type found for {typeof(T)}");
+    var key = entityType.FindPrimaryKey()
+      ?? throw new InvalidOperationException(
+        $"No primary key found for {typeof(T)}");
+    var properties = key.Properties;
+    var parameter = Expression.Parameter(typeof(T));
+    var propertyExpressions = properties
+      .Select(property =>
+        property.PropertyInfo is { } propertyInfo
+          ? Expression.Property(parameter, propertyInfo)
+          : property.FieldInfo is { } fieldInfo
+            ? Expression.Field(parameter, fieldInfo)
+            : throw new InvalidOperationException(
+              $"No property or field found for {property}"));
+    if (properties.Count == 1)
+    {
+      var propertyExpression = propertyExpressions.Single();
+      var propertyToStringExpression = Expression.Call(propertyExpression,
+        typeof(object).GetMethod(nameof(object.ToString))
+        ?? throw new InvalidOperationException(
+          $"No {nameof(object.ToString)} method found in {propertyExpression}"));
+      return Expression.Lambda<Func<T, object>>(
+        propertyToStringExpression, parameter);
+    }
+
+    var propertyToStringExpressions =
+      propertyExpressions.Select(propertyExpression =>
+        Expression.Call(propertyExpression,
+          typeof(object).GetMethod(nameof(object.ToString))
+          ?? throw new InvalidOperationException(
+            $"No {nameof(object.ToString)} method found in {propertyExpression}")
+          ));
+    var stringJoinWithDashExpression = Expression.Call(
+      typeof(string).GetMethod(nameof(string.Join),
+        new[] { typeof(string), typeof(string[]) }) ??
+          throw new InvalidOperationException(
+              $"No {nameof(string.Join)} method found in {typeof(string)}"),
+      Expression.Constant("-"),
+      Expression.NewArrayInit(typeof(string), propertyExpressions));
+
+    return Expression.Lambda<Func<T, object>>(
+      stringJoinWithDashExpression, parameter);
   }
 
   public Func<T, object> PrimaryKeyOfCompiled<T, U>(Expression<Func<T, U>> prefix)
@@ -46,27 +71,11 @@ public partial class OzdsDbContext
 
   public Expression<Func<T, object>> PrimaryKeyOf<T, U>(Expression<Func<T, U>> prefix)
   {
-    var type = typeof(U);
     var parameter = Expression.Parameter(typeof(T));
-    var hasStringId =
-      type.IsAssignableTo(typeof(RepresentativeEntity))
-      || type.IsAssignableTo(typeof(MessengerEntity))
-      || type.IsAssignableTo(typeof(MeterEntity));
-    var fieldName = hasStringId ? "_stringId" : "_id";
-    var field = type
-      .GetField(fieldName,
-        BindingFlags.NonPublic | BindingFlags.Instance |
-        BindingFlags.FlattenHierarchy);
     var callExpression = Expression.Invoke(prefix, parameter);
-    var fieldExpression = Expression
-      .Field(callExpression, field
-                        ?? throw new InvalidOperationException(
-                          $"No {fieldName} field found in {type}"));
-    var castExpression = Expression.Convert(fieldExpression, typeof(object));
-    return Expression.Lambda(castExpression, parameter)
-      as Expression<Func<T, object>>
-      ?? throw new InvalidOperationException(
-        $"Failed to create primary key expression for {typeof(T)}");
+    var primaryKeyExpression = PrimaryKeyOf<T>();
+    return Expression.Lambda<Func<T, object>>(
+      Expression.Invoke(primaryKeyExpression, callExpression), parameter);
   }
 
   public Func<T, bool> PrimaryKeyEqualsCompiled<T>(string id)
@@ -78,24 +87,14 @@ public partial class OzdsDbContext
   {
     var type = typeof(T);
     var parameter = Expression.Parameter(type);
-    var hasStringId =
-      type.IsAssignableTo(typeof(RepresentativeEntity))
-      || type.IsAssignableTo(typeof(MessengerEntity))
-      || type.IsAssignableTo(typeof(MeterEntity));
-    var fieldName = hasStringId ? "_stringId" : "_id";
-    var field = type
-      .GetField(fieldName,
-        BindingFlags.NonPublic | BindingFlags.Instance |
-        BindingFlags.FlattenHierarchy);
-    var fieldExpression = Expression
-      .Field(parameter, field
-                        ?? throw new InvalidOperationException(
-                          $"No {fieldName} field found in {type}"));
-    var constant = hasStringId
-      ? Expression.Constant(id)
-      : Expression.Constant(long.Parse(id));
-    var body = Expression.Equal(fieldExpression, constant);
-    return Expression.Lambda<Func<T, bool>>(body, parameter);
+    var primaryKeyExpression = PrimaryKeyOf<T>();
+    var primaryKeyEqualsExpression = Expression.Equal(
+      Expression.Invoke(primaryKeyExpression, parameter),
+      Expression.Constant(id));
+    return Expression.Lambda<Func<T, bool>>(
+      primaryKeyEqualsExpression,
+      parameter
+    );
   }
 
   public Func<T, bool> PrimaryKeyInCompiled<T>(ICollection<string> ids)
@@ -107,58 +106,72 @@ public partial class OzdsDbContext
   {
     var type = typeof(T);
     var parameter = Expression.Parameter(type);
-    var hasStringId =
-      type.IsAssignableTo(typeof(RepresentativeEntity))
-      || type.IsAssignableTo(typeof(MessengerEntity))
-      || type.IsAssignableTo(typeof(MeterEntity));
-    var fieldName = hasStringId ? "_stringId" : "_id";
-    var field = type
-      .GetField(fieldName,
-        BindingFlags.NonPublic | BindingFlags.Instance |
-        BindingFlags.FlattenHierarchy);
-    var fieldExpression = Expression
-      .Field(parameter, field
-                        ?? throw new InvalidOperationException(
-                          $"No {fieldName} field found in {type}"));
-    var constants = hasStringId
-      ? Expression.Constant(ids)
-      : Expression.Constant(ids.Select(long.Parse));
-    var body = Expression.Call(
-      constants,
-      typeof(ICollection<string>)
-        .GetMethod(nameof(ICollection<string>.Contains))!,
-      fieldExpression
+    var primaryKeyExpression = PrimaryKeyOf<T>();
+    var primaryKeyInExpression = Expression.Call(
+      typeof(Enumerable),
+      nameof(Enumerable.Contains),
+      new[] { typeof(string) },
+      Expression.Constant(ids),
+      Expression.Invoke(primaryKeyExpression, parameter));
+    return Expression.Lambda<Func<T, bool>>(
+      primaryKeyInExpression,
+      parameter
     );
-    return Expression.Lambda<Func<T, bool>>(body, parameter);
   }
 
-  public Func<T, object> ForeignKeyOfCompiled<T>(Type joinType)
+  public Func<T, object> ForeignKeyOfCompiled<T>(string property)
   {
-    return ForeignKeyOf<T>(joinType).Compile();
+    return ForeignKeyOf<T>(property).Compile();
   }
 
-  public Expression<Func<T, object>> ForeignKeyOf<T>(Type joinType)
+  public Expression<Func<T, object>> ForeignKeyOf<T>(string property)
   {
     var type = typeof(T);
-    var parameter = Expression.Parameter(type);
-    var joinTypeName = joinType.Name.Replace("Entity", "");
-    var fieldName = $"_{char.ToLower(joinTypeName[0]) + joinTypeName[1..]}Id";
-    var field = type.GetField(fieldName,
-      BindingFlags.NonPublic | BindingFlags.Instance);
-    var propertyName = $"{joinTypeName}Id";
-    var property = type.GetProperty(propertyName,
-      BindingFlags.Public | BindingFlags.Instance);
-    var memberExpression = field != null
-      ? Expression.Field(parameter, field)
-      : property != null
-        ? Expression.Property(parameter, property)
-        : throw new InvalidOperationException(
-          $"No {fieldName} field found in {type}");
-    var castExpression = Expression.Convert(memberExpression, typeof(object));
-    return Expression.Lambda(castExpression, parameter)
-      as Expression<Func<T, object>>
+    var entityType = Model.FindEntityType(type)
       ?? throw new InvalidOperationException(
-        $"Failed to create foreign key expression for {type}");
+        $"No entity type found for {type}");
+    var navigation = entityType.FindNavigation(property)
+      ?? throw new InvalidOperationException(
+        $"No navigation found for {type} {property}");
+    var foreignKey = navigation.ForeignKey ??
+      throw new InvalidOperationException(
+        $"No foreign key found for {type} {property}");
+    var properties = foreignKey.Properties;
+    var parameter = Expression.Parameter(type);
+    var propertyExpressions = properties
+      .Select(property =>
+        property.PropertyInfo is { } propertyInfo
+          ? Expression.Property(parameter, propertyInfo)
+          : property.FieldInfo is { } fieldInfo
+            ? Expression.Field(parameter, fieldInfo)
+            : throw new InvalidOperationException(
+              $"No property or field found for {property}"));
+    if (properties.Count == 1)
+    {
+      var propertyExpression = propertyExpressions.Single();
+      var propertyToStringExpression = Expression.Call(propertyExpression,
+        typeof(object).GetMethod(nameof(object.ToString))
+        ?? throw new InvalidOperationException(
+          $"No {nameof(object.ToString)} method found in {propertyExpression}"));
+      return Expression.Lambda<Func<T, object>>(
+        propertyToStringExpression, parameter);
+    }
+    var propertyToStringExpressions =
+      propertyExpressions.Select(propertyExpression =>
+        Expression.Call(propertyExpression,
+          typeof(object).GetMethod(nameof(object.ToString))
+          ?? throw new InvalidOperationException(
+            $"No {nameof(object.ToString)} method found in {propertyExpression}")
+          ));
+    var stringJoinWithDashExpression = Expression.Call(
+      typeof(string).GetMethod(nameof(string.Join),
+        new[] { typeof(string), typeof(string[]) }) ??
+          throw new InvalidOperationException(
+              $"No {nameof(string.Join)} method found in {typeof(string)}"),
+      Expression.Constant("-"),
+      Expression.NewArrayInit(typeof(string), propertyExpressions));
+    return Expression.Lambda<Func<T, object>>(
+      stringJoinWithDashExpression, parameter);
   }
 
   public Func<T, object> ForeignKeyOfCompiled<T, U>(Expression<Func<T, U>> prefix, Type joinType)
@@ -170,24 +183,8 @@ public partial class OzdsDbContext
   {
     var parameter = Expression.Parameter(typeof(T));
     var callExpression = Expression.Invoke(prefix, parameter);
-    var type = typeof(U);
-    var joinTypeName = joinType.Name.Replace("Entity", "");
-    var fieldName = $"_{char.ToLower(joinTypeName[0]) + joinTypeName[1..]}Id";
-    var field = type.GetField(fieldName,
-      BindingFlags.NonPublic | BindingFlags.Instance);
-    var propertyName = $"{joinTypeName}Id";
-    var property = type.GetProperty(propertyName,
-      BindingFlags.Public | BindingFlags.Instance);
-    var memberExpression = field != null
-      ? Expression.Field(callExpression, field)
-      : property != null
-        ? Expression.Property(callExpression, property)
-        : throw new InvalidOperationException(
-          $"No {fieldName} field found in {type}");
-    var castExpression = Expression.Convert(memberExpression, typeof(object));
-    return Expression.Lambda(castExpression, parameter)
-      as Expression<Func<T, object>>
-      ?? throw new InvalidOperationException(
-        $"Failed to create foreign key expression for {typeof(T)}");
+    var foreignKeyExpression = ForeignKeyOf<T>(joinType.Name);
+    return Expression.Lambda<Func<T, object>>(
+      Expression.Invoke(foreignKeyExpression, callExpression), parameter);
   }
 }
