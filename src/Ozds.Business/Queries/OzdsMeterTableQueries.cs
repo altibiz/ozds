@@ -171,9 +171,7 @@ public class OzdsMeterTableQueries : IOzdsQueries
           context.AbbB2xAggregates
             .Where(x => x.Timestamp >= fromDate)
             .Where(x => x.Timestamp <= toDate)
-            .Where(x =>
-              x.Interval == IntervalEntity.QuarterHour ||
-              x.Interval == IntervalEntity.Month),
+            .Where(x => x.Interval == IntervalEntity.Month),
           context.PrimaryKeyOf((ViewModelStruct x) => x.Meter),
           context.ForeignKeyOf<AbbB2xAggregateEntity>(nameof(AbbB2xAggregateEntity.Meter)),
           (x, abbB2xAggregates) => new
@@ -182,10 +180,10 @@ public class OzdsMeterTableQueries : IOzdsQueries
             x.NetworkUser,
             x.MeasurementLocation,
             x.Meter,
-            AbbAggregates = abbB2xAggregates
+            abbB2xAggregates
           }
         )
-        .SelectMany(x => x.AbbAggregates.DefaultIfEmpty(),
+        .SelectMany(x => x.abbB2xAggregates.DefaultIfEmpty(),
         (x, abbAggregate) => new ViewModelStruct
         {
           Location = x.Location,
@@ -198,22 +196,20 @@ public class OzdsMeterTableQueries : IOzdsQueries
           context.SchneideriEM3xxxAggregates
             .Where(x => x.Timestamp >= fromDate)
             .Where(x => x.Timestamp <= toDate)
-            .Where(x =>
-              x.Interval == IntervalEntity.QuarterHour ||
-              x.Interval == IntervalEntity.Month),
+            .Where(x => x.Interval == IntervalEntity.Month),
           context.PrimaryKeyOf((ViewModelStruct x) => x.Meter),
           context.ForeignKeyOf<SchneideriEM3xxxAggregateEntity>(nameof(SchneideriEM3xxxAggregateEntity.Meter)),
-          (x, schneideriEM3xxxAggregate) => new
+          (x, schneideriEM3xxxAggregates) => new
           {
             x.Location,
             x.NetworkUser,
             x.MeasurementLocation,
             x.Meter,
             x.AbbAggregate,
-            SchneiderAggregate = schneideriEM3xxxAggregate
+            schneideriEM3xxxAggregates
           }
         )
-        .SelectMany(x => x.SchneiderAggregate.DefaultIfEmpty(), (x, schneiderAggregate) => new ViewModelStruct
+        .SelectMany(x => x.schneideriEM3xxxAggregates.DefaultIfEmpty(), (x, schneiderAggregate) => new ViewModelStruct
         {
           Location = x.Location,
           NetworkUser = x.NetworkUser,

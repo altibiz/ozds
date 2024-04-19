@@ -13,7 +13,7 @@
         </MudItem>
         <MudContainer Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
           <MudText Typo="Typo.h4">
-            @(DecimalString(_thisMonthTotal / 1000, 0) + " kWh")
+            @(FloatString(_thisMonthTotal / 1000, 0) + " kWh")
           </MudText>
         </MudContainer>
       </MudPaper>
@@ -28,7 +28,7 @@
         </MudItem>
         <MudContainer Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
           <MudText Typo="Typo.h4">
-            @(DecimalString(_lastMonthTotal / 1000, 0) + " kWh")
+            @(FloatString(_lastMonthTotal / 1000, 0) + " kWh")
           </MudText>
         </MudContainer>
         <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
@@ -38,7 +38,7 @@
         </MudItem>
         <MudContainer Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
           <MudText Typo="Typo.h6">
-            @(lastMonthInvoicesTotal == 0m ? T["Račun u izradi..."] : DecimalString(lastMonthInvoicesTotal) + " EUR")
+            @(lastMonthInvoicesTotal == 0 ? T["Račun u izradi..."] : FloatString(lastMonthInvoicesTotal) + " EUR")
           </MudText>
         </MudContainer>
       </MudPaper>
@@ -69,7 +69,7 @@
         </MudItem>
         <MudContainer Class="d-flex align-end justify-center" MaxWidth="MaxWidth.Small">
           <MudText Typo="Typo.h1">
-            @(DecimalString(_thisMonthTotal / 1000, 0))
+            @(FloatString(_thisMonthTotal / 1000, 0))
           </MudText>
           <MudText Typo="Typo.h4" Class="mb-3 ml-1">kWh</MudText>
         </MudContainer>
@@ -94,7 +94,7 @@
         </MudItem>
         <MudContainer Class="d-flex align-end justify-center" MaxWidth="MaxWidth.Small">
           <MudText Typo="Typo.h1">
-            @(DecimalString(_lastMonthTotal / 1000, 0))
+            @(FloatString(_lastMonthTotal / 1000, 0))
           </MudText>
           <MudText Typo="Typo.h4" Class="mb-3 ml-1">kWh</MudText>
         </MudContainer>
@@ -105,7 +105,7 @@
         </MudItem>
         <MudItem Class="" Style="font-size: large; font-weight: bold; align-self: center;">
           <MudText Typo="Typo.h5">
-            @(lastMonthInvoicesTotal == 0m ? T["Račun u izradi..."] : DecimalString(lastMonthInvoicesTotal) + " EUR")
+            @(lastMonthInvoicesTotal == 0 ? T["Račun u izradi..."] : FloatString(lastMonthInvoicesTotal) + " EUR")
           </MudText>
         </MudItem>
       </MudPaper>
@@ -124,18 +124,13 @@
 </MudHidden>
 
 @code {
-  [CascadingParameter] public UserState user { get; set; } = default!;
-  [CascadingParameter] public RepresentativeState representative { get; set; } = default!;
-  private IEnumerable<MeterModel>? _ioTDevices;
   private DateTimeOffset now = DateTimeOffset.UtcNow;
   private DateTimeOffset startOfThisMonth = DateTimeOffset.UtcNow.GetStartOfMonth();
   private DateTimeOffset startOfNextMonth = DateTimeOffset.UtcNow.GetStartOfNextMonth();
-  private DateTimeOffset lastMonth = DateTimeOffset.UtcNow.GetStartOfLastMonth();
-  private (decimal? First, decimal? Last, DateTimeOffset FirstDate) _startEnd;
-  private (decimal? First, decimal? Last, DateTimeOffset FirstDate) _startEndLastMonth = new(0, 0, DateTime.UtcNow);
-  private decimal _lastMonthTotal = 0;
-  private decimal _thisMonthTotal = 0;
-  decimal lastMonthInvoicesTotal = 0;
+  private DateTimeOffset startOfLastMonth = DateTimeOffset.UtcNow.GetStartOfLastMonth();
+  private float _lastMonthTotal = 0;
+  private float _thisMonthTotal = 0;
+  float lastMonthInvoicesTotal = 0;
 
   protected override async Task OnInitializedAsync()
   {
@@ -144,11 +139,11 @@
     var meters = test.OrderBy(x => x.Timestamp).GroupBy(x => x.MeterId).ToList();
     foreach (var meter in meters)
     {
-      var _thisMonthUsage = (decimal)meter.FirstOrDefault()!.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum;
+      var _thisMonthUsage = meter.FirstOrDefault()!.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum;
       if (_thisMonthUsage == 0)
       {
-        var a = (decimal)meter.FirstOrDefault()!.ActiveEnergySpan_Wh.SpanMin.TariffUnary.DuplexImport.PhaseSum;
-        var b = (decimal)meter.FirstOrDefault()!.ActiveEnergySpan_Wh.SpanMax.TariffUnary.DuplexImport.PhaseSum;
+        var a = meter.FirstOrDefault()!.ActiveEnergySpan_Wh.SpanMin.TariffUnary.DuplexImport.PhaseSum;
+        var b = meter.FirstOrDefault()!.ActiveEnergySpan_Wh.SpanMax.TariffUnary.DuplexImport.PhaseSum;
         _thisMonthUsage = b - a;
       }
 

@@ -149,31 +149,24 @@
 @code {
 
   [Parameter] public string Source { get; set; } = "abb";
-  public string TextValue { get; set; } = "";
-  private MeterModel? _meter;
   private string? _searchString;
   private List<TabularData> _dataStruct = new();
-  private (float? First, float? Last, DateTimeOffset FirstDate) _startEnd;
-
   public record ChartData(float? L1, float? L2, float? L3, DateTimeOffset date);
-
   public record struct TabularData(string year, string month, float? monthStartTotal, float? monthEndTotal, float maxPower);
-
   private string _month = "-1";
   private string _year = "-1";
   private float thisMonthMaxPower = 0;
-  private IReadOnlyList<SpanningMeasure<float>>? _spanningMeasurements;
   private DateTimeOffset startOfThisYear = DateTimeOffset.UtcNow.GetStartOfYear();
   private DateTimeOffset startOfThisMonth = DateTimeOffset.UtcNow.GetStartOfMonth();
   private DateTimeOffset now = DateTime.UtcNow;
 
+  @* MOBILE *@
   private class ExpandThing
   {
     public TabularData data;
     public bool expand;
     public bool show;
   }
-
   List<ExpandThing> _shownOMMs = new();
 
   protected override async Task OnInitializedAsync()
