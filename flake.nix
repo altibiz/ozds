@@ -49,10 +49,13 @@
             omnisharp-roslyn
             netcoredbg
 
-            # Misc
+            # PostgreSQL
             usql
-            just
+            postgresql_14
             mermerd
+
+            # Misc
+            just
             nodePackages.prettier
             # nodePackages.remark
             nodePackages.yaml-language-server

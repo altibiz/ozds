@@ -1,11 +1,8 @@
 using System.Linq.Expressions;
-using System.Reflection;
-using Ozds.Data.Entities;
-using Ozds.Data.Entities.Base;
 
 // TODO: through model
 // TODO: cache expressions/compilations
-// TODO: https://github.com/dotnet/efcore/issues/20604 for string casts
+// TODO: check if conversion to string is needed for all properties
 
 namespace Ozds.Data;
 
