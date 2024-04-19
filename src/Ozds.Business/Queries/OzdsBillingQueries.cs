@@ -37,7 +37,7 @@ public class OzdsBillingQueries
             .Include(x => x.NetworkUser.Location)
             .Include(x => x.NetworkUser.Location.RegulatoryCatalogue),
           _dbContext.PrimaryKeyOf<NetworkUserEntity>(),
-          _dbContext.ForeignKeyOf<NetworkUserMeasurementLocationEntity>(nameof(NetworkUserMeasurementLocationEntity.NetworkUserId)),
+          _dbContext.ForeignKeyOf<NetworkUserMeasurementLocationEntity>(nameof(NetworkUserMeasurementLocationEntity.NetworkUser)),
           (networkUser, measurementLocation) => new
           {
             Location = measurementLocation.NetworkUser.Location.ToModel(),

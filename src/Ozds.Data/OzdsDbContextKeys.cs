@@ -37,21 +37,18 @@ public partial class OzdsDbContext
     if (properties.Count == 1)
     {
       var propertyExpression = propertyExpressions.Single();
-      var propertyToStringExpression = Expression.Call(propertyExpression,
-        typeof(object).GetMethod(nameof(object.ToString))
-        ?? throw new InvalidOperationException(
-          $"No {nameof(object.ToString)} method found in {propertyExpression}"));
+      var propertyToStringExpression =
+      Expression.Convert(
+        Expression.Convert(propertyExpression, typeof(object)), typeof(string));
       return Expression.Lambda<Func<T, object>>(
         propertyToStringExpression, parameter);
     }
 
     var propertyToStringExpressions =
       propertyExpressions.Select(propertyExpression =>
-        Expression.Call(propertyExpression,
-          typeof(object).GetMethod(nameof(object.ToString))
-          ?? throw new InvalidOperationException(
-            $"No {nameof(object.ToString)} method found in {propertyExpression}")
-          ));
+      Expression.Convert(
+        Expression.Convert(propertyExpression, typeof(object)), typeof(string))
+          );
     var stringJoinWithDashExpression = Expression.Call(
       typeof(string).GetMethod(nameof(string.Join),
         new[] { typeof(string), typeof(string[]) }) ??
@@ -149,20 +146,17 @@ public partial class OzdsDbContext
     if (properties.Count == 1)
     {
       var propertyExpression = propertyExpressions.Single();
-      var propertyToStringExpression = Expression.Call(propertyExpression,
-        typeof(object).GetMethod(nameof(object.ToString))
-        ?? throw new InvalidOperationException(
-          $"No {nameof(object.ToString)} method found in {propertyExpression}"));
+      var propertyToStringExpression =
+      Expression.Convert(
+        Expression.Convert(propertyExpression, typeof(object)), typeof(string));
       return Expression.Lambda<Func<T, object>>(
         propertyToStringExpression, parameter);
     }
     var propertyToStringExpressions =
       propertyExpressions.Select(propertyExpression =>
-        Expression.Call(propertyExpression,
-          typeof(object).GetMethod(nameof(object.ToString))
-          ?? throw new InvalidOperationException(
-            $"No {nameof(object.ToString)} method found in {propertyExpression}")
-          ));
+      Expression.Convert(
+        Expression.Convert(propertyExpression, typeof(object)), typeof(string))
+          );
     var stringJoinWithDashExpression = Expression.Call(
       typeof(string).GetMethod(nameof(string.Join),
         new[] { typeof(string), typeof(string[]) }) ??
@@ -174,16 +168,16 @@ public partial class OzdsDbContext
       stringJoinWithDashExpression, parameter);
   }
 
-  public Func<T, object> ForeignKeyOfCompiled<T, U>(Expression<Func<T, U>> prefix, Type joinType)
+  public Func<T, object> ForeignKeyOfCompiled<T, U>(Expression<Func<T, U>> prefix, string property)
   {
-    return ForeignKeyOf(prefix, joinType).Compile();
+    return ForeignKeyOf(prefix, property).Compile();
   }
 
-  public Expression<Func<T, object>> ForeignKeyOf<T, U>(Expression<Func<T, U>> prefix, Type joinType)
+  public Expression<Func<T, object>> ForeignKeyOf<T, U>(Expression<Func<T, U>> prefix, string property)
   {
     var parameter = Expression.Parameter(typeof(T));
     var callExpression = Expression.Invoke(prefix, parameter);
-    var foreignKeyExpression = ForeignKeyOf<T>(joinType.Name);
+    var foreignKeyExpression = ForeignKeyOf<U>(property);
     return Expression.Lambda<Func<T, object>>(
       Expression.Invoke(foreignKeyExpression, callExpression), parameter);
   }
