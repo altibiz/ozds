@@ -176,7 +176,7 @@ publish *args:
     --configuration Release \
     {{args}}
 
-[confirm("This will clean app data and docker containers. Do you want to continue?")]
+[confirm("This will clean docker containers. Do you want to continue?")]
 clean:
   docker compose down -v
   docker compose up -d
@@ -191,7 +191,7 @@ clean:
       psql \
       --disable-triggers
 
-[confirm("This will clean app data, docker containers and dotnet artifacts. Do you want to continue?")]
+[confirm("This will clean docker containers and dotnet artifacts. Do you want to continue?")]
 purge:
   git clean -Xdf \
     -e !.vscode/ \
@@ -208,3 +208,13 @@ purge:
 
   docker compose down -v
   docker compose up -d
+
+  dotnet ef \
+    --startup-project "{{servercsproj}}" \
+    --project "{{datacsproj}}" \
+    database update
+
+  cat "{{assets}}/current.sql" | \
+    docker exec -i ozds-postgres-1 \
+      psql \
+      --disable-triggers
