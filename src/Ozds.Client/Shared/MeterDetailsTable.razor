@@ -36,21 +36,19 @@
                 @T["Prvo očitanje"]:
                 @if (dataStruct.data.monthEndTotal is not null)
                   @(FloatString(dataStruct.data.monthEndTotal / 1000, 0)) kWh
-              
+
               </MudContainer>
               <MudContainer>
                 @T["Zadnje očitanje"]:
                 @if (dataStruct.data.monthStartTotal is not null)
                   @(FloatString(dataStruct.data.monthStartTotal / 1000, 0)) kWh
-              
+
               </MudContainer>
               <MudContainer Style="font-size: large; font-weight:bold;">
                 @T["Ukupna potrošnja"]:
-                @* @if (dataStruct.data.monthStartTotal is not null && dataStruct.data.monthEndTotal is not null)
-                  @(FloatString((dataStruct.data.monthStartTotal - dataStruct.data.monthEndTotal) / 1000, 0)) kWh *@
                 @if (dataStruct.data.monthStartTotal is not null && dataStruct.data.monthEndTotal is not null)
-                  @(FloatString(dataStruct.data.monthStartTotal - dataStruct.data.monthEndTotal, 0)) Wh
-              
+                  @(FloatString((dataStruct.data.monthStartTotal - dataStruct.data.monthEndTotal) / 1000, 0)) kWh
+
               </MudContainer>
               <MudContainer Style="font-weight:bold;">
                 @T["Maksimalna snaga"]:
@@ -100,7 +98,7 @@
           <CellTemplate>
             @if (context.Item.monthEndTotal is not null)
               @(FloatString(context.Item.monthEndTotal / 1000, 0) + " kWh")
-          
+
           </CellTemplate>
         </PropertyColumn>
         <PropertyColumn
@@ -110,7 +108,7 @@
           <CellTemplate>
             @if (context.Item.monthStartTotal is not null)
               @(FloatString(context.Item.monthStartTotal / 1000, 0) + " kWh")
-          
+
           </CellTemplate>
         </PropertyColumn>
         <PropertyColumn
@@ -118,11 +116,9 @@
           Property="x => x.monthStartTotal - x.monthEndTotal"
           Title='@T["Ukupna potrošnja"]'>
           <CellTemplate>
-            @* @if (context.Item.monthStartTotal is not null && context.Item.monthEndTotal is not null)
-              @(FloatString((context.Item.monthStartTotal - context.Item.monthEndTotal) / 1000, 0) + " kWh") *@
             @if (context.Item.monthStartTotal is not null && context.Item.monthEndTotal is not null)
-              @(FloatString(context.Item.monthStartTotal - context.Item.monthEndTotal, 0) + " Wh")
-          
+              @(FloatString((context.Item.monthStartTotal - context.Item.monthEndTotal) / 1000, 0) + " kWh")
+
           </CellTemplate>
         </PropertyColumn>
         <PropertyColumn

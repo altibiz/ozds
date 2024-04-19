@@ -26,8 +26,7 @@
           </MudItem>
           <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
             @T["Potrošnja u tekućem mjesecu"]: <br>
-            @* @DecimalString(dataStruct.data.thisMonthUsage / 1000, 0) kWh *@
-            @DecimalString(dataStruct.data.thisMonthUsage, 0) Wh
+            @DecimalString(dataStruct.data.thisMonthUsage / 1000, 0) kWh
           </MudItem>
           @if (dataStruct.data.lastMonthsPayment is not null && false)
           {
@@ -125,8 +124,7 @@
         Property="x => x.thisMonthUsage"
         Title='@T["Potrošnja u tekućem mjesecu"]'>
         <CellTemplate>
-          @* @(DecimalString(context.Item.thisMonthUsage / 1000, 0) + " kWh") *@
-          @(DecimalString(context.Item.thisMonthUsage, 0) + " Wh")
+          @(DecimalString(context.Item.thisMonthUsage / 1000, 0) + " kWh")
         </CellTemplate>
       </PropertyColumn>
       @if (false)

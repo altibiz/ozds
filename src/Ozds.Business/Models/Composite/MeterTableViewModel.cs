@@ -7,5 +7,5 @@ public record MeterTableViewModel(
   NetworkUserModel NetworkUser,
   MeasurementLocationModel MeasurementLocation,
   MeterModel Meter,
-  List<AggregateModel> Aggregates
+  IEnumerable<AggregateModel> Aggregates
 );

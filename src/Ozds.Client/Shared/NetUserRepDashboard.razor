@@ -13,8 +13,7 @@
         </MudItem>
         <MudContainer Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
           <MudText Typo="Typo.h4">
-            @* @(DecimalString(_thisMonthTotal / 1000, 0) + " kWh") *@
-            @(DecimalString(_thisMonthTotal, 0) + " Wh")
+            @(DecimalString(_thisMonthTotal / 1000, 0) + " kWh")
           </MudText>
         </MudContainer>
       </MudPaper>
@@ -70,11 +69,9 @@
         </MudItem>
         <MudContainer Class="d-flex align-end justify-center" MaxWidth="MaxWidth.Small">
           <MudText Typo="Typo.h1">
-            @* @(DecimalString(_thisMonthTotal / 1000, 0)) *@
-            @(DecimalString(_thisMonthTotal, 0))
+            @(DecimalString(_thisMonthTotal / 1000, 0))
           </MudText>
-          @* <MudText Typo="Typo.h4" Class="mb-3 ml-1">kWh</MudText> *@
-          <MudText Typo="Typo.h4" Class="mb-3 ml-1">Wh</MudText>
+          <MudText Typo="Typo.h4" Class="mb-3 ml-1">kWh</MudText>
         </MudContainer>
         <MudItem Class="" Style="font-size: large; font-weight: bold;color: white;">
           <MudText Typo="Typo.h6">

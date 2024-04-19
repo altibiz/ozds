@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Conversion;
+using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Models;
+using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Composite;
 using Ozds.Business.Models.Enums;
@@ -8,6 +10,7 @@ using Ozds.Business.Queries.Abstractions;
 using Ozds.Data;
 using Ozds.Data.Entities;
 using Ozds.Data.Entities.Base;
+using Ozds.Data.Entities.Enums;
 using Ozds.Data.Extensions;
 
 namespace Ozds.Business.Queries;
@@ -16,9 +19,12 @@ public class OzdsMeterTableQueries : IOzdsQueries
 {
   protected readonly OzdsDbContext context;
 
-  public OzdsMeterTableQueries(OzdsDbContext context)
+  protected readonly AgnosticModelEntityConverter modelEntityConverter;
+
+  public OzdsMeterTableQueries(OzdsDbContext context, AgnosticModelEntityConverter modelEntityConverter)
   {
     this.context = context;
+    this.modelEntityConverter = modelEntityConverter;
   }
 
   // public async Task<List<MeterTableViewModel>>
@@ -112,13 +118,14 @@ public class OzdsMeterTableQueries : IOzdsQueries
   //     .ToList();
   // }
 
-  private readonly struct NetworkUserMeasurementLocationJoin
+  private readonly struct ViewModelStruct
   {
     public LocationEntity Location { get; init; }
     public NetworkUserEntity NetworkUser { get; init; }
     public NetworkUserMeasurementLocationEntity MeasurementLocation { get; init; }
-    public NetworkUserCatalogueEntity NetworkUserCatalogue { get; init; }
-    public RegulatoryCatalogueEntity RegulatoryCatalogue { get; init; }
+    public MeterEntity Meter { get; init; }
+    public AbbB2xAggregateEntity? AbbAggregate { get; init; }
+    public SchneideriEM3xxxAggregateEntity? SchneiderAggregate { get; init; }
   };
 
   public async Task<List<MeterTableViewModel>>
@@ -138,39 +145,95 @@ public class OzdsMeterTableQueries : IOzdsQueries
             .Include(x => x.NetworkUserCatalogue),
           context.PrimaryKeyOf<NetworkUserEntity>(),
           context.ForeignKeyOf<NetworkUserMeasurementLocationEntity>(nameof(NetworkUserMeasurementLocationEntity.NetworkUser)),
-          (networkUser, measurementLocation) => new NetworkUserMeasurementLocationJoin
+          (networkUser, measurementLocation) => new ViewModelStruct
           {
             Location = networkUser.Location,
             NetworkUser = networkUser,
-            MeasurementLocation = measurementLocation,
-            NetworkUserCatalogue = measurementLocation.NetworkUserCatalogue,
-            RegulatoryCatalogue = networkUser.Location.RegulatoryCatalogue
+            MeasurementLocation = measurementLocation
           }
         )
         .Join(
           context.Meters,
           context.ForeignKeyOf(
-            (NetworkUserMeasurementLocationJoin x) => x.MeasurementLocation,
+            (ViewModelStruct x) => x.MeasurementLocation,
             nameof(MeasurementLocationEntity.Meter)
           ),
           context.PrimaryKeyOf<MeterEntity>(),
-          (x, meter) => new
+          (x, meter) => new ViewModelStruct
+          {
+            Location = x.Location,
+            NetworkUser = x.NetworkUser,
+            MeasurementLocation = x.MeasurementLocation,
+            Meter = meter
+          }
+        )
+        .GroupJoin(
+          context.AbbB2xAggregates
+            .Where(x => x.Timestamp >= fromDate)
+            .Where(x => x.Timestamp <= toDate)
+            .Where(x =>
+              x.Interval == IntervalEntity.QuarterHour ||
+              x.Interval == IntervalEntity.Month),
+          context.PrimaryKeyOf((ViewModelStruct x) => x.Meter),
+          context.ForeignKeyOf<AbbB2xAggregateEntity>(nameof(AbbB2xAggregateEntity.Meter)),
+          (x, abbB2xAggregates) => new
           {
             x.Location,
             x.NetworkUser,
             x.MeasurementLocation,
-            x.NetworkUserCatalogue,
-            x.RegulatoryCatalogue,
-            Meter = meter
+            x.Meter,
+            AbbAggregates = abbB2xAggregates
           }
-        );
-    return (await query.ToListAsync())
+        )
+        .SelectMany(x => x.AbbAggregates.DefaultIfEmpty(),
+        (x, abbAggregate) => new ViewModelStruct
+        {
+          Location = x.Location,
+          NetworkUser = x.NetworkUser,
+          MeasurementLocation = x.MeasurementLocation,
+          Meter = x.Meter,
+          AbbAggregate = abbAggregate
+        })
+        .GroupJoin(
+          context.SchneideriEM3xxxAggregates
+            .Where(x => x.Timestamp >= fromDate)
+            .Where(x => x.Timestamp <= toDate)
+            .Where(x =>
+              x.Interval == IntervalEntity.QuarterHour ||
+              x.Interval == IntervalEntity.Month),
+          context.PrimaryKeyOf((ViewModelStruct x) => x.Meter),
+          context.ForeignKeyOf<SchneideriEM3xxxAggregateEntity>(nameof(SchneideriEM3xxxAggregateEntity.Meter)),
+          (x, schneideriEM3xxxAggregate) => new
+          {
+            x.Location,
+            x.NetworkUser,
+            x.MeasurementLocation,
+            x.Meter,
+            x.AbbAggregate,
+            SchneiderAggregate = schneideriEM3xxxAggregate
+          }
+        )
+        .SelectMany(x => x.SchneiderAggregate.DefaultIfEmpty(), (x, schneiderAggregate) => new ViewModelStruct
+        {
+          Location = x.Location,
+          NetworkUser = x.NetworkUser,
+          MeasurementLocation = x.MeasurementLocation,
+          Meter = x.Meter,
+          AbbAggregate = x.AbbAggregate,
+          SchneiderAggregate = schneiderAggregate
+        });
+    var result = await query.ToListAsync();
+    var grouped = result.GroupBy(x => x.MeasurementLocation.Id);
+    return grouped
       .Select(x => new MeterTableViewModel(
-        x.Location.ToModel(),
-        x.NetworkUser.ToModel(),
-        x.MeasurementLocation.ToModel(),
-        x.Meter.ToModel(),
-        Enumerable.Empty<AggregateModel>().ToList()
+        x.FirstOrDefault()!.Location.ToModel(),
+        x.FirstOrDefault()!.NetworkUser.ToModel(),
+        x.FirstOrDefault()!.MeasurementLocation.ToModel(),
+        x.FirstOrDefault()!.Meter.ToModel(),
+        Enumerable.Empty<AggregateModel>()
+        .Concat(x.Select(x => x.AbbAggregate?.ToModel()).Where(x => x is not null).OfType<AggregateModel>())
+        .Concat(x.Select(x => x.SchneiderAggregate?.ToModel()).Where(x => x is not null).OfType<AggregateModel>())
+        .ToList()
       ))
       .ToList();
   }
