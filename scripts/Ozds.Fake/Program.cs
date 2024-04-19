@@ -45,7 +45,6 @@ if (options.Seed is { } seed)
       ? now
       : seedTimeBegin.AddDays(1);
 
-
     var measurements = new List<MessengerPushRequestMeasurement>();
     foreach (var meterId in options.MeterIds)
     {
@@ -73,6 +72,8 @@ if (options.Seed is { } seed)
 
     seedTimeBegin = seedTimeEnd;
   }
+
+  return;
 }
 
 while (true)

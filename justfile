@@ -1,6 +1,7 @@
 # TODO: rm -rf on windows
 
-set windows-shell := ["pwsh.exe", "-c"]
+set windows-shell := ["nu.exe", "-c"]
+set shell := ["nu", "-c"]
 
 root := absolute_path('')
 assets := absolute_path('assets')
@@ -11,7 +12,6 @@ jbcache := absolute_path('.jb/cache')
 jbcleanuplog := absolute_path('.jb/cleanup.log')
 jbinspectlog := absolute_path('.jb/inspect.log')
 artifacts := absolute_path('artifacts')
-appdata := absolute_path('App_Data')
 servercsproj := absolute_path('src/Ozds.Server/Ozds.Server.csproj')
 datacsproj := absolute_path('src/Ozds.Data/Ozds.Data.csproj')
 fakecsproj := absolute_path('scripts/Ozds.Fake/Ozds.Fake.csproj')
@@ -29,13 +29,22 @@ prepare:
   dvc pull
   dotnet tool restore
   prettier --version || npm install -g prettier
-  # remark --version || npm install -g remark
+
   docker compose up -d
+
+  dotnet ef \
+    --startup-project "{{servercsproj}}" \
+    --project "{{datacsproj}}" \
+    database update
+
+  cat "{{assets}}/current.sql" | \
+    docker exec -i ozds-postgres-1 \
+      psql \
+      --disable-triggers
 
 ci:
   dotnet tool restore
   prettier --version || npm install -g prettier
-  # remark --version || npm install -g remark
 
 dev *args:
   dotnet watch --project "{{servercsproj}}" {{args}}
@@ -104,25 +113,27 @@ lint:
 test *args:
   dotnet test "{{sln}}" {{args}}
 
-dump name:
-  pg_dump \
-    --data-only \
-    --schema=public \
-    --exclude-table-data=%aggregates,%measurements \
-    > "{{assets}}}/{{name}}.sql"
+dump:
+  docker exec -i ozds-postgres-1 \
+    pg_dump \
+      --data-only \
+      --schema=public \
+      --exclude-table-data=%aggregates,%measurements | \
+    save -f "{{assets}}}/current.sql"
 
-migrate previous name:
+migrate name:
   docker compose down -v
   docker compose up -d
 
   dotnet ef \
     --startup-project "{{servercsproj}}" \
     --project "{{datacsproj}}" \
-    database update \
-    "{{previous}}"
+    database update
 
-  psql --disable-triggers \
-    --file="{{assets}}/{{previous}}.sql"
+  docker exec -i ozds-postgres-1 \
+    psql \
+      --disable-triggers \
+      --file="{{assets}}/current.sql"
 
   dotnet ef \
     --startup-project "{{servercsproj}}" \
@@ -138,11 +149,16 @@ migrate previous name:
     database update \
     "{{name}}"
 
-  pg_dump \
-    --data-only \
-    --schema=public \
-    --exclude-table-data=%aggregates,%measurements \
-    > "{{assets}}}/{{name}}.sql"
+  docker exec -i ozds-postgres-1 \
+    pg_dump \
+      --data-only \
+      --schema=public \
+      --exclude-table-data=%aggregates,%measurements | \
+    save -f "{{assets}}}/{{name}}.sql"
+
+  cp -f \
+    "{{assets}}/{{name}}.sql" \
+    "{{assets}}/current.sql"
 
   mermerd \
     --schema public \
@@ -162,15 +178,21 @@ publish *args:
 
 [confirm("This will clean app data and docker containers. Do you want to continue?")]
 clean:
-  # rm -rf "{{appdata}}"
-
   docker compose down -v
   docker compose up -d
 
+  dotnet ef \
+    --startup-project "{{servercsproj}}" \
+    --project "{{datacsproj}}" \
+    database update
+
+  cat "{{assets}}/current.sql" | \
+    docker exec -i ozds-postgres-1 \
+      psql \
+      --disable-triggers
+
 [confirm("This will clean app data, docker containers and dotnet artifacts. Do you want to continue?")]
 purge:
-  # rm -rf "{{appdata}}"
-
   git clean -Xdf \
     -e !.vscode/ \
     -e !.vscode/** \
@@ -179,7 +201,6 @@ purge:
     -e !.idea/ \
     -e !.idea/** \
     -e !**/*.csproj.user \
-    -e !App_Data/ \
     -e !.direnv/ \
     -e !.direnv/bin/
   dotnet tool restore
