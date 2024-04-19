@@ -3,6 +3,7 @@
 set windows-shell := ["pwsh.exe", "-c"]
 
 root := absolute_path('')
+assets := absolute_path('assets')
 sln := absolute_path('ozds.sln')
 gitignore := absolute_path('.gitignore')
 prettierignore := absolute_path('.prettierignore')
@@ -103,7 +104,26 @@ lint:
 test *args:
   dotnet test "{{sln}}" {{args}}
 
-migrate name:
+dump name:
+  pg_dump \
+    --data-only \
+    --schema=public \
+    --exclude-table-data=%aggregates,%measurements \
+    > "{{assets}}}/{{name}}.sql"
+
+migrate previous name:
+  docker compose down -v
+  docker compose up -d
+
+  dotnet ef \
+    --startup-project "{{servercsproj}}" \
+    --project "{{datacsproj}}" \
+    database update \
+    "{{previous}}"
+
+  psql --disable-triggers \
+    --file="{{assets}}/{{previous}}.sql"
+
   dotnet ef \
     --startup-project "{{servercsproj}}" \
     --project "{{datacsproj}}" \
@@ -117,6 +137,12 @@ migrate name:
     --project "{{datacsproj}}" \
     database update \
     "{{name}}"
+
+  pg_dump \
+    --data-only \
+    --schema=public \
+    --exclude-table-data=%aggregates,%measurements \
+    > "{{assets}}}/{{name}}.sql"
 
   mermerd \
     --schema public \
