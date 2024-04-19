@@ -9,4 +9,6 @@ public interface IModelEntityConverter
   object ToEntity(object model);
 
   object ToModel(object entity);
+
+  Type EntityType();
 }

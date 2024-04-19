@@ -32,7 +32,7 @@ public class OzdsAggregateQueries : IOzdsQueries
     int pageCount = QueryConstants.DefaultPageCount
   ) where T : class, IAggregate
   {
-    var dbSetType = _modelEntityConverter.DbSetType(typeof(T));
+    var dbSetType = _modelEntityConverter.EntityType(typeof(T));
     var queryable =
       _context.GetDbSet(dbSetType) as IQueryable<AggregateEntity>
       ?? throw new InvalidOperationException();

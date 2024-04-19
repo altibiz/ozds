@@ -13,29 +13,15 @@ public class AgnosticModelEntityConverter
     _serviceProvider = serviceProvider;
   }
 
-  public Type DbSetType(Type type)
+  public Type EntityType(Type type)
   {
-    if (type == typeof(SchneideriEM3xxxMeasurementModel))
-    {
-      return typeof(SchneideriEM3xxxMeasurementEntity);
-    }
-
-    if (type == typeof(AbbB2xMeasurementModel))
-    {
-      return typeof(AbbB2xMeasurementEntity);
-    }
-
-    if (type == typeof(SchneideriEM3xxxAggregateModel))
-    {
-      return typeof(SchneideriEM3xxxAggregateEntity);
-    }
-
-    if (type == typeof(AbbB2xAggregateModel))
-    {
-      return typeof(AbbB2xAggregateEntity);
-    }
-
-    throw new NotImplementedException();
+    return _serviceProvider
+             .GetServices<IModelEntityConverter>()
+             .FirstOrDefault(converter =>
+               converter.CanConvertToEntity(type))
+             ?.EntityType()
+           ?? throw new InvalidOperationException(
+             $"No converter found for model {type}.");
   }
 
   public object ToEntity(object model)

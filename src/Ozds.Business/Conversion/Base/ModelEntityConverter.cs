@@ -31,6 +31,11 @@ public abstract class ModelEntityConverter<TModel, TEntity> : TypeConverter,
                    throw new ArgumentNullException(nameof(entity)));
   }
 
+  public Type EntityType()
+  {
+    return typeof(TEntity);
+  }
+
   protected abstract TEntity ToEntity(TModel model);
 
   protected abstract TModel ToModel(TEntity entity);

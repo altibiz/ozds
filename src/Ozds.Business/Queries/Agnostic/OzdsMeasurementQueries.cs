@@ -32,7 +32,7 @@ public class OzdsMeasurementQueries : IOzdsQueries
     int pageCount = QueryConstants.DefaultPageCount
   ) where T : class, IMeasurement
   {
-    var dbSetType = _modelEntityConverter.DbSetType(typeof(T));
+    var dbSetType = _modelEntityConverter.EntityType(typeof(T));
     var queryable =
       _context.GetDbSet(dbSetType) as IQueryable<MeasurementEntity>
       ?? throw new InvalidOperationException("fjkdasl;fjsa");
