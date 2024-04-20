@@ -1,69 +1,50 @@
-using System.Globalization;
 using Microsoft.AspNetCore.Components;
-using Ozds.Business.Time;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Ozds.Client.Base;
 
-public abstract class OzdsOwningComponentBase : OwningComponentBase
+public abstract class OzdsOwningComponentBase : OzdsComponentBase, IDisposable
 {
-  public static OzdsComponentLocalizer T
-  {
-    get { return new OzdsComponentLocalizer(); }
-  }
+  private AsyncServiceScope? _scope;
 
-  protected static string DecimalString(decimal? number, int places = 2)
+  [Inject]
+  private IServiceScopeFactory ScopeFactory { get; set; } = default!;
+
+  protected bool IsDisposed { get; private set; }
+
+  protected IServiceProvider ScopedServices
   {
-    if (number is null)
+    get
     {
-      return "";
+      if (ScopeFactory == null)
+      {
+        throw new InvalidOperationException(
+          "Services cannot be accessed before the component is initialized."
+        );
+      }
+      ObjectDisposedException.ThrowIf(IsDisposed, this);
+      if (!_scope.HasValue)
+      {
+        _scope = ScopeFactory.CreateAsyncScope();
+      }
+      return _scope.Value.ServiceProvider;
     }
-
-    var cultureInfo = new CultureInfo("hr-HR");
-
-    var numberFormatInfo = (NumberFormatInfo)cultureInfo.NumberFormat.Clone();
-    numberFormatInfo.NumberGroupSeparator = ".";
-    numberFormatInfo.NumberDecimalDigits = places;
-
-    var roundedNumber = Math.Round(number.Value, places);
-    return roundedNumber.ToString("N", numberFormatInfo);
   }
 
-  protected static string FloatString(float? number, int places = 2)
+#pragma warning disable CA1816
+  void IDisposable.Dispose()
   {
-    if (number is null)
+    if (!IsDisposed)
     {
-      return "";
+      _scope?.Dispose();
+      _scope = null;
+      Dispose(disposing: true);
+      IsDisposed = true;
     }
-
-    var cultureInfo = new CultureInfo("hr-HR");
-
-    var numberFormatInfo = (NumberFormatInfo)cultureInfo.NumberFormat.Clone();
-    numberFormatInfo.NumberGroupSeparator = ".";
-    numberFormatInfo.NumberDecimalDigits = places;
-
-    var roundedNumber = Math.Round(number.Value, places);
-    return roundedNumber.ToString("N", numberFormatInfo);
   }
+#pragma warning restore CA1816
 
-  protected static string DateString(DateTimeOffset? dateTimeOffset)
+  protected virtual void Dispose(bool disposing)
   {
-    if (dateTimeOffset is null)
-    {
-      return "";
-    }
-
-    var cultureInfo = new CultureInfo("hr-HR");
-
-    var withTimezone = dateTimeOffset
-      .Value
-      .ToOffset(DateTimeOffsetExtensions.DefaultOffset);
-
-    return withTimezone.ToString("dd. MM. yyyy.", cultureInfo);
-  }
-
-  protected static DateTimeOffset DateTimeGraph(DateTimeOffset dateTimeOffset)
-  {
-    return dateTimeOffset.UtcDateTime.Add(
-      DateTimeOffsetExtensions.DefaultOffset);
   }
 }

@@ -1,4 +1,5 @@
 using System.Globalization;
+using ApexCharts;
 using Microsoft.AspNetCore.Components;
 using Ozds.Business.Time;
 
@@ -6,6 +7,19 @@ namespace Ozds.Client.Base;
 
 public abstract class OzdsComponentBase : ComponentBase
 {
+  public static ApexChartOptions<T> NewApexChartOptions<T>() where T : class
+  {
+    var options = new ApexChartOptions<T>()
+    {
+      Blazor = new ApexChartsBlazorOptions
+      {
+        JavascriptPath = "/_content/Blazor-ApexCharts/js/blazor-apexcharts.js"
+      }
+    };
+
+    return options;
+  }
+
   public static OzdsComponentLocalizer T
   {
     get { return new OzdsComponentLocalizer(); }

@@ -68,33 +68,25 @@
     }
 
 
-    graphOptionsMob = new ApexChartOptions<ChartData>
+    graphOptionsMob = NewApexChartOptions<ChartData>();
+    graphOptionsMob.Grid = new Grid
     {
-      Grid = new Grid
+      BorderColor = "#e7e7e7",
+      Row = new GridRow
       {
-        BorderColor = "#e7e7e7",
-        Row = new GridRow
-        {
-          Colors = new List<string> { "#f3f3f3", "transparent" },
-          Opacity = 0.5d
-        }
+        Colors = new List<string> { "#f3f3f3", "transparent" },
+        Opacity = 0.5d
       }
     };
-    graphOptions = new ApexChartOptions<ChartData>
+    graphOptions = NewApexChartOptions<ChartData>();
+    graphOptions.Grid = new Grid
     {
-      Grid = new Grid
+      BorderColor = "#e7e7e7",
+      Row = new GridRow
       {
-        BorderColor = "#e7e7e7",
-        Row = new GridRow
-        {
-          Colors = new List<string> { "#f3f3f3", "transparent" },
-          Opacity = 0.5d
-        }
+        Colors = new List<string> { "#f3f3f3", "transparent" },
+        Opacity = 0.5d
       }
-    };
-    graphOptions.Blazor = new ApexChartsBlazorOptions
-    {
-      JavascriptPath = "/_content/Blazor-ApexCharts/js/blazor-apexcharts.js"
     };
     graphOptions.Chart = new Chart
     {
