@@ -29,9 +29,37 @@
   <MudCard>
     <MudCardContent>
       <MudTextField
-        Label="Ime"
+        Label="Naziv"
         @bind-Value="LoadingState.Value.Title"
         For="@(() => LoadingState.Value.Title)"/>
+      <MudTextField
+        Label="Ime"
+        @bind-Value="LoadingState.Value.LegalPerson.Name"
+        For="@(() => LoadingState.Value.LegalPerson.Name)"/>
+      <MudTextField
+        Label="OIB"
+        @bind-Value="LoadingState.Value.LegalPerson.SocialSecurityNumber"
+        For="@(() => LoadingState.Value.LegalPerson.SocialSecurityNumber)"/>
+      <MudTextField
+        Label="Adresa"
+        @bind-Value="LoadingState.Value.LegalPerson.Address"
+        For="@(() => LoadingState.Value.LegalPerson.Address)"/>
+      <MudTextField
+        Label="Poštanski broj"
+        @bind-Value="LoadingState.Value.LegalPerson.PostalCode"
+        For="@(() => LoadingState.Value.LegalPerson.PostalCode)"/>
+      <MudTextField
+        Label="Grad"
+        @bind-Value="LoadingState.Value.LegalPerson.City"
+        For="@(() => LoadingState.Value.LegalPerson.City)"/>
+      <MudTextField
+        Label="Email adresa"
+        @bind-Value="LoadingState.Value.LegalPerson.Email"
+        For="@(() => LoadingState.Value.LegalPerson.Email)"/>
+      <MudTextField
+        Label="Broj telefona"
+        @bind-Value="LoadingState.Value.LegalPerson.PhoneNumber"
+        For="@(() => LoadingState.Value.LegalPerson.PhoneNumber)"/>
       <MudSelect
         Label="Lokacija"
         AnchorOrigin="Origin.BottomCenter"
