@@ -158,6 +158,7 @@ dump:
         --exclude-table-data='"User"*' \
         --exclude-table-data=%aggregates \
         --exclude-table-data=%measurements \
+        --exclude-table-data='"__EFMigrationsHistory"' \
     out> "{{assets}}/current.sql"
 
 migrate name:
@@ -216,7 +217,9 @@ migrate name:
     ozds-postgres-1 \
       pg_dump \
         --schema=public \
-        --table=Document,Identifiers,User% \
+        --table='"Document"' \
+        --table='"Identifiers"' \
+        --table='"User"*' \
     out> "{{assets}}/{{name}}-orchard.sql"
 
   cp -f \
@@ -234,7 +237,12 @@ migrate name:
       pg_dump \
         --data-only \
         --schema=public \
-        --exclude-table-data=Document,Identifiers,User%,%aggregates,%measurements \
+        --exclude-table-data='"Document"' \
+        --exclude-table-data='"Identifiers"' \
+        --exclude-table-data='"User"*' \
+        --exclude-table-data=%aggregates \
+        --exclude-table-data=%measurements \
+        --exclude-table-data='"__EFMigrationsHistory"' \
     out> "{{assets}}/{{name}}.sql"
 
   cp -f \
