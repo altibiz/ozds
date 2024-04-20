@@ -42,6 +42,23 @@ public abstract class OzdsComponentBase : ComponentBase
     return roundedNumber.ToString("N", numberFormatInfo);
   }
 
+  protected static string FloatString(float? number, int places = 2)
+  {
+    if (number is null)
+    {
+      return "";
+    }
+
+    var cultureInfo = new CultureInfo("hr-HR");
+
+    var numberFormatInfo = (NumberFormatInfo)cultureInfo.NumberFormat.Clone();
+    numberFormatInfo.NumberGroupSeparator = ".";
+    numberFormatInfo.NumberDecimalDigits = places;
+
+    var roundedNumber = Math.Round(number.Value, places);
+    return roundedNumber.ToString("N", numberFormatInfo);
+  }
+
   protected static string DateString(DateTimeOffset? dateTimeOffset)
   {
     if (dateTimeOffset is null)
