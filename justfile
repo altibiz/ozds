@@ -30,12 +30,13 @@ prepare:
 
   cat "{{assets}}/current-orchard.sql" | \
     docker exec \
-      -e PGHOST="localhost" \
-      -e PGPORT="5432" \
-      -e PGDATABASE="ozds" \
-      -e PGUSER="ozds" \
-      -e PGPASSWORD="ozds" \
-      -i ozds-postgres-1 \
+      --env PGHOST="localhost" \
+      --env PGPORT="5432" \
+      --env PGDATABASE="ozds" \
+      --env PGUSER="ozds" \
+      --env PGPASSWORD="ozds" \
+      --interactive \
+      ozds-postgres-1 \
         psql
 
   dotnet ef \
@@ -45,12 +46,13 @@ prepare:
 
   cat "{{assets}}/current.sql" | \
     docker exec \
-      -e PGHOST="localhost" \
-      -e PGPORT="5432" \
-      -e PGDATABASE="ozds" \
-      -e PGUSER="ozds" \
-      -e PGPASSWORD="ozds" \
-      -i ozds-postgres-1 \
+      --env PGHOST="localhost" \
+      --env PGPORT="5432" \
+      --env PGDATABASE="ozds" \
+      --env PGUSER="ozds" \
+      --env PGPASSWORD="ozds" \
+      --interactive \
+      ozds-postgres-1 \
         psql
 
 ci:
@@ -126,12 +128,13 @@ test *args:
 
 dump:
   docker exec \
-    -e PGHOST="localhost" \
-    -e PGPORT="5432" \
-    -e PGDATABASE="ozds" \
-    -e PGUSER="ozds" \
-    -e PGPASSWORD="ozds" \
-    -i ozds-postgres-1 \
+    --env PGHOST="localhost" \
+    --env PGPORT="5432" \
+    --env PGDATABASE="ozds" \
+    --env PGUSER="ozds" \
+    --env PGPASSWORD="ozds" \
+    --interactive \
+    ozds-postgres-1 \
       pg_dump \
         --schema=public \
         --table=Document \
@@ -140,12 +143,13 @@ dump:
     out> "{{assets}}/current-orchard.sql"
 
   docker exec \
-    -e PGHOST="localhost" \
-    -e PGPORT="5432" \
-    -e PGDATABASE="ozds" \
-    -e PGUSER="ozds" \
-    -e PGPASSWORD="ozds" \
-    -i ozds-postgres-1 \
+    --env PGHOST="localhost" \
+    --env PGPORT="5432" \
+    --env PGDATABASE="ozds" \
+    --env PGUSER="ozds" \
+    --env PGPASSWORD="ozds" \
+    --interactive \
+    ozds-postgres-1 \
       pg_dump \
         --data-only \
         --schema=public \
@@ -163,12 +167,13 @@ migrate name:
 
   cat "{{assets}}/current-orchard.sql" | \
     docker exec \
-      -e PGHOST="localhost" \
-      -e PGPORT="5432" \
-      -e PGDATABASE="ozds" \
-      -e PGUSER="ozds" \
-      -e PGPASSWORD="ozds" \
-      -i ozds-postgres-1 \
+      --env PGHOST="localhost" \
+      --env PGPORT="5432" \
+      --env PGDATABASE="ozds" \
+      --env PGUSER="ozds" \
+      --env PGPASSWORD="ozds" \
+      --interactive \
+      ozds-postgres-1 \
         psql
 
   dotnet ef \
@@ -178,12 +183,13 @@ migrate name:
 
   cat "{{assets}}/current.sql" | \
     docker exec \
-      -e PGHOST="localhost" \
-      -e PGPORT="5432" \
-      -e PGDATABASE="ozds" \
-      -e PGUSER="ozds" \
-      -e PGPASSWORD="ozds" \
-      -i ozds-postgres-1 \
+      --env PGHOST="localhost" \
+      --env PGPORT="5432" \
+      --env PGDATABASE="ozds" \
+      --env PGUSER="ozds" \
+      --env PGPASSWORD="ozds" \
+      --interactive \
+      ozds-postgres-1 \
         psql
 
   dotnet ef \
@@ -201,12 +207,13 @@ migrate name:
     "{{name}}"
 
   docker exec \
-    -e PGHOST="localhost" \
-    -e PGPORT="5432" \
-    -e PGDATABASE="ozds" \
-    -e PGUSER="ozds" \
-    -e PGPASSWORD="ozds" \
-    -i ozds-postgres-1 \
+    --env PGHOST="localhost" \
+    --env PGPORT="5432" \
+    --env PGDATABASE="ozds" \
+    --env PGUSER="ozds" \
+    --env PGPASSWORD="ozds" \
+    --interactive \
+    ozds-postgres-1 \
       pg_dump \
         --schema=public \
         --table=Document,Identifiers,User% \
@@ -217,12 +224,13 @@ migrate name:
     "{{assets}}/current-orchard.sql"
 
   docker exec \
-    -e PGHOST="localhost" \
-    -e PGPORT="5432" \
-    -e PGDATABASE="ozds" \
-    -e PGUSER="ozds" \
-    -e PGPASSWORD="ozds" \
-    -i ozds-postgres-1 \
+    --env PGHOST="localhost" \
+    --env PGPORT="5432" \
+    --env PGDATABASE="ozds" \
+    --env PGUSER="ozds" \
+    --env PGPASSWORD="ozds" \
+    --interactive \
+    ozds-postgres-1 \
       pg_dump \
         --data-only \
         --schema=public \
@@ -257,12 +265,13 @@ clean:
 
   cat "{{assets}}/current-orchard.sql" | \
     docker exec \
-      -e PGHOST="localhost" \
-      -e PGPORT="5432" \
-      -e PGDATABASE="ozds" \
-      -e PGUSER="ozds" \
-      -e PGPASSWORD="ozds" \
-      -i ozds-postgres-1 \
+      --env PGHOST="localhost" \
+      --env PGPORT="5432" \
+      --env PGDATABASE="ozds" \
+      --env PGUSER="ozds" \
+      --env PGPASSWORD="ozds" \
+      --interactive \
+      ozds-postgres-1 \
         psql
 
   dotnet ef \
@@ -272,12 +281,13 @@ clean:
 
   cat "{{assets}}/current.sql" | \
     docker exec \
-      -e PGHOST="localhost" \
-      -e PGPORT="5432" \
-      -e PGDATABASE="ozds" \
-      -e PGUSER="ozds" \
-      -e PGPASSWORD="ozds" \
-      -i ozds-postgres-1 \
+      --env PGHOST="localhost" \
+      --env PGPORT="5432" \
+      --env PGDATABASE="ozds" \
+      --env PGUSER="ozds" \
+      --env PGPASSWORD="ozds" \
+      --interactive \
+      ozds-postgres-1 \
         psql
 
 [confirm("This will clean docker containers and dotnet artifacts. Do you want to continue?")]
@@ -301,12 +311,13 @@ purge:
 
   cat "{{assets}}/current-orchard.sql" | \
     docker exec \
-      -e PGHOST="localhost" \
-      -e PGPORT="5432" \
-      -e PGDATABASE="ozds" \
-      -e PGUSER="ozds" \
-      -e PGPASSWORD="ozds" \
-      -i ozds-postgres-1 \
+      --env PGHOST="localhost" \
+      --env PGPORT="5432" \
+      --env PGDATABASE="ozds" \
+      --env PGUSER="ozds" \
+      --env PGPASSWORD="ozds" \
+      --interactive \
+      ozds-postgres-1 \
         psql
 
   dotnet ef \
@@ -316,10 +327,11 @@ purge:
 
   cat "{{assets}}/current.sql" | \
     docker exec \
-      -e PGHOST="localhost" \
-      -e PGPORT="5432" \
-      -e PGDATABASE="ozds" \
-      -e PGUSER="ozds" \
-      -e PGPASSWORD="ozds" \
-      -i ozds-postgres-1 \
+      --env PGHOST="localhost" \
+      --env PGPORT="5432" \
+      --env PGDATABASE="ozds" \
+      --env PGUSER="ozds" \
+      --env PGPASSWORD="ozds" \
+      --interactive \
+      ozds-postgres-1 \
         psql
