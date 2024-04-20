@@ -137,9 +137,9 @@ dump:
     ozds-postgres-1 \
       pg_dump \
         --schema=public \
-        --table=Document \
-        --table=Identifiers \
-        --table=User% \
+        --table='"Document"' \
+        --table='"Identifiers"' \
+        --table='"User"*' \
     out> "{{assets}}/current-orchard.sql"
 
   docker exec \
@@ -153,9 +153,9 @@ dump:
       pg_dump \
         --data-only \
         --schema=public \
-        --exclude-table-data=Document \
-        --exclude-table-data=Identifiers \
-        --exclude-table-data=User% \
+        --exclude-table-data='"Document"' \
+        --exclude-table-data='"Identifiers"' \
+        --exclude-table-data='"User"*' \
         --exclude-table-data=%aggregates \
         --exclude-table-data=%measurements \
     out> "{{assets}}/current.sql"
