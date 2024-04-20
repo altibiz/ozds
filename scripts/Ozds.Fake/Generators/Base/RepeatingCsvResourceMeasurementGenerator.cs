@@ -5,6 +5,7 @@ using Ozds.Fake.Loaders;
 using Ozds.Fake.Records.Abstractions;
 
 // TODO: check time logic here
+// TODO: add energy logic
 // TODO: fixup cumulatives
 
 namespace Ozds.Fake.Generators.Base;

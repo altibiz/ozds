@@ -18,6 +18,13 @@ public class AgnosticMeasurementGenerator
     string meterId
   )
   {
+    var logger = _serviceProvider.GetRequiredService<ILogger<AgnosticMeasurementGenerator>>();
+    logger.LogInformation(
+      "Generating measurements for meter {meterId} from {dateFrom} to {dateTo}",
+      meterId,
+      dateFrom,
+      dateTo
+    );
     var generators = _serviceProvider.GetServices<IMeasurementGenerator>();
     var generator =
       generators.FirstOrDefault(g => g.CanGenerateMeasurementsFor(meterId));

@@ -8,7 +8,13 @@ var options = Options.Parse(args);
 
 var serviceCollection = new ServiceCollection();
 
-serviceCollection.AddLogging(builder => builder.AddConsole());
+serviceCollection.AddLogging(builder =>
+{
+  builder.AddConsole();
+  builder.SetMinimumLevel(LogLevel.Information);
+  builder.AddFilter("Microsoft", LogLevel.Warning);
+  builder.AddFilter("System", LogLevel.Warning);
+});
 serviceCollection.AddRecords();
 serviceCollection.AddLoaders();
 serviceCollection.AddGenerators();
