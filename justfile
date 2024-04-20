@@ -28,7 +28,7 @@ prepare:
   docker compose up -d
   sleep 3sec
 
-  cat "{{assets}}/current.sql" | \
+  cat "{{assets}}/current.sql" "{{assets}}/current-timescale.sql" | \
     docker exec \
       -e PGHOST="localhost" \
       -e PGPORT="5432" \
@@ -164,6 +164,10 @@ migrate name:
     out> "{{assets}}/{{name}}.sql"
 
   cp -f \
+    "{{assets}}/current-timescale.sql" \
+    "{{assets}}/{{name}}-timescale.sql"
+
+  cp -f \
     "{{assets}}/{{name}}.sql" \
     "{{assets}}/current.sql"
 
@@ -172,6 +176,8 @@ migrate name:
     --useAllTables \
     --encloseWithMermaidBackticks \
     --outputFileName "{{schema}}"
+
+  echo "Please modify '{{assets}}/current-timescale.sql' and '{{assets}}/{{name}}-timescale.sql' manually."
 
 publish *args:
   dotnet publish "{{sln}}" \
@@ -189,7 +195,7 @@ clean:
   docker compose up -d
   sleep 3sec
 
-  cat "{{assets}}/current.sql" | \
+  cat "{{assets}}/current.sql" "{{assets}}/current-timescale.sql" | \
     docker exec \
       -e PGHOST="localhost" \
       -e PGPORT="5432" \
@@ -218,7 +224,7 @@ purge:
   docker compose up -d
   sleep 3sec
 
-  cat "{{assets}}/current.sql" | \
+  cat "{{assets}}/current.sql" "{{assets}}/current-timescale.sql" | \
     docker exec \
       -e PGHOST="localhost" \
       -e PGPORT="5432" \
