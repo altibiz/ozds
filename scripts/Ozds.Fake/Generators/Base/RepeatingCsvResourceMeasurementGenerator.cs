@@ -53,6 +53,7 @@ public abstract class
       (dateTo - csvRecordsMinTimestamp).Ticks % csvRecordsTimeSpan.Ticks
     );
     return records
+      .OrderBy(record => record.Timestamp)
       .Where(record =>
         record.Timestamp >= dateFromCsv
         && record.Timestamp <= dateToCsv)
@@ -62,11 +63,10 @@ public abstract class
         var timestamp = dateFrom.AddTicks(
           (record.Timestamp - dateFromCsv).Ticks
         );
-        pushRequest["Timestamp"] = timestamp;
 
         return new MessengerPushRequestMeasurement(
           record.MeterId,
-          now,
+          timestamp,
           pushRequest
         );
       })
