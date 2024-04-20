@@ -7,7 +7,7 @@ using Ozds.Fake.Records.Abstractions;
 // TODO: check time logic here
 // TODO: add energy logic
 // TODO: fixup cumulatives
-// TODO: rotation logic
+// TODO: repeating enumerable
 
 namespace Ozds.Fake.Generators.Base;
 
