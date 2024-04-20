@@ -43,6 +43,13 @@ public class OzdsPushClient
       {
         var response = await client.PostAsync($"iot/push/{messengerId}", content);
         success = response.IsSuccessStatusCode;
+        if (!success)
+        {
+          _logger.LogWarning(
+            "Failed to push measurements with {statusCode}, retrying...",
+            response.StatusCode
+          );
+        }
         await Task.Delay(1000);
       }
       catch (Exception ex)
