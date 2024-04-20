@@ -23,14 +23,9 @@ default: prepare
 prepare:
   dvc pull
   dotnet tool restore
-  prettier --version || npm install -g prettier
+  prettier --version or npm install -g prettier
 
   docker compose up -d
-
-  dotnet ef \
-    --startup-project "{{servercsproj}}" \
-    --project "{{datacsproj}}" \
-    database update
 
   cat "{{assets}}/current.sql" | \
     docker exec \
@@ -40,12 +35,11 @@ prepare:
       -e PGUSER="ozds" \
       -e PGPASSWORD="ozds" \
       -i ozds-postgres-1 \
-        psql \
-          --disable-triggers
+        psql
 
 ci:
   dotnet tool restore
-  prettier --version || npm install -g prettier
+  prettier --version or npm install -g prettier
 
 dev *args:
   dotnet watch --project "{{servercsproj}}" {{args}}
@@ -123,7 +117,6 @@ dump:
     -e PGPASSWORD="ozds" \
     -i ozds-postgres-1 \
       pg_dump \
-        --data-only \
         --schema=public \
         --exclude-table-data=%aggregates,%measurements \
     out> "{{assets}}/current.sql"
@@ -132,21 +125,15 @@ migrate name:
   docker compose down -v
   docker compose up -d
 
-  dotnet ef \
-    --startup-project "{{servercsproj}}" \
-    --project "{{datacsproj}}" \
-    database update
-
-  docker exec \
-    -e PGHOST="localhost" \
-    -e PGPORT="5432" \
-    -e PGDATABASE="ozds" \
-    -e PGUSER="ozds" \
-    -e PGPASSWORD="ozds" \
-    -i ozds-postgres-1 \
-      psql \
-        --disable-triggers \
-        --file="{{assets}}/current.sql"
+  cat "{{assets}}/current.sql" | \
+    docker exec \
+      -e PGHOST="localhost" \
+      -e PGPORT="5432" \
+      -e PGDATABASE="ozds" \
+      -e PGUSER="ozds" \
+      -e PGPASSWORD="ozds" \
+      -i ozds-postgres-1 \
+        psql
 
   dotnet ef \
     --startup-project "{{servercsproj}}" \
@@ -170,7 +157,6 @@ migrate name:
     -e PGPASSWORD="ozds" \
     -i ozds-postgres-1 \
       pg_dump \
-        --data-only \
         --schema=public \
         --exclude-table-data=%aggregates,%measurements \
     out> "{{assets}}/{{name}}.sql"
@@ -200,11 +186,6 @@ clean:
   docker compose down -v
   docker compose up -d
 
-  dotnet ef \
-    --startup-project "{{servercsproj}}" \
-    --project "{{datacsproj}}" \
-    database update
-
   cat "{{assets}}/current.sql" | \
     docker exec \
       -e PGHOST="localhost" \
@@ -213,8 +194,7 @@ clean:
       -e PGUSER="ozds" \
       -e PGPASSWORD="ozds" \
       -i ozds-postgres-1 \
-        psql \
-        --disable-triggers
+        psql
 
 [confirm("This will clean docker containers and dotnet artifacts. Do you want to continue?")]
 purge:
@@ -234,11 +214,6 @@ purge:
   docker compose down -v
   docker compose up -d
 
-  dotnet ef \
-    --startup-project "{{servercsproj}}" \
-    --project "{{datacsproj}}" \
-    database update
-
   cat "{{assets}}/current.sql" | \
     docker exec \
       -e PGHOST="localhost" \
@@ -247,5 +222,4 @@ purge:
       -e PGUSER="ozds" \
       -e PGPASSWORD="ozds" \
       -i ozds-postgres-1 \
-        psql \
-          --disable-triggers
+        psql
