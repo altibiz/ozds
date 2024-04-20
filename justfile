@@ -17,11 +17,6 @@ datacsproj := absolute_path('src/Ozds.Data/Ozds.Data.csproj')
 fakecsproj := absolute_path('scripts/Ozds.Fake/Ozds.Fake.csproj')
 schema := absolute_path('docs/structure/data/schema.md')
 
-export PGHOST := "localhost"
-export PGPORT := "5432"
-export PGDATABASE := "ozds"
-export PGUSER := "ozds"
-export PGPASSWORD := "ozds"
 
 default: prepare
 
@@ -38,9 +33,15 @@ prepare:
     database update
 
   cat "{{assets}}/current.sql" | \
-    docker exec -i ozds-postgres-1 \
-      psql \
-      --disable-triggers
+    docker exec \
+      -e PGHOST="localhost" \
+      -e PGPORT="5432" \
+      -e PGDATABASE="ozds" \
+      -e PGUSER="ozds" \
+      -e PGPASSWORD="ozds" \
+      -i ozds-postgres-1 \
+        psql \
+          --disable-triggers
 
 ci:
   dotnet tool restore
@@ -114,12 +115,18 @@ test *args:
   dotnet test "{{sln}}" {{args}}
 
 dump:
-  docker exec -i ozds-postgres-1 \
-    pg_dump \
-      --data-only \
-      --schema=public \
-      --exclude-table-data=%aggregates,%measurements | \
-    save -f "{{assets}}}/current.sql"
+  docker exec \
+    -e PGHOST="localhost" \
+    -e PGPORT="5432" \
+    -e PGDATABASE="ozds" \
+    -e PGUSER="ozds" \
+    -e PGPASSWORD="ozds" \
+    -i ozds-postgres-1 \
+      pg_dump \
+        --data-only \
+        --schema=public \
+        --exclude-table-data=%aggregates,%measurements \
+    out> "{{assets}}/current.sql"
 
 migrate name:
   docker compose down -v
@@ -130,10 +137,16 @@ migrate name:
     --project "{{datacsproj}}" \
     database update
 
-  docker exec -i ozds-postgres-1 \
-    psql \
-      --disable-triggers \
-      --file="{{assets}}/current.sql"
+  docker exec \
+    -e PGHOST="localhost" \
+    -e PGPORT="5432" \
+    -e PGDATABASE="ozds" \
+    -e PGUSER="ozds" \
+    -e PGPASSWORD="ozds" \
+    -i ozds-postgres-1 \
+      psql \
+        --disable-triggers \
+        --file="{{assets}}/current.sql"
 
   dotnet ef \
     --startup-project "{{servercsproj}}" \
@@ -149,12 +162,18 @@ migrate name:
     database update \
     "{{name}}"
 
-  docker exec -i ozds-postgres-1 \
-    pg_dump \
-      --data-only \
-      --schema=public \
-      --exclude-table-data=%aggregates,%measurements | \
-    save -f "{{assets}}}/{{name}}.sql"
+  docker exec \
+    -e PGHOST="localhost" \
+    -e PGPORT="5432" \
+    -e PGDATABASE="ozds" \
+    -e PGUSER="ozds" \
+    -e PGPASSWORD="ozds" \
+    -i ozds-postgres-1 \
+      pg_dump \
+        --data-only \
+        --schema=public \
+        --exclude-table-data=%aggregates,%measurements \
+    out> "{{assets}}/{{name}}.sql"
 
   cp -f \
     "{{assets}}/{{name}}.sql" \
@@ -187,9 +206,15 @@ clean:
     database update
 
   cat "{{assets}}/current.sql" | \
-    docker exec -i ozds-postgres-1 \
-      psql \
-      --disable-triggers
+    docker exec \
+      -e PGHOST="localhost" \
+      -e PGPORT="5432" \
+      -e PGDATABASE="ozds" \
+      -e PGUSER="ozds" \
+      -e PGPASSWORD="ozds" \
+      -i ozds-postgres-1 \
+        psql \
+        --disable-triggers
 
 [confirm("This will clean docker containers and dotnet artifacts. Do you want to continue?")]
 purge:
@@ -215,6 +240,12 @@ purge:
     database update
 
   cat "{{assets}}/current.sql" | \
-    docker exec -i ozds-postgres-1 \
-      psql \
-      --disable-triggers
+    docker exec \
+      -e PGHOST="localhost" \
+      -e PGPORT="5432" \
+      -e PGDATABASE="ozds" \
+      -e PGUSER="ozds" \
+      -e PGPASSWORD="ozds" \
+      -i ozds-postgres-1 \
+        psql \
+          --disable-triggers
