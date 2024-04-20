@@ -26,6 +26,7 @@ prepare:
   prettier --version or npm install -g prettier
 
   docker compose up -d
+  sleep 3sec
 
   cat "{{assets}}/current.sql" | \
     docker exec \
@@ -124,6 +125,7 @@ dump:
 migrate name:
   docker compose down -v
   docker compose up -d
+  sleep 3sec
 
   cat "{{assets}}/current.sql" | \
     docker exec \
@@ -185,6 +187,7 @@ publish *args:
 clean:
   docker compose down -v
   docker compose up -d
+  sleep 3sec
 
   cat "{{assets}}/current.sql" | \
     docker exec \
@@ -213,6 +216,7 @@ purge:
 
   docker compose down -v
   docker compose up -d
+  sleep 3sec
 
   cat "{{assets}}/current.sql" | \
     docker exec \
