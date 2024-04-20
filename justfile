@@ -28,7 +28,22 @@ prepare:
   docker compose up -d
   sleep 3sec
 
-  cat "{{assets}}/current.sql" "{{assets}}/current-timescale.sql" | \
+  cat "{{assets}}/current-orchard.sql" | \
+    docker exec \
+      -e PGHOST="localhost" \
+      -e PGPORT="5432" \
+      -e PGDATABASE="ozds" \
+      -e PGUSER="ozds" \
+      -e PGPASSWORD="ozds" \
+      -i ozds-postgres-1 \
+        psql
+
+  dotnet ef \
+    --startup-project "{{servercsproj}}" \
+    --project "{{datacsproj}}" \
+    database update
+
+  cat "{{assets}}/current.sql" | \
     docker exec \
       -e PGHOST="localhost" \
       -e PGPORT="5432" \
@@ -119,13 +134,47 @@ dump:
     -i ozds-postgres-1 \
       pg_dump \
         --schema=public \
-        --exclude-table-data=%aggregates,%measurements \
+        --table=Document \
+        --table=Identifiers \
+        --table=User% \
+    out> "{{assets}}/current-orchard.sql"
+
+  docker exec \
+    -e PGHOST="localhost" \
+    -e PGPORT="5432" \
+    -e PGDATABASE="ozds" \
+    -e PGUSER="ozds" \
+    -e PGPASSWORD="ozds" \
+    -i ozds-postgres-1 \
+      pg_dump \
+        --data-only \
+        --schema=public \
+        --exclude-table-data=Document \
+        --exclude-table-data=Identifiers \
+        --exclude-table-data=User% \
+        --exclude-table-data=%aggregates \
+        --exclude-table-data=%measurements \
     out> "{{assets}}/current.sql"
 
 migrate name:
   docker compose down -v
   docker compose up -d
   sleep 3sec
+
+  cat "{{assets}}/current-orchard.sql" | \
+    docker exec \
+      -e PGHOST="localhost" \
+      -e PGPORT="5432" \
+      -e PGDATABASE="ozds" \
+      -e PGUSER="ozds" \
+      -e PGPASSWORD="ozds" \
+      -i ozds-postgres-1 \
+        psql
+
+  dotnet ef \
+    --startup-project "{{servercsproj}}" \
+    --project "{{datacsproj}}" \
+    database update
 
   cat "{{assets}}/current.sql" | \
     docker exec \
@@ -160,12 +209,25 @@ migrate name:
     -i ozds-postgres-1 \
       pg_dump \
         --schema=public \
-        --exclude-table-data=%aggregates,%measurements \
-    out> "{{assets}}/{{name}}.sql"
+        --table=Document,Identifiers,User% \
+    out> "{{assets}}/{{name}}-orchard.sql"
 
   cp -f \
-    "{{assets}}/current-timescale.sql" \
-    "{{assets}}/{{name}}-timescale.sql"
+    "{{assets}}/{{name}}-orchard.sql" \
+    "{{assets}}/current-orchard.sql"
+
+  docker exec \
+    -e PGHOST="localhost" \
+    -e PGPORT="5432" \
+    -e PGDATABASE="ozds" \
+    -e PGUSER="ozds" \
+    -e PGPASSWORD="ozds" \
+    -i ozds-postgres-1 \
+      pg_dump \
+        --data-only \
+        --schema=public \
+        --exclude-table-data=Document,Identifiers,User%,%aggregates,%measurements \
+    out> "{{assets}}/{{name}}.sql"
 
   cp -f \
     "{{assets}}/{{name}}.sql" \
@@ -176,8 +238,6 @@ migrate name:
     --useAllTables \
     --encloseWithMermaidBackticks \
     --outputFileName "{{schema}}"
-
-  echo "Please modify '{{assets}}/current-timescale.sql' and '{{assets}}/{{name}}-timescale.sql' manually."
 
 publish *args:
   dotnet publish "{{sln}}" \
@@ -195,7 +255,22 @@ clean:
   docker compose up -d
   sleep 3sec
 
-  cat "{{assets}}/current.sql" "{{assets}}/current-timescale.sql" | \
+  cat "{{assets}}/current-orchard.sql" | \
+    docker exec \
+      -e PGHOST="localhost" \
+      -e PGPORT="5432" \
+      -e PGDATABASE="ozds" \
+      -e PGUSER="ozds" \
+      -e PGPASSWORD="ozds" \
+      -i ozds-postgres-1 \
+        psql
+
+  dotnet ef \
+    --startup-project "{{servercsproj}}" \
+    --project "{{datacsproj}}" \
+    database update
+
+  cat "{{assets}}/current.sql" | \
     docker exec \
       -e PGHOST="localhost" \
       -e PGPORT="5432" \
@@ -224,7 +299,22 @@ purge:
   docker compose up -d
   sleep 3sec
 
-  cat "{{assets}}/current.sql" "{{assets}}/current-timescale.sql" | \
+  cat "{{assets}}/current-orchard.sql" | \
+    docker exec \
+      -e PGHOST="localhost" \
+      -e PGPORT="5432" \
+      -e PGDATABASE="ozds" \
+      -e PGUSER="ozds" \
+      -e PGPASSWORD="ozds" \
+      -i ozds-postgres-1 \
+        psql
+
+  dotnet ef \
+    --startup-project "{{servercsproj}}" \
+    --project "{{datacsproj}}" \
+    database update
+
+  cat "{{assets}}/current.sql" | \
     docker exec \
       -e PGHOST="localhost" \
       -e PGPORT="5432" \
