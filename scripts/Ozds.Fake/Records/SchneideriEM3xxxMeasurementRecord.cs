@@ -97,6 +97,9 @@ public class SchneideriEM3xxxMeasurementRecord : MeasurementRecord
 
   public override TariffMeasure<float> ApparentEnergy_VAh
   {
-    get { return TariffMeasure<float>.Null; }
+    get
+    {
+      return TariffMeasure<float>.Null;
+    }
   }
 }
