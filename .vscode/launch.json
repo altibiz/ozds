@@ -110,7 +110,7 @@
       "requireExactSource": false,
       "args": [
         "--seed",
-        "hour",
+        "week",
         "--meter-ids",
         "abb-B2x-1624226",
         "schneider-iEM3xxx-19453067"
@@ -134,7 +134,7 @@
       "requireExactSource": false,
       "args": [
         "--seed",
-        "hour",
+        "week",
         "--meter-ids",
         "abb-B2x-1624226",
         "schneider-iEM3xxx-19453067"

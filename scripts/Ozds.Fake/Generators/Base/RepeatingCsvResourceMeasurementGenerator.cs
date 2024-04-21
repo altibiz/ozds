@@ -43,7 +43,8 @@ public abstract class
   {
     var records = await _resources
       .GetAsync<CsvLoader<TMeasurement>, List<TMeasurement>>(CsvResourceName);
-    return ExpandRecords(records, dateFrom, dateTo).ToList();
+    var pushRequestMeasurements = ExpandRecords(records, dateFrom, dateTo).ToList();
+    return pushRequestMeasurements;
   }
 
   private IEnumerable<MessengerPushRequestMeasurement> ExpandRecords(
@@ -71,7 +72,7 @@ public abstract class
         .OrderBy(record => record.Timestamp)
         .Where(record =>
           record.Timestamp >= dateFromCsv
-          && record.Timestamp <= dateToCsv))
+          && record.Timestamp < dateToCsv))
       {
         var timestamp = currentDateFrom.AddTicks(
           (record.Timestamp - dateFromCsv).Ticks
