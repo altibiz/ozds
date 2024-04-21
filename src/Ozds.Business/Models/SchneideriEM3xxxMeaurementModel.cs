@@ -125,7 +125,6 @@ public class SchneideriEM3xxxMeasurementModel : MeasurementModel<
     }
   }
 
-
   public override TariffMeasure<float> ActiveEnergy_Wh
   {
     get

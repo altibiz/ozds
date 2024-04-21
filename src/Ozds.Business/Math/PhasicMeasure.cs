@@ -15,7 +15,7 @@ public record class CompositePhasicMeasure<T>(List<PhasicMeasure<T>> Measures)
   {
     return Measures.FirstOrDefault(measure =>
         measure is TriPhasicMeasure<T> or SinglePhasicMeasure<T>) is
-      { } singleOrTri
+    { } singleOrTri
       ? selector(singleOrTri)
       : @default;
   }
@@ -157,16 +157,33 @@ public abstract record class PhasicMeasure<T>
     }
   }
 
-  public PhasicMeasure<T> PhaseSingle
+  public SinglePhasicMeasure<T> PhaseSingle
   {
     get
     {
       return this switch
       {
         CompositePhasicMeasure<T> composite => composite.FromMostAccurate(
-          measure => measure.PhaseSingle, new NullPhasicMeasure<T>()),
+          measure => measure.PhaseSingle, new SinglePhasicMeasure<T>(default)),
         SinglePhasicMeasure<T> single => single,
-        _ => new NullPhasicMeasure<T>()
+        _ => new SinglePhasicMeasure<T>(default)
+      };
+    }
+  }
+
+  public TriPhasicMeasure<T> PhaseSplit
+  {
+    get
+    {
+      return this switch
+      {
+        CompositePhasicMeasure<T> composite => composite.FromMostAccurate(
+          measure => measure.PhaseSplit, new TriPhasicMeasure<T>(default, default,
+            default)),
+        SinglePhasicMeasure<T> single => new TriPhasicMeasure<T>(single.Value,
+          single.Value, single.Value),
+        TriPhasicMeasure<T> tri => tri,
+        _ => new TriPhasicMeasure<T>(default, default, default)
       };
     }
   }

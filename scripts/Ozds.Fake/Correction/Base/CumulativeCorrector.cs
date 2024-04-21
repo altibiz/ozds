@@ -46,4 +46,14 @@ public abstract class CumulativeCorrector<TMeasurementRecord> : ICumulativeCorre
       TMeasurementRecord firstMeasurementRecord,
       TMeasurementRecord lastMeasurementRecord
   );
+
+  protected float DiffMultiplier(
+    DateTimeOffset timestamp,
+    DateTimeOffset firstTimestamp,
+    DateTimeOffset lastTimestamp
+  )
+  {
+    return (timestamp - firstTimestamp).Ticks /
+      (float)(lastTimestamp - firstTimestamp).Ticks;
+  }
 }
