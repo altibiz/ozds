@@ -65,7 +65,7 @@ public abstract class
       : dateFromCsv + timeSpan;
     var currentDateFrom = dateFrom;
     var currentDateTo = dateFrom + (dateToCsv - dateFromCsv);
-    while (currentDateFrom < dateTo)
+    while (timeSpan > TimeSpan.Zero)
     {
       foreach (var record in records
         .OrderBy(record => record.Timestamp)
