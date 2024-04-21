@@ -4,6 +4,8 @@ using Ozds.Business.Conversion.Agnostic;
 using Ozds.Fake.Client;
 using Ozds.Fake.Conversion.Abstractions;
 using Ozds.Fake.Conversion.Agnostic;
+using Ozds.Fake.Correction.Abstractions;
+using Ozds.Fake.Correction.Agnostic;
 using Ozds.Fake.Generators.Abstractions;
 using Ozds.Fake.Generators.Agnostic;
 using Ozds.Fake.Loaders;
@@ -48,6 +50,9 @@ public static class IServiceCollectionExtensions
       typeof(IMeasurementRecordPushRequestConverter));
     services.AddSingleton(
       typeof(AgnosticMeasurementRecordPushRequestConverter));
+    services.AddTransientAssignableTo(
+      typeof(ICumulativeCorrector));
+    services.AddSingleton(typeof(AgnosticCumulativeCorrector));
     return services;
   }
 

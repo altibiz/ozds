@@ -1,5 +1,6 @@
 using Ozds.Business.Iot;
 using Ozds.Fake.Conversion.Agnostic;
+using Ozds.Fake.Correction.Agnostic;
 using Ozds.Fake.Generators.Abstractions;
 using Ozds.Fake.Loaders;
 using Ozds.Fake.Records.Abstractions;
@@ -17,6 +18,7 @@ public abstract class
 {
   private readonly AgnosticMeasurementRecordPushRequestConverter _converter;
   private readonly ResourceCache _resources;
+  private readonly AgnosticCumulativeCorrector _corrector;
 
   public RepeatingCsvResourceMeasurementGenerator(
     IServiceProvider serviceProvider)
@@ -24,6 +26,7 @@ public abstract class
     _resources = serviceProvider.GetRequiredService<ResourceCache>();
     _converter = serviceProvider
       .GetRequiredService<AgnosticMeasurementRecordPushRequestConverter>();
+    _corrector = serviceProvider.GetRequiredService<AgnosticCumulativeCorrector>();
   }
 
   protected abstract string CsvResourceName { get; }
@@ -53,8 +56,16 @@ public abstract class
     DateTimeOffset dateTo
   )
   {
-    var csvRecordsMinTimestamp = records.Min(record => record.Timestamp);
-    var csvRecordsMaxTimestamp = records.Max(record => record.Timestamp);
+    var ordered = records.OrderBy(record => record.Timestamp).ToList();
+    var firstRecord = ordered.FirstOrDefault();
+    var lastRecord = ordered.LastOrDefault();
+    if (firstRecord == null || lastRecord == null)
+    {
+      yield break;
+    }
+
+    var csvRecordsMinTimestamp = firstRecord.Timestamp;
+    var csvRecordsMaxTimestamp = lastRecord.Timestamp;
     var csvRecordsTimeSpan = csvRecordsMaxTimestamp - csvRecordsMinTimestamp;
 
     var timeSpan = dateTo - dateFrom;
@@ -68,8 +79,7 @@ public abstract class
     var currentDateTo = dateFrom + (dateToCsv - dateFromCsv);
     while (timeSpan > TimeSpan.Zero)
     {
-      foreach (var record in records
-        .OrderBy(record => record.Timestamp)
+      foreach (var record in ordered
         .Where(record =>
           record.Timestamp >= dateFromCsv
           && record.Timestamp < dateToCsv))
@@ -77,10 +87,17 @@ public abstract class
         var timestamp = currentDateFrom.AddTicks(
           (record.Timestamp - dateFromCsv).Ticks
         );
+        var withCorrectedCumulatives = _corrector.CorrectCumulatives(
+          timestamp,
+          record,
+          firstRecord,
+          lastRecord
+        );
+        var json = _converter.ConvertToPushRequest(withCorrectedCumulatives);
         yield return new MessengerPushRequestMeasurement(
           record.MeterId,
           timestamp,
-          _converter.ConvertToPushRequest(record)
+          json
         );
       }
 
