@@ -12,6 +12,8 @@ using Ozds.Business.Queries.Abstractions;
 using Ozds.Data;
 using Ozds.Data.Extensions;
 
+// TODO: switch to enable query/mutation logging
+
 namespace Ozds.Business.Extensions;
 
 public static class IServiceCollectionExtensions
@@ -27,7 +29,7 @@ public static class IServiceCollectionExtensions
       {
         options.EnableSensitiveDataLogging();
         options.EnableDetailedErrors();
-        options.UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()));
+        // options.UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()));
       }
 
       options
