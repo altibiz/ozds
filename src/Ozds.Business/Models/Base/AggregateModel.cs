@@ -30,7 +30,18 @@ public abstract class AggregateModel : IAggregate
     }
   }
 
-  [Required] public required IntervalModel Interval { get; set; }
+  private IntervalModel _interval = IntervalModel.QuarterHour;
+
+  [Required]
+  public required IntervalModel Interval
+  {
+    get { return _interval; }
+    set
+    {
+      _interval = value;
+      Timestamp = _timestamp;
+    }
+  }
 
   [Required] public required long Count { get; set; } = 0;
 
