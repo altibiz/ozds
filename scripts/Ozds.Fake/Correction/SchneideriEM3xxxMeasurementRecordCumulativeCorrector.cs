@@ -38,6 +38,27 @@ public class SchneideriEM3xxxMeasurementRecordCumulativeCorrector
         lastMeasurementRecord.ApparentEnergy_VAh
       ).SpanDiff * diffMultiplier;
 
+    measurementRecord.ActiveEnergyL1ImportT0_Wh =
+      activeEnergy.TariffUnary.DuplexImport.PhaseSplit.ValueL1;
+    measurementRecord.ActiveEnergyL2ImportT0_Wh =
+      activeEnergy.TariffUnary.DuplexImport.PhaseSplit.ValueL2;
+    measurementRecord.ActiveEnergyL3ImportT0_Wh =
+      activeEnergy.TariffUnary.DuplexImport.PhaseSplit.ValueL3;
+    measurementRecord.ActiveEnergyTotalImportT0_Wh =
+      activeEnergy.TariffUnary.DuplexImport.PhaseSum;
+
+    measurementRecord.ActiveEnergyTotalExportT0_Wh =
+      activeEnergy.TariffUnary.DuplexExport.PhaseSum;
+
+    measurementRecord.ReactiveEnergyTotalImportT0_VARh =
+      reactiveEnergy.TariffUnary.DuplexImport.PhaseSum;
+
+    measurementRecord.ReactiveEnergyTotalExportT0_VARh =
+      reactiveEnergy.TariffUnary.DuplexExport.PhaseSum;
+
+    measurementRecord.ApparentPowerTotalNetT0_VA =
+      apparentEnergy.TariffUnary.DuplexNet.PhaseSum;
+
     return measurementRecord;
   }
 }
