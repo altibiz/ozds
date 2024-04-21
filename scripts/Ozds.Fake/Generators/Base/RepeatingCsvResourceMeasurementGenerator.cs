@@ -41,37 +41,59 @@ public abstract class
     string meterId
   )
   {
-    var now = DateTimeOffset.UtcNow;
     var records = await _resources
       .GetAsync<CsvLoader<TMeasurement>, List<TMeasurement>>(CsvResourceName);
+    return ExpandRecords(records, dateFrom, dateTo).ToList();
+  }
+
+  private IEnumerable<MessengerPushRequestMeasurement> ExpandRecords(
+    List<TMeasurement> records,
+    DateTimeOffset dateFrom,
+    DateTimeOffset dateTo
+  )
+  {
     var csvRecordsMinTimestamp = records.Min(record => record.Timestamp);
     var csvRecordsMaxTimestamp = records.Max(record => record.Timestamp);
     var csvRecordsTimeSpan = csvRecordsMaxTimestamp - csvRecordsMinTimestamp;
+
+    var timeSpan = dateTo - dateFrom;
     var dateFromCsv = csvRecordsMinTimestamp.AddTicks(
       (dateFrom - csvRecordsMinTimestamp).Ticks % csvRecordsTimeSpan.Ticks
     );
-    var dateToCsv = csvRecordsMinTimestamp.AddTicks(
-      (dateTo - csvRecordsMinTimestamp).Ticks % csvRecordsTimeSpan.Ticks
-    );
-    return records
-      .OrderBy(record => record.Timestamp)
-      .Where(record =>
-        record.Timestamp >= dateFromCsv
-        && record.Timestamp <= dateToCsv)
-      .Select(record =>
+    var dateToCsv = dateFromCsv + timeSpan > csvRecordsMaxTimestamp
+      ? csvRecordsMaxTimestamp
+      : dateFromCsv + timeSpan;
+    var currentDateFrom = dateFrom;
+    var currentDateTo = dateFrom + (dateToCsv - dateFromCsv);
+    while (currentDateFrom < dateTo)
+    {
+      foreach (var record in records
+        .OrderBy(record => record.Timestamp)
+        .Where(record =>
+          record.Timestamp >= dateFromCsv
+          && record.Timestamp <= dateToCsv))
       {
-        var pushRequest = _converter.ConvertToPushRequest(record);
-        var timestamp = dateFrom.AddTicks(
+        var timestamp = currentDateFrom.AddTicks(
           (record.Timestamp - dateFromCsv).Ticks
         );
-
-        return new MessengerPushRequestMeasurement(
+        yield return new MessengerPushRequestMeasurement(
           record.MeterId,
           timestamp,
-          pushRequest
+          _converter.ConvertToPushRequest(record)
         );
-      })
-      .OfType<MessengerPushRequestMeasurement>()
-      .ToList();
+      }
+
+      timeSpan -= dateToCsv - dateFromCsv;
+
+      dateFromCsv = dateToCsv == csvRecordsMaxTimestamp
+        ? csvRecordsMinTimestamp
+        : dateToCsv;
+      dateToCsv = dateFromCsv + timeSpan > csvRecordsMaxTimestamp
+        ? csvRecordsMaxTimestamp
+        : dateFromCsv + timeSpan;
+
+      currentDateFrom = currentDateTo;
+      currentDateTo = currentDateFrom + (dateToCsv - dateFromCsv);
+    }
   }
 }
