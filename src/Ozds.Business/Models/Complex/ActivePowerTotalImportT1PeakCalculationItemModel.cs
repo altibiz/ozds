@@ -20,11 +20,12 @@ public abstract class
     get
     {
       return new PeakSpanningMeasure<decimal>(
-        new UnaryTariffMeasure<decimal>(
+        new BinaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
             new SinglePhasicMeasure<decimal>(Peak_W),
             PhasicMeasure<decimal>.Null
-          )
+          ),
+          DuplexMeasure<decimal>.Null
         )
       );
     }
@@ -44,11 +45,12 @@ public class UsageActivePowerTotalImportT1PeakCalculationItemModel
     get
     {
       return new UsageExpenditureMeasure<decimal>(
-        new UnaryTariffMeasure<decimal>(
+        new BinaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
             new SinglePhasicMeasure<decimal>(Price_EUR),
             PhasicMeasure<decimal>.Null
-          )
+          ),
+          DuplexMeasure<decimal>.Null
         )
       );
     }

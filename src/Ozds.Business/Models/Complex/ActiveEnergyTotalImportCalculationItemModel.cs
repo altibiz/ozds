@@ -134,11 +134,12 @@ public class UsageActiveEnergyTotalImportT1CalculationItemModel
     get
     {
       return new UsageExpenditureMeasure<decimal>(
-        new UnaryTariffMeasure<decimal>(
+        new BinaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
             new SinglePhasicMeasure<decimal>(Price_EUR),
             PhasicMeasure<decimal>.Null
-          )
+          ),
+          DuplexMeasure<decimal>.Null
         )
       );
     }
@@ -158,7 +159,8 @@ public class UsageActiveEnergyTotalImportT2CalculationItemModel
     get
     {
       return new UsageExpenditureMeasure<decimal>(
-        new UnaryTariffMeasure<decimal>(
+        new BinaryTariffMeasure<decimal>(
+          DuplexMeasure<decimal>.Null,
           new ImportExportDuplexMeasure<decimal>(
             new SinglePhasicMeasure<decimal>(Price_EUR),
             PhasicMeasure<decimal>.Null
@@ -182,11 +184,12 @@ public class SupplyActiveEnergyTotalImportT1CalculationItemModel
     get
     {
       return new SupplyExpenditureMeasure<decimal>(
-        new UnaryTariffMeasure<decimal>(
+        new BinaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
             new SinglePhasicMeasure<decimal>(Price_EUR),
             PhasicMeasure<decimal>.Null
-          )
+          ),
+          DuplexMeasure<decimal>.Null
         )
       );
     }
@@ -206,7 +209,8 @@ public class SupplyActiveEnergyTotalImportT2CalculationItemModel
     get
     {
       return new SupplyExpenditureMeasure<decimal>(
-        new UnaryTariffMeasure<decimal>(
+        new BinaryTariffMeasure<decimal>(
+          DuplexMeasure<decimal>.Null,
           new ImportExportDuplexMeasure<decimal>(
             new SinglePhasicMeasure<decimal>(Price_EUR),
             PhasicMeasure<decimal>.Null
