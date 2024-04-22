@@ -3,12 +3,13 @@ using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Composite;
+using Ozds.Business.Queries.Abstractions;
 using Ozds.Data;
 using Ozds.Data.Entities;
 
 namespace Ozds.Business.Queries;
 
-public class OzdsCalculatedInvoiceQueries
+public class OzdsCalculatedInvoiceQueries : IOzdsQueries
 {
   private readonly OzdsDbContext _context;
 

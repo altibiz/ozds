@@ -26,6 +26,7 @@ public class OzdsMeterTableQueries : IOzdsQueries
     this.context = context;
     this.modelEntityConverter = modelEntityConverter;
   }
+
   private readonly struct ViewModelStruct
   {
     public LocationEntity Location { get; init; }

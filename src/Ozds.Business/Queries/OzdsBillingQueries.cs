@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Conversion;
 using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Composite;
+using Ozds.Business.Queries.Abstractions;
 using Ozds.Data;
 using Ozds.Data.Entities;
 using Ozds.Data.Entities.Enums;
@@ -11,7 +12,7 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Business.Queries;
 
-public class OzdsBillingQueries
+public class OzdsBillingQueries : IOzdsQueries
 {
   private readonly OzdsDbContext _dbContext;
 
