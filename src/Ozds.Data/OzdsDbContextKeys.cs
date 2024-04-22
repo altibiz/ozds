@@ -69,7 +69,7 @@ public partial class OzdsDbContext
     var parameter = Expression.Parameter(typeof(T));
     var callExpression = Expression.Invoke(prefix, parameter);
     var primaryKeyExpression = PrimaryKeyOf<U>();
-    return Expression.Lambda<Func<T, object>>(
+    return Expression.Lambda<Func<T, string>>(
       Expression.Invoke(primaryKeyExpression, callExpression), parameter);
   }
 

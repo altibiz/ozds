@@ -28,7 +28,7 @@ prepare:
   docker compose up -d
   sleep 3sec
 
-  cat "{{assets}}/current-orchard.sql" | \
+  cat '{{assets}}/current-orchard.sql' | \
     docker exec \
       --env PGHOST="localhost" \
       --env PGPORT="5432" \
@@ -40,11 +40,11 @@ prepare:
         psql
 
   dotnet ef \
-    --startup-project "{{servercsproj}}" \
-    --project "{{datacsproj}}" \
+    --startup-project '{{servercsproj}}' \
+    --project '{{datacsproj}}' \
     database update
 
-  cat "{{assets}}/current.sql" | \
+  cat '{{assets}}/current.sql' | \
     docker exec \
       --env PGHOST="localhost" \
       --env PGPORT="5432" \
@@ -60,19 +60,19 @@ ci:
   prettier --version or npm install -g prettier
 
 dev *args:
-  dotnet watch --project "{{servercsproj}}" {{args}}
+  dotnet watch --project '{{servercsproj}}' {{args}}
 
 fake *args:
-  dotnet run --project "{{fakecsproj}}" -- {{args}}
+  dotnet run --project '{{fakecsproj}}' -- {{args}}
 
 format:
   prettier --write \
-    --ignore-path "{{gitignore}}" \
-    --ignore-path "{{prettierignore}}" \
+    --ignore-path '{{gitignore}}' \
+    --ignore-path '{{prettierignore}}' \
     --cache --cache-strategy metadata \
-    "{{root}}"
+    '{{root}}'
 
-  dotnet format "{{sln}}" \
+  dotnet format '{{sln}}' \
     --no-restore \
     --verbosity minimal \
     --severity info \
@@ -81,28 +81,28 @@ format:
     --exclude '**/obj/**/*' \
     --exclude '**/bin/**/*'
 
-  dotnet roslynator fix "{{sln}}" \
+  dotnet roslynator fix '{{sln}}' \
     --format \
     --verbosity minimal \
     --exclude='**/.git/**/*;**/.nuget/**/*;**/obj/**/*;**/bin/**/*'
 
-  dotnet jb cleanupcode "{{sln}}" \
+  dotnet jb cleanupcode '{{sln}}' \
     --no-build \
     --verbosity=ERROR \
-    --caches-home="{{jbcache}}" \
-    -o="{{jbinspectlog}}" \
+    --caches-home='{{jbcache}}' \
+    -o='{{jbinspectlog}}' \
     --exclude='**/.git/**/*;**/.nuget/**/*;**/obj/**/*;**/bin/**/*'
 
 lint:
   prettier --check \
-    --ignore-path "{{gitignore}}" \
-    --ignore-path "{{prettierignore}}" \
+    --ignore-path '{{gitignore}}' \
+    --ignore-path '{{prettierignore}}' \
     --cache --cache-strategy metadata \
-    "{{root}}"
+    '{{root}}'
 
-  dotnet build "{{sln}}"
+  dotnet build '{{sln}}'
 
-  dotnet format "{{sln}}" \
+  dotnet format '{{sln}}' \
     --verify-no-changes \
     --no-restore \
     --verbosity minimal \
@@ -112,19 +112,19 @@ lint:
     --exclude '**/obj/**/*' \
     --exclude '**/bin/**/*'
 
-  dotnet roslynator analyze "{{sln}}" \
+  dotnet roslynator analyze '{{sln}}' \
     --verbosity minimal \
     --exclude='**/.git/**/*;**/.nuget/**/*;**/obj/**/*;**/bin/**/*'
 
-  dotnet jb inspectcode "{{sln}}" \
+  dotnet jb inspectcode '{{sln}}' \
     --no-build \
     --verbosity=ERROR \
-    --caches-home="{{jbcache}}" \
-    -o="{{jbinspectlog}}" \
+    --caches-home='{{jbcache}}' \
+    -o='{{jbinspectlog}}' \
     --exclude='**/.git/**/*;**/.nuget/**/*;**/obj/**/*;**/bin/**/*'
 
 test *args:
-  dotnet test "{{sln}}" {{args}}
+  dotnet test '{{sln}}' {{args}}
 
 dump:
   docker exec \
@@ -140,7 +140,7 @@ dump:
         --table='"Document"' \
         --table='"Identifiers"' \
         --table='"User"*' \
-    out> "{{assets}}/current-orchard.sql"
+    out> '{{assets}}/current-orchard.sql'
 
   docker exec \
     --env PGHOST="localhost" \
@@ -159,14 +159,14 @@ dump:
         --exclude-table-data=%aggregates \
         --exclude-table-data=%measurements \
         --exclude-table-data='"__EFMigrationsHistory"' \
-    out> "{{assets}}/current.sql"
+    out> '{{assets}}/current.sql'
 
 migrate name:
   docker compose down -v
   docker compose up -d
   sleep 3sec
 
-  cat "{{assets}}/current-orchard.sql" | \
+  cat '{{assets}}/current-orchard.sql' | \
     docker exec \
       --env PGHOST="localhost" \
       --env PGPORT="5432" \
@@ -178,11 +178,11 @@ migrate name:
         psql
 
   dotnet ef \
-    --startup-project "{{servercsproj}}" \
-    --project "{{datacsproj}}" \
+    --startup-project '{{servercsproj}}' \
+    --project '{{datacsproj}}' \
     database update
 
-  cat "{{assets}}/current.sql" | \
+  cat '{{assets}}/current.sql' | \
     docker exec \
       --env PGHOST="localhost" \
       --env PGPORT="5432" \
@@ -194,18 +194,18 @@ migrate name:
         psql
 
   dotnet ef \
-    --startup-project "{{servercsproj}}" \
-    --project "{{datacsproj}}" \
+    --startup-project '{{servercsproj}}' \
+    --project '{{datacsproj}}' \
     migrations add \
     --output-dir Migrations \
     --namespace Ozds.Data.Migrations \
-    "{{name}}"
+    '{{name}}'
 
   dotnet ef \
-    --startup-project "{{servercsproj}}" \
-    --project "{{datacsproj}}" \
+    --startup-project '{{servercsproj}}' \
+    --project '{{datacsproj}}' \
     database update \
-    "{{name}}"
+    '{{name}}'
 
   docker exec \
     --env PGHOST="localhost" \
@@ -220,11 +220,11 @@ migrate name:
         --table='"Document"' \
         --table='"Identifiers"' \
         --table='"User"*' \
-    out> "{{assets}}/{{name}}-orchard.sql"
+    out> '{{assets}}/{{name}}-orchard.sql'
 
   cp -f \
-    "{{assets}}/{{name}}-orchard.sql" \
-    "{{assets}}/current-orchard.sql"
+    '{{assets}}/{{name}}-orchard.sql' \
+    '{{assets}}/current-orchard.sql'
 
   docker exec \
     --env PGHOST="localhost" \
@@ -243,21 +243,21 @@ migrate name:
         --exclude-table-data=%aggregates \
         --exclude-table-data=%measurements \
         --exclude-table-data='"__EFMigrationsHistory"' \
-    out> "{{assets}}/{{name}}.sql"
+    out> '{{assets}}/{{name}}.sql'
 
   cp -f \
-    "{{assets}}/{{name}}.sql" \
-    "{{assets}}/current.sql"
+    '{{assets}}/{{name}}.sql' \
+    '{{assets}}/current.sql'
 
   mermerd \
     --schema public \
     --useAllTables \
     --encloseWithMermaidBackticks \
-    --outputFileName "{{schema}}"
+    --outputFileName '{{schema}}'
 
 publish *args:
-  dotnet publish "{{sln}}" \
-    --property PublishDir="{{artifacts}}" \
+  dotnet publish '{{sln}}' \
+    --property PublishDir='{{artifacts}}' \
     --property ConsoleLoggerParameters=ErrorsOnly \
     --property IsWebConfigTransformDisabled=true \
     --property DebugType=None \
@@ -271,7 +271,7 @@ clean:
   docker compose up -d
   sleep 3sec
 
-  cat "{{assets}}/current-orchard.sql" | \
+  cat '{{assets}}/current-orchard.sql' | \
     docker exec \
       --env PGHOST="localhost" \
       --env PGPORT="5432" \
@@ -283,11 +283,11 @@ clean:
         psql
 
   dotnet ef \
-    --startup-project "{{servercsproj}}" \
-    --project "{{datacsproj}}" \
+    --startup-project '{{servercsproj}}' \
+    --project '{{datacsproj}}' \
     database update
 
-  cat "{{assets}}/current.sql" | \
+  cat '{{assets}}/current.sql' | \
     docker exec \
       --env PGHOST="localhost" \
       --env PGPORT="5432" \
@@ -317,7 +317,7 @@ purge:
   docker compose up -d
   sleep 3sec
 
-  cat "{{assets}}/current-orchard.sql" | \
+  cat '{{assets}}/current-orchard.sql' | \
     docker exec \
       --env PGHOST="localhost" \
       --env PGPORT="5432" \
@@ -329,11 +329,11 @@ purge:
         psql
 
   dotnet ef \
-    --startup-project "{{servercsproj}}" \
-    --project "{{datacsproj}}" \
+    --startup-project '{{servercsproj}}' \
+    --project '{{datacsproj}}' \
     database update
 
-  cat "{{assets}}/current.sql" | \
+  cat '{{assets}}/current.sql' | \
     docker exec \
       --env PGHOST="localhost" \
       --env PGPORT="5432" \
