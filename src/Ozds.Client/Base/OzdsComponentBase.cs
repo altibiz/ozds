@@ -75,6 +75,23 @@ public abstract class OzdsComponentBase : ComponentBase
     return withTimezone.ToString("dd. MM. yyyy.", cultureInfo);
   }
 
+  protected static string DateTimeString(DateTimeOffset? dateTimeOffset)
+  {
+    if (dateTimeOffset is null)
+    {
+      return "";
+    }
+
+    var cultureInfo = new CultureInfo("hr-HR");
+
+    var withTimezone = dateTimeOffset
+      .Value
+      .ToOffset(DateTimeOffsetExtensions.DefaultOffset);
+
+    return withTimezone.ToString("dd. MM. yyyy. HH:mm", cultureInfo);
+  }
+
+
   protected static DateTimeOffset DateTimeGraph(DateTimeOffset dateTimeOffset)
   {
     return dateTimeOffset.UtcDateTime.Add(

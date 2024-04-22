@@ -1,0 +1,266 @@
+@inherits OzdsOwningComponentBase
+
+<Loading Load="@(async () => (Invoice ?? await ScopedServices
+    .GetRequiredService<OzdsInvoiceQueries>()
+    .ReadSingle<NetworkUserInvoiceModel>(
+      Id ?? throw new InvalidOperationException()))!)">
+  <Found>
+    <MudText Typo="Typo.h5">
+      RAČUN ZA @(context.FromDate.Month). MJESEC
+    </MudText>
+
+    <MudPaper class="mt-4 px-4 py-2">
+      <MudGrid Spacing="1">
+        <MudItem xs="12" sm="12">
+          <MudText Typo="Typo.body1">
+            <strong>ZDS:</strong>
+          </MudText>
+        </MudItem>
+        <MudItem xs="12" sm="12">
+            <MudText Typo="Typo.body1" Align="MudAlign.Left">
+              @(context.ArchivedLocation.Title)
+            </MudText>
+        </MudItem>
+        <MudItem xs="12" sm="12">
+          <MudText Typo="Typo.body1">
+            <strong>Korisnik:</strong>
+          </MudText>
+        </MudItem>
+        <MudItem xs="12" sm="12">
+            <MudText Typo="Typo.body1" Align="MudAlign.Left">
+              @(context.ArchivedNetworkUser.Title)
+            </MudText>
+        </MudItem>
+        <MudItem xs="12" sm="12">
+          <MudText Typo="Typo.body1">
+            <strong>Od:</strong>
+          </MudText>
+        </MudItem>
+        <MudItem xs="12" sm="12">
+            <MudText Typo="Typo.body1" Align="MudAlign.Left">
+              @DateTimeString(context.FromDate)
+            </MudText>
+        </MudItem>
+        <MudItem xs="12" sm="12">
+          <MudText Typo="Typo.body1">
+            <strong>Do:</strong>
+          </MudText>
+        </MudItem>
+        <MudItem xs="12" sm="12">
+            <MudText Typo="Typo.body1" Align="MudAlign.Left">
+              @DateTimeString(context.ToDate)
+            </MudText>
+        </MudItem>
+      </MudGrid>
+    </MudPaper>
+
+    <MudItem Class="d-flex flex-row justify-space-between mt-8">
+      <MudText Typo="Typo.h5">
+        Mrežarina
+      </MudText>
+      <MudText Typo="Typo.h5" Class="mr-4">
+        EUR
+      </MudText>
+    </MudItem>
+    @{
+      var usageRows = new[]
+      {
+        (
+          Name: "Korištenje mreže u doba jedne dnevne tarife",
+          Total: context.UsageActiveEnergyTotalImportT0Fee_EUR
+        ),
+        (
+          Name: "Korištenje mreže u doba više dnevne tarife",
+          Total: context.UsageActiveEnergyTotalImportT1Fee_EUR
+        ),
+        (
+          Name: "Korištenje mreže u doba niže dnevne tarife",
+          Total: context.UsageActiveEnergyTotalImportT2Fee_EUR
+        ),
+        (
+          Name: "Angažirana snaga u doba više tarife",
+          Total: context.UsageActivePowerTotalImportT1PeakFee_EUR
+        ),
+        (
+          Name: "Prekomjerno preuzeta jalova energija",
+          Total: context.UsageReactiveEnergyTotalRampedT0Fee_EUR
+        ),
+        (
+          Name: "Naknada za mjernu uslugu",
+          Total: context.UsageMeterFee_EUR
+        ),
+      };
+    }
+    @foreach (var row in usageRows) {
+      <MudPaper class="mt-2 px-4 py-2">
+        <MudGrid Spacing="1">
+          <MudItem xs="12" sm="6">
+            <MudText Typo="Typo.body1">
+              @(row.Name)
+            </MudText>
+          </MudItem>
+          <MudItem xs="12" sm="6">
+            <MudHidden Breakpoint="Breakpoint.Xs">
+              <MudText Typo="Typo.body1" Align="MudAlign.Right">
+                @DecimalString(row.Total, 2)
+              </MudText>
+            </MudHidden>
+            <MudHidden Breakpoint="Breakpoint.SmAndUp">
+              <MudText Typo="Typo.body1" Align="MudAlign.Left">
+                @DecimalString(row.Total, 2)
+              </MudText>
+            </MudHidden>
+          </MudItem>
+        </MudGrid>
+      </MudPaper>
+    }
+    <MudText Typo="Typo.subtitle1" class="mt-2" Align="MudAlign.Right">
+      UKUPNO @DecimalString(context.UsageFeeTotal_EUR, 2) EUR
+    </MudText>
+
+    <MudItem Class="d-flex flex-row justify-space-between mt-8">
+      <MudText Typo="Typo.h5">
+        Opskrba
+      </MudText>
+      <MudText Typo="Typo.h5" Class="mr-4">
+        EUR
+      </MudText>
+    </MudItem>
+    @{
+      var supplyRows = new[]
+      {
+        (
+          Name: "Opskrba električnom energijom u doba više dnevne tarife",
+          Total: context.SupplyActiveEnergyTotalImportT1Fee_EUR
+        ),
+        (
+          Name: "Opskrba električnom energijom u doba niže dnevne tarife",
+          Total: context.SupplyActiveEnergyTotalImportT2Fee_EUR
+        ),
+        (
+          Name: "Naknada za poticanje proizvodnje iz obnovljivih izvora energije i kogeneracije",
+          Total: context.SupplyRenewableEnergyFee_EUR
+        ),
+        (
+          Name: "Trošarina za poslovnu/neposlovnu upotrebu",
+          Total: context.SupplyBusinessUsageFee_EUR
+        )
+      };
+    }
+    @foreach (var row in supplyRows) {
+      <MudPaper class="mt-2 px-4 py-2">
+        <MudGrid Spacing="1">
+          <MudItem xs="12" sm="6">
+            <MudText Typo="Typo.body1">
+              @(row.Name)
+            </MudText>
+          </MudItem>
+          <MudItem xs="12" sm="6">
+            <MudHidden Breakpoint="Breakpoint.Xs">
+              <MudText Typo="Typo.body1" Align="MudAlign.Right">
+                @DecimalString(row.Total, 2)
+              </MudText>
+            </MudHidden>
+            <MudHidden Breakpoint="Breakpoint.SmAndUp">
+              <MudText Typo="Typo.body1" Align="MudAlign.Left">
+                @DecimalString(row.Total, 2)
+              </MudText>
+            </MudHidden>
+          </MudItem>
+        </MudGrid>
+      </MudPaper>
+    }
+    <MudText Typo="Typo.subtitle1" class="mt-2" Align="MudAlign.Right">
+      UKUPNO @DecimalString(context.SupplyFeeTotal_EUR) EUR
+    </MudText>
+
+    <MudItem Class="d-flex flex-row justify-space-between mt-8">
+      <MudText Typo="Typo.h5">
+
+      </MudText>
+      <MudText Typo="Typo.h5" Class="mr-4">
+        EUR
+      </MudText>
+    </MudItem>
+    <MudPaper class="px-4 py-2">
+      <MudGrid Spacing="1">
+        <MudItem xs="12" sm="9">
+          <MudText Typo="Typo.h5">
+            <strong>Ukupno</strong>
+          </MudText>
+        </MudItem>
+        <MudItem xs="12" sm="3">
+          <MudHidden Breakpoint="Breakpoint.Xs">
+            <MudText Typo="Typo.h5" Align="MudAlign.Right">
+              @DecimalString(context.Total_EUR, 2) EUR
+            </MudText>
+          </MudHidden>
+          <MudHidden Breakpoint="Breakpoint.SmAndUp">
+            <MudText Typo="Typo.h5" Align="MudAlign.Left">
+              @DecimalString(context.Total_EUR, 2) EUR
+            </MudText>
+          </MudHidden>
+        </MudItem>
+        <MudItem xs="12" sm="9">
+          <MudText Typo="Typo.h5">
+
+            <strong>
+              PDV (@DecimalString(
+                context.ArchivedRegulatoryCatalogue.TaxRate_Percent,
+                2
+              )%)</strong>
+          </MudText>
+        </MudItem>
+        <MudItem xs="12" sm="3">
+          <MudHidden Breakpoint="Breakpoint.Xs">
+            <MudText Typo="Typo.h5" Align="MudAlign.Right">
+              @DecimalString(context.Tax_EUR, 2) EUR
+            </MudText>
+          </MudHidden>
+          <MudHidden Breakpoint="Breakpoint.SmAndUp">
+            <MudText Typo="Typo.h5" Align="MudAlign.Left">
+              @DecimalString(context.Tax_EUR, 2) EUR
+            </MudText>
+          </MudHidden>
+        </MudItem>
+        <MudItem xs="12" sm="9">
+          <MudText Typo="Typo.h5">
+            <strong>Sveukupno</strong>
+          </MudText>
+        </MudItem>
+        <MudItem xs="12" sm="3">
+          <MudHidden Breakpoint="Breakpoint.Xs">
+            <MudText Typo="Typo.h5" Align="MudAlign.Right">
+              @DecimalString(context.TotalWithTax_EUR, 2) EUR
+            </MudText>
+          </MudHidden>
+          <MudHidden Breakpoint="Breakpoint.SmAndUp">
+            <MudText Typo="Typo.h5" Align="MudAlign.Left">
+              @DecimalString(context.TotalWithTax_EUR, 2) EUR
+            </MudText>
+          </MudHidden>
+        </MudItem>
+      </MudGrid>
+    </MudPaper>
+
+    <MudText class="mt-8" Align="MudAlign.Right">
+      <MudLink
+          class="ml-auto"
+          Href='@($"/app/network-user-invoice-print/{context.Id}")'>
+        <MudButton Variant="Variant.Filled">
+          PREGLED
+        </MudButton>
+      </MudLink>
+    </MudText>
+
+    <div class="mb-16" />
+  </Found>
+</Loading>?
+
+@code {
+  [Parameter]
+  public string? Id { get; set; }
+
+  [Parameter]
+  public NetworkUserInvoiceModel? Invoice { get; set; }
+}

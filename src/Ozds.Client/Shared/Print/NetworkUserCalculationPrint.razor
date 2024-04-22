@@ -1,28 +1,39 @@
-<div class="page">
-  <div class="page-header">
-    <img src="Mess.Ozds/invoice-print-header-hrv.svg"/>
-  </div>
-  <div class="page-content">
-    <NetworkUserCalculationPrintContent Calculation="@Calculation"/>
-    <NetworkUserCalculationPrintAbbreviations/>
-  </div>
-  <div class="page-footer">
-    <img src="/print/invoice-print-footer-hrv.svg"/>
-  </div>
-</div>
-<div class="page-break"/>
-<div class="page">
-  <div class="page-header">
-    <img src="/print/invoice-print-header-hrv.svg"/>
-  </div>
-  <div class="page-content">
-    <CalculationPrintFooter/>
-  </div>
-  <div class="page-footer">
-    <img src="/print/invoice-print-footer-hrv.svg"/>
-  </div>
-</div>
+@inherits OzdsOwningComponentBase
+
+<Loading Load="@(async () => (Calculation ?? await ScopedServices
+    .GetRequiredService<OzdsNetworkUserCalculationQueries>()
+    .ReadSingle<NetworkUserCalculationModel>(
+      Id ?? throw new InvalidOperationException()))!)">
+  <Found>
+    <div class="page">
+      <div class="page-header">
+        <img src="Mess.Ozds/invoice-print-header-hrv.svg"/>
+      </div>
+      <div class="page-content">
+        <NetworkUserCalculationPrintContent Calculation="@context"/>
+        <NetworkUserCalculationPrintAbbreviations/>
+      </div>
+      <div class="page-footer">
+        <img src="/print/invoice-print-footer-hrv.svg"/>
+      </div>
+    </div"Id is required">
+    <div class="page-break"/>
+    <div class="page">
+      <div class="page-header">
+        <img src="/print/invoice-print-header-hrv.svg"/>
+      </div>
+      <div class="page-content">
+        <NetworkUserCalculationPrintFooter/>
+      </div>
+      <div class="page-footer">
+        <img src="/print/invoice-print-footer-hrv.svg"/>
+      </div>
+    </div>
+  </Found>
+</Loading>
 
 @code {
-  [Parameter] public NetworkUserCalculationModel Calculation { get; set; } = default!;
+  [Parameter] public NetworkUserCalculationModel? Calculation { get; set; }
+
+  [Parameter] public string? Id { get; set; }
 }

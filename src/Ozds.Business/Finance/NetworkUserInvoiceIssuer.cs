@@ -137,7 +137,7 @@ public class NetworkUserInvoiceIssuer
 
     return new CalculatedNetworkUserInvoiceModel(
       Invoice: initial,
-      NetworkUserCalculations: calculations
+      Calculations: calculations
     );
   }
 
