@@ -15,10 +15,10 @@ public record class CompositeTariffMeasure<T>(List<TariffMeasure<T>> Measures)
   {
     return Measures.FirstOrDefault(measure => measure is BinaryTariffMeasure<T>)
       is
-      { } binary
+    { } binary
       ? selector(binary)
       : Measures.FirstOrDefault(measure => measure is UnaryTariffMeasure<T>) is
-        { } unary
+      { } unary
         ? selector(unary)
         : @default;
   }
@@ -642,6 +642,10 @@ public abstract record class TariffMeasure<T>
   {
     return (lhs, rhs) switch
     {
+      (CompositeTariffMeasure<T> composite, _) => composite.Zip(rhs,
+        (lhs, rhs) => lhs + rhs),
+      (_, CompositeTariffMeasure<T> composite) => composite.Zip(lhs,
+        (rhs, lhs) => lhs + rhs),
       (UnaryTariffMeasure<T> left, UnaryTariffMeasure<T> right) =>
         new UnaryTariffMeasure<T>(left.T0 + right.T0),
       (BinaryTariffMeasure<T> left, BinaryTariffMeasure<T> right) => new
@@ -655,6 +659,10 @@ public abstract record class TariffMeasure<T>
   {
     return (lhs, rhs) switch
     {
+      (CompositeTariffMeasure<T> composite, _) => composite.Zip(rhs,
+        (lhs, rhs) => lhs - rhs),
+      (_, CompositeTariffMeasure<T> composite) => composite.Zip(lhs,
+        (rhs, lhs) => lhs - rhs),
       (UnaryTariffMeasure<T> left, UnaryTariffMeasure<T> right) =>
         new UnaryTariffMeasure<T>(left.T0 - right.T0),
       (BinaryTariffMeasure<T> left, BinaryTariffMeasure<T> right) => new
@@ -668,6 +676,10 @@ public abstract record class TariffMeasure<T>
   {
     return (lhs, rhs) switch
     {
+      (CompositeTariffMeasure<T> composite, _) => composite.Zip(rhs,
+        (lhs, rhs) => lhs * rhs),
+      (_, CompositeTariffMeasure<T> composite) => composite.Zip(lhs,
+        (rhs, lhs) => lhs * rhs),
       (UnaryTariffMeasure<T> left, UnaryTariffMeasure<T> right) =>
         new UnaryTariffMeasure<T>(left.T0 * right.T0),
       (BinaryTariffMeasure<T> left, BinaryTariffMeasure<T> right) => new
@@ -681,6 +693,10 @@ public abstract record class TariffMeasure<T>
   {
     return (lhs, rhs) switch
     {
+      (CompositeTariffMeasure<T> composite, _) => composite.Zip(rhs,
+        (lhs, rhs) => lhs / rhs),
+      (_, CompositeTariffMeasure<T> composite) => composite.Zip(lhs,
+        (rhs, lhs) => lhs / rhs),
       (UnaryTariffMeasure<T> left, UnaryTariffMeasure<T> right) =>
         new UnaryTariffMeasure<T>(left.T0 / right.T0),
       (BinaryTariffMeasure<T> left, BinaryTariffMeasure<T> right) => new
