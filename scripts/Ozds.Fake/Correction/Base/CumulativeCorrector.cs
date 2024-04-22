@@ -53,7 +53,8 @@ public abstract class CumulativeCorrector<TMeasurementRecord> : ICumulativeCorre
     DateTimeOffset lastTimestamp
   )
   {
-    return (timestamp - firstTimestamp).Ticks /
-      (float)(lastTimestamp - firstTimestamp).Ticks;
+    var multiplier = (timestamp - firstTimestamp).Ticks /
+      (lastTimestamp - firstTimestamp).Ticks;
+    return multiplier;
   }
 }
