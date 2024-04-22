@@ -25,7 +25,7 @@
                                Name="@_graphValues.Select(x => x.names[j]).FirstOrDefault()"
                                SeriesType="SeriesType.Line"
                                XValue='x => DateTimeGraph(x.date)'
-                               YValue="x => x.values[j]"
+                               YValue="x => (decimal)x.values[j]"
                                Stroke="@(ColorGraph(j))"/>
             }
             @if (lineCount == 0)
@@ -95,7 +95,7 @@
                                Name="@_graphValues.Select(x => x.names[j]).FirstOrDefault()"
                                SeriesType="SeriesType.Line"
                                XValue='x => DateTimeGraph(x.date)'
-                               YValue="x => x.values[j]"
+                               YValue="x => (decimal)x.values[j]"
                                Stroke="@(ColorGraph(j))"/>
             }
             @if (lineCount == 0)
@@ -150,9 +150,10 @@
   [Parameter] public string Source { get; set; } = "abb";
   private MeterModel? _meter;
   AnnotationsYAxis? _annotation;
-  private ApexChartOptions<ChartData> graphOptions = new();
-  private ApexChartOptions<ChartData> graphOptionsMob = new();
-
+  private ApexChartOptions<ChartData> graphOptions = NewApexChartOptions<ChartData>();
+  private ApexChartOptions<ChartData> graphOptionsMob = NewApexChartOptions<ChartData>();
+  OzdsAggregateQueries aggregateQueries;
+  OzdsMeasurementQueries measureQueries;
   private List<string> _displayType = new()
   {
     "Napon", "Struja", "Radna snaga", "Jalova snaga", "Prividna snaga"
@@ -165,7 +166,7 @@
   private string _dataTitle = "";
   private string _timeTitle = "15 min";
 
-  public record ChartData(decimal[] values, string[] names, DateTimeOffset date, string source);
+  public record ChartData(float[] values, string[] names, DateTimeOffset date, string source);
 
   private ApexChart<ChartData> chart = default!;
 
@@ -175,12 +176,17 @@
   private int updateMilisec = 10000;
   private DateTimeOffset maxDate;
   private int counter;
-  private DateTimeOffset now = DateTimeOffset.UtcNow;
+  private DateTimeOffset now = DateTimeOffset.UtcNow.LocalDateTime;
 
   protected override async Task OnInitializedAsync()
   {
-    SetGraphOptionsStart();
+    aggregateQueries = ScopedServices.GetRequiredService<OzdsAggregateQueries>();
+    measureQueries = ScopedServices.GetRequiredService<OzdsMeasurementQueries>();
+    _meter = await ScopedServices
+      .GetRequiredService<OzdsMeterTableQueries>()
+      .GetMeterById(Source);
 
+    SetGraphOptionsStart();
 
     await DataMenuItemClicked(_dataTitle);
 
@@ -191,46 +197,7 @@
 
   private async Task DataMenuItemClicked(string type)
   {
-    switch (type)
-    {
-      case "Struja":
-        _dataTitle = "Struja";
-        break;
-      case "Radna snaga":
-        _dataTitle = "Radna snaga";
-        break;
-      case "Napon":
-        _dataTitle = "Napon";
-        break;
-      case "Jalova Snaga":
-        if (Source.StartsWith("abb"))
-        {
-        }
-        else if (Source.StartsWith("schneider"))
-        {
-        }
-
-        _dataTitle = "Jalova Snaga";
-        break;
-      case "Prividna snaga":
-        if (Source.StartsWith("abb"))
-        {
-        }
-        else if (Source.StartsWith("schneider"))
-        {
-        }
-
-        _dataTitle = "Prividna snaga";
-        break;
-      case "":
-        _dataTitle = "Radna snaga";
-        break;
-      default:
-        _dataTitle = "none";
-        break;
-    }
-
-    await GetValues(_dataTitle, now.AddMinutes(-timeSpanMins), now);
+    await GetValues(type, now.AddMinutes(-timeSpanMins), now);
   }
 
   private async Task TimeMenuItemClicked(string item)
@@ -261,19 +228,87 @@
 
   private async Task GetValues(string type, DateTimeOffset fromDate, DateTimeOffset toDate, bool reRenderChart = true)
   {
-    IReadOnlyList<SpanningMeasure<float>>? _spanningMeasurements;
-
+    var quorterHourlyMeasures = await aggregateQueries.ReadAgnostic(new[] { "x => x.Interval == 0" }, fromDate, toDate, 1, 9000);
+    var measures = await measureQueries.ReadAgnostic(new[] { $"x => x.MeterId == \"{Source}\"" }, fromDate, toDate, 1, 3000);
     switch (type)
     {
       case "Struja":
+        _dataTitle = "Struja";
+        _graphValues = measures.Select(x =>
+          new ChartData(
+            values: new float[]{
+              x.Current_A.TariffUnary.DuplexAny.PhaseSplit.ValueL1,
+              x.Current_A.TariffUnary.DuplexAny.PhaseSplit.ValueL2,
+              x.Current_A.TariffUnary.DuplexAny.PhaseSplit.ValueL3
+            },
+            names: new string[]{"L1 Struja", "L2 Struja","L3 Struja"},
+            date: x.Timestamp,
+            source: x.MeterId
+          )).ToList();
+        lineCount = 3;
         break;
+      case "":
       case "Radna snaga":
+        _dataTitle = "Radna snaga";
+        _graphValues = measures.Select(x =>
+          new ChartData(
+            values: new float[]{
+              x.ActivePower_W.TariffUnary.DuplexNet.PhaseSplit.ValueL1,
+              x.ActivePower_W.TariffUnary.DuplexNet.PhaseSplit.ValueL2,
+              x.ActivePower_W.TariffUnary.DuplexNet.PhaseSplit.ValueL3,
+              x.ActivePower_W.TariffUnary.DuplexNet.PhaseSum
+            },
+            names: new string[]{"L1 Radna snaga", "L2 Radna snaga","L3 Radna snaga","Ukupna snaga"},
+            date: x.Timestamp,
+            source: x.MeterId
+          )).ToList();
+        lineCount = 4;
         break;
       case "Napon":
+        _dataTitle = "Napon";
+        _graphValues = measures.Select(x =>
+          new ChartData(
+            values: new float[]{
+              x.Voltage_V.TariffUnary.DuplexAny.PhaseSplit.ValueL1,
+              x.Voltage_V.TariffUnary.DuplexAny.PhaseSplit.ValueL2,
+              x.Voltage_V.TariffUnary.DuplexAny.PhaseSplit.ValueL3
+            },
+            names: new string[]{"L1 Napon", "L2 Napon","L3 Napon"},
+            date: x.Timestamp,
+            source: x.MeterId
+          )).ToList();
+        lineCount = 3;
         break;
       case "Jalova Snaga":
+        _dataTitle = "Jalova Snaga";
+        _graphValues = measures.Select(x =>
+          new ChartData(
+            values: new float[]{
+              x.ReactivePower_VAR.TariffUnary.DuplexNet.PhaseSplit.ValueL1,
+              x.ReactivePower_VAR.TariffUnary.DuplexNet.PhaseSplit.ValueL2,
+              x.ReactivePower_VAR.TariffUnary.DuplexNet.PhaseSplit.ValueL3
+            },
+            names: new string[]{"L1 Jalova snaga", "L2 Jalova snaga","L3 Jalova snaga"},
+            date: x.Timestamp,
+            source: x.MeterId
+          )).ToList();
+        lineCount = 3;
         break;
       case "Prividna snaga":
+        _graphValues = measures.Select(x =>
+          new ChartData(
+            values: new float[]{
+              x.ApparentPower_VA.TariffUnary.DuplexNet.PhaseSum,
+            },
+            names: new string[]{"Prividna snaga"},
+            date: x.Timestamp,
+            source: x.MeterId
+          )).ToList();
+        lineCount = 1;
+        _dataTitle = "Prividna snaga";
+        break;
+      default:
+        _dataTitle = "none";
         break;
     }
 
@@ -326,7 +361,7 @@
         graphOptions.Yaxis.Clear();
         graphOptions.Yaxis.Add(new YAxis
         {
-          Max = graphMaxPower * 1.5m,
+          Max = graphMaxPower * 1.5,
           Labels = new YAxisLabels
           {
             Formatter = "function(val, index) { return val.toFixed(0); }"
@@ -340,7 +375,7 @@
         graphOptionsMob.Yaxis.Clear();
         graphOptionsMob.Yaxis.Add(new YAxis
         {
-          Max = graphMaxPower * 1.5m,
+          Max = graphMaxPower * 1.5,
           Labels = new YAxisLabels
           {
             Formatter = "function(val, index) { return val.toFixed(0); }"
@@ -394,16 +429,14 @@
 
   private void SetGraphOptionsStart()
   {
-    graphOptionsMob = new ApexChartOptions<ChartData>
+    graphOptionsMob = NewApexChartOptions<ChartData>();
+    graphOptionsMob.Grid = new Grid
     {
-      Grid = new Grid
+      BorderColor = "#e7e7e7",
+      Row = new GridRow
       {
-        BorderColor = "#e7e7e7",
-        Row = new GridRow
-        {
-          Colors = new List<string> { "#f3f3f3", "transparent" },
-          Opacity = 0.5d
-        }
+        Colors = new List<string> { "#f3f3f3", "transparent" },
+        Opacity = 0.5d
       }
     };
     graphOptionsMob.Tooltip = new Tooltip { X = new TooltipX { Format = @"HH:mm:ss" } };
@@ -421,16 +454,14 @@
         Tools = new Tools { Zoomin = false, Zoomout = false, Download = false, Pan = false, Selection = false }
       }
     };
-    graphOptions = new ApexChartOptions<ChartData>
+    graphOptions = NewApexChartOptions<ChartData>();
+    graphOptions.Grid = new Grid
     {
-      Grid = new Grid
+      BorderColor = "#e7e7e7",
+      Row = new GridRow
       {
-        BorderColor = "#e7e7e7",
-        Row = new GridRow
-        {
-          Colors = new List<string> { "#f3f3f3", "transparent" },
-          Opacity = 0.5d
-        }
+        Colors = new List<string> { "#f3f3f3", "transparent" },
+        Opacity = 0.5d
       }
     };
     graphOptions.Chart = new Chart

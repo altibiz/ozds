@@ -59,12 +59,12 @@
   protected override async Task OnInitializedAsync()
   {
     var aggregateQueries = ScopedServices.GetRequiredService<OzdsAggregateQueries>();
-    var test = await aggregateQueries.ReadAgnostic(new[] { "x => x.Interval == 0" }, startOfThisYear, now, 1, 9000);
-    var values = test.OrderBy(x => x.Timestamp).GroupBy(x => x.Timestamp).ToList();
+    var quorterHourlyMeasures = await aggregateQueries.ReadAgnostic(new[] { "x => x.Interval == 0" }, startOfThisYear, now, 1, 9000);
+    var values = quorterHourlyMeasures.OrderBy(x => x.Timestamp).GroupBy(x => x.Timestamp).ToList();
     foreach (var value in values)
     {
-      var val = (decimal)value.FirstOrDefault()!.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum * 1000;
-      _graphValues.Append(new ChartData(val, "test", value.Key, "test"));
+      var val = (decimal)value.FirstOrDefault()!.ActiveEnergySpan_Wh.SpanMax.TariffUnary.DuplexImport.PhaseSum;
+      _graphValues = _graphValues.Append(new ChartData(val / 1000, "test", value.Key, "test"));
     }
 
 

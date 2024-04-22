@@ -26,7 +26,7 @@ public class OzdsAuditableQueries : IOzdsQueries
 
   public async Task<T?> ReadSingle<T>(string id) where T : class, IAuditable
   {
-    var queryable = _context.GetDbSet(typeof(T))
+    var queryable = _context.GetDbSet(_modelEntityConverter.EntityType(typeof(T)))
                       as IQueryable<AuditableEntity>
                     ?? throw new InvalidOperationException();
     var item = await queryable

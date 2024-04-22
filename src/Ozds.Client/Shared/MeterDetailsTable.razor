@@ -7,7 +7,7 @@
   <MudHidden Breakpoint="Breakpoint.MdAndUp">
     <MudGrid Class="my-3 pa-1">
       <MudItem xs="12" Class="pa-1">
-        <MeterGraph/>
+        <MeterGraph Source="@Source"/>
       </MudItem>
       <MudItem xs="12" Class="pa-1">
         <MeterGage/>
@@ -140,7 +140,7 @@
         <MeterGage/>
       </MudItem>
       <MudItem xs="6">
-        <MeterGraph/>
+        <MeterGraph Source="@Source"/>
       </MudItem>
     </MudGrid>
   </MudHidden>
@@ -189,7 +189,7 @@
         .ToList();
       var a = measureThisMonthMonthly.ActiveEnergySpan_Wh.SpanMin.TariffUnary.DuplexImport.PhaseSum;
       var b = measureThisMonthMonthly.ActiveEnergySpan_Wh.SpanMax.TariffUnary.DuplexImport.PhaseSum;
-      var c = 15;
+      var c = measureThisMonthQuarterHourlies.Select(measure => measure.ActivePower_W.TariffBinary.T1.DuplexImport.PhaseSum).DefaultIfEmpty(0).Max();
       _dataStruct.Add(new TabularData
       {
         year = month.ToString("yy"),

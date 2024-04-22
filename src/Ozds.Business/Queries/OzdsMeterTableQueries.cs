@@ -26,98 +26,6 @@ public class OzdsMeterTableQueries : IOzdsQueries
     this.context = context;
     this.modelEntityConverter = modelEntityConverter;
   }
-
-  // public async Task<List<MeterTableViewModel>>
-  //   ViewModelByNetworkUser(
-  //     string networkUserId,
-  //     DateTimeOffset fromDate,
-  //     DateTimeOffset toDate
-  //   )
-  // {
-  //   return (await context.NetworkUsers
-  //       .WithId(networkUserId)
-  //       .Join(
-  //         context.MeasurementLocations
-  //           .OfType<NetworkUserMeasurementLocationEntity>()
-  //           .Include(x => x.NetworkUserCatalogue)
-  //           .Include(x => x.NetworkUser)
-  //           .Include(x => x.NetworkUser.Location)
-  //           .Include(x => x.NetworkUser.Location.RegulatoryCatalogue),
-  //         networkUser => networkUser.Id,
-  //         measurementLocation => measurementLocation.NetworkUserId,
-  //         (networkUser, measurementLocation) => new
-  //         {
-  //           Location = measurementLocation.NetworkUser.Location.ToModel(),
-  //           NetworkUser = measurementLocation.NetworkUser.ToModel(),
-  //           MeasurementLocation = measurementLocation.ToModel()
-  //         }
-  //       )
-  //       .Join(
-  //         context.Meters,
-  //         x => x.MeasurementLocation.MeterId,
-  //         meter => meter.Id,
-  //         (x, meter) => new
-  //         {
-  //           x.Location,
-  //           x.NetworkUser,
-  //           x.MeasurementLocation,
-  //           Meter = meter.ToModel()
-  //         }
-  //       )
-  //       .GroupJoin(
-  //         context.AbbB2xAggregates
-  //           .Where(x => x.Timestamp >= fromDate)
-  //           .Where(x => x.Timestamp <= toDate)
-  //           .Where(x =>
-  //             x.Interval == IntervalEntity.QuarterHour ||
-  //             x.Interval == IntervalEntity.Month),
-  //         x => x.Meter.Id,
-  //         aggregate => aggregate.MeterId,
-  //         (x, abbB2xAggregates) => new
-  //         {
-  //           x.Location,
-  //           x.NetworkUser,
-  //           x.Meter,
-  //           x.MeasurementLocation,
-  //           AbbB2xAggregates = abbB2xAggregates
-  //             .Select(abbB2xAggregate => abbB2xAggregate
-  //               .ToModel())
-  //         }
-  //       )
-  //       .GroupJoin(
-  //         context.SchneideriEM3xxxAggregates
-  //           .Where(x => x.Timestamp >= fromDate)
-  //           .Where(x => x.Timestamp <= toDate)
-  //           .Where(x =>
-  //             x.Interval == IntervalEntity.QuarterHour ||
-  //             x.Interval == IntervalEntity.Month),
-  //         x => x.Meter.Id,
-  //         aggregate => aggregate.MeterId,
-  //         (x, schneideriEM3xxxAggregates) => new
-  //         {
-  //           x.Location,
-  //           x.NetworkUser,
-  //           x.Meter,
-  //           x.MeasurementLocation,
-  //           x.AbbB2xAggregates,
-  //           SchneideriEM3xxxAggregates = schneideriEM3xxxAggregates
-  //             .Select(schneideriEM3xxxAggregate => schneideriEM3xxxAggregate
-  //               .ToModel())
-  //         }
-  //       )
-  //       .ToListAsync())
-  //     .Select(x => new MeterTableViewModel(
-  //       x.Location,
-  //       x.NetworkUser,
-  //       x.Meter,
-  //       Enumerable.Empty<AggregateModel>()
-  //         .Concat(x.AbbB2xAggregates)
-  //         .Concat(x.SchneideriEM3xxxAggregates)
-  //         .ToList()
-  //     ))
-  //     .ToList();
-  // }
-
   private readonly struct ViewModelStruct
   {
     public LocationEntity Location { get; init; }
@@ -127,6 +35,11 @@ public class OzdsMeterTableQueries : IOzdsQueries
     public AbbB2xAggregateEntity? AbbAggregate { get; init; }
     public SchneideriEM3xxxAggregateEntity? SchneiderAggregate { get; init; }
   };
+
+  public async Task<MeterModel?> GetMeterById(string Id)
+  {
+    return await context.Meters.Where(context.PrimaryKeyEquals<MeterEntity>(Id)).Select(m => m.ToModel()).FirstOrDefaultAsync();
+  }
 
   public async Task<List<MeterTableViewModel>>
     ViewModelByNetworkUser(
@@ -233,5 +146,4 @@ public class OzdsMeterTableQueries : IOzdsQueries
       ))
       .ToList();
   }
-
 }

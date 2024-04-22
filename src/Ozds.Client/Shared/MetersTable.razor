@@ -179,8 +179,8 @@
       meters = await queries.ViewModelByNetworkUser("1", startOfLastMonth, now);
       foreach(var omm in meters){
         // !!! Remove .Month and .LocalDateTime in live
-        var _thisMonthAggregate = omm.Aggregates.Where(x => x.Timestamp.Month == startOfThisMonth.LocalDateTime.Month).FirstOrDefault();
-        var _lastMonthAggregate = omm.Aggregates.Where(x => x.Timestamp.Month == startOfLastMonth.LocalDateTime.Month).FirstOrDefault();
+        var _thisMonthAggregate = omm.Aggregates.Where(x => x.Timestamp == startOfThisMonth).FirstOrDefault();
+        var _lastMonthAggregate = omm.Aggregates.Where(x => x.Timestamp == startOfLastMonth).FirstOrDefault();
         float _thisMonthUsage = 0;
         float _lastMonthUsage = 0;
         if(_thisMonthAggregate is not null)

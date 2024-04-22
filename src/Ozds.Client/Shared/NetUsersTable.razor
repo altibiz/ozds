@@ -175,8 +175,8 @@
       var groupedNetUsers = netUsers.GroupBy(x => x.NetworkUser.Id).ToList();
       foreach(var netUser in groupedNetUsers){
         // !!! Remove .Month and .LocalDateTime in live
-        var _thisMonthAggregate = netUser.Select(x => x.Aggregates.Where(x => x.Timestamp.Month == startOfThisMonth.LocalDateTime.Month).FirstOrDefault()).Where(x => x is not null).ToList();
-        var _lastMonthAggregate = netUser.Select(x => x.Aggregates.Where(x => x.Timestamp.Month == startOfLastMonth.LocalDateTime.Month).FirstOrDefault()).Where(x => x is not null).ToList();
+        var _thisMonthAggregate = netUser.Select(x => x.Aggregates.Where(x => x.Timestamp == startOfThisMonth).FirstOrDefault()).Where(x => x is not null).ToList();
+        var _lastMonthAggregate = netUser.Select(x => x.Aggregates.Where(x => x.Timestamp == startOfLastMonth).FirstOrDefault()).Where(x => x is not null).ToList();
         float _thisMonthUsage = 0;
         float _lastMonthUsage = 0;
         if(_thisMonthAggregate is not null && _thisMonthAggregate.Count > 0)
