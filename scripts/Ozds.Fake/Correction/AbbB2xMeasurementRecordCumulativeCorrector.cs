@@ -21,16 +21,12 @@ public class AbbB2xMeasurementRecordCumulativeCorrector
     );
 
     var activeEnergy = measurementRecord.ActiveEnergy_Wh +
-      new MinMaxSpanningMeasure<float>(
-        firstMeasurementRecord.ActiveEnergy_Wh,
-        lastMeasurementRecord.ActiveEnergy_Wh
-      ).SpanDiff * diffMultiplier;
+      (lastMeasurementRecord.ActiveEnergy_Wh
+      - firstMeasurementRecord.ActiveEnergy_Wh) * diffMultiplier;
 
     var reactiveEnergy = measurementRecord.ReactiveEnergy_VARh +
-      new MinMaxSpanningMeasure<float>(
-        firstMeasurementRecord.ReactiveEnergy_VARh,
-        lastMeasurementRecord.ReactiveEnergy_VARh
-      ).SpanDiff * diffMultiplier;
+      (lastMeasurementRecord.ReactiveEnergy_VARh
+      - firstMeasurementRecord.ReactiveEnergy_VARh) * diffMultiplier;
 
     measurementRecord.ActiveEnergyL1ImportT0_Wh =
       activeEnergy.TariffUnary.DuplexImport.PhaseSplit.ValueL1;
