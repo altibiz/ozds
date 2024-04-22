@@ -136,10 +136,10 @@ public class OzdsMeterTableQueries : IOzdsQueries
     var grouped = result.GroupBy(x => x.MeasurementLocation.Id);
     return grouped
       .Select(x => new MeterTableViewModel(
-        x.FirstOrDefault()!.Location.ToModel(),
-        x.FirstOrDefault()!.NetworkUser.ToModel(),
-        x.FirstOrDefault()!.MeasurementLocation.ToModel(),
-        x.FirstOrDefault()!.Meter.ToModel(),
+        x.First().Location.ToModel(),
+        x.First().NetworkUser.ToModel(),
+        x.First().MeasurementLocation.ToModel(),
+        x.First().Meter.ToModel(),
         Enumerable.Empty<AggregateModel>()
         .Concat(x.Select(x => x.AbbAggregate?.ToModel()).Where(x => x is not null).OfType<AggregateModel>())
         .Concat(x.Select(x => x.SchneiderAggregate?.ToModel()).Where(x => x is not null).OfType<AggregateModel>())
