@@ -68,6 +68,11 @@ public class AbbB2xMeasurementRecordCumulativeCorrector
     measurementRecord.ReactiveEnergyTotalExportT0_VARh =
       reactiveEnergy.TariffUnary.DuplexExport.PhaseSum;
 
+    measurementRecord.ActiveEnergyTotalImportT1_Wh =
+      activeEnergy.TariffBinary.T1.DuplexImport.PhaseSum;
+    measurementRecord.ActiveEnergyTotalImportT2_Wh =
+      activeEnergy.TariffBinary.T2.DuplexExport.PhaseSum;
+
     return measurementRecord;
   }
 }

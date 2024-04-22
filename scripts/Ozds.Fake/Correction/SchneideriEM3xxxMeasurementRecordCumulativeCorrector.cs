@@ -59,6 +59,11 @@ public class SchneideriEM3xxxMeasurementRecordCumulativeCorrector
     measurementRecord.ApparentPowerTotalNetT0_VA =
       apparentEnergy.TariffUnary.DuplexNet.PhaseSum;
 
+    measurementRecord.ActiveEnergyTotalImportT1_Wh =
+      activeEnergy.TariffBinary.T1.DuplexImport.PhaseSum;
+    measurementRecord.ActiveEnergyTotalImportT2_Wh =
+      activeEnergy.TariffBinary.T2.DuplexExport.PhaseSum;
+
     return measurementRecord;
   }
 }
