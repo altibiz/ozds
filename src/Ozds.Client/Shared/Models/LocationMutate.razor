@@ -165,8 +165,8 @@
   private List<WhiteLowNetworkUserCatalogueModel> _whiteLowNetworkUserCatalogues;
   private List<RedLowNetworkUserCatalogueModel> _redLowNetworkUserCatalogues;
   private List<RegulatoryCatalogueModel> _regulatoryNetworkUserCatalogues;
-  @* private List<RepresentativeModel> _representatives;
-  private IEnumerable<RepresentativeModel> _selectedRepsList { get; set; } = new HashSet<RepresentativeModel>() { }; *@
+  private List<RepresentativeModel> _representatives;
+  private IEnumerable<RepresentativeModel> _selectedRepsList { get; set; } = new HashSet<RepresentativeModel>() { };
 
   private bool _create;
 
@@ -201,9 +201,9 @@
     _whiteLowNetworkUserCatalogues = (await queries.GetWhiteLowNetworkUserCatalogues("")).Items;
     _redLowNetworkUserCatalogues = (await queries.GetRedLowNetworkUserCatalogues("")).Items;
     _regulatoryNetworkUserCatalogues = (await queries.GetRegulatoryCatalogues("")).Items;
-    @* _representatives = (await queries.GetEligibleRepresentatives("")).Items; *@
+    _representatives = (await queries.GetEligibleRepresentatives("")).Items;
 
-    @* if (LoadingState.Value is null && Id is not null)
+    if (LoadingState.Value is null && Id is not null)
     {
       var result = await queries.LocationWithRepresentativesById(Id);
       if (result != null)
@@ -213,7 +213,7 @@
           _representatives = _representatives.Select(x => representatives.FirstOrDefault(y => x.Id == y.Id) is { } y ? y : x).ToList();
           LoadingState = LoadingState.WithValue(location);
       }
-    } *@
+    }
 
     if (LoadingState.Value is null)
     {
