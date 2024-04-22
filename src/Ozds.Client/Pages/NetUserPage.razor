@@ -1,8 +1,40 @@
 @page "/network-user/{Id}"
+@using Ozds.Business.Time
+@using Ozds.Business.Finance
+@inherits OzdsOwningComponentBase
 @attribute [StreamRendering]
 
 <NetUserMutate Id="@Id"/>
 
+<MudButton OnClick="CreateInvoice">
+  Create invoice
+</MudButton>
+
+
 @code {
   [Parameter] public string? Id { get; set; } = "-1";
+
+  private async Task CreateInvoice()
+  {
+    var now = DateTimeOffset.UtcNow;
+    var (dateFrom, dateTo) = now.GetMonthRange();
+
+    var ozdsBillingQueries = ScopedServices
+      .GetRequiredService<OzdsBillingQueries>();
+    var invoiceIssuer = ScopedServices
+      .GetRequiredService<NetworkUserInvoiceIssuer>();
+    var invoiceMutations = ScopedServices
+      .GetRequiredService<OzdsInvoiceMutations>();
+    var networkUserCalculationMutations = ScopedServices
+      .GetRequiredService<OzdsNetworkUserCalculationMutations>();
+
+    var basis = await ozdsBillingQueries
+      .IssuingBasisForNetworkUser(Id!, dateFrom, dateTo);
+    var invoice = invoiceIssuer.Issue(basis);
+    invoiceMutations.Create(invoice.Invoice);
+    foreach (var calculation in invoice.Calculations)
+    {
+      networkUserCalculationMutations.Create(calculation);
+    }
+  }
 }
