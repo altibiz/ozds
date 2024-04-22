@@ -1,7 +1,7 @@
 @using System.Timers
 @implements IDisposable
 
-@if (_measurements is not null)
+@if (gageValue is not null)
 {
   @* MOBILE *@
   <MudHidden Breakpoint="Breakpoint.MdAndUp">
@@ -17,13 +17,13 @@
                            Items="gageValue"
                            SeriesType=SeriesType.RadialBar
                            Name="@T["Potrošnja"]"
-                           XValue="@(e => DecimalString(e.value / 1000, 2) + " kW")"
-                           YAggregate="@(e => Math.Round(e.First().percent, 2))"
+                           XValue="@(e => FloatString(e.value / 1000, 2) + " kW")"
+                           YAggregate="@(e => (decimal?)Math.Round((double)e.First().percent, 2))"
                            OrderByDescending="e => e.X"/>
         </ApexChart>
       </MudContainer>
       <MudText Typo="Typo.body1" Style="font-weight: bold;margin-top: -30px;text-align: center; color: #adadad;" Class="m-0">
-        @T["U usporedbi s maksimalnom snagom u prethodnom mjesecu"] (@(DecimalString(connectionMaxPower / 1000) + " kW"))
+        @T["U usporedbi s maksimalnom snagom u prethodnom mjesecu"] (@(FloatString(connectionMaxPower / 1000) + " kW"))
       </MudText>
     </MudPaper>
   </MudHidden>
@@ -43,13 +43,13 @@
                            Items="gageValue"
                            SeriesType=SeriesType.RadialBar
                            Name="@T["Potrošnja"]"
-                           XValue="@(e => DecimalString(e.value / 1000, 2) + " kW")"
-                           YAggregate="@(e => Math.Round(e.First().percent, 2))"
+                           XValue="@(e => FloatString(e.value / 1000, 2) + " kW")"
+                           YAggregate="@(e => (decimal?)Math.Round((double)e.First().percent, 2))"
                            OrderByDescending="e => e.X"/>
         </ApexChart>
       </MudContainer>
       <MudText Typo="Typo.body1" Style="font-weight: bold;margin-top: -30px;text-align: center; color: #adadad;" Class="m-0">
-        @T["U usporedbi s maksimalnom snagom u prethodnom mjesecu"] <br> (@(DecimalString(connectionMaxPower / 1000) + " kW"))
+        @T["U usporedbi s maksimalnom snagom u prethodnom mjesecu"] <br> (@(FloatString(connectionMaxPower / 1000) + " kW"))
       </MudText>
     </MudPaper>
   </MudHidden>
@@ -60,19 +60,20 @@
   [Parameter] public string Source { get; set; } = "abb";
   private MeterModel? _meter;
   private ApexChart<GageData> gage = default!;
-  private decimal thisMonthCurrentPower = 100000m;
+  private float thisMonthCurrentPower = 0;
   private List<GageData> gageValue = new();
-  private ApexChartOptions<GageData> gageOptions = new();
-  private decimal connectionMaxPower = 100000m;
+  private ApexChartOptions<GageData> gageOptions = NewApexChartOptions<GageData>();
+  private float connectionMaxPower = 100000;
   private IReadOnlyList<TariffMeasure<float>>? _measurements;
+  OzdsMeasurementQueries measureQueries;
 
   private class GageData
   {
-    public decimal value = 10;
-    public decimal valueMax = 100000;
-    public decimal percent = 50;
+    public float value = 10;
+    public float valueMax = 100000;
+    public float percent = 50;
 
-    public GageData(decimal val, decimal max)
+    public GageData(float val, float max)
     {
       value = val;
       valueMax = max;
@@ -91,10 +92,16 @@
   private int updateMilisec = 10000;
   private DateTimeOffset maxDate;
   private int counter;
-  private DateTimeOffset now = DateTimeOffset.UtcNow;
+  private DateTimeOffset now = DateTimeOffset.UtcNow.LocalDateTime;
 
   protected override async Task OnInitializedAsync()
   {
+    measureQueries = ScopedServices.GetRequiredService<OzdsMeasurementQueries>();
+    _meter = await ScopedServices
+      .GetRequiredService<OzdsMeterTableQueries>()
+      .GetMeterById(Source);
+    connectionMaxPower = _meter.ConnectionPower_W * 3;
+
     SetGageOptionsStart();
 
     await GetValue();
@@ -104,6 +111,13 @@
 
   private async Task GetValue()
   {
+    now = DateTimeOffset.UtcNow.LocalDateTime;
+    var measureLastQuorterHour = await measureQueries.ReadAgnostic(new[] { $"x => x.MeterId == \"{Source}\"" }, now.AddMinutes(-1), now, 1, 1000);
+    if(measureLastQuorterHour.Count() > 0){
+      var a = measureLastQuorterHour.OrderBy(x => x.Timestamp).LastOrDefault();
+      var b = a.ActivePower_W.TariffUnary.DuplexNet.PhaseSum;
+      thisMonthCurrentPower = b;
+    }
   }
 
   private void SetGageValue()

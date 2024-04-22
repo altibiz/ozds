@@ -22,12 +22,12 @@
             <MudIconButton OnClick="() => InspectMeter(dataStruct.data.meter.Id)" Icon="@Icons.Material.Filled.RemoveRedEye" Color="Color.Primary"/>
           </MudItem>
           <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
-            @T["Potrošnja u prethodnom mjesecu"]: <br>
-            @FloatString(dataStruct.data.lastMonthUsage / 1000, 0) kWh
-          </MudItem>
-          <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
             @T["Potrošnja u tekućem mjesecu"]: <br>
             @FloatString(dataStruct.data.thisMonthUsage / 1000, 0) kWh
+          </MudItem>
+          <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
+            @T["Potrošnja u prethodnom mjesecu"]: <br>
+            @FloatString(dataStruct.data.lastMonthUsage / 1000, 0) kWh
           </MudItem>
           @if (dataStruct.data.lastMonthsPayment is not null && false)
           {
@@ -114,18 +114,18 @@
 
       <PropertyColumn
         CellStyle="font-size: x-large;"
-        Property="x => x.lastMonthUsage"
-        Title='@T["Potrošnja u prethodnom mjesecu"]'>
-        <CellTemplate>
-          @(FloatString(context.Item.lastMonthUsage / 1000, 0) + " kWh")
-        </CellTemplate>
-      </PropertyColumn>
-      <PropertyColumn
-        CellStyle="font-size: x-large;"
         Property="x => x.thisMonthUsage"
         Title='@T["Potrošnja u tekućem mjesecu"]'>
         <CellTemplate>
           @(FloatString(context.Item.thisMonthUsage / 1000, 0) + " kWh")
+        </CellTemplate>
+      </PropertyColumn>
+      <PropertyColumn
+        CellStyle="font-size: x-large;"
+        Property="x => x.lastMonthUsage"
+        Title='@T["Potrošnja u prethodnom mjesecu"]'>
+        <CellTemplate>
+          @(FloatString(context.Item.lastMonthUsage / 1000, 0) + " kWh")
         </CellTemplate>
       </PropertyColumn>
       @if (false)

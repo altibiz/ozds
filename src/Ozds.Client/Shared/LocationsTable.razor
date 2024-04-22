@@ -9,7 +9,7 @@
     <MudText Typo="Typo.h4" Class="d-flex">
       @(T["Potrošnja lokacija"])
     </MudText>
-    @foreach (var dataStruct in _shownSubnets.Where(x => x.show).ToList())
+    @foreach (var dataStruct in _shownLocations.Where(x => x.show).ToList())
     {
       <MudPaper Elevation="2" Class="ma-1">
         <MudStack Spacing="0">
@@ -21,13 +21,13 @@
               <MudIconButton OnClick="() => InspectLocation(dataStruct.data.location)" Icon="@Icons.Material.Filled.RemoveRedEye" Color="Color.Primary"/>
             </MudItem>
             <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
-              @T["Potrošnja u tekućem mjesecu"]: @(DecimalString(dataStruct.data.consumption / 1000, 0) + " kWh")
+              @T["Potrošnja u tekućem mjesecu"]: @(FloatString(dataStruct.data.thisMonthUsage / 1000, 0) + " kWh")
             </MudItem>
             <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
-              @T["Potrošnja u prethodnom mjesecu"]: @(DecimalString(dataStruct.data.lastMonthConsumption / 1000, 0) + " kWh")
+              @T["Potrošnja u prethodnom mjesecu"]: @(FloatString(dataStruct.data.lastMonthUsage / 1000, 0) + " kWh")
             </MudItem>
             <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
-              @T["Zbroj računa tokom prethodnog mjeseca"]: @(dataStruct.data.invoiceTotal == 0m ? T["Račun u izradi..."] : DecimalString(dataStruct.data.invoiceTotal) + " EUR")
+              @T["Zbroj računa prethodnog mjeseca"]: @(dataStruct.data.lastMonthsPayment == 0 ? T["Račun u izradi..."] : FloatString(dataStruct.data.lastMonthsPayment) + " EUR")
             </MudItem>
           </MudGrid>
         </MudStack>
@@ -71,26 +71,26 @@
       </TemplateColumn>
       <PropertyColumn
         CellStyle="font-size: x-large;"
-        Property="x => x.consumption"
+        Property="x => x.thisMonthUsage"
         Title='@T["Potrošnja u tekućem mjesecu"]'>
         <CellTemplate>
-          @(DecimalString(context.Item.consumption / 1000, 0) + " kWh")
+          @(FloatString(context.Item.thisMonthUsage / 1000, 0) + " kWh")
         </CellTemplate>
       </PropertyColumn>
       <PropertyColumn
         CellStyle="font-size: x-large;"
-        Property="x => x.lastMonthConsumption"
+        Property="x => x.lastMonthUsage"
         Title='@T["Potrošnja u prethodnom mjesecu"]'>
         <CellTemplate>
-          @(DecimalString(context.Item.lastMonthConsumption / 1000, 0) + " kWh")
+          @(FloatString(context.Item.lastMonthUsage / 1000, 0) + " kWh")
         </CellTemplate>
       </PropertyColumn>
       <PropertyColumn
         CellStyle="font-size: x-large;"
-        Property="x => x.invoiceTotal"
-        Title='@T["Zbroj računa tokom prethodnog mjeseca"]'>
+        Property="x => x.lastMonthsPayment"
+        Title='@T["Zbroj računa prethodnog mjeseca"]'>
         <CellTemplate>
-          @(context.Item.invoiceTotal == 0m ? T["Račun u izradi..."] : DecimalString(context.Item.invoiceTotal) + " EUR")
+          @(context.Item.lastMonthsPayment == 0 ? T["Račun u izradi..."] : FloatString(context.Item.lastMonthsPayment) + " EUR")
         </CellTemplate>
       </PropertyColumn>
     </Columns>
@@ -103,26 +103,68 @@
 @code {
   [CascadingParameter] public UserState user { get; set; } = default!;
   [CascadingParameter] public RepresentativeState representative { get; set; } = default!;
-  private (decimal? First, decimal? Last, DateTimeOffset FirstDate) _startEnd;
-  private (decimal? First, decimal? Last, DateTimeOffset FirstDate) _startEndLastMonth;
+  private (float? First, float? Last, DateTimeOffset FirstDate) _startEnd;
+  private (float? First, float? Last, DateTimeOffset FirstDate) _startEndLastMonth;
   private string? _searchString;
   private IEnumerable<MeterModel>? _meters;
   private IEnumerable<LocationModel>? _locations;
   private IEnumerable<NetworkUserModel>? _networdUser;
   private IEnumerable<NetworkUserInvoiceModel>? _invoices;
-  private decimal? _consumption = 0;
-  private decimal? _lastMonthConsumption = 0;
+  private float? _consumption = 0;
+  private float? _lastMonthConsumption = 0;
 
-  public record struct TabularData(LocationModel location, decimal consumption, decimal lastMonthConsumption, decimal invoiceTotal);
+  public record struct TabularData(LocationModel location, float thisMonthUsage, float lastMonthUsage, float lastMonthsPayment);
 
   private List<TabularData> _dataStruct = new();
   private IReadOnlyList<SpanningMeasure<float>>? _spanningMeasurements;
-  private DateTimeOffset nowMonth = DateTimeOffset.UtcNow.GetStartOfMonth();
-  private DateTimeOffset lastMonth = DateTimeOffset.UtcNow.GetStartOfLastMonth();
+  private DateTimeOffset startOfThisMonth = DateTimeOffset.UtcNow.GetStartOfMonth();
+  private DateTimeOffset startOfLastMonth = DateTimeOffset.UtcNow.GetStartOfLastMonth();
   private DateTimeOffset now = DateTimeOffset.UtcNow;
 
   protected override async Task OnInitializedAsync()
   {
+    var queries = ScopedServices.GetRequiredService<OzdsMeterTableQueries>();
+    List<MeterTableViewModel> locations = new();
+
+    if (representative is null)
+    {
+      return;
+    }
+    if (representative.Representative.Role is RoleModel.NetworkUserRepresentative)
+    {
+      locations = await queries.ViewModelByNetworkUser("1", startOfLastMonth, now);
+      var groupedLocations = locations.GroupBy(x => x.Location.Id).ToList();
+      foreach(var netUser in groupedLocations){
+        // !!! Remove .Month and .LocalDateTime in live
+        var _thisMonthAggregate = netUser.Select(x => x.Aggregates.Where(x => x.Timestamp == startOfThisMonth).FirstOrDefault()).Where(x => x is not null).ToList();
+        var _lastMonthAggregate = netUser.Select(x => x.Aggregates.Where(x => x.Timestamp == startOfLastMonth).FirstOrDefault()).Where(x => x is not null).ToList();
+        float _thisMonthUsage = 0;
+        float _lastMonthUsage = 0;
+        if(_thisMonthAggregate is not null && _thisMonthAggregate.Count > 0)
+          _thisMonthUsage = _thisMonthAggregate
+            .Select(x => x.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum)
+            .DefaultIfEmpty(0)
+            .Sum();
+        if(_lastMonthAggregate is not null && _lastMonthAggregate.Count > 0)
+          _lastMonthUsage = _lastMonthAggregate
+            .Select(x => x.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum)
+            .DefaultIfEmpty(0)
+            .Sum();
+        _dataStruct.Add(
+          new TabularData {
+            location = netUser.FirstOrDefault().Location,
+            thisMonthUsage = _thisMonthUsage,
+            lastMonthUsage = _lastMonthUsage,
+            lastMonthsPayment = 0 // !!! Add another query
+          }
+        );
+      }
+    }
+
+    foreach (var data in _dataStruct)
+    {
+      _shownLocations.Add(new ExpandThing { data = data, show = true, expand = false });
+    }
   }
 
   private Func<TabularData, bool> _quickFilter
@@ -158,11 +200,11 @@
     public bool show;
   }
 
-  List<ExpandThing> _shownSubnets = new();
+  List<ExpandThing> _shownLocations = new();
 
   private void OnExpandCollapseClick(string id)
   {
-    var a = _shownSubnets.Where(x => x.data.location.Id == id).FirstOrDefault();
+    var a = _shownLocations.Where(x => x.data.location.Id == id).FirstOrDefault();
     if (a != null)
     {
       a.expand = !a.expand;
@@ -172,7 +214,7 @@
   private Task Filter(string value)
   {
     TextValue = value;
-    foreach (var inv in _shownSubnets)
+    foreach (var inv in _shownLocations)
     {
       if (value.Trim() != "")
       {
@@ -181,7 +223,7 @@
     }
 
     ;
-    var a = _shownSubnets.Where(x => x.data.location.Title.Contains(value, StringComparison.InvariantCultureIgnoreCase)).ToList();
+    var a = _shownLocations.Where(x => x.data.location.Title.Contains(value, StringComparison.InvariantCultureIgnoreCase)).ToList();
     foreach (var inv in a)
     {
       inv.show = true;

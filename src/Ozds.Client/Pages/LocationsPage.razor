@@ -1,12 +1,12 @@
-@page "/invoices"
-
+@page "/locations"
+@attribute [Navigation(Title = "Lokacije")]
 
 @if (user is null)
 {
   return;
 }
 
-<InvoicesTable/>
+<LocationsTable/>
 
 @code {
   [CascadingParameter] public UserState user { get; set; } = default!;

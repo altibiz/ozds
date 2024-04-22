@@ -536,7 +536,7 @@
       var lastGraphValues = _graphValues.OrderByDescending(x => x.date).FirstOrDefault();
       if (lastGraphValues is not null)
       {
-        await GetValues(_dataTitle, lastGraphValues.date, DateTimeOffset.UtcNow, false);
+        await GetValues(_dataTitle, lastGraphValues.date, DateTimeOffset.UtcNow.LocalDateTime, false);
         await chart.AppendDataAsync(_graphValues);
       }
     }

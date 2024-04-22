@@ -10,7 +10,7 @@
         <MeterGraph Source="@Source"/>
       </MudItem>
       <MudItem xs="12" Class="pa-1">
-        <MeterGage/>
+        <MeterGage Source="@Source"/>
       </MudItem>
     </MudGrid>
 
@@ -137,7 +137,7 @@
 
     <MudGrid Class="my-3">
       <MudItem xs="6">
-        <MeterGage/>
+        <MeterGage Source="@Source"/>
       </MudItem>
       <MudItem xs="6">
         <MeterGraph Source="@Source"/>
@@ -178,13 +178,13 @@
     foreach (var month in startOfThisYear.GetThisYearMonthStarts().Reverse())
     {
       var measureThisMonthMonthly = measurePerMonth
-        .Where(x => x.Timestamp.Month == month.Month)
+        .Where(x => x.Timestamp.LocalDateTime.Month == month.Month)
         .Where(x => x.Interval == IntervalModel.Month)
         .FirstOrDefault();
       if (measureThisMonthMonthly is null)
         continue;
       var measureThisMonthQuarterHourlies = measurePerMonth
-        .Where(x => x.Timestamp.Month == month.Month)
+        .Where(x => x.Timestamp.LocalDateTime.Month == month.Month)
         .Where(x => x.Interval == IntervalModel.QuarterHour)
         .ToList();
       var a = measureThisMonthMonthly.ActiveEnergySpan_Wh.SpanMin.TariffUnary.DuplexImport.PhaseSum;

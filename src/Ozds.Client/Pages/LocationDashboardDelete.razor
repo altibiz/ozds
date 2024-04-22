@@ -1,0 +1,14 @@
+@page "/locations-dashboard"
+@attribute [Navigation(Title = "Lokacije Naslovnica")]
+
+@if (user is null)
+{
+  return;
+}
+
+<LocationRepDashboard/>
+<LocationsTable/>
+
+@code {
+  [CascadingParameter] public UserState user { get; set; } = default!;
+}

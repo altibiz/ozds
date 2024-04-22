@@ -15,7 +15,7 @@
         </MudItem>
         <MudContainer Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
           <MudText Typo="Typo.h4">
-            @(_totalLastMonthConsumption is null ? null : DecimalString((decimal)_totalLastMonthConsumption / 1000, 0) + " kWh")
+            @(FloatString(_lastMonthUsage / 1000, 0) + " kWh")
           </MudText>
         </MudContainer>
       </MudPaper>
@@ -29,7 +29,7 @@
         </MudItem>
         <MudContainer Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
           <MudText Typo="Typo.h4">
-            @(_totalConsumption is null ? null : DecimalString((decimal)_totalConsumption / 1000, 0) + " kWh")
+            @(FloatString(_thisMonthUsage / 1000, 0) + " kWh")
           </MudText>
         </MudContainer>
       </MudPaper>
@@ -38,45 +38,20 @@
       <MudPaper Class="d-flex align-center justify-stat mud-width-full pa-1 pb-3 flex-column">
         <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
           <MudText Typo="Typo.h6">
-            @T["Trenutna snaga:"]
+            @T["Zbroj računa prethodnog mjeseca:"]
           </MudText>
         </MudItem>
         <MudContainer Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
-          <MudText Typo="Typo.h4">
-            @(_totalLastPower is null ? null : DecimalString((decimal)_totalLastPower / 1000) + " kW")
-          </MudText>
+            @if(_lastMonthsPayment == 0){
+              <MudText Typo="Typo.h6">@T["Račun u izradi..."]</MudText>
+            }
+            else{
+              <MudText Typo="Typo.h4">@FloatString(_lastMonthsPayment) + " EUR"</MudText>
+            }
         </MudContainer>
       </MudPaper>
     </MudItem>
   </MudGrid>
-
-
-  <MudText Typo="Typo.h4" Class="d-flex">
-    @(T["Tvoje lokacije"])
-  </MudText>
-  @foreach (var dataStruct in _shownSubnets.Where(x => x.show).ToList())
-  {
-    <MudPaper Elevation="2" Class="ma-1">
-      <MudStack Spacing="0">
-        <MudGrid Class="d-flex pa-2">
-          <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
-            @T["Lokacija"]: @dataStruct.data.location.Title
-          </MudItem>
-          <MudItem xs="2" Class="d-flex align-center justify-end">
-            <MudIconButton OnClick="() => InspectLocation(dataStruct.data.location)" Icon="@Icons.Material.Filled.RemoveRedEye" Color="Color.Primary"/>
-          </MudItem>
-          <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
-            @T["Potrošnja u tekućem mjesecu"]: @(dataStruct.data.consumption is null ? null : DecimalString((decimal)dataStruct.data.consumption / 1000, 0) + " kWh")
-          </MudItem>
-          <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
-            @T["Potrošnja u prethodnom mjesecu"]: @(dataStruct.data.lastMonthConsumption is null ? null : DecimalString((decimal)dataStruct.data.lastMonthConsumption / 1000, 0) + " kWh")
-          </MudItem>
-          <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
-            @T["Trenutna snaga"]: @(dataStruct.data.lastPower is null ? null : DecimalString((decimal)dataStruct.data.lastPower / 1000) + " kW")
-          </MudItem>
-        </MudGrid>
-      </MudStack>
-    </MudPaper>
   }
 </MudHidden>
 
@@ -93,7 +68,7 @@
         </MudItem>
         <MudContainer Class="d-flex align-end justify-center pb-10" MaxWidth="MaxWidth.Small">
           <MudText Typo="Typo.h1">
-            @(_totalConsumption is null ? null : DecimalString((decimal)_totalConsumption / 1000, 0))
+            @(FloatString(_thisMonthUsage / 1000, 0))
           </MudText>
           <MudText Typo="Typo.h4" Class="mb-3 ml-1">kWh</MudText>
         </MudContainer>
@@ -108,7 +83,7 @@
         </MudItem>
         <MudContainer Class="d-flex align-end justify-center pb-10" MaxWidth="MaxWidth.Small">
           <MudText Typo="Typo.h1">
-            @(_totalLastMonthConsumption is null ? null : DecimalString((decimal)_totalLastMonthConsumption / 1000, 0))
+            @(FloatString(_lastMonthUsage / 1000, 0))
           </MudText>
           <MudText Typo="Typo.h4" Class="mb-3 ml-1">kWh</MudText>
         </MudContainer>
@@ -118,107 +93,85 @@
       <MudPaper Class="mud-width-full d-flex flex-column justify-space-between pa-4" Height="320px">
         <MudItem Class="" Style="font-size: large; font-weight: bold;">
           <MudText Typo="Typo.h5">
-            @(T["Trenutna snaga:"])
+            @(T["Zbroj računa prethodnog mjeseca:"])
           </MudText>
         </MudItem>
         <MudContainer Class="d-flex align-end justify-center pb-10" MaxWidth="MaxWidth.Small">
-          <MudText Typo="Typo.h1">
-            @(_totalLastPower is null ? null : DecimalString((decimal)_totalLastPower / 1000))
-          </MudText>
-          <MudText Typo="Typo.h4" Class="mb-3 ml-1">kW</MudText>
+            @if(_lastMonthsPayment == 0){
+              <MudText Typo="Typo.h4">@T["Račun u izradi..."]</MudText>
+            }
+            else{
+              <MudText Typo="Typo.h1">
+                @(FloatString(_lastMonthsPayment))
+              </MudText>
+              <MudText Typo="Typo.h4" Class="mb-3 ml-1">EUR</MudText>
+            }
         </MudContainer>
       </MudPaper>
     </MudItem>
   </MudGrid>
-
-
-  <MudDataGrid
-    T="TabularData"
-    MultiSelection="true"
-    Items="@_dataStruct"
-    SortMode="SortMode.Multiple"
-    Filterable="true"
-    QuickFilter="@_quickFilter">
-    <ToolBarContent>
-      <MudText Typo="Typo.h4">@T["Tvoje lokacije"]</MudText>
-      <MudSpacer/>
-      <MudTextField
-        @bind-Value="_searchString"
-        Placeholder="@T["Pretraži"]"
-        Adornment="Adornment.Start"
-        Immediate="true"
-        AdornmentIcon="@Icons.Material.Filled.Search"
-        IconSize="Size.Medium"
-        Class="mt-0">
-      </MudTextField>
-    </ToolBarContent>
-    <Columns>
-      <TemplateColumn Title="@T["Lokacije"]">
-        <CellTemplate>
-          <MudStack Row>
-            <MudButton OnClick="() => InspectLocation(context.Item.location)" Variant="Variant.Outlined" Color="Color.Primary">
-              @context.Item.location.Title
-            </MudButton>
-          </MudStack>
-        </CellTemplate>
-      </TemplateColumn>
-      <PropertyColumn
-        CellStyle="font-size: x-large;"
-        Property="x => x.consumption"
-        Title='@T["Potrošnja u tekućem mjesecu"]'>
-        <CellTemplate>
-          @(context.Item.consumption is null ? null : DecimalString((decimal)context.Item.consumption / 1000, 0) + " kWh")
-        </CellTemplate>
-      </PropertyColumn>
-      <PropertyColumn
-        CellStyle="font-size: x-large;"
-        Property="x => x.consumption"
-        Title='@T["Potrošnja u prethodnom mjesecu"]'>
-        <CellTemplate>
-          @(context.Item.lastMonthConsumption is null ? null : DecimalString((decimal)context.Item.lastMonthConsumption / 1000, 0) + " kWh")
-        </CellTemplate>
-      </PropertyColumn>
-      <PropertyColumn
-        CellStyle="font-size: x-large;"
-        Property="x => x.consumption"
-        Title='@T["Trenutna snaga"]'>
-        <CellTemplate>
-          @(context.Item.lastPower is null ? null : DecimalString((decimal)context.Item.lastPower / 1000) + " kW")
-        </CellTemplate>
-      </PropertyColumn>
-    </Columns>
-    <PagerContent>
-      <MudDataGridPager T="TabularData"/>
-    </PagerContent>
-  </MudDataGrid>
 </MudHidden>
 
 
 @code {
   [CascadingParameter] public UserState user { get; set; } = default!;
   [CascadingParameter] public RepresentativeState representative { get; set; } = default!;
-  private (decimal? First, decimal? Last, DateTimeOffset FirstDate) _startEnd;
-  private (decimal? First, decimal? Last, DateTimeOffset FirstDate) _startEndLastMonth = new(0, 0, DateTime.UtcNow);
+  private (float First, float Last, DateTimeOffset FirstDate) _startEnd;
+  private (float First, float Last, DateTimeOffset FirstDate) _startEndLastMonth = new(0, 0, DateTime.UtcNow);
   private string? _searchString;
   private IEnumerable<LocationModel>? _locations;
   private IEnumerable<MeterModel>? _meters;
 
-  public record struct TabularData(LocationModel location, decimal? consumption, decimal? lastMonthConsumption, decimal? lastPower);
+  public record struct TabularData(LocationModel location, float consumption, float lastMonthConsumption, float lastPower);
 
-  private decimal? _diagnostics = 0;
-  private decimal? _lastMonthDiagnostics = 0;
-  private decimal? _lastMeasurements = 0;
-  private decimal? _totalConsumption = 0;
-  private decimal? _totalLastMonthConsumption = 0;
-  private decimal? _totalLastPower = 0;
+  private float _diagnostics = 0;
+  private float _lastMonthDiagnostics = 0;
+  private float _lastMeasurements = 0;
+  private float _thisMonthUsage = 0;
+  private float _lastMonthUsage = 0;
+  private float _lastMonthsPayment = 0;
   private List<TabularData> _dataStruct = new();
   private IReadOnlyList<SpanningMeasure<float>>? _spanningMeasurements;
-  private DateTimeOffset nowMonth = DateTimeOffset.UtcNow.GetStartOfMonth();
-  private DateTimeOffset lastMonth = DateTimeOffset.UtcNow.GetStartOfLastMonth();
+  private DateTimeOffset startOfThisMonth = DateTimeOffset.UtcNow.GetStartOfMonth();
+  private DateTimeOffset startOfLastMonth = DateTimeOffset.UtcNow.GetStartOfLastMonth();
   private DateTimeOffset now = DateTimeOffset.UtcNow;
 
   protected override async Task OnInitializedAsync()
   {
+    var queries = ScopedServices.GetRequiredService<OzdsMeterTableQueries>();
+    List<MeterTableViewModel> locations = new();
+
+    if (representative is null)
+    {
+      return;
+    }
+    if (representative.Representative.Role is RoleModel.NetworkUserRepresentative)
+    {
+      locations = await queries.ViewModelByNetworkUser("1", startOfLastMonth, now);
+      var groupedLocations = locations.GroupBy(x => x.Location.Id).ToList();
+      foreach(var netUser in groupedLocations){
+        // !!! Remove .Month and .LocalDateTime in live
+        var _thisMonthAggregate = netUser.Select(x => x.Aggregates.Where(x => x.Timestamp == startOfThisMonth).FirstOrDefault()).Where(x => x is not null).ToList();
+        var _lastMonthAggregate = netUser.Select(x => x.Aggregates.Where(x => x.Timestamp == startOfLastMonth).FirstOrDefault()).Where(x => x is not null).ToList();
+
+        if(_thisMonthAggregate is not null && _thisMonthAggregate.Count > 0){
+          _lastMonthsPayment += _thisMonthAggregate
+            .Select(x => x.ActivePower_W.TariffUnary.DuplexNet.PhaseSum)
+            .DefaultIfEmpty(0)
+            .Sum();
+          _thisMonthUsage += _thisMonthAggregate
+            .Select(x => x.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum)
+            .DefaultIfEmpty(0)
+            .Sum();
+        }
+        if(_lastMonthAggregate is not null && _lastMonthAggregate.Count > 0)
+          _lastMonthUsage += _lastMonthAggregate
+            .Select(x => x.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum)
+            .DefaultIfEmpty(0)
+            .Sum();
+        _lastMonthsPayment = 0;
+      }
+    }
   }
 
   private Func<TabularData, bool> _quickFilter
@@ -254,11 +207,11 @@
     public bool show;
   }
 
-  List<ExpandThing> _shownSubnets = new();
+  List<ExpandThing> _shownLocations = new();
 
   private void OnExpandCollapseClick(string id)
   {
-    var a = _shownSubnets.Where(x => x.data.location.Id == id).FirstOrDefault();
+    var a = _shownLocations.Where(x => x.data.location.Id == id).FirstOrDefault();
     if (a != null)
     {
       a.expand = !a.expand;
@@ -268,7 +221,7 @@
   private Task Filter(string value)
   {
     TextValue = value;
-    foreach (var inv in _shownSubnets)
+    foreach (var inv in _shownLocations)
     {
       if (value.Trim() != "")
       {
@@ -277,7 +230,7 @@
     }
 
     ;
-    var a = _shownSubnets.Where(x => x.data.location.Title.Contains(value, StringComparison.InvariantCultureIgnoreCase)).ToList();
+    var a = _shownLocations.Where(x => x.data.location.Title.Contains(value, StringComparison.InvariantCultureIgnoreCase)).ToList();
     foreach (var inv in a)
     {
       inv.show = true;
