@@ -20,11 +20,12 @@ public abstract class CumulativeCorrector<TMeasurementRecord> : ICumulativeCorre
   {
     return CorrectCumulatives(
       timestamp,
+      CopyRecord(
         measurementRecord as TMeasurementRecord
             ?? throw new ArgumentException(
                 $"Expected {typeof(TMeasurementRecord).Name}, but got {measurementRecord.GetType().Name}",
                 nameof(measurementRecord)
-            ),
+            )),
         firstMeasurementRecord
             as TMeasurementRecord
             ?? throw new ArgumentException(
@@ -46,6 +47,8 @@ public abstract class CumulativeCorrector<TMeasurementRecord> : ICumulativeCorre
       TMeasurementRecord firstMeasurementRecord,
       TMeasurementRecord lastMeasurementRecord
   );
+
+  protected abstract TMeasurementRecord CopyRecord(TMeasurementRecord record);
 
   protected float DiffMultiplier(
     DateTimeOffset timestamp,
