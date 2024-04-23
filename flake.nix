@@ -69,6 +69,7 @@
             marksman
             taplo
             nushell
+            nodePackages.cspell
           ];
         };
     };
