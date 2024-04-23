@@ -111,7 +111,7 @@ public class
       IssuedById = default!,
       ArchivedMeter = calculationBasis.Meter,
       ArchivedMeasurementLocation = calculationBasis.MeasurementLocation,
-      ArchivedUsageNetworkUserCatalogue = usageCatalogue,
+      ConcreteArchivedUsageNetworkUserCatalogue = usageCatalogue,
       ArchivedSupplyRegulatoryCatalogue =
         calculationBasis.SupplyRegulatoryCatalogue,
       UsageActiveEnergyTotalImportT0 = usageActiveEnergyTotalImportT0,

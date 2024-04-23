@@ -120,7 +120,7 @@ public class
       IssuedById = default!,
       ArchivedMeter = calculationBasis.Meter,
       ArchivedMeasurementLocation = calculationBasis.MeasurementLocation,
-      ArchivedUsageNetworkUserCatalogue = usageCatalogue,
+      ConcreteArchivedUsageNetworkUserCatalogue = usageCatalogue,
       ArchivedSupplyRegulatoryCatalogue =
         calculationBasis.SupplyRegulatoryCatalogue,
       UsageActiveEnergyTotalImportT1 = usageActiveEnergyTotalImportT1,

@@ -44,7 +44,7 @@ public static class BlueLowNetworkUserCalculationModelEntityConverterExtensions
         entity.ArchivedMeasurementLocation.ToModel(),
       ArchivedSupplyRegulatoryCatalogue =
         entity.ArchivedSupplyRegulatoryCatalogue.ToModel(),
-      ArchivedUsageNetworkUserCatalogue =
+      ConcreteArchivedUsageNetworkUserCatalogue =
         entity.ArchivedUsageNetworkUserCatalogue.ToModel(),
       ArchivedMeter = entity.ArchivedMeter.ToModel(),
       UsageActiveEnergyTotalImportT0 =
@@ -85,7 +85,7 @@ public static class BlueLowNetworkUserCalculationModelEntityConverterExtensions
       ArchivedSupplyRegulatoryCatalogue =
         model.ArchivedSupplyRegulatoryCatalogue.ToEntity(),
       ArchivedUsageNetworkUserCatalogue =
-        model.ArchivedUsageNetworkUserCatalogue.ToEntity(),
+        model.ConcreteArchivedUsageNetworkUserCatalogue.ToEntity(),
       ArchivedMeter = model.ArchivedMeter.ToEntity(),
       UsageActiveEnergyTotalImportT0 =
         model.UsageActiveEnergyTotalImportT0.ToEntity(),

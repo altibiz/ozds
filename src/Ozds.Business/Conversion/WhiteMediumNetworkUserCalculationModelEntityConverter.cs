@@ -46,7 +46,7 @@ public static class
         entity.ArchivedMeasurementLocation.ToModel(),
       ArchivedSupplyRegulatoryCatalogue =
         entity.ArchivedSupplyRegulatoryCatalogue.ToModel(),
-      ArchivedUsageNetworkUserCatalogue =
+      ConcreteArchivedUsageNetworkUserCatalogue =
         entity.ArchivedUsageNetworkUserCatalogue.ToModel(),
       ArchivedMeter = entity.ArchivedMeter.ToModel(),
       UsageActiveEnergyTotalImportT1 =
@@ -91,7 +91,7 @@ public static class
       ArchivedSupplyRegulatoryCatalogue =
         model.ArchivedSupplyRegulatoryCatalogue.ToEntity(),
       ArchivedUsageNetworkUserCatalogue =
-        model.ArchivedUsageNetworkUserCatalogue.ToEntity(),
+        model.ConcreteArchivedUsageNetworkUserCatalogue.ToEntity(),
       ArchivedMeter = model.ArchivedMeter.ToEntity(),
       UsageActiveEnergyTotalImportT1 =
         model.UsageActiveEnergyTotalImportT1.ToEntity(),

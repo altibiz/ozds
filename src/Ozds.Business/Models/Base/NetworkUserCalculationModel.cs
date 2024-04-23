@@ -8,9 +8,7 @@ using Ozds.Business.Models.Complex;
 
 namespace Ozds.Business.Models.Base;
 
-public abstract class NetworkUserCalculationModel<TNetworkUserCatalogue>
-  : INetworkUserCalculation
-  where TNetworkUserCatalogue : NetworkUserCatalogueModel
+public abstract class NetworkUserCalculationModel : INetworkUserCalculation
 {
   [Required] public required DateTimeOffset FromDate { get; set; } = default!;
   [Required] public required DateTimeOffset ToDate { get; set; } = default!;
@@ -72,13 +70,6 @@ public abstract class NetworkUserCalculationModel<TNetworkUserCatalogue>
   { get; set; } = default!;
 
   [Required]
-  public required TNetworkUserCatalogue ArchivedUsageNetworkUserCatalogue
-  {
-    get;
-    set;
-  } = default!;
-
-  [Required]
   public required RegulatoryCatalogueModel ArchivedSupplyRegulatoryCatalogue
   {
     get;
@@ -91,8 +82,7 @@ public abstract class NetworkUserCalculationModel<TNetworkUserCatalogue>
 
   [Required] public required decimal Total_EUR { get; set; }
 
-  NetworkUserCatalogueModel INetworkUserCalculation.ArchivedUsageNetworkUserCatalogue =>
-    ArchivedUsageNetworkUserCatalogue;
+  public abstract NetworkUserCatalogueModel ArchivedUsageNetworkUserCatalogue { get; }
 
   public abstract string Kind { get; }
 
@@ -184,4 +174,19 @@ public abstract class NetworkUserCalculationModel<TNetworkUserCatalogue>
       }
     }
   }
+}
+
+public abstract class NetworkUserCalculationModel<TNetworkUserCatalogue>
+  : NetworkUserCalculationModel, INetworkUserCalculation
+  where TNetworkUserCatalogue : NetworkUserCatalogueModel
+{
+  [Required]
+  public required TNetworkUserCatalogue ConcreteArchivedUsageNetworkUserCatalogue
+  {
+    get;
+    set;
+  } = default!;
+
+  public override NetworkUserCatalogueModel ArchivedUsageNetworkUserCatalogue =>
+    ArchivedUsageNetworkUserCatalogue;
 }

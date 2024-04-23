@@ -40,7 +40,20 @@ public class OzdsInvoiceMutations : IOzdsMutations
     _context.ChangeTracker.Clear();
   }
 
-  public async Task<string> Create(IInvoice invoice)
+  public void Create(IInvoice invoice)
+  {
+    var validationResults = invoice
+      .Validate(new ValidationContext(this))
+      .ToList();
+    if (validationResults.Count is not 0)
+    {
+      throw new ValidationException(validationResults.First().ErrorMessage);
+    }
+
+    _context.Add(_modelEntityConverter.ToEntity(invoice));
+  }
+
+  public async Task<string> CreateId(IInvoice invoice)
   {
     var validationResults = invoice
       .Validate(new ValidationContext(this))
