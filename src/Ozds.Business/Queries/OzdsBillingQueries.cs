@@ -87,9 +87,7 @@ public class OzdsBillingQueries : IOzdsQueries
           _dbContext.AbbB2xAggregates
             .Where(x => x.Timestamp >= fromDate)
             .Where(x => x.Timestamp <= toDate)
-            .Where(x =>
-              x.Interval == IntervalEntity.QuarterHour ||
-              x.Interval == IntervalEntity.Month),
+            .Where(x => x.Interval == IntervalEntity.QuarterHour),
           _dbContext.PrimaryKeyOf(
             (NetworkUserCalculationBasesByNetworkUserIntermediary x) =>
               x.Meter
@@ -127,9 +125,7 @@ public class OzdsBillingQueries : IOzdsQueries
           _dbContext.SchneideriEM3xxxAggregates
             .Where(x => x.Timestamp >= fromDate)
             .Where(x => x.Timestamp <= toDate)
-            .Where(x =>
-              x.Interval == IntervalEntity.QuarterHour ||
-              x.Interval == IntervalEntity.Month),
+            .Where(x => x.Interval == IntervalEntity.QuarterHour),
           _dbContext.PrimaryKeyOf(
             (NetworkUserCalculationBasesByNetworkUserIntermediary x) =>
               x.Meter

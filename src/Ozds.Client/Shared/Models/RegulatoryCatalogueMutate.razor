@@ -33,20 +33,28 @@
         @bind-Value="LoadingState.Value.Title"
         For="@(() => LoadingState.Value.Title)"/>
       <MudTextField
-        Label="Cijena potrošnje aktivne energije u dnevnoj tarifi"
-        @bind-Value="LoadingState.Value.ActiveEnergyTotalImportT1Price_EUR"
+        T="decimal"
+        Label="Cijena potrošnje aktivne energije u dnevnoj tarifi (EUR/kWh)"
+        Value="LoadingState.Value.ActiveEnergyTotalImportT1Price_EUR"
+        ValueChanged="@(e => LoadingState.Value.ActiveEnergyTotalImportT1Price_EUR = e / 1000)"
         For="@(() => LoadingState.Value.ActiveEnergyTotalImportT1Price_EUR)"/>
       <MudTextField
-        Label="Cijena potrošnje aktivne energije u noćnoj tarifi"
-        @bind-Value="LoadingState.Value.ActiveEnergyTotalImportT2Price_EUR"
+        T="decimal"
+        Label="Cijena potrošnje aktivne energije u noćnoj tarifi (EUR/kWh)"
+        Value="LoadingState.Value.ActiveEnergyTotalImportT2Price_EUR"
+        ValueChanged="@(e => LoadingState.Value.ActiveEnergyTotalImportT2Price_EUR = e / 1000)"
         For="@(() => LoadingState.Value.ActiveEnergyTotalImportT2Price_EUR)"/>
       <MudTextField
-        Label="Cijena naknade za obnovljivu energiju"
-        @bind-Value="LoadingState.Value.RenewableEnergyFeePrice_EUR"
+        T="decimal"
+        Label="Cijena naknade za obnovljivu energiju (EUR/kWh)"
+        Value="LoadingState.Value.RenewableEnergyFeePrice_EUR"
+        ValueChanged="@(e => LoadingState.Value.RenewableEnergyFeePrice_EUR = e / 1000)"
         For="@(() => LoadingState.Value.RenewableEnergyFeePrice_EUR)"/>
       <MudTextField
+        T="decimal"
         Label="Cijena naknade za poslovnu upotrebu"
-        @bind-Value="LoadingState.Value.BusinessUsageFeePrice_EUR"
+        Value="LoadingState.Value.BusinessUsageFeePrice_EUR"
+        ValueChanged="@(e => LoadingState.Value.BusinessUsageFeePrice_EUR = e / 1000)"
         For="@(() => LoadingState.Value.BusinessUsageFeePrice_EUR)"/>
       <MudTextField
         Label="Porez"

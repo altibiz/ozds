@@ -33,16 +33,22 @@
         @bind-Value="LoadingState.Value.Title"
         For="@(() => LoadingState.Value.Title)"/>
       <MudTextField
-        Label="Cijena potrošnje aktivne energije u dnevnoj tarifi"
-        @bind-Value="LoadingState.Value.ActiveEnergyTotalImportT1Price_EUR"
+        T="decimal"
+        Label="Cijena potrošnje aktivne energije u dnevnoj tarifi (EUR/kWh)"
+        Value="LoadingState.Value.ActiveEnergyTotalImportT1Price_EUR"
+        ValueChanged="@(e => LoadingState.Value.ActiveEnergyTotalImportT1Price_EUR = e / 1000)"
         For="@(() => LoadingState.Value.ActiveEnergyTotalImportT1Price_EUR)"/>
       <MudTextField
-        Label="Cijena potrošnje aktivne energije u noćnoj tarifi"
-        @bind-Value="LoadingState.Value.ActiveEnergyTotalImportT2Price_EUR"
+        T="decimal"
+        Label="Cijena potrošnje aktivne energije u noćnoj tarifi (EUR/kWh)"
+        Value="LoadingState.Value.ActiveEnergyTotalImportT2Price_EUR"
+        ValueChanged="@(e => LoadingState.Value.ActiveEnergyTotalImportT2Price_EUR = e / 1000)"
         For="@(() => LoadingState.Value.ActiveEnergyTotalImportT2Price_EUR)"/>
       <MudTextField
-        Label="Cijena potrošnje reaktivne energije u jednoj tarifi"
-        @bind-Value="LoadingState.Value.ReactiveEnergyTotalRampedT0Price_EUR"
+        T="decimal"
+        Label="Cijena potrošnje reaktivne energije u jednoj tarifi (EUR/kVARh)"
+        Value="LoadingState.Value.ReactiveEnergyTotalRampedT0Price_EUR"
+        ValueChanged="@(e => LoadingState.Value.ReactiveEnergyTotalRampedT0Price_EUR = e / 1000)"
         For="@(() => LoadingState.Value.ReactiveEnergyTotalRampedT0Price_EUR)"/>
       <MudTextField
         Label="Cijena naknade za brojilo"
