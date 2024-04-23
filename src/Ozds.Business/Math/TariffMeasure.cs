@@ -2,7 +2,7 @@ using System.Numerics;
 
 namespace Ozds.Business.Math;
 
-public record class CompositeTariffMeasure<T>(List<TariffMeasure<T>> Measures)
+public record class CompositeTariffMeasure<T>
   : TariffMeasure<T>
   where T : struct,
   IComparisonOperators<T, T, bool>,
@@ -11,6 +11,17 @@ public record class CompositeTariffMeasure<T>(List<TariffMeasure<T>> Measures)
   IMultiplyOperators<T, T, T>,
   IDivisionOperators<T, T, T>
 {
+  public List<TariffMeasure<T>> Measures { get; set; }
+
+  public CompositeTariffMeasure(List<TariffMeasure<T>> measures)
+  {
+    Measures = measures.SelectMany(measure => measure switch
+    {
+      CompositeTariffMeasure<T> composite => composite.Measures,
+      _ => new List<TariffMeasure<T>> { measure }
+    }).ToList();
+  }
+
   public U FromMostAccurate<U>(Func<TariffMeasure<T>, U> selector, U @default)
   {
     return Measures.FirstOrDefault(measure => measure is BinaryTariffMeasure<T>)

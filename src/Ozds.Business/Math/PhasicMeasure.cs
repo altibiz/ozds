@@ -2,7 +2,7 @@ using System.Numerics;
 
 namespace Ozds.Business.Math;
 
-public record class CompositePhasicMeasure<T>(List<PhasicMeasure<T>> Measures)
+public record class CompositePhasicMeasure<T>
   : PhasicMeasure<T>
   where T : struct,
   IComparisonOperators<T, T, bool>,
@@ -11,6 +11,17 @@ public record class CompositePhasicMeasure<T>(List<PhasicMeasure<T>> Measures)
   IMultiplyOperators<T, T, T>,
   IDivisionOperators<T, T, T>
 {
+  public List<PhasicMeasure<T>> Measures { get; set; }
+
+  public CompositePhasicMeasure(List<PhasicMeasure<T>> measures)
+  {
+    Measures = measures.SelectMany(measure => measure switch
+    {
+      CompositePhasicMeasure<T> composite => composite.Measures,
+      _ => new List<PhasicMeasure<T>> { measure }
+    }).ToList();
+  }
+
   public U FromMostAccurate<U>(Func<PhasicMeasure<T>, U> selector, U @default)
   {
     return Measures.FirstOrDefault(measure =>

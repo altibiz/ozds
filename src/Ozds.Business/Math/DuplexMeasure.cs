@@ -2,7 +2,7 @@ using System.Numerics;
 
 namespace Ozds.Business.Math;
 
-public record class CompositeDuplexMeasure<T>(List<DuplexMeasure<T>> Measures)
+public record class CompositeDuplexMeasure<T>
   : DuplexMeasure<T>
   where T : struct,
   IComparisonOperators<T, T, bool>,
@@ -11,16 +11,27 @@ public record class CompositeDuplexMeasure<T>(List<DuplexMeasure<T>> Measures)
   IMultiplyOperators<T, T, T>,
   IDivisionOperators<T, T, T>
 {
+  public List<DuplexMeasure<T>> Measures { get; set; }
+
+  public CompositeDuplexMeasure(List<DuplexMeasure<T>> measures)
+  {
+    Measures = measures.SelectMany(measure => measure switch
+    {
+      CompositeDuplexMeasure<T> composite => composite.Measures,
+      _ => new List<DuplexMeasure<T>> { measure }
+    }).ToList();
+  }
+
   public U FromMostAccurate<U>(Func<DuplexMeasure<T>, U> selector, U @default)
   {
     return Measures.FirstOrDefault(measure =>
       measure is ImportExportDuplexMeasure<T>) is { } importExport
       ? selector(importExport)
       : Measures.FirstOrDefault(measure => measure is NetDuplexMeasure<T>) is
-        { } net
+      { } net
         ? selector(net)
         : Measures.FirstOrDefault(measure => measure is AnyDuplexMeasure<T>) is
-          { } any
+        { } any
           ? selector(any)
           : @default;
   }
