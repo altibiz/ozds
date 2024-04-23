@@ -24,7 +24,7 @@
   </MudAppBar>
   <MudDrawer @bind-Open="_drawerOpen" Elevation="25" ClipMode="DrawerClipMode.Always">
     <MudNavMenu>
-      @foreach (var route in MainLayout.GetNavigationDescriptors())
+      @foreach (var route in MainLayout.GetNavigationDescriptors(RepresentativeState))
       {
         <MudNavLink Href="@route.Route">
           @route.Title
@@ -46,6 +46,7 @@
 
 @code {
   [CascadingParameter] public UserState? UserState { get; set; } = default!;
+  [CascadingParameter] public RepresentativeState RepresentativeState { get; set; } = default!;
 
   public bool _drawerOpen = true;
 

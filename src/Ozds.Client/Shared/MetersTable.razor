@@ -174,7 +174,8 @@
     {
       return;
     }
-    if (representative.Representative.Role is RoleModel.NetworkUserRepresentative)
+    @* if (representative.Representative.Role is RoleModel.NetworkUserRepresentative) *@
+    if (true)
     {
       meters = await queries.ViewModelByNetworkUser("1", startOfLastMonth, now);
       foreach(var omm in meters){

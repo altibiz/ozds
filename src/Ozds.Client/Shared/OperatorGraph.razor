@@ -5,29 +5,29 @@
   <MudHidden Breakpoint="Breakpoint.MdAndUp">
     <MudPaper Class="d-flex align-center justify-stat mud-width-full pa-1 pb-3 flex-column">
       <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
-        @(_leftDataTitle + T[" za"] + ": " + _leftTitle)
+        @(_dataType + T[" za"] + ": " + _title)
       </MudItem>
       <MudContainer Class="d-flex flex-column" MaxWidth="MaxWidth.Small">
         @if (_graphValues is not null)
         {
-          <ApexChart TItem="ChartDataL"
+          <ApexChart TItem="ChartData"
                      XAxisType="XAxisType.Datetime"
                      Options="graphLOptionsMob"
                      @ref="chart">
-            @for (var i = 0; i < leftLineCount; i++)
+            @for (var i = 0; i < lineCount; i++)
             {
               var j = i;
-              <ApexPointSeries TItem="ChartDataL"
+              <ApexPointSeries TItem="ChartData"
                                Items="@_graphValues"
                                Name="@_graphValues.Select(x => x.names[j]).FirstOrDefault()"
                                SeriesType="SeriesType.Line"
                                XValue='x => DateTimeGraph(x.date)'
-                               YValue="x => x.values[j]"
+                               YValue="x => (decimal?)x.values[j]"
                                Stroke="@(ColorGraph(j))"/>
             }
-            @if (leftLineCount == 0)
+            @if (lineCount == 0)
             {
-              <ApexPointSeries TItem="ChartDataL"
+              <ApexPointSeries TItem="ChartData"
                                Items="@_graphValues"
                                Name="n/a"
                                SeriesType="SeriesType.Line"
@@ -37,11 +37,11 @@
             }
           </ApexChart>
           <MudItem Class="d-flex flex-column justify-center gap-2">
-            <MudAutocomplete Class="pa-4 mt-0" T="string" Label="Brojila" Value="_leftTitle" ValueChanged="e => LeftMenuItemClicked(e)" SearchFunc="@Search" ToStringFunc="@(e => e == null ? null : $"{e}")"/>
+            <MudAutocomplete Class="pa-4 mt-0" T="string" Label="Brojila" Value="_title" ValueChanged="e => LeftMenuItemClicked(e)" SearchFunc="@Search" ToStringFunc="@(e => e == null ? null : $"{e}")"/>
             <MudMenu Dense="true" Variant="Variant.Filled" Color="Color.Primary">
               <ActivatorContent>
                 <MudButton Variant="Variant.Filled" Color="Color.Primary">
-                  @_leftDataTitle
+                  @_dataType
                   <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowDown"/>
                 </MudButton>
               </ActivatorContent>
@@ -77,29 +77,29 @@
   <MudHidden Breakpoint="Breakpoint.SmAndDown">
     <MudPaper Class="d-flex align-center justify-center mud-width-full py-8 px-8 flex-column" Height="525px">
       <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
-        @(_leftDataTitle + " za: " + _leftTitle)
+        @(_dataType + " za: " + _title)
       </MudItem>
       <MudContainer Class="d-flex flex-column" MaxWidth="MaxWidth.Medium">
         @if (_graphValues is not null)
         {
-          <ApexChart TItem="ChartDataL"
+          <ApexChart TItem="ChartData"
                      XAxisType="XAxisType.Datetime"
                      Options="graphLOptions"
                      @ref="chart">
-            @for (var i = 0; i < leftLineCount; i++)
+            @for (var i = 0; i < lineCount; i++)
             {
               var j = i;
-              <ApexPointSeries TItem="ChartDataL"
+              <ApexPointSeries TItem="ChartData"
                                Items="@_graphValues"
                                Name="@_graphValues.Select(x => x.names[j]).FirstOrDefault()"
                                SeriesType="SeriesType.Line"
                                XValue='x => DateTimeGraph(x.date)'
-                               YValue="x => x.values[j]"
+                               YValue="x => (decimal?)x.values[j]"
                                Stroke="@(ColorGraph(j))"/>
             }
-            @if (leftLineCount == 0)
+            @if (lineCount == 0)
             {
-              <ApexPointSeries TItem="ChartDataL"
+              <ApexPointSeries TItem="ChartData"
                                Items="@_graphValues"
                                Name="n/a"
                                SeriesType="SeriesType.Line"
@@ -112,7 +112,7 @@
             <MudMenu Dense="true" Variant="Variant.Filled" Color="Color.Primary">
               <ActivatorContent>
                 <MudButton Variant="Variant.Filled" Color="Color.Primary">
-                  @_leftDataTitle
+                  @_dataType
                   <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowDown"/>
                 </MudButton>
               </ActivatorContent>
@@ -138,7 +138,7 @@
               </ChildContent>
             </MudMenu>
           </MudItem>
-          <MudAutocomplete Class="pa-4 mt-0" T="string" Label="Brojila" Value="_leftTitle" ValueChanged="e => LeftMenuItemClicked(e)" SearchFunc="@Search" ToStringFunc="@(e => e == null ? null : $"{e}")"/>
+          <MudAutocomplete Class="pa-4 mt-0" T="string" Label="Brojila" Value="_title" ValueChanged="e => LeftMenuItemClicked(e)" SearchFunc="@Search" ToStringFunc="@(e => e == null ? null : $"{e}")"/>
         }
       </MudContainer>
     </MudPaper>
@@ -150,8 +150,8 @@
   [CascadingParameter] public UserState user { get; set; } = default!;
   [CascadingParameter] public RepresentativeState representative { get; set; } = default!;
   public string TextValue { get; set; } = "";
-  private ApexChartOptions<ChartDataL> graphLOptions = new();
-  private ApexChartOptions<ChartDataL> graphLOptionsMob = new();
+  private ApexChartOptions<ChartData> graphLOptions = NewApexChartOptions<ChartData>();
+  private ApexChartOptions<ChartData> graphLOptionsMob = NewApexChartOptions<ChartData>();
 
   private List<string> _displayType = new()
   {
@@ -159,18 +159,21 @@
   };
 
   public int timeSpanMins = 15;
-  public int leftLineCount = 0;
+  public int lineCount = 0;
   public int rightLineCount = 0;
-  public IEnumerable<ChartDataL>? _graphValues;
-  public IEnumerable<ChartDataL>? _rowData;
-  private string _leftTitle = "";
-  private string _leftDataTitle = "";
+  public IEnumerable<ChartData>? _graphValues;
+  public IEnumerable<ChartData>? _rowData;
+  private string _title = "";
+  private string _dataType = "";
   private string _leftTimeTitle = "15 min";
+  private DateTimeOffset now = DateTimeOffset.UtcNow.LocalDateTime;
 
-  public record ChartDataL(decimal[] values, string[] names, DateTimeOffset date, string source);
+  public record ChartData(float[] values, string[] names, DateTimeOffset date, string source);
 
-  private ApexChart<ChartDataL> chart = default!;
+  private ApexChart<ChartData> chart = default!;
   private IEnumerable<MeterModel>? _meters;
+  OzdsAggregateQueries aggregateQueries;
+  OzdsMeasurementQueries measureQueries;
 
   private class ExpandThing
   {
@@ -183,29 +186,39 @@
 
   protected override async Task OnInitializedAsync()
   {
-    graphLOptionsMob = new ApexChartOptions<ChartDataL>
+    aggregateQueries = ScopedServices.GetRequiredService<OzdsAggregateQueries>();
+    measureQueries = ScopedServices.GetRequiredService<OzdsMeasurementQueries>();
+    var a = await ScopedServices
+      .GetRequiredService<OzdsAuditableQueries>().Read<MeterModel>(Enumerable.Empty<string>(), Enumerable.Empty<string>(), Enumerable.Empty<string>(), 1, 1000);
+    _meters = a.Items;
+    _ioTDeviceNames = _meters.Select(x => x.Id).ToList();
+    @* SetGraphOptionsStart(); *@
+
+    await LeftMenuItemClicked(_title);
+
+    @* SetAnnotationStart();
+
+    await SetAnnotationGraphOptions(); *@
+
+    graphLOptionsMob = NewApexChartOptions<ChartData>();
+    graphLOptionsMob.Grid = new()
     {
-      Grid = new Grid
+      BorderColor = "#e7e7e7",
+      Row = new GridRow
       {
-        BorderColor = "#e7e7e7",
-        Row = new GridRow
-        {
-          Colors = new List<string> { "#f3f3f3", "transparent" },
-          Opacity = 0.5d
-        }
+        Colors = new List<string> { "#f3f3f3", "transparent" },
+        Opacity = 0.5d
       }
     };
-    graphLOptions = new ApexChartOptions<ChartDataL>
+    graphLOptions = NewApexChartOptions<ChartData>();
+    graphLOptions.Grid = new()
     {
-      Grid = new Grid
-      {
-        BorderColor = "#e7e7e7",
+      BorderColor = "#e7e7e7",
         Row = new GridRow
         {
           Colors = new List<string> { "#f3f3f3", "transparent" },
           Opacity = 0.5d
         }
-      }
     };
     graphLOptions.Yaxis = new List<YAxis>();
     graphLOptions.Yaxis.Add(new YAxis
@@ -253,76 +266,46 @@
     if (source.StartsWith("abb"))
     {
       _displayType = new List<string> { "Napon", "Struja", "Radna snaga", "Jalova Snaga" };
-      if (_leftDataTitle == "Prividna snaga")
-        _leftDataTitle = "Jalova Snaga";
+      if (_dataType == "Prividna snaga")
+        _dataType = "Jalova Snaga";
     }
     else if (source.StartsWith("schneider"))
     {
       _displayType = new List<string> { "Napon", "Struja", "Radna snaga", "Jalova Snaga", "Prividna snaga" };
     }
 
-    _leftTitle = source;
-    await LeftMenuDataItemClicked(_leftDataTitle);
-  }
-
-  private async Task GetValues(string source, string type)
-  {
-    IReadOnlyList<SpanningMeasure<float>>? _spanningMeasurements;
-
-    switch (type)
-    {
-      case "Struja":
-        break;
-      case "Radna snaga":
-        break;
-      case "Napon":
-        break;
-      case "Jalova Snaga":
-        break;
-      case "Prividna snaga":
-        break;
-    }
-
-    StateHasChanged();
-    await chart.UpdateSeriesAsync();
+    _title = source;
+    await LeftMenuDataItemClicked(_dataType);
   }
 
   private async Task LeftMenuDataItemClicked(string type)
   {
-    switch (type)
+
+    switch(type)
     {
       case "Struja":
-        _leftDataTitle = "Struja";
+        _dataType = "Struja";
+        break;
+      case "":
+        _dataType = "Radna snaga";
         break;
       case "Radna snaga":
-        _leftDataTitle = "Radna snaga";
+        _dataType = "Radna snaga";
         break;
       case "Napon":
-        _leftDataTitle = "Napon";
+        _dataType = "Napon";
         break;
       case "Jalova Snaga":
-        if (_leftTitle.StartsWith("abb"))
-        {
-        }
-        else if (_leftTitle.StartsWith("schneider"))
-        {
-        }
-
-        _leftDataTitle = "Jalova Snaga";
+        _dataType = "Jalova Snaga";
         break;
       case "Prividna snaga":
-        if (_leftTitle.StartsWith("abb"))
-        {
-        }
-        else if (_leftTitle.StartsWith("schneider"))
-        {
-        }
-
-        _leftDataTitle = "Prividna snaga";
+        _dataType = "Prividna snaga";
+        break;
+      default:
         break;
     }
 
-    await GetValues(_leftTitle, _leftDataTitle);
+    await GetValues(now.AddMinutes(-timeSpanMins), now);
   }
 
   private async Task MenuItemClicked(string item)
@@ -347,7 +330,98 @@
         break;
     }
 
-    await GetValues(_leftTitle, _leftDataTitle);
+    await GetValues(now.AddMinutes(-timeSpanMins), now);
+  }
+
+  private async Task GetValues(DateTimeOffset fromDate, DateTimeOffset toDate, bool reRenderChart = true)
+  {
+    var quorterHourlyMeasures = await aggregateQueries.ReadAgnostic(new[] { "x => x.Interval == 0" }, fromDate, toDate, 1, 9000);
+    var measures = await measureQueries.ReadAgnostic(new[] { $"x => x.MeterId == \"{_title}\"" }, fromDate, toDate, 1, 3000);
+    switch (_dataType)
+    {
+      case "Struja":
+        _graphValues = measures.Select(x =>
+          new ChartData(
+            values: new float[]{
+              x.Current_A.TariffUnary.DuplexAny.PhaseSplit.ValueL1,
+              x.Current_A.TariffUnary.DuplexAny.PhaseSplit.ValueL2,
+              x.Current_A.TariffUnary.DuplexAny.PhaseSplit.ValueL3
+            },
+            names: new string[]{"L1 Struja", "L2 Struja","L3 Struja"},
+            date: x.Timestamp,
+            source: x.MeterId
+          )).ToList();
+        lineCount = 3;
+        break;
+      case "":
+      case "Radna snaga":
+        _graphValues = measures.Select(x =>
+          new ChartData(
+            values: new float[]{
+              x.ActivePower_W.TariffUnary.DuplexNet.PhaseSplit.ValueL1,
+              x.ActivePower_W.TariffUnary.DuplexNet.PhaseSplit.ValueL2,
+              x.ActivePower_W.TariffUnary.DuplexNet.PhaseSplit.ValueL3,
+              x.ActivePower_W.TariffUnary.DuplexNet.PhaseSum
+            },
+            names: new string[]{"L1 Radna snaga", "L2 Radna snaga","L3 Radna snaga","Ukupna snaga"},
+            date: x.Timestamp,
+            source: x.MeterId
+          )).ToList();
+        lineCount = 4;
+        break;
+      case "Napon":
+        _graphValues = measures.Select(x =>
+          new ChartData(
+            values: new float[]{
+              x.Voltage_V.TariffUnary.DuplexAny.PhaseSplit.ValueL1,
+              x.Voltage_V.TariffUnary.DuplexAny.PhaseSplit.ValueL2,
+              x.Voltage_V.TariffUnary.DuplexAny.PhaseSplit.ValueL3
+            },
+            names: new string[]{"L1 Napon", "L2 Napon","L3 Napon"},
+            date: x.Timestamp,
+            source: x.MeterId
+          )).ToList();
+        lineCount = 3;
+        break;
+      case "Jalova Snaga":
+        _graphValues = measures.Select(x =>
+          new ChartData(
+            values: new float[]{
+              x.ReactivePower_VAR.TariffUnary.DuplexNet.PhaseSplit.ValueL1,
+              x.ReactivePower_VAR.TariffUnary.DuplexNet.PhaseSplit.ValueL2,
+              x.ReactivePower_VAR.TariffUnary.DuplexNet.PhaseSplit.ValueL3
+            },
+            names: new string[]{"L1 Jalova snaga", "L2 Jalova snaga","L3 Jalova snaga"},
+            date: x.Timestamp,
+            source: x.MeterId
+          )).ToList();
+        lineCount = 3;
+        break;
+      case "Prividna snaga":
+        _graphValues = measures.Select(x =>
+          new ChartData(
+            values: new float[]{
+              x.ApparentPower_VA.TariffUnary.DuplexNet.PhaseSum,
+            },
+            names: new string[]{"Prividna snaga"},
+            date: x.Timestamp,
+            source: x.MeterId
+          )).ToList();
+        lineCount = 1;
+        break;
+    }
+
+    if (chart is null)
+    {
+      return;
+    }
+
+    InvokeAsync(() => StateHasChanged());
+    if (reRenderChart)
+    {
+      await chart.UpdateSeriesAsync();
+      @* await SetAnnotationGraphOptions(); *@
+    }
   }
 
   private SeriesStroke ColorGraph(int index)

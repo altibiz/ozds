@@ -169,7 +169,8 @@
     {
       return;
     }
-    if (representative.Representative.Role is RoleModel.NetworkUserRepresentative)
+    @* if (representative.Representative.Role is RoleModel.NetworkUserRepresentative) *@
+    if (true)
     {
       netUsers = await queries.ViewModelByNetworkUser("1", startOfLastMonth, now);
       var groupedNetUsers = netUsers.GroupBy(x => x.NetworkUser.Id).ToList();

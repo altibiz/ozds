@@ -1,4 +1,5 @@
 @page "/invoices"
+@attribute [Navigation(Title = "Računi", Allows = new[] { RoleModel.LocationRepresentative, RoleModel.NetworkUserRepresentative, RoleModel.OperatorRepresentative })]
 
 
 @if (user is null)

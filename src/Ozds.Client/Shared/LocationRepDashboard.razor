@@ -145,7 +145,8 @@
     {
       return;
     }
-    if (representative.Representative.Role is RoleModel.NetworkUserRepresentative)
+    @* if (representative.Representative.Role is RoleModel.NetworkUserRepresentative) *@
+    if (true)
     {
       locations = await queries.ViewModelByNetworkUser("1", startOfLastMonth, now);
       var groupedLocations = locations.GroupBy(x => x.Location.Id).ToList();

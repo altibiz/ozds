@@ -1,5 +1,5 @@
 @page "/network-users"
-@attribute [Navigation(Title = "Korisnici mereže")]
+@attribute [Navigation(Title = "Korisnici mereže", Allows = new[] { RoleModel.LocationRepresentative, RoleModel.NetworkUserRepresentative, RoleModel.OperatorRepresentative })]
 
 @if (user is null)
 {

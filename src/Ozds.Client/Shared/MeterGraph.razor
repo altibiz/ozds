@@ -197,7 +197,31 @@
 
   private async Task DataMenuItemClicked(string type)
   {
-    await GetValues(type, now.AddMinutes(-timeSpanMins), now);
+    switch(type)
+    {
+      case "Struja":
+        _dataTitle = "Struja";
+        break;
+      case "":
+        _dataTitle = "Radna snaga";
+        break;
+      case "Radna snaga":
+        _dataTitle = "Radna snaga";
+        break;
+      case "Napon":
+        _dataTitle = "Napon";
+        break;
+      case "Jalova Snaga":
+        _dataTitle = "Jalova Snaga";
+        break;
+      case "Prividna snaga":
+        _dataTitle = "Prividna snaga";
+        break;
+      default:
+        break;
+    }
+
+    await GetValues(now.AddMinutes(-timeSpanMins), now);
   }
 
   private async Task TimeMenuItemClicked(string item)
@@ -223,17 +247,16 @@
     }
 
     SetGraphTimeRange();
-    await GetValues(_dataTitle, now.AddMinutes(-timeSpanMins), now);
+    await GetValues(now.AddMinutes(-timeSpanMins), now);
   }
 
-  private async Task GetValues(string type, DateTimeOffset fromDate, DateTimeOffset toDate, bool reRenderChart = true)
+  private async Task GetValues(DateTimeOffset fromDate, DateTimeOffset toDate, bool reRenderChart = true)
   {
     var quorterHourlyMeasures = await aggregateQueries.ReadAgnostic(new[] { "x => x.Interval == 0" }, fromDate, toDate, 1, 9000);
     var measures = await measureQueries.ReadAgnostic(new[] { $"x => x.MeterId == \"{Source}\"" }, fromDate, toDate, 1, 3000);
-    switch (type)
+    switch (_dataTitle)
     {
       case "Struja":
-        _dataTitle = "Struja";
         _graphValues = measures.Select(x =>
           new ChartData(
             values: new float[]{
@@ -249,7 +272,6 @@
         break;
       case "":
       case "Radna snaga":
-        _dataTitle = "Radna snaga";
         _graphValues = measures.Select(x =>
           new ChartData(
             values: new float[]{
@@ -265,7 +287,6 @@
         lineCount = 4;
         break;
       case "Napon":
-        _dataTitle = "Napon";
         _graphValues = measures.Select(x =>
           new ChartData(
             values: new float[]{
@@ -280,7 +301,6 @@
         lineCount = 3;
         break;
       case "Jalova Snaga":
-        _dataTitle = "Jalova Snaga";
         _graphValues = measures.Select(x =>
           new ChartData(
             values: new float[]{
@@ -305,10 +325,6 @@
             source: x.MeterId
           )).ToList();
         lineCount = 1;
-        _dataTitle = "Prividna snaga";
-        break;
-      default:
-        _dataTitle = "none";
         break;
     }
 
@@ -536,7 +552,7 @@
       var lastGraphValues = _graphValues.OrderByDescending(x => x.date).FirstOrDefault();
       if (lastGraphValues is not null)
       {
-        await GetValues(_dataTitle, lastGraphValues.date, DateTimeOffset.UtcNow.LocalDateTime, false);
+        await GetValues(lastGraphValues.date, DateTimeOffset.UtcNow.LocalDateTime, false);
         await chart.AppendDataAsync(_graphValues);
       }
     }

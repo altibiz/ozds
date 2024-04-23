@@ -1,6 +1,6 @@
 @page "/"
 @using Ozds.Business.Models.Enums
-@attribute [Navigation(Title = "Dashboard")]
+@attribute [Navigation(Title = "Dashboard", Allows = new[] { RoleModel.LocationRepresentative, RoleModel.NetworkUserRepresentative, RoleModel.OperatorRepresentative })]
 @attribute [Authorize]
 
 @if (user is null || representative is null)
@@ -15,6 +15,7 @@
 @if (representative.Representative.Role is RoleModel.LocationRepresentative)
 {
   <LocationRepDashboard/>
+  <LocationsTable/>
 }
 @if (representative.Representative.Role is RoleModel.OperatorRepresentative)
 {
