@@ -1,0 +1,18 @@
+useGitignore: true
+version: "0.2"
+language: en
+ignorePaths:
+  - "*.svg"
+  - "**/Migrations/**/*"
+words:
+  - "ozds"
+  - "blazor"
+  - "xunit"
+  - "stylesheet"
+  - "aspnetcore"
+  - "apexcharts"
+  - "contentfiles"
+  - "buildtransitive"
+  - "altibiz"
+  - "issetuprecipe"
+  - "antiforgery"

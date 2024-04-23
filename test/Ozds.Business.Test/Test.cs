@@ -7,6 +7,6 @@ public class TestClass
   [Fact]
   public void TestCase()
   {
-    Console.WriteLine("yea babyyy");
+    Console.WriteLine("It works!");
   }
 }

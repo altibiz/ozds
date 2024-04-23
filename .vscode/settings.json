@@ -32,5 +32,8 @@
   "editor.wordWrap": "off",
   "files.insertFinalNewline": true,
   "files.trimTrailingWhitespace": true,
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "files.associations": {
+    ".dvcignore": "ignore"
+  }
 }
