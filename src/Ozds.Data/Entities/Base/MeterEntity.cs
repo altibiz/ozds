@@ -26,7 +26,8 @@ public class MeterEntity : AuditableEntity
   public List<PhaseEntity> Phases { get; set; } = default!;
 
   public virtual ICollection<NetworkUserCalculationEntity>
-    NetworkUserCalculations { get; set; } =
+    NetworkUserCalculations
+  { get; set; } =
     default!;
 }
 
@@ -41,16 +42,16 @@ public class MeterEntity<
 {
   private readonly long _measurementValidatorId;
 
-  public virtual ICollection<TMeasurement> Measurements { get; set; } =
-    default!;
-
-  public virtual ICollection<TAggregate> Aggregates { get; set; } = default!;
-
   public virtual string MeasurementValidatorId
   {
     get { return _measurementValidatorId.ToString(); }
     init { _measurementValidatorId = long.Parse(value); }
   }
+
+  public virtual ICollection<TMeasurement> Measurements { get; set; } =
+    default!;
+
+  public virtual ICollection<TAggregate> Aggregates { get; set; } = default!;
 
   public virtual TMeasurementValidator MeasurementValidator { get; set; } =
     default!;

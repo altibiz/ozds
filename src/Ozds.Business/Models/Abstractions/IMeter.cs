@@ -11,4 +11,6 @@ public interface IMeter : IAuditable
   public string MeasurementValidatorId { get; }
 
   public ICapabilities Capabilities { get; }
+
+  public HashSet<PhaseModel> Phases { get; }
 }

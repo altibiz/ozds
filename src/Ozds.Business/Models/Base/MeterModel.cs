@@ -1,10 +1,11 @@
 using System.ComponentModel.DataAnnotations;
+using Ozds.Business.Capabilities;
 using Ozds.Business.Capabilities.Abstractions;
 using Ozds.Business.Models.Abstractions;
 
 namespace Ozds.Business.Models.Base;
 
-public abstract class MeterModel : AuditableModel, IMeter
+public class MeterModel : AuditableModel, IMeter
 {
   [Required] public required float ConnectionPower_W { get; set; }
 
@@ -14,7 +15,7 @@ public abstract class MeterModel : AuditableModel, IMeter
 
   [Required] public required string MeasurementValidatorId { get; set; }
 
-  public abstract ICapabilities Capabilities { get; }
+  public virtual ICapabilities Capabilities { get => new NullCapabilities(); }
 
   public override IEnumerable<ValidationResult> Validate(
     ValidationContext validationContext)
