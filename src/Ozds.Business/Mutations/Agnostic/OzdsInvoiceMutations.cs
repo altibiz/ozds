@@ -3,6 +3,8 @@ using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Mutations.Abstractions;
 using Ozds.Data;
+using Ozds.Data.Entities.Abstractions;
+using Ozds.Data.Entities.Base;
 
 namespace Ozds.Business.Mutations.Agnostic;
 
@@ -38,7 +40,7 @@ public class OzdsInvoiceMutations : IOzdsMutations
     _context.ChangeTracker.Clear();
   }
 
-  public void Create(IInvoice invoice)
+  public async Task<string> Create(IInvoice invoice)
   {
     var validationResults = invoice
       .Validate(new ValidationContext(this))
@@ -48,6 +50,12 @@ public class OzdsInvoiceMutations : IOzdsMutations
       throw new ValidationException(validationResults.First().ErrorMessage);
     }
 
-    _context.Add(_modelEntityConverter.ToEntity(invoice));
+    var entity = _modelEntityConverter.ToEntity(invoice)
+      as IIdentifiableEntity
+      ?? throw new InvalidOperationException(
+        $"Failed to convert {nameof(invoice)} to entity.");
+    _context.Add(entity);
+    await _context.SaveChangesAsync();
+    return entity.Id;
   }
 }

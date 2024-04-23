@@ -31,9 +31,10 @@
     var basis = await ozdsBillingQueries
       .IssuingBasisForNetworkUser(Id!, dateFrom, dateTo);
     var invoice = invoiceIssuer.Issue(basis);
-    invoiceMutations.Create(invoice.Invoice);
+    var invoiceId = await invoiceMutations.Create(invoice.Invoice);
     foreach (var calculation in invoice.Calculations)
     {
+      calculation.NetworkUserInvoiceId = invoiceId;
       networkUserCalculationMutations.Create(calculation);
     }
   }
