@@ -53,12 +53,6 @@ public class NetworkUserCalculationEntity : IReadonlyEntity, IIdentifiableEntity
 
   public decimal Total_EUR { get; set; }
 
-  public NetworkUserCatalogueEntity ArchivedUsageNetworkUserCatalogue
-  {
-    get;
-    set;
-  } = default!;
-
   public RegulatoryCatalogueEntity ArchivedSupplyRegulatoryCatalogue
   {
     get;
@@ -139,6 +133,12 @@ public class
     get;
     set;
   } = default!;
+
+  public TUsageNetworkUserCatalogue ArchivedUsageNetworkUserCatalogue
+  {
+    get;
+    set;
+  } = default!;
 }
 
 public class
@@ -190,10 +190,6 @@ public class
 
     builder
       .ArchivedProperty(nameof(NetworkUserCalculationEntity.ArchivedMeter));
-
-    builder
-      .ArchivedProperty(nameof(NetworkUserCalculationEntity
-        .ArchivedUsageNetworkUserCatalogue));
 
     builder
       .ArchivedProperty(nameof(NetworkUserCalculationEntity
@@ -268,6 +264,10 @@ public class
       builder
         .Property("_usageNetworkUserCatalogueId")
         .HasColumnName("usage_network_user_catalogue_id");
+
+      builder
+        .ArchivedProperty(nameof(NetworkUserCalculationEntity<NetworkUserCatalogueEntity>
+          .ArchivedUsageNetworkUserCatalogue));
     }
   }
 }

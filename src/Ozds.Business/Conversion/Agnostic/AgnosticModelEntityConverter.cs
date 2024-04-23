@@ -1,6 +1,4 @@
 using Ozds.Business.Conversion.Abstractions;
-using Ozds.Business.Models;
-using Ozds.Data.Entities;
 
 namespace Ozds.Business.Conversion.Agnostic;
 
