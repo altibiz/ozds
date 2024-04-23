@@ -58,7 +58,7 @@
 @code {
 
   [Parameter] public string Source { get; set; } = "abb";
-  private MeterModel? _meter;
+  private IMeter? _meter;
   private ApexChart<GageData> gage = default!;
   private float thisMonthCurrentPower = 0;
   private List<GageData> gageValue = new();
