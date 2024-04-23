@@ -297,6 +297,10 @@ erDiagram
         timestamp_with_time_zone asrc_last_updated_on
         numeric asrc_renewable_energy_fee_price__eur
         numeric asrc_tax_rate__percent
+        numeric aunuc_active_energy_total_import_t0_price__eur
+        numeric aunuc_active_energy_total_import_t1_price__eur
+        numeric aunuc_active_energy_total_import_t2_price__eur
+        numeric aunuc_active_power_total_import_t1_price__eur
         text aunuc_created_by_id
         timestamp_with_time_zone aunuc_created_on
         text aunuc_deleted_by_id
@@ -304,6 +308,8 @@ erDiagram
         boolean aunuc_is_deleted
         text aunuc_last_updated_by_id
         timestamp_with_time_zone aunuc_last_updated_on
+        numeric aunuc_meter_fee_price__eur
+        numeric aunuc_reactive_energy_total_ramped_t0_price__eur
         timestamp_with_time_zone from_date
         bigint id PK
         text issued_by_id FK
