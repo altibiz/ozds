@@ -123,6 +123,9 @@ lint:
     -o='{{jbinspectlog}}' \
     --exclude='**/.git/**/*;**/.nuget/**/*;**/obj/**/*;**/bin/**/*'
 
+  cspell lint . \
+    --no-progress
+
 test *args:
   dotnet test '{{sln}}' {{args}}
 
