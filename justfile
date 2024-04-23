@@ -100,6 +100,9 @@ lint:
     --cache --cache-strategy metadata \
     '{{root}}'
 
+  cspell lint . \
+    --no-progress
+
   dotnet build '{{sln}}'
 
   dotnet format '{{sln}}' \
@@ -122,9 +125,6 @@ lint:
     --caches-home='{{jbcache}}' \
     -o='{{jbinspectlog}}' \
     --exclude='**/.git/**/*;**/.nuget/**/*;**/obj/**/*;**/bin/**/*'
-
-  cspell lint . \
-    --no-progress
 
 test *args:
   dotnet test '{{sln}}' {{args}}
