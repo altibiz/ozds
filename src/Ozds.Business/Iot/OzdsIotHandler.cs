@@ -1,7 +1,7 @@
 using System.Text.Json;
 using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Mutations.Agnostic;
-using Ozds.Business.Queries.Agnotic;
+using Ozds.Business.Queries.Agnostic;
 
 namespace Ozds.Business.Iot;
 

@@ -2,8 +2,8 @@ namespace Ozds.Client.Base;
 
 public class OzdsComponentLocalizer
 {
-  public string this[string unlocalized]
+  public string this[string notLocalized]
   {
-    get { return unlocalized; }
+    get { return notLocalized; }
   }
 }

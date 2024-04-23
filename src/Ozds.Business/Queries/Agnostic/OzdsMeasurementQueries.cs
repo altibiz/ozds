@@ -7,7 +7,7 @@ using Ozds.Business.Queries.Abstractions;
 using Ozds.Data;
 using Ozds.Data.Entities.Base;
 
-namespace Ozds.Business.Queries.Agnotic;
+namespace Ozds.Business.Queries.Agnostic;
 
 public class OzdsMeasurementQueries : IOzdsQueries
 {
