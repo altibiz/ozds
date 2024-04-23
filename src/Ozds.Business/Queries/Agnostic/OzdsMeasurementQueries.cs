@@ -35,7 +35,8 @@ public class OzdsMeasurementQueries : IOzdsQueries
     var dbSetType = _modelEntityConverter.EntityType(typeof(T));
     var queryable =
       _context.GetDbSet(dbSetType) as IQueryable<MeasurementEntity>
-      ?? throw new InvalidOperationException("fjkdasl;fjsa");
+      ?? throw new InvalidOperationException(
+        $"No DbSet found for {dbSetType}");
     var filtered = whereClauses.Aggregate(queryable,
       (current, clause) => current.WhereDynamic(clause));
     var timeFiltered = filtered

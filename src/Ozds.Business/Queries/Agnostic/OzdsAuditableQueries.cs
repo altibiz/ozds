@@ -5,7 +5,6 @@ using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Data;
 using Ozds.Data.Entities.Base;
-using Ozds.Data.Extensions;
 
 namespace Ozds.Business.Queries.Agnotic;
 
@@ -26,11 +25,10 @@ public class OzdsAuditableQueries : IOzdsQueries
 
   public async Task<T?> ReadSingle<T>(string id) where T : class, IAuditable
   {
-    var queryable = _context.GetDbSet(_modelEntityConverter.EntityType(typeof(T)))
-                      as IQueryable<AuditableEntity>
-                    ?? throw new InvalidOperationException();
+    var entityType = _modelEntityConverter.EntityType(typeof(T));
+    var queryable = _context.GetDbSet(entityType);
     var item = await queryable
-      .Where(_context.PrimaryKeyEquals<AuditableEntity>(id))
+      .Where(_context.PrimaryKeyEqualsAgnostic(entityType, id))
       .FirstOrDefaultAsync();
     return item is null ? null : _modelEntityConverter.ToModel(item) as T;
   }

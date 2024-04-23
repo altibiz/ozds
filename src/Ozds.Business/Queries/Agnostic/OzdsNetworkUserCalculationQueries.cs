@@ -27,11 +27,13 @@ public class OzdsNetworkUserCalculationQueries : IOzdsQueries
 
   public async Task<T?> ReadSingle<T>(string id) where T : class, INetworkUserCalculation
   {
-    var queryable = _context.GetDbSet(typeof(T))
-                      as IQueryable<NetworkUserCalculationEntity>
-                    ?? throw new InvalidOperationException();
+    var entityType = _modelEntityConverter.EntityType(typeof(T));
+    var queryable = _context.GetDbSet(entityType)
+      as IQueryable<NetworkUserCalculationEntity>
+      ?? throw new InvalidOperationException(
+        $"No DbSet found for {entityType}");
     var item = await queryable
-      .Where(_context.PrimaryKeyEquals<NetworkUserCalculationEntity>(id))
+      .Where(_context.PrimaryKeyEqualsAgnostic(entityType, id))
       .FirstOrDefaultAsync();
     return item is null ? null : _modelEntityConverter.ToModel(item) as T;
   }
