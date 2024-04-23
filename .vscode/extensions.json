@@ -3,6 +3,7 @@
     "esbenp.prettier-vscode",
     "ms-azuretools.vscode-docker",
     // "ms-dotnettools.csdevkit",
-    "ms-dotnettools.csharp"
+    "ms-dotnettools.csharp",
+    "streetsidesoftware.code-spell-checker"
   ]
 }
