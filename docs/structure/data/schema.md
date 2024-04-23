@@ -1,5 +1,54 @@
 ```mermaid
 erDiagram
+    Document {
+        text Content
+        bigint Id PK
+        character_varying Type
+        bigint Version
+    }
+
+    Identifiers {
+        character_varying dimension PK
+        bigint nextval
+    }
+
+    UserByClaimIndex {
+        character_varying ClaimType
+        character_varying ClaimValue
+        bigint DocumentId FK
+        integer Id PK
+    }
+
+    UserByLoginInfoIndex {
+        bigint DocumentId FK
+        integer Id PK
+        character_varying LoginProvider
+        character_varying ProviderKey
+    }
+
+    UserByRoleNameIndex {
+        integer Count
+        integer Id PK
+        character_varying RoleName
+    }
+
+    UserByRoleNameIndex_Document {
+        bigint DocumentId FK
+        bigint UserByRoleNameIndexId FK
+    }
+
+    UserIndex {
+        integer AccessFailedCount
+        bigint DocumentId FK
+        integer Id PK
+        boolean IsEnabled
+        boolean IsLockoutEnabled
+        timestamp_without_time_zone LockoutEndUtc
+        character_varying NormalizedEmail
+        character_varying NormalizedUserName
+        character_varying UserId
+    }
+
     __EFMigrationsHistory {
         character_varying migration_id PK
         character_varying product_version
@@ -263,8 +312,7 @@ erDiagram
         bigint location_invoice_entity_id FK
         bigint measurement_location_id FK
         text meter_id FK
-        bigint network_user_id FK
-        bigint network_user_invoice_id
+        bigint network_user_invoice_id FK
         numeric supply_active_energy_total_import_t1_amount_wh
         numeric supply_active_energy_total_import_t1_max_wh
         numeric supply_active_energy_total_import_t1_min_wh
@@ -523,6 +571,11 @@ erDiagram
         real voltage_l3_any_t0_v
     }
 
+    UserByClaimIndex }o--|| Document : "DocumentId"
+    UserByLoginInfoIndex }o--|| Document : "DocumentId"
+    UserByRoleNameIndex_Document }o--|| Document : "DocumentId"
+    UserIndex }o--|| Document : "DocumentId"
+    UserByRoleNameIndex_Document }o--|| UserByRoleNameIndex : "UserByRoleNameIndexId"
     abb_b2x_aggregates }o--|| meters : "meter_id"
     abb_b2x_measurements }o--|| meters : "meter_id"
     events }o--|| messengers : "messenger_id"
@@ -565,7 +618,7 @@ erDiagram
     schneider_iem3xxx_aggregates }o--|| meters : "meter_id"
     schneider_iem3xxx_measurements }o--|| meters : "meter_id"
     network_user_calculations }o--|| network_user_catalogues : "usage_network_user_catalogue_id"
-    network_user_calculations }o--|| network_user_invoices : "network_user_id"
+    network_user_calculations }o--|| network_user_invoices : "network_user_invoice_id"
     network_user_calculations }o--|| regulatory_catalogues : "supply_regulatory_catalogue_id"
     network_user_calculations }o--|| representatives : "issued_by_id"
     network_user_catalogues }o--|| representatives : "created_by_id"
