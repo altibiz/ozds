@@ -5,11 +5,13 @@ ignorePaths:
   - "*.svg"
   - "**/Migrations/**/*"
   - "*.razor" # TODO: remove once localized
-  - "justfile"
-  - "flake.nix"
   - "./docs/structure/data/schema.md"
   - "App_Data/**/*"
+  # NOTE: maybe remove these and add ignores in them?
+  - "justfile"
+  - "flake.nix"
   - "docker-compose.yml"
+  - "omnisharp.json"
 words:
   - "ozds"
   - "blazor"
@@ -37,3 +39,8 @@ words:
   - "validatable"
   - "upserter"
   - "cumulative"
+  - "upserters"
+  - "cumulatives"
+  - "mermerd"
+  - "nushell"
+  - "justfile"

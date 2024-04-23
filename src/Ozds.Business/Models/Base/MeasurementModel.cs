@@ -47,7 +47,7 @@ public abstract class MeasurementModel<T> : IMeasurement
         new[] { nameof(Timestamp) });
     }
 
-    if (validationContext.Items["Measure<float>mentValidator"] is T validator)
+    if (validationContext.Items["MeasurementValidator"] is T validator)
     {
       foreach (var result in validator.Validate(validationContext))
       {
