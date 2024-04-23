@@ -91,10 +91,12 @@ public class NetworkUserCalculationEntity : IReadonlyEntity, IIdentifiableEntity
     default!;
 
   public SupplyActiveEnergyTotalImportT1CalculationItemEntity
-    SupplyActiveEnergyTotalImportT1 { get; set; } = default!;
+    SupplyActiveEnergyTotalImportT1
+  { get; set; } = default!;
 
   public SupplyActiveEnergyTotalImportT2CalculationItemEntity
-    SupplyActiveEnergyTotalImportT2 { get; set; } = default!;
+    SupplyActiveEnergyTotalImportT2
+  { get; set; } = default!;
 
   public SupplyBusinessUsageFeeCalculationItemEntity SupplyBusinessUsageFee
   {
@@ -184,7 +186,7 @@ public class
     builder
       .HasOne(nameof(NetworkUserCalculationEntity.NetworkUserInvoice))
       .WithMany(nameof(InvoiceEntity.NetworkUserCalculations))
-      .HasForeignKey("_networkUserId");
+      .HasForeignKey("_networkUserInvoiceId");
 
     builder
       .ArchivedProperty(nameof(NetworkUserCalculationEntity.ArchivedMeter));
@@ -217,10 +219,6 @@ public class
     builder
       .Property("_networkUserInvoiceId")
       .HasColumnName("network_user_invoice_id");
-
-    builder
-      .Property("_networkUserId")
-      .HasColumnName("network_user_id");
 
     builder
       .Property(nameof(NetworkUserCalculationEntity.Total_EUR))
