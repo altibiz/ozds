@@ -19,12 +19,12 @@ public partial class OzdsDbContext
     var original = PrimaryKeyOfAgnostic(typeof(T));
     var parameter = Expression.Parameter(typeof(T));
     return Expression.Lambda<Func<T, string>>(
-      Expression.Invoke(original, parameter),
+      Expression.Invoke(original, Expression.Convert(parameter, typeof(object))),
       parameter
     );
   }
 
-  public Func<object, string> PrimaryKeyOfCompiled(Type type)
+  public Func<object, string> PrimaryKeyOfAgnosticCompiled(Type type)
   {
     return PrimaryKeyOfAgnostic(type).Compile();
   }
@@ -99,12 +99,12 @@ public partial class OzdsDbContext
     var original = PrimaryKeyEqualsAgnostic(typeof(T), id);
     var parameter = Expression.Parameter(typeof(T));
     return Expression.Lambda<Func<T, bool>>(
-      Expression.Invoke(original, parameter),
+      Expression.Invoke(original, Expression.Convert(parameter, typeof(object))),
       parameter
     );
   }
 
-  public Func<object, bool> PrimaryKeyEqualsCompiled(Type type, string id)
+  public Func<object, bool> PrimaryKeyEqualsAgnosticCompiled(Type type, string id)
   {
     return PrimaryKeyEqualsAgnostic(type, id).Compile();
   }
@@ -133,12 +133,12 @@ public partial class OzdsDbContext
     var original = PrimaryKeyInAgnostic(typeof(T), ids);
     var parameter = Expression.Parameter(typeof(T));
     return Expression.Lambda<Func<T, bool>>(
-      Expression.Invoke(original, parameter),
+      Expression.Invoke(original, Expression.Convert(parameter, typeof(object))),
       parameter
     );
   }
 
-  public Func<object, bool> PrimaryKeyInCompiled(
+  public Func<object, bool> PrimaryKeyInAgnosticCompiled(
     Type type,
     ICollection<string> ids)
   {
@@ -172,12 +172,12 @@ public partial class OzdsDbContext
     var original = ForeignKeyOfAgnostic(typeof(T), property);
     var parameter = Expression.Parameter(typeof(T));
     return Expression.Lambda<Func<T, string>>(
-      Expression.Invoke(original, parameter),
+      Expression.Invoke(original, Expression.Convert(parameter, typeof(object))),
       parameter
     );
   }
 
-  public Func<object, string> ForeignKeyOfCompiled(Type type, string property)
+  public Func<object, string> ForeignKeyOfAgnosticCompiled(Type type, string property)
   {
     return ForeignKeyOfAgnostic(type, property).Compile();
   }
@@ -239,12 +239,12 @@ public partial class OzdsDbContext
     var original = ForeignKeyOfAgnostic(prefix, property);
     var parameter = Expression.Parameter(typeof(T));
     return Expression.Lambda<Func<T, string>>(
-      Expression.Invoke(original, parameter),
+      Expression.Invoke(original, Expression.Convert(parameter, typeof(object))),
       parameter
     );
   }
 
-  public Func<object, string> ForeignKeyOfCompiledAgnostic<T, U>(
+  public Func<object, string> ForeignKeyOfAgnosticCompiled<T, U>(
     Expression<Func<T, U>> prefix, string property
   )
   {
