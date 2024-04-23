@@ -17,7 +17,6 @@ datacsproj := absolute_path('src/Ozds.Data/Ozds.Data.csproj')
 fakecsproj := absolute_path('scripts/Ozds.Fake/Ozds.Fake.csproj')
 schema := absolute_path('docs/structure/data/schema.md')
 
-
 default: prepare
 
 prepare:
@@ -158,6 +157,8 @@ dump:
         --exclude-table-data='"User"*' \
         --exclude-table-data=%aggregates \
         --exclude-table-data=%measurements \
+        --exclude-table-data=%invoices \
+        --exclude-table-data=%calculations \
         --exclude-table-data='"__EFMigrationsHistory"' \
     out> '{{assets}}/current.sql'
 
@@ -242,6 +243,8 @@ migrate name:
         --exclude-table-data='"User"*' \
         --exclude-table-data=%aggregates \
         --exclude-table-data=%measurements \
+        --exclude-table-data=%invoices \
+        --exclude-table-data=%calculations \
         --exclude-table-data='"__EFMigrationsHistory"' \
     out> '{{assets}}/{{name}}.sql'
 
