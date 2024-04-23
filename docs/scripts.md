@@ -16,7 +16,7 @@ tools and runs the PostgreSQL database using docker compose in the background.
 
 ## `just ci`
 
-This script is only used for CI and is not intended for developers. It installes
+This script is only used for CI and is not intended for developers. It installs
 dotnet tools and prettier if not available.
 
 ## `just dev`
@@ -64,6 +64,6 @@ and volumes and starts them back up.
 
 ## `just purge`
 
-This scripts does the same as `just clean` except that, in adition, it uses
+This scripts does the same as `just clean` except that, in addition, it uses
 `git clean` to remove any compiled artifacts and restores all dotnet tools and
 packages.
