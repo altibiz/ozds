@@ -16,14 +16,30 @@ public partial class OzdsDbContext
 
   public Expression<Func<T, string>> PrimaryKeyOf<T>()
   {
-    var entityType = Model.FindEntityType(typeof(T))
+    var original = PrimaryKeyOfAgnostic(typeof(T));
+    var parameter = Expression.Parameter(typeof(T));
+    return Expression.Lambda<Func<T, string>>(
+      Expression.Invoke(original, parameter),
+      parameter
+    );
+  }
+
+  public Func<object, string> PrimaryKeyOfCompiled(Type type)
+  {
+    return PrimaryKeyOfAgnostic(type).Compile();
+  }
+
+  public Expression<Func<object, string>> PrimaryKeyOfAgnostic(Type type)
+  {
+    var entityType = Model.FindEntityType(type)
       ?? throw new InvalidOperationException(
-        $"No entity type found for {typeof(T)}");
+        $"No entity type found for {type}");
     var key = entityType.FindPrimaryKey()
       ?? throw new InvalidOperationException(
-        $"No primary key found for {typeof(T)}");
+        $"No primary key found for {type}");
     var properties = key.Properties;
-    var parameter = Expression.Parameter(typeof(T));
+    var objectParameter = Expression.Parameter(typeof(object));
+    var parameter = Expression.Convert(objectParameter, type);
     var propertyExpressions = properties
       .Select(property =>
         property.PropertyInfo is { } propertyInfo
@@ -38,8 +54,8 @@ public partial class OzdsDbContext
       var propertyToStringExpression =
       Expression.Convert(
         Expression.Convert(propertyExpression, typeof(object)), typeof(string));
-      return Expression.Lambda<Func<T, string>>(
-        propertyToStringExpression, parameter);
+      return Expression.Lambda<Func<object, string>>(
+        propertyToStringExpression, objectParameter);
     }
 
     var propertyToStringExpressions =
@@ -55,8 +71,8 @@ public partial class OzdsDbContext
       Expression.Constant("-"),
       Expression.NewArrayInit(typeof(string), propertyExpressions));
 
-    return Expression.Lambda<Func<T, string>>(
-      stringJoinWithDashExpression, parameter);
+    return Expression.Lambda<Func<object, string>>(
+      stringJoinWithDashExpression, objectParameter);
   }
 
   public Func<T, string> PrimaryKeyOfCompiled<T, U>(Expression<Func<T, U>> prefix)
@@ -80,15 +96,30 @@ public partial class OzdsDbContext
 
   public Expression<Func<T, bool>> PrimaryKeyEquals<T>(string id)
   {
-    var type = typeof(T);
-    var parameter = Expression.Parameter(type);
-    var primaryKeyExpression = PrimaryKeyOf<T>();
+    var original = PrimaryKeyEqualsAgnostic(typeof(T), id);
+    var parameter = Expression.Parameter(typeof(T));
+    return Expression.Lambda<Func<T, bool>>(
+      Expression.Invoke(original, parameter),
+      parameter
+    );
+  }
+
+  public Func<object, bool> PrimaryKeyEqualsCompiled(Type type, string id)
+  {
+    return PrimaryKeyEqualsAgnostic(type, id).Compile();
+  }
+
+  public Expression<Func<object, bool>> PrimaryKeyEqualsAgnostic(Type type, string id)
+  {
+    var objectParameter = Expression.Parameter(typeof(object));
+    var parameter = Expression.Convert(objectParameter, type);
+    var primaryKeyExpression = PrimaryKeyOfAgnostic(type);
     var primaryKeyEqualsExpression = Expression.Equal(
       Expression.Invoke(primaryKeyExpression, parameter),
       Expression.Constant(id));
-    return Expression.Lambda<Func<T, bool>>(
+    return Expression.Lambda<Func<object, bool>>(
       primaryKeyEqualsExpression,
-      parameter
+      objectParameter
     );
   }
 
@@ -99,18 +130,35 @@ public partial class OzdsDbContext
 
   public Expression<Func<T, bool>> PrimaryKeyIn<T>(ICollection<string> ids)
   {
-    var type = typeof(T);
-    var parameter = Expression.Parameter(type);
-    var primaryKeyExpression = PrimaryKeyOf<T>();
+    var original = PrimaryKeyInAgnostic(typeof(T), ids);
+    var parameter = Expression.Parameter(typeof(T));
+    return Expression.Lambda<Func<T, bool>>(
+      Expression.Invoke(original, parameter),
+      parameter
+    );
+  }
+
+  public Func<object, bool> PrimaryKeyInCompiled(
+    Type type,
+    ICollection<string> ids)
+  {
+    return PrimaryKeyInAgnostic(type, ids).Compile();
+  }
+
+  public Expression<Func<object, bool>> PrimaryKeyInAgnostic(Type type, ICollection<string> ids)
+  {
+    var objectParameter = Expression.Parameter(typeof(object));
+    var parameter = Expression.Convert(objectParameter, type);
+    var primaryKeyExpression = PrimaryKeyOfAgnostic(type);
     var primaryKeyInExpression = Expression.Call(
       Expression.Constant(ids),
       typeof(ICollection<string>).GetMethod(nameof(ICollection<string>.Contains)) ??
         throw new InvalidOperationException(
           $"No {nameof(ICollection<string>.Contains)} method found in {typeof(ICollection<string>)}"),
       Expression.Invoke(primaryKeyExpression, parameter));
-    return Expression.Lambda<Func<T, bool>>(
+    return Expression.Lambda<Func<object, bool>>(
       primaryKeyInExpression,
-      parameter
+      objectParameter
     );
   }
 
@@ -121,7 +169,21 @@ public partial class OzdsDbContext
 
   public Expression<Func<T, string>> ForeignKeyOf<T>(string property)
   {
-    var type = typeof(T);
+    var original = ForeignKeyOfAgnostic(typeof(T), property);
+    var parameter = Expression.Parameter(typeof(T));
+    return Expression.Lambda<Func<T, string>>(
+      Expression.Invoke(original, parameter),
+      parameter
+    );
+  }
+
+  public Func<object, string> ForeignKeyOfCompiled(Type type, string property)
+  {
+    return ForeignKeyOfAgnostic(type, property).Compile();
+  }
+
+  public Expression<Func<object, string>> ForeignKeyOfAgnostic(Type type, string property)
+  {
     var entityType = Model.FindEntityType(type)
       ?? throw new InvalidOperationException(
         $"No entity type found for {type}");
@@ -132,7 +194,8 @@ public partial class OzdsDbContext
       throw new InvalidOperationException(
         $"No foreign key found for {type} {property}");
     var properties = foreignKey.Properties;
-    var parameter = Expression.Parameter(type);
+    var objectParameter = Expression.Parameter(typeof(object));
+    var parameter = Expression.Convert(objectParameter, type);
     var propertyExpressions = properties
       .Select(property =>
         property.PropertyInfo is { } propertyInfo
@@ -147,8 +210,8 @@ public partial class OzdsDbContext
       var propertyToStringExpression =
       Expression.Convert(
         Expression.Convert(propertyExpression, typeof(object)), typeof(string));
-      return Expression.Lambda<Func<T, string>>(
-        propertyToStringExpression, parameter);
+      return Expression.Lambda<Func<object, string>>(
+        propertyToStringExpression, objectParameter);
     }
     var propertyToStringExpressions =
       propertyExpressions.Select(propertyExpression =>
@@ -162,8 +225,8 @@ public partial class OzdsDbContext
               $"No {nameof(string.Join)} method found in {typeof(string)}"),
       Expression.Constant("-"),
       Expression.NewArrayInit(typeof(string), propertyExpressions));
-    return Expression.Lambda<Func<T, string>>(
-      stringJoinWithDashExpression, parameter);
+    return Expression.Lambda<Func<object, string>>(
+      stringJoinWithDashExpression, objectParameter);
   }
 
   public Func<T, string> ForeignKeyOfCompiled<T, U>(Expression<Func<T, U>> prefix, string property)
@@ -173,10 +236,32 @@ public partial class OzdsDbContext
 
   public Expression<Func<T, string>> ForeignKeyOf<T, U>(Expression<Func<T, U>> prefix, string property)
   {
+    var original = ForeignKeyOfAgnostic(prefix, property);
     var parameter = Expression.Parameter(typeof(T));
+    return Expression.Lambda<Func<T, string>>(
+      Expression.Invoke(original, parameter),
+      parameter
+    );
+  }
+
+  public Func<object, string> ForeignKeyOfCompiledAgnostic<T, U>(
+    Expression<Func<T, U>> prefix, string property
+  )
+  {
+    return ForeignKeyOfAgnostic(prefix, property).Compile();
+  }
+
+  public Expression<Func<object, string>> ForeignKeyOfAgnostic<T, U>(
+    Expression<Func<T, U>> prefix, string property
+  )
+  {
+    var objectParameter = Expression.Parameter(typeof(object));
+    var parameter = Expression.Convert(objectParameter, typeof(T));
     var callExpression = Expression.Invoke(prefix, parameter);
     var foreignKeyExpression = ForeignKeyOf<U>(property);
-    return Expression.Lambda<Func<T, string>>(
-      Expression.Invoke(foreignKeyExpression, callExpression), parameter);
+    return Expression.Lambda<Func<object, string>>(
+      Expression.Invoke(foreignKeyExpression, callExpression),
+      objectParameter
+    );
   }
 }

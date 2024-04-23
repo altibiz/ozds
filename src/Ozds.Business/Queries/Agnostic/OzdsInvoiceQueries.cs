@@ -27,11 +27,10 @@ public class OzdsInvoiceQueries : IOzdsQueries
 
   public async Task<T?> ReadSingle<T>(string id) where T : class, IInvoice
   {
-    var queryable = _context.GetDbSet(typeof(T))
-                      as IQueryable<InvoiceEntity>
-                    ?? throw new InvalidOperationException();
+    var entityType = _modelEntityConverter.EntityType(typeof(T));
+    var queryable = _context.GetDbSet(entityType);
     var item = await queryable
-      .Where(_context.PrimaryKeyEquals<InvoiceEntity>(id))
+      .Where(_context.PrimaryKeyEqualsAgnostic(entityType, id))
       .FirstOrDefaultAsync();
     return item is null ? null : _modelEntityConverter.ToModel(item) as T;
   }

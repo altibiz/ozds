@@ -8,7 +8,7 @@ namespace Ozds.Business.Extensions;
 
 public static class DbContextExtensions
 {
-  public static IQueryable<object>? GetDbSet(this DbContext context, Type type)
+  public static IQueryable<object> GetDbSet(this DbContext context, Type type)
   {
     var method = typeof(DbContext)
       .GetMethods()
@@ -16,7 +16,8 @@ public static class DbContextExtensions
                            && m.IsGenericMethodDefinition
                            && m.GetParameters().Length == 0)
       ?.MakeGenericMethod(type);
-    return method?.Invoke(context, null) as IQueryable<object>;
+    return method?.Invoke(context, null) as IQueryable<object>
+      ?? throw new InvalidOperationException($"No DbSet found for {type}");
   }
 
 
