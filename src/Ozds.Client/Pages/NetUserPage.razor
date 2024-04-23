@@ -34,7 +34,7 @@
     var invoiceId = await invoiceMutations.Create(invoice.Invoice);
     foreach (var calculation in invoice.Calculations)
     {
-      calculation.NetworkUserInvoiceId = invoiceId;
+      // calculation.NetworkUserInvoiceId = invoiceId;
       networkUserCalculationMutations.Create(calculation);
     }
   }

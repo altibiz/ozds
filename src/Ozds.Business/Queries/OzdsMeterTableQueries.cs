@@ -37,7 +37,7 @@ public class OzdsMeterTableQueries : IOzdsQueries
     public SchneideriEM3xxxAggregateEntity? SchneiderAggregate { get; init; }
   };
 
-  public async Task<MeterModel?> GetMeterById(string Id)
+  public async Task<IMeter?> GetMeterById(string Id)
   {
     return await context.Meters.Where(context.PrimaryKeyEquals<MeterEntity>(Id)).Select(m => m.ToModel()).FirstOrDefaultAsync();
   }

@@ -1,21 +1,21 @@
 using Ozds.Business.Conversion.Base;
 using Ozds.Business.Models;
-using Ozds.Business.Models.Base;
+using Ozds.Business.Models.Abstractions;
 using Ozds.Data.Entities;
 using Ozds.Data.Entities.Base;
 
 namespace Ozds.Business.Conversion;
 
 public class NetworkUserCalculationModelEntityConverter : ModelEntityConverter<
-  NetworkUserCalculationModel, NetworkUserCalculationEntity>
+  INetworkUserCalculation, NetworkUserCalculationEntity>
 {
   protected override NetworkUserCalculationEntity ToEntity(
-    NetworkUserCalculationModel model)
+    INetworkUserCalculation model)
   {
     return model.ToEntity();
   }
 
-  protected override NetworkUserCalculationModel ToModel(
+  protected override INetworkUserCalculation ToModel(
     NetworkUserCalculationEntity entity)
   {
     return entity.ToModel();
@@ -25,7 +25,7 @@ public class NetworkUserCalculationModelEntityConverter : ModelEntityConverter<
 public static class NetworkUserCalculationModelEntityConverterExtensions
 {
   public static NetworkUserCalculationEntity ToEntity(
-    this NetworkUserCalculationModel model)
+    this INetworkUserCalculation model)
   {
     if (model is RedLowNetworkUserCalculationModel
         redLowNetworkUserCalculationModel)
@@ -56,7 +56,7 @@ public static class NetworkUserCalculationModelEntityConverterExtensions
     );
   }
 
-  public static NetworkUserCalculationModel ToModel(
+  public static INetworkUserCalculation ToModel(
     this NetworkUserCalculationEntity entity)
   {
     if (entity is RedLowNetworkUserCalculationEntity

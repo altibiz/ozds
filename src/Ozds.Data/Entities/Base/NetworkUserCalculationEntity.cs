@@ -3,6 +3,9 @@ using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Entities.Complex;
 using Ozds.Data.Extensions;
 
+// TODO: interface
+// TODO: check that all base classes are only used for inheritance
+
 namespace Ozds.Data.Entities.Base;
 
 public class NetworkUserCalculationEntity : IReadonlyEntity, IIdentifiableEntity

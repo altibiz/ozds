@@ -1,21 +1,21 @@
 using Ozds.Business.Conversion.Base;
 using Ozds.Business.Models;
-using Ozds.Business.Models.Base;
+using Ozds.Business.Models.Abstractions;
 using Ozds.Data.Entities;
 using Ozds.Data.Entities.Base;
 
 namespace Ozds.Business.Conversion;
 
 public class MeterModelEntityConverter : ModelEntityConverter<
-  MeterModel, MeterEntity>
+  IMeter, MeterEntity>
 {
   protected override MeterEntity ToEntity(
-    MeterModel model)
+    IMeter model)
   {
     return model.ToEntity();
   }
 
-  protected override MeterModel ToModel(
+  protected override IMeter ToModel(
     MeterEntity entity)
   {
     return entity.ToModel();
@@ -24,7 +24,7 @@ public class MeterModelEntityConverter : ModelEntityConverter<
 
 public static class MeterModelEntityConverterExtensions
 {
-  public static MeterEntity ToEntity(this MeterModel model)
+  public static MeterEntity ToEntity(this IMeter model)
   {
     if (model is AbbB2xMeterModel abbB2xMeterModel)
     {
@@ -41,7 +41,7 @@ public static class MeterModelEntityConverterExtensions
     );
   }
 
-  public static MeterModel ToModel(this MeterEntity entity)
+  public static IMeter ToModel(this MeterEntity entity)
   {
     if (entity is AbbB2xMeterEntity abbB2xMeterEntity)
     {

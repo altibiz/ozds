@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Conversion;
 using Ozds.Business.Models;
+using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Base;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Data;
@@ -53,7 +54,7 @@ public class OzdsLocationMeasurementLocationModelQueries : IOzdsQueries
       .ToPaginatedList(count);
   }
 
-  public async Task<PaginatedList<MeterModel>> GetMeters(
+  public async Task<PaginatedList<IMeter>> GetMeters(
     string title,
     int pageNumber = QueryConstants.StartingPage,
     int pageCount = QueryConstants.DefaultPageCount

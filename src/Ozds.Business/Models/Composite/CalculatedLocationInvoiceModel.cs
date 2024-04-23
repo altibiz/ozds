@@ -1,8 +1,8 @@
-using Ozds.Business.Models.Base;
+using Ozds.Business.Models.Abstractions;
 
 namespace Ozds.Business.Models.Composite;
 
 public record CalculatedLoactionInvoiceModel(
-  List<NetworkUserCalculationModel> NetworkUserCalculations,
+  List<INetworkUserCalculation> NetworkUserCalculations,
   LocationInvoiceModel Invoice
 );

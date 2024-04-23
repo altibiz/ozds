@@ -1,5 +1,6 @@
 using Ozds.Business.Finance.Agnostic;
 using Ozds.Business.Models;
+using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Complex;
 using Ozds.Business.Models.Composite;
@@ -31,7 +32,7 @@ public class NetworkUserInvoiceIssuer
 
     var calculations = basis.NetworkUserCalculationBases
       .Select(_calculationCalculator.Calculate)
-      .OfType<NetworkUserCalculationModel>()
+      .OfType<INetworkUserCalculation>()
       .ToList();
 
     var usageActiveEnergyTotalImportT0Fee = calculations

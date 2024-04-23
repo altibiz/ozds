@@ -154,7 +154,7 @@
   private DateTimeOffset startOfLastMonth = DateTimeOffset.UtcNow.GetStartOfLastMonth();
   private DateTimeOffset now = DateTime.UtcNow;
   private List<TabularData> _dataStruct = new();
-  public record struct TabularData(LocationModel location, NetworkUserModel networkUser, MeterModel meter, float thisMonthUsage = 0, float lastMonthUsage = 0, float? lastMonthsPayment = null);
+  public record struct TabularData(LocationModel location, NetworkUserModel networkUser, IMeter meter, float thisMonthUsage = 0, float lastMonthUsage = 0, float? lastMonthsPayment = null);
 
   @* MOBILE *@
   public string TextValue { get; set; } = "";

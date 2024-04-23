@@ -2,7 +2,7 @@
 
 <Loading Load="@(async () => (Calculation ?? await ScopedServices
     .GetRequiredService<OzdsNetworkUserCalculationQueries>()
-    .ReadSingle<NetworkUserCalculationModel>(
+    .ReadSingle<INetworkUserCalculation>(
       Id ?? throw new InvalidOperationException()))!)">
   <Found>
     <div class="page">
@@ -33,7 +33,7 @@
 </Loading>
 
 @code {
-  [Parameter] public NetworkUserCalculationModel? Calculation { get; set; }
+  [Parameter] public INetworkUserCalculation? Calculation { get; set; }
 
   [Parameter] public string? Id { get; set; }
 }

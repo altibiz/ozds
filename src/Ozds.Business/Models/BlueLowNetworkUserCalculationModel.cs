@@ -6,15 +6,18 @@ using Ozds.Business.Models.Complex;
 
 namespace Ozds.Business.Models;
 
-public class BlueLowNetworkUserCalculationModel : NetworkUserCalculationModel
+public class BlueLowNetworkUserCalculationModel
+  : NetworkUserCalculationModel<BlueLowNetworkUserCatalogueModel>
 {
   [Required]
   public required UsageActiveEnergyTotalImportT0CalculationItemModel
-    UsageActiveEnergyTotalImportT0 { get; set; } = default!;
+    UsageActiveEnergyTotalImportT0
+  { get; set; } = default!;
 
   [Required]
   public required UsageReactiveEnergyTotalRampedT0CalculationItemModel
-    UsageReactiveEnergyTotalRampedT0 { get; set; } = default!;
+    UsageReactiveEnergyTotalRampedT0
+  { get; set; } = default!;
 
   public override string Kind
   {

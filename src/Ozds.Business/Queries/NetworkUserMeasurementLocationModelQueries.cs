@@ -54,7 +54,7 @@ public class OzdsNetworkUserMeasurementLocationModelQueries : IOzdsQueries
       .ToPaginatedList(count);
   }
 
-  public async Task<PaginatedList<MeterModel>> GetMeters(
+  public async Task<PaginatedList<IMeter>> GetMeters(
     string title,
     int pageNumber = QueryConstants.StartingPage,
     int pageCount = QueryConstants.DefaultPageCount

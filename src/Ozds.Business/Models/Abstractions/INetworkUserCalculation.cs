@@ -7,12 +7,14 @@ public interface INetworkUserCalculation : IReadonly, IIdentifiable
 {
   public DateTimeOffset IssuedOn { get; }
   public string? IssuedById { get; }
+  public DateTimeOffset FromDate { get; }
+  public DateTimeOffset ToDate { get; }
   public string MeterId { get; }
   public string MeasurementLocationId { get; }
   public string UsageNetworkUserCatalogueId { get; }
   public string SupplyRegulatoryCatalogueId { get; }
   public string NetworkUserInvoiceId { get; }
-  public MeterModel ArchivedMeter { get; }
+  public IMeter ArchivedMeter { get; }
   public string Kind { get; }
 
   public NetworkUserMeasurementLocationModel ArchivedMeasurementLocation

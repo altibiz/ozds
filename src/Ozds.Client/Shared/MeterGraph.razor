@@ -148,7 +148,7 @@
 
 @code {
   [Parameter] public string Source { get; set; } = "abb";
-  private MeterModel? _meter;
+  private IMeter? _meter;
   AnnotationsYAxis? _annotation;
   private ApexChartOptions<ChartData> graphOptions = NewApexChartOptions<ChartData>();
   private ApexChartOptions<ChartData> graphOptionsMob = NewApexChartOptions<ChartData>();

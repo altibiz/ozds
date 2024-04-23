@@ -6,19 +6,23 @@ using Ozds.Business.Models.Complex;
 
 namespace Ozds.Business.Models;
 
-public class WhiteLowNetworkUserCalculationModel : NetworkUserCalculationModel
+public class WhiteLowNetworkUserCalculationModel
+  : NetworkUserCalculationModel<WhiteLowNetworkUserCatalogueModel>
 {
   [Required]
   public required ActiveEnergyTotalImportT1CalculationItemModel
-    UsageActiveEnergyTotalImportT1 { get; set; } = default!;
+    UsageActiveEnergyTotalImportT1
+  { get; set; } = default!;
 
   [Required]
   public required ActiveEnergyTotalImportT2CalculationItemModel
-    UsageActiveEnergyTotalImportT2 { get; set; } = default!;
+    UsageActiveEnergyTotalImportT2
+  { get; set; } = default!;
 
   [Required]
   public required ReactiveEnergyTotalRampedT0CalculationItemModel
-    UsageReactiveEnergyTotalRampedT0 { get; set; } = default!;
+    UsageReactiveEnergyTotalRampedT0
+  { get; set; } = default!;
 
   public override string Kind
   {

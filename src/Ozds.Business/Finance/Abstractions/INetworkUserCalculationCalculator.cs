@@ -1,3 +1,4 @@
+using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Composite;
 
@@ -7,7 +8,7 @@ public interface INetworkUserCalculationCalculator
 {
   bool CanCalculate(NetworkUserCalculationBasisModel calculationBasis);
 
-  NetworkUserCalculationModel Calculate(
+  INetworkUserCalculation Calculate(
     NetworkUserCalculationBasisModel calculationBasis
   );
 }

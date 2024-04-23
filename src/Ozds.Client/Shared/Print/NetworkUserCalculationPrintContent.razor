@@ -179,7 +179,7 @@
 
 
 @code {
-  [Parameter] public NetworkUserCalculationModel Calculation { get; set; } = default!;
+  [Parameter] public INetworkUserCalculation Calculation { get; set; } = default!;
 
   private int usageRowspan
   {

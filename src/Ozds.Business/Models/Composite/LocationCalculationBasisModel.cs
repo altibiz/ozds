@@ -1,4 +1,4 @@
-using Ozds.Business.Models.Base;
+using Ozds.Business.Models.Abstractions;
 
 namespace Ozds.Business.Models.Composite;
 
@@ -7,7 +7,7 @@ public record LocationNetworkUserCalculationBasisModel(
   DateTimeOffset ToDate,
   LocationModel Location,
   LocationMeasurementLocationModel MeasurementLocation,
-  NetworkUserCatalogueModel NetworkUserCatalogue,
-  MeterModel Meter,
-  List<AggregateModel> Aggregates
+  INetworkUserCatalogue NetworkUserCatalogue,
+  IMeter Meter,
+  List<IAggregate> Aggregates
 );

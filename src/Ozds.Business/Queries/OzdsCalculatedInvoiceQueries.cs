@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Models;
+using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Composite;
 using Ozds.Business.Queries.Abstractions;
@@ -39,7 +40,7 @@ public class OzdsCalculatedInvoiceQueries : IOzdsQueries
 
     return new CalculatedNetworkUserInvoiceModel(
       invoice.NetworkUserCalculations
-        .Select(_modelEntityConverter.ToModel<NetworkUserCalculationModel>)
+        .Select(_modelEntityConverter.ToModel<INetworkUserCalculation>)
         .ToList(),
       _modelEntityConverter.ToModel<NetworkUserInvoiceModel>(invoice)
     );
