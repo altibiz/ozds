@@ -1,0 +1,31 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-issue-forms.json
+
+name: Test
+title: Test
+description: Add tests
+labels: [test]
+assignees: HrvojeJuric
+body:
+  - type: dropdown
+    attributes:
+      label: Type
+      description: Type of test
+      multiple: false
+      options:
+        - "End-to-end"
+        - "Integration"
+        - "Unit"
+  - type: textarea
+    attributes:
+      label: Area
+      description: |
+        Area of the test that needs to be added.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Description
+      description: |
+        Description of the test that needs to be added.
+    validations:
+      required: true
