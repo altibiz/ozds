@@ -2,7 +2,7 @@
 
 This script project runs in a loop and sends faked measurements to the server.
 Here is an outline of the various options that can be passed to the project to
-customize its behaviour:
+customize its behavior:
 
 | Option     | Description                    | Example         | Explanation                             |
 | ---------- | ------------------------------ | --------------- | --------------------------------------- |
