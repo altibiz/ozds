@@ -1,7 +1,5 @@
 using System.Numerics;
 
-// TODO: implement math
-
 namespace Ozds.Business.Math;
 
 public record class UsageExpenditureMeasure<T>(
