@@ -4,9 +4,6 @@ using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Infrastructure.Internal;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Migrations;
 
-// TODO: make number of partitions configurable
-// NOTE: for now hardcored to 2 because we have two meter types
-
 namespace Ozds.Data.Timescale;
 
 public class TimescaleMigrationSqlGenerator : NpgsqlMigrationsSqlGenerator

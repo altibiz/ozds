@@ -21,7 +21,8 @@ public abstract class InvoiceEntity : IReadonlyEntity, IIdentifiableEntity
   public DateTimeOffset ToDate { get; set; } = default!;
 
   public virtual ICollection<NetworkUserCalculationEntity>
-    NetworkUserCalculations { get; set; } =
+    NetworkUserCalculations
+  { get; set; } =
     default!;
 
   public decimal Total_EUR { get; set; } = default!;
@@ -33,7 +34,7 @@ public abstract class InvoiceEntity : IReadonlyEntity, IIdentifiableEntity
   public virtual string Id
   {
     get { return _id.ToString(); }
-    init { _id = value is { } nonullValue ? long.Parse(nonullValue) : default; }
+    init { _id = value is { } notNullValue ? long.Parse(notNullValue) : default; }
   }
 
   public string Title { get; set; } = default!;

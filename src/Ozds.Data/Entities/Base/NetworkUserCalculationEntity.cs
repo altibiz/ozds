@@ -88,10 +88,12 @@ public class NetworkUserCalculationEntity : IReadonlyEntity, IIdentifiableEntity
     default!;
 
   public SupplyActiveEnergyTotalImportT1CalculationItemEntity
-    SupplyActiveEnergyTotalImportT1 { get; set; } = default!;
+    SupplyActiveEnergyTotalImportT1
+  { get; set; } = default!;
 
   public SupplyActiveEnergyTotalImportT2CalculationItemEntity
-    SupplyActiveEnergyTotalImportT2 { get; set; } = default!;
+    SupplyActiveEnergyTotalImportT2
+  { get; set; } = default!;
 
   public SupplyBusinessUsageFeeCalculationItemEntity SupplyBusinessUsageFee
   {
@@ -110,7 +112,7 @@ public class NetworkUserCalculationEntity : IReadonlyEntity, IIdentifiableEntity
   public virtual string Id
   {
     get { return _id.ToString(); }
-    init { _id = value is { } nonullValue ? long.Parse(nonullValue) : default; }
+    init { _id = value is { } notNullValue ? long.Parse(notNullValue) : default; }
   }
 
   public string Title { get; set; } = default!;
