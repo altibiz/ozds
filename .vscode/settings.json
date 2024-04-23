@@ -2,11 +2,13 @@
   "search.exclude": {
     "**/bin": true,
     "**/obj": true,
+    "src/Ozds.Server/Localization/": true,
     ".direnv": true
   },
   "files.exclude": {
     "**/bin": true,
     "**/obj": true,
+    "src/Ozds.Server/Localization/": true,
     ".direnv": true
   },
   "prettier.ignorePath": ".prettierignore",
