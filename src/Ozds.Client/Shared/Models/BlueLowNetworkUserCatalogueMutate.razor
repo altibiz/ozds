@@ -35,17 +35,17 @@
       <MudTextField
         T="decimal"
         Label="Cijena potrošnje aktivne energije u dnevnoj tarifi (EUR/kWh)"
-        Value="LoadingState.Value.ActiveEnergyTotalImportT0Price_EUR"
+        Value="LoadingState.Value.ActiveEnergyTotalImportT0Price_EUR * 1000"
         ValueChanged="@(e => LoadingState.Value.ActiveEnergyTotalImportT0Price_EUR = e / 1000)"
         For="@(() => LoadingState.Value.ActiveEnergyTotalImportT0Price_EUR)"/>
       <MudTextField
         T="decimal"
         Label="Cijena potrošnje reaktivne energije u jednoj tarifi (EUR/kVARh)"
-        Value="LoadingState.Value.ReactiveEnergyTotalRampedT0Price_EUR"
+        Value="LoadingState.Value.ReactiveEnergyTotalRampedT0Price_EUR * 1000"
         ValueChanged="@(e => LoadingState.Value.ReactiveEnergyTotalRampedT0Price_EUR = e / 1000)"
         For="@(() => LoadingState.Value.ReactiveEnergyTotalRampedT0Price_EUR)"/>
       <MudTextField
-        Label="Cijena naknade za brojilo"
+        Label="Cijena naknade za brojilo (EUR)"
         @bind-Value="LoadingState.Value.MeterFeePrice_EUR"
         For="@(() => LoadingState.Value.MeterFeePrice_EUR)"/>
     </MudCardContent>
