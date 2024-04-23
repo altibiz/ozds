@@ -14,16 +14,6 @@ public class UsageMeterFeeCalculationItemEntity : FeeCalculationItemEntity
 {
 }
 
-public class
-  SupplyBusinessUsageFeeCalculationItemEntity : FeeCalculationItemEntity
-{
-}
-
-public class
-  SupplyRenewableEnergyFeeCalculationItemEntity : FeeCalculationItemEntity
-{
-}
-
 public static class FeeCalculationItemEntityExtensions
 {
   public static void UsageMeterFeeCalculationItem(
@@ -31,20 +21,6 @@ public static class FeeCalculationItemEntityExtensions
   )
   {
     builder.FeeCalculationItem("usage_meter");
-  }
-
-  public static void SupplyBusinessUsageCalculationItem(
-    this ComplexPropertyBuilder builder
-  )
-  {
-    builder.FeeCalculationItem("supply_business_usage");
-  }
-
-  public static void SupplyRenewableEnergyCalculationItem(
-    this ComplexPropertyBuilder builder
-  )
-  {
-    builder.FeeCalculationItem("supply_renewable_energy");
   }
 
   private static void FeeCalculationItem(

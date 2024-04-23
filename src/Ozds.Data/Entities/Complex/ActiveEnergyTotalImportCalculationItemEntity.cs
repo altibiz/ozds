@@ -37,6 +37,16 @@ public class SupplyActiveEnergyTotalImportT2CalculationItemEntity
 {
 }
 
+public class
+  SupplyBusinessUsageFeeCalculationItemEntity : ActiveEnergyTotalImportCalculationItemEntity
+{
+}
+
+public class
+  SupplyRenewableEnergyFeeCalculationItemEntity : ActiveEnergyTotalImportCalculationItemEntity
+{
+}
+
 public static class ActiveEnergyImportCalculationItemEntityExtensions
 {
   public static void UsageActiveEnergyTotalImportT0CalculationItem(
@@ -72,6 +82,20 @@ public static class ActiveEnergyImportCalculationItemEntityExtensions
   )
   {
     builder.ActiveEnergyImportCalculationItem("supply", "t2");
+  }
+
+  public static void SupplyBusinessUsageCalculationItem(
+    this ComplexPropertyBuilder builder
+  )
+  {
+    builder.ActiveEnergyImportCalculationItem("supply_business_usage_fee", "t0");
+  }
+
+  public static void SupplyRenewableEnergyCalculationItem(
+    this ComplexPropertyBuilder builder
+  )
+  {
+    builder.ActiveEnergyImportCalculationItem("supply_renewable_energy_fee", "t0");
   }
 
   private static void ActiveEnergyImportCalculationItem(

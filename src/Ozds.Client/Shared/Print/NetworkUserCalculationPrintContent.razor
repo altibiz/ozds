@@ -294,8 +294,8 @@
             </Fragment>
           : item is FeeCalculationItemModel feeItem
             ? @<Fragment>
-                <td>
-                  <strong>Naknada za mjernu uslugu - MU</strong>
+                <td colspan="4">
+                  <strong>@feeItem.Kind</strong>
                 </td>
                 <td style="text-align: right;">
                   @DecimalString(feeItem.Amount_N, 0)

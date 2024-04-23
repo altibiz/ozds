@@ -220,3 +220,51 @@ public class SupplyActiveEnergyTotalImportT2CalculationItemModel
     }
   }
 }
+
+public class
+  SupplyBusinessUsageCalculationItemModel : ActiveEnergyTotalImportT0CalculationItemModel
+{
+  public override string Kind
+  {
+    get { return "TRP"; }
+  }
+
+  public override ExpenditureMeasure<decimal> Price
+  {
+    get
+    {
+      return new SupplyExpenditureMeasure<decimal>(
+        new UnaryTariffMeasure<decimal>(
+          new ImportExportDuplexMeasure<decimal>(
+            new SinglePhasicMeasure<decimal>(Price_EUR),
+            PhasicMeasure<decimal>.Null
+          )
+        )
+      );
+    }
+  }
+}
+
+public class
+  SupplyRenewableEnergyCalculationItemModel : ActiveEnergyTotalImportT0CalculationItemModel
+{
+  public override string Kind
+  {
+    get { return "OIE"; }
+  }
+
+  public override ExpenditureMeasure<decimal> Price
+  {
+    get
+    {
+      return new SupplyExpenditureMeasure<decimal>(
+        new UnaryTariffMeasure<decimal>(
+          new ImportExportDuplexMeasure<decimal>(
+            new SinglePhasicMeasure<decimal>(Price_EUR),
+            PhasicMeasure<decimal>.Null
+          )
+        )
+      );
+    }
+  }
+}

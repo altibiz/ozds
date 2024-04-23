@@ -29,12 +29,12 @@ public abstract class NetworkUserCalculationModel : INetworkUserCalculation
   { get; set; } = default!;
 
   [Required]
-  public required SupplyBusinessUsageFeeCalculationItemModel
+  public required SupplyBusinessUsageCalculationItemModel
     SupplyBusinessUsageFee
   { get; set; } = default!;
 
   [Required]
-  public required SupplyRenewableEnergyFeeCalculationItemModel
+  public required SupplyRenewableEnergyCalculationItemModel
     SupplyRenewableEnergyFee
   { get; set; } = default!;
 

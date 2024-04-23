@@ -85,12 +85,12 @@ public class NetworkUserInvoiceIssuer
 
     var supplyBusinessUsageFee = calculations
       .SelectMany(calculation => calculation.SupplyItems
-        .OfType<SupplyBusinessUsageFeeCalculationItemModel>())
+        .OfType<SupplyBusinessUsageCalculationItemModel>())
       .Sum(item => item.Total_EUR);
 
     var supplyRenewableEnergyFee = calculations
       .SelectMany(calculation => calculation.SupplyItems
-        .OfType<SupplyRenewableEnergyFeeCalculationItemModel>())
+        .OfType<SupplyRenewableEnergyCalculationItemModel>())
       .Sum(item => item.Total_EUR);
 
     var supplyFeeTotal = supplyActiveEnergyTotalImportT1Fee

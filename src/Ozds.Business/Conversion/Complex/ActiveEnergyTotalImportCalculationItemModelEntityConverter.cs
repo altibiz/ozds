@@ -26,6 +26,10 @@ public class ActiveEnergyTotalImportCalculationItemModelEntityConverter :
         t1Model.ToEntity(),
       SupplyActiveEnergyTotalImportT2CalculationItemModel t2Model =>
         t2Model.ToEntity(),
+      SupplyBusinessUsageCalculationItemModel businessUsageModel =>
+        businessUsageModel.ToEntity(),
+      SupplyRenewableEnergyCalculationItemModel renewableEnergyModel =>
+        renewableEnergyModel.ToEntity(),
       _ => throw new InvalidOperationException("Unknown tariff type")
     };
   }
@@ -45,6 +49,10 @@ public class ActiveEnergyTotalImportCalculationItemModelEntityConverter :
         .ToModel(),
       SupplyActiveEnergyTotalImportT2CalculationItemEntity t2Entity => t2Entity
         .ToModel(),
+      SupplyBusinessUsageFeeCalculationItemEntity businessUsageEntity =>
+        businessUsageEntity.ToModel(),
+      SupplyRenewableEnergyFeeCalculationItemEntity renewableEnergyEntity =>
+        renewableEnergyEntity.ToModel(),
       _ => throw new InvalidOperationException("Unknown tariff type")
     };
   }
@@ -118,6 +126,32 @@ public static class
     };
   }
 
+  public static SupplyBusinessUsageCalculationItemModel ToModel(
+    this SupplyBusinessUsageFeeCalculationItemEntity entity)
+  {
+    return new SupplyBusinessUsageCalculationItemModel
+    {
+      Min_Wh = entity.Min_Wh,
+      Max_Wh = entity.Max_Wh,
+      Amount_Wh = entity.Amount_Wh,
+      Price_EUR = entity.Price_EUR,
+      Total_EUR = entity.Total_EUR
+    };
+  }
+
+  public static SupplyRenewableEnergyCalculationItemModel ToModel(
+    this SupplyRenewableEnergyFeeCalculationItemEntity entity)
+  {
+    return new SupplyRenewableEnergyCalculationItemModel
+    {
+      Min_Wh = entity.Min_Wh,
+      Max_Wh = entity.Max_Wh,
+      Amount_Wh = entity.Amount_Wh,
+      Price_EUR = entity.Price_EUR,
+      Total_EUR = entity.Total_EUR
+    };
+  }
+
   public static UsageActiveEnergyTotalImportT0CalculationItemEntity ToEntity(
     this ActiveEnergyTotalImportT0CalculationItemModel model)
   {
@@ -174,6 +208,32 @@ public static class
     this SupplyActiveEnergyTotalImportT2CalculationItemModel model)
   {
     return new SupplyActiveEnergyTotalImportT2CalculationItemEntity
+    {
+      Min_Wh = model.Min_Wh,
+      Max_Wh = model.Max_Wh,
+      Amount_Wh = model.Amount_Wh,
+      Price_EUR = model.Price_EUR,
+      Total_EUR = model.Total_EUR
+    };
+  }
+
+  public static SupplyBusinessUsageFeeCalculationItemEntity ToEntity(
+    this SupplyBusinessUsageCalculationItemModel model)
+  {
+    return new SupplyBusinessUsageFeeCalculationItemEntity
+    {
+      Min_Wh = model.Min_Wh,
+      Max_Wh = model.Max_Wh,
+      Amount_Wh = model.Amount_Wh,
+      Price_EUR = model.Price_EUR,
+      Total_EUR = model.Total_EUR
+    };
+  }
+
+  public static SupplyRenewableEnergyFeeCalculationItemEntity ToEntity(
+    this SupplyRenewableEnergyCalculationItemModel model)
+  {
+    return new SupplyRenewableEnergyFeeCalculationItemEntity
     {
       Min_Wh = model.Min_Wh,
       Max_Wh = model.Max_Wh,

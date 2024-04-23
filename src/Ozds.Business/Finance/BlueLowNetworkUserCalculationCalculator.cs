@@ -73,7 +73,7 @@ public class
       );
 
     var supplyBusinessUsageFee = _calculationItemCalculator
-      .Calculate<SupplyBusinessUsageFeeCalculationItemModel>(
+      .Calculate<SupplyBusinessUsageCalculationItemModel>(
         new CalculationItemBasisModel(
           calculationBasis.Aggregates,
           supplyCatalogue.BusinessUsageFeePrice_EUR
@@ -81,7 +81,7 @@ public class
       );
 
     var supplyRenewableEnergyFee = _calculationItemCalculator
-      .Calculate<SupplyRenewableEnergyFeeCalculationItemModel>(
+      .Calculate<SupplyRenewableEnergyCalculationItemModel>(
         new CalculationItemBasisModel(
           calculationBasis.Aggregates,
           supplyCatalogue.RenewableEnergyFeePrice_EUR

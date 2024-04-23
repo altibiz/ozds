@@ -13,10 +13,6 @@ public class FeeCalculationItemModelEntityConverter : ModelEntityConverter<
     return model switch
     {
       UsageMeterFeeCalculationItemModel usageModel => usageModel.ToEntity(),
-      SupplyBusinessUsageFeeCalculationItemModel supplyBusinessModel =>
-        supplyBusinessModel.ToEntity(),
-      SupplyRenewableEnergyFeeCalculationItemModel supplyRenewableModel =>
-        supplyRenewableModel.ToEntity(),
       _ => throw new InvalidOperationException("Unknown tariff type")
     };
   }
@@ -27,10 +23,6 @@ public class FeeCalculationItemModelEntityConverter : ModelEntityConverter<
     return entity switch
     {
       UsageMeterFeeCalculationItemEntity usageEntity => usageEntity.ToModel(),
-      SupplyBusinessUsageFeeCalculationItemEntity supplyBusinessEntity =>
-        supplyBusinessEntity.ToModel(),
-      SupplyRenewableEnergyFeeCalculationItemEntity supplyRenewableEntity =>
-        supplyRenewableEntity.ToModel(),
       _ => throw new InvalidOperationException("Unknown tariff type")
     };
   }
@@ -49,54 +41,10 @@ public static class FeeCalculationItemModelEntityConverterExtensions
     };
   }
 
-  public static SupplyBusinessUsageFeeCalculationItemModel ToModel(
-    this SupplyBusinessUsageFeeCalculationItemEntity entity)
-  {
-    return new SupplyBusinessUsageFeeCalculationItemModel
-    {
-      Amount_N = entity.Amount_N,
-      Price_EUR = entity.Price_EUR,
-      Total_EUR = entity.Total_EUR
-    };
-  }
-
-  public static SupplyRenewableEnergyFeeCalculationItemModel ToModel(
-    this SupplyRenewableEnergyFeeCalculationItemEntity entity)
-  {
-    return new SupplyRenewableEnergyFeeCalculationItemModel
-    {
-      Amount_N = entity.Amount_N,
-      Price_EUR = entity.Price_EUR,
-      Total_EUR = entity.Total_EUR
-    };
-  }
-
   public static UsageMeterFeeCalculationItemEntity ToEntity(
     this UsageMeterFeeCalculationItemModel model)
   {
     return new UsageMeterFeeCalculationItemEntity
-    {
-      Amount_N = model.Amount_N,
-      Price_EUR = model.Price_EUR,
-      Total_EUR = model.Total_EUR
-    };
-  }
-
-  public static SupplyBusinessUsageFeeCalculationItemEntity ToEntity(
-    this SupplyBusinessUsageFeeCalculationItemModel model)
-  {
-    return new SupplyBusinessUsageFeeCalculationItemEntity
-    {
-      Amount_N = model.Amount_N,
-      Price_EUR = model.Price_EUR,
-      Total_EUR = model.Total_EUR
-    };
-  }
-
-  public static SupplyRenewableEnergyFeeCalculationItemEntity ToEntity(
-    this SupplyRenewableEnergyFeeCalculationItemModel model)
-  {
-    return new SupplyRenewableEnergyFeeCalculationItemEntity
     {
       Amount_N = model.Amount_N,
       Price_EUR = model.Price_EUR,
