@@ -36,19 +36,19 @@
                 @T["Prvo očitanje"]:
                 @if (dataStruct.data.monthEndTotal is not null)
                   @(FloatString(dataStruct.data.monthEndTotal / 1000, 0)) kWh
-
+              
               </MudContainer>
               <MudContainer>
                 @T["Zadnje očitanje"]:
                 @if (dataStruct.data.monthStartTotal is not null)
                   @(FloatString(dataStruct.data.monthStartTotal / 1000, 0)) kWh
-
+              
               </MudContainer>
               <MudContainer Style="font-size: large; font-weight:bold;">
                 @T["Ukupna potrošnja"]:
                 @if (dataStruct.data.monthStartTotal is not null && dataStruct.data.monthEndTotal is not null)
                   @(FloatString((dataStruct.data.monthStartTotal - dataStruct.data.monthEndTotal) / 1000, 0)) kWh
-
+              
               </MudContainer>
               <MudContainer Style="font-weight:bold;">
                 @T["Maksimalna snaga"]:
@@ -98,7 +98,7 @@
           <CellTemplate>
             @if (context.Item.monthEndTotal is not null)
               @(FloatString(context.Item.monthEndTotal / 1000, 0) + " kWh")
-
+          
           </CellTemplate>
         </PropertyColumn>
         <PropertyColumn
@@ -108,7 +108,7 @@
           <CellTemplate>
             @if (context.Item.monthStartTotal is not null)
               @(FloatString(context.Item.monthStartTotal / 1000, 0) + " kWh")
-
+          
           </CellTemplate>
         </PropertyColumn>
         <PropertyColumn
@@ -118,7 +118,7 @@
           <CellTemplate>
             @if (context.Item.monthStartTotal is not null && context.Item.monthEndTotal is not null)
               @(FloatString((context.Item.monthStartTotal - context.Item.monthEndTotal) / 1000, 0) + " kWh")
-
+          
           </CellTemplate>
         </PropertyColumn>
         <PropertyColumn
@@ -151,8 +151,11 @@
   [Parameter] public string Source { get; set; } = "abb";
   private string? _searchString;
   private List<TabularData> _dataStruct = new();
+
   public record ChartData(float? L1, float? L2, float? L3, DateTimeOffset date);
+
   public record struct TabularData(string year, string month, float? monthStartTotal, float? monthEndTotal, float maxPower);
+
   private string _month = "-1";
   private string _year = "-1";
   private float thisMonthMaxPower = 0;
@@ -167,6 +170,7 @@
     public bool expand;
     public bool show;
   }
+
   List<ExpandThing> _shownOMMs = new();
 
   protected override async Task OnInitializedAsync()

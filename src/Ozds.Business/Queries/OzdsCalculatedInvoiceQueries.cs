@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Abstractions;
-using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Composite;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Data;
@@ -17,17 +16,18 @@ public class OzdsCalculatedInvoiceQueries : IOzdsQueries
   private readonly AgnosticModelEntityConverter _modelEntityConverter;
 
   public OzdsCalculatedInvoiceQueries(
-      OzdsDbContext context,
-      AgnosticModelEntityConverter modelEntityConverter
+    OzdsDbContext context,
+    AgnosticModelEntityConverter modelEntityConverter
   )
   {
     _context = context;
     _modelEntityConverter = modelEntityConverter;
   }
 
-  public async Task<CalculatedNetworkUserInvoiceModel?> ReadCalculatedNetworkUserInvoice(
-    string id
-  )
+  public async Task<CalculatedNetworkUserInvoiceModel?>
+    ReadCalculatedNetworkUserInvoice(
+      string id
+    )
   {
     var invoice = await _context.NetworkUserInvoices
       .Where(_context.PrimaryKeyEquals<NetworkUserInvoiceEntity>(id))

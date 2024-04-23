@@ -5,7 +5,6 @@ using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Data;
 using Ozds.Data.Entities.Base;
-using Ozds.Data.Extensions;
 
 namespace Ozds.Business.Queries.Agnotic;
 

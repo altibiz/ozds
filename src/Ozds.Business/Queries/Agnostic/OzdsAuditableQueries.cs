@@ -41,9 +41,10 @@ public class OzdsAuditableQueries : IOzdsQueries
     int pageCount = QueryConstants.DefaultPageCount
   ) where T : class, IAuditable
   {
-    var queryable = _context.GetDbSet(_modelEntityConverter.EntityType(typeof(T)))
-                      as IQueryable<AuditableEntity>
-                    ?? throw new InvalidOperationException();
+    var queryable =
+      _context.GetDbSet(_modelEntityConverter.EntityType(typeof(T)))
+        as IQueryable<AuditableEntity>
+      ?? throw new InvalidOperationException();
     var filtered = whereClauses.Aggregate(queryable,
       (current, clause) => current.WhereDynamic(clause));
     var count = await filtered.CountAsync();

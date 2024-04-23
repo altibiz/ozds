@@ -7,9 +7,14 @@ namespace Ozds.Client.Base;
 
 public abstract class OzdsComponentBase : ComponentBase
 {
+  public static OzdsComponentLocalizer T
+  {
+    get { return new OzdsComponentLocalizer(); }
+  }
+
   public static ApexChartOptions<T> NewApexChartOptions<T>() where T : class
   {
-    var options = new ApexChartOptions<T>()
+    var options = new ApexChartOptions<T>
     {
       Blazor = new ApexChartsBlazorOptions
       {
@@ -18,11 +23,6 @@ public abstract class OzdsComponentBase : ComponentBase
     };
 
     return options;
-  }
-
-  public static OzdsComponentLocalizer T
-  {
-    get { return new OzdsComponentLocalizer(); }
   }
 
   protected static string DecimalString(decimal? number, int places = 2)

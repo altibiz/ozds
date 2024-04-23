@@ -166,7 +166,7 @@
   private List<RedLowNetworkUserCatalogueModel> _redLowNetworkUserCatalogues;
   private List<RegulatoryCatalogueModel> _regulatoryNetworkUserCatalogues;
   private List<RepresentativeModel> _representatives;
-  private IEnumerable<RepresentativeModel> _selectedRepsList { get; set; } = new HashSet<RepresentativeModel>() { };
+  private IEnumerable<RepresentativeModel> _selectedRepsList { get; set; } = new HashSet<RepresentativeModel>();
 
   private bool _create;
 
@@ -208,10 +208,10 @@
       var result = await queries.LocationWithRepresentativesById(Id);
       if (result != null)
       {
-          var (location, representatives) = result;
-          _selectedRepsList = representatives;
-          _representatives = _representatives.Select(x => representatives.FirstOrDefault(y => x.Id == y.Id) is { } y ? y : x).ToList();
-          LoadingState = LoadingState.WithValue(location);
+        var (location, representatives) = result;
+        _selectedRepsList = representatives;
+        _representatives = _representatives.Select(x => representatives.FirstOrDefault(y => x.Id == y.Id) is { } y ? y : x).ToList();
+        LoadingState = LoadingState.WithValue(location);
       }
     }
 

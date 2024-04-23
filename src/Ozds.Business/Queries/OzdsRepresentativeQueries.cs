@@ -13,7 +13,6 @@ using Ozds.Business.Queries.Abstractions;
 using Ozds.Data;
 using Ozds.Data.Entities;
 using Ozds.Data.Entities.Enums;
-using Ozds.Data.Extensions;
 using YesSql;
 using ISession = YesSql.ISession;
 
@@ -152,7 +151,8 @@ public class OzdsRepresentativeQueries : IOzdsQueries
       .Select(user => new MaybeRepresentingUserModel(
         user,
         representatives
-          .Where(_context.PrimaryKeyEqualsCompiled<RepresentativeEntity>(user.Id))
+          .Where(
+            _context.PrimaryKeyEqualsCompiled<RepresentativeEntity>(user.Id))
           .FirstOrDefault() is { } representative
           ? representative.ToModel()
           : null

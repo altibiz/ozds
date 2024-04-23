@@ -10,35 +10,29 @@ namespace Ozds.Business.Models.Base;
 
 public abstract class NetworkUserCalculationModel : INetworkUserCalculation
 {
-  [Required] public required DateTimeOffset FromDate { get; set; } = default!;
-  [Required] public required DateTimeOffset ToDate { get; set; } = default!;
-
   [Required]
   public required UsageMeterFeeCalculationItemModel
-    UsageMeterFee
-  { get; set; } = default!;
+    UsageMeterFee { get; set; } = default!;
 
   [Required]
   public required SupplyActiveEnergyTotalImportT1CalculationItemModel
-    SupplyActiveEnergyTotalImportT1
-  { get; set; } = default!;
+    SupplyActiveEnergyTotalImportT1 { get; set; } = default!;
 
   [Required]
   public required SupplyActiveEnergyTotalImportT2CalculationItemModel
-    SupplyActiveEnergyTotalImportT2
-  { get; set; } = default!;
+    SupplyActiveEnergyTotalImportT2 { get; set; } = default!;
 
   [Required]
   public required SupplyBusinessUsageCalculationItemModel
-    SupplyBusinessUsageFee
-  { get; set; } = default!;
+    SupplyBusinessUsageFee { get; set; } = default!;
 
   [Required]
   public required SupplyRenewableEnergyCalculationItemModel
-    SupplyRenewableEnergyFee
-  { get; set; } = default!;
+    SupplyRenewableEnergyFee { get; set; } = default!;
 
   protected abstract IEnumerable<ICalculationItem> AdditionalUsageItems { get; }
+  [Required] public required DateTimeOffset FromDate { get; set; } = default!;
+  [Required] public required DateTimeOffset ToDate { get; set; } = default!;
 
   [Required]
   public required DateTimeOffset IssuedOn { get; set; } = DateTimeOffset.UtcNow;
@@ -66,8 +60,7 @@ public abstract class NetworkUserCalculationModel : INetworkUserCalculation
 
   [Required]
   public required NetworkUserMeasurementLocationModel
-    ArchivedMeasurementLocation
-  { get; set; } = default!;
+    ArchivedMeasurementLocation { get; set; } = default!;
 
   [Required]
   public required RegulatoryCatalogueModel ArchivedSupplyRegulatoryCatalogue
@@ -82,7 +75,10 @@ public abstract class NetworkUserCalculationModel : INetworkUserCalculation
 
   [Required] public required decimal Total_EUR { get; set; }
 
-  public abstract NetworkUserCatalogueModel ArchivedUsageNetworkUserCatalogue { get; }
+  public abstract NetworkUserCatalogueModel ArchivedUsageNetworkUserCatalogue
+  {
+    get;
+  }
 
   public abstract string Kind { get; }
 
@@ -181,12 +177,11 @@ public abstract class NetworkUserCalculationModel<TNetworkUserCatalogue>
   where TNetworkUserCatalogue : NetworkUserCatalogueModel
 {
   [Required]
-  public required TNetworkUserCatalogue ConcreteArchivedUsageNetworkUserCatalogue
-  {
-    get;
-    set;
-  } = default!;
+  public required TNetworkUserCatalogue
+    ConcreteArchivedUsageNetworkUserCatalogue { get; set; } = default!;
 
-  public override NetworkUserCatalogueModel ArchivedUsageNetworkUserCatalogue =>
-    ArchivedUsageNetworkUserCatalogue;
+  public override NetworkUserCatalogueModel ArchivedUsageNetworkUserCatalogue
+  {
+    get { return ArchivedUsageNetworkUserCatalogue; }
+  }
 }

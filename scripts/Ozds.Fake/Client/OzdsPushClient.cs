@@ -41,7 +41,8 @@ public class OzdsPushClient
     {
       try
       {
-        var response = await client.PostAsync($"iot/push/{messengerId}", content);
+        var response =
+          await client.PostAsync($"iot/push/{messengerId}", content);
         success = response.IsSuccessStatusCode;
         if (!success)
         {
@@ -50,6 +51,7 @@ public class OzdsPushClient
             response.StatusCode
           );
         }
+
         await Task.Delay(1000);
       }
       catch (Exception ex)

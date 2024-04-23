@@ -1,5 +1,4 @@
 using Ozds.Business.Models.Abstractions;
-using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Composite;
 
 namespace Ozds.Business.Finance.Abstractions;

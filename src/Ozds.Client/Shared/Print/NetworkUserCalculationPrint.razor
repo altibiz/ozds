@@ -1,9 +1,6 @@
 @inherits OzdsOwningComponentBase
 
-<Loading Load="@(async () => (Calculation ?? await ScopedServices
-    .GetRequiredService<OzdsNetworkUserCalculationQueries>()
-    .ReadSingle<INetworkUserCalculation>(
-      Id ?? throw new InvalidOperationException()))!)">
+<Loading Load="@(async () => (Calculation ?? await ScopedServices.GetRequiredService<OzdsNetworkUserCalculationQueries>().ReadSingle<INetworkUserCalculation>(Id ?? throw new InvalidOperationException()))!)">
   <Found>
     <div class="page">
       <div class="page-header">

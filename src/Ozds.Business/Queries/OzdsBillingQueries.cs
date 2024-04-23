@@ -1,14 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Conversion;
 using Ozds.Business.Models.Abstractions;
-using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Composite;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Data;
 using Ozds.Data.Entities;
 using Ozds.Data.Entities.Base;
 using Ozds.Data.Entities.Enums;
-using Ozds.Data.Extensions;
 
 // TODO: remove any direct references to aggregate model/entity types
 
@@ -21,18 +19,6 @@ public class OzdsBillingQueries : IOzdsQueries
   public OzdsBillingQueries(OzdsDbContext dbContext)
   {
     _dbContext = dbContext;
-  }
-
-  private readonly struct NetworkUserCalculationBasesByNetworkUserIntermediary
-  {
-    public LocationEntity Location { get; init; }
-    public NetworkUserEntity NetworkUser { get; init; }
-    public NetworkUserMeasurementLocationEntity MeasurementLocation { get; init; }
-    public NetworkUserCatalogueEntity UsageNetworkUserCatalogue { get; init; }
-    public RegulatoryCatalogueEntity SupplyRegulatoryCatalogue { get; init; }
-    public MeterEntity Meter { get; init; }
-    public AbbB2xAggregateEntity? AbbB2xAggregate { get; init; }
-    public SchneideriEM3xxxAggregateEntity? SchneideriEM3xxxAggregate { get; init; }
   }
 
   public async Task<List<NetworkUserCalculationBasisModel>>
@@ -52,17 +38,20 @@ public class OzdsBillingQueries : IOzdsQueries
             .Include(x => x.NetworkUser.Location)
             .Include(x => x.NetworkUser.Location.RegulatoryCatalogue),
           _dbContext.PrimaryKeyOf<NetworkUserEntity>(),
-          _dbContext.ForeignKeyOf<NetworkUserMeasurementLocationEntity>(nameof(NetworkUserMeasurementLocationEntity.NetworkUser)),
-          (networkUser, measurementLocation) => new NetworkUserCalculationBasesByNetworkUserIntermediary
-          {
-            Location = measurementLocation.NetworkUser.Location,
-            NetworkUser = measurementLocation.NetworkUser,
-            MeasurementLocation = measurementLocation,
-            UsageNetworkUserCatalogue =
-              measurementLocation.NetworkUserCatalogue,
-            SupplyRegulatoryCatalogue = measurementLocation.NetworkUser.Location
-              .RegulatoryCatalogue
-          }
+          _dbContext.ForeignKeyOf<NetworkUserMeasurementLocationEntity>(
+            nameof(NetworkUserMeasurementLocationEntity.NetworkUser)),
+          (networkUser, measurementLocation) =>
+            new NetworkUserCalculationBasesByNetworkUserIntermediary
+            {
+              Location = measurementLocation.NetworkUser.Location,
+              NetworkUser = measurementLocation.NetworkUser,
+              MeasurementLocation = measurementLocation,
+              UsageNetworkUserCatalogue =
+                measurementLocation.NetworkUserCatalogue,
+              SupplyRegulatoryCatalogue = measurementLocation.NetworkUser
+                .Location
+                .RegulatoryCatalogue
+            }
         )
         .Join(
           _dbContext.Meters,
@@ -73,15 +62,15 @@ public class OzdsBillingQueries : IOzdsQueries
           ),
           _dbContext.PrimaryKeyOf<MeterEntity>(),
           (x, meter) =>
-          new NetworkUserCalculationBasesByNetworkUserIntermediary
-          {
-            Location = x.Location,
-            NetworkUser = x.NetworkUser,
-            MeasurementLocation = x.MeasurementLocation,
-            UsageNetworkUserCatalogue = x.UsageNetworkUserCatalogue,
-            SupplyRegulatoryCatalogue = x.SupplyRegulatoryCatalogue,
-            Meter = meter
-          }
+            new NetworkUserCalculationBasesByNetworkUserIntermediary
+            {
+              Location = x.Location,
+              NetworkUser = x.NetworkUser,
+              MeasurementLocation = x.MeasurementLocation,
+              UsageNetworkUserCatalogue = x.UsageNetworkUserCatalogue,
+              SupplyRegulatoryCatalogue = x.SupplyRegulatoryCatalogue,
+              Meter = meter
+            }
         )
         .GroupJoin(
           _dbContext.AbbB2xAggregates
@@ -96,30 +85,30 @@ public class OzdsBillingQueries : IOzdsQueries
             nameof(AbbB2xAggregateEntity.Meter)
           ),
           (x, abbB2xAggregates) =>
-          new
-          {
-            x.Location,
-            x.NetworkUser,
-            x.MeasurementLocation,
-            x.Meter,
-            x.UsageNetworkUserCatalogue,
-            x.SupplyRegulatoryCatalogue,
-            abbB2xAggregates
-          }
+            new
+            {
+              x.Location,
+              x.NetworkUser,
+              x.MeasurementLocation,
+              x.Meter,
+              x.UsageNetworkUserCatalogue,
+              x.SupplyRegulatoryCatalogue,
+              abbB2xAggregates
+            }
         )
         .SelectMany(
           x => x.abbB2xAggregates.DefaultIfEmpty(),
           (x, abbAggregate) =>
-          new NetworkUserCalculationBasesByNetworkUserIntermediary
-          {
-            Location = x.Location,
-            NetworkUser = x.NetworkUser,
-            MeasurementLocation = x.MeasurementLocation,
-            Meter = x.Meter,
-            UsageNetworkUserCatalogue = x.UsageNetworkUserCatalogue,
-            SupplyRegulatoryCatalogue = x.SupplyRegulatoryCatalogue,
-            AbbB2xAggregate = abbAggregate
-          }
+            new NetworkUserCalculationBasesByNetworkUserIntermediary
+            {
+              Location = x.Location,
+              NetworkUser = x.NetworkUser,
+              MeasurementLocation = x.MeasurementLocation,
+              Meter = x.Meter,
+              UsageNetworkUserCatalogue = x.UsageNetworkUserCatalogue,
+              SupplyRegulatoryCatalogue = x.SupplyRegulatoryCatalogue,
+              AbbB2xAggregate = abbAggregate
+            }
         )
         .GroupJoin(
           _dbContext.SchneideriEM3xxxAggregates
@@ -134,52 +123,54 @@ public class OzdsBillingQueries : IOzdsQueries
             nameof(AbbB2xAggregateEntity.Meter)
           ),
           (x, schneideriEM3xxxAggregates) =>
-          new
-          {
-            x.Location,
-            x.NetworkUser,
-            x.MeasurementLocation,
-            x.Meter,
-            x.UsageNetworkUserCatalogue,
-            x.SupplyRegulatoryCatalogue,
-            x.AbbB2xAggregate,
-            schneideriEM3xxxAggregates
-          }
+            new
+            {
+              x.Location,
+              x.NetworkUser,
+              x.MeasurementLocation,
+              x.Meter,
+              x.UsageNetworkUserCatalogue,
+              x.SupplyRegulatoryCatalogue,
+              x.AbbB2xAggregate,
+              schneideriEM3xxxAggregates
+            }
         )
         .SelectMany(
           x => x.schneideriEM3xxxAggregates.DefaultIfEmpty(),
           (x, schneiderAggregate) =>
-          new NetworkUserCalculationBasesByNetworkUserIntermediary
-          {
-            Location = x.Location,
-            NetworkUser = x.NetworkUser,
-            MeasurementLocation = x.MeasurementLocation,
-            Meter = x.Meter,
-            UsageNetworkUserCatalogue = x.UsageNetworkUserCatalogue,
-            SupplyRegulatoryCatalogue = x.SupplyRegulatoryCatalogue,
-            AbbB2xAggregate = x.AbbB2xAggregate,
-            SchneideriEM3xxxAggregate = schneiderAggregate
-          }
+            new NetworkUserCalculationBasesByNetworkUserIntermediary
+            {
+              Location = x.Location,
+              NetworkUser = x.NetworkUser,
+              MeasurementLocation = x.MeasurementLocation,
+              Meter = x.Meter,
+              UsageNetworkUserCatalogue = x.UsageNetworkUserCatalogue,
+              SupplyRegulatoryCatalogue = x.SupplyRegulatoryCatalogue,
+              AbbB2xAggregate = x.AbbB2xAggregate,
+              SchneideriEM3xxxAggregate = schneiderAggregate
+            }
         )
         .ToListAsync())
       .GroupBy(x => x.MeasurementLocation.Id)
       .Select(x => new NetworkUserCalculationBasisModel(
-        fromDate,
-        toDate,
-        Location: x.First().Location.ToModel(),
-        NetworkUser: x.First().NetworkUser.ToModel(),
-        MeasurementLocation: x.First().MeasurementLocation.ToModel(),
-        Meter: x.First().Meter.ToModel(),
-        UsageNetworkUserCatalogue: x.First().UsageNetworkUserCatalogue.ToModel(),
-        SupplyRegulatoryCatalogue: x.First().SupplyRegulatoryCatalogue.ToModel(),
-        Aggregates: Enumerable.Empty<IAggregate>()
-          .Concat(x
-            .Where(x => x.AbbB2xAggregate is not null)
-            .Select(x => x.AbbB2xAggregate!.ToModel()))
-          .Concat(x
-            .Where(x => x.SchneideriEM3xxxAggregate is not null)
-            .Select(x => x.SchneideriEM3xxxAggregate!.ToModel()))
-          .ToList()
+          fromDate,
+          toDate,
+          Location: x.First().Location.ToModel(),
+          NetworkUser: x.First().NetworkUser.ToModel(),
+          MeasurementLocation: x.First().MeasurementLocation.ToModel(),
+          Meter: x.First().Meter.ToModel(),
+          UsageNetworkUserCatalogue: x.First().UsageNetworkUserCatalogue
+            .ToModel(),
+          SupplyRegulatoryCatalogue: x.First().SupplyRegulatoryCatalogue
+            .ToModel(),
+          Aggregates: Enumerable.Empty<IAggregate>()
+            .Concat(x
+              .Where(x => x.AbbB2xAggregate is not null)
+              .Select(x => x.AbbB2xAggregate!.ToModel()))
+            .Concat(x
+              .Where(x => x.SchneideriEM3xxxAggregate is not null)
+              .Select(x => x.SchneideriEM3xxxAggregate!.ToModel()))
+            .ToList()
         )
       )
       .ToList();
@@ -193,7 +184,8 @@ public class OzdsBillingQueries : IOzdsQueries
     )
   {
     var networkUser = await _dbContext.NetworkUsers
-                        .Where(_dbContext.PrimaryKeyEquals<NetworkUserEntity>(networkUserId))
+                        .Where(_dbContext.PrimaryKeyEquals<NetworkUserEntity>(
+                          networkUserId))
                         .Include(x => x.Location)
                         .Include(x => x.Location.RegulatoryCatalogue)
                         .FirstOrDefaultAsync() ??
@@ -232,5 +224,28 @@ public class OzdsBillingQueries : IOzdsQueries
   )
   {
     throw new NotImplementedException();
+  }
+
+  private readonly struct NetworkUserCalculationBasesByNetworkUserIntermediary
+  {
+    public LocationEntity Location { get; init; }
+    public NetworkUserEntity NetworkUser { get; init; }
+
+    public NetworkUserMeasurementLocationEntity MeasurementLocation
+    {
+      get;
+      init;
+    }
+
+    public NetworkUserCatalogueEntity UsageNetworkUserCatalogue { get; init; }
+    public RegulatoryCatalogueEntity SupplyRegulatoryCatalogue { get; init; }
+    public MeterEntity Meter { get; init; }
+    public AbbB2xAggregateEntity? AbbB2xAggregate { get; init; }
+
+    public SchneideriEM3xxxAggregateEntity? SchneideriEM3xxxAggregate
+    {
+      get;
+      init;
+    }
   }
 }

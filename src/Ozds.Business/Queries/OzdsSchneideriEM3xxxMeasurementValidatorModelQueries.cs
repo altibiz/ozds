@@ -4,7 +4,6 @@ using Ozds.Business.Models;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Data;
 using Ozds.Data.Entities;
-using Ozds.Data.Extensions;
 
 namespace Ozds.Business.Queries;
 
@@ -24,7 +23,8 @@ public class OzdsSchneideriEM3xxxMeasurementValidatorModelQueries : IOzdsQueries
     var validatorModel =
       await context.MeasurementValidators
         .OfType<SchneideriEM3xxxMeasurementValidatorEntity>()
-        .Where(context.PrimaryKeyEquals<SchneideriEM3xxxMeasurementValidatorEntity>(id))
+        .Where(context
+          .PrimaryKeyEquals<SchneideriEM3xxxMeasurementValidatorEntity>(id))
         .FirstOrDefaultAsync();
     if (validatorModel is not null)
     {

@@ -17,8 +17,8 @@ public abstract class
   where TMeasurement : IMeasurementRecord
 {
   private readonly AgnosticMeasurementRecordPushRequestConverter _converter;
-  private readonly ResourceCache _resources;
   private readonly AgnosticCumulativeCorrector _corrector;
+  private readonly ResourceCache _resources;
 
   public RepeatingCsvResourceMeasurementGenerator(
     IServiceProvider serviceProvider)
@@ -26,7 +26,8 @@ public abstract class
     _resources = serviceProvider.GetRequiredService<ResourceCache>();
     _converter = serviceProvider
       .GetRequiredService<AgnosticMeasurementRecordPushRequestConverter>();
-    _corrector = serviceProvider.GetRequiredService<AgnosticCumulativeCorrector>();
+    _corrector =
+      serviceProvider.GetRequiredService<AgnosticCumulativeCorrector>();
   }
 
   protected abstract string CsvResourceName { get; }
@@ -46,7 +47,8 @@ public abstract class
   {
     var records = await _resources
       .GetAsync<CsvLoader<TMeasurement>, List<TMeasurement>>(CsvResourceName);
-    var pushRequestMeasurements = ExpandRecords(records, dateFrom, dateTo).ToList();
+    var pushRequestMeasurements =
+      ExpandRecords(records, dateFrom, dateTo).ToList();
     return pushRequestMeasurements;
   }
 
@@ -80,9 +82,9 @@ public abstract class
     while (timeSpan > TimeSpan.Zero)
     {
       foreach (var record in ordered
-        .Where(record =>
-          record.Timestamp >= dateFromCsv
-          && record.Timestamp < dateToCsv))
+                 .Where(record =>
+                   record.Timestamp >= dateFromCsv
+                   && record.Timestamp < dateToCsv))
       {
         var timestamp = currentDateFrom.AddTicks(
           (record.Timestamp - dateFromCsv).Ticks

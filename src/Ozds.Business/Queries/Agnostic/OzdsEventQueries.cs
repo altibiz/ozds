@@ -32,9 +32,9 @@ public class OzdsEventQueries : IOzdsQueries
   ) where T : class, IEvent
   {
     var queryable = _context.GetDbSet(typeof(T))
-      as IQueryable<EventEntity>
-      ?? throw new InvalidOperationException(
-        $"No DbSet found for {typeof(T)}");
+                      as IQueryable<EventEntity>
+                    ?? throw new InvalidOperationException(
+                      $"No DbSet found for {typeof(T)}");
     var filtered = whereClauses.Aggregate(queryable,
       (current, clause) => current.WhereDynamic(clause));
     var timeFiltered = filtered

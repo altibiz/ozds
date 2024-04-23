@@ -113,7 +113,8 @@
   {
     now = DateTimeOffset.UtcNow.LocalDateTime;
     var measureLastQuorterHour = await measureQueries.ReadAgnostic(new[] { $"x => x.MeterId == \"{Source}\"" }, now.AddMinutes(-1), now, 1, 1000);
-    if(measureLastQuorterHour.Count() > 0){
+    if (measureLastQuorterHour.Count() > 0)
+    {
       var a = measureLastQuorterHour.OrderBy(x => x.Timestamp).LastOrDefault();
       var b = a.ActivePower_W.TariffUnary.DuplexNet.PhaseSum;
       thisMonthCurrentPower = b;

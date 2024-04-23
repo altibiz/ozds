@@ -34,9 +34,9 @@ public class OzdsAggregateQueries : IOzdsQueries
   {
     var dbSetType = _modelEntityConverter.EntityType(typeof(T));
     var queryable = _context.GetDbSet(dbSetType)
-      as IQueryable<AggregateEntity>
-      ?? throw new InvalidOperationException(
-        $"No DbSet found for {dbSetType}");
+                      as IQueryable<AggregateEntity>
+                    ?? throw new InvalidOperationException(
+                      $"No DbSet found for {dbSetType}");
     var filtered = whereClauses.Aggregate(queryable,
       (current, clause) => current.WhereDynamic(clause));
     var timeFiltered = filtered

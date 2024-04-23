@@ -136,24 +136,26 @@
     {
       locations = await queries.ViewModelByNetworkUser("1", startOfLastMonth, now);
       var groupedLocations = locations.GroupBy(x => x.Location.Id).ToList();
-      foreach(var netUser in groupedLocations){
+      foreach (var netUser in groupedLocations)
+      {
         // !!! Remove .Month and .LocalDateTime in live
         var _thisMonthAggregate = netUser.Select(x => x.Aggregates.Where(x => x.Timestamp == startOfThisMonth).FirstOrDefault()).Where(x => x is not null).ToList();
         var _lastMonthAggregate = netUser.Select(x => x.Aggregates.Where(x => x.Timestamp == startOfLastMonth).FirstOrDefault()).Where(x => x is not null).ToList();
         float _thisMonthUsage = 0;
         float _lastMonthUsage = 0;
-        if(_thisMonthAggregate is not null && _thisMonthAggregate.Count > 0)
+        if (_thisMonthAggregate is not null && _thisMonthAggregate.Count > 0)
           _thisMonthUsage = _thisMonthAggregate
             .Select(x => x.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum)
             .DefaultIfEmpty(0)
             .Sum();
-        if(_lastMonthAggregate is not null && _lastMonthAggregate.Count > 0)
+        if (_lastMonthAggregate is not null && _lastMonthAggregate.Count > 0)
           _lastMonthUsage = _lastMonthAggregate
             .Select(x => x.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum)
             .DefaultIfEmpty(0)
             .Sum();
         _dataStruct.Add(
-          new TabularData {
+          new TabularData
+          {
             location = netUser.FirstOrDefault().Location,
             thisMonthUsage = _thisMonthUsage,
             lastMonthUsage = _lastMonthUsage,

@@ -2,7 +2,6 @@ using Ozds.Business.Finance.Agnostic;
 using Ozds.Business.Finance.Base;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Abstractions;
-using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Complex;
 using Ozds.Business.Models.Composite;
 

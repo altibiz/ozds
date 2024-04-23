@@ -15,7 +15,10 @@ public class MeterModel : AuditableModel, IMeter
 
   [Required] public required string MeasurementValidatorId { get; set; }
 
-  public virtual ICapabilities Capabilities { get => new NullCapabilities(); }
+  public virtual ICapabilities Capabilities
+  {
+    get { return new NullCapabilities(); }
+  }
 
   public override IEnumerable<ValidationResult> Validate(
     ValidationContext validationContext)

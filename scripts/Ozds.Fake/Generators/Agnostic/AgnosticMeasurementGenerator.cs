@@ -18,13 +18,15 @@ public class AgnosticMeasurementGenerator
     string meterId
   )
   {
-    var logger = _serviceProvider.GetRequiredService<ILogger<AgnosticMeasurementGenerator>>();
+    var logger = _serviceProvider
+      .GetRequiredService<ILogger<AgnosticMeasurementGenerator>>();
     var generators = _serviceProvider.GetServices<IMeasurementGenerator>();
     var generator =
       generators.FirstOrDefault(g => g.CanGenerateMeasurementsFor(meterId));
-    var measurements = await (generator?.GenerateMeasurements(dateFrom, dateTo, meterId)
-           ?? throw new InvalidOperationException(
-             $"No generator found for meter {meterId}"));
+    var measurements =
+      await (generator?.GenerateMeasurements(dateFrom, dateTo, meterId)
+             ?? throw new InvalidOperationException(
+               $"No generator found for meter {meterId}"));
     logger.LogInformation(
       "Generated {count} measurements for meter {meterId} from {dateFrom} to {dateTo}",
       measurements.Count,

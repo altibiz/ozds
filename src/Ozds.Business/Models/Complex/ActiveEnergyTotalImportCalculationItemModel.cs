@@ -222,7 +222,8 @@ public class SupplyActiveEnergyTotalImportT2CalculationItemModel
 }
 
 public class
-  SupplyBusinessUsageCalculationItemModel : ActiveEnergyTotalImportT0CalculationItemModel
+  SupplyBusinessUsageCalculationItemModel :
+  ActiveEnergyTotalImportT0CalculationItemModel
 {
   public override string Kind
   {
@@ -246,7 +247,8 @@ public class
 }
 
 public class
-  SupplyRenewableEnergyCalculationItemModel : ActiveEnergyTotalImportT0CalculationItemModel
+  SupplyRenewableEnergyCalculationItemModel :
+  ActiveEnergyTotalImportT0CalculationItemModel
 {
   public override string Kind
   {

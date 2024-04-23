@@ -1,5 +1,3 @@
-@using Color = MudBlazor.Color
-@using Size = MudBlazor.Size
 @using Ozds.Business.Time
 @inject NavigationManager NavigationManager;
 
@@ -42,12 +40,14 @@
           </MudText>
         </MudItem>
         <MudContainer Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
-            @if(_lastMonthsPayment == 0){
-              <MudText Typo="Typo.h6">@T["Račun u izradi..."]</MudText>
-            }
-            else{
-              <MudText Typo="Typo.h4">@FloatString(_lastMonthsPayment) + " EUR"</MudText>
-            }
+          @if (_lastMonthsPayment == 0)
+          {
+            <MudText Typo="Typo.h6">@T["Račun u izradi..."]</MudText>
+          }
+          else
+          {
+            <MudText Typo="Typo.h4">@FloatString(_lastMonthsPayment) + " EUR"</MudText>
+          }
         </MudContainer>
       </MudPaper>
     </MudItem>
@@ -97,15 +97,17 @@
           </MudText>
         </MudItem>
         <MudContainer Class="d-flex align-end justify-center pb-10" MaxWidth="MaxWidth.Small">
-            @if(_lastMonthsPayment == 0){
-              <MudText Typo="Typo.h4">@T["Račun u izradi..."]</MudText>
-            }
-            else{
-              <MudText Typo="Typo.h1">
-                @(FloatString(_lastMonthsPayment))
-              </MudText>
-              <MudText Typo="Typo.h4" Class="mb-3 ml-1">EUR</MudText>
-            }
+          @if (_lastMonthsPayment == 0)
+          {
+            <MudText Typo="Typo.h4">@T["Račun u izradi..."]</MudText>
+          }
+          else
+          {
+            <MudText Typo="Typo.h1">
+              @(FloatString(_lastMonthsPayment))
+            </MudText>
+            <MudText Typo="Typo.h4" Class="mb-3 ml-1">EUR</MudText>
+          }
         </MudContainer>
       </MudPaper>
     </MudItem>
@@ -145,17 +147,20 @@
     {
       return;
     }
+
     @* if (representative.Representative.Role is RoleModel.NetworkUserRepresentative) *@
     if (true)
     {
       locations = await queries.ViewModelByNetworkUser("1", startOfLastMonth, now);
       var groupedLocations = locations.GroupBy(x => x.Location.Id).ToList();
-      foreach(var netUser in groupedLocations){
+      foreach (var netUser in groupedLocations)
+      {
         // !!! Remove .Month and .LocalDateTime in live
         var _thisMonthAggregate = netUser.Select(x => x.Aggregates.Where(x => x.Timestamp == startOfThisMonth).FirstOrDefault()).Where(x => x is not null).ToList();
         var _lastMonthAggregate = netUser.Select(x => x.Aggregates.Where(x => x.Timestamp == startOfLastMonth).FirstOrDefault()).Where(x => x is not null).ToList();
 
-        if(_thisMonthAggregate is not null && _thisMonthAggregate.Count > 0){
+        if (_thisMonthAggregate is not null && _thisMonthAggregate.Count > 0)
+        {
           _lastMonthsPayment += _thisMonthAggregate
             .Select(x => x.ActivePower_W.TariffUnary.DuplexNet.PhaseSum)
             .DefaultIfEmpty(0)
@@ -165,7 +170,8 @@
             .DefaultIfEmpty(0)
             .Sum();
         }
-        if(_lastMonthAggregate is not null && _lastMonthAggregate.Count > 0)
+
+        if (_lastMonthAggregate is not null && _lastMonthAggregate.Count > 0)
           _lastMonthUsage += _lastMonthAggregate
             .Select(x => x.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum)
             .DefaultIfEmpty(0)

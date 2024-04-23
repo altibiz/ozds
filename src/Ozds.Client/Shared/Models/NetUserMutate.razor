@@ -117,7 +117,7 @@
   [Parameter] public NetworkUserModel? Model { get; set; }
   private List<LocationModel> _locations;
   private List<RepresentativeModel> _representatives;
-  private IEnumerable<RepresentativeModel> _selectedRepsList { get; set; } = new HashSet<RepresentativeModel>() { };
+  private IEnumerable<RepresentativeModel> _selectedRepsList { get; set; } = new HashSet<RepresentativeModel>();
   private LoadingState<NetworkUserModel> LoadingState { get; set; } = new();
 
   private bool _create;
@@ -158,10 +158,10 @@
       var result = await queries.NetworkUserWithRepresentativesById(Id);
       if (result != null)
       {
-          var (networkUser, representatives) = result;
-          _selectedRepsList = representatives;
-          _representatives = _representatives.Select(x => representatives.FirstOrDefault(y => x.Id == y.Id) is { } y ? y : x).ToList();
-          LoadingState = LoadingState.WithValue(networkUser);
+        var (networkUser, representatives) = result;
+        _selectedRepsList = representatives;
+        _representatives = _representatives.Select(x => representatives.FirstOrDefault(y => x.Id == y.Id) is { } y ? y : x).ToList();
+        LoadingState = LoadingState.WithValue(networkUser);
       }
     }
 

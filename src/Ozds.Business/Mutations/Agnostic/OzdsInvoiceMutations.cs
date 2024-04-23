@@ -4,7 +4,6 @@ using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Mutations.Abstractions;
 using Ozds.Data;
 using Ozds.Data.Entities.Abstractions;
-using Ozds.Data.Entities.Base;
 
 namespace Ozds.Business.Mutations.Agnostic;
 
@@ -64,9 +63,9 @@ public class OzdsInvoiceMutations : IOzdsMutations
     }
 
     var entity = _modelEntityConverter.ToEntity(invoice)
-      as IIdentifiableEntity
-      ?? throw new InvalidOperationException(
-        $"Failed to convert {nameof(invoice)} to entity.");
+                   as IIdentifiableEntity
+                 ?? throw new InvalidOperationException(
+                   $"Failed to convert {nameof(invoice)} to entity.");
     _context.Add(entity);
     await _context.SaveChangesAsync();
     return entity.Id;

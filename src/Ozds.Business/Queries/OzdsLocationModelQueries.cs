@@ -6,7 +6,6 @@ using Ozds.Business.Queries.Abstractions;
 using Ozds.Data;
 using Ozds.Data.Entities;
 using Ozds.Data.Entities.Enums;
-using Ozds.Data.Extensions;
 
 namespace Ozds.Business.Queries;
 
@@ -172,6 +171,7 @@ public class OzdsLocationModelQueries : IOzdsQueries
       .Select(item => item.ToModel())
       .ToPaginatedList(count);
   }
+
   public async Task<LocationWithRepresentativesModel?>
     LocationWithRepresentativesById(string id)
   {

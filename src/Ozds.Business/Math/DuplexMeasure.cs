@@ -11,8 +11,6 @@ public record class CompositeDuplexMeasure<T>
   IMultiplyOperators<T, T, T>,
   IDivisionOperators<T, T, T>
 {
-  public List<DuplexMeasure<T>> Measures { get; set; }
-
   public CompositeDuplexMeasure(List<DuplexMeasure<T>> measures)
   {
     Measures = measures.SelectMany(measure => measure switch
@@ -22,16 +20,18 @@ public record class CompositeDuplexMeasure<T>
     }).ToList();
   }
 
+  public List<DuplexMeasure<T>> Measures { get; set; }
+
   public U FromMostAccurate<U>(Func<DuplexMeasure<T>, U> selector, U @default)
   {
     return Measures.FirstOrDefault(measure =>
       measure is ImportExportDuplexMeasure<T>) is { } importExport
       ? selector(importExport)
       : Measures.FirstOrDefault(measure => measure is NetDuplexMeasure<T>) is
-      { } net
+        { } net
         ? selector(net)
         : Measures.FirstOrDefault(measure => measure is AnyDuplexMeasure<T>) is
-        { } any
+          { } any
           ? selector(any)
           : @default;
   }

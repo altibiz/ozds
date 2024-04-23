@@ -20,9 +20,10 @@ public class AgnosticCumulativeCorrector
   )
   {
     var corrector = _serviceProvider.GetServices<ICumulativeCorrector>()
-      .FirstOrDefault(c => c.CanCorrectCumulativesFor(measurementRecord.GetType()))
-      ?? throw new InvalidOperationException(
-        $"No corrector found for {measurementRecord.GetType().Name}");
+                      .FirstOrDefault(c =>
+                        c.CanCorrectCumulativesFor(measurementRecord.GetType()))
+                    ?? throw new InvalidOperationException(
+                      $"No corrector found for {measurementRecord.GetType().Name}");
 
     return corrector.CorrectCumulatives(
       timestamp,

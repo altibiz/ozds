@@ -4,7 +4,6 @@ using Ozds.Business.Models;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Data;
 using Ozds.Data.Entities;
-using Ozds.Data.Extensions;
 
 namespace Ozds.Business.Queries;
 
@@ -23,7 +22,8 @@ public class OzdsWhiteMediumNetworkUserCatalogueModelQueries : IOzdsQueries
     var catalogueModel =
       await context.NetworkUserCatalogues
         .OfType<WhiteMediumNetworkUserCatalogueEntity>()
-        .Where(context.PrimaryKeyEquals<WhiteMediumNetworkUserCatalogueEntity>(id))
+        .Where(
+          context.PrimaryKeyEquals<WhiteMediumNetworkUserCatalogueEntity>(id))
         .FirstOrDefaultAsync();
     if (catalogueModel is not null)
     {

@@ -11,8 +11,6 @@ public record class CompositePhasicMeasure<T>
   IMultiplyOperators<T, T, T>,
   IDivisionOperators<T, T, T>
 {
-  public List<PhasicMeasure<T>> Measures { get; set; }
-
   public CompositePhasicMeasure(List<PhasicMeasure<T>> measures)
   {
     Measures = measures.SelectMany(measure => measure switch
@@ -22,11 +20,13 @@ public record class CompositePhasicMeasure<T>
     }).ToList();
   }
 
+  public List<PhasicMeasure<T>> Measures { get; set; }
+
   public U FromMostAccurate<U>(Func<PhasicMeasure<T>, U> selector, U @default)
   {
     return Measures.FirstOrDefault(measure =>
         measure is TriPhasicMeasure<T> or SinglePhasicMeasure<T>) is
-    { } singleOrTri
+      { } singleOrTri
       ? selector(singleOrTri)
       : @default;
   }
@@ -189,7 +189,8 @@ public abstract record class PhasicMeasure<T>
       return this switch
       {
         CompositePhasicMeasure<T> composite => composite.FromMostAccurate(
-          measure => measure.PhaseSplit, new TriPhasicMeasure<T>(default, default,
+          measure => measure.PhaseSplit, new TriPhasicMeasure<T>(default,
+            default,
             default)),
         SinglePhasicMeasure<T> single => new TriPhasicMeasure<T>(single.Value,
           single.Value, single.Value),

@@ -154,6 +154,7 @@
   private ApexChartOptions<ChartData> graphOptionsMob = NewApexChartOptions<ChartData>();
   OzdsAggregateQueries aggregateQueries;
   OzdsMeasurementQueries measureQueries;
+
   private List<string> _displayType = new()
   {
     "Napon", "Struja", "Radna snaga", "Jalova snaga", "Prividna snaga"
@@ -197,7 +198,7 @@
 
   private async Task DataMenuItemClicked(string type)
   {
-    switch(type)
+    switch (type)
     {
       case "Struja":
         _dataTitle = "Struja";
@@ -216,8 +217,6 @@
         break;
       case "Prividna snaga":
         _dataTitle = "Prividna snaga";
-        break;
-      default:
         break;
     }
 
@@ -259,14 +258,15 @@
       case "Struja":
         _graphValues = measures.Select(x =>
           new ChartData(
-            values: new float[]{
+            new[]
+            {
               x.Current_A.TariffUnary.DuplexAny.PhaseSplit.ValueL1,
               x.Current_A.TariffUnary.DuplexAny.PhaseSplit.ValueL2,
               x.Current_A.TariffUnary.DuplexAny.PhaseSplit.ValueL3
             },
-            names: new string[]{"L1 Struja", "L2 Struja","L3 Struja"},
-            date: x.Timestamp,
-            source: x.MeterId
+            new[] { "L1 Struja", "L2 Struja", "L3 Struja" },
+            x.Timestamp,
+            x.MeterId
           )).ToList();
         lineCount = 3;
         break;
@@ -274,55 +274,59 @@
       case "Radna snaga":
         _graphValues = measures.Select(x =>
           new ChartData(
-            values: new float[]{
+            new[]
+            {
               x.ActivePower_W.TariffUnary.DuplexNet.PhaseSplit.ValueL1,
               x.ActivePower_W.TariffUnary.DuplexNet.PhaseSplit.ValueL2,
               x.ActivePower_W.TariffUnary.DuplexNet.PhaseSplit.ValueL3,
               x.ActivePower_W.TariffUnary.DuplexNet.PhaseSum
             },
-            names: new string[]{"L1 Radna snaga", "L2 Radna snaga","L3 Radna snaga","Ukupna snaga"},
-            date: x.Timestamp,
-            source: x.MeterId
+            new[] { "L1 Radna snaga", "L2 Radna snaga", "L3 Radna snaga", "Ukupna snaga" },
+            x.Timestamp,
+            x.MeterId
           )).ToList();
         lineCount = 4;
         break;
       case "Napon":
         _graphValues = measures.Select(x =>
           new ChartData(
-            values: new float[]{
+            new[]
+            {
               x.Voltage_V.TariffUnary.DuplexAny.PhaseSplit.ValueL1,
               x.Voltage_V.TariffUnary.DuplexAny.PhaseSplit.ValueL2,
               x.Voltage_V.TariffUnary.DuplexAny.PhaseSplit.ValueL3
             },
-            names: new string[]{"L1 Napon", "L2 Napon","L3 Napon"},
-            date: x.Timestamp,
-            source: x.MeterId
+            new[] { "L1 Napon", "L2 Napon", "L3 Napon" },
+            x.Timestamp,
+            x.MeterId
           )).ToList();
         lineCount = 3;
         break;
       case "Jalova Snaga":
         _graphValues = measures.Select(x =>
           new ChartData(
-            values: new float[]{
+            new[]
+            {
               x.ReactivePower_VAR.TariffUnary.DuplexNet.PhaseSplit.ValueL1,
               x.ReactivePower_VAR.TariffUnary.DuplexNet.PhaseSplit.ValueL2,
               x.ReactivePower_VAR.TariffUnary.DuplexNet.PhaseSplit.ValueL3
             },
-            names: new string[]{"L1 Jalova snaga", "L2 Jalova snaga","L3 Jalova snaga"},
-            date: x.Timestamp,
-            source: x.MeterId
+            new[] { "L1 Jalova snaga", "L2 Jalova snaga", "L3 Jalova snaga" },
+            x.Timestamp,
+            x.MeterId
           )).ToList();
         lineCount = 3;
         break;
       case "Prividna snaga":
         _graphValues = measures.Select(x =>
           new ChartData(
-            values: new float[]{
-              x.ApparentPower_VA.TariffUnary.DuplexNet.PhaseSum,
+            new[]
+            {
+              x.ApparentPower_VA.TariffUnary.DuplexNet.PhaseSum
             },
-            names: new string[]{"Prividna snaga"},
-            date: x.Timestamp,
-            source: x.MeterId
+            new[] { "Prividna snaga" },
+            x.Timestamp,
+            x.MeterId
           )).ToList();
         lineCount = 1;
         break;

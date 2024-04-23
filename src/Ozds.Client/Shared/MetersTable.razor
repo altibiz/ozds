@@ -1,5 +1,4 @@
 @using Color = MudBlazor.Color
-@using Ozds.Business.Models.Composite
 @using Size = MudBlazor.Size
 @using Ozds.Business.Time
 @inject NavigationManager NavigationManager
@@ -154,17 +153,21 @@
   private DateTimeOffset startOfLastMonth = DateTimeOffset.UtcNow.GetStartOfLastMonth();
   private DateTimeOffset now = DateTime.UtcNow;
   private List<TabularData> _dataStruct = new();
+
   public record struct TabularData(LocationModel location, NetworkUserModel networkUser, IMeter meter, float thisMonthUsage = 0, float lastMonthUsage = 0, float? lastMonthsPayment = null);
 
   @* MOBILE *@
   public string TextValue { get; set; } = "";
+
   private class ExpandThing
   {
     public TabularData data;
     public bool expand;
     public bool show;
   }
+
   List<ExpandThing> _shownOMMs = new();
+
   protected override async Task OnInitializedAsync()
   {
     var queries = ScopedServices.GetRequiredService<OzdsMeterTableQueries>();
@@ -174,22 +177,25 @@
     {
       return;
     }
+
     @* if (representative.Representative.Role is RoleModel.NetworkUserRepresentative) *@
     if (true)
     {
       meters = await queries.ViewModelByNetworkUser("1", startOfLastMonth, now);
-      foreach(var omm in meters){
+      foreach (var omm in meters)
+      {
         // !!! Remove .Month and .LocalDateTime in live
         var _thisMonthAggregate = omm.Aggregates.Where(x => x.Timestamp == startOfThisMonth).FirstOrDefault();
         var _lastMonthAggregate = omm.Aggregates.Where(x => x.Timestamp == startOfLastMonth).FirstOrDefault();
         float _thisMonthUsage = 0;
         float _lastMonthUsage = 0;
-        if(_thisMonthAggregate is not null)
+        if (_thisMonthAggregate is not null)
           _thisMonthUsage = _thisMonthAggregate.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum;
-        if(_lastMonthAggregate is not null)
+        if (_lastMonthAggregate is not null)
           _lastMonthUsage = _lastMonthAggregate.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum;
         _dataStruct.Add(
-          new TabularData {
+          new TabularData
+          {
             location = omm.Location,
             networkUser = omm.NetworkUser,
             meter = omm.Meter,
@@ -223,6 +229,7 @@
       };
     }
   }
+
   private void InspectNetworkUser(string item)
   {
     NavigationManager.NavigateTo($"network-user/{item}");
@@ -269,4 +276,5 @@
     StateHasChanged();
     return Task.CompletedTask;
   }
+
 }

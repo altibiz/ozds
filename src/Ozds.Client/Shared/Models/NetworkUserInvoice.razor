@@ -1,9 +1,6 @@
 @inherits OzdsOwningComponentBase
 
-<Loading Load="@(async () => (Invoice ?? await ScopedServices
-    .GetRequiredService<OzdsInvoiceQueries>()
-    .ReadSingle<NetworkUserInvoiceModel>(
-      Id ?? throw new InvalidOperationException()))!)">
+<Loading Load="@(async () => (Invoice ?? await ScopedServices.GetRequiredService<OzdsInvoiceQueries>().ReadSingle<NetworkUserInvoiceModel>(Id ?? throw new InvalidOperationException()))!)">
   <Found>
     <MudText Typo="Typo.h5">
       RAČUN ZA @(context.FromDate.Month). MJESEC
@@ -17,9 +14,9 @@
           </MudText>
         </MudItem>
         <MudItem xs="12" sm="12">
-            <MudText Typo="Typo.body1" Align="MudAlign.Left">
-              @(context.ArchivedLocation.Title)
-            </MudText>
+          <MudText Typo="Typo.body1" Align="MudAlign.Left">
+            @(context.ArchivedLocation.Title)
+          </MudText>
         </MudItem>
         <MudItem xs="12" sm="12">
           <MudText Typo="Typo.body1">
@@ -27,9 +24,9 @@
           </MudText>
         </MudItem>
         <MudItem xs="12" sm="12">
-            <MudText Typo="Typo.body1" Align="MudAlign.Left">
-              @(context.ArchivedNetworkUser.Title)
-            </MudText>
+          <MudText Typo="Typo.body1" Align="MudAlign.Left">
+            @(context.ArchivedNetworkUser.Title)
+          </MudText>
         </MudItem>
         <MudItem xs="12" sm="12">
           <MudText Typo="Typo.body1">
@@ -37,9 +34,9 @@
           </MudText>
         </MudItem>
         <MudItem xs="12" sm="12">
-            <MudText Typo="Typo.body1" Align="MudAlign.Left">
-              @DateTimeString(context.FromDate)
-            </MudText>
+          <MudText Typo="Typo.body1" Align="MudAlign.Left">
+            @DateTimeString(context.FromDate)
+          </MudText>
         </MudItem>
         <MudItem xs="12" sm="12">
           <MudText Typo="Typo.body1">
@@ -47,9 +44,9 @@
           </MudText>
         </MudItem>
         <MudItem xs="12" sm="12">
-            <MudText Typo="Typo.body1" Align="MudAlign.Left">
-              @DateTimeString(context.ToDate)
-            </MudText>
+          <MudText Typo="Typo.body1" Align="MudAlign.Left">
+            @DateTimeString(context.ToDate)
+          </MudText>
         </MudItem>
       </MudGrid>
     </MudPaper>
@@ -88,10 +85,11 @@
         (
           Name: "Naknada za mjernu uslugu",
           Total: context.UsageMeterFee_EUR
-        ),
+        )
       };
     }
-    @foreach (var row in usageRows) {
+    @foreach (var row in usageRows)
+    {
       <MudPaper class="mt-2 px-4 py-2">
         <MudGrid Spacing="1">
           <MudItem xs="12" sm="6">
@@ -102,12 +100,12 @@
           <MudItem xs="12" sm="6">
             <MudHidden Breakpoint="Breakpoint.Xs">
               <MudText Typo="Typo.body1" Align="MudAlign.Right">
-                @DecimalString(row.Total, 2)
+                @DecimalString(row.Total)
               </MudText>
             </MudHidden>
             <MudHidden Breakpoint="Breakpoint.SmAndUp">
               <MudText Typo="Typo.body1" Align="MudAlign.Left">
-                @DecimalString(row.Total, 2)
+                @DecimalString(row.Total)
               </MudText>
             </MudHidden>
           </MudItem>
@@ -115,7 +113,7 @@
       </MudPaper>
     }
     <MudText Typo="Typo.subtitle1" class="mt-2" Align="MudAlign.Right">
-      UKUPNO @DecimalString(context.UsageFeeTotal_EUR, 2) EUR
+      UKUPNO @DecimalString(context.UsageFeeTotal_EUR) EUR
     </MudText>
 
     <MudItem Class="d-flex flex-row justify-space-between mt-8">
@@ -147,7 +145,8 @@
         )
       };
     }
-    @foreach (var row in supplyRows) {
+    @foreach (var row in supplyRows)
+    {
       <MudPaper class="mt-2 px-4 py-2">
         <MudGrid Spacing="1">
           <MudItem xs="12" sm="6">
@@ -158,12 +157,12 @@
           <MudItem xs="12" sm="6">
             <MudHidden Breakpoint="Breakpoint.Xs">
               <MudText Typo="Typo.body1" Align="MudAlign.Right">
-                @DecimalString(row.Total, 2)
+                @DecimalString(row.Total)
               </MudText>
             </MudHidden>
             <MudHidden Breakpoint="Breakpoint.SmAndUp">
               <MudText Typo="Typo.body1" Align="MudAlign.Left">
-                @DecimalString(row.Total, 2)
+                @DecimalString(row.Total)
               </MudText>
             </MudHidden>
           </MudItem>
@@ -192,12 +191,12 @@
         <MudItem xs="12" sm="3">
           <MudHidden Breakpoint="Breakpoint.Xs">
             <MudText Typo="Typo.h5" Align="MudAlign.Right">
-              @DecimalString(context.Total_EUR, 2) EUR
+              @DecimalString(context.Total_EUR) EUR
             </MudText>
           </MudHidden>
           <MudHidden Breakpoint="Breakpoint.SmAndUp">
             <MudText Typo="Typo.h5" Align="MudAlign.Left">
-              @DecimalString(context.Total_EUR, 2) EUR
+              @DecimalString(context.Total_EUR) EUR
             </MudText>
           </MudHidden>
         </MudItem>
@@ -206,20 +205,20 @@
 
             <strong>
               PDV (@DecimalString(
-                context.ArchivedRegulatoryCatalogue.TaxRate_Percent,
-                2
-              )%)</strong>
+                     context.ArchivedRegulatoryCatalogue.TaxRate_Percent
+                   )%)
+            </strong>
           </MudText>
         </MudItem>
         <MudItem xs="12" sm="3">
           <MudHidden Breakpoint="Breakpoint.Xs">
             <MudText Typo="Typo.h5" Align="MudAlign.Right">
-              @DecimalString(context.Tax_EUR, 2) EUR
+              @DecimalString(context.Tax_EUR) EUR
             </MudText>
           </MudHidden>
           <MudHidden Breakpoint="Breakpoint.SmAndUp">
             <MudText Typo="Typo.h5" Align="MudAlign.Left">
-              @DecimalString(context.Tax_EUR, 2) EUR
+              @DecimalString(context.Tax_EUR) EUR
             </MudText>
           </MudHidden>
         </MudItem>
@@ -231,12 +230,12 @@
         <MudItem xs="12" sm="3">
           <MudHidden Breakpoint="Breakpoint.Xs">
             <MudText Typo="Typo.h5" Align="MudAlign.Right">
-              @DecimalString(context.TotalWithTax_EUR, 2) EUR
+              @DecimalString(context.TotalWithTax_EUR) EUR
             </MudText>
           </MudHidden>
           <MudHidden Breakpoint="Breakpoint.SmAndUp">
             <MudText Typo="Typo.h5" Align="MudAlign.Left">
-              @DecimalString(context.TotalWithTax_EUR, 2) EUR
+              @DecimalString(context.TotalWithTax_EUR) EUR
             </MudText>
           </MudHidden>
         </MudItem>
@@ -245,22 +244,20 @@
 
     <MudText class="mt-8" Align="MudAlign.Right">
       <MudLink
-          class="ml-auto"
-          Href='@($"/app/network-user-invoice-print/{context.Id}")'>
+        class="ml-auto"
+        Href='@($"/app/network-user-invoice-print/{context.Id}")'>
         <MudButton Variant="Variant.Filled">
           PREGLED
         </MudButton>
       </MudLink>
     </MudText>
 
-    <div class="mb-16" />
+    <div class="mb-16"/>
   </Found>
 </Loading>?
 
 @code {
-  [Parameter]
-  public string? Id { get; set; }
+  [Parameter] public string? Id { get; set; }
 
-  [Parameter]
-  public NetworkUserInvoiceModel? Invoice { get; set; }
+  [Parameter] public NetworkUserInvoiceModel? Invoice { get; set; }
 }

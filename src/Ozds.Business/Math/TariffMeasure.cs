@@ -11,8 +11,6 @@ public record class CompositeTariffMeasure<T>
   IMultiplyOperators<T, T, T>,
   IDivisionOperators<T, T, T>
 {
-  public List<TariffMeasure<T>> Measures { get; set; }
-
   public CompositeTariffMeasure(List<TariffMeasure<T>> measures)
   {
     Measures = measures.SelectMany(measure => measure switch
@@ -22,14 +20,16 @@ public record class CompositeTariffMeasure<T>
     }).ToList();
   }
 
+  public List<TariffMeasure<T>> Measures { get; set; }
+
   public U FromMostAccurate<U>(Func<TariffMeasure<T>, U> selector, U @default)
   {
     return Measures.FirstOrDefault(measure => measure is BinaryTariffMeasure<T>)
       is
-    { } binary
+      { } binary
       ? selector(binary)
       : Measures.FirstOrDefault(measure => measure is UnaryTariffMeasure<T>) is
-      { } unary
+        { } unary
         ? selector(unary)
         : @default;
   }

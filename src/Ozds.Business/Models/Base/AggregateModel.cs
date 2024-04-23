@@ -8,6 +8,7 @@ namespace Ozds.Business.Models.Base;
 
 public abstract class AggregateModel : IAggregate
 {
+  private IntervalModel _interval = IntervalModel.QuarterHour;
   private DateTimeOffset _timestamp;
 
   [Required] public required string MeterId { get; set; }
@@ -29,8 +30,6 @@ public abstract class AggregateModel : IAggregate
       };
     }
   }
-
-  private IntervalModel _interval = IntervalModel.QuarterHour;
 
   [Required]
   public required IntervalModel Interval

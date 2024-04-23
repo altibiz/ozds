@@ -6,7 +6,6 @@ using Ozds.Business.Models.Base;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Data;
 using Ozds.Data.Entities;
-using Ozds.Data.Extensions;
 
 namespace Ozds.Business.Queries;
 
@@ -25,7 +24,8 @@ public class OzdsNetworkUserMeasurementLocationModelQueries : IOzdsQueries
     var meterEntity =
       await context.MeasurementLocations
         .OfType<NetworkUserMeasurementLocationEntity>()
-        .Where(context.PrimaryKeyEquals<NetworkUserMeasurementLocationEntity>(id))
+        .Where(
+          context.PrimaryKeyEquals<NetworkUserMeasurementLocationEntity>(id))
         .FirstOrDefaultAsync();
     if (meterEntity is not null)
     {

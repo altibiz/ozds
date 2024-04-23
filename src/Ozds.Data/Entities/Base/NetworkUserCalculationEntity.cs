@@ -88,12 +88,10 @@ public class NetworkUserCalculationEntity : IReadonlyEntity, IIdentifiableEntity
     default!;
 
   public SupplyActiveEnergyTotalImportT1CalculationItemEntity
-    SupplyActiveEnergyTotalImportT1
-  { get; set; } = default!;
+    SupplyActiveEnergyTotalImportT1 { get; set; } = default!;
 
   public SupplyActiveEnergyTotalImportT2CalculationItemEntity
-    SupplyActiveEnergyTotalImportT2
-  { get; set; } = default!;
+    SupplyActiveEnergyTotalImportT2 { get; set; } = default!;
 
   public SupplyBusinessUsageFeeCalculationItemEntity SupplyBusinessUsageFee
   {
@@ -269,8 +267,9 @@ public class
         .HasColumnName("usage_network_user_catalogue_id");
 
       builder
-        .ArchivedProperty(nameof(NetworkUserCalculationEntity<NetworkUserCatalogueEntity>
-          .ArchivedUsageNetworkUserCatalogue));
+        .ArchivedProperty(
+          nameof(NetworkUserCalculationEntity<NetworkUserCatalogueEntity>
+            .ArchivedUsageNetworkUserCatalogue));
     }
   }
 }

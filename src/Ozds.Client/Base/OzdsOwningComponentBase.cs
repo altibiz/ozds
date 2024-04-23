@@ -7,8 +7,7 @@ public abstract class OzdsOwningComponentBase : OzdsComponentBase, IDisposable
 {
   private AsyncServiceScope? _scope;
 
-  [Inject]
-  private IServiceScopeFactory ScopeFactory { get; set; } = default!;
+  [Inject] private IServiceScopeFactory ScopeFactory { get; set; } = default!;
 
   protected bool IsDisposed { get; private set; }
 
@@ -22,11 +21,13 @@ public abstract class OzdsOwningComponentBase : OzdsComponentBase, IDisposable
           "Services cannot be accessed before the component is initialized."
         );
       }
+
       ObjectDisposedException.ThrowIf(IsDisposed, this);
       if (!_scope.HasValue)
       {
         _scope = ScopeFactory.CreateAsyncScope();
       }
+
       return _scope.Value.ServiceProvider;
     }
   }
@@ -38,7 +39,7 @@ public abstract class OzdsOwningComponentBase : OzdsComponentBase, IDisposable
     {
       _scope?.Dispose();
       _scope = null;
-      Dispose(disposing: true);
+      Dispose(true);
       IsDisposed = true;
     }
   }

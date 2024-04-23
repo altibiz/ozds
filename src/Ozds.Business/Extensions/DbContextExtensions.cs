@@ -17,7 +17,7 @@ public static class DbContextExtensions
                            && m.GetParameters().Length == 0)
       ?.MakeGenericMethod(type);
     return method?.Invoke(context, null) as IQueryable<object>
-      ?? throw new InvalidOperationException($"No DbSet found for {type}");
+           ?? throw new InvalidOperationException($"No DbSet found for {type}");
   }
 
 

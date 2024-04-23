@@ -68,7 +68,8 @@ if (options.Seed is { } seed)
         batch.ToArray()
       );
 
-      var pushClient = scope.ServiceProvider.GetRequiredService<OzdsPushClient>();
+      var pushClient =
+        scope.ServiceProvider.GetRequiredService<OzdsPushClient>();
       await pushClient.Push(
         options.MessengerId,
         options.ApiKey,

@@ -2,8 +2,7 @@
 
 @inject NavigationManager NavigationManager;
 @using Color = MudBlazor.Color
-@using Microsoft.Extensions.DependencyInjection
-@inherits Ozds.Client.Base.OzdsOwningComponentBase
+@inherits OzdsOwningComponentBase
 @attribute [Navigation( Title = "Data", Allows = new[] { RoleModel.LocationRepresentative, RoleModel.NetworkUserRepresentative, RoleModel.OperatorRepresentative }, Parents = new[] { typeof(UsersPage)})]
 @attribute [StreamRendering]
 

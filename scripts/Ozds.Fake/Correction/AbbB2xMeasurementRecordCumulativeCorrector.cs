@@ -1,4 +1,3 @@
-using Ozds.Business.Math;
 using Ozds.Fake.Correction.Base;
 using Ozds.Fake.Records;
 
@@ -21,12 +20,14 @@ public class AbbB2xMeasurementRecordCumulativeCorrector
     );
 
     var activeEnergy = measurementRecord.ActiveEnergy_Wh +
-      (lastMeasurementRecord.ActiveEnergy_Wh
-      - firstMeasurementRecord.ActiveEnergy_Wh) * diffMultiplier;
+                       (lastMeasurementRecord.ActiveEnergy_Wh
+                        - firstMeasurementRecord.ActiveEnergy_Wh) *
+                       diffMultiplier;
 
     var reactiveEnergy = measurementRecord.ReactiveEnergy_VARh +
-      (lastMeasurementRecord.ReactiveEnergy_VARh
-      - firstMeasurementRecord.ReactiveEnergy_VARh) * diffMultiplier;
+                         (lastMeasurementRecord.ReactiveEnergy_VARh
+                          - firstMeasurementRecord.ReactiveEnergy_VARh) *
+                         diffMultiplier;
 
     measurementRecord.ActiveEnergyL1ImportT0_Wh =
       activeEnergy.TariffUnary.DuplexImport.PhaseSplit.ValueL1;
@@ -72,9 +73,10 @@ public class AbbB2xMeasurementRecordCumulativeCorrector
     return measurementRecord;
   }
 
-  protected override AbbB2xMeasurementRecord CopyRecord(AbbB2xMeasurementRecord record)
+  protected override AbbB2xMeasurementRecord CopyRecord(
+    AbbB2xMeasurementRecord record)
   {
-    return new()
+    return new AbbB2xMeasurementRecord
     {
       MeterId = record.MeterId,
       Timestamp = record.Timestamp,
@@ -104,10 +106,12 @@ public class AbbB2xMeasurementRecordCumulativeCorrector
       ReactiveEnergyL3ExportT0_VARh = record.ReactiveEnergyL3ExportT0_VARh,
       ActiveEnergyTotalImportT0_Wh = record.ActiveEnergyTotalImportT0_Wh,
       ActiveEnergyTotalExportT0_Wh = record.ActiveEnergyTotalExportT0_Wh,
-      ReactiveEnergyTotalImportT0_VARh = record.ReactiveEnergyTotalImportT0_VARh,
-      ReactiveEnergyTotalExportT0_VARh = record.ReactiveEnergyTotalExportT0_VARh,
+      ReactiveEnergyTotalImportT0_VARh =
+        record.ReactiveEnergyTotalImportT0_VARh,
+      ReactiveEnergyTotalExportT0_VARh =
+        record.ReactiveEnergyTotalExportT0_VARh,
       ActiveEnergyTotalImportT1_Wh = record.ActiveEnergyTotalImportT1_Wh,
-      ActiveEnergyTotalImportT2_Wh = record.ActiveEnergyTotalImportT2_Wh,
+      ActiveEnergyTotalImportT2_Wh = record.ActiveEnergyTotalImportT2_Wh
     };
   }
 }
