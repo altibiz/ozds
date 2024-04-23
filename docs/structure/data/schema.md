@@ -329,14 +329,18 @@ erDiagram
         numeric supply_active_energy_total_import_t2_min_wh
         numeric supply_active_energy_total_import_t2_price_eur
         numeric supply_active_energy_total_import_t2_total_eur
-        numeric supply_business_usage_fee_amount
-        numeric supply_business_usage_fee_price_eur
-        numeric supply_business_usage_total_eur
+        numeric supply_business_usage_fee_active_energy_total_import_t0_amount_
+        numeric supply_business_usage_fee_active_energy_total_import_t0_max_wh
+        numeric supply_business_usage_fee_active_energy_total_import_t0_min_wh
+        numeric supply_business_usage_fee_active_energy_total_import_t0_price_e
+        numeric supply_business_usage_fee_active_energy_total_import_t0_total_e
         numeric supply_fee_total_eur
         bigint supply_regulatory_catalogue_id FK
-        numeric supply_renewable_energy_fee_amount
-        numeric supply_renewable_energy_fee_price_eur
-        numeric supply_renewable_energy_total_eur
+        numeric supply_renewable_energy_fee_active_energy_total_import_t0_amoun
+        numeric supply_renewable_energy_fee_active_energy_total_import_t0_max_w
+        numeric supply_renewable_energy_fee_active_energy_total_import_t0_min_w
+        numeric supply_renewable_energy_fee_active_energy_total_import_t0_price
+        numeric supply_renewable_energy_fee_active_energy_total_import_t0_total
         text title
         timestamp_with_time_zone to_date
         numeric total_eur
