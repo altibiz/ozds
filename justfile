@@ -20,6 +20,7 @@ schema := absolute_path('docs/structure/data/schema.md')
 default: prepare
 
 prepare:
+  dvc install
   dvc pull
   dotnet tool restore
   prettier --version or npm install -g prettier
