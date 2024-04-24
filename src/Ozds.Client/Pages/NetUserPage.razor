@@ -21,7 +21,7 @@
 
     var ozdsBillingQueries = ScopedServices
       .GetRequiredService<OzdsBillingQueries>();
-    var invoiceIssuer = ScopedServices
+    var invoiceCalculator = ScopedServices
       .GetRequiredService<NetworkUserInvoiceCalculator>();
     var invoiceMutations = ScopedServices
       .GetRequiredService<OzdsInvoiceMutations>();
@@ -30,7 +30,7 @@
 
     var basis = await ozdsBillingQueries
       .IssuingBasisForNetworkUser(Id!, dateFrom, dateTo);
-    var invoice = invoiceIssuer.Issue(basis);
+    var invoice = invoiceCalculator.Calculate(basis);
     var invoiceId = await invoiceMutations.CreateId(invoice.Invoice);
     foreach (var calculation in invoice.Calculations)
     {

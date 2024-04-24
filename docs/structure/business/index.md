@@ -14,14 +14,35 @@ picking the right implementation of the interface. For example, the
 
 ## `Ozds.Business.Aggregation`
 
-This namespace contains client-side and server-side aggregation upsert logic via
-(`AgnosticAggregateUpserter`). The server-side logic is used to tell the
-database how to upsert aggregates via LINQ Expressions over database entities
-and the client-side logic mimics this as a method over business models . If we
-were just to use the server-side logic, the database would complain that it
-couldn't upsert the same aggregate twice in the same transaction. This is why we
-have to upsert first on client-side the aggregates that are to be inserted and
-then upsert the aggregates that are on the server.
+This namespace contains client-side and server-side aggregation upsert logic.
+The server-side logic is used to tell the database how to upsert aggregates via
+LINQ Expressions over database entities and the client-side logic mimics this as
+a method over business models . If we were just to use the server-side logic,
+the database would complain that it couldn't upsert the same aggregate twice in
+the same transaction. This is why we have to upsert first on client-side the
+aggregates that are to be inserted and then upsert the aggregates that are on
+the server.
+
+```plantuml
+class AgnosticAggregateUpserter
+{
+  + Expression<Func<TEntity, TEntity, TEntity>>UpsertEntity<TEntity>()
+  + LambdaExpression UpsertEntityAgnostic(Type entityType)
+  + TModel UpsertModel<TModel>(TModel lhs, TModel rhs)
+  + IAggregate UpsertModelAgnostic(IAggregate lhs, IAggregate rhs)
+}
+
+interface IAggregateUpserter
+{
+  + LambdaExpression UpsertEntity
+
+  + bool CanUpsertModel(Type modelType)
+  + bool CanUpsertEntity(Type entityType)
+  + IAggregate UpsertModel(IAggregate lhs, IAggregate rhs)
+}
+
+AgnosticAggregateUpserter o-- "0..N" IAggregateUpserter
+```
 
 ## `Ozds.Business.Capabilities`
 
@@ -32,18 +53,82 @@ measures.
 
 This namespace contains converters for:
 
-- Database entities <-> business models (`AgnosticModelEntityConverter`)
-- Push requests -> measurement models
-  (`AgnosticPushRequestMeasurementConverter`)
-- Measurement models -> aggregate models
-  (`AgnosticMeasurementAggregateConverter`)
+- Database entities &harr; business models
 
 ```plantuml
 class AgnosticModelEntityConverter
+{
+  + TEntity ToEntity<TEntity>(object model)
+  + TModel ToModel<TModel>(object entity)
+  + object ToEntity(object model)
+  + object ToModel(object entity)
+  + Type EntityType()
+}
 
 interface IModelEntityConverter
+{
+  + bool CanConvertToEntity(Type modelType)
+  + bool CanConvertToModel(Type entityType)
+  + object ToEntity(object model)
+  + object ToModel(object entity)
+  + Type EntityType()
+}
 
-AgnosticModelEntityConverter --> IModelEntityConverter
+AgnosticModelEntityConverter o-- "0..N" IModelEntityConverter
+```
+
+- Push requests &harr; measurement models
+
+```plantuml
+class AgnosticPushRequestMeasurementConverter
+{
+  + IMeasurement ToMeasurement( \
+    JsonObject pushRequest, \
+    string meterId, \
+    DateTimeOffset timestamp \
+  )
+  + TMeasurement ToMeasurement<TMeasurement>(
+    JsonObject pushRequest, \
+    string meterId, \
+    DateTimeOffset timestamp \
+  )
+  + JsonObject ToPushRequest(IMeasurement measurement)
+}
+
+interface IPushRequestMeasurementConverter
+{
+  + bool CanConvert(string meterId)
+  + IMeasurement ToMeasurement( \
+    JsonObject pushRequest, \
+    string meterId, \
+    DateTimeOffset timestamp \
+  )
+  + JsonObject ToPushRequest(IMeasurement measurement)
+}
+
+AgnosticPushRequestMeasurementConverter o-- "0..N" \
+  IPushRequestMeasurementConverter
+```
+
+- Measurement models &rarr; aggregate models
+
+```plantuml
+interface IMeasurementAggregateConverter
+{
+  + bool CanConvertToAggregate(Type measurementType)
+  + IAggregate ToAggregate(IMeasurement measurement, IntervalModel interval)
+}
+
+class AgnosticMeasurementAggregateConverter
+{
+  + IAggregate ToAggregate(IMeasurement measurement, IntervalModel interval)
+  + TAggregate ToAggregate<TAggregate>( \
+    IMeasurement measurement, \
+    IntervalModel interval \
+  )
+}
+
+AgnosticMeasurementAggregateConverter o-- "0..N" IMeasurementAggregateConverter
 ```
 
 ## `Ozds.Business.Finance`
@@ -53,16 +138,76 @@ calculations needed for every invoice:
 
 - Invoice level: this is the top level corresponding to a network user or
   location and uses lower levels to calculate the totals and subtotals on an
-  invoice (`NetworkUserInvoiceCalculator`)
+  invoice
+
+```plantuml
+class NetworkUserInvoiceCalculator
+{
+  + CalculatedNetworkUserInvoiceModel Calculate(NetworkUserInvoiceCalculationBasisModel basis)
+}
+```
+
 - Calculation level: each invoice has a set of calculation corresponding to a
   measurement location and uses the lowest level to calculate the totals and
   subtotals of a particular calculation
-  (`AgnosticNetworkUserCalculationCalculator`)
+
+```plantuml
+class AgnosticNetworkUserCalculationCalculator
+{
+  + INetworkUserCalculation Calculate(NetworkUserCalculationBasisModel basis)
+  + TCalculation Calculate<TCalculation>(NetworkUserCalculationBasisModel basis)
+}
+
+interface INetworkUserCalculationCalculator
+{
+  + bool CanCalculate(NetworkUserCalculationBasisModel basis)
+  + INetworkUserCalculation Calculate(NetworkUserCalculationBasisModel basis)
+}
+
+AgnosticNetworkUserCalculationCalculator o-- "0..N" \
+  INetworkUserCalculationCalculator
+```
+
 - Calculation item level: each calculation has a set of calculation items
   corresponding to a certain billing item and calculates the amounts and totals
-  of a particular billing item (`AgnosticCalculationItemCalculator`)
+  of a particular billing item
+
+```plantuml
+class AgnosticCalculationItemCalculator
+{
+  + ICalculationItem Calculate(CalculationItemBasisModel basis)
+  + TCalculationItem Calculate<TCalculationItem>( \
+    CalculationItemBasisModel basis \
+  )
+}
+
+interface ICalculationItemCalculator
+{
+  + bool CanCalculate(Type calculationItemType)
+  + ICalculationItem Calculate(CalculationItemBasisModel basis)
+}
+
+AgnosticCalculationItemCalculator o-- "0..N" ICalculationItemCalculator
+```
 
 For now, only network user invoice calculation is implemented.
+
+```plantuml
+class NetworkUserInvoiceCalculator
+
+class AgnosticNetworkUserCalculationCalculator
+
+interface INetworkUserCalculationCalculator
+
+class AgnosticCalculationItemCalculator
+
+interface ICalculationItemCalculator
+
+NetworkUserInvoiceCalculator o-- "1" AgnosticNetworkUserCalculationCalculator
+AgnosticNetworkUserCalculationCalculator o-- "0..N" INetworkUserCalculationCalculator
+INetworkUserCalculationCalculator o-- "1" AgnosticCalculationItemCalculator
+AgnosticCalculationItemCalculator o-- "0..N" ICalculationItemCalculator
+```
 
 ## `Ozds.Business.Interceptors`
 
@@ -83,6 +228,28 @@ implement various business logic:
 - `ServedSaveChangesInterceptors`: this is a base type for interceptors that is
   hooked up to provide inheritors with a `IServiceProvider`.
 
+```plantuml
+left to right direction
+
+class ServedSaveChangesInterceptors
+{
+  # IServiceProvider _serviceProvider
+}
+
+class AggregateCreationInterceptor
+class AuditingInterceptor
+class CascadingSoftDeleteInterceptor
+class InvoiceIssuingInterceptor
+class ReadonlyInterceptor
+
+SaveChangesInterceptor <|-- ServedSaveChangesInterceptors
+ServedSaveChangesInterceptors <|-- AggregateCreationInterceptor
+ServedSaveChangesInterceptors <|-- AuditingInterceptor
+ServedSaveChangesInterceptors <|-- CascadingSoftDeleteInterceptor
+ServedSaveChangesInterceptors <|-- InvoiceIssuingInterceptor
+ServedSaveChangesInterceptors <|-- ReadonlyInterceptor
+```
+
 ## `Ozds.Business.Iot`
 
 Contains logic for handling IoT requests. It only handles pushing for now
@@ -92,6 +259,34 @@ we get around to implement polling.
 Pushing is the process of IoT devices sending measurements to the server. It is
 implemented via a REST API that the IoT devices can call. The IoT devices send
 measurements which then get aggregated and stored in the database.
+
+```plantuml
+class OzdsIotHandler
+{
+  + Task OnPush(string id, string request)
+}
+
+class MessengerPushRequest
+{
+  DateTimeOffset Timestamp
+  MessengerPushRequestMeasurement[] Measurements
+}
+
+class MessengerPushRequestMeasurement
+{
+  string MeterId
+  DateTimeOffset Timestamp
+  JsonObject Data
+}
+
+class AbbB2xPushRequest
+class SchneideriEM3xxxPushRequest
+
+MessengerPushRequestMeasurement *-- "0..N Data" AbbB2xPushRequest
+MessengerPushRequestMeasurement *-- "0..N Data" SchneideriEM3xxxPushRequest
+MessengerPushRequest *-- "0..N" MessengerPushRequestMeasurement
+OzdsIotHandler -- "processes" MessengerPushRequest
+```
 
 Polling is the process of IoT devices asking the server for newly updated
 configuration. This way we bypass the need to send anything to IoT devices which
@@ -108,12 +303,30 @@ thoroughly.
 
 There are three different dimensions each measure can have:
 
-- `PhaseMeasure`: a measure can be a single phase or three phases.
-- `DuplexMeasure`: a measure can be an import or export and these correspond to
-  user consumption and production. It can also be any if it is a measure of
-  current or voltage since these are not directional.
-- `TariffMeasure`: a measure can be a high tariff and a low tariff or a unary
-  tariff. This is used to calculate the cost of the measure depending on the
+- Phase: a measure can be a single phase or triphasic measure.
+
+```plantuml
+class PhasicMeasure<T>
+{
+  + {static} PhasicMeasure<T> Null
+
+  + T PhaseSum
+  + T PhaseAverage
+  + T PhasePeak
+  + T PhaseTrough
+  + SinglePhasicMeasure<T> PhaseSingle
+  + TriphasicMeasure<T> PhaseSplit
+  + PhasicMeasure<T> PhaseAbs
+
+  + PhasicMeasure<U> ConvertPrimitiveTo<U>()
+}
+```
+
+- Direction: a measure can be an import or export measure and these correspond
+  to user consumption and production. It can also be any duplex measure if it is
+  a measure of current or voltage since these are not directional.
+- Tariff: a measure can be a high tariff and a low tariff or a unary tariff
+  measure. This is used to calculate the cost of the measure depending on the
   time of day.
 
 The measure structure is such that `TariffMeasure` contains `DuplexMeasure`

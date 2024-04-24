@@ -23,7 +23,7 @@ public class NetworkUserInvoiceCalculator
     _httpContextAccessor = httpContextAccessor;
   }
 
-  public CalculatedNetworkUserInvoiceModel Issue(
+  public CalculatedNetworkUserInvoiceModel Calculate(
     NetworkUserInvoiceIssuingBasisModel basis
   )
   {
