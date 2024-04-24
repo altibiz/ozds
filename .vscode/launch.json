@@ -12,8 +12,7 @@
       "requireExactSource": false,
       "env": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "DOTNET_ENVIRONMENT": "Development",
-        "ORCHARD_APP_DATA": "${workspaceFolder}/App_Data"
+        "DOTNET_ENVIRONMENT": "Development"
       },
       "logging": {
         "moduleLoad": false
@@ -30,8 +29,7 @@
       "requireExactSource": false,
       "env": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "DOTNET_ENVIRONMENT": "Development",
-        "ORCHARD_APP_DATA": "${workspaceFolder}/App_Data"
+        "DOTNET_ENVIRONMENT": "Development"
       },
       "logging": {
         "moduleLoad": false
