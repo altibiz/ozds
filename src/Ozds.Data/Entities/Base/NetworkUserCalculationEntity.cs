@@ -8,40 +8,13 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
 
-public class NetworkUserCalculationEntity : IReadonlyEntity, IIdentifiableEntity
+public class NetworkUserCalculationEntity : CalculationEntity, IReadonlyEntity, IIdentifiableEntity
 {
-  protected readonly long _id;
-
-  protected readonly long _measurementLocationId;
-
   protected readonly long _networkUserInvoiceId;
 
   protected readonly long _supplyRegulatoryCatalogueId;
 
-  public DateTimeOffset IssuedOn { get; set; } = DateTimeOffset.UtcNow;
-
-  public string? IssuedById { get; set; }
-
-  public virtual RepresentativeEntity? IssuedBy { get; set; }
-
-  public DateTimeOffset FromDate { get; set; } = default!;
-
-  public DateTimeOffset ToDate { get; set; } = default!;
-
-  public virtual MeterEntity Meter { get; set; } = default!;
-
-  public string MeterId { get; set; } = default!;
-
-  public virtual MeasurementLocationEntity MeasurementLocation { get; set; } =
-    default!;
-
-  public string MeasurementLocationId
-  {
-    get { return _measurementLocationId.ToString(); }
-    init { _measurementLocationId = long.Parse(value); }
-  }
-
-  public virtual NetworkUserInvoiceEntity NetworkUserInvoice { get; set; } =
+  public virtual NetworkUserInvoiceEntity Invoice { get; set; } =
     default!;
 
   public string NetworkUserInvoiceId
@@ -54,18 +27,7 @@ public class NetworkUserCalculationEntity : IReadonlyEntity, IIdentifiableEntity
 
   public decimal SupplyFeeTotal_EUR { get; set; }
 
-  public decimal Total_EUR { get; set; }
-
   public RegulatoryCatalogueEntity ArchivedSupplyRegulatoryCatalogue
-  {
-    get;
-    set;
-  } =
-    default!;
-
-  public MeterEntity ArchivedMeter { get; set; } = default!;
-
-  public NetworkUserMeasurementLocationEntity ArchivedMeasurementLocation
   {
     get;
     set;
@@ -108,14 +70,6 @@ public class NetworkUserCalculationEntity : IReadonlyEntity, IIdentifiableEntity
     set;
   } =
     default!;
-
-  public virtual string Id
-  {
-    get { return _id.ToString(); }
-    init { _id = value is { } notNullValue ? long.Parse(notNullValue) : default; }
-  }
-
-  public string Title { get; set; } = default!;
 }
 
 public class
@@ -159,60 +113,14 @@ public class
       .ToTable("network_user_calculations")
       .HasDiscriminator<string>("kind");
 
-    if (type == typeof(NetworkUserCalculationEntity))
-    {
-      builder.HasKey("_id");
-    }
-
-    builder.Ignore(nameof(NetworkUserCalculationEntity.Id));
     builder
-      .Property("_id")
-      .HasColumnName("id")
-      .HasColumnType("bigint")
-      .UseIdentityAlwaysColumn();
-
-    builder
-      .HasOne(nameof(NetworkUserCalculationEntity.IssuedBy))
-      .WithMany()
-      .HasForeignKey(nameof(NetworkUserCalculationEntity.IssuedById));
-
-    builder
-      .HasOne(nameof(NetworkUserCalculationEntity.Meter))
-      .WithMany(nameof(MeterEntity.NetworkUserCalculations))
-      .HasForeignKey(nameof(NetworkUserCalculationEntity.MeterId));
-
-    builder
-      .HasOne(nameof(NetworkUserCalculationEntity.MeasurementLocation))
-      .WithMany(nameof(MeasurementLocationEntity.NetworkUserCalculations))
-      .HasForeignKey("_measurementLocationId");
-
-    builder
-      .HasOne(nameof(NetworkUserCalculationEntity.NetworkUserInvoice))
-      .WithMany(nameof(InvoiceEntity.NetworkUserCalculations))
+      .HasOne(nameof(NetworkUserCalculationEntity.Invoice))
+      .WithMany(nameof(NetworkUserInvoiceEntity.Calculations))
       .HasForeignKey("_networkUserInvoiceId");
-
-    builder
-      .ArchivedProperty(nameof(NetworkUserCalculationEntity.ArchivedMeter));
 
     builder
       .ArchivedProperty(nameof(NetworkUserCalculationEntity
         .ArchivedSupplyRegulatoryCatalogue));
-
-    builder
-      .ArchivedProperty(nameof(NetworkUserCalculationEntity
-        .ArchivedMeasurementLocation));
-
-    builder
-      .Property<DateTimeOffset>(nameof(NetworkUserCalculationEntity.IssuedOn))
-      .HasConversion(
-        x => x.ToUniversalTime(),
-        x => x.ToUniversalTime()
-      );
-
-    builder.Ignore(nameof(NetworkUserCalculationEntity.MeasurementLocationId));
-    builder
-      .Property("_measurementLocationId")
-      .HasColumnName("measurement_location_id");
 
     builder.Ignore(nameof(NetworkUserCalculationEntity.NetworkUserInvoiceId));
     builder
@@ -220,12 +128,8 @@ public class
       .HasColumnName("network_user_invoice_id");
 
     builder
-      .Property(nameof(NetworkUserCalculationEntity.Total_EUR))
-      .HasColumnName("total_eur");
-
-    builder
       .HasOne(nameof(NetworkUserCalculationEntity.SupplyRegulatoryCatalogue))
-      .WithMany(nameof(RegulatoryCatalogueEntity.NetworkUserCalculations))
+      .WithMany(nameof(RegulatoryCatalogueEntity.Calculations))
       .HasForeignKey("_supplyRegulatoryCatalogueId");
 
     builder.Ignore(nameof(NetworkUserCalculationEntity

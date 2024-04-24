@@ -10,7 +10,8 @@ public class RegulatoryCatalogueEntity : AuditableEntity
   public virtual LocationEntity Location { get; set; } = default!;
 
   public virtual ICollection<NetworkUserCalculationEntity>
-    NetworkUserCalculations { get; set; } =
+    Calculations
+  { get; set; } =
     default!;
 
 #pragma warning disable CA1707

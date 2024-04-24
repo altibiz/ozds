@@ -25,8 +25,9 @@ public class MeterEntity : AuditableEntity
 
   public List<PhaseEntity> Phases { get; set; } = default!;
 
-  public virtual ICollection<NetworkUserCalculationEntity>
-    NetworkUserCalculations { get; set; } =
+  public virtual ICollection<CalculationEntity>
+    Calculations
+  { get; set; } =
     default!;
 }
 

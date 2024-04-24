@@ -31,7 +31,7 @@ public class OzdsCalculatedInvoiceQueries : IOzdsQueries
   {
     var invoice = await _context.NetworkUserInvoices
       .Where(_context.PrimaryKeyEquals<NetworkUserInvoiceEntity>(id))
-      .Include(invoice => invoice.NetworkUserCalculations)
+      .Include(invoice => invoice.Calculations)
       .FirstOrDefaultAsync();
     if (invoice is null)
     {
@@ -39,7 +39,7 @@ public class OzdsCalculatedInvoiceQueries : IOzdsQueries
     }
 
     return new CalculatedNetworkUserInvoiceModel(
-      invoice.NetworkUserCalculations
+      invoice.Calculations
         .Select(_modelEntityConverter.ToModel<INetworkUserCalculation>)
         .ToList(),
       _modelEntityConverter.ToModel<NetworkUserInvoiceModel>(invoice)

@@ -9,4 +9,10 @@ public interface IInvoice : IIdentifiable, IReadonly
   DateTimeOffset FromDate { get; }
 
   DateTimeOffset ToDate { get; }
+
+  decimal Total_EUR { get; }
+
+  decimal Tax_EUR { get; }
+
+  decimal TotalWithTax_EUR { get; }
 }

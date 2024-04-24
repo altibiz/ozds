@@ -1,5 +1,6 @@
 using Ozds.Business.Conversion.Base;
 using Ozds.Business.Models;
+using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Base;
 using Ozds.Data.Entities;
 using Ozds.Data.Entities.Base;
@@ -7,15 +8,15 @@ using Ozds.Data.Entities.Base;
 namespace Ozds.Business.Conversion;
 
 public class MeasurementLocationModelEntityConverter : ModelEntityConverter<
-  MeasurementLocationModel, MeasurementLocationEntity>
+  IMeasurementLocation, MeasurementLocationEntity>
 {
   protected override MeasurementLocationEntity ToEntity(
-    MeasurementLocationModel model)
+    IMeasurementLocation model)
   {
     return model.ToEntity();
   }
 
-  protected override MeasurementLocationModel ToModel(
+  protected override IMeasurementLocation ToModel(
     MeasurementLocationEntity entity)
   {
     return entity.ToModel();
@@ -25,7 +26,7 @@ public class MeasurementLocationModelEntityConverter : ModelEntityConverter<
 public static class MeasurementLocationModelEntityConverterExtensions
 {
   public static MeasurementLocationEntity ToEntity(
-    this MeasurementLocationModel model)
+    this IMeasurementLocation model)
   {
     if (model is NetworkUserMeasurementLocationModel
         networkUserMeasurementLocation)
@@ -43,7 +44,7 @@ public static class MeasurementLocationModelEntityConverterExtensions
     );
   }
 
-  public static MeasurementLocationModel ToModel(
+  public static IMeasurementLocation ToModel(
     this MeasurementLocationEntity entity)
   {
     if (entity is NetworkUserMeasurementLocationEntity

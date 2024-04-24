@@ -546,17 +546,304 @@ operations that should not be exposed to the rest of the application. On the
 other hand, business models have special fields and properties and implement
 interfaces which should not be represented in the database.
 
-Models are divided into a couple of class hierarchies:
+There are a couple of marker interfaces that are used to represent the different
+aspects of models:
 
-- Auditable:
-- Events:
-- Measurements:
-- Aggregates:
-- Invoices:
-- Network user calculations:
+- Identifiable: models with an identifier. Additionally, all models that are
+  identifiable should have a title which is a nice addition to display them in
+  the UI.
+
+```plantuml
+interface IIdentifiable
+{
+  + string Id
+  + string Title
+}
+```
+
+- Readonly: models that are readonly and should not be mutated.
+
+```plantuml
+interface IReadonly
+{
+}
+```
+
+Models are divided into a few of class hierarchies:
+
+- Auditable: models that can be audited. Any time a mutation is done on an
+  auditable entity, an audit event is created and the audit fields on the entity
+  are updated.
+
+```plantuml
+interface IIdentifiable
+{
+  + string Id
+  + string Title
+}
+
+interface IAuditable
+{
+  + DateTimeOffset CreatedOn
+  + string? CreatedById
+  + DateTimeOffset LastUpdatedOn
+  + string? LastUpdatedById
+  + bool IsDeleted
+  + DateTimeOffset? DeletedOn
+  + string? DeletedById
+}
+
+abstract class AuditableModel
+{
+  + string Id
+  + string Title
+  + DateTimeOffset CreatedOn
+  + string? CreatedById
+  + DateTimeOffset LastUpdatedOn
+  + string? LastUpdatedById
+  + bool IsDeleted
+  + DateTimeOffset? DeletedOn
+  + string? DeletedById
+}
+
+IIdentifiable <|-- IAuditable
+IAuditable <|-- AuditableModel
+```
+
+- Events: models that represent events like when an auditable entity is mutated.
+
+```plantuml
+interface IReadonly
+
+interface IIdentifiable
+{
+  + string Id
+  + string Title
+}
+
+interface IEvent
+{
+  + DateTimeOffset Timestamp
+  + LevelModel Level
+  + string Description
+}
+
+abstract class EventModel
+{
+  + string Id
+  + string Title
+  + DateTimeOffset Timestamp
+  + LevelModel Level
+  + string Description
+}
+
+enum LevelModel
+{
+  Trace
+  Debug
+  Information
+  Warning
+  Error
+  Critical
+}
+
+IReadonly <|-- IEvent
+IIdentifiable <|-- IEvent
+IEvent <|-- EventModel
+EventModel *-- "1" LevelModel
+```
+
+- Measurements: models that represent measurements that are sent by IoT devices.
+  In order to use models from multiple device types all measurement models are
+  required to implement the different measure properties on `IMeasurement`.
+
+```plantuml
+interface IReadonly
+
+interface IMeasurement
+{
+  + string MeterId
+  + DateTimeOffset Timestamp
+
+  + TariffMeasure<float> Current_A
+  + TariffMeasure<float> Voltage_V
+  + TariffMeasure<float> ActivePower_W
+  + TariffMeasure<float> ReactivePower_VAR
+  + TariffMeasure<float> ApparentPower_VA
+  + TariffMeasure<float> ActiveEnergy_Wh
+  + TariffMeasure<float> ReactiveEnergy_VARh
+  + TariffMeasure<float> ApparentEnergy_VAh
+}
+
+abstract class MeasurementModel
+{
+  + string MeterId
+  + DateTimeOffset Timestamp
+
+  + {abstract} TariffMeasure<float> Current_A
+  + {abstract} TariffMeasure<float> Voltage_V
+  + {abstract} TariffMeasure<float> ActivePower_W
+  + {abstract} TariffMeasure<float> ReactivePower_VAR
+  + {abstract} TariffMeasure<float> ApparentPower_VA
+  + {abstract} TariffMeasure<float> ActiveEnergy_Wh
+  + {abstract} TariffMeasure<float> ReactiveEnergy_VARh
+  + {abstract} TariffMeasure<float> ApparentEnergy_VAh
+}
+
+IReadonly <|-- IMeasurement
+IMeasurement <|-- MeasurementModel
+```
+
+- Aggregates: models that represent aggregates of measurements. In order to use
+  models from multiple device types all aggregate models are required to
+  implement the different measure properties on `IAggregate`. The `Timestamp` is
+  always the start of the span of the aggregate. The `Count` is the number of
+  measurements that were aggregated. The non `SpanningMeasure` energy properties
+  are the values of the last measurement in the span while the non
+  `SpanningMeasure` non energy properties are the average values of the
+  measurements in the span.
+
+```plantuml
+interface IReadonly
+
+interface IAggregate
+{
+  + string MeterId
+  + DateTimeOffset Timestamp
+  + IntervalModel Interval
+  + long Count
+
+  + TariffMeasure<float> Current_A
+  + TariffMeasure<float> Voltage_V
+  + TariffMeasure<float> ActivePower_W
+  + TariffMeasure<float> ReactivePower_VAR
+  + TariffMeasure<float> ApparentPower_VA
+  + TariffMeasure<float> ActiveEnergy_Wh
+  + TariffMeasure<float> ReactiveEnergy_VARh
+  + TariffMeasure<float> ApparentEnergy_VAh
+
+  + SpanningMeasure<float> ActiveEnergySpan_Wh
+  + SpanningMeasure<float> ReactiveEnergySpan_VARh
+  + SpanningMeasure<float> ApparentEnergySpan_VAh
+}
+
+abstract class AggregateModel
+{
+  + string MeterId
+  + DateTimeOffset Timestamp
+  + IntervalModel Interval
+  + long Count
+
+  + {abstract} TariffMeasure<float> Current_A
+  + {abstract} TariffMeasure<float> Voltage_V
+  + {abstract} TariffMeasure<float> ActivePower_W
+  + {abstract} TariffMeasure<float> ReactivePower_VAR
+  + {abstract} TariffMeasure<float> ApparentPower_VA
+  + {abstract} TariffMeasure<float> ActiveEnergy_Wh
+  + {abstract} TariffMeasure<float> ReactiveEnergy_VARh
+  + {abstract} TariffMeasure<float> ApparentEnergy_VAh
+
+  + {abstract} SpanningMeasure<float> ActiveEnergySpan_Wh
+  + {abstract} SpanningMeasure<float> ReactiveEnergySpan_VARh
+  + {abstract} SpanningMeasure<float> ApparentEnergySpan_VAh
+}
+
+IReadonly <|-- IAggregate
+IAggregate <|-- AggregateModel
+```
+
+- Invoices: models that represent invoices that are sent to network users.
+
+```plantuml
+interface IReadonly
+
+interface IIdentifiable
+{
+  + string Id
+  + string Title
+}
+
+interface IInvoice
+{
+  + DateTimeOffset IssuedOn
+  + string? IssuedById
+  + DateTimeOffset FromDate
+  + DateTimeOffset ToDate
+  + decimal Total_EUR
+  + decimal Tax_EUR
+  + decimal TotalWithTax_EUR
+}
+
+abstract class InvoiceModel
+{
+  + string Id
+  + string Title
+  + DateTimeOffset IssuedOn
+  + string? IssuedById
+  + DateTimeOffset FromDate
+  + DateTimeOffset ToDate
+  + decimal Total_EUR
+  + decimal Tax_EUR
+  + decimal TotalWithTax_EUR
+}
+
+IReadonly <|-- IInvoice
+IIdentifiable <|-- IInvoice
+IInvoice <|-- InvoiceModel
+```
+
+- Calculations: models that represent calculations that are used to calculate
+  the totals and subtotals on an invoice.
+
+```plantuml
+interface IReadonly
+
+interface IIdentifiable
+{
+  + string Id
+  + string Title
+}
+
+interface ICalculation
+{
+  + DateTimeOffset IssuedOn
+  + string? IssuedById
+  + DateTimeOffset FromDate
+  + DateTimeOffset ToDate
+  + string MeterId
+  + IMeter Meter
+  + string MeasurementLocationId
+  + IMeasurementLocation MeasurementLocation
+  + decimal Total_EUR
+}
+
+abstract class CalculationModel
+{
+  + string Id
+  + string Title
+  + DateTimeOffset IssuedOn
+  + string? IssuedById
+  + DateTimeOffset FromDate
+  + DateTimeOffset ToDate
+  + string MeterId
+  + IMeter Meter
+  + string MeasurementLocationId
+  + IMeasurementLocation MeasurementLocation
+  + decimal Total_EUR
+}
+
+IReadonly <|-- ICalculation
+IIdentifiable <|-- ICalculation
+ICalculation <|-- CalculationModel
+```
+
+In addition, all class hierarchies implement `IValidatableObject`.
 
 ## `Ozds.Business.Mutations`
 
 ## `Ozds.Business.Queries`
 
 ## `Ozds.Business.Time`
+
+Contains all logic for handling time. This is a critical part of the application
+that much of the application depends on and is tested thoroughly.
