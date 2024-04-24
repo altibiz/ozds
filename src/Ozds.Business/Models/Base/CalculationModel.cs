@@ -20,15 +20,7 @@ public abstract class CalculationModel : ICalculation
 
   [Required] public required string MeterId { get; set; } = default!;
 
-  [Required]
-  public required string MeasurementLocationId { get; set; } = default!;
-
   [Required] public required IMeter ArchivedMeter { get; set; } = default!;
-
-  [Required]
-  public required IMeasurementLocation
-    ArchivedMeasurementLocation
-  { get; set; } = default!;
 
   [Required] public required decimal Total_EUR { get; set; }
 

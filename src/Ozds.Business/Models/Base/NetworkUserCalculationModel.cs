@@ -9,6 +9,15 @@ namespace Ozds.Business.Models.Base;
 
 public abstract class NetworkUserCalculationModel : CalculationModel, INetworkUserCalculation
 {
+
+  [Required]
+  public required string NetworkUserMeasurementLocationId { get; set; } = default!;
+
+  [Required]
+  public required NetworkUserMeasurementLocationModel
+    ArchivedNetworkUserMeasurementLocation
+  { get; set; } = default!;
+
   [Required]
   public required UsageMeterFeeCalculationItemModel
     UsageMeterFee

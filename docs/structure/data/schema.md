@@ -197,7 +197,8 @@ erDiagram
     }
 
     measurement_locations {
-        bigint catalogue_id FK
+        bigint _network_user_catalogue_id FK
+        bigint catalogue_id
         text created_by_id FK
         timestamp_with_time_zone created_on
         text deleted_by_id FK
@@ -277,14 +278,14 @@ erDiagram
         timestamp_with_time_zone am_last_updated_on
         text am_messenger_id
         ARRAY am_phases
-        text aml_created_by_id
-        timestamp_with_time_zone aml_created_on
-        text aml_deleted_by_id
-        timestamp_with_time_zone aml_deleted_on
-        boolean aml_is_deleted
-        text aml_last_updated_by_id
-        timestamp_with_time_zone aml_last_updated_on
-        text aml_meter_id
+        text anuml_created_by_id
+        timestamp_with_time_zone anuml_created_on
+        text anuml_deleted_by_id
+        timestamp_with_time_zone anuml_deleted_on
+        boolean anuml_is_deleted
+        text anuml_last_updated_by_id
+        timestamp_with_time_zone anuml_last_updated_on
+        text anuml_meter_id
         numeric asrc_active_energy_total_import_t1_price__eur
         numeric asrc_active_energy_total_import_t2_price__eur
         numeric asrc_business_usage_fee_price__eur
@@ -315,10 +316,9 @@ erDiagram
         text issued_by_id FK
         timestamp_with_time_zone issued_on
         character_varying kind
-        bigint location_invoice_entity_id FK
-        bigint measurement_location_id FK
         text meter_id FK
         bigint network_user_invoice_id FK
+        bigint network_user_measurement_location_id FK
         numeric supply_active_energy_total_import_t1_amount_wh
         numeric supply_active_energy_total_import_t1_max_wh
         numeric supply_active_energy_total_import_t1_min_wh
@@ -594,7 +594,6 @@ erDiagram
     location_entity_representative_entity }o--|| representatives : "representatives_string_id"
     location_invoices }o--|| locations : "location_id"
     location_invoices }o--|| representatives : "issued_by_id"
-    network_user_calculations }o--|| location_invoices : "location_invoice_entity_id"
     locations }o--|| network_user_catalogues : "blue_low_catalogue_id"
     locations }o--|| network_user_catalogues : "red_low_catalogue_id"
     locations }o--|| network_user_catalogues : "white_low_catalogue_id"
@@ -607,12 +606,12 @@ erDiagram
     messengers }o--|| locations : "location_id"
     network_users }o--|| locations : "location_id"
     measurement_locations }o--|| meters : "meter_id"
-    measurement_locations }o--|| network_user_catalogues : "catalogue_id"
+    measurement_locations }o--|| network_user_catalogues : "_network_user_catalogue_id"
     measurement_locations }o--|| network_users : "network_user_id"
     measurement_locations }o--|| representatives : "created_by_id"
     measurement_locations }o--|| representatives : "deleted_by_id"
     measurement_locations }o--|| representatives : "last_updated_by_id"
-    network_user_calculations }o--|| measurement_locations : "measurement_location_id"
+    network_user_calculations }o--|| measurement_locations : "network_user_measurement_location_id"
     measurement_validators }o--|| representatives : "created_by_id"
     measurement_validators }o--|| representatives : "deleted_by_id"
     measurement_validators }o--|| representatives : "last_updated_by_id"

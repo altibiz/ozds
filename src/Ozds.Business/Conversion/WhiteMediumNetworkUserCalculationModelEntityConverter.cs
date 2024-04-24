@@ -38,12 +38,12 @@ public static class
       FromDate = entity.FromDate,
       ToDate = entity.ToDate,
       MeterId = entity.MeterId,
-      MeasurementLocationId = entity.MeasurementLocationId,
+      NetworkUserMeasurementLocationId = entity.NetworkUserMeasurementLocationId,
       UsageNetworkUserCatalogueId = entity.UsageNetworkUserCatalogueId,
       SupplyRegulatoryCatalogueId = entity.SupplyRegulatoryCatalogueId,
       NetworkUserInvoiceId = entity.NetworkUserInvoiceId,
-      ArchivedMeasurementLocation =
-        entity.ArchivedMeasurementLocation.ToModel(),
+      ArchivedNetworkUserMeasurementLocation =
+        entity.ArchivedNetworkUserMeasurementLocation.ToModel(),
       ArchivedSupplyRegulatoryCatalogue =
         entity.ArchivedSupplyRegulatoryCatalogue.ToModel(),
       ConcreteArchivedUsageNetworkUserCatalogue =
@@ -82,12 +82,12 @@ public static class
       FromDate = model.FromDate,
       ToDate = model.ToDate,
       MeterId = model.MeterId,
-      MeasurementLocationId = model.MeasurementLocationId,
+      NetworkUserMeasurementLocationId = model.NetworkUserMeasurementLocationId,
       UsageNetworkUserCatalogueId = model.UsageNetworkUserCatalogueId,
       SupplyRegulatoryCatalogueId = model.SupplyRegulatoryCatalogueId,
       NetworkUserInvoiceId = model.NetworkUserInvoiceId,
-      ArchivedMeasurementLocation =
-        model.ArchivedMeasurementLocation.ToEntity(),
+      ArchivedNetworkUserMeasurementLocation =
+        model.ArchivedNetworkUserMeasurementLocation.ToEntity(),
       ArchivedSupplyRegulatoryCatalogue =
         model.ArchivedSupplyRegulatoryCatalogue.ToEntity(),
       ArchivedUsageNetworkUserCatalogue =

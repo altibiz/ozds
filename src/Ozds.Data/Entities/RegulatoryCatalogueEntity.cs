@@ -10,7 +10,7 @@ public class RegulatoryCatalogueEntity : AuditableEntity
   public virtual LocationEntity Location { get; set; } = default!;
 
   public virtual ICollection<NetworkUserCalculationEntity>
-    Calculations
+    NetworkUserCalculations
   { get; set; } =
     default!;
 

@@ -10,7 +10,5 @@ public interface ICalculation : IValidatableObject, IReadonly, IIdentifiable
   public DateTimeOffset ToDate { get; }
   public string MeterId { get; }
   public IMeter ArchivedMeter { get; }
-  public string MeasurementLocationId { get; }
-  public IMeasurementLocation ArchivedMeasurementLocation { get; }
   public decimal Total_EUR { get; }
 }

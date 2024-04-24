@@ -114,11 +114,11 @@ public class
       UsageNetworkUserCatalogueId = usageCatalogue.Id,
       SupplyRegulatoryCatalogueId =
         calculationBasis.SupplyRegulatoryCatalogue.Id,
-      MeasurementLocationId = calculationBasis.MeasurementLocation.Id,
+      NetworkUserMeasurementLocationId = calculationBasis.MeasurementLocation.Id,
       IssuedOn = DateTimeOffset.UtcNow,
       IssuedById = default!,
       ArchivedMeter = calculationBasis.Meter,
-      ArchivedMeasurementLocation = calculationBasis.MeasurementLocation,
+      ArchivedNetworkUserMeasurementLocation = calculationBasis.MeasurementLocation,
       ConcreteArchivedUsageNetworkUserCatalogue = usageCatalogue,
       ArchivedSupplyRegulatoryCatalogue =
         calculationBasis.SupplyRegulatoryCatalogue,

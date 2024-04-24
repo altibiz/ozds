@@ -12,9 +12,11 @@ public class NetworkUserCalculationEntity : CalculationEntity, IReadonlyEntity, 
 {
   protected readonly long _networkUserInvoiceId;
 
+  protected readonly long _networkUserMeasurementLocationId;
+
   protected readonly long _supplyRegulatoryCatalogueId;
 
-  public virtual NetworkUserInvoiceEntity Invoice { get; set; } =
+  public virtual NetworkUserInvoiceEntity NetworkUserInvoice { get; set; } =
     default!;
 
   public string NetworkUserInvoiceId
@@ -70,6 +72,22 @@ public class NetworkUserCalculationEntity : CalculationEntity, IReadonlyEntity, 
     set;
   } =
     default!;
+
+  public virtual NetworkUserMeasurementLocationEntity NetworkUserMeasurementLocation { get; set; } =
+    default!;
+
+  public string NetworkUserMeasurementLocationId
+  {
+    get { return _networkUserMeasurementLocationId.ToString(); }
+    init { _networkUserMeasurementLocationId = long.Parse(value); }
+  }
+
+  public NetworkUserMeasurementLocationEntity ArchivedNetworkUserMeasurementLocation
+  {
+    get;
+    set;
+  } =
+    default!;
 }
 
 public class
@@ -114,9 +132,23 @@ public class
       .HasDiscriminator<string>("kind");
 
     builder
-      .HasOne(nameof(NetworkUserCalculationEntity.Invoice))
-      .WithMany(nameof(NetworkUserInvoiceEntity.Calculations))
+      .HasOne(nameof(NetworkUserCalculationEntity.NetworkUserInvoice))
+      .WithMany(nameof(NetworkUserInvoiceEntity.NetworkUserCalculations))
       .HasForeignKey("_networkUserInvoiceId");
+
+    builder
+      .HasOne(nameof(NetworkUserCalculationEntity.NetworkUserMeasurementLocation))
+      .WithMany(nameof(NetworkUserMeasurementLocationEntity.NetworkUserCalculations))
+      .HasForeignKey("_networkUserMeasurementLocationId");
+
+    builder
+      .ArchivedProperty(nameof(NetworkUserCalculationEntity
+        .ArchivedNetworkUserMeasurementLocation));
+
+    builder.Ignore(nameof(NetworkUserCalculationEntity.NetworkUserMeasurementLocationId));
+    builder
+      .Property("_networkUserMeasurementLocationId")
+      .HasColumnName("network_user_measurement_location_id");
 
     builder
       .ArchivedProperty(nameof(NetworkUserCalculationEntity
@@ -129,7 +161,7 @@ public class
 
     builder
       .HasOne(nameof(NetworkUserCalculationEntity.SupplyRegulatoryCatalogue))
-      .WithMany(nameof(RegulatoryCatalogueEntity.Calculations))
+      .WithMany(nameof(RegulatoryCatalogueEntity.NetworkUserCalculations))
       .HasForeignKey("_supplyRegulatoryCatalogueId");
 
     builder.Ignore(nameof(NetworkUserCalculationEntity

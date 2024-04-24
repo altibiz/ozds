@@ -11,8 +11,6 @@ public class CalculationEntity : IReadonlyEntity, IIdentifiableEntity
 {
   protected readonly long _id;
 
-  protected readonly long _measurementLocationId;
-
   public DateTimeOffset IssuedOn { get; set; } = DateTimeOffset.UtcNow;
 
   public string? IssuedById { get; set; }
@@ -27,25 +25,9 @@ public class CalculationEntity : IReadonlyEntity, IIdentifiableEntity
 
   public string MeterId { get; set; } = default!;
 
-  public virtual MeasurementLocationEntity MeasurementLocation { get; set; } =
-    default!;
-
-  public string MeasurementLocationId
-  {
-    get { return _measurementLocationId.ToString(); }
-    init { _measurementLocationId = long.Parse(value); }
-  }
-
   public decimal Total_EUR { get; set; }
 
   public MeterEntity ArchivedMeter { get; set; } = default!;
-
-  public MeasurementLocationEntity ArchivedMeasurementLocation
-  {
-    get;
-    set;
-  } =
-    default!;
 
   public virtual string Id
   {
@@ -60,7 +42,7 @@ public class
   CalculationEntityTypeHierarchyConfiguration :
   EntityTypeHierarchyConfiguration
   <
-    NetworkUserCalculationEntity>
+    CalculationEntity>
 {
   public override void Configure(ModelBuilder modelBuilder, Type type)
   {
@@ -76,6 +58,14 @@ public class
       builder.HasKey("_id");
     }
 
+    if (type.IsAssignableTo(typeof(NetworkUserCalculationEntity)))
+    {
+      builder
+        .HasOne(nameof(CalculationEntity.Meter))
+        .WithMany(nameof(MeterEntity.NetworkUserCalculations))
+        .HasForeignKey(nameof(CalculationEntity.MeterId));
+    }
+
     builder.Ignore(nameof(CalculationEntity.Id));
     builder
       .Property("_id")
@@ -89,21 +79,7 @@ public class
       .HasForeignKey(nameof(CalculationEntity.IssuedById));
 
     builder
-      .HasOne(nameof(CalculationEntity.Meter))
-      .WithMany(nameof(MeterEntity.Calculations))
-      .HasForeignKey(nameof(CalculationEntity.MeterId));
-
-    builder
-      .HasOne(nameof(CalculationEntity.MeasurementLocation))
-      .WithMany(nameof(MeasurementLocationEntity.Calculations))
-      .HasForeignKey("_measurementLocationId");
-
-    builder
       .ArchivedProperty(nameof(CalculationEntity.ArchivedMeter));
-
-    builder
-      .ArchivedProperty(nameof(CalculationEntity
-        .ArchivedMeasurementLocation));
 
     builder
       .Property<DateTimeOffset>(nameof(CalculationEntity.IssuedOn))
@@ -111,11 +87,6 @@ public class
         x => x.ToUniversalTime(),
         x => x.ToUniversalTime()
       );
-
-    builder.Ignore(nameof(CalculationEntity.MeasurementLocationId));
-    builder
-      .Property("_measurementLocationId")
-      .HasColumnName("measurement_location_id");
 
     builder
       .Property(nameof(CalculationEntity.Total_EUR))

@@ -47,6 +47,11 @@ public class NetworkUserInvoiceEntity : InvoiceEntity
   public decimal SupplyRenewableEnergyFee_EUR { get; set; }
 
   public decimal SupplyFeeTotal_EUR { get; set; }
+
+  public virtual ICollection<NetworkUserCalculationEntity>
+    NetworkUserCalculations
+  { get; set; } =
+    default!;
 }
 
 public class
@@ -67,7 +72,7 @@ public class
       .HasColumnName("network_user_id");
 
     builder
-      .ArchivedProperty(nameof(LocationInvoiceEntity.ArchivedLocation));
+      .ArchivedProperty(nameof(NetworkUserInvoiceEntity.ArchivedLocation));
 
     builder
       .ArchivedProperty(nameof(NetworkUserInvoiceEntity.ArchivedNetworkUser));

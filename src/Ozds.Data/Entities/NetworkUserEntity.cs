@@ -11,7 +11,8 @@ public class NetworkUserEntity : AuditableEntity
   private readonly long _locationId;
 
   public virtual ICollection<RepresentativeEntity>
-    Representatives { get; set; } = default!;
+    Representatives
+  { get; set; } = default!;
 
   public virtual string LocationId
   {
@@ -22,7 +23,8 @@ public class NetworkUserEntity : AuditableEntity
   public virtual LocationEntity Location { get; set; } = default!;
 
   public virtual ICollection<NetworkUserMeasurementLocationEntity>
-    MeasurementLocations { get; set; } = default!;
+    NetworkUserMeasurementLocations
+  { get; set; } = default!;
 
   public virtual ICollection<NetworkUserInvoiceEntity> Invoices { get; set; } =
     default!;
@@ -46,7 +48,7 @@ public class
       .HasForeignKey("_locationId");
 
     builder
-      .HasMany(nameof(NetworkUserEntity.MeasurementLocations))
+      .HasMany(nameof(NetworkUserEntity.NetworkUserMeasurementLocations))
       .WithOne(nameof(NetworkUserMeasurementLocationEntity.NetworkUser));
 
     builder
