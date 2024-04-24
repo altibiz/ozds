@@ -6,6 +6,9 @@ using Ozds.Business.Queries.Abstractions;
 using Ozds.Data;
 using Ozds.Data.Entities;
 
+// TODO: MeasurementLocation -> MeasurementSpot ?
+// TODO: use surrogate keys
+
 namespace Ozds.Business.Queries;
 
 public class OzdsLocationMeasurementLocationModelQueries : IOzdsQueries
