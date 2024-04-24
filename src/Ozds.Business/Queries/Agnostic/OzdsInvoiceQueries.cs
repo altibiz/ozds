@@ -42,9 +42,11 @@ public class OzdsInvoiceQueries : IOzdsQueries
     int pageCount = QueryConstants.DefaultPageCount
   ) where T : class, IInvoice
   {
-    var queryable = _context.GetDbSet(typeof(T))
+    var dbSetType = _modelEntityConverter.EntityType(typeof(T));
+    var queryable = _context.GetDbSet(dbSetType)
                       as IQueryable<InvoiceEntity>
-                    ?? throw new InvalidOperationException();
+                    ?? throw new InvalidOperationException(
+                      $"No DbSet found for {dbSetType}");
     var filtered = whereClauses.Aggregate(queryable,
       (current, clause) => current.WhereDynamic(clause));
     var count = await filtered.CountAsync();

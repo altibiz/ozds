@@ -31,8 +31,25 @@
   </Loading>
 </main>
 
+<style>
+  td {
+    text-align: center !important;
+  }
+  th {
+    text-align: center !important;
+  }
+</style>
+
 @code {
   [CascadingParameter] private Task<AuthenticationState>? _authenticationStateTask { get; set; }
 
   private readonly Theme _theme = new();
+
+  @* protected override void OnLayoutInitialized()
+  {
+    _theme.Theme = new HelbMudTheme();
+    _theme.DrawerClipMode = DrawerClipMode.Always;
+    _theme.FontFamily = "Roboto";
+    _theme.DefaultBorderRadius = 3;
+  } *@
 }

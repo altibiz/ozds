@@ -136,7 +136,9 @@
     {
       return;
     }
-
+    var query = ScopedServices.GetRequiredService<OzdsInvoiceQueries>();
+    var response = await query.Read<NetworkUserInvoiceModel>(Enumerable.Empty<string>() ,Enumerable.Empty<string>() ,Enumerable.Empty<string>() ,1 ,100);
+    _invoices = response.Items;
     if (representative.Representative.Role is RoleModel.NetworkUserRepresentative)
     {
       // Find all _invoices tied to this user, decending by FromDate
@@ -187,7 +189,7 @@
 
   private void InspectInvoice(NetworkUserInvoiceModel item)
   {
-    NavigationManager.NavigateTo($"invoice/{item.Id}");
+    NavigationManager.NavigateTo($"network-user-invoice/{item.Id}");
   }
 
   private Task Filter(string value)

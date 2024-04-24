@@ -15,6 +15,17 @@ builder.Services
     .MigrateOzdsData());
 
 var app = builder.Build();
+app.Use(async (context, next) =>
+{
+  if (context.Request.Path == "/")
+  {
+    context.Response.Redirect("/app", permanent: true);
+  }
+  else
+  {
+    await next();
+  }
+});
 app.UseStaticFiles();
 app.UseOrchardCore();
 await app.RunAsync();

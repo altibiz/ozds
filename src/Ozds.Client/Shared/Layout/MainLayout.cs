@@ -38,7 +38,8 @@ public partial class MainLayout : OzdsLayoutComponentBase
         {
           yield return new NavigationDescriptor(
             navigationAttribute.Title,
-            "/app" + routeAttribute.Template
+            "/app" + routeAttribute.Template,
+            navigationAttribute.Icon
           );
         }
       }
@@ -91,6 +92,6 @@ public partial class MainLayout : OzdsLayoutComponentBase
     return await query.MaybeRepresentingUserByClaimsPrincipal(claimsPrincipal);
   }
 
-  public record NavigationDescriptor(string Title, string Route);
+  public record NavigationDescriptor(string Title, string Route, string? Icon);
 }
 // TODO: remove hardcoding of /app here

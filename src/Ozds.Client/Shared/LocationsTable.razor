@@ -7,7 +7,7 @@
 <MudHidden Breakpoint="Breakpoint.MdAndUp">
   <MudItem Class="mb-5">
     <MudText Typo="Typo.h4" Class="d-flex">
-      @(T["Potrošnja lokacija"])
+      @(T["Lokacije"])
     </MudText>
     @foreach (var dataStruct in _shownLocations.Where(x => x.show).ToList())
     {
@@ -47,7 +47,7 @@
     QuickFilter="@_quickFilter"
     Class="mb-6">
     <ToolBarContent>
-      <MudText Typo="Typo.h4">@T["Potrošnja lokacija"]</MudText>
+      <MudText Typo="Typo.h4">@T["Lokacije"]</MudText>
       <MudSpacer/>
       <MudTextField
         @bind-Value="_searchString"

@@ -9,6 +9,8 @@ public class NavigationAttribute : Attribute
 
   public string? RouteValue { get; set; }
 
+  public string? Icon { get; set; }
+
   public Type[] Parents { get; set; } = Array.Empty<Type>();
 
   public RoleModel[] Allows { get; set; } = Array.Empty<RoleModel>();
