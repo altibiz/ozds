@@ -45,3 +45,5 @@ words:
   - "nushell"
   - "justfile"
   - "omnisharp"
+  - "linq"
+  - "cgnat"

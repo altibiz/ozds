@@ -57,7 +57,7 @@ public static class IServiceCollectionExtensions
     services.AddTransientAssignableTo(typeof(IPushRequestMeasurementConverter));
     services.AddSingleton(typeof(AgnosticPushRequestMeasurementConverter));
 
-    services.AddTransient(typeof(NetworkUserInvoiceIssuer));
+    services.AddTransient(typeof(NetworkUserInvoiceCalculator));
     services.AddTransientAssignableTo(
       typeof(INetworkUserCalculationCalculator));
     services.AddSingleton(typeof(AgnosticNetworkUserCalculationCalculator));

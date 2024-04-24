@@ -22,7 +22,7 @@
     var ozdsBillingQueries = ScopedServices
       .GetRequiredService<OzdsBillingQueries>();
     var invoiceIssuer = ScopedServices
-      .GetRequiredService<NetworkUserInvoiceIssuer>();
+      .GetRequiredService<NetworkUserInvoiceCalculator>();
     var invoiceMutations = ScopedServices
       .GetRequiredService<OzdsInvoiceMutations>();
     var networkUserCalculationMutations = ScopedServices

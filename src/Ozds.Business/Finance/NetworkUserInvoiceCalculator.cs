@@ -7,14 +7,14 @@ using Ozds.Business.Models.Composite;
 
 namespace Ozds.Business.Finance;
 
-public class NetworkUserInvoiceIssuer
+public class NetworkUserInvoiceCalculator
 {
   private readonly AgnosticNetworkUserCalculationCalculator
     _calculationCalculator;
 
   private readonly IHttpContextAccessor _httpContextAccessor;
 
-  public NetworkUserInvoiceIssuer(
+  public NetworkUserInvoiceCalculator(
     AgnosticNetworkUserCalculationCalculator calculationCalculator,
     IHttpContextAccessor httpContextAccessor
   )
