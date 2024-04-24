@@ -87,7 +87,7 @@ class AgnosticPushRequestMeasurementConverter
     string meterId, \
     DateTimeOffset timestamp \
   )
-  + TMeasurement ToMeasurement<TMeasurement>(
+  + TMeasurement ToMeasurement<TMeasurement>a(
     JsonObject pushRequest, \
     string meterId, \
     DateTimeOffset timestamp \
@@ -320,20 +320,243 @@ class PhasicMeasure<T>
 
   + PhasicMeasure<U> ConvertPrimitiveTo<U>()
 }
+
+class CompositePhasicMeasure<T>
+{
+  + List<PhasicMeasure<T>> Measures
+}
+
+class TriPhasicMeasure<T>
+{
+  + T ValueL1
+  + T ValueL2
+  + T ValueL3
+}
+
+class SinglePhasicMeasure<T>
+{
+  + T Value
+}
+
+class NullPhasicMeasure<T>
+
+CompositePhasicMeasure *-- "0..N" PhasicMeasure
+
+PhasicMeasure <|-- SinglePhasicMeasure
+PhasicMeasure <|-- TriPhasicMeasure
+PhasicMeasure <|-- NullPhasicMeasure
+PhasicMeasure <|-- CompositePhasicMeasure
 ```
 
 - Direction: a measure can be an import or export measure and these correspond
   to user consumption and production. It can also be any duplex measure if it is
   a measure of current or voltage since these are not directional.
-- Tariff: a measure can be a high tariff and a low tariff or a unary tariff
+
+```plantuml
+class DuplexMeasure<T>
+{
+  + {static} DuplexMeasure<T> Null
+
+  + PhasicMeasure<T> DuplexNet
+  + PhasicMeasure<T> DuplexAny
+  + PhasicMeasure<T> DuplexImport
+  + PhasicMeasure<T> DuplexExport
+  + DuplexMeasure<T> DuplexAbs
+  + DuplexMeasure<T> DuplexSum
+
+  + DuplexMeasure<U> ConvertPrimitiveTo<U>()
+}
+
+class CompositeDuplexMeasure<T>
+{
+  + List<DuplexMeasure<T>> Measures
+}
+
+class NullDuplexMeasure<T>
+
+class ImportExportDuplexMeasure<T>
+{
+  + PhasicMeasure<T> Import
+  + PhasicMeasure<T> Export
+}
+
+class AnyDuplexMeasure<T>
+{
+  + PhasicMeasure<T> Value
+}
+
+class NetDuplexMeasure<T>
+{
+  + PhasicMeasure<T> TrueNet
+}
+
+CompositeDuplexMeasure *-- "0..N" DuplexMeasure
+
+DuplexMeasure <|-- ImportExportDuplexMeasure
+DuplexMeasure <|-- AnyDuplexMeasure
+DuplexMeasure <|-- NetDuplexMeasure
+DuplexMeasure <|-- NullDuplexMeasure
+DuplexMeasure <|-- CompositeDuplexMeasure
+```
+
+- Tariff: a measure can be a high tariff and a low tariff or a single tariff
   measure. This is used to calculate the cost of the measure depending on the
   time of day.
 
-The measure structure is such that `TariffMeasure` contains `DuplexMeasure`
-which contains `PhaseMeasure`. All three of these class hierarchies also contain
-a `Null` class which is used to represent a measure that is not set. These
-hierarchies also contain a composite class which is used to represent a measure
-that is a combination of two or more measures. This is used to represent the
-different ways in which a measure is stored or calculated for better accuracy.
-For example, we might store a measure as three phases but also as a single phase
-and for some calculations one is more accurate than the other.
+```plantuml
+class TariffMeasure<T>
+{
+  + {static} TariffMeasure<T> Null
+
+  + DuplexMeasure<T> TariffUnary
+  + BinaryTariffMeasure<T> TariffBinary
+  + TariffMeasure<T> TariffAbs
+  + DuplexMeasure<T> TariffSum
+
+  + TariffMeasure<U> ConvertPrimitiveTo<U>()
+}
+
+class CompositeTariffMeasure<T>
+{
+  + List<TariffMeasure<T>> Measures
+}
+
+class BinaryTariffMeasure<T>
+{
+  + DuplexMeasure<T> T1
+  + DuplexMeasure<T> T2
+}
+
+class NullTariffMeasure<T>
+
+class UnaryTariffMeasure<T>
+{
+  + DuplexMeasure<T> T0
+}
+
+CompositeTariffMeasure *-- "0..N" TariffMeasure
+
+TariffMeasure <|-- UnaryTariffMeasure
+TariffMeasure <|-- BinaryTariffMeasure
+TariffMeasure <|-- NullTariffMeasure
+TariffMeasure <|-- CompositeTariffMeasure
+```
+
+The measure structure is such that the tariff hierarchy classes contain
+directional hierarchy classes which contain phase hierarchy classes. All three
+of these class hierarchies also contain a null class which is used to represent
+a measure that is not set. These hierarchies also contain a composite class
+which is used to represent a measure that is a combination of two or more
+measures. This is used to represent the different ways in which a measure is
+stored or calculated for better accuracy. For example, we might store a measure
+as three phases but also as a single phase and for some calculations one is more
+accurate than the other.
+
+There are two more top-level class hierarchies:
+
+- Span: a measure can be a measure over a certain time span. This is used to
+  calculate the costs over a span of time.
+
+```plantuml
+class SpanningMeasure<T>
+{
+  + {static} SpanningMeasure<T> Null
+
+  + TariffMeasure<T> SpanMin
+  + TariffMeasure<T> SpanMax
+  + TariffMeasure<T> SpanAvg
+  + TariffMeasure<T> SpanPeak
+  + TariffMeasure<T> SpanDiff
+
+  + SpanningMeasure<U> ConvertPrimitiveTo<U>()
+}
+
+class NullSpanningMeasure<T>
+
+class MinMaxSpanningMeasure<T>
+{
+  + TariffMeasure<T> TrueMin
+  + TariffMeasure<T> TrueMax
+}
+
+class AvgSpanningMeasure<T>
+{
+  + TariffMeasure<T> TrueAvg
+}
+
+class PeakSpanningMeasure<T>
+{
+  + TariffMeasure<T> TruePeak
+}
+
+SpanningMeasure <|-- MinMaxSpanningMeasure
+SpanningMeasure <|-- AvgSpanningMeasure
+SpanningMeasure <|-- PeakSpanningMeasure
+SpanningMeasure <|-- NullSpanningMeasure
+```
+
+- Expenditure: a measure can be an amount used to calculate costs. For network
+  user invoice calculations this means it can be either used to calculate supply
+  or usage costs and is used to represent these two different types of costs.
+
+```plantuml
+class ExpenditureMeasure<T>
+{
+  + {static} ExpenditureMeasure<T> Null
+
+  + TariffMeasure<T> ExpenditureSupply
+  + TariffMeasure<T> ExpenditureUsage
+  + TariffMeasure<T> ExpenditureSum
+
+  + ExpenditureMeasure<U> ConvertPrimitiveTo<U>()
+}
+
+class NullExpenditureMeasure<T>
+
+class SupplyExpenditureMeasure<T>
+{
+  + TariffMeasure<T> TrueSupply
+}
+
+class UsageExpenditureMeasure<T>
+{
+  + TariffMeasure<T> TrueUsage
+}
+
+class DualExpenditureMeasure<T>
+{
+  + TariffMeasure<T> TrueSupply
+  + TariffMeasure<T> TrueUsage
+}
+
+ExpenditureMeasure <|-- SupplyExpenditureMeasure
+ExpenditureMeasure <|-- UsageExpenditureMeasure
+ExpenditureMeasure <|-- DualExpenditureMeasure
+ExpenditureMeasure <|-- NullExpenditureMeasure
+```
+
+## `Ozds.Business.Models`
+
+Contains business models that are used to represent entities in the database.
+Entities in the database are represented as entity classes in the
+`Ozds.Data.Entities` namespace which are then converted to business models in
+this namespace. The reasoning is that the database entity classes have special
+fields or properties that instruct Entity Framework Core how to handle database
+operations that should not be exposed to the rest of the application. On the
+other hand, business models have special fields and properties and implement
+interfaces which should not be represented in the database.
+
+Models are divided into a couple of class hierarchies:
+
+- Auditable:
+- Events:
+- Measurements:
+- Aggregates:
+- Invoices:
+- Network user calculations:
+
+## `Ozds.Business.Mutations`
+
+## `Ozds.Business.Queries`
+
+## `Ozds.Business.Time`
