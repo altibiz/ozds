@@ -8,24 +8,24 @@
   <Loading State="_userState">
     <Found Context="user">
       <CascadingValue Value="user">
-        <UserLayout>
-          <Body>
           <Loading State="_representativeState">
             <Found Context="representative">
               <CascadingValue Value="representative">
-                <RepresentativeLayout>
+                <UserLayout>
                   <Body>
-                  @Body
+                  <RepresentativeLayout>
+                    <Body>
+                    @Body
+                    </Body>
+                  </RepresentativeLayout>
                   </Body>
-                </RepresentativeLayout>
+                </UserLayout>
               </CascadingValue>
             </Found>
             <NotFound>
               @Body
             </NotFound>
           </Loading>
-          </Body>
-        </UserLayout>
       </CascadingValue>
     </Found>
   </Loading>

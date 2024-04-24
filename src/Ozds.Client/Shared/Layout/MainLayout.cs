@@ -32,9 +32,9 @@ public partial class MainLayout : OzdsLayoutComponentBase
           && type.GetCustomAttribute(typeof(NavigationAttribute)) is
             NavigationAttribute navigationAttribute)
       {
-        if (navigationAttribute.Title is not null)
-          // && rep is not null
-          // && navigationAttribute.Allows.Contains(rep.Representative.Role))
+        if (navigationAttribute.Title is not null
+          && rep is not null
+          && navigationAttribute.Allows.Contains(rep.Representative.Role))
         {
           yield return new NavigationDescriptor(
             navigationAttribute.Title,
