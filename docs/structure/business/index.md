@@ -826,9 +826,7 @@ abstract class CalculationModel
   + DateTimeOffset FromDate
   + DateTimeOffset ToDate
   + string MeterId
-  + IMeter Meter
-  + string MeasurementLocationId
-  + IMeasurementLocation MeasurementLocation
+  + IMeter ArchivedMeter
   + decimal Total_EUR
 }
 
