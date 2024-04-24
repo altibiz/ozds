@@ -6,7 +6,7 @@ ignorePaths:
   - "**/Migrations/**/*"
   - "*.razor" # TODO: remove once localized
   - "./docs/structure/data/schema.md"
-  - "App_Data/**/*"
+  - "./src/Ozds.Server/App_Data/**/*"
   # NOTE: maybe remove these and add ignores in them?
   - "justfile"
   - "flake.nix"
