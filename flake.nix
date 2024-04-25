@@ -27,7 +27,7 @@
           PGPASSWORD = "ozds";
 
           DOXYGEN_HTML_EXTRA_STYLESHEET =
-            "${doxygen-awesome-css}/doxygen-awesome-css.css";
+            "${doxygen-awesome-css}/doxygen-awesome.css";
 
           packages = with pkgs; let
             usql = pkgs.writeShellApplication {
