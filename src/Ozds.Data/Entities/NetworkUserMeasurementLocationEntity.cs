@@ -7,7 +7,7 @@ namespace Ozds.Data.Entities;
 
 public class NetworkUserMeasurementLocationEntity : MeasurementLocationEntity
 {
-  private readonly long _catalogueId;
+  private readonly long _networkUserCatalogueId;
   private long _networkUserId;
 
   public virtual string NetworkUserId
@@ -20,8 +20,8 @@ public class NetworkUserMeasurementLocationEntity : MeasurementLocationEntity
 
   public virtual string NetworkUserCatalogueId
   {
-    get { return _catalogueId.ToString(); }
-    init { _catalogueId = long.Parse(value); }
+    get { return _networkUserCatalogueId.ToString(); }
+    init { _networkUserCatalogueId = long.Parse(value); }
   }
 
   public virtual NetworkUserCatalogueEntity NetworkUserCatalogue { get; set; } =
@@ -58,7 +58,7 @@ public class
     builder.Ignore(nameof(NetworkUserMeasurementLocationEntity
       .NetworkUserCatalogueId));
     builder
-      .Property("_catalogueId")
-      .HasColumnName("catalogue_id");
+      .Property("_networkUserCatalogueId")
+      .HasColumnName("network_user_catalogue_id");
   }
 }
