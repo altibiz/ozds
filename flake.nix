@@ -7,7 +7,7 @@
     doxygen-awesome-css.flake = false;
   };
 
-  outputs = { self, nixpkgs, utils }:
+  outputs = { self, nixpkgs, utils, doxygen-awesome-css, ... }:
     utils.lib.simpleFlake {
       inherit self nixpkgs;
       name = "altibiz-ozds";
@@ -25,6 +25,9 @@
           PGDATABASE = "ozds";
           PGUSER = "ozds";
           PGPASSWORD = "ozds";
+
+          DOXYGEN_HTML_EXTRA_STYLESHEET =
+            "${doxygen-awesome-css}/doxygen-awesome-css.css";
 
           packages = with pkgs; let
             usql = pkgs.writeShellApplication {
