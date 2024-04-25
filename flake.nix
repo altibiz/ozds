@@ -2,12 +2,9 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11";
     utils.url = "github:numtide/flake-utils";
-
-    doxygen-awesome-css.url = "github:jothepro/doxygen-awesome-css";
-    doxygen-awesome-css.flake = false;
   };
 
-  outputs = { self, nixpkgs, utils, doxygen-awesome-css, ... }:
+  outputs = { self, nixpkgs, utils, ... }:
     utils.lib.simpleFlake {
       inherit self nixpkgs;
       name = "altibiz-ozds";
@@ -25,10 +22,6 @@
           PGDATABASE = "ozds";
           PGUSER = "ozds";
           PGPASSWORD = "ozds";
-
-          DOXYGEN_HTML_EXTRA_STYLESHEET =
-            "${doxygen-awesome-css}/doxygen-awesome.css"
-            + " ${doxygen-awesome-css}/doxygen-awesome-sidebar-only.css";
 
           packages = with pkgs; let
             usql = pkgs.writeShellApplication {
