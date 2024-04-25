@@ -8,13 +8,13 @@ using Ozds.Data.Entities.Base;
 
 namespace Ozds.Business.Queries.Agnostic;
 
-public class OzdsNetworkUserCalculationQueries : IOzdsQueries
+public class OzdsCalculationQueries : IOzdsQueries
 {
   private readonly OzdsDbContext _context;
 
   private readonly AgnosticModelEntityConverter _modelEntityConverter;
 
-  public OzdsNetworkUserCalculationQueries(
+  public OzdsCalculationQueries(
     OzdsDbContext context,
     AgnosticModelEntityConverter modelEntityConverter
   )

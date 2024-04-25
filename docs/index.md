@@ -15,7 +15,7 @@ information you need.
 - [Project structure](docs/structure/index.md)
   - [Testing](docs/structure/test.md)
   - [Database schema](docs/structure/data/index.md)
-  - [Business layer](docs/structure/business/index.md)
+  - [Business layer](docs/structure/business.md)
   - [Server](docs/structure/server.md)
   - [Client](docs/structure/client.md)
   - [Faking measurements](docs/structure/fake.md)

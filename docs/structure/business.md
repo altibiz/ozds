@@ -840,7 +840,9 @@ In addition, all class hierarchies implement `IValidatableObject`.
 Contains classes that wrap database requests in functions that mutate data.
 These are separate from other requests in `Ozds.Business.Queries` because
 mutations are always more sensitive and should be handled with care. All the
-classes use `OzdsDbContext` to mutate data in the database.
+classes use `AgnosticModelEntityConverter` from `Ozds.Business.Conversion` to
+convert the mutated business models to database entities and `OzdsDbContext`
+from `Ozds.Data` to mutate data in the database.
 
 Most mutations are done via agnostic classes that operate on class hierarchies
 in `Ozds.Business.Models`:
@@ -851,6 +853,7 @@ in `Ozds.Business.Models`:
 class OzdsAuditableMutations
 {
   - OzdsDbContext _context
+  - AgnosticModelEntityConverter _modelEntityConverter
 
   + void Create(IAuditable)
   + void Update(IAuditable)
@@ -865,6 +868,7 @@ class OzdsAuditableMutations
 class OzdsEventMutations
 {
   - OzdsDbContext _context
+  - AgnosticModelEntityConverter _modelEntityConverter
 
   + void Create(IEvent)
 }
@@ -877,6 +881,7 @@ class OzdsEventMutations
 class OzdsMeasurementMutations
 {
   - OzdsDbContext _context
+  - AgnosticModelEntityConverter _modelEntityConverter
 
   + void Create(IMeasurement)
 }
@@ -889,6 +894,7 @@ class OzdsMeasurementMutations
 class OzdsAggregateMutations
 {
   - OzdsDbContext _context
+  - AgnosticModelEntityConverter _modelEntityConverter
 
   + void Create(IAggregate)
 }
@@ -901,6 +907,7 @@ class OzdsAggregateMutations
 class OzdsInvoiceMutations
 {
   - OzdsDbContext _context
+  - AgnosticModelEntityConverter _modelEntityConverter
 
   + void Create(IInvoice)
 }
@@ -913,12 +920,151 @@ class OzdsInvoiceMutations
 class OzdsCalculationMutations
 {
   - OzdsDbContext _context
+  - AgnosticModelEntityConverter _modelEntityConverter
 
   + void Create(ICalculation)
 }
 ```
 
 ## `Ozds.Business.Queries`
+
+Contains classes that wrap database requests in functions that query data. These
+are separate from other requests in `Ozds.Business.Mutations` because queries
+are always less sensitive and should be handled with less care. All the classes
+use `OzdsDbContext` from `Ozds.Data` to query data in the database and
+`AgnosticModelEntityConverter` from `Ozds.Business.Conversion` to convert the
+queried database entities to business models.
+
+Query classes use the `PaginatedList<T>` class that makes it easier to paginate
+the results of a query.
+
+```plantuml
+class PaginatedList<T>
+{
+  + List<T> Items
+  + int TotalCount
+}
+```
+
+Query classes also use the `Z.EntityFramework.Plus.EFCore` nuget package to make
+where and order by clauses agnostic over the type of entity. This makes the code
+more brittle but for now it is a quick and dirty solution to get started before
+we convert everything to use standard LINQ expressions.
+
+Most queries are done via specifically implemented classes but a lot can be
+queried via agnostic classes that operate on class hierarchies in
+`Ozds.Business.Models`:
+
+- Auditable: queries that query auditable entities.
+
+```plantuml
+class OzdsAuditableQueries
+{
+  - OzdsDbContext _context
+  - AgnosticModelEntityConverter _modelEntityConverter
+
+  + Task<T?> ReadSingle<T>(string id) where T : class, IAuditable
+  + Task<PaginatedList<T>> Read<T>( \
+    IEnumerable<string> whereClauses, \
+    IEnumerable<string> orderByDescClauses, \
+    IEnumerable<string> orderByAscClauses, \
+    int pageNumber = QueryConstants.StartingPage, \
+    int pageCount = QueryConstants.DefaultPageCount \
+  ) where T : class, IAuditable
+}
+```
+
+- Events: queries that query events.
+
+```plantuml
+class OzdsEventQueries
+{
+  - OzdsDbContext _context
+  - AgnosticModelEntityConverter _modelEntityConverter
+
+  + public async Task<PaginatedList<T>> Read<T>( \
+    IEnumerable<string> whereClauses, \
+    DateTimeOffset fromDate, \
+    DateTimeOffset toDate, \
+    int pageNumber = QueryConstants.StartingPage, \
+    int pageCount = QueryConstants.DefaultPageCount \
+  ) where T : class, IEvent
+}
+```
+
+- Measurements: queries that query measurements.
+
+```plantuml
+class OzdsMeasurementQueries
+{
+  - OzdsDbContext _context
+  - AgnosticModelEntityConverter _modelEntityConverter
+
+  + Task<PaginatedList<T>> Read<T>( \
+    IEnumerable<string> whereClauses, \
+    DateTimeOffset fromDate, \
+    DateTimeOffset toDate, \
+    int pageNumber = QueryConstants.StartingPage, \
+    int pageCount = QueryConstants.DefaultPageCount \
+  ) where T : class, IMeasurement
+}
+```
+
+- Aggregates: queries that query aggregates.
+
+```plantuml
+class OzdsAggregateQueries
+{
+  - OzdsDbContext _context
+  - AgnosticModelEntityConverter _modelEntityConverter
+
+  + Task<PaginatedList<T>> Read<T>( \
+    IEnumerable<string> whereClauses, \
+    DateTimeOffset fromDate, \
+    DateTimeOffset toDate, \
+    int pageNumber = QueryConstants.StartingPage, \
+    int pageCount = QueryConstants.DefaultPageCount \
+  ) where T : class, IAggregate
+}
+```
+
+- Invoices: queries that query invoices.
+
+```plantuml
+class OzdsInvoiceQueries
+{
+  - OzdsDbContext _context
+  - AgnosticModelEntityConverter _modelEntityConverter
+
+  + Task<T?> ReadSingle<T>(string id) where T : class, IInvoice
+  + Task<PaginatedList<T>> Read<T>( \
+    IEnumerable<string> whereClauses, \
+    IEnumerable<string> orderByDescClauses, \
+    IEnumerable<string> orderByAscClauses, \
+    int pageNumber = QueryConstants.StartingPage, \
+    int pageCount = QueryConstants.DefaultPageCount \
+  ) where T : class, IInvoice
+}
+```
+
+- Calculations: queries that query calculations.
+
+```plantuml
+class OzdsCalculationQueries
+{
+  - OzdsDbContext _context
+  - AgnosticModelEntityConverter _modelEntityConverter
+
+  + Task<T?> ReadSingle<T>(string id) where T : class, ICalculation
+  + Task<PaginatedList<T>> Read<T>( \
+    IEnumerable<string> whereClauses, \
+    IEnumerable<string> orderByDescClauses, \
+    IEnumerable<string> orderByAscClauses, \
+    int pageNumber = QueryConstants.StartingPage, \
+    int pageCount = QueryConstants.DefaultPageCount \
+  ) where T : class, ICalculation
+}
+```
 
 ## `Ozds.Business.Time`
 
