@@ -36,6 +36,7 @@
   "files.trimTrailingWhitespace": true,
   "editor.formatOnSave": true,
   "files.associations": {
-    ".dvcignore": "ignore"
+    ".dvcignore": "ignore",
+    "Doxyfile": "ini"
   }
 }
