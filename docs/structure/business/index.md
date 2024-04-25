@@ -812,8 +812,6 @@ interface ICalculation
   + DateTimeOffset ToDate
   + string MeterId
   + IMeter Meter
-  + string MeasurementLocationId
-  + IMeasurementLocation MeasurementLocation
   + decimal Total_EUR
 }
 
@@ -838,6 +836,87 @@ ICalculation <|-- CalculationModel
 In addition, all class hierarchies implement `IValidatableObject`.
 
 ## `Ozds.Business.Mutations`
+
+Contains classes that wrap database requests in functions that mutate data.
+These are separate from other requests in `Ozds.Business.Queries` because
+mutations are always more sensitive and should be handled with care. All the
+classes use `OzdsDbContext` to mutate data in the database.
+
+Most mutations are done via agnostic classes that operate on class hierarchies
+in `Ozds.Business.Models`:
+
+- Auditable: mutations that mutate auditable entities.
+
+```plantuml
+class OzdsAuditableMutations
+{
+  - OzdsDbContext _context
+
+  + void Create(IAuditable)
+  + void Update(IAuditable)
+  + void Delete(IAuditable)
+}
+```
+
+- Events: mutations that mutate events. This class hierarchy is readonly so only
+  the create mutation is implemented.
+
+```plantuml
+class OzdsEventMutations
+{
+  - OzdsDbContext _context
+
+  + void Create(IEvent)
+}
+```
+
+- Measurements: mutations that mutate measurements. This class hierarchy is
+  readonly so only the create mutation is implemented.
+
+```plantuml
+class OzdsMeasurementMutations
+{
+  - OzdsDbContext _context
+
+  + void Create(IMeasurement)
+}
+```
+
+- Aggregates: mutations that mutate aggregates. This class hierarchy is readonly
+  so only the create mutation is implemented.
+
+```plantuml
+class OzdsAggregateMutations
+{
+  - OzdsDbContext _context
+
+  + void Create(IAggregate)
+}
+```
+
+- Invoices: mutations that mutate invoices. This class hierarchy is readonly so
+  only the create mutation is implemented.
+
+```plantuml
+class OzdsInvoiceMutations
+{
+  - OzdsDbContext _context
+
+  + void Create(IInvoice)
+}
+```
+
+- Calculations: mutations that mutate calculations. This class hierarchy is
+  readonly so only the create mutation is implemented.
+
+```plantuml
+class OzdsCalculationMutations
+{
+  - OzdsDbContext _context
+
+  + void Create(ICalculation)
+}
+```
 
 ## `Ozds.Business.Queries`
 

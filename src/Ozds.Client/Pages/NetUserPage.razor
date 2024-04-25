@@ -26,7 +26,7 @@
     var invoiceMutations = ScopedServices
       .GetRequiredService<OzdsInvoiceMutations>();
     var networkUserCalculationMutations = ScopedServices
-      .GetRequiredService<OzdsNetworkUserCalculationMutations>();
+      .GetRequiredService<OzdsCalculationMutations>();
 
     var basis = await ozdsBillingQueries
       .IssuingBasisForNetworkUser(Id!, dateFrom, dateTo);

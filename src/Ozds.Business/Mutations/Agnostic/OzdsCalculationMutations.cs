@@ -6,13 +6,13 @@ using Ozds.Data;
 
 namespace Ozds.Business.Mutations.Agnostic;
 
-public class OzdsNetworkUserCalculationMutations : IOzdsMutations
+public class OzdsCalculationMutations : IOzdsMutations
 {
   private readonly OzdsDbContext _context;
 
   private readonly AgnosticModelEntityConverter _modelEntityConverter;
 
-  public OzdsNetworkUserCalculationMutations(
+  public OzdsCalculationMutations(
     OzdsDbContext context,
     AgnosticModelEntityConverter modelEntityConverter
   )
@@ -38,7 +38,7 @@ public class OzdsNetworkUserCalculationMutations : IOzdsMutations
     _context.ChangeTracker.Clear();
   }
 
-  public void Create(INetworkUserCalculation invoice)
+  public void Create(ICalculation invoice)
   {
     var validationResults = invoice
       .Validate(new ValidationContext(this))
