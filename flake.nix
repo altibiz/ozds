@@ -70,6 +70,7 @@
             taplo
             nushell
             nodePackages.cspell
+            doxygen
           ];
         };
     };
