@@ -71,6 +71,7 @@
             nushell
             nodePackages.cspell
             doxygen
+            simple-http-server
           ];
         };
     };
