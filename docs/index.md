@@ -35,7 +35,7 @@ need.
 
 Install [just](https://github.com/casey/just#packages),
 [docker](https://docs.docker.com/engine/install/),
-[node](https://nodejs.org/en/download), [dvc](https://dvc.org/),
+[node](https://nodejs.org/en/download) , [dvc](https://dvc.org/),
 [dotnet](https://github.com/dotnet/core/blob/main/release-notes/8.0/8.0.1/8.0.1.md?WT.mc_id=dotnet-35129-website)
 and [nushell](https://www.nushell.sh/). Prepare `dvc` by asking a fellow
 developer for the configuration and following their instructions. Finally, run
