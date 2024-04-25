@@ -3,7 +3,7 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11";
     utils.url = "github:numtide/flake-utils";
 
-    doxygen-awesome-css. = "github:jothepro/doxygen-awesome-css";
+    doxygen-awesome-css.url = "github:jothepro/doxygen-awesome-css";
     doxygen-awesome-css.flake = false;
   };
 
