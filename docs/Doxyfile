@@ -2807,13 +2807,16 @@ MSCFILE_DIRS           =
 #---------------------------------------------------------------------------
 
 PROJECT_NAME = OZDS
-OUTPUT_DIRECTORY = artifacts/doxygen
+OUTPUT_DIRECTORY = ../artifacts/doxygen
 EXTRACT_ALL = YES
-INPUT = src scripts test
+INPUT = ../src ../scripts ../test
 RECURSIVE = YES
-HTML_EXTRASTYLESHEET = $(DOXYGEN_HTML_EXTRA_STYLESHEET)
+HTML_EXTRA_STYLESHEET = \
+  doxygen-awesome.css \
+  doxygen-awesome-sidebar-only.css
 HTML_COLORSTYLE = LIGHT
 GENERATE_TREEVIEW = YES
 GENERATE_LATEX = NO
 DISABLE_INDEX = NO
 FULL_SIDEBAR = NO
+LAYOUT_FILE = DoxygenLayout.xml
