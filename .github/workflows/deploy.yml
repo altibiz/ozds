@@ -19,7 +19,7 @@ jobs:
         run: |-
           nix develop .#deploy \
             -c just publish \
-            -p PublishDir=${{ env.DOTNET_ROOT }}/myapp
+              -p PublishDir=${{ env.DOTNET_ROOT }}/myapp
 
       - name: upload
         uses: actions/upload-artifact@v3
