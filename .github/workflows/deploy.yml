@@ -18,8 +18,8 @@ jobs:
       - name: deploy
         run: |-
           nix develop .#deploy \
-            -c bash \
-            -c "just publish --property PublishDir='${{ env.DOTNET_ROOT }}/myapp'"
+            -c just publish \
+            -p PublishDir=${{ env.DOTNET_ROOT }}/myapp
 
       - name: upload
         uses: actions/upload-artifact@v3
