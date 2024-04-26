@@ -120,6 +120,7 @@
   private DateTimeOffset startOfThisMonth = DateTimeOffset.UtcNow.GetStartOfMonth();
   private DateTimeOffset startOfLastMonth = DateTimeOffset.UtcNow.GetStartOfLastMonth();
   private DateTimeOffset now = DateTimeOffset.UtcNow;
+  private List<NetworkUserModel>? _netUsers;
 
   protected override async Task OnInitializedAsync()
   {
@@ -134,7 +135,10 @@
     @* if (representative.Representative.Role is RoleModel.NetworkUserRepresentative) *@
     if (true)
     {
-      locations = await queries.ViewModelByNetworkUser("1", startOfLastMonth, now);
+
+      _netUsers = await queries.GetNetworkUsersByRepresentative(representative.Representative);
+      var _netUserIds = _netUsers.Select( x => x.Id ).ToList();
+      locations = await queries.ViewModelByNetworkUser(_netUserIds, startOfLastMonth, now);
       var groupedLocations = locations.GroupBy(x => x.Location.Id).ToList();
       foreach (var netUser in groupedLocations)
       {

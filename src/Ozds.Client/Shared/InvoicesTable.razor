@@ -16,7 +16,7 @@
         <MudStack Spacing="0">
           <MudGrid Class="d-flex pa-2">
             <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: medium;">
-              @T["Broj Računa"]: @dataStruct.invoice.NetworkUserId
+              @T["Broj Računa"]: @dataStruct.invoice.Id
             </MudItem>
             <MudItem xs="2" Class="d-flex align-center  justify-end">
               <MudIconButton OnClick="() => InspectInvoice(dataStruct.invoice)" Icon="@Icons.Material.Filled.RemoveRedEye" Color="Color.Primary"/>
@@ -28,7 +28,7 @@
               @T["Do"]: @(DateString(dataStruct.invoice.ToDate))
             </MudItem>
             <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large; font-weight:bold;">
-              @T["Iznos"]:@(DecimalString(1234m)) EUR
+              @T["Iznos"]:@(DecimalString(dataStruct.invoice.TotalWithTax_EUR)) EUR
             </MudItem>
             <MudItem xs="2" Class="d-flex align-center justify-end">
               <MudIconButton OnClick="() => OnExpandCollapseClick(dataStruct.invoice.Id)" Icon="@(dataStruct.expand ? Icons.Material.Filled.KeyboardArrowUp : Icons.Material.Filled.KeyboardArrowDown)" Color="Color.Default"/>
@@ -39,7 +39,7 @@
             <MudStack>
               <MudDivider DividerType="DividerType.Middle" Class="mt-2"/>
               <MudContainer>
-                @T["Korisnik (mreže)"]: @(dataStruct.invoice.NetworkUserId)
+                @T["Korisnik (mreže)"]: @(dataStruct.invoice.ArchivedNetworkUser.LegalPerson.Name)
               </MudContainer>
             </MudStack>
           </MudCollapse>
@@ -74,14 +74,14 @@
       <Columns >
         <PropertyColumn
           CellStyle="font-size: large;"
-          Property="x => x.NetworkUserId"
+          Property="x => x.ArchivedNetworkUser.LegalPerson.Name"
           Title='@T["Korisnik (mreže)"]' Sortable="false"/>
         <PropertyColumn
           CellStyle="font-size: x-large; text-align: end !important;"
-          Property="x => 1234m"
+          Property="x => x.TotalWithTax_EUR"
           Title='@T["Iznos"]'>
           <CellTemplate>
-            @(DecimalString(1234m) + " EUR")
+            @(DecimalString(context.Item.Total_EUR) + " EUR")
           </CellTemplate>
         </PropertyColumn>
         <PropertyColumn
@@ -94,7 +94,7 @@
           Title='@T["Do"]'/>
         <PropertyColumn
           CellStyle="font-size: large;"
-          Property="x => x.NetworkUserId"
+          Property="x => x.Id"
           Sortable="false"
           Title='@T["Broj Računa"]'/>
         <TemplateColumn CellClass="d-flex justify-center" Sortable="false" Filterable="false">
@@ -128,7 +128,8 @@
 
   List<MobileData> _shownInvoices = new();
   private string? _searchString;
-  private IEnumerable<NetworkUserInvoiceModel>? _invoices;
+  private List<NetworkUserInvoiceModel>? _invoices = new();
+  private List<NetworkUserModel>? _netUsers;
 
   protected override async Task OnInitializedAsync()
   {
@@ -136,9 +137,13 @@
     {
       return;
     }
-    var query = ScopedServices.GetRequiredService<OzdsInvoiceQueries>();
-    var response = await query.Read<NetworkUserInvoiceModel>(Enumerable.Empty<string>() ,Enumerable.Empty<string>() ,Enumerable.Empty<string>() ,1 ,100);
-    _invoices = response.Items;
+    var invoiceQuery = ScopedServices.GetRequiredService<OzdsInvoiceQueries>();
+    var query = ScopedServices.GetRequiredService<OzdsMeterTableQueries>();
+    _netUsers = await query.GetNetworkUsersByRepresentative(representative.Representative);
+
+    var _netUserIds = _netUsers.Select( x => x.Id ).ToList();
+    var allInvoices = await invoiceQuery.Read<NetworkUserInvoiceModel>(Enumerable.Empty<string>(), Enumerable.Empty<string>(), Enumerable.Empty<string>(), 1, 100);
+    _invoices = allInvoices.Items.Where(x => _netUserIds.Contains(x.NetworkUserId)).ToList();
     if (representative.Representative.Role is RoleModel.NetworkUserRepresentative)
     {
       // Find all _invoices tied to this user, decending by FromDate

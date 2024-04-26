@@ -36,23 +36,23 @@
                 @T["Prvo očitanje"]:
                 @if (dataStruct.data.monthEndTotal is not null)
                   @(FloatString(dataStruct.data.monthEndTotal / 1000, 0)) kWh
-              
+
               </MudContainer>
               <MudContainer>
                 @T["Zadnje očitanje"]:
                 @if (dataStruct.data.monthStartTotal is not null)
                   @(FloatString(dataStruct.data.monthStartTotal / 1000, 0)) kWh
-              
+
               </MudContainer>
               <MudContainer Style="font-size: large; font-weight:bold;">
                 @T["Ukupna potrošnja"]:
                 @if (dataStruct.data.monthStartTotal is not null && dataStruct.data.monthEndTotal is not null)
                   @(FloatString((dataStruct.data.monthStartTotal - dataStruct.data.monthEndTotal) / 1000, 0)) kWh
-              
+
               </MudContainer>
               <MudContainer Style="font-weight:bold;">
                 @T["Maksimalna snaga"]:
-                @(FloatString(dataStruct.data.maxPower, 0) + " W")
+                @(FloatString(dataStruct.data.maxPower / 1000, 0) + " kW")
               </MudContainer>
             </MudStack>
           </MudCollapse>
@@ -98,7 +98,7 @@
           <CellTemplate>
             @if (context.Item.monthEndTotal is not null)
               @(FloatString(context.Item.monthEndTotal / 1000, 0) + " kWh")
-          
+
           </CellTemplate>
         </PropertyColumn>
         <PropertyColumn
@@ -108,7 +108,7 @@
           <CellTemplate>
             @if (context.Item.monthStartTotal is not null)
               @(FloatString(context.Item.monthStartTotal / 1000, 0) + " kWh")
-          
+
           </CellTemplate>
         </PropertyColumn>
         <PropertyColumn
@@ -118,7 +118,7 @@
           <CellTemplate>
             @if (context.Item.monthStartTotal is not null && context.Item.monthEndTotal is not null)
               @(FloatString((context.Item.monthStartTotal - context.Item.monthEndTotal) / 1000, 0) + " kWh")
-          
+
           </CellTemplate>
         </PropertyColumn>
         <PropertyColumn
@@ -126,7 +126,7 @@
           Property="x => x.maxPower"
           Title='@T["Maksimalna snaga"]'>
           <CellTemplate>
-            @(FloatString(context.Item.maxPower, 0) + " W")
+            @(FloatString(context.Item.maxPower / 1000, 0) + " kW")
           </CellTemplate>
         </PropertyColumn>
       </Columns>

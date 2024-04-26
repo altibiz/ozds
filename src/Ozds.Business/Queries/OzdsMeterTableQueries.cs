@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Conversion;
 using Ozds.Business.Conversion.Agnostic;
+using Ozds.Business.Models;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Composite;
@@ -9,6 +10,7 @@ using Ozds.Data;
 using Ozds.Data.Entities;
 using Ozds.Data.Entities.Base;
 using Ozds.Data.Entities.Enums;
+using Ozds.Business.Models.Enums;
 
 namespace Ozds.Business.Queries;
 
@@ -30,10 +32,47 @@ public class OzdsMeterTableQueries : IOzdsQueries
     return await context.Meters.Where(context.PrimaryKeyEquals<MeterEntity>(Id))
       .Select(m => m.ToModel()).FirstOrDefaultAsync();
   }
+  // !!! Fix this
+  public async Task<List<NetworkUserModel>?> GetNetworkUsersByRepresentative(RepresentativeModel representative)
+  {
+    List<NetworkUserModel> netUsers = new();
+    switch (representative.Role)
+    {
+      case RoleModel.NetworkUserRepresentative:
+        netUsers = await context.NetworkUsers.Select(x => x.ToModel()).ToListAsync();
+        break;
+      case RoleModel.LocationRepresentative:
+        netUsers = await context.NetworkUsers.Select(x => x.ToModel()).ToListAsync();
+        break;
+      case RoleModel.OperatorRepresentative:
+        netUsers = await context.NetworkUsers.Select(x => x.ToModel()).ToListAsync();
+        break;
+    }
 
+    return netUsers;
+  }
+  // !!! Fix this
+  public async Task<List<LocationModel>?> GetLocationsByRepresentative(RepresentativeModel representative)
+  {
+    List<LocationModel> locations = new();
+    switch (representative.Role)
+    {
+      case RoleModel.NetworkUserRepresentative:
+        locations = await context.Locations.Select(x => x.ToModel()).ToListAsync();
+        break;
+      case RoleModel.LocationRepresentative:
+        locations = await context.Locations.Select(x => x.ToModel()).ToListAsync();
+        break;
+      case RoleModel.OperatorRepresentative:
+        locations = await context.Locations.Select(x => x.ToModel()).ToListAsync();
+        break;
+    }
+
+    return locations;
+  }
   public async Task<List<MeterTableViewModel>>
     ViewModelByNetworkUser(
-      string networkUserId,
+      List<string> networkUserId,
       DateTimeOffset fromDate,
       DateTimeOffset toDate
     )
@@ -41,7 +80,7 @@ public class OzdsMeterTableQueries : IOzdsQueries
     var query = context.NetworkUsers
       .Include(x => x.Location)
       .Include(x => x.Location.RegulatoryCatalogue)
-      .Where(context.PrimaryKeyEquals<NetworkUserEntity>(networkUserId))
+      .Where(context.PrimaryKeyIn<NetworkUserEntity>(networkUserId))
       .Join(
         context.MeasurementLocations
           .OfType<NetworkUserMeasurementLocationEntity>()

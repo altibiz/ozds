@@ -85,8 +85,8 @@
     _dataList.Add("Schneider iEM3xxx validacija");
     _dataList.Add("Abb B2x brojilo");
     _dataList.Add("Schneider iEM3xxx brojilo");
-    _dataList.Add("Brojilo u Lokaciji");
-    _dataList.Add("Brojilo u Korisniku Mreže");
+    _dataList.Add("Brojilo na Lokaciji");
+    _dataList.Add("Brojilo na Korisniku Mreže");
 
     await Update("Lokacije");
   }
@@ -151,11 +151,11 @@
         var m = (await queries.GetSchneideriEM3xxxMeters("")).Items;
         _data = m.Select(x => new TabularData(x.Title, x.Id)).ToList();
         break;
-      case "Brojilo u Lokaciji":
+      case "Brojilo na Lokaciji":
         var i = (await queries.GetLocationMeasurementLocations("")).Items;
         _data = i.Select(x => new TabularData(x.Title, x.Id)).ToList();
         break;
-      case "Brojilo u Korisniku Mreže":
+      case "Brojilo na Korisniku Mreže":
         var j = (await queries.GetNetworkUserMeasurementLocations("")).Items;
         _data = j.Select(x => new TabularData(x.Title, x.Id)).ToList();
         break;

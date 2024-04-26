@@ -7,25 +7,12 @@
   return;
 }
 
-<MudText Typo="Typo.h5">User</MudText>
-<MudPaper>
-  <MudGrid>
-    <MudItem xs="12" sm="6">
-      <MudText Typo="Typo.body1">Id</MudText>
-      <MudText Typo="Typo.body2">@LoadingState.Value.User.UserName</MudText>
-    </MudItem>
-    <MudItem xs="12" sm="6">
-      <MudText Typo="Typo.body1">Email</MudText>
-      <MudText Typo="Typo.body2">@LoadingState.Value.User.Email</MudText>
-    </MudItem>
-  </MudGrid>
-</MudPaper>
-
 @if (LoadingState.Value.Representative is null)
 {
   return;
 }
 
+<MudText Class="my-2" Typo="Typo.h4">User @LoadingState.Value.User.UserName</MudText>
 <EditForm
   Model="@LoadingState.Value.Representative"
   OnValidSubmit="Submit">

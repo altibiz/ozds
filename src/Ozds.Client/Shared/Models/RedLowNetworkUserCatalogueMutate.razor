@@ -7,21 +7,12 @@
   return;
 }
 
-<MudText Typo="Typo.h5">Crveni Niski Katalog</MudText>
-<MudPaper>
-  <MudGrid>
-    <MudItem xs="12" sm="6">
-      <MudText Typo="Typo.body1">Id</MudText>
-      <MudText Typo="Typo.body2">@LoadingState.Value.Id</MudText>
-    </MudItem>
-  </MudGrid>
-</MudPaper>
-
 @if (LoadingState.Value is null)
 {
   return;
 }
 
+<MudText Class="my-2" Typo="Typo.h4">Crveni Niski Katalog</MudText>
 <EditForm
   Model="@LoadingState.Value"
   OnValidSubmit="Submit">

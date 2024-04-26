@@ -40,14 +40,7 @@
           </MudText>
         </MudItem>
         <MudContainer Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
-          @if (_lastMonthsPayment == 0)
-          {
-            <MudText Typo="Typo.h6">@T["Račun u izradi..."]</MudText>
-          }
-          else
-          {
-            <MudText Typo="Typo.h4">@FloatString(_lastMonthsPayment) + " EUR"</MudText>
-          }
+            <MudText Typo="Typo.h4">@FloatString(_totalActivePower / 1000) + " kW"</MudText>
         </MudContainer>
       </MudPaper>
     </MudItem>
@@ -97,17 +90,10 @@
           </MudText>
         </MudItem>
         <MudContainer Class="d-flex align-end justify-center pb-10" MaxWidth="MaxWidth.Small">
-          @if (_lastMonthsPayment == 0)
-          {
-            <MudText Typo="Typo.h4">@T["Račun u izradi..."]</MudText>
-          }
-          else
-          {
             <MudText Typo="Typo.h1">
-              @(FloatString(_lastMonthsPayment))
+              @(FloatString(_totalActivePower / 1000))
             </MudText>
-            <MudText Typo="Typo.h4" Class="mb-3 ml-1">EUR</MudText>
-          }
+            <MudText Typo="Typo.h4" Class="mb-3 ml-1">kW</MudText>
         </MudContainer>
       </MudPaper>
     </MudItem>
@@ -121,7 +107,7 @@
   private (float First, float Last, DateTimeOffset FirstDate) _startEnd;
   private (float First, float Last, DateTimeOffset FirstDate) _startEndLastMonth = new(0, 0, DateTime.UtcNow);
   private string? _searchString;
-  private IEnumerable<LocationModel>? _locations;
+  private List<NetworkUserModel>? _netUsers;
   private IEnumerable<MeterModel>? _meters;
 
   public record struct TabularData(LocationModel location, float consumption, float lastMonthConsumption, float lastPower);
@@ -131,7 +117,7 @@
   private float _lastMeasurements = 0;
   private float _thisMonthUsage = 0;
   private float _lastMonthUsage = 0;
-  private float _lastMonthsPayment = 0;
+  private float _totalActivePower = 0;
   private List<TabularData> _dataStruct = new();
   private IReadOnlyList<SpanningMeasure<float>>? _spanningMeasurements;
   private DateTimeOffset startOfThisMonth = DateTimeOffset.UtcNow.GetStartOfMonth();
@@ -143,41 +129,35 @@
     var queries = ScopedServices.GetRequiredService<OzdsMeterTableQueries>();
     List<MeterTableViewModel> locations = new();
 
-    if (representative is null)
-    {
-      return;
-    }
+    _netUsers = await queries.GetNetworkUsersByRepresentative(representative.Representative);
+    var _netUserIds = _netUsers.Select( x => x.Id ).ToList();
+    locations = await queries.ViewModelByNetworkUser(_netUserIds, startOfLastMonth, now);
+    var groupedLocations = locations.GroupBy(x => x.Location.Id).ToList();
 
-    @* if (representative.Representative.Role is RoleModel.NetworkUserRepresentative) *@
-    if (true)
+    foreach (var netUser in groupedLocations)
     {
-      locations = await queries.ViewModelByNetworkUser("1", startOfLastMonth, now);
-      var groupedLocations = locations.GroupBy(x => x.Location.Id).ToList();
-      foreach (var netUser in groupedLocations)
+      // !!! Remove .Month and .LocalDateTime in live
+      var _thisMonthAggregate = netUser.Select(x => x.Aggregates.Where(x => x.Timestamp == startOfThisMonth).FirstOrDefault()).Where(x => x is not null).ToList();
+      var _lastMonthAggregate = netUser.Select(x => x.Aggregates.Where(x => x.Timestamp == startOfLastMonth).FirstOrDefault()).Where(x => x is not null).ToList();
+
+      if (_thisMonthAggregate is not null && _thisMonthAggregate.Count > 0)
       {
-        // !!! Remove .Month and .LocalDateTime in live
-        var _thisMonthAggregate = netUser.Select(x => x.Aggregates.Where(x => x.Timestamp == startOfThisMonth).FirstOrDefault()).Where(x => x is not null).ToList();
-        var _lastMonthAggregate = netUser.Select(x => x.Aggregates.Where(x => x.Timestamp == startOfLastMonth).FirstOrDefault()).Where(x => x is not null).ToList();
-
-        if (_thisMonthAggregate is not null && _thisMonthAggregate.Count > 0)
-        {
-          _lastMonthsPayment += _thisMonthAggregate
-            .Select(x => x.ActivePower_W.TariffUnary.DuplexNet.PhaseSum)
-            .DefaultIfEmpty(0)
-            .Sum();
-          _thisMonthUsage += _thisMonthAggregate
-            .Select(x => x.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum)
-            .DefaultIfEmpty(0)
-            .Sum();
-        }
-
-        if (_lastMonthAggregate is not null && _lastMonthAggregate.Count > 0)
-          _lastMonthUsage += _lastMonthAggregate
-            .Select(x => x.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum)
-            .DefaultIfEmpty(0)
-            .Sum();
-        _lastMonthsPayment = 0;
+        _totalActivePower += _thisMonthAggregate
+          .Select(x => x.ActivePower_W.TariffUnary.DuplexNet.PhaseSum)
+          .DefaultIfEmpty(0)
+          .Sum();
+        _thisMonthUsage += _thisMonthAggregate
+          .Select(x => x.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum)
+          .DefaultIfEmpty(0)
+          .Sum();
       }
+
+      if (_lastMonthAggregate is not null && _lastMonthAggregate.Count > 0)
+        _lastMonthUsage += _lastMonthAggregate
+          .Select(x => x.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum)
+          .DefaultIfEmpty(0)
+          .Sum();
+      _totalActivePower = 0;
     }
   }
 
