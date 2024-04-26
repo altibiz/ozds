@@ -18,7 +18,12 @@ jobs:
       - name: deploy
         run: |-
           nix develop .#deploy \
-            -c just publish \
+            -c dotnet publish \
+              -p ConsoleLoggerParameters=ErrorsOnly \
+              -p IsWebConfigTransformDisabled=true \
+              -p DebugType=None \
+              -p DebugSymbols=false \
+              -c Release \
               -p PublishDir=${{ env.DOTNET_ROOT }}/myapp
 
       - name: upload
