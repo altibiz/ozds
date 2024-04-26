@@ -18,15 +18,13 @@ jobs:
 
       - name: deploy
         shell: nix develop .#deploy -c {0}
-        run: |-
-          just publish \
-            -p PublishDir=${{ env.DOTNET_ROOT }}/myapp
+        run: just publish
 
       - name: upload
         uses: actions/upload-artifact@v3
         with:
           name: .net-app
-          path: ${{ env.DOTNET_ROOT }}/myapp
+          path: artifacts
 
   deploy:
     runs-on: ubuntu-latest
