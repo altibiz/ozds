@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 
-name: Deploy
+# TODO: nix-build
 
 on:
   push:
@@ -10,23 +10,20 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: extractions/setup-just@v1
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - uses: actions/setup-dotnet@v3
-        with:
-          global-json-file: global.json
-      - name: ci
-        run: just ci
 
-      - name: publish
-        run: just publish --property PublishDir=${{env.DOTNET_ROOT}}/myapp
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: cachix/install-nix-action@v25
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: deploy
+        run:
+          nix develop --command bash -c "just deploy --property
+          PublishDir=${{env.DOTNET_ROOT}}/myapp"
 
       - name: upload
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: .net-app
           path: ${{env.DOTNET_ROOT}}/myapp
@@ -37,11 +34,13 @@ jobs:
     environment:
       name: "Production"
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
     steps:
       - name: download
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: .net-app
+
       - name: deploy
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
@@ -49,5 +48,5 @@ jobs:
           app-name: "altibiz-mess"
           slot-name: "Production"
           # prettier-ignore
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_4416F6604DF04E9BB6F36F3413BC3CCB }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_012D1E91353344A0A0FFEB89ED713614 }}
           package: .

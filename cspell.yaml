@@ -12,6 +12,7 @@ ignorePaths:
   - "flake.nix"
   - "docker-compose.yml"
   - "omnisharp.json"
+  - ".github/workflows/*"
 words:
   - "ozds"
   - "blazor"
