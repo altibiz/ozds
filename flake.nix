@@ -70,17 +70,21 @@
             postgresql_14
             mermerd
 
-            # Misc
+            # Scripts
             just
+            nushell
+
+            # Documentation
+            doxygen
+            simple-http-server
+
+            # Misc
             nodePackages.prettier
             nodePackages.yaml-language-server
             nodePackages.vscode-langservers-extracted
-            marksman
             taplo
-            nushell
+            marksman
             nodePackages.cspell
-            doxygen
-            simple-http-server
           ];
         };
       });
