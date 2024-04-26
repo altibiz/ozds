@@ -1,22 +1,32 @@
 {
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11";
-    utils.url = "github:numtide/flake-utils";
+    flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, nixpkgs, utils, ... }:
-    utils.lib.simpleFlake {
-      inherit self nixpkgs;
-      name = "altibiz-ozds";
-      config = {
-        allowUnfree = true;
-      };
-      overlay = (final: prev: {
-        nodejs = prev.nodejs_20;
-        dotnet-sdk = prev.dotnet-sdk_8;
-      });
-      shell = { pkgs }:
-        pkgs.mkShell {
+  outputs = { nixpkgs, flake-utils, ... }:
+    flake-utils.lib.eachDefaultSystem (system:
+      let
+        pkgs = import nixpkgs {
+          inherit system;
+          config = { allowUnfree = true; };
+          overlays = [
+            (final: prev: {
+              nodejs = prev.nodejs_20;
+              dotnet-sdk = prev.dotnet-sdk_8;
+            })
+          ];
+        };
+      in
+      {
+        devShells.deploy = pkgs.mkShell {
+          packages = with pkgs; [
+            dotnet-sdk
+            dotnet-runtime
+            dotnet-aspnetcore
+          ];
+        };
+        devShells.default = pkgs.mkShell {
           PGHOST = "localhost";
           PGPORT = "5432";
           PGDATABASE = "ozds";
@@ -24,16 +34,16 @@
           PGPASSWORD = "ozds";
 
           packages = with pkgs; let
-            usql = pkgs.writeShellApplication {
+            usql = writeShellApplication {
               name = "usql";
-              runtimeInputs = [ pkgs.usql ];
+              runtimeInputs = [ usql ];
               text = ''
                 usql pg://ozds:ozds@localhost/ozds?sslmode=disable "$@"
               '';
             };
-            mermerd = pkgs.writeShellApplication {
+            mermerd = writeShellApplication {
               name = "mermerd";
-              runtimeInputs = [ pkgs.mermerd ];
+              runtimeInputs = [ mermerd ];
               text = ''
                 mermerd --connectionString postgresql://ozds:ozds@localhost:5432/ozds "$@"
               '';
@@ -74,5 +84,5 @@
             simple-http-server
           ];
         };
-    };
+      });
 }
