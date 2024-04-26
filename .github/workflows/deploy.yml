@@ -1,7 +1,5 @@
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 
-# TODO: nix-build
-
 on:
   push:
     branches:
@@ -21,13 +19,13 @@ jobs:
         run: |-
           nix develop .#deploy \
             -c bash \
-            -c "just publish --property PublishDir='${{env.DOTNET_ROOT}}/myapp'"
+            -c "just publish --property PublishDir='${{ env.DOTNET_ROOT }}/myapp'"
 
       - name: upload
         uses: actions/upload-artifact@v3
         with:
           name: .net-app
-          path: ${{env.DOTNET_ROOT}}/myapp
+          path: ${{ env.DOTNET_ROOT }}/myapp
 
   deploy:
     runs-on: ubuntu-latest
