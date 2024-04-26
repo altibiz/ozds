@@ -12,19 +12,24 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "8.x"
+          inclued-prerelease: true
+
       - uses: cachix/install-nix-action@v25
         with:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: deploy
         run: |-
-          nix develop .#deploy \
-            -c dotnet publish \
-              -p ConsoleLoggerParameters=ErrorsOnly \
-              -p IsWebConfigTransformDisabled=true \
-              -p DebugType=None \
-              -p DebugSymbols=false \
-              -c Release \
-              -p PublishDir=${{ env.DOTNET_ROOT }}/myapp
+          dotnet publish \
+            -p ConsoleLoggerParameters=ErrorsOnly \
+            -p IsWebConfigTransformDisabled=true \
+            -p DebugType=None \
+            -p DebugSymbols=false \
+            -c Release \
+            -p PublishDir=${{ env.DOTNET_ROOT }}/myapp
 
       - name: upload
         uses: actions/upload-artifact@v3
