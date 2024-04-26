@@ -21,6 +21,9 @@
       {
         devShells.deploy = pkgs.mkShell {
           packages = with pkgs; [
+            just
+            nushell
+
             dotnet-sdk
             dotnet-runtime
             dotnet-aspnetcore
