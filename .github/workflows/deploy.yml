@@ -18,7 +18,7 @@ jobs:
         with:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
       - name: deploy
-        run: >
+        run: >-
           nix develop .#deploy
             -c bash 
             -c "just publish -o ${{env.DOTNET_ROOT}}/myapp"
