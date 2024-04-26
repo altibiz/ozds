@@ -64,6 +64,8 @@ fake *args:
   dotnet run --project '{{fakecsproj}}' -- {{args}}
 
 format:
+  nixpkgs-fmt {{root}}
+
   prettier --write \
     --ignore-path '{{gitignore}}' \
     --ignore-path '{{prettierignore}}' \

@@ -21,12 +21,33 @@
       {
         devShells.deploy = pkgs.mkShell {
           packages = with pkgs; [
+            # Scripts
             just
             nushell
 
+            # C#
             dotnet-sdk
             dotnet-runtime
             dotnet-aspnetcore
+          ];
+        };
+        devShells.check = pkgs.mkShell {
+          packages = with pkgs; [
+            # Scripts
+            just
+            nushell
+
+            # Nix
+            nixpkgs-fmt
+
+            # C#
+            dotnet-sdk
+            dotnet-runtime
+            dotnet-aspnetcore
+
+            # Misc
+            nodePackages.prettier
+            nodePackages.cspell
           ];
         };
         devShells.default = pkgs.mkShell {

@@ -2807,7 +2807,7 @@ MSCFILE_DIRS           =
 #---------------------------------------------------------------------------
 
 PROJECT_NAME = OZDS
-OUTPUT_DIRECTORY = ../artifacts/doxygen
+OUTPUT_DIRECTORY = ../artifacts
 EXTRACT_ALL = YES
 INPUT = ../src ../scripts ../test
 RECURSIVE = YES
