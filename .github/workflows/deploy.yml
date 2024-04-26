@@ -17,8 +17,7 @@ jobs:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: deploy
-        shell: nix develop .#deploy -c {0}
-        run: just publish
+        run: nix develop .#deploy -c just publish
 
       - name: upload
         uses: actions/upload-artifact@v3
