@@ -34,12 +34,12 @@ public static class IServiceCollectionExtensions
         // options.UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()));
       }
 
+      var connectionString = services
+        .GetRequiredService<ShellSettings>()
+        .ShellConfiguration["ConnectionString"]
+        ?? throw new InvalidOperationException("No connection string found.");
       options
-        .UseTimescale(
-          services.GetRequiredService<ShellSettings>()
-            .ShellConfiguration["ConnectionString"] ??
-            throw new InvalidOperationException("No connection string found.")
-        )
+        .UseTimescale(connectionString)
         .AddServedSaveChangesInterceptorsFromAssembly(
           Assembly.GetExecutingAssembly(),
           services
