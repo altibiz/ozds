@@ -9,6 +9,7 @@
 	</ItemGroup>
 
   <ItemGroup>
+		<PackageReference Include="OrchardCore.Abstractions" Version="$(OrchardVersion)" />
 		<PackageReference Include="OrchardCore.Users" Version="$(OrchardVersion)" />
   </ItemGroup>
 

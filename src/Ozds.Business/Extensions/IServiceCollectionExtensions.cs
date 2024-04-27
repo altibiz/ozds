@@ -1,4 +1,5 @@
 using System.Reflection;
+using OrchardCore.Environment.Shell;
 using Ozds.Business.Aggregation.Abstractions;
 using Ozds.Business.Aggregation.Agnostic;
 using Ozds.Business.Conversion.Abstractions;
@@ -13,6 +14,7 @@ using Ozds.Data;
 using Ozds.Data.Extensions;
 
 // TODO: switch to enable query/mutation logging
+// TODO: remove references to OrchardCore
 
 namespace Ozds.Business.Extensions;
 
@@ -34,9 +36,9 @@ public static class IServiceCollectionExtensions
 
       options
         .UseTimescale(
-          services.GetRequiredService<IConfiguration>()
-            .GetConnectionString("Ozds") ?? throw new InvalidOperationException(
-            "Ozds connection string not found")
+          services.GetRequiredService<ShellSettings>()
+            .ShellConfiguration["ConnectionString"] ??
+            throw new InvalidOperationException("No connection string found.")
         )
         .AddServedSaveChangesInterceptorsFromAssembly(
           Assembly.GetExecutingAssembly(),
