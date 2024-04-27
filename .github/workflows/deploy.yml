@@ -16,7 +16,7 @@ jobs:
         with:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: deploy
+      - name: publish
         run: nix develop .#deploy -c just publish
 
       - name: upload
