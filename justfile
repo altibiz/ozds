@@ -268,6 +268,8 @@ publish *args:
     --configuration Release \
     {{args}}
 
+  rm -rf '{{artifacts}}/App_Data'
+
 [confirm("This will clean docker containers. Do you want to continue?")]
 clean:
   docker compose down -v
