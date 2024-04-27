@@ -16,6 +16,9 @@ jobs:
         with:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: prepare
+        run: nix develop .#check -c dotnet tool restore
+
       - name: format
         run: nix develop .#check -c just format
 

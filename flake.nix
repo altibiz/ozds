@@ -68,6 +68,7 @@
                     "$@"
                 '';
               };
+
               mermerd = pkgs.writeShellApplication {
                 name = "mermerd";
                 runtimeInputs = [ pkgs.mermerd ];

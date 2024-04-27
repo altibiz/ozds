@@ -53,10 +53,6 @@ prepare:
       ozds-postgres-1 \
         psql
 
-ci:
-  dotnet tool restore
-  prettier --version or npm install -g prettier
-
 dev *args:
   dotnet watch --project '{{servercsproj}}' {{args}}
 
