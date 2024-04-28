@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Text.Json;
 using OrchardCore.Environment.Shell;
 using Ozds.Business.Aggregation.Abstractions;
 using Ozds.Business.Aggregation.Agnostic;
@@ -34,10 +35,24 @@ public static class IServiceCollectionExtensions
         // options.UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()));
       }
 
-      var connectionString = services
-        .GetRequiredService<ShellSettings>()
-        .ShellConfiguration["ConnectionString"]
-        ?? throw new InvalidOperationException("No connection string found.");
+      var shellConfiguration =
+        services.GetRequiredService<ShellSettings>().ShellConfiguration;
+      var connectionString = shellConfiguration["ConnectionString"];
+      if (connectionString is null)
+      {
+        var serializerOptions = new JsonSerializerOptions
+        {
+          WriteIndented = true
+        };
+        var serializedShellConfiguration = JsonSerializer.Serialize(
+          shellConfiguration.AsEnumerable().ToList(),
+          serializerOptions
+        );
+        throw new InvalidOperationException(
+          "ConnectionString not found in shell configuration: "
+          + serializedShellConfiguration
+        );
+      }
       options
         .UseTimescale(connectionString)
         .AddServedSaveChangesInterceptorsFromAssembly(
