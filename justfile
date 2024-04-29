@@ -155,10 +155,10 @@ dump:
         --exclude-table-data='"Document"' \
         --exclude-table-data='"Identifiers"' \
         --exclude-table-data='"User"*' \
-        --exclude-table-data=%aggregates \
-        --exclude-table-data=%measurements \
-        --exclude-table-data=%invoices \
-        --exclude-table-data=%calculations \
+        --exclude-table-data='*aggregates' \
+        --exclude-table-data='*measurements' \
+        --exclude-table-data='*invoices' \
+        --exclude-table-data='*calculations' \
         --exclude-table-data='"__EFMigrationsHistory"' \
     out> '{{assets}}/current.sql'
 
@@ -241,10 +241,10 @@ migrate name:
         --exclude-table-data='"Document"' \
         --exclude-table-data='"Identifiers"' \
         --exclude-table-data='"User"*' \
-        --exclude-table-data=%aggregates \
-        --exclude-table-data=%measurements \
-        --exclude-table-data=%invoices \
-        --exclude-table-data=%calculations \
+        --exclude-table-data='*aggregates' \
+        --exclude-table-data='*measurements' \
+        --exclude-table-data='*invoices' \
+        --exclude-table-data='*calculations' \
         --exclude-table-data='"__EFMigrationsHistory"' \
     out> '{{assets}}/{{name}}.sql'
 

@@ -211,7 +211,7 @@
                 IND:
               </strong>
               <span>
-                @DecimalString(reactiveItem.ImportMin_VARh, 2)
+                @DecimalString(reactiveItem.ImportMin_VARh / 1000M, 2)
               </span>
             </p>
             <p class="capacitative-label">
@@ -219,7 +219,7 @@
                 KAP:
               </strong>
               <span>
-                @DecimalString(reactiveItem.ExportMin_VARh, 2)
+                @DecimalString(reactiveItem.ExportMin_VARh / 1000M, 2)
               </span>
             </p>
           </td>
@@ -229,7 +229,7 @@
                 IND:
               </strong>
               <span>
-                @DecimalString(reactiveItem.ImportMax_VARh, 2)
+                @DecimalString(reactiveItem.ImportMax_VARh / 1000M, 2)
               </span>
             </p>
             <p class="capacitative-label">
@@ -237,16 +237,16 @@
                 KAP:
               </strong>
               <span>
-                @DecimalString(reactiveItem.ExportMax_VARh, 2)
+                @DecimalString(reactiveItem.ExportMax_VARh / 1000M, 2)
               </span>
             </p>
           </td>
           <td style="text-align: center;">O</td>
           <td style="text-align: right;">
-            @DecimalString(reactiveItem.Amount_VARh, 0)
+            @DecimalString(reactiveItem.Amount_VARh / 1000M, 0)
           </td>
           <td style="text-align: right;">
-            @DecimalString(reactiveItem.Price_EUR, 6)
+            @DecimalString(reactiveItem.Price_EUR * 1000M, 6)
           </td>
           <td style="text-align: right;">
             @DecimalString(reactiveItem.Total_EUR, 2)
@@ -258,17 +258,17 @@
               <strong>@energyItem.Kind</strong>
             </td>
             <td style="text-align: right;">
-              @DecimalString(energyItem.Min_Wh, 2)
+              @DecimalString(energyItem.Min_Wh / 1000M, 2)
             </td>
             <td style="text-align: right;">
-              @DecimalString(energyItem.Max_Wh, 2)
+              @DecimalString(energyItem.Max_Wh / 1000M, 2)
             </td>
             <td style="text-align: center;">O</td>
             <td style="text-align: right;">
-              @DecimalString(energyItem.Amount_Wh, 0)
+              @DecimalString(energyItem.Amount_Wh / 1000M, 0)
             </td>
             <td style="text-align: right;">
-              @DecimalString(energyItem.Price_EUR, 6)
+              @DecimalString(energyItem.Price_EUR * 1000M, 6)
             </td>
             <td style="text-align: right;">
               @DecimalString(energyItem.Total_EUR, 2)
@@ -283,10 +283,10 @@
               <td style="text-align: right;"></td>
               <td style="text-align: center;">O</td>
               <td style="text-align: right;">
-                @DecimalString(powerItem.Amount_W, 0)
+                @DecimalString(powerItem.Amount_W / 1000M, 0)
               </td>
               <td style="text-align: right;">
-                @DecimalString(powerItem.Price_EUR, 3)
+                @DecimalString(powerItem.Price_EUR * 1000M, 3)
               </td>
               <td style="text-align: right;">
                 @DecimalString(powerItem.Total_EUR, 2)

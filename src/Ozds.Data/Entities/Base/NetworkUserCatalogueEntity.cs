@@ -6,13 +6,15 @@ namespace Ozds.Data.Entities.Base;
 
 public class NetworkUserCatalogueEntity : AuditableEntity
 {
-  public virtual LocationEntity Location { get; set; } = default!;
+  public virtual ICollection<LocationEntity> Locations { get; set; } = default!;
 
   public virtual ICollection<MeasurementLocationEntity>
-    NetworkUserMeasurementLocations { get; set; } = default!;
+    NetworkUserMeasurementLocations
+  { get; set; } = default!;
 
   public virtual ICollection<NetworkUserCalculationEntity>
-    NetworkUserCalculations { get; set; } =
+    NetworkUserCalculations
+  { get; set; } =
     default!;
 }
 

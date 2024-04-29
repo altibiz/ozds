@@ -26,7 +26,8 @@ public class MeterEntity : AuditableEntity
   public List<PhaseEntity> Phases { get; set; } = default!;
 
   public virtual ICollection<NetworkUserCalculationEntity>
-    NetworkUserCalculations { get; set; } =
+    NetworkUserCalculations
+  { get; set; } =
     default!;
 }
 
@@ -96,8 +97,8 @@ public class
         .HasOne(
           nameof(MeterEntity<MeasurementEntity, AggregateEntity,
             MeasurementValidatorEntity>.MeasurementValidator))
-        .WithOne(nameof(MeasurementValidatorEntity<MeterEntity>.Meter))
-        .HasForeignKey(type.Name, "_measurementValidatorId");
+        .WithMany(nameof(MeasurementValidatorEntity<MeterEntity>.Meters))
+        .HasForeignKey("_measurementValidatorId");
 
       builder.Ignore(nameof(MeterEntity<MeasurementEntity, AggregateEntity,
         MeasurementValidatorEntity>.MeasurementValidatorId));
