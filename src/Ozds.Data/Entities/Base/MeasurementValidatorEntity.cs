@@ -11,7 +11,7 @@ public class MeasurementValidatorEntity : AuditableEntity
 public class MeasurementValidatorEntity<TMeter> : MeasurementValidatorEntity
   where TMeter : MeterEntity
 {
-  public virtual TMeter Meter { get; set; } = default!;
+  public virtual ICollection<TMeter> Meters { get; set; } = default!;
 }
 
 public class MeasurementValidatorEntityTypeHierarchyConfiguration :

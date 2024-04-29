@@ -19,7 +19,8 @@ public class LocationEntity : AuditableEntity
   private long _whiteMediumNetworkUserCatalogueId;
 
   public virtual ICollection<RepresentativeEntity>
-    Representatives { get; set; } = default!;
+    Representatives
+  { get; set; } = default!;
 
   public virtual ICollection<NetworkUserEntity> NetworkUsers { get; set; } =
     default!;
@@ -28,7 +29,8 @@ public class LocationEntity : AuditableEntity
     default!;
 
   public virtual ICollection<LocationMeasurementLocationEntity>
-    MeasurementLocations { get; set; } = default!;
+    MeasurementLocations
+  { get; set; } = default!;
 
   public virtual ICollection<LocationInvoiceEntity> Invoices { get; set; } =
     default!;
@@ -40,7 +42,8 @@ public class LocationEntity : AuditableEntity
   }
 
   public virtual WhiteMediumNetworkUserCatalogueEntity
-    WhiteMediumNetworkUserCatalogue { get; set; } =
+    WhiteMediumNetworkUserCatalogue
+  { get; set; } =
     default!;
 
   public string BlueLowNetworkUserCatalogueId
@@ -120,30 +123,28 @@ public class
 
     builder
       .HasOne(nameof(LocationEntity.WhiteMediumNetworkUserCatalogue))
-      .WithOne(nameof(WhiteMediumNetworkUserCatalogueEntity.Location))
-      .HasForeignKey(nameof(LocationEntity),
-        "_whiteMediumNetworkUserCatalogueId");
+      .WithMany(nameof(WhiteMediumNetworkUserCatalogueEntity.Locations))
+      .HasForeignKey("_whiteMediumNetworkUserCatalogueId");
 
     builder
       .HasOne(nameof(LocationEntity.BlueLowNetworkUserCatalogue))
-      .WithOne(nameof(BlueLowNetworkUserCatalogueEntity.Location))
-      .HasForeignKey(nameof(LocationEntity), "_blueLowNetworkUserCatalogueId");
+      .WithMany(nameof(BlueLowNetworkUserCatalogueEntity.Locations))
+      .HasForeignKey("_blueLowNetworkUserCatalogueId");
 
     builder
       .HasOne(nameof(LocationEntity.WhiteLowNetworkUserCatalogue))
-      .WithOne(nameof(WhiteLowNetworkUserCatalogueEntity.Location))
-      .HasForeignKey(nameof(LocationEntity), "_whiteLowNetworkUserCatalogueId");
+      .WithMany(nameof(WhiteLowNetworkUserCatalogueEntity.Locations))
+      .HasForeignKey("_whiteLowNetworkUserCatalogueId");
 
     builder
       .HasOne(nameof(LocationEntity.RedLowNetworkUserCatalogue))
-      .WithOne(nameof(RedLowNetworkUserCatalogueEntity.Location))
-      .HasForeignKey(nameof(LocationEntity), "_redLowNetworkUserCatalogueId");
+      .WithMany(nameof(RedLowNetworkUserCatalogueEntity.Locations))
+      .HasForeignKey("_redLowNetworkUserCatalogueId");
 
     builder
       .HasOne(nameof(LocationEntity.RegulatoryCatalogue))
-      .WithOne(nameof(RegulatoryCatalogueEntity.Location))
-      .HasForeignKey(nameof(LocationEntity),
-        "_regulatoryNetworkUserCatalogueId");
+      .WithMany(nameof(RegulatoryCatalogueEntity.Locations))
+      .HasForeignKey("_regulatoryNetworkUserCatalogueId");
 
     builder.Ignore(nameof(LocationEntity.WhiteMediumNetworkUserCatalogueId));
     builder

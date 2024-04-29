@@ -197,8 +197,6 @@ erDiagram
     }
 
     measurement_locations {
-        bigint _network_user_catalogue_id FK
-        bigint catalogue_id
         text created_by_id FK
         timestamp_with_time_zone created_on
         text deleted_by_id FK
@@ -210,6 +208,7 @@ erDiagram
         timestamp_with_time_zone last_updated_on
         bigint location_id FK
         text meter_id FK
+        bigint network_user_catalogue_id FK
         bigint network_user_id FK
         text title
     }
@@ -606,7 +605,7 @@ erDiagram
     messengers }o--|| locations : "location_id"
     network_users }o--|| locations : "location_id"
     measurement_locations }o--|| meters : "meter_id"
-    measurement_locations }o--|| network_user_catalogues : "_network_user_catalogue_id"
+    measurement_locations }o--|| network_user_catalogues : "network_user_catalogue_id"
     measurement_locations }o--|| network_users : "network_user_id"
     measurement_locations }o--|| representatives : "created_by_id"
     measurement_locations }o--|| representatives : "deleted_by_id"
