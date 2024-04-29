@@ -1,5 +1,5 @@
 outs:
-- md5: 4bdc05a9dca97af0904be0da19f93498
-  size: 30936
+- md5: ebf30f1d465c60082652f69499864db2
+  size: 23216
   hash: md5
   path: current.sql
