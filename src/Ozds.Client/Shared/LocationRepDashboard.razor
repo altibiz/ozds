@@ -36,16 +36,15 @@
       <MudPaper Class="d-flex align-center justify-stat mud-width-full pa-1 pb-3 flex-column">
         <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
           <MudText Typo="Typo.h6">
-            @T["Zbroj računa prethodnog mjeseca:"]
+            @T["Trenutna snaga:"]
           </MudText>
         </MudItem>
         <MudContainer Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
-          <MudText Typo="Typo.h4">@FloatString(_totalActivePower / 1000) + " kW"</MudText>
+          <MudText Typo="Typo.h4">@FloatString(_totalActivePower / 1000) kW</MudText>
         </MudContainer>
       </MudPaper>
     </MudItem>
   </MudGrid>
-  }
 </MudHidden>
 
 
@@ -86,7 +85,7 @@
       <MudPaper Class="mud-width-full d-flex flex-column justify-space-between pa-4" Height="320px">
         <MudItem Class="" Style="font-size: large; font-weight: bold;">
           <MudText Typo="Typo.h5">
-            @(T["Zbroj računa prethodnog mjeseca:"])
+            @(T["Trenutna snaga:"])
           </MudText>
         </MudItem>
         <MudContainer Class="d-flex align-end justify-center pb-10" MaxWidth="MaxWidth.Small">
@@ -127,25 +126,29 @@
   protected override async Task OnInitializedAsync()
   {
     var queries = ScopedServices.GetRequiredService<OzdsMeterTableQueries>();
+    var locationQueries = ScopedServices.GetRequiredService<OzdsLocationsTableQueries>();
     List<MeterTableViewModel> locations = new();
+    List<LocationsTableViewModel> locationsTwo = new();
 
     _netUsers = await queries.GetNetworkUsersByRepresentative(representative.Representative);
     var _netUserIds = _netUsers.Select(x => x.Id).ToList();
     locations = await queries.ViewModelByNetworkUser(_netUserIds, startOfLastMonth, now);
     var groupedLocations = locations.GroupBy(x => x.Location.Id).ToList();
+    locationsTwo = await locationQueries.ViewModelByNetworkUser(_netUserIds);
 
     foreach (var netUser in groupedLocations)
     {
       // !!! Remove .Month and .LocalDateTime in live
       var _thisMonthAggregate = netUser.Select(x => x.Aggregates.Where(x => x.Timestamp == startOfThisMonth).FirstOrDefault()).Where(x => x is not null).ToList();
       var _lastMonthAggregate = netUser.Select(x => x.Aggregates.Where(x => x.Timestamp == startOfLastMonth).FirstOrDefault()).Where(x => x is not null).ToList();
+      var _currentPower = locationsTwo
+          .Where(x => x.Location.Id == netUser.Key)
+          .Select( x => x.Measurement.FirstOrDefault()
+          .ActivePower_W.TariffUnary.DuplexNet.PhaseSum)
+          .DefaultIfEmpty(0).Sum();
 
       if (_thisMonthAggregate is not null && _thisMonthAggregate.Count > 0)
       {
-        _totalActivePower += _thisMonthAggregate
-          .Select(x => x.ActivePower_W.TariffUnary.DuplexNet.PhaseSum)
-          .DefaultIfEmpty(0)
-          .Sum();
         _thisMonthUsage += _thisMonthAggregate
           .Select(x => x.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum)
           .DefaultIfEmpty(0)
@@ -157,7 +160,8 @@
           .Select(x => x.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum)
           .DefaultIfEmpty(0)
           .Sum();
-      _totalActivePower = 0;
+
+      _totalActivePower += _currentPower;
     }
   }
 

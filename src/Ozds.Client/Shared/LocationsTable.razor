@@ -26,9 +26,16 @@
             <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
               @T["Potrošnja u prethodnom mjesecu"]: @(FloatString(dataStruct.data.lastMonthUsage / 1000, 0) + " kWh")
             </MudItem>
-            <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
-              @T["Zbroj računa prethodnog mjeseca"]: @(dataStruct.data.lastMonthsPayment == 0 ? T["Račun u izradi..."] : FloatString(dataStruct.data.lastMonthsPayment) + " EUR")
-            </MudItem>
+            @if(representative.Representative.Role is RoleModel.LocationRepresentative){
+              <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
+                @T["Trenutna snaga"]: @FloatString(dataStruct.data.currentPower / 1000) kW
+              </MudItem>
+            }
+            else{
+              <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
+                @T["Zbroj računa prethodnog mjeseca"]: @(dataStruct.data.lastMonthsPayment == 0 ? T["Račun u izradi..."] : FloatString(dataStruct.data.lastMonthsPayment) + " EUR")
+              </MudItem>
+            }
           </MudGrid>
         </MudStack>
       </MudPaper>
@@ -85,14 +92,26 @@
           @(FloatString(context.Item.lastMonthUsage / 1000, 0) + " kWh")
         </CellTemplate>
       </PropertyColumn>
-      <PropertyColumn
-        CellStyle="font-size: x-large;"
-        Property="x => x.lastMonthsPayment"
-        Title='@T["Zbroj računa prethodnog mjeseca"]'>
-        <CellTemplate>
-          @(context.Item.lastMonthsPayment == 0 ? T["Račun u izradi..."] : FloatString(context.Item.lastMonthsPayment) + " EUR")
-        </CellTemplate>
-      </PropertyColumn>
+      @if(representative.Representative.Role is RoleModel.LocationRepresentative){
+        <PropertyColumn
+          CellStyle="font-size: x-large;"
+          Property="x => x.currentPower"
+          Title='@T["Trenutna snaga"]'>
+          <CellTemplate>
+            @FloatString(context.Item.currentPower / 1000) kW
+          </CellTemplate>
+        </PropertyColumn>
+      }
+      else{
+        <PropertyColumn
+          CellStyle="font-size: x-large;"
+          Property="x => x.lastMonthsPayment"
+          Title='@T["Zbroj računa prethodnog mjeseca"]'>
+          <CellTemplate>
+            @(context.Item.lastMonthsPayment == 0 ? T["Račun u izradi..."] : FloatString(context.Item.lastMonthsPayment) + " EUR")
+          </CellTemplate>
+        </PropertyColumn>
+      }
     </Columns>
     <PagerContent>
       <MudDataGridPager T="TabularData"/>
@@ -113,7 +132,7 @@
   private float? _consumption = 0;
   private float? _lastMonthConsumption = 0;
 
-  public record struct TabularData(LocationModel location, float thisMonthUsage, float lastMonthUsage, float lastMonthsPayment);
+  public record struct TabularData(LocationModel location, float thisMonthUsage, float lastMonthUsage, float lastMonthsPayment, float currentPower = 0);
 
   private List<TabularData> _dataStruct = new();
   private IReadOnlyList<SpanningMeasure<float>>? _spanningMeasurements;
@@ -125,7 +144,9 @@
   protected override async Task OnInitializedAsync()
   {
     var queries = ScopedServices.GetRequiredService<OzdsMeterTableQueries>();
+    var locationQueries = ScopedServices.GetRequiredService<OzdsLocationsTableQueries>();
     List<MeterTableViewModel> locations = new();
+    List<LocationsTableViewModel> locationsTwo = new();
 
     if (representative is null)
     {
@@ -139,11 +160,18 @@
       var _netUserIds = _netUsers.Select(x => x.Id).ToList();
       locations = await queries.ViewModelByNetworkUser(_netUserIds, startOfLastMonth, now);
       var groupedLocations = locations.GroupBy(x => x.Location.Id).ToList();
+      locationsTwo = await locationQueries.ViewModelByNetworkUser(_netUserIds);
       foreach (var netUser in groupedLocations)
       {
         // !!! Remove .Month and .LocalDateTime in live
         var _thisMonthAggregate = netUser.Select(x => x.Aggregates.Where(x => x.Timestamp == startOfThisMonth).FirstOrDefault()).Where(x => x is not null).ToList();
         var _lastMonthAggregate = netUser.Select(x => x.Aggregates.Where(x => x.Timestamp == startOfLastMonth).FirstOrDefault()).Where(x => x is not null).ToList();
+        var _currentPower = locationsTwo
+          .Where(x => x.Location.Id == netUser.Key)
+          .Select( x => x.Measurement.FirstOrDefault()
+          .ActivePower_W.TariffUnary.DuplexNet.PhaseSum)
+          .DefaultIfEmpty(0).Sum();
+
         float _thisMonthUsage = 0;
         float _lastMonthUsage = 0;
         if (_thisMonthAggregate is not null && _thisMonthAggregate.Count > 0)
@@ -156,12 +184,16 @@
             .Select(x => x.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum)
             .DefaultIfEmpty(0)
             .Sum();
+
+
+
         _dataStruct.Add(
           new TabularData
           {
             location = netUser.FirstOrDefault().Location,
             thisMonthUsage = _thisMonthUsage,
             lastMonthUsage = _lastMonthUsage,
+            currentPower = _currentPower,
             lastMonthsPayment = 0 // !!! Add another query
           }
         );
@@ -200,7 +232,7 @@
   @* MOBILE *@
   public string TextValue { get; set; } = "";
 
-  private class ExpandThing
+    private class ExpandThing
   {
     public TabularData data = default!;
     public bool expand;

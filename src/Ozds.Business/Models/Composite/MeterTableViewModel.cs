@@ -9,3 +9,11 @@ public record MeterTableViewModel(
   IMeter Meter,
   IEnumerable<IAggregate> Aggregates
 );
+
+public record LocationsTableViewModel(
+  LocationModel Location,
+  NetworkUserModel NetworkUser,
+  IMeasurementLocation MeasurementLocation,
+  IMeter Meter,
+  IEnumerable<IMeasurement> Measurement
+);
