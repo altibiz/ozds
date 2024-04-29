@@ -12,7 +12,10 @@ public interface INetworkUserCalculation : ICalculation
   public string Kind { get; }
   public NetworkUserCatalogueModel ArchivedUsageNetworkUserCatalogue { get; }
   public RegulatoryCatalogueModel ArchivedSupplyRegulatoryCatalogue { get; }
-  public NetworkUserMeasurementLocationModel ArchivedNetworkUserMeasurementLocation { get; }
+
+  public NetworkUserMeasurementLocationModel
+    ArchivedNetworkUserMeasurementLocation { get; }
+
   public decimal UsageFeeTotal_EUR { get; }
   public decimal SupplyFeeTotal_EUR { get; }
 

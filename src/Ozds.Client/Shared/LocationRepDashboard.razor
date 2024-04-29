@@ -40,7 +40,7 @@
           </MudText>
         </MudItem>
         <MudContainer Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
-            <MudText Typo="Typo.h4">@FloatString(_totalActivePower / 1000) + " kW"</MudText>
+          <MudText Typo="Typo.h4">@FloatString(_totalActivePower / 1000) + " kW"</MudText>
         </MudContainer>
       </MudPaper>
     </MudItem>
@@ -90,10 +90,10 @@
           </MudText>
         </MudItem>
         <MudContainer Class="d-flex align-end justify-center pb-10" MaxWidth="MaxWidth.Small">
-            <MudText Typo="Typo.h1">
-              @(FloatString(_totalActivePower / 1000))
-            </MudText>
-            <MudText Typo="Typo.h4" Class="mb-3 ml-1">kW</MudText>
+          <MudText Typo="Typo.h1">
+            @(FloatString(_totalActivePower / 1000))
+          </MudText>
+          <MudText Typo="Typo.h4" Class="mb-3 ml-1">kW</MudText>
         </MudContainer>
       </MudPaper>
     </MudItem>
@@ -130,7 +130,7 @@
     List<MeterTableViewModel> locations = new();
 
     _netUsers = await queries.GetNetworkUsersByRepresentative(representative.Representative);
-    var _netUserIds = _netUsers.Select( x => x.Id ).ToList();
+    var _netUserIds = _netUsers.Select(x => x.Id).ToList();
     locations = await queries.ViewModelByNetworkUser(_netUserIds, startOfLastMonth, now);
     var groupedLocations = locations.GroupBy(x => x.Location.Id).ToList();
 

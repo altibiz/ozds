@@ -18,7 +18,10 @@ public class EventEntity : IReadonlyEntity, IIdentifiableEntity
   public virtual string Id
   {
     get { return _id.ToString(); }
-    init { _id = value is { } notNullValue ? long.Parse(notNullValue) : default; }
+    init
+    {
+      _id = value is { } notNullValue ? long.Parse(notNullValue) : default;
+    }
   }
 
   public string Title { get; set; } = default!;

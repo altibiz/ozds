@@ -49,8 +49,7 @@ public class NetworkUserInvoiceEntity : InvoiceEntity
   public decimal SupplyFeeTotal_EUR { get; set; }
 
   public virtual ICollection<NetworkUserCalculationEntity>
-    NetworkUserCalculations
-  { get; set; } =
+    NetworkUserCalculations { get; set; } =
     default!;
 }
 

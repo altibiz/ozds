@@ -141,8 +141,8 @@
     var query = ScopedServices.GetRequiredService<OzdsMeterTableQueries>();
     _netUsers = await query.GetNetworkUsersByRepresentative(representative.Representative);
 
-    var _netUserIds = _netUsers.Select( x => x.Id ).ToList();
-    _invoices = (await invoiceQuery.Read<NetworkUserInvoiceModel>(new[] { $"x => x.FromDate.Month == {startOfLastMonth.Month}"}, Enumerable.Empty<string>(), Enumerable.Empty<string>(), 1, 100)).Items;
+    var _netUserIds = _netUsers.Select(x => x.Id).ToList();
+    _invoices = (await invoiceQuery.Read<NetworkUserInvoiceModel>(new[] { $"x => x.FromDate.Month == {startOfLastMonth.Month}" }, Enumerable.Empty<string>(), Enumerable.Empty<string>(), 1, 100)).Items;
 
     lastMonthInvoicesTotal = _invoices.Where(x => _netUserIds.Contains(x.NetworkUserId)).Select(x => x.TotalWithTax_EUR).DefaultIfEmpty(0).Sum();
     var aggregateQueries = ScopedServices.GetRequiredService<OzdsAggregateQueries>();

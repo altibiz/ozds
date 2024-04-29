@@ -28,8 +28,7 @@ public class NetworkUserMeasurementLocationEntity : MeasurementLocationEntity
     default!;
 
   public virtual ICollection<NetworkUserCalculationEntity>
-    NetworkUserCalculations
-  { get; set; } =
+    NetworkUserCalculations { get; set; } =
     default!;
 }
 
@@ -47,7 +46,8 @@ public class
 
     builder
       .HasOne(nameof(NetworkUserMeasurementLocationEntity.NetworkUserCatalogue))
-      .WithMany(nameof(NetworkUserCatalogueEntity.NetworkUserMeasurementLocations))
+      .WithMany(nameof(NetworkUserCatalogueEntity
+        .NetworkUserMeasurementLocations))
       .HasForeignKey("_networkUserCatalogueId");
 
     builder.Ignore(nameof(NetworkUserMeasurementLocationEntity.NetworkUserId));

@@ -19,7 +19,7 @@ app.Use(async (context, next) =>
 {
   if (context.Request.Path == "/")
   {
-    context.Response.Redirect("/app", permanent: true);
+    context.Response.Redirect("/app", true);
   }
   else
   {

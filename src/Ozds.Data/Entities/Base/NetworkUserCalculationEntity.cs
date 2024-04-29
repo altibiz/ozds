@@ -8,7 +8,8 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
 
-public class NetworkUserCalculationEntity : CalculationEntity, IReadonlyEntity, IIdentifiableEntity
+public class NetworkUserCalculationEntity : CalculationEntity, IReadonlyEntity,
+  IIdentifiableEntity
 {
   protected readonly long _networkUserInvoiceId;
 
@@ -52,12 +53,10 @@ public class NetworkUserCalculationEntity : CalculationEntity, IReadonlyEntity, 
     default!;
 
   public SupplyActiveEnergyTotalImportT1CalculationItemEntity
-    SupplyActiveEnergyTotalImportT1
-  { get; set; } = default!;
+    SupplyActiveEnergyTotalImportT1 { get; set; } = default!;
 
   public SupplyActiveEnergyTotalImportT2CalculationItemEntity
-    SupplyActiveEnergyTotalImportT2
-  { get; set; } = default!;
+    SupplyActiveEnergyTotalImportT2 { get; set; } = default!;
 
   public SupplyBusinessUsageFeeCalculationItemEntity SupplyBusinessUsageFee
   {
@@ -73,7 +72,8 @@ public class NetworkUserCalculationEntity : CalculationEntity, IReadonlyEntity, 
   } =
     default!;
 
-  public virtual NetworkUserMeasurementLocationEntity NetworkUserMeasurementLocation { get; set; } =
+  public virtual NetworkUserMeasurementLocationEntity
+    NetworkUserMeasurementLocation { get; set; } =
     default!;
 
   public string NetworkUserMeasurementLocationId
@@ -82,11 +82,8 @@ public class NetworkUserCalculationEntity : CalculationEntity, IReadonlyEntity, 
     init { _networkUserMeasurementLocationId = long.Parse(value); }
   }
 
-  public NetworkUserMeasurementLocationEntity ArchivedNetworkUserMeasurementLocation
-  {
-    get;
-    set;
-  } =
+  public NetworkUserMeasurementLocationEntity
+    ArchivedNetworkUserMeasurementLocation { get; set; } =
     default!;
 }
 
@@ -137,15 +134,18 @@ public class
       .HasForeignKey("_networkUserInvoiceId");
 
     builder
-      .HasOne(nameof(NetworkUserCalculationEntity.NetworkUserMeasurementLocation))
-      .WithMany(nameof(NetworkUserMeasurementLocationEntity.NetworkUserCalculations))
+      .HasOne(
+        nameof(NetworkUserCalculationEntity.NetworkUserMeasurementLocation))
+      .WithMany(nameof(NetworkUserMeasurementLocationEntity
+        .NetworkUserCalculations))
       .HasForeignKey("_networkUserMeasurementLocationId");
 
     builder
       .ArchivedProperty(nameof(NetworkUserCalculationEntity
         .ArchivedNetworkUserMeasurementLocation));
 
-    builder.Ignore(nameof(NetworkUserCalculationEntity.NetworkUserMeasurementLocationId));
+    builder.Ignore(nameof(NetworkUserCalculationEntity
+      .NetworkUserMeasurementLocationId));
     builder
       .Property("_networkUserMeasurementLocationId")
       .HasColumnName("network_user_measurement_location_id");

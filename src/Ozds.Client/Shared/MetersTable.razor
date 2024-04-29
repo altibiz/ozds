@@ -182,9 +182,8 @@
     @* if (representative.Representative.Role is RoleModel.NetworkUserRepresentative) *@
     if (true)
     {
-
       _netUsers = await queries.GetNetworkUsersByRepresentative(representative.Representative);
-      var _netUserIds = _netUsers.Select( x => x.Id ).ToList();
+      var _netUserIds = _netUsers.Select(x => x.Id).ToList();
       meters = await queries.ViewModelByNetworkUser(_netUserIds, startOfLastMonth, now);
       foreach (var omm in meters)
       {

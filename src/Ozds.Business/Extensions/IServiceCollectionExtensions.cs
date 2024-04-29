@@ -40,10 +40,11 @@ public static class IServiceCollectionExtensions
       var shellConfiguration =
         services.GetRequiredService<ShellSettings>().ShellConfiguration;
       var connectionString = shellConfiguration["ConnectionString"]
-        ?? shellConfiguration.GetSection("OrchardCore_AutoSetup")
-          ?.GetSection("Tenants")
-          ?.GetSection("0")
-          ?["DatabaseConnectionString"];
+                             ?? shellConfiguration
+                               .GetSection("OrchardCore_AutoSetup")
+                               ?.GetSection("Tenants")
+                               ?.GetSection("0")
+                               ?["DatabaseConnectionString"];
       if (connectionString is null)
       {
         var serializerOptions = new JsonSerializerOptions
@@ -59,6 +60,7 @@ public static class IServiceCollectionExtensions
           + serializedShellConfiguration
         );
       }
+
       options
         .UseTimescale(connectionString)
         .AddServedSaveChangesInterceptorsFromAssembly(

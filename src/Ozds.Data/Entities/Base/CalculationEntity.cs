@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Ozds.Data.Entities.Abstractions;
-using Ozds.Data.Entities.Complex;
 using Ozds.Data.Extensions;
 
 // TODO: check that all base classes are only used for inheritance
@@ -32,7 +31,10 @@ public class CalculationEntity : IReadonlyEntity, IIdentifiableEntity
   public virtual string Id
   {
     get { return _id.ToString(); }
-    init { _id = value is { } notNullValue ? long.Parse(notNullValue) : default; }
+    init
+    {
+      _id = value is { } notNullValue ? long.Parse(notNullValue) : default;
+    }
   }
 
   public string Title { get; set; } = default!;

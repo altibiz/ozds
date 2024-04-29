@@ -36,7 +36,8 @@ public static class WhiteLowNetworkUserCalculationModelEntityConverterExtensions
       FromDate = entity.FromDate,
       ToDate = entity.ToDate,
       MeterId = entity.MeterId,
-      NetworkUserMeasurementLocationId = entity.NetworkUserMeasurementLocationId,
+      NetworkUserMeasurementLocationId =
+        entity.NetworkUserMeasurementLocationId,
       UsageNetworkUserCatalogueId = entity.UsageNetworkUserCatalogueId,
       SupplyRegulatoryCatalogueId = entity.SupplyRegulatoryCatalogueId,
       NetworkUserInvoiceId = entity.NetworkUserInvoiceId,
