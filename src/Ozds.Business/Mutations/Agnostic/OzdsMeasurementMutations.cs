@@ -21,16 +21,9 @@ public class OzdsMeasurementMutations : IOzdsMutations
     _modelEntityConverter = modelEntityConverter;
   }
 
-  public async ValueTask DisposeAsync()
+  public Task SaveChangesAsync()
   {
-    await _context.SaveChangesAsync();
-    GC.SuppressFinalize(this);
-  }
-
-  public void Dispose()
-  {
-    _context.SaveChanges();
-    GC.SuppressFinalize(this);
+    return _context.SaveChangesAsync();
   }
 
   public void ClearChanges()

@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using Ozds.Business.Conversion;
-using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Extensions;
 using Ozds.Business.Models;
 using Ozds.Business.Mutations.Abstractions;
@@ -14,27 +13,16 @@ public class OzdsLocationMutations : IOzdsMutations
 {
   private readonly OzdsDbContext _context;
 
-  private readonly AgnosticModelEntityConverter _modelEntityConverter;
-
   public OzdsLocationMutations(
-    OzdsDbContext context,
-    AgnosticModelEntityConverter modelEntityConverter
+    OzdsDbContext context
   )
   {
     _context = context;
-    _modelEntityConverter = modelEntityConverter;
   }
 
-  public async ValueTask DisposeAsync()
+  public Task SaveChangesAsync()
   {
-    await _context.SaveChangesAsync();
-    GC.SuppressFinalize(this);
-  }
-
-  public void Dispose()
-  {
-    _context.SaveChanges();
-    GC.SuppressFinalize(this);
+    return _context.SaveChangesAsync();
   }
 
   public void ClearChanges()
