@@ -1,3 +1,6 @@
+using System.Net.Http.Headers;
+using System.Net.Sockets;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Conversion;
 using Ozds.Business.Conversion.Agnostic;
@@ -79,6 +82,42 @@ public class OzdsMeterTableQueries : IOzdsQueries
     }
 
     return locations;
+  }
+
+
+  public async Task<List<NetworkUserInvoiceModel>> GetNetworkUserInvoicesByRepresentative(
+    RepresentativeModel representative)
+  {
+    List<NetworkUserInvoiceEntity> results = new();
+
+    switch (representative.Role)
+    {
+      case RoleModel.NetworkUserRepresentative:
+        results = await context.Representatives
+          .Where(context.PrimaryKeyEquals<RepresentativeEntity>(representative.Id))
+          .Include(x => x.NetworkUsers)
+          .ThenInclude(x => x.Invoices)
+          .SelectMany(x => x.NetworkUsers.SelectMany(x => x.Invoices))
+          .ToListAsync();
+        break;
+      case RoleModel.LocationRepresentative:
+        results = await context.Representatives
+          .Where(context.PrimaryKeyEquals<RepresentativeEntity>(representative.Id))
+          .Include(x => x.Locations)
+          .ThenInclude(x => x.NetworkUsers)
+          .ThenInclude(x => x.Invoices)
+          .SelectMany(x => x.Locations.SelectMany(x => x.NetworkUsers.SelectMany(x => x.Invoices)))
+          .ToListAsync();
+        break;
+      case RoleModel.OperatorRepresentative:
+        results = await context.NetworkUsers
+          .Include(x => x.Invoices)
+          .SelectMany(x => x.Invoices)
+          .ToListAsync();
+        break;
+    }
+
+    return results.Select(x => x.ToModel()).ToList();
   }
 
   public async Task<List<MeterTableViewModel>>

@@ -140,11 +140,18 @@
 
     var invoiceQuery = ScopedServices.GetRequiredService<OzdsInvoiceQueries>();
     var query = ScopedServices.GetRequiredService<OzdsMeterTableQueries>();
-    _netUsers = await query.GetNetworkUsersByRepresentative(representative.Representative);
-
+    _invoices = await query.GetNetworkUserInvoicesByRepresentative(representative.Representative);
+    @* _netUsers = await query.GetNetworkUsersByRepresentative(representative.Representative);
     var _netUserIds = _netUsers.Select(x => x.Id).ToList();
-    var allInvoices = await invoiceQuery.Read<NetworkUserInvoiceModel>(Enumerable.Empty<string>(), Enumerable.Empty<string>(), Enumerable.Empty<string>(), 1, 100);
-    _invoices = allInvoices.Items.Where(x => _netUserIds.Contains(x.NetworkUserId)).ToList();
+    var allInvoices = await invoiceQuery
+      .Read<NetworkUserInvoiceModel>(
+        new[] { $"x => {_netUserIds}.Contains(x.NetworkUserId)" },
+        Enumerable.Empty<string>(),
+        Enumerable.Empty<string>(),
+        1,
+        100); *@
+    @* var allInvoices = await invoiceQuery.Read<NetworkUserInvoiceModel>(Enumerable.Empty<string>(), Enumerable.Empty<string>(), Enumerable.Empty<string>(), 1, 100); *@
+    @* _invoices = allInvoices.Items.Where(x => _netUserIds.Contains(x.NetworkUserId)).ToList(); *@
     if (representative.Representative.Role is RoleModel.NetworkUserRepresentative)
     {
       // Find all _invoices tied to this user, decending by FromDate

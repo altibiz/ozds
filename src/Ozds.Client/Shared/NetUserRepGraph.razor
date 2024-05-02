@@ -55,10 +55,13 @@
   private ApexChart<ChartData> chart = default!;
   private readonly DateTimeOffset startOfThisYear = DateTimeOffset.UtcNow.GetStartOfYear();
   private readonly DateTimeOffset now = DateTime.UtcNow;
+  private List<NetworkUserModel>? _netUsers;
 
   protected override async Task OnInitializedAsync()
   {
     var aggregateQueries = ScopedServices.GetRequiredService<OzdsAggregateQueries>();
+    var query = ScopedServices.GetRequiredService<OzdsMeterTableQueries>();
+    _netUsers = await query.GetNetworkUsersByRepresentative(representative.Representative);
     var quorterHourlyMeasures = await aggregateQueries.ReadAgnostic(new[] { "x => x.Interval == 0" }, startOfThisYear, now, 1, 9000);
     var values = quorterHourlyMeasures.OrderBy(x => x.Timestamp).GroupBy(x => x.Timestamp).ToList();
     foreach (var value in values)
