@@ -1,4 +1,5 @@
 @inject NavigationManager NavigationManager
+@inject IDialogService DialogService
 @inherits OzdsOwningComponentBase
 
 @if (LoadingState.Value is null)
@@ -69,7 +70,7 @@
 
   private bool _create;
 
-  private void Submit()
+  private async Task Submit()
   {
     var mutations = ScopedServices.GetRequiredService<OzdsAuditableMutations>();
     if (LoadingState.Value is null)
@@ -82,6 +83,8 @@
     {
       mutations.Update(LoadingState.Value);
     }
+    await mutations.SaveChangesAsync();
+    DialogService.Show<MutateSuccess>("Changes Saved", new DialogOptions(){CloseOnEscapeKey = true});
   }
 
   protected override void OnInitialized()

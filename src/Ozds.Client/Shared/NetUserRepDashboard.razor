@@ -143,7 +143,9 @@
     lastMonthInvoicesTotal = _invoices.Select(x => x.TotalWithTax_EUR).DefaultIfEmpty(0).Sum();
 
     _netUsers = await query.GetNetworkUsersByRepresentative(representative.Representative);
-    var _netUserIds = _netUsers.Select(x => x.Id).ToList();
+    List<string> _netUserIds = new();
+    if(_netUsers is not null)
+      _netUserIds = _netUsers.Select(x => x.Id).ToList();
     var meters = await query.ViewModelByNetworkUser(_netUserIds, startOfLastMonth, now);
     foreach (var meter in meters)
     {

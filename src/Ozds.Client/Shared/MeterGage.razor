@@ -64,8 +64,7 @@
   private List<GageData> gageValue = new();
   private ApexChartOptions<GageData> gageOptions = NewApexChartOptions<GageData>();
   private float connectionMaxPower = 100000;
-  private IReadOnlyList<TariffMeasure<float>>? _measurements;
-  OzdsMeasurementQueries measureQueries;
+  OzdsMeasurementQueries measureQueries = default!;
 
   private class GageData
   {
@@ -88,10 +87,8 @@
 
   @* TIME STUFF *@
   private bool timerInitialized;
-  private Timer timer;
+  private Timer timer = new();
   private int updateMilisec = 10000;
-  private DateTimeOffset maxDate;
-  private int counter;
   private DateTimeOffset now = DateTimeOffset.UtcNow.LocalDateTime;
 
   protected override async Task OnInitializedAsync()
@@ -100,7 +97,8 @@
     _meter = await ScopedServices
       .GetRequiredService<OzdsMeterTableQueries>()
       .GetMeterById(Source);
-    connectionMaxPower = _meter.ConnectionPower_W * 3;
+    if(_meter is not null)
+      connectionMaxPower = _meter.ConnectionPower_W * 3;
 
     SetGageOptionsStart();
 
@@ -116,8 +114,10 @@
     if (measureLastQuorterHour.Count() > 0)
     {
       var a = measureLastQuorterHour.OrderBy(x => x.Timestamp).LastOrDefault();
-      var b = a.ActivePower_W.TariffUnary.DuplexNet.PhaseSum;
-      thisMonthCurrentPower = b;
+      if(a is not null){
+        var b = a.ActivePower_W.TariffUnary.DuplexNet.PhaseSum;
+        thisMonthCurrentPower = b;
+      }
     }
   }
 
@@ -162,14 +162,13 @@
       return;
     }
 
-    InvokeAsync(() => StateHasChanged());
+    await InvokeAsync(() => StateHasChanged());
     await gage.UpdateOptionsAsync(false, true, false);
   }
 
   void IDisposable.Dispose()
   {
     timer?.Dispose();
-    timer = null;
   }
 
 }

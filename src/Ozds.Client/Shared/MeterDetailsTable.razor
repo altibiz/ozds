@@ -36,19 +36,19 @@
                 @T["Prvo očitanje"]:
                 @if (dataStruct.data.monthEndTotal is not null)
                   @(FloatString(dataStruct.data.monthEndTotal / 1000, 0)) kWh
-              
+
               </MudContainer>
               <MudContainer>
                 @T["Zadnje očitanje"]:
                 @if (dataStruct.data.monthStartTotal is not null)
                   @(FloatString(dataStruct.data.monthStartTotal / 1000, 0)) kWh
-              
+
               </MudContainer>
               <MudContainer Style="font-size: large; font-weight:bold;">
                 @T["Ukupna potrošnja"]:
                 @if (dataStruct.data.monthStartTotal is not null && dataStruct.data.monthEndTotal is not null)
                   @(FloatString((dataStruct.data.monthStartTotal - dataStruct.data.monthEndTotal) / 1000, 0)) kWh
-              
+
               </MudContainer>
               <MudContainer Style="font-weight:bold;">
                 @T["Maksimalna snaga"]:
@@ -98,7 +98,7 @@
           <CellTemplate>
             @if (context.Item.monthEndTotal is not null)
               @(FloatString(context.Item.monthEndTotal / 1000, 0) + " kWh")
-          
+
           </CellTemplate>
         </PropertyColumn>
         <PropertyColumn
@@ -108,7 +108,7 @@
           <CellTemplate>
             @if (context.Item.monthStartTotal is not null)
               @(FloatString(context.Item.monthStartTotal / 1000, 0) + " kWh")
-          
+
           </CellTemplate>
         </PropertyColumn>
         <PropertyColumn
@@ -118,7 +118,7 @@
           <CellTemplate>
             @if (context.Item.monthStartTotal is not null && context.Item.monthEndTotal is not null)
               @(FloatString((context.Item.monthStartTotal - context.Item.monthEndTotal) / 1000, 0) + " kWh")
-          
+
           </CellTemplate>
         </PropertyColumn>
         <PropertyColumn
@@ -156,9 +156,6 @@
 
   public record struct TabularData(string year, string month, float? monthStartTotal, float? monthEndTotal, float maxPower);
 
-  private string _month = "-1";
-  private string _year = "-1";
-  private float thisMonthMaxPower = 0;
   private DateTimeOffset startOfThisYear = DateTimeOffset.UtcNow.GetStartOfYear();
   private DateTimeOffset startOfThisMonth = DateTimeOffset.UtcNow.GetStartOfMonth();
   private DateTimeOffset now = DateTime.UtcNow;
@@ -202,9 +199,6 @@
         monthEndTotal = a,
         maxPower = c
       });
-      thisMonthMaxPower = 0;
-      _month = "00";
-      _year = "00";
     }
 
     foreach (var data in _dataStruct)

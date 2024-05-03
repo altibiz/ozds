@@ -23,7 +23,7 @@ public partial class MainLayout : OzdsLayoutComponentBase
   [Inject] private IServiceProvider Services { get; set; } = default!;
 
   public static IEnumerable<NavigationDescriptor> GetNavigationDescriptors(
-    RepresentativeState rep)
+    RepresentativeState? rep)
   {
     foreach (var type in typeof(App).Assembly.GetTypes())
     {

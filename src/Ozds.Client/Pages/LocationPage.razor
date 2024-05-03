@@ -5,11 +5,5 @@
 @code {
   [Parameter] public string? Id { get; set; }
   [CascadingParameter] public UserState user { get; set; } = default!;
-  private LocationModel? _location;
-
-  protected override async Task OnInitializedAsync()
-  {
-    // !!! Find _location by id
-  }
 
 }
