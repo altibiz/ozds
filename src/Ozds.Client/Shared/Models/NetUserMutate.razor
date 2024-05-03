@@ -1,4 +1,5 @@
 @inject NavigationManager NavigationManager
+@inject IDialogService DialogService
 @inherits OzdsOwningComponentBase
 
 @if (LoadingState.Value is null)
@@ -107,20 +108,17 @@
   [Parameter] public string Id { get; set; } = default!;
 
   [Parameter] public NetworkUserModel? Model { get; set; }
-  private List<LocationModel> _locations;
-  private List<RepresentativeModel> _representatives;
+  private List<LocationModel> _locations = new();
+  private List<RepresentativeModel> _representatives = new();
   private IEnumerable<RepresentativeModel> _selectedRepsList { get; set; } = new HashSet<RepresentativeModel>();
   private LoadingState<NetworkUserModel> LoadingState { get; set; } = new();
 
   private bool _create;
-
-  private void Submit()
+private async Task Submit()
   {
     var mutations = ScopedServices.GetRequiredService<OzdsNetworkUserMutations>();
-
     if (LoadingState.Value is null)
       return;
-
     if (_create)
     {
       mutations.CreateWithRepresentatives(LoadingState.Value, _selectedRepsList);
@@ -129,6 +127,8 @@
     {
       mutations.UpdateWithRepresentatives(LoadingState.Value, _selectedRepsList);
     }
+    await mutations.SaveChangesAsync();
+    DialogService.Show<MutateSuccess>("Changes Saved", new DialogOptions(){CloseOnEscapeKey = true});
   }
 
   protected override void OnInitialized()

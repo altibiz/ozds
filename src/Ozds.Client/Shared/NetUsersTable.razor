@@ -143,20 +143,12 @@
 @code {
   [CascadingParameter] public UserState user { get; set; } = default!;
   [CascadingParameter] public RepresentativeState representative { get; set; } = default!;
-  private (float? First, float? Last, DateTimeOffset FirstDate) _startEnd;
-  private (float? First, float? Last, DateTimeOffset FirstDate) _startEndLastMonth;
   private string? _searchString;
-  private float _totalConsumption = 0;
-  private float _lastMonthTotalConsumption = 0;
-  private float _lastMonthInvoicesTotal = 0;
   private List<NetworkUserInvoiceModel>? _invoices = new();
 
   public record struct TabularData(LocationModel location, NetworkUserModel networkUser, float thisMonthUsage, float lastMonthUsage, decimal lastMonthsPayment);
 
   private List<TabularData> _dataStruct = new();
-  private IEnumerable<NetworkUserModel>? _networkUsers;
-  private IEnumerable<LocationModel>? _locations;
-  private IReadOnlyList<SpanningMeasure<float>>? _spanningMeasurements;
   private DateTimeOffset startOfThisMonth = DateTimeOffset.UtcNow.GetStartOfMonth();
   private DateTimeOffset startOfLastMonth = DateTimeOffset.UtcNow.GetStartOfLastMonth();
   private DateTimeOffset now = DateTimeOffset.UtcNow;
@@ -168,6 +160,8 @@
     List<MeterTableViewModel> netUsers = new();
 
     _netUsers = await queries.GetNetworkUsersByRepresentative(representative.Representative);
+    if(_netUsers is null || _netUsers.Count < 0 )
+      return;
     var _netUserIds = _netUsers.Select(x => x.Id).ToList();
     netUsers = await queries.ViewModelByNetworkUser(_netUserIds, startOfLastMonth, now);
     var groupedNetUsers = netUsers.GroupBy(x => x.NetworkUser.Id).ToList();
@@ -176,6 +170,11 @@
 
     foreach (var netUser in groupedNetUsers)
     {
+      if (netUser is null) continue;
+
+      var firstNetUser = netUser.FirstOrDefault();
+      if (firstNetUser is null) continue;
+
       var _thisMonthAggregate = netUser.Select(x => x.Aggregates.Where(x => x.Timestamp == startOfThisMonth).FirstOrDefault()).Where(x => x is not null).ToList();
       var _lastMonthAggregate = netUser.Select(x => x.Aggregates.Where(x => x.Timestamp == startOfLastMonth).FirstOrDefault()).Where(x => x is not null).ToList();
       var _lastMonthInvoiceTotals = groupedInvoices
@@ -186,16 +185,24 @@
       float _thisMonthUsage = 0;
       float _lastMonthUsage = 0;
       decimal _lastMonthsPayment = 0;
-      if (_thisMonthAggregate is not null && _thisMonthAggregate.Count > 0)
-        _thisMonthUsage = _thisMonthAggregate
-          .Select(x => x.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum)
+      if (_thisMonthAggregate is not null && _thisMonthAggregate.Count > 0){
+        var agg = _thisMonthAggregate
+          .Select(x => x?.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum)
           .DefaultIfEmpty(0)
           .Sum();
-      if (_lastMonthAggregate is not null && _lastMonthAggregate.Count > 0)
-        _lastMonthUsage = _lastMonthAggregate
-          .Select(x => x.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum)
+        if(agg is null)
+          agg = 0;
+        _thisMonthUsage = (float)agg;
+      }
+      if (_lastMonthAggregate is not null && _lastMonthAggregate.Count > 0){
+        var agg = _lastMonthAggregate
+          .Select(x => x?.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum)
           .DefaultIfEmpty(0)
           .Sum();
+        if(agg is null)
+          agg = 0;
+        _lastMonthUsage = (float)agg;
+      }
       if (_lastMonthInvoiceTotals is not null && _lastMonthInvoiceTotals.Count() > 0)
         _lastMonthsPayment = _lastMonthInvoiceTotals
           .DefaultIfEmpty(0)
@@ -204,8 +211,8 @@
       _dataStruct.Add(
         new TabularData
         {
-          location = netUser.FirstOrDefault().Location,
-          networkUser = netUser.FirstOrDefault().NetworkUser,
+          location = firstNetUser.Location,
+          networkUser = firstNetUser.NetworkUser,
           thisMonthUsage = _thisMonthUsage,
           lastMonthUsage = _lastMonthUsage,
           lastMonthsPayment = _lastMonthsPayment // !!! Add another query

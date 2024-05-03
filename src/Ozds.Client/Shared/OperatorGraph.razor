@@ -172,8 +172,8 @@
 
   private ApexChart<ChartData> chart = default!;
   private IEnumerable<MeterModel>? _meters;
-  OzdsAggregateQueries aggregateQueries;
-  OzdsMeasurementQueries measureQueries;
+  OzdsAggregateQueries aggregateQueries = default!;
+  OzdsMeasurementQueries measureQueries = default!;
 
   private class ExpandThing
   {
@@ -418,7 +418,7 @@
       return;
     }
 
-    InvokeAsync(() => StateHasChanged());
+    await InvokeAsync(() => StateHasChanged());
     if (reRenderChart)
     {
       await chart.UpdateSeriesAsync();
@@ -470,12 +470,13 @@
     return Task.CompletedTask;
   }
 
-  private async Task<IEnumerable<string>> Search(string value)
+  private Task<IEnumerable<string>> Search(string value)
   {
     // if text is null or empty, show complete list
     if (string.IsNullOrEmpty(value))
-      return _ioTDeviceNames;
-    return _ioTDeviceNames.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+      return Task.FromResult(_ioTDeviceNames as IEnumerable<string>);
+    var result = _ioTDeviceNames.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+    return Task.FromResult(result);
   }
 
 }

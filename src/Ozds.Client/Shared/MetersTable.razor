@@ -170,6 +170,8 @@
     List<MeterTableViewModel> meters = new();
 
     _netUsers = await queries.GetNetworkUsersByRepresentative(representative.Representative);
+    if(_netUsers is null || _netUsers.Count < 0 )
+      return;
     var _netUserIds = _netUsers.Select(x => x.Id).ToList();
     meters = await queries.ViewModelByNetworkUser(_netUserIds, startOfLastMonth, now);
     _calculations = await queries.GetCalculationByMeasurementLocation(

@@ -122,20 +122,12 @@
 @code {
   [CascadingParameter] public UserState user { get; set; } = default!;
   [CascadingParameter] public RepresentativeState representative { get; set; } = default!;
-  private (float? First, float? Last, DateTimeOffset FirstDate) _startEnd;
-  private (float? First, float? Last, DateTimeOffset FirstDate) _startEndLastMonth;
   private string? _searchString;
-  private IEnumerable<MeterModel>? _meters;
-  private IEnumerable<LocationModel>? _locations;
-  private IEnumerable<NetworkUserModel>? _networdUser;
   private IEnumerable<NetworkUserInvoiceModel>? _invoices;
-  private float? _consumption = 0;
-  private float? _lastMonthConsumption = 0;
 
   public record struct TabularData(LocationModel location, float thisMonthUsage, float lastMonthUsage, decimal lastMonthsPayment, float currentPower = 0);
 
   private List<TabularData> _dataStruct = new();
-  private IReadOnlyList<SpanningMeasure<float>>? _spanningMeasurements;
   private DateTimeOffset startOfThisMonth = DateTimeOffset.UtcNow.GetStartOfMonth();
   private DateTimeOffset startOfLastMonth = DateTimeOffset.UtcNow.GetStartOfLastMonth();
   private DateTimeOffset now = DateTimeOffset.UtcNow;
@@ -149,6 +141,8 @@
     List<LocationsTableViewModel> lastMeasurementPerMeterOnLocation = new();
 
     _netUsers = await queries.GetNetworkUsersByRepresentative(representative.Representative);
+    if(_netUsers is null || _netUsers.Count < 0 )
+      return;
     var _netUserIds = _netUsers.Select(x => x.Id).ToList();
     locations = await queries.ViewModelByNetworkUser(_netUserIds, startOfLastMonth, now);
     var groupedLocations = locations.GroupBy(x => x.Location.Id).ToList();
@@ -157,6 +151,11 @@
     var groupedInvoices = _invoices.GroupBy( x => x.NetworkUserId).ToList();
     foreach (var location in groupedLocations)
     {
+      if (location is null) continue;
+
+      var firstLocation = location.FirstOrDefault();
+      if (firstLocation is null) continue;
+
       var _thisMonthAggregate = location.Select(x => x.Aggregates.Where(x => x.Timestamp == startOfThisMonth).FirstOrDefault()).Where(x => x is not null).ToList();
       var _lastMonthAggregate = location.Select(x => x.Aggregates.Where(x => x.Timestamp == startOfLastMonth).FirstOrDefault()).Where(x => x is not null).ToList();
       var netUserIds =  location.Select( x => x.NetworkUser.Id ).ToList();
@@ -180,16 +179,24 @@
 
       float _thisMonthUsage = 0;
       float _lastMonthUsage = 0;
-      if (_thisMonthAggregate is not null && _thisMonthAggregate.Count > 0)
-        _thisMonthUsage = _thisMonthAggregate
-          .Select(x => x.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum)
+      if (_thisMonthAggregate is not null && _thisMonthAggregate.Count > 0){
+        var agg = _thisMonthAggregate
+          .Select(x => x?.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum)
           .DefaultIfEmpty(0)
           .Sum();
-      if (_lastMonthAggregate is not null && _lastMonthAggregate.Count > 0)
-        _lastMonthUsage = _lastMonthAggregate
-          .Select(x => x.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum)
+        if(agg is null)
+          agg = 0;
+        _thisMonthUsage = (float)agg;
+      }
+      if (_lastMonthAggregate is not null && _lastMonthAggregate.Count > 0){
+        var agg = _lastMonthAggregate
+          .Select(x => x?.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum)
           .DefaultIfEmpty(0)
           .Sum();
+        if(agg is null)
+          agg = 0;
+        _lastMonthUsage = (float)agg;
+      }
       if (_lastMonthInvoiceTotals is not null && _lastMonthInvoiceTotals.Count() > 0)
         _lastMonthsPayment = _lastMonthInvoiceTotals
           .DefaultIfEmpty(0)
@@ -198,7 +205,7 @@
       _dataStruct.Add(
         new TabularData
         {
-          location = location.FirstOrDefault().Location,
+          location = firstLocation.Location,
           thisMonthUsage = _thisMonthUsage,
           lastMonthUsage = _lastMonthUsage,
           currentPower = _currentPower,

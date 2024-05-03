@@ -1,4 +1,5 @@
 @inject NavigationManager NavigationManager
+@inject IDialogService DialogService
 @inherits OzdsOwningComponentBase
 
 @if (LoadingState.Value is null)
@@ -151,17 +152,17 @@
   [Parameter] public LocationModel? Model { get; set; }
 
   private LoadingState<LocationModel> LoadingState { get; set; } = new();
-  private List<WhiteMediumNetworkUserCatalogueModel> _whiteMediumNetworkUserCatalogues;
-  private List<BlueLowNetworkUserCatalogueModel> _blueLowNetworkUserCatalogues;
-  private List<WhiteLowNetworkUserCatalogueModel> _whiteLowNetworkUserCatalogues;
-  private List<RedLowNetworkUserCatalogueModel> _redLowNetworkUserCatalogues;
-  private List<RegulatoryCatalogueModel> _regulatoryNetworkUserCatalogues;
-  private List<RepresentativeModel> _representatives;
+  private List<WhiteMediumNetworkUserCatalogueModel> _whiteMediumNetworkUserCatalogues = new();
+  private List<BlueLowNetworkUserCatalogueModel> _blueLowNetworkUserCatalogues = new();
+  private List<WhiteLowNetworkUserCatalogueModel> _whiteLowNetworkUserCatalogues = new();
+  private List<RedLowNetworkUserCatalogueModel> _redLowNetworkUserCatalogues = new();
+  private List<RegulatoryCatalogueModel> _regulatoryNetworkUserCatalogues = new();
+  private List<RepresentativeModel> _representatives = new();
   private IEnumerable<RepresentativeModel> _selectedRepsList { get; set; } = new HashSet<RepresentativeModel>();
 
   private bool _create;
 
-  private void Submit()
+  private async Task Submit()
   {
     var mutations = ScopedServices.GetRequiredService<OzdsLocationMutations>();
     if (LoadingState.Value is null)
@@ -174,6 +175,8 @@
     {
       mutations.UpdateWithRepresentatives(LoadingState.Value, _selectedRepsList);
     }
+    await mutations.SaveChangesAsync();
+    DialogService.Show<MutateSuccess>("Changes Saved", new DialogOptions(){CloseOnEscapeKey = true});
   }
 
   protected override void OnInitialized()
