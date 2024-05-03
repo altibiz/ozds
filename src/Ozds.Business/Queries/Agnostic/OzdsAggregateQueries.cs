@@ -62,9 +62,6 @@ public class OzdsAggregateQueries : IOzdsQueries
     int pageNumber = QueryConstants.StartingPage,
     int pageCount = QueryConstants.DefaultPageCount)
   {
-    // AbbB2xAggregateEntity a = default!;
-
-    // a.Interval == 2;
     var abbB2x = await Read<AbbB2xAggregateModel>(whereClauses, fromDate,
       toDate, pageNumber, pageCount);
     var schneideriEM3xxx =

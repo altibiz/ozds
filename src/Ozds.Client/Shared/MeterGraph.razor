@@ -85,6 +85,7 @@
         @if (_graphValues is not null)
         {
           <ApexChart TItem="ChartData"
+                     XAxisType="XAxisType.Datetime"
                      Options="graphOptions"
                      @ref="chart">
             @for (var i = 0; i < lineCount; i++)
@@ -104,7 +105,7 @@
                                Items="@_graphValues"
                                Name="n/a"
                                SeriesType="SeriesType.Line"
-                               XValue='x => DateTimeGraph(x.date)'
+                               XValue='x => DateTimeGraph(x.date).DateTime'
                                YValue="x => 0"
                                Stroke="@(ColorGraph(0))"/>
             }
@@ -251,8 +252,12 @@
 
   private async Task GetValues(DateTimeOffset fromDate, DateTimeOffset toDate, bool reRenderChart = true)
   {
-    var quorterHourlyMeasures = await aggregateQueries.ReadAgnostic(new[] { "x => x.Interval == 0", $"x => x.MeterId == \"{Source}\"" }, fromDate, toDate, 1, 9000);
-    var measures = await measureQueries.ReadAgnostic(new[] { $"x => x.MeterId == \"{Source}\"" }, fromDate, toDate, 1, 3000);
+    IEnumerable<IMeasurement> measures;
+    if(timeSpanMins > 60)
+      measures = await aggregateQueries.ReadAgnostic(new[] { "x => x.Interval == 0", $"x => x.MeterId == \"{Source}\"" }, fromDate, toDate, 1, 9000);
+    else
+      measures = await measureQueries.ReadAgnostic(new[] { $"x => x.MeterId == \"{Source}\"" }, fromDate, toDate, 1, 3000);
+    measures = measures.OrderBy(x => x.Timestamp).ToList();
     switch (_dataTitle)
     {
       case "Struja":
@@ -340,7 +345,7 @@
     InvokeAsync(() => StateHasChanged());
     if (reRenderChart)
     {
-      await chart.UpdateSeriesAsync();
+      await chart.UpdateSeriesAsync(true);
       await SetAnnotationGraphOptions();
     }
   }
@@ -553,6 +558,7 @@
   {
     if (_graphValues is not null)
     {
+      var aaafuckme = _graphValues.OrderByDescending(x => x.date).ToList();
       var lastGraphValues = _graphValues.OrderByDescending(x => x.date).FirstOrDefault();
       if (lastGraphValues is not null)
       {

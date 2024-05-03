@@ -36,28 +36,34 @@ public class OzdsMeterTableQueries : IOzdsQueries
       .Select(m => m.ToModel()).FirstOrDefaultAsync();
   }
 
-  // !!! Fix this
   public async Task<List<NetworkUserModel>?> GetNetworkUsersByRepresentative(
     RepresentativeModel representative)
   {
-    List<NetworkUserModel> netUsers = new();
+    List<NetworkUserEntity> netUsers = new();
     switch (representative.Role)
     {
       case RoleModel.NetworkUserRepresentative:
-        netUsers = await context.NetworkUsers.Select(x => x.ToModel())
+        netUsers = await context.Representatives
+          .Where(context.PrimaryKeyEquals<RepresentativeEntity>(representative.Id))
+          .Include(x => x.NetworkUsers)
+          .SelectMany(x => x.NetworkUsers)
           .ToListAsync();
         break;
       case RoleModel.LocationRepresentative:
-        netUsers = await context.NetworkUsers.Select(x => x.ToModel())
+        netUsers = await context.Representatives
+          .Where(context.PrimaryKeyEquals<RepresentativeEntity>(representative.Id))
+          .Include(x => x.Locations)
+          .ThenInclude(x => x.NetworkUsers)
+          .SelectMany(x => x.Locations.SelectMany(x => x.NetworkUsers))
           .ToListAsync();
         break;
       case RoleModel.OperatorRepresentative:
-        netUsers = await context.NetworkUsers.Select(x => x.ToModel())
+        netUsers = await context.NetworkUsers
           .ToListAsync();
         break;
     }
 
-    return netUsers;
+    return netUsers.Select(x => x.ToModel()).ToList();
   }
 
   // !!! Fix this
@@ -86,10 +92,11 @@ public class OzdsMeterTableQueries : IOzdsQueries
 
 
   public async Task<List<NetworkUserInvoiceModel>> GetNetworkUserInvoicesByRepresentative(
-    RepresentativeModel representative)
+    RepresentativeModel representative,
+    DateTimeOffset fromDate,
+    DateTimeOffset toDate)
   {
     List<NetworkUserInvoiceEntity> results = new();
-
     switch (representative.Role)
     {
       case RoleModel.NetworkUserRepresentative:
@@ -98,6 +105,8 @@ public class OzdsMeterTableQueries : IOzdsQueries
           .Include(x => x.NetworkUsers)
           .ThenInclude(x => x.Invoices)
           .SelectMany(x => x.NetworkUsers.SelectMany(x => x.Invoices))
+          .Where(x => x.ToDate >= fromDate)
+          .Where(x => x.ToDate < toDate)
           .ToListAsync();
         break;
       case RoleModel.LocationRepresentative:
@@ -107,30 +116,58 @@ public class OzdsMeterTableQueries : IOzdsQueries
           .ThenInclude(x => x.NetworkUsers)
           .ThenInclude(x => x.Invoices)
           .SelectMany(x => x.Locations.SelectMany(x => x.NetworkUsers.SelectMany(x => x.Invoices)))
+          .Where(x => x.ToDate >= fromDate)
+          .Where(x => x.ToDate < toDate)
           .ToListAsync();
         break;
       case RoleModel.OperatorRepresentative:
         results = await context.NetworkUsers
           .Include(x => x.Invoices)
           .SelectMany(x => x.Invoices)
+          .Where(x => x.ToDate >= fromDate)
+          .Where(x => x.ToDate < toDate)
           .ToListAsync();
         break;
     }
+    return results.Select(x => x.ToModel()).ToList();
+  }
+
+  public async Task<List<INetworkUserCalculation>> GetCalculationByMeasurementLocation(
+    List<IMeasurementLocation> omms,
+    DateTimeOffset fromDate,
+    DateTimeOffset toDate)
+  {
+    List<NetworkUserCalculationEntity> results = new();
+
+    results = await context.MeasurementLocations
+      .Where(context.PrimaryKeyIn<MeasurementLocationEntity>(omms.Select(x => x.Id).ToList()))
+      .Join(
+        context.NetworkUserCalculations,
+        context.PrimaryKeyOf<MeasurementLocationEntity>(),
+        context.ForeignKeyOf<NetworkUserCalculationEntity>(
+          nameof(NetworkUserCalculationEntity.NetworkUserMeasurementLocation)
+        ),
+        (x, calc) => calc
+      )
+      .Where(x => x.ToDate >= fromDate)
+      .Where(x => x.ToDate < toDate)
+      .ToListAsync();
 
     return results.Select(x => x.ToModel()).ToList();
   }
 
   public async Task<List<MeterTableViewModel>>
     ViewModelByNetworkUser(
-      List<string> networkUserId,
+      List<string> networkUserIds,
       DateTimeOffset fromDate,
-      DateTimeOffset toDate
+      DateTimeOffset toDate,
+      IntervalEntity interval = IntervalEntity.Month
     )
   {
     var query = context.NetworkUsers
       .Include(x => x.Location)
       .Include(x => x.Location.RegulatoryCatalogue)
-      .Where(context.PrimaryKeyIn<NetworkUserEntity>(networkUserId))
+      .Where(context.PrimaryKeyIn<NetworkUserEntity>(networkUserIds))
       .Join(
         context.MeasurementLocations
           .OfType<NetworkUserMeasurementLocationEntity>()
@@ -164,7 +201,7 @@ public class OzdsMeterTableQueries : IOzdsQueries
         context.AbbB2xAggregates
           .Where(x => x.Timestamp >= fromDate)
           .Where(x => x.Timestamp <= toDate)
-          .Where(x => x.Interval == IntervalEntity.Month),
+          .Where(x => x.Interval == interval),
         context.PrimaryKeyOf((ViewModelStruct x) => x.Meter),
         context.ForeignKeyOf<AbbB2xAggregateEntity>(
           nameof(AbbB2xAggregateEntity.Meter)),
@@ -190,7 +227,7 @@ public class OzdsMeterTableQueries : IOzdsQueries
         context.SchneideriEM3xxxAggregates
           .Where(x => x.Timestamp >= fromDate)
           .Where(x => x.Timestamp <= toDate)
-          .Where(x => x.Interval == IntervalEntity.Month),
+          .Where(x => x.Interval == interval),
         context.PrimaryKeyOf((ViewModelStruct x) => x.Meter),
         context.ForeignKeyOf<SchneideriEM3xxxAggregateEntity>(
           nameof(SchneideriEM3xxxAggregateEntity.Meter)),

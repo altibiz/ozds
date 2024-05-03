@@ -81,7 +81,7 @@
           Property="x => x.TotalWithTax_EUR"
           Title='@T["Iznos"]'>
           <CellTemplate>
-            @(DecimalString(context.Item.Total_EUR) + " EUR")
+            @(DecimalString(context.Item.TotalWithTax_EUR) + " EUR")
           </CellTemplate>
         </PropertyColumn>
         <PropertyColumn
@@ -133,37 +133,9 @@
 
   protected override async Task OnInitializedAsync()
   {
-    if (representative is null)
-    {
-      return;
-    }
-
     var invoiceQuery = ScopedServices.GetRequiredService<OzdsInvoiceQueries>();
     var query = ScopedServices.GetRequiredService<OzdsMeterTableQueries>();
-    _invoices = await query.GetNetworkUserInvoicesByRepresentative(representative.Representative);
-    @* _netUsers = await query.GetNetworkUsersByRepresentative(representative.Representative);
-    var _netUserIds = _netUsers.Select(x => x.Id).ToList();
-    var allInvoices = await invoiceQuery
-      .Read<NetworkUserInvoiceModel>(
-        new[] { $"x => {_netUserIds}.Contains(x.NetworkUserId)" },
-        Enumerable.Empty<string>(),
-        Enumerable.Empty<string>(),
-        1,
-        100); *@
-    @* var allInvoices = await invoiceQuery.Read<NetworkUserInvoiceModel>(Enumerable.Empty<string>(), Enumerable.Empty<string>(), Enumerable.Empty<string>(), 1, 100); *@
-    @* _invoices = allInvoices.Items.Where(x => _netUserIds.Contains(x.NetworkUserId)).ToList(); *@
-    if (representative.Representative.Role is RoleModel.NetworkUserRepresentative)
-    {
-      // Find all _invoices tied to this user, decending by FromDate
-    }
-    else if (representative.Representative.Role is RoleModel.LocationRepresentative)
-    {
-      // Find all network users that belong to this location, then find all _invoices tied to thous user, decending by FromDate
-    }
-    else if (representative.Representative.Role is RoleModel.OperatorRepresentative)
-    {
-      // Find all _invoices tied to this user, decending by FromDate
-    }
+    _invoices = await query.GetNetworkUserInvoicesByRepresentative(representative.Representative, DateTimeOffset.MinValue, DateTimeOffset.MaxValue);
 
     if (_invoices is not null)
     {
