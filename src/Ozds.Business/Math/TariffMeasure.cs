@@ -26,10 +26,10 @@ public record class CompositeTariffMeasure<T>
   {
     return Measures.FirstOrDefault(measure => measure is BinaryTariffMeasure<T>)
       is
-      { } binary
+    { } binary
       ? selector(binary)
       : Measures.FirstOrDefault(measure => measure is UnaryTariffMeasure<T>) is
-        { } unary
+      { } unary
         ? selector(unary)
         : @default;
   }
@@ -166,11 +166,9 @@ public abstract record class TariffMeasure<T>
       return this switch
       {
         CompositeTariffMeasure<T> composite =>
-          composite.Measures.FirstOrDefault(
-              measure => measure is UnaryTariffMeasure<T>) is
-            UnaryTariffMeasure<T> unary
-            ? unary.T0
-            : DuplexMeasure<T>.Null,
+          new CompositeDuplexMeasure<T>(
+          composite.Measures.Select(
+              measure => measure.TariffUnary).ToList()),
         BinaryTariffMeasure<T> binary => binary.T1 + binary.T2,
         UnaryTariffMeasure<T> unary => unary.T0,
         _ => DuplexMeasure<T>.Null
