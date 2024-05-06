@@ -35,7 +35,7 @@ public class OzdsIotHandler
     return Task.FromResult(true);
   }
 
-  public Task OnPush(string _, string request)
+  public async Task OnPush(string _, string request)
   {
     var messengerRequest =
       JsonSerializer.Deserialize<MessengerPushRequest>(
@@ -47,7 +47,7 @@ public class OzdsIotHandler
     if (messengerRequest?.Measurements is null
         || messengerRequest.Measurements.Length == 0)
     {
-      return Task.CompletedTask;
+      return;
     }
 
     foreach (var item in messengerRequest.Measurements)
@@ -57,8 +57,9 @@ public class OzdsIotHandler
       );
       _measurementMutations.Create(measurement);
     }
+    await _measurementMutations.SaveChangesAsync();
 
-    return Task.CompletedTask;
+    return;
   }
 
   public Task OnPoll(string id, string request)
