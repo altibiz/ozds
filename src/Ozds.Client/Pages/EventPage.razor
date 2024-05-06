@@ -1,0 +1,98 @@
+@page "/event/{id}"
+
+
+@if (user is null)
+{
+  return;
+}
+<MudContainer MaxWidth="MaxWidth.Small" Class="d-flex  flex-column" Style="float: left;">
+  <MudText Class="d-flex align-center my-2" Typo="@Typo.h5">Event Id: @Id</MudText>
+  <MudPaper class="mt-2 px-4 py-2">
+
+    <MudGrid Spacing="3">
+      <MudItem xs="12" sm="3">
+        <MudText Typo="Typo.body1" Style="font-weight: bold;">
+          @T["Naziv"]:
+        </MudText>
+      </MudItem>
+      <MudItem xs="12" sm="9">
+        <MudHidden Breakpoint="Breakpoint.Xs">
+          <MudText Type="Typo.body2" Align="MudAlign.Right">
+            @T["AbbB2x NOT RESPONDING"]
+          </MudText>
+        </MudHidden>
+        <MudHidden Breakpoint="Breakpoint.SmAndUp">
+          <MudText Type="Typo.body2" Align="MudAlign.Left">
+            @T["AbbB2x NOT RESPONDING"]
+          </MudText>
+        </MudHidden>
+      </MudItem>
+    </MudGrid>
+
+    <MudGrid Spacing="3">
+      <MudItem xs="12" sm="3">
+        <MudText Typo="Typo.body1" Style="font-weight: bold;">
+          @T["Nivo"]:
+        </MudText>
+      </MudItem>
+      <MudItem xs="12" sm="9">
+        <MudHidden Breakpoint="Breakpoint.Xs">
+          <MudText Type="Typo.body2" Align="MudAlign.Right">
+            <MudIcon Icon="@Icons.Material.Filled.Circle" Color="@MudBlazor.Color.Error"/>
+          </MudText>
+        </MudHidden>
+        <MudHidden Breakpoint="Breakpoint.SmAndUp">
+          <MudText Type="Typo.body2" Align="MudAlign.Left">
+            <MudIcon Icon="@Icons.Material.Filled.Circle" Color="@MudBlazor.Color.Error"/>
+          </MudText>
+        </MudHidden>
+      </MudItem>
+    </MudGrid>
+
+    <MudGrid Spacing="3">
+      <MudItem xs="12" sm="3">
+        <MudText Typo="Typo.body1" Style="font-weight: bold;">
+          @T["Opis"]:
+        </MudText>
+      </MudItem>
+      <MudItem xs="12" sm="9">
+        <MudHidden Breakpoint="Breakpoint.Xs">
+          <MudText Type="Typo.body2" Align="MudAlign.Right">
+            @T["At {Time} AbbB2x STOPPED RESPONDING"]
+          </MudText>
+        </MudHidden>
+        <MudHidden Breakpoint="Breakpoint.SmAndUp">
+          <MudText Type="Typo.body2" Align="MudAlign.Left">
+            @T["At {Time} AbbB2x STOPPED RESPONDING"]
+          </MudText>
+        </MudHidden>
+      </MudItem>
+    </MudGrid>
+
+    <MudGrid Spacing="3">
+      <MudItem xs="12" sm="3">
+        <MudText Typo="Typo.body1" Style="font-weight: bold;">
+          @T["Datum"]:
+        </MudText>
+      </MudItem>
+      <MudItem xs="12" sm="9">
+        <MudHidden Breakpoint="Breakpoint.Xs">
+          <MudText Type="Typo.body2" Align="MudAlign.Right">
+            @T["11:39 06.05"]
+          </MudText>
+        </MudHidden>
+        <MudHidden Breakpoint="Breakpoint.SmAndUp">
+          <MudText Type="Typo.body2" Align="MudAlign.Left">
+            @T["11:39 06.05"]
+          </MudText>
+        </MudHidden>
+      </MudItem>
+    </MudGrid>
+  </MudPaper>
+</MudContainer>
+
+@code {
+  [CascadingParameter] public UserState user { get; set; } = default!;
+  [CascadingParameter] public RepresentativeState RepresentativeState { get; set; } = default!;
+  [Parameter] public string Id { get; set; } = default!;
+}
