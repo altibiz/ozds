@@ -53,6 +53,7 @@ public class OzdsRepresentativeQueries : IOzdsQueries
   {
     return await _context.Representatives
       .Where(entity => entity.Role == RoleEntity.OperatorRepresentative)
+      .OrderBy(_context.PrimaryKeyOf<RepresentativeEntity>())
       .QueryPaged(
         RepresentativeModelEntityConverterExtensions.ToModel,
         filter,
@@ -73,6 +74,7 @@ public class OzdsRepresentativeQueries : IOzdsQueries
       .Where(entity => entity.NetworkUsers
         .Where(_context.PrimaryKeyEqualsCompiled<NetworkUserEntity>(id))
         .Any())
+      .OrderBy(_context.PrimaryKeyOf<RepresentativeEntity>())
       .QueryPaged(
         RepresentativeModelEntityConverterExtensions.ToModel,
         filter,
@@ -92,6 +94,7 @@ public class OzdsRepresentativeQueries : IOzdsQueries
       .Where(entity => entity.Locations
         .Where(_context.PrimaryKeyEqualsCompiled<LocationEntity>(id))
         .Any())
+      .OrderBy(_context.PrimaryKeyOf<RepresentativeEntity>())
       .QueryPaged(
         RepresentativeModelEntityConverterExtensions.ToModel,
         filter,
@@ -133,6 +136,7 @@ public class OzdsRepresentativeQueries : IOzdsQueries
   {
     var users = await _session
       .Query<User, UserIndex>()
+      .OrderBy(index => index.DocumentId)
       .QueryPaged(
         UserModelExtensions.ToModel,
         filter,
@@ -167,6 +171,7 @@ public class OzdsRepresentativeQueries : IOzdsQueries
   {
     var users = await _session
       .Query<User, UserIndex>()
+      .OrderBy(index => index.DocumentId)
       .QueryPaged(
         UserModelExtensions.ToModel,
         filter,

@@ -43,6 +43,7 @@ public class OzdsSchneideriEM3xxxMeterModelQueries : IOzdsQueries
         .StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered
+      .OrderBy(context.PrimaryKeyOf<MessengerEntity>())
       .Skip((pageNumber - 1) * pageCount)
       .Take(pageCount)
       .ToListAsync();
@@ -51,24 +52,6 @@ public class OzdsSchneideriEM3xxxMeterModelQueries : IOzdsQueries
       .ToPaginatedList(count);
   }
 
-  // public async Task<PaginatedList<NetworkUserCatalogueModel>> GetNetworkUserCatalogues(
-  //   string title,
-  //   int pageNumber = QueryConstants.StartingPage,
-  //   int pageCount = QueryConstants.DefaultPageCount
-  // )
-  // {
-  //   var filtered = context.NetworkUserCatalogues
-  //     .Where(catalogue => catalogue.Title
-  //       .StartsWith(title));
-  //   var count = await filtered.CountAsync();
-  //   var items = await filtered
-  //     .Skip((pageNumber - 1) * pageCount)
-  //     .Take(pageCount)
-  //     .ToListAsync();
-  //   return items
-  //     .Select(item => item.ToModel())
-  //     .ToPaginatedList(count);
-  // }
   public async Task<PaginatedList<SchneideriEM3xxxMeasurementValidatorModel>>
     GetValidators(
       string title,
@@ -81,6 +64,7 @@ public class OzdsSchneideriEM3xxxMeterModelQueries : IOzdsQueries
       .Where(catalogue => catalogue.Title.StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered
+      .OrderBy(context.PrimaryKeyOf<SchneideriEM3xxxMeasurementValidatorEntity>())
       .Skip((pageNumber - 1) * pageCount)
       .Take(pageCount)
       .ToListAsync();

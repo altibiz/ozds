@@ -42,6 +42,7 @@ public class OzdsMessengerModelQueries : IOzdsQueries
         .StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered
+      .OrderBy(context.PrimaryKeyOf<LocationEntity>())
       .Skip((pageNumber - 1) * pageCount)
       .Take(pageCount)
       .ToListAsync();

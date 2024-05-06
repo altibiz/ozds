@@ -6,6 +6,7 @@ using Ozds.Business.Models.Base;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Data;
 using Ozds.Data.Entities;
+using Ozds.Data.Entities.Base;
 
 namespace Ozds.Business.Queries;
 
@@ -46,6 +47,7 @@ public class OzdsNetworkUserMeasurementLocationModelQueries : IOzdsQueries
         .StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered
+      .OrderBy(context.PrimaryKeyOf<NetworkUserEntity>())
       .Skip((pageNumber - 1) * pageCount)
       .Take(pageCount)
       .ToListAsync();
@@ -64,6 +66,7 @@ public class OzdsNetworkUserMeasurementLocationModelQueries : IOzdsQueries
       .Where(catalogue => catalogue.Title.StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered
+      .OrderBy(context.PrimaryKeyOf<MeterEntity>())
       .Skip((pageNumber - 1) * pageCount)
       .Take(pageCount)
       .ToListAsync();
@@ -81,6 +84,7 @@ public class OzdsNetworkUserMeasurementLocationModelQueries : IOzdsQueries
     var filtered = context.NetworkUserCatalogues;
     var count = await filtered.CountAsync();
     var items = await filtered
+      .OrderBy(context.PrimaryKeyOf<NetworkUserCatalogueEntity>())
       .Skip((pageNumber - 1) * pageCount)
       .Take(pageCount)
       .ToListAsync();

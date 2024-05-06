@@ -45,6 +45,7 @@ public class OzdsNetworkUserQueries : IOzdsQueries
         .StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered
+      .OrderBy(context.PrimaryKeyOf<LocationEntity>())
       .Skip((pageNumber - 1) * pageCount)
       .Take(pageCount)
       .ToListAsync();
@@ -66,6 +67,7 @@ public class OzdsNetworkUserQueries : IOzdsQueries
       .Where(rep => rep.Role == RoleEntity.NetworkUserRepresentative);
     var count = await filtered.CountAsync();
     var items = await filtered
+      .OrderBy(context.PrimaryKeyOf<RepresentativeEntity>())
       .Skip((pageNumber - 1) * pageCount)
       .Take(pageCount)
       .ToListAsync();

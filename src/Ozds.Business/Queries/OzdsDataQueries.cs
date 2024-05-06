@@ -27,6 +27,7 @@ public class OzdsDataQueries : IOzdsQueries
         .StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered
+      .OrderBy(context.PrimaryKeyOf<LocationEntity>())
       .Skip((pageNumber - 1) * pageCount)
       .Take(pageCount)
       .ToListAsync();
@@ -46,6 +47,7 @@ public class OzdsDataQueries : IOzdsQueries
         .StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered
+      .OrderBy(context.PrimaryKeyOf<NetworkUserEntity>())
       .Skip((pageNumber - 1) * pageCount)
       .Take(pageCount)
       .ToListAsync();
@@ -67,6 +69,7 @@ public class OzdsDataQueries : IOzdsQueries
         .StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered
+      .OrderBy(context.PrimaryKeyOf<RedLowNetworkUserCatalogueEntity>())
       .Skip((pageNumber - 1) * pageCount)
       .Take(pageCount)
       .ToListAsync();
@@ -88,6 +91,7 @@ public class OzdsDataQueries : IOzdsQueries
         .StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered
+      .OrderBy(context.PrimaryKeyOf<BlueLowNetworkUserCatalogueEntity>())
       .Skip((pageNumber - 1) * pageCount)
       .Take(pageCount)
       .ToListAsync();
@@ -109,6 +113,7 @@ public class OzdsDataQueries : IOzdsQueries
         .StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered
+      .OrderBy(context.PrimaryKeyOf<WhiteLowNetworkUserCatalogueEntity>())
       .Skip((pageNumber - 1) * pageCount)
       .Take(pageCount)
       .ToListAsync();
@@ -130,6 +135,7 @@ public class OzdsDataQueries : IOzdsQueries
         .StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered
+      .OrderBy(context.PrimaryKeyOf<WhiteMediumNetworkUserCatalogueEntity>())
       .Skip((pageNumber - 1) * pageCount)
       .Take(pageCount)
       .ToListAsync();
@@ -150,6 +156,7 @@ public class OzdsDataQueries : IOzdsQueries
         .StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered
+      .OrderBy(context.PrimaryKeyOf<RegulatoryCatalogueEntity>())
       .Skip((pageNumber - 1) * pageCount)
       .Take(pageCount)
       .ToListAsync();
@@ -170,6 +177,7 @@ public class OzdsDataQueries : IOzdsQueries
         .StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered
+      .OrderBy(context.PrimaryKeyOf<MessengerEntity>())
       .Skip((pageNumber - 1) * pageCount)
       .Take(pageCount)
       .ToListAsync();
@@ -191,6 +199,7 @@ public class OzdsDataQueries : IOzdsQueries
         .StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered
+      .OrderBy(context.PrimaryKeyOf<AbbB2xMeasurementValidatorEntity>())
       .Skip((pageNumber - 1) * pageCount)
       .Take(pageCount)
       .ToListAsync();
@@ -212,6 +221,7 @@ public class OzdsDataQueries : IOzdsQueries
         .StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered
+      .OrderBy(context.PrimaryKeyOf<SchneideriEM3xxxMeasurementValidatorEntity>())
       .Skip((pageNumber - 1) * pageCount)
       .Take(pageCount)
       .ToListAsync();
@@ -232,6 +242,7 @@ public class OzdsDataQueries : IOzdsQueries
         .StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered
+      .OrderBy(context.PrimaryKeyOf<AbbB2xMeterEntity>())
       .Skip((pageNumber - 1) * pageCount)
       .Take(pageCount)
       .ToListAsync();
@@ -253,6 +264,7 @@ public class OzdsDataQueries : IOzdsQueries
         .StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered
+      .OrderBy(context.PrimaryKeyOf<SchneideriEM3xxxMeterEntity>())
       .Skip((pageNumber - 1) * pageCount)
       .Take(pageCount)
       .ToListAsync();
@@ -274,6 +286,7 @@ public class OzdsDataQueries : IOzdsQueries
         .StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered
+      .OrderBy(context.PrimaryKeyOf<LocationMeasurementLocationEntity>())
       .Skip((pageNumber - 1) * pageCount)
       .Take(pageCount)
       .ToListAsync();
@@ -295,6 +308,7 @@ public class OzdsDataQueries : IOzdsQueries
         .StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered
+      .OrderBy(context.PrimaryKeyOf<NetworkUserMeasurementLocationEntity>())
       .Skip((pageNumber - 1) * pageCount)
       .Take(pageCount)
       .ToListAsync();

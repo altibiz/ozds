@@ -5,6 +5,7 @@ using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Data;
 using Ozds.Data.Entities;
+using Ozds.Data.Entities.Base;
 
 // TODO: MeasurementLocation -> MeasurementSpot ?
 // TODO: use surrogate keys
@@ -47,6 +48,7 @@ public class OzdsLocationMeasurementLocationModelQueries : IOzdsQueries
         .StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered
+      .OrderBy(context.PrimaryKeyOf<LocationEntity>())
       .Skip((pageNumber - 1) * pageCount)
       .Take(pageCount)
       .ToListAsync();
@@ -65,6 +67,7 @@ public class OzdsLocationMeasurementLocationModelQueries : IOzdsQueries
       .Where(catalogue => catalogue.Title.StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered
+      .OrderBy(context.PrimaryKeyOf<MeterEntity>())
       .Skip((pageNumber - 1) * pageCount)
       .Take(pageCount)
       .ToListAsync();
