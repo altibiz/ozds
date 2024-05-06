@@ -1,0 +1,15 @@
+@page "/alerts"
+@attribute [Navigation(Icon= Icons.Material.Outlined.Notifications, Title = "Alarmi", Allows = new[] { RoleModel.OperatorRepresentative })]
+
+
+@if (user is null)
+{
+  return;
+}
+
+<AlertsTable/>
+
+@code {
+  [CascadingParameter] public UserState user { get; set; } = default!;
+  [CascadingParameter] public RepresentativeState RepresentativeState { get; set; } = default!;
+}
