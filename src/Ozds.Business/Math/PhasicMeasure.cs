@@ -16,7 +16,7 @@ public record class CompositePhasicMeasure<T>
     Measures = measures.SelectMany(measure => measure switch
     {
       CompositePhasicMeasure<T> composite => composite.Measures,
-      _ => new List<PhasicMeasure<T>> { measure }
+      _ => [measure]
     }).ToList();
   }
 

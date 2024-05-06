@@ -8,21 +8,15 @@ using Ozds.Data.Entities.Base;
 
 namespace Ozds.Business.Queries.Agnostic;
 
-public class OzdsCalculationQueries : IOzdsQueries
+public class OzdsCalculationQueries(
+  OzdsDbContext context,
+  AgnosticModelEntityConverter modelEntityConverter
+) : IOzdsQueries
 {
-  private readonly OzdsDbContext _context;
+  private readonly OzdsDbContext _context = context;
 
-  private readonly AgnosticModelEntityConverter _modelEntityConverter;
-
-  public OzdsCalculationQueries(
-    OzdsDbContext context,
-    AgnosticModelEntityConverter modelEntityConverter
-  )
-  {
-    _context = context;
-    _modelEntityConverter = modelEntityConverter;
-  }
-
+  private readonly AgnosticModelEntityConverter _modelEntityConverter =
+    modelEntityConverter;
 
   public async Task<T?> ReadSingle<T>(string id)
     where T : class, INetworkUserCalculation

@@ -16,7 +16,7 @@ public record class CompositeDuplexMeasure<T>
     Measures = measures.SelectMany(measure => measure switch
     {
       CompositeDuplexMeasure<T> composite => composite.Measures,
-      _ => new List<DuplexMeasure<T>> { measure }
+      _ => [measure]
     }).ToList();
   }
 

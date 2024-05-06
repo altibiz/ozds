@@ -9,16 +9,11 @@ using Ozds.Data;
 
 namespace Ozds.Business.Mutations.Agnostic;
 
-public class OzdsLocationMutations : IOzdsMutations
+public class OzdsLocationMutations(
+  OzdsDbContext context
+) : IOzdsMutations
 {
-  private readonly OzdsDbContext _context;
-
-  public OzdsLocationMutations(
-    OzdsDbContext context
-  )
-  {
-    _context = context;
-  }
+  private readonly OzdsDbContext _context = context;
 
   public Task SaveChangesAsync()
   {

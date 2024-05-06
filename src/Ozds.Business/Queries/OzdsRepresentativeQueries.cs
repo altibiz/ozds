@@ -18,23 +18,16 @@ using ISession = YesSql.ISession;
 
 namespace Ozds.Business.Queries;
 
-public class OzdsRepresentativeQueries : IOzdsQueries
+public class OzdsRepresentativeQueries(
+  OzdsDbContext context,
+  UserManager<IUser> userManager,
+  ISession session
+) : IOzdsQueries
 {
-  private readonly OzdsDbContext _context;
-  private readonly ISession _session;
+  private readonly OzdsDbContext _context = context;
+  private readonly ISession _session = session;
 
-  private readonly UserManager<IUser> _userManager;
-
-  public OzdsRepresentativeQueries(
-    OzdsDbContext context,
-    UserManager<IUser> userManager,
-    ISession session
-  )
-  {
-    _context = context;
-    _session = session;
-    _userManager = userManager;
-  }
+  private readonly UserManager<IUser> _userManager = userManager;
 
   public async Task<RepresentativeModel?> RepresentativeById(string id)
   {

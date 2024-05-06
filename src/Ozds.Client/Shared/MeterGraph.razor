@@ -251,7 +251,7 @@
   private async Task GetValues(DateTimeOffset fromDate, DateTimeOffset toDate, bool reRenderChart = true)
   {
     IEnumerable<IMeasurement> measures;
-    if(timeSpanMins > 60)
+    if (timeSpanMins > 60)
       measures = await aggregateQueries.ReadAgnostic(new[] { "x => x.Interval == 0", $"x => x.MeterId == \"{Source}\"" }, fromDate, toDate, 1, 9000);
     else
       measures = await measureQueries.ReadAgnostic(new[] { $"x => x.MeterId == \"{Source}\"" }, fromDate, toDate, 1, 3000);
@@ -343,7 +343,7 @@
     await InvokeAsync(() => StateHasChanged());
     if (reRenderChart)
     {
-      await chart.UpdateSeriesAsync(true);
+      await chart.UpdateSeriesAsync();
       await SetAnnotationGraphOptions();
     }
   }
@@ -570,7 +570,7 @@
   {
     public bool Equals(ChartData? x, ChartData? y)
     {
-      if(y is null || x is null)
+      if (y is null || x is null)
         return false;
       return x.date == y.date;
     }

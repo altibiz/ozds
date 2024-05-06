@@ -65,7 +65,7 @@ if (options.Seed is { } seed)
 
       var request = new MessengerPushRequest(
         now,
-        batch.ToArray()
+        [.. batch]
       );
 
       var pushClient =
@@ -105,7 +105,7 @@ while (true)
 
     var request = new MessengerPushRequest(
       now,
-      measurements.ToArray()
+      [.. measurements]
     );
 
     await pushClient.Push(

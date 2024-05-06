@@ -8,20 +8,15 @@ using Ozds.Data.Entities.Base;
 
 namespace Ozds.Business.Queries.Agnostic;
 
-public class OzdsEventQueries : IOzdsQueries
+public class OzdsEventQueries(
+  OzdsDbContext context,
+  AgnosticModelEntityConverter modelEntityConverter
+) : IOzdsQueries
 {
-  private readonly OzdsDbContext _context;
+  private readonly OzdsDbContext _context = context;
 
-  private readonly AgnosticModelEntityConverter _modelEntityConverter;
-
-  public OzdsEventQueries(
-    OzdsDbContext context,
-    AgnosticModelEntityConverter modelEntityConverter
-  )
-  {
-    _context = context;
-    _modelEntityConverter = modelEntityConverter;
-  }
+  private readonly AgnosticModelEntityConverter _modelEntityConverter =
+    modelEntityConverter;
 
   public async Task<PaginatedList<T>> Read<T>(
     IEnumerable<string> whereClauses,

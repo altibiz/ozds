@@ -9,14 +9,9 @@ using Ozds.Data.Entities.Enums;
 
 namespace Ozds.Business.Queries;
 
-public class OzdsNetworkUserQueries : IOzdsQueries
+public class OzdsNetworkUserQueries(OzdsDbContext context) : IOzdsQueries
 {
-  protected readonly OzdsDbContext context;
-
-  public OzdsNetworkUserQueries(OzdsDbContext context)
-  {
-    this.context = context;
-  }
+  protected readonly OzdsDbContext context = context;
 
   public async Task<NetworkUserModel?>
     NetworkUserById(string id)
@@ -108,6 +103,6 @@ public class OzdsNetworkUserQueries : IOzdsQueries
       return rep.NetworkUsers.Select(x => x.ToModel()).ToList();
     }
 
-    return new List<NetworkUserModel>();
+    return [];
   }
 }

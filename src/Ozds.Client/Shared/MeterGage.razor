@@ -97,7 +97,7 @@
     _meter = await ScopedServices
       .GetRequiredService<OzdsMeterTableQueries>()
       .GetMeterById(Source);
-    if(_meter is not null)
+    if (_meter is not null)
       connectionMaxPower = _meter.ConnectionPower_W * 3;
 
     SetGageOptionsStart();
@@ -114,7 +114,8 @@
     if (measureLastQuorterHour.Count() > 0)
     {
       var a = measureLastQuorterHour.OrderBy(x => x.Timestamp).LastOrDefault();
-      if(a is not null){
+      if (a is not null)
+      {
         var b = a.ActivePower_W.TariffUnary.DuplexNet.PhaseSum;
         thisMonthCurrentPower = b;
       }

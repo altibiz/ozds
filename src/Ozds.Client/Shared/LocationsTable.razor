@@ -26,12 +26,14 @@
             <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
               @T["Potrošnja u prethodnom mjesecu"]: @(FloatString(dataStruct.data.lastMonthUsage / 1000, 0) + " kWh")
             </MudItem>
-            @if(representative.Representative.Role is RoleModel.LocationRepresentative){
+            @if (representative.Representative.Role is RoleModel.LocationRepresentative)
+            {
               <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
                 @T["Trenutna snaga"]: @FloatString(dataStruct.data.currentPower / 1000) kW
               </MudItem>
             }
-            else{
+            else
+            {
               <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
                 @T["Zbroj računa prethodnog mjeseca"]: @(dataStruct.data.lastMonthsPayment == 0 ? T["Račun u izradi..."] : DecimalString(dataStruct.data.lastMonthsPayment) + " EUR")
               </MudItem>
@@ -92,7 +94,8 @@
           @(FloatString(context.Item.lastMonthUsage / 1000, 0) + " kWh")
         </CellTemplate>
       </PropertyColumn>
-      @if(representative.Representative.Role is RoleModel.LocationRepresentative){
+      @if (representative.Representative.Role is RoleModel.LocationRepresentative)
+      {
         <PropertyColumn
           CellStyle="font-size: x-large;"
           Property="x => x.currentPower"
@@ -102,7 +105,8 @@
           </CellTemplate>
         </PropertyColumn>
       }
-      else{
+      else
+      {
         <PropertyColumn
           CellStyle="font-size: x-large;"
           Property="x => x.lastMonthsPayment"
@@ -141,14 +145,14 @@
     List<LocationsTableViewModel> lastMeasurementPerMeterOnLocation = new();
 
     _netUsers = await queries.GetNetworkUsersByRepresentative(representative.Representative);
-    if(_netUsers is null || _netUsers.Count < 0 )
+    if (_netUsers is null || _netUsers.Count < 0)
       return;
     var _netUserIds = _netUsers.Select(x => x.Id).ToList();
     locations = await queries.ViewModelByNetworkUser(_netUserIds, startOfLastMonth, now);
     var groupedLocations = locations.GroupBy(x => x.Location.Id).ToList();
     lastMeasurementPerMeterOnLocation = await locationQueries.ViewModelByNetworkUser(_netUserIds);
     _invoices = await queries.GetNetworkUserInvoicesByRepresentative(representative.Representative, startOfLastMonth, startOfThisMonth);
-    var groupedInvoices = _invoices.GroupBy( x => x.NetworkUserId).ToList();
+    var groupedInvoices = _invoices.GroupBy(x => x.NetworkUserId).ToList();
     foreach (var location in groupedLocations)
     {
       if (location is null) continue;
@@ -158,45 +162,50 @@
 
       var _thisMonthAggregate = location.Select(x => x.Aggregates.Where(x => x.Timestamp == startOfThisMonth).FirstOrDefault()).Where(x => x is not null).ToList();
       var _lastMonthAggregate = location.Select(x => x.Aggregates.Where(x => x.Timestamp == startOfLastMonth).FirstOrDefault()).Where(x => x is not null).ToList();
-      var netUserIds =  location.Select( x => x.NetworkUser.Id ).ToList();
+      var netUserIds = location.Select(x => x.NetworkUser.Id).ToList();
       var _lastMonthInvoiceTotals = groupedInvoices
-        .Where( x => netUserIds.Contains(x.Key))
+        .Where(x => netUserIds.Contains(x.Key))
         .Where(x => x is not null)
-        .Select( x => x.Select( y => y.TotalWithTax_EUR ) )
+        .Select(x => x.Select(y => y.TotalWithTax_EUR))
         .FirstOrDefault();
 
       float _currentPower = 0;
       decimal _lastMonthsPayment = 0;
       var measureSum = lastMeasurementPerMeterOnLocation
-          .Where(x => x.Location.Id == location.Key)
-          .Select( x => x.Measurement.FirstOrDefault()?
+        .Where(x => x.Location.Id == location.Key)
+        .Select(x => x.Measurement.FirstOrDefault()?
           .ActivePower_W.TariffUnary.DuplexNet.PhaseSum)
-          .Where(x => x is not null)
-          .DefaultIfEmpty(0).Sum();
-      if(measureSum is not null){
+        .Where(x => x is not null)
+        .DefaultIfEmpty(0).Sum();
+      if (measureSum is not null)
+      {
         _currentPower = measureSum ?? 0;
       }
 
       float _thisMonthUsage = 0;
       float _lastMonthUsage = 0;
-      if (_thisMonthAggregate is not null && _thisMonthAggregate.Count > 0){
+      if (_thisMonthAggregate is not null && _thisMonthAggregate.Count > 0)
+      {
         var agg = _thisMonthAggregate
           .Select(x => x?.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum)
           .DefaultIfEmpty(0)
           .Sum();
-        if(agg is null)
+        if (agg is null)
           agg = 0;
         _thisMonthUsage = (float)agg;
       }
-      if (_lastMonthAggregate is not null && _lastMonthAggregate.Count > 0){
+
+      if (_lastMonthAggregate is not null && _lastMonthAggregate.Count > 0)
+      {
         var agg = _lastMonthAggregate
           .Select(x => x?.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum)
           .DefaultIfEmpty(0)
           .Sum();
-        if(agg is null)
+        if (agg is null)
           agg = 0;
         _lastMonthUsage = (float)agg;
       }
+
       if (_lastMonthInvoiceTotals is not null && _lastMonthInvoiceTotals.Count() > 0)
         _lastMonthsPayment = _lastMonthInvoiceTotals
           .DefaultIfEmpty(0)
@@ -246,7 +255,7 @@
   @* MOBILE *@
   public string TextValue { get; set; } = "";
 
-    private class ExpandThing
+  private class ExpandThing
   {
     public TabularData data = default!;
     public bool expand;

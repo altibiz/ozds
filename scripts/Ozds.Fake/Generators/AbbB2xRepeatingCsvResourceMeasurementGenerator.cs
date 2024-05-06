@@ -3,15 +3,11 @@ using Ozds.Fake.Records;
 
 namespace Ozds.Fake.Generators;
 
-public class AbbB2xRepeatingCsvResourceMeasurementGenerator :
-  RepeatingCsvResourceMeasurementGenerator<AbbB2xMeasurementRecord>
+public class AbbB2xRepeatingCsvResourceMeasurementGenerator(
+  IServiceProvider serviceProvider) :
+  RepeatingCsvResourceMeasurementGenerator<AbbB2xMeasurementRecord>(
+    serviceProvider)
 {
-  public AbbB2xRepeatingCsvResourceMeasurementGenerator(
-    IServiceProvider serviceProvider)
-    : base(serviceProvider)
-  {
-  }
-
   protected override string CsvResourceName
   {
     get { return "abb-B2x-measurements.csv"; }

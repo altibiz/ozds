@@ -5,30 +5,23 @@ using Ozds.Business.Queries.Agnostic;
 
 namespace Ozds.Business.Iot;
 
-public class OzdsIotHandler
+public class OzdsIotHandler(
+  OzdsAuditableQueries auditableQueries,
+  IHttpContextAccessor httpContextAccessor,
+  AgnosticPushRequestMeasurementConverter pushRequestMeasurementConverter,
+  OzdsMeasurementMutations measurementMutations
+)
 {
-  private readonly OzdsAuditableQueries _auditableQueries;
+  private readonly OzdsAuditableQueries _auditableQueries = auditableQueries;
 
-  private readonly IHttpContextAccessor _httpContextAccessor;
+  private readonly IHttpContextAccessor _httpContextAccessor =
+    httpContextAccessor;
 
-  private readonly OzdsMeasurementMutations _measurementMutations;
+  private readonly OzdsMeasurementMutations _measurementMutations =
+    measurementMutations;
 
   private readonly AgnosticPushRequestMeasurementConverter
-    _pushRequestMeasurementConverter;
-
-
-  public OzdsIotHandler(
-    OzdsAuditableQueries auditableQueries,
-    IHttpContextAccessor httpContextAccessor,
-    AgnosticPushRequestMeasurementConverter pushRequestMeasurementConverter,
-    OzdsMeasurementMutations measurementMutations
-  )
-  {
-    _auditableQueries = auditableQueries;
-    _httpContextAccessor = httpContextAccessor;
     _pushRequestMeasurementConverter = pushRequestMeasurementConverter;
-    _measurementMutations = measurementMutations;
-  }
 
   public Task<bool> Authorize(string id, string request)
   {
@@ -57,9 +50,8 @@ public class OzdsIotHandler
       );
       _measurementMutations.Create(measurement);
     }
-    await _measurementMutations.SaveChangesAsync();
 
-    return;
+    await _measurementMutations.SaveChangesAsync();
   }
 
   public Task OnPoll(string id, string request)

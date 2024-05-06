@@ -7,14 +7,9 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Queries;
 
-public class OzdsDataQueries : IOzdsQueries
+public class OzdsDataQueries(OzdsDbContext context) : IOzdsQueries
 {
-  protected readonly OzdsDbContext context;
-
-  public OzdsDataQueries(OzdsDbContext context)
-  {
-    this.context = context;
-  }
+  protected readonly OzdsDbContext context = context;
 
   public async Task<PaginatedList<LocationModel>> GetLocations(
     string title,
@@ -221,7 +216,8 @@ public class OzdsDataQueries : IOzdsQueries
         .StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered
-      .OrderBy(context.PrimaryKeyOf<SchneideriEM3xxxMeasurementValidatorEntity>())
+      .OrderBy(
+        context.PrimaryKeyOf<SchneideriEM3xxxMeasurementValidatorEntity>())
       .Skip((pageNumber - 1) * pageCount)
       .Take(pageCount)
       .ToListAsync();

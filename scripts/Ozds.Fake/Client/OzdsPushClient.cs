@@ -2,18 +2,12 @@ using Ozds.Business.Iot;
 
 namespace Ozds.Fake.Client;
 
-public class OzdsPushClient
+public class OzdsPushClient(
+  IHttpClientFactory httpClientFactory,
+  ILogger<OzdsPushClient> logger)
 {
-  private readonly IHttpClientFactory _httpClientFactory;
-  private readonly ILogger _logger;
-
-  public OzdsPushClient(
-    IHttpClientFactory httpClientFactory,
-    ILogger<OzdsPushClient> logger)
-  {
-    _httpClientFactory = httpClientFactory;
-    _logger = logger;
-  }
+  private readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
+  private readonly ILogger _logger = logger;
 
   public async Task Push(
     string messengerId,

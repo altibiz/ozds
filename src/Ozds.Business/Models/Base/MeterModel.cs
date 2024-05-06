@@ -9,7 +9,7 @@ public class MeterModel : AuditableModel, IMeter
 {
   [Required] public required float ConnectionPower_W { get; set; }
 
-  [Required] public required HashSet<PhaseModel> Phases { get; set; } = new();
+  [Required] public required HashSet<PhaseModel> Phases { get; set; } = [];
 
   [Required] public required string? MessengerId { get; set; }
 

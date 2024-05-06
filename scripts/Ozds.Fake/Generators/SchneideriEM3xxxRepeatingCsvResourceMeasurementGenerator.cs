@@ -3,15 +3,11 @@ using Ozds.Fake.Records;
 
 namespace Ozds.Fake.Generators;
 
-public class SchneideriEM3xxxRepeatingCsvResourceMeasurementGenerator :
-  RepeatingCsvResourceMeasurementGenerator<SchneideriEM3xxxMeasurementRecord>
+public class SchneideriEM3xxxRepeatingCsvResourceMeasurementGenerator(
+  IServiceProvider serviceProvider) :
+  RepeatingCsvResourceMeasurementGenerator<SchneideriEM3xxxMeasurementRecord>(
+    serviceProvider)
 {
-  public SchneideriEM3xxxRepeatingCsvResourceMeasurementGenerator(
-    IServiceProvider serviceProvider)
-    : base(serviceProvider)
-  {
-  }
-
   protected override string CsvResourceName
   {
     get { return "schneider-iEM3xxx-measurements.csv"; }

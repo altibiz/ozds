@@ -28,10 +28,10 @@
             @T["Potrošnja u prethodnom mjesecu"]: <br>
             @FloatString(dataStruct.data.lastMonthUsage / 1000, 0) kWh
           </MudItem>
-            <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
-              @T["Zbroj obračuna u prethodnom mjesecu"]: <br>
-              @(dataStruct.data.lastMonthsPayment == 0 ? T["Račun u izradi..."] : DecimalString(dataStruct.data.lastMonthsPayment) + " EUR")
-            </MudItem>
+          <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
+            @T["Zbroj obračuna u prethodnom mjesecu"]: <br>
+            @(dataStruct.data.lastMonthsPayment == 0 ? T["Račun u izradi..."] : DecimalString(dataStruct.data.lastMonthsPayment) + " EUR")
+          </MudItem>
           <MudItem xs="2" Class="d-flex align-center justify-end">
             <MudIconButton OnClick="() => OnExpandCollapseClick(dataStruct.data.meter.Id)" Icon="@(dataStruct.expand ? Icons.Material.Filled.KeyboardArrowUp : Icons.Material.Filled.KeyboardArrowDown)" Color="Color.Default"/>
           </MudItem>
@@ -124,14 +124,14 @@
           @(FloatString(context.Item.lastMonthUsage / 1000, 0) + " kWh")
         </CellTemplate>
       </PropertyColumn>
-        <PropertyColumn
-          CellStyle="font-size: x-large;"
-          Property="x => x.lastMonthsPayment"
-          Title='@T["Zbroj obračuna u prethodnom mjesecu"]'>
-          <CellTemplate>
-            @(context.Item.lastMonthsPayment == 0 ? T["Račun u izradi..."] : DecimalString(context.Item.lastMonthsPayment) + " EUR")
-          </CellTemplate>
-        </PropertyColumn>
+      <PropertyColumn
+        CellStyle="font-size: x-large;"
+        Property="x => x.lastMonthsPayment"
+        Title='@T["Zbroj obračuna u prethodnom mjesecu"]'>
+        <CellTemplate>
+          @(context.Item.lastMonthsPayment == 0 ? T["Račun u izradi..."] : DecimalString(context.Item.lastMonthsPayment) + " EUR")
+        </CellTemplate>
+      </PropertyColumn>
     </Columns>
     <PagerContent>
       <MudDataGridPager T="TabularData"/>
@@ -170,23 +170,23 @@
     List<MeterTableViewModel> meters = new();
 
     _netUsers = await queries.GetNetworkUsersByRepresentative(representative.Representative);
-    if(_netUsers is null || _netUsers.Count < 0 )
+    if (_netUsers is null || _netUsers.Count < 0)
       return;
     var _netUserIds = _netUsers.Select(x => x.Id).ToList();
     meters = await queries.ViewModelByNetworkUser(_netUserIds, startOfLastMonth, now);
     _calculations = await queries.GetCalculationByMeasurementLocation(
-      meters.Select( x => x.MeasurementLocation).ToList(),
+      meters.Select(x => x.MeasurementLocation).ToList(),
       startOfLastMonth,
       startOfThisMonth);
-    var groupedCalcs = _calculations.GroupBy( x => x.NetworkUserMeasurementLocationId ).ToList();
+    var groupedCalcs = _calculations.GroupBy(x => x.NetworkUserMeasurementLocationId).ToList();
     foreach (var omm in meters)
     {
       var _thisMonthAggregate = omm.Aggregates.Where(x => x.Timestamp == startOfThisMonth).FirstOrDefault();
       var _lastMonthAggregate = omm.Aggregates.Where(x => x.Timestamp == startOfLastMonth).FirstOrDefault();
       var _lastMonthOmmCalcs = groupedCalcs
-        .Where( x => x.Key == omm.MeasurementLocation.Id )
+        .Where(x => x.Key == omm.MeasurementLocation.Id)
         .Where(x => x is not null)
-        .Select( x => x.Select( y => y.Total_EUR ) )
+        .Select(x => x.Select(y => y.Total_EUR))
         .FirstOrDefault();
 
       float _thisMonthUsage = 0;

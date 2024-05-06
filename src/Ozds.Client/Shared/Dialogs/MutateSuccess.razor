@@ -1,14 +1,19 @@
+@using Color = MudBlazor.Color
 <MudDialog>
-    <DialogContent>
-        Success
-    </DialogContent>
-    <DialogActions>
-        <MudButton Color="MudBlazor.Color.Primary" OnClick="Submit">Ok</MudButton>
-    </DialogActions>
+  <DialogContent>
+    Success
+  </DialogContent>
+  <DialogActions>
+    <MudButton Color="Color.Primary" OnClick="Submit">Ok</MudButton>
+  </DialogActions>
 </MudDialog>
 
 @code {
-    [CascadingParameter] MudDialogInstance MudDialog { get; set; } = default!;
+  [CascadingParameter] MudDialogInstance MudDialog { get; set; } = default!;
 
-    void Submit() => MudDialog.Close(DialogResult.Ok(true));
+  void Submit()
+  {
+    MudDialog.Close(DialogResult.Ok(true));
+  }
+
 }

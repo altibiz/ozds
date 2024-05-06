@@ -144,7 +144,7 @@
 
     _netUsers = await query.GetNetworkUsersByRepresentative(representative.Representative);
     List<string> _netUserIds = new();
-    if(_netUsers is not null)
+    if (_netUsers is not null)
       _netUserIds = _netUsers.Select(x => x.Id).ToList();
     var meters = await query.ViewModelByNetworkUser(_netUserIds, startOfLastMonth, now);
     foreach (var meter in meters)

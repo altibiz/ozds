@@ -1,4 +1,3 @@
-@using Ozds.Client.Shared.Dialogs
 @inject NavigationManager NavigationManager
 @inject IDialogService DialogService
 @inherits OzdsOwningComponentBase
@@ -96,8 +95,9 @@
     {
       mutations.Update(LoadingState.Value);
     }
+
     await mutations.SaveChangesAsync();
-    DialogService.Show<MutateSuccess>("Changes Saved", new DialogOptions(){CloseOnEscapeKey = true});
+    DialogService.Show<MutateSuccess>("Changes Saved", new DialogOptions { CloseOnEscapeKey = true });
   }
 
   protected override void OnInitialized()

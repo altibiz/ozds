@@ -2,14 +2,9 @@ using Ozds.Business.Conversion.Abstractions;
 
 namespace Ozds.Business.Conversion.Agnostic;
 
-public class AgnosticModelEntityConverter
+public class AgnosticModelEntityConverter(IServiceProvider serviceProvider)
 {
-  private readonly IServiceProvider _serviceProvider;
-
-  public AgnosticModelEntityConverter(IServiceProvider serviceProvider)
-  {
-    _serviceProvider = serviceProvider;
-  }
+  private readonly IServiceProvider _serviceProvider = serviceProvider;
 
   public Type EntityType(Type type)
   {

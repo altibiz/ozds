@@ -4,15 +4,10 @@ using Ozds.Business.Models.Composite;
 
 namespace Ozds.Business.Finance.Agnostic;
 
-public class AgnosticNetworkUserCalculationCalculator
+public class AgnosticNetworkUserCalculationCalculator(
+  IServiceProvider serviceProvider)
 {
-  private readonly IServiceProvider _serviceProvider;
-
-  public AgnosticNetworkUserCalculationCalculator(
-    IServiceProvider serviceProvider)
-  {
-    _serviceProvider = serviceProvider;
-  }
+  private readonly IServiceProvider _serviceProvider = serviceProvider;
 
   public INetworkUserCalculation Calculate(
     NetworkUserCalculationBasisModel basis)

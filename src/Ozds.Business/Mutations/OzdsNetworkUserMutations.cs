@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using Ozds.Business.Conversion;
-using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Extensions;
 using Ozds.Business.Models;
 using Ozds.Business.Mutations.Abstractions;
@@ -10,16 +9,11 @@ using Ozds.Data;
 
 namespace Ozds.Business.Mutations.Agnostic;
 
-public class OzdsNetworkUserMutations : IOzdsMutations
+public class OzdsNetworkUserMutations(
+  OzdsDbContext context
+) : IOzdsMutations
 {
-  private readonly OzdsDbContext _context;
-
-  public OzdsNetworkUserMutations(
-    OzdsDbContext context
-  )
-  {
-    _context = context;
-  }
+  private readonly OzdsDbContext _context = context;
 
   public Task SaveChangesAsync()
   {

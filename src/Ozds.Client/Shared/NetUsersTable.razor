@@ -160,13 +160,13 @@
     List<MeterTableViewModel> netUsers = new();
 
     _netUsers = await queries.GetNetworkUsersByRepresentative(representative.Representative);
-    if(_netUsers is null || _netUsers.Count < 0 )
+    if (_netUsers is null || _netUsers.Count < 0)
       return;
     var _netUserIds = _netUsers.Select(x => x.Id).ToList();
     netUsers = await queries.ViewModelByNetworkUser(_netUserIds, startOfLastMonth, now);
     var groupedNetUsers = netUsers.GroupBy(x => x.NetworkUser.Id).ToList();
     _invoices = await queries.GetNetworkUserInvoicesByRepresentative(representative.Representative, startOfLastMonth, startOfThisMonth);
-    var groupedInvoices = _invoices.GroupBy( x => x.NetworkUserId).ToList();
+    var groupedInvoices = _invoices.GroupBy(x => x.NetworkUserId).ToList();
 
     foreach (var netUser in groupedNetUsers)
     {
@@ -178,31 +178,35 @@
       var _thisMonthAggregate = netUser.Select(x => x.Aggregates.Where(x => x.Timestamp == startOfThisMonth).FirstOrDefault()).Where(x => x is not null).ToList();
       var _lastMonthAggregate = netUser.Select(x => x.Aggregates.Where(x => x.Timestamp == startOfLastMonth).FirstOrDefault()).Where(x => x is not null).ToList();
       var _lastMonthInvoiceTotals = groupedInvoices
-        .Where( x => x.Key == netUser.Key )
+        .Where(x => x.Key == netUser.Key)
         .Where(x => x is not null)
-        .Select( x => x.Select( y => y.TotalWithTax_EUR ) )
+        .Select(x => x.Select(y => y.TotalWithTax_EUR))
         .FirstOrDefault();
       float _thisMonthUsage = 0;
       float _lastMonthUsage = 0;
       decimal _lastMonthsPayment = 0;
-      if (_thisMonthAggregate is not null && _thisMonthAggregate.Count > 0){
+      if (_thisMonthAggregate is not null && _thisMonthAggregate.Count > 0)
+      {
         var agg = _thisMonthAggregate
           .Select(x => x?.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum)
           .DefaultIfEmpty(0)
           .Sum();
-        if(agg is null)
+        if (agg is null)
           agg = 0;
         _thisMonthUsage = (float)agg;
       }
-      if (_lastMonthAggregate is not null && _lastMonthAggregate.Count > 0){
+
+      if (_lastMonthAggregate is not null && _lastMonthAggregate.Count > 0)
+      {
         var agg = _lastMonthAggregate
           .Select(x => x?.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum)
           .DefaultIfEmpty(0)
           .Sum();
-        if(agg is null)
+        if (agg is null)
           agg = 0;
         _lastMonthUsage = (float)agg;
       }
+
       if (_lastMonthInvoiceTotals is not null && _lastMonthInvoiceTotals.Count() > 0)
         _lastMonthsPayment = _lastMonthInvoiceTotals
           .DefaultIfEmpty(0)

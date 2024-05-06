@@ -7,14 +7,9 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Queries;
 
-public class OzdsAbbB2xMeterModelQueries : IOzdsQueries
+public class OzdsAbbB2xMeterModelQueries(OzdsDbContext context) : IOzdsQueries
 {
-  protected readonly OzdsDbContext context;
-
-  public OzdsAbbB2xMeterModelQueries(OzdsDbContext context)
-  {
-    this.context = context;
-  }
+  protected readonly OzdsDbContext context = context;
 
   public async Task<AbbB2xMeterModel?>
     AbbB2xMeterById(string id)

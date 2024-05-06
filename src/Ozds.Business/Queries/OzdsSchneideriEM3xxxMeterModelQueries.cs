@@ -7,14 +7,10 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Queries;
 
-public class OzdsSchneideriEM3xxxMeterModelQueries : IOzdsQueries
+public class OzdsSchneideriEM3xxxMeterModelQueries(OzdsDbContext context)
+  : IOzdsQueries
 {
-  protected readonly OzdsDbContext context;
-
-  public OzdsSchneideriEM3xxxMeterModelQueries(OzdsDbContext context)
-  {
-    this.context = context;
-  }
+  protected readonly OzdsDbContext context = context;
 
   public async Task<SchneideriEM3xxxMeterModel?>
     SchneideriEM3xxxMeterById(string id)
@@ -64,7 +60,8 @@ public class OzdsSchneideriEM3xxxMeterModelQueries : IOzdsQueries
       .Where(catalogue => catalogue.Title.StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered
-      .OrderBy(context.PrimaryKeyOf<SchneideriEM3xxxMeasurementValidatorEntity>())
+      .OrderBy(
+        context.PrimaryKeyOf<SchneideriEM3xxxMeasurementValidatorEntity>())
       .Skip((pageNumber - 1) * pageCount)
       .Take(pageCount)
       .ToListAsync();

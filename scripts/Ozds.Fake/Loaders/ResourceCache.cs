@@ -3,17 +3,12 @@ using Ozds.Fake.Loaders.Abstractions;
 
 namespace Ozds.Fake.Loaders;
 
-public class ResourceCache
+public class ResourceCache(IServiceProvider serviceProvider)
 {
   private readonly ConcurrentDictionary<(string, Type), Lazy<Task<object>>>
     _cache = new();
 
-  private readonly IServiceProvider _serviceProvider;
-
-  public ResourceCache(IServiceProvider serviceProvider)
-  {
-    _serviceProvider = serviceProvider;
-  }
+  private readonly IServiceProvider _serviceProvider = serviceProvider;
 
   public TOut Get<TLoader, TOut>(string name)
     where TLoader : ILoader<TOut>

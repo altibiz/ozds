@@ -175,8 +175,9 @@
     {
       mutations.UpdateWithRepresentatives(LoadingState.Value, _selectedRepsList);
     }
+
     await mutations.SaveChangesAsync();
-    DialogService.Show<MutateSuccess>("Changes Saved", new DialogOptions(){CloseOnEscapeKey = true});
+    DialogService.Show<MutateSuccess>("Changes Saved", new DialogOptions { CloseOnEscapeKey = true });
   }
 
   protected override void OnInitialized()

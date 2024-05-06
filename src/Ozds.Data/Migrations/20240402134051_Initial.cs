@@ -8,8 +8,8 @@ namespace Ozds.Data.Migrations
   /// <inheritdoc />
   public partial class Initial : Migration
   {
-    private static readonly string[] columns = new[] { "auditable_entity_table", "auditable_entity_id" };
-    private static readonly string[] columnsArray = new[] { "auditable_entity_type", "auditable_entity_id" };
+    private static readonly string[] columns = ["auditable_entity_table", "auditable_entity_id"];
+    private static readonly string[] columnsArray = ["auditable_entity_type", "auditable_entity_id"];
 
     /// <inheritdoc />
     protected override void Up(MigrationBuilder migrationBuilder)

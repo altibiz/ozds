@@ -3,14 +3,9 @@ using Ozds.Fake.Generators.Abstractions;
 
 namespace Ozds.Fake.Generators.Agnostic;
 
-public class AgnosticMeasurementGenerator
+public class AgnosticMeasurementGenerator(IServiceProvider serviceProvider)
 {
-  private readonly IServiceProvider _serviceProvider;
-
-  public AgnosticMeasurementGenerator(IServiceProvider serviceProvider)
-  {
-    _serviceProvider = serviceProvider;
-  }
+  private readonly IServiceProvider _serviceProvider = serviceProvider;
 
   public async Task<List<MessengerPushRequestMeasurement>> GenerateMeasurements(
     DateTimeOffset dateFrom,

@@ -1,31 +1,23 @@
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Conversion;
 using Ozds.Business.Conversion.Agnostic;
-using Ozds.Business.Models;
 using Ozds.Business.Models.Abstractions;
-using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Composite;
-using Ozds.Business.Models.Enums;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Data;
 using Ozds.Data.Entities;
 using Ozds.Data.Entities.Base;
-using Ozds.Data.Entities.Enums;
 
 namespace Ozds.Business.Queries;
 
-public class OzdsLocationsTableQueries : IOzdsQueries
+public class OzdsLocationsTableQueries(
+  OzdsDbContext context,
+  AgnosticModelEntityConverter modelEntityConverter) : IOzdsQueries
 {
-  protected readonly OzdsDbContext context;
+  protected readonly OzdsDbContext context = context;
 
-  protected readonly AgnosticModelEntityConverter modelEntityConverter;
-
-  public OzdsLocationsTableQueries(OzdsDbContext context,
-    AgnosticModelEntityConverter modelEntityConverter)
-  {
-    this.context = context;
-    this.modelEntityConverter = modelEntityConverter;
-  }
+  protected readonly AgnosticModelEntityConverter modelEntityConverter =
+    modelEntityConverter;
 
   public async Task<List<LocationsTableViewModel>>
     ViewModelByNetworkUser(
@@ -148,6 +140,11 @@ public class OzdsLocationsTableQueries : IOzdsQueries
 
     public MeterEntity Meter { get; init; }
     public AbbB2xMeasurementEntity? AbbMeasurement { get; init; }
-    public SchneideriEM3xxxMeasurementEntity? SchneiderMeasurement { get; init; }
+
+    public SchneideriEM3xxxMeasurementEntity? SchneiderMeasurement
+    {
+      get;
+      init;
+    }
   }
 }

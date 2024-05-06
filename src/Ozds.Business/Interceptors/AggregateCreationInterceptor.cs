@@ -11,13 +11,9 @@ using Ozds.Data.Entities.Base;
 
 namespace Ozds.Business.Interceptors;
 
-public class AggregateCreationInterceptor : ServedSaveChangesInterceptor
+public class AggregateCreationInterceptor(IServiceProvider serviceProvider)
+  : ServedSaveChangesInterceptor(serviceProvider)
 {
-  public AggregateCreationInterceptor(IServiceProvider serviceProvider)
-    : base(serviceProvider)
-  {
-  }
-
   public override async ValueTask<InterceptionResult<int>> SavingChangesAsync(
     DbContextEventData eventData, InterceptionResult<int> result,
     CancellationToken cancellationToken = default)

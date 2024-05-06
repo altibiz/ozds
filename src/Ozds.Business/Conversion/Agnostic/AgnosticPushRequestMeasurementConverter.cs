@@ -4,15 +4,10 @@ using Ozds.Business.Models.Abstractions;
 
 namespace Ozds.Business.Conversion.Agnostic;
 
-public class AgnosticPushRequestMeasurementConverter
+public class AgnosticPushRequestMeasurementConverter(
+  IServiceProvider serviceProvider)
 {
-  private readonly IServiceProvider _serviceProvider;
-
-  public AgnosticPushRequestMeasurementConverter(
-    IServiceProvider serviceProvider)
-  {
-    _serviceProvider = serviceProvider;
-  }
+  private readonly IServiceProvider _serviceProvider = serviceProvider;
 
   public JsonObject ToPushRequest(IMeasurement measurement)
   {

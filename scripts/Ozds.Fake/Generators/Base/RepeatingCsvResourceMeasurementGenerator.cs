@@ -13,22 +13,19 @@ using Ozds.Fake.Records.Abstractions;
 namespace Ozds.Fake.Generators.Base;
 
 public abstract class
-  RepeatingCsvResourceMeasurementGenerator<TMeasurement> : IMeasurementGenerator
+  RepeatingCsvResourceMeasurementGenerator<TMeasurement>(
+    IServiceProvider serviceProvider) : IMeasurementGenerator
   where TMeasurement : IMeasurementRecord
 {
-  private readonly AgnosticMeasurementRecordPushRequestConverter _converter;
-  private readonly AgnosticCumulativeCorrector _corrector;
-  private readonly ResourceCache _resources;
-
-  public RepeatingCsvResourceMeasurementGenerator(
-    IServiceProvider serviceProvider)
-  {
-    _resources = serviceProvider.GetRequiredService<ResourceCache>();
-    _converter = serviceProvider
+  private readonly AgnosticMeasurementRecordPushRequestConverter _converter =
+    serviceProvider
       .GetRequiredService<AgnosticMeasurementRecordPushRequestConverter>();
-    _corrector =
-      serviceProvider.GetRequiredService<AgnosticCumulativeCorrector>();
-  }
+
+  private readonly AgnosticCumulativeCorrector _corrector =
+    serviceProvider.GetRequiredService<AgnosticCumulativeCorrector>();
+
+  private readonly ResourceCache _resources =
+    serviceProvider.GetRequiredService<ResourceCache>();
 
   protected abstract string CsvResourceName { get; }
 

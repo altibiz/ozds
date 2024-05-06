@@ -12,14 +12,9 @@ using Ozds.Data.Entities.Enums;
 
 namespace Ozds.Business.Queries;
 
-public class OzdsBillingQueries : IOzdsQueries
+public class OzdsBillingQueries(OzdsDbContext dbContext) : IOzdsQueries
 {
-  private readonly OzdsDbContext _dbContext;
-
-  public OzdsBillingQueries(OzdsDbContext dbContext)
-  {
-    _dbContext = dbContext;
-  }
+  private readonly OzdsDbContext _dbContext = dbContext;
 
   public async Task<List<NetworkUserCalculationBasisModel>>
     NetworkUserCalculationBasesByNetworkUser(

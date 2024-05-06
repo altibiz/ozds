@@ -114,7 +114,8 @@
   private LoadingState<NetworkUserModel> LoadingState { get; set; } = new();
 
   private bool _create;
-private async Task Submit()
+
+  private async Task Submit()
   {
     var mutations = ScopedServices.GetRequiredService<OzdsNetworkUserMutations>();
     if (LoadingState.Value is null)
@@ -127,8 +128,9 @@ private async Task Submit()
     {
       mutations.UpdateWithRepresentatives(LoadingState.Value, _selectedRepsList);
     }
+
     await mutations.SaveChangesAsync();
-    DialogService.Show<MutateSuccess>("Changes Saved", new DialogOptions(){CloseOnEscapeKey = true});
+    DialogService.Show<MutateSuccess>("Changes Saved", new DialogOptions { CloseOnEscapeKey = true });
   }
 
   protected override void OnInitialized()

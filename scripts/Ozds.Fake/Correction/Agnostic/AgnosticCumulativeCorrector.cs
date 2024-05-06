@@ -3,14 +3,9 @@ using Ozds.Fake.Records.Abstractions;
 
 namespace Ozds.Fake.Correction.Agnostic;
 
-public class AgnosticCumulativeCorrector
+public class AgnosticCumulativeCorrector(IServiceProvider serviceProvider)
 {
-  private readonly IServiceProvider _serviceProvider;
-
-  public AgnosticCumulativeCorrector(IServiceProvider serviceProvider)
-  {
-    _serviceProvider = serviceProvider;
-  }
+  private readonly IServiceProvider _serviceProvider = serviceProvider;
 
   public IMeasurementRecord CorrectCumulatives(
     DateTimeOffset timestamp,
