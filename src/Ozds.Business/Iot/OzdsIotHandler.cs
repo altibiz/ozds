@@ -1,21 +1,19 @@
 using System.Text.Json;
 using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Mutations.Agnostic;
-using Ozds.Business.Queries.Agnostic;
 
 namespace Ozds.Business.Iot;
 
 public class OzdsIotHandler(
-  OzdsAuditableQueries auditableQueries,
-  IHttpContextAccessor httpContextAccessor,
   AgnosticPushRequestMeasurementConverter pushRequestMeasurementConverter,
   OzdsMeasurementMutations measurementMutations
 )
 {
-  private readonly OzdsAuditableQueries _auditableQueries = auditableQueries;
-
-  private readonly IHttpContextAccessor _httpContextAccessor =
-    httpContextAccessor;
+  private static readonly JsonSerializerOptions deserializationOptions =
+    new()
+    {
+      PropertyNameCaseInsensitive = true
+    };
 
   private readonly OzdsMeasurementMutations _measurementMutations =
     measurementMutations;
@@ -32,11 +30,7 @@ public class OzdsIotHandler(
   {
     var messengerRequest =
       JsonSerializer.Deserialize<MessengerPushRequest>(
-        request,
-        new JsonSerializerOptions
-        {
-          PropertyNameCaseInsensitive = true
-        });
+        request, deserializationOptions);
     if (messengerRequest?.Measurements is null
         || messengerRequest.Measurements.Length == 0)
     {

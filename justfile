@@ -86,7 +86,7 @@ format:
 
   dotnet jb cleanupcode '{{sln}}' \
     --no-build \
-    --verbosity=ERROR \
+    --verbosity=WARN \
     --caches-home='{{jbcache}}' \
     -o='{{jbinspectlog}}' \
     --exclude='**/.git/**/*;**/.nuget/**/*;**/obj/**/*;**/bin/**/*'
@@ -103,23 +103,12 @@ lint:
 
   dotnet build '{{sln}}'
 
-  dotnet format '{{sln}}' \
-    --verify-no-changes \
-    --no-restore \
-    --verbosity minimal \
-    --severity info \
-    --exclude '**/.git/**/*' \
-    --exclude '**/.nuget/**/*' \
-    --exclude '**/obj/**/*' \
-    --exclude '**/bin/**/*'
-
   dotnet roslynator analyze '{{sln}}' \
-    --verbosity minimal \
     --exclude='**/.git/**/*;**/.nuget/**/*;**/obj/**/*;**/bin/**/*'
 
   dotnet jb inspectcode '{{sln}}' \
     --no-build \
-    --verbosity=ERROR \
+    --verbosity=WARN \
     --caches-home='{{jbcache}}' \
     -o='{{jbinspectlog}}' \
     --exclude='**/.git/**/*;**/.nuget/**/*;**/obj/**/*;**/bin/**/*'
