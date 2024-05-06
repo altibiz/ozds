@@ -133,14 +133,14 @@ public class OzdsMeterTableQueries : IOzdsQueries
   }
 
   public async Task<List<INetworkUserCalculation>> GetCalculationByMeasurementLocation(
-    List<IMeasurementLocation> omms,
+    List<IMeasurementLocation> measurementLocations,
     DateTimeOffset fromDate,
     DateTimeOffset toDate)
   {
     List<NetworkUserCalculationEntity> results = new();
 
     results = await context.MeasurementLocations
-      .Where(context.PrimaryKeyIn<MeasurementLocationEntity>(omms.Select(x => x.Id).ToList()))
+      .Where(context.PrimaryKeyIn<MeasurementLocationEntity>(measurementLocations.Select(x => x.Id).ToList()))
       .Join(
         context.NetworkUserCalculations,
         context.PrimaryKeyOf<MeasurementLocationEntity>(),
