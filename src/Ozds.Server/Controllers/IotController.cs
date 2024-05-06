@@ -4,14 +4,9 @@ using Ozds.Business.Iot;
 namespace Ozds.Server.Controllers;
 
 [IgnoreAntiforgeryToken]
-public class IotController : Controller
+public class IotController(OzdsIotHandler iotHandler) : Controller
 {
-  private readonly OzdsIotHandler _iotHandler;
-
-  public IotController(OzdsIotHandler iotHandler)
-  {
-    _iotHandler = iotHandler;
-  }
+  private readonly OzdsIotHandler _iotHandler = iotHandler;
 
   [HttpPost]
   public async Task<IActionResult> Push(string id)

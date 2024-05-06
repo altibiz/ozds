@@ -4,13 +4,9 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace Ozds.Business.Interceptors;
 
-public class CascadingSoftDeleteInterceptor : ServedSaveChangesInterceptor
+public class CascadingSoftDeleteInterceptor(IServiceProvider serviceProvider)
+  : ServedSaveChangesInterceptor(serviceProvider)
 {
-  public CascadingSoftDeleteInterceptor(IServiceProvider serviceProvider)
-    : base(serviceProvider)
-  {
-  }
-
   public override InterceptionResult<int> SavingChanges(
     DbContextEventData eventData, InterceptionResult<int> result)
   {

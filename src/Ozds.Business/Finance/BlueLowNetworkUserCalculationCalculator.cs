@@ -8,16 +8,13 @@ using Ozds.Business.Models.Composite;
 namespace Ozds.Business.Finance;
 
 public class
-  BlueLowNetworkUserCalculationCalculator : NetworkUserCalculationCalculator<
-  BlueLowNetworkUserCatalogueModel>
-{
-  public readonly AgnosticCalculationItemCalculator _calculationItemCalculator;
-
-  public BlueLowNetworkUserCalculationCalculator(
+  BlueLowNetworkUserCalculationCalculator(
     AgnosticCalculationItemCalculator calculationItemCalculator)
-  {
-    _calculationItemCalculator = calculationItemCalculator;
-  }
+  : NetworkUserCalculationCalculator<
+    BlueLowNetworkUserCatalogueModel>
+{
+  public readonly AgnosticCalculationItemCalculator _calculationItemCalculator =
+    calculationItemCalculator;
 
   protected override INetworkUserCalculation CalculateForNetworkUser(
     BlueLowNetworkUserCatalogueModel usageCatalogue,

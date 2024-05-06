@@ -1,4 +1,5 @@
 @inherits OzdsOwningComponentBase
+@inject IDialogService DialogService
 
 <Loading Load="@(async () => (Invoice ?? await ScopedServices.GetRequiredService<OzdsInvoiceQueries>().ReadSingle<NetworkUserInvoiceModel>(Id ?? throw new InvalidOperationException()))!)">
   <Found>

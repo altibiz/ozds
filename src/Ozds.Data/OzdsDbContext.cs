@@ -7,13 +7,9 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data;
 
-public partial class OzdsDbContext : DbContext
+public partial class OzdsDbContext(DbContextOptions<OzdsDbContext> options)
+  : DbContext(options)
 {
-  public OzdsDbContext(DbContextOptions<OzdsDbContext> options)
-    : base(options)
-  {
-  }
-
   protected override void OnConfiguring(
     DbContextOptionsBuilder dbContextOptionsBuilder)
   {

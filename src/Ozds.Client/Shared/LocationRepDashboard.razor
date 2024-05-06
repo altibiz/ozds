@@ -103,22 +103,14 @@
 @code {
   [CascadingParameter] public UserState user { get; set; } = default!;
   [CascadingParameter] public RepresentativeState representative { get; set; } = default!;
-  private (float First, float Last, DateTimeOffset FirstDate) _startEnd;
-  private (float First, float Last, DateTimeOffset FirstDate) _startEndLastMonth = new(0, 0, DateTime.UtcNow);
-  private string? _searchString;
   private List<NetworkUserModel>? _netUsers;
-  private IEnumerable<MeterModel>? _meters;
 
   public record struct TabularData(LocationModel location, float consumption, float lastMonthConsumption, float lastPower);
 
-  private float _diagnostics = 0;
-  private float _lastMonthDiagnostics = 0;
-  private float _lastMeasurements = 0;
   private float _thisMonthUsage = 0;
   private float _lastMonthUsage = 0;
   private float _totalActivePower = 0;
   private List<TabularData> _dataStruct = new();
-  private IReadOnlyList<SpanningMeasure<float>>? _spanningMeasurements;
   private DateTimeOffset startOfThisMonth = DateTimeOffset.UtcNow.GetStartOfMonth();
   private DateTimeOffset startOfLastMonth = DateTimeOffset.UtcNow.GetStartOfLastMonth();
   private DateTimeOffset now = DateTimeOffset.UtcNow;
@@ -131,6 +123,8 @@
     List<LocationsTableViewModel> locationsTwo = new();
 
     _netUsers = await queries.GetNetworkUsersByRepresentative(representative.Representative);
+    if (_netUsers is null || _netUsers.Count < 0)
+      return;
     var _netUserIds = _netUsers.Select(x => x.Id).ToList();
     locations = await queries.ViewModelByNetworkUser(_netUserIds, startOfLastMonth, now);
     var groupedLocations = locations.GroupBy(x => x.Location.Id).ToList();
@@ -142,48 +136,40 @@
       var _thisMonthAggregate = netUser.Select(x => x.Aggregates.Where(x => x.Timestamp == startOfThisMonth).FirstOrDefault()).Where(x => x is not null).ToList();
       var _lastMonthAggregate = netUser.Select(x => x.Aggregates.Where(x => x.Timestamp == startOfLastMonth).FirstOrDefault()).Where(x => x is not null).ToList();
       float _currentPower = 0;
-        var measureSum = locationsTwo
-            .Where(x => x.Location.Id == netUser.Key)
-            .Select( x => x.Measurement.FirstOrDefault()?
-            .ActivePower_W.TariffUnary.DuplexNet.PhaseSum)
-            .Where(x => x is not null)
-            .DefaultIfEmpty(0).Sum();
-        if(measureSum is not null){
-          _currentPower = measureSum ?? 0;
-        }
+      var measureSum = locationsTwo
+        .Where(x => x.Location.Id == netUser.Key)
+        .Select(x => x.Measurement.FirstOrDefault()?
+          .ActivePower_W.TariffUnary.DuplexNet.PhaseSum)
+        .Where(x => x is not null)
+        .DefaultIfEmpty(0).Sum();
+      if (measureSum is not null)
+      {
+        _currentPower = measureSum ?? 0;
+      }
 
       if (_thisMonthAggregate is not null && _thisMonthAggregate.Count > 0)
       {
-        _thisMonthUsage += _thisMonthAggregate
-          .Select(x => x.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum)
+        var agg = _thisMonthAggregate
+          .Select(x => x?.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum)
           .DefaultIfEmpty(0)
           .Sum();
+        if (agg is null)
+          agg = 0;
+        _thisMonthUsage += (float)agg;
       }
 
       if (_lastMonthAggregate is not null && _lastMonthAggregate.Count > 0)
-        _lastMonthUsage += _lastMonthAggregate
-          .Select(x => x.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum)
+      {
+        var agg = _lastMonthAggregate
+          .Select(x => x?.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum)
           .DefaultIfEmpty(0)
           .Sum();
+        if (agg is null)
+          agg = 0;
+        _lastMonthUsage += (float)agg;
+      }
 
       _totalActivePower += _currentPower;
-    }
-  }
-
-  private Func<TabularData, bool> _quickFilter
-  {
-    get
-    {
-      return x =>
-      {
-        if (string.IsNullOrWhiteSpace(_searchString))
-          return true;
-
-        if (x.location.Title.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
-          return true;
-
-        return false;
-      };
     }
   }
 

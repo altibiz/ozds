@@ -4,16 +4,10 @@ using Ozds.Fake.Records.Abstractions;
 
 namespace Ozds.Fake.Conversion.Agnostic;
 
-public class AgnosticMeasurementRecordPushRequestConverter
+public class AgnosticMeasurementRecordPushRequestConverter(
+  IServiceProvider serviceProvider)
 {
-  private readonly IServiceProvider _serviceProvider;
-
-  public AgnosticMeasurementRecordPushRequestConverter(
-    IServiceProvider serviceProvider)
-  {
-    _serviceProvider = serviceProvider;
-  }
-
+  private readonly IServiceProvider _serviceProvider = serviceProvider;
 
   public JsonObject ConvertToPushRequest(IMeasurementRecord record)
   {

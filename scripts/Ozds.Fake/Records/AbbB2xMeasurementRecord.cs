@@ -47,28 +47,28 @@ public class AbbB2xMeasurementRecord : MeasurementRecord
              || ActiveEnergyL1ExportT0_Wh is not 0
              || ActiveEnergyL2ExportT0_Wh is not 0
              || ActiveEnergyL3ExportT0_Wh is not 0
-        ? new CompositeTariffMeasure<float>(new List<TariffMeasure<float>>
-        {
+        ? new CompositeTariffMeasure<float>(
+        [
           new UnaryTariffMeasure<float>(
             new ImportExportDuplexMeasure<float>(
-              new CompositePhasicMeasure<float>(new List<PhasicMeasure<float>>
-              {
+              new CompositePhasicMeasure<float>(
+              [
                 new TriPhasicMeasure<float>(
                   ActiveEnergyL1ImportT0_Wh,
                   ActiveEnergyL2ImportT0_Wh,
                   ActiveEnergyL3ImportT0_Wh
                 ),
                 new SinglePhasicMeasure<float>(ActiveEnergyTotalImportT0_Wh)
-              }),
-              new CompositePhasicMeasure<float>(new List<PhasicMeasure<float>>
-              {
+              ]),
+              new CompositePhasicMeasure<float>(
+              [
                 new TriPhasicMeasure<float>(
                   ActiveEnergyL1ExportT0_Wh,
                   ActiveEnergyL2ExportT0_Wh,
                   ActiveEnergyL3ExportT0_Wh
                 ),
                 new SinglePhasicMeasure<float>(ActiveEnergyTotalExportT0_Wh)
-              })
+              ])
             )
           ),
           new BinaryTariffMeasure<float>(
@@ -81,9 +81,9 @@ public class AbbB2xMeasurementRecord : MeasurementRecord
               PhasicMeasure<float>.Null
             )
           )
-        })
-        : new CompositeTariffMeasure<float>(new List<TariffMeasure<float>>
-        {
+        ])
+        : new CompositeTariffMeasure<float>(
+        [
           new UnaryTariffMeasure<float>(
             new ImportExportDuplexMeasure<float>(
               new SinglePhasicMeasure<float>(ActiveEnergyTotalImportT0_Wh),
@@ -100,7 +100,7 @@ public class AbbB2xMeasurementRecord : MeasurementRecord
               PhasicMeasure<float>.Null
             )
           )
-        });
+        ]);
     }
   }
 
@@ -116,24 +116,24 @@ public class AbbB2xMeasurementRecord : MeasurementRecord
              || ReactiveEnergyL3ExportT0_VARh is not 0
         ? new UnaryTariffMeasure<float>(
           new ImportExportDuplexMeasure<float>(
-            new CompositePhasicMeasure<float>(new List<PhasicMeasure<float>>
-            {
+            new CompositePhasicMeasure<float>(
+            [
               new TriPhasicMeasure<float>(
                 ReactiveEnergyL1ImportT0_VARh,
                 ReactiveEnergyL2ImportT0_VARh,
                 ReactiveEnergyL3ImportT0_VARh
               ),
               new SinglePhasicMeasure<float>(ReactiveEnergyTotalImportT0_VARh)
-            }),
-            new CompositePhasicMeasure<float>(new List<PhasicMeasure<float>>
-            {
+            ]),
+            new CompositePhasicMeasure<float>(
+            [
               new TriPhasicMeasure<float>(
                 ReactiveEnergyL1ExportT0_VARh,
                 ReactiveEnergyL2ExportT0_VARh,
                 ReactiveEnergyL3ExportT0_VARh
               ),
               new SinglePhasicMeasure<float>(ReactiveEnergyTotalExportT0_VARh)
-            })
+            ])
           )
         )
         : new UnaryTariffMeasure<float>(

@@ -92,8 +92,8 @@ public class SchneideriEM3xxxAggregateModel : AggregateModel
   {
     get
     {
-      return new CompositeTariffMeasure<float>(new List<TariffMeasure<float>>
-      {
+      return new CompositeTariffMeasure<float>(
+      [
         base.ActivePower_W,
         new UnaryTariffMeasure<float>(
           new NetDuplexMeasure<float>(
@@ -104,7 +104,7 @@ public class SchneideriEM3xxxAggregateModel : AggregateModel
             )
           )
         )
-      });
+      ]);
     }
   }
 
@@ -112,8 +112,8 @@ public class SchneideriEM3xxxAggregateModel : AggregateModel
   {
     get
     {
-      return new CompositeTariffMeasure<float>(new List<TariffMeasure<float>>
-      {
+      return new CompositeTariffMeasure<float>(
+      [
         base.ReactivePower_VAR,
         new UnaryTariffMeasure<float>(
           new NetDuplexMeasure<float>(
@@ -122,7 +122,7 @@ public class SchneideriEM3xxxAggregateModel : AggregateModel
             )
           )
         )
-      });
+      ]);
     }
   }
 
@@ -130,8 +130,8 @@ public class SchneideriEM3xxxAggregateModel : AggregateModel
   {
     get
     {
-      return new CompositeTariffMeasure<float>(new List<TariffMeasure<float>>
-      {
+      return new CompositeTariffMeasure<float>(
+      [
         base.ApparentPower_VA,
         new UnaryTariffMeasure<float>(
           new NetDuplexMeasure<float>(
@@ -140,7 +140,7 @@ public class SchneideriEM3xxxAggregateModel : AggregateModel
             )
           )
         )
-      });
+      ]);
     }
   }
 

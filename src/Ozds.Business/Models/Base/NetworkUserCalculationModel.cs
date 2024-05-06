@@ -153,6 +153,6 @@ public abstract class NetworkUserCalculationModel<TNetworkUserCatalogue>
 
   public override NetworkUserCatalogueModel ArchivedUsageNetworkUserCatalogue
   {
-    get { return ArchivedUsageNetworkUserCatalogue; }
+    get { return ConcreteArchivedUsageNetworkUserCatalogue; }
   }
 }

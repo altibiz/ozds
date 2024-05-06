@@ -26,8 +26,7 @@
   MultiSelection="true"
   Items="@_data"
   SortMode="SortMode.Multiple"
-  Filterable="true"
-  QuickFilter="@_quickFilter">
+  Filterable="true">
   <Columns>
     <PropertyColumn
       CellStyle="font-size: x-large;"
@@ -67,8 +66,7 @@
 
   private string _dataSelected = "Lokacije";
   private readonly List<string> _dataList = new();
-  private OzdsDataQueries queries;
-  private string _searchString;
+  private OzdsDataQueries queries = default!;
 
   protected override async Task OnInitializedAsync()
   {
@@ -91,12 +89,13 @@
     await Update("Lokacije");
   }
 
-  private async Task<IEnumerable<string>> Search(string value)
+  private Task<IEnumerable<string>> Search(string value)
   {
     // if text is null or empty, show complete list
     if (string.IsNullOrEmpty(value))
-      return _dataList;
-    return _dataList.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+      return Task.FromResult(_dataList as IEnumerable<string>);
+    var result = _dataList.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+    return Task.FromResult(result);
   }
 
   private async Task Update(string value)
@@ -164,22 +163,6 @@
     _dataSelected = value;
   }
 
-  private Func<TabularData, bool> _quickFilter
-  {
-    get
-    {
-      return x =>
-      {
-        if (string.IsNullOrWhiteSpace(_searchString))
-          return true;
-
-        if (x.title.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
-          return true;
-
-        return false;
-      };
-    }
-  }
 
   private void Edit(string id)
   {

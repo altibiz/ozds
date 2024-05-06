@@ -18,23 +18,16 @@ using ISession = YesSql.ISession;
 
 namespace Ozds.Business.Queries;
 
-public class OzdsRepresentativeQueries : IOzdsQueries
+public class OzdsRepresentativeQueries(
+  OzdsDbContext context,
+  UserManager<IUser> userManager,
+  ISession session
+) : IOzdsQueries
 {
-  private readonly OzdsDbContext _context;
-  private readonly ISession _session;
+  private readonly OzdsDbContext _context = context;
+  private readonly ISession _session = session;
 
-  private readonly UserManager<IUser> _userManager;
-
-  public OzdsRepresentativeQueries(
-    OzdsDbContext context,
-    UserManager<IUser> userManager,
-    ISession session
-  )
-  {
-    _context = context;
-    _session = session;
-    _userManager = userManager;
-  }
+  private readonly UserManager<IUser> _userManager = userManager;
 
   public async Task<RepresentativeModel?> RepresentativeById(string id)
   {
@@ -53,6 +46,7 @@ public class OzdsRepresentativeQueries : IOzdsQueries
   {
     return await _context.Representatives
       .Where(entity => entity.Role == RoleEntity.OperatorRepresentative)
+      .OrderBy(_context.PrimaryKeyOf<RepresentativeEntity>())
       .QueryPaged(
         RepresentativeModelEntityConverterExtensions.ToModel,
         filter,
@@ -73,6 +67,7 @@ public class OzdsRepresentativeQueries : IOzdsQueries
       .Where(entity => entity.NetworkUsers
         .Where(_context.PrimaryKeyEqualsCompiled<NetworkUserEntity>(id))
         .Any())
+      .OrderBy(_context.PrimaryKeyOf<RepresentativeEntity>())
       .QueryPaged(
         RepresentativeModelEntityConverterExtensions.ToModel,
         filter,
@@ -92,6 +87,7 @@ public class OzdsRepresentativeQueries : IOzdsQueries
       .Where(entity => entity.Locations
         .Where(_context.PrimaryKeyEqualsCompiled<LocationEntity>(id))
         .Any())
+      .OrderBy(_context.PrimaryKeyOf<RepresentativeEntity>())
       .QueryPaged(
         RepresentativeModelEntityConverterExtensions.ToModel,
         filter,
@@ -133,6 +129,7 @@ public class OzdsRepresentativeQueries : IOzdsQueries
   {
     var users = await _session
       .Query<User, UserIndex>()
+      .OrderBy(index => index.DocumentId)
       .QueryPaged(
         UserModelExtensions.ToModel,
         filter,
@@ -167,6 +164,7 @@ public class OzdsRepresentativeQueries : IOzdsQueries
   {
     var users = await _session
       .Query<User, UserIndex>()
+      .OrderBy(index => index.DocumentId)
       .QueryPaged(
         UserModelExtensions.ToModel,
         filter,

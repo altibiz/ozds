@@ -1,53 +1,40 @@
 using System.Text.Json;
 using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Mutations.Agnostic;
-using Ozds.Business.Queries.Agnostic;
 
 namespace Ozds.Business.Iot;
 
-public class OzdsIotHandler
+public class OzdsIotHandler(
+  AgnosticPushRequestMeasurementConverter pushRequestMeasurementConverter,
+  OzdsMeasurementMutations measurementMutations
+)
 {
-  private readonly OzdsAuditableQueries _auditableQueries;
+  private static readonly JsonSerializerOptions deserializationOptions =
+    new()
+    {
+      PropertyNameCaseInsensitive = true
+    };
 
-  private readonly IHttpContextAccessor _httpContextAccessor;
-
-  private readonly OzdsMeasurementMutations _measurementMutations;
+  private readonly OzdsMeasurementMutations _measurementMutations =
+    measurementMutations;
 
   private readonly AgnosticPushRequestMeasurementConverter
-    _pushRequestMeasurementConverter;
-
-
-  public OzdsIotHandler(
-    OzdsAuditableQueries auditableQueries,
-    IHttpContextAccessor httpContextAccessor,
-    AgnosticPushRequestMeasurementConverter pushRequestMeasurementConverter,
-    OzdsMeasurementMutations measurementMutations
-  )
-  {
-    _auditableQueries = auditableQueries;
-    _httpContextAccessor = httpContextAccessor;
     _pushRequestMeasurementConverter = pushRequestMeasurementConverter;
-    _measurementMutations = measurementMutations;
-  }
 
   public Task<bool> Authorize(string id, string request)
   {
     return Task.FromResult(true);
   }
 
-  public Task OnPush(string _, string request)
+  public async Task OnPush(string _, string request)
   {
     var messengerRequest =
       JsonSerializer.Deserialize<MessengerPushRequest>(
-        request,
-        new JsonSerializerOptions
-        {
-          PropertyNameCaseInsensitive = true
-        });
+        request, deserializationOptions);
     if (messengerRequest?.Measurements is null
         || messengerRequest.Measurements.Length == 0)
     {
-      return Task.CompletedTask;
+      return;
     }
 
     foreach (var item in messengerRequest.Measurements)
@@ -58,7 +45,7 @@ public class OzdsIotHandler
       _measurementMutations.Create(measurement);
     }
 
-    return Task.CompletedTask;
+    await _measurementMutations.SaveChangesAsync();
   }
 
   public Task OnPoll(string id, string request)

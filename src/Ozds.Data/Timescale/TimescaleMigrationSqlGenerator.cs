@@ -6,17 +6,13 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Migrations;
 
 namespace Ozds.Data.Timescale;
 
-public class TimescaleMigrationSqlGenerator : NpgsqlMigrationsSqlGenerator
-{
-  public TimescaleMigrationSqlGenerator(
-    MigrationsSqlGeneratorDependencies dependencies,
+public class TimescaleMigrationSqlGenerator(
+  MigrationsSqlGeneratorDependencies dependencies,
 #pragma warning disable EF1001
-    INpgsqlSingletonOptions options
+  INpgsqlSingletonOptions options
 #pragma warning restore EF1001
-  ) : base(dependencies, options)
-  {
-  }
-
+) : NpgsqlMigrationsSqlGenerator(dependencies, options)
+{
   protected override void Generate(
     CreateTableOperation operation,
     IModel? model,

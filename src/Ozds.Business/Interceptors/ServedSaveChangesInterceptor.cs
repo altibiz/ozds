@@ -2,12 +2,8 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace Ozds.Business.Interceptors;
 
-public class ServedSaveChangesInterceptor : SaveChangesInterceptor
+public class ServedSaveChangesInterceptor(IServiceProvider serviceProvider)
+  : SaveChangesInterceptor
 {
-  protected readonly IServiceProvider _serviceProvider;
-
-  public ServedSaveChangesInterceptor(IServiceProvider serviceProvider)
-  {
-    _serviceProvider = serviceProvider;
-  }
+  protected readonly IServiceProvider _serviceProvider = serviceProvider;
 }

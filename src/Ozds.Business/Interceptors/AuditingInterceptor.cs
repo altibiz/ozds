@@ -10,13 +10,9 @@ using Ozds.Data.Entities.Enums;
 
 namespace Ozds.Business.Interceptors;
 
-public class AuditingInterceptor : ServedSaveChangesInterceptor
+public class AuditingInterceptor(IServiceProvider serviceProvider)
+  : ServedSaveChangesInterceptor(serviceProvider)
 {
-  public AuditingInterceptor(IServiceProvider serviceProvider)
-    : base(serviceProvider)
-  {
-  }
-
   public override InterceptionResult<int> SavingChanges(
     DbContextEventData eventData,
     InterceptionResult<int> result

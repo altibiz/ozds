@@ -67,7 +67,7 @@ public partial class OzdsDbContext
       );
     var stringJoinWithDashExpression = Expression.Call(
       typeof(string).GetMethod(nameof(string.Join),
-        new[] { typeof(string), typeof(string[]) }) ??
+        [typeof(string), typeof(string[])]) ??
       throw new InvalidOperationException(
         $"No {nameof(string.Join)} method found in {typeof(string)}"),
       Expression.Constant("-"),
@@ -236,7 +236,7 @@ public partial class OzdsDbContext
       );
     var stringJoinWithDashExpression = Expression.Call(
       typeof(string).GetMethod(nameof(string.Join),
-        new[] { typeof(string), typeof(string[]) }) ??
+        [typeof(string), typeof(string[])]) ??
       throw new InvalidOperationException(
         $"No {nameof(string.Join)} method found in {typeof(string)}"),
       Expression.Constant("-"),

@@ -13,6 +13,11 @@ ignorePaths:
   - "docker-compose.yml"
   - "omnisharp.json"
   - ".github/workflows/*"
+  - "Doxyfile"
+  - "DoxygenLayout.xml"
+  - "doxygen-awesome.css"
+  - "doxygen-awesome-sidebar-only.css"
+  - "cspell.yaml"
 words:
   - "ozds"
   - "blazor"
@@ -51,3 +56,4 @@ words:
   - "plantuml"
   - "mermaid"
   - "triphasic"
+  - "datetime"

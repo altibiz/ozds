@@ -9,7 +9,7 @@ using Ozds.Data;
 
 namespace Ozds.Business.Mutations.Agnostic;
 
-public class OzdsNetworkUserMutations(
+public class OzdsLocationMutations(
   OzdsDbContext context
 ) : IOzdsMutations
 {
@@ -25,10 +25,10 @@ public class OzdsNetworkUserMutations(
     _context.ChangeTracker.Clear();
   }
 
-  public void CreateWithRepresentatives(NetworkUserModel netUser,
+  public void CreateWithRepresentatives(LocationModel location,
     IEnumerable<RepresentativeModel> reps)
   {
-    var validationResults = netUser
+    var validationResults = location
       .Validate(new ValidationContext(this))
       .ToList();
     if (validationResults.Count is not 0)
@@ -37,15 +37,15 @@ public class OzdsNetworkUserMutations(
     }
 
     var repEntities = reps.Select(x => x.ToEntity()).ToList();
-    var entity = netUser.ToEntity();
+    var entity = location.ToEntity();
     _context.AddTracked(entity);
     _context.JoinTracked(entity, repEntities);
   }
 
-  public void UpdateWithRepresentatives(NetworkUserModel netUser,
+  public void UpdateWithRepresentatives(LocationModel location,
     IEnumerable<RepresentativeModel> reps)
   {
-    var validationResults = netUser
+    var validationResults = location
       .Validate(new ValidationContext(this))
       .ToList();
     if (validationResults.Count is not 0)
@@ -54,7 +54,7 @@ public class OzdsNetworkUserMutations(
     }
 
     var repEntities = reps.Select(x => x.ToEntity()).ToList();
-    var entity = netUser.ToEntity();
+    var entity = location.ToEntity();
     entity.Representatives = repEntities;
     _context.UpdateTracked(entity);
     _context.JoinTracked(entity, repEntities);

@@ -4,14 +4,10 @@ using Ozds.Business.Models.Enums;
 
 namespace Ozds.Business.Conversion.Agnostic;
 
-public class AgnosticMeasurementAggregateConverter
+public class AgnosticMeasurementAggregateConverter(
+  IServiceProvider serviceProvider)
 {
-  private readonly IServiceProvider _serviceProvider;
-
-  public AgnosticMeasurementAggregateConverter(IServiceProvider serviceProvider)
-  {
-    _serviceProvider = serviceProvider;
-  }
+  private readonly IServiceProvider _serviceProvider = serviceProvider;
 
   public IAggregate ToAggregate(IMeasurement model, IntervalModel interval)
   {

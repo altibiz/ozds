@@ -7,14 +7,9 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Queries;
 
-public class OzdsAbbB2xMeterModelQueries : IOzdsQueries
+public class OzdsAbbB2xMeterModelQueries(OzdsDbContext context) : IOzdsQueries
 {
-  protected readonly OzdsDbContext context;
-
-  public OzdsAbbB2xMeterModelQueries(OzdsDbContext context)
-  {
-    this.context = context;
-  }
+  protected readonly OzdsDbContext context = context;
 
   public async Task<AbbB2xMeterModel?>
     AbbB2xMeterById(string id)
@@ -43,6 +38,7 @@ public class OzdsAbbB2xMeterModelQueries : IOzdsQueries
         .StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered
+      .OrderBy(context.PrimaryKeyOf<MessengerEntity>())
       .Skip((pageNumber - 1) * pageCount)
       .Take(pageCount)
       .ToListAsync();
@@ -51,24 +47,6 @@ public class OzdsAbbB2xMeterModelQueries : IOzdsQueries
       .ToPaginatedList(count);
   }
 
-  // public async Task<PaginatedList<NetworkUserCatalogueModel>> GetNetworkUserCatalogues(
-  //   string title,
-  //   int pageNumber = QueryConstants.StartingPage,
-  //   int pageCount = QueryConstants.DefaultPageCount
-  // )
-  // {
-  //   var filtered = context.NetworkUserCatalogues
-  //     .Where(catalogue => catalogue.Title
-  //       .StartsWith(title));
-  //   var count = await filtered.CountAsync();
-  //   var items = await filtered
-  //     .Skip((pageNumber - 1) * pageCount)
-  //     .Take(pageCount)
-  //     .ToListAsync();
-  //   return items
-  //     .Select(item => item.ToModel())
-  //     .ToPaginatedList(count);
-  // }
   public async Task<PaginatedList<AbbB2xMeasurementValidatorModel>>
     GetValidators(
       string title,
@@ -81,6 +59,7 @@ public class OzdsAbbB2xMeterModelQueries : IOzdsQueries
       .Where(catalogue => catalogue.Title.StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered
+      .OrderBy(context.PrimaryKeyOf<AbbB2xMeasurementValidatorEntity>())
       .Skip((pageNumber - 1) * pageCount)
       .Take(pageCount)
       .ToListAsync();

@@ -11,7 +11,7 @@ public class NavigationAttribute : Attribute
 
   public string? Icon { get; set; }
 
-  public Type[] Parents { get; set; } = Array.Empty<Type>();
+  public Type[] Parents { get; set; } = [];
 
-  public RoleModel[] Allows { get; set; } = Array.Empty<RoleModel>();
+  public RoleModel[] Allows { get; set; } = [];
 }

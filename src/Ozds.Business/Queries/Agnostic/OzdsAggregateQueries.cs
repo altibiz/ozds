@@ -9,20 +9,15 @@ using Ozds.Data.Entities.Base;
 
 namespace Ozds.Business.Queries.Agnostic;
 
-public class OzdsAggregateQueries : IOzdsQueries
+public class OzdsAggregateQueries(
+  OzdsDbContext context,
+  AgnosticModelEntityConverter modelEntityConverter
+) : IOzdsQueries
 {
-  private readonly OzdsDbContext _context;
+  private readonly OzdsDbContext _context = context;
 
-  private readonly AgnosticModelEntityConverter _modelEntityConverter;
-
-  public OzdsAggregateQueries(
-    OzdsDbContext context,
-    AgnosticModelEntityConverter modelEntityConverter
-  )
-  {
-    _context = context;
-    _modelEntityConverter = modelEntityConverter;
-  }
+  private readonly AgnosticModelEntityConverter _modelEntityConverter =
+    modelEntityConverter;
 
   public async Task<PaginatedList<T>> Read<T>(
     IEnumerable<string> whereClauses,
@@ -62,9 +57,6 @@ public class OzdsAggregateQueries : IOzdsQueries
     int pageNumber = QueryConstants.StartingPage,
     int pageCount = QueryConstants.DefaultPageCount)
   {
-    // AbbB2xAggregateEntity a = default!;
-
-    // a.Interval == 2;
     var abbB2x = await Read<AbbB2xAggregateModel>(whereClauses, fromDate,
       toDate, pageNumber, pageCount);
     var schneideriEM3xxx =

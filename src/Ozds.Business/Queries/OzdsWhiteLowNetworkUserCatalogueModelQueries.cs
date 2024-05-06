@@ -7,14 +7,10 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Queries;
 
-public class OzdsWhiteLowNetworkUserCatalogueModelQueries : IOzdsQueries
+public class OzdsWhiteLowNetworkUserCatalogueModelQueries(OzdsDbContext context)
+  : IOzdsQueries
 {
-  protected readonly OzdsDbContext context;
-
-  public OzdsWhiteLowNetworkUserCatalogueModelQueries(OzdsDbContext context)
-  {
-    this.context = context;
-  }
+  protected readonly OzdsDbContext context = context;
 
   public async Task<WhiteLowNetworkUserCatalogueModel?>
     BlueLowNetworkUserCatalogueById(string id)

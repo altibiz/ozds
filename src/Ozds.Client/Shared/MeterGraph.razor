@@ -85,6 +85,7 @@
         @if (_graphValues is not null)
         {
           <ApexChart TItem="ChartData"
+                     XAxisType="XAxisType.Datetime"
                      Options="graphOptions"
                      @ref="chart">
             @for (var i = 0; i < lineCount; i++)
@@ -104,7 +105,7 @@
                                Items="@_graphValues"
                                Name="n/a"
                                SeriesType="SeriesType.Line"
-                               XValue='x => DateTimeGraph(x.date)'
+                               XValue='x => DateTimeGraph(x.date).DateTime'
                                YValue="x => 0"
                                Stroke="@(ColorGraph(0))"/>
             }
@@ -149,11 +150,11 @@
 @code {
   [Parameter] public string Source { get; set; } = "abb";
   private IMeter? _meter;
-  AnnotationsYAxis? _annotation;
+  AnnotationsYAxis _annotation = new();
   private ApexChartOptions<ChartData> graphOptions = NewApexChartOptions<ChartData>();
   private ApexChartOptions<ChartData> graphOptionsMob = NewApexChartOptions<ChartData>();
-  OzdsAggregateQueries aggregateQueries;
-  OzdsMeasurementQueries measureQueries;
+  OzdsAggregateQueries aggregateQueries = default!;
+  OzdsMeasurementQueries measureQueries = default!;
 
   private List<string> _displayType = new()
   {
@@ -163,7 +164,7 @@
   public int timeSpanMins = 15;
   public int lineCount = 0;
   private float connectionMaxPower = 1000000f;
-  public IEnumerable<ChartData>? _graphValues;
+  public List<ChartData> _graphValues = new();
   private string _dataTitle = "";
   private string _timeTitle = "15 min";
 
@@ -173,10 +174,8 @@
 
   @* TIME STUFF *@
   private bool timerInitialized;
-  private Timer timer;
+  private Timer timer = new();
   private int updateMilisec = 10000;
-  private DateTimeOffset maxDate;
-  private int counter;
   private DateTimeOffset now = DateTimeOffset.UtcNow.LocalDateTime;
 
   protected override async Task OnInitializedAsync()
@@ -251,8 +250,12 @@
 
   private async Task GetValues(DateTimeOffset fromDate, DateTimeOffset toDate, bool reRenderChart = true)
   {
-    var quorterHourlyMeasures = await aggregateQueries.ReadAgnostic(new[] { "x => x.Interval == 0", $"x => x.MeterId == \"{Source}\"" }, fromDate, toDate, 1, 9000);
-    var measures = await measureQueries.ReadAgnostic(new[] { $"x => x.MeterId == \"{Source}\"" }, fromDate, toDate, 1, 3000);
+    IEnumerable<IMeasurement> measures;
+    if (timeSpanMins > 60)
+      measures = await aggregateQueries.ReadAgnostic(new[] { "x => x.Interval == 0", $"x => x.MeterId == \"{Source}\"" }, fromDate, toDate, 1, 9000);
+    else
+      measures = await measureQueries.ReadAgnostic(new[] { $"x => x.MeterId == \"{Source}\"" }, fromDate, toDate, 1, 3000);
+    measures = measures.OrderBy(x => x.Timestamp).ToList();
     switch (_dataTitle)
     {
       case "Struja":
@@ -337,7 +340,7 @@
       return;
     }
 
-    InvokeAsync(() => StateHasChanged());
+    await InvokeAsync(() => StateHasChanged());
     if (reRenderChart)
     {
       await chart.UpdateSeriesAsync();
@@ -377,7 +380,7 @@
     {
       if (_graphValues is not null && _graphValues.Select(x => x.values[3]).ToList().Count > 0)
       {
-        var graphMaxPower = _graphValues.MaxBy(x => x.values[3]).values[3];
+        var graphMaxPower = _graphValues.Where(x => x.values.Length > 3).Select(x => x.values[3]).Max();
         graphOptions.Yaxis.Clear();
         graphOptions.Yaxis.Add(new YAxis
         {
@@ -553,6 +556,7 @@
   {
     if (_graphValues is not null)
     {
+      var aaafuckme = _graphValues.OrderByDescending(x => x.date).ToList();
       var lastGraphValues = _graphValues.OrderByDescending(x => x.date).FirstOrDefault();
       if (lastGraphValues is not null)
       {
@@ -564,8 +568,10 @@
 
   public class ChartDataComparer : IEqualityComparer<ChartData>
   {
-    public bool Equals(ChartData x, ChartData y)
+    public bool Equals(ChartData? x, ChartData? y)
     {
+      if (y is null || x is null)
+        return false;
       return x.date == y.date;
     }
 
@@ -578,7 +584,6 @@
   void IDisposable.Dispose()
   {
     timer?.Dispose();
-    timer = null;
   }
 
 }

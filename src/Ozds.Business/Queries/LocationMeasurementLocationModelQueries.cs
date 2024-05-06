@@ -5,20 +5,17 @@ using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Data;
 using Ozds.Data.Entities;
+using Ozds.Data.Entities.Base;
 
 // TODO: MeasurementLocation -> MeasurementSpot ?
 // TODO: use surrogate keys
 
 namespace Ozds.Business.Queries;
 
-public class OzdsLocationMeasurementLocationModelQueries : IOzdsQueries
+public class OzdsLocationMeasurementLocationModelQueries(OzdsDbContext context)
+  : IOzdsQueries
 {
-  protected readonly OzdsDbContext context;
-
-  public OzdsLocationMeasurementLocationModelQueries(OzdsDbContext context)
-  {
-    this.context = context;
-  }
+  protected readonly OzdsDbContext context = context;
 
   public async Task<LocationMeasurementLocationModel?>
     LocationMeasurementLocationById(string id)
@@ -47,6 +44,7 @@ public class OzdsLocationMeasurementLocationModelQueries : IOzdsQueries
         .StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered
+      .OrderBy(context.PrimaryKeyOf<LocationEntity>())
       .Skip((pageNumber - 1) * pageCount)
       .Take(pageCount)
       .ToListAsync();
@@ -65,6 +63,7 @@ public class OzdsLocationMeasurementLocationModelQueries : IOzdsQueries
       .Where(catalogue => catalogue.Title.StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered
+      .OrderBy(context.PrimaryKeyOf<MeterEntity>())
       .Skip((pageNumber - 1) * pageCount)
       .Take(pageCount)
       .ToListAsync();

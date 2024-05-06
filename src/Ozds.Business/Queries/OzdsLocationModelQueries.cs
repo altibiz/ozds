@@ -9,14 +9,9 @@ using Ozds.Data.Entities.Enums;
 
 namespace Ozds.Business.Queries;
 
-public class OzdsLocationModelQueries : IOzdsQueries
+public class OzdsLocationModelQueries(OzdsDbContext context) : IOzdsQueries
 {
-  protected readonly OzdsDbContext context;
-
-  public OzdsLocationModelQueries(OzdsDbContext context)
-  {
-    this.context = context;
-  }
+  protected readonly OzdsDbContext context = context;
 
   public async Task<LocationModel?>
     LocationById(string id)
@@ -60,6 +55,7 @@ public class OzdsLocationModelQueries : IOzdsQueries
         .StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered
+      .OrderBy(context.PrimaryKeyOf<RedLowNetworkUserCatalogueEntity>())
       .Skip((pageNumber - 1) * pageCount)
       .Take(pageCount)
       .ToListAsync();
@@ -81,6 +77,7 @@ public class OzdsLocationModelQueries : IOzdsQueries
         .StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered
+      .OrderBy(context.PrimaryKeyOf<BlueLowNetworkUserCatalogueEntity>())
       .Skip((pageNumber - 1) * pageCount)
       .Take(pageCount)
       .ToListAsync();
@@ -102,6 +99,7 @@ public class OzdsLocationModelQueries : IOzdsQueries
         .StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered
+      .OrderBy(context.PrimaryKeyOf<WhiteLowNetworkUserCatalogueEntity>())
       .Skip((pageNumber - 1) * pageCount)
       .Take(pageCount)
       .ToListAsync();
@@ -123,6 +121,7 @@ public class OzdsLocationModelQueries : IOzdsQueries
         .StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered
+      .OrderBy(context.PrimaryKeyOf<WhiteMediumNetworkUserCatalogueEntity>())
       .Skip((pageNumber - 1) * pageCount)
       .Take(pageCount)
       .ToListAsync();
@@ -143,6 +142,7 @@ public class OzdsLocationModelQueries : IOzdsQueries
         .StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered
+      .OrderBy(context.PrimaryKeyOf<RegulatoryCatalogueEntity>())
       .Skip((pageNumber - 1) * pageCount)
       .Take(pageCount)
       .ToListAsync();
@@ -164,6 +164,7 @@ public class OzdsLocationModelQueries : IOzdsQueries
       .Where(rep => rep.Role == RoleEntity.LocationRepresentative);
     var count = await filtered.CountAsync();
     var items = await filtered
+      .OrderBy(context.PrimaryKeyOf<RepresentativeEntity>())
       .Skip((pageNumber - 1) * pageCount)
       .Take(pageCount)
       .ToListAsync();

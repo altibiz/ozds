@@ -7,31 +7,19 @@ using Ozds.Data.Entities.Abstractions;
 
 namespace Ozds.Business.Mutations.Agnostic;
 
-public class OzdsInvoiceMutations : IOzdsMutations
+public class OzdsInvoiceMutations(
+  OzdsDbContext context,
+  AgnosticModelEntityConverter modelEntityConverter
+) : IOzdsMutations
 {
-  private readonly OzdsDbContext _context;
+  private readonly OzdsDbContext _context = context;
 
-  private readonly AgnosticModelEntityConverter _modelEntityConverter;
+  private readonly AgnosticModelEntityConverter _modelEntityConverter =
+    modelEntityConverter;
 
-  public OzdsInvoiceMutations(
-    OzdsDbContext context,
-    AgnosticModelEntityConverter modelEntityConverter
-  )
+  public Task SaveChangesAsync()
   {
-    _context = context;
-    _modelEntityConverter = modelEntityConverter;
-  }
-
-  public async ValueTask DisposeAsync()
-  {
-    await _context.SaveChangesAsync();
-    GC.SuppressFinalize(this);
-  }
-
-  public void Dispose()
-  {
-    _context.SaveChanges();
-    GC.SuppressFinalize(this);
+    return _context.SaveChangesAsync();
   }
 
   public void ClearChanges()

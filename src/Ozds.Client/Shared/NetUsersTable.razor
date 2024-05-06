@@ -34,7 +34,7 @@
             @T["Potrošnja u prethodnom mjesecu"]: @(FloatString(dataStruct.data.lastMonthUsage / 1000, 0) + " kWh")
           </MudItem>
           <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large;">
-            @T["Iznos računa u prethodnom mjesecu"]: @(dataStruct.data.lastMonthsPayment == 0 ? T["Račun u izradi..."] : FloatString(dataStruct.data.lastMonthsPayment) + " EUR")
+            @T["Iznos računa u prethodnom mjesecu"]: @(dataStruct.data.lastMonthsPayment == 0 ? T["Račun u izradi..."] : DecimalString(dataStruct.data.lastMonthsPayment) + " EUR")
           </MudItem>
           @if (representative is not null && representative.Representative.Role is RoleModel.OperatorRepresentative)
           {
@@ -115,7 +115,7 @@
         Property="x => x.lastMonthsPayment"
         Title='@T["Iznos računa u prethodnom mjesecu"]'>
         <CellTemplate>
-          @(context.Item.lastMonthsPayment == 0 ? T["Račun u izradi..."] : FloatString(context.Item.lastMonthsPayment) + " EUR")
+          @(context.Item.lastMonthsPayment == 0 ? T["Račun u izradi..."] : DecimalString(context.Item.lastMonthsPayment) + " EUR")
         </CellTemplate>
       </PropertyColumn>
 
@@ -143,19 +143,12 @@
 @code {
   [CascadingParameter] public UserState user { get; set; } = default!;
   [CascadingParameter] public RepresentativeState representative { get; set; } = default!;
-  private (float? First, float? Last, DateTimeOffset FirstDate) _startEnd;
-  private (float? First, float? Last, DateTimeOffset FirstDate) _startEndLastMonth;
   private string? _searchString;
-  private float _totalConsumption = 0;
-  private float _lastMonthTotalConsumption = 0;
-  private float _lastMonthInvoicesTotal = 0;
+  private List<NetworkUserInvoiceModel>? _invoices = new();
 
-  public record struct TabularData(LocationModel location, NetworkUserModel networkUser, float thisMonthUsage, float lastMonthUsage, float lastMonthsPayment);
+  public record struct TabularData(LocationModel location, NetworkUserModel networkUser, float thisMonthUsage, float lastMonthUsage, decimal lastMonthsPayment);
 
   private List<TabularData> _dataStruct = new();
-  private IEnumerable<NetworkUserModel>? _networkUsers;
-  private IEnumerable<LocationModel>? _locations;
-  private IReadOnlyList<SpanningMeasure<float>>? _spanningMeasurements;
   private DateTimeOffset startOfThisMonth = DateTimeOffset.UtcNow.GetStartOfMonth();
   private DateTimeOffset startOfLastMonth = DateTimeOffset.UtcNow.GetStartOfLastMonth();
   private DateTimeOffset now = DateTimeOffset.UtcNow;
@@ -166,46 +159,69 @@
     var queries = ScopedServices.GetRequiredService<OzdsMeterTableQueries>();
     List<MeterTableViewModel> netUsers = new();
 
-    if (representative is null)
-    {
+    _netUsers = await queries.GetNetworkUsersByRepresentative(representative.Representative);
+    if (_netUsers is null || _netUsers.Count < 0)
       return;
-    }
+    var _netUserIds = _netUsers.Select(x => x.Id).ToList();
+    netUsers = await queries.ViewModelByNetworkUser(_netUserIds, startOfLastMonth, now);
+    var groupedNetUsers = netUsers.GroupBy(x => x.NetworkUser.Id).ToList();
+    _invoices = await queries.GetNetworkUserInvoicesByRepresentative(representative.Representative, startOfLastMonth, startOfThisMonth);
+    var groupedInvoices = _invoices.GroupBy(x => x.NetworkUserId).ToList();
 
-    @* if (representative.Representative.Role is RoleModel.NetworkUserRepresentative) *@
-    if (true)
+    foreach (var netUser in groupedNetUsers)
     {
-      _netUsers = await queries.GetNetworkUsersByRepresentative(representative.Representative);
-      var _netUserIds = _netUsers.Select(x => x.Id).ToList();
-      netUsers = await queries.ViewModelByNetworkUser(_netUserIds, startOfLastMonth, now);
-      var groupedNetUsers = netUsers.GroupBy(x => x.NetworkUser.Id).ToList();
-      foreach (var netUser in groupedNetUsers)
+      if (netUser is null) continue;
+
+      var firstNetUser = netUser.FirstOrDefault();
+      if (firstNetUser is null) continue;
+
+      var _thisMonthAggregate = netUser.Select(x => x.Aggregates.Where(x => x.Timestamp == startOfThisMonth).FirstOrDefault()).Where(x => x is not null).ToList();
+      var _lastMonthAggregate = netUser.Select(x => x.Aggregates.Where(x => x.Timestamp == startOfLastMonth).FirstOrDefault()).Where(x => x is not null).ToList();
+      var _lastMonthInvoiceTotals = groupedInvoices
+        .Where(x => x.Key == netUser.Key)
+        .Where(x => x is not null)
+        .Select(x => x.Select(y => y.TotalWithTax_EUR))
+        .FirstOrDefault();
+      float _thisMonthUsage = 0;
+      float _lastMonthUsage = 0;
+      decimal _lastMonthsPayment = 0;
+      if (_thisMonthAggregate is not null && _thisMonthAggregate.Count > 0)
       {
-        // !!! Remove .Month and .LocalDateTime in live
-        var _thisMonthAggregate = netUser.Select(x => x.Aggregates.Where(x => x.Timestamp == startOfThisMonth).FirstOrDefault()).Where(x => x is not null).ToList();
-        var _lastMonthAggregate = netUser.Select(x => x.Aggregates.Where(x => x.Timestamp == startOfLastMonth).FirstOrDefault()).Where(x => x is not null).ToList();
-        float _thisMonthUsage = 0;
-        float _lastMonthUsage = 0;
-        if (_thisMonthAggregate is not null && _thisMonthAggregate.Count > 0)
-          _thisMonthUsage = _thisMonthAggregate
-            .Select(x => x.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum)
-            .DefaultIfEmpty(0)
-            .Sum();
-        if (_lastMonthAggregate is not null && _lastMonthAggregate.Count > 0)
-          _lastMonthUsage = _lastMonthAggregate
-            .Select(x => x.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum)
-            .DefaultIfEmpty(0)
-            .Sum();
-        _dataStruct.Add(
-          new TabularData
-          {
-            location = netUser.FirstOrDefault().Location,
-            networkUser = netUser.FirstOrDefault().NetworkUser,
-            thisMonthUsage = _thisMonthUsage,
-            lastMonthUsage = _lastMonthUsage,
-            lastMonthsPayment = 0 // !!! Add another query
-          }
-        );
+        var agg = _thisMonthAggregate
+          .Select(x => x?.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum)
+          .DefaultIfEmpty(0)
+          .Sum();
+        if (agg is null)
+          agg = 0;
+        _thisMonthUsage = (float)agg;
       }
+
+      if (_lastMonthAggregate is not null && _lastMonthAggregate.Count > 0)
+      {
+        var agg = _lastMonthAggregate
+          .Select(x => x?.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum)
+          .DefaultIfEmpty(0)
+          .Sum();
+        if (agg is null)
+          agg = 0;
+        _lastMonthUsage = (float)agg;
+      }
+
+      if (_lastMonthInvoiceTotals is not null && _lastMonthInvoiceTotals.Count() > 0)
+        _lastMonthsPayment = _lastMonthInvoiceTotals
+          .DefaultIfEmpty(0)
+          .Sum();
+
+      _dataStruct.Add(
+        new TabularData
+        {
+          location = firstNetUser.Location,
+          networkUser = firstNetUser.NetworkUser,
+          thisMonthUsage = _thisMonthUsage,
+          lastMonthUsage = _lastMonthUsage,
+          lastMonthsPayment = _lastMonthsPayment // !!! Add another query
+        }
+      );
     }
 
     foreach (var data in _dataStruct)

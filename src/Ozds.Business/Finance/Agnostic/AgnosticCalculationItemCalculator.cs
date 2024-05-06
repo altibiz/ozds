@@ -4,14 +4,9 @@ using Ozds.Business.Models.Composite;
 
 namespace Ozds.Business.Finance.Agnostic;
 
-public class AgnosticCalculationItemCalculator
+public class AgnosticCalculationItemCalculator(IServiceProvider serviceProvider)
 {
-  private readonly IServiceProvider _serviceProvider;
-
-  public AgnosticCalculationItemCalculator(IServiceProvider serviceProvider)
-  {
-    _serviceProvider = serviceProvider;
-  }
+  private readonly IServiceProvider _serviceProvider = serviceProvider;
 
   public ICalculationItem Calculate(CalculationItemBasisModel basis, Type type)
   {

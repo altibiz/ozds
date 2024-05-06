@@ -156,9 +156,6 @@
 
   public record struct TabularData(string year, string month, float? monthStartTotal, float? monthEndTotal, float maxPower);
 
-  private string _month = "-1";
-  private string _year = "-1";
-  private float thisMonthMaxPower = 0;
   private DateTimeOffset startOfThisYear = DateTimeOffset.UtcNow.GetStartOfYear();
   private DateTimeOffset startOfThisMonth = DateTimeOffset.UtcNow.GetStartOfMonth();
   private DateTimeOffset now = DateTime.UtcNow;
@@ -202,9 +199,6 @@
         monthEndTotal = a,
         maxPower = c
       });
-      thisMonthMaxPower = 0;
-      _month = "00";
-      _year = "00";
     }
 
     foreach (var data in _dataStruct)

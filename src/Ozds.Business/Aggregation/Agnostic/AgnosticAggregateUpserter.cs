@@ -5,15 +5,9 @@ using Ozds.Data.Entities.Abstractions;
 
 namespace Ozds.Business.Aggregation.Agnostic;
 
-public class AgnosticAggregateUpserter
+public class AgnosticAggregateUpserter(IServiceProvider serviceProvider)
 {
-  private readonly IServiceProvider _serviceProvider;
-
-  public AgnosticAggregateUpserter(IServiceProvider serviceProvider)
-  {
-    _serviceProvider = serviceProvider;
-  }
-
+  private readonly IServiceProvider _serviceProvider = serviceProvider;
 
   public Expression<Func<TEntity, TEntity, TEntity>> UpsertEntity<TEntity>()
     where TEntity : class, IAggregateEntity

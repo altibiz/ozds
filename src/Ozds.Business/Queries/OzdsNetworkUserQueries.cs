@@ -9,14 +9,9 @@ using Ozds.Data.Entities.Enums;
 
 namespace Ozds.Business.Queries;
 
-public class OzdsNetworkUserQueries : IOzdsQueries
+public class OzdsNetworkUserQueries(OzdsDbContext context) : IOzdsQueries
 {
-  protected readonly OzdsDbContext context;
-
-  public OzdsNetworkUserQueries(OzdsDbContext context)
-  {
-    this.context = context;
-  }
+  protected readonly OzdsDbContext context = context;
 
   public async Task<NetworkUserModel?>
     NetworkUserById(string id)
@@ -45,6 +40,7 @@ public class OzdsNetworkUserQueries : IOzdsQueries
         .StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered
+      .OrderBy(context.PrimaryKeyOf<LocationEntity>())
       .Skip((pageNumber - 1) * pageCount)
       .Take(pageCount)
       .ToListAsync();
@@ -66,6 +62,7 @@ public class OzdsNetworkUserQueries : IOzdsQueries
       .Where(rep => rep.Role == RoleEntity.NetworkUserRepresentative);
     var count = await filtered.CountAsync();
     var items = await filtered
+      .OrderBy(context.PrimaryKeyOf<RepresentativeEntity>())
       .Skip((pageNumber - 1) * pageCount)
       .Take(pageCount)
       .ToListAsync();
@@ -106,6 +103,6 @@ public class OzdsNetworkUserQueries : IOzdsQueries
       return rep.NetworkUsers.Select(x => x.ToModel()).ToList();
     }
 
-    return new List<NetworkUserModel>();
+    return [];
   }
 }

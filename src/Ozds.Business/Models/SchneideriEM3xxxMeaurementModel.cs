@@ -132,8 +132,8 @@ public class SchneideriEM3xxxMeasurementModel : MeasurementModel<
       return ActiveEnergyL1ImportT0_Wh is not 0
              && ActiveEnergyL2ImportT0_Wh is not 0
              && ActiveEnergyL3ImportT0_Wh is not 0
-        ? new CompositeTariffMeasure<float>(new List<TariffMeasure<float>>
-        {
+        ? new CompositeTariffMeasure<float>(
+        [
           new UnaryTariffMeasure<float>(
             new ImportExportDuplexMeasure<float>(
               new TriPhasicMeasure<float>(
@@ -156,9 +156,9 @@ public class SchneideriEM3xxxMeasurementModel : MeasurementModel<
               PhasicMeasure<float>.Null
             )
           )
-        })
-        : new CompositeTariffMeasure<float>(new List<TariffMeasure<float>>
-        {
+        ])
+        : new CompositeTariffMeasure<float>(
+        [
           new UnaryTariffMeasure<float>(
             new ImportExportDuplexMeasure<float>(
               new SinglePhasicMeasure<float>(ActiveEnergyTotalImportT0_Wh),
@@ -175,7 +175,7 @@ public class SchneideriEM3xxxMeasurementModel : MeasurementModel<
               PhasicMeasure<float>.Null
             )
           )
-        });
+        ]);
     }
   }
 

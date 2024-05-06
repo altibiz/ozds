@@ -6,13 +6,9 @@ using Ozds.Data.Entities.Base;
 
 namespace Ozds.Business.Interceptors;
 
-public class InvoiceIssuingInterceptor : ServedSaveChangesInterceptor
+public class InvoiceIssuingInterceptor(IServiceProvider serviceProvider)
+  : ServedSaveChangesInterceptor(serviceProvider)
 {
-  public InvoiceIssuingInterceptor(IServiceProvider serviceProvider)
-    : base(serviceProvider)
-  {
-  }
-
   public override InterceptionResult<int> SavingChanges(
     DbContextEventData eventData, InterceptionResult<int> result)
   {

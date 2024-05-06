@@ -1,4 +1,5 @@
 @inject NavigationManager NavigationManager
+@inject IDialogService DialogService
 @inherits OzdsOwningComponentBase
 
 @if (LoadingState.Value is null)
@@ -92,12 +93,12 @@
   [Parameter] public AbbB2xMeterModel? Model { get; set; }
 
   private LoadingState<AbbB2xMeterModel> LoadingState { get; set; } = new();
-  private List<MessengerModel> _messengers;
-  private List<AbbB2xMeasurementValidatorModel> _validators;
+  private List<MessengerModel> _messengers = new();
+  private List<AbbB2xMeasurementValidatorModel> _validators = new();
 
   private bool _create;
 
-  private void Submit()
+  private async Task Submit()
   {
     var mutations = ScopedServices.GetRequiredService<OzdsAuditableMutations>();
     if (LoadingState.Value is null)
@@ -110,6 +111,9 @@
     {
       mutations.Update(LoadingState.Value);
     }
+
+    await mutations.SaveChangesAsync();
+    DialogService.Show<MutateSuccess>("Changes Saved", new DialogOptions { CloseOnEscapeKey = true });
   }
 
   protected override void OnInitialized()

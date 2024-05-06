@@ -9,20 +9,15 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Queries;
 
-public class OzdsCalculatedInvoiceQueries : IOzdsQueries
+public class OzdsCalculatedInvoiceQueries(
+  OzdsDbContext context,
+  AgnosticModelEntityConverter modelEntityConverter
+) : IOzdsQueries
 {
-  private readonly OzdsDbContext _context;
+  private readonly OzdsDbContext _context = context;
 
-  private readonly AgnosticModelEntityConverter _modelEntityConverter;
-
-  public OzdsCalculatedInvoiceQueries(
-    OzdsDbContext context,
-    AgnosticModelEntityConverter modelEntityConverter
-  )
-  {
-    _context = context;
-    _modelEntityConverter = modelEntityConverter;
-  }
+  private readonly AgnosticModelEntityConverter _modelEntityConverter =
+    modelEntityConverter;
 
   public async Task<CalculatedNetworkUserInvoiceModel?>
     ReadCalculatedNetworkUserInvoice(

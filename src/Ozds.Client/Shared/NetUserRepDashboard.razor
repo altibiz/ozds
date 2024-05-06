@@ -137,29 +137,35 @@
 
   protected override async Task OnInitializedAsync()
   {
-    var invoiceQuery = ScopedServices.GetRequiredService<OzdsInvoiceQueries>();
     var query = ScopedServices.GetRequiredService<OzdsMeterTableQueries>();
+
+    _invoices = await query.GetNetworkUserInvoicesByRepresentative(representative.Representative, startOfLastMonth, startOfThisMonth);
+    lastMonthInvoicesTotal = _invoices.Select(x => x.TotalWithTax_EUR).DefaultIfEmpty(0).Sum();
+
     _netUsers = await query.GetNetworkUsersByRepresentative(representative.Representative);
-
-    var _netUserIds = _netUsers.Select(x => x.Id).ToList();
-    _invoices = (await invoiceQuery.Read<NetworkUserInvoiceModel>(new[] { $"x => x.FromDate.Month == {startOfLastMonth.Month}" }, Enumerable.Empty<string>(), Enumerable.Empty<string>(), 1, 100)).Items;
-
-    lastMonthInvoicesTotal = _invoices.Where(x => _netUserIds.Contains(x.NetworkUserId)).Select(x => x.TotalWithTax_EUR).DefaultIfEmpty(0).Sum();
-    var aggregateQueries = ScopedServices.GetRequiredService<OzdsAggregateQueries>();
-    var test = await aggregateQueries.ReadAgnostic(new[] { "x => x.Interval == 2" }, startOfThisMonth, now, 1, 9000);
-    var meters = test.OrderBy(x => x.Timestamp).GroupBy(x => x.MeterId).ToList();
-
+    List<string> _netUserIds = new();
+    if (_netUsers is not null)
+      _netUserIds = _netUsers.Select(x => x.Id).ToList();
+    var meters = await query.ViewModelByNetworkUser(_netUserIds, startOfLastMonth, now);
     foreach (var meter in meters)
     {
-      var _thisMonthUsage = meter.FirstOrDefault()!.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum;
-      if (_thisMonthUsage == 0)
-      {
-        var a = meter.FirstOrDefault()!.ActiveEnergySpan_Wh.SpanMin.TariffUnary.DuplexImport.PhaseSum;
-        var b = meter.FirstOrDefault()!.ActiveEnergySpan_Wh.SpanMax.TariffUnary.DuplexImport.PhaseSum;
-        _thisMonthUsage = b - a;
-      }
+      var _thisMonthAggregate = meter.Aggregates.Where(x => x.Timestamp == startOfThisMonth).Where(x => x is not null).ToList();
+      var _lastMonthAggregate = meter.Aggregates.Where(x => x.Timestamp == startOfLastMonth).Where(x => x is not null).ToList();
+      float _thisMonthUsage = 0;
+      float _lastMonthUsage = 0;
+      if (_thisMonthAggregate is not null && _thisMonthAggregate.Count > 0)
+        _thisMonthUsage = _thisMonthAggregate
+          .Select(x => x.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum)
+          .DefaultIfEmpty(0)
+          .Sum();
+      if (_lastMonthAggregate is not null && _lastMonthAggregate.Count > 0)
+        _lastMonthUsage = _lastMonthAggregate
+          .Select(x => x.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum)
+          .DefaultIfEmpty(0)
+          .Sum();
 
       _thisMonthTotal += _thisMonthUsage;
+      _lastMonthTotal += _lastMonthUsage;
     }
   }
 

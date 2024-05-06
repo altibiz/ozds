@@ -94,8 +94,8 @@ public class AbbB2xAggregateModel : AggregateModel
   {
     get
     {
-      return new CompositeTariffMeasure<float>(new List<TariffMeasure<float>>
-      {
+      return new CompositeTariffMeasure<float>(
+      [
         base.ActivePower_W,
         new UnaryTariffMeasure<float>(
           new NetDuplexMeasure<float>(
@@ -106,7 +106,7 @@ public class AbbB2xAggregateModel : AggregateModel
             )
           )
         )
-      });
+      ]);
     }
   }
 
@@ -114,8 +114,8 @@ public class AbbB2xAggregateModel : AggregateModel
   {
     get
     {
-      return new CompositeTariffMeasure<float>(new List<TariffMeasure<float>>
-      {
+      return new CompositeTariffMeasure<float>(
+      [
         base.ReactivePower_VAR,
         new UnaryTariffMeasure<float>(
           new NetDuplexMeasure<float>(
@@ -126,7 +126,7 @@ public class AbbB2xAggregateModel : AggregateModel
             )
           )
         )
-      });
+      ]);
     }
   }
 
@@ -135,8 +135,8 @@ public class AbbB2xAggregateModel : AggregateModel
     get
     {
       return new MinMaxSpanningMeasure<float>(
-        new CompositeTariffMeasure<float>(new List<TariffMeasure<float>>
-        {
+        new CompositeTariffMeasure<float>(
+        [
           new BinaryTariffMeasure<float>(
             new ImportExportDuplexMeasure<float>(
               new SinglePhasicMeasure<float>(ActiveEnergyTotalImportT1Min_Wh),
@@ -154,9 +154,9 @@ public class AbbB2xAggregateModel : AggregateModel
               new SinglePhasicMeasure<float>(ActiveEnergyTotalExportT0Min_Wh)
             )
           )
-        }),
-        new CompositeTariffMeasure<float>(new List<TariffMeasure<float>>
-        {
+        ]),
+        new CompositeTariffMeasure<float>(
+        [
           new BinaryTariffMeasure<float>(
             new ImportExportDuplexMeasure<float>(
               new SinglePhasicMeasure<float>(ActiveEnergyTotalImportT1Max_Wh),
@@ -174,7 +174,7 @@ public class AbbB2xAggregateModel : AggregateModel
               new SinglePhasicMeasure<float>(ActiveEnergyTotalExportT0Max_Wh)
             )
           )
-        })
+        ])
       );
     }
   }

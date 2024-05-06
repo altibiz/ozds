@@ -1,4 +1,5 @@
 @inherits OwningComponentBase
+@inject IDialogService DialogService
 
 <Loading Load="@(async () => (Model ?? await ScopedServices.GetRequiredService<OzdsRepresentativeQueries>().MaybeRepresentingUserByUserId(Id))!)">
   <Found>
