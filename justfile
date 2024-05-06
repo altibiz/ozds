@@ -68,6 +68,8 @@ format:
     --cache --cache-strategy metadata \
     '{{root}}'
 
+  dotnet build '{{sln}}'
+
   dotnet format '{{sln}}' \
     --no-restore \
     --verbosity minimal \
