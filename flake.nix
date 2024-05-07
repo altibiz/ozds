@@ -17,6 +17,8 @@
             })
           ];
         };
+
+        nushell = pkgs.nushell.override { additionalFeatures = (p: p ++ [ "dataframe" ]); };
       in
       {
         devShells.deploy = pkgs.mkShell {
