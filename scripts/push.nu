@@ -20,25 +20,41 @@ def main [path: path, batch: int = 10000, url: string = "http://localhost:5000/i
     let request = {
       Timestamp: (date now | date to-timezone utc | format date %+),
       Measurements: ($measurements | 
-        each { |x| {
-          MeterId: $x.MeterId,
-          Timestamp: ($x.Timestamp | date to-timezone utc | format date %+),
-          Data: ($x | reject index MeterId Timestamp)
+        each { |measurement| {
+          MeterId: $measurement.MeterId,
+          Timestamp: ($measurement.Timestamp | date to-timezone utc | format date %+),
+          Data: ($measurement | reject index MeterId Timestamp)
         } })
     }
 
-    loop {
-      try {
-        let $response = http post --content-type application/json $url $request
-        if ($response | is-empty) {
-          print $"Successfully pushed ($measurements | length) measurements at ($start)"
-        } else {
-          print $"Successfully pushed ($measurements | length) measurements at ($start), and got response:\n($response)"
+    try {
+      let $response = http post --content-type application/json $url $request
+      if ($response | is-empty) {
+        print $"Successfully pushed ($measurements | length) measurements at ($start)"
+      } else {
+        print $"Successfully pushed ($measurements | length) measurements at ($start), and got response:\n($response)"
+      }
+    } catch {
+      print $"Failed pushing ($batch) rows at ($start). Trying one by one..."
+      $measurements | each { |measurement| 
+        let request = {
+          Timestamp: (date now | date to-timezone utc | format date %+),
+          Measurements: [{
+            MeterId: $measurement.MeterId,
+            Timestamp: ($measurement.Timestamp | date to-timezone utc | format date %+),
+            Data: ($measurement | reject index MeterId Timestamp)
+          }]
         }
-        break
-      } catch {
-        print $"Failed pushing ($batch) rows at ($start)"
-        sleep 1sec
+        try {
+          let $response = http post --content-type application/json $url $request
+          if ($response | is-empty) {
+            print $"Successfully pushed ($measurement.MeterId) measurement at ($measurement.Timestamp)"
+          } else {
+            print $"Successfully pushed ($measurement.MeterId) measurement at ($measurement.Timestamp), and got response:\n($response)"
+          }
+        } catch {
+          print $"Failed pushing ($measurement.MeterId) measurement at ($measurement.Timestamp). Skipping..."
+        }
       }
     }
 
