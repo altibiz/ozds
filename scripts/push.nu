@@ -5,6 +5,8 @@ def main [path: path, batch: int = 10000, url: string = "http://localhost:5000/i
     dfr with-column (dfr open $path |
       dfr select Timestamp |
       dfr as-datetime "%Y-%m-%d %H:%M:%S.%9f%z") --name Timestamp
+    | dfr filter (dfr col Timestamp | dfr is-not-null)
+    | dfr filter (dfr col MeterId | dfr is-not-null)
 
   mut i = 0
 
@@ -28,10 +30,10 @@ def main [path: path, batch: int = 10000, url: string = "http://localhost:5000/i
     loop {
       try {
         let $response = http post --content-type application/json $url $request
-        if (($response | length) == 0) {
+        if ($response | is-empty) {
           print $"Successfully pushed ($measurements | length) measurements at ($start)"
         } else {
-          print $"Successfully pushed ($measurements | length) measurements at ($start) and got response:\n($response)"
+          print $"Successfully pushed ($measurements | length) measurements at ($start), and got response:\n($response)"
         }
         break
       } catch {
