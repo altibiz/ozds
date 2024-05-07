@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Mutations.Abstractions;
@@ -36,6 +37,8 @@ public class OzdsMeasurementMutations(
       throw new ValidationException(validationResults.First().ErrorMessage);
     }
 
-    _context.Add(_modelEntityConverter.ToEntity(measurement));
+    _context
+      .Upsert(_modelEntityConverter.ToEntity(measurement))
+      .NoUpdate();
   }
 }
