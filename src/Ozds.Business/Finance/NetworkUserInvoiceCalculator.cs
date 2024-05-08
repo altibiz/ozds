@@ -138,7 +138,7 @@ public class NetworkUserInvoiceCalculator(
 
   private string? GetRepresentativeId()
   {
-    if (_httpContextAccessor.HttpContext is not { } httpContextAccessor)
+    if (_httpContextAccessor.HttpContext is null)
     {
       return null;
     }
