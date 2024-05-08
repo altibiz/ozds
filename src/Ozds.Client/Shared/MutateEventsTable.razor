@@ -82,24 +82,13 @@
           Property="x => x.Timestamp"
           Title='@T["Datum"]'>
           <CellTemplate>
-            @(context.Item.Timestamp.ToString("hh:mm dd.MM. "))
+            @(context.Item.Timestamp.ToString("HH:mm dd.MM.yyyy."))
           </CellTemplate>
         </PropertyColumn>
         <PropertyColumn
           CellStyle="font-size: large;"
-          Property="x => x.Level"
-          Title='@T["Nivo"]'>
-          <CellTemplate>
-            @if(context.Item.Level == LevelModel.Error || context.Item.Level == LevelModel.Critical){
-              <MudIcon Icon="@Icons.Material.Filled.Circle" Color="Color.Error"/>
-            }
-            else if(context.Item.Level == LevelModel.Warning){
-              <MudIcon Icon="@Icons.Material.Filled.Circle" Color="Color.Warning"/>
-            }
-            else{
-              <MudIcon Icon="@Icons.Material.Filled.Circle" Color="Color.Success"/>
-            }
-          </CellTemplate>
+          Property="x => x.Author"
+          Title='@T["Autor"]'>
         </PropertyColumn>
         <TemplateColumn CellClass="d-flex justify-end" Sortable="false" Filterable="false" >
           <CellTemplate>
@@ -137,6 +126,8 @@
     public string Description;
     public LevelModel Level;
     public DateTimeOffset Timestamp = DateTimeOffset.UtcNow.AddMinutes(new Random().Next(60, 180));
+
+    public string Author = "Marko";
   }
 
   List<MobileData> _shownInvoices = new();
