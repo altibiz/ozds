@@ -62,8 +62,131 @@ interface IMeasurementEntity
 ```
 
 Apart from the marker interfaces, entities can be grouped in a few class
-hierarchies. These hierarchies make it easier to group entities that have
-similar mapping to database tables:
+hierarchies. Virtual properties on entity classes are navigation properties to
+other entities they have a relationship with and are not kept in the database.
+These hierarchies make it easier to group entities that have similar mapping to
+database tables:
 
 - Auditable: entities that can be audited. These entities also have soft delete
   functionality implemented via interceptors.
+
+```plantuml
+abstract class AuditableEntity
+{
+  + DateTimeOffset CreatedOn
+  + string CreatedById
+  + <<virtual>> RepresentativeEntity CreatedBy
+  + DateTimeOffset? LastUpdatedOn
+  + string? LastUpdatedById
+  + <<virtual>> RepresentativeEntity? LastUpdatedBy
+  + bool IsDeleted
+  + DateTimeOffset? DeletedOn
+  + string? DeletedById
+  + <<virtual>> RepresentativeEntity? DeletedBy
+  + string Id
+  + string Title
+}
+```
+
+- Event: entities that represent events.
+
+```plantuml
+abstract class EventEntity
+{
+  + string Id
+  + string Title
+  + DateTimeOffset Timestamp
+  + LevelEntity Level
+  + string Description
+}
+
+enum LevelEntity
+{
+  Trace
+  Debug
+  Information
+  Warning
+  Error
+  Critical
+}
+
+EventEntity *-- "1" LevelEntity
+```
+
+- Measurements: entities that represent measurements. Concrete measurement types
+  have navigation properties to specific meter types.
+
+```plantuml
+abstract class MeasurementEntity
+{
+  + DateTimeOffset Timestamp
+  + string MeterId
+}
+```
+
+- Aggregates: entities that represent aggregated measurements. The timestamp is
+  the start of the interval and the count is the number of measurements in that
+  interval. Concrete aggregate types have navigation properties to specific
+  meter types.
+
+```plantuml
+abstract class AggregateEntity
+{
+  + DateTimeOffset Timestamp
+  + long Count
+  + IntervalEntity Interval
+  + string MeterId
+}
+
+enum IntervalEntity
+{
+  QuarterHourly
+  Daily
+  Monthly
+}
+
+AggregateEntity *-- "1" IntervalEntity
+```
+
+- Calculations: entities that represent calculations. Calculations that don't
+  have a issuer are issued automatically by the server.
+
+```plantuml
+abstract class CalculationEntity
+{
+  + string Id
+  + string Title
+  + DateTimeOffset IssuedOn
+  + string? IssuedById
+  + <<virtual>> RepresentativeEntity? IssuedBy
+  + DateTimeOffset FromDate
+  + DateTimeOffset ToDate
+  + string MeterId
+  + <<virtual>> MeterEntity Meter
+  + decimal Total_EUR
+  + MeterEntity ArchivedMeter
+}
+```
+
+- Invoices: entities that represent invoices.
+
+```plantuml
+abstract class InvoiceEntity
+{
+  + string Id
+  + string Title
+  + DateTimeOffset IssuedOn
+  + string? IssuedById
+  + <<virtual>> RepresentativeEntity? IssuedBy
+  + DateTimeOffset FromDate
+  + DateTimeOffset ToDate
+  + decimal Total_EUR
+  + decimal Tax_EUR
+  + decimal TotalWithTax_EUR
+}
+```
+
+# `Ozds.Data.Migrations`
+
+This namespace contains generated migrations for the database. The migrations
+are generated using `dotnet ef` and are kept in the `Migrations` directory.
