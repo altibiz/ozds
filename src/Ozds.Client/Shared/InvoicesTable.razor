@@ -1,34 +1,34 @@
 @using Color = MudBlazor.Color
 @using Size = MudBlazor.Size
-@inject NavigationManager NavigationManager
+
 
 @if (_shownInvoices is not null && _shownInvoices.Count() > 0)
 {
   @* MOBILE *@
   <MudHidden Breakpoint="Breakpoint.LgAndUp">
     <MudText Typo="Typo.h4" Class="d-flex">
-      @T["Računi"]
+      @T["Invoices"]
     </MudText>
-    <MudTextField Class="" ValueChanged="EventCallback.Factory.Create<string>(this, Filter)" Label="Pretraži" Variant="Variant.Text"></MudTextField>
+    <MudTextField Class="" ValueChanged="EventCallback.Factory.Create<string>(this, Filter)" Label="@T["Search"]" Variant="Variant.Text"></MudTextField>
     @foreach (var dataStruct in _shownInvoices.Where(x => x.show).ToList())
     {
       <MudPaper Elevation="2" Class="ma-1">
         <MudStack Spacing="0">
           <MudGrid Class="d-flex pa-2">
             <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: medium;">
-              @T["Broj Računa"]: @dataStruct.invoice.Id
+              @T["Invoice number"]: @dataStruct.invoice.Id
             </MudItem>
             <MudItem xs="2" Class="d-flex align-center  justify-end">
               <MudIconButton OnClick="() => InspectInvoice(dataStruct.invoice)" Icon="@Icons.Material.Filled.RemoveRedEye" Color="Color.Primary"/>
             </MudItem>
             <MudItem xs="6" Class="d-flex align-center justify-start" Style="font-size: medium;">
-              @T["Od"]: @(DateString(dataStruct.invoice.FromDate))
+              @T["From"]: @(DateString(dataStruct.invoice.FromDate))
             </MudItem>
             <MudItem xs="6" Class="d-flex align-center justify-start" Style="font-size: medium;">
-              @T["Do"]: @(DateString(dataStruct.invoice.ToDate))
+              @T["To"]: @(DateString(dataStruct.invoice.ToDate))
             </MudItem>
             <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large; font-weight:bold;">
-              @T["Iznos"]:@(DecimalString(dataStruct.invoice.TotalWithTax_EUR)) EUR
+              @T["Total"]:@(DecimalString(dataStruct.invoice.TotalWithTax_EUR)) EUR
             </MudItem>
             <MudItem xs="2" Class="d-flex align-center justify-end">
               <MudIconButton OnClick="() => OnExpandCollapseClick(dataStruct.invoice.Id)" Icon="@(dataStruct.expand ? Icons.Material.Filled.KeyboardArrowUp : Icons.Material.Filled.KeyboardArrowDown)" Color="Color.Default"/>
@@ -39,7 +39,7 @@
             <MudStack>
               <MudDivider DividerType="DividerType.Middle" Class="mt-2"/>
               <MudContainer>
-                @T["Korisnik (mreže)"]: @(dataStruct.invoice.ArchivedNetworkUser.LegalPerson.Name)
+                @T["Network user"]: @(dataStruct.invoice.ArchivedNetworkUser.LegalPerson.Name)
               </MudContainer>
             </MudStack>
           </MudCollapse>
@@ -59,11 +59,11 @@
       Filterable="true"
       QuickFilter="@_quickFilter">
       <ToolBarContent>
-        <MudText Typo="Typo.h4">@T["Računi"]</MudText>
+        <MudText Typo="Typo.h4">@T["Invoice"]</MudText>
         <MudSpacer/>
         <MudTextField
           @bind-Value="_searchString"
-          Placeholder="Search"
+          Placeholder="@T["Search"]"
           Adornment="Adornment.Start"
           Immediate="true"
           AdornmentIcon="@Icons.Material.Filled.Search"
@@ -75,11 +75,11 @@
         <PropertyColumn
           CellStyle="font-size: large;"
           Property="x => x.ArchivedNetworkUser.LegalPerson.Name"
-          Title='@T["Korisnik (mreže)"]' Sortable="false"/>
+          Title='@T["Network user"]' Sortable="false"/>
         <PropertyColumn
           CellStyle="font-size: x-large; text-align: end !important;"
           Property="x => x.TotalWithTax_EUR"
-          Title='@T["Iznos"]'>
+          Title='@T["Total"]'>
           <CellTemplate>
             @(DecimalString(context.Item.TotalWithTax_EUR) + " EUR")
           </CellTemplate>
@@ -87,21 +87,21 @@
         <PropertyColumn
           CellStyle="font-size: large;"
           Property="x => DateString(x.FromDate)"
-          Title='@T["Od"]'/>
+          Title='@T["From"]'/>
         <PropertyColumn
           CellStyle="font-size: large;"
           Property="x => DateString(x.ToDate)"
-          Title='@T["Do"]'/>
+          Title='@T["To"]'/>
         <PropertyColumn
           CellStyle="font-size: large;"
           Property="x => x.Id"
           Sortable="false"
-          Title='@T["Broj Računa"]'/>
+          Title='@T["Invoice number"]'/>
         <TemplateColumn CellClass="d-flex justify-center" Sortable="false" Filterable="false">
           <CellTemplate>
             <MudStack Row>
               <MudButton OnClick="() => InspectInvoice(context.Item)" Variant="Variant.Filled" Color="Color.Primary">
-                @T["Pregled"]
+                @T["View"]
               </MudButton>
             </MudStack>
           </CellTemplate>

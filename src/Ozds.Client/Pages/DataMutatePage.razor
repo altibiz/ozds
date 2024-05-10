@@ -3,46 +3,46 @@
 
 @switch (Type)
 {
-  case "lokacije":
+  case "location":
     <LocationMutate Id="@Id"/>
     break;
-  case "korisnici-mreže":
+  case "network-user":
     <NetUserMutate Id="@Id"/>
     break;
-  case "crveni-niski-katalozi":
+  case "red-low-catalogue":
     <RedLowNetworkUserCatalogueMutate Id="@Id"/>
     break;
-  case "plavi-niski-katalozi":
+  case "blue-low-catalogue":
     <BlueLowNetworkUserCatalogueMutate Id="@Id"/>
     break;
-  case "bijeli-niski-katalozi":
+  case "white-low-catalogue":
     <WhiteLowNetworkUserCatalogueMutate Id="@Id"/>
     break;
-  case "bijeli-srednji-katalozi":
+  case "white-medium-catalogue":
     <WhiteMediumNetworkUserCatalogueMutate Id="@Id"/>
     break;
-  case "regulaciski-katalozi":
+  case "regulatory-catalogue":
     <RegulatoryCatalogueMutate Id="@Id"/>
     break;
-  case "pošiljatenji":
+  case "messenger":
     <MessengerMutate Id="@Id"/>
     break;
-  case "abb-b2x-validacija":
+  case "abb-b2x-validator":
     <AbbB2xMeasurementValidatorMutate Id="@Id"/>
     break;
-  case "schneider-iem3xxx-validacija":
+  case "schneider-iem3xxx-validator":
     <SchneideriEM3xxxMeasurementValidatorMutate Id="@Id"/>
     break;
-  case "abb-b2x-brojilo":
+  case "abb-b2x-device":
     <AbbB2xMeterMutate Id="@Id"/>
     break;
-  case "schneider-iem3xxx-brojilo":
+  case "schneider-iem3xxx-device":
     <SchneideriEM3xxxMeterMutate Id="@Id"/>
     break;
-  case "brojilo-na-lokaciji":
+  case "device-at-location":
     <LocationMeasurementLocationMutate Id="@Id"/>
     break;
-  case "brojilo-na-korisniku-mreže":
+  case "device-at-network-user":
     <NetworkUserMeasurementLocationMutate Id="@Id"/>
     break;
 }

@@ -1,10 +1,9 @@
-<HeadOutlet @rendermode="RenderMode.InteractiveServer"/>
+@inject NavigationManager Navigation
+@inject IServiceProvider ServiceProvider
 
 <Router AppAssembly="@typeof(App).Assembly">
   <Found Context="routeData">
-    <AuthorizeRouteView
-      RouteData="@routeData"
-      DefaultLayout="@typeof(MainLayout)">
+    <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
       <Authorizing>
         <Authorizing/>
       </Authorizing>
@@ -26,3 +25,6 @@
     </LayoutView>
   </NotFound>
 </Router>
+
+@code {
+}

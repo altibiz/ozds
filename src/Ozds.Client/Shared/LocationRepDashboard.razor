@@ -1,6 +1,4 @@
 @using Ozds.Business.Time
-@inject NavigationManager NavigationManager;
-
 @* MOBILE *@
 <MudHidden Breakpoint="Breakpoint.MdAndUp">
   <MudGrid Class="my-3 pa-1">
@@ -8,7 +6,7 @@
       <MudPaper Class="d-flex align-center justify-stat mud-width-full pa-1 pb-3 flex-column">
         <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
           <MudText Typo="Typo.h6">
-            @T["Potrošnja prethodni mjesc:"]
+            @T["Last months consumption"]:
           </MudText>
         </MudItem>
         <MudContainer Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
@@ -22,7 +20,7 @@
       <MudPaper Class="d-flex align-center justify-stat mud-width-full pa-1 pb-3 flex-column">
         <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
           <MudText Typo="Typo.h6">
-            @T["Potrošnja u tekućem mjesecu:"]
+            @T["Current months consumption"]:
           </MudText>
         </MudItem>
         <MudContainer Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
@@ -36,7 +34,7 @@
       <MudPaper Class="d-flex align-center justify-stat mud-width-full pa-1 pb-3 flex-column">
         <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
           <MudText Typo="Typo.h6">
-            @T["Trenutna snaga:"]
+            @T["Active power"]:
           </MudText>
         </MudItem>
         <MudContainer Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
@@ -55,7 +53,7 @@
       <MudPaper Class="mud-width-full d-flex flex-column justify-space-between pa-4" Height="320px">
         <MudItem Class="" Style="font-size: large; font-weight: bold;">
           <MudText Typo="Typo.h5">
-            @(T["Potrošnja u tekućem mjesecu:"])
+            @(T["Current months consumption"] + ": ")
           </MudText>
         </MudItem>
         <MudContainer Class="d-flex align-end justify-center pb-10" MaxWidth="MaxWidth.Small">
@@ -70,7 +68,7 @@
       <MudPaper Class="mud-width-full d-flex flex-column justify-space-between pa-4" Height="320px">
         <MudItem Class="" Style="font-size: large; font-weight: bold;">
           <MudText Typo="Typo.h5">
-            @(T["Potrošnja u prethodnom mjesecu:"])
+            @(T["Last months consumption"] + ": ")
           </MudText>
         </MudItem>
         <MudContainer Class="d-flex align-end justify-center pb-10" MaxWidth="MaxWidth.Small">
@@ -85,7 +83,7 @@
       <MudPaper Class="mud-width-full d-flex flex-column justify-space-between pa-4" Height="320px">
         <MudItem Class="" Style="font-size: large; font-weight: bold;">
           <MudText Typo="Typo.h5">
-            @(T["Trenutna snaga:"])
+            @(T["Active power"] + ": ")
           </MudText>
         </MudItem>
         <MudContainer Class="d-flex align-end justify-center pb-10" MaxWidth="MaxWidth.Small">

@@ -1,4 +1,3 @@
-@inject NavigationManager NavigationManager
 @inject IDialogService DialogService
 @inherits OzdsOwningComponentBase
 
@@ -13,7 +12,7 @@
   return;
 }
 
-<MudText Class="my-2" Typo="Typo.h4">Regulaciski katalog</MudText>
+<MudText Class="my-2" Typo="Typo.h4">@T["Regulatory Catalogues"]</MudText>
 <EditForm
   Model="@LoadingState.Value"
   OnValidSubmit="Submit">
@@ -21,35 +20,35 @@
   <MudCard>
     <MudCardContent>
       <MudTextField
-        Label="Naziv"
+        Label="@T["Name"]"
         @bind-Value="LoadingState.Value.Title"
         For="@(() => LoadingState.Value.Title)"/>
       <MudTextField
         T="decimal"
-        Label="Cijena potrošnje aktivne energije u dnevnoj tarifi (EUR/kWh)"
+        Label="@T["Price of higher tariff active energy consumption (EUR/kWh)"]"
         Value="LoadingState.Value.ActiveEnergyTotalImportT1Price_EUR * 1000"
         ValueChanged="@(e => LoadingState.Value.ActiveEnergyTotalImportT1Price_EUR = e / 1000)"
         For="@(() => LoadingState.Value.ActiveEnergyTotalImportT1Price_EUR)"/>
       <MudTextField
         T="decimal"
-        Label="Cijena potrošnje aktivne energije u noćnoj tarifi (EUR/kWh)"
+        Label="@T["Price of active energy consumption in low tariff (EUR/kWh)"]"
         Value="LoadingState.Value.ActiveEnergyTotalImportT2Price_EUR * 1000"
         ValueChanged="@(e => LoadingState.Value.ActiveEnergyTotalImportT2Price_EUR = e / 1000)"
         For="@(() => LoadingState.Value.ActiveEnergyTotalImportT2Price_EUR)"/>
       <MudTextField
         T="decimal"
-        Label="Cijena naknade za obnovljivu energiju (EUR/kWh)"
+        Label="@T["Price of personal use fee (EUR/kWh)"]"
         Value="LoadingState.Value.RenewableEnergyFeePrice_EUR * 1000"
         ValueChanged="@(e => LoadingState.Value.RenewableEnergyFeePrice_EUR = e / 1000)"
         For="@(() => LoadingState.Value.RenewableEnergyFeePrice_EUR)"/>
       <MudTextField
         T="decimal"
-        Label="Cijena naknade za poslovnu upotrebu (EUR/kWh)"
+        Label="@T["Price of business use fee (EUR/kWh)"]"
         Value="LoadingState.Value.BusinessUsageFeePrice_EUR * 1000"
         ValueChanged="@(e => LoadingState.Value.BusinessUsageFeePrice_EUR = e / 1000)"
         For="@(() => LoadingState.Value.BusinessUsageFeePrice_EUR)"/>
       <MudTextField
-        Label="Porez (Postotak)"
+        Label="@T["Tax (%)"]"
         @bind-Value="LoadingState.Value.TaxRate_Percent"
         For="@(() => LoadingState.Value.TaxRate_Percent)"/>
     </MudCardContent>
@@ -62,11 +61,11 @@
         Class="ml-auto">
         @if (_create)
         {
-          <span>Create</span>
+          <span>@T["Create"]</span>
         }
         else
         {
-          <span>Update</span>
+          <span>@T["Update"]</span>
         }
       </MudButton>
     </MudCardActions>

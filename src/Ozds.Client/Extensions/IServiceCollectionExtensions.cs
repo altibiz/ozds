@@ -37,7 +37,12 @@ public static class IServiceCollectionExtensions
     services.AddCascadingAuthenticationState();
     services.AddCascadingValue(_ => default(UserState));
     services.AddCascadingValue(_ => default(RepresentativeState));
+    services.AddSingleton<IOzdsComponentLocalizer, OzdsComponentLocalizer>();
 
     return services;
   }
+}
+
+internal class CultureService
+{
 }

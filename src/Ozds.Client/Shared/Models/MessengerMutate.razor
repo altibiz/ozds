@@ -1,4 +1,3 @@
-@inject NavigationManager NavigationManager
 @inject IDialogService DialogService
 @inherits OzdsOwningComponentBase
 
@@ -8,7 +7,7 @@
   return;
 }
 
-<MudText Class="my-2" Typo="Typo.h4">Pošiljatelj</MudText>
+<MudText Class="my-2" Typo="Typo.h4">@T["Messenger"]</MudText>
 <EditForm
   Model="@LoadingState.Value"
   OnValidSubmit="Submit">
@@ -20,11 +19,11 @@
         @bind-Value="LoadingState.Value.Id"
         For="@(() => LoadingState.Value.Id)"/>
       <MudTextField
-        Label="Ime"
+        Label="@T["Name"]"
         @bind-Value="LoadingState.Value.Title"
         For="@(() => LoadingState.Value.Title)"/>
       <MudSelect
-        Label="Lokacija"
+        Label="@T["Location"]"
         AnchorOrigin="Origin.BottomCenter"
         @bind-Value="LoadingState.Value.LocationId"
         For="@(() => LoadingState.Value.LocationId)">
@@ -45,11 +44,11 @@
         Class="ml-auto">
         @if (_create)
         {
-          <span>Create</span>
+          <span>@T["Create"]</span>
         }
         else
         {
-          <span>Update</span>
+          <span>@T["Update"]</span>
         }
       </MudButton>
     </MudCardActions>
