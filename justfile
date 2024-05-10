@@ -2,7 +2,6 @@ set windows-shell := ["nu.exe", "-c"]
 set shell := ["nu", "-c"]
 
 root := absolute_path('')
-assets := absolute_path('assets')
 sln := absolute_path('ozds.sln')
 gitignore := absolute_path('.gitignore')
 prettierignore := absolute_path('.prettierignore')
@@ -13,6 +12,10 @@ artifacts := absolute_path('artifacts')
 servercsproj := absolute_path('src/Ozds.Server/Ozds.Server.csproj')
 datacsproj := absolute_path('src/Ozds.Data/Ozds.Data.csproj')
 fakecsproj := absolute_path('scripts/Ozds.Fake/Ozds.Fake.csproj')
+fakeassets := absolute_path('scripts/Ozds.Fake/Assets')
+migrationassets := absolute_path('src/Ozds.Data/Assets')
+docsenassets := absolute_path('docs/en/assets')
+docshrassets := absolute_path('docs/hr/assets')
 schema := absolute_path('docs/structure/data/schema.md')
 
 default: prepare
@@ -26,7 +29,7 @@ prepare:
   docker compose up -d
   sleep 10sec
 
-  open --raw '{{assets}}/current-orchard.sql' | \
+  open --raw '{{migrationassets}}/current-orchard.sql' | \
     docker exec \
       --env PGHOST="localhost" \
       --env PGPORT="5432" \
@@ -42,7 +45,7 @@ prepare:
     --project '{{datacsproj}}' \
     database update
 
-  open --raw '{{assets}}/current.sql' | \
+  open --raw '{{migrationassets}}/current.sql' | \
     docker exec \
       --env PGHOST="localhost" \
       --env PGPORT="5432" \
@@ -52,6 +55,12 @@ prepare:
       --interactive \
       ozds-postgres-1 \
         psql
+
+lfs:
+  dvc add {{fakeassets}}/*.csv
+  dvc add {{migrationassets}}/*.sql
+  dvc add {{docsenassets}}/*.png
+  dvc add {{docshrassets}}/*.png
 
 dev *args:
   dotnet watch --project '{{servercsproj}}' {{args}}
@@ -98,6 +107,7 @@ lint:
     --cache --cache-strategy metadata \
     '{{root}}'
 
+  # TODO: use hunspell with dictionaries
   cspell lint . \
     --no-progress
 
@@ -130,7 +140,7 @@ dump:
         --table='"Document"' \
         --table='"Identifiers"' \
         --table='"User"*' \
-    out> '{{assets}}/current-orchard.sql'
+    out> '{{migrationassets}}/current-orchard.sql'
 
   docker exec \
     --env PGHOST="localhost" \
@@ -151,14 +161,14 @@ dump:
         --exclude-table-data='*invoices' \
         --exclude-table-data='*calculations' \
         --exclude-table-data='"__EFMigrationsHistory"' \
-    out> '{{assets}}/current.sql'
+    out> '{{migrationassets}}/current.sql'
 
 migrate name:
   docker compose down -v
   docker compose up -d
   sleep 10sec
 
-  open --raw '{{assets}}/current-orchard.sql' | \
+  open --raw '{{migrationassets}}/current-orchard.sql' | \
     docker exec \
       --env PGHOST="localhost" \
       --env PGPORT="5432" \
@@ -174,7 +184,7 @@ migrate name:
     --project '{{datacsproj}}' \
     database update
 
-  open --raw '{{assets}}/current.sql' | \
+  open --raw '{{migrationassets}}/current.sql' | \
     docker exec \
       --env PGHOST="localhost" \
       --env PGPORT="5432" \
@@ -212,11 +222,11 @@ migrate name:
         --table='"Document"' \
         --table='"Identifiers"' \
         --table='"User"*' \
-    out> '{{assets}}/{{name}}-orchard.sql'
+    out> '{{migrationassets}}/{{name}}-orchard.sql'
 
   cp -f \
-    '{{assets}}/{{name}}-orchard.sql' \
-    '{{assets}}/current-orchard.sql'
+    '{{migrationassets}}/{{name}}-orchard.sql' \
+    '{{migrationassets}}/current-orchard.sql'
 
   docker exec \
     --env PGHOST="localhost" \
@@ -237,11 +247,11 @@ migrate name:
         --exclude-table-data='*invoices' \
         --exclude-table-data='*calculations' \
         --exclude-table-data='"__EFMigrationsHistory"' \
-    out> '{{assets}}/{{name}}.sql'
+    out> '{{migrationassets}}/{{name}}.sql'
 
   cp -f \
-    '{{assets}}/{{name}}.sql' \
-    '{{assets}}/current.sql'
+    '{{migrationassets}}/{{name}}.sql' \
+    '{{migrationassets}}/current.sql'
 
   mermerd \
     --schema public \
@@ -267,7 +277,7 @@ clean:
   docker compose up -d
   sleep 10sec
 
-  open --raw '{{assets}}/current-orchard.sql' | \
+  open --raw '{{migrationassets}}/current-orchard.sql' | \
     docker exec \
       --env PGHOST="localhost" \
       --env PGPORT="5432" \
@@ -283,7 +293,7 @@ clean:
     --project '{{datacsproj}}' \
     database update
 
-  open --raw '{{assets}}/current.sql' | \
+  open --raw '{{migrationassets}}/current.sql' | \
     docker exec \
       --env PGHOST="localhost" \
       --env PGPORT="5432" \
@@ -313,7 +323,7 @@ purge:
   docker compose up -d
   sleep 10sec
 
-  open --raw '{{assets}}/current-orchard.sql' | \
+  open --raw '{{migrationassets}}/current-orchard.sql' | \
     docker exec \
       --env PGHOST="localhost" \
       --env PGPORT="5432" \
@@ -329,7 +339,7 @@ purge:
     --project '{{datacsproj}}' \
     database update
 
-  open --raw '{{assets}}/current.sql' | \
+  open --raw '{{migrationassets}}/current.sql' | \
     docker exec \
       --env PGHOST="localhost" \
       --env PGPORT="5432" \

@@ -2,4 +2,4 @@
 
 ## Documentation
 
-Documentation can be found [here](docs/index.md).
+Documentation can be found [here](docs/en/index.md).
