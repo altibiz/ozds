@@ -24,9 +24,9 @@ prepare:
   prettier --version or npm install -g prettier
 
   docker compose up -d
-  sleep 3sec
+  sleep 10sec
 
-  cat '{{assets}}/current-orchard.sql' | \
+  open --raw '{{assets}}/current-orchard.sql' | \
     docker exec \
       --env PGHOST="localhost" \
       --env PGPORT="5432" \
@@ -42,7 +42,7 @@ prepare:
     --project '{{datacsproj}}' \
     database update
 
-  cat '{{assets}}/current.sql' | \
+  open --raw '{{assets}}/current.sql' | \
     docker exec \
       --env PGHOST="localhost" \
       --env PGPORT="5432" \
@@ -156,9 +156,9 @@ dump:
 migrate name:
   docker compose down -v
   docker compose up -d
-  sleep 3sec
+  sleep 10sec
 
-  cat '{{assets}}/current-orchard.sql' | \
+  open --raw '{{assets}}/current-orchard.sql' | \
     docker exec \
       --env PGHOST="localhost" \
       --env PGPORT="5432" \
@@ -174,7 +174,7 @@ migrate name:
     --project '{{datacsproj}}' \
     database update
 
-  cat '{{assets}}/current.sql' | \
+  open --raw '{{assets}}/current.sql' | \
     docker exec \
       --env PGHOST="localhost" \
       --env PGPORT="5432" \
@@ -265,9 +265,9 @@ publish *args:
 clean:
   docker compose down -v
   docker compose up -d
-  sleep 3sec
+  sleep 10sec
 
-  cat '{{assets}}/current-orchard.sql' | \
+  open --raw '{{assets}}/current-orchard.sql' | \
     docker exec \
       --env PGHOST="localhost" \
       --env PGPORT="5432" \
@@ -283,7 +283,7 @@ clean:
     --project '{{datacsproj}}' \
     database update
 
-  cat '{{assets}}/current.sql' | \
+  open --raw '{{assets}}/current.sql' | \
     docker exec \
       --env PGHOST="localhost" \
       --env PGPORT="5432" \
@@ -311,9 +311,9 @@ purge:
 
   docker compose down -v
   docker compose up -d
-  sleep 3sec
+  sleep 10sec
 
-  cat '{{assets}}/current-orchard.sql' | \
+  open --raw '{{assets}}/current-orchard.sql' | \
     docker exec \
       --env PGHOST="localhost" \
       --env PGPORT="5432" \
@@ -329,7 +329,7 @@ purge:
     --project '{{datacsproj}}' \
     database update
 
-  cat '{{assets}}/current.sql' | \
+  open --raw '{{assets}}/current.sql' | \
     docker exec \
       --env PGHOST="localhost" \
       --env PGPORT="5432" \
