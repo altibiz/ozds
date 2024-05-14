@@ -1,5 +1,9 @@
 # Faking
 
+<div style="display: none;">
+  \page workflow-faking Faking
+</div>
+
 Faking measurements is done in two modes: pushing and seeding. In push mode,
 measurements are faked continuously and sent to the server. In seed mode,
 measurements are faked for a specified interval (e.g. last week) and sent to the

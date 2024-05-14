@@ -1,4 +1,8 @@
-# `Ozds.Client`
+# Ozds.Client
+
+<div style="display: none;">
+  \page structure-client Client
+</div>
 
 This project holds all the UI pages and reusable components needed to render the
 UI. Pages are kept in the `Pages` namespace and reusable components are kept in
@@ -7,7 +11,7 @@ complexity, contain only one route, and most UI logic is kept in the reusable
 components. Reusable components only contain UI logic and any backend logic is
 kept in the `Ozds.Business` project.
 
-## `Ozds.Client.Base`
+## Ozds.Client.Base
 
 Contains base component and layout component classes for the UI. These classes
 provide functions that make it more convenient to serialize dates, measures and
@@ -23,12 +27,12 @@ abstract class OzdsComponentBase
 }
 ```
 
-## `Ozds.Client.Pages`
+## Ozds.Client.Pages
 
 Contains pages rendered by the UI. Pages are better explained in other parts of
 the documentation.
 
-## `Ozds.Client.Shared`
+## Ozds.Client.Shared
 
 Contains reusable components. Reusable components are spread across multiple
 namespaces each for a different purpose:

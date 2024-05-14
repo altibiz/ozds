@@ -1,5 +1,9 @@
 # Login
 
+<div style="display: none;">
+  \page workflow-login Login
+</div>
+
 Login is a simple workflow that starts a user session and directs them to the
 correct page based on their role. There are two types of users the login
 workflow differentiates between: admin and regular users. Admin users (mostly

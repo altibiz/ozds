@@ -1,4 +1,8 @@
-# Admin UI documentation
+# Admin
+
+<div style="display: none;">
+  \page user-admin Admin
+</div>
 
 This section of the documentation describes features and functionalities exposed
 to the administrators of the application which are usually developers.

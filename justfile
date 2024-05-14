@@ -14,9 +14,9 @@ datacsproj := absolute_path('src/Ozds.Data/Ozds.Data.csproj')
 fakecsproj := absolute_path('scripts/Ozds.Fake/Ozds.Fake.csproj')
 fakeassets := absolute_path('scripts/Ozds.Fake/Assets')
 migrationassets := absolute_path('src/Ozds.Data/Assets')
-docsenassets := absolute_path('docs/en/assets')
-docshrassets := absolute_path('docs/hr/assets')
-schema := absolute_path('docs/structure/data/schema.md')
+docs := absolute_path('docs')
+doxyfile := absolute_path('docs/Doxyfile')
+schema := absolute_path('docs/schema.md')
 
 default: prepare
 
@@ -59,8 +59,6 @@ prepare:
 lfs:
   dvc add {{fakeassets}}/*.csv
   dvc add {{migrationassets}}/*.sql
-  dvc add {{docsenassets}}/*.png
-  dvc add {{docshrassets}}/*.png
 
 dev *args:
   dotnet watch --project '{{servercsproj}}' {{args}}
@@ -259,7 +257,34 @@ migrate name:
     --encloseWithMermaidBackticks \
     --outputFileName '{{schema}}'
 
+# NOTE: https://github.com/doxygen/doxygen/issues/6783
+docs:
+  rm -rf '{{artifacts}}'
+  mkdir '{{artifacts}}'
+
+  let result = glob '{{docs}}/**/Doxyfile' | \
+    filter { |$doxyfile| $doxyfile != '{{doxyfile}}' } | \
+    par-each { |$doxyfile| \
+      let temp = mktemp -d; \
+      open {{doxyfile}} $doxyfile | \
+        str join | \
+        save $"($temp)/Doxyfile"; \
+      let assets = $"($doxyfile | path dirname)/assets"; \
+      let lang = $"($doxyfile | path dirname | path basename)"; \
+      print $"Generating documentation for language '($lang)'..."; \
+      doxygen -q $"($temp)/Doxyfile" o+e>| ignore; \
+      mkdir $"{{artifacts}}/($lang)/docs/($lang)"; \
+      cp -r $"{{docs}}/($lang)/assets" $"{{artifacts}}/($lang)/docs/($lang)"; \
+      rm -rf $temp; \
+    };
+
+  cp '{{docs}}/index.html' {{artifacts}}
+  cp '{{docs}}/favicon.ico' {{artifacts}}
+
 publish *args:
+  rm -rf '{{artifacts}}'
+  mkdir '{{artifacts}}'
+
   dotnet publish '{{sln}}' \
     --property PublishDir='{{artifacts}}' \
     --property ConsoleLoggerParameters=ErrorsOnly \

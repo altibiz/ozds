@@ -1,5 +1,9 @@
 # Auditing
 
+<div style="display: none;">
+  \page workflow-auditing Auditing
+</div>
+
 Auditing is the process of tracking changes to auditable data such as locations
 and network users via audit events. Audit events are created by the server each
 time auditable data is created, updated, or deleted. These events are stored in

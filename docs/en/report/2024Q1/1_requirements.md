@@ -1,5 +1,9 @@
 # Requirements
 
+<div style="display: none;">
+  \page report-2024-q1-requirements Requirements
+</div>
+
 Currently only Abb B2x and Schneider iEM3xxx devices are supported. Manuals for
 these devices were analyzed to determine the interfacing strategy.
 

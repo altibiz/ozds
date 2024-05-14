@@ -186,13 +186,3 @@ node_modules/*
 .direnv
 .jb
 Localization
-
-*.png
-*.jpg
-*.jpeg
-*.gif
-*.csv
-*.doc
-*.docx
-*.pdf
-*.sql
