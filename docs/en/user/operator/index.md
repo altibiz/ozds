@@ -1,7 +1,11 @@
-# Operator role UI documentation
+# Operator
+
+<div style="display: none;">
+  \page user-operator Operator
+</div>
 
 This section of the documentation describes features and functionalities exposed
-to the Operator role.
+to the operator role.
 
 ## Representatives
 

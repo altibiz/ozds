@@ -1,5 +1,9 @@
 # Okruženje
 
+<div style="display: none;">
+  \page izvjesce-2024-q1-okruzenje Okruženje
+</div>
+
 OZDS je ASP.NET Core web aplikacija smještena na Azure App Service. Aplikacija
 se povezuje s Postgresql bazom podataka s TimescaleDB ekstenzijom. Aplikacija
 prima dolazne podatke s Raspberry Pi 4B uređaja putem HTTP POST zahtjeva.

@@ -1,5 +1,9 @@
 # IOT
 
+<div style="display: none;">
+  \page izvjesce-2024-q1-iot IOT
+</div>
+
 Uređaji Raspberry PI 4 (posrednici) sadrže Rust program koji kontinuirano čita
 mjerenja s mjerača, grupira ih svakim određenim intervalom i šalje ih na cloud
 server.

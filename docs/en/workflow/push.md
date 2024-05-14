@@ -1,5 +1,9 @@
 # Push
 
+<div style="display: none;">
+  \page workflow-push Push
+</div>
+
 Messengers push measurements from meters via the `push` API to the server.
 
 The measurement insertion process is rather simple as it only requires JSON

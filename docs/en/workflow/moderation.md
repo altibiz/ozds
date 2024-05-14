@@ -1,5 +1,9 @@
 # Moderation
 
+<div style="display: none;">
+  \page workflow-moderation Moderation
+</div>
+
 Moderation, in the context of OZDS, is the act of user management including user
 creation and modification. For now, an admin is required to create a user and
 then the user data can be modified by other users. This is because we are using

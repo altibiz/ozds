@@ -1,5 +1,9 @@
 # Push
 
+<div style="display: none;">
+  \page report-2024-q1-push Push
+</div>
+
 Measurements are pushed to the server by messenger devices via a simple REST
 API. The endpoint is on `/iot/push/{messengerId}` and accepts JSON payloads with
 the following schema:

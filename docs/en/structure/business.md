@@ -1,4 +1,8 @@
-# `Ozds.Business`
+# Ozds.Business
+
+<div style="display: none;">
+  \page structure-business Business
+</div>
 
 This project contains all of the backend logic of the server. Critical functions
 in this project is tested in the `Ozds.Business.Test` project. Logic is divided
@@ -12,7 +16,7 @@ picking the right implementation of the interface. For example, the
 `AgnosticModelEntityConverter` will pick the right implementation of
 `IModelEntityConverter` based on the type of the entity or model.
 
-## `Ozds.Business.Aggregation`
+## Ozds.Business.Aggregation
 
 This namespace contains client-side and server-side aggregation upsert logic.
 The server-side logic is used to tell the database how to upsert aggregates via
@@ -44,12 +48,12 @@ interface IAggregateUpserter
 AgnosticAggregateUpserter o-- "0..N" IAggregateUpserter
 ```
 
-## `Ozds.Business.Capabilities`
+## Ozds.Business.Capabilities
 
 This namespace is a WIP but will be used to detect which meter measures which
 measures.
 
-## `Ozds.Business.Conversion`
+## Ozds.Business.Conversion
 
 This namespace contains converters for:
 
@@ -131,7 +135,7 @@ class AgnosticMeasurementAggregateConverter
 AgnosticMeasurementAggregateConverter o-- "0..N" IMeasurementAggregateConverter
 ```
 
-## `Ozds.Business.Finance`
+## Ozds.Business.Finance
 
 This namespace contains billing logic. There are three levels of billing
 calculations needed for every invoice:
@@ -209,7 +213,7 @@ INetworkUserCalculationCalculator o-- "1" AgnosticCalculationItemCalculator
 AgnosticCalculationItemCalculator o-- "0..N" ICalculationItemCalculator
 ```
 
-## `Ozds.Business.Interceptors`
+## Ozds.Business.Interceptors
 
 This namespace contains interceptors to any request sent to the database and
 implement various business logic:
@@ -250,7 +254,7 @@ ServedSaveChangesInterceptors <|-- InvoiceIssuingInterceptor
 ServedSaveChangesInterceptors <|-- ReadonlyInterceptor
 ```
 
-## `Ozds.Business.Iot`
+## Ozds.Business.Iot
 
 Contains logic for handling IoT requests. It only handles pushing for now
 (`OzdsIotHandler`), but it will be split into a `Push` and `Poll` interface once
@@ -295,7 +299,7 @@ meant to be implemented as a REST API that the IoT devices can call. The IoT
 devices asks for updated configuration and the server responds with the updated
 configuration from the database.
 
-## `Ozds.Business.Math`
+## Ozds.Business.Math
 
 Contains logic for manipulating electrical measures. This is a critical part of
 the application that much of the application depends on and is tested
@@ -535,7 +539,7 @@ ExpenditureMeasure <|-- DualExpenditureMeasure
 ExpenditureMeasure <|-- NullExpenditureMeasure
 ```
 
-## `Ozds.Business.Models`
+## Ozds.Business.Models
 
 Contains business models that are used to represent entities in the database.
 Entities in the database are represented as entity classes in the
@@ -835,7 +839,7 @@ ICalculation <|-- CalculationModel
 
 In addition, all class hierarchies implement `IValidatableObject`.
 
-## `Ozds.Business.Mutations`
+## Ozds.Business.Mutations
 
 Contains classes that wrap database requests in functions that mutate data.
 These are separate from other requests in `Ozds.Business.Queries` because
@@ -926,7 +930,7 @@ class OzdsCalculationMutations
 }
 ```
 
-## `Ozds.Business.Queries`
+## Ozds.Business.Queries
 
 Contains classes that wrap database requests in functions that query data. These
 are separate from other requests in `Ozds.Business.Mutations` because queries
@@ -1066,7 +1070,7 @@ class OzdsCalculationQueries
 }
 ```
 
-## `Ozds.Business.Time`
+## Ozds.Business.Time
 
 Contains all logic for handling time. This is a critical part of the application
 that much of the application depends on and is tested thoroughly.

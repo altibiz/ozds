@@ -1,0 +1,5 @@
+OUTPUT_LANGUAGE = Croatian
+INPUT = src scripts test docs/hr
+USE_MDFILE_AS_MAINPAGE = docs/hr/index.md
+OUTPUT_DIRECTORY = artifacts/hr
+STRIP_FROM_PATH = docs/hr

@@ -1,4 +1,8 @@
-# OZDS Scripts
+# Scripts
+
+<div style="display: none;">
+  \page script Scripts
+</div>
 
 This is documentation for the various scripts used for development defined in
 the [justfile](justfile).

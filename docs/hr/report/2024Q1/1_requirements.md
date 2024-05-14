@@ -1,5 +1,9 @@
 # Zahtjevi
 
+<div style="display: none;">
+  \page izvjesce-2024-q1-zahtjevi Zahtjevi
+</div>
+
 Trenutno su podržani samo uređaji Abb B2x i Schneider iEM3xxx. Priručnici za te
 uređaje analizirani su kako bi se odredila strategija sučeljavanja.
 

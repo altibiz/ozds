@@ -1,6 +1,8 @@
 {
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/release-23.05";
+
     flake-utils.url = "github:numtide/flake-utils";
   };
 
@@ -31,6 +33,22 @@
             dotnet-aspnetcore
           ];
         };
+        devShells.docs = pkgs.mkShell {
+          DOXYGEN_DOT_PATH = "${pkgs.graphviz}/bin/dot";
+          DOXYGEN_PLANTUML_JAR_PATH = "${pkgs.plantuml}/lib/plantuml.jar";
+
+          packages = with pkgs; [
+            # Scripts
+            just
+            nushell
+
+            # Documentation
+            doxygen
+            graphviz
+            openjdk
+            plantuml
+          ];
+        };
         devShells.check = pkgs.mkShell {
           packages = with pkgs; [
             # Scripts
@@ -45,12 +63,14 @@
             dotnet-runtime
             dotnet-aspnetcore
 
-            # Misc
-            nodePackages.prettier
+            # Spelling
             nodePackages.cspell
             hunspell
             hunspellDicts.hr-hr
             hunspellDicts.en-us-large
+
+            # Misc
+            nodePackages.prettier
           ];
         };
         devShells.default = pkgs.mkShell {
@@ -59,6 +79,9 @@
           PGDATABASE = "ozds";
           PGUSER = "ozds";
           PGPASSWORD = "ozds";
+
+          DOXYGEN_DOT_PATH = "${pkgs.graphviz}/bin/dot";
+          DOXYGEN_PLANTUML_JAR_PATH = "${pkgs.plantuml}/lib/plantuml.jar";
 
           packages =
             let
@@ -104,14 +127,22 @@
               postgresql_14
               mermerd
 
+              # Spelling
+              nodePackages.cspell
+              hunspell
+              hunspellDicts.hr-hr
+              hunspellDicts.en-us-large
+
               # Scripts
               just
               nushell
 
               # Documentation
               doxygen
+              graphviz
               simple-http-server
               pandoc
+              openjdk
               plantuml
               # NOTE: starts compiling chromium...
               # mermaid-filter
@@ -123,10 +154,6 @@
               nodePackages.vscode-langservers-extracted
               taplo
               marksman
-              nodePackages.cspell
-              hunspell
-              hunspellDicts.hr-hr
-              hunspellDicts.en-us-large
             ];
         };
       });

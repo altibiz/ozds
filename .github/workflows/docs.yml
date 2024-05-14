@@ -1,0 +1,38 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+
+name: docs
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - uses: cachix/install-nix-action@v25
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: build
+        run: nix develop .#docs -c just docs
+
+      - name: upload
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "./artifacts"
+
+      - name: deploy
+        uses: actions/deploy-pages@v4
