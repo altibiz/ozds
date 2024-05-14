@@ -5,8 +5,7 @@ ignorePaths:
   - "*.svg"
   - "**/Migrations/**/*"
   - "*.razor" # TODO: remove once localized
-  - "./docs/**/structure/data/schema.md"
-  - "./docs/**/structure/data/schema.md"
+  - "./docs/schema.md"
   - "./src/Ozds.Server/App_Data/**/*"
   # NOTE: maybe remove these and add ignores in them?
   - "justfile"
@@ -21,6 +20,10 @@ ignorePaths:
   - "cspell.yaml"
   # TODO: add dicrionary or use aspell/hunspell
   - "./docs/hr/**/*"
+  # TODO: add dicrionary or use aspell/hunspell
+  - "./docs/index.html"
+  - "./docs/footer.html"
+  - "./docs/header.html"
 words:
   - "ozds"
   - "blazor"
@@ -68,3 +71,4 @@ words:
   - "modbus"
   - "portin"
   - "portout"
+  - "subpage"

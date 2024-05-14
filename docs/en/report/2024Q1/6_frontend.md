@@ -1,5 +1,9 @@
 # Frontend
 
+<div style="display: none;">
+  \page report-2024-q1-frontend Frontend
+</div>
+
 The OZDS frontend is a Blazor SSR (Server-Side Rendering) project based on
 OrchardCore, which is currently undergoing intensive development.
 

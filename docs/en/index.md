@@ -1,46 +1,18 @@
-# OZDS Documentation
+# Pages
+
+<div style="display: none;">
+  <div>\subpage user</div>
+  <div>\subpage script</div>
+  <div>\subpage workflow</div>
+  <div>\subpage structure</div>
+  <div>\subpage report</div>
+</div>
 
 This is documentation for the OZDS project.
 
-The documentation is split in two sections. The [index](#index) provides a
-bottom-up approach and the [FAQ](#faq) provides a top-down approach.
+## Development
 
-## Index
-
-Here is an outline of the various topics covered by the documentation giving the
-reader a bottom up perspective. Read this if you already know what piece of
-information you need.
-
-- [Scripts](docs/en/scripts.md)
-- [Project structure](docs/en/structure/index.md)
-  - [Testing](docs/en/structure/test.md)
-  - [Database schema](docs/en/structure/data/index.md)
-  - [Business layer](docs/en/structure/business.md)
-  - [Server](docs/en/structure/server.md)
-  - [Client](docs/en/structure/client.md)
-  - [Faking measurements](docs/en/structure/fake.md)
-- [Workflow](docs/en/workflow/index.md)
-  - [Auditing](docs/en/workflow/auditing.md)
-  - [Billing](docs/en/workflow/billing.md)
-  - [Deployment](docs/en/workflow/deployment.md)
-  - [Faking](docs/en/workflow/faking.md)
-  - [Login](docs/en/workflow/login.md)
-  - [Migration](docs/en/workflow/migration.md)
-  - [Moderation](docs/en/workflow/moderation.md)
-  - [Push](docs/en/workflow/push.md)
-- [User](docs/en/user/index.md)
-  - [Admin](docs/en/user/admin/index.md)
-  - [Operator](docs/en/user/operator/index.md)
-  - [Location](docs/en/user/location/index.md)
-  - [Network user](docs/en/user/network-user/index.md)
-- [Report](docs/en/report/2024Q1)
-  - [2024Q1](/docs/en/report/2024Q1/1_requirements.md)
-
-## FAQ
-
-Here is a question answering portion of the documentation giving the reader a
-top down perspective. Read this if you don't know what piece of information you
-need.
+Here are some answers to questions developers might have when developing OZDS.
 
 ### How do I prepare OZDS for development?
 

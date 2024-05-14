@@ -1,11 +1,15 @@
-# `Ozds.Server`
+# Ozds.Server
+
+<div style="display: none;">
+  \page structure-server Server
+</div>
 
 This project holds the entry point to the `Ozds.Client` project and all
 necessary API controllers. The controllers reside in the `Controller` namespace.
 Every controller action is authorized and should only wrap inputs and outputs of
 particular functions inside `Ozds.Business`.
 
-## `Ozds.Server.Controllers`
+## Ozds.Server.Controllers
 
 There are a couple of marker interfaces that are used to implement the UI and
 API:

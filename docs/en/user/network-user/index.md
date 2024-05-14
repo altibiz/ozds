@@ -1,7 +1,11 @@
-# Tenant role UI documentation
+# Network user
+
+<div style="display: none;">
+  \page user-network-user Network user
+</div>
 
 This section of the documentation describes features and functionalities exposed
-to the Tenant role.
+to the network user role.
 
 ## Dashboard
 

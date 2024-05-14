@@ -1,5 +1,9 @@
 # Environment
 
+<div style="display: none;">
+  \page report-2024-q1-environment Environment
+</div>
+
 OZDS is an ASP.NET Core web application hosted on Azure App Service. The
 application connects to a Postgresql database with TimescaleDB extension. The
 application listens for incoming data from Raspberry Pi 4B devices via HTTP POST

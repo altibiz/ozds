@@ -1,5 +1,9 @@
 # Migration
 
+<div style="display: none;">
+  \page workflow-migration Migration
+</div>
+
 Migrations are generated via `dotnet ef` but to prepare the database and test if
 migrations went well, there is a bit more to do.
 

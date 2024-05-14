@@ -1,4 +1,8 @@
-# `Ozds.Fake`
+# Ozds.Fake
+
+<div style="display: none;">
+  \page structure-fake Fake
+</div>
 
 This is a project intended only for development purposes. It is treated as a
 script that pushes measurements to a development `Ozds.Server` instance. It has
@@ -19,12 +23,12 @@ two main modes:
 The project has a similar namespace structure to `Ozds.Business` and references
 it in order to mimic the API data structure needed to push measurements.
 
-## `Ozds.Fake.Client`
+## Ozds.Fake.Client
 
 Contains the client that pushes measurements to the server. It contains a single
 class with a single method that makes HTTP requests to the server.
 
-## `Ozds.Fake.Correction`
+## Ozds.Fake.Correction
 
 Correction logic when converting CSV records to measurements. So far, only
 cumulative measure correction is needed and implemented via the
@@ -56,7 +60,7 @@ class AgnosticCumulativeCorrector
 AgnosticCumulativeCorrector o-- "0..N" ICumulativeCorrector
 ```
 
-## `Ozds.Fake.Generators`
+## Ozds.Fake.Generators
 
 Generation logic for push request measurements. Generators deserialize CSV
 records, correct cumulatives and generate push request measurements within a
@@ -102,7 +106,7 @@ abstract class RepeatingCsvResourceMeasurementGenerator<TMeasurement>
 IMeasurementGenerator <|-- RepeatingCsvResourceMeasurementGenerator
 ```
 
-## `Ozds.Fake.Loaders`
+## Ozds.Fake.Loaders
 
 Loaders for different types for embedded resources. Currently only a CSV file
 loader is needed and implemented. These loaders are then used by the
@@ -134,7 +138,7 @@ ILoader <|-- CsvLoader
 ResourceCache o-- "0..N" ILoader
 ```
 
-## `Ozds.Fake.Records`
+## Ozds.Fake.Records
 
 Contains CSV record classes that are used to deserialize the CSV files and
 correct cumulative measures. All concrete classes implement the

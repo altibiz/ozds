@@ -1,5 +1,9 @@
 # Billing
 
+<div style="display: none;">
+  \page workflow-billing Billing
+</div>
+
 Billing is the process of issuing invoices to network users and locations. Only
 network user billing is currently implemented. Currently, operators can issue
 invoices on demand for the last billing period (last month).

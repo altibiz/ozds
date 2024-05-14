@@ -1,5 +1,9 @@
 # Push
 
+<div style="display: none;">
+  \page izvjesce-2024-q1-push Push
+</div>
+
 Mjerenja se šalju na server putem posredničkih uređaja preko jednostavnog REST
 API-ja. Krajnja točka se nalazi na `/iot/push/{messengerId}` i prihvaća JSON
 poruke s sljedećom shemom:
