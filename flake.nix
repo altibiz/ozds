@@ -48,6 +48,9 @@
             # Misc
             nodePackages.prettier
             nodePackages.cspell
+            hunspell
+            hunspellDicts.hr-hr
+            hunspellDicts.en-us-large
           ];
         };
         devShells.default = pkgs.mkShell {
@@ -108,6 +111,11 @@
               # Documentation
               doxygen
               simple-http-server
+              pandoc
+              plantuml
+              # NOTE: starts compiling chromium...
+              # mermaid-filter
+              pandoc-plantuml-filter
 
               # Misc
               nodePackages.prettier
@@ -116,6 +124,9 @@
               taplo
               marksman
               nodePackages.cspell
+              hunspell
+              hunspellDicts.hr-hr
+              hunspellDicts.en-us-large
             ];
         };
       });
