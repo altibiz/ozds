@@ -5,6 +5,8 @@ namespace Ozds.Business.Models;
 
 public class NetworkUserInvoiceModel : InvoiceModel
 {
+  public string? BillId { get; set; }
+
   [Required]
   public required string NetworkUserId { get; set; }
 

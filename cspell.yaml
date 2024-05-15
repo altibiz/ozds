@@ -18,16 +18,22 @@ ignorePaths:
   - "doxygen-awesome.css"
   - "doxygen-awesome-sidebar-only.css"
   - "cspell.yaml"
+  - "./docs/schema.md"
   # TODO: add dicrionary or use aspell/hunspell
   - "./docs/wiki/hr/**/*"
-  - "./docs/wiki/schema.md"
   - "./docs/wiki/**/book.toml"
   # TODO: add dicrionary or use aspell/hunspell
-  - "src/Ozds.Client/Assets/*.json"
+  - "src/Ozds.Business/Assets/translations-*.json"
   - "./docs/index.html"
   - "./.config/dotnet-tools.json"
+  - "./scripts/*.*"
+  - "NLog.config"
+  - "pyproject.toml"
 flagWords:
   - "gage"
+  - "./rabbitmq.conf"
+  - "./definitions.json"
+  - "./deps.nix"
 words:
   - "networkusers"
   - "blazor"
@@ -103,6 +109,11 @@ words:
   - "cet"
   - "cest"
   - "randomizer"
+  - "partitioner"
+  - "appsettings"
+  - "xmin"
+  - "subproject"
+  - "kvarh"
 
   # Croatian
   - "altibiz"

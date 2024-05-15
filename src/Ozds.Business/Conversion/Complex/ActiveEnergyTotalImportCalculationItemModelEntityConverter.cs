@@ -66,9 +66,9 @@ public static class
   {
     return new UsageActiveEnergyTotalImportT0CalculationItemModel
     {
-      Min_Wh = entity.Min_Wh,
-      Max_Wh = entity.Max_Wh,
-      Amount_Wh = entity.Amount_Wh,
+      Min_kWh = entity.Min_kWh,
+      Max_kWh = entity.Max_kWh,
+      Amount_kWh = entity.Amount_kWh,
       Price_EUR = entity.Price_EUR,
       Total_EUR = entity.Total_EUR
     };
@@ -79,9 +79,9 @@ public static class
   {
     return new UsageActiveEnergyTotalImportT1CalculationItemModel
     {
-      Min_Wh = entity.Min_Wh,
-      Max_Wh = entity.Max_Wh,
-      Amount_Wh = entity.Amount_Wh,
+      Min_kWh = entity.Min_kWh,
+      Max_kWh = entity.Max_kWh,
+      Amount_kWh = entity.Amount_kWh,
       Price_EUR = entity.Price_EUR,
       Total_EUR = entity.Total_EUR
     };
@@ -92,9 +92,9 @@ public static class
   {
     return new UsageActiveEnergyTotalImportT2CalculationItemModel
     {
-      Min_Wh = entity.Min_Wh,
-      Max_Wh = entity.Max_Wh,
-      Amount_Wh = entity.Amount_Wh,
+      Min_kWh = entity.Min_kWh,
+      Max_kWh = entity.Max_kWh,
+      Amount_kWh = entity.Amount_kWh,
       Price_EUR = entity.Price_EUR,
       Total_EUR = entity.Total_EUR
     };
@@ -105,9 +105,9 @@ public static class
   {
     return new SupplyActiveEnergyTotalImportT1CalculationItemModel
     {
-      Min_Wh = entity.Min_Wh,
-      Max_Wh = entity.Max_Wh,
-      Amount_Wh = entity.Amount_Wh,
+      Min_kWh = entity.Min_kWh,
+      Max_kWh = entity.Max_kWh,
+      Amount_kWh = entity.Amount_kWh,
       Price_EUR = entity.Price_EUR,
       Total_EUR = entity.Total_EUR
     };
@@ -118,9 +118,9 @@ public static class
   {
     return new SupplyActiveEnergyTotalImportT2CalculationItemModel
     {
-      Min_Wh = entity.Min_Wh,
-      Max_Wh = entity.Max_Wh,
-      Amount_Wh = entity.Amount_Wh,
+      Min_kWh = entity.Min_kWh,
+      Max_kWh = entity.Max_kWh,
+      Amount_kWh = entity.Amount_kWh,
       Price_EUR = entity.Price_EUR,
       Total_EUR = entity.Total_EUR
     };
@@ -131,9 +131,9 @@ public static class
   {
     return new SupplyBusinessUsageCalculationItemModel
     {
-      Min_Wh = entity.Min_Wh,
-      Max_Wh = entity.Max_Wh,
-      Amount_Wh = entity.Amount_Wh,
+      Min_kWh = entity.Min_kWh,
+      Max_kWh = entity.Max_kWh,
+      Amount_kWh = entity.Amount_kWh,
       Price_EUR = entity.Price_EUR,
       Total_EUR = entity.Total_EUR
     };
@@ -144,9 +144,9 @@ public static class
   {
     return new SupplyRenewableEnergyCalculationItemModel
     {
-      Min_Wh = entity.Min_Wh,
-      Max_Wh = entity.Max_Wh,
-      Amount_Wh = entity.Amount_Wh,
+      Min_kWh = entity.Min_kWh,
+      Max_kWh = entity.Max_kWh,
+      Amount_kWh = entity.Amount_kWh,
       Price_EUR = entity.Price_EUR,
       Total_EUR = entity.Total_EUR
     };
@@ -157,9 +157,9 @@ public static class
   {
     return new UsageActiveEnergyTotalImportT0CalculationItemEntity
     {
-      Min_Wh = model.Min_Wh,
-      Max_Wh = model.Max_Wh,
-      Amount_Wh = model.Amount_Wh,
+      Min_kWh = model.Min_kWh,
+      Max_kWh = model.Max_kWh,
+      Amount_kWh = model.Amount_kWh,
       Price_EUR = model.Price_EUR,
       Total_EUR = model.Total_EUR
     };
@@ -170,9 +170,9 @@ public static class
   {
     return new UsageActiveEnergyTotalImportT1CalculationItemEntity
     {
-      Min_Wh = model.Min_Wh,
-      Max_Wh = model.Max_Wh,
-      Amount_Wh = model.Amount_Wh,
+      Min_kWh = model.Min_kWh,
+      Max_kWh = model.Max_kWh,
+      Amount_kWh = model.Amount_kWh,
       Price_EUR = model.Price_EUR,
       Total_EUR = model.Total_EUR
     };
@@ -183,9 +183,9 @@ public static class
   {
     return new UsageActiveEnergyTotalImportT2CalculationItemEntity
     {
-      Min_Wh = model.Min_Wh,
-      Max_Wh = model.Max_Wh,
-      Amount_Wh = model.Amount_Wh,
+      Min_kWh = model.Min_kWh,
+      Max_kWh = model.Max_kWh,
+      Amount_kWh = model.Amount_kWh,
       Price_EUR = model.Price_EUR,
       Total_EUR = model.Total_EUR
     };
@@ -196,9 +196,9 @@ public static class
   {
     return new SupplyActiveEnergyTotalImportT1CalculationItemEntity
     {
-      Min_Wh = model.Min_Wh,
-      Max_Wh = model.Max_Wh,
-      Amount_Wh = model.Amount_Wh,
+      Min_kWh = model.Min_kWh,
+      Max_kWh = model.Max_kWh,
+      Amount_kWh = model.Amount_kWh,
       Price_EUR = model.Price_EUR,
       Total_EUR = model.Total_EUR
     };
@@ -209,9 +209,9 @@ public static class
   {
     return new SupplyActiveEnergyTotalImportT2CalculationItemEntity
     {
-      Min_Wh = model.Min_Wh,
-      Max_Wh = model.Max_Wh,
-      Amount_Wh = model.Amount_Wh,
+      Min_kWh = model.Min_kWh,
+      Max_kWh = model.Max_kWh,
+      Amount_kWh = model.Amount_kWh,
       Price_EUR = model.Price_EUR,
       Total_EUR = model.Total_EUR
     };
@@ -222,9 +222,9 @@ public static class
   {
     return new SupplyBusinessUsageFeeCalculationItemEntity
     {
-      Min_Wh = model.Min_Wh,
-      Max_Wh = model.Max_Wh,
-      Amount_Wh = model.Amount_Wh,
+      Min_kWh = model.Min_kWh,
+      Max_kWh = model.Max_kWh,
+      Amount_kWh = model.Amount_kWh,
       Price_EUR = model.Price_EUR,
       Total_EUR = model.Total_EUR
     };
@@ -235,9 +235,9 @@ public static class
   {
     return new SupplyRenewableEnergyFeeCalculationItemEntity
     {
-      Min_Wh = model.Min_Wh,
-      Max_Wh = model.Max_Wh,
-      Amount_Wh = model.Amount_Wh,
+      Min_kWh = model.Min_kWh,
+      Max_kWh = model.Max_kWh,
+      Amount_kWh = model.Amount_kWh,
       Price_EUR = model.Price_EUR,
       Total_EUR = model.Total_EUR
     };

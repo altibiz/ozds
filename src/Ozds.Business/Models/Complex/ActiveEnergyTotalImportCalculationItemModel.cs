@@ -10,13 +10,13 @@ public abstract class
   ActiveEnergyTotalImportCalculationItemModel : CalculationItemModel
 {
   [Required]
-  public required decimal Min_Wh { get; set; }
+  public required decimal Min_kWh { get; set; }
 
   [Required]
-  public required decimal Max_Wh { get; set; }
+  public required decimal Max_kWh { get; set; }
 
   [Required]
-  public required decimal Amount_Wh { get; set; }
+  public required decimal Amount_kWh { get; set; }
 
   [Required]
   public required decimal Price_EUR { get; set; }
@@ -24,7 +24,10 @@ public abstract class
   [Required]
   public required decimal Total_EUR { get; set; }
 
-  public override decimal Total => Total_EUR;
+  public override decimal Total
+  {
+    get { return Total_EUR; }
+  }
 }
 
 public abstract class ActiveEnergyTotalImportT0CalculationItemModel
@@ -37,13 +40,13 @@ public abstract class ActiveEnergyTotalImportT0CalculationItemModel
       return new MinMaxSpanningMeasure<decimal>(
         new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(Min_Wh),
+            new SinglePhasicMeasure<decimal>(Min_kWh),
             PhasicMeasure<decimal>.Null
           )
         ),
         new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(Max_Wh),
+            new SinglePhasicMeasure<decimal>(Max_kWh),
             PhasicMeasure<decimal>.Null
           )
         )
@@ -62,14 +65,14 @@ public abstract class ActiveEnergyTotalImportT1CalculationItemModel
       return new MinMaxSpanningMeasure<decimal>(
         new BinaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(Min_Wh),
+            new SinglePhasicMeasure<decimal>(Min_kWh),
             PhasicMeasure<decimal>.Null
           ),
           DuplexMeasure<decimal>.Null
         ),
         new BinaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(Max_Wh),
+            new SinglePhasicMeasure<decimal>(Max_kWh),
             PhasicMeasure<decimal>.Null
           ),
           DuplexMeasure<decimal>.Null
@@ -90,14 +93,14 @@ public abstract class ActiveEnergyTotalImportT2CalculationItemModel
         new BinaryTariffMeasure<decimal>(
           DuplexMeasure<decimal>.Null,
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(Min_Wh),
+            new SinglePhasicMeasure<decimal>(Min_kWh),
             PhasicMeasure<decimal>.Null
           )
         ),
         new BinaryTariffMeasure<decimal>(
           DuplexMeasure<decimal>.Null,
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(Max_Wh),
+            new SinglePhasicMeasure<decimal>(Max_kWh),
             PhasicMeasure<decimal>.Null
           )
         )

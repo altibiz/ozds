@@ -12,7 +12,7 @@ using Ozds.Data;
 
 namespace Ozds.Data.Migrations
 {
-    [DbContext(typeof(OzdsDbContext))]
+    [DbContext(typeof(OzdsDataDbContext))]
     [Migration("20240423080940_Calculation4")]
     partial class Calculation4
     {

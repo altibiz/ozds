@@ -26,26 +26,22 @@
       <MudTextField
         T="decimal"
         Label="@T["Price of higher tariff active energy consumption (EUR/kWh)"]"
-        Value="LoadingState.Value.ActiveEnergyTotalImportT1Price_EUR * 1000"
-        ValueChanged="@(e => LoadingState.Value.ActiveEnergyTotalImportT1Price_EUR = e / 1000)"
+        @bind-Value="LoadingState.Value.ActiveEnergyTotalImportT1Price_EUR"
         For="@(() => LoadingState.Value.ActiveEnergyTotalImportT1Price_EUR)"/>
       <MudTextField
         T="decimal"
         Label="@T["Price of active energy consumption in low tariff (EUR/kWh)"]"
-        Value="LoadingState.Value.ActiveEnergyTotalImportT2Price_EUR * 1000"
-        ValueChanged="@(e => LoadingState.Value.ActiveEnergyTotalImportT2Price_EUR = e / 1000)"
+        @bind-Value="LoadingState.Value.ActiveEnergyTotalImportT2Price_EUR"
         For="@(() => LoadingState.Value.ActiveEnergyTotalImportT2Price_EUR)"/>
       <MudTextField
         T="decimal"
         Label="@T["Price of personal use fee (EUR/kWh)"]"
-        Value="LoadingState.Value.RenewableEnergyFeePrice_EUR * 1000"
-        ValueChanged="@(e => LoadingState.Value.RenewableEnergyFeePrice_EUR = e / 1000)"
+        @bind-Value="LoadingState.Value.RenewableEnergyFeePrice_EUR"
         For="@(() => LoadingState.Value.RenewableEnergyFeePrice_EUR)"/>
       <MudTextField
         T="decimal"
         Label="@T["Price of business use fee (EUR/kWh)"]"
-        Value="LoadingState.Value.BusinessUsageFeePrice_EUR * 1000"
-        ValueChanged="@(e => LoadingState.Value.BusinessUsageFeePrice_EUR = e / 1000)"
+        @bind-Value="LoadingState.Value.BusinessUsageFeePrice_EUR"
         For="@(() => LoadingState.Value.BusinessUsageFeePrice_EUR)"/>
       <MudTextField
         Label="@T["Tax (%)"]"

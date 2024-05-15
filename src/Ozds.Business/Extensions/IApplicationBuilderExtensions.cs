@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Ozds.Data;
+using Ozds.Messaging;
 
 namespace Ozds.Business.Extensions;
 
@@ -9,7 +10,16 @@ public static class IApplicationBuilderExtensions
     this IApplicationBuilder app)
   {
     using var scope = app.ApplicationServices.CreateScope();
-    scope.ServiceProvider.GetRequiredService<OzdsDbContext>().Database
+    scope.ServiceProvider.GetRequiredService<OzdsDataDbContext>().Database
+      .Migrate();
+    return app;
+  }
+
+  public static IApplicationBuilder MigrateOzdsMessaging(
+    this IApplicationBuilder app)
+  {
+    using var scope = app.ApplicationServices.CreateScope();
+    scope.ServiceProvider.GetRequiredService<OzdsMessagingDbContext>().Database
       .Migrate();
     return app;
   }

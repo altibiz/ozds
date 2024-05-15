@@ -25,7 +25,7 @@
                                Name="@_graphValues.Select(x => x.names[j]).FirstOrDefault()"
                                SeriesType="SeriesType.Line"
                                XValue='x => DateTimeGraph(x.date)'
-                               YValue="x => (decimal)x.values[j]"
+                               YValue="x => x.values[j]"
                                Stroke="@(ColorGraph(j))"/>
             }
 
@@ -98,7 +98,7 @@
                                Name="@_graphValues.Select(x => x.names[j]).FirstOrDefault()"
                                SeriesType="SeriesType.Line"
                                XValue='x => DateTimeGraph(x.date)'
-                               YValue="x => (decimal)x.values[j]"
+                               YValue="x => x.values[j]"
                                Stroke="@(ColorGraph(j))"/>
             }
             @if (lineCount == 0)

@@ -1,128 +1,42 @@
-using Ozds.Business.Iot;
 using Ozds.Fake;
-using Ozds.Fake.Client;
 using Ozds.Fake.Extensions;
-using Ozds.Fake.Generators.Agnostic;
+using Ozds.Fake.Services;
 
 var options = Options.Parse(args);
-
-var serviceCollection = new ServiceCollection();
-
-serviceCollection.AddLogging(
-  builder =>
-  {
-    builder.AddConsole();
-    builder.SetMinimumLevel(LogLevel.Information);
-    builder.AddFilter("Microsoft", LogLevel.Warning);
-    builder.AddFilter("System", LogLevel.Warning);
-  });
-serviceCollection.AddRecords();
-serviceCollection.AddLoaders();
-serviceCollection.AddGenerators();
-serviceCollection.AddClient(options.Timeout_s, options.BaseUrl);
-
-#pragma warning disable ASP0000
-var serviceProvider = serviceCollection.BuildServiceProvider();
-#pragma warning restore ASP0000
-
-var now = DateTimeOffset.UtcNow;
-var lastPush = now;
-
-if (options.Seed is { } seed)
+if (options is null)
 {
-  await using var scope = serviceProvider.CreateAsyncScope();
-
-  var generator = scope.ServiceProvider
-    .GetRequiredService<AgnosticMeasurementGenerator>();
-
-  var seedTimeBegin = seed switch
-  {
-    Seed.Hour => now.AddHours(-1),
-    Seed.Day => now.AddDays(-1),
-    Seed.Week => now.AddDays(-7),
-    Seed.Month => now.AddMonths(-1),
-    Seed.Season => now.AddMonths(-3),
-    Seed.Year => now.AddYears(-1),
-    _ => throw new InvalidOperationException($"Unknown seed: {seed}")
-  };
-
-  while (seedTimeBegin < now)
-  {
-    var seedTimeEnd = seedTimeBegin.AddDays(1) > now
-      ? now
-      : seedTimeBegin.AddDays(1);
-
-    var measurements = new List<MessengerPushRequestMeasurement>();
-    foreach (var meterId in options.MeterIds)
-    {
-      measurements.AddRange(
-        await generator
-          .GenerateMeasurements(seedTimeBegin, seedTimeEnd, meterId));
-    }
-
-    while (measurements.Count > 0)
-    {
-      var batch = measurements.Take(options.BatchSize).ToList();
-      measurements.RemoveRange(0, batch.Count);
-
-      var request = new MessengerPushRequest(
-        now,
-        [.. batch]
-      );
-
-      var pushClient =
-        scope.ServiceProvider.GetRequiredService<OzdsPushClient>();
-      await pushClient.Push(
-        options.MessengerId,
-        options.ApiKey,
-        request
-      );
-    }
-
-    seedTimeBegin = seedTimeEnd;
-  }
-
   return;
 }
 
-while (true)
+var builder = Host.CreateApplicationBuilder();
+
+_ = options switch
 {
-  {
-    await using var scope = serviceProvider.CreateAsyncScope();
+  PushOptions push => builder.Services
+    .AddSingleton(push)
+    .AddRecords()
+    .AddLoaders()
+    .AddGenerators()
+    .AddClient(push.Timeout_s, push.BaseUrl)
+    .AddHostedService<PushHostedService>(),
+  SeedOptions seed => builder.Services
+    .AddSingleton(seed)
+    .AddRecords()
+    .AddLoaders()
+    .AddGenerators()
+    .AddClient(seed.Timeout_s, seed.BaseUrl)
+    .AddHostedService<SeedHostedService>(),
+  AltibizOptions altibiz => builder.Services
+    .AddSingleton(altibiz)
+    .AddMessaging(
+      altibiz.Host,
+      altibiz.VirtualHost,
+      altibiz.Username,
+      altibiz.Password
+    ),
+  _ => throw new InvalidOperationException($"Unknown options: {options}")
+};
 
-    now = DateTimeOffset.UtcNow;
+var app = builder.Build();
 
-    var pushClient = scope.ServiceProvider.GetRequiredService<OzdsPushClient>();
-    var generator = scope.ServiceProvider
-      .GetRequiredService<AgnosticMeasurementGenerator>();
-
-    var measurements = new List<MessengerPushRequestMeasurement>();
-    foreach (var meterId in options.MeterIds)
-    {
-      measurements.AddRange(
-        await generator
-          .GenerateMeasurements(lastPush, now, meterId));
-    }
-
-    lastPush = now;
-
-    var request = new MessengerPushRequest(
-      now,
-      [.. measurements]
-    );
-
-    await pushClient.Push(
-      options.MessengerId,
-      options.ApiKey,
-      request
-    );
-  }
-
-  var toWait =
-    TimeSpan.FromSeconds(options.Interval_s)
-    - (DateTimeOffset.UtcNow - now);
-  if (toWait.TotalMilliseconds > 0)
-  {
-    await Task.Delay(toWait);
-  }
-}
+await app.RunAsync();

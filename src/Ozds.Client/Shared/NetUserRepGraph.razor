@@ -15,7 +15,7 @@
                            Name="@T["Consumption"]"
                            SeriesType="SeriesType.Area"
                            XValue='x => DateTimeGraph(x.date)'
-                           YValue="x => (decimal)x.value"/>
+                           YValue="x => x.value"/>
         </ApexChart>
       }
     </MudContainer>
@@ -35,7 +35,7 @@
                          Name="@T["Consumption"]"
                          SeriesType="SeriesType.Area"
                          XValue='x => DateTimeGraph(x.date)'
-                         YValue="x => (decimal)x.value"/>
+                         YValue="x => x.value"/>
       </ApexChart>
     }
   </MudHidden>

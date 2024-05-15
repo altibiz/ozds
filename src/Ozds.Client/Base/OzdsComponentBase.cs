@@ -1,6 +1,7 @@
 using System.Globalization;
 using ApexCharts;
 using Microsoft.AspNetCore.Components;
+using Ozds.Business.Localization.Abstractions;
 using Ozds.Business.Time;
 
 namespace Ozds.Client.Base;
@@ -8,7 +9,7 @@ namespace Ozds.Client.Base;
 public abstract class OzdsComponentBase : ComponentBase
 {
   [Inject]
-  public IOzdsComponentLocalizer T { get; set; } = default!;
+  public IOzdsLocalizer T { get; set; } = default!;
 
   [Inject]
   public NavigationManager NavigationManager { get; set; } = default!;

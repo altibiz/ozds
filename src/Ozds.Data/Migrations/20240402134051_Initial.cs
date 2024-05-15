@@ -8,10 +8,8 @@ namespace Ozds.Data.Migrations
   /// <inheritdoc />
   public partial class Initial : Migration
   {
-#pragma warning disable SA1311
-    private static readonly string[] columns = ["auditable_entity_table", "auditable_entity_id"];
-    private static readonly string[] columnsArray = ["auditable_entity_type", "auditable_entity_id"];
-#pragma warning restore SA1311
+    private static readonly string[] Columns = ["auditable_entity_table", "auditable_entity_id"];
+    private static readonly string[] ColumnsArray = ["auditable_entity_type", "auditable_entity_id"];
 
     /// <inheritdoc />
     protected override void Up(MigrationBuilder migrationBuilder)
@@ -771,12 +769,12 @@ namespace Ozds.Data.Migrations
       migrationBuilder.CreateIndex(
           name: "ix_events_auditable_entity_table_auditable_entity_id",
           table: "events",
-          columns: columns);
+          columns: Columns);
 
       migrationBuilder.CreateIndex(
           name: "ix_events_auditable_entity_type_auditable_entity_id",
           table: "events",
-          columns: columnsArray);
+          columns: ColumnsArray);
 
       migrationBuilder.CreateIndex(
           name: "ix_events_messenger_id",

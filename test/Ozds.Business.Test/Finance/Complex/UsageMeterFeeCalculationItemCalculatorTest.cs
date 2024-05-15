@@ -20,7 +20,8 @@ public class UsageMeterFeeCalculationItemCalculatorTest
         .RuleFor(
           x => x.Price_EUR,
           (f, _) => System.Math.Round(
-            f.Random.Decimal(Constants.MinEnergyValue, Constants.MaxEnergyValue),
+            f.Random.Decimal(
+              Constants.MinEnergyValue, Constants.MaxEnergyValue),
             3))
         .RuleFor(
           x => x.Total_EUR,

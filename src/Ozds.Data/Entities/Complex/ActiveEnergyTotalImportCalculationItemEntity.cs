@@ -5,9 +5,9 @@ namespace Ozds.Data.Entities.Complex;
 
 public abstract class ActiveEnergyTotalImportCalculationItemEntity
 {
-  public decimal Min_Wh { get; set; }
-  public decimal Max_Wh { get; set; }
-  public decimal Amount_Wh { get; set; }
+  public decimal Min_kWh { get; set; }
+  public decimal Max_kWh { get; set; }
+  public decimal Amount_kWh { get; set; }
   public decimal Price_EUR { get; set; }
   public decimal Total_EUR { get; set; }
 }
@@ -55,84 +55,79 @@ public static class ActiveEnergyImportCalculationItemEntityExtensions
     this ComplexPropertyBuilder builder
   )
   {
-    builder.ActiveEnergyImportCalculationItem("usage", "t0");
+    builder.ActiveEnergyImportCalculationItem("mjt");
   }
 
   public static void UsageActiveEnergyTotalImportT1CalculationItem(
     this ComplexPropertyBuilder builder
   )
   {
-    builder.ActiveEnergyImportCalculationItem("usage", "t1");
+    builder.ActiveEnergyImportCalculationItem("mvt");
   }
 
   public static void UsageActiveEnergyTotalImportT2CalculationItem(
     this ComplexPropertyBuilder builder
   )
   {
-    builder.ActiveEnergyImportCalculationItem("usage", "t2");
+    builder.ActiveEnergyImportCalculationItem("mnt");
   }
 
   public static void SupplyActiveEnergyTotalImportT1CalculationItem(
     this ComplexPropertyBuilder builder
   )
   {
-    builder.ActiveEnergyImportCalculationItem("supply", "t1");
+    builder.ActiveEnergyImportCalculationItem("rvt");
   }
 
   public static void SupplyActiveEnergyTotalImportT2CalculationItem(
     this ComplexPropertyBuilder builder
   )
   {
-    builder.ActiveEnergyImportCalculationItem("supply", "t2");
+    builder.ActiveEnergyImportCalculationItem("rnt");
   }
 
   public static void SupplyBusinessUsageCalculationItem(
     this ComplexPropertyBuilder builder
   )
   {
-    builder.ActiveEnergyImportCalculationItem(
-      "supply_business_usage_fee",
-      "t0");
+    builder.ActiveEnergyImportCalculationItem("trp");
   }
 
   public static void SupplyRenewableEnergyCalculationItem(
     this ComplexPropertyBuilder builder
   )
   {
-    builder.ActiveEnergyImportCalculationItem(
-      "supply_renewable_energy_fee",
-      "t0");
+    builder.ActiveEnergyImportCalculationItem("oie");
   }
 
   private static void ActiveEnergyImportCalculationItem(
     this ComplexPropertyBuilder builder,
-    string prefix,
-    string tariffColumnPart
+    string prefix
   )
   {
     builder
-      .Property(nameof(ActiveEnergyTotalImportCalculationItemEntity.Min_Wh))
+      .Property(nameof(ActiveEnergyTotalImportCalculationItemEntity.Min_kWh))
       .HasColumnName(
-        $"{prefix}_active_energy_total_import_{tariffColumnPart}_min_wh");
+        $"{prefix}_min_kwh");
 
     builder
-      .Property(nameof(ActiveEnergyTotalImportCalculationItemEntity.Max_Wh))
+      .Property(nameof(ActiveEnergyTotalImportCalculationItemEntity.Max_kWh))
       .HasColumnName(
-        $"{prefix}_active_energy_total_import_{tariffColumnPart}_max_wh");
+        $"{prefix}_max_kwh");
 
     builder
-      .Property(nameof(ActiveEnergyTotalImportCalculationItemEntity.Amount_Wh))
+      .Property(nameof(ActiveEnergyTotalImportCalculationItemEntity.Amount_kWh))
       .HasColumnName(
-        $"{prefix}_active_energy_total_import_{tariffColumnPart}_amount_wh");
+        $"{prefix}_amount_kwh");
 
     builder
       .Property(nameof(ActiveEnergyTotalImportCalculationItemEntity.Price_EUR))
       .HasColumnName(
-        $"{prefix}_active_energy_total_import_{tariffColumnPart}_price_eur");
+        $"{prefix}_price_eur");
 
     builder
       .Property(nameof(ActiveEnergyTotalImportCalculationItemEntity.Total_EUR))
       .HasColumnName(
-        $"{prefix}_active_energy_total_import_{tariffColumnPart}_total_eur");
+        $"{prefix}_total_eur");
   }
 }

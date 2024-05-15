@@ -15,29 +15,31 @@ public class SupplyActiveEnergyTotalImportT1CalculationItemCalculatorTest
     TestData = new(
       new Faker<SupplyActiveEnergyTotalImportT1CalculationItemModel>()
         .RuleFor(
-          x => x.Min_Wh,
+          x => x.Min_kWh,
           (f, _) => System.Math.Round(
-            f.Random.Decimal(Constants.MinEnergyValue, Constants.MaxEnergyValue),
+            f.Random.Decimal(
+              Constants.MinEnergyValue, Constants.MaxEnergyValue),
             2))
         .RuleFor(
-          x => x.Max_Wh,
+          x => x.Max_kWh,
           (f, m) => System.Math.Round(
-            f.Random.Decimal(m.Min_Wh, Constants.MaxEnergyValue),
+            f.Random.Decimal(m.Min_kWh, Constants.MaxEnergyValue),
             2))
         .RuleFor(
-          x => x.Amount_Wh,
+          x => x.Amount_kWh,
           (_, m) => System.Math.Round(
-            m.Max_Wh - m.Min_Wh,
+            m.Max_kWh - m.Min_kWh,
             0))
         .RuleFor(
           x => x.Price_EUR,
           (f, _) => System.Math.Round(
-            f.Random.Decimal(Constants.MinEnergyValue, Constants.MaxEnergyValue),
+            f.Random.Decimal(
+              Constants.MinEnergyValue, Constants.MaxEnergyValue),
             6))
         .RuleFor(
           x => x.Total_EUR,
           (_, m) => System.Math.Round(
-            m.Amount_Wh * m.Price_EUR,
+            m.Amount_kWh * m.Price_EUR,
             2))
         .GenerateLazy(Constants.DefaultFuzzCount)
     );
@@ -62,25 +64,26 @@ public class SupplyActiveEnergyTotalImportT1CalculationItemCalculatorTest
             end.Subtract(IntervalModel.QuarterHour.ToTimeSpan(start))))
         .RuleFor(
           x => x.ActiveEnergyTotalImportT1Max_Wh,
-          (f, _) => f.Random.Decimal(Constants.MinEnergyValue, Constants.MaxEnergyValue))
+          (f, _) => f.Random.Decimal(
+            Constants.MinEnergyValue, Constants.MaxEnergyValue))
         .Generate(Constants.DefaultFuzzCount);
     var startAggregate =
       new Faker<AbbB2xAggregateModel>()
         .RuleFor(
-            x => x.Timestamp,
-            (_, _) => start)
+          x => x.Timestamp,
+          (_, _) => start)
         .RuleFor(
           x => x.ActiveEnergyTotalImportT1Max_Wh,
-          (_, _) => expected.Min_Wh)
+          (_, _) => expected.Min_kWh * 1000M)
         .Generate();
     var endAggregate =
       new Faker<AbbB2xAggregateModel>()
         .RuleFor(
-            x => x.Timestamp,
-            (_, _) => end)
+          x => x.Timestamp,
+          (_, _) => end)
         .RuleFor(
           x => x.ActiveEnergyTotalImportT1Max_Wh,
-          (_, _) => expected.Max_Wh)
+          (_, _) => expected.Max_kWh * 1000M)
         .Generate();
 
     var aggregates = noiseAggregates

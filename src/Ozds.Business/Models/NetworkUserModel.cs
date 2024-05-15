@@ -12,6 +12,9 @@ public class NetworkUserModel : AuditableModel
   [Required]
   public required LegalPersonModel LegalPerson { get; set; } = default!;
 
+  [Required]
+  public required string AltiBizSubProjectCode { get; set; } = default!;
+
   public static NetworkUserModel New()
   {
     return new NetworkUserModel
@@ -26,7 +29,8 @@ public class NetworkUserModel : AuditableModel
       DeletedOn = default,
       DeletedById = default,
       LocationId = "",
-      LegalPerson = LegalPersonModel.New()
+      LegalPerson = LegalPersonModel.New(),
+      AltiBizSubProjectCode = ""
     };
   }
 

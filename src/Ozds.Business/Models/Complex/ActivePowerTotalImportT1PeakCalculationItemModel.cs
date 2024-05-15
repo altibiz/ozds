@@ -8,10 +8,10 @@ public abstract class
   ActivePowerTotalImportT1PeakCalculationItemModel : CalculationItemModel
 {
   [Required]
-  public required decimal Peak_W { get; set; }
+  public required decimal Peak_kW { get; set; }
 
   [Required]
-  public required decimal Amount_W { get; set; }
+  public required decimal Amount_kW { get; set; }
 
   [Required]
   public required decimal Price_EUR { get; set; }
@@ -26,7 +26,7 @@ public abstract class
       return new PeakSpanningMeasure<decimal>(
         new BinaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(Peak_W),
+            new SinglePhasicMeasure<decimal>(Peak_kW),
             PhasicMeasure<decimal>.Null
           ),
           DuplexMeasure<decimal>.Null
@@ -35,7 +35,10 @@ public abstract class
     }
   }
 
-  public override decimal Total => Total_EUR;
+  public override decimal Total
+  {
+    get { return Total_EUR; }
+  }
 }
 
 public class UsageActivePowerTotalImportT1PeakCalculationItemModel

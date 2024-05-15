@@ -43,18 +43,30 @@ public static class AbbB2xAggregateModelEntityConverterExtensions
       ReactivePowerL1NetT0Avg_VAR = (float)model.ReactivePowerL1NetT0Avg_VAR,
       ReactivePowerL2NetT0Avg_VAR = (float)model.ReactivePowerL2NetT0Avg_VAR,
       ReactivePowerL3NetT0Avg_VAR = (float)model.ReactivePowerL3NetT0Avg_VAR,
-      ActiveEnergyTotalImportT0Min_Wh = (float)model.ActiveEnergyTotalImportT0Min_Wh,
-      ActiveEnergyTotalImportT0Max_Wh = (float)model.ActiveEnergyTotalImportT0Max_Wh,
-      ActiveEnergyTotalExportT0Min_Wh = (float)model.ActiveEnergyTotalExportT0Min_Wh,
-      ActiveEnergyTotalExportT0Max_Wh = (float)model.ActiveEnergyTotalExportT0Max_Wh,
-      ReactiveEnergyTotalImportT0Min_VARh = (float)model.ReactiveEnergyTotalImportT0Min_VARh,
-      ReactiveEnergyTotalImportT0Max_VARh = (float)model.ReactiveEnergyTotalImportT0Max_VARh,
-      ReactiveEnergyTotalExportT0Min_VARh = (float)model.ReactiveEnergyTotalExportT0Min_VARh,
-      ReactiveEnergyTotalExportT0Max_VARh = (float)model.ReactiveEnergyTotalExportT0Max_VARh,
-      ActiveEnergyTotalImportT1Min_Wh = (float)model.ActiveEnergyTotalImportT1Min_Wh,
-      ActiveEnergyTotalImportT1Max_Wh = (float)model.ActiveEnergyTotalImportT1Max_Wh,
-      ActiveEnergyTotalImportT2Min_Wh = (float)model.ActiveEnergyTotalImportT2Min_Wh,
-      ActiveEnergyTotalImportT2Max_Wh = (float)model.ActiveEnergyTotalImportT2Max_Wh
+      ActiveEnergyTotalImportT0Min_Wh =
+        (float)model.ActiveEnergyTotalImportT0Min_Wh,
+      ActiveEnergyTotalImportT0Max_Wh =
+        (float)model.ActiveEnergyTotalImportT0Max_Wh,
+      ActiveEnergyTotalExportT0Min_Wh =
+        (float)model.ActiveEnergyTotalExportT0Min_Wh,
+      ActiveEnergyTotalExportT0Max_Wh =
+        (float)model.ActiveEnergyTotalExportT0Max_Wh,
+      ReactiveEnergyTotalImportT0Min_VARh =
+        (float)model.ReactiveEnergyTotalImportT0Min_VARh,
+      ReactiveEnergyTotalImportT0Max_VARh =
+        (float)model.ReactiveEnergyTotalImportT0Max_VARh,
+      ReactiveEnergyTotalExportT0Min_VARh =
+        (float)model.ReactiveEnergyTotalExportT0Min_VARh,
+      ReactiveEnergyTotalExportT0Max_VARh =
+        (float)model.ReactiveEnergyTotalExportT0Max_VARh,
+      ActiveEnergyTotalImportT1Min_Wh =
+        (float)model.ActiveEnergyTotalImportT1Min_Wh,
+      ActiveEnergyTotalImportT1Max_Wh =
+        (float)model.ActiveEnergyTotalImportT1Max_Wh,
+      ActiveEnergyTotalImportT2Min_Wh =
+        (float)model.ActiveEnergyTotalImportT2Min_Wh,
+      ActiveEnergyTotalImportT2Max_Wh =
+        (float)model.ActiveEnergyTotalImportT2Max_Wh
     };
   }
 
@@ -78,18 +90,30 @@ public static class AbbB2xAggregateModelEntityConverterExtensions
       ReactivePowerL1NetT0Avg_VAR = (decimal)entity.ReactivePowerL1NetT0Avg_VAR,
       ReactivePowerL2NetT0Avg_VAR = (decimal)entity.ReactivePowerL2NetT0Avg_VAR,
       ReactivePowerL3NetT0Avg_VAR = (decimal)entity.ReactivePowerL3NetT0Avg_VAR,
-      ActiveEnergyTotalImportT0Min_Wh = (decimal)entity.ActiveEnergyTotalImportT0Min_Wh,
-      ActiveEnergyTotalImportT0Max_Wh = (decimal)entity.ActiveEnergyTotalImportT0Max_Wh,
-      ActiveEnergyTotalExportT0Min_Wh = (decimal)entity.ActiveEnergyTotalExportT0Min_Wh,
-      ActiveEnergyTotalExportT0Max_Wh = (decimal)entity.ActiveEnergyTotalExportT0Max_Wh,
-      ReactiveEnergyTotalImportT0Min_VARh = (decimal)entity.ReactiveEnergyTotalImportT0Min_VARh,
-      ReactiveEnergyTotalImportT0Max_VARh = (decimal)entity.ReactiveEnergyTotalImportT0Max_VARh,
-      ReactiveEnergyTotalExportT0Min_VARh = (decimal)entity.ReactiveEnergyTotalExportT0Min_VARh,
-      ReactiveEnergyTotalExportT0Max_VARh = (decimal)entity.ReactiveEnergyTotalExportT0Max_VARh,
-      ActiveEnergyTotalImportT1Min_Wh = (decimal)entity.ActiveEnergyTotalImportT1Min_Wh,
-      ActiveEnergyTotalImportT1Max_Wh = (decimal)entity.ActiveEnergyTotalImportT1Max_Wh,
-      ActiveEnergyTotalImportT2Min_Wh = (decimal)entity.ActiveEnergyTotalImportT2Min_Wh,
-      ActiveEnergyTotalImportT2Max_Wh = (decimal)entity.ActiveEnergyTotalImportT2Max_Wh
+      ActiveEnergyTotalImportT0Min_Wh =
+        (decimal)entity.ActiveEnergyTotalImportT0Min_Wh,
+      ActiveEnergyTotalImportT0Max_Wh =
+        (decimal)entity.ActiveEnergyTotalImportT0Max_Wh,
+      ActiveEnergyTotalExportT0Min_Wh =
+        (decimal)entity.ActiveEnergyTotalExportT0Min_Wh,
+      ActiveEnergyTotalExportT0Max_Wh =
+        (decimal)entity.ActiveEnergyTotalExportT0Max_Wh,
+      ReactiveEnergyTotalImportT0Min_VARh =
+        (decimal)entity.ReactiveEnergyTotalImportT0Min_VARh,
+      ReactiveEnergyTotalImportT0Max_VARh =
+        (decimal)entity.ReactiveEnergyTotalImportT0Max_VARh,
+      ReactiveEnergyTotalExportT0Min_VARh =
+        (decimal)entity.ReactiveEnergyTotalExportT0Min_VARh,
+      ReactiveEnergyTotalExportT0Max_VARh =
+        (decimal)entity.ReactiveEnergyTotalExportT0Max_VARh,
+      ActiveEnergyTotalImportT1Min_Wh =
+        (decimal)entity.ActiveEnergyTotalImportT1Min_Wh,
+      ActiveEnergyTotalImportT1Max_Wh =
+        (decimal)entity.ActiveEnergyTotalImportT1Max_Wh,
+      ActiveEnergyTotalImportT2Min_Wh =
+        (decimal)entity.ActiveEnergyTotalImportT2Min_Wh,
+      ActiveEnergyTotalImportT2Max_Wh =
+        (decimal)entity.ActiveEnergyTotalImportT2Max_Wh
     };
   }
 }

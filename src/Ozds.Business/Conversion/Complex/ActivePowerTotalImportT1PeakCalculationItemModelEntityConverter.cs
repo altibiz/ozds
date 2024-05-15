@@ -43,8 +43,8 @@ public static class
   {
     return new UsageActivePowerTotalImportT1PeakCalculationItemEntity
     {
-      Peak_W = model.Peak_W,
-      Amount_W = model.Amount_W,
+      Peak_kW = model.Peak_kW,
+      Amount_kW = model.Amount_kW,
       Price_EUR = model.Price_EUR,
       Total_EUR = model.Total_EUR
     };
@@ -55,8 +55,8 @@ public static class
   {
     return new UsageActivePowerTotalImportT1PeakCalculationItemModel
     {
-      Peak_W = entity.Peak_W,
-      Amount_W = entity.Amount_W,
+      Peak_kW = entity.Peak_kW,
+      Amount_kW = entity.Amount_kW,
       Price_EUR = entity.Price_EUR,
       Total_EUR = entity.Total_EUR
     };

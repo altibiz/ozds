@@ -6,45 +6,24 @@
 
 <NetUserMutate Id="@Id"/>
 
-<MudButton OnClick="CreateInvoice">
-  Create invoice
-</MudButton>
-
+@if (Id is not null)
+{
+  <MudButton OnClick="CreateInvoice">
+    Create invoice
+  </MudButton>
+}
 
 @code {
 
   [Parameter]
-  public string? Id { get; set; } = "-1";
+  public string Id { get; set; } = "-1";
 
   private async Task CreateInvoice()
   {
-    var now = DateTimeOffset.UtcNow;
-    var (dateFrom, dateTo) = now.GetMonthRange();
-
-    var ozdsBillingQueries = ScopedServices
-      .GetRequiredService<OzdsBillingQueries>();
-    var invoiceCalculator = ScopedServices
-      .GetRequiredService<NetworkUserInvoiceCalculator>();
-    var invoiceMutations = ScopedServices
-      .GetRequiredService<OzdsInvoiceMutations>();
-    var networkUserCalculationMutations = ScopedServices
-      .GetRequiredService<OzdsCalculationMutations>();
-
-    var basis = await ozdsBillingQueries
-      .IssuingBasisForNetworkUser(Id!, dateFrom, dateTo);
-    var invoice = invoiceCalculator.Calculate(basis);
-    var invoiceId = await invoiceMutations.CreateId(invoice.Invoice);
-    foreach (var calculation in invoice.Calculations)
-    {
-      if (calculation is NetworkUserCalculationModel networkUserCalculation)
-      {
-        networkUserCalculation.NetworkUserInvoiceId = invoiceId;
-      }
-
-      networkUserCalculationMutations.Create(calculation);
-    }
-
-    await invoiceMutations.SaveChangesAsync();
+    var (dateFrom, dateTo) = DateTimeOffset.UtcNow.GetMonthRange();
+    await ScopedServices
+      .GetRequiredService<NetworkUserInvoiceIssuer>()
+      .IssueNetworkUserInvoiceAsync(Id, dateFrom, dateTo);
   }
 
 }

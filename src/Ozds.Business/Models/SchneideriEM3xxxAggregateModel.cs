@@ -170,13 +170,15 @@ public class SchneideriEM3xxxAggregateModel : AggregateModel
       return new MinMaxSpanningMeasure<decimal>(
         new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasureSum<decimal>(ActiveEnergyTotalImportT0Min_Wh),
+            new SinglePhasicMeasureSum<decimal>(
+              ActiveEnergyTotalImportT0Min_Wh),
             new SinglePhasicMeasureSum<decimal>(ActiveEnergyTotalExportT0Min_Wh)
           )
         ),
         new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasureSum<decimal>(ActiveEnergyTotalImportT0Max_Wh),
+            new SinglePhasicMeasureSum<decimal>(
+              ActiveEnergyTotalImportT0Max_Wh),
             new SinglePhasicMeasureSum<decimal>(ActiveEnergyTotalExportT0Max_Wh)
           )
         )

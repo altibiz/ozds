@@ -36,7 +36,8 @@ public static class NetworkUserModelEntityConverterExtensions
       DeletedOn = entity.DeletedOn,
       DeletedById = entity.DeletedById,
       LocationId = entity.LocationId,
-      LegalPerson = entity.LegalPerson.ToModel()
+      LegalPerson = entity.LegalPerson.ToModel(),
+      AltiBizSubProjectCode = entity.AltiBizSubProjectCode
     };
   }
 
@@ -54,7 +55,8 @@ public static class NetworkUserModelEntityConverterExtensions
       DeletedOn = model.DeletedOn,
       DeletedById = model.DeletedById,
       LocationId = model.LocationId,
-      LegalPerson = model.LegalPerson.ToEntity()
+      LegalPerson = model.LegalPerson.ToEntity(),
+      AltiBizSubProjectCode = model.AltiBizSubProjectCode
     };
   }
 }

@@ -41,7 +41,8 @@ public static class LocationModelEntityConverterExtensions
       WhiteLowNetworkUserCatalogueId = entity.WhiteLowNetworkUserCatalogueId,
       RedLowNetworkUserCatalogueId = entity.RedLowNetworkUserCatalogueId,
       RegulatoryCatalogueId = entity.RegulatoryCatalogueId,
-      LegalPerson = entity.LegalPerson.ToModel()
+      LegalPerson = entity.LegalPerson.ToModel(),
+      AltiBizSubProjectCode = entity.AltiBizSubProjectCode
     };
   }
 
@@ -64,7 +65,8 @@ public static class LocationModelEntityConverterExtensions
       WhiteLowNetworkUserCatalogueId = model.WhiteLowNetworkUserCatalogueId,
       RedLowNetworkUserCatalogueId = model.RedLowNetworkUserCatalogueId,
       RegulatoryCatalogueId = model.RegulatoryCatalogueId,
-      LegalPerson = model.LegalPerson.ToEntity()
+      LegalPerson = model.LegalPerson.ToEntity(),
+      AltiBizSubProjectCode = model.AltiBizSubProjectCode
     };
   }
 }

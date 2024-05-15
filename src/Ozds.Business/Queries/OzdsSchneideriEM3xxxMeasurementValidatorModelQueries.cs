@@ -8,9 +8,9 @@ using Ozds.Data.Entities;
 namespace Ozds.Business.Queries;
 
 public class OzdsSchneideriEM3xxxMeasurementValidatorModelQueries(
-  OzdsDbContext context) : IOzdsQueries
+  OzdsDataDbContext context) : IOzdsQueries
 {
-  private readonly OzdsDbContext context = context;
+  private readonly OzdsDataDbContext context = context;
 
   public async Task<SchneideriEM3xxxMeasurementValidatorModel?>
     SchneideriEM3xxxMeasurementValidatorById(string id)

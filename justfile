@@ -1,6 +1,9 @@
 set windows-shell := ["nu.exe", "-c"]
 set shell := ["nu", "-c"]
 
+# TODO: use hunspell with dictionaries
+# FIXME: pyright '{{root}}'
+
 root := absolute_path('')
 sln := absolute_path('ozds.sln')
 gitignore := absolute_path('.gitignore')
@@ -11,12 +14,33 @@ jbinspectlog := absolute_path('.jb/inspect.log')
 artifacts := absolute_path('artifacts')
 servercsproj := absolute_path('src/Ozds.Server/Ozds.Server.csproj')
 datacsproj := absolute_path('src/Ozds.Data/Ozds.Data.csproj')
+messagingcsproj := absolute_path('src/Ozds.Messaging/Ozds.Messaging.csproj')
 fakecsproj := absolute_path('scripts/Ozds.Fake/Ozds.Fake.csproj')
 fakeassets := absolute_path('scripts/Ozds.Fake/Assets')
-migrationassets := absolute_path('src/Ozds.Data/Assets')
+migrationassets := absolute_path('scripts/migrations')
 docs := absolute_path('docs')
 doxyfile := absolute_path('docs/Doxyfile')
 schema := absolute_path('docs/schema.md')
+
+waitservicescommand := (
+  'loop { ' +
+  '  try { ' +
+  '    (docker exec (' +
+  '      docker compose ps --format json | ' +
+  '        lines | ' +
+  '        each { $in | from json } | ' +
+  '        filter { $in.Image | str starts-with "timescale" } | ' +
+  '        first | ' +
+  '        get id) pg_isready --host localhost); ' +
+  '    break ' +
+  '  } catch { ' +
+  '    sleep 1sec; ' +
+  '    continue ' +
+  '  } ' +
+  '}'
+)
+
+now := `date now | format date '%Y%m%d%H%M%S'`
 
 default: prepare
 
@@ -24,11 +48,11 @@ prepare:
   do -i { dvc install } o+e>| ignore
   dvc pull
   dotnet tool restore
-  prettier --version or npm install -g prettier
+  (not (which prettier | is-empty)) or (npm install -g prettier) | ignore
 
-  docker compose down -v
+  docker compose --profile "*" down -v
   docker compose up -d
-  sleep 10sec
+  {{waitservicescommand}}
 
   open --raw '{{migrationassets}}/current-orchard.sql' | \
     docker exec \
@@ -44,6 +68,11 @@ prepare:
   dotnet ef \
     --startup-project '{{servercsproj}}' \
     --project '{{datacsproj}}' \
+    database update
+
+  dotnet ef \
+    --startup-project '{{servercsproj}}' \
+    --project '{{messagingcsproj}}' \
     database update
 
   open --raw '{{migrationassets}}/current.sql' | \
@@ -62,10 +91,14 @@ lfs:
   dvc add {{migrationassets}}/*.sql
 
 dev *args:
-  dotnet watch --project '{{servercsproj}}' {{args}}
+  $env.ASPNETCORE_ENVIRONMENT = "Development"; \
+    $env.DOTNET_ENVIRONMENT = "Development"; \
+    dotnet watch --project '{{servercsproj}}' {{args}}
 
 fake *args:
-  dotnet run --project '{{fakecsproj}}' -- {{args}}
+  $env.ASPNETCORE_ENVIRONMENT = "Development"; \
+    $env.DOTNET_ENVIRONMENT = "Development"; \
+    dotnet run  --project '{{fakecsproj}}' -- {{args}}
 
 format:
   nixpkgs-fmt {{root}}
@@ -76,10 +109,9 @@ format:
     --cache --cache-strategy metadata \
     '{{root}}'
 
-  dotnet build '{{sln}}'
+  yapf --recursive --in-place --parallel '{{root}}'
 
   dotnet jb cleanupcode '{{sln}}' \
-    --no-build \
     --verbosity=WARN \
     --caches-home='{{jbcache}}' \
     -o='{{jbinspectlog}}' \
@@ -92,12 +124,13 @@ lint:
     --cache --cache-strategy metadata \
     '{{root}}'
 
-  # TODO: use hunspell with dictionaries
   cspell lint '{{root}}' \
     --no-progress
 
   markdownlint '{{root}}'
   markdown-link-check --config .markdown-link-check.json --quiet ...(glob '**/*.md')
+
+  ruff check '{{root}}'
 
   dotnet build --no-incremental /warnaserror '{{sln}}'
 
@@ -110,6 +143,16 @@ lint:
     --caches-home='{{jbcache}}' \
     -o='{{jbinspectlog}}' \
     --exclude='**/.git/**/*;**/.nuget/**/*;**/obj/**/*;**/bin/**/*'
+
+  dotnet ef migrations \
+    --startup-project '{{servercsproj}}' \
+    --project '{{datacsproj}}' \
+    has-pending-model-changes
+
+  dotnet ef migrations \
+    --startup-project '{{servercsproj}}' \
+    --project '{{messagingcsproj}}' \
+    has-pending-model-changes
 
 test *args:
   dotnet test '{{sln}}' {{args}}
@@ -148,13 +191,17 @@ dump:
         --exclude-table-data='*measurements' \
         --exclude-table-data='*invoices' \
         --exclude-table-data='*calculations' \
-        --exclude-table-data='"__EFMigrationsHistory"' \
+        --exclude-table-data='*state' \
+        --exclude-table-data='outbox_state' \
+        --exclude-table-data='inbox_state' \
+        --exclude-table-data='outbox_message' \
+        --exclude-table-data='"__"*' \
     out> '{{migrationassets}}/current.sql'
 
-migrate name:
-  docker compose down -v
+migrate project name:
+  docker compose --profile "*" down -v
   docker compose up -d
-  sleep 10sec
+  {{waitservicescommand}}
 
   open --raw '{{migrationassets}}/current-orchard.sql' | \
     docker exec \
@@ -172,6 +219,11 @@ migrate name:
     --project '{{datacsproj}}' \
     database update
 
+  dotnet ef \
+    --startup-project '{{servercsproj}}' \
+    --project '{{messagingcsproj}}' \
+    database update
+
   open --raw '{{migrationassets}}/current.sql' | \
     docker exec \
       --env PGHOST="localhost" \
@@ -185,17 +237,25 @@ migrate name:
 
   dotnet ef \
     --startup-project '{{servercsproj}}' \
-    --project '{{datacsproj}}' \
+    --project '{{root}}/src/{{project}}/{{project}}.csproj' \
     migrations add \
     --output-dir Migrations \
-    --namespace Ozds.Data.Migrations \
+    --namespace {{project}}.Migrations \
     '{{name}}'
+
+  glob ('{{root}}/src/{{project}}/' + \
+    ('{{project}}.Migrations' | split row '.' | path join) + '/*') | \
+    each { |x| mv -f $x '{{root}}/src/{{project}}/Migrations' } | ignore
 
   dotnet ef \
     --startup-project '{{servercsproj}}' \
     --project '{{datacsproj}}' \
-    database update \
-    '{{name}}'
+    database update
+
+  dotnet ef \
+    --startup-project '{{servercsproj}}' \
+    --project '{{messagingcsproj}}' \
+    database update
 
   docker exec \
     --env PGHOST="localhost" \
@@ -210,10 +270,10 @@ migrate name:
         --table='"Document"' \
         --table='"Identifiers"' \
         --table='"User"*' \
-    out> '{{migrationassets}}/{{name}}-orchard.sql'
+    out> '{{migrationassets}}/{{project}}-{{name}}-{{now}}-orchard.sql'
 
   cp -f \
-    '{{migrationassets}}/{{name}}-orchard.sql' \
+    '{{migrationassets}}/{{project}}-{{name}}-{{now}}-orchard.sql' \
     '{{migrationassets}}/current-orchard.sql'
 
   docker exec \
@@ -234,11 +294,15 @@ migrate name:
         --exclude-table-data='*measurements' \
         --exclude-table-data='*invoices' \
         --exclude-table-data='*calculations' \
-        --exclude-table-data='"__EFMigrationsHistory"' \
-    out> '{{migrationassets}}/{{name}}.sql'
+        --exclude-table-data='*state' \
+        --exclude-table-data='outbox_state' \
+        --exclude-table-data='inbox_state' \
+        --exclude-table-data='outbox_message' \
+        --exclude-table-data='"__"*' \
+    out> '{{migrationassets}}/{{project}}-{{name}}-{{now}}.sql'
 
   cp -f \
-    '{{migrationassets}}/{{name}}.sql' \
+    '{{migrationassets}}/{{project}}-{{name}}-{{now}}.sql' \
     '{{migrationassets}}/current.sql'
 
   mermerd \
@@ -267,6 +331,9 @@ docs:
 
   cp '{{docs}}/index.html' {{artifacts}}
   cp '{{docs}}/favicon.ico' {{artifacts}}
+
+deps:
+  exec (nix build ".#default.fetch-deps" --print-out-paths --no-link) deps.nix
 
 report quarter language ext:
   rm -rf '{{artifacts}}'
@@ -298,9 +365,9 @@ publish *args:
 
 [confirm("This will clean docker containers. Do you want to continue?")]
 clean:
-  docker compose down -v
+  docker compose --profile "*" down -v
   docker compose up -d
-  sleep 10sec
+  {{waitservicescommand}}
 
   open --raw '{{migrationassets}}/current-orchard.sql' | \
     docker exec \
@@ -316,6 +383,11 @@ clean:
   dotnet ef \
     --startup-project '{{servercsproj}}' \
     --project '{{datacsproj}}' \
+    database update
+
+  dotnet ef \
+    --startup-project '{{servercsproj}}' \
+    --project '{{messagingcsproj}}' \
     database update
 
   open --raw '{{migrationassets}}/current.sql' | \
@@ -344,9 +416,9 @@ purge:
   dotnet tool restore
   dotnet restore
 
-  docker compose down -v
+  docker compose --profile "*" down -v
   docker compose up -d
-  sleep 10sec
+  {{waitservicescommand}}
 
   open --raw '{{migrationassets}}/current-orchard.sql' | \
     docker exec \
@@ -362,6 +434,11 @@ purge:
   dotnet ef \
     --startup-project '{{servercsproj}}' \
     --project '{{datacsproj}}' \
+    database update
+
+  dotnet ef \
+    --startup-project '{{servercsproj}}' \
+    --project '{{messagingcsproj}}' \
     database update
 
   open --raw '{{migrationassets}}/current.sql' | \

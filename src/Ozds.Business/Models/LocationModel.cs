@@ -24,6 +24,9 @@ public class LocationModel : AuditableModel
   [Required]
   public required LegalPersonModel LegalPerson { get; set; } = default!;
 
+  [Required]
+  public required string AltiBizSubProjectCode { get; set; } = default!;
+
   public static LocationModel New()
   {
     return new LocationModel
@@ -42,7 +45,8 @@ public class LocationModel : AuditableModel
       WhiteLowNetworkUserCatalogueId = default!,
       RedLowNetworkUserCatalogueId = default!,
       RegulatoryCatalogueId = default!,
-      LegalPerson = LegalPersonModel.New()
+      LegalPerson = LegalPersonModel.New(),
+      AltiBizSubProjectCode = ""
     };
   }
 

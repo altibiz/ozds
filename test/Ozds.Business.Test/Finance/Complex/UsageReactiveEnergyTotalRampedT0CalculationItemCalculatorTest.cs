@@ -15,68 +15,74 @@ public class UsageReactiveEnergyTotalRampedT0CalculationItemCalculatorTest
     TestData = new(
       new Faker<UsageReactiveEnergyTotalRampedT0CalculationItemModel>()
         .RuleFor(
-          x => x.ReactiveImportMin_VARh,
+          x => x.ReactiveImportMin_kVARh,
           (f, _) => System.Math.Round(
-            f.Random.Decimal(Constants.MinEnergyValue, Constants.MaxEnergyValue),
+            f.Random.Decimal(
+              Constants.MinEnergyValue, Constants.MaxEnergyValue),
             2))
         .RuleFor(
-          x => x.ReactiveImportMax_VARh,
+          x => x.ReactiveImportMax_kVARh,
           (f, m) => System.Math.Round(
-            f.Random.Decimal(m.ReactiveImportMin_VARh, Constants.MaxEnergyValue),
+            f.Random.Decimal(
+              m.ReactiveImportMin_kVARh, Constants.MaxEnergyValue),
             2))
         .RuleFor(
-          x => x.ReactiveImportAmount_VARh,
+          x => x.ReactiveImportAmount_kVARh,
           (_, m) => System.Math.Round(
-            m.ReactiveImportMax_VARh - m.ReactiveImportMin_VARh,
+            m.ReactiveImportMax_kVARh - m.ReactiveImportMin_kVARh,
             0))
         .RuleFor(
-          x => x.ReactiveExportMin_VARh,
+          x => x.ReactiveExportMin_kVARh,
           (f, _) => System.Math.Round(
-            f.Random.Decimal(Constants.MinEnergyValue, Constants.MaxEnergyValue),
+            f.Random.Decimal(
+              Constants.MinEnergyValue, Constants.MaxEnergyValue),
             2))
         .RuleFor(
-          x => x.ReactiveExportMax_VARh,
+          x => x.ReactiveExportMax_kVARh,
           (f, m) => System.Math.Round(
-            f.Random.Decimal(m.ReactiveExportMin_VARh, Constants.MaxEnergyValue),
+            f.Random.Decimal(
+              m.ReactiveExportMin_kVARh, Constants.MaxEnergyValue),
             2))
         .RuleFor(
-          x => x.ReactiveExportAmount_VARh,
+          x => x.ReactiveExportAmount_kVARh,
           (_, m) => System.Math.Round(
-            m.ReactiveExportMax_VARh - m.ReactiveExportMin_VARh,
+            m.ReactiveExportMax_kVARh - m.ReactiveExportMin_kVARh,
             0))
         .RuleFor(
-          x => x.ActiveImportMin_Wh,
+          x => x.ActiveImportMin_kWh,
           (f, _) => System.Math.Round(
-            f.Random.Decimal(Constants.MinEnergyValue, Constants.MaxEnergyValue),
+            f.Random.Decimal(
+              Constants.MinEnergyValue, Constants.MaxEnergyValue),
             2))
         .RuleFor(
-          x => x.ActiveImportMax_Wh,
+          x => x.ActiveImportMax_kWh,
           (f, m) => System.Math.Round(
-            f.Random.Decimal(m.ActiveImportMin_Wh, Constants.MaxEnergyValue),
+            f.Random.Decimal(m.ActiveImportMin_kWh, Constants.MaxEnergyValue),
             2))
         .RuleFor(
-          x => x.ActiveImportAmount_Wh,
+          x => x.ActiveImportAmount_kWh,
           (_, m) => System.Math.Round(
-            m.ActiveImportMax_Wh - m.ActiveImportMin_Wh,
+            m.ActiveImportMax_kWh - m.ActiveImportMin_kWh,
             0))
         .RuleFor(
-          x => x.Amount_VARh,
+          x => x.Amount_kVARh,
           (f, m) => System.Math.Round(
             System.Math.Max(
-              System.Math.Abs(m.ReactiveImportAmount_VARh)
-              + System.Math.Abs(m.ReactiveExportAmount_VARh)
-              - 0.33M * m.ActiveImportAmount_Wh,
+              System.Math.Abs(m.ReactiveImportAmount_kVARh)
+              + System.Math.Abs(m.ReactiveExportAmount_kVARh)
+              - 0.33M * m.ActiveImportAmount_kWh,
               0),
             0))
         .RuleFor(
           x => x.Price_EUR,
           (f, _) => System.Math.Round(
-            f.Random.Decimal(Constants.MinEnergyValue, Constants.MaxEnergyValue),
+            f.Random.Decimal(
+              Constants.MinEnergyValue, Constants.MaxEnergyValue),
             6))
         .RuleFor(
           x => x.Total_EUR,
           (_, m) => System.Math.Round(
-            m.Amount_VARh * m.Price_EUR,
+            m.Amount_kVARh * m.Price_EUR,
             2))
         .GenerateLazy(Constants.DefaultFuzzCount)
     );
@@ -101,43 +107,46 @@ public class UsageReactiveEnergyTotalRampedT0CalculationItemCalculatorTest
             end.Subtract(IntervalModel.QuarterHour.ToTimeSpan(start))))
         .RuleFor(
           x => x.ReactiveEnergyTotalImportT0Max_VARh,
-          (f, _) => f.Random.Decimal(Constants.MinEnergyValue, Constants.MaxEnergyValue))
+          (f, _) => f.Random.Decimal(
+            Constants.MinEnergyValue, Constants.MaxEnergyValue))
         .RuleFor(
           x => x.ReactiveEnergyTotalExportT0Max_VARh,
-          (f, _) => f.Random.Decimal(Constants.MinEnergyValue, Constants.MaxEnergyValue))
+          (f, _) => f.Random.Decimal(
+            Constants.MinEnergyValue, Constants.MaxEnergyValue))
         .RuleFor(
           x => x.ActiveEnergyTotalImportT0Max_Wh,
-          (f, _) => f.Random.Decimal(Constants.MinEnergyValue, Constants.MaxEnergyValue))
+          (f, _) => f.Random.Decimal(
+            Constants.MinEnergyValue, Constants.MaxEnergyValue))
         .Generate(Constants.DefaultFuzzCount);
     var startAggregate =
       new Faker<AbbB2xAggregateModel>()
         .RuleFor(
-            x => x.Timestamp,
-            (_, _) => start)
+          x => x.Timestamp,
+          (_, _) => start)
         .RuleFor(
           x => x.ReactiveEnergyTotalImportT0Max_VARh,
-          (_, _) => expected.ReactiveImportMin_VARh)
+          (_, _) => expected.ReactiveImportMin_kVARh * 1000M)
         .RuleFor(
           x => x.ReactiveEnergyTotalExportT0Max_VARh,
-          (_, _) => expected.ReactiveExportMin_VARh)
+          (_, _) => expected.ReactiveExportMin_kVARh * 1000M)
         .RuleFor(
           x => x.ActiveEnergyTotalImportT0Max_Wh,
-          (_, _) => expected.ActiveImportMin_Wh)
+          (_, _) => expected.ActiveImportMin_kWh * 1000M)
         .Generate();
     var endAggregate =
       new Faker<AbbB2xAggregateModel>()
         .RuleFor(
-            x => x.Timestamp,
-            (_, _) => end)
+          x => x.Timestamp,
+          (_, _) => end)
         .RuleFor(
           x => x.ReactiveEnergyTotalImportT0Max_VARh,
-          (_, _) => expected.ReactiveImportMax_VARh)
+          (_, _) => expected.ReactiveImportMax_kVARh * 1000M)
         .RuleFor(
           x => x.ReactiveEnergyTotalExportT0Max_VARh,
-          (_, _) => expected.ReactiveExportMax_VARh)
+          (_, _) => expected.ReactiveExportMax_kVARh * 1000M)
         .RuleFor(
           x => x.ActiveEnergyTotalImportT0Max_Wh,
-          (_, _) => expected.ActiveImportMax_Wh)
+          (_, _) => expected.ActiveImportMax_kWh * 1000M)
         .Generate();
 
     var aggregates = noiseAggregates

@@ -47,18 +47,30 @@ public static class AbbB2xMeasurementModelEntityConverterExtensions
       ActiveEnergyL1ExportT0_Wh = (decimal)entity.ActiveEnergyL1ExportT0_Wh,
       ActiveEnergyL2ExportT0_Wh = (decimal)entity.ActiveEnergyL2ExportT0_Wh,
       ActiveEnergyL3ExportT0_Wh = (decimal)entity.ActiveEnergyL3ExportT0_Wh,
-      ReactiveEnergyL1ImportT0_VARh = (decimal)entity.ReactiveEnergyL1ImportT0_VARh,
-      ReactiveEnergyL2ImportT0_VARh = (decimal)entity.ReactiveEnergyL2ImportT0_VARh,
-      ReactiveEnergyL3ImportT0_VARh = (decimal)entity.ReactiveEnergyL3ImportT0_VARh,
-      ReactiveEnergyL1ExportT0_VARh = (decimal)entity.ReactiveEnergyL1ExportT0_VARh,
-      ReactiveEnergyL2ExportT0_VARh = (decimal)entity.ReactiveEnergyL2ExportT0_VARh,
-      ReactiveEnergyL3ExportT0_VARh = (decimal)entity.ReactiveEnergyL3ExportT0_VARh,
-      ActiveEnergyTotalImportT0_Wh = (decimal)entity.ActiveEnergyTotalImportT0_Wh,
-      ActiveEnergyTotalExportT0_Wh = (decimal)entity.ActiveEnergyTotalExportT0_Wh,
-      ReactiveEnergyTotalImportT0_VARh = (decimal)entity.ReactiveEnergyTotalImportT0_VARh,
-      ReactiveEnergyTotalExportT0_VARh = (decimal)entity.ReactiveEnergyTotalExportT0_VARh,
-      ActiveEnergyTotalImportT1_Wh = (decimal)entity.ActiveEnergyTotalImportT1_Wh,
-      ActiveEnergyTotalImportT2_Wh = (decimal)entity.ActiveEnergyTotalImportT2_Wh
+      ReactiveEnergyL1ImportT0_VARh =
+        (decimal)entity.ReactiveEnergyL1ImportT0_VARh,
+      ReactiveEnergyL2ImportT0_VARh =
+        (decimal)entity.ReactiveEnergyL2ImportT0_VARh,
+      ReactiveEnergyL3ImportT0_VARh =
+        (decimal)entity.ReactiveEnergyL3ImportT0_VARh,
+      ReactiveEnergyL1ExportT0_VARh =
+        (decimal)entity.ReactiveEnergyL1ExportT0_VARh,
+      ReactiveEnergyL2ExportT0_VARh =
+        (decimal)entity.ReactiveEnergyL2ExportT0_VARh,
+      ReactiveEnergyL3ExportT0_VARh =
+        (decimal)entity.ReactiveEnergyL3ExportT0_VARh,
+      ActiveEnergyTotalImportT0_Wh =
+        (decimal)entity.ActiveEnergyTotalImportT0_Wh,
+      ActiveEnergyTotalExportT0_Wh =
+        (decimal)entity.ActiveEnergyTotalExportT0_Wh,
+      ReactiveEnergyTotalImportT0_VARh =
+        (decimal)entity.ReactiveEnergyTotalImportT0_VARh,
+      ReactiveEnergyTotalExportT0_VARh =
+        (decimal)entity.ReactiveEnergyTotalExportT0_VARh,
+      ActiveEnergyTotalImportT1_Wh =
+        (decimal)entity.ActiveEnergyTotalImportT1_Wh,
+      ActiveEnergyTotalImportT2_Wh =
+        (decimal)entity.ActiveEnergyTotalImportT2_Wh
     };
   }
 
@@ -87,16 +99,24 @@ public static class AbbB2xMeasurementModelEntityConverterExtensions
       ActiveEnergyL1ExportT0_Wh = (float)model.ActiveEnergyL1ExportT0_Wh,
       ActiveEnergyL2ExportT0_Wh = (float)model.ActiveEnergyL2ExportT0_Wh,
       ActiveEnergyL3ExportT0_Wh = (float)model.ActiveEnergyL3ExportT0_Wh,
-      ReactiveEnergyL1ImportT0_VARh = (float)model.ReactiveEnergyL1ImportT0_VARh,
-      ReactiveEnergyL2ImportT0_VARh = (float)model.ReactiveEnergyL2ImportT0_VARh,
-      ReactiveEnergyL3ImportT0_VARh = (float)model.ReactiveEnergyL3ImportT0_VARh,
-      ReactiveEnergyL1ExportT0_VARh = (float)model.ReactiveEnergyL1ExportT0_VARh,
-      ReactiveEnergyL2ExportT0_VARh = (float)model.ReactiveEnergyL2ExportT0_VARh,
-      ReactiveEnergyL3ExportT0_VARh = (float)model.ReactiveEnergyL3ExportT0_VARh,
+      ReactiveEnergyL1ImportT0_VARh =
+        (float)model.ReactiveEnergyL1ImportT0_VARh,
+      ReactiveEnergyL2ImportT0_VARh =
+        (float)model.ReactiveEnergyL2ImportT0_VARh,
+      ReactiveEnergyL3ImportT0_VARh =
+        (float)model.ReactiveEnergyL3ImportT0_VARh,
+      ReactiveEnergyL1ExportT0_VARh =
+        (float)model.ReactiveEnergyL1ExportT0_VARh,
+      ReactiveEnergyL2ExportT0_VARh =
+        (float)model.ReactiveEnergyL2ExportT0_VARh,
+      ReactiveEnergyL3ExportT0_VARh =
+        (float)model.ReactiveEnergyL3ExportT0_VARh,
       ActiveEnergyTotalImportT0_Wh = (float)model.ActiveEnergyTotalImportT0_Wh,
       ActiveEnergyTotalExportT0_Wh = (float)model.ActiveEnergyTotalExportT0_Wh,
-      ReactiveEnergyTotalImportT0_VARh = (float)model.ReactiveEnergyTotalImportT0_VARh,
-      ReactiveEnergyTotalExportT0_VARh = (float)model.ReactiveEnergyTotalExportT0_VARh,
+      ReactiveEnergyTotalImportT0_VARh =
+        (float)model.ReactiveEnergyTotalImportT0_VARh,
+      ReactiveEnergyTotalExportT0_VARh =
+        (float)model.ReactiveEnergyTotalExportT0_VARh,
       ActiveEnergyTotalImportT1_Wh = (float)model.ActiveEnergyTotalImportT1_Wh,
       ActiveEnergyTotalImportT2_Wh = (float)model.ActiveEnergyTotalImportT2_Wh
     };

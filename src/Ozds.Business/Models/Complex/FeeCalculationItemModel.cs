@@ -29,7 +29,10 @@ public abstract class FeeCalculationItemModel : CalculationItemModel
     }
   }
 
-  public override decimal Total => Total_EUR;
+  public override decimal Total
+  {
+    get { return Total_EUR; }
+  }
 }
 
 public class UsageMeterFeeCalculationItemModel : FeeCalculationItemModel

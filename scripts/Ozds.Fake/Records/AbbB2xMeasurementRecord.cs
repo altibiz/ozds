@@ -123,7 +123,8 @@ public class AbbB2xMeasurementRecord : MeasurementRecord
                   ReactiveEnergyL2ImportT0_VARh,
                   ReactiveEnergyL3ImportT0_VARh
                 ),
-                new SinglePhasicMeasure<decimal>(ReactiveEnergyTotalImportT0_VARh)
+                new SinglePhasicMeasure<decimal>(
+                  ReactiveEnergyTotalImportT0_VARh)
               ]),
               new CompositePhasicMeasure<decimal>(
               [
@@ -132,13 +133,15 @@ public class AbbB2xMeasurementRecord : MeasurementRecord
                   ReactiveEnergyL2ExportT0_VARh,
                   ReactiveEnergyL3ExportT0_VARh
                 ),
-                new SinglePhasicMeasure<decimal>(ReactiveEnergyTotalExportT0_VARh)
+                new SinglePhasicMeasure<decimal>(
+                  ReactiveEnergyTotalExportT0_VARh)
               ])
             )
           )
           : new UnaryTariffMeasure<decimal>(
             new ImportExportDuplexMeasure<decimal>(
-              new SinglePhasicMeasure<decimal>(ReactiveEnergyTotalImportT0_VARh),
+              new SinglePhasicMeasure<decimal>(
+                ReactiveEnergyTotalImportT0_VARh),
               new SinglePhasicMeasure<decimal>(ReactiveEnergyTotalExportT0_VARh)
             )
           );

@@ -14,9 +14,9 @@ public class SupplyActiveEnergyTotalImportT2CalculationItemCalculator :
     {
       return new SupplyActiveEnergyTotalImportT2CalculationItemModel
       {
-        Min_Wh = 0,
-        Max_Wh = 0,
-        Amount_Wh = 0,
+        Min_kWh = 0,
+        Max_kWh = 0,
+        Amount_kWh = 0,
         Price_EUR = calculationBasis.Price,
         Total_EUR = 0
       };
@@ -26,33 +26,33 @@ public class SupplyActiveEnergyTotalImportT2CalculationItemCalculator :
       .OrderBy(a => a.Timestamp)
       .ToList();
 
-    var minOriginal = aggregates
-        .First().ActiveEnergy_Wh
-        .TariffBinary().T2
-        .DuplexImport()
-        .PhaseSum();
+    var min = aggregates
+      .First().ActiveEnergy_Wh
+      .TariffBinary().T2
+      .DuplexImport()
+      .PhaseSum();
 
-    var min = System.Math.Round(minOriginal, 2);
+    var minKilo = System.Math.Round(min / 1000M, 2);
 
-    var maxOriginal = aggregates
-        .Last().ActiveEnergy_Wh
-        .TariffBinary().T2
-        .DuplexImport()
-        .PhaseSum();
+    var max = aggregates
+      .Last().ActiveEnergy_Wh
+      .TariffBinary().T2
+      .DuplexImport()
+      .PhaseSum();
 
-    var max = System.Math.Round(maxOriginal, 2);
+    var maxKilo = System.Math.Round(max / 1000M, 2);
 
-    var amount = System.Math.Round(max - min, 0);
+    var amountKilo = System.Math.Round(maxKilo - minKilo, 0);
 
     var price = System.Math.Round(calculationBasis.Price, 6);
 
-    var total = System.Math.Round(amount * price, 2);
+    var total = System.Math.Round(amountKilo * price, 2);
 
     return new SupplyActiveEnergyTotalImportT2CalculationItemModel
     {
-      Min_Wh = min,
-      Max_Wh = max,
-      Amount_Wh = amount,
+      Min_kWh = minKilo,
+      Max_kWh = maxKilo,
+      Amount_kWh = amountKilo,
       Price_EUR = price,
       Total_EUR = total
     };

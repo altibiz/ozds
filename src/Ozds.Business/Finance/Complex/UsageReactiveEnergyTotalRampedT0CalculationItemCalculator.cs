@@ -1,5 +1,4 @@
 using Ozds.Business.Finance.Base;
-using Ozds.Business.Math;
 using Ozds.Business.Models.Complex;
 using Ozds.Business.Models.Composite;
 
@@ -16,17 +15,17 @@ public class UsageReactiveEnergyTotalRampedT0CalculationItemCalculator :
     {
       return new UsageReactiveEnergyTotalRampedT0CalculationItemModel
       {
-        ReactiveImportMin_VARh = 0,
-        ReactiveImportMax_VARh = 0,
-        ReactiveImportAmount_VARh = 0,
-        ReactiveExportMin_VARh = 0,
-        ReactiveExportMax_VARh = 0,
-        ReactiveExportAmount_VARh = 0,
-        ActiveImportMin_Wh = 0,
-        ActiveImportMax_Wh = 0,
-        ActiveImportAmount_Wh = 0,
+        ReactiveImportMin_kVARh = 0,
+        ReactiveImportMax_kVARh = 0,
+        ReactiveImportAmount_kVARh = 0,
+        ReactiveExportMin_kVARh = 0,
+        ReactiveExportMax_kVARh = 0,
+        ReactiveExportAmount_kVARh = 0,
+        ActiveImportMin_kWh = 0,
+        ActiveImportMax_kWh = 0,
+        ActiveImportAmount_kWh = 0,
         Price_EUR = calculationBasis.Price,
-        Amount_VARh = 0,
+        Amount_kVARh = 0,
         Total_EUR = 0
       };
     }
@@ -35,71 +34,83 @@ public class UsageReactiveEnergyTotalRampedT0CalculationItemCalculator :
       .OrderBy(a => a.Timestamp)
       .ToList();
 
-    var reactiveImportMinOriginal = aggregates
+    var reactiveImportMin = aggregates
       .First().ReactiveEnergy_VARh
       .TariffUnary()
       .DuplexImport()
       .PhaseSum();
 
-    var reactiveImportMin = System.Math.Round(reactiveImportMinOriginal, 2);
+    var reactiveImportMinKilo = System.Math.Round(
+      reactiveImportMin / 1000M,
+      2);
 
-    var reactiveImportMaxOriginal = aggregates
+    var reactiveImportMax = aggregates
       .Last().ReactiveEnergy_VARh
       .TariffUnary()
       .DuplexImport()
       .PhaseSum();
 
-    var reactiveImportMax = System.Math.Round(reactiveImportMaxOriginal, 2);
+    var reactiveImportMaxKilo = System.Math.Round(
+      reactiveImportMax / 1000M,
+      2);
 
-    var reactiveImportAmount = System.Math.Round(
-      reactiveImportMax - reactiveImportMin,
+    var reactiveImportAmountKilo = System.Math.Round(
+      reactiveImportMaxKilo - reactiveImportMinKilo,
       0);
 
-    var reactiveExportMinOriginal = aggregates
+    var reactiveExportMin = aggregates
       .First().ReactiveEnergy_VARh
       .TariffUnary()
       .DuplexExport()
       .PhaseSum();
 
-    var reactiveExportMin = System.Math.Round(reactiveExportMinOriginal, 2);
+    var reactiveExportMinKilo = System.Math.Round(
+      reactiveExportMin / 1000M,
+      2);
 
-    var reactiveExportMaxOriginal = aggregates
+    var reactiveExportMax = aggregates
       .Last().ReactiveEnergy_VARh
       .TariffUnary()
       .DuplexExport()
       .PhaseSum();
 
-    var reactiveExportMax = System.Math.Round(reactiveExportMaxOriginal, 2);
+    var reactiveExportMaxKilo = System.Math.Round(
+      reactiveExportMax / 1000M,
+      2);
 
-    var reactiveExportAmount = System.Math.Round(
-      reactiveExportMax - reactiveExportMin,
+    var reactiveExportAmountKilo = System.Math.Round(
+      reactiveExportMaxKilo - reactiveExportMinKilo,
       0);
 
-    var activeImportMinOriginal = aggregates
+    var activeImportMin = aggregates
       .First().ActiveEnergy_Wh
       .TariffUnary()
       .DuplexImport()
       .PhaseSum();
 
-    var activeImportMin = System.Math.Round(activeImportMinOriginal, 2);
+    var activeImportMinKilo = System.Math.Round(
+      activeImportMin / 1000M,
+      2);
 
-    var activeImportMaxOriginal = aggregates
+    var activeImportMax = aggregates
       .Last().ActiveEnergy_Wh
       .TariffUnary()
       .DuplexImport()
       .PhaseSum();
 
-    var activeImportMax = System.Math.Round(activeImportMaxOriginal, 2);
+    var activeImportMaxKilo = System.Math.Round(
+      activeImportMax / 1000M,
+      2);
 
-    var activeImportAmount = System.Math.Round(
-      activeImportMax - activeImportMin,
+    var activeImportAmountKilo = System.Math.Round(
+      activeImportMaxKilo - activeImportMinKilo,
       0);
 
-    var amount = System.Math.Round(
+    var amountKilo = System.Math.Round(
       System.Math.Max(
-        System.Math.Abs(reactiveImportAmount)
-        + System.Math.Abs(reactiveExportAmount)
-        - 0.33M * activeImportAmount,
+        System.Math.Abs(reactiveImportAmountKilo)
+        + System.Math.Abs(reactiveExportAmountKilo)
+        - 0.33M * activeImportAmountKilo,
         0),
       0);
 
@@ -108,22 +119,22 @@ public class UsageReactiveEnergyTotalRampedT0CalculationItemCalculator :
       6);
 
     var total = System.Math.Round(
-      amount * price,
+      amountKilo * price,
       2);
 
     return new UsageReactiveEnergyTotalRampedT0CalculationItemModel
     {
-      ReactiveImportMin_VARh = reactiveImportMin,
-      ReactiveImportMax_VARh = reactiveImportMax,
-      ReactiveImportAmount_VARh = reactiveImportAmount,
-      ReactiveExportMin_VARh = reactiveExportMin,
-      ReactiveExportMax_VARh = reactiveExportMax,
-      ReactiveExportAmount_VARh = reactiveExportAmount,
-      ActiveImportMin_Wh = activeImportMin,
-      ActiveImportMax_Wh = activeImportMax,
-      ActiveImportAmount_Wh = activeImportAmount,
+      ReactiveImportMin_kVARh = reactiveImportMinKilo,
+      ReactiveImportMax_kVARh = reactiveImportMaxKilo,
+      ReactiveImportAmount_kVARh = reactiveImportAmountKilo,
+      ReactiveExportMin_kVARh = reactiveExportMinKilo,
+      ReactiveExportMax_kVARh = reactiveExportMaxKilo,
+      ReactiveExportAmount_kVARh = reactiveExportAmountKilo,
+      ActiveImportMin_kWh = activeImportMinKilo,
+      ActiveImportMax_kWh = activeImportMaxKilo,
+      ActiveImportAmount_kWh = activeImportAmountKilo,
       Price_EUR = price,
-      Amount_VARh = amount,
+      Amount_kVARh = amountKilo,
       Total_EUR = total
     };
   }

@@ -174,7 +174,8 @@ public class AbbB2xAggregateModel : AggregateModel
             new ImportExportDuplexMeasure<decimal>(
               new SinglePhasicMeasureSum<decimal>(
                 ActiveEnergyTotalImportT0Min_Wh),
-              new SinglePhasicMeasureSum<decimal>(ActiveEnergyTotalExportT0Min_Wh)
+              new SinglePhasicMeasureSum<decimal>(
+                ActiveEnergyTotalExportT0Min_Wh)
             )
           )
         ]),
@@ -197,7 +198,8 @@ public class AbbB2xAggregateModel : AggregateModel
             new ImportExportDuplexMeasure<decimal>(
               new SinglePhasicMeasureSum<decimal>(
                 ActiveEnergyTotalImportT0Max_Wh),
-              new SinglePhasicMeasureSum<decimal>(ActiveEnergyTotalExportT0Max_Wh)
+              new SinglePhasicMeasureSum<decimal>(
+                ActiveEnergyTotalExportT0Max_Wh)
             )
           )
         ])

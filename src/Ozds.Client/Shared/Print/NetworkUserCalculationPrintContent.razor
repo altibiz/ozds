@@ -215,7 +215,7 @@
                 @T["IND"]:
               </strong>
               <span>
-                @NumericString(reactiveItem.ReactiveImportMin_VARh / 1000M, 2)
+                @NumericString(reactiveItem.ReactiveImportMin_kVARh, 2)
               </span>
             </p>
             <p class="capacitative-label">
@@ -223,7 +223,7 @@
                 @T["KAP"]:
               </strong>
               <span>
-                @NumericString(reactiveItem.ReactiveExportMin_VARh / 1000M, 2)
+                @NumericString(reactiveItem.ReactiveExportMin_kVARh, 2)
               </span>
             </p>
           </td>
@@ -233,7 +233,7 @@
                 @T["IND"]:
               </strong>
               <span>
-                @NumericString(reactiveItem.ReactiveImportMax_VARh / 1000M, 2)
+                @NumericString(reactiveItem.ReactiveImportMax_kVARh, 2)
               </span>
             </p>
             <p class="capacitative-label">
@@ -241,16 +241,16 @@
                 @T["KAP"]:
               </strong>
               <span>
-                @NumericString(reactiveItem.ReactiveExportMax_VARh / 1000M, 2)
+                @NumericString(reactiveItem.ReactiveExportMax_kVARh, 2)
               </span>
             </p>
           </td>
           <td style="text-align: center;">O</td>
           <td style="text-align: right;">
-            @NumericString(reactiveItem.Amount_VARh / 1000M, 0)
+            @NumericString(reactiveItem.Amount_kVARh, 0)
           </td>
           <td style="text-align: right;">
-            @NumericString(reactiveItem.Price_EUR * 1000M, 6)
+            @NumericString(reactiveItem.Price_EUR, 6)
           </td>
           <td style="text-align: right;">
             @NumericString(reactiveItem.Total_EUR, 2)
@@ -262,17 +262,17 @@
               <strong>@energyItem.Kind</strong>
             </td>
             <td style="text-align: right;">
-              @NumericString(energyItem.Min_Wh / 1000M, 2)
+              @NumericString(energyItem.Min_kWh, 2)
             </td>
             <td style="text-align: right;">
-              @NumericString(energyItem.Max_Wh / 1000M, 2)
+              @NumericString(energyItem.Max_kWh, 2)
             </td>
             <td style="text-align: center;">O</td>
             <td style="text-align: right;">
-              @NumericString(energyItem.Amount_Wh / 1000M, 0)
+              @NumericString(energyItem.Amount_kWh, 0)
             </td>
             <td style="text-align: right;">
-              @NumericString(energyItem.Price_EUR * 1000M, 6)
+              @NumericString(energyItem.Price_EUR, 6)
             </td>
             <td style="text-align: right;">
               @NumericString(energyItem.Total_EUR, 2)
@@ -287,10 +287,10 @@
               <td style="text-align: right;"></td>
               <td style="text-align: center;">O</td>
               <td style="text-align: right;">
-                @NumericString(powerItem.Amount_W / 1000M, 0)
+                @NumericString(powerItem.Amount_kW, 0)
               </td>
               <td style="text-align: right;">
-                @NumericString(powerItem.Price_EUR * 1000M, 3)
+                @NumericString(powerItem.Price_EUR, 3)
               </td>
               <td style="text-align: right;">
                 @NumericString(powerItem.Total_EUR, 2)

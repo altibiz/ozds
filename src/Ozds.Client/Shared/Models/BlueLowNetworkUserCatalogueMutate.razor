@@ -26,14 +26,12 @@
       <MudTextField
         T="decimal"
         Label="@T["Price of higher tariff active energy consumption (EUR/kWh)"]"
-        Value="LoadingState.Value.ActiveEnergyTotalImportT0Price_EUR * 1000"
-        ValueChanged="@(e => LoadingState.Value.ActiveEnergyTotalImportT0Price_EUR = e / 1000)"
+        @bind-Value="LoadingState.Value.ActiveEnergyTotalImportT0Price_EUR"
         For="@(() => LoadingState.Value.ActiveEnergyTotalImportT0Price_EUR)"/>
       <MudTextField
         T="decimal"
         Label="@T["Price of reactive energy consumption in a single tariff (EUR/kVARh)"]"
-        Value="LoadingState.Value.ReactiveEnergyTotalRampedT0Price_EUR * 1000"
-        ValueChanged="@(e => LoadingState.Value.ReactiveEnergyTotalRampedT0Price_EUR = e / 1000)"
+        @bind-Value="LoadingState.Value.ReactiveEnergyTotalRampedT0Price_EUR"
         For="@(() => LoadingState.Value.ReactiveEnergyTotalRampedT0Price_EUR)"/>
       <MudTextField
         Label="@T["Price of metering fee (EUR)"]"

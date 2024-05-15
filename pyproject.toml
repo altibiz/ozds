@@ -1,0 +1,32 @@
+[tool.poetry]
+name = "ozds"
+version = "0.1.0"
+description = "OZDS"
+authors = ["Hrvoje Jurić <hrvoje@altibiz.com>"]
+license = "MIT"
+readme = "README.md"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+ozds-scripts-data = "scripts.data:main"
+
+[tool.poetry.dependencies]
+python = "~3.11"
+pandas = "^2.2.2"
+requests = "^2.32.3"
+sqlalchemy = "^2.0.31"
+psycopg2 = "^2.9.9"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.5.0"
+pyright = "^1.1.370"
+yapf = "^0.40.2"
+
+[tool.yapf]
+based_on_style = "pep8"
+column_limit = 80
+continuation_indent_width = 2
+indent_width = 2

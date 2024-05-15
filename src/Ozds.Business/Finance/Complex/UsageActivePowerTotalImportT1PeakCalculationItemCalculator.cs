@@ -15,8 +15,8 @@ public class UsageActivePowerTotalImportT1PeakCalculationItemCalculator :
     {
       return new UsageActivePowerTotalImportT1PeakCalculationItemModel
       {
-        Peak_W = 0,
-        Amount_W = 0,
+        Peak_kW = 0,
+        Amount_kW = 0,
         Price_EUR = calculationBasis.Price,
         Total_EUR = 0
       };
@@ -24,27 +24,28 @@ public class UsageActivePowerTotalImportT1PeakCalculationItemCalculator :
 
     var aggregates = calculationBasis.Aggregates;
 
-    var peakOriginal = aggregates
-      .Select(x => x.ActivePower_W
-        .TariffBinary().T1
-        .DuplexImport()
-        .PhaseSum())
+    var peak = aggregates
+      .Select(
+        x => x.ActivePower_W
+          .TariffBinary().T1
+          .DuplexImport()
+          .PhaseSum())
       .Max();
 
-    var peak = System.Math.Round(peakOriginal, 2);
+    var peakKilo = System.Math.Round(peak / 1000M, 2);
 
-    var amount = System.Math.Round(peak, 0);
+    var amountKilo = System.Math.Round(peakKilo, 0);
 
     var price = System.Math.Round(calculationBasis.Price, 3);
 
-    var total = System.Math.Round(amount * price, 2);
+    var total = System.Math.Round(amountKilo * price, 2);
 
     return new UsageActivePowerTotalImportT1PeakCalculationItemModel
     {
-      Peak_W = peak,
-      Amount_W = amount,
+      Peak_kW = peakKilo,
+      Amount_kW = amountKilo,
       Price_EUR = price,
-      Total_EUR = total,
+      Total_EUR = total
     };
   }
 }

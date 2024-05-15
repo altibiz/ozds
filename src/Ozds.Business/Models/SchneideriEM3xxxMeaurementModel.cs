@@ -166,11 +166,13 @@ public class SchneideriEM3xxxMeasurementModel : MeasurementModel<
             ),
             new BinaryTariffMeasure<decimal>(
               new ImportExportDuplexMeasure<decimal>(
-                new SinglePhasicMeasureSum<decimal>(ActiveEnergyTotalImportT1_Wh),
+                new SinglePhasicMeasureSum<decimal>(
+                  ActiveEnergyTotalImportT1_Wh),
                 PhasicMeasure<decimal>.Null
               ),
               new ImportExportDuplexMeasure<decimal>(
-                new SinglePhasicMeasureSum<decimal>(ActiveEnergyTotalImportT2_Wh),
+                new SinglePhasicMeasureSum<decimal>(
+                  ActiveEnergyTotalImportT2_Wh),
                 PhasicMeasure<decimal>.Null
               )
             )
@@ -179,17 +181,21 @@ public class SchneideriEM3xxxMeasurementModel : MeasurementModel<
           [
             new UnaryTariffMeasure<decimal>(
               new ImportExportDuplexMeasure<decimal>(
-                new SinglePhasicMeasureSum<decimal>(ActiveEnergyTotalImportT0_Wh),
-                new SinglePhasicMeasureSum<decimal>(ActiveEnergyTotalExportT0_Wh)
+                new SinglePhasicMeasureSum<decimal>(
+                  ActiveEnergyTotalImportT0_Wh),
+                new SinglePhasicMeasureSum<decimal>(
+                  ActiveEnergyTotalExportT0_Wh)
               )
             ),
             new BinaryTariffMeasure<decimal>(
               new ImportExportDuplexMeasure<decimal>(
-                new SinglePhasicMeasureSum<decimal>(ActiveEnergyTotalImportT1_Wh),
+                new SinglePhasicMeasureSum<decimal>(
+                  ActiveEnergyTotalImportT1_Wh),
                 PhasicMeasure<decimal>.Null
               ),
               new ImportExportDuplexMeasure<decimal>(
-                new SinglePhasicMeasureSum<decimal>(ActiveEnergyTotalImportT2_Wh),
+                new SinglePhasicMeasureSum<decimal>(
+                  ActiveEnergyTotalImportT2_Wh),
                 PhasicMeasure<decimal>.Null
               )
             )

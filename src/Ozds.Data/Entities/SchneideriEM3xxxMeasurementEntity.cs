@@ -94,54 +94,54 @@ public class
       .Property(
         nameof(SchneideriEM3xxxMeasurementEntity
           .ActiveEnergyL1ImportT0_Wh))
-      .HasColumnName("active_energy_import_l1_t0_wh");
+      .HasColumnName("active_energy_l1_import_t0_wh");
 
     builder
       .Property(
         nameof(SchneideriEM3xxxMeasurementEntity
           .ActiveEnergyL2ImportT0_Wh))
-      .HasColumnName("active_energy_import_l2_t0_wh");
+      .HasColumnName("active_energy_l2_import_t0_wh");
 
     builder
       .Property(
         nameof(SchneideriEM3xxxMeasurementEntity
           .ActiveEnergyL3ImportT0_Wh))
-      .HasColumnName("active_energy_import_l3_t0_wh");
+      .HasColumnName("active_energy_l3_import_t0_wh");
 
     builder
       .Property(
         nameof(SchneideriEM3xxxMeasurementEntity
           .ActiveEnergyTotalImportT0_Wh))
-      .HasColumnName("active_energy_import_total_t0_wh");
+      .HasColumnName("active_energy_total_import_t0_wh");
 
     builder
       .Property(
         nameof(SchneideriEM3xxxMeasurementEntity
           .ActiveEnergyTotalExportT0_Wh))
-      .HasColumnName("active_energy_export_total_t0_wh");
+      .HasColumnName("active_energy_total_export_t0_wh");
 
     builder
       .Property(
         nameof(SchneideriEM3xxxMeasurementEntity
           .ReactiveEnergyTotalImportT0_VARh))
-      .HasColumnName("reactive_energy_import_total_t0_varh");
+      .HasColumnName("reactive_energy_total_import_t0_varh");
 
     builder
       .Property(
         nameof(SchneideriEM3xxxMeasurementEntity
           .ReactiveEnergyTotalExportT0_VARh))
-      .HasColumnName("reactive_energy_export_total_t0_varh");
+      .HasColumnName("reactive_energy_total_export_t0_varh");
 
     builder
       .Property(
         nameof(SchneideriEM3xxxMeasurementEntity
           .ActiveEnergyTotalImportT1_Wh))
-      .HasColumnName("active_energy_import_total_t1_wh");
+      .HasColumnName("active_energy_total_import_t1_wh");
 
     builder
       .Property(
         nameof(SchneideriEM3xxxMeasurementEntity
           .ActiveEnergyTotalImportT2_Wh))
-      .HasColumnName("active_energy_import_total_t2_wh");
+      .HasColumnName("active_energy_total_import_t2_wh");
   }
 }

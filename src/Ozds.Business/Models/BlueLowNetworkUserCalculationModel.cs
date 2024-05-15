@@ -11,13 +11,11 @@ public class BlueLowNetworkUserCalculationModel
 {
   [Required]
   public required UsageActiveEnergyTotalImportT0CalculationItemModel
-    UsageActiveEnergyTotalImportT0
-  { get; set; } = default!;
+    UsageActiveEnergyTotalImportT0 { get; set; } = default!;
 
   [Required]
   public required UsageReactiveEnergyTotalRampedT0CalculationItemModel
-    UsageReactiveEnergyTotalRampedT0
-  { get; set; } = default!;
+    UsageReactiveEnergyTotalRampedT0 { get; set; } = default!;
 
   public override string Kind
   {
@@ -45,7 +43,7 @@ public class BlueLowNetworkUserCalculationModel
           new ImportExportDuplexMeasure<decimal>(
             new SinglePhasicMeasure<decimal>(
               UsageActiveEnergyTotalImportT0
-                .Min_Wh),
+                .Min_kWh),
             new NullPhasicMeasure<decimal>()
           )
         ),
@@ -53,7 +51,7 @@ public class BlueLowNetworkUserCalculationModel
           new ImportExportDuplexMeasure<decimal>(
             new SinglePhasicMeasure<decimal>(
               UsageActiveEnergyTotalImportT0
-                .Max_Wh),
+                .Max_kWh),
             new NullPhasicMeasure<decimal>()
           )
         )
@@ -101,17 +99,17 @@ public class BlueLowNetworkUserCalculationModel
         new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
             new SinglePhasicMeasure<decimal>(
-              UsageReactiveEnergyTotalRampedT0.ReactiveImportMin_VARh),
+              UsageReactiveEnergyTotalRampedT0.ReactiveImportMin_kVARh),
             new SinglePhasicMeasure<decimal>(
-              UsageReactiveEnergyTotalRampedT0.ReactiveImportMax_VARh)
+              UsageReactiveEnergyTotalRampedT0.ReactiveImportMax_kVARh)
           )
         ),
         new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
             new SinglePhasicMeasure<decimal>(
-              UsageReactiveEnergyTotalRampedT0.ReactiveImportMax_VARh),
+              UsageReactiveEnergyTotalRampedT0.ReactiveImportMax_kVARh),
             new SinglePhasicMeasure<decimal>(
-              UsageReactiveEnergyTotalRampedT0.ReactiveExportMax_VARh)
+              UsageReactiveEnergyTotalRampedT0.ReactiveExportMax_kVARh)
           )
         )
       );

@@ -15,24 +15,26 @@ public class UsageActivePowerTotalImportT1PeakCalculationItemCalculatorTest
     TestData = new(
       new Faker<UsageActivePowerTotalImportT1PeakCalculationItemModel>()
         .RuleFor(
-          x => x.Peak_W,
+          x => x.Peak_kW,
           (f, m) => System.Math.Round(
-            f.Random.Decimal(Constants.MinEnergyValue, Constants.MaxEnergyValue),
+            f.Random.Decimal(
+              Constants.MinEnergyValue, Constants.MaxEnergyValue),
             2))
         .RuleFor(
-          x => x.Amount_W,
+          x => x.Amount_kW,
           (_, m) => System.Math.Round(
-            m.Peak_W,
+            m.Peak_kW,
             0))
         .RuleFor(
           x => x.Price_EUR,
           (f, _) => System.Math.Round(
-            f.Random.Decimal(Constants.MinEnergyValue, Constants.MaxEnergyValue),
+            f.Random.Decimal(
+              Constants.MinEnergyValue, Constants.MaxEnergyValue),
             3))
         .RuleFor(
           x => x.Total_EUR,
           (_, m) => System.Math.Round(
-            m.Amount_W * m.Price_EUR,
+            m.Amount_kW * m.Price_EUR,
             2))
         .GenerateLazy(Constants.DefaultFuzzCount)
     );
@@ -57,15 +59,16 @@ public class UsageActivePowerTotalImportT1PeakCalculationItemCalculatorTest
             end.Subtract(IntervalModel.QuarterHour.ToTimeSpan(start))))
         .RuleFor(
           x => x.ActiveEnergyTotalImportT1Min_Wh,
-          (f, _) => f.Random.Decimal(Constants.MinEnergyValue, Constants.MaxEnergyValue))
+          (f, _) => f.Random.Decimal(
+            Constants.MinEnergyValue, Constants.MaxEnergyValue))
         .RuleFor(
           x => x.ActiveEnergyTotalImportT1Max_Wh,
           (f, m) => f.Random.Decimal(
             m.ActiveEnergyTotalImportT1Min_Wh,
             m.ActiveEnergyTotalImportT1Min_Wh
-              + expected.Peak_W
-              * (decimal)IntervalModel.QuarterHour.ToTimeSpan(start).TotalHours
-              - 0.01M))
+            + expected.Peak_kW * 1000M
+            * (decimal)IntervalModel.QuarterHour.ToTimeSpan(start).TotalHours
+            - 0.01M))
         .Generate(Constants.DefaultFuzzCount);
     var peakAggregate =
       new Faker<AbbB2xAggregateModel>()
@@ -79,11 +82,12 @@ public class UsageActivePowerTotalImportT1PeakCalculationItemCalculatorTest
             end.Subtract(IntervalModel.QuarterHour.ToTimeSpan(start))))
         .RuleFor(
           x => x.ActiveEnergyTotalImportT1Min_Wh,
-          (f, _) => f.Random.Decimal(Constants.MinEnergyValue, Constants.MaxEnergyValue))
+          (f, _) => f.Random.Decimal(
+            Constants.MinEnergyValue, Constants.MaxEnergyValue))
         .RuleFor(
           x => x.ActiveEnergyTotalImportT1Max_Wh,
           (_, m) => m.ActiveEnergyTotalImportT1Min_Wh
-            + expected.Peak_W
+            + expected.Peak_kW * 1000M
             * (decimal)IntervalModel.QuarterHour.ToTimeSpan(start).TotalHours)
         .Generate();
 
