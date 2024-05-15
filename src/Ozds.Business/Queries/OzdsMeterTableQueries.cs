@@ -15,10 +15,10 @@ using Ozds.Data.Entities.Enums;
 namespace Ozds.Business.Queries;
 
 public class OzdsMeterTableQueries(
-  OzdsDbContext context,
+  OzdsDataDbContext context,
   AgnosticModelEntityConverter modelEntityConverter) : IOzdsQueries
 {
-  protected readonly OzdsDbContext context = context;
+  protected readonly OzdsDataDbContext context = context;
 
   protected readonly AgnosticModelEntityConverter modelEntityConverter =
     modelEntityConverter;

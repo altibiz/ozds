@@ -19,12 +19,12 @@ using ISession = YesSql.ISession;
 namespace Ozds.Business.Queries;
 
 public class OzdsRepresentativeQueries(
-  OzdsDbContext context,
+  OzdsDataDbContext context,
   UserManager<IUser> userManager,
   ISession session
 ) : IOzdsQueries
 {
-  private readonly OzdsDbContext _context = context;
+  private readonly OzdsDataDbContext _context = context;
   private readonly ISession _session = session;
 
   private readonly UserManager<IUser> _userManager = userManager;

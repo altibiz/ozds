@@ -9,6 +9,7 @@ public interface IMeasurementGenerator
   Task<List<MessengerPushRequestMeasurement>> GenerateMeasurements(
     DateTimeOffset dateFrom,
     DateTimeOffset dateTo,
-    string meterId
+    string meterId,
+    CancellationToken cancellationToken = default
   );
 }

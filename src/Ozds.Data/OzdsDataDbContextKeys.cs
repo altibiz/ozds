@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 
 namespace Ozds.Data;
 
-public partial class OzdsDbContext
+public partial class OzdsDataDbContext
 {
   public Func<T, string> PrimaryKeyOfCompiled<T>()
   {

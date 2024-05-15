@@ -10,11 +10,11 @@ using Ozds.Data.Entities.Base;
 namespace Ozds.Business.Queries.Agnostic;
 
 public class OzdsMeasurementQueries(
-  OzdsDbContext context,
+  OzdsDataDbContext context,
   AgnosticModelEntityConverter modelEntityConverter
 ) : IOzdsQueries
 {
-  private readonly OzdsDbContext _context = context;
+  private readonly OzdsDataDbContext _context = context;
 
   private readonly AgnosticModelEntityConverter _modelEntityConverter =
     modelEntityConverter;

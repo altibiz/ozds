@@ -16,6 +16,22 @@ public class UsageReactiveEnergyTotalRampedT0CalculationItemCalculator :
       .OrderBy(a => a.Timestamp)
       .ToList();
 
+    if (aggregates.Count < 2)
+    {
+      return new UsageReactiveEnergyTotalRampedT0CalculationItemModel
+      {
+        ImportMin_VARh = 0,
+        ImportMax_VARh = 0,
+        ImportAmount_VARh = 0,
+        ExportMin_VARh = 0,
+        ExportMax_VARh = 0,
+        ExportAmount_VARh = 0,
+        Price_EUR = calculationBasis.Price,
+        Amount_VARh = 0,
+        Total_EUR = 0
+      };
+    }
+
     var reactiveAmount = new MinMaxSpanningMeasure<decimal>(
       aggregates.FirstOrDefault()!.ReactiveEnergy_VARh
         .ConvertPrimitiveTo<decimal>(),

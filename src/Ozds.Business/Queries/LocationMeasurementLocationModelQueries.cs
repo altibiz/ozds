@@ -12,10 +12,11 @@ using Ozds.Data.Entities.Base;
 
 namespace Ozds.Business.Queries;
 
-public class OzdsLocationMeasurementLocationModelQueries(OzdsDbContext context)
+public class OzdsLocationMeasurementLocationModelQueries(
+  OzdsDataDbContext context)
   : IOzdsQueries
 {
-  protected readonly OzdsDbContext context = context;
+  protected readonly OzdsDataDbContext context = context;
 
   public async Task<LocationMeasurementLocationModel?>
     LocationMeasurementLocationById(string id)

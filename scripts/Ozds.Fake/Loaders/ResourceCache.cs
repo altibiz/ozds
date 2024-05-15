@@ -17,7 +17,10 @@ public class ResourceCache(IServiceProvider serviceProvider)
     return GetAsync<TLoader, TOut>(name).Result;
   }
 
-  public async Task<TOut> GetAsync<TLoader, TOut>(string name)
+  public async Task<TOut> GetAsync<TLoader, TOut>(
+    string name,
+    CancellationToken cancellationToken = default
+  )
     where TLoader : ILoader<TOut>
     where TOut : class
   {

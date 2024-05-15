@@ -7,10 +7,10 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Queries;
 
-public class OzdsRegulatoryCatalogueModelQueries(OzdsDbContext context)
+public class OzdsRegulatoryCatalogueModelQueries(OzdsDataDbContext context)
   : IOzdsQueries
 {
-  protected readonly OzdsDbContext context = context;
+  protected readonly OzdsDataDbContext context = context;
 
   public async Task<RegulatoryCatalogueModel?>
     RegulatoryCatalogueById(string id)

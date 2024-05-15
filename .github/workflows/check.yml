@@ -19,6 +19,9 @@ jobs:
       - name: prepare
         run: nix develop .#check -c dotnet tool restore
 
+      - name: deps
+        run: nix develop .#check -c just deps
+
       - name: format
         run: nix develop .#check -c just format
 

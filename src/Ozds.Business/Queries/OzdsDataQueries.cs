@@ -7,9 +7,9 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Queries;
 
-public class OzdsDataQueries(OzdsDbContext context) : IOzdsQueries
+public class OzdsDataQueries(OzdsDataDbContext context) : IOzdsQueries
 {
-  protected readonly OzdsDbContext context = context;
+  protected readonly OzdsDataDbContext context = context;
 
   public async Task<PaginatedList<LocationModel>> GetLocations(
     string title,

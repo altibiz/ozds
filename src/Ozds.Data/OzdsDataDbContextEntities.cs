@@ -4,7 +4,7 @@ using Ozds.Data.Entities.Base;
 
 namespace Ozds.Data;
 
-public partial class OzdsDbContext : DbContext
+public partial class OzdsDataDbContext : DbContext
 {
   public DbSet<RepresentativeEntity> Representatives { get; set; } = default!;
 

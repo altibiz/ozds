@@ -10,17 +10,13 @@ public class InvoiceIssuingInterceptor(IServiceProvider serviceProvider)
   : ServedSaveChangesInterceptor(serviceProvider)
 {
   public override InterceptionResult<int> SavingChanges(
-    DbContextEventData eventData, InterceptionResult<int> result)
-  {
-    IssueInvoices(eventData);
-    return base.SavingChanges(eventData, result);
-  }
-
-  private void IssueInvoices(DbContextEventData eventData)
+    DbContextEventData eventData,
+    InterceptionResult<int> result
+  )
   {
     if (eventData.Context is null)
     {
-      return;
+      return base.SavingChanges(eventData, result);
     }
 
     var representativeId = GetRepresentativeId();
@@ -29,7 +25,6 @@ public class InvoiceIssuingInterceptor(IServiceProvider serviceProvider)
     var entries = eventData.Context.ChangeTracker
       .Entries<InvoiceEntity>()
       .ToList();
-
     foreach (var invoice in entries)
     {
       if (invoice.State is EntityState.Added)
@@ -38,6 +33,8 @@ public class InvoiceIssuingInterceptor(IServiceProvider serviceProvider)
         invoice.Entity.IssuedById = representativeId;
       }
     }
+
+    return base.SavingChanges(eventData, result);
   }
 
   private string? GetRepresentativeId()

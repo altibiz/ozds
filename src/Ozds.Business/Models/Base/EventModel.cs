@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
-using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Enums;
+using IEvent = Ozds.Business.Models.Abstractions.IEvent;
 
 namespace Ozds.Business.Models.Base;
 

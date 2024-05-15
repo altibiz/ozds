@@ -8,9 +8,9 @@ using Ozds.Data.Entities;
 namespace Ozds.Business.Queries;
 
 public class OzdsWhiteMediumNetworkUserCatalogueModelQueries(
-  OzdsDbContext context) : IOzdsQueries
+  OzdsDataDbContext context) : IOzdsQueries
 {
-  protected readonly OzdsDbContext context = context;
+  protected readonly OzdsDataDbContext context = context;
 
   public async Task<WhiteMediumNetworkUserCatalogueModel?>
     BlueLowNetworkUserCatalogueById(string id)

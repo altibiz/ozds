@@ -51,7 +51,12 @@ erDiagram
         character_varying UserId
     }
 
-    __EFMigrationsHistory {
+    __OzdsDataDbContext {
+        character_varying migration_id PK
+        character_varying product_version
+    }
+
+    __OzdsMessagingDbContext {
         character_varying migration_id PK
         character_varying product_version
     }
@@ -73,7 +78,7 @@ erDiagram
         real current_l2_any_t0_avg_a
         real current_l3_any_t0_avg_a
         integer interval PK
-        text meter_id PK
+        text meter_id PK,FK
         real reactive_energy_total_export_t0_max_varh
         real reactive_energy_total_export_t0_min_varh
         real reactive_energy_total_import_t0_max_varh
@@ -104,7 +109,7 @@ erDiagram
         real current_l1_any_t0_a
         real current_l2_any_t0_a
         real current_l3_any_t0_a
-        text meter_id PK
+        text meter_id PK,FK
         real reactive_energy_l1_export_t0_varh
         real reactive_energy_l1_import_t0_varh
         real reactive_energy_l2_export_t0_varh
@@ -137,9 +142,23 @@ erDiagram
         text title
     }
 
+    inbox_state {
+        timestamp_with_time_zone consumed
+        uuid consumer_id UK
+        timestamp_with_time_zone delivered
+        timestamp_with_time_zone expiration_time
+        bigint id PK
+        bigint last_sequence_number
+        uuid lock_id
+        uuid message_id UK
+        integer receive_count
+        timestamp_with_time_zone received
+        bytea row_version
+    }
+
     location_entity_representative_entity {
-        bigint locations_id PK
-        text representatives_string_id PK
+        bigint locations_id PK,FK
+        text representatives_string_id PK,FK
     }
 
     location_invoices {
@@ -400,8 +419,15 @@ erDiagram
     }
 
     network_user_entity_representative_entity {
-        bigint network_users_id PK
-        text representatives_string_id PK
+        bigint network_users_id PK,FK
+        text representatives_string_id PK,FK
+    }
+
+    network_user_invoice_state {
+        uuid correlation_id PK
+        text current_state
+        text network_user_invoice_id
+        text registration_id
     }
 
     network_user_invoices {
@@ -455,6 +481,7 @@ erDiagram
         text issued_by_id FK
         timestamp_with_time_zone issued_on
         bigint network_user_id FK
+        text registration_id
         numeric supply_active_energy_total_import_t1fee_eur
         numeric supply_active_energy_total_import_t2fee_eur
         numeric supply_business_usage_fee_eur
@@ -492,6 +519,39 @@ erDiagram
         text legal_person_social_security_number
         bigint location_id FK
         text title
+    }
+
+    outbox_message {
+        text body
+        character_varying content_type
+        uuid conversation_id
+        uuid correlation_id
+        character_varying destination_address
+        timestamp_with_time_zone enqueue_time
+        timestamp_with_time_zone expiration_time
+        character_varying fault_address
+        text headers
+        uuid inbox_consumer_id
+        uuid inbox_message_id
+        uuid initiator_id
+        uuid message_id
+        text message_type
+        uuid outbox_id
+        text properties
+        uuid request_id
+        character_varying response_address
+        timestamp_with_time_zone sent_time
+        bigint sequence_number PK
+        character_varying source_address
+    }
+
+    outbox_state {
+        timestamp_with_time_zone created
+        timestamp_with_time_zone delivered
+        bigint last_sequence_number
+        uuid lock_id
+        uuid outbox_id PK
+        bytea row_version
     }
 
     regulatory_catalogues {
@@ -545,7 +605,7 @@ erDiagram
         real current_l2_any_t0_avg_a
         real current_l3_any_t0_avg_a
         integer interval PK
-        text meter_id PK
+        text meter_id PK,FK
         real reactive_energy_total_export_t0_max_varh
         real reactive_energy_total_export_t0_min_varh
         real reactive_energy_total_import_t0_max_varh
@@ -572,7 +632,7 @@ erDiagram
         real current_l1_any_t0_a
         real current_l2_any_t0_a
         real current_l3_any_t0_a
-        text meter_id PK
+        text meter_id PK,FK
         real reactive_energy_export_total_t0_varh
         real reactive_energy_import_total_t0_varh
         real reactive_power_total_net_t0_var

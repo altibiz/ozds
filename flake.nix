@@ -92,6 +92,11 @@ rec {
           PGUSER = "ozds";
           PGPASSWORD = "ozds";
 
+          DOXYGEN_DOT_PATH = "${pkgs.graphviz}/bin/dot";
+          DOXYGEN_PLANTUML_JAR_PATH = "${pkgs.plantuml}/lib/plantuml.jar";
+
+          COMPOSE_PROFILES = "*";
+
           packages =
             let
               usql = pkgs.writeShellApplication {

@@ -17,6 +17,18 @@ public class UsageActiveEnergyTotalImportT1CalculationItemCalculator :
       .OrderBy(a => a.Timestamp)
       .ToList();
 
+    if (aggregates.Count < 2)
+    {
+      return new UsageActiveEnergyTotalImportT1CalculationItemModel
+      {
+        Min_Wh = 0,
+        Max_Wh = 0,
+        Amount_Wh = 0,
+        Price_EUR = calculationBasis.Price,
+        Total_EUR = 0
+      };
+    }
+
     var amount = new MinMaxSpanningMeasure<decimal>(
       aggregates.FirstOrDefault()!.ActiveEnergy_Wh
         .ConvertPrimitiveTo<decimal>(),

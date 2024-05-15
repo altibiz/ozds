@@ -27,6 +27,9 @@ ignorePaths:
   - "./docs/index.html"
 flagWords:
   - "gage"
+  - "./rabbitmq.conf"
+  - "./definitions.json"
+  - "./deps.nix"
 words:
   - "networkusers"
   - "blazor"
@@ -99,6 +102,9 @@ words:
   - "pyright"
   - "mdbook"
   - "nbsp"
+  - "partitioner"
+  - "appsettings"
+  - "xmin"
 
   # Croatian
   - "altibiz"

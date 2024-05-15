@@ -11,8 +11,8 @@ using Ozds.Data;
 
 namespace Ozds.Data.Migrations
 {
-    [DbContext(typeof(OzdsDbContext))]
-    partial class OzdsDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(OzdsDataDbContext))]
+    partial class OzdsDataDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -1486,6 +1486,10 @@ namespace Ozds.Data.Migrations
                     b.Property<DateTimeOffset>("IssuedOn")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("issued_on");
+
+                    b.Property<string>("RegistrationId")
+                        .HasColumnType("text")
+                        .HasColumnName("registration_id");
 
                     b.Property<decimal>("SupplyActiveEnergyTotalImportT1Fee_EUR")
                         .HasColumnType("numeric")

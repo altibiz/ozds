@@ -16,6 +16,17 @@ public class UsageActivePowerTotalImportT1PeakCalculationItemCalculator :
       .OrderBy(a => a.Timestamp)
       .ToList();
 
+    if (aggregates.Count < 1)
+    {
+      return new UsageActivePowerTotalImportT1PeakCalculationItemModel
+      {
+        Peak_W = 0,
+        Amount_W = 0,
+        Price_EUR = calculationBasis.Price,
+        Total_EUR = 0
+      };
+    }
+
     var amount = new PeakSpanningMeasure<decimal>(
       aggregates
         .MaxBy(aggregate =>

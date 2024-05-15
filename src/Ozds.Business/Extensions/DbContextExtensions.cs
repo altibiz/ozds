@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 // TODO: add tracked - create a way to make distinct ephemeral primary keys
-// TODO: cache, add to OzdsDbContext
+// TODO: cache, add to OzdsDataDbContext
 
 namespace Ozds.Business.Extensions;
 

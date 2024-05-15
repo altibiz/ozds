@@ -11,9 +11,9 @@ using Ozds.Data.Entities.Base;
 namespace Ozds.Business.Queries;
 
 public class OzdsNetworkUserMeasurementLocationModelQueries(
-  OzdsDbContext context) : IOzdsQueries
+  OzdsDataDbContext context) : IOzdsQueries
 {
-  protected readonly OzdsDbContext context = context;
+  protected readonly OzdsDataDbContext context = context;
 
   public async Task<NetworkUserMeasurementLocationModel?>
     NetworkUserMeasurementLocationById(string id)

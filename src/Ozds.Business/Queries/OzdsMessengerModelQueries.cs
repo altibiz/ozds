@@ -7,9 +7,9 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Queries;
 
-public class OzdsMessengerModelQueries(OzdsDbContext context) : IOzdsQueries
+public class OzdsMessengerModelQueries(OzdsDataDbContext context) : IOzdsQueries
 {
-  protected readonly OzdsDbContext context = context;
+  protected readonly OzdsDataDbContext context = context;
 
   public async Task<MessengerModel?>
     MessengerById(string id)

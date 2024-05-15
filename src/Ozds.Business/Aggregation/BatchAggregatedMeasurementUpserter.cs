@@ -13,7 +13,7 @@ public class BatchAggregatedMeasurementUpserter(
   AgnosticMeasurementAggregateConverter aggregateConverter,
   AgnosticModelEntityConverter modelEntityConverter,
   AgnosticAggregateUpserter aggregateUpserter,
-  OzdsDbContext context
+  OzdsDataDbContext context
 )
 {
   public async Task BatchAggregatedUpsert(

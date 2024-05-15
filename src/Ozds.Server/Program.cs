@@ -6,15 +6,16 @@ builder.Services
   .AddOrchardCms()
   .AddSetupFeatures("OrchardCore.AutoSetup")
   .ConfigureServices(services => services
-    .AddOzdsClient(builder.Environment.IsDevelopment())
-    .AddOzdsBusinessClient(builder.Environment.IsDevelopment()))
+    .AddOzdsClient(builder)
+    .AddOzdsBusinessClient(builder))
   .Configure((_, endpoints) => endpoints
     .MapOzdsClient("App", "Index", "/app")
     .MapOzdsIot("Iot", "Push", "/iot/push")
     .MapOzdsIot("Iot", "Poll", "/iot/poll")
     .MapOzdsIot("Iot", "Update", "/iot/update"))
   .Configure(app => app
-    .MigrateOzdsData());
+    .MigrateOzdsData()
+    .MigrateOzdsMessaging());
 
 
 var app = builder.Build();

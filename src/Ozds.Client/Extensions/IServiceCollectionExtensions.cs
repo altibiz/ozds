@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using MudBlazor.Services;
 using Ozds.Client.State;
 
@@ -8,7 +9,7 @@ public static class IServiceCollectionExtensions
 {
   public static IServiceCollection AddOzdsClient(
     this IServiceCollection services,
-    bool isDevelopment
+    IHostApplicationBuilder builder
   )
   {
     services
@@ -19,14 +20,14 @@ public static class IServiceCollectionExtensions
       .AddServerSideBlazor()
       .AddCircuitOptions(options =>
       {
-        if (isDevelopment)
+        if (builder.Environment.IsDevelopment())
         {
           options.DetailedErrors = true;
         }
       })
       .AddHubOptions(options =>
       {
-        if (isDevelopment)
+        if (builder.Environment.IsDevelopment())
         {
           options.EnableDetailedErrors = true;
         }
