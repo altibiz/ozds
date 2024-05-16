@@ -1,5 +1,6 @@
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 using Ozds.Business.Conversion.Abstractions;
 using Ozds.Business.Models.Abstractions;
 
@@ -16,11 +17,18 @@ public abstract class PushRequestMeasurementConverter<TPushRequest,
     return meterId.StartsWith(MeterIdPrefix);
   }
 
+  private static readonly JsonSerializerOptions serializationOptions =
+    new()
+    {
+      PropertyNameCaseInsensitive = true,
+      NumberHandling = JsonNumberHandling.AllowReadingFromString
+    };
+
   public IMeasurement ToMeasurement(JsonObject pushRequest, string meterId,
     DateTimeOffset timestamp)
   {
     return ToMeasurement(
-      pushRequest.Deserialize<TPushRequest>()
+      pushRequest.Deserialize<TPushRequest>(serializationOptions)
       ?? throw new ArgumentNullException(nameof(pushRequest)),
       meterId,
       timestamp
@@ -32,7 +40,7 @@ public abstract class PushRequestMeasurementConverter<TPushRequest,
     return JsonSerializer.SerializeToNode(
              ToPushRequest(measurement as TMeasurement
                            ?? throw new ArgumentNullException(
-                             nameof(measurement)))) as JsonObject
+                             nameof(measurement))), serializationOptions) as JsonObject
            ?? throw new ArgumentNullException(nameof(measurement));
   }
 
