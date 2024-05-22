@@ -15,7 +15,7 @@ public static class IEndpointRouteBuilderExtensions
       "Ozds.Business.Ios",
       Assembly.GetCallingAssembly().GetName().Name
       ?? throw new InvalidOperationException("Assembly name not found"),
-      prefix + "/push/{id}",
+      prefix + "/{id}",
       new { controller, action }
     );
 

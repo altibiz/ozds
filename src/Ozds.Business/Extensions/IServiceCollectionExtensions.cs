@@ -1,6 +1,7 @@
 using System.Reflection;
 using System.Text.Json;
 using OrchardCore.Environment.Shell;
+using Ozds.Business.Aggregation;
 using Ozds.Business.Aggregation.Abstractions;
 using Ozds.Business.Aggregation.Agnostic;
 using Ozds.Business.Conversion.Abstractions;
@@ -90,6 +91,7 @@ public static class IServiceCollectionExtensions
     services.AddSingleton(typeof(AgnosticCalculationItemCalculator));
 
     services.AddScoped<OzdsIotHandler>();
+    services.AddScoped<BatchAggregatedMeasurementUpserter>();
 
     return services;
   }

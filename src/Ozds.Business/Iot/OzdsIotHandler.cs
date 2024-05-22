@@ -1,12 +1,15 @@
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
+using Ozds.Business.Aggregation;
 using Ozds.Business.Conversion.Agnostic;
-using Ozds.Business.Mutations.Agnostic;
+using Ozds.Business.Models.Abstractions;
 
 namespace Ozds.Business.Iot;
 
 public class OzdsIotHandler(
   AgnosticPushRequestMeasurementConverter pushRequestMeasurementConverter,
-  OzdsMeasurementMutations measurementMutations
+  BatchAggregatedMeasurementUpserter batchAggregatedMeasurementUpserter,
+  ILogger<OzdsIotHandler> logger
 )
 {
   private static readonly JsonSerializerOptions deserializationOptions =
@@ -15,12 +18,6 @@ public class OzdsIotHandler(
       PropertyNameCaseInsensitive = true
     };
 
-  private readonly OzdsMeasurementMutations _measurementMutations =
-    measurementMutations;
-
-  private readonly AgnosticPushRequestMeasurementConverter
-    _pushRequestMeasurementConverter = pushRequestMeasurementConverter;
-
   public Task<bool> Authorize(string id, string request)
   {
     return Task.FromResult(true);
@@ -28,27 +25,63 @@ public class OzdsIotHandler(
 
   public async Task OnPush(string _, string request)
   {
-    var messengerRequest =
-      JsonSerializer.Deserialize<MessengerPushRequest>(
-        request, deserializationOptions);
+    MessengerPushRequest? messengerRequest = null;
+    try
+    {
+      messengerRequest =
+        JsonSerializer.Deserialize<MessengerPushRequest>(
+          request, deserializationOptions);
+    }
+    catch (JsonException ex)
+    {
+      // TODO: alerts
+      logger.LogError(ex, "Failed to deserialize request");
+      throw;
+    }
+
     if (messengerRequest?.Measurements is null
         || messengerRequest.Measurements.Length == 0)
     {
+      logger.LogWarning("No measurements in request");
       return;
     }
 
+    var measurements = new List<IMeasurement>();
+
     foreach (var item in messengerRequest.Measurements)
     {
-      var measurement = _pushRequestMeasurementConverter.ToMeasurement(
+      var measurement = pushRequestMeasurementConverter.ToMeasurement(
         item.Data, item.MeterId, item.Timestamp
       );
-      _measurementMutations.Create(measurement);
+
+      var validationResults = measurement
+        .Validate(new ValidationContext(this))
+        .ToList();
+
+      if (validationResults.Count is 0)
+      {
+        measurements.Add(measurement);
+      }
+      else
+      {
+        // TODO: alerts
+        logger.LogWarning(
+          "Measurement validation failed: {errors}",
+          string.Join(", ", validationResults.Select(x => x.ErrorMessage))
+        );
+      }
     }
 
-    await _measurementMutations.SaveChangesAsync();
+    await batchAggregatedMeasurementUpserter
+      .BatchAggregatedUpsert(measurements);
   }
 
   public Task OnPoll(string id, string request)
+  {
+    return Task.CompletedTask;
+  }
+
+  public Task OnUpdate(string id, string request)
   {
     return Task.CompletedTask;
   }
