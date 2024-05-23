@@ -192,13 +192,8 @@
       .GetRequiredService<OzdsAuditableQueries>().Read<MeterModel>(Enumerable.Empty<string>(), Enumerable.Empty<string>(), Enumerable.Empty<string>(), 1, 1000);
     _meters = a.Items;
     _ioTDeviceNames = _meters.Select(x => x.Id).ToList();
-    @* SetGraphOptionsStart(); *@
 
     await LeftMenuItemClicked(_title);
-
-    @* SetAnnotationStart();
-
-    await SetAnnotationGraphOptions(); *@
 
     graphLOptionsMob = NewApexChartOptions<ChartData>();
     graphLOptionsMob.Grid = new Grid
@@ -225,7 +220,7 @@
     {
       Labels = new YAxisLabels
       {
-        Formatter = "function(val, index) { return val.toFixed(0); }"
+        Formatter = "function(val, index) { return (val ?? 0).toFixed(0); }"
       }
     });
     graphLOptions.Chart = new Chart
@@ -245,7 +240,7 @@
       Show = false,
       Labels = new YAxisLabels
       {
-        Formatter = "function(val, index) { return val.toFixed(0); }"
+        Formatter = "function(val, index) { return (val ?? 0).toFixed(0); }"
       }
     });
     graphLOptionsMob.Xaxis = new XAxis
@@ -332,8 +327,12 @@
 
   private async Task GetValues(DateTimeOffset fromDate, DateTimeOffset toDate, bool reRenderChart = true)
   {
-    var quorterHourlyMeasures = await aggregateQueries.ReadAgnostic(new[] { "x => x.Interval == 0" }, fromDate, toDate, 1, 9000);
-    var measures = await measureQueries.ReadAgnostic(new[] { $"x => x.MeterId == \"{_title}\"" }, fromDate, toDate, 1, 3000);
+    IEnumerable<IMeasurement> measures;
+    if (timeSpanMins > 60)
+      measures = await aggregateQueries.ReadAgnostic(new[] { "x => x.Interval == 0", $"x => x.MeterId == \"{_title}\"" }, fromDate, toDate, 1, 9000);
+    else
+      measures = await measureQueries.ReadAgnostic(new[] { $"x => x.MeterId == \"{_title}\"" }, fromDate, toDate, 1, 3000);
+    measures = measures.OrderBy(x => x.Timestamp).ToList();
     switch (_dataType)
     {
       case "Struja":
@@ -422,7 +421,6 @@
     if (reRenderChart)
     {
       await chart.UpdateSeriesAsync();
-      @* await SetAnnotationGraphOptions(); *@
     }
   }
 
@@ -441,6 +439,11 @@
     if (index == 2)
     {
       return new SeriesStroke { Color = "#00897B", Width = 4 };
+    }
+
+    if (index == 3)
+    {
+      return new SeriesStroke { Color = "#D81B60", Width = 4 };
     }
 
     return new SeriesStroke { Color = "#FB8C00", Width = 4 };

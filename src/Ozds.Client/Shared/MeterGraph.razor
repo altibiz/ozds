@@ -11,65 +11,65 @@
         @(_dataTitle + T[" za"] + ": " + Source)
       </MudItem>
       <MudContainer Class="d-flex flex-column" MaxWidth="MaxWidth.Small">
-        @if (_graphValues is not null)
-        {
           <ApexChart TItem="ChartData"
                      XAxisType="XAxisType.Datetime"
                      Options="graphOptionsMob"
                      @ref="chart">
-            @for (var i = 0; i < lineCount; i++)
-            {
-              var j = i;
-              <ApexPointSeries TItem="ChartData"
-                               Items="@_graphValues"
-                               Name="@_graphValues.Select(x => x.names[j]).FirstOrDefault()"
-                               SeriesType="SeriesType.Line"
-                               XValue='x => DateTimeGraph(x.date)'
-                               YValue="x => (decimal)x.values[j]"
-                               Stroke="@(ColorGraph(j))"/>
-            }
-            @if (lineCount == 0)
-            {
-              <ApexPointSeries TItem="ChartData"
-                               Items="@_graphValues"
-                               Name="n/a"
-                               SeriesType="SeriesType.Line"
-                               XValue='x => DateTimeGraph(x.date)'
-                               YValue="x => 0"
-                               Stroke="@(ColorGraph(0))"/>
-            }
-          </ApexChart>
-          <MudItem Class="d-flex flex-column justify-center gap-2">
-            <MudMenu Dense="true" Variant="Variant.Filled" Color="Color.Primary">
-              <ActivatorContent>
-                <MudButton Variant="Variant.Filled" Color="Color.Primary">
-                  @_dataTitle
-                  <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowDown"/>
-                </MudButton>
-              </ActivatorContent>
-              <ChildContent>
-                @foreach (var type in _displayType)
-                {
-                  <MudMenuItem OnClick="@(() => DataMenuItemClicked(type))">@type</MudMenuItem>
-                }
-              </ChildContent>
-            </MudMenu>
-            <MudMenu Dense="true" Variant="Variant.Filled" Color="Color.Primary">
-              <ActivatorContent>
-                <MudButton Variant="Variant.Filled" Color="Color.Primary">
-                  @_timeTitle
-                  <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowDown"/>
-                </MudButton>
-              </ActivatorContent>
-              <ChildContent>
-                <MudMenuItem OnClick="@(() => TimeMenuItemClicked("Scale1"))">15 min</MudMenuItem>
-                <MudMenuItem OnClick="@(() => TimeMenuItemClicked("Scale2"))">1 h</MudMenuItem>
-                <MudMenuItem OnClick="@(() => TimeMenuItemClicked("Scale3"))">6 h</MudMenuItem>
-                <MudMenuItem OnClick="@(() => TimeMenuItemClicked("Scale4"))">24 h</MudMenuItem>
-              </ChildContent>
-            </MudMenu>
-          </MudItem>
-        }
+          @if (_graphValues is not null)
+          {
+              @for (var i = 0; i < lineCount; i++)
+              {
+                var j = i;
+                <ApexPointSeries TItem="ChartData"
+                                  Items="@_graphValues"
+                                  Name="@_graphValues.Select(x => x.names[j]).FirstOrDefault()"
+                                  SeriesType="SeriesType.Line"
+                                  XValue='x => DateTimeGraph(x.date)'
+                                  YValue="x => (decimal)x.values[j]"
+                                  Stroke="@(ColorGraph(j))"/>
+              }
+              @if (lineCount == 0)
+              {
+                <ApexPointSeries TItem="ChartData"
+                                  Items="@_graphValues"
+                                  Name="n/a"
+                                  SeriesType="SeriesType.Line"
+                                  XValue='x => DateTimeGraph(x.date).DateTime'
+                                  YValue="x => 0"
+                                  Stroke="@(ColorGraph(0))"/>
+              }
+            <MudItem Class="d-flex flex-column justify-center gap-2">
+              <MudMenu Dense="true" Variant="Variant.Filled" Color="Color.Primary">
+                <ActivatorContent>
+                  <MudButton Variant="Variant.Filled" Color="Color.Primary">
+                    @_dataTitle
+                    <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowDown"/>
+                  </MudButton>
+                </ActivatorContent>
+                <ChildContent>
+                  @foreach (var type in _displayType)
+                  {
+                    <MudMenuItem OnClick="@(() => DataMenuItemClicked(type))">@type</MudMenuItem>
+                  }
+                </ChildContent>
+              </MudMenu>
+              <MudMenu Dense="true" Variant="Variant.Filled" Color="Color.Primary">
+                <ActivatorContent>
+                  <MudButton Variant="Variant.Filled" Color="Color.Primary">
+                    @_timeTitle
+                    <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowDown"/>
+                  </MudButton>
+                </ActivatorContent>
+                <ChildContent>
+                  <MudMenuItem OnClick="@(() => TimeMenuItemClicked("Scale1"))">15 min</MudMenuItem>
+                  <MudMenuItem OnClick="@(() => TimeMenuItemClicked("Scale2"))">1 h</MudMenuItem>
+                  <MudMenuItem OnClick="@(() => TimeMenuItemClicked("Scale3"))">6 h</MudMenuItem>
+                  <MudMenuItem OnClick="@(() => TimeMenuItemClicked("Scale4"))">24 h</MudMenuItem>
+                </ChildContent>
+              </MudMenu>
+            </MudItem>
+          }
+        </ApexChart>
       </MudContainer>
     </MudPaper>
   </MudHidden>
@@ -187,12 +187,15 @@
       .GetMeterById(Source);
 
     SetGraphOptionsStart();
-
     await DataMenuItemClicked(_dataTitle);
+    if (chart is not null)
+    {
 
-    SetAnnotationStart();
+      SetAnnotationStart();
 
-    await SetAnnotationGraphOptions();
+      await SetAnnotationGraphOptions();
+    }
+
   }
 
   private async Task DataMenuItemClicked(string type)
@@ -335,16 +338,14 @@
         break;
     }
 
-    if (chart is null)
+    if (chart is not null)
     {
-      return;
-    }
-
-    await InvokeAsync(() => StateHasChanged());
-    if (reRenderChart)
-    {
-      await chart.UpdateSeriesAsync();
-      await SetAnnotationGraphOptions();
+      await InvokeAsync(() => StateHasChanged());
+      if (reRenderChart)
+      {
+        await chart.UpdateSeriesAsync();
+        await SetAnnotationGraphOptions();
+      }
     }
   }
 
@@ -375,80 +376,77 @@
   }
 
   private async Task SetAnnotationGraphOptions()
-  {
+{
     if (_dataTitle == "Radna snaga")
     {
-      if (_graphValues is not null && _graphValues.Select(x => x.values[3]).ToList().Count > 0)
-      {
-        var graphMaxPower = _graphValues.Where(x => x.values.Length > 3).Select(x => x.values[3]).Max();
-        graphOptions.Yaxis.Clear();
-        graphOptions.Yaxis.Add(new YAxis
+        if (_graphValues is not null && _graphValues.Any() && _graphValues.All(x => x.values.Length > 3))
         {
-          Max = graphMaxPower * 1.5,
-          Labels = new YAxisLabels
-          {
-            Formatter = "function(val, index) { return val.toFixed(0); }"
-          }
-        });
-        graphOptions.Annotations = new Annotations
-        {
-          Yaxis = new List<AnnotationsYAxis> { _annotation }
-        };
+            var graphMaxPower = _graphValues.Select(x => x.values[3]).Max();
+            graphOptions.Yaxis.Clear();
+            graphOptions.Yaxis.Add(new YAxis
+            {
+                Max = graphMaxPower * 1.5,
+                Labels = new YAxisLabels
+                {
+                    Formatter = "function(val, index) { return (val ?? 0).toFixed(0); }"
+                }
+            });
+            graphOptions.Annotations = new Annotations
+            {
+                Yaxis = new List<AnnotationsYAxis> { _annotation }
+            };
 
-        graphOptionsMob.Yaxis.Clear();
-        graphOptionsMob.Yaxis.Add(new YAxis
-        {
-          Max = graphMaxPower * 1.5,
-          Labels = new YAxisLabels
-          {
-            Formatter = "function(val, index) { return val.toFixed(0); }"
-          }
-        });
-        graphOptionsMob.Annotations = new Annotations
-        {
-          Yaxis = new List<AnnotationsYAxis> { _annotation }
-        };
-        if (chart is null)
-        {
-          return;
+            graphOptionsMob.Yaxis.Clear();
+            graphOptionsMob.Yaxis.Add(new YAxis
+            {
+                Max = graphMaxPower * 1.5,
+                Labels = new YAxisLabels
+                {
+                    Formatter = "function(val, index) { return (val ?? 0).toFixed(0); }"
+                }
+            });
+            graphOptionsMob.Annotations = new Annotations
+            {
+                Yaxis = new List<AnnotationsYAxis> { _annotation }
+            };
+
+            if (chart is not null)
+            {
+                await chart.RenderAsync();
+                await chart.AddYAxisAnnotationAsync(_annotation, true);
+            }
         }
-
-        await chart.RenderAsync();
-        await chart.AddYAxisAnnotationAsync(_annotation, true);
-      }
     }
     else
     {
-      graphOptions.Annotations = new Annotations();
-      graphOptions.Yaxis.Clear();
-      graphOptions.Yaxis.Add(new YAxis
+        graphOptions.Annotations = new Annotations();
+        graphOptions.Yaxis.Clear();
+        graphOptions.Yaxis.Add(new YAxis
         {
-          Labels = new YAxisLabels
-          {
-            Formatter = "function(val, index) { return val.toFixed(0); }"
-          }
-        }
-      );
+            Labels = new YAxisLabels
+            {
+                Formatter = "function(val, index) { return (val ?? 0).toFixed(0); }"
+            }
+        });
 
-      graphOptionsMob.Annotations = new Annotations();
-      graphOptionsMob.Yaxis.Clear();
-      graphOptionsMob.Yaxis.Add(new YAxis
+        graphOptionsMob.Annotations = new Annotations();
+        graphOptionsMob.Yaxis.Clear();
+        graphOptionsMob.Yaxis.Add(new YAxis
         {
-          Labels = new YAxisLabels
-          {
-            Formatter = "function(val, index) { return val.toFixed(0); }"
-          }
-        }
-      );
-      if (chart is null)
-      {
-        return;
-      }
+            Labels = new YAxisLabels
+            {
+                Formatter = "function(val, index) { return (val ?? 0).toFixed(0); }"
+            }
+        });
 
-      await chart.ClearAnnotationsAsync();
-      await chart.RenderAsync();
+        if (chart is not null)
+        {
+            await chart.ClearAnnotationsAsync();
+            await chart.RenderAsync();
+        }
     }
-  }
+}
+
 
   private void SetGraphOptionsStart()
   {
@@ -558,6 +556,10 @@
     {
       var aaafuckme = _graphValues.OrderByDescending(x => x.date).ToList();
       var lastGraphValues = _graphValues.OrderByDescending(x => x.date).FirstOrDefault();
+      if (chart is null)
+      {
+        return;
+      }
       if (lastGraphValues is not null)
       {
         await GetValues(lastGraphValues.date, DateTimeOffset.UtcNow.LocalDateTime, false);
