@@ -26,11 +26,13 @@ public class OzdsComponentLocalizer : IOzdsComponentLocalizer
         .TwoLetterISOLanguageName;
       var enCulture = CultureInfo.CreateSpecificCulture("en-US")
         .TwoLetterISOLanguageName;
-      if (CultureInfo.CurrentCulture.Equals(CultureInfo.CreateSpecificCulture("en-US")))
+      if (CultureInfo.CurrentCulture.Equals(
+            CultureInfo.CreateSpecificCulture("en-US")))
       {
         _activeTranslation = _translations.Value;
       }
-      else if (CultureInfo.CurrentCulture.Equals(CultureInfo.CreateSpecificCulture("hr-HR")))
+      else if (CultureInfo.CurrentCulture.Equals(
+                 CultureInfo.CreateSpecificCulture("hr-HR")))
       {
         _activeTranslation = _translationsHR.Value;
       }
