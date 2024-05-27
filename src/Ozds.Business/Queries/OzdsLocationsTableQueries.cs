@@ -58,7 +58,7 @@ public class OzdsLocationsTableQueries(
           meter
         }
       )
-      .SelectMany(x => x.meter.DefaultIfEmpty(),
+      .SelectMany(x => x.meter,
         (x, meter) => new ViewModelStruct
         {
           Location = x.Location,
