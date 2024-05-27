@@ -13,12 +13,12 @@
     <MudMenu AnchorOrigin="Origin.CenterLeft" Dense="true" Class="mt-1 ml-4">
       <ActivatorContent>
         <MudButton Variant="Variant.Outlined" Class="mx-2" Style="color: white; border-color: white;">
-          @CultureInfo.CurrentCulture.Name.ToUpper()
+          @CultureInfo.CurrentCulture.TwoLetterISOLanguageName.ToUpper()
         </MudButton>
       </ActivatorContent>
       <ChildContent>
-        <MudListItem Text="HR" Href="@(ChangeLang("hr"))" ForceLoad="true"/>
-        <MudListItem Text="EN" Href="@(ChangeLang("en"))" ForceLoad="true"/>
+        <MudListItem Text="HR" Href="@(ChangeLang("hr-HR"))" ForceLoad="true"/>
+        <MudListItem Text="EN" Href="@(ChangeLang("en-US"))" ForceLoad="true"/>
       </ChildContent>
     </MudMenu>
     <MudMenu AnchorOrigin="Origin.BottomLeft" Dense="true" Class="mt-1 ml-4">

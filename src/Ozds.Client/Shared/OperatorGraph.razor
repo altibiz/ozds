@@ -5,7 +5,7 @@
   <MudHidden Breakpoint="Breakpoint.MdAndUp">
     <MudPaper Class="d-flex align-center justify-stat mud-width-full pa-1 pb-3 flex-column">
       <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
-        @(T[_dataType] + T[" for"] + ": " + _title)
+        @T[_dataType] @T["for"]: @_title
       </MudItem>
       <MudContainer Class="d-flex flex-column" MaxWidth="MaxWidth.Small">
         @if (_graphValues is not null)
@@ -77,7 +77,7 @@
   <MudHidden Breakpoint="Breakpoint.SmAndDown">
     <MudPaper Class="d-flex align-center justify-center mud-width-full py-8 px-8 flex-column" Height="525px">
       <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
-        @(T[_dataType] + T[" for"] + ": " + _title)
+        @T[_dataType] @T["for"]: @_title
       </MudItem>
       <MudContainer Class="d-flex flex-column" MaxWidth="MaxWidth.Medium">
         @if (_graphValues is not null)
@@ -153,7 +153,7 @@
   private ApexChartOptions<ChartData> graphLOptions = NewApexChartOptions<ChartData>();
   private ApexChartOptions<ChartData> graphLOptionsMob = NewApexChartOptions<ChartData>();
 
-  private List<(string type, string name)> _displayType = new();
+  private List<(DataEnum type, string name)> _displayType = new();
 
   public int timeSpanMins = 15;
   public int lineCount = 0;
@@ -161,6 +161,7 @@
   public IEnumerable<ChartData>? _graphValues;
   public IEnumerable<ChartData>? _rowData;
   private string _title = "";
+  private MeterModel _selectedMeter;
   private string _dataType = "";
   private string _leftTimeTitle = "15 min";
   private DateTimeOffset now = DateTimeOffset.UtcNow.LocalDateTime;
@@ -171,6 +172,14 @@
   private IEnumerable<MeterModel>? _meters;
   OzdsAggregateQueries aggregateQueries = default!;
   OzdsMeasurementQueries measureQueries = default!;
+  private enum DataEnum
+  {
+    Voltage,
+    Current,
+    Active_Power,
+    Reactive_Power,
+    Apparent_Power,
+  }
 
   private class ExpandThing
   {
@@ -183,9 +192,9 @@
 
   protected override async Task OnInitializedAsync()
   {
-    _displayType = new List<(string type, string name)>
+    _displayType = new List<(DataEnum type, string name)>
     {
-      ("Voltage", T["Voltage"]), ("Current", T["Current"]), ("Active Power", T["Active Power"]), ("Reactive Power", T["Reactive Power"])
+      (DataEnum.Voltage, T["Voltage"]), (DataEnum.Current, T["Current"]), (DataEnum.Active_Power, T["Active Power"]), (DataEnum.Reactive_Power, T["Reactive Power"])
     };
     aggregateQueries = ScopedServices.GetRequiredService<OzdsAggregateQueries>();
     measureQueries = ScopedServices.GetRequiredService<OzdsMeasurementQueries>();
@@ -264,41 +273,46 @@
 
   private async Task LeftMenuItemClicked(string source)
   {
-    if (source.StartsWith("abb"))
+    _title = source;
+    _selectedMeter = _meters.Where(x => x.Id == source).FirstOrDefault();
+
+    if (_selectedMeter != null && _selectedMeter.Capabilities.hasApparentPower)
     {
-      _displayType = new List<(string type, string name)> { ("Voltage", T["Voltage"]), ("Current", T["Current"]), ("Active Power", T["Active Power"]), ("Reactive Power", T["Reactive Power"]) };
+      _displayType = new List<(DataEnum type, string name)>
+        {
+          (DataEnum.Voltage, T["Voltage"]), (DataEnum.Current, T["Current"]), (DataEnum.Active_Power, T["Active Power"]), (DataEnum.Reactive_Power, T["Reactive Power"]), (DataEnum.Apparent_Power, T["Apparent Power"])
+        };
+    }
+    else
+    {
+      _displayType = new List<(DataEnum type, string name)>
+        {
+          (DataEnum.Voltage, T["Voltage"]), (DataEnum.Current, T["Current"]), (DataEnum.Active_Power, T["Active Power"]), (DataEnum.Reactive_Power, T["Reactive Power"])
+        };
       if (_dataType == "Apparent Power")
         _dataType = "Reactive Power";
     }
-    else if (source.StartsWith("schneider"))
-    {
-      _displayType = new List<(string type, string name)> { ("Voltage", T["Voltage"]), ("Current", T["Current"]), ("Active Power", T["Active Power"]), ("Reactive Power", T["Reactive Power"]), ("Apparent Power", T["Apparent Power"]) };
-    }
 
-    _title = source;
-    await LeftMenuDataItemClicked(_dataType);
+    await LeftMenuDataItemClicked(DataEnum.Active_Power);
   }
 
-  private async Task LeftMenuDataItemClicked(string type)
+  private async Task LeftMenuDataItemClicked(DataEnum type)
   {
     switch (type)
     {
-      case "Current":
+      case DataEnum.Current:
         _dataType = "Current";
         break;
-      case "":
+      case DataEnum.Active_Power:
         _dataType = "Active Power";
         break;
-      case "Active Power":
-        _dataType = "Active Power";
-        break;
-      case "Voltage":
+      case DataEnum.Voltage:
         _dataType = "Voltage";
         break;
-      case "Reactive Power":
+      case DataEnum.Reactive_Power:
         _dataType = "Reactive Power";
         break;
-      case "Apparent Power":
+      case DataEnum.Apparent_Power:
         _dataType = "Apparent Power";
         break;
     }

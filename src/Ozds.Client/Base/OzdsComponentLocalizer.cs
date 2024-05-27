@@ -21,15 +21,16 @@ public class OzdsComponentLocalizer : IOzdsComponentLocalizer
     get
     {
       Dictionary<string, string> _activeTranslation = [];
-      var culture = CultureInfo.CurrentCulture.Name;
-      switch (culture)
+      var culture = CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
+      var hrCulture = CultureInfo.CreateSpecificCulture("hr-HR").TwoLetterISOLanguageName;
+      var enCulture = CultureInfo.CreateSpecificCulture("en-US").TwoLetterISOLanguageName;
+      if (culture == enCulture)
       {
-        case "en":
-          _activeTranslation = _translations.Value;
-          break;
-        case "hr":
-          _activeTranslation = _translationsHR.Value;
-          break;
+        _activeTranslation = _translations.Value;
+      }
+      else if (culture == hrCulture)
+      {
+        _activeTranslation = _translationsHR.Value;
       }
 
       if (_activeTranslation.Count > 0 &&
@@ -39,7 +40,7 @@ public class OzdsComponentLocalizer : IOzdsComponentLocalizer
       }
 
       return
-        notLocalized; // Fallback to the original string if no translation is found
+        notLocalized;
     }
   }
 

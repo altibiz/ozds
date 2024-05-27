@@ -139,8 +139,6 @@
 
   protected override async Task OnInitializedAsync()
   {
-    var a = T["Location"];
-    var b = Thread.CurrentThread.CurrentCulture.Name;
     var queries = ScopedServices.GetRequiredService<OzdsMeterTableQueries>();
     var locationQueries = ScopedServices.GetRequiredService<OzdsLocationsTableQueries>();
     List<MeterTableViewModel> locations = new();

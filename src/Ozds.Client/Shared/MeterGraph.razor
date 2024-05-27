@@ -8,7 +8,7 @@
   <MudHidden Breakpoint="Breakpoint.MdAndUp">
     <MudPaper Class="d-flex align-center justify-stat mud-width-full pa-1 pb-3 flex-column">
       <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
-        @(_dataTitle + T[" for"] + ": " + Source)
+        @T[_dataTitle] @T["for"]: @Source
       </MudItem>
       <MudContainer Class="d-flex flex-column" MaxWidth="MaxWidth.Small">
         @if (_graphValues is not null)
@@ -79,7 +79,7 @@
   <MudHidden Breakpoint="Breakpoint.SmAndDown">
     <MudPaper Class="d-flex align-center justify-center mud-width-full py-8 px-8 flex-column" Height="450px">
       <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
-        @(_dataTitle + T[" for"] + ": " + Source)
+        @T[_dataTitle] @T["for"]:  @Source
       </MudItem>
       <MudContainer Class="d-flex flex-column" MaxWidth="MaxWidth.Medium">
         @if (_graphValues is not null)
@@ -114,7 +114,7 @@
             <MudMenu Dense="true" Variant="Variant.Filled" Color="Color.Primary">
               <ActivatorContent>
                 <MudButton Variant="Variant.Filled" Color="Color.Primary">
-                  @_dataTitle
+                  @T[_dataTitle]
                   <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowDown"/>
                 </MudButton>
               </ActivatorContent>
@@ -156,7 +156,7 @@
   OzdsAggregateQueries aggregateQueries = default!;
   OzdsMeasurementQueries measureQueries = default!;
 
-  private List<(string type, string name)> _displayType = new();
+  private List<(DataEnum type, string name)> _displayType = new();
 
   public int timeSpanMins = 15;
   public int lineCount = 0;
@@ -174,12 +174,20 @@
   private Timer timer = new();
   private int updateMillisecond = 10000;
   private DateTimeOffset now = DateTimeOffset.UtcNow.LocalDateTime;
+  private enum DataEnum
+  {
+    Voltage,
+    Current,
+    Active_Power,
+    Reactive_Power,
+    Apparent_Power,
+  }
 
   protected override async Task OnInitializedAsync()
   {
-    _displayType = new List<(string type, string name)>
+    _displayType = new List<(DataEnum type, string name)>
     {
-      ("Voltage", T["Voltage"]), ("Current", T["Current"]), ("Active Power", T["Active Power"]), ("Reactive Power", T["Reactive Power"])
+      (DataEnum.Voltage, T["Voltage"]), (DataEnum.Current, T["Current"]), (DataEnum.Active_Power, T["Active Power"]), (DataEnum.Reactive_Power, T["Reactive Power"])
     };
 
     aggregateQueries = ScopedServices.GetRequiredService<OzdsAggregateQueries>();
@@ -189,40 +197,37 @@
       .GetMeterById(Source);
 
 
-    if (Source.StartsWith("schneider"))
+    if (_meter != null && _meter.Capabilities.hasApparentPower)
     {
-      _displayType.Add(new ValueTuple<string, string>("Apparent Power", T["Apparent Power"]));
+      _displayType.Add(new ValueTuple<DataEnum, string>(DataEnum.Apparent_Power, T["Apparent Power"]));
     }
 
     SetGraphOptionsStart();
 
-    await DataMenuItemClicked(_dataTitle);
+    await DataMenuItemClicked(DataEnum.Active_Power);
 
     SetAnnotationStart();
 
     await SetAnnotationGraphOptions();
   }
 
-  private async Task DataMenuItemClicked(string type)
+  private async Task DataMenuItemClicked(DataEnum type)
   {
     switch (type)
     {
-      case "Current":
+      case DataEnum.Current:
         _dataTitle = "Current";
         break;
-      case "":
+      case DataEnum.Active_Power:
         _dataTitle = "Active Power";
         break;
-      case "Active Power":
-        _dataTitle = "Active Power";
-        break;
-      case "Voltage":
+      case DataEnum.Voltage:
         _dataTitle = "Voltage";
         break;
-      case "Reactive Power":
+      case DataEnum.Reactive_Power:
         _dataTitle = "Reactive Power";
         break;
-      case "Apparent Power":
+      case DataEnum.Apparent_Power:
         _dataTitle = "Apparent Power";
         break;
     }

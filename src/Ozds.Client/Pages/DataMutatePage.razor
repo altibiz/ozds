@@ -1,53 +1,35 @@
-@page "/data/{type}/{id}"
+@page "/data/{Type}/{Id}"
 @attribute [StreamRendering]
 
-@switch (Type)
+@if (_componentDict.TryGetValue(Type, out var renderFragment))
 {
-  case "location":
-    <LocationMutate Id="@Id"/>
-    break;
-  case "network-user":
-    <NetUserMutate Id="@Id"/>
-    break;
-  case "red-low-catalogue":
-    <RedLowNetworkUserCatalogueMutate Id="@Id"/>
-    break;
-  case "blue-low-catalogue":
-    <BlueLowNetworkUserCatalogueMutate Id="@Id"/>
-    break;
-  case "white-low-catalogue":
-    <WhiteLowNetworkUserCatalogueMutate Id="@Id"/>
-    break;
-  case "white-medium-catalogue":
-    <WhiteMediumNetworkUserCatalogueMutate Id="@Id"/>
-    break;
-  case "regulatory-catalogue":
-    <RegulatoryCatalogueMutate Id="@Id"/>
-    break;
-  case "messenger":
-    <MessengerMutate Id="@Id"/>
-    break;
-  case "abb-b2x-validator":
-    <AbbB2xMeasurementValidatorMutate Id="@Id"/>
-    break;
-  case "schneider-iem3xxx-validator":
-    <SchneideriEM3xxxMeasurementValidatorMutate Id="@Id"/>
-    break;
-  case "abb-b2x-device":
-    <AbbB2xMeterMutate Id="@Id"/>
-    break;
-  case "schneider-iem3xxx-device":
-    <SchneideriEM3xxxMeterMutate Id="@Id"/>
-    break;
-  case "device-at-location":
-    <LocationMeasurementLocationMutate Id="@Id"/>
-    break;
-  case "device-at-network-user":
-    <NetworkUserMeasurementLocationMutate Id="@Id"/>
-    break;
+    @renderFragment
+}
+else
+{
+    <p>Component not found for type: @Type</p>
 }
 
 @code {
-  [Parameter] public string? Type { get; set; } = "";
-  [Parameter] public string? Id { get; set; } = "-1";
+    [Parameter] public string? Type { get; set; } = "";
+    [Parameter] public string? Id { get; set; } = "-1";
+    private readonly Dictionary<string, RenderFragment> _componentDict = new();
+
+    protected override void OnInitialized()
+    {
+        _componentDict.Add("location", @<LocationMutate Id="@Id" />);
+        _componentDict.Add("network-user", @<NetUserMutate Id="@Id" />);
+        _componentDict.Add("red-low-catalogue", @<RedLowNetworkUserCatalogueMutate Id="@Id" />);
+        _componentDict.Add("blue-low-catalogue", @<BlueLowNetworkUserCatalogueMutate Id="@Id" />);
+        _componentDict.Add("white-low-catalogue", @<WhiteLowNetworkUserCatalogueMutate Id="@Id" />);
+        _componentDict.Add("white-medium-catalogue", @<WhiteMediumNetworkUserCatalogueMutate Id="@Id" />);
+        _componentDict.Add("regulatory-catalogue", @<RegulatoryCatalogueMutate Id="@Id" />);
+        _componentDict.Add("messenger", @<MessengerMutate Id="@Id" />);
+        _componentDict.Add("abb-b2x-validator", @<AbbB2xMeasurementValidatorMutate Id="@Id" />);
+        _componentDict.Add("schneider-iem3xxx-validator", @<SchneideriEM3xxxMeasurementValidatorMutate Id="@Id" />);
+        _componentDict.Add("abb-b2x-device", @<AbbB2xMeterMutate Id="@Id" />);
+        _componentDict.Add("schneider-iem3xxx-device", @<SchneideriEM3xxxMeterMutate Id="@Id" />);
+        _componentDict.Add("device-at-location", @<LocationMeasurementLocationMutate Id="@Id" />);
+        _componentDict.Add("device-at-network-user", @<NetworkUserMeasurementLocationMutate Id="@Id" />);
+    }
 }

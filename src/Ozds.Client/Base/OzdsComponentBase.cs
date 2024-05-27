@@ -30,7 +30,7 @@ public abstract class OzdsComponentBase : ComponentBase
     }
     catch (CultureNotFoundException)
     {
-      var defaultCulture = new CultureInfo("en");
+      var defaultCulture = new CultureInfo("en-US");
       CultureInfo.DefaultThreadCurrentCulture = defaultCulture;
       CultureInfo.DefaultThreadCurrentUICulture = defaultCulture;
     }

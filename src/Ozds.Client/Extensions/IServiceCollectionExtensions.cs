@@ -42,7 +42,3 @@ public static class IServiceCollectionExtensions
     return services;
   }
 }
-
-internal class CultureService
-{
-}
