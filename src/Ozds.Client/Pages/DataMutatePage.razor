@@ -1,7 +1,7 @@
 @page "/data/{Type}/{Id}"
 @attribute [StreamRendering]
 
-@if (_componentDict.TryGetValue(Type, out var renderFragment))
+@if (!string.IsNullOrEmpty(Type) && _componentDict.TryGetValue(Type, out var renderFragment))
 {
   @renderFragment
 }
