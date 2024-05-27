@@ -1,4 +1,3 @@
-@inject NavigationManager NavigationManager
 @inject IDialogService DialogService
 @inherits OzdsOwningComponentBase
 
@@ -8,7 +7,7 @@
   return;
 }
 
-<MudText Class="my-2" Typo="Typo.h4">Lokacija</MudText>
+<MudText Class="my-2" Typo="Typo.h4">@T["Location"]</MudText>
 <EditForm
   Model="@LoadingState.Value"
   OnValidSubmit="Submit">
@@ -16,39 +15,39 @@
   <MudCard>
     <MudCardContent>
       <MudTextField
-        Label="Naziv"
+        Label="@T["Name"]"
         @bind-Value="LoadingState.Value.Title"
         For="@(() => LoadingState.Value.Title)"/>
       <MudTextField
-        Label="Ime"
+        Label="@T["Person name"]"
         @bind-Value="LoadingState.Value.LegalPerson.Name"
         For="@(() => LoadingState.Value.LegalPerson.Name)"/>
       <MudTextField
-        Label="OIB"
+        Label="@T["OIB"]"
         @bind-Value="LoadingState.Value.LegalPerson.SocialSecurityNumber"
         For="@(() => LoadingState.Value.LegalPerson.SocialSecurityNumber)"/>
       <MudTextField
-        Label="Adresa"
+        Label="@T["Address"]"
         @bind-Value="LoadingState.Value.LegalPerson.Address"
         For="@(() => LoadingState.Value.LegalPerson.Address)"/>
       <MudTextField
-        Label="Poštanski broj"
+        Label="@T["Postal code"]"
         @bind-Value="LoadingState.Value.LegalPerson.PostalCode"
         For="@(() => LoadingState.Value.LegalPerson.PostalCode)"/>
       <MudTextField
-        Label="Grad"
+        Label="@T["City"]"
         @bind-Value="LoadingState.Value.LegalPerson.City"
         For="@(() => LoadingState.Value.LegalPerson.City)"/>
       <MudTextField
-        Label="Email adresa"
+        Label="@T["Email address"]"
         @bind-Value="LoadingState.Value.LegalPerson.Email"
         For="@(() => LoadingState.Value.LegalPerson.Email)"/>
       <MudTextField
-        Label="Broj telefona"
+        Label="@T["Phone number"]"
         @bind-Value="LoadingState.Value.LegalPerson.PhoneNumber"
         For="@(() => LoadingState.Value.LegalPerson.PhoneNumber)"/>
       <MudSelect
-        Label="_whiteMediumNetworkUserCatalogues"
+        Label="@T["White Medium Network User Catalogues"]"
         AnchorOrigin="Origin.BottomCenter"
         @bind-Value="LoadingState.Value.WhiteMediumNetworkUserCatalogueId"
         For="@(() => LoadingState.Value.WhiteMediumNetworkUserCatalogueId)">
@@ -60,7 +59,7 @@
         }
       </MudSelect>
       <MudSelect
-        Label="_blueLowNetworkUserCatalogues"
+        Label="@T["Blue Low Network User Catalogues"]"
         AnchorOrigin="Origin.BottomCenter"
         @bind-Value="LoadingState.Value.BlueLowNetworkUserCatalogueId"
         For="@(() => LoadingState.Value.BlueLowNetworkUserCatalogueId)">
@@ -72,7 +71,7 @@
         }
       </MudSelect>
       <MudSelect
-        Label="_whiteLowNetworkUserCatalogues"
+        Label="@T["White Low Network User Catalogues"]"
         AnchorOrigin="Origin.BottomCenter"
         @bind-Value="LoadingState.Value.WhiteLowNetworkUserCatalogueId"
         For="@(() => LoadingState.Value.WhiteLowNetworkUserCatalogueId)">
@@ -84,7 +83,7 @@
         }
       </MudSelect>
       <MudSelect
-        Label="_redLowNetworkUserCatalogues"
+        Label="@T["Red Low Network User Catalogues"]"
         AnchorOrigin="Origin.BottomCenter"
         @bind-Value="LoadingState.Value.RedLowNetworkUserCatalogueId"
         For="@(() => LoadingState.Value.RedLowNetworkUserCatalogueId)">
@@ -96,7 +95,7 @@
         }
       </MudSelect>
       <MudSelect
-        Label="_regulatoryNetworkUserCatalogues"
+        Label="@T["Regulatory Network User Catalogues"]"
         AnchorOrigin="Origin.BottomCenter"
         @bind-Value="LoadingState.Value.RegulatoryCatalogueId"
         For="@(() => LoadingState.Value.RegulatoryCatalogueId)">
@@ -109,7 +108,7 @@
       </MudSelect>
       <MudSelect
         T="RepresentativeModel"
-        Label="Korisnici"
+        Label="@T["Representatives"]"
         AnchorOrigin="Origin.BottomCenter"
         ToStringFunc="a => a?.PhysicalPerson.Name"
         MultiSelection="true"
@@ -122,7 +121,7 @@
         }
       </MudSelect>
       <MudItem Class="py-5">
-        <MudText Typo="Typo.subtitle2">Odabrani korisnici</MudText>
+        <MudText Typo="Typo.subtitle2">@T["Allocated representatives"]</MudText>
         <MudText Typo="Typo.body2" Class="pl-4">@(string.Join(", ", _selectedRepsList.Select(x => $"\"{x.PhysicalPerson.Name}\"")))</MudText>
       </MudItem>
     </MudCardContent>

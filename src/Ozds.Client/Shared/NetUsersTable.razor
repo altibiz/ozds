@@ -1,47 +1,47 @@
+@using Ozds.Business.Time
 @using Color = MudBlazor.Color
 @using Size = MudBlazor.Size
-@using Ozds.Business.Time
-@inject NavigationManager NavigationManager;
+
 
 
 @* MOBILE *@
 <MudHidden Breakpoint="Breakpoint.MdAndUp">
   <MudText Typo="Typo.h4" Class="d-flex">
-    @(T["Korisnici mreže"])
+    @(T["Network users"])
   </MudText>
-  <MudTextField Class="" ValueChanged="EventCallback.Factory.Create<string>(this, Filter)" Label="Pretraži korisnike lokacije" Variant="Variant.Text"></MudTextField>
+  <MudTextField Class="" ValueChanged="EventCallback.Factory.Create<string>(this, Filter)" Label="@T["Search"]" Variant="Variant.Text"></MudTextField>
   @foreach (var dataStruct in _shownTenants.Where(x => x.show).ToList())
   {
     <MudPaper Elevation="2" Class="ma-1">
       <MudStack Spacing="0">
         <MudGrid Class="d-flex pa-2">
           <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
-            @T["Lokacija"]: @dataStruct.data.location.Title
+            @T["Location"]: @dataStruct.data.location.Title
           </MudItem>
           <MudItem xs="2" Class="d-flex align-center justify-end">
             <MudIconButton OnClick="() => InspectLocation(dataStruct.data.location)" Icon="@Icons.Material.Filled.RemoveRedEye" Color="Color.Primary"/>
           </MudItem>
           <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
-            @T["Korisnik mreže"]: @dataStruct.data.networkUser.Title
+            @T["Network user"]: @dataStruct.data.networkUser.Title
           </MudItem>
           <MudItem xs="2" Class="d-flex align-center justify-end">
             <MudIconButton OnClick="() => InspectNetworkUser(dataStruct.data.networkUser)" Icon="@Icons.Material.Filled.RemoveRedEye" Color="Color.Primary"/>
           </MudItem>
           <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large;">
-            @T["Potrošnja u tekućem mjesecu"]: @(FloatString(dataStruct.data.thisMonthUsage / 1000, 0) + " kWh")
+            @T["Current months consumption"]: @(FloatString(dataStruct.data.thisMonthUsage / 1000, 0) + " kWh")
           </MudItem>
           <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large;">
-            @T["Potrošnja u prethodnom mjesecu"]: @(FloatString(dataStruct.data.lastMonthUsage / 1000, 0) + " kWh")
+            @T["Last months consumption"]: @(FloatString(dataStruct.data.lastMonthUsage / 1000, 0) + " kWh")
           </MudItem>
           <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large;">
-            @T["Iznos računa u prethodnom mjesecu"]: @(dataStruct.data.lastMonthsPayment == 0 ? T["Račun u izradi..."] : DecimalString(dataStruct.data.lastMonthsPayment) + " EUR")
+            @T["Last months invoice total"]: @(dataStruct.data.lastMonthsPayment == 0 ? T["Invoice pending..."] : DecimalString(dataStruct.data.lastMonthsPayment) + " EUR")
           </MudItem>
           @if (representative is not null && representative.Representative.Role is RoleModel.OperatorRepresentative)
           {
             <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large;">
               <MudButton Variant="Variant.Filled" Color="Color.Primary">
                 <form method="post" action="@($"admin/IssueInvoice/{dataStruct.data.networkUser.Id}")">
-                  <button type="submit">@T["Izdati Račun"]</button>
+                  <button type="submit">@T["Issue Invoice"]</button>
                 </form>
               </MudButton>
             </MudItem>
@@ -63,11 +63,11 @@
     Filterable="true"
     QuickFilter="@_quickFilter">
     <ToolBarContent>
-      <MudText Typo="Typo.h4">@T["Korisnici mreže"]</MudText>
+      <MudText Typo="Typo.h4">@T["Network users"]</MudText>
       <MudSpacer/>
       <MudTextField
         @bind-Value="_searchString"
-        Placeholder="Search"
+        Placeholder="@T["Search"]"
         Adornment="Adornment.Start"
         Immediate="true"
         AdornmentIcon="@Icons.Material.Filled.Search"
@@ -76,7 +76,7 @@
       </MudTextField>
     </ToolBarContent>
     <Columns>
-      <TemplateColumn Title="@T["Lokacija"]" Sortable="false">
+      <TemplateColumn Title="@T["Location"]" Sortable="false">
         <CellTemplate>
           <MudStack Row>
             <MudButton OnClick="() => InspectLocation(context.Item.location)" Variant="Variant.Outlined" Color="Color.Primary">
@@ -85,7 +85,7 @@
           </MudStack>
         </CellTemplate>
       </TemplateColumn>
-      <TemplateColumn Title="@T["Korisnici mreže"]" Sortable="false">
+      <TemplateColumn Title="@T["Network users"]" Sortable="false">
         <CellTemplate>
           <MudStack Row>
             <MudButton OnClick="() => InspectNetworkUser(context.Item.networkUser)" Variant="Variant.Outlined" Color="Color.Primary">
@@ -97,7 +97,7 @@
       <PropertyColumn
         CellStyle="font-size: x-large;"
         Property="x => x.thisMonthUsage"
-        Title='@T["Potrošnja u tekućem mjesecu"]'>
+        Title='@T["Current months consumption"]'>
         <CellTemplate>
           @(FloatString(context.Item.thisMonthUsage / 1000, 0) + " kWh")
         </CellTemplate>
@@ -105,7 +105,7 @@
       <PropertyColumn
         CellStyle="font-size: x-large;"
         Property="x => x.lastMonthUsage"
-        Title='@T["Potrošnja u prethodnom mjesecu"]'>
+        Title='@T["Last months consumption"]'>
         <CellTemplate>
           @(FloatString(context.Item.lastMonthUsage / 1000, 0) + " kWh")
         </CellTemplate>
@@ -113,9 +113,9 @@
       <PropertyColumn
         CellStyle="font-size: x-large;"
         Property="x => x.lastMonthsPayment"
-        Title='@T["Iznos računa u prethodnom mjesecu"]'>
+        Title='@T["Last months invoice total"]'>
         <CellTemplate>
-          @(context.Item.lastMonthsPayment == 0 ? T["Račun u izradi..."] : DecimalString(context.Item.lastMonthsPayment) + " EUR")
+          @(context.Item.lastMonthsPayment == 0 ? T["Invoice pending..."] : DecimalString(context.Item.lastMonthsPayment) + " EUR")
         </CellTemplate>
       </PropertyColumn>
 
@@ -126,7 +126,7 @@
             <MudStack Row>
               <MudButton Variant="Variant.Filled" Color="Color.Primary">
                 <form method="post" action="@($"admin/IssueInvoice/{context.Item.networkUser.Id}")">
-                  <button type="submit">@T["Izdati Račun"]</button>
+                  <button type="submit">@T["Issue Invoice"]</button>
                 </form>
               </MudButton>
             </MudStack>

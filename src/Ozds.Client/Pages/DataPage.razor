@@ -1,6 +1,6 @@
 @page "/data"
 
-@inject NavigationManager NavigationManager;
+
 @using Color = MudBlazor.Color
 @inherits OzdsOwningComponentBase
 @* @attribute [Navigation( Title = "Data", Allows = new[] { RoleModel.LocationRepresentative, RoleModel.NetworkUserRepresentative, RoleModel.OperatorRepresentative }, Parents = new[] { typeof(UsersPage)})] *@
@@ -10,14 +10,14 @@
   <MudAutocomplete
     MaxItems="20"
     Class="pa-4 mt-0"
-    T="string"
-    Label="Data type:"
+    T="(EntityEnum type, string name)"
+    Label="@T["Data type:"]"
     Value="_dataSelected"
     ValueChanged="e => Update(e)"
     SearchFunc="@Search"
-    ToStringFunc="@(e => e == null ? null : $"{e}")"/>
+    ToStringFunc="@(e => e.name == null ? null : $"{e.name}")"/>
   <MudButton Class="ma-4" OnClick='() => Edit("-1")' Variant="Variant.Outlined" Color="Color.Primary">
-    Create
+    @T["Create"]
   </MudButton>
 </MudItem>
 
@@ -31,7 +31,7 @@
     <PropertyColumn
       CellStyle="font-size: x-large;"
       Property="x => x.title"
-      Title='@T["Ime"]'>
+      Title='@T["Name"]'>
       <CellTemplate>
         @(context.Item.title)
       </CellTemplate>
@@ -48,7 +48,7 @@
       <CellTemplate>
         <MudStack Row>
           <MudButton OnClick="() => Edit(context.Item.id)" Variant="Variant.Outlined" Color="Color.Primary">
-            Edit
+            @T["Edit"]
           </MudButton>
         </MudStack>
       </CellTemplate>
@@ -64,97 +64,116 @@
 
   public record struct TabularData(string title, string id);
 
-  private string _dataSelected = "Lokacije";
-  private readonly List<string> _dataList = new();
+  private (EntityEnum type, string name) _dataSelected;
+  private readonly List<(EntityEnum type, string name)> _dataList = new();
   private OzdsDataQueries queries = default!;
+
+  private enum EntityEnum
+  {
+    Locations,
+    Network_Users,
+    Red_Low_Catalogue,
+    Blue_Low_Catalogue,
+    White_Low_Catalogue,
+    White_Medium_Catalogue,
+    Regulatory_Catalogue,
+    Messenger,
+    Abb_B2x_validator,
+    Schneider_iEM3xxx_validator,
+    Abb_B2x_device,
+    Schneider_iEM3xxx_device,
+    Device_at_location,
+    Device_at_network_user
+  }
 
   protected override async Task OnInitializedAsync()
   {
+    _dataSelected = (EntityEnum.Locations, T["Locations"]);
     queries = ScopedServices.GetRequiredService<OzdsDataQueries>();
-    _dataList.Add("Lokacije");
-    _dataList.Add("Korisnici mreže");
-    _dataList.Add("Crveni Niski Katalozi");
-    _dataList.Add("Plavi Niski Katalozi");
-    _dataList.Add("Bijeli Niski Katalozi");
-    _dataList.Add("Bijeli Srednji Katalozi");
-    _dataList.Add("Regulaciski Katalozi");
-    _dataList.Add("Pošiljatenji");
-    _dataList.Add("Abb B2x validacija");
-    _dataList.Add("Schneider iEM3xxx validacija");
-    _dataList.Add("Abb B2x brojilo");
-    _dataList.Add("Schneider iEM3xxx brojilo");
-    _dataList.Add("Brojilo na Lokaciji");
-    _dataList.Add("Brojilo na Korisniku Mreže");
+    _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.Locations, T["Locations"]));
+    _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.Network_Users, T["Network Users"]));
+    _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.Red_Low_Catalogue, T["Red Low Catalogue"]));
+    _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.Blue_Low_Catalogue, T["Blue Low Catalogue"]));
+    _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.White_Low_Catalogue, T["White Low Catalogue"]));
+    _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.White_Medium_Catalogue, T["White Medium Catalogue"]));
+    _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.Regulatory_Catalogue, T["Regulatory Catalogue"]));
+    _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.Messenger, T["Messenger"]));
+    _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.Abb_B2x_validator, T["Abb B2x validator"]));
+    _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.Schneider_iEM3xxx_validator, T["Schneider iEM3xxx validator"]));
+    _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.Abb_B2x_device, T["Abb B2x device"]));
+    _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.Schneider_iEM3xxx_device, T["Schneider iEM3xxx device"]));
+    _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.Device_at_location, T["Device at location"]));
+    _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.Device_at_network_user, T["Device at network user"]));
 
-    await Update("Lokacije");
+    await Update(new ValueTuple<EntityEnum, string>(EntityEnum.Locations, T["Locations"]));
   }
 
-  private Task<IEnumerable<string>> Search(string value)
+  private Task<IEnumerable<(EntityEnum type, string name)>> Search(string value)
   {
     // if text is null or empty, show complete list
     if (string.IsNullOrEmpty(value))
-      return Task.FromResult(_dataList as IEnumerable<string>);
-    var result = _dataList.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+      return Task.FromResult(_dataList as IEnumerable<(EntityEnum type, string name)>);
+    var result = _dataList.Where(x => x.name.Contains(value, StringComparison.InvariantCultureIgnoreCase));
     return Task.FromResult(result);
   }
 
-  private async Task Update(string value)
+  private async Task Update((EntityEnum type, string name) value)
   {
-    switch (value)
+    switch (value.type)
     {
-      case "Lokacije":
+      case EntityEnum.Locations:
         var a = (await queries.GetLocations("")).Items;
         _data = a.Select(x => new TabularData(x.Title, x.Id)).ToList();
         break;
-      case "Korisnici mreže":
+      case EntityEnum.Network_Users:
         var b = (await queries.GetNetworkUsers("")).Items;
         _data = b.Select(x => new TabularData(x.Title, x.Id)).ToList();
         break;
-      case "Crveni Niski Katalozi":
+      case EntityEnum.Red_Low_Catalogue:
         var c = (await queries.GetRedLowNetworkUserCatalogues("")).Items;
         _data = c.Select(x => new TabularData(x.Title, x.Id)).ToList();
         break;
-      case "Plavi Niski Katalozi":
+      case EntityEnum.Blue_Low_Catalogue:
         var d = (await queries.GetBlueLowNetworkUserCatalogues("")).Items;
         _data = d.Select(x => new TabularData(x.Title, x.Id)).ToList();
         break;
-      case "Bijeli Niski Katalozi":
+      case EntityEnum.White_Low_Catalogue:
         var e = (await queries.GetWhiteLowNetworkUserCatalogues("")).Items;
         _data = e.Select(x => new TabularData(x.Title, x.Id)).ToList();
         break;
-      case "Bijeli Srednji Katalozi":
+      case EntityEnum.White_Medium_Catalogue:
         var f = (await queries.GetWhiteMediumNetworkUserCatalogues("")).Items;
         _data = f.Select(x => new TabularData(x.Title, x.Id)).ToList();
         break;
-      case "Regulaciski Katalozi":
+      case EntityEnum.Regulatory_Catalogue:
         var g = (await queries.GetRegulatoryCatalogues("")).Items;
         _data = g.Select(x => new TabularData(x.Title, x.Id)).ToList();
         break;
-      case "Pošiljatenji":
+      case EntityEnum.Messenger:
         var h = (await queries.GetMessengers("")).Items;
         _data = h.Select(x => new TabularData(x.Title, x.Id)).ToList();
         break;
-      case "Abb B2x validacija":
+      case EntityEnum.Abb_B2x_validator:
         var k = (await queries.GetAbbB2xMeasurementValidators("")).Items;
         _data = k.Select(x => new TabularData(x.Title, x.Id)).ToList();
         break;
-      case "Schneider iEM3xxx validacija":
+      case EntityEnum.Schneider_iEM3xxx_validator:
         var l = (await queries.GetSchneideriEM3xxxMeasurementValidators("")).Items;
         _data = l.Select(x => new TabularData(x.Title, x.Id)).ToList();
         break;
-      case "Abb B2x brojilo":
+      case EntityEnum.Abb_B2x_device:
         var n = (await queries.GetAbbB2xMeters("")).Items;
         _data = n.Select(x => new TabularData(x.Title, x.Id)).ToList();
         break;
-      case "Schneider iEM3xxx brojilo":
+      case EntityEnum.Schneider_iEM3xxx_device:
         var m = (await queries.GetSchneideriEM3xxxMeters("")).Items;
         _data = m.Select(x => new TabularData(x.Title, x.Id)).ToList();
         break;
-      case "Brojilo na Lokaciji":
+      case EntityEnum.Device_at_location:
         var i = (await queries.GetLocationMeasurementLocations("")).Items;
         _data = i.Select(x => new TabularData(x.Title, x.Id)).ToList();
         break;
-      case "Brojilo na Korisniku Mreže":
+      case EntityEnum.Device_at_network_user:
         var j = (await queries.GetNetworkUserMeasurementLocations("")).Items;
         _data = j.Select(x => new TabularData(x.Title, x.Id)).ToList();
         break;
@@ -166,7 +185,54 @@
 
   private void Edit(string id)
   {
-    var typeString = _dataSelected.ToLower().Replace(' ', '-');
+    var typeString = "";
+
+    switch (_dataSelected.type)
+    {
+      case EntityEnum.Locations:
+        typeString = "location";
+        break;
+      case EntityEnum.Network_Users:
+        typeString = "network-user";
+        break;
+      case EntityEnum.Red_Low_Catalogue:
+        typeString = "red-low-catalogue";
+        break;
+      case EntityEnum.Blue_Low_Catalogue:
+        typeString = "blue-low-catalogue";
+        break;
+      case EntityEnum.White_Low_Catalogue:
+        typeString = "white-low-catalogue";
+        break;
+      case EntityEnum.White_Medium_Catalogue:
+        typeString = "white-medium-catalogue";
+        break;
+      case EntityEnum.Regulatory_Catalogue:
+        typeString = "regulatory-catalogue";
+        break;
+      case EntityEnum.Messenger:
+        typeString = "messenger";
+        break;
+      case EntityEnum.Abb_B2x_validator:
+        typeString = "abb-b2x-validator";
+        break;
+      case EntityEnum.Schneider_iEM3xxx_validator:
+        typeString = "schneider-iem3xxx-validator";
+        break;
+      case EntityEnum.Abb_B2x_device:
+        typeString = "abb-b2x-device";
+        break;
+      case EntityEnum.Schneider_iEM3xxx_device:
+        typeString = "schneider-iem3xxx-device";
+        break;
+      case EntityEnum.Device_at_location:
+        typeString = "device-at-location";
+        break;
+      case EntityEnum.Device_at_network_user:
+        typeString = "device-at-network-user";
+        break;
+    }
+
     NavigationManager.NavigateTo($"data/{typeString}/{id}");
   }
 

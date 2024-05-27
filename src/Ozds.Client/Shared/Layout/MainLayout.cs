@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Reflection;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Components;
@@ -18,8 +19,6 @@ public partial class MainLayout : OzdsLayoutComponentBase
 
   private LoadingState<UserState> _userState = new();
 
-  [Inject] private NavigationManager NavigationManager { get; set; } = default!;
-
   [Inject] private IServiceProvider Services { get; set; } = default!;
 
   public static IEnumerable<NavigationDescriptor> GetNavigationDescriptors(
@@ -38,7 +37,7 @@ public partial class MainLayout : OzdsLayoutComponentBase
         {
           yield return new NavigationDescriptor(
             navigationAttribute.Title,
-            "/app" + routeAttribute.Template,
+            $"/app/{CultureInfo.CurrentCulture.Name}" + routeAttribute.Template,
             navigationAttribute.Icon
           );
         }

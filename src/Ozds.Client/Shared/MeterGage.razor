@@ -7,7 +7,7 @@
   <MudHidden Breakpoint="Breakpoint.MdAndUp">
     <MudPaper Class="d-flex align-center justify-space-between mud-width-full pa-1 flex-column">
       <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
-        @(T["Trenutna snaga"] + ": " + Source)
+        @(T["Active power"] + ": " + Source)
       </MudItem>
       <MudContainer MaxWidth="MaxWidth.Small">
         <ApexChart TItem="GageData"
@@ -16,14 +16,14 @@
           <ApexPointSeries TItem="GageData"
                            Items="gageValue"
                            SeriesType=SeriesType.RadialBar
-                           Name="@T["Potrošnja"]"
+                           Name="@T["Search"]"
                            XValue="@(e => FloatString(e.value / 1000, 2) + " kW")"
                            YAggregate="@(e => (decimal?)Math.Round((double)e.First().percent, 2))"
                            OrderByDescending="e => e.X"/>
         </ApexChart>
       </MudContainer>
       <MudText Typo="Typo.body1" Style="font-weight: bold;margin-top: -30px;text-align: center; color: #adadad;" Class="m-0">
-        @T["U usporedbi s maksimalnom snagom u prethodnom mjesecu"] (@(FloatString(connectionMaxPower / 1000) + " kW"))
+        @T["Relative to connected power"] (@(FloatString(connectionMaxPower / 1000) + " kW"))
       </MudText>
     </MudPaper>
   </MudHidden>
@@ -33,7 +33,7 @@
   <MudHidden Breakpoint="Breakpoint.SmAndDown">
     <MudPaper Class="d-flex align-center justify-space-between mud-width-full py-8 px-8 flex-column" Height="450px">
       <MudItem Class="d-flex" Style="font-size: large; font-weight: bold;">
-        @(T["Trenutna snaga"] + ": " + Source)
+        @(T["Active power"] + ": " + Source)
       </MudItem>
       <MudContainer MaxWidth="MaxWidth.Medium">
         <ApexChart TItem="GageData"
@@ -42,14 +42,14 @@
           <ApexPointSeries TItem="GageData"
                            Items="gageValue"
                            SeriesType=SeriesType.RadialBar
-                           Name="@T["Potrošnja"]"
+                           Name="@T["Search"]"
                            XValue="@(e => FloatString(e.value / 1000, 2) + " kW")"
                            YAggregate="@(e => (decimal?)Math.Round((double)e.First().percent, 2))"
                            OrderByDescending="e => e.X"/>
         </ApexChart>
       </MudContainer>
       <MudText Typo="Typo.body1" Style="font-weight: bold;margin-top: -30px;text-align: center; color: #adadad;" Class="m-0">
-        @T["U usporedbi s maksimalnom snagom u prethodnom mjesecu"] <br> (@(FloatString(connectionMaxPower / 1000) + " kW"))
+        @T["Relative to connected power"] <br> (@(FloatString(connectionMaxPower / 1000) + " kW"))
       </MudText>
     </MudPaper>
   </MudHidden>
@@ -88,7 +88,7 @@
   @* TIME STUFF *@
   private bool timerInitialized;
   private Timer timer = new();
-  private int updateMilisec = 10000;
+  private int updateMillisecond = 10000;
   private DateTimeOffset now = DateTimeOffset.UtcNow.LocalDateTime;
 
   protected override async Task OnInitializedAsync()
@@ -110,10 +110,10 @@
   private async Task GetValue()
   {
     now = DateTimeOffset.UtcNow.LocalDateTime;
-    var measureLastQuorterHour = await measureQueries.ReadAgnostic(new[] { $"x => x.MeterId == \"{Source}\"" }, now.AddMinutes(-1), now, 1, 1000);
-    if (measureLastQuorterHour.Count() > 0)
+    var measureLastQuarterHour = await measureQueries.ReadAgnostic(new[] { $"x => x.MeterId == \"{Source}\"" }, now.AddMinutes(-1), now, 1, 1000);
+    if (measureLastQuarterHour.Count() > 0)
     {
-      var a = measureLastQuorterHour.OrderBy(x => x.Timestamp).LastOrDefault();
+      var a = measureLastQuarterHour.OrderBy(x => x.Timestamp).LastOrDefault();
       if (a is not null)
       {
         var b = a.ActivePower_W.TariffUnary.DuplexNet.PhaseSum;
@@ -148,7 +148,7 @@
     if (firstRender && !timerInitialized)
     {
       timerInitialized = true;
-      timer = new Timer(updateMilisec);
+      timer = new Timer(updateMillisecond);
       timer.Elapsed += async delegate { await UpdateChartSeries(); };
       timer.Enabled = true;
     }

@@ -1,13 +1,13 @@
+@using Ozds.Business.Time
 @using Color = MudBlazor.Color
 @using Size = MudBlazor.Size
-@using Ozds.Business.Time
-@inject NavigationManager NavigationManager;
+
 
 @* MOBILE *@
 <MudHidden Breakpoint="Breakpoint.MdAndUp">
   <MudItem Class="mb-5">
     <MudText Typo="Typo.h4" Class="d-flex">
-      @(T["Lokacije"])
+      @(T["Locations"])
     </MudText>
     @foreach (var dataStruct in _shownLocations.Where(x => x.show).ToList())
     {
@@ -15,27 +15,27 @@
         <MudStack Spacing="0">
           <MudGrid Class="d-flex pa-2">
             <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large;">
-              @T["Lokacija"]: @dataStruct.data.location.Title
+              @T["Location"]: @dataStruct.data.location.Title
             </MudItem>
             <MudItem xs="2" Class="d-flex align-center justify-end">
               <MudIconButton OnClick="() => InspectLocation(dataStruct.data.location)" Icon="@Icons.Material.Filled.RemoveRedEye" Color="Color.Primary"/>
             </MudItem>
             <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
-              @T["Potrošnja u tekućem mjesecu"]: @(FloatString(dataStruct.data.thisMonthUsage / 1000, 0) + " kWh")
+              @T["Current months consumption"]: @(FloatString(dataStruct.data.thisMonthUsage / 1000, 0) + " kWh")
             </MudItem>
             <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
-              @T["Potrošnja u prethodnom mjesecu"]: @(FloatString(dataStruct.data.lastMonthUsage / 1000, 0) + " kWh")
+              @T["Last months consumption"]: @(FloatString(dataStruct.data.lastMonthUsage / 1000, 0) + " kWh")
             </MudItem>
             @if (representative.Representative.Role is RoleModel.LocationRepresentative)
             {
               <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
-                @T["Trenutna snaga"]: @FloatString(dataStruct.data.currentPower / 1000) kW
+                @T["Active power"]: @FloatString(dataStruct.data.currentPower / 1000) kW
               </MudItem>
             }
             else
             {
               <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
-                @T["Zbroj računa prethodnog mjeseca"]: @(dataStruct.data.lastMonthsPayment == 0 ? T["Račun u izradi..."] : DecimalString(dataStruct.data.lastMonthsPayment) + " EUR")
+                @T["Last months invoice total"]: @(dataStruct.data.lastMonthsPayment == 0 ? T["Invoice pending..."] : DecimalString(dataStruct.data.lastMonthsPayment) + " EUR")
               </MudItem>
             }
           </MudGrid>
@@ -56,11 +56,11 @@
     QuickFilter="@_quickFilter"
     Class="mb-6">
     <ToolBarContent>
-      <MudText Typo="Typo.h4">@T["Lokacije"]</MudText>
+      <MudText Typo="Typo.h4">@T["Locations"]</MudText>
       <MudSpacer/>
       <MudTextField
         @bind-Value="_searchString"
-        Placeholder="@T["Ukupna pretraži tekućeg mjeseca"]"
+        Placeholder="@T["Search"]"
         Adornment="Adornment.Start"
         Immediate="true"
         AdornmentIcon="@Icons.Material.Filled.Search"
@@ -69,7 +69,7 @@
       </MudTextField>
     </ToolBarContent>
     <Columns>
-      <TemplateColumn Title="@T["Lokacije"]" Sortable="false">
+      <TemplateColumn Title="@T["Location"]" Sortable="false">
         <CellTemplate>
           <MudStack Row>
             <MudButton OnClick="() => InspectLocation(context.Item.location)" Variant="Variant.Outlined" Color="Color.Primary">
@@ -81,7 +81,7 @@
       <PropertyColumn
         CellStyle="font-size: x-large;"
         Property="x => x.thisMonthUsage"
-        Title='@T["Potrošnja u tekućem mjesecu"]'>
+        Title='@T["Current months consumption"]'>
         <CellTemplate>
           @(FloatString(context.Item.thisMonthUsage / 1000, 0) + " kWh")
         </CellTemplate>
@@ -89,7 +89,7 @@
       <PropertyColumn
         CellStyle="font-size: x-large;"
         Property="x => x.lastMonthUsage"
-        Title='@T["Potrošnja u prethodnom mjesecu"]'>
+        Title='@T["Last months consumption"]'>
         <CellTemplate>
           @(FloatString(context.Item.lastMonthUsage / 1000, 0) + " kWh")
         </CellTemplate>
@@ -99,7 +99,7 @@
         <PropertyColumn
           CellStyle="font-size: x-large;"
           Property="x => x.currentPower"
-          Title='@T["Trenutna snaga"]'>
+          Title='@T["Active power"]'>
           <CellTemplate>
             @FloatString(context.Item.currentPower / 1000) kW
           </CellTemplate>
@@ -110,9 +110,9 @@
         <PropertyColumn
           CellStyle="font-size: x-large;"
           Property="x => x.lastMonthsPayment"
-          Title='@T["Zbroj računa prethodnog mjeseca"]'>
+          Title='@T["Last months invoice total"]'>
           <CellTemplate>
-            @(context.Item.lastMonthsPayment == 0 ? T["Račun u izradi..."] : DecimalString(context.Item.lastMonthsPayment) + " EUR")
+            @(context.Item.lastMonthsPayment == 0 ? T["Invoice pending..."] : DecimalString(context.Item.lastMonthsPayment) + " EUR")
           </CellTemplate>
         </PropertyColumn>
       }

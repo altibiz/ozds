@@ -4,14 +4,14 @@
 <Loading Load="@(async () => (Invoice ?? await ScopedServices.GetRequiredService<OzdsInvoiceQueries>().ReadSingle<NetworkUserInvoiceModel>(Id ?? throw new InvalidOperationException()))!)">
   <Found>
     <MudText Typo="Typo.h5">
-      RAČUN ZA @(context.FromDate.Month). MJESEC
+      @T["INVOICE FOR"] @(context.FromDate.Month). @T["MONTH"]
     </MudText>
 
     <MudPaper class="mt-4 px-4 py-2">
       <MudGrid Spacing="1">
         <MudItem xs="12" sm="12">
           <MudText Typo="Typo.body1">
-            <strong>ZDS:</strong>
+            <strong>@T["ZDS"]:</strong>
           </MudText>
         </MudItem>
         <MudItem xs="12" sm="12">
@@ -21,7 +21,7 @@
         </MudItem>
         <MudItem xs="12" sm="12">
           <MudText Typo="Typo.body1">
-            <strong>Korisnik:</strong>
+            <strong>@T["User"]:</strong>
           </MudText>
         </MudItem>
         <MudItem xs="12" sm="12">
@@ -31,7 +31,7 @@
         </MudItem>
         <MudItem xs="12" sm="12">
           <MudText Typo="Typo.body1">
-            <strong>Od:</strong>
+            <strong>@T["From"]:</strong>
           </MudText>
         </MudItem>
         <MudItem xs="12" sm="12">
@@ -41,7 +41,7 @@
         </MudItem>
         <MudItem xs="12" sm="12">
           <MudText Typo="Typo.body1">
-            <strong>Do:</strong>
+            <strong>@T["To"]:</strong>
           </MudText>
         </MudItem>
         <MudItem xs="12" sm="12">
@@ -54,7 +54,7 @@
 
     <MudItem Class="d-flex flex-row justify-space-between mt-8">
       <MudText Typo="Typo.h5">
-        Mrežarina
+        @T["Grid fee"]
       </MudText>
       <MudText Typo="Typo.h5" Class="mr-4">
         EUR
@@ -64,27 +64,27 @@
       var usageRows = new[]
       {
         (
-          Name: "Korištenje mreže u doba jedne dnevne tarife",
+          Name: T["Network usage during the period of a single daily tariff"],
           Total: context.UsageActiveEnergyTotalImportT0Fee_EUR
         ),
         (
-          Name: "Korištenje mreže u doba više dnevne tarife",
+          Name: T["Network usage during the period of a higher daily tariff"],
           Total: context.UsageActiveEnergyTotalImportT1Fee_EUR
         ),
         (
-          Name: "Korištenje mreže u doba niže dnevne tarife",
+          Name: T["Network usage during the period of a lower daily tariff"],
           Total: context.UsageActiveEnergyTotalImportT2Fee_EUR
         ),
         (
-          Name: "Angažirana snaga u doba više tarife",
+          Name: T["Engaged power during the period of a higher tariff"],
           Total: context.UsageActivePowerTotalImportT1PeakFee_EUR
         ),
         (
-          Name: "Prekomjerno preuzeta jalova energija",
+          Name: T["Excessively drawn reactive power"],
           Total: context.UsageReactiveEnergyTotalRampedT0Fee_EUR
         ),
         (
-          Name: "Naknada za mjernu uslugu",
+          Name: T["Measurement service fee"],
           Total: context.UsageMeterFee_EUR
         )
       };
@@ -114,12 +114,12 @@
       </MudPaper>
     }
     <MudText Typo="Typo.subtitle1" class="mt-2" Align="MudAlign.Right">
-      UKUPNO @DecimalString(context.UsageFeeTotal_EUR) EUR
+      @T["TOTAL"] @DecimalString(context.UsageFeeTotal_EUR) EUR
     </MudText>
 
     <MudItem Class="d-flex flex-row justify-space-between mt-8">
       <MudText Typo="Typo.h5">
-        Opskrba
+        @T["Supply"]
       </MudText>
       <MudText Typo="Typo.h5" Class="mr-4">
         EUR
@@ -129,19 +129,19 @@
       var supplyRows = new[]
       {
         (
-          Name: "Opskrba električnom energijom u doba više dnevne tarife",
+          Name: T["Electricity supply during the period of a higher daily tariff"],
           Total: context.SupplyActiveEnergyTotalImportT1Fee_EUR
         ),
         (
-          Name: "Opskrba električnom energijom u doba niže dnevne tarife",
+          Name: T["Electricity supply during the period of a lower daily tariff"],
           Total: context.SupplyActiveEnergyTotalImportT2Fee_EUR
         ),
         (
-          Name: "Naknada za poticanje proizvodnje iz obnovljivih izvora energije i kogeneracije",
+          Name: T["Fee for promoting production from renewable energy sources and cogeneration"],
           Total: context.SupplyRenewableEnergyFee_EUR
         ),
         (
-          Name: "Trošarina za poslovnu/neposlovnu upotrebu",
+          Name: T["Excise duty for business/non-business use"],
           Total: context.SupplyBusinessUsageFee_EUR
         )
       };
@@ -171,7 +171,7 @@
       </MudPaper>
     }
     <MudText Typo="Typo.subtitle1" class="mt-2" Align="MudAlign.Right">
-      UKUPNO @DecimalString(context.SupplyFeeTotal_EUR) EUR
+      @T["TOTAL"] @DecimalString(context.SupplyFeeTotal_EUR) EUR
     </MudText>
 
     <MudItem Class="d-flex flex-row justify-space-between mt-8">
@@ -186,7 +186,7 @@
       <MudGrid Spacing="1">
         <MudItem xs="12" sm="9">
           <MudText Typo="Typo.h5">
-            <strong>Ukupno</strong>
+            <strong>@T["Total"]</strong>
           </MudText>
         </MudItem>
         <MudItem xs="12" sm="3">
@@ -205,9 +205,9 @@
           <MudText Typo="Typo.h5">
 
             <strong>
-              PDV (@DecimalString(
-                     context.ArchivedRegulatoryCatalogue.TaxRate_Percent
-                   )%)
+              @T["VAT"] (@DecimalString(
+                           context.ArchivedRegulatoryCatalogue.TaxRate_Percent
+                         )%)
             </strong>
           </MudText>
         </MudItem>
@@ -225,7 +225,7 @@
         </MudItem>
         <MudItem xs="12" sm="9">
           <MudText Typo="Typo.h5">
-            <strong>Sveukupno</strong>
+            <strong>@T["Full total"]</strong>
           </MudText>
         </MudItem>
         <MudItem xs="12" sm="3">
@@ -248,7 +248,7 @@
         class="ml-auto"
         Href='@($"/app/network-user-invoice-print/{context.Id}")'>
         <MudButton Variant="Variant.Filled">
-          PREGLED
+          @T["VIEW"]
         </MudButton>
       </MudLink>
     </MudText>

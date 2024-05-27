@@ -4,4 +4,5 @@ namespace Ozds.Business.Capabilities;
 
 public class AbbB2xCapabilities : ICapabilities
 {
+  public bool hasApparentPower { get; set; } = false;
 }
