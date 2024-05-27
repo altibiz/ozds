@@ -172,13 +172,14 @@
   private IEnumerable<MeterModel>? _meters;
   OzdsAggregateQueries aggregateQueries = default!;
   OzdsMeasurementQueries measureQueries = default!;
+
   private enum DataEnum
   {
     Voltage,
     Current,
     Active_Power,
     Reactive_Power,
-    Apparent_Power,
+    Apparent_Power
   }
 
   private class ExpandThing
@@ -279,16 +280,16 @@
     if (_selectedMeter != null && _selectedMeter.Capabilities.hasApparentPower)
     {
       _displayType = new List<(DataEnum type, string name)>
-        {
-          (DataEnum.Voltage, T["Voltage"]), (DataEnum.Current, T["Current"]), (DataEnum.Active_Power, T["Active Power"]), (DataEnum.Reactive_Power, T["Reactive Power"]), (DataEnum.Apparent_Power, T["Apparent Power"])
-        };
+      {
+        (DataEnum.Voltage, T["Voltage"]), (DataEnum.Current, T["Current"]), (DataEnum.Active_Power, T["Active Power"]), (DataEnum.Reactive_Power, T["Reactive Power"]), (DataEnum.Apparent_Power, T["Apparent Power"])
+      };
     }
     else
     {
       _displayType = new List<(DataEnum type, string name)>
-        {
-          (DataEnum.Voltage, T["Voltage"]), (DataEnum.Current, T["Current"]), (DataEnum.Active_Power, T["Active Power"]), (DataEnum.Reactive_Power, T["Reactive Power"])
-        };
+      {
+        (DataEnum.Voltage, T["Voltage"]), (DataEnum.Current, T["Current"]), (DataEnum.Active_Power, T["Active Power"]), (DataEnum.Reactive_Power, T["Reactive Power"])
+      };
       if (_dataType == "Apparent Power")
         _dataType = "Reactive Power";
     }

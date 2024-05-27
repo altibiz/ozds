@@ -22,8 +22,10 @@ public class OzdsComponentLocalizer : IOzdsComponentLocalizer
     {
       Dictionary<string, string> _activeTranslation = [];
       var culture = CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
-      var hrCulture = CultureInfo.CreateSpecificCulture("hr-HR").TwoLetterISOLanguageName;
-      var enCulture = CultureInfo.CreateSpecificCulture("en-US").TwoLetterISOLanguageName;
+      var hrCulture = CultureInfo.CreateSpecificCulture("hr-HR")
+        .TwoLetterISOLanguageName;
+      var enCulture = CultureInfo.CreateSpecificCulture("en-US")
+        .TwoLetterISOLanguageName;
       if (culture == enCulture)
       {
         _activeTranslation = _translations.Value;

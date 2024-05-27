@@ -79,7 +79,7 @@
   <MudHidden Breakpoint="Breakpoint.SmAndDown">
     <MudPaper Class="d-flex align-center justify-center mud-width-full py-8 px-8 flex-column" Height="450px">
       <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
-        @T[_dataTitle] @T["for"]:  @Source
+        @T[_dataTitle] @T["for"]: @Source
       </MudItem>
       <MudContainer Class="d-flex flex-column" MaxWidth="MaxWidth.Medium">
         @if (_graphValues is not null)
@@ -174,13 +174,14 @@
   private Timer timer = new();
   private int updateMillisecond = 10000;
   private DateTimeOffset now = DateTimeOffset.UtcNow.LocalDateTime;
+
   private enum DataEnum
   {
     Voltage,
     Current,
     Active_Power,
     Reactive_Power,
-    Apparent_Power,
+    Apparent_Power
   }
 
   protected override async Task OnInitializedAsync()
