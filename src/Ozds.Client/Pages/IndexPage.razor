@@ -1,5 +1,5 @@
 @page "/"
-@attribute [Navigation(Icon= Icons.Material.Outlined.Home, Title = "Naslovnica", Allows = new[] { RoleModel.LocationRepresentative, RoleModel.NetworkUserRepresentative, RoleModel.OperatorRepresentative })]
+@attribute [Navigation(Icon= Icons.Material.Outlined.Home, Title = "Home", Allows = new[] { RoleModel.LocationRepresentative, RoleModel.NetworkUserRepresentative, RoleModel.OperatorRepresentative })]
 @attribute [Authorize]
 
 @if (user is null || representative is null)

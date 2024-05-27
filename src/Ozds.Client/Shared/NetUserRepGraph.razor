@@ -12,7 +12,7 @@
                    @ref="chart">
           <ApexPointSeries TItem="ChartData"
                            Items="@_graphValues"
-                           Name="Potrošnja"
+                           Name="@T["Consumption"]"
                            SeriesType="SeriesType.Area"
                            XValue='x => DateTimeGraph(x.date)'
                            YValue="x => x.value"/>
@@ -32,7 +32,7 @@
                  @ref="chart">
         <ApexPointSeries TItem="ChartData"
                          Items="@_graphValues"
-                         Name="Potrošnja"
+                         Name="@T["Consumption"]"
                          SeriesType="SeriesType.Area"
                          XValue='x => DateTimeGraph(x.date)'
                          YValue="x => x.value"/>
@@ -62,8 +62,8 @@
     var aggregateQueries = ScopedServices.GetRequiredService<OzdsAggregateQueries>();
     var query = ScopedServices.GetRequiredService<OzdsMeterTableQueries>();
     _netUsers = await query.GetNetworkUsersByRepresentative(representative.Representative);
-    var quorterHourlyMeasures = await aggregateQueries.ReadAgnostic(new[] { "x => x.Interval == 0" }, startOfThisYear, now, 1, 9000);
-    var values = quorterHourlyMeasures.OrderBy(x => x.Timestamp).GroupBy(x => x.Timestamp).ToList();
+    var quarterHourlyMeasures = await aggregateQueries.ReadAgnostic(new[] { "x => x.Interval == 0" }, startOfThisYear, now, 1, 9000);
+    var values = quarterHourlyMeasures.OrderBy(x => x.Timestamp).GroupBy(x => x.Timestamp).ToList();
     foreach (var value in values)
     {
       var val = (decimal)value.FirstOrDefault()!.ActiveEnergySpan_Wh.SpanMax.TariffUnary.DuplexImport.PhaseSum;

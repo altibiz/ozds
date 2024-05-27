@@ -1,4 +1,3 @@
-@inject NavigationManager NavigationManager
 @inject IDialogService DialogService
 @inherits OzdsOwningComponentBase
 
@@ -8,7 +7,7 @@
   return;
 }
 
-<MudText Class="my-2" Typo="Typo.h4">Brojilo na Korisniku mreže</MudText>
+<MudText Class="my-2" Typo="Typo.h4">@T["Device at network user"]</MudText>
 <EditForm
   Model="@LoadingState.Value"
   OnValidSubmit="Submit">
@@ -16,11 +15,11 @@
   <MudCard>
     <MudCardContent>
       <MudTextField
-        Label="Ime"
+        Label="@T["Name"]"
         @bind-Value="LoadingState.Value.Title"
         For="@(() => LoadingState.Value.Title)"/>
       <MudSelect
-        Label="Korisnici mreže"
+        Label="@T["Network users"]"
         AnchorOrigin="Origin.BottomCenter"
         @bind-Value="LoadingState.Value.NetworkUserId"
         For="@(() => LoadingState.Value.NetworkUserId)">
@@ -32,7 +31,7 @@
         }
       </MudSelect>
       <MudSelect
-        Label="Brojilo"
+        Label="@T["Device"]"
         AnchorOrigin="Origin.BottomCenter"
         @bind-Value="LoadingState.Value.MeterId"
         For="@(() => LoadingState.Value.MeterId)">
@@ -44,7 +43,7 @@
         }
       </MudSelect>
       <MudSelect
-        Label="Katalog"
+        Label="@T["Catalogue"]"
         AnchorOrigin="Origin.BottomCenter"
         @bind-Value="LoadingState.Value.NetworkUserCatalogueId"
         For="@(() => LoadingState.Value.NetworkUserCatalogueId)">
@@ -65,11 +64,11 @@
         Class="ml-auto">
         @if (_create)
         {
-          <span>Create</span>
+          <span>@T["Create"]</span>
         }
         else
         {
-          <span>Update</span>
+          <span>@T["Update"]</span>
         }
       </MudButton>
     </MudCardActions>

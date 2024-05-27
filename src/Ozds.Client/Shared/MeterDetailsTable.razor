@@ -1,3 +1,4 @@
+@using Ozds.Business.Time
 @using Color = MudBlazor.Color
 @using Size = MudBlazor.Size
 @using Ozds.Business.Time
@@ -15,7 +16,7 @@
     </MudGrid>
 
     <MudText Typo="Typo.h4" Class="d-flex">
-      @(T["Brojilo"] + ": " + Source)
+      @(T["Device"] + ": " + Source)
     </MudText>
     <MudText Typo="Typo.h5">@(T["Name"] + ": " + _meter.Title)</MudText>
     @foreach (var dataStruct in _shownOMMs.Where(x => x.show).ToList())
@@ -24,7 +25,7 @@
         <MudStack Spacing="0">
           <MudGrid Class="d-flex pa-2">
             <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
-              @T["Obračunsko razdoblje"]: @(dataStruct.data.month + "/" + dataStruct.data.year)
+              @T["Billing period"]: @(dataStruct.data.month + "/" + dataStruct.data.year)
             </MudItem>
             <MudItem xs="2" Class="d-flex align-center justify-end">
               <MudIconButton OnClick="() => OnExpandCollapseClick(dataStruct.data.year, dataStruct.data.month)" Icon="@(dataStruct.expand ? Icons.Material.Filled.KeyboardArrowUp : Icons.Material.Filled.KeyboardArrowDown)" Color="Color.Default"/>
@@ -34,25 +35,25 @@
             <MudStack>
               <MudDivider DividerType="DividerType.Middle" Class="mt-2"/>
               <MudContainer>
-                @T["Prvo očitanje"]:
+                @T["First reading"]:
                 @if (dataStruct.data.monthStartTotal is not null)
                   @(FloatString(dataStruct.data.monthStartTotal / 1000, 0)) kWh
               
               </MudContainer>
               <MudContainer>
-                @T["Zadnje očitanje"]:
+                @T["Last reading"]:
                 @if (dataStruct.data.monthEndTotal is not null)
                   @(FloatString(dataStruct.data.monthEndTotal / 1000, 0)) kWh
               
               </MudContainer>
               <MudContainer Style="font-size: large; font-weight:bold;">
-                @T["Ukupna potrošnja"]:
+                @T["Total consumption"]:
                 @if (dataStruct.data.monthStartTotal is not null && dataStruct.data.monthEndTotal is not null)
                   @(FloatString((dataStruct.data.monthEndTotal - dataStruct.data.monthStartTotal) / 1000, 0)) kWh
               
               </MudContainer>
               <MudContainer Style="font-weight:bold;">
-                @T["Maksimalna snaga"]:
+                @T["Max power"]:
                 @(FloatString(dataStruct.data.maxPower / 1000, 0) + " kW")
               </MudContainer>
             </MudStack>
@@ -71,11 +72,11 @@
       Items="@_dataStruct"
       SortMode="SortMode.Multiple">
       <ToolBarContent>
-        <MudText Typo="Typo.h4">@(T["Brojilo"] + ": " + _meter.Title + " (" + Source + ")")</MudText>
+        <MudText Typo="Typo.h4">@(T["Device"] + ": " + _meter.Title + " (" + Source + ")")</MudText>
         <MudSpacer/>
         <MudTextField
           @bind-Value="_searchString"
-          Placeholder="@T["Pretraži"]"
+          Placeholder="@T["Search"]"
           Adornment="Adornment.Start"
           Immediate="true"
           AdornmentIcon="@Icons.Material.Filled.Search"
@@ -87,7 +88,7 @@
         <PropertyColumn
           CellStyle="font-size: x-large;"
           Property="x => x.month"
-          Title='@T["Obračunsko razdoblje"]'>
+          Title='@T["Billing period"]'>
           <CellTemplate>
             @(context.Item.month + "/" + context.Item.year)
           </CellTemplate>
@@ -95,7 +96,7 @@
         <PropertyColumn
           CellStyle="font-size: x-large;"
           Property="x => x.monthStartTotal"
-          Title='@T["Prvo očitanje"]'>
+          Title='@T["First reading"]'>
           <CellTemplate>
             @if (context.Item.monthStartTotal is not null)
               @(FloatString(context.Item.monthStartTotal / 1000, 0) + " kWh")
@@ -105,7 +106,7 @@
         <PropertyColumn
           CellStyle="font-size: x-large;"
           Property="x => x.monthEndTotal"
-          Title='@T["Zadnje očitanje"]'>
+          Title='@T["Last reading"]'>
           <CellTemplate>
             @if (context.Item.monthEndTotal is not null)
               @(FloatString(context.Item.monthEndTotal / 1000, 0) + " kWh")
@@ -115,7 +116,7 @@
         <PropertyColumn
           CellStyle="font-size: xx-large;"
           Property="x => x.monthEndTotal - x.monthStartTotal"
-          Title='@T["Ukupna potrošnja"]'>
+          Title='@T["Total consumption"]'>
           <CellTemplate>
             @if (context.Item.monthStartTotal is not null && context.Item.monthEndTotal is not null)
               @(FloatString((context.Item.monthEndTotal - context.Item.monthStartTotal) / 1000, 0) + " kWh")
@@ -125,7 +126,7 @@
         <PropertyColumn
           CellStyle="font-size: x-large;"
           Property="x => x.maxPower"
-          Title='@T["Maksimalna snaga"]'>
+          Title='@T["Max power"]'>
           <CellTemplate>
             @(FloatString(context.Item.maxPower / 1000, 0) + " kW")
           </CellTemplate>
@@ -188,13 +189,13 @@
         .Where(x => x.Interval == IntervalModel.Month)
         .FirstOrDefault();
       var measureThisMonthMonthly = measurePerMonth
-        .Where(x => x.Timestamp.LocalDateTime.Month == month.Month)
+        .Where(x => x.Timestamp == month)
         .Where(x => x.Interval == IntervalModel.Month)
         .FirstOrDefault();
       if (measureThisMonthMonthly is null)
         continue;
-      var measureThisMonthQuarterHourlies = measurePerMonth
-        .Where(x => x.Timestamp.LocalDateTime.Month == month.Month)
+      var ThisMonthQuarterHourly = measurePerMonth
+        .Where(x => x.Timestamp.GetStartOfMonth() == month)
         .Where(x => x.Interval == IntervalModel.QuarterHour)
         .ToList();
 

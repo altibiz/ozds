@@ -1,5 +1,5 @@
-@using Color = MudBlazor.Color
 @using System.Timers
+@using Color = MudBlazor.Color
 @implements IDisposable
 
 @if (_graphValues is not null)
@@ -8,7 +8,7 @@
   <MudHidden Breakpoint="Breakpoint.MdAndUp">
     <MudPaper Class="d-flex align-center justify-stat mud-width-full pa-1 pb-3 flex-column">
       <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
-        @(_dataTitle + T[" za"] + ": " + Source)
+        @T[_dataTitle] @T["for"]: @Source
       </MudItem>
       <MudContainer Class="d-flex flex-column" MaxWidth="MaxWidth.Small">
         <ApexChart TItem="ChartData"
@@ -51,7 +51,7 @@
                 <ChildContent>
                   @foreach (var type in _displayType)
                   {
-                    <MudMenuItem OnClick="@(() => DataMenuItemClicked(type))">@type</MudMenuItem>
+                    <MudMenuItem OnClick="@(() => DataMenuItemClicked(type.type))">@type.name</MudMenuItem>
                   }
                 </ChildContent>
               </MudMenu>
@@ -81,7 +81,7 @@
   <MudHidden Breakpoint="Breakpoint.SmAndDown">
     <MudPaper Class="d-flex align-center justify-center mud-width-full py-8 px-8 flex-column" Height="450px">
       <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
-        @(_dataTitle + " za: " + Source)
+        @T[_dataTitle] @T["for"]: @Source
       </MudItem>
       <MudContainer Class="d-flex flex-column" MaxWidth="MaxWidth.Medium">
         @if (_graphValues is not null)
@@ -116,14 +116,14 @@
             <MudMenu Dense="true" Variant="Variant.Filled" Color="Color.Primary">
               <ActivatorContent>
                 <MudButton Variant="Variant.Filled" Color="Color.Primary">
-                  @_dataTitle
+                  @T[_dataTitle]
                   <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowDown"/>
                 </MudButton>
               </ActivatorContent>
               <ChildContent>
                 @foreach (var type in _displayType)
                 {
-                  <MudMenuItem OnClick="@(() => DataMenuItemClicked(type))">@type</MudMenuItem>
+                  <MudMenuItem OnClick="@(() => DataMenuItemClicked(type.type))">@type.name</MudMenuItem>
                 }
               </ChildContent>
             </MudMenu>
@@ -158,10 +158,7 @@
   OzdsAggregateQueries aggregateQueries = default!;
   OzdsMeasurementQueries measureQueries = default!;
 
-  private List<string> _displayType = new()
-  {
-    "Napon", "Struja", "Radna snaga", "Jalova snaga", "Prividna snaga"
-  };
+  private List<(DataEnum type, string name)> _displayType = new();
 
   public int timeSpanMins = 15;
   public int lineCount = 0;
@@ -177,16 +174,36 @@
   @* TIME STUFF *@
   private bool timerInitialized;
   private Timer timer = new();
-  private int updateMilisec = 10000;
+  private int updateMillisecond = 10000;
   private DateTimeOffset now = DateTimeOffset.UtcNow.LocalDateTime;
+
+  private enum DataEnum
+  {
+    Voltage,
+    Current,
+    Active_Power,
+    Reactive_Power,
+    Apparent_Power
+  }
 
   protected override async Task OnInitializedAsync()
   {
+    _displayType = new List<(DataEnum type, string name)>
+    {
+      (DataEnum.Voltage, T["Voltage"]), (DataEnum.Current, T["Current"]), (DataEnum.Active_Power, T["Active Power"]), (DataEnum.Reactive_Power, T["Reactive Power"])
+    };
+
     aggregateQueries = ScopedServices.GetRequiredService<OzdsAggregateQueries>();
     measureQueries = ScopedServices.GetRequiredService<OzdsMeasurementQueries>();
     _meter = await ScopedServices
       .GetRequiredService<OzdsMeterTableQueries>()
       .GetMeterById(Source);
+
+
+    if (_meter != null && _meter.Capabilities.hasApparentPower)
+    {
+      _displayType.Add(new ValueTuple<DataEnum, string>(DataEnum.Apparent_Power, T["Apparent Power"]));
+    }
 
     SetGraphOptionsStart();
     await DataMenuItemClicked(_dataTitle);
@@ -198,27 +215,24 @@
     }
   }
 
-  private async Task DataMenuItemClicked(string type)
+  private async Task DataMenuItemClicked(DataEnum type)
   {
     switch (type)
     {
-      case "Struja":
-        _dataTitle = "Struja";
+      case DataEnum.Current:
+        _dataTitle = "Current";
         break;
-      case "":
-        _dataTitle = "Radna snaga";
+      case DataEnum.Active_Power:
+        _dataTitle = "Active Power";
         break;
-      case "Radna snaga":
-        _dataTitle = "Radna snaga";
+      case DataEnum.Voltage:
+        _dataTitle = "Voltage";
         break;
-      case "Napon":
-        _dataTitle = "Napon";
+      case DataEnum.Reactive_Power:
+        _dataTitle = "Reactive Power";
         break;
-      case "Jalova Snaga":
-        _dataTitle = "Jalova Snaga";
-        break;
-      case "Prividna snaga":
-        _dataTitle = "Prividna snaga";
+      case DataEnum.Apparent_Power:
+        _dataTitle = "Apparent Power";
         break;
     }
 
@@ -261,7 +275,7 @@
     measures = measures.OrderBy(x => x.Timestamp).ToList();
     switch (_dataTitle)
     {
-      case "Struja":
+      case "Current":
         _graphValues = measures.Select(x =>
           new ChartData(
             new[]
@@ -270,14 +284,14 @@
               x.Current_A.TariffUnary.DuplexAny.PhaseSplit.ValueL2,
               x.Current_A.TariffUnary.DuplexAny.PhaseSplit.ValueL3
             },
-            new[] { "L1 Struja", "L2 Struja", "L3 Struja" },
+            new[] { "L1 Current", "L2 Current", "L3 Current" },
             x.Timestamp,
             x.MeterId
           )).ToList();
         lineCount = 3;
         break;
       case "":
-      case "Radna snaga":
+      case "Active Power":
         _graphValues = measures.Select(x =>
           new ChartData(
             new[]
@@ -287,13 +301,13 @@
               x.ActivePower_W.TariffUnary.DuplexNet.PhaseSplit.ValueL3,
               x.ActivePower_W.TariffUnary.DuplexNet.PhaseSum
             },
-            new[] { "L1 Radna snaga", "L2 Radna snaga", "L3 Radna snaga", "Ukupna snaga" },
+            new[] { "L1 Active Power", "L2 Active Power", "L3 Active Power", "Total power" },
             x.Timestamp,
             x.MeterId
           )).ToList();
         lineCount = 4;
         break;
-      case "Napon":
+      case "Voltage":
         _graphValues = measures.Select(x =>
           new ChartData(
             new[]
@@ -302,13 +316,13 @@
               x.Voltage_V.TariffUnary.DuplexAny.PhaseSplit.ValueL2,
               x.Voltage_V.TariffUnary.DuplexAny.PhaseSplit.ValueL3
             },
-            new[] { "L1 Napon", "L2 Napon", "L3 Napon" },
+            new[] { "L1 Voltage", "L2 Voltage", "L3 Voltage" },
             x.Timestamp,
             x.MeterId
           )).ToList();
         lineCount = 3;
         break;
-      case "Jalova Snaga":
+      case "Reactive Power":
         _graphValues = measures.Select(x =>
           new ChartData(
             new[]
@@ -317,20 +331,20 @@
               x.ReactivePower_VAR.TariffUnary.DuplexNet.PhaseSplit.ValueL2,
               x.ReactivePower_VAR.TariffUnary.DuplexNet.PhaseSplit.ValueL3
             },
-            new[] { "L1 Jalova snaga", "L2 Jalova snaga", "L3 Jalova snaga" },
+            new[] { "L1 Reactive Power", "L2 Reactive Power", "L3 Reactive Power" },
             x.Timestamp,
             x.MeterId
           )).ToList();
         lineCount = 3;
         break;
-      case "Prividna snaga":
+      case "Apparent Power":
         _graphValues = measures.Select(x =>
           new ChartData(
             new[]
             {
               x.ApparentPower_VA.TariffUnary.DuplexNet.PhaseSum
             },
-            new[] { "Prividna snaga" },
+            new[] { "Apparent Power" },
             x.Timestamp,
             x.MeterId
           )).ToList();
@@ -377,7 +391,7 @@
 
   private async Task SetAnnotationGraphOptions()
   {
-    if (_dataTitle == "Radna snaga")
+    if (_dataTitle == "Active Power")
     {
       if (_graphValues is not null && _graphValues.Any() && _graphValues.All(x => x.values.Length > 3))
       {
@@ -528,7 +542,7 @@
     {
       Label = new Label
       {
-        Text = T["PRIKLJUČNA SNAGA"],
+        Text = T["CONNECTED POWER"],
         Style = new Style { Background = "red", Color = "white", FontSize = "12px" }
       },
       Y = connectionMaxPower,
@@ -544,7 +558,7 @@
     if (firstRender && !timerInitialized)
     {
       timerInitialized = true;
-      timer = new Timer(updateMilisec);
+      timer = new Timer(updateMillisecond);
       timer.Elapsed += async delegate { await UpdateChartSeries(); };
       timer.Enabled = true;
     }
@@ -554,7 +568,6 @@
   {
     if (_graphValues is not null)
     {
-      var aaafuckme = _graphValues.OrderByDescending(x => x.date).ToList();
       var lastGraphValues = _graphValues.OrderByDescending(x => x.date).FirstOrDefault();
       if (chart is null)
       {

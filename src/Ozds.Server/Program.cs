@@ -10,16 +10,20 @@ builder.Services
     .AddOzdsBusinessClient(builder.Environment.IsDevelopment()))
   .Configure((_, endpoints) => endpoints
     .MapOzdsClient("App", "Index", "/app")
-    .MapOzdsIot("Iot", "Push", "/iot"))
+    .MapOzdsIot("Iot", "Push", "/iot/push")
+    .MapOzdsIot("Iot", "Poll", "/iot/poll")
+    .MapOzdsIot("Iot", "Update", "/iot/update"))
   .Configure(app => app
     .MigrateOzdsData());
 
+
 var app = builder.Build();
+
 app.Use(async (context, next) =>
 {
   if (context.Request.Path == "/")
   {
-    context.Response.Redirect("/app", true);
+    context.Response.Redirect("/app/en", true);
   }
   else
   {
@@ -28,4 +32,5 @@ app.Use(async (context, next) =>
 });
 app.UseStaticFiles();
 app.UseOrchardCore();
+
 await app.RunAsync();

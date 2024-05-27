@@ -1,4 +1,3 @@
-@inject NavigationManager NavigationManager
 @inject IDialogService DialogService
 @inherits OzdsOwningComponentBase
 
@@ -7,7 +6,7 @@
   <MudProgressCircular/>
   return;
 }
-<MudText Class="my-2" Typo="Typo.h4">Abb B2x Brojilo</MudText>
+<MudText Class="my-2" Typo="Typo.h4">@T["Abb B2x Device"]</MudText>
 <EditForm
   Model="@LoadingState.Value"
   OnValidSubmit="Submit">
@@ -19,15 +18,15 @@
         @bind-Value="LoadingState.Value.Id"
         For="@(() => LoadingState.Value.Id)"/>
       <MudTextField
-        Label="Ime"
+        Label="@T["Name"]"
         @bind-Value="LoadingState.Value.Title"
         For="@(() => LoadingState.Value.Title)"/>
       <MudTextField
-        Label="Priključna snaga"
+        Label="@T["Connected power"]"
         @bind-Value="LoadingState.Value.ConnectionPower_W"
         For="@(() => LoadingState.Value.ConnectionPower_W)"/>
       <MudSelect
-        Label="Pošiljatelj"
+        Label="@T["Messenger"]"
         AnchorOrigin="Origin.BottomCenter"
         @bind-Value="LoadingState.Value.MessengerId"
         For="@(() => LoadingState.Value.MessengerId)">
@@ -39,7 +38,7 @@
         }
       </MudSelect>
       <MudSelect
-        Label="Validator"
+        Label="@T["Validator"]"
         AnchorOrigin="Origin.BottomCenter"
         @bind-Value="LoadingState.Value.MeasurementValidatorId"
         For="@(() => LoadingState.Value.MeasurementValidatorId)">
@@ -52,7 +51,7 @@
       </MudSelect>
       <MudSelect
         T="PhaseModel"
-        Label="Faze"
+        Label="@T["Phase"]"
         AnchorOrigin="Origin.BottomCenter"
         SelectedValuesChanged="@(e => LoadingState.Value.Phases = e.ToHashSet())"
         MultiSelection="true">

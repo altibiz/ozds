@@ -5,7 +5,7 @@
   <MudHidden Breakpoint="Breakpoint.MdAndUp">
     <MudPaper Class="d-flex align-center justify-stat mud-width-full pa-1 pb-3 flex-column">
       <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
-        @(_dataType + T[" za"] + ": " + _title)
+        @T[_dataType] @T["for"]: @_title
       </MudItem>
       <MudContainer Class="d-flex flex-column" MaxWidth="MaxWidth.Small">
         @if (_graphValues is not null)
@@ -37,18 +37,18 @@
             }
           </ApexChart>
           <MudItem Class="d-flex flex-column justify-center gap-2">
-            <MudAutocomplete Class="pa-4 mt-0" T="string" Label="Brojila" Value="_title" ValueChanged="e => LeftMenuItemClicked(e)" SearchFunc="@Search" ToStringFunc="@(e => e == null ? null : $"{e}")"/>
+            <MudAutocomplete Class="pa-4 mt-0" T="string" Label="@T["Devices"]" Value="_title" ValueChanged="e => LeftMenuItemClicked(e)" SearchFunc="@Search" ToStringFunc="@(e => e == null ? null : $"{e}")"/>
             <MudMenu Dense="true" Variant="Variant.Filled" Color="Color.Primary">
               <ActivatorContent>
                 <MudButton Variant="Variant.Filled" Color="Color.Primary">
-                  @_dataType
+                  @T[_dataType]
                   <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowDown"/>
                 </MudButton>
               </ActivatorContent>
               <ChildContent>
                 @foreach (var type in _displayType)
                 {
-                  <MudMenuItem OnClick="@(() => LeftMenuDataItemClicked(type))">@type</MudMenuItem>
+                  <MudMenuItem OnClick="@(() => LeftMenuDataItemClicked(type.type))">@type.name</MudMenuItem>
                 }
               </ChildContent>
             </MudMenu>
@@ -77,7 +77,7 @@
   <MudHidden Breakpoint="Breakpoint.SmAndDown">
     <MudPaper Class="d-flex align-center justify-center mud-width-full py-8 px-8 flex-column" Height="525px">
       <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
-        @(_dataType + " za: " + _title)
+        @T[_dataType] @T["for"]: @_title
       </MudItem>
       <MudContainer Class="d-flex flex-column" MaxWidth="MaxWidth.Medium">
         @if (_graphValues is not null)
@@ -112,14 +112,14 @@
             <MudMenu Dense="true" Variant="Variant.Filled" Color="Color.Primary">
               <ActivatorContent>
                 <MudButton Variant="Variant.Filled" Color="Color.Primary">
-                  @_dataType
+                  @T[_dataType]
                   <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowDown"/>
                 </MudButton>
               </ActivatorContent>
               <ChildContent>
                 @foreach (var type in _displayType)
                 {
-                  <MudMenuItem OnClick="@(() => LeftMenuDataItemClicked(type))">@type</MudMenuItem>
+                  <MudMenuItem OnClick="@(() => LeftMenuDataItemClicked(type.type))">@type.name</MudMenuItem>
                 }
               </ChildContent>
             </MudMenu>
@@ -138,7 +138,7 @@
               </ChildContent>
             </MudMenu>
           </MudItem>
-          <MudAutocomplete Class="pa-4 mt-0" T="string" Label="Brojila" Value="_title" ValueChanged="e => LeftMenuItemClicked(e)" SearchFunc="@Search" ToStringFunc="@(e => e == null ? null : $"{e}")"/>
+          <MudAutocomplete Class="pa-4 mt-0" T="string" Label="@T["Devices"]" Value="_title" ValueChanged="e => LeftMenuItemClicked(e)" SearchFunc="@Search" ToStringFunc="@(e => e == null ? null : $"{e}")"/>
         }
       </MudContainer>
     </MudPaper>
@@ -153,10 +153,7 @@
   private ApexChartOptions<ChartData> graphLOptions = NewApexChartOptions<ChartData>();
   private ApexChartOptions<ChartData> graphLOptionsMob = NewApexChartOptions<ChartData>();
 
-  private List<string> _displayType = new()
-  {
-    "Napon", "Struja", "Radna snaga", "Jalova Snaga", "Prividna snaga"
-  };
+  private List<(DataEnum type, string name)> _displayType = new();
 
   public int timeSpanMins = 15;
   public int lineCount = 0;
@@ -164,6 +161,7 @@
   public IEnumerable<ChartData>? _graphValues;
   public IEnumerable<ChartData>? _rowData;
   private string _title = "";
+  private MeterModel _selectedMeter;
   private string _dataType = "";
   private string _leftTimeTitle = "15 min";
   private DateTimeOffset now = DateTimeOffset.UtcNow.LocalDateTime;
@@ -174,6 +172,15 @@
   private IEnumerable<MeterModel>? _meters;
   OzdsAggregateQueries aggregateQueries = default!;
   OzdsMeasurementQueries measureQueries = default!;
+
+  private enum DataEnum
+  {
+    Voltage,
+    Current,
+    Active_Power,
+    Reactive_Power,
+    Apparent_Power
+  }
 
   private class ExpandThing
   {
@@ -186,6 +193,10 @@
 
   protected override async Task OnInitializedAsync()
   {
+    _displayType = new List<(DataEnum type, string name)>
+    {
+      (DataEnum.Voltage, T["Voltage"]), (DataEnum.Current, T["Current"]), (DataEnum.Active_Power, T["Active Power"]), (DataEnum.Reactive_Power, T["Reactive Power"])
+    };
     aggregateQueries = ScopedServices.GetRequiredService<OzdsAggregateQueries>();
     measureQueries = ScopedServices.GetRequiredService<OzdsMeasurementQueries>();
     var a = await ScopedServices
@@ -258,42 +269,47 @@
 
   private async Task LeftMenuItemClicked(string source)
   {
-    if (source.StartsWith("abb"))
+    _title = source;
+    _selectedMeter = _meters.Where(x => x.Id == source).FirstOrDefault();
+
+    if (_selectedMeter != null && _selectedMeter.Capabilities.hasApparentPower)
     {
-      _displayType = new List<string> { "Napon", "Struja", "Radna snaga", "Jalova Snaga" };
-      if (_dataType == "Prividna snaga")
-        _dataType = "Jalova Snaga";
+      _displayType = new List<(DataEnum type, string name)>
+      {
+        (DataEnum.Voltage, T["Voltage"]), (DataEnum.Current, T["Current"]), (DataEnum.Active_Power, T["Active Power"]), (DataEnum.Reactive_Power, T["Reactive Power"]), (DataEnum.Apparent_Power, T["Apparent Power"])
+      };
     }
-    else if (source.StartsWith("schneider"))
+    else
     {
-      _displayType = new List<string> { "Napon", "Struja", "Radna snaga", "Jalova Snaga", "Prividna snaga" };
+      _displayType = new List<(DataEnum type, string name)>
+      {
+        (DataEnum.Voltage, T["Voltage"]), (DataEnum.Current, T["Current"]), (DataEnum.Active_Power, T["Active Power"]), (DataEnum.Reactive_Power, T["Reactive Power"])
+      };
+      if (_dataType == "Apparent Power")
+        _dataType = "Reactive Power";
     }
 
-    _title = source;
-    await LeftMenuDataItemClicked(_dataType);
+    await LeftMenuDataItemClicked(DataEnum.Active_Power);
   }
 
-  private async Task LeftMenuDataItemClicked(string type)
+  private async Task LeftMenuDataItemClicked(DataEnum type)
   {
     switch (type)
     {
-      case "Struja":
-        _dataType = "Struja";
+      case DataEnum.Current:
+        _dataType = "Current";
         break;
-      case "":
-        _dataType = "Radna snaga";
+      case DataEnum.Active_Power:
+        _dataType = "Active Power";
         break;
-      case "Radna snaga":
-        _dataType = "Radna snaga";
+      case DataEnum.Voltage:
+        _dataType = "Voltage";
         break;
-      case "Napon":
-        _dataType = "Napon";
+      case DataEnum.Reactive_Power:
+        _dataType = "Reactive Power";
         break;
-      case "Jalova Snaga":
-        _dataType = "Jalova Snaga";
-        break;
-      case "Prividna snaga":
-        _dataType = "Prividna snaga";
+      case DataEnum.Apparent_Power:
+        _dataType = "Apparent Power";
         break;
     }
 
@@ -335,7 +351,7 @@
     measures = measures.OrderBy(x => x.Timestamp).ToList();
     switch (_dataType)
     {
-      case "Struja":
+      case "Current":
         _graphValues = measures.Select(x =>
           new ChartData(
             new[]
@@ -344,14 +360,14 @@
               x.Current_A.TariffUnary.DuplexAny.PhaseSplit.ValueL2,
               x.Current_A.TariffUnary.DuplexAny.PhaseSplit.ValueL3
             },
-            new[] { "L1 Struja", "L2 Struja", "L3 Struja" },
+            new[] { "L1 Current", "L2 Current", "L3 Current" },
             x.Timestamp,
             x.MeterId
           )).ToList();
         lineCount = 3;
         break;
       case "":
-      case "Radna snaga":
+      case "Active Power":
         _graphValues = measures.Select(x =>
           new ChartData(
             new[]
@@ -361,13 +377,13 @@
               x.ActivePower_W.TariffUnary.DuplexNet.PhaseSplit.ValueL3,
               x.ActivePower_W.TariffUnary.DuplexNet.PhaseSum
             },
-            new[] { "L1 Radna snaga", "L2 Radna snaga", "L3 Radna snaga", "Ukupna snaga" },
+            new[] { "L1 Active Power", "L2 Active Power", "L3 Active Power", "Total power" },
             x.Timestamp,
             x.MeterId
           )).ToList();
         lineCount = 4;
         break;
-      case "Napon":
+      case "Voltage":
         _graphValues = measures.Select(x =>
           new ChartData(
             new[]
@@ -376,13 +392,13 @@
               x.Voltage_V.TariffUnary.DuplexAny.PhaseSplit.ValueL2,
               x.Voltage_V.TariffUnary.DuplexAny.PhaseSplit.ValueL3
             },
-            new[] { "L1 Napon", "L2 Napon", "L3 Napon" },
+            new[] { "L1 Voltage", "L2 Voltage", "L3 Voltage" },
             x.Timestamp,
             x.MeterId
           )).ToList();
         lineCount = 3;
         break;
-      case "Jalova Snaga":
+      case "Reactive Power":
         _graphValues = measures.Select(x =>
           new ChartData(
             new[]
@@ -391,20 +407,20 @@
               x.ReactivePower_VAR.TariffUnary.DuplexNet.PhaseSplit.ValueL2,
               x.ReactivePower_VAR.TariffUnary.DuplexNet.PhaseSplit.ValueL3
             },
-            new[] { "L1 Jalova snaga", "L2 Jalova snaga", "L3 Jalova snaga" },
+            new[] { "L1 Reactive Power", "L2 Reactive Power", "L3 Reactive Power" },
             x.Timestamp,
             x.MeterId
           )).ToList();
         lineCount = 3;
         break;
-      case "Prividna snaga":
+      case "Apparent Power":
         _graphValues = measures.Select(x =>
           new ChartData(
             new[]
             {
               x.ApparentPower_VA.TariffUnary.DuplexNet.PhaseSum
             },
-            new[] { "Prividna snaga" },
+            new[] { "Apparent Power" },
             x.Timestamp,
             x.MeterId
           )).ToList();
