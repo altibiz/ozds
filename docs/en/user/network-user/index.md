@@ -4,21 +4,44 @@
   \page user-network-user Network user
 </div>
 
-This section of the documentation describes features and functionalities exposed
-to the network user role.
+The dahboard of a user selected to oversee network users.
 
-## Dashboard
+## Navigation
 
-Here the user can see aggregated consumption measurement data for the current
-month, the previous month, and a graph of consumption over longer periods. Below
-the aggregated values is a table of measurement locations showing the
-consumption of individual measurement locations in the current and previous
-month, and the calculation totals in the previous month.
+[Invoices](../../user/shared/invoices/index.md)
 
-By clicking on the names of locations, network users, or measurement locations,
-users are redirected to a detailed overview of these entities. Locations and
-network users redirect to a review of user data and privileges. Clicking on
-measurement locations redirects to a detailed overview of individual measurement
+[Measurement locations](../../user/shared/measurement-locations/index.md)
+
+[Network users](../../user/shared/network-users/index.md)
+
+## Content
+
+![LocationHomePage](../../assets/ENNetworkUserHomePage.png) _/app_
+
+## Network user Home Panel
+
+This panel shows three segments displaying the combined values of current month
+consumption, last month consumption with the last months total invoices under
+that numer.
+
+There is also a graph showing this years power consumption.
+
+![ENNetworkUserHomePanel](../../assets/ENNetworkUserHomePanel.png) _Network User
+Home Panel_
+
+## Measurement Location Table
+
+This table shows all measurement locations the current user can oversee.
+
+The user can see the name of the location, network user and device on that
+measurement location. The current month consumption, last month consumption and
+last months invoice total for thous measurement locations.
+
+By pressing on the name of the location or network user, the user can inspect
+that entities detailes.
+
+Clicking on a device redirects to a detailed overview of individual measurement
 locations.
 
-![Dashboard](docs/en/assets/dashboard.png) _/app/dashboard_
+![ENMeasurementLocationsTable](../../assets/ENMeasurementLocationsTable.png)
+_Measurement Locations Table_

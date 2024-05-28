@@ -23,17 +23,4 @@ On the login page, users start their session. After logging in, the user is
 redirected to a page personalized to their needs based on their user type,
 privileges, and the locations and network users they are responsible for.
 
-![Login](docs/en/assets/login.png) _/login_
-
-## Meter
-
-When one of the measurement locations is clicked, detailed data about that
-measurement location becomes visible. The initial and final readings at that
-measurement location per month are displayed, along with the total consumption
-and maximum power during that month. A graph on the right side shows
-measurements for the last quarter hour, half hour, hour, and six hours, and it
-can display values for voltage, current, active power, reactive power, and
-apparent power. A gauge on the left side shows the current power and compares it
-to the maximum power from the previous month.
-
-![Meter](docs/en/assets/meter.png) _/app/meter_
+![Login](../assets/login.png) _/login_
