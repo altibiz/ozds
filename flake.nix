@@ -43,10 +43,12 @@
             nushell
 
             # Documentation
-            doxygen
-            graphviz
+            mdbook
             openjdk
             plantuml
+            graphviz
+            mdbook-plantuml
+            pandoc-plantuml-filter
           ];
         };
         devShells.check = pkgs.mkShell {
@@ -138,14 +140,13 @@
               nushell
 
               # Documentation
-              doxygen
-              graphviz
               simple-http-server
               pandoc
+              mdbook
               openjdk
               plantuml
-              # NOTE: starts compiling chromium...
-              # mermaid-filter
+              graphviz
+              mdbook-plantuml
               pandoc-plantuml-filter
 
               # Misc

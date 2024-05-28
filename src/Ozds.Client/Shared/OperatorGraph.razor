@@ -269,7 +269,7 @@
 
   private async Task LeftMenuItemClicked(string source)
   {
-    if (source is null)
+    if (source is null || _meters is null)
       return;
     _title = source;
     _selectedMeter = _meters.Where(x => x.Id == source).FirstOrDefault();

@@ -109,7 +109,7 @@ lint:
   cspell lint . \
     --no-progress
 
-  dotnet build '{{sln}}'
+  dotnet build /warnaserror '{{sln}}'
 
   dotnet roslynator analyze '{{sln}}' \
     --exclude='**/.git/**/*;**/.nuget/**/*;**/obj/**/*;**/bin/**/*'
@@ -262,24 +262,31 @@ docs:
   rm -rf '{{artifacts}}'
   mkdir '{{artifacts}}'
 
-  let result = glob '{{docs}}/**/Doxyfile' | \
-    filter { |$doxyfile| $doxyfile != '{{doxyfile}}' } | \
-    each { |$doxyfile| \
-      let temp = mktemp -d; \
-      open {{doxyfile}} $doxyfile | \
-        str join | \
-        save $"($temp)/Doxyfile"; \
-      let assets = $"($doxyfile | path dirname)/assets"; \
-      let lang = $"($doxyfile | path dirname | path basename)"; \
-      print $"Generating documentation for language '($lang)'..."; \
-      doxygen -q $"($temp)/Doxyfile"; \
-      mkdir $"{{artifacts}}/($lang)/docs/($lang)"; \
-      cp -r $"{{docs}}/($lang)/assets" $"{{artifacts}}/($lang)/docs/($lang)"; \
-      rm -rf $temp; \
-    };
+  dotnet docfx metadata '{{docs}}/code/docfx.json'
+  dotnet docfx build '{{docs}}/code/docfx.json'
+  cp -f '{{docs}}/favicon.ico' '{{artifacts}}/code'
+  cp -f '{{docs}}/logo.svg' '{{artifacts}}/code'
+
+  mdbook build '{{docs}}/wiki/en'
+  mdbook build '{{docs}}/wiki/hr'
+  mv '{{docs}}/wiki/en/book' '{{artifacts}}/wiki/en'
+  mv '{{docs}}/wiki/hr/book' '{{artifacts}}/wiki/hr'
 
   cp '{{docs}}/index.html' {{artifacts}}
   cp '{{docs}}/favicon.ico' {{artifacts}}
+
+report quarter language ext:
+  rm -rf '{{artifacts}}'
+  mkdir '{{artifacts}}'
+
+  pandoc \
+    --from=markdown+rebase_relative_paths \
+    --to=docx+native_numbering \
+    --standalone \
+    --table-of-contents \
+    --output='{{artifacts}}/ozds-{{quarter}}-report-{{language}}.{{ext}}' \
+    --filter=pandoc-plantuml \
+    {{docs}}/wiki/{{language}}/report/{{quarter}}/*.md
 
 publish *args:
   rm -rf '{{artifacts}}'
