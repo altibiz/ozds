@@ -1,7 +1,8 @@
 @using Ozds.Business.Time
 @using Color = MudBlazor.Color
 @using Size = MudBlazor.Size
-@if (_dataStruct is not null)
+
+@if (_dataStruct is not null && _meter is not null)
 {
   @* MOBILE *@
   <MudHidden Breakpoint="Breakpoint.MdAndUp">
@@ -17,6 +18,7 @@
     <MudText Typo="Typo.h4" Class="d-flex">
       @(T["Device"] + ": " + Source)
     </MudText>
+    <MudText Typo="Typo.h5">@(T["Name"] + ": " + _meter.Title)</MudText>
     @foreach (var dataStruct in _shownOMMs.Where(x => x.show).ToList())
     {
       <MudPaper Elevation="2" Class="ma-1">
@@ -34,20 +36,20 @@
               <MudDivider DividerType="DividerType.Middle" Class="mt-2"/>
               <MudContainer>
                 @T["First reading"]:
-                @if (dataStruct.data.monthEndTotal is not null)
-                  @(FloatString(dataStruct.data.monthEndTotal / 1000, 0)) kWh
+                @if (dataStruct.data.monthStartTotal is not null)
+                  @(FloatString(dataStruct.data.monthStartTotal / 1000, 0)) kWh
               
               </MudContainer>
               <MudContainer>
                 @T["Last reading"]:
-                @if (dataStruct.data.monthStartTotal is not null)
-                  @(FloatString(dataStruct.data.monthStartTotal / 1000, 0)) kWh
+                @if (dataStruct.data.monthEndTotal is not null)
+                  @(FloatString(dataStruct.data.monthEndTotal / 1000, 0)) kWh
               
               </MudContainer>
               <MudContainer Style="font-size: large; font-weight:bold;">
                 @T["Total consumption"]:
                 @if (dataStruct.data.monthStartTotal is not null && dataStruct.data.monthEndTotal is not null)
-                  @(FloatString((dataStruct.data.monthStartTotal - dataStruct.data.monthEndTotal) / 1000, 0)) kWh
+                  @(FloatString((dataStruct.data.monthEndTotal - dataStruct.data.monthStartTotal) / 1000, 0)) kWh
               
               </MudContainer>
               <MudContainer Style="font-weight:bold;">
@@ -70,7 +72,7 @@
       Items="@_dataStruct"
       SortMode="SortMode.Multiple">
       <ToolBarContent>
-        <MudText Typo="Typo.h4">@(T["Device"] + ": " + Source)</MudText>
+        <MudText Typo="Typo.h4">@(T["Device"] + ": " + _meter.Title + " (" + Source + ")")</MudText>
         <MudSpacer/>
         <MudTextField
           @bind-Value="_searchString"
@@ -93,18 +95,8 @@
         </PropertyColumn>
         <PropertyColumn
           CellStyle="font-size: x-large;"
-          Property="x => x.monthEndTotal"
-          Title='@T["First reading"]'>
-          <CellTemplate>
-            @if (context.Item.monthEndTotal is not null)
-              @(FloatString(context.Item.monthEndTotal / 1000, 0) + " kWh")
-          
-          </CellTemplate>
-        </PropertyColumn>
-        <PropertyColumn
-          CellStyle="font-size: x-large;"
           Property="x => x.monthStartTotal"
-          Title='@T["Last reading"]'>
+          Title='@T["First reading"]'>
           <CellTemplate>
             @if (context.Item.monthStartTotal is not null)
               @(FloatString(context.Item.monthStartTotal / 1000, 0) + " kWh")
@@ -112,12 +104,22 @@
           </CellTemplate>
         </PropertyColumn>
         <PropertyColumn
+          CellStyle="font-size: x-large;"
+          Property="x => x.monthEndTotal"
+          Title='@T["Last reading"]'>
+          <CellTemplate>
+            @if (context.Item.monthEndTotal is not null)
+              @(FloatString(context.Item.monthEndTotal / 1000, 0) + " kWh")
+          
+          </CellTemplate>
+        </PropertyColumn>
+        <PropertyColumn
           CellStyle="font-size: xx-large;"
-          Property="x => x.monthStartTotal - x.monthEndTotal"
+          Property="x => x.monthEndTotal - x.monthStartTotal"
           Title='@T["Total consumption"]'>
           <CellTemplate>
             @if (context.Item.monthStartTotal is not null && context.Item.monthEndTotal is not null)
-              @(FloatString((context.Item.monthStartTotal - context.Item.monthEndTotal) / 1000, 0) + " kWh")
+              @(FloatString((context.Item.monthEndTotal - context.Item.monthStartTotal) / 1000, 0) + " kWh")
           
           </CellTemplate>
         </PropertyColumn>
@@ -159,6 +161,7 @@
   private DateTimeOffset startOfThisYear = DateTimeOffset.UtcNow.GetStartOfYear();
   private DateTimeOffset startOfThisMonth = DateTimeOffset.UtcNow.GetStartOfMonth();
   private DateTimeOffset now = DateTime.UtcNow;
+  private IMeter? _meter;
 
   @* MOBILE *@
   private class ExpandThing
@@ -173,11 +176,18 @@
   protected override async Task OnInitializedAsync()
   {
     var aggregateQueries = ScopedServices.GetRequiredService<OzdsAggregateQueries>();
-    var test = await aggregateQueries.ReadAgnostic(new[] { "x => x.Interval == 2 || x.Interval == 0" }, startOfThisYear, now, 1, 9000);
+    var test = await aggregateQueries.ReadAgnostic(new[] { $"x => (x.Interval == 2 || x.Interval == 0) && x.MeterId == \"{Source}\"" }, startOfThisYear, now, 1, 9000);
     var measurePerMonth = test.OrderBy(x => x.Timestamp).Where(x => x.MeterId == Source).ToList();
+    _meter = await ScopedServices
+      .GetRequiredService<OzdsMeterTableQueries>()
+      .GetMeterById(Source);
 
     foreach (var month in startOfThisYear.GetThisYearMonthStarts().Reverse())
     {
+      var measureNextMonthMonthly = measurePerMonth
+        .Where(x => x.Timestamp.LocalDateTime.Month == month.AddMonths(1).Month)
+        .Where(x => x.Interval == IntervalModel.Month)
+        .FirstOrDefault();
       var measureThisMonthMonthly = measurePerMonth
         .Where(x => x.Timestamp == month)
         .Where(x => x.Interval == IntervalModel.Month)
@@ -188,16 +198,24 @@
         .Where(x => x.Timestamp.GetStartOfMonth() == month)
         .Where(x => x.Interval == IntervalModel.QuarterHour)
         .ToList();
-      var a = measureThisMonthMonthly.ActiveEnergySpan_Wh.SpanMin.TariffUnary.DuplexImport.PhaseSum;
-      var b = measureThisMonthMonthly.ActiveEnergySpan_Wh.SpanMax.TariffUnary.DuplexImport.PhaseSum;
-      var c = ThisMonthQuarterHourly.Select(measure => measure.ActivePower_W.TariffBinary.T1.DuplexImport.PhaseSum).DefaultIfEmpty(0).Max();
+
+      var _monthStartTotal = measureThisMonthMonthly.ActiveEnergySpan_Wh.SpanMin.TariffUnary.DuplexImport.PhaseSum;
+      if (measureNextMonthMonthly is not null)
+      {
+        var _nextMonthStartTotal = measureNextMonthMonthly.ActiveEnergySpan_Wh.SpanMin.TariffUnary.DuplexImport.PhaseSum;
+        if (_nextMonthStartTotal > 0)
+          _monthStartTotal = _nextMonthStartTotal;
+      }
+
+      var _monthEndTotal = measureThisMonthMonthly.ActiveEnergySpan_Wh.SpanMax.TariffUnary.DuplexImport.PhaseSum;
+      var _maxPower = ThisMonthQuarterHourly.Select(measure => measure.ActivePower_W.TariffBinary.T1.DuplexImport.PhaseSum).DefaultIfEmpty(0).Max();
       _dataStruct.Add(new TabularData
       {
         year = month.ToString("yy"),
         month = month.ToString("MM"),
-        monthStartTotal = b,
-        monthEndTotal = a,
-        maxPower = c
+        monthStartTotal = _monthStartTotal,
+        monthEndTotal = _monthEndTotal,
+        maxPower = _maxPower
       });
     }
 

@@ -109,14 +109,14 @@
       Show = false,
       Labels = new YAxisLabels
       {
-        Formatter = "function(val, index) { return val.toFixed(0);}"
+        Formatter = "function(val, index) { return (val ?? 0).toFixed(0); }"
       }
     });
     graphOptions.Yaxis.Add(new YAxis
     {
       Labels = new YAxisLabels
       {
-        Formatter = "function(val, index) { return val.toFixed(0);}"
+        Formatter = "function(val, index) { return (val ?? 0).toFixed(0); }"
       }
     });
     graphOptionsMob.Xaxis = new XAxis

@@ -42,21 +42,30 @@ public class OzdsLocationsTableQueries(
           MeasurementLocation = measurementLocation
         }
       )
-      .Join(
+      .GroupJoin(
         context.Meters,
         context.ForeignKeyOf(
           (ViewModelStruct x) => x.MeasurementLocation,
           nameof(MeasurementLocationEntity.Meter)
         ),
         context.PrimaryKeyOf<MeterEntity>(),
+        (x, meter) => new
+        {
+          x.Location,
+          x.NetworkUser,
+          x.MeasurementLocation,
+          x.Meter,
+          meter
+        }
+      )
+      .SelectMany(x => x.meter,
         (x, meter) => new ViewModelStruct
         {
           Location = x.Location,
           NetworkUser = x.NetworkUser,
           MeasurementLocation = x.MeasurementLocation,
           Meter = meter
-        }
-      )
+        })
       .GroupJoin(
         context.AbbB2xMeasurements
           .OrderByDescending(x => x.Timestamp)
