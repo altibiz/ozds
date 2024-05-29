@@ -6,16 +6,6 @@
 
 The dahboard of a user selected to oversee locations.
 
-## Navigation
-
-[Invoices](../../user/shared/invoices/index.md)
-
-[Locations](../../user/shared/locations/index.md)
-
-[Measurement locations](../../user/shared/measurement-locations/index.md)
-
-[Network users](../../user/shared/network-users/index.md)
-
 ## Content
 
 ![ENLocationHomePage](../../assets/ENLocationHomePage.png) _/app_

@@ -6,14 +6,6 @@
 
 The dahboard of a user selected to oversee all aspects of the network.
 
-## Available to
-
-[Operator](../../../user/operator/index.md)
-
-[Location](../../../user/location/index.md)
-
-[Network user](../../../user/network-user/index.md)
-
 ## Content
 
 ![ENMeterDetailsPage](../../../assets/ENMeterDetailsPage.png) _/app/meter/{id}_

@@ -6,14 +6,6 @@
 
 The dahboard of a user selected to oversee network users.
 
-## Navigation
-
-[Invoices](../../user/shared/invoices/index.md)
-
-[Measurement locations](../../user/shared/measurement-locations/index.md)
-
-[Network users](../../user/shared/network-users/index.md)
-
 ## Content
 
 ![LocationHomePage](../../assets/ENNetworkUserHomePage.png) _/app_

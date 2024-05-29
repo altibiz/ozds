@@ -7,14 +7,6 @@
 This page holds the Network users table component and is used to find and review
 network users.
 
-## Available to
-
-[Operator](../../../user/operator/index.md)
-
-[Location](../../../user/location/index.md)
-
-[Network user](../../../user/network-user/index.md)
-
 ## Content
 
 ![ENNetworkusersPage](../../../assets/ENNetworkUsersPage.png)

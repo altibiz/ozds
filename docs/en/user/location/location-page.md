@@ -7,12 +7,6 @@
 This page holds the Locations table component and is used to find and review
 locations.
 
-## Available to
-
-[Operator](../../../user/operator/index.md)
-
-[Location](../../../user/location/index.md)
-
 ## Content
 
 ![ENLocationPage](../../../assets/ENLocationPage.png) _/app/locations_

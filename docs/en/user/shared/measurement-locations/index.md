@@ -7,14 +7,6 @@
 This page holds the Measurement locatios table component and is used to find and
 review measurement locations.
 
-## Available to
-
-[Operator](../../../user/operator/index.md)
-
-[Location](../../../user/location/index.md)
-
-[Network user](../../../user/network-user/index.md)
-
 ## Content
 
 ![ENMeasurementLocationsPage](../../../assets/ENMeasurementLocationsPage.png)
