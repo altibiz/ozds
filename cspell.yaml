@@ -4,7 +4,6 @@ language: en
 ignorePaths:
   - "*.svg"
   - "**/Migrations/**/*"
-  - "./docs/schema.md"
   - "./src/Ozds.Server/App_Data/**/*"
   - "justfile"
   - "flake.nix"
@@ -17,12 +16,12 @@ ignorePaths:
   - "doxygen-awesome-sidebar-only.css"
   - "cspell.yaml"
   # TODO: add dicrionary or use aspell/hunspell
-  - "./docs/hr/**/*"
+  - "./docs/wiki/hr/**/*"
+  - "./docs/wiki/schema.md"
+  - "./docs/wiki/**/book.toml"
   # TODO: add dicrionary or use aspell/hunspell
   - "src/Ozds.Client/Assets/*.json"
   - "./docs/index.html"
-  - "./docs/footer.html"
-  - "./docs/header.html"
 words:
   - "blazor"
   - "xunit"
@@ -85,6 +84,15 @@ words:
   - "rowspan"
   - "colspan"
   - "blockquote"
+  - "pidgeon"
+  - "startuml"
+  - "enduml"
+  - "yapf"
+  - "shfmt"
+  - "clippy"
+  - "pyright"
+  - "mdbook"
+  - "nbsp"
 
   # Croatian
   - "altibiz"

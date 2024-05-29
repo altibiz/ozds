@@ -1,5 +1,0 @@
-OUTPUT_LANGUAGE = English
-INPUT = src scripts test docs/en
-USE_MDFILE_AS_MAINPAGE = docs/en/index.md
-OUTPUT_DIRECTORY = artifacts/en
-STRIP_FROM_PATH = docs/en

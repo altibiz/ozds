@@ -3,13 +3,19 @@
     "**/bin": true,
     "**/obj": true,
     "src/Ozds.Server/Localization/": true,
-    ".direnv": true
+    ".direnv": true,
+    "docs/wiki/**/book": true,
+    "**/mdbook-plantuml-img": true,
+    "**/plantuml-images": true
   },
   "files.exclude": {
     "**/bin": true,
     "**/obj": true,
     "src/Ozds.Server/Localization/": true,
-    ".direnv": true
+    ".direnv": true,
+    "docs/wiki/**/book": true,
+    "**/mdbook-plantuml-img": true,
+    "**/plantuml-images": true
   },
   "prettier.ignorePath": ".prettierignore",
   "editor.defaultFormatter": "esbenp.prettier-vscode",
