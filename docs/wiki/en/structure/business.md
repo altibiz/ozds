@@ -161,7 +161,9 @@ calculations needed for every invoice:
 
 class NetworkUserInvoiceCalculator
 {
-  + CalculatedNetworkUserInvoiceModel Calculate(NetworkUserInvoiceCalculationBasisModel basis)
+  + CalculatedNetworkUserInvoiceModel Calculate( \
+    NetworkUserInvoiceCalculationBasisModel basis \
+  )
 }
 
 @enduml

@@ -2,4 +2,4 @@
 
 ## Documentation
 
-Documentation can be found [here](docs/en/index.md).
+Documentation can be found [here](https://altibiz.github.io/ozds/).

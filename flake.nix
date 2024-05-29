@@ -70,6 +70,10 @@
             dotnet-runtime
             dotnet-aspnetcore
 
+            # Markdown
+            markdownlint-cli
+            nodePackages.markdown-link-check
+
             # Spelling
             nodePackages.cspell
             hunspell
@@ -129,6 +133,11 @@
               omnisharp-roslyn
               netcoredbg
 
+              # Markdown
+              marksman
+              markdownlint-cli
+              nodePackages.markdown-link-check
+
               # PostgreSQL
               usql
               postgresql_14
@@ -159,7 +168,6 @@
               nodePackages.yaml-language-server
               nodePackages.vscode-langservers-extracted
               taplo
-              marksman
             ];
         };
       });
