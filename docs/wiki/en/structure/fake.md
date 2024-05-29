@@ -1,5 +1,7 @@
 # Ozds.Fake
 
+<!-- TODO: expand verbs in files and add altibiz -->
+
 This is a project intended only for development purposes. It is treated as a
 script that pushes measurements to a development `Ozds.Server` instance. It has
 two main modes:

@@ -1,6 +1,9 @@
 # Summary
 
 - [Uvod](./index.md)
+- [Testiranje](./testing/index.md)
+  - [Push](./testing/push.md)
+  - [Naplata](./testing/billing.md)
 - [Izvješća](./report/index.md)
   - [2024 Q1](./report/2024Q1/index.md)
     1. [Zahtjevi](./report/2024Q1/1_requirements.md)

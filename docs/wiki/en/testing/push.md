@@ -1,6 +1,6 @@
 # Push
 
-According to our [architecture](../architecture.md), from the standpoint of the
+According to the [architecture](../architecture.md), from the standpoint of the
 cloud server, there are multiple points from which errors can occur. Starting
 from the locations and going to the database, we can expect to see errors in
 these areas:
