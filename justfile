@@ -106,10 +106,13 @@ lint:
     '{{root}}'
 
   # TODO: use hunspell with dictionaries
-  cspell lint . \
+  cspell lint '{{root}}' \
     --no-progress
 
-  dotnet build /warnaserror '{{sln}}'
+  markdownlint '{{root}}'
+  markdown-link-check --config .markdown-link-check.json --quiet ...(glob '**/*.md')
+
+  dotnet build --no-incremental /warnaserror '{{sln}}'
 
   dotnet roslynator analyze '{{sln}}' \
     --exclude='**/.git/**/*;**/.nuget/**/*;**/obj/**/*;**/bin/**/*'
@@ -256,6 +259,9 @@ migrate name:
     --useAllTables \
     --encloseWithMermaidBackticks \
     --outputFileName '{{schema}}'
+
+  $"# Database schema\n\n(open --raw '{{schema}}')" | \
+    save --force '{{schema}}'
 
 # NOTE: https://github.com/doxygen/doxygen/issues/6783
 docs:

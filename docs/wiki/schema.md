@@ -1,3 +1,5 @@
+# Database schema
+
 ```mermaid
 erDiagram
     Document {

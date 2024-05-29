@@ -1,7 +1,7 @@
 # Scripts
 
 This is documentation for the various scripts used for development defined in
-the [justfile](justfile).
+the justfile.
 
 Install [just](https://github.com/casey/just#packages),
 [docker](https://docs.docker.com/engine/install/),
@@ -28,8 +28,8 @@ changes in the solution providing hot reloading of the server.
 
 ## `just fake`
 
-This script runs the [`Ozds.Fake`](scripts/Ozds.Fake) project that sends fake
-measurements to the local server.
+This script runs the fake project that sends fake measurements to the local
+server.
 
 ## `just format`
 
@@ -51,13 +51,13 @@ This script tests C# code with the `dotnet test` command.
 
 ## `just migrate {name}`
 
-This script generates a migration in the [`Ozds.Data`](src/Ozds.Data) project
-using the [`dotnet ef`](https://www.nuget.org/packages/dotnet-ef) tool.
+This script generates a migration in the data project using the
+[`dotnet ef`](https://www.nuget.org/packages/dotnet-ef) tool.
 
 ## `just publish`
 
-This script compiles the solution for release inside the
-[artifacts directory](artifacts) using the `dotnet publish` command.
+This script compiles the solution for release inside the artifacts directory
+using the `dotnet publish` command.
 
 ## `just clean`
 

@@ -23,9 +23,9 @@ open OZDS in your editor of choice (we recommend
 [Visual Studio Code](https://code.visualstudio.com/)) and run `just dev` on the
 command line. We also recommend seeding the database with measurements
 continuously by running `just fake` on another command line. After the server
-starts, navigate to [http://localhost:5000] in your browser of choice. Hot
-reload is enabled by default so there is no need of rerunning any commands on
-changes.
+starts, navigate to [localhost](http://localhost:5000) in your browser of
+choice. Hot reload is enabled by default so there is no need of rerunning any
+commands on changes.
 
 ### How do I debug OZDS?
 

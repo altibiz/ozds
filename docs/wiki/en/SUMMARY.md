@@ -1,12 +1,13 @@
 # Summary
 
 - [Introduction](./index.md)
-- [Scripts](./scripts.md)
 - [User](./user/index.md)
   - [Admin](./user/admin/index.md)
   - [Location](./user/location/index.md)
   - [Network user](./user/network-user/index.md)
   - [Operator](./user/operator/index.md)
+- [Architecture](./architecture.md)
+- [Scripts](./scripts.md)
 - [Workflow](./workflow/index.md)
   - [Auditing](./workflow/auditing.md)
   - [Billing](./workflow/billing.md)
@@ -23,6 +24,8 @@
   - [Data](./structure/data.md)
   - [Fake](./structure/fake.md)
   - [Test](./structure/test.md)
+- [Testing](./testing/index.md)
+  - [Push](./testing/push.md)
 - [Reports](./report/index.md)
   - [2024 Q1](./report/2024Q1/index.md)
     1. [Requirements](./report/2024Q1/1_requirements.md)
