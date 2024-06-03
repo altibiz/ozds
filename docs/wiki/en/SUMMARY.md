@@ -26,6 +26,7 @@
   - [Test](./structure/test.md)
 - [Testing](./testing/index.md)
   - [Push](./testing/push.md)
+  - [Billing](./testing/billing.md)
 - [Reports](./report/index.md)
   - [2024 Q1](./report/2024Q1/index.md)
     1. [Requirements](./report/2024Q1/1_requirements.md)
