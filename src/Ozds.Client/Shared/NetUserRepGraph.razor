@@ -69,42 +69,45 @@
     var meters = await measurementQueries.ViewModelByNetworkUser(_netUserIds, startOfThisYear, now, IntervalEntity.Day);
     foreach (var omm in meters)
     {
-      var consumption = omm.Aggregates.OrderBy( x => x.Timestamp ).Select( x => new ChartData(x.ActiveEnergySpan_Wh.SpanMax.TariffUnary.DuplexImport.PhaseSum / 1000, "Potrošnja", x.Timestamp, x.MeterId)  ).ToList();
+      var consumption = omm.Aggregates.OrderBy(x => x.Timestamp).Select(x => new ChartData(x.ActiveEnergySpan_Wh.SpanMax.TariffUnary.DuplexImport.PhaseSum / 1000, "Potrošnja", x.Timestamp, x.MeterId)).ToList();
       _totalConsumption.AddRange(consumption);
     }
+
     var aggregatedConsumption = _totalConsumption
       .GroupBy(x => x.date)
       .Select(group =>
+      {
+        var aggregatedValue = group.Select(g => g.value).DefaultIfEmpty(0).Sum();
+
+        var firstItem = group.FirstOrDefault();
+
+        if (firstItem is null)
         {
-          var aggregatedValue = group.Select(g => g.value).DefaultIfEmpty(0).Sum();
-
-          var firstItem = group.FirstOrDefault();
-
-          if(firstItem is null){
-            return new ChartData(
-              aggregatedValue,
-              "none",
-              group.Key,
-              "none");
-          }
-
           return new ChartData(
-              aggregatedValue,
-              firstItem.name,
-              group.Key,
-              firstItem.source);
-          })
+            aggregatedValue,
+            "none",
+            group.Key,
+            "none");
+        }
+
+        return new ChartData(
+          aggregatedValue,
+          firstItem.name,
+          group.Key,
+          firstItem.source);
+      })
       .ToList();
     _totalConsumption.Clear(); // Clear existing items
     _totalConsumption.AddRange(aggregatedConsumption); // Add aggregated items
     var minValue = _totalConsumption.MinBy(consumption => consumption.value);
     if (minValue is not null)
-      _graphValues = _totalConsumption.Select(x => {
+      _graphValues = _totalConsumption.Select(x =>
+      {
         return new ChartData(
-                  x.value - minValue.value,
-                  x.name,
-                  x.date,
-                  x.source);
+          x.value - minValue.value,
+          x.name,
+          x.date,
+          x.source);
       });
 
 
