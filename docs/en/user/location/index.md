@@ -1,9 +1,5 @@
 # Location
 
-<div style="display: none;">
-  \page user-location Location
-</div>
-
 The dahboard of a user selected to oversee locations.
 
 ## Content

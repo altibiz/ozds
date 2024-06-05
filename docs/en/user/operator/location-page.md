@@ -1,9 +1,5 @@
 # Locations
 
-<div style="display: none;">
-  \page user-shared-locations Locations
-</div>
-
 This page holds the Locations table component and is used to find and review
 locations.
 

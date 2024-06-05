@@ -1,9 +1,5 @@
 # Measurement locations
 
-<div style="display: none;">
-  \page user-shared-measurement-locations Measurement locations
-</div>
-
 This page holds the Measurement locatios table component and is used to find and
 review measurement locations.
 

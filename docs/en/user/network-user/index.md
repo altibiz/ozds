@@ -1,9 +1,5 @@
 # Network user
 
-<div style="display: none;">
-  \page user-network-user Network user
-</div>
-
 The dahboard of a user selected to oversee network users.
 
 ## Content

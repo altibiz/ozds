@@ -1,9 +1,5 @@
 # Invoices
 
-<div style="display: none;">
-  \page user-shared-invoices Invoices
-</div>
-
 This page holds the Invoices table component and is used to find and review
 invoices.
 

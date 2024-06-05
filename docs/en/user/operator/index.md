@@ -1,9 +1,5 @@
 # Operator
 
-<div style="display: none;">
-  \page user-operator Operator
-</div>
-
 The dahboard of a user selected to oversee all aspects of the network.
 
 ## Content

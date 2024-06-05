@@ -1,9 +1,5 @@
 # Meter details
 
-<div style="display: none;">
-  \page user-shared-meter-details Meter details
-</div>
-
 The dahboard of a user selected to oversee all aspects of the network.
 
 ## Content

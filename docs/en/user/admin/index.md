@@ -1,9 +1,5 @@
 # Admin
 
-<div style="display: none;">
-  \page user-admin Admin
-</div>
-
 The administrator can change some app settings and modify users.
 
 ## Users

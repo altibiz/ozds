@@ -1,14 +1,5 @@
 # Users
 
-<div style="display: none;">
-  \page user Users
-
-  <div>\subpage user-admin</div>
-  <div>\subpage user-operator</div>
-  <div>\subpage user-location</div>
-  <div>\subpage user-network-user</div>
-</div>
-
 This portion of the documentation is meant for the end users of the OZDS web
 application. This documentation outlines all functionality and features of the
 OZDS web application divided for certain roles of users.

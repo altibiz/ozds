@@ -1,9 +1,5 @@
 # Network users
 
-<div style="display: none;">
-  \page user-shared-network-users Network users
-</div>
-
 This page holds the Network users table component and is used to find and review
 network users.
 
