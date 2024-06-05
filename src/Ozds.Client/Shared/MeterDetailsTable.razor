@@ -38,19 +38,19 @@
                 @T["First reading"]:
                 @if (dataStruct.data.monthStartTotal is not null)
                   @(FloatString(dataStruct.data.monthStartTotal / 1000, 0)) kWh
-              
+
               </MudContainer>
               <MudContainer>
                 @T["Last reading"]:
                 @if (dataStruct.data.monthEndTotal is not null)
                   @(FloatString(dataStruct.data.monthEndTotal / 1000, 0)) kWh
-              
+
               </MudContainer>
               <MudContainer Style="font-size: large; font-weight:bold;">
                 @T["Total consumption"]:
                 @if (dataStruct.data.monthStartTotal is not null && dataStruct.data.monthEndTotal is not null)
                   @(FloatString((dataStruct.data.monthEndTotal - dataStruct.data.monthStartTotal) / 1000, 0)) kWh
-              
+
               </MudContainer>
               <MudContainer Style="font-weight:bold;">
                 @T["Max power"]:
@@ -100,7 +100,7 @@
           <CellTemplate>
             @if (context.Item.monthStartTotal is not null)
               @(FloatString(context.Item.monthStartTotal / 1000, 0) + " kWh")
-          
+
           </CellTemplate>
         </PropertyColumn>
         <PropertyColumn
@@ -110,7 +110,7 @@
           <CellTemplate>
             @if (context.Item.monthEndTotal is not null)
               @(FloatString(context.Item.monthEndTotal / 1000, 0) + " kWh")
-          
+
           </CellTemplate>
         </PropertyColumn>
         <PropertyColumn
@@ -120,7 +120,7 @@
           <CellTemplate>
             @if (context.Item.monthStartTotal is not null && context.Item.monthEndTotal is not null)
               @(FloatString((context.Item.monthEndTotal - context.Item.monthStartTotal) / 1000, 0) + " kWh")
-          
+
           </CellTemplate>
         </PropertyColumn>
         <PropertyColumn
@@ -185,17 +185,17 @@
     foreach (var month in startOfThisYear.GetThisYearMonthStarts().Reverse())
     {
       var measureNextMonthMonthly = measurePerMonth
-        .Where(x => x.Timestamp == month.AddMonths(1))
+        .Where(x => x.Timestamp.Month == month.AddMonths(1).Month)
         .Where(x => x.Interval == IntervalModel.Month)
         .FirstOrDefault();
       var measureThisMonthMonthly = measurePerMonth
-        .Where(x => x.Timestamp == month)
+        .Where(x => x.Timestamp.Month == month.Month)
         .Where(x => x.Interval == IntervalModel.Month)
         .FirstOrDefault();
       if (measureThisMonthMonthly is null)
         continue;
       var ThisMonthQuarterHourly = measurePerMonth
-        .Where(x => x.Timestamp.GetStartOfMonth() == month)
+        .Where(x => x.Timestamp.GetStartOfMonth().Month == month.Month)
         .Where(x => x.Interval == IntervalModel.QuarterHour)
         .ToList();
 
