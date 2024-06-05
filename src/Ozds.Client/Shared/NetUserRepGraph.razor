@@ -1,4 +1,5 @@
 @using Ozds.Business.Time
+@using Ozds.Data.Entities.Enums
 @if (_graphValues is not null)
 {
   @* MOBILE *@
@@ -15,7 +16,7 @@
                            Name="@T["Consumption"]"
                            SeriesType="SeriesType.Area"
                            XValue='x => DateTimeGraph(x.date)'
-                           YValue="x => x.value"/>
+                           YValue="x => (decimal)x.value"/>
         </ApexChart>
       }
     </MudContainer>
@@ -35,7 +36,7 @@
                          Name="@T["Consumption"]"
                          SeriesType="SeriesType.Area"
                          XValue='x => DateTimeGraph(x.date)'
-                         YValue="x => x.value"/>
+                         YValue="x => (decimal)x.value"/>
       </ApexChart>
     }
   </MudHidden>
@@ -50,7 +51,7 @@
   public IEnumerable<ChartData> _graphValues = Enumerable.Empty<ChartData>();
   public List<ChartData> _totalConsumption = new();
 
-  public record ChartData(decimal value, string name, DateTimeOffset date, string source);
+  public record ChartData(float value, string name, DateTimeOffset date, string source);
 
   private ApexChart<ChartData> chart = default!;
   private readonly DateTimeOffset startOfThisYear = DateTimeOffset.UtcNow.GetStartOfYear();
@@ -59,16 +60,55 @@
 
   protected override async Task OnInitializedAsync()
   {
-    var aggregateQueries = ScopedServices.GetRequiredService<OzdsAggregateQueries>();
     var query = ScopedServices.GetRequiredService<OzdsMeterTableQueries>();
+    var measurementQueries = ScopedServices.GetRequiredService<OzdsMeterTableQueries>();
     _netUsers = await query.GetNetworkUsersByRepresentative(representative.Representative);
-    var quarterHourlyMeasures = await aggregateQueries.ReadAgnostic(new[] { "x => x.Interval == 0" }, startOfThisYear, now, 1, 9000);
-    var values = quarterHourlyMeasures.OrderBy(x => x.Timestamp).GroupBy(x => x.Timestamp).ToList();
-    foreach (var value in values)
+    if (_netUsers is null || _netUsers.Count < 0)
+      return;
+    var _netUserIds = _netUsers.Select(x => x.Id).ToList();
+    var meters = await measurementQueries.ViewModelByNetworkUser(_netUserIds, startOfThisYear, now, IntervalEntity.Day);
+    foreach (var omm in meters)
     {
-      var val = (decimal)value.FirstOrDefault()!.ActiveEnergySpan_Wh.SpanMax.TariffUnary.DuplexImport.PhaseSum;
-      _graphValues = _graphValues.Append(new ChartData(val / 1000, "test", value.Key, "test"));
+      var consumption = omm.Aggregates.OrderBy(x => x.Timestamp).Select(x => new ChartData(x.ActiveEnergySpan_Wh.SpanMax.TariffUnary.DuplexImport.PhaseSum / 1000, "Consumption", x.Timestamp, x.MeterId)).ToList();
+      _totalConsumption.AddRange(consumption);
     }
+
+    var aggregatedConsumption = _totalConsumption
+      .GroupBy(x => x.date)
+      .Select(group =>
+      {
+        var aggregatedValue = group.Select(g => g.value).DefaultIfEmpty(0).Sum();
+
+        var firstItem = group.FirstOrDefault();
+
+        if (firstItem is null)
+        {
+          return new ChartData(
+            aggregatedValue,
+            "none",
+            group.Key,
+            "none");
+        }
+
+        return new ChartData(
+          aggregatedValue,
+          firstItem.name,
+          group.Key,
+          firstItem.source);
+      })
+      .ToList();
+    _totalConsumption.Clear(); // Clear existing items
+    _totalConsumption.AddRange(aggregatedConsumption); // Add aggregated items
+    var minValue = _totalConsumption.MinBy(consumption => consumption.value);
+    if (minValue is not null)
+      _graphValues = _totalConsumption.Select(x =>
+      {
+        return new ChartData(
+          x.value - minValue.value,
+          x.name,
+          x.date,
+          x.source);
+      });
 
 
     graphOptionsMob = NewApexChartOptions<ChartData>();

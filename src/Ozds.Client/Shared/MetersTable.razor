@@ -181,8 +181,8 @@
     var groupedCalcs = _calculations.GroupBy(x => x.NetworkUserMeasurementLocationId).ToList();
     foreach (var omm in meters)
     {
-      var _thisMonthAggregate = omm.Aggregates.Where(x => x.Timestamp == startOfThisMonth).FirstOrDefault();
-      var _lastMonthAggregate = omm.Aggregates.Where(x => x.Timestamp == startOfLastMonth).FirstOrDefault();
+      var _thisMonthAggregate = omm.Aggregates.Where(x => x.Timestamp.Month == startOfThisMonth.Month).FirstOrDefault();
+      var _lastMonthAggregate = omm.Aggregates.Where(x => x.Timestamp.Month == startOfLastMonth.Month).FirstOrDefault();
       var _lastMonthOmmCalcs = groupedCalcs
         .Where(x => x.Key == omm.MeasurementLocation.Id)
         .Where(x => x is not null)

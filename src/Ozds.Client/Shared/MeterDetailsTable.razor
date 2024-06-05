@@ -185,29 +185,30 @@
     foreach (var month in startOfThisYear.GetThisYearMonthStarts().Reverse())
     {
       var measureNextMonthMonthly = measurePerMonth
-        .Where(x => x.Timestamp.LocalDateTime.Month == month.AddMonths(1).Month)
+        .Where(x => x.Timestamp.Month == month.AddMonths(1).Month)
         .Where(x => x.Interval == IntervalModel.Month)
         .FirstOrDefault();
       var measureThisMonthMonthly = measurePerMonth
-        .Where(x => x.Timestamp == month)
+        .Where(x => x.Timestamp.Month == month.Month)
         .Where(x => x.Interval == IntervalModel.Month)
         .FirstOrDefault();
       if (measureThisMonthMonthly is null)
         continue;
       var ThisMonthQuarterHourly = measurePerMonth
-        .Where(x => x.Timestamp.GetStartOfMonth() == month)
+        .Where(x => x.Timestamp.GetStartOfMonth().Month == month.Month)
         .Where(x => x.Interval == IntervalModel.QuarterHour)
         .ToList();
 
       var _monthStartTotal = measureThisMonthMonthly.ActiveEnergySpan_Wh.SpanMin.TariffUnary.DuplexImport.PhaseSum;
+
+      var _monthEndTotal = measureThisMonthMonthly.ActiveEnergySpan_Wh.SpanMax.TariffUnary.DuplexImport.PhaseSum;
       if (measureNextMonthMonthly is not null)
       {
         var _nextMonthStartTotal = measureNextMonthMonthly.ActiveEnergySpan_Wh.SpanMin.TariffUnary.DuplexImport.PhaseSum;
         if (_nextMonthStartTotal > 0)
-          _monthStartTotal = _nextMonthStartTotal;
+          _monthEndTotal = _nextMonthStartTotal;
       }
 
-      var _monthEndTotal = measureThisMonthMonthly.ActiveEnergySpan_Wh.SpanMax.TariffUnary.DuplexImport.PhaseSum;
       var _maxPower = ThisMonthQuarterHourly.Select(measure => measure.ActivePower_W.TariffBinary.T1.DuplexImport.PhaseSum).DefaultIfEmpty(0).Max();
       _dataStruct.Add(new TabularData
       {
