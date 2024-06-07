@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Ozds.Business.Extensions;
 using Ozds.Client.Extensions;
 
@@ -15,7 +16,6 @@ builder.Services
     .MapOzdsIot("Iot", "Update", "/iot/update"))
   .Configure(app => app
     .MigrateOzdsData());
-
 
 var app = builder.Build();
 

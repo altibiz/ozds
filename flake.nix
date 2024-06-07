@@ -83,6 +83,8 @@ rec {
 
             # Misc
             nodePackages.prettier
+            zip
+            unzip
           ];
         };
         devShells.default = pkgs.mkShell {
@@ -166,35 +168,63 @@ rec {
               nodePackages.yaml-language-server
               nodePackages.vscode-langservers-extracted
               taplo
+              zip
+              unzip
             ];
         };
 
-        packages.default = pkgs.buildDotnetModule rec {
-          pname = "ozds";
-          version = "0.1.0";
+        packages.default = pkgs.writeShellApplication {
+          name = "ozds";
+          runtimeInputs = [
+            (pkgs.buildDotnetModule rec {
+              pname = "ozds";
+              version = "0.1.0";
 
-          src = self;
-          projectFile = "src/Ozds.Server/Ozds.Server.csproj";
-          nugetDeps = ./deps.nix;
-          executables = [ "Ozds.Server" ];
-          makeWrapperArgs = [
-            "--set DOTNET_CONTENTROOT ${placeholder "out"}/lib/${pname}"
+              src = self;
+              projectFile = "src/Ozds.Server/Ozds.Server.csproj";
+              nugetDeps = ./deps.nix;
+              executables = [ "Ozds.Server" ];
+              makeWrapperArgs = [
+                "--set DOTNET_CONTENTROOT ${placeholder "out"}/lib/${pname}"
+              ];
+
+              postPatch = ''
+                rm -rf src/Ozds.Server/App_Data
+              '';
+
+              dotnet-sdk = pkgs.dotnet-sdk;
+              dotnet-runtime = pkgs.dotnet-aspnetcore;
+
+              meta = {
+                description = description;
+                homepage = "https://github.com/altibiz/ozds";
+                license = pkgs.lib.licenses.mit;
+              };
+            })
           ];
-
-          dotnet-sdk = pkgs.dotnet-sdk;
-          dotnet-runtime = pkgs.dotnet-aspnetcore;
-
-          meta = {
-            description = description;
-            homepage = "https://github.com/altibiz/ozds";
-            license = pkgs.lib.licenses.mit;
-          };
+          text = ''
+            Ozds.Server "$@"
+          '';
         };
 
-        packages.docker = pkgs.dockerTools.buildImage {
+        packages.default-docker = pkgs.dockerTools.buildImage {
           name = "altibiz/ozds";
           tag = "latest";
           created = "now";
+          fromImage = (pkgs.dockerTools.buildImage {
+            name = "altibiz/gns3-base";
+            tag = "latest";
+            created = "now";
+            copyToRoot = with pkgs.dockerTools; [
+              usrBinEnv
+              binSh
+              caCertificates
+              fakeNss
+            ];
+            runAsRoot = ''
+              mkdir -p /var/run
+            '';
+          });
           copyToRoot = pkgs.buildEnv {
             name = "image-root";
             paths = [ self.packages.${system}.default ];
