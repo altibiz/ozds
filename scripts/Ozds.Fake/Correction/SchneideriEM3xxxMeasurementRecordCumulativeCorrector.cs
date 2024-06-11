@@ -19,20 +19,26 @@ public class SchneideriEM3xxxMeasurementRecordCumulativeCorrector
       lastMeasurementRecord.Timestamp
     );
 
-    var activeEnergy = measurementRecord.ActiveEnergy_Wh +
-                       (lastMeasurementRecord.ActiveEnergy_Wh
-                        - firstMeasurementRecord.ActiveEnergy_Wh) *
-                       diffMultiplier;
+    var activeEnergy = measurementRecord.ActiveEnergy_Wh
+                        .Add(
+                          (lastMeasurementRecord.ActiveEnergy_Wh
+                          .Reduce(firstMeasurementRecord.ActiveEnergy_Wh))
+                          .Multiply(diffMultiplier)
+                        );
 
-    var reactiveEnergy = measurementRecord.ReactiveEnergy_VARh +
-                         (lastMeasurementRecord.ReactiveEnergy_VARh
-                          - firstMeasurementRecord.ReactiveEnergy_VARh) *
-                         diffMultiplier;
+    var reactiveEnergy = measurementRecord.ReactiveEnergy_VARh
+                        .Add(
+                          (lastMeasurementRecord.ReactiveEnergy_VARh
+                          .Reduce(firstMeasurementRecord.ReactiveEnergy_VARh))
+                          .Multiply(diffMultiplier)
+                        );
 
-    var apparentEnergy = measurementRecord.ApparentEnergy_VAh +
-                         (lastMeasurementRecord.ApparentEnergy_VAh
-                          - firstMeasurementRecord.ApparentEnergy_VAh) *
-                         diffMultiplier;
+    var apparentEnergy = measurementRecord.ApparentEnergy_VAh
+                        .Add(
+                          (lastMeasurementRecord.ApparentEnergy_VAh
+                          .Reduce(firstMeasurementRecord.ApparentEnergy_VAh))
+                          .Multiply(diffMultiplier)
+                        );
 
     measurementRecord.ActiveEnergyL1ImportT0_Wh =
       activeEnergy.TariffUnary.DuplexImport.PhaseSplit.ValueL1;

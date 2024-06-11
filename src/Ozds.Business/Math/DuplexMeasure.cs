@@ -143,8 +143,8 @@ public abstract record class DuplexMeasure<T>
       {
         CompositeDuplexMeasure<T> composite => composite.FromMostAccurate(
           measure => measure.DuplexNet, PhasicMeasure<T>.Null),
-        ImportExportDuplexMeasure<T> importExport => importExport.Import -
-          importExport.Export,
+        ImportExportDuplexMeasure<T> importExport => importExport.Import
+        .Reduce(importExport.Export),
         NetDuplexMeasure<T> net => net.TrueNet,
         _ => PhasicMeasure<T>.Null
       };
@@ -207,8 +207,8 @@ public abstract record class DuplexMeasure<T>
       {
         CompositeDuplexMeasure<T> composite => composite.FromMostAccurate(
           measure => measure.DuplexSum, PhasicMeasure<T>.Null),
-        ImportExportDuplexMeasure<T> importExport => importExport.Import +
-          importExport.Export,
+        ImportExportDuplexMeasure<T> importExport => importExport.Import
+          .Add(importExport.Export),
         NetDuplexMeasure<T> net => net.TrueNet,
         AnyDuplexMeasure<T> any => any.Value,
         _ => PhasicMeasure<T>.Null
@@ -294,36 +294,36 @@ public abstract record class DuplexMeasure<T>
   //   };
   // }
 
-  public static DuplexMeasure<T> operator *(DuplexMeasure<T> lhs, T rhs)
+  public DuplexMeasure<T> Multiply(T rhs)
   {
-    return lhs switch
+    return this switch
     {
       CompositeDuplexMeasure<T> composite => composite.Select(measure =>
-        measure * rhs),
+        measure.Multiply(rhs)),
       ImportExportDuplexMeasure<T> importExport => new
         ImportExportDuplexMeasure<T>(
-          importExport.Import * rhs,
-          importExport.Export * rhs
+          importExport.Import.Multiply(rhs),
+          importExport.Export.Multiply(rhs)
         ),
-      NetDuplexMeasure<T> net => new NetDuplexMeasure<T>(net.TrueNet * rhs),
-      AnyDuplexMeasure<T> any => new AnyDuplexMeasure<T>(any.Value * rhs),
+      NetDuplexMeasure<T> net => new NetDuplexMeasure<T>(net.TrueNet.Multiply(rhs)),
+      AnyDuplexMeasure<T> any => new AnyDuplexMeasure<T>(any.Value.Multiply(rhs)),
       _ => Null
     };
   }
 
-  public static DuplexMeasure<T> operator /(DuplexMeasure<T> lhs, T rhs)
+  public DuplexMeasure<T> Divide(T rhs)
   {
-    return lhs switch
+    return this switch
     {
       CompositeDuplexMeasure<T> composite => composite.Select(measure =>
-        measure / rhs),
+        measure.Divide(rhs)),
       ImportExportDuplexMeasure<T> importExport => new
         ImportExportDuplexMeasure<T>(
-          importExport.Import / rhs,
-          importExport.Export / rhs
+          importExport.Import.Divide(rhs),
+          importExport.Export.Divide(rhs)
         ),
-      NetDuplexMeasure<T> net => new NetDuplexMeasure<T>(net.TrueNet / rhs),
-      AnyDuplexMeasure<T> any => new AnyDuplexMeasure<T>(any.Value / rhs),
+      NetDuplexMeasure<T> net => new NetDuplexMeasure<T>(net.TrueNet.Divide(rhs)),
+      AnyDuplexMeasure<T> any => new AnyDuplexMeasure<T>(any.Value.Divide(rhs)),
       _ => Null
     };
   }
@@ -564,71 +564,68 @@ public abstract record class DuplexMeasure<T>
   //   };
   // }
 
-  public static DuplexMeasure<T> operator +(DuplexMeasure<T> lhs,
-    DuplexMeasure<T> rhs)
+  public DuplexMeasure<T> Add(DuplexMeasure<T> rhs)
   {
-    return (lhs, rhs) switch
+    return (this, rhs) switch
     {
       (CompositeDuplexMeasure<T> lhsComposite, _) =>
-        lhsComposite.Zip(rhs, (lhs, rhs) => lhs + rhs),
+        lhsComposite.Zip(rhs, (lhs, rhs) => lhs.Add(rhs)),
       (_, CompositeDuplexMeasure<T> rhsComposite) =>
-        rhsComposite.Zip(lhs, (rhs, lhs) => lhs + rhs),
+        rhsComposite.Zip(this, (rhs, lhs) => lhs.Add(rhs)),
       (ImportExportDuplexMeasure<T> lhsImportExport,
         ImportExportDuplexMeasure<T>
         rhsImportExport) => new ImportExportDuplexMeasure<T>(
-          lhsImportExport.Import + rhsImportExport.Import,
-          lhsImportExport.Export + rhsImportExport.Export
+          lhsImportExport.Import.Add(rhsImportExport.Import),
+          lhsImportExport.Export.Add(rhsImportExport.Export)
         ),
       (NetDuplexMeasure<T> lhsNet, NetDuplexMeasure<T> rhsNet) =>
-        new NetDuplexMeasure<T>(lhsNet.TrueNet + rhsNet.TrueNet),
+        new NetDuplexMeasure<T>(lhsNet.TrueNet.Add(rhsNet.TrueNet)),
       (AnyDuplexMeasure<T> lhsAny, AnyDuplexMeasure<T> rhsAny) =>
-        new AnyDuplexMeasure<T>(lhsAny.Value + rhsAny.Value),
+        new AnyDuplexMeasure<T>(lhsAny.Value.Add(rhsAny.Value)),
       _ => Null
     };
   }
 
-  public static DuplexMeasure<T> operator -(DuplexMeasure<T> lhs,
-    DuplexMeasure<T> rhs)
+  public DuplexMeasure<T> Reduce(DuplexMeasure<T> rhs)
   {
-    return (lhs, rhs) switch
+    return (this, rhs) switch
     {
       (CompositeDuplexMeasure<T> lhsComposite, _) =>
-        lhsComposite.Zip(rhs, (lhs, rhs) => lhs - rhs),
+        lhsComposite.Zip(rhs, (lhs, rhs) => lhs.Reduce(rhs)),
       (_, CompositeDuplexMeasure<T> rhsComposite) =>
-        rhsComposite.Zip(lhs, (rhs, lhs) => lhs - rhs),
+        rhsComposite.Zip(this, (rhs, lhs) => lhs.Reduce(rhs)),
       (ImportExportDuplexMeasure<T> lhsImportExport,
         ImportExportDuplexMeasure<T>
         rhsImportExport) => new ImportExportDuplexMeasure<T>(
-          lhsImportExport.Import - rhsImportExport.Import,
-          lhsImportExport.Export - rhsImportExport.Export
+          lhsImportExport.Import.Reduce(rhsImportExport.Import),
+          lhsImportExport.Export.Reduce(rhsImportExport.Export)
         ),
       (NetDuplexMeasure<T> lhsNet, NetDuplexMeasure<T> rhsNet) =>
-        new NetDuplexMeasure<T>(lhsNet.TrueNet - rhsNet.TrueNet),
+        new NetDuplexMeasure<T>(lhsNet.TrueNet.Reduce(rhsNet.TrueNet)),
       (AnyDuplexMeasure<T> lhsAny, AnyDuplexMeasure<T> rhsAny) =>
-        new AnyDuplexMeasure<T>(lhsAny.Value - rhsAny.Value),
+        new AnyDuplexMeasure<T>(lhsAny.Value.Reduce(rhsAny.Value)),
       _ => Null
     };
   }
 
-  public static DuplexMeasure<T> operator *(DuplexMeasure<T> lhs,
-    DuplexMeasure<T> rhs)
+  public DuplexMeasure<T> Multiply(DuplexMeasure<T> rhs)
   {
-    return (lhs, rhs) switch
+    return (this, rhs) switch
     {
       (CompositeDuplexMeasure<T> lhsComposite, _) =>
-        lhsComposite.Zip(rhs, (lhs, rhs) => lhs * rhs),
+        lhsComposite.Zip(rhs, (lhs, rhs) => lhs.Multiply(rhs)),
       (_, CompositeDuplexMeasure<T> rhsComposite) =>
-        rhsComposite.Zip(lhs, (rhs, lhs) => lhs * rhs),
+        rhsComposite.Zip(this, (rhs, lhs) => lhs.Multiply(rhs)),
       (ImportExportDuplexMeasure<T> lhsImportExport,
         ImportExportDuplexMeasure<T>
         rhsImportExport) => new ImportExportDuplexMeasure<T>(
-          lhsImportExport.Import * rhsImportExport.Import,
-          lhsImportExport.Export * rhsImportExport.Export
+          lhsImportExport.Import.Multiply(rhsImportExport.Import),
+          lhsImportExport.Export.Multiply(rhsImportExport.Export)
         ),
       (NetDuplexMeasure<T> lhsNet, NetDuplexMeasure<T> rhsNet) =>
-        new NetDuplexMeasure<T>(lhsNet.TrueNet * rhsNet.TrueNet),
+        new NetDuplexMeasure<T>(lhsNet.TrueNet.Multiply(rhsNet.TrueNet)),
       (AnyDuplexMeasure<T> lhsAny, AnyDuplexMeasure<T> rhsAny) =>
-        new AnyDuplexMeasure<T>(lhsAny.Value * rhsAny.Value),
+        new AnyDuplexMeasure<T>(lhsAny.Value.Multiply(rhsAny.Value)),
       _ => Null
     };
   }

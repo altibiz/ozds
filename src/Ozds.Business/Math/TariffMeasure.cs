@@ -169,7 +169,7 @@ public abstract record class TariffMeasure<T>
           new CompositeDuplexMeasure<T>(
             composite.Measures.Select(
               measure => measure.TariffUnary).ToList()),
-        BinaryTariffMeasure<T> binary => binary.T1 + binary.T2,
+        BinaryTariffMeasure<T> binary => binary.T1.Add(binary.T2),
         UnaryTariffMeasure<T> unary => unary.T0,
         _ => DuplexMeasure<T>.Null
       };
@@ -282,30 +282,30 @@ public abstract record class TariffMeasure<T>
   //   };
   // }
 
-  public static TariffMeasure<T> operator *(TariffMeasure<T> lhs, T rhs)
+  public TariffMeasure<T> Multiply(T rhs)
   {
-    return lhs switch
+    return this switch
     {
       CompositeTariffMeasure<T> composite => composite.Select(measure =>
-        measure * rhs),
-      UnaryTariffMeasure<T> unary => new UnaryTariffMeasure<T>(unary.T0 * rhs),
+        measure.Multiply(rhs)),
+      UnaryTariffMeasure<T> unary => new UnaryTariffMeasure<T>(unary.T0.Multiply(rhs)),
       BinaryTariffMeasure<T> binary => new BinaryTariffMeasure<T>(
-        binary.T1 * rhs,
-        binary.T2 * rhs),
+        binary.T1.Multiply(rhs),
+        binary.T2.Multiply(rhs)),
       _ => Null
     };
   }
 
-  public static TariffMeasure<T> operator /(TariffMeasure<T> lhs, T rhs)
+  public TariffMeasure<T> Divide(T rhs)
   {
-    return lhs switch
+    return this switch
     {
       CompositeTariffMeasure<T> composite => composite.Select(measure =>
-        measure / rhs),
-      UnaryTariffMeasure<T> unary => new UnaryTariffMeasure<T>(unary.T0 / rhs),
+        measure.Divide(rhs)),
+      UnaryTariffMeasure<T> unary => new UnaryTariffMeasure<T>(unary.T0.Divide(rhs)),
       BinaryTariffMeasure<T> binary => new BinaryTariffMeasure<T>(
-        binary.T1 / rhs,
-        binary.T2 / rhs),
+        binary.T1.Divide(rhs),
+        binary.T2.Divide(rhs)),
       _ => Null
     };
   }
@@ -646,53 +646,50 @@ public abstract record class TariffMeasure<T>
   //   };
   // }
 
-  public static TariffMeasure<T> operator +(TariffMeasure<T> lhs,
-    TariffMeasure<T> rhs)
+  public TariffMeasure<T> Add(TariffMeasure<T> rhs)
   {
-    return (lhs, rhs) switch
+    return (this, rhs) switch
     {
       (CompositeTariffMeasure<T> composite, _) => composite.Zip(rhs,
-        (lhs, rhs) => lhs + rhs),
-      (_, CompositeTariffMeasure<T> composite) => composite.Zip(lhs,
-        (rhs, lhs) => lhs + rhs),
+          (lhs, rhs) => lhs.Add(rhs)),
+      (_, CompositeTariffMeasure<T> composite) => composite.Zip(this,
+          (rhs, lhs) => lhs.Add(rhs)),
       (UnaryTariffMeasure<T> left, UnaryTariffMeasure<T> right) =>
-        new UnaryTariffMeasure<T>(left.T0 + right.T0),
+          new UnaryTariffMeasure<T>(left.T0.Add(right.T0)),
       (BinaryTariffMeasure<T> left, BinaryTariffMeasure<T> right) => new
-        BinaryTariffMeasure<T>(left.T1 + right.T1, left.T2 + right.T2),
+          BinaryTariffMeasure<T>(left.T1.Add(right.T1), left.T2.Add(right.T2)),
       _ => Null
     };
   }
 
-  public static TariffMeasure<T> operator -(TariffMeasure<T> lhs,
-    TariffMeasure<T> rhs)
+  public TariffMeasure<T> Reduce(TariffMeasure<T> rhs)
   {
-    return (lhs, rhs) switch
+    return (this, rhs) switch
     {
       (CompositeTariffMeasure<T> composite, _) => composite.Zip(rhs,
-        (lhs, rhs) => lhs - rhs),
-      (_, CompositeTariffMeasure<T> composite) => composite.Zip(lhs,
-        (rhs, lhs) => lhs - rhs),
+        (lhs, rhs) => lhs.Reduce(rhs)),
+      (_, CompositeTariffMeasure<T> composite) => composite.Zip(this,
+        (rhs, lhs) => lhs.Reduce(rhs)),
       (UnaryTariffMeasure<T> left, UnaryTariffMeasure<T> right) =>
-        new UnaryTariffMeasure<T>(left.T0 - right.T0),
+        new UnaryTariffMeasure<T>(left.T0.Reduce(right.T0)),
       (BinaryTariffMeasure<T> left, BinaryTariffMeasure<T> right) => new
-        BinaryTariffMeasure<T>(left.T1 - right.T1, left.T2 - right.T2),
+        BinaryTariffMeasure<T>(left.T1.Reduce(right.T1), left.T2.Reduce(right.T2)),
       _ => Null
     };
   }
 
-  public static TariffMeasure<T> operator *(TariffMeasure<T> lhs,
-    TariffMeasure<T> rhs)
+  public TariffMeasure<T> Multiply(TariffMeasure<T> rhs)
   {
-    return (lhs, rhs) switch
+    return (this, rhs) switch
     {
       (CompositeTariffMeasure<T> composite, _) => composite.Zip(rhs,
-        (lhs, rhs) => lhs * rhs),
-      (_, CompositeTariffMeasure<T> composite) => composite.Zip(lhs,
-        (rhs, lhs) => lhs * rhs),
+        (lhs, rhs) => lhs.Multiply(rhs)),
+      (_, CompositeTariffMeasure<T> composite) => composite.Zip(this,
+        (rhs, lhs) => lhs.Multiply(rhs)),
       (UnaryTariffMeasure<T> left, UnaryTariffMeasure<T> right) =>
-        new UnaryTariffMeasure<T>(left.T0 * right.T0),
+        new UnaryTariffMeasure<T>(left.T0.Multiply(right.T0)),
       (BinaryTariffMeasure<T> left, BinaryTariffMeasure<T> right) => new
-        BinaryTariffMeasure<T>(left.T1 * right.T1, left.T2 * right.T2),
+        BinaryTariffMeasure<T>(left.T1.Multiply(right.T1), left.T2.Multiply(right.T2)),
       _ => Null
     };
   }

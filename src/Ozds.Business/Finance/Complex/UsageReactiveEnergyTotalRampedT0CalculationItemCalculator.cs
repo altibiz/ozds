@@ -31,9 +31,9 @@ public class UsageReactiveEnergyTotalRampedT0CalculationItemCalculator :
 
     var rampedAmount =
       reactiveAmount.SpanDiff.Select(duplex =>
-        new AnyDuplexMeasure<decimal>(duplex.DuplexAbs.DuplexSum)) -
+        new AnyDuplexMeasure<decimal>(duplex.DuplexAbs.DuplexSum)).Reduce(
       activeAmount.SpanDiff.Select(duplex =>
-        new AnyDuplexMeasure<decimal>(duplex.DuplexAny));
+        new AnyDuplexMeasure<decimal>(duplex.DuplexAny)));
 
     rampedAmount = rampedAmount
       .Select(duplex => duplex.DuplexAny.PhaseSum < 0
