@@ -22,14 +22,14 @@ public class AbbB2xMeasurementRecordCumulativeCorrector
     var activeEnergy = measurementRecord.ActiveEnergy_Wh
                         .Add(
                           (lastMeasurementRecord.ActiveEnergy_Wh
-                          .Reduce(firstMeasurementRecord.ActiveEnergy_Wh))
+                          .Subtract(firstMeasurementRecord.ActiveEnergy_Wh))
                           .Multiply(diffMultiplier)
                         );
 
     var reactiveEnergy = measurementRecord.ReactiveEnergy_VARh
                         .Add(
                           (lastMeasurementRecord.ReactiveEnergy_VARh
-                          .Reduce(firstMeasurementRecord.ReactiveEnergy_VARh))
+                          .Subtract(firstMeasurementRecord.ReactiveEnergy_VARh))
                           .Multiply(diffMultiplier)
                         );
 

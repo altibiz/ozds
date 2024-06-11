@@ -6,37 +6,71 @@ namespace Ozds.Business.Test.Math.PhasicMeasureTest;
 
 public class ConvertPrimitiveToTest
 {
-  public static readonly TheoryData<PhasicMeasure<decimal>, PhasicMeasure<int>> PhasicMeasuresConversion = new()
+  public static readonly TheoryData<PhasicMeasure<decimal>, PhasicMeasure<float>> DecimalToFloatConversion = new()
   {
     {
       new SinglePhasicMeasure<decimal>(5.4m),
-      new SinglePhasicMeasure<int>(5)
+      new SinglePhasicMeasure<float>(5.4f)
     },
     {
       new TriPhasicMeasure<decimal>(3.3m, 2.2m, 1.1m),
-      new TriPhasicMeasure<int>(3, 2, 1)
+      new TriPhasicMeasure<float>(3.3f, 2.2f, 1.1f)
     },
     {
       new CompositePhasicMeasure<decimal>(new List<PhasicMeasure<decimal>> {
         new SinglePhasicMeasure<decimal>(4.4m),
         new SinglePhasicMeasure<decimal>(5.5m)
       }),
-      new CompositePhasicMeasure<int>(new List<PhasicMeasure<int>> {
-        new SinglePhasicMeasure<int>(4),
-        new SinglePhasicMeasure<int>(5)
+      new CompositePhasicMeasure<float>(new List<PhasicMeasure<float>> {
+        new SinglePhasicMeasure<float>(4.4f),
+        new SinglePhasicMeasure<float>(5.5f)
       })
     },
     {
       new NullPhasicMeasure<decimal>(),
-      new NullPhasicMeasure<int>()
+      new NullPhasicMeasure<float>()
+    }
+  };
+
+  public static readonly TheoryData<PhasicMeasure<float>, PhasicMeasure<decimal>> FloatToDecimalConversion = new()
+  {
+    {
+      new SinglePhasicMeasure<float>(5.4f),
+      new SinglePhasicMeasure<decimal>(5.4m)
+    },
+    {
+      new TriPhasicMeasure<float>(3.3f, 2.2f, 1.1f),
+      new TriPhasicMeasure<decimal>(3.3m, 2.2m, 1.1m)
+    },
+    {
+      new CompositePhasicMeasure<float>(new List<PhasicMeasure<float>> {
+        new SinglePhasicMeasure<float>(4.4f),
+        new SinglePhasicMeasure<float>(5.5f)
+      }),
+      new CompositePhasicMeasure<decimal>(new List<PhasicMeasure<decimal>> {
+        new SinglePhasicMeasure<decimal>(4.4m),
+        new SinglePhasicMeasure<decimal>(5.5m)
+      })
+    },
+    {
+      new NullPhasicMeasure<float>(),
+      new NullPhasicMeasure<decimal>()
     }
   };
 
   [Theory]
-  [MemberData(nameof(PhasicMeasuresConversion))]
-  public void ConvertsPhasicMeasureCorrectly(PhasicMeasure<decimal> input, PhasicMeasure<int> expected)
+  [MemberData(nameof(DecimalToFloatConversion))]
+  public void ConvertsDecimalToFloatCorrectly(PhasicMeasure<decimal> input, PhasicMeasure<float> expected)
   {
-    var result = input.ConvertPrimitiveTo<int>();
+    var result = input.ConvertPrimitiveTo<float>();
+    AssertPhasicMeasureEqual(expected, result);
+  }
+
+  [Theory]
+  [MemberData(nameof(FloatToDecimalConversion))]
+  public void ConvertsFloatToDecimalCorrectly(PhasicMeasure<float> input, PhasicMeasure<decimal> expected)
+  {
+    var result = input.ConvertPrimitiveTo<decimal>();
     AssertPhasicMeasureEqual(expected, result);
   }
 

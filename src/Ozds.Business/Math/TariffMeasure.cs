@@ -22,18 +22,20 @@ public record class CompositeTariffMeasure<T>
 
   public List<TariffMeasure<T>> Measures { get; set; }
 
-  // public U FromMostAccurate<U>(Func<TariffMeasure<T>, U> selector, U @default)
-  // {
-  //   return Measures.FirstOrDefault(measure => measure is BinaryTariffMeasure<T>)
-  //     is
-  //   { } binary
-  //     ? selector(binary)
-  //     : Measures.FirstOrDefault(measure => measure is UnaryTariffMeasure<T>) is
-  //     { } unary
-  //       ? selector(unary)
-  //       : @default;
-  // }
+  // DO NOT TEST
+  public U FromMostAccurate<U>(Func<TariffMeasure<T>, U> selector, U @default)
+  {
+    return Measures.FirstOrDefault(measure => measure is BinaryTariffMeasure<T>)
+      is
+    { } binary
+      ? selector(binary)
+      : Measures.FirstOrDefault(measure => measure is UnaryTariffMeasure<T>) is
+      { } unary
+        ? selector(unary)
+        : @default;
+  }
 
+  // DO NOT TEST
   public CompositeTariffMeasure<T> Select(
     Func<TariffMeasure<T>, TariffMeasure<T>> selector)
   {
@@ -66,6 +68,7 @@ public record class CompositeTariffMeasure<T>
   //   };
   // }
 
+  // DO NOT TEST
   public CompositeTariffMeasure<T> Zip(TariffMeasure<T> other,
     Func<TariffMeasure<T>, TariffMeasure<T>, TariffMeasure<T>> selector)
   {
@@ -209,8 +212,8 @@ public abstract record class TariffMeasure<T>
   //     return this switch
   //     {
   //       CompositeTariffMeasure<T> composite => composite.Measures.Aggregate(
-  //         DuplexMeasure<T>.Null, (sum, measure) => sum + measure.TariffUnary),
-  //       BinaryTariffMeasure<T> binary => binary.T1 + binary.T2,
+  //         DuplexMeasure<T>.Null, (sum, measure) => sum.Add(measure.TariffUnary)),
+  //       BinaryTariffMeasure<T> binary => binary.T1.Add(binary.T2),
   //       UnaryTariffMeasure<T> unary => unary.T0,
   //       _ => DuplexMeasure<T>.Null
   //     };
@@ -238,6 +241,7 @@ public abstract record class TariffMeasure<T>
     };
   }
 
+  // DO NOT TEST
   public TariffMeasure<T> Select(
     Func<DuplexMeasure<T>, DuplexMeasure<T>> selector)
   {
@@ -662,18 +666,18 @@ public abstract record class TariffMeasure<T>
     };
   }
 
-  public TariffMeasure<T> Reduce(TariffMeasure<T> rhs)
+  public TariffMeasure<T> Subtract(TariffMeasure<T> rhs)
   {
     return (this, rhs) switch
     {
       (CompositeTariffMeasure<T> composite, _) => composite.Zip(rhs,
-        (lhs, rhs) => lhs.Reduce(rhs)),
+        (lhs, rhs) => lhs.Subtract(rhs)),
       (_, CompositeTariffMeasure<T> composite) => composite.Zip(this,
-        (rhs, lhs) => lhs.Reduce(rhs)),
+        (rhs, lhs) => lhs.Subtract(rhs)),
       (UnaryTariffMeasure<T> left, UnaryTariffMeasure<T> right) =>
-        new UnaryTariffMeasure<T>(left.T0.Reduce(right.T0)),
+        new UnaryTariffMeasure<T>(left.T0.Subtract(right.T0)),
       (BinaryTariffMeasure<T> left, BinaryTariffMeasure<T> right) => new
-        BinaryTariffMeasure<T>(left.T1.Reduce(right.T1), left.T2.Reduce(right.T2)),
+        BinaryTariffMeasure<T>(left.T1.Subtract(right.T1), left.T2.Subtract(right.T2)),
       _ => Null
     };
   }

@@ -22,21 +22,21 @@ public class SchneideriEM3xxxMeasurementRecordCumulativeCorrector
     var activeEnergy = measurementRecord.ActiveEnergy_Wh
                         .Add(
                           (lastMeasurementRecord.ActiveEnergy_Wh
-                          .Reduce(firstMeasurementRecord.ActiveEnergy_Wh))
+                          .Subtract(firstMeasurementRecord.ActiveEnergy_Wh))
                           .Multiply(diffMultiplier)
                         );
 
     var reactiveEnergy = measurementRecord.ReactiveEnergy_VARh
                         .Add(
                           (lastMeasurementRecord.ReactiveEnergy_VARh
-                          .Reduce(firstMeasurementRecord.ReactiveEnergy_VARh))
+                          .Subtract(firstMeasurementRecord.ReactiveEnergy_VARh))
                           .Multiply(diffMultiplier)
                         );
 
     var apparentEnergy = measurementRecord.ApparentEnergy_VAh
                         .Add(
                           (lastMeasurementRecord.ApparentEnergy_VAh
-                          .Reduce(firstMeasurementRecord.ApparentEnergy_VAh))
+                          .Subtract(firstMeasurementRecord.ApparentEnergy_VAh))
                           .Multiply(diffMultiplier)
                         );
 

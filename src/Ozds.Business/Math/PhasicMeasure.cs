@@ -235,6 +235,7 @@ public abstract record class PhasicMeasure<T>
     };
   }
 
+  // DO NOT TEST
   public PhasicMeasure<T> Select(Func<T, T> selector)
   {
     return this switch
@@ -381,14 +382,14 @@ public abstract record class PhasicMeasure<T>
     };
   }
 
-  public PhasicMeasure<T> Reduce(PhasicMeasure<T> rhs)
+  public PhasicMeasure<T> Subtract(PhasicMeasure<T> rhs)
   {
     return (this, rhs) switch
     {
       (CompositePhasicMeasure<T> compositeLhs, _) =>
-        compositeLhs.Zip(rhs, (lhs, rhs) => lhs.Reduce(rhs)),
+        compositeLhs.Zip(rhs, (lhs, rhs) => lhs.Subtract(rhs)),
       (_, CompositePhasicMeasure<T> compositeRhs) =>
-        compositeRhs.Zip(this, (rhs, lhs) => lhs.Reduce(rhs)),
+        compositeRhs.Zip(this, (rhs, lhs) => lhs.Subtract(rhs)),
       (TriPhasicMeasure<T> triLhs, TriPhasicMeasure<T> triRhs) => new
         TriPhasicMeasure<T>(triLhs.ValueL1 - triRhs.ValueL1,
           triLhs.ValueL2 - triRhs.ValueL2, triLhs.ValueL3 - triRhs.ValueL3),
