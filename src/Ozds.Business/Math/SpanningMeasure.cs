@@ -129,7 +129,8 @@ public abstract record class SpanningMeasure<T>
   {
     return this switch
     {
-      MinMaxSpanningMeasure<T> minMax => minMax.TrueMax.Subtract(minMax.TrueMin),
+      MinMaxSpanningMeasure<T> minMax =>
+        minMax.TrueMax.Subtract(minMax.TrueMin),
       AvgSpanningMeasure<T> avg => avg.TrueAvg.Multiply(y),
       _ => TariffMeasure<T>.Null
     };

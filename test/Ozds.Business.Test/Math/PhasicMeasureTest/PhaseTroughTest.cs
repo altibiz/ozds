@@ -1,15 +1,24 @@
-using Xunit;
 using Ozds.Business.Math;
+using Xunit;
 
 namespace Ozds.Business.Test.Math.PhasicMeasureTest;
 
 public class PhaseTroughTest
 {
-  public static readonly TheoryData<PhasicMeasure<decimal>> PhasicMeasuresTroughSix = new()
-  {
-    { new SinglePhasicMeasure<decimal>(6) },
-    { new TriPhasicMeasure<decimal>(100, 6.1m, 6) },
-  };
+  public static readonly TheoryData<PhasicMeasure<decimal>>
+    PhasicMeasuresTroughSix = new()
+    {
+      new SinglePhasicMeasure<decimal>(6),
+      new TriPhasicMeasure<decimal>(100, 6.1m, 6)
+    };
+
+  public static readonly TheoryData<PhasicMeasure<decimal>>
+    PhasicMeasuresTroughZero = new()
+    {
+      new SinglePhasicMeasure<decimal>(0),
+      new TriPhasicMeasure<decimal>(0, 0, 0),
+      new NullPhasicMeasure<decimal>()
+    };
 
   [Theory]
   [MemberData(nameof(PhasicMeasuresTroughSix))]
@@ -17,13 +26,6 @@ public class PhaseTroughTest
   {
     Assert.Equal(6, x.PhaseTrough);
   }
-
-  public static readonly TheoryData<PhasicMeasure<decimal>> PhasicMeasuresTroughZero = new()
-  {
-    { new SinglePhasicMeasure<decimal>(0) },
-    { new TriPhasicMeasure<decimal>(0, 0, 0) },
-    { new NullPhasicMeasure<decimal>() }
-  };
 
   [Theory]
   [MemberData(nameof(PhasicMeasuresTroughZero))]

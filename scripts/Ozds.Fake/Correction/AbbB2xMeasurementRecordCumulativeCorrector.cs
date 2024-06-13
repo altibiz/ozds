@@ -20,18 +20,18 @@ public class AbbB2xMeasurementRecordCumulativeCorrector
     );
 
     var activeEnergy = measurementRecord.ActiveEnergy_Wh
-                        .Add(
-                          (lastMeasurementRecord.ActiveEnergy_Wh
-                          .Subtract(firstMeasurementRecord.ActiveEnergy_Wh))
-                          .Multiply(diffMultiplier)
-                        );
+      .Add(
+        lastMeasurementRecord.ActiveEnergy_Wh
+          .Subtract(firstMeasurementRecord.ActiveEnergy_Wh)
+          .Multiply(diffMultiplier)
+      );
 
     var reactiveEnergy = measurementRecord.ReactiveEnergy_VARh
-                        .Add(
-                          (lastMeasurementRecord.ReactiveEnergy_VARh
-                          .Subtract(firstMeasurementRecord.ReactiveEnergy_VARh))
-                          .Multiply(diffMultiplier)
-                        );
+      .Add(
+        lastMeasurementRecord.ReactiveEnergy_VARh
+          .Subtract(firstMeasurementRecord.ReactiveEnergy_VARh)
+          .Multiply(diffMultiplier)
+      );
 
     measurementRecord.ActiveEnergyL1ImportT0_Wh =
       activeEnergy.TariffUnary.DuplexImport.PhaseSplit.ValueL1;

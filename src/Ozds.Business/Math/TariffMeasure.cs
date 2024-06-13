@@ -26,10 +26,10 @@ public record class CompositeTariffMeasure<T>
   {
     return Measures.FirstOrDefault(measure => measure is BinaryTariffMeasure<T>)
       is
-    { } binary
+      { } binary
       ? selector(binary)
       : Measures.FirstOrDefault(measure => measure is UnaryTariffMeasure<T>) is
-      { } unary
+        { } unary
         ? selector(unary)
         : @default;
   }
@@ -173,7 +173,8 @@ public abstract record class TariffMeasure<T>
     {
       CompositeTariffMeasure<T> composite => composite.Select(measure =>
         measure.Multiply(rhs)),
-      UnaryTariffMeasure<T> unary => new UnaryTariffMeasure<T>(unary.T0.Multiply(rhs)),
+      UnaryTariffMeasure<T> unary => new UnaryTariffMeasure<T>(
+        unary.T0.Multiply(rhs)),
       BinaryTariffMeasure<T> binary => new BinaryTariffMeasure<T>(
         binary.T1.Multiply(rhs),
         binary.T2.Multiply(rhs)),
@@ -187,7 +188,8 @@ public abstract record class TariffMeasure<T>
     {
       CompositeTariffMeasure<T> composite => composite.Select(measure =>
         measure.Divide(rhs)),
-      UnaryTariffMeasure<T> unary => new UnaryTariffMeasure<T>(unary.T0.Divide(rhs)),
+      UnaryTariffMeasure<T> unary => new UnaryTariffMeasure<T>(
+        unary.T0.Divide(rhs)),
       BinaryTariffMeasure<T> binary => new BinaryTariffMeasure<T>(
         binary.T1.Divide(rhs),
         binary.T2.Divide(rhs)),
@@ -200,13 +202,13 @@ public abstract record class TariffMeasure<T>
     return (this, rhs) switch
     {
       (CompositeTariffMeasure<T> composite, _) => composite.Zip(rhs,
-          (lhs, rhs) => lhs.Add(rhs)),
+        (lhs, rhs) => lhs.Add(rhs)),
       (_, CompositeTariffMeasure<T> composite) => composite.Zip(this,
-          (rhs, lhs) => lhs.Add(rhs)),
+        (rhs, lhs) => lhs.Add(rhs)),
       (UnaryTariffMeasure<T> left, UnaryTariffMeasure<T> right) =>
-          new UnaryTariffMeasure<T>(left.T0.Add(right.T0)),
+        new UnaryTariffMeasure<T>(left.T0.Add(right.T0)),
       (BinaryTariffMeasure<T> left, BinaryTariffMeasure<T> right) => new
-          BinaryTariffMeasure<T>(left.T1.Add(right.T1), left.T2.Add(right.T2)),
+        BinaryTariffMeasure<T>(left.T1.Add(right.T1), left.T2.Add(right.T2)),
       _ => Null
     };
   }
@@ -222,7 +224,8 @@ public abstract record class TariffMeasure<T>
       (UnaryTariffMeasure<T> left, UnaryTariffMeasure<T> right) =>
         new UnaryTariffMeasure<T>(left.T0.Subtract(right.T0)),
       (BinaryTariffMeasure<T> left, BinaryTariffMeasure<T> right) => new
-        BinaryTariffMeasure<T>(left.T1.Subtract(right.T1), left.T2.Subtract(right.T2)),
+        BinaryTariffMeasure<T>(left.T1.Subtract(right.T1),
+          left.T2.Subtract(right.T2)),
       _ => Null
     };
   }
@@ -238,7 +241,8 @@ public abstract record class TariffMeasure<T>
       (UnaryTariffMeasure<T> left, UnaryTariffMeasure<T> right) =>
         new UnaryTariffMeasure<T>(left.T0.Multiply(right.T0)),
       (BinaryTariffMeasure<T> left, BinaryTariffMeasure<T> right) => new
-        BinaryTariffMeasure<T>(left.T1.Multiply(right.T1), left.T2.Multiply(right.T2)),
+        BinaryTariffMeasure<T>(left.T1.Multiply(right.T1),
+          left.T2.Multiply(right.T2)),
       _ => Null
     };
   }

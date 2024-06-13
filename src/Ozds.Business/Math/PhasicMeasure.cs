@@ -26,7 +26,7 @@ public record class CompositePhasicMeasure<T>
   {
     return Measures.FirstOrDefault(measure =>
         measure is TriPhasicMeasure<T> or SinglePhasicMeasure<T>) is
-    { } singleOrTri
+      { } singleOrTri
       ? selector(singleOrTri)
       : @default;
   }
@@ -251,6 +251,7 @@ public abstract record class PhasicMeasure<T>
       _ => Null
     };
   }
+
   public PhasicMeasure<T> Multiply(T rhs)
   {
     return this switch

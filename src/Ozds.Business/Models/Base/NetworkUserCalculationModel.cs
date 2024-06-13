@@ -12,28 +12,23 @@ public abstract class NetworkUserCalculationModel : CalculationModel,
 {
   [Required]
   public required UsageMeterFeeCalculationItemModel
-    UsageMeterFee
-  { get; set; } = default!;
+    UsageMeterFee { get; set; } = default!;
 
   [Required]
   public required SupplyActiveEnergyTotalImportT1CalculationItemModel
-    SupplyActiveEnergyTotalImportT1
-  { get; set; } = default!;
+    SupplyActiveEnergyTotalImportT1 { get; set; } = default!;
 
   [Required]
   public required SupplyActiveEnergyTotalImportT2CalculationItemModel
-    SupplyActiveEnergyTotalImportT2
-  { get; set; } = default!;
+    SupplyActiveEnergyTotalImportT2 { get; set; } = default!;
 
   [Required]
   public required SupplyBusinessUsageCalculationItemModel
-    SupplyBusinessUsageFee
-  { get; set; } = default!;
+    SupplyBusinessUsageFee { get; set; } = default!;
 
   [Required]
   public required SupplyRenewableEnergyCalculationItemModel
-    SupplyRenewableEnergyFee
-  { get; set; } = default!;
+    SupplyRenewableEnergyFee { get; set; } = default!;
 
   protected abstract IEnumerable<ICalculationItem> AdditionalUsageItems { get; }
 
@@ -43,8 +38,7 @@ public abstract class NetworkUserCalculationModel : CalculationModel,
 
   [Required]
   public required NetworkUserMeasurementLocationModel
-    ArchivedNetworkUserMeasurementLocation
-  { get; set; } = default!;
+    ArchivedNetworkUserMeasurementLocation { get; set; } = default!;
 
   [Required]
   public required string UsageNetworkUserCatalogueId { get; set; } = default!;
@@ -113,8 +107,8 @@ public abstract class NetworkUserCalculationModel : CalculationModel,
       var result =
         ReactiveEnergyAmount_Wh.SpanDiff.Select(duplex =>
           new AnyDuplexMeasure<decimal>(duplex.DuplexAbs.DuplexSum)).Subtract(
-        ActiveEnergyAmount_Wh.SpanDiff.Select(duplex =>
-          new AnyDuplexMeasure<decimal>(duplex.DuplexAny)));
+          ActiveEnergyAmount_Wh.SpanDiff.Select(duplex =>
+            new AnyDuplexMeasure<decimal>(duplex.DuplexAny)));
 
       return result
         .Select(duplex => duplex.DuplexAny.PhaseSum < 0
@@ -134,13 +128,18 @@ public abstract class NetworkUserCalculationModel : CalculationModel,
     get
     {
       return new DualExpenditureMeasure<decimal>(
-        ActiveEnergyAmount_Wh.SpanDiff.Multiply(ActiveEnergyPrice_EUR.ExpenditureUsage)
-        .Add(ReactiveEnergyRampedAmount_Wh.Multiply(ReactiveEnergyPrice_EUR.ExpenditureUsage))
-        .Add(ActivePowerAmount_W.SpanDiff.Multiply(ActivePowerPrice_EUR.ExpenditureUsage)),
-
-    ActiveEnergyAmount_Wh.SpanDiff.Multiply(ActiveEnergyPrice_EUR.ExpenditureSupply)
-        .Add(ReactiveEnergyRampedAmount_Wh.Multiply(ReactiveEnergyPrice_EUR.ExpenditureSupply))
-        .Add(ActivePowerAmount_W.SpanDiff.Multiply(ActivePowerPrice_EUR.ExpenditureSupply))
+        ActiveEnergyAmount_Wh.SpanDiff
+          .Multiply(ActiveEnergyPrice_EUR.ExpenditureUsage)
+          .Add(ReactiveEnergyRampedAmount_Wh.Multiply(ReactiveEnergyPrice_EUR
+            .ExpenditureUsage))
+          .Add(ActivePowerAmount_W.SpanDiff.Multiply(ActivePowerPrice_EUR
+            .ExpenditureUsage)),
+        ActiveEnergyAmount_Wh.SpanDiff
+          .Multiply(ActiveEnergyPrice_EUR.ExpenditureSupply)
+          .Add(ReactiveEnergyRampedAmount_Wh.Multiply(ReactiveEnergyPrice_EUR
+            .ExpenditureSupply))
+          .Add(ActivePowerAmount_W.SpanDiff.Multiply(ActivePowerPrice_EUR
+            .ExpenditureSupply))
       );
     }
   }
@@ -152,8 +151,7 @@ public abstract class NetworkUserCalculationModel<TNetworkUserCatalogue>
 {
   [Required]
   public required TNetworkUserCatalogue
-    ConcreteArchivedUsageNetworkUserCatalogue
-  { get; set; } = default!;
+    ConcreteArchivedUsageNetworkUserCatalogue { get; set; } = default!;
 
   public override NetworkUserCatalogueModel ArchivedUsageNetworkUserCatalogue
   {

@@ -28,10 +28,10 @@ public record class CompositeDuplexMeasure<T>
       measure is ImportExportDuplexMeasure<T>) is { } importExport
       ? selector(importExport)
       : Measures.FirstOrDefault(measure => measure is NetDuplexMeasure<T>) is
-      { } net
+        { } net
         ? selector(net)
         : Measures.FirstOrDefault(measure => measure is AnyDuplexMeasure<T>) is
-        { } any
+          { } any
           ? selector(any)
           : @default;
   }
@@ -110,7 +110,7 @@ public abstract record class DuplexMeasure<T>
         CompositeDuplexMeasure<T> composite => composite.FromMostAccurate(
           measure => measure.DuplexNet, PhasicMeasure<T>.Null),
         ImportExportDuplexMeasure<T> importExport => importExport.Import
-        .Subtract(importExport.Export),
+          .Subtract(importExport.Export),
         NetDuplexMeasure<T> net => net.TrueNet,
         _ => PhasicMeasure<T>.Null
       };
@@ -238,8 +238,10 @@ public abstract record class DuplexMeasure<T>
           importExport.Import.Multiply(rhs),
           importExport.Export.Multiply(rhs)
         ),
-      NetDuplexMeasure<T> net => new NetDuplexMeasure<T>(net.TrueNet.Multiply(rhs)),
-      AnyDuplexMeasure<T> any => new AnyDuplexMeasure<T>(any.Value.Multiply(rhs)),
+      NetDuplexMeasure<T> net => new NetDuplexMeasure<T>(
+        net.TrueNet.Multiply(rhs)),
+      AnyDuplexMeasure<T> any => new AnyDuplexMeasure<T>(
+        any.Value.Multiply(rhs)),
       _ => Null
     };
   }
@@ -255,7 +257,8 @@ public abstract record class DuplexMeasure<T>
           importExport.Import.Divide(rhs),
           importExport.Export.Divide(rhs)
         ),
-      NetDuplexMeasure<T> net => new NetDuplexMeasure<T>(net.TrueNet.Divide(rhs)),
+      NetDuplexMeasure<T> net => new NetDuplexMeasure<T>(
+        net.TrueNet.Divide(rhs)),
       AnyDuplexMeasure<T> any => new AnyDuplexMeasure<T>(any.Value.Divide(rhs)),
       _ => Null
     };
