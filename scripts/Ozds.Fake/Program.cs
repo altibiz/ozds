@@ -25,7 +25,7 @@ serviceCollection.AddClient(options.Timeout_s, options.BaseUrl);
 var serviceProvider = serviceCollection.BuildServiceProvider();
 #pragma warning restore ASP0000
 
-var now = DateTimeOffset.UtcNow;
+var temp = DateTimeOffset.TryParse("02.04.2024.", out var now);
 var lastPush = now;
 
 if (options.Seed is { } seed)
