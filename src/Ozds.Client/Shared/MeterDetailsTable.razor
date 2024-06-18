@@ -181,17 +181,17 @@
     foreach (var month in startOfThisYear.GetThisYearMonthStarts().Reverse())
     {
       var measureNextMonthMonthly = measurePerMonth
-        .Where(x => x.Timestamp.Month == month.AddMonths(1).Month)
+        .Where(x => x.Timestamp == month.AddMonths(1))
         .Where(x => x.Interval == IntervalModel.Month)
         .FirstOrDefault();
       var measureThisMonthMonthly = measurePerMonth
-        .Where(x => x.Timestamp.Month == month.Month)
+        .Where(x => x.Timestamp == month)
         .Where(x => x.Interval == IntervalModel.Month)
         .FirstOrDefault();
       if (measureThisMonthMonthly is null)
         continue;
       var ThisMonthQuarterHourly = measurePerMonth
-        .Where(x => x.Timestamp.GetStartOfMonth().Month == month.Month)
+        .Where(x => x.Timestamp.GetStartOfMonth() == month)
         .Where(x => x.Interval == IntervalModel.QuarterHour)
         .ToList();
 
