@@ -42,28 +42,37 @@ public static class DateTimeOffsetExtensions
     this DateTimeOffset dateTimeOffset
   )
   {
-    // dateTimeOffset = dateTimeOffset.ToOffset(GetOffset(dateTimeOffset));
-    var a = dateTimeOffset.ToOffset(GetOffset(dateTimeOffset));
-    var monthStart = new DateTimeOffset(
-      a.Year,
-      a.Month,
-      1,
-      0,
-      0,
-      0,
-      a.Offset
-    );
-    var b = dateTimeOffset.ToOffset(GetOffset(dateTimeOffset.AddMonths(1)));
-    var nextMonthStart = new DateTimeOffset(
-      b.Year,
-      b.Month,
-      1,
-      0,
-      0,
-      0,
-      b.Offset
-    );
-    return (monthStart, nextMonthStart);
+
+    var dateOnlyStart = new DateTime(dateTimeOffset.Year, dateTimeOffset.Month, 1, 0, 0, 0, DateTimeKind.Unspecified);
+    var offsetStart = GetOffset(dateOnlyStart);
+    var dateOnlyEnd = new DateTime(dateTimeOffset.Year, dateTimeOffset.AddMonths(1).Month, 1, 0, 0, 0, DateTimeKind.Unspecified);
+    var offsetEnd = GetOffset(dateOnlyEnd);
+
+    var start = new DateTimeOffset(dateOnlyStart, offsetStart);
+    var end = new DateTimeOffset(dateOnlyEnd, offsetEnd);
+    return (start.UtcDateTime, end.UtcDateTime);
+
+    // var a = dateTimeOffset.ToOffset(GetOffset(dateTimeOffset));
+    // var monthStart = new DateTimeOffset(
+    //   a.Year,
+    //   a.Month,
+    //   1,
+    //   0,
+    //   0,
+    //   0,
+    //   a.Offset
+    // );
+    // var b = dateTimeOffset.ToOffset(GetOffset(dateTimeOffset.AddMonths(1)));
+    // var nextMonthStart = new DateTimeOffset(
+    //   b.Year,
+    //   b.Month,
+    //   1,
+    //   0,
+    //   0,
+    //   0,
+    //   b.Offset
+    // );
+    // return (monthStart, nextMonthStart);
   }
 
   public static DateTimeOffset GetStartOfQuarterHour(
@@ -71,6 +80,7 @@ public static class DateTimeOffsetExtensions
   )
   {
     var quarterHour = dateTimeOffset.Minute / 15;
+
     dateTimeOffset = dateTimeOffset.ToOffset(GetOffset(dateTimeOffset));
     return new DateTimeOffset(
       dateTimeOffset.Year,
@@ -87,93 +97,90 @@ public static class DateTimeOffsetExtensions
     this DateTimeOffset dateTimeOffset
   )
   {
-    dateTimeOffset = dateTimeOffset.ToOffset(GetOffset(dateTimeOffset));
-    return new DateTimeOffset(
-      dateTimeOffset.Year,
-      dateTimeOffset.Month,
-      1,
-      0,
-      0,
-      0,
-      dateTimeOffset.Offset
-    );
+
+    var dateOnly = new DateTime(dateTimeOffset.Year, dateTimeOffset.Month, 1, 0, 0, 0, DateTimeKind.Unspecified);
+    var offset = GetOffset(dateOnly);
+
+    var startOfMonth = new DateTimeOffset(dateOnly, offset);
+    return startOfMonth.UtcDateTime;
   }
 
   public static DateTimeOffset GetStartOfLastMonth(
     this DateTimeOffset dateTimeOffset
   )
   {
-    dateTimeOffset = dateTimeOffset.ToOffset(GetOffset(dateTimeOffset.AddMonths(-1)));
-    return new DateTimeOffset(
-      dateTimeOffset.Year,
-      dateTimeOffset.Month,
-      1,
-      0,
-      0,
-      0,
-      dateTimeOffset.Offset
-    );
+    var dateOnly = new DateTime(dateTimeOffset.Year, dateTimeOffset.AddMonths(-1).Month, 1, 0, 0, 0, DateTimeKind.Unspecified);
+    var offset = GetOffset(dateOnly);
+
+    var startOfLastMonth = new DateTimeOffset(dateOnly, offset);
+    return startOfLastMonth.UtcDateTime;
+
+    // dateTimeOffset = dateTimeOffset.ToOffset(GetOffset(dateTimeOffset.AddMonths(-1)));
+    // return new DateTimeOffset(
+    //   dateTimeOffset.Year,
+    //   dateTimeOffset.Month,
+    //   1,
+    //   0,
+    //   0,
+    //   0,
+    //   dateTimeOffset.Offset
+    // );
   }
 
   public static DateTimeOffset GetStartOfNextMonth(
     this DateTimeOffset dateTimeOffset
   )
   {
-    dateTimeOffset = dateTimeOffset.ToOffset(GetOffset(dateTimeOffset.AddMonths(1)));
-    return new DateTimeOffset(
-      dateTimeOffset.Year,
-      dateTimeOffset.Month,
-      1,
-      0,
-      0,
-      0,
-      dateTimeOffset.Offset
-    );
-  }
+    var dateOnly = new DateTime(dateTimeOffset.Year, dateTimeOffset.AddMonths(1).Month, 1, 0, 0, 0, DateTimeKind.Unspecified);
+    var offset = GetOffset(dateOnly);
 
-  // public static DateTimeOffset GetStartOfDay(
-  //   this DateTimeOffset dateTimeOffset
-  // )
-  // {
-  //   dateTimeOffset = dateTimeOffset.ToOffset(GetOffset(dateTimeOffset.AddHours(4))); //fix
-  //   return new DateTimeOffset(
-  //     dateTimeOffset.Year,
-  //     dateTimeOffset.Month,
-  //     dateTimeOffset.Day,
-  //     0,
-  //     0,
-  //     0,
-  //     dateTimeOffset.Offset
-  //   );
-  // }
+    var startOfNextMonth = new DateTimeOffset(dateOnly, offset);
+    return startOfNextMonth.UtcDateTime;
+
+    // dateTimeOffset = dateTimeOffset.ToOffset(GetOffset(dateTimeOffset.AddMonths(1)));
+    // return new DateTimeOffset(
+    //   dateTimeOffset.Year,
+    //   dateTimeOffset.Month,
+    //   1,
+    //   0,
+    //   0,
+    //   0,
+    //   dateTimeOffset.Offset
+    // );
+  }
 
   public static DateTimeOffset GetStartOfDay(this DateTimeOffset dateTimeOffset)
   {
-    // Ensure we get the correct offset for the start of the day
     var dateOnly = new DateTime(dateTimeOffset.Year, dateTimeOffset.Month, dateTimeOffset.Day, 0, 0, 0, DateTimeKind.Unspecified);
     var offset = GetOffset(dateOnly);
 
-    // Apply the offset to the date
     var startOfDay = new DateTimeOffset(dateOnly, offset);
-    return startOfDay;
+    return startOfDay.UtcDateTime;
   }
 
   public static DateTimeOffset GetStartOfYear(
     this DateTimeOffset dateTimeOffset
   )
   {
-    dateTimeOffset = dateTimeOffset.ToOffset(GetOffset(dateTimeOffset.AddMonths(-dateTimeOffset.Month)));
-    return new DateTimeOffset(
-      dateTimeOffset.Year,
-      1,
-      1,
-      0,
-      0,
-      0,
-      dateTimeOffset.Offset
-    );
+
+    var dateOnly = new DateTime(dateTimeOffset.Year, 1, 1, 0, 0, 0, DateTimeKind.Unspecified);
+    var offset = GetOffset(dateOnly);
+
+    var startOfYear = new DateTimeOffset(dateOnly, offset);
+    return startOfYear.UtcDateTime;
+
+    // dateTimeOffset = dateTimeOffset.ToOffset(GetOffset(dateTimeOffset.AddMonths(-dateTimeOffset.Month)));
+    // return new DateTimeOffset(
+    //   dateTimeOffset.Year,
+    //   1,
+    //   1,
+    //   0,
+    //   0,
+    //   0,
+    //   dateTimeOffset.Offset
+    // );
   }
-  // ToDo
+  // ToDo FIX THIS
   public static IEnumerable<DateTimeOffset> GetThisYearMonthStarts(
     this DateTimeOffset dateTimeOffset
   )
@@ -189,7 +196,7 @@ public static class DateTimeOffsetExtensions
             0,
             0,
             dateTimeOffset.Offset
-          )
+          ).ToUniversalTime()
 
       );
   }
