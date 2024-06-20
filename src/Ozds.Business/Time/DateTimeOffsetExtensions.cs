@@ -131,20 +131,31 @@ public static class DateTimeOffsetExtensions
     );
   }
 
-  public static DateTimeOffset GetStartOfDay(
-    this DateTimeOffset dateTimeOffset
-  )
+  // public static DateTimeOffset GetStartOfDay(
+  //   this DateTimeOffset dateTimeOffset
+  // )
+  // {
+  //   dateTimeOffset = dateTimeOffset.ToOffset(GetOffset(dateTimeOffset.AddHours(4))); //fix
+  //   return new DateTimeOffset(
+  //     dateTimeOffset.Year,
+  //     dateTimeOffset.Month,
+  //     dateTimeOffset.Day,
+  //     0,
+  //     0,
+  //     0,
+  //     dateTimeOffset.Offset
+  //   );
+  // }
+
+  public static DateTimeOffset GetStartOfDay(this DateTimeOffset dateTimeOffset)
   {
-    dateTimeOffset = dateTimeOffset.ToOffset(GetOffset(dateTimeOffset.AddHours(4))); //fix
-    return new DateTimeOffset(
-      dateTimeOffset.Year,
-      dateTimeOffset.Month,
-      dateTimeOffset.Day,
-      0,
-      0,
-      0,
-      dateTimeOffset.Offset
-    );
+    // Ensure we get the correct offset for the start of the day
+    var dateOnly = new DateTime(dateTimeOffset.Year, dateTimeOffset.Month, dateTimeOffset.Day, 0, 0, 0, DateTimeKind.Unspecified);
+    var offset = GetOffset(dateOnly);
+
+    // Apply the offset to the date
+    var startOfDay = new DateTimeOffset(dateOnly, offset);
+    return startOfDay;
   }
 
   public static DateTimeOffset GetStartOfYear(
