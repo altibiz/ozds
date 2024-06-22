@@ -33,23 +33,23 @@
 <p>
   <strong>
     <u>
-      SPECIFIKACIJA POTROŠNJE NA OBRAČUNSKIM MJERNIM MJESTIMA
+      @T["SPECIFICATION OF CONSUMPTION AT BILLING METERING POINTS"]
     </u>
   </strong>
 </p>
 <p style="margin-top: 0.8rem;">
-  Naziv obračunskom mjernog mjesta (OMM):
+  @T["Name of the billing metering point (OMM)"]:
   @(Calculation.ArchivedNetworkUserMeasurementLocation.Title)
 </p>
 <p>
-  Broj obračunskog mjernog mjesta (OMM):
+  @T["Number of the billing metering point (OMM)"]:
   @(Calculation.ArchivedNetworkUserMeasurementLocation.Id)
 </p>
 <p>
-  Tarifni model: @(Calculation.Kind)
+  @T["Tariff model"]: @(Calculation.Kind)
 </p>
 <p style="margin-top: 1.2rem; margin-left: 0.8rem;">
-  <strong>A) NAKNADA ZA KORIŠTENJE MREŽE ZDS-a</strong>
+  <strong>@T["A) NETWORK USAGE FEE FOR ZDS"]</strong>
 </p>
 <table style="margin-top: 0.8rem; width: 100%">
   <colgroup>
@@ -66,16 +66,16 @@
   </colgroup>
   <thead>
   <tr class="header">
-    <th>Broj brojila</th>
-    <th>Datum od</th>
-    <th>Datum do</th>
-    <th>Tarifna stavka</th>
-    <th>Stanje od</th>
-    <th>Stanje do</th>
-    <th>Status</th>
-    <th>Potrošak (kWh/kW/kVAR)</th>
-    <th>Jed.cijena (EUR)</th>
-    <th>Iznos (EUR)</th>
+    <th>@T["Number of devices"]</th>
+    <th>@T["Date from"]</th>
+    <th>@T["Date to"]</th>
+    <th>@T["Tariff item"]</th>
+    <th>@T["Status from"]</th>
+    <th>@T["Status to"]</th>
+    <th>@T["Status"]</th>
+    <th>@T["Usage"] (kWh/kW/kVAR)</th>
+    <th>@T["Unit"] (EUR)</th>
+    <th>@T["Total"] (EUR)</th>
   </tr>
   </thead>
   <tbody>
@@ -102,7 +102,7 @@
   <tr class="odd">
     <td colspan="5"></td>
     <td colspan="4">
-      <strong>Naknada za korištenje mreže ZDS-a - UKUPNO:</strong>
+      <strong>@T["Network usage fee for ZDS - TOTAL"]:</strong>
     </td>
     <td style="text-align: right;">
       <strong>
@@ -113,7 +113,7 @@
   </tbody>
 </table>
 <p style="margin-top: 1.2rem; margin-left: 0.8rem;">
-  <strong>B) NAKNADA ZA OPSKRBU ELEKTRIČNOM ENERGIJOM</strong>
+  <strong>@T["B) ELECTRICITY SUPPLY FEE"]</strong>
 </p>
 <table style="margin-top: 0.8rem;">
   <colgroup>
@@ -130,16 +130,16 @@
   </colgroup>
   <thead>
   <tr class="header">
-    <th>Broj brojila</th>
-    <th>Datum od</th>
-    <th>Datum do</th>
-    <th>Tarifna stavka</th>
-    <th>Stanje od</th>
-    <th>Stanje do</th>
-    <th>Status</th>
-    <th>Potrošak (kWh)</th>
-    <th>Jed.cijena (EUR)</th>
-    <th>Iznos (EUR)</th>
+    <th>@T["Number of devices"]</th>
+    <th>@T["Date from"]</th>
+    <th>@T["Date to"]</th>
+    <th>@T["Tariff item"]</th>
+    <th>@T["Status from"]</th>
+    <th>@T["Status to"]</th>
+    <th>@T["Status"]</th>
+    <th>@T["Usage"] (kWh)</th>
+    <th>@T["Unit"] (EUR)</th>
+    <th>@T["Total"] (EUR)</th>
   </tr>
   </thead>
   <tbody>
@@ -166,7 +166,7 @@
   <tr class="odd">
     <td colspan="4"></td>
     <td colspan="5">
-      <strong>Naknada za opskrbu električnom energijom - UKUPNO:</strong>
+      <strong>@T["Fee for electricity supply - TOTAL"]:</strong>
     </td>
     <td style="text-align: right;">
       <strong>
@@ -203,12 +203,12 @@
     item is ReactiveEnergyTotalRampedT0CalculationItemModel reactiveItem
       ? @<Fragment>
           <td>
-            <strong>JEN</strong>
+            <strong>@T["JEN"]</strong>
           </td>
           <td style="padding: 0;">
             <p class="inductive-label">
               <strong>
-                IND:
+                @T["IND"]:
               </strong>
               <span>
                 @DecimalString(reactiveItem.ImportMin_VARh / 1000M, 2)
@@ -216,7 +216,7 @@
             </p>
             <p class="capacitative-label">
               <strong>
-                KAP:
+                @T["KAP"]:
               </strong>
               <span>
                 @DecimalString(reactiveItem.ExportMin_VARh / 1000M, 2)
@@ -226,7 +226,7 @@
           <td style="padding: 0;">
             <p class="inductive-label">
               <strong>
-                IND:
+                @T["IND"]:
               </strong>
               <span>
                 @DecimalString(reactiveItem.ImportMax_VARh / 1000M, 2)
@@ -234,7 +234,7 @@
             </p>
             <p class="capacitative-label">
               <strong>
-                KAP:
+                @T["KAP"]:
               </strong>
               <span>
                 @DecimalString(reactiveItem.ExportMax_VARh / 1000M, 2)

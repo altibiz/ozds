@@ -7,9 +7,38 @@ namespace Ozds.Client.Base;
 
 public abstract class OzdsComponentBase : ComponentBase
 {
-  public static OzdsComponentLocalizer T
+  [Inject] public IOzdsComponentLocalizer T { get; set; } = default!;
+
+  [Inject] public NavigationManager NavigationManager { get; set; } = default!;
+
+  protected override void OnInitialized()
   {
-    get { return new OzdsComponentLocalizer(); }
+    var uri = new Uri(NavigationManager.Uri);
+    var culture = (uri.Segments[2]
+                   ?? throw new InvalidOperationException("Culture not found"))
+      .TrimEnd('/');
+    SetCulture(culture);
+  }
+
+  private static void SetCulture(string culture)
+  {
+    try
+    {
+      var ci = CultureInfo.GetCultureInfo(culture);
+      CultureInfo.DefaultThreadCurrentCulture = ci;
+      CultureInfo.DefaultThreadCurrentUICulture = ci;
+    }
+    catch (CultureNotFoundException)
+    {
+      var defaultCulture = new CultureInfo("en-US");
+      CultureInfo.DefaultThreadCurrentCulture = defaultCulture;
+      CultureInfo.DefaultThreadCurrentUICulture = defaultCulture;
+    }
+  }
+
+  public static string GetCulture()
+  {
+    return CultureInfo.CurrentCulture.Name;
   }
 
   public static ApexChartOptions<T> NewApexChartOptions<T>() where T : class

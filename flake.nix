@@ -1,4 +1,6 @@
-{
+rec {
+  description = "OZDS";
+
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:NixOS/nixpkgs/release-23.05";
@@ -6,7 +8,7 @@
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { nixpkgs, flake-utils, ... }:
+  outputs = { self, nixpkgs, flake-utils, ... }:
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs {
@@ -16,6 +18,8 @@
             (final: prev: {
               nodejs = prev.nodejs_20;
               dotnet-sdk = prev.dotnet-sdk_8;
+              dotnet-runtime = prev.dotnet-runtime_8;
+              dotnet-aspnetcore = prev.dotnet-aspnetcore_8;
             })
           ];
         };
@@ -34,19 +38,23 @@
           ];
         };
         devShells.docs = pkgs.mkShell {
-          DOXYGEN_DOT_PATH = "${pkgs.graphviz}/bin/dot";
-          DOXYGEN_PLANTUML_JAR_PATH = "${pkgs.plantuml}/lib/plantuml.jar";
-
           packages = with pkgs; [
             # Scripts
             just
             nushell
 
+            # C#
+            dotnet-sdk
+            dotnet-runtime
+            dotnet-aspnetcore
+
             # Documentation
-            doxygen
-            graphviz
+            mdbook
             openjdk
             plantuml
+            graphviz
+            mdbook-plantuml
+            pandoc-plantuml-filter
           ];
         };
         devShells.check = pkgs.mkShell {
@@ -62,6 +70,10 @@
             dotnet-sdk
             dotnet-runtime
             dotnet-aspnetcore
+
+            # Markdown
+            markdownlint-cli
+            nodePackages.markdown-link-check
 
             # Spelling
             nodePackages.cspell
@@ -79,9 +91,6 @@
           PGDATABASE = "ozds";
           PGUSER = "ozds";
           PGPASSWORD = "ozds";
-
-          DOXYGEN_DOT_PATH = "${pkgs.graphviz}/bin/dot";
-          DOXYGEN_PLANTUML_JAR_PATH = "${pkgs.plantuml}/lib/plantuml.jar";
 
           packages =
             let
@@ -122,6 +131,11 @@
               omnisharp-roslyn
               netcoredbg
 
+              # Markdown
+              marksman
+              markdownlint-cli
+              nodePackages.markdown-link-check
+
               # PostgreSQL
               usql
               postgresql_14
@@ -138,14 +152,13 @@
               nushell
 
               # Documentation
-              doxygen
-              graphviz
               simple-http-server
               pandoc
+              mdbook
               openjdk
               plantuml
-              # NOTE: starts compiling chromium...
-              # mermaid-filter
+              graphviz
+              mdbook-plantuml
               pandoc-plantuml-filter
 
               # Misc
@@ -153,8 +166,43 @@
               nodePackages.yaml-language-server
               nodePackages.vscode-langservers-extracted
               taplo
-              marksman
             ];
+        };
+
+        packages.default = pkgs.buildDotnetModule rec {
+          pname = "ozds";
+          version = "0.1.0";
+
+          src = self;
+          projectFile = "src/Ozds.Server/Ozds.Server.csproj";
+          nugetDeps = ./deps.nix;
+          executables = [ "Ozds.Server" ];
+          makeWrapperArgs = [
+            "--set DOTNET_CONTENTROOT ${placeholder "out"}/lib/${pname}"
+          ];
+
+          dotnet-sdk = pkgs.dotnet-sdk;
+          dotnet-runtime = pkgs.dotnet-aspnetcore;
+
+          meta = {
+            description = description;
+            homepage = "https://github.com/altibiz/ozds";
+            license = pkgs.lib.licenses.mit;
+          };
+        };
+
+        packages.docker = pkgs.dockerTools.buildImage {
+          name = "altibiz/ozds";
+          tag = "latest";
+          created = "now";
+          copyToRoot = pkgs.buildEnv {
+            name = "image-root";
+            paths = [ self.packages.${system}.default ];
+            pathsToLink = [ "/bin" ];
+          };
+          config = {
+            Cmd = [ "ozds" ];
+          };
         };
       });
 }

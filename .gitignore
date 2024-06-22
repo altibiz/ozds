@@ -186,3 +186,7 @@ node_modules/*
 .direnv
 .jb
 Localization
+plantuml-images/
+docs/wiki/**/book
+mdbook-plantuml-img/
+/result

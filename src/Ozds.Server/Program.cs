@@ -16,12 +16,14 @@ builder.Services
   .Configure(app => app
     .MigrateOzdsData());
 
+
 var app = builder.Build();
+
 app.Use(async (context, next) =>
 {
   if (context.Request.Path == "/")
   {
-    context.Response.Redirect("/app", true);
+    context.Response.Redirect("/app/en", true);
   }
   else
   {
@@ -30,4 +32,5 @@ app.Use(async (context, next) =>
 });
 app.UseStaticFiles();
 app.UseOrchardCore();
+
 await app.RunAsync();

@@ -17,10 +17,10 @@ public static class IEndpointRouteBuilderExtensions
       "Ozds.Client",
       Assembly.GetCallingAssembly().GetName().Name
       ?? throw new InvalidOperationException("Assembly name not found"),
-      prefix + "/{**catchall}",
+      prefix + "/{culture}/{**catchall}",
       new { controller, action }
     );
-    endpoints.MapBlazorHub(prefix + "/_blazor");
+    endpoints.MapBlazorHub(prefix + "/{culture}/_blazor");
 
     return endpoints;
   }

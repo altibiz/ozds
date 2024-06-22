@@ -3,20 +3,29 @@
   "isRoot": true,
   "tools": {
     "dotnet-ef": {
-      "version": "8.0.1",
-      "commands": ["dotnet-ef"]
+      "version": "8.0.5",
+      "commands": ["dotnet-ef"],
+      "rollForward": false
     },
     "dotnet-format": {
       "version": "5.1.250801",
-      "commands": ["dotnet-format"]
+      "commands": ["dotnet-format"],
+      "rollForward": false
     },
     "jetbrains.resharper.globaltools": {
-      "version": "2023.3.2",
-      "commands": ["jb"]
+      "version": "2024.1.2",
+      "commands": ["jb"],
+      "rollForward": false
     },
     "roslynator.dotnet.cli": {
-      "version": "0.8.4",
-      "commands": ["roslynator"]
+      "version": "0.8.8",
+      "commands": ["roslynator"],
+      "rollForward": false
+    },
+    "docfx": {
+      "version": "2.76.0",
+      "commands": ["docfx"],
+      "rollForward": false
     }
   }
 }

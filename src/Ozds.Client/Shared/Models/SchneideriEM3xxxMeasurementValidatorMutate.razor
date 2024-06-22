@@ -1,4 +1,3 @@
-@inject NavigationManager NavigationManager
 @inject IDialogService DialogService
 @inherits OzdsOwningComponentBase
 
@@ -13,7 +12,7 @@
   return;
 }
 
-<MudText Class="my-2" Typo="Typo.h4">Schneider iEM3xxx Validacija</MudText>
+<MudText Class="my-2" Typo="Typo.h4">@T["Schneider iEM3xxx validation"]</MudText>
 <EditForm
   Model="@LoadingState.Value"
   OnValidSubmit="Submit">
@@ -21,47 +20,47 @@
   <MudCard>
     <MudCardContent>
       <MudTextField
-        Label="Naziv"
+        Label="@T["Name"]"
         @bind-Value="LoadingState.Value.Title"
         For="@(() => LoadingState.Value.Title)"/>
       <MudTextField
-        Label="Minimalni napon"
+        Label="@T["Min voltage"]"
         @bind-Value="LoadingState.Value.MinVoltage_V"
         For="@(() => LoadingState.Value.MinVoltage_V)"/>
       <MudTextField
-        Label="Maksimalni napon"
+        Label="@T["Max voltage"]"
         @bind-Value="LoadingState.Value.MaxVoltage_V"
         For="@(() => LoadingState.Value.MaxVoltage_V)"/>
       <MudTextField
-        Label="Minimalna struja"
+        Label="@T["Min current"]"
         @bind-Value="LoadingState.Value.MinCurrent_A"
         For="@(() => LoadingState.Value.MinCurrent_A)"/>
       <MudTextField
-        Label="Maksimalna struja"
+        Label="@T["Max current"]"
         @bind-Value="LoadingState.Value.MaxCurrent_A"
         For="@(() => LoadingState.Value.MaxCurrent_A)"/>
       <MudTextField
-        Label="Minimalna aktivna snaga"
+        Label="@T["Min active power"]"
         @bind-Value="LoadingState.Value.MinActivePower_W"
         For="@(() => LoadingState.Value.MinActivePower_W)"/>
       <MudTextField
-        Label="Maksimalna aktivna snaga"
+        Label="@T["Max active power"]"
         @bind-Value="LoadingState.Value.MaxActivePower_W"
         For="@(() => LoadingState.Value.MaxActivePower_W)"/>
       <MudTextField
-        Label="Minimalna reaktivna snaga"
+        Label="@T["Min reactive power"]"
         @bind-Value="LoadingState.Value.MinReactivePower_VAR"
         For="@(() => LoadingState.Value.MinReactivePower_VAR)"/>
       <MudTextField
-        Label="Maksimalna reaktivna snaga"
+        Label="@T["Max reactive power"]"
         @bind-Value="LoadingState.Value.MaxReactivePower_VAR"
         For="@(() => LoadingState.Value.MaxReactivePower_VAR)"/>
       <MudTextField
-        Label="Maksimalna prividna snaga"
+        Label="@T["Min apparent power"]"
         @bind-Value="LoadingState.Value.MinApparentPower_VA"
         For="@(() => LoadingState.Value.MinApparentPower_VA)"/>
       <MudTextField
-        Label="Maksimalna prividna snaga"
+        Label="@T["Max apparent power"]"
         @bind-Value="LoadingState.Value.MaxApparentPower_VA"
         For="@(() => LoadingState.Value.MaxApparentPower_VA)"/>
     </MudCardContent>
@@ -74,11 +73,11 @@
         Class="ml-auto">
         @if (_create)
         {
-          <span>Create</span>
+          <span>@T["Create"]</span>
         }
         else
         {
-          <span>Update</span>
+          <span>@T["Update"]</span>
         }
       </MudButton>
     </MudCardActions>

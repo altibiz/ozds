@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json.schemastore.org/docfx.json",
+  "metadata": [
+    {
+      "src": [
+        {
+          "src": "../..",
+          "files": ["src/**/*.csproj"]
+        }
+      ],
+      "dest": "../../artifacts/code/api",
+      "memberLayout": "separatePages",
+      "namespaceLayout": "nested",
+      "outputFormat": "apiPage"
+    }
+  ],
+  "build": {
+    "markdownEngineProperties": {
+      "alerts": {
+        "FIXME": "alert alert-primary",
+        "TODO": "alert alert-secondary"
+      }
+    },
+    "content": [
+      {
+        "src": "../../artifacts/code",
+        "files": ["api/**/*.{yml}"]
+      },
+      {
+        "src": ".",
+        "files": ["index.md", "toc.yml"]
+      }
+    ],
+    "postProcessors": ["ExtractSearchIndex"],
+    "dest": "../../artifacts/code",
+    "template": ["default", "modern", "template"],
+    "globalMetadata": {
+      "_appTitle": "OZDS",
+      "_appName": "ozds",
+      "_appFooter": "© 2024 Altibiz",
+      "_enableSearch": true,
+      "pdf": true
+    }
+  }
+}

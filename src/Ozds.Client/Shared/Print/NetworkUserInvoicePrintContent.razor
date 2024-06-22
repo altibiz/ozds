@@ -39,7 +39,7 @@
 </style>
 
 <p style="text-align: right;">
-  RAČUN BR. @(Invoice.Id)
+  @T["INVOICE NO."] @(Invoice.Id)
 </p>
 <table class="info-table" style="margin-top: 0.8rem; width: 100%;">
   <colgroup>
@@ -52,7 +52,7 @@
     <th style="text-align: start;">
       <strong>@(Invoice.ArchivedLocation.Title)</strong>
     </th>
-    <th style="text-align: end;">DATUM ISPORUKE:</th>
+    <th style="text-align: end;">@T["ISSUE DATE"]:</th>
     <th style="text-align: start;">
       @(DateString(Invoice.ToDate.AddTicks(-1)))
     </th>
@@ -61,12 +61,12 @@
   <tbody>
   <tr>
     <td>@Invoice.ArchivedLocation.Title</td>
-    <td style="text-align: end;">DOSPIJEĆE:</td>
+    <td style="text-align: end;">@T["DUE DATE"]:</td>
     <td>@DateString(Invoice.IssuedOn)</td>
   </tr>
   <tr>
     <td>@Invoice.ArchivedLocation.LegalPerson.Address</td>
-    <td style="text-align: end;">DATUM UGOVORA:</td>
+    <td style="text-align: end;">@T["CONTRACT DATE"]:</td>
     <td>@DateString(Invoice.IssuedOn)</td>
   </tr>
   <tr>
@@ -74,18 +74,18 @@
       @Invoice.ArchivedLocation.LegalPerson.PostalCode
       @Invoice.ArchivedLocation.LegalPerson.City
     </td>
-    <td style="text-align: end;">UGOVOR:</td>
+    <td style="text-align: end;">@T["CONTRACT"]:</td>
     <td>@Invoice.ArchivedLocation.Id</td>
   </tr>
   <tr>
-    <td>OIB: @Invoice.ArchivedLocation.LegalPerson.SocialSecurityNumber</td>
-    <td style="text-align: end;">NOSIOC:</td>
+    <td>@T["SOCIAL SECURITY CODE"]: @Invoice.ArchivedLocation.LegalPerson.SocialSecurityNumber</td>
+    <td style="text-align: end;">@T["NOSIOC"]:</td>
     <td>@Invoice.ArchivedLocation.Id</td>
   </tr>
   </tbody>
 </table>
 <p style="margin-top: 1.2rem; text-align: right;">
-  ZA ELEKTRIČNU ENERGIJU ZA RAZDOBLJE: OD
+  @T["FOR ELECTRICITY FOR THE PERIOD"]: @T["TO"]
   <strong>
     @(DateString(Invoice.FromDate))
   </strong>
@@ -102,62 +102,62 @@
   </colgroup>
   <thead>
   <tr>
-    <th>RBR</th>
-    <th>NAZIV ARTIKLA / USLUGE</th>
-    <th>UKUPNO</th>
+    <th>@T["RBR"]</th>
+    <th>@T["NAME ARTICLE / SERVICE"]</th>
+    <th>@T["TOTAL"]</th>
   </tr>
   </thead>
   <tbody>
   <tr>
     <td style="text-align: center;">1.)</td>
-    <td>Naknada za korištenje mreže ZDS-a</td>
+    <td>@T["Network usage fee for ZDS"]</td>
     <td></td>
   </tr>
   <tr>
     <td style="text-align: center; padding-left: 1.2rem;">1.1.)</td>
-    <td>Korištenje mreže u doba jedne tarife</td>
+    <td>@T["Network usage during one tariff period"]</td>
     <td style="text-align: end;">
       @DecimalString(Invoice.UsageActiveEnergyTotalImportT0Fee_EUR)
     </td>
   </tr>
   <tr>
     <td style="text-align: center; padding-left: 1.2rem;">1.2.)</td>
-    <td>Korištenje mreže u doba više tarife</td>
+    <td>@T["Network usage during multiple tariff periods"]</td>
     <td style="text-align: end;">
       @DecimalString(Invoice.UsageActiveEnergyTotalImportT1Fee_EUR)
     </td>
   </tr>
   <tr>
     <td style="text-align: center; padding-left: 1.2rem;">1.3.)</td>
-    <td>Korištenje mreže u doba niže tarife</td>
+    <td>@T["Network usage during off-peak tariff period"]</td>
     <td style="text-align: end;">
       @DecimalString(Invoice.UsageActiveEnergyTotalImportT2Fee_EUR)
     </td>
   </tr>
   <tr>
     <td style="text-align: center; padding-left: 1.2rem;">1.4.)</td>
-    <td>Angažirana snaga u doba više tarife</td>
+    <td>@T["Engaged power during multiple tariff periods"]</td>
     <td style="text-align: end;">
       @DecimalString(Invoice.UsageActivePowerTotalImportT1PeakFee_EUR)
     </td>
   </tr>
   <tr>
     <td style="text-align: center; padding-left: 1.2rem;">1.5.)</td>
-    <td>Prekomjerno preuzeta jalova energija</td>
+    <td>@T["Excessively taken reactive power"]</td>
     <td style="text-align: end;">
       @DecimalString(Invoice.UsageReactiveEnergyTotalRampedT0Fee_EUR)
     </td>
   </tr>
   <tr>
     <td style="text-align: center; padding-left: 1.2rem;">1.6.)</td>
-    <td>Naknada za mjernu uslugu</td>
+    <td>@T["Metering service fee"]</td>
     <td style="text-align: end;">
       @DecimalString(Invoice.UsageMeterFee_EUR)
     </td>
   </tr>
   <tr>
     <td></td>
-    <td style="text-align: end;">Naknada za korištenje mreže - UKUPNO</td>
+    <td style="text-align: end;">@T["Network usage fee - TOTAL"]</td>
     <td style="text-align: end;">
       <strong>
         @DecimalString(Invoice.UsageFeeTotal_EUR) EUR
@@ -166,19 +166,19 @@
   </tr>
   <tr>
     <td style="text-align: center;">2.)</td>
-    <td>Naknada za opskrbu električnom energijom</td>
+    <td>@T["Electricity supply fee"]</td>
     <td></td>
   </tr>
   <tr>
     <td style="text-align: center; padding-left: 1.2rem;">2.1.)</td>
-    <td>Opskrba električnom energijom u doba više dnevne tarife</td>
+    <td>@T["Electricity supply during multi-rate daily tariff period"]</td>
     <td style="text-align: end;">
       @DecimalString(Invoice.SupplyActiveEnergyTotalImportT1Fee_EUR)
     </td>
   </tr>
   <tr>
     <td style="text-align: center; padding-left: 1.2rem;">2.2.)</td>
-    <td>Opskrba električnom energijom u doba niže dnevne tarife</td>
+    <td>@T["Electricity supply during off-peak daily tariff period"]</td>
     <td style="text-align: end;">
       @DecimalString(Invoice.SupplyActiveEnergyTotalImportT2Fee_EUR)
     </td>
@@ -186,8 +186,7 @@
   <tr>
     <td style="text-align: center; padding-left: 1.2rem;">2.3.)</td>
     <td>
-      Naknada za poticanje proizvodnje iz obnovljivih izvora energije i
-      kogeneracije
+      @T["Fee for encouraging production from renewable energy sources and cogeneration"]
     </td>
     <td style="text-align: end;">
       @DecimalString(Invoice.SupplyRenewableEnergyFee_EUR)
@@ -195,14 +194,14 @@
   </tr>
   <tr>
     <td style="text-align: center; padding-left: 1.2rem;">2.4.)</td>
-    <td>Opskrba električnom energijom u doba niže dnevne tarife</td>
+    <td>@T["Electricity supply during off-peak daily tariff period"]</td>
     <td style="text-align: end;">
       @DecimalString(Invoice.SupplyBusinessUsageFee_EUR)
     </td>
   </tr>
   <tr>
     <td></td>
-    <td style="text-align: end;">Naknada za opskrbu – UKUPNO</td>
+    <td style="text-align: end;">@T["Supply fee – TOTAL"]</td>
     <td style="text-align: end;">
       <strong>
         @DecimalString(Invoice.SupplyFeeTotal_EUR) EUR
@@ -218,7 +217,7 @@
   </colgroup>
   <thead>
   <tr>
-    <th style="text-align: right;">UKUPNO:</th>
+    <th style="text-align: right;">@T["TOTAL"]:</th>
     <th style="text-align: right;">
       @DecimalString(Invoice.Total_EUR) EUR
     </th>
@@ -227,7 +226,7 @@
   <tbody>
   <tr>
     <td style="text-align: right;">
-      PDV (@(Invoice.ArchivedRegulatoryCatalogue.TaxRate_Percent)%):
+      @T["VAT"] (@(Invoice.ArchivedRegulatoryCatalogue.TaxRate_Percent)%):
     </td>
     <td style="text-align: right;">
       @DecimalString(Invoice.Tax_EUR) EUR
@@ -235,7 +234,7 @@
   </tr>
   <tr>
     <td style="text-align: right;">
-      <strong>SVEUKUPNI IZNOS:</strong>
+      <strong>@T["FULL TOTAL"]:</strong>
     </td>
     <td style="text-align: right;">
       @DecimalString(Invoice.TotalWithTax_EUR) EUR
