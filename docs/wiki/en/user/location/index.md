@@ -1,6 +1,6 @@
 # Location
 
-The dahboard of a user selected to oversee locations.
+The dashboard of a user selected to oversee locations.
 
 ## Content
 
@@ -14,7 +14,7 @@ consumption, last month consumption, and current power consumption.
 ![ENLocationHomePanel](../../assets/ENLocationHomePanel.png) _Location Home
 Panel Component_
 
-## Locatio Table
+## Location Table
 
 This table shows all locations the current user can oversee.
 

@@ -1,6 +1,6 @@
 # Operator
 
-The dahboard of a user selected to oversee all aspects of the network.
+The dashboard of a user selected to oversee all aspects of the network.
 
 ## Content
 
@@ -24,7 +24,7 @@ device's data will be displayed.
 
 ![ENOperatorGraph](../../assets/ENOperatorGraph.png) _Operator Graph_
 
-## Locatio Table
+## Location Table
 
 This table shows all locations the current user can oversee.
 

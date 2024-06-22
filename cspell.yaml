@@ -23,6 +23,7 @@ ignorePaths:
   - "src/Ozds.Client/Assets/*.json"
   - "./docs/index.html"
 words:
+  - "Networkusers"
   - "blazor"
   - "xunit"
   - "stylesheet"

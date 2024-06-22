@@ -1,6 +1,6 @@
 # Network user
 
-The dahboard of a user selected to oversee network users.
+The dashboard of a user selected to oversee network users.
 
 ## Content
 
@@ -10,7 +10,7 @@ The dahboard of a user selected to oversee network users.
 
 This panel shows three segments displaying the combined values of current month
 consumption, last month consumption with the last months total invoices under
-that numer.
+that number.
 
 There is also a graph showing this years power consumption.
 
@@ -26,7 +26,7 @@ measurement location. The current month consumption, last month consumption and
 last months invoice total for thous measurement locations.
 
 By pressing on the name of the location or network user, the user can inspect
-that entities detailes.
+that entities details.
 
 Clicking on a device redirects to a detailed overview of individual measurement
 locations.

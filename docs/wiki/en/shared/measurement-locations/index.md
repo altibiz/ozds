@@ -1,7 +1,7 @@
 # Measurement locations
 
-This page holds the Measurement locatios table component and is used to find and
-review measurement locations.
+This page holds the Measurement locations table component and is used to find
+and review measurement locations.
 
 ## Content
 
@@ -17,7 +17,7 @@ measurement location. The current month consumption, last month consumption and
 last months invoice total for thous measurement locations.
 
 By pressing on the name of the location or network user, the user can inspect
-that entities detailes.
+that entities details.
 
 Clicking on a device redirects to a detailed overview of individual measurement
 locations.

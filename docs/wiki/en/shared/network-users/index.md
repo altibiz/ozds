@@ -17,7 +17,7 @@ month consumption, last month consumption and last months invoice total for
 thous network users.
 
 By pressing on the name of the location or network user, the user can inspect
-that entities detailes.
+that entities details.
 
 Clicking on the "Issue Invoice" button, the user generates an invoice between
 the start of the month or the end of the last issued invoice to now. (Only

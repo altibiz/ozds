@@ -1,6 +1,6 @@
 # Meter details
 
-The dahboard of a user selected to oversee all aspects of the network.
+The dashboard of a user selected to oversee all aspects of the network.
 
 ## Content
 
