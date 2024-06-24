@@ -5,7 +5,7 @@ invoices.
 
 ## Content
 
-![InvoicesPage](../../../assets/InvoicesPage.png) _/app/invoices_
+![InvoicesPage](../../assets/InvoicesPage.png) _/app/invoices_
 
 ## Invoices Table
 
@@ -18,4 +18,4 @@ issuing of this invoice, and the invoice number.
 By pressing the inspect button, the user can see a more detailed overview of the
 invoice and even print it out.
 
-![InvoicesTable](../../../assets/InvoicesTable.png) _Invoices Table_
+![InvoicesTable](../../assets/InvoicesTable.png) _Invoices Table_

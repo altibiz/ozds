@@ -4,7 +4,7 @@ The dashboard of a user selected to oversee all aspects of the network.
 
 ## Content
 
-![ENMeterDetailsPage](../../../assets/ENMeterDetailsPage.png) _/app/meter/{id}_
+![ENMeterDetailsPage](../../assets/ENMeterDetailsPage.png) _/app/meter/{id}_
 
 ## Meter Graph
 
@@ -21,7 +21,7 @@ visualization in steps of 15 minutes, 1 hour, 6 hours, and 24 hours.
 
 This display updates in real time !
 
-![ENMeterDetailsGraph](../../../assets/ENMeterDetailsGraph.png) _Meter Graph_
+![ENMeterDetailsGraph](../../assets/ENMeterDetailsGraph.png) _Meter Graph_
 
 ## Meter Gage
 
@@ -30,4 +30,4 @@ allowed by the device which is set by the operator.
 
 This display updates in real time !
 
-![ENMeterDetailsGage](../../../assets/ENMeterDetailsGage.png) _Meter Gage_
+![ENMeterDetailsGage](../../assets/ENMeterDetailsGage.png) _Meter Gage_
