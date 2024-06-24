@@ -5,6 +5,7 @@ ignorePaths:
   - "*.svg"
   - "**/Migrations/**/*"
   - "./src/Ozds.Server/App_Data/**/*"
+  - "deps.nix"
   - "justfile"
   - "flake.nix"
   - "docker-compose.yml"
