@@ -122,7 +122,7 @@ public static class DateTimeOffsetExtensions
     return startOfYear.UtcDateTime;
   }
 
-  public static IEnumerable<DateTimeOffset> GetThisYearMonthStarts(
+  public static IEnumerable<DateTimeOffset> GetThisYearMonthStartsNoTransformation(
     this DateTimeOffset dateTimeOffset
   )
   {
@@ -131,8 +131,7 @@ public static class DateTimeOffsetExtensions
     return Enumerable.Range(1, 12).Select(month =>
     {
       var dateOnly = new DateTime(year, month, 1, 0, 0, 0, DateTimeKind.Unspecified);
-      var offset = GetOffset(dateOnly);
-      var startOfMonth = new DateTimeOffset(dateOnly, offset);
+      var startOfMonth = new DateTimeOffset(dateOnly, TimeSpan.Zero);
       return startOfMonth.ToUniversalTime();
     });
   }

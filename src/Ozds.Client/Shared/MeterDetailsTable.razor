@@ -181,20 +181,20 @@
       .GetRequiredService<OzdsMeterTableQueries>()
       .GetMeterById(Source);
 
-    foreach (var month in startOfThisYearNoTransformation.GetThisYearMonthStarts().Reverse())
+    foreach (var month in startOfThisYearNoTransformation.GetThisYearMonthStartsNoTransformation().Reverse())
     {
       var measureNextMonthMonthly = measurePerMonth
-        .Where(x => x.Timestamp == month.AddMonths(1))
+        .Where(x => x.Timestamp == month.GetStartOfNextMonth())
         .Where(x => x.Interval == IntervalModel.Month)
         .FirstOrDefault();
       var measureThisMonthMonthly = measurePerMonth
-        .Where(x => x.Timestamp == month)
+        .Where(x => x.Timestamp == month.GetStartOfMonth())
         .Where(x => x.Interval == IntervalModel.Month)
         .FirstOrDefault();
       if (measureThisMonthMonthly is null)
         continue;
       var ThisMonthQuarterHourly = measurePerQuarterHour
-        .Where(x => x.Timestamp.GetStartOfMonth() == month)
+        .Where(x => x.Timestamp.GetStartOfMonth() == month.GetStartOfMonth())
         .Where(x => x.Interval == IntervalModel.QuarterHour)
         .ToList();
 
@@ -211,8 +211,8 @@
       var _maxPower = ThisMonthQuarterHourly.Select(measure => measure.ActivePower_W.TariffUnary.DuplexImport.PhaseSum).DefaultIfEmpty(0).Max();
       _dataStruct.Add(new TabularData
       {
-        year = month.LocalDateTime.ToString("yy"),
-        month = month.LocalDateTime.ToString("MM"),
+        year = month.ToString("yy"),
+        month = month.ToString("MM"),
         monthStartTotal = _monthStartTotal,
         monthEndTotal = _monthEndTotal,
         maxPower = _maxPower
