@@ -1,6 +1,5 @@
-using System;
-using Xunit;
 using Ozds.Business.Time;
+using Xunit;
 
 namespace Ozds.Business.Test.Time.DateTimeOffsetExtensionsTest;
 
@@ -20,7 +19,8 @@ public class GetStartOfNextMonthTest
   [InlineData("2023-11-15T12:34:56Z", "2023-11-30T23:00:00Z")]
   [InlineData("2023-12-15T12:34:56Z", "2023-12-31T23:00:00Z")]
   [InlineData("2024-02-29T12:34:56Z", "2024-02-29T23:00:00Z")]
-  public void GetStartOfNextMonth_ReturnsExpectedStartOfNextMonth(string inputDateString, string expectedDateString)
+  public void GetStartOfNextMonth_ReturnsExpectedStartOfNextMonth(
+    string inputDateString, string expectedDateString)
   {
     var inputDate = DateTimeOffset.Parse(inputDateString);
     var expectedDate = DateTimeOffset.Parse(expectedDateString);
