@@ -71,7 +71,7 @@
     if (_netUsers is null || _netUsers.Count < 0)
       return;
     var _netUserIds = _netUsers.Select(x => x.Id).ToList();
-    var meters = await measurementQueries.ViewModelByNetworkUser(_netUserIds, startOfThisYear, now, IntervalEntity.Day);
+    var meters = await measurementQueries.ViewModelByNetworkUser(_netUserIds, startOfThisYear, now, IntervalEntity.Month);
     foreach (var omm in meters)
     {
       var consumption = omm.Aggregates.OrderBy(x => x.Timestamp).Select(x => new ChartData(x.ActiveEnergySpan_Wh.SpanMax.TariffUnary.DuplexImport.PhaseSum / 1000, "Consumption", x.Timestamp, x.MeterId)).ToList();
