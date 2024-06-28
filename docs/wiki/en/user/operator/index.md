@@ -4,7 +4,7 @@ The dashboard of a user selected to oversee all aspects of the network.
 
 ## Content
 
-![LocationHomePage](../../assets/ENOperatorHomePage.png) _/app_
+![LocationHomePage](../../assets/operator-home-page.png) _/app_
 
 ## Operator Graph
 
@@ -22,7 +22,7 @@ visualization in steps of 15 minutes, 1 hour, 6 hours, and 24 hours.
 The auto-completing text box labeled "Devices" allows the user to select which
 device's data will be displayed.
 
-![ENOperatorGraph](../../assets/ENOperatorGraph.png) _Operator Graph_
+![ENOperatorGraph](../../assets/operator-graph.png) _Operator Graph_
 
 ## Location Table
 
@@ -34,4 +34,4 @@ month consumption, and the last months invoice total.
 By pressing on the name of the location, the user can inspect that locations
 data.
 
-![ENLocationsTable](../../assets/ENLocationsTable.png) _Location Table_
+![ENLocationsTable](../../assets/locations-table.png) _Location Table_

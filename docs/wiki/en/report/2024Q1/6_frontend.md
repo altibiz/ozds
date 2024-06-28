@@ -56,7 +56,7 @@ network users redirect to a review of user data and privileges. Clicking on
 measurement locations redirects to a detailed overview of individual measurement
 locations.
 
-![Dashboard](../../assets/ENNetworkUserHomePage.png) _/app/dashboard_
+![Dashboard](../../assets/network-user-home-page.png) _/app/dashboard_
 
 ## Other
 
@@ -75,4 +75,4 @@ can display values for voltage, current, active power, reactive power, and
 apparent power. A gauge on the left side shows the current power and compares it
 to the maximum power from the previous month.
 
-![Meter](../../assets/ENMeterDetailsPage.png) _/app/meter_
+![Meter](../../assets/meter-details-page.png) _/app/meter_

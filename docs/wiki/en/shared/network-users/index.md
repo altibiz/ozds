@@ -5,7 +5,7 @@ network users.
 
 ## Content
 
-![ENNetworkusersPage](../../assets/ENNetworkUsersPage.png) _/app/network-users_
+![ENNetworkusersPage](../../assets/network-users-page.png) _/app/network-users_
 
 ## Network Users Table
 
@@ -22,5 +22,5 @@ Clicking on the "Issue Invoice" button, the user generates an invoice between
 the start of the month or the end of the last issued invoice to now. (Only
 Operators can do this and no other users even see the button)
 
-![ENNetworkUsersTable](../../assets/ENNetworkUsersTable.png) _Network Users
+![ENNetworkUsersTable](../../assets/network-users-table.png) _Network Users
 Table_

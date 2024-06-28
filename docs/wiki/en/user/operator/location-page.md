@@ -5,7 +5,7 @@ locations.
 
 ## Content
 
-![ENLocationPage](../../assets/ENLocationPage.png) _/app/locations_
+![ENLocationPage](../../assets/location-page.png) _/app/locations_
 
 ## Locations Table
 
@@ -17,4 +17,4 @@ month consumption, and the last months invoice total.
 By pressing on the name of the location, the user can inspect that locations
 data.
 
-![ENLocationsTable](../../assets/ENLocationsTable.png) _Locations Table_
+![ENLocationsTable](../../assets/locations-table.png) _Locations Table_
