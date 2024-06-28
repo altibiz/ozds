@@ -1,7 +1,7 @@
 # Measurement locations
 
-This page holds the Measurement locations table component and is used to find
-and review measurement locations.
+This page contains the Measurement Locations table and is used to find and
+review measurement locations.
 
 ## Content
 
@@ -10,14 +10,15 @@ _/app/meters_
 
 ## Network Users Table
 
-This table shows all measurement locations the current user can oversee.
+This table shows all measurement locations the current user can see.
 
-The user can see the name of the location, network user and device on that
-measurement location. The current month consumption, last month consumption and
-last months invoice total for thous measurement locations.
+The user can see the name of the location, network user, and device at that
+measurement location. The table also displays the current month's consumption,
+last month's consumption, and last month's invoice total for those measurement
+locations.
 
-By pressing on the name of the location or network user, the user can inspect
-that entities details.
+By clicking on the name of the location or network user, the user can inspect
+the details of that entity.
 
 Clicking on a device redirects to a detailed overview of individual measurement
 locations.

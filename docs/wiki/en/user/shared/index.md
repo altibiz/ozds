@@ -1,6 +1,6 @@
 # Shared pages
 
-The site is constructed of modular components arranged into pages.
+The site is built with modular components arranged into pages.
 
-Depending on the type of the user, different pages are available or even display
-slightly different.
+Depending on the user type, different pages are available or display slightly
+differently.

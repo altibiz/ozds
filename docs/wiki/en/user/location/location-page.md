@@ -1,7 +1,6 @@
 # Locations
 
-This page holds the Locations table component and is used to find and review
-locations.
+This page contains the Locations table and is used to find and review locations.
 
 ## Content
 
@@ -9,12 +8,12 @@ locations.
 
 ## Locations Table
 
-This table shows all locations the current user can oversee.
+This table shows all locations.
 
-The user can see the name of each location, its current month consumption, last
-month consumption, and the last months invoice total.
+The user can see the name of each location, its current month's consumption,
+last month's consumption, and last month's invoice total.
 
-By pressing on the name of the location, the user can inspect that locations
+By clicking on the name of the location, the user can inspect that location's
 data.
 
 ![ENLocationsTable](../../assets/locations-table.png) _Locations Table_

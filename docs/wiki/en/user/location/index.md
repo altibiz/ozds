@@ -1,6 +1,6 @@
 # Location
 
-The dashboard of a user selected to oversee locations.
+The dashboard for a user selected to oversee locations.
 
 ## Content
 
@@ -8,8 +8,8 @@ The dashboard of a user selected to oversee locations.
 
 ## Location Home Panel
 
-This panel shows three segments displaying the combined values of current month
-consumption, last month consumption, and current power consumption.
+This panel displays three segments showing the combined values of current
+month's consumption, last month's consumption, and current power consumption.
 
 ![ENLocationHomePanel](../../assets/location-home-panel.png) _Location Home
 Panel Component_
@@ -18,10 +18,10 @@ Panel Component_
 
 This table shows all locations the current user can oversee.
 
-The user can see the name of each location, its current month consumption, last
-month consumption, and current power consumption for each location.
+The user can see the name of each location, its current month's consumption,
+last month's consumption, and current power consumption for each location.
 
-By pressing on the name of the location, the user can inspect that locations
+By clicking on the name of the location, the user can inspect that location's
 data.
 
 ![ENLocationsTable](../../assets/locations-table.png) _Location Table_

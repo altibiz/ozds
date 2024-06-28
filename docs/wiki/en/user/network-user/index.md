@@ -1,6 +1,6 @@
 # Network user
 
-The dashboard of a user selected to oversee network users.
+The dashboard for a user selected to oversee network users.
 
 ## Content
 
@@ -8,11 +8,10 @@ The dashboard of a user selected to oversee network users.
 
 ## Network user Home Panel
 
-This panel shows three segments displaying the combined values of current month
-consumption, last month consumption with the last months total invoices under
-that number.
+This panel displays three segments showing the combined values of current
+month's consumption, last month's consumption, and last month's total invoices.
 
-There is also a graph showing this years power consumption.
+There is also a graph showing this year's power consumption.
 
 ![ENNetworkUserHomePanel](../../assets/network-user-home-panel.png) _Network
 User Home Panel_
@@ -21,12 +20,13 @@ User Home Panel_
 
 This table shows all measurement locations the current user can oversee.
 
-The user can see the name of the location, network user and device on that
-measurement location. The current month consumption, last month consumption and
-last months invoice total for thous measurement locations.
+The user can see the name of the location, network user, and device at each
+measurement location. The table also displays the current month's consumption,
+last month's consumption, and last month's invoice total for those measurement
+locations.
 
-By pressing on the name of the location or network user, the user can inspect
-that entities details.
+By clicking on the name of the location or network user, the user can inspect
+the details of that entity.
 
 Clicking on a device redirects to a detailed overview of individual measurement
 locations.
