@@ -23,9 +23,9 @@ This display updates in real time !
 
 ![ENMeterDetailsGraph](../../assets/meter-details-graph.png) _Meter Graph_
 
-## Meter Gage
+## Meter Gauge
 
-This gage shows the current active power in relation to the connected power
+This gauge shows the current active power in relation to the connected power
 allowed by the device which is set by the operator.
 
 This display updates in real time !

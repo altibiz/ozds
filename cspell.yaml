@@ -1,3 +1,5 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/streetsidesoftware/cspell/main/packages/cspell-types/cspell.schema.json
+
 useGitignore: true
 version: "0.2"
 language: en
@@ -23,8 +25,10 @@ ignorePaths:
   # TODO: add dicrionary or use aspell/hunspell
   - "src/Ozds.Client/Assets/*.json"
   - "./docs/index.html"
+flagWords:
+  - "gage"
 words:
-  - "Networkusers"
+  - "networkusers"
   - "blazor"
   - "xunit"
   - "stylesheet"

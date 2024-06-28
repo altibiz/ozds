@@ -1,7 +1,7 @@
 @using System.Timers
 @implements IDisposable
 
-@if (gageValue is not null)
+@if (gaugeValue is not null)
 {
   @* MOBILE *@
   <MudHidden Breakpoint="Breakpoint.MdAndUp">
@@ -10,11 +10,11 @@
         @(T["Active power"] + ": " + Source)
       </MudItem>
       <MudContainer MaxWidth="MaxWidth.Small">
-        <ApexChart TItem="GageData"
-                   Options="gageOptions"
-                   @ref="gage">
-          <ApexPointSeries TItem="GageData"
-                           Items="gageValue"
+        <ApexChart TItem="GaugeData"
+                   Options="gaugeOptions"
+                   @ref="gauge">
+          <ApexPointSeries TItem="GaugeData"
+                           Items="gaugeValue"
                            SeriesType=SeriesType.RadialBar
                            Name="@T["Search"]"
                            XValue="@(e => FloatString(e.value / 1000, 2) + " kW")"
@@ -36,11 +36,11 @@
         @(T["Active power"] + ": " + Source)
       </MudItem>
       <MudContainer MaxWidth="MaxWidth.Medium">
-        <ApexChart TItem="GageData"
-                   Options="gageOptions"
-                   @ref="gage">
-          <ApexPointSeries TItem="GageData"
-                           Items="gageValue"
+        <ApexChart TItem="GaugeData"
+                   Options="gaugeOptions"
+                   @ref="gauge">
+          <ApexPointSeries TItem="GaugeData"
+                           Items="gaugeValue"
                            SeriesType=SeriesType.RadialBar
                            Name="@T["Search"]"
                            XValue="@(e => FloatString(e.value / 1000, 2) + " kW")"
@@ -59,20 +59,20 @@
 
   [Parameter] public string Source { get; set; } = "abb";
   private IMeter? _meter;
-  private ApexChart<GageData> gage = default!;
+  private ApexChart<GaugeData> gauge = default!;
   private float thisMonthCurrentPower = 0;
-  private List<GageData> gageValue = new();
-  private ApexChartOptions<GageData> gageOptions = NewApexChartOptions<GageData>();
+  private List<GaugeData> gaugeValue = new();
+  private ApexChartOptions<GaugeData> gaugeOptions = NewApexChartOptions<GaugeData>();
   private float connectionMaxPower = 100000;
   OzdsMeasurementQueries measureQueries = default!;
 
-  private class GageData
+  private class GaugeData
   {
     public float value = 10;
     public float valueMax = 100000;
     public float percent = 50;
 
-    public GageData(float val, float max)
+    public GaugeData(float val, float max)
     {
       value = val;
       valueMax = max;
@@ -100,11 +100,11 @@
     if (_meter is not null)
       connectionMaxPower = _meter.ConnectionPower_W * 3;
 
-    SetGageOptionsStart();
+    SetGaugeOptionsStart();
 
     await GetValue();
 
-    SetGageValue();
+    SetGaugeValue();
   }
 
   private async Task GetValue()
@@ -122,23 +122,23 @@
     }
   }
 
-  private void SetGageValue()
+  private void SetGaugeValue()
   {
-    gageValue.Add(new GageData(thisMonthCurrentPower, connectionMaxPower));
+    gaugeValue.Add(new GaugeData(thisMonthCurrentPower, connectionMaxPower));
 
     if (thisMonthCurrentPower / connectionMaxPower > 1)
     {
-      gageOptions.Colors = new List<string> { "#E53935" };
+      gaugeOptions.Colors = new List<string> { "#E53935" };
     }
     else
     {
-      gageOptions.Colors = new List<string> { "#1E88E5" };
+      gaugeOptions.Colors = new List<string> { "#1E88E5" };
     }
   }
 
-  private void SetGageOptionsStart()
+  private void SetGaugeOptionsStart()
   {
-    gageOptions.PlotOptions = new PlotOptions { RadialBar = new PlotOptionsRadialBar { StartAngle = -90, EndAngle = 90 } };
+    gaugeOptions.PlotOptions = new PlotOptions { RadialBar = new PlotOptionsRadialBar { StartAngle = -90, EndAngle = 90 } };
   }
 
   @* TIME STUFF *@
@@ -157,14 +157,14 @@
   private async Task UpdateChartSeries()
   {
     await GetValue();
-    gageValue = new List<GageData> { new(thisMonthCurrentPower, connectionMaxPower) };
-    if (gage is null)
+    gaugeValue = new List<GaugeData> { new(thisMonthCurrentPower, connectionMaxPower) };
+    if (gauge is null)
     {
       return;
     }
 
     await InvokeAsync(() => StateHasChanged());
-    await gage.UpdateOptionsAsync(false, true, false);
+    await gauge.UpdateOptionsAsync(false, true, false);
   }
 
   void IDisposable.Dispose()
