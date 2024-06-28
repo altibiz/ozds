@@ -1,3 +1,5 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/streetsidesoftware/cspell/main/packages/cspell-types/cspell.schema.json
+
 useGitignore: true
 version: "0.2"
 language: en
@@ -5,6 +7,7 @@ ignorePaths:
   - "*.svg"
   - "**/Migrations/**/*"
   - "./src/Ozds.Server/App_Data/**/*"
+  - "deps.nix"
   - "justfile"
   - "flake.nix"
   - "docker-compose.yml"
@@ -22,7 +25,10 @@ ignorePaths:
   # TODO: add dicrionary or use aspell/hunspell
   - "src/Ozds.Client/Assets/*.json"
   - "./docs/index.html"
+flagWords:
+  - "gage"
 words:
+  - "networkusers"
   - "blazor"
   - "xunit"
   - "stylesheet"

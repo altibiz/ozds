@@ -21,11 +21,12 @@ schema := absolute_path('docs/schema.md')
 default: prepare
 
 prepare:
-  dvc install
+  do -i { dvc install } o+e>| ignore
   dvc pull
   dotnet tool restore
   prettier --version or npm install -g prettier
 
+  docker compose down -v
   docker compose up -d
   sleep 10sec
 

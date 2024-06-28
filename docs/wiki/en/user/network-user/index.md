@@ -1,20 +1,36 @@
 # Network user
 
-This section of the documentation describes features and functionalities exposed
-to the network user role.
+The dashboard for a user selected to oversee network users.
 
-## Dashboard
+## Content
 
-Here the user can see aggregated consumption measurement data for the current
-month, the previous month, and a graph of consumption over longer periods. Below
-the aggregated values is a table of measurement locations showing the
-consumption of individual measurement locations in the current and previous
-month, and the calculation totals in the previous month.
+![Network user representative home page](../../assets/network-user-home-page.png)
+_/app_
 
-By clicking on the names of locations, network users, or measurement locations,
-users are redirected to a detailed overview of these entities. Locations and
-network users redirect to a review of user data and privileges. Clicking on
-measurement locations redirects to a detailed overview of individual measurement
+## Network user Home Panel
+
+This panel displays three segments showing the combined values of current
+month's consumption, last month's consumption, and last month's total invoices.
+
+There is also a graph showing this year's power consumption.
+
+![Network user representative home page panel](../../assets/network-user-home-panel.png)
+_Network User Home Panel_
+
+## Measurement Location Table
+
+This table shows all measurement locations the current user can oversee.
+
+The user can see the name of the location, network user, and device at each
+measurement location. The table also displays the current month's consumption,
+last month's consumption, and last month's invoice total for those measurement
 locations.
 
-![Dashboard](../../assets/dashboard.png) _/app/dashboard_
+By clicking on the name of the location or network user, the user can inspect
+the details of that entity.
+
+Clicking on a device redirects to a detailed overview of individual measurement
+locations.
+
+![Measurement locations table](../../assets/measurement-locations-table.png)
+_Measurement Locations Table_
