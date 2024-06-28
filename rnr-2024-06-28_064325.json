@@ -1,0 +1,69 @@
+{
+  "date": "2024-06-28 06:43:25",
+  "operations": [
+    {
+      "source": "docs/wiki/en/assets/ENMeterDetailsPage.png",
+      "target": "docs/wiki/en/assets/MeterDetailsPage.png"
+    },
+    {
+      "source": "docs/wiki/en/assets/ENOperatorGraph.png",
+      "target": "docs/wiki/en/assets/OperatorGraph.png"
+    },
+    {
+      "source": "docs/wiki/en/assets/ENLocationHomePanel.png",
+      "target": "docs/wiki/en/assets/LocationHomePanel.png"
+    },
+    {
+      "source": "docs/wiki/en/assets/ENMeterDetailsGage.png",
+      "target": "docs/wiki/en/assets/MeterDetailsGage.png"
+    },
+    {
+      "source": "docs/wiki/en/assets/ENMeasurementLocationsPage.png",
+      "target": "docs/wiki/en/assets/MeasurementLocationsPage.png"
+    },
+    {
+      "source": "docs/wiki/en/assets/ENMeasurementLocationsTable.png",
+      "target": "docs/wiki/en/assets/MeasurementLocationsTable.png"
+    },
+    {
+      "source": "docs/wiki/en/assets/ENNetworkUsersTable.png",
+      "target": "docs/wiki/en/assets/NetworkUsersTable.png"
+    },
+    {
+      "source": "docs/wiki/en/assets/ENNetworkUserHomePanel.png",
+      "target": "docs/wiki/en/assets/NetworkUserHomePanel.png"
+    },
+    {
+      "source": "docs/wiki/en/assets/ENMeterDetailsTable.png",
+      "target": "docs/wiki/en/assets/MeterDetailsTable.png"
+    },
+    {
+      "source": "docs/wiki/en/assets/ENNetworkUserHomePage.png",
+      "target": "docs/wiki/en/assets/NetworkUserHomePage.png"
+    },
+    {
+      "source": "docs/wiki/en/assets/ENOperatorHomePage.png",
+      "target": "docs/wiki/en/assets/OperatorHomePage.png"
+    },
+    {
+      "source": "docs/wiki/en/assets/ENMeterDetailsGraph.png",
+      "target": "docs/wiki/en/assets/MeterDetailsGraph.png"
+    },
+    {
+      "source": "docs/wiki/en/assets/ENLocationHomePage.png",
+      "target": "docs/wiki/en/assets/LocationHomePage.png"
+    },
+    {
+      "source": "docs/wiki/en/assets/ENLocationPage.png",
+      "target": "docs/wiki/en/assets/LocationPage.png"
+    },
+    {
+      "source": "docs/wiki/en/assets/ENLocationsTable.png",
+      "target": "docs/wiki/en/assets/LocationsTable.png"
+    },
+    {
+      "source": "docs/wiki/en/assets/ENNetworkUsersPage.png",
+      "target": "docs/wiki/en/assets/NetworkUsersPage.png"
+    }
+  ]
+}
