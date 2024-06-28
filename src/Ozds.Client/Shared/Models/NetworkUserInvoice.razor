@@ -245,9 +245,8 @@
 
     <MudText class="mt-8" Align="MudAlign.Right">
       <MudLink
-        class="ml-auto"
-        Href='@($"/app/network-user-invoice-print/{context.Id}")'>
-        <MudButton Variant="Variant.Filled">
+        class="ml-auto">
+        <MudButton Variant="Variant.Filled" OnClick="() => InspectInvoicePrint(context.Id)">
           @T["VIEW"]
         </MudButton>
       </MudLink>
@@ -261,4 +260,8 @@
   [Parameter] public string? Id { get; set; }
 
   [Parameter] public NetworkUserInvoiceModel? Invoice { get; set; }
+  private void InspectInvoicePrint(string id)
+  {
+    NavigationManager.NavigateTo($"network-user-invoice-print/{id}");
+  }
 }
