@@ -4,7 +4,8 @@ The dashboard for a user selected to oversee network users.
 
 ## Content
 
-![LocationHomePage](../../assets/network-user-home-page.png) _/app_
+![Network user representative home page](../../assets/network-user-home-page.png)
+_/app_
 
 ## Network user Home Panel
 
@@ -13,8 +14,8 @@ month's consumption, last month's consumption, and last month's total invoices.
 
 There is also a graph showing this year's power consumption.
 
-![ENNetworkUserHomePanel](../../assets/network-user-home-panel.png) _Network
-User Home Panel_
+![Network user representative home page panel](../../assets/network-user-home-panel.png)
+_Network User Home Panel_
 
 ## Measurement Location Table
 
@@ -31,5 +32,5 @@ the details of that entity.
 Clicking on a device redirects to a detailed overview of individual measurement
 locations.
 
-![ENMeasurementLocationsTable](../../assets/measurement-locations-table.png)
+![Measurement locations table](../../assets/measurement-locations-table.png)
 _Measurement Locations Table_

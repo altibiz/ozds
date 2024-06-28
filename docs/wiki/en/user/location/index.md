@@ -4,15 +4,15 @@ The dashboard for a user selected to oversee locations.
 
 ## Content
 
-![ENLocationHomePage](../../assets/location-home-page.png) _/app_
+![Location representative home page](../../assets/location-home-page.png) _/app_
 
 ## Location Home Panel
 
 This panel displays three segments showing the combined values of current
 month's consumption, last month's consumption, and current power consumption.
 
-![ENLocationHomePanel](../../assets/location-home-panel.png) _Location Home
-Panel Component_
+![Location representative home page panel](../../assets/location-home-panel.png)
+_Location Home Panel Component_
 
 ## Location Table
 
@@ -24,4 +24,4 @@ last month's consumption, and current power consumption for each location.
 By clicking on the name of the location, the user can inspect that location's
 data.
 
-![ENLocationsTable](../../assets/locations-table.png) _Location Table_
+![Locations table](../../assets/locations-table.png) _Location Table_

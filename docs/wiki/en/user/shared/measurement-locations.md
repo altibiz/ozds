@@ -5,7 +5,7 @@ review measurement locations.
 
 ## Content
 
-![ENMeasurementLocationsPage](../../assets/measurement-locations-page.png)
+![Measurement locations page](../../assets/measurement-locations-page.png)
 _/app/meters_
 
 ## Network Users Table
@@ -23,5 +23,5 @@ the details of that entity.
 Clicking on a device redirects to a detailed overview of individual measurement
 locations.
 
-![ENNetworkUsersTable](../../assets/measurement-locations-table.png)
+![Measurement locations table](../../assets/measurement-locations-table.png)
 _Measurement Locations Table_

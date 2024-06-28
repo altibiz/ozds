@@ -4,7 +4,7 @@ This page contains the Locations table and is used to find and review locations.
 
 ## Content
 
-![ENLocationPage](../../assets/location-page.png) _/app/locations_
+![Locations page](../../assets/location-page.png) _/app/locations_
 
 ## Locations Table
 
@@ -16,4 +16,4 @@ last month's consumption, and last month's invoice total.
 By clicking on the name of the location, the user can inspect that location's
 data.
 
-![ENLocationsTable](../../assets/locations-table.png) _Locations Table_
+![Locations table](../../assets/locations-table.png) _Locations Table_

@@ -4,7 +4,7 @@ This page holds the Invoices table and is used to find and review invoices.
 
 ## Content
 
-![InvoicesPage](../../assets/invoices-page.png) _/app/invoices_
+![Invoices page](../../assets/invoices-page.png) _/app/invoices_
 
 ## Invoices Table
 
@@ -17,4 +17,4 @@ invoice number.
 By pressing the inspect button, the user can see a more detailed overview of the
 invoice and even print it out.
 
-![InvoicesTable](../../assets/invoices-table.png) _Invoices Table_
+![Invoices table](../../assets/invoices-table.png) _Invoices Table_
