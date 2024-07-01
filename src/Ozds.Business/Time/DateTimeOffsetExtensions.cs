@@ -4,8 +4,14 @@ public static class DateTimeOffsetExtensions
 {
   // NOTE: Croatian UTC offset (https://en.wikipedia.org/wiki/List_of_UTC_offsets)
 
-  public static TimeSpan DefaultOffset => TimeZoneInfo
-    .FindSystemTimeZoneById("Europe/Zagreb").GetUtcOffset(DateTime.UtcNow);
+  public static TimeSpan DefaultOffset
+  {
+    get
+    {
+      return TimeZoneInfo
+        .FindSystemTimeZoneById("Europe/Zagreb").GetUtcOffset(DateTime.UtcNow);
+    }
+  }
 
   private static TimeSpan GetOffset(DateTimeOffset forDate)
   {
@@ -17,12 +23,14 @@ public static class DateTimeOffsetExtensions
     this DateTimeOffset dateTimeOffset
   )
   {
-    var dateOnlyStart = new DateTime(dateTimeOffset.Year, dateTimeOffset.Month,
+    var dateOnlyStart = new DateTime(
+      dateTimeOffset.Year, dateTimeOffset.Month,
       1, 0, 0, 0, DateTimeKind.Unspecified);
     var offsetStart = GetOffset(dateOnlyStart);
 
     var nextMonth = dateTimeOffset.AddMonths(1);
-    var dateOnlyEnd = new DateTime(nextMonth.Year, nextMonth.Month, 1, 0, 0, 0,
+    var dateOnlyEnd = new DateTime(
+      nextMonth.Year, nextMonth.Month, 1, 0, 0, 0,
       DateTimeKind.Unspecified);
     var offsetEnd = GetOffset(dateOnlyEnd);
 
@@ -53,7 +61,8 @@ public static class DateTimeOffsetExtensions
     this DateTimeOffset dateTimeOffset
   )
   {
-    var dateOnly = new DateTime(dateTimeOffset.Year, dateTimeOffset.Month, 1, 0,
+    var dateOnly = new DateTime(
+      dateTimeOffset.Year, dateTimeOffset.Month, 1, 0,
       0, 0, DateTimeKind.Unspecified);
     var offset = GetOffset(dateOnly);
 
@@ -65,7 +74,8 @@ public static class DateTimeOffsetExtensions
     this DateTimeOffset dateTimeOffset
   )
   {
-    var dateOnly = new DateTime(dateTimeOffset.Year, dateTimeOffset.Month, 1, 0,
+    var dateOnly = new DateTime(
+      dateTimeOffset.Year, dateTimeOffset.Month, 1, 0,
       0, 0, DateTimeKind.Unspecified);
 
     var startOfMonth = new DateTimeOffset(dateOnly, TimeSpan.Zero);
@@ -77,7 +87,8 @@ public static class DateTimeOffsetExtensions
   )
   {
     var lastMonth = dateTimeOffset.AddMonths(-1);
-    var dateOnly = new DateTime(lastMonth.Year, lastMonth.Month, 1, 0, 0, 0,
+    var dateOnly = new DateTime(
+      lastMonth.Year, lastMonth.Month, 1, 0, 0, 0,
       DateTimeKind.Unspecified);
     var offset = GetOffset(dateOnly);
 
@@ -90,7 +101,8 @@ public static class DateTimeOffsetExtensions
   )
   {
     var nextMonth = dateTimeOffset.AddMonths(1);
-    var dateOnly = new DateTime(nextMonth.Year, nextMonth.Month, 1, 0, 0, 0,
+    var dateOnly = new DateTime(
+      nextMonth.Year, nextMonth.Month, 1, 0, 0, 0,
       DateTimeKind.Unspecified);
     var offset = GetOffset(dateOnly);
 
@@ -100,7 +112,8 @@ public static class DateTimeOffsetExtensions
 
   public static DateTimeOffset GetStartOfDay(this DateTimeOffset dateTimeOffset)
   {
-    var dateOnly = new DateTime(dateTimeOffset.Year, dateTimeOffset.Month,
+    var dateOnly = new DateTime(
+      dateTimeOffset.Year, dateTimeOffset.Month,
       dateTimeOffset.Day, 0, 0, 0, DateTimeKind.Unspecified);
     var offset = GetOffset(dateOnly);
 
@@ -112,7 +125,8 @@ public static class DateTimeOffsetExtensions
     this DateTimeOffset dateTimeOffset
   )
   {
-    var dateOnly = new DateTime(dateTimeOffset.Year, 1, 1, 0, 0, 0,
+    var dateOnly = new DateTime(
+      dateTimeOffset.Year, 1, 1, 0, 0, 0,
       DateTimeKind.Unspecified);
     var offset = GetOffset(dateOnly);
 
@@ -124,7 +138,8 @@ public static class DateTimeOffsetExtensions
     this DateTimeOffset dateTimeOffset
   )
   {
-    var dateOnly = new DateTime(dateTimeOffset.Year, 1, 1, 0, 0, 0,
+    var dateOnly = new DateTime(
+      dateTimeOffset.Year, 1, 1, 0, 0, 0,
       DateTimeKind.Unspecified);
 
     var startOfYear = new DateTimeOffset(dateOnly, TimeSpan.Zero);
@@ -138,12 +153,13 @@ public static class DateTimeOffsetExtensions
   {
     var year = dateTimeOffset.Year;
 
-    return Enumerable.Range(1, 12).Select(month =>
-    {
-      var dateOnly =
-        new DateTime(year, month, 1, 0, 0, 0, DateTimeKind.Unspecified);
-      var startOfMonth = new DateTimeOffset(dateOnly, TimeSpan.Zero);
-      return startOfMonth.ToUniversalTime();
-    });
+    return Enumerable.Range(1, 12).Select(
+      month =>
+      {
+        var dateOnly =
+          new DateTime(year, month, 1, 0, 0, 0, DateTimeKind.Unspecified);
+        var startOfMonth = new DateTimeOffset(dateOnly, TimeSpan.Zero);
+        return startOfMonth.ToUniversalTime();
+      });
   }
 }
