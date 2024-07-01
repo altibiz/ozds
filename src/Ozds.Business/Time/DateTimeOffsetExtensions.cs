@@ -29,7 +29,7 @@ public static class DateTimeOffsetExtensions
 
     var start = new DateTimeOffset(dateOnlyStart, offsetStart);
     var end = new DateTimeOffset(dateOnlyEnd, offsetEnd);
-    return (start.UtcDateTime, end.UtcDateTime);
+    return (start.ToUniversalTime(), end.ToUniversalTime());
   }
 
   public static DateTimeOffset GetStartOfQuarterHour(
@@ -59,7 +59,7 @@ public static class DateTimeOffsetExtensions
     var offset = GetOffset(dateOnly);
 
     var startOfMonth = new DateTimeOffset(dateOnly, offset);
-    return startOfMonth.UtcDateTime;
+    return startOfMonth.ToUniversalTime();
   }
 
   public static DateTimeOffset GetStartOfMonthNoTransformation(
@@ -70,7 +70,7 @@ public static class DateTimeOffsetExtensions
       0, 0, DateTimeKind.Unspecified);
 
     var startOfMonth = new DateTimeOffset(dateOnly, TimeSpan.Zero);
-    return startOfMonth.UtcDateTime;
+    return startOfMonth.ToUniversalTime();
   }
 
   public static DateTimeOffset GetStartOfLastMonth(
@@ -83,7 +83,7 @@ public static class DateTimeOffsetExtensions
     var offset = GetOffset(dateOnly);
 
     var startOfLastMonth = new DateTimeOffset(dateOnly, offset);
-    return startOfLastMonth.UtcDateTime;
+    return startOfLastMonth.ToUniversalTime();
   }
 
   public static DateTimeOffset GetStartOfNextMonth(
@@ -106,7 +106,7 @@ public static class DateTimeOffsetExtensions
     var offset = GetOffset(dateOnly);
 
     var startOfDay = new DateTimeOffset(dateOnly, offset);
-    return startOfDay.UtcDateTime;
+    return startOfDay.ToUniversalTime();
   }
 
   public static DateTimeOffset GetStartOfYear(
@@ -118,7 +118,7 @@ public static class DateTimeOffsetExtensions
     var offset = GetOffset(dateOnly);
 
     var startOfYear = new DateTimeOffset(dateOnly, offset);
-    return startOfYear.UtcDateTime;
+    return startOfYear.ToUniversalTime();
   }
 
   public static DateTimeOffset GetStartOfYearNoTransformation(
@@ -129,7 +129,7 @@ public static class DateTimeOffsetExtensions
       DateTimeKind.Unspecified);
 
     var startOfYear = new DateTimeOffset(dateOnly, TimeSpan.Zero);
-    return startOfYear.UtcDateTime;
+    return startOfYear.ToUniversalTime();
   }
 
   public static IEnumerable<DateTimeOffset>
