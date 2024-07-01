@@ -4,7 +4,7 @@ public static class DateTimeOffsetExtensions
 {
   // NOTE: Croatian UTC offset (https://en.wikipedia.org/wiki/List_of_UTC_offsets)
 
-  public static TimeSpan DefaultOffset = TimeZoneInfo
+  public static TimeSpan DefaultOffset => TimeZoneInfo
     .FindSystemTimeZoneById("Europe/Zagreb").GetUtcOffset(DateTime.UtcNow);
 
   private static TimeSpan GetOffset(DateTimeOffset forDate)
@@ -20,7 +20,6 @@ public static class DateTimeOffsetExtensions
     var dateOnlyStart = new DateTime(dateTimeOffset.Year, dateTimeOffset.Month,
       1, 0, 0, 0, DateTimeKind.Unspecified);
     var offsetStart = GetOffset(dateOnlyStart);
-
 
     var nextMonth = dateTimeOffset.AddMonths(1);
     var dateOnlyEnd = new DateTime(nextMonth.Year, nextMonth.Month, 1, 0, 0, 0,
