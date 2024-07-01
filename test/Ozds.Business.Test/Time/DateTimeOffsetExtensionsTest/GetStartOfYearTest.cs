@@ -20,11 +20,14 @@ public class GetStartOfYearTest
   [InlineData("2023-11-15T12:34:56Z", "2022-12-31T23:00:00Z")]
   [InlineData("2023-12-15T12:34:56Z", "2022-12-31T23:00:00Z")]
   [InlineData("2024-02-29T12:34:56Z", "2023-12-31T23:00:00Z")]
-  public void GetStartOfYear_ReturnsExpectedStartOfYear(string inputDateString,
+  public void GetStartOfYear_ReturnsExpectedStartOfYear(
+    string inputDateString,
     string expectedDateString)
   {
-    var inputDate = DateTimeOffset.Parse(inputDateString, CultureInfo.InvariantCulture);
-    var expectedDate = DateTimeOffset.Parse(expectedDateString, CultureInfo.InvariantCulture);
+    var inputDate = DateTimeOffset.Parse(
+      inputDateString, CultureInfo.InvariantCulture);
+    var expectedDate = DateTimeOffset.Parse(
+      expectedDateString, CultureInfo.InvariantCulture);
 
     var result = inputDate.GetStartOfYear();
 

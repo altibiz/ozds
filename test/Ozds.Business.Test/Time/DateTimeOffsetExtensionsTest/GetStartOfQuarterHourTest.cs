@@ -14,10 +14,13 @@ public class GetStartOfQuarterHourTest
   [InlineData("2023-05-15T12:50:56Z", "2023-05-15T12:45:00Z")]
   [InlineData("2023-06-15T12:55:56Z", "2023-06-15T12:45:00Z")]
   public void GetStartOfQuarterHour_ReturnsExpectedStartOfQuarterHour(
-    string inputDateString, string expectedDateString)
+    string inputDateString,
+    string expectedDateString)
   {
-    var inputDate = DateTimeOffset.Parse(inputDateString, CultureInfo.InvariantCulture);
-    var expectedDate = DateTimeOffset.Parse(expectedDateString, CultureInfo.InvariantCulture);
+    var inputDate = DateTimeOffset.Parse(
+      inputDateString, CultureInfo.InvariantCulture);
+    var expectedDate = DateTimeOffset.Parse(
+      expectedDateString, CultureInfo.InvariantCulture);
 
     var result = inputDate.GetStartOfQuarterHour();
 

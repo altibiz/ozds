@@ -209,14 +209,15 @@
       }
 
       var _maxPower = ThisMonthQuarterHourly.Select(measure => measure.ActivePower_W.TariffUnary.DuplexImport.PhaseSum).DefaultIfEmpty(0).Max();
-      _dataStruct.Add(new TabularData
-      {
-        year = month.ToString("yy"),
-        month = month.ToString("MM"),
-        monthStartTotal = _monthStartTotal,
-        monthEndTotal = _monthEndTotal,
-        maxPower = _maxPower
-      });
+      _dataStruct.Add(
+        new TabularData
+        {
+          year = month.ToString("yy"),
+          month = month.ToString("MM"),
+          monthStartTotal = _monthStartTotal,
+          monthEndTotal = _monthEndTotal,
+          maxPower = _maxPower
+        });
     }
 
     foreach (var data in _dataStruct)

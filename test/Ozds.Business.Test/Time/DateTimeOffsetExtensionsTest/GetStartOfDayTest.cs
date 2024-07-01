@@ -19,11 +19,14 @@ public class GetStartOfDayTest
   [InlineData("2023-10-15T12:34:56Z", "2023-10-14T22:00:00Z")]
   [InlineData("2023-11-15T12:34:56Z", "2023-11-14T23:00:00Z")]
   [InlineData("2023-12-15T12:34:56Z", "2023-12-14T23:00:00Z")]
-  public void GetStartOfDay_ReturnsExpectedStartOfDay(string inputDateString,
+  public void GetStartOfDay_ReturnsExpectedStartOfDay(
+    string inputDateString,
     string expectedDateString)
   {
-    var inputDate = DateTimeOffset.Parse(inputDateString, CultureInfo.InvariantCulture);
-    var expectedDate = DateTimeOffset.Parse(expectedDateString, CultureInfo.InvariantCulture);
+    var inputDate = DateTimeOffset.Parse(
+      inputDateString, CultureInfo.InvariantCulture);
+    var expectedDate = DateTimeOffset.Parse(
+      expectedDateString, CultureInfo.InvariantCulture);
 
     var result = inputDate.GetStartOfDay();
 

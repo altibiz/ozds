@@ -21,10 +21,13 @@ public class GetStartOfNextMonthTest
   [InlineData("2023-12-15T12:34:56Z", "2023-12-31T23:00:00Z")]
   [InlineData("2024-02-29T12:34:56Z", "2024-02-29T23:00:00Z")]
   public void GetStartOfNextMonth_ReturnsExpectedStartOfNextMonth(
-    string inputDateString, string expectedDateString)
+    string inputDateString,
+    string expectedDateString)
   {
-    var inputDate = DateTimeOffset.Parse(inputDateString, CultureInfo.InvariantCulture);
-    var expectedDate = DateTimeOffset.Parse(expectedDateString, CultureInfo.InvariantCulture);
+    var inputDate = DateTimeOffset.Parse(
+      inputDateString, CultureInfo.InvariantCulture);
+    var expectedDate = DateTimeOffset.Parse(
+      expectedDateString, CultureInfo.InvariantCulture);
 
     var result = inputDate.GetStartOfNextMonth();
 
