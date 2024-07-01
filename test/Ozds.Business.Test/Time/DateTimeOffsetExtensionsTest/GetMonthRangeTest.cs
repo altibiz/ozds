@@ -1,3 +1,4 @@
+using System.Globalization;
 using Ozds.Business.Time;
 using Xunit;
 
@@ -35,9 +36,9 @@ public class GetMonthRangeTest
   public void GetMonthRange_ReturnsExpectedRange(string inputDateString,
     string expectedStartString, string expectedEndString)
   {
-    var inputDate = DateTimeOffset.Parse(inputDateString);
-    var expectedStart = DateTimeOffset.Parse(expectedStartString);
-    var expectedEnd = DateTimeOffset.Parse(expectedEndString);
+    var inputDate = DateTimeOffset.Parse(inputDateString, CultureInfo.InvariantCulture);
+    var expectedStart = DateTimeOffset.Parse(expectedStartString, CultureInfo.InvariantCulture);
+    var expectedEnd = DateTimeOffset.Parse(expectedEndString, CultureInfo.InvariantCulture);
 
     var (start, end) = inputDate.GetMonthRange();
 

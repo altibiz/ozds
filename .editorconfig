@@ -182,6 +182,8 @@ dotnet_diagnostic.SA1117.severity = None
 dotnet_diagnostic.SA1505.severity = None
 # Single-line comment should be preceded by blank line
 dotnet_diagnostic.SA1515.severity = none
+# Split parameters should start on line after declaration
+dotnet_diagnostic.SA1116.severity = none
 
 ###############################################################################
 # SonarAnalyzer.CSharp                                                        #

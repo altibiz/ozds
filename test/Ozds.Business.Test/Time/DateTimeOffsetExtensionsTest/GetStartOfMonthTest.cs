@@ -1,3 +1,4 @@
+using System.Globalization;
 using Ozds.Business.Time;
 using Xunit;
 
@@ -36,8 +37,8 @@ public class GetStartOfMonthTest
     string inputDateString, string expectedDateString)
   {
     // Arrange
-    var inputDate = DateTimeOffset.Parse(inputDateString);
-    var expectedDate = DateTimeOffset.Parse(expectedDateString);
+    var inputDate = DateTimeOffset.Parse(inputDateString, CultureInfo.InvariantCulture);
+    var expectedDate = DateTimeOffset.Parse(expectedDateString, CultureInfo.InvariantCulture);
 
     // Act
     var result = inputDate.GetStartOfMonth();

@@ -1,3 +1,4 @@
+using System.Globalization;
 using Ozds.Business.Time;
 using Xunit;
 
@@ -35,8 +36,8 @@ public class GetStartOfLastMonthTest
   public void GetStartOfLastMonth_ReturnsExpectedStartOfLastMonth(
     string inputDateString, string expectedDateString)
   {
-    var inputDate = DateTimeOffset.Parse(inputDateString);
-    var expectedDate = DateTimeOffset.Parse(expectedDateString);
+    var inputDate = DateTimeOffset.Parse(inputDateString, CultureInfo.InvariantCulture);
+    var expectedDate = DateTimeOffset.Parse(expectedDateString, CultureInfo.InvariantCulture);
 
     var result = inputDate.GetStartOfLastMonth();
 
