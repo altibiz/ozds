@@ -9,13 +9,17 @@ public class LocationModel : AuditableModel
   [Required]
   public required string WhiteMediumNetworkUserCatalogueId { get; set; }
 
-  [Required] public required string BlueLowNetworkUserCatalogueId { get; set; }
+  [Required]
+  public required string BlueLowNetworkUserCatalogueId { get; set; }
 
-  [Required] public required string WhiteLowNetworkUserCatalogueId { get; set; }
+  [Required]
+  public required string WhiteLowNetworkUserCatalogueId { get; set; }
 
-  [Required] public required string RedLowNetworkUserCatalogueId { get; set; }
+  [Required]
+  public required string RedLowNetworkUserCatalogueId { get; set; }
 
-  [Required] public required string RegulatoryCatalogueId { get; set; }
+  [Required]
+  public required string RegulatoryCatalogueId { get; set; }
 
   [Required]
   public required LegalPersonModel LegalPerson { get; set; } = default!;

@@ -104,9 +104,13 @@
 </EditForm>
 
 @code {
-  [Parameter] public string Id { get; set; } = default!;
 
-  [Parameter] public NetworkUserModel? Model { get; set; }
+  [Parameter]
+  public string Id { get; set; } = default!;
+
+  [Parameter]
+  public NetworkUserModel? Model { get; set; }
+
   private List<LocationModel> _locations = new();
   private List<RepresentativeModel> _representatives = new();
   private IEnumerable<RepresentativeModel> _selectedRepsList { get; set; } = new HashSet<RepresentativeModel>();

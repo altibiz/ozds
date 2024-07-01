@@ -8,8 +8,7 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
 
-public class NetworkUserCalculationEntity : CalculationEntity, IReadonlyEntity,
-  IIdentifiableEntity
+public class NetworkUserCalculationEntity : CalculationEntity, IReadonlyEntity
 {
   protected readonly long _networkUserInvoiceId;
 
@@ -119,9 +118,9 @@ public class
   <
     NetworkUserCalculationEntity>
 {
-  public override void Configure(ModelBuilder modelBuilder, Type type)
+  public override void Configure(ModelBuilder modelBuilder, Type entity)
   {
-    var builder = modelBuilder.Entity(type);
+    var builder = modelBuilder.Entity(entity);
 
     builder
       .UseTphMappingStrategy()
@@ -136,23 +135,27 @@ public class
     builder
       .HasOne(
         nameof(NetworkUserCalculationEntity.NetworkUserMeasurementLocation))
-      .WithMany(nameof(NetworkUserMeasurementLocationEntity
-        .NetworkUserCalculations))
+      .WithMany(
+        nameof(NetworkUserMeasurementLocationEntity
+          .NetworkUserCalculations))
       .HasForeignKey("_networkUserMeasurementLocationId");
 
     builder
-      .ArchivedProperty(nameof(NetworkUserCalculationEntity
-        .ArchivedNetworkUserMeasurementLocation));
+      .ArchivedProperty(
+        nameof(NetworkUserCalculationEntity
+          .ArchivedNetworkUserMeasurementLocation));
 
-    builder.Ignore(nameof(NetworkUserCalculationEntity
-      .NetworkUserMeasurementLocationId));
+    builder.Ignore(
+      nameof(NetworkUserCalculationEntity
+        .NetworkUserMeasurementLocationId));
     builder
       .Property("_networkUserMeasurementLocationId")
       .HasColumnName("network_user_measurement_location_id");
 
     builder
-      .ArchivedProperty(nameof(NetworkUserCalculationEntity
-        .ArchivedSupplyRegulatoryCatalogue));
+      .ArchivedProperty(
+        nameof(NetworkUserCalculationEntity
+          .ArchivedSupplyRegulatoryCatalogue));
 
     builder.Ignore(nameof(NetworkUserCalculationEntity.NetworkUserInvoiceId));
     builder
@@ -164,8 +167,9 @@ public class
       .WithMany(nameof(RegulatoryCatalogueEntity.NetworkUserCalculations))
       .HasForeignKey("_supplyRegulatoryCatalogueId");
 
-    builder.Ignore(nameof(NetworkUserCalculationEntity
-      .SupplyRegulatoryCatalogueId));
+    builder.Ignore(
+      nameof(NetworkUserCalculationEntity
+        .SupplyRegulatoryCatalogueId));
     builder
       .Property("_supplyRegulatoryCatalogueId")
       .HasColumnName("supply_regulatory_catalogue_id");
@@ -173,27 +177,32 @@ public class
     builder.ComplexProperty(nameof(NetworkUserCalculationEntity.UsageMeterFee))
       .UsageMeterFeeCalculationItem();
 
-    builder.ComplexProperty(nameof(NetworkUserCalculationEntity
-        .SupplyActiveEnergyTotalImportT1))
+    builder.ComplexProperty(
+        nameof(NetworkUserCalculationEntity
+          .SupplyActiveEnergyTotalImportT1))
       .SupplyActiveEnergyTotalImportT1CalculationItem();
 
-    builder.ComplexProperty(nameof(NetworkUserCalculationEntity
-        .SupplyActiveEnergyTotalImportT2))
+    builder.ComplexProperty(
+        nameof(NetworkUserCalculationEntity
+          .SupplyActiveEnergyTotalImportT2))
       .SupplyActiveEnergyTotalImportT2CalculationItem();
 
-    builder.ComplexProperty(nameof(NetworkUserCalculationEntity
-        .SupplyBusinessUsageFee))
+    builder.ComplexProperty(
+        nameof(NetworkUserCalculationEntity
+          .SupplyBusinessUsageFee))
       .SupplyBusinessUsageCalculationItem();
 
-    builder.ComplexProperty(nameof(NetworkUserCalculationEntity
-        .SupplyRenewableEnergyFee))
+    builder.ComplexProperty(
+        nameof(NetworkUserCalculationEntity
+          .SupplyRenewableEnergyFee))
       .SupplyRenewableEnergyCalculationItem();
 
-    if (type != typeof(NetworkUserCalculationEntity))
+    if (entity != typeof(NetworkUserCalculationEntity))
     {
       builder
-        .HasOne(nameof(NetworkUserCalculationEntity<NetworkUserCatalogueEntity>
-          .UsageNetworkUserCatalogue))
+        .HasOne(
+          nameof(NetworkUserCalculationEntity<NetworkUserCatalogueEntity>
+            .UsageNetworkUserCatalogue))
         .WithMany(nameof(NetworkUserCatalogueEntity.NetworkUserCalculations))
         .HasForeignKey("_usageNetworkUserCatalogueId");
 

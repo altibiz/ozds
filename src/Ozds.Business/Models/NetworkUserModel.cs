@@ -6,7 +6,8 @@ namespace Ozds.Business.Models;
 
 public class NetworkUserModel : AuditableModel
 {
-  [Required] public required string LocationId { get; set; }
+  [Required]
+  public required string LocationId { get; set; }
 
   [Required]
   public required LegalPersonModel LegalPerson { get; set; } = default!;

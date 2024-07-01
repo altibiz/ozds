@@ -13,7 +13,7 @@ namespace Ozds.Business.Queries;
 public class OzdsNetworkUserMeasurementLocationModelQueries(
   OzdsDbContext context) : IOzdsQueries
 {
-  protected readonly OzdsDbContext context = context;
+  private readonly OzdsDbContext context = context;
 
   public async Task<NetworkUserMeasurementLocationModel?>
     NetworkUserMeasurementLocationById(string id)
@@ -39,8 +39,9 @@ public class OzdsNetworkUserMeasurementLocationModelQueries(
   )
   {
     var filtered = context.NetworkUsers
-      .Where(catalogue => catalogue.Title
-        .StartsWith(title));
+      .Where(
+        catalogue => catalogue.Title
+          .StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered
       .OrderBy(context.PrimaryKeyOf<NetworkUserEntity>())

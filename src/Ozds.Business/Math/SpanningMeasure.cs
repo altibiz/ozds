@@ -2,6 +2,10 @@ using System.Numerics;
 
 namespace Ozds.Business.Math;
 
+// TODO: convert properties to methods and create proper class hierarchy
+#pragma warning disable S2365
+#pragma warning disable S3060
+
 public record class MinMaxSpanningMeasure<T>(
   TariffMeasure<T> TrueMin,
   TariffMeasure<T> TrueMax)
@@ -101,27 +105,27 @@ public abstract record class SpanningMeasure<T>
 
   public TariffMeasure<T> SpanDiff
   {
-    get { return SpanMax - SpanMin; }
+    get { return SpanMax.Subtract(SpanMin); }
   }
 
-  public SpanningMeasure<U> ConvertPrimitiveTo<U>()
-    where U : struct,
-    IComparisonOperators<U, U, bool>,
-    IAdditionOperators<U, U, U>,
-    ISubtractionOperators<U, U, U>,
-    IMultiplyOperators<U, U, U>,
-    IDivisionOperators<U, U, U>
+  public SpanningMeasure<TConverted> ConvertPrimitiveTo<TConverted>()
+    where TConverted : struct,
+    IComparisonOperators<TConverted, TConverted, bool>,
+    IAdditionOperators<TConverted, TConverted, TConverted>,
+    ISubtractionOperators<TConverted, TConverted, TConverted>,
+    IMultiplyOperators<TConverted, TConverted, TConverted>,
+    IDivisionOperators<TConverted, TConverted, TConverted>
   {
     return this switch
     {
-      MinMaxSpanningMeasure<T> minMax => new MinMaxSpanningMeasure<U>(
-        minMax.TrueMin.ConvertPrimitiveTo<U>(),
-        minMax.TrueMax.ConvertPrimitiveTo<U>()),
-      AvgSpanningMeasure<T> avg => new AvgSpanningMeasure<U>(
-        avg.TrueAvg.ConvertPrimitiveTo<U>()),
-      PeakSpanningMeasure<T> peak => new PeakSpanningMeasure<U>(
-        peak.TruePeak.ConvertPrimitiveTo<U>()),
-      _ => new NullSpanningMeasure<U>()
+      MinMaxSpanningMeasure<T> minMax => new MinMaxSpanningMeasure<TConverted>(
+        minMax.TrueMin.ConvertPrimitiveTo<TConverted>(),
+        minMax.TrueMax.ConvertPrimitiveTo<TConverted>()),
+      AvgSpanningMeasure<T> avg => new AvgSpanningMeasure<TConverted>(
+        avg.TrueAvg.ConvertPrimitiveTo<TConverted>()),
+      PeakSpanningMeasure<T> peak => new PeakSpanningMeasure<TConverted>(
+        peak.TruePeak.ConvertPrimitiveTo<TConverted>()),
+      _ => new NullSpanningMeasure<TConverted>()
     };
   }
 
@@ -129,14 +133,15 @@ public abstract record class SpanningMeasure<T>
   {
     return this switch
     {
-      MinMaxSpanningMeasure<T> minMax => minMax.TrueMax - minMax.TrueMin,
-      AvgSpanningMeasure<T> avg => avg.TrueAvg * y,
+      MinMaxSpanningMeasure<T> minMax =>
+        minMax.TrueMax.Subtract(minMax.TrueMin),
+      AvgSpanningMeasure<T> avg => avg.TrueAvg.Multiply(y),
       _ => TariffMeasure<T>.Null
     };
   }
 
   public TariffMeasure<T> SpanDifferential(T y)
   {
-    return SpanDiff / y;
+    return SpanDiff.Divide(y);
   }
 }

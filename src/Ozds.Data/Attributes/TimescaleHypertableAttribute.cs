@@ -41,12 +41,13 @@ public static class TimescaleHypertableAttributeExtensions
   {
     return builder.Model
       .GetEntityTypes()
-      .Select(entity => new
-      {
-        Entity = entity,
-        Attribute = entity.ClrType
-          .GetCustomAttribute<TimescaleHypertableAttribute>()
-      })
+      .Select(
+        entity => new
+        {
+          Entity = entity,
+          Attribute = entity.ClrType
+            .GetCustomAttribute<TimescaleHypertableAttribute>()
+        })
       .Where(x => x.Attribute is not null)
       .Aggregate(
         builder,

@@ -5,9 +5,11 @@ namespace Ozds.Client.Base;
 
 public class OzdsLayoutComponentBase : OzdsComponentBase
 {
-  [Parameter] public RenderFragment? Body { get; set; }
+  [Parameter]
+  public RenderFragment? Body { get; set; }
 
-  [DynamicDependency(DynamicallyAccessedMemberTypes.All,
+  [DynamicDependency(
+    DynamicallyAccessedMemberTypes.All,
     typeof(OzdsLayoutComponentBase))]
   public override Task SetParametersAsync(ParameterView parameters)
   {

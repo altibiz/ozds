@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Conversion;
-using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Base;
@@ -14,14 +13,12 @@ using Ozds.Data.Entities.Enums;
 
 namespace Ozds.Business.Queries;
 
-public class OzdsMeterTableQueries(
-  OzdsDbContext context,
-  AgnosticModelEntityConverter modelEntityConverter) : IOzdsQueries
-{
-  protected readonly OzdsDbContext context = context;
+// FIXME: get location by representative
 
-  protected readonly AgnosticModelEntityConverter modelEntityConverter =
-    modelEntityConverter;
+public class OzdsMeterTableQueries(
+  OzdsDbContext context) : IOzdsQueries
+{
+  private readonly OzdsDbContext context = context;
 
   public async Task<IMeter?> GetMeterById(string Id)
   {
@@ -37,16 +34,20 @@ public class OzdsMeterTableQueries(
     {
       case RoleModel.NetworkUserRepresentative:
         netUsers = await context.Representatives
-          .Where(context.PrimaryKeyEquals<RepresentativeEntity>(representative
-            .Id))
+          .Where(
+            context.PrimaryKeyEquals<RepresentativeEntity>(
+              representative
+                .Id))
           .Include(x => x.NetworkUsers)
           .SelectMany(x => x.NetworkUsers)
           .ToListAsync();
         break;
       case RoleModel.LocationRepresentative:
         netUsers = await context.Representatives
-          .Where(context.PrimaryKeyEquals<RepresentativeEntity>(representative
-            .Id))
+          .Where(
+            context.PrimaryKeyEquals<RepresentativeEntity>(
+              representative
+                .Id))
           .Include(x => x.Locations)
           .ThenInclude(x => x.NetworkUsers)
           .SelectMany(x => x.Locations.SelectMany(x => x.NetworkUsers))
@@ -61,30 +62,11 @@ public class OzdsMeterTableQueries(
     return netUsers.Select(x => x.ToModel()).ToList();
   }
 
-  // !!! Fix this
   public async Task<List<LocationModel>?> GetLocationsByRepresentative(
     RepresentativeModel representative)
   {
-    List<LocationModel> locations = [];
-    switch (representative.Role)
-    {
-      case RoleModel.NetworkUserRepresentative:
-        locations =
-          await context.Locations.Select(x => x.ToModel()).ToListAsync();
-        break;
-      case RoleModel.LocationRepresentative:
-        locations =
-          await context.Locations.Select(x => x.ToModel()).ToListAsync();
-        break;
-      case RoleModel.OperatorRepresentative:
-        locations =
-          await context.Locations.Select(x => x.ToModel()).ToListAsync();
-        break;
-    }
-
-    return locations;
+    return await context.Locations.Select(x => x.ToModel()).ToListAsync();
   }
-
 
   public async Task<List<NetworkUserInvoiceModel>>
     GetNetworkUserInvoicesByRepresentative(
@@ -97,8 +79,10 @@ public class OzdsMeterTableQueries(
     {
       case RoleModel.NetworkUserRepresentative:
         results = await context.Representatives
-          .Where(context.PrimaryKeyEquals<RepresentativeEntity>(representative
-            .Id))
+          .Where(
+            context.PrimaryKeyEquals<RepresentativeEntity>(
+              representative
+                .Id))
           .Include(x => x.NetworkUsers)
           .ThenInclude(x => x.Invoices)
           .SelectMany(x => x.NetworkUsers.SelectMany(x => x.Invoices))
@@ -108,14 +92,18 @@ public class OzdsMeterTableQueries(
         break;
       case RoleModel.LocationRepresentative:
         results = await context.Representatives
-          .Where(context.PrimaryKeyEquals<RepresentativeEntity>(representative
-            .Id))
+          .Where(
+            context.PrimaryKeyEquals<RepresentativeEntity>(
+              representative
+                .Id))
           .Include(x => x.Locations)
           .ThenInclude(x => x.NetworkUsers)
           .ThenInclude(x => x.Invoices)
-          .SelectMany(x =>
-            x.Locations.SelectMany(x =>
-              x.NetworkUsers.SelectMany(x => x.Invoices)))
+          .SelectMany(
+            x =>
+              x.Locations.SelectMany(
+                x =>
+                  x.NetworkUsers.SelectMany(x => x.Invoices)))
           .Where(x => x.ToDate >= fromDate)
           .Where(x => x.ToDate < toDate)
           .ToListAsync();
@@ -139,11 +127,10 @@ public class OzdsMeterTableQueries(
       DateTimeOffset fromDate,
       DateTimeOffset toDate)
   {
-    List<NetworkUserCalculationEntity> results = [];
-
-    results = await context.MeasurementLocations
-      .Where(context.PrimaryKeyIn<MeasurementLocationEntity>(
-        measurementLocations.Select(x => x.Id).ToList()))
+    var results = await context.MeasurementLocations
+      .Where(
+        context.PrimaryKeyIn<MeasurementLocationEntity>(
+          measurementLocations.Select(x => x.Id).ToList()))
       .Join(
         context.NetworkUserCalculations,
         context.PrimaryKeyOf<MeasurementLocationEntity>(),
@@ -201,7 +188,8 @@ public class OzdsMeterTableQueries(
           meter
         }
       )
-      .SelectMany(x => x.meter,
+      .SelectMany(
+        x => x.meter,
         (x, meter) => new ViewModelStruct
         {
           Location = x.Location,
@@ -226,7 +214,8 @@ public class OzdsMeterTableQueries(
           abbB2xAggregates
         }
       )
-      .SelectMany(x => x.abbB2xAggregates.DefaultIfEmpty(),
+      .SelectMany(
+        x => x.abbB2xAggregates.DefaultIfEmpty(),
         (x, abbAggregate) => new ViewModelStruct
         {
           Location = x.Location,
@@ -253,7 +242,8 @@ public class OzdsMeterTableQueries(
           schneideriEM3xxxAggregates
         }
       )
-      .SelectMany(x => x.schneideriEM3xxxAggregates.DefaultIfEmpty(),
+      .SelectMany(
+        x => x.schneideriEM3xxxAggregates.DefaultIfEmpty(),
         (x, schneiderAggregate) => new ViewModelStruct
         {
           Location = x.Location,
@@ -266,18 +256,21 @@ public class OzdsMeterTableQueries(
     var result = await query.ToListAsync();
     var grouped = result.GroupBy(x => x.MeasurementLocation.Id);
     return grouped
-      .Select(x => new MeterTableViewModel(
-        x.First().Location.ToModel(),
-        x.First().NetworkUser.ToModel(),
-        x.First().MeasurementLocation.ToModel(),
-        x.First().Meter.ToModel(),
-        Enumerable.Empty<AggregateModel>()
-          .Concat(x.Select(x => x.AbbAggregate?.ToModel())
-            .Where(x => x is not null).OfType<AggregateModel>())
-          .Concat(x.Select(x => x.SchneiderAggregate?.ToModel())
-            .Where(x => x is not null).OfType<AggregateModel>())
-          .ToList()
-      ))
+      .Select(
+        x => new MeterTableViewModel(
+          x.First().Location.ToModel(),
+          x.First().NetworkUser.ToModel(),
+          x.First().MeasurementLocation.ToModel(),
+          x.First().Meter.ToModel(),
+          Enumerable.Empty<AggregateModel>()
+            .Concat(
+              x.Select(x => x.AbbAggregate?.ToModel())
+                .Where(x => x is not null).OfType<AggregateModel>())
+            .Concat(
+              x.Select(x => x.SchneiderAggregate?.ToModel())
+                .Where(x => x is not null).OfType<AggregateModel>())
+            .ToList()
+        ))
       .ToList();
   }
 

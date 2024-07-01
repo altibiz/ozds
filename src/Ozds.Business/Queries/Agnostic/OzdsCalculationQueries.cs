@@ -23,9 +23,9 @@ public class OzdsCalculationQueries(
   {
     var entityType = _modelEntityConverter.EntityType(typeof(T));
     var queryable = _context.GetDbSet(entityType)
-                      as IQueryable<NetworkUserCalculationEntity>
-                    ?? throw new InvalidOperationException(
-                      $"No DbSet found for {entityType}");
+        as IQueryable<NetworkUserCalculationEntity>
+      ?? throw new InvalidOperationException(
+        $"No DbSet found for {entityType}");
     var item = await queryable
       .Where(_context.PrimaryKeyEqualsAgnostic(entityType, id))
       .FirstOrDefaultAsync();
@@ -38,17 +38,21 @@ public class OzdsCalculationQueries(
     IEnumerable<string> orderByAscClauses,
     int pageNumber = QueryConstants.StartingPage,
     int pageCount = QueryConstants.DefaultPageCount
-  ) where T : class, INetworkUserCalculation
+  )
+    where T : class, INetworkUserCalculation
   {
     var queryable = _context.GetDbSet(typeof(T))
-                      as IQueryable<NetworkUserCalculationEntity>
-                    ?? throw new InvalidOperationException();
-    var filtered = whereClauses.Aggregate(queryable,
+        as IQueryable<NetworkUserCalculationEntity>
+      ?? throw new InvalidOperationException();
+    var filtered = whereClauses.Aggregate(
+      queryable,
       (current, clause) => current.WhereDynamic(clause));
     var count = await filtered.CountAsync();
-    var orderedByDesc = orderByDescClauses.Aggregate(filtered,
+    var orderedByDesc = orderByDescClauses.Aggregate(
+      filtered,
       (current, clause) => current.OrderByDescendingDynamic(clause));
-    var orderedByAsc = orderByAscClauses.Aggregate(orderedByDesc,
+    var orderedByAsc = orderByAscClauses.Aggregate(
+      orderedByDesc,
       (current, clause) => current.OrderByDynamic(clause));
     var items = await orderedByAsc.Skip((pageNumber - 1) * pageCount)
       .Take(pageCount).ToListAsync();

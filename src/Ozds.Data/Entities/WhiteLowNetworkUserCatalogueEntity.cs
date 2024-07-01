@@ -23,18 +23,21 @@ public class
     EntityTypeBuilder<WhiteLowNetworkUserCatalogueEntity> builder)
   {
     builder
-      .Property(nameof(WhiteLowNetworkUserCatalogueEntity
-        .ActiveEnergyTotalImportT1Price_EUR))
+      .Property(
+        nameof(WhiteLowNetworkUserCatalogueEntity
+          .ActiveEnergyTotalImportT1Price_EUR))
       .HasColumnName("active_energy_total_import_t1_price_eur");
 
     builder
-      .Property(nameof(WhiteLowNetworkUserCatalogueEntity
-        .ActiveEnergyTotalImportT2Price_EUR))
+      .Property(
+        nameof(WhiteLowNetworkUserCatalogueEntity
+          .ActiveEnergyTotalImportT2Price_EUR))
       .HasColumnName("active_energy_total_import_t2_price_eur");
 
     builder
-      .Property(nameof(WhiteLowNetworkUserCatalogueEntity
-        .ReactiveEnergyTotalRampedT0Price_EUR))
+      .Property(
+        nameof(WhiteLowNetworkUserCatalogueEntity
+          .ReactiveEnergyTotalRampedT0Price_EUR))
       .HasColumnName("reactive_energy_total_ramped_t0_price_eur");
 
     builder

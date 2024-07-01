@@ -36,7 +36,11 @@
 </Loading>
 
 @code {
-  [Parameter] public string Id { get; set; } = default!;
 
-  [Parameter] public MaybeRepresentingUserModel? Model { get; set; }
+  [Parameter]
+  public string Id { get; set; } = default!;
+
+  [Parameter]
+  public MaybeRepresentingUserModel? Model { get; set; }
+
 }

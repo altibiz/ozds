@@ -15,7 +15,7 @@ namespace Ozds.Fake.Generators.Base;
 public abstract class
   RepeatingCsvResourceMeasurementGenerator<TMeasurement>(
     IServiceProvider serviceProvider) : IMeasurementGenerator
-  where TMeasurement : IMeasurementRecord
+  where TMeasurement : class, IMeasurementRecord
 {
   private readonly AgnosticMeasurementRecordPushRequestConverter _converter =
     serviceProvider
@@ -79,9 +79,10 @@ public abstract class
     while (timeSpan > TimeSpan.Zero)
     {
       foreach (var record in ordered
-                 .Where(record =>
-                   record.Timestamp >= dateFromCsv
-                   && record.Timestamp < dateToCsv))
+        .Where(
+          record =>
+            record.Timestamp >= dateFromCsv
+            && record.Timestamp < dateToCsv))
       {
         var timestamp = currentDateFrom.AddTicks(
           (record.Timestamp - dateFromCsv).Ticks

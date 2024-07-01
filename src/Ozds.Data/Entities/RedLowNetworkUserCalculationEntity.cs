@@ -32,23 +32,27 @@ public class
     EntityTypeBuilder<RedLowNetworkUserCalculationEntity> builder)
   {
     builder
-      .ComplexProperty(nameof(RedLowNetworkUserCalculationEntity
-        .UsageActiveEnergyTotalImportT1))
+      .ComplexProperty(
+        nameof(RedLowNetworkUserCalculationEntity
+          .UsageActiveEnergyTotalImportT1))
       .UsageActiveEnergyTotalImportT1CalculationItem();
 
     builder
-      .ComplexProperty(nameof(RedLowNetworkUserCalculationEntity
-        .UsageActiveEnergyTotalImportT2))
+      .ComplexProperty(
+        nameof(RedLowNetworkUserCalculationEntity
+          .UsageActiveEnergyTotalImportT2))
       .UsageActiveEnergyTotalImportT2CalculationItem();
 
     builder
-      .ComplexProperty(nameof(RedLowNetworkUserCalculationEntity
-        .UsageActivePowerTotalImportT1Peak))
+      .ComplexProperty(
+        nameof(RedLowNetworkUserCalculationEntity
+          .UsageActivePowerTotalImportT1Peak))
       .UsageActivePowerTotalImportT1PeakCalculationItem();
 
     builder
-      .ComplexProperty(nameof(RedLowNetworkUserCalculationEntity
-        .UsageReactiveEnergyTotalRampedT0))
+      .ComplexProperty(
+        nameof(RedLowNetworkUserCalculationEntity
+          .UsageReactiveEnergyTotalRampedT0))
       .UsageReactiveEnergyTotalRampedT0CalculationItem();
   }
 }

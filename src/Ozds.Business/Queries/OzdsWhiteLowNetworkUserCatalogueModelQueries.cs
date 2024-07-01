@@ -10,7 +10,7 @@ namespace Ozds.Business.Queries;
 public class OzdsWhiteLowNetworkUserCatalogueModelQueries(OzdsDbContext context)
   : IOzdsQueries
 {
-  protected readonly OzdsDbContext context = context;
+  private readonly OzdsDbContext context = context;
 
   public async Task<WhiteLowNetworkUserCatalogueModel?>
     BlueLowNetworkUserCatalogueById(string id)

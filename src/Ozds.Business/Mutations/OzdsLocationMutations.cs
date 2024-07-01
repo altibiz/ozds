@@ -25,7 +25,8 @@ public class OzdsLocationMutations(
     _context.ChangeTracker.Clear();
   }
 
-  public void CreateWithRepresentatives(LocationModel location,
+  public void CreateWithRepresentatives(
+    LocationModel location,
     IEnumerable<RepresentativeModel> reps)
   {
     var validationResults = location
@@ -42,7 +43,8 @@ public class OzdsLocationMutations(
     _context.JoinTracked(entity, repEntities);
   }
 
-  public void UpdateWithRepresentatives(LocationModel location,
+  public void UpdateWithRepresentatives(
+    LocationModel location,
     IEnumerable<RepresentativeModel> reps)
   {
     var validationResults = location

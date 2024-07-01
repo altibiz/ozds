@@ -3,7 +3,9 @@ using Ozds.Business.Models.Abstractions;
 
 namespace Ozds.Business.Models.Base;
 
+#pragma warning disable S1694
 public abstract class CalculationItemModel : ICalculationItem
+#pragma warning restore S1694
 {
   public abstract SpanningMeasure<decimal> Amount { get; }
 

@@ -4,16 +4,20 @@ namespace Ozds.Business.Models.Complex;
 
 public class LegalPersonModel : IValidatableObject
 {
-  [Required] public required string Name { get; set; } = default!;
+  [Required]
+  public required string Name { get; set; } = default!;
 
   [Required]
   public required string SocialSecurityNumber { get; set; } = default!;
 
-  [Required] public required string Address { get; set; } = default!;
+  [Required]
+  public required string Address { get; set; } = default!;
 
-  [Required] public required string PostalCode { get; set; } = default!;
+  [Required]
+  public required string PostalCode { get; set; } = default!;
 
-  [Required] public required string City { get; set; } = default!;
+  [Required]
+  public required string City { get; set; } = default!;
 
   [EmailAddress]
   [Required]
@@ -28,7 +32,7 @@ public class LegalPersonModel : IValidatableObject
   {
     if (
       validationContext.MemberName is null or nameof(SocialSecurityNumber) &&
-      SocialSecurityNumber.All(char.IsDigit) == false
+      !SocialSecurityNumber.All(char.IsDigit)
     )
     {
       yield return new ValidationResult(
@@ -50,7 +54,7 @@ public class LegalPersonModel : IValidatableObject
 
     if (
       validationContext.MemberName is null or nameof(PostalCode) &&
-      PostalCode.All(char.IsDigit) == false
+      !PostalCode.All(char.IsDigit)
     )
     {
       yield return new ValidationResult(

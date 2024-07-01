@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Conversion;
-using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Composite;
 using Ozds.Business.Queries.Abstractions;
@@ -11,13 +10,9 @@ using Ozds.Data.Entities.Base;
 namespace Ozds.Business.Queries;
 
 public class OzdsLocationsTableQueries(
-  OzdsDbContext context,
-  AgnosticModelEntityConverter modelEntityConverter) : IOzdsQueries
+  OzdsDbContext context) : IOzdsQueries
 {
-  protected readonly OzdsDbContext context = context;
-
-  protected readonly AgnosticModelEntityConverter modelEntityConverter =
-    modelEntityConverter;
+  private readonly OzdsDbContext context = context;
 
   public async Task<List<LocationsTableViewModel>>
     ViewModelByNetworkUser(
@@ -58,7 +53,8 @@ public class OzdsLocationsTableQueries(
           meter
         }
       )
-      .SelectMany(x => x.meter,
+      .SelectMany(
+        x => x.meter,
         (x, meter) => new ViewModelStruct
         {
           Location = x.Location,
@@ -82,7 +78,8 @@ public class OzdsLocationsTableQueries(
           abbB2xMeasurements
         }
       )
-      .SelectMany(x => x.abbB2xMeasurements.DefaultIfEmpty(),
+      .SelectMany(
+        x => x.abbB2xMeasurements.DefaultIfEmpty(),
         (x, abbMeasurement) => new ViewModelStruct
         {
           Location = x.Location,
@@ -108,7 +105,8 @@ public class OzdsLocationsTableQueries(
           schneideriEM3xxxMeasurements
         }
       )
-      .SelectMany(x => x.schneideriEM3xxxMeasurements.DefaultIfEmpty(),
+      .SelectMany(
+        x => x.schneideriEM3xxxMeasurements.DefaultIfEmpty(),
         (x, schneiderMeasurement) => new ViewModelStruct
         {
           Location = x.Location,
@@ -121,18 +119,21 @@ public class OzdsLocationsTableQueries(
     var result = await query.ToListAsync();
     var grouped = result.GroupBy(x => x.MeasurementLocation.Id);
     return grouped
-      .Select(x => new LocationsTableViewModel(
-        x.First().Location.ToModel(),
-        x.First().NetworkUser.ToModel(),
-        x.First().MeasurementLocation.ToModel(),
-        x.First().Meter.ToModel(),
-        Enumerable.Empty<IMeasurement>()
-          .Concat(x.Select(x => x.AbbMeasurement?.ToModel())
-            .OfType<IMeasurement>())
-          .Concat(x.Select(x => x.SchneiderMeasurement?.ToModel())
-            .OfType<IMeasurement>())
-          .ToList()
-      ))
+      .Select(
+        x => new LocationsTableViewModel(
+          x.First().Location.ToModel(),
+          x.First().NetworkUser.ToModel(),
+          x.First().MeasurementLocation.ToModel(),
+          x.First().Meter.ToModel(),
+          Enumerable.Empty<IMeasurement>()
+            .Concat(
+              x.Select(x => x.AbbMeasurement?.ToModel())
+                .OfType<IMeasurement>())
+            .Concat(
+              x.Select(x => x.SchneiderMeasurement?.ToModel())
+                .OfType<IMeasurement>())
+            .ToList()
+        ))
       .ToList();
   }
 

@@ -6,7 +6,8 @@
     ".direnv": true,
     "docs/wiki/**/book": true,
     "**/mdbook-plantuml-img": true,
-    "**/plantuml-images": true
+    "**/plantuml-images": true,
+    "artifacts": true
   },
   "files.exclude": {
     "**/bin": true,
@@ -15,7 +16,8 @@
     ".direnv": true,
     "docs/wiki/**/book": true,
     "**/mdbook-plantuml-img": true,
-    "**/plantuml-images": true
+    "**/plantuml-images": true,
+    "artifacts": true
   },
   "prettier.ignorePath": ".prettierignore",
   "editor.defaultFormatter": "esbenp.prettier-vscode",

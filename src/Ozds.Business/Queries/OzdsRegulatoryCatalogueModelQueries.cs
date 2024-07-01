@@ -10,7 +10,7 @@ namespace Ozds.Business.Queries;
 public class OzdsRegulatoryCatalogueModelQueries(OzdsDbContext context)
   : IOzdsQueries
 {
-  protected readonly OzdsDbContext context = context;
+  private readonly OzdsDbContext context = context;
 
   public async Task<RegulatoryCatalogueModel?>
     RegulatoryCatalogueById(string id)

@@ -65,9 +65,12 @@
 </EditForm>
 
 @code {
-  [Parameter] public string Id { get; set; } = default!;
 
-  [Parameter] public MaybeRepresentingUserModel? Model { get; set; }
+  [Parameter]
+  public string Id { get; set; } = default!;
+
+  [Parameter]
+  public MaybeRepresentingUserModel? Model { get; set; }
 
   private LoadingState<MaybeRepresentingUserModel> LoadingState { get; set; } = new();
 
@@ -122,10 +125,11 @@
     )
     {
       LoadingState = LoadingState
-        .WithValue(LoadingState.Value with
-        {
-          Representative = RepresentativeModel.New(LoadingState.Value.User)
-        });
+        .WithValue(
+          LoadingState.Value with
+          {
+            Representative = RepresentativeModel.New(LoadingState.Value.User)
+          });
       _create = true;
     }
   }

@@ -33,13 +33,15 @@ public class
       .ToTable("regulatory_catalogues");
 
     builder
-      .Property(nameof(RegulatoryCatalogueEntity
-        .ActiveEnergyTotalImportT1Price_EUR))
+      .Property(
+        nameof(RegulatoryCatalogueEntity
+          .ActiveEnergyTotalImportT1Price_EUR))
       .HasColumnName("active_energy_total_import_t1_price_eur");
 
     builder
-      .Property(nameof(RegulatoryCatalogueEntity
-        .ActiveEnergyTotalImportT2Price_EUR))
+      .Property(
+        nameof(RegulatoryCatalogueEntity
+          .ActiveEnergyTotalImportT2Price_EUR))
       .HasColumnName("active_energy_total_import_t2_price_eur");
 
     builder

@@ -49,17 +49,24 @@
 }
 
 @code {
-  [Parameter] public LoadingState<TState>? State { get; set; } = new();
 
-  [Parameter] public Func<Task<TState?>>? Load { get; set; }
+  [Parameter]
+  public LoadingState<TState>? State { get; set; } = new();
 
-  [Parameter] public RenderFragment? Progress { get; set; }
+  [Parameter]
+  public Func<Task<TState?>>? Load { get; set; }
 
-  [Parameter] public RenderFragment<string>? Error { get; set; }
+  [Parameter]
+  public RenderFragment? Progress { get; set; }
 
-  [Parameter] public RenderFragment? NotFound { get; set; }
+  [Parameter]
+  public RenderFragment<string>? Error { get; set; }
 
-  [Parameter] public RenderFragment<TState>? Found { get; set; }
+  [Parameter]
+  public RenderFragment? NotFound { get; set; }
+
+  [Parameter]
+  public RenderFragment<TState>? Found { get; set; }
 
   protected override async Task OnInitializedAsync()
   {

@@ -3,11 +3,13 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Ozds.Client.Base;
 
+#pragma warning disable S3881
 public abstract class OzdsOwningComponentBase : OzdsComponentBase, IDisposable
 {
   private AsyncServiceScope? _scope;
 
-  [Inject] private IServiceScopeFactory ScopeFactory { get; set; } = default!;
+  [Inject]
+  private IServiceScopeFactory ScopeFactory { get; set; } = default!;
 
   protected bool IsDisposed { get; private set; }
 
@@ -45,7 +47,10 @@ public abstract class OzdsOwningComponentBase : OzdsComponentBase, IDisposable
   }
 #pragma warning restore CA1816
 
+#pragma warning disable S2953
   protected virtual void Dispose(bool disposing)
   {
   }
+#pragma warning restore S2953
 }
+#pragma warning restore S3881

@@ -6,9 +6,14 @@ namespace Ozds.Business.Models.Complex;
 
 public abstract class FeeCalculationItemModel : CalculationItemModel
 {
-  [Required] public required decimal Amount_N { get; set; }
-  [Required] public required decimal Price_EUR { get; set; }
-  [Required] public required decimal Total_EUR { get; set; }
+  [Required]
+  public required decimal Amount_N { get; set; }
+
+  [Required]
+  public required decimal Price_EUR { get; set; }
+
+  [Required]
+  public required decimal Total_EUR { get; set; }
 
   public override SpanningMeasure<decimal> Amount
   {

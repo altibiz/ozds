@@ -8,13 +8,14 @@ var options = Options.Parse(args);
 
 var serviceCollection = new ServiceCollection();
 
-serviceCollection.AddLogging(builder =>
-{
-  builder.AddConsole();
-  builder.SetMinimumLevel(LogLevel.Information);
-  builder.AddFilter("Microsoft", LogLevel.Warning);
-  builder.AddFilter("System", LogLevel.Warning);
-});
+serviceCollection.AddLogging(
+  builder =>
+  {
+    builder.AddConsole();
+    builder.SetMinimumLevel(LogLevel.Information);
+    builder.AddFilter("Microsoft", LogLevel.Warning);
+    builder.AddFilter("System", LogLevel.Warning);
+  });
 serviceCollection.AddRecords();
 serviceCollection.AddLoaders();
 serviceCollection.AddGenerators();
@@ -54,8 +55,9 @@ if (options.Seed is { } seed)
     var measurements = new List<MessengerPushRequestMeasurement>();
     foreach (var meterId in options.MeterIds)
     {
-      measurements.AddRange(await generator
-        .GenerateMeasurements(seedTimeBegin, seedTimeEnd, meterId));
+      measurements.AddRange(
+        await generator
+          .GenerateMeasurements(seedTimeBegin, seedTimeEnd, meterId));
     }
 
     while (measurements.Count > 0)
@@ -97,8 +99,9 @@ while (true)
     var measurements = new List<MessengerPushRequestMeasurement>();
     foreach (var meterId in options.MeterIds)
     {
-      measurements.AddRange(await generator
-        .GenerateMeasurements(lastPush, now, meterId));
+      measurements.AddRange(
+        await generator
+          .GenerateMeasurements(lastPush, now, meterId));
     }
 
     lastPush = now;

@@ -47,30 +47,40 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
           auditable.Entity.CreatedById = representativeId;
           if (isDevelopment)
           {
-            eventData.Context.Add(new RepresentativeAuditEventEntity
-            {
-              Timestamp = now,
-              Title =
-                $"Created {auditable.Entity.GetType().Name} {auditable.Entity.Title}",
-              RepresentativeId = representativeId,
-              Level = LevelEntity.Debug,
-              Audit = AuditEntity.Creation,
-              Description = CreateAddedMessage(auditable)
-            });
+            eventData.Context.Add(
+              new RepresentativeAuditEventEntity
+              {
+                Timestamp = now,
+                Title =
+                  $"Created {
+                    auditable.Entity.GetType().Name
+                  } {
+                    auditable.Entity.Title
+                  }",
+                RepresentativeId = representativeId,
+                Level = LevelEntity.Debug,
+                Audit = AuditEntity.Creation,
+                Description = CreateAddedMessage(auditable)
+              });
           }
         }
         else if (isDevelopment)
         {
           auditable.Entity.CreatedBy = null;
-          eventData.Context.Add(new SystemAuditEventEntity
-          {
-            Timestamp = now,
-            Title =
-              $"Created {auditable.Entity.GetType().Name} {auditable.Entity.Title}",
-            Level = LevelEntity.Debug,
-            Audit = AuditEntity.Creation,
-            Description = CreateAddedMessage(auditable)
-          });
+          eventData.Context.Add(
+            new SystemAuditEventEntity
+            {
+              Timestamp = now,
+              Title =
+                $"Created {
+                  auditable.Entity.GetType().Name
+                } {
+                  auditable.Entity.Title
+                }",
+              Level = LevelEntity.Debug,
+              Audit = AuditEntity.Creation,
+              Description = CreateAddedMessage(auditable)
+            });
         }
       }
 
@@ -82,16 +92,21 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
           auditable.Entity.LastUpdatedById = representativeId;
           if (isDevelopment)
           {
-            eventData.Context.Add(new RepresentativeAuditEventEntity
-            {
-              Timestamp = now,
-              Title =
-                $"Updated {auditable.Entity.GetType().Name} {auditable.Entity.Title}",
-              RepresentativeId = representativeId,
-              Level = LevelEntity.Debug,
-              Audit = AuditEntity.Modification,
-              Description = CreateModifiedMessage(auditable)
-            });
+            eventData.Context.Add(
+              new RepresentativeAuditEventEntity
+              {
+                Timestamp = now,
+                Title =
+                  $"Updated {
+                    auditable.Entity.GetType().Name
+                  } {
+                    auditable.Entity.Title
+                  }",
+                RepresentativeId = representativeId,
+                Level = LevelEntity.Debug,
+                Audit = AuditEntity.Modification,
+                Description = CreateModifiedMessage(auditable)
+              });
           }
         }
         else
@@ -99,15 +114,20 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
           auditable.Entity.LastUpdatedBy = null;
           if (isDevelopment)
           {
-            eventData.Context.Add(new SystemAuditEventEntity
-            {
-              Timestamp = now,
-              Title =
-                $"Updated {auditable.Entity.GetType().Name} {auditable.Entity.Title}",
-              Level = LevelEntity.Debug,
-              Audit = AuditEntity.Modification,
-              Description = CreateModifiedMessage(auditable)
-            });
+            eventData.Context.Add(
+              new SystemAuditEventEntity
+              {
+                Timestamp = now,
+                Title =
+                  $"Updated {
+                    auditable.Entity.GetType().Name
+                  } {
+                    auditable.Entity.Title
+                  }",
+                Level = LevelEntity.Debug,
+                Audit = AuditEntity.Modification,
+                Description = CreateModifiedMessage(auditable)
+              });
           }
         }
       }
@@ -122,16 +142,21 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
           auditable.Entity.DeletedById = representativeId;
           if (isDevelopment)
           {
-            eventData.Context.Add(new RepresentativeAuditEventEntity
-            {
-              Timestamp = now,
-              Title =
-                $"Deleted {auditable.Entity.GetType().Name} {auditable.Entity.Title}",
-              RepresentativeId = representativeId,
-              Level = LevelEntity.Debug,
-              Audit = AuditEntity.Deletion,
-              Description = CreateDeletedMessage(auditable)
-            });
+            eventData.Context.Add(
+              new RepresentativeAuditEventEntity
+              {
+                Timestamp = now,
+                Title =
+                  $"Deleted {
+                    auditable.Entity.GetType().Name
+                  } {
+                    auditable.Entity.Title
+                  }",
+                RepresentativeId = representativeId,
+                Level = LevelEntity.Debug,
+                Audit = AuditEntity.Deletion,
+                Description = CreateDeletedMessage(auditable)
+              });
           }
         }
         else
@@ -139,15 +164,20 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
           auditable.Entity.DeletedById = null;
           if (isDevelopment)
           {
-            eventData.Context.Add(new SystemAuditEventEntity
-            {
-              Timestamp = now,
-              Title =
-                $"Deleted {auditable.Entity.GetType().Name} {auditable.Entity.Title}",
-              Level = LevelEntity.Debug,
-              Audit = AuditEntity.Deletion,
-              Description = CreateDeletedMessage(auditable)
-            });
+            eventData.Context.Add(
+              new SystemAuditEventEntity
+              {
+                Timestamp = now,
+                Title =
+                  $"Deleted {
+                    auditable.Entity.GetType().Name
+                  } {
+                    auditable.Entity.Title
+                  }",
+                Level = LevelEntity.Debug,
+                Audit = AuditEntity.Deletion,
+                Description = CreateDeletedMessage(auditable)
+              });
           }
         }
       }
@@ -156,10 +186,9 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
 
   private string? GetRepresentativeId()
   {
-    if (_serviceProvider.GetService<IHttpContextAccessor>() is not null)
+    if (serviceProvider.GetService<IHttpContextAccessor>() is not null)
     {
       return null;
-      // return httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
     }
 
     return null;
@@ -167,9 +196,9 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
 
   private bool IsDevelopment()
   {
-    return _serviceProvider.GetService<IHostEnvironment>() is
-             { } hostEnvironment
-           && hostEnvironment.IsDevelopment();
+    return serviceProvider.GetService<IHostEnvironment>() is
+        { } hostEnvironment
+      && hostEnvironment.IsDevelopment();
   }
 
   private static string CreateAddedMessage(EntityEntry entry)
@@ -178,18 +207,19 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
       .Aggregate(
         $"Inserting {entry.Metadata.DisplayName()} with ",
         (auditString, property) => auditString +
-                                   $"{property.Metadata.Name}: '{property.CurrentValue}' ");
+          $"{property.Metadata.Name}: '{property.CurrentValue}' ");
   }
 
   private static string CreateModifiedMessage(EntityEntry entry)
   {
     return entry.Properties
-      .Where(property =>
-        property.IsModified || property.Metadata.IsPrimaryKey())
+      .Where(
+        property =>
+          property.IsModified || property.Metadata.IsPrimaryKey())
       .Aggregate(
         $"Updating {entry.Metadata.DisplayName()} with ",
         (auditString, property) => auditString +
-                                   $"{property.Metadata.Name}: '{property.CurrentValue}' ");
+          $"{property.Metadata.Name}: '{property.CurrentValue}' ");
   }
 
   private static string CreateDeletedMessage(EntityEntry entry)
@@ -199,6 +229,6 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
       .Aggregate(
         $"Deleting {entry.Metadata.DisplayName()} with ",
         (auditString, property) => auditString +
-                                   $"{property.Metadata.Name}: '{property.CurrentValue}' ");
+          $"{property.Metadata.Name}: '{property.CurrentValue}' ");
   }
 }

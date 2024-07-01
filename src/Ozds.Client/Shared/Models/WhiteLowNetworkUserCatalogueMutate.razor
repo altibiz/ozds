@@ -67,9 +67,12 @@
 </EditForm>
 
 @code {
-  [Parameter] public string Id { get; set; } = default!;
 
-  [Parameter] public WhiteLowNetworkUserCatalogueModel? Model { get; set; }
+  [Parameter]
+  public string Id { get; set; } = default!;
+
+  [Parameter]
+  public WhiteLowNetworkUserCatalogueModel? Model { get; set; }
 
   private LoadingState<WhiteLowNetworkUserCatalogueModel> LoadingState { get; set; } = new();
 

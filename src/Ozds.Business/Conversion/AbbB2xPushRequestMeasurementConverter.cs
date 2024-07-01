@@ -13,7 +13,9 @@ public class AbbB2xPushRequestMeasurementConverter :
   }
 
   protected override AbbB2xMeasurementModel ToMeasurement(
-    AbbB2xPushRequest pushRequest, string meterId, DateTimeOffset timestamp)
+    AbbB2xPushRequest pushRequest,
+    string meterId,
+    DateTimeOffset timestamp)
   {
     return pushRequest.ToModel(meterId, timestamp);
   }

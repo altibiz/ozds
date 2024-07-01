@@ -51,9 +51,9 @@ public class OzdsInvoiceMutations(
     }
 
     var entity = _modelEntityConverter.ToEntity(invoice)
-                   as IIdentifiableEntity
-                 ?? throw new InvalidOperationException(
-                   $"Failed to convert {nameof(invoice)} to entity.");
+        as IIdentifiableEntity
+      ?? throw new InvalidOperationException(
+        $"Failed to convert {nameof(invoice)} to entity.");
     _context.Add(entity);
     await _context.SaveChangesAsync();
     return entity.Id;

@@ -46,8 +46,9 @@ public class
 
     builder
       .HasOne(nameof(NetworkUserMeasurementLocationEntity.NetworkUserCatalogue))
-      .WithMany(nameof(NetworkUserCatalogueEntity
-        .NetworkUserMeasurementLocations))
+      .WithMany(
+        nameof(NetworkUserCatalogueEntity
+          .NetworkUserMeasurementLocations))
       .HasForeignKey("_networkUserCatalogueId");
 
     builder.Ignore(nameof(NetworkUserMeasurementLocationEntity.NetworkUserId));
@@ -55,8 +56,9 @@ public class
       .Property("_networkUserId")
       .HasColumnName("network_user_id");
 
-    builder.Ignore(nameof(NetworkUserMeasurementLocationEntity
-      .NetworkUserCatalogueId));
+    builder.Ignore(
+      nameof(NetworkUserMeasurementLocationEntity
+        .NetworkUserCatalogueId));
     builder
       .Property("_networkUserCatalogueId")
       .HasColumnName("network_user_catalogue_id");

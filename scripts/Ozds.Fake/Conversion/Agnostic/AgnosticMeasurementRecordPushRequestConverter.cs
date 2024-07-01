@@ -16,7 +16,7 @@ public class AgnosticMeasurementRecordPushRequestConverter(
       .FirstOrDefault(c => c.CanConvertToPushRequest(record));
 
     return converter?.ConvertToPushRequest(record)
-           ?? throw new InvalidOperationException(
-             $"No converter found for {record.GetType()}");
+      ?? throw new InvalidOperationException(
+        $"No converter found for {record.GetType()}");
   }
 }

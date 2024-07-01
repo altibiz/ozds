@@ -5,22 +5,32 @@ namespace Ozds.Business.Models.Base;
 
 public abstract class InvoiceModel : IInvoice
 {
-  [Required] public required decimal Total_EUR { get; set; }
+  [Required]
+  public required decimal Total_EUR { get; set; }
 
-  [Required] public required decimal Tax_EUR { get; set; }
+  [Required]
+  public required decimal Tax_EUR { get; set; }
 
-  [Required] public required decimal TotalWithTax_EUR { get; set; }
-  [Required] public required string Id { get; set; }
+  [Required]
+  public required decimal TotalWithTax_EUR { get; set; }
 
-  [Required] public required string Title { get; set; }
+  [Required]
+  public required string Id { get; set; }
 
-  [Required] public required DateTimeOffset IssuedOn { get; set; }
+  [Required]
+  public required string Title { get; set; }
 
-  [Required] public required string? IssuedById { get; set; }
+  [Required]
+  public required DateTimeOffset IssuedOn { get; set; }
 
-  [Required] public required DateTimeOffset FromDate { get; set; }
+  [Required]
+  public required string? IssuedById { get; set; }
 
-  [Required] public required DateTimeOffset ToDate { get; set; }
+  [Required]
+  public required DateTimeOffset FromDate { get; set; }
+
+  [Required]
+  public required DateTimeOffset ToDate { get; set; }
 
   public virtual IEnumerable<ValidationResult> Validate(
     ValidationContext validationContext)
@@ -43,8 +53,8 @@ public abstract class InvoiceModel : IInvoice
 
     if (
       (validationContext.MemberName is null or nameof(IssuedOn)
-         or nameof(FromDate) or nameof(ToDate) &&
-       IssuedOn < FromDate) || IssuedOn < ToDate
+          or nameof(FromDate) or nameof(ToDate) &&
+        IssuedOn < FromDate) || IssuedOn < ToDate
     )
     {
       yield return new ValidationResult(

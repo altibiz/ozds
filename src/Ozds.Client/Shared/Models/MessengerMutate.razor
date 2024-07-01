@@ -56,9 +56,12 @@
 </EditForm>
 
 @code {
-  [Parameter] public string Id { get; set; } = default!;
 
-  [Parameter] public MessengerModel? Model { get; set; }
+  [Parameter]
+  public string Id { get; set; } = default!;
+
+  [Parameter]
+  public MessengerModel? Model { get; set; }
 
   private LoadingState<MessengerModel> LoadingState { get; set; } = new();
   private List<LocationModel> _locations = new();

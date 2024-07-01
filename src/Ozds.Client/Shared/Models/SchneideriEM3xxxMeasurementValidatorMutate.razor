@@ -85,9 +85,12 @@
 </EditForm>
 
 @code {
-  [Parameter] public string Id { get; set; } = default!;
 
-  [Parameter] public SchneideriEM3xxxMeasurementValidatorModel? Model { get; set; }
+  [Parameter]
+  public string Id { get; set; } = default!;
+
+  [Parameter]
+  public SchneideriEM3xxxMeasurementValidatorModel? Model { get; set; }
 
   private LoadingState<SchneideriEM3xxxMeasurementValidatorModel> LoadingState { get; set; } = new();
 

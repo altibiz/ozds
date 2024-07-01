@@ -23,14 +23,14 @@ public class
 <
   MeasurementEntity>
 {
-  public override void Configure(ModelBuilder modelBuilder, Type type)
+  public override void Configure(ModelBuilder modelBuilder, Type entity)
   {
-    if (type == typeof(MeasurementEntity))
+    if (entity == typeof(MeasurementEntity))
     {
       return;
     }
 
-    var builder = modelBuilder.Entity(type);
+    var builder = modelBuilder.Entity(entity);
 
     builder.HasKey(
       nameof(MeasurementEntity.Timestamp),

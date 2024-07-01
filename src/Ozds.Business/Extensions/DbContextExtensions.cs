@@ -12,14 +12,14 @@ public static class DbContextExtensions
   {
     var method = typeof(DbContext)
       .GetMethods()
-      .FirstOrDefault(m => m.Name == nameof(DbContext.Set)
-                           && m.IsGenericMethodDefinition
-                           && m.GetParameters().Length == 0)
+      .FirstOrDefault(
+        m => m.Name == nameof(DbContext.Set)
+          && m.IsGenericMethodDefinition
+          && m.GetParameters().Length == 0)
       ?.MakeGenericMethod(type);
     return method?.Invoke(context, null) as IQueryable<object>
-           ?? throw new InvalidOperationException($"No DbSet found for {type}");
+      ?? throw new InvalidOperationException($"No DbSet found for {type}");
   }
-
 
   public static void AddTracked(
     this DbContext context,
@@ -41,7 +41,6 @@ public static class DbContextExtensions
     entry.State = EntityState.Modified;
   }
 
-
   public static void DeleteTracked(
     this DbContext context,
     object entity
@@ -54,14 +53,16 @@ public static class DbContextExtensions
   public static void JoinTracked<T>(
     this DbContext context,
     object entity,
-    ICollection<T> collection) where T : notnull
+    ICollection<T> collection)
+    where T : notnull
   {
     var entry = context.FindEntry(entity);
 
     if (entry.Collections
-          .FirstOrDefault(collection =>
+        .FirstOrDefault(
+          collection =>
             collection.Metadata.TargetEntityType.ClrType == typeof(T))
-        is not { } entryCollection)
+      is not { } entryCollection)
     {
       throw new InvalidOperationException(
         $"No collection of {typeof(T)} found on {entity.GetType()}");
@@ -96,19 +97,21 @@ public static class DbContextExtensions
   )
   {
     var entityTypeAssembly = entry.Entity.GetType().Assembly.FullName
-                             ?? throw new InvalidOperationException(
-                               "Entity type has no assembly.");
+      ?? throw new InvalidOperationException(
+        "Entity type has no assembly.");
     var entityType = entityTypeAssembly.StartsWith("DynamicProxyGenAssembly2")
       ? entry.Entity.GetType().BaseType ??
-        throw new InvalidOperationException("Proxy has no base type.")
+      throw new InvalidOperationException("Proxy has no base type.")
       : entry.Entity.GetType();
-    return entityType.IsAssignableFrom(entity.GetType()) &&
-           (entry.Metadata
-             .FindPrimaryKey()?.Properties
-             .All(property => property
-               .GetGetter()
-               .GetClrValue(entity)?.Equals(property
-                 .GetGetter()
-                 .GetClrValue(entry.Entity)) ?? false) ?? false);
+    return entityType.IsInstanceOfType(entity) &&
+      (entry.Metadata
+        .FindPrimaryKey()?.Properties
+        .All(
+          property => property
+            .GetGetter()
+            .GetClrValue(entity)?.Equals(
+              property
+                .GetGetter()
+                .GetClrValue(entry.Entity)) ?? false) ?? false);
   }
 }

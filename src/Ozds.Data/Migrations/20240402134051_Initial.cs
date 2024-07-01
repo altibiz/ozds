@@ -8,8 +8,10 @@ namespace Ozds.Data.Migrations
   /// <inheritdoc />
   public partial class Initial : Migration
   {
+#pragma warning disable SA1311
     private static readonly string[] columns = ["auditable_entity_table", "auditable_entity_id"];
     private static readonly string[] columnsArray = ["auditable_entity_type", "auditable_entity_id"];
+#pragma warning restore SA1311
 
     /// <inheritdoc />
     protected override void Up(MigrationBuilder migrationBuilder)

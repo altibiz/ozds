@@ -13,8 +13,9 @@ public class
   : NetworkUserCalculationCalculator<
     RedLowNetworkUserCatalogueModel>
 {
-  public readonly AgnosticCalculationItemCalculator _calculationItemCalculator =
-    calculationItemCalculator;
+  private readonly AgnosticCalculationItemCalculator
+    _calculationItemCalculator =
+      calculationItemCalculator;
 
   protected override INetworkUserCalculation CalculateForNetworkUser(
     RedLowNetworkUserCatalogueModel usageCatalogue,
@@ -112,7 +113,13 @@ public class
     {
       Id = default!,
       Title =
-        $"${usageCatalogue.Title} calculation for {calculationBasis.NetworkUser.Title} at {calculationBasis.Location.Title}",
+        $"${
+          usageCatalogue.Title
+        } calculation for {
+          calculationBasis.NetworkUser.Title
+        } at {
+          calculationBasis.Location.Title
+        }",
       MeterId = calculationBasis.Meter.Id,
       ToDate = calculationBasis.ToDate,
       FromDate = calculationBasis.FromDate,

@@ -7,7 +7,8 @@ namespace Ozds.Business.Models;
 
 public class RepresentativeModel : AuditableModel
 {
-  [Required] public required RoleModel Role { get; set; }
+  [Required]
+  public required RoleModel Role { get; set; }
 
   [Required]
   public required PhysicalPersonModel PhysicalPerson { get; set; } = default!;

@@ -20,25 +20,20 @@ public class OzdsComponentLocalizer : IOzdsComponentLocalizer
   {
     get
     {
-      Dictionary<string, string> _activeTranslation = [];
-      var culture = CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
-      var hrCulture = CultureInfo.CreateSpecificCulture("hr-HR")
-        .TwoLetterISOLanguageName;
-      var enCulture = CultureInfo.CreateSpecificCulture("en-US")
-        .TwoLetterISOLanguageName;
+      Dictionary<string, string> activeTranslation = [];
       if (CultureInfo.CurrentCulture.Equals(
-            CultureInfo.CreateSpecificCulture("en-US")))
+        CultureInfo.CreateSpecificCulture("en-US")))
       {
-        _activeTranslation = _translations.Value;
+        activeTranslation = _translations.Value;
       }
       else if (CultureInfo.CurrentCulture.Equals(
-                 CultureInfo.CreateSpecificCulture("hr-HR")))
+        CultureInfo.CreateSpecificCulture("hr-HR")))
       {
-        _activeTranslation = _translationsHR.Value;
+        activeTranslation = _translationsHR.Value;
       }
 
-      if (_activeTranslation.Count > 0 &&
-          _activeTranslation.TryGetValue(notLocalized, out var value))
+      if (activeTranslation.Count > 0 &&
+        activeTranslation.TryGetValue(notLocalized, out var value))
       {
         return value;
       }
@@ -62,11 +57,13 @@ public class OzdsComponentLocalizer : IOzdsComponentLocalizer
     var fullName = $"{assembly.GetName().Name}.Assets.{name}";
 
     var stream = assembly.GetManifestResourceStream(fullName) ??
-                 throw new InvalidOperationException(
-                   $"Resource {fullName} does not exist. "
-                   + $"Here are the available resources for the given assembly '{assembly.GetName().Name}':\n"
-                   + string.Join("\n", assembly.GetManifestResourceNames())
-                 );
+      throw new InvalidOperationException(
+        $"Resource {fullName} does not exist. "
+        + $"Here are the available resources for the given assembly '{
+          assembly.GetName().Name
+        }':\n"
+        + string.Join("\n", assembly.GetManifestResourceNames())
+      );
     return stream;
   }
 }

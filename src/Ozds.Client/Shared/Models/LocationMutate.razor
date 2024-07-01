@@ -146,9 +146,12 @@
 </EditForm>
 
 @code {
-  [Parameter] public string Id { get; set; } = default!;
 
-  [Parameter] public LocationModel? Model { get; set; }
+  [Parameter]
+  public string Id { get; set; } = default!;
+
+  [Parameter]
+  public LocationModel? Model { get; set; }
 
   private LoadingState<LocationModel> LoadingState { get; set; } = new();
   private List<WhiteMediumNetworkUserCatalogueModel> _whiteMediumNetworkUserCatalogues = new();

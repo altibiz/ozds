@@ -17,9 +17,9 @@ public class MeasurementValidatorEntity<TMeter> : MeasurementValidatorEntity
 public class MeasurementValidatorEntityTypeHierarchyConfiguration :
   EntityTypeHierarchyConfiguration<MeasurementValidatorEntity>
 {
-  public override void Configure(ModelBuilder modelBuilder, Type type)
+  public override void Configure(ModelBuilder modelBuilder, Type entity)
   {
-    var builder = modelBuilder.Entity(type);
+    var builder = modelBuilder.Entity(entity);
 
     builder
       .UseTphMappingStrategy()

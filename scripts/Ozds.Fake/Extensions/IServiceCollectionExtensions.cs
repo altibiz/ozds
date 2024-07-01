@@ -62,11 +62,12 @@ public static class IServiceCollectionExtensions
     string baseUrl
   )
   {
-    services.AddHttpClient("Ozds.Fake", options =>
-    {
-      options.Timeout = TimeSpan.FromSeconds(timeout);
-      options.BaseAddress = new Uri(baseUrl);
-    });
+    services.AddHttpClient(
+      "Ozds.Fake", options =>
+      {
+        options.Timeout = TimeSpan.FromSeconds(timeout);
+        options.BaseAddress = new Uri(baseUrl);
+      });
     services.AddScoped(typeof(OzdsPushClient));
     return services;
   }
@@ -80,11 +81,12 @@ public static class IServiceCollectionExtensions
     assembly ??= typeof(IServiceCollectionExtensions).Assembly;
     var conversionTypes = assembly
       .GetTypes()
-      .Where(type =>
-        !type.IsAbstract &&
-        !type.IsGenericType &&
-        type.IsClass &&
-        type.IsAssignableTo(assignableTo));
+      .Where(
+        type =>
+          !type.IsAbstract &&
+          !type.IsGenericType &&
+          type.IsClass &&
+          type.IsAssignableTo(assignableTo));
 
     foreach (var conversionType in conversionTypes)
     {

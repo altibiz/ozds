@@ -73,9 +73,12 @@
 </EditForm>
 
 @code {
-  [Parameter] public string Id { get; set; } = default!;
 
-  [Parameter] public RedLowNetworkUserCatalogueModel? Model { get; set; }
+  [Parameter]
+  public string Id { get; set; } = default!;
+
+  [Parameter]
+  public RedLowNetworkUserCatalogueModel? Model { get; set; }
 
   private LoadingState<RedLowNetworkUserCatalogueModel> LoadingState { get; set; } = new();
 

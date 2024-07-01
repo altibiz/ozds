@@ -60,9 +60,9 @@ public class
   MeterInheritedEntityTypeConfiguration :
   EntityTypeHierarchyConfiguration<MeterEntity>
 {
-  public override void Configure(ModelBuilder modelBuilder, Type type)
+  public override void Configure(ModelBuilder modelBuilder, Type entity)
   {
-    var builder = modelBuilder.Entity(type);
+    var builder = modelBuilder.Entity(entity);
 
     builder
       .UseTphMappingStrategy()
@@ -78,7 +78,7 @@ public class
       .Property(nameof(MeterEntity.ConnectionPower_W))
       .HasColumnName("connection_power_w");
 
-    if (type != typeof(MeterEntity))
+    if (entity != typeof(MeterEntity))
     {
       builder
         .HasMany(
@@ -99,8 +99,9 @@ public class
         .WithMany(nameof(MeasurementValidatorEntity<MeterEntity>.Meters))
         .HasForeignKey("_measurementValidatorId");
 
-      builder.Ignore(nameof(MeterEntity<MeasurementEntity, AggregateEntity,
-        MeasurementValidatorEntity>.MeasurementValidatorId));
+      builder.Ignore(
+        nameof(MeterEntity<MeasurementEntity, AggregateEntity,
+          MeasurementValidatorEntity>.MeasurementValidatorId));
       builder
         .Property("_measurementValidatorId")
         .HasColumnName("measurement_validator_id");

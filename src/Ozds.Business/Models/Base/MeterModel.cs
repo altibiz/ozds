@@ -7,13 +7,17 @@ namespace Ozds.Business.Models.Base;
 
 public class MeterModel : AuditableModel, IMeter
 {
-  [Required] public required float ConnectionPower_W { get; set; }
+  [Required]
+  public required float ConnectionPower_W { get; set; }
 
-  [Required] public required HashSet<PhaseModel> Phases { get; set; } = [];
+  [Required]
+  public required HashSet<PhaseModel> Phases { get; set; } = [];
 
-  [Required] public required string? MessengerId { get; set; }
+  [Required]
+  public required string? MessengerId { get; set; }
 
-  [Required] public required string MeasurementValidatorId { get; set; }
+  [Required]
+  public required string MeasurementValidatorId { get; set; }
 
   public virtual ICapabilities Capabilities
   {

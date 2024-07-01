@@ -56,9 +56,11 @@ public abstract class NetworkUserCalculationModel : CalculationModel,
     set;
   } = default!;
 
-  [Required] public required decimal UsageFeeTotal_EUR { get; set; }
+  [Required]
+  public required decimal UsageFeeTotal_EUR { get; set; }
 
-  [Required] public required decimal SupplyFeeTotal_EUR { get; set; }
+  [Required]
+  public required decimal SupplyFeeTotal_EUR { get; set; }
 
   public abstract NetworkUserCatalogueModel ArchivedUsageNetworkUserCatalogue
   {
@@ -72,11 +74,12 @@ public abstract class NetworkUserCalculationModel : CalculationModel,
     get
     {
       return AdditionalUsageItems
-        .ToArray()
-        .Concat(new ICalculationItem[]
-        {
-          UsageMeterFee
-        });
+        .AsEnumerable()
+        .Concat(
+          new ICalculationItem[]
+          {
+            UsageMeterFee
+          });
     }
   }
 
@@ -105,15 +108,18 @@ public abstract class NetworkUserCalculationModel : CalculationModel,
     get
     {
       var result =
-        ReactiveEnergyAmount_Wh.SpanDiff.Select(duplex =>
-          new AnyDuplexMeasure<decimal>(duplex.DuplexAbs.DuplexSum)) -
-        ActiveEnergyAmount_Wh.SpanDiff.Select(duplex =>
-          new AnyDuplexMeasure<decimal>(duplex.DuplexAny));
+        ReactiveEnergyAmount_Wh.SpanDiff.Select(
+          duplex =>
+            new AnyDuplexMeasure<decimal>(duplex.DuplexAbs.DuplexSum)).Subtract(
+          ActiveEnergyAmount_Wh.SpanDiff.Select(
+            duplex =>
+              new AnyDuplexMeasure<decimal>(duplex.DuplexAny)));
 
       return result
-        .Select(duplex => duplex.DuplexAny.PhaseSum < 0
-          ? DuplexMeasure<decimal>.Null
-          : duplex);
+        .Select(
+          duplex => duplex.DuplexAny.PhaseSum < 0
+            ? DuplexMeasure<decimal>.Null
+            : duplex);
     }
   }
 
@@ -128,16 +134,26 @@ public abstract class NetworkUserCalculationModel : CalculationModel,
     get
     {
       return new DualExpenditureMeasure<decimal>(
-        ActiveEnergyAmount_Wh.SpanDiff *
-        ActiveEnergyPrice_EUR.ExpenditureUsage +
-        ReactiveEnergyRampedAmount_Wh *
-        ReactiveEnergyPrice_EUR.ExpenditureUsage +
-        ActivePowerAmount_W.SpanDiff * ActivePowerPrice_EUR.ExpenditureUsage,
-        ActiveEnergyAmount_Wh.SpanDiff *
-        ActiveEnergyPrice_EUR.ExpenditureSupply +
-        ReactiveEnergyRampedAmount_Wh *
-        ReactiveEnergyPrice_EUR.ExpenditureSupply +
-        ActivePowerAmount_W.SpanDiff * ActivePowerPrice_EUR.ExpenditureSupply
+        ActiveEnergyAmount_Wh.SpanDiff
+          .Multiply(ActiveEnergyPrice_EUR.ExpenditureUsage)
+          .Add(
+            ReactiveEnergyRampedAmount_Wh.Multiply(
+              ReactiveEnergyPrice_EUR
+                .ExpenditureUsage))
+          .Add(
+            ActivePowerAmount_W.SpanDiff.Multiply(
+              ActivePowerPrice_EUR
+                .ExpenditureUsage)),
+        ActiveEnergyAmount_Wh.SpanDiff
+          .Multiply(ActiveEnergyPrice_EUR.ExpenditureSupply)
+          .Add(
+            ReactiveEnergyRampedAmount_Wh.Multiply(
+              ReactiveEnergyPrice_EUR
+                .ExpenditureSupply))
+          .Add(
+            ActivePowerAmount_W.SpanDiff.Multiply(
+              ActivePowerPrice_EUR
+                .ExpenditureSupply))
       );
     }
   }

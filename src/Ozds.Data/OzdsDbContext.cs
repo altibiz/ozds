@@ -11,13 +11,13 @@ public partial class OzdsDbContext(DbContextOptions<OzdsDbContext> options)
   : DbContext(options)
 {
   protected override void OnConfiguring(
-    DbContextOptionsBuilder dbContextOptionsBuilder)
+    DbContextOptionsBuilder optionsBuilder)
   {
-    dbContextOptionsBuilder
+    optionsBuilder
       .UseLazyLoadingProxies()
       .UseSnakeCaseNamingConvention();
 
-    base.OnConfiguring(dbContextOptionsBuilder);
+    base.OnConfiguring(optionsBuilder);
   }
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)

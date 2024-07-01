@@ -41,7 +41,9 @@
 </style>
 
 @code {
-  [CascadingParameter] private Task<AuthenticationState>? _authenticationStateTask { get; set; }
+
+  [CascadingParameter]
+  private Task<AuthenticationState>? _authenticationStateTask { get; set; }
 
   private readonly Theme _theme = new();
 

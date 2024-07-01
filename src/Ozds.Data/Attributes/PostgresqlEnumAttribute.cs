@@ -24,12 +24,14 @@ public static class PostgresqlEnumAttributeExtensions
   {
     return builder.Model
       .GetEntityTypes()
-      .SelectMany(entityType => entityType
-        .GetProperties()
-        .SelectMany(property =>
-          property.PropertyInfo?.PropertyType is { } type
-            ? RecursivelyFindPostgresqlEnumTypes(type)
-            : Enumerable.Empty<Type>()))
+      .SelectMany(
+        entityType => entityType
+          .GetProperties()
+          .SelectMany(
+            property =>
+              property.PropertyInfo?.PropertyType is { } type
+                ? RecursivelyFindPostgresqlEnumTypes(type)
+                : Enumerable.Empty<Type>()))
       .Aggregate(
         builder,
         (builder, type) =>
@@ -58,7 +60,7 @@ public static class PostgresqlEnumAttributeExtensions
       foreach (var genericArgument in type.GetGenericArguments())
       {
         foreach (var nestedType in RecursivelyFindPostgresqlEnumTypes(
-                   genericArgument))
+          genericArgument))
         {
           yield return nestedType;
         }
