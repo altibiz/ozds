@@ -5,11 +5,6 @@
     <LangVersion>12</LangVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-    <!--
-      TODO: enable this when we have fixed all warnings
-      <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    -->
   </PropertyGroup>
 
   <PropertyGroup>
@@ -19,6 +14,24 @@
   <PropertyGroup>
     <OrchardVersion>1.8.1</OrchardVersion>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference
+        Include="StyleCop.Analyzers"
+        Version="1.1.118"
+        Condition="$(MSBuildProjectExtension) == '.csproj'">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+
+    <PackageReference
+        Include="SonarAnalyzer.CSharp"
+        Version="9.28.0.94264"
+        Condition="$(MSBuildProjectExtension) == '.csproj'">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Assets/**/*" />

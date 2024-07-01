@@ -147,8 +147,13 @@
 
 
 @code {
-  [CascadingParameter] public UserState user { get; set; } = default!;
-  [CascadingParameter] public RepresentativeState representative { get; set; } = default!;
+
+  [CascadingParameter]
+  public UserState user { get; set; } = default!;
+
+  [CascadingParameter]
+  public RepresentativeState representative { get; set; } = default!;
+
   public string TextValue { get; set; } = "";
   private ApexChartOptions<ChartData> graphLOptions = NewApexChartOptions<ChartData>();
   private ApexChartOptions<ChartData> graphLOptionsMob = NewApexChartOptions<ChartData>();
@@ -227,13 +232,14 @@
       }
     };
     graphLOptions.Yaxis = new List<YAxis>();
-    graphLOptions.Yaxis.Add(new YAxis
-    {
-      Labels = new YAxisLabels
+    graphLOptions.Yaxis.Add(
+      new YAxis
       {
-        Formatter = "function(val, index) { return (val ?? 0).toFixed(0); }"
-      }
-    });
+        Labels = new YAxisLabels
+        {
+          Formatter = "function(val, index) { return (val ?? 0).toFixed(0); }"
+        }
+      });
     graphLOptions.Chart = new Chart
     {
       Toolbar = new Toolbar
@@ -246,14 +252,15 @@
     graphLOptionsMob.Yaxis = new List<YAxis>();
     graphLOptionsMob.Xaxis = new XAxis();
 
-    graphLOptionsMob.Yaxis.Add(new YAxis
-    {
-      Show = false,
-      Labels = new YAxisLabels
+    graphLOptionsMob.Yaxis.Add(
+      new YAxis
       {
-        Formatter = "function(val, index) { return (val ?? 0).toFixed(0); }"
-      }
-    });
+        Show = false,
+        Labels = new YAxisLabels
+        {
+          Formatter = "function(val, index) { return (val ?? 0).toFixed(0); }"
+        }
+      });
     graphLOptionsMob.Xaxis = new XAxis
     {
       Labels = new XAxisLabels { Show = false }
@@ -274,7 +281,7 @@
     _title = source;
     _selectedMeter = _meters.Where(x => x.Id == source).FirstOrDefault();
 
-    if (_selectedMeter != null && _selectedMeter.Capabilities.hasApparentPower)
+    if (_selectedMeter != null && _selectedMeter.Capabilities.HasApparentPower)
     {
       _displayType = new List<(DataEnum type, string name)>
       {
@@ -354,78 +361,83 @@
     switch (_dataType)
     {
       case "Current":
-        _graphValues = measures.Select(x =>
-          new ChartData(
-            new[]
-            {
-              x.Current_A.TariffUnary.DuplexAny.PhaseSplit.ValueL1,
-              x.Current_A.TariffUnary.DuplexAny.PhaseSplit.ValueL2,
-              x.Current_A.TariffUnary.DuplexAny.PhaseSplit.ValueL3
-            },
-            new[] { "L1 Current", "L2 Current", "L3 Current" },
-            x.Timestamp,
-            x.MeterId
-          )).ToList();
+        _graphValues = measures.Select(
+          x =>
+            new ChartData(
+              new[]
+              {
+                x.Current_A.TariffUnary.DuplexAny.PhaseSplit.ValueL1,
+                x.Current_A.TariffUnary.DuplexAny.PhaseSplit.ValueL2,
+                x.Current_A.TariffUnary.DuplexAny.PhaseSplit.ValueL3
+              },
+              new[] { "L1 Current", "L2 Current", "L3 Current" },
+              x.Timestamp,
+              x.MeterId
+            )).ToList();
         lineCount = 3;
         break;
       case "":
       case "Active Power":
-        _graphValues = measures.Select(x =>
-          new ChartData(
-            new[]
-            {
-              x.ActivePower_W.TariffUnary.DuplexNet.PhaseSplit.ValueL1,
-              x.ActivePower_W.TariffUnary.DuplexNet.PhaseSplit.ValueL2,
-              x.ActivePower_W.TariffUnary.DuplexNet.PhaseSplit.ValueL3,
-              x.ActivePower_W.TariffUnary.DuplexNet.PhaseSplit.PhaseSum
-            },
-            new[] { "L1 Active Power", "L2 Active Power", "L3 Active Power", "Total power" },
-            x.Timestamp,
-            x.MeterId
-          )).ToList();
+        _graphValues = measures.Select(
+          x =>
+            new ChartData(
+              new[]
+              {
+                x.ActivePower_W.TariffUnary.DuplexNet.PhaseSplit.ValueL1,
+                x.ActivePower_W.TariffUnary.DuplexNet.PhaseSplit.ValueL2,
+                x.ActivePower_W.TariffUnary.DuplexNet.PhaseSplit.ValueL3,
+                x.ActivePower_W.TariffUnary.DuplexNet.PhaseSplit.PhaseSum
+              },
+              new[] { "L1 Active Power", "L2 Active Power", "L3 Active Power", "Total power" },
+              x.Timestamp,
+              x.MeterId
+            )).ToList();
         lineCount = 4;
         break;
       case "Voltage":
-        _graphValues = measures.Select(x =>
-          new ChartData(
-            new[]
-            {
-              x.Voltage_V.TariffUnary.DuplexAny.PhaseSplit.ValueL1,
-              x.Voltage_V.TariffUnary.DuplexAny.PhaseSplit.ValueL2,
-              x.Voltage_V.TariffUnary.DuplexAny.PhaseSplit.ValueL3
-            },
-            new[] { "L1 Voltage", "L2 Voltage", "L3 Voltage" },
-            x.Timestamp,
-            x.MeterId
-          )).ToList();
+        _graphValues = measures.Select(
+          x =>
+            new ChartData(
+              new[]
+              {
+                x.Voltage_V.TariffUnary.DuplexAny.PhaseSplit.ValueL1,
+                x.Voltage_V.TariffUnary.DuplexAny.PhaseSplit.ValueL2,
+                x.Voltage_V.TariffUnary.DuplexAny.PhaseSplit.ValueL3
+              },
+              new[] { "L1 Voltage", "L2 Voltage", "L3 Voltage" },
+              x.Timestamp,
+              x.MeterId
+            )).ToList();
         lineCount = 3;
         break;
       case "Reactive Power":
-        _graphValues = measures.Select(x =>
-          new ChartData(
-            new[]
-            {
-              x.ReactivePower_VAR.TariffUnary.DuplexNet.PhaseSplit.ValueL1,
-              x.ReactivePower_VAR.TariffUnary.DuplexNet.PhaseSplit.ValueL2,
-              x.ReactivePower_VAR.TariffUnary.DuplexNet.PhaseSplit.ValueL3
-            },
-            new[] { "L1 Reactive Power", "L2 Reactive Power", "L3 Reactive Power" },
-            x.Timestamp,
-            x.MeterId
-          )).ToList();
+        _graphValues = measures.Select(
+          x =>
+            new ChartData(
+              new[]
+              {
+                x.ReactivePower_VAR.TariffUnary.DuplexNet.PhaseSplit.ValueL1,
+                x.ReactivePower_VAR.TariffUnary.DuplexNet.PhaseSplit.ValueL2,
+                x.ReactivePower_VAR.TariffUnary.DuplexNet.PhaseSplit.ValueL3
+              },
+              new[] { "L1 Reactive Power", "L2 Reactive Power", "L3 Reactive Power" },
+              x.Timestamp,
+              x.MeterId
+            )).ToList();
         lineCount = 3;
         break;
       case "Apparent Power":
-        _graphValues = measures.Select(x =>
-          new ChartData(
-            new[]
-            {
-              x.ApparentPower_VA.TariffUnary.DuplexNet.PhaseSum
-            },
-            new[] { "Apparent Power" },
-            x.Timestamp,
-            x.MeterId
-          )).ToList();
+        _graphValues = measures.Select(
+          x =>
+            new ChartData(
+              new[]
+              {
+                x.ApparentPower_VA.TariffUnary.DuplexNet.PhaseSum
+              },
+              new[] { "Apparent Power" },
+              x.Timestamp,
+              x.MeterId
+            )).ToList();
         lineCount = 1;
         break;
     }

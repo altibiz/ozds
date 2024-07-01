@@ -53,8 +53,10 @@ public class DuplexSubtractTest
 
   [Theory]
   [MemberData(nameof(DuplexMeasuresSubtract))]
-  public void Subtract_ReturnsExpectedResult(DuplexMeasure<decimal> lhs,
-    DuplexMeasure<decimal> rhs, DuplexMeasure<decimal> expected)
+  public void Subtract_ReturnsExpectedResult(
+    DuplexMeasure<decimal> lhs,
+    DuplexMeasure<decimal> rhs,
+    DuplexMeasure<decimal> expected)
   {
     var result = lhs.Subtract(rhs);
 

@@ -24,13 +24,15 @@ public class OzdsEventQueries(
     DateTimeOffset toDate,
     int pageNumber = QueryConstants.StartingPage,
     int pageCount = QueryConstants.DefaultPageCount
-  ) where T : class, IEvent
+  )
+    where T : class, IEvent
   {
     var queryable = _context.GetDbSet(typeof(T))
-                      as IQueryable<EventEntity>
-                    ?? throw new InvalidOperationException(
-                      $"No DbSet found for {typeof(T)}");
-    var filtered = whereClauses.Aggregate(queryable,
+        as IQueryable<EventEntity>
+      ?? throw new InvalidOperationException(
+        $"No DbSet found for {typeof(T)}");
+    var filtered = whereClauses.Aggregate(
+      queryable,
       (current, clause) => current.WhereDynamic(clause));
     var timeFiltered = filtered
       .Where(aggregate => aggregate.Timestamp >= fromDate)

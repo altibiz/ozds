@@ -17,9 +17,9 @@ public abstract class MeasurementRecordPushRequestConverter<TRecord,
   public JsonObject ConvertToPushRequest(IMeasurementRecord record)
   {
     return JsonSerializer
-               .SerializeToNode(ConvertToPushRequest((TRecord)record)!) as
-             JsonObject
-           ?? throw new InvalidOperationException();
+          .SerializeToNode(ConvertToPushRequest((TRecord)record)!) as
+        JsonObject
+      ?? throw new InvalidOperationException();
   }
 
   protected abstract TPushRequest ConvertToPushRequest(TRecord record);

@@ -20,10 +20,10 @@ public class AgnosticMeasurementGenerator(IServiceProvider serviceProvider)
       generators.FirstOrDefault(g => g.CanGenerateMeasurementsFor(meterId));
     var measurements =
       await (generator?.GenerateMeasurements(dateFrom, dateTo, meterId)
-             ?? throw new InvalidOperationException(
-               $"No generator found for meter {meterId}"));
+        ?? throw new InvalidOperationException(
+          $"No generator found for meter {meterId}"));
     logger.LogInformation(
-      "Generated {count} measurements for meter {meterId} from {dateFrom} to {dateTo}",
+      "Generated {Count} measurements for meter {MeterId} from {DateFrom} to {DateTo}",
       measurements.Count,
       meterId,
       dateFrom,

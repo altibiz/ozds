@@ -7,15 +7,17 @@ namespace Ozds.Client.Base;
 
 public abstract class OzdsComponentBase : ComponentBase
 {
-  [Inject] public IOzdsComponentLocalizer T { get; set; } = default!;
+  [Inject]
+  public IOzdsComponentLocalizer T { get; set; } = default!;
 
-  [Inject] public NavigationManager NavigationManager { get; set; } = default!;
+  [Inject]
+  public NavigationManager NavigationManager { get; set; } = default!;
 
   protected override void OnInitialized()
   {
     var uri = new Uri(NavigationManager.Uri);
     var culture = (uri.Segments[2]
-                   ?? throw new InvalidOperationException("Culture not found"))
+        ?? throw new InvalidOperationException("Culture not found"))
       .TrimEnd('/');
     SetCulture(culture);
   }
@@ -41,7 +43,8 @@ public abstract class OzdsComponentBase : ComponentBase
     return CultureInfo.CurrentCulture.Name;
   }
 
-  public static ApexChartOptions<T> NewApexChartOptions<T>() where T : class
+  public static ApexChartOptions<T> NewApexChartOptions<T>()
+    where T : class
   {
     var options = new ApexChartOptions<T>
     {
@@ -119,7 +122,6 @@ public abstract class OzdsComponentBase : ComponentBase
 
     return withTimezone.ToString("dd. MM. yyyy. HH:mm", cultureInfo);
   }
-
 
   protected static DateTimeOffset DateTimeGraph(DateTimeOffset dateTimeOffset)
   {

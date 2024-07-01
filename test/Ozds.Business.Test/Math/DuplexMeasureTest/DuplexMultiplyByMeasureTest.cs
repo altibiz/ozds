@@ -53,8 +53,10 @@ public class DuplexMultiplyByMeasureTest
 
   [Theory]
   [MemberData(nameof(DuplexMeasuresMultiply))]
-  public void Multiply_ReturnsExpectedResult(DuplexMeasure<decimal> lhs,
-    DuplexMeasure<decimal> rhs, DuplexMeasure<decimal> expected)
+  public void Multiply_ReturnsExpectedResult(
+    DuplexMeasure<decimal> lhs,
+    DuplexMeasure<decimal> rhs,
+    DuplexMeasure<decimal> expected)
   {
     var result = lhs.Multiply(rhs);
 

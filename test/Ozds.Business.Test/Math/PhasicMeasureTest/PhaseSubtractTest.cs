@@ -28,8 +28,10 @@ public class PhaseSubtractTest
 
   [Theory]
   [MemberData(nameof(PhasicMeasuresSubtract))]
-  public void SubtractReturnsExpectedResult(PhasicMeasure<decimal> lhs,
-    PhasicMeasure<decimal> rhs, PhasicMeasure<decimal> expected)
+  public void SubtractReturnsExpectedResult(
+    PhasicMeasure<decimal> lhs,
+    PhasicMeasure<decimal> rhs,
+    PhasicMeasure<decimal> expected)
   {
     var result = lhs.Subtract(rhs);
 

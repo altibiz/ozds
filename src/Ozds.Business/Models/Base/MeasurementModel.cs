@@ -7,7 +7,8 @@ namespace Ozds.Business.Models.Base;
 public abstract class MeasurementModel<T> : IMeasurement
   where T : class, IMeasurementValidator
 {
-  [Required] public required string MeterId { get; init; }
+  [Required]
+  public required string MeterId { get; init; }
 
   [Required]
   public required DateTimeOffset Timestamp { get; set; } =

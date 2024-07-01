@@ -31,9 +31,9 @@ public class
   EntityTypeHierarchyConfiguration<
     NetworkUserCatalogueEntity>
 {
-  public override void Configure(ModelBuilder modelBuilder, Type type)
+  public override void Configure(ModelBuilder modelBuilder, Type entity)
   {
-    var builder = modelBuilder.Entity(type);
+    var builder = modelBuilder.Entity(entity);
 
     builder
       .UseTphMappingStrategy()

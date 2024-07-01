@@ -30,7 +30,7 @@ public class UsageActiveEnergyTotalImportT1CalculationItemCalculator :
       Amount_Wh = amount.SpanDiff.TariffBinary.T1.DuplexImport.PhaseSum,
       Price_EUR = calculationBasis.Price,
       Total_EUR = amount.SpanDiff.TariffBinary.T1.DuplexImport.PhaseSum
-                  * calculationBasis.Price
+        * calculationBasis.Price
     };
   }
 }

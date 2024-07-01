@@ -32,7 +32,7 @@ public static class MeasurementValidatorModelEntityConverterExtensions
     }
 
     if (model is SchneideriEM3xxxMeasurementValidatorModel
-        schneideriEM3XxxMeasurementValidator)
+      schneideriEM3XxxMeasurementValidator)
     {
       return schneideriEM3XxxMeasurementValidator.ToEntity();
     }
@@ -51,13 +51,15 @@ public static class MeasurementValidatorModelEntityConverterExtensions
     }
 
     if (entity is SchneideriEM3xxxMeasurementValidatorEntity
-        schneideriEM3XxxMeasurementValidator)
+      schneideriEM3XxxMeasurementValidator)
     {
       return schneideriEM3XxxMeasurementValidator.ToModel();
     }
 
     throw new NotSupportedException(
-      $"MeasurementValidatorEntity type {entity.GetType().Name} is not supported."
+      $"MeasurementValidatorEntity type {
+        entity.GetType().Name
+      } is not supported."
     );
   }
 }

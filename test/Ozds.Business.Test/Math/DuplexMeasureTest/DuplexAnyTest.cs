@@ -26,7 +26,8 @@ public class DuplexAnyTest
 
   [Theory]
   [MemberData(nameof(DuplexMeasuresAny))]
-  public void DuplexAnyReturnsExpectedResult(DuplexMeasure<decimal> measure,
+  public void DuplexAnyReturnsExpectedResult(
+    DuplexMeasure<decimal> measure,
     PhasicMeasure<decimal> expected)
   {
     var result = measure.DuplexAny;

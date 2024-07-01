@@ -28,7 +28,7 @@ public class TimescaleMigrationSqlGenerator(
     );
 
     if (operation.FindAnnotation("TimescaleHypertable")?.Value is string
-        columnsString)
+      columnsString)
     {
       var columns = columnsString.Split(",");
       var timeColumn = columns.FirstOrDefault();
@@ -49,9 +49,15 @@ public class TimescaleMigrationSqlGenerator(
         builder.AppendLine(
           $"""
            SELECT add_dimension(
-             '"{operation.Name}"',
-             '{spaceColumn}',
-             {spacePartitioning}
+             '"{
+                 operation.Name
+               }"',
+             '{
+                 spaceColumn
+               }',
+             {
+                 spacePartitioning
+               }
            );
            """
         );

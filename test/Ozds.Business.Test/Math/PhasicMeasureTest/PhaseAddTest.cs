@@ -28,8 +28,10 @@ public class PhaseAddTest
 
   [Theory]
   [MemberData(nameof(PhasicMeasuresAdd))]
-  public void AddReturnsExpectedResult(PhasicMeasure<decimal> lhs,
-    PhasicMeasure<decimal> rhs, PhasicMeasure<decimal> expected)
+  public void AddReturnsExpectedResult(
+    PhasicMeasure<decimal> lhs,
+    PhasicMeasure<decimal> rhs,
+    PhasicMeasure<decimal> expected)
   {
     var result = lhs.Add(rhs);
 

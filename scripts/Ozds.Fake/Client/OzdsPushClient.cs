@@ -18,11 +18,14 @@ public class OzdsPushClient(
     var client = _httpClientFactory.CreateClient();
     client.DefaultRequestHeaders.Add("X-Api-Key", apiKey);
     Console.WriteLine(client.BaseAddress);
+
     // FIXME: this should be configurable
+#pragma warning disable S1075
     client.BaseAddress = new Uri("http://localhost:5000/");
+#pragma warning restore S1075
 
     _logger.LogInformation(
-      "Pushing measurements to {baseUrl} for messenger {messengerId}",
+      "Pushing measurements to {BaseUrl} for messenger {MessengerId}",
       client.BaseAddress,
       messengerId
     );
@@ -41,7 +44,7 @@ public class OzdsPushClient(
         if (!success)
         {
           _logger.LogWarning(
-            "Failed to push measurements with {statusCode}, retrying...",
+            "Failed to push measurements with {StatusCode}, retrying...",
             response.StatusCode
           );
         }

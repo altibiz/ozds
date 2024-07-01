@@ -8,7 +8,8 @@ public class AbbB2xMeasurementAggregateConverter : MeasurementAggregateConverter
   <AbbB2xMeasurementModel, AbbB2xAggregateModel>
 {
   protected override AbbB2xAggregateModel ToAggregate(
-    AbbB2xMeasurementModel measurement, IntervalModel interval)
+    AbbB2xMeasurementModel measurement,
+    IntervalModel interval)
   {
     return measurement.ToAggregate(interval);
   }

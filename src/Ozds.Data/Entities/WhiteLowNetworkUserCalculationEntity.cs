@@ -30,18 +30,21 @@ public class
     EntityTypeBuilder<WhiteLowNetworkUserCalculationEntity> builder)
   {
     builder
-      .ComplexProperty(nameof(WhiteLowNetworkUserCalculationEntity
-        .UsageActiveEnergyTotalImportT1))
+      .ComplexProperty(
+        nameof(WhiteLowNetworkUserCalculationEntity
+          .UsageActiveEnergyTotalImportT1))
       .UsageActiveEnergyTotalImportT1CalculationItem();
 
     builder
-      .ComplexProperty(nameof(WhiteLowNetworkUserCalculationEntity
-        .UsageActiveEnergyTotalImportT2))
+      .ComplexProperty(
+        nameof(WhiteLowNetworkUserCalculationEntity
+          .UsageActiveEnergyTotalImportT2))
       .UsageActiveEnergyTotalImportT2CalculationItem();
 
     builder
-      .ComplexProperty(nameof(WhiteLowNetworkUserCalculationEntity
-        .UsageReactiveEnergyTotalRampedT0))
+      .ComplexProperty(
+        nameof(WhiteLowNetworkUserCalculationEntity
+          .UsageReactiveEnergyTotalRampedT0))
       .UsageReactiveEnergyTotalRampedT0CalculationItem();
   }
 }

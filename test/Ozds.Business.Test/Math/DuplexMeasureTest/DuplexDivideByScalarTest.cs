@@ -44,8 +44,10 @@ public class DuplexDivideByScalarTest
 
   [Theory]
   [MemberData(nameof(DuplexMeasuresDivide))]
-  public void DivideReturnsExpectedResult(DuplexMeasure<decimal> measure,
-    decimal divisor, DuplexMeasure<decimal> expected)
+  public void DivideReturnsExpectedResult(
+    DuplexMeasure<decimal> measure,
+    decimal divisor,
+    DuplexMeasure<decimal> expected)
   {
     var result = measure.Divide(divisor);
 

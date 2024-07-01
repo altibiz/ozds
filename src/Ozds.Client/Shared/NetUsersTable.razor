@@ -141,8 +141,13 @@
 </MudHidden>
 
 @code {
-  [CascadingParameter] public UserState user { get; set; } = default!;
-  [CascadingParameter] public RepresentativeState representative { get; set; } = default!;
+
+  [CascadingParameter]
+  public UserState user { get; set; } = default!;
+
+  [CascadingParameter]
+  public RepresentativeState representative { get; set; } = default!;
+
   private string? _searchString;
   private List<NetworkUserInvoiceModel>? _invoices = new();
 

@@ -45,14 +45,16 @@ public class TariffBinaryTest
 
       {
         new NullTariffMeasure<decimal>(),
-        new BinaryTariffMeasure<decimal>(DuplexMeasure<decimal>.Null,
+        new BinaryTariffMeasure<decimal>(
+          DuplexMeasure<decimal>.Null,
           DuplexMeasure<decimal>.Null)
       }
     };
 
   [Theory]
   [MemberData(nameof(TariffMeasuresBinary))]
-  public void TariffBinary_ReturnsExpectedResult(TariffMeasure<decimal> measure,
+  public void TariffBinary_ReturnsExpectedResult(
+    TariffMeasure<decimal> measure,
     BinaryTariffMeasure<decimal> expected)
   {
     var result = measure.TariffBinary;

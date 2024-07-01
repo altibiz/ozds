@@ -26,7 +26,8 @@ public class DuplexImportTest
 
   [Theory]
   [MemberData(nameof(DuplexMeasuresImport))]
-  public void DuplexImportReturnsExpectedResult(DuplexMeasure<decimal> measure,
+  public void DuplexImportReturnsExpectedResult(
+    DuplexMeasure<decimal> measure,
     PhasicMeasure<decimal> expected)
   {
     var result = measure.DuplexImport;

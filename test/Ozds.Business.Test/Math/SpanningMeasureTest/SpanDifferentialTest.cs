@@ -20,9 +20,10 @@ public class SpanDifferentialTest
               new SinglePhasicMeasure<decimal>(10),
               new SinglePhasicMeasure<decimal>(6)))),
         2,
-        new UnaryTariffMeasure<decimal>(new ImportExportDuplexMeasure<decimal>(
-          new SinglePhasicMeasure<decimal>(2.5m),
-          new SinglePhasicMeasure<decimal>(1.5m)))
+        new UnaryTariffMeasure<decimal>(
+          new ImportExportDuplexMeasure<decimal>(
+            new SinglePhasicMeasure<decimal>(2.5m),
+            new SinglePhasicMeasure<decimal>(1.5m)))
       },
 
       {
@@ -36,9 +37,10 @@ public class SpanDifferentialTest
               new TriPhasicMeasure<decimal>(7, 8, 9),
               new TriPhasicMeasure<decimal>(10, 11, 12)))),
         3,
-        new UnaryTariffMeasure<decimal>(new ImportExportDuplexMeasure<decimal>(
-          new TriPhasicMeasure<decimal>(2, 2, 2),
-          new TriPhasicMeasure<decimal>(2, 2, 2)))
+        new UnaryTariffMeasure<decimal>(
+          new ImportExportDuplexMeasure<decimal>(
+            new TriPhasicMeasure<decimal>(2, 2, 2),
+            new TriPhasicMeasure<decimal>(2, 2, 2)))
       },
 
       {
@@ -49,7 +51,8 @@ public class SpanDifferentialTest
   [Theory]
   [MemberData(nameof(SpanningMeasuresDifferential))]
   public void SpanDifferential_ReturnsExpectedResult(
-    SpanningMeasure<decimal> measure, decimal y,
+    SpanningMeasure<decimal> measure,
+    decimal y,
     TariffMeasure<decimal> expected)
   {
     var result = measure.SpanDifferential(y);

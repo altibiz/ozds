@@ -13,7 +13,8 @@ public class DuplexConvertPrimitiveToFloatTest
         new ImportExportDuplexMeasure<decimal>(
           new SinglePhasicMeasure<decimal>(5),
           new SinglePhasicMeasure<decimal>(3)),
-        new ImportExportDuplexMeasure<float>(new SinglePhasicMeasure<float>(5f),
+        new ImportExportDuplexMeasure<float>(
+          new SinglePhasicMeasure<float>(5f),
           new SinglePhasicMeasure<float>(3f))
       },
 
@@ -33,7 +34,8 @@ public class DuplexConvertPrimitiveToFloatTest
   [Theory]
   [MemberData(nameof(DuplexMeasuresConvertToFloat))]
   public void ConvertPrimitiveToFloatReturnsExpectedResult(
-    DuplexMeasure<decimal> measure, DuplexMeasure<float> expected)
+    DuplexMeasure<decimal> measure,
+    DuplexMeasure<float> expected)
   {
     var result = measure.ConvertPrimitiveTo<float>();
 

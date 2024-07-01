@@ -15,9 +15,10 @@ public class ExpenditureSupplyTest
             new ImportExportDuplexMeasure<decimal>(
               new SinglePhasicMeasure<decimal>(5),
               new SinglePhasicMeasure<decimal>(3)))),
-        new UnaryTariffMeasure<decimal>(new ImportExportDuplexMeasure<decimal>(
-          new SinglePhasicMeasure<decimal>(5),
-          new SinglePhasicMeasure<decimal>(3)))
+        new UnaryTariffMeasure<decimal>(
+          new ImportExportDuplexMeasure<decimal>(
+            new SinglePhasicMeasure<decimal>(5),
+            new SinglePhasicMeasure<decimal>(3)))
       },
 
       {
@@ -30,9 +31,10 @@ public class ExpenditureSupplyTest
             new ImportExportDuplexMeasure<decimal>(
               new TriPhasicMeasure<decimal>(7, 8, 9),
               new TriPhasicMeasure<decimal>(10, 11, 12)))),
-        new UnaryTariffMeasure<decimal>(new ImportExportDuplexMeasure<decimal>(
-          new TriPhasicMeasure<decimal>(7, 8, 9),
-          new TriPhasicMeasure<decimal>(10, 11, 12)))
+        new UnaryTariffMeasure<decimal>(
+          new ImportExportDuplexMeasure<decimal>(
+            new TriPhasicMeasure<decimal>(7, 8, 9),
+            new TriPhasicMeasure<decimal>(10, 11, 12)))
       },
 
       {
@@ -43,7 +45,8 @@ public class ExpenditureSupplyTest
   [Theory]
   [MemberData(nameof(ExpenditureMeasuresSupply))]
   public void ExpenditureSupply_ReturnsExpectedResult(
-    ExpenditureMeasure<decimal> measure, TariffMeasure<decimal> expected)
+    ExpenditureMeasure<decimal> measure,
+    TariffMeasure<decimal> expected)
   {
     var result = measure.ExpenditureSupply;
 

@@ -5,7 +5,8 @@ namespace Ozds.Business.Models;
 
 public class MessengerModel : AuditableModel
 {
-  [Required] public required string LocationId { get; set; }
+  [Required]
+  public required string LocationId { get; set; }
 
   public static MessengerModel New()
   {

@@ -41,15 +41,17 @@ public class BlueLowNetworkUserCalculationModel
       return new MinMaxSpanningMeasure<decimal>(
         new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(UsageActiveEnergyTotalImportT0
-              .Min_Wh),
+            new SinglePhasicMeasure<decimal>(
+              UsageActiveEnergyTotalImportT0
+                .Min_Wh),
             new NullPhasicMeasure<decimal>()
           )
         ),
         new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(UsageActiveEnergyTotalImportT0
-              .Max_Wh),
+            new SinglePhasicMeasure<decimal>(
+              UsageActiveEnergyTotalImportT0
+                .Max_Wh),
             new NullPhasicMeasure<decimal>()
           )
         )
@@ -65,20 +67,23 @@ public class BlueLowNetworkUserCalculationModel
         new DualExpenditureMeasure<decimal>(
           new UnaryTariffMeasure<decimal>(
             new ImportExportDuplexMeasure<decimal>(
-              new SinglePhasicMeasure<decimal>(UsageActiveEnergyTotalImportT0
-                .Price_EUR),
+              new SinglePhasicMeasure<decimal>(
+                UsageActiveEnergyTotalImportT0
+                  .Price_EUR),
               new NullPhasicMeasure<decimal>()
             )
           ),
           new BinaryTariffMeasure<decimal>(
             new ImportExportDuplexMeasure<decimal>(
-              new SinglePhasicMeasure<decimal>(SupplyActiveEnergyTotalImportT1
-                .Price_EUR),
+              new SinglePhasicMeasure<decimal>(
+                SupplyActiveEnergyTotalImportT1
+                  .Price_EUR),
               new NullPhasicMeasure<decimal>()
             ),
             new ImportExportDuplexMeasure<decimal>(
-              new SinglePhasicMeasure<decimal>(SupplyActiveEnergyTotalImportT2
-                .Price_EUR),
+              new SinglePhasicMeasure<decimal>(
+                SupplyActiveEnergyTotalImportT2
+                  .Price_EUR),
               new NullPhasicMeasure<decimal>()
             )
           )

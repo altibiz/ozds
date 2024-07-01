@@ -37,7 +37,8 @@ public class TariffUnaryTest
 
   [Theory]
   [MemberData(nameof(TariffMeasuresUnary))]
-  public void TariffUnary_ReturnsExpectedResult(TariffMeasure<decimal> measure,
+  public void TariffUnary_ReturnsExpectedResult(
+    TariffMeasure<decimal> measure,
     DuplexMeasure<decimal> expected)
   {
     var result = measure.TariffUnary;

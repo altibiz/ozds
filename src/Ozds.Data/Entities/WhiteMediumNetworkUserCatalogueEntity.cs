@@ -25,23 +25,27 @@ public class
     EntityTypeBuilder<WhiteMediumNetworkUserCatalogueEntity> builder)
   {
     builder
-      .Property(nameof(WhiteMediumNetworkUserCatalogueEntity
-        .ActiveEnergyTotalImportT1Price_EUR))
+      .Property(
+        nameof(WhiteMediumNetworkUserCatalogueEntity
+          .ActiveEnergyTotalImportT1Price_EUR))
       .HasColumnName("active_energy_total_import_t1_price_eur");
 
     builder
-      .Property(nameof(WhiteMediumNetworkUserCatalogueEntity
-        .ActiveEnergyTotalImportT2Price_EUR))
+      .Property(
+        nameof(WhiteMediumNetworkUserCatalogueEntity
+          .ActiveEnergyTotalImportT2Price_EUR))
       .HasColumnName("active_energy_total_import_t2_price_eur");
 
     builder
-      .Property(nameof(WhiteMediumNetworkUserCatalogueEntity
-        .ActivePowerTotalImportT1Price_EUR))
+      .Property(
+        nameof(WhiteMediumNetworkUserCatalogueEntity
+          .ActivePowerTotalImportT1Price_EUR))
       .HasColumnName("active_power_total_import_t1_price_eur");
 
     builder
-      .Property(nameof(WhiteMediumNetworkUserCatalogueEntity
-        .ReactiveEnergyTotalRampedT0Price_EUR))
+      .Property(
+        nameof(WhiteMediumNetworkUserCatalogueEntity
+          .ReactiveEnergyTotalRampedT0Price_EUR))
       .HasColumnName("reactive_energy_total_ramped_t0_price_eur");
 
     builder

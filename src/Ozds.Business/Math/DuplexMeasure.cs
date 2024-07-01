@@ -2,6 +2,10 @@ using System.Numerics;
 
 namespace Ozds.Business.Math;
 
+// TODO: convert properties to methods and create proper class hierarchy
+#pragma warning disable S2365
+#pragma warning disable S3060
+
 public record class CompositeDuplexMeasure<T>
   : DuplexMeasure<T>
   where T : struct,
@@ -13,19 +17,23 @@ public record class CompositeDuplexMeasure<T>
 {
   public CompositeDuplexMeasure(List<DuplexMeasure<T>> measures)
   {
-    Measures = measures.SelectMany(measure => measure switch
-    {
-      CompositeDuplexMeasure<T> composite => composite.Measures,
-      _ => [measure]
-    }).ToList();
+    Measures = measures.SelectMany(
+      measure => measure switch
+      {
+        CompositeDuplexMeasure<T> composite => composite.Measures,
+        _ => [measure]
+      }).ToList();
   }
 
   public List<DuplexMeasure<T>> Measures { get; set; }
 
-  public U FromMostAccurate<U>(Func<DuplexMeasure<T>, U> selector, U @default)
+  public TConverted FromMostAccurate<TConverted>(
+    Func<DuplexMeasure<T>, TConverted> selector,
+    TConverted @default)
   {
-    return Measures.FirstOrDefault(measure =>
-      measure is ImportExportDuplexMeasure<T>) is { } importExport
+    return Measures.FirstOrDefault(
+      measure =>
+        measure is ImportExportDuplexMeasure<T>) is { } importExport
       ? selector(importExport)
       : Measures.FirstOrDefault(measure => measure is NetDuplexMeasure<T>) is
         { } net
@@ -42,15 +50,17 @@ public record class CompositeDuplexMeasure<T>
     return new CompositeDuplexMeasure<T>(Measures.Select(selector).ToList());
   }
 
-  public CompositeDuplexMeasure<T> Zip(DuplexMeasure<T> other,
+  public CompositeDuplexMeasure<T> Zip(
+    DuplexMeasure<T> other,
     Func<DuplexMeasure<T>, DuplexMeasure<T>, DuplexMeasure<T>> selector)
   {
     return other switch
     {
       CompositeDuplexMeasure<T> otherComposite => new CompositeDuplexMeasure<T>(
         Measures.Zip(otherComposite.Measures, selector).ToList()),
-      _ => new CompositeDuplexMeasure<T>(Measures
-        .Select(measure => selector(measure, other)).ToList())
+      _ => new CompositeDuplexMeasure<T>(
+        Measures
+          .Select(measure => selector(measure, other)).ToList())
     };
   }
 }
@@ -182,29 +192,31 @@ public abstract record class DuplexMeasure<T>
     }
   }
 
-  public DuplexMeasure<U> ConvertPrimitiveTo<U>()
-    where U : struct,
-    IComparisonOperators<U, U, bool>,
-    IAdditionOperators<U, U, U>,
-    ISubtractionOperators<U, U, U>,
-    IMultiplyOperators<U, U, U>,
-    IDivisionOperators<U, U, U>
+  public DuplexMeasure<TConverted> ConvertPrimitiveTo<TConverted>()
+    where TConverted : struct,
+    IComparisonOperators<TConverted, TConverted, bool>,
+    IAdditionOperators<TConverted, TConverted, TConverted>,
+    ISubtractionOperators<TConverted, TConverted, TConverted>,
+    IMultiplyOperators<TConverted, TConverted, TConverted>,
+    IDivisionOperators<TConverted, TConverted, TConverted>
   {
     return this switch
     {
-      CompositeDuplexMeasure<T> composite => new CompositeDuplexMeasure<U>(
-        composite.Measures.Select(measure => measure.ConvertPrimitiveTo<U>())
-          .ToList()),
+      CompositeDuplexMeasure<T> composite => new
+        CompositeDuplexMeasure<TConverted>(
+          composite.Measures.Select(
+              measure => measure.ConvertPrimitiveTo<TConverted>())
+            .ToList()),
       ImportExportDuplexMeasure<T> importExport => new
-        ImportExportDuplexMeasure<U>(
-          importExport.Import.ConvertPrimitiveTo<U>(),
-          importExport.Export.ConvertPrimitiveTo<U>()
+        ImportExportDuplexMeasure<TConverted>(
+          importExport.Import.ConvertPrimitiveTo<TConverted>(),
+          importExport.Export.ConvertPrimitiveTo<TConverted>()
         ),
-      NetDuplexMeasure<T> net => new NetDuplexMeasure<U>(
-        net.TrueNet.ConvertPrimitiveTo<U>()),
-      AnyDuplexMeasure<T> any => new AnyDuplexMeasure<U>(
-        any.Value.ConvertPrimitiveTo<U>()),
-      _ => DuplexMeasure<U>.Null
+      NetDuplexMeasure<T> net => new NetDuplexMeasure<TConverted>(
+        net.TrueNet.ConvertPrimitiveTo<TConverted>()),
+      AnyDuplexMeasure<T> any => new AnyDuplexMeasure<TConverted>(
+        any.Value.ConvertPrimitiveTo<TConverted>()),
+      _ => DuplexMeasure<TConverted>.Null
     };
   }
 
@@ -214,8 +226,9 @@ public abstract record class DuplexMeasure<T>
   {
     return this switch
     {
-      CompositeDuplexMeasure<T> composite => composite.Select(measure =>
-        measure.Select(selector)),
+      CompositeDuplexMeasure<T> composite => composite.Select(
+        measure =>
+          measure.Select(selector)),
       ImportExportDuplexMeasure<T> importExport => new
         ImportExportDuplexMeasure<T>(
           selector(importExport.Import),
@@ -231,8 +244,9 @@ public abstract record class DuplexMeasure<T>
   {
     return this switch
     {
-      CompositeDuplexMeasure<T> composite => composite.Select(measure =>
-        measure.Multiply(rhs)),
+      CompositeDuplexMeasure<T> composite => composite.Select(
+        measure =>
+          measure.Multiply(rhs)),
       ImportExportDuplexMeasure<T> importExport => new
         ImportExportDuplexMeasure<T>(
           importExport.Import.Multiply(rhs),
@@ -250,8 +264,9 @@ public abstract record class DuplexMeasure<T>
   {
     return this switch
     {
-      CompositeDuplexMeasure<T> composite => composite.Select(measure =>
-        measure.Divide(rhs)),
+      CompositeDuplexMeasure<T> composite => composite.Select(
+        measure =>
+          measure.Divide(rhs)),
       ImportExportDuplexMeasure<T> importExport => new
         ImportExportDuplexMeasure<T>(
           importExport.Import.Divide(rhs),

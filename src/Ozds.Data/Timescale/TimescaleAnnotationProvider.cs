@@ -30,19 +30,20 @@ public class TimescaleAnnotationProvider : NpgsqlAnnotationProvider
 #pragma warning restore EF1001
 
     var annotation = table.EntityTypeMappings
-      .Select(mapping => new
-      {
-        Mapping = mapping,
-        // NOTE: this is the exact way that annotations get added in
-        // NOTE: do not change this
-        Value = (mapping.TypeBase
-          .GetAnnotations()
-          .FirstOrDefault(
-            annotation =>
-              annotation.Name == "TimescaleHypertable" &&
-              annotation.Value is string)
-          ?.Value as string)!
-      })
+      .Select(
+        mapping => new
+        {
+          Mapping = mapping,
+          // NOTE: this is the exact way that annotations get added in
+          // NOTE: do not change this
+          Value = (mapping.TypeBase
+            .GetAnnotations()
+            .FirstOrDefault(
+              annotation =>
+                annotation.Name == "TimescaleHypertable" &&
+                annotation.Value is string)
+            ?.Value as string)!
+        })
       .FirstOrDefault(x => x.Value is not null);
 
     if (annotation is null)

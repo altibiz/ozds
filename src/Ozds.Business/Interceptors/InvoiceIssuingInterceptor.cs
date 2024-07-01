@@ -10,7 +10,8 @@ public class InvoiceIssuingInterceptor(IServiceProvider serviceProvider)
   : ServedSaveChangesInterceptor(serviceProvider)
 {
   public override InterceptionResult<int> SavingChanges(
-    DbContextEventData eventData, InterceptionResult<int> result)
+    DbContextEventData eventData,
+    InterceptionResult<int> result)
   {
     IssueInvoices(eventData);
     return base.SavingChanges(eventData, result);
@@ -30,22 +31,20 @@ public class InvoiceIssuingInterceptor(IServiceProvider serviceProvider)
       .Entries<InvoiceEntity>()
       .ToList();
 
-    foreach (var invoice in entries)
+    foreach (var entity in entries
+      .Where(e => e.State is EntityState.Added)
+      .Select(e => e.Entity))
     {
-      if (invoice.State is EntityState.Added)
-      {
-        invoice.Entity.IssuedOn = now;
-        invoice.Entity.IssuedById = representativeId;
-      }
+      entity.IssuedOn = now;
+      entity.IssuedById = representativeId;
     }
   }
 
   private string? GetRepresentativeId()
   {
-    if (_serviceProvider.GetService<IHttpContextAccessor>() is not null)
+    if (serviceProvider.GetService<IHttpContextAccessor>() is not null)
     {
       return null;
-      // return httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
     }
 
     return null;

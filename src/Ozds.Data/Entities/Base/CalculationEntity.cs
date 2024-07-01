@@ -46,21 +46,21 @@ public class
   <
     CalculationEntity>
 {
-  public override void Configure(ModelBuilder modelBuilder, Type type)
+  public override void Configure(ModelBuilder modelBuilder, Type entity)
   {
-    if (type == typeof(CalculationEntity))
+    if (entity == typeof(CalculationEntity))
     {
       return;
     }
 
-    var builder = modelBuilder.Entity(type);
+    var builder = modelBuilder.Entity(entity);
 
-    if (type == typeof(NetworkUserCalculationEntity))
+    if (entity == typeof(NetworkUserCalculationEntity))
     {
       builder.HasKey("_id");
     }
 
-    if (type.IsAssignableTo(typeof(NetworkUserCalculationEntity)))
+    if (entity.IsAssignableTo(typeof(NetworkUserCalculationEntity)))
     {
       builder
         .HasOne(nameof(CalculationEntity.Meter))

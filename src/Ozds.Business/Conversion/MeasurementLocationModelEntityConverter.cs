@@ -28,7 +28,7 @@ public static class MeasurementLocationModelEntityConverterExtensions
     this IMeasurementLocation model)
   {
     if (model is NetworkUserMeasurementLocationModel
-        networkUserMeasurementLocation)
+      networkUserMeasurementLocation)
     {
       return networkUserMeasurementLocation.ToEntity();
     }
@@ -47,7 +47,7 @@ public static class MeasurementLocationModelEntityConverterExtensions
     this MeasurementLocationEntity entity)
   {
     if (entity is NetworkUserMeasurementLocationEntity
-        networkUserMeasurementLocation)
+      networkUserMeasurementLocation)
     {
       return networkUserMeasurementLocation.ToModel();
     }
@@ -58,7 +58,9 @@ public static class MeasurementLocationModelEntityConverterExtensions
     }
 
     throw new NotSupportedException(
-      $"MeasurementLocationEntity type {entity.GetType().Name} is not supported."
+      $"MeasurementLocationEntity type {
+        entity.GetType().Name
+      } is not supported."
     );
   }
 }

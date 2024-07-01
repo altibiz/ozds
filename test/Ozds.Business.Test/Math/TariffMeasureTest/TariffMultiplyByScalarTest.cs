@@ -10,23 +10,27 @@ public class TariffMultiplyByScalarTest
     TariffMeasuresMultiply = new()
     {
       {
-        new UnaryTariffMeasure<decimal>(new ImportExportDuplexMeasure<decimal>(
-          new SinglePhasicMeasure<decimal>(5),
-          new SinglePhasicMeasure<decimal>(3))),
+        new UnaryTariffMeasure<decimal>(
+          new ImportExportDuplexMeasure<decimal>(
+            new SinglePhasicMeasure<decimal>(5),
+            new SinglePhasicMeasure<decimal>(3))),
         2,
-        new UnaryTariffMeasure<decimal>(new ImportExportDuplexMeasure<decimal>(
-          new SinglePhasicMeasure<decimal>(10),
-          new SinglePhasicMeasure<decimal>(6)))
+        new UnaryTariffMeasure<decimal>(
+          new ImportExportDuplexMeasure<decimal>(
+            new SinglePhasicMeasure<decimal>(10),
+            new SinglePhasicMeasure<decimal>(6)))
       },
 
       {
-        new UnaryTariffMeasure<decimal>(new ImportExportDuplexMeasure<decimal>(
-          new TriPhasicMeasure<decimal>(1, 2, 3),
-          new TriPhasicMeasure<decimal>(4, 5, 6))),
+        new UnaryTariffMeasure<decimal>(
+          new ImportExportDuplexMeasure<decimal>(
+            new TriPhasicMeasure<decimal>(1, 2, 3),
+            new TriPhasicMeasure<decimal>(4, 5, 6))),
         2,
-        new UnaryTariffMeasure<decimal>(new ImportExportDuplexMeasure<decimal>(
-          new TriPhasicMeasure<decimal>(2, 4, 6),
-          new TriPhasicMeasure<decimal>(8, 10, 12)))
+        new UnaryTariffMeasure<decimal>(
+          new ImportExportDuplexMeasure<decimal>(
+            new TriPhasicMeasure<decimal>(2, 4, 6),
+            new TriPhasicMeasure<decimal>(8, 10, 12)))
       },
 
       {
@@ -52,8 +56,10 @@ public class TariffMultiplyByScalarTest
 
   [Theory]
   [MemberData(nameof(TariffMeasuresMultiply))]
-  public void Multiply_ReturnsExpectedResult(TariffMeasure<decimal> measure,
-    decimal multiplier, TariffMeasure<decimal> expected)
+  public void Multiply_ReturnsExpectedResult(
+    TariffMeasure<decimal> measure,
+    decimal multiplier,
+    TariffMeasure<decimal> expected)
   {
     var result = measure.Multiply(multiplier);
 

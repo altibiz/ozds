@@ -28,25 +28,25 @@ public static class NetworkUserCatalogueModelEntityConverterExtensions
     this NetworkUserCatalogueModel model)
   {
     if (model is RedLowNetworkUserCatalogueModel
-        redLowNetworkUserCatalogueModel)
+      redLowNetworkUserCatalogueModel)
     {
       return redLowNetworkUserCatalogueModel.ToEntity();
     }
 
     if (model is BlueLowNetworkUserCatalogueModel
-        blueLowNetworkUserCatalogueModel)
+      blueLowNetworkUserCatalogueModel)
     {
       return blueLowNetworkUserCatalogueModel.ToEntity();
     }
 
     if (model is WhiteLowNetworkUserCatalogueModel
-        whiteLowNetworkUserCatalogueModel)
+      whiteLowNetworkUserCatalogueModel)
     {
       return whiteLowNetworkUserCatalogueModel.ToEntity();
     }
 
     if (model is WhiteMediumNetworkUserCatalogueModel
-        whiteMediumNetworkUserCatalogueModel)
+      whiteMediumNetworkUserCatalogueModel)
     {
       return whiteMediumNetworkUserCatalogueModel.ToEntity();
     }
@@ -60,31 +60,33 @@ public static class NetworkUserCatalogueModelEntityConverterExtensions
     this NetworkUserCatalogueEntity entity)
   {
     if (entity is RedLowNetworkUserCatalogueEntity
-        redLowNetworkUserCatalogueEntity)
+      redLowNetworkUserCatalogueEntity)
     {
       return redLowNetworkUserCatalogueEntity.ToModel();
     }
 
     if (entity is BlueLowNetworkUserCatalogueEntity
-        blueLowNetworkUserCatalogueEntity)
+      blueLowNetworkUserCatalogueEntity)
     {
       return blueLowNetworkUserCatalogueEntity.ToModel();
     }
 
     if (entity is WhiteLowNetworkUserCatalogueEntity
-        whiteLowNetworkUserCatalogueEntity)
+      whiteLowNetworkUserCatalogueEntity)
     {
       return whiteLowNetworkUserCatalogueEntity.ToModel();
     }
 
     if (entity is WhiteMediumNetworkUserCatalogueEntity
-        whiteMediumNetworkUserCatalogueEntity)
+      whiteMediumNetworkUserCatalogueEntity)
     {
       return whiteMediumNetworkUserCatalogueEntity.ToModel();
     }
 
     throw new NotSupportedException(
-      $"NetworkUserCatalogueEntity type {entity.GetType().Name} is not supported."
+      $"NetworkUserCatalogueEntity type {
+        entity.GetType().Name
+      } is not supported."
     );
   }
 }

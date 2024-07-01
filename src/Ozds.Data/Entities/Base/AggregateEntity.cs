@@ -17,7 +17,8 @@ public abstract class AggregateEntity : IAggregateEntity
   public string MeterId { get; set; } = default!;
 }
 
-public class AggregateEntity<T> : AggregateEntity where T : MeterEntity
+public class AggregateEntity<T> : AggregateEntity
+  where T : MeterEntity
 {
   public virtual T Meter { get; set; } = default!;
 }
@@ -26,14 +27,14 @@ public class
   AggregateEntityTypeHierarchyConfiguration : EntityTypeHierarchyConfiguration<
   AggregateEntity>
 {
-  public override void Configure(ModelBuilder modelBuilder, Type type)
+  public override void Configure(ModelBuilder modelBuilder, Type entity)
   {
-    if (type == typeof(AggregateEntity))
+    if (entity == typeof(AggregateEntity))
     {
       return;
     }
 
-    var builder = modelBuilder.Entity(type);
+    var builder = modelBuilder.Entity(entity);
 
     builder.HasKey(
       nameof(AggregateEntity.Timestamp),

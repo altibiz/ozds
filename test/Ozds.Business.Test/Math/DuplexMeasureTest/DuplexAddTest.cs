@@ -53,8 +53,10 @@ public class DuplexAddTest
 
   [Theory]
   [MemberData(nameof(DuplexMeasuresAdd))]
-  public void AddReturnsExpectedResult(DuplexMeasure<decimal> lhs,
-    DuplexMeasure<decimal> rhs, DuplexMeasure<decimal> expected)
+  public void AddReturnsExpectedResult(
+    DuplexMeasure<decimal> lhs,
+    DuplexMeasure<decimal> rhs,
+    DuplexMeasure<decimal> expected)
   {
     var result = lhs.Add(rhs);
 

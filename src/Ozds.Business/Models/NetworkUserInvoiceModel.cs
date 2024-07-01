@@ -5,7 +5,8 @@ namespace Ozds.Business.Models;
 
 public class NetworkUserInvoiceModel : InvoiceModel
 {
-  [Required] public required string NetworkUserId { get; set; }
+  [Required]
+  public required string NetworkUserId { get; set; }
 
   [Required]
   public required LocationModel ArchivedLocation { get; set; } = default!;
@@ -40,9 +41,11 @@ public class NetworkUserInvoiceModel : InvoiceModel
   public required decimal
     UsageReactiveEnergyTotalRampedT0Fee_EUR { get; set; } = default!;
 
-  [Required] public required decimal UsageMeterFee_EUR { get; set; } = default!;
+  [Required]
+  public required decimal UsageMeterFee_EUR { get; set; } = default!;
 
-  [Required] public required decimal UsageFeeTotal_EUR { get; set; } = default!;
+  [Required]
+  public required decimal UsageFeeTotal_EUR { get; set; } = default!;
 
   [Required]
   public required decimal SupplyActiveEnergyTotalImportT1Fee_EUR { get; set; } =

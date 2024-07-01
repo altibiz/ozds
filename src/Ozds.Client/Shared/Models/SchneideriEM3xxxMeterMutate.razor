@@ -88,9 +88,12 @@
 </EditForm>
 
 @code {
-  [Parameter] public string Id { get; set; } = default!;
 
-  [Parameter] public SchneideriEM3xxxMeterModel? Model { get; set; }
+  [Parameter]
+  public string Id { get; set; } = default!;
+
+  [Parameter]
+  public SchneideriEM3xxxMeterModel? Model { get; set; }
 
   private LoadingState<SchneideriEM3xxxMeterModel> LoadingState { get; set; } = new();
   private List<MessengerModel> _messengers = new();

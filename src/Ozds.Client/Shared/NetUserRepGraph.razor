@@ -44,8 +44,13 @@
 
 
 @code {
-  [CascadingParameter] public UserState user { get; set; } = default!;
-  [CascadingParameter] public RepresentativeState representative { get; set; } = default!;
+
+  [CascadingParameter]
+  public UserState user { get; set; } = default!;
+
+  [CascadingParameter]
+  public RepresentativeState representative { get; set; } = default!;
+
   private ApexChartOptions<ChartData> graphOptions = new();
   private ApexChartOptions<ChartData> graphOptionsMob = new();
   public IEnumerable<ChartData> _graphValues = Enumerable.Empty<ChartData>();
@@ -75,40 +80,42 @@
 
     var aggregatedConsumption = _totalConsumption
       .GroupBy(x => x.date)
-      .Select(group =>
-      {
-        var aggregatedValue = group.Select(g => g.value).DefaultIfEmpty(0).Sum();
-
-        var firstItem = group.FirstOrDefault();
-
-        if (firstItem is null)
+      .Select(
+        group =>
         {
+          var aggregatedValue = group.Select(g => g.value).DefaultIfEmpty(0).Sum();
+
+          var firstItem = group.FirstOrDefault();
+
+          if (firstItem is null)
+          {
+            return new ChartData(
+              aggregatedValue,
+              "none",
+              group.Key,
+              "none");
+          }
+
           return new ChartData(
             aggregatedValue,
-            "none",
+            firstItem.name,
             group.Key,
-            "none");
-        }
-
-        return new ChartData(
-          aggregatedValue,
-          firstItem.name,
-          group.Key,
-          firstItem.source);
-      })
+            firstItem.source);
+        })
       .ToList();
     _totalConsumption.Clear(); // Clear existing items
     _totalConsumption.AddRange(aggregatedConsumption); // Add aggregated items
     var minValue = _totalConsumption.MinBy(consumption => consumption.value);
     if (minValue is not null)
-      _graphValues = _totalConsumption.Select(x =>
-      {
-        return new ChartData(
-          x.value - minValue.value,
-          x.name,
-          x.date,
-          x.source);
-      });
+      _graphValues = _totalConsumption.Select(
+        x =>
+        {
+          return new ChartData(
+            x.value - minValue.value,
+            x.name,
+            x.date,
+            x.source);
+        });
 
 
     graphOptionsMob = NewApexChartOptions<ChartData>();
@@ -144,21 +151,23 @@
     graphOptions.Yaxis = new List<YAxis>();
     graphOptionsMob.Xaxis = new XAxis();
 
-    graphOptionsMob.Yaxis.Add(new YAxis
-    {
-      Show = false,
-      Labels = new YAxisLabels
+    graphOptionsMob.Yaxis.Add(
+      new YAxis
       {
-        Formatter = "function(val, index) { return (val ?? 0).toFixed(0); }"
-      }
-    });
-    graphOptions.Yaxis.Add(new YAxis
-    {
-      Labels = new YAxisLabels
+        Show = false,
+        Labels = new YAxisLabels
+        {
+          Formatter = "function(val, index) { return (val ?? 0).toFixed(0); }"
+        }
+      });
+    graphOptions.Yaxis.Add(
+      new YAxis
       {
-        Formatter = "function(val, index) { return (val ?? 0).toFixed(0); }"
-      }
-    });
+        Labels = new YAxisLabels
+        {
+          Formatter = "function(val, index) { return (val ?? 0).toFixed(0); }"
+        }
+      });
     graphOptionsMob.Xaxis = new XAxis
     {
       Labels = new XAxisLabels

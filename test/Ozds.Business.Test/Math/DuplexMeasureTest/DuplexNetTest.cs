@@ -30,7 +30,8 @@ public class DuplexNetTest
 
   [Theory]
   [MemberData(nameof(DuplexMeasuresNet))]
-  public void DuplexNetReturnsExpectedResult(DuplexMeasure<decimal> measure,
+  public void DuplexNetReturnsExpectedResult(
+    DuplexMeasure<decimal> measure,
     PhasicMeasure<decimal> expected)
   {
     var result = measure.DuplexNet;

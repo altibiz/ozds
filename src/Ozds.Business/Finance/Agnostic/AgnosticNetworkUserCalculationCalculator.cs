@@ -13,11 +13,11 @@ public class AgnosticNetworkUserCalculationCalculator(
     NetworkUserCalculationBasisModel basis)
   {
     return _serviceProvider
-             .GetServices<INetworkUserCalculationCalculator>()
-             .FirstOrDefault(calculator => calculator.CanCalculate(basis))
-             ?.Calculate(basis)
-           ?? throw new InvalidOperationException(
-             $"No calculator found for calculation {basis.GetType()}.");
+        .GetServices<INetworkUserCalculationCalculator>()
+        .FirstOrDefault(calculator => calculator.CanCalculate(basis))
+        ?.Calculate(basis)
+      ?? throw new InvalidOperationException(
+        $"No calculator found for calculation {basis.GetType()}.");
   }
 
   public TCalculation Calculate<TCalculation>(
@@ -25,7 +25,7 @@ public class AgnosticNetworkUserCalculationCalculator(
     where TCalculation : class, INetworkUserCalculation
   {
     return Calculate(basis) as TCalculation
-           ?? throw new InvalidOperationException(
-             $"No calculator found for calculation {basis.GetType()}.");
+      ?? throw new InvalidOperationException(
+        $"No calculator found for calculation {basis.GetType()}.");
   }
 }

@@ -10,12 +10,14 @@ public class TariffConvertPrimitiveToFloatTest
     TariffMeasuresConvertToFloat = new()
     {
       {
-        new UnaryTariffMeasure<decimal>(new ImportExportDuplexMeasure<decimal>(
-          new SinglePhasicMeasure<decimal>(5),
-          new SinglePhasicMeasure<decimal>(3))),
-        new UnaryTariffMeasure<float>(new ImportExportDuplexMeasure<float>(
-          new SinglePhasicMeasure<float>(5f),
-          new SinglePhasicMeasure<float>(3f)))
+        new UnaryTariffMeasure<decimal>(
+          new ImportExportDuplexMeasure<decimal>(
+            new SinglePhasicMeasure<decimal>(5),
+            new SinglePhasicMeasure<decimal>(3))),
+        new UnaryTariffMeasure<float>(
+          new ImportExportDuplexMeasure<float>(
+            new SinglePhasicMeasure<float>(5f),
+            new SinglePhasicMeasure<float>(3f)))
       },
 
       {
@@ -41,7 +43,8 @@ public class TariffConvertPrimitiveToFloatTest
   [Theory]
   [MemberData(nameof(TariffMeasuresConvertToFloat))]
   public void ConvertPrimitiveToFloat_ReturnsExpectedResult(
-    TariffMeasure<decimal> measure, TariffMeasure<float> expected)
+    TariffMeasure<decimal> measure,
+    TariffMeasure<float> expected)
   {
     var result = measure.ConvertPrimitiveTo<float>();
 

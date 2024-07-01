@@ -10,7 +10,7 @@ namespace Ozds.Business.Queries;
 public class OzdsSchneideriEM3xxxMeasurementValidatorModelQueries(
   OzdsDbContext context) : IOzdsQueries
 {
-  protected readonly OzdsDbContext context = context;
+  private readonly OzdsDbContext context = context;
 
   public async Task<SchneideriEM3xxxMeasurementValidatorModel?>
     SchneideriEM3xxxMeasurementValidatorById(string id)
@@ -18,8 +18,9 @@ public class OzdsSchneideriEM3xxxMeasurementValidatorModelQueries(
     var validatorModel =
       await context.MeasurementValidators
         .OfType<SchneideriEM3xxxMeasurementValidatorEntity>()
-        .Where(context
-          .PrimaryKeyEquals<SchneideriEM3xxxMeasurementValidatorEntity>(id))
+        .Where(
+          context
+            .PrimaryKeyEquals<SchneideriEM3xxxMeasurementValidatorEntity>(id))
         .FirstOrDefaultAsync();
     if (validatorModel is not null)
     {

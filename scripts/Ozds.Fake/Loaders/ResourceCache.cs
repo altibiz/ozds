@@ -23,12 +23,13 @@ public class ResourceCache(IServiceProvider serviceProvider)
   {
     return (await _cache.GetOrAdd(
       (name, typeof(TLoader)),
-      _ => new Lazy<Task<object>>(async () =>
-      {
-        await using var stream = Load(name);
-        var loader = _serviceProvider.GetRequiredService<TLoader>();
-        return loader.Load(stream);
-      })
+      _ => new Lazy<Task<object>>(
+        async () =>
+        {
+          await using var stream = Load(name);
+          var loader = _serviceProvider.GetRequiredService<TLoader>();
+          return loader.Load(stream);
+        })
     ).Value as TOut)!;
   }
 
@@ -38,11 +39,13 @@ public class ResourceCache(IServiceProvider serviceProvider)
     var fullName = $"{assembly.GetName().Name}.Assets.{name}";
 
     var stream = assembly.GetManifestResourceStream(fullName) ??
-                 throw new InvalidOperationException(
-                   $"Resource {fullName} does not exist. "
-                   + $"Here are the available resources for the given assembly '{assembly.GetName().Name}':\n"
-                   + string.Join("\n", assembly.GetManifestResourceNames())
-                 );
+      throw new InvalidOperationException(
+        $"Resource {fullName} does not exist. "
+        + $"Here are the available resources for the given assembly '{
+          assembly.GetName().Name
+        }':\n"
+        + string.Join("\n", assembly.GetManifestResourceNames())
+      );
     return stream;
   }
 }

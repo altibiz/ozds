@@ -9,7 +9,7 @@ namespace Ozds.Business.Queries;
 
 public class OzdsDataQueries(OzdsDbContext context) : IOzdsQueries
 {
-  protected readonly OzdsDbContext context = context;
+  private readonly OzdsDbContext context = context;
 
   public async Task<PaginatedList<LocationModel>> GetLocations(
     string title,
@@ -18,8 +18,9 @@ public class OzdsDataQueries(OzdsDbContext context) : IOzdsQueries
   )
   {
     var filtered = context.Locations
-      .Where(x => x.Title
-        .StartsWith(title));
+      .Where(
+        x => x.Title
+          .StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered
       .OrderBy(context.PrimaryKeyOf<LocationEntity>())
@@ -38,8 +39,9 @@ public class OzdsDataQueries(OzdsDbContext context) : IOzdsQueries
   )
   {
     var filtered = context.NetworkUsers
-      .Where(x => x.Title
-        .StartsWith(title));
+      .Where(
+        x => x.Title
+          .StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered
       .OrderBy(context.PrimaryKeyOf<NetworkUserEntity>())
@@ -60,8 +62,9 @@ public class OzdsDataQueries(OzdsDbContext context) : IOzdsQueries
   {
     var filtered = context.NetworkUserCatalogues
       .OfType<RedLowNetworkUserCatalogueEntity>()
-      .Where(catalogue => catalogue.Title
-        .StartsWith(title));
+      .Where(
+        catalogue => catalogue.Title
+          .StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered
       .OrderBy(context.PrimaryKeyOf<RedLowNetworkUserCatalogueEntity>())
@@ -82,8 +85,9 @@ public class OzdsDataQueries(OzdsDbContext context) : IOzdsQueries
   {
     var filtered = context.NetworkUserCatalogues
       .OfType<BlueLowNetworkUserCatalogueEntity>()
-      .Where(catalogue => catalogue.Title
-        .StartsWith(title));
+      .Where(
+        catalogue => catalogue.Title
+          .StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered
       .OrderBy(context.PrimaryKeyOf<BlueLowNetworkUserCatalogueEntity>())
@@ -104,8 +108,9 @@ public class OzdsDataQueries(OzdsDbContext context) : IOzdsQueries
   {
     var filtered = context.NetworkUserCatalogues
       .OfType<WhiteLowNetworkUserCatalogueEntity>()
-      .Where(catalogue => catalogue.Title
-        .StartsWith(title));
+      .Where(
+        catalogue => catalogue.Title
+          .StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered
       .OrderBy(context.PrimaryKeyOf<WhiteLowNetworkUserCatalogueEntity>())
@@ -126,8 +131,9 @@ public class OzdsDataQueries(OzdsDbContext context) : IOzdsQueries
   {
     var filtered = context.NetworkUserCatalogues
       .OfType<WhiteMediumNetworkUserCatalogueEntity>()
-      .Where(catalogue => catalogue.Title
-        .StartsWith(title));
+      .Where(
+        catalogue => catalogue.Title
+          .StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered
       .OrderBy(context.PrimaryKeyOf<WhiteMediumNetworkUserCatalogueEntity>())
@@ -147,8 +153,9 @@ public class OzdsDataQueries(OzdsDbContext context) : IOzdsQueries
     )
   {
     var filtered = context.RegulatoryCatalogues
-      .Where(catalogue => catalogue.Title
-        .StartsWith(title));
+      .Where(
+        catalogue => catalogue.Title
+          .StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered
       .OrderBy(context.PrimaryKeyOf<RegulatoryCatalogueEntity>())
@@ -168,8 +175,9 @@ public class OzdsDataQueries(OzdsDbContext context) : IOzdsQueries
   {
     var filtered = context.Messengers
       .OfType<MessengerEntity>()
-      .Where(catalogue => catalogue.Title
-        .StartsWith(title));
+      .Where(
+        catalogue => catalogue.Title
+          .StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered
       .OrderBy(context.PrimaryKeyOf<MessengerEntity>())
@@ -190,8 +198,9 @@ public class OzdsDataQueries(OzdsDbContext context) : IOzdsQueries
   {
     var filtered = context.MeasurementValidators
       .OfType<AbbB2xMeasurementValidatorEntity>()
-      .Where(catalogue => catalogue.Title
-        .StartsWith(title));
+      .Where(
+        catalogue => catalogue.Title
+          .StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered
       .OrderBy(context.PrimaryKeyOf<AbbB2xMeasurementValidatorEntity>())
@@ -212,8 +221,9 @@ public class OzdsDataQueries(OzdsDbContext context) : IOzdsQueries
   {
     var filtered = context.MeasurementValidators
       .OfType<SchneideriEM3xxxMeasurementValidatorEntity>()
-      .Where(catalogue => catalogue.Title
-        .StartsWith(title));
+      .Where(
+        catalogue => catalogue.Title
+          .StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered
       .OrderBy(
@@ -234,8 +244,9 @@ public class OzdsDataQueries(OzdsDbContext context) : IOzdsQueries
   {
     var filtered = context.Meters
       .OfType<AbbB2xMeterEntity>()
-      .Where(catalogue => catalogue.Title
-        .StartsWith(title));
+      .Where(
+        catalogue => catalogue.Title
+          .StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered
       .OrderBy(context.PrimaryKeyOf<AbbB2xMeterEntity>())
@@ -256,8 +267,9 @@ public class OzdsDataQueries(OzdsDbContext context) : IOzdsQueries
   {
     var filtered = context.Meters
       .OfType<SchneideriEM3xxxMeterEntity>()
-      .Where(catalogue => catalogue.Title
-        .StartsWith(title));
+      .Where(
+        catalogue => catalogue.Title
+          .StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered
       .OrderBy(context.PrimaryKeyOf<SchneideriEM3xxxMeterEntity>())
@@ -278,8 +290,9 @@ public class OzdsDataQueries(OzdsDbContext context) : IOzdsQueries
   {
     var filtered = context.MeasurementLocations
       .OfType<LocationMeasurementLocationEntity>()
-      .Where(catalogue => catalogue.Title
-        .StartsWith(title));
+      .Where(
+        catalogue => catalogue.Title
+          .StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered
       .OrderBy(context.PrimaryKeyOf<LocationMeasurementLocationEntity>())
@@ -300,8 +313,9 @@ public class OzdsDataQueries(OzdsDbContext context) : IOzdsQueries
   {
     var filtered = context.MeasurementLocations
       .OfType<NetworkUserMeasurementLocationEntity>()
-      .Where(catalogue => catalogue.Title
-        .StartsWith(title));
+      .Where(
+        catalogue => catalogue.Title
+          .StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered
       .OrderBy(context.PrimaryKeyOf<NetworkUserMeasurementLocationEntity>())

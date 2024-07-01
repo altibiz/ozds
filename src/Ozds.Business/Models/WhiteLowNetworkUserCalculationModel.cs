@@ -46,25 +46,29 @@ public class WhiteLowNetworkUserCalculationModel
       return new MinMaxSpanningMeasure<decimal>(
         new BinaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(UsageActiveEnergyTotalImportT1
-              .Min_Wh),
+            new SinglePhasicMeasure<decimal>(
+              UsageActiveEnergyTotalImportT1
+                .Min_Wh),
             new NullPhasicMeasure<decimal>()
           ),
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(UsageActiveEnergyTotalImportT2
-              .Min_Wh),
+            new SinglePhasicMeasure<decimal>(
+              UsageActiveEnergyTotalImportT2
+                .Min_Wh),
             new NullPhasicMeasure<decimal>()
           )
         ),
         new BinaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(UsageActiveEnergyTotalImportT2
-              .Max_Wh),
+            new SinglePhasicMeasure<decimal>(
+              UsageActiveEnergyTotalImportT2
+                .Max_Wh),
             new NullPhasicMeasure<decimal>()
           ),
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(UsageActiveEnergyTotalImportT2
-              .Max_Wh),
+            new SinglePhasicMeasure<decimal>(
+              UsageActiveEnergyTotalImportT2
+                .Max_Wh),
             new NullPhasicMeasure<decimal>()
           )
         )
@@ -79,25 +83,29 @@ public class WhiteLowNetworkUserCalculationModel
       return new DualExpenditureMeasure<decimal>(
         new BinaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(UsageActiveEnergyTotalImportT1
-              .Price_EUR),
+            new SinglePhasicMeasure<decimal>(
+              UsageActiveEnergyTotalImportT1
+                .Price_EUR),
             new NullPhasicMeasure<decimal>()
           ),
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(UsageActiveEnergyTotalImportT2
-              .Price_EUR),
+            new SinglePhasicMeasure<decimal>(
+              UsageActiveEnergyTotalImportT2
+                .Price_EUR),
             new NullPhasicMeasure<decimal>()
           )
         ),
         new BinaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(SupplyActiveEnergyTotalImportT1
-              .Price_EUR),
+            new SinglePhasicMeasure<decimal>(
+              SupplyActiveEnergyTotalImportT1
+                .Price_EUR),
             new NullPhasicMeasure<decimal>()
           ),
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(SupplyActiveEnergyTotalImportT2
-              .Price_EUR),
+            new SinglePhasicMeasure<decimal>(
+              SupplyActiveEnergyTotalImportT2
+                .Price_EUR),
             new NullPhasicMeasure<decimal>()
           )
         )

@@ -34,7 +34,8 @@ public class DuplexAbsTest
 
   [Theory]
   [MemberData(nameof(DuplexMeasuresAbs))]
-  public void DuplexAbsReturnsExpectedResult(DuplexMeasure<decimal> measure,
+  public void DuplexAbsReturnsExpectedResult(
+    DuplexMeasure<decimal> measure,
     DuplexMeasure<decimal> expected)
   {
     var result = measure.DuplexAbs;

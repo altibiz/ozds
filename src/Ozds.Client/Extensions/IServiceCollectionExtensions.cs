@@ -17,20 +17,22 @@ public static class IServiceCollectionExtensions
 
     services
       .AddServerSideBlazor()
-      .AddCircuitOptions(options =>
-      {
-        if (isDevelopment)
+      .AddCircuitOptions(
+        options =>
         {
-          options.DetailedErrors = true;
-        }
-      })
-      .AddHubOptions(options =>
-      {
-        if (isDevelopment)
+          if (isDevelopment)
+          {
+            options.DetailedErrors = true;
+          }
+        })
+      .AddHubOptions(
+        options =>
         {
-          options.EnableDetailedErrors = true;
-        }
-      });
+          if (isDevelopment)
+          {
+            options.EnableDetailedErrors = true;
+          }
+        });
 
     services.AddMudServices();
 

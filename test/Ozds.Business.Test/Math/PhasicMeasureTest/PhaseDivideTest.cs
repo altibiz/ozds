@@ -24,8 +24,10 @@ public class PhaseDivideTest
 
   [Theory]
   [MemberData(nameof(PhasicMeasuresDivide))]
-  public void DivideReturnsExpectedResult(PhasicMeasure<decimal> measure,
-    decimal divisor, PhasicMeasure<decimal> expected)
+  public void DivideReturnsExpectedResult(
+    PhasicMeasure<decimal> measure,
+    decimal divisor,
+    PhasicMeasure<decimal> expected)
   {
     var result = measure.Divide(divisor);
 

@@ -10,23 +10,27 @@ public class ExpenditureSumTest
     ExpenditureMeasuresSum = new()
     {
       {
-        new UsageExpenditureMeasure<decimal>(new UnaryTariffMeasure<decimal>(
+        new UsageExpenditureMeasure<decimal>(
+          new UnaryTariffMeasure<decimal>(
+            new ImportExportDuplexMeasure<decimal>(
+              new SinglePhasicMeasure<decimal>(5),
+              new SinglePhasicMeasure<decimal>(3)))),
+        new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
             new SinglePhasicMeasure<decimal>(5),
-            new SinglePhasicMeasure<decimal>(3)))),
-        new UnaryTariffMeasure<decimal>(new ImportExportDuplexMeasure<decimal>(
-          new SinglePhasicMeasure<decimal>(5),
-          new SinglePhasicMeasure<decimal>(3)))
+            new SinglePhasicMeasure<decimal>(3)))
       },
 
       {
-        new SupplyExpenditureMeasure<decimal>(new UnaryTariffMeasure<decimal>(
+        new SupplyExpenditureMeasure<decimal>(
+          new UnaryTariffMeasure<decimal>(
+            new ImportExportDuplexMeasure<decimal>(
+              new TriPhasicMeasure<decimal>(1, 2, 3),
+              new TriPhasicMeasure<decimal>(4, 5, 6)))),
+        new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
             new TriPhasicMeasure<decimal>(1, 2, 3),
-            new TriPhasicMeasure<decimal>(4, 5, 6)))),
-        new UnaryTariffMeasure<decimal>(new ImportExportDuplexMeasure<decimal>(
-          new TriPhasicMeasure<decimal>(1, 2, 3),
-          new TriPhasicMeasure<decimal>(4, 5, 6)))
+            new TriPhasicMeasure<decimal>(4, 5, 6)))
       },
 
       {
@@ -39,9 +43,10 @@ public class ExpenditureSumTest
             new ImportExportDuplexMeasure<decimal>(
               new SinglePhasicMeasure<decimal>(3),
               new SinglePhasicMeasure<decimal>(4)))),
-        new UnaryTariffMeasure<decimal>(new ImportExportDuplexMeasure<decimal>(
-          new SinglePhasicMeasure<decimal>(4),
-          new SinglePhasicMeasure<decimal>(6)))
+        new UnaryTariffMeasure<decimal>(
+          new ImportExportDuplexMeasure<decimal>(
+            new SinglePhasicMeasure<decimal>(4),
+            new SinglePhasicMeasure<decimal>(6)))
       },
 
       {
@@ -52,7 +57,8 @@ public class ExpenditureSumTest
   [Theory]
   [MemberData(nameof(ExpenditureMeasuresSum))]
   public void ExpenditureSum_ReturnsExpectedResult(
-    ExpenditureMeasure<decimal> measure, TariffMeasure<decimal> expected)
+    ExpenditureMeasure<decimal> measure,
+    TariffMeasure<decimal> expected)
   {
     var result = measure.ExpenditureSum;
 

@@ -124,7 +124,10 @@
 </MudHidden>
 
 @code {
-  [CascadingParameter] public RepresentativeState representative { get; set; } = default!;
+
+  [CascadingParameter]
+  public RepresentativeState representative { get; set; } = default!;
+
   private DateTimeOffset now = DateTimeOffset.UtcNow;
   private DateTimeOffset startOfThisMonth = DateTimeOffset.UtcNow.GetStartOfMonth();
   private DateTimeOffset startOfNextMonth = DateTimeOffset.UtcNow.GetStartOfNextMonth();

@@ -1,3 +1,2 @@
 flake.lock
-docs/header.html
-docs/footer.html
+.config/dotnet-tools.json

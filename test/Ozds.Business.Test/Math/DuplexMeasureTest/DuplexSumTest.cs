@@ -34,7 +34,8 @@ public class DuplexSumTest
 
   [Theory]
   [MemberData(nameof(DuplexMeasuresSum))]
-  public void DuplexSumReturnsExpectedResult(DuplexMeasure<decimal> measure,
+  public void DuplexSumReturnsExpectedResult(
+    DuplexMeasure<decimal> measure,
     PhasicMeasure<decimal> expected)
   {
     var result = measure.DuplexSum;

@@ -29,8 +29,10 @@ public class PhaseMultiplyByMeasureTest
 
   [Theory]
   [MemberData(nameof(PhasicMeasuresMultiply))]
-  public void MultiplyReturnsExpectedResult(PhasicMeasure<decimal> lhs,
-    PhasicMeasure<decimal> rhs, PhasicMeasure<decimal> expected)
+  public void MultiplyReturnsExpectedResult(
+    PhasicMeasure<decimal> lhs,
+    PhasicMeasure<decimal> rhs,
+    PhasicMeasure<decimal> expected)
   {
     var result = lhs.Multiply(rhs);
 

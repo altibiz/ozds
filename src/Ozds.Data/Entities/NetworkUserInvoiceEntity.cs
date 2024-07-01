@@ -77,7 +77,8 @@ public class
       .ArchivedProperty(nameof(NetworkUserInvoiceEntity.ArchivedNetworkUser));
 
     builder
-      .ArchivedProperty(nameof(NetworkUserInvoiceEntity
-        .ArchivedRegulatoryCatalogue));
+      .ArchivedProperty(
+        nameof(NetworkUserInvoiceEntity
+          .ArchivedRegulatoryCatalogue));
   }
 }

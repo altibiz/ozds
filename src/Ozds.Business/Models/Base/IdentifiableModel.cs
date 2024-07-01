@@ -7,7 +7,8 @@ public abstract class IdentifiableModel : IIdentifiable
 {
   public required string Id { get; set; }
 
-  [Required] public required string Title { get; set; }
+  [Required]
+  public required string Title { get; set; }
 
   public virtual IEnumerable<ValidationResult> Validate(
     ValidationContext validationContext)

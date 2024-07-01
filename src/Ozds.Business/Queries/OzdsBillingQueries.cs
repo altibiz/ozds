@@ -147,7 +147,8 @@ public class OzdsBillingQueries(OzdsDbContext dbContext) : IOzdsQueries
         )
         .ToListAsync())
       .GroupBy(x => x.MeasurementLocation.Id)
-      .Select(x => new NetworkUserCalculationBasisModel(
+      .Select(
+        x => new NetworkUserCalculationBasisModel(
           fromDate,
           toDate,
           Location: x.First().Location.ToModel(),
@@ -159,12 +160,14 @@ public class OzdsBillingQueries(OzdsDbContext dbContext) : IOzdsQueries
           SupplyRegulatoryCatalogue: x.First().SupplyRegulatoryCatalogue
             .ToModel(),
           Aggregates: Enumerable.Empty<IAggregate>()
-            .Concat(x
-              .Where(x => x.AbbB2xAggregate is not null)
-              .Select(x => x.AbbB2xAggregate!.ToModel()))
-            .Concat(x
-              .Where(x => x.SchneideriEM3xxxAggregate is not null)
-              .Select(x => x.SchneideriEM3xxxAggregate!.ToModel()))
+            .Concat(
+              x
+                .Where(x => x.AbbB2xAggregate is not null)
+                .Select(x => x.AbbB2xAggregate!.ToModel()))
+            .Concat(
+              x
+                .Where(x => x.SchneideriEM3xxxAggregate is not null)
+                .Select(x => x.SchneideriEM3xxxAggregate!.ToModel()))
             .ToList()
         )
       )
@@ -179,13 +182,14 @@ public class OzdsBillingQueries(OzdsDbContext dbContext) : IOzdsQueries
     )
   {
     var networkUser = await _dbContext.NetworkUsers
-                        .Where(_dbContext.PrimaryKeyEquals<NetworkUserEntity>(
-                          networkUserId))
-                        .Include(x => x.Location)
-                        .Include(x => x.Location.RegulatoryCatalogue)
-                        .FirstOrDefaultAsync() ??
-                      throw new InvalidOperationException(
-                        "Network user not found");
+        .Where(
+          _dbContext.PrimaryKeyEquals<NetworkUserEntity>(
+            networkUserId))
+        .Include(x => x.Location)
+        .Include(x => x.Location.RegulatoryCatalogue)
+        .FirstOrDefaultAsync() ??
+      throw new InvalidOperationException(
+        "Network user not found");
     var calculationBases = await NetworkUserCalculationBasesByNetworkUser(
       networkUserId,
       fromDate,

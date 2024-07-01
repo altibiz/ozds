@@ -12,12 +12,6 @@ public class OzdsIotHandler(
   ILogger<OzdsIotHandler> logger
 )
 {
-  private static readonly JsonSerializerOptions deserializationOptions =
-    new()
-    {
-      PropertyNameCaseInsensitive = true
-    };
-
   public Task<bool> Authorize(string id, string request)
   {
     return Task.FromResult(true);
@@ -30,17 +24,16 @@ public class OzdsIotHandler(
     {
       messengerRequest =
         JsonSerializer.Deserialize<MessengerPushRequest>(
-          request, deserializationOptions);
+          request, OzdsIotHandlerJsonOptions.Options);
     }
     catch (JsonException ex)
     {
       // TODO: alerts
       logger.LogError(ex, "Failed to deserialize request");
-      throw;
     }
 
     if (messengerRequest?.Measurements is null
-        || messengerRequest.Measurements.Length == 0)
+      || messengerRequest.Measurements.Length == 0)
     {
       logger.LogWarning("No measurements in request");
       return;
@@ -66,7 +59,7 @@ public class OzdsIotHandler(
       {
         // TODO: alerts
         logger.LogWarning(
-          "Measurement validation failed: {errors}",
+          "Measurement validation failed: {Errors}",
           string.Join(", ", validationResults.Select(x => x.ErrorMessage))
         );
       }
@@ -85,4 +78,13 @@ public class OzdsIotHandler(
   {
     return Task.CompletedTask;
   }
+}
+
+internal static class OzdsIotHandlerJsonOptions
+{
+  public static readonly JsonSerializerOptions Options =
+    new()
+    {
+      PropertyNameCaseInsensitive = true
+    };
 }

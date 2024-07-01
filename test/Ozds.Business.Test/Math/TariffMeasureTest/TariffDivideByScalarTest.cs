@@ -10,23 +10,27 @@ public class TariffDivideByScalarTest
     TariffMeasuresDivide = new()
     {
       {
-        new UnaryTariffMeasure<decimal>(new ImportExportDuplexMeasure<decimal>(
-          new SinglePhasicMeasure<decimal>(10),
-          new SinglePhasicMeasure<decimal>(6))),
+        new UnaryTariffMeasure<decimal>(
+          new ImportExportDuplexMeasure<decimal>(
+            new SinglePhasicMeasure<decimal>(10),
+            new SinglePhasicMeasure<decimal>(6))),
         2,
-        new UnaryTariffMeasure<decimal>(new ImportExportDuplexMeasure<decimal>(
-          new SinglePhasicMeasure<decimal>(5),
-          new SinglePhasicMeasure<decimal>(3)))
+        new UnaryTariffMeasure<decimal>(
+          new ImportExportDuplexMeasure<decimal>(
+            new SinglePhasicMeasure<decimal>(5),
+            new SinglePhasicMeasure<decimal>(3)))
       },
 
       {
-        new UnaryTariffMeasure<decimal>(new ImportExportDuplexMeasure<decimal>(
-          new TriPhasicMeasure<decimal>(8, 6, 4),
-          new TriPhasicMeasure<decimal>(2, 1, 0.5m))),
+        new UnaryTariffMeasure<decimal>(
+          new ImportExportDuplexMeasure<decimal>(
+            new TriPhasicMeasure<decimal>(8, 6, 4),
+            new TriPhasicMeasure<decimal>(2, 1, 0.5m))),
         2,
-        new UnaryTariffMeasure<decimal>(new ImportExportDuplexMeasure<decimal>(
-          new TriPhasicMeasure<decimal>(4, 3, 2),
-          new TriPhasicMeasure<decimal>(1, 0.5m, 0.25m)))
+        new UnaryTariffMeasure<decimal>(
+          new ImportExportDuplexMeasure<decimal>(
+            new TriPhasicMeasure<decimal>(4, 3, 2),
+            new TriPhasicMeasure<decimal>(1, 0.5m, 0.25m)))
       },
 
       {
@@ -52,8 +56,10 @@ public class TariffDivideByScalarTest
 
   [Theory]
   [MemberData(nameof(TariffMeasuresDivide))]
-  public void Divide_ReturnsExpectedResult(TariffMeasure<decimal> measure,
-    decimal divisor, TariffMeasure<decimal> expected)
+  public void Divide_ReturnsExpectedResult(
+    TariffMeasure<decimal> measure,
+    decimal divisor,
+    TariffMeasure<decimal> expected)
   {
     var result = measure.Divide(divisor);
 

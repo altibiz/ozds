@@ -2,6 +2,10 @@ using System.Numerics;
 
 namespace Ozds.Business.Math;
 
+// TODO: convert properties to methods and create proper class hierarchy
+#pragma warning disable S2365
+#pragma warning disable S3060
+
 public record class UsageExpenditureMeasure<T>(
   TariffMeasure<T> TrueUsage)
   : ExpenditureMeasure<T>
@@ -92,25 +96,27 @@ public abstract record class ExpenditureMeasure<T>
     }
   }
 
-  public ExpenditureMeasure<U> ConvertPrimitiveTo<U>()
-    where U : struct,
-    IComparisonOperators<U, U, bool>,
-    IAdditionOperators<U, U, U>,
-    ISubtractionOperators<U, U, U>,
-    IMultiplyOperators<U, U, U>,
-    IDivisionOperators<U, U, U>
+  public ExpenditureMeasure<TConverted> ConvertPrimitiveTo<TConverted>()
+    where TConverted : struct,
+    IComparisonOperators<TConverted, TConverted, bool>,
+    IAdditionOperators<TConverted, TConverted, TConverted>,
+    ISubtractionOperators<TConverted, TConverted, TConverted>,
+    IMultiplyOperators<TConverted, TConverted, TConverted>,
+    IDivisionOperators<TConverted, TConverted, TConverted>
   {
     return this switch
     {
-      UsageExpenditureMeasure<T> usage => new UsageExpenditureMeasure<U>(
-        usage.TrueUsage.ConvertPrimitiveTo<U>()),
-      SupplyExpenditureMeasure<T> supply => new SupplyExpenditureMeasure<U>(
-        supply.TrueSupply.ConvertPrimitiveTo<U>()),
-      DualExpenditureMeasure<T> dual => new DualExpenditureMeasure<U>(
-        dual.TrueUsage.ConvertPrimitiveTo<U>(),
-        dual.TrueSupply.ConvertPrimitiveTo<U>()
+      UsageExpenditureMeasure<T> usage => new
+        UsageExpenditureMeasure<TConverted>(
+          usage.TrueUsage.ConvertPrimitiveTo<TConverted>()),
+      SupplyExpenditureMeasure<T> supply => new
+        SupplyExpenditureMeasure<TConverted>(
+          supply.TrueSupply.ConvertPrimitiveTo<TConverted>()),
+      DualExpenditureMeasure<T> dual => new DualExpenditureMeasure<TConverted>(
+        dual.TrueUsage.ConvertPrimitiveTo<TConverted>(),
+        dual.TrueSupply.ConvertPrimitiveTo<TConverted>()
       ),
-      _ => NullExpenditureMeasure<U>.Null
+      _ => NullExpenditureMeasure<TConverted>.Null
     };
   }
 }
