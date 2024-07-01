@@ -135,7 +135,6 @@
 
     foreach (var netUser in groupedLocations)
     {
-      // !!! Remove .Month and .LocalDateTime in live
       var _thisMonthAggregate = netUser.Select(x => x.Aggregates.Where(x => x.Timestamp == startOfThisMonth).FirstOrDefault()).Where(x => x is not null).ToList();
       var _lastMonthAggregate = netUser.Select(x => x.Aggregates.Where(x => x.Timestamp == startOfLastMonth).FirstOrDefault()).Where(x => x is not null).ToList();
       float _currentPower = 0;

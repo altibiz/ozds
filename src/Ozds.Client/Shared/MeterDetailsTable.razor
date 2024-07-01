@@ -155,6 +155,7 @@
   public record struct TabularData(string year, string month, float? monthStartTotal, float? monthEndTotal, float maxPower);
 
   private DateTimeOffset startOfThisYear = DateTimeOffset.UtcNow.GetStartOfYear();
+  private DateTimeOffset startOfThisYearNoTransformation = DateTimeOffset.UtcNow.GetStartOfYearNoTransformation();
   private DateTimeOffset startOfThisMonth = DateTimeOffset.UtcNow.GetStartOfMonth();
   private DateTimeOffset now = DateTime.UtcNow;
   private IMeter? _meter;
@@ -172,26 +173,28 @@
   protected override async Task OnInitializedAsync()
   {
     var aggregateQueries = ScopedServices.GetRequiredService<OzdsAggregateQueries>();
-    var test = await aggregateQueries.ReadAgnostic(new[] { $"x => (x.Interval == 2 || x.Interval == 0) && x.MeterId == \"{Source}\"" }, startOfThisYear, now, 1, 9000);
-    var measurePerMonth = test.OrderBy(x => x.Timestamp).Where(x => x.MeterId == Source).ToList();
+    var test = await aggregateQueries.ReadAgnostic(new[] { $"x => (x.Interval == 2 || x.Interval == 0) && x.MeterId == \"{Source}\"" }, startOfThisYear, now, 1, 900000);
+    var measures = test.OrderBy(x => x.Timestamp).Where(x => x.MeterId == Source).ToList();
+    var measurePerMonth = measures.Where(x => x.Interval == IntervalModel.Month).ToList();
+    var measurePerQuarterHour = measures.Where(x => x.Interval == IntervalModel.QuarterHour).ToList();
     _meter = await ScopedServices
       .GetRequiredService<OzdsMeterTableQueries>()
       .GetMeterById(Source);
 
-    foreach (var month in startOfThisYear.GetThisYearMonthStarts().Reverse())
+    foreach (var month in startOfThisYearNoTransformation.GetThisYearMonthStartsNoTransformation().Reverse())
     {
       var measureNextMonthMonthly = measurePerMonth
-        .Where(x => x.Timestamp.Month == month.AddMonths(1).Month)
+        .Where(x => x.Timestamp == month.GetStartOfNextMonth())
         .Where(x => x.Interval == IntervalModel.Month)
         .FirstOrDefault();
       var measureThisMonthMonthly = measurePerMonth
-        .Where(x => x.Timestamp.Month == month.Month)
+        .Where(x => x.Timestamp == month.GetStartOfMonth())
         .Where(x => x.Interval == IntervalModel.Month)
         .FirstOrDefault();
       if (measureThisMonthMonthly is null)
         continue;
-      var ThisMonthQuarterHourly = measurePerMonth
-        .Where(x => x.Timestamp.GetStartOfMonth().Month == month.Month)
+      var ThisMonthQuarterHourly = measurePerQuarterHour
+        .Where(x => x.Timestamp.GetStartOfMonth() == month.GetStartOfMonth())
         .Where(x => x.Interval == IntervalModel.QuarterHour)
         .ToList();
 
@@ -205,7 +208,7 @@
           _monthEndTotal = _nextMonthStartTotal;
       }
 
-      var _maxPower = ThisMonthQuarterHourly.Select(measure => measure.ActivePower_W.TariffBinary.T1.DuplexImport.PhaseSum).DefaultIfEmpty(0).Max();
+      var _maxPower = ThisMonthQuarterHourly.Select(measure => measure.ActivePower_W.TariffUnary.DuplexImport.PhaseSum).DefaultIfEmpty(0).Max();
       _dataStruct.Add(
         new TabularData
         {
