@@ -8,14 +8,15 @@ public class PhaseTroughTest
   public static readonly TheoryData<PhasicMeasure<decimal>>
     PhasicMeasuresTroughSix = new()
     {
-      new SinglePhasicMeasure<decimal>(6),
+      new SinglePhasicAverage<decimal>(6),
       new TriPhasicMeasure<decimal>(100, 6.1m, 6)
     };
 
   public static readonly TheoryData<PhasicMeasure<decimal>>
     PhasicMeasuresTroughZero = new()
     {
-      new SinglePhasicMeasure<decimal>(0),
+      new SinglePhasicSum<decimal>(6),
+      new SinglePhasicAverage<decimal>(0),
       new TriPhasicMeasure<decimal>(0, 0, 0),
       new NullPhasicMeasure<decimal>()
     };

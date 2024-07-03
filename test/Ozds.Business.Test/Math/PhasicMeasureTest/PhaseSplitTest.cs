@@ -8,11 +8,11 @@ public class PhaseSplitTest
   public static readonly TheoryData<PhasicMeasure<decimal>>
     PhasicMeasuresSplitSix = new()
     {
-      new SinglePhasicMeasure<decimal>(6),
+      new SinglePhasicSum<decimal>(6),
       new CompositePhasicMeasure<decimal>(
       [
-        new SinglePhasicMeasure<decimal>(6),
-        new TriPhasicMeasure<decimal>(1, 2, 3)
+        new SinglePhasicSum<decimal>(3),
+        new TriPhasicMeasure<decimal>(6, 6, 6)
       ]),
       new TriPhasicMeasure<decimal>(6, 6, 6)
     };
@@ -20,11 +20,12 @@ public class PhaseSplitTest
   public static readonly TheoryData<PhasicMeasure<decimal>>
     PhasicMeasuresSplitZero = new()
     {
-      new SinglePhasicMeasure<decimal>(0),
+      new SinglePhasicSum<decimal>(0),
+      new SinglePhasicAverage<decimal>(0),
       new CompositePhasicMeasure<decimal>(
       [
-        new SinglePhasicMeasure<decimal>(0),
-        new TriPhasicMeasure<decimal>(1, 2, 3)
+        new SinglePhasicSum<decimal>(6),
+        new TriPhasicMeasure<decimal>(0, 0, 0)
       ]),
       new TriPhasicMeasure<decimal>(0, 0, 0),
       new NullPhasicMeasure<decimal>()
