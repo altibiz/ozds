@@ -34,7 +34,7 @@ public record class CompositePhasicMeasure<T>
     return Measures.FirstOrDefault(
         measure =>
           measure is TriPhasicMeasure<T> or SinglePhasicMeasure<T>) is
-      { } singleOrTri
+    { } singleOrTri
       ? selector(singleOrTri)
       : @default;
   }
@@ -81,6 +81,22 @@ public record class SinglePhasicMeasure<T>(T Value) : PhasicMeasure<T>
   IMultiplyOperators<T, T, T>,
   IDivisionOperators<T, T, T>;
 
+public record class SinglePhasicSum<T>(T Value) : SinglePhasicMeasure<T>(Value)
+  where T : struct,
+  IComparisonOperators<T, T, bool>,
+  IAdditionOperators<T, T, T>,
+  ISubtractionOperators<T, T, T>,
+  IMultiplyOperators<T, T, T>,
+  IDivisionOperators<T, T, T>;
+
+public record class SinglePhasicAverage<T>(T Value) : SinglePhasicMeasure<T>(Value)
+  where T : struct,
+  IComparisonOperators<T, T, bool>,
+  IAdditionOperators<T, T, T>,
+  ISubtractionOperators<T, T, T>,
+  IMultiplyOperators<T, T, T>,
+  IDivisionOperators<T, T, T>;
+
 public record class NullPhasicMeasure<T> : PhasicMeasure<T>
   where T : struct,
   IComparisonOperators<T, T, bool>,
@@ -111,7 +127,7 @@ public abstract record class PhasicMeasure<T>
             (T)Convert.ChangeType(0, typeof(T)),
             typeof(T))),
         TriPhasicMeasure<T> tri => tri.ValueL1 + tri.ValueL2 + tri.ValueL3,
-        SinglePhasicMeasure<T> single => single.Value,
+        SinglePhasicSum<T> single => single.Value,
         _ => (T)Convert.ChangeType(
           (T)Convert.ChangeType(0, typeof(T)),
           typeof(T))
@@ -132,7 +148,7 @@ public abstract record class PhasicMeasure<T>
             typeof(T))),
         TriPhasicMeasure<T> tri => (tri.ValueL1 + tri.ValueL2 + tri.ValueL3) /
           (T)Convert.ChangeType(3, typeof(T)),
-        SinglePhasicMeasure<T> single => single.Value,
+        SinglePhasicAverage<T> single => single.Value,
         _ => (T)Convert.ChangeType(
           (T)Convert.ChangeType(0, typeof(T)),
           typeof(T))
@@ -155,7 +171,7 @@ public abstract record class PhasicMeasure<T>
           : tri.ValueL2 > tri.ValueL3
             ? tri.ValueL2
             : tri.ValueL3,
-        SinglePhasicMeasure<T> single => single.Value,
+        SinglePhasicAverage<T> single => single.Value,
         _ => (T)Convert.ChangeType(0, typeof(T))
       };
     }
@@ -176,7 +192,7 @@ public abstract record class PhasicMeasure<T>
           : tri.ValueL2 < tri.ValueL3
             ? tri.ValueL2
             : tri.ValueL3,
-        SinglePhasicMeasure<T> single => single.Value,
+        SinglePhasicAverage<T> single => single.Value,
         _ => (T)Convert.ChangeType(0, typeof(T))
       };
     }

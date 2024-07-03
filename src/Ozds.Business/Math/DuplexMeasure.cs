@@ -1,4 +1,5 @@
 using System.Numerics;
+using Humanizer;
 
 namespace Ozds.Business.Math;
 
@@ -26,23 +27,6 @@ public record class CompositeDuplexMeasure<T>
   }
 
   public List<DuplexMeasure<T>> Measures { get; set; }
-
-  public TConverted FromMostAccurate<TConverted>(
-    Func<DuplexMeasure<T>, TConverted> selector,
-    TConverted @default)
-  {
-    return Measures.FirstOrDefault(
-      measure =>
-        measure is ImportExportDuplexMeasure<T>) is { } importExport
-      ? selector(importExport)
-      : Measures.FirstOrDefault(measure => measure is NetDuplexMeasure<T>) is
-        { } net
-        ? selector(net)
-        : Measures.FirstOrDefault(measure => measure is AnyDuplexMeasure<T>) is
-          { } any
-          ? selector(any)
-          : @default;
-  }
 
   public CompositeDuplexMeasure<T> Select(
     Func<DuplexMeasure<T>, DuplexMeasure<T>> selector)
@@ -117,8 +101,17 @@ public abstract record class DuplexMeasure<T>
     {
       return this switch
       {
-        CompositeDuplexMeasure<T> composite => composite.FromMostAccurate(
-          measure => measure.DuplexNet, PhasicMeasure<T>.Null),
+        CompositeDuplexMeasure<T> composite => composite.Measures.FirstOrDefault(
+      measure =>
+        measure is NetDuplexMeasure<T>) is { } net
+      ? net.DuplexNet
+      : composite.Measures.FirstOrDefault(measure => measure is ImportExportDuplexMeasure<T>) is
+      { } importExport
+        ? importExport.DuplexNet
+        : composite.Measures.FirstOrDefault(measure => measure is AnyDuplexMeasure<T>) is
+        { } any
+          ? any.DuplexNet
+          : NullPhasicMeasure<T>.Null,
         ImportExportDuplexMeasure<T> importExport => importExport.Import
           .Subtract(importExport.Export),
         NetDuplexMeasure<T> net => net.TrueNet,
@@ -133,8 +126,17 @@ public abstract record class DuplexMeasure<T>
     {
       return this switch
       {
-        CompositeDuplexMeasure<T> composite => composite.FromMostAccurate(
-          measure => measure.DuplexAny, PhasicMeasure<T>.Null),
+        CompositeDuplexMeasure<T> composite => composite.Measures.FirstOrDefault(
+      measure =>
+        measure is AnyDuplexMeasure<T>) is { } any
+      ? any.DuplexAny
+      : composite.Measures.FirstOrDefault(measure => measure is NetDuplexMeasure<T>) is
+      { } net
+        ? net.DuplexAny
+        : composite.Measures.FirstOrDefault(measure => measure is ImportExportDuplexMeasure<T>) is
+        { } importExport
+          ? importExport.DuplexAny
+          : NullPhasicMeasure<T>.Null,
         NetDuplexMeasure<T> net => net.TrueNet,
         AnyDuplexMeasure<T> net => net.Value,
         _ => PhasicMeasure<T>.Null
@@ -148,8 +150,17 @@ public abstract record class DuplexMeasure<T>
     {
       return this switch
       {
-        CompositeDuplexMeasure<T> composite => composite.FromMostAccurate(
-          measure => measure.DuplexImport, PhasicMeasure<T>.Null),
+        CompositeDuplexMeasure<T> composite => composite.Measures.FirstOrDefault(
+      measure =>
+        measure is ImportExportDuplexMeasure<T>) is { } importExport
+      ? importExport.DuplexImport
+      : composite.Measures.FirstOrDefault(measure => measure is NetDuplexMeasure<T>) is
+      { } net
+        ? net.DuplexImport
+        : composite.Measures.FirstOrDefault(measure => measure is AnyDuplexMeasure<T>) is
+        { } any
+          ? any.DuplexImport
+          : NullPhasicMeasure<T>.Null,
         ImportExportDuplexMeasure<T> importExport => importExport.Import,
         _ => PhasicMeasure<T>.Null
       };
@@ -162,8 +173,17 @@ public abstract record class DuplexMeasure<T>
     {
       return this switch
       {
-        CompositeDuplexMeasure<T> composite => composite.FromMostAccurate(
-          measure => measure.DuplexExport, PhasicMeasure<T>.Null),
+        CompositeDuplexMeasure<T> composite => composite.Measures.FirstOrDefault(
+      measure =>
+        measure is ImportExportDuplexMeasure<T>) is { } importExport
+      ? importExport.DuplexExport
+      : composite.Measures.FirstOrDefault(measure => measure is NetDuplexMeasure<T>) is
+      { } net
+        ? net.DuplexExport
+        : composite.Measures.FirstOrDefault(measure => measure is AnyDuplexMeasure<T>) is
+        { } any
+          ? any.DuplexExport
+          : NullPhasicMeasure<T>.Null,
         ImportExportDuplexMeasure<T> importExport => importExport.Export,
         _ => PhasicMeasure<T>.Null
       };
@@ -181,8 +201,17 @@ public abstract record class DuplexMeasure<T>
     {
       return this switch
       {
-        CompositeDuplexMeasure<T> composite => composite.FromMostAccurate(
-          measure => measure.DuplexSum, PhasicMeasure<T>.Null),
+        CompositeDuplexMeasure<T> composite => composite.Measures.FirstOrDefault(
+      measure =>
+        measure is ImportExportDuplexMeasure<T>) is { } importExport
+      ? importExport.DuplexSum
+      : composite.Measures.FirstOrDefault(measure => measure is NetDuplexMeasure<T>) is
+      { } net
+        ? net.DuplexSum
+        : composite.Measures.FirstOrDefault(measure => measure is AnyDuplexMeasure<T>) is
+        { } any
+          ? any.DuplexSum
+          : NullPhasicMeasure<T>.Null,
         ImportExportDuplexMeasure<T> importExport => importExport.Import
           .Add(importExport.Export),
         NetDuplexMeasure<T> net => net.TrueNet,

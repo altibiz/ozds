@@ -27,20 +27,6 @@ public record class CompositeTariffMeasure<T>
 
   public List<TariffMeasure<T>> Measures { get; set; }
 
-  public TConverted FromMostAccurate<TConverted>(
-    Func<TariffMeasure<T>, TConverted> selector,
-    TConverted @default)
-  {
-    return Measures.FirstOrDefault(measure => measure is BinaryTariffMeasure<T>)
-      is
-      { } binary
-      ? selector(binary)
-      : Measures.FirstOrDefault(measure => measure is UnaryTariffMeasure<T>) is
-        { } unary
-        ? selector(unary)
-        : @default;
-  }
-
   public CompositeTariffMeasure<T> Select(
     Func<TariffMeasure<T>, TariffMeasure<T>> selector)
   {

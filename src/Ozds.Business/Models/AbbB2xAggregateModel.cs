@@ -159,19 +159,19 @@ public class AbbB2xAggregateModel : AggregateModel
         [
           new BinaryTariffMeasure<float>(
             new ImportExportDuplexMeasure<float>(
-              new SinglePhasicMeasure<float>(ActiveEnergyTotalImportT1Min_Wh),
+              new SinglePhasicSum<float>(ActiveEnergyTotalImportT1Min_Wh),
               new NullPhasicMeasure<float>()
             ),
             new ImportExportDuplexMeasure<float>(
-              new SinglePhasicMeasure<float>(ActiveEnergyTotalImportT2Min_Wh),
+              new SinglePhasicSum<float>(ActiveEnergyTotalImportT2Min_Wh),
               new NullPhasicMeasure<float>()
             )
           ),
 
           new UnaryTariffMeasure<float>(
             new ImportExportDuplexMeasure<float>(
-              new SinglePhasicMeasure<float>(ActiveEnergyTotalImportT0Min_Wh),
-              new SinglePhasicMeasure<float>(ActiveEnergyTotalExportT0Min_Wh)
+              new SinglePhasicSum<float>(ActiveEnergyTotalImportT0Min_Wh),
+              new SinglePhasicSum<float>(ActiveEnergyTotalExportT0Min_Wh)
             )
           )
         ]),
@@ -179,19 +179,19 @@ public class AbbB2xAggregateModel : AggregateModel
         [
           new BinaryTariffMeasure<float>(
             new ImportExportDuplexMeasure<float>(
-              new SinglePhasicMeasure<float>(ActiveEnergyTotalImportT1Max_Wh),
+              new SinglePhasicSum<float>(ActiveEnergyTotalImportT1Max_Wh),
               new NullPhasicMeasure<float>()
             ),
             new ImportExportDuplexMeasure<float>(
-              new SinglePhasicMeasure<float>(ActiveEnergyTotalImportT2Max_Wh),
+              new SinglePhasicSum<float>(ActiveEnergyTotalImportT2Max_Wh),
               new NullPhasicMeasure<float>()
             )
           ),
 
           new UnaryTariffMeasure<float>(
             new ImportExportDuplexMeasure<float>(
-              new SinglePhasicMeasure<float>(ActiveEnergyTotalImportT0Max_Wh),
-              new SinglePhasicMeasure<float>(ActiveEnergyTotalExportT0Max_Wh)
+              new SinglePhasicSum<float>(ActiveEnergyTotalImportT0Max_Wh),
+              new SinglePhasicSum<float>(ActiveEnergyTotalExportT0Max_Wh)
             )
           )
         ])
@@ -206,14 +206,14 @@ public class AbbB2xAggregateModel : AggregateModel
       return new MinMaxSpanningMeasure<float>(
         new UnaryTariffMeasure<float>(
           new ImportExportDuplexMeasure<float>(
-            new SinglePhasicMeasure<float>(ReactiveEnergyTotalImportT0Min_VARh),
-            new SinglePhasicMeasure<float>(ReactiveEnergyTotalExportT0Min_VARh)
+            new SinglePhasicSum<float>(ReactiveEnergyTotalImportT0Min_VARh),
+            new SinglePhasicSum<float>(ReactiveEnergyTotalExportT0Min_VARh)
           )
         ),
         new UnaryTariffMeasure<float>(
           new ImportExportDuplexMeasure<float>(
-            new SinglePhasicMeasure<float>(ReactiveEnergyTotalImportT0Max_VARh),
-            new SinglePhasicMeasure<float>(ReactiveEnergyTotalExportT0Max_VARh)
+            new SinglePhasicSum<float>(ReactiveEnergyTotalImportT0Max_VARh),
+            new SinglePhasicSum<float>(ReactiveEnergyTotalExportT0Max_VARh)
           )
         )
       );
