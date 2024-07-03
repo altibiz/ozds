@@ -27,18 +27,6 @@ public record class CompositePhasicMeasure<T>
 
   public List<PhasicMeasure<T>> Measures { get; set; }
 
-  public TConverted FromMostAccurate<TConverted>(
-    Func<PhasicMeasure<T>, TConverted> selector,
-    TConverted @default)
-  {
-    return Measures.FirstOrDefault(
-        measure =>
-          measure is TriPhasicMeasure<T> or SinglePhasicMeasure<T>) is
-    { } singleOrTri
-      ? selector(singleOrTri)
-      : @default;
-  }
-
   public CompositePhasicMeasure<T> Select(
     Func<PhasicMeasure<T>, PhasicMeasure<T>> selector)
   {
@@ -121,16 +109,16 @@ public abstract record class PhasicMeasure<T>
     {
       return this switch
       {
-        CompositePhasicMeasure<T> composite => composite.FromMostAccurate(
-          measure => measure.PhaseSum,
-          (T)Convert.ChangeType(
-            (T)Convert.ChangeType(0, typeof(T)),
-            typeof(T))),
+        CompositePhasicMeasure<T> composite => composite.Measures.FirstOrDefault(
+          measure => measure is SinglePhasicSum<T> or TriPhasicMeasure<T>) switch
+        {
+          SinglePhasicSum<T> single => single.Value,
+          TriPhasicMeasure<T> tri => tri.ValueL1 + tri.ValueL2 + tri.ValueL3,
+          _ => (T)Convert.ChangeType(0, typeof(T))
+        },
         TriPhasicMeasure<T> tri => tri.ValueL1 + tri.ValueL2 + tri.ValueL3,
         SinglePhasicSum<T> single => single.Value,
-        _ => (T)Convert.ChangeType(
-          (T)Convert.ChangeType(0, typeof(T)),
-          typeof(T))
+        _ => (T)Convert.ChangeType(0, typeof(T))
       };
     }
   }
@@ -141,17 +129,18 @@ public abstract record class PhasicMeasure<T>
     {
       return this switch
       {
-        CompositePhasicMeasure<T> composite => composite.FromMostAccurate(
-          measure => measure.PhaseAverage,
-          (T)Convert.ChangeType(
-            (T)Convert.ChangeType(0, typeof(T)),
-            typeof(T))),
+        CompositePhasicMeasure<T> composite => composite.Measures.FirstOrDefault(
+          measure => measure is SinglePhasicAverage<T> or TriPhasicMeasure<T>) switch
+        {
+          SinglePhasicAverage<T> single => single.Value,
+          TriPhasicMeasure<T> tri => (tri.ValueL1 + tri.ValueL2 + tri.ValueL3) /
+            (T)Convert.ChangeType(3, typeof(T)),
+          _ => (T)Convert.ChangeType(0, typeof(T))
+        },
         TriPhasicMeasure<T> tri => (tri.ValueL1 + tri.ValueL2 + tri.ValueL3) /
           (T)Convert.ChangeType(3, typeof(T)),
         SinglePhasicAverage<T> single => single.Value,
-        _ => (T)Convert.ChangeType(
-          (T)Convert.ChangeType(0, typeof(T)),
-          typeof(T))
+        _ => (T)Convert.ChangeType(0, typeof(T))
       };
     }
   }
@@ -162,15 +151,18 @@ public abstract record class PhasicMeasure<T>
     {
       return this switch
       {
-        CompositePhasicMeasure<T> composite => composite.FromMostAccurate(
-          measure => measure.PhasePeak, (T)Convert.ChangeType(0, typeof(T))),
+        CompositePhasicMeasure<T> composite => composite.Measures.FirstOrDefault(
+          measure => measure is SinglePhasicAverage<T> or TriPhasicMeasure<T>) switch
+        {
+          SinglePhasicAverage<T> single => single.Value,
+          TriPhasicMeasure<T> tri => tri.ValueL1 > tri.ValueL2
+            ? tri.ValueL1 > tri.ValueL3 ? tri.ValueL1 : tri.ValueL3
+            : tri.ValueL2 > tri.ValueL3 ? tri.ValueL2 : tri.ValueL3,
+          _ => (T)Convert.ChangeType(0, typeof(T))
+        },
         TriPhasicMeasure<T> tri => tri.ValueL1 > tri.ValueL2
-          ? tri.ValueL1 > tri.ValueL3
-            ? tri.ValueL1
-            : tri.ValueL3
-          : tri.ValueL2 > tri.ValueL3
-            ? tri.ValueL2
-            : tri.ValueL3,
+          ? tri.ValueL1 > tri.ValueL3 ? tri.ValueL1 : tri.ValueL3
+          : tri.ValueL2 > tri.ValueL3 ? tri.ValueL2 : tri.ValueL3,
         SinglePhasicAverage<T> single => single.Value,
         _ => (T)Convert.ChangeType(0, typeof(T))
       };
@@ -183,15 +175,18 @@ public abstract record class PhasicMeasure<T>
     {
       return this switch
       {
-        CompositePhasicMeasure<T> composite => composite.FromMostAccurate(
-          measure => measure.PhaseTrough, (T)Convert.ChangeType(0, typeof(T))),
+        CompositePhasicMeasure<T> composite => composite.Measures.FirstOrDefault(
+          measure => measure is SinglePhasicAverage<T> or TriPhasicMeasure<T>) switch
+        {
+          SinglePhasicAverage<T> single => single.Value,
+          TriPhasicMeasure<T> tri => tri.ValueL1 < tri.ValueL2
+            ? tri.ValueL1 < tri.ValueL3 ? tri.ValueL1 : tri.ValueL3
+            : tri.ValueL2 < tri.ValueL3 ? tri.ValueL2 : tri.ValueL3,
+          _ => (T)Convert.ChangeType(0, typeof(T))
+        },
         TriPhasicMeasure<T> tri => tri.ValueL1 < tri.ValueL2
-          ? tri.ValueL1 < tri.ValueL3
-            ? tri.ValueL1
-            : tri.ValueL3
-          : tri.ValueL2 < tri.ValueL3
-            ? tri.ValueL2
-            : tri.ValueL3,
+          ? tri.ValueL1 < tri.ValueL3 ? tri.ValueL1 : tri.ValueL3
+          : tri.ValueL2 < tri.ValueL3 ? tri.ValueL2 : tri.ValueL3,
         SinglePhasicAverage<T> single => single.Value,
         _ => (T)Convert.ChangeType(0, typeof(T))
       };
@@ -204,8 +199,8 @@ public abstract record class PhasicMeasure<T>
     {
       return this switch
       {
-        CompositePhasicMeasure<T> composite => composite.FromMostAccurate(
-          measure => measure.PhaseSingle, new SinglePhasicMeasure<T>(default)),
+        CompositePhasicMeasure<T> composite => composite.Measures.FirstOrDefault(
+          measure => measure is SinglePhasicMeasure<T>) as SinglePhasicMeasure<T> ?? new SinglePhasicMeasure<T>(default),
         SinglePhasicMeasure<T> single => single,
         _ => new SinglePhasicMeasure<T>(default)
       };
@@ -218,11 +213,8 @@ public abstract record class PhasicMeasure<T>
     {
       return this switch
       {
-        CompositePhasicMeasure<T> composite => composite.FromMostAccurate(
-          measure => measure.PhaseSplit, new TriPhasicMeasure<T>(
-            default,
-            default,
-            default)),
+        CompositePhasicMeasure<T> composite => composite.Measures.FirstOrDefault(
+          measure => measure is TriPhasicMeasure<T>) as TriPhasicMeasure<T> ?? new TriPhasicMeasure<T>(default, default, default),
         SinglePhasicMeasure<T> single => new TriPhasicMeasure<T>(
           single.Value,
           single.Value, single.Value),
