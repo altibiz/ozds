@@ -129,17 +129,6 @@ public abstract record class SpanningMeasure<T>
     };
   }
 
-  public TariffMeasure<T> SpanIntegral(T y)
-  {
-    return this switch
-    {
-      MinMaxSpanningMeasure<T> minMax =>
-        minMax.TrueMax.Subtract(minMax.TrueMin),
-      AvgSpanningMeasure<T> avg => avg.TrueAvg.Multiply(y),
-      _ => TariffMeasure<T>.Null
-    };
-  }
-
   public TariffMeasure<T> SpanDifferential(T y)
   {
     return SpanDiff.Divide(y);
