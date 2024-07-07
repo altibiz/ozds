@@ -13,17 +13,17 @@ public class SpanDifferentialTest
         new MinMaxSpanningMeasure<decimal>(
           new UnaryTariffMeasure<decimal>(
             new ImportExportDuplexMeasure<decimal>(
-              new SinglePhasicMeasure<decimal>(5),
-              new SinglePhasicMeasure<decimal>(3))),
+              new SinglePhasicMeasureSum<decimal>(5),
+              new SinglePhasicMeasureSum<decimal>(3))),
           new UnaryTariffMeasure<decimal>(
             new ImportExportDuplexMeasure<decimal>(
-              new SinglePhasicMeasure<decimal>(10),
-              new SinglePhasicMeasure<decimal>(6)))),
+              new SinglePhasicMeasureSum<decimal>(10),
+              new SinglePhasicMeasureSum<decimal>(6)))),
         2,
         new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(2.5m),
-            new SinglePhasicMeasure<decimal>(1.5m)))
+            new SinglePhasicMeasureSum<decimal>(2.5m),
+            new SinglePhasicMeasureSum<decimal>(1.5m)))
       },
 
       {

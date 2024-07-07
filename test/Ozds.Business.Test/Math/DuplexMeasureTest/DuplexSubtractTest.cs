@@ -11,14 +11,14 @@ public class DuplexSubtractTest
     {
       {
         new ImportExportDuplexMeasure<decimal>(
-          new SinglePhasicMeasure<decimal>(5),
-          new SinglePhasicMeasure<decimal>(3)),
+          new SinglePhasicMeasureSum<decimal>(5),
+          new SinglePhasicMeasureSum<decimal>(3)),
         new ImportExportDuplexMeasure<decimal>(
-          new SinglePhasicMeasure<decimal>(2),
-          new SinglePhasicMeasure<decimal>(1)),
+          new SinglePhasicMeasureSum<decimal>(2),
+          new SinglePhasicMeasureSum<decimal>(1)),
         new ImportExportDuplexMeasure<decimal>(
-          new SinglePhasicMeasure<decimal>(3),
-          new SinglePhasicMeasure<decimal>(2))
+          new SinglePhasicMeasureSum<decimal>(3),
+          new SinglePhasicMeasureSum<decimal>(2))
       },
 
       {
@@ -34,15 +34,15 @@ public class DuplexSubtractTest
       },
 
       {
-        new NetDuplexMeasure<decimal>(new SinglePhasicMeasure<decimal>(10)),
-        new NetDuplexMeasure<decimal>(new SinglePhasicMeasure<decimal>(4)),
-        new NetDuplexMeasure<decimal>(new SinglePhasicMeasure<decimal>(6))
+        new NetDuplexMeasure<decimal>(new SinglePhasicMeasureSum<decimal>(10)),
+        new NetDuplexMeasure<decimal>(new SinglePhasicMeasureSum<decimal>(4)),
+        new NetDuplexMeasure<decimal>(new SinglePhasicMeasureSum<decimal>(6))
       },
 
       {
-        new AnyDuplexMeasure<decimal>(new SinglePhasicMeasure<decimal>(7)),
-        new AnyDuplexMeasure<decimal>(new SinglePhasicMeasure<decimal>(3)),
-        new AnyDuplexMeasure<decimal>(new SinglePhasicMeasure<decimal>(4))
+        new AnyDuplexMeasure<decimal>(new SinglePhasicMeasureSum<decimal>(7)),
+        new AnyDuplexMeasure<decimal>(new SinglePhasicMeasureSum<decimal>(3)),
+        new AnyDuplexMeasure<decimal>(new SinglePhasicMeasureSum<decimal>(4))
       },
 
       {

@@ -10,8 +10,8 @@ public class PhaseMultiplyTest
     PhasicMeasuresMultiply = new()
     {
       {
-        new SinglePhasicMeasure<decimal>(5), 2,
-        new SinglePhasicMeasure<decimal>(10)
+        new SinglePhasicMeasureSum<decimal>(5), 2,
+        new SinglePhasicMeasureSum<decimal>(10)
       },
 
       {

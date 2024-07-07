@@ -10,12 +10,12 @@ public class DuplexAnyTest
     DuplexMeasuresAny = new()
     {
       {
-        new NetDuplexMeasure<decimal>(new SinglePhasicMeasure<decimal>(4)),
-        new SinglePhasicMeasure<decimal>(4)
+        new NetDuplexMeasure<decimal>(new SinglePhasicMeasureSum<decimal>(4)),
+        new SinglePhasicMeasureSum<decimal>(4)
       },
       {
-        new AnyDuplexMeasure<decimal>(new SinglePhasicMeasure<decimal>(3)),
-        new SinglePhasicMeasure<decimal>(3)
+        new AnyDuplexMeasure<decimal>(new SinglePhasicMeasureSum<decimal>(3)),
+        new SinglePhasicMeasureSum<decimal>(3)
       },
       {
         new AnyDuplexMeasure<decimal>(new TriPhasicMeasure<decimal>(1, 2, 3)),

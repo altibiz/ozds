@@ -12,18 +12,18 @@ public class TariffBinaryTest
       {
         new BinaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(1),
-            new SinglePhasicMeasure<decimal>(2)),
+            new SinglePhasicMeasureSum<decimal>(1),
+            new SinglePhasicMeasureSum<decimal>(2)),
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(3),
-            new SinglePhasicMeasure<decimal>(4))),
+            new SinglePhasicMeasureSum<decimal>(3),
+            new SinglePhasicMeasureSum<decimal>(4))),
         new BinaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(1),
-            new SinglePhasicMeasure<decimal>(2)),
+            new SinglePhasicMeasureSum<decimal>(1),
+            new SinglePhasicMeasureSum<decimal>(2)),
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(3),
-            new SinglePhasicMeasure<decimal>(4)))
+            new SinglePhasicMeasureSum<decimal>(3),
+            new SinglePhasicMeasureSum<decimal>(4)))
       },
 
       {

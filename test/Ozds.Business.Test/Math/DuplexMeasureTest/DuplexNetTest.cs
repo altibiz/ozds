@@ -11,9 +11,9 @@ public class DuplexNetTest
     {
       {
         new ImportExportDuplexMeasure<decimal>(
-          new SinglePhasicMeasure<decimal>(5),
-          new SinglePhasicMeasure<decimal>(3)),
-        new SinglePhasicMeasure<decimal>(2)
+          new SinglePhasicMeasureSum<decimal>(5),
+          new SinglePhasicMeasureSum<decimal>(3)),
+        new SinglePhasicMeasureSum<decimal>(2)
       },
       {
         new ImportExportDuplexMeasure<decimal>(
@@ -22,8 +22,8 @@ public class DuplexNetTest
         new TriPhasicMeasure<decimal>(5, 6, 7)
       },
       {
-        new NetDuplexMeasure<decimal>(new SinglePhasicMeasure<decimal>(4)),
-        new SinglePhasicMeasure<decimal>(4)
+        new NetDuplexMeasure<decimal>(new SinglePhasicMeasureSum<decimal>(4)),
+        new SinglePhasicMeasureSum<decimal>(4)
       },
       { new NullDuplexMeasure<decimal>(), new NullPhasicMeasure<decimal>() }
     };

@@ -11,12 +11,12 @@ public class DuplexMultiplyByScalarTest
     {
       {
         new ImportExportDuplexMeasure<decimal>(
-          new SinglePhasicMeasure<decimal>(5),
-          new SinglePhasicMeasure<decimal>(3)),
+          new SinglePhasicMeasureSum<decimal>(5),
+          new SinglePhasicMeasureSum<decimal>(3)),
         2,
         new ImportExportDuplexMeasure<decimal>(
-          new SinglePhasicMeasure<decimal>(10),
-          new SinglePhasicMeasure<decimal>(6))
+          new SinglePhasicMeasureSum<decimal>(10),
+          new SinglePhasicMeasureSum<decimal>(6))
       },
 
       {
@@ -30,13 +30,13 @@ public class DuplexMultiplyByScalarTest
       },
 
       {
-        new NetDuplexMeasure<decimal>(new SinglePhasicMeasure<decimal>(4)), 3,
-        new NetDuplexMeasure<decimal>(new SinglePhasicMeasure<decimal>(12))
+        new NetDuplexMeasure<decimal>(new SinglePhasicMeasureSum<decimal>(4)), 3,
+        new NetDuplexMeasure<decimal>(new SinglePhasicMeasureSum<decimal>(12))
       },
 
       {
-        new AnyDuplexMeasure<decimal>(new SinglePhasicMeasure<decimal>(3)), 4,
-        new AnyDuplexMeasure<decimal>(new SinglePhasicMeasure<decimal>(12))
+        new AnyDuplexMeasure<decimal>(new SinglePhasicMeasureSum<decimal>(3)), 4,
+        new AnyDuplexMeasure<decimal>(new SinglePhasicMeasureSum<decimal>(12))
       },
 
       { new NullDuplexMeasure<decimal>(), 2, new NullDuplexMeasure<decimal>() }
