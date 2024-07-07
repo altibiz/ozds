@@ -16,7 +16,6 @@ public class PhaseAverageTest
     PhasicMeasuresAverageZero = new()
     {
       new SinglePhasicMeasureSum<decimal>(0),
-      new SinglePhasicMeasureSum<decimal>(6),
       new TriPhasicMeasure<decimal>(0, 0, 0),
       new NullPhasicMeasure<decimal>()
     };

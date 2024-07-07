@@ -11,8 +11,8 @@ public class ConvertPrimitiveToTest
     DecimalToFloatConversion = new()
     {
       {
-        new SinglePhasicMeasure<decimal>(5.4m),
-        new SinglePhasicMeasure<float>(5.4f)
+        new SinglePhasicMeasureSum<decimal>(5.4m),
+        new SinglePhasicMeasureSum<float>(5.4f)
       },
       {
         new TriPhasicMeasure<decimal>(3.3m, 2.2m, 1.1m),
@@ -21,13 +21,13 @@ public class ConvertPrimitiveToTest
       {
         new CompositePhasicMeasure<decimal>(
         [
-          new SinglePhasicMeasure<decimal>(4.4m),
-          new SinglePhasicMeasure<decimal>(5.5m)
+          new SinglePhasicMeasureSum<decimal>(4.4m),
+          new SinglePhasicMeasureSum<decimal>(5.5m)
         ]),
         new CompositePhasicMeasure<float>(
         [
-          new SinglePhasicMeasure<float>(4.4f),
-          new SinglePhasicMeasure<float>(5.5f)
+          new SinglePhasicMeasureSum<float>(4.4f),
+          new SinglePhasicMeasureSum<float>(5.5f)
         ])
       },
       {
@@ -41,8 +41,8 @@ public class ConvertPrimitiveToTest
     FloatToDecimalConversion = new()
     {
       {
-        new SinglePhasicMeasure<float>(5.4f),
-        new SinglePhasicMeasure<decimal>(5.4m)
+        new SinglePhasicMeasureSum<float>(5.4f),
+        new SinglePhasicMeasureSum<decimal>(5.4m)
       },
       {
         new TriPhasicMeasure<float>(3.3f, 2.2f, 1.1f),
@@ -51,13 +51,13 @@ public class ConvertPrimitiveToTest
       {
         new CompositePhasicMeasure<float>(
         [
-          new SinglePhasicMeasure<float>(4.4f),
-          new SinglePhasicMeasure<float>(5.5f)
+          new SinglePhasicMeasureSum<float>(4.4f),
+          new SinglePhasicMeasureSum<float>(5.5f)
         ]),
         new CompositePhasicMeasure<decimal>(
         [
-          new SinglePhasicMeasure<decimal>(4.4m),
-          new SinglePhasicMeasure<decimal>(5.5m)
+          new SinglePhasicMeasureSum<decimal>(4.4m),
+          new SinglePhasicMeasureSum<decimal>(5.5m)
         ])
       },
       {
@@ -98,7 +98,7 @@ public class ConvertPrimitiveToTest
   {
     switch (expected, actual)
     {
-      case (SinglePhasicMeasure<T> expSingle, SinglePhasicMeasure<T> actSingle):
+      case (SinglePhasicMeasureSum<T> expSingle, SinglePhasicMeasureSum<T> actSingle):
         Assert.Equal(expSingle.Value, actSingle.Value);
         break;
       case (TriPhasicMeasure<T> expTri, TriPhasicMeasure<T> actTri):

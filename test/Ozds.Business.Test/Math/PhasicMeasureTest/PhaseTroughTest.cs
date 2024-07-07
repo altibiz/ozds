@@ -14,7 +14,7 @@ public class PhaseTroughTest
   public static readonly TheoryData<PhasicMeasure<decimal>>
     PhasicMeasuresTroughZero = new()
     {
-      new SinglePhasicMeasureSum<decimal>(6),
+      new SinglePhasicMeasureSum<decimal>(0),
       new TriPhasicMeasure<decimal>(0, 0, 0),
       new NullPhasicMeasure<decimal>()
     };

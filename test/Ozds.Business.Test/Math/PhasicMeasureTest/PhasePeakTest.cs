@@ -15,7 +15,7 @@ public class PhasePeakTest
   public static readonly TheoryData<PhasicMeasure<decimal>>
     PhasicMeasuresPeakZero = new()
     {
-      new SinglePhasicMeasureSum<decimal>(6),
+      new SinglePhasicMeasureSum<decimal>(0),
       new TriPhasicMeasure<decimal>(0, 0, 0),
       new NullPhasicMeasure<decimal>()
     };

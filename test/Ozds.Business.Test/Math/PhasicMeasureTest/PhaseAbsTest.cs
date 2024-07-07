@@ -8,7 +8,7 @@ public class PhaseAbsTest
   public static readonly TheoryData<PhasicMeasure<decimal>>
     PhasicMeasuresAbsSinglePhaseSix = new()
     {
-      new SinglePhasicMeasure<decimal>(6)
+      new SinglePhasicMeasureSum<decimal>(6)
     };
 
   public static readonly TheoryData<PhasicMeasure<decimal>>
@@ -21,7 +21,7 @@ public class PhaseAbsTest
   public static readonly TheoryData<PhasicMeasure<decimal>>
     PhasicMeasuresAbsSinglePhaseZero = new()
     {
-      new SinglePhasicMeasure<decimal>(0)
+      new SinglePhasicMeasureSum<decimal>(0)
     };
 
   public static readonly TheoryData<PhasicMeasure<decimal>>
@@ -35,7 +35,7 @@ public class PhaseAbsTest
   [MemberData(nameof(PhasicMeasuresAbsSinglePhaseSix))]
   public void ReturnsAbsSinglePhaseSix(PhasicMeasure<decimal> x)
   {
-    Assert.Equal(new SinglePhasicMeasure<decimal>(6), x.PhaseAbs);
+    Assert.Equal(new SinglePhasicMeasureSum<decimal>(6), x.PhaseAbs);
   }
 
   [Theory]
@@ -49,7 +49,7 @@ public class PhaseAbsTest
   [MemberData(nameof(PhasicMeasuresAbsSinglePhaseZero))]
   public void ReturnsAbsSinglePhaseZero(PhasicMeasure<decimal> x)
   {
-    Assert.Equal(new SinglePhasicMeasure<decimal>(0), x.PhaseAbs);
+    Assert.Equal(new SinglePhasicMeasureSum<decimal>(0), x.PhaseAbs);
   }
 
   [Theory]
