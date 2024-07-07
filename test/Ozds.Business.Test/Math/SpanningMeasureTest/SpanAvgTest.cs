@@ -42,7 +42,7 @@ public class SpanAvgTest
     SpanningMeasure<decimal> measure,
     TariffMeasure<decimal> expected)
   {
-    var result = measure.SpanAvg;
+    var result = measure.SpanAvg();
 
     Assert.Equal(expected, result);
   }

@@ -87,16 +87,15 @@ public abstract record class TariffMeasure<T>
 {
   public static readonly TariffMeasure<T> Null = new NullTariffMeasure<T>();
 
-  public DuplexMeasure<T> TariffUnary
+  public DuplexMeasure<T> TariffUnary()
   {
-    get
     {
       return this switch
       {
         CompositeTariffMeasure<T> composite =>
           new CompositeDuplexMeasure<T>(
             composite.Measures.Select(
-              measure => measure.TariffUnary).ToList()),
+              measure => measure.TariffUnary()).ToList()),
         BinaryTariffMeasure<T> binary => binary.T1.Add(binary.T2),
         UnaryTariffMeasure<T> unary => unary.T0,
         _ => DuplexMeasure<T>.Null
@@ -104,9 +103,8 @@ public abstract record class TariffMeasure<T>
     }
   }
 
-  public BinaryTariffMeasure<T> TariffBinary
+  public BinaryTariffMeasure<T> TariffBinary()
   {
-    get
     {
       return this switch
       {

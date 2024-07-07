@@ -366,9 +366,9 @@
             new ChartData(
               new[]
               {
-                x.Current_A.TariffUnary.DuplexAny.PhaseSplit.ValueL1,
-                x.Current_A.TariffUnary.DuplexAny.PhaseSplit.ValueL2,
-                x.Current_A.TariffUnary.DuplexAny.PhaseSplit.ValueL3
+                x.Current_A.TariffUnary().DuplexAny().PhaseSplit().ValueL1,
+                x.Current_A.TariffUnary().DuplexAny().PhaseSplit().ValueL2,
+                x.Current_A.TariffUnary().DuplexAny().PhaseSplit().ValueL3
               },
               new[] { "L1 Current", "L2 Current", "L3 Current" },
               x.Timestamp,
@@ -383,10 +383,10 @@
             new ChartData(
               new[]
               {
-                x.ActivePower_W.TariffUnary.DuplexNet.PhaseSplit.ValueL1,
-                x.ActivePower_W.TariffUnary.DuplexNet.PhaseSplit.ValueL2,
-                x.ActivePower_W.TariffUnary.DuplexNet.PhaseSplit.ValueL3,
-                x.ActivePower_W.TariffUnary.DuplexNet.PhaseSplit.PhaseSum
+                x.ActivePower_W.TariffUnary().DuplexNet().PhaseSplit().ValueL1,
+                x.ActivePower_W.TariffUnary().DuplexNet().PhaseSplit().ValueL2,
+                x.ActivePower_W.TariffUnary().DuplexNet().PhaseSplit().ValueL3,
+                x.ActivePower_W.TariffUnary().DuplexNet().PhaseSplit().PhaseSum()
               },
               new[] { "L1 Active Power", "L2 Active Power", "L3 Active Power", "Total power" },
               x.Timestamp,
@@ -400,9 +400,9 @@
             new ChartData(
               new[]
               {
-                x.Voltage_V.TariffUnary.DuplexAny.PhaseSplit.ValueL1,
-                x.Voltage_V.TariffUnary.DuplexAny.PhaseSplit.ValueL2,
-                x.Voltage_V.TariffUnary.DuplexAny.PhaseSplit.ValueL3
+                x.Voltage_V.TariffUnary().DuplexAny().PhaseSplit().ValueL1,
+                x.Voltage_V.TariffUnary().DuplexAny().PhaseSplit().ValueL2,
+                x.Voltage_V.TariffUnary().DuplexAny().PhaseSplit().ValueL3
               },
               new[] { "L1 Voltage", "L2 Voltage", "L3 Voltage" },
               x.Timestamp,
@@ -416,9 +416,9 @@
             new ChartData(
               new[]
               {
-                x.ReactivePower_VAR.TariffUnary.DuplexNet.PhaseSplit.ValueL1,
-                x.ReactivePower_VAR.TariffUnary.DuplexNet.PhaseSplit.ValueL2,
-                x.ReactivePower_VAR.TariffUnary.DuplexNet.PhaseSplit.ValueL3
+                x.ReactivePower_VAR.TariffUnary().DuplexNet().PhaseSplit().ValueL1,
+                x.ReactivePower_VAR.TariffUnary().DuplexNet().PhaseSplit().ValueL2,
+                x.ReactivePower_VAR.TariffUnary().DuplexNet().PhaseSplit().ValueL3
               },
               new[] { "L1 Reactive Power", "L2 Reactive Power", "L3 Reactive Power" },
               x.Timestamp,
@@ -432,7 +432,7 @@
             new ChartData(
               new[]
               {
-                x.ApparentPower_VA.TariffUnary.DuplexNet.PhaseSum
+                x.ApparentPower_VA.TariffUnary().DuplexNet().PhaseSum()
               },
               new[] { "Apparent Power" },
               x.Timestamp,

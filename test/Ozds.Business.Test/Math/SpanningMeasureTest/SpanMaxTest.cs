@@ -50,7 +50,7 @@ public class SpanMaxTest
     SpanningMeasure<decimal> measure,
     TariffMeasure<decimal> expected)
   {
-    var result = measure.SpanMax;
+    var result = measure.SpanMax();
 
     Assert.Equal(expected, result);
   }

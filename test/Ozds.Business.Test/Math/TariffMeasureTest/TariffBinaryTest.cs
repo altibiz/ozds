@@ -57,7 +57,7 @@ public class TariffBinaryTest
     TariffMeasure<decimal> measure,
     BinaryTariffMeasure<decimal> expected)
   {
-    var result = measure.TariffBinary;
+    var result = measure.TariffBinary();
 
     Assert.Equal(expected, result);
   }

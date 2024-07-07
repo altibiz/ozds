@@ -30,32 +30,32 @@ public class UsageReactiveEnergyTotalRampedT0CalculationItemCalculator :
     );
 
     var rampedAmount =
-      reactiveAmount.SpanDiff.Select(
+      reactiveAmount.SpanDiff().Select(
         duplex =>
-          new AnyDuplexMeasure<decimal>(duplex.DuplexAbs.DuplexSum)).Subtract(
-        activeAmount.SpanDiff.Select(
+          new AnyDuplexMeasure<decimal>(duplex.DuplexAbs().DuplexSum())).Subtract(
+        activeAmount.SpanDiff().Select(
           duplex =>
-            new AnyDuplexMeasure<decimal>(duplex.DuplexAny)));
+            new AnyDuplexMeasure<decimal>(duplex.DuplexAny())));
 
     rampedAmount = rampedAmount
       .Select(
-        duplex => duplex.DuplexAny.PhaseSum < 0
+        duplex => duplex.DuplexAny().PhaseSum() < 0
           ? DuplexMeasure<decimal>.Null
           : duplex);
 
     return new UsageReactiveEnergyTotalRampedT0CalculationItemModel
     {
-      ImportMin_VARh = reactiveAmount.SpanMin.TariffUnary.DuplexImport.PhaseSum,
-      ImportMax_VARh = reactiveAmount.SpanMax.TariffUnary.DuplexImport.PhaseSum,
+      ImportMin_VARh = reactiveAmount.SpanMin().TariffUnary().DuplexImport().PhaseSum(),
+      ImportMax_VARh = reactiveAmount.SpanMax().TariffUnary().DuplexImport().PhaseSum(),
       ImportAmount_VARh =
-        reactiveAmount.SpanDiff.TariffUnary.DuplexImport.PhaseSum,
-      ExportMin_VARh = reactiveAmount.SpanMin.TariffUnary.DuplexExport.PhaseSum,
-      ExportMax_VARh = reactiveAmount.SpanMax.TariffUnary.DuplexExport.PhaseSum,
+        reactiveAmount.SpanDiff().TariffUnary().DuplexImport().PhaseSum(),
+      ExportMin_VARh = reactiveAmount.SpanMin().TariffUnary().DuplexExport().PhaseSum(),
+      ExportMax_VARh = reactiveAmount.SpanMax().TariffUnary().DuplexExport().PhaseSum(),
       ExportAmount_VARh =
-        reactiveAmount.SpanDiff.TariffUnary.DuplexExport.PhaseSum,
+        reactiveAmount.SpanDiff().TariffUnary().DuplexExport().PhaseSum(),
       Price_EUR = calculationBasis.Price,
-      Amount_VARh = rampedAmount.TariffUnary.DuplexAny.PhaseSum,
-      Total_EUR = rampedAmount.TariffUnary.DuplexAny.PhaseSum *
+      Amount_VARh = rampedAmount.TariffUnary().DuplexAny().PhaseSum(),
+      Total_EUR = rampedAmount.TariffUnary().DuplexAny().PhaseSum() *
         calculationBasis.Price
     };
   }

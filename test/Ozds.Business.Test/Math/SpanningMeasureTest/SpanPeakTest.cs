@@ -42,7 +42,7 @@ public class SpanPeakTest
     SpanningMeasure<decimal> measure,
     TariffMeasure<decimal> expected)
   {
-    var result = measure.SpanPeak;
+    var result = measure.SpanPeak();
 
     Assert.Equal(expected, result);
   }

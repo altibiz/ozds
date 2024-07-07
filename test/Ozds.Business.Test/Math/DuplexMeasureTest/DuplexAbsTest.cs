@@ -38,7 +38,7 @@ public class DuplexAbsTest
     DuplexMeasure<decimal> measure,
     DuplexMeasure<decimal> expected)
   {
-    var result = measure.DuplexAbs;
+    var result = measure.DuplexAbs();
 
     Assert.Equal(expected, result);
   }

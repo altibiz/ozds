@@ -30,7 +30,7 @@ public class DuplexExportTest
     DuplexMeasure<decimal> measure,
     PhasicMeasure<decimal> expected)
   {
-    var result = measure.DuplexExport;
+    var result = measure.DuplexExport();
 
     Assert.Equal(expected, result);
   }

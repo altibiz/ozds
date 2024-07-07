@@ -95,9 +95,8 @@ public abstract record class PhasicMeasure<T>
 {
   public static readonly PhasicMeasure<T> Null = new NullPhasicMeasure<T>();
 
-  public T PhaseSum
+  public T PhaseSum()
   {
-    get
     {
       return this switch
       {
@@ -115,9 +114,8 @@ public abstract record class PhasicMeasure<T>
     }
   }
 
-  public T PhaseAverage
+  public T PhaseAverage()
   {
-    get
     {
       return this switch
       {
@@ -137,9 +135,8 @@ public abstract record class PhasicMeasure<T>
     }
   }
 
-  public T PhasePeak
+  public T PhasePeak()
   {
-    get
     {
       return this switch
       {
@@ -161,9 +158,8 @@ public abstract record class PhasicMeasure<T>
     }
   }
 
-  public T PhaseTrough
+  public T PhaseTrough()
   {
-    get
     {
       return this switch
       {
@@ -185,9 +181,8 @@ public abstract record class PhasicMeasure<T>
     }
   }
 
-  public SinglePhasicMeasureSum<T> PhaseSingle
+  public SinglePhasicMeasureSum<T> PhaseSingle()
   {
-    get
     {
       return this switch
       {
@@ -199,9 +194,8 @@ public abstract record class PhasicMeasure<T>
     }
   }
 
-  public TriPhasicMeasure<T> PhaseSplit
+  public TriPhasicMeasure<T> PhaseSplit()
   {
-    get
     {
       return this switch
       {
@@ -216,9 +210,8 @@ public abstract record class PhasicMeasure<T>
     }
   }
 
-  public PhasicMeasure<T> PhaseAbs
+  public PhasicMeasure<T> PhaseAbs()
   {
-    get
     {
       return Select(
         value =>

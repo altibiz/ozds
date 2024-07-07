@@ -34,13 +34,13 @@ public class PhaseSplitTest
   [MemberData(nameof(PhasicMeasuresSplitSix))]
   public void ReturnsSplitSix(PhasicMeasure<decimal> x)
   {
-    Assert.Equal(new TriPhasicMeasure<decimal>(6, 6, 6), x.PhaseSplit);
+    Assert.Equal(new TriPhasicMeasure<decimal>(6, 6, 6), x.PhaseSplit());
   }
 
   [Theory]
   [MemberData(nameof(PhasicMeasuresSplitZero))]
   public void ReturnsSplitZero(PhasicMeasure<decimal> x)
   {
-    Assert.Equal(new TriPhasicMeasure<decimal>(0, 0, 0), x.PhaseSplit);
+    Assert.Equal(new TriPhasicMeasure<decimal>(0, 0, 0), x.PhaseSplit());
   }
 }

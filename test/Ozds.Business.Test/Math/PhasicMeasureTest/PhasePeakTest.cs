@@ -24,13 +24,13 @@ public class PhasePeakTest
   [MemberData(nameof(PhasicMeasuresPeakSix))]
   public void ReturnsPeakSix(PhasicMeasure<decimal> x)
   {
-    Assert.Equal(6, x.PhasePeak);
+    Assert.Equal(6, x.PhasePeak());
   }
 
   [Theory]
   [MemberData(nameof(PhasicMeasuresPeakZero))]
   public void ReturnsPeakZero(PhasicMeasure<decimal> x)
   {
-    Assert.Equal(0, x.PhasePeak);
+    Assert.Equal(0, x.PhasePeak());
   }
 }

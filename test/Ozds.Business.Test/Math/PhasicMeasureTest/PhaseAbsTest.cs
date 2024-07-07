@@ -35,27 +35,27 @@ public class PhaseAbsTest
   [MemberData(nameof(PhasicMeasuresAbsSinglePhaseSix))]
   public void ReturnsAbsSinglePhaseSix(PhasicMeasure<decimal> x)
   {
-    Assert.Equal(new SinglePhasicMeasureSum<decimal>(6), x.PhaseAbs);
+    Assert.Equal(new SinglePhasicMeasureSum<decimal>(6), x.PhaseAbs());
   }
 
   [Theory]
   [MemberData(nameof(PhasicMeasuresAbsTriPhaseSix))]
   public void ReturnsAbsTriPhaseSix(PhasicMeasure<decimal> x)
   {
-    Assert.Equal(new TriPhasicMeasure<decimal>(6, 6, 6), x.PhaseAbs);
+    Assert.Equal(new TriPhasicMeasure<decimal>(6, 6, 6), x.PhaseAbs());
   }
 
   [Theory]
   [MemberData(nameof(PhasicMeasuresAbsSinglePhaseZero))]
   public void ReturnsAbsSinglePhaseZero(PhasicMeasure<decimal> x)
   {
-    Assert.Equal(new SinglePhasicMeasureSum<decimal>(0), x.PhaseAbs);
+    Assert.Equal(new SinglePhasicMeasureSum<decimal>(0), x.PhaseAbs());
   }
 
   [Theory]
   [MemberData(nameof(PhasicMeasuresAbsTriPhaseZero))]
   public void ReturnsAbsTriPhaseZero(PhasicMeasure<decimal> x)
   {
-    Assert.Equal(new TriPhasicMeasure<decimal>(0, 0, 0), x.PhaseAbs);
+    Assert.Equal(new TriPhasicMeasure<decimal>(0, 0, 0), x.PhaseAbs());
   }
 }

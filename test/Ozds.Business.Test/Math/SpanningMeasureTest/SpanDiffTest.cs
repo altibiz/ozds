@@ -50,7 +50,7 @@ public class SpanDiffTest
     SpanningMeasure<decimal> measure,
     TariffMeasure<decimal> expected)
   {
-    var result = measure.SpanDiff;
+    var result = measure.SpanDiff();
 
     Assert.Equal(expected, result);
   }

@@ -198,12 +198,12 @@
         .Where(x => x.Interval == IntervalModel.QuarterHour)
         .ToList();
 
-      var _monthStartTotal = measureThisMonthMonthly.ActiveEnergySpan_Wh.SpanMin.TariffUnary.DuplexImport.PhaseSum;
+      var _monthStartTotal = measureThisMonthMonthly.ActiveEnergySpan_Wh.SpanMin().TariffUnary().DuplexImport().PhaseSum();
 
-      var _monthEndTotal = measureThisMonthMonthly.ActiveEnergySpan_Wh.SpanMax.TariffUnary.DuplexImport.PhaseSum;
+      var _monthEndTotal = measureThisMonthMonthly.ActiveEnergySpan_Wh.SpanMax().TariffUnary().DuplexImport().PhaseSum();
       if (measureNextMonthMonthly is not null)
       {
-        var _nextMonthStartTotal = measureNextMonthMonthly.ActiveEnergySpan_Wh.SpanMin.TariffUnary.DuplexImport.PhaseSum;
+        var _nextMonthStartTotal = measureNextMonthMonthly.ActiveEnergySpan_Wh.SpanMin().TariffUnary().DuplexImport().PhaseSum();
         if (_nextMonthStartTotal > 0)
           _monthEndTotal = _nextMonthStartTotal;
       }

@@ -30,7 +30,7 @@ public class DuplexAnyTest
     DuplexMeasure<decimal> measure,
     PhasicMeasure<decimal> expected)
   {
-    var result = measure.DuplexAny;
+    var result = measure.DuplexAny();
 
     Assert.Equal(expected, result);
   }

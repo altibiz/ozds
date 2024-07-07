@@ -48,7 +48,7 @@ public class ExpenditureSupplyTest
     ExpenditureMeasure<decimal> measure,
     TariffMeasure<decimal> expected)
   {
-    var result = measure.ExpenditureSupply;
+    var result = measure.ExpenditureSupply();
 
     Assert.Equal(expected, result);
   }

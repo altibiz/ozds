@@ -24,13 +24,13 @@ public class PhaseAverageTest
   [MemberData(nameof(PhasicMeasuresAverageSix))]
   public void ReturnsAverageSix(PhasicMeasure<decimal> x)
   {
-    Assert.Equal(6, x.PhaseAverage);
+    Assert.Equal(6, x.PhaseAverage());
   }
 
   [Theory]
   [MemberData(nameof(PhasicMeasuresAverageZero))]
   public void ReturnsAverageZero(PhasicMeasure<decimal> x)
   {
-    Assert.Equal(0, x.PhaseAverage);
+    Assert.Equal(0, x.PhaseAverage());
   }
 }

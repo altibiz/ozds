@@ -55,9 +55,8 @@ public abstract record class SpanningMeasure<T>
 {
   public static readonly SpanningMeasure<T> Null = new NullSpanningMeasure<T>();
 
-  public TariffMeasure<T> SpanMin
+  public TariffMeasure<T> SpanMin()
   {
-    get
     {
       return this switch
       {
@@ -67,9 +66,8 @@ public abstract record class SpanningMeasure<T>
     }
   }
 
-  public TariffMeasure<T> SpanMax
+  public TariffMeasure<T> SpanMax()
   {
-    get
     {
       return this switch
       {
@@ -79,9 +77,8 @@ public abstract record class SpanningMeasure<T>
     }
   }
 
-  public TariffMeasure<T> SpanAvg
+  public TariffMeasure<T> SpanAvg()
   {
-    get
     {
       return this switch
       {
@@ -91,9 +88,8 @@ public abstract record class SpanningMeasure<T>
     }
   }
 
-  public TariffMeasure<T> SpanPeak
+  public TariffMeasure<T> SpanPeak()
   {
-    get
     {
       return this switch
       {
@@ -103,9 +99,9 @@ public abstract record class SpanningMeasure<T>
     }
   }
 
-  public TariffMeasure<T> SpanDiff
+  public TariffMeasure<T> SpanDiff()
   {
-    get { return SpanMax.Subtract(SpanMin); }
+    return SpanMax().Subtract(SpanMin());
   }
 
   public SpanningMeasure<TConverted> ConvertPrimitiveTo<TConverted>()
@@ -131,6 +127,6 @@ public abstract record class SpanningMeasure<T>
 
   public TariffMeasure<T> SpanDifferential(T y)
   {
-    return SpanDiff.Divide(y);
+    return SpanDiff().Divide(y);
   }
 }

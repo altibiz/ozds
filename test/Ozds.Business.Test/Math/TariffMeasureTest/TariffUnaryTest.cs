@@ -41,7 +41,7 @@ public class TariffUnaryTest
     TariffMeasure<decimal> measure,
     DuplexMeasure<decimal> expected)
   {
-    var result = measure.TariffUnary;
+    var result = measure.TariffUnary();
 
     Assert.Equal(expected, result);
   }

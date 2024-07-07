@@ -30,13 +30,13 @@ public class PhaseSingleTest
   [MemberData(nameof(PhasicMeasuresSingleSix))]
   public void ReturnsSingleSix(PhasicMeasure<decimal> x)
   {
-    Assert.Equal(6, x.PhaseSingle.Value);
+    Assert.Equal(6, x.PhaseSingle().Value);
   }
 
   [Theory]
   [MemberData(nameof(PhasicMeasuresSingleZero))]
   public void ReturnsSingleZero(PhasicMeasure<decimal> x)
   {
-    Assert.Equal(0, x.PhaseSingle.Value);
+    Assert.Equal(0, x.PhaseSingle().Value);
   }
 }

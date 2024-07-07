@@ -23,13 +23,13 @@ public class PhaseTroughTest
   [MemberData(nameof(PhasicMeasuresTroughSix))]
   public void ReturnsTroughSix(PhasicMeasure<decimal> x)
   {
-    Assert.Equal(6, x.PhaseTrough);
+    Assert.Equal(6, x.PhaseTrough());
   }
 
   [Theory]
   [MemberData(nameof(PhasicMeasuresTroughZero))]
   public void ReturnsTroughZero(PhasicMeasure<decimal> x)
   {
-    Assert.Equal(0, x.PhaseTrough);
+    Assert.Equal(0, x.PhaseTrough());
   }
 }

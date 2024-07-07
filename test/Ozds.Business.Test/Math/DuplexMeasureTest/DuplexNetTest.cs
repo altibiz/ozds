@@ -34,7 +34,7 @@ public class DuplexNetTest
     DuplexMeasure<decimal> measure,
     PhasicMeasure<decimal> expected)
   {
-    var result = measure.DuplexNet;
+    var result = measure.DuplexNet();
 
     Assert.Equal(expected, result);
   }

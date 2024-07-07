@@ -60,7 +60,7 @@ public class ExpenditureUsageTest
     ExpenditureMeasure<decimal> measure,
     TariffMeasure<decimal> expected)
   {
-    var result = measure.ExpenditureUsage;
+    var result = measure.ExpenditureUsage();
 
     Assert.Equal(expected, result);
   }

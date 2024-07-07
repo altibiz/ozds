@@ -198,9 +198,9 @@
       float _lastMonthUsage = 0;
       decimal _lastMonthTotal = 0;
       if (_thisMonthAggregate is not null)
-        _thisMonthUsage = _thisMonthAggregate.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum;
+        _thisMonthUsage = _thisMonthAggregate.ActiveEnergySpan_Wh.SpanDiff().TariffUnary().DuplexImport().PhaseSum();
       if (_lastMonthAggregate is not null)
-        _lastMonthUsage = _lastMonthAggregate.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum;
+        _lastMonthUsage = _lastMonthAggregate.ActiveEnergySpan_Wh.SpanDiff().TariffUnary().DuplexImport().PhaseSum();
       if (_lastMonthOmmCalcs is not null && _lastMonthOmmCalcs.Count() > 0)
         _lastMonthTotal = _lastMonthOmmCalcs
           .DefaultIfEmpty(0)

@@ -354,13 +354,13 @@ class PhasicMeasure<T>
 {
   + {static} PhasicMeasure<T> Null
 
-  + T PhaseSum
-  + T PhaseAverage
-  + T PhasePeak
-  + T PhaseTrough
-  + SinglePhasicMeasure<T> PhaseSingle
-  + TriphasicMeasure<T> PhaseSplit
-  + PhasicMeasure<T> PhaseAbs
+  + T PhaseSum()
+  + T PhaseAverage()
+  + T PhasePeak()
+  + T PhaseTrough()
+  + SinglePhasicMeasure<T> PhaseSingle()
+  + TriphasicMeasure<T> PhaseSplit()
+  + PhasicMeasure<T> PhaseAbs()
 
   + PhasicMeasure<U> ConvertPrimitiveTo<U>()
 }
@@ -405,12 +405,12 @@ class DuplexMeasure<T>
 {
   + {static} DuplexMeasure<T> Null
 
-  + PhasicMeasure<T> DuplexNet
-  + PhasicMeasure<T> DuplexAny
-  + PhasicMeasure<T> DuplexImport
-  + PhasicMeasure<T> DuplexExport
-  + DuplexMeasure<T> DuplexAbs
-  + DuplexMeasure<T> DuplexSum
+  + PhasicMeasure<T> DuplexNet()
+  + PhasicMeasure<T> DuplexAny()
+  + PhasicMeasure<T> DuplexImport()
+  + PhasicMeasure<T> DuplexExport()
+  + DuplexMeasure<T> DuplexAbs()
+  + DuplexMeasure<T> DuplexSum()
 
   + DuplexMeasure<U> ConvertPrimitiveTo<U>()
 }
@@ -460,8 +460,8 @@ class TariffMeasure<T>
 {
   + {static} TariffMeasure<T> Null
 
-  + DuplexMeasure<T> TariffUnary
-  + BinaryTariffMeasure<T> TariffBinary
+  + DuplexMeasure<T> TariffUnary()
+  + BinaryTariffMeasure<T> TariffBinary()
   + TariffMeasure<T> TariffAbs
   + DuplexMeasure<T> TariffSum
 
@@ -518,11 +518,11 @@ class SpanningMeasure<T>
 {
   + {static} SpanningMeasure<T> Null
 
-  + TariffMeasure<T> SpanMin
-  + TariffMeasure<T> SpanMax
-  + TariffMeasure<T> SpanAvg
-  + TariffMeasure<T> SpanPeak
-  + TariffMeasure<T> SpanDiff
+  + TariffMeasure<T> SpanMin()
+  + TariffMeasure<T> SpanMax()
+  + TariffMeasure<T> SpanAvg()
+  + TariffMeasure<T> SpanPeak()
+  + TariffMeasure<T> SpanDiff()
 
   + SpanningMeasure<U> ConvertPrimitiveTo<U>()
 }
@@ -564,9 +564,9 @@ class ExpenditureMeasure<T>
 {
   + {static} ExpenditureMeasure<T> Null
 
-  + TariffMeasure<T> ExpenditureSupply
-  + TariffMeasure<T> ExpenditureUsage
-  + TariffMeasure<T> ExpenditureSum
+  + TariffMeasure<T> ExpenditureSupply()
+  + TariffMeasure<T> ExpenditureUsage()
+  + TariffMeasure<T> ExpenditureSum()
 
   + ExpenditureMeasure<U> ConvertPrimitiveTo<U>()
 }

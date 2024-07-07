@@ -38,7 +38,7 @@ public class DuplexSumTest
     DuplexMeasure<decimal> measure,
     PhasicMeasure<decimal> expected)
   {
-    var result = measure.DuplexSum;
+    var result = measure.DuplexSum();
 
     Assert.Equal(expected, result);
   }

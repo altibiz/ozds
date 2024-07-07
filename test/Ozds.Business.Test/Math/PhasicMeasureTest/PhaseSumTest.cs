@@ -24,13 +24,13 @@ public class PhaseSumTest
   [MemberData(nameof(PhasicMeasuresSumSix))]
   public void ReturnsSumSix(PhasicMeasure<decimal> x)
   {
-    Assert.Equal(6, x.PhaseSum);
+    Assert.Equal(6, x.PhaseSum());
   }
 
   [Theory]
   [MemberData(nameof(PhasicMeasuresSumZero))]
   public void SumZeroReturnsZero(PhasicMeasure<decimal> x)
   {
-    Assert.Equal(0, x.PhaseSum);
+    Assert.Equal(0, x.PhaseSum());
   }
 }

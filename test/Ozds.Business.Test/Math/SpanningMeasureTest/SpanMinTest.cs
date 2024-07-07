@@ -50,7 +50,7 @@ public class SpanMinTest
     SpanningMeasure<decimal> measure,
     TariffMeasure<decimal> expected)
   {
-    var result = measure.SpanMin;
+    var result = measure.SpanMin();
 
     Assert.Equal(expected, result);
   }
