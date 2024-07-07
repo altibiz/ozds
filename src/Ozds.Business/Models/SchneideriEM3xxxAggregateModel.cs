@@ -136,7 +136,7 @@ public class SchneideriEM3xxxAggregateModel : AggregateModel
         base.ReactivePower_VAR,
         new UnaryTariffMeasure<float>(
           new NetDuplexMeasure<float>(
-            new SinglePhasicAverage<float>(
+            new SinglePhasicMeasureSum<float>(
               ReactivePowerTotalNetT0Avg_VAR
             )
           )
@@ -154,7 +154,7 @@ public class SchneideriEM3xxxAggregateModel : AggregateModel
         base.ApparentPower_VA,
         new UnaryTariffMeasure<float>(
           new NetDuplexMeasure<float>(
-            new SinglePhasicAverage<float>(
+            new SinglePhasicMeasureSum<float>(
               ApparentPowerTotalNetT0Avg_VA
             )
           )
@@ -170,14 +170,14 @@ public class SchneideriEM3xxxAggregateModel : AggregateModel
       return new MinMaxSpanningMeasure<float>(
         new UnaryTariffMeasure<float>(
           new ImportExportDuplexMeasure<float>(
-            new SinglePhasicSum<float>(ActiveEnergyTotalImportT0Min_Wh),
-            new SinglePhasicSum<float>(ActiveEnergyTotalExportT0Min_Wh)
+            new SinglePhasicMeasureSum<float>(ActiveEnergyTotalImportT0Min_Wh),
+            new SinglePhasicMeasureSum<float>(ActiveEnergyTotalExportT0Min_Wh)
           )
         ),
         new UnaryTariffMeasure<float>(
           new ImportExportDuplexMeasure<float>(
-            new SinglePhasicSum<float>(ActiveEnergyTotalImportT0Max_Wh),
-            new SinglePhasicSum<float>(ActiveEnergyTotalExportT0Max_Wh)
+            new SinglePhasicMeasureSum<float>(ActiveEnergyTotalImportT0Max_Wh),
+            new SinglePhasicMeasureSum<float>(ActiveEnergyTotalExportT0Max_Wh)
           )
         )
       );
@@ -191,14 +191,14 @@ public class SchneideriEM3xxxAggregateModel : AggregateModel
       return new MinMaxSpanningMeasure<float>(
         new UnaryTariffMeasure<float>(
           new ImportExportDuplexMeasure<float>(
-            new SinglePhasicSum<float>(ReactiveEnergyTotalImportT0Min_VARh),
-            new SinglePhasicSum<float>(ReactiveEnergyTotalExportT0Min_VARh)
+            new SinglePhasicMeasureSum<float>(ReactiveEnergyTotalImportT0Min_VARh),
+            new SinglePhasicMeasureSum<float>(ReactiveEnergyTotalExportT0Min_VARh)
           )
         ),
         new UnaryTariffMeasure<float>(
           new ImportExportDuplexMeasure<float>(
-            new SinglePhasicSum<float>(ReactiveEnergyTotalImportT0Max_VARh),
-            new SinglePhasicSum<float>(ReactiveEnergyTotalExportT0Max_VARh)
+            new SinglePhasicMeasureSum<float>(ReactiveEnergyTotalImportT0Max_VARh),
+            new SinglePhasicMeasureSum<float>(ReactiveEnergyTotalExportT0Max_VARh)
           )
         )
       );

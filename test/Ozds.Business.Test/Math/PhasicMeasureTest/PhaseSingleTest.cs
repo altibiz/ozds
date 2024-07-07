@@ -8,10 +8,10 @@ public class PhaseSingleTest
   public static readonly TheoryData<PhasicMeasure<decimal>>
     PhasicMeasuresSingleSix = new()
     {
-      new SinglePhasicSum<decimal>(6),
+      new SinglePhasicMeasureSum<decimal>(6),
       new CompositePhasicMeasure<decimal>(
       [
-        new SinglePhasicSum<decimal>(6),
+        new SinglePhasicMeasureSum<decimal>(6),
         new TriPhasicMeasure<decimal>(1, 1, 1)
       ])
     };
@@ -19,8 +19,7 @@ public class PhaseSingleTest
   public static readonly TheoryData<PhasicMeasure<decimal>>
     PhasicMeasuresSingleZero = new()
     {
-      new SinglePhasicSum<decimal>(0),
-      new SinglePhasicAverage<decimal>(0),
+      new SinglePhasicMeasureSum<decimal>(0),
       new CompositePhasicMeasure<decimal>(
         [new TriPhasicMeasure<decimal>(1, 1, 1)]),
       new TriPhasicMeasure<decimal>(0, 0, 0),

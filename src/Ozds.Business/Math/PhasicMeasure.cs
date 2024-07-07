@@ -69,15 +69,7 @@ public record class SinglePhasicMeasure<T>(T Value) : PhasicMeasure<T>
   IMultiplyOperators<T, T, T>,
   IDivisionOperators<T, T, T>;
 
-public record class SinglePhasicSum<T>(T Value) : SinglePhasicMeasure<T>(Value)
-  where T : struct,
-  IComparisonOperators<T, T, bool>,
-  IAdditionOperators<T, T, T>,
-  ISubtractionOperators<T, T, T>,
-  IMultiplyOperators<T, T, T>,
-  IDivisionOperators<T, T, T>;
-
-public record class SinglePhasicAverage<T>(T Value) : SinglePhasicMeasure<T>(Value)
+public record class SinglePhasicMeasureSum<T>(T Value) : SinglePhasicMeasure<T>(Value)
   where T : struct,
   IComparisonOperators<T, T, bool>,
   IAdditionOperators<T, T, T>,
@@ -110,14 +102,14 @@ public abstract record class PhasicMeasure<T>
       return this switch
       {
         CompositePhasicMeasure<T> composite => composite.Measures.FirstOrDefault(
-          measure => measure is SinglePhasicSum<T> or TriPhasicMeasure<T>) switch
+          measure => measure is SinglePhasicMeasureSum<T> or TriPhasicMeasure<T>) switch
         {
-          SinglePhasicSum<T> single => single.Value,
+          SinglePhasicMeasureSum<T> single => single.Value,
           TriPhasicMeasure<T> tri => tri.ValueL1 + tri.ValueL2 + tri.ValueL3,
           _ => (T)Convert.ChangeType(0, typeof(T))
         },
         TriPhasicMeasure<T> tri => tri.ValueL1 + tri.ValueL2 + tri.ValueL3,
-        SinglePhasicSum<T> single => single.Value,
+        SinglePhasicMeasureSum<T> single => single.Value,
         _ => (T)Convert.ChangeType(0, typeof(T))
       };
     }
@@ -130,16 +122,16 @@ public abstract record class PhasicMeasure<T>
       return this switch
       {
         CompositePhasicMeasure<T> composite => composite.Measures.FirstOrDefault(
-          measure => measure is SinglePhasicAverage<T> or TriPhasicMeasure<T>) switch
+          measure => measure is SinglePhasicMeasureSum<T> or TriPhasicMeasure<T>) switch
         {
-          SinglePhasicAverage<T> single => single.Value,
           TriPhasicMeasure<T> tri => (tri.ValueL1 + tri.ValueL2 + tri.ValueL3) /
             (T)Convert.ChangeType(3, typeof(T)),
-          _ => (T)Convert.ChangeType(0, typeof(T))
+          SinglePhasicMeasureSum<T> single => single.Value,
+          _ => (T)Convert.ChangeType(0, typeof(T)),
         },
         TriPhasicMeasure<T> tri => (tri.ValueL1 + tri.ValueL2 + tri.ValueL3) /
           (T)Convert.ChangeType(3, typeof(T)),
-        SinglePhasicAverage<T> single => single.Value,
+        SinglePhasicMeasureSum<T> single => single.Value,
         _ => (T)Convert.ChangeType(0, typeof(T))
       };
     }
@@ -152,18 +144,18 @@ public abstract record class PhasicMeasure<T>
       return this switch
       {
         CompositePhasicMeasure<T> composite => composite.Measures.FirstOrDefault(
-          measure => measure is SinglePhasicAverage<T> or TriPhasicMeasure<T>) switch
+          measure => measure is SinglePhasicMeasureSum<T> or TriPhasicMeasure<T>) switch
         {
-          SinglePhasicAverage<T> single => single.Value,
           TriPhasicMeasure<T> tri => tri.ValueL1 > tri.ValueL2
             ? tri.ValueL1 > tri.ValueL3 ? tri.ValueL1 : tri.ValueL3
             : tri.ValueL2 > tri.ValueL3 ? tri.ValueL2 : tri.ValueL3,
+          SinglePhasicMeasureSum<T> single => single.Value,
           _ => (T)Convert.ChangeType(0, typeof(T))
         },
         TriPhasicMeasure<T> tri => tri.ValueL1 > tri.ValueL2
           ? tri.ValueL1 > tri.ValueL3 ? tri.ValueL1 : tri.ValueL3
           : tri.ValueL2 > tri.ValueL3 ? tri.ValueL2 : tri.ValueL3,
-        SinglePhasicAverage<T> single => single.Value,
+        SinglePhasicMeasureSum<T> single => single.Value,
         _ => (T)Convert.ChangeType(0, typeof(T))
       };
     }
@@ -176,18 +168,18 @@ public abstract record class PhasicMeasure<T>
       return this switch
       {
         CompositePhasicMeasure<T> composite => composite.Measures.FirstOrDefault(
-          measure => measure is SinglePhasicAverage<T> or TriPhasicMeasure<T>) switch
+          measure => measure is SinglePhasicMeasureSum<T> or TriPhasicMeasure<T>) switch
         {
-          SinglePhasicAverage<T> single => single.Value,
           TriPhasicMeasure<T> tri => tri.ValueL1 < tri.ValueL2
             ? tri.ValueL1 < tri.ValueL3 ? tri.ValueL1 : tri.ValueL3
             : tri.ValueL2 < tri.ValueL3 ? tri.ValueL2 : tri.ValueL3,
+          SinglePhasicMeasureSum<T> single => single.Value,
           _ => (T)Convert.ChangeType(0, typeof(T))
         },
         TriPhasicMeasure<T> tri => tri.ValueL1 < tri.ValueL2
           ? tri.ValueL1 < tri.ValueL3 ? tri.ValueL1 : tri.ValueL3
           : tri.ValueL2 < tri.ValueL3 ? tri.ValueL2 : tri.ValueL3,
-        SinglePhasicAverage<T> single => single.Value,
+        SinglePhasicMeasureSum<T> single => single.Value,
         _ => (T)Convert.ChangeType(0, typeof(T))
       };
     }

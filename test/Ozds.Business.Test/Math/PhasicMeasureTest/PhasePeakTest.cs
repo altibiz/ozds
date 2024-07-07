@@ -8,7 +8,6 @@ public class PhasePeakTest
   public static readonly TheoryData<PhasicMeasure<decimal>>
     PhasicMeasuresPeakSix = new()
     {
-      new SinglePhasicAverage<decimal>(6),
       new TriPhasicMeasure<decimal>(1, 5.9m, 6),
       new TriPhasicMeasure<decimal>(0, -12, 6)
     };
@@ -16,8 +15,7 @@ public class PhasePeakTest
   public static readonly TheoryData<PhasicMeasure<decimal>>
     PhasicMeasuresPeakZero = new()
     {
-      new SinglePhasicSum<decimal>(6),
-      new SinglePhasicAverage<decimal>(0),
+      new SinglePhasicMeasureSum<decimal>(6),
       new TriPhasicMeasure<decimal>(0, 0, 0),
       new NullPhasicMeasure<decimal>()
     };

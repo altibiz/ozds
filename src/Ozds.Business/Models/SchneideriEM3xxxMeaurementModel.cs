@@ -121,7 +121,7 @@ public class SchneideriEM3xxxMeasurementModel : MeasurementModel<
     {
       return new UnaryTariffMeasure<float>(
         new NetDuplexMeasure<float>(
-          new SinglePhasicAverage<float>(
+          new SinglePhasicMeasureSum<float>(
             ReactivePowerTotalNetT0_VAR
           )
         )
@@ -135,7 +135,7 @@ public class SchneideriEM3xxxMeasurementModel : MeasurementModel<
     {
       return new UnaryTariffMeasure<float>(
         new NetDuplexMeasure<float>(
-          new SinglePhasicAverage<float>(
+          new SinglePhasicMeasureSum<float>(
             ApparentPowerTotalNetT0_VA
           )
         )
@@ -159,18 +159,18 @@ public class SchneideriEM3xxxMeasurementModel : MeasurementModel<
                   ActiveEnergyL2ImportT0_Wh,
                   ActiveEnergyL3ImportT0_Wh
                 ),
-                new SinglePhasicSum<float>(
+                new SinglePhasicMeasureSum<float>(
                   ActiveEnergyTotalExportT0_Wh
                 )
               )
             ),
             new BinaryTariffMeasure<float>(
               new ImportExportDuplexMeasure<float>(
-                new SinglePhasicSum<float>(ActiveEnergyTotalImportT1_Wh),
+                new SinglePhasicMeasureSum<float>(ActiveEnergyTotalImportT1_Wh),
                 PhasicMeasure<float>.Null
               ),
               new ImportExportDuplexMeasure<float>(
-                new SinglePhasicSum<float>(ActiveEnergyTotalImportT2_Wh),
+                new SinglePhasicMeasureSum<float>(ActiveEnergyTotalImportT2_Wh),
                 PhasicMeasure<float>.Null
               )
             )
@@ -179,17 +179,17 @@ public class SchneideriEM3xxxMeasurementModel : MeasurementModel<
           [
             new UnaryTariffMeasure<float>(
               new ImportExportDuplexMeasure<float>(
-                new SinglePhasicSum<float>(ActiveEnergyTotalImportT0_Wh),
-                new SinglePhasicSum<float>(ActiveEnergyTotalExportT0_Wh)
+                new SinglePhasicMeasureSum<float>(ActiveEnergyTotalImportT0_Wh),
+                new SinglePhasicMeasureSum<float>(ActiveEnergyTotalExportT0_Wh)
               )
             ),
             new BinaryTariffMeasure<float>(
               new ImportExportDuplexMeasure<float>(
-                new SinglePhasicSum<float>(ActiveEnergyTotalImportT1_Wh),
+                new SinglePhasicMeasureSum<float>(ActiveEnergyTotalImportT1_Wh),
                 PhasicMeasure<float>.Null
               ),
               new ImportExportDuplexMeasure<float>(
-                new SinglePhasicSum<float>(ActiveEnergyTotalImportT2_Wh),
+                new SinglePhasicMeasureSum<float>(ActiveEnergyTotalImportT2_Wh),
                 PhasicMeasure<float>.Null
               )
             )
@@ -203,8 +203,8 @@ public class SchneideriEM3xxxMeasurementModel : MeasurementModel<
     {
       return new UnaryTariffMeasure<float>(
         new ImportExportDuplexMeasure<float>(
-          new SinglePhasicSum<float>(ReactiveEnergyTotalImportT0_VARh),
-          new SinglePhasicSum<float>(ReactiveEnergyTotalExportT0_VARh)
+          new SinglePhasicMeasureSum<float>(ReactiveEnergyTotalImportT0_VARh),
+          new SinglePhasicMeasureSum<float>(ReactiveEnergyTotalExportT0_VARh)
         )
       );
     }

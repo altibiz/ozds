@@ -183,7 +183,7 @@ AbbB2xMeasurementModel : MeasurementModel<AbbB2xMeasurementValidatorModel>
                     ActiveEnergyL2ImportT0_Wh,
                     ActiveEnergyL3ImportT0_Wh
                   ),
-                  new SinglePhasicSum<float>(ActiveEnergyTotalImportT0_Wh)
+                  new SinglePhasicMeasureSum<float>(ActiveEnergyTotalImportT0_Wh)
                 ]),
                 new CompositePhasicMeasure<float>(
                 [
@@ -192,17 +192,17 @@ AbbB2xMeasurementModel : MeasurementModel<AbbB2xMeasurementValidatorModel>
                     ActiveEnergyL2ExportT0_Wh,
                     ActiveEnergyL3ExportT0_Wh
                   ),
-                  new SinglePhasicSum<float>(ActiveEnergyTotalExportT0_Wh)
+                  new SinglePhasicMeasureSum<float>(ActiveEnergyTotalExportT0_Wh)
                 ])
               )
             ),
             new BinaryTariffMeasure<float>(
               new ImportExportDuplexMeasure<float>(
-                new SinglePhasicSum<float>(ActiveEnergyTotalImportT1_Wh),
+                new SinglePhasicMeasureSum<float>(ActiveEnergyTotalImportT1_Wh),
                 PhasicMeasure<float>.Null
               ),
               new ImportExportDuplexMeasure<float>(
-                new SinglePhasicSum<float>(ActiveEnergyTotalImportT2_Wh),
+                new SinglePhasicMeasureSum<float>(ActiveEnergyTotalImportT2_Wh),
                 PhasicMeasure<float>.Null
               )
             )
@@ -211,17 +211,17 @@ AbbB2xMeasurementModel : MeasurementModel<AbbB2xMeasurementValidatorModel>
           [
             new UnaryTariffMeasure<float>(
               new ImportExportDuplexMeasure<float>(
-                new SinglePhasicSum<float>(ActiveEnergyTotalImportT0_Wh),
-                new SinglePhasicSum<float>(ActiveEnergyTotalExportT0_Wh)
+                new SinglePhasicMeasureSum<float>(ActiveEnergyTotalImportT0_Wh),
+                new SinglePhasicMeasureSum<float>(ActiveEnergyTotalExportT0_Wh)
               )
             ),
             new BinaryTariffMeasure<float>(
               new ImportExportDuplexMeasure<float>(
-                new SinglePhasicSum<float>(ActiveEnergyTotalImportT1_Wh),
+                new SinglePhasicMeasureSum<float>(ActiveEnergyTotalImportT1_Wh),
                 PhasicMeasure<float>.Null
               ),
               new ImportExportDuplexMeasure<float>(
-                new SinglePhasicSum<float>(ActiveEnergyTotalImportT2_Wh),
+                new SinglePhasicMeasureSum<float>(ActiveEnergyTotalImportT2_Wh),
                 PhasicMeasure<float>.Null
               )
             )
@@ -248,7 +248,7 @@ AbbB2xMeasurementModel : MeasurementModel<AbbB2xMeasurementValidatorModel>
                   ReactiveEnergyL2ImportT0_VARh,
                   ReactiveEnergyL3ImportT0_VARh
                 ),
-                new SinglePhasicSum<float>(ReactiveEnergyTotalImportT0_VARh)
+                new SinglePhasicMeasureSum<float>(ReactiveEnergyTotalImportT0_VARh)
               ]),
               new CompositePhasicMeasure<float>(
               [
@@ -257,14 +257,14 @@ AbbB2xMeasurementModel : MeasurementModel<AbbB2xMeasurementValidatorModel>
                   ReactiveEnergyL2ExportT0_VARh,
                   ReactiveEnergyL3ExportT0_VARh
                 ),
-                new SinglePhasicSum<float>(ReactiveEnergyTotalExportT0_VARh)
+                new SinglePhasicMeasureSum<float>(ReactiveEnergyTotalExportT0_VARh)
               ])
             )
           )
           : new UnaryTariffMeasure<float>(
             new ImportExportDuplexMeasure<float>(
-              new SinglePhasicSum<float>(ReactiveEnergyTotalImportT0_VARh),
-              new SinglePhasicSum<float>(ReactiveEnergyTotalExportT0_VARh)
+              new SinglePhasicMeasureSum<float>(ReactiveEnergyTotalImportT0_VARh),
+              new SinglePhasicMeasureSum<float>(ReactiveEnergyTotalExportT0_VARh)
             )
           );
     }
