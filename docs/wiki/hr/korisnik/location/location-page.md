@@ -5,7 +5,7 @@ pregledavanje lokacija.
 
 ## Sadržaj
 
-![Stranica lokacija](../../assets/location-page.png) _/app/locations_
+![Stranica lokacija](../../assets/locations-page.png) _/app/locations_
 
 ## Tablica lokacija
 
