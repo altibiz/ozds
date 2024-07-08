@@ -1,4 +1,5 @@
 using System.Numerics;
+using OrchardCore.DisplayManagement.Shapes;
 
 namespace Ozds.Business.Math;
 
@@ -109,14 +110,15 @@ public abstract record class TariffMeasure<T>
       return this switch
       {
         CompositeTariffMeasure<T> composite =>
-          composite.Measures.FirstOrDefault(
-              measure => measure is BinaryTariffMeasure<T>) is
-            BinaryTariffMeasure<T>
-            binary
-            ? binary
-            : new BinaryTariffMeasure<T>(
-              DuplexMeasure<T>.Null,
-              DuplexMeasure<T>.Null),
+          new BinaryTariffMeasure<T>(
+            new CompositeDuplexMeasure<T>(
+            composite.Measures.Select(
+              measure => measure.TariffBinary().T1
+            ).ToList()),
+            new CompositeDuplexMeasure<T>(
+            composite.Measures.Select(
+              measure => measure.TariffBinary().T2
+            ).ToList())),
         BinaryTariffMeasure<T> binary => binary,
         _ => new BinaryTariffMeasure<T>(
           DuplexMeasure<T>.Null,
