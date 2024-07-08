@@ -30,12 +30,14 @@ public class DuplexDivideByScalarTest
       },
 
       {
-        new NetDuplexMeasure<decimal>(new SinglePhasicMeasureSum<decimal>(12)), 3,
+        new NetDuplexMeasure<decimal>(new SinglePhasicMeasureSum<decimal>(12)),
+        3,
         new NetDuplexMeasure<decimal>(new SinglePhasicMeasureSum<decimal>(4))
       },
 
       {
-        new AnyDuplexMeasure<decimal>(new SinglePhasicMeasureSum<decimal>(12)), 4,
+        new AnyDuplexMeasure<decimal>(new SinglePhasicMeasureSum<decimal>(12)),
+        4,
         new AnyDuplexMeasure<decimal>(new SinglePhasicMeasureSum<decimal>(3))
       },
 

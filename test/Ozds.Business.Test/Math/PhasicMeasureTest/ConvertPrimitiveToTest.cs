@@ -98,7 +98,8 @@ public class ConvertPrimitiveToTest
   {
     switch (expected, actual)
     {
-      case (SinglePhasicMeasureSum<T> expSingle, SinglePhasicMeasureSum<T> actSingle):
+      case (SinglePhasicMeasureSum<T> expSingle, SinglePhasicMeasureSum<T>
+        actSingle):
         Assert.Equal(expSingle.Value, actSingle.Value);
         break;
       case (TriPhasicMeasure<T> expTri, TriPhasicMeasure<T> actTri):

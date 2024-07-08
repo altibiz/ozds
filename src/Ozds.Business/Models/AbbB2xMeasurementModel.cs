@@ -5,7 +5,7 @@ using Ozds.Business.Models.Base;
 namespace Ozds.Business.Models;
 
 public class
-AbbB2xMeasurementModel : MeasurementModel<AbbB2xMeasurementValidatorModel>
+  AbbB2xMeasurementModel : MeasurementModel<AbbB2xMeasurementValidatorModel>
 {
   [Required]
   public required float VoltageL1AnyT0_V { get; set; }
@@ -183,7 +183,8 @@ AbbB2xMeasurementModel : MeasurementModel<AbbB2xMeasurementValidatorModel>
                     ActiveEnergyL2ImportT0_Wh,
                     ActiveEnergyL3ImportT0_Wh
                   ),
-                  new SinglePhasicMeasureSum<float>(ActiveEnergyTotalImportT0_Wh)
+                  new SinglePhasicMeasureSum<float>(
+                    ActiveEnergyTotalImportT0_Wh)
                 ]),
                 new CompositePhasicMeasure<float>(
                 [
@@ -192,7 +193,8 @@ AbbB2xMeasurementModel : MeasurementModel<AbbB2xMeasurementValidatorModel>
                     ActiveEnergyL2ExportT0_Wh,
                     ActiveEnergyL3ExportT0_Wh
                   ),
-                  new SinglePhasicMeasureSum<float>(ActiveEnergyTotalExportT0_Wh)
+                  new SinglePhasicMeasureSum<float>(
+                    ActiveEnergyTotalExportT0_Wh)
                 ])
               )
             ),
@@ -248,7 +250,8 @@ AbbB2xMeasurementModel : MeasurementModel<AbbB2xMeasurementValidatorModel>
                   ReactiveEnergyL2ImportT0_VARh,
                   ReactiveEnergyL3ImportT0_VARh
                 ),
-                new SinglePhasicMeasureSum<float>(ReactiveEnergyTotalImportT0_VARh)
+                new SinglePhasicMeasureSum<float>(
+                  ReactiveEnergyTotalImportT0_VARh)
               ]),
               new CompositePhasicMeasure<float>(
               [
@@ -257,14 +260,17 @@ AbbB2xMeasurementModel : MeasurementModel<AbbB2xMeasurementValidatorModel>
                   ReactiveEnergyL2ExportT0_VARh,
                   ReactiveEnergyL3ExportT0_VARh
                 ),
-                new SinglePhasicMeasureSum<float>(ReactiveEnergyTotalExportT0_VARh)
+                new SinglePhasicMeasureSum<float>(
+                  ReactiveEnergyTotalExportT0_VARh)
               ])
             )
           )
           : new UnaryTariffMeasure<float>(
             new ImportExportDuplexMeasure<float>(
-              new SinglePhasicMeasureSum<float>(ReactiveEnergyTotalImportT0_VARh),
-              new SinglePhasicMeasureSum<float>(ReactiveEnergyTotalExportT0_VARh)
+              new SinglePhasicMeasureSum<float>(
+                ReactiveEnergyTotalImportT0_VARh),
+              new SinglePhasicMeasureSum<float>(
+                ReactiveEnergyTotalExportT0_VARh)
             )
           );
     }

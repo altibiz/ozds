@@ -11,7 +11,8 @@ public class PhaseSubtractTest
     {
       {
         new SinglePhasicMeasureSum<decimal>(8),
-        new SinglePhasicMeasureSum<decimal>(3), new SinglePhasicMeasureSum<decimal>(5)
+        new SinglePhasicMeasureSum<decimal>(3),
+        new SinglePhasicMeasureSum<decimal>(5)
       },
 
       {
@@ -21,7 +22,8 @@ public class PhaseSubtractTest
       },
 
       {
-        new NullPhasicMeasure<decimal>(), new SinglePhasicMeasureSum<decimal>(2),
+        new NullPhasicMeasure<decimal>(),
+        new SinglePhasicMeasureSum<decimal>(2),
         new NullPhasicMeasure<decimal>()
       }
     };

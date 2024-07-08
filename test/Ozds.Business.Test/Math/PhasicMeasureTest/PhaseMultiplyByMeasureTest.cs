@@ -22,7 +22,8 @@ public class PhaseMultiplyByMeasureTest
       },
 
       {
-        new NullPhasicMeasure<decimal>(), new SinglePhasicMeasureSum<decimal>(2),
+        new NullPhasicMeasure<decimal>(),
+        new SinglePhasicMeasureSum<decimal>(2),
         new NullPhasicMeasure<decimal>()
       }
     };

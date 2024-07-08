@@ -31,11 +31,12 @@ public class UsageReactiveEnergyTotalRampedT0CalculationItemCalculator :
 
     var rampedAmount =
       reactiveAmount.SpanDiff().Select(
-        duplex =>
-          new AnyDuplexMeasure<decimal>(duplex.DuplexAbs().DuplexSum())).Subtract(
-        activeAmount.SpanDiff().Select(
           duplex =>
-            new AnyDuplexMeasure<decimal>(duplex.DuplexAny())));
+            new AnyDuplexMeasure<decimal>(duplex.DuplexAbs().DuplexSum()))
+        .Subtract(
+          activeAmount.SpanDiff().Select(
+            duplex =>
+              new AnyDuplexMeasure<decimal>(duplex.DuplexAny())));
 
     rampedAmount = rampedAmount
       .Select(
@@ -45,12 +46,16 @@ public class UsageReactiveEnergyTotalRampedT0CalculationItemCalculator :
 
     return new UsageReactiveEnergyTotalRampedT0CalculationItemModel
     {
-      ImportMin_VARh = reactiveAmount.SpanMin().TariffUnary().DuplexImport().PhaseSum(),
-      ImportMax_VARh = reactiveAmount.SpanMax().TariffUnary().DuplexImport().PhaseSum(),
+      ImportMin_VARh = reactiveAmount.SpanMin().TariffUnary().DuplexImport()
+        .PhaseSum(),
+      ImportMax_VARh = reactiveAmount.SpanMax().TariffUnary().DuplexImport()
+        .PhaseSum(),
       ImportAmount_VARh =
         reactiveAmount.SpanDiff().TariffUnary().DuplexImport().PhaseSum(),
-      ExportMin_VARh = reactiveAmount.SpanMin().TariffUnary().DuplexExport().PhaseSum(),
-      ExportMax_VARh = reactiveAmount.SpanMax().TariffUnary().DuplexExport().PhaseSum(),
+      ExportMin_VARh = reactiveAmount.SpanMin().TariffUnary().DuplexExport()
+        .PhaseSum(),
+      ExportMax_VARh = reactiveAmount.SpanMax().TariffUnary().DuplexExport()
+        .PhaseSum(),
       ExportAmount_VARh =
         reactiveAmount.SpanDiff().TariffUnary().DuplexExport().PhaseSum(),
       Price_EUR = calculationBasis.Price,

@@ -1,5 +1,4 @@
 using System.Numerics;
-using Humanizer;
 
 namespace Ozds.Business.Math;
 
@@ -115,8 +114,8 @@ public abstract record class DuplexMeasure<T>
       return this switch
       {
         CompositeDuplexMeasure<T> composite =>
-        new CompositePhasicMeasure<T>(
-          composite.Measures.Select(measure => measure.DuplexAny()).ToList()),
+          new CompositePhasicMeasure<T>(
+            composite.Measures.Select(measure => measure.DuplexAny()).ToList()),
         NetDuplexMeasure<T> net => net.TrueNet,
         AnyDuplexMeasure<T> net => net.Value,
         _ => PhasicMeasure<T>.Null
@@ -130,8 +129,9 @@ public abstract record class DuplexMeasure<T>
       return this switch
       {
         CompositeDuplexMeasure<T> composite =>
-        new CompositePhasicMeasure<T>(
-          composite.Measures.Select(measure => measure.DuplexImport()).ToList()),
+          new CompositePhasicMeasure<T>(
+            composite.Measures.Select(measure => measure.DuplexImport())
+              .ToList()),
         ImportExportDuplexMeasure<T> importExport => importExport.Import,
         _ => PhasicMeasure<T>.Null
       };
@@ -144,8 +144,9 @@ public abstract record class DuplexMeasure<T>
       return this switch
       {
         CompositeDuplexMeasure<T> composite =>
-        new CompositePhasicMeasure<T>(
-          composite.Measures.Select(measure => measure.DuplexExport()).ToList()),
+          new CompositePhasicMeasure<T>(
+            composite.Measures.Select(measure => measure.DuplexExport())
+              .ToList()),
         ImportExportDuplexMeasure<T> importExport => importExport.Export,
         _ => PhasicMeasure<T>.Null
       };
@@ -163,8 +164,8 @@ public abstract record class DuplexMeasure<T>
       return this switch
       {
         CompositeDuplexMeasure<T> composite =>
-        new CompositePhasicMeasure<T>(
-          composite.Measures.Select(measure => measure.DuplexSum()).ToList()),
+          new CompositePhasicMeasure<T>(
+            composite.Measures.Select(measure => measure.DuplexSum()).ToList()),
         ImportExportDuplexMeasure<T> importExport => importExport.Import
           .Add(importExport.Export),
         NetDuplexMeasure<T> net => net.TrueNet,

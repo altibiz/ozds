@@ -29,7 +29,8 @@ public class UsageActivePowerTotalImportT1PeakCalculationItemCalculator :
       Peak_W = amount.SpanPeak().TariffBinary().T1.DuplexImport().PhaseSum(),
       Amount_W = amount.SpanPeak().TariffBinary().T1.DuplexImport().PhaseSum(),
       Price_EUR = calculationBasis.Price,
-      Total_EUR = amount.SpanPeak().TariffBinary().T1.DuplexImport().PhaseSum() *
+      Total_EUR = amount.SpanPeak().TariffBinary().T1.DuplexImport().PhaseSum()
+        *
         calculationBasis.Price
     };
   }
