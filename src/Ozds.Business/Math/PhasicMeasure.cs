@@ -234,12 +234,12 @@ public abstract record class PhasicMeasure<T>
     return this switch
     {
       CompositePhasicMeasure<T> composite => composite.Measures.OrderBy(
-            measure => measure switch
-            {
-              SinglePhasicMeasureSum<T> => 0,
-              TriPhasicMeasure<T> => 1,
-              _ => 2
-            })
+          measure => measure switch
+          {
+            SinglePhasicMeasureSum<T> => 0,
+            TriPhasicMeasure<T> => 1,
+            _ => 2
+          })
         .Select(
           measure => measure switch
           {
@@ -259,12 +259,12 @@ public abstract record class PhasicMeasure<T>
     return this switch
     {
       CompositePhasicMeasure<T> composite => composite.Measures.OrderBy(
-            measure => measure switch
-            {
-              TriPhasicMeasure<T> => 0,
-              SinglePhasicMeasureSum<T> => 1,
-              _ => 2
-            })
+          measure => measure switch
+          {
+            TriPhasicMeasure<T> => 0,
+            SinglePhasicMeasureSum<T> => 1,
+            _ => 2
+          })
         .Select(
           measure => measure switch
           {
