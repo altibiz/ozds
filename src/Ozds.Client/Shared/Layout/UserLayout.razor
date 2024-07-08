@@ -1,4 +1,9 @@
 @using System.Globalization
+@using Microsoft.AspNetCore.Antiforgery
+@using Microsoft.AspNetCore.Http
+@inject IAntiforgery Antiforgery
+@inject IHttpContextAccessor HttpContextAccessor
+
 <MudLayout>
   <MudAppBar Elevation="4">
     <MudHidden Breakpoint="Breakpoint.MdAndUp">
@@ -30,7 +35,12 @@
       </ActivatorContent>
       <ChildContent>
         <MudListItem Text="Account" Icon="@Icons.Material.Outlined.Person" Href="account" ForceLoad="true"/>
-        <MudListItem Text="Logout" Icon="@Icons.Material.Outlined.Login" Href="/login" ForceLoad="true"/>
+        <MudListItem Text="Logout" Icon="@Icons.Material.Outlined.Login" ForceLoad="true">
+          <form method="post" action="/Users/LogOff?returnUrl=/login">
+            <input type="hidden" name="__RequestVerificationToken" value="@antiforgeryToken"/>
+            <button class="btn" type="submit">Logout</button>
+          </form>
+        </MudListItem>
       </ChildContent>
     </MudMenu>
   </MudAppBar>
@@ -65,6 +75,21 @@
   public RepresentativeState? RepresentativeState { get; set; } = default!;
 
   public bool _drawerOpen = true;
+  private string antiforgeryToken = string.Empty;
+
+  protected override void OnInitialized()
+  {
+    var httpContext = HttpContextAccessor.HttpContext;
+    if (httpContext != null)
+    {
+      var tokens = Antiforgery.GetAndStoreTokens(httpContext);
+      antiforgeryToken = tokens.RequestToken ?? string.Empty;
+    }
+    else
+    {
+      antiforgeryToken = string.Empty;
+    }
+  }
 
   void DrawerToggle()
   {
