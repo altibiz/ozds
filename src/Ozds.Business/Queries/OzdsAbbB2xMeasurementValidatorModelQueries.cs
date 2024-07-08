@@ -10,7 +10,7 @@ namespace Ozds.Business.Queries;
 public class OzdsAbbB2xMeasurementValidatorModelQueries(OzdsDbContext context)
   : IOzdsQueries
 {
-  protected readonly OzdsDbContext context = context;
+  private readonly OzdsDbContext context = context;
 
   public async Task<AbbB2xMeasurementValidatorModel?>
     AbbB2xMeasurementValidatorById(string id)

@@ -14,7 +14,8 @@ public class SchneideriEM3xxxPushRequestMeasurementConverter :
   }
 
   protected override SchneideriEM3xxxMeasurementModel ToMeasurement(
-    SchneideriEM3xxxPushRequest pushRequest, string meterId,
+    SchneideriEM3xxxPushRequest pushRequest,
+    string meterId,
     DateTimeOffset timestamp)
   {
     return pushRequest.ToModel(meterId, timestamp);

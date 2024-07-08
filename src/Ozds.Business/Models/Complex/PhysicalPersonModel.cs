@@ -4,7 +4,8 @@ namespace Ozds.Business.Models.Complex;
 
 public class PhysicalPersonModel : IValidatableObject
 {
-  [Required] public required string Name { get; set; } = default!;
+  [Required]
+  public required string Name { get; set; } = default!;
 
   [EmailAddress]
   [Required]

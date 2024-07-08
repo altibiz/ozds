@@ -30,15 +30,18 @@ public class UsageReactiveEnergyTotalRampedT0CalculationItemCalculator :
     );
 
     var rampedAmount =
-      reactiveAmount.SpanDiff.Select(duplex =>
-        new AnyDuplexMeasure<decimal>(duplex.DuplexAbs.DuplexSum)) -
-      activeAmount.SpanDiff.Select(duplex =>
-        new AnyDuplexMeasure<decimal>(duplex.DuplexAny));
+      reactiveAmount.SpanDiff.Select(
+        duplex =>
+          new AnyDuplexMeasure<decimal>(duplex.DuplexAbs.DuplexSum)).Subtract(
+        activeAmount.SpanDiff.Select(
+          duplex =>
+            new AnyDuplexMeasure<decimal>(duplex.DuplexAny)));
 
     rampedAmount = rampedAmount
-      .Select(duplex => duplex.DuplexAny.PhaseSum < 0
-        ? DuplexMeasure<decimal>.Null
-        : duplex);
+      .Select(
+        duplex => duplex.DuplexAny.PhaseSum < 0
+          ? DuplexMeasure<decimal>.Null
+          : duplex);
 
     return new UsageReactiveEnergyTotalRampedT0CalculationItemModel
     {
@@ -53,7 +56,7 @@ public class UsageReactiveEnergyTotalRampedT0CalculationItemCalculator :
       Price_EUR = calculationBasis.Price,
       Amount_VARh = rampedAmount.TariffUnary.DuplexAny.PhaseSum,
       Total_EUR = rampedAmount.TariffUnary.DuplexAny.PhaseSum *
-                  calculationBasis.Price
+        calculationBasis.Price
     };
   }
 }

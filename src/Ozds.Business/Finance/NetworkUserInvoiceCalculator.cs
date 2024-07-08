@@ -3,7 +3,7 @@ using Ozds.Business.Models;
 using Ozds.Business.Models.Complex;
 using Ozds.Business.Models.Composite;
 
-// TODO: fix getting representative id
+// FIXME: fix getting representative id
 
 namespace Ozds.Business.Finance;
 
@@ -30,66 +30,76 @@ public class NetworkUserInvoiceCalculator(
       .ToList();
 
     var usageActiveEnergyTotalImportT0Fee = calculations
-      .SelectMany(calculation => calculation.UsageItems
-        .OfType<UsageActiveEnergyTotalImportT0CalculationItemModel>())
+      .SelectMany(
+        calculation => calculation.UsageItems
+          .OfType<UsageActiveEnergyTotalImportT0CalculationItemModel>())
       .Sum(item => item.Total_EUR);
 
     var usageActiveEnergyTotalImportT1Fee = calculations
-      .SelectMany(calculation => calculation.UsageItems
-        .OfType<UsageActiveEnergyTotalImportT1CalculationItemModel>())
+      .SelectMany(
+        calculation => calculation.UsageItems
+          .OfType<UsageActiveEnergyTotalImportT1CalculationItemModel>())
       .Sum(item => item.Total_EUR);
 
     var usageActiveEnergyTotalImportT2Fee = calculations
-      .SelectMany(calculation => calculation.UsageItems
-        .OfType<UsageActiveEnergyTotalImportT2CalculationItemModel>())
+      .SelectMany(
+        calculation => calculation.UsageItems
+          .OfType<UsageActiveEnergyTotalImportT2CalculationItemModel>())
       .Sum(item => item.Total_EUR);
 
     var usageActivePowerTotalImportT1PeakFee = calculations
-      .SelectMany(calculation => calculation.UsageItems
-        .OfType<UsageActivePowerTotalImportT1PeakCalculationItemModel>())
+      .SelectMany(
+        calculation => calculation.UsageItems
+          .OfType<UsageActivePowerTotalImportT1PeakCalculationItemModel>())
       .Sum(item => item.Total_EUR);
 
     var usageReactiveEnergyTotalRampedT0Fee = calculations
-      .SelectMany(calculation => calculation.UsageItems
-        .OfType<UsageReactiveEnergyTotalRampedT0CalculationItemModel>())
+      .SelectMany(
+        calculation => calculation.UsageItems
+          .OfType<UsageReactiveEnergyTotalRampedT0CalculationItemModel>())
       .Sum(item => item.Total_EUR);
 
     var usageMeterFee = calculations
-      .SelectMany(calculation => calculation.UsageItems
-        .OfType<UsageMeterFeeCalculationItemModel>())
+      .SelectMany(
+        calculation => calculation.UsageItems
+          .OfType<UsageMeterFeeCalculationItemModel>())
       .Sum(item => item.Total_EUR);
 
     var usageFeeTotal = usageActiveEnergyTotalImportT0Fee
-                        + usageActiveEnergyTotalImportT1Fee
-                        + usageActiveEnergyTotalImportT2Fee
-                        + usageActivePowerTotalImportT1PeakFee
-                        + usageReactiveEnergyTotalRampedT0Fee
-                        + usageMeterFee;
+      + usageActiveEnergyTotalImportT1Fee
+      + usageActiveEnergyTotalImportT2Fee
+      + usageActivePowerTotalImportT1PeakFee
+      + usageReactiveEnergyTotalRampedT0Fee
+      + usageMeterFee;
 
     var supplyActiveEnergyTotalImportT1Fee = calculations
-      .SelectMany(calculation => calculation.SupplyItems
-        .OfType<SupplyActiveEnergyTotalImportT1CalculationItemModel>())
+      .SelectMany(
+        calculation => calculation.SupplyItems
+          .OfType<SupplyActiveEnergyTotalImportT1CalculationItemModel>())
       .Sum(item => item.Total_EUR);
 
     var supplyActiveEnergyTotalImportT2Fee = calculations
-      .SelectMany(calculation => calculation.SupplyItems
-        .OfType<SupplyActiveEnergyTotalImportT2CalculationItemModel>())
+      .SelectMany(
+        calculation => calculation.SupplyItems
+          .OfType<SupplyActiveEnergyTotalImportT2CalculationItemModel>())
       .Sum(item => item.Total_EUR);
 
     var supplyBusinessUsageFee = calculations
-      .SelectMany(calculation => calculation.SupplyItems
-        .OfType<SupplyBusinessUsageCalculationItemModel>())
+      .SelectMany(
+        calculation => calculation.SupplyItems
+          .OfType<SupplyBusinessUsageCalculationItemModel>())
       .Sum(item => item.Total_EUR);
 
     var supplyRenewableEnergyFee = calculations
-      .SelectMany(calculation => calculation.SupplyItems
-        .OfType<SupplyRenewableEnergyCalculationItemModel>())
+      .SelectMany(
+        calculation => calculation.SupplyItems
+          .OfType<SupplyRenewableEnergyCalculationItemModel>())
       .Sum(item => item.Total_EUR);
 
     var supplyFeeTotal = supplyActiveEnergyTotalImportT1Fee
-                         + supplyActiveEnergyTotalImportT2Fee
-                         + supplyBusinessUsageFee
-                         + supplyRenewableEnergyFee;
+      + supplyActiveEnergyTotalImportT2Fee
+      + supplyBusinessUsageFee
+      + supplyRenewableEnergyFee;
 
     var total = usageFeeTotal + supplyFeeTotal;
     var tax = total * basis.RegulatoryCatalogue.TaxRate_Percent / 100M;
@@ -100,7 +110,13 @@ public class NetworkUserInvoiceCalculator(
       Id = default!,
       Title = issuer is null
         ? $"Invoice for {basis.NetworkUser.Title} at {basis.Location.Title}"
-        : $"Invoice for {basis.NetworkUser.Title} at {basis.Location.Title} issued by {issuer}",
+        : $"Invoice for {
+          basis.NetworkUser.Title
+        } at {
+          basis.Location.Title
+        } issued by {
+          issuer
+        }",
       IssuedById = issuer,
       IssuedOn = now,
       NetworkUserId = basis.NetworkUser.Id,
@@ -144,6 +160,5 @@ public class NetworkUserInvoiceCalculator(
     }
 
     return null;
-    // return httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
   }
 }

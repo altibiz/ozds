@@ -28,7 +28,7 @@ public class UsageActiveEnergyTotalImportT0CalculationItemCalculator :
       Amount_Wh = amount.SpanDiff.TariffUnary.DuplexImport.PhaseSum,
       Price_EUR = calculationBasis.Price,
       Total_EUR = amount.SpanDiff.TariffUnary.DuplexImport.PhaseSum *
-                  calculationBasis.Price
+        calculationBasis.Price
     };
   }
 }

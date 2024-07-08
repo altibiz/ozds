@@ -27,13 +27,15 @@ public class
     EntityTypeBuilder<BlueLowNetworkUserCalculationEntity> builder)
   {
     builder
-      .ComplexProperty(nameof(BlueLowNetworkUserCalculationEntity
-        .UsageActiveEnergyTotalImportT0))
+      .ComplexProperty(
+        nameof(BlueLowNetworkUserCalculationEntity
+          .UsageActiveEnergyTotalImportT0))
       .UsageActiveEnergyTotalImportT0CalculationItem();
 
     builder
-      .ComplexProperty(nameof(BlueLowNetworkUserCalculationEntity
-        .UsageReactiveEnergyTotalRampedT0))
+      .ComplexProperty(
+        nameof(BlueLowNetworkUserCalculationEntity
+          .UsageReactiveEnergyTotalRampedT0))
       .UsageReactiveEnergyTotalRampedT0CalculationItem();
   }
 }

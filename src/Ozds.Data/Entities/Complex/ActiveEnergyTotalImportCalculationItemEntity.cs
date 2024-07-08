@@ -90,7 +90,8 @@ public static class ActiveEnergyImportCalculationItemEntityExtensions
     this ComplexPropertyBuilder builder
   )
   {
-    builder.ActiveEnergyImportCalculationItem("supply_business_usage_fee",
+    builder.ActiveEnergyImportCalculationItem(
+      "supply_business_usage_fee",
       "t0");
   }
 
@@ -98,7 +99,8 @@ public static class ActiveEnergyImportCalculationItemEntityExtensions
     this ComplexPropertyBuilder builder
   )
   {
-    builder.ActiveEnergyImportCalculationItem("supply_renewable_energy_fee",
+    builder.ActiveEnergyImportCalculationItem(
+      "supply_renewable_energy_fee",
       "t0");
   }
 

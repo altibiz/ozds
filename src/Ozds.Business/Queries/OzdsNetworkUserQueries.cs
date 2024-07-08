@@ -11,7 +11,7 @@ namespace Ozds.Business.Queries;
 
 public class OzdsNetworkUserQueries(OzdsDbContext context) : IOzdsQueries
 {
-  protected readonly OzdsDbContext context = context;
+  private readonly OzdsDbContext context = context;
 
   public async Task<NetworkUserModel?>
     NetworkUserById(string id)
@@ -28,7 +28,6 @@ public class OzdsNetworkUserQueries(OzdsDbContext context) : IOzdsQueries
     return null;
   }
 
-
   public async Task<PaginatedList<LocationModel>> GetLocations(
     string title,
     int pageNumber = QueryConstants.StartingPage,
@@ -36,8 +35,9 @@ public class OzdsNetworkUserQueries(OzdsDbContext context) : IOzdsQueries
   )
   {
     var filtered = context.Locations
-      .Where(catalogue => catalogue.Title
-        .StartsWith(title));
+      .Where(
+        catalogue => catalogue.Title
+          .StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered
       .OrderBy(context.PrimaryKeyOf<LocationEntity>())
@@ -57,8 +57,9 @@ public class OzdsNetworkUserQueries(OzdsDbContext context) : IOzdsQueries
     )
   {
     var filtered = context.Representatives
-      .Where(rep => rep.Title
-        .StartsWith(title))
+      .Where(
+        rep => rep.Title
+          .StartsWith(title))
       .Where(rep => rep.Role == RoleEntity.NetworkUserRepresentative);
     var count = await filtered.CountAsync();
     var items = await filtered

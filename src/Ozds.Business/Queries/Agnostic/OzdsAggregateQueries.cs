@@ -25,14 +25,16 @@ public class OzdsAggregateQueries(
     DateTimeOffset toDate,
     int pageNumber = QueryConstants.StartingPage,
     int pageCount = QueryConstants.DefaultPageCount
-  ) where T : class, IAggregate
+  )
+    where T : class, IAggregate
   {
     var dbSetType = _modelEntityConverter.EntityType(typeof(T));
     var queryable = _context.GetDbSet(dbSetType)
-                      as IQueryable<AggregateEntity>
-                    ?? throw new InvalidOperationException(
-                      $"No DbSet found for {dbSetType}");
-    var filtered = whereClauses.Aggregate(queryable,
+        as IQueryable<AggregateEntity>
+      ?? throw new InvalidOperationException(
+        $"No DbSet found for {dbSetType}");
+    var filtered = whereClauses.Aggregate(
+      queryable,
       (current, clause) => current.WhereDynamic(clause));
     var timeFiltered = filtered
       .Where(aggregate => aggregate.Timestamp >= fromDate)
@@ -57,10 +59,12 @@ public class OzdsAggregateQueries(
     int pageNumber = QueryConstants.StartingPage,
     int pageCount = QueryConstants.DefaultPageCount)
   {
-    var abbB2x = await Read<AbbB2xAggregateModel>(whereClauses, fromDate,
+    var abbB2x = await Read<AbbB2xAggregateModel>(
+      whereClauses, fromDate,
       toDate, pageNumber, pageCount);
     var schneideriEM3xxx =
-      await Read<SchneideriEM3xxxAggregateModel>(whereClauses, fromDate, toDate,
+      await Read<SchneideriEM3xxxAggregateModel>(
+        whereClauses, fromDate, toDate,
         pageNumber, pageCount);
     return abbB2x.Items.Cast<IAggregate>().Concat(schneideriEM3xxx.Items)
       .ToList();

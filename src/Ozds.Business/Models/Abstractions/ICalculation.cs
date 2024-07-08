@@ -1,8 +1,6 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace Ozds.Business.Models.Abstractions;
 
-public interface ICalculation : IValidatableObject, IReadonly, IIdentifiable
+public interface ICalculation : IReadonly, IIdentifiable
 {
   public DateTimeOffset IssuedOn { get; }
   public string? IssuedById { get; }

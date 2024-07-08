@@ -15,7 +15,7 @@ namespace Ozds.Business.Queries;
 public class OzdsLocationMeasurementLocationModelQueries(OzdsDbContext context)
   : IOzdsQueries
 {
-  protected readonly OzdsDbContext context = context;
+  private readonly OzdsDbContext context = context;
 
   public async Task<LocationMeasurementLocationModel?>
     LocationMeasurementLocationById(string id)
@@ -40,8 +40,9 @@ public class OzdsLocationMeasurementLocationModelQueries(OzdsDbContext context)
   )
   {
     var filtered = context.Locations
-      .Where(catalogue => catalogue.Title
-        .StartsWith(title));
+      .Where(
+        catalogue => catalogue.Title
+          .StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered
       .OrderBy(context.PrimaryKeyOf<LocationEntity>())

@@ -12,20 +12,22 @@ public class AgnosticMeasurementAggregateConverter(
   public IAggregate ToAggregate(IMeasurement model, IntervalModel interval)
   {
     return _serviceProvider
-             .GetServices<IMeasurementAggregateConverter>()
-             .FirstOrDefault(converter =>
-               converter.CanConvertToAggregate(model.GetType()))
-             ?.ToAggregate(model, interval)
-           ?? throw new InvalidOperationException(
-             $"No converter found for measurement {model.GetType()}.");
+        .GetServices<IMeasurementAggregateConverter>()
+        .FirstOrDefault(
+          converter =>
+            converter.CanConvertToAggregate(model.GetType()))
+        ?.ToAggregate(model, interval)
+      ?? throw new InvalidOperationException(
+        $"No converter found for measurement {model.GetType()}.");
   }
 
-  public TAggregate ToAggregate<TAggregate>(IMeasurement model,
+  public TAggregate ToAggregate<TAggregate>(
+    IMeasurement model,
     IntervalModel interval)
     where TAggregate : class, IAggregate
   {
     return ToAggregate(model, interval) as TAggregate
-           ?? throw new InvalidOperationException(
-             $"No converter found for measurement {model.GetType()}.");
+      ?? throw new InvalidOperationException(
+        $"No converter found for measurement {model.GetType()}.");
   }
 }

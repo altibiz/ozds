@@ -21,46 +21,46 @@ public class AbbB2xAggregateUpserter : AggregateUpserter<AbbB2xAggregateModel,
         Interval = lhs.Interval,
         Count = lhs.Count + rhs.Count,
         VoltageL1AnyT0Avg_V = (lhs.VoltageL1AnyT0Avg_V * lhs.Count
-                               + rhs.VoltageL1AnyT0Avg_V * rhs.Count)
-                              / (lhs.Count + rhs.Count),
+            + rhs.VoltageL1AnyT0Avg_V * rhs.Count)
+          / (lhs.Count + rhs.Count),
         VoltageL2AnyT0Avg_V = (lhs.VoltageL2AnyT0Avg_V * lhs.Count
-                               + rhs.VoltageL2AnyT0Avg_V * rhs.Count)
-                              / (lhs.Count + rhs.Count),
+            + rhs.VoltageL2AnyT0Avg_V * rhs.Count)
+          / (lhs.Count + rhs.Count),
         VoltageL3AnyT0Avg_V = (lhs.VoltageL3AnyT0Avg_V * lhs.Count
-                               + rhs.VoltageL3AnyT0Avg_V * rhs.Count)
-                              / (lhs.Count + rhs.Count),
+            + rhs.VoltageL3AnyT0Avg_V * rhs.Count)
+          / (lhs.Count + rhs.Count),
         CurrentL1AnyT0Avg_A = (lhs.CurrentL1AnyT0Avg_A * lhs.Count
-                               + rhs.CurrentL1AnyT0Avg_A * rhs.Count)
-                              / (lhs.Count + rhs.Count),
+            + rhs.CurrentL1AnyT0Avg_A * rhs.Count)
+          / (lhs.Count + rhs.Count),
         CurrentL2AnyT0Avg_A = (lhs.CurrentL2AnyT0Avg_A * lhs.Count
-                               + rhs.CurrentL2AnyT0Avg_A * rhs.Count)
-                              / (lhs.Count + rhs.Count),
+            + rhs.CurrentL2AnyT0Avg_A * rhs.Count)
+          / (lhs.Count + rhs.Count),
         CurrentL3AnyT0Avg_A = (lhs.CurrentL3AnyT0Avg_A * lhs.Count
-                               + rhs.CurrentL3AnyT0Avg_A * rhs.Count)
-                              / (lhs.Count + rhs.Count),
+            + rhs.CurrentL3AnyT0Avg_A * rhs.Count)
+          / (lhs.Count + rhs.Count),
         ActivePowerL1NetT0Avg_W = (lhs.ActivePowerL1NetT0Avg_W * lhs.Count
-                                   + rhs.ActivePowerL1NetT0Avg_W *
-                                   rhs.Count)
-                                  / (lhs.Count + rhs.Count),
+            + rhs.ActivePowerL1NetT0Avg_W *
+            rhs.Count)
+          / (lhs.Count + rhs.Count),
         ActivePowerL2NetT0Avg_W = (lhs.ActivePowerL2NetT0Avg_W * lhs.Count
-                                   + rhs.ActivePowerL2NetT0Avg_W *
-                                   rhs.Count)
-                                  / (lhs.Count + rhs.Count),
+            + rhs.ActivePowerL2NetT0Avg_W *
+            rhs.Count)
+          / (lhs.Count + rhs.Count),
         ActivePowerL3NetT0Avg_W = (lhs.ActivePowerL3NetT0Avg_W * lhs.Count
-                                   + rhs.ActivePowerL3NetT0Avg_W *
-                                   rhs.Count)
-                                  / (lhs.Count + rhs.Count),
+            + rhs.ActivePowerL3NetT0Avg_W *
+            rhs.Count)
+          / (lhs.Count + rhs.Count),
         ReactivePowerL1NetT0Avg_VAR =
           (lhs.ReactivePowerL1NetT0Avg_VAR * lhs.Count
-           + rhs.ReactivePowerL1NetT0Avg_VAR * rhs.Count)
+            + rhs.ReactivePowerL1NetT0Avg_VAR * rhs.Count)
           / (lhs.Count + rhs.Count),
         ReactivePowerL2NetT0Avg_VAR =
           (lhs.ReactivePowerL2NetT0Avg_VAR * lhs.Count
-           + rhs.ReactivePowerL2NetT0Avg_VAR * rhs.Count)
+            + rhs.ReactivePowerL2NetT0Avg_VAR * rhs.Count)
           / (lhs.Count + rhs.Count),
         ReactivePowerL3NetT0Avg_VAR =
           (lhs.ReactivePowerL3NetT0Avg_VAR * lhs.Count
-           + rhs.ReactivePowerL3NetT0Avg_VAR * rhs.Count)
+            + rhs.ReactivePowerL3NetT0Avg_VAR * rhs.Count)
           / (lhs.Count + rhs.Count),
         ActiveEnergyTotalImportT0Min_Wh =
           lhs.ActiveEnergyTotalImportT0Min_Wh >
@@ -127,7 +127,8 @@ public class AbbB2xAggregateUpserter : AggregateUpserter<AbbB2xAggregateModel,
   }
 
   protected override AbbB2xAggregateModel UpsertConcreteModel(
-    AbbB2xAggregateModel lhs, AbbB2xAggregateModel rhs)
+    AbbB2xAggregateModel lhs,
+    AbbB2xAggregateModel rhs)
   {
     return new AbbB2xAggregateModel
     {
@@ -136,46 +137,46 @@ public class AbbB2xAggregateUpserter : AggregateUpserter<AbbB2xAggregateModel,
       Interval = lhs.Interval,
       Count = lhs.Count + rhs.Count,
       VoltageL1AnyT0Avg_V = (lhs.VoltageL1AnyT0Avg_V * lhs.Count
-                             + rhs.VoltageL1AnyT0Avg_V * rhs.Count)
-                            / (lhs.Count + rhs.Count),
+          + rhs.VoltageL1AnyT0Avg_V * rhs.Count)
+        / (lhs.Count + rhs.Count),
       VoltageL2AnyT0Avg_V = (lhs.VoltageL2AnyT0Avg_V * lhs.Count
-                             + rhs.VoltageL2AnyT0Avg_V * rhs.Count)
-                            / (lhs.Count + rhs.Count),
+          + rhs.VoltageL2AnyT0Avg_V * rhs.Count)
+        / (lhs.Count + rhs.Count),
       VoltageL3AnyT0Avg_V = (lhs.VoltageL3AnyT0Avg_V * lhs.Count
-                             + rhs.VoltageL3AnyT0Avg_V * rhs.Count)
-                            / (lhs.Count + rhs.Count),
+          + rhs.VoltageL3AnyT0Avg_V * rhs.Count)
+        / (lhs.Count + rhs.Count),
       CurrentL1AnyT0Avg_A = (lhs.CurrentL1AnyT0Avg_A * lhs.Count
-                             + rhs.CurrentL1AnyT0Avg_A * rhs.Count)
-                            / (lhs.Count + rhs.Count),
+          + rhs.CurrentL1AnyT0Avg_A * rhs.Count)
+        / (lhs.Count + rhs.Count),
       CurrentL2AnyT0Avg_A = (lhs.CurrentL2AnyT0Avg_A * lhs.Count
-                             + rhs.CurrentL2AnyT0Avg_A * rhs.Count)
-                            / (lhs.Count + rhs.Count),
+          + rhs.CurrentL2AnyT0Avg_A * rhs.Count)
+        / (lhs.Count + rhs.Count),
       CurrentL3AnyT0Avg_A = (lhs.CurrentL3AnyT0Avg_A * lhs.Count
-                             + rhs.CurrentL3AnyT0Avg_A * rhs.Count)
-                            / (lhs.Count + rhs.Count),
+          + rhs.CurrentL3AnyT0Avg_A * rhs.Count)
+        / (lhs.Count + rhs.Count),
       ActivePowerL1NetT0Avg_W = (lhs.ActivePowerL1NetT0Avg_W * lhs.Count
-                                 + rhs.ActivePowerL1NetT0Avg_W *
-                                 rhs.Count)
-                                / (lhs.Count + rhs.Count),
+          + rhs.ActivePowerL1NetT0Avg_W *
+          rhs.Count)
+        / (lhs.Count + rhs.Count),
       ActivePowerL2NetT0Avg_W = (lhs.ActivePowerL2NetT0Avg_W * lhs.Count
-                                 + rhs.ActivePowerL2NetT0Avg_W *
-                                 rhs.Count)
-                                / (lhs.Count + rhs.Count),
+          + rhs.ActivePowerL2NetT0Avg_W *
+          rhs.Count)
+        / (lhs.Count + rhs.Count),
       ActivePowerL3NetT0Avg_W = (lhs.ActivePowerL3NetT0Avg_W * lhs.Count
-                                 + rhs.ActivePowerL3NetT0Avg_W *
-                                 rhs.Count)
-                                / (lhs.Count + rhs.Count),
+          + rhs.ActivePowerL3NetT0Avg_W *
+          rhs.Count)
+        / (lhs.Count + rhs.Count),
       ReactivePowerL1NetT0Avg_VAR =
         (lhs.ReactivePowerL1NetT0Avg_VAR * lhs.Count
-         + rhs.ReactivePowerL1NetT0Avg_VAR * rhs.Count)
+          + rhs.ReactivePowerL1NetT0Avg_VAR * rhs.Count)
         / (lhs.Count + rhs.Count),
       ReactivePowerL2NetT0Avg_VAR =
         (lhs.ReactivePowerL2NetT0Avg_VAR * lhs.Count
-         + rhs.ReactivePowerL2NetT0Avg_VAR * rhs.Count)
+          + rhs.ReactivePowerL2NetT0Avg_VAR * rhs.Count)
         / (lhs.Count + rhs.Count),
       ReactivePowerL3NetT0Avg_VAR =
         (lhs.ReactivePowerL3NetT0Avg_VAR * lhs.Count
-         + rhs.ReactivePowerL3NetT0Avg_VAR * rhs.Count)
+          + rhs.ReactivePowerL3NetT0Avg_VAR * rhs.Count)
         / (lhs.Count + rhs.Count),
       ActiveEnergyTotalImportT0Min_Wh =
         lhs.ActiveEnergyTotalImportT0Min_Wh >

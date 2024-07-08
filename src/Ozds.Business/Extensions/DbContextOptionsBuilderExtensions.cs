@@ -18,18 +18,20 @@ public static class DbContextOptionsBuilderExtensions
       assembly
         .GetTypes()
         .Where(type => type.IsSubclassOf(typeof(ServedSaveChangesInterceptor)))
-        .Select(type =>
-        {
-          try
+        .Select(
+          type =>
           {
-            return (IInterceptor?)Activator.CreateInstance(type,
-              serviceProvider);
-          }
-          catch (Exception)
-          {
-            return null;
-          }
-        })
+            try
+            {
+              return (IInterceptor?)Activator.CreateInstance(
+                type,
+                serviceProvider);
+            }
+            catch (Exception)
+            {
+              return null;
+            }
+          })
         .Where(interceptor => interceptor is not null)
         .OfType<IInterceptor>()
         .ToArray());

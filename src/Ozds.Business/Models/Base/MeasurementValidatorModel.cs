@@ -21,8 +21,9 @@ public abstract class MeasurementValidatorModel<T> : MeasurementValidatorModel,
 
     if (validationContext.ObjectInstance is T measurement)
     {
-      foreach (var result in ValidateMeasurement(measurement,
-                 validationContext.MemberName))
+      foreach (var result in ValidateMeasurement(
+        measurement,
+        validationContext.MemberName))
       {
         yield return result;
       }

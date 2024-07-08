@@ -50,10 +50,8 @@
       "stopAtEntry": false,
       "requireExactSource": false,
       "args": [
-        "--timeout",
-        "1",
-        "--interval",
-        "3",
+        "--seed",
+        "week",
         "--meter-ids",
         "abb-B2x-1624226",
         "schneider-iEM3xxx-19453067"

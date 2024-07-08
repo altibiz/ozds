@@ -9,7 +9,8 @@ public class SchneideriEM3xxxMeasurementAggregateConverter :
     SchneideriEM3xxxAggregateModel>
 {
   protected override SchneideriEM3xxxAggregateModel ToAggregate(
-    SchneideriEM3xxxMeasurementModel measurement, IntervalModel interval)
+    SchneideriEM3xxxMeasurementModel measurement,
+    IntervalModel interval)
   {
     return measurement.ToAggregate(interval);
   }

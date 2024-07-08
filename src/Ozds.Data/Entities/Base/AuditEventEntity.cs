@@ -20,9 +20,9 @@ public class AuditEventEntity : EventEntity
 public class AuditEventEntityTypeHierarchyConfiguration :
   EntityTypeHierarchyConfiguration<AuditEventEntity>
 {
-  public override void Configure(ModelBuilder modelBuilder, Type type)
+  public override void Configure(ModelBuilder modelBuilder, Type entity)
   {
-    var builder = modelBuilder.Entity(type);
+    var builder = modelBuilder.Entity(entity);
 
     builder.HasIndex(
       new[]

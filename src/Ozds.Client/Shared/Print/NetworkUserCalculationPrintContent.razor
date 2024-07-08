@@ -89,7 +89,8 @@
     <td rowspan="@usageRowspan">
       @DateString(Calculation.ToDate)
     </td>
-    @(Calculation.UsageItems.FirstOrDefault() is { } usageItem
+    @(
+    Calculation.UsageItems.FirstOrDefault() is { } usageItem
       ? renderItem(usageItem)
       : null)
   </tr>
@@ -153,7 +154,8 @@
     <td rowspan="@supplyRowspan">
       @DateString(Calculation.ToDate)
     </td>
-    @(Calculation.SupplyItems.FirstOrDefault() is { } supplyItem
+    @(
+    Calculation.SupplyItems.FirstOrDefault() is { } supplyItem
       ? renderItem(supplyItem)
       : null)
   </tr>
@@ -179,7 +181,9 @@
 
 
 @code {
-  [Parameter] public INetworkUserCalculation Calculation { get; set; } = default!;
+
+  [Parameter]
+  public INetworkUserCalculation Calculation { get; set; } = default!;
 
   private int usageRowspan
   {

@@ -61,9 +61,12 @@
 </EditForm>
 
 @code {
-  [Parameter] public string Id { get; set; } = default!;
 
-  [Parameter] public BlueLowNetworkUserCatalogueModel? Model { get; set; }
+  [Parameter]
+  public string Id { get; set; } = default!;
+
+  [Parameter]
+  public BlueLowNetworkUserCatalogueModel? Model { get; set; }
 
   private LoadingState<BlueLowNetworkUserCatalogueModel> LoadingState { get; set; } = new();
 

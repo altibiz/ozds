@@ -7,15 +7,20 @@ namespace Ozds.Business.Models.Complex;
 public abstract class
   ActiveEnergyTotalImportCalculationItemModel : CalculationItemModel
 {
-  [Required] public required decimal Min_Wh { get; set; }
+  [Required]
+  public required decimal Min_Wh { get; set; }
 
-  [Required] public required decimal Max_Wh { get; set; }
+  [Required]
+  public required decimal Max_Wh { get; set; }
 
-  [Required] public required decimal Amount_Wh { get; set; }
+  [Required]
+  public required decimal Amount_Wh { get; set; }
 
-  [Required] public required decimal Price_EUR { get; set; }
+  [Required]
+  public required decimal Price_EUR { get; set; }
 
-  [Required] public required decimal Total_EUR { get; set; }
+  [Required]
+  public required decimal Total_EUR { get; set; }
 }
 
 public abstract class ActiveEnergyTotalImportT0CalculationItemModel

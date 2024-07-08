@@ -7,25 +7,35 @@ public class
   SchneideriEM3xxxMeasurementValidatorModel : MeasurementValidatorModel<
   SchneideriEM3xxxMeasurementModel>
 {
-  [Required] public required float MinVoltage_V { get; set; }
+  [Required]
+  public required float MinVoltage_V { get; set; }
 
-  [Required] public required float MaxVoltage_V { get; set; }
+  [Required]
+  public required float MaxVoltage_V { get; set; }
 
-  [Required] public required float MinCurrent_A { get; set; }
+  [Required]
+  public required float MinCurrent_A { get; set; }
 
-  [Required] public required float MaxCurrent_A { get; set; }
+  [Required]
+  public required float MaxCurrent_A { get; set; }
 
-  [Required] public required float MinActivePower_W { get; set; }
+  [Required]
+  public required float MinActivePower_W { get; set; }
 
-  [Required] public required float MaxActivePower_W { get; set; }
+  [Required]
+  public required float MaxActivePower_W { get; set; }
 
-  [Required] public required float MinReactivePower_VAR { get; set; }
+  [Required]
+  public required float MinReactivePower_VAR { get; set; }
 
-  [Required] public required float MaxReactivePower_VAR { get; set; }
+  [Required]
+  public required float MaxReactivePower_VAR { get; set; }
 
-  [Required] public required float MinApparentPower_VA { get; set; }
+  [Required]
+  public required float MinApparentPower_VA { get; set; }
 
-  [Required] public required float MaxApparentPower_VA { get; set; }
+  [Required]
+  public required float MaxApparentPower_VA { get; set; }
 
   public static SchneideriEM3xxxMeasurementValidatorModel New()
   {
@@ -146,7 +156,9 @@ public class
     )
     {
       yield return new ValidationResult(
-        $"ReactivePower must be greater than or equal to {MinReactivePower_VAR}.",
+        $"ReactivePower must be greater than or equal to {
+          MinReactivePower_VAR
+        }.",
         new[] { nameof(SchneideriEM3xxxAggregateModel.ReactivePower_VAR) }
       );
     }
@@ -176,7 +188,9 @@ public class
     )
     {
       yield return new ValidationResult(
-        $"ApparentPower must be greater than or equal to {MinApparentPower_VA}.",
+        $"ApparentPower must be greater than or equal to {
+          MinApparentPower_VA
+        }.",
         new[] { nameof(SchneideriEM3xxxAggregateModel.ApparentPower_VA) }
       );
     }

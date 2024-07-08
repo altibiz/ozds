@@ -11,7 +11,8 @@ public abstract class AggregateModel : IAggregate
   private IntervalModel _interval = IntervalModel.QuarterHour;
   private DateTimeOffset _timestamp;
 
-  [Required] public required string MeterId { get; set; }
+  [Required]
+  public required string MeterId { get; set; }
 
   [Required]
   public required DateTimeOffset Timestamp
@@ -21,9 +22,11 @@ public abstract class AggregateModel : IAggregate
     {
       _ = Interval switch
       {
+#pragma warning disable S1121
         IntervalModel.QuarterHour => _timestamp = value.GetStartOfQuarterHour(),
         IntervalModel.Day => _timestamp = value.GetStartOfDay(),
         IntervalModel.Month => _timestamp = value.GetStartOfMonth(),
+#pragma warning restore S1121
         _ => throw new InvalidOperationException(
           $"Unsupported interval {Interval}"
         )
@@ -42,7 +45,8 @@ public abstract class AggregateModel : IAggregate
     }
   }
 
-  [Required] public required long Count { get; set; } = 0;
+  [Required]
+  public required long Count { get; set; } = 0;
 
   public abstract TariffMeasure<float> Current_A { get; }
 

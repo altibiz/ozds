@@ -57,7 +57,9 @@
 
 @code {
 
-  [Parameter] public string Source { get; set; } = "abb";
+  [Parameter]
+  public string Source { get; set; } = "abb";
+
   private IMeter? _meter;
   private ApexChart<GaugeData> gauge = default!;
   private float thisMonthCurrentPower = 0;

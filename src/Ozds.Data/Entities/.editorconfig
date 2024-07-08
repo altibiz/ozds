@@ -1,0 +1,10 @@
+[*.{cs,cshtml,razor}]
+# Field should be private
+dotnet_diagnostic.SA1401.severity = None
+
+# Make field auto-implemented
+dotnet_diagnostic.S2292.severity = None
+
+# Classes shouldn't be empty
+dotnet_diagnostic.S2094.severity = None
+

@@ -10,7 +10,7 @@ namespace Ozds.Business.Queries;
 public class OzdsSchneideriEM3xxxMeterModelQueries(OzdsDbContext context)
   : IOzdsQueries
 {
-  protected readonly OzdsDbContext context = context;
+  private readonly OzdsDbContext context = context;
 
   public async Task<SchneideriEM3xxxMeterModel?>
     SchneideriEM3xxxMeterById(string id)
@@ -35,8 +35,9 @@ public class OzdsSchneideriEM3xxxMeterModelQueries(OzdsDbContext context)
   )
   {
     var filtered = context.Messengers
-      .Where(catalogue => catalogue.Title
-        .StartsWith(title));
+      .Where(
+        catalogue => catalogue.Title
+          .StartsWith(title));
     var count = await filtered.CountAsync();
     var items = await filtered
       .OrderBy(context.PrimaryKeyOf<MessengerEntity>())

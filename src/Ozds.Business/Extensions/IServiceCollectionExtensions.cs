@@ -27,48 +27,51 @@ public static class IServiceCollectionExtensions
     bool IsDevelopment
   )
   {
-    services.AddDbContextFactory<OzdsDbContext>((services, options) =>
-    {
-      if (IsDevelopment)
+    services.AddDbContextFactory<OzdsDbContext>(
+      (services, options) =>
       {
-        options.EnableSensitiveDataLogging();
-        options.EnableDetailedErrors();
-        // options.UseLoggerFactory(
-        //   LoggerFactory.Create(builder => builder.AddConsole())
-        // );
-      }
-
-      var shellConfiguration =
-        services.GetRequiredService<ShellSettings>().ShellConfiguration;
-      var connectionString = shellConfiguration["ConnectionString"]
-                             ?? shellConfiguration
-                               .GetSection("OrchardCore_AutoSetup")
-                               ?.GetSection("Tenants")
-                               ?.GetSection("0")
-                               ?["DatabaseConnectionString"];
-      if (connectionString is null)
-      {
-        var serializerOptions = new JsonSerializerOptions
+        if (IsDevelopment)
         {
-          WriteIndented = true
-        };
-        var serializedShellConfiguration = JsonSerializer.Serialize(
-          shellConfiguration.AsEnumerable().ToList(),
-          serializerOptions
-        );
-        throw new InvalidOperationException(
-          "ConnectionString not found in shell configuration: "
-          + serializedShellConfiguration
-        );
-      }
+          options.EnableSensitiveDataLogging();
+          options.EnableDetailedErrors();
+#pragma warning disable S125
+          // options.UseLoggerFactory(
+          //   LoggerFactory.Create(builder => builder.AddConsole())
+          // );
+#pragma warning restore S125
+        }
 
-      options
-        .UseTimescale(connectionString)
-        .AddServedSaveChangesInterceptorsFromAssembly(
-          Assembly.GetExecutingAssembly(),
-          services
-        );
-    });
+        var shellConfiguration =
+          services.GetRequiredService<ShellSettings>().ShellConfiguration;
+        var connectionString = shellConfiguration["ConnectionString"]
+          ?? shellConfiguration
+            .GetSection("OrchardCore_AutoSetup")
+            ?.GetSection("Tenants")
+            ?.GetSection("0")
+            ?["DatabaseConnectionString"];
+        if (connectionString is null)
+        {
+          var serializerOptions = new JsonSerializerOptions
+          {
+            WriteIndented = true
+          };
+          var serializedShellConfiguration = JsonSerializer.Serialize(
+            shellConfiguration.AsEnumerable().ToList(),
+            serializerOptions
+          );
+          throw new InvalidOperationException(
+            "ConnectionString not found in shell configuration: "
+            + serializedShellConfiguration
+          );
+        }
+
+        options
+          .UseTimescale(connectionString)
+          .AddServedSaveChangesInterceptorsFromAssembly(
+            Assembly.GetExecutingAssembly(),
+            services
+          );
+      });
 
     services.AddScopedAssignableTo(typeof(IOzdsQueries));
     services.AddScopedAssignableTo(typeof(IOzdsMutations));
@@ -103,11 +106,12 @@ public static class IServiceCollectionExtensions
   {
     var conversionTypes = typeof(IServiceCollectionExtensions).Assembly
       .GetTypes()
-      .Where(type =>
-        !type.IsAbstract &&
-        !type.IsGenericType &&
-        type.IsClass &&
-        type.IsAssignableTo(assignableTo));
+      .Where(
+        type =>
+          !type.IsAbstract &&
+          !type.IsGenericType &&
+          type.IsClass &&
+          type.IsAssignableTo(assignableTo));
 
     foreach (var conversionType in conversionTypes)
     {
@@ -123,11 +127,12 @@ public static class IServiceCollectionExtensions
   {
     var conversionTypes = typeof(IServiceCollectionExtensions).Assembly
       .GetTypes()
-      .Where(type =>
-        !type.IsAbstract &&
-        !type.IsGenericType &&
-        type.IsClass &&
-        type.IsAssignableTo(assignableTo));
+      .Where(
+        type =>
+          !type.IsAbstract &&
+          !type.IsGenericType &&
+          type.IsClass &&
+          type.IsAssignableTo(assignableTo));
 
     foreach (var conversionType in conversionTypes)
     {

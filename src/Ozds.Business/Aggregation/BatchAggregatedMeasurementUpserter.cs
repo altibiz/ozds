@@ -27,25 +27,30 @@ public class BatchAggregatedMeasurementUpserter(
     foreach (var group in measurementGroups)
     {
       var enumerableCastMethod = typeof(Enumerable)
-                                   .GetMethod(nameof(Enumerable.Cast),
-                                     BindingFlags.Public | BindingFlags.Static)
-                                   ?.MakeGenericMethod(group.Key)
-                                 ?? throw new InvalidOperationException(
-                                   $"Cannot find method {nameof(Enumerable.Cast)}.");
-      var upsertMeasurementsMethod = typeof(BatchAggregatedMeasurementUpserter)
-                                       .GetMethod(nameof(UpsertMeasurements),
-                                         BindingFlags.NonPublic |
-                                         BindingFlags.Static)
-                                       ?.MakeGenericMethod(group.Key)
-                                     ?? throw new InvalidOperationException(
-                                       $"Cannot find method {nameof(UpsertMeasurements)}.");
-      var result = upsertMeasurementsMethod.Invoke(null,
-      [
-        context,
-        enumerableCastMethod.Invoke(null, [group])
+          .GetMethod(
+            nameof(Enumerable.Cast),
+            BindingFlags.Public | BindingFlags.Static)
+          ?.MakeGenericMethod(group.Key)
         ?? throw new InvalidOperationException(
-          $"Cannot cast group to {group.Key.Name}.")
-      ]);
+          $"Cannot find method {nameof(Enumerable.Cast)}.");
+      var upsertMeasurementsMethod = typeof(BatchAggregatedMeasurementUpserter)
+          .GetMethod(
+            nameof(UpsertMeasurements),
+#pragma warning disable S3011
+            BindingFlags.NonPublic |
+#pragma warning restore S3011
+            BindingFlags.Static)
+          ?.MakeGenericMethod(group.Key)
+        ?? throw new InvalidOperationException(
+          $"Cannot find method {nameof(UpsertMeasurements)}.");
+      var result = upsertMeasurementsMethod.Invoke(
+        null,
+        [
+          context,
+          enumerableCastMethod.Invoke(null, [group])
+          ?? throw new InvalidOperationException(
+            $"Cannot cast group to {group.Key.Name}.")
+        ]);
 
       if (result is Task task)
       {
@@ -54,18 +59,20 @@ public class BatchAggregatedMeasurementUpserter(
     }
 
     var aggregateGroups = measurements
-      .SelectMany(model => typeof(IntervalModel)
-        .GetEnumValues()
-        .Cast<IntervalModel>()
-        .Select(interval => aggregateConverter.ToAggregate(model, interval)))
+      .SelectMany(
+        model => typeof(IntervalModel)
+          .GetEnumValues()
+          .Cast<IntervalModel>()
+          .Select(interval => aggregateConverter.ToAggregate(model, interval)))
       .OfType<IAggregate>()
-      .GroupBy(aggregate => new
-      {
-        Type = aggregate.GetType(),
-        aggregate.MeterId,
-        aggregate.Timestamp,
-        aggregate.Interval
-      })
+      .GroupBy(
+        aggregate => new
+        {
+          Type = aggregate.GetType(),
+          aggregate.MeterId,
+          aggregate.Timestamp,
+          aggregate.Interval
+        })
       .Select(group => group.Aggregate(aggregateUpserter.UpsertModelAgnostic))
       .Select(modelEntityConverter.ToEntity)
       .OfType<IAggregateEntity>()
@@ -74,26 +81,31 @@ public class BatchAggregatedMeasurementUpserter(
     foreach (var group in aggregateGroups)
     {
       var enumerableCastMethod = typeof(Enumerable)
-                                   .GetMethod(nameof(Enumerable.Cast),
-                                     BindingFlags.Public | BindingFlags.Static)
-                                   ?.MakeGenericMethod(group.Key)
-                                 ?? throw new InvalidOperationException(
-                                   $"Cannot find method {nameof(Enumerable.Cast)}.");
-      var upsertAggregatesMethod = typeof(BatchAggregatedMeasurementUpserter)
-                                     .GetMethod(nameof(UpsertAggregates),
-                                       BindingFlags.NonPublic |
-                                       BindingFlags.Static)
-                                     ?.MakeGenericMethod(group.Key)
-                                   ?? throw new InvalidOperationException(
-                                     $"Cannot find method {nameof(UpsertAggregates)}.");
-      var result = upsertAggregatesMethod.Invoke(null,
-      [
-        context,
-        enumerableCastMethod.Invoke(null, [group])
+          .GetMethod(
+            nameof(Enumerable.Cast),
+            BindingFlags.Public | BindingFlags.Static)
+          ?.MakeGenericMethod(group.Key)
         ?? throw new InvalidOperationException(
-          $"Cannot cast group to {group.Key.Name}."),
-        aggregateUpserter
-      ]);
+          $"Cannot find method {nameof(Enumerable.Cast)}.");
+      var upsertAggregatesMethod = typeof(BatchAggregatedMeasurementUpserter)
+          .GetMethod(
+            nameof(UpsertAggregates),
+#pragma warning disable S3011 // Reflection should not be used to increase accessibility of classes, methods, or fields
+            BindingFlags.NonPublic |
+#pragma warning restore S3011
+            BindingFlags.Static)
+          ?.MakeGenericMethod(group.Key)
+        ?? throw new InvalidOperationException(
+          $"Cannot find method {nameof(UpsertAggregates)}.");
+      var result = upsertAggregatesMethod.Invoke(
+        null,
+        [
+          context,
+          enumerableCastMethod.Invoke(null, [group])
+          ?? throw new InvalidOperationException(
+            $"Cannot cast group to {group.Key.Name}."),
+          aggregateUpserter
+        ]);
 
       if (result is Task task)
       {
@@ -110,11 +122,12 @@ public class BatchAggregatedMeasurementUpserter(
   {
     return context
       .UpsertRange(measurements.ToArray())
-      .On(measurement => new
-      {
-        measurement.MeterId,
-        measurement.Timestamp
-      })
+      .On(
+        measurement => new
+        {
+          measurement.MeterId,
+          measurement.Timestamp
+        })
       .NoUpdate()
       .RunAsync();
   }
@@ -127,12 +140,13 @@ public class BatchAggregatedMeasurementUpserter(
   {
     return context
       .UpsertRange(aggregates.ToArray())
-      .On(aggregate => new
-      {
-        aggregate.MeterId,
-        aggregate.Timestamp,
-        aggregate.Interval
-      })
+      .On(
+        aggregate => new
+        {
+          aggregate.MeterId,
+          aggregate.Timestamp,
+          aggregate.Interval
+        })
       .WhenMatched(upserter.UpsertEntity<T>())
       .RunAsync();
   }

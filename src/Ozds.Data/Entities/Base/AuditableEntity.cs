@@ -44,20 +44,20 @@ public class
   AuditableEntityConfiguration : EntityTypeHierarchyConfiguration<
   AuditableEntity>
 {
-  public override void Configure(ModelBuilder modelBuilder, Type type)
+  public override void Configure(ModelBuilder modelBuilder, Type entity)
   {
-    if (type == typeof(AuditableEntity))
+    if (entity == typeof(AuditableEntity))
     {
       return;
     }
 
-    var builder = modelBuilder.Entity(type);
+    var builder = modelBuilder.Entity(entity);
 
-    if (type.BaseType == typeof(AuditableEntity))
+    if (entity.BaseType == typeof(AuditableEntity))
     {
-      if (type == typeof(RepresentativeEntity)
-          || type == typeof(MeterEntity)
-          || type == typeof(MessengerEntity))
+      if (entity == typeof(RepresentativeEntity)
+        || entity == typeof(MeterEntity)
+        || entity == typeof(MessengerEntity))
       {
         builder.HasKey("_stringId");
       }
@@ -67,9 +67,9 @@ public class
       }
     }
 
-    if (type == typeof(RepresentativeEntity) ||
-        type.IsAssignableTo(typeof(MeterEntity)) ||
-        type.IsAssignableTo(typeof(MessengerEntity)))
+    if (entity == typeof(RepresentativeEntity) ||
+      entity.IsAssignableTo(typeof(MeterEntity)) ||
+      entity.IsAssignableTo(typeof(MessengerEntity)))
     {
       builder.Ignore("_id");
       builder.Ignore(nameof(AuditableEntity.Id));

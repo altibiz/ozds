@@ -1,10 +1,9 @@
-using System.ComponentModel.DataAnnotations;
 using Ozds.Business.Math;
 using Ozds.Business.Models.Enums;
 
 namespace Ozds.Business.Models.Abstractions;
 
-public interface IAggregate : IMeasurement, IValidatableObject, IReadonly
+public interface IAggregate : IMeasurement
 {
   public IntervalModel Interval { get; }
 

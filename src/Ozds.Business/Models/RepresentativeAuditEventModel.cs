@@ -5,5 +5,6 @@ namespace Ozds.Business.Models;
 
 public class RepresentativeAuditEventModel : AuditEventModel
 {
-  [Required] public required string RepresentativeId { get; set; }
+  [Required]
+  public required string RepresentativeId { get; set; }
 }

@@ -2,6 +2,10 @@ using System.Numerics;
 
 namespace Ozds.Business.Math;
 
+// TODO: convert properties to methods and create proper class hierarchy
+#pragma warning disable S2365
+#pragma warning disable S3060
+
 public record class CompositePhasicMeasure<T>
   : PhasicMeasure<T>
   where T : struct,
@@ -13,19 +17,23 @@ public record class CompositePhasicMeasure<T>
 {
   public CompositePhasicMeasure(List<PhasicMeasure<T>> measures)
   {
-    Measures = measures.SelectMany(measure => measure switch
-    {
-      CompositePhasicMeasure<T> composite => composite.Measures,
-      _ => [measure]
-    }).ToList();
+    Measures = measures.SelectMany(
+      measure => measure switch
+      {
+        CompositePhasicMeasure<T> composite => composite.Measures,
+        _ => [measure]
+      }).ToList();
   }
 
   public List<PhasicMeasure<T>> Measures { get; set; }
 
-  public U FromMostAccurate<U>(Func<PhasicMeasure<T>, U> selector, U @default)
+  public TConverted FromMostAccurate<TConverted>(
+    Func<PhasicMeasure<T>, TConverted> selector,
+    TConverted @default)
   {
-    return Measures.FirstOrDefault(measure =>
-        measure is TriPhasicMeasure<T> or SinglePhasicMeasure<T>) is
+    return Measures.FirstOrDefault(
+        measure =>
+          measure is TriPhasicMeasure<T> or SinglePhasicMeasure<T>) is
       { } singleOrTri
       ? selector(singleOrTri)
       : @default;
@@ -37,16 +45,18 @@ public record class CompositePhasicMeasure<T>
     return new CompositePhasicMeasure<T>(Measures.Select(selector).ToList());
   }
 
-  public CompositePhasicMeasure<T> Zip(PhasicMeasure<T> other,
+  public CompositePhasicMeasure<T> Zip(
+    PhasicMeasure<T> other,
     Func<PhasicMeasure<T>, PhasicMeasure<T>, PhasicMeasure<T>> selector)
   {
     return other switch
     {
       CompositePhasicMeasure<T> otherComposite => new CompositePhasicMeasure<T>(
         Measures.Zip(otherComposite.Measures, selector).ToList()),
-      _ => new CompositePhasicMeasure<T>(Measures
-        .Zip(Enumerable.Repeat(other, Measures.Count), selector)
-        .ToList())
+      _ => new CompositePhasicMeasure<T>(
+        Measures
+          .Zip(Enumerable.Repeat(other, Measures.Count), selector)
+          .ToList())
     };
   }
 }
@@ -97,11 +107,13 @@ public abstract record class PhasicMeasure<T>
       {
         CompositePhasicMeasure<T> composite => composite.FromMostAccurate(
           measure => measure.PhaseSum,
-          (T)Convert.ChangeType((T)Convert.ChangeType(0, typeof(T)),
+          (T)Convert.ChangeType(
+            (T)Convert.ChangeType(0, typeof(T)),
             typeof(T))),
         TriPhasicMeasure<T> tri => tri.ValueL1 + tri.ValueL2 + tri.ValueL3,
         SinglePhasicMeasure<T> single => single.Value,
-        _ => (T)Convert.ChangeType((T)Convert.ChangeType(0, typeof(T)),
+        _ => (T)Convert.ChangeType(
+          (T)Convert.ChangeType(0, typeof(T)),
           typeof(T))
       };
     }
@@ -115,12 +127,14 @@ public abstract record class PhasicMeasure<T>
       {
         CompositePhasicMeasure<T> composite => composite.FromMostAccurate(
           measure => measure.PhaseAverage,
-          (T)Convert.ChangeType((T)Convert.ChangeType(0, typeof(T)),
+          (T)Convert.ChangeType(
+            (T)Convert.ChangeType(0, typeof(T)),
             typeof(T))),
         TriPhasicMeasure<T> tri => (tri.ValueL1 + tri.ValueL2 + tri.ValueL3) /
-                                   (T)Convert.ChangeType(3, typeof(T)),
+          (T)Convert.ChangeType(3, typeof(T)),
         SinglePhasicMeasure<T> single => single.Value,
-        _ => (T)Convert.ChangeType((T)Convert.ChangeType(0, typeof(T)),
+        _ => (T)Convert.ChangeType(
+          (T)Convert.ChangeType(0, typeof(T)),
           typeof(T))
       };
     }
@@ -189,10 +203,12 @@ public abstract record class PhasicMeasure<T>
       return this switch
       {
         CompositePhasicMeasure<T> composite => composite.FromMostAccurate(
-          measure => measure.PhaseSplit, new TriPhasicMeasure<T>(default,
+          measure => measure.PhaseSplit, new TriPhasicMeasure<T>(
+            default,
             default,
             default)),
-        SinglePhasicMeasure<T> single => new TriPhasicMeasure<T>(single.Value,
+        SinglePhasicMeasure<T> single => new TriPhasicMeasure<T>(
+          single.Value,
           single.Value, single.Value),
         TriPhasicMeasure<T> tri => tri,
         _ => new TriPhasicMeasure<T>(default, default, default)
@@ -206,32 +222,35 @@ public abstract record class PhasicMeasure<T>
     {
       return Select(
         value =>
-          (T)Convert.ChangeType(System.Math.Abs(Convert.ToDecimal(value)),
+          (T)Convert.ChangeType(
+            System.Math.Abs(Convert.ToDecimal(value)),
             typeof(T))
       );
     }
   }
 
-  public PhasicMeasure<U> ConvertPrimitiveTo<U>()
-    where U : struct,
-    IComparisonOperators<U, U, bool>,
-    IAdditionOperators<U, U, U>,
-    ISubtractionOperators<U, U, U>,
-    IMultiplyOperators<U, U, U>,
-    IDivisionOperators<U, U, U>
+  public PhasicMeasure<TConverted> ConvertPrimitiveTo<TConverted>()
+    where TConverted : struct,
+    IComparisonOperators<TConverted, TConverted, bool>,
+    IAdditionOperators<TConverted, TConverted, TConverted>,
+    ISubtractionOperators<TConverted, TConverted, TConverted>,
+    IMultiplyOperators<TConverted, TConverted, TConverted>,
+    IDivisionOperators<TConverted, TConverted, TConverted>
   {
     return this switch
     {
-      CompositePhasicMeasure<T> composite => new CompositePhasicMeasure<U>(
-        composite.Measures.Select(measure => measure.ConvertPrimitiveTo<U>())
-          .ToList()),
-      TriPhasicMeasure<T> tri => new TriPhasicMeasure<U>(
-        (U)Convert.ChangeType(tri.ValueL1, typeof(U)),
-        (U)Convert.ChangeType(tri.ValueL2, typeof(U)),
-        (U)Convert.ChangeType(tri.ValueL3, typeof(U))),
-      SinglePhasicMeasure<T> single => new SinglePhasicMeasure<U>(
-        (U)Convert.ChangeType(single.Value, typeof(U))),
-      _ => new NullPhasicMeasure<U>()
+      CompositePhasicMeasure<T> composite => new
+        CompositePhasicMeasure<TConverted>(
+          composite.Measures.Select(
+              measure => measure.ConvertPrimitiveTo<TConverted>())
+            .ToList()),
+      TriPhasicMeasure<T> tri => new TriPhasicMeasure<TConverted>(
+        (TConverted)Convert.ChangeType(tri.ValueL1, typeof(TConverted)),
+        (TConverted)Convert.ChangeType(tri.ValueL2, typeof(TConverted)),
+        (TConverted)Convert.ChangeType(tri.ValueL3, typeof(TConverted))),
+      SinglePhasicMeasure<T> single => new SinglePhasicMeasure<TConverted>(
+        (TConverted)Convert.ChangeType(single.Value, typeof(TConverted))),
+      _ => new NullPhasicMeasure<TConverted>()
     };
   }
 
@@ -252,129 +271,51 @@ public abstract record class PhasicMeasure<T>
     };
   }
 
-  public static PhasicMeasure<T> operator +(PhasicMeasure<T> lhs, T rhs)
+  public PhasicMeasure<T> Multiply(T rhs)
   {
-    return lhs switch
+    return this switch
     {
-      CompositePhasicMeasure<T> composite => composite.Select(measure =>
-        measure + rhs),
-      TriPhasicMeasure<T> tri => new TriPhasicMeasure<T>(tri.ValueL1 + rhs,
-        tri.ValueL2 + rhs, tri.ValueL3 + rhs),
-      SinglePhasicMeasure<T> single => new SinglePhasicMeasure<T>(single.Value +
-        rhs),
-      _ => Null
-    };
-  }
-
-  public static PhasicMeasure<T> operator -(PhasicMeasure<T> lhs, T rhs)
-  {
-    return lhs switch
-    {
-      CompositePhasicMeasure<T> composite => composite.Select(measure =>
-        measure - rhs),
-      TriPhasicMeasure<T> tri => new TriPhasicMeasure<T>(tri.ValueL1 - rhs,
-        tri.ValueL2 - rhs, tri.ValueL3 - rhs),
-      SinglePhasicMeasure<T> single => new SinglePhasicMeasure<T>(single.Value -
-        rhs),
-      _ => Null
-    };
-  }
-
-  public static PhasicMeasure<T> operator *(PhasicMeasure<T> lhs, T rhs)
-  {
-    return lhs switch
-    {
-      CompositePhasicMeasure<T> composite => composite.Select(measure =>
-        measure * rhs),
-      TriPhasicMeasure<T> tri => new TriPhasicMeasure<T>(tri.ValueL1 * rhs,
+      CompositePhasicMeasure<T> composite => composite.Select(
+        measure =>
+          measure * rhs),
+      TriPhasicMeasure<T> tri => new TriPhasicMeasure<T>(
+        tri.ValueL1 * rhs,
         tri.ValueL2 * rhs, tri.ValueL3 * rhs),
-      SinglePhasicMeasure<T> single => new SinglePhasicMeasure<T>(single.Value *
+      SinglePhasicMeasure<T> single => new SinglePhasicMeasure<T>(
+        single.Value *
         rhs),
       _ => Null
     };
   }
 
-  public static PhasicMeasure<T> operator /(PhasicMeasure<T> lhs, T rhs)
+  public PhasicMeasure<T> Divide(T rhs)
   {
-    return lhs switch
+    return this switch
     {
-      CompositePhasicMeasure<T> composite => composite.Select(measure =>
-        measure / rhs),
-      TriPhasicMeasure<T> tri => new TriPhasicMeasure<T>(tri.ValueL1 / rhs,
+      CompositePhasicMeasure<T> composite => composite.Select(
+        measure =>
+          measure / rhs),
+      TriPhasicMeasure<T> tri => new TriPhasicMeasure<T>(
+        tri.ValueL1 / rhs,
         tri.ValueL2 / rhs, tri.ValueL3 / rhs),
-      SinglePhasicMeasure<T> single => new SinglePhasicMeasure<T>(single.Value /
+      SinglePhasicMeasure<T> single => new SinglePhasicMeasure<T>(
+        single.Value /
         rhs),
       _ => Null
     };
   }
 
-  public static PhasicMeasure<T> operator +(T lhs, PhasicMeasure<T> rhs)
+  public PhasicMeasure<T> Add(PhasicMeasure<T> rhs)
   {
-    return rhs switch
-    {
-      CompositePhasicMeasure<T> composite => composite.Select(measure =>
-        lhs + composite),
-      TriPhasicMeasure<T> tri => new TriPhasicMeasure<T>(lhs + tri.ValueL1,
-        lhs + tri.ValueL2, lhs + tri.ValueL3),
-      SinglePhasicMeasure<T> single => new SinglePhasicMeasure<T>(
-        lhs + single.Value),
-      _ => Null
-    };
-  }
-
-  public static PhasicMeasure<T> operator -(T lhs, PhasicMeasure<T> rhs)
-  {
-    return rhs switch
-    {
-      CompositePhasicMeasure<T> composite => composite.Select(measure =>
-        lhs - composite),
-      TriPhasicMeasure<T> tri => new TriPhasicMeasure<T>(lhs - tri.ValueL1,
-        lhs - tri.ValueL2, lhs - tri.ValueL3),
-      SinglePhasicMeasure<T> single => new SinglePhasicMeasure<T>(
-        lhs - single.Value),
-      _ => Null
-    };
-  }
-
-  public static PhasicMeasure<T> operator *(T lhs, PhasicMeasure<T> rhs)
-  {
-    return rhs switch
-    {
-      CompositePhasicMeasure<T> composite => composite.Select(measure =>
-        lhs * composite),
-      TriPhasicMeasure<T> tri => new TriPhasicMeasure<T>(lhs * tri.ValueL1,
-        lhs * tri.ValueL2, lhs * tri.ValueL3),
-      SinglePhasicMeasure<T> single => new SinglePhasicMeasure<T>(
-        lhs * single.Value),
-      _ => Null
-    };
-  }
-
-  public static PhasicMeasure<T> operator /(T lhs, PhasicMeasure<T> rhs)
-  {
-    return rhs switch
-    {
-      CompositePhasicMeasure<T> composite => composite.Select(measure =>
-        lhs / composite),
-      TriPhasicMeasure<T> tri => new TriPhasicMeasure<T>(lhs / tri.ValueL1,
-        lhs / tri.ValueL2, lhs / tri.ValueL3),
-      SinglePhasicMeasure<T> single => new SinglePhasicMeasure<T>(
-        lhs / single.Value),
-      _ => Null
-    };
-  }
-
-  public static PhasicMeasure<T> operator +(PhasicMeasure<T> lhs,
-    PhasicMeasure<T> rhs)
-  {
-    return (lhs, rhs) switch
+    return (this, rhs) switch
     {
       (CompositePhasicMeasure<T> compositeLhs, _) =>
-        compositeLhs.Zip(rhs, (lhs, rhs) => lhs + rhs),
+        compositeLhs.Zip(rhs, (lhs, rhs) => lhs.Add(rhs)),
       (_, CompositePhasicMeasure<T> compositeRhs) =>
-        compositeRhs.Zip(lhs, (rhs, lhs) => lhs + rhs),
+        compositeRhs.Zip(this, (rhs, lhs) => lhs.Add(rhs)),
       (TriPhasicMeasure<T> triLhs, TriPhasicMeasure<T> triRhs) => new
-        TriPhasicMeasure<T>(triLhs.ValueL1 + triRhs.ValueL1,
+        TriPhasicMeasure<T>(
+          triLhs.ValueL1 + triRhs.ValueL1,
           triLhs.ValueL2 + triRhs.ValueL2, triLhs.ValueL3 + triRhs.ValueL3),
       (SinglePhasicMeasure<T> singleLhs, SinglePhasicMeasure<T> singleRhs) =>
         new SinglePhasicMeasure<T>(singleLhs.Value + singleRhs.Value),
@@ -382,17 +323,17 @@ public abstract record class PhasicMeasure<T>
     };
   }
 
-  public static PhasicMeasure<T> operator -(PhasicMeasure<T> lhs,
-    PhasicMeasure<T> rhs)
+  public PhasicMeasure<T> Subtract(PhasicMeasure<T> rhs)
   {
-    return (lhs, rhs) switch
+    return (this, rhs) switch
     {
       (CompositePhasicMeasure<T> compositeLhs, _) =>
-        compositeLhs.Zip(rhs, (lhs, rhs) => lhs - rhs),
+        compositeLhs.Zip(rhs, (lhs, rhs) => lhs.Subtract(rhs)),
       (_, CompositePhasicMeasure<T> compositeRhs) =>
-        compositeRhs.Zip(lhs, (rhs, lhs) => lhs - rhs),
+        compositeRhs.Zip(this, (rhs, lhs) => lhs.Subtract(rhs)),
       (TriPhasicMeasure<T> triLhs, TriPhasicMeasure<T> triRhs) => new
-        TriPhasicMeasure<T>(triLhs.ValueL1 - triRhs.ValueL1,
+        TriPhasicMeasure<T>(
+          triLhs.ValueL1 - triRhs.ValueL1,
           triLhs.ValueL2 - triRhs.ValueL2, triLhs.ValueL3 - triRhs.ValueL3),
       (SinglePhasicMeasure<T> singleLhs, SinglePhasicMeasure<T> singleRhs) =>
         new SinglePhasicMeasure<T>(singleLhs.Value - singleRhs.Value),
@@ -400,38 +341,20 @@ public abstract record class PhasicMeasure<T>
     };
   }
 
-  public static PhasicMeasure<T> operator *(PhasicMeasure<T> lhs,
-    PhasicMeasure<T> rhs)
+  public PhasicMeasure<T> Multiply(PhasicMeasure<T> rhs)
   {
-    return (lhs, rhs) switch
+    return (this, rhs) switch
     {
       (CompositePhasicMeasure<T> compositeLhs, _) =>
-        compositeLhs.Zip(rhs, (lhs, rhs) => lhs * rhs),
+        compositeLhs.Zip(rhs, (lhs, rhs) => lhs.Multiply(rhs)),
       (_, CompositePhasicMeasure<T> compositeRhs) =>
-        compositeRhs.Zip(lhs, (rhs, lhs) => lhs * rhs),
+        compositeRhs.Zip(this, (rhs, lhs) => lhs.Multiply(rhs)),
       (TriPhasicMeasure<T> triLhs, TriPhasicMeasure<T> triRhs) => new
-        TriPhasicMeasure<T>(triLhs.ValueL1 * triRhs.ValueL1,
+        TriPhasicMeasure<T>(
+          triLhs.ValueL1 * triRhs.ValueL1,
           triLhs.ValueL2 * triRhs.ValueL2, triLhs.ValueL3 * triRhs.ValueL3),
       (SinglePhasicMeasure<T> singleLhs, SinglePhasicMeasure<T> singleRhs) =>
         new SinglePhasicMeasure<T>(singleLhs.Value * singleRhs.Value),
-      _ => Null
-    };
-  }
-
-  public static PhasicMeasure<T> operator /(PhasicMeasure<T> lhs,
-    PhasicMeasure<T> rhs)
-  {
-    return (lhs, rhs) switch
-    {
-      (CompositePhasicMeasure<T> compositeLhs, _) =>
-        compositeLhs.Zip(rhs, (lhs, rhs) => lhs / rhs),
-      (_, CompositePhasicMeasure<T> compositeRhs) =>
-        compositeRhs.Zip(lhs, (rhs, lhs) => lhs / rhs),
-      (TriPhasicMeasure<T> triLhs, TriPhasicMeasure<T> triRhs) => new
-        TriPhasicMeasure<T>(triLhs.ValueL1 / triRhs.ValueL1,
-          triLhs.ValueL2 / triRhs.ValueL2, triLhs.ValueL3 / triRhs.ValueL3),
-      (SinglePhasicMeasure<T> singleLhs, SinglePhasicMeasure<T> singleRhs) =>
-        new SinglePhasicMeasure<T>(singleLhs.Value / singleRhs.Value),
       _ => Null
     };
   }

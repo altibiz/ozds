@@ -22,42 +22,42 @@ public class SchneideriEM3xxxAggregateUpserter : AggregateUpserter<
         Interval = lhs.Interval,
         Count = lhs.Count + rhs.Count,
         VoltageL1AnyT0Avg_V = (lhs.VoltageL1AnyT0Avg_V * lhs.Count
-                               + rhs.VoltageL1AnyT0Avg_V * rhs.Count)
-                              / (lhs.Count + rhs.Count),
+            + rhs.VoltageL1AnyT0Avg_V * rhs.Count)
+          / (lhs.Count + rhs.Count),
         VoltageL2AnyT0Avg_V = (lhs.VoltageL2AnyT0Avg_V * lhs.Count
-                               + rhs.VoltageL2AnyT0Avg_V * rhs.Count)
-                              / (lhs.Count + rhs.Count),
+            + rhs.VoltageL2AnyT0Avg_V * rhs.Count)
+          / (lhs.Count + rhs.Count),
         VoltageL3AnyT0Avg_V = (lhs.VoltageL3AnyT0Avg_V * lhs.Count
-                               + rhs.VoltageL3AnyT0Avg_V * rhs.Count)
-                              / (lhs.Count + rhs.Count),
+            + rhs.VoltageL3AnyT0Avg_V * rhs.Count)
+          / (lhs.Count + rhs.Count),
         CurrentL1AnyT0Avg_A = (lhs.CurrentL1AnyT0Avg_A * lhs.Count
-                               + rhs.CurrentL1AnyT0Avg_A * rhs.Count)
-                              / (lhs.Count + rhs.Count),
+            + rhs.CurrentL1AnyT0Avg_A * rhs.Count)
+          / (lhs.Count + rhs.Count),
         CurrentL2AnyT0Avg_A = (lhs.CurrentL2AnyT0Avg_A * lhs.Count
-                               + rhs.CurrentL2AnyT0Avg_A * rhs.Count)
-                              / (lhs.Count + rhs.Count),
+            + rhs.CurrentL2AnyT0Avg_A * rhs.Count)
+          / (lhs.Count + rhs.Count),
         CurrentL3AnyT0Avg_A = (lhs.CurrentL3AnyT0Avg_A * lhs.Count
-                               + rhs.CurrentL3AnyT0Avg_A * rhs.Count)
-                              / (lhs.Count + rhs.Count),
+            + rhs.CurrentL3AnyT0Avg_A * rhs.Count)
+          / (lhs.Count + rhs.Count),
         ActivePowerL1NetT0Avg_W = (lhs.ActivePowerL1NetT0Avg_W * lhs.Count
-                                   + rhs.ActivePowerL1NetT0Avg_W *
-                                   rhs.Count)
-                                  / (lhs.Count + rhs.Count),
+            + rhs.ActivePowerL1NetT0Avg_W *
+            rhs.Count)
+          / (lhs.Count + rhs.Count),
         ActivePowerL2NetT0Avg_W = (lhs.ActivePowerL2NetT0Avg_W * lhs.Count
-                                   + rhs.ActivePowerL2NetT0Avg_W *
-                                   rhs.Count)
-                                  / (lhs.Count + rhs.Count),
+            + rhs.ActivePowerL2NetT0Avg_W *
+            rhs.Count)
+          / (lhs.Count + rhs.Count),
         ActivePowerL3NetT0Avg_W = (lhs.ActivePowerL3NetT0Avg_W * lhs.Count
-                                   + rhs.ActivePowerL3NetT0Avg_W *
-                                   rhs.Count)
-                                  / (lhs.Count + rhs.Count),
+            + rhs.ActivePowerL3NetT0Avg_W *
+            rhs.Count)
+          / (lhs.Count + rhs.Count),
         ReactivePowerTotalNetT0Avg_VAR =
           (lhs.ReactivePowerTotalNetT0Avg_VAR * lhs.Count
-           + rhs.ReactivePowerTotalNetT0Avg_VAR * rhs.Count)
+            + rhs.ReactivePowerTotalNetT0Avg_VAR * rhs.Count)
           / (lhs.Count + rhs.Count),
         ApparentPowerTotalNetT0Avg_VA =
           (lhs.ApparentPowerTotalNetT0Avg_VA * lhs.Count
-           + rhs.ApparentPowerTotalNetT0Avg_VA * rhs.Count)
+            + rhs.ApparentPowerTotalNetT0Avg_VA * rhs.Count)
           / (lhs.Count + rhs.Count),
         ActiveEnergyTotalImportT0Min_Wh =
           lhs.ActiveEnergyTotalImportT0Min_Wh >
@@ -124,7 +124,8 @@ public class SchneideriEM3xxxAggregateUpserter : AggregateUpserter<
   }
 
   protected override SchneideriEM3xxxAggregateModel UpsertConcreteModel(
-    SchneideriEM3xxxAggregateModel lhs, SchneideriEM3xxxAggregateModel rhs)
+    SchneideriEM3xxxAggregateModel lhs,
+    SchneideriEM3xxxAggregateModel rhs)
   {
     return new SchneideriEM3xxxAggregateModel
     {
@@ -133,42 +134,42 @@ public class SchneideriEM3xxxAggregateUpserter : AggregateUpserter<
       Interval = lhs.Interval,
       Count = lhs.Count + rhs.Count,
       VoltageL1AnyT0Avg_V = (lhs.VoltageL1AnyT0Avg_V * lhs.Count
-                             + rhs.VoltageL1AnyT0Avg_V * rhs.Count)
-                            / (lhs.Count + rhs.Count),
+          + rhs.VoltageL1AnyT0Avg_V * rhs.Count)
+        / (lhs.Count + rhs.Count),
       VoltageL2AnyT0Avg_V = (lhs.VoltageL2AnyT0Avg_V * lhs.Count
-                             + rhs.VoltageL2AnyT0Avg_V * rhs.Count)
-                            / (lhs.Count + rhs.Count),
+          + rhs.VoltageL2AnyT0Avg_V * rhs.Count)
+        / (lhs.Count + rhs.Count),
       VoltageL3AnyT0Avg_V = (lhs.VoltageL3AnyT0Avg_V * lhs.Count
-                             + rhs.VoltageL3AnyT0Avg_V * rhs.Count)
-                            / (lhs.Count + rhs.Count),
+          + rhs.VoltageL3AnyT0Avg_V * rhs.Count)
+        / (lhs.Count + rhs.Count),
       CurrentL1AnyT0Avg_A = (lhs.CurrentL1AnyT0Avg_A * lhs.Count
-                             + rhs.CurrentL1AnyT0Avg_A * rhs.Count)
-                            / (lhs.Count + rhs.Count),
+          + rhs.CurrentL1AnyT0Avg_A * rhs.Count)
+        / (lhs.Count + rhs.Count),
       CurrentL2AnyT0Avg_A = (lhs.CurrentL2AnyT0Avg_A * lhs.Count
-                             + rhs.CurrentL2AnyT0Avg_A * rhs.Count)
-                            / (lhs.Count + rhs.Count),
+          + rhs.CurrentL2AnyT0Avg_A * rhs.Count)
+        / (lhs.Count + rhs.Count),
       CurrentL3AnyT0Avg_A = (lhs.CurrentL3AnyT0Avg_A * lhs.Count
-                             + rhs.CurrentL3AnyT0Avg_A * rhs.Count)
-                            / (lhs.Count + rhs.Count),
+          + rhs.CurrentL3AnyT0Avg_A * rhs.Count)
+        / (lhs.Count + rhs.Count),
       ActivePowerL1NetT0Avg_W = (lhs.ActivePowerL1NetT0Avg_W * lhs.Count
-                                 + rhs.ActivePowerL1NetT0Avg_W *
-                                 rhs.Count)
-                                / (lhs.Count + rhs.Count),
+          + rhs.ActivePowerL1NetT0Avg_W *
+          rhs.Count)
+        / (lhs.Count + rhs.Count),
       ActivePowerL2NetT0Avg_W = (lhs.ActivePowerL2NetT0Avg_W * lhs.Count
-                                 + rhs.ActivePowerL2NetT0Avg_W *
-                                 rhs.Count)
-                                / (lhs.Count + rhs.Count),
+          + rhs.ActivePowerL2NetT0Avg_W *
+          rhs.Count)
+        / (lhs.Count + rhs.Count),
       ActivePowerL3NetT0Avg_W = (lhs.ActivePowerL3NetT0Avg_W * lhs.Count
-                                 + rhs.ActivePowerL3NetT0Avg_W *
-                                 rhs.Count)
-                                / (lhs.Count + rhs.Count),
+          + rhs.ActivePowerL3NetT0Avg_W *
+          rhs.Count)
+        / (lhs.Count + rhs.Count),
       ReactivePowerTotalNetT0Avg_VAR =
         (lhs.ReactivePowerTotalNetT0Avg_VAR * lhs.Count
-         + rhs.ReactivePowerTotalNetT0Avg_VAR * rhs.Count)
+          + rhs.ReactivePowerTotalNetT0Avg_VAR * rhs.Count)
         / (lhs.Count + rhs.Count),
       ApparentPowerTotalNetT0Avg_VA =
         (lhs.ApparentPowerTotalNetT0Avg_VA * lhs.Count
-         + rhs.ApparentPowerTotalNetT0Avg_VA * rhs.Count)
+          + rhs.ApparentPowerTotalNetT0Avg_VA * rhs.Count)
         / (lhs.Count + rhs.Count),
       ActiveEnergyTotalImportT0Min_Wh =
         lhs.ActiveEnergyTotalImportT0Min_Wh >

@@ -20,7 +20,8 @@ public static class AuditModelExtensions
       AuditEntity.Creation => AuditModel.Creation,
       AuditEntity.Modification => AuditModel.Modification,
       AuditEntity.Deletion => AuditModel.Deletion,
-      _ => throw new ArgumentOutOfRangeException(nameof(auditEntity),
+      _ => throw new ArgumentOutOfRangeException(
+        nameof(auditEntity),
         auditEntity, null)
     };
   }
@@ -33,7 +34,8 @@ public static class AuditModelExtensions
       AuditModel.Creation => AuditEntity.Creation,
       AuditModel.Modification => AuditEntity.Modification,
       AuditModel.Deletion => AuditEntity.Deletion,
-      _ => throw new ArgumentOutOfRangeException(nameof(auditModel), auditModel,
+      _ => throw new ArgumentOutOfRangeException(
+        nameof(auditModel), auditModel,
         null)
     };
   }

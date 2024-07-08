@@ -13,11 +13,11 @@ public class MeasurementLocationEntity : AuditableEntity
 public class MeasurementLocationEntityTypeHierarchyConfiguration :
   EntityTypeHierarchyConfiguration<MeasurementLocationEntity>
 {
-  public override void Configure(ModelBuilder modelBuilder, Type type)
+  public override void Configure(ModelBuilder modelBuilder, Type entity)
   {
-    var builder = modelBuilder.Entity(type);
+    var builder = modelBuilder.Entity(entity);
 
-    if (type == typeof(MeasurementLocationEntity))
+    if (entity == typeof(MeasurementLocationEntity))
     {
       builder
         .UseTphMappingStrategy()
@@ -30,6 +30,6 @@ public class MeasurementLocationEntityTypeHierarchyConfiguration :
       .WithOne(
         nameof(MeterEntity<MeasurementEntity, AggregateEntity,
           MeasurementValidatorEntity>.MeasurementLocation))
-      .HasForeignKey(type.Name, nameof(MeasurementLocationEntity.MeterId));
+      .HasForeignKey(entity.Name, nameof(MeasurementLocationEntity.MeterId));
   }
 }

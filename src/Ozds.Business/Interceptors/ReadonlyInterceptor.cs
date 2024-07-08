@@ -31,12 +31,13 @@ public class ReadonlyInterceptor(IServiceProvider serviceProvider)
       .Entries<IReadonlyEntity>()
       .ToList();
 
-    foreach (var @readonly in entries)
+    foreach (var entity in entries
+      .Where(e => e.State is EntityState.Modified or EntityState.Deleted)
+      .Select(e => e.Entity))
     {
-      if (@readonly.State is EntityState.Modified or EntityState.Deleted)
-      {
-        throw new InvalidOperationException("Cannot modify readonly entity.");
-      }
+#pragma warning disable S1751
+      throw new InvalidOperationException("Cannot modify readonly entity.");
+#pragma warning restore S1751
     }
 
     return result;

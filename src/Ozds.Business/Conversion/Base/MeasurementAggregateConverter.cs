@@ -15,7 +15,8 @@ public abstract class
     return measurement.IsAssignableTo(typeof(TMeasurement));
   }
 
-  public IAggregate ToAggregate(IMeasurement measurement,
+  public IAggregate ToAggregate(
+    IMeasurement measurement,
     IntervalModel interval)
   {
     return ToAggregate(
@@ -25,6 +26,7 @@ public abstract class
     );
   }
 
-  protected abstract TAggregate ToAggregate(TMeasurement measurement,
+  protected abstract TAggregate ToAggregate(
+    TMeasurement measurement,
     IntervalModel interval);
 }

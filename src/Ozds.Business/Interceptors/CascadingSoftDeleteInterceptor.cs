@@ -1,14 +1,13 @@
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
-// TODO: implement cascading soft delete
-
 namespace Ozds.Business.Interceptors;
 
 public class CascadingSoftDeleteInterceptor(IServiceProvider serviceProvider)
   : ServedSaveChangesInterceptor(serviceProvider)
 {
   public override InterceptionResult<int> SavingChanges(
-    DbContextEventData eventData, InterceptionResult<int> result)
+    DbContextEventData eventData,
+    InterceptionResult<int> result)
   {
     AddCascadingSoftDeletes(eventData);
     return base.SavingChanges(eventData, result);
@@ -16,5 +15,6 @@ public class CascadingSoftDeleteInterceptor(IServiceProvider serviceProvider)
 
   private static void AddCascadingSoftDeletes(DbContextEventData _)
   {
+    // TODO: implement cascading soft delete
   }
 }

@@ -10,13 +10,6 @@ public abstract class PushRequestMeasurementConverter<TPushRequest,
   TMeasurement> : IPushRequestMeasurementConverter
   where TMeasurement : class, IMeasurement
 {
-  private static readonly JsonSerializerOptions serializationOptions =
-    new()
-    {
-      PropertyNameCaseInsensitive = true,
-      NumberHandling = JsonNumberHandling.AllowReadingFromString
-    };
-
   protected abstract string MeterIdPrefix { get; }
 
   public bool CanConvert(string meterId)
@@ -24,11 +17,14 @@ public abstract class PushRequestMeasurementConverter<TPushRequest,
     return meterId.StartsWith(MeterIdPrefix);
   }
 
-  public IMeasurement ToMeasurement(JsonObject pushRequest, string meterId,
+  public IMeasurement ToMeasurement(
+    JsonObject pushRequest,
+    string meterId,
     DateTimeOffset timestamp)
   {
     return ToMeasurement(
-      pushRequest.Deserialize<TPushRequest>(serializationOptions)
+      pushRequest.Deserialize<TPushRequest>(
+        PushRequestMeasurementConverterOptions.Options)
       ?? throw new ArgumentNullException(nameof(pushRequest)),
       meterId,
       timestamp
@@ -38,15 +34,28 @@ public abstract class PushRequestMeasurementConverter<TPushRequest,
   public JsonObject ToPushRequest(IMeasurement measurement)
   {
     return JsonSerializer.SerializeToNode(
-             ToPushRequest(measurement as TMeasurement
-                           ?? throw new ArgumentNullException(
-                             nameof(measurement))),
-             serializationOptions) as JsonObject
-           ?? throw new ArgumentNullException(nameof(measurement));
+        ToPushRequest(
+          measurement as TMeasurement
+          ?? throw new ArgumentNullException(
+            nameof(measurement))),
+        PushRequestMeasurementConverterOptions.Options) as JsonObject
+      ?? throw new ArgumentNullException(nameof(measurement));
   }
 
-  protected abstract TMeasurement ToMeasurement(TPushRequest pushRequest,
-    string meterId, DateTimeOffset timestamp);
+  protected abstract TMeasurement ToMeasurement(
+    TPushRequest pushRequest,
+    string meterId,
+    DateTimeOffset timestamp);
 
   protected abstract TPushRequest ToPushRequest(TMeasurement measurement);
+}
+
+internal static class PushRequestMeasurementConverterOptions
+{
+  public static readonly JsonSerializerOptions Options =
+    new()
+    {
+      PropertyNameCaseInsensitive = true,
+      NumberHandling = JsonNumberHandling.AllowReadingFromString
+    };
 }

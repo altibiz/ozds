@@ -78,20 +78,6 @@ format:
 
   dotnet build '{{sln}}'
 
-  dotnet format '{{sln}}' \
-    --no-restore \
-    --verbosity minimal \
-    --severity info \
-    --exclude '**/.git/**/*' \
-    --exclude '**/.nuget/**/*' \
-    --exclude '**/obj/**/*' \
-    --exclude '**/bin/**/*'
-
-  dotnet roslynator fix '{{sln}}' \
-    --format \
-    --verbosity minimal \
-    --exclude='**/.git/**/*;**/.nuget/**/*;**/obj/**/*;**/bin/**/*'
-
   dotnet jb cleanupcode '{{sln}}' \
     --no-build \
     --verbosity=WARN \

@@ -17,8 +17,9 @@ public static class EntityTypeBuilderExtensions
       .ComplexType
       .ClrType
       .GetProperties()
-      .Where(property => property is { GetMethod.IsVirtual: true } or
-        { GetMethod.IsAbstract: true })
+      .Where(
+        property => property is { GetMethod.IsVirtual: true } or
+          { GetMethod.IsAbstract: true })
       .ToList();
 
     var propertiesToArchive = complexPropertyBuilder.Metadata
@@ -42,6 +43,7 @@ public static class EntityTypeBuilderExtensions
       complexPropertyBuilder.Ignore(property.Name);
     }
 
+#pragma warning disable S3267
     foreach (var property in propertiesToShorten)
     {
       complexPropertyBuilder
@@ -56,10 +58,12 @@ public static class EntityTypeBuilderExtensions
     {
       complexPropertyBuilder
         .ComplexProperty(property.Name)
-        .Archived(propertyName.Abbreviation()
-                  + "_"
-                  + property.Name.Abbreviation());
+        .Archived(
+          propertyName.Abbreviation()
+          + "_"
+          + property.Name.Abbreviation());
     }
+#pragma warning restore S3267
 
     return complexPropertyBuilder;
   }
@@ -82,10 +86,11 @@ public static class EntityTypeBuilderExtensions
   private static string ToSnakeCase(this string name)
   {
     return string.Concat(
-      name.Select((x, i) =>
-        i > 0 && char.IsUpper(x) && !char.IsUpper(name[i - 1])
-          ? "_" + x.ToString().ToLower()
-          : x.ToString().ToLower()
+      name.Select(
+        (x, i) =>
+          i > 0 && char.IsUpper(x) && !char.IsUpper(name[i - 1])
+            ? "_" + x.ToString().ToLower()
+            : x.ToString().ToLower()
       )
     );
   }

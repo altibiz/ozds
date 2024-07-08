@@ -36,29 +36,6 @@ public abstract class AggregateUpserter<TModel, TEntity> : IAggregateUpserter
   {
     get
     {
-      // var castException = new InvalidOperationException(
-      //   $"Entity is not of type {typeof(TEntity).Name}.");
-      // var castExceptionExpression = Expression.Constant(castException);
-      // var castThrowExpression = Expression.Throw(castExceptionExpression);
-      // var lhsParamExpression = Expression.Parameter(typeof(IAggregateEntity));
-      // var lhsCastExpression =
-      //   Expression.TypeAs(lhsParamExpression, typeof(TEntity));
-      // var lhsCoalesceExpression =
-      //   Expression.Coalesce(lhsCastExpression, castThrowExpression);
-      // var rhsParamExpression = Expression.Parameter(typeof(IAggregateEntity));
-      // var rhsCastExpression =
-      //   Expression.TypeAs(rhsParamExpression, typeof(TEntity));
-      // var rhsCoalesceExpression =
-      //   Expression.Coalesce(rhsCastExpression, castThrowExpression);
-      // var callExpression = Expression.Invoke(UpsertConcreteEntity,
-      //   lhsCoalesceExpression, rhsCoalesceExpression);
-      // var lambdaExpression =
-      //   Expression
-      //     .Lambda<Func<IAggregateEntity, IAggregateEntity, IAggregateEntity>>(
-      //       callExpression,
-      //       lhsParamExpression,
-      //       rhsParamExpression
-      //     );
       var lambdaExpression = UpsertConcreteEntity;
       return lambdaExpression;
     }

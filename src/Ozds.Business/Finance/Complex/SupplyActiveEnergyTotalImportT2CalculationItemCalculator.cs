@@ -28,7 +28,7 @@ public class SupplyActiveEnergyTotalImportT2CalculationItemCalculator :
       Amount_Wh = amount.SpanDiff.TariffBinary.T2.DuplexImport.PhaseSum,
       Price_EUR = calculationBasis.Price,
       Total_EUR = amount.SpanDiff.TariffBinary.T2.DuplexImport.PhaseSum
-                  * calculationBasis.Price
+        * calculationBasis.Price
     };
   }
 }

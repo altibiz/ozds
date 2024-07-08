@@ -99,8 +99,13 @@
 
 
 @code {
-  [CascadingParameter] public UserState user { get; set; } = default!;
-  [CascadingParameter] public RepresentativeState representative { get; set; } = default!;
+
+  [CascadingParameter]
+  public UserState user { get; set; } = default!;
+
+  [CascadingParameter]
+  public RepresentativeState representative { get; set; } = default!;
+
   private List<NetworkUserModel>? _netUsers;
 
   public record struct TabularData(LocationModel location, float consumption, float lastMonthConsumption, float lastPower);
@@ -130,14 +135,14 @@
 
     foreach (var netUser in groupedLocations)
     {
-      // !!! Remove .Month and .LocalDateTime in live
       var _thisMonthAggregate = netUser.Select(x => x.Aggregates.Where(x => x.Timestamp == startOfThisMonth).FirstOrDefault()).Where(x => x is not null).ToList();
       var _lastMonthAggregate = netUser.Select(x => x.Aggregates.Where(x => x.Timestamp == startOfLastMonth).FirstOrDefault()).Where(x => x is not null).ToList();
       float _currentPower = 0;
       var measureSum = locationsTwo
         .Where(x => x.Location.Id == netUser.Key)
-        .Select(x => x.Measurement.FirstOrDefault()?
-          .ActivePower_W.TariffUnary.DuplexNet.PhaseSum)
+        .Select(
+          x => x.Measurement.FirstOrDefault()?
+            .ActivePower_W.TariffUnary.DuplexNet.PhaseSum)
         .Where(x => x is not null)
         .DefaultIfEmpty(0).Sum();
       if (measureSum is not null)

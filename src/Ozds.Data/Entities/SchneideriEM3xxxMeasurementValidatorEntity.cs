@@ -47,33 +47,39 @@ public class SchneideriEM3xxxMeasurementValidatorEntityTypeConfiguration :
       .HasColumnName("max_current_a");
 
     builder
-      .Property(nameof(SchneideriEM3xxxMeasurementValidatorEntity
-        .MinActivePower_W))
+      .Property(
+        nameof(SchneideriEM3xxxMeasurementValidatorEntity
+          .MinActivePower_W))
       .HasColumnName("min_active_power_w");
 
     builder
-      .Property(nameof(SchneideriEM3xxxMeasurementValidatorEntity
-        .MaxActivePower_W))
+      .Property(
+        nameof(SchneideriEM3xxxMeasurementValidatorEntity
+          .MaxActivePower_W))
       .HasColumnName("max_active_power_w");
 
     builder
-      .Property(nameof(SchneideriEM3xxxMeasurementValidatorEntity
-        .MinReactivePower_VAR))
+      .Property(
+        nameof(SchneideriEM3xxxMeasurementValidatorEntity
+          .MinReactivePower_VAR))
       .HasColumnName("min_reactive_power_var");
 
     builder
-      .Property(nameof(SchneideriEM3xxxMeasurementValidatorEntity
-        .MaxReactivePower_VAR))
+      .Property(
+        nameof(SchneideriEM3xxxMeasurementValidatorEntity
+          .MaxReactivePower_VAR))
       .HasColumnName("max_reactive_power_var");
 
     builder
-      .Property(nameof(SchneideriEM3xxxMeasurementValidatorEntity
-        .MinApparentPower_VA))
+      .Property(
+        nameof(SchneideriEM3xxxMeasurementValidatorEntity
+          .MinApparentPower_VA))
       .HasColumnName("min_apparent_power_va");
 
     builder
-      .Property(nameof(SchneideriEM3xxxMeasurementValidatorEntity
-        .MaxApparentPower_VA))
+      .Property(
+        nameof(SchneideriEM3xxxMeasurementValidatorEntity
+          .MaxApparentPower_VA))
       .HasColumnName("max_apparent_power_va");
   }
 }

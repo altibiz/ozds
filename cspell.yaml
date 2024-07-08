@@ -25,6 +25,7 @@ ignorePaths:
   # TODO: add dicrionary or use aspell/hunspell
   - "src/Ozds.Client/Assets/*.json"
   - "./docs/index.html"
+  - "./.config/dotnet-tools.json"
 flagWords:
   - "gage"
 words:
@@ -99,6 +100,8 @@ words:
   - "pyright"
   - "mdbook"
   - "nbsp"
+  - "cet"
+  - "cest"
 
   # Croatian
   - "altibiz"

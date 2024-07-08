@@ -4,5 +4,5 @@ namespace Ozds.Business.Capabilities;
 
 public class SchneideriEM3xxxCapabilities : ICapabilities
 {
-  public bool hasApparentPower { get; set; } = true;
+  public bool HasApparentPower { get; set; } = true;
 }

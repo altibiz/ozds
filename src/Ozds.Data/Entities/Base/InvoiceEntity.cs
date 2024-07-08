@@ -42,14 +42,14 @@ public class
   InvoiceEntityTypeHierarchyConfiguration : EntityTypeHierarchyConfiguration<
   InvoiceEntity>
 {
-  public override void Configure(ModelBuilder modelBuilder, Type type)
+  public override void Configure(ModelBuilder modelBuilder, Type entity)
   {
-    if (type == typeof(InvoiceEntity))
+    if (entity == typeof(InvoiceEntity))
     {
       return;
     }
 
-    var builder = modelBuilder.Entity(type);
+    var builder = modelBuilder.Entity(entity);
 
     builder.HasKey("_id");
     builder.Ignore(nameof(InvoiceEntity.Id));

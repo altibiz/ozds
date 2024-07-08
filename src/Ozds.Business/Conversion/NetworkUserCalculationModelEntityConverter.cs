@@ -28,31 +28,33 @@ public static class NetworkUserCalculationModelEntityConverterExtensions
     this INetworkUserCalculation model)
   {
     if (model is RedLowNetworkUserCalculationModel
-        redLowNetworkUserCalculationModel)
+      redLowNetworkUserCalculationModel)
     {
       return redLowNetworkUserCalculationModel.ToEntity();
     }
 
     if (model is BlueLowNetworkUserCalculationModel
-        blueLowNetworkUserCalculationModel)
+      blueLowNetworkUserCalculationModel)
     {
       return blueLowNetworkUserCalculationModel.ToEntity();
     }
 
     if (model is WhiteLowNetworkUserCalculationModel
-        whiteLowNetworkUserCalculationModel)
+      whiteLowNetworkUserCalculationModel)
     {
       return whiteLowNetworkUserCalculationModel.ToEntity();
     }
 
     if (model is WhiteMediumNetworkUserCalculationModel
-        whiteMediumNetworkUserCalculationModel)
+      whiteMediumNetworkUserCalculationModel)
     {
       return whiteMediumNetworkUserCalculationModel.ToEntity();
     }
 
     throw new NotSupportedException(
-      $"NetworkUserCalculationModel type {model.GetType().Name} is not supported."
+      $"NetworkUserCalculationModel type {
+        model.GetType().Name
+      } is not supported."
     );
   }
 
@@ -60,31 +62,33 @@ public static class NetworkUserCalculationModelEntityConverterExtensions
     this NetworkUserCalculationEntity entity)
   {
     if (entity is RedLowNetworkUserCalculationEntity
-        redLowNetworkUserCalculationEntity)
+      redLowNetworkUserCalculationEntity)
     {
       return redLowNetworkUserCalculationEntity.ToModel();
     }
 
     if (entity is BlueLowNetworkUserCalculationEntity
-        blueLowNetworkUserCalculationEntity)
+      blueLowNetworkUserCalculationEntity)
     {
       return blueLowNetworkUserCalculationEntity.ToModel();
     }
 
     if (entity is WhiteLowNetworkUserCalculationEntity
-        whiteLowNetworkUserCalculationEntity)
+      whiteLowNetworkUserCalculationEntity)
     {
       return whiteLowNetworkUserCalculationEntity.ToModel();
     }
 
     if (entity is WhiteMediumNetworkUserCalculationEntity
-        whiteMediumNetworkUserCalculationEntity)
+      whiteMediumNetworkUserCalculationEntity)
     {
       return whiteMediumNetworkUserCalculationEntity.ToModel();
     }
 
     throw new NotSupportedException(
-      $"NetworkUserCalculationEntity type {entity.GetType().Name} is not supported."
+      $"NetworkUserCalculationEntity type {
+        entity.GetType().Name
+      } is not supported."
     );
   }
 }

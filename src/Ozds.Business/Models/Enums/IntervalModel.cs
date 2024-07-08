@@ -34,7 +34,8 @@ public static class IntervalModelExtensions
     };
   }
 
-  public static TimeSpan ToTimeSpan(this IntervalModel model,
+  public static TimeSpan ToTimeSpan(
+    this IntervalModel model,
     DateTimeOffset timestamp)
   {
     return model switch

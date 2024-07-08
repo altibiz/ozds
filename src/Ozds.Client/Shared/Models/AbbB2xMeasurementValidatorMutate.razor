@@ -77,9 +77,12 @@
 </EditForm>
 
 @code {
-  [Parameter] public string Id { get; set; } = default!;
 
-  [Parameter] public AbbB2xMeasurementValidatorModel? Model { get; set; }
+  [Parameter]
+  public string Id { get; set; } = default!;
+
+  [Parameter]
+  public AbbB2xMeasurementValidatorModel? Model { get; set; }
 
   private LoadingState<AbbB2xMeasurementValidatorModel> LoadingState { get; set; } = new();
 

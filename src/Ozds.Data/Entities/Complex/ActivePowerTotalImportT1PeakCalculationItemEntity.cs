@@ -28,18 +28,21 @@ public static class ActivePowerTotalImportT1PeakCalculationItemEntityExtensions
       .HasColumnName("usage_active_power_total_import_t1_peak_w");
 
     builder
-      .Property(nameof(ActivePowerTotalImportT1PeakCalculationItemEntity
-        .Amount_W))
+      .Property(
+        nameof(ActivePowerTotalImportT1PeakCalculationItemEntity
+          .Amount_W))
       .HasColumnName("usage_active_power_total_import_t1_amount_w");
 
     builder
-      .Property(nameof(ActivePowerTotalImportT1PeakCalculationItemEntity
-        .Price_EUR))
+      .Property(
+        nameof(ActivePowerTotalImportT1PeakCalculationItemEntity
+          .Price_EUR))
       .HasColumnName("usage_active_power_total_import_t1_price_eur");
 
     builder
-      .Property(nameof(ActivePowerTotalImportT1PeakCalculationItemEntity
-        .Total_EUR))
+      .Property(
+        nameof(ActivePowerTotalImportT1PeakCalculationItemEntity
+          .Total_EUR))
       .HasColumnName("usage_active_power_total_import_t1_total_eur");
   }
 }

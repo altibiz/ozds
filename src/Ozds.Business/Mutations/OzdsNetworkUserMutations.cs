@@ -25,7 +25,8 @@ public class OzdsNetworkUserMutations(
     _context.ChangeTracker.Clear();
   }
 
-  public void CreateWithRepresentatives(NetworkUserModel netUser,
+  public void CreateWithRepresentatives(
+    NetworkUserModel netUser,
     IEnumerable<RepresentativeModel> reps)
   {
     var validationResults = netUser
@@ -42,7 +43,8 @@ public class OzdsNetworkUserMutations(
     _context.JoinTracked(entity, repEntities);
   }
 
-  public void UpdateWithRepresentatives(NetworkUserModel netUser,
+  public void UpdateWithRepresentatives(
+    NetworkUserModel netUser,
     IEnumerable<RepresentativeModel> reps)
   {
     var validationResults = netUser

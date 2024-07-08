@@ -31,11 +31,11 @@ public class
   EventEntityTypeHierarchyConfiguration :
   EntityTypeHierarchyConfiguration<EventEntity>
 {
-  public override void Configure(ModelBuilder modelBuilder, Type type)
+  public override void Configure(ModelBuilder modelBuilder, Type entity)
   {
-    var builder = modelBuilder.Entity(type);
+    var builder = modelBuilder.Entity(entity);
 
-    if (type == typeof(EventEntity))
+    if (entity == typeof(EventEntity))
     {
       builder.HasKey("_id");
     }

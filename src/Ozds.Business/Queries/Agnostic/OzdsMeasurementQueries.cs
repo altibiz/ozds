@@ -25,14 +25,16 @@ public class OzdsMeasurementQueries(
     DateTimeOffset toDate,
     int pageNumber = QueryConstants.StartingPage,
     int pageCount = QueryConstants.DefaultPageCount
-  ) where T : class, IMeasurement
+  )
+    where T : class, IMeasurement
   {
     var dbSetType = _modelEntityConverter.EntityType(typeof(T));
     var queryable =
       _context.GetDbSet(dbSetType) as IQueryable<MeasurementEntity>
       ?? throw new InvalidOperationException(
         $"No DbSet found for {dbSetType}");
-    var filtered = whereClauses.Aggregate(queryable,
+    var filtered = whereClauses.Aggregate(
+      queryable,
       (current, clause) => current.WhereDynamic(clause));
     var timeFiltered = filtered
       .Where(aggregate => aggregate.Timestamp >= fromDate)
@@ -57,10 +59,12 @@ public class OzdsMeasurementQueries(
     int pageNumber = QueryConstants.StartingPage,
     int pageCount = QueryConstants.DefaultPageCount)
   {
-    var abbB2x = await Read<AbbB2xMeasurementModel>(whereClauses, fromDate,
+    var abbB2x = await Read<AbbB2xMeasurementModel>(
+      whereClauses, fromDate,
       toDate, pageNumber, pageCount);
     var schneideriEM3xxx =
-      await Read<SchneideriEM3xxxMeasurementModel>(whereClauses, fromDate,
+      await Read<SchneideriEM3xxxMeasurementModel>(
+        whereClauses, fromDate,
         toDate, pageNumber, pageCount);
     return abbB2x.Items.Cast<IMeasurement>().Concat(schneideriEM3xxx.Items)
       .ToList();

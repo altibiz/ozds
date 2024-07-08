@@ -32,7 +32,8 @@ public class Options
   [Option('n', "interval", Required = false, HelpText = "Interval in seconds.")]
   public int Interval_s { get; set; } = 60;
 
-  [Option('s', "seed", Required = false,
+  [Option(
+    's', "seed", Required = false,
     HelpText = "Seed the database with a desired interval.")]
   public Seed? Seed { get; set; } = default;
 
@@ -43,17 +44,18 @@ public class Options
   {
     try
     {
-      var result = new Parser(with =>
-      {
-        with.CaseInsensitiveEnumValues = true;
-        with.AutoHelp = true;
-        with.AutoVersion = true;
-        with.HelpWriter = Console.Out;
-      }).ParseArguments<Options>(args);
+      var result = new Parser(
+        with =>
+        {
+          with.CaseInsensitiveEnumValues = true;
+          with.AutoHelp = true;
+          with.AutoVersion = true;
+          with.HelpWriter = Console.Out;
+        }).ParseArguments<Options>(args);
 
       if (result.Tag == ParserResultType.NotParsed)
       {
-        if (result.Errors.Where(e => !e.StopsProcessing).Any())
+        if (result.Errors.Any(e => !e.StopsProcessing))
         {
           foreach (var error in result.Errors)
           {
