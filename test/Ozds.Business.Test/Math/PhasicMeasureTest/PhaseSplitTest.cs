@@ -14,6 +14,11 @@ public class PhaseSplitTest
         new SinglePhasicMeasureSum<decimal>(3),
         new TriPhasicMeasure<decimal>(6, 6, 6)
       ]),
+      new CompositePhasicMeasure<decimal>(
+      [
+        new SinglePhasicMeasureSum<decimal>(6),
+        new TriPhasicMeasure<decimal>(0, 0, 0)
+      ]),
       new TriPhasicMeasure<decimal>(6, 6, 6)
     };
 
@@ -23,7 +28,7 @@ public class PhaseSplitTest
       new SinglePhasicMeasureSum<decimal>(0),
       new CompositePhasicMeasure<decimal>(
       [
-        new SinglePhasicMeasureSum<decimal>(6),
+        new SinglePhasicMeasureSum<decimal>(0),
         new TriPhasicMeasure<decimal>(0, 0, 0)
       ]),
       new TriPhasicMeasure<decimal>(0, 0, 0),
