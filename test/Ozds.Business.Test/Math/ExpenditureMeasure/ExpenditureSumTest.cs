@@ -13,12 +13,12 @@ public class ExpenditureSumTest
         new UsageExpenditureMeasure<decimal>(
           new UnaryTariffMeasure<decimal>(
             new ImportExportDuplexMeasure<decimal>(
-              new SinglePhasicMeasure<decimal>(5),
-              new SinglePhasicMeasure<decimal>(3)))),
+              new SinglePhasicMeasureSum<decimal>(5),
+              new SinglePhasicMeasureSum<decimal>(3)))),
         new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(5),
-            new SinglePhasicMeasure<decimal>(3)))
+            new SinglePhasicMeasureSum<decimal>(5),
+            new SinglePhasicMeasureSum<decimal>(3)))
       },
 
       {
@@ -37,16 +37,16 @@ public class ExpenditureSumTest
         new DualExpenditureMeasure<decimal>(
           new UnaryTariffMeasure<decimal>(
             new ImportExportDuplexMeasure<decimal>(
-              new SinglePhasicMeasure<decimal>(1),
-              new SinglePhasicMeasure<decimal>(2))),
+              new SinglePhasicMeasureSum<decimal>(1),
+              new SinglePhasicMeasureSum<decimal>(2))),
           new UnaryTariffMeasure<decimal>(
             new ImportExportDuplexMeasure<decimal>(
-              new SinglePhasicMeasure<decimal>(3),
-              new SinglePhasicMeasure<decimal>(4)))),
+              new SinglePhasicMeasureSum<decimal>(3),
+              new SinglePhasicMeasureSum<decimal>(4)))),
         new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(4),
-            new SinglePhasicMeasure<decimal>(6)))
+            new SinglePhasicMeasureSum<decimal>(4),
+            new SinglePhasicMeasureSum<decimal>(6)))
       },
 
       {
@@ -60,7 +60,7 @@ public class ExpenditureSumTest
     ExpenditureMeasure<decimal> measure,
     TariffMeasure<decimal> expected)
   {
-    var result = measure.ExpenditureSum;
+    var result = measure.ExpenditureSum();
 
     Assert.Equal(expected, result);
   }

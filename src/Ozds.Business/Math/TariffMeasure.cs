@@ -27,20 +27,6 @@ public record class CompositeTariffMeasure<T>
 
   public List<TariffMeasure<T>> Measures { get; set; }
 
-  public TConverted FromMostAccurate<TConverted>(
-    Func<TariffMeasure<T>, TConverted> selector,
-    TConverted @default)
-  {
-    return Measures.FirstOrDefault(measure => measure is BinaryTariffMeasure<T>)
-      is
-      { } binary
-      ? selector(binary)
-      : Measures.FirstOrDefault(measure => measure is UnaryTariffMeasure<T>) is
-        { } unary
-        ? selector(unary)
-        : @default;
-  }
-
   public CompositeTariffMeasure<T> Select(
     Func<TariffMeasure<T>, TariffMeasure<T>> selector)
   {
@@ -101,16 +87,15 @@ public abstract record class TariffMeasure<T>
 {
   public static readonly TariffMeasure<T> Null = new NullTariffMeasure<T>();
 
-  public DuplexMeasure<T> TariffUnary
+  public DuplexMeasure<T> TariffUnary()
   {
-    get
     {
       return this switch
       {
         CompositeTariffMeasure<T> composite =>
           new CompositeDuplexMeasure<T>(
             composite.Measures.Select(
-              measure => measure.TariffUnary).ToList()),
+              measure => measure.TariffUnary()).ToList()),
         BinaryTariffMeasure<T> binary => binary.T1.Add(binary.T2),
         UnaryTariffMeasure<T> unary => unary.T0,
         _ => DuplexMeasure<T>.Null
@@ -118,21 +103,21 @@ public abstract record class TariffMeasure<T>
     }
   }
 
-  public BinaryTariffMeasure<T> TariffBinary
+  public BinaryTariffMeasure<T> TariffBinary()
   {
-    get
     {
       return this switch
       {
         CompositeTariffMeasure<T> composite =>
-          composite.Measures.FirstOrDefault(
-              measure => measure is BinaryTariffMeasure<T>) is
-            BinaryTariffMeasure<T>
-            binary
-            ? binary
-            : new BinaryTariffMeasure<T>(
-              DuplexMeasure<T>.Null,
-              DuplexMeasure<T>.Null),
+          new BinaryTariffMeasure<T>(
+            new CompositeDuplexMeasure<T>(
+              composite.Measures.Select(
+                measure => measure.TariffBinary().T1
+              ).ToList()),
+            new CompositeDuplexMeasure<T>(
+              composite.Measures.Select(
+                measure => measure.TariffBinary().T2
+              ).ToList())),
         BinaryTariffMeasure<T> binary => binary,
         _ => new BinaryTariffMeasure<T>(
           DuplexMeasure<T>.Null,

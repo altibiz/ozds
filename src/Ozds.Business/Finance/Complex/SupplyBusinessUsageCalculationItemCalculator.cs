@@ -23,11 +23,11 @@ public class SupplyBusinessUsageFeeCalculationItemCalculator :
 
     return new SupplyBusinessUsageCalculationItemModel
     {
-      Min_Wh = amount.SpanMin.TariffUnary.DuplexImport.PhaseSum,
-      Max_Wh = amount.SpanMax.TariffUnary.DuplexImport.PhaseSum,
-      Amount_Wh = amount.SpanDiff.TariffUnary.DuplexImport.PhaseSum,
+      Min_Wh = amount.SpanMin().TariffUnary().DuplexImport().PhaseSum(),
+      Max_Wh = amount.SpanMax().TariffUnary().DuplexImport().PhaseSum(),
+      Amount_Wh = amount.SpanDiff().TariffUnary().DuplexImport().PhaseSum(),
       Price_EUR = calculationBasis.Price,
-      Total_EUR = amount.SpanDiff.TariffUnary.DuplexImport.PhaseSum
+      Total_EUR = amount.SpanDiff().TariffUnary().DuplexImport().PhaseSum()
         * calculationBasis.Price
     };
   }

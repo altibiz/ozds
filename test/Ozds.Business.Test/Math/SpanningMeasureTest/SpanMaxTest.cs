@@ -13,16 +13,16 @@ public class SpanMaxTest
         new MinMaxSpanningMeasure<decimal>(
           new UnaryTariffMeasure<decimal>(
             new ImportExportDuplexMeasure<decimal>(
-              new SinglePhasicMeasure<decimal>(5),
-              new SinglePhasicMeasure<decimal>(3))),
+              new SinglePhasicMeasureSum<decimal>(5),
+              new SinglePhasicMeasureSum<decimal>(3))),
           new UnaryTariffMeasure<decimal>(
             new ImportExportDuplexMeasure<decimal>(
-              new SinglePhasicMeasure<decimal>(10),
-              new SinglePhasicMeasure<decimal>(6)))),
+              new SinglePhasicMeasureSum<decimal>(10),
+              new SinglePhasicMeasureSum<decimal>(6)))),
         new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(10),
-            new SinglePhasicMeasure<decimal>(6)))
+            new SinglePhasicMeasureSum<decimal>(10),
+            new SinglePhasicMeasureSum<decimal>(6)))
       },
 
       {
@@ -50,7 +50,7 @@ public class SpanMaxTest
     SpanningMeasure<decimal> measure,
     TariffMeasure<decimal> expected)
   {
-    var result = measure.SpanMax;
+    var result = measure.SpanMax();
 
     Assert.Equal(expected, result);
   }

@@ -11,9 +11,9 @@ public class DuplexSumTest
     {
       {
         new ImportExportDuplexMeasure<decimal>(
-          new SinglePhasicMeasure<decimal>(5),
-          new SinglePhasicMeasure<decimal>(3)),
-        new SinglePhasicMeasure<decimal>(8)
+          new SinglePhasicMeasureSum<decimal>(5),
+          new SinglePhasicMeasureSum<decimal>(3)),
+        new SinglePhasicMeasureSum<decimal>(8)
       },
       {
         new ImportExportDuplexMeasure<decimal>(
@@ -22,12 +22,12 @@ public class DuplexSumTest
         new TriPhasicMeasure<decimal>(5, 7, 9)
       },
       {
-        new NetDuplexMeasure<decimal>(new SinglePhasicMeasure<decimal>(4)),
-        new SinglePhasicMeasure<decimal>(4)
+        new NetDuplexMeasure<decimal>(new SinglePhasicMeasureSum<decimal>(4)),
+        new SinglePhasicMeasureSum<decimal>(4)
       },
       {
-        new AnyDuplexMeasure<decimal>(new SinglePhasicMeasure<decimal>(3)),
-        new SinglePhasicMeasure<decimal>(3)
+        new AnyDuplexMeasure<decimal>(new SinglePhasicMeasureSum<decimal>(3)),
+        new SinglePhasicMeasureSum<decimal>(3)
       },
       { new NullDuplexMeasure<decimal>(), new NullPhasicMeasure<decimal>() }
     };
@@ -38,7 +38,7 @@ public class DuplexSumTest
     DuplexMeasure<decimal> measure,
     PhasicMeasure<decimal> expected)
   {
-    var result = measure.DuplexSum;
+    var result = measure.DuplexSum();
 
     Assert.Equal(expected, result);
   }

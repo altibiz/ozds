@@ -13,12 +13,12 @@ public class ExpenditureSupplyTest
         new SupplyExpenditureMeasure<decimal>(
           new UnaryTariffMeasure<decimal>(
             new ImportExportDuplexMeasure<decimal>(
-              new SinglePhasicMeasure<decimal>(5),
-              new SinglePhasicMeasure<decimal>(3)))),
+              new SinglePhasicMeasureSum<decimal>(5),
+              new SinglePhasicMeasureSum<decimal>(3)))),
         new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(5),
-            new SinglePhasicMeasure<decimal>(3)))
+            new SinglePhasicMeasureSum<decimal>(5),
+            new SinglePhasicMeasureSum<decimal>(3)))
       },
 
       {
@@ -48,7 +48,7 @@ public class ExpenditureSupplyTest
     ExpenditureMeasure<decimal> measure,
     TariffMeasure<decimal> expected)
   {
-    var result = measure.ExpenditureSupply;
+    var result = measure.ExpenditureSupply();
 
     Assert.Equal(expected, result);
   }

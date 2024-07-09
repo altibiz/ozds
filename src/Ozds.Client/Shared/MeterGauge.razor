@@ -118,7 +118,7 @@
       var a = measureLastQuarterHour.OrderBy(x => x.Timestamp).LastOrDefault();
       if (a is not null)
       {
-        var b = a.ActivePower_W.TariffUnary.DuplexNet.PhaseSum;
+        var b = a.ActivePower_W.TariffUnary().DuplexNet().PhaseSum();
         thisMonthCurrentPower = b;
       }
     }

@@ -13,12 +13,12 @@ public class SpanAvgTest
         new AvgSpanningMeasure<decimal>(
           new UnaryTariffMeasure<decimal>(
             new ImportExportDuplexMeasure<decimal>(
-              new SinglePhasicMeasure<decimal>(5),
-              new SinglePhasicMeasure<decimal>(3)))),
+              new SinglePhasicMeasureSum<decimal>(5),
+              new SinglePhasicMeasureSum<decimal>(3)))),
         new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(5),
-            new SinglePhasicMeasure<decimal>(3)))
+            new SinglePhasicMeasureSum<decimal>(5),
+            new SinglePhasicMeasureSum<decimal>(3)))
       },
 
       {
@@ -42,7 +42,7 @@ public class SpanAvgTest
     SpanningMeasure<decimal> measure,
     TariffMeasure<decimal> expected)
   {
-    var result = measure.SpanAvg;
+    var result = measure.SpanAvg();
 
     Assert.Equal(expected, result);
   }

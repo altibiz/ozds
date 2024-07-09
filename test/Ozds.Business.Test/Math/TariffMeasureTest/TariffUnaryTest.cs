@@ -12,14 +12,14 @@ public class TariffUnaryTest
       {
         new BinaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(5),
-            new SinglePhasicMeasure<decimal>(3)),
+            new SinglePhasicMeasureSum<decimal>(5),
+            new SinglePhasicMeasureSum<decimal>(3)),
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(2),
-            new SinglePhasicMeasure<decimal>(1))),
+            new SinglePhasicMeasureSum<decimal>(2),
+            new SinglePhasicMeasureSum<decimal>(1))),
         new ImportExportDuplexMeasure<decimal>(
-          new SinglePhasicMeasure<decimal>(7),
-          new SinglePhasicMeasure<decimal>(4))
+          new SinglePhasicMeasureSum<decimal>(7),
+          new SinglePhasicMeasureSum<decimal>(4))
       },
 
       {
@@ -41,7 +41,7 @@ public class TariffUnaryTest
     TariffMeasure<decimal> measure,
     DuplexMeasure<decimal> expected)
   {
-    var result = measure.TariffUnary;
+    var result = measure.TariffUnary();
 
     Assert.Equal(expected, result);
   }

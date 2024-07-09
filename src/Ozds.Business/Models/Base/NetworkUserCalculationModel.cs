@@ -108,16 +108,17 @@ public abstract class NetworkUserCalculationModel : CalculationModel,
     get
     {
       var result =
-        ReactiveEnergyAmount_Wh.SpanDiff.Select(
-          duplex =>
-            new AnyDuplexMeasure<decimal>(duplex.DuplexAbs.DuplexSum)).Subtract(
-          ActiveEnergyAmount_Wh.SpanDiff.Select(
+        ReactiveEnergyAmount_Wh.SpanDiff().Select(
             duplex =>
-              new AnyDuplexMeasure<decimal>(duplex.DuplexAny)));
+              new AnyDuplexMeasure<decimal>(duplex.DuplexAbs().DuplexSum()))
+          .Subtract(
+            ActiveEnergyAmount_Wh.SpanDiff().Select(
+              duplex =>
+                new AnyDuplexMeasure<decimal>(duplex.DuplexAny())));
 
       return result
         .Select(
-          duplex => duplex.DuplexAny.PhaseSum < 0
+          duplex => duplex.DuplexAny().PhaseSum() < 0
             ? DuplexMeasure<decimal>.Null
             : duplex);
     }
@@ -134,26 +135,26 @@ public abstract class NetworkUserCalculationModel : CalculationModel,
     get
     {
       return new DualExpenditureMeasure<decimal>(
-        ActiveEnergyAmount_Wh.SpanDiff
-          .Multiply(ActiveEnergyPrice_EUR.ExpenditureUsage)
+        ActiveEnergyAmount_Wh.SpanDiff()
+          .Multiply(ActiveEnergyPrice_EUR.ExpenditureUsage())
           .Add(
             ReactiveEnergyRampedAmount_Wh.Multiply(
               ReactiveEnergyPrice_EUR
-                .ExpenditureUsage))
+                .ExpenditureUsage()))
           .Add(
-            ActivePowerAmount_W.SpanDiff.Multiply(
+            ActivePowerAmount_W.SpanDiff().Multiply(
               ActivePowerPrice_EUR
-                .ExpenditureUsage)),
-        ActiveEnergyAmount_Wh.SpanDiff
-          .Multiply(ActiveEnergyPrice_EUR.ExpenditureSupply)
+                .ExpenditureUsage())),
+        ActiveEnergyAmount_Wh.SpanDiff()
+          .Multiply(ActiveEnergyPrice_EUR.ExpenditureSupply())
           .Add(
             ReactiveEnergyRampedAmount_Wh.Multiply(
               ReactiveEnergyPrice_EUR
-                .ExpenditureSupply))
+                .ExpenditureSupply()))
           .Add(
-            ActivePowerAmount_W.SpanDiff.Multiply(
+            ActivePowerAmount_W.SpanDiff().Multiply(
               ActivePowerPrice_EUR
-                .ExpenditureSupply))
+                .ExpenditureSupply()))
       );
     }
   }

@@ -10,8 +10,8 @@ public class PhaseDivideTest
     PhasicMeasuresDivide = new()
     {
       {
-        new SinglePhasicMeasure<decimal>(10), 2,
-        new SinglePhasicMeasure<decimal>(5)
+        new SinglePhasicMeasureSum<decimal>(10), 2,
+        new SinglePhasicMeasureSum<decimal>(5)
       },
 
       {

@@ -27,23 +27,6 @@ public record class CompositeDuplexMeasure<T>
 
   public List<DuplexMeasure<T>> Measures { get; set; }
 
-  public TConverted FromMostAccurate<TConverted>(
-    Func<DuplexMeasure<T>, TConverted> selector,
-    TConverted @default)
-  {
-    return Measures.FirstOrDefault(
-      measure =>
-        measure is ImportExportDuplexMeasure<T>) is { } importExport
-      ? selector(importExport)
-      : Measures.FirstOrDefault(measure => measure is NetDuplexMeasure<T>) is
-        { } net
-        ? selector(net)
-        : Measures.FirstOrDefault(measure => measure is AnyDuplexMeasure<T>) is
-          { } any
-          ? selector(any)
-          : @default;
-  }
-
   public CompositeDuplexMeasure<T> Select(
     Func<DuplexMeasure<T>, DuplexMeasure<T>> selector)
   {
@@ -111,30 +94,28 @@ public abstract record class DuplexMeasure<T>
 {
   public static readonly DuplexMeasure<T> Null = new NullDuplexMeasure<T>();
 
-  public PhasicMeasure<T> DuplexNet
+  public PhasicMeasure<T> DuplexNet()
   {
-    get
+    return this switch
     {
-      return this switch
-      {
-        CompositeDuplexMeasure<T> composite => composite.FromMostAccurate(
-          measure => measure.DuplexNet, PhasicMeasure<T>.Null),
-        ImportExportDuplexMeasure<T> importExport => importExport.Import
-          .Subtract(importExport.Export),
-        NetDuplexMeasure<T> net => net.TrueNet,
-        _ => PhasicMeasure<T>.Null
-      };
-    }
+      CompositeDuplexMeasure<T> composite =>
+        new CompositePhasicMeasure<T>(
+          composite.Measures.Select(measure => measure.DuplexNet()).ToList()),
+      ImportExportDuplexMeasure<T> importExport => importExport.Import
+        .Subtract(importExport.Export),
+      NetDuplexMeasure<T> net => net.TrueNet,
+      _ => PhasicMeasure<T>.Null
+    };
   }
 
-  public PhasicMeasure<T> DuplexAny
+  public PhasicMeasure<T> DuplexAny()
   {
-    get
     {
       return this switch
       {
-        CompositeDuplexMeasure<T> composite => composite.FromMostAccurate(
-          measure => measure.DuplexAny, PhasicMeasure<T>.Null),
+        CompositeDuplexMeasure<T> composite =>
+          new CompositePhasicMeasure<T>(
+            composite.Measures.Select(measure => measure.DuplexAny()).ToList()),
         NetDuplexMeasure<T> net => net.TrueNet,
         AnyDuplexMeasure<T> net => net.Value,
         _ => PhasicMeasure<T>.Null
@@ -142,47 +123,49 @@ public abstract record class DuplexMeasure<T>
     }
   }
 
-  public PhasicMeasure<T> DuplexImport
+  public PhasicMeasure<T> DuplexImport()
   {
-    get
     {
       return this switch
       {
-        CompositeDuplexMeasure<T> composite => composite.FromMostAccurate(
-          measure => measure.DuplexImport, PhasicMeasure<T>.Null),
+        CompositeDuplexMeasure<T> composite =>
+          new CompositePhasicMeasure<T>(
+            composite.Measures.Select(measure => measure.DuplexImport())
+              .ToList()),
         ImportExportDuplexMeasure<T> importExport => importExport.Import,
         _ => PhasicMeasure<T>.Null
       };
     }
   }
 
-  public PhasicMeasure<T> DuplexExport
+  public PhasicMeasure<T> DuplexExport()
   {
-    get
     {
       return this switch
       {
-        CompositeDuplexMeasure<T> composite => composite.FromMostAccurate(
-          measure => measure.DuplexExport, PhasicMeasure<T>.Null),
+        CompositeDuplexMeasure<T> composite =>
+          new CompositePhasicMeasure<T>(
+            composite.Measures.Select(measure => measure.DuplexExport())
+              .ToList()),
         ImportExportDuplexMeasure<T> importExport => importExport.Export,
         _ => PhasicMeasure<T>.Null
       };
     }
   }
 
-  public DuplexMeasure<T> DuplexAbs
+  public DuplexMeasure<T> DuplexAbs()
   {
-    get { return Select(phasic => phasic.PhaseAbs); }
+    return Select(phasic => phasic.PhaseAbs());
   }
 
-  public PhasicMeasure<T> DuplexSum
+  public PhasicMeasure<T> DuplexSum()
   {
-    get
     {
       return this switch
       {
-        CompositeDuplexMeasure<T> composite => composite.FromMostAccurate(
-          measure => measure.DuplexSum, PhasicMeasure<T>.Null),
+        CompositeDuplexMeasure<T> composite =>
+          new CompositePhasicMeasure<T>(
+            composite.Measures.Select(measure => measure.DuplexSum()).ToList()),
         ImportExportDuplexMeasure<T> importExport => importExport.Import
           .Add(importExport.Export),
         NetDuplexMeasure<T> net => net.TrueNet,

@@ -34,45 +34,45 @@ public class AbbB2xMeasurementRecordCumulativeCorrector
       );
 
     measurementRecord.ActiveEnergyL1ImportT0_Wh =
-      activeEnergy.TariffUnary.DuplexImport.PhaseSplit.ValueL1;
+      activeEnergy.TariffUnary().DuplexImport().PhaseSplit().ValueL1;
     measurementRecord.ActiveEnergyL2ImportT0_Wh =
-      activeEnergy.TariffUnary.DuplexImport.PhaseSplit.ValueL2;
+      activeEnergy.TariffUnary().DuplexImport().PhaseSplit().ValueL2;
     measurementRecord.ActiveEnergyL3ImportT0_Wh =
-      activeEnergy.TariffUnary.DuplexImport.PhaseSplit.ValueL3;
+      activeEnergy.TariffUnary().DuplexImport().PhaseSplit().ValueL3;
     measurementRecord.ActiveEnergyTotalImportT0_Wh =
-      activeEnergy.TariffUnary.DuplexImport.PhaseSum;
+      activeEnergy.TariffUnary().DuplexImport().PhaseSum();
 
     measurementRecord.ActiveEnergyL1ExportT0_Wh =
-      activeEnergy.TariffUnary.DuplexExport.PhaseSplit.ValueL1;
+      activeEnergy.TariffUnary().DuplexExport().PhaseSplit().ValueL1;
     measurementRecord.ActiveEnergyL2ExportT0_Wh =
-      activeEnergy.TariffUnary.DuplexExport.PhaseSplit.ValueL2;
+      activeEnergy.TariffUnary().DuplexExport().PhaseSplit().ValueL2;
     measurementRecord.ActiveEnergyL3ExportT0_Wh =
-      activeEnergy.TariffUnary.DuplexExport.PhaseSplit.ValueL3;
+      activeEnergy.TariffUnary().DuplexExport().PhaseSplit().ValueL3;
     measurementRecord.ActiveEnergyTotalExportT0_Wh =
-      activeEnergy.TariffUnary.DuplexExport.PhaseSum;
+      activeEnergy.TariffUnary().DuplexExport().PhaseSum();
 
     measurementRecord.ReactiveEnergyL1ImportT0_VARh =
-      reactiveEnergy.TariffUnary.DuplexImport.PhaseSplit.ValueL1;
+      reactiveEnergy.TariffUnary().DuplexImport().PhaseSplit().ValueL1;
     measurementRecord.ReactiveEnergyL2ImportT0_VARh =
-      reactiveEnergy.TariffUnary.DuplexImport.PhaseSplit.ValueL2;
+      reactiveEnergy.TariffUnary().DuplexImport().PhaseSplit().ValueL2;
     measurementRecord.ReactiveEnergyL3ImportT0_VARh =
-      reactiveEnergy.TariffUnary.DuplexImport.PhaseSplit.ValueL3;
+      reactiveEnergy.TariffUnary().DuplexImport().PhaseSplit().ValueL3;
     measurementRecord.ReactiveEnergyTotalImportT0_VARh =
-      reactiveEnergy.TariffUnary.DuplexImport.PhaseSum;
+      reactiveEnergy.TariffUnary().DuplexImport().PhaseSum();
 
     measurementRecord.ReactiveEnergyL1ExportT0_VARh =
-      reactiveEnergy.TariffUnary.DuplexExport.PhaseSplit.ValueL1;
+      reactiveEnergy.TariffUnary().DuplexExport().PhaseSplit().ValueL1;
     measurementRecord.ReactiveEnergyL2ImportT0_VARh =
-      reactiveEnergy.TariffUnary.DuplexExport.PhaseSplit.ValueL2;
+      reactiveEnergy.TariffUnary().DuplexExport().PhaseSplit().ValueL2;
     measurementRecord.ReactiveEnergyL3ImportT0_VARh =
-      reactiveEnergy.TariffUnary.DuplexExport.PhaseSplit.ValueL3;
+      reactiveEnergy.TariffUnary().DuplexExport().PhaseSplit().ValueL3;
     measurementRecord.ReactiveEnergyTotalExportT0_VARh =
-      reactiveEnergy.TariffUnary.DuplexExport.PhaseSum;
+      reactiveEnergy.TariffUnary().DuplexExport().PhaseSum();
 
     measurementRecord.ActiveEnergyTotalImportT1_Wh =
-      activeEnergy.TariffBinary.T1.DuplexImport.PhaseSum;
+      activeEnergy.TariffBinary().T1.DuplexImport().PhaseSum();
     measurementRecord.ActiveEnergyTotalImportT2_Wh =
-      activeEnergy.TariffBinary.T2.DuplexExport.PhaseSum;
+      activeEnergy.TariffBinary().T2.DuplexExport().PhaseSum();
 
     return measurementRecord;
   }

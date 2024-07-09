@@ -13,12 +13,12 @@ public class SpanPeakTest
         new PeakSpanningMeasure<decimal>(
           new UnaryTariffMeasure<decimal>(
             new ImportExportDuplexMeasure<decimal>(
-              new SinglePhasicMeasure<decimal>(5),
-              new SinglePhasicMeasure<decimal>(3)))),
+              new SinglePhasicMeasureSum<decimal>(5),
+              new SinglePhasicMeasureSum<decimal>(3)))),
         new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(5),
-            new SinglePhasicMeasure<decimal>(3)))
+            new SinglePhasicMeasureSum<decimal>(5),
+            new SinglePhasicMeasureSum<decimal>(3)))
       },
 
       {
@@ -42,7 +42,7 @@ public class SpanPeakTest
     SpanningMeasure<decimal> measure,
     TariffMeasure<decimal> expected)
   {
-    var result = measure.SpanPeak;
+    var result = measure.SpanPeak();
 
     Assert.Equal(expected, result);
   }

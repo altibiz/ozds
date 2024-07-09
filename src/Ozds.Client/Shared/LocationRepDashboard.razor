@@ -142,7 +142,7 @@
         .Where(x => x.Location.Id == netUser.Key)
         .Select(
           x => x.Measurement.FirstOrDefault()?
-            .ActivePower_W.TariffUnary.DuplexNet.PhaseSum)
+            .ActivePower_W.TariffUnary().DuplexNet().PhaseSum())
         .Where(x => x is not null)
         .DefaultIfEmpty(0).Sum();
       if (measureSum is not null)
@@ -153,7 +153,7 @@
       if (_thisMonthAggregate is not null && _thisMonthAggregate.Count > 0)
       {
         var agg = _thisMonthAggregate
-          .Select(x => x?.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum)
+          .Select(x => x?.ActiveEnergySpan_Wh.SpanDiff().TariffUnary().DuplexImport().PhaseSum())
           .DefaultIfEmpty(0)
           .Sum();
         if (agg is null)
@@ -164,7 +164,7 @@
       if (_lastMonthAggregate is not null && _lastMonthAggregate.Count > 0)
       {
         var agg = _lastMonthAggregate
-          .Select(x => x?.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum)
+          .Select(x => x?.ActiveEnergySpan_Wh.SpanDiff().TariffUnary().DuplexImport().PhaseSum())
           .DefaultIfEmpty(0)
           .Sum();
         if (agg is null)

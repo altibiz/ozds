@@ -56,9 +56,8 @@ public abstract record class ExpenditureMeasure<T>
   public static readonly ExpenditureMeasure<T> Null =
     new NullExpenditureMeasure<T>();
 
-  public TariffMeasure<T> ExpenditureUsage
+  public TariffMeasure<T> ExpenditureUsage()
   {
-    get
     {
       return this switch
       {
@@ -69,9 +68,8 @@ public abstract record class ExpenditureMeasure<T>
     }
   }
 
-  public TariffMeasure<T> ExpenditureSupply
+  public TariffMeasure<T> ExpenditureSupply()
   {
-    get
     {
       return this switch
       {
@@ -82,9 +80,8 @@ public abstract record class ExpenditureMeasure<T>
     }
   }
 
-  public TariffMeasure<T> ExpenditureSum
+  public TariffMeasure<T> ExpenditureSum()
   {
-    get
     {
       return this switch
       {

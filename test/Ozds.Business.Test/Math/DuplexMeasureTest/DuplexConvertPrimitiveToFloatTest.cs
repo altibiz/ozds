@@ -11,21 +11,21 @@ public class DuplexConvertPrimitiveToFloatTest
     {
       {
         new ImportExportDuplexMeasure<decimal>(
-          new SinglePhasicMeasure<decimal>(5),
-          new SinglePhasicMeasure<decimal>(3)),
+          new SinglePhasicMeasureSum<decimal>(5),
+          new SinglePhasicMeasureSum<decimal>(3)),
         new ImportExportDuplexMeasure<float>(
-          new SinglePhasicMeasure<float>(5f),
-          new SinglePhasicMeasure<float>(3f))
+          new SinglePhasicMeasureSum<float>(5f),
+          new SinglePhasicMeasureSum<float>(3f))
       },
 
       {
-        new NetDuplexMeasure<decimal>(new SinglePhasicMeasure<decimal>(4)),
-        new NetDuplexMeasure<float>(new SinglePhasicMeasure<float>(4f))
+        new NetDuplexMeasure<decimal>(new SinglePhasicMeasureSum<decimal>(4)),
+        new NetDuplexMeasure<float>(new SinglePhasicMeasureSum<float>(4f))
       },
 
       {
-        new AnyDuplexMeasure<decimal>(new SinglePhasicMeasure<decimal>(3)),
-        new AnyDuplexMeasure<float>(new SinglePhasicMeasure<float>(3f))
+        new AnyDuplexMeasure<decimal>(new SinglePhasicMeasureSum<decimal>(3)),
+        new AnyDuplexMeasure<float>(new SinglePhasicMeasureSum<float>(3f))
       },
 
       { new NullDuplexMeasure<decimal>(), new NullDuplexMeasure<float>() }

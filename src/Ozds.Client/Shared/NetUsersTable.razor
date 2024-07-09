@@ -193,7 +193,7 @@
       if (_thisMonthAggregate is not null && _thisMonthAggregate.Count > 0)
       {
         var agg = _thisMonthAggregate
-          .Select(x => x?.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum)
+          .Select(x => x?.ActiveEnergySpan_Wh.SpanDiff().TariffUnary().DuplexImport().PhaseSum())
           .DefaultIfEmpty(0)
           .Sum();
         if (agg is null)
@@ -204,7 +204,7 @@
       if (_lastMonthAggregate is not null && _lastMonthAggregate.Count > 0)
       {
         var agg = _lastMonthAggregate
-          .Select(x => x?.ActiveEnergySpan_Wh.SpanDiff.TariffUnary.DuplexImport.PhaseSum)
+          .Select(x => x?.ActiveEnergySpan_Wh.SpanDiff().TariffUnary().DuplexImport().PhaseSum())
           .DefaultIfEmpty(0)
           .Sum();
         if (agg is null)

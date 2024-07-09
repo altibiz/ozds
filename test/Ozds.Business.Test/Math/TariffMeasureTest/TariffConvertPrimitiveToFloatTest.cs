@@ -12,12 +12,12 @@ public class TariffConvertPrimitiveToFloatTest
       {
         new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(5),
-            new SinglePhasicMeasure<decimal>(3))),
+            new SinglePhasicMeasureSum<decimal>(5),
+            new SinglePhasicMeasureSum<decimal>(3))),
         new UnaryTariffMeasure<float>(
           new ImportExportDuplexMeasure<float>(
-            new SinglePhasicMeasure<float>(5f),
-            new SinglePhasicMeasure<float>(3f)))
+            new SinglePhasicMeasureSum<float>(5f),
+            new SinglePhasicMeasureSum<float>(3f)))
       },
 
       {

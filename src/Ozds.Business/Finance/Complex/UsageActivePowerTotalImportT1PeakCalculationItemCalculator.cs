@@ -20,16 +20,17 @@ public class UsageActivePowerTotalImportT1PeakCalculationItemCalculator :
       aggregates
         .MaxBy(
           aggregate =>
-            aggregate.ActivePower_W.TariffBinary.T1.DuplexImport.PhaseSum)
+            aggregate.ActivePower_W.TariffBinary().T1.DuplexImport().PhaseSum())
         !.ActivePower_W.ConvertPrimitiveTo<decimal>()
     );
 
     return new UsageActivePowerTotalImportT1PeakCalculationItemModel
     {
-      Peak_W = amount.SpanPeak.TariffBinary.T1.DuplexImport.PhaseSum,
-      Amount_W = amount.SpanPeak.TariffBinary.T1.DuplexImport.PhaseSum,
+      Peak_W = amount.SpanPeak().TariffBinary().T1.DuplexImport().PhaseSum(),
+      Amount_W = amount.SpanPeak().TariffBinary().T1.DuplexImport().PhaseSum(),
       Price_EUR = calculationBasis.Price,
-      Total_EUR = amount.SpanPeak.TariffBinary.T1.DuplexImport.PhaseSum *
+      Total_EUR = amount.SpanPeak().TariffBinary().T1.DuplexImport().PhaseSum()
+        *
         calculationBasis.Price
     };
   }

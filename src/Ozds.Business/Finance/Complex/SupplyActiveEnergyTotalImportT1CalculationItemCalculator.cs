@@ -23,11 +23,11 @@ public class SupplyActiveEnergyTotalImportT1CalculationItemCalculator :
 
     return new SupplyActiveEnergyTotalImportT1CalculationItemModel
     {
-      Min_Wh = amount.SpanMin.TariffBinary.T1.DuplexImport.PhaseSum,
-      Max_Wh = amount.SpanMax.TariffBinary.T1.DuplexImport.PhaseSum,
-      Amount_Wh = amount.SpanDiff.TariffBinary.T1.DuplexImport.PhaseSum,
+      Min_Wh = amount.SpanMin().TariffBinary().T1.DuplexImport().PhaseSum(),
+      Max_Wh = amount.SpanMax().TariffBinary().T1.DuplexImport().PhaseSum(),
+      Amount_Wh = amount.SpanDiff().TariffBinary().T1.DuplexImport().PhaseSum(),
       Price_EUR = calculationBasis.Price,
-      Total_EUR = amount.SpanDiff.TariffBinary.T1.DuplexImport.PhaseSum
+      Total_EUR = amount.SpanDiff().TariffBinary().T1.DuplexImport().PhaseSum()
         * calculationBasis.Price
     };
   }

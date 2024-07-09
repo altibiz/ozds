@@ -11,9 +11,9 @@ public class DuplexExportTest
     {
       {
         new ImportExportDuplexMeasure<decimal>(
-          new SinglePhasicMeasure<decimal>(5),
-          new SinglePhasicMeasure<decimal>(3)),
-        new SinglePhasicMeasure<decimal>(3)
+          new SinglePhasicMeasureSum<decimal>(5),
+          new SinglePhasicMeasureSum<decimal>(3)),
+        new SinglePhasicMeasureSum<decimal>(3)
       },
       {
         new ImportExportDuplexMeasure<decimal>(
@@ -30,7 +30,7 @@ public class DuplexExportTest
     DuplexMeasure<decimal> measure,
     PhasicMeasure<decimal> expected)
   {
-    var result = measure.DuplexExport;
+    var result = measure.DuplexExport();
 
     Assert.Equal(expected, result);
   }
