@@ -270,8 +270,13 @@ public abstract record class PhasicMeasure<T>
           {
             TriPhasicMeasure<T> tri => tri,
             SinglePhasicMeasureSum<T> single => new TriPhasicMeasure<T>(
-              single.Value, single.Value, single.Value),
-            _ => new TriPhasicMeasure<T>(default, default, default)
+              single.Value / (T)Convert.ChangeType(3, typeof(T)),
+              single.Value / (T)Convert.ChangeType(3, typeof(T)),
+              single.Value / (T)Convert.ChangeType(3, typeof(T))),
+            _ => new TriPhasicMeasure<T>(
+              (T)Convert.ChangeType(0, typeof(T)),
+              (T)Convert.ChangeType(0, typeof(T)),
+              (T)Convert.ChangeType(0, typeof(T)))
           }).FirstOrDefault(
           tri => !EqualityComparer<T>.Default.Equals(
               tri.ValueL1, (T)Convert.ChangeType(0, typeof(T))) &&
@@ -279,11 +284,19 @@ public abstract record class PhasicMeasure<T>
               tri.ValueL2, (T)Convert.ChangeType(0, typeof(T))) &&
             !EqualityComparer<T>.Default.Equals(
               tri.ValueL3, (T)Convert.ChangeType(0, typeof(T))),
-          new TriPhasicMeasure<T>(default, default, default)),
+          new TriPhasicMeasure<T>(
+            (T)Convert.ChangeType(0, typeof(T)),
+            (T)Convert.ChangeType(0, typeof(T)),
+            (T)Convert.ChangeType(0, typeof(T)))),
       SinglePhasicMeasureSum<T> single => new TriPhasicMeasure<T>(
-        single.Value, single.Value, single.Value),
+        single.Value / (T)Convert.ChangeType(3, typeof(T)),
+        single.Value / (T)Convert.ChangeType(3, typeof(T)),
+        single.Value / (T)Convert.ChangeType(3, typeof(T))),
       TriPhasicMeasure<T> tri => tri,
-      _ => new TriPhasicMeasure<T>(default, default, default)
+      _ => new TriPhasicMeasure<T>(
+        (T)Convert.ChangeType(0, typeof(T)),
+        (T)Convert.ChangeType(0, typeof(T)),
+        (T)Convert.ChangeType(0, typeof(T)))
     };
   }
 
