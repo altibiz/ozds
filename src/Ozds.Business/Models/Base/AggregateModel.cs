@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using Ozds.Business.Math;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Enums;
@@ -9,7 +10,10 @@ namespace Ozds.Business.Models.Base;
 public abstract class AggregateModel : IAggregate
 {
   private IntervalModel _interval = IntervalModel.QuarterHour;
-  private DateTimeOffset _timestamp;
+
+  // NOTE: just so it doesn't break if interval is set before timestamp
+  private DateTimeOffset _timestamp =
+    DateTimeOffset.Parse("2000-01-01T00:00:00Z", CultureInfo.InvariantCulture);
 
   [Required]
   public required string MeterId { get; set; }
@@ -48,54 +52,54 @@ public abstract class AggregateModel : IAggregate
   [Required]
   public required long Count { get; set; } = 0;
 
-  public abstract TariffMeasure<float> Current_A { get; }
+  public abstract TariffMeasure<decimal> Current_A { get; }
 
-  public abstract TariffMeasure<float> Voltage_V { get; }
+  public abstract TariffMeasure<decimal> Voltage_V { get; }
 
-  public abstract SpanningMeasure<float> ActiveEnergySpan_Wh { get; }
+  public abstract SpanningMeasure<decimal> ActiveEnergySpan_Wh { get; }
 
-  public abstract SpanningMeasure<float> ReactiveEnergySpan_VARh { get; }
+  public abstract SpanningMeasure<decimal> ReactiveEnergySpan_VARh { get; }
 
-  public abstract SpanningMeasure<float> ApparentEnergySpan_VAh { get; }
+  public abstract SpanningMeasure<decimal> ApparentEnergySpan_VAh { get; }
 
-  public virtual TariffMeasure<float> ActivePower_W
+  public virtual TariffMeasure<decimal> ActivePower_W
   {
     get
     {
       return ActiveEnergySpan_Wh.SpanDifferential(
-        (float)Interval.ToTimeSpan(Timestamp).TotalHours);
+        (decimal)Interval.ToTimeSpan(Timestamp).TotalHours);
     }
   }
 
-  public virtual TariffMeasure<float> ReactivePower_VAR
+  public virtual TariffMeasure<decimal> ReactivePower_VAR
   {
     get
     {
       return ReactiveEnergySpan_VARh.SpanDifferential(
-        (float)Interval.ToTimeSpan(Timestamp).TotalHours);
+        (decimal)Interval.ToTimeSpan(Timestamp).TotalHours);
     }
   }
 
-  public virtual TariffMeasure<float> ApparentPower_VA
+  public virtual TariffMeasure<decimal> ApparentPower_VA
   {
     get
     {
       return ApparentEnergySpan_VAh.SpanDifferential(
-        (float)Interval.ToTimeSpan(Timestamp).TotalHours);
+        (decimal)Interval.ToTimeSpan(Timestamp).TotalHours);
     }
   }
 
-  public virtual TariffMeasure<float> ActiveEnergy_Wh
+  public virtual TariffMeasure<decimal> ActiveEnergy_Wh
   {
     get { return ActiveEnergySpan_Wh.SpanMax(); }
   }
 
-  public virtual TariffMeasure<float> ReactiveEnergy_VARh
+  public virtual TariffMeasure<decimal> ReactiveEnergy_VARh
   {
     get { return ReactiveEnergySpan_VARh.SpanMax(); }
   }
 
-  public virtual TariffMeasure<float> ApparentEnergy_VAh
+  public virtual TariffMeasure<decimal> ApparentEnergy_VAh
   {
     get { return ApparentEnergySpan_VAh.SpanMax(); }
   }

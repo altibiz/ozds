@@ -55,7 +55,7 @@
   public IEnumerable<ChartData> _graphValues = Enumerable.Empty<ChartData>();
   public List<ChartData> _totalConsumption = new();
 
-  public record ChartData(float value, string name, DateTimeOffset date, string source);
+  public record ChartData(decimal value, string name, DateTimeOffset date, string source);
 
   private ApexChart<ChartData> chart = default!;
   private readonly DateTimeOffset startOfThisYear = DateTimeOffset.UtcNow.GetStartOfYear();

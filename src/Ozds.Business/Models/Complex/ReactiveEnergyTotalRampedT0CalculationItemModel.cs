@@ -8,22 +8,31 @@ public abstract class
   ReactiveEnergyTotalRampedT0CalculationItemModel : CalculationItemModel
 {
   [Required]
-  public required decimal ImportMin_VARh { get; set; }
+  public required decimal ReactiveImportMin_VARh { get; set; }
 
   [Required]
-  public required decimal ImportMax_VARh { get; set; }
+  public required decimal ReactiveImportMax_VARh { get; set; }
 
   [Required]
-  public required decimal ImportAmount_VARh { get; set; }
+  public required decimal ReactiveImportAmount_VARh { get; set; }
 
   [Required]
-  public required decimal ExportMin_VARh { get; set; }
+  public required decimal ReactiveExportMin_VARh { get; set; }
 
   [Required]
-  public required decimal ExportMax_VARh { get; set; }
+  public required decimal ReactiveExportMax_VARh { get; set; }
 
   [Required]
-  public required decimal ExportAmount_VARh { get; set; }
+  public required decimal ReactiveExportAmount_VARh { get; set; }
+
+  [Required]
+  public required decimal ActiveImportMin_Wh { get; set; }
+
+  [Required]
+  public required decimal ActiveImportMax_Wh { get; set; }
+
+  [Required]
+  public required decimal ActiveImportAmount_Wh { get; set; }
 
   [Required]
   public required decimal Amount_VARh { get; set; }
@@ -41,19 +50,21 @@ public abstract class
       return new MinMaxSpanningMeasure<decimal>(
         new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(ImportMin_VARh),
-            new SinglePhasicMeasure<decimal>(ExportMin_VARh)
+            new SinglePhasicMeasure<decimal>(ReactiveImportMin_VARh),
+            new SinglePhasicMeasure<decimal>(ReactiveExportMin_VARh)
           )
         ),
         new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(ImportMax_VARh),
-            new SinglePhasicMeasure<decimal>(ExportMax_VARh)
+            new SinglePhasicMeasure<decimal>(ReactiveImportMax_VARh),
+            new SinglePhasicMeasure<decimal>(ReactiveExportMax_VARh)
           )
         )
       );
     }
   }
+
+  public override decimal Total => Total_EUR;
 }
 
 public class UsageReactiveEnergyTotalRampedT0CalculationItemModel

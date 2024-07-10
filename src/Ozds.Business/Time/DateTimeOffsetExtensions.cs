@@ -1,9 +1,11 @@
 namespace Ozds.Business.Time;
 
+// TODO: make time zone configurable
+
+// NOTE: Croatian UTC offset (https://en.wikipedia.org/wiki/List_of_UTC_offsets)
+
 public static class DateTimeOffsetExtensions
 {
-  // NOTE: Croatian UTC offset (https://en.wikipedia.org/wiki/List_of_UTC_offsets)
-
   public static TimeSpan DefaultOffset
   {
     get

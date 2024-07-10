@@ -57,7 +57,7 @@ public abstract class OzdsComponentBase : ComponentBase
     return options;
   }
 
-  protected static string DecimalString(decimal? number, int places = 2)
+  protected static string NumericString(decimal? number, int places = 2)
   {
     if (number is null)
     {
@@ -74,7 +74,7 @@ public abstract class OzdsComponentBase : ComponentBase
     return roundedNumber.ToString("N", numberFormatInfo);
   }
 
-  protected static string FloatString(float? number, int places = 2)
+  protected static string NumericString(float? number, int places = 2)
   {
     if (number is null)
     {

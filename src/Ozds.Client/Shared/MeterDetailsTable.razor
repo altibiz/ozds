@@ -37,21 +37,21 @@
               <MudContainer>
                 @T["First reading"]:
                 @if (dataStruct.data.monthStartTotal is not null)
-                  @(FloatString(dataStruct.data.monthStartTotal / 1000, 0)) kWh
+                  @(NumericString(dataStruct.data.monthStartTotal / 1000, 0)) kWh
               </MudContainer>
               <MudContainer>
                 @T["Last reading"]:
                 @if (dataStruct.data.monthEndTotal is not null)
-                  @(FloatString(dataStruct.data.monthEndTotal / 1000, 0)) kWh
+                  @(NumericString(dataStruct.data.monthEndTotal / 1000, 0)) kWh
               </MudContainer>
               <MudContainer Style="font-size: large; font-weight:bold;">
                 @T["Total consumption"]:
                 @if (dataStruct.data.monthStartTotal is not null && dataStruct.data.monthEndTotal is not null)
-                  @(FloatString((dataStruct.data.monthEndTotal - dataStruct.data.monthStartTotal) / 1000, 0)) kWh
+                  @(NumericString((dataStruct.data.monthEndTotal - dataStruct.data.monthStartTotal) / 1000, 0)) kWh
               </MudContainer>
               <MudContainer Style="font-weight:bold;">
                 @T["Max power"]:
-                @(FloatString(dataStruct.data.maxPower / 1000, 0) + " kW")
+                @(NumericString(dataStruct.data.maxPower / 1000, 0) + " kW")
               </MudContainer>
             </MudStack>
           </MudCollapse>
@@ -96,7 +96,7 @@
           Title='@T["First reading"]'>
           <CellTemplate>
             @if (context.Item.monthStartTotal is not null)
-              @(FloatString(context.Item.monthStartTotal / 1000, 0) + " kWh")
+              @(NumericString(context.Item.monthStartTotal / 1000, 0) + " kWh")
           </CellTemplate>
         </PropertyColumn>
         <PropertyColumn
@@ -105,7 +105,7 @@
           Title='@T["Last reading"]'>
           <CellTemplate>
             @if (context.Item.monthEndTotal is not null)
-              @(FloatString(context.Item.monthEndTotal / 1000, 0) + " kWh")
+              @(NumericString(context.Item.monthEndTotal / 1000, 0) + " kWh")
           </CellTemplate>
         </PropertyColumn>
         <PropertyColumn
@@ -114,7 +114,7 @@
           Title='@T["Total consumption"]'>
           <CellTemplate>
             @if (context.Item.monthStartTotal is not null && context.Item.monthEndTotal is not null)
-              @(FloatString((context.Item.monthEndTotal - context.Item.monthStartTotal) / 1000, 0) + " kWh")
+              @(NumericString((context.Item.monthEndTotal - context.Item.monthStartTotal) / 1000, 0) + " kWh")
           </CellTemplate>
         </PropertyColumn>
         <PropertyColumn
@@ -122,7 +122,7 @@
           Property="x => x.maxPower"
           Title='@T["Max power"]'>
           <CellTemplate>
-            @(FloatString(context.Item.maxPower / 1000, 0) + " kW")
+            @(NumericString(context.Item.maxPower / 1000, 0) + " kW")
           </CellTemplate>
         </PropertyColumn>
       </Columns>
@@ -150,9 +150,9 @@
   private string? _searchString;
   private List<TabularData> _dataStruct = new();
 
-  public record ChartData(float? L1, float? L2, float? L3, DateTimeOffset date);
+  public record ChartData(decimal? L1, decimal? L2, decimal? L3, DateTimeOffset date);
 
-  public record struct TabularData(string year, string month, float? monthStartTotal, float? monthEndTotal, float maxPower);
+  public record struct TabularData(string year, string month, decimal? monthStartTotal, decimal? monthEndTotal, decimal maxPower);
 
   private DateTimeOffset startOfThisYear = DateTimeOffset.UtcNow.GetStartOfYear();
   private DateTimeOffset startOfThisYearNoTransformation = DateTimeOffset.UtcNow.GetStartOfYearNoTransformation();

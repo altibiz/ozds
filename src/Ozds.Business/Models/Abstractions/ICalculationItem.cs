@@ -8,5 +8,7 @@ public interface ICalculationItem
 
   public ExpenditureMeasure<decimal> Price { get; }
 
+  public decimal Total { get; }
+
   public string Kind { get; }
 }

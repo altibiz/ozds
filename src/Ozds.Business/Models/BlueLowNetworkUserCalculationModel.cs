@@ -11,11 +11,13 @@ public class BlueLowNetworkUserCalculationModel
 {
   [Required]
   public required UsageActiveEnergyTotalImportT0CalculationItemModel
-    UsageActiveEnergyTotalImportT0 { get; set; } = default!;
+    UsageActiveEnergyTotalImportT0
+  { get; set; } = default!;
 
   [Required]
   public required UsageReactiveEnergyTotalRampedT0CalculationItemModel
-    UsageReactiveEnergyTotalRampedT0 { get; set; } = default!;
+    UsageReactiveEnergyTotalRampedT0
+  { get; set; } = default!;
 
   public override string Kind
   {
@@ -99,17 +101,17 @@ public class BlueLowNetworkUserCalculationModel
         new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
             new SinglePhasicMeasure<decimal>(
-              UsageReactiveEnergyTotalRampedT0.ImportMin_VARh),
+              UsageReactiveEnergyTotalRampedT0.ReactiveImportMin_VARh),
             new SinglePhasicMeasure<decimal>(
-              UsageReactiveEnergyTotalRampedT0.ImportMax_VARh)
+              UsageReactiveEnergyTotalRampedT0.ReactiveImportMax_VARh)
           )
         ),
         new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
             new SinglePhasicMeasure<decimal>(
-              UsageReactiveEnergyTotalRampedT0.ImportMax_VARh),
+              UsageReactiveEnergyTotalRampedT0.ReactiveImportMax_VARh),
             new SinglePhasicMeasure<decimal>(
-              UsageReactiveEnergyTotalRampedT0.ExportMax_VARh)
+              UsageReactiveEnergyTotalRampedT0.ReactiveExportMax_VARh)
           )
         )
       );

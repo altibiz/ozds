@@ -4,6 +4,8 @@ using Ozds.Business.Models.Base;
 
 namespace Ozds.Business.Models.Complex;
 
+// TODO: shortcodes to english
+
 public abstract class
   ActiveEnergyTotalImportCalculationItemModel : CalculationItemModel
 {
@@ -21,6 +23,8 @@ public abstract class
 
   [Required]
   public required decimal Total_EUR { get; set; }
+
+  public override decimal Total => Total_EUR;
 }
 
 public abstract class ActiveEnergyTotalImportT0CalculationItemModel

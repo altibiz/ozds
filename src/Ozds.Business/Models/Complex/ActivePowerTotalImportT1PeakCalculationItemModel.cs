@@ -34,6 +34,8 @@ public abstract class
       );
     }
   }
+
+  public override decimal Total => Total_EUR;
 }
 
 public class UsageActivePowerTotalImportT1PeakCalculationItemModel

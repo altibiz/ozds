@@ -11,5 +11,7 @@ public abstract class CalculationItemModel : ICalculationItem
 
   public abstract ExpenditureMeasure<decimal> Price { get; }
 
+  public abstract decimal Total { get; }
+
   public abstract string Kind { get; }
 }

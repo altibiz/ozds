@@ -8,28 +8,28 @@ public class
   AbbB2xMeasurementModel>
 {
   [Required]
-  public required float MinVoltage_V { get; set; }
+  public required decimal MinVoltage_V { get; set; }
 
   [Required]
-  public required float MaxVoltage_V { get; set; }
+  public required decimal MaxVoltage_V { get; set; }
 
   [Required]
-  public required float MinCurrent_A { get; set; }
+  public required decimal MinCurrent_A { get; set; }
 
   [Required]
-  public required float MaxCurrent_A { get; set; }
+  public required decimal MaxCurrent_A { get; set; }
 
   [Required]
-  public required float MinActivePower_W { get; set; }
+  public required decimal MinActivePower_W { get; set; }
 
   [Required]
-  public required float MaxActivePower_W { get; set; }
+  public required decimal MaxActivePower_W { get; set; }
 
   [Required]
-  public required float MinReactivePower_VAR { get; set; }
+  public required decimal MinReactivePower_VAR { get; set; }
 
   [Required]
-  public required float MaxReactivePower_VAR { get; set; }
+  public required decimal MaxReactivePower_VAR { get; set; }
 
   public static AbbB2xMeasurementValidatorModel New()
   {
@@ -151,9 +151,7 @@ public class
     )
     {
       yield return new ValidationResult(
-        $"ReactivePower must be greater than or equal to {
-          MinReactivePower_VAR
-        }.",
+        $"ReactivePower must be greater than or equal to {MinReactivePower_VAR}.",
         new[] { nameof(AbbB2xAggregateModel.ReactivePower_VAR) }
       );
     }

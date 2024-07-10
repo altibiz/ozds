@@ -9,7 +9,8 @@ public class AgnosticNetworkUserCalculationCalculator(
 {
   private readonly IServiceProvider _serviceProvider = serviceProvider;
 
-  public INetworkUserCalculation Calculate(
+  // NOTE: virtual to allow mocking
+  public virtual INetworkUserCalculation Calculate(
     NetworkUserCalculationBasisModel basis)
   {
     return _serviceProvider

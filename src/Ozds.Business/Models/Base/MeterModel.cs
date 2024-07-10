@@ -8,7 +8,7 @@ namespace Ozds.Business.Models.Base;
 public class MeterModel : AuditableModel, IMeter
 {
   [Required]
-  public required float ConnectionPower_W { get; set; }
+  public required decimal ConnectionPower_W { get; set; }
 
   [Required]
   public required HashSet<PhaseModel> Phases { get; set; } = [];

@@ -42,12 +42,15 @@ public static class
   {
     return new UsageReactiveEnergyTotalRampedT0CalculationItemEntity
     {
-      ImportMin_VARh = model.ImportMin_VARh,
-      ImportMax_VARh = model.ImportMax_VARh,
-      ImportAmount_VARh = model.ImportAmount_VARh,
-      ExportMin_VARh = model.ExportMin_VARh,
-      ExportMax_VARh = model.ExportMax_VARh,
-      ExportAmount_VARh = model.ExportAmount_VARh,
+      ReactiveImportMin_VARh = model.ReactiveImportMin_VARh,
+      ReactiveImportMax_VARh = model.ReactiveImportMax_VARh,
+      ReactiveImportAmount_VARh = model.ReactiveImportAmount_VARh,
+      ReactiveExportMin_VARh = model.ReactiveExportMin_VARh,
+      ReactiveExportMax_VARh = model.ReactiveExportMax_VARh,
+      ReactiveExportAmount_VARh = model.ReactiveExportAmount_VARh,
+      ActiveImportMin_Wh = model.ActiveImportMin_Wh,
+      ActiveImportMax_Wh = model.ActiveImportMax_Wh,
+      ActiveImportAmount_Wh = model.ActiveImportAmount_Wh,
       Amount_VARh = model.Amount_VARh,
       Price_EUR = model.Price_EUR,
       Total_EUR = model.Total_EUR
@@ -59,12 +62,15 @@ public static class
   {
     return new UsageReactiveEnergyTotalRampedT0CalculationItemModel
     {
-      ImportMin_VARh = entity.ImportMin_VARh,
-      ImportMax_VARh = entity.ImportMax_VARh,
-      ImportAmount_VARh = entity.ImportAmount_VARh,
-      ExportMin_VARh = entity.ExportMin_VARh,
-      ExportMax_VARh = entity.ExportMax_VARh,
-      ExportAmount_VARh = entity.ExportAmount_VARh,
+      ReactiveImportMin_VARh = entity.ReactiveImportMin_VARh,
+      ReactiveImportMax_VARh = entity.ReactiveImportMax_VARh,
+      ReactiveImportAmount_VARh = entity.ReactiveImportAmount_VARh,
+      ReactiveExportMin_VARh = entity.ReactiveExportMin_VARh,
+      ReactiveExportMax_VARh = entity.ReactiveExportMax_VARh,
+      ReactiveExportAmount_VARh = entity.ReactiveExportAmount_VARh,
+      ActiveImportMin_Wh = entity.ActiveImportMin_Wh,
+      ActiveImportMax_Wh = entity.ActiveImportMax_Wh,
+      ActiveImportAmount_Wh = entity.ActiveImportAmount_Wh,
       Amount_VARh = entity.Amount_VARh,
       Price_EUR = entity.Price_EUR,
       Total_EUR = entity.Total_EUR

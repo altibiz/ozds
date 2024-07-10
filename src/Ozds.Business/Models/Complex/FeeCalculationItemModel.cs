@@ -28,6 +28,8 @@ public abstract class FeeCalculationItemModel : CalculationItemModel
       );
     }
   }
+
+  public override decimal Total => Total_EUR;
 }
 
 public class UsageMeterFeeCalculationItemModel : FeeCalculationItemModel

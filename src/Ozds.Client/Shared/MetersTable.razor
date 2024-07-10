@@ -22,15 +22,15 @@
           </MudItem>
           <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
             @T["Current months consumption"]: <br>
-            @FloatString(dataStruct.data.thisMonthUsage / 1000, 0) kWh
+            @NumericString(dataStruct.data.thisMonthUsage / 1000, 0) kWh
           </MudItem>
           <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
             @T["Last months consumption"]: <br>
-            @FloatString(dataStruct.data.lastMonthUsage / 1000, 0) kWh
+            @NumericString(dataStruct.data.lastMonthUsage / 1000, 0) kWh
           </MudItem>
           <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
             @T["Last months invoice total"]: <br>
-            @(dataStruct.data.lastMonthsPayment == 0 ? T["Invoice pending..."] : DecimalString(dataStruct.data.lastMonthsPayment) + " EUR")
+            @(dataStruct.data.lastMonthsPayment == 0 ? T["Invoice pending..."] : NumericString(dataStruct.data.lastMonthsPayment) + " EUR")
           </MudItem>
           <MudItem xs="2" Class="d-flex align-center justify-end">
             <MudIconButton OnClick="() => OnExpandCollapseClick(dataStruct.data.meter.Id)" Icon="@(dataStruct.expand ? Icons.Material.Filled.KeyboardArrowUp : Icons.Material.Filled.KeyboardArrowDown)" Color="Color.Default"/>
@@ -113,7 +113,7 @@
         Property="x => x.thisMonthUsage"
         Title='@T["Current months consumption"]'>
         <CellTemplate>
-          @(FloatString(context.Item.thisMonthUsage / 1000, 0) + " kWh")
+          @(NumericString(context.Item.thisMonthUsage / 1000, 0) + " kWh")
         </CellTemplate>
       </PropertyColumn>
       <PropertyColumn
@@ -121,7 +121,7 @@
         Property="x => x.lastMonthUsage"
         Title='@T["Last months consumption"]'>
         <CellTemplate>
-          @(FloatString(context.Item.lastMonthUsage / 1000, 0) + " kWh")
+          @(NumericString(context.Item.lastMonthUsage / 1000, 0) + " kWh")
         </CellTemplate>
       </PropertyColumn>
       <PropertyColumn
@@ -129,7 +129,7 @@
         Property="x => x.lastMonthsPayment"
         Title='@T["Last months invoice total"]'>
         <CellTemplate>
-          @(context.Item.lastMonthsPayment == 0 ? T["Invoice pending..."] : DecimalString(context.Item.lastMonthsPayment) + " EUR")
+          @(context.Item.lastMonthsPayment == 0 ? T["Invoice pending..."] : NumericString(context.Item.lastMonthsPayment) + " EUR")
         </CellTemplate>
       </PropertyColumn>
     </Columns>
@@ -154,7 +154,7 @@
   private List<TabularData> _dataStruct = new();
   private IEnumerable<INetworkUserCalculation>? _calculations;
 
-  public record struct TabularData(LocationModel location, NetworkUserModel networkUser, IMeter meter, float thisMonthUsage = 0, float lastMonthUsage = 0, decimal lastMonthsPayment = 0m);
+  public record struct TabularData(LocationModel location, NetworkUserModel networkUser, IMeter meter, decimal thisMonthUsage = 0, decimal lastMonthUsage = 0, decimal lastMonthsPayment = 0m);
 
   @* MOBILE *@
   public string TextValue { get; set; } = "";
@@ -194,8 +194,8 @@
         .Select(x => x.Select(y => y.Total_EUR))
         .FirstOrDefault();
 
-      float _thisMonthUsage = 0;
-      float _lastMonthUsage = 0;
+      decimal _thisMonthUsage = 0;
+      decimal _lastMonthUsage = 0;
       decimal _lastMonthTotal = 0;
       if (_thisMonthAggregate is not null)
         _thisMonthUsage = _thisMonthAggregate.ActiveEnergySpan_Wh.SpanDiff().TariffUnary().DuplexImport().PhaseSum();

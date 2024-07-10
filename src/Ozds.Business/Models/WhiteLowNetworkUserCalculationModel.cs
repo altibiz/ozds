@@ -10,16 +10,19 @@ public class WhiteLowNetworkUserCalculationModel
   : NetworkUserCalculationModel<WhiteLowNetworkUserCatalogueModel>
 {
   [Required]
-  public required ActiveEnergyTotalImportT1CalculationItemModel
-    UsageActiveEnergyTotalImportT1 { get; set; } = default!;
+  public required UsageActiveEnergyTotalImportT1CalculationItemModel
+    UsageActiveEnergyTotalImportT1
+  { get; set; } = default!;
 
   [Required]
-  public required ActiveEnergyTotalImportT2CalculationItemModel
-    UsageActiveEnergyTotalImportT2 { get; set; } = default!;
+  public required UsageActiveEnergyTotalImportT2CalculationItemModel
+    UsageActiveEnergyTotalImportT2
+  { get; set; } = default!;
 
   [Required]
-  public required ReactiveEnergyTotalRampedT0CalculationItemModel
-    UsageReactiveEnergyTotalRampedT0 { get; set; } = default!;
+  public required UsageReactiveEnergyTotalRampedT0CalculationItemModel
+    UsageReactiveEnergyTotalRampedT0
+  { get; set; } = default!;
 
   public override string Kind
   {
@@ -121,17 +124,17 @@ public class WhiteLowNetworkUserCalculationModel
         new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
             new SinglePhasicMeasure<decimal>(
-              UsageReactiveEnergyTotalRampedT0.ImportMin_VARh),
+              UsageReactiveEnergyTotalRampedT0.ReactiveImportMin_VARh),
             new SinglePhasicMeasure<decimal>(
-              UsageReactiveEnergyTotalRampedT0.ExportMin_VARh)
+              UsageReactiveEnergyTotalRampedT0.ReactiveExportMin_VARh)
           )
         ),
         new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
             new SinglePhasicMeasure<decimal>(
-              UsageReactiveEnergyTotalRampedT0.ImportMax_VARh),
+              UsageReactiveEnergyTotalRampedT0.ReactiveImportMax_VARh),
             new SinglePhasicMeasure<decimal>(
-              UsageReactiveEnergyTotalRampedT0.ExportMax_VARh)
+              UsageReactiveEnergyTotalRampedT0.ReactiveExportMax_VARh)
           )
         )
       );

@@ -28,7 +28,7 @@
               @T["To"]: @(DateString(dataStruct.invoice.ToDate))
             </MudItem>
             <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large; font-weight:bold;">
-              @T["Total"]:@(DecimalString(dataStruct.invoice.TotalWithTax_EUR)) EUR
+              @T["Total"]:@(NumericString(dataStruct.invoice.TotalWithTax_EUR)) EUR
             </MudItem>
             <MudItem xs="2" Class="d-flex align-center justify-end">
               <MudIconButton OnClick="() => OnExpandCollapseClick(dataStruct.invoice.Id)" Icon="@(dataStruct.expand ? Icons.Material.Filled.KeyboardArrowUp : Icons.Material.Filled.KeyboardArrowDown)" Color="Color.Default"/>
@@ -81,7 +81,7 @@
           Property="x => x.TotalWithTax_EUR"
           Title='@T["Total"]'>
           <CellTemplate>
-            @(DecimalString(context.Item.TotalWithTax_EUR) + " EUR")
+            @(NumericString(context.Item.TotalWithTax_EUR) + " EUR")
           </CellTemplate>
         </PropertyColumn>
         <PropertyColumn

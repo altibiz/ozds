@@ -165,12 +165,12 @@
 
   public int timeSpanMins = 15;
   public int lineCount = 0;
-  private float connectionMaxPower = 1000000f;
+  private decimal connectionMaxPower = 1000000M;
   public List<ChartData> _graphValues = new();
   private string _dataTitle = "";
   private string _timeTitle = "15 min";
 
-  public record ChartData(float[] values, string[] names, DateTimeOffset date, string source);
+  public record ChartData(decimal[] values, string[] names, DateTimeOffset date, string source);
 
   private ApexChart<ChartData> chart = default!;
 
@@ -408,7 +408,7 @@
         graphOptions.Yaxis.Add(
           new YAxis
           {
-            Max = graphMaxPower * 1.5,
+            Max = graphMaxPower * 1.5M,
             Labels = new YAxisLabels
             {
               Formatter = "function(val, index) { return (val ?? 0).toFixed(0); }"
@@ -423,7 +423,7 @@
         graphOptionsMob.Yaxis.Add(
           new YAxis
           {
-            Max = graphMaxPower * 1.5,
+            Max = graphMaxPower * 1.5M,
             Labels = new YAxisLabels
             {
               Formatter = "function(val, index) { return (val ?? 0).toFixed(0); }"

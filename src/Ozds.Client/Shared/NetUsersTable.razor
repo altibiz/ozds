@@ -28,13 +28,13 @@
             <MudIconButton OnClick="() => InspectNetworkUser(dataStruct.data.networkUser)" Icon="@Icons.Material.Filled.RemoveRedEye" Color="Color.Primary"/>
           </MudItem>
           <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large;">
-            @T["Current months consumption"]: @(FloatString(dataStruct.data.thisMonthUsage / 1000, 0) + " kWh")
+            @T["Current months consumption"]: @(NumericString(dataStruct.data.thisMonthUsage / 1000, 0) + " kWh")
           </MudItem>
           <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large;">
-            @T["Last months consumption"]: @(FloatString(dataStruct.data.lastMonthUsage / 1000, 0) + " kWh")
+            @T["Last months consumption"]: @(NumericString(dataStruct.data.lastMonthUsage / 1000, 0) + " kWh")
           </MudItem>
           <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large;">
-            @T["Last months invoice total"]: @(dataStruct.data.lastMonthsPayment == 0 ? T["Invoice pending..."] : DecimalString(dataStruct.data.lastMonthsPayment) + " EUR")
+            @T["Last months invoice total"]: @(dataStruct.data.lastMonthsPayment == 0 ? T["Invoice pending..."] : NumericString(dataStruct.data.lastMonthsPayment) + " EUR")
           </MudItem>
           @if (representative is not null && representative.Representative.Role is RoleModel.OperatorRepresentative)
           {
@@ -99,7 +99,7 @@
         Property="x => x.thisMonthUsage"
         Title='@T["Current months consumption"]'>
         <CellTemplate>
-          @(FloatString(context.Item.thisMonthUsage / 1000, 0) + " kWh")
+          @(NumericString(context.Item.thisMonthUsage / 1000, 0) + " kWh")
         </CellTemplate>
       </PropertyColumn>
       <PropertyColumn
@@ -107,7 +107,7 @@
         Property="x => x.lastMonthUsage"
         Title='@T["Last months consumption"]'>
         <CellTemplate>
-          @(FloatString(context.Item.lastMonthUsage / 1000, 0) + " kWh")
+          @(NumericString(context.Item.lastMonthUsage / 1000, 0) + " kWh")
         </CellTemplate>
       </PropertyColumn>
       <PropertyColumn
@@ -115,7 +115,7 @@
         Property="x => x.lastMonthsPayment"
         Title='@T["Last months invoice total"]'>
         <CellTemplate>
-          @(context.Item.lastMonthsPayment == 0 ? T["Invoice pending..."] : DecimalString(context.Item.lastMonthsPayment) + " EUR")
+          @(context.Item.lastMonthsPayment == 0 ? T["Invoice pending..."] : NumericString(context.Item.lastMonthsPayment) + " EUR")
         </CellTemplate>
       </PropertyColumn>
 
@@ -151,7 +151,7 @@
   private string? _searchString;
   private List<NetworkUserInvoiceModel>? _invoices = new();
 
-  public record struct TabularData(LocationModel location, NetworkUserModel networkUser, float thisMonthUsage, float lastMonthUsage, decimal lastMonthsPayment);
+  public record struct TabularData(LocationModel location, NetworkUserModel networkUser, decimal thisMonthUsage, decimal lastMonthUsage, decimal lastMonthsPayment);
 
   private List<TabularData> _dataStruct = new();
   private DateTimeOffset startOfThisMonth = DateTimeOffset.UtcNow.GetStartOfMonth();
@@ -187,8 +187,8 @@
         .Where(x => x is not null)
         .Select(x => x.Select(y => y.TotalWithTax_EUR))
         .FirstOrDefault();
-      float _thisMonthUsage = 0;
-      float _lastMonthUsage = 0;
+      decimal _thisMonthUsage = 0;
+      decimal _lastMonthUsage = 0;
       decimal _lastMonthsPayment = 0;
       if (_thisMonthAggregate is not null && _thisMonthAggregate.Count > 0)
       {
@@ -198,7 +198,7 @@
           .Sum();
         if (agg is null)
           agg = 0;
-        _thisMonthUsage = (float)agg;
+        _thisMonthUsage = (decimal)agg;
       }
 
       if (_lastMonthAggregate is not null && _lastMonthAggregate.Count > 0)
@@ -209,7 +209,7 @@
           .Sum();
         if (agg is null)
           agg = 0;
-        _lastMonthUsage = (float)agg;
+        _lastMonthUsage = (decimal)agg;
       }
 
       if (_lastMonthInvoiceTotals is not null && _lastMonthInvoiceTotals.Count() > 0)

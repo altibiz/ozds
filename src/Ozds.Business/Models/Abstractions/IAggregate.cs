@@ -9,9 +9,9 @@ public interface IAggregate : IMeasurement
 
   public long Count { get; }
 
-  public SpanningMeasure<float> ActiveEnergySpan_Wh { get; }
+  public SpanningMeasure<decimal> ActiveEnergySpan_Wh { get; }
 
-  public SpanningMeasure<float> ReactiveEnergySpan_VARh { get; }
+  public SpanningMeasure<decimal> ReactiveEnergySpan_VARh { get; }
 
-  public SpanningMeasure<float> ApparentEnergySpan_VAh { get; }
+  public SpanningMeasure<decimal> ApparentEnergySpan_VAh { get; }
 }

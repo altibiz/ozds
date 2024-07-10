@@ -24,31 +24,19 @@ public abstract class
       CopyRecord(
         measurementRecord as TMeasurementRecord
         ?? throw new ArgumentException(
-          $"Expected {
-            typeof(TMeasurementRecord).Name
-          }, but got {
-            measurementRecord.GetType().Name
-          }",
+          $"Expected {typeof(TMeasurementRecord).Name}, but got {measurementRecord.GetType().Name}",
           nameof(measurementRecord)
         )),
       firstMeasurementRecord
         as TMeasurementRecord
       ?? throw new ArgumentException(
-        $"Expected {
-          typeof(TMeasurementRecord).Name
-        }, but got {
-          firstMeasurementRecord.GetType().Name
-        }",
+        $"Expected {typeof(TMeasurementRecord).Name}, but got {firstMeasurementRecord.GetType().Name}",
         nameof(firstMeasurementRecord)
       ),
       lastMeasurementRecord
         as TMeasurementRecord
       ?? throw new ArgumentException(
-        $"Expected {
-          typeof(TMeasurementRecord).Name
-        }, but got {
-          lastMeasurementRecord.GetType().Name
-        }",
+        $"Expected {typeof(TMeasurementRecord).Name}, but got {lastMeasurementRecord.GetType().Name}",
         nameof(lastMeasurementRecord)
       )
     );
@@ -63,7 +51,7 @@ public abstract class
 
   protected abstract TMeasurementRecord CopyRecord(TMeasurementRecord record);
 
-  protected float DiffMultiplier(
+  protected decimal DiffMultiplier(
     DateTimeOffset timestamp,
     DateTimeOffset firstTimestamp,
     DateTimeOffset lastTimestamp

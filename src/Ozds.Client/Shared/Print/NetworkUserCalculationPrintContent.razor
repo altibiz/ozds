@@ -107,7 +107,7 @@
     </td>
     <td style="text-align: right;">
       <strong>
-        @DecimalString(Calculation.UsageFeeTotal_EUR, 2) EUR
+        @NumericString(Calculation.UsageFeeTotal_EUR, 2) EUR
       </strong>
     </td>
   </tr>
@@ -172,7 +172,7 @@
     </td>
     <td style="text-align: right;">
       <strong>
-        @DecimalString(Calculation.SupplyFeeTotal_EUR, 2) EUR
+        @NumericString(Calculation.SupplyFeeTotal_EUR, 2) EUR
       </strong>
     </td>
   </tr>
@@ -215,7 +215,7 @@
                 @T["IND"]:
               </strong>
               <span>
-                @DecimalString(reactiveItem.ImportMin_VARh / 1000M, 2)
+                @NumericString(reactiveItem.ReactiveImportMin_VARh / 1000M, 2)
               </span>
             </p>
             <p class="capacitative-label">
@@ -223,7 +223,7 @@
                 @T["KAP"]:
               </strong>
               <span>
-                @DecimalString(reactiveItem.ExportMin_VARh / 1000M, 2)
+                @NumericString(reactiveItem.ReactiveExportMin_VARh / 1000M, 2)
               </span>
             </p>
           </td>
@@ -233,7 +233,7 @@
                 @T["IND"]:
               </strong>
               <span>
-                @DecimalString(reactiveItem.ImportMax_VARh / 1000M, 2)
+                @NumericString(reactiveItem.ReactiveImportMax_VARh / 1000M, 2)
               </span>
             </p>
             <p class="capacitative-label">
@@ -241,19 +241,19 @@
                 @T["KAP"]:
               </strong>
               <span>
-                @DecimalString(reactiveItem.ExportMax_VARh / 1000M, 2)
+                @NumericString(reactiveItem.ReactiveExportMax_VARh / 1000M, 2)
               </span>
             </p>
           </td>
           <td style="text-align: center;">O</td>
           <td style="text-align: right;">
-            @DecimalString(reactiveItem.Amount_VARh / 1000M, 0)
+            @NumericString(reactiveItem.Amount_VARh / 1000M, 0)
           </td>
           <td style="text-align: right;">
-            @DecimalString(reactiveItem.Price_EUR * 1000M, 6)
+            @NumericString(reactiveItem.Price_EUR * 1000M, 6)
           </td>
           <td style="text-align: right;">
-            @DecimalString(reactiveItem.Total_EUR, 2)
+            @NumericString(reactiveItem.Total_EUR, 2)
           </td>
         </Fragment>
       : item is ActiveEnergyTotalImportCalculationItemModel energyItem
@@ -262,20 +262,20 @@
               <strong>@energyItem.Kind</strong>
             </td>
             <td style="text-align: right;">
-              @DecimalString(energyItem.Min_Wh / 1000M, 2)
+              @NumericString(energyItem.Min_Wh / 1000M, 2)
             </td>
             <td style="text-align: right;">
-              @DecimalString(energyItem.Max_Wh / 1000M, 2)
+              @NumericString(energyItem.Max_Wh / 1000M, 2)
             </td>
             <td style="text-align: center;">O</td>
             <td style="text-align: right;">
-              @DecimalString(energyItem.Amount_Wh / 1000M, 0)
+              @NumericString(energyItem.Amount_Wh / 1000M, 0)
             </td>
             <td style="text-align: right;">
-              @DecimalString(energyItem.Price_EUR * 1000M, 6)
+              @NumericString(energyItem.Price_EUR * 1000M, 6)
             </td>
             <td style="text-align: right;">
-              @DecimalString(energyItem.Total_EUR, 2)
+              @NumericString(energyItem.Total_EUR, 2)
             </td>
           </Fragment>
         : item is ActivePowerTotalImportT1PeakCalculationItemModel powerItem
@@ -287,13 +287,13 @@
               <td style="text-align: right;"></td>
               <td style="text-align: center;">O</td>
               <td style="text-align: right;">
-                @DecimalString(powerItem.Amount_W / 1000M, 0)
+                @NumericString(powerItem.Amount_W / 1000M, 0)
               </td>
               <td style="text-align: right;">
-                @DecimalString(powerItem.Price_EUR * 1000M, 3)
+                @NumericString(powerItem.Price_EUR * 1000M, 3)
               </td>
               <td style="text-align: right;">
-                @DecimalString(powerItem.Total_EUR, 2)
+                @NumericString(powerItem.Total_EUR, 2)
               </td>
             </Fragment>
           : item is FeeCalculationItemModel feeItem
@@ -302,13 +302,13 @@
                   <strong>@feeItem.Kind</strong>
                 </td>
                 <td style="text-align: right;">
-                  @DecimalString(feeItem.Amount_N, 0)
+                  @NumericString(feeItem.Amount_N, 0)
                 </td>
                 <td style="text-align: right;">
-                  @DecimalString(feeItem.Price_EUR, 3)
+                  @NumericString(feeItem.Price_EUR, 3)
                 </td>
                 <td style="text-align: right;">
-                  @DecimalString(feeItem.Total_EUR, 2)
+                  @NumericString(feeItem.Total_EUR, 2)
                 </td>
               </Fragment>
             : throw new InvalidOperationException(
