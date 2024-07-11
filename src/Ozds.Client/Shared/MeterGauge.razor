@@ -90,7 +90,7 @@
   @* TIME STUFF *@
   private bool timerInitialized;
   private Timer timer = new();
-  private int updateMillisecond = 10000;
+  private int updateMillisecond = 20000;
   private DateTimeOffset now = DateTimeOffset.UtcNow.LocalDateTime;
 
   protected override async Task OnInitializedAsync()
@@ -146,32 +146,46 @@
   @* TIME STUFF *@
 
   protected override void OnAfterRender(bool firstRender)
-  {
+{
     if (firstRender && !timerInitialized)
     {
-      timerInitialized = true;
-      timer = new Timer(updateMillisecond);
-      timer.Elapsed += async delegate { await UpdateChartSeries(); };
-      timer.Enabled = true;
+        timerInitialized = true;
+        timer = new Timer(updateMillisecond);
+        timer.Elapsed += async delegate { await UpdateChartSeries(); };
+        timer.Enabled = true;
     }
-  }
+}
 
-  private async Task UpdateChartSeries()
-  {
-    await GetValue();
-    gaugeValue = new List<GaugeData> { new(thisMonthCurrentPower, connectionMaxPower) };
-    if (gauge is null)
+private async Task UpdateChartSeries()
+{
+    try
     {
-      return;
-    }
+        await GetValue();
+        gaugeValue = new List<GaugeData> { new(thisMonthCurrentPower, connectionMaxPower) };
+        if (gauge is null)
+        {
+            return;
+        }
 
-    await InvokeAsync(() => StateHasChanged());
-    await gauge.UpdateOptionsAsync(false, true, false);
-  }
+        await InvokeAsync(() => StateHasChanged());
+        await gauge.UpdateOptionsAsync(false, true, false);
+    }
+    catch (TaskCanceledException ex)
+    {
+        Console.WriteLine("Task was canceled: " + ex.Message);
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine("An error occurred: " + ex.Message);
+        throw; // Optionally rethrow or handle the exception as needed
+    }
+}
+
 
   void IDisposable.Dispose()
   {
     timer?.Dispose();
+    gauge?.Dispose();
   }
 
 }

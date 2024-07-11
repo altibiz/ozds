@@ -177,7 +177,7 @@
   @* TIME STUFF *@
   private bool timerInitialized;
   private Timer timer = new();
-  private int updateMillisecond = 10000;
+  private int updateMillisecond = 20000;
   private DateTimeOffset now = DateTimeOffset.UtcNow.LocalDateTime;
 
   private enum DataEnum
@@ -593,22 +593,42 @@
   }
 
   private async Task UpdateChartSeries()
-  {
-    if (_graphValues is not null)
+{
+    if (_graphValues == null)
     {
-      var lastGraphValues = _graphValues.OrderByDescending(x => x.date).FirstOrDefault();
-      if (chart is null)
-      {
+        Console.WriteLine("Graph values are null.");
         return;
-      }
+    }
 
-      if (lastGraphValues is not null)
-      {
+    var lastGraphValues = _graphValues.OrderByDescending(x => x.date).FirstOrDefault();
+
+    if (lastGraphValues == null)
+    {
+        Console.WriteLine("Last graph values are null.");
+        return;
+    }
+
+    if (chart == null)
+    {
+        Console.WriteLine("Chart is null.");
+        return;
+    }
+
+    try
+    {
         await GetValues(lastGraphValues.date, DateTimeOffset.UtcNow.LocalDateTime, false);
         await chart.AppendDataAsync(_graphValues);
-      }
     }
-  }
+    catch (TaskCanceledException ex)
+    {
+        Console.WriteLine("Task was canceled: " + ex.Message);
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Exception during chart update: {ex.Message}");
+        throw;
+    }
+}
 
   public class ChartDataComparer : IEqualityComparer<ChartData>
   {
