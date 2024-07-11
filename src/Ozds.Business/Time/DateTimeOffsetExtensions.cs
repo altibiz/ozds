@@ -4,16 +4,7 @@ public static class DateTimeOffsetExtensions
 {
   // NOTE: Croatian UTC offset (https://en.wikipedia.org/wiki/List_of_UTC_offsets)
 
-  public static TimeSpan DefaultOffset
-  {
-    get
-    {
-      return TimeZoneInfo
-        .FindSystemTimeZoneById("Europe/Zagreb").GetUtcOffset(DateTime.UtcNow);
-    }
-  }
-
-  private static TimeSpan GetOffset(DateTimeOffset forDate)
+  public static TimeSpan GetOffset(DateTimeOffset forDate)
   {
     return TimeZoneInfo.FindSystemTimeZoneById("Europe/Zagreb")
       .GetUtcOffset(forDate);
