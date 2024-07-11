@@ -7,9 +7,10 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Queries;
 
-public class OzdsAbbB2xMeterModelQueries(OzdsDbContext context) : IOzdsQueries
+public class OzdsAbbB2xMeterModelQueries(OzdsDataDbContext context)
+  : IOzdsQueries
 {
-  private readonly OzdsDbContext context = context;
+  private readonly OzdsDataDbContext context = context;
 
   public async Task<AbbB2xMeterModel?>
     AbbB2xMeterById(string id)

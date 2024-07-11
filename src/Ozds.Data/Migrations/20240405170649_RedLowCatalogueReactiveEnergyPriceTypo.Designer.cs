@@ -11,7 +11,7 @@ using Ozds.Data;
 
 namespace Ozds.Data.Migrations
 {
-    [DbContext(typeof(OzdsDbContext))]
+    [DbContext(typeof(OzdsDataDbContext))]
     [Migration("20240405170649_RedLowCatalogueReactiveEnergyPriceTypo")]
     partial class RedLowCatalogueReactiveEnergyPriceTypo
     {

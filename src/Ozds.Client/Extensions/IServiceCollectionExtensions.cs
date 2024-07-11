@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using MudBlazor.Services;
 using Ozds.Client.State;
 
@@ -8,7 +9,7 @@ public static class IServiceCollectionExtensions
 {
   public static IServiceCollection AddOzdsClient(
     this IServiceCollection services,
-    bool isDevelopment
+    IHostApplicationBuilder builder
   )
   {
     services
@@ -20,7 +21,7 @@ public static class IServiceCollectionExtensions
       .AddCircuitOptions(
         options =>
         {
-          if (isDevelopment)
+          if (builder.Environment.IsDevelopment())
           {
             options.DetailedErrors = true;
           }
@@ -28,7 +29,7 @@ public static class IServiceCollectionExtensions
       .AddHubOptions(
         options =>
         {
-          if (isDevelopment)
+          if (builder.Environment.IsDevelopment())
           {
             options.EnableDetailedErrors = true;
           }
@@ -39,7 +40,6 @@ public static class IServiceCollectionExtensions
     services.AddCascadingAuthenticationState();
     services.AddCascadingValue(_ => default(UserState));
     services.AddCascadingValue(_ => default(RepresentativeState));
-    services.AddSingleton<IOzdsComponentLocalizer, OzdsComponentLocalizer>();
 
     return services;
   }

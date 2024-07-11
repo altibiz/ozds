@@ -6,19 +6,19 @@ namespace Ozds.Business.Models;
 public class WhiteLowNetworkUserCatalogueModel : NetworkUserCatalogueModel
 {
   [Required]
-  [Range(0, double.MaxValue)]
+  [Range(0, uint.MaxValue)]
   public required decimal ActiveEnergyTotalImportT1Price_EUR { get; set; }
 
   [Required]
-  [Range(0, double.MaxValue)]
+  [Range(0, uint.MaxValue)]
   public required decimal ActiveEnergyTotalImportT2Price_EUR { get; set; }
 
   [Required]
-  [Range(0, double.MaxValue)]
+  [Range(0, uint.MaxValue)]
   public required decimal ReactiveEnergyTotalRampedT0Price_EUR { get; set; }
 
   [Required]
-  [Range(0, double.MaxValue)]
+  [Range(0, uint.MaxValue)]
   public required decimal MeterFeePrice_EUR { get; set; }
 
   public static WhiteLowNetworkUserCatalogueModel New()

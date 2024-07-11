@@ -13,7 +13,7 @@
         </MudItem>
         <MudContainer Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
           <MudText Typo="Typo.h4">
-            @(FloatString(_thisMonthTotal / 1000, 0) + " kWh")
+            @(NumericString(_thisMonthTotal / 1000, 0) + " kWh")
           </MudText>
         </MudContainer>
       </MudPaper>
@@ -28,7 +28,7 @@
         </MudItem>
         <MudContainer Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
           <MudText Typo="Typo.h4">
-            @(FloatString(_lastMonthTotal / 1000, 0) + " kWh")
+            @(NumericString(_lastMonthTotal / 1000, 0) + " kWh")
           </MudText>
         </MudContainer>
         <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
@@ -38,7 +38,7 @@
         </MudItem>
         <MudContainer Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
           <MudText Typo="Typo.h6">
-            @(lastMonthInvoicesTotal == 0 ? T["Invoice pending..."] : DecimalString(lastMonthInvoicesTotal) + " EUR")
+            @(lastMonthInvoicesTotal == 0 ? T["Invoice pending..."] : NumericString(lastMonthInvoicesTotal) + " EUR")
           </MudText>
         </MudContainer>
       </MudPaper>
@@ -69,7 +69,7 @@
         </MudItem>
         <MudContainer Class="d-flex align-end justify-center" MaxWidth="MaxWidth.Small">
           <MudText Typo="Typo.h1">
-            @(FloatString(_thisMonthTotal / 1000, 0))
+            @(NumericString(_thisMonthTotal / 1000, 0))
           </MudText>
           <MudText Typo="Typo.h4" Class="mb-3 ml-1">kWh</MudText>
         </MudContainer>
@@ -94,7 +94,7 @@
         </MudItem>
         <MudContainer Class="d-flex align-end justify-center" MaxWidth="MaxWidth.Small">
           <MudText Typo="Typo.h1">
-            @(FloatString(_lastMonthTotal / 1000, 0))
+            @(NumericString(_lastMonthTotal / 1000, 0))
           </MudText>
           <MudText Typo="Typo.h4" Class="mb-3 ml-1">kWh</MudText>
         </MudContainer>
@@ -105,7 +105,7 @@
         </MudItem>
         <MudItem Class="" Style="font-size: large; font-weight: bold; align-self: center;">
           <MudText Typo="Typo.h5">
-            @(lastMonthInvoicesTotal == 0 ? T["Invoice pending..."] : DecimalString(lastMonthInvoicesTotal) + " EUR")
+            @(lastMonthInvoicesTotal == 0 ? T["Invoice pending..."] : NumericString(lastMonthInvoicesTotal) + " EUR")
           </MudText>
         </MudItem>
       </MudPaper>
@@ -132,8 +132,8 @@
   private DateTimeOffset startOfThisMonth = DateTimeOffset.UtcNow.GetStartOfMonth();
   private DateTimeOffset startOfNextMonth = DateTimeOffset.UtcNow.GetStartOfNextMonth();
   private DateTimeOffset startOfLastMonth = DateTimeOffset.UtcNow.GetStartOfLastMonth();
-  private float _lastMonthTotal = 0;
-  private float _thisMonthTotal = 0;
+  private decimal _lastMonthTotal = 0;
+  private decimal _thisMonthTotal = 0;
   decimal lastMonthInvoicesTotal = 0m;
   private List<NetworkUserModel>? _netUsers;
   private IEnumerable<NetworkUserInvoiceModel>? _invoices;
@@ -154,8 +154,8 @@
     {
       var _thisMonthAggregate = meter.Aggregates.Where(x => x.Timestamp == startOfThisMonth).Where(x => x is not null).ToList();
       var _lastMonthAggregate = meter.Aggregates.Where(x => x.Timestamp == startOfLastMonth).Where(x => x is not null).ToList();
-      float _thisMonthUsage = 0;
-      float _lastMonthUsage = 0;
+      decimal _thisMonthUsage = 0;
+      decimal _lastMonthUsage = 0;
       if (_thisMonthAggregate is not null && _thisMonthAggregate.Count > 0)
         _thisMonthUsage = _thisMonthAggregate
           .Select(x => x.ActiveEnergySpan_Wh.SpanDiff().TariffUnary().DuplexImport().PhaseSum())

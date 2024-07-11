@@ -31,34 +31,42 @@ public static class AbbB2xAggregateModelEntityConverterExtensions
       Timestamp = model.Timestamp,
       Interval = model.Interval.ToEntity(),
       Count = model.Count,
-      VoltageL1AnyT0Avg_V = model.VoltageL1AnyT0Avg_V,
-      VoltageL2AnyT0Avg_V = model.VoltageL2AnyT0Avg_V,
-      VoltageL3AnyT0Avg_V = model.VoltageL3AnyT0Avg_V,
-      CurrentL1AnyT0Avg_A = model.CurrentL1AnyT0Avg_A,
-      CurrentL2AnyT0Avg_A = model.CurrentL2AnyT0Avg_A,
-      CurrentL3AnyT0Avg_A = model.CurrentL3AnyT0Avg_A,
-      ActivePowerL1NetT0Avg_W = model.ActivePowerL1NetT0Avg_W,
-      ActivePowerL2NetT0Avg_W = model.ActivePowerL2NetT0Avg_W,
-      ActivePowerL3NetT0Avg_W = model.ActivePowerL3NetT0Avg_W,
-      ReactivePowerL1NetT0Avg_VAR = model.ReactivePowerL1NetT0Avg_VAR,
-      ReactivePowerL2NetT0Avg_VAR = model.ReactivePowerL2NetT0Avg_VAR,
-      ReactivePowerL3NetT0Avg_VAR = model.ReactivePowerL3NetT0Avg_VAR,
-      ActiveEnergyTotalImportT0Min_Wh = model.ActiveEnergyTotalImportT0Min_Wh,
-      ActiveEnergyTotalImportT0Max_Wh = model.ActiveEnergyTotalImportT0Max_Wh,
-      ActiveEnergyTotalExportT0Min_Wh = model.ActiveEnergyTotalExportT0Min_Wh,
-      ActiveEnergyTotalExportT0Max_Wh = model.ActiveEnergyTotalExportT0Max_Wh,
+      VoltageL1AnyT0Avg_V = (float)model.VoltageL1AnyT0Avg_V,
+      VoltageL2AnyT0Avg_V = (float)model.VoltageL2AnyT0Avg_V,
+      VoltageL3AnyT0Avg_V = (float)model.VoltageL3AnyT0Avg_V,
+      CurrentL1AnyT0Avg_A = (float)model.CurrentL1AnyT0Avg_A,
+      CurrentL2AnyT0Avg_A = (float)model.CurrentL2AnyT0Avg_A,
+      CurrentL3AnyT0Avg_A = (float)model.CurrentL3AnyT0Avg_A,
+      ActivePowerL1NetT0Avg_W = (float)model.ActivePowerL1NetT0Avg_W,
+      ActivePowerL2NetT0Avg_W = (float)model.ActivePowerL2NetT0Avg_W,
+      ActivePowerL3NetT0Avg_W = (float)model.ActivePowerL3NetT0Avg_W,
+      ReactivePowerL1NetT0Avg_VAR = (float)model.ReactivePowerL1NetT0Avg_VAR,
+      ReactivePowerL2NetT0Avg_VAR = (float)model.ReactivePowerL2NetT0Avg_VAR,
+      ReactivePowerL3NetT0Avg_VAR = (float)model.ReactivePowerL3NetT0Avg_VAR,
+      ActiveEnergyTotalImportT0Min_Wh =
+        (float)model.ActiveEnergyTotalImportT0Min_Wh,
+      ActiveEnergyTotalImportT0Max_Wh =
+        (float)model.ActiveEnergyTotalImportT0Max_Wh,
+      ActiveEnergyTotalExportT0Min_Wh =
+        (float)model.ActiveEnergyTotalExportT0Min_Wh,
+      ActiveEnergyTotalExportT0Max_Wh =
+        (float)model.ActiveEnergyTotalExportT0Max_Wh,
       ReactiveEnergyTotalImportT0Min_VARh =
-        model.ReactiveEnergyTotalImportT0Min_VARh,
+        (float)model.ReactiveEnergyTotalImportT0Min_VARh,
       ReactiveEnergyTotalImportT0Max_VARh =
-        model.ReactiveEnergyTotalImportT0Max_VARh,
+        (float)model.ReactiveEnergyTotalImportT0Max_VARh,
       ReactiveEnergyTotalExportT0Min_VARh =
-        model.ReactiveEnergyTotalExportT0Min_VARh,
+        (float)model.ReactiveEnergyTotalExportT0Min_VARh,
       ReactiveEnergyTotalExportT0Max_VARh =
-        model.ReactiveEnergyTotalExportT0Max_VARh,
-      ActiveEnergyTotalImportT1Min_Wh = model.ActiveEnergyTotalImportT1Min_Wh,
-      ActiveEnergyTotalImportT1Max_Wh = model.ActiveEnergyTotalImportT1Max_Wh,
-      ActiveEnergyTotalImportT2Min_Wh = model.ActiveEnergyTotalImportT2Min_Wh,
-      ActiveEnergyTotalImportT2Max_Wh = model.ActiveEnergyTotalImportT2Max_Wh
+        (float)model.ReactiveEnergyTotalExportT0Max_VARh,
+      ActiveEnergyTotalImportT1Min_Wh =
+        (float)model.ActiveEnergyTotalImportT1Min_Wh,
+      ActiveEnergyTotalImportT1Max_Wh =
+        (float)model.ActiveEnergyTotalImportT1Max_Wh,
+      ActiveEnergyTotalImportT2Min_Wh =
+        (float)model.ActiveEnergyTotalImportT2Min_Wh,
+      ActiveEnergyTotalImportT2Max_Wh =
+        (float)model.ActiveEnergyTotalImportT2Max_Wh
     };
   }
 
@@ -70,34 +78,42 @@ public static class AbbB2xAggregateModelEntityConverterExtensions
       Timestamp = entity.Timestamp,
       Interval = entity.Interval.ToModel(),
       Count = entity.Count,
-      VoltageL1AnyT0Avg_V = entity.VoltageL1AnyT0Avg_V,
-      VoltageL2AnyT0Avg_V = entity.VoltageL2AnyT0Avg_V,
-      VoltageL3AnyT0Avg_V = entity.VoltageL3AnyT0Avg_V,
-      CurrentL1AnyT0Avg_A = entity.CurrentL1AnyT0Avg_A,
-      CurrentL2AnyT0Avg_A = entity.CurrentL2AnyT0Avg_A,
-      CurrentL3AnyT0Avg_A = entity.CurrentL3AnyT0Avg_A,
-      ActivePowerL1NetT0Avg_W = entity.ActivePowerL1NetT0Avg_W,
-      ActivePowerL2NetT0Avg_W = entity.ActivePowerL2NetT0Avg_W,
-      ActivePowerL3NetT0Avg_W = entity.ActivePowerL3NetT0Avg_W,
-      ReactivePowerL1NetT0Avg_VAR = entity.ReactivePowerL1NetT0Avg_VAR,
-      ReactivePowerL2NetT0Avg_VAR = entity.ReactivePowerL2NetT0Avg_VAR,
-      ReactivePowerL3NetT0Avg_VAR = entity.ReactivePowerL3NetT0Avg_VAR,
-      ActiveEnergyTotalImportT0Min_Wh = entity.ActiveEnergyTotalImportT0Min_Wh,
-      ActiveEnergyTotalImportT0Max_Wh = entity.ActiveEnergyTotalImportT0Max_Wh,
-      ActiveEnergyTotalExportT0Min_Wh = entity.ActiveEnergyTotalExportT0Min_Wh,
-      ActiveEnergyTotalExportT0Max_Wh = entity.ActiveEnergyTotalExportT0Max_Wh,
+      VoltageL1AnyT0Avg_V = (decimal)entity.VoltageL1AnyT0Avg_V,
+      VoltageL2AnyT0Avg_V = (decimal)entity.VoltageL2AnyT0Avg_V,
+      VoltageL3AnyT0Avg_V = (decimal)entity.VoltageL3AnyT0Avg_V,
+      CurrentL1AnyT0Avg_A = (decimal)entity.CurrentL1AnyT0Avg_A,
+      CurrentL2AnyT0Avg_A = (decimal)entity.CurrentL2AnyT0Avg_A,
+      CurrentL3AnyT0Avg_A = (decimal)entity.CurrentL3AnyT0Avg_A,
+      ActivePowerL1NetT0Avg_W = (decimal)entity.ActivePowerL1NetT0Avg_W,
+      ActivePowerL2NetT0Avg_W = (decimal)entity.ActivePowerL2NetT0Avg_W,
+      ActivePowerL3NetT0Avg_W = (decimal)entity.ActivePowerL3NetT0Avg_W,
+      ReactivePowerL1NetT0Avg_VAR = (decimal)entity.ReactivePowerL1NetT0Avg_VAR,
+      ReactivePowerL2NetT0Avg_VAR = (decimal)entity.ReactivePowerL2NetT0Avg_VAR,
+      ReactivePowerL3NetT0Avg_VAR = (decimal)entity.ReactivePowerL3NetT0Avg_VAR,
+      ActiveEnergyTotalImportT0Min_Wh =
+        (decimal)entity.ActiveEnergyTotalImportT0Min_Wh,
+      ActiveEnergyTotalImportT0Max_Wh =
+        (decimal)entity.ActiveEnergyTotalImportT0Max_Wh,
+      ActiveEnergyTotalExportT0Min_Wh =
+        (decimal)entity.ActiveEnergyTotalExportT0Min_Wh,
+      ActiveEnergyTotalExportT0Max_Wh =
+        (decimal)entity.ActiveEnergyTotalExportT0Max_Wh,
       ReactiveEnergyTotalImportT0Min_VARh =
-        entity.ReactiveEnergyTotalImportT0Min_VARh,
+        (decimal)entity.ReactiveEnergyTotalImportT0Min_VARh,
       ReactiveEnergyTotalImportT0Max_VARh =
-        entity.ReactiveEnergyTotalImportT0Max_VARh,
+        (decimal)entity.ReactiveEnergyTotalImportT0Max_VARh,
       ReactiveEnergyTotalExportT0Min_VARh =
-        entity.ReactiveEnergyTotalExportT0Min_VARh,
+        (decimal)entity.ReactiveEnergyTotalExportT0Min_VARh,
       ReactiveEnergyTotalExportT0Max_VARh =
-        entity.ReactiveEnergyTotalExportT0Max_VARh,
-      ActiveEnergyTotalImportT1Min_Wh = entity.ActiveEnergyTotalImportT1Min_Wh,
-      ActiveEnergyTotalImportT1Max_Wh = entity.ActiveEnergyTotalImportT1Max_Wh,
-      ActiveEnergyTotalImportT2Min_Wh = entity.ActiveEnergyTotalImportT2Min_Wh,
-      ActiveEnergyTotalImportT2Max_Wh = entity.ActiveEnergyTotalImportT2Max_Wh
+        (decimal)entity.ReactiveEnergyTotalExportT0Max_VARh,
+      ActiveEnergyTotalImportT1Min_Wh =
+        (decimal)entity.ActiveEnergyTotalImportT1Min_Wh,
+      ActiveEnergyTotalImportT1Max_Wh =
+        (decimal)entity.ActiveEnergyTotalImportT1Max_Wh,
+      ActiveEnergyTotalImportT2Min_Wh =
+        (decimal)entity.ActiveEnergyTotalImportT2Min_Wh,
+      ActiveEnergyTotalImportT2Max_Wh =
+        (decimal)entity.ActiveEnergyTotalImportT2Max_Wh
     };
   }
 }

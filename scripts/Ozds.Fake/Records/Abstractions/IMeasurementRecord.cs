@@ -8,9 +8,9 @@ public interface IMeasurementRecord
 
   public DateTimeOffset Timestamp { get; }
 
-  public TariffMeasure<float> ActiveEnergy_Wh { get; }
+  public TariffMeasure<decimal> ActiveEnergy_Wh { get; }
 
-  public TariffMeasure<float> ReactiveEnergy_VARh { get; }
+  public TariffMeasure<decimal> ReactiveEnergy_VARh { get; }
 
-  public TariffMeasure<float> ApparentEnergy_VAh { get; }
+  public TariffMeasure<decimal> ApparentEnergy_VAh { get; }
 }

@@ -39,18 +39,22 @@ public abstract class
   public async Task<List<MessengerPushRequestMeasurement>> GenerateMeasurements(
     DateTimeOffset dateFrom,
     DateTimeOffset dateTo,
-    string meterId
+    string meterId,
+    CancellationToken cancellationToken = default
   )
   {
     var records = await _resources
-      .GetAsync<CsvLoader<TMeasurement>, List<TMeasurement>>(CsvResourceName);
+      .GetAsync<CsvLoader<TMeasurement>, List<TMeasurement>>(
+        CsvResourceName,
+        cancellationToken);
     var pushRequestMeasurements =
-      ExpandRecords(records, dateFrom, dateTo).ToList();
+      ExpandRecords(records, meterId, dateFrom, dateTo).ToList();
     return pushRequestMeasurements;
   }
 
   private IEnumerable<MessengerPushRequestMeasurement> ExpandRecords(
     List<TMeasurement> records,
+    string meterId,
     DateTimeOffset dateFrom,
     DateTimeOffset dateTo
   )
@@ -95,7 +99,7 @@ public abstract class
         );
         var json = _converter.ConvertToPushRequest(withCorrectedCumulatives);
         yield return new MessengerPushRequestMeasurement(
-          record.MeterId,
+          meterId,
           timestamp,
           json
         );

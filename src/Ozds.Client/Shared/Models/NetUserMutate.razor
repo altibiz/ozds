@@ -52,6 +52,10 @@
         Label="@T["Phone number"]"
         @bind-Value="LoadingState.Value.LegalPerson.PhoneNumber"
         For="@(() => LoadingState.Value.LegalPerson.PhoneNumber)"/>
+      <MudTextField
+        Label="@T["AltiBiz subproject code"]"
+        @bind-Value="LoadingState.Value.AltiBizSubProjectCode"
+        For="@(() => LoadingState.Value.AltiBizSubProjectCode)"/>
       <MudSelect
         Label="@T["Location"]"
         AnchorOrigin="Origin.BottomCenter"

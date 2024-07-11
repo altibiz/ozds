@@ -58,6 +58,7 @@ public static class NetworkUserInvoiceModelEntityConverterExtensions
       SupplyRenewableEnergyFee_EUR = entity.SupplyRenewableEnergyFee_EUR,
       SupplyFeeTotal_EUR = entity.SupplyFeeTotal_EUR,
       Total_EUR = entity.Total_EUR,
+      TaxRate_Percent = entity.TaxRate_Percent,
       Tax_EUR = entity.Tax_EUR,
       TotalWithTax_EUR = entity.TotalWithTax_EUR
     };
@@ -99,6 +100,7 @@ public static class NetworkUserInvoiceModelEntityConverterExtensions
       SupplyRenewableEnergyFee_EUR = model.SupplyRenewableEnergyFee_EUR,
       SupplyFeeTotal_EUR = model.SupplyFeeTotal_EUR,
       Total_EUR = model.Total_EUR,
+      TaxRate_Percent = model.TaxRate_Percent,
       Tax_EUR = model.Tax_EUR,
       TotalWithTax_EUR = model.TotalWithTax_EUR
     };

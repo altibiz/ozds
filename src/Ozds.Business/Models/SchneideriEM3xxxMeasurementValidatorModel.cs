@@ -8,34 +8,34 @@ public class
   SchneideriEM3xxxMeasurementModel>
 {
   [Required]
-  public required float MinVoltage_V { get; set; }
+  public required decimal MinVoltage_V { get; set; }
 
   [Required]
-  public required float MaxVoltage_V { get; set; }
+  public required decimal MaxVoltage_V { get; set; }
 
   [Required]
-  public required float MinCurrent_A { get; set; }
+  public required decimal MinCurrent_A { get; set; }
 
   [Required]
-  public required float MaxCurrent_A { get; set; }
+  public required decimal MaxCurrent_A { get; set; }
 
   [Required]
-  public required float MinActivePower_W { get; set; }
+  public required decimal MinActivePower_W { get; set; }
 
   [Required]
-  public required float MaxActivePower_W { get; set; }
+  public required decimal MaxActivePower_W { get; set; }
 
   [Required]
-  public required float MinReactivePower_VAR { get; set; }
+  public required decimal MinReactivePower_VAR { get; set; }
 
   [Required]
-  public required float MaxReactivePower_VAR { get; set; }
+  public required decimal MaxReactivePower_VAR { get; set; }
 
   [Required]
-  public required float MinApparentPower_VA { get; set; }
+  public required decimal MinApparentPower_VA { get; set; }
 
   [Required]
-  public required float MaxApparentPower_VA { get; set; }
+  public required decimal MaxApparentPower_VA { get; set; }
 
   public static SchneideriEM3xxxMeasurementValidatorModel New()
   {

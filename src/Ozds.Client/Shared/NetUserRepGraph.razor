@@ -15,7 +15,7 @@
                            Name="@T["Consumption"]"
                            SeriesType="SeriesType.Area"
                            XValue='x => DateTimeGraph(x.date)'
-                           YValue="x => (decimal)x.value"/>
+                           YValue="x => x.value"/>
         </ApexChart>
       }
     </MudContainer>
@@ -35,7 +35,7 @@
                          Name="@T["Consumption"]"
                          SeriesType="SeriesType.Area"
                          XValue='x => DateTimeGraph(x.date)'
-                         YValue="x => (decimal)x.value"/>
+                         YValue="x => x.value"/>
       </ApexChart>
     }
   </MudHidden>
@@ -55,7 +55,7 @@
   public IEnumerable<ChartData> _graphValues = Enumerable.Empty<ChartData>();
   public List<ChartData> _totalConsumption = new();
 
-  public record ChartData(float value, string name, DateTimeOffset date, string source);
+  public record ChartData(decimal value, string name, DateTimeOffset date, string source);
 
   private ApexChart<ChartData> chart = default!;
   private readonly DateTimeOffset startOfThisYear = DateTimeOffset.UtcNow.GetStartOfYear();

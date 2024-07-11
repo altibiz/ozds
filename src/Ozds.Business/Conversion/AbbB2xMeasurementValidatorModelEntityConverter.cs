@@ -37,14 +37,14 @@ public static class AbbB2xMeasurementValidatorModelEntityConverterExtensions
       IsDeleted = entity.IsDeleted,
       DeletedOn = entity.DeletedOn,
       DeletedById = entity.DeletedById,
-      MinVoltage_V = entity.MinVoltage_V,
-      MaxVoltage_V = entity.MaxVoltage_V,
-      MinCurrent_A = entity.MinCurrent_A,
-      MaxCurrent_A = entity.MaxCurrent_A,
-      MinActivePower_W = entity.MinActivePower_W,
-      MaxActivePower_W = entity.MaxActivePower_W,
-      MinReactivePower_VAR = entity.MinReactivePower_VAR,
-      MaxReactivePower_VAR = entity.MaxReactivePower_VAR
+      MinVoltage_V = (decimal)entity.MinVoltage_V,
+      MaxVoltage_V = (decimal)entity.MaxVoltage_V,
+      MinCurrent_A = (decimal)entity.MinCurrent_A,
+      MaxCurrent_A = (decimal)entity.MaxCurrent_A,
+      MinActivePower_W = (decimal)entity.MinActivePower_W,
+      MaxActivePower_W = (decimal)entity.MaxActivePower_W,
+      MinReactivePower_VAR = (decimal)entity.MinReactivePower_VAR,
+      MaxReactivePower_VAR = (decimal)entity.MaxReactivePower_VAR
     };
   }
 
@@ -62,14 +62,14 @@ public static class AbbB2xMeasurementValidatorModelEntityConverterExtensions
       IsDeleted = model.IsDeleted,
       DeletedOn = model.DeletedOn,
       DeletedById = model.DeletedById,
-      MinVoltage_V = model.MinVoltage_V,
-      MaxVoltage_V = model.MaxVoltage_V,
-      MinCurrent_A = model.MinCurrent_A,
-      MaxCurrent_A = model.MaxCurrent_A,
-      MinActivePower_W = model.MinActivePower_W,
-      MaxActivePower_W = model.MaxActivePower_W,
-      MinReactivePower_VAR = model.MinReactivePower_VAR,
-      MaxReactivePower_VAR = model.MaxReactivePower_VAR
+      MinVoltage_V = (float)model.MinVoltage_V,
+      MaxVoltage_V = (float)model.MaxVoltage_V,
+      MinCurrent_A = (float)model.MinCurrent_A,
+      MaxCurrent_A = (float)model.MaxCurrent_A,
+      MinActivePower_W = (float)model.MinActivePower_W,
+      MaxActivePower_W = (float)model.MaxActivePower_W,
+      MinReactivePower_VAR = (float)model.MinReactivePower_VAR,
+      MaxReactivePower_VAR = (float)model.MaxReactivePower_VAR
     };
   }
 }

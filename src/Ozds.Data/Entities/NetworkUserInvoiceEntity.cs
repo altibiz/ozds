@@ -8,6 +8,7 @@ namespace Ozds.Data.Entities;
 public class NetworkUserInvoiceEntity : InvoiceEntity
 {
   private long _networkUserId;
+  public string? BillId { get; set; }
 
   public virtual string NetworkUserId
   {

@@ -10,9 +10,9 @@ using Ozds.Data.Entities.Base;
 namespace Ozds.Business.Queries;
 
 public class OzdsLocationsTableQueries(
-  OzdsDbContext context) : IOzdsQueries
+  OzdsDataDbContext context) : IOzdsQueries
 {
-  private readonly OzdsDbContext context = context;
+  private readonly OzdsDataDbContext context = context;
 
   public async Task<List<LocationsTableViewModel>>
     ViewModelByNetworkUser(

@@ -11,11 +11,11 @@ public abstract class MeasurementRecord : IMeasurementRecord
   public required DateTimeOffset Timestamp { get; set; }
 
   [Ignore]
-  public abstract TariffMeasure<float> ActiveEnergy_Wh { get; }
+  public abstract TariffMeasure<decimal> ActiveEnergy_Wh { get; }
 
   [Ignore]
-  public abstract TariffMeasure<float> ReactiveEnergy_VARh { get; }
+  public abstract TariffMeasure<decimal> ReactiveEnergy_VARh { get; }
 
   [Ignore]
-  public abstract TariffMeasure<float> ApparentEnergy_VAh { get; }
+  public abstract TariffMeasure<decimal> ApparentEnergy_VAh { get; }
 }

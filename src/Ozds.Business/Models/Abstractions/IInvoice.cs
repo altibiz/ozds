@@ -12,6 +12,8 @@ public interface IInvoice : IIdentifiable, IReadonly
 
   decimal Total_EUR { get; }
 
+  decimal TaxRate_Percent { get; }
+
   decimal Tax_EUR { get; }
 
   decimal TotalWithTax_EUR { get; }

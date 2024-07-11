@@ -9,6 +9,9 @@ public abstract class InvoiceModel : IInvoice
   public required decimal Total_EUR { get; set; }
 
   [Required]
+  public required decimal TaxRate_Percent { get; set; }
+
+  [Required]
   public required decimal Tax_EUR { get; set; }
 
   [Required]

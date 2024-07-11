@@ -2,8 +2,6 @@ using System.Numerics;
 
 namespace Ozds.Business.Math;
 
-// TODO: convert properties to methods and create proper class hierarchy
-#pragma warning disable S2365
 #pragma warning disable S3060
 
 public record class MinMaxSpanningMeasure<T>(

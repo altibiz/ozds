@@ -9,19 +9,19 @@ public interface IMeasurement : IValidatableObject, IReadonly
 
   public DateTimeOffset Timestamp { get; }
 
-  public TariffMeasure<float> Current_A { get; }
+  public TariffMeasure<decimal> Current_A { get; }
 
-  public TariffMeasure<float> Voltage_V { get; }
+  public TariffMeasure<decimal> Voltage_V { get; }
 
-  public TariffMeasure<float> ActivePower_W { get; }
+  public TariffMeasure<decimal> ActivePower_W { get; }
 
-  public TariffMeasure<float> ReactivePower_VAR { get; }
+  public TariffMeasure<decimal> ReactivePower_VAR { get; }
 
-  public TariffMeasure<float> ApparentPower_VA { get; }
+  public TariffMeasure<decimal> ApparentPower_VA { get; }
 
-  public TariffMeasure<float> ActiveEnergy_Wh { get; }
+  public TariffMeasure<decimal> ActiveEnergy_Wh { get; }
 
-  public TariffMeasure<float> ReactiveEnergy_VARh { get; }
+  public TariffMeasure<decimal> ReactiveEnergy_VARh { get; }
 
-  public TariffMeasure<float> ApparentEnergy_VAh { get; }
+  public TariffMeasure<decimal> ApparentEnergy_VAh { get; }
 }

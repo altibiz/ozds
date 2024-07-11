@@ -6,6 +6,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="../../src/Ozds.Data/Ozds.Data.csproj" />
+	  <ProjectReference Include="../../src/Ozds.Messaging/Ozds.Messaging.csproj" />
 	</ItemGroup>
 
   <ItemGroup>

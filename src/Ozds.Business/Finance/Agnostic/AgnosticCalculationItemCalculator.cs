@@ -8,7 +8,10 @@ public class AgnosticCalculationItemCalculator(IServiceProvider serviceProvider)
 {
   private readonly IServiceProvider _serviceProvider = serviceProvider;
 
-  public ICalculationItem Calculate(CalculationItemBasisModel basis, Type type)
+  // NOTE: virtual for mocking purposes
+  public virtual ICalculationItem Calculate(
+    CalculationItemBasisModel basis,
+    Type type)
   {
     return _serviceProvider
         .GetServices<ICalculationItemCalculator>()

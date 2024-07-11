@@ -5,8 +5,8 @@ namespace Ozds.Data.Entities.Complex;
 
 public abstract class ActivePowerTotalImportT1PeakCalculationItemEntity
 {
-  public decimal Peak_W { get; set; }
-  public decimal Amount_W { get; set; }
+  public decimal Peak_kW { get; set; }
+  public decimal Amount_kW { get; set; }
   public decimal Price_EUR { get; set; }
   public decimal Total_EUR { get; set; }
 }
@@ -24,25 +24,25 @@ public static class ActivePowerTotalImportT1PeakCalculationItemEntityExtensions
   {
     builder
       .Property(
-        nameof(ActivePowerTotalImportT1PeakCalculationItemEntity.Peak_W))
-      .HasColumnName("usage_active_power_total_import_t1_peak_w");
+        nameof(ActivePowerTotalImportT1PeakCalculationItemEntity.Peak_kW))
+      .HasColumnName("svt_peak_kw");
 
     builder
       .Property(
         nameof(ActivePowerTotalImportT1PeakCalculationItemEntity
-          .Amount_W))
-      .HasColumnName("usage_active_power_total_import_t1_amount_w");
+          .Amount_kW))
+      .HasColumnName("svt_amount_kw");
 
     builder
       .Property(
         nameof(ActivePowerTotalImportT1PeakCalculationItemEntity
           .Price_EUR))
-      .HasColumnName("usage_active_power_total_import_t1_price_eur");
+      .HasColumnName("svt_price_eur");
 
     builder
       .Property(
         nameof(ActivePowerTotalImportT1PeakCalculationItemEntity
           .Total_EUR))
-      .HasColumnName("usage_active_power_total_import_t1_total_eur");
+      .HasColumnName("svt_total_eur");
   }
 }

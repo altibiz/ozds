@@ -4,7 +4,7 @@ namespace Ozds.Business.Models.Abstractions;
 
 public interface IMeter : IAuditable
 {
-  public float ConnectionPower_W { get; }
+  public decimal ConnectionPower_W { get; }
 
   public string? MessengerId { get; }
 

@@ -2,13 +2,14 @@ rec {
   description = "OZDS";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs-stable.url = "github:NixOS/nixpkgs/release-23.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     flake-utils.url = "github:numtide/flake-utils";
+
+    poetry2nix.url = "github:nix-community/poetry2nix";
   };
 
-  outputs = { self, nixpkgs, flake-utils, ... }:
+  outputs = { self, nixpkgs, flake-utils, ... } @rawInputs:
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs {
@@ -22,6 +23,38 @@ rec {
               dotnet-aspnetcore = prev.dotnet-aspnetcore_8;
             })
           ];
+        };
+
+        mkEnvWrapper = env: name: pkgs.writeShellApplication {
+          name = name;
+          runtimeInputs = [ env ];
+          text = ''
+            export PYTHONPREFIX=${env}
+            export PYTHONEXECUTABLE=${env}/bin/python
+
+            # shellcheck disable=SC2125
+            export PYTHONPATH=${env}/lib/**/site-packages
+
+            ${name} "$@"
+          '';
+        };
+
+        poetry2nix = rawInputs.poetry2nix.lib.mkPoetry2Nix { inherit pkgs; };
+
+        pythonEnv = poetry2nix.mkPoetryEnv {
+          projectDir = self;
+          preferWheels = true;
+          checkGroups = [ ];
+          overrides = poetry2nix.defaultPoetryOverrides.extend (final: prev: {
+            pyright = prev.pyright.overridePythonAttrs (old: {
+              postInstall = (old.postInstall or "") + ''
+                wrapProgram $out/bin/pyright \
+                  --prefix PATH : ${pkgs.lib.makeBinPath [ pkgs.nodejs ]}
+                wrapProgram $out/bin/pyright-langserver \
+                  --prefix PATH : ${pkgs.lib.makeBinPath [ pkgs.nodejs ]}
+              '';
+            });
+          });
         };
       in
       {
@@ -71,6 +104,12 @@ rec {
             dotnet-runtime
             dotnet-aspnetcore
 
+            # Python
+            poetry
+            pythonEnv
+            (mkEnvWrapper pythonEnv "pyright")
+            (mkEnvWrapper pythonEnv "pyright-langserver")
+
             # Markdown
             markdownlint-cli
             nodePackages.markdown-link-check
@@ -91,6 +130,11 @@ rec {
           PGDATABASE = "ozds";
           PGUSER = "ozds";
           PGPASSWORD = "ozds";
+
+          DOXYGEN_DOT_PATH = "${pkgs.graphviz}/bin/dot";
+          DOXYGEN_PLANTUML_JAR_PATH = "${pkgs.plantuml}/lib/plantuml.jar";
+
+          COMPOSE_PROFILES = "*";
 
           packages =
             let
@@ -113,6 +157,16 @@ rec {
                     "$@"
                 '';
               };
+
+              nushell = pkgs.writeShellApplication {
+                name = "nu";
+                runtimeInputs = [ pkgs.nushell ];
+                text = ''
+                  nu \
+                    --plugins "[ ${pkgs.nushellPlugins.polars}/bin/nu_plugin_polars ]" \
+                    "$@"
+                '';
+              };
             in
             with pkgs;
             [
@@ -130,6 +184,12 @@ rec {
               dotnet-aspnetcore
               omnisharp-roslyn
               netcoredbg
+
+              # Python
+              poetry
+              pythonEnv
+              (mkEnvWrapper pythonEnv "pyright")
+              (mkEnvWrapper pythonEnv "pyright-langserver")
 
               # Markdown
               marksman
@@ -169,40 +229,43 @@ rec {
             ];
         };
 
-        packages.default = pkgs.buildDotnetModule rec {
-          pname = "ozds";
-          version = "0.1.0";
+        packages.default =
+          pkgs.buildDotnetModule
+            rec {
+              pname = "ozds";
+              version = "0.1.0";
 
-          src = self;
-          projectFile = "src/Ozds.Server/Ozds.Server.csproj";
-          nugetDeps = ./deps.nix;
-          executables = [ "Ozds.Server" ];
-          makeWrapperArgs = [
-            "--set DOTNET_CONTENTROOT ${placeholder "out"}/lib/${pname}"
-          ];
+              src = self;
+              projectFile = "src/Ozds.Server/Ozds.Server.csproj";
+              nugetDeps = ./deps.nix;
+              executables = [ "Ozds.Server" ];
+              makeWrapperArgs = [
+                "--set DOTNET_CONTENTROOT ${placeholder "out"}/lib/${pname}"
+              ];
 
-          dotnet-sdk = pkgs.dotnet-sdk;
-          dotnet-runtime = pkgs.dotnet-aspnetcore;
+              dotnet-sdk = pkgs.dotnet-sdk;
+              dotnet-runtime = pkgs.dotnet-aspnetcore;
 
-          meta = {
-            description = description;
-            homepage = "https://github.com/altibiz/ozds";
-            license = pkgs.lib.licenses.mit;
+              meta = {
+                description = description;
+                homepage = "https://github.com/altibiz/ozds";
+                license = pkgs.lib.licenses.mit;
+              };
+            };
+
+        packages.docker = pkgs.dockerTools.buildImage
+          {
+            name = "altibiz/ozds";
+            tag = "latest";
+            created = "now";
+            copyToRoot = pkgs.buildEnv {
+              name = "image-root";
+              paths = [ self.packages.${system}.default ];
+              pathsToLink = [ "/bin" ];
+            };
+            config = {
+              Cmd = [ "ozds" ];
+            };
           };
-        };
-
-        packages.docker = pkgs.dockerTools.buildImage {
-          name = "altibiz/ozds";
-          tag = "latest";
-          created = "now";
-          copyToRoot = pkgs.buildEnv {
-            name = "image-root";
-            paths = [ self.packages.${system}.default ];
-            pathsToLink = [ "/bin" ];
-          };
-          config = {
-            Cmd = [ "ozds" ];
-          };
-        };
       });
 }

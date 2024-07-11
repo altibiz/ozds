@@ -9,9 +9,9 @@ using Ozds.Data.Entities.Enums;
 
 namespace Ozds.Business.Queries;
 
-public class OzdsLocationModelQueries(OzdsDbContext context) : IOzdsQueries
+public class OzdsLocationModelQueries(OzdsDataDbContext context) : IOzdsQueries
 {
-  private readonly OzdsDbContext context = context;
+  private readonly OzdsDataDbContext context = context;
 
   public async Task<LocationModel?>
     LocationById(string id)

@@ -36,7 +36,7 @@ public static class AbbB2xMeterModelEntityConverterExtensions
       DeletedById = model.DeletedById,
       MessengerId = model.MessengerId,
       MeasurementValidatorId = model.MeasurementValidatorId,
-      ConnectionPower_W = model.ConnectionPower_W,
+      ConnectionPower_W = (float)model.ConnectionPower_W,
       Phases = model.Phases.Select(p => p.ToEntity()).ToList()
     };
   }
@@ -56,7 +56,7 @@ public static class AbbB2xMeterModelEntityConverterExtensions
       DeletedById = entity.DeletedById,
       MessengerId = entity.MessengerId,
       MeasurementValidatorId = entity.MeasurementValidatorId,
-      ConnectionPower_W = entity.ConnectionPower_W,
+      ConnectionPower_W = (decimal)entity.ConnectionPower_W,
       Phases = entity.Phases.Select(p => p.ToModel()).ToHashSet()
     };
   }

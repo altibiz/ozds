@@ -19,13 +19,16 @@ jobs:
       - name: prepare
         run: nix develop .#check -c dotnet tool restore
 
+      - name: deps
+        run: nix develop .#check -c just deps
+
       - name: format
         run: nix develop .#check -c just format
 
       - name: commit
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: format
+          commit_message: format & deps.nix
           branch: ${{ github.head_ref }}
 
       - name: lint

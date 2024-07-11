@@ -1,6 +1,7 @@
 using System.Globalization;
 using ApexCharts;
 using Microsoft.AspNetCore.Components;
+using Ozds.Business.Localization.Abstractions;
 using Ozds.Business.Time;
 
 namespace Ozds.Client.Base;
@@ -8,7 +9,7 @@ namespace Ozds.Client.Base;
 public abstract class OzdsComponentBase : ComponentBase
 {
   [Inject]
-  public IOzdsComponentLocalizer T { get; set; } = default!;
+  public IOzdsLocalizer T { get; set; } = default!;
 
   [Inject]
   public NavigationManager NavigationManager { get; set; } = default!;
@@ -57,7 +58,7 @@ public abstract class OzdsComponentBase : ComponentBase
     return options;
   }
 
-  protected static string DecimalString(decimal? number, int places = 2)
+  protected static string NumericString(decimal? number, int places = 2)
   {
     if (number is null)
     {
@@ -74,7 +75,7 @@ public abstract class OzdsComponentBase : ComponentBase
     return roundedNumber.ToString("N", numberFormatInfo);
   }
 
-  protected static string FloatString(float? number, int places = 2)
+  protected static string NumericString(float? number, int places = 2)
   {
     if (number is null)
     {
