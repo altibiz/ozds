@@ -90,7 +90,7 @@
   @* TIME STUFF *@
   private bool timerInitialized;
   private Timer timer = new();
-  private int updateMillisecond = 10000;
+  private int updateMillisecond = 20000;
   private DateTimeOffset now = DateTimeOffset.UtcNow.LocalDateTime;
 
   protected override async Task OnInitializedAsync()
@@ -158,16 +158,28 @@
 
   private async Task UpdateChartSeries()
   {
-    await GetValue();
-    gaugeValue = new List<GaugeData> { new(thisMonthCurrentPower, connectionMaxPower) };
-    if (gauge is null)
+    try
     {
-      return;
-    }
+      await GetValue();
+      gaugeValue = new List<GaugeData> { new(thisMonthCurrentPower, connectionMaxPower) };
+      if (gauge is null)
+      {
+        return;
+      }
 
-    await InvokeAsync(() => StateHasChanged());
-    await gauge.UpdateOptionsAsync(false, true, false);
+      await InvokeAsync(() => StateHasChanged());
+      await gauge.UpdateOptionsAsync(false, true, false);
+    }
+    catch (TaskCanceledException ex)
+    {
+      Console.WriteLine("Gauge task was canceled: " + ex.Message);
+    }
+    catch (Exception ex)
+    {
+      Console.WriteLine("An error occurred: " + ex.Message);
+    }
   }
+
 
   void IDisposable.Dispose()
   {

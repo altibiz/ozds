@@ -177,7 +177,7 @@
   @* TIME STUFF *@
   private bool timerInitialized;
   private Timer timer = new();
-  private int updateMillisecond = 10000;
+  private int updateMillisecond = 20000;
   private DateTimeOffset now = DateTimeOffset.UtcNow.LocalDateTime;
 
   private enum DataEnum
@@ -594,19 +594,30 @@
 
   private async Task UpdateChartSeries()
   {
-    if (_graphValues is not null)
-    {
-      var lastGraphValues = _graphValues.OrderByDescending(x => x.date).FirstOrDefault();
-      if (chart is null)
-      {
-        return;
-      }
+    if (_graphValues == null)
+      return;
 
-      if (lastGraphValues is not null)
-      {
-        await GetValues(lastGraphValues.date, DateTimeOffset.UtcNow.LocalDateTime, false);
-        await chart.AppendDataAsync(_graphValues);
-      }
+    var lastGraphValues = _graphValues.OrderByDescending(x => x.date).FirstOrDefault();
+
+    if (lastGraphValues == null)
+      return;
+
+    if (chart == null)
+      return;
+
+    try
+    {
+      await GetValues(lastGraphValues.date, DateTimeOffset.UtcNow.LocalDateTime, false);
+      await chart.AppendDataAsync(_graphValues);
+    }
+    catch (TaskCanceledException ex)
+    {
+      Console.WriteLine("Graph task was canceled: " + ex.Message);
+    }
+    catch (Exception ex)
+    {
+      Console.WriteLine($"Exception during chart update: {ex.Message}");
+      throw;
     }
   }
 
