@@ -595,24 +595,15 @@
   private async Task UpdateChartSeries()
 {
     if (_graphValues == null)
-    {
-        Console.WriteLine("Graph values are null.");
         return;
-    }
 
     var lastGraphValues = _graphValues.OrderByDescending(x => x.date).FirstOrDefault();
 
     if (lastGraphValues == null)
-    {
-        Console.WriteLine("Last graph values are null.");
         return;
-    }
 
     if (chart == null)
-    {
-        Console.WriteLine("Chart is null.");
         return;
-    }
 
     try
     {
@@ -621,7 +612,7 @@
     }
     catch (TaskCanceledException ex)
     {
-        Console.WriteLine("Task was canceled: " + ex.Message);
+        Console.WriteLine("Graph task was canceled: " + ex.Message);
     }
     catch (Exception ex)
     {

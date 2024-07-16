@@ -172,12 +172,11 @@ private async Task UpdateChartSeries()
     }
     catch (TaskCanceledException ex)
     {
-        Console.WriteLine("Task was canceled: " + ex.Message);
+        Console.WriteLine("Guage task was canceled: " + ex.Message);
     }
     catch (Exception ex)
     {
         Console.WriteLine("An error occurred: " + ex.Message);
-        throw; // Optionally rethrow or handle the exception as needed
     }
 }
 
@@ -185,7 +184,6 @@ private async Task UpdateChartSeries()
   void IDisposable.Dispose()
   {
     timer?.Dispose();
-    gauge?.Dispose();
   }
 
 }
