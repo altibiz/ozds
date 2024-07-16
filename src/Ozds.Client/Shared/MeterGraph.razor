@@ -593,33 +593,33 @@
   }
 
   private async Task UpdateChartSeries()
-{
+  {
     if (_graphValues == null)
-        return;
+      return;
 
     var lastGraphValues = _graphValues.OrderByDescending(x => x.date).FirstOrDefault();
 
     if (lastGraphValues == null)
-        return;
+      return;
 
     if (chart == null)
-        return;
+      return;
 
     try
     {
-        await GetValues(lastGraphValues.date, DateTimeOffset.UtcNow.LocalDateTime, false);
-        await chart.AppendDataAsync(_graphValues);
+      await GetValues(lastGraphValues.date, DateTimeOffset.UtcNow.LocalDateTime, false);
+      await chart.AppendDataAsync(_graphValues);
     }
     catch (TaskCanceledException ex)
     {
-        Console.WriteLine("Graph task was canceled: " + ex.Message);
+      Console.WriteLine("Graph task was canceled: " + ex.Message);
     }
     catch (Exception ex)
     {
-        Console.WriteLine($"Exception during chart update: {ex.Message}");
-        throw;
+      Console.WriteLine($"Exception during chart update: {ex.Message}");
+      throw;
     }
-}
+  }
 
   public class ChartDataComparer : IEqualityComparer<ChartData>
   {

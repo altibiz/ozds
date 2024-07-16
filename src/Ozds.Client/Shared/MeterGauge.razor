@@ -146,39 +146,39 @@
   @* TIME STUFF *@
 
   protected override void OnAfterRender(bool firstRender)
-{
+  {
     if (firstRender && !timerInitialized)
     {
-        timerInitialized = true;
-        timer = new Timer(updateMillisecond);
-        timer.Elapsed += async delegate { await UpdateChartSeries(); };
-        timer.Enabled = true;
+      timerInitialized = true;
+      timer = new Timer(updateMillisecond);
+      timer.Elapsed += async delegate { await UpdateChartSeries(); };
+      timer.Enabled = true;
     }
-}
+  }
 
-private async Task UpdateChartSeries()
-{
+  private async Task UpdateChartSeries()
+  {
     try
     {
-        await GetValue();
-        gaugeValue = new List<GaugeData> { new(thisMonthCurrentPower, connectionMaxPower) };
-        if (gauge is null)
-        {
-            return;
-        }
+      await GetValue();
+      gaugeValue = new List<GaugeData> { new(thisMonthCurrentPower, connectionMaxPower) };
+      if (gauge is null)
+      {
+        return;
+      }
 
-        await InvokeAsync(() => StateHasChanged());
-        await gauge.UpdateOptionsAsync(false, true, false);
+      await InvokeAsync(() => StateHasChanged());
+      await gauge.UpdateOptionsAsync(false, true, false);
     }
     catch (TaskCanceledException ex)
     {
-        Console.WriteLine("Guage task was canceled: " + ex.Message);
+      Console.WriteLine("Guage task was canceled: " + ex.Message);
     }
     catch (Exception ex)
     {
-        Console.WriteLine("An error occurred: " + ex.Message);
+      Console.WriteLine("An error occurred: " + ex.Message);
     }
-}
+  }
 
 
   void IDisposable.Dispose()
