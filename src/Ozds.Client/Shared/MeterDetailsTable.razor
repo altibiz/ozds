@@ -173,7 +173,7 @@
   protected override async Task OnInitializedAsync()
   {
     var aggregateQueries = ScopedServices.GetRequiredService<OzdsAggregateQueries>();
-    var test = await aggregateQueries.ReadAgnostic(new[] { $"x => (x.Interval == 2 || x.Interval == 0) && x.MeterId == \"{Source}\"" }, startOfThisYear, now, 1, 900000);
+    var test = await aggregateQueries.ReadAgnostic(new Expression<Func<AggregateEntity, bool>>[] { x => (x.Interval == IntervalEntity.QuarterHour || x.Interval == IntervalEntity.Month) && x.MeterId == Source }, startOfThisYear, now, 1, 900000);
     var measures = test.OrderBy(x => x.Timestamp).Where(x => x.MeterId == Source).ToList();
     var measurePerMonth = measures.Where(x => x.Interval == IntervalModel.Month).ToList();
     var measurePerQuarterHour = measures.Where(x => x.Interval == IntervalModel.QuarterHour).ToList();
