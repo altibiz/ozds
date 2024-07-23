@@ -205,8 +205,8 @@
     aggregateQueries = ScopedServices.GetRequiredService<OzdsAggregateQueries>();
     measureQueries = ScopedServices.GetRequiredService<OzdsMeasurementQueries>();
     var a = await ScopedServices
-    .GetRequiredService<OzdsAuditableQueries>()
-    .Read<MeterModel>(
+      .GetRequiredService<OzdsAuditableQueries>()
+      .Read<MeterModel>(
         Enumerable.Empty<Expression<Func<AuditableEntity, bool>>>(),
         Enumerable.Empty<Expression<Func<AuditableEntity, object>>>(),
         Enumerable.Empty<Expression<Func<AuditableEntity, object>>>(),

@@ -34,9 +34,12 @@ public class OzdsCalculationQueries(
   }
 
   public async Task<PaginatedList<T>> Read<T>(
-    IEnumerable<Expression<Func<NetworkUserCalculationEntity, bool>>> whereClauses,
-    IEnumerable<Expression<Func<NetworkUserCalculationEntity, object>>> orderByDescClauses,
-    IEnumerable<Expression<Func<NetworkUserCalculationEntity, object>>> orderByAscClauses,
+    IEnumerable<Expression<Func<NetworkUserCalculationEntity, bool>>>
+      whereClauses,
+    IEnumerable<Expression<Func<NetworkUserCalculationEntity, object>>>
+      orderByDescClauses,
+    IEnumerable<Expression<Func<NetworkUserCalculationEntity, object>>>
+      orderByAscClauses,
     int pageNumber = QueryConstants.StartingPage,
     int pageCount = QueryConstants.DefaultPageCount
   )
