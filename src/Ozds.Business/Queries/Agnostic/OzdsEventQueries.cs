@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Extensions;
@@ -19,7 +20,7 @@ public class OzdsEventQueries(
     modelEntityConverter;
 
   public async Task<PaginatedList<T>> Read<T>(
-    IEnumerable<string> whereClauses,
+    IEnumerable<Expression<Func<EventEntity, bool>>> whereClauses,
     DateTimeOffset fromDate,
     DateTimeOffset toDate,
     int pageNumber = QueryConstants.StartingPage,
@@ -31,19 +32,25 @@ public class OzdsEventQueries(
         as IQueryable<EventEntity>
       ?? throw new InvalidOperationException(
         $"No DbSet found for {typeof(T)}");
+
     var filtered = whereClauses.Aggregate(
       queryable,
-      (current, clause) => current.WhereDynamic(clause));
+      (current, clause) => current.Where(clause));
+
     var timeFiltered = filtered
       .Where(aggregate => aggregate.Timestamp >= fromDate)
       .Where(aggregate => aggregate.Timestamp < toDate);
+
     var count = await timeFiltered.CountAsync();
+
     var ordered = timeFiltered
       .OrderByDescending(aggregate => aggregate.Timestamp);
+
     var items = await ordered
       .Skip((pageNumber - 1) * pageCount)
       .Take(pageCount)
       .ToListAsync();
+
     return items
       .Select(_modelEntityConverter.ToModel)
       .OfType<T>()

@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Extensions;
@@ -33,9 +34,9 @@ public class OzdsCalculationQueries(
   }
 
   public async Task<PaginatedList<T>> Read<T>(
-    IEnumerable<string> whereClauses,
-    IEnumerable<string> orderByDescClauses,
-    IEnumerable<string> orderByAscClauses,
+    IEnumerable<Expression<Func<NetworkUserCalculationEntity, bool>>> whereClauses,
+    IEnumerable<Expression<Func<NetworkUserCalculationEntity, object>>> orderByDescClauses,
+    IEnumerable<Expression<Func<NetworkUserCalculationEntity, object>>> orderByAscClauses,
     int pageNumber = QueryConstants.StartingPage,
     int pageCount = QueryConstants.DefaultPageCount
   )
@@ -44,18 +45,24 @@ public class OzdsCalculationQueries(
     var queryable = _context.GetDbSet(typeof(T))
         as IQueryable<NetworkUserCalculationEntity>
       ?? throw new InvalidOperationException();
+
     var filtered = whereClauses.Aggregate(
       queryable,
-      (current, clause) => current.WhereDynamic(clause));
+      (current, clause) => current.Where(clause));
+
     var count = await filtered.CountAsync();
+
     var orderedByDesc = orderByDescClauses.Aggregate(
       filtered,
-      (current, clause) => current.OrderByDescendingDynamic(clause));
+      (current, clause) => current.OrderByDescending(clause));
+
     var orderedByAsc = orderByAscClauses.Aggregate(
       orderedByDesc,
-      (current, clause) => current.OrderByDynamic(clause));
+      (current, clause) => current.OrderBy(clause));
+
     var items = await orderedByAsc.Skip((pageNumber - 1) * pageCount)
       .Take(pageCount).ToListAsync();
+
     return items
       .Select(_modelEntityConverter.ToModel)
       .OfType<T>()

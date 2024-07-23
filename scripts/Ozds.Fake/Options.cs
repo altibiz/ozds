@@ -38,7 +38,7 @@ public class PushOptions
 public class SeedOptions
 {
   [Option('i', "interval", Required = false, HelpText = "Desired interval.")]
-  public SeedInterval Interval { get; set; } = SeedInterval.Month;
+  public SeedInterval Interval { get; set; } = SeedInterval.Hour;
 
   [Option('b', "batch-size", Required = false, HelpText = "Batch size.")]
   public int BatchSize { get; set; } = 10000;

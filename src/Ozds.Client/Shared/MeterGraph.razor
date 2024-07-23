@@ -274,7 +274,7 @@
     if (timeSpanMins > 60)
       measures = await aggregateQueries.ReadAgnostic(new Expression<Func<AggregateEntity, bool>>[] { x => x.Interval == 0, x => x.MeterId == Source }, fromDate, toDate, 1, 9000);
     else
-      measures = await measureQueries.ReadAgnostic(new[] { $"x => x.MeterId == \"{Source}\"" }, fromDate, toDate, 1, 3000);
+      measures = await measureQueries.ReadAgnostic(new Expression<Func<MeasurementEntity, bool>>[] { x => x.MeterId == Source }, fromDate, toDate, 1, 3000);
     measures = measures.OrderBy(x => x.Timestamp).ToList();
     switch (_dataTitle)
     {
