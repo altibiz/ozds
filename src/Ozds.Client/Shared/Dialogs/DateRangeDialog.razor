@@ -1,0 +1,64 @@
+@using MudBlazor
+@inject NavigationManager NavigationManager
+
+<MudDialog>
+    <DialogContent>
+        <MudStack Spacing="2">
+            <MudDatePicker Label="@T["Start Date"]" @bind-Date="StartDate" DateFormat="dd.MM.yyyy" MinDate="minDate?.DateTime" MaxDate="maxDate?.DateTime" />
+            <MudDatePicker Label="@T["End Date"]" @bind-Date="EndDate" DateFormat="dd.MM.yyyy" MinDate="minDate?.DateTime" MaxDate="maxDate?.DateTime" />
+        </MudStack>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="MudBlazor.Color.Primary" OnClick="Submit">@T["Submit"]</MudButton>
+        <MudButton Color="MudBlazor.Color.Secondary" OnClick="Cancel">@T["Cancel"]</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; } = default!;
+    [Parameter] public DateTimeOffset? MinDate { get; set; }
+    [Parameter] public DateTimeOffset? MaxDate { get; set; }
+    private DateTime? startDate;
+    private DateTime? endDate;
+    private DateTimeOffset? minDate => MinDate;
+    private DateTimeOffset? maxDate => MaxDate;
+
+    public DateTime? StartDate
+    {
+        get => startDate;
+        set
+        {
+            startDate = value;
+            if (endDate.HasValue && startDate.HasValue && startDate > endDate)
+            {
+                endDate = startDate;
+            }
+        }
+    }
+
+    public DateTime? EndDate
+    {
+        get => endDate;
+        set
+        {
+            endDate = value;
+            if (startDate.HasValue && endDate.HasValue && endDate < startDate)
+            {
+                startDate = endDate;
+            }
+        }
+    }
+
+    private void Submit()
+    {
+        if (startDate.HasValue && endDate.HasValue)
+        {
+            MudDialog.Close(DialogResult.Ok((startDate.Value.ToUniversalTime(), endDate.Value.ToUniversalTime())));
+        }
+    }
+
+    private void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+}

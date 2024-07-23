@@ -197,5 +197,8 @@
   "«ReferenceNumber»": "«ReferentniBroj»",
   "for": "za",
   "Month": "Mjesec",
-  "AltiBiz subproject code": "AltiBiz šifra projekta"
+  "AltiBiz subproject code": "AltiBiz šifra projekta",
+  "Select Date Range": "Odaberi raspon datuma",
+  "Start Date": "Početni datum",
+  "End Date": "Završni datum"
 }
