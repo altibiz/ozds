@@ -220,4 +220,7 @@
   "Warning": "Upozorenje",
   "Error": "Greška",
   "Critical": "Kritično"
+  "Select Date Range": "Odaberi raspon datuma",
+  "Start Date": "Početni datum",
+  "End Date": "Završni datum"
 }
