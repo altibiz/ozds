@@ -36,6 +36,7 @@ flagWords:
   - "./deps.nix"
 words:
   - "networkusers"
+  - "onclick"
   - "blazor"
   - "xunit"
   - "stylesheet"
