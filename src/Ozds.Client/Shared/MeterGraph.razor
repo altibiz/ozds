@@ -51,7 +51,7 @@
                 <ChildContent>
                   @foreach (var type in _displayType)
                   {
-                    <MudMenuItem OnClick="@(() => DataMenuItemClicked(type.type))">@type.name</MudMenuItem>
+                    <MudMenuItem OnTouch="@(() => DataMenuItemClicked(type.type))" OnClick="@(() => DataMenuItemClicked(type.type))">@type.name</MudMenuItem>
                   }
                 </ChildContent>
               </MudMenu>
@@ -63,10 +63,10 @@
                   </MudButton>
                 </ActivatorContent>
                 <ChildContent>
-                  <MudMenuItem OnClick="@(() => TimeMenuItemClicked("Scale1"))">15 min</MudMenuItem>
-                  <MudMenuItem OnClick="@(() => TimeMenuItemClicked("Scale2"))">1 h</MudMenuItem>
-                  <MudMenuItem OnClick="@(() => TimeMenuItemClicked("Scale3"))">6 h</MudMenuItem>
-                  <MudMenuItem OnClick="@(() => TimeMenuItemClicked("Scale4"))">24 h</MudMenuItem>
+                  <MudMenuItem OnTouch="@(() => TimeMenuItemClicked("Scale1"))" OnClick="@(() => TimeMenuItemClicked("Scale1"))">15 min</MudMenuItem>
+                  <MudMenuItem OnTouch="@(() => TimeMenuItemClicked("Scale2"))" OnClick="@(() => TimeMenuItemClicked("Scale2"))">1 h</MudMenuItem>
+                  <MudMenuItem OnTouch="@(() => TimeMenuItemClicked("Scale3"))" OnClick="@(() => TimeMenuItemClicked("Scale3"))">6 h</MudMenuItem>
+                  <MudMenuItem OnTouch="@(() => TimeMenuItemClicked("Scale4"))" OnClick="@(() => TimeMenuItemClicked("Scale4"))">24 h</MudMenuItem>
                 </ChildContent>
               </MudMenu>
             </MudItem>
@@ -123,7 +123,7 @@
               <ChildContent>
                 @foreach (var type in _displayType)
                 {
-                  <MudMenuItem OnClick="@(() => DataMenuItemClicked(type.type))">@type.name</MudMenuItem>
+                  <MudMenuItem OnTouch="@(() => DataMenuItemClicked(type.type))" OnClick="@(() => DataMenuItemClicked(type.type))">@type.name</MudMenuItem>
                 }
               </ChildContent>
             </MudMenu>
@@ -135,10 +135,10 @@
                 </MudButton>
               </ActivatorContent>
               <ChildContent>
-                <MudMenuItem OnClick="@(() => TimeMenuItemClicked("Scale1"))">15 min</MudMenuItem>
-                <MudMenuItem OnClick="@(() => TimeMenuItemClicked("Scale2"))">1 h</MudMenuItem>
-                <MudMenuItem OnClick="@(() => TimeMenuItemClicked("Scale3"))">6 h</MudMenuItem>
-                <MudMenuItem OnClick="@(() => TimeMenuItemClicked("Scale4"))">24 h</MudMenuItem>
+                <MudMenuItem OnTouch="@(() => TimeMenuItemClicked("Scale1"))" OnClick="@(() => TimeMenuItemClicked("Scale1"))">15 min</MudMenuItem>
+                <MudMenuItem OnTouch="@(() => TimeMenuItemClicked("Scale2"))" OnClick="@(() => TimeMenuItemClicked("Scale2"))">1 h</MudMenuItem>
+                <MudMenuItem OnTouch="@(() => TimeMenuItemClicked("Scale3"))" OnClick="@(() => TimeMenuItemClicked("Scale3"))">6 h</MudMenuItem>
+                <MudMenuItem OnTouch="@(() => TimeMenuItemClicked("Scale4"))" OnClick="@(() => TimeMenuItemClicked("Scale4"))">24 h</MudMenuItem>
               </ChildContent>
             </MudMenu>
           </MudItem>
@@ -506,7 +506,7 @@
     {
       Toolbar = new Toolbar
       {
-        Tools = new Tools { Zoomin = false, Zoomout = false, Download = false, Pan = false, Selection = false }
+        Tools = new Tools { Zoomin = true, Zoomout = false, Zoom = false, Download = false, Pan = true, Selection = false }
       }
     };
     graphOptions = NewApexChartOptions<ChartData>();

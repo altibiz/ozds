@@ -48,7 +48,7 @@
               <ChildContent>
                 @foreach (var type in _displayType)
                 {
-                  <MudMenuItem OnClick="@(() => LeftMenuDataItemClicked(type.type))">@type.name</MudMenuItem>
+                  <MudMenuItem OnTouch="@(() => LeftMenuDataItemClicked(type.type))" OnClick="@(() => LeftMenuDataItemClicked(type.type))">@type.name</MudMenuItem>
                 }
               </ChildContent>
             </MudMenu>
@@ -60,10 +60,10 @@
                 </MudButton>
               </ActivatorContent>
               <ChildContent>
-                <MudMenuItem OnClick="@(() => MenuItemClicked("Scale1"))">15 min</MudMenuItem>
-                <MudMenuItem OnClick="@(() => MenuItemClicked("Scale2"))">1 h</MudMenuItem>
-                <MudMenuItem OnClick="@(() => MenuItemClicked("Scale3"))">6 h</MudMenuItem>
-                <MudMenuItem OnClick="@(() => MenuItemClicked("Scale4"))">24 h</MudMenuItem>
+                <MudMenuItem OnTouch="@(() => MenuItemClicked("Scale1"))" OnClick="@(() => MenuItemClicked("Scale1"))">15 min</MudMenuItem>
+                <MudMenuItem OnTouch="@(() => MenuItemClicked("Scale2"))" OnClick="@(() => MenuItemClicked("Scale2"))">1 h</MudMenuItem>
+                <MudMenuItem OnTouch="@(() => MenuItemClicked("Scale3"))" OnClick="@(() => MenuItemClicked("Scale3"))">6 h</MudMenuItem>
+                <MudMenuItem OnTouch="@(() => MenuItemClicked("Scale4"))" OnClick="@(() => MenuItemClicked("Scale4"))">24 h</MudMenuItem>
               </ChildContent>
             </MudMenu>
           </MudItem>
@@ -119,7 +119,7 @@
               <ChildContent>
                 @foreach (var type in _displayType)
                 {
-                  <MudMenuItem OnClick="@(() => LeftMenuDataItemClicked(type.type))">@type.name</MudMenuItem>
+                  <MudMenuItem OnTouch="@(() => LeftMenuDataItemClicked(type.type))" OnClick="@(() => LeftMenuDataItemClicked(type.type))">@type.name</MudMenuItem>
                 }
               </ChildContent>
             </MudMenu>
@@ -131,10 +131,10 @@
                 </MudButton>
               </ActivatorContent>
               <ChildContent>
-                <MudMenuItem OnClick="@(() => MenuItemClicked("Scale1"))">15 min</MudMenuItem>
-                <MudMenuItem OnClick="@(() => MenuItemClicked("Scale2"))">1 h</MudMenuItem>
-                <MudMenuItem OnClick="@(() => MenuItemClicked("Scale3"))">6 h</MudMenuItem>
-                <MudMenuItem OnClick="@(() => MenuItemClicked("Scale4"))">24 h</MudMenuItem>
+                <MudMenuItem OnTouch="@(() => MenuItemClicked("Scale1"))" OnClick="@(() => MenuItemClicked("Scale1"))">15 min</MudMenuItem>
+                <MudMenuItem OnTouch="@(() => MenuItemClicked("Scale2"))" OnClick="@(() => MenuItemClicked("Scale2"))">1 h</MudMenuItem>
+                <MudMenuItem OnTouch="@(() => MenuItemClicked("Scale3"))" OnClick="@(() => MenuItemClicked("Scale3"))">6 h</MudMenuItem>
+                <MudMenuItem OnTouch="@(() => MenuItemClicked("Scale4"))" OnClick="@(() => MenuItemClicked("Scale4"))">24 h</MudMenuItem>
               </ChildContent>
             </MudMenu>
           </MudItem>
@@ -248,7 +248,7 @@
       }
     };
     graphLOptions.Tooltip = new Tooltip { X = new TooltipX { Format = @"HH:mm:ss" } };
-    graphLOptionsMob.Tooltip = new Tooltip { X = new TooltipX { Format = @"GG:mm:ss" } };
+    graphLOptionsMob.Tooltip = new Tooltip { X = new TooltipX { Format = @"HH:mm:ss" } };
     graphLOptionsMob.Yaxis = new List<YAxis>();
     graphLOptionsMob.Xaxis = new XAxis();
 
@@ -347,6 +347,7 @@
         break;
     }
 
+    SetGraphTimeRange();
     await GetValues(now.AddMinutes(-timeSpanMins), now);
   }
 
@@ -452,6 +453,23 @@
     {
       await chart.UpdateSeriesAsync();
     }
+    await chart.RenderAsync();
+  }
+
+  private void SetGraphTimeRange()
+  {
+    graphLOptions.Xaxis = new XAxis
+    {
+      Type = XAxisType.Datetime,
+      AxisTicks = new AxisTicks(),
+      Range = 60000 * timeSpanMins
+    };
+
+    graphLOptionsMob.Xaxis = new XAxis
+    {
+      Labels = new XAxisLabels { Show = false },
+      Range = 60000 * timeSpanMins
+    };
   }
 
   private SeriesStroke ColorGraph(int index)
