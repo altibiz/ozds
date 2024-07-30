@@ -1,0 +1,249 @@
+@using Color = MudBlazor.Color
+@using Ozds.Business.Time
+
+<MudDialog>
+  <DialogContent>
+    <ApexChart TItem="ChartData"
+               Height="400"
+               Options="graphLOptions"
+               @ref="chart">
+        @foreach (var series in ChartSeries)
+        {
+            <ApexPointSeries TItem="ChartData"
+                             Items="@series.Data"
+                             Name="@series.Name"
+                             SeriesType="SeriesType.Line"
+                             XValue="@(x => x.Date)"
+                             YValue="@(x => x.Value)"/>
+        }
+    </ApexChart>
+
+    <ApexChart TItem="ChartData"
+               Height="130"
+               Options="optionsLine"
+               @ref="chartLine">
+        @foreach (var series in ChartSeries)
+        {
+            <ApexPointSeries TItem="ChartData"
+                             Items="@series.Data"
+                             Name="@series.Name"
+                             SeriesType="SeriesType.Area"
+                             XValue="@(x => x.Date)"
+                             YValue="@(x => x.Value)"/>
+        }
+    </ApexChart>
+  </DialogContent>
+  <DialogActions>
+    <MudButton Color="Color.Primary">Close</MudButton>
+  </DialogActions>
+</MudDialog>
+
+@code {
+    public class ChartData
+    {
+        public DateTime Date { get; set; }
+        public decimal Value { get; set; }
+    }
+
+    public class Series<T>
+    {
+        public string Name { get; set; }
+        public List<T> Data { get; set; }
+        public int StrokeWidth { get; set; } = 0;
+        public double FillOpacity { get; set; } = 0;
+    }
+
+    private ApexChart<ChartData> chart;
+    private ApexChart<ChartData> chartLine;
+
+    private List<Series<ChartData>> ChartSeries => new List<Series<ChartData>>
+    {
+        new Series<ChartData>
+        {
+            Name = "Flies",
+            Data = Data1,
+            StrokeWidth = 2,
+            FillOpacity = 1
+        },
+        new Series<ChartData>
+        {
+            Name = "Spiders",
+            Data = Data2,
+            StrokeWidth = 6,
+            FillOpacity = 0.75
+        }
+    };
+
+    private List<ChartData> Data1 = new List<ChartData>
+    {
+        new ChartData { Date = DateTime.Now.AddDays(-5), Value = 10 },
+        new ChartData { Date = DateTime.Now.AddDays(-4), Value = 30 },
+        new ChartData { Date = DateTime.Now.AddDays(-3), Value = 15 },
+        new ChartData { Date = DateTime.Now.AddDays(-2), Value = 50 },
+        new ChartData { Date = DateTime.Now.AddDays(-1), Value = 45 },
+        new ChartData { Date = DateTime.Now, Value = 35 }
+    };
+
+    private List<ChartData> Data2 = new List<ChartData>
+    {
+        new ChartData { Date = DateTime.Now.AddDays(-5), Value = 5 },
+        new ChartData { Date = DateTime.Now.AddDays(-4), Value = 20 },
+        new ChartData { Date = DateTime.Now.AddDays(-3), Value = 0 },
+        new ChartData { Date = DateTime.Now.AddDays(-2), Value = 65 },
+        new ChartData { Date = DateTime.Now.AddDays(-1), Value = 100 },
+        new ChartData { Date = DateTime.Now, Value = 30 }
+    };
+
+    private ApexChartOptions<ChartData> graphLOptions = NewApexChartOptions<ChartData>();
+    private ApexChartOptions<ChartData> optionsLine = NewApexChartOptions<ChartData>();
+
+    protected override void OnInitialized()
+    {
+        graphLOptions.Chart = new Chart
+        {
+            Type = ApexCharts.ChartType.Line,
+            Height = 230,
+            Id="chart2",
+            DropShadow = new DropShadow
+            {
+                Enabled = true,
+                EnabledOnSeries = new List<double> { 1 }
+            },
+            Toolbar = new Toolbar
+            {
+                AutoSelected = AutoSelected.Pan,
+                Show = false
+            }
+        };
+
+        graphLOptions.Colors = new List<string> { "#008FFB", "#00E396" };
+        graphLOptions.Stroke = new Stroke
+        {
+            Width = new List<int> { 2, 6 },
+        };
+        graphLOptions.DataLabels = new DataLabels
+        {
+            Enabled = false
+        };
+        graphLOptions.Fill = new Fill
+        {
+            Opacity = new List<double> { 1, 0.75 }
+        };
+        graphLOptions.Markers = new Markers
+        {
+            Size = 0
+        };
+        graphLOptions.Yaxis = new List<YAxis>
+        {
+            new YAxis
+            {
+                SeriesName = "Flies",
+                AxisTicks = new AxisTicks
+                {
+                    Show = true,
+                    Color = "#008FFB"
+                },
+                AxisBorder = new AxisBorder
+                {
+                    Show = true,
+                    Color = "#008FFB"
+                },
+                Labels = new YAxisLabels
+                {
+                    Style = new AxisLabelStyle
+                    {
+                        Colors = "#008FFB"
+                    }
+                },
+                Title = new AxisTitle
+                {
+                    Text = "Flies",
+                    Style = new AxisTitleStyle
+                    {
+                        Color = "#008FFB"
+                    }
+                }
+            },
+            new YAxis
+            {
+                SeriesName = "Spiders",
+                Opposite = true,
+                AxisTicks = new AxisTicks
+                {
+                    Show = true,
+                    Color = "#00E396"
+                },
+                AxisBorder = new AxisBorder
+                {
+                    Show = true,
+                    Color = "#00E396"
+                },
+                Labels = new YAxisLabels
+                {
+                    Style = new AxisLabelStyle
+                    {
+                        Colors = "#00E396"
+                    }
+                },
+                Title = new AxisTitle
+                {
+                    Text = "Spiders",
+                    Style = new AxisTitleStyle
+                    {
+                        Color = "#00E396"
+                    }
+                }
+            }
+        };
+        graphLOptions.Xaxis = new XAxis
+        {
+            Type = XAxisType.Datetime
+        };
+
+        optionsLine.Chart = new Chart
+        {
+            Height = 130,
+            Type = ApexCharts.ChartType.Area,
+            Brush = new Brush
+            {
+                Target = "chart2",
+                Enabled = true
+            },
+            Selection = new Selection
+            {
+                Enabled = true,
+                Xaxis = new SelectionXaxis
+                {
+                    Min = new DateTime(2017, 4, 24).ToUniversalTime().Subtract(new DateTime(1970, 1, 1)).TotalMilliseconds,
+                    Max = new DateTime(2017, 5, 29).ToUniversalTime().Subtract(new DateTime(1970, 1, 1)).TotalMilliseconds
+                }
+            }
+        };
+
+        optionsLine.Colors = new List<string> { "#008FFB", "#00E396" };
+        optionsLine.Stroke = new Stroke
+        {
+            Width = new List<int> { 1, 3 },
+        };
+        optionsLine.Fill = new Fill
+        {
+            Type = FillType.Gradient
+        };
+        optionsLine.Xaxis = new XAxis
+        {
+            Type = XAxisType.Datetime,
+            Tooltip = new XAxisTooltip
+            {
+                Enabled = false
+            }
+        };
+        optionsLine.Yaxis = new List<YAxis>
+        {
+            new YAxis
+            {
+                Max = 100,
+                TickAmount = 2
+            }
+        };
+    }
+}

@@ -1,0 +1,371 @@
+@using Color = MudBlazor.Color
+@using Ozds.Business.Time
+<MudDialog>
+  <DialogContent>
+    <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
+        @T[_dataType] @T["for"]: @_title
+      </MudItem>
+      <MudContainer Class="d-flex flex-column" MaxWidth="MaxWidth.ExtraExtraLarge">
+        @if (_graphValues is not null)
+        {
+          <ApexChart TItem="ChartData"
+                     Height="500"
+                     XAxisType="XAxisType.Datetime"
+                     Options="graphLOptions"
+                     @ref="chart">
+            @for (var i = 0; i < lineCount; i++)
+            {
+              var j = i;
+              <ApexPointSeries TItem="ChartData"
+                               Items="@_graphValues"
+                               Name="@_graphValues.Select(x => x.names[j]).FirstOrDefault()"
+                               SeriesType="SeriesType.Line"
+                               XValue='x => DateTimeGraph(x.date)'
+                               YValue="x => (decimal?)x.values[j]"
+                               Stroke="@(ColorGraph(j))"/>
+            }
+            @if (lineCount == 0)
+            {
+              <ApexPointSeries TItem="ChartData"
+                               Items="@_graphValues"
+                               Name="n/a"
+                               SeriesType="SeriesType.Line"
+                               XValue='x => DateTimeGraph(x.date)'
+                               YValue="x => 0"
+                               Stroke="@(ColorGraph(0))"/>
+            }
+          </ApexChart>
+          <MudItem Class="d-flex flex-row justify-center gap-2">
+            <MudMenu Dense="true" Variant="Variant.Filled" Color="Color.Primary">
+              <ActivatorContent>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary">
+                  @T[_dataType]
+                  <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowDown"/>
+                </MudButton>
+              </ActivatorContent>
+              <ChildContent>
+                @foreach (var type in _displayType)
+                {
+                  <MudMenuItem OnClick="@(() => LeftMenuDataItemClicked(type.type))">@type.name</MudMenuItem>
+                }
+              </ChildContent>
+            </MudMenu>
+          </MudItem>
+          <MudAutocomplete Class="pa-4 mt-0" T="string" Label="@T["Devices"]" Value="_title" ValueChanged="e => LeftMenuItemClicked(e)" SearchFunc="@Search" ToStringFunc="@(e => e == null ? null : $"{e}")"/>
+        }
+      </MudContainer>
+  </DialogContent>
+  <DialogActions>
+    <MudButton Color="Color.Primary" OnClick="Submit">Close</MudButton>
+  </DialogActions>
+</MudDialog>
+
+@code {
+
+  [CascadingParameter]
+  MudDialogInstance MudDialog { get; set; } = default!;
+
+  [CascadingParameter]
+  public UserState user { get; set; } = default!;
+
+  [CascadingParameter]
+  public RepresentativeState representative { get; set; } = default!;
+
+  public string TextValue { get; set; } = "";
+  private ApexChartOptions<ChartData> graphLOptions = NewApexChartOptions<ChartData>();
+  private List<(DataEnum type, string name)> _displayType = new();
+  public int lineCount = 0;
+  public int rightLineCount = 0;
+  public IEnumerable<ChartData>? _graphValues;
+  public IEnumerable<ChartData>? _rowData;
+  private string _title = "";
+  private MeterModel? _selectedMeter = default!;
+  private string _dataType = "";
+  private DateTimeOffset now = DateTimeOffset.UtcNow.LocalDateTime;
+  private DateTimeOffset startOfThisYear = DateTimeOffset.UtcNow.GetStartOfYear();
+
+  public record ChartData(decimal[] values, string[] names, DateTimeOffset date, string source);
+
+  private ApexChart<ChartData> chart = default!;
+  private IEnumerable<MeterModel>? _meters;
+  OzdsAggregateQueries aggregateQueries = default!;
+  OzdsMeasurementQueries measureQueries = default!;
+
+  private enum DataEnum
+  {
+    Voltage,
+    Current,
+    Active_Power,
+    Reactive_Power,
+    Apparent_Power
+  }
+
+  private class ExpandThing
+  {
+    public MeterModel device = default!;
+    public bool show;
+  }
+
+  private List<ExpandThing> _shownIoTDevices = new();
+  private List<string> _ioTDeviceNames = new();
+
+  protected override async Task OnInitializedAsync()
+  {
+    _displayType = new List<(DataEnum type, string name)>
+    {
+      (DataEnum.Voltage, T["Voltage"]), (DataEnum.Current, T["Current"]), (DataEnum.Active_Power, T["Active Power"]), (DataEnum.Reactive_Power, T["Reactive Power"])
+    };
+    aggregateQueries = ScopedServices.GetRequiredService<OzdsAggregateQueries>();
+    measureQueries = ScopedServices.GetRequiredService<OzdsMeasurementQueries>();
+    var a = await ScopedServices
+      .GetRequiredService<OzdsAuditableQueries>().Read<MeterModel>(Enumerable.Empty<string>(), Enumerable.Empty<string>(), Enumerable.Empty<string>(), 1, 1000);
+    _meters = a.Items;
+    _ioTDeviceNames = _meters.Select(x => x.Id).ToList();
+
+    await LeftMenuItemClicked(_title);
+
+    graphLOptions = NewApexChartOptions<ChartData>();
+    graphLOptions.Grid = new Grid
+    {
+      BorderColor = "#e7e7e7",
+      Row = new GridRow
+      {
+        Colors = new List<string> { "#f3f3f3", "transparent" },
+        Opacity = 0.5d
+      }
+    };
+    graphLOptions.Yaxis = new List<YAxis>();
+    graphLOptions.Yaxis.Add(
+      new YAxis
+      {
+        Labels = new YAxisLabels
+        {
+          Formatter = "function(val, index) { return (val ?? 0).toFixed(0); }"
+        }
+      });
+    graphLOptions.Chart = new Chart
+    {
+      Toolbar = new Toolbar
+      {
+        Tools = new Tools { Zoomin = false, Zoomout = false, Zoom = true, Download = false, Pan = false, Selection = true }
+      }
+    };
+    graphLOptions.Tooltip = new Tooltip { X = new TooltipX { Format = @"dd.MM.yyyy." } };
+  }
+
+  private async Task LeftMenuItemClicked(string source)
+  {
+    if (source is null || _meters is null)
+      return;
+    _title = source;
+    _selectedMeter = _meters.Where(x => x.Id == source).FirstOrDefault();
+
+    if (_selectedMeter != null && _selectedMeter.Capabilities.HasApparentPower)
+    {
+      _displayType = new List<(DataEnum type, string name)>
+      {
+        (DataEnum.Voltage, T["Voltage"]), (DataEnum.Current, T["Current"]), (DataEnum.Active_Power, T["Active Power"]), (DataEnum.Reactive_Power, T["Reactive Power"]), (DataEnum.Apparent_Power, T["Apparent Power"])
+      };
+    }
+    else
+    {
+      _displayType = new List<(DataEnum type, string name)>
+      {
+        (DataEnum.Voltage, T["Voltage"]), (DataEnum.Current, T["Current"]), (DataEnum.Active_Power, T["Active Power"]), (DataEnum.Reactive_Power, T["Reactive Power"])
+      };
+      if (_dataType == "Apparent Power")
+        _dataType = "Reactive Power";
+    }
+
+    await LeftMenuDataItemClicked(DataEnum.Active_Power);
+  }
+
+  private async Task LeftMenuDataItemClicked(DataEnum type)
+  {
+    switch (type)
+    {
+      case DataEnum.Current:
+        _dataType = "Current";
+        break;
+      case DataEnum.Active_Power:
+        _dataType = "Active Power";
+        break;
+      case DataEnum.Voltage:
+        _dataType = "Voltage";
+        break;
+      case DataEnum.Reactive_Power:
+        _dataType = "Reactive Power";
+        break;
+      case DataEnum.Apparent_Power:
+        _dataType = "Apparent Power";
+        break;
+    }
+
+    await GetValues();
+  }
+
+  private async Task GetValues(bool reRenderChart = true)
+  {
+    IEnumerable<IMeasurement> measures;
+    measures = await aggregateQueries.ReadAgnostic(new[] { "x => x.Interval == 1", $"x => x.MeterId == \"{_title}\"" }, startOfThisYear, now, 1, 9000);
+    measures = measures.OrderBy(x => x.Timestamp).ToList();
+    switch (_dataType)
+    {
+      case "Current":
+        _graphValues = measures.Select(
+          x =>
+            new ChartData(
+              new[]
+              {
+                x.Current_A.TariffUnary().DuplexAny().PhaseSplit().ValueL1,
+                x.Current_A.TariffUnary().DuplexAny().PhaseSplit().ValueL2,
+                x.Current_A.TariffUnary().DuplexAny().PhaseSplit().ValueL3
+              },
+              new[] { "L1 Current", "L2 Current", "L3 Current" },
+              x.Timestamp,
+              x.MeterId
+            )).ToList();
+        lineCount = 3;
+        break;
+      case "":
+      case "Active Power":
+        _graphValues = measures.Select(
+          x =>
+            new ChartData(
+              new[]
+              {
+                x.ActivePower_W.TariffUnary().DuplexNet().PhaseSplit().ValueL1,
+                x.ActivePower_W.TariffUnary().DuplexNet().PhaseSplit().ValueL2,
+                x.ActivePower_W.TariffUnary().DuplexNet().PhaseSplit().ValueL3,
+                x.ActivePower_W.TariffUnary().DuplexNet().PhaseSplit().PhaseSum()
+              },
+              new[] { "L1 Active Power", "L2 Active Power", "L3 Active Power", "Total power" },
+              x.Timestamp,
+              x.MeterId
+            )).ToList();
+        lineCount = 4;
+        break;
+      case "Voltage":
+        _graphValues = measures.Select(
+          x =>
+            new ChartData(
+              new[]
+              {
+                x.Voltage_V.TariffUnary().DuplexAny().PhaseSplit().ValueL1,
+                x.Voltage_V.TariffUnary().DuplexAny().PhaseSplit().ValueL2,
+                x.Voltage_V.TariffUnary().DuplexAny().PhaseSplit().ValueL3
+              },
+              new[] { "L1 Voltage", "L2 Voltage", "L3 Voltage" },
+              x.Timestamp,
+              x.MeterId
+            )).ToList();
+        lineCount = 3;
+        break;
+      case "Reactive Power":
+        _graphValues = measures.Select(
+          x =>
+            new ChartData(
+              new[]
+              {
+                x.ReactivePower_VAR.TariffUnary().DuplexNet().PhaseSplit().ValueL1,
+                x.ReactivePower_VAR.TariffUnary().DuplexNet().PhaseSplit().ValueL2,
+                x.ReactivePower_VAR.TariffUnary().DuplexNet().PhaseSplit().ValueL3
+              },
+              new[] { "L1 Reactive Power", "L2 Reactive Power", "L3 Reactive Power" },
+              x.Timestamp,
+              x.MeterId
+            )).ToList();
+        lineCount = 3;
+        break;
+      case "Apparent Power":
+        _graphValues = measures.Select(
+          x =>
+            new ChartData(
+              new[]
+              {
+                x.ApparentPower_VA.TariffUnary().DuplexNet().PhaseSum()
+              },
+              new[] { "Apparent Power" },
+              x.Timestamp,
+              x.MeterId
+            )).ToList();
+        lineCount = 1;
+        break;
+    }
+
+    if (chart is null)
+    {
+      return;
+    }
+
+    await InvokeAsync(() => StateHasChanged());
+    if (reRenderChart)
+    {
+      await chart.UpdateSeriesAsync();
+    }
+  }
+
+  private SeriesStroke ColorGraph(int index)
+  {
+    if (index == 0)
+    {
+      return new SeriesStroke { Color = "#673AB7", Width = 4 };
+    }
+
+    if (index == 1)
+    {
+      return new SeriesStroke { Color = "#FB8C00", Width = 4 };
+    }
+
+    if (index == 2)
+    {
+      return new SeriesStroke { Color = "#00897B", Width = 4 };
+    }
+
+    if (index == 3)
+    {
+      return new SeriesStroke { Color = "#D81B60", Width = 4 };
+    }
+
+    return new SeriesStroke { Color = "#FB8C00", Width = 4 };
+  }
+
+  @* Search *@
+  private Task Filter(string value)
+  {
+    TextValue = value;
+    foreach (var inv in _shownIoTDevices)
+    {
+      if (value.Trim() != "")
+      {
+        inv.show = false;
+      }
+    }
+
+    ;
+    var a = _shownIoTDevices.Where(x => x.device.Title.Contains(value, StringComparison.InvariantCultureIgnoreCase)).ToList();
+    foreach (var inv in a)
+    {
+      inv.show = true;
+    }
+
+    ;
+    StateHasChanged();
+    return Task.CompletedTask;
+  }
+
+  private Task<IEnumerable<string>> Search(string value)
+  {
+    // if text is null or empty, show complete list
+    if (string.IsNullOrEmpty(value))
+      return Task.FromResult(_ioTDeviceNames as IEnumerable<string>);
+    var result = _ioTDeviceNames.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+    return Task.FromResult(result);
+  }
+
+  void Submit()
+  {
+    MudDialog.Close(DialogResult.Ok(true));
+  }
+
+}
