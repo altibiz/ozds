@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Extensions;
@@ -30,9 +31,9 @@ public class OzdsInvoiceQueries(
   }
 
   public async Task<PaginatedList<T>> Read<T>(
-    IEnumerable<string> whereClauses,
-    IEnumerable<string> orderByDescClauses,
-    IEnumerable<string> orderByAscClauses,
+    IEnumerable<Expression<Func<InvoiceEntity, bool>>> whereClauses,
+    IEnumerable<Expression<Func<InvoiceEntity, object>>> orderByDescClauses,
+    IEnumerable<Expression<Func<InvoiceEntity, object>>> orderByAscClauses,
     int pageNumber = QueryConstants.StartingPage,
     int pageCount = QueryConstants.DefaultPageCount
   )
@@ -43,18 +44,24 @@ public class OzdsInvoiceQueries(
         as IQueryable<InvoiceEntity>
       ?? throw new InvalidOperationException(
         $"No DbSet found for {dbSetType}");
+
     var filtered = whereClauses.Aggregate(
       queryable,
-      (current, clause) => current.WhereDynamic(clause));
+      (current, clause) => current.Where(clause));
+
     var count = await filtered.CountAsync();
+
     var orderedByDesc = orderByDescClauses.Aggregate(
       filtered,
-      (current, clause) => current.OrderByDescendingDynamic(clause));
+      (current, clause) => current.OrderByDescending(clause));
+
     var orderedByAsc = orderByAscClauses.Aggregate(
       orderedByDesc,
-      (current, clause) => current.OrderByDynamic(clause));
+      (current, clause) => current.OrderBy(clause));
+
     var items = await orderedByAsc.Skip((pageNumber - 1) * pageCount)
       .Take(pageCount).ToListAsync();
+
     return items
       .Select(_modelEntityConverter.ToModel)
       .OfType<T>()

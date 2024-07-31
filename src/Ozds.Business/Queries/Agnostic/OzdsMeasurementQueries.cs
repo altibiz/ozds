@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Extensions;
@@ -20,7 +21,7 @@ public class OzdsMeasurementQueries(
     modelEntityConverter;
 
   public async Task<PaginatedList<T>> Read<T>(
-    IEnumerable<string> whereClauses,
+    IEnumerable<Expression<Func<MeasurementEntity, bool>>> whereClauses,
     DateTimeOffset fromDate,
     DateTimeOffset toDate,
     int pageNumber = QueryConstants.StartingPage,
@@ -35,7 +36,7 @@ public class OzdsMeasurementQueries(
         $"No DbSet found for {dbSetType}");
     var filtered = whereClauses.Aggregate(
       queryable,
-      (current, clause) => current.WhereDynamic(clause));
+      (current, clause) => current.Where(clause));
     var timeFiltered = filtered
       .Where(aggregate => aggregate.Timestamp >= fromDate)
       .Where(aggregate => aggregate.Timestamp < toDate);
@@ -53,7 +54,7 @@ public class OzdsMeasurementQueries(
   }
 
   public async Task<List<IMeasurement>> ReadAgnostic(
-    IEnumerable<string> whereClauses,
+    IEnumerable<Expression<Func<MeasurementEntity, bool>>> whereClauses,
     DateTimeOffset fromDate,
     DateTimeOffset toDate,
     int pageNumber = QueryConstants.StartingPage,

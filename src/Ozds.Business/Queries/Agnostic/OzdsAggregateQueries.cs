@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Extensions;
@@ -20,7 +21,7 @@ public class OzdsAggregateQueries(
     modelEntityConverter;
 
   public async Task<PaginatedList<T>> Read<T>(
-    IEnumerable<string> whereClauses,
+    IEnumerable<Expression<Func<AggregateEntity, bool>>> whereClauses,
     DateTimeOffset fromDate,
     DateTimeOffset toDate,
     int pageNumber = QueryConstants.StartingPage,
@@ -33,19 +34,24 @@ public class OzdsAggregateQueries(
         as IQueryable<AggregateEntity>
       ?? throw new InvalidOperationException(
         $"No DbSet found for {dbSetType}");
+
     var filtered = whereClauses.Aggregate(
       queryable,
-      (current, clause) => current.WhereDynamic(clause));
+      (current, clause) => current.Where(clause));
+
     var timeFiltered = filtered
       .Where(aggregate => aggregate.Timestamp >= fromDate)
       .Where(aggregate => aggregate.Timestamp < toDate);
+
     var count = await timeFiltered.CountAsync();
     var ordered = timeFiltered
       .OrderByDescending(aggregate => aggregate.Timestamp);
+
     var items = await ordered
       .Skip((pageNumber - 1) * pageCount)
       .Take(pageCount)
       .ToListAsync();
+
     return items
       .Select(_modelEntityConverter.ToModel)
       .OfType<T>()
@@ -53,7 +59,7 @@ public class OzdsAggregateQueries(
   }
 
   public async Task<List<IAggregate>> ReadAgnostic(
-    IEnumerable<string> whereClauses,
+    IEnumerable<Expression<Func<AggregateEntity, bool>>> whereClauses,
     DateTimeOffset fromDate,
     DateTimeOffset toDate,
     int pageNumber = QueryConstants.StartingPage,
