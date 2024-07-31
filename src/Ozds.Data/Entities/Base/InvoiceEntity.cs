@@ -22,6 +22,8 @@ public abstract class InvoiceEntity : IReadonlyEntity, IIdentifiableEntity
 
   public decimal Total_EUR { get; set; } = default!;
 
+  public decimal TaxRate_Percent { get; set; } = default!;
+
   public decimal Tax_EUR { get; set; } = default!;
 
   public decimal TotalWithTax_EUR { get; set; } = default!;

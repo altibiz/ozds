@@ -63,7 +63,7 @@ public abstract class
 
   protected abstract TMeasurementRecord CopyRecord(TMeasurementRecord record);
 
-  protected float DiffMultiplier(
+  protected decimal DiffMultiplier(
     DateTimeOffset timestamp,
     DateTimeOffset firstTimestamp,
     DateTimeOffset lastTimestamp

@@ -17,13 +17,13 @@
                            Items="gaugeValue"
                            SeriesType=SeriesType.RadialBar
                            Name="@T["Search"]"
-                           XValue="@(e => FloatString(e.value / 1000, 2) + " kW")"
+                           XValue="@(e => NumericString(e.value / 1000, 2) + " kW")"
                            YAggregate="@(e => (decimal?)Math.Round((double)e.First().percent, 2))"
                            OrderByDescending="e => e.X"/>
         </ApexChart>
       </MudContainer>
       <MudText Typo="Typo.body1" Style="font-weight: bold;margin-top: -30px;text-align: center; color: #adadad;" Class="m-0">
-        @T["Relative to connected power"] (@(FloatString(connectionMaxPower / 1000) + " kW"))
+        @T["Relative to connected power"] (@(NumericString(connectionMaxPower / 1000) + " kW"))
       </MudText>
     </MudPaper>
   </MudHidden>
@@ -43,13 +43,13 @@
                            Items="gaugeValue"
                            SeriesType=SeriesType.RadialBar
                            Name="@T["Search"]"
-                           XValue="@(e => FloatString(e.value / 1000, 2) + " kW")"
+                           XValue="@(e => NumericString(e.value / 1000, 2) + " kW")"
                            YAggregate="@(e => (decimal?)Math.Round((double)e.First().percent, 2))"
                            OrderByDescending="e => e.X"/>
         </ApexChart>
       </MudContainer>
       <MudText Typo="Typo.body1" Style="font-weight: bold;margin-top: -30px;text-align: center; color: #adadad;" Class="m-0">
-        @T["Relative to connected power"] <br> (@(FloatString(connectionMaxPower / 1000) + " kW"))
+        @T["Relative to connected power"] <br> (@(NumericString(connectionMaxPower / 1000) + " kW"))
       </MudText>
     </MudPaper>
   </MudHidden>
@@ -62,19 +62,19 @@
 
   private IMeter? _meter;
   private ApexChart<GaugeData> gauge = default!;
-  private float thisMonthCurrentPower = 0;
+  private decimal thisMonthCurrentPower = 0;
   private List<GaugeData> gaugeValue = new();
   private ApexChartOptions<GaugeData> gaugeOptions = NewApexChartOptions<GaugeData>();
-  private float connectionMaxPower = 100000;
+  private decimal connectionMaxPower = 100000;
   OzdsMeasurementQueries measureQueries = default!;
 
   private class GaugeData
   {
-    public float value = 10;
-    public float valueMax = 100000;
-    public float percent = 50;
+    public decimal value = 10;
+    public decimal valueMax = 100000;
+    public decimal percent = 50;
 
-    public GaugeData(float val, float max)
+    public GaugeData(decimal val, decimal max)
     {
       value = val;
       valueMax = max;

@@ -48,10 +48,11 @@ public class
         )
       );
 
-    var usageFeeTotal =
-      usageActiveEnergyTotalImportT0.Total_EUR
-      + usageReactiveEnergyTotalRampedT0.Total_EUR
-      + usageMeterFee.Total_EUR;
+    var usageFeeTotal = System.Math.Round(
+      usageActiveEnergyTotalImportT0.Total
+      + usageReactiveEnergyTotalRampedT0.Total
+      + usageMeterFee.Total,
+      2);
 
     var supplyActiveEnergyTotalImportT1 = _calculationItemCalculator
       .Calculate<SupplyActiveEnergyTotalImportT1CalculationItemModel>(
@@ -85,27 +86,26 @@ public class
         )
       );
 
-    var supplyFeeTotal =
-      supplyActiveEnergyTotalImportT1.Total_EUR
-      + supplyActiveEnergyTotalImportT2.Total_EUR
-      + supplyBusinessUsageFee.Total_EUR
-      + supplyRenewableEnergyFee.Total_EUR;
+    var supplyFeeTotal = System.Math.Round(
+      supplyActiveEnergyTotalImportT1.Total
+      + supplyActiveEnergyTotalImportT2.Total
+      + supplyBusinessUsageFee.Total
+      + supplyRenewableEnergyFee.Total,
+      2);
+
+    var total = System.Math.Round(usageFeeTotal + supplyFeeTotal, 2);
 
     var initial = new BlueLowNetworkUserCalculationModel
     {
       Id = default!,
       Title =
-        $"${
-          usageCatalogue.Title
-        } calculation for {
-          calculationBasis.NetworkUser.Title
-        } at {
-          calculationBasis.Location.Title
-        }",
+        $"{usageCatalogue.Title} calculation for "
+        + $"{calculationBasis.NetworkUser.Title} at "
+        + $"{calculationBasis.Location.Title}",
       MeterId = calculationBasis.Meter.Id,
       ToDate = calculationBasis.ToDate,
       FromDate = calculationBasis.FromDate,
-      NetworkUserInvoiceId = calculationBasis.NetworkUser.Id,
+      NetworkUserInvoiceId = default!,
       UsageNetworkUserCatalogueId = usageCatalogue.Id,
       SupplyRegulatoryCatalogueId =
         calculationBasis.SupplyRegulatoryCatalogue.Id,
@@ -128,7 +128,7 @@ public class
       SupplyBusinessUsageFee = supplyBusinessUsageFee,
       SupplyRenewableEnergyFee = supplyRenewableEnergyFee,
       SupplyFeeTotal_EUR = supplyFeeTotal,
-      Total_EUR = usageFeeTotal + supplyFeeTotal
+      Total_EUR = total
     };
 
     return initial;

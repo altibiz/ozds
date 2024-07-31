@@ -42,13 +42,16 @@ public static class
   {
     return new UsageReactiveEnergyTotalRampedT0CalculationItemEntity
     {
-      ImportMin_VARh = model.ImportMin_VARh,
-      ImportMax_VARh = model.ImportMax_VARh,
-      ImportAmount_VARh = model.ImportAmount_VARh,
-      ExportMin_VARh = model.ExportMin_VARh,
-      ExportMax_VARh = model.ExportMax_VARh,
-      ExportAmount_VARh = model.ExportAmount_VARh,
-      Amount_VARh = model.Amount_VARh,
+      ReactiveImportMin_kVARh = model.ReactiveImportMin_kVARh,
+      ReactiveImportMax_kVARh = model.ReactiveImportMax_kVARh,
+      ReactiveImportAmount_kVARh = model.ReactiveImportAmount_kVARh,
+      ReactiveExportMin_kVARh = model.ReactiveExportMin_kVARh,
+      ReactiveExportMax_kVARh = model.ReactiveExportMax_kVARh,
+      ReactiveExportAmount_kVARh = model.ReactiveExportAmount_kVARh,
+      ActiveImportMin_kWh = model.ActiveImportMin_kWh,
+      ActiveImportMax_kWh = model.ActiveImportMax_kWh,
+      ActiveImportAmount_kWh = model.ActiveImportAmount_kWh,
+      Amount_kVARh = model.Amount_kVARh,
       Price_EUR = model.Price_EUR,
       Total_EUR = model.Total_EUR
     };
@@ -59,13 +62,16 @@ public static class
   {
     return new UsageReactiveEnergyTotalRampedT0CalculationItemModel
     {
-      ImportMin_VARh = entity.ImportMin_VARh,
-      ImportMax_VARh = entity.ImportMax_VARh,
-      ImportAmount_VARh = entity.ImportAmount_VARh,
-      ExportMin_VARh = entity.ExportMin_VARh,
-      ExportMax_VARh = entity.ExportMax_VARh,
-      ExportAmount_VARh = entity.ExportAmount_VARh,
-      Amount_VARh = entity.Amount_VARh,
+      ReactiveImportMin_kVARh = entity.ReactiveImportMin_kVARh,
+      ReactiveImportMax_kVARh = entity.ReactiveImportMax_kVARh,
+      ReactiveImportAmount_kVARh = entity.ReactiveImportAmount_kVARh,
+      ReactiveExportMin_kVARh = entity.ReactiveExportMin_kVARh,
+      ReactiveExportMax_kVARh = entity.ReactiveExportMax_kVARh,
+      ReactiveExportAmount_kVARh = entity.ReactiveExportAmount_kVARh,
+      ActiveImportMin_kWh = entity.ActiveImportMin_kWh,
+      ActiveImportMax_kWh = entity.ActiveImportMax_kWh,
+      ActiveImportAmount_kWh = entity.ActiveImportAmount_kWh,
+      Amount_kVARh = entity.Amount_kVARh,
       Price_EUR = entity.Price_EUR,
       Total_EUR = entity.Total_EUR
     };

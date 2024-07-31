@@ -76,27 +76,27 @@ public class
 
     builder
       .Property(nameof(AbbB2xMeasurementEntity.ActivePowerL1NetT0_W))
-      .HasColumnName("active_power_l1_any_t0_w");
+      .HasColumnName("active_power_l1_net_t0_w");
 
     builder
       .Property(nameof(AbbB2xMeasurementEntity.ActivePowerL2NetT0_W))
-      .HasColumnName("active_power_l2_any_t0_w");
+      .HasColumnName("active_power_l2_net_t0_w");
 
     builder
       .Property(nameof(AbbB2xMeasurementEntity.ActivePowerL3NetT0_W))
-      .HasColumnName("active_power_l3_any_t0_w");
+      .HasColumnName("active_power_l3_net_t0_w");
 
     builder
       .Property(nameof(AbbB2xMeasurementEntity.ReactivePowerL1NetT0_VAR))
-      .HasColumnName("reactive_power_l1_any_t0_var");
+      .HasColumnName("reactive_power_l1_net_t0_var");
 
     builder
       .Property(nameof(AbbB2xMeasurementEntity.ReactivePowerL2NetT0_VAR))
-      .HasColumnName("reactive_power_l2_any_t0_var");
+      .HasColumnName("reactive_power_l2_net_t0_var");
 
     builder
       .Property(nameof(AbbB2xMeasurementEntity.ReactivePowerL3NetT0_VAR))
-      .HasColumnName("reactive_power_l3_any_t0_var");
+      .HasColumnName("reactive_power_l3_net_t0_var");
 
     builder
       .Property(nameof(AbbB2xMeasurementEntity.ActiveEnergyL1ImportT0_Wh))

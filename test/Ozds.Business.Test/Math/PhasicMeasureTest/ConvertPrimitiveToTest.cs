@@ -1,6 +1,5 @@
 using System.Numerics;
 using Ozds.Business.Math;
-using Xunit;
 
 namespace Ozds.Business.Test.Math.PhasicMeasureTest;
 

@@ -19,6 +19,11 @@ provideFormatter = true
 format = { enable = true }
 json = { validate = { enable = true } }
 
+[language-server.pyright-langserver]
+command = "pyright-langserver"
+args = ["--stdio"]
+config = {}
+
 [[language]]
 name = "nix"
 auto-format = true
@@ -29,6 +34,12 @@ language-servers = ["nil"]
 name = "c-sharp"
 language-servers = ["omnisharp"]
 auto-format = true
+
+[[language]]
+name = "python"
+auto-format = true
+formatter = { command = "yapf" }
+language-servers = ["pyright-langserver"]
 
 # [[language]]
 # name = "razor"

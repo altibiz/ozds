@@ -53,13 +53,13 @@ public class RedLowNetworkUserCalculationModel
           new ImportExportDuplexMeasure<decimal>(
             new SinglePhasicMeasure<decimal>(
               UsageActiveEnergyTotalImportT1
-                .Min_Wh),
+                .Min_kWh),
             new NullPhasicMeasure<decimal>()
           ),
           new ImportExportDuplexMeasure<decimal>(
             new SinglePhasicMeasure<decimal>(
               UsageActiveEnergyTotalImportT2
-                .Min_Wh),
+                .Min_kWh),
             new NullPhasicMeasure<decimal>()
           )
         ),
@@ -67,13 +67,13 @@ public class RedLowNetworkUserCalculationModel
           new ImportExportDuplexMeasure<decimal>(
             new SinglePhasicMeasure<decimal>(
               UsageActiveEnergyTotalImportT2
-                .Max_Wh),
+                .Max_kWh),
             new NullPhasicMeasure<decimal>()
           ),
           new ImportExportDuplexMeasure<decimal>(
             new SinglePhasicMeasure<decimal>(
               UsageActiveEnergyTotalImportT2
-                .Max_Wh),
+                .Max_kWh),
             new NullPhasicMeasure<decimal>()
           )
         )
@@ -126,17 +126,17 @@ public class RedLowNetworkUserCalculationModel
         new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
             new SinglePhasicMeasure<decimal>(
-              UsageReactiveEnergyTotalRampedT0.ImportMin_VARh),
+              UsageReactiveEnergyTotalRampedT0.ReactiveImportMin_kVARh),
             new SinglePhasicMeasure<decimal>(
-              UsageReactiveEnergyTotalRampedT0.ExportMin_VARh)
+              UsageReactiveEnergyTotalRampedT0.ReactiveExportMin_kVARh)
           )
         ),
         new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
             new SinglePhasicMeasure<decimal>(
-              UsageReactiveEnergyTotalRampedT0.ImportMax_VARh),
+              UsageReactiveEnergyTotalRampedT0.ReactiveImportMax_kVARh),
             new SinglePhasicMeasure<decimal>(
-              UsageReactiveEnergyTotalRampedT0.ExportMax_VARh)
+              UsageReactiveEnergyTotalRampedT0.ReactiveExportMax_kVARh)
           )
         )
       );
@@ -168,7 +168,7 @@ public class RedLowNetworkUserCalculationModel
           new ImportExportDuplexMeasure<decimal>(
             new SinglePhasicMeasure<decimal>(
               UsageActivePowerTotalImportT1Peak
-                .Amount_W),
+                .Amount_kW),
             new NullPhasicMeasure<decimal>()
           ),
           DuplexMeasure<decimal>.Null

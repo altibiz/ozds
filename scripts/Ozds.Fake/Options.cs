@@ -2,7 +2,7 @@ using CommandLine;
 
 namespace Ozds.Fake;
 
-public enum Seed
+public enum SeedInterval
 {
   Hour,
   Day,
@@ -12,7 +12,8 @@ public enum Seed
   Year
 }
 
-public class Options
+[Verb("push", HelpText = "Push measurements to the API.")]
+public class PushOptions
 {
   [Option('b', "base-url", Required = false, HelpText = "Base URL of the API.")]
   public string BaseUrl { get; set; } = "http://localhost:5000";
@@ -31,16 +32,54 @@ public class Options
 
   [Option('n', "interval", Required = false, HelpText = "Interval in seconds.")]
   public int Interval_s { get; set; } = 60;
+}
 
-  [Option(
-    's', "seed", Required = false,
-    HelpText = "Seed the database with a desired interval.")]
-  public Seed? Seed { get; set; } = default;
+[Verb("seed", HelpText = "Seed the database with a desired interval.")]
+public class SeedOptions
+{
+  [Option('i', "interval", Required = false, HelpText = "Desired interval.")]
+  public SeedInterval Interval { get; set; } = SeedInterval.Hour;
 
   [Option('b', "batch-size", Required = false, HelpText = "Batch size.")]
   public int BatchSize { get; set; } = 10000;
 
-  public static Options Parse(string[] args)
+  [Option('b', "base-url", Required = false, HelpText = "Base URL of the API.")]
+  public string BaseUrl { get; set; } = "http://localhost:5000";
+
+  [Option('a', "api-key", Required = false, HelpText = "API key.")]
+  public string ApiKey { get; set; } = "messenger";
+
+  [Option('m', "messenger-id", Required = false, HelpText = "Messenger ID.")]
+  public string MessengerId { get; set; } = "messenger";
+
+  [Option('i', "meter-ids", Required = false, HelpText = "Meter IDs.")]
+  public IEnumerable<string> MeterIds { get; set; } = Array.Empty<string>();
+
+  [Option('t', "timeout", Required = false, HelpText = "Timeout in seconds.")]
+  public int Timeout_s { get; set; } = 3;
+}
+
+[Verb("altibiz", HelpText = "Fake Altibiz ERP web application.")]
+public class AltibizOptions
+{
+  [Option('o', "host", Required = false, HelpText = "RabbitMQ host.")]
+  public string Host { get; set; } = "localhost";
+
+  [Option(
+    'i', "virtual-host", Required = false,
+    HelpText = "RabbitMQ virtual host.")]
+  public string VirtualHost { get; set; } = "/";
+
+  [Option('u', "username", Required = false, HelpText = "RabbitMQ username.")]
+  public string Username { get; set; } = "ozds";
+
+  [Option('p', "password", Required = false, HelpText = "RabbitMQ password.")]
+  public string Password { get; set; } = "ozds";
+}
+
+public static class Options
+{
+  public static object? Parse(string[] args)
   {
     try
     {
@@ -51,7 +90,7 @@ public class Options
           with.AutoHelp = true;
           with.AutoVersion = true;
           with.HelpWriter = Console.Out;
-        }).ParseArguments<Options>(args);
+        }).ParseArguments<PushOptions, SeedOptions, AltibizOptions>(args);
 
       if (result.Tag == ParserResultType.NotParsed)
       {
@@ -78,6 +117,6 @@ public class Options
       Environment.Exit(1);
     }
 
-    return default!; // NOTE: unreachable
+    return default;
   }
 }

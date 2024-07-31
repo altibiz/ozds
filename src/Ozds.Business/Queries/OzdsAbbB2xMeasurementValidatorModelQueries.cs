@@ -7,10 +7,11 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Queries;
 
-public class OzdsAbbB2xMeasurementValidatorModelQueries(OzdsDbContext context)
+public class OzdsAbbB2xMeasurementValidatorModelQueries(
+  OzdsDataDbContext context)
   : IOzdsQueries
 {
-  private readonly OzdsDbContext context = context;
+  private readonly OzdsDataDbContext context = context;
 
   public async Task<AbbB2xMeasurementValidatorModel?>
     AbbB2xMeasurementValidatorById(string id)

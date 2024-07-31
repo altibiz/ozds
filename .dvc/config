@@ -1,4 +1,6 @@
 [core]
     remote = azure
+[cache]
+    dir = cache
 ['remote "azure"']
     url = azure://ozds

@@ -33,6 +33,7 @@ public static class LocationInvoiceModelEntityConverterExtensions
       LocationId = entity.LocationId,
       ArchivedLocation = entity.ArchivedLocation.ToModel(),
       Total_EUR = entity.Total_EUR,
+      TaxRate_Percent = entity.TaxRate_Percent,
       Tax_EUR = entity.Tax_EUR,
       TotalWithTax_EUR = entity.TotalWithTax_EUR
     };
@@ -51,6 +52,7 @@ public static class LocationInvoiceModelEntityConverterExtensions
       LocationId = model.LocationId,
       ArchivedLocation = model.ArchivedLocation.ToEntity(),
       Total_EUR = model.Total_EUR,
+      TaxRate_Percent = model.TaxRate_Percent,
       Tax_EUR = model.Tax_EUR,
       TotalWithTax_EUR = model.TotalWithTax_EUR
     };

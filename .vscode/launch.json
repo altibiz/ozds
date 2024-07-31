@@ -41,7 +41,7 @@
       }
     },
     {
-      "name": "debug-fake",
+      "name": "debug-push",
       "type": "coreclr",
       "request": "launch",
       "program": "${workspaceFolder}/scripts/Ozds.Fake/bin/Debug/net8.0/Ozds.Fake.dll",
@@ -50,10 +50,15 @@
       "stopAtEntry": false,
       "requireExactSource": false,
       "args": [
-        "--seed",
-        "week",
+        "push",
+        "--timeout",
+        "1",
+        "--interval",
+        "3",
         "--meter-ids",
         "abb-B2x-1624226",
+        "abb-B2x-1856212",
+        "abb-B2x-1856214",
         "schneider-iEM3xxx-19453067"
       ],
       "env": {
@@ -65,7 +70,7 @@
       }
     },
     {
-      "name": "debug-fake-external",
+      "name": "debug-push-external",
       "type": "coreclr",
       "request": "launch",
       "program": "${workspaceFolder}/scripts/Ozds.Fake/bin/Debug/net8.0/Ozds.Fake.dll",
@@ -74,12 +79,15 @@
       "stopAtEntry": false,
       "requireExactSource": false,
       "args": [
+        "push",
         "--timeout",
         "1",
         "--interval",
         "3",
         "--meter-ids",
         "abb-B2x-1624226",
+        "abb-B2x-1856212",
+        "abb-B2x-1856214",
         "schneider-iEM3xxx-19453067"
       ],
       "env": {
@@ -105,10 +113,13 @@
       "stopAtEntry": false,
       "requireExactSource": false,
       "args": [
-        "--seed",
+        "seed",
+        "--interval",
         "week",
         "--meter-ids",
         "abb-B2x-1624226",
+        "abb-B2x-1856212",
+        "abb-B2x-1856214",
         "schneider-iEM3xxx-19453067"
       ],
       "env": {
@@ -129,12 +140,56 @@
       "stopAtEntry": false,
       "requireExactSource": false,
       "args": [
-        "--seed",
+        "seed",
+        "--interval",
         "week",
         "--meter-ids",
         "abb-B2x-1624226",
+        "abb-B2x-1856212",
+        "abb-B2x-1856214",
         "schneider-iEM3xxx-19453067"
       ],
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DOTNET_ENVIRONMENT": "Development"
+      },
+      "logging": {
+        "moduleLoad": false
+      },
+      "justMyCode": false,
+      "symbolOptions": {
+        "searchMicrosoftSymbolFake": true,
+        "searchNuGetOrgSymbolFake": true
+      }
+    },
+    {
+      "name": "debug-altibiz",
+      "type": "coreclr",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/Ozds.Fake/bin/Debug/net8.0/Ozds.Fake.dll",
+      "preLaunchTask": "build-fake",
+      "cwd": "${workspaceFolder}/scripts/Ozds.Fake",
+      "stopAtEntry": false,
+      "requireExactSource": false,
+      "args": ["altibiz"],
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DOTNET_ENVIRONMENT": "Development"
+      },
+      "logging": {
+        "moduleLoad": false
+      }
+    },
+    {
+      "name": "debug-altibiz-external",
+      "type": "coreclr",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/Ozds.Fake/bin/Debug/net8.0/Ozds.Fake.dll",
+      "preLaunchTask": "build-fake",
+      "cwd": "${workspaceFolder}/scripts/Ozds.Fake",
+      "stopAtEntry": false,
+      "requireExactSource": false,
+      "args": ["altibiz"],
       "env": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "DOTNET_ENVIRONMENT": "Development"

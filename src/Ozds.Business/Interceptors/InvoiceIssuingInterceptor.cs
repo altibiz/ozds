@@ -11,17 +11,12 @@ public class InvoiceIssuingInterceptor(IServiceProvider serviceProvider)
 {
   public override InterceptionResult<int> SavingChanges(
     DbContextEventData eventData,
-    InterceptionResult<int> result)
-  {
-    IssueInvoices(eventData);
-    return base.SavingChanges(eventData, result);
-  }
-
-  private void IssueInvoices(DbContextEventData eventData)
+    InterceptionResult<int> result
+  )
   {
     if (eventData.Context is null)
     {
-      return;
+      return base.SavingChanges(eventData, result);
     }
 
     var representativeId = GetRepresentativeId();
@@ -38,6 +33,8 @@ public class InvoiceIssuingInterceptor(IServiceProvider serviceProvider)
       entity.IssuedOn = now;
       entity.IssuedById = representativeId;
     }
+
+    return base.SavingChanges(eventData, result);
   }
 
   private string? GetRepresentativeId()

@@ -1,14 +1,20 @@
+using OrchardCore.Logging;
 using Ozds.Business.Extensions;
 using Ozds.Client.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
+if (builder.Environment.IsDevelopment())
+{
+  builder.Host.UseNLogHost();
+}
+
 builder.Services
   .AddOrchardCms()
   .AddSetupFeatures("OrchardCore.AutoSetup")
   .ConfigureServices(
     services => services
-      .AddOzdsClient(builder.Environment.IsDevelopment())
-      .AddOzdsBusinessClient(builder.Environment.IsDevelopment()))
+      .AddOzdsClient(builder)
+      .AddOzdsBusinessClient(builder))
   .Configure(
     (_, endpoints) => endpoints
       .MapOzdsClient("App", "Index", "/app")
@@ -17,7 +23,8 @@ builder.Services
       .MapOzdsIot("Iot", "Update", "/iot/update"))
   .Configure(
     app => app
-      .MigrateOzdsData());
+      .MigrateOzdsData()
+      .MigrateOzdsMessaging());
 
 var app = builder.Build();
 

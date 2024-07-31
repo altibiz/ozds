@@ -17,7 +17,26 @@ services:
       interval: 1m
       timeout: 10s
       retries: 10
+  rabbitmq:
+    image: rabbitmq:3.13-management
+    restart: always
+    profiles: [all]
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=ozds
+      - RABBITMQ_DEFAULT_PASS=ozds
+    ports:
+      - 5672:5672
+      - 15672:15672
+    healthcheck:
+      test: ["CMD-SHELL", "rabbitmqctl node_health_check"]
+      interval: 1m
+      timeout: 10s
+      retries: 10
 
 volumes:
   postgres_data:
+    driver: local
+  rabbitmq_data:
     driver: local

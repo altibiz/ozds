@@ -107,14 +107,18 @@ public abstract class NetworkUserCalculationModel : CalculationModel,
   {
     get
     {
-      var result =
-        ReactiveEnergyAmount_Wh.SpanDiff().Select(
-            duplex =>
-              new AnyDuplexMeasure<decimal>(duplex.DuplexAbs().DuplexSum()))
-          .Subtract(
-            ActiveEnergyAmount_Wh.SpanDiff().Select(
+      var result = ReactiveEnergyAmount_Wh
+        .SpanDiff()
+        .Select(
+          duplex =>
+            new AnyDuplexMeasure<decimal>(duplex.DuplexAbs().DuplexSum()))
+        .Subtract(
+          ActiveEnergyAmount_Wh
+            .SpanDiff()
+            .Select(
               duplex =>
-                new AnyDuplexMeasure<decimal>(duplex.DuplexAny())));
+                new AnyDuplexMeasure<decimal>(duplex.DuplexImport()))
+            .Multiply(0.33M));
 
       return result
         .Select(

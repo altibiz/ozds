@@ -10,11 +10,17 @@ public class UsageMeterFeeCalculationItemCalculator :
   protected override UsageMeterFeeCalculationItemModel CalculateConcrete(
     CalculationItemBasisModel calculationBasis)
   {
+    var amount = System.Math.Round(1M, 0);
+
+    var price = System.Math.Round(calculationBasis.Price, 3);
+
+    var total = System.Math.Round(amount * price, 2);
+
     return new UsageMeterFeeCalculationItemModel
     {
-      Amount_N = 1,
-      Price_EUR = calculationBasis.Price,
-      Total_EUR = calculationBasis.Price
+      Amount_N = amount,
+      Price_EUR = price,
+      Total_EUR = total
     };
   }
 }

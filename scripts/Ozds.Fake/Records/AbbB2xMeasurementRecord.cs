@@ -6,38 +6,38 @@ namespace Ozds.Fake.Records;
 public class AbbB2xMeasurementRecord : MeasurementRecord
 {
 #pragma warning disable CA1707
-  public required float VoltageL1AnyT0_V { get; set; }
-  public required float VoltageL2AnyT0_V { get; set; }
-  public required float VoltageL3AnyT0_V { get; set; }
-  public required float CurrentL1AnyT0_A { get; set; }
-  public required float CurrentL2AnyT0_A { get; set; }
-  public required float CurrentL3AnyT0_A { get; set; }
-  public required float ActivePowerL1NetT0_W { get; set; }
-  public required float ActivePowerL2NetT0_W { get; set; }
-  public required float ActivePowerL3NetT0_W { get; set; }
-  public required float ReactivePowerL1NetT0_VAR { get; set; }
-  public required float ReactivePowerL2NetT0_VAR { get; set; }
-  public required float ReactivePowerL3NetT0_VAR { get; set; }
-  public required float ActiveEnergyL1ImportT0_Wh { get; set; }
-  public required float ActiveEnergyL2ImportT0_Wh { get; set; }
-  public required float ActiveEnergyL3ImportT0_Wh { get; set; }
-  public required float ActiveEnergyL1ExportT0_Wh { get; set; }
-  public required float ActiveEnergyL2ExportT0_Wh { get; set; }
-  public required float ActiveEnergyL3ExportT0_Wh { get; set; }
-  public required float ReactiveEnergyL1ImportT0_VARh { get; set; }
-  public required float ReactiveEnergyL2ImportT0_VARh { get; set; }
-  public required float ReactiveEnergyL3ImportT0_VARh { get; set; }
-  public required float ReactiveEnergyL1ExportT0_VARh { get; set; }
-  public required float ReactiveEnergyL2ExportT0_VARh { get; set; }
-  public required float ReactiveEnergyL3ExportT0_VARh { get; set; }
-  public required float ActiveEnergyTotalImportT0_Wh { get; set; }
-  public required float ActiveEnergyTotalExportT0_Wh { get; set; }
-  public required float ReactiveEnergyTotalImportT0_VARh { get; set; }
-  public required float ReactiveEnergyTotalExportT0_VARh { get; set; }
-  public required float ActiveEnergyTotalImportT1_Wh { get; set; }
-  public required float ActiveEnergyTotalImportT2_Wh { get; set; }
+  public required decimal VoltageL1AnyT0_V { get; set; }
+  public required decimal VoltageL2AnyT0_V { get; set; }
+  public required decimal VoltageL3AnyT0_V { get; set; }
+  public required decimal CurrentL1AnyT0_A { get; set; }
+  public required decimal CurrentL2AnyT0_A { get; set; }
+  public required decimal CurrentL3AnyT0_A { get; set; }
+  public required decimal ActivePowerL1NetT0_W { get; set; }
+  public required decimal ActivePowerL2NetT0_W { get; set; }
+  public required decimal ActivePowerL3NetT0_W { get; set; }
+  public required decimal ReactivePowerL1NetT0_VAR { get; set; }
+  public required decimal ReactivePowerL2NetT0_VAR { get; set; }
+  public required decimal ReactivePowerL3NetT0_VAR { get; set; }
+  public required decimal ActiveEnergyL1ImportT0_Wh { get; set; }
+  public required decimal ActiveEnergyL2ImportT0_Wh { get; set; }
+  public required decimal ActiveEnergyL3ImportT0_Wh { get; set; }
+  public required decimal ActiveEnergyL1ExportT0_Wh { get; set; }
+  public required decimal ActiveEnergyL2ExportT0_Wh { get; set; }
+  public required decimal ActiveEnergyL3ExportT0_Wh { get; set; }
+  public required decimal ReactiveEnergyL1ImportT0_VARh { get; set; }
+  public required decimal ReactiveEnergyL2ImportT0_VARh { get; set; }
+  public required decimal ReactiveEnergyL3ImportT0_VARh { get; set; }
+  public required decimal ReactiveEnergyL1ExportT0_VARh { get; set; }
+  public required decimal ReactiveEnergyL2ExportT0_VARh { get; set; }
+  public required decimal ReactiveEnergyL3ExportT0_VARh { get; set; }
+  public required decimal ActiveEnergyTotalImportT0_Wh { get; set; }
+  public required decimal ActiveEnergyTotalExportT0_Wh { get; set; }
+  public required decimal ReactiveEnergyTotalImportT0_VARh { get; set; }
+  public required decimal ReactiveEnergyTotalExportT0_VARh { get; set; }
+  public required decimal ActiveEnergyTotalImportT1_Wh { get; set; }
+  public required decimal ActiveEnergyTotalImportT2_Wh { get; set; }
 
-  public override TariffMeasure<float> ActiveEnergy_Wh
+  public override TariffMeasure<decimal> ActiveEnergy_Wh
   {
     get
     {
@@ -47,64 +47,64 @@ public class AbbB2xMeasurementRecord : MeasurementRecord
         || ActiveEnergyL1ExportT0_Wh is not 0
         || ActiveEnergyL2ExportT0_Wh is not 0
         || ActiveEnergyL3ExportT0_Wh is not 0
-          ? new CompositeTariffMeasure<float>(
+          ? new CompositeTariffMeasure<decimal>(
           [
-            new UnaryTariffMeasure<float>(
-              new ImportExportDuplexMeasure<float>(
-                new CompositePhasicMeasure<float>(
+            new UnaryTariffMeasure<decimal>(
+              new ImportExportDuplexMeasure<decimal>(
+                new CompositePhasicMeasure<decimal>(
                 [
-                  new TriPhasicMeasure<float>(
+                  new TriPhasicMeasure<decimal>(
                     ActiveEnergyL1ImportT0_Wh,
                     ActiveEnergyL2ImportT0_Wh,
                     ActiveEnergyL3ImportT0_Wh
                   ),
-                  new SinglePhasicMeasure<float>(ActiveEnergyTotalImportT0_Wh)
+                  new SinglePhasicMeasure<decimal>(ActiveEnergyTotalImportT0_Wh)
                 ]),
-                new CompositePhasicMeasure<float>(
+                new CompositePhasicMeasure<decimal>(
                 [
-                  new TriPhasicMeasure<float>(
+                  new TriPhasicMeasure<decimal>(
                     ActiveEnergyL1ExportT0_Wh,
                     ActiveEnergyL2ExportT0_Wh,
                     ActiveEnergyL3ExportT0_Wh
                   ),
-                  new SinglePhasicMeasure<float>(ActiveEnergyTotalExportT0_Wh)
+                  new SinglePhasicMeasure<decimal>(ActiveEnergyTotalExportT0_Wh)
                 ])
               )
             ),
-            new BinaryTariffMeasure<float>(
-              new ImportExportDuplexMeasure<float>(
-                new SinglePhasicMeasure<float>(ActiveEnergyTotalImportT1_Wh),
-                PhasicMeasure<float>.Null
+            new BinaryTariffMeasure<decimal>(
+              new ImportExportDuplexMeasure<decimal>(
+                new SinglePhasicMeasure<decimal>(ActiveEnergyTotalImportT1_Wh),
+                PhasicMeasure<decimal>.Null
               ),
-              new ImportExportDuplexMeasure<float>(
-                new SinglePhasicMeasure<float>(ActiveEnergyTotalImportT2_Wh),
-                PhasicMeasure<float>.Null
+              new ImportExportDuplexMeasure<decimal>(
+                new SinglePhasicMeasure<decimal>(ActiveEnergyTotalImportT2_Wh),
+                PhasicMeasure<decimal>.Null
               )
             )
           ])
-          : new CompositeTariffMeasure<float>(
+          : new CompositeTariffMeasure<decimal>(
           [
-            new UnaryTariffMeasure<float>(
-              new ImportExportDuplexMeasure<float>(
-                new SinglePhasicMeasure<float>(ActiveEnergyTotalImportT0_Wh),
-                new SinglePhasicMeasure<float>(ActiveEnergyTotalExportT0_Wh)
+            new UnaryTariffMeasure<decimal>(
+              new ImportExportDuplexMeasure<decimal>(
+                new SinglePhasicMeasure<decimal>(ActiveEnergyTotalImportT0_Wh),
+                new SinglePhasicMeasure<decimal>(ActiveEnergyTotalExportT0_Wh)
               )
             ),
-            new BinaryTariffMeasure<float>(
-              new ImportExportDuplexMeasure<float>(
-                new SinglePhasicMeasure<float>(ActiveEnergyTotalImportT1_Wh),
-                PhasicMeasure<float>.Null
+            new BinaryTariffMeasure<decimal>(
+              new ImportExportDuplexMeasure<decimal>(
+                new SinglePhasicMeasure<decimal>(ActiveEnergyTotalImportT1_Wh),
+                PhasicMeasure<decimal>.Null
               ),
-              new ImportExportDuplexMeasure<float>(
-                new SinglePhasicMeasure<float>(ActiveEnergyTotalImportT2_Wh),
-                PhasicMeasure<float>.Null
+              new ImportExportDuplexMeasure<decimal>(
+                new SinglePhasicMeasure<decimal>(ActiveEnergyTotalImportT2_Wh),
+                PhasicMeasure<decimal>.Null
               )
             )
           ]);
     }
   }
 
-  public override TariffMeasure<float> ReactiveEnergy_VARh
+  public override TariffMeasure<decimal> ReactiveEnergy_VARh
   {
     get
     {
@@ -114,40 +114,43 @@ public class AbbB2xMeasurementRecord : MeasurementRecord
         || ReactiveEnergyL1ExportT0_VARh is not 0
         || ReactiveEnergyL2ExportT0_VARh is not 0
         || ReactiveEnergyL3ExportT0_VARh is not 0
-          ? new UnaryTariffMeasure<float>(
-            new ImportExportDuplexMeasure<float>(
-              new CompositePhasicMeasure<float>(
+          ? new UnaryTariffMeasure<decimal>(
+            new ImportExportDuplexMeasure<decimal>(
+              new CompositePhasicMeasure<decimal>(
               [
-                new TriPhasicMeasure<float>(
+                new TriPhasicMeasure<decimal>(
                   ReactiveEnergyL1ImportT0_VARh,
                   ReactiveEnergyL2ImportT0_VARh,
                   ReactiveEnergyL3ImportT0_VARh
                 ),
-                new SinglePhasicMeasure<float>(ReactiveEnergyTotalImportT0_VARh)
+                new SinglePhasicMeasure<decimal>(
+                  ReactiveEnergyTotalImportT0_VARh)
               ]),
-              new CompositePhasicMeasure<float>(
+              new CompositePhasicMeasure<decimal>(
               [
-                new TriPhasicMeasure<float>(
+                new TriPhasicMeasure<decimal>(
                   ReactiveEnergyL1ExportT0_VARh,
                   ReactiveEnergyL2ExportT0_VARh,
                   ReactiveEnergyL3ExportT0_VARh
                 ),
-                new SinglePhasicMeasure<float>(ReactiveEnergyTotalExportT0_VARh)
+                new SinglePhasicMeasure<decimal>(
+                  ReactiveEnergyTotalExportT0_VARh)
               ])
             )
           )
-          : new UnaryTariffMeasure<float>(
-            new ImportExportDuplexMeasure<float>(
-              new SinglePhasicMeasure<float>(ReactiveEnergyTotalImportT0_VARh),
-              new SinglePhasicMeasure<float>(ReactiveEnergyTotalExportT0_VARh)
+          : new UnaryTariffMeasure<decimal>(
+            new ImportExportDuplexMeasure<decimal>(
+              new SinglePhasicMeasure<decimal>(
+                ReactiveEnergyTotalImportT0_VARh),
+              new SinglePhasicMeasure<decimal>(ReactiveEnergyTotalExportT0_VARh)
             )
           );
     }
   }
 
-  public override TariffMeasure<float> ApparentEnergy_VAh
+  public override TariffMeasure<decimal> ApparentEnergy_VAh
   {
-    get { return TariffMeasure<float>.Null; }
+    get { return TariffMeasure<decimal>.Null; }
   }
 #pragma warning restore CA1707
 }

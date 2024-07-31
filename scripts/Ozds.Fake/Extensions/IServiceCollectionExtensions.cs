@@ -1,4 +1,5 @@
 using System.Reflection;
+using MassTransit;
 using Ozds.Business.Conversion.Abstractions;
 using Ozds.Business.Conversion.Agnostic;
 using Ozds.Fake.Client;
@@ -9,6 +10,7 @@ using Ozds.Fake.Correction.Agnostic;
 using Ozds.Fake.Generators.Abstractions;
 using Ozds.Fake.Generators.Agnostic;
 using Ozds.Fake.Loaders;
+using Ozds.Messaging;
 
 // TODO: figure out how to discover generic types nicely
 
@@ -69,6 +71,45 @@ public static class IServiceCollectionExtensions
         options.BaseAddress = new Uri(baseUrl);
       });
     services.AddScoped(typeof(OzdsPushClient));
+    return services;
+  }
+
+  public static IServiceCollection AddMessaging(
+    this IServiceCollection services,
+    string host,
+    string virtualHost,
+    string username,
+    string password
+  )
+  {
+    services.AddMassTransit(
+      x =>
+      {
+        var fakeAssembly = typeof(IServiceCollectionExtensions).Assembly;
+        var messagingAssembly = typeof(OzdsMessagingDbContext).Assembly;
+
+        x.SetKebabCaseEndpointNameFormatter();
+
+        x.AddConsumers(fakeAssembly);
+        x.AddSagaStateMachines(fakeAssembly);
+        x.AddActivities(fakeAssembly);
+
+        x.AddSagas(messagingAssembly);
+        x.SetInMemorySagaRepositoryProvider();
+
+        x.UsingRabbitMq(
+          (context, cfg) =>
+          {
+            cfg.Host(
+              host, virtualHost, cfg =>
+              {
+                cfg.Username(username);
+                cfg.Password(password);
+              });
+            cfg.ConfigureEndpoints(context);
+          });
+      });
+
     return services;
   }
 

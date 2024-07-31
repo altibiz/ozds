@@ -8,11 +8,11 @@ using Ozds.Data.Entities.Abstractions;
 namespace Ozds.Business.Mutations.Agnostic;
 
 public class OzdsInvoiceMutations(
-  OzdsDbContext context,
+  OzdsDataDbContext context,
   AgnosticModelEntityConverter modelEntityConverter
 ) : IOzdsMutations
 {
-  private readonly OzdsDbContext _context = context;
+  private readonly OzdsDataDbContext _context = context;
 
   private readonly AgnosticModelEntityConverter _modelEntityConverter =
     modelEntityConverter;

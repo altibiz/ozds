@@ -1,5 +1,4 @@
 using Ozds.Business.Finance.Base;
-using Ozds.Business.Math;
 using Ozds.Business.Models.Complex;
 using Ozds.Business.Models.Composite;
 
@@ -12,26 +11,41 @@ public class UsageActivePowerTotalImportT1PeakCalculationItemCalculator :
   protected override UsageActivePowerTotalImportT1PeakCalculationItemModel
     CalculateConcrete(CalculationItemBasisModel calculationBasis)
   {
-    var aggregates = calculationBasis.Aggregates
-      .OrderBy(a => a.Timestamp)
-      .ToList();
+    if (calculationBasis.Aggregates.Count == 0)
+    {
+      return new UsageActivePowerTotalImportT1PeakCalculationItemModel
+      {
+        Peak_kW = 0,
+        Amount_kW = 0,
+        Price_EUR = calculationBasis.Price,
+        Total_EUR = 0
+      };
+    }
 
-    var amount = new PeakSpanningMeasure<decimal>(
-      aggregates
-        .MaxBy(
-          aggregate =>
-            aggregate.ActivePower_W.TariffBinary().T1.DuplexImport().PhaseSum())
-        !.ActivePower_W.ConvertPrimitiveTo<decimal>()
-    );
+    var aggregates = calculationBasis.Aggregates;
+
+    var peak = aggregates
+      .Select(
+        x => x.ActivePower_W
+          .TariffBinary().T1
+          .DuplexImport()
+          .PhaseSum())
+      .Max();
+
+    var peakKilo = System.Math.Round(peak / 1000M, 2);
+
+    var amountKilo = System.Math.Round(peakKilo, 0);
+
+    var price = System.Math.Round(calculationBasis.Price, 3);
+
+    var total = System.Math.Round(amountKilo * price, 2);
 
     return new UsageActivePowerTotalImportT1PeakCalculationItemModel
     {
-      Peak_W = amount.SpanPeak().TariffBinary().T1.DuplexImport().PhaseSum(),
-      Amount_W = amount.SpanPeak().TariffBinary().T1.DuplexImport().PhaseSum(),
-      Price_EUR = calculationBasis.Price,
-      Total_EUR = amount.SpanPeak().TariffBinary().T1.DuplexImport().PhaseSum()
-        *
-        calculationBasis.Price
+      Peak_kW = peakKilo,
+      Amount_kW = amountKilo,
+      Price_EUR = price,
+      Total_EUR = total
     };
   }
 }

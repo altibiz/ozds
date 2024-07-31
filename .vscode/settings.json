@@ -7,7 +7,10 @@
     "docs/wiki/**/book": true,
     "**/mdbook-plantuml-img": true,
     "**/plantuml-images": true,
-    "artifacts": true
+    "artifacts": true,
+    "**/cache": true,
+    "**/.ruff_cache": true,
+    "**/__pycache__": true
   },
   "files.exclude": {
     "**/bin": true,
@@ -17,7 +20,10 @@
     "docs/wiki/**/book": true,
     "**/mdbook-plantuml-img": true,
     "**/plantuml-images": true,
-    "artifacts": true
+    "artifacts": true,
+    "**/cache": true,
+    "**/.ruff_cache": true,
+    "**/__pycache__": true
   },
   "prettier.ignorePath": ".prettierignore",
   "editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -27,6 +33,9 @@
   "[aspnetcorerazor]": {
     "editor.defaultFormatter": "ms-dotnettools.csharp",
     "editor.formatOnSave": false
+  },
+  "[python]": {
+    "editor.defaultFormatter": "eeyore.yapf"
   },
   "files.encoding": "utf8",
   "files.eol": "\n",
@@ -45,6 +54,7 @@
   "editor.formatOnSave": true,
   "files.associations": {
     ".dvcignore": "ignore",
-    "Doxyfile": "ini"
+    "Doxyfile": "ini",
+    "NLog.config": "xml"
   }
 }
