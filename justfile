@@ -56,11 +56,11 @@ prepare:
 
   open --raw '{{migrationassets}}/current-orchard.sql' | \
     docker exec \
-      --env PGHOST="localhost" \
-      --env PGPORT="5432" \
-      --env PGDATABASE="ozds" \
-      --env PGUSER="ozds" \
-      --env PGPASSWORD="ozds" \
+      --env PGHOST=localhost \
+      --env PGPORT=5432 \
+      --env PGDATABASE=ozds \
+      --env PGUSER=ozds \
+      --env PGPASSWORD=ozds \
       --interactive \
       ozds-postgres-1 \
         psql
@@ -77,11 +77,11 @@ prepare:
 
   open --raw '{{migrationassets}}/current.sql' | \
     docker exec \
-      --env PGHOST="localhost" \
-      --env PGPORT="5432" \
-      --env PGDATABASE="ozds" \
-      --env PGUSER="ozds" \
-      --env PGPASSWORD="ozds" \
+      --env PGHOST=localhost \
+      --env PGPORT=5432 \
+      --env PGDATABASE=ozds \
+      --env PGUSER=ozds \
+      --env PGPASSWORD=ozds \
       --interactive \
       ozds-postgres-1 \
         psql
@@ -159,11 +159,11 @@ test *args:
 
 dump:
   docker exec \
-    --env PGHOST="localhost" \
-    --env PGPORT="5432" \
-    --env PGDATABASE="ozds" \
-    --env PGUSER="ozds" \
-    --env PGPASSWORD="ozds" \
+    --env PGHOST=localhost \
+    --env PGPORT=5432 \
+    --env PGDATABASE=ozds \
+    --env PGUSER=ozds \
+    --env PGPASSWORD=ozds \
     --interactive \
     ozds-postgres-1 \
       pg_dump \
@@ -174,11 +174,11 @@ dump:
     out> '{{migrationassets}}/current-orchard.sql'
 
   docker exec \
-    --env PGHOST="localhost" \
-    --env PGPORT="5432" \
-    --env PGDATABASE="ozds" \
-    --env PGUSER="ozds" \
-    --env PGPASSWORD="ozds" \
+    --env PGHOST=localhost \
+    --env PGPORT=5432 \
+    --env PGDATABASE=ozds \
+    --env PGUSER=ozds \
+    --env PGPASSWORD=ozds \
     --interactive \
     ozds-postgres-1 \
       pg_dump \
@@ -205,11 +205,11 @@ migrate project name:
 
   open --raw '{{migrationassets}}/current-orchard.sql' | \
     docker exec \
-      --env PGHOST="localhost" \
-      --env PGPORT="5432" \
-      --env PGDATABASE="ozds" \
-      --env PGUSER="ozds" \
-      --env PGPASSWORD="ozds" \
+      --env PGHOST=localhost \
+      --env PGPORT=5432 \
+      --env PGDATABASE=ozds \
+      --env PGUSER=ozds \
+      --env PGPASSWORD=ozds \
       --interactive \
       ozds-postgres-1 \
         psql
@@ -226,11 +226,11 @@ migrate project name:
 
   open --raw '{{migrationassets}}/current.sql' | \
     docker exec \
-      --env PGHOST="localhost" \
-      --env PGPORT="5432" \
-      --env PGDATABASE="ozds" \
-      --env PGUSER="ozds" \
-      --env PGPASSWORD="ozds" \
+      --env PGHOST=localhost \
+      --env PGPORT=5432 \
+      --env PGDATABASE=ozds \
+      --env PGUSER=ozds \
+      --env PGPASSWORD=ozds \
       --interactive \
       ozds-postgres-1 \
         psql
@@ -258,11 +258,11 @@ migrate project name:
     database update
 
   docker exec \
-    --env PGHOST="localhost" \
-    --env PGPORT="5432" \
-    --env PGDATABASE="ozds" \
-    --env PGUSER="ozds" \
-    --env PGPASSWORD="ozds" \
+    --env PGHOST=localhost \
+    --env PGPORT=5432 \
+    --env PGDATABASE=ozds \
+    --env PGUSER=ozds \
+    --env PGPASSWORD=ozds \
     --interactive \
     ozds-postgres-1 \
       pg_dump \
@@ -277,11 +277,11 @@ migrate project name:
     '{{migrationassets}}/current-orchard.sql'
 
   docker exec \
-    --env PGHOST="localhost" \
-    --env PGPORT="5432" \
-    --env PGDATABASE="ozds" \
-    --env PGUSER="ozds" \
-    --env PGPASSWORD="ozds" \
+    --env PGHOST=localhost \
+    --env PGPORT=5432 \
+    --env PGDATABASE=ozds \
+    --env PGUSER=ozds \
+    --env PGPASSWORD=ozds \
     --interactive \
     ozds-postgres-1 \
       pg_dump \
@@ -371,11 +371,11 @@ clean:
 
   open --raw '{{migrationassets}}/current-orchard.sql' | \
     docker exec \
-      --env PGHOST="localhost" \
-      --env PGPORT="5432" \
-      --env PGDATABASE="ozds" \
-      --env PGUSER="ozds" \
-      --env PGPASSWORD="ozds" \
+      --env PGHOST=localhost \
+      --env PGPORT=5432 \
+      --env PGDATABASE=ozds \
+      --env PGUSER=ozds \
+      --env PGPASSWORD=ozds \
       --interactive \
       ozds-postgres-1 \
         psql
@@ -392,11 +392,11 @@ clean:
 
   open --raw '{{migrationassets}}/current.sql' | \
     docker exec \
-      --env PGHOST="localhost" \
-      --env PGPORT="5432" \
-      --env PGDATABASE="ozds" \
-      --env PGUSER="ozds" \
-      --env PGPASSWORD="ozds" \
+      --env PGHOST=localhost \
+      --env PGPORT=5432 \
+      --env PGDATABASE=ozds \
+      --env PGUSER=ozds \
+      --env PGPASSWORD=ozds \
       --interactive \
       ozds-postgres-1 \
         psql
@@ -422,11 +422,11 @@ purge:
 
   open --raw '{{migrationassets}}/current-orchard.sql' | \
     docker exec \
-      --env PGHOST="localhost" \
-      --env PGPORT="5432" \
-      --env PGDATABASE="ozds" \
-      --env PGUSER="ozds" \
-      --env PGPASSWORD="ozds" \
+      --env PGHOST=localhost \
+      --env PGPORT=5432 \
+      --env PGDATABASE=ozds \
+      --env PGUSER=ozds \
+      --env PGPASSWORD=ozds \
       --interactive \
       ozds-postgres-1 \
         psql
@@ -443,11 +443,11 @@ purge:
 
   open --raw '{{migrationassets}}/current.sql' | \
     docker exec \
-      --env PGHOST="localhost" \
-      --env PGPORT="5432" \
-      --env PGDATABASE="ozds" \
-      --env PGUSER="ozds" \
-      --env PGPASSWORD="ozds" \
+      --env PGHOST=localhost \
+      --env PGPORT=5432 \
+      --env PGDATABASE=ozds \
+      --env PGUSER=ozds \
+      --env PGPASSWORD=ozds \
       --interactive \
       ozds-postgres-1 \
         psql
