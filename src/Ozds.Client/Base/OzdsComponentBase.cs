@@ -103,7 +103,7 @@ public abstract class OzdsComponentBase : ComponentBase
 
     var withTimezone = dateTimeOffset
       .Value
-      .ToOffset(DateTimeOffsetExtensions.DefaultOffset);
+      .ToOffset(DateTimeOffsetExtensions.GetOffset(dateTimeOffset.Value));
 
     return withTimezone.ToString("dd. MM. yyyy.", cultureInfo);
   }
@@ -119,7 +119,7 @@ public abstract class OzdsComponentBase : ComponentBase
 
     var withTimezone = dateTimeOffset
       .Value
-      .ToOffset(DateTimeOffsetExtensions.DefaultOffset);
+      .ToOffset(DateTimeOffsetExtensions.GetOffset(dateTimeOffset.Value));
 
     return withTimezone.ToString("dd. MM. yyyy. HH:mm", cultureInfo);
   }
@@ -127,6 +127,6 @@ public abstract class OzdsComponentBase : ComponentBase
   protected static DateTimeOffset DateTimeGraph(DateTimeOffset dateTimeOffset)
   {
     return dateTimeOffset.UtcDateTime.Add(
-      DateTimeOffsetExtensions.DefaultOffset);
+      DateTimeOffsetExtensions.GetOffset(dateTimeOffset));
   }
 }
