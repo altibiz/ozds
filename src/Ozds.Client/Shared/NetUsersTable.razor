@@ -1,7 +1,7 @@
 @using Ozds.Business.Finance
 @using Ozds.Business.Time
-@using Color = MudBlazor.Color
 @using Ozds.Client.Shared.Dialogs
+@using Color = MudBlazor.Color
 @using Size = MudBlazor.Size
 @inject IDialogService DialogService
 
@@ -339,8 +339,9 @@
     StateHasChanged();
     return Task.CompletedTask;
   }
+
   private async Task CreateInvoice(string id)
-{
+  {
     var minDate = startOfLastMonth;
     var maxDate = now;
     var _lastInvoice = groupedAllInvoices
@@ -349,14 +350,15 @@
       .OrderByDescending(x => x.ToDate)
       .FirstOrDefault();
 
-    if(_lastInvoice is not null){
+    if (_lastInvoice is not null)
+    {
       minDate = _lastInvoice.ToDate.AddDays(1);
     }
 
     var parameters = new DialogParameters
     {
-        { "MinDate", minDate },
-        { "MaxDate", maxDate }
+      { "MinDate", minDate },
+      { "MaxDate", maxDate }
     };
     var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Small };
     var dialog = DialogService.Show<DateRangeDialog>(T["Select Date Range"], parameters, options);
@@ -364,12 +366,12 @@
 
     if (!result.Canceled)
     {
-        var (dateFrom, dateTo) = ((DateTime, DateTime))result.Data;
-        await ScopedServices
-            .GetRequiredService<NetworkUserInvoiceIssuer>()
-            .IssueNetworkUserInvoiceAsync(id, dateFrom, dateTo);
-        NavigationManager.NavigateTo($"invoices");
+      var (dateFrom, dateTo) = ((DateTime, DateTime))result.Data;
+      await ScopedServices
+        .GetRequiredService<NetworkUserInvoiceIssuer>()
+        .IssueNetworkUserInvoiceAsync(id, dateFrom, dateTo);
+      NavigationManager.NavigateTo("invoices");
     }
-}
+  }
 
 }
