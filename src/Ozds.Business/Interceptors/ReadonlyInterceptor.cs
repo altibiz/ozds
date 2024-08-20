@@ -39,8 +39,9 @@ public class ReadonlyInterceptor : ServedSaveChangesInterceptor
       .ToList();
 
     if (entries.Find(
-      entry =>
-        entry.State is EntityState.Modified or EntityState.Deleted) is { } entry)
+        entry =>
+          entry.State is EntityState.Modified or EntityState.Deleted) is
+      { } entry)
     {
       throw new InvalidOperationException(
         $"Cannot modify readonly entity {entry.Entity.GetType().Name}.");

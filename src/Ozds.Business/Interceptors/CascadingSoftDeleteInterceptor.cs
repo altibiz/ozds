@@ -73,10 +73,12 @@ public class CascadingDeleteInterceptor : ServedSaveChangesInterceptor
           == entry.Metadata);
 
     foreach (var relationship in relationships
-      .Where(relationship => !relationship.DeclaringEntityType.ClrType
-        .IsAssignableTo(typeof(IReadonlyEntity)))
-      .Where(relationship => relationship.DeclaringEntityType.ClrType
-        .IsAssignableTo(typeof(IIdentifiableEntity))))
+      .Where(
+        relationship => !relationship.DeclaringEntityType.ClrType
+          .IsAssignableTo(typeof(IReadonlyEntity)))
+      .Where(
+        relationship => relationship.DeclaringEntityType.ClrType
+          .IsAssignableTo(typeof(IIdentifiableEntity))))
     {
       var declarers = await context
         .GetQueryable(relationship.DeclaringEntityType.ClrType)
