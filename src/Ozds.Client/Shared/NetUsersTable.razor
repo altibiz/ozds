@@ -189,7 +189,7 @@
   private DateTimeOffset now = DateTimeOffset.UtcNow;
   private List<NetworkUserModel>? _netUsers;
   private List<IGrouping<string, NetworkUserInvoiceModel>>? groupedInvoices = new();
-  private List<IGrouping<string, NetworkUserInvoiceModel>>? groupedAllInvoices = new();
+  private List<IGrouping<string, NetworkUserInvoiceModel>> groupedAllInvoices = new();
 
   protected override async Task OnInitializedAsync()
   {
@@ -362,7 +362,7 @@
     var dialog = DialogService.Show<DateRangeDialog>(T["Select Date Range"], parameters, options);
     var result = await dialog.Result;
 
-    if (!result.Cancelled)
+    if (!result.Canceled)
     {
         var (dateFrom, dateTo) = ((DateTime, DateTime))result.Data;
         await ScopedServices
