@@ -1,36 +1,45 @@
+using System.Security.Claims;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Ozds.Data;
 using Ozds.Data.Entities;
 using Ozds.Data.Entities.Base;
 using Ozds.Data.Entities.Enums;
 
-// TODO: audit db errors and such
-// TODO: check if user is representative
-
 namespace Ozds.Business.Interceptors;
 
-public class AuditingInterceptor(IServiceProvider serviceProvider)
-  : ServedSaveChangesInterceptor(serviceProvider)
+public class AuditingInterceptor : ServedSaveChangesInterceptor
 {
-  public override InterceptionResult<int> SavingChanges(
-    DbContextEventData eventData,
-    InterceptionResult<int> result
-  )
+  public AuditingInterceptor(IServiceProvider serviceProvider)
+    : base(serviceProvider)
   {
-    Audit(eventData);
-    return base.SavingChanges(eventData, result);
   }
 
-  public void Audit(DbContextEventData eventData)
+  public override int Order
+  {
+    get { return 20; }
+  }
+
+  public override async ValueTask<InterceptionResult<int>> SavingChangesAsync(
+    DbContextEventData eventData,
+    InterceptionResult<int> result,
+    CancellationToken cancellationToken = default
+  )
+  {
+    await Audit(eventData);
+    return await base.SavingChangesAsync(eventData, result, cancellationToken);
+  }
+
+  public async ValueTask Audit(DbContextEventData eventData)
   {
     if (eventData.Context is null)
     {
       return;
     }
 
-    var representativeId = GetRepresentativeId();
-    var isDevelopment = IsDevelopment();
+    var representativeId = await GetRepresentativeId(eventData);
     var now = DateTimeOffset.UtcNow;
 
     var entries = eventData.Context.ChangeTracker
@@ -45,26 +54,26 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
         if (representativeId is not null)
         {
           auditable.Entity.CreatedById = representativeId;
-          if (isDevelopment)
-          {
-            eventData.Context.Add(
-              new RepresentativeAuditEventEntity
-              {
-                Timestamp = now,
-                Title =
-                  $"Created {
-                    auditable.Entity.GetType().Name
-                  } {
-                    auditable.Entity.Title
-                  }",
-                RepresentativeId = representativeId,
-                Level = LevelEntity.Debug,
-                Audit = AuditEntity.Creation,
-                Description = CreateAddedMessage(auditable)
-              });
-          }
+          eventData.Context.Add(
+            new RepresentativeAuditEventEntity
+            {
+              Timestamp = now,
+              Title =
+                $"Created {auditable.Entity.GetType().Name} {auditable.Entity.Title}",
+              RepresentativeId = representativeId,
+              Level = LevelEntity.Debug,
+              Audit = AuditEntity.Creation,
+              Description = CreateAddedMessage(auditable),
+              AuditableEntityId = auditable.Entity.Id,
+              AuditableEntityType = auditable.Entity.GetType().FullName
+                ?? throw new InvalidOperationException(
+                  "No type name found for auditable entity"),
+              AuditableEntityTable = auditable.Metadata.GetTableName()
+                ?? throw new InvalidOperationException(
+                  "No table name found for auditable entity")
+            });
         }
-        else if (isDevelopment)
+        else
         {
           auditable.Entity.CreatedBy = null;
           eventData.Context.Add(
@@ -72,14 +81,17 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
             {
               Timestamp = now,
               Title =
-                $"Created {
-                  auditable.Entity.GetType().Name
-                } {
-                  auditable.Entity.Title
-                }",
+                $"Created {auditable.Entity.GetType().Name} {auditable.Entity.Title}",
               Level = LevelEntity.Debug,
               Audit = AuditEntity.Creation,
-              Description = CreateAddedMessage(auditable)
+              Description = CreateAddedMessage(auditable),
+              AuditableEntityId = auditable.Entity.Id,
+              AuditableEntityType = auditable.Entity.GetType().FullName
+                ?? throw new InvalidOperationException(
+                  "No type name found for auditable entity"),
+              AuditableEntityTable = auditable.Metadata.GetTableName()
+                ?? throw new InvalidOperationException(
+                  "No table name found for auditable entity")
             });
         }
       }
@@ -90,45 +102,45 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
         if (representativeId is not null)
         {
           auditable.Entity.LastUpdatedById = representativeId;
-          if (isDevelopment)
-          {
-            eventData.Context.Add(
-              new RepresentativeAuditEventEntity
-              {
-                Timestamp = now,
-                Title =
-                  $"Updated {
-                    auditable.Entity.GetType().Name
-                  } {
-                    auditable.Entity.Title
-                  }",
-                RepresentativeId = representativeId,
-                Level = LevelEntity.Debug,
-                Audit = AuditEntity.Modification,
-                Description = CreateModifiedMessage(auditable)
-              });
-          }
+          eventData.Context.Add(
+            new RepresentativeAuditEventEntity
+            {
+              Timestamp = now,
+              Title =
+                $"Updated {auditable.Entity.GetType().Name} {auditable.Entity.Title}",
+              RepresentativeId = representativeId,
+              Level = LevelEntity.Debug,
+              Audit = AuditEntity.Modification,
+              Description = CreateModifiedMessage(auditable),
+              AuditableEntityId = auditable.Entity.Id,
+              AuditableEntityType = auditable.Entity.GetType().FullName
+                ?? throw new InvalidOperationException(
+                  "No type name found for auditable entity"),
+              AuditableEntityTable = auditable.Metadata.GetTableName()
+                ?? throw new InvalidOperationException(
+                  "No table name found for auditable entity")
+            });
         }
         else
         {
           auditable.Entity.LastUpdatedBy = null;
-          if (isDevelopment)
-          {
-            eventData.Context.Add(
-              new SystemAuditEventEntity
-              {
-                Timestamp = now,
-                Title =
-                  $"Updated {
-                    auditable.Entity.GetType().Name
-                  } {
-                    auditable.Entity.Title
-                  }",
-                Level = LevelEntity.Debug,
-                Audit = AuditEntity.Modification,
-                Description = CreateModifiedMessage(auditable)
-              });
-          }
+          eventData.Context.Add(
+            new SystemAuditEventEntity
+            {
+              Timestamp = now,
+              Title =
+                $"Updated {auditable.Entity.GetType().Name} {auditable.Entity.Title}",
+              Level = LevelEntity.Debug,
+              Audit = AuditEntity.Modification,
+              Description = CreateModifiedMessage(auditable),
+              AuditableEntityId = auditable.Entity.Id,
+              AuditableEntityType = auditable.Entity.GetType().FullName
+                ?? throw new InvalidOperationException(
+                  "No type name found for auditable entity"),
+              AuditableEntityTable = auditable.Metadata.GetTableName()
+                ?? throw new InvalidOperationException(
+                  "No table name found for auditable entity")
+            });
         }
       }
 
@@ -140,65 +152,91 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
         if (representativeId is not null)
         {
           auditable.Entity.DeletedById = representativeId;
-          if (isDevelopment)
-          {
-            eventData.Context.Add(
-              new RepresentativeAuditEventEntity
-              {
-                Timestamp = now,
-                Title =
-                  $"Deleted {
-                    auditable.Entity.GetType().Name
-                  } {
-                    auditable.Entity.Title
-                  }",
-                RepresentativeId = representativeId,
-                Level = LevelEntity.Debug,
-                Audit = AuditEntity.Deletion,
-                Description = CreateDeletedMessage(auditable)
-              });
-          }
+          eventData.Context.Add(
+            new RepresentativeAuditEventEntity
+            {
+              Timestamp = now,
+              Title =
+                $"Deleted {auditable.Entity.GetType().Name} {auditable.Entity.Title}",
+              RepresentativeId = representativeId,
+              Level = LevelEntity.Debug,
+              Audit = AuditEntity.Deletion,
+              Description = CreateDeletedMessage(auditable),
+              AuditableEntityId = auditable.Entity.Id,
+              AuditableEntityType = auditable.Entity.GetType().FullName
+                ?? throw new InvalidOperationException(
+                  "No type name found for auditable entity"),
+              AuditableEntityTable = auditable.Metadata.GetTableName()
+                ?? throw new InvalidOperationException(
+                  "No table name found for auditable entity")
+            });
         }
         else
         {
           auditable.Entity.DeletedById = null;
-          if (isDevelopment)
-          {
-            eventData.Context.Add(
-              new SystemAuditEventEntity
-              {
-                Timestamp = now,
-                Title =
-                  $"Deleted {
-                    auditable.Entity.GetType().Name
-                  } {
-                    auditable.Entity.Title
-                  }",
-                Level = LevelEntity.Debug,
-                Audit = AuditEntity.Deletion,
-                Description = CreateDeletedMessage(auditable)
-              });
-          }
+          eventData.Context.Add(
+            new SystemAuditEventEntity
+            {
+              Timestamp = now,
+              Title =
+                $"Deleted {auditable.Entity.GetType().Name} {auditable.Entity.Title}",
+              Level = LevelEntity.Debug,
+              Audit = AuditEntity.Deletion,
+              Description = CreateDeletedMessage(auditable),
+              AuditableEntityId = auditable.Entity.Id,
+              AuditableEntityType = auditable.Entity.GetType().FullName
+                ?? throw new InvalidOperationException(
+                  "No type name found for auditable entity"),
+              AuditableEntityTable = auditable.Metadata.GetTableName()
+                ?? throw new InvalidOperationException(
+                  "No table name found for auditable entity")
+            });
         }
       }
     }
   }
 
-  private string? GetRepresentativeId()
+  private async Task<string?> GetRepresentativeId(DbContextEventData eventData)
   {
-    if (serviceProvider.GetService<IHttpContextAccessor>() is not null)
+    ClaimsPrincipal? claimsPrincipal = null;
+    if (serviceProvider
+        .GetService<IHttpContextAccessor>()
+        ?.HttpContext is { } httpContext)
+    {
+      claimsPrincipal = httpContext.User;
+    }
+
+    if (claimsPrincipal is null
+      && serviceProvider.GetService<AuthenticationStateProvider>()
+        is { } authStateProvider)
+    {
+      claimsPrincipal =
+        (await authStateProvider.GetAuthenticationStateAsync()).User;
+    }
+
+    if (claimsPrincipal is null)
     {
       return null;
     }
 
-    return null;
-  }
+    var id = claimsPrincipal.Claims
+      .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+    if (string.IsNullOrEmpty(id))
+    {
+      return null;
+    }
 
-  private bool IsDevelopment()
-  {
-    return serviceProvider.GetService<IHostEnvironment>() is
-        { } hostEnvironment
-      && hostEnvironment.IsDevelopment();
+    var context = eventData.Context as OzdsDataDbContext;
+    if (context is null)
+    {
+      return null;
+    }
+
+    var representative = await context.Representatives
+      .Where(context.PrimaryKeyEquals<RepresentativeEntity>(id))
+      .FirstOrDefaultAsync();
+
+    return representative?.Id;
   }
 
   private static string CreateAddedMessage(EntityEntry entry)

@@ -2,13 +2,20 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Ozds.Data.Entities.Abstractions;
 
-// TODO: check if this is the right way to do it
-
 namespace Ozds.Business.Interceptors;
 
-public class ReadonlyInterceptor(IServiceProvider serviceProvider)
-  : ServedSaveChangesInterceptor(serviceProvider)
+public class ReadonlyInterceptor : ServedSaveChangesInterceptor
 {
+  public ReadonlyInterceptor(IServiceProvider serviceProvider)
+    : base(serviceProvider)
+  {
+  }
+
+  public override int Order
+  {
+    get { return 0; }
+  }
+
   public override InterceptionResult<int> SavingChanges(
     DbContextEventData eventData,
     InterceptionResult<int> result
@@ -31,13 +38,12 @@ public class ReadonlyInterceptor(IServiceProvider serviceProvider)
       .Entries<IReadonlyEntity>()
       .ToList();
 
-    foreach (var entity in entries
-      .Where(e => e.State is EntityState.Modified or EntityState.Deleted)
-      .Select(e => e.Entity))
+    if (entries.Find(
+      entry =>
+        entry.State is EntityState.Modified or EntityState.Deleted) is { } entry)
     {
-#pragma warning disable S1751
-      throw new InvalidOperationException("Cannot modify readonly entity.");
-#pragma warning restore S1751
+      throw new InvalidOperationException(
+        $"Cannot modify readonly entity {entry.Entity.GetType().Name}.");
     }
 
     return result;

@@ -21,6 +21,21 @@ public static class DbContextExtensions
       ?? throw new InvalidOperationException($"No DbSet found for {type}");
   }
 
+  public static IQueryable<object> GetQueryable(
+    this DbContext context,
+    Type type)
+  {
+    var method = typeof(DbContext)
+      .GetMethods()
+      .FirstOrDefault(
+        m => m.Name == nameof(DbContext.Set)
+          && m.IsGenericMethodDefinition
+          && m.GetParameters().Length == 0)
+      ?.MakeGenericMethod(type);
+    return method?.Invoke(context, null) as IQueryable<object>
+      ?? throw new InvalidOperationException($"No DbSet found for {type}");
+  }
+
   public static void AddTracked(
     this DbContext context,
     object entity
@@ -75,7 +90,7 @@ public static class DbContextExtensions
       .ToList();
   }
 
-  private static EntityEntry FindEntry(
+  public static EntityEntry FindEntry(
     this DbContext context,
     object entity
   )

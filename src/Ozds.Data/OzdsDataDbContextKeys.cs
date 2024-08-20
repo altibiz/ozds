@@ -8,6 +8,7 @@ namespace Ozds.Data;
 
 public partial class OzdsDataDbContext
 {
+  public const string KeyJoin = "@";
   public Func<T, string> PrimaryKeyOfCompiled<T>()
   {
     return PrimaryKeyOf<T>().Compile();
@@ -166,11 +167,7 @@ public partial class OzdsDataDbContext
       typeof(ICollection<string>).GetMethod(
         nameof(ICollection<string>.Contains)) ??
       throw new InvalidOperationException(
-        $"No {
-          nameof(ICollection<string>.Contains)
-        } method found in {
-          typeof(ICollection<string>)
-        }"),
+        $"No {nameof(ICollection<string>.Contains)} method found in {typeof(ICollection<string>)}"),
       Expression.Invoke(primaryKeyExpression, parameter));
     return Expression.Lambda<Func<object, bool>>(
       primaryKeyInExpression,
@@ -290,6 +287,23 @@ public partial class OzdsDataDbContext
     var foreignKeyExpression = ForeignKeyOf<TConverted>(property);
     return Expression.Lambda<Func<object, string>>(
       Expression.Invoke(foreignKeyExpression, callExpression),
+      objectParameter
+    );
+  }
+
+  public Expression<Func<object, bool>> ForeignKeyEqualsAgnostic(
+    Type type,
+    string property,
+    params string[] ids)
+  {
+    var objectParameter = Expression.Parameter(typeof(object));
+    var parameter = Expression.Convert(objectParameter, type);
+    var foreignKeyExpression = ForeignKeyOfAgnostic(type, property);
+    var foreignKeyEqualsExpression = Expression.Equal(
+      Expression.Invoke(foreignKeyExpression, parameter),
+      Expression.Constant(string.Join(KeyJoin, ids)));
+    return Expression.Lambda<Func<object, bool>>(
+      foreignKeyEqualsExpression,
       objectParameter
     );
   }
