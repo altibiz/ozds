@@ -28,7 +28,7 @@ public class CascadingDeleteInterceptor : ServedSaveChangesInterceptor
     return await base.SavingChangesAsync(eventData, result, cancellationToken);
   }
 
-  private async ValueTask AddCascadingDeletes(
+  private static async ValueTask AddCascadingDeletes(
     DbContextEventData eventData)
   {
     var context = eventData.Context as OzdsDataDbContext;
