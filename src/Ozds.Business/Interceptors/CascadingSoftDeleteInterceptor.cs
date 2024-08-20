@@ -48,7 +48,7 @@ public class CascadingDeleteInterceptor : ServedSaveChangesInterceptor
     }
   }
 
-  private async Task CascadingDelete(
+  private static async Task CascadingDelete(
     DbContextEventData eventData,
     EntityEntry entry)
   {
