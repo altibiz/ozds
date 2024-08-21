@@ -32,7 +32,7 @@ public static class RepresentativeEventModelEntityConverterExtensions
       Title = entity.Title,
       Timestamp = entity.Timestamp,
       Level = entity.Level.ToModel(),
-      Description = entity.Description,
+      Content = entity.Content,
       RepresentativeId = entity.RepresentativeId
     };
   }
@@ -46,7 +46,7 @@ public static class RepresentativeEventModelEntityConverterExtensions
       Title = model.Title,
       Timestamp = model.Timestamp,
       Level = model.Level.ToEntity(),
-      Description = model.Description,
+      Content = model.Content,
       RepresentativeId = model.RepresentativeId
     };
   }

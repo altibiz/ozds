@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Nodes;
 using Ozds.Business.Models.Enums;
 using IEvent = Ozds.Business.Models.Abstractions.IEvent;
 
@@ -19,7 +20,7 @@ public abstract class EventModel : IEvent
   public required LevelModel Level { get; set; }
 
   [Required]
-  public required string Description { get; set; }
+  public required JsonObject Content { get; set; }
 
   public virtual IEnumerable<ValidationResult> Validate(
     ValidationContext validationContext)

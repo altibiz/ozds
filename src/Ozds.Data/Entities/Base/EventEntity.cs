@@ -1,4 +1,6 @@
+using System.Text.Json.Nodes;
 using Microsoft.EntityFrameworkCore;
+using Ozds.Data.Attributes;
 using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Entities.Enums;
 using Ozds.Data.Extensions;
@@ -13,7 +15,7 @@ public class EventEntity : IReadonlyEntity, IIdentifiableEntity
 
   public LevelEntity Level { get; set; }
 
-  public string Description { get; set; } = default!;
+  public JsonObject Content { get; set; } = default!;
 
   public virtual string Id
   {
@@ -25,6 +27,8 @@ public class EventEntity : IReadonlyEntity, IIdentifiableEntity
   }
 
   public string Title { get; set; } = default!;
+
+  public virtual ICollection<NotificationEntity> Notifications { get; set; } = default!;
 }
 
 public class
@@ -58,5 +62,11 @@ public class
         x => x.ToUniversalTime(),
         x => x.ToUniversalTime()
       );
+
+    builder.HasTimescaleHypertable(
+      nameof(EventEntity.Timestamp),
+      nameof(EventEntity.Level),
+      $"number_partitions => {typeof(LevelEntity).GetEnumValues().Length}"
+    );
   }
 }

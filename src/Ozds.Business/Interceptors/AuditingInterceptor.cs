@@ -1,3 +1,5 @@
+using System.Text.Json;
+using System.Text.Json.Nodes;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -52,15 +54,11 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
               {
                 Timestamp = now,
                 Title =
-                  $"Created {
-                    auditable.Entity.GetType().Name
-                  } {
-                    auditable.Entity.Title
-                  }",
+                  $"Created {auditable.Entity.GetType().Name} {auditable.Entity.Title}",
                 RepresentativeId = representativeId,
                 Level = LevelEntity.Debug,
                 Audit = AuditEntity.Creation,
-                Description = CreateAddedMessage(auditable)
+                Content = CreateAddedMessage(auditable)
               });
           }
         }
@@ -72,14 +70,10 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
             {
               Timestamp = now,
               Title =
-                $"Created {
-                  auditable.Entity.GetType().Name
-                } {
-                  auditable.Entity.Title
-                }",
+                $"Created {auditable.Entity.GetType().Name} {auditable.Entity.Title}",
               Level = LevelEntity.Debug,
               Audit = AuditEntity.Creation,
-              Description = CreateAddedMessage(auditable)
+              Content = CreateAddedMessage(auditable)
             });
         }
       }
@@ -97,15 +91,11 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
               {
                 Timestamp = now,
                 Title =
-                  $"Updated {
-                    auditable.Entity.GetType().Name
-                  } {
-                    auditable.Entity.Title
-                  }",
+                  $"Updated {auditable.Entity.GetType().Name} {auditable.Entity.Title}",
                 RepresentativeId = representativeId,
                 Level = LevelEntity.Debug,
                 Audit = AuditEntity.Modification,
-                Description = CreateModifiedMessage(auditable)
+                Content = CreateModifiedMessage(auditable)
               });
           }
         }
@@ -119,14 +109,10 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
               {
                 Timestamp = now,
                 Title =
-                  $"Updated {
-                    auditable.Entity.GetType().Name
-                  } {
-                    auditable.Entity.Title
-                  }",
+                  $"Updated {auditable.Entity.GetType().Name} {auditable.Entity.Title}",
                 Level = LevelEntity.Debug,
                 Audit = AuditEntity.Modification,
-                Description = CreateModifiedMessage(auditable)
+                Content = CreateModifiedMessage(auditable)
               });
           }
         }
@@ -147,15 +133,11 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
               {
                 Timestamp = now,
                 Title =
-                  $"Deleted {
-                    auditable.Entity.GetType().Name
-                  } {
-                    auditable.Entity.Title
-                  }",
+                  $"Deleted {auditable.Entity.GetType().Name} {auditable.Entity.Title}",
                 RepresentativeId = representativeId,
                 Level = LevelEntity.Debug,
                 Audit = AuditEntity.Deletion,
-                Description = CreateDeletedMessage(auditable)
+                Content = CreateDeletedMessage(auditable)
               });
           }
         }
@@ -169,14 +151,10 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
               {
                 Timestamp = now,
                 Title =
-                  $"Deleted {
-                    auditable.Entity.GetType().Name
-                  } {
-                    auditable.Entity.Title
-                  }",
+                  $"Deleted {auditable.Entity.GetType().Name} {auditable.Entity.Title}",
                 Level = LevelEntity.Debug,
                 Audit = AuditEntity.Deletion,
-                Description = CreateDeletedMessage(auditable)
+                Content = CreateDeletedMessage(auditable)
               });
           }
         }
@@ -197,38 +175,45 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
   private bool IsDevelopment()
   {
     return serviceProvider.GetService<IHostEnvironment>() is
-        { } hostEnvironment
+    { } hostEnvironment
       && hostEnvironment.IsDevelopment();
   }
 
-  private static string CreateAddedMessage(EntityEntry entry)
+  private static JsonObject CreateAddedMessage(EntityEntry entry)
   {
-    return entry.Properties
-      .Aggregate(
-        $"Inserting {entry.Metadata.DisplayName()} with ",
-        (auditString, property) => auditString +
-          $"{property.Metadata.Name}: '{property.CurrentValue}' ");
+    return CreateMessage(entry, "Added");
   }
 
-  private static string CreateModifiedMessage(EntityEntry entry)
+  private static JsonObject CreateModifiedMessage(EntityEntry entry)
   {
-    return entry.Properties
-      .Where(
-        property =>
-          property.IsModified || property.Metadata.IsPrimaryKey())
-      .Aggregate(
-        $"Updating {entry.Metadata.DisplayName()} with ",
-        (auditString, property) => auditString +
-          $"{property.Metadata.Name}: '{property.CurrentValue}' ");
+    return CreateMessage(entry, "Modified");
   }
 
-  private static string CreateDeletedMessage(EntityEntry entry)
+  private static JsonObject CreateDeletedMessage(EntityEntry entry)
   {
-    return entry.Properties
-      .Where(property => property.Metadata.IsPrimaryKey())
-      .Aggregate(
-        $"Deleting {entry.Metadata.DisplayName()} with ",
-        (auditString, property) => auditString +
-          $"{property.Metadata.Name}: '{property.CurrentValue}' ");
+    return CreateMessage(entry, "Deleted");
   }
+
+  private static JsonObject CreateMessage(EntityEntry entry, string type)
+  {
+    var properties = entry.Properties
+      .Where(property => property.OriginalValue != property.CurrentValue)
+      .Select(property => new AuditProperty(
+        property.Metadata.Name,
+        property.OriginalValue?.ToString(),
+        property.CurrentValue?.ToString()
+      ))
+      .ToArray();
+
+    var message = new AuditMessage(
+      type,
+      properties
+    );
+
+    return (JsonObject)JsonSerializer.SerializeToNode(message)!;
+  }
+
+  private sealed record AuditMessage(string Type, AuditProperty[] Properties);
+
+  private sealed record AuditProperty(string Name, string? OldValue, string? NewValue);
 }

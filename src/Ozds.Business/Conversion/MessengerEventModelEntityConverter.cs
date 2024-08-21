@@ -29,7 +29,7 @@ public static class MessengerEventModelExtensions
       Title = entity.Title,
       Timestamp = entity.Timestamp,
       Level = entity.Level.ToModel(),
-      Description = entity.Description,
+      Content = entity.Content,
       MessengerId = entity.MessengerId
     };
   }
@@ -42,7 +42,7 @@ public static class MessengerEventModelExtensions
       Title = model.Title,
       Timestamp = model.Timestamp,
       Level = model.Level.ToEntity(),
-      Description = model.Description,
+      Content = model.Content,
       MessengerId = model.MessengerId
     };
   }

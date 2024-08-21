@@ -1,3 +1,4 @@
+using System.Text.Json.Nodes;
 using Ozds.Business.Models.Enums;
 
 namespace Ozds.Business.Models.Abstractions;
@@ -8,5 +9,5 @@ public interface IEvent : IIdentifiable, IReadonly
 
   public LevelModel Level { get; }
 
-  public string Description { get; }
+  public JsonObject Content { get; }
 }

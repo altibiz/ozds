@@ -32,7 +32,7 @@ public static class SystemAuditEventModelEntityExtensions
       Title = entity.Title,
       Timestamp = entity.Timestamp,
       Level = entity.Level.ToModel(),
-      Description = entity.Description,
+      Content = entity.Content,
       Audit = entity.Audit.ToModel()
     };
   }
@@ -46,7 +46,7 @@ public static class SystemAuditEventModelEntityExtensions
       Title = model.Title,
       Timestamp = model.Timestamp,
       Level = model.Level.ToEntity(),
-      Description = model.Description,
+      Content = model.Content,
       Audit = model.Audit.ToEntity()
     };
   }
