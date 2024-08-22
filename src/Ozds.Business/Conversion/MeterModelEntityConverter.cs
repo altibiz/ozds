@@ -39,21 +39,9 @@ public static class MeterModelEntityConverterExtensions
       return schneideriEM3xxxMeterModel.ToEntity();
     }
 
-    return new MeterEntity
-    {
-      Id = model.Id,
-      Title = model.Title,
-      CreatedOn = model.CreatedOn,
-      CreatedById = model.CreatedById,
-      LastUpdatedOn = model.LastUpdatedOn,
-      LastUpdatedById = model.LastUpdatedById,
-      IsDeleted = model.IsDeleted,
-      DeletedOn = model.DeletedOn,
-      DeletedById = model.DeletedById,
-      MessengerId = model.MessengerId,
-      ConnectionPower_W = (float)model.ConnectionPower_W,
-      Phases = model.Phases.Select(phase => phase.ToEntity()).ToList()
-    };
+    throw new NotSupportedException(
+      $"MeterModel type {model.GetType().Name} is not supported."
+    );
   }
 
   public static IMeter ToModel(this MeterEntity entity)
@@ -68,21 +56,8 @@ public static class MeterModelEntityConverterExtensions
       return schneideriEM3xxxMeterEntity.ToModel();
     }
 
-    return new MeterModel
-    {
-      Id = entity.Id,
-      Title = entity.Title,
-      CreatedOn = entity.CreatedOn,
-      CreatedById = entity.CreatedById,
-      LastUpdatedOn = entity.LastUpdatedOn,
-      LastUpdatedById = entity.LastUpdatedById,
-      IsDeleted = entity.IsDeleted,
-      DeletedOn = entity.DeletedOn,
-      DeletedById = entity.DeletedById,
-      MessengerId = entity.MessengerId,
-      MeasurementValidatorId = "",
-      ConnectionPower_W = (decimal)entity.ConnectionPower_W,
-      Phases = entity.Phases.Select(phase => phase.ToModel()).ToHashSet()
-    };
+    throw new NotSupportedException(
+      $"MeterEntity type {entity.GetType().Name} is not supported."
+    );
   }
 }

@@ -59,4 +59,6 @@ public partial class OzdsDataDbContext : DbContext
   } = default!;
 
   public DbSet<EventEntity> Events { get; set; } = default!;
+
+  public DbSet<NotificationEntity> Notifications { get; set; } = default!;
 }

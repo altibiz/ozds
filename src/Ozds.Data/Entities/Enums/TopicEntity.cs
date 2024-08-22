@@ -3,17 +3,15 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Enums;
 
-public enum StatusEntity
+public enum TopicEntity
 {
-  Unseen,
-  Seen,
-  Resolved,
+  General
 }
 
-public class StatusEntityTypeConfiguration : IModelConfiguration
+public class TopicEntityModelConfiguration : IModelConfiguration
 {
   public void Configure(ModelBuilder modelBuilder)
   {
-    modelBuilder.HasPostgresEnum<StatusEntity>();
+    modelBuilder.HasPostgresEnum<TopicEntity>();
   }
 }

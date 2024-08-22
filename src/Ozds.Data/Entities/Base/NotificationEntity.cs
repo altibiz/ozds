@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Ozds.Data.Attributes;
 using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Entities.Enums;
+using Ozds.Data.Entities.Joins;
 using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
@@ -13,8 +14,6 @@ public class NotificationEntity : IIdentifiableEntity
   protected readonly long _id;
 
   public DateTimeOffset Timestamp { get; set; }
-
-  public StatusEntity Status { get; set; }
 
   public virtual string Id
   {
@@ -31,15 +30,19 @@ public class NotificationEntity : IIdentifiableEntity
     init { _eventId = value is { } notNullValue ? long.Parse(notNullValue) : default; }
   }
 
+  public virtual EventEntity? Event { get; set; } = default!;
+
+  public virtual ICollection<NotificationRepresentativeEntity> NotificationRepresentatives { get; set; } = default!;
+
+  public virtual ICollection<RepresentativeEntity> Representatives { get; set; } = default!;
+
   public string Title { get; set; } = default!;
 
   public string Summary { get; set; } = default!;
 
   public string Content { get; set; } = default!;
 
-  public virtual EventEntity Event { get; set; } = default!;
-
-  public virtual ICollection<RepresentativeEntity> Representatives { get; set; } = default!;
+  public TopicEntity Topic { get; set; } = default!;
 }
 
 public class
@@ -74,15 +77,7 @@ public class
         x => x.ToUniversalTime()
       );
 
-    builder.HasTimescaleHypertable(
-      nameof(NotificationEntity.Timestamp),
-      nameof(NotificationEntity.Status),
-      $"number_partitions => {typeof(StatusEntity).GetEnumValues().Length}"
-    );
-
-    builder
-      .HasMany(nameof(NotificationEntity.Representatives))
-      .WithMany(nameof(RepresentativeEntity.Notifications));
+    builder.HasTimescaleHypertable(nameof(NotificationEntity.Timestamp));
 
     builder
       .HasOne(nameof(NotificationEntity.Event))

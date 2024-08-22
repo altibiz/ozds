@@ -36,4 +36,24 @@ public static class RoleModelExtensions
       _ => throw new ArgumentOutOfRangeException(nameof(model), model, null)
     };
   }
+
+  public static List<TopicModel> ToTopics(this RoleModel model)
+  {
+    return model switch
+    {
+      RoleModel.OperatorRepresentative => new List<TopicModel>()
+      {
+        TopicModel.General
+      },
+      RoleModel.LocationRepresentative => new List<TopicModel>()
+      {
+        TopicModel.General
+      },
+      RoleModel.NetworkUserRepresentative => new List<TopicModel>()
+      {
+        TopicModel.General
+      },
+      _ => throw new ArgumentOutOfRangeException(nameof(model), model, null)
+    };
+  }
 }
