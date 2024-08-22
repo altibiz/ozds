@@ -201,6 +201,9 @@ rec {
               postgresql_14
               mermerd
 
+              # MailHog
+              apacheHttpd
+
               # Spelling
               nodePackages.cspell
               hunspell

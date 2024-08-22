@@ -1,4 +1,5 @@
 using System.Reflection;
+using MailKit.Net.Smtp;
 using MassTransit;
 using MassTransit.Configuration;
 using MassTransit.EntityFrameworkCoreIntegration;
@@ -21,6 +22,8 @@ using Ozds.Business.Localization.Abstractions;
 using Ozds.Business.Mutations.Abstractions;
 using Ozds.Business.Naming.Abstractions;
 using Ozds.Business.Naming.Agnostic;
+using Ozds.Business.Notifications;
+using Ozds.Business.Notifications.Abstractions;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Data;
 using Ozds.Data.Extensions;
@@ -71,6 +74,9 @@ public static class IServiceCollectionExtensions
     services.AddScoped<BatchAggregatedMeasurementUpserter>();
 
     services.AddSingleton<IOzdsLocalizer, OzdsLocalizer>();
+
+    services.AddScoped<ISmtpClient, SmtpClient>();
+    services.AddScoped<INotificationSender, NotificationSender>();
 
     return services;
   }
