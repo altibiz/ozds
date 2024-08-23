@@ -1,6 +1,5 @@
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
-using Ozds.Data.Attributes;
 using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Entities.Enums;
 using Ozds.Data.Extensions;
@@ -17,7 +16,7 @@ public class EventEntity : IReadonlyEntity, IIdentifiableEntity, IDisposable
 
   public LevelEntity Level { get; set; }
 
-  public JsonDocument? Content { get; set; } = default!;
+  public JsonDocument Content { get; set; } = default!;
 
   public virtual string Id
   {
