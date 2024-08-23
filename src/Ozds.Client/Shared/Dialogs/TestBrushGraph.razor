@@ -34,15 +34,17 @@
     </ApexChart>
     <MudItem Class="d-flex">
         <MudAutocomplete Class="pa-4 mt-0" T="string" Label="@T["Devices"]" Value="_title" ValueChanged="e => LeftMenuItemClicked(e)" SearchFunc="@Search" ToStringFunc="@(e => e == null ? null : $"{e}")"/>
-        <MudDatePicker Label="@T["Pick month"]" HelperText="@_month?.ToShortDateString()" @bind-Date="_month" OpenTo="OpenTo.Month" FixYear="@DateTime.Today.Year" FixDay="@DateTime.Today.Day" DateFormat="MMM" />
+        <MudDatePicker Label="@T["Pick month"]" HelperText="@_month?.ToShortDateString()" DateChanged="e => MonthChange(e)" OpenTo="OpenTo.Month" FixYear="@DateTime.Today.Year" FixDay="@DateTime.Today.Day" DateFormat="MMM" />
     </MudItem>
   </DialogContent>
   <DialogActions>
-    <MudButton Color="Color.Primary">Close</MudButton>
+    <MudButton Color="Color.Primary" OnClick="Submit">Close</MudButton>
   </DialogActions>
 </MudDialog>
 
 @code {
+  [CascadingParameter]
+  MudDialogInstance MudDialog { get; set; } = default!;
   private string _title = "";
   private IEnumerable<MeterModel>? _meters;
   private MeterModel? _selectedMeter = default!;
@@ -63,44 +65,34 @@
 
     public class Series<T>
     {
-        public string Name { get; set; }
-        public List<T> Data { get; set; }
-        public int StrokeWidth { get; set; } = 0;
-        public double FillOpacity { get; set; } = 0;
+        public string Name { get; set; } = "";
+        public List<T> Data { get; set; } = new();
     }
 
-    private ApexChart<ChartData> chart;
-    private ApexChart<ChartData> chartLine;
+    private ApexChart<ChartData> chart = new();
+    private ApexChart<ChartData> chartLine = new();
 
     private List<Series<ChartData>> ChartSeries => new List<Series<ChartData>>
     {
         new Series<ChartData>
         {
             Name = "L1 Active Power",
-            Data = Data1,
-            StrokeWidth = 5,
-            FillOpacity = 0.75
+            Data = Data1
         },
         new Series<ChartData>
         {
             Name = "L2 Active Power",
-            Data = Data2,
-            StrokeWidth = 5,
-            FillOpacity = 0.75
+            Data = Data2
         },
         new Series<ChartData>
         {
             Name = "L3 Active Power",
-            Data = Data3,
-            StrokeWidth = 5,
-            FillOpacity = 0.75
+            Data = Data3
         },
         new Series<ChartData>
         {
             Name = "Total power",
-            Data = Data4,
-            StrokeWidth = 7,
-            FillOpacity = 1
+            Data = Data4
         }
     };
 
@@ -108,41 +100,41 @@
     private ApexChartOptions<ChartData> graphLOptions = NewApexChartOptions<ChartData>();
     private ApexChartOptions<ChartData> optionsLine = NewApexChartOptions<ChartData>();
 
-    private async Task GetValues(){
-IEnumerable<IMeasurement> measures;
-    measures = await aggregateQueries.ReadAgnostic(new[] { "x => x.Interval == 1", $"x => x.MeterId == \"{_title}\"" }, startOfThisYearNoTransformation, now, 1, 9000);
+    private async Task GetValues(DateTimeOffset startDate, DateTimeOffset endDate){
+        IEnumerable<IMeasurement> measures;
+        measures = await aggregateQueries.ReadAgnostic(new[] { "x => x.Interval == 1", $"x => x.MeterId == \"{_title}\"" }, startDate, endDate, 1, 9000);
 
-    Data1 =
-        measures.Select(
-            x => new ChartData{
-                Date = x.Timestamp.DateTime,
-                Value = x.ActivePower_W.TariffUnary().DuplexNet().PhaseSplit().ValueL1
-            }
-        ).ToList();
-    Data2 =
-        measures.Select(
-            x => new ChartData{
-                Date = x.Timestamp.DateTime,
-                Value = x.ActivePower_W.TariffUnary().DuplexNet().PhaseSplit().ValueL2
-            }
-        ).ToList();
-    Data3 =
-        measures.Select(
-            x => new ChartData{
-                Date = x.Timestamp.DateTime,
-                Value = x.ActivePower_W.TariffUnary().DuplexNet().PhaseSplit().ValueL3
-            }
-        ).ToList();
-    Data4 =
-        measures.Select(
-            x => new ChartData{
-                Date = x.Timestamp.DateTime,
-                Value = x.ActivePower_W.TariffUnary().DuplexNet().PhaseSplit().PhaseSum()
-            }
-        ).ToList();
+        Data1 =
+            measures.Select(
+                x => new ChartData{
+                    Date = x.Timestamp.DateTime,
+                    Value = x.ActivePower_W.TariffUnary().DuplexNet().PhaseSplit().ValueL1
+                }
+            ).ToList();
+        Data2 =
+            measures.Select(
+                x => new ChartData{
+                    Date = x.Timestamp.DateTime,
+                    Value = x.ActivePower_W.TariffUnary().DuplexNet().PhaseSplit().ValueL2
+                }
+            ).ToList();
+        Data3 =
+            measures.Select(
+                x => new ChartData{
+                    Date = x.Timestamp.DateTime,
+                    Value = x.ActivePower_W.TariffUnary().DuplexNet().PhaseSplit().ValueL3
+                }
+            ).ToList();
+        Data4 =
+            measures.Select(
+                x => new ChartData{
+                    Date = x.Timestamp.DateTime,
+                    Value = x.ActivePower_W.TariffUnary().DuplexNet().PhaseSplit().PhaseSum()
+                }
+            ).ToList();
+        StateHasChanged();
         await chart.UpdateSeriesAsync();
         await chartLine.UpdateSeriesAsync();
-
     }
 
   protected override async Task OnInitializedAsync()
@@ -152,7 +144,6 @@ IEnumerable<IMeasurement> measures;
             .GetRequiredService<OzdsAuditableQueries>().Read<MeterModel>(Enumerable.Empty<string>(), Enumerable.Empty<string>(), Enumerable.Empty<string>(), 1, 1000);
         _meters = a.Items;
         _ioTDeviceNames = _meters.Select(x => x.Id).ToList();
-
     }
   protected override void OnInitialized()
     {
@@ -177,91 +168,28 @@ IEnumerable<IMeasurement> measures;
         graphLOptions.Colors = new List<string> { "#673AB7", "#FB8C00", "#00897B", "#D81B60" };
         graphLOptions.Stroke = new Stroke
         {
-            Width = new List<int> { 2, 6 },
+            Width = new List<int> { 2, 2, 2, 6 },
         };
-        graphLOptions.DataLabels = new DataLabels
-        {
-            Enabled = false
-        };
-        graphLOptions.Fill = new Fill
-        {
-            Opacity = new List<double> { 1, 0.75 }
-        };
-        graphLOptions.Markers = new Markers
-        {
-            Size = 0
-        };
-        @* graphLOptions.Yaxis = new List<YAxis>
-        {
-            new YAxis
-            {
-                SeriesName = "Flies",
-                AxisTicks = new AxisTicks
-                {
-                    Show = true,
-                    Color = "#008FFB"
-                },
-                AxisBorder = new AxisBorder
-                {
-                    Show = true,
-                    Color = "#008FFB"
-                },
-                Labels = new YAxisLabels
-                {
-                    Style = new AxisLabelStyle
-                    {
-                        Colors = "#008FFB"
-                    }
-                },
-                Title = new AxisTitle
-                {
-                    Text = "Flies",
-                    Style = new AxisTitleStyle
-                    {
-                        Color = "#008FFB"
-                    }
-                }
-            },
-            new YAxis
-            {
-                SeriesName = "Spiders",
-                Opposite = true,
-                AxisTicks = new AxisTicks
-                {
-                    Show = true,
-                    Color = "#00E396"
-                },
-                AxisBorder = new AxisBorder
-                {
-                    Show = true,
-                    Color = "#00E396"
-                },
-                Labels = new YAxisLabels
-                {
-                    Style = new AxisLabelStyle
-                    {
-                        Colors = "#00E396"
-                    }
-                },
-                Title = new AxisTitle
-                {
-                    Text = "Spiders",
-                    Style = new AxisTitleStyle
-                    {
-                        Color = "#00E396"
-                    }
-                }
-            }
-        }; *@
         graphLOptions.Xaxis = new XAxis
         {
-            Type = XAxisType.Datetime
+            Type = XAxisType.Datetime,
+            Labels = new(){ Format = @"dd.MM."},
         };
+        graphLOptions.Tooltip = new Tooltip { X = new TooltipX { Format = @"dd.MM." } };
+        graphLOptions.Yaxis = new List<YAxis>();
+        graphLOptions.Yaxis.Add(
+        new YAxis
+        {
+            Labels = new YAxisLabels
+            {
+            Formatter = "function(val, index) { return (val ?? 0).toFixed(0); }"
+            }
+        });
+
 
         optionsLine.Chart = new Chart
         {
             Height = 130,
-            @* Type = ApexCharts.ChartType.Area, *@
             Brush = new Brush
             {
                 Target = "chart2",
@@ -276,28 +204,27 @@ IEnumerable<IMeasurement> measures;
         optionsLine.Colors = new List<string> { "#673AB7", "#FB8C00", "#00897B", "#D81B60" };
         optionsLine.Stroke = new Stroke
         {
-            Width = new List<int> { 1, 3 },
-        };
-        optionsLine.Fill = new Fill
-        {
-            Type = FillType.Gradient
+            Width = new List<int> { 1, 1, 1, 3 },
         };
         optionsLine.Xaxis = new XAxis
         {
             Type = XAxisType.Datetime,
+            Labels = new(){ Format = @"dd.MM."},
             Tooltip = new XAxisTooltip
             {
                 Enabled = false
             }
         };
-        optionsLine.Yaxis = new List<YAxis>
+        @* optionsLine.Tooltip = new Tooltip { X = new TooltipX { Format = @"dd.MM." } }; *@
+        optionsLine.Yaxis = new List<YAxis>();
+        optionsLine.Yaxis.Add(
+        new YAxis
         {
-            new YAxis
+            Labels = new YAxisLabels
             {
-                Max = 100,
-                TickAmount = 2
+            Formatter = "function(val, index) { return (val ?? 0).toFixed(0); }"
             }
-        };
+        });
     }
     private async Task LeftMenuItemClicked(string source)
   {
@@ -305,7 +232,14 @@ IEnumerable<IMeasurement> measures;
       return;
     _title = source;
     _selectedMeter = _meters.Where(x => x.Id == source).FirstOrDefault();
-    await GetValues();
+    await GetValues( startOfThisYearNoTransformation, now);
+  }
+  private async Task MonthChange(DateTime? newDate){
+    _month = newDate;
+    if (_month is not null){
+        DateTimeOffset month = DateTime.SpecifyKind(_month.Value, DateTimeKind.Utc);
+        await GetValues( month.GetStartOfMonth(), month.GetStartOfNextMonth());
+        }
   }
   private Task<IEnumerable<string>> Search(string value)
   {
@@ -314,5 +248,9 @@ IEnumerable<IMeasurement> measures;
       return Task.FromResult(_ioTDeviceNames as IEnumerable<string>);
     var result = _ioTDeviceNames.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
     return Task.FromResult(result);
+  }
+  void Submit()
+  {
+    MudDialog.Close(DialogResult.Ok(true));
   }
 }
