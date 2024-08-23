@@ -7,12 +7,8 @@
 	<ItemGroup>
 	  <ProjectReference Include="../../src/Ozds.Data/Ozds.Data.csproj" />
 	  <ProjectReference Include="../../src/Ozds.Messaging/Ozds.Messaging.csproj" />
+	  <ProjectReference Include="../../src/Ozds.Users/Ozds.Users.csproj" />
+	  <ProjectReference Include="../../src/Ozds.Email/Ozds.Email.csproj" />
 	</ItemGroup>
-
-  <ItemGroup>
-		<PackageReference Include="OrchardCore.Abstractions" Version="$(OrchardVersion)" />
-		<PackageReference Include="OrchardCore.Users" Version="$(OrchardVersion)" />
-    <PackageReference Include="MailKit" Version="4.7.1.1" />
-  </ItemGroup>
 
 </Project>

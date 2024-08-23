@@ -1,11 +1,3 @@
-using System.Reflection;
-using MailKit.Net.Smtp;
-using MassTransit;
-using MassTransit.Configuration;
-using MassTransit.EntityFrameworkCoreIntegration;
-using Microsoft.EntityFrameworkCore;
-using OrchardCore.Environment.Shell;
-using OrchardCore.Modules;
 using Ozds.Business.Activation.Abstractions;
 using Ozds.Business.Activation.Agnostic;
 using Ozds.Business.Aggregation;
@@ -25,17 +17,12 @@ using Ozds.Business.Naming.Agnostic;
 using Ozds.Business.Notifications;
 using Ozds.Business.Notifications.Abstractions;
 using Ozds.Business.Queries.Abstractions;
-using Ozds.Data;
-using Ozds.Data.Extensions;
-using Ozds.Messaging;
-
-// TODO: switch to enable query/mutation logging
 
 namespace Ozds.Business.Extensions;
 
 public static class IServiceCollectionExtensions
 {
-  public static IServiceCollection AddOzdsBusinessClient(
+  public static IServiceCollection AddOzdsBusiness(
     this IServiceCollection services,
     IHostApplicationBuilder builder
   )
@@ -43,9 +30,6 @@ public static class IServiceCollectionExtensions
     // Activation
     services.AddTransientAssignableTo(typeof(IModelActivator));
     services.AddSingleton(typeof(AgnosticModelActivator));
-
-    services.AddData(builder);
-    services.AddMessaging(builder);
 
     services.AddScopedAssignableTo(typeof(IOzdsQueries));
     services.AddScopedAssignableTo(typeof(IOzdsMutations));
@@ -75,170 +59,40 @@ public static class IServiceCollectionExtensions
 
     services.AddSingleton<IOzdsLocalizer, OzdsLocalizer>();
 
-    services.AddScoped<ISmtpClient, SmtpClient>();
     services.AddScoped<INotificationSender, NotificationSender>();
 
     return services;
   }
 
-  private static void AddData(
-    this IServiceCollection services,
-    IHostApplicationBuilder builder
+  public static IApplicationBuilder UseOzdsBusiness(
+    this IApplicationBuilder app,
+    IEndpointRouteBuilder endpoints
   )
   {
-    services.AddDbContextFactory<OzdsDataDbContext>(
-      (services, options) =>
-      {
-        var connectionString =
-          builder.Configuration["Ozds:Data:ConnectionString"]
-          ?? throw new InvalidOperationException(
-            "Ozds:Data:ConnectionString not found in configuration"
-          );
+    endpoints.MapAreaControllerRoute(
+      "Ozds.Business.Controllers.Iot.Push",
+      "Ozds.Business",
+      "/iot/push/{id}",
+      new { controller = "Iot", action = "Push" }
+    );
 
-        if (builder.Environment.IsDevelopment())
-        {
-#pragma warning disable S125
-          // TODO: switch to enable query/mutation logging
-          // options.EnableSensitiveDataLogging();
-          // options.EnableDetailedErrors();
-          // options.UseLoggerFactory(
-          //   LoggerFactory.Create(builder => builder.AddConsole())
-          // );
-#pragma warning restore S125
-        }
+    endpoints.MapAreaControllerRoute(
+      "Ozds.Business.Controllers.Iot.Poll",
+      "Ozds.Business",
+      "/iot/poll/{id}",
+      new { controller = "Iot", action = "Poll" }
+    );
 
-        options
-          .UseTimescale(
-            connectionString,
-            options =>
-            {
-              options.MigrationsAssembly(
-                typeof(OzdsDataDbContext).Assembly.GetName().Name);
-              options.MigrationsHistoryTable(
-                $"__{nameof(OzdsDataDbContext)}");
-            })
-          .AddServedSaveChangesInterceptorsFromAssembly(
-            Assembly.GetExecutingAssembly(),
-            services
-          );
-      });
-  }
+    endpoints.MapAreaControllerRoute(
+      "Ozds.Business.Controllers.Iot.Update",
+      "Ozds.Business",
+      "/iot/update/{id}",
+      new { controller = "Iot", action = "Update" }
+    );
 
-  private static void AddMessaging(
-    this IServiceCollection services,
-    IHostApplicationBuilder builder
-  )
-  {
-    var persistenceConnectionString = builder.Configuration[
-        "Ozds:Messaging:PersistenceConnectionString"]
-      ?? throw new InvalidOperationException(
-        "Ozds:Messaging:PersistenceConnectionString not found in configuration"
-      );
+    app.ApplicationServices.GetRequiredService<IHostApplicationLifetime>();
 
-    services.AddDbContext<OzdsMessagingDbContext>(
-      builder => builder
-        .UseNpgsql(
-          persistenceConnectionString, m =>
-          {
-            m.MigrationsAssembly(
-              typeof(OzdsMessagingDbContext).Assembly.GetName().Name);
-            m.MigrationsHistoryTable(
-              $"__{nameof(OzdsMessagingDbContext)}");
-          }));
-
-    services.AddMassTransit(
-      x =>
-      {
-        var messagingAssembly = typeof(OzdsMessagingDbContext).Assembly;
-        var businessAssembly = typeof(IServiceCollectionExtensions).Assembly;
-
-#pragma warning disable S125
-        // FIXME: nothing happens
-        // x.AddEntityFrameworkOutbox<OzdsMessagingDbContext>(o =>
-        // {
-        //   o.UsePostgres();
-        //   o.UseBusOutbox();
-        // });
-        // x.AddConfigureEndpointsCallback((context, name, cfg) =>
-        // {
-        //   cfg.UseEntityFrameworkOutbox<OzdsMessagingDbContext>(context);
-        // });
-#pragma warning restore S125
-        x.SetKebabCaseEndpointNameFormatter();
-
-        x.AddConsumers(businessAssembly);
-        x.AddSagaStateMachines(businessAssembly);
-        x.AddActivities(businessAssembly);
-
-        x.AddSagas(messagingAssembly);
-        x.SetSagaRepositoryProvider(
-          new OzdsSagaRepositoryRegistrationProvider());
-
-        if (builder.Environment.IsDevelopment())
-        {
-          var connectionStringDictionary = (
-              builder.Configuration["Ozds:Messaging:ConnectionString"]
-              ?? throw new InvalidOperationException(
-                "Messaging connection string not configured"
-              )
-            )
-            .Split(';')
-            .ToDictionary(x => x.Split('=')[0], x => x.Split('=')[1]);
-          var host = connectionStringDictionary["Host"];
-          var virtualHost = connectionStringDictionary["VirtualHost"];
-          var username = connectionStringDictionary["Username"];
-          var password = connectionStringDictionary["Password"];
-
-          x.UsingRabbitMq(
-            (context, cfg) =>
-            {
-              cfg.Host(
-                host, virtualHost, cfg =>
-                {
-                  cfg.Username(username);
-                  cfg.Password(password);
-                });
-              cfg.ConfigureEndpoints(context);
-            });
-        }
-        else
-        {
-          var connectionString =
-            builder.Configuration["Ozds:Messaging:ConnectionString"]
-            ?? throw new InvalidOperationException(
-              "Azure Service Bus connection string not configured"
-            );
-
-          x.UsingAzureServiceBus(
-            (context, cfg) =>
-            {
-              cfg.Host(connectionString);
-              cfg.ConfigureEndpoints(context);
-            });
-        }
-      });
-
-    services.RemoveHostedService<MassTransitHostedService>();
-    services
-      .RemoveHostedService<BusOutboxDeliveryService<OzdsMessagingDbContext>>();
-    services.RemoveHostedService<InboxCleanupService<OzdsMessagingDbContext>>();
-
-    services.AddSingleton<
-      IModularTenantEvents,
-      HostedServiceModularTenantEvents<
-        MassTransitHostedService>>();
-
-#pragma warning disable S125
-    // FIXME: nothing happens
-    // services.AddSingleton<
-    //   IModularTenantEvents,
-    //   HostedServiceModularTenantEvents<
-    //     BusOutboxDeliveryService<OzdsMessagingDbContext>>>();
-    // services.AddSingleton<
-    //   IModularTenantEvents,
-    //   HostedServiceModularTenantEvents<
-    //     InboxCleanupService<OzdsMessagingDbContext>>>();
-#pragma warning restore S125
+    return app;
   }
 
   private static void AddScopedAssignableTo(
@@ -280,139 +134,6 @@ public static class IServiceCollectionExtensions
     {
       services.AddTransient(assignableTo, conversionType);
       services.AddTransient(conversionType);
-    }
-  }
-
-  private sealed class OzdsSagaRepositoryRegistrationProvider
-    : ISagaRepositoryRegistrationProvider
-  {
-    public void Configure<TSaga>(
-      ISagaRegistrationConfigurator<TSaga> configurator
-    )
-      where TSaga : class, ISaga
-    {
-      configurator
-        .EntityFrameworkRepository(
-          r =>
-          {
-            r.ConcurrencyMode = ConcurrencyMode.Optimistic;
-            r.ExistingDbContext<OzdsMessagingDbContext>();
-            r.UsePostgres();
-          });
-    }
-  }
-
-  private sealed class HostedServiceModularTenantEvents<THostedService>(
-    IServiceProvider serviceProvider,
-    ILogger<HostedServiceModularTenantEvents<THostedService>> logger,
-    ShellSettings shellSettings
-  ) : ModularTenantEvents, IDisposable, IAsyncDisposable
-    where THostedService : IHostedService
-  {
-    private bool _disposed;
-    private THostedService? _hostedService;
-    private bool _started;
-
-    public async ValueTask DisposeAsync()
-    {
-      if (_hostedService is not IAsyncDisposable asyncDisposable)
-      {
-        return;
-      }
-
-      if (_disposed || _hostedService is null)
-      {
-        _disposed = true;
-        return;
-      }
-
-      if (_started)
-      {
-        await _hostedService.StopAsync(CancellationToken.None);
-        _started = false;
-      }
-
-      await asyncDisposable.DisposeAsync();
-      _disposed = true;
-    }
-
-    public void Dispose()
-    {
-      if (_hostedService is not IDisposable disposable)
-      {
-        return;
-      }
-
-      if (_disposed || _hostedService is null)
-      {
-        _disposed = true;
-        return;
-      }
-
-      if (_started)
-      {
-        _hostedService
-          .StopAsync(CancellationToken.None)
-          .GetAwaiter()
-          .GetResult();
-        _started = false;
-      }
-
-      disposable.Dispose();
-      _disposed = true;
-    }
-
-    public override async Task ActivatedAsync()
-    {
-      ObjectDisposedException.ThrowIf(
-        _disposed,
-        _hostedService!
-      );
-
-      if (_started)
-      {
-        return;
-      }
-
-      logger.LogInformation(
-        "Starting hosted service '{HostedService}' for tenant '{TenantName}'.",
-        typeof(THostedService).Name,
-        shellSettings.Name
-      );
-
-      _hostedService = ActivatorUtilities
-        .CreateInstance<THostedService>(serviceProvider);
-
-      await _hostedService
-        .StartAsync(CancellationToken.None)
-        .ConfigureAwait(false);
-
-      _started = true;
-    }
-
-    public override async Task TerminatingAsync()
-    {
-      ObjectDisposedException.ThrowIf(
-        _disposed,
-        _hostedService!
-      );
-
-      if (_hostedService is null || !_started)
-      {
-        return;
-      }
-
-      logger.LogInformation(
-        "Stopping hosted service '{HostedService}' for tenant '{TenantName}'.",
-        typeof(THostedService).Name,
-        shellSettings.Name
-      );
-
-      await _hostedService
-        .StopAsync(CancellationToken.None)
-        .ConfigureAwait(false);
-
-      _started = false;
     }
   }
 }

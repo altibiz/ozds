@@ -1,6 +1,11 @@
 using OrchardCore.Logging;
 using Ozds.Business.Extensions;
 using Ozds.Client.Extensions;
+using Ozds.Data.Extensions;
+using Ozds.Email.Extensions;
+using Ozds.Messaging.Extensions;
+using Ozds.Server.Extensions;
+using Ozds.Users.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 if (builder.Environment.IsDevelopment())
@@ -13,33 +18,25 @@ builder.Services
   .AddSetupFeatures("OrchardCore.AutoSetup")
   .ConfigureServices(
     services => services
+      .AddOzdsUsers(builder)
+      .AddOzdsData(builder)
+      .AddOzdsEmail(builder)
+      .AddOzdsMessaging(builder)
+      .AddOzdsBusiness(builder)
       .AddOzdsClient(builder)
-      .AddOzdsBusinessClient(builder))
+      .AddOzdsServer(builder))
   .Configure(
-    (_, endpoints) => endpoints
-      .MapOzdsClient("App", "Index", "/app")
-      .MapOzdsIot("Iot", "Push", "/iot/push")
-      .MapOzdsIot("Iot", "Poll", "/iot/poll")
-      .MapOzdsIot("Iot", "Update", "/iot/update"))
-  .Configure(
-    app => app
-      .MigrateOzdsData()
-      .MigrateOzdsMessaging());
+    (app, endpoints) => app
+      .UseOzdsServer(endpoints)
+      .UseOzdsClient(endpoints)
+      .UseOzdsBusiness(endpoints)
+      .UseOzdsData(endpoints)
+      .UseOzdsEmail(endpoints)
+      .UseOzdsMessaging(endpoints)
+      .UseUsers(endpoints));
 
 var app = builder.Build();
 
-app.Use(
-  async (context, next) =>
-  {
-    if (context.Request.Path == "/")
-    {
-      context.Response.Redirect("/app/en", true);
-    }
-    else
-    {
-      await next();
-    }
-  });
 app.UseStaticFiles();
 app.UseOrchardCore();
 

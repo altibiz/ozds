@@ -26,5 +26,3 @@ namespace Ozds.Data.Migrations
         }
     }
 }
-
-

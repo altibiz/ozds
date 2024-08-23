@@ -1,9 +1,9 @@
 using System.ComponentModel.DataAnnotations;
 using Ozds.Business.Conversion.Agnostic;
-using Ozds.Business.Extensions;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Mutations.Abstractions;
 using Ozds.Data;
+using Ozds.Data.Extensions;
 
 // TODO: check representative model user id
 

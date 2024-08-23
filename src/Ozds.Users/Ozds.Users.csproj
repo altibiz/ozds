@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+		<PackageReference Include="OrchardCore.Abstractions" Version="$(OrchardVersion)" />
+		<PackageReference Include="OrchardCore.Users" Version="$(OrchardVersion)" />
+  </ItemGroup>
+
+</Project>
