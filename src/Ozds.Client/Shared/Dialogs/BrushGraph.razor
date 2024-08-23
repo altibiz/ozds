@@ -1,59 +1,59 @@
-@using Color = MudBlazor.Color
 @using Ozds.Business.Time
+@using Color = MudBlazor.Color
 <MudDialog>
   <DialogContent>
     <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
-        @T[_dataType] @T["for"]: @_title
-      </MudItem>
-      <MudContainer Class="d-flex flex-column" MaxWidth="MaxWidth.ExtraExtraLarge">
-        @if (_graphValues is not null)
-        {
-          <ApexChart TItem="ChartData"
-                     Height="500"
-                     XAxisType="XAxisType.Datetime"
-                     Options="graphLOptions"
-                     @ref="chart">
-            @for (var i = 0; i < lineCount; i++)
-            {
-              var j = i;
-              <ApexPointSeries TItem="ChartData"
-                               Items="@_graphValues"
-                               Name="@_graphValues.Select(x => x.names[j]).FirstOrDefault()"
-                               SeriesType="SeriesType.Line"
-                               XValue='x => DateTimeGraph(x.date)'
-                               YValue="x => (decimal?)x.values[j]"
-                               Stroke="@(ColorGraph(j))"/>
-            }
-            @if (lineCount == 0)
-            {
-              <ApexPointSeries TItem="ChartData"
-                               Items="@_graphValues"
-                               Name="n/a"
-                               SeriesType="SeriesType.Line"
-                               XValue='x => DateTimeGraph(x.date)'
-                               YValue="x => 0"
-                               Stroke="@(ColorGraph(0))"/>
-            }
-          </ApexChart>
-          <MudItem Class="d-flex flex-row justify-center gap-2">
-            <MudMenu Dense="true" Variant="Variant.Filled" Color="Color.Primary">
-              <ActivatorContent>
-                <MudButton Variant="Variant.Filled" Color="Color.Primary">
-                  @T[_dataType]
-                  <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowDown"/>
-                </MudButton>
-              </ActivatorContent>
-              <ChildContent>
-                @foreach (var type in _displayType)
-                {
-                  <MudMenuItem OnClick="@(() => LeftMenuDataItemClicked(type.type))">@type.name</MudMenuItem>
-                }
-              </ChildContent>
-            </MudMenu>
-          </MudItem>
-          <MudAutocomplete Class="pa-4 mt-0" T="string" Label="@T["Devices"]" Value="_title" ValueChanged="e => LeftMenuItemClicked(e)" SearchFunc="@Search" ToStringFunc="@(e => e == null ? null : $"{e}")"/>
-        }
-      </MudContainer>
+      @T[_dataType] @T["for"]: @_title
+    </MudItem>
+    <MudContainer Class="d-flex flex-column" MaxWidth="MaxWidth.ExtraExtraLarge">
+      @if (_graphValues is not null)
+      {
+        <ApexChart TItem="ChartData"
+                   Height="500"
+                   XAxisType="XAxisType.Datetime"
+                   Options="graphLOptions"
+                   @ref="chart">
+          @for (var i = 0; i < lineCount; i++)
+          {
+            var j = i;
+            <ApexPointSeries TItem="ChartData"
+                             Items="@_graphValues"
+                             Name="@_graphValues.Select(x => x.names[j]).FirstOrDefault()"
+                             SeriesType="SeriesType.Line"
+                             XValue='x => DateTimeGraph(x.date)'
+                             YValue="x => (decimal?)x.values[j]"
+                             Stroke="@(ColorGraph(j))"/>
+          }
+          @if (lineCount == 0)
+          {
+            <ApexPointSeries TItem="ChartData"
+                             Items="@_graphValues"
+                             Name="n/a"
+                             SeriesType="SeriesType.Line"
+                             XValue='x => DateTimeGraph(x.date)'
+                             YValue="x => 0"
+                             Stroke="@(ColorGraph(0))"/>
+          }
+        </ApexChart>
+        <MudItem Class="d-flex flex-row justify-center gap-2">
+          <MudMenu Dense="true" Variant="Variant.Filled" Color="Color.Primary">
+            <ActivatorContent>
+              <MudButton Variant="Variant.Filled" Color="Color.Primary">
+                @T[_dataType]
+                <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowDown"/>
+              </MudButton>
+            </ActivatorContent>
+            <ChildContent>
+              @foreach (var type in _displayType)
+              {
+                <MudMenuItem OnClick="@(() => LeftMenuDataItemClicked(type.type))">@type.name</MudMenuItem>
+              }
+            </ChildContent>
+          </MudMenu>
+        </MudItem>
+        <MudAutocomplete Class="pa-4 mt-0" T="string" Label="@T["Devices"]" Value="_title" ValueChanged="e => LeftMenuItemClicked(e)" SearchFunc="@Search" ToStringFunc="@(e => e == null ? null : $"{e}")"/>
+      }
+    </MudContainer>
   </DialogContent>
   <DialogActions>
     <MudButton Color="Color.Primary" OnClick="Submit">Close</MudButton>
@@ -74,15 +74,15 @@
   public string TextValue { get; set; } = "";
   private ApexChartOptions<ChartData> graphLOptions = NewApexChartOptions<ChartData>();
   private List<(DataEnum type, string name)> _displayType = new();
-  public int lineCount = 0;
+  public int lineCount;
   public int rightLineCount = 0;
   public IEnumerable<ChartData>? _graphValues;
   public IEnumerable<ChartData>? _rowData;
   private string _title = "";
-  private MeterModel? _selectedMeter = default!;
+  private MeterModel? _selectedMeter;
   private string _dataType = "";
-  private DateTimeOffset now = DateTimeOffset.UtcNow.LocalDateTime;
-  private DateTimeOffset startOfThisYear = DateTimeOffset.UtcNow.GetStartOfYear();
+  private readonly DateTimeOffset now = DateTimeOffset.UtcNow.LocalDateTime;
+  private readonly DateTimeOffset startOfThisYear = DateTimeOffset.UtcNow.GetStartOfYear();
 
   public record ChartData(decimal[] values, string[] names, DateTimeOffset date, string source);
 
@@ -102,11 +102,11 @@
 
   private class ExpandThing
   {
-    public MeterModel device = default!;
+    public readonly MeterModel device = default!;
     public bool show;
   }
 
-  private List<ExpandThing> _shownIoTDevices = new();
+  private readonly List<ExpandThing> _shownIoTDevices = new();
   private List<string> _ioTDeviceNames = new();
 
   protected override async Task OnInitializedAsync()

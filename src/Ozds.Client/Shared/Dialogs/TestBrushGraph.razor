@@ -1,5 +1,6 @@
-@using Color = MudBlazor.Color
 @using Ozds.Business.Time
+@using ChartType = ApexCharts.ChartType
+@using Color = MudBlazor.Color
 
 <MudDialog>
   <DialogContent>
@@ -7,34 +8,34 @@
                Height="300"
                Options="graphLOptions"
                @ref="chart">
-        @foreach (var series in ChartSeries)
-        {
-            <ApexPointSeries TItem="ChartData"
-                             Items="@series.Data"
-                             Name="@series.Name"
-                             SeriesType="SeriesType.Line"
-                             XValue="@(x => x.Date)"
-                             YValue="@(x => x.Value)"/>
-        }
+      @foreach (var series in ChartSeries)
+      {
+        <ApexPointSeries TItem="ChartData"
+                         Items="@series.Data"
+                         Name="@series.Name"
+                         SeriesType="SeriesType.Line"
+                         XValue="@(x => x.Date)"
+                         YValue="@(x => x.Value)"/>
+      }
     </ApexChart>
 
     <ApexChart TItem="ChartData"
                Height="130"
                Options="optionsLine"
                @ref="chartLine">
-        @foreach (var series in ChartSeries)
-        {
-            <ApexPointSeries TItem="ChartData"
-                             Items="@series.Data"
-                             Name="@series.Name"
-                             SeriesType="SeriesType.Line"
-                             XValue="@(x => x.Date)"
-                             YValue="@(x => x.Value)"/>
-        }
+      @foreach (var series in ChartSeries)
+      {
+        <ApexPointSeries TItem="ChartData"
+                         Items="@series.Data"
+                         Name="@series.Name"
+                         SeriesType="SeriesType.Line"
+                         XValue="@(x => x.Date)"
+                         YValue="@(x => x.Value)"/>
+      }
     </ApexChart>
     <MudItem Class="d-flex">
-        <MudAutocomplete Class="pa-4 mt-0" T="string" Label="@T["Devices"]" Value="_title" ValueChanged="e => LeftMenuItemClicked(e)" SearchFunc="@Search" ToStringFunc="@(e => e == null ? null : $"{e}")"/>
-        <MudDatePicker Label="@T["Pick month"]" HelperText="@_month?.ToShortDateString()" DateChanged="e => MonthChange(e)" OpenTo="OpenTo.Month" FixYear="@DateTime.Today.Year" FixDay="@DateTime.Today.Day" DateFormat="MMM" />
+      <MudAutocomplete Class="pa-4 mt-0" T="string" Label="@T["Devices"]" Value="_title" ValueChanged="e => LeftMenuItemClicked(e)" SearchFunc="@Search" ToStringFunc="@(e => e == null ? null : $"{e}")"/>
+      <MudDatePicker Label="@T["Pick month"]" HelperText="@_month?.ToShortDateString()" DateChanged="e => MonthChange(e)" OpenTo="OpenTo.Month" FixYear="@DateTime.Today.Year" FixDay="@DateTime.Today.Day" DateFormat="MMM"/>
     </MudItem>
   </DialogContent>
   <DialogActions>
@@ -43,204 +44,223 @@
 </MudDialog>
 
 @code {
+
   [CascadingParameter]
   MudDialogInstance MudDialog { get; set; } = default!;
+
   private string _title = "";
   private IEnumerable<MeterModel>? _meters;
-  private MeterModel? _selectedMeter = default!;
+  private MeterModel? _selectedMeter;
   private List<string> _ioTDeviceNames = new();
   private DateTime? _month;
-  private DateTimeOffset startOfThisYearNoTransformation = DateTimeOffset.UtcNow.GetStartOfYearNoTransformation();
-  private DateTimeOffset now = DateTime.UtcNow;
+  private readonly DateTimeOffset startOfThisYearNoTransformation = DateTimeOffset.UtcNow.GetStartOfYearNoTransformation();
+  private readonly DateTimeOffset now = DateTime.UtcNow;
   OzdsAggregateQueries aggregateQueries = default!;
   private List<ChartData> Data1 = new();
   private List<ChartData> Data2 = new();
   private List<ChartData> Data3 = new();
   private List<ChartData> Data4 = new();
-    public class ChartData
-    {
-        public DateTime Date { get; set; }
-        public decimal Value { get; set; }
-    }
 
-    public class Series<T>
-    {
-        public string Name { get; set; } = "";
-        public List<T> Data { get; set; } = new();
-    }
+  public class ChartData
+  {
+    public DateTime Date { get; set; }
+    public decimal Value { get; set; }
+  }
 
-    private ApexChart<ChartData> chart = new();
-    private ApexChart<ChartData> chartLine = new();
+  public class Series<T>
+  {
+    public string Name { get; set; } = "";
+    public List<T> Data { get; set; } = new();
+  }
 
-    private List<Series<ChartData>> ChartSeries => new List<Series<ChartData>>
+  private ApexChart<ChartData> chart = new();
+  private ApexChart<ChartData> chartLine = new();
+
+  private List<Series<ChartData>> ChartSeries
+  {
+    get
     {
-        new Series<ChartData>
+      return new List<Series<ChartData>>
+      {
+        new()
         {
-            Name = "L1 Active Power",
-            Data = Data1
+          Name = "L1 Active Power",
+          Data = Data1
         },
-        new Series<ChartData>
+        new()
         {
-            Name = "L2 Active Power",
-            Data = Data2
+          Name = "L2 Active Power",
+          Data = Data2
         },
-        new Series<ChartData>
+        new()
         {
-            Name = "L3 Active Power",
-            Data = Data3
+          Name = "L3 Active Power",
+          Data = Data3
         },
-        new Series<ChartData>
+        new()
         {
-            Name = "Total power",
-            Data = Data4
+          Name = "Total power",
+          Data = Data4
         }
-    };
-
-
-    private ApexChartOptions<ChartData> graphLOptions = NewApexChartOptions<ChartData>();
-    private ApexChartOptions<ChartData> optionsLine = NewApexChartOptions<ChartData>();
-
-    private async Task GetValues(DateTimeOffset startDate, DateTimeOffset endDate){
-        IEnumerable<IMeasurement> measures;
-        measures = await aggregateQueries.ReadAgnostic(new[] { "x => x.Interval == 1", $"x => x.MeterId == \"{_title}\"" }, startDate, endDate, 1, 9000);
-
-        Data1 =
-            measures.Select(
-                x => new ChartData{
-                    Date = x.Timestamp.DateTime,
-                    Value = x.ActivePower_W.TariffUnary().DuplexNet().PhaseSplit().ValueL1
-                }
-            ).ToList();
-        Data2 =
-            measures.Select(
-                x => new ChartData{
-                    Date = x.Timestamp.DateTime,
-                    Value = x.ActivePower_W.TariffUnary().DuplexNet().PhaseSplit().ValueL2
-                }
-            ).ToList();
-        Data3 =
-            measures.Select(
-                x => new ChartData{
-                    Date = x.Timestamp.DateTime,
-                    Value = x.ActivePower_W.TariffUnary().DuplexNet().PhaseSplit().ValueL3
-                }
-            ).ToList();
-        Data4 =
-            measures.Select(
-                x => new ChartData{
-                    Date = x.Timestamp.DateTime,
-                    Value = x.ActivePower_W.TariffUnary().DuplexNet().PhaseSplit().PhaseSum()
-                }
-            ).ToList();
-        StateHasChanged();
-        await chart.UpdateSeriesAsync();
-        await chartLine.UpdateSeriesAsync();
+      };
     }
+  }
+
+
+  private readonly ApexChartOptions<ChartData> graphLOptions = NewApexChartOptions<ChartData>();
+  private readonly ApexChartOptions<ChartData> optionsLine = NewApexChartOptions<ChartData>();
+
+  private async Task GetValues(DateTimeOffset startDate, DateTimeOffset endDate)
+  {
+    IEnumerable<IMeasurement> measures;
+    measures = await aggregateQueries.ReadAgnostic(new[] { "x => x.Interval == 1", $"x => x.MeterId == \"{_title}\"" }, startDate, endDate, 1, 9000);
+
+    Data1 =
+      measures.Select(
+        x => new ChartData
+        {
+          Date = x.Timestamp.DateTime,
+          Value = x.ActivePower_W.TariffUnary().DuplexNet().PhaseSplit().ValueL1
+        }
+      ).ToList();
+    Data2 =
+      measures.Select(
+        x => new ChartData
+        {
+          Date = x.Timestamp.DateTime,
+          Value = x.ActivePower_W.TariffUnary().DuplexNet().PhaseSplit().ValueL2
+        }
+      ).ToList();
+    Data3 =
+      measures.Select(
+        x => new ChartData
+        {
+          Date = x.Timestamp.DateTime,
+          Value = x.ActivePower_W.TariffUnary().DuplexNet().PhaseSplit().ValueL3
+        }
+      ).ToList();
+    Data4 =
+      measures.Select(
+        x => new ChartData
+        {
+          Date = x.Timestamp.DateTime,
+          Value = x.ActivePower_W.TariffUnary().DuplexNet().PhaseSplit().PhaseSum()
+        }
+      ).ToList();
+    StateHasChanged();
+    await chart.UpdateSeriesAsync();
+    await chartLine.UpdateSeriesAsync();
+  }
 
   protected override async Task OnInitializedAsync()
-    {
-        aggregateQueries = ScopedServices.GetRequiredService<OzdsAggregateQueries>();
-        var a = await ScopedServices
-            .GetRequiredService<OzdsAuditableQueries>().Read<MeterModel>(Enumerable.Empty<string>(), Enumerable.Empty<string>(), Enumerable.Empty<string>(), 1, 1000);
-        _meters = a.Items;
-        _ioTDeviceNames = _meters.Select(x => x.Id).ToList();
-    }
+  {
+    aggregateQueries = ScopedServices.GetRequiredService<OzdsAggregateQueries>();
+    var a = await ScopedServices
+      .GetRequiredService<OzdsAuditableQueries>().Read<MeterModel>(Enumerable.Empty<string>(), Enumerable.Empty<string>(), Enumerable.Empty<string>(), 1, 1000);
+    _meters = a.Items;
+    _ioTDeviceNames = _meters.Select(x => x.Id).ToList();
+  }
+
   protected override void OnInitialized()
+  {
+    graphLOptions.Chart = new Chart
     {
+      Type = ChartType.Line,
+      Height = 130,
+      Id = "chart2",
+      DropShadow = new DropShadow
+      {
+        Enabled = true,
+        EnabledOnSeries = new List<double> { 1 }
+      },
+      Toolbar = new Toolbar
+      {
+        AutoSelected = AutoSelected.Pan,
+        Show = false
+      }
+    };
 
-        graphLOptions.Chart = new Chart
+    graphLOptions.Colors = new List<string> { "#673AB7", "#FB8C00", "#00897B", "#D81B60" };
+    graphLOptions.Stroke = new Stroke
+    {
+      Width = new List<int> { 2, 2, 2, 6 }
+    };
+    graphLOptions.Xaxis = new XAxis
+    {
+      Type = XAxisType.Datetime,
+      Labels = new XAxisLabels { Format = @"dd.MM." }
+    };
+    graphLOptions.Tooltip = new Tooltip { X = new TooltipX { Format = @"dd.MM." } };
+    graphLOptions.Yaxis = new List<YAxis>();
+    graphLOptions.Yaxis.Add(
+      new YAxis
+      {
+        Labels = new YAxisLabels
         {
-            Type = ApexCharts.ChartType.Line,
-            Height = 130,
-            Id="chart2",
-            DropShadow = new DropShadow
-            {
-                Enabled = true,
-                EnabledOnSeries = new List<double> { 1 }
-            },
-            Toolbar = new Toolbar
-            {
-                AutoSelected = AutoSelected.Pan,
-                Show = false
-            }
-        };
-
-        graphLOptions.Colors = new List<string> { "#673AB7", "#FB8C00", "#00897B", "#D81B60" };
-        graphLOptions.Stroke = new Stroke
-        {
-            Width = new List<int> { 2, 2, 2, 6 },
-        };
-        graphLOptions.Xaxis = new XAxis
-        {
-            Type = XAxisType.Datetime,
-            Labels = new(){ Format = @"dd.MM."},
-        };
-        graphLOptions.Tooltip = new Tooltip { X = new TooltipX { Format = @"dd.MM." } };
-        graphLOptions.Yaxis = new List<YAxis>();
-        graphLOptions.Yaxis.Add(
-        new YAxis
-        {
-            Labels = new YAxisLabels
-            {
-            Formatter = "function(val, index) { return (val ?? 0).toFixed(0); }"
-            }
-        });
+          Formatter = "function(val, index) { return (val ?? 0).toFixed(0); }"
+        }
+      });
 
 
-        optionsLine.Chart = new Chart
-        {
-            Height = 130,
-            Brush = new Brush
-            {
-                Target = "chart2",
-                Enabled = true
-            },
-            Selection = new Selection
-            {
-                Enabled = true,
-            }
-        };
+    optionsLine.Chart = new Chart
+    {
+      Height = 130,
+      Brush = new Brush
+      {
+        Target = "chart2",
+        Enabled = true
+      },
+      Selection = new Selection
+      {
+        Enabled = true
+      }
+    };
 
-        optionsLine.Colors = new List<string> { "#673AB7", "#FB8C00", "#00897B", "#D81B60" };
-        optionsLine.Stroke = new Stroke
+    optionsLine.Colors = new List<string> { "#673AB7", "#FB8C00", "#00897B", "#D81B60" };
+    optionsLine.Stroke = new Stroke
+    {
+      Width = new List<int> { 1, 1, 1, 3 }
+    };
+    optionsLine.Xaxis = new XAxis
+    {
+      Type = XAxisType.Datetime,
+      Labels = new XAxisLabels { Format = @"dd.MM." },
+      Tooltip = new XAxisTooltip
+      {
+        Enabled = false
+      }
+    };
+    @* optionsLine.Tooltip = new Tooltip { X = new TooltipX { Format = @"dd.MM." } }; *@
+    optionsLine.Yaxis = new List<YAxis>();
+    optionsLine.Yaxis.Add(
+      new YAxis
+      {
+        Labels = new YAxisLabels
         {
-            Width = new List<int> { 1, 1, 1, 3 },
-        };
-        optionsLine.Xaxis = new XAxis
-        {
-            Type = XAxisType.Datetime,
-            Labels = new(){ Format = @"dd.MM."},
-            Tooltip = new XAxisTooltip
-            {
-                Enabled = false
-            }
-        };
-        @* optionsLine.Tooltip = new Tooltip { X = new TooltipX { Format = @"dd.MM." } }; *@
-        optionsLine.Yaxis = new List<YAxis>();
-        optionsLine.Yaxis.Add(
-        new YAxis
-        {
-            Labels = new YAxisLabels
-            {
-            Formatter = "function(val, index) { return (val ?? 0).toFixed(0); }"
-            }
-        });
-    }
-    private async Task LeftMenuItemClicked(string source)
+          Formatter = "function(val, index) { return (val ?? 0).toFixed(0); }"
+        }
+      });
+  }
+
+  private async Task LeftMenuItemClicked(string source)
   {
     if (source is null || _meters is null)
       return;
     _title = source;
     _selectedMeter = _meters.Where(x => x.Id == source).FirstOrDefault();
-    await GetValues( startOfThisYearNoTransformation, now);
+    await GetValues(startOfThisYearNoTransformation, now);
   }
-  private async Task MonthChange(DateTime? newDate){
+
+  private async Task MonthChange(DateTime? newDate)
+  {
     _month = newDate;
-    if (_month is not null){
-        DateTimeOffset month = DateTime.SpecifyKind(_month.Value, DateTimeKind.Utc);
-        await GetValues( month.GetStartOfMonth(), month.GetStartOfNextMonth());
-        }
+    if (_month is not null)
+    {
+      DateTimeOffset month = DateTime.SpecifyKind(_month.Value, DateTimeKind.Utc);
+      await GetValues(month.GetStartOfMonth(), month.GetStartOfNextMonth());
+    }
   }
+
   private Task<IEnumerable<string>> Search(string value)
   {
     // if text is null or empty, show complete list
@@ -249,8 +269,10 @@
     var result = _ioTDeviceNames.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
     return Task.FromResult(result);
   }
+
   void Submit()
   {
     MudDialog.Close(DialogResult.Ok(true));
   }
+
 }
