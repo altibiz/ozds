@@ -1,6 +1,8 @@
 using MailKit.Net.Smtp;
 using MimeKit;
+using Ozds.Business.Models;
 using Ozds.Business.Models.Abstractions;
+using Ozds.Business.Models.Enums;
 using Ozds.Business.Notifications.Abstractions;
 
 namespace Ozds.Business.Notifications;
@@ -10,7 +12,9 @@ public class NotificationSender(
   IConfiguration configuration
 ) : INotificationSender
 {
-  public async Task SendAsync(IEnumerable<INotification> notifications)
+  public async Task SendAsync(
+    INotification notification,
+    IEnumerable<RepresentativeModel> recipients)
   {
     var notificationConfiguration = configuration
       .GetSection("Ozds:Notifications");
@@ -36,22 +40,18 @@ public class NotificationSender(
       ?? throw new InvalidOperationException("Email address is not configured.");
 
     var messages = new List<MimeMessage>();
+    var fromAddress = new MailboxAddress(from, address);
+    var subject = $"[OZDS - {notification.Topic.ToTitle()}]: {notification.Title}";
+    var body = new BodyBuilder() { HtmlBody = notification.Content, }.ToMessageBody();
 
-    foreach (var notification in notifications)
+    foreach (var recipient in recipients.Select(r => r.PhysicalPerson))
     {
       var message = new MimeMessage();
-      message.From.Add(new MailboxAddress(from, address));
+      message.From.Add(fromAddress);
+      message.Subject = subject;
+      message.Body = body;
 
-      message.To.Add(new MailboxAddress(notification., notification.Address));
-      message.Subject = notification.Subject;
-
-      var bodyBuilder = new BodyBuilder()
-      {
-        HtmlBody = notification.HtmlBody,
-        TextBody = notification.TextBody
-      };
-
-      message.Body = bodyBuilder.ToMessageBody();
+      message.To.Add(new MailboxAddress(recipient.Name, recipient.Email));
 
       messages.Add(message);
     }

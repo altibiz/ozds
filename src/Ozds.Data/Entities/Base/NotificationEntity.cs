@@ -77,8 +77,6 @@ public class
         x => x.ToUniversalTime()
       );
 
-    builder.HasTimescaleHypertable(nameof(NotificationEntity.Timestamp));
-
     builder
       .HasOne(nameof(NotificationEntity.Event))
       .WithMany(nameof(EventEntity.Notifications))

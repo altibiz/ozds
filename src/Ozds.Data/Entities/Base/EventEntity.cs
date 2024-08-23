@@ -1,4 +1,4 @@
-using System.Text.Json.Nodes;
+using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Ozds.Data.Attributes;
 using Ozds.Data.Entities.Abstractions;
@@ -7,7 +7,9 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
 
-public class EventEntity : IReadonlyEntity, IIdentifiableEntity
+#pragma warning disable S3881 // "IDisposable" should be implemented correctly
+public class EventEntity : IReadonlyEntity, IIdentifiableEntity, IDisposable
+#pragma warning restore S3881 // "IDisposable" should be implemented correctly
 {
   protected readonly long _id;
 
@@ -15,7 +17,7 @@ public class EventEntity : IReadonlyEntity, IIdentifiableEntity
 
   public LevelEntity Level { get; set; }
 
-  public JsonObject Content { get; set; } = default!;
+  public JsonDocument? Content { get; set; } = default!;
 
   public virtual string Id
   {
@@ -29,6 +31,13 @@ public class EventEntity : IReadonlyEntity, IIdentifiableEntity
   public string Title { get; set; } = default!;
 
   public virtual ICollection<NotificationEntity> Notifications { get; set; } = default!;
+
+#pragma warning disable CA1816 // Dispose methods should call SuppressFinalize
+  public void Dispose()
+#pragma warning restore CA1816 // Dispose methods should call SuppressFinalize
+  {
+    Content?.Dispose();
+  }
 }
 
 public class
@@ -62,11 +71,5 @@ public class
         x => x.ToUniversalTime(),
         x => x.ToUniversalTime()
       );
-
-    builder.HasTimescaleHypertable(
-      nameof(EventEntity.Timestamp),
-      nameof(EventEntity.Level),
-      $"number_partitions => {typeof(LevelEntity).GetEnumValues().Length}"
-    );
   }
 }

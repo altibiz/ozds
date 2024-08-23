@@ -6,13 +6,22 @@ namespace Ozds.Data.Entities.Joins;
 
 public class NotificationRepresentativeEntity
 {
-  public string NotificationId { get; set; } = default!;
+  private long _notificationId;
+
+  public string NotificationId
+  {
+    get { return _notificationId.ToString(); }
+    set
+    {
+      _notificationId = value is { } notNullValue ? long.Parse(notNullValue) : default;
+    }
+  }
 
   public string RepresentativeId { get; set; } = default!;
 
-  public NotificationEntity Notification { get; set; } = default!;
+  public virtual NotificationEntity Notification { get; set; } = default!;
 
-  public RepresentativeEntity Representative { get; set; } = default!;
+  public virtual RepresentativeEntity Representative { get; set; } = default!;
 
   public DateTimeOffset? SeenOn { get; set; } = default!;
 }
@@ -31,14 +40,18 @@ public class NotificationRepresentativeEntityModelConfiguration : IModelConfigur
         configureLeft: l => l
           .HasOne(nameof(NotificationRepresentativeEntity.Notification))
           .WithMany(nameof(NotificationEntity.NotificationRepresentatives))
-          .HasForeignKey(nameof(NotificationRepresentativeEntity.NotificationId)),
+          .HasForeignKey("_notificationId"),
         configureRight: r => r
           .HasOne(nameof(NotificationRepresentativeEntity.Representative))
           .WithMany(nameof(RepresentativeEntity.NotificationRepresentatives))
           .HasForeignKey(nameof(NotificationRepresentativeEntity.RepresentativeId)),
-        configureJoinEntityType: j => j
-          .Property(nameof(NotificationRepresentativeEntity.SeenOn))
-          .HasDefaultValue(null)
+        configureJoinEntityType: entity =>
+        {
+          entity.Ignore(nameof(NotificationRepresentativeEntity.NotificationId));
+          entity
+            .Property("_notificationId")
+            .HasColumnName("notification_id");
+        }
       );
   }
 }

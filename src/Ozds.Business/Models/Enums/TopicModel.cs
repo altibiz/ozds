@@ -27,7 +27,7 @@ public static class TopicModelExtensions
     };
   }
 
-  public static string ToString(this TopicModel model)
+  public static string ToTitle(this TopicModel model)
   {
     return model switch
     {

@@ -179,22 +179,22 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
       && hostEnvironment.IsDevelopment();
   }
 
-  private static JsonObject CreateAddedMessage(EntityEntry entry)
+  private static JsonDocument CreateAddedMessage(EntityEntry entry)
   {
     return CreateMessage(entry, "Added");
   }
 
-  private static JsonObject CreateModifiedMessage(EntityEntry entry)
+  private static JsonDocument CreateModifiedMessage(EntityEntry entry)
   {
     return CreateMessage(entry, "Modified");
   }
 
-  private static JsonObject CreateDeletedMessage(EntityEntry entry)
+  private static JsonDocument CreateDeletedMessage(EntityEntry entry)
   {
     return CreateMessage(entry, "Deleted");
   }
 
-  private static JsonObject CreateMessage(EntityEntry entry, string type)
+  private static JsonDocument CreateMessage(EntityEntry entry, string type)
   {
     var properties = entry.Properties
       .Where(property => property.OriginalValue != property.CurrentValue)
@@ -210,7 +210,10 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
       properties
     );
 
-    return (JsonObject)JsonSerializer.SerializeToNode(message)!;
+    var node = JsonSerializer.SerializeToNode(message)!;
+
+    // NOTE: https://stackoverflow.com/a/73048230
+    return node.Deserialize<JsonDocument>()!;
   }
 
   private sealed record AuditMessage(string Type, AuditProperty[] Properties);
