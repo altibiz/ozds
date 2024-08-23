@@ -16,6 +16,9 @@ public static class IServiceCollectionExtensions
         "Ozds:Data not found in configuration"
       );
 
+    services.Configure<OzdsDataOptions>(
+      builder.Configuration.GetSection("Ozds:Data"));
+
     services.AddDbContextFactory<OzdsDataDbContext>(
       (services, options) =>
       {

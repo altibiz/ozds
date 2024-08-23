@@ -12,10 +12,10 @@ public static class IServiceCollectionExtensions
     IHostApplicationBuilder builder
   )
   {
-    services.AddTransient<ISmtpClient, SmtpClient>();
-
     services.Configure<OzdsEmailOptions>(
       builder.Configuration.GetSection("Ozds:Email"));
+
+    services.AddTransient<ISmtpClient, SmtpClient>();
 
     services.AddTransient<IEmailSender, SmtpSender>();
 

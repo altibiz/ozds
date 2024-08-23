@@ -34,8 +34,8 @@ public static class IServiceCollectionExtensions
     services.AddScopedAssignableTo(typeof(IOzdsQueries));
     services.AddScopedAssignableTo(typeof(IOzdsMutations));
 
-    services.AddTransientAssignableTo(typeof(IAggregateUpserter));
-    services.AddSingleton(typeof(AgnosticAggregateUpserter));
+    services.AddTransientAssignableTo<IAggregateUpserter>();
+    services.AddSingleton<AgnosticAggregateUpserter>();
 
     services.AddTransientAssignableTo(typeof(IModelEntityConverter));
     services.AddSingleton(typeof(AgnosticModelEntityConverter));
@@ -46,13 +46,12 @@ public static class IServiceCollectionExtensions
     services.AddTransientAssignableTo(typeof(IMeterNamingConvention));
     services.AddSingleton(typeof(AgnosticMeterNamingConvention));
 
-    services.AddTransientAssignableTo(
-      typeof(INetworkUserCalculationCalculator));
-    services.AddSingleton(typeof(AgnosticNetworkUserCalculationCalculator));
-    services.AddTransientAssignableTo(typeof(ICalculationItemCalculator));
-    services.AddSingleton(typeof(AgnosticCalculationItemCalculator));
-    services.AddTransient(typeof(NetworkUserInvoiceCalculator));
-    services.AddScoped(typeof(NetworkUserInvoiceIssuer));
+    services.AddTransientAssignableTo<INetworkUserCalculationCalculator>();
+    services.AddSingleton<AgnosticNetworkUserCalculationCalculator>();
+    services.AddTransientAssignableTo<ICalculationItemCalculator>();
+    services.AddSingleton<AgnosticCalculationItemCalculator>();
+    services.AddTransient<INetworkUserInvoiceCalculator, NetworkUserInvoiceCalculator>();
+    services.AddScoped<INetworkUserInvoiceIssuer, NetworkUserInvoiceIssuer>();
 
     services.AddScoped<OzdsIotHandler>();
     services.AddScoped<BatchAggregatedMeasurementUpserter>();
@@ -90,14 +89,11 @@ public static class IServiceCollectionExtensions
       new { controller = "Iot", action = "Update" }
     );
 
-    app.ApplicationServices.GetRequiredService<IHostApplicationLifetime>();
-
     return app;
   }
 
-  private static void AddScopedAssignableTo(
-    this IServiceCollection services,
-    Type assignableTo
+  private static void AddScopedAssignableTo<T>(
+    this IServiceCollection services
   )
   {
     var conversionTypes = typeof(IServiceCollectionExtensions).Assembly
@@ -107,18 +103,17 @@ public static class IServiceCollectionExtensions
           !type.IsAbstract &&
           !type.IsGenericType &&
           type.IsClass &&
-          type.IsAssignableTo(assignableTo));
+          type.IsAssignableTo(typeof(T)));
 
     foreach (var conversionType in conversionTypes)
     {
-      services.AddScoped(assignableTo, conversionType);
+      services.AddScoped(typeof(T), conversionType);
       services.AddScoped(conversionType);
     }
   }
 
-  private static void AddTransientAssignableTo(
-    this IServiceCollection services,
-    Type assignableTo
+  private static void AddTransientAssignableTo<T>(
+    this IServiceCollection services
   )
   {
     var conversionTypes = typeof(IServiceCollectionExtensions).Assembly
@@ -128,11 +123,11 @@ public static class IServiceCollectionExtensions
           !type.IsAbstract &&
           !type.IsGenericType &&
           type.IsClass &&
-          type.IsAssignableTo(assignableTo));
+          type.IsAssignableTo(typeof(T)));
 
     foreach (var conversionType in conversionTypes)
     {
-      services.AddTransient(assignableTo, conversionType);
+      services.AddTransient(typeof(T), conversionType);
       services.AddTransient(conversionType);
     }
   }

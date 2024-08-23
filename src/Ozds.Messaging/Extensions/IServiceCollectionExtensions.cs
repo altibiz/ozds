@@ -15,6 +15,9 @@ public static class IServiceCollectionExtensions
     IHostApplicationBuilder builder
   )
   {
+    services.Configure<OzdsMessagingOptions>(
+      builder.Configuration.GetSection("Ozds:Messaging"));
+
     var options = builder.Configuration.GetValue<OzdsMessagingOptions>(
       "Ozds:Messaging") ?? throw new InvalidOperationException(
         "Ozds:Messaging not found in configuration");

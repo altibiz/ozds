@@ -1,22 +1,22 @@
 using System.Globalization;
-using MassTransit;
+using Ozds.Business.Finance.Abstractions;
 using Ozds.Business.Localization.Abstractions;
 using Ozds.Business.Models.Base;
 using Ozds.Business.Mutations.Agnostic;
 using Ozds.Business.Queries;
 using Ozds.Messaging.Contracts;
+using Ozds.Messaging.Sender.Abstractions;
 
 namespace Ozds.Business.Finance;
 
 public class NetworkUserInvoiceIssuer(
-  IConfiguration configuration,
   OzdsBillingQueries ozdsBillingQueries,
   NetworkUserInvoiceCalculator invoiceCalculator,
   OzdsInvoiceMutations invoiceMutations,
   OzdsCalculationMutations calculationMutations,
-  ISendEndpointProvider endpointProvider,
-  IOzdsLocalizer localizer
-)
+  IOzdsLocalizer localizer,
+  IMessageSender messageSender
+) : INetworkUserInvoiceIssuer
 {
   public async Task IssueNetworkUserInvoiceAsync(
     string networkUserId,
@@ -41,19 +41,9 @@ public class NetworkUserInvoiceIssuer(
 
     await calculationMutations.SaveChangesAsync();
 
-    var config = configuration
-      .GetSection("Ozds")
-      .GetSection("Messaging")
-      .GetSection("Endpoints");
-
     var culture = CultureInfo.CreateSpecificCulture("hr-HR");
 
-    var endpoint = await endpointProvider.GetSendEndpoint(
-      new Uri(
-        config["AcknowledgeNetworkUserInvoice"]
-        ?? throw new InvalidOperationException(
-          "AcknowledgeNetworkUserInvoice endpoint not found")));
-    await endpoint.Send(
+    await messageSender.AcknowledgeNetworkUserInvoice(
       new AcknowledgeNetworkUserInvoice(
         invoiceId,
         basis.NetworkUser.AltiBizSubProjectCode,
