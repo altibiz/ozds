@@ -3,653 +3,673 @@
 ```mermaid
 erDiagram
     Document {
-        text Content
-        bigint Id PK
-        character_varying Type
-        bigint Version
+        text Content 
+        bigint Id PK 
+        character_varying Type 
+        bigint Version 
     }
 
     Identifiers {
-        character_varying dimension PK
-        bigint nextval
+        character_varying dimension PK 
+        bigint nextval 
     }
 
     UserByClaimIndex {
-        character_varying ClaimType
-        character_varying ClaimValue
-        bigint DocumentId FK
-        integer Id PK
+        character_varying ClaimType 
+        character_varying ClaimValue 
+        bigint DocumentId FK 
+        integer Id PK 
     }
 
     UserByLoginInfoIndex {
-        bigint DocumentId FK
-        integer Id PK
-        character_varying LoginProvider
-        character_varying ProviderKey
+        bigint DocumentId FK 
+        integer Id PK 
+        character_varying LoginProvider 
+        character_varying ProviderKey 
     }
 
     UserByRoleNameIndex {
-        integer Count
-        integer Id PK
-        character_varying RoleName
+        integer Count 
+        integer Id PK 
+        character_varying RoleName 
     }
 
     UserByRoleNameIndex_Document {
-        bigint DocumentId FK
-        bigint UserByRoleNameIndexId FK
+        bigint DocumentId FK 
+        bigint UserByRoleNameIndexId FK 
     }
 
     UserIndex {
-        integer AccessFailedCount
-        bigint DocumentId FK
-        integer Id PK
-        boolean IsEnabled
-        boolean IsLockoutEnabled
-        timestamp_without_time_zone LockoutEndUtc
-        character_varying NormalizedEmail
-        character_varying NormalizedUserName
-        character_varying UserId
+        integer AccessFailedCount 
+        bigint DocumentId FK 
+        integer Id PK 
+        boolean IsEnabled 
+        boolean IsLockoutEnabled 
+        timestamp_without_time_zone LockoutEndUtc 
+        character_varying NormalizedEmail 
+        character_varying NormalizedUserName 
+        character_varying UserId 
     }
 
     __OzdsDataDbContext {
-        character_varying migration_id PK
-        character_varying product_version
+        character_varying migration_id PK 
+        character_varying product_version 
     }
 
     __OzdsMessagingDbContext {
-        character_varying migration_id PK
-        character_varying product_version
+        character_varying migration_id PK 
+        character_varying product_version 
     }
 
     abb_b2x_aggregates {
-        real active_energy_total_export_t0_max_wh
-        real active_energy_total_export_t0_min_wh
-        real active_energy_total_import_t0_max_wh
-        real active_energy_total_import_t0_min_wh
-        real active_energy_total_import_t1_max_wh
-        real active_energy_total_import_t1_min_wh
-        real active_energy_total_import_t2_max_wh
-        real active_energy_total_import_t2_min_wh
-        real active_power_l1_net_t0_avg_w
-        real active_power_l2_net_t0_avg_w
-        real active_power_l3_net_t0_avg_w
-        bigint count
-        real current_l1_any_t0_avg_a
-        real current_l2_any_t0_avg_a
-        real current_l3_any_t0_avg_a
-        integer interval PK
-        text meter_id PK,FK
-        real reactive_energy_total_export_t0_max_varh
-        real reactive_energy_total_export_t0_min_varh
-        real reactive_energy_total_import_t0_max_varh
-        real reactive_energy_total_import_t0_min_varh
-        real reactive_power_l1_net_t0_avg_var
-        real reactive_power_l2_net_t0_avg_var
-        real reactive_power_l3_net_t0_avg_var
-        timestamp_with_time_zone timestamp PK
-        real voltage_l1_any_t0_avg_v
-        real voltage_l2_any_t0_avg_v
-        real voltage_l3_any_t0_avg_v
+        real active_energy_total_export_t0_max_wh 
+        real active_energy_total_export_t0_min_wh 
+        real active_energy_total_import_t0_max_wh 
+        real active_energy_total_import_t0_min_wh 
+        real active_energy_total_import_t1_max_wh 
+        real active_energy_total_import_t1_min_wh 
+        real active_energy_total_import_t2_max_wh 
+        real active_energy_total_import_t2_min_wh 
+        real active_power_l1_net_t0_avg_w 
+        real active_power_l2_net_t0_avg_w 
+        real active_power_l3_net_t0_avg_w 
+        bigint count 
+        real current_l1_any_t0_avg_a 
+        real current_l2_any_t0_avg_a 
+        real current_l3_any_t0_avg_a 
+        integer interval PK 
+        text meter_id PK,FK 
+        real reactive_energy_total_export_t0_max_varh 
+        real reactive_energy_total_export_t0_min_varh 
+        real reactive_energy_total_import_t0_max_varh 
+        real reactive_energy_total_import_t0_min_varh 
+        real reactive_power_l1_net_t0_avg_var 
+        real reactive_power_l2_net_t0_avg_var 
+        real reactive_power_l3_net_t0_avg_var 
+        timestamp_with_time_zone timestamp PK 
+        real voltage_l1_any_t0_avg_v 
+        real voltage_l2_any_t0_avg_v 
+        real voltage_l3_any_t0_avg_v 
     }
 
     abb_b2x_measurements {
-        real active_energy_l1_export_t0_wh
-        real active_energy_l1_import_t0_wh
-        real active_energy_l2_export_t0_wh
-        real active_energy_l2_import_t0_wh
-        real active_energy_l3_export_t0_wh
-        real active_energy_l3_import_t0_wh
-        real active_energy_total_export_t0_wh
-        real active_energy_total_import_t0_wh
-        real active_energy_total_import_t1_wh
-        real active_energy_total_import_t2_wh
-        real active_power_l1_net_t0_w
-        real active_power_l2_net_t0_w
-        real active_power_l3_net_t0_w
-        real current_l1_any_t0_a
-        real current_l2_any_t0_a
-        real current_l3_any_t0_a
-        text meter_id PK,FK
-        real reactive_energy_l1_export_t0_varh
-        real reactive_energy_l1_import_t0_varh
-        real reactive_energy_l2_export_t0_varh
-        real reactive_energy_l2_import_t0_varh
-        real reactive_energy_l3_export_t0_varh
-        real reactive_energy_l3_import_t0_varh
-        real reactive_energy_total_export_t0_varh
-        real reactive_energy_total_import_t0_varh
-        real reactive_power_l1_net_t0_var
-        real reactive_power_l2_net_t0_var
-        real reactive_power_l3_net_t0_var
-        timestamp_with_time_zone timestamp PK
-        real voltage_l1_any_t0_v
-        real voltage_l2_any_t0_v
-        real voltage_l3_any_t0_v
+        real active_energy_l1_export_t0_wh 
+        real active_energy_l1_import_t0_wh 
+        real active_energy_l2_export_t0_wh 
+        real active_energy_l2_import_t0_wh 
+        real active_energy_l3_export_t0_wh 
+        real active_energy_l3_import_t0_wh 
+        real active_energy_total_export_t0_wh 
+        real active_energy_total_import_t0_wh 
+        real active_energy_total_import_t1_wh 
+        real active_energy_total_import_t2_wh 
+        real active_power_l1_net_t0_w 
+        real active_power_l2_net_t0_w 
+        real active_power_l3_net_t0_w 
+        real current_l1_any_t0_a 
+        real current_l2_any_t0_a 
+        real current_l3_any_t0_a 
+        text meter_id PK,FK 
+        real reactive_energy_l1_export_t0_varh 
+        real reactive_energy_l1_import_t0_varh 
+        real reactive_energy_l2_export_t0_varh 
+        real reactive_energy_l2_import_t0_varh 
+        real reactive_energy_l3_export_t0_varh 
+        real reactive_energy_l3_import_t0_varh 
+        real reactive_energy_total_export_t0_varh 
+        real reactive_energy_total_import_t0_varh 
+        real reactive_power_l1_net_t0_var 
+        real reactive_power_l2_net_t0_var 
+        real reactive_power_l3_net_t0_var 
+        timestamp_with_time_zone timestamp PK 
+        real voltage_l1_any_t0_v 
+        real voltage_l2_any_t0_v 
+        real voltage_l3_any_t0_v 
     }
 
     events {
-        integer audit
-        text auditable_entity_id
-        text auditable_entity_table
-        text auditable_entity_type
-        text description
-        bigint id PK
-        character_varying kind
-        integer level
-        text messenger_id FK
-        text representative_id FK
-        timestamp_with_time_zone timestamp
-        text title
+        integer audit 
+        text auditable_entity_id 
+        text auditable_entity_table 
+        text auditable_entity_type 
+        jsonb content 
+        bigint id PK 
+        character_varying kind 
+        integer level 
+        text messenger_id FK 
+        text representative_id FK 
+        timestamp_with_time_zone timestamp 
+        text title 
     }
 
     inbox_state {
-        timestamp_with_time_zone consumed
-        uuid consumer_id UK
-        timestamp_with_time_zone delivered
-        timestamp_with_time_zone expiration_time
-        bigint id PK
-        bigint last_sequence_number
-        uuid lock_id
-        uuid message_id UK
-        integer receive_count
-        timestamp_with_time_zone received
-        bytea row_version
+        timestamp_with_time_zone consumed 
+        uuid consumer_id UK 
+        timestamp_with_time_zone delivered 
+        timestamp_with_time_zone expiration_time 
+        bigint id PK 
+        bigint last_sequence_number 
+        uuid lock_id 
+        uuid message_id UK 
+        integer receive_count 
+        timestamp_with_time_zone received 
+        bytea row_version 
     }
 
     location_entity_representative_entity {
-        bigint locations_id PK,FK
-        text representatives_string_id PK,FK
+        bigint locations_id PK,FK 
+        text representatives_string_id PK,FK 
     }
 
     location_invoices {
-        text al_alti_biz_sub_project_code
-        text al_blue_low_network_user_catalogue_id
-        text al_created_by_id
-        timestamp_with_time_zone al_created_on
-        text al_deleted_by_id
-        timestamp_with_time_zone al_deleted_on
-        boolean al_is_deleted
-        text al_last_updated_by_id
-        timestamp_with_time_zone al_last_updated_on
-        text al_lp_address
-        text al_lp_city
-        text al_lp_email
-        text al_lp_name
-        text al_lp_phone_number
-        text al_lp_postal_code
-        text al_lp_social_security_number
-        text al_red_low_network_user_catalogue_id
-        text al_regulatory_catalogue_id
-        text al_white_low_network_user_catalogue_id
-        text al_white_medium_network_user_catalogue_id
-        timestamp_with_time_zone from_date
-        bigint id PK
-        text issued_by_id FK
-        timestamp_with_time_zone issued_on
-        bigint location_id FK
-        numeric tax_eur
-        numeric tax_rate_percent
-        text title
-        timestamp_with_time_zone to_date
-        numeric total_eur
-        numeric total_with_tax_eur
+        text al_alti_biz_sub_project_code 
+        text al_blue_low_network_user_catalogue_id 
+        text al_created_by_id 
+        timestamp_with_time_zone al_created_on 
+        text al_deleted_by_id 
+        timestamp_with_time_zone al_deleted_on 
+        boolean al_is_deleted 
+        text al_last_updated_by_id 
+        timestamp_with_time_zone al_last_updated_on 
+        text al_lp_address 
+        text al_lp_city 
+        text al_lp_email 
+        text al_lp_name 
+        text al_lp_phone_number 
+        text al_lp_postal_code 
+        text al_lp_social_security_number 
+        text al_red_low_network_user_catalogue_id 
+        text al_regulatory_catalogue_id 
+        text al_white_low_network_user_catalogue_id 
+        text al_white_medium_network_user_catalogue_id 
+        timestamp_with_time_zone from_date 
+        bigint id PK 
+        text issued_by_id FK 
+        timestamp_with_time_zone issued_on 
+        bigint location_id FK 
+        numeric tax_eur 
+        numeric tax_rate_percent 
+        text title 
+        timestamp_with_time_zone to_date 
+        numeric total_eur 
+        numeric total_with_tax_eur 
     }
 
     locations {
-        text alti_biz_sub_project_code
-        bigint blue_low_catalogue_id FK
-        text created_by_id FK
-        timestamp_with_time_zone created_on
-        text deleted_by_id FK
-        timestamp_with_time_zone deleted_on
-        bigint id PK
-        boolean is_deleted
-        text last_updated_by_id FK
-        timestamp_with_time_zone last_updated_on
-        text legal_person_address
-        text legal_person_city
-        text legal_person_email
-        text legal_person_name
-        text legal_person_phone_number
-        text legal_person_postal_code
-        text legal_person_social_security_number
-        bigint red_low_catalogue_id FK
-        bigint regulatory_catalogue_id FK
-        text title
-        bigint white_low_catalogue_id FK
-        bigint white_medium_catalogue_id FK
+        text alti_biz_sub_project_code 
+        bigint blue_low_catalogue_id FK 
+        text created_by_id FK 
+        timestamp_with_time_zone created_on 
+        text deleted_by_id FK 
+        timestamp_with_time_zone deleted_on 
+        bigint id PK 
+        boolean is_deleted 
+        text last_updated_by_id FK 
+        timestamp_with_time_zone last_updated_on 
+        text legal_person_address 
+        text legal_person_city 
+        text legal_person_email 
+        text legal_person_name 
+        text legal_person_phone_number 
+        text legal_person_postal_code 
+        text legal_person_social_security_number 
+        bigint red_low_catalogue_id FK 
+        bigint regulatory_catalogue_id FK 
+        text title 
+        bigint white_low_catalogue_id FK 
+        bigint white_medium_catalogue_id FK 
     }
 
     measurement_locations {
-        text created_by_id FK
-        timestamp_with_time_zone created_on
-        text deleted_by_id FK
-        timestamp_with_time_zone deleted_on
-        bigint id PK
-        boolean is_deleted
-        character_varying kind
-        text last_updated_by_id FK
-        timestamp_with_time_zone last_updated_on
-        bigint location_id FK
-        text meter_id FK
-        bigint network_user_catalogue_id FK
-        bigint network_user_id FK
-        text title
+        text created_by_id FK 
+        timestamp_with_time_zone created_on 
+        text deleted_by_id FK 
+        timestamp_with_time_zone deleted_on 
+        bigint id PK 
+        boolean is_deleted 
+        character_varying kind 
+        text last_updated_by_id FK 
+        timestamp_with_time_zone last_updated_on 
+        bigint location_id FK 
+        text meter_id FK 
+        bigint network_user_catalogue_id FK 
+        bigint network_user_id FK 
+        text title 
     }
 
     measurement_validators {
-        text created_by_id FK
-        timestamp_with_time_zone created_on
-        text deleted_by_id FK
-        timestamp_with_time_zone deleted_on
-        bigint id PK
-        boolean is_deleted
-        character_varying kind
-        text last_updated_by_id FK
-        timestamp_with_time_zone last_updated_on
-        real max_active_power_w
-        real max_apparent_power_va
-        real max_current_a
-        real max_reactive_power_var
-        real max_voltage_v
-        real min_active_power_w
-        real min_apparent_power_va
-        real min_current_a
-        real min_reactive_power_var
-        real min_voltage_v
-        text title
+        text created_by_id FK 
+        timestamp_with_time_zone created_on 
+        text deleted_by_id FK 
+        timestamp_with_time_zone deleted_on 
+        bigint id PK 
+        boolean is_deleted 
+        character_varying kind 
+        text last_updated_by_id FK 
+        timestamp_with_time_zone last_updated_on 
+        real max_active_power_w 
+        real max_apparent_power_va 
+        real max_current_a 
+        real max_reactive_power_var 
+        real max_voltage_v 
+        real min_active_power_w 
+        real min_apparent_power_va 
+        real min_current_a 
+        real min_reactive_power_var 
+        real min_voltage_v 
+        text title 
     }
 
     messengers {
-        text created_by_id FK
-        timestamp_with_time_zone created_on
-        text deleted_by_id FK
-        timestamp_with_time_zone deleted_on
-        text id PK
-        boolean is_deleted
-        text last_updated_by_id FK
-        timestamp_with_time_zone last_updated_on
-        bigint location_id FK
-        text title
+        text created_by_id FK 
+        timestamp_with_time_zone created_on 
+        text deleted_by_id FK 
+        timestamp_with_time_zone deleted_on 
+        text id PK 
+        boolean is_deleted 
+        text last_updated_by_id FK 
+        timestamp_with_time_zone last_updated_on 
+        bigint location_id FK 
+        text title 
     }
 
     meters {
-        real connection_power_w
-        text created_by_id FK
-        timestamp_with_time_zone created_on
-        text deleted_by_id FK
-        timestamp_with_time_zone deleted_on
-        text id PK
-        boolean is_deleted
-        character_varying kind
-        text last_updated_by_id FK
-        timestamp_with_time_zone last_updated_on
-        bigint measurement_validator_id FK
-        text messenger_id FK
-        ARRAY phases
-        text title
+        real connection_power_w 
+        text created_by_id FK 
+        timestamp_with_time_zone created_on 
+        text deleted_by_id FK 
+        timestamp_with_time_zone deleted_on 
+        text id PK 
+        boolean is_deleted 
+        character_varying kind 
+        text last_updated_by_id FK 
+        timestamp_with_time_zone last_updated_on 
+        bigint measurement_validator_id FK 
+        text messenger_id FK 
+        ARRAY phases 
+        text title 
     }
 
     network_user_calculations {
-        real am_connection_power__w
-        text am_created_by_id
-        timestamp_with_time_zone am_created_on
-        text am_deleted_by_id
-        timestamp_with_time_zone am_deleted_on
-        boolean am_is_deleted
-        text am_last_updated_by_id
-        timestamp_with_time_zone am_last_updated_on
-        text am_messenger_id
-        ARRAY am_phases
-        text anuml_created_by_id
-        timestamp_with_time_zone anuml_created_on
-        text anuml_deleted_by_id
-        timestamp_with_time_zone anuml_deleted_on
-        boolean anuml_is_deleted
-        text anuml_last_updated_by_id
-        timestamp_with_time_zone anuml_last_updated_on
-        text anuml_meter_id
-        numeric asrc_active_energy_total_import_t1_price__eur
-        numeric asrc_active_energy_total_import_t2_price__eur
-        numeric asrc_business_usage_fee_price__eur
-        text asrc_created_by_id
-        timestamp_with_time_zone asrc_created_on
-        text asrc_deleted_by_id
-        timestamp_with_time_zone asrc_deleted_on
-        boolean asrc_is_deleted
-        text asrc_last_updated_by_id
-        timestamp_with_time_zone asrc_last_updated_on
-        numeric asrc_renewable_energy_fee_price__eur
-        numeric asrc_tax_rate__percent
-        numeric aunuc_active_energy_total_import_t0_price__eur
-        numeric aunuc_active_energy_total_import_t1_price__eur
-        numeric aunuc_active_energy_total_import_t2_price__eur
-        numeric aunuc_active_power_total_import_t1_price__eur
-        text aunuc_created_by_id
-        timestamp_with_time_zone aunuc_created_on
-        text aunuc_deleted_by_id
-        timestamp_with_time_zone aunuc_deleted_on
-        boolean aunuc_is_deleted
-        text aunuc_last_updated_by_id
-        timestamp_with_time_zone aunuc_last_updated_on
-        numeric aunuc_meter_fee_price__eur
-        numeric aunuc_reactive_energy_total_ramped_t0_price__eur
-        timestamp_with_time_zone from_date
-        bigint id PK
-        text issued_by_id FK
-        timestamp_with_time_zone issued_on
-        numeric jen_active_import_amount_kwh
-        numeric jen_active_import_max_kwh
-        numeric jen_active_import_min_kwh
-        numeric jen_ramped_amount_kvarh
-        numeric jen_ramped_price_eur
-        numeric jen_ramped_total_eur
-        numeric jen_reactive_export_amount_kvarh
-        numeric jen_reactive_export_max_kvarh
-        numeric jen_reactive_export_min_kvarh
-        numeric jen_reactive_import_amount_kvarh
-        numeric jen_reactive_import_max_kvarh
-        numeric jen_reactive_import_min_kvarh
-        character_varying kind
-        text meter_id FK
-        numeric mjt_amount_kwh
-        numeric mjt_max_kwh
-        numeric mjt_min_kwh
-        numeric mjt_price_eur
-        numeric mjt_total_eur
-        numeric mnt_amount_kwh
-        numeric mnt_max_kwh
-        numeric mnt_min_kwh
-        numeric mnt_price_eur
-        numeric mnt_total_eur
-        numeric mvt_amount_kwh
-        numeric mvt_max_kwh
-        numeric mvt_min_kwh
-        numeric mvt_price_eur
-        numeric mvt_total_eur
-        bigint network_user_invoice_id FK
-        bigint network_user_measurement_location_id FK
-        numeric oie_amount_kwh
-        numeric oie_max_kwh
-        numeric oie_min_kwh
-        numeric oie_price_eur
-        numeric oie_total_eur
-        numeric rnt_amount_kwh
-        numeric rnt_max_kwh
-        numeric rnt_min_kwh
-        numeric rnt_price_eur
-        numeric rnt_total_eur
-        numeric rvt_amount_kwh
-        numeric rvt_max_kwh
-        numeric rvt_min_kwh
-        numeric rvt_price_eur
-        numeric rvt_total_eur
-        numeric supply_fee_total_eur
-        bigint supply_regulatory_catalogue_id FK
-        numeric svt_amount_kw
-        numeric svt_peak_kw
-        numeric svt_price_eur
-        numeric svt_total_eur
-        text title
-        timestamp_with_time_zone to_date
-        numeric total_eur
-        numeric trp_amount_kwh
-        numeric trp_max_kwh
-        numeric trp_min_kwh
-        numeric trp_price_eur
-        numeric trp_total_eur
-        numeric usage_fee_total_eur
-        numeric usage_meter_fee_amount
-        numeric usage_meter_fee_price_eur
-        numeric usage_meter_total_eur
-        bigint usage_network_user_catalogue_id FK
+        real am_connection_power__w 
+        text am_created_by_id 
+        timestamp_with_time_zone am_created_on 
+        text am_deleted_by_id 
+        timestamp_with_time_zone am_deleted_on 
+        boolean am_is_deleted 
+        text am_last_updated_by_id 
+        timestamp_with_time_zone am_last_updated_on 
+        text am_messenger_id 
+        ARRAY am_phases 
+        text anuml_created_by_id 
+        timestamp_with_time_zone anuml_created_on 
+        text anuml_deleted_by_id 
+        timestamp_with_time_zone anuml_deleted_on 
+        boolean anuml_is_deleted 
+        text anuml_last_updated_by_id 
+        timestamp_with_time_zone anuml_last_updated_on 
+        text anuml_meter_id 
+        numeric asrc_active_energy_total_import_t1_price__eur 
+        numeric asrc_active_energy_total_import_t2_price__eur 
+        numeric asrc_business_usage_fee_price__eur 
+        text asrc_created_by_id 
+        timestamp_with_time_zone asrc_created_on 
+        text asrc_deleted_by_id 
+        timestamp_with_time_zone asrc_deleted_on 
+        boolean asrc_is_deleted 
+        text asrc_last_updated_by_id 
+        timestamp_with_time_zone asrc_last_updated_on 
+        numeric asrc_renewable_energy_fee_price__eur 
+        numeric asrc_tax_rate__percent 
+        numeric aunuc_active_energy_total_import_t0_price__eur 
+        numeric aunuc_active_energy_total_import_t1_price__eur 
+        numeric aunuc_active_energy_total_import_t2_price__eur 
+        numeric aunuc_active_power_total_import_t1_price__eur 
+        text aunuc_created_by_id 
+        timestamp_with_time_zone aunuc_created_on 
+        text aunuc_deleted_by_id 
+        timestamp_with_time_zone aunuc_deleted_on 
+        boolean aunuc_is_deleted 
+        text aunuc_last_updated_by_id 
+        timestamp_with_time_zone aunuc_last_updated_on 
+        numeric aunuc_meter_fee_price__eur 
+        numeric aunuc_reactive_energy_total_ramped_t0_price__eur 
+        timestamp_with_time_zone from_date 
+        bigint id PK 
+        text issued_by_id FK 
+        timestamp_with_time_zone issued_on 
+        numeric jen_active_import_amount_kwh 
+        numeric jen_active_import_max_kwh 
+        numeric jen_active_import_min_kwh 
+        numeric jen_ramped_amount_kvarh 
+        numeric jen_ramped_price_eur 
+        numeric jen_ramped_total_eur 
+        numeric jen_reactive_export_amount_kvarh 
+        numeric jen_reactive_export_max_kvarh 
+        numeric jen_reactive_export_min_kvarh 
+        numeric jen_reactive_import_amount_kvarh 
+        numeric jen_reactive_import_max_kvarh 
+        numeric jen_reactive_import_min_kvarh 
+        character_varying kind 
+        text meter_id FK 
+        numeric mjt_amount_kwh 
+        numeric mjt_max_kwh 
+        numeric mjt_min_kwh 
+        numeric mjt_price_eur 
+        numeric mjt_total_eur 
+        numeric mnt_amount_kwh 
+        numeric mnt_max_kwh 
+        numeric mnt_min_kwh 
+        numeric mnt_price_eur 
+        numeric mnt_total_eur 
+        numeric mvt_amount_kwh 
+        numeric mvt_max_kwh 
+        numeric mvt_min_kwh 
+        numeric mvt_price_eur 
+        numeric mvt_total_eur 
+        bigint network_user_invoice_id FK 
+        bigint network_user_measurement_location_id FK 
+        numeric oie_amount_kwh 
+        numeric oie_max_kwh 
+        numeric oie_min_kwh 
+        numeric oie_price_eur 
+        numeric oie_total_eur 
+        numeric rnt_amount_kwh 
+        numeric rnt_max_kwh 
+        numeric rnt_min_kwh 
+        numeric rnt_price_eur 
+        numeric rnt_total_eur 
+        numeric rvt_amount_kwh 
+        numeric rvt_max_kwh 
+        numeric rvt_min_kwh 
+        numeric rvt_price_eur 
+        numeric rvt_total_eur 
+        numeric supply_fee_total_eur 
+        bigint supply_regulatory_catalogue_id FK 
+        numeric svt_amount_kw 
+        numeric svt_peak_kw 
+        numeric svt_price_eur 
+        numeric svt_total_eur 
+        text title 
+        timestamp_with_time_zone to_date 
+        numeric total_eur 
+        numeric trp_amount_kwh 
+        numeric trp_max_kwh 
+        numeric trp_min_kwh 
+        numeric trp_price_eur 
+        numeric trp_total_eur 
+        numeric usage_fee_total_eur 
+        numeric usage_meter_fee_amount 
+        numeric usage_meter_fee_price_eur 
+        numeric usage_meter_total_eur 
+        bigint usage_network_user_catalogue_id FK 
     }
 
     network_user_catalogues {
-        numeric active_energy_total_import_t0_price_eur
-        numeric active_energy_total_import_t1_price_eur
-        numeric active_energy_total_import_t2_price_eur
-        numeric active_power_total_import_t1_price_eur
-        text created_by_id FK
-        timestamp_with_time_zone created_on
-        text deleted_by_id FK
-        timestamp_with_time_zone deleted_on
-        bigint id PK
-        boolean is_deleted
-        character_varying kind
-        text last_updated_by_id FK
-        timestamp_with_time_zone last_updated_on
-        numeric meter_fee_price_eur
-        numeric reactive_energy_total_ramped_t0_price_eur
-        text title
+        numeric active_energy_total_import_t0_price_eur 
+        numeric active_energy_total_import_t1_price_eur 
+        numeric active_energy_total_import_t2_price_eur 
+        numeric active_power_total_import_t1_price_eur 
+        text created_by_id FK 
+        timestamp_with_time_zone created_on 
+        text deleted_by_id FK 
+        timestamp_with_time_zone deleted_on 
+        bigint id PK 
+        boolean is_deleted 
+        character_varying kind 
+        text last_updated_by_id FK 
+        timestamp_with_time_zone last_updated_on 
+        numeric meter_fee_price_eur 
+        numeric reactive_energy_total_ramped_t0_price_eur 
+        text title 
     }
 
     network_user_entity_representative_entity {
-        bigint network_users_id PK,FK
-        text representatives_string_id PK,FK
+        bigint network_users_id PK,FK 
+        text representatives_string_id PK,FK 
     }
 
     network_user_invoice_state {
-        text bill_id
-        uuid correlation_id PK
-        text current_state
-        text network_user_invoice_id
+        text bill_id 
+        uuid correlation_id PK 
+        text current_state 
+        text network_user_invoice_id 
     }
 
     network_user_invoices {
-        text al_alti_biz_sub_project_code
-        text al_blue_low_network_user_catalogue_id
-        text al_created_by_id
-        timestamp_with_time_zone al_created_on
-        text al_deleted_by_id
-        timestamp_with_time_zone al_deleted_on
-        boolean al_is_deleted
-        text al_last_updated_by_id
-        timestamp_with_time_zone al_last_updated_on
-        text al_lp_address
-        text al_lp_city
-        text al_lp_email
-        text al_lp_name
-        text al_lp_phone_number
-        text al_lp_postal_code
-        text al_lp_social_security_number
-        text al_red_low_network_user_catalogue_id
-        text al_regulatory_catalogue_id
-        text al_white_low_network_user_catalogue_id
-        text al_white_medium_network_user_catalogue_id
-        text anu_alti_biz_sub_project_code
-        text anu_created_by_id
-        timestamp_with_time_zone anu_created_on
-        text anu_deleted_by_id
-        timestamp_with_time_zone anu_deleted_on
-        boolean anu_is_deleted
-        text anu_last_updated_by_id
-        timestamp_with_time_zone anu_last_updated_on
-        text anu_lp_address
-        text anu_lp_city
-        text anu_lp_email
-        text anu_lp_name
-        text anu_lp_phone_number
-        text anu_lp_postal_code
-        text anu_lp_social_security_number
-        numeric arc_active_energy_total_import_t1_price__eur
-        numeric arc_active_energy_total_import_t2_price__eur
-        numeric arc_business_usage_fee_price__eur
-        text arc_created_by_id
-        timestamp_with_time_zone arc_created_on
-        text arc_deleted_by_id
-        timestamp_with_time_zone arc_deleted_on
-        boolean arc_is_deleted
-        text arc_last_updated_by_id
-        timestamp_with_time_zone arc_last_updated_on
-        numeric arc_renewable_energy_fee_price__eur
-        numeric arc_tax_rate__percent
-        text bill_id
-        timestamp_with_time_zone from_date
-        bigint id PK
-        text issued_by_id FK
-        timestamp_with_time_zone issued_on
-        bigint network_user_id FK
-        numeric supply_active_energy_total_import_t1fee_eur
-        numeric supply_active_energy_total_import_t2fee_eur
-        numeric supply_business_usage_fee_eur
-        numeric supply_fee_total_eur
-        numeric supply_renewable_energy_fee_eur
-        numeric tax_eur
-        numeric tax_rate_percent
-        text title
-        timestamp_with_time_zone to_date
-        numeric total_eur
-        numeric total_with_tax_eur
-        numeric usage_active_energy_total_import_t0fee_eur
-        numeric usage_active_energy_total_import_t1fee_eur
-        numeric usage_active_energy_total_import_t2fee_eur
-        numeric usage_active_power_total_import_t1peak_fee_eur
-        numeric usage_fee_total_eur
-        numeric usage_meter_fee_eur
-        numeric usage_reactive_energy_total_ramped_t0fee_eur
+        text al_alti_biz_sub_project_code 
+        text al_blue_low_network_user_catalogue_id 
+        text al_created_by_id 
+        timestamp_with_time_zone al_created_on 
+        text al_deleted_by_id 
+        timestamp_with_time_zone al_deleted_on 
+        boolean al_is_deleted 
+        text al_last_updated_by_id 
+        timestamp_with_time_zone al_last_updated_on 
+        text al_lp_address 
+        text al_lp_city 
+        text al_lp_email 
+        text al_lp_name 
+        text al_lp_phone_number 
+        text al_lp_postal_code 
+        text al_lp_social_security_number 
+        text al_red_low_network_user_catalogue_id 
+        text al_regulatory_catalogue_id 
+        text al_white_low_network_user_catalogue_id 
+        text al_white_medium_network_user_catalogue_id 
+        text anu_alti_biz_sub_project_code 
+        text anu_created_by_id 
+        timestamp_with_time_zone anu_created_on 
+        text anu_deleted_by_id 
+        timestamp_with_time_zone anu_deleted_on 
+        boolean anu_is_deleted 
+        text anu_last_updated_by_id 
+        timestamp_with_time_zone anu_last_updated_on 
+        text anu_lp_address 
+        text anu_lp_city 
+        text anu_lp_email 
+        text anu_lp_name 
+        text anu_lp_phone_number 
+        text anu_lp_postal_code 
+        text anu_lp_social_security_number 
+        numeric arc_active_energy_total_import_t1_price__eur 
+        numeric arc_active_energy_total_import_t2_price__eur 
+        numeric arc_business_usage_fee_price__eur 
+        text arc_created_by_id 
+        timestamp_with_time_zone arc_created_on 
+        text arc_deleted_by_id 
+        timestamp_with_time_zone arc_deleted_on 
+        boolean arc_is_deleted 
+        text arc_last_updated_by_id 
+        timestamp_with_time_zone arc_last_updated_on 
+        numeric arc_renewable_energy_fee_price__eur 
+        numeric arc_tax_rate__percent 
+        text bill_id 
+        timestamp_with_time_zone from_date 
+        bigint id PK 
+        text issued_by_id FK 
+        timestamp_with_time_zone issued_on 
+        bigint network_user_id FK 
+        numeric supply_active_energy_total_import_t1fee_eur 
+        numeric supply_active_energy_total_import_t2fee_eur 
+        numeric supply_business_usage_fee_eur 
+        numeric supply_fee_total_eur 
+        numeric supply_renewable_energy_fee_eur 
+        numeric tax_eur 
+        numeric tax_rate_percent 
+        text title 
+        timestamp_with_time_zone to_date 
+        numeric total_eur 
+        numeric total_with_tax_eur 
+        numeric usage_active_energy_total_import_t0fee_eur 
+        numeric usage_active_energy_total_import_t1fee_eur 
+        numeric usage_active_energy_total_import_t2fee_eur 
+        numeric usage_active_power_total_import_t1peak_fee_eur 
+        numeric usage_fee_total_eur 
+        numeric usage_meter_fee_eur 
+        numeric usage_reactive_energy_total_ramped_t0fee_eur 
     }
 
     network_users {
-        text alti_biz_sub_project_code
-        text created_by_id FK
-        timestamp_with_time_zone created_on
-        text deleted_by_id FK
-        timestamp_with_time_zone deleted_on
-        bigint id PK
-        boolean is_deleted
-        text last_updated_by_id FK
-        timestamp_with_time_zone last_updated_on
-        text legal_person_address
-        text legal_person_city
-        text legal_person_email
-        text legal_person_name
-        text legal_person_phone_number
-        text legal_person_postal_code
-        text legal_person_social_security_number
-        bigint location_id FK
-        text title
+        text alti_biz_sub_project_code 
+        text created_by_id FK 
+        timestamp_with_time_zone created_on 
+        text deleted_by_id FK 
+        timestamp_with_time_zone deleted_on 
+        bigint id PK 
+        boolean is_deleted 
+        text last_updated_by_id FK 
+        timestamp_with_time_zone last_updated_on 
+        text legal_person_address 
+        text legal_person_city 
+        text legal_person_email 
+        text legal_person_name 
+        text legal_person_phone_number 
+        text legal_person_postal_code 
+        text legal_person_social_security_number 
+        bigint location_id FK 
+        text title 
+    }
+
+    notification_representative_entity {
+        bigint notification_id PK,FK 
+        text representative_id PK,FK 
+        timestamp_with_time_zone seen_on 
+    }
+
+    notifications {
+        text content 
+        bigint event_id FK 
+        bigint id PK 
+        character_varying kind 
+        text resolved_by_id FK 
+        timestamp_with_time_zone resolved_on 
+        text summary 
+        timestamp_with_time_zone timestamp 
+        text title 
+        integer topic 
     }
 
     outbox_message {
-        text body
-        character_varying content_type
-        uuid conversation_id
-        uuid correlation_id
-        character_varying destination_address
-        timestamp_with_time_zone enqueue_time
-        timestamp_with_time_zone expiration_time
-        character_varying fault_address
-        text headers
-        uuid inbox_consumer_id
-        uuid inbox_message_id
-        uuid initiator_id
-        uuid message_id
-        text message_type
-        uuid outbox_id
-        text properties
-        uuid request_id
-        character_varying response_address
-        timestamp_with_time_zone sent_time
-        bigint sequence_number PK
-        character_varying source_address
+        text body 
+        character_varying content_type 
+        uuid conversation_id 
+        uuid correlation_id 
+        character_varying destination_address 
+        timestamp_with_time_zone enqueue_time 
+        timestamp_with_time_zone expiration_time 
+        character_varying fault_address 
+        text headers 
+        uuid inbox_consumer_id 
+        uuid inbox_message_id 
+        uuid initiator_id 
+        uuid message_id 
+        text message_type 
+        uuid outbox_id 
+        text properties 
+        uuid request_id 
+        character_varying response_address 
+        timestamp_with_time_zone sent_time 
+        bigint sequence_number PK 
+        character_varying source_address 
     }
 
     outbox_state {
-        timestamp_with_time_zone created
-        timestamp_with_time_zone delivered
-        bigint last_sequence_number
-        uuid lock_id
-        uuid outbox_id PK
-        bytea row_version
+        timestamp_with_time_zone created 
+        timestamp_with_time_zone delivered 
+        bigint last_sequence_number 
+        uuid lock_id 
+        uuid outbox_id PK 
+        bytea row_version 
     }
 
     regulatory_catalogues {
-        numeric active_energy_total_import_t1_price_eur
-        numeric active_energy_total_import_t2_price_eur
-        numeric business_usage_fee_price_eur
-        text created_by_id FK
-        timestamp_with_time_zone created_on
-        text deleted_by_id FK
-        timestamp_with_time_zone deleted_on
-        bigint id PK
-        boolean is_deleted
-        text last_updated_by_id FK
-        timestamp_with_time_zone last_updated_on
-        numeric renewable_energy_fee_price_eur
-        numeric tax_rate_percent
-        text title
+        numeric active_energy_total_import_t1_price_eur 
+        numeric active_energy_total_import_t2_price_eur 
+        numeric business_usage_fee_price_eur 
+        text created_by_id FK 
+        timestamp_with_time_zone created_on 
+        text deleted_by_id FK 
+        timestamp_with_time_zone deleted_on 
+        bigint id PK 
+        boolean is_deleted 
+        text last_updated_by_id FK 
+        timestamp_with_time_zone last_updated_on 
+        numeric renewable_energy_fee_price_eur 
+        numeric tax_rate_percent 
+        text title 
     }
 
     representatives {
-        text created_by_id FK
-        timestamp_with_time_zone created_on
-        text deleted_by_id FK
-        timestamp_with_time_zone deleted_on
-        text id PK
-        boolean is_deleted
-        text last_updated_by_id FK
-        timestamp_with_time_zone last_updated_on
-        text physical_person_email
-        text physical_person_name
-        text physical_person_phone_number
-        integer role
-        text title
+        text created_by_id FK 
+        timestamp_with_time_zone created_on 
+        text deleted_by_id FK 
+        timestamp_with_time_zone deleted_on 
+        text id PK 
+        boolean is_deleted 
+        text last_updated_by_id FK 
+        timestamp_with_time_zone last_updated_on 
+        text physical_person_email 
+        text physical_person_name 
+        text physical_person_phone_number 
+        integer role 
+        text title 
+        ARRAY topics 
     }
 
     schneider_iem3xxx_aggregates {
-        real active_energy_total_export_t0_max_wh
-        real active_energy_total_export_t0_min_wh
-        real active_energy_total_import_t0_max_wh
-        real active_energy_total_import_t0_min_wh
-        real active_energy_total_import_t1_max_wh
-        real active_energy_total_import_t1_min_wh
-        real active_energy_total_import_t2_max_wh
-        real active_energy_total_import_t2_min_wh
-        real active_power_l1_net_t0_avg_w
-        real active_power_l2_net_t0_avg_w
-        real active_power_l3_net_t0_avg_w
-        real apparent_power_total_net_t0_avg_va
-        bigint count
-        real current_l1_any_t0_avg_a
-        real current_l2_any_t0_avg_a
-        real current_l3_any_t0_avg_a
-        integer interval PK
-        text meter_id PK,FK
-        real reactive_energy_total_export_t0_max_varh
-        real reactive_energy_total_export_t0_min_varh
-        real reactive_energy_total_import_t0_max_varh
-        real reactive_energy_total_import_t0_min_varh
-        real reactive_power_total_net_t0_avg_var
-        timestamp_with_time_zone timestamp PK
-        real voltage_l1_any_t0_avg_v
-        real voltage_l2_any_t0_avg_v
-        real voltage_l3_any_t0_avg_v
+        real active_energy_total_export_t0_max_wh 
+        real active_energy_total_export_t0_min_wh 
+        real active_energy_total_import_t0_max_wh 
+        real active_energy_total_import_t0_min_wh 
+        real active_energy_total_import_t1_max_wh 
+        real active_energy_total_import_t1_min_wh 
+        real active_energy_total_import_t2_max_wh 
+        real active_energy_total_import_t2_min_wh 
+        real active_power_l1_net_t0_avg_w 
+        real active_power_l2_net_t0_avg_w 
+        real active_power_l3_net_t0_avg_w 
+        real apparent_power_total_net_t0_avg_va 
+        bigint count 
+        real current_l1_any_t0_avg_a 
+        real current_l2_any_t0_avg_a 
+        real current_l3_any_t0_avg_a 
+        integer interval PK 
+        text meter_id PK,FK 
+        real reactive_energy_total_export_t0_max_varh 
+        real reactive_energy_total_export_t0_min_varh 
+        real reactive_energy_total_import_t0_max_varh 
+        real reactive_energy_total_import_t0_min_varh 
+        real reactive_power_total_net_t0_avg_var 
+        timestamp_with_time_zone timestamp PK 
+        real voltage_l1_any_t0_avg_v 
+        real voltage_l2_any_t0_avg_v 
+        real voltage_l3_any_t0_avg_v 
     }
 
     schneider_iem3xxx_measurements {
-        real active_energy_l1_import_t0_wh
-        real active_energy_l2_import_t0_wh
-        real active_energy_l3_import_t0_wh
-        real active_energy_total_export_t0_wh
-        real active_energy_total_import_t0_wh
-        real active_energy_total_import_t1_wh
-        real active_energy_total_import_t2_wh
-        real active_power_l1_net_t0_w
-        real active_power_l2_net_t0_w
-        real active_power_l3_net_t0_w
-        real apparent_power_total_net_t0_va
-        real current_l1_any_t0_a
-        real current_l2_any_t0_a
-        real current_l3_any_t0_a
-        text meter_id PK,FK
-        real reactive_energy_total_export_t0_varh
-        real reactive_energy_total_import_t0_varh
-        real reactive_power_total_net_t0_var
-        timestamp_with_time_zone timestamp PK
-        real voltage_l1_any_t0_v
-        real voltage_l2_any_t0_v
-        real voltage_l3_any_t0_v
+        real active_energy_l1_import_t0_wh 
+        real active_energy_l2_import_t0_wh 
+        real active_energy_l3_import_t0_wh 
+        real active_energy_total_export_t0_wh 
+        real active_energy_total_import_t0_wh 
+        real active_energy_total_import_t1_wh 
+        real active_energy_total_import_t2_wh 
+        real active_power_l1_net_t0_w 
+        real active_power_l2_net_t0_w 
+        real active_power_l3_net_t0_w 
+        real apparent_power_total_net_t0_va 
+        real current_l1_any_t0_a 
+        real current_l2_any_t0_a 
+        real current_l3_any_t0_a 
+        text meter_id PK,FK 
+        real reactive_energy_total_export_t0_varh 
+        real reactive_energy_total_import_t0_varh 
+        real reactive_power_total_net_t0_var 
+        timestamp_with_time_zone timestamp PK 
+        real voltage_l1_any_t0_v 
+        real voltage_l2_any_t0_v 
+        real voltage_l3_any_t0_v 
     }
 
     UserByClaimIndex }o--|| Document : "DocumentId"
@@ -661,6 +681,7 @@ erDiagram
     abb_b2x_measurements }o--|| meters : "meter_id"
     events }o--|| messengers : "messenger_id"
     events }o--|| representatives : "representative_id"
+    notifications }o--|| events : "event_id"
     location_entity_representative_entity }o--|| locations : "locations_id"
     location_entity_representative_entity }o--|| representatives : "representatives_string_id"
     location_invoices }o--|| locations : "location_id"
@@ -711,6 +732,9 @@ erDiagram
     network_users }o--|| representatives : "created_by_id"
     network_users }o--|| representatives : "deleted_by_id"
     network_users }o--|| representatives : "last_updated_by_id"
+    notification_representative_entity }o--|| notifications : "notification_id"
+    notification_representative_entity }o--|| representatives : "representative_id"
+    notifications }o--|| representatives : "resolved_by_id"
     regulatory_catalogues }o--|| representatives : "created_by_id"
     regulatory_catalogues }o--|| representatives : "deleted_by_id"
     regulatory_catalogues }o--|| representatives : "last_updated_by_id"
