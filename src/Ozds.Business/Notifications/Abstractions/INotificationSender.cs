@@ -4,5 +4,5 @@ namespace Ozds.Business.Notifications.Abstractions;
 
 public interface INotificationSender
 {
-  Task SendAsync(INotification notification);
+  Task SendAsync(IEnumerable<INotification> notifications);
 }

@@ -89,6 +89,7 @@ prepare:
 lfs:
   dvc add {{fakeassets}}/*.csv
   dvc add {{migrationassets}}/*.sql
+  dvc push
 
 dev *args:
   $env.ASPNETCORE_ENVIRONMENT = "Development"; \
