@@ -15,7 +15,7 @@ artifacts := absolute_path('artifacts')
 servercsproj := absolute_path('src/Ozds.Server/Ozds.Server.csproj')
 datacsproj := absolute_path('src/Ozds.Data/Ozds.Data.csproj')
 messagingcsproj := absolute_path('src/Ozds.Messaging/Ozds.Messaging.csproj')
-jobscsproj := absolute_path('src/Ozds.Jobs/Ozds.Jobs.csproj')j
+jobscsproj := absolute_path('src/Ozds.Jobs/Ozds.Jobs.csproj')
 fakecsproj := absolute_path('scripts/Ozds.Fake/Ozds.Fake.csproj')
 fakeassets := absolute_path('scripts/Ozds.Fake/Assets')
 migrationassets := absolute_path('scripts/migrations')
@@ -197,6 +197,7 @@ dump:
         --exclude-table-data='outbox_state' \
         --exclude-table-data='inbox_state' \
         --exclude-table-data='outbox_message' \
+        --exclude-table-data='"QRTZ_"*' \
         --exclude-table-data='"__"*' \
     out> '{{migrationassets}}/current.sql'
 
