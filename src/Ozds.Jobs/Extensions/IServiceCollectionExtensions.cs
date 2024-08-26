@@ -1,23 +1,24 @@
 using Microsoft.EntityFrameworkCore;
-using Ozds.Timers.Options;
+using Ozds.Jobs.Options;
 using Quartz;
+using Quartz.Spi;
 
-namespace Ozds.Timers.Extensions;
+namespace Ozds.Jobs.Extensions;
 
 public static class IServiceCollectionExtensions
 {
-  public static IServiceCollection AddOzdsTimers(
+  public static IServiceCollection AddOzdsJobs(
     this IServiceCollection services,
     IHostApplicationBuilder builder
   )
   {
-    services.Configure<OzdsTimersOptions>(
-      builder.Configuration.GetSection("Ozds:Timers"));
+    services.Configure<OzdsJobsOptions>(
+      builder.Configuration.GetSection("Ozds:Jobs"));
 
     var timersOptions = builder.Configuration
-      .GetValue<OzdsTimersOptions>("Ozds:Timers")
+      .GetValue<OzdsJobsOptions>("Ozds:Jobs")
         ?? throw new InvalidOperationException(
-          "Missing Ozds:Timers configuration");
+          "Missing Ozds:Jobs configuration");
 
     services.AddQuartz(options =>
     {
@@ -40,14 +41,14 @@ public static class IServiceCollectionExtensions
     return services;
   }
 
-  public static IApplicationBuilder UseOzdsTimers(
+  public static IApplicationBuilder UseOzdsJobs(
     this IApplicationBuilder app,
     IEndpointRouteBuilder endpoints
   )
   {
     using var scope = app.ApplicationServices.CreateScope();
     var context = scope.ServiceProvider
-      .GetRequiredService<OzdsTimersDbContext>();
+      .GetRequiredService<OzdsJobsDbContext>();
     context.Database.Migrate();
 
     return app;

@@ -1,12 +1,17 @@
 using MassTransit;
 using MassTransit.Configuration;
-using MassTransit.EntityFrameworkCoreIntegration;
 using Microsoft.EntityFrameworkCore;
 using Ozds.Messaging.Observers;
 using Ozds.Messaging.Observers.Abstractions;
 using Ozds.Messaging.Options;
 
 namespace Ozds.Messaging.Extensions;
+
+// FIXME: outbox and inbox
+#pragma warning disable S125
+// services.RemoveHostedService<BusOutboxDeliveryService<OzdsMessagingDbContext>>();
+// services.RemoveHostedService<InboxCleanupService<OzdsMessagingDbContext>>();
+#pragma warning restore S125
 
 public static class IServiceCollectionExtensions
 {
@@ -21,9 +26,6 @@ public static class IServiceCollectionExtensions
     var options = builder.Configuration.GetValue<OzdsMessagingOptions>(
       "Ozds:Messaging") ?? throw new InvalidOperationException(
         "Ozds:Messaging not found in configuration");
-
-    services.AddSingleton<INetworkUserInvoiceStatePublisher, NetworkUserInvoiceStateObserver>();
-    services.AddSingleton<INetworkUserInvoiceStateSubscriber, NetworkUserInvoiceStateObserver>();
 
     services.AddDbContext<OzdsMessagingDbContext>(
       builder => builder
@@ -41,18 +43,15 @@ public static class IServiceCollectionExtensions
       {
         var assembly = typeof(OzdsMessagingDbContext).Assembly;
 
-#pragma warning disable S125
-        // FIXME: nothing happens
-        // x.AddEntityFrameworkOutbox<OzdsMessagingDbContext>(o =>
-        // {
-        //   o.UsePostgres();
-        //   o.UseBusOutbox();
-        // });
-        // x.AddConfigureEndpointsCallback((context, name, cfg) =>
-        // {
-        //   cfg.UseEntityFrameworkOutbox<OzdsMessagingDbContext>(context);
-        // });
-#pragma warning restore S125
+        config.AddEntityFrameworkOutbox<OzdsMessagingDbContext>(config =>
+        {
+          config.UsePostgres();
+          config.UseBusOutbox();
+        });
+        config.AddConfigureEndpointsCallback((context, name, config) =>
+        {
+          config.UseEntityFrameworkOutbox<OzdsMessagingDbContext>(context);
+        });
         config.SetKebabCaseEndpointNameFormatter();
 
         config.AddConsumers(assembly);
@@ -98,10 +97,8 @@ public static class IServiceCollectionExtensions
         }
       });
 
-    // FIXME: nothing happens when not removed
-    services
-      .RemoveHostedService<BusOutboxDeliveryService<OzdsMessagingDbContext>>();
-    services.RemoveHostedService<InboxCleanupService<OzdsMessagingDbContext>>();
+    services.AddSingleton<INetworkUserInvoiceStatePublisher, NetworkUserInvoiceStateObserver>();
+    services.AddSingleton<INetworkUserInvoiceStateSubscriber, NetworkUserInvoiceStateObserver>();
 
     return services;
   }
@@ -126,14 +123,12 @@ public static class IServiceCollectionExtensions
     )
       where TSaga : class, ISaga
     {
-      configurator
-        .EntityFrameworkRepository(
-          r =>
-          {
-            r.ConcurrencyMode = ConcurrencyMode.Optimistic;
-            r.ExistingDbContext<OzdsMessagingDbContext>();
-            r.UsePostgres();
-          });
+      configurator.EntityFrameworkRepository(config =>
+      {
+        config.ConcurrencyMode = ConcurrencyMode.Optimistic;
+        config.ExistingDbContext<OzdsMessagingDbContext>();
+        config.UsePostgres();
+      });
     }
   }
 }

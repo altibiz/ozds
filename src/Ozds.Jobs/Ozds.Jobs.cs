@@ -1,3 +1,3 @@
 #pragma warning disable S3261
-namespace Ozds.Timers;
+namespace Ozds.Jobs;
 #pragma warning restore S3261
