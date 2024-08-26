@@ -15,6 +15,7 @@ artifacts := absolute_path('artifacts')
 servercsproj := absolute_path('src/Ozds.Server/Ozds.Server.csproj')
 datacsproj := absolute_path('src/Ozds.Data/Ozds.Data.csproj')
 messagingcsproj := absolute_path('src/Ozds.Messaging/Ozds.Messaging.csproj')
+jobscsproj := absolute_path('src/Ozds.Jobs/Ozds.Jobs.csproj')j
 fakecsproj := absolute_path('scripts/Ozds.Fake/Ozds.Fake.csproj')
 fakeassets := absolute_path('scripts/Ozds.Fake/Assets')
 migrationassets := absolute_path('scripts/migrations')
@@ -225,6 +226,11 @@ migrate project name:
     --project '{{messagingcsproj}}' \
     database update
 
+  dotnet ef \
+    --startup-project '{{servercsproj}}' \
+    --project '{{jobscsproj}}' \
+    database update
+
   open --raw '{{migrationassets}}/current.sql' | \
     docker exec \
       --env PGHOST="localhost" \
@@ -256,6 +262,11 @@ migrate project name:
   dotnet ef \
     --startup-project '{{servercsproj}}' \
     --project '{{messagingcsproj}}' \
+    database update
+
+  dotnet ef \
+    --startup-project '{{servercsproj}}' \
+    --project '{{jobscsproj}}' \
     database update
 
   docker exec \
@@ -299,6 +310,7 @@ migrate project name:
         --exclude-table-data='outbox_state' \
         --exclude-table-data='inbox_state' \
         --exclude-table-data='outbox_message' \
+        --exclude-table-data='"QRTZ_"*' \
         --exclude-table-data='"__"*' \
     out> '{{migrationassets}}/{{project}}-{{name}}-{{now}}.sql'
 
