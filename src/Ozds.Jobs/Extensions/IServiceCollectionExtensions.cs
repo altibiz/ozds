@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using Ozds.Jobs.Jobs.Abstractions;
 using Ozds.Jobs.Options;
 using Quartz;
-using Quartz.Spi;
 
 namespace Ozds.Jobs.Extensions;
 
@@ -47,8 +47,7 @@ public static class IServiceCollectionExtensions
   )
   {
     using var scope = app.ApplicationServices.CreateScope();
-    var context = scope.ServiceProvider
-      .GetRequiredService<OzdsJobsDbContext>();
+    var context = scope.ServiceProvider.GetRequiredService<OzdsJobsDbContext>();
     context.Database.Migrate();
 
     return app;
