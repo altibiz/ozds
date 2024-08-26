@@ -9,10 +9,9 @@
     <PackageReference Include="MassTransit.RabbitMQ" Version="8.2.2" />
     <PackageReference Include="MassTransit.Azure.ServiceBus.Core" Version="8.2.2" />
     <PackageReference Include="MassTransit.EntityFrameworkCore" Version="8.2.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0" />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="$(EntityFrameworkCoreVersion)" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="$(EntityFrameworkCoreVersion)" />
     <PackageReference Include="EFCore.NamingConventions" Version="8.0.3" />
-		<PackageReference Include="OrchardCore.Abstractions" Version="$(OrchardVersion)" />
   </ItemGroup>
 
 </Project>

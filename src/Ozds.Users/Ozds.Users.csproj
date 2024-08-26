@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-		<PackageReference Include="OrchardCore.Abstractions" Version="$(OrchardVersion)" />
-		<PackageReference Include="OrchardCore.Users" Version="$(OrchardVersion)" />
+		<PackageReference Include="OrchardCore.Abstractions" Version="$(OrchardCoreVersion)" />
+		<PackageReference Include="OrchardCore.Users" Version="$(OrchardCoreVersion)" />
   </ItemGroup>
 
 </Project>
