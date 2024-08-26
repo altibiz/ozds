@@ -536,7 +536,7 @@ erDiagram
         text title 
     }
 
-    notification_representative_entity {
+    notification_recipient_entity {
         bigint notification_id PK,FK 
         text representative_id PK,FK 
         timestamp_with_time_zone seen_on 
@@ -737,8 +737,8 @@ erDiagram
     network_users }o--|| representatives : "created_by_id"
     network_users }o--|| representatives : "deleted_by_id"
     network_users }o--|| representatives : "last_updated_by_id"
-    notification_representative_entity }o--|| notifications : "notification_id"
-    notification_representative_entity }o--|| representatives : "representative_id"
+    notification_recipient_entity }o--|| notifications : "notification_id"
+    notification_recipient_entity }o--|| representatives : "representative_id"
     notifications }o--|| representatives : "resolved_by_id"
     regulatory_catalogues }o--|| representatives : "created_by_id"
     regulatory_catalogues }o--|| representatives : "deleted_by_id"

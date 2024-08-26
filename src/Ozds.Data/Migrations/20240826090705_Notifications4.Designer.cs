@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Ozds.Data;
@@ -13,9 +14,11 @@ using Ozds.Data;
 namespace Ozds.Data.Migrations
 {
     [DbContext(typeof(OzdsDataDbContext))]
-    partial class OzdsDataDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240826090705_Notifications4")]
+    partial class Notifications4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
