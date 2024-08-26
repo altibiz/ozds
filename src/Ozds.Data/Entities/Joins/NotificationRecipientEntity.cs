@@ -4,7 +4,7 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Joins;
 
-public class NotificationRepresentativeEntity
+public class NotificationRecipientEntity
 {
   private long _notificationId;
 
@@ -36,18 +36,18 @@ public class NotificationRepresentativeEntityModelConfiguration : IModelConfigur
       .HasMany(nameof(NotificationEntity.Representatives))
       .WithMany(nameof(RepresentativeEntity.Notifications))
       .UsingEntity(
-        joinEntityType: typeof(NotificationRepresentativeEntity),
+        joinEntityType: typeof(NotificationRecipientEntity),
         configureLeft: l => l
-          .HasOne(nameof(NotificationRepresentativeEntity.Notification))
+          .HasOne(nameof(NotificationRecipientEntity.Notification))
           .WithMany(nameof(NotificationEntity.NotificationRepresentatives))
           .HasForeignKey("_notificationId"),
         configureRight: r => r
-          .HasOne(nameof(NotificationRepresentativeEntity.Representative))
+          .HasOne(nameof(NotificationRecipientEntity.Representative))
           .WithMany(nameof(RepresentativeEntity.NotificationRepresentatives))
-          .HasForeignKey(nameof(NotificationRepresentativeEntity.RepresentativeId)),
+          .HasForeignKey(nameof(NotificationRecipientEntity.RepresentativeId)),
         configureJoinEntityType: entity =>
         {
-          entity.Ignore(nameof(NotificationRepresentativeEntity.NotificationId));
+          entity.Ignore(nameof(NotificationRecipientEntity.NotificationId));
           entity
             .Property("_notificationId")
             .HasColumnName("notification_id");

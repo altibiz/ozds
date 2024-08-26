@@ -34,7 +34,7 @@ public class RepresentativeEntity : AuditableEntity
   } =
     default!;
 
-  public virtual ICollection<NotificationRepresentativeEntity> NotificationRepresentatives { get; set; } = default!;
+  public virtual ICollection<NotificationRecipientEntity> NotificationRepresentatives { get; set; } = default!;
 
   public virtual ICollection<NotificationEntity> Notifications { get; set; } = default!;
 

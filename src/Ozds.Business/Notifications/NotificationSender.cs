@@ -21,7 +21,7 @@ public class NotificationSender(
   {
     context.Add(converter.ToEntity(notification));
     context.AddRange(recipients
-      .Select(recipient => new NotificationRepresentativeModel()
+      .Select(recipient => new NotificationRecipientModel()
       {
         NotificationId = notification.Id,
         RepresentativeId = recipient.Id

@@ -56,6 +56,11 @@ erDiagram
         character_varying product_version 
     }
 
+    __OzdsJobsDbContext {
+        character_varying MigrationId PK 
+        character_varying ProductVersion 
+    }
+
     __OzdsMessagingDbContext {
         character_varying migration_id PK 
         character_varying product_version 
