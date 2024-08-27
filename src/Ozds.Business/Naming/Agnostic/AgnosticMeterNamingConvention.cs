@@ -9,7 +9,8 @@ public class AgnosticMeterNamingConvention(IServiceProvider serviceProvider)
     var meterNamingConvention = serviceProvider
       .GetServices<IMeterNamingConvention>();
 
-    var abbMeter = meterNamingConvention.FirstOrDefault(x =>
+    var abbMeter = meterNamingConvention.FirstOrDefault(
+      x =>
         meterId.StartsWith(x.AbbIdPrefix));
 
     if (abbMeter is not null)
@@ -17,7 +18,8 @@ public class AgnosticMeterNamingConvention(IServiceProvider serviceProvider)
       return abbMeter.AbbB2xMeasurementType;
     }
 
-    var schneideriMeter = meterNamingConvention.FirstOrDefault(x =>
+    var schneideriMeter = meterNamingConvention.FirstOrDefault(
+      x =>
         meterId.StartsWith(x.SchneiderIdPrefix));
 
     if (schneideriMeter is not null)
@@ -26,7 +28,7 @@ public class AgnosticMeterNamingConvention(IServiceProvider serviceProvider)
     }
 
     throw new InvalidOperationException(
-        $"No MeterNamingConvention found for {meterId}");
+      $"No MeterNamingConvention found for {meterId}");
   }
 
   public Type AggregateTypeForLineAndMeterId(string meterId)
@@ -34,7 +36,8 @@ public class AgnosticMeterNamingConvention(IServiceProvider serviceProvider)
     var meterNamingConvention = serviceProvider
       .GetServices<IMeterNamingConvention>();
 
-    var abbMeter = meterNamingConvention.FirstOrDefault(x =>
+    var abbMeter = meterNamingConvention.FirstOrDefault(
+      x =>
         meterId.StartsWith(x.AbbIdPrefix));
 
     if (abbMeter is not null)
@@ -42,7 +45,8 @@ public class AgnosticMeterNamingConvention(IServiceProvider serviceProvider)
       return abbMeter.AbbB2xAggregateType;
     }
 
-    var schneideriMeter = meterNamingConvention.FirstOrDefault(x =>
+    var schneideriMeter = meterNamingConvention.FirstOrDefault(
+      x =>
         meterId.StartsWith(x.SchneiderIdPrefix));
 
     if (schneideriMeter is not null)
@@ -51,7 +55,7 @@ public class AgnosticMeterNamingConvention(IServiceProvider serviceProvider)
     }
 
     throw new InvalidOperationException(
-        $"No MeterNamingConvention found for {meterId}");
+      $"No MeterNamingConvention found for {meterId}");
   }
 
   public Type ValidatorTypeForLineAndMeterId(string meterId)
@@ -59,7 +63,8 @@ public class AgnosticMeterNamingConvention(IServiceProvider serviceProvider)
     var meterNamingConvention = serviceProvider
       .GetServices<IMeterNamingConvention>();
 
-    var abbMeter = meterNamingConvention.FirstOrDefault(x =>
+    var abbMeter = meterNamingConvention.FirstOrDefault(
+      x =>
         meterId.StartsWith(x.AbbIdPrefix));
 
     if (abbMeter is not null)
@@ -67,7 +72,8 @@ public class AgnosticMeterNamingConvention(IServiceProvider serviceProvider)
       return abbMeter.AbbB2xMeasurementValidatorType;
     }
 
-    var schneideriMeter = meterNamingConvention.FirstOrDefault(x =>
+    var schneideriMeter = meterNamingConvention.FirstOrDefault(
+      x =>
         meterId.StartsWith(x.SchneiderIdPrefix));
 
     if (schneideriMeter is not null)
@@ -76,14 +82,16 @@ public class AgnosticMeterNamingConvention(IServiceProvider serviceProvider)
     }
 
     throw new InvalidOperationException(
-        $"No MeterNamingConvention found for {meterId}");
+      $"No MeterNamingConvention found for {meterId}");
   }
+
   public Type MeterTypeForLineAndMeterId(string meterId)
   {
     var meterNamingConvention = serviceProvider
       .GetServices<IMeterNamingConvention>();
 
-    var abbMeter = meterNamingConvention.FirstOrDefault(x =>
+    var abbMeter = meterNamingConvention.FirstOrDefault(
+      x =>
         meterId.StartsWith(x.AbbIdPrefix));
 
     if (abbMeter is not null)
@@ -91,7 +99,8 @@ public class AgnosticMeterNamingConvention(IServiceProvider serviceProvider)
       return abbMeter.AbbB2xMeterType;
     }
 
-    var schneideriMeter = meterNamingConvention.FirstOrDefault(x =>
+    var schneideriMeter = meterNamingConvention.FirstOrDefault(
+      x =>
         meterId.StartsWith(x.SchneiderIdPrefix));
 
     if (schneideriMeter is not null)
@@ -100,6 +109,6 @@ public class AgnosticMeterNamingConvention(IServiceProvider serviceProvider)
     }
 
     throw new InvalidOperationException(
-        $"No MeterNamingConvention found for {meterId}");
+      $"No MeterNamingConvention found for {meterId}");
   }
 }
