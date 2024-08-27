@@ -6,7 +6,6 @@ namespace Ozds.Business.Naming.Base;
 public abstract class MeterNamingConvention : IMeterNamingConvention
 #pragma warning restore S1694 // An abstract class should have both abstract and concrete methods
 {
-
   public abstract string AbbIdPrefix { get; }
   public abstract string SchneiderIdPrefix { get; }
 
