@@ -17,12 +17,12 @@ public class AgnosticMeterNamingConvention(IServiceProvider serviceProvider)
       return abbMeter.AbbB2xMeasurementType;
     }
 
-    var schneideriMeter = meterNamingConvention.FirstOrDefault(x =>
+    var schneiderMeter = meterNamingConvention.FirstOrDefault(x =>
         meterId.StartsWith(x.SchneiderIdPrefix));
 
-    if (schneideriMeter is not null)
+    if (schneiderMeter is not null)
     {
-      return schneideriMeter.SchneideriEM3xxxMeasurementType;
+      return schneiderMeter.SchneideriEM3xxxMeasurementType;
     }
 
     throw new InvalidOperationException(
@@ -42,12 +42,12 @@ public class AgnosticMeterNamingConvention(IServiceProvider serviceProvider)
       return abbMeter.AbbB2xAggregateType;
     }
 
-    var schneideriMeter = meterNamingConvention.FirstOrDefault(x =>
+    var schneiderMeter = meterNamingConvention.FirstOrDefault(x =>
         meterId.StartsWith(x.SchneiderIdPrefix));
 
-    if (schneideriMeter is not null)
+    if (schneiderMeter is not null)
     {
-      return schneideriMeter.SchneideriEM3xxxAggregateType;
+      return schneiderMeter.SchneideriEM3xxxAggregateType;
     }
 
     throw new InvalidOperationException(
@@ -67,12 +67,12 @@ public class AgnosticMeterNamingConvention(IServiceProvider serviceProvider)
       return abbMeter.AbbB2xMeasurementValidatorType;
     }
 
-    var schneideriMeter = meterNamingConvention.FirstOrDefault(x =>
+    var schneiderMeter = meterNamingConvention.FirstOrDefault(x =>
         meterId.StartsWith(x.SchneiderIdPrefix));
 
-    if (schneideriMeter is not null)
+    if (schneiderMeter is not null)
     {
-      return schneideriMeter.SchneideriEM3xxxMeasurementValidatorType;
+      return schneiderMeter.SchneideriEM3xxxMeasurementValidatorType;
     }
 
     throw new InvalidOperationException(
@@ -91,12 +91,12 @@ public class AgnosticMeterNamingConvention(IServiceProvider serviceProvider)
       return abbMeter.AbbB2xMeterType;
     }
 
-    var schneideriMeter = meterNamingConvention.FirstOrDefault(x =>
+    var schneiderMeter = meterNamingConvention.FirstOrDefault(x =>
         meterId.StartsWith(x.SchneiderIdPrefix));
 
-    if (schneideriMeter is not null)
+    if (schneiderMeter is not null)
     {
-      return schneideriMeter.SchneideriEM3xxxMeterType;
+      return schneiderMeter.SchneideriEM3xxxMeterType;
     }
 
     throw new InvalidOperationException(
