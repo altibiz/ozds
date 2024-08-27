@@ -18,7 +18,8 @@ public class AgnosticMeterNamingConvention(IServiceProvider serviceProvider)
       return abbMeter.AbbB2xMeasurementType;
     }
 
-    var schneiderMeter = meterNamingConvention.FirstOrDefault(x =>
+    var schneiderMeter = meterNamingConvention.FirstOrDefault(
+      x =>
         meterId.StartsWith(x.SchneiderIdPrefix));
 
     if (schneiderMeter is not null)
@@ -44,7 +45,8 @@ public class AgnosticMeterNamingConvention(IServiceProvider serviceProvider)
       return abbMeter.AbbB2xAggregateType;
     }
 
-    var schneiderMeter = meterNamingConvention.FirstOrDefault(x =>
+    var schneiderMeter = meterNamingConvention.FirstOrDefault(
+      x =>
         meterId.StartsWith(x.SchneiderIdPrefix));
 
     if (schneiderMeter is not null)
@@ -70,7 +72,8 @@ public class AgnosticMeterNamingConvention(IServiceProvider serviceProvider)
       return abbMeter.AbbB2xMeasurementValidatorType;
     }
 
-    var schneiderMeter = meterNamingConvention.FirstOrDefault(x =>
+    var schneiderMeter = meterNamingConvention.FirstOrDefault(
+      x =>
         meterId.StartsWith(x.SchneiderIdPrefix));
 
     if (schneiderMeter is not null)
@@ -96,7 +99,8 @@ public class AgnosticMeterNamingConvention(IServiceProvider serviceProvider)
       return abbMeter.AbbB2xMeterType;
     }
 
-    var schneiderMeter = meterNamingConvention.FirstOrDefault(x =>
+    var schneiderMeter = meterNamingConvention.FirstOrDefault(
+      x =>
         meterId.StartsWith(x.SchneiderIdPrefix));
 
     if (schneiderMeter is not null)
