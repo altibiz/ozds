@@ -11,6 +11,27 @@ public enum PhaseModel
 
 public static class PhaseModelExtensions
 {
+  public static string ToTitle(this PhaseModel phase)
+  {
+    return phase switch
+    {
+      PhaseModel.L1 => "L1",
+      PhaseModel.L2 => "L2",
+      PhaseModel.L3 => "L3",
+      _ => throw new ArgumentOutOfRangeException(nameof(phase), phase, null)
+    };
+  }
+
+  public static string ToColor(this PhaseModel phase)
+  {
+    return phase switch
+    {
+      PhaseModel.L1 => "#FB8C00",
+      PhaseModel.L2 => "#E91E63",
+      PhaseModel.L3 => "#20F97B",
+      _ => throw new ArgumentOutOfRangeException(nameof(phase), phase, null)
+    };
+  }
   public static PhaseModel ToModel(this PhaseEntity phase)
   {
     return phase switch

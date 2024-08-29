@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Abstractions;
+using Ozds.Business.Models.Enums;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Data.Context;
 using Ozds.Data.Entities.Base;
@@ -68,5 +69,64 @@ public class OzdsAggregateQueries(
         pageNumber, pageCount);
     return abbB2x.Items.Cast<IAggregate>().Concat(schneideriEM3xxx.Items)
       .ToList();
+  }
+
+  public async Task<PaginatedList<IAggregate>> ReadDynamic(
+    DateTimeOffset fromDate,
+    DateTimeOffset toDate,
+    Type? aggregateType = null,
+    string? meterId = null,
+    IntervalModel? interval = null,
+    string? whereClause = null,
+    int pageNumber = QueryConstants.StartingPage,
+    int pageCount = QueryConstants.DefaultPageCount
+  )
+  {
+    using var @lock = await mutex.LockAsync();
+    var mutexContext = @lock.Context;
+
+    if (aggregateType is null)
+    {
+      aggregateType = meterNamingConvention
+        .AggregateTypeForLineAndMeterId(
+          meterId ?? throw new ArgumentNullException(nameof(meterId)));
+    }
+
+    var dbSetType = modelEntityConverter.EntityType(aggregateType);
+    var queryable = mutexContext.GetQueryable(dbSetType)
+        as IQueryable<AggregateEntity>
+      ?? throw new InvalidOperationException(
+        $"No DbSet found for {dbSetType}");
+
+    var whereFiltered = whereClause is null
+      ? queryable
+      : queryable.WhereDynamic(whereClause);
+
+    var timeFiltered = whereFiltered
+      .Where(aggregate => aggregate.Timestamp >= fromDate)
+      .Where(aggregate => aggregate.Timestamp < toDate);
+
+    var intervalEntity = interval?.ToEntity();
+    var intervalFiltered = intervalEntity is null
+      ? timeFiltered
+      : timeFiltered.Where(aggregate => aggregate.Interval == intervalEntity);
+
+    var filtered = intervalFiltered.Where(aggregate =>
+          aggregate.MeterId == meterId);
+
+    var ordered = filtered
+      .OrderByDescending(aggregate => aggregate.Timestamp);
+
+    var count = await filtered.CountAsync();
+
+    var items = await ordered
+      .Skip((pageNumber - 1) * pageCount)
+      .Take(pageCount)
+      .ToListAsync();
+
+    return items
+      .Select(modelEntityConverter.ToModel)
+      .OfType<IAggregate>()
+      .ToPaginatedList(count);
   }
 }

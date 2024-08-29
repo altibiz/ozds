@@ -69,4 +69,57 @@ public class OzdsMeasurementQueries(
     return abbB2x.Items.Cast<IMeasurement>().Concat(schneideriEM3xxx.Items)
       .ToList();
   }
+
+  public async Task<PaginatedList<IMeasurement>> ReadDynamic(
+    DateTimeOffset fromDate,
+    DateTimeOffset toDate,
+    Type? measurementType = null,
+    string? meterId = null,
+    string? whereClause = null,
+    int pageNumber = QueryConstants.StartingPage,
+    int pageCount = QueryConstants.MeasurementPageCount
+  )
+  {
+    using var @lock = await mutex.LockAsync();
+    var mutexContext = @lock.Context;
+
+    if (measurementType is null)
+    {
+      measurementType = meterNamingConvention
+        .MeasurementTypeForLineAndMeterId(
+          meterId ?? throw new ArgumentNullException(nameof(meterId)));
+    }
+
+    var dbSetType = modelEntityConverter.EntityType(measurementType);
+    var queryable = mutexContext.GetQueryable(dbSetType)
+        as IQueryable<MeasurementEntity>
+      ?? throw new InvalidOperationException(
+        $"No DbSet found for {dbSetType}");
+
+    var whereFiltered = whereClause is null
+      ? queryable
+      : queryable.WhereDynamic(whereClause);
+
+    var timeFiltered = whereFiltered
+      .Where(aggregate => aggregate.Timestamp >= fromDate)
+      .Where(aggregate => aggregate.Timestamp < toDate);
+
+    var filtered = timeFiltered.Where(aggregate =>
+          aggregate.MeterId == meterId);
+
+    var ordered = filtered
+      .OrderByDescending(aggregate => aggregate.Timestamp);
+
+    var count = await filtered.CountAsync();
+
+    var items = await ordered
+      .Skip((pageNumber - 1) * pageCount)
+      .Take(pageCount)
+      .ToListAsync();
+
+    return items
+      .Select(modelEntityConverter.ToModel)
+      .OfType<IMeasurement>()
+      .ToPaginatedList(count);
+  }
 }

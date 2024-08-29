@@ -1,0 +1,42 @@
+@using ApexCharts
+@using MudBlazor
+@using Microsoft.Extensions.DependencyInjection
+@using Ozds.Business.Models
+@using Ozds.Client.Base
+@using Ozds.Client.Shared.Streaming
+@using Ozds.Client.Shared.Fields
+@namespace Ozds.Client.Shared.Charts
+
+@inherits OzdsOwningComponentBase
+
+<EnumPicker
+  @bind-Value="Measure"
+  Label="x => T[x.ToTitle()]" />
+<EnumPicker
+  @bind-Value="Resolution"
+  Label="x => T[x.ToTitle(Multiplier)]" />
+<MultiEnumPicker
+  @bind-Value="Phases"
+  Title="@T["Phase"]"
+  Label="x => T[x.ToTitle()]"/>
+<MudNumericField
+  @bind-Value="Multiplier"
+  Label="@T["Multiplier"]"
+  Min="1"
+  Max="@Resolution.MaxMultiplier()"
+  Step="1"/>
+
+<ApexChart XAxisType="XAxisType.Datetime"
+           Options="@_options"
+           @ref="_chart">
+  @foreach (var phase in Phases)
+  {
+    <ApexPointSeries
+      Items="@(_measurements.Items)"
+      Name="@(phase.ToTitle())"
+      SeriesType="SeriesType.Line"
+      XValue='x => DateTimeGraph(x.Timestamp)'
+      YValue="x => x.ChartValue(Measure, phase)"
+      Stroke="@(new SeriesStroke { Color = phase.ToColor(), Width = 4 })"/>
+  }
+</ApexChart>
