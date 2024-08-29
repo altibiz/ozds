@@ -9,22 +9,13 @@ public class AgnosticMeterNamingConvention(IServiceProvider serviceProvider)
     var meterNamingConvention = serviceProvider
       .GetServices<IMeterNamingConvention>();
 
-    var abbMeter = meterNamingConvention.FirstOrDefault(
+    var meter = meterNamingConvention.FirstOrDefault(
       x =>
-        meterId.StartsWith(x.AbbIdPrefix));
+        meterId.StartsWith(x.IdPrefix));
 
-    if (abbMeter is not null)
+    if (meter is not null)
     {
-      return abbMeter.AbbB2xMeasurementType;
-    }
-
-    var schneiderMeter = meterNamingConvention.FirstOrDefault(
-      x =>
-        meterId.StartsWith(x.SchneiderIdPrefix));
-
-    if (schneiderMeter is not null)
-    {
-      return schneiderMeter.SchneideriEM3xxxMeasurementType;
+      return meter.MeasurementType;
     }
 
     throw new InvalidOperationException(
@@ -36,22 +27,13 @@ public class AgnosticMeterNamingConvention(IServiceProvider serviceProvider)
     var meterNamingConvention = serviceProvider
       .GetServices<IMeterNamingConvention>();
 
-    var abbMeter = meterNamingConvention.FirstOrDefault(
+    var meter = meterNamingConvention.FirstOrDefault(
       x =>
-        meterId.StartsWith(x.AbbIdPrefix));
+        meterId.StartsWith(x.IdPrefix));
 
-    if (abbMeter is not null)
+    if (meter is not null)
     {
-      return abbMeter.AbbB2xAggregateType;
-    }
-
-    var schneiderMeter = meterNamingConvention.FirstOrDefault(
-      x =>
-        meterId.StartsWith(x.SchneiderIdPrefix));
-
-    if (schneiderMeter is not null)
-    {
-      return schneiderMeter.SchneideriEM3xxxAggregateType;
+      return meter.AggregateType;
     }
 
     throw new InvalidOperationException(
@@ -63,22 +45,13 @@ public class AgnosticMeterNamingConvention(IServiceProvider serviceProvider)
     var meterNamingConvention = serviceProvider
       .GetServices<IMeterNamingConvention>();
 
-    var abbMeter = meterNamingConvention.FirstOrDefault(
+    var meter = meterNamingConvention.FirstOrDefault(
       x =>
-        meterId.StartsWith(x.AbbIdPrefix));
+        meterId.StartsWith(x.IdPrefix));
 
-    if (abbMeter is not null)
+    if (meter is not null)
     {
-      return abbMeter.AbbB2xMeasurementValidatorType;
-    }
-
-    var schneiderMeter = meterNamingConvention.FirstOrDefault(
-      x =>
-        meterId.StartsWith(x.SchneiderIdPrefix));
-
-    if (schneiderMeter is not null)
-    {
-      return schneiderMeter.SchneideriEM3xxxMeasurementValidatorType;
+      return meter.MeasurementValidatorType;
     }
 
     throw new InvalidOperationException(
@@ -90,22 +63,13 @@ public class AgnosticMeterNamingConvention(IServiceProvider serviceProvider)
     var meterNamingConvention = serviceProvider
       .GetServices<IMeterNamingConvention>();
 
-    var abbMeter = meterNamingConvention.FirstOrDefault(
+    var meter = meterNamingConvention.FirstOrDefault(
       x =>
-        meterId.StartsWith(x.AbbIdPrefix));
+        meterId.StartsWith(x.IdPrefix));
 
-    if (abbMeter is not null)
+    if (meter is not null)
     {
-      return abbMeter.AbbB2xMeterType;
-    }
-
-    var schneiderMeter = meterNamingConvention.FirstOrDefault(
-      x =>
-        meterId.StartsWith(x.SchneiderIdPrefix));
-
-    if (schneiderMeter is not null)
-    {
-      return schneiderMeter.SchneideriEM3xxxMeterType;
+      return meter.MeterType;
     }
 
     throw new InvalidOperationException(

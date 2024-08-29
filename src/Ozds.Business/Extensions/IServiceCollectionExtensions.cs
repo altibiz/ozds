@@ -17,6 +17,8 @@ using Ozds.Business.Iot;
 using Ozds.Business.Localization;
 using Ozds.Business.Localization.Abstractions;
 using Ozds.Business.Mutations.Abstractions;
+using Ozds.Business.Naming.Abstractions;
+using Ozds.Business.Naming.Agnostic;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Data;
 using Ozds.Data.Extensions;
@@ -48,6 +50,8 @@ public static class IServiceCollectionExtensions
     services.AddSingleton(typeof(AgnosticMeasurementAggregateConverter));
     services.AddTransientAssignableTo(typeof(IPushRequestMeasurementConverter));
     services.AddSingleton(typeof(AgnosticPushRequestMeasurementConverter));
+    services.AddTransientAssignableTo(typeof(IMeterNamingConvention));
+    services.AddSingleton(typeof(AgnosticMeterNamingConvention));
 
     services.AddTransientAssignableTo(
       typeof(INetworkUserCalculationCalculator));
