@@ -3,17 +3,17 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Enums;
 
-public enum TopicEntity
+public enum CategoryEntity
 {
   All,
   Messenger,
-  MessengerInactivity
+  MessengerPush
 }
 
-public class TopicEntityModelConfiguration : IModelConfiguration
+public class CategoryEntityModelConfiguration : IModelConfiguration
 {
   public void Configure(ModelBuilder modelBuilder)
   {
-    modelBuilder.HasPostgresEnum<TopicEntity>();
+    modelBuilder.HasPostgresEnum<CategoryEntity>();
   }
 }

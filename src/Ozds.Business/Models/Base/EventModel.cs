@@ -22,6 +22,9 @@ public abstract class EventModel : IEvent
   [Required]
   public required JsonDocument Content { get; set; }
 
+  [Required]
+  public required List<CategoryModel> Categories { get; set; }
+
   public virtual IEnumerable<ValidationResult> Validate(
     ValidationContext validationContext)
   {

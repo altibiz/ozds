@@ -43,15 +43,13 @@ public static class RoleModelExtensions
     {
       RoleModel.OperatorRepresentative => new List<TopicModel>()
       {
-        TopicModel.General
+        TopicModel.All
       },
       RoleModel.LocationRepresentative => new List<TopicModel>()
       {
-        TopicModel.General
       },
       RoleModel.NetworkUserRepresentative => new List<TopicModel>()
       {
-        TopicModel.General
       },
       _ => throw new ArgumentOutOfRangeException(nameof(model), model, null)
     };

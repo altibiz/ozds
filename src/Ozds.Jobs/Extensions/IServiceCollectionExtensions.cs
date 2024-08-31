@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Ozds.Jobs.Jobs.Abstractions;
 using Ozds.Jobs.Options;
 using Quartz;
 

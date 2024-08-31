@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Ozds.Data.Attributes;
 using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Entities.Enums;
 using Ozds.Data.Entities.Joins;
@@ -42,7 +41,7 @@ public class NotificationEntity : IIdentifiableEntity
 
   public string Content { get; set; } = default!;
 
-  public TopicEntity Topic { get; set; } = default!;
+  public List<TopicEntity> Topics { get; set; } = default!;
 }
 
 public class

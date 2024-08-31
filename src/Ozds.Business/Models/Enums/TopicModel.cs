@@ -1,10 +1,13 @@
+using Humanizer;
 using Ozds.Data.Entities.Enums;
 
 namespace Ozds.Business.Models.Enums;
 
 public enum TopicModel
 {
-  General
+  All,
+  Messenger,
+  MessengerInactivity
 }
 
 public static class TopicModelExtensions
@@ -13,7 +16,9 @@ public static class TopicModelExtensions
   {
     return entity switch
     {
-      TopicEntity.General => TopicModel.General,
+      TopicEntity.All => TopicModel.All,
+      TopicEntity.Messenger => TopicModel.Messenger,
+      TopicEntity.MessengerInactivity => TopicModel.MessengerInactivity,
       _ => throw new ArgumentOutOfRangeException(nameof(entity), entity, null)
     };
   }
@@ -22,7 +27,9 @@ public static class TopicModelExtensions
   {
     return model switch
     {
-      TopicModel.General => TopicEntity.General,
+      TopicModel.All => TopicEntity.All,
+      TopicModel.Messenger => TopicEntity.Messenger,
+      TopicModel.MessengerInactivity => TopicEntity.MessengerInactivity,
       _ => throw new ArgumentOutOfRangeException(nameof(model), model, null)
     };
   }
@@ -31,7 +38,9 @@ public static class TopicModelExtensions
   {
     return model switch
     {
-      TopicModel.General => "General",
+      TopicModel.All => "General",
+      TopicModel.Messenger => "Messenger",
+      TopicModel.MessengerInactivity => "Messenger inactivity",
       _ => throw new ArgumentOutOfRangeException(nameof(model), model, null)
     };
   }

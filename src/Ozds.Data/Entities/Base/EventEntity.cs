@@ -31,6 +31,8 @@ public class EventEntity : IReadonlyEntity, IIdentifiableEntity, IDisposable
 
   public virtual ICollection<NotificationEntity> Notifications { get; set; } = default!;
 
+  public List<CategoryEntity> Categories { get; set; } = default!;
+
 #pragma warning disable CA1816 // Dispose methods should call SuppressFinalize
   public void Dispose()
 #pragma warning restore CA1816 // Dispose methods should call SuppressFinalize

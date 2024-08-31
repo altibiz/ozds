@@ -9,27 +9,26 @@ namespace Ozds.Jobs.Managers
     {
       var scheduler = await schedulerFactory.GetScheduler();
 
-      var jobKey = new JobKey(id, nameof(MessengerInactivityMonitorJob));
-
-      if (!await scheduler.CheckExists(jobKey))
+      var triggerKey = new TriggerKey(id, nameof(MessengerInactivityMonitorJob));
+      if (!await scheduler.CheckExists(triggerKey))
       {
-        var jobDetail = CreateJobDetail(id);
+        var job = CreateJob(id);
         var trigger = CreateTrigger(id, inactivityDuration);
 
-        await scheduler.ScheduleJob(jobDetail, trigger);
+        await scheduler.ScheduleJob(job, trigger);
       }
     }
 
-    public async Task RefreshInactivityMonitorJob(string id, TimeSpan inactivityDuration)
+    public async Task RescheduleInactivityMonitorJob(string id, TimeSpan inactivityDuration)
     {
       var scheduler = await schedulerFactory.GetScheduler();
 
-      var jobKey = new JobKey(id, nameof(MessengerInactivityMonitorJob));
+      var triggerKey = new TriggerKey(id, nameof(MessengerInactivityMonitorJob));
 
-      if (await scheduler.CheckExists(jobKey))
+      if (await scheduler.CheckExists(triggerKey))
       {
         var trigger = CreateTrigger(id, inactivityDuration);
-        await scheduler.RescheduleJob(new TriggerKey(id, nameof(MessengerInactivityMonitorJob)), trigger);
+        await scheduler.RescheduleJob(triggerKey, trigger);
       }
       else
       {
@@ -37,7 +36,19 @@ namespace Ozds.Jobs.Managers
       }
     }
 
-    private IJobDetail CreateJobDetail(string id)
+    public async Task UnscheduleInactivityMonitorJob(string id)
+    {
+      var scheduler = await schedulerFactory.GetScheduler();
+
+      var triggerKey = new TriggerKey(id, nameof(MessengerInactivityMonitorJob));
+
+      if (await scheduler.CheckExists(triggerKey))
+      {
+        await scheduler.UnscheduleJob(triggerKey);
+      }
+    }
+
+    private IJobDetail CreateJob(string id)
     {
       return JobBuilder.Create<MessengerInactivityMonitorJob>()
         .WithIdentity(id, nameof(MessengerInactivityMonitorJob))
@@ -49,6 +60,7 @@ namespace Ozds.Jobs.Managers
     {
       return TriggerBuilder.Create()
         .WithIdentity(id, nameof(MessengerInactivityMonitorJob))
+        .ForJob(id, nameof(MessengerInactivityMonitorJob))
         .StartAt(DateBuilder.FutureDate((int)inactivityDuration.TotalMilliseconds, IntervalUnit.Millisecond))
         .WithSimpleSchedule(x => x.WithMisfireHandlingInstructionFireNow())
         .Build();

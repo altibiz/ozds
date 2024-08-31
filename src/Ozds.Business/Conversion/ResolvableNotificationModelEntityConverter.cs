@@ -1,7 +1,8 @@
 using Ozds.Business.Conversion.Base;
 using Ozds.Business.Models;
+using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Enums;
-using Ozds.Data.Entities;
+using Ozds.Data.Entities.Base;
 
 namespace Ozds.Business.Conversion;
 
@@ -13,7 +14,22 @@ public class ResolvableNotificationModelEntityConverter :
   protected override ResolvableNotificationEntity ToEntity(
     ResolvableNotificationModel model)
   {
-    return new ResolvableNotificationEntity
+    return model.ToEntity();
+  }
+
+  protected override ResolvableNotificationModel ToModel(
+    ResolvableNotificationEntity entity)
+  {
+    return entity.ToModel();
+  }
+}
+
+public static class ResolvableNotificationModelEntityConverterExtensions
+{
+  public static ResolvableNotificationEntity ToEntity(
+    this ResolvableNotificationModel model)
+  {
+    return new()
     {
       Id = model.Id,
       Title = model.Title,
@@ -23,14 +39,14 @@ public class ResolvableNotificationModelEntityConverter :
       EventId = model.EventId,
       ResolvedById = model.ResolvedById,
       ResolvedOn = model.ResolvedOn,
-      Topic = model.Topic.ToEntity()
+      Topics = model.Topics.Select(x => x.ToEntity()).ToList()
     };
   }
 
-  protected override ResolvableNotificationModel ToModel(
-    ResolvableNotificationEntity entity)
+  public static ResolvableNotificationModel ToModel(
+    this ResolvableNotificationEntity entity)
   {
-    return new ResolvableNotificationModel
+    return new()
     {
       Id = entity.Id,
       Title = entity.Title,
@@ -40,7 +56,7 @@ public class ResolvableNotificationModelEntityConverter :
       EventId = entity.EventId,
       ResolvedById = entity.ResolvedById,
       ResolvedOn = entity.ResolvedOn,
-      Topic = entity.Topic.ToModel()
+      Topics = entity.Topics.Select(x => x.ToModel()).ToList()
     };
   }
 }

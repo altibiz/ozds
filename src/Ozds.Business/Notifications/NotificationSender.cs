@@ -1,3 +1,4 @@
+using System.Text;
 using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Abstractions;
@@ -29,11 +30,20 @@ public class NotificationSender(
       .Select(converter.ToEntity));
     await context.SaveChangesAsync();
 
+    var titleBuilder = new StringBuilder($"[OZDS]: {notification.Title}");
+    if (notification.Topics.Count > 0)
+    {
+      var topics = notification.Topics.Select(x => x.ToTitle());
+      titleBuilder.Append(" (");
+      titleBuilder.Append(string.Join(", ", topics));
+      titleBuilder.Append(")");
+    }
+
     await sender.SendBulkAsync(recipients.Select(
       recipient => new EmailMessage(
         recipient.PhysicalPerson.Name,
         recipient.PhysicalPerson.Email,
-        $"[OZDS - {notification.Topic.ToTitle()}]: {notification.Title}",
+        titleBuilder.ToString(),
         notification.Content
       )
     ));

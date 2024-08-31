@@ -1,6 +1,4 @@
-using Ozds.Business.Models.Base;
-
-namespace Ozds.Business.Models;
+namespace Ozds.Business.Models.Base;
 
 public class ResolvableNotificationModel : NotificationModel
 {

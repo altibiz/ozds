@@ -25,6 +25,11 @@ public static class NotificationModelEntityConverterExtensions
 {
   public static NotificationEntity ToEntity(this NotificationModel model)
   {
+    if (model is MessengerNotificationModel messengerInactivityNotificationModel)
+    {
+      return messengerInactivityNotificationModel.ToEntity();
+    }
+
     if (model is ResolvableNotificationModel resolvableNotificationModel)
     {
       return resolvableNotificationModel.ToEntity();
@@ -38,12 +43,17 @@ public static class NotificationModelEntityConverterExtensions
       Content = model.Content,
       Timestamp = model.Timestamp,
       EventId = model.EventId,
-      Topic = model.Topic.ToEntity()
+      Topics = model.Topics.Select(x => x.ToEntity()).ToList()
     };
   }
 
   public static NotificationModel ToModel(this NotificationEntity entity)
   {
+    if (entity is MessengerNotificationEntity messengerInactivityNotificationEntity)
+    {
+      return messengerInactivityNotificationEntity.ToModel();
+    }
+
     if (entity is ResolvableNotificationEntity resolvableNotificationEntity)
     {
       return resolvableNotificationEntity.ToModel();
@@ -57,7 +67,7 @@ public static class NotificationModelEntityConverterExtensions
       Content = entity.Content,
       Timestamp = entity.Timestamp,
       EventId = entity.EventId,
-      Topic = entity.Topic.ToModel()
+      Topics = entity.Topics.Select(x => x.ToModel()).ToList()
     };
   }
 }

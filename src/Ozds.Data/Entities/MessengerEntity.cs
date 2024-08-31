@@ -30,6 +30,8 @@ public class MessengerEntity : AuditableEntity
 
   public virtual ICollection<MessengerEventEntity> Events { get; set; } =
     default!;
+
+  public virtual ICollection<MessengerNotificationEntity> InactivityNotifications { get; set; } = default!;
 }
 
 public class
@@ -49,6 +51,10 @@ public class
     builder
       .HasMany(nameof(MessengerEntity.Events))
       .WithOne(nameof(MessengerEventEntity.Messenger));
+
+    builder
+      .HasMany(nameof(MessengerEntity.InactivityNotifications))
+      .WithOne(nameof(MessengerNotificationEntity.Messenger));
 
     builder.Ignore(nameof(MessengerEntity.LocationId));
     builder

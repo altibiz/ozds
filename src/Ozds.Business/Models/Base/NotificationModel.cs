@@ -18,5 +18,5 @@ public class NotificationModel : IdentifiableModel, INotification
   public string? EventId { get; set; } = default!;
 
   [Required]
-  public required TopicModel Topic { get; set; } = default!;
+  public required List<TopicModel> Topics { get; set; } = default!;
 }

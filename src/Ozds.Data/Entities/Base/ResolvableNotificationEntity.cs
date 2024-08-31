@@ -1,8 +1,7 @@
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Ozds.Data.Entities.Base;
+using Microsoft.EntityFrameworkCore;
 using Ozds.Data.Extensions;
 
-namespace Ozds.Data.Entities;
+namespace Ozds.Data.Entities.Base;
 
 public class ResolvableNotificationEntity : NotificationEntity
 {
@@ -14,11 +13,13 @@ public class ResolvableNotificationEntity : NotificationEntity
 }
 
 public class ResolvableNotificationEntityModelConfiguration :
-  EntityTypeConfiguration<ResolvableNotificationEntity>
+  EntityTypeHierarchyConfiguration<ResolvableNotificationEntity>
 {
-  public override void Configure(EntityTypeBuilder<ResolvableNotificationEntity> modelBuilder)
+  public override void Configure(ModelBuilder modelBuilder, Type entity)
   {
-    modelBuilder
+    var builder = modelBuilder.Entity(entity);
+
+    builder
       .HasOne(nameof(ResolvableNotificationEntity.ResolvedBy))
       .WithMany(nameof(RepresentativeEntity.ResolvedNotifications))
       .HasForeignKey(nameof(ResolvableNotificationEntity.ResolvedById));
