@@ -1,7 +1,7 @@
-using Enms.Business.Models.Abstractions;
-using Enms.Business.Pushing.Abstractions;
+using Ozds.Business.Models.Abstractions;
+using Ozds.Business.Pushing.Abstractions;
 
-namespace Enms.Business.Pushing;
+namespace Ozds.Business.Pushing;
 
 public class MeasurementPublisher(ILogger<MeasurementPublisher> logger)
   : IMeasurementPublisher, IMeasurementSubscriber

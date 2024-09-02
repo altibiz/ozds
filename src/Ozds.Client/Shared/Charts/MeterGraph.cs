@@ -41,7 +41,7 @@ public partial class MeterGraph : OzdsOwningComponentBase
   [Inject]
   public IMeasurementSubscriber MeasurementSubscriber { get; set; } = default!;
 
-  private readonly ApexChart<IMeasurement>? _chart = default!;
+  private ApexChart<IMeasurement>? _chart = default!;
 
   private PaginatedList<IMeasurement> _measurements = new(new(), 0);
 

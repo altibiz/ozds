@@ -1,24 +1,24 @@
 using System.Data;
 using System.Reflection;
-using Enms.Business.Aggregation.Agnostic;
-using Enms.Business.Conversion.Agnostic;
-using Enms.Business.Models.Abstractions;
-using Enms.Business.Models.Enums;
-using Enms.Business.Pushing.Abstractions;
-using Enms.Data;
-using Enms.Data.Entities.Abstractions;
+using Ozds.Business.Aggregation.Agnostic;
+using Ozds.Business.Conversion.Agnostic;
+using Ozds.Business.Models.Abstractions;
+using Ozds.Business.Models.Enums;
+using Ozds.Business.Pushing.Abstractions;
+using Ozds.Data;
+using Ozds.Data.Entities.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
 
 // FIXME: duplicates make averages incorrect
 
-namespace Enms.Business.Pushing;
+namespace Ozds.Business.Pushing;
 
 public class MeasurementPusher(
   AgnosticMeasurementAggregateConverter aggregateConverter,
   AgnosticModelEntityConverter modelEntityConverter,
   AgnosticAggregateUpserter aggregateUpserter,
-  EnmsDataDbContext context,
+  OzdsDataDbContext context,
   IMeasurementPublisher publisher
 ) : IMeasurementPusher
 {
@@ -58,7 +58,7 @@ public class MeasurementPusher(
         aggregate => new
         {
           Type = aggregate.GetType(),
-          aggregate.LineId,
+          aggregate.MeterId,
           aggregate.Timestamp,
           aggregate.Interval
         })
@@ -184,7 +184,7 @@ public class MeasurementPusher(
   }
 
   private static async Task UpsertMeasurements<T>(
-    EnmsDataDbContext context,
+    OzdsDataDbContext context,
     IEnumerable<T> measurements
   )
     where T : class, IMeasurementEntity
@@ -195,7 +195,6 @@ public class MeasurementPusher(
         measurement => new
         {
           measurement.MeterId,
-          measurement.LineId,
           measurement.Timestamp
         })
       .NoUpdate()
@@ -203,7 +202,7 @@ public class MeasurementPusher(
   }
 
   private static async Task UpsertAggregates<T>(
-    EnmsDataDbContext context,
+    OzdsDataDbContext context,
     IEnumerable<T> aggregates,
     AgnosticAggregateUpserter upserter)
     where T : class, IAggregateEntity
@@ -214,7 +213,6 @@ public class MeasurementPusher(
         aggregate => new
         {
           aggregate.MeterId,
-          aggregate.LineId,
           aggregate.Timestamp,
           aggregate.Interval
         })
