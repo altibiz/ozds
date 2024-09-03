@@ -19,7 +19,8 @@ public class InvoiceIssuingInterceptor(IServiceProvider serviceProvider)
   {
     if (eventData.Context is null)
     {
-      return await base.SavingChangesAsync(eventData, result, cancellationToken);
+      return await base.SavingChangesAsync(
+        eventData, result, cancellationToken);
     }
 
     var representativeId = await GetRepresentativeId(eventData);
