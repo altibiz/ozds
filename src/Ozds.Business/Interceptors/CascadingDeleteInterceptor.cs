@@ -64,10 +64,12 @@ public class CascadingDeleteInterceptor : ServedSaveChangesInterceptor
       return;
     }
 
-    var relationships = context.Model
+    var allRelationships = context.Model
       .GetEntityTypes()
       .SelectMany(e => e.GetForeignKeys())
-      .Where(relationship => relationship.IsRequired)
+      .Where(relationship => relationship.IsRequired);
+
+    var relationships = allRelationships
       .Where(
         relationship => relationship.PrincipalEntityType
           == entry.Metadata);

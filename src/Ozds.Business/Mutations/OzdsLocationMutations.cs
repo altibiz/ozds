@@ -61,4 +61,10 @@ public class OzdsLocationMutations(
     _context.UpdateTracked(entity);
     _context.JoinTracked(entity, repEntities);
   }
+
+  public void Delete(LocationModel location)
+  {
+    var entity = location.ToEntity();
+    _context.DeleteTracked(entity);
+  }
 }

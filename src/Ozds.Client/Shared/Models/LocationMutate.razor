@@ -145,6 +145,16 @@
           <span>Update</span>
         }
       </MudButton>
+      @if (!_create)
+      {
+        <MudButton
+          ButtonType="ButtonType.Button"
+          Variant="Variant.Filled"
+          Color="MudColor.Error"
+          OnClick="Delete">
+          Delete
+        </MudButton>
+      }
     </MudCardActions>
   </MudCard>
 </EditForm>
@@ -182,6 +192,23 @@
       mutations.UpdateWithRepresentatives(LoadingState.Value, _selectedRepsList);
     }
 
+    await mutations.SaveChangesAsync();
+    DialogService.Show<MutateSuccess>("Changes Saved", new DialogOptions { CloseOnEscapeKey = true });
+  }
+
+  private async Task Delete()
+  {
+    if (LoadingState.Value is null)
+    {
+      return;
+    }
+    if (_create)
+    {
+      return;
+    }
+
+    var mutations = ScopedServices.GetRequiredService<OzdsLocationMutations>();
+    mutations.Delete(LoadingState.Value);
     await mutations.SaveChangesAsync();
     DialogService.Show<MutateSuccess>("Changes Saved", new DialogOptions { CloseOnEscapeKey = true });
   }
