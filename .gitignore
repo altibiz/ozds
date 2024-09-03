@@ -361,6 +361,7 @@ cython_debug/
 .direnv
 .jb
 src/Ozds.Server/Localization
+src/Ozds.Server/App_Data/Sites/Default/DataProtection-Keys
 plantuml-images/
 docs/wiki/**/book
 mdbook-plantuml-img/
