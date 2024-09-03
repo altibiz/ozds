@@ -11,13 +11,13 @@
 @inherits Ozds.Client.Base.OzdsOwningComponentBase
 
 @if(meter is not null){
-  <MeterGraph Model="@meter"/>
+  <NewMeterGraph Model="@meter"/>
 }
 
 @code {
 
   [Parameter]
-  public string Id { get; set; } = "schneider-iE3xxx-19453067";
+  public string Id { get; set; } = "schneider-iEM3xxx-19453067";
 
   private IMeter? meter;
 

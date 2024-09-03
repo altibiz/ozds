@@ -11,7 +11,7 @@ using Ozds.Client.Base;
 
 namespace Ozds.Client.Shared.Charts;
 
-public partial class MeterGraph : OzdsOwningComponentBase
+public partial class NewMeterGraph : OzdsOwningComponentBase
 {
   [Parameter]
   public IMeter Model { get; set; } = default!;
