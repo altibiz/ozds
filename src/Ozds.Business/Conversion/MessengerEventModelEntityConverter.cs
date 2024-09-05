@@ -30,7 +30,8 @@ public static class MessengerEventModelExtensions
       Timestamp = entity.Timestamp,
       Level = entity.Level.ToModel(),
       Content = entity.Content,
-      MessengerId = entity.MessengerId
+      MessengerId = entity.MessengerId,
+      Categories = entity.Categories.Select(c => c.ToModel()).ToList()
     };
   }
 
@@ -43,7 +44,8 @@ public static class MessengerEventModelExtensions
       Timestamp = model.Timestamp,
       Level = model.Level.ToEntity(),
       Content = model.Content,
-      MessengerId = model.MessengerId
+      MessengerId = model.MessengerId,
+      Categories = model.Categories.Select(c => c.ToEntity()).ToList()
     };
   }
 }

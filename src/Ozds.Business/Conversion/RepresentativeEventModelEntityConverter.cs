@@ -33,7 +33,8 @@ public static class RepresentativeEventModelEntityConverterExtensions
       Timestamp = entity.Timestamp,
       Level = entity.Level.ToModel(),
       Content = entity.Content,
-      RepresentativeId = entity.RepresentativeId
+      RepresentativeId = entity.RepresentativeId,
+      Categories = entity.Categories.Select(c => c.ToModel()).ToList()
     };
   }
 
@@ -47,7 +48,8 @@ public static class RepresentativeEventModelEntityConverterExtensions
       Timestamp = model.Timestamp,
       Level = model.Level.ToEntity(),
       Content = model.Content,
-      RepresentativeId = model.RepresentativeId
+      RepresentativeId = model.RepresentativeId,
+      Categories = model.Categories.Select(c => c.ToEntity()).ToList()
     };
   }
 }

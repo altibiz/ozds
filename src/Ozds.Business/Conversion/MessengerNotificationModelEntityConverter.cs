@@ -5,7 +5,7 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Conversion;
 
-public class MessengerInactivityNotificationModelEntityConverter :
+public class MessengerNotificationModelEntityConverter :
   ModelEntityConverter<MessengerNotificationModel, MessengerNotificationEntity>
 {
   protected override MessengerNotificationEntity ToEntity(

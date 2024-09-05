@@ -33,7 +33,7 @@ builder.Services
       .UseOzdsData(endpoints)
       .UseOzdsEmail(endpoints)
       .UseOzdsMessaging(endpoints)
-      .UseUsers(endpoints));
+      .UseOzdsUsers(endpoints));
 
 var app = builder.Build();
 

@@ -1,11 +1,11 @@
 using System.Security.Claims;
-using Ozds.Users.Models;
+using Ozds.Users.Entities;
 
 namespace Ozds.Users.Queries.Abstractions;
 
 public interface IUserQueries
 {
-  Task<UserModel?> UserByClaimsPrincipal(ClaimsPrincipal principal);
-  Task<UserModel?> UserByUserId(string userId);
-  Task<(List<UserModel> Items, int TotalCount)> Users(int pageNumber, int pageSize);
+  Task<UserEntity?> UserByClaimsPrincipal(ClaimsPrincipal principal);
+  Task<UserEntity?> UserByUserId(string userId);
+  Task<(List<UserEntity> Items, int TotalCount)> Users(int pageNumber, int pageSize);
 }

@@ -1,6 +1,4 @@
-using Ozds.Users.Models;
-
-// TODO: remove connection to Ozds.Users
+using Ozds.Business.Models;
 
 namespace Ozds.Client.State;
 

@@ -2,7 +2,6 @@ using System.ComponentModel.DataAnnotations;
 using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Complex;
 using Ozds.Business.Models.Enums;
-using Ozds.Users.Models;
 
 namespace Ozds.Business.Models;
 

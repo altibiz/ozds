@@ -33,7 +33,8 @@ public static class SystemAuditEventModelEntityExtensions
       Timestamp = entity.Timestamp,
       Level = entity.Level.ToModel(),
       Content = entity.Content,
-      Audit = entity.Audit.ToModel()
+      Audit = entity.Audit.ToModel(),
+      Categories = entity.Categories.Select(c => c.ToModel()).ToList()
     };
   }
 
@@ -47,7 +48,8 @@ public static class SystemAuditEventModelEntityExtensions
       Timestamp = model.Timestamp,
       Level = model.Level.ToEntity(),
       Content = model.Content,
-      Audit = model.Audit.ToEntity()
+      Audit = model.Audit.ToEntity(),
+      Categories = model.Categories.Select(c => c.ToEntity()).ToList()
     };
   }
 }

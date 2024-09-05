@@ -1,9 +1,9 @@
 using OrchardCore.Users;
 using OrchardCore.Users.Models;
 
-namespace Ozds.Users.Models;
+namespace Ozds.Users.Entities;
 
-public record UserModel(
+public record UserEntity(
   string Id,
   string UserName,
   string Email
@@ -11,10 +11,10 @@ public record UserModel(
 
 public static class UserModelExtensions
 {
-  public static UserModel ToModel(this IUser abstractUser)
+  public static UserEntity ToEntity(this IUser abstractUser)
   {
     return abstractUser is User user
-      ? new UserModel(
+      ? new UserEntity(
         user.UserId,
         user.UserName,
         user.Email

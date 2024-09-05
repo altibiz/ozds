@@ -11,6 +11,9 @@ public static class IServiceCollectionExtensions
     IHostApplicationBuilder builder
   )
   {
+    services.Configure<OzdsDataOptions>(
+      builder.Configuration.GetSection("Ozds:Data"));
+
     var dataOptions = builder.Configuration.GetValue<OzdsDataOptions>("Ozds:Data")
       ?? throw new InvalidOperationException(
         "Ozds:Data not found in configuration"

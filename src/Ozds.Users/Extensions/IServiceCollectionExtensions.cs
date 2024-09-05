@@ -15,7 +15,7 @@ public static class IServiceCollectionExtensions
     return services;
   }
 
-  public static IApplicationBuilder UseUsers(
+  public static IApplicationBuilder UseOzdsUsers(
     this IApplicationBuilder app,
     IEndpointRouteBuilder endpoints
   )

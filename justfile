@@ -76,6 +76,11 @@ prepare:
     --project '{{messagingcsproj}}' \
     database update
 
+  dotnet ef \
+    --startup-project '{{servercsproj}}' \
+    --project '{{jobscsproj}}' \
+    database update
+
   open --raw '{{migrationassets}}/current.sql' | \
     docker exec \
       --env PGHOST="localhost" \
@@ -156,6 +161,11 @@ lint:
     --project '{{messagingcsproj}}' \
     has-pending-model-changes
 
+  dotnet ef migrations \
+    --startup-project '{{servercsproj}}' \
+    --project '{{jobscsproj}}' \
+    has-pending-model-changes
+
 test *args:
   dotnet test '{{sln}}' {{args}}
 
@@ -197,7 +207,7 @@ dump:
         --exclude-table-data='outbox_state' \
         --exclude-table-data='inbox_state' \
         --exclude-table-data='outbox_message' \
-        --exclude-table-data='"QRTZ_"*' \
+        --exclude-table-data='"qrtz_"*' \
         --exclude-table-data='"__"*' \
     out> '{{migrationassets}}/current.sql'
 
@@ -404,6 +414,11 @@ clean:
     --project '{{messagingcsproj}}' \
     database update
 
+  dotnet ef \
+    --startup-project '{{servercsproj}}' \
+    --project '{{jobscsproj}}' \
+    database update
+
   open --raw '{{migrationassets}}/current.sql' | \
     docker exec \
       --env PGHOST="localhost" \
@@ -453,6 +468,11 @@ purge:
   dotnet ef \
     --startup-project '{{servercsproj}}' \
     --project '{{messagingcsproj}}' \
+    database update
+
+  dotnet ef \
+    --startup-project '{{servercsproj}}' \
+    --project '{{jobscsproj}}' \
     database update
 
   open --raw '{{migrationassets}}/current.sql' | \

@@ -34,7 +34,8 @@ public static class RepresentativeAuditEventModelEntityConverterExtensions
       Level = entity.Level.ToModel(),
       Content = entity.Content,
       Audit = entity.Audit.ToModel(),
-      RepresentativeId = entity.RepresentativeId
+      RepresentativeId = entity.RepresentativeId,
+      Categories = entity.Categories.Select(c => c.ToModel()).ToList()
     };
   }
 
@@ -49,7 +50,8 @@ public static class RepresentativeAuditEventModelEntityConverterExtensions
       Level = model.Level.ToEntity(),
       Content = model.Content,
       Audit = model.Audit.ToEntity(),
-      RepresentativeId = model.RepresentativeId
+      RepresentativeId = model.RepresentativeId,
+      Categories = model.Categories.Select(c => c.ToEntity()).ToList()
     };
   }
 }

@@ -112,7 +112,7 @@ public class OzdsRepresentativeQueries(
     return users.Items
       .Select(
         user => new MaybeRepresentingUserModel(
-          user,
+          user.ToModel(),
           representatives
               .FirstOrDefault(
                 context.PrimaryKeyEqualsCompiled<RepresentativeEntity>(user.Id))
@@ -139,7 +139,7 @@ public class OzdsRepresentativeQueries(
     return users.Items
       .Select(
         user => new MaybeRepresentingUserModel(
-          user,
+          user.ToModel(),
           representatives
               .FirstOrDefault(
                 context.PrimaryKeyInCompiled<RepresentativeEntity>(ids)) is
@@ -177,7 +177,7 @@ public class OzdsRepresentativeQueries(
     }
 
     return new RepresentingUserModel(
-      user,
+      user.ToModel(),
       representative.ToModel()
     );
   }
@@ -201,7 +201,7 @@ public class OzdsRepresentativeQueries(
     }
 
     return new RepresentingUserModel(
-      user,
+      user.ToModel(),
       representative.ToModel()
     );
   }
@@ -225,7 +225,7 @@ public class OzdsRepresentativeQueries(
     }
 
     return new RepresentingUserModel(
-      user,
+      user.ToModel(),
       representative.ToModel()
     );
   }
@@ -245,11 +245,11 @@ public class OzdsRepresentativeQueries(
         .FirstOrDefaultAsync();
     if (representative is null)
     {
-      return new MaybeRepresentingUserModel(user, null);
+      return new MaybeRepresentingUserModel(user.ToModel(), null);
     }
 
     return new MaybeRepresentingUserModel(
-      user,
+      user.ToModel(),
       representative.ToModel()
     );
   }
@@ -269,11 +269,11 @@ public class OzdsRepresentativeQueries(
         .FirstOrDefaultAsync();
     if (representative is null)
     {
-      return new MaybeRepresentingUserModel(user, null);
+      return new MaybeRepresentingUserModel(user.ToModel(), null);
     }
 
     return new MaybeRepresentingUserModel(
-      user,
+      user.ToModel(),
       representative.ToModel()
     );
   }

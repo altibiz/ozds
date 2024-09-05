@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using OrchardCore.Users;
 using OrchardCore.Users.Indexes;
 using OrchardCore.Users.Models;
-using Ozds.Users.Models;
+using Ozds.Users.Entities;
 using Ozds.Users.Queries.Abstractions;
 using YesSql;
 using ISession = YesSql.ISession;
@@ -15,22 +15,22 @@ public class UserQueries(
   ISession session
 ) : IUserQueries
 {
-  public async Task<UserModel?> UserByClaimsPrincipal(
+  public async Task<UserEntity?> UserByClaimsPrincipal(
     ClaimsPrincipal principal)
   {
     return await userManager.GetUserAsync(principal) is { } user
-      ? user.ToModel()
+      ? user.ToEntity()
       : null;
   }
 
-  public async Task<UserModel?> UserByUserId(string userId)
+  public async Task<UserEntity?> UserByUserId(string userId)
   {
     return await userManager.FindByIdAsync(userId) is { } user
-      ? user.ToModel()
+      ? user.ToEntity()
       : null;
   }
 
-  public async Task<(List<UserModel> Items, int TotalCount)> Users(int pageNumber, int pageSize)
+  public async Task<(List<UserEntity> Items, int TotalCount)> Users(int pageNumber, int pageSize)
   {
     var ordered = session
       .Query<User, UserIndex>()
@@ -43,6 +43,6 @@ public class UserQueries(
 
     var users = await filtered.ListAsync();
 
-    return (users.Select(user => user.ToModel()).ToList(), count);
+    return (users.Select(user => user.ToEntity()).ToList(), count);
   }
 }
