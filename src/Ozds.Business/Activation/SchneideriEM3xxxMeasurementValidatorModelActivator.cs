@@ -1,10 +1,11 @@
 using Ozds.Business.Activation.Base;
 using Ozds.Business.Models;
-using Ozds.Business.Models.Complex;
 
 namespace Ozds.Business.Activation.Complex;
 
-public class SchneideriEM3xxxMeasurementValidatorModelActivator : ModelActivator<SchneideriEM3xxxMeasurementValidatorModel>
+public class
+  SchneideriEM3xxxMeasurementValidatorModelActivator : ModelActivator<
+  SchneideriEM3xxxMeasurementValidatorModel>
 {
   public override SchneideriEM3xxxMeasurementValidatorModel ActivateConcrete()
   {

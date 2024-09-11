@@ -1,10 +1,11 @@
 using Ozds.Business.Activation.Base;
 using Ozds.Business.Models;
-using Ozds.Business.Models.Complex;
 
 namespace Ozds.Business.Activation.Complex;
 
-public class AbbB2xMeasurementValidatorModelActivator : ModelActivator<AbbB2xMeasurementValidatorModel>
+public class
+  AbbB2xMeasurementValidatorModelActivator : ModelActivator<
+  AbbB2xMeasurementValidatorModel>
 {
   public override AbbB2xMeasurementValidatorModel ActivateConcrete()
   {

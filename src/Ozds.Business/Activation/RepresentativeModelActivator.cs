@@ -1,6 +1,5 @@
 using Ozds.Business.Activation.Base;
 using Ozds.Business.Models;
-using Ozds.Business.Models.Complex;
 using Ozds.Business.Models.Enums;
 
 namespace Ozds.Business.Activation.Complex;
@@ -11,6 +10,7 @@ public class RepresentativeModelActivator : ModelActivator<RepresentativeModel>
   {
     return New();
   }
+
   public static RepresentativeModel New()
   {
     return new RepresentativeModel

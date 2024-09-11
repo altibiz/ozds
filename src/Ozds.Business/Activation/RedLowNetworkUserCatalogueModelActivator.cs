@@ -1,10 +1,11 @@
 using Ozds.Business.Activation.Base;
 using Ozds.Business.Models;
-using Ozds.Business.Models.Complex;
 
 namespace Ozds.Business.Activation.Complex;
 
-public class RedLowNetworkUserCatalogueModelActivator : ModelActivator<RedLowNetworkUserCatalogueModel>
+public class
+  RedLowNetworkUserCatalogueModelActivator : ModelActivator<
+  RedLowNetworkUserCatalogueModel>
 {
   public override RedLowNetworkUserCatalogueModel ActivateConcrete()
   {

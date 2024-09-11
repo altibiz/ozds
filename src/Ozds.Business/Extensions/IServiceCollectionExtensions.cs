@@ -37,7 +37,6 @@ public static class IServiceCollectionExtensions
     IHostApplicationBuilder builder
   )
   {
-
     // Activation
     services.AddTransientAssignableTo(typeof(IModelActivator));
     services.AddSingleton(typeof(AgnosticModelActivator));

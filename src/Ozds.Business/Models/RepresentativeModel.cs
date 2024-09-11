@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using Ozds.Business.Activation.Complex;
 using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Complex;
 using Ozds.Business.Models.Enums;

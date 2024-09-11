@@ -1,10 +1,10 @@
 using Ozds.Business.Activation.Base;
 using Ozds.Business.Models;
-using Ozds.Business.Models.Complex;
 
 namespace Ozds.Business.Activation.Complex;
 
-public class RegulatoryCatalogueModelActivator : ModelActivator<RegulatoryCatalogueModel>
+public class
+  RegulatoryCatalogueModelActivator : ModelActivator<RegulatoryCatalogueModel>
 {
   public override RegulatoryCatalogueModel ActivateConcrete()
   {

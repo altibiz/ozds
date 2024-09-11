@@ -1,10 +1,11 @@
 using Ozds.Business.Activation.Base;
 using Ozds.Business.Models;
-using Ozds.Business.Models.Complex;
 
 namespace Ozds.Business.Activation.Complex;
 
-public class LocationMeasurementLocationModelActivator : ModelActivator<LocationMeasurementLocationModel>
+public class
+  LocationMeasurementLocationModelActivator : ModelActivator<
+  LocationMeasurementLocationModel>
 {
   public override LocationMeasurementLocationModel ActivateConcrete()
   {
