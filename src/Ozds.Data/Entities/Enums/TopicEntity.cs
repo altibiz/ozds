@@ -19,7 +19,8 @@ public class TopicEntityModelConfiguration : IModelConfiguration
   }
 }
 
-public class TopicEntityNpgsqlDataSourceConfiguration : INpgsqlDataSourceConfiguration
+public class
+  TopicEntityNpgsqlDataSourceConfiguration : INpgsqlDataSourceConfiguration
 {
   public void Configure(NpgsqlDataSourceBuilder builder)
   {

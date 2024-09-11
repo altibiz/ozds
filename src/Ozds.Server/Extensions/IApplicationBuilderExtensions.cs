@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using Ozds.Server.Controllers;
 
 namespace Ozds.Server.Extensions;
@@ -58,8 +59,8 @@ public static class IApplicationBuilderExtensions
       {
         controller = controller.Name.Remove(
           controller.Name.Length -
-          nameof(Microsoft.AspNetCore.Mvc.Controller).Length,
-          nameof(Microsoft.AspNetCore.Mvc.Controller).Length),
+          nameof(Controller).Length,
+          nameof(Controller).Length),
         action
       }
     );

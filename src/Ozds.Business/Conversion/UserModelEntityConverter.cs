@@ -4,7 +4,8 @@ using Ozds.Users.Entities;
 
 namespace Ozds.Business.Conversion;
 
-public class UserModelEntityConverter : ModelEntityConverter<UserModel, UserEntity>
+public class
+  UserModelEntityConverter : ModelEntityConverter<UserModel, UserEntity>
 {
   protected override UserEntity ToEntity(UserModel model)
   {

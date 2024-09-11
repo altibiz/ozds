@@ -1,6 +1,7 @@
 @using System.Globalization
 @using Microsoft.AspNetCore.Antiforgery
 @using Microsoft.AspNetCore.Http
+@using Color = MudBlazor.Color
 @inject IAntiforgery Antiforgery
 @inject IHttpContextAccessor HttpContextAccessor
 
@@ -45,7 +46,8 @@
         </MudListItem>
       </ChildContent>
     </MudMenu>
-    @if(RepresentativeState.Representative.Role == RoleModel.OperatorRepresentative){
+    @if (RepresentativeState.Representative.Role == RoleModel.OperatorRepresentative)
+    {
       <MudMenu AnchorOrigin="Origin.CenterLeft" Dense="true" Class="mt-1 ml-4">
         <ActivatorContent>
           <MudIcon Icon="@Icons.Material.Filled.NotificationsActive"/>
@@ -55,9 +57,10 @@
           </MudItem>
         </ActivatorContent>
         <ChildContent>
-          @foreach(var criticalEvent in _events){
-            <MudListItem Text="@criticalEvent.Title" Icon="@Icons.Material.Filled.Circle" IconColor="@MudBlazor.Color.Error" Href="@($"event/{criticalEvent.Id}")" ForceLoad="true"/>
-            <hr />
+          @foreach (var criticalEvent in _events)
+          {
+            <MudListItem Text="@criticalEvent.Title" Icon="@Icons.Material.Filled.Circle" IconColor="@Color.Error" Href="@($"event/{criticalEvent.Id}")" ForceLoad="true"/>
+            <hr/>
           }
         </ChildContent>
       </MudMenu>
@@ -95,6 +98,7 @@
 
 
   private List<DemoEventModel>? _events = new();
+
   private class DemoEventModel
   {
     public string Id = new Random().Next(1, 10000).ToString();
@@ -126,18 +130,23 @@
   {
     _drawerOpen = !_drawerOpen;
   }
+
   protected override async Task OnInitializedAsync()
   {
-    _events.Add(new DemoEventModel{
-      Title = "AbbB2x NOT RESPONDING",
-      Description = "At {Time} AbbB2x STOPPED RESPONDING",
-      Level = LevelModel.Critical
-    });
-    _events.Add(new DemoEventModel{
-      Title = "SchneideriEM3xxx CRITICAL VOLTAGE",
-      Description = "At {Time} SchneideriEM3xxx had LOW VOLTAGE",
-      Level = LevelModel.Critical
-    });
+    _events.Add(
+      new DemoEventModel
+      {
+        Title = "AbbB2x NOT RESPONDING",
+        Description = "At {Time} AbbB2x STOPPED RESPONDING",
+        Level = LevelModel.Critical
+      });
+    _events.Add(
+      new DemoEventModel
+      {
+        Title = "SchneideriEM3xxx CRITICAL VOLTAGE",
+        Description = "At {Time} SchneideriEM3xxx had LOW VOLTAGE",
+        Level = LevelModel.Critical
+      });
   }
 
   string ChangeLang(string culture)

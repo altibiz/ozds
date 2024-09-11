@@ -67,13 +67,14 @@ public static class IServiceCollectionExtensions
     services.AddDbContext<JobsDbContext>(
       options =>
       {
-        options.UseNpgsql(jobsOptions.ConnectionString, x =>
-        {
-          x.MigrationsAssembly(
-            typeof(JobsDbContext).Assembly.GetName().Name);
-          x.MigrationsHistoryTable(
-            $"__Ozds{nameof(JobsDbContext)}");
-        });
+        options.UseNpgsql(
+          jobsOptions.ConnectionString, x =>
+          {
+            x.MigrationsAssembly(
+              typeof(JobsDbContext).Assembly.GetName().Name);
+            x.MigrationsHistoryTable(
+              $"__Ozds{nameof(JobsDbContext)}");
+          });
       });
   }
 
@@ -96,8 +97,9 @@ public static class IServiceCollectionExtensions
       foreach (var interfaceType in conversionType.GetAllInterfaces())
       {
         services.AddSingleton(conversionType);
-        services.AddSingleton(interfaceType, services =>
-          services.GetRequiredService(conversionType));
+        services.AddSingleton(
+          interfaceType, services =>
+            services.GetRequiredService(conversionType));
       }
     }
   }

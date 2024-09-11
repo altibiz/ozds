@@ -5,13 +5,12 @@ using Ozds.Messaging.Sagas;
 namespace Ozds.Messaging.Observers;
 
 public class NetworkUserInvoiceStateObserver
-: INetworkUserInvoiceStatePublisher, INetworkUserInvoiceStateSubscriber
+  : INetworkUserInvoiceStatePublisher, INetworkUserInvoiceStateSubscriber
 {
-  private event EventHandler<NetworkUserInvoiceStateEventArgs>? OnRegistered;
-
   public void PublishRegistered(NetworkUserInvoiceState state)
   {
-    OnRegistered?.Invoke(this, new NetworkUserInvoiceStateEventArgs { State = state });
+    OnRegistered?.Invoke(
+      this, new NetworkUserInvoiceStateEventArgs { State = state });
   }
 
   public void Subscribe(EventHandler<NetworkUserInvoiceStateEventArgs> handler)
@@ -19,8 +18,11 @@ public class NetworkUserInvoiceStateObserver
     OnRegistered += handler;
   }
 
-  public void Unsubscribe(EventHandler<NetworkUserInvoiceStateEventArgs> handler)
+  public void Unsubscribe(
+    EventHandler<NetworkUserInvoiceStateEventArgs> handler)
   {
     OnRegistered -= handler;
   }
+
+  private event EventHandler<NetworkUserInvoiceStateEventArgs>? OnRegistered;
 }

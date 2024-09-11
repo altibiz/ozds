@@ -11,7 +11,8 @@ public static class IApplicationBuilderExtensions
   )
   {
     using var scope = app.ApplicationServices.CreateScope();
-    var context = scope.ServiceProvider.GetRequiredService<MessagingDbContext>();
+    var context =
+      scope.ServiceProvider.GetRequiredService<MessagingDbContext>();
     context.Database.Migrate();
 
     return app;

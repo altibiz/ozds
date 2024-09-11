@@ -1,4 +1,5 @@
 @page "/event/{id}"
+@using Color = MudBlazor.Color
 
 
 @if (user is null)
@@ -38,12 +39,12 @@
       <MudItem xs="12" sm="9">
         <MudHidden Breakpoint="Breakpoint.Xs">
           <MudText Type="Typo.body2" Align="MudAlign.Right">
-            <MudIcon Icon="@Icons.Material.Filled.Circle" Color="@MudBlazor.Color.Error"/>
+            <MudIcon Icon="@Icons.Material.Filled.Circle" Color="@Color.Error"/>
           </MudText>
         </MudHidden>
         <MudHidden Breakpoint="Breakpoint.SmAndUp">
           <MudText Type="Typo.body2" Align="MudAlign.Left">
-            <MudIcon Icon="@Icons.Material.Filled.Circle" Color="@MudBlazor.Color.Error"/>
+            <MudIcon Icon="@Icons.Material.Filled.Circle" Color="@Color.Error"/>
           </MudText>
         </MudHidden>
       </MudItem>
@@ -92,7 +93,14 @@
 </MudContainer>
 
 @code {
-  [CascadingParameter] public UserState user { get; set; } = default!;
-  [CascadingParameter] public RepresentativeState RepresentativeState { get; set; } = default!;
-  [Parameter] public string Id { get; set; } = default!;
+
+  [CascadingParameter]
+  public UserState user { get; set; } = default!;
+
+  [CascadingParameter]
+  public RepresentativeState RepresentativeState { get; set; } = default!;
+
+  [Parameter]
+  public string Id { get; set; } = default!;
+
 }

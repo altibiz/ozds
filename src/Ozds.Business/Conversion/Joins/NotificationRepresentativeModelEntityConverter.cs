@@ -5,7 +5,8 @@ using Ozds.Data.Entities.Joins;
 namespace Ozds.Business.Conversion.Joins;
 
 public class NotificationRecipientModelEntityConverter
-  : ModelEntityConverter<NotificationRecipientModel, NotificationRecipientEntity>
+  : ModelEntityConverter<NotificationRecipientModel,
+    NotificationRecipientEntity>
 {
   protected override NotificationRecipientEntity ToEntity(
     NotificationRecipientModel model)

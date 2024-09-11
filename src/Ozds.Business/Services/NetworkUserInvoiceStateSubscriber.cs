@@ -32,12 +32,15 @@ public class NetworkUserInvoiceStateSubscriber(
     {
       var state = await registered.Reader.ReadAsync(stoppingToken);
       await using var scope = serviceScopeFactory.CreateAsyncScope();
-      var mutations = scope.ServiceProvider.GetRequiredService<OzdsNetworkUserInvoiceMutations>();
+      var mutations = scope.ServiceProvider
+        .GetRequiredService<OzdsNetworkUserInvoiceMutations>();
       await mutations.UpdateBillId(state.NetworkUserInvoiceId, state.BillId!);
     }
   }
 
-  public void OnRegistered(object? sender, NetworkUserInvoiceStateEventArgs state)
+  public void OnRegistered(
+    object? sender,
+    NetworkUserInvoiceStateEventArgs state)
   {
     registered.Writer.TryWrite(state.State);
   }

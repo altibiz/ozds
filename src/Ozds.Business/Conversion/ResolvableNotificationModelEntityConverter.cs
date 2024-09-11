@@ -1,5 +1,4 @@
 using Ozds.Business.Conversion.Base;
-using Ozds.Business.Models;
 using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Enums;
 using Ozds.Data.Entities.Base;
@@ -29,7 +28,7 @@ public static class ResolvableNotificationModelEntityConverterExtensions
   public static ResolvableNotificationEntity ToEntity(
     this ResolvableNotificationModel model)
   {
-    return new()
+    return new ResolvableNotificationEntity
     {
       Id = model.Id,
       Title = model.Title,
@@ -46,7 +45,7 @@ public static class ResolvableNotificationModelEntityConverterExtensions
   public static ResolvableNotificationModel ToModel(
     this ResolvableNotificationEntity entity)
   {
-    return new()
+    return new ResolvableNotificationModel
     {
       Id = entity.Id,
       Title = entity.Title,

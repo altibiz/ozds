@@ -13,7 +13,9 @@ public class NotificationRecipientEntity
     get { return _notificationId.ToString(); }
     set
     {
-      _notificationId = value is { } notNullValue ? long.Parse(notNullValue) : default;
+      _notificationId = value is { } notNullValue
+        ? long.Parse(notNullValue)
+        : default;
     }
   }
 
@@ -26,7 +28,8 @@ public class NotificationRecipientEntity
   public DateTimeOffset? SeenOn { get; set; } = default!;
 }
 
-public class NotificationRepresentativeEntityModelConfiguration : IModelConfiguration
+public class
+  NotificationRepresentativeEntityModelConfiguration : IModelConfiguration
 {
   public void Configure(ModelBuilder modelBuilder)
   {
@@ -36,7 +39,7 @@ public class NotificationRepresentativeEntityModelConfiguration : IModelConfigur
       .HasMany(nameof(NotificationEntity.Representatives))
       .WithMany(nameof(RepresentativeEntity.Notifications))
       .UsingEntity(
-        joinEntityType: typeof(NotificationRecipientEntity),
+        typeof(NotificationRecipientEntity),
         configureLeft: l => l
           .HasOne(nameof(NotificationRecipientEntity.Notification))
           .WithMany(nameof(NotificationEntity.NotificationRepresentatives))

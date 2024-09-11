@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Data.Context;
-using Ozds.Data.Extensions;
 using Ozds.Data.Entities.Base;
 using Ozds.Data.Extensions;
 using IEvent = Ozds.Business.Models.Abstractions.IEvent;

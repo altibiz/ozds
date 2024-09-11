@@ -11,7 +11,6 @@ public class EndpointMessageSender(
   IOptions<OzdsMessagingEndpointOptions> options
 ) : IMessageSender
 {
-
   public async Task AcknowledgeNetworkUserInvoice(
     IAcknowledgeNetworkUserInvoice acknowledgeNetworkUserInvoice
   )

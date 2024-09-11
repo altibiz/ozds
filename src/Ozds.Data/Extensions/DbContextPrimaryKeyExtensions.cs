@@ -8,6 +8,14 @@ namespace Ozds.Data.Extensions;
 
 public static class DbContextPrimaryKeyExtensions
 {
+  private static readonly
+    ConcurrentDictionary<(Type dbContextType, Type entityType), Delegate>
+    _primaryKeyGetterCompiledCache = new();
+
+  private static readonly
+    ConcurrentDictionary<(Type dbContextType, Type entityType), Expression>
+    _primaryKeyGetterExpressionCache = new();
+
   public static Func<T, object> PrimaryKeyOfCompiled<T>(
     this DbContext context)
   {
@@ -45,14 +53,16 @@ public static class DbContextPrimaryKeyExtensions
   }
 
   public static Func<T, bool> PrimaryKeyInCompiled<T>(
-    this DbContext context, ICollection<string> ids)
+    this DbContext context,
+    ICollection<string> ids)
   {
     var typeBasedFunc = context.PrimaryKeyInCompiled(typeof(T), ids);
     return entity => typeBasedFunc(entity!);
   }
 
   public static Expression<Func<T, bool>> PrimaryKeyIn<T>(
-    this DbContext context, ICollection<string> ids)
+    this DbContext context,
+    ICollection<string> ids)
   {
     var typeBasedExpr = context.PrimaryKeyIn(typeof(T), ids);
     var parameter = Expression.Parameter(typeof(T), "entity");
@@ -62,7 +72,8 @@ public static class DbContextPrimaryKeyExtensions
   }
 
   public static Func<object, object> PrimaryKeyOfCompiled(
-    this DbContext context, Type entityType)
+    this DbContext context,
+    Type entityType)
   {
     var key = (context.GetType(), entityType);
 
@@ -79,7 +90,8 @@ public static class DbContextPrimaryKeyExtensions
   }
 
   public static Expression<Func<object, object>> PrimaryKeyOf(
-    this DbContext context, Type entityType)
+    this DbContext context,
+    Type entityType)
   {
     var key = (context.GetType(), entityType);
 
@@ -95,43 +107,54 @@ public static class DbContextPrimaryKeyExtensions
   }
 
   public static Func<object, bool> PrimaryKeyEqualsCompiled(
-    this DbContext context, Type entityType, string id)
+    this DbContext context,
+    Type entityType,
+    string id)
   {
     return context.PrimaryKeyEqualsUncached(entityType, id).Compile();
   }
 
   public static Expression<Func<object, bool>> PrimaryKeyEquals(
-    this DbContext context, Type entityType, string id)
+    this DbContext context,
+    Type entityType,
+    string id)
   {
     return context.PrimaryKeyEqualsUncached(entityType, id);
   }
 
   public static Func<object, bool> PrimaryKeyInCompiled(
-    this DbContext context, Type entityType, ICollection<string> ids)
+    this DbContext context,
+    Type entityType,
+    ICollection<string> ids)
   {
     return context.PrimaryKeyInUncached(entityType, ids).Compile();
   }
 
   public static Expression<Func<object, bool>> PrimaryKeyIn(
-    this DbContext context, Type entityType, ICollection<string> ids)
+    this DbContext context,
+    Type entityType,
+    ICollection<string> ids)
   {
     return context.PrimaryKeyInUncached(entityType, ids);
   }
 
   private static Expression<Func<object, object>> PrimaryKeyOfUncached(
-    this DbContext context, Type entityType)
+    this DbContext context,
+    Type entityType)
   {
     var keyProperties = context.GetPrimaryKeyProperties(entityType);
     var parameter = Expression.Parameter(typeof(object));
     var convertedParameter = Expression.Convert(parameter, entityType);
 
     var propertyExpressions = keyProperties
-      .Select(p =>
-        p.PropertyInfo is { } propertyInfo
-        ? Expression.Property(convertedParameter, propertyInfo)
-        : Expression.Field(convertedParameter, p.FieldInfo
-          ?? throw new InvalidOperationException(
-            $"No field info found for {p}")))
+      .Select(
+        p =>
+          p.PropertyInfo is { } propertyInfo
+            ? Expression.Property(convertedParameter, propertyInfo)
+            : Expression.Field(
+              convertedParameter, p.FieldInfo
+              ?? throw new InvalidOperationException(
+                $"No field info found for {p}")))
       .ToList();
 
     Expression resultExpression;
@@ -143,20 +166,20 @@ public static class DbContextPrimaryKeyExtensions
     {
       var genericTupleType =
         propertyExpressions.Count == 1
-        ? typeof(ValueTuple<>)
-        : propertyExpressions.Count == 2
-        ? typeof(ValueTuple<,>)
-        : propertyExpressions.Count == 3
-        ? typeof(ValueTuple<,,>)
-        : propertyExpressions.Count == 4
-        ? typeof(ValueTuple<,,,>)
-        : propertyExpressions.Count == 5
-        ? typeof(ValueTuple<,,,,>)
-        : propertyExpressions.Count == 6
-        ? typeof(ValueTuple<,,,,,>)
-        : propertyExpressions.Count == 7
-        ? typeof(ValueTuple<,,,,,,>)
-        : typeof(ValueTuple<,,,,,,,>);
+          ? typeof(ValueTuple<>)
+          : propertyExpressions.Count == 2
+            ? typeof(ValueTuple<,>)
+            : propertyExpressions.Count == 3
+              ? typeof(ValueTuple<,,>)
+              : propertyExpressions.Count == 4
+                ? typeof(ValueTuple<,,,>)
+                : propertyExpressions.Count == 5
+                  ? typeof(ValueTuple<,,,,>)
+                  : propertyExpressions.Count == 6
+                    ? typeof(ValueTuple<,,,,,>)
+                    : propertyExpressions.Count == 7
+                      ? typeof(ValueTuple<,,,,,,>)
+                      : typeof(ValueTuple<,,,,,,,>);
       var tupleType = genericTupleType.MakeGenericType(
         propertyExpressions.Select(p => p.Type).ToArray());
       var constructor = tupleType.GetConstructors().Single();
@@ -173,7 +196,9 @@ public static class DbContextPrimaryKeyExtensions
   }
 
   private static Expression<Func<object, bool>> PrimaryKeyEqualsUncached(
-    this DbContext context, Type entityType, string id)
+    this DbContext context,
+    Type entityType,
+    string id)
   {
     var keyProperties = context.GetPrimaryKeyProperties(entityType);
     var idParts = id.Split(DataDbContext.KeyJoin);
@@ -193,10 +218,11 @@ public static class DbContextPrimaryKeyExtensions
     {
       var propertyExpression =
         property.PropertyInfo is { } propertyInfo
-         ? Expression.Property(convertedParameter, propertyInfo)
-         : Expression.Field(convertedParameter, property.FieldInfo
-           ?? throw new InvalidOperationException(
-             $"No field info found for {property}"));
+          ? Expression.Property(convertedParameter, propertyInfo)
+          : Expression.Field(
+            convertedParameter, property.FieldInfo
+            ?? throw new InvalidOperationException(
+              $"No field info found for {property}"));
       var convertedId = Expression.Constant(
         Convert.ChangeType(idValue, property.ClrType));
 
@@ -207,11 +233,14 @@ public static class DbContextPrimaryKeyExtensions
         : Expression.AndAlso(equalityExpression, equalsExpression);
     }
 
-    return Expression.Lambda<Func<object, bool>>(equalityExpression!, parameter);
+    return Expression.Lambda<Func<object, bool>>(
+      equalityExpression!, parameter);
   }
 
   private static Expression<Func<object, bool>> PrimaryKeyInUncached(
-    this DbContext context, Type entityType, ICollection<string> ids)
+    this DbContext context,
+    Type entityType,
+    ICollection<string> ids)
   {
     var keyProperties = context.GetPrimaryKeyProperties(entityType);
     var parameter = Expression.Parameter(typeof(object));
@@ -234,10 +263,11 @@ public static class DbContextPrimaryKeyExtensions
       {
         var propertyExpression =
           property.PropertyInfo is { } propertyInfo
-          ? Expression.Property(convertedParameter, propertyInfo)
-          : Expression.Field(convertedParameter, property.FieldInfo
-            ?? throw new InvalidOperationException(
-              $"No field info found for {property}"));
+            ? Expression.Property(convertedParameter, propertyInfo)
+            : Expression.Field(
+              convertedParameter, property.FieldInfo
+              ?? throw new InvalidOperationException(
+                $"No field info found for {property}"));
         var convertedIdPart = Expression.Constant(
           Convert.ChangeType(idPart, property.ClrType));
 
@@ -260,7 +290,8 @@ public static class DbContextPrimaryKeyExtensions
   }
 
   private static IReadOnlyList<IProperty> GetPrimaryKeyProperties(
-    this DbContext context, Type entityType)
+    this DbContext context,
+    Type entityType)
   {
     var entityTypeInfo = context.Model.FindEntityType(entityType)
       ?? throw new InvalidOperationException(
@@ -270,12 +301,4 @@ public static class DbContextPrimaryKeyExtensions
         $"No primary key found for {entityType}");
     return key.Properties;
   }
-
-  private static readonly
-    ConcurrentDictionary<(Type dbContextType, Type entityType), Delegate>
-    _primaryKeyGetterCompiledCache = new();
-
-  private static readonly
-    ConcurrentDictionary<(Type dbContextType, Type entityType), Expression>
-    _primaryKeyGetterExpressionCache = new();
 }

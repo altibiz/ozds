@@ -18,6 +18,18 @@ public class EventEntity : IReadonlyEntity, IIdentifiableEntity, IDisposable
 
   public JsonDocument Content { get; set; } = default!;
 
+  public virtual ICollection<NotificationEntity> Notifications { get; set; } =
+    default!;
+
+  public List<CategoryEntity> Categories { get; set; } = default!;
+
+#pragma warning disable CA1816 // Dispose methods should call SuppressFinalize
+  public void Dispose()
+#pragma warning restore CA1816 // Dispose methods should call SuppressFinalize
+  {
+    Content?.Dispose();
+  }
+
   public virtual string Id
   {
     get { return _id.ToString(); }
@@ -28,17 +40,6 @@ public class EventEntity : IReadonlyEntity, IIdentifiableEntity, IDisposable
   }
 
   public string Title { get; set; } = default!;
-
-  public virtual ICollection<NotificationEntity> Notifications { get; set; } = default!;
-
-  public List<CategoryEntity> Categories { get; set; } = default!;
-
-#pragma warning disable CA1816 // Dispose methods should call SuppressFinalize
-  public void Dispose()
-#pragma warning restore CA1816 // Dispose methods should call SuppressFinalize
-  {
-    Content?.Dispose();
-  }
 }
 
 public class

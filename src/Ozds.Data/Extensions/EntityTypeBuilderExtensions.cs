@@ -19,7 +19,7 @@ public static class EntityTypeBuilderExtensions
       .GetProperties()
       .Where(
         property => property is { GetMethod.IsVirtual: true } or
-        { GetMethod.IsAbstract: true })
+          { GetMethod.IsAbstract: true })
       .ToList();
 
     var propertiesToArchive = complexPropertyBuilder.Metadata

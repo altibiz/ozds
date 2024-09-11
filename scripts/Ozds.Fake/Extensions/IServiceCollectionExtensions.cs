@@ -118,7 +118,8 @@ public static class IServiceCollectionExtensions
     Assembly? assembly = null
   )
   {
-    var conversionTypes = (assembly ?? typeof(IServiceCollectionExtensions).Assembly)
+    var conversionTypes =
+      (assembly ?? typeof(IServiceCollectionExtensions).Assembly)
       .GetTypes()
       .Where(
         type =>
@@ -132,8 +133,9 @@ public static class IServiceCollectionExtensions
       services.AddTransient(conversionType);
       foreach (var interfaceType in conversionType.GetAllInterfaces())
       {
-        services.AddTransient(interfaceType, services =>
-          services.GetRequiredService(conversionType));
+        services.AddTransient(
+          interfaceType, services =>
+            services.GetRequiredService(conversionType));
       }
     }
   }

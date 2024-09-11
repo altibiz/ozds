@@ -25,7 +25,8 @@ public static class NotificationModelEntityConverterExtensions
 {
   public static NotificationEntity ToEntity(this NotificationModel model)
   {
-    if (model is MessengerNotificationModel messengerInactivityNotificationModel)
+    if (model is MessengerNotificationModel
+      messengerInactivityNotificationModel)
     {
       return messengerInactivityNotificationModel.ToEntity();
     }
@@ -49,7 +50,8 @@ public static class NotificationModelEntityConverterExtensions
 
   public static NotificationModel ToModel(this NotificationEntity entity)
   {
-    if (entity is MessengerNotificationEntity messengerInactivityNotificationEntity)
+    if (entity is MessengerNotificationEntity
+      messengerInactivityNotificationEntity)
     {
       return messengerInactivityNotificationEntity.ToModel();
     }

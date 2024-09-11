@@ -19,7 +19,8 @@ public class PhaseEntityTypeConfiguration : IModelConfiguration
   }
 }
 
-public class PhaseEntityNpgsqlDataSourceConfiguration : INpgsqlDataSourceConfiguration
+public class
+  PhaseEntityNpgsqlDataSourceConfiguration : INpgsqlDataSourceConfiguration
 {
   public void Configure(NpgsqlDataSourceBuilder builder)
   {

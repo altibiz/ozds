@@ -7,9 +7,9 @@ using Ozds.Business.Models;
 using Ozds.Business.Models.Composite;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Data.Context;
-using Ozds.Data.Extensions;
 using Ozds.Data.Entities;
 using Ozds.Data.Entities.Enums;
+using Ozds.Data.Extensions;
 using Ozds.Users.Queries;
 
 namespace Ozds.Business.Queries;
@@ -144,7 +144,7 @@ public class OzdsRepresentativeQueries(
           representatives
               .FirstOrDefault(
                 context.PrimaryKeyInCompiled<RepresentativeEntity>(ids)) is
-          { } representative
+            { } representative
             ? representative.ToModel()
             : null
         ))

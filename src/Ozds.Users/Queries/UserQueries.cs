@@ -30,7 +30,9 @@ public class UserQueries(
       : null;
   }
 
-  public async Task<(List<UserEntity> Items, int TotalCount)> Users(int pageNumber, int pageSize)
+  public async Task<(List<UserEntity> Items, int TotalCount)> Users(
+    int pageNumber,
+    int pageSize)
   {
     var ordered = session
       .Query<User, UserIndex>()

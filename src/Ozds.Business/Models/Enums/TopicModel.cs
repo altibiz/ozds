@@ -1,4 +1,3 @@
-using Humanizer;
 using Ozds.Data.Entities.Enums;
 
 namespace Ozds.Business.Models.Enums;

@@ -7,5 +7,8 @@ public interface IUserQueries
 {
   Task<UserEntity?> UserByClaimsPrincipal(ClaimsPrincipal principal);
   Task<UserEntity?> UserByUserId(string userId);
-  Task<(List<UserEntity> Items, int TotalCount)> Users(int pageNumber, int pageSize);
+
+  Task<(List<UserEntity> Items, int TotalCount)> Users(
+    int pageNumber,
+    int pageSize);
 }

@@ -11,11 +11,12 @@ public static class IServiceCollectionExtensions
   )
   {
     var hostedServices = services
-      .Where(service =>
-        !service.ServiceType.IsGenericType &&
-        !service.ServiceType.IsAbstract &&
-        service.Lifetime == ServiceLifetime.Singleton &&
-        service.ServiceType.IsAssignableTo(typeof(IHostedService)))
+      .Where(
+        service =>
+          !service.ServiceType.IsGenericType &&
+          !service.ServiceType.IsAbstract &&
+          service.Lifetime == ServiceLifetime.Singleton &&
+          service.ServiceType.IsAssignableTo(typeof(IHostedService)))
       .ToList();
 
     foreach (var hostedService in hostedServices)
@@ -24,30 +25,30 @@ public static class IServiceCollectionExtensions
       var modularTenantEvents =
         hostedService.ImplementationFactory is { } factory
           ? new ServiceDescriptor(
-              typeof(IModularTenantEvents),
-              services => ActivatorUtilities.CreateInstance(
-                services,
-                typeof(HostedServiceModularTenantEvents<>)
-                  .MakeGenericType(
-                    hostedService.ImplementationType ??
-                    hostedService.ServiceType),
-                factory(services)),
-              ServiceLifetime.Singleton
-            )
-          : new ServiceDescriptor(
-              typeof(IModularTenantEvents),
-              services => ActivatorUtilities.CreateInstance(
-                services,
-                typeof(HostedServiceModularTenantEvents<>)
-                  .MakeGenericType(
-                    hostedService.ImplementationType ??
-                    hostedService.ServiceType),
-                ActivatorUtilities.CreateInstance(
-                  services,
+            typeof(IModularTenantEvents),
+            services => ActivatorUtilities.CreateInstance(
+              services,
+              typeof(HostedServiceModularTenantEvents<>)
+                .MakeGenericType(
                   hostedService.ImplementationType ??
-                  hostedService.ServiceType)),
-              ServiceLifetime.Singleton
-            );
+                  hostedService.ServiceType),
+              factory(services)),
+            ServiceLifetime.Singleton
+          )
+          : new ServiceDescriptor(
+            typeof(IModularTenantEvents),
+            services => ActivatorUtilities.CreateInstance(
+              services,
+              typeof(HostedServiceModularTenantEvents<>)
+                .MakeGenericType(
+                  hostedService.ImplementationType ??
+                  hostedService.ServiceType),
+              ActivatorUtilities.CreateInstance(
+                services,
+                hostedService.ImplementationType ??
+                hostedService.ServiceType)),
+            ServiceLifetime.Singleton
+          );
       services.Add(modularTenantEvents);
     }
 

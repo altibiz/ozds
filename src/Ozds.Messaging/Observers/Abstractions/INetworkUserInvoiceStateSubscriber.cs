@@ -6,5 +6,6 @@ public interface INetworkUserInvoiceStateSubscriber
 {
   public void Subscribe(EventHandler<NetworkUserInvoiceStateEventArgs> handler);
 
-  public void Unsubscribe(EventHandler<NetworkUserInvoiceStateEventArgs> handler);
+  public void Unsubscribe(
+    EventHandler<NetworkUserInvoiceStateEventArgs> handler);
 }

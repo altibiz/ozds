@@ -47,7 +47,8 @@ public class LevelEntityTypeConfiguration : IModelConfiguration
   }
 }
 
-public class LevelEntityNpgsqlDataSourceConfiguration : INpgsqlDataSourceConfiguration
+public class
+  LevelEntityNpgsqlDataSourceConfiguration : INpgsqlDataSourceConfiguration
 {
   public void Configure(NpgsqlDataSourceBuilder builder)
   {

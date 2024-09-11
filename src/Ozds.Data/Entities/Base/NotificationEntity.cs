@@ -14,6 +14,29 @@ public class NotificationEntity : IIdentifiableEntity
 
   public DateTimeOffset Timestamp { get; set; }
 
+  public string? EventId
+  {
+    get { return _eventId?.ToString(); }
+    init
+    {
+      _eventId = value is { } notNullValue ? long.Parse(notNullValue) : default;
+    }
+  }
+
+  public virtual EventEntity? Event { get; set; } = default!;
+
+  public virtual ICollection<NotificationRecipientEntity>
+    NotificationRepresentatives { get; set; } = default!;
+
+  public virtual ICollection<RepresentativeEntity>
+    Representatives { get; set; } = default!;
+
+  public string Summary { get; set; } = default!;
+
+  public string Content { get; set; } = default!;
+
+  public List<TopicEntity> Topics { get; set; } = default!;
+
   public virtual string Id
   {
     get { return _id.ToString(); }
@@ -23,25 +46,7 @@ public class NotificationEntity : IIdentifiableEntity
     }
   }
 
-  public string? EventId
-  {
-    get { return _eventId?.ToString(); }
-    init { _eventId = value is { } notNullValue ? long.Parse(notNullValue) : default; }
-  }
-
-  public virtual EventEntity? Event { get; set; } = default!;
-
-  public virtual ICollection<NotificationRecipientEntity> NotificationRepresentatives { get; set; } = default!;
-
-  public virtual ICollection<RepresentativeEntity> Representatives { get; set; } = default!;
-
   public string Title { get; set; } = default!;
-
-  public string Summary { get; set; } = default!;
-
-  public string Content { get; set; } = default!;
-
-  public List<TopicEntity> Topics { get; set; } = default!;
 }
 
 public class

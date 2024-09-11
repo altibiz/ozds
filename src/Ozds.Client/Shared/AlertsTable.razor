@@ -89,18 +89,21 @@
           Property="x => x.Level"
           Title='@T["Nivo"]'>
           <CellTemplate>
-            @if(context.Item.Level == LevelModel.Error || context.Item.Level == LevelModel.Critical){
+            @if (context.Item.Level == LevelModel.Error || context.Item.Level == LevelModel.Critical)
+            {
               <MudIcon Icon="@Icons.Material.Filled.Circle" Color="Color.Error"/>
             }
-            else if(context.Item.Level == LevelModel.Warning){
+            else if (context.Item.Level == LevelModel.Warning)
+            {
               <MudIcon Icon="@Icons.Material.Filled.Circle" Color="Color.Warning"/>
             }
-            else{
+            else
+            {
               <MudIcon Icon="@Icons.Material.Filled.Circle" Color="Color.Success"/>
             }
           </CellTemplate>
         </PropertyColumn>
-        <TemplateColumn CellClass="d-flex justify-end" Sortable="false" Filterable="false" >
+        <TemplateColumn CellClass="d-flex justify-end" Sortable="false" Filterable="false">
           <CellTemplate>
             <MudStack Row>
               <MudButton OnClick="() => InspectEvent(context.Item.Id)" Variant="Variant.Filled" Color="Color.Primary">
@@ -118,8 +121,13 @@
 }
 
 @code {
-  [CascadingParameter] public UserState user { get; set; } = default!;
-  [CascadingParameter] public RepresentativeState representative { get; set; } = default!;
+
+  [CascadingParameter]
+  public UserState user { get; set; } = default!;
+
+  [CascadingParameter]
+  public RepresentativeState representative { get; set; } = default!;
+
   public string SearchString { get; set; } = "";
   private List<DemoEventModel>? _events = new();
 
@@ -129,6 +137,7 @@
     public bool expand;
     public bool show;
   }
+
   private class DemoEventModel
   {
     public string Id = new Random().Next(1, 10000).ToString();
@@ -143,26 +152,34 @@
 
   protected override async Task OnInitializedAsync()
   {
-    _events.Add(new DemoEventModel{
-      Title = "AbbB2x NOT RESPONDING",
-      Description = "At {Time} AbbB2x STOPPED RESPONDING",
-      Level = LevelModel.Critical
-    });
-    _events.Add(new DemoEventModel{
-      Title = "SchneideriEM3xxx CRITICAL VOLTAGE",
-      Description = "At {Time} SchneideriEM3xxx had CRITICAL VOLTAGE",
-      Level = LevelModel.Critical
-    });
-    _events.Add(new DemoEventModel{
-      Title = "SchneideriEM3xxx SLOW",
-      Description = "At {Time} SchneideriEM3xxx has SLOW response time",
-      Level = LevelModel.Warning
-    });
-    _events.Add(new DemoEventModel{
-      Title = "SchneideriEM3xxx LOW VOLTAGE",
-      Description = "At {Time} SchneideriEM3xxx had LOW VOLTAGE",
-      Level = LevelModel.Warning
-    });
+    _events.Add(
+      new DemoEventModel
+      {
+        Title = "AbbB2x NOT RESPONDING",
+        Description = "At {Time} AbbB2x STOPPED RESPONDING",
+        Level = LevelModel.Critical
+      });
+    _events.Add(
+      new DemoEventModel
+      {
+        Title = "SchneideriEM3xxx CRITICAL VOLTAGE",
+        Description = "At {Time} SchneideriEM3xxx had CRITICAL VOLTAGE",
+        Level = LevelModel.Critical
+      });
+    _events.Add(
+      new DemoEventModel
+      {
+        Title = "SchneideriEM3xxx SLOW",
+        Description = "At {Time} SchneideriEM3xxx has SLOW response time",
+        Level = LevelModel.Warning
+      });
+    _events.Add(
+      new DemoEventModel
+      {
+        Title = "SchneideriEM3xxx LOW VOLTAGE",
+        Description = "At {Time} SchneideriEM3xxx had LOW VOLTAGE",
+        Level = LevelModel.Warning
+      });
     _events = _events.OrderByDescending(x => x.Level).ToList();
     if (_events is not null)
     {
@@ -208,15 +225,20 @@
       {
         inv.show = false;
       }
-    };
+    }
+
+    ;
     var a = _shownInvoices.Where(x => x.auditEvent.Title.Contains(value, StringComparison.InvariantCultureIgnoreCase)).ToList();
     foreach (var inv in a)
     {
       inv.show = true;
-    };
+    }
+
+    ;
     StateHasChanged();
     return Task.CompletedTask;
   }
+
   private void InspectEvent(string id)
   {
     NavigationManager.NavigateTo($"event/{id}");

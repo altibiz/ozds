@@ -26,6 +26,12 @@ public class MessengerInactivityService(
   IServiceScopeFactory serviceScopeFactory
 ) : BackgroundService
 {
+  private static readonly JsonSerializerOptions
+    EventContentSerializationOptions = new()
+    {
+      WriteIndented = true
+    };
+
   private readonly Channel<string> inactive =
     Channel.CreateUnbounded<string>();
 
@@ -75,7 +81,7 @@ public class MessengerInactivityService(
     var context = serviceProvider.GetRequiredService<DataDbContext>();
 
     var messenger = (await context.Messengers
-      .FirstOrDefaultAsync(context.PrimaryKeyEquals<MessengerEntity>(id)))
+        .FirstOrDefaultAsync(context.PrimaryKeyEquals<MessengerEntity>(id)))
       ?.ToModel();
 
     if (messenger is null)
@@ -91,15 +97,17 @@ public class MessengerInactivityService(
       .FirstOrDefaultAsync();
 
     var recipients = (await context.Representatives
-      .Where(x => x.Topics.Contains(TopicEntity.All)
-        || x.Topics.Contains(TopicEntity.Messenger)
-        || x.Topics.Contains(TopicEntity.MessengerInactivity))
-      .ToListAsync())
+        .Where(
+          x => x.Topics.Contains(TopicEntity.All)
+            || x.Topics.Contains(TopicEntity.Messenger)
+            || x.Topics.Contains(TopicEntity.MessengerInactivity))
+        .ToListAsync())
       .Select(x => x.ToModel());
 
     var notification = MessengerNotificationModel.New();
     notification.MessengerId = messenger.Id;
-    notification.Topics = [
+    notification.Topics =
+    [
       TopicModel.All,
       TopicModel.Messenger,
       TopicModel.MessengerInactivity
@@ -124,10 +132,4 @@ public class MessengerInactivityService(
 
     await sender.SendAsync(notification, recipients);
   }
-
-  private static readonly JsonSerializerOptions
-    EventContentSerializationOptions = new()
-    {
-      WriteIndented = true,
-    };
 }

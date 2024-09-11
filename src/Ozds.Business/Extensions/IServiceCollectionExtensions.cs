@@ -44,12 +44,16 @@ public static class IServiceCollectionExtensions
     services.AddTransientAssignableTo(typeof(IMeterNamingConvention));
     services.AddSingleton(typeof(AgnosticMeterNamingConvention));
 
-    services.AddTransientAssignableTo(typeof(INetworkUserCalculationCalculator));
+    services.AddTransientAssignableTo(
+      typeof(INetworkUserCalculationCalculator));
     services.AddSingleton(typeof(AgnosticNetworkUserCalculationCalculator));
     services.AddTransientAssignableTo(typeof(ICalculationItemCalculator));
     services.AddSingleton(typeof(AgnosticCalculationItemCalculator));
-    services.AddTransient(typeof(INetworkUserInvoiceCalculator), typeof(NetworkUserInvoiceCalculator));
-    services.AddScoped(typeof(INetworkUserInvoiceIssuer), typeof(NetworkUserInvoiceIssuer));
+    services.AddTransient(
+      typeof(INetworkUserInvoiceCalculator),
+      typeof(NetworkUserInvoiceCalculator));
+    services.AddScoped(
+      typeof(INetworkUserInvoiceIssuer), typeof(NetworkUserInvoiceIssuer));
 
     services.AddScoped(typeof(OzdsIotHandler));
     services.AddScoped(typeof(BatchAggregatedMeasurementUpserter));
@@ -78,8 +82,9 @@ public static class IServiceCollectionExtensions
       services.AddSingleton(conversionType);
       foreach (var interfaceType in conversionType.GetInterfaces())
       {
-        services.AddSingleton(interfaceType, services =>
-          services.GetRequiredService(conversionType));
+        services.AddSingleton(
+          interfaceType, services =>
+            services.GetRequiredService(conversionType));
       }
     }
   }
@@ -103,8 +108,9 @@ public static class IServiceCollectionExtensions
       services.AddScoped(conversionType);
       foreach (var interfaceType in conversionType.GetAllInterfaces())
       {
-        services.AddScoped(interfaceType, services =>
-          services.GetRequiredService(conversionType));
+        services.AddScoped(
+          interfaceType, services =>
+            services.GetRequiredService(conversionType));
       }
     }
   }
@@ -128,8 +134,9 @@ public static class IServiceCollectionExtensions
       services.AddTransient(conversionType);
       foreach (var interfaceType in conversionType.GetAllInterfaces())
       {
-        services.AddTransient(interfaceType, services =>
-          services.GetRequiredService(conversionType));
+        services.AddTransient(
+          interfaceType, services =>
+            services.GetRequiredService(conversionType));
       }
     }
   }

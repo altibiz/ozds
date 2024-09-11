@@ -2,7 +2,6 @@ using System.ComponentModel.DataAnnotations;
 using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Mutations.Abstractions;
 using Ozds.Data.Context;
-using Ozds.Data.Extensions;
 using IEvent = Ozds.Business.Models.Abstractions.IEvent;
 
 namespace Ozds.Business.Mutations.Agnostic;

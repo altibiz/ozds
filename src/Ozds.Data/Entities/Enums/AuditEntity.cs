@@ -20,7 +20,8 @@ public class AuditEntityTypeConfiguration : IModelConfiguration
   }
 }
 
-public class AuditEntityNpgsqlDataSourceConfiguration : INpgsqlDataSourceConfiguration
+public class
+  AuditEntityNpgsqlDataSourceConfiguration : INpgsqlDataSourceConfiguration
 {
   public void Configure(NpgsqlDataSourceBuilder builder)
   {

@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Ozds.Business.Models.Base;
+using Ozds.Business.Models.Enums;
 
 namespace Ozds.Business.Models;
 
@@ -10,7 +11,7 @@ public class MessengerNotificationModel : ResolvableNotificationModel
 
   public static MessengerNotificationModel New()
   {
-    return new()
+    return new MessengerNotificationModel
     {
       Id = default!,
       Title = "",
@@ -20,7 +21,7 @@ public class MessengerNotificationModel : ResolvableNotificationModel
       EventId = default!,
       ResolvedById = default!,
       ResolvedOn = default!,
-      Topics = new(),
+      Topics = new List<TopicModel>(),
       MessengerId = default!
     };
   }

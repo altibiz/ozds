@@ -21,12 +21,13 @@ public class MessengerNotificationModelEntityConverter :
   }
 }
 
-public static class MessengerInactivityNotificationModelEntityConverterExtensions
+public static class
+  MessengerInactivityNotificationModelEntityConverterExtensions
 {
   public static MessengerNotificationModel ToModel(
     this MessengerNotificationEntity entity)
   {
-    return new()
+    return new MessengerNotificationModel
     {
       Id = entity.Id,
       Title = entity.Title,
@@ -44,7 +45,7 @@ public static class MessengerInactivityNotificationModelEntityConverterExtension
   public static MessengerNotificationEntity ToEntity(
     this MessengerNotificationModel model)
   {
-    return new()
+    return new MessengerNotificationEntity
     {
       Id = model.Id,
       Title = model.Title,

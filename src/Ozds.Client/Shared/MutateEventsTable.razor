@@ -90,10 +90,10 @@
           Property="x => x.Author"
           Title='@T["Autor"]'>
         </PropertyColumn>
-        <TemplateColumn CellClass="d-flex justify-end" Sortable="false" Filterable="false" >
+        <TemplateColumn CellClass="d-flex justify-end" Sortable="false" Filterable="false">
           <CellTemplate>
             <MudStack Row>
-              <MudButton  OnClick="() => InspectEvent(context.Item.Id)" Variant="Variant.Filled" Color="Color.Primary">
+              <MudButton OnClick="() => InspectEvent(context.Item.Id)" Variant="Variant.Filled" Color="Color.Primary">
                 @T["Pregled"]
               </MudButton>
             </MudStack>
@@ -108,8 +108,13 @@
 }
 
 @code {
-  [CascadingParameter] public UserState user { get; set; } = default!;
-  [CascadingParameter] public RepresentativeState representative { get; set; } = default!;
+
+  [CascadingParameter]
+  public UserState user { get; set; } = default!;
+
+  [CascadingParameter]
+  public RepresentativeState representative { get; set; } = default!;
+
   public string SearchString { get; set; } = "";
   private List<DemoEventModel>? _events = new();
 
@@ -119,6 +124,7 @@
     public bool expand;
     public bool show;
   }
+
   private class DemoEventModel
   {
     public string Id = new Random().Next(1, 10000).ToString();
@@ -135,26 +141,34 @@
 
   protected override async Task OnInitializedAsync()
   {
-    _events.Add(new DemoEventModel{
-      Title = "Created RepresentativeEntity network-user",
-      Description = "Inserting RepresentativeEntity with _stringId: '41qe2wwv2xxf7wkzj43mfb9sns' CreatedById: '' CreatedOn: '4/20/2024 1:20:37 PM +00:00' DeletedById: '' DeletedOn: '' IsDeleted: 'False' LastUpdatedById: '' LastUpdatedOn: '' Role: 'NetworkUserRepresentative' Title: 'network-user' ",
-      Level = LevelModel.Information
-    });
-    _events.Add(new DemoEventModel{
-      Title = "Created AbbB2xMeterEntity test",
-      Description = "Inserting AbbB2xMeterEntity with _stringId: 'abb-B2x-1624226' ConnectionPower_W: '24000' CreatedById: '' CreatedOn: '4/20/2024 11:21:08 AM +00:00' DeletedById: '' DeletedOn: '' IsDeleted: 'False' LastUpdatedById: '' LastUpdatedOn: '' MessengerId: 'messenger' Phases: 'System.Collections.Generic.List`1[Ozds.Data.Entities.Enums.PhaseEntity]' Title: 'test' kind: 'AbbB2xMeterEntity' _measurementValidatorId: '1' ",
-      Level = LevelModel.Information
-    });
-    _events.Add(new DemoEventModel{
-      Title = "Updated NetworkUserEntityProxy DM",
-      Description = "Updating NetworkUserEntity with _id: '1' CreatedById: '' CreatedOn: '20.4.2024. 11:16:00 +00:00' DeletedById: '' DeletedOn: '' IsDeleted: 'False' LastUpdatedById: '' LastUpdatedOn: '22.4.2024. 16:42:56 +00:00' Title: 'DM' _locationId: '1' ",
-      Level = LevelModel.Information
-    });
-    _events.Add(new DemoEventModel{
-      Title = "Updated BlueLowNetworkUserCatalogueEntityProxy test",
-      Description = "Updating BlueLowNetworkUserCatalogueEntity with _id: '2' CreatedById: '' CreatedOn: '4/19/2024 1:37:43 PM +00:00' DeletedById: '' DeletedOn: '' IsDeleted: 'False' LastUpdatedById: '' LastUpdatedOn: '4/29/2024 12:45:42 PM +00:00' Title: 'test' ActiveEnergyTotalImportT0Price_EUR: '0.000041144' MeterFeePrice_EUR: '5.481' ReactiveEnergyTotalRampedT0Price_EUR: '0.000021236' ",
-      Level = LevelModel.Information
-    });
+    _events.Add(
+      new DemoEventModel
+      {
+        Title = "Created RepresentativeEntity network-user",
+        Description = "Inserting RepresentativeEntity with _stringId: '41qe2wwv2xxf7wkzj43mfb9sns' CreatedById: '' CreatedOn: '4/20/2024 1:20:37 PM +00:00' DeletedById: '' DeletedOn: '' IsDeleted: 'False' LastUpdatedById: '' LastUpdatedOn: '' Role: 'NetworkUserRepresentative' Title: 'network-user' ",
+        Level = LevelModel.Information
+      });
+    _events.Add(
+      new DemoEventModel
+      {
+        Title = "Created AbbB2xMeterEntity test",
+        Description = "Inserting AbbB2xMeterEntity with _stringId: 'abb-B2x-1624226' ConnectionPower_W: '24000' CreatedById: '' CreatedOn: '4/20/2024 11:21:08 AM +00:00' DeletedById: '' DeletedOn: '' IsDeleted: 'False' LastUpdatedById: '' LastUpdatedOn: '' MessengerId: 'messenger' Phases: 'System.Collections.Generic.List`1[Ozds.Data.Entities.Enums.PhaseEntity]' Title: 'test' kind: 'AbbB2xMeterEntity' _measurementValidatorId: '1' ",
+        Level = LevelModel.Information
+      });
+    _events.Add(
+      new DemoEventModel
+      {
+        Title = "Updated NetworkUserEntityProxy DM",
+        Description = "Updating NetworkUserEntity with _id: '1' CreatedById: '' CreatedOn: '20.4.2024. 11:16:00 +00:00' DeletedById: '' DeletedOn: '' IsDeleted: 'False' LastUpdatedById: '' LastUpdatedOn: '22.4.2024. 16:42:56 +00:00' Title: 'DM' _locationId: '1' ",
+        Level = LevelModel.Information
+      });
+    _events.Add(
+      new DemoEventModel
+      {
+        Title = "Updated BlueLowNetworkUserCatalogueEntityProxy test",
+        Description = "Updating BlueLowNetworkUserCatalogueEntity with _id: '2' CreatedById: '' CreatedOn: '4/19/2024 1:37:43 PM +00:00' DeletedById: '' DeletedOn: '' IsDeleted: 'False' LastUpdatedById: '' LastUpdatedOn: '4/29/2024 12:45:42 PM +00:00' Title: 'test' ActiveEnergyTotalImportT0Price_EUR: '0.000041144' MeterFeePrice_EUR: '5.481' ReactiveEnergyTotalRampedT0Price_EUR: '0.000021236' ",
+        Level = LevelModel.Information
+      });
     if (_events is not null)
     {
       foreach (var _auditEvent in _events)
@@ -199,15 +213,20 @@
       {
         inv.show = false;
       }
-    };
+    }
+
+    ;
     var a = _shownInvoices.Where(x => x.auditEvent.Title.Contains(value, StringComparison.InvariantCultureIgnoreCase)).ToList();
     foreach (var inv in a)
     {
       inv.show = true;
-    };
+    }
+
+    ;
     StateHasChanged();
     return Task.CompletedTask;
   }
+
   private void InspectEvent(string id)
   {
     NavigationManager.NavigateTo($"event/{id}");

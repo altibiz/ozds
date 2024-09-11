@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Mutations.Abstractions;
 using Ozds.Data.Context;
-using Ozds.Data.Extensions;
 using Ozds.Data.Entities;
+using Ozds.Data.Extensions;
 
 namespace Ozds.Business.Mutations;
 

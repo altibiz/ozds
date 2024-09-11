@@ -55,8 +55,9 @@ public class OzdsBillingQueries(DataDbContext dbContext) : IOzdsQueries
           _dbContext
             .ForeignKeyOf<MeasurementLocationEntity>(
               nameof(MeasurementLocationEntity.Meter))
-            .Prefix((NetworkUserCalculationBasesByNetworkUserIntermediary x) =>
-              x.MeasurementLocation),
+            .Prefix(
+              (NetworkUserCalculationBasesByNetworkUserIntermediary x) =>
+                x.MeasurementLocation),
           _dbContext.PrimaryKeyOf<MeterEntity>(),
           (x, meter) =>
             new NetworkUserCalculationBasesByNetworkUserIntermediary
@@ -76,8 +77,9 @@ public class OzdsBillingQueries(DataDbContext dbContext) : IOzdsQueries
             .Where(x => x.Interval == IntervalEntity.QuarterHour),
           _dbContext
             .PrimaryKeyOf<MeterEntity>()
-            .Prefix((NetworkUserCalculationBasesByNetworkUserIntermediary x) =>
-              x.Meter),
+            .Prefix(
+              (NetworkUserCalculationBasesByNetworkUserIntermediary x) =>
+                x.Meter),
           _dbContext.ForeignKeyOf<AbbB2xAggregateEntity>(
             nameof(AbbB2xAggregateEntity.Meter)
           ),
@@ -114,8 +116,9 @@ public class OzdsBillingQueries(DataDbContext dbContext) : IOzdsQueries
             .Where(x => x.Interval == IntervalEntity.QuarterHour),
           _dbContext
             .PrimaryKeyOf<MeterEntity>()
-            .Prefix((NetworkUserCalculationBasesByNetworkUserIntermediary x) =>
-              x.Meter),
+            .Prefix(
+              (NetworkUserCalculationBasesByNetworkUserIntermediary x) =>
+                x.Meter),
           _dbContext.ForeignKeyOf<SchneideriEM3xxxAggregateEntity>(
             nameof(AbbB2xAggregateEntity.Meter)
           ),

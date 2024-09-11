@@ -21,13 +21,15 @@ public class NotificationSender(
     IEnumerable<RepresentativeModel> recipients)
   {
     context.Add(converter.ToEntity(notification));
-    context.AddRange(recipients
-      .Select(recipient => new NotificationRecipientModel()
-      {
-        NotificationId = notification.Id,
-        RepresentativeId = recipient.Id
-      })
-      .Select(converter.ToEntity));
+    context.AddRange(
+      recipients
+        .Select(
+          recipient => new NotificationRecipientModel
+          {
+            NotificationId = notification.Id,
+            RepresentativeId = recipient.Id
+          })
+        .Select(converter.ToEntity));
     await context.SaveChangesAsync();
 
     var titleBuilder = new StringBuilder($"[OZDS]: {notification.Title}");
@@ -39,13 +41,14 @@ public class NotificationSender(
       titleBuilder.Append(")");
     }
 
-    await sender.SendBulkAsync(recipients.Select(
-      recipient => new EmailMessage(
-        recipient.PhysicalPerson.Name,
-        recipient.PhysicalPerson.Email,
-        titleBuilder.ToString(),
-        notification.Content
-      )
-    ));
+    await sender.SendBulkAsync(
+      recipients.Select(
+        recipient => new EmailMessage(
+          recipient.PhysicalPerson.Name,
+          recipient.PhysicalPerson.Email,
+          titleBuilder.ToString(),
+          notification.Content
+        )
+      ));
   }
 }

@@ -61,15 +61,17 @@ public static class IServiceCollectionExtensions
       {
         var assembly = typeof(MessagingDbContext).Assembly;
 
-        config.AddEntityFrameworkOutbox<MessagingDbContext>(config =>
-        {
-          config.UsePostgres();
-          config.UseBusOutbox();
-        });
-        config.AddConfigureEndpointsCallback((context, name, config) =>
-        {
-          config.UseEntityFrameworkOutbox<MessagingDbContext>(context);
-        });
+        config.AddEntityFrameworkOutbox<MessagingDbContext>(
+          config =>
+          {
+            config.UsePostgres();
+            config.UseBusOutbox();
+          });
+        config.AddConfigureEndpointsCallback(
+          (context, name, config) =>
+          {
+            config.UseEntityFrameworkOutbox<MessagingDbContext>(context);
+          });
         config.SetKebabCaseEndpointNameFormatter();
 
         config.AddConsumers(assembly);
@@ -116,23 +118,6 @@ public static class IServiceCollectionExtensions
       });
   }
 
-  private sealed class OzdsSagaRepositoryRegistrationProvider
-    : ISagaRepositoryRegistrationProvider
-  {
-    public void Configure<TSaga>(
-      ISagaRegistrationConfigurator<TSaga> configurator
-    )
-      where TSaga : class, ISaga
-    {
-      configurator.EntityFrameworkRepository(config =>
-      {
-        config.ConcurrencyMode = ConcurrencyMode.Optimistic;
-        config.ExistingDbContext<MessagingDbContext>();
-        config.UsePostgres();
-      });
-    }
-  }
-
   private static void AddSingletonAssignableTo(
     this IServiceCollection services,
     Type assignableTo
@@ -152,8 +137,9 @@ public static class IServiceCollectionExtensions
       foreach (var interfaceType in conversionType.GetAllInterfaces())
       {
         services.AddSingleton(conversionType);
-        services.AddSingleton(interfaceType, services =>
-          services.GetRequiredService(conversionType));
+        services.AddSingleton(
+          interfaceType, services =>
+            services.GetRequiredService(conversionType));
       }
     }
   }
@@ -165,5 +151,23 @@ public static class IServiceCollectionExtensions
       .Concat(type.BaseType?.GetAllInterfaces() ?? Array.Empty<Type>())
       .ToHashSet()
       .ToArray();
+  }
+
+  private sealed class OzdsSagaRepositoryRegistrationProvider
+    : ISagaRepositoryRegistrationProvider
+  {
+    public void Configure<TSaga>(
+      ISagaRegistrationConfigurator<TSaga> configurator
+    )
+      where TSaga : class, ISaga
+    {
+      configurator.EntityFrameworkRepository(
+        config =>
+        {
+          config.ConcurrencyMode = ConcurrencyMode.Optimistic;
+          config.ExistingDbContext<MessagingDbContext>();
+          config.UsePostgres();
+        });
+    }
   }
 }

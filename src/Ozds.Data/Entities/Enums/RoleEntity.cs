@@ -21,7 +21,8 @@ public class RoleEntityTypeConfiguration : IModelConfiguration
   }
 }
 
-public class RoleEntityNpgsqlDataSourceConfiguration : INpgsqlDataSourceConfiguration
+public class
+  RoleEntityNpgsqlDataSourceConfiguration : INpgsqlDataSourceConfiguration
 {
   public void Configure(NpgsqlDataSourceBuilder builder)
   {

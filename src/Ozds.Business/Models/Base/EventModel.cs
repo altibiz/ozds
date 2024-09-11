@@ -8,6 +8,9 @@ namespace Ozds.Business.Models.Base;
 public abstract class EventModel : IEvent
 {
   [Required]
+  public required List<CategoryModel> Categories { get; set; }
+
+  [Required]
   public required string Id { get; set; }
 
   [Required]
@@ -21,9 +24,6 @@ public abstract class EventModel : IEvent
 
   [Required]
   public required JsonDocument Content { get; set; }
-
-  [Required]
-  public required List<CategoryModel> Categories { get; set; }
 
   public virtual IEnumerable<ValidationResult> Validate(
     ValidationContext validationContext)

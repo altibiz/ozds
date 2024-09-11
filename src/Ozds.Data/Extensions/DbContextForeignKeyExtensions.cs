@@ -8,6 +8,16 @@ namespace Ozds.Data.Extensions;
 
 public static class DbContextForeignKeyExtensions
 {
+  private static readonly
+    ConcurrentDictionary<(Type dbContextType, Type entityType, string foreignKey
+      ), Delegate>
+    _foreignKeyGetterCompiledCache = new();
+
+  private static readonly
+    ConcurrentDictionary<(Type dbContextType, Type entityType, string foreignKey
+      ), Expression>
+    _foreignKeyGetterExpressionCache = new();
+
   public static Func<T, object> ForeignKeyOfCompiled<T>(
     this DbContext context,
     string property)
@@ -50,14 +60,18 @@ public static class DbContextForeignKeyExtensions
   }
 
   public static Func<T, bool> ForeignKeyInCompiled<T>(
-    this DbContext context, string property, ICollection<string> ids)
+    this DbContext context,
+    string property,
+    ICollection<string> ids)
   {
     var typeBasedFunc = context.ForeignKeyInCompiled(typeof(T), property, ids);
     return entity => typeBasedFunc(entity!);
   }
 
   public static Expression<Func<T, bool>> ForeignKeyIn<T>(
-    this DbContext context, string property, ICollection<string> ids)
+    this DbContext context,
+    string property,
+    ICollection<string> ids)
   {
     var typeBasedExpr = context.ForeignKeyIn(typeof(T), property, ids);
     var parameter = Expression.Parameter(typeof(T), "entity");
@@ -67,7 +81,9 @@ public static class DbContextForeignKeyExtensions
   }
 
   public static Func<object, object> ForeignKeyOfCompiled(
-    this DbContext context, Type entityType, string property)
+    this DbContext context,
+    Type entityType,
+    string property)
   {
     var key = (context.GetType(), entityType, property);
 
@@ -84,7 +100,9 @@ public static class DbContextForeignKeyExtensions
   }
 
   public static Expression<Func<object, object>> ForeignKeyOf(
-    this DbContext context, Type entityType, string property)
+    this DbContext context,
+    Type entityType,
+    string property)
   {
     var key = (context.GetType(), entityType, property);
 
@@ -100,43 +118,59 @@ public static class DbContextForeignKeyExtensions
   }
 
   public static Func<object, bool> ForeignKeyEqualsCompiled(
-    this DbContext context, Type entityType, string property, string id)
+    this DbContext context,
+    Type entityType,
+    string property,
+    string id)
   {
     return context.ForeignKeyEqualsUncached(entityType, property, id).Compile();
   }
 
   public static Expression<Func<object, bool>> ForeignKeyEquals(
-    this DbContext context, Type entityType, string property, string id)
+    this DbContext context,
+    Type entityType,
+    string property,
+    string id)
   {
     return context.ForeignKeyEqualsUncached(entityType, property, id);
   }
 
   public static Func<object, bool> ForeignKeyInCompiled(
-    this DbContext context, Type entityType, string property, ICollection<string> ids)
+    this DbContext context,
+    Type entityType,
+    string property,
+    ICollection<string> ids)
   {
     return context.ForeignKeyInUncached(entityType, property, ids).Compile();
   }
 
   public static Expression<Func<object, bool>> ForeignKeyIn(
-    this DbContext context, Type entityType, string property, ICollection<string> ids)
+    this DbContext context,
+    Type entityType,
+    string property,
+    ICollection<string> ids)
   {
     return context.ForeignKeyInUncached(entityType, property, ids);
   }
 
   private static Expression<Func<object, object>> ForeignKeyOfUncached(
-    this DbContext context, Type entityType, string property)
+    this DbContext context,
+    Type entityType,
+    string property)
   {
     var keyProperties = context.GetForeignKeyProperties(entityType, property);
     var parameter = Expression.Parameter(typeof(object));
     var convertedParameter = Expression.Convert(parameter, entityType);
 
     var propertyExpressions = keyProperties
-      .Select(p =>
-        p.PropertyInfo is { } propertyInfo
-        ? Expression.Property(convertedParameter, propertyInfo)
-        : Expression.Field(convertedParameter, p.FieldInfo
-          ?? throw new InvalidOperationException(
-            $"No field info found for {p}")))
+      .Select(
+        p =>
+          p.PropertyInfo is { } propertyInfo
+            ? Expression.Property(convertedParameter, propertyInfo)
+            : Expression.Field(
+              convertedParameter, p.FieldInfo
+              ?? throw new InvalidOperationException(
+                $"No field info found for {p}")))
       .ToList();
 
     Expression resultExpression;
@@ -148,20 +182,20 @@ public static class DbContextForeignKeyExtensions
     {
       var genericTupleType =
         propertyExpressions.Count == 1
-        ? typeof(ValueTuple<>)
-        : propertyExpressions.Count == 2
-        ? typeof(ValueTuple<,>)
-        : propertyExpressions.Count == 3
-        ? typeof(ValueTuple<,,>)
-        : propertyExpressions.Count == 4
-        ? typeof(ValueTuple<,,,>)
-        : propertyExpressions.Count == 5
-        ? typeof(ValueTuple<,,,,>)
-        : propertyExpressions.Count == 6
-        ? typeof(ValueTuple<,,,,,>)
-        : propertyExpressions.Count == 7
-        ? typeof(ValueTuple<,,,,,,>)
-        : typeof(ValueTuple<,,,,,,,>);
+          ? typeof(ValueTuple<>)
+          : propertyExpressions.Count == 2
+            ? typeof(ValueTuple<,>)
+            : propertyExpressions.Count == 3
+              ? typeof(ValueTuple<,,>)
+              : propertyExpressions.Count == 4
+                ? typeof(ValueTuple<,,,>)
+                : propertyExpressions.Count == 5
+                  ? typeof(ValueTuple<,,,,>)
+                  : propertyExpressions.Count == 6
+                    ? typeof(ValueTuple<,,,,,>)
+                    : propertyExpressions.Count == 7
+                      ? typeof(ValueTuple<,,,,,,>)
+                      : typeof(ValueTuple<,,,,,,,>);
       var tupleType = genericTupleType.MakeGenericType(
         propertyExpressions.Select(p => p.Type).ToArray());
       var constructor = tupleType.GetConstructors().Single();
@@ -178,7 +212,10 @@ public static class DbContextForeignKeyExtensions
   }
 
   private static Expression<Func<object, bool>> ForeignKeyEqualsUncached(
-    this DbContext context, Type entityType, string property, string id)
+    this DbContext context,
+    Type entityType,
+    string property,
+    string id)
   {
     var keyProperties = context.GetForeignKeyProperties(entityType, property);
     var idParts = id.Split(DataDbContext.KeyJoin);
@@ -198,10 +235,11 @@ public static class DbContextForeignKeyExtensions
     {
       var propertyExpression =
         keyProperty.PropertyInfo is { } propertyInfo
-        ? Expression.Property(convertedParameter, propertyInfo)
-        : Expression.Field(convertedParameter, keyProperty.FieldInfo
-          ?? throw new InvalidOperationException(
-            $"No field info found for {property}"));
+          ? Expression.Property(convertedParameter, propertyInfo)
+          : Expression.Field(
+            convertedParameter, keyProperty.FieldInfo
+            ?? throw new InvalidOperationException(
+              $"No field info found for {property}"));
       var convertedId = Expression.Constant(
         Convert.ChangeType(idValue, keyProperty.ClrType));
       var equalsExpression = Expression.Equal(propertyExpression, convertedId);
@@ -211,11 +249,15 @@ public static class DbContextForeignKeyExtensions
         : Expression.AndAlso(equalityExpression, equalsExpression);
     }
 
-    return Expression.Lambda<Func<object, bool>>(equalityExpression!, parameter);
+    return Expression.Lambda<Func<object, bool>>(
+      equalityExpression!, parameter);
   }
 
   private static Expression<Func<object, bool>> ForeignKeyInUncached(
-    this DbContext context, Type entityType, string property, ICollection<string> ids)
+    this DbContext context,
+    Type entityType,
+    string property,
+    ICollection<string> ids)
   {
     var keyProperties = context.GetForeignKeyProperties(entityType, property);
     var parameter = Expression.Parameter(typeof(object));
@@ -238,10 +280,11 @@ public static class DbContextForeignKeyExtensions
       {
         var propertyExpressionConverted =
           propertyExpression.PropertyInfo is { } propertyInfo
-          ? Expression.Property(convertedParameter, propertyInfo)
-          : Expression.Field(convertedParameter, propertyExpression.FieldInfo
-            ?? throw new InvalidOperationException(
-              $"No field info found for {property}"));
+            ? Expression.Property(convertedParameter, propertyInfo)
+            : Expression.Field(
+              convertedParameter, propertyExpression.FieldInfo
+              ?? throw new InvalidOperationException(
+                $"No field info found for {property}"));
         var convertedIdPart = Expression.Constant(
           Convert.ChangeType(idPart, propertyExpression.ClrType));
 
@@ -283,12 +326,4 @@ public static class DbContextForeignKeyExtensions
 
     return foreignKey.Properties;
   }
-
-  private static readonly
-    ConcurrentDictionary<(Type dbContextType, Type entityType, string foreignKey), Delegate>
-    _foreignKeyGetterCompiledCache = new();
-
-  private static readonly
-    ConcurrentDictionary<(Type dbContextType, Type entityType, string foreignKey), Expression>
-    _foreignKeyGetterExpressionCache = new();
 }

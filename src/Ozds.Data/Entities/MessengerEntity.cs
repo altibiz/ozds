@@ -31,7 +31,8 @@ public class MessengerEntity : AuditableEntity
   public virtual ICollection<MessengerEventEntity> Events { get; set; } =
     default!;
 
-  public virtual ICollection<MessengerNotificationEntity> InactivityNotifications { get; set; } = default!;
+  public virtual ICollection<MessengerNotificationEntity>
+    InactivityNotifications { get; set; } = default!;
 }
 
 public class
