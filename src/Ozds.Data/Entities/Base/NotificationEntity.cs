@@ -26,16 +26,18 @@ public class NotificationEntity : IIdentifiableEntity
   public virtual EventEntity? Event { get; set; } = default!;
 
   public virtual ICollection<NotificationRecipientEntity>
-    NotificationRepresentatives { get; set; } = default!;
+    NotificationRepresentatives
+  { get; set; } = default!;
 
   public virtual ICollection<RepresentativeEntity>
-    Representatives { get; set; } = default!;
+    Representatives
+  { get; set; } = default!;
 
   public string Summary { get; set; } = default!;
 
   public string Content { get; set; } = default!;
 
-  public List<TopicEntity> Topics { get; set; } = default!;
+  public HashSet<TopicEntity> Topics { get; set; } = default!;
 
   public virtual string Id
   {

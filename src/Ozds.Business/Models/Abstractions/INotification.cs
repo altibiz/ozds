@@ -12,5 +12,5 @@ public interface INotification : IIdentifiable
 
   public string? EventId { get; }
 
-  public List<TopicModel> Topics { get; }
+  public HashSet<TopicModel> Topics { get; }
 }

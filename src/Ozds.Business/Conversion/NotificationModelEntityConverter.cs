@@ -44,7 +44,7 @@ public static class NotificationModelEntityConverterExtensions
       Content = model.Content,
       Timestamp = model.Timestamp,
       EventId = model.EventId,
-      Topics = model.Topics.Select(x => x.ToEntity()).ToList()
+      Topics = model.Topics.Select(x => x.ToEntity()).ToHashSet()
     };
   }
 
@@ -69,7 +69,7 @@ public static class NotificationModelEntityConverterExtensions
       Content = entity.Content,
       Timestamp = entity.Timestamp,
       EventId = entity.EventId,
-      Topics = entity.Topics.Select(x => x.ToModel()).ToList()
+      Topics = entity.Topics.Select(x => x.ToModel()).ToHashSet()
     };
   }
 }

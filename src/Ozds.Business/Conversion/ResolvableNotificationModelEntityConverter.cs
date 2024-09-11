@@ -38,7 +38,7 @@ public static class ResolvableNotificationModelEntityConverterExtensions
       EventId = model.EventId,
       ResolvedById = model.ResolvedById,
       ResolvedOn = model.ResolvedOn,
-      Topics = model.Topics.Select(x => x.ToEntity()).ToList()
+      Topics = model.Topics.Select(x => x.ToEntity()).ToHashSet()
     };
   }
 
@@ -55,7 +55,7 @@ public static class ResolvableNotificationModelEntityConverterExtensions
       EventId = entity.EventId,
       ResolvedById = entity.ResolvedById,
       ResolvedOn = entity.ResolvedOn,
-      Topics = entity.Topics.Select(x => x.ToModel()).ToList()
+      Topics = entity.Topics.Select(x => x.ToModel()).ToHashSet()
     };
   }
 }
