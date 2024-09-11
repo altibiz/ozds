@@ -1,3 +1,4 @@
+
 @inject IDialogService DialogService
 @inherits OzdsOwningComponentBase
 
@@ -118,7 +119,7 @@
 
     if (LoadingState.Value is null)
     {
-      LoadingState = LoadingState.WithValue(WhiteMediumNetworkUserCatalogueModel.New());
+      LoadingState = LoadingState.WithValue(WhiteMediumNetworkUserCatalogueModelActivator.New());
       _create = true;
     }
   }

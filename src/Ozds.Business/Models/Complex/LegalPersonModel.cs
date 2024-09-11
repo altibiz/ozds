@@ -74,18 +74,4 @@ public class LegalPersonModel : IValidatableObject
       );
     }
   }
-
-  public static LegalPersonModel New()
-  {
-    return new LegalPersonModel
-    {
-      Name = "",
-      SocialSecurityNumber = "",
-      Address = "",
-      PostalCode = "",
-      City = "",
-      Email = "",
-      PhoneNumber = ""
-    };
-  }
 }

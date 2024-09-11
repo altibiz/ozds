@@ -118,7 +118,7 @@
 
     if (LoadingState.Value is null)
     {
-      LoadingState = LoadingState.WithValue(RedLowNetworkUserCatalogueModel.New());
+      LoadingState = LoadingState.WithValue(RedLowNetworkUserCatalogueModelActivator.New());
       _create = true;
     }
   }

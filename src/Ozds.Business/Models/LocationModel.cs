@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Ozds.Business.Activation.Complex;
 using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Complex;
 
@@ -45,7 +46,7 @@ public class LocationModel : AuditableModel
       WhiteLowNetworkUserCatalogueId = default!,
       RedLowNetworkUserCatalogueId = default!,
       RegulatoryCatalogueId = default!,
-      LegalPerson = LegalPersonModel.New(),
+      LegalPerson = LegalPersonModelActivator.New(),
       AltiBizSubProjectCode = ""
     };
   }

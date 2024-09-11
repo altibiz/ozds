@@ -31,30 +31,6 @@ public class
   [Required]
   public required decimal MaxReactivePower_VAR { get; set; }
 
-  public static AbbB2xMeasurementValidatorModel New()
-  {
-    return new AbbB2xMeasurementValidatorModel
-    {
-      Id = default!,
-      Title = "",
-      CreatedOn = DateTimeOffset.UtcNow,
-      CreatedById = default,
-      LastUpdatedOn = default,
-      LastUpdatedById = default,
-      IsDeleted = false,
-      DeletedOn = default,
-      DeletedById = default,
-      MinVoltage_V = default,
-      MaxVoltage_V = default,
-      MinCurrent_A = default,
-      MaxCurrent_A = default,
-      MinActivePower_W = default,
-      MaxActivePower_W = default,
-      MinReactivePower_VAR = default,
-      MaxReactivePower_VAR = default
-    };
-  }
-
   public override IEnumerable<ValidationResult> ValidateMeasurement(
     AbbB2xMeasurementModel measurement,
     string? memberName
@@ -151,9 +127,7 @@ public class
     )
     {
       yield return new ValidationResult(
-        $"ReactivePower must be greater than or equal to {
-          MinReactivePower_VAR
-        }.",
+        $"ReactivePower must be greater than or equal to {MinReactivePower_VAR}.",
         new[] { nameof(AbbB2xAggregateModel.ReactivePower_VAR) }
       );
     }

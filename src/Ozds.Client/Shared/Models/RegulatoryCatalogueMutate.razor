@@ -118,7 +118,7 @@
 
     if (LoadingState.Value is null)
     {
-      LoadingState = LoadingState.WithValue(RegulatoryCatalogueModel.New());
+      LoadingState = LoadingState.WithValue(RegulatoryCatalogueModelActivator.New());
       _create = true;
     }
   }

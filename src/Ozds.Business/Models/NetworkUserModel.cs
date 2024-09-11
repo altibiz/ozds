@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Ozds.Business.Activation.Complex;
 using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Complex;
 
@@ -14,25 +15,6 @@ public class NetworkUserModel : AuditableModel
 
   [Required]
   public required string AltiBizSubProjectCode { get; set; } = default!;
-
-  public static NetworkUserModel New()
-  {
-    return new NetworkUserModel
-    {
-      Id = default!,
-      Title = "",
-      CreatedOn = DateTimeOffset.UtcNow,
-      CreatedById = default,
-      LastUpdatedOn = default,
-      LastUpdatedById = default,
-      IsDeleted = false,
-      DeletedOn = default,
-      DeletedById = default,
-      LocationId = "",
-      LegalPerson = LegalPersonModel.New(),
-      AltiBizSubProjectCode = ""
-    };
-  }
 
   public override IEnumerable<ValidationResult> Validate(
     ValidationContext validationContext)

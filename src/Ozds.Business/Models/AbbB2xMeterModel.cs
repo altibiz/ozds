@@ -10,24 +10,4 @@ public class AbbB2xMeterModel : MeterModel
   {
     get { return new AbbB2xCapabilities(); }
   }
-
-  public static AbbB2xMeterModel New()
-  {
-    return new AbbB2xMeterModel
-    {
-      Id = default!,
-      Title = "",
-      CreatedOn = DateTimeOffset.UtcNow,
-      CreatedById = default,
-      LastUpdatedOn = default,
-      LastUpdatedById = default,
-      IsDeleted = false,
-      DeletedOn = default,
-      DeletedById = default,
-      ConnectionPower_W = default,
-      Phases = default!,
-      MessengerId = default!,
-      MeasurementValidatorId = default!
-    };
-  }
 }

@@ -5,6 +5,8 @@ using MassTransit.EntityFrameworkCoreIntegration;
 using Microsoft.EntityFrameworkCore;
 using OrchardCore.Environment.Shell;
 using OrchardCore.Modules;
+using Ozds.Business.Activation.Abstractions;
+using Ozds.Business.Activation.Agnostic;
 using Ozds.Business.Aggregation;
 using Ozds.Business.Aggregation.Abstractions;
 using Ozds.Business.Aggregation.Agnostic;
@@ -35,6 +37,11 @@ public static class IServiceCollectionExtensions
     IHostApplicationBuilder builder
   )
   {
+
+    // Activation
+    services.AddTransientAssignableTo(typeof(IModelActivator));
+    services.AddSingleton(typeof(AgnosticModelActivator));
+
     services.AddData(builder);
     services.AddMessaging(builder);
 

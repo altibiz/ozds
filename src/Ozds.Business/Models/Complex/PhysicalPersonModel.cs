@@ -20,14 +20,4 @@ public class PhysicalPersonModel : IValidatableObject
   {
     yield break;
   }
-
-  public static PhysicalPersonModel New()
-  {
-    return new PhysicalPersonModel
-    {
-      Name = "",
-      Email = "",
-      PhoneNumber = ""
-    };
-  }
 }

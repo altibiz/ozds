@@ -116,7 +116,7 @@
 
     if (LoadingState.Value is null)
     {
-      LoadingState = LoadingState.WithValue(LocationMeasurementLocationModel.New());
+      LoadingState = LoadingState.WithValue(LocationMeasurementLocationModelActivator.New());
       _create = true;
     }
   }
