@@ -69,7 +69,7 @@ public static class IServiceCollectionExtensions
       (services, options) =>
       {
         if (builder.Environment.IsDevelopment()
-          && Environment.GetEnvironmentVariable("ENMS_LOG_SQL") is not null)
+          && Environment.GetEnvironmentVariable("OZDS_LOG_SQL") is not null)
         {
           options.EnableSensitiveDataLogging();
           options.EnableDetailedErrors();
