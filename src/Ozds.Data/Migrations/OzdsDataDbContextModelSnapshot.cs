@@ -6,14 +6,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using Ozds.Data;
+using Ozds.Data.Context;
 
 #nullable disable
 
 namespace Ozds.Data.Migrations
 {
-    [DbContext(typeof(OzdsDataDbContext))]
-    partial class OzdsDataDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(DataDbContext))]
+    partial class DataDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {

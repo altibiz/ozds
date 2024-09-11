@@ -1,7 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Queries.Abstractions;
-using Ozds.Data;
+using Ozds.Data.Context;
+using Ozds.Data.Extensions;
 using Ozds.Data.Entities.Base;
 using Ozds.Data.Extensions;
 using IEvent = Ozds.Business.Models.Abstractions.IEvent;
@@ -9,11 +10,11 @@ using IEvent = Ozds.Business.Models.Abstractions.IEvent;
 namespace Ozds.Business.Queries.Agnostic;
 
 public class OzdsEventQueries(
-  OzdsDataDbContext context,
+  DataDbContext context,
   AgnosticModelEntityConverter modelEntityConverter
 ) : IOzdsQueries
 {
-  private readonly OzdsDataDbContext _context = context;
+  private readonly DataDbContext _context = context;
 
   private readonly AgnosticModelEntityConverter _modelEntityConverter =
     modelEntityConverter;
@@ -27,7 +28,7 @@ public class OzdsEventQueries(
   )
     where T : class, IEvent
   {
-    var queryable = _context.GetDbSet(typeof(T))
+    var queryable = _context.GetQueryable(typeof(T))
         as IQueryable<EventEntity>
       ?? throw new InvalidOperationException(
         $"No DbSet found for {typeof(T)}");

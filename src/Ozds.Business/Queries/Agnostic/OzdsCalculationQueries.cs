@@ -2,18 +2,18 @@ using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Queries.Abstractions;
-using Ozds.Data;
+using Ozds.Data.Context;
 using Ozds.Data.Entities.Base;
 using Ozds.Data.Extensions;
 
 namespace Ozds.Business.Queries.Agnostic;
 
 public class OzdsCalculationQueries(
-  OzdsDataDbContext context,
+  DataDbContext context,
   AgnosticModelEntityConverter modelEntityConverter
 ) : IOzdsQueries
 {
-  private readonly OzdsDataDbContext _context = context;
+  private readonly DataDbContext _context = context;
 
   private readonly AgnosticModelEntityConverter _modelEntityConverter =
     modelEntityConverter;
@@ -22,12 +22,12 @@ public class OzdsCalculationQueries(
     where T : class, INetworkUserCalculation
   {
     var entityType = _modelEntityConverter.EntityType(typeof(T));
-    var queryable = _context.GetDbSet(entityType)
+    var queryable = _context.GetQueryable(entityType)
         as IQueryable<NetworkUserCalculationEntity>
       ?? throw new InvalidOperationException(
         $"No DbSet found for {entityType}");
     var item = await queryable
-      .Where(_context.PrimaryKeyEqualsAgnostic(entityType, id))
+      .Where(_context.PrimaryKeyEquals(entityType, id))
       .FirstOrDefaultAsync();
     return item is null ? null : _modelEntityConverter.ToModel(item) as T;
   }
@@ -41,7 +41,7 @@ public class OzdsCalculationQueries(
   )
     where T : class, INetworkUserCalculation
   {
-    var queryable = _context.GetDbSet(typeof(T))
+    var queryable = _context.GetQueryable(typeof(T))
         as IQueryable<NetworkUserCalculationEntity>
       ?? throw new InvalidOperationException();
     var filtered = whereClauses.Aggregate(

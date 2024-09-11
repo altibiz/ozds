@@ -6,7 +6,8 @@ using Ozds.Business.Extensions;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Composite;
 using Ozds.Business.Queries.Abstractions;
-using Ozds.Data;
+using Ozds.Data.Context;
+using Ozds.Data.Extensions;
 using Ozds.Data.Entities;
 using Ozds.Data.Entities.Enums;
 using Ozds.Users.Queries;
@@ -14,7 +15,7 @@ using Ozds.Users.Queries;
 namespace Ozds.Business.Queries;
 
 public class OzdsRepresentativeQueries(
-  OzdsDataDbContext context,
+  DataDbContext context,
   UserQueries userQueries
 ) : IOzdsQueries
 {

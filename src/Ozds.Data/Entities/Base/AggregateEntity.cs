@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Ozds.Data.Attributes;
 using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Entities.Enums;
 using Ozds.Data.Extensions;

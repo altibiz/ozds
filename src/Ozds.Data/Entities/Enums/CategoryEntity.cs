@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Enums;
@@ -7,7 +8,8 @@ public enum CategoryEntity
 {
   All,
   Messenger,
-  MessengerPush
+  MessengerPush,
+  Audit
 }
 
 public class CategoryEntityModelConfiguration : IModelConfiguration
@@ -15,5 +17,14 @@ public class CategoryEntityModelConfiguration : IModelConfiguration
   public void Configure(ModelBuilder modelBuilder)
   {
     modelBuilder.HasPostgresEnum<CategoryEntity>();
+  }
+}
+
+public class
+  CategoryEntityNpgsqlDataSourceConfiguration : INpgsqlDataSourceConfiguration
+{
+  public void Configure(NpgsqlDataSourceBuilder builder)
+  {
+    builder.MapEnum<CategoryEntity>();
   }
 }

@@ -1,4 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using Ozds.Jobs.Context;
+using Ozds.Jobs.Manager.Abstractions;
+using Ozds.Jobs.Observers.Abstractions;
 using Ozds.Jobs.Options;
 using Quartz;
 
@@ -11,44 +14,100 @@ public static class IServiceCollectionExtensions
     IHostApplicationBuilder builder
   )
   {
+    // Options
     services.Configure<OzdsJobsOptions>(
       builder.Configuration.GetSection("Ozds:Jobs"));
 
-    var timersOptions = builder.Configuration
-      .GetValue<OzdsJobsOptions>("Ozds:Jobs")
-        ?? throw new InvalidOperationException(
-          "Missing Ozds:Jobs configuration");
+    // Quartz
+    services.AddQuartz(builder);
 
-    services.AddQuartz(options =>
-    {
-      options.UsePersistentStore(options =>
-      {
-        options.UseSystemTextJsonSerializer();
-        options.UsePostgres(options =>
-        {
-          options.ConnectionString = timersOptions.ConnectionString;
-        });
-      });
-    });
+    // Managers
+    services.AddSingletonAssignableTo(typeof(IJobManager));
 
-    services.AddQuartzHostedService(options =>
-    {
-      options.WaitForJobsToComplete = true;
-      options.AwaitApplicationStarted = true;
-    });
+    // Observers
+    services.AddSingletonAssignableTo(typeof(IPublisher));
+    services.AddSingletonAssignableTo(typeof(ISubscriber));
 
     return services;
   }
 
-  public static IApplicationBuilder UseOzdsJobs(
-    this IApplicationBuilder app,
-    IEndpointRouteBuilder endpoints
+  private static void AddQuartz(
+    this IServiceCollection services,
+    IHostApplicationBuilder builder
   )
   {
-    using var scope = app.ApplicationServices.CreateScope();
-    var context = scope.ServiceProvider.GetRequiredService<OzdsJobsDbContext>();
-    context.Database.Migrate();
+    var jobsOptions = builder.Configuration
+        .GetSection("Ozds:Jobs")
+        .Get<OzdsJobsOptions>()
+      ?? throw new InvalidOperationException(
+        "Missing Ozds:Jobs configuration");
 
-    return app;
+    services.AddQuartz(
+      options =>
+      {
+        options.UsePersistentStore(
+          options =>
+          {
+            options.UseSystemTextJsonSerializer();
+            options.UsePostgres(
+              options =>
+              {
+                options.ConnectionString = jobsOptions.ConnectionString;
+              });
+          });
+      });
+
+    services.AddQuartzHostedService(
+      options =>
+      {
+        options.WaitForJobsToComplete = true;
+        options.AwaitApplicationStarted = true;
+      });
+
+    services.AddDbContext<JobsDbContext>(
+      options =>
+      {
+        options.UseNpgsql(jobsOptions.ConnectionString, x =>
+        {
+          x.MigrationsAssembly(
+            typeof(JobsDbContext).Assembly.GetName().Name);
+          x.MigrationsHistoryTable(
+            $"__Ozds{nameof(JobsDbContext)}");
+        });
+      });
+  }
+
+  private static void AddSingletonAssignableTo(
+    this IServiceCollection services,
+    Type assignableTo
+  )
+  {
+    var conversionTypes = typeof(IServiceCollectionExtensions).Assembly
+      .GetTypes()
+      .Where(
+        type =>
+          !type.IsAbstract &&
+          !type.IsGenericType &&
+          type.IsClass &&
+          type.IsAssignableTo(assignableTo));
+
+    foreach (var conversionType in conversionTypes)
+    {
+      foreach (var interfaceType in conversionType.GetAllInterfaces())
+      {
+        services.AddSingleton(conversionType);
+        services.AddSingleton(interfaceType, services =>
+          services.GetRequiredService(conversionType));
+      }
+    }
+  }
+
+  private static Type[] GetAllInterfaces(this Type type)
+  {
+    return type.GetInterfaces()
+      .Concat(type.GetInterfaces().SelectMany(GetAllInterfaces))
+      .Concat(type.BaseType?.GetAllInterfaces() ?? Array.Empty<Type>())
+      .ToHashSet()
+      .ToArray();
   }
 }

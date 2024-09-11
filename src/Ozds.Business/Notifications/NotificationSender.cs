@@ -5,13 +5,13 @@ using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Enums;
 using Ozds.Business.Models.Joins;
 using Ozds.Business.Notifications.Abstractions;
-using Ozds.Data;
+using Ozds.Data.Context;
 using Ozds.Email.Sender.Abstractions;
 
 namespace Ozds.Business.Notifications;
 
 public class NotificationSender(
-  OzdsDataDbContext context,
+  DataDbContext context,
   AgnosticModelEntityConverter converter,
   IEmailSender sender
 ) : INotificationSender

@@ -1,8 +1,10 @@
-using Ozds.Messaging.Sagas;
+using Ozds.Messaging.Observers.EventArgs;
 
 namespace Ozds.Messaging.Observers.Abstractions;
 
 public interface INetworkUserInvoiceStateSubscriber
 {
-  public event EventHandler<NetworkUserInvoiceStateEventArgs>? OnRegistered;
+  public void Subscribe(EventHandler<NetworkUserInvoiceStateEventArgs> handler);
+
+  public void Unsubscribe(EventHandler<NetworkUserInvoiceStateEventArgs> handler);
 }

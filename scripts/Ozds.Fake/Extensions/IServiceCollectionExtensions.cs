@@ -10,9 +10,8 @@ using Ozds.Fake.Correction.Agnostic;
 using Ozds.Fake.Generators.Abstractions;
 using Ozds.Fake.Generators.Agnostic;
 using Ozds.Fake.Loaders;
-using Ozds.Messaging;
-
-// TODO: figure out how to discover generic types nicely
+using Ozds.Fake.Loaders.Abstractions;
+using Ozds.Messaging.Context;
 
 namespace Ozds.Fake.Extensions;
 
@@ -41,7 +40,7 @@ public static class IServiceCollectionExtensions
 
   public static IServiceCollection AddLoaders(this IServiceCollection services)
   {
-    services.AddTransient(typeof(CsvLoader<>));
+    services.AddTransientAssignableTo(typeof(ILoader));
     services.AddSingleton(typeof(ResourceCache));
     return services;
   }
@@ -86,7 +85,7 @@ public static class IServiceCollectionExtensions
       x =>
       {
         var fakeAssembly = typeof(IServiceCollectionExtensions).Assembly;
-        var messagingAssembly = typeof(OzdsMessagingDbContext).Assembly;
+        var messagingAssembly = typeof(MessagingDbContext).Assembly;
 
         x.SetKebabCaseEndpointNameFormatter();
 
@@ -119,8 +118,7 @@ public static class IServiceCollectionExtensions
     Assembly? assembly = null
   )
   {
-    assembly ??= typeof(IServiceCollectionExtensions).Assembly;
-    var conversionTypes = assembly
+    var conversionTypes = (assembly ?? typeof(IServiceCollectionExtensions).Assembly)
       .GetTypes()
       .Where(
         type =>
@@ -131,8 +129,21 @@ public static class IServiceCollectionExtensions
 
     foreach (var conversionType in conversionTypes)
     {
-      services.AddTransient(assignableTo, conversionType);
       services.AddTransient(conversionType);
+      foreach (var interfaceType in conversionType.GetAllInterfaces())
+      {
+        services.AddTransient(interfaceType, services =>
+          services.GetRequiredService(conversionType));
+      }
     }
+  }
+
+  private static Type[] GetAllInterfaces(this Type type)
+  {
+    return type.GetInterfaces()
+      .Concat(type.GetInterfaces().SelectMany(GetAllInterfaces))
+      .Concat(type.BaseType?.GetAllInterfaces() ?? Array.Empty<Type>())
+      .ToHashSet()
+      .ToArray();
   }
 }

@@ -2,7 +2,7 @@ using System.Globalization;
 using Microsoft.AspNetCore.Mvc;
 using Ozds.Client.ViewModels;
 
-namespace Ozds.Client.Controllers;
+namespace Ozds.Server.Controllers;
 
 public class AppController : Controller
 {

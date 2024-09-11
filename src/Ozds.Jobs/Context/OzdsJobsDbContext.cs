@@ -2,10 +2,10 @@ using AppAny.Quartz.EntityFrameworkCore.Migrations;
 using AppAny.Quartz.EntityFrameworkCore.Migrations.PostgreSQL;
 using Microsoft.EntityFrameworkCore;
 
-namespace Ozds.Jobs;
+namespace Ozds.Jobs.Context;
 
-public class OzdsJobsDbContext(
-  DbContextOptions<OzdsJobsDbContext> options
+public class JobsDbContext(
+  DbContextOptions<JobsDbContext> options
 ) : DbContext(options)
 {
   protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -2,16 +2,17 @@ using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Conversion;
 using Ozds.Business.Models;
 using Ozds.Business.Queries.Abstractions;
-using Ozds.Data;
+using Ozds.Data.Context;
+using Ozds.Data.Extensions;
 using Ozds.Data.Entities;
 
 namespace Ozds.Business.Queries;
 
 public class OzdsAbbB2xMeasurementValidatorModelQueries(
-  OzdsDataDbContext context)
+  DataDbContext context)
   : IOzdsQueries
 {
-  private readonly OzdsDataDbContext context = context;
+  private readonly DataDbContext context = context;
 
   public async Task<AbbB2xMeasurementValidatorModel?>
     AbbB2xMeasurementValidatorById(string id)

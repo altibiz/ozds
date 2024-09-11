@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Mutations.Abstractions;
-using Ozds.Data;
+using Ozds.Data.Context;
 using Ozds.Data.Extensions;
 
 // TODO: check representative model user id
@@ -10,11 +10,11 @@ using Ozds.Data.Extensions;
 namespace Ozds.Business.Mutations.Agnostic;
 
 public class OzdsAuditableMutations(
-  OzdsDataDbContext context,
+  DataDbContext context,
   AgnosticModelEntityConverter modelEntityConverter
 ) : IOzdsMutations
 {
-  private readonly OzdsDataDbContext _context = context;
+  private readonly DataDbContext _context = context;
 
   private readonly AgnosticModelEntityConverter _modelEntityConverter =
     modelEntityConverter;
@@ -57,6 +57,6 @@ public class OzdsAuditableMutations(
 
   public void Delete(IAuditable auditable)
   {
-    _context.DeleteTracked(_modelEntityConverter.ToEntity(auditable));
+    _context.RemoveTracked(_modelEntityConverter.ToEntity(auditable));
   }
 }

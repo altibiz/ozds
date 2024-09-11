@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace Ozds.Client.Controllers;
+namespace Ozds.Server.Controllers;
 
 public class IndexController : Controller
 {

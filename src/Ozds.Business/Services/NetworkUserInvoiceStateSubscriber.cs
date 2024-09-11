@@ -1,6 +1,7 @@
 using System.Threading.Channels;
 using Ozds.Business.Mutations;
 using Ozds.Messaging.Observers.Abstractions;
+using Ozds.Messaging.Observers.EventArgs;
 using Ozds.Messaging.Sagas;
 
 namespace Ozds.Business.Services;
@@ -15,13 +16,13 @@ public class NetworkUserInvoiceStateSubscriber(
 
   public override Task StartAsync(CancellationToken cancellationToken)
   {
-    subscriber.OnRegistered += OnRegistered;
+    subscriber.Subscribe(OnRegistered);
     return base.StartAsync(cancellationToken);
   }
 
   public override Task StopAsync(CancellationToken cancellationToken)
   {
-    subscriber.OnRegistered -= OnRegistered;
+    subscriber.Unsubscribe(OnRegistered);
     return base.StopAsync(cancellationToken);
   }
 

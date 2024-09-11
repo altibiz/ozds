@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Ozds.Business.Iot;
 
-namespace Ozds.Business.Controllers;
+namespace Ozds.Server.Controllers;
 
 [IgnoreAntiforgeryToken]
 public class IotController(OzdsIotHandler iotHandler) : Controller

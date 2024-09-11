@@ -1,4 +1,5 @@
 using Ozds.Jobs.Observers.Abstractions;
+using Ozds.Jobs.Observers.EventArgs;
 using Quartz;
 
 namespace Ozds.Jobs;
@@ -11,7 +12,11 @@ public class MessengerInactivityMonitorJob(
 
   public Task Execute(IJobExecutionContext context)
   {
-    messengerJobPublisher.PublishInactivity(Id);
+    messengerJobPublisher.PublishInactivity(
+      new MessengerInactivityEventArgs
+      {
+        Id = Id
+      });
 
     return Task.CompletedTask;
   }

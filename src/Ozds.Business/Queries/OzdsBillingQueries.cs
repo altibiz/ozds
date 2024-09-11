@@ -1,20 +1,22 @@
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Conversion;
+using Ozds.Business.Extensions;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Composite;
 using Ozds.Business.Queries.Abstractions;
-using Ozds.Data;
+using Ozds.Data.Context;
 using Ozds.Data.Entities;
 using Ozds.Data.Entities.Base;
 using Ozds.Data.Entities.Enums;
+using Ozds.Data.Extensions;
 
 // TODO: remove any direct references to aggregate model/entity types
 
 namespace Ozds.Business.Queries;
 
-public class OzdsBillingQueries(OzdsDataDbContext dbContext) : IOzdsQueries
+public class OzdsBillingQueries(DataDbContext dbContext) : IOzdsQueries
 {
-  private readonly OzdsDataDbContext _dbContext = dbContext;
+  private readonly DataDbContext _dbContext = dbContext;
 
   public async Task<List<NetworkUserCalculationBasisModel>>
     NetworkUserCalculationBasesByNetworkUser(
@@ -50,11 +52,11 @@ public class OzdsBillingQueries(OzdsDataDbContext dbContext) : IOzdsQueries
         )
         .Join(
           _dbContext.Meters,
-          _dbContext.ForeignKeyOf(
-            (NetworkUserCalculationBasesByNetworkUserIntermediary x) =>
-              x.MeasurementLocation,
-            nameof(MeasurementLocationEntity.Meter)
-          ),
+          _dbContext
+            .ForeignKeyOf<MeasurementLocationEntity>(
+              nameof(MeasurementLocationEntity.Meter))
+            .Prefix((NetworkUserCalculationBasesByNetworkUserIntermediary x) =>
+              x.MeasurementLocation),
           _dbContext.PrimaryKeyOf<MeterEntity>(),
           (x, meter) =>
             new NetworkUserCalculationBasesByNetworkUserIntermediary
@@ -72,10 +74,10 @@ public class OzdsBillingQueries(OzdsDataDbContext dbContext) : IOzdsQueries
             .Where(x => x.Timestamp >= fromDate)
             .Where(x => x.Timestamp <= toDate)
             .Where(x => x.Interval == IntervalEntity.QuarterHour),
-          _dbContext.PrimaryKeyOf(
-            (NetworkUserCalculationBasesByNetworkUserIntermediary x) =>
-              x.Meter
-          ),
+          _dbContext
+            .PrimaryKeyOf<MeterEntity>()
+            .Prefix((NetworkUserCalculationBasesByNetworkUserIntermediary x) =>
+              x.Meter),
           _dbContext.ForeignKeyOf<AbbB2xAggregateEntity>(
             nameof(AbbB2xAggregateEntity.Meter)
           ),
@@ -110,10 +112,10 @@ public class OzdsBillingQueries(OzdsDataDbContext dbContext) : IOzdsQueries
             .Where(x => x.Timestamp >= fromDate)
             .Where(x => x.Timestamp <= toDate)
             .Where(x => x.Interval == IntervalEntity.QuarterHour),
-          _dbContext.PrimaryKeyOf(
-            (NetworkUserCalculationBasesByNetworkUserIntermediary x) =>
-              x.Meter
-          ),
+          _dbContext
+            .PrimaryKeyOf<MeterEntity>()
+            .Prefix((NetworkUserCalculationBasesByNetworkUserIntermediary x) =>
+              x.Meter),
           _dbContext.ForeignKeyOf<SchneideriEM3xxxAggregateEntity>(
             nameof(AbbB2xAggregateEntity.Meter)
           ),

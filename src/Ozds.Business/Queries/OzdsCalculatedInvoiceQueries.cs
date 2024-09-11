@@ -4,17 +4,18 @@ using Ozds.Business.Models;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Composite;
 using Ozds.Business.Queries.Abstractions;
-using Ozds.Data;
+using Ozds.Data.Context;
+using Ozds.Data.Extensions;
 using Ozds.Data.Entities;
 
 namespace Ozds.Business.Queries;
 
 public class OzdsCalculatedInvoiceQueries(
-  OzdsDataDbContext context,
+  DataDbContext context,
   AgnosticModelEntityConverter modelEntityConverter
 ) : IOzdsQueries
 {
-  private readonly OzdsDataDbContext _context = context;
+  private readonly DataDbContext _context = context;
 
   private readonly AgnosticModelEntityConverter _modelEntityConverter =
     modelEntityConverter;

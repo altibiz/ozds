@@ -1,5 +1,7 @@
 using System.Reflection;
-using Microsoft.EntityFrameworkCore;
+using Npgsql;
+using Ozds.Data.Context;
+using Ozds.Data.Observers.Abstractions;
 using Ozds.Data.Options;
 
 namespace Ozds.Data.Extensions;
@@ -11,60 +13,99 @@ public static class IServiceCollectionExtensions
     IHostApplicationBuilder builder
   )
   {
+    // Entity Framework Core
+    services.AddEntityFrameworkCore(builder);
+
+    // Observers
+    services.AddSingletonAssignableTo(typeof(IPublisher));
+    services.AddSingletonAssignableTo(typeof(ISubscriber));
+
+    return services;
+  }
+
+  private static void AddSingletonAssignableTo(
+    this IServiceCollection services,
+    Type assignableTo
+  )
+  {
+    var conversionTypes = typeof(IServiceCollectionExtensions).Assembly
+      .GetTypes()
+      .Where(
+        type =>
+          !type.IsAbstract &&
+          !type.IsGenericType &&
+          type.IsClass &&
+          type.IsAssignableTo(assignableTo));
+
+    foreach (var conversionType in conversionTypes)
+    {
+      foreach (var interfaceType in conversionType.GetAllInterfaces())
+      {
+        services.AddSingleton(conversionType);
+        services.AddSingleton(interfaceType, services =>
+          services.GetRequiredService(conversionType));
+      }
+    }
+  }
+
+  private static void AddEntityFrameworkCore(
+    this IServiceCollection services,
+    IHostApplicationBuilder builder
+  )
+  {
     services.Configure<OzdsDataOptions>(
       builder.Configuration.GetSection("Ozds:Data"));
 
-    var dataOptions = builder.Configuration.GetValue<OzdsDataOptions>("Ozds:Data")
+    var dataOptions =
+      builder.Configuration
+        .GetSection("Ozds:Data")
+        .Get<OzdsDataOptions>()
       ?? throw new InvalidOperationException(
         "Ozds:Data not found in configuration"
       );
 
-    services.Configure<OzdsDataOptions>(
-      builder.Configuration.GetSection("Ozds:Data"));
-
-    services.AddDbContextFactory<OzdsDataDbContext>(
+    services.AddDbContextFactory<DataDbContext>(
       (services, options) =>
       {
-        if (builder.Environment.IsDevelopment())
+        if (builder.Environment.IsDevelopment()
+          && Environment.GetEnvironmentVariable("ENMS_LOG_SQL") is not null)
         {
-#pragma warning disable S125
-          // TODO: switch to enable query/mutation logging
-          // options.EnableSensitiveDataLogging();
-          // options.EnableDetailedErrors();
-          // options.UseLoggerFactory(
-          //   LoggerFactory.Create(builder => builder.AddConsole())
-          // );
-#pragma warning restore S125
+          options.EnableSensitiveDataLogging();
+          options.EnableDetailedErrors();
+          options.UseLoggerFactory(
+            LoggerFactory.Create(builder => builder.AddConsole())
+          );
         }
+
+        var dataSourceBuilder =
+          new NpgsqlDataSourceBuilder(dataOptions.ConnectionString);
+        dataSourceBuilder.ApplyConfigurationsFromAssembly(
+          Assembly.GetExecutingAssembly());
+        var dataSource = dataSourceBuilder.Build();
 
         options
           .UseTimescale(
-            dataOptions.ConnectionString,
+            dataSource,
             options =>
             {
               options.MigrationsAssembly(
-                typeof(OzdsDataDbContext).Assembly.GetName().Name);
+                typeof(DataDbContext).Assembly.GetName().Name);
               options.MigrationsHistoryTable(
-                $"__{nameof(OzdsDataDbContext)}");
+                $"__Ozds{nameof(DataDbContext)}");
             })
           .AddServedSaveChangesInterceptorsFromAssembly(
             Assembly.GetExecutingAssembly(),
             services
           );
       });
-
-    return services;
   }
 
-  public static IApplicationBuilder UseOzdsData(
-    this IApplicationBuilder app,
-    IEndpointRouteBuilder endpoints
-  )
+  private static Type[] GetAllInterfaces(this Type type)
   {
-    using var scope = app.ApplicationServices.CreateScope();
-    var context = scope.ServiceProvider.GetRequiredService<OzdsDataDbContext>();
-    context.Database.Migrate();
-
-    return app;
+    return type.GetInterfaces()
+      .Concat(type.GetInterfaces().SelectMany(GetAllInterfaces))
+      .Concat(type.BaseType?.GetAllInterfaces() ?? Array.Empty<Type>())
+      .ToHashSet()
+      .ToArray();
   }
 }

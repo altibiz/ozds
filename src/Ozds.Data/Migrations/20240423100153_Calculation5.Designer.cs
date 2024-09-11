@@ -6,13 +6,13 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using Ozds.Data;
+using Ozds.Data.Context;
 
 #nullable disable
 
 namespace Ozds.Data.Migrations
 {
-    [DbContext(typeof(OzdsDataDbContext))]
+    [DbContext(typeof(DataDbContext))]
     [Migration("20240423100153_Calculation5")]
     partial class Calculation5
     {

@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-// TODO: better way to find nested archivable properties
-
 namespace Ozds.Data.Extensions;
+
+// TODO: better way to find nested archivable properties
 
 public static class EntityTypeBuilderExtensions
 {
@@ -19,7 +19,7 @@ public static class EntityTypeBuilderExtensions
       .GetProperties()
       .Where(
         property => property is { GetMethod.IsVirtual: true } or
-          { GetMethod.IsAbstract: true })
+        { GetMethod.IsAbstract: true })
       .ToList();
 
     var propertiesToArchive = complexPropertyBuilder.Metadata
@@ -93,5 +93,23 @@ public static class EntityTypeBuilderExtensions
             : x.ToString().ToLower()
       )
     );
+  }
+
+  public static EntityTypeBuilder HasTimescaleHypertable(
+    this EntityTypeBuilder builder,
+    string timeColumn,
+    string? spaceColumn = null,
+    string? spacePartitioning = null
+  )
+  {
+    var value = timeColumn;
+    if (spaceColumn is not null && spacePartitioning is not null)
+    {
+      value += $",{spaceColumn}:{spacePartitioning}";
+    }
+
+    builder.Metadata.AddAnnotation("TimescaleHypertable", value);
+
+    return builder;
   }
 }

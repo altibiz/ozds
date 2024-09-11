@@ -6,7 +6,7 @@ using Ozds.Business.Aggregation.Agnostic;
 using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Enums;
-using Ozds.Data;
+using Ozds.Data.Context;
 using Ozds.Data.Entities.Abstractions;
 
 // FIXME: duplicates make averages incorrect
@@ -17,7 +17,7 @@ public class BatchAggregatedMeasurementUpserter(
   AgnosticMeasurementAggregateConverter aggregateConverter,
   AgnosticModelEntityConverter modelEntityConverter,
   AgnosticAggregateUpserter aggregateUpserter,
-  OzdsDataDbContext context
+  DataDbContext context
 )
 {
   private static readonly SemaphoreSlim Semaphore = new(1, 1);
@@ -165,7 +165,7 @@ public class BatchAggregatedMeasurementUpserter(
   }
 
   private static async Task UpsertMeasurements<T>(
-    OzdsDataDbContext context,
+    DataDbContext context,
     IEnumerable<T> measurements
   )
     where T : class, IMeasurementEntity
@@ -183,7 +183,7 @@ public class BatchAggregatedMeasurementUpserter(
   }
 
   private static async Task UpsertAggregates<T>(
-    OzdsDataDbContext context,
+    DataDbContext context,
     IEnumerable<T> aggregates,
     AgnosticAggregateUpserter upserter)
     where T : class, IAggregateEntity

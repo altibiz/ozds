@@ -6,11 +6,13 @@ using Ozds.Business.Conversion;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Enums;
 using Ozds.Business.Notifications.Abstractions;
-using Ozds.Data;
+using Ozds.Data.Context;
 using Ozds.Data.Entities;
 using Ozds.Data.Entities.Enums;
+using Ozds.Data.Extensions;
 using Ozds.Jobs.Manager.Abstractions;
 using Ozds.Jobs.Observers.Abstractions;
+using Ozds.Jobs.Observers.EventArgs;
 
 namespace Ozds.Business.Services;
 
@@ -31,7 +33,7 @@ public class MessengerInactivityService(
   {
     await using (var scope = serviceScopeFactory.CreateAsyncScope())
     {
-      var context = scope.ServiceProvider.GetRequiredService<OzdsDataDbContext>();
+      var context = scope.ServiceProvider.GetRequiredService<DataDbContext>();
       var messengers = await context.Messengers.ToListAsync();
       foreach (var messenger in messengers)
       {
@@ -42,13 +44,13 @@ public class MessengerInactivityService(
       }
     }
 
-    subscriber.OnInactivity += OnInactivity;
+    subscriber.SubscribeInactivity(OnInactivity);
     await base.StartAsync(cancellationToken);
   }
 
   public override Task StopAsync(CancellationToken cancellationToken)
   {
-    subscriber.OnInactivity -= OnInactivity;
+    subscriber.UnsubscribeInactivity(OnInactivity);
     return base.StopAsync(cancellationToken);
   }
 
@@ -62,15 +64,15 @@ public class MessengerInactivityService(
     }
   }
 
-  private void OnInactivity(object? sender, string id)
+  private void OnInactivity(object? sender, MessengerInactivityEventArgs args)
   {
-    inactive.Writer.TryWrite(id);
+    inactive.Writer.TryWrite(args.Id);
   }
 
-  private async Task Notify(IServiceProvider serviceProvider, string id)
+  private static async Task Notify(IServiceProvider serviceProvider, string id)
   {
     var sender = serviceProvider.GetRequiredService<INotificationSender>();
-    var context = serviceProvider.GetRequiredService<OzdsDataDbContext>();
+    var context = serviceProvider.GetRequiredService<DataDbContext>();
 
     var messenger = (await context.Messengers
       .FirstOrDefaultAsync(context.PrimaryKeyEquals<MessengerEntity>(id)))

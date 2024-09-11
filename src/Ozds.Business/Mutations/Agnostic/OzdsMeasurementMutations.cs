@@ -2,16 +2,17 @@ using System.ComponentModel.DataAnnotations;
 using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Mutations.Abstractions;
-using Ozds.Data;
+using Ozds.Data.Context;
+using Ozds.Data.Extensions;
 
 namespace Ozds.Business.Mutations.Agnostic;
 
 public class OzdsMeasurementMutations(
-  OzdsDataDbContext context,
+  DataDbContext context,
   AgnosticModelEntityConverter modelEntityConverter
 ) : IOzdsMutations
 {
-  private readonly OzdsDataDbContext _context = context;
+  private readonly DataDbContext _context = context;
 
   private readonly AgnosticModelEntityConverter _modelEntityConverter =
     modelEntityConverter;

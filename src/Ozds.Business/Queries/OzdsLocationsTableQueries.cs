@@ -1,18 +1,20 @@
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Conversion;
+using Ozds.Business.Extensions;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Composite;
 using Ozds.Business.Queries.Abstractions;
-using Ozds.Data;
+using Ozds.Data.Context;
 using Ozds.Data.Entities;
 using Ozds.Data.Entities.Base;
+using Ozds.Data.Extensions;
 
 namespace Ozds.Business.Queries;
 
 public class OzdsLocationsTableQueries(
-  OzdsDataDbContext context) : IOzdsQueries
+  DataDbContext context) : IOzdsQueries
 {
-  private readonly OzdsDataDbContext context = context;
+  private readonly DataDbContext context = context;
 
   public async Task<List<LocationsTableViewModel>>
     ViewModelByNetworkUser(
@@ -39,10 +41,10 @@ public class OzdsLocationsTableQueries(
       )
       .GroupJoin(
         context.Meters,
-        context.ForeignKeyOf(
-          (ViewModelStruct x) => x.MeasurementLocation,
-          nameof(MeasurementLocationEntity.Meter)
-        ),
+        context
+          .ForeignKeyOf<NetworkUserMeasurementLocationEntity>(
+            nameof(MeasurementLocationEntity.Meter))
+          .Prefix((ViewModelStruct x) => x.MeasurementLocation),
         context.PrimaryKeyOf<MeterEntity>(),
         (x, meter) => new
         {
@@ -66,7 +68,9 @@ public class OzdsLocationsTableQueries(
         context.AbbB2xMeasurements
           .OrderByDescending(x => x.Timestamp)
           .Take(1),
-        context.PrimaryKeyOf((ViewModelStruct x) => x.Meter),
+        context
+          .PrimaryKeyOf<MeterEntity>()
+          .Prefix((ViewModelStruct x) => x.Meter),
         context.ForeignKeyOf<AbbB2xMeasurementEntity>(
           nameof(AbbB2xMeasurementEntity.Meter)),
         (x, abbB2xMeasurements) => new
@@ -92,7 +96,9 @@ public class OzdsLocationsTableQueries(
         context.SchneideriEM3xxxMeasurements
           .OrderByDescending(x => x.Timestamp)
           .Take(1),
-        context.PrimaryKeyOf((ViewModelStruct x) => x.Meter),
+        context
+          .PrimaryKeyOf<MeterEntity>()
+          .Prefix((ViewModelStruct x) => x.Meter),
         context.ForeignKeyOf<SchneideriEM3xxxMeasurementEntity>(
           nameof(SchneideriEM3xxxMeasurementEntity.Meter)),
         (x, schneideriEM3xxxMeasurements) => new

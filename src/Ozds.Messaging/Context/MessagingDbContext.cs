@@ -2,17 +2,17 @@ using MassTransit;
 using MassTransit.EntityFrameworkCoreIntegration;
 using Microsoft.EntityFrameworkCore;
 
-namespace Ozds.Messaging;
+namespace Ozds.Messaging.Context;
 
-public class OzdsMessagingDbContext(
-  DbContextOptions<OzdsMessagingDbContext> options)
+public class MessagingDbContext(
+  DbContextOptions<MessagingDbContext> options)
   : SagaDbContext(options)
 {
   protected override IEnumerable<ISagaClassMap> Configurations
   {
     get
     {
-      return typeof(OzdsMessagingDbContext).Assembly.GetTypes()
+      return typeof(MessagingDbContext).Assembly.GetTypes()
         .Where(
           x =>
             x.IsClass &&

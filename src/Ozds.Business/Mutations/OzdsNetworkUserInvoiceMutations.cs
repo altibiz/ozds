@@ -1,14 +1,15 @@
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Mutations.Abstractions;
-using Ozds.Data;
+using Ozds.Data.Context;
+using Ozds.Data.Extensions;
 using Ozds.Data.Entities;
 
 namespace Ozds.Business.Mutations;
 
-public class OzdsNetworkUserInvoiceMutations(OzdsDataDbContext dbContext)
+public class OzdsNetworkUserInvoiceMutations(DataDbContext dbContext)
   : IOzdsMutations
 {
-  private readonly OzdsDataDbContext _dbContext = dbContext;
+  private readonly DataDbContext _dbContext = dbContext;
 
   public async Task UpdateBillId(string id, string registrationId)
   {

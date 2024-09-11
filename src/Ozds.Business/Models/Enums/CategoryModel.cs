@@ -6,7 +6,8 @@ public enum CategoryModel
 {
   All,
   Messenger,
-  MessengerPush
+  MessengerPush,
+  Audit
 }
 
 public static class CategoryModelExtensions
@@ -18,6 +19,7 @@ public static class CategoryModelExtensions
       CategoryEntity.All => CategoryModel.All,
       CategoryEntity.Messenger => CategoryModel.Messenger,
       CategoryEntity.MessengerPush => CategoryModel.MessengerPush,
+      CategoryEntity.Audit => CategoryModel.Audit,
       _ => throw new ArgumentOutOfRangeException(nameof(entity), entity, null)
     };
   }
@@ -29,6 +31,7 @@ public static class CategoryModelExtensions
       CategoryModel.All => CategoryEntity.All,
       CategoryModel.Messenger => CategoryEntity.Messenger,
       CategoryModel.MessengerPush => CategoryEntity.MessengerPush,
+      CategoryModel.Audit => CategoryEntity.Audit,
       _ => throw new ArgumentOutOfRangeException(nameof(model), model, null)
     };
   }
@@ -40,6 +43,7 @@ public static class CategoryModelExtensions
       CategoryModel.All => "General",
       CategoryModel.Messenger => "Messenger",
       CategoryModel.MessengerPush => "Messenger push",
+      CategoryModel.Audit => "Audit",
       _ => throw new ArgumentOutOfRangeException(nameof(model), model, null)
     };
   }

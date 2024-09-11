@@ -3,18 +3,19 @@ using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Queries.Abstractions;
-using Ozds.Data;
+using Ozds.Data.Context;
+using Ozds.Data.Extensions;
 using Ozds.Data.Entities.Base;
 using Ozds.Data.Extensions;
 
 namespace Ozds.Business.Queries.Agnostic;
 
 public class OzdsAggregateQueries(
-  OzdsDataDbContext context,
+  DataDbContext context,
   AgnosticModelEntityConverter modelEntityConverter
 ) : IOzdsQueries
 {
-  private readonly OzdsDataDbContext _context = context;
+  private readonly DataDbContext _context = context;
 
   private readonly AgnosticModelEntityConverter _modelEntityConverter =
     modelEntityConverter;
@@ -29,7 +30,7 @@ public class OzdsAggregateQueries(
     where T : class, IAggregate
   {
     var dbSetType = _modelEntityConverter.EntityType(typeof(T));
-    var queryable = _context.GetDbSet(dbSetType)
+    var queryable = _context.GetQueryable(dbSetType)
         as IQueryable<AggregateEntity>
       ?? throw new InvalidOperationException(
         $"No DbSet found for {dbSetType}");

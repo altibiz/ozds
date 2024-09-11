@@ -1,3 +1,4 @@
+using System.Data.Common;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -13,12 +14,12 @@ public static class DbContextOptionsBuilderExtensions
 {
   public static DbContextOptionsBuilder UseTimescale(
     this DbContextOptionsBuilder builder,
-    string connectionString,
+    DbDataSource dataSource,
     Action<NpgsqlDbContextOptionsBuilder>? npgsqlOptionsAction = null
   )
   {
     return builder
-      .UseNpgsql(connectionString, npgsqlOptionsAction)
+      .UseNpgsql(dataSource, npgsqlOptionsAction)
       .ReplaceService<IMigrationsSqlGenerator, TimescaleMigrationSqlGenerator>()
       .ReplaceService<IRelationalAnnotationProvider,
         TimescaleAnnotationProvider>();
@@ -50,6 +51,8 @@ public static class DbContextOptionsBuilderExtensions
             }
           })
         .Where(interceptor => interceptor is not null)
+        .OfType<ServedSaveChangesInterceptor>()
+        .OrderBy(interceptor => interceptor.Order)
         .OfType<IInterceptor>()
         .ToArray());
   }

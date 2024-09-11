@@ -1,29 +1,46 @@
-using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Observers.Abstractions;
+using Ozds.Data.Observers.EventArgs;
 
 namespace Ozds.Data.Observers;
 
 public class EntityChangesObserver
   : IEntityChangesPublisher, IEntityChangesSubscriber
 {
-  public event EventHandler<EntityAddedEventArgs>? OnEntityAdded;
-
-  public event EventHandler<EntityModifiedEventArgs>? OnEntityModified;
-
-  public event EventHandler<EntityRemovedEventArgs>? OnEntityRemoved;
-
-  public void PublishEntityAdded(IEntity entity)
+  public void PublishEntitiesChanged(EntitiesChangedEventArgs eventArgs)
   {
-    OnEntityAdded?.Invoke(this, new EntityAddedEventArgs { Entity = entity });
+    OnEntitiesChanged?.Invoke(this, eventArgs);
   }
 
-  public void PublishEntityModified(IEntity entity)
+  public void PublishEntitiesChanging(EntitiesChangingEventArgs eventArgs)
   {
-    OnEntityModified?.Invoke(this, new EntityModifiedEventArgs { Entity = entity });
+    OnEntitiesChanging?.Invoke(this, eventArgs);
   }
 
-  public void PublishEntityRemoved(IEntity entity)
+  public void SubscribeEntitiesChanging(
+    EventHandler<EntitiesChangingEventArgs> handler)
   {
-    OnEntityRemoved?.Invoke(this, new EntityRemovedEventArgs { Entity = entity });
+    OnEntitiesChanging += handler;
   }
+
+  public void UnsubscribeEntitiesChanging(
+    EventHandler<EntitiesChangingEventArgs> handler)
+  {
+    OnEntitiesChanging -= handler;
+  }
+
+  public void SubscribeEntitiesChanged(
+    EventHandler<EntitiesChangedEventArgs> handler)
+  {
+    OnEntitiesChanged += handler;
+  }
+
+  public void UnsubscribeEntitiesChanged(
+    EventHandler<EntitiesChangedEventArgs> handler)
+  {
+    OnEntitiesChanged -= handler;
+  }
+
+  private event EventHandler<EntitiesChangingEventArgs>? OnEntitiesChanging;
+
+  private event EventHandler<EntitiesChangedEventArgs>? OnEntitiesChanged;
 }

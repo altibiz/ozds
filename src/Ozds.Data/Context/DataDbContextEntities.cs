@@ -2,9 +2,9 @@ using Microsoft.EntityFrameworkCore;
 using Ozds.Data.Entities;
 using Ozds.Data.Entities.Base;
 
-namespace Ozds.Data;
+namespace Ozds.Data.Context;
 
-public partial class OzdsDataDbContext : DbContext
+public partial class DataDbContext : DbContext
 {
   public DbSet<RepresentativeEntity> Representatives { get; set; } = default!;
 

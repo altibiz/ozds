@@ -1,26 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-// TODO: add tracked - create a way to make distinct ephemeral primary keys
-// TODO: cache, add to OzdsDataDbContext
-
 namespace Ozds.Data.Extensions;
 
-public static class DbContextExtensions
+public static class DbContextTrackingExtensions
 {
-  public static IQueryable<object> GetDbSet(this DbContext context, Type type)
-  {
-    var method = typeof(DbContext)
-      .GetMethods()
-      .FirstOrDefault(
-        m => m.Name == nameof(DbContext.Set)
-          && m.IsGenericMethodDefinition
-          && m.GetParameters().Length == 0)
-      ?.MakeGenericMethod(type);
-    return method?.Invoke(context, null) as IQueryable<object>
-      ?? throw new InvalidOperationException($"No DbSet found for {type}");
-  }
-
   public static void AddTracked(
     this DbContext context,
     object entity
@@ -41,7 +25,7 @@ public static class DbContextExtensions
     entry.State = EntityState.Modified;
   }
 
-  public static void DeleteTracked(
+  public static void RemoveTracked(
     this DbContext context,
     object entity
   )
@@ -75,7 +59,7 @@ public static class DbContextExtensions
       .ToList();
   }
 
-  private static EntityEntry FindEntry(
+  public static EntityEntry FindEntry(
     this DbContext context,
     object entity
   )

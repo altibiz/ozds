@@ -2,18 +2,18 @@ using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Queries.Abstractions;
-using Ozds.Data;
+using Ozds.Data.Context;
 using Ozds.Data.Entities.Base;
 using Ozds.Data.Extensions;
 
 namespace Ozds.Business.Queries.Agnostic;
 
 public class OzdsAuditableQueries(
-  OzdsDataDbContext context,
+  DataDbContext context,
   AgnosticModelEntityConverter modelEntityConverter
 ) : IOzdsQueries
 {
-  private readonly OzdsDataDbContext _context = context;
+  private readonly DataDbContext _context = context;
 
   private readonly AgnosticModelEntityConverter _modelEntityConverter =
     modelEntityConverter;
@@ -22,9 +22,9 @@ public class OzdsAuditableQueries(
     where T : class, IAuditable
   {
     var entityType = _modelEntityConverter.EntityType(typeof(T));
-    var queryable = _context.GetDbSet(entityType);
+    var queryable = _context.GetQueryable(entityType);
     var item = await queryable
-      .Where(_context.PrimaryKeyEqualsAgnostic(entityType, id))
+      .Where(_context.PrimaryKeyEquals(entityType, id))
       .FirstOrDefaultAsync();
     return item is null ? null : _modelEntityConverter.ToModel(item) as T;
   }
@@ -39,7 +39,7 @@ public class OzdsAuditableQueries(
     where T : class, IAuditable
   {
     var queryable =
-      _context.GetDbSet(_modelEntityConverter.EntityType(typeof(T)))
+      _context.GetQueryable(_modelEntityConverter.EntityType(typeof(T)))
         as IQueryable<AuditableEntity>
       ?? throw new InvalidOperationException();
     var filtered = whereClauses.Aggregate(

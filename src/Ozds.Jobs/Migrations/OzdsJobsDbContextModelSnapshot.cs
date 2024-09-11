@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using Ozds.Jobs;
+using Ozds.Jobs.Context;
 
 #nullable disable
 
 namespace Ozds.Jobs.Migrations
 {
-    [DbContext(typeof(OzdsJobsDbContext))]
+    [DbContext(typeof(JobsDbContext))]
     partial class OzdsJobsDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

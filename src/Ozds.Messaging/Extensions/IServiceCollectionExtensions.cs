@@ -1,7 +1,7 @@
 using MassTransit;
 using MassTransit.Configuration;
 using Microsoft.EntityFrameworkCore;
-using Ozds.Messaging.Observers;
+using Ozds.Messaging.Context;
 using Ozds.Messaging.Observers.Abstractions;
 using Ozds.Messaging.Options;
 
@@ -20,37 +20,55 @@ public static class IServiceCollectionExtensions
     IHostApplicationBuilder builder
   )
   {
+    // Options
     services.Configure<OzdsMessagingOptions>(
       builder.Configuration.GetSection("Ozds:Messaging"));
 
-    var options = builder.Configuration.GetValue<OzdsMessagingOptions>(
-      "Ozds:Messaging") ?? throw new InvalidOperationException(
-        "Ozds:Messaging not found in configuration");
+    // MassTransit
+    services.AddMassTransit(builder);
 
-    services.AddDbContext<OzdsMessagingDbContext>(
+    // Observers
+    services.AddSingletonAssignableTo(typeof(IPublisher));
+    services.AddSingletonAssignableTo(typeof(ISubscriber));
+
+    return services;
+  }
+
+  private static void AddMassTransit(
+    this IServiceCollection services,
+    IHostApplicationBuilder builder
+  )
+  {
+    var messagingOptions = builder.Configuration
+        .GetSection("Ozds:Messaging")
+        .Get<OzdsMessagingOptions>()
+      ?? throw new InvalidOperationException(
+        "Missing Ozds:Messaging configuration");
+
+    services.AddDbContext<MessagingDbContext>(
       builder => builder
         .UseNpgsql(
-          options.PersistenceConnectionString, m =>
+          messagingOptions.PersistenceConnectionString, m =>
           {
             m.MigrationsAssembly(
-              typeof(OzdsMessagingDbContext).Assembly.GetName().Name);
+              typeof(MessagingDbContext).Assembly.GetName().Name);
             m.MigrationsHistoryTable(
-              $"__{nameof(OzdsMessagingDbContext)}");
+              $"__{nameof(MessagingDbContext)}");
           }));
 
     services.AddMassTransit(
       config =>
       {
-        var assembly = typeof(OzdsMessagingDbContext).Assembly;
+        var assembly = typeof(MessagingDbContext).Assembly;
 
-        config.AddEntityFrameworkOutbox<OzdsMessagingDbContext>(config =>
+        config.AddEntityFrameworkOutbox<MessagingDbContext>(config =>
         {
           config.UsePostgres();
           config.UseBusOutbox();
         });
         config.AddConfigureEndpointsCallback((context, name, config) =>
         {
-          config.UseEntityFrameworkOutbox<OzdsMessagingDbContext>(context);
+          config.UseEntityFrameworkOutbox<MessagingDbContext>(context);
         });
         config.SetKebabCaseEndpointNameFormatter();
 
@@ -64,7 +82,7 @@ public static class IServiceCollectionExtensions
 
         if (builder.Environment.IsDevelopment())
         {
-          var connectionStringDictionary = options.ConnectionString
+          var connectionStringDictionary = messagingOptions.ConnectionString
             .Split(';')
             .ToDictionary(x => x.Split('=')[0], x => x.Split('=')[1]);
           var host = connectionStringDictionary["Host"];
@@ -86,7 +104,7 @@ public static class IServiceCollectionExtensions
         }
         else
         {
-          var connectionString = options.ConnectionString;
+          var connectionString = messagingOptions.ConnectionString;
 
           config.UsingAzureServiceBus(
             (context, cfg) =>
@@ -96,23 +114,6 @@ public static class IServiceCollectionExtensions
             });
         }
       });
-
-    services.AddSingleton<INetworkUserInvoiceStatePublisher, NetworkUserInvoiceStateObserver>();
-    services.AddSingleton<INetworkUserInvoiceStateSubscriber, NetworkUserInvoiceStateObserver>();
-
-    return services;
-  }
-
-  public static IApplicationBuilder UseOzdsMessaging(
-    this IApplicationBuilder app,
-    IEndpointRouteBuilder endpoints
-  )
-  {
-    using var scope = app.ApplicationServices.CreateScope();
-    var context = scope.ServiceProvider.GetRequiredService<OzdsMessagingDbContext>();
-    context.Database.Migrate();
-
-    return app;
   }
 
   private sealed class OzdsSagaRepositoryRegistrationProvider
@@ -126,9 +127,43 @@ public static class IServiceCollectionExtensions
       configurator.EntityFrameworkRepository(config =>
       {
         config.ConcurrencyMode = ConcurrencyMode.Optimistic;
-        config.ExistingDbContext<OzdsMessagingDbContext>();
+        config.ExistingDbContext<MessagingDbContext>();
         config.UsePostgres();
       });
     }
+  }
+
+  private static void AddSingletonAssignableTo(
+    this IServiceCollection services,
+    Type assignableTo
+  )
+  {
+    var conversionTypes = typeof(IServiceCollectionExtensions).Assembly
+      .GetTypes()
+      .Where(
+        type =>
+          !type.IsAbstract &&
+          !type.IsGenericType &&
+          type.IsClass &&
+          type.IsAssignableTo(assignableTo));
+
+    foreach (var conversionType in conversionTypes)
+    {
+      foreach (var interfaceType in conversionType.GetAllInterfaces())
+      {
+        services.AddSingleton(conversionType);
+        services.AddSingleton(interfaceType, services =>
+          services.GetRequiredService(conversionType));
+      }
+    }
+  }
+
+  private static Type[] GetAllInterfaces(this Type type)
+  {
+    return type.GetInterfaces()
+      .Concat(type.GetInterfaces().SelectMany(GetAllInterfaces))
+      .Concat(type.BaseType?.GetAllInterfaces() ?? Array.Empty<Type>())
+      .ToHashSet()
+      .ToArray();
   }
 }

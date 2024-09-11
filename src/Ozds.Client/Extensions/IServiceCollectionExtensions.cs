@@ -45,28 +45,4 @@ public static class IServiceCollectionExtensions
 
     return services;
   }
-
-  public static IApplicationBuilder UseOzdsClient(
-    this IApplicationBuilder app,
-    IEndpointRouteBuilder endpoints
-  )
-  {
-    endpoints.MapControllerRoute(
-      "Ozds.Client.Controllers.Index.Index",
-      "Ozds.Client",
-      "/",
-      new { controller = "Index", action = "Index" }
-    );
-
-    endpoints.MapAreaControllerRoute(
-      "Ozds.Client.Controllers.App.Catchall",
-      "Ozds.Client",
-      "/app/{culture}/{**catchall}",
-      new { controller = "App", action = "Catchall" }
-    );
-
-    endpoints.MapBlazorHub("/app/{culture}/_blazor");
-
-    return app;
-  }
 }

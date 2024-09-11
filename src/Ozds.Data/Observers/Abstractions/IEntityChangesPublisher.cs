@@ -1,12 +1,10 @@
-using Ozds.Data.Entities.Abstractions;
+using Ozds.Data.Observers.EventArgs;
 
 namespace Ozds.Data.Observers.Abstractions;
 
 public interface IEntityChangesPublisher : IPublisher<IEntityChangesSubscriber>
 {
-  public void PublishEntityAdded(IEntity entity);
+  public void PublishEntitiesChanging(EntitiesChangingEventArgs eventArgs);
 
-  public void PublishEntityModified(IEntity entity);
-
-  public void PublishEntityRemoved(IEntity entity);
+  public void PublishEntitiesChanged(EntitiesChangedEventArgs eventArgs);
 }

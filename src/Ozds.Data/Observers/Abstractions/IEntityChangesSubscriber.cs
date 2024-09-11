@@ -1,27 +1,18 @@
-using Ozds.Data.Entities.Abstractions;
+using Ozds.Data.Observers.EventArgs;
 
 namespace Ozds.Data.Observers.Abstractions;
 
-public class EntityAddedEventArgs : EventArgs
-{
-  public required IEntity Entity { get; init; }
-}
-
-public class EntityRemovedEventArgs : EventArgs
-{
-  public required IEntity Entity { get; init; }
-}
-
-public class EntityModifiedEventArgs : EventArgs
-{
-  public required IEntity Entity { get; init; }
-}
-
 public interface IEntityChangesSubscriber : ISubscriber<IEntityChangesPublisher>
 {
-  public event EventHandler<EntityAddedEventArgs>? OnEntityAdded;
+  public void SubscribeEntitiesChanging(
+    EventHandler<EntitiesChangingEventArgs> handler);
 
-  public event EventHandler<EntityModifiedEventArgs>? OnEntityModified;
+  public void UnsubscribeEntitiesChanging(
+    EventHandler<EntitiesChangingEventArgs> handler);
 
-  public event EventHandler<EntityRemovedEventArgs>? OnEntityRemoved;
+  public void SubscribeEntitiesChanged(
+    EventHandler<EntitiesChangedEventArgs> handler);
+
+  public void UnsubscribeEntitiesChanged(
+    EventHandler<EntitiesChangedEventArgs> handler);
 }

@@ -1,14 +1,11 @@
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
-using Ozds.Data.Attributes;
 using Ozds.Data.Extensions;
 
-// TODO: remove all the applications in favor of fluent API
+namespace Ozds.Data.Context;
 
-namespace Ozds.Data;
-
-public partial class OzdsDataDbContext(
-  DbContextOptions<OzdsDataDbContext> options)
+public partial class DataDbContext(
+  DbContextOptions<DataDbContext> options)
   : DbContext(options)
 {
   protected override void OnConfiguring(
@@ -25,9 +22,7 @@ public partial class OzdsDataDbContext(
   {
     modelBuilder
       .HasPostgresExtension("timescaledb")
-      .ApplyModelConfigurationsFromAssembly(Assembly.GetExecutingAssembly())
-      .ApplyPostgresqlEnumAttributes()
-      .ApplyTimescaleHypertableAttributes();
+      .ApplyModelConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
     base.OnModelCreating(modelBuilder);
   }

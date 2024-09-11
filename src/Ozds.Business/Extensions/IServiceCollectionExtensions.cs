@@ -14,8 +14,6 @@ using Ozds.Business.Localization.Abstractions;
 using Ozds.Business.Mutations.Abstractions;
 using Ozds.Business.Naming.Abstractions;
 using Ozds.Business.Naming.Agnostic;
-using Ozds.Business.Notifications;
-using Ozds.Business.Notifications.Abstractions;
 using Ozds.Business.Queries.Abstractions;
 
 namespace Ozds.Business.Extensions;
@@ -34,8 +32,8 @@ public static class IServiceCollectionExtensions
     services.AddScopedAssignableTo(typeof(IOzdsQueries));
     services.AddScopedAssignableTo(typeof(IOzdsMutations));
 
-    services.AddTransientAssignableTo<IAggregateUpserter>();
-    services.AddSingleton<AgnosticAggregateUpserter>();
+    services.AddTransientAssignableTo(typeof(IAggregateUpserter));
+    services.AddSingleton(typeof(AgnosticAggregateUpserter));
 
     services.AddTransientAssignableTo(typeof(IModelEntityConverter));
     services.AddSingleton(typeof(AgnosticModelEntityConverter));
@@ -46,54 +44,24 @@ public static class IServiceCollectionExtensions
     services.AddTransientAssignableTo(typeof(IMeterNamingConvention));
     services.AddSingleton(typeof(AgnosticMeterNamingConvention));
 
-    services.AddTransientAssignableTo<INetworkUserCalculationCalculator>();
-    services.AddSingleton<AgnosticNetworkUserCalculationCalculator>();
-    services.AddTransientAssignableTo<ICalculationItemCalculator>();
-    services.AddSingleton<AgnosticCalculationItemCalculator>();
-    services.AddTransient<INetworkUserInvoiceCalculator, NetworkUserInvoiceCalculator>();
-    services.AddScoped<INetworkUserInvoiceIssuer, NetworkUserInvoiceIssuer>();
+    services.AddTransientAssignableTo(typeof(INetworkUserCalculationCalculator));
+    services.AddSingleton(typeof(AgnosticNetworkUserCalculationCalculator));
+    services.AddTransientAssignableTo(typeof(ICalculationItemCalculator));
+    services.AddSingleton(typeof(AgnosticCalculationItemCalculator));
+    services.AddTransient(typeof(INetworkUserInvoiceCalculator), typeof(NetworkUserInvoiceCalculator));
+    services.AddScoped(typeof(INetworkUserInvoiceIssuer), typeof(NetworkUserInvoiceIssuer));
 
-    services.AddScoped<OzdsIotHandler>();
-    services.AddScoped<BatchAggregatedMeasurementUpserter>();
+    services.AddScoped(typeof(OzdsIotHandler));
+    services.AddScoped(typeof(BatchAggregatedMeasurementUpserter));
 
-    services.AddSingleton<IOzdsLocalizer, OzdsLocalizer>();
-
-    services.AddScoped<INotificationSender, NotificationSender>();
+    services.AddSingleton(typeof(IOzdsLocalizer), typeof(OzdsLocalizer));
 
     return services;
   }
 
-  public static IApplicationBuilder UseOzdsBusiness(
-    this IApplicationBuilder app,
-    IEndpointRouteBuilder endpoints
-  )
-  {
-    endpoints.MapAreaControllerRoute(
-      "Ozds.Business.Controllers.Iot.Push",
-      "Ozds.Business",
-      "/iot/push/{id}",
-      new { controller = "Iot", action = "Push" }
-    );
-
-    endpoints.MapAreaControllerRoute(
-      "Ozds.Business.Controllers.Iot.Poll",
-      "Ozds.Business",
-      "/iot/poll/{id}",
-      new { controller = "Iot", action = "Poll" }
-    );
-
-    endpoints.MapAreaControllerRoute(
-      "Ozds.Business.Controllers.Iot.Update",
-      "Ozds.Business",
-      "/iot/update/{id}",
-      new { controller = "Iot", action = "Update" }
-    );
-
-    return app;
-  }
-
-  private static void AddScopedAssignableTo<T>(
-    this IServiceCollection services
+  private static void AddSingletonAssignableTo(
+    this IServiceCollection services,
+    Type assignableTo
   )
   {
     var conversionTypes = typeof(IServiceCollectionExtensions).Assembly
@@ -103,17 +71,47 @@ public static class IServiceCollectionExtensions
           !type.IsAbstract &&
           !type.IsGenericType &&
           type.IsClass &&
-          type.IsAssignableTo(typeof(T)));
+          type.IsAssignableTo(assignableTo));
 
     foreach (var conversionType in conversionTypes)
     {
-      services.AddScoped(typeof(T), conversionType);
+      services.AddSingleton(conversionType);
+      foreach (var interfaceType in conversionType.GetInterfaces())
+      {
+        services.AddSingleton(interfaceType, services =>
+          services.GetRequiredService(conversionType));
+      }
+    }
+  }
+
+  private static void AddScopedAssignableTo(
+    this IServiceCollection services,
+    Type assignableTo
+  )
+  {
+    var conversionTypes = typeof(IServiceCollectionExtensions).Assembly
+      .GetTypes()
+      .Where(
+        type =>
+          !type.IsAbstract &&
+          !type.IsGenericType &&
+          type.IsClass &&
+          type.IsAssignableTo(assignableTo));
+
+    foreach (var conversionType in conversionTypes)
+    {
       services.AddScoped(conversionType);
+      foreach (var interfaceType in conversionType.GetAllInterfaces())
+      {
+        services.AddScoped(interfaceType, services =>
+          services.GetRequiredService(conversionType));
+      }
     }
   }
 
-  private static void AddTransientAssignableTo<T>(
-    this IServiceCollection services
+  private static void AddTransientAssignableTo(
+    this IServiceCollection services,
+    Type assignableTo
   )
   {
     var conversionTypes = typeof(IServiceCollectionExtensions).Assembly
@@ -123,12 +121,25 @@ public static class IServiceCollectionExtensions
           !type.IsAbstract &&
           !type.IsGenericType &&
           type.IsClass &&
-          type.IsAssignableTo(typeof(T)));
+          type.IsAssignableTo(assignableTo));
 
     foreach (var conversionType in conversionTypes)
     {
-      services.AddTransient(typeof(T), conversionType);
       services.AddTransient(conversionType);
+      foreach (var interfaceType in conversionType.GetAllInterfaces())
+      {
+        services.AddTransient(interfaceType, services =>
+          services.GetRequiredService(conversionType));
+      }
     }
+  }
+
+  private static Type[] GetAllInterfaces(this Type type)
+  {
+    return type.GetInterfaces()
+      .Concat(type.GetInterfaces().SelectMany(GetAllInterfaces))
+      .Concat(type.BaseType?.GetAllInterfaces() ?? Array.Empty<Type>())
+      .ToHashSet()
+      .ToArray();
   }
 }
