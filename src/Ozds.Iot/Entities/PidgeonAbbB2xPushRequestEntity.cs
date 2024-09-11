@@ -1,6 +1,14 @@
-namespace Ozds.Business.Iot;
+using Ozds.Iot.Entities.Base;
 
-public record AbbB2xPushRequest(
+namespace Ozds.Iot.Entities;
+
+public record PidgeonAbbB2xPushRequestDataEntity(
+  string MeterId,
+  DateTimeOffset Timestamp,
+  PidgeonAbbB2xPushRequestData Data
+) : PidgeonMeterPushRequestEntity(MeterId, Timestamp);
+
+public record PidgeonAbbB2xPushRequestData(
   decimal VoltageL1AnyT0_V,
   decimal VoltageL2AnyT0_V,
   decimal VoltageL3AnyT0_V,

@@ -1,6 +1,7 @@
 using System.Text.Json.Nodes;
 using Ozds.Business.Conversion.Abstractions;
 using Ozds.Business.Models.Abstractions;
+using Ozds.Iot.Entities.Abstractions;
 
 namespace Ozds.Business.Conversion.Agnostic;
 
@@ -9,7 +10,7 @@ public class AgnosticPushRequestMeasurementConverter(
 {
   private readonly IServiceProvider _serviceProvider = serviceProvider;
 
-  public JsonObject ToPushRequest(IMeasurement measurement)
+  public IMeterPushRequestEntity ToPushRequest(IMeasurement measurement)
   {
     return _serviceProvider
         .GetServices<IPushRequestMeasurementConverter>()
@@ -22,7 +23,7 @@ public class AgnosticPushRequestMeasurementConverter(
   }
 
   public IMeasurement ToMeasurement(
-    JsonObject pushRequest,
+    IMeterPushRequestEntity pushRequest,
     string meterId,
     DateTimeOffset timestamp)
   {
@@ -35,7 +36,7 @@ public class AgnosticPushRequestMeasurementConverter(
   }
 
   public TMeasurement ToMeasurement<TMeasurement>(
-    JsonObject pushRequest,
+    IMeterPushRequestEntity pushRequest,
     string meterId,
     DateTimeOffset timestamp)
     where TMeasurement : class, IMeasurement

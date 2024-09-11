@@ -3,28 +3,26 @@ using System.Text.Json;
 using System.Threading.Channels;
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Conversion;
-using Ozds.Business.Models;
+using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Models.Enums;
-using Ozds.Business.Notifications.Abstractions;
+using Ozds.Business.Models.Joins;
+using Ozds.Business.Reactors.Abstractions;
 using Ozds.Data.Context;
 using Ozds.Data.Entities;
 using Ozds.Data.Entities.Enums;
 using Ozds.Data.Extensions;
-using Ozds.Jobs.Manager.Abstractions;
 using Ozds.Jobs.Observers.Abstractions;
 using Ozds.Jobs.Observers.EventArgs;
 
-namespace Ozds.Business.Services;
+namespace Ozds.Business.Workers;
 
-// TODO: handle null messenger
-// TODO: messenger paging
-// TODO: configurable inactivity duration
+// TODO: handle null meter
+// TODO: paging when fetching
 
-public class MessengerInactivityService(
-  IMessengerJobSubscriber subscriber,
-  IMessengerJobManager manager,
-  IServiceScopeFactory serviceScopeFactory
-) : BackgroundService
+public class MeterInactivityWorker(
+  IServiceScopeFactory serviceScopeFactory,
+  IMessengerJobSubscriber subscriber
+) : BackgroundService, IReactor
 {
   private static readonly JsonSerializerOptions
     EventContentSerializationOptions = new()
@@ -32,66 +30,57 @@ public class MessengerInactivityService(
       WriteIndented = true
     };
 
-  private readonly Channel<string> inactive =
-    Channel.CreateUnbounded<string>();
+  private readonly Channel<MessengerInactivityEventArgs> channel =
+    Channel.CreateUnbounded<MessengerInactivityEventArgs>();
 
   public override async Task StartAsync(CancellationToken cancellationToken)
   {
-    await using (var scope = serviceScopeFactory.CreateAsyncScope())
-    {
-      var context = scope.ServiceProvider.GetRequiredService<DataDbContext>();
-      var messengers = await context.Messengers.ToListAsync();
-      foreach (var messenger in messengers)
-      {
-        await manager.EnsureInactivityMonitorJob(
-          messenger.Id,
-          TimeSpan.FromMinutes(5)
-        );
-      }
-    }
-
     subscriber.SubscribeInactivity(OnInactivity);
+
     await base.StartAsync(cancellationToken);
   }
 
   public override Task StopAsync(CancellationToken cancellationToken)
   {
     subscriber.UnsubscribeInactivity(OnInactivity);
+
     return base.StopAsync(cancellationToken);
   }
 
   protected override async Task ExecuteAsync(CancellationToken stoppingToken)
   {
-    while (!stoppingToken.IsCancellationRequested)
+    await foreach (var eventArgs in channel.Reader.ReadAllAsync(stoppingToken))
     {
-      var id = await inactive.Reader.ReadAsync(stoppingToken);
       await using var scope = serviceScopeFactory.CreateAsyncScope();
-      await Notify(scope.ServiceProvider, id);
+      await Handle(scope.ServiceProvider, eventArgs);
     }
   }
 
-  private void OnInactivity(object? sender, MessengerInactivityEventArgs args)
+  private void OnInactivity(object? sender, MessengerInactivityEventArgs eventArgs)
   {
-    inactive.Writer.TryWrite(args.Id);
+    channel.Writer.TryWrite(eventArgs);
   }
 
-  private static async Task Notify(IServiceProvider serviceProvider, string id)
+  private static async Task Handle(
+    IServiceProvider serviceProvider,
+    MessengerInactivityEventArgs eventArgs)
   {
-    var sender = serviceProvider.GetRequiredService<INotificationSender>();
     var context = serviceProvider.GetRequiredService<DataDbContext>();
+    var converter = serviceProvider.GetRequiredService<AgnosticModelEntityConverter>();
 
-    var messenger = (await context.Messengers
-        .FirstOrDefaultAsync(context.PrimaryKeyEquals<MessengerEntity>(id)))
+    var meter = (await context.Messengers
+        .FirstOrDefaultAsync(
+          context.PrimaryKeyEquals<MessengerEntity>(eventArgs.Id)))
       ?.ToModel();
 
-    if (messenger is null)
+    if (meter is null)
     {
       return;
     }
 
     var lastPushEvent = await context.Events
       .OfType<MessengerEventEntity>()
-      .Where(x => x.MessengerId == messenger.Id)
+      .Where(x => x.MessengerId == meter.Id)
       .Where(x => x.Categories.Contains(CategoryEntity.MessengerPush))
       .OrderByDescending(x => x.Timestamp)
       .FirstOrDefaultAsync();
@@ -104,18 +93,18 @@ public class MessengerInactivityService(
         .ToListAsync())
       .Select(x => x.ToModel());
 
-    var notification = MessengerNotificationModel.New();
-    notification.MessengerId = messenger.Id;
+    var notification = MessengerNotificationModelActivator.New();
+    notification.MeterId = meter.Id;
     notification.Topics =
     [
       TopicModel.All,
       TopicModel.Messenger,
       TopicModel.MessengerInactivity
     ];
-    notification.Summary = $"Messenger \"{messenger.Title}\" is inactive";
+    notification.Summary = $"Meter \"{meter.Title}\" is inactive";
     if (lastPushEvent is null)
     {
-      notification.Content = "Messenger never pushed";
+      notification.Content = "Meter never pushed";
     }
     else
     {
@@ -124,12 +113,22 @@ public class MessengerInactivityService(
         lastPushEvent.Content,
         EventContentSerializationOptions
       );
-      builder.AppendLine($"Messenger: \"{messenger.Title}\"");
+      builder.AppendLine($"Meter: \"{meter.Title}\"");
       builder.AppendLine($"Last pushed at: {lastPushEvent.Timestamp}");
       builder.AppendLine($"Last push details: {lastPushEventDetails}");
       notification.Content = builder.ToString();
     }
 
-    await sender.SendAsync(notification, recipients);
+    context.Add(converter.ToEntity(notification));
+    context.AddRange(
+      recipients
+        .Select(
+          recipient => new NotificationRecipientModel
+          {
+            NotificationId = notification.Id,
+            RepresentativeId = recipient.Id
+          })
+        .Select(converter.ToEntity));
+    await context.SaveChangesAsync();
   }
 }

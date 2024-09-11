@@ -1,11 +1,11 @@
 using Ozds.Business.Conversion.Base;
-using Ozds.Business.Iot;
 using Ozds.Business.Models;
+using Ozds.Iot.Entities;
 
 namespace Ozds.Business.Conversion;
 
 public class SchneideriEM3xxxPushRequestMeasurementConverter :
-  PushRequestMeasurementConverter<SchneideriEM3xxxPushRequest,
+  PushRequestMeasurementConverter<SchneideriEM3xxxPushRequestEntity,
     SchneideriEM3xxxMeasurementModel>
 {
   protected override string MeterIdPrefix
@@ -14,24 +14,24 @@ public class SchneideriEM3xxxPushRequestMeasurementConverter :
   }
 
   protected override SchneideriEM3xxxMeasurementModel ToMeasurement(
-    SchneideriEM3xxxPushRequest pushRequest,
+    SchneideriEM3xxxPushRequestEntity pushRequest,
     string meterId,
     DateTimeOffset timestamp)
   {
     return pushRequest.ToModel(meterId, timestamp);
   }
 
-  protected override SchneideriEM3xxxPushRequest ToPushRequest(
+  protected override SchneideriEM3xxxPushRequestEntity ToPushRequest(
     SchneideriEM3xxxMeasurementModel measurement)
   {
     return measurement.ToPushRequest();
   }
 }
 
-public static class SchneideriEM3xxxPushRequestMeasurementConverterExtensions
+public static class SchneideriEM3xxxPushRequestEntityMeasurementConverterExtensions
 {
   public static SchneideriEM3xxxMeasurementModel ToModel(
-    this SchneideriEM3xxxPushRequest request,
+    this SchneideriEM3xxxPushRequestEntity request,
     string meterId,
     DateTimeOffset timestamp
   )
@@ -65,11 +65,11 @@ public static class SchneideriEM3xxxPushRequestMeasurementConverterExtensions
     };
   }
 
-  public static SchneideriEM3xxxPushRequest ToPushRequest(
+  public static SchneideriEM3xxxPushRequestEntity ToPushRequest(
     this SchneideriEM3xxxMeasurementModel model
   )
   {
-    return new SchneideriEM3xxxPushRequest(
+    return new SchneideriEM3xxxPushRequestEntity(
       model.VoltageL1AnyT0_V,
       model.VoltageL2AnyT0_V,
       model.VoltageL3AnyT0_V,

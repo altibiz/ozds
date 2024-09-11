@@ -1,21 +1,34 @@
-<HeadOutlet @rendermode="RenderMode.InteractiveServer"/>
+@using Ozds.Client.Shared.Layout
+@using Ozds.Client.Shared.Streaming
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Web
+@using Ozds.Client.State
+@namespace Ozds.Client
+
+<HeadContent>
+  <title>OZDS</title>
+</HeadContent>
+
 <Router AppAssembly="@typeof(App).Assembly">
   <Found Context="routeData">
-    <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
-      <Authorizing>
-        <Authorizing/>
-      </Authorizing>
-      <NotAuthorized>
-        @if (context.User.Identity?.IsAuthenticated is false)
-        {
-          <RedirectToLogin/>
-        }
-        else
-        {
-          <NotAuthorized/>
-        }
-      </NotAuthorized>
-    </AuthorizeRouteView>
+    <CascadingValue Value="LogoutTokenState">
+      <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+        <Authorizing>
+          <Authorizing/>
+        </Authorizing>
+        <NotAuthorized>
+          @if (context.User.Identity?.IsAuthenticated is false)
+          {
+            <RedirectToLogin/>
+          }
+          else
+          {
+            <NotAuthorized/>
+          }
+        </NotAuthorized>
+      </AuthorizeRouteView>
+    </CascadingValue>
   </Found>
   <NotFound>
     <LayoutView Layout="@typeof(MainLayout)">
@@ -23,3 +36,15 @@
     </LayoutView>
   </NotFound>
 </Router>
+
+@code {
+  [Parameter]
+  public string LogoutToken { get; set; } = default!;
+
+  private LogoutTokenState LogoutTokenState = default!;
+
+  protected override void OnParametersSet()
+  {
+    LogoutTokenState = new LogoutTokenState(LogoutToken);
+  }
+}

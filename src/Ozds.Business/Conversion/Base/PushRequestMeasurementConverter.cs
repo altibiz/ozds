@@ -1,14 +1,15 @@
 using System.Text.Json;
-using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 using Ozds.Business.Conversion.Abstractions;
 using Ozds.Business.Models.Abstractions;
+using Ozds.Iot.Entities.Abstractions;
 
 namespace Ozds.Business.Conversion.Base;
 
 public abstract class PushRequestMeasurementConverter<TPushRequest,
   TMeasurement> : IPushRequestMeasurementConverter
   where TMeasurement : class, IMeasurement
+  where TPushRequest : class, IMeterPushRequestEntity
 {
   protected abstract string MeterIdPrefix { get; }
 
@@ -18,28 +19,23 @@ public abstract class PushRequestMeasurementConverter<TPushRequest,
   }
 
   public IMeasurement ToMeasurement(
-    JsonObject pushRequest,
+    IMeterPushRequestEntity pushRequest,
     string meterId,
     DateTimeOffset timestamp)
   {
     return ToMeasurement(
-      pushRequest.Deserialize<TPushRequest>(
-        PushRequestMeasurementConverterOptions.Options)
-      ?? throw new ArgumentNullException(nameof(pushRequest)),
+      (TPushRequest)pushRequest
+        ?? throw new ArgumentNullException(nameof(pushRequest)),
       meterId,
       timestamp
     );
   }
 
-  public JsonObject ToPushRequest(IMeasurement measurement)
+  public IMeterPushRequestEntity ToPushRequest(IMeasurement measurement)
   {
-    return JsonSerializer.SerializeToNode(
-        ToPushRequest(
-          measurement as TMeasurement
-          ?? throw new ArgumentNullException(
-            nameof(measurement))),
-        PushRequestMeasurementConverterOptions.Options) as JsonObject
-      ?? throw new ArgumentNullException(nameof(measurement));
+    return ToPushRequest(
+      measurement as TMeasurement
+        ?? throw new ArgumentNullException(nameof(measurement)));
   }
 
   protected abstract TMeasurement ToMeasurement(

@@ -1,15 +1,16 @@
 using System.Threading.Channels;
 using Ozds.Business.Mutations;
+using Ozds.Business.Reactors.Abstractions;
 using Ozds.Messaging.Observers.Abstractions;
 using Ozds.Messaging.Observers.EventArgs;
 using Ozds.Messaging.Sagas;
 
-namespace Ozds.Business.Services;
+namespace Ozds.Business.Reactors;
 
-public class NetworkUserInvoiceStateSubscriber(
+public class NetworkUserInvoiceStateReactor(
   INetworkUserInvoiceStateSubscriber subscriber,
   IServiceScopeFactory serviceScopeFactory
-) : BackgroundService
+) : BackgroundService, IReactor
 {
   private readonly Channel<NetworkUserInvoiceState> registered =
     Channel.CreateUnbounded<NetworkUserInvoiceState>();

@@ -1,57 +1,43 @@
+using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
-using Ozds.Business.Iot;
+using Ozds.Iot.Entities;
+using Ozds.Iot.Entities.Abstractions;
+using Ozds.Iot.Observers.Abstractions;
+using Ozds.Iot.Observers.EventArgs;
 
 namespace Ozds.Server.Controllers;
 
 [IgnoreAntiforgeryToken]
-public class IotController(OzdsIotHandler iotHandler) : Controller
+public class IotController(IPushPublisher publisher) : Controller
 {
-  private readonly OzdsIotHandler _iotHandler = iotHandler;
-
   [HttpPost]
   public async Task<IActionResult> Push(string id)
   {
-    using var reader = new StreamReader(Request.Body);
-    var message = await reader.ReadToEndAsync();
-
-    if (!await _iotHandler.Authorize(id, message))
+    IMessengerPushRequestEntity? request;
+    try
     {
-      return Unauthorized();
+      request = await JsonSerializer.DeserializeAsync<IMessengerPushRequestEntity>(
+        Request.Body,
+        Options
+      );
+    }
+    catch (JsonException ex)
+    {
+      return BadRequest(ex.Message);
     }
 
-    await _iotHandler.OnPush(id, message);
+    if (request is null)
+    {
+      return BadRequest("No request found");
+    }
+
+    publisher.PublishPush(new PushEventArgs(request));
 
     return Ok();
   }
 
-  public async Task<IActionResult> Poll(string id)
+  public static readonly JsonSerializerOptions Options = new()
   {
-    using var reader = new StreamReader(Request.Body);
-    var message = await reader.ReadToEndAsync();
-
-    if (!await _iotHandler.Authorize(id, message))
-    {
-      return Unauthorized();
-    }
-
-    await _iotHandler.OnPoll(id, message);
-
-    return Ok();
-  }
-
-  [HttpPost]
-  public async Task<IActionResult> Update(string id)
-  {
-    using var reader = new StreamReader(Request.Body);
-    var message = await reader.ReadToEndAsync();
-
-    if (!await _iotHandler.Authorize(id, message))
-    {
-      return Unauthorized();
-    }
-
-    await _iotHandler.OnUpdate(id, message);
-
-    return Ok();
-  }
+    PropertyNameCaseInsensitive = true
+  };
 }

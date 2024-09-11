@@ -17,18 +17,6 @@ public static class IApplicationBuilderExtensions
     );
 
     endpoints.MapOzdsServerRoute(
-      "/iot/update/{id}",
-      typeof(IotController),
-      nameof(IotController.Update)
-    );
-
-    endpoints.MapOzdsServerRoute(
-      "/iot/poll/{id}",
-      typeof(IotController),
-      nameof(IotController.Poll)
-    );
-
-    endpoints.MapOzdsServerRoute(
       "/",
       typeof(IndexController),
       nameof(IndexController.Index)

@@ -3,28 +3,11 @@ using Ozds.Business.Observers.EventArgs;
 
 namespace Ozds.Business.Observers;
 
-public class MeasurementObserver : IMeasurementPublisher, IMeasurementSubscriber
+public class MeasurementUpsertObserver : IMeasurementUpsertPublisher, IMeasurementUpsertSubscriber
 {
-  public void PublishPush(MeasurementPushEventArgs eventArgs)
-  {
-    OnPush?.Invoke(this, eventArgs);
-  }
-
   public void PublishUpsert(MeasurementUpsertEventArgs eventArgs)
   {
     OnUpsert?.Invoke(this, eventArgs);
-  }
-
-  public void SubscribePush(
-    EventHandler<MeasurementPushEventArgs> handler)
-  {
-    OnPush += handler;
-  }
-
-  public void UnsubscribePush(
-    EventHandler<MeasurementPushEventArgs> handler)
-  {
-    OnPush -= handler;
   }
 
   public void SubscribeUpsert(
@@ -38,8 +21,6 @@ public class MeasurementObserver : IMeasurementPublisher, IMeasurementSubscriber
   {
     OnUpsert -= handler;
   }
-
-  private event EventHandler<MeasurementPushEventArgs>? OnPush;
 
   private event EventHandler<MeasurementUpsertEventArgs>? OnUpsert;
 }

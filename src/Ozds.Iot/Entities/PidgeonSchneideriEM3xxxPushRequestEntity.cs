@@ -1,6 +1,14 @@
-namespace Ozds.Business.Iot;
+using Ozds.Iot.Entities.Base;
 
-public record SchneideriEM3xxxPushRequest(
+namespace Ozds.Iot.Entities;
+
+public record PidgeonSchneideriEM3xxxPushRequestEntity(
+  string MeterId,
+  DateTimeOffset Timestamp,
+  PidgeonSchneideriEM3xxxPushRequestData Data
+) : PidgeonMeterPushRequestEntity(MeterId, Timestamp);
+
+public record PidgeonSchneideriEM3xxxPushRequestData(
   decimal VoltageL1AnyT0_V,
   decimal VoltageL2AnyT0_V,
   decimal VoltageL3AnyT0_V,
