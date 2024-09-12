@@ -22,7 +22,7 @@ public class PushOptions
   public string ApiKey { get; set; } = "messenger";
 
   [Option('m', "messenger-id", Required = false, HelpText = "Messenger ID.")]
-  public string MessengerId { get; set; } = "messenger";
+  public string MessengerId { get; set; } = "pidgeon";
 
   [Option('i', "meter-ids", Required = false, HelpText = "Meter IDs.")]
   public IEnumerable<string> MeterIds { get; set; } = Array.Empty<string>();
