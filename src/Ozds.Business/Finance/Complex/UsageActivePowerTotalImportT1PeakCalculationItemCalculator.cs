@@ -25,6 +25,7 @@ public class UsageActivePowerTotalImportT1PeakCalculationItemCalculator :
     var aggregates = calculationBasis.Aggregates;
 
     var peak = aggregates
+      .SkipLast(1)
       .Select(
         x => x.ActivePower_W
           .TariffBinary().T1

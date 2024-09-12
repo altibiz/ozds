@@ -3,6 +3,7 @@ using Ozds.Business.Conversion;
 using Ozds.Business.Extensions;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Composite;
+using Ozds.Business.Models.Enums;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Data.Context;
 using Ozds.Data.Entities;
@@ -18,7 +19,48 @@ public class OzdsBillingQueries(DataDbContext dbContext) : IOzdsQueries
 {
   private readonly DataDbContext _dbContext = dbContext;
 
-  public async Task<List<NetworkUserCalculationBasisModel>>
+  public async Task<NetworkUserInvoiceIssuingBasisModel>
+    IssuingBasisForNetworkUser(
+      string networkUserId,
+      DateTimeOffset fromDate,
+      DateTimeOffset toDate
+    )
+  {
+    var networkUser = await _dbContext.NetworkUsers
+        .Where(
+          _dbContext.PrimaryKeyEquals<NetworkUserEntity>(
+            networkUserId))
+        .Include(x => x.Location)
+        .Include(x => x.Location.RegulatoryCatalogue)
+        .FirstOrDefaultAsync() ??
+      throw new InvalidOperationException(
+        "Network user not found");
+    var calculationBases = await NetworkUserCalculationBasesByNetworkUser(
+      networkUserId,
+      fromDate,
+      toDate
+    );
+
+    return new NetworkUserInvoiceIssuingBasisModel(
+      networkUser.Location.ToModel(),
+      networkUser.ToModel(),
+      networkUser.Location.RegulatoryCatalogue.ToModel(),
+      fromDate,
+      toDate,
+      calculationBases
+    );
+  }
+
+  public Task<LocationInvoiceIssuingBasisModel> IssuingBasisForLocation(
+    string locationId,
+    DateTimeOffset fromDate,
+    DateTimeOffset toDate
+  )
+  {
+    throw new NotImplementedException();
+  }
+
+  private async Task<List<NetworkUserCalculationBasisModel>>
     NetworkUserCalculationBasesByNetworkUser(
       string networkUserId,
       DateTimeOffset fromDate,
@@ -179,53 +221,12 @@ public class OzdsBillingQueries(DataDbContext dbContext) : IOzdsQueries
       .ToList();
   }
 
-  public async Task<NetworkUserInvoiceIssuingBasisModel>
-    IssuingBasisForNetworkUser(
-      string networkUserId,
-      DateTimeOffset fromDate,
-      DateTimeOffset toDate
-    )
-  {
-    var networkUser = await _dbContext.NetworkUsers
-        .Where(
-          _dbContext.PrimaryKeyEquals<NetworkUserEntity>(
-            networkUserId))
-        .Include(x => x.Location)
-        .Include(x => x.Location.RegulatoryCatalogue)
-        .FirstOrDefaultAsync() ??
-      throw new InvalidOperationException(
-        "Network user not found");
-    var calculationBases = await NetworkUserCalculationBasesByNetworkUser(
-      networkUserId,
-      fromDate,
-      toDate
-    );
-
-    return new NetworkUserInvoiceIssuingBasisModel(
-      networkUser.Location.ToModel(),
-      networkUser.ToModel(),
-      networkUser.Location.RegulatoryCatalogue.ToModel(),
-      fromDate,
-      toDate,
-      calculationBases
-    );
-  }
-
   public Task<List<LocationNetworkUserCalculationBasisModel>>
     NetworkUserCalculationBasesByLocation(
       string locationId,
       DateTimeOffset fromDate,
       DateTimeOffset toDate
     )
-  {
-    throw new NotImplementedException();
-  }
-
-  public Task<LocationInvoiceIssuingBasisModel> IssuingBasisForLocation(
-    string locationId,
-    DateTimeOffset fromDate,
-    DateTimeOffset toDate
-  )
   {
     throw new NotImplementedException();
   }
