@@ -2,36 +2,35 @@ using System.Text.Json;
 using System.Threading.Channels;
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Conversion;
-using Ozds.Business.Models;
-using Ozds.Business.Observers.Abstractions;
-using Ozds.Business.Observers.EventArgs;
+using Ozds.Business.Models.Base;
 using Ozds.Business.Reactors.Abstractions;
 using Ozds.Data.Context;
 using Ozds.Data.Entities;
+using Ozds.Data.Entities.Base;
 using Ozds.Data.Entities.Enums;
 using Ozds.Data.Extensions;
+using Ozds.Iot.Observers.Abstractions;
+using Ozds.Iot.Observers.EventArgs;
 
 namespace Ozds.Business.Reactors;
 
 public class MessengerPushEventWorker(
   IServiceScopeFactory serviceScopeFactory,
-  IMeasurementUpsertSubscriber subscriber
+  IPushSubscriber subscriber
 ) : BackgroundService, IReactor
 {
-  private readonly Channel<MeasurementPushEventArgs> channel =
-    Channel.CreateUnbounded<MeasurementPushEventArgs>();
+  private readonly Channel<PushEventArgs> channel =
+    Channel.CreateUnbounded<PushEventArgs>();
 
   public override async Task StartAsync(CancellationToken cancellationToken)
   {
     subscriber.SubscribePush(OnPush);
-
     await base.StartAsync(cancellationToken);
   }
 
   public override Task StopAsync(CancellationToken cancellationToken)
   {
     subscriber.UnsubscribePush(OnPush);
-
     return base.StopAsync(cancellationToken);
   }
 
@@ -44,54 +43,51 @@ public class MessengerPushEventWorker(
     }
   }
 
-  private void OnPush(object? sender, MeasurementPushEventArgs eventArgs)
+  private void OnPush(object? sender, PushEventArgs eventArgs)
   {
     channel.Writer.TryWrite(eventArgs);
   }
 
   private static async Task Handle(
     IServiceProvider serviceProvider,
-    MeasurementPushEventArgs eventArgs)
+    PushEventArgs eventArgs)
   {
     var context = serviceProvider.GetRequiredService<DataDbContext>();
 
-    var messengerIds = eventArgs.Measurements.Select(x => x.MessengerId).Distinct().ToList();
+    var messenger = (await context.Messengers
+        .Where(context.PrimaryKeyEquals<MessengerEntity>(eventArgs.MessengerId))
+        .FirstOrDefaultAsync())
+        ?.ToModel();
 
-    var messengers = await context.Messengers
-        .Where(context.PrimaryKeyIn<MessengerEntity>(messengerIds))
-        .Select(x => x.ToModel())
-        .ToListAsync();
+    if (messenger is null)
+    {
+      return;
+    }
 
-    var events = messengers.Select(
-      messenger => new MessengerEventEntity
-      {
-        Title = $"Messenger \"{messenger.Title}\" has pushed",
-        Timestamp = DateTimeOffset.UtcNow,
-        MessengerId = messenger.Id,
-        Level = LevelEntity.Info,
-        Content = CreateEventContent(eventArgs, messenger),
-        Categories = [CategoryEntity.All, CategoryEntity.Messenger, CategoryEntity.MessengerPush],
-      });
+    var @event = new MessengerEventEntity
+    {
+      Title = $"Messenger \"{messenger.Title}\" has pushed",
+      Timestamp = DateTimeOffset.UtcNow,
+      MessengerId = messenger.Id,
+      Level = LevelEntity.Info,
+      Content = CreateEventContent(eventArgs, messenger),
+      Categories = [CategoryEntity.All, CategoryEntity.Messenger, CategoryEntity.MessengerPush],
+    };
 
-    context.AddRange(events);
+    context.Add(@event);
     await context.SaveChangesAsync();
   }
 
   private static JsonDocument CreateEventContent(
-    MeasurementPushEventArgs eventArgs,
+    PushEventArgs eventArgs,
     MessengerModel messenger)
   {
     var content = new EventContent(
       messenger.Id,
-      eventArgs.Measurements
-        .Where(x => x.MessengerId == messenger.Id)
-        .Select(x => x.LineId)
-        .Distinct()
-        .Count(),
-      eventArgs.Measurements
-        .Where(x => x.MessengerId == messenger.Id)
-        .GroupBy(x => x.LineId)
-        .Select(group => new EventContentLine(group.Key, group.Count()))
+      eventArgs.Request.Measurements.Count,
+      eventArgs.Request.Measurements
+        .GroupBy(x => x.MeterId)
+        .Select(group => new EventContentMeter(group.Key, group.Count()))
         .ToArray()
     );
 
@@ -101,10 +97,10 @@ public class MessengerPushEventWorker(
   private sealed record EventContent(
     string MessengerId,
     int Count,
-    EventContentLine[] Lines
+    EventContentMeter[] Meters
   );
 
-  private sealed record EventContentLine(
+  private sealed record EventContentMeter(
     string Id,
     int Count
   );

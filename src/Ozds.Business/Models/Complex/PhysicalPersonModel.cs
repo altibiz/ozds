@@ -1,8 +1,9 @@
 using System.ComponentModel.DataAnnotations;
+using Ozds.Business.Models.Abstractions;
 
 namespace Ozds.Business.Models.Complex;
 
-public class PhysicalPersonModel : IValidatableObject
+public class PhysicalPersonModel : IValidatableObject, IModel
 {
   [Required]
   public required string Name { get; set; } = default!;

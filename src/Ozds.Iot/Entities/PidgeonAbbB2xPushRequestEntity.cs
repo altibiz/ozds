@@ -2,7 +2,7 @@ using Ozds.Iot.Entities.Abstractions;
 
 namespace Ozds.Iot.Entities;
 
-public record PidgeonAbbB2xPushRequestDataEntity(
+public record PidgeonAbbB2xPushRequestEntity(
   string MeterId,
   DateTimeOffset Timestamp,
   PidgeonAbbB2xPushRequestData Data

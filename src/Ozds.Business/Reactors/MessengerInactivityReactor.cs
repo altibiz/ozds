@@ -2,6 +2,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Channels;
 using Microsoft.EntityFrameworkCore;
+using Ozds.Business.Activation;
 using Ozds.Business.Conversion;
 using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Models.Enums;
@@ -9,6 +10,7 @@ using Ozds.Business.Models.Joins;
 using Ozds.Business.Reactors.Abstractions;
 using Ozds.Data.Context;
 using Ozds.Data.Entities;
+using Ozds.Data.Entities.Base;
 using Ozds.Data.Entities.Enums;
 using Ozds.Data.Extensions;
 using Ozds.Jobs.Observers.Abstractions;
@@ -18,6 +20,7 @@ namespace Ozds.Business.Workers;
 
 // TODO: handle null meter
 // TODO: paging when fetching
+// TODO: recipients by role
 
 public class MeterInactivityWorker(
   IServiceScopeFactory serviceScopeFactory,
@@ -68,19 +71,19 @@ public class MeterInactivityWorker(
     var context = serviceProvider.GetRequiredService<DataDbContext>();
     var converter = serviceProvider.GetRequiredService<AgnosticModelEntityConverter>();
 
-    var meter = (await context.Messengers
-        .FirstOrDefaultAsync(
-          context.PrimaryKeyEquals<MessengerEntity>(eventArgs.Id)))
+    var messenger = (await context.Messengers
+        .Where(context.PrimaryKeyEquals<MessengerEntity>(eventArgs.Id))
+        .FirstOrDefaultAsync())
       ?.ToModel();
 
-    if (meter is null)
+    if (messenger is null)
     {
       return;
     }
 
     var lastPushEvent = await context.Events
       .OfType<MessengerEventEntity>()
-      .Where(x => x.MessengerId == meter.Id)
+      .Where(x => x.MessengerId == messenger.Id)
       .Where(x => x.Categories.Contains(CategoryEntity.MessengerPush))
       .OrderByDescending(x => x.Timestamp)
       .FirstOrDefaultAsync();
@@ -94,14 +97,14 @@ public class MeterInactivityWorker(
       .Select(x => x.ToModel());
 
     var notification = MessengerNotificationModelActivator.New();
-    notification.MeterId = meter.Id;
+    notification.MessengerId = messenger.Id;
     notification.Topics =
     [
       TopicModel.All,
       TopicModel.Messenger,
       TopicModel.MessengerInactivity
     ];
-    notification.Summary = $"Meter \"{meter.Title}\" is inactive";
+    notification.Summary = $"Meter \"{messenger.Title}\" is inactive";
     if (lastPushEvent is null)
     {
       notification.Content = "Meter never pushed";
@@ -113,7 +116,7 @@ public class MeterInactivityWorker(
         lastPushEvent.Content,
         EventContentSerializationOptions
       );
-      builder.AppendLine($"Meter: \"{meter.Title}\"");
+      builder.AppendLine($"Meter: \"{messenger.Title}\"");
       builder.AppendLine($"Last pushed at: {lastPushEvent.Timestamp}");
       builder.AppendLine($"Last push details: {lastPushEventDetails}");
       notification.Content = builder.ToString();

@@ -16,10 +16,11 @@ public class IotController(IPushPublisher publisher) : Controller
     IMessengerPushRequestEntity? request;
     try
     {
-      request = await JsonSerializer.DeserializeAsync<IMessengerPushRequestEntity>(
-        Request.Body,
-        Options
-      );
+      request = await JsonSerializer
+        .DeserializeAsync<IMessengerPushRequestEntity>(
+          Request.Body,
+          Options
+        );
     }
     catch (JsonException ex)
     {
@@ -31,7 +32,7 @@ public class IotController(IPushPublisher publisher) : Controller
       return BadRequest("No request found");
     }
 
-    publisher.PublishPush(new PushEventArgs(request));
+    publisher.PublishPush(new PushEventArgs(id, request));
 
     return Ok();
   }

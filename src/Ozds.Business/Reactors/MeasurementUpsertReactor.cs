@@ -69,10 +69,7 @@ public class MeasurementUpsertWorker(
 
     IReadOnlyList<IMeasurement> upsertMeasurements =
       eventArgs.Request.Measurements
-        .Select(measurement => pushRequestConverter.ToMeasurement(
-          measurement.Data,
-          measurement.MeterId,
-          measurement.Timestamp))
+        .Select(pushRequestConverter.ToMeasurement)
         .ToList();
 
     IReadOnlyList<IAggregate> upsertAggregates =

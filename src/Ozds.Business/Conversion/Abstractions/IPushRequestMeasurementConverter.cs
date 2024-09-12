@@ -7,10 +7,7 @@ public interface IPushRequestMeasurementConverter
 {
   bool CanConvert(string meterId);
 
-  IMeasurement ToMeasurement(
-    IMeterPushRequestEntity pushRequest,
-    string meterId,
-    DateTimeOffset timestamp);
+  IMeasurement ToMeasurement(IMeterPushRequestEntity pushRequest);
 
   IMeterPushRequestEntity ToPushRequest(IMeasurement measurement);
 }

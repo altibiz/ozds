@@ -12,8 +12,8 @@ public class NetworkUserInvoiceStateReactor(
   IServiceScopeFactory serviceScopeFactory
 ) : BackgroundService, IReactor
 {
-  private readonly Channel<NetworkUserInvoiceState> registered =
-    Channel.CreateUnbounded<NetworkUserInvoiceState>();
+  private readonly Channel<NetworkUserInvoiceStateEventArgs> channel =
+    Channel.CreateUnbounded<NetworkUserInvoiceStateEventArgs>();
 
   public override Task StartAsync(CancellationToken cancellationToken)
   {
@@ -29,13 +29,10 @@ public class NetworkUserInvoiceStateReactor(
 
   protected override async Task ExecuteAsync(CancellationToken stoppingToken)
   {
-    while (!stoppingToken.IsCancellationRequested)
+    await foreach (var state in channel.Reader.ReadAllAsync(stoppingToken))
     {
-      var state = await registered.Reader.ReadAsync(stoppingToken);
       await using var scope = serviceScopeFactory.CreateAsyncScope();
-      var mutations = scope.ServiceProvider
-        .GetRequiredService<OzdsNetworkUserInvoiceMutations>();
-      await mutations.UpdateBillId(state.NetworkUserInvoiceId, state.BillId!);
+      await Handle(scope.ServiceProvider, state);
     }
   }
 
@@ -43,6 +40,15 @@ public class NetworkUserInvoiceStateReactor(
     object? sender,
     NetworkUserInvoiceStateEventArgs state)
   {
-    registered.Writer.TryWrite(state.State);
+    channel.Writer.TryWrite(state);
+  }
+
+  private static async Task Handle(
+    IServiceProvider serviceProvider,
+    NetworkUserInvoiceStateEventArgs eventArgs)
+  {
+    var mutations = serviceProvider
+      .GetRequiredService<OzdsNetworkUserInvoiceMutations>();
+    await mutations.UpdateBillId(eventArgs.State.NetworkUserInvoiceId, eventArgs.State.BillId!);
   }
 }

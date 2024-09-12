@@ -18,16 +18,11 @@ public abstract class PushRequestMeasurementConverter<TPushRequest,
     return meterId.StartsWith(MeterIdPrefix);
   }
 
-  public IMeasurement ToMeasurement(
-    IMeterPushRequestEntity pushRequest,
-    string meterId,
-    DateTimeOffset timestamp)
+  public IMeasurement ToMeasurement(IMeterPushRequestEntity pushRequest)
   {
     return ToMeasurement(
       (TPushRequest)pushRequest
-        ?? throw new ArgumentNullException(nameof(pushRequest)),
-      meterId,
-      timestamp
+        ?? throw new ArgumentNullException(nameof(pushRequest))
     );
   }
 
@@ -38,10 +33,7 @@ public abstract class PushRequestMeasurementConverter<TPushRequest,
         ?? throw new ArgumentNullException(nameof(measurement)));
   }
 
-  protected abstract TMeasurement ToMeasurement(
-    TPushRequest pushRequest,
-    string meterId,
-    DateTimeOffset timestamp);
+  protected abstract TMeasurement ToMeasurement(TPushRequest pushRequest);
 
   protected abstract TPushRequest ToPushRequest(TMeasurement measurement);
 }

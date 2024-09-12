@@ -1,11 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Ozds.Data.Entities.Base;
+using Ozds.Data.Entities.Complex;
 using Ozds.Data.Extensions;
 
-// TODO: settings for the messenger
-
-namespace Ozds.Data.Entities;
+namespace Ozds.Data.Entities.Base;
 
 public class MessengerEntity : AuditableEntity
 {
@@ -32,14 +30,26 @@ public class MessengerEntity : AuditableEntity
     default!;
 
   public virtual ICollection<MessengerNotificationEntity>
-    InactivityNotifications { get; set; } = default!;
+    InactivityNotifications
+  { get; set; } = default!;
+
+  public PeriodEntity MaxInactivityPeriod { get; set; } = default!;
+
+  public PeriodEntity PushDelayPeriod { get; set; } = default!;
 }
 
 public class
-  MessengerEntityTypeConfiguration : EntityTypeConfiguration<MessengerEntity>
+  MessengerEntityTypeConfiguration : EntityTypeHierarchyConfiguration<MessengerEntity>
 {
-  public override void Configure(EntityTypeBuilder<MessengerEntity> builder)
+  public override void Configure(ModelBuilder modelBuilder, Type entity)
   {
+    var builder = modelBuilder.Entity(entity);
+
+    builder
+      .UseTphMappingStrategy()
+      .ToTable("messengers")
+      .HasDiscriminator<string>("kind");
+
     builder
       .HasOne(nameof(MessengerEntity.Location))
       .WithMany(nameof(LocationEntity.Messengers))
@@ -61,5 +71,8 @@ public class
     builder
       .Property("_locationId")
       .HasColumnName("location_id");
+
+    builder.ComplexProperty(nameof(MessengerEntity.MaxInactivityPeriod));
+    builder.ComplexProperty(nameof(MessengerEntity.PushDelayPeriod));
   }
 }
