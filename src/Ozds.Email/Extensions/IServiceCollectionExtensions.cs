@@ -12,21 +12,30 @@ public static class IServiceCollectionExtensions
     IHostApplicationBuilder builder
   )
   {
+    // Options
     services.Configure<OzdsEmailOptions>(
       builder.Configuration.GetSection("Ozds:Email"));
 
-    services.AddTransient<ISmtpClient, SmtpClient>();
+    // MailKit
+    services.AddMailKit(builder);
 
+    // Sender
     services.AddTransient<IEmailSender, SmtpSender>();
 
     return services;
   }
 
-  public static IApplicationBuilder UseOzdsEmail(
-    this IApplicationBuilder app,
-    IEndpointRouteBuilder endpoints
+  private static void AddMailKit(
+    this IServiceCollection services,
+    IHostApplicationBuilder builder
   )
   {
-    return app;
+    _ = builder.Configuration
+      .GetSection("Ozds:Email")
+      .Get<OzdsEmailOptions>()
+      ?? throw new InvalidOperationException(
+        "Missing Ozds:Email configuration");
+
+    services.AddTransient<ISmtpClient, SmtpClient>();
   }
 }

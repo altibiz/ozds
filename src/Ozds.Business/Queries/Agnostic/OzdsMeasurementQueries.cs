@@ -12,7 +12,7 @@ namespace Ozds.Business.Queries.Agnostic;
 public class OzdsMeasurementQueries(
   DataDbContext context,
   AgnosticModelEntityConverter modelEntityConverter
-) : IOzdsQueries
+) : IQueries
 {
   private readonly DataDbContext _context = context;
 

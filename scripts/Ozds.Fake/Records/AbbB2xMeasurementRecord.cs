@@ -3,7 +3,7 @@ using Ozds.Fake.Records.Base;
 
 namespace Ozds.Fake.Records;
 
-public class AbbB2xMeasurementRecord : MeasurementRecord
+public record class AbbB2xMeasurementRecord : MeasurementRecord
 {
 #pragma warning disable CA1707
   public required decimal VoltageL1AnyT0_V { get; set; }

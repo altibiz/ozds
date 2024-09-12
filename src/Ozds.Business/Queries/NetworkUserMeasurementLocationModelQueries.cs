@@ -12,7 +12,7 @@ using Ozds.Data.Extensions;
 namespace Ozds.Business.Queries;
 
 public class OzdsNetworkUserMeasurementLocationModelQueries(
-  DataDbContext context) : IOzdsQueries
+  DataDbContext context) : IQueries
 {
   private readonly DataDbContext context = context;
 

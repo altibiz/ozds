@@ -4,13 +4,34 @@ using Ozds.Fake.Records.Abstractions;
 namespace Ozds.Fake.Correction.Base;
 
 public abstract class
-  CumulativeCorrector<TMeasurementRecord> : ICumulativeCorrector
+  Corrector<TMeasurementRecord> : ICorrector
   where TMeasurementRecord : class, IMeasurementRecord
 {
-  public bool CanCorrectCumulativesFor(Type measurementRecordType)
+  public bool CanCorrectFor(Type measurementRecordType)
   {
     return measurementRecordType.IsAssignableFrom(typeof(TMeasurementRecord));
   }
+
+  public IMeasurementRecord CorrectMeterId(
+    IMeasurementRecord measurementRecord,
+    string meterId
+  )
+  {
+    return CorrectMeterId(
+      measurementRecord
+        as TMeasurementRecord
+      ?? throw new ArgumentException(
+        $"Expected {typeof(TMeasurementRecord).Name}, but got {measurementRecord.GetType().Name}",
+        nameof(measurementRecord)
+      ),
+      meterId
+    );
+  }
+
+  protected abstract TMeasurementRecord CorrectMeterId(
+    TMeasurementRecord measurementRecord,
+    string meterId
+  );
 
   public IMeasurementRecord CorrectCumulatives(
     DateTimeOffset timestamp,
@@ -24,31 +45,19 @@ public abstract class
       CopyRecord(
         measurementRecord as TMeasurementRecord
         ?? throw new ArgumentException(
-          $"Expected {
-            typeof(TMeasurementRecord).Name
-          }, but got {
-            measurementRecord.GetType().Name
-          }",
+          $"Expected {typeof(TMeasurementRecord).Name}, but got {measurementRecord.GetType().Name}",
           nameof(measurementRecord)
         )),
       firstMeasurementRecord
         as TMeasurementRecord
       ?? throw new ArgumentException(
-        $"Expected {
-          typeof(TMeasurementRecord).Name
-        }, but got {
-          firstMeasurementRecord.GetType().Name
-        }",
+        $"Expected {typeof(TMeasurementRecord).Name}, but got {firstMeasurementRecord.GetType().Name}",
         nameof(firstMeasurementRecord)
       ),
       lastMeasurementRecord
         as TMeasurementRecord
       ?? throw new ArgumentException(
-        $"Expected {
-          typeof(TMeasurementRecord).Name
-        }, but got {
-          lastMeasurementRecord.GetType().Name
-        }",
+        $"Expected {typeof(TMeasurementRecord).Name}, but got {lastMeasurementRecord.GetType().Name}",
         nameof(lastMeasurementRecord)
       )
     );

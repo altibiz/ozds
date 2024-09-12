@@ -14,7 +14,7 @@ public class NetworkUserInvoiceIssuer(
   NetworkUserInvoiceCalculator invoiceCalculator,
   OzdsInvoiceMutations invoiceMutations,
   OzdsCalculationMutations calculationMutations,
-  IOzdsLocalizer localizer,
+  ILocalizer localizer,
   IMessageSender messageSender
 ) : INetworkUserInvoiceIssuer
 {

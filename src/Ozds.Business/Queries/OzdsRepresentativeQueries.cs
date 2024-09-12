@@ -17,7 +17,7 @@ namespace Ozds.Business.Queries;
 public class OzdsRepresentativeQueries(
   DataDbContext context,
   UserQueries userQueries
-) : IOzdsQueries
+) : IQueries
 {
   public async Task<RepresentativeModel?> RepresentativeById(string id)
   {
@@ -144,7 +144,7 @@ public class OzdsRepresentativeQueries(
           representatives
               .FirstOrDefault(
                 context.PrimaryKeyInCompiled<RepresentativeEntity>(ids)) is
-            { } representative
+          { } representative
             ? representative.ToModel()
             : null
         ))

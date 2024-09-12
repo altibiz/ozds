@@ -7,7 +7,7 @@ using Ozds.Data.Extensions;
 namespace Ozds.Business.Mutations;
 
 public class OzdsNetworkUserInvoiceMutations(DataDbContext dbContext)
-  : IOzdsMutations
+  : IMutations
 {
   private readonly DataDbContext _dbContext = dbContext;
 

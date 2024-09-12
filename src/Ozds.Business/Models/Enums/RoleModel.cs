@@ -43,7 +43,9 @@ public static class RoleModelExtensions
     {
       RoleModel.OperatorRepresentative => new List<TopicModel>
       {
-        TopicModel.All
+        TopicModel.All,
+        TopicModel.Messenger,
+        TopicModel.MessengerInactivity
       },
       RoleModel.LocationRepresentative => new List<TopicModel>(),
       RoleModel.NetworkUserRepresentative => new List<TopicModel>(),

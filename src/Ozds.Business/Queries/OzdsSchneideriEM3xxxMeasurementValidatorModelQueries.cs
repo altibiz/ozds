@@ -9,7 +9,7 @@ using Ozds.Data.Extensions;
 namespace Ozds.Business.Queries;
 
 public class OzdsSchneideriEM3xxxMeasurementValidatorModelQueries(
-  DataDbContext context) : IOzdsQueries
+  DataDbContext context) : IQueries
 {
   private readonly DataDbContext context = context;
 

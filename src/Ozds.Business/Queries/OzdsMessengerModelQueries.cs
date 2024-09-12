@@ -8,16 +8,17 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Business.Queries;
 
-public class OzdsMessengerModelQueries(DataDbContext context) : IOzdsQueries
+public class OzdsMessengerModelQueries(DataDbContext context) : IQueries
 {
   private readonly DataDbContext context = context;
 
-  public async Task<MessengerModel?>
+  public async Task<PidgeonMessengerModel?>
     MessengerById(string id)
   {
     var messengerEntity =
       await context.Messengers
-        .Where(context.PrimaryKeyEquals<MessengerEntity>(id))
+        .OfType<PidgeonMessengerEntity>()
+        .Where(context.PrimaryKeyEquals<PidgeonMessengerEntity>(id))
         .FirstOrDefaultAsync();
     if (messengerEntity is not null)
     {

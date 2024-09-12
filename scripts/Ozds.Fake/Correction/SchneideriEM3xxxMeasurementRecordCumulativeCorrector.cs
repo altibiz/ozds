@@ -4,8 +4,16 @@ using Ozds.Fake.Records;
 namespace Ozds.Fake.Correction;
 
 public class SchneideriEM3xxxMeasurementRecordCumulativeCorrector
-  : CumulativeCorrector<SchneideriEM3xxxMeasurementRecord>
+  : Corrector<SchneideriEM3xxxMeasurementRecord>
 {
+  protected override SchneideriEM3xxxMeasurementRecord CorrectMeterId(
+    SchneideriEM3xxxMeasurementRecord measurementRecord,
+    string meterId
+  )
+  {
+    return measurementRecord with { MeterId = meterId };
+  }
+
   protected override SchneideriEM3xxxMeasurementRecord CorrectCumulatives(
     DateTimeOffset timestamp,
     SchneideriEM3xxxMeasurementRecord measurementRecord,

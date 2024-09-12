@@ -1,3 +1,4 @@
+using OrchardCore.Security;
 using Ozds.Business.Activation.Base;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Enums;
@@ -25,7 +26,8 @@ public class RepresentativeModelActivator : ModelActivator<RepresentativeModel>
       DeletedOn = null,
       DeletedById = null,
       Role = RoleModel.NetworkUserRepresentative,
-      PhysicalPerson = PhysicalPersonModelActivator.New()
+      PhysicalPerson = PhysicalPersonModelActivator.New(),
+      Topics = RoleModel.NetworkUserRepresentative.ToTopics()
     };
   }
 
@@ -43,7 +45,8 @@ public class RepresentativeModelActivator : ModelActivator<RepresentativeModel>
       DeletedOn = null,
       DeletedById = null,
       Role = RoleModel.NetworkUserRepresentative,
-      PhysicalPerson = PhysicalPersonModelActivator.New()
+      PhysicalPerson = PhysicalPersonModelActivator.New(),
+      Topics = RoleModel.NetworkUserRepresentative.ToTopics()
     };
   }
 }

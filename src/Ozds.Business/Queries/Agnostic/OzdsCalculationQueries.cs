@@ -11,7 +11,7 @@ namespace Ozds.Business.Queries.Agnostic;
 public class OzdsCalculationQueries(
   DataDbContext context,
   AgnosticModelEntityConverter modelEntityConverter
-) : IOzdsQueries
+) : IQueries
 {
   private readonly DataDbContext _context = context;
 

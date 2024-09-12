@@ -2,7 +2,7 @@ using System.Globalization;
 
 namespace Ozds.Business.Localization.Abstractions;
 
-public interface IOzdsLocalizer
+public interface ILocalizer
 {
   public string this[string notLocalized] { get; }
 

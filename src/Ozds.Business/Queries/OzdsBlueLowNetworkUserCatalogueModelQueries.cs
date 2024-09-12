@@ -10,7 +10,7 @@ namespace Ozds.Business.Queries;
 
 public class OzdsBlueLowNetworkUserCatalogueModelQueries(
   DataDbContext context)
-  : IOzdsQueries
+  : IQueries
 {
   private readonly DataDbContext context = context;
 

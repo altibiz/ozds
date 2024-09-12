@@ -13,7 +13,9 @@ using Ozds.Business.Localization.Abstractions;
 using Ozds.Business.Mutations.Abstractions;
 using Ozds.Business.Naming.Abstractions;
 using Ozds.Business.Naming.Agnostic;
+using Ozds.Business.Observers.Abstractions;
 using Ozds.Business.Queries.Abstractions;
+using Ozds.Business.Reactors.Abstractions;
 
 namespace Ozds.Business.Extensions;
 
@@ -28,21 +30,19 @@ public static class IServiceCollectionExtensions
     services.AddTransientAssignableTo(typeof(IModelActivator));
     services.AddSingleton(typeof(AgnosticModelActivator));
 
-    services.AddScopedAssignableTo(typeof(IOzdsQueries));
-    services.AddScopedAssignableTo(typeof(IOzdsMutations));
-
+    // Aggregation
     services.AddTransientAssignableTo(typeof(IAggregateUpserter));
     services.AddSingleton(typeof(AgnosticAggregateUpserter));
 
+    // Conversion
     services.AddTransientAssignableTo(typeof(IModelEntityConverter));
     services.AddSingleton(typeof(AgnosticModelEntityConverter));
     services.AddTransientAssignableTo(typeof(IMeasurementAggregateConverter));
     services.AddSingleton(typeof(AgnosticMeasurementAggregateConverter));
     services.AddTransientAssignableTo(typeof(IPushRequestMeasurementConverter));
     services.AddSingleton(typeof(AgnosticPushRequestMeasurementConverter));
-    services.AddTransientAssignableTo(typeof(IMeterNamingConvention));
-    services.AddSingleton(typeof(AgnosticMeterNamingConvention));
 
+    // Finance
     services.AddTransientAssignableTo(
       typeof(INetworkUserCalculationCalculator));
     services.AddSingleton(typeof(AgnosticNetworkUserCalculationCalculator));
@@ -54,9 +54,25 @@ public static class IServiceCollectionExtensions
     services.AddScoped(
       typeof(INetworkUserInvoiceIssuer), typeof(NetworkUserInvoiceIssuer));
 
-    services.AddScoped(typeof(BatchAggregatedMeasurementUpserter));
+    // Localization
+    services.AddSingleton(typeof(ILocalizer), typeof(Localizer));
 
-    services.AddSingleton(typeof(IOzdsLocalizer), typeof(OzdsLocalizer));
+    // Mutations
+    services.AddScopedAssignableTo(typeof(IMutations));
+
+    // Naming
+    services.AddTransientAssignableTo(typeof(IMeterNamingConvention));
+    services.AddSingleton(typeof(AgnosticMeterNamingConvention));
+
+    // Observers
+    services.AddSingletonAssignableTo(typeof(IPublisher));
+    services.AddSingletonAssignableTo(typeof(ISubscriber));
+
+    // Queries
+    services.AddScopedAssignableTo(typeof(IQueries));
+
+    // Reactors
+    services.AddSingletonAssignableTo(typeof(IReactor));
 
     return services;
   }

@@ -18,7 +18,7 @@ namespace Ozds.Business.Queries;
 // FIXME: get location by representative
 
 public class OzdsMeterTableQueries(
-  DataDbContext context) : IOzdsQueries
+  DataDbContext context) : IQueries
 {
   private readonly DataDbContext context = context;
 

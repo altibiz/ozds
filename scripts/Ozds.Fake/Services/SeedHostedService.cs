@@ -1,6 +1,8 @@
 using Ozds.Business.Iot;
 using Ozds.Fake.Client;
 using Ozds.Fake.Generators.Agnostic;
+using Ozds.Iot.Entities;
+using Ozds.Iot.Entities.Abstractions;
 
 namespace Ozds.Fake.Services;
 
@@ -40,7 +42,7 @@ public class SeedHostedService(
         ? now
         : seedTimeBegin.AddDays(1);
 
-      var measurements = new List<MessengerPushRequestMeasurement>();
+      var measurements = new List<IMeterPushRequestEntity>();
       foreach (var meterId in seed.MeterIds)
       {
         measurements.AddRange(
@@ -53,7 +55,7 @@ public class SeedHostedService(
         var batch = measurements.Take(seed.BatchSize).ToList();
         measurements.RemoveRange(0, batch.Count);
 
-        var request = new MessengerPushRequest(
+        var request = new PidgeonPushRequestEntity(
           now,
           [.. batch]
         );

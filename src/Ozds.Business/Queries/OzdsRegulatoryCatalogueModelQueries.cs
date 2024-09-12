@@ -9,7 +9,7 @@ using Ozds.Data.Extensions;
 namespace Ozds.Business.Queries;
 
 public class OzdsRegulatoryCatalogueModelQueries(DataDbContext context)
-  : IOzdsQueries
+  : IQueries
 {
   private readonly DataDbContext context = context;
 

@@ -13,6 +13,10 @@ public static class IServiceCollectionExtensions
     IHostApplicationBuilder builder
   )
   {
+    // Options
+    services.Configure<OzdsDataOptions>(
+      builder.Configuration.GetSection("Ozds:Data"));
+
     // Entity Framework Core
     services.AddEntityFrameworkCore(builder);
 
@@ -23,40 +27,11 @@ public static class IServiceCollectionExtensions
     return services;
   }
 
-  private static void AddSingletonAssignableTo(
-    this IServiceCollection services,
-    Type assignableTo
-  )
-  {
-    var conversionTypes = typeof(IServiceCollectionExtensions).Assembly
-      .GetTypes()
-      .Where(
-        type =>
-          !type.IsAbstract &&
-          !type.IsGenericType &&
-          type.IsClass &&
-          type.IsAssignableTo(assignableTo));
-
-    foreach (var conversionType in conversionTypes)
-    {
-      foreach (var interfaceType in conversionType.GetAllInterfaces())
-      {
-        services.AddSingleton(conversionType);
-        services.AddSingleton(
-          interfaceType, services =>
-            services.GetRequiredService(conversionType));
-      }
-    }
-  }
-
   private static void AddEntityFrameworkCore(
     this IServiceCollection services,
     IHostApplicationBuilder builder
   )
   {
-    services.Configure<OzdsDataOptions>(
-      builder.Configuration.GetSection("Ozds:Data"));
-
     var dataOptions =
       builder.Configuration
         .GetSection("Ozds:Data")
@@ -99,6 +74,32 @@ public static class IServiceCollectionExtensions
             services
           );
       });
+  }
+
+  private static void AddSingletonAssignableTo(
+    this IServiceCollection services,
+    Type assignableTo
+  )
+  {
+    var conversionTypes = typeof(IServiceCollectionExtensions).Assembly
+      .GetTypes()
+      .Where(
+        type =>
+          !type.IsAbstract &&
+          !type.IsGenericType &&
+          type.IsClass &&
+          type.IsAssignableTo(assignableTo));
+
+    foreach (var conversionType in conversionTypes)
+    {
+      foreach (var interfaceType in conversionType.GetAllInterfaces())
+      {
+        services.AddSingleton(conversionType);
+        services.AddSingleton(
+          interfaceType, services =>
+            services.GetRequiredService(conversionType));
+      }
+    }
   }
 
   private static Type[] GetAllInterfaces(this Type type)

@@ -1,15 +1,17 @@
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Conversion;
 using Ozds.Business.Models;
+using Ozds.Business.Models.Base;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Data.Context;
 using Ozds.Data.Entities;
+using Ozds.Data.Entities.Base;
 using Ozds.Data.Extensions;
 
 namespace Ozds.Business.Queries;
 
 public class OzdsAbbB2xMeterModelQueries(DataDbContext context)
-  : IOzdsQueries
+  : IQueries
 {
   private readonly DataDbContext context = context;
 

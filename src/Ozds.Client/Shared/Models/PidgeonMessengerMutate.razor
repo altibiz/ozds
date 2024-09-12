@@ -61,9 +61,9 @@
   public string Id { get; set; } = default!;
 
   [Parameter]
-  public MessengerModel? Model { get; set; }
+  public PidgeonMessengerModel? Model { get; set; }
 
-  private LoadingState<MessengerModel> LoadingState { get; set; } = new();
+  private LoadingState<PidgeonMessengerModel> LoadingState { get; set; } = new();
   private List<LocationModel> _locations = new();
 
   private bool _create;
@@ -106,7 +106,7 @@
 
     if (LoadingState.Value is null)
     {
-      LoadingState = LoadingState.WithValue(MessengerModelActivator.New());
+      LoadingState = LoadingState.WithValue(PidgeonMessengerModelActivator.New());
       _create = true;
     }
   }

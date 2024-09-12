@@ -7,6 +7,22 @@ public class AgnosticCumulativeCorrector(IServiceProvider serviceProvider)
 {
   private readonly IServiceProvider _serviceProvider = serviceProvider;
 
+  public IMeasurementRecord CorrectMeterId(
+    IMeasurementRecord measurementRecord,
+    string meterId
+  )
+  {
+    var corrector = _serviceProvider.GetServices<ICorrector>()
+        .FirstOrDefault(
+          c =>
+            c.CanCorrectFor(
+              measurementRecord.GetType()))
+      ?? throw new InvalidOperationException(
+        $"No corrector found for {measurementRecord.GetType().Name}");
+
+    return corrector.CorrectMeterId(measurementRecord, meterId);
+  }
+
   public IMeasurementRecord CorrectCumulatives(
     DateTimeOffset timestamp,
     IMeasurementRecord measurementRecord,
@@ -14,10 +30,10 @@ public class AgnosticCumulativeCorrector(IServiceProvider serviceProvider)
     IMeasurementRecord lastMeasurementRecord
   )
   {
-    var corrector = _serviceProvider.GetServices<ICumulativeCorrector>()
+    var corrector = _serviceProvider.GetServices<ICorrector>()
         .FirstOrDefault(
           c =>
-            c.CanCorrectCumulativesFor(
+            c.CanCorrectFor(
               measurementRecord.GetType()))
       ?? throw new InvalidOperationException(
         $"No corrector found for {measurementRecord.GetType().Name}");

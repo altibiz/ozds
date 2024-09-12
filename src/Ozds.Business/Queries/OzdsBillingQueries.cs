@@ -15,7 +15,7 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Business.Queries;
 
-public class OzdsBillingQueries(DataDbContext dbContext) : IOzdsQueries
+public class OzdsBillingQueries(DataDbContext dbContext) : IQueries
 {
   private readonly DataDbContext _dbContext = dbContext;
 

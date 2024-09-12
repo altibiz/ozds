@@ -2,9 +2,14 @@ using Ozds.Fake.Records.Abstractions;
 
 namespace Ozds.Fake.Correction.Abstractions;
 
-public interface ICumulativeCorrector
+public interface ICorrector
 {
-  bool CanCorrectCumulativesFor(Type measurementRecordType);
+  bool CanCorrectFor(Type measurementRecordType);
+
+  IMeasurementRecord CorrectMeterId(
+    IMeasurementRecord measurementRecord,
+    string meterId
+  );
 
   IMeasurementRecord CorrectCumulatives(
     DateTimeOffset timestamp,

@@ -10,16 +10,9 @@ public static class IServiceCollectionExtensions
     IHostApplicationBuilder builder
   )
   {
+    // Queries
     services.AddScoped<IUserQueries, UserQueries>();
 
     return services;
-  }
-
-  public static IApplicationBuilder UseOzdsUsers(
-    this IApplicationBuilder app,
-    IEndpointRouteBuilder endpoints
-  )
-  {
-    return app;
   }
 }

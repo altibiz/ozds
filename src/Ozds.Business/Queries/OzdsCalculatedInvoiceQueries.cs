@@ -13,7 +13,7 @@ namespace Ozds.Business.Queries;
 public class OzdsCalculatedInvoiceQueries(
   DataDbContext context,
   AgnosticModelEntityConverter modelEntityConverter
-) : IOzdsQueries
+) : IQueries
 {
   private readonly DataDbContext _context = context;
 

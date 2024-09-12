@@ -1,11 +1,11 @@
-using System.Text.Json.Nodes;
 using Ozds.Fake.Records.Abstractions;
+using Ozds.Iot.Entities.Abstractions;
 
 namespace Ozds.Fake.Conversion.Abstractions;
 
 public interface IMeasurementRecordPushRequestConverter
 {
-  public bool CanConvertToPushRequest(IMeasurementRecord record);
+  public bool CanConvertToPushRequest(IMeasurementRecord record, string messengerId);
 
-  public JsonObject ConvertToPushRequest(IMeasurementRecord record);
+  public IMeterPushRequestEntity ConvertToPushRequest(IMeasurementRecord record);
 }

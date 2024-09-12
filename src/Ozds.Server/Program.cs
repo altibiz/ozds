@@ -3,6 +3,7 @@ using Ozds.Business.Extensions;
 using Ozds.Client.Extensions;
 using Ozds.Data.Extensions;
 using Ozds.Email.Extensions;
+using Ozds.Iot.Extensions;
 using Ozds.Messaging.Extensions;
 using Ozds.Server.Extensions;
 using Ozds.Users.Extensions;
@@ -23,12 +24,14 @@ builder.Services
       .AddOzdsEmail(builder)
       .AddOzdsMessaging(builder)
       .AddOzdsBusiness(builder)
+      .AddOzdsIot(builder)
       .AddOzdsClient(builder)
       .AddOzdsServer(builder))
   .Configure(
     (app, endpoints) => app
       .UseOzdsServer(endpoints)
       .UseOzdsClient(endpoints)
+      .UseOzdsIot(endpoints)
       .UseOzdsBusiness(endpoints)
       .UseOzdsData(endpoints)
       .UseOzdsEmail(endpoints)

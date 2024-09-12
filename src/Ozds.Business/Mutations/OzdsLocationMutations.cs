@@ -11,7 +11,7 @@ namespace Ozds.Business.Mutations.Agnostic;
 
 public class OzdsLocationMutations(
   DataDbContext context
-) : IOzdsMutations
+) : IMutations
 {
   private readonly DataDbContext _context = context;
 

@@ -9,7 +9,7 @@ namespace Ozds.Client.Base;
 public abstract class OzdsComponentBase : ComponentBase
 {
   [Inject]
-  public IOzdsLocalizer T { get; set; } = default!;
+  public ILocalizer T { get; set; } = default!;
 
   [Inject]
   public NavigationManager NavigationManager { get; set; } = default!;

@@ -3,7 +3,7 @@ using Ozds.Fake.Records.Base;
 
 namespace Ozds.Fake.Records;
 
-public class SchneideriEM3xxxMeasurementRecord : MeasurementRecord
+public record class SchneideriEM3xxxMeasurementRecord : MeasurementRecord
 {
   public override TariffMeasure<decimal> ActiveEnergy_Wh
   {

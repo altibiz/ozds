@@ -10,7 +10,7 @@ namespace Ozds.Business.Mutations.Agnostic;
 public class OzdsInvoiceMutations(
   DataDbContext context,
   AgnosticModelEntityConverter modelEntityConverter
-) : IOzdsMutations
+) : IMutations
 {
   private readonly DataDbContext _context = context;
 

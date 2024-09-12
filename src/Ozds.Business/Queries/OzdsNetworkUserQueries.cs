@@ -10,7 +10,7 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Business.Queries;
 
-public class OzdsNetworkUserQueries(DataDbContext context) : IOzdsQueries
+public class OzdsNetworkUserQueries(DataDbContext context) : IQueries
 {
   private readonly DataDbContext context = context;
 

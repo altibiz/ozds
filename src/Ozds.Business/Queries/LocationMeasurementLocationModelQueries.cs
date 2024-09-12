@@ -15,7 +15,7 @@ namespace Ozds.Business.Queries;
 
 public class OzdsLocationMeasurementLocationModelQueries(
   DataDbContext context)
-  : IOzdsQueries
+  : IQueries
 {
   private readonly DataDbContext context = context;
 

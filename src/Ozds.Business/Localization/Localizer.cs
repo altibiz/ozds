@@ -4,7 +4,7 @@ using Ozds.Business.Localization.Abstractions;
 
 namespace Ozds.Business.Localization;
 
-public class OzdsLocalizer : IOzdsLocalizer
+public class Localizer : ILocalizer
 {
   private static readonly Lazy<Dictionary<string, string>> _translations =
     new(() => LoadTranslations("translations-en.json"));
@@ -48,15 +48,13 @@ public class OzdsLocalizer : IOzdsLocalizer
 
   private static Stream Load(string name)
   {
-    var assembly = typeof(OzdsLocalizer).Assembly;
+    var assembly = typeof(Localizer).Assembly;
     var fullName = $"{assembly.GetName().Name}.Assets.{name}";
 
     var stream = assembly.GetManifestResourceStream(fullName) ??
       throw new InvalidOperationException(
         $"Resource {fullName} does not exist. "
-        + $"Here are the available resources for the given assembly '{
-          assembly.GetName().Name
-        }':\n"
+        + $"Here are the available resources for the given assembly '{assembly.GetName().Name}':\n"
         + string.Join("\n", assembly.GetManifestResourceNames())
       );
     return stream;

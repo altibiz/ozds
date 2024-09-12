@@ -12,7 +12,7 @@ namespace Ozds.Business.Mutations.Agnostic;
 public class OzdsAuditableMutations(
   DataDbContext context,
   AgnosticModelEntityConverter modelEntityConverter
-) : IOzdsMutations
+) : IMutations
 {
   private readonly DataDbContext _context = context;
 
