@@ -1,9 +1,9 @@
-using OrchardCore.Security;
 using Ozds.Business.Activation.Base;
+using Ozds.Business.Activation.Complex;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Enums;
 
-namespace Ozds.Business.Activation.Complex;
+namespace Ozds.Business.Activation;
 
 public class RepresentativeModelActivator : ModelActivator<RepresentativeModel>
 {

@@ -6,15 +6,15 @@ namespace Ozds.Fake.Conversion;
 
 public class PidgeonAbbB2xMeasurementRecordPushRequestConverter
   : PidgeonMeasurementRecordPushRequestConverter<AbbB2xMeasurementRecord,
-    PidgeonAbbB2xPushRequestEntity>
+    PidgeonAbbB2xMeterPushRequestEntity>
 {
-  protected override PidgeonAbbB2xPushRequestEntity ConvertToPushRequest(
+  protected override PidgeonAbbB2xMeterPushRequestEntity ConvertToPushRequest(
     AbbB2xMeasurementRecord record)
   {
-    return new PidgeonAbbB2xPushRequestEntity(
+    return new PidgeonAbbB2xMeterPushRequestEntity(
       MeterId: record.MeterId,
       Timestamp: record.Timestamp,
-      Data: new PidgeonAbbB2xPushRequestData(
+      Data: new PidgeonAbbB2xMeterPushRequestData(
         record.VoltageL1AnyT0_V,
         record.VoltageL2AnyT0_V,
         record.VoltageL3AnyT0_V,

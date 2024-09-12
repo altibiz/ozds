@@ -2,16 +2,16 @@ using Ozds.Iot.Entities.Abstractions;
 
 namespace Ozds.Iot.Entities;
 
-public record PidgeonSchneideriEM3xxxPushRequestEntity(
+public record PidgeonAbbB2xMeterPushRequestEntity(
   string MeterId,
   DateTimeOffset Timestamp,
-  PidgeonSchneideriEM3xxxPushRequestData Data
+  PidgeonAbbB2xMeterPushRequestData Data
 ) : IPidgeonMeterPushRequestEntity
 {
-  public static string MeterIdPrefix => "schneider-iEM3xxx";
+  public static string MeterIdPrefix => "abb-B2x";
 }
 
-public record PidgeonSchneideriEM3xxxPushRequestData(
+public record PidgeonAbbB2xMeterPushRequestData(
   decimal VoltageL1AnyT0_V,
   decimal VoltageL2AnyT0_V,
   decimal VoltageL3AnyT0_V,
@@ -21,11 +21,21 @@ public record PidgeonSchneideriEM3xxxPushRequestData(
   decimal ActivePowerL1NetT0_W,
   decimal ActivePowerL2NetT0_W,
   decimal ActivePowerL3NetT0_W,
-  decimal ReactivePowerTotalNetT0_VAR,
-  decimal ApparentPowerTotalNetT0_VA,
+  decimal ReactivePowerL1NetT0_VAR,
+  decimal ReactivePowerL2NetT0_VAR,
+  decimal ReactivePowerL3NetT0_VAR,
   decimal ActiveEnergyL1ImportT0_Wh,
   decimal ActiveEnergyL2ImportT0_Wh,
   decimal ActiveEnergyL3ImportT0_Wh,
+  decimal ActiveEnergyL1ExportT0_Wh,
+  decimal ActiveEnergyL2ExportT0_Wh,
+  decimal ActiveEnergyL3ExportT0_Wh,
+  decimal ReactiveEnergyL1ImportT0_VARh,
+  decimal ReactiveEnergyL2ImportT0_VARh,
+  decimal ReactiveEnergyL3ImportT0_VARh,
+  decimal ReactiveEnergyL1ExportT0_VARh,
+  decimal ReactiveEnergyL2ExportT0_VARh,
+  decimal ReactiveEnergyL3ExportT0_VARh,
   decimal ActiveEnergyTotalImportT0_Wh,
   decimal ActiveEnergyTotalExportT0_Wh,
   decimal ReactiveEnergyTotalImportT0_VARh,

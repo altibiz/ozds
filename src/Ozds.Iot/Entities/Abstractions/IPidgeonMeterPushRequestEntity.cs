@@ -6,5 +6,4 @@ namespace Ozds.Iot.Entities.Abstractions;
 [JsonConverter(typeof(PidgeonMeterPushRequestEntityConverterFactory))]
 public interface IPidgeonMeterPushRequestEntity : IMeterPushRequestEntity
 {
-  public static abstract string MeterIdPrefix { get; }
 }

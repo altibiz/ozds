@@ -3,6 +3,8 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Ozds.Iot.Entities.Abstractions;
 
+// TODO: get rid of ghosts
+
 namespace Ozds.Iot.Converters;
 
 public class PidgeonMeterPushRequestEntityJsonConverter<T>
@@ -34,12 +36,11 @@ public class PidgeonMeterPushRequestEntityJsonConverter<T>
 
         foreach (var type in types)
         {
-          var meterIdPrefix = type
+          if (type
             .GetProperties(BindingFlags.Public | BindingFlags.Static)
             .FirstOrDefault(p => p.Name == "MeterIdPrefix")
-            ?.GetValue(null) as string;
-
-          if (meterIdPrefix is null || !meterId.StartsWith(meterIdPrefix))
+            ?.GetValue(null) is not string meterIdPrefix
+            || !meterId.StartsWith(meterIdPrefix))
           {
             continue;
           }

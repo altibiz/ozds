@@ -5,7 +5,7 @@ using Ozds.Iot.Entities;
 namespace Ozds.Business.Conversion;
 
 public class PidgeonAbbB2xPushRequestMeasurementConverter :
-  PushRequestMeasurementConverter<PidgeonAbbB2xPushRequestEntity, AbbB2xMeasurementModel>
+  PushRequestMeasurementConverter<PidgeonAbbB2xMeterPushRequestEntity, AbbB2xMeasurementModel>
 {
   protected override string MeterIdPrefix
   {
@@ -13,12 +13,12 @@ public class PidgeonAbbB2xPushRequestMeasurementConverter :
   }
 
   protected override AbbB2xMeasurementModel ToMeasurement(
-    PidgeonAbbB2xPushRequestEntity pushRequest)
+    PidgeonAbbB2xMeterPushRequestEntity pushRequest)
   {
     return pushRequest.ToModel();
   }
 
-  protected override PidgeonAbbB2xPushRequestEntity ToPushRequest(
+  protected override PidgeonAbbB2xMeterPushRequestEntity ToPushRequest(
     AbbB2xMeasurementModel measurement)
   {
     return measurement.ToPushRequest();
@@ -28,7 +28,7 @@ public class PidgeonAbbB2xPushRequestMeasurementConverter :
 public static class AbbB2xPushRequestEntityMeasurementConverterExtensions
 {
   public static AbbB2xMeasurementModel ToModel(
-    this PidgeonAbbB2xPushRequestEntity request
+    this PidgeonAbbB2xMeterPushRequestEntity request
   )
   {
     return new AbbB2xMeasurementModel
@@ -70,14 +70,14 @@ public static class AbbB2xPushRequestEntityMeasurementConverterExtensions
     };
   }
 
-  public static PidgeonAbbB2xPushRequestEntity ToPushRequest(
+  public static PidgeonAbbB2xMeterPushRequestEntity ToPushRequest(
     this AbbB2xMeasurementModel model
   )
   {
-    return new PidgeonAbbB2xPushRequestEntity(
+    return new PidgeonAbbB2xMeterPushRequestEntity(
       MeterId: model.MeterId,
       Timestamp: model.Timestamp,
-      Data: new PidgeonAbbB2xPushRequestData(
+      Data: new PidgeonAbbB2xMeterPushRequestData(
         model.VoltageL1AnyT0_V,
         model.VoltageL2AnyT0_V,
         model.VoltageL3AnyT0_V,

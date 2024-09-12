@@ -17,7 +17,7 @@ public class MessengerPushRequestEntityJsonConverter<T>
   {
     return (T?)JsonSerializer.Deserialize(
       ref reader,
-      typeof(PidgeonPushRequestEntity),
+      typeof(PidgeonMessengerPushRequestEntity),
       options
     );
   }

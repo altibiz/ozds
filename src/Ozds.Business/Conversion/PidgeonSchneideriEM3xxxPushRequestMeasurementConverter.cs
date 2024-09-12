@@ -5,7 +5,7 @@ using Ozds.Iot.Entities;
 namespace Ozds.Business.Conversion;
 
 public class PidgeonSchneideriEM3xxxPushRequestMeasurementConverter :
-  PushRequestMeasurementConverter<PidgeonSchneideriEM3xxxPushRequestEntity,
+  PushRequestMeasurementConverter<PidgeonSchneideriEM3xxxMeterPushRequestEntity,
     SchneideriEM3xxxMeasurementModel>
 {
   protected override string MeterIdPrefix
@@ -14,12 +14,12 @@ public class PidgeonSchneideriEM3xxxPushRequestMeasurementConverter :
   }
 
   protected override SchneideriEM3xxxMeasurementModel ToMeasurement(
-    PidgeonSchneideriEM3xxxPushRequestEntity pushRequest)
+    PidgeonSchneideriEM3xxxMeterPushRequestEntity pushRequest)
   {
     return pushRequest.ToModel();
   }
 
-  protected override PidgeonSchneideriEM3xxxPushRequestEntity ToPushRequest(
+  protected override PidgeonSchneideriEM3xxxMeterPushRequestEntity ToPushRequest(
     SchneideriEM3xxxMeasurementModel measurement)
   {
     return measurement.ToPushRequest();
@@ -29,7 +29,7 @@ public class PidgeonSchneideriEM3xxxPushRequestMeasurementConverter :
 public static class SchneideriEM3xxxPushRequestEntityMeasurementConverterExtensions
 {
   public static SchneideriEM3xxxMeasurementModel ToModel(
-    this PidgeonSchneideriEM3xxxPushRequestEntity request
+    this PidgeonSchneideriEM3xxxMeterPushRequestEntity request
   )
   {
     return new SchneideriEM3xxxMeasurementModel
@@ -61,14 +61,14 @@ public static class SchneideriEM3xxxPushRequestEntityMeasurementConverterExtensi
     };
   }
 
-  public static PidgeonSchneideriEM3xxxPushRequestEntity ToPushRequest(
+  public static PidgeonSchneideriEM3xxxMeterPushRequestEntity ToPushRequest(
     this SchneideriEM3xxxMeasurementModel model
   )
   {
-    return new PidgeonSchneideriEM3xxxPushRequestEntity(
+    return new PidgeonSchneideriEM3xxxMeterPushRequestEntity(
       MeterId: model.MeterId,
       Timestamp: model.Timestamp,
-      Data: new PidgeonSchneideriEM3xxxPushRequestData(
+      Data: new PidgeonSchneideriEM3xxxMeterPushRequestData(
         model.VoltageL1AnyT0_V,
         model.VoltageL2AnyT0_V,
         model.VoltageL3AnyT0_V,

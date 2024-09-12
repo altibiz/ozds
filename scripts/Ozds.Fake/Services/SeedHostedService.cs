@@ -1,7 +1,6 @@
-using Ozds.Business.Iot;
 using Ozds.Fake.Client;
 using Ozds.Fake.Generators.Agnostic;
-using Ozds.Iot.Entities;
+using Ozds.Fake.Packing.Agnostic;
 using Ozds.Iot.Entities.Abstractions;
 
 namespace Ozds.Fake.Services;
@@ -24,6 +23,8 @@ public class SeedHostedService(
 
     var generator = scope.ServiceProvider
       .GetRequiredService<AgnosticMeasurementGenerator>();
+    var packer = scope.ServiceProvider
+      .GetRequiredService<AgnosticMessengerPushRequestPacker>();
 
     var seedTimeBegin = seed.Interval switch
     {
@@ -47,7 +48,7 @@ public class SeedHostedService(
       {
         measurements.AddRange(
           await generator.GenerateMeasurements(
-            seedTimeBegin, seedTimeEnd, meterId, stoppingToken));
+            seedTimeBegin, seedTimeEnd, seed.MessengerId, meterId, stoppingToken));
       }
 
       while (measurements.Count > 0)
@@ -55,10 +56,10 @@ public class SeedHostedService(
         var batch = measurements.Take(seed.BatchSize).ToList();
         measurements.RemoveRange(0, batch.Count);
 
-        var request = new PidgeonPushRequestEntity(
+        var request = packer.Pack(
+          seed.MessengerId,
           now,
-          [.. batch]
-        );
+          batch);
 
         var pushClient =
           scope.ServiceProvider.GetRequiredService<OzdsPushClient>();
