@@ -8,7 +8,6 @@ using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Finance;
 using Ozds.Business.Finance.Abstractions;
 using Ozds.Business.Finance.Agnostic;
-using Ozds.Business.Iot;
 using Ozds.Business.Localization;
 using Ozds.Business.Localization.Abstractions;
 using Ozds.Business.Mutations.Abstractions;
@@ -55,7 +54,6 @@ public static class IServiceCollectionExtensions
     services.AddScoped(
       typeof(INetworkUserInvoiceIssuer), typeof(NetworkUserInvoiceIssuer));
 
-    services.AddScoped(typeof(OzdsIotHandler));
     services.AddScoped(typeof(BatchAggregatedMeasurementUpserter));
 
     services.AddSingleton(typeof(IOzdsLocalizer), typeof(OzdsLocalizer));
