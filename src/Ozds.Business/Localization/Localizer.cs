@@ -54,7 +54,9 @@ public class Localizer : ILocalizer
     var stream = assembly.GetManifestResourceStream(fullName) ??
       throw new InvalidOperationException(
         $"Resource {fullName} does not exist. "
-        + $"Here are the available resources for the given assembly '{assembly.GetName().Name}':\n"
+        + $"Here are the available resources for the given assembly '{
+          assembly.GetName().Name
+        }':\n"
         + string.Join("\n", assembly.GetManifestResourceNames())
       );
     return stream;

@@ -103,7 +103,8 @@ public abstract class
           firstRecord,
           lastRecord
         );
-        var pushRequest = _converter.ConvertToPushRequest(withCorrectedCumulatives, messengerId);
+        var pushRequest = _converter.ConvertToPushRequest(
+          withCorrectedCumulatives, messengerId);
         yield return pushRequest;
       }
 

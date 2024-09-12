@@ -21,7 +21,7 @@ public class MessengerNotificationModel : ResolvableNotificationModel
       EventId = default!,
       ResolvedById = default!,
       ResolvedOn = default!,
-      Topics = new(),
+      Topics = new HashSet<TopicModel>(),
       MessengerId = default!
     };
   }

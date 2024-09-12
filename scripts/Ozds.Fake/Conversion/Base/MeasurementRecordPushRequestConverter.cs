@@ -9,12 +9,14 @@ public abstract class MeasurementRecordPushRequestConverter<TRecord,
   where TRecord : IMeasurementRecord
   where TPushRequest : IMeterPushRequestEntity
 {
-  public bool CanConvertToPushRequest(IMeasurementRecord record, string messengerId)
+  protected abstract string MessengerIdPrefix { get; }
+
+  public bool CanConvertToPushRequest(
+    IMeasurementRecord record,
+    string messengerId)
   {
     return record is TRecord && messengerId.StartsWith(MessengerIdPrefix);
   }
-
-  protected abstract string MessengerIdPrefix { get; }
 
   public IMeterPushRequestEntity ConvertToPushRequest(IMeasurementRecord record)
   {

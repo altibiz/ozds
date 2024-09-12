@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Ozds.Data.Entities.Complex;
 using Ozds.Data.Extensions;
 
@@ -9,7 +8,7 @@ public class MessengerEntity : AuditableEntity
 {
   protected readonly string _stringId = default!;
 
-  private long _locationId;
+  private readonly long _locationId;
 
   public override string Id
   {
@@ -30,8 +29,7 @@ public class MessengerEntity : AuditableEntity
     default!;
 
   public virtual ICollection<MessengerNotificationEntity>
-    InactivityNotifications
-  { get; set; } = default!;
+    InactivityNotifications { get; set; } = default!;
 
   public PeriodEntity MaxInactivityPeriod { get; set; } = default!;
 
@@ -39,7 +37,8 @@ public class MessengerEntity : AuditableEntity
 }
 
 public class
-  MessengerEntityTypeConfiguration : EntityTypeHierarchyConfiguration<MessengerEntity>
+  MessengerEntityTypeConfiguration : EntityTypeHierarchyConfiguration<
+  MessengerEntity>
 {
   public override void Configure(ModelBuilder modelBuilder, Type entity)
   {

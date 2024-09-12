@@ -8,12 +8,14 @@ namespace Ozds.Business.Conversion;
 public class SystemNotificationModelEntityConverter : ModelEntityConverter<
   SystemNotificationModel, SystemNotificationEntity>
 {
-  protected override SystemNotificationEntity ToEntity(SystemNotificationModel model)
+  protected override SystemNotificationEntity ToEntity(
+    SystemNotificationModel model)
   {
     return model.ToEntity();
   }
 
-  protected override SystemNotificationModel ToModel(SystemNotificationEntity entity)
+  protected override SystemNotificationModel ToModel(
+    SystemNotificationEntity entity)
   {
     return entity.ToModel();
   }
@@ -24,7 +26,7 @@ public static class SystemNotificationModelEntityConverterExtensions
   public static SystemNotificationEntity ToEntity(
     this SystemNotificationModel model)
   {
-    return new()
+    return new SystemNotificationEntity
     {
       Id = model.Id,
       Title = model.Title,
@@ -32,14 +34,14 @@ public static class SystemNotificationModelEntityConverterExtensions
       Content = model.Content,
       Topics = model.Topics.Select(x => x.ToEntity()).ToHashSet(),
       EventId = model.EventId,
-      Timestamp = model.Timestamp,
+      Timestamp = model.Timestamp
     };
   }
 
   public static SystemNotificationModel ToModel(
     this SystemNotificationEntity entity)
   {
-    return new()
+    return new SystemNotificationModel
     {
       Id = entity.Id,
       Title = entity.Title,
@@ -47,7 +49,7 @@ public static class SystemNotificationModelEntityConverterExtensions
       Content = entity.Content,
       Topics = entity.Topics.Select(x => x.ToModel()).ToHashSet(),
       EventId = entity.EventId,
-      Timestamp = entity.Timestamp,
+      Timestamp = entity.Timestamp
     };
   }
 }

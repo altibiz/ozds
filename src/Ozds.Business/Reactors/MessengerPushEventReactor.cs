@@ -57,7 +57,7 @@ public class MessengerPushEventWorker(
     var messenger = (await context.Messengers
         .Where(context.PrimaryKeyEquals<MessengerEntity>(eventArgs.MessengerId))
         .FirstOrDefaultAsync())
-        ?.ToModel();
+      ?.ToModel();
 
     if (messenger is null)
     {
@@ -71,7 +71,11 @@ public class MessengerPushEventWorker(
       MessengerId = messenger.Id,
       Level = LevelEntity.Info,
       Content = CreateEventContent(eventArgs, messenger),
-      Categories = [CategoryEntity.All, CategoryEntity.Messenger, CategoryEntity.MessengerPush],
+      Categories =
+      [
+        CategoryEntity.All, CategoryEntity.Messenger,
+        CategoryEntity.MessengerPush
+      ]
     };
 
     context.Add(@event);

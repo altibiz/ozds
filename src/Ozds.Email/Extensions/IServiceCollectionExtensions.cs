@@ -31,8 +31,8 @@ public static class IServiceCollectionExtensions
   )
   {
     _ = builder.Configuration
-      .GetSection("Ozds:Email")
-      .Get<OzdsEmailOptions>()
+        .GetSection("Ozds:Email")
+        .Get<OzdsEmailOptions>()
       ?? throw new InvalidOperationException(
         "Missing Ozds:Email configuration");
 

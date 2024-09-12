@@ -8,7 +8,10 @@ public record PidgeonSchneideriEM3xxxMeterPushRequestEntity(
   PidgeonSchneideriEM3xxxMeterPushRequestData Data
 ) : IPidgeonMeterPushRequestEntity
 {
-  public static string MeterIdPrefix => "schneider-iEM3xxx";
+  public static string MeterIdPrefix
+  {
+    get { return "schneider-iEM3xxx"; }
+  }
 }
 
 public record PidgeonSchneideriEM3xxxMeterPushRequestData(

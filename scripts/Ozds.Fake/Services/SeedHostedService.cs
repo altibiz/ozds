@@ -48,7 +48,8 @@ public class SeedHostedService(
       {
         measurements.AddRange(
           await generator.GenerateMeasurements(
-            seedTimeBegin, seedTimeEnd, seed.MessengerId, meterId, stoppingToken));
+            seedTimeBegin, seedTimeEnd, seed.MessengerId, meterId,
+            stoppingToken));
       }
 
       while (measurements.Count > 0)

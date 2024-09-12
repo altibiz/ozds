@@ -65,7 +65,8 @@ public class MeasurementUpsertWorker(
       serviceProvider.GetRequiredService<AgnosticAggregateUpserter>();
     var aggregateConverter = serviceProvider
       .GetRequiredService<AgnosticMeasurementAggregateConverter>();
-    var publisher = serviceProvider.GetRequiredService<IMeasurementUpsertPublisher>();
+    var publisher =
+      serviceProvider.GetRequiredService<IMeasurementUpsertPublisher>();
 
     IReadOnlyList<IMeasurement> upsertMeasurements =
       eventArgs.Request.Measurements

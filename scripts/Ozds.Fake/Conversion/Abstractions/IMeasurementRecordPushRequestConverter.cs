@@ -5,7 +5,10 @@ namespace Ozds.Fake.Conversion.Abstractions;
 
 public interface IMeasurementRecordPushRequestConverter
 {
-  public bool CanConvertToPushRequest(IMeasurementRecord record, string messengerId);
+  public bool CanConvertToPushRequest(
+    IMeasurementRecord record,
+    string messengerId);
 
-  public IMeterPushRequestEntity ConvertToPushRequest(IMeasurementRecord record);
+  public IMeterPushRequestEntity
+    ConvertToPushRequest(IMeasurementRecord record);
 }

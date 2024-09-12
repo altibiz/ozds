@@ -22,30 +22,31 @@ public class PidgeonMeterPushRequestEntityJsonConverter<T>
     var jsonObject = jsonDocument.RootElement;
 
     if (jsonObject.TryGetProperty("MeterId", out var meterIdProp) ||
-        jsonObject.TryGetProperty("meterId", out meterIdProp))
+      jsonObject.TryGetProperty("meterId", out meterIdProp))
     {
       var meterId = meterIdProp.GetString();
 
       if (meterId is not null)
       {
         var types = typeof(T).Assembly.GetTypes()
-          .Where(t =>
-            !t.IsAbstract
-            && !t.IsGenericType
-            && t.IsAssignableTo(typeof(IPidgeonMeterPushRequestEntity)));
+          .Where(
+            t =>
+              !t.IsAbstract
+              && !t.IsGenericType
+              && t.IsAssignableTo(typeof(IPidgeonMeterPushRequestEntity)));
 
         foreach (var type in types)
         {
           if (type
-            .GetProperties(BindingFlags.Public | BindingFlags.Static)
-            .FirstOrDefault(p => p.Name == "MeterIdPrefix")
-            ?.GetValue(null) is not string meterIdPrefix
+              .GetProperties(BindingFlags.Public | BindingFlags.Static)
+              .FirstOrDefault(p => p.Name == "MeterIdPrefix")
+              ?.GetValue(null) is not string meterIdPrefix
             || !meterId.StartsWith(meterIdPrefix))
           {
             continue;
           }
 
-          return (T?)JsonSerializer.Deserialize(jsonObject, type, options);
+          return (T?)jsonObject.Deserialize(type, options);
         }
       }
     }

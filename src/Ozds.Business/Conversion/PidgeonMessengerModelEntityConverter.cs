@@ -6,15 +6,18 @@ using Ozds.Data.Entities;
 namespace Ozds.Business.Conversion;
 
 public class
-  PidgeonMessengerModelEntityConverter : ModelEntityConverter<PidgeonMessengerModel,
+  PidgeonMessengerModelEntityConverter : ModelEntityConverter<
+  PidgeonMessengerModel,
   PidgeonMessengerEntity>
 {
-  protected override PidgeonMessengerEntity ToEntity(PidgeonMessengerModel model)
+  protected override PidgeonMessengerEntity ToEntity(
+    PidgeonMessengerModel model)
   {
     return model.ToEntity();
   }
 
-  protected override PidgeonMessengerModel ToModel(PidgeonMessengerEntity entity)
+  protected override PidgeonMessengerModel ToModel(
+    PidgeonMessengerEntity entity)
   {
     return entity.ToModel();
   }
@@ -22,7 +25,8 @@ public class
 
 public static class PidgeonMessengerModelEntityConverterExtensions
 {
-  public static PidgeonMessengerModel ToModel(this PidgeonMessengerEntity entity)
+  public static PidgeonMessengerModel ToModel(
+    this PidgeonMessengerEntity entity)
   {
     return new PidgeonMessengerModel
     {
@@ -41,7 +45,8 @@ public static class PidgeonMessengerModelEntityConverterExtensions
     };
   }
 
-  public static PidgeonMessengerEntity ToEntity(this PidgeonMessengerModel model)
+  public static PidgeonMessengerEntity ToEntity(
+    this PidgeonMessengerModel model)
   {
     return new PidgeonMessengerEntity
     {

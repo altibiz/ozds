@@ -9,7 +9,9 @@ public class AgnosticMeasurementRecordPushRequestConverter(
 {
   private readonly IServiceProvider _serviceProvider = serviceProvider;
 
-  public IMeterPushRequestEntity ConvertToPushRequest(IMeasurementRecord record, string messengerId)
+  public IMeterPushRequestEntity ConvertToPushRequest(
+    IMeasurementRecord record,
+    string messengerId)
   {
     var converter = _serviceProvider
       .GetServices<IMeasurementRecordPushRequestConverter>()

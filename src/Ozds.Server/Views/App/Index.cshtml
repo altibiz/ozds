@@ -1,7 +1,8 @@
+@using Ozds.Client
 @namespace Ozds.Server.Views.App
 
 @{
   Layout = "_Layout.cshtml";
 }
 
-@(await Html.RenderComponentAsync<Ozds.Client.App>(RenderMode.Server, new { LogoutToken = Model.LogoutToken }))
+@(await Html.RenderComponentAsync<App>(RenderMode.Server, new { Model.LogoutToken }))

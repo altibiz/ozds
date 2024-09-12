@@ -3,7 +3,8 @@ using Ozds.Business.Observers.EventArgs;
 
 namespace Ozds.Business.Observers;
 
-public class MeasurementUpsertObserver : IMeasurementUpsertPublisher, IMeasurementUpsertSubscriber
+public class MeasurementUpsertObserver : IMeasurementUpsertPublisher,
+  IMeasurementUpsertSubscriber
 {
   public void PublishUpsert(MeasurementUpsertEventArgs eventArgs)
   {

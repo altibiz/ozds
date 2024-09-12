@@ -19,14 +19,16 @@ public class PidgeonSchneideriEM3xxxPushRequestMeasurementConverter :
     return pushRequest.ToModel();
   }
 
-  protected override PidgeonSchneideriEM3xxxMeterPushRequestEntity ToPushRequest(
-    SchneideriEM3xxxMeasurementModel measurement)
+  protected override PidgeonSchneideriEM3xxxMeterPushRequestEntity
+    ToPushRequest(
+      SchneideriEM3xxxMeasurementModel measurement)
   {
     return measurement.ToPushRequest();
   }
 }
 
-public static class SchneideriEM3xxxPushRequestEntityMeasurementConverterExtensions
+public static class
+  SchneideriEM3xxxPushRequestEntityMeasurementConverterExtensions
 {
   public static SchneideriEM3xxxMeasurementModel ToModel(
     this PidgeonSchneideriEM3xxxMeterPushRequestEntity request
@@ -66,9 +68,9 @@ public static class SchneideriEM3xxxPushRequestEntityMeasurementConverterExtensi
   )
   {
     return new PidgeonSchneideriEM3xxxMeterPushRequestEntity(
-      MeterId: model.MeterId,
-      Timestamp: model.Timestamp,
-      Data: new PidgeonSchneideriEM3xxxMeterPushRequestData(
+      model.MeterId,
+      model.Timestamp,
+      new PidgeonSchneideriEM3xxxMeterPushRequestData(
         model.VoltageL1AnyT0_V,
         model.VoltageL2AnyT0_V,
         model.VoltageL3AnyT0_V,

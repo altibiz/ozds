@@ -31,7 +31,8 @@ public class AgnosticPushRequestMeasurementConverter(
         $"No converter found for meter {pushRequest.MeterId}.");
   }
 
-  public TMeasurement ToMeasurement<TMeasurement>(IMeterPushRequestEntity pushRequest)
+  public TMeasurement ToMeasurement<TMeasurement>(
+    IMeterPushRequestEntity pushRequest)
     where TMeasurement : class, IMeasurement
   {
     return ToMeasurement(pushRequest) as TMeasurement

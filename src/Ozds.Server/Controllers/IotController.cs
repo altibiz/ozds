@@ -1,6 +1,5 @@
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
-using Ozds.Iot.Entities;
 using Ozds.Iot.Entities.Abstractions;
 using Ozds.Iot.Observers.Abstractions;
 using Ozds.Iot.Observers.EventArgs;
@@ -10,6 +9,11 @@ namespace Ozds.Server.Controllers;
 [IgnoreAntiforgeryToken]
 public class IotController(IPushPublisher publisher) : Controller
 {
+  public static readonly JsonSerializerOptions Options = new()
+  {
+    PropertyNameCaseInsensitive = true
+  };
+
   [HttpPost]
   public async Task<IActionResult> Push(string id)
   {
@@ -36,9 +40,4 @@ public class IotController(IPushPublisher publisher) : Controller
 
     return Ok();
   }
-
-  public static readonly JsonSerializerOptions Options = new()
-  {
-    PropertyNameCaseInsensitive = true
-  };
 }

@@ -16,7 +16,7 @@ public class PeriodModelActivator : ModelActivator<PeriodModel>
     return new PeriodModel
     {
       Duration = DurationModel.Second,
-      Multiplier = 1,
+      Multiplier = 1
     };
   }
 }

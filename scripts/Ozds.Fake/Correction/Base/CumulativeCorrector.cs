@@ -21,17 +21,16 @@ public abstract class
       measurementRecord
         as TMeasurementRecord
       ?? throw new ArgumentException(
-        $"Expected {typeof(TMeasurementRecord).Name}, but got {measurementRecord.GetType().Name}",
+        $"Expected {
+          typeof(TMeasurementRecord).Name
+        }, but got {
+          measurementRecord.GetType().Name
+        }",
         nameof(measurementRecord)
       ),
       meterId
     );
   }
-
-  protected abstract TMeasurementRecord CorrectMeterId(
-    TMeasurementRecord measurementRecord,
-    string meterId
-  );
 
   public IMeasurementRecord CorrectCumulatives(
     DateTimeOffset timestamp,
@@ -45,23 +44,40 @@ public abstract class
       CopyRecord(
         measurementRecord as TMeasurementRecord
         ?? throw new ArgumentException(
-          $"Expected {typeof(TMeasurementRecord).Name}, but got {measurementRecord.GetType().Name}",
+          $"Expected {
+            typeof(TMeasurementRecord).Name
+          }, but got {
+            measurementRecord.GetType().Name
+          }",
           nameof(measurementRecord)
         )),
       firstMeasurementRecord
         as TMeasurementRecord
       ?? throw new ArgumentException(
-        $"Expected {typeof(TMeasurementRecord).Name}, but got {firstMeasurementRecord.GetType().Name}",
+        $"Expected {
+          typeof(TMeasurementRecord).Name
+        }, but got {
+          firstMeasurementRecord.GetType().Name
+        }",
         nameof(firstMeasurementRecord)
       ),
       lastMeasurementRecord
         as TMeasurementRecord
       ?? throw new ArgumentException(
-        $"Expected {typeof(TMeasurementRecord).Name}, but got {lastMeasurementRecord.GetType().Name}",
+        $"Expected {
+          typeof(TMeasurementRecord).Name
+        }, but got {
+          lastMeasurementRecord.GetType().Name
+        }",
         nameof(lastMeasurementRecord)
       )
     );
   }
+
+  protected abstract TMeasurementRecord CorrectMeterId(
+    TMeasurementRecord measurementRecord,
+    string meterId
+  );
 
   protected abstract TMeasurementRecord CorrectCumulatives(
     DateTimeOffset timestamp,

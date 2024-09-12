@@ -118,24 +118,6 @@ public static class IServiceCollectionExtensions
       });
   }
 
-  private sealed class OzdsSagaRepositoryRegistrationProvider
-    : ISagaRepositoryRegistrationProvider
-  {
-    public void Configure<TSaga>(
-      ISagaRegistrationConfigurator<TSaga> configurator
-    )
-      where TSaga : class, ISaga
-    {
-      configurator.EntityFrameworkRepository(
-        config =>
-        {
-          config.ConcurrencyMode = ConcurrencyMode.Optimistic;
-          config.ExistingDbContext<MessagingDbContext>();
-          config.UsePostgres();
-        });
-    }
-  }
-
   private static void AddSingletonAssignableTo(
     this IServiceCollection services,
     Type assignableTo
@@ -169,5 +151,23 @@ public static class IServiceCollectionExtensions
       .Concat(type.BaseType?.GetAllInterfaces() ?? Array.Empty<Type>())
       .ToHashSet()
       .ToArray();
+  }
+
+  private sealed class OzdsSagaRepositoryRegistrationProvider
+    : ISagaRepositoryRegistrationProvider
+  {
+    public void Configure<TSaga>(
+      ISagaRegistrationConfigurator<TSaga> configurator
+    )
+      where TSaga : class, ISaga
+    {
+      configurator.EntityFrameworkRepository(
+        config =>
+        {
+          config.ConcurrencyMode = ConcurrencyMode.Optimistic;
+          config.ExistingDbContext<MessagingDbContext>();
+          config.UsePostgres();
+        });
+    }
   }
 }

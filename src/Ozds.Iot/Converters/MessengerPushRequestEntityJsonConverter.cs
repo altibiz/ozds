@@ -22,7 +22,10 @@ public class MessengerPushRequestEntityJsonConverter<T>
     );
   }
 
-  public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
+  public override void Write(
+    Utf8JsonWriter writer,
+    T value,
+    JsonSerializerOptions options)
   {
     var type = value?.GetType();
     if (type == null)

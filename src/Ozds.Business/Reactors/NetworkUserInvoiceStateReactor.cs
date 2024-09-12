@@ -3,7 +3,6 @@ using Ozds.Business.Mutations;
 using Ozds.Business.Reactors.Abstractions;
 using Ozds.Messaging.Observers.Abstractions;
 using Ozds.Messaging.Observers.EventArgs;
-using Ozds.Messaging.Sagas;
 
 namespace Ozds.Business.Reactors;
 
@@ -49,6 +48,7 @@ public class NetworkUserInvoiceStateReactor(
   {
     var mutations = serviceProvider
       .GetRequiredService<OzdsNetworkUserInvoiceMutations>();
-    await mutations.UpdateBillId(eventArgs.State.NetworkUserInvoiceId, eventArgs.State.BillId!);
+    await mutations.UpdateBillId(
+      eventArgs.State.NetworkUserInvoiceId, eventArgs.State.BillId!);
   }
 }

@@ -5,7 +5,8 @@ using Ozds.Iot.Entities;
 namespace Ozds.Business.Conversion;
 
 public class PidgeonAbbB2xPushRequestMeasurementConverter :
-  PushRequestMeasurementConverter<PidgeonAbbB2xMeterPushRequestEntity, AbbB2xMeasurementModel>
+  PushRequestMeasurementConverter<PidgeonAbbB2xMeterPushRequestEntity,
+    AbbB2xMeasurementModel>
 {
   protected override string MeterIdPrefix
   {
@@ -53,12 +54,18 @@ public static class AbbB2xPushRequestEntityMeasurementConverterExtensions
       ActiveEnergyL1ExportT0_Wh = request.Data.ActiveEnergyL1ExportT0_Wh,
       ActiveEnergyL2ExportT0_Wh = request.Data.ActiveEnergyL2ExportT0_Wh,
       ActiveEnergyL3ExportT0_Wh = request.Data.ActiveEnergyL3ExportT0_Wh,
-      ReactiveEnergyL1ImportT0_VARh = request.Data.ReactiveEnergyL1ImportT0_VARh,
-      ReactiveEnergyL2ImportT0_VARh = request.Data.ReactiveEnergyL2ImportT0_VARh,
-      ReactiveEnergyL3ImportT0_VARh = request.Data.ReactiveEnergyL3ImportT0_VARh,
-      ReactiveEnergyL1ExportT0_VARh = request.Data.ReactiveEnergyL1ExportT0_VARh,
-      ReactiveEnergyL2ExportT0_VARh = request.Data.ReactiveEnergyL2ExportT0_VARh,
-      ReactiveEnergyL3ExportT0_VARh = request.Data.ReactiveEnergyL3ExportT0_VARh,
+      ReactiveEnergyL1ImportT0_VARh =
+        request.Data.ReactiveEnergyL1ImportT0_VARh,
+      ReactiveEnergyL2ImportT0_VARh =
+        request.Data.ReactiveEnergyL2ImportT0_VARh,
+      ReactiveEnergyL3ImportT0_VARh =
+        request.Data.ReactiveEnergyL3ImportT0_VARh,
+      ReactiveEnergyL1ExportT0_VARh =
+        request.Data.ReactiveEnergyL1ExportT0_VARh,
+      ReactiveEnergyL2ExportT0_VARh =
+        request.Data.ReactiveEnergyL2ExportT0_VARh,
+      ReactiveEnergyL3ExportT0_VARh =
+        request.Data.ReactiveEnergyL3ExportT0_VARh,
       ActiveEnergyTotalImportT0_Wh = request.Data.ActiveEnergyTotalImportT0_Wh,
       ActiveEnergyTotalExportT0_Wh = request.Data.ActiveEnergyTotalExportT0_Wh,
       ReactiveEnergyTotalImportT0_VARh =
@@ -75,9 +82,9 @@ public static class AbbB2xPushRequestEntityMeasurementConverterExtensions
   )
   {
     return new PidgeonAbbB2xMeterPushRequestEntity(
-      MeterId: model.MeterId,
-      Timestamp: model.Timestamp,
-      Data: new PidgeonAbbB2xMeterPushRequestData(
+      model.MeterId,
+      model.Timestamp,
+      new PidgeonAbbB2xMeterPushRequestData(
         model.VoltageL1AnyT0_V,
         model.VoltageL2AnyT0_V,
         model.VoltageL3AnyT0_V,

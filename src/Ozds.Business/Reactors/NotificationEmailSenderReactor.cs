@@ -73,34 +73,38 @@ public class NotificationEmailSenderWorker(
     }
 
     var notifications = await context.Notifications
-      .Where(context.PrimaryKeyIn<NotificationEntity>(
-        recipients
-          .Select(x => x.NotificationId)
-          .ToList()))
+      .Where(
+        context.PrimaryKeyIn<NotificationEntity>(
+          recipients
+            .Select(x => x.NotificationId)
+            .ToList()))
       .ToListAsync();
 
     var representatives = await context.Representatives
-      .Where(context.PrimaryKeyIn<RepresentativeEntity>(
-        recipients
-          .Select(x => x.RepresentativeId)
-          .ToList()))
+      .Where(
+        context.PrimaryKeyIn<RepresentativeEntity>(
+          recipients
+            .Select(x => x.RepresentativeId)
+            .ToList()))
       .ToListAsync();
 
     var groups = recipients
       .GroupBy(x => x.NotificationId)
-      .Select(x => new
-      {
-        Notification = notifications
-          .FirstOrDefault(y => y.Id == x.Key)
-          ?.ToModel(),
-        Recipients = x.ToList(),
-        Representatives = x
-          .Select(y => representatives
-            .FirstOrDefault(z => z.Id == y.RepresentativeId))
+      .Select(
+        x => new
+        {
+          Notification = notifications
+            .FirstOrDefault(y => y.Id == x.Key)
+            ?.ToModel(),
+          Recipients = x.ToList(),
+          Representatives = x
+            .Select(
+              y => representatives
+                .FirstOrDefault(z => z.Id == y.RepresentativeId))
             .OfType<RepresentativeEntity>()
             .Select(z => z.ToModel())
             .ToList()
-      });
+        });
 
     var emails = new List<EmailMessage>();
     foreach (var group in groups)
@@ -112,7 +116,7 @@ public class NotificationEmailSenderWorker(
 
       var notification = group.Notification;
       var titleBuilder = new StringBuilder(
-          $"[{nameof(Ozds)}]: {notification.Title}");
+        $"[{nameof(Ozds)}]: {notification.Title}");
       if (notification.Topics.Count > 0)
       {
         var topics = notification.Topics.Select(x => x.ToTitle());

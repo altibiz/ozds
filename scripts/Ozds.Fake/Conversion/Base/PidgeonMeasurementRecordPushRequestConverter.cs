@@ -5,7 +5,7 @@ namespace Ozds.Fake.Conversion.Base;
 
 public abstract class PidgeonMeasurementRecordPushRequestConverter<TRecord,
   TPushRequest> : MeasurementRecordPushRequestConverter<TRecord,
-    TPushRequest>
+  TPushRequest>
   where TRecord : IMeasurementRecord
   where TPushRequest : IMeterPushRequestEntity
 {

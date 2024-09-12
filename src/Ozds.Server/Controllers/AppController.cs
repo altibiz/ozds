@@ -30,10 +30,11 @@ public class AppController(IAntiforgery antiforgery) : Controller
       return BadRequest(ex);
     }
 
-    return View(new AppViewModel
-    {
-      Culture = cultureInfo,
-      LogoutToken = logoutToken!,
-    });
+    return View(
+      new AppViewModel
+      {
+        Culture = cultureInfo,
+        LogoutToken = logoutToken!
+      });
   }
 }

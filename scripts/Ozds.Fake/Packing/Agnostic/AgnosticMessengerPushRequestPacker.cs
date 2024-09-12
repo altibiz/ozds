@@ -12,7 +12,7 @@ public class AgnosticMessengerPushRequestPacker(IServiceProvider services)
   )
   {
     var packer = services.GetServices<IMessengerPushRequestPacker>()
-      .FirstOrDefault(p => p.CanPack(messengerId))
+        .FirstOrDefault(p => p.CanPack(messengerId))
       ?? throw new InvalidOperationException(
         $"No packer found for {messengerId}");
 

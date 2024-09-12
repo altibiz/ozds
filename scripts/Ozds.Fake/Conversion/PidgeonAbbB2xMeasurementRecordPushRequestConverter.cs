@@ -12,9 +12,9 @@ public class PidgeonAbbB2xMeasurementRecordPushRequestConverter
     AbbB2xMeasurementRecord record)
   {
     return new PidgeonAbbB2xMeterPushRequestEntity(
-      MeterId: record.MeterId,
-      Timestamp: record.Timestamp,
-      Data: new PidgeonAbbB2xMeterPushRequestData(
+      record.MeterId,
+      record.Timestamp,
+      new PidgeonAbbB2xMeterPushRequestData(
         record.VoltageL1AnyT0_V,
         record.VoltageL2AnyT0_V,
         record.VoltageL3AnyT0_V,

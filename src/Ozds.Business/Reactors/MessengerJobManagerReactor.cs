@@ -4,7 +4,6 @@ using Ozds.Business.Conversion.Complex;
 using Ozds.Business.Models.Complex;
 using Ozds.Business.Reactors.Abstractions;
 using Ozds.Data.Context;
-using Ozds.Data.Entities;
 using Ozds.Data.Entities.Base;
 using Ozds.Data.Observers.Abstractions;
 using Ozds.Data.Observers.EventArgs;
@@ -113,10 +112,12 @@ public class MessengerJobManagerWorker(
     var startedSource = new TaskCompletionSource();
     var cancelledSource = new TaskCompletionSource();
 
-    using var reg1 = lifetime.ApplicationStarted.Register(() => startedSource.SetResult());
+    using var reg1 =
+      lifetime.ApplicationStarted.Register(() => startedSource.SetResult());
     using var reg2 = stoppingToken.Register(() => cancelledSource.SetResult());
 
-    Task completedTask = await Task.WhenAny(startedSource.Task, cancelledSource.Task);
+    var completedTask = await Task.WhenAny(
+      startedSource.Task, cancelledSource.Task);
 
     return completedTask == startedSource.Task;
   }

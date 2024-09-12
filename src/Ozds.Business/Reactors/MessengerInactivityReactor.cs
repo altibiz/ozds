@@ -59,7 +59,9 @@ public class MeterInactivityWorker(
     }
   }
 
-  private void OnInactivity(object? sender, MessengerInactivityEventArgs eventArgs)
+  private void OnInactivity(
+    object? sender,
+    MessengerInactivityEventArgs eventArgs)
   {
     channel.Writer.TryWrite(eventArgs);
   }
@@ -69,7 +71,8 @@ public class MeterInactivityWorker(
     MessengerInactivityEventArgs eventArgs)
   {
     var context = serviceProvider.GetRequiredService<DataDbContext>();
-    var converter = serviceProvider.GetRequiredService<AgnosticModelEntityConverter>();
+    var converter =
+      serviceProvider.GetRequiredService<AgnosticModelEntityConverter>();
 
     var messenger = (await context.Messengers
         .Where(context.PrimaryKeyEquals<MessengerEntity>(eventArgs.Id))

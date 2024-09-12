@@ -7,6 +7,9 @@ public record PidgeonMessengerPushRequestEntity(
   IPidgeonMeterPushRequestEntity[] Measurements
 ) : IMessengerPushRequestEntity
 {
-  IReadOnlyCollection<IMeterPushRequestEntity> IMessengerPushRequestEntity.Measurements =>
-    Measurements;
+  IReadOnlyCollection<IMeterPushRequestEntity> IMessengerPushRequestEntity.
+    Measurements
+  {
+    get { return Measurements; }
+  }
 }

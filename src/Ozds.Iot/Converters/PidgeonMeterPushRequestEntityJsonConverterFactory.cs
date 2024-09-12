@@ -4,11 +4,13 @@ using Ozds.Iot.Entities.Abstractions;
 
 namespace Ozds.Iot.Converters;
 
-public class PidgeonMeterPushRequestEntityConverterFactory : JsonConverterFactory
+public class
+  PidgeonMeterPushRequestEntityConverterFactory : JsonConverterFactory
 {
   public override bool CanConvert(Type typeToConvert)
   {
-    return typeof(IPidgeonMeterPushRequestEntity).IsAssignableFrom(typeToConvert);
+    return typeof(IPidgeonMeterPushRequestEntity).IsAssignableFrom(
+      typeToConvert);
   }
 
   public override JsonConverter? CreateConverter(

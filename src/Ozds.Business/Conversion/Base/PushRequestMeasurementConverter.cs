@@ -22,7 +22,7 @@ public abstract class PushRequestMeasurementConverter<TPushRequest,
   {
     return ToMeasurement(
       (TPushRequest)pushRequest
-        ?? throw new ArgumentNullException(nameof(pushRequest))
+      ?? throw new ArgumentNullException(nameof(pushRequest))
     );
   }
 
@@ -30,7 +30,7 @@ public abstract class PushRequestMeasurementConverter<TPushRequest,
   {
     return ToPushRequest(
       measurement as TMeasurement
-        ?? throw new ArgumentNullException(nameof(measurement)));
+      ?? throw new ArgumentNullException(nameof(measurement)));
   }
 
   protected abstract TMeasurement ToMeasurement(TPushRequest pushRequest);

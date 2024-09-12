@@ -33,7 +33,7 @@ public static class PeriodModelExtensions
       builder.Append("a ");
     }
 
-    builder.Append(model.Duration.ToTitle(plural: model.Multiplier > 1));
+    builder.Append(model.Duration.ToTitle(model.Multiplier > 1));
 
     return builder.ToString();
   }

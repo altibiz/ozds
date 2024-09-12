@@ -1,9 +1,3 @@
-@using Ozds.Client.Shared.Layout
-@using Ozds.Client.Shared.Streaming
-@using Microsoft.AspNetCore.Components.Authorization
-@using Microsoft.AspNetCore.Components.Routing
-@using Microsoft.AspNetCore.Components.Web
-@using Ozds.Client.State
 @namespace Ozds.Client
 
 <HeadContent>
@@ -38,6 +32,7 @@
 </Router>
 
 @code {
+
   [Parameter]
   public string LogoutToken { get; set; } = default!;
 
@@ -47,4 +42,5 @@
   {
     LogoutTokenState = new LogoutTokenState(LogoutToken);
   }
+
 }

@@ -8,7 +8,10 @@ public record PidgeonAbbB2xMeterPushRequestEntity(
   PidgeonAbbB2xMeterPushRequestData Data
 ) : IPidgeonMeterPushRequestEntity
 {
-  public static string MeterIdPrefix => "abb-B2x";
+  public static string MeterIdPrefix
+  {
+    get { return "abb-B2x"; }
+  }
 }
 
 public record PidgeonAbbB2xMeterPushRequestData(
