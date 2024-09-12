@@ -24,25 +24,4 @@ public class RegulatoryCatalogueModel : AuditableModel
   [Required]
   [Range(0, uint.MaxValue)]
   public required decimal TaxRate_Percent { get; set; }
-
-  public static RegulatoryCatalogueModel New()
-  {
-    return new RegulatoryCatalogueModel
-    {
-      Id = default!,
-      Title = "",
-      CreatedOn = DateTimeOffset.UtcNow,
-      CreatedById = default,
-      LastUpdatedOn = default,
-      LastUpdatedById = default,
-      IsDeleted = false,
-      DeletedOn = default,
-      DeletedById = default,
-      ActiveEnergyTotalImportT1Price_EUR = 0,
-      ActiveEnergyTotalImportT2Price_EUR = 0,
-      RenewableEnergyFeePrice_EUR = 0,
-      BusinessUsageFeePrice_EUR = 0,
-      TaxRate_Percent = 0
-    };
-  }
 }

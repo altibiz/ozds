@@ -168,7 +168,7 @@
 
     if (LoadingState.Value is null)
     {
-      LoadingState = LoadingState.WithValue(NetworkUserModel.New());
+      LoadingState = LoadingState.WithValue(NetworkUserModelActivator.New());
       _create = true;
     }
   }

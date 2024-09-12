@@ -24,25 +24,4 @@ public class RedLowNetworkUserCatalogueModel : NetworkUserCatalogueModel
   [Required]
   [Range(0, uint.MaxValue)]
   public required decimal MeterFeePrice_EUR { get; set; }
-
-  public static RedLowNetworkUserCatalogueModel New()
-  {
-    return new RedLowNetworkUserCatalogueModel
-    {
-      Id = default!,
-      Title = "",
-      CreatedOn = DateTimeOffset.UtcNow,
-      CreatedById = default,
-      LastUpdatedOn = default,
-      LastUpdatedById = default,
-      IsDeleted = false,
-      DeletedOn = default,
-      DeletedById = default,
-      ActiveEnergyTotalImportT1Price_EUR = 0,
-      ActiveEnergyTotalImportT2Price_EUR = 0,
-      ActivePowerTotalImportT1Price_EUR = 0,
-      ReactiveEnergyTotalRampedT0Price_EUR = 0,
-      MeterFeePrice_EUR = 0
-    };
-  }
 }

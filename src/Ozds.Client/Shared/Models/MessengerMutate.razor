@@ -106,7 +106,7 @@
 
     if (LoadingState.Value is null)
     {
-      LoadingState = LoadingState.WithValue(MessengerModel.New());
+      LoadingState = LoadingState.WithValue(MessengerModelActivator.New());
       _create = true;
     }
   }

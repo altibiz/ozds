@@ -134,7 +134,7 @@
 
     if (LoadingState.Value is null)
     {
-      LoadingState = LoadingState.WithValue(SchneideriEM3xxxMeasurementValidatorModel.New());
+      LoadingState = LoadingState.WithValue(SchneideriEM3xxxMeasurementValidatorModelActivator.New());
       _create = true;
     }
   }

@@ -128,7 +128,7 @@
         .WithValue(
           LoadingState.Value with
           {
-            Representative = RepresentativeModel.New(LoadingState.Value.User)
+            Representative = RepresentativeModelActivator.New(LoadingState.Value.User)
           });
       _create = true;
     }

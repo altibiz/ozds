@@ -130,7 +130,7 @@
 
     if (LoadingState.Value is null)
     {
-      LoadingState = LoadingState.WithValue(NetworkUserMeasurementLocationModel.New());
+      LoadingState = LoadingState.WithValue(NetworkUserMeasurementLocationModelActivator.New());
       _create = true;
     }
   }

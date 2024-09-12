@@ -108,7 +108,7 @@
 
     if (LoadingState.Value is null)
     {
-      LoadingState = LoadingState.WithValue(BlueLowNetworkUserCatalogueModel.New());
+      LoadingState = LoadingState.WithValue(BlueLowNetworkUserCatalogueModelActivator.New());
       _create = true;
     }
   }

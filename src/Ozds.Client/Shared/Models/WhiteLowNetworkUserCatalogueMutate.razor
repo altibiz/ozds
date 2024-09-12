@@ -113,7 +113,7 @@
 
     if (LoadingState.Value is null)
     {
-      LoadingState = LoadingState.WithValue(WhiteLowNetworkUserCatalogueModel.New());
+      LoadingState = LoadingState.WithValue(WhiteLowNetworkUserCatalogueModelActivator.New());
       _create = true;
     }
   }
