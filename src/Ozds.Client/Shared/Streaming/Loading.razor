@@ -1,11 +1,21 @@
-@typeparam TState
+@namespace Ozds.Client.Shared.Streaming
 
-@if (State is null)
-{
-  return;
-}
+@attribute [StreamRendering]
 
-@if (State.IsLoading)
+@typeparam T where T : notnull
+@using Ozds.Business.Activation.Agnostic
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Business.Queries.Agnostic
+@using Ozds.Client.State
+@using Microsoft.Extensions.DependencyInjection
+@inherits Ozds.Client.Base.OzdsOwningComponentBase
+
+@*
+   TODO: indstead of the reload hack preserve height and
+   add a loading indicator until the task is done
+*@
+
+@if (_state.State is LoadingState.Loading)
 {
   if (Progress is not null)
   {
@@ -13,25 +23,23 @@
     return;
   }
 
-  <MudProgressCircular/>
+  <Progress/>
   return;
 }
 
-@if (State.Error is not null)
+@if (_state.State is LoadingState.Error)
 {
   if (Error is not null)
   {
-    @Error(State.Error!)
+    @Error(_state.Error!)
     return;
   }
 
-  <MudAlert Severity="Severity.Error">
-    @State.Error
-  </MudAlert>
+  <Error>@_state.Error</Error>
   return;
 }
 
-@if (State.Value is null)
+@if (_state.State is LoadingState.Unfound)
 {
   if (NotFound is not null)
   {
@@ -43,18 +51,31 @@
   return;
 }
 
+@if (_state.State is LoadingState.Created)
+{
+  if (Created is not null)
+  {
+    @Created(_state.Value!)
+    return;
+  }
+
+
+  <Serialized Value="@_state.Value"/>
+  return;
+}
+
 @if (Found is not null)
 {
-  @Found(State.Value!)
+  @Found(_state.Value!)
+  return;
 }
+
+<Serialized Value="@_state.Value"/>
 
 @code {
 
   [Parameter]
-  public LoadingState<TState>? State { get; set; } = new();
-
-  [Parameter]
-  public Func<Task<TState?>>? Load { get; set; }
+  public T? Value { get; set; }
 
   [Parameter]
   public RenderFragment? Progress { get; set; }
@@ -63,14 +84,69 @@
   public RenderFragment<string>? Error { get; set; }
 
   [Parameter]
+  public string? Id { get; set; }
+
+  [Parameter]
+  public Func<T?>? Load { get; set; }
+
+  [Parameter]
+  public Func<Task<T?>>? LoadAsync { get; set; }
+
+  [Parameter]
+  public Func<T>? New { get; set; }
+
+  [Parameter]
+  public Func<Task<T>>? NewAsync { get; set; }
+
+  [Parameter]
+  public bool Activate { get; set; }
+
+  [Parameter]
+  public bool ActivateAsync { get; set; }
+
+  [Parameter]
   public RenderFragment? NotFound { get; set; }
 
   [Parameter]
-  public RenderFragment<TState>? Found { get; set; }
+  public RenderFragment<T>? Found { get; set; }
 
-  protected override async Task OnInitializedAsync()
+  [Parameter]
+  public RenderFragment<T>? Created { get; set; }
+
+  private LoadingState<T> _state = new();
+
+  public void Initialize(
+    bool reset = false,
+    bool render = false
+  )
   {
-    if (State is null)
+    if (reset)
+    {
+      _state = _state.WithReset();
+    }
+
+    if (Value is not null)
+    {
+      _state = _state.WithValue(Value);
+    }
+
+    if (render)
+    {
+      InvokeAsync(StateHasChanged);
+    }
+  }
+
+  public void Reload(
+    bool reset = false,
+    bool render = false
+  )
+  {
+    if (reset)
+    {
+      _state = _state.WithReset();
+    }
+
+    if (_state.State is not LoadingState.Loading and not LoadingState.Unfound)
     {
       return;
     }
@@ -79,13 +155,160 @@
     {
       try
       {
-        State = State.WithValue(await Load());
+        _state = _state.WithValue(Load());
       }
       catch (Exception e)
       {
-        State = State.WithError(e.Message);
+        _state = _state.WithError(e.Message);
       }
+    }
+
+    if (_state.State is not LoadingState.Loading and not LoadingState.Unfound)
+    {
+      return;
+    }
+
+    if (New is not null)
+    {
+      try
+      {
+        _state = _state.WithCreated(New());
+      }
+      catch (Exception e)
+      {
+        _state = _state.WithError(e.Message);
+      }
+    }
+
+    if (_state.State is not LoadingState.Loading and not LoadingState.Unfound)
+    {
+      return;
+    }
+
+    if (Activate)
+    {
+      try
+      {
+        var activator = ScopedServices.GetRequiredService<AgnosticModelActivator>();
+        var created = activator.Activate<T>();
+        _state = _state.WithCreated(created);
+      }
+      catch (Exception e)
+      {
+        _state = _state.WithError(e.Message);
+      }
+    }
+
+    if (render)
+    {
+      InvokeAsync(StateHasChanged);
     }
   }
 
+  public async Task ReloadAsync(
+    bool reset = false,
+    bool render = false
+  )
+  {
+    // NOTE: stupid but prevents it from rerendring immediately after reseting
+    await Task.Run(() => {});
+
+    if (reset)
+    {
+      _state = _state.WithReset();
+    }
+
+    if (_state.State is not LoadingState.Loading and not LoadingState.Unfound)
+    {
+      return;
+    }
+
+    if (LoadAsync is not null)
+    {
+      try
+      {
+        _state = _state.WithValue(await LoadAsync());
+      }
+      catch (Exception e)
+      {
+        _state = _state.WithError(e.Message);
+      }
+    }
+
+    if (_state.State is not LoadingState.Loading and not LoadingState.Unfound)
+    {
+      return;
+    }
+
+    if (Id is not null && typeof(T).IsAssignableTo(typeof(IIdentifiable)))
+    {
+      try
+      {
+        _state = _state.WithValue(
+          await ScopedServices
+            .GetRequiredService<OzdsAgnosticQueries>()
+            .ReadSingleDynamic<T>(Id));
+      }
+      catch (Exception e)
+      {
+        _state = _state.WithError(e.Message);
+      }
+    }
+
+    if (_state.State is not LoadingState.Loading and not LoadingState.Unfound)
+    {
+      return;
+    }
+
+    if (NewAsync is not null)
+    {
+      try
+      {
+        _state = _state.WithCreated(await NewAsync());
+      }
+      catch (Exception e)
+      {
+        _state = _state.WithError(e.Message);
+      }
+    }
+
+    if (_state.State is not LoadingState.Loading and not LoadingState.Unfound)
+    {
+      return;
+    }
+
+    if (ActivateAsync)
+    {
+      try
+      {
+        var activator = ScopedServices.GetRequiredService<AgnosticModelActivator>();
+        var created = activator.Activate<T>();
+        _state = _state.WithCreated(created);
+      }
+      catch (Exception e)
+      {
+        _state = _state.WithError(e.Message);
+      }
+    }
+
+    if (render)
+    {
+      await InvokeAsync(StateHasChanged);
+    }
+  }
+
+  protected override void OnInitialized()
+  {
+    Initialize();
+  }
+
+  protected override void OnParametersSet()
+  {
+    Reload();
+  }
+
+  protected override async Task OnParametersSetAsync()
+  {
+    await ReloadAsync();
+  }
 }

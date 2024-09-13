@@ -1,0 +1,237 @@
+@namespace Ozds.Client.Shared.Streaming
+
+@typeparam T where T : notnull
+@using System.Text.Json
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Business.Queries.Abstractions
+@using Ozds.Business.Queries.Agnostic
+@using Microsoft.Extensions.DependencyInjection
+@using Microsoft.JSInterop
+@using MudBlazor
+@inherits Ozds.Client.Base.OzdsOwningComponentBase
+@inject IJSRuntime JS
+
+@*
+  TODO: memoize Loading parameters to prevent rerendering
+*@
+
+<Loading
+  T="PaginatedList<T>"
+  @ref="loading"
+  Load="@OnPage"
+  LoadAsync="@OnPageAsync"
+  Progress="@Progress"
+  Error="@Error">
+  <Found Context="page">
+    @if (page.Items.Count == 0)
+    {
+      if (Empty is not null)
+      {
+        @Empty
+      }
+      else
+      {
+        <Empty/>
+      }
+    }
+    else
+    {
+      if (Found is not null)
+      {
+        @Found(page)
+      }
+      else if (Summary is not null)
+      {
+        foreach (var item in page.Items)
+        {
+          @Summary(item)
+        }
+      }
+      else
+      {
+        foreach (var item in page.Items)
+        {
+          <MudText>
+            @JsonSerializer.Serialize(item, JsonSerializerOptions)
+          </MudText>
+        }
+      }
+
+      if (page.TotalCount != page.Items.Count)
+      {
+        if (Pagination is not null)
+        {
+          @Pagination(
+            new PaginationOptions(
+              PageCount,
+              _pageNumber,
+              page.TotalCount,
+              SetPageNumber
+            )
+          )
+        }
+        else
+        {
+          @if (Scroll == Scroll.Paged)
+          {
+            <div style="width: 100%; text-align: center;">
+              <MudPagination
+                class="mt-4"
+                Count="@((int)Math.Ceiling(page.TotalCount / (double)PageCount))"
+                Selected="_pageNumber"
+                SelectedChanged="OnSelectedChanged"/>
+              <MudText Class="mt-4" Typo="Typo.body2">
+                @((_pageNumber - 1) * PageCount) -
+                @(Math.Min(_pageNumber * PageCount, page.TotalCount)) /
+                @(page.TotalCount)
+              </MudText>
+            </div>
+          }
+          else
+          {
+            <div
+              id="@infiniteScrollId"
+              style="width: 100%; text-align: center;">
+              <MudProgressCircular />
+            </div>
+            <MudScrollToTop>
+              <MudFab
+                Color="MudBlazor.Color.Tertiary"
+                StartIcon="@Icons.Material.Filled.ArrowCircleUp" />
+            </MudScrollToTop>
+          }
+        }
+      }
+    }
+  </Found>
+</Loading>
+
+<script>
+  window.observeElement = (elementId, dotNetHelper) => {
+    const element = document.getElementById(elementId);
+
+    if (!element) {
+      console.error(`Element with id ${elementId} not found.`);
+      return;
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        dotNetHelper.invokeMethodAsync('OnScrollInView', entry.isIntersecting);
+      });
+    });
+
+    observer.observe(element);
+  };
+</script>
+
+@code {
+
+  [Parameter]
+  public Func<int, PaginatedList<T>>? Page { get; set; }
+
+  [Parameter]
+  public Func<int, Task<PaginatedList<T>>>? PageAsync { get; set; }
+
+  [Parameter]
+  public RenderFragment? Progress { get; set; }
+
+  [Parameter]
+  public RenderFragment<string>? Error { get; set; }
+
+  [Parameter]
+  public RenderFragment<T>? Summary { get; set; }
+
+  [Parameter]
+  public RenderFragment<PaginatedList<T>>? Found { get; set; }
+
+  [Parameter]
+  public RenderFragment? Empty { get; set; }
+
+  [Parameter]
+  public int PageCount { get; set; } = QueryConstants.DefaultPageCount;
+
+  [Parameter]
+  public RenderFragment<PaginationOptions>? Pagination { get; set; }
+
+  [Parameter]
+  public Scroll Scroll { get; set; } = Scroll.Paged;
+
+  private Guid infiniteScrollId = Guid.NewGuid();
+
+  private Loading<PaginatedList<T>>? loading;
+
+  protected override async Task OnAfterRenderAsync(bool firstRender)
+  {
+    if (firstRender && Pagination is null && Scroll is Scroll.Infinite)
+    {
+      var dotNetRef = DotNetObjectReference.Create(this);
+      await JS.InvokeVoidAsync("observeElement", infiniteScrollId, dotNetRef);
+    }
+  }
+
+  [JSInvokable]
+  public void OnScrollInView(bool isInView)
+  {
+    if (isInView && Pagination is null && Scroll is Scroll.Infinite)
+    {
+      _pageNumber++;
+      loading?.ReloadAsync(reset: true);
+    }
+  }
+
+  private Func<PaginatedList<T>>? OnPage
+  {
+    get
+    {
+      return Page is null
+        ? null
+        : () => Page(_pageNumber);
+    }
+  }
+
+  private async Task OnSelectedChanged(int pageNumber)
+  {
+    _pageNumber = pageNumber;
+    if (loading is { } nonNullLoading)
+    {
+      await nonNullLoading.ReloadAsync(reset: true);
+    }
+  }
+
+  private Func<Task<PaginatedList<T>>>? OnPageAsync
+  {
+    get
+    {
+      return PageAsync is not null
+        ? () => PageAsync(_pageNumber)
+        : Page is null && typeof(T).IsAssignableTo(typeof(IAuditable))
+          ? () => ScopedServices
+            .GetRequiredService<OzdsAgnosticQueries>()
+            .ReadDynamic<T>(
+              "x => x.IsDeleted == false",
+              pageNumber: _pageNumber,
+              pageCount: PageCount)
+          : Page is null && typeof(T).IsAssignableTo(typeof(IModel))
+            ? () => ScopedServices
+              .GetRequiredService<OzdsAgnosticQueries>()
+              .ReadDynamic<T>(pageNumber: _pageNumber, pageCount: PageCount)
+            : null;
+    }
+  }
+
+  private void SetPageNumber(int pageNumber)
+  {
+    _pageNumber = pageNumber;
+    InvokeAsync(StateHasChanged);
+  }
+
+  private int _pageNumber = 1;
+
+  private static readonly JsonSerializerOptions JsonSerializerOptions =
+    new()
+    {
+      WriteIndented = true
+    };
+
+}

@@ -1,0 +1,23 @@
+@namespace Ozds.Client.Shared.Fields
+@using MudBlazor
+
+<MudGrid Justify="Justify.SpaceBetween" Spacing="0" Class="mt-2">
+  <MudItem xs="12" sm="6">
+    <MudText Typo="Typo.body1">
+      @Title
+    </MudText>
+  </MudItem>
+  <MudItem>
+    <MudText Typo="Typo.body2">
+      @ChildContent
+    </MudText>
+  </MudItem>
+</MudGrid>
+
+@code {
+  [Parameter]
+  public string Title { get; set; } = default!;
+
+  [Parameter]
+  public RenderFragment? ChildContent { get; set; }
+}
