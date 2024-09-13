@@ -2,6 +2,7 @@ using System.Globalization;
 using System.Text.Json;
 using ApexCharts;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using Ozds.Business.Localization.Abstractions;
 using Ozds.Business.Time;
 
@@ -19,6 +20,9 @@ public abstract class OzdsComponentBase : ComponentBase
 
   [Inject]
   public NavigationManager NavigationManager { get; set; } = default!;
+
+  [Inject]
+  private IJSRuntime JS { get; set; } = default!;
 
   protected override void OnInitialized()
   {
@@ -141,5 +145,14 @@ public abstract class OzdsComponentBase : ComponentBase
   protected static string JsonString(JsonDocument jsonDocument)
   {
     return JsonSerializer.Serialize(jsonDocument, _jsonSerializerOptions);
+  }
+  protected void NavigateToLogin()
+  {
+    NavigationManager.NavigateTo(
+      $"/login?returnUrl={Uri.EscapeDataString(NavigationManager.Uri)}");
+  }
+  protected void NavigateBack()
+  {
+    JS.InvokeVoidAsync("history.back");
   }
 }

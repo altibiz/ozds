@@ -1,0 +1,30 @@
+@using MudBlazor
+@inherits Ozds.Client.Base.OzdsComponentBase
+
+<MudDialog OnBackdropClick="Exit">
+  <DialogContent>
+    <MudText Typo="Typo.body1" Style="min-width: 200px;">
+      @Body
+    </MudText>
+  </DialogContent>
+  <DialogActions>
+    <MudButton FullWidth Color="MudBlazor.Color.Primary" OnClick="Exit">
+      @T["Close"]
+    </MudButton>
+  </DialogActions>
+</MudDialog>
+
+@code {
+
+  [CascadingParameter]
+  MudDialogInstance MudDialog { get; set; } = default!;
+
+  [Parameter]
+  public string? Body { get; set; } = default!;
+
+  void Exit()
+  {
+    NavigateBack();
+    MudDialog.Close(DialogResult.Ok(true));
+  }
+}

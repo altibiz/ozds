@@ -2,7 +2,7 @@
 @inject IDialogService DialogService
 @inject IJSRuntime JSRuntime
 
-<Loading Load="@(async () => (Invoice ?? await ScopedServices.GetRequiredService<OzdsInvoiceQueries>().ReadSingle<NetworkUserInvoiceModel>(Id ?? throw new InvalidOperationException()))!)">
+<OldLoading Load="@(async () => (Invoice ?? await ScopedServices.GetRequiredService<OzdsInvoiceQueries>().ReadSingle<NetworkUserInvoiceModel>(Id ?? throw new InvalidOperationException()))!)">
   <Found>
     <MudText Typo="Typo.h5">
       @T["INVOICE FOR"] @(context.FromDate.Month). @T["MONTH"]
@@ -255,7 +255,7 @@
 
     <div class="mb-16"/>
   </Found>
-</Loading>?
+</OldLoading>?
 
 @code {
 

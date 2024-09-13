@@ -8,7 +8,7 @@ public abstract class MeasurementValidatorModel : AuditableModel
 }
 
 public abstract class MeasurementValidatorModel<T> : MeasurementValidatorModel,
-  IMeasurementValidator
+  IMeasurementValidator, IModel
   where T : IMeasurement
 {
   public override IEnumerable<ValidationResult> Validate(
