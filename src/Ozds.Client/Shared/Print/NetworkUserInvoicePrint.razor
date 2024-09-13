@@ -1,6 +1,6 @@
 @inherits OzdsOwningComponentBase
 
-<Loading Load="@(async () => (CalculatedInvoice ?? await ScopedServices.GetRequiredService<OzdsCalculatedInvoiceQueries>().ReadCalculatedNetworkUserInvoice(Id ?? throw new InvalidOperationException()))!)">
+<OldLoading Load="@(async () => (CalculatedInvoice ?? await ScopedServices.GetRequiredService<OzdsCalculatedInvoiceQueries>().ReadCalculatedNetworkUserInvoice(Id ?? throw new InvalidOperationException()))!)">
   <Found>
     <div class="page">
       <div class="page-header">
@@ -60,7 +60,7 @@
       </div>
     </div>
   </Found>
-</Loading>
+</OldLoading>
 
 @code {
 
