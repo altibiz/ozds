@@ -25,7 +25,7 @@ public class DataDbContextDesignTimeFactory
         x.MigrationsAssembly(
           typeof(DataDbContext).Assembly.GetName().Name);
         x.MigrationsHistoryTable(
-          $"__{nameof(DataDbContext)}");
+          $"__Ozds{nameof(DataDbContext)}");
       });
     return new DataDbContext(optionsBuilder.Options);
   }

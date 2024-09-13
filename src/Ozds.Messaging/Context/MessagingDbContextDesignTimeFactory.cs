@@ -17,7 +17,7 @@ public class MessagingDbContextDesignTimeFactory
           x.MigrationsAssembly(
             typeof(MessagingDbContext).Assembly.GetName().Name);
           x.MigrationsHistoryTable(
-            $"__{nameof(MessagingDbContext)}");
+            $"__Ozds{nameof(MessagingDbContext)}");
         });
     return new MessagingDbContext(optionsBuilder.Options);
   }
