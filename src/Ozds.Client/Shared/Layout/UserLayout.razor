@@ -46,7 +46,7 @@
         </MudListItem>
       </ChildContent>
     </MudMenu>
-    @if (RepresentativeState.Representative.Role == RoleModel.OperatorRepresentative)
+    @if (RepresentativeState?.Representative.Role is RoleModel.OperatorRepresentative)
     {
       <MudMenu AnchorOrigin="Origin.CenterLeft" Dense="true" Class="mt-1 ml-4">
         <ActivatorContent>
@@ -97,13 +97,13 @@
   public RepresentativeState? RepresentativeState { get; set; } = default!;
 
 
-  private List<DemoEventModel>? _events = new();
+  private List<DemoEventModel> _events = new();
 
   private class DemoEventModel
   {
     public string Id = new Random().Next(1, 10000).ToString();
-    public string Title;
-    public string Description;
+    public string Title = string.Empty;
+    public string Description = string.Empty;
     public LevelModel Level;
     public DateTimeOffset Timestamp = DateTimeOffset.UtcNow.AddMinutes(new Random().Next(60, 180));
   }
@@ -124,15 +124,7 @@
     {
       antiforgeryToken = string.Empty;
     }
-  }
 
-  void DrawerToggle()
-  {
-    _drawerOpen = !_drawerOpen;
-  }
-
-  protected override async Task OnInitializedAsync()
-  {
     _events.Add(
       new DemoEventModel
       {
@@ -147,6 +139,11 @@
         Description = "At {Time} SchneideriEM3xxx had LOW VOLTAGE",
         Level = LevelModel.Critical
       });
+  }
+
+  void DrawerToggle()
+  {
+    _drawerOpen = !_drawerOpen;
   }
 
   string ChangeLang(string culture)

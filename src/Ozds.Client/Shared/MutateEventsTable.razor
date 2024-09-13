@@ -1,55 +1,8 @@
 @using Color = MudBlazor.Color
 @using Size = MudBlazor.Size
-@inject NavigationManager NavigationManager
 
 @if (_shownInvoices is not null && _shownInvoices.Count() > 0)
 {
-  @* MOBILE *@
-  @* <MudHidden Breakpoint="Breakpoint.LgAndUp">
-    <MudText Typo="Typo.h4" Class="d-flex">
-      @T["Računi"]
-    </MudText>
-    <MudTextField Class="" ValueChanged="EventCallback.Factory.Create<string>(this, Filter)" Label="Pretraži" Variant="Variant.Text"></MudTextField>
-    @foreach (var dataStruct in _shownInvoices.Where(x => x.show).ToList())
-    {
-      <MudPaper Elevation="2" Class="ma-1">
-        <MudStack Spacing="0">
-          <MudGrid Class="d-flex pa-2">
-            <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: medium;">
-              @T["Broj Računa"]: @dataStruct.auditEvent.Id
-            </MudItem>
-            <MudItem xs="2" Class="d-flex align-center  justify-end">
-              <MudIconButton OnClick="() => InspectInvoice(dataStruct.auditEvent)" Icon="@Icons.Material.Filled.RemoveRedEye" Color="Color.Primary"/>
-            </MudItem>
-            <MudItem xs="6" Class="d-flex align-center justify-start" Style="font-size: medium;">
-              @T["Od"]: @(DateString(dataStruct.auditEvent.FromDate))
-            </MudItem>
-            <MudItem xs="6" Class="d-flex align-center justify-start" Style="font-size: medium;">
-              @T["Do"]: @(DateString(dataStruct.auditEvent.ToDate))
-            </MudItem>
-            <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large; font-weight:bold;">
-              @T["Iznos"]:@(DecimalString(dataStruct.auditEvent.TotalWithTax_EUR)) EUR
-            </MudItem>
-            <MudItem xs="2" Class="d-flex align-center justify-end">
-              <MudIconButton OnClick="() => OnExpandCollapseClick(dataStruct.auditEvent.Id)" Icon="@(dataStruct.expand ? Icons.Material.Filled.KeyboardArrowUp : Icons.Material.Filled.KeyboardArrowDown)" Color="Color.Default"/>
-            </MudItem>
-          </MudGrid>
-
-          <MudCollapse Class="py-2" Expanded="_shownInvoices.Where(x => x.auditEvent.Id == dataStruct.auditEvent.Id).First().expand">
-            <MudStack>
-              <MudDivider DividerType="DividerType.Middle" Class="mt-2"/>
-              <MudContainer>
-                @T["Korisnik (mreže)"]: @(dataStruct.auditEvent.ArchivedNetworkUser.LegalPerson.Name)
-              </MudContainer>
-            </MudStack>
-          </MudCollapse>
-        </MudStack>
-      </MudPaper>
-    }
-  </MudHidden> *@
-
-
-  @* DESKTOP *@
   <MudHidden Breakpoint="Breakpoint.MdAndDown">
     <MudDataGrid
       T="DemoEventModel"
@@ -60,7 +13,7 @@
       Filterable="true"
       QuickFilter="@_quickFilter">
       <ToolBarContent>
-        <MudText Typo="Typo.h4">@T["Promjene"]</MudText>
+        <MudText Typo="Typo.h4">@T["Changes"]</MudText>
         <MudSpacer/>
         <MudTextField
           @bind-Value="_searchString"
@@ -76,11 +29,11 @@
         <PropertyColumn
           CellStyle="text-align: start !important;"
           Property="x => x.Title"
-          Title='@T["Naslov"]' Sortable="false"/>
+          Title='@T["Title"]' Sortable="false"/>
         <PropertyColumn
           CellStyle="font-size: x-large;"
           Property="x => x.Timestamp"
-          Title='@T["Datum"]'>
+          Title='@T["Date"]'>
           <CellTemplate>
             @(context.Item.Timestamp.ToString("HH:mm dd.MM.yyyy."))
           </CellTemplate>
@@ -88,13 +41,13 @@
         <PropertyColumn
           CellStyle="font-size: large;"
           Property="x => x.Author"
-          Title='@T["Autor"]'>
+          Title='@T["Author"]'>
         </PropertyColumn>
         <TemplateColumn CellClass="d-flex justify-end" Sortable="false" Filterable="false">
           <CellTemplate>
             <MudStack Row>
               <MudButton OnClick="() => InspectEvent(context.Item.Id)" Variant="Variant.Filled" Color="Color.Primary">
-                @T["Pregled"]
+                @T["Overview"]
               </MudButton>
             </MudStack>
           </CellTemplate>
@@ -116,7 +69,7 @@
   public RepresentativeState representative { get; set; } = default!;
 
   public string SearchString { get; set; } = "";
-  private List<DemoEventModel>? _events = new();
+  private List<DemoEventModel> _events = new();
 
   private class MobileData
   {
@@ -128,24 +81,24 @@
   private class DemoEventModel
   {
     public string Id = new Random().Next(1, 10000).ToString();
-    public string Title;
-    public string Description;
+    public string Title = string.Empty;
+    public string Description = string.Empty;
     public LevelModel Level;
     public DateTimeOffset Timestamp = DateTimeOffset.UtcNow.AddMinutes(new Random().Next(60, 180));
 
-    public string Author = "Marko";
+    public string Author = "";
   }
 
   List<MobileData> _shownInvoices = new();
   private string? _searchString;
 
-  protected override async Task OnInitializedAsync()
+  protected override void OnInitialized()
   {
     _events.Add(
       new DemoEventModel
       {
         Title = "Created RepresentativeEntity network-user",
-        Description = "Inserting RepresentativeEntity with _stringId: '41qe2wwv2xxf7wkzj43mfb9sns' CreatedById: '' CreatedOn: '4/20/2024 1:20:37 PM +00:00' DeletedById: '' DeletedOn: '' IsDeleted: 'False' LastUpdatedById: '' LastUpdatedOn: '' Role: 'NetworkUserRepresentative' Title: 'network-user' ",
+        Description = "Inserting RepresentativeEntity with _stringId: '4' CreatedById: '' CreatedOn: '4/20/2024 1:20:37 PM +00:00' DeletedById: '' DeletedOn: '' IsDeleted: 'False' LastUpdatedById: '' LastUpdatedOn: '' Role: 'NetworkUserRepresentative' Title: 'network-user' ",
         Level = LevelModel.Information
       });
     _events.Add(
