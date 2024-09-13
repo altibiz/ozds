@@ -51,6 +51,7 @@ prepare:
   dotnet tool restore
   (not (which prettier | is-empty)) or (npm install -g prettier) | ignore
 
+  docker ps -a -q | lines | each { |x| docker stop $x }
   docker compose --profile "*" down -v
   docker compose up -d
   {{waitservicescommand}}
@@ -212,6 +213,7 @@ dump:
     out> '{{migrationassets}}/current.sql'
 
 migrate project name:
+  docker ps -a -q | lines | each { |x| docker stop $x }
   docker compose --profile "*" down -v
   docker compose up -d
   {{waitservicescommand}}
@@ -389,6 +391,7 @@ publish *args:
 
 [confirm("This will clean docker containers. Do you want to continue?")]
 clean:
+  docker ps -a -q | lines | each { |x| docker stop $x }
   docker compose --profile "*" down -v
   docker compose up -d
   {{waitservicescommand}}
@@ -445,6 +448,7 @@ purge:
   dotnet tool restore
   dotnet restore
 
+  docker ps -a -q | lines | each { |x| docker stop $x }
   docker compose --profile "*" down -v
   docker compose up -d
   {{waitservicescommand}}
