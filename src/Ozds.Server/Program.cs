@@ -4,6 +4,7 @@ using Ozds.Client.Extensions;
 using Ozds.Data.Extensions;
 using Ozds.Email.Extensions;
 using Ozds.Iot.Extensions;
+using Ozds.Jobs.Extensions;
 using Ozds.Messaging.Extensions;
 using Ozds.Server.Extensions;
 using Ozds.Users.Extensions;
@@ -21,8 +22,9 @@ builder.Services
     services => services
       .AddOzdsUsers(builder)
       .AddOzdsData(builder)
-      .AddOzdsEmail(builder)
       .AddOzdsMessaging(builder)
+      .AddOzdsJobs(builder)
+      .AddOzdsEmail(builder)
       .AddOzdsBusiness(builder)
       .AddOzdsIot(builder)
       .AddOzdsClient(builder)
@@ -33,9 +35,10 @@ builder.Services
       .UseOzdsClient(endpoints)
       .UseOzdsIot(endpoints)
       .UseOzdsBusiness(endpoints)
-      .UseOzdsData(endpoints)
       .UseOzdsEmail(endpoints)
+      .UseOzdsJobs(endpoints)
       .UseOzdsMessaging(endpoints)
+      .UseOzdsData(endpoints)
       .UseOzdsUsers(endpoints));
 
 var app = builder.Build();

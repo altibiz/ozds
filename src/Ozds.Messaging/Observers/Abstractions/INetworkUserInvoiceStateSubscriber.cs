@@ -2,7 +2,7 @@ using Ozds.Messaging.Observers.EventArgs;
 
 namespace Ozds.Messaging.Observers.Abstractions;
 
-public interface INetworkUserInvoiceStateSubscriber
+public interface INetworkUserInvoiceStateSubscriber : ISubscriber<INetworkUserInvoiceStatePublisher>
 {
   public void Subscribe(EventHandler<NetworkUserInvoiceStateEventArgs> handler);
 
