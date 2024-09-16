@@ -3,6 +3,9 @@ using Ozds.Data.Entities.Enums;
 using Ozds.Data.Extensions;
 using Microsoft.EntityFrameworkCore.Migrations;
 
+#pragma warning disable S3887
+#pragma warning disable S2386
+
 #nullable disable
 
 namespace Ozds.Data.Migrations
@@ -90,6 +93,13 @@ namespace Ozds.Data.Migrations
                 type: "topic_entity[]",
                 nullable: false);
 
+            migrationBuilder.AddColumn<HashSet<CategoryEntity>>(
+                name: "categories",
+                table: "events",
+                type: "category_entity[]",
+                nullable: false,
+                defaultValue: new HashSet<CategoryEntity>() { CategoryEntity.All, CategoryEntity.Audit });
+
             migrationBuilder.AddColumn<string>(
                 name: "kind",
                 table: "messengers",
@@ -175,6 +185,10 @@ namespace Ozds.Data.Migrations
             migrationBuilder.DropColumn(
                 name: "topics",
                 table: "notifications");
+
+            migrationBuilder.DropColumn(
+                name: "categories",
+                table: "events");
 
             migrationBuilder.DropColumn(
                 name: "kind",
