@@ -55,7 +55,7 @@ public static class IServiceCollectionExtensions
       typeof(AgnosticMeasurementRecordPushRequestConverter));
     services.AddTransientAssignableTo(
       typeof(ICorrector));
-    services.AddSingleton(typeof(AgnosticCumulativeCorrector));
+    services.AddSingleton(typeof(AgnosticCorrector));
     return services;
   }
 

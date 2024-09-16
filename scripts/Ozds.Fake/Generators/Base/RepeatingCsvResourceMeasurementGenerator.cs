@@ -21,8 +21,8 @@ public abstract class
     serviceProvider
       .GetRequiredService<AgnosticMeasurementRecordPushRequestConverter>();
 
-  private readonly AgnosticCumulativeCorrector _corrector =
-    serviceProvider.GetRequiredService<AgnosticCumulativeCorrector>();
+  private readonly AgnosticCorrector _corrector =
+    serviceProvider.GetRequiredService<AgnosticCorrector>();
 
   private readonly ResourceCache _resources =
     serviceProvider.GetRequiredService<ResourceCache>();
@@ -97,9 +97,13 @@ public abstract class
           record,
           meterId
         );
+        var withCorrectedTimestamp = _corrector.CorrectTimestamp(
+          withCorrectedMeterId,
+          timestamp
+        );
         var withCorrectedCumulatives = _corrector.CorrectCumulatives(
           timestamp,
-          withCorrectedMeterId,
+          withCorrectedTimestamp,
           firstRecord,
           lastRecord
         );

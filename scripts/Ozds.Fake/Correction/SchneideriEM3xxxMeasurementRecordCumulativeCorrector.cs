@@ -14,6 +14,14 @@ public class SchneideriEM3xxxMeasurementRecordCumulativeCorrector
     return measurementRecord with { MeterId = meterId };
   }
 
+  protected override SchneideriEM3xxxMeasurementRecord CorrectTimestamp(
+    SchneideriEM3xxxMeasurementRecord measurementRecord,
+    DateTimeOffset timestamp
+  )
+  {
+    return measurementRecord with { Timestamp = timestamp };
+  }
+
   protected override SchneideriEM3xxxMeasurementRecord CorrectCumulatives(
     DateTimeOffset timestamp,
     SchneideriEM3xxxMeasurementRecord measurementRecord,

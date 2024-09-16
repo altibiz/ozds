@@ -11,6 +11,11 @@ public interface ICorrector
     string meterId
   );
 
+  IMeasurementRecord CorrectTimestamp(
+    IMeasurementRecord measurementRecord,
+    DateTimeOffset timestamp
+  );
+
   IMeasurementRecord CorrectCumulatives(
     DateTimeOffset timestamp,
     IMeasurementRecord measurementRecord,

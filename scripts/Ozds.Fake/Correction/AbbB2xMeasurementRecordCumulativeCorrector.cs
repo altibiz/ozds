@@ -14,6 +14,14 @@ public class AbbB2xMeasurementRecordCumulativeCorrector
     return measurementRecord with { MeterId = meterId };
   }
 
+  protected override AbbB2xMeasurementRecord CorrectTimestamp(
+    AbbB2xMeasurementRecord measurementRecord,
+    DateTimeOffset timestamp
+  )
+  {
+    return measurementRecord with { Timestamp = timestamp };
+  }
+
   protected override AbbB2xMeasurementRecord CorrectCumulatives(
     DateTimeOffset timestamp,
     AbbB2xMeasurementRecord measurementRecord,
