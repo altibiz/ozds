@@ -11,6 +11,8 @@ using Ozds.Fake.Generators.Abstractions;
 using Ozds.Fake.Generators.Agnostic;
 using Ozds.Fake.Loaders;
 using Ozds.Fake.Loaders.Abstractions;
+using Ozds.Fake.Packing.Abstractions;
+using Ozds.Fake.Packing.Agnostic;
 using Ozds.Messaging.Context;
 
 namespace Ozds.Fake.Extensions;
@@ -73,6 +75,13 @@ public static class IServiceCollectionExtensions
     return services;
   }
 
+  public static IServiceCollection AddPackers(this IServiceCollection services)
+  {
+    services.AddTransientAssignableTo(typeof(IMessengerPushRequestPacker));
+    services.AddSingleton(typeof(AgnosticMessengerPushRequestPacker));
+    return services;
+  }
+
   public static IServiceCollection AddMessaging(
     this IServiceCollection services,
     string host,
@@ -124,7 +133,6 @@ public static class IServiceCollectionExtensions
       .Where(
         type =>
           !type.IsAbstract &&
-          !type.IsGenericType &&
           type.IsClass &&
           type.IsAssignableTo(assignableTo));
 
