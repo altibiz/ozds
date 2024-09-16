@@ -323,7 +323,7 @@ migrate project name:
         --exclude-table-data='outbox_state' \
         --exclude-table-data='inbox_state' \
         --exclude-table-data='outbox_message' \
-        --exclude-table-data='"QRTZ_"*' \
+        --exclude-table-data='"qrtz_"*' \
         --exclude-table-data='"__"*' \
     out> '{{migrationassets}}/{{project}}-{{name}}-{{now}}.sql'
 

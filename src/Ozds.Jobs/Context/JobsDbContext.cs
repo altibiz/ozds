@@ -10,6 +10,6 @@ public class JobsDbContext(
 {
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
-    modelBuilder.AddQuartz(builder => builder.UsePostgreSql());
+    modelBuilder.AddQuartz(builder => builder.UsePostgreSql(schema: null));
   }
 }
