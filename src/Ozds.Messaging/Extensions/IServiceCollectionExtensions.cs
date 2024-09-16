@@ -53,7 +53,7 @@ public static class IServiceCollectionExtensions
             m.MigrationsAssembly(
               typeof(MessagingDbContext).Assembly.GetName().Name);
             m.MigrationsHistoryTable(
-              $"__{nameof(MessagingDbContext)}");
+              $"__Ozds{nameof(MessagingDbContext)}");
           }));
 
     services.AddMassTransit(
