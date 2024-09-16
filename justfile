@@ -24,6 +24,7 @@ doxyfile := absolute_path('docs/Doxyfile')
 schema := absolute_path('docs/schema.md')
 waitservices := absolute_path('scripts/wait-services.nu')
 now := `date now | format date '%Y%m%d%H%M%S'`
+current := 'current'
 
 default:
     @just --choose
@@ -155,7 +156,7 @@ lint:
 test *args:
     dotnet test '{{ sln }}' {{ args }}
 
-dump name:
+dump name=current:
     docker exec \
       --env PGHOST="localhost" \
       --env PGPORT="5432" \
@@ -229,11 +230,11 @@ dump name:
         --data-only \
         --schema=public \
         --table='*_export' \
-      > '{{ migrationassets }}/{{ name }}-hypertables.sql'
+      out> '{{ migrationassets }}/{{ name }}-hypertables.sql'
 
     open '{{ migrationassets }}/{{ name }}-hypertables.sql' \
       | str replace -r 'COPY (\S+)\._export ' 'COPY $1. ' \
-      | save '{{ migrationassets }}/{{ name }}-hypertables.sql'
+      | save -f '{{ migrationassets }}/{{ name }}-hypertables.sql'
 
     docker exec \
       --env PGHOST="localhost" \
