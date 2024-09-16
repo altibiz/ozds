@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Ozds.Data.Entities.Enums;
 using Ozds.Data.Extensions;
-using Microsoft.EntityFrameworkCore.Migrations;
 
 #pragma warning disable S3887
 #pragma warning disable S2386
@@ -47,6 +47,7 @@ namespace Ozds.Data.Migrations
                 name: "topic",
                 table: "notifications");
 
+#pragma warning disable S125 // Sections of code should not be commented out
             // Update database annotations
             // migrationBuilder.AlterDatabase()
             //     .Annotation("Npgsql:Enum:audit_entity", "query,creation,modification,deletion")
@@ -65,6 +66,7 @@ namespace Ozds.Data.Migrations
             //     .OldAnnotation("Npgsql:Enum:role_entity", "operator_representative,location_representative,network_user_representative")
             //     .OldAnnotation("Npgsql:Enum:topic_entity", "general")
             //     .OldAnnotation("Npgsql:PostgresExtension:timescaledb", ",,");
+#pragma warning restore S125 // Sections of code should not be commented out
 
             // Apply data conversions from int to enum types
             EnumMappings.ApplyUpMigrations(migrationBuilder);
