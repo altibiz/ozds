@@ -96,7 +96,7 @@ namespace Ozds.Data.Migrations
                 type: "character varying(34)",
                 maxLength: 34,
                 nullable: false,
-                defaultValue: "");
+                defaultValue: "PidgeonMessengerEntity");
 
             migrationBuilder.AddColumn<DurationEntity>(
                 name: "max_inactivity_period_duration",
