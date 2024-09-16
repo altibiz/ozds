@@ -88,15 +88,14 @@ public static class IServiceCollectionExtensions
       .Where(
         type =>
           !type.IsAbstract &&
-          !type.IsGenericType &&
           type.IsClass &&
           type.IsAssignableTo(assignableTo));
 
     foreach (var conversionType in conversionTypes)
     {
+      services.AddSingleton(conversionType);
       foreach (var interfaceType in conversionType.GetAllInterfaces())
       {
-        services.AddSingleton(conversionType);
         services.AddSingleton(
           interfaceType, services =>
             services.GetRequiredService(conversionType));
@@ -109,7 +108,7 @@ public static class IServiceCollectionExtensions
     return type.GetInterfaces()
       .Concat(type.GetInterfaces().SelectMany(GetAllInterfaces))
       .Concat(type.BaseType?.GetAllInterfaces() ?? Array.Empty<Type>())
-      .ToHashSet()
+      .Distinct()
       .ToArray();
   }
 }

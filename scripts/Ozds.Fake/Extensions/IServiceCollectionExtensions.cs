@@ -153,7 +153,7 @@ public static class IServiceCollectionExtensions
     return type.GetInterfaces()
       .Concat(type.GetInterfaces().SelectMany(GetAllInterfaces))
       .Concat(type.BaseType?.GetAllInterfaces() ?? Array.Empty<Type>())
-      .ToHashSet()
+      .Distinct()
       .ToArray();
   }
 }

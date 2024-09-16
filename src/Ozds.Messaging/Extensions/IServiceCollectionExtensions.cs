@@ -118,41 +118,6 @@ public static class IServiceCollectionExtensions
       });
   }
 
-  private static void AddSingletonAssignableTo(
-    this IServiceCollection services,
-    Type assignableTo
-  )
-  {
-    var conversionTypes = typeof(IServiceCollectionExtensions).Assembly
-      .GetTypes()
-      .Where(
-        type =>
-          !type.IsAbstract &&
-          !type.IsGenericType &&
-          type.IsClass &&
-          type.IsAssignableTo(assignableTo));
-
-    foreach (var conversionType in conversionTypes)
-    {
-      foreach (var interfaceType in conversionType.GetAllInterfaces())
-      {
-        services.AddSingleton(conversionType);
-        services.AddSingleton(
-          interfaceType, services =>
-            services.GetRequiredService(conversionType));
-      }
-    }
-  }
-
-  private static Type[] GetAllInterfaces(this Type type)
-  {
-    return type.GetInterfaces()
-      .Concat(type.GetInterfaces().SelectMany(GetAllInterfaces))
-      .Concat(type.BaseType?.GetAllInterfaces() ?? Array.Empty<Type>())
-      .ToHashSet()
-      .ToArray();
-  }
-
   private sealed class OzdsSagaRepositoryRegistrationProvider
     : ISagaRepositoryRegistrationProvider
   {
@@ -169,5 +134,39 @@ public static class IServiceCollectionExtensions
           config.UsePostgres();
         });
     }
+  }
+
+  private static void AddSingletonAssignableTo(
+    this IServiceCollection services,
+    Type assignableTo
+  )
+  {
+    var conversionTypes = typeof(IServiceCollectionExtensions).Assembly
+      .GetTypes()
+      .Where(
+        type =>
+          !type.IsAbstract &&
+          type.IsClass &&
+          type.IsAssignableTo(assignableTo));
+
+    foreach (var conversionType in conversionTypes)
+    {
+      services.AddSingleton(conversionType);
+      foreach (var interfaceType in conversionType.GetAllInterfaces())
+      {
+        services.AddSingleton(
+          interfaceType, services =>
+            services.GetRequiredService(conversionType));
+      }
+    }
+  }
+
+  private static Type[] GetAllInterfaces(this Type type)
+  {
+    return type.GetInterfaces()
+      .Concat(type.GetInterfaces().SelectMany(GetAllInterfaces))
+      .Concat(type.BaseType?.GetAllInterfaces() ?? Array.Empty<Type>())
+      .Distinct()
+      .ToArray();
   }
 }
