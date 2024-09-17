@@ -2,9 +2,9 @@
 
 let root = $env.FILE_PWD | path dirname
 let src = [$root, "src"] | path join
-let dumps = [$root, "scripts", "migration"] | path join
+let dumps = [$root, "scripts", "migrations"] | path join
 let projects = glob $"($src)/**/Migrations" | path dirname
-let server_csproj = [$root, "Ozds.Server", "Ozds.Server.csproj"] | path join
+let server_csproj = glob $"(glob $"($src)/**/Program.cs" | first | path dirname)/*.csproj" | first
 
 def main [name: string] {
   let migration = glob $"($src)/**/Migrations/*_($name).cs" | first
