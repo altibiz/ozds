@@ -1,7 +1,7 @@
 #!/usr/bin/env nu
 
 let root = $env.FILE_PWD | path dirname
-let src = [$root, "src"] | path join
+let src = [$root "src"] | path join
 let projects = glob $"($src)/**/Migrations" | path dirname
 let server_csproj = glob $"(glob $"($src)/**/Program.cs" | first | path dirname)/*.csproj" | first
 
@@ -14,15 +14,23 @@ def main [name: string] {
 
   let timestamp = $migration | path basename | split row '_' | first
 
-  let project_migrations =  $projects | each { ||
-    let migration = glob $"($in)/Migrations/*"
-      | path basename | sort
-      | filter {  $in >= $timestamp and $in =~ '\d{14}_.*\.cs' } | last
-      | split row "_" | last
-      | split row "." | first
-    let csproj = [$in, $"($in | path basename).csproj"] | path join
-    { project: $in, migration: $migration, csproj: $csproj }
-  }
+  let project_migrations =  $projects
+    | each { |x|
+      let migrations = glob $"($x)/Migrations/*"
+        | path basename | sort
+        | filter { |x| $x <= $timestamp and $x =~ '\d{14}_[^\.]*\.cs' }
+      if ($migrations | is-empty) {
+        return null
+      }
+
+      let migration = $migrations | last
+        | split row "_" | last
+        | split row "." | first
+
+      let csproj = [$x $"($x | path basename).csproj"] | path join
+      { project: $x migration: $migration csproj: $csproj }
+    }
+    | filter { |x| $x | is-not-empty }
 
   for $project_migration in $project_migrations {
     let project = $project_migration.project

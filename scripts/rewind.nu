@@ -17,15 +17,23 @@ def main [name: string] {
   let project = $migration | path dirname --num-levels 2
   let project_name = $project | path basename
 
-  let project_migrations =  $projects | each { ||
-    let migration = glob $"($in)/Migrations/*"
-      | path basename | sort
-      | filter {  $in >= $timestamp and $in =~ '\d{14}_.*\.cs' } | last
-      | split row "_" | last
-      | split row "." | first
-    let csproj = [$in, $"($in | path basename).csproj"] | path join
-    { project: $in, migration: $migration, csproj: $csproj }
-  }
+  let project_migrations =  $projects
+    | each { |x|
+      let migrations = glob $"($x)/Migrations/*"
+        | path basename | sort
+        | filter { |x| $x <= $timestamp and $x =~ '\d{14}_[^\.]*\.cs' }
+      if ($migrations | is-empty) {
+        return null
+      }
+
+      let migration = $migrations | last
+        | split row "_" | last
+        | split row "." | first
+
+      let csproj = [$x $"($x | path basename).csproj"] | path join
+      { project: $x migration: $migration csproj: $csproj }
+    }
+    | filter { |x| $x | is-not-empty }
 
   let orchard_dump = $"($dumps)/($timestamp)-($project_name)-($name)-orchard.sql"
   let normal_dump = $"($dumps)/($timestamp)-($project_name)-($name).sql"
