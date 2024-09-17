@@ -23,6 +23,7 @@ docs := absolute_path('docs')
 doxyfile := absolute_path('docs/Doxyfile')
 schema := absolute_path('docs/schema.md')
 waitservices := absolute_path('scripts/wait-services.nu')
+rewind := absolute_path('scripts/rewind.nu')
 now := `date now | format date '%Y%m%d%H%M%S'`
 
 default:
@@ -293,6 +294,10 @@ dump name:
     cp -f \
       '{{ migrationassets }}/{{ name }}-hypertables.sql' \
       '{{ migrationassets }}/current-hypertables.sql'
+
+rewind name:
+    clean
+    {{ rewind }} {{ name }}
 
 report quarter language ext:
     rm -rf '{{ artifacts }}'
