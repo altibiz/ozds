@@ -1,0 +1,5 @@
+outs:
+- md5: d4fa69229630cb58db802ce142d27125
+  size: 32628
+  hash: md5
+  path: 19700101000000-Calculation6.sql
