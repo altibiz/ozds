@@ -22,7 +22,7 @@ migrationassets := absolute_path('scripts/migrations')
 docs := absolute_path('docs')
 doxyfile := absolute_path('docs/Doxyfile')
 schema := absolute_path('docs/schema.md')
-waitservices := absolute_path('scripts/wait-services.nu')
+isready := absolute_path('scripts/isready.nu')
 rewind := absolute_path('scripts/rewind.nu')
 now := `date now | format date '%Y%m%d%H%M%S'`
 
@@ -317,7 +317,7 @@ clean:
     docker ps -a -q | lines | each { |x| docker stop $x }
     docker compose --profile "*" down -v
     docker compose up -d
-    {{ waitservices }}
+    {{ isready }}
 
     open --raw '{{ migrationassets }}/current-orchard.sql' | \
       docker exec \
