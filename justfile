@@ -299,6 +299,9 @@ rewind name:
     clean
     {{ rewind }} {{ name }}
 
+rollback name:
+    {{ rollback }} {{ name }}
+
 report quarter language ext:
     rm -rf '{{ artifacts }}'
     mkdir '{{ artifacts }}'
