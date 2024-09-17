@@ -12,13 +12,17 @@ def main [name: string] {
     exit 1
   }
 
-  let timestamp = $migration | path basename | split row '_' | first
+  let timestamp = $migration
+    | path basename
+    | split row '_'
+    | each { |x| (($x | into int) + 1) | into string }
+    | first;
 
   let project_migrations =  $projects
     | each { |x|
       let migrations = glob $"($x)/Migrations/*"
         | path basename | sort
-        | filter { |x| $x <= $timestamp and $x =~ '\d{14}_[^\.]*\.cs' }
+        | filter { |x| $x < $timestamp and $x =~ '\d{14}_[^\.]*\.cs' }
       if ($migrations | is-empty) {
         return null
       }
