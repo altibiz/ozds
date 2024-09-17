@@ -34,48 +34,7 @@ prepare:
     dvc pull
     dotnet tool restore
     (not (which prettier | is-empty)) or (npm install -g prettier) | ignore
-
-    docker ps -a -q | lines | each { |x| docker stop $x }
-    docker compose --profile "*" down -v
-    docker compose up -d
-    {{ waitservices }}
-
-    open --raw '{{ migrationassets }}/current-orchard.sql' | \
-      docker exec \
-        --env PGHOST="localhost" \
-        --env PGPORT="5432" \
-        --env PGDATABASE="ozds" \
-        --env PGUSER="ozds" \
-        --env PGPASSWORD="ozds" \
-        --interactive \
-        ozds-postgres-1 \
-          psql
-
-    dotnet ef \
-      --startup-project '{{ servercsproj }}' \
-      --project '{{ datacsproj }}' \
-      database update
-
-    dotnet ef \
-      --startup-project '{{ servercsproj }}' \
-      --project '{{ messagingcsproj }}' \
-      database update
-
-    dotnet ef \
-      --startup-project '{{ servercsproj }}' \
-      --project '{{ jobscsproj }}' \
-      database update
-
-    open --raw '{{ migrationassets }}/current.sql' | \
-      docker exec \
-        --env PGHOST="localhost" \
-        --env PGPORT="5432" \
-        --env PGDATABASE="ozds" \
-        --env PGUSER="ozds" \
-        --env PGPASSWORD="ozds" \
-        --interactive \
-        ozds-postgres-1 \
-          psql
+    clean
 
 lfs:
     dvc add {{ fakeassets }}/*.csv
@@ -110,6 +69,9 @@ format:
       --caches-home='{{ jbcache }}' \
       -o='{{ jbinspectlog }}' \
       --exclude='**/.git/**/*;**/.nuget/**/*;**/obj/**/*;**/bin/**/*'
+
+deps:
+    exec (nix build ".#default.fetch-deps" --print-out-paths --no-link) deps.nix
 
 lint:
     prettier --check \
@@ -155,6 +117,81 @@ lint:
 
 test *args:
     dotnet test '{{ sln }}' {{ args }}
+
+publish *args:
+    rm -rf '{{ artifacts }}'
+    mkdir '{{ artifacts }}'
+
+    dotnet publish '{{ sln }}' \
+      --property PublishDir='{{ artifacts }}' \
+      --property ConsoleLoggerParameters=ErrorsOnly \
+      --property IsWebConfigTransformDisabled=true \
+      --property DebugType=None \
+      --property DebugSymbols=false \
+      --configuration Release \
+      {{ args }}
+
+    rm -rf '{{ artifacts }}/App_Data'
+
+docs:
+    rm -rf '{{ artifacts }}'
+    mkdir '{{ artifacts }}'
+
+    dotnet docfx metadata '{{ docs }}/code/docfx.json'
+    dotnet docfx build '{{ docs }}/code/docfx.json'
+    cp -f '{{ docs }}/favicon.ico' '{{ artifacts }}/code'
+    cp -f '{{ docs }}/logo.svg' '{{ artifacts }}/code'
+
+    mdbook build '{{ docs }}/wiki/en'
+    mdbook build '{{ docs }}/wiki/hr'
+    mv '{{ docs }}/wiki/en/book' '{{ artifacts }}/wiki/en'
+    mv '{{ docs }}/wiki/hr/book' '{{ artifacts }}/wiki/hr'
+
+    cp '{{ docs }}/index.html' {{ artifacts }}
+    cp '{{ docs }}/favicon.ico' {{ artifacts }}
+
+migrate project name:
+    clean
+
+    dotnet ef \
+      --startup-project '{{ servercsproj }}' \
+      --project '{{ root }}/src/{{ project }}/{{ project }}.csproj' \
+      migrations add \
+      --output-dir Migrations \
+      --namespace {{ project }}.Migrations \
+      '{{ name }}'
+
+    glob ('{{ root }}/src/{{ project }}/' + \
+      ('{{ project }}.Migrations' | split row '.' | path join) + '/*') | \
+      each { |x| mv -f $x '{{ root }}/src/{{ project }}/Migrations' } | ignore
+
+    dotnet ef \
+      --startup-project '{{ servercsproj }}' \
+      --project '{{ root }}/src/{{ project }}/{{ project }}.csproj' \
+      database update
+
+    dump '{{ now }}-{{ project }}-{{ name }}'
+
+    cp -f \
+      '{{ migrationassets }}/{{ now }}-{{ project }}-{{ name }}-orchard.sql' \
+      '{{ migrationassets }}/current-orchard.sql'
+
+    cp -f \
+      '{{ migrationassets }}/{{ now }}-{{ project }}-{{ name }}.sql' \
+      '{{ migrationassets }}/current.sql'
+
+    cp -f \
+      '{{ migrationassets }}/{{ now }}-{{ project }}-{{ name }}-hypertables.sql' \
+      '{{ migrationassets }}/current-hypertables.sql'
+
+    mermerd \
+      --schema public \
+      --useAllTables \
+      --encloseWithMermaidBackticks \
+      --outputFileName '{{ schema }}'
+
+    $"# Database schema\n\n(open --raw '{{ schema }}')" | \
+      save --force '{{ schema }}'
 
 dump name=current:
     docker exec \
@@ -258,79 +295,6 @@ dump name=current:
         END; \
       $$;"
 
-migrate project name:
-    clean
-
-    dotnet ef \
-      --startup-project '{{ servercsproj }}' \
-      --project '{{ root }}/src/{{ project }}/{{ project }}.csproj' \
-      migrations add \
-      --output-dir Migrations \
-      --namespace {{ project }}.Migrations \
-      '{{ name }}'
-
-    glob ('{{ root }}/src/{{ project }}/' + \
-      ('{{ project }}.Migrations' | split row '.' | path join) + '/*') | \
-      each { |x| mv -f $x '{{ root }}/src/{{ project }}/Migrations' } | ignore
-
-    dotnet ef \
-      --startup-project '{{ servercsproj }}' \
-      --project '{{ datacsproj }}' \
-      database update
-
-    dotnet ef \
-      --startup-project '{{ servercsproj }}' \
-      --project '{{ messagingcsproj }}' \
-      database update
-
-    dotnet ef \
-      --startup-project '{{ servercsproj }}' \
-      --project '{{ jobscsproj }}' \
-      database update
-
-    dump '{{ now }}-{{ project }}-{{ name }}'
-
-    cp -f \
-      '{{ migrationassets }}/{{ now }}-{{ project }}-{{ name }}-orchard.sql' \
-      '{{ migrationassets }}/current-orchard.sql'
-
-    cp -f \
-      '{{ migrationassets }}/{{ now }}-{{ project }}-{{ name }}.sql' \
-      '{{ migrationassets }}/current.sql'
-
-    cp -f \
-      '{{ migrationassets }}/{{ now }}-{{ project }}-{{ name }}-hypertables.sql' \
-      '{{ migrationassets }}/current-hypertables.sql'
-
-    mermerd \
-      --schema public \
-      --useAllTables \
-      --encloseWithMermaidBackticks \
-      --outputFileName '{{ schema }}'
-
-    $"# Database schema\n\n(open --raw '{{ schema }}')" | \
-      save --force '{{ schema }}'
-
-docs:
-    rm -rf '{{ artifacts }}'
-    mkdir '{{ artifacts }}'
-
-    dotnet docfx metadata '{{ docs }}/code/docfx.json'
-    dotnet docfx build '{{ docs }}/code/docfx.json'
-    cp -f '{{ docs }}/favicon.ico' '{{ artifacts }}/code'
-    cp -f '{{ docs }}/logo.svg' '{{ artifacts }}/code'
-
-    mdbook build '{{ docs }}/wiki/en'
-    mdbook build '{{ docs }}/wiki/hr'
-    mv '{{ docs }}/wiki/en/book' '{{ artifacts }}/wiki/en'
-    mv '{{ docs }}/wiki/hr/book' '{{ artifacts }}/wiki/hr'
-
-    cp '{{ docs }}/index.html' {{ artifacts }}
-    cp '{{ docs }}/favicon.ico' {{ artifacts }}
-
-deps:
-    exec (nix build ".#default.fetch-deps" --print-out-paths --no-link) deps.nix
-
 report quarter language ext:
     rm -rf '{{ artifacts }}'
     mkdir '{{ artifacts }}'
@@ -343,21 +307,6 @@ report quarter language ext:
       --output='{{ artifacts }}/ozds-{{ quarter }}-report-{{ language }}.{{ ext }}' \
       --filter=pandoc-plantuml \
       {{ docs }}/wiki/{{ language }}/report/{{ quarter }}/*.md
-
-publish *args:
-    rm -rf '{{ artifacts }}'
-    mkdir '{{ artifacts }}'
-
-    dotnet publish '{{ sln }}' \
-      --property PublishDir='{{ artifacts }}' \
-      --property ConsoleLoggerParameters=ErrorsOnly \
-      --property IsWebConfigTransformDisabled=true \
-      --property DebugType=None \
-      --property DebugSymbols=false \
-      --configuration Release \
-      {{ args }}
-
-    rm -rf '{{ artifacts }}/App_Data'
 
 [confirm("This will clean docker containers. Do you want to continue?")]
 clean:
