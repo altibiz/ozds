@@ -24,6 +24,7 @@ doxyfile := absolute_path('docs/Doxyfile')
 schema := absolute_path('docs/schema.md')
 isready := absolute_path('scripts/isready.nu')
 rewind := absolute_path('scripts/rewind.nu')
+rollback := absolute_path('scripts/rollback.nu')
 now := `date now | format date '%Y%m%d%H%M%S'`
 
 default:
