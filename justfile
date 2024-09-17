@@ -24,7 +24,6 @@ doxyfile := absolute_path('docs/Doxyfile')
 schema := absolute_path('docs/schema.md')
 waitservices := absolute_path('scripts/wait-services.nu')
 now := `date now | format date '%Y%m%d%H%M%S'`
-current := 'current'
 
 default:
     @just --choose
@@ -172,18 +171,6 @@ migrate project name:
 
     dump '{{ now }}-{{ project }}-{{ name }}'
 
-    cp -f \
-      '{{ migrationassets }}/{{ now }}-{{ project }}-{{ name }}-orchard.sql' \
-      '{{ migrationassets }}/current-orchard.sql'
-
-    cp -f \
-      '{{ migrationassets }}/{{ now }}-{{ project }}-{{ name }}.sql' \
-      '{{ migrationassets }}/current.sql'
-
-    cp -f \
-      '{{ migrationassets }}/{{ now }}-{{ project }}-{{ name }}-hypertables.sql' \
-      '{{ migrationassets }}/current-hypertables.sql'
-
     mermerd \
       --schema public \
       --useAllTables \
@@ -193,7 +180,7 @@ migrate project name:
     $"# Database schema\n\n(open --raw '{{ schema }}')" | \
       save --force '{{ schema }}'
 
-dump name=current:
+dump name:
     docker exec \
       --env PGHOST="localhost" \
       --env PGPORT="5432" \
@@ -294,6 +281,18 @@ dump name=current:
           END LOOP; \
         END; \
       $$;"
+
+    cp -f \
+      '{{ migrationassets }}/{{ name }}-orchard.sql' \
+      '{{ migrationassets }}/current-orchard.sql'
+
+    cp -f \
+      '{{ migrationassets }}/{{ name }}.sql' \
+      '{{ migrationassets }}/current.sql'
+
+    cp -f \
+      '{{ migrationassets }}/{{ name }}-hypertables.sql' \
+      '{{ migrationassets }}/current-hypertables.sql'
 
 report quarter language ext:
     rm -rf '{{ artifacts }}'
