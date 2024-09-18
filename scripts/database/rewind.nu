@@ -39,15 +39,15 @@ def main [project_name: string, name: string] {
   let normal_dump = $"($dumps)/($timestamp)-($project_name)-($name).sql"
   let hypertables_dump = $"($dumps)/($timestamp)-($project_name)-($name)-hypertables.sql"
   if not ($orchard_dump | path exists) {
-    print $"Orchard dump not found for migration '($name)'."
+    print $"Orchard dump '($orchard_dump)' not found for migration '($name)'."
     exit 1
   }
   if not ($normal_dump | path exists) {
-    print $"Normal dump not found for migration '($name)'."
+    print $"Normal dump '($normal_dump)' not found for migration '($name)'."
     exit 1
   }
   if not ($hypertables_dump | path exists) {
-    print $"Hypertables dump not found for migration '($name)'."
+    print $"Hypertables dump '($hypertables_dump)' not found for migration '($name)'."
     exit 1
   }
 
