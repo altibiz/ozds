@@ -15,14 +15,14 @@ def main [project_name: string, name: string] {
   let timestamp = $migration
     | path basename
     | split row '_'
-    | each { |x| (($x | into int) + 1) | into string }
     | first;
+  let timestamp_plus_1 = (($timestamp | into int) + 1) | into string
   let project = $migration | path dirname --num-levels 2
   let project_migrations =  $projects
     | each { |x|
       let migrations = glob $"($x)/Migrations/*"
         | path basename | sort
-        | filter { |x| $x < $timestamp and $x =~ '\d{14}_[^\.]*\.cs' }
+        | filter { |x| $x < $timestamp_plus_1 and $x =~ '\d{14}_[^\.]*\.cs' }
       if ($migrations | is-empty) {
         return null
       }
