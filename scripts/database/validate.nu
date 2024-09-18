@@ -31,22 +31,22 @@ def main [project_name: string, name: string] {
   for $dump_type in $dump_types {
     let original_dump = $"($dumps)/($dump_name)($dump_type).sql"
     let rewind_dump = $"($dumps)/($rewind_dump_name)($dump_type).sql"
-
     if (not ($original_dump | path exists)) {
       print $"Dump file '($original_dump)' does not exist."
       exit 1
     }
-
     if (not ($rewind_dump | path exists)) {
       print $"Rewind dump file '($rewind_dump)' does not exist."
       exit 1
     }
-
-    let diff_output = delta $original_dump $rewind_dump
-    if (($diff_output | str length) > 0) {
-      print $"Differences found in '($dump_type)' dump:"
-      print $diff_output
+    delta $original_dump $rewind_dump
+    print $"Do you consider the migration valid for '($dump_type)' dump? (y/n): "
+    let user_input = stdin get-line | str trim
+    if $user_input == 'y' {
+      continue
+    } else {
       $differences = true
+      break  # Exit loop if any dump_type is invalid
     }
   }
   if $differences {
