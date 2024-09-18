@@ -39,7 +39,9 @@ def main [project_name: string, name: string] {
       print $"Rewind dump file '($rewind_dump)' does not exist."
       exit 1
     }
-    delta $original_dump $rewind_dump
+    try {
+      delta $original_dump $rewind_dump
+    }
     print $"Do you consider the migration valid for '($dump_type)' dump?"
     let user_input = ['y' 'n'] | input list
     if $user_input == 'y' {
