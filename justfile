@@ -301,15 +301,14 @@ dump name:
       '{{ migrationassets }}/{{ name }}-hypertables.sql' \
       '{{ migrationassets }}/current-hypertables.sql'
 
-rewind name:
-    clean
-    {{ rewind }} {{ name }}
+rewind *args:
+    {{ rewind }} {{ args }}
 
-rollback name:
-    {{ rollback }} {{ name }}
+rollback *args:
+    {{ rollback }} {{ args }}
 
-validate name:
-    {{ validate }} {{ name }}
+validate *args:
+    {{ validate }} {{ args }}
 
 report quarter language ext:
     rm -rf '{{ artifacts }}'

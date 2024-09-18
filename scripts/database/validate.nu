@@ -8,18 +8,17 @@ let projects = glob $"($src)/**/Migrations" | path dirname
 let server_csproj = glob $"(glob $"($src)/**/Program.cs" | first | path dirname)/*.csproj" | first
 let dump_types = [ "", "-orchard", "-hypertables" ]
 
-def main [name: string] {
-  let migration_file = glob $"($src)/**/Migrations/*_($name).cs" | first
-  if ($migration_file | is-empty) {
+def main [project_name: string, name: string] {
+  let migration = glob $"($src)/($project_name)/Migrations/*_($name).cs" | first
+  if ($migration | is-empty) {
     print $"Migration '($name)' not found."
     exit 1
   }
-  let timestamp = $migration_file
+  let timestamp = $migration
     | path basename
     | split row '_'
     | get 0
-  let project = $migration_file | path dirname --num-levels 2
-  let project_name = $project | path basename
+  let project = $migration | path dirname --num-levels 2
   let dump_name = $"($timestamp)-($project_name)-($name)"
   let rewind_dump_name = $"($dump_name)-rewind"
 

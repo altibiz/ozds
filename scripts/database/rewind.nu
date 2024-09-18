@@ -6,21 +6,18 @@ let dumps = [$root, "scripts", "migrations"] | path join
 let projects = glob $"($src)/**/Migrations" | path dirname
 let server_csproj = glob $"(glob $"($src)/**/Program.cs" | first | path dirname)/*.csproj" | first
 
-def main [name: string] {
-  let migration = glob $"($src)/**/Migrations/*_($name).cs" | first
+def main [project_name: string, name: string] {
+  let migration = glob $"($src)/($project_name)/Migrations/*_($name).cs" | first
   if ($migration | is-empty) {
     print $"Migration '($migration)' not found."
     exit 1
   }
-
   let timestamp = $migration
     | path basename
     | split row '_'
     | each { |x| (($x | into int) + 1) | into string }
     | first;
   let project = $migration | path dirname --num-levels 2
-  let project_name = $project | path basename
-
   let project_migrations =  $projects
     | each { |x|
       let migrations = glob $"($x)/Migrations/*"
@@ -38,11 +35,9 @@ def main [name: string] {
       { project: $x migration: $migration csproj: $csproj }
     }
     | filter { |x| $x | is-not-empty }
-
   let orchard_dump = $"($dumps)/($timestamp)-($project_name)-($name)-orchard.sql"
   let normal_dump = $"($dumps)/($timestamp)-($project_name)-($name).sql"
   let hypertables_dump = $"($dumps)/($timestamp)-($project_name)-($name)-hypertables.sql"
-
   if not ($orchard_dump | path exists) {
     print $"Orchard dump not found for migration '($name)'."
     exit 1
@@ -56,6 +51,7 @@ def main [name: string] {
     exit 1
   }
 
+  just clean
   open --raw $orchard_dump
     | (docker exec
         --env PGHOST="localhost"
@@ -66,7 +62,6 @@ def main [name: string] {
         --interactive
         ozds-postgres-1
           psql)
-
   for $project_migration in $project_migrations {
     let project = $project_migration.project
     let migration = $project_migration.migration
@@ -78,7 +73,6 @@ def main [name: string] {
       database update
       $migration)
   }
-
   open --raw $normal_dump
     | (docker exec
         --env PGHOST="localhost"
@@ -89,7 +83,6 @@ def main [name: string] {
         --interactive
         ozds-postgres-1
           psql)
-
   open --raw $hypertables_dump
     | (docker exec
         --env PGHOST="localhost"
