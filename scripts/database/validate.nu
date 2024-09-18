@@ -24,7 +24,7 @@ def main [project_name: string, name: string] {
   let timestamp = $migration.timestamp
   let dump_name = $"($timestamp)-($project_name)-($name)"
   let rewind_dump_name = $"($dump_name)-rewind"
-  let rollback_dump_name = $"(dump-namel)-rollback"
+  let rollback_dump_name = $"($dump_name)-rollback"
 
   let timestamp_plus_1 = (($timestamp | into int) + 1) | into string
   mut migrations_plus_1 = $parsed_migrations
@@ -36,12 +36,14 @@ def main [project_name: string, name: string] {
   })
   let name_plus_1 = $migration_plus_1.name
 
-  if ($name_plus_1 != $name) {
-    just --yes rewind $project_name $name_plus_1
-  }
-
+  just --yes rewind $project_name $name_plus_1
   just --yes rollback $project_name $name
   just --yes dump $rollback_dump_name
+  for $dump_type in $dump_types {
+    let rollback_dump = $"($dumps)/($rollback_dump_name)($dump_type).sql"
+    let original_dump = $"($dumps)/($dump_name)($dump_type).sql"
+    cp -f $rollback_dump $original_dump
+  }
   just --yes rewind $project_name $name
   just --yes dump $rewind_dump_name
 
