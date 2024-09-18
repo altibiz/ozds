@@ -1,7 +1,5 @@
 #!/usr/bin/env nu
 
-# TODO: rewind to migration + 1 before rollback
-
 let root = $env.FILE_PWD | path dirname --num-levels 2
 let src = [$root, "src"] | path join
 let dumps = [$root, "scripts", "migrations"] | path join
@@ -10,18 +8,35 @@ let server_csproj = glob $"(glob $"($src)/**/Program.cs" | first | path dirname)
 let dump_types = [ "", "-orchard", "-hypertables" ]
 
 def main [project_name: string, name: string] {
-  let migration = glob $"($src)/($project_name)/Migrations/*_($name).cs" | first
-  if ($migration | is-empty) {
+  let migrations = glob $"($src)/($project_name)/Migrations/*_($name).cs"
+    | parse --regex $"\(?P<path>.*Migrations/\(?P<timestamp>[0-9]+\)\)_\(?P<name>\\.+\).cs"
+    | filter { |x| $x.name == $name }
+  if ($migrations | is-empty) {
     print $"Migration '($name)' not found."
     exit 1
   }
-  let timestamp = $migration
-    | path basename
-    | split row '_'
-    | get 0
-  let project = $migration | path dirname --num-levels 2
+  let migration = $migrations.path | first
+  let project = $migration.path | path dirname --num-levels 2
+  let timestamp = $migration.timestamp
   let dump_name = $"($timestamp)-($project_name)-($name)"
   let rewind_dump_name = $"($dump_name)-rewind"
+
+  let timestamp_plus_1 = (($timestamp | into int) + 1) | into string
+  mut migrations_plus_1 = glob $"($src)/($project_name)/Migrations/*.cs"
+    | parse --regex "(?P<path>.*Migrations/(?P<timestamp>[0-9]+)_(?P<name>[^\\.]+).cs)"
+    | sort-by timestamp
+    | filter { |x| $x.timestamp > $timestamp_plus_1 }
+  let migration_plus_1: string = (if ($migrations_plus_1 | is-empty) {
+   $migration } else {
+     $migrations_plus_1 | first
+  })
+  print $migration_plus_1
+  exit 1
+  let name_plus_1 = $migration_plus_1.name
+
+  if ($name_plus_1 != $name) {
+    just --yes rewind $project_name $name_plus_1
+  }
 
   just --yes rollback $project_name $name
   just --yes dump $dump_name
