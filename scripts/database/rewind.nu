@@ -51,7 +51,10 @@ def main [project_name: string, name: string] {
     exit 1
   }
 
-  just --yes clean
+  docker ps -a -q | lines | each { |x| docker stop $x }
+  docker compose --profile "*" down -v
+  docker compose up -d
+  $"($src)/scripts/database/isready.nu"
   open --raw $orchard_dump
     | (docker exec
         --env PGHOST="localhost"
@@ -66,7 +69,6 @@ def main [project_name: string, name: string] {
     let project = $project_migration.project
     let migration = $project_migration.migration
     let csproj = $project_migration.csproj
-
     (dotnet ef
       --startup-project $server_csproj
       --project $csproj
