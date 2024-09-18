@@ -1,5 +1,7 @@
 #!/usr/bin/env nu
 
+# TODO: don't clean
+
 let root = $env.FILE_PWD | path dirname --num-levels 2
 let src = [$root "src"] | path join
 let projects = glob $"($src)/**/Migrations" | path dirname

@@ -1,6 +1,7 @@
 #!/usr/bin/env nu
 
-# Define variables
+# TODO: rewind to migration + 1 before rollback
+
 let root = $env.FILE_PWD | path dirname --num-levels 2
 let src = [$root, "src"] | path join
 let dumps = [$root, "scripts", "migrations"] | path join
