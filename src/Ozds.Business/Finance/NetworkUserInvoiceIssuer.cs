@@ -11,7 +11,7 @@ namespace Ozds.Business.Finance;
 
 public class NetworkUserInvoiceIssuer(
   OzdsBillingQueries ozdsBillingQueries,
-  NetworkUserInvoiceCalculator invoiceCalculator,
+  INetworkUserInvoiceCalculator invoiceCalculator,
   OzdsInvoiceMutations invoiceMutations,
   OzdsCalculationMutations calculationMutations,
   ILocalizer localizer,

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Ozds.Messaging.Context;
 using Ozds.Messaging.Observers.Abstractions;
 using Ozds.Messaging.Options;
+using Ozds.Messaging.Sender.Abstractions;
 
 namespace Ozds.Messaging.Extensions;
 
@@ -30,6 +31,9 @@ public static class IServiceCollectionExtensions
     // Observers
     services.AddSingletonAssignableTo(typeof(IPublisher));
     services.AddSingletonAssignableTo(typeof(ISubscriber));
+
+    // Sender
+    services.AddSingletonAssignableTo(typeof(IMessageSender));
 
     return services;
   }
