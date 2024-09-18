@@ -40,8 +40,8 @@ def main [project_name: string, name: string] {
       exit 1
     }
     delta $original_dump $rewind_dump
-    print $"Do you consider the migration valid for '($dump_type)' dump? \(y/n\): "
-    let user_input = stdin get-line | str trim
+    print $"Do you consider the migration valid for '($dump_type)' dump?"
+    let user_input = ['y' 'n'] | input list
     if $user_input == 'y' {
       continue
     } else {
