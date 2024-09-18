@@ -24,6 +24,7 @@ def main [project_name: string, name: string] {
   let timestamp = $migration.timestamp
   let dump_name = $"($timestamp)-($project_name)-($name)"
   let rewind_dump_name = $"($dump_name)-rewind"
+  let rollback_dump_name = $"(dump-namel)-rollback"
 
   let timestamp_plus_1 = (($timestamp | into int) + 1) | into string
   mut migrations_plus_1 = $parsed_migrations
@@ -40,16 +41,16 @@ def main [project_name: string, name: string] {
   }
 
   just --yes rollback $project_name $name
-  just --yes dump $dump_name
+  just --yes dump $rollback_dump_name
   just --yes rewind $project_name $name
   just --yes dump $rewind_dump_name
 
   mut differences = false
   for $dump_type in $dump_types {
-    let original_dump = $"($dumps)/($dump_name)($dump_type).sql"
+    let rollback_dump = $"($dumps)/($rollback_dump_name)($dump_type).sql"
     let rewind_dump = $"($dumps)/($rewind_dump_name)($dump_type).sql"
-    if (not ($original_dump | path exists)) {
-      print $"Dump file '($original_dump)' does not exist."
+    if (not ($rollback_dump | path exists)) {
+      print $"Dump file '($rollback_dump)' does not exist."
       exit 1
     }
     if (not ($rewind_dump | path exists)) {
@@ -57,7 +58,7 @@ def main [project_name: string, name: string] {
       exit 1
     }
     try {
-      delta $original_dump $rewind_dump
+      delta $rollback_dump $rewind_dump
     }
     print $"Do you consider the migration valid for '($dump_type)' dump?"
     let user_input = ['y' 'n'] | input list
@@ -72,9 +73,11 @@ def main [project_name: string, name: string] {
     exit 1
   } else {
     for $dump_type in $dump_types {
+      let rollback_dump = $"($dumps)/($rollback_dump_name)($dump_type).sql"
       let rewind_dump = $"($dumps)/($rewind_dump_name)($dump_type).sql"
       let original_dump = $"($dumps)/($dump_name)($dump_type).sql"
-      mv -f $rewind_dump $original_dump
+      print $rollback_dump $rewind_dump $original_dump
+      cp -f $rewind_dump $original_dump
     }
   }
 }

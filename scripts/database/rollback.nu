@@ -36,7 +36,6 @@ def main [project_name: string, name: string] {
     }
     | filter { |x| $x | is-not-empty }
 
-  just --yes clean
   for $project_migration in $project_migrations {
     let project = $project_migration.project
     let migration = $project_migration.migration
