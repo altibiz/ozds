@@ -46,7 +46,7 @@ def main [project_name: string, name: string] {
     if (($diff_output | str length) > 0) {
       print $"Differences found in '($dump_type)' dump:"
       print $diff_output
-      differences = true
+      $differences = true
     }
   }
   if $differences {
