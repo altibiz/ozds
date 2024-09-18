@@ -6,33 +6,33 @@ let dumps = [$root, "scripts", "migrations"] | path join
 let projects = glob $"($src)/**/Migrations" | path dirname
 let server_csproj = glob $"(glob $"($src)/**/Program.cs" | first | path dirname)/*.csproj" | first
 let dump_types = [ "", "-orchard", "-hypertables" ]
-let migration_parser =  "(?P<path>.*Migrations/(?P<timestamp>[0-9]+))_(?P<name>[^\\.]+).cs"
+
+let migration_parser =  ".*Migrations/(?P<timestamp>[0-9]+)_(?P<name>[^\\.]+).cs"
 
 def main [project_name: string, name: string] {
-  let migrations = glob $"($src)/($project_name)/Migrations/*_($name).cs"
+  let migration_glob = $"($src)/($project_name)/Migrations/*.cs"
+  let parsed_migrations =  glob $migration_glob
     | parse --regex $migration_parser
+
+  let migrations = $parsed_migrations
     | filter { |x| $x.name == $name }
   if ($migrations | is-empty) {
     print $"Migration '($name)' not found."
     exit 1
   }
   let migration = $migrations | first
-  let project = $migration.path | path dirname --num-levels 2
   let timestamp = $migration.timestamp
   let dump_name = $"($timestamp)-($project_name)-($name)"
   let rewind_dump_name = $"($dump_name)-rewind"
 
   let timestamp_plus_1 = (($timestamp | into int) + 1) | into string
-  mut migrations_plus_1 = glob $"($src)/($project_name)/Migrations/*.cs"
-    | parse --regex $migration_parser
+  mut migrations_plus_1 = $parsed_migrations
     | sort-by timestamp
     | filter { |x| $x.timestamp > $timestamp_plus_1 }
   let migration_plus_1: string = (if ($migrations_plus_1 | is-empty) {
    $migration } else {
      $migrations_plus_1 | first
   })
-  print $migration_plus_1
-  exit 1
   let name_plus_1 = $migration_plus_1.name
 
   if ($name_plus_1 != $name) {
