@@ -43,7 +43,7 @@ def main [project_name: string, name: string] {
     }
 
     let diff_output = delta $original_dump $rewind_dump
-    if ($diff_output | str length | into int > 0) {
+    if (($diff_output | str length) > 0) {
       print $"Differences found in '($dump_type)' dump:"
       print $diff_output
       let differences = true
