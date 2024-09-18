@@ -27,7 +27,7 @@ def main [project_name: string, name: string] {
   just --yes rewind $project_name $name
   just --yes dump $rewind_dump_name
 
-  let differences = false
+  mut differences = false
   for $dump_type in $dump_types {
     let original_dump = $"($dumps)/($dump_name)($dump_type).sql"
     let rewind_dump = $"($dumps)/($rewind_dump_name)($dump_type).sql"
@@ -46,7 +46,7 @@ def main [project_name: string, name: string] {
     if (($diff_output | str length) > 0) {
       print $"Differences found in '($dump_type)' dump:"
       print $diff_output
-      let differences = true
+      differences = true
     }
   }
   if $differences {
