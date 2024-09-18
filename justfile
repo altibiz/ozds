@@ -264,7 +264,7 @@ dump name:
       out> '{{ migrationassets }}/{{ name }}-hypertables.sql'
 
     open '{{ migrationassets }}/{{ name }}-hypertables.sql' \
-      | str replace -r 'COPY (\S+)\._export ' 'COPY $1. ' \
+      | str replace -r 'COPY (\S+)_export ' 'COPY $1 ' \
       | save -f '{{ migrationassets }}/{{ name }}-hypertables.sql'
 
     docker exec \
