@@ -178,6 +178,18 @@ migrate project name:
 
     dump '{{ now }}-{{ project }}-{{ name }}'
 
+    cp -f \
+      '{{ migrationassets }}/{{ now }}-{{ project }}-{{ name }}-orchard.sql' \
+      '{{ migrationassets }}/current-orchard.sql'
+
+    cp -f \
+      '{{ migrationassets }}/{{ now }}-{{ project }}-{{ name }}.sql' \
+      '{{ migrationassets }}/current.sql'
+
+    cp -f \
+      '{{ migrationassets }}/{{ now }}-{{ project }}-{{ name }}-hypertables.sql' \
+      '{{ migrationassets }}/current-hypertables.sql'
+
     mermerd \
       --schema public \
       --useAllTables \
@@ -288,18 +300,6 @@ dump name:
           END LOOP; \
         END; \
       $$;"
-
-    cp -f \
-      '{{ migrationassets }}/{{ name }}-orchard.sql' \
-      '{{ migrationassets }}/current-orchard.sql'
-
-    cp -f \
-      '{{ migrationassets }}/{{ name }}.sql' \
-      '{{ migrationassets }}/current.sql'
-
-    cp -f \
-      '{{ migrationassets }}/{{ name }}-hypertables.sql' \
-      '{{ migrationassets }}/current-hypertables.sql'
 
 report quarter language ext:
     rm -rf '{{ artifacts }}'
