@@ -10,13 +10,13 @@ using Ozds.Data.Context;
 using Ozds.Data.Entities;
 using Ozds.Data.Entities.Enums;
 using Ozds.Data.Extensions;
-using Ozds.Users.Queries;
+using Ozds.Users.Queries.Abstractions;
 
 namespace Ozds.Business.Queries;
 
 public class OzdsRepresentativeQueries(
   DataDbContext context,
-  UserQueries userQueries
+  IUserQueries userQueries
 ) : IQueries
 {
   public async Task<RepresentativeModel?> RepresentativeById(string id)
@@ -144,7 +144,7 @@ public class OzdsRepresentativeQueries(
           representatives
               .FirstOrDefault(
                 context.PrimaryKeyInCompiled<RepresentativeEntity>(ids)) is
-            { } representative
+          { } representative
             ? representative.ToModel()
             : null
         ))
