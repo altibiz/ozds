@@ -22,9 +22,11 @@ migrationassets := absolute_path('scripts/migrations')
 docs := absolute_path('docs')
 doxyfile := absolute_path('docs/Doxyfile')
 schema := absolute_path('docs/schema.md')
-isready := absolute_path('scripts/isready.nu')
-rewind := absolute_path('scripts/rewind.nu')
-rollback := absolute_path('scripts/rollback.nu')
+isready := absolute_path('scripts/database/isready.nu')
+rewind := absolute_path('scripts/database/rewind.nu')
+rollback := absolute_path('scripts/database/rollback.nu')
+validate := absolute_path('scripts/database/validate.nu')
+measurements := absolute_path('scripts/database/measurements.nu')
 now := `date now | format date '%Y%m%d%H%M%S'`
 
 default:
@@ -51,6 +53,9 @@ fake *args:
     $env.ASPNETCORE_ENVIRONMENT = "Development"; \
       $env.DOTNET_ENVIRONMENT = "Development"; \
       dotnet run  --project '{{ fakecsproj }}' -- {{ args }}
+
+measurements *args:
+    python -m scripts.database.measurements {{ args }}
 
 format:
     cd '{{ root }}'; just --fmt --unstable
@@ -302,6 +307,9 @@ rewind name:
 
 rollback name:
     {{ rollback }} {{ name }}
+
+validate name:
+    {{ validate }} {{ name }}
 
 report quarter language ext:
     rm -rf '{{ artifacts }}'
