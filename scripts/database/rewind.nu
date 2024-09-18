@@ -1,6 +1,6 @@
 #!/usr/bin/env nu
 
-let root = $env.FILE_PWD | path dirname
+let root = $env.FILE_PWD | path dirname --num-levels 2
 let src = [$root, "src"] | path join
 let dumps = [$root, "scripts", "migrations"] | path join
 let projects = glob $"($src)/**/Migrations" | path dirname
@@ -51,7 +51,7 @@ def main [project_name: string, name: string] {
     exit 1
   }
 
-  just clean
+  just --yes clean
   open --raw $orchard_dump
     | (docker exec
         --env PGHOST="localhost"

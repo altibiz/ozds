@@ -1,7 +1,7 @@
 #!/usr/bin/env nu
 
 # Define variables
-let root = $env.FILE_PWD | path dirname
+let root = $env.FILE_PWD | path dirname --num-levels 2
 let src = [$root, "src"] | path join
 let dumps = [$root, "scripts", "migrations"] | path join
 let projects = glob $"($src)/**/Migrations" | path dirname
@@ -22,11 +22,10 @@ def main [project_name: string, name: string] {
   let dump_name = $"($timestamp)-($project_name)-($name)"
   let rewind_dump_name = $"($dump_name)-rewind"
 
-  just clean
-  just rollback $name
-  just dump $dump_name
-  just rewind $name
-  just dump $rewind_dump_name
+  just --yes rollback $project_name $name
+  just --yes dump $dump_name
+  just --yes rewind $project_name $name
+  just --yes dump $rewind_dump_name
 
   let differences = false
   for $dump_type in $dump_types {

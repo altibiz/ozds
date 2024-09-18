@@ -1,6 +1,6 @@
 #!/usr/bin/env nu
 
-let root = $env.FILE_PWD | path dirname
+let root = $env.FILE_PWD | path dirname --num-levels 2
 let src = [$root "src"] | path join
 let projects = glob $"($src)/**/Migrations" | path dirname
 let server_csproj = glob $"(glob $"($src)/**/Program.cs" | first | path dirname)/*.csproj" | first
@@ -34,7 +34,7 @@ def main [project_name: string, name: string] {
     }
     | filter { |x| $x | is-not-empty }
 
-  just clean
+  just --yes clean
   for $project_migration in $project_migrations {
     let project = $project_migration.project
     let migration = $project_migration.migration

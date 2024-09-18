@@ -301,15 +301,6 @@ dump name:
       '{{ migrationassets }}/{{ name }}-hypertables.sql' \
       '{{ migrationassets }}/current-hypertables.sql'
 
-rewind *args:
-    {{ rewind }} {{ args }}
-
-rollback *args:
-    {{ rollback }} {{ args }}
-
-validate *args:
-    {{ validate }} {{ args }}
-
 report quarter language ext:
     rm -rf '{{ artifacts }}'
     mkdir '{{ artifacts }}'
@@ -322,6 +313,18 @@ report quarter language ext:
       --output='{{ artifacts }}/ozds-{{ quarter }}-report-{{ language }}.{{ ext }}' \
       --filter=pandoc-plantuml \
       {{ docs }}/wiki/{{ language }}/report/{{ quarter }}/*.md
+
+[confirm("This will clean docker containers. Do you want to continue?")]
+rewind *args:
+    {{ rewind }} {{ args }}
+
+[confirm("This will clean docker containers. Do you want to continue?")]
+rollback *args:
+    {{ rollback }} {{ args }}
+
+[confirm("This will clean docker containers. Do you want to continue?")]
+validate *args:
+    {{ validate }} {{ args }}
 
 [confirm("This will clean docker containers. Do you want to continue?")]
 clean:
