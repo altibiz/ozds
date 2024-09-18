@@ -5,3 +5,4 @@
 # TODO: use ! when https://github.com/iterative/dvc/issues/10122
 
 *-rewind.sql
+*-rollback.sql
