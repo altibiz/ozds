@@ -56,7 +56,8 @@ def main [project_name: string, name: string] {
   } else {
     for $dump_type in $dump_types {
       let rewind_dump = $"($dumps)/($rewind_dump_name)($dump_type).sql"
-      rm $rewind_dump
+      let original_dump = $"($dumps)/($dump_name)($dump_type).sql"
+      mv -f $rewind_dump $original_dump
     }
   }
 }
