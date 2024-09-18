@@ -54,7 +54,7 @@ def main [project_name: string, name: string] {
   docker ps -a -q | lines | each { |x| docker stop $x }
   docker compose --profile "*" down -v
   docker compose up -d
-  $"($src)/scripts/database/isready.nu"
+  exec $"($src)/scripts/database/isready.nu"
   open --raw $orchard_dump
     | (docker exec
         --env PGHOST="localhost"
