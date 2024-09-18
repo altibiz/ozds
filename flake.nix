@@ -173,6 +173,7 @@ rec {
               # Version Control
               git
               dvc-with-remotes
+              delta
 
               # Nix
               nil
