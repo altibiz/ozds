@@ -56,6 +56,7 @@ public static class MeterModelEntityConverterExtensions
       return schneideriEM3xxxMeterEntity.ToModel();
     }
 
+    // NOTE: for archived properties
     return new MeterModel
     {
       Id = entity.Id,
@@ -70,7 +71,6 @@ public static class MeterModelEntityConverterExtensions
       ConnectionPower_W = (decimal)entity.ConnectionPower_W,
       Phases = entity.Phases.Select(x => x.ToModel()).ToHashSet(),
       MessengerId = entity.MessengerId,
-      MeasurementValidatorId = entity.MeasurementValidatorId
     };
 
     throw new NotSupportedException(
