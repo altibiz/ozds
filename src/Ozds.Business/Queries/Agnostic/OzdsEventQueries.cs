@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Conversion.Agnostic;
+using Ozds.Business.Models.Enums;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Data.Context;
 using Ozds.Data.Entities.Base;
@@ -30,9 +31,7 @@ public class OzdsEventQueries(
   }
 
   public async Task<PaginatedList<T>> Read<T>(
-    IEnumerable<string> whereClauses,
-    DateTimeOffset fromDate,
-    DateTimeOffset toDate,
+    LevelModel minLevel,
     int pageNumber = QueryConstants.StartingPage,
     int pageCount = QueryConstants.DefaultPageCount
   )
@@ -43,15 +42,12 @@ public class OzdsEventQueries(
         as IQueryable<EventEntity>
       ?? throw new InvalidOperationException(
         $"No DbSet found for {dbSetType}");
-    var filtered = whereClauses.Aggregate(
-      queryable,
-      (current, clause) => current.WhereDynamic(clause));
-    var timeFiltered = filtered
-      .Where(aggregate => aggregate.Timestamp >= fromDate)
-      .Where(aggregate => aggregate.Timestamp < toDate);
-    var count = await timeFiltered.CountAsync();
-    var ordered = timeFiltered
+    var minLevelEntity = minLevel.ToEntity();
+    var filtered = queryable.Where(e => e.Level >= minLevelEntity);
+    var ordered = filtered
       .OrderByDescending(aggregate => aggregate.Timestamp);
+
+    var count = await filtered.CountAsync();
     var items = await ordered
       .Skip((pageNumber - 1) * pageCount)
       .Take(pageCount)

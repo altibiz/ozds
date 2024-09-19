@@ -110,6 +110,9 @@
   [CascadingParameter]
   public RepresentativeState representative { get; set; } = default!;
 
+  [Parameter]
+  public LevelModel MinLevel { get; set; } = LevelModel.Warning;
+
   public string SearchString { get; set; } = "";
   private List<IEvent> _events = new();
 
@@ -123,12 +126,12 @@
   List<MobileData> _shownEvents = new();
   private string? _searchString;
 
-  protected override async Task OnInitializedAsync()
+  protected override async Task OnParametersSetAsync()
   {
 
     _events = (await ScopedServices
       .GetRequiredService<OzdsEventQueries>()
-      .Read<EventModel>(Array.Empty<string>(), default, DateTimeOffset.UtcNow))
+      .Read<EventModel>(MinLevel))
       .Items
       .OfType<IEvent>()
       .ToList();
