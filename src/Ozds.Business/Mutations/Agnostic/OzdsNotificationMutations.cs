@@ -1,7 +1,12 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Conversion.Agnostic;
+using Ozds.Business.Models;
+using Ozds.Business.Models.Enums;
+using Ozds.Business.Models.Joins;
 using Ozds.Business.Mutations.Abstractions;
 using Ozds.Data.Context;
+using Ozds.Data.Entities.Base;
 using INotification = Ozds.Business.Models.Abstractions.INotification;
 
 namespace Ozds.Business.Mutations.Agnostic;
@@ -26,9 +31,11 @@ public class OzdsNotificationMutations(
     _context.ChangeTracker.Clear();
   }
 
-  public void Create(INotification @event)
+  public async Task CreateAsync(
+    SystemNotificationModel notification,
+    IEnumerable<NotificationRecipientModel> recipients)
   {
-    var validationResults = @event
+    var validationResults = notification
       .Validate(new ValidationContext(this))
       .ToList();
     if (validationResults.Count is not 0)
@@ -36,6 +43,17 @@ public class OzdsNotificationMutations(
       throw new ValidationException(validationResults.First().ErrorMessage);
     }
 
-    _context.Add(_modelEntityConverter.ToEntity(@event));
+    var notificationEntity = _modelEntityConverter.ToEntity<NotificationEntity>(notification);
+    _context.Add(notificationEntity);
+    await _context.SaveChangesAsync();
+
+    _context.AddRange(recipients
+      .Select(recipient =>
+      {
+        recipient.NotificationId = notificationEntity.Id;
+        return recipient;
+      })
+      .Select(_modelEntityConverter.ToEntity));
+    await _context.SaveChangesAsync();
   }
 }

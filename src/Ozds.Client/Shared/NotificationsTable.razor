@@ -114,7 +114,7 @@
 
     _notifications = (await ScopedServices
       .GetRequiredService<OzdsNotificationQueries>()
-      .Read<NotificationModel>(Array.Empty<string>(), default, DateTimeOffset.UtcNow))
+      .ReadForRecipient<NotificationModel>(representative.Representative))
       .Items
       .OfType<INotification>()
       .ToList();

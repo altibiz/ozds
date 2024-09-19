@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Ozds.Data.Entities;
 using Ozds.Data.Entities.Base;
+using Ozds.Data.Entities.Joins;
 
 namespace Ozds.Data.Context;
 
@@ -61,4 +62,6 @@ public partial class DataDbContext : DbContext
   public DbSet<EventEntity> Events { get; set; } = default!;
 
   public DbSet<NotificationEntity> Notifications { get; set; } = default!;
+
+  public DbSet<NotificationRecipientEntity> NotificationRecipients { get; set; } = default!;
 }

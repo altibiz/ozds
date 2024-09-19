@@ -1,10 +1,13 @@
 using Microsoft.EntityFrameworkCore;
+using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Entities.Base;
 using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Joins;
 
-public class NotificationRecipientEntity
+// TODO: to notification_recipients
+
+public class NotificationRecipientEntity : IEntity
 {
   private long _notificationId;
 
@@ -50,6 +53,7 @@ public class
           .HasForeignKey(nameof(NotificationRecipientEntity.RepresentativeId)),
         configureJoinEntityType: entity =>
         {
+          entity.ToTable("notification_recipient_entity");
           entity.Ignore(nameof(NotificationRecipientEntity.NotificationId));
           entity
             .Property("_notificationId")

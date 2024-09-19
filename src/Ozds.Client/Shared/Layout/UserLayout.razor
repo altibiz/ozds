@@ -121,9 +121,14 @@
 
   protected override async Task OnInitializedAsync()
   {
+    if (RepresentativeState?.Representative is not { } representative)
+    {
+      return;
+    }
+
     _notifications = (await ScopedServices
       .GetRequiredService<OzdsNotificationQueries>()
-      .Read<NotificationModel>(Array.Empty<string>(), default, DateTimeOffset.UtcNow))
+      .ReadForRecipient<NotificationModel>(representative))
       .Items
       .OfType<INotification>()
       .ToList();

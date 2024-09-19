@@ -57,11 +57,14 @@
 
   private async Task Submit()
   {
-    var mutations = ScopedServices.GetRequiredService<OzdsNotificationMutations>();
     if (LoadingState.Value is null)
       return;
 
-    mutations.Create(LoadingState.Value);
+    var queries = ScopedServices.GetRequiredService<OzdsNotificationQueries>();
+    var recipients = await queries.Recipients(LoadingState.Value);
+
+    var mutations = ScopedServices.GetRequiredService<OzdsNotificationMutations>();
+    await mutations.CreateAsync(LoadingState.Value, recipients);
     await mutations.SaveChangesAsync();
     DialogService.Show<MutateSuccess>("Changes Saved", new DialogOptions { CloseOnEscapeKey = true });
   }
