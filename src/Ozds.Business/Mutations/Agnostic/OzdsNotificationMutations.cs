@@ -7,6 +7,8 @@ using Ozds.Business.Models.Joins;
 using Ozds.Business.Mutations.Abstractions;
 using Ozds.Data.Context;
 using Ozds.Data.Entities.Base;
+using Ozds.Data.Entities.Joins;
+using Ozds.Data.Extensions;
 using INotification = Ozds.Business.Models.Abstractions.INotification;
 
 namespace Ozds.Business.Mutations.Agnostic;
@@ -54,6 +56,29 @@ public class OzdsNotificationMutations(
         return recipient;
       })
       .Select(_modelEntityConverter.ToEntity));
+    await _context.SaveChangesAsync();
+  }
+
+  public async Task MarkNotificationAsSeen(
+    string notificationId,
+    string representativeId
+  )
+  {
+    var notification = await _context.NotificationRecipients
+      .Where(_context.ForeignKeyEquals<NotificationRecipientEntity>(
+        nameof(NotificationRecipientEntity.Notification),
+        notificationId))
+      .Where(_context.ForeignKeyEquals<NotificationRecipientEntity>(
+        nameof(NotificationRecipientEntity.Representative),
+        representativeId))
+      .FirstOrDefaultAsync();
+    if (notification is null || notification.SeenOn is not null)
+    {
+      return;
+    }
+
+    notification.SeenOn = DateTimeOffset.UtcNow;
+    _context.Update(notification);
     await _context.SaveChangesAsync();
   }
 }

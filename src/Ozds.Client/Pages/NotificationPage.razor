@@ -111,4 +111,18 @@
   [Parameter]
   public string Id { get; set; } = default!;
 
+  private async Task<NotificationModel?> Load()
+  {
+    var notification = await ScopedServices
+      .GetRequiredService<OzdsNotificationQueries>()
+      .ReadSingle<NotificationModel>(Id);
+    if (notification is { }) {
+      await ScopedServices
+        .GetRequiredService<OzdsNotificationMutations>()
+        .MarkNotificationAsSeen(
+          notification.Id,
+          RepresentativeState.Representative.Id);
+    }
+    return notification;
+  }
 }

@@ -82,7 +82,9 @@ public class OzdsNotificationQueries(
 
     var filtered = _context.NotificationRecipients
       .Where(nr => nr.RepresentativeId == representative.Id)
-      .Where(nr => seen || nr.SeenOn == null)
+      .Where(seen
+        ? nr => nr.SeenOn != null
+        : nr => nr.SeenOn == null)
       .Join(
         queryable,
         _context.ForeignKeyOf<NotificationRecipientEntity>(nameof(NotificationRecipientEntity.Notification)),

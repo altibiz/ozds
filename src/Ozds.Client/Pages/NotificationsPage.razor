@@ -7,7 +7,11 @@
   return;
 }
 
-<NotificationsTable/>
+<MudCheckBox
+  Label="@T["Seen"]"
+  @bind-Checked="@_seen"/>
+
+<NotificationsTable Seen="@_seen"/>
 
 
 @code {
@@ -18,4 +22,5 @@
   [CascadingParameter]
   public RepresentativeState RepresentativeState { get; set; } = default!;
 
+  private bool _seen = false;
 }
