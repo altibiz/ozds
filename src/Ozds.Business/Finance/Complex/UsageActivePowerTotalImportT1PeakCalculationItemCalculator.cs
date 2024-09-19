@@ -11,7 +11,7 @@ public class UsageActivePowerTotalImportT1PeakCalculationItemCalculator :
   protected override UsageActivePowerTotalImportT1PeakCalculationItemModel
     CalculateConcrete(CalculationItemBasisModel calculationBasis)
   {
-    if (calculationBasis.Aggregates.Count == 0)
+    if (calculationBasis.Aggregates.Count <= 1)
     {
       return new UsageActivePowerTotalImportT1PeakCalculationItemModel
       {

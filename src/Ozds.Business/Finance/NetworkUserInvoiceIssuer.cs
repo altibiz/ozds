@@ -9,6 +9,8 @@ using Ozds.Messaging.Sender.Abstractions;
 
 namespace Ozds.Business.Finance;
 
+// TODO: in one transaction
+
 public class NetworkUserInvoiceIssuer(
   OzdsBillingQueries ozdsBillingQueries,
   INetworkUserInvoiceCalculator invoiceCalculator,
@@ -28,6 +30,7 @@ public class NetworkUserInvoiceIssuer(
       .IssuingBasisForNetworkUser(networkUserId, dateFrom, dateTo);
     var invoice = invoiceCalculator.Calculate(basis);
     var invoiceId = await invoiceMutations.CreateId(invoice.Invoice);
+    await calculationMutations.SaveChangesAsync();
 
     foreach (var calculation in invoice.Calculations)
     {
@@ -37,9 +40,8 @@ public class NetworkUserInvoiceIssuer(
       }
 
       calculationMutations.Create(calculation);
+      await calculationMutations.SaveChangesAsync();
     }
-
-    await calculationMutations.SaveChangesAsync();
 
     var culture = CultureInfo.CreateSpecificCulture("hr-HR");
 

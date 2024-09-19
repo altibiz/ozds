@@ -1,16 +1,19 @@
 namespace Ozds.Messaging.Options;
 
-public record OzdsMessagingEndpointOptions(
-  string AcknowledgeNetworkUserInvoice
-);
+public class OzdsMessagingEndpointOptions
+{
+  public string AcknowledgeNetworkUserInvoice { get; set; } = default!;
+}
 
-public record OzdsMessagingSagaOptions(
-  string NetworkUserInvoiceState
-);
+public class OzdsMessagingSagaOptions
+{
+  public string NetworkUserInvoiceState { get; set; } = default!;
+}
 
-public record OzdsMessagingOptions(
-  string ConnectionString,
-  string PersistenceConnectionString,
-  OzdsMessagingEndpointOptions Endpoints,
-  OzdsMessagingSagaOptions Sagas
-);
+public class OzdsMessagingOptions
+{
+  public string ConnectionString { get; set; } = default!;
+  public string PersistenceConnectionString { get; set; } = default!;
+  public OzdsMessagingEndpointOptions Endpoints { get; set; } = default!;
+  public OzdsMessagingSagaOptions Sagas { get; set; } = default!;
+}

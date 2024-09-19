@@ -11,8 +11,8 @@ public class NetworkUserInvoiceStateSagaDefinition
 
   public NetworkUserInvoiceStateSagaDefinition(IConfiguration configuration)
   {
-    var options = configuration.GetValue<OzdsMessagingOptions>(
-      "Ozds:Messaging") ?? throw new InvalidOperationException(
+    var options = configuration.GetSection(
+      "Ozds:Messaging").Get<OzdsMessagingOptions>() ?? throw new InvalidOperationException(
       "Ozds:Messaging not found in configuration");
 
     Endpoint(

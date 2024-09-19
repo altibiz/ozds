@@ -8,7 +8,7 @@ namespace Ozds.Messaging.Sender;
 
 public class EndpointMessageSender(
   ISendEndpointProvider endpointProvider,
-  IOptions<OzdsMessagingEndpointOptions> options
+  IOptions<OzdsMessagingOptions> options
 ) : IMessageSender
 {
   public async Task AcknowledgeNetworkUserInvoice(
@@ -16,7 +16,7 @@ public class EndpointMessageSender(
   )
   {
     var endpoint = await endpointProvider.GetSendEndpoint(
-      new Uri(options.Value.AcknowledgeNetworkUserInvoice));
+      new Uri(options.Value.Endpoints.AcknowledgeNetworkUserInvoice));
 
     await endpoint.Send(
       acknowledgeNetworkUserInvoice

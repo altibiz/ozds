@@ -1,6 +1,7 @@
 using Ozds.Business.Conversion.Base;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Abstractions;
+using Ozds.Business.Models.Base;
 using Ozds.Data.Entities;
 using Ozds.Data.Entities.Base;
 
@@ -54,6 +55,23 @@ public static class MeterModelEntityConverterExtensions
     {
       return schneideriEM3xxxMeterEntity.ToModel();
     }
+
+    return new MeterModel
+    {
+      Id = entity.Id,
+      Title = entity.Title,
+      CreatedOn = entity.CreatedOn,
+      CreatedById = entity.CreatedById,
+      LastUpdatedOn = entity.LastUpdatedOn,
+      LastUpdatedById = entity.LastUpdatedById,
+      IsDeleted = entity.IsDeleted,
+      DeletedOn = entity.DeletedOn,
+      DeletedById = entity.DeletedById,
+      ConnectionPower_W = (decimal)entity.ConnectionPower_W,
+      Phases = entity.Phases.Select(x => x.ToModel()).ToHashSet(),
+      MessengerId = entity.MessengerId,
+      MeasurementValidatorId = entity.MeasurementValidatorId
+    };
 
     throw new NotSupportedException(
       $"MeterEntity type {entity.GetType().Name} is not supported."

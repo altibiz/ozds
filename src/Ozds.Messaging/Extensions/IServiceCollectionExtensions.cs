@@ -1,5 +1,6 @@
 using MassTransit;
 using MassTransit.Configuration;
+using MassTransit.EntityFrameworkCoreIntegration;
 using Microsoft.EntityFrameworkCore;
 using Ozds.Messaging.Context;
 using Ozds.Messaging.Observers.Abstractions;
@@ -33,7 +34,7 @@ public static class IServiceCollectionExtensions
     services.AddSingletonAssignableTo(typeof(ISubscriber));
 
     // Sender
-    services.AddSingletonAssignableTo(typeof(IMessageSender));
+    services.AddScopedAssignableTo(typeof(IMessageSender));
 
     return services;
   }
@@ -65,17 +66,18 @@ public static class IServiceCollectionExtensions
       {
         var assembly = typeof(MessagingDbContext).Assembly;
 
-        config.AddEntityFrameworkOutbox<MessagingDbContext>(
-          config =>
-          {
-            config.UsePostgres();
-            config.UseBusOutbox();
-          });
-        config.AddConfigureEndpointsCallback(
-          (context, name, config) =>
-          {
-            config.UseEntityFrameworkOutbox<MessagingDbContext>(context);
-          });
+#pragma warning disable S125
+        // FIXME: nothing happens
+        // x.AddEntityFrameworkOutbox<MessagingDbContext>(o =>
+        // {
+        //   o.UsePostgres();
+        //   o.UseBusOutbox();
+        // });
+        // x.AddConfigureEndpointsCallback((context, name, cfg) =>
+        // {
+        //   cfg.UseEntityFrameworkOutbox<MessagingDbContext>(context);
+        // });
+#pragma warning restore S125
         config.SetKebabCaseEndpointNameFormatter();
 
         config.AddConsumers(assembly);
@@ -120,6 +122,11 @@ public static class IServiceCollectionExtensions
             });
         }
       });
+
+    // FIXME: nothing happens
+    services
+      .RemoveHostedService<BusOutboxDeliveryService<MessagingDbContext>>();
+    services.RemoveHostedService<InboxCleanupService<MessagingDbContext>>();
   }
 
   private sealed class OzdsSagaRepositoryRegistrationProvider
@@ -159,6 +166,31 @@ public static class IServiceCollectionExtensions
       foreach (var interfaceType in conversionType.GetAllInterfaces())
       {
         services.AddSingleton(
+          interfaceType, services =>
+            services.GetRequiredService(conversionType));
+      }
+    }
+  }
+
+  private static void AddScopedAssignableTo(
+    this IServiceCollection services,
+    Type assignableTo
+  )
+  {
+    var conversionTypes = typeof(IServiceCollectionExtensions).Assembly
+      .GetTypes()
+      .Where(
+        type =>
+          !type.IsAbstract &&
+          type.IsClass &&
+          type.IsAssignableTo(assignableTo));
+
+    foreach (var conversionType in conversionTypes)
+    {
+      services.AddScoped(conversionType);
+      foreach (var interfaceType in conversionType.GetAllInterfaces())
+      {
+        services.AddScoped(
           interfaceType, services =>
             services.GetRequiredService(conversionType));
       }
