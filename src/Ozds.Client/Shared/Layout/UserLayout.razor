@@ -2,9 +2,12 @@
 @using Microsoft.AspNetCore.Antiforgery
 @using Microsoft.AspNetCore.Http
 @using Color = MudBlazor.Color
+@using Ozds.Business.Observers.Abstractions
+@using Ozds.Business.Observers.EventArgs
 @inject IAntiforgery Antiforgery
 @inject IHttpContextAccessor HttpContextAccessor
 @inherits OzdsOwningLayoutComponentBase
+@implements IDisposable
 
 <MudLayout>
   <MudAppBar Elevation="4">
@@ -49,16 +52,18 @@
     </MudMenu>
     @if (RepresentativeState?.Representative is { } representative)
     {
+          @if (_userLayoutState.Notifications.Count > 0)
+          {
       <MudMenu AnchorOrigin="Origin.CenterLeft" Dense="true" Class="mt-1 ml-4">
         <ActivatorContent>
-          <MudIcon Icon="@Icons.Material.Filled.NotificationsActive"/>
-          <MudItem Style="display: flex; position: absolute; top: 12px; left: 14px;">
-            <MudIcon Icon="@Icons.Material.Filled.Circle" Style="font-size: 17px; color: #f44336; position: absolute;"/>
-            <MudText Style="font-size: 10px; position: absolute; left: 6px;">@_notifications.Count()</MudText>
-          </MudItem>
+            <MudIcon Icon="@Icons.Material.Filled.NotificationsActive"/>
+            <MudItem Style="display: flex; position: absolute; top: 12px; left: 14px;">
+              <MudIcon Icon="@Icons.Material.Filled.Circle" Style="font-size: 17px; color: #f44336; position: absolute;"/>
+              <MudText Style="font-size: 10px; position: absolute; left: 6px;">@_userLayoutState.Notifications.Count()</MudText>
+            </MudItem>
         </ActivatorContent>
         <ChildContent>
-          @foreach (var notification in _notifications)
+          @foreach (var notification in _userLayoutState.Notifications)
           {
             <MudListItem
               Text="@notification.Title"
@@ -68,6 +73,11 @@
           }
         </ChildContent>
       </MudMenu>
+          }
+          else
+          {
+            <MudIcon Icon="@Icons.Material.Filled.Notifications"/>
+          }
     }
   </MudAppBar>
   <MudDrawer @bind-Open="_drawerOpen" Elevation="25" ClipMode="DrawerClipMode.Always">
@@ -106,13 +116,10 @@
    new(
       false,
       [],
-      n => { }, s => {
-      }
+      n => { },
+      s => { },
+      c => { }
     );
-
-  private List<INotification> _notifications = new();
-
-  private bool _seen = false;
 
   public bool _drawerOpen = true;
 
@@ -130,7 +137,19 @@
     {
       antiforgeryToken = string.Empty;
     }
+
+    ScopedServices
+      .GetRequiredService<INotificationCreatedSubscriber>()
+      .SubscribeCreated(OnNotificationCreated);
   }
+
+  void IDisposable.Dispose()
+  {
+    ScopedServices
+      .GetRequiredService<INotificationCreatedSubscriber>()
+      .UnsubscribeCreated(OnNotificationCreated);
+  }
+
 
   protected override async Task OnInitializedAsync()
   {
@@ -139,7 +158,7 @@
       return;
     }
 
-    _notifications = (await ScopedServices
+    var notifications = (await ScopedServices
       .GetRequiredService<OzdsNotificationQueries>()
       .ReadForRecipient<NotificationModel>(representative))
       .Items
@@ -148,10 +167,26 @@
 
     _userLayoutState =
     new(
-      _seen,
-      _notifications,
+      false,
+      notifications,
       n => {
-        _notifications.Remove(n);
+        _userLayoutState = _userLayoutState with
+        {
+            Notifications = _userLayoutState
+              .Notifications
+              .Where(u => u.Id != n.Id)
+              .ToList()
+        };
+        InvokeAsync(StateHasChanged);
+      },
+      c => {
+        _userLayoutState = _userLayoutState with
+        {
+            Notifications = _userLayoutState
+              .Notifications
+              .Concat([c])
+              .ToList()
+        };
         InvokeAsync(StateHasChanged);
       },
       s => {
@@ -159,6 +194,13 @@
         InvokeAsync(StateHasChanged);
       }
     );
+  }
+
+  void OnNotificationCreated(
+    object? sender,
+    NotificationCreatedEventArgs eventArgs)
+  {
+    _userLayoutState.CreateNotification(eventArgs.Notification);
   }
 
   void DrawerToggle()

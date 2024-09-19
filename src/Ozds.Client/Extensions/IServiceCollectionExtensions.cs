@@ -26,9 +26,9 @@ public static class IServiceCollectionExtensions
     services.AddCascadingValue(_ => new UserLayoutState(
       false,
       [],
-      n => { }, s =>
-      {
-      }
+      n => { },
+      s => { },
+      c => { }
     ));
 
     return services;
