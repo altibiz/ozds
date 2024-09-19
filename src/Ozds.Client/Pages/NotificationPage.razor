@@ -106,6 +106,9 @@
   [CascadingParameter]
   public RepresentativeState RepresentativeState { get; set; } = default!;
 
+  [CascadingParameter]
+  public UserLayoutState UserLayoutState { get; set; } = default!;
+
   [Parameter]
   public string Id { get; set; } = default!;
 
@@ -120,6 +123,7 @@
         .MarkNotificationAsSeen(
           notification.Id,
           RepresentativeState.Representative.Id);
+      UserLayoutState.MarkNotificationAsSeen(notification);
     }
     return notification;
   }

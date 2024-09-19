@@ -87,7 +87,9 @@
       </MudToolBar>
     </MudHidden>
     <MudContainer MaxWidth="MaxWidth.Large" Class="mt-4">
-      @Body
+      <CascadingValue Value="_userLayoutState">
+        @Body
+      </CascadingValue>
     </MudContainer>
   </MudMainContent>
 </MudLayout>
@@ -100,9 +102,20 @@
   [CascadingParameter]
   public RepresentativeState? RepresentativeState { get; set; } = default!;
 
+  private UserLayoutState _userLayoutState =
+   new(
+      false,
+      [],
+      n => { }, s => {
+      }
+    );
+
   private List<INotification> _notifications = new();
 
+  private bool _seen = false;
+
   public bool _drawerOpen = true;
+
   private string antiforgeryToken = string.Empty;
 
   protected override void OnInitialized()
@@ -132,6 +145,20 @@
       .Items
       .OfType<INotification>()
       .ToList();
+
+    _userLayoutState =
+    new(
+      _seen,
+      _notifications,
+      n => {
+        _notifications.Remove(n);
+        InvokeAsync(StateHasChanged);
+      },
+      s => {
+        _userLayoutState = _userLayoutState with { Seen = s };
+        InvokeAsync(StateHasChanged);
+      }
+    );
   }
 
   void DrawerToggle()

@@ -96,6 +96,9 @@
   [CascadingParameter]
   public RepresentativeState representative { get; set; } = default!;
 
+  [CascadingParameter]
+  public UserLayoutState UserLayoutState { get; set; } = default!;
+
   [Parameter]
   public bool Seen { get; set; } = false;
 
@@ -116,12 +119,14 @@
   {
     _shownNotifications.Clear();
 
-    _notifications = (await ScopedServices
-      .GetRequiredService<OzdsNotificationQueries>()
-      .ReadForRecipient<NotificationModel>(representative.Representative, seen: Seen))
-      .Items
-      .OfType<INotification>()
-      .ToList();
+    _notifications = UserLayoutState.Seen
+      ? (await ScopedServices
+        .GetRequiredService<OzdsNotificationQueries>()
+        .ReadForRecipient<NotificationModel>(representative.Representative, seen: Seen))
+        .Items
+        .OfType<INotification>()
+        .ToList()
+      : UserLayoutState.Notifications;
     if (_notifications is not null)
     {
       foreach (var notification in _notifications)

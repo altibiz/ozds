@@ -23,6 +23,13 @@ public static class IServiceCollectionExtensions
     services.AddCascadingValue(_ => default(UserState));
     services.AddCascadingValue(_ => default(RepresentativeState));
     services.AddCascadingValue(_ => default(LogoutTokenState));
+    services.AddCascadingValue(_ => new UserLayoutState(
+      false,
+      [],
+      n => { }, s =>
+      {
+      }
+    ));
 
     return services;
   }
