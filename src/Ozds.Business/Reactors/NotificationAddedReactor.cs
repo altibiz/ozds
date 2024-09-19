@@ -1,9 +1,14 @@
 using System.Threading.Channels;
+using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Conversion;
+using Ozds.Business.Conversion.Joins;
 using Ozds.Business.Observers.Abstractions;
 using Ozds.Business.Observers.EventArgs;
 using Ozds.Business.Reactors.Abstractions;
+using Ozds.Data.Context;
 using Ozds.Data.Entities.Base;
+using Ozds.Data.Entities.Joins;
+using Ozds.Data.Extensions;
 using Ozds.Data.Observers.Abstractions;
 using Ozds.Data.Observers.EventArgs;
 
@@ -45,18 +50,28 @@ public class NotificationAddedReactor(
     channel.Writer.TryWrite(eventArgs);
   }
 
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
   private static async Task Handle(
     IServiceProvider serviceProvider,
     EntitiesChangedEventArgs eventArgs)
   {
     var publisher = serviceProvider.GetRequiredService<INotificationCreatedPublisher>();
+    var context = serviceProvider.GetRequiredService<DataDbContext>();
 
     foreach (var entry in eventArgs.Entities)
     {
       if (
         entry.State is not EntityChangedState.Added ||
-        entry.Entity is not NotificationEntity notification)
+        entry.Entity is not NotificationRecipientEntity recipient)
+      {
+        continue;
+      }
+
+      var notification = await context.Notifications
+        .Where(context.PrimaryKeyEquals<NotificationEntity>(
+          recipient.NotificationId))
+        .FirstOrDefaultAsync();
+
+      if (notification is null)
       {
         continue;
       }
@@ -66,10 +81,10 @@ public class NotificationAddedReactor(
         publisher.PublishCreated(
           new NotificationCreatedEventArgs
           {
-            Notification = notification.ToModel()
+            Notification = notification.ToModel(),
+            Recipient = recipient.ToModel()
           });
       }
     }
   }
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
 }

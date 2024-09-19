@@ -200,7 +200,12 @@
     object? sender,
     NotificationCreatedEventArgs eventArgs)
   {
-    _userLayoutState.CreateNotification(eventArgs.Notification);
+    if (
+      RepresentativeState?.Representative.Id is { } representativeId
+      && eventArgs.Recipient.RepresentativeId == representativeId)
+    {
+      _userLayoutState.CreateNotification(eventArgs.Notification);
+    }
   }
 
   void DrawerToggle()
