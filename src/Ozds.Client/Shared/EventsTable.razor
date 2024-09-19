@@ -16,7 +16,9 @@
           <MudStack Spacing="0">
             <MudGrid Class="d-flex pa-2">
               <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large;">
-                @e.data.Title
+                <MudText Typo="Typo.h6">
+                 @e.data.Title
+                </MudText>
               </MudItem>
               <MudItem xs="2" Class="d-flex align-center justify-end">
                 <MudIconButton
@@ -24,7 +26,30 @@
                   Icon="@Icons.Material.Filled.RemoveRedEye"
                   Color="Color.Primary"/>
               </MudItem>
+              <MudItem xs="2" Class="d-flex align-center justify-end">
+                <MudIconButton
+                  OnClick="() => OnExpandCollapseClick(e.data.Id)"
+                  Icon="@(e.expand
+                    ? Icons.Material.Filled.KeyboardArrowUp
+                    : Icons.Material.Filled.KeyboardArrowDown)"
+                  Color="Color.Default"/>
+              </MudItem>
+              <MudItem xs="10" Class="d-flex flex-row align-center justify-end">
+                <MudText Typo="Typo.body2">
+                  @DateTimeString(e.data.Timestamp)
+                </MudText>
+              </MudItem>
             </MudGrid>
+            <MudCollapse Class="py-2" Expanded="_shownEvents
+              .Where(x => x.data.Id == e.data.Id)
+              .First().expand">
+              <MudStack>
+                <MudDivider DividerType="DividerType.Middle" Class="mt-2"/>
+                <Mudtext Typo="Typo.body2" Class="px-8 py-4">
+                  @(e.content)
+                </Mudtext>
+              </MudStack>
+            </MudCollapse>
           </MudStack>
         </MudPaper>
       }
@@ -121,6 +146,8 @@
     public IEvent data = default!;
     public bool expand;
     public bool show;
+
+    public string content = string.Empty;
   }
 
   List<MobileData> _shownEvents = new();
@@ -140,7 +167,14 @@
     {
       foreach (var e in _events)
       {
-        _shownEvents.Add(new MobileData { data = e, expand = false, show = true });
+        _shownEvents.Add(
+          new MobileData
+          {
+            data = e,
+            expand = false,
+            show = true,
+            content = JsonString(e.Content)
+          });
       }
     }
   }
