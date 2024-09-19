@@ -19,7 +19,7 @@ public class NotificationEntity : IIdentifiableEntity
     get { return _eventId?.ToString(); }
     init
     {
-      _eventId = value is { } notNullValue ? long.Parse(notNullValue) : default;
+      _eventId = value is { } notNullValue ? long.Parse(notNullValue) : null;
     }
   }
 

@@ -18,7 +18,7 @@ namespace Ozds.Business.Workers;
 
 // TODO: paging when fetching
 
-public class NotificationEmailSenderWorker(
+public class NotificationEmailSenderReactor(
   IServiceScopeFactory serviceScopeFactory,
   IEntityChangesSubscriber subscriber
 ) : BackgroundService, IReactor

@@ -4,6 +4,7 @@
 @using Color = MudBlazor.Color
 @inject IAntiforgery Antiforgery
 @inject IHttpContextAccessor HttpContextAccessor
+@inherits OzdsOwningLayoutComponentBase
 
 <MudLayout>
   <MudAppBar Elevation="4">
@@ -46,20 +47,23 @@
         </MudListItem>
       </ChildContent>
     </MudMenu>
-    @if (RepresentativeState?.Representative.Role is RoleModel.OperatorRepresentative)
+    @if (RepresentativeState?.Representative is { } representative)
     {
       <MudMenu AnchorOrigin="Origin.CenterLeft" Dense="true" Class="mt-1 ml-4">
         <ActivatorContent>
           <MudIcon Icon="@Icons.Material.Filled.NotificationsActive"/>
           <MudItem Style="display: flex; position: absolute; top: 12px; left: 14px;">
             <MudIcon Icon="@Icons.Material.Filled.Circle" Style="font-size: 17px; color: #f44336; position: absolute;"/>
-            <MudText Style="font-size: 10px; position: absolute; left: 6px;">@_events.Count()</MudText>
+            <MudText Style="font-size: 10px; position: absolute; left: 6px;">@_notifications.Count()</MudText>
           </MudItem>
         </ActivatorContent>
         <ChildContent>
-          @foreach (var criticalEvent in _events)
+          @foreach (var notification in _notifications)
           {
-            <MudListItem Text="@criticalEvent.Title" Icon="@Icons.Material.Filled.Circle" IconColor="@Color.Error" Href="@($"event/{criticalEvent.Id}")" ForceLoad="true"/>
+            <MudListItem
+              Text="@notification.Title"
+              Href="@($"notification/{notification.Id}")"
+              ForceLoad="true"/>
             <hr/>
           }
         </ChildContent>
@@ -96,18 +100,7 @@
   [CascadingParameter]
   public RepresentativeState? RepresentativeState { get; set; } = default!;
 
-
-  private List<DemoEventModel> _events = new();
-
-  private class DemoEventModel
-  {
-    public string Id = new Random().Next(1, 10000).ToString();
-    public string Title = string.Empty;
-    public string Description = string.Empty;
-    public LevelModel Level;
-    public DateTimeOffset Timestamp = DateTimeOffset.UtcNow.AddMinutes(new Random().Next(60, 180));
-  }
-
+  private List<INotification> _notifications = new();
 
   public bool _drawerOpen = true;
   private string antiforgeryToken = string.Empty;
@@ -124,21 +117,16 @@
     {
       antiforgeryToken = string.Empty;
     }
+  }
 
-    _events.Add(
-      new DemoEventModel
-      {
-        Title = "AbbB2x NOT RESPONDING",
-        Description = "At {Time} AbbB2x STOPPED RESPONDING",
-        Level = LevelModel.Critical
-      });
-    _events.Add(
-      new DemoEventModel
-      {
-        Title = "SchneideriEM3xxx CRITICAL VOLTAGE",
-        Description = "At {Time} SchneideriEM3xxx had LOW VOLTAGE",
-        Level = LevelModel.Critical
-      });
+  protected override async Task OnInitializedAsync()
+  {
+    _notifications = (await ScopedServices
+      .GetRequiredService<OzdsNotificationQueries>()
+      .Read<NotificationModel>(Array.Empty<string>(), default, DateTimeOffset.UtcNow))
+      .Items
+      .OfType<INotification>()
+      .ToList();
   }
 
   void DrawerToggle()

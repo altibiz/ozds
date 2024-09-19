@@ -22,7 +22,7 @@ namespace Ozds.Business.Workers;
 // TODO: paging when fetching
 // TODO: recipients by role
 
-public class MeterInactivityWorker(
+public class MeterInactivityReactor(
   IServiceScopeFactory serviceScopeFactory,
   IMessengerJobSubscriber subscriber
 ) : BackgroundService, IReactor

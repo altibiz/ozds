@@ -11,7 +11,7 @@ using Ozds.Jobs.Manager.Abstractions;
 
 namespace Ozds.Business.Reactors;
 
-public class MessengerJobManagerWorker(
+public class MessengerJobManagerReactor(
   IServiceScopeFactory serviceScopeFactory,
   IEntityChangesSubscriber subscriber,
   IHostApplicationLifetime lifetime

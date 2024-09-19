@@ -17,7 +17,7 @@ using Ozds.Iot.Observers.EventArgs;
 
 namespace Ozds.Business.Reactors;
 
-public class MeasurementUpsertWorker(
+public class MeasurementUpsertReactor(
   IServiceScopeFactory serviceScopeFactory,
   IPushSubscriber subscriber
 ) : BackgroundService, IReactor
@@ -177,7 +177,7 @@ public class MeasurementUpsertWorker(
           ?.MakeGenericMethod(group.Key)
         ?? throw new InvalidOperationException(
           $"Cannot find method {nameof(Enumerable.Cast)}.");
-      var upsertMeasurementsMethod = typeof(MeasurementUpsertWorker)
+      var upsertMeasurementsMethod = typeof(MeasurementUpsertReactor)
           .GetMethod(
             nameof(UpsertMeasurements),
 #pragma warning disable S3011
@@ -217,7 +217,7 @@ public class MeasurementUpsertWorker(
           ?.MakeGenericMethod(group.Key)
         ?? throw new InvalidOperationException(
           $"Cannot find method {nameof(Enumerable.Cast)}.");
-      var upsertAggregatesMethod = typeof(MeasurementUpsertWorker)
+      var upsertAggregatesMethod = typeof(MeasurementUpsertReactor)
           .GetMethod(
             nameof(UpsertAggregates),
 #pragma warning disable S3011

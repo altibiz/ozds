@@ -2,56 +2,90 @@
 @using Size = MudBlazor.Size
 @inherits OzdsOwningComponentBase
 
-@if (_shownInvoices is not null && _shownInvoices.Count() > 0)
+@if (_shownNotifications is not null && _shownNotifications.Count() > 0)
 {
-  <MudDataGrid
-    T="INotification"
-    Class="my-6"
-    MultiSelection="true"
-    Items="@_notifications"
-    SortMode="SortMode.Multiple"
-    Filterable="true"
-    QuickFilter="@_quickFilter">
-    <ToolBarContent>
-      <MudText Typo="Typo.h4">@T["Changes"]</MudText>
-      <MudSpacer/>
-      <MudTextField
-        @bind-Value="_searchString"
-        Placeholder="Search"
-        Adornment="Adornment.Start"
-        Immediate="true"
-        AdornmentIcon="@Icons.Material.Filled.Search"
-        IconSize="Size.Medium"
-        Class="mt-0">
-      </MudTextField>
-    </ToolBarContent>
-    <Columns >
-      <PropertyColumn
-        CellStyle="text-align: start !important;"
-        Property="x => x.Title"
-        Title='@T["Title"]' Sortable="false"/>
-      <PropertyColumn
-        CellStyle="font-size: x-large;"
-        Property="x => x.Timestamp"
-        Title='@T["Datum"]'>
-        <CellTemplate>
-          @(context.Item.Timestamp.ToString("HH:mm dd.MM.yyyy."))
-        </CellTemplate>
-      </PropertyColumn>
-      <TemplateColumn CellClass="d-flex justify-end" Sortable="false" Filterable="false">
-        <CellTemplate>
-          <MudStack Row>
-            <MudButton OnClick="() => InspectNotification(context.Item.Id)" Variant="Variant.Filled" Color="Color.Primary">
-              @T["Overview"]
-            </MudButton>
+  <MudHidden Breakpoint="Breakpoint.MdAndUp">
+    <MudItem Class="mb-5">
+      <MudText Typo="Typo.h4" Class="d-flex">
+        @(T["Notifications"])
+      </MudText>
+      @foreach (var notification in _shownNotifications.Where(x => x.show).ToList())
+      {
+        <MudPaper Elevation="2" Class="ma-1">
+          <MudStack Spacing="0">
+            <MudGrid Class="d-flex pa-2">
+              <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large;">
+                @notification.data.Title
+              </MudItem>
+              <MudItem xs="2" Class="d-flex align-center justify-end">
+                <MudIconButton
+                  OnClick="() => InspectNotification(notification.data.Id)"
+                  Icon="@Icons.Material.Filled.RemoveRedEye"
+                  Color="Color.Primary"/>
+              </MudItem>
+            </MudGrid>
           </MudStack>
-        </CellTemplate>
-      </TemplateColumn>
-    </Columns>
-    <PagerContent>
-      <MudDataGridPager T="INotification"/>
-    </PagerContent>
-  </MudDataGrid>
+        </MudPaper>
+      }
+    </MudItem>
+  </MudHidden>
+
+  <MudHidden Breakpoint="Breakpoint.SmAndDown">
+    <MudDataGrid
+      T="INotification"
+      Class="my-6"
+      MultiSelection="true"
+      Items="@_notifications"
+      SortMode="SortMode.Multiple"
+      Filterable="true"
+      QuickFilter="@_quickFilter">
+      <ToolBarContent>
+        <MudText Typo="Typo.h4">@T["Notifications"]</MudText>
+        <MudSpacer/>
+        <MudTextField
+          @bind-Value="_searchString"
+          Placeholder="Search"
+          Adornment="Adornment.Start"
+          Immediate="true"
+          AdornmentIcon="@Icons.Material.Filled.Search"
+          IconSize="Size.Medium"
+          Class="mt-0">
+        </MudTextField>
+      </ToolBarContent>
+      <Columns >
+        <PropertyColumn
+          CellStyle="text-align: start !important;"
+          Property="x => x.Title"
+          Title='@T["Title"]' Sortable="false"/>
+        <PropertyColumn
+          CellStyle="font-size: x-large;"
+          Property="x => x.Timestamp"
+          Title='@T["Datum"]'>
+          <CellTemplate>
+            @(context.Item.Timestamp.ToString("HH:mm dd.MM.yyyy."))
+          </CellTemplate>
+        </PropertyColumn>
+        <TemplateColumn
+          CellClass="d-flex justify-end"
+          Sortable="false"
+          Filterable="false">
+          <CellTemplate>
+            <MudStack Row>
+              <MudButton
+                OnClick="() => InspectNotification(context.Item.Id)"
+                Variant="Variant.Filled"
+                Color="Color.Primary">
+                @T["Overview"]
+              </MudButton>
+            </MudStack>
+          </CellTemplate>
+        </TemplateColumn>
+      </Columns>
+      <PagerContent>
+        <MudDataGridPager T="INotification"/>
+      </PagerContent>
+    </MudDataGrid>
+  </MudHidden>
 }
 
 @code {
@@ -67,12 +101,12 @@
 
   private class MobileData
   {
-    public INotification auditNotification = default!;
+    public INotification data = default!;
     public bool expand;
     public bool show;
   }
 
-  List<MobileData> _shownInvoices = new();
+  List<MobileData> _shownNotifications = new();
   private string? _searchString;
 
   protected override async Task OnInitializedAsync()
@@ -86,16 +120,16 @@
       .ToList();
     if (_notifications is not null)
     {
-      foreach (var _auditNotification in _notifications)
+      foreach (var notification in _notifications)
       {
-        _shownInvoices.Add(new MobileData { auditNotification = _auditNotification, expand = false, show = true });
+        _shownNotifications.Add(new MobileData { data = notification, expand = false, show = true });
       }
     }
   }
 
-  private void OnExpandCollapseClick(string invoiceId)
+  private void OnExpandCollapseClick(string notificationId)
   {
-    var a = _shownInvoices.Where(x => x.auditNotification.Id == invoiceId).FirstOrDefault();
+    var a = _shownNotifications.Where(x => x.data.Id == notificationId).FirstOrDefault();
     if (a != null)
     {
       a.expand = !a.expand;
@@ -122,7 +156,7 @@
   private Task Filter(string value)
   {
     SearchString = value;
-    foreach (var inv in _shownInvoices)
+    foreach (var inv in _shownNotifications)
     {
       if (value.Trim() != "")
       {
@@ -131,7 +165,7 @@
     }
 
     ;
-    var a = _shownInvoices.Where(x => x.auditNotification.Title.Contains(value, StringComparison.InvariantCultureIgnoreCase)).ToList();
+    var a = _shownNotifications.Where(x => x.data.Title.Contains(value, StringComparison.InvariantCultureIgnoreCase)).ToList();
     foreach (var inv in a)
     {
       inv.show = true;

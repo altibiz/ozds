@@ -1,96 +1,104 @@
 @page "/event/{id}"
 @using Color = MudBlazor.Color
+@using Ozds.Client.Extensions
+@inherits OzdsOwningComponentBase
 
 
 @if (user is null)
 {
   return;
 }
-<MudContainer MaxWidth="MaxWidth.Small" Class="d-flex  flex-column" Style="float: left;">
-  <MudText Class="d-flex align-center my-2" Typo="@Typo.h5">Event Id: @Id</MudText>
-  <MudPaper class="mt-2 px-4 py-2">
+<Loading TState="EventModel" Load="@(() => ScopedServices
+  .GetRequiredService<OzdsEventQueries>()
+  .ReadSingle<EventModel>(Id))">
+  <Found Context="model">
+    <MudContainer MaxWidth="MaxWidth.Small" Class="d-flex  flex-column" Style="float: left;">
+      <MudText Class="d-flex align-center my-2" Typo="@Typo.h5">Event Id: @Id</MudText>
+      <MudPaper class="mt-2 px-4 py-2">
 
-    <MudGrid Spacing="3">
-      <MudItem xs="12" sm="3">
-        <MudText Typo="Typo.body1" Style="font-weight: bold;">
-          @T["Title"]:
-        </MudText>
-      </MudItem>
-      <MudItem xs="12" sm="9">
-        <MudHidden Breakpoint="Breakpoint.Xs">
-          <MudText Type="Typo.body2" Align="MudAlign.Right">
-            @T["AbbB2x NOT RESPONDING"]
-          </MudText>
-        </MudHidden>
-        <MudHidden Breakpoint="Breakpoint.SmAndUp">
-          <MudText Type="Typo.body2" Align="MudAlign.Left">
-            @T["AbbB2x NOT RESPONDING"]
-          </MudText>
-        </MudHidden>
-      </MudItem>
-    </MudGrid>
+        <MudGrid Spacing="3">
+          <MudItem xs="12" sm="3">
+            <MudText Typo="Typo.body1" Style="font-weight: bold;">
+              @T["Title"]:
+            </MudText>
+          </MudItem>
+          <MudItem xs="12" sm="9">
+            <MudHidden Breakpoint="Breakpoint.Xs">
+              <MudText Type="Typo.body2" Align="MudAlign.Right">
+                @model.Title
+              </MudText>
+            </MudHidden>
+            <MudHidden Breakpoint="Breakpoint.SmAndUp">
+              <MudText Type="Typo.body2" Align="MudAlign.Left">
+                @model.Title
+              </MudText>
+            </MudHidden>
+          </MudItem>
+        </MudGrid>
 
-    <MudGrid Spacing="3">
-      <MudItem xs="12" sm="3">
-        <MudText Typo="Typo.body1" Style="font-weight: bold;">
-          @T["Level"]:
-        </MudText>
-      </MudItem>
-      <MudItem xs="12" sm="9">
-        <MudHidden Breakpoint="Breakpoint.Xs">
-          <MudText Type="Typo.body2" Align="MudAlign.Right">
-            <MudIcon Icon="@Icons.Material.Filled.Circle" Color="@Color.Error"/>
-          </MudText>
-        </MudHidden>
-        <MudHidden Breakpoint="Breakpoint.SmAndUp">
-          <MudText Type="Typo.body2" Align="MudAlign.Left">
-            <MudIcon Icon="@Icons.Material.Filled.Circle" Color="@Color.Error"/>
-          </MudText>
-        </MudHidden>
-      </MudItem>
-    </MudGrid>
+        <MudGrid Spacing="3">
+          <MudItem xs="12" sm="3">
+            <MudText Typo="Typo.body1" Style="font-weight: bold;">
+              @T["Level"]:
+            </MudText>
+          </MudItem>
+          <MudItem xs="12" sm="9">
+            <MudHidden Breakpoint="Breakpoint.Xs">
+              <MudText Type="Typo.body2" Align="MudAlign.Right">
+                <MudIcon Icon="@Icons.Material.Filled.Circle" Color="@model.Level.ToColor()"/>
+              </MudText>
+            </MudHidden>
+            <MudHidden Breakpoint="Breakpoint.SmAndUp">
+              <MudText Type="Typo.body2" Align="MudAlign.Left">
+                <MudIcon Icon="@Icons.Material.Filled.Circle" Color="@model.Level.ToColor()"/>
+              </MudText>
+            </MudHidden>
+          </MudItem>
+        </MudGrid>
 
-    <MudGrid Spacing="3">
-      <MudItem xs="12" sm="3">
-        <MudText Typo="Typo.body1" Style="font-weight: bold;">
-          @T["Description"]:
-        </MudText>
-      </MudItem>
-      <MudItem xs="12" sm="9">
-        <MudHidden Breakpoint="Breakpoint.Xs">
-          <MudText Type="Typo.body2" Align="MudAlign.Right">
-            @T["At {Time} AbbB2x STOPPED RESPONDING"]
-          </MudText>
-        </MudHidden>
-        <MudHidden Breakpoint="Breakpoint.SmAndUp">
-          <MudText Type="Typo.body2" Align="MudAlign.Left">
-            @T["At {Time} AbbB2x STOPPED RESPONDING"]
-          </MudText>
-        </MudHidden>
-      </MudItem>
-    </MudGrid>
+        <MudGrid Spacing="3">
+          <MudItem xs="12" sm="3">
+            <MudText Typo="Typo.body1" Style="font-weight: bold;">
+              @T["Content"]:
+            </MudText>
+          </MudItem>
+          <MudItem xs="12" sm="9">
+            <MudHidden Breakpoint="Breakpoint.Xs">
+              <MudText Type="Typo.body2" Align="MudAlign.Right">
+                @JsonString(model.Content)
+              </MudText>
+            </MudHidden>
+            <MudHidden Breakpoint="Breakpoint.SmAndUp">
+              <MudText Type="Typo.body2" Align="MudAlign.Left">
+                @JsonString(model.Content)
+              </MudText>
+            </MudHidden>
+          </MudItem>
+        </MudGrid>
 
-    <MudGrid Spacing="3">
-      <MudItem xs="12" sm="3">
-        <MudText Typo="Typo.body1" Style="font-weight: bold;">
-          @T["Datum"]:
-        </MudText>
-      </MudItem>
-      <MudItem xs="12" sm="9">
-        <MudHidden Breakpoint="Breakpoint.Xs">
-          <MudText Type="Typo.body2" Align="MudAlign.Right">
-            @T["11:39 06.05"]
-          </MudText>
-        </MudHidden>
-        <MudHidden Breakpoint="Breakpoint.SmAndUp">
-          <MudText Type="Typo.body2" Align="MudAlign.Left">
-            @T["11:39 06.05"]
-          </MudText>
-        </MudHidden>
-      </MudItem>
-    </MudGrid>
-  </MudPaper>
-</MudContainer>
+        <MudGrid Spacing="3">
+          <MudItem xs="12" sm="3">
+            <MudText Typo="Typo.body1" Style="font-weight: bold;">
+              @T["Datum"]:
+            </MudText>
+          </MudItem>
+          <MudItem xs="12" sm="9">
+            <MudHidden Breakpoint="Breakpoint.Xs">
+              <MudText Type="Typo.body2" Align="MudAlign.Right">
+                @T["11:39 06.05"]
+              </MudText>
+            </MudHidden>
+            <MudHidden Breakpoint="Breakpoint.SmAndUp">
+              <MudText Type="Typo.body2" Align="MudAlign.Left">
+                @T["11:39 06.05"]
+              </MudText>
+            </MudHidden>
+          </MudItem>
+        </MudGrid>
+      </MudPaper>
+    </MudContainer>
+  </Found>
+</Loading>
 
 @code {
 

@@ -14,7 +14,7 @@ using Ozds.Iot.Observers.EventArgs;
 
 namespace Ozds.Business.Reactors;
 
-public class MessengerPushEventWorker(
+public class MessengerPushEventReactor(
   IServiceScopeFactory serviceScopeFactory,
   IPushSubscriber subscriber
 ) : BackgroundService, IReactor

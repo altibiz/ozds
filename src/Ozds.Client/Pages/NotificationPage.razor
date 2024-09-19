@@ -8,7 +8,7 @@
   return;
 }
 
-<Loading Load="@(() => ScopedServices
+<Loading TState="NotificationModel" Load="@(() => ScopedServices
   .GetRequiredService<OzdsNotificationQueries>()
   .ReadSingle<NotificationModel>(Id))">
   <Found Context="model">
@@ -25,12 +25,12 @@
           <MudItem xs="12" sm="9">
             <MudHidden Breakpoint="Breakpoint.Xs">
               <MudText Type="Typo.body2" Align="MudAlign.Right">
-                @T["AbbB2x NOT RESPONDING"]
+                @model.Title
               </MudText>
             </MudHidden>
             <MudHidden Breakpoint="Breakpoint.SmAndUp">
               <MudText Type="Typo.body2" Align="MudAlign.Left">
-                @T["AbbB2x NOT RESPONDING"]
+                @model.Title
               </MudText>
             </MudHidden>
           </MudItem>
@@ -39,18 +39,18 @@
         <MudGrid Spacing="3">
           <MudItem xs="12" sm="3">
             <MudText Typo="Typo.body1" Style="font-weight: bold;">
-              @T["Level"]:
+              @T["Summmary"]:
             </MudText>
           </MudItem>
           <MudItem xs="12" sm="9">
             <MudHidden Breakpoint="Breakpoint.Xs">
               <MudText Type="Typo.body2" Align="MudAlign.Right">
-                <MudIcon Icon="@Icons.Material.Filled.Circle" Color="@Color.Error"/>
+                @model.Summary
               </MudText>
             </MudHidden>
             <MudHidden Breakpoint="Breakpoint.SmAndUp">
               <MudText Type="Typo.body2" Align="MudAlign.Left">
-                <MudIcon Icon="@Icons.Material.Filled.Circle" Color="@Color.Error"/>
+                @model.Summary
               </MudText>
             </MudHidden>
           </MudItem>
@@ -59,18 +59,18 @@
         <MudGrid Spacing="3">
           <MudItem xs="12" sm="3">
             <MudText Typo="Typo.body1" Style="font-weight: bold;">
-              @T["Description"]:
+              @T["Content"]:
             </MudText>
           </MudItem>
           <MudItem xs="12" sm="9">
             <MudHidden Breakpoint="Breakpoint.Xs">
               <MudText Type="Typo.body2" Align="MudAlign.Right">
-                @T["At {Time} AbbB2x STOPPED RESPONDING"]
+                @model.Content
               </MudText>
             </MudHidden>
             <MudHidden Breakpoint="Breakpoint.SmAndUp">
               <MudText Type="Typo.body2" Align="MudAlign.Left">
-                @T["At {Time} AbbB2x STOPPED RESPONDING"]
+                @model.Content
               </MudText>
             </MudHidden>
           </MudItem>
@@ -79,18 +79,18 @@
         <MudGrid Spacing="3">
           <MudItem xs="12" sm="3">
             <MudText Typo="Typo.body1" Style="font-weight: bold;">
-              @T["Datum"]:
+              @T["Date"]:
             </MudText>
           </MudItem>
           <MudItem xs="12" sm="9">
             <MudHidden Breakpoint="Breakpoint.Xs">
               <MudText Type="Typo.body2" Align="MudAlign.Right">
-                @T["11:39 06.05"]
+                @DateTimeString(model.Timestamp)
               </MudText>
             </MudHidden>
             <MudHidden Breakpoint="Breakpoint.SmAndUp">
               <MudText Type="Typo.body2" Align="MudAlign.Left">
-                @T["11:39 06.05"]
+                @DateTimeString(model.Timestamp)
               </MudText>
             </MudHidden>
           </MudItem>
