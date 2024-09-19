@@ -102,7 +102,20 @@ public static class DateTimeOffsetExtensions
     var offset = GetOffset(dateOnly);
 
     var startOfNextMonth = new DateTimeOffset(dateOnly, offset);
-    return startOfNextMonth;
+    return startOfNextMonth.ToUniversalTime();
+  }
+
+  public static DateTimeOffset GetStartOfNextMonthNoTransformation(
+    this DateTimeOffset dateTimeOffset
+  )
+  {
+    var nextMonth = dateTimeOffset.AddMonths(1);
+    var dateOnly = new DateTime(
+      nextMonth.Year, nextMonth.Month, 1, 0, 0, 0,
+      DateTimeKind.Unspecified);
+
+    var startOfNextMonth = new DateTimeOffset(dateOnly, TimeSpan.Zero);
+    return startOfNextMonth.ToUniversalTime();
   }
 
   public static DateTimeOffset GetStartOfDay(this DateTimeOffset dateTimeOffset)
