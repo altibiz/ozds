@@ -32,7 +32,7 @@ public static class SystemNotificationModelEntityConverterExtensions
       Title = model.Title,
       Summary = model.Summary,
       Content = model.Content,
-      Topics = model.Topics.Select(x => x.ToEntity()).ToHashSet(),
+      Topics = model.Topics.Select(x => x.ToEntity()).ToList(),
       EventId = model.EventId,
       Timestamp = model.Timestamp
     };

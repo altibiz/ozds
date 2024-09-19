@@ -55,7 +55,7 @@ public static class
       EventId = model.EventId,
       ResolvedById = model.ResolvedById,
       ResolvedOn = model.ResolvedOn,
-      Topics = model.Topics.Select(x => x.ToEntity()).ToHashSet(),
+      Topics = model.Topics.Select(x => x.ToEntity()).ToList(),
       MessengerId = model.MessengerId
     };
   }

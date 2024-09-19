@@ -329,4 +329,23 @@ public class OzdsDataQueries(DataDbContext context) : IQueries
       .Select(item => item.ToModel())
       .ToPaginatedList(count);
   }
+
+  public async Task<PaginatedList<NotificationModel>> GetNotifications(
+    string title,
+    int pageNumber = QueryConstants.StartingPage,
+    int pageCount = QueryConstants.DefaultPageCount
+  )
+  {
+    var filtered = context.Notifications
+      .Where(notification => notification.Title.StartsWith(title));
+    var count = await filtered.CountAsync();
+    var items = await filtered
+      .OrderBy(context.PrimaryKeyOf<NotificationEntity>())
+      .Skip((pageNumber - 1) * pageCount)
+      .Take(pageCount)
+      .ToListAsync();
+    return items
+      .Select(item => item.ToModel())
+      .ToPaginatedList(count);
+  }
 }

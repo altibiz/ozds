@@ -37,7 +37,7 @@ public class NotificationEntity : IIdentifiableEntity
 
   public string Content { get; set; } = default!;
 
-  public HashSet<TopicEntity> Topics { get; set; } = default!;
+  public List<TopicEntity> Topics { get; set; } = default!;
 
   public virtual string Id
   {

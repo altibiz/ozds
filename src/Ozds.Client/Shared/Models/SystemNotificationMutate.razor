@@ -1,0 +1,93 @@
+@inject IDialogService DialogService
+@inherits OzdsOwningComponentBase
+
+@if (LoadingState.Value is null)
+{
+  <MudProgressCircular/>
+  return;
+}
+
+@if (LoadingState.Value is null)
+{
+  return;
+}
+
+<MudText Class="my-2" Typo="Typo.h4">@T["Notification"]</MudText>
+<EditForm
+  Model="@LoadingState.Value"
+  OnValidSubmit="Submit">
+  <DataAnnotationsValidator/>
+  <MudCard>
+    <MudCardContent>
+      <MudTextField
+        Label="@T["Name"]"
+        @bind-Value="LoadingState.Value.Title"
+        For="@(() => LoadingState.Value.Title)"/>
+      <MudTextField
+        Label="@T["Summary"]"
+        @bind-Value="LoadingState.Value.Summary"
+        For="@(() => LoadingState.Value.Summary)"/>
+      <MudTextField
+        Label="@T["Content"]"
+        @bind-Value="LoadingState.Value.Content"
+        For="@(() => LoadingState.Value.Summary)"/>
+    </MudCardContent>
+    <ValidationSummary/>
+    <MudCardActions>
+      <MudButton
+        ButtonType="ButtonType.Submit"
+        Variant="Variant.Filled"
+        Color="MudColor.Primary"
+        Class="ml-auto">
+        <span>@T["Create"]</span>
+      </MudButton>
+    </MudCardActions>
+  </MudCard>
+</EditForm>
+
+@code {
+
+  [Parameter]
+  public string Id { get; set; } = default!;
+
+  [Parameter]
+  public SystemNotificationModel? Model { get; set; }
+
+  private LoadingState<SystemNotificationModel> LoadingState { get; set; } = new();
+
+  private async Task Submit()
+  {
+    var mutations = ScopedServices.GetRequiredService<OzdsNotificationMutations>();
+    if (LoadingState.Value is null)
+      return;
+
+    mutations.Create(LoadingState.Value);
+    await mutations.SaveChangesAsync();
+    DialogService.Show<MutateSuccess>("Changes Saved", new DialogOptions { CloseOnEscapeKey = true });
+  }
+
+  protected override void OnInitialized()
+  {
+    if (LoadingState.Value is not null)
+    {
+      LoadingState = LoadingState.WithValue(LoadingState.Value);
+    }
+  }
+
+  protected override async Task OnInitializedAsync()
+  {
+    if (LoadingState.Value is null && Id is not null)
+    {
+      LoadingState = LoadingState.WithValue(
+        await ScopedServices
+          .GetRequiredService<OzdsNotificationQueries>()
+          .ReadSingle<SystemNotificationModel>(Id));
+    }
+
+    if (LoadingState.Value is null)
+    {
+      LoadingState = LoadingState.WithValue(SystemNotificationModelActivator.New());
+    }
+  }
+
+}

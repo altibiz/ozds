@@ -1,5 +1,6 @@
 @page "/notification/{id}"
 @using Color = MudBlazor.Color
+@inherits OzdsOwningComponentBase
 
 
 @if (user is null)
@@ -7,7 +8,7 @@
   return;
 }
 
-<Loading LoadAsync="$(async () => ScopedServices
+<Loading Load="@(() => ScopedServices
   .GetRequiredService<OzdsNotificationQueries>()
   .ReadSingle<NotificationModel>(Id))">
   <Found Context="model">

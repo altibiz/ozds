@@ -40,7 +40,7 @@ public class OzdsNotificationQueries(
   {
     var dbSetType = _modelEntityConverter.EntityType(typeof(T));
     var queryable = _context.GetQueryable(dbSetType)
-        as IQueryable<AggregateEntity>
+        as IQueryable<NotificationEntity>
       ?? throw new InvalidOperationException(
         $"No DbSet found for {dbSetType}");
     var filtered = whereClauses.Aggregate(
