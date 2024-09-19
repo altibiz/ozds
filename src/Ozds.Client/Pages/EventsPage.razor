@@ -1,0 +1,20 @@
+@page "/events"
+@attribute [Navigation(Icon= Icons.Material.Outlined.Notifications, Title = "Events", Allows = new[] { RoleModel.OperatorRepresentative })]
+
+
+@if (user is null)
+{
+  return;
+}
+
+<EventsTable/>
+
+@code {
+
+  [CascadingParameter]
+  public UserState user { get; set; } = default!;
+
+  [CascadingParameter]
+  public RepresentativeState RepresentativeState { get; set; } = default!;
+
+}

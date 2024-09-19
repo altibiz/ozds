@@ -1,5 +1,5 @@
-@page "/alerts"
-@attribute [Navigation(Icon= Icons.Material.Outlined.Notifications, Title = "Alarms", Allows = new[] { RoleModel.OperatorRepresentative })]
+@page "/notifications"
+@attribute [Navigation(Icon= Icons.Material.Outlined.Notifications, Title = "Notification")]
 
 
 @if (user is null)
@@ -7,7 +7,7 @@
   return;
 }
 
-<AlertsTable/>
+<NotificationsTable/>
 
 @code {
 

@@ -4,11 +4,11 @@ using Ozds.Business.Queries.Abstractions;
 using Ozds.Data.Context;
 using Ozds.Data.Entities.Base;
 using Ozds.Data.Extensions;
-using IEvent = Ozds.Business.Models.Abstractions.IEvent;
+using INotification = Ozds.Business.Models.Abstractions.INotification;
 
 namespace Ozds.Business.Queries.Agnostic;
 
-public class OzdsEventQueries(
+public class OzdsNotificationQueries(
   DataDbContext context,
   AgnosticModelEntityConverter modelEntityConverter
 ) : IQueries
@@ -19,7 +19,7 @@ public class OzdsEventQueries(
     modelEntityConverter;
 
   public async Task<T?> ReadSingle<T>(string id)
-    where T : class, IEvent
+    where T : class, INotification
   {
     var entityType = _modelEntityConverter.EntityType(typeof(T));
     var queryable = _context.GetQueryable(entityType);
@@ -36,11 +36,11 @@ public class OzdsEventQueries(
     int pageNumber = QueryConstants.StartingPage,
     int pageCount = QueryConstants.DefaultPageCount
   )
-    where T : class, IEvent
+    where T : class, INotification
   {
     var dbSetType = _modelEntityConverter.EntityType(typeof(T));
     var queryable = _context.GetQueryable(dbSetType)
-        as IQueryable<EventEntity>
+        as IQueryable<AggregateEntity>
       ?? throw new InvalidOperationException(
         $"No DbSet found for {dbSetType}");
     var filtered = whereClauses.Aggregate(

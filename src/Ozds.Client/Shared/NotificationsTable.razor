@@ -1,0 +1,150 @@
+@using Color = MudBlazor.Color
+@using Size = MudBlazor.Size
+@inherits OzdsOwningComponentBase
+
+@if (_shownInvoices is not null && _shownInvoices.Count() > 0)
+{
+  <MudDataGrid
+    T="INotification"
+    Class="my-6"
+    MultiSelection="true"
+    Items="@_notifications"
+    SortMode="SortMode.Multiple"
+    Filterable="true"
+    QuickFilter="@_quickFilter">
+    <ToolBarContent>
+      <MudText Typo="Typo.h4">@T["Changes"]</MudText>
+      <MudSpacer/>
+      <MudTextField
+        @bind-Value="_searchString"
+        Placeholder="Search"
+        Adornment="Adornment.Start"
+        Immediate="true"
+        AdornmentIcon="@Icons.Material.Filled.Search"
+        IconSize="Size.Medium"
+        Class="mt-0">
+      </MudTextField>
+    </ToolBarContent>
+    <Columns >
+      <PropertyColumn
+        CellStyle="text-align: start !important;"
+        Property="x => x.Title"
+        Title='@T["Title"]' Sortable="false"/>
+      <PropertyColumn
+        CellStyle="font-size: x-large;"
+        Property="x => x.Timestamp"
+        Title='@T["Datum"]'>
+        <CellTemplate>
+          @(context.Item.Timestamp.ToString("HH:mm dd.MM.yyyy."))
+        </CellTemplate>
+      </PropertyColumn>
+      <TemplateColumn CellClass="d-flex justify-end" Sortable="false" Filterable="false">
+        <CellTemplate>
+          <MudStack Row>
+            <MudButton OnClick="() => InspectNotification(context.Item.Id)" Variant="Variant.Filled" Color="Color.Primary">
+              @T["Overview"]
+            </MudButton>
+          </MudStack>
+        </CellTemplate>
+      </TemplateColumn>
+    </Columns>
+    <PagerContent>
+      <MudDataGridPager T="INotification"/>
+    </PagerContent>
+  </MudDataGrid>
+}
+
+@code {
+
+  [CascadingParameter]
+  public UserState user { get; set; } = default!;
+
+  [CascadingParameter]
+  public RepresentativeState representative { get; set; } = default!;
+
+  public string SearchString { get; set; } = "";
+  private List<INotification> _notifications = new();
+
+  private class MobileData
+  {
+    public INotification auditNotification = default!;
+    public bool expand;
+    public bool show;
+  }
+
+  List<MobileData> _shownInvoices = new();
+  private string? _searchString;
+
+  protected override async Task OnInitializedAsync()
+  {
+
+    _notifications = (await ScopedServices
+      .GetRequiredService<OzdsNotificationQueries>()
+      .Read<NotificationModel>(Array.Empty<string>(), default, DateTimeOffset.UtcNow))
+      .Items
+      .OfType<INotification>()
+      .ToList();
+    if (_notifications is not null)
+    {
+      foreach (var _auditNotification in _notifications)
+      {
+        _shownInvoices.Add(new MobileData { auditNotification = _auditNotification, expand = false, show = true });
+      }
+    }
+  }
+
+  private void OnExpandCollapseClick(string invoiceId)
+  {
+    var a = _shownInvoices.Where(x => x.auditNotification.Id == invoiceId).FirstOrDefault();
+    if (a != null)
+    {
+      a.expand = !a.expand;
+    }
+  }
+
+  private Func<INotification, bool> _quickFilter
+  {
+    get
+    {
+      return x =>
+      {
+        if (string.IsNullOrWhiteSpace(_searchString))
+          return true;
+
+        if (x.Title.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
+          return true;
+
+        return false;
+      };
+    }
+  }
+
+  private Task Filter(string value)
+  {
+    SearchString = value;
+    foreach (var inv in _shownInvoices)
+    {
+      if (value.Trim() != "")
+      {
+        inv.show = false;
+      }
+    }
+
+    ;
+    var a = _shownInvoices.Where(x => x.auditNotification.Title.Contains(value, StringComparison.InvariantCultureIgnoreCase)).ToList();
+    foreach (var inv in a)
+    {
+      inv.show = true;
+    }
+
+    ;
+    StateHasChanged();
+    return Task.CompletedTask;
+  }
+
+  private void InspectNotification(string id)
+  {
+    NavigationManager.NavigateTo($"notification/{id}");
+  }
+
+}

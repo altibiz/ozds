@@ -1,0 +1,170 @@
+@using Color = MudBlazor.Color
+@using Size = MudBlazor.Size
+@inherits OzdsOwningComponentBase
+
+@if (_shownInvoices is not null && _shownInvoices.Count() > 0)
+{
+  <MudDataGrid
+    T="IEvent"
+    Class="my-6"
+    MultiSelection="true"
+    Items="@_events"
+    SortMode="SortMode.Multiple"
+    Filterable="true"
+    QuickFilter="@_quickFilter">
+    <ToolBarContent>
+      <MudText Typo="Typo.h4">@T["Changes"]</MudText>
+      <MudSpacer/>
+      <MudTextField
+        @bind-Value="_searchString"
+        Placeholder="Search"
+        Adornment="Adornment.Start"
+        Immediate="true"
+        AdornmentIcon="@Icons.Material.Filled.Search"
+        IconSize="Size.Medium"
+        Class="mt-0">
+      </MudTextField>
+    </ToolBarContent>
+    <Columns >
+      <PropertyColumn
+        CellStyle="text-align: start !important;"
+        Property="x => x.Title"
+        Title='@T["Title"]' Sortable="false"/>
+      <PropertyColumn
+        CellStyle="font-size: x-large;"
+        Property="x => x.Timestamp"
+        Title='@T["Datum"]'>
+        <CellTemplate>
+          @(context.Item.Timestamp.ToString("HH:mm dd.MM.yyyy."))
+        </CellTemplate>
+      </PropertyColumn>
+      <PropertyColumn
+        CellStyle="font-size: large;"
+        Property="x => x.Level"
+        Title='@T["Level"]'>
+        <CellTemplate>
+          @if (context.Item.Level == LevelModel.Error || context.Item.Level == LevelModel.Critical)
+          {
+            <MudIcon Icon="@Icons.Material.Filled.Circle" Color="Color.Error"/>
+          }
+          else if (context.Item.Level == LevelModel.Warning)
+          {
+            <MudIcon Icon="@Icons.Material.Filled.Circle" Color="Color.Warning"/>
+          }
+          else
+          {
+            <MudIcon Icon="@Icons.Material.Filled.Circle" Color="Color.Success"/>
+          }
+        </CellTemplate>
+      </PropertyColumn>
+      <TemplateColumn CellClass="d-flex justify-end" Sortable="false" Filterable="false">
+        <CellTemplate>
+          <MudStack Row>
+            <MudButton OnClick="() => InspectEvent(context.Item.Id)" Variant="Variant.Filled" Color="Color.Primary">
+              @T["Overview"]
+            </MudButton>
+          </MudStack>
+        </CellTemplate>
+      </TemplateColumn>
+    </Columns>
+    <PagerContent>
+      <MudDataGridPager T="IEvent"/>
+    </PagerContent>
+  </MudDataGrid>
+}
+
+@code {
+
+  [CascadingParameter]
+  public UserState user { get; set; } = default!;
+
+  [CascadingParameter]
+  public RepresentativeState representative { get; set; } = default!;
+
+  public string SearchString { get; set; } = "";
+  private List<IEvent> _events = new();
+
+  private class MobileData
+  {
+    public IEvent auditEvent = default!;
+    public bool expand;
+    public bool show;
+  }
+
+  List<MobileData> _shownInvoices = new();
+  private string? _searchString;
+
+  protected override async Task OnInitializedAsync()
+  {
+
+    _events = (await ScopedServices
+      .GetRequiredService<OzdsEventQueries>()
+      .Read<EventModel>(Array.Empty<string>(), default, DateTimeOffset.UtcNow))
+      .Items
+      .OfType<IEvent>()
+      .ToList();
+    _events = _events.OrderByDescending(x => x.Level).ToList();
+    if (_events is not null)
+    {
+      foreach (var _auditEvent in _events)
+      {
+        _shownInvoices.Add(new MobileData { auditEvent = _auditEvent, expand = false, show = true });
+      }
+    }
+  }
+
+  private void OnExpandCollapseClick(string invoiceId)
+  {
+    var a = _shownInvoices.Where(x => x.auditEvent.Id == invoiceId).FirstOrDefault();
+    if (a != null)
+    {
+      a.expand = !a.expand;
+    }
+  }
+
+  private Func<IEvent, bool> _quickFilter
+  {
+    get
+    {
+      return x =>
+      {
+        if (string.IsNullOrWhiteSpace(_searchString))
+          return true;
+
+        if (x.Title.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
+          return true;
+
+        return false;
+      };
+    }
+  }
+
+  private Task Filter(string value)
+  {
+    SearchString = value;
+    foreach (var inv in _shownInvoices)
+    {
+      if (value.Trim() != "")
+      {
+        inv.show = false;
+      }
+    }
+
+    ;
+    var a = _shownInvoices.Where(x => x.auditEvent.Title.Contains(value, StringComparison.InvariantCultureIgnoreCase)).ToList();
+    foreach (var inv in a)
+    {
+      inv.show = true;
+    }
+
+    ;
+    StateHasChanged();
+    return Task.CompletedTask;
+  }
+
+  private void InspectEvent(string id)
+  {
+    NavigationManager.NavigateTo($"event/{id}");
+  }
+
+}
