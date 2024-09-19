@@ -1,6 +1,5 @@
 @using Ozds.Business.Time
 @using ChartType = ApexCharts.ChartType
-@using Color = MudBlazor.Color
 
 <MudPaper Class="d-flex align-center justify-center mud-width-full py-8 px-8 flex-column" Height="600px">
   <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
@@ -8,32 +7,32 @@
   </MudItem>
   <MudContainer Class="d-flex flex-column">
     <ApexChart TItem="ChartData"
-                Height="300"
-                Options="graphLOptions"
-                @ref="brushChart">
+               Height="300"
+               Options="graphLOptions"
+               @ref="brushChart">
       @foreach (var series in ChartSeries)
       {
         <ApexPointSeries TItem="ChartData"
-                          Items="@series.Data"
-                          Name="@series.Name"
-                          SeriesType="SeriesType.Line"
-                          XValue="@(x => x.Date)"
-                          YValue="@(x => x.Value)"/>
+                         Items="@series.Data"
+                         Name="@series.Name"
+                         SeriesType="SeriesType.Line"
+                         XValue="@(x => x.Date)"
+                         YValue="@(x => x.Value)"/>
       }
     </ApexChart>
 
     <ApexChart TItem="ChartData"
-                Height="130"
-                Options="optionsLine"
-                @ref="brushChartLine">
+               Height="130"
+               Options="optionsLine"
+               @ref="brushChartLine">
       @foreach (var series in ChartSeries)
       {
         <ApexPointSeries TItem="ChartData"
-                          Items="@series.Data"
-                          Name="@series.Name"
-                          SeriesType="SeriesType.Line"
-                          XValue="@(x => x.Date)"
-                          YValue="@(x => x.Value)"/>
+                         Items="@series.Data"
+                         Name="@series.Name"
+                         SeriesType="SeriesType.Line"
+                         XValue="@(x => x.Date)"
+                         YValue="@(x => x.Value)"/>
       }
     </ApexChart>
     <MudItem Class="d-flex">
@@ -43,6 +42,7 @@
 </MudPaper>
 
 @code {
+
   [Parameter]
   public string Source { get; set; } = "abb";
 
@@ -148,7 +148,6 @@
 
   protected override async Task OnInitializedAsync()
   {
-
     aggregateQueries = ScopedServices.GetRequiredService<OzdsAggregateQueries>();
     SetGraphOptionsStart();
 
@@ -245,4 +244,5 @@
       await GetValues(month.GetStartOfMonthNoTransformation(), month.GetStartOfNextMonthNoTransformation());
     }
   }
+
 }
