@@ -8,9 +8,7 @@
   return;
 }
 
-<Loading TState="NotificationModel" Load="@(() => ScopedServices
-  .GetRequiredService<OzdsNotificationQueries>()
-  .ReadSingle<NotificationModel>(Id))">
+<Loading TState="NotificationModel" Load="Load">
   <Found Context="model">
     <MudContainer MaxWidth="MaxWidth.Small" Class="d-flex  flex-column" Style="float: left;">
       <MudText Class="d-flex align-center my-2" Typo="@Typo.h5">Notification Id: @Id</MudText>

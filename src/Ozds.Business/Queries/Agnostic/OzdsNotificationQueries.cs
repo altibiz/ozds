@@ -13,22 +13,21 @@ using INotification = Ozds.Business.Models.Abstractions.INotification;
 namespace Ozds.Business.Queries.Agnostic;
 
 public class OzdsNotificationQueries(
-  DataDbContext context,
+  IDbContextFactory<DataDbContext> contextFactory,
   AgnosticModelEntityConverter modelEntityConverter
 ) : IQueries
 {
-  private readonly DataDbContext _context = context;
-
   private readonly AgnosticModelEntityConverter _modelEntityConverter =
     modelEntityConverter;
 
   public async Task<T?> ReadSingle<T>(string id)
     where T : class, INotification
   {
+    await using var context = await contextFactory.CreateDbContextAsync();
     var entityType = _modelEntityConverter.EntityType(typeof(T));
-    var queryable = _context.GetQueryable(entityType);
+    var queryable = context.GetQueryable(entityType);
     var item = await queryable
-      .Where(_context.PrimaryKeyEquals(entityType, id))
+      .Where(context.PrimaryKeyEquals(entityType, id))
       .FirstOrDefaultAsync();
     return item is null ? null : _modelEntityConverter.ToModel(item) as T;
   }
@@ -42,8 +41,9 @@ public class OzdsNotificationQueries(
   )
     where T : class, INotification
   {
+    await using var context = await contextFactory.CreateDbContextAsync();
     var dbSetType = _modelEntityConverter.EntityType(typeof(T));
-    var queryable = _context.GetQueryable(dbSetType)
+    var queryable = context.GetQueryable(dbSetType)
         as IQueryable<NotificationEntity>
       ?? throw new InvalidOperationException(
         $"No DbSet found for {dbSetType}");
@@ -74,21 +74,22 @@ public class OzdsNotificationQueries(
   )
     where T : class, INotification
   {
+    await using var context = await contextFactory.CreateDbContextAsync();
     var dbSetType = _modelEntityConverter.EntityType(typeof(T));
-    var queryable = _context.GetQueryable(dbSetType)
+    var queryable = context.GetQueryable(dbSetType)
         as IQueryable<NotificationEntity>
       ?? throw new InvalidOperationException(
         $"No DbSet found for {dbSetType}");
 
-    var filtered = _context.NotificationRecipients
+    var filtered = context.NotificationRecipients
       .Where(nr => nr.RepresentativeId == representative.Id)
       .Where(seen
         ? nr => nr.SeenOn != null
         : nr => nr.SeenOn == null)
       .Join(
         queryable,
-        _context.ForeignKeyOf<NotificationRecipientEntity>(nameof(NotificationRecipientEntity.Notification)),
-        _context.PrimaryKeyOf<NotificationEntity>(),
+        context.ForeignKeyOf<NotificationRecipientEntity>(nameof(NotificationRecipientEntity.Notification)),
+        context.PrimaryKeyOf<NotificationEntity>(),
         (_, n) => n
       );
     var count = await filtered.CountAsync();
@@ -107,8 +108,9 @@ public class OzdsNotificationQueries(
   public async Task<List<NotificationRecipientModel>> Recipients(
     INotification notification)
   {
+    await using var context = await contextFactory.CreateDbContextAsync();
     var topics = notification.Topics.Select(x => x.ToEntity());
-    var representatives = await _context.Representatives
+    var representatives = await context.Representatives
       .Where(r => r.Topics.Any(t => topics.Contains(t)))
       .ToListAsync();
 
