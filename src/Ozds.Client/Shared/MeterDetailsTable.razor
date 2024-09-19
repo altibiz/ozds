@@ -21,7 +21,7 @@
     <MudText Typo="Typo.h5">@(T["Name"] + ": " + _meter.Title)</MudText>
     <MudItem Class="d-flex flex-row">
       <MudText Typo="Typo.h5">@(T["Catalogue"] + ": ")</MudText>
-      <MudButton OnClick="() => InspectCatalogue(catalogue)" Variant="Variant.Filled" Color="Color.Primary" Class="p-1 mx-2" >@(catalogue)</MudButton>
+      <MudButton OnClick="() => InspectCatalogue(catalogue)" Variant="Variant.Filled" Color="Color.Primary" Class="p-1 mx-2">@(catalogue)</MudButton>
     </MudItem>
     @foreach (var dataStruct in _shownOMMs.Where(x => x.show).ToList())
     {
@@ -77,7 +77,7 @@
           <MudText Typo="Typo.h4">@(T["Device"] + ": " + _meter.Title + " (" + Source + ")")</MudText>
           <MudItem Class="d-flex flex-row">
             <MudText Typo="Typo.h5">@(T["Catalogue"] + ": ")</MudText>
-            <MudButton OnClick="() => InspectCatalogue(catalogue)" Variant="Variant.Filled" Color="Color.Primary" Class="p-1 mx-2" >@(catalogue)</MudButton>
+            <MudButton OnClick="() => InspectCatalogue(catalogue)" Variant="Variant.Filled" Color="Color.Primary" Class="p-1 mx-2">@(catalogue)</MudButton>
           </MudItem>
         </MudItem>
         <MudSpacer/>
@@ -161,6 +161,7 @@
   private List<TabularData> _dataStruct = new();
 
   public record ChartData(decimal? L1, decimal? L2, decimal? L3, DateTimeOffset date);
+
   public string catalogue = "";
 
   public record struct TabularData(string year, string month, decimal? monthStartTotal, decimal? monthEndTotal, decimal maxPower);
@@ -187,7 +188,7 @@
     var auditableQueries = ScopedServices.GetRequiredService<OzdsAuditableQueries>();
     var catalogueQueries = ScopedServices.GetRequiredService<OzdsNetworkUserCatalogueQueries>();
     var aggragets = await aggregateQueries.ReadAgnostic(new[] { $"x => (x.Interval == 2 || x.Interval == 0) && x.MeterId == \"{Source}\"" }, startOfThisYear, now, 1, 900000);
-    var measurementLocation = await auditableQueries.Read<NetworkUserMeasurementLocationModel>( new[] { $"x => x.MeterId == \"{Source}\"" }, Enumerable.Empty<string>(), Enumerable.Empty<string>(), 1, 1);
+    var measurementLocation = await auditableQueries.Read<NetworkUserMeasurementLocationModel>(new[] { $"x => x.MeterId == \"{Source}\"" }, Enumerable.Empty<string>(), Enumerable.Empty<string>(), 1, 1);
     var measures = aggragets.OrderBy(x => x.Timestamp).Where(x => x.MeterId == Source).ToList();
     var measurePerMonth = measures.Where(x => x.Interval == IntervalModel.Month).ToList();
     var measurePerQuarterHour = measures.Where(x => x.Interval == IntervalModel.QuarterHour).ToList();
@@ -195,11 +196,13 @@
       .GetRequiredService<OzdsMeterTableQueries>()
       .GetMeterById(Source);
 
-    if( measurementLocation is not null && measurementLocation.Items.FirstOrDefault() is not null){
+    if (measurementLocation is not null && measurementLocation.Items.FirstOrDefault() is not null)
+    {
       var netUserCatalogue = await catalogueQueries.NetworkUserCatalogueById(measurementLocation.Items.FirstOrDefault().NetworkUserCatalogueId);
-      if( netUserCatalogue is not null )
+      if (netUserCatalogue is not null)
         catalogue = netUserCatalogue.Title;
     }
+
     foreach (var month in startOfThisYearNoTransformation.GetThisYearMonthStartsNoTransformation().Reverse())
     {
       var measureNextMonthMonthly = measurePerMonth
@@ -252,10 +255,10 @@
       a.expand = !a.expand;
   }
 
-  private void InspectCatalogue (string item)
+  private void InspectCatalogue(string item)
   {
     // TODO - This is hardcoded because there will be a new inspector for this stuff
-    NavigationManager.NavigateTo($"data/red-low-catalogue/1");
+    NavigationManager.NavigateTo("data/red-low-catalogue/1");
   }
 
 }
