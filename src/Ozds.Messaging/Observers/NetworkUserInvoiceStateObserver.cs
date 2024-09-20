@@ -13,12 +13,12 @@ public class NetworkUserInvoiceStateObserver
       this, new NetworkUserInvoiceStateEventArgs { State = state });
   }
 
-  public void Subscribe(EventHandler<NetworkUserInvoiceStateEventArgs> handler)
+  public void SubscribeRegistered(EventHandler<NetworkUserInvoiceStateEventArgs> handler)
   {
     OnRegistered += handler;
   }
 
-  public void Unsubscribe(
+  public void UnsubscribeRegistered(
     EventHandler<NetworkUserInvoiceStateEventArgs> handler)
   {
     OnRegistered -= handler;

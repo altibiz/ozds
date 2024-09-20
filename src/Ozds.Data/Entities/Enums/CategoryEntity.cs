@@ -9,7 +9,9 @@ public enum CategoryEntity
   All,
   Messenger,
   MessengerPush,
-  Audit
+  Audit,
+  Error,
+  Lifecycle
 }
 
 public class CategoryEntityModelConfiguration : IModelConfiguration

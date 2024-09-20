@@ -43,7 +43,7 @@ public class
   )
   {
     if (
-      memberName is null or nameof(SchneideriEM3xxxAggregateModel.Voltage_V) &&
+      memberName is null or nameof(SchneideriEM3xxxMeasurementModel.Voltage_V) &&
       measurement.Voltage_V.TariffUnary().DuplexAny().PhaseSum()
       < MinVoltage_V * 3 &&
       measurement.Voltage_V.TariffUnary().DuplexAny().PhaseTrough()
@@ -52,12 +52,12 @@ public class
     {
       yield return new ValidationResult(
         $"Voltage must be greater than or equal to {MinVoltage_V}.",
-        new[] { nameof(SchneideriEM3xxxAggregateModel.Voltage_V) }
+        new[] { nameof(SchneideriEM3xxxMeasurementModel.Voltage_V) }
       );
     }
 
     if (
-      memberName is null or nameof(SchneideriEM3xxxAggregateModel.Voltage_V) &&
+      memberName is null or nameof(SchneideriEM3xxxMeasurementModel.Voltage_V) &&
       measurement.Voltage_V.TariffUnary().DuplexAny().PhaseSum()
       > MaxVoltage_V * 3 &&
       measurement.Voltage_V.TariffUnary().DuplexAny().PhasePeak() > MaxVoltage_V
@@ -65,12 +65,12 @@ public class
     {
       yield return new ValidationResult(
         $"Voltage must be less than or equal to {MaxVoltage_V}.",
-        new[] { nameof(SchneideriEM3xxxAggregateModel.Voltage_V) }
+        new[] { nameof(SchneideriEM3xxxMeasurementModel.Voltage_V) }
       );
     }
 
     if (
-      memberName is null or nameof(SchneideriEM3xxxAggregateModel.Current_A) &&
+      memberName is null or nameof(SchneideriEM3xxxMeasurementModel.Current_A) &&
       measurement.Current_A.TariffUnary().DuplexAny().PhaseSum()
       < MinCurrent_A * 3 &&
       measurement.Current_A.TariffUnary().DuplexAny().PhaseTrough()
@@ -79,12 +79,12 @@ public class
     {
       yield return new ValidationResult(
         $"Current must be greater than or equal to {MinCurrent_A}.",
-        new[] { nameof(SchneideriEM3xxxAggregateModel.Current_A) }
+        new[] { nameof(SchneideriEM3xxxMeasurementModel.Current_A) }
       );
     }
 
     if (
-      memberName is null or nameof(SchneideriEM3xxxAggregateModel.Current_A) &&
+      memberName is null or nameof(SchneideriEM3xxxMeasurementModel.Current_A) &&
       measurement.Current_A.TariffUnary().DuplexAny().PhaseSum()
       > MaxCurrent_A * 3 &&
       measurement.Current_A.TariffUnary().DuplexAny().PhasePeak() > MaxCurrent_A
@@ -92,13 +92,13 @@ public class
     {
       yield return new ValidationResult(
         $"Current must be less than or equal to {MaxCurrent_A}.",
-        new[] { nameof(SchneideriEM3xxxAggregateModel.Current_A) }
+        new[] { nameof(SchneideriEM3xxxMeasurementModel.Current_A) }
       );
     }
 
     if (
       memberName is null
-        or nameof(SchneideriEM3xxxAggregateModel.ActivePower_W) &&
+        or nameof(SchneideriEM3xxxMeasurementModel.ActivePower_W) &&
       measurement.ActivePower_W.TariffUnary().DuplexAny().PhaseSum() <
       MinActivePower_W * 3 &&
       measurement.ActivePower_W.TariffUnary().DuplexAny().PhaseTrough() <
@@ -107,13 +107,13 @@ public class
     {
       yield return new ValidationResult(
         $"ActivePower must be greater than or equal to {MinActivePower_W}.",
-        new[] { nameof(SchneideriEM3xxxAggregateModel.ActivePower_W) }
+        new[] { nameof(SchneideriEM3xxxMeasurementModel.ActivePower_W) }
       );
     }
 
     if (
       memberName is null
-        or nameof(SchneideriEM3xxxAggregateModel.ActivePower_W) &&
+        or nameof(SchneideriEM3xxxMeasurementModel.ActivePower_W) &&
       measurement.ActivePower_W.TariffUnary().DuplexAny().PhaseSum() >
       MaxActivePower_W * 3 &&
       measurement.ActivePower_W.TariffUnary().DuplexAny().PhasePeak() >
@@ -122,13 +122,13 @@ public class
     {
       yield return new ValidationResult(
         $"ActivePower must be less than or equal to {MaxActivePower_W}.",
-        new[] { nameof(SchneideriEM3xxxAggregateModel.ActivePower_W) }
+        new[] { nameof(SchneideriEM3xxxMeasurementModel.ActivePower_W) }
       );
     }
 
     if (
       memberName is null
-        or nameof(SchneideriEM3xxxAggregateModel.ReactivePower_VAR) &&
+        or nameof(SchneideriEM3xxxMeasurementModel.ReactivePower_VAR) &&
       measurement.ReactivePower_VAR.TariffUnary().DuplexAny().PhaseSum() <
       MinReactivePower_VAR * 3 &&
       measurement.ReactivePower_VAR.TariffUnary().DuplexAny().PhaseTrough() <
@@ -136,16 +136,14 @@ public class
     )
     {
       yield return new ValidationResult(
-        $"ReactivePower must be greater than or equal to {
-          MinReactivePower_VAR
-        }.",
-        new[] { nameof(SchneideriEM3xxxAggregateModel.ReactivePower_VAR) }
+        $"ReactivePower must be greater than or equal to {MinReactivePower_VAR}.",
+        new[] { nameof(SchneideriEM3xxxMeasurementModel.ReactivePower_VAR) }
       );
     }
 
     if (
       memberName is null
-        or nameof(SchneideriEM3xxxAggregateModel.ReactivePower_VAR) &&
+        or nameof(SchneideriEM3xxxMeasurementModel.ReactivePower_VAR) &&
       measurement.ReactivePower_VAR.TariffUnary().DuplexAny().PhaseSum() >
       MaxReactivePower_VAR * 3 &&
       measurement.ReactivePower_VAR.TariffUnary().DuplexAny().PhasePeak() >
@@ -154,13 +152,13 @@ public class
     {
       yield return new ValidationResult(
         $"ReactivePower must be less than or equal to {MaxReactivePower_VAR}.",
-        new[] { nameof(SchneideriEM3xxxAggregateModel.ReactivePower_VAR) }
+        new[] { nameof(SchneideriEM3xxxMeasurementModel.ReactivePower_VAR) }
       );
     }
 
     if (
       memberName is null
-        or nameof(SchneideriEM3xxxAggregateModel.ApparentPower_VA) &&
+        or nameof(SchneideriEM3xxxMeasurementModel.ApparentPower_VA) &&
       measurement.ApparentPower_VA.TariffUnary().DuplexAny().PhaseSum() <
       MinApparentPower_VA * 3 &&
       measurement.ApparentPower_VA.TariffUnary().DuplexAny().PhaseTrough() <
@@ -168,16 +166,14 @@ public class
     )
     {
       yield return new ValidationResult(
-        $"ApparentPower must be greater than or equal to {
-          MinApparentPower_VA
-        }.",
-        new[] { nameof(SchneideriEM3xxxAggregateModel.ApparentPower_VA) }
+        $"ApparentPower must be greater than or equal to {MinApparentPower_VA}.",
+        new[] { nameof(SchneideriEM3xxxMeasurementModel.ApparentPower_VA) }
       );
     }
 
     if (
       memberName is null
-        or nameof(SchneideriEM3xxxAggregateModel.ApparentPower_VA) &&
+        or nameof(SchneideriEM3xxxMeasurementModel.ApparentPower_VA) &&
       measurement.ApparentPower_VA.TariffUnary().DuplexAny().PhaseSum() >
       MaxApparentPower_VA * 3 &&
       measurement.ApparentPower_VA.TariffUnary().DuplexAny().PhasePeak() >
@@ -186,7 +182,7 @@ public class
     {
       yield return new ValidationResult(
         $"ApparentPower must be less than or equal to {MaxApparentPower_VA}.",
-        new[] { nameof(SchneideriEM3xxxAggregateModel.ApparentPower_VA) }
+        new[] { nameof(SchneideriEM3xxxMeasurementModel.ApparentPower_VA) }
       );
     }
   }

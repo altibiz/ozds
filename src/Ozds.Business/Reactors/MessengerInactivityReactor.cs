@@ -125,16 +125,15 @@ public class MeterInactivityReactor(
       notification.Content = builder.ToString();
     }
 
+    var notificationRecipients = recipients.Select(
+      recipient => new NotificationRecipientModel
+      {
+        NotificationId = notification.Id,
+        RepresentativeId = recipient.Id
+      });
+
     context.Add(converter.ToEntity(notification));
-    context.AddRange(
-      recipients
-        .Select(
-          recipient => new NotificationRecipientModel
-          {
-            NotificationId = notification.Id,
-            RepresentativeId = recipient.Id
-          })
-        .Select(converter.ToEntity));
+    context.AddRange(notificationRecipients.Select(converter.ToEntity));
     await context.SaveChangesAsync();
   }
 }

@@ -8,7 +8,9 @@ public enum TopicEntity
 {
   All,
   Messenger,
-  MessengerInactivity
+  MessengerInactivity,
+  InvalidPush,
+  Error
 }
 
 public class TopicEntityModelConfiguration : IModelConfiguration

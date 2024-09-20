@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Ozds.Server.Controllers;
+using Ozds.Server.Middleware;
 
 namespace Ozds.Server.Extensions;
 
@@ -27,6 +28,8 @@ public static class IApplicationBuilderExtensions
       typeof(AppController),
       nameof(AppController.Catchall)
     );
+
+    app.UseMiddleware<ExceptionMiddleware>();
 
     endpoints.MapBlazorHub("/app/{culture}/_blazor");
 
