@@ -73,16 +73,15 @@
     var mutations = ScopedServices.GetRequiredService<OzdsAuditableMutations>();
     if (LoadingState.Value is null)
       return;
+
     if (_create)
     {
-      mutations.Create(LoadingState.Value);
+      await mutations.Create(LoadingState.Value);
     }
     else
     {
-      mutations.Update(LoadingState.Value);
+      await mutations.Update(LoadingState.Value);
     }
-
-    await mutations.SaveChangesAsync();
     DialogService.Show<MutateSuccess>("Changes Saved", new DialogOptions { CloseOnEscapeKey = true });
   }
 
