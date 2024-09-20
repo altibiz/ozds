@@ -25,7 +25,7 @@ public class NetworkUserInvoiceNotificationEntityConfiguration :
   {
     builder
       .HasOne(nameof(NetworkUserInvoiceNotificationEntity.Invoice))
-      .WithOne(nameof(NetworkUserInvoiceEntity.Notification))
+      .WithMany(nameof(NetworkUserInvoiceEntity.Notifications))
       .HasForeignKey("_invoiceId");
 
     builder.Ignore(nameof(NetworkUserInvoiceNotificationEntity.InvoiceId));
