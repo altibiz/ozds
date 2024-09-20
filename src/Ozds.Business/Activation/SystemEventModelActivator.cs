@@ -20,12 +20,11 @@ public class SystemEventModelActivator : ModelActivator<SystemEventModel>
       Id = default!,
       Title = string.Empty,
       Timestamp = DateTimeOffset.UtcNow,
-      Content = JsonDocument.Parse(string.Empty),
+      Content = JsonSerializer.SerializeToDocument(string.Empty),
       Level = LevelModel.Information,
       Categories = new List<CategoryModel>
       {
         CategoryModel.All,
-        CategoryModel.Audit
       }
     };
   }

@@ -1,6 +1,7 @@
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Activation.Agnostic;
+using Ozds.Business.Conversion;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Enums;
 using Ozds.Business.Reactors.Abstractions;
@@ -18,7 +19,8 @@ public class LifecycleReactor(
     await using var context = await factory.CreateDbContextAsync();
     var content = new StartupEventContent();
     var @event = CreateEvent(content);
-    context.Add(@event);
+    var eventEntity = @event.ToEntity();
+    context.Add(eventEntity);
     await context.SaveChangesAsync();
   }
 
@@ -27,7 +29,8 @@ public class LifecycleReactor(
     await using var context = await factory.CreateDbContextAsync();
     var content = new ShutdownEventContent();
     var @event = CreateEvent(content);
-    context.Add(@event);
+    var eventEntity = @event.ToEntity();
+    context.Add(eventEntity);
     await context.SaveChangesAsync();
   }
 
