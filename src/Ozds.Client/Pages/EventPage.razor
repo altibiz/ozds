@@ -82,12 +82,16 @@
                 ? MudBlazor.Align.Left
                 : MudBlazor.Align.Right)"
                 Style="overflow-wrap: break-word;">
-                @json
+                <code Style="overflow-wrap: break-word;">
+                  @json
+                </code>
               </MudText>
             </MudHidden>
             <MudHidden Breakpoint="Breakpoint.SmAndUp">
-              <MudText Type="Typo.body2" Align="MudAlign.Left" Style="overflow-wrap: break-word;">
-                @json
+              <MudText Type="Typo.body2" Align="MudAlign.Left">
+                <code Style="overflow-wrap: break-word;">
+                  @json
+                </code>
               </MudText>
             </MudHidden>
           </MudItem>

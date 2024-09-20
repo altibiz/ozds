@@ -1,0 +1,186 @@
+<MudHidden Breakpoint="Breakpoint.MdAndUp">
+  <MudText Typo="Typo.h4" Class="d-flex">
+    @(T["Messengers"])
+  </MudText>
+  <MudTextField
+    Class=""
+    ValueChanged="EventCallback.Factory.Create<string>(this, Filter)"
+    Label="@T["Search"]"
+    Variant="Variant.Text" />
+  @foreach (var messenger in mobileMessengers.Where(x => x.show).ToList())
+  {
+    <MudPaper Elevation="2" Class="ma-1">
+      <MudStack Spacing="0">
+        <MudGrid Class="d-flex pa-2">
+          <MudItem
+            xs="10"
+            Class="d-flex align-center justify-start"
+            Style="font-size: large;">
+            @T["Messenger"]: <br> @messenger.data.Title
+          </MudItem>
+          <MudItem xs="2" Class="d-flex align-center justify-end">
+            <MudIconButton
+              OnClick="@(() => InspectMessenger(messenger.data.Id))"
+              Icon="@Icons.Material.Filled.RemoveRedEye"
+              Color="MudBlazor.Color.Primary"/>
+          </MudItem>
+        </MudGrid>
+
+        <MudCollapse
+          Class="py-2"
+          Expanded="mobileMessengers
+            .Where(x => x.data.Id == messenger.data.Id)
+            .First()
+            .expand">
+          <MudStack>
+            <MudDivider DividerType="DividerType.Middle" Class="mt-2"/>
+            <MudText>
+              @T["Messenger"]: @(messenger.data.Title)
+            </MudText>
+          </MudStack>
+        </MudCollapse>
+      </MudStack>
+    </MudPaper>
+  }
+</MudHidden>
+
+<MudHidden Breakpoint="Breakpoint.SmAndDown">
+  <MudDataGrid
+    T="MessengerModel"
+    MultiSelection="true"
+    Items="@desktopMessengers"
+    SortMode="SortMode.Multiple"
+    Filterable="true"
+    QuickFilter="@_quickFilter">
+    <ToolBarContent>
+      <MudText Typo="Typo.h4">@T["Messengers"]</MudText>
+      <MudSpacer/>
+      <MudTextField
+        @bind-Value="Search"
+        Placeholder="@T["Search"]"
+        Adornment="Adornment.Start"
+        Immediate="true"
+        AdornmentIcon="@Icons.Material.Filled.Search"
+        IconSize="MudBlazor.Size.Medium"
+        Class="mt-0">
+      </MudTextField>
+    </ToolBarContent>
+    <Columns>
+      <TemplateColumn Title="@T["Messenger"]" Sortable="false">
+        <CellTemplate>
+          <MudStack Row>
+            <MudButton
+              OnClick="() => InspectMessenger(context.Item.Id)"
+              Variant="Variant.Outlined"
+              Color="MudBlazor.Color.Primary">
+              @context.Item.Title
+            </MudButton>
+          </MudStack>
+        </CellTemplate>
+      </TemplateColumn>
+
+      <PropertyColumn
+        CellStyle="font-size: x-large;"
+        Property="x => x.MaxInactivityPeriod"
+        Title='@T["Max Inactivity"]'>
+        <CellTemplate>
+          @context.Item.MaxInactivityPeriod.ToTitle()
+        </CellTemplate>
+      </PropertyColumn>
+
+      <PropertyColumn
+        CellStyle="font-size: x-large;"
+        Property="x => x.PushDelayPeriod"
+        Title='@T["Push delay"]'>
+        <CellTemplate>
+          @context.Item.PushDelayPeriod.ToTitle()
+        </CellTemplate>
+      </PropertyColumn>
+    </Columns>
+
+    <PagerContent>
+      <MudDataGridPager T="MessengerModel"/>
+    </PagerContent>
+  </MudDataGrid>
+</MudHidden>
+
+@code {
+
+  private List<MobileMessenger> mobileMessengers = new();
+
+  private List<MessengerModel> desktopMessengers = new();
+
+  public string Search { get; set; } = "";
+
+  protected override async Task OnInitializedAsync()
+  {
+    var context = ScopedServices.GetRequiredService<OzdsAuditableQueries>();
+    var messengers = await context.Read<MessengerModel>([], [], []);
+    desktopMessengers = messengers.Items;
+    mobileMessengers = messengers.Items
+      .Select(messenger =>
+        new MobileMessenger {
+          data = messenger,
+          show = true,
+          expand = false
+        }
+      )
+      .ToList();
+  }
+
+  private class MobileMessenger
+  {
+    public MessengerModel data = default!;
+    public bool expand;
+    public bool show;
+  }
+  private void InspectMessenger(string item)
+  {
+    NavigationManager.NavigateTo($"messenger/{item}");
+  }
+
+  private Func<MessengerModel, bool> _quickFilter
+  {
+    get
+    {
+      return x =>
+      {
+        if (string.IsNullOrWhiteSpace(Search))
+          return true;
+
+        if (x.Title.Contains(Search, StringComparison.OrdinalIgnoreCase))
+          return true;
+
+        return false;
+      };
+    }
+  }
+
+  private Task Filter(string value)
+  {
+    Search = value;
+    foreach (var inv in mobileMessengers)
+    {
+      if (value.Trim() != "")
+      {
+        inv.show = false;
+      }
+    }
+
+    var filetered = mobileMessengers
+      .Where(x => x.data.Title
+        .Contains(value, StringComparison.InvariantCultureIgnoreCase))
+      .ToList();
+    foreach (var messenger in filetered)
+    {
+      messenger.show = true;
+    }
+
+    return InvokeAsync(StateHasChanged);
+  }
+}
+    using YesSql.Services;
+
+#line default
+#line hidden
+#nullable disable

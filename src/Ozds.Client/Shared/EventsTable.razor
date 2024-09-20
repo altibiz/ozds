@@ -45,8 +45,10 @@
               .First().expand">
               <MudStack>
                 <MudDivider DividerType="DividerType.Middle" Class="mt-2"/>
-                <MudText Typo="Typo.body2" Class="px-8 py-4">
-                  @(e.content)
+                <MudText Typo="Typo.body2" Class="px-8 py-4" Style="overflow-wrap: break-word;">
+                  <pre>
+                    @(e.content)
+                  </pre>
                 </MudText>
               </MudStack>
             </MudCollapse>

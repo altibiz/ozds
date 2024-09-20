@@ -68,13 +68,13 @@ public class MonthlyNetworkUserInvoiceReactor(
     var issuer = serviceProvider
       .GetRequiredService<INetworkUserInvoiceIssuer>();
 
-    var (startOfLastMonth, endOfLastMonth) = DateTimeOffset.UtcNow
-      .GetStartOfLastMonth()
-      .GetMonthRange();
+    var now = DateTimeOffset.UtcNow;
+    var startOfLastMonth = now.GetStartOfLastMonth();
+    var startOfThisMonth = now.GetStartOfMonth();
     await issuer.IssueNetworkUserInvoiceAsync(
       networkUser.Id,
       startOfLastMonth,
-      endOfLastMonth
+      startOfThisMonth
     );
   }
 }

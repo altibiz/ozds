@@ -1,6 +1,7 @@
 using System.Text;
 using System.Threading.Channels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Ozds.Business.Conversion;
 using Ozds.Business.Conversion.Joins;
 using Ozds.Business.Models.Enums;
@@ -12,6 +13,7 @@ using Ozds.Data.Entities.Joins;
 using Ozds.Data.Extensions;
 using Ozds.Data.Observers.Abstractions;
 using Ozds.Data.Observers.EventArgs;
+using Ozds.Email.Options;
 using Ozds.Email.Sender.Abstractions;
 
 namespace Ozds.Business.Workers;
@@ -58,9 +60,6 @@ public class NotificationEmailSenderReactor(
     IServiceProvider serviceProvider,
     EntitiesChangedEventArgs eventArgs)
   {
-    var sender = serviceProvider.GetRequiredService<IEmailSender>();
-    var context = serviceProvider.GetRequiredService<DataDbContext>();
-
     var recipients = eventArgs.Entities
       .Where(x => x.State == EntityChangedState.Added)
       .Select(x => x.Entity)
@@ -71,6 +70,10 @@ public class NotificationEmailSenderReactor(
     {
       return;
     }
+
+    var sender = serviceProvider.GetRequiredService<IEmailSender>();
+    var context = serviceProvider.GetRequiredService<DataDbContext>();
+    var emailOptions = serviceProvider.GetRequiredService<IOptions<OzdsEmailOptions>>();
 
     var notifications = await context.Notifications
       .Where(
@@ -131,7 +134,16 @@ public class NotificationEmailSenderReactor(
             representative.PhysicalPerson.Name,
             representative.PhysicalPerson.Email,
             titleBuilder.ToString(),
-            $"/notification/{notification.Id}\n\n{notification.Summary}\n\n{notification.Content}"
+            $"""
+              <p style="font-size: large;">
+                <a href="{emailOptions.Value.Host}/app/hr/notification/{notification.Id}">
+                  {notification.Summary}
+                </a>
+              </p>
+              <p style="font-size: small;">
+                {notification.Content}
+              </p>
+            """
           )
         ));
     }

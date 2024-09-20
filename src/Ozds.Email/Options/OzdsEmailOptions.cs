@@ -22,6 +22,8 @@ public class OzdsEmailSmtpOptions
 
 public class OzdsEmailOptions
 {
+  public string Host { get; init; } = string.Empty;
+
   public OzdsEmailSmtpOptions Smtp { get; init; } = new();
 
   public OzdsEmailFromOptions From { get; init; } = new();

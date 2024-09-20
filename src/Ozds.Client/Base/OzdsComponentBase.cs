@@ -138,6 +138,6 @@ public abstract class OzdsComponentBase : ComponentBase
 
   private static readonly JsonSerializerOptions _jsonSerializerOptions = new()
   {
-    WriteIndented = true
+    WriteIndented = true,
   };
 }
