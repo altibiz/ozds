@@ -98,11 +98,11 @@
 
     if (_create)
     {
-      await mutations.Create(LoadingState.Value);
+      await mutations.Create(LoadingState.Value.Representative);
     }
     else
     {
-      await mutations.Update(LoadingState.Value);
+      await mutations.Update(LoadingState.Value.Representative);
     }
     DialogService.Show<MutateSuccess>("Changes Saved", new DialogOptions { CloseOnEscapeKey = true });
   }

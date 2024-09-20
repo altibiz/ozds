@@ -8,7 +8,8 @@ namespace Ozds.Email.Sender;
 
 public class SmtpSender(
   ISmtpClient client,
-  IOptions<OzdsEmailOptions> options
+  IOptions<OzdsEmailOptions> options,
+  ILogger<SmtpSender> logger
 ) : IEmailSender
 {
   public void Send(EmailMessage message)
@@ -109,7 +110,8 @@ public class SmtpSender(
       options.Value.Smtp.Username, options.Value.Smtp.Password);
     foreach (var mimeMessage in mimeMessages)
     {
-      await client.SendAsync(mimeMessage);
+      var response = await client.SendAsync(mimeMessage);
+      logger.LogDebug(response.ToString());
     }
 
     await client.DisconnectAsync(true);
