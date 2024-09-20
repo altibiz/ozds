@@ -1,3 +1,5 @@
+# Database schema
+
 ```mermaid
 erDiagram
     Document {
@@ -135,6 +137,7 @@ erDiagram
         text auditable_entity_id 
         text auditable_entity_table 
         text auditable_entity_type 
+        ARRAY categories 
         jsonb content 
         bigint id PK 
         character_varying kind 
@@ -549,6 +552,7 @@ erDiagram
         text content 
         bigint event_id FK 
         bigint id PK 
+        bigint invoice_id FK 
         character_varying kind 
         text messenger_id FK 
         text resolved_by_id FK 
@@ -852,6 +856,7 @@ erDiagram
     network_user_entity_representative_entity }o--|| representatives : "representatives_string_id"
     network_user_invoices }o--|| network_users : "network_user_id"
     network_user_invoices }o--|| representatives : "issued_by_id"
+    notifications }o--|| network_user_invoices : "invoice_id"
     network_users }o--|| representatives : "created_by_id"
     network_users }o--|| representatives : "deleted_by_id"
     network_users }o--|| representatives : "last_updated_by_id"
