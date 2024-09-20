@@ -1,5 +1,21 @@
 @page "/dev"
+@using Microsoft.Extensions.Logging
+@using Microsoft.Extensions.Hosting;
+@inject ILogger<DevPage> Logger
+@inject IHostEnvironment Environment
 
-<MudButton @OnClick="@(() => { throw new InvalidOperationException(); })">
-  @T["Throw"]
-</MudButton>
+@if (!Environment.IsDevelopment())
+{
+  return;
+}
+
+<MudButton OnClick="OnThrowClick">@T["Throw"]</MudButton>
+
+@code
+{
+  private void OnThrowClick()
+  {
+    Logger.LogDebug("Throw clicked");
+    throw new InvalidOperationException();
+  }
+}

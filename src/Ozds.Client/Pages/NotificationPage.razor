@@ -35,19 +35,23 @@
         </MudGrid>
 
         <MudGrid Spacing="3">
-          <MudItem xs="12" sm="3">
+          <MudItem xs="12" sm="@(model.Summary.Length > 30 ? 12 : 3)">
             <MudText Typo="Typo.body1" Style="font-weight: bold;">
-              @T["Summmary"]:
+              @T["Summary"]:
             </MudText>
           </MudItem>
-          <MudItem xs="12" sm="9">
+          <MudItem xs="12" sm="@(model.Summary.Length > 30 ? 12 : 9)">
             <MudHidden Breakpoint="Breakpoint.Xs">
-              <MudText Type="Typo.body2" Align="MudAlign.Right">
+              <MudText Type="Typo.body2" Align="@(model.Content.Length > 30
+                ? MudBlazor.Align.Left
+                : MudBlazor.Align.Right)"
+                Style="overflow-wrap: break-word;">
                 @model.Summary
               </MudText>
             </MudHidden>
             <MudHidden Breakpoint="Breakpoint.SmAndUp">
-              <MudText Type="Typo.body2" Align="MudAlign.Left">
+              <MudText Type="Typo.body2" Align="MudAlign.Left"
+                Style="overflow-wrap: break-word;">
                 @model.Summary
               </MudText>
             </MudHidden>
@@ -55,19 +59,23 @@
         </MudGrid>
 
         <MudGrid Spacing="3">
-          <MudItem xs="12" sm="3">
+          <MudItem xs="12" sm="@(model.Content.Length > 30 ? 12 : 3)">
             <MudText Typo="Typo.body1" Style="font-weight: bold;">
               @T["Content"]:
             </MudText>
           </MudItem>
-          <MudItem xs="12" sm="9">
+          <MudItem xs="12" sm="@(model.Content.Length > 30 ? 12 : 9)">
             <MudHidden Breakpoint="Breakpoint.Xs">
-              <MudText Type="Typo.body2" Align="MudAlign.Right">
+              <MudText Type="Typo.body2" Align="@(model.Content.Length > 30
+                ? MudBlazor.Align.Left
+                : MudBlazor.Align.Right)"
+                Style="overflow-wrap: break-word;">
                 @model.Content
               </MudText>
             </MudHidden>
             <MudHidden Breakpoint="Breakpoint.SmAndUp">
-              <MudText Type="Typo.body2" Align="MudAlign.Left">
+              <MudText Type="Typo.body2" Align="MudAlign.Left"
+                Style="overflow-wrap: break-word;">
                 @model.Content
               </MudText>
             </MudHidden>

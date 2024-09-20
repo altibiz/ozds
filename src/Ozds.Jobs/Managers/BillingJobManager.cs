@@ -64,7 +64,7 @@ public class BillingJobManager(ISchedulerFactory schedulerFactory)
       .WithIdentity(id, nameof(NetworkUserMonthlyBillingJob))
       .ForJob(id, nameof(NetworkUserMonthlyBillingJob))
       // NOTE: at start of every month
-      .WithCronSchedule("0 * * */1 *")
+      .WithCronSchedule("0 * * */1 * ?")
       .WithSimpleSchedule(x => x.WithMisfireHandlingInstructionFireNow())
       .Build();
   }

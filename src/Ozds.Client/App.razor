@@ -1,10 +1,11 @@
 @namespace Ozds.Client
+@using static Microsoft.AspNetCore.Components.Web.RenderMode
 
 <HeadContent>
   <title>OZDS</title>
 </HeadContent>
 
-<Router AppAssembly="@typeof(App).Assembly">
+<Router @rendermode="InteractiveServer" AppAssembly="@typeof(App).Assembly">
   <Found Context="routeData">
     <CascadingValue Value="LogoutTokenState">
       <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">

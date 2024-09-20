@@ -131,7 +131,7 @@ public class NotificationEmailSenderReactor(
             representative.PhysicalPerson.Name,
             representative.PhysicalPerson.Email,
             titleBuilder.ToString(),
-            notification.Content
+            $"/notification/{notification.Id}\n\n{notification.Summary}\n\n{notification.Content}"
           )
         ));
     }

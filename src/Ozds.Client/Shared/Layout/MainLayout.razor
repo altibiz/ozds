@@ -1,34 +1,58 @@
 @using Theme = Theme
 
-<main>
+<main class="relative" style="height: 100vh;">
   <MudThemeProvider Theme="_theme"/>
   <MudDialogProvider/>
   <MudSnackbarProvider/>
 
-  <Loading State="_userState">
-    <Found Context="user">
-      <CascadingValue Value="user">
-        <Loading State="_representativeState">
-          <Found Context="representative">
-            <CascadingValue Value="representative">
-              <UserLayout>
-                <Body>
-                <RepresentativeLayout>
-                  <Body>
-                  @Body
-                  </Body>
-                </RepresentativeLayout>
-                </Body>
-              </UserLayout>
-            </CascadingValue>
-          </Found>
-          <NotFound>
-            @Body
-          </NotFound>
-        </Loading>
-      </CascadingValue>
-    </Found>
-  </Loading>
+  <MainLayoutErrorBoundary>
+    <ChildContent>
+      <Loading State="_userState">
+        <Found Context="user">
+          <CascadingValue Value="user">
+            <Loading State="_representativeState">
+              <Found Context="representative">
+                <CascadingValue Value="representative">
+                  <UserLayout>
+                    <Body>
+                    <RepresentativeLayout>
+                      <Body>
+                      @Body
+                      </Body>
+                    </RepresentativeLayout>
+                    </Body>
+                  </UserLayout>
+                </CascadingValue>
+              </Found>
+              <NotFound>
+                @Body
+              </NotFound>
+            </Loading>
+          </CascadingValue>
+        </Found>
+      </Loading>
+    </ChildContent>
+    <ErrorContent>
+      <MudContainer
+        MaxWidth="MaxWidth.Medium"
+        Class="relative"
+        style="height: 100%; width:100%; padding-bottom: 120px;">
+        <div
+          Class="d-flex flex-column align-start justify-center relative"
+          style="height: 100%; width: 100%;">
+          <MudText Typo="Typo.h4">
+            @T["Error"]
+          </MudText>
+          <MudText
+            Typo="Typo.body2"
+            Class="relative"
+            Style="overflow-wrap: break-word; text-wrap: balance; width: 100%;">
+            @context.ToString()
+          </MudText>
+        </div>
+      </MudContainer>
+    </ErrorContent>
+  </MainLayoutErrorBoundary>
 </main>
 
 <style>
