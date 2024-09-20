@@ -18,8 +18,8 @@ public class NetworkUserInvoiceEntity : InvoiceEntity
 
   public virtual NetworkUserEntity NetworkUser { get; set; } = default!;
 
-  public virtual ICollection<NetworkUserInvoiceNotificationEntity>
-    Notifications
+  public virtual NetworkUserInvoiceNotificationEntity
+    Notification
   { get; set; } = default!;
 
   public LocationEntity ArchivedLocation { get; set; } = default!;

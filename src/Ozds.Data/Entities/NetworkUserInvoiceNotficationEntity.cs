@@ -25,11 +25,12 @@ public class NetworkUserInvoiceNotificationEntityConfiguration :
   {
     builder
       .HasOne(nameof(NetworkUserInvoiceNotificationEntity.Invoice))
-      .WithOne(nameof(NetworkUserInvoiceEntity.Notifications))
+      .WithOne(nameof(NetworkUserInvoiceEntity.Notification))
       .HasForeignKey("_invoiceId");
+
+    builder.Ignore(nameof(NetworkUserInvoiceNotificationEntity.InvoiceId));
     builder
       .Property("_invoiceId")
       .HasColumnName("invoice_id");
-    builder.Ignore(nameof(NetworkUserInvoiceNotificationEntity.InvoiceId));
   }
 }
