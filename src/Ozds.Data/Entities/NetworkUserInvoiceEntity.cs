@@ -86,5 +86,9 @@ public class
       .ArchivedProperty(
         nameof(NetworkUserInvoiceEntity
           .ArchivedRegulatoryCatalogue));
+
+    builder
+      .HasMany(nameof(NetworkUserInvoiceEntity.Notifications))
+      .WithOne(nameof(NetworkUserInvoiceNotificationEntity.Invoice));
   }
 }
