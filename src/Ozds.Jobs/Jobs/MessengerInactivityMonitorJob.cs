@@ -15,12 +15,7 @@ public class MessengerInactivityMonitorJob(
 
   public Task Execute(IJobExecutionContext context)
   {
-
-    logger.LogDebug(
-      "Executing {Group} job for {Id}",
-      nameof(MessengerInactivityMonitorJob),
-      Id
-    );
+    logger.LogDebug("Executing job for {Id}", Id);
 
     messengerJobPublisher.PublishInactivity(
       new MessengerInactivityEventArgs

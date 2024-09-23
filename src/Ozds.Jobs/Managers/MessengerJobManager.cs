@@ -4,13 +4,22 @@ using Quartz;
 
 namespace Ozds.Jobs.Managers;
 
-public class MessengerJobManager(ISchedulerFactory schedulerFactory)
-  : IMessengerJobManager
+public class MessengerJobManager(
+  ISchedulerFactory schedulerFactory,
+  ILogger<MessengerJobManager> logger
+) : IMessengerJobManager
 {
   public async Task EnsureInactivityMonitorJob(
     string id,
     TimeSpan inactivityDuration)
   {
+    logger.LogDebug(
+      "Ensuring {Group} job for {Id} with inactivity duration {Duration}",
+      nameof(MessengerInactivityMonitorJob),
+      id,
+      inactivityDuration
+    );
+
     var scheduler = await schedulerFactory.GetScheduler();
 
     var triggerKey = new TriggerKey(id, nameof(MessengerInactivityMonitorJob));
@@ -26,6 +35,13 @@ public class MessengerJobManager(ISchedulerFactory schedulerFactory)
     string id,
     TimeSpan inactivityDuration)
   {
+    logger.LogDebug(
+      "Rescheduling {Group} job for {Id} with inactivity duration {Duration}",
+      nameof(MessengerInactivityMonitorJob),
+      id,
+      inactivityDuration
+    );
+
     var scheduler = await schedulerFactory.GetScheduler();
 
     var triggerKey = new TriggerKey(id, nameof(MessengerInactivityMonitorJob));
@@ -44,6 +60,12 @@ public class MessengerJobManager(ISchedulerFactory schedulerFactory)
 
   public async Task UnscheduleInactivityMonitorJob(string id)
   {
+    logger.LogDebug(
+      "Unscheduling {Group} job for {Id}",
+      nameof(MessengerInactivityMonitorJob),
+      id
+    );
+
     var scheduler = await schedulerFactory.GetScheduler();
 
     var triggerKey = new TriggerKey(id, nameof(MessengerInactivityMonitorJob));
