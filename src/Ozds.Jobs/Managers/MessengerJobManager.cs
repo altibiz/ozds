@@ -29,15 +29,16 @@ public class MessengerJobManager(ISchedulerFactory schedulerFactory)
     var scheduler = await schedulerFactory.GetScheduler();
 
     var triggerKey = new TriggerKey(id, nameof(MessengerInactivityMonitorJob));
+    var trigger = CreateTrigger(id, inactivityDuration);
 
     if (await scheduler.CheckExists(triggerKey))
     {
-      var trigger = CreateTrigger(id, inactivityDuration);
       await scheduler.RescheduleJob(triggerKey, trigger);
     }
     else
     {
-      await EnsureInactivityMonitorJob(id, inactivityDuration);
+      var job = CreateJob(id);
+      await scheduler.ScheduleJob(job, trigger);
     }
   }
 
@@ -66,10 +67,9 @@ public class MessengerJobManager(ISchedulerFactory schedulerFactory)
     return TriggerBuilder.Create()
       .WithIdentity(id, nameof(MessengerInactivityMonitorJob))
       .ForJob(id, nameof(MessengerInactivityMonitorJob))
-      .StartAt(
-        DateBuilder.FutureDate(
-          (int)inactivityDuration.TotalMilliseconds, IntervalUnit.Millisecond))
-      .WithSimpleSchedule(x => x.WithMisfireHandlingInstructionFireNow())
+      .WithSimpleSchedule(x => x
+        .WithIntervalInSeconds((int)inactivityDuration.TotalSeconds)
+        .WithMisfireHandlingInstructionFireNow())
       .Build();
   }
 }
