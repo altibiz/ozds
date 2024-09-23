@@ -1,3 +1,4 @@
+using System.Globalization;
 using Ozds.Jobs.Manager.Abstractions;
 using Quartz;
 
@@ -59,6 +60,9 @@ public class MessengerJobManager(ISchedulerFactory schedulerFactory)
     return JobBuilder.Create<MessengerInactivityMonitorJob>()
       .WithIdentity(id, nameof(MessengerInactivityMonitorJob))
       .UsingJobData(nameof(MessengerInactivityMonitorJob.Id), id)
+      .UsingJobData(
+        nameof(MessengerInactivityMonitorJob.ScheduledAt),
+        DateTimeOffset.UtcNow.ToString("o", CultureInfo.InvariantCulture))
       .Build();
   }
 
@@ -67,9 +71,8 @@ public class MessengerJobManager(ISchedulerFactory schedulerFactory)
     return TriggerBuilder.Create()
       .WithIdentity(id, nameof(MessengerInactivityMonitorJob))
       .ForJob(id, nameof(MessengerInactivityMonitorJob))
-      .WithSimpleSchedule(x => x
-        .WithIntervalInSeconds((int)inactivityDuration.TotalSeconds)
-        .WithMisfireHandlingInstructionFireNow())
+      .StartAt(DateTimeOffset.UtcNow.Add(inactivityDuration))
+      .WithSimpleSchedule(x => x.WithMisfireHandlingInstructionFireNow())
       .Build();
   }
 }

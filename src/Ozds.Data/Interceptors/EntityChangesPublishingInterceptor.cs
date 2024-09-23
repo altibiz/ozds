@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Ozds.Data.Entities.Abstractions;
@@ -10,9 +11,8 @@ public class EntityChangesPublishingInterceptor(
   IServiceProvider serviceProvider)
   : ServedSaveChangesInterceptor(serviceProvider)
 {
-  private readonly List<EntityChangesEntry> _entries = new();
-
-  private readonly SemaphoreSlim _semaphore = new(1, 1);
+  private readonly ConditionalWeakTable<DbContext, List<EntityChangesEntry>>
+    _contextEntries = new();
 
   public override int Order
   {
@@ -29,9 +29,9 @@ public class EntityChangesPublishingInterceptor(
       return base.SavingChanges(eventData, result);
     }
 
-    _semaphore.Wait();
-    ProcessSavingChanges(context);
-    PublishEntitiesChanging();
+    var entries = ProcessSavingChanges(context);
+    _contextEntries.Add(context, entries);
+    PublishEntitiesChanging(entries);
 
     return base.SavingChanges(eventData, result);
   }
@@ -48,9 +48,9 @@ public class EntityChangesPublishingInterceptor(
         eventData, result, cancellationToken);
     }
 
-    await _semaphore.WaitAsync(cancellationToken);
-    ProcessSavingChanges(context);
-    PublishEntitiesChanging();
+    var entries = ProcessSavingChanges(context);
+    _contextEntries.Add(context, entries);
+    PublishEntitiesChanging(entries);
 
     return await base.SavingChangesAsync(eventData, result, cancellationToken);
   }
@@ -59,27 +59,45 @@ public class EntityChangesPublishingInterceptor(
     SaveChangesCompletedEventData eventData,
     int result)
   {
-    PublishEntitiesChanged();
-    ProcessSavedChanges();
-    _semaphore.Release();
+    var context = eventData.Context;
+    if (context == null)
+    {
+      return base.SavedChanges(eventData, result);
+    }
+
+    if (_contextEntries.TryGetValue(context, out var entries))
+    {
+      PublishEntitiesChanged(entries);
+      _contextEntries.Remove(context);
+    }
     return base.SavedChanges(eventData, result);
   }
 
-  public override ValueTask<int> SavedChangesAsync(
+  public override async ValueTask<int> SavedChangesAsync(
     SaveChangesCompletedEventData eventData,
     int result,
     CancellationToken cancellationToken = default
   )
   {
-    PublishEntitiesChanged();
-    ProcessSavedChanges();
-    _semaphore.Release();
-    return base.SavedChangesAsync(eventData, result, cancellationToken);
+    var context = eventData.Context;
+    if (context == null)
+    {
+      return await base.SavedChangesAsync(eventData, result, cancellationToken);
+    }
+
+    if (_contextEntries.TryGetValue(context, out var entries))
+    {
+      PublishEntitiesChanged(entries);
+      _contextEntries.Remove(context);
+    }
+    return await base.SavedChangesAsync(eventData, result, cancellationToken);
   }
 
-  private void ProcessSavingChanges(DbContext context)
+  private List<EntityChangesEntry> ProcessSavingChanges(DbContext context)
   {
     context.ChangeTracker.DetectChanges();
+
+    var entries = new List<EntityChangesEntry>();
 
     foreach (var entry in context.ChangeTracker.Entries())
     {
@@ -89,13 +107,13 @@ public class EntityChangesPublishingInterceptor(
       }
 
       if (entry.State is not EntityState.Added
-        or EntityState.Modified
-        or EntityState.Deleted)
+        and not EntityState.Modified
+        and not EntityState.Deleted)
       {
         continue;
       }
 
-      _entries.Add(
+      entries.Add(
         new EntityChangesEntry(
           entry.State switch
           {
@@ -106,14 +124,10 @@ public class EntityChangesPublishingInterceptor(
           },
           entity));
     }
+    return entries;
   }
 
-  private void ProcessSavedChanges()
-  {
-    _entries.Clear();
-  }
-
-  private void PublishEntitiesChanging()
+  private void PublishEntitiesChanging(List<EntityChangesEntry> entries)
   {
     var publisher = serviceProvider
       .GetRequiredService<IEntityChangesPublisher>();
@@ -121,7 +135,7 @@ public class EntityChangesPublishingInterceptor(
     publisher.PublishEntitiesChanging(
       new EntitiesChangingEventArgs
       {
-        Entities = _entries
+        Entities = entries
           .Select(
             entry => new EntityChangingRecord(
               entry.State switch
@@ -138,7 +152,7 @@ public class EntityChangesPublishingInterceptor(
       });
   }
 
-  private void PublishEntitiesChanged()
+  private void PublishEntitiesChanged(List<EntityChangesEntry> entries)
   {
     var publisher = serviceProvider
       .GetRequiredService<IEntityChangesPublisher>();
@@ -146,7 +160,7 @@ public class EntityChangesPublishingInterceptor(
     publisher.PublishEntitiesChanged(
       new EntitiesChangedEventArgs
       {
-        Entities = _entries
+        Entities = entries
           .Select(
             entry => new EntityChangedEntry(
               entry.State switch

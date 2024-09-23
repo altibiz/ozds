@@ -1,5 +1,6 @@
 using OrchardCore.Environment.Shell;
 using OrchardCore.Modules;
+using Quartz;
 
 namespace Ozds.Server.Extensions;
 
@@ -10,13 +11,35 @@ public static class IServiceCollectionExtensions
     IHostApplicationBuilder builder
   )
   {
-    var hostedServices = services
+    var allServices = services.ToList();
+    var quartz = allServices
+      .Where(service => service.ImplementationType?.Namespace?.Contains("Quartz") ?? false)
+      .Select(service => new
+      {
+        service.ServiceType.Namespace,
+        service.ServiceType.Name,
+        service.ServiceType.IsAbstract,
+        service.ServiceType.IsGenericType,
+        service.Lifetime,
+      })
+      .ToList();
+
+    var hostedServices = allServices
       .Where(
         service =>
-          !service.ServiceType.IsGenericType &&
-          !service.ServiceType.IsAbstract &&
-          service.Lifetime == ServiceLifetime.Singleton &&
-          service.ServiceType.IsAssignableTo(typeof(IHostedService)))
+          service.ServiceType == typeof(IHostedService) &&
+          service.Lifetime == ServiceLifetime.Singleton)
+      .Where(
+        service =>
+          !(service.ImplementationInstance?.GetType().Namespace?.StartsWith(nameof(Microsoft))
+          ?? service.ImplementationType?.Namespace?.StartsWith(nameof(Microsoft))
+          ?? service.ImplementationFactory?.Method?.Module.Name?.StartsWith(nameof(Microsoft))
+          ?? false)
+          && !(service.ImplementationInstance?.GetType().Namespace?.StartsWith(nameof(OrchardCore))
+            ?? service.ImplementationType?.Namespace?.StartsWith(nameof(OrchardCore))
+            ?? service.ImplementationFactory?.Method.Module.Name?.StartsWith(nameof(OrchardCore))
+            ?? false)
+      )
       .ToList();
 
     foreach (var hostedService in hostedServices)

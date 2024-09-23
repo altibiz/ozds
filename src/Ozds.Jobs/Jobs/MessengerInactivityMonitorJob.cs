@@ -10,12 +10,18 @@ public class MessengerInactivityMonitorJob(
 {
   public string Id { get; set; } = default!;
 
+  public DateTimeOffset ScheduledAt { get; set; } = default!;
+
   public Task Execute(IJobExecutionContext context)
   {
     messengerJobPublisher.PublishInactivity(
       new MessengerInactivityEventArgs
       {
-        Id = Id
+        Id = Id,
+        ScheduledAt = ScheduledAt,
+        StartedAt = context.Trigger.StartTimeUtc,
+        ScheduledFireAt = context.ScheduledFireTimeUtc ?? default,
+        FiredAt = context.FireTimeUtc,
       });
 
     return Task.CompletedTask;

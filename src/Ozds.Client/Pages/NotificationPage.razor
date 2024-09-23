@@ -42,7 +42,7 @@
           </MudItem>
           <MudItem xs="12" sm="@(model.Summary.Length > 30 ? 12 : 9)">
             <MudHidden Breakpoint="Breakpoint.Xs">
-              <MudText Type="Typo.body2" Align="@(model.Content.Length > 30
+              <MudText Type="Typo.body2" Align="@(model.Summary.Length > 30
                 ? MudBlazor.Align.Left
                 : MudBlazor.Align.Right)"
                 Style="overflow-wrap: break-word;">
@@ -70,13 +70,17 @@
                 ? MudBlazor.Align.Left
                 : MudBlazor.Align.Right)"
                 Style="overflow-wrap: break-word;">
-                @model.Content
+                <pre>
+                  @model.Content
+                </pre>
               </MudText>
             </MudHidden>
             <MudHidden Breakpoint="Breakpoint.SmAndUp">
               <MudText Type="Typo.body2" Align="MudAlign.Left"
                 Style="overflow-wrap: break-word;">
-                @model.Content
+                <pre>
+                  @model.Content
+                </pre>
               </MudText>
             </MudHidden>
           </MudItem>

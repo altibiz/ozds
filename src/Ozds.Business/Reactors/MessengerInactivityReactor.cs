@@ -73,6 +73,7 @@ public class MeterInactivityReactor(
     var context = serviceProvider.GetRequiredService<DataDbContext>();
     var converter =
       serviceProvider.GetRequiredService<AgnosticModelEntityConverter>();
+    var environment = serviceProvider.GetRequiredService<IHostEnvironment>();
 
     var messenger = (await context.Messengers
         .Where(context.PrimaryKeyEquals<MessengerEntity>(eventArgs.Id))
@@ -108,13 +109,21 @@ public class MeterInactivityReactor(
       TopicModel.MessengerInactivity
     ];
     notification.Summary = $"Meter \"{messenger.Title}\" is inactive";
+    var builder = new StringBuilder();
+    if (environment.IsDevelopment())
+    {
+      builder.AppendLine($"Stared at: {eventArgs.StartedAt}");
+      builder.AppendLine($"Scheduled to fire at: {eventArgs.ScheduledFireAt}");
+      builder.AppendLine($"Fired at: {eventArgs.FiredAt}");
+      builder.AppendLine($"Scheduled at: {eventArgs.ScheduledAt}");
+      builder.AppendLine();
+    }
     if (lastPushEvent is null)
     {
-      notification.Content = "Meter never pushed";
+      builder.AppendLine("Meter never pushed");
     }
     else
     {
-      var builder = new StringBuilder();
       var lastPushEventDetails = JsonSerializer.Serialize(
         lastPushEvent.Content,
         EventContentSerializationOptions
@@ -122,8 +131,12 @@ public class MeterInactivityReactor(
       builder.AppendLine($"Meter: \"{messenger.Title}\"");
       builder.AppendLine($"Last pushed at: {lastPushEvent.Timestamp}");
       builder.AppendLine($"Last push details: {lastPushEventDetails}");
-      notification.Content = builder.ToString();
     }
+    notification.Content = builder.ToString();
+    var notificationEntity = converter.ToEntity<MessengerNotificationEntity>(notification);
+    context.Add(notificationEntity);
+    await context.SaveChangesAsync();
+    notification.Id = notificationEntity.Id;
 
     var notificationRecipients = recipients.Select(
       recipient => new NotificationRecipientModel
@@ -131,8 +144,6 @@ public class MeterInactivityReactor(
         NotificationId = notification.Id,
         RepresentativeId = recipient.Id
       });
-
-    context.Add(converter.ToEntity(notification));
     context.AddRange(notificationRecipients.Select(converter.ToEntity));
     await context.SaveChangesAsync();
   }

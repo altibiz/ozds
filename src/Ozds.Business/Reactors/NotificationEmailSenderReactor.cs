@@ -141,7 +141,9 @@ public class NotificationEmailSenderReactor(
                 </a>
               </p>
               <p style="font-size: small;">
-                {notification.Content}
+                <pre style="overflow-wrap: break-word;">
+                  {notification.Content}
+                </pre>
               </p>
             """
           )
