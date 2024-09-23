@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Ozds.Jobs.Observers.Abstractions;
 using Ozds.Jobs.Observers.EventArgs;
 using Quartz;
@@ -15,18 +16,27 @@ public class MessengerInactivityMonitorJob(
 
   public Task Execute(IJobExecutionContext context)
   {
-    logger.LogDebug("Executing job for {Id}", Id);
+    var eventArgs = new MessengerInactivityEventArgs
+    {
+      Id = Id,
+      ScheduledAt = ScheduledAt,
+      StartedAt = context.Trigger.StartTimeUtc,
+      ScheduledFireAt = context.ScheduledFireTimeUtc ?? default,
+      FiredAt = context.FireTimeUtc,
+    };
 
-    messengerJobPublisher.PublishInactivity(
-      new MessengerInactivityEventArgs
-      {
-        Id = Id,
-        ScheduledAt = ScheduledAt,
-        StartedAt = context.Trigger.StartTimeUtc,
-        ScheduledFireAt = context.ScheduledFireTimeUtc ?? default,
-        FiredAt = context.FireTimeUtc,
-      });
+    logger.LogDebug(
+      "Executing job for {Id} with {EventArgs}",
+      Id,
+      JsonSerializer.Serialize(eventArgs, JsonSerializerOptions));
+
+    messengerJobPublisher.PublishInactivity(eventArgs);
 
     return Task.CompletedTask;
   }
+
+  private static readonly JsonSerializerOptions JsonSerializerOptions = new()
+  {
+    WriteIndented = true
+  };
 }
