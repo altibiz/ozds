@@ -5,7 +5,8 @@ using Quartz;
 namespace Ozds.Jobs;
 
 public class MessengerInactivityMonitorJob(
-  IMessengerJobPublisher messengerJobPublisher
+  IMessengerJobPublisher messengerJobPublisher,
+  ILogger<MessengerInactivityMonitorJob> logger
 ) : IJob
 {
   public string Id { get; set; } = default!;
@@ -14,6 +15,13 @@ public class MessengerInactivityMonitorJob(
 
   public Task Execute(IJobExecutionContext context)
   {
+
+    logger.LogDebug(
+      "Executing {Group} job for {Id}",
+      nameof(MessengerInactivityMonitorJob),
+      Id
+    );
+
     messengerJobPublisher.PublishInactivity(
       new MessengerInactivityEventArgs
       {

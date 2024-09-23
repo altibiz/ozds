@@ -18,7 +18,6 @@ public class MessengerJobManager(ISchedulerFactory schedulerFactory)
     {
       var job = CreateJob(id);
       var trigger = CreateTrigger(id, inactivityDuration);
-
       await scheduler.ScheduleJob(job, trigger);
     }
   }
@@ -68,12 +67,14 @@ public class MessengerJobManager(ISchedulerFactory schedulerFactory)
 
   private ITrigger CreateTrigger(string id, TimeSpan inactivityDuration)
   {
+    var interval = (int)inactivityDuration.TotalSeconds * 6;
     return TriggerBuilder.Create()
       .WithIdentity(id, nameof(MessengerInactivityMonitorJob))
       .ForJob(id, nameof(MessengerInactivityMonitorJob))
       .StartAt(DateTimeOffset.UtcNow.Add(inactivityDuration))
       .WithSimpleSchedule(x => x
-        .WithIntervalInSeconds((int)inactivityDuration.TotalSeconds * 6)
+        .WithIntervalInSeconds(interval)
+        .WithRepeatCount(3)
         .WithMisfireHandlingInstructionFireNow())
       .Build();
   }
