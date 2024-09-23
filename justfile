@@ -28,6 +28,7 @@ rollback := absolute_path('scripts/database/rollback.nu')
 validate := absolute_path('scripts/database/validate.nu')
 measurements := absolute_path('scripts/database/measurements.nu')
 now := `date now | format date '%Y%m%d%H%M%S'`
+current := "current"
 
 default:
     @just --choose
@@ -199,7 +200,7 @@ migrate project name:
     $"# Database schema\n\n(open --raw '{{ schema }}')" | \
       save --force '{{ schema }}'
 
-dump name:
+dump name=current:
     docker exec \
       --env PGHOST="localhost" \
       --env PGPORT="5432" \

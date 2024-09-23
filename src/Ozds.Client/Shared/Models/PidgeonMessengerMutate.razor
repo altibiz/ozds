@@ -34,6 +34,23 @@
           </MudSelectItem>
         }
       </MudSelect>
+      <MudSelect
+        T="DurationModel"
+        Label="@T["Max inactivity period unit"]"
+        AnchorOrigin="Origin.BottomCenter"
+        For="@(() => LoadingState.Value.MaxInactivityPeriod.Duration)"
+        @bind-Value="LoadingState.Value.MaxInactivityPeriod.Duration">
+        @foreach (var value in Enum.GetValues<DurationModel>())
+        {
+          <MudSelectItem Value="value">
+            @T[value.ToTitle()]
+          </MudSelectItem>
+        }
+      </MudSelect>
+      <MudNumericField
+        Label="@T["Max inactivity period multiplier"]"
+        For="@(() => LoadingState.Value.MaxInactivityPeriod.Multiplier)"
+        @bind-Value ="LoadingState.Value.MaxInactivityPeriod.Multiplier" />
     </MudCardContent>
     <ValidationSummary/>
     <MudCardActions>
