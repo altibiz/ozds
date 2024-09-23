@@ -1,6 +1,7 @@
 using OrchardCore.Environment.Shell;
 using OrchardCore.Modules;
-using Quartz;
+
+// TODO: finer control over what services are hosted
 
 namespace Ozds.Server.Extensions;
 
@@ -11,20 +12,7 @@ public static class IServiceCollectionExtensions
     IHostApplicationBuilder builder
   )
   {
-    var allServices = services.ToList();
-    var quartz = allServices
-      .Where(service => service.ImplementationType?.Namespace?.Contains("Quartz") ?? false)
-      .Select(service => new
-      {
-        service.ServiceType.Namespace,
-        service.ServiceType.Name,
-        service.ServiceType.IsAbstract,
-        service.ServiceType.IsGenericType,
-        service.Lifetime,
-      })
-      .ToList();
-
-    var hostedServices = allServices
+    var hostedServices = services
       .Where(
         service =>
           service.ServiceType == typeof(IHostedService) &&

@@ -72,7 +72,9 @@ public class MessengerJobManager(ISchedulerFactory schedulerFactory)
       .WithIdentity(id, nameof(MessengerInactivityMonitorJob))
       .ForJob(id, nameof(MessengerInactivityMonitorJob))
       .StartAt(DateTimeOffset.UtcNow.Add(inactivityDuration))
-      .WithSimpleSchedule(x => x.WithMisfireHandlingInstructionFireNow())
+      .WithSimpleSchedule(x => x
+        .WithIntervalInSeconds((int)inactivityDuration.TotalSeconds * 6)
+        .WithMisfireHandlingInstructionFireNow())
       .Build();
   }
 }

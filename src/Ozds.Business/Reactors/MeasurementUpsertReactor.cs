@@ -12,6 +12,7 @@ using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Base;
+using Ozds.Business.Models.Complex;
 using Ozds.Business.Models.Enums;
 using Ozds.Business.Observers.Abstractions;
 using Ozds.Business.Observers.EventArgs;
@@ -24,6 +25,7 @@ using Ozds.Data.Entities.Base;
 using Ozds.Data.Extensions;
 using Ozds.Iot.Observers.Abstractions;
 using Ozds.Iot.Observers.EventArgs;
+using Ozds.Jobs.Manager.Abstractions;
 
 namespace Ozds.Business.Reactors;
 
@@ -81,6 +83,14 @@ public class MeasurementUpsertReactor(
       serviceProvider.GetRequiredService<IMeasurementUpsertPublisher>();
     var notificationQueries = serviceProvider
       .GetRequiredService<OzdsNotificationQueries>();
+    var messengerJobManager = serviceProvider
+      .GetRequiredService<IMessengerJobManager>();
+
+    await RescheduleInactivityMonitorJob(
+      messengerJobManager,
+      context,
+      eventArgs
+    );
 
     IReadOnlyList<IMeasurement> upsertMeasurements =
       eventArgs.Request.Measurements
@@ -129,6 +139,27 @@ public class MeasurementUpsertReactor(
       });
   }
 
+  private static async Task RescheduleInactivityMonitorJob(
+    IMessengerJobManager manager,
+    DataDbContext context,
+    PushEventArgs eventArgs
+  )
+  {
+    var messenger = (await context.Messengers
+        .Where(context.PrimaryKeyEquals<MessengerEntity>(eventArgs.MessengerId))
+        .FirstOrDefaultAsync())
+      ?.ToModel();
+    if (messenger is null)
+    {
+      return;
+    }
+
+    await manager.RescheduleInactivityMonitorJob(
+      messenger.Id,
+      messenger.MaxInactivityPeriod.ToTimeSpan()
+    );
+  }
+
   private static IEnumerable<IAggregate> MakeAggregates(
     AgnosticAggregateUpserter aggregateUpserter,
     AgnosticMeasurementAggregateConverter aggregateConverter,
@@ -158,15 +189,15 @@ public class MeasurementUpsertReactor(
   {
     var meterIds = validationMeasurements.Select(x => x.MeterId)
       .Concat(validationAggregates.Select(x => x.MeterId))
+      .Distinct()
       .ToList();
 
-    var validators = await context.Meters
-      .Where(x => meterIds.Contains(x.Id))
+    var validators = await context.MeasurementValidators
       .Join(
-        context.MeasurementValidators,
-        context.ForeignKeyOf<MeterEntity>(nameof(AbbB2xMeterEntity.MeasurementValidator)),
+        context.Meters.Where(context.PrimaryKeyIn<MeterEntity>(meterIds)),
         context.PrimaryKeyOf<MeasurementValidatorEntity>(),
-        (_, validator) => validator
+        context.ForeignKeyOf<MeterEntity>(nameof(MeterEntity.MeasurementValidator)),
+        (validator, _) => validator
       )
       .ToListAsync();
 
