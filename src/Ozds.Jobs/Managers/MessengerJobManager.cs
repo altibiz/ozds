@@ -49,7 +49,9 @@ public class MessengerJobManager(
 
     if (await scheduler.CheckExists(triggerKey))
     {
-      await scheduler.RescheduleJob(triggerKey, trigger);
+      await scheduler.UnscheduleJob(triggerKey);
+      var job = CreateJob(id);
+      await scheduler.ScheduleJob(job, trigger);
     }
     else
     {
@@ -89,15 +91,26 @@ public class MessengerJobManager(
 
   private ITrigger CreateTrigger(string id, TimeSpan inactivityDuration)
   {
-    var interval = (int)inactivityDuration.TotalSeconds * 6;
+    var now = DateTimeOffset.UtcNow;
+    var startAt = now.Add(inactivityDuration);
+
+    logger.LogDebug(
+      "{Now} Creating trigger for {Group} job"
+      + " for {Id} with inactivity duration {Duration}"
+      + " starting at {StartAt}",
+      now,
+      nameof(MessengerInactivityMonitorJob),
+      id,
+      inactivityDuration,
+      startAt
+    );
+
     return TriggerBuilder.Create()
       .WithIdentity(id, nameof(MessengerInactivityMonitorJob))
       .ForJob(id, nameof(MessengerInactivityMonitorJob))
-      .StartAt(DateTimeOffset.UtcNow.Add(inactivityDuration))
+      .StartAt(startAt)
       .WithSimpleSchedule(x => x
-        .WithIntervalInSeconds(interval)
-        .WithRepeatCount(3)
-        .WithMisfireHandlingInstructionFireNow())
+        .WithMisfireHandlingInstructionNextWithExistingCount())
       .Build();
   }
 }

@@ -116,6 +116,7 @@ public class MeterInactivityReactor(
       builder.AppendLine($"Scheduled to fire at: {eventArgs.ScheduledFireAt}");
       builder.AppendLine($"Fired at: {eventArgs.FiredAt}");
       builder.AppendLine($"Scheduled at: {eventArgs.ScheduledAt}");
+      builder.AppendLine($"Refire count: {eventArgs.RefireCount}");
       builder.AppendLine();
     }
     if (lastPushEvent is null)

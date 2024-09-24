@@ -6,6 +6,7 @@
 @using Ozds.Business.Observers.EventArgs
 @inject IAntiforgery Antiforgery
 @inject IHttpContextAccessor HttpContextAccessor
+@inject INotificationCreatedSubscriber NotificationCreatedSubscriber
 @inherits OzdsOwningLayoutComponentBase
 @implements IDisposable
 
@@ -138,16 +139,17 @@
       antiforgeryToken = string.Empty;
     }
 
-    ScopedServices
-      .GetRequiredService<INotificationCreatedSubscriber>()
-      .SubscribeCreated(OnNotificationCreated);
+    NotificationCreatedSubscriber.SubscribeCreated(OnNotificationCreated);
   }
 
-  void IDisposable.Dispose()
+  protected override void Dispose(bool disposing)
   {
-    ScopedServices
-      .GetRequiredService<INotificationCreatedSubscriber>()
-      .UnsubscribeCreated(OnNotificationCreated);
+    if (!disposing)
+    {
+      return;
+    }
+
+    NotificationCreatedSubscriber.UnsubscribeCreated(OnNotificationCreated);
   }
 
 
