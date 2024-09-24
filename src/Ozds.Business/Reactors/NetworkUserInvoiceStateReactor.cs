@@ -68,8 +68,8 @@ public class NetworkUserInvoiceStateReactor(
     var localizer = serviceProvider.GetRequiredService<ILocalizer>();
 
     var invoices = (await context.NetworkUserInvoices
-      .Where(x => x.Id == eventArgs.State.NetworkUserInvoiceId)
-      .ToListAsync())
+        .Where(x => x.Id == eventArgs.State.NetworkUserInvoiceId)
+        .ToListAsync())
       .Select(converter.ToModel<NetworkUserInvoiceModel>);
 
     var networkUserIds = invoices
@@ -80,7 +80,8 @@ public class NetworkUserInvoiceStateReactor(
       .Where(context.PrimaryKeyIn<NetworkUserEntity>(networkUserIds))
       .Join(
         context.Representatives.Where(r => r.Topics.Contains(TopicEntity.All)),
-        context.ForeignKeyOf<NetworkUserEntity>(nameof(NetworkUserEntity.Representatives)),
+        context.ForeignKeyOf<NetworkUserEntity>(
+          nameof(NetworkUserEntity.Representatives)),
         context.PrimaryKeyOf<RepresentativeEntity>(),
         (_, representative) => representative
       )
@@ -94,19 +95,27 @@ public class NetworkUserInvoiceStateReactor(
       notification.InvoiceId = invoice.Id;
       notification.Topics =
       [
-        TopicModel.All,
+        TopicModel.All
       ];
-      notification.Summary = $"{localizer["Invoice"]} \"{invoice.Title}\" {localizer["issued"]}";
-      notification.Content = $"{localizer["Invoice url is"]} 'invoices/{invoice.Id}'";
+      notification.Summary = $"{
+        localizer["Invoice"]
+      } \"{
+        invoice.Title
+      }\" {
+        localizer["issued"]
+      }";
+      notification.Content =
+        $"{localizer["Invoice url is"]} 'invoices/{invoice.Id}'";
       notifications.Add(notification);
 
       foreach (var recipient in recipients)
       {
-        notificationRecipients.Add(new NotificationRecipientModel
-        {
-          NotificationId = notification.Id,
-          RepresentativeId = recipient.Id
-        });
+        notificationRecipients.Add(
+          new NotificationRecipientModel
+          {
+            NotificationId = notification.Id,
+            RepresentativeId = recipient.Id
+          });
       }
     }
 

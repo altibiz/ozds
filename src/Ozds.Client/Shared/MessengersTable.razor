@@ -1,3 +1,5 @@
+@using Color = MudBlazor.Color
+@using Size = MudBlazor.Size
 <MudHidden Breakpoint="Breakpoint.MdAndUp">
   <MudText Typo="Typo.h4" Class="d-flex">
     @(T["Messengers"])
@@ -6,7 +8,7 @@
     Class=""
     ValueChanged="EventCallback.Factory.Create<string>(this, Filter)"
     Label="@T["Search"]"
-    Variant="Variant.Text" />
+    Variant="Variant.Text"/>
   @foreach (var messenger in mobileMessengers.Where(x => x.show).ToList())
   {
     <MudPaper Elevation="2" Class="ma-1">
@@ -22,16 +24,13 @@
             <MudIconButton
               OnClick="@(() => InspectMessenger(messenger.data.Id))"
               Icon="@Icons.Material.Filled.RemoveRedEye"
-              Color="MudBlazor.Color.Primary"/>
+              Color="Color.Primary"/>
           </MudItem>
         </MudGrid>
 
         <MudCollapse
           Class="py-2"
-          Expanded="mobileMessengers
-            .Where(x => x.data.Id == messenger.data.Id)
-            .First()
-            .expand">
+          Expanded="mobileMessengers.Where(x => x.data.Id == messenger.data.Id).First().expand">
           <MudStack>
             <MudDivider DividerType="DividerType.Middle" Class="mt-2"/>
             <MudText>
@@ -61,7 +60,7 @@
         Adornment="Adornment.Start"
         Immediate="true"
         AdornmentIcon="@Icons.Material.Filled.Search"
-        IconSize="MudBlazor.Size.Medium"
+        IconSize="Size.Medium"
         Class="mt-0">
       </MudTextField>
     </ToolBarContent>
@@ -72,7 +71,7 @@
             <MudButton
               OnClick="() => InspectMessenger(context.Item.Id)"
               Variant="Variant.Outlined"
-              Color="MudBlazor.Color.Primary">
+              Color="Color.Primary">
               @context.Item.Title
             </MudButton>
           </MudStack>
@@ -118,12 +117,14 @@
     var messengers = await context.Read<MessengerModel>([], [], []);
     desktopMessengers = messengers.Items;
     mobileMessengers = messengers.Items
-      .Select(messenger =>
-        new MobileMessenger {
-          data = messenger,
-          show = true,
-          expand = false
-        }
+      .Select(
+        messenger =>
+          new MobileMessenger
+          {
+            data = messenger,
+            show = true,
+            expand = false
+          }
       )
       .ToList();
   }
@@ -134,6 +135,7 @@
     public bool expand;
     public bool show;
   }
+
   private void InspectMessenger(string item)
   {
     NavigationManager.NavigateTo($"messenger/{item}");
@@ -168,8 +170,9 @@
     }
 
     var filetered = mobileMessengers
-      .Where(x => x.data.Title
-        .Contains(value, StringComparison.InvariantCultureIgnoreCase))
+      .Where(
+        x => x.data.Title
+          .Contains(value, StringComparison.InvariantCultureIgnoreCase))
       .ToList();
     foreach (var messenger in filetered)
     {
@@ -178,8 +181,10 @@
 
     return InvokeAsync(StateHasChanged);
   }
+
 }
-    using YesSql.Services;
+
+using YesSql.Services;
 
 #line default
 #line hidden

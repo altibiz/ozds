@@ -16,11 +16,12 @@ public class ExceptionMiddleware(
     }
     catch (Exception ex)
     {
-      publisher.PublishError(new ErrorEventArgs
-      {
-        Message = ex.Message,
-        Exception = ex
-      });
+      publisher.PublishError(
+        new ErrorEventArgs
+        {
+          Message = ex.Message,
+          Exception = ex
+        });
 
       throw;
     }

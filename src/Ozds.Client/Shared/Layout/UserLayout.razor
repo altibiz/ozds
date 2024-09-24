@@ -1,13 +1,12 @@
-@using System.Globalization
-@using Microsoft.AspNetCore.Antiforgery
-@using Microsoft.AspNetCore.Http
-@using Color = MudBlazor.Color
-@using Ozds.Business.Observers.Abstractions
-@using Ozds.Business.Observers.EventArgs
 @inject IAntiforgery Antiforgery
 @inject IHttpContextAccessor HttpContextAccessor
 @inject INotificationCreatedSubscriber NotificationCreatedSubscriber
 @inherits OzdsOwningLayoutComponentBase
+@using System.Globalization
+@using Microsoft.AspNetCore.Antiforgery
+@using Microsoft.AspNetCore.Http
+@using Ozds.Business.Observers.Abstractions
+@using Ozds.Business.Observers.EventArgs
 @implements IDisposable
 
 <MudLayout>
@@ -53,32 +52,32 @@
     </MudMenu>
     @if (RepresentativeState?.Representative is { } representative)
     {
-          @if (_userLayoutState.Notifications.Count > 0)
-          {
-      <MudMenu AnchorOrigin="Origin.CenterLeft" Dense="true" Class="mt-1 ml-4">
-        <ActivatorContent>
+      @if (_userLayoutState.Notifications.Count > 0)
+      {
+        <MudMenu AnchorOrigin="Origin.CenterLeft" Dense="true" Class="mt-1 ml-4">
+          <ActivatorContent>
             <MudIcon Icon="@Icons.Material.Filled.NotificationsActive"/>
             <MudItem Style="display: flex; position: absolute; top: 12px; left: 14px;">
               <MudIcon Icon="@Icons.Material.Filled.Circle" Style="font-size: 17px; color: #f44336; position: absolute;"/>
               <MudText Style="font-size: 10px; position: absolute; left: 6px;">@_userLayoutState.Notifications.Count()</MudText>
             </MudItem>
-        </ActivatorContent>
-        <ChildContent>
-          @foreach (var notification in _userLayoutState.Notifications)
-          {
-            <MudListItem
-              Text="@notification.Title"
-              Href="@($"notification/{notification.Id}")"
-              ForceLoad="true"/>
-            <hr/>
-          }
-        </ChildContent>
-      </MudMenu>
-          }
-          else
-          {
-            <MudIcon Icon="@Icons.Material.Filled.Notifications"/>
-          }
+          </ActivatorContent>
+          <ChildContent>
+            @foreach (var notification in _userLayoutState.Notifications)
+            {
+              <MudListItem
+                Text="@notification.Title"
+                Href="@($"notification/{notification.Id}")"
+                ForceLoad="true"/>
+              <hr/>
+            }
+          </ChildContent>
+        </MudMenu>
+      }
+      else
+      {
+        <MudIcon Icon="@Icons.Material.Filled.Notifications"/>
+      }
     }
   </MudAppBar>
   <MudDrawer @bind-Open="_drawerOpen" Elevation="25" ClipMode="DrawerClipMode.Always">
@@ -114,7 +113,7 @@
   public RepresentativeState? RepresentativeState { get; set; } = default!;
 
   private UserLayoutState _userLayoutState =
-   new(
+    new(
       false,
       [],
       n => { },
@@ -161,41 +160,44 @@
     }
 
     var notifications = (await ScopedServices
-      .GetRequiredService<OzdsNotificationQueries>()
-      .ReadForRecipient<NotificationModel>(representative))
+        .GetRequiredService<OzdsNotificationQueries>()
+        .ReadForRecipient<NotificationModel>(representative))
       .Items
       .OfType<INotification>()
       .ToList();
 
     _userLayoutState =
-    new(
-      false,
-      notifications,
-      n => {
-        _userLayoutState = _userLayoutState with
+      new UserLayoutState(
+        false,
+        notifications,
+        n =>
         {
+          _userLayoutState = _userLayoutState with
+          {
             Notifications = _userLayoutState
               .Notifications
               .Where(u => u.Id != n.Id)
               .ToList()
-        };
-        InvokeAsync(StateHasChanged);
-      },
-      c => {
-        _userLayoutState = _userLayoutState with
+          };
+          InvokeAsync(StateHasChanged);
+        },
+        c =>
         {
+          _userLayoutState = _userLayoutState with
+          {
             Notifications = _userLayoutState
               .Notifications
               .Concat([c])
               .ToList()
-        };
-        InvokeAsync(StateHasChanged);
-      },
-      s => {
-        _userLayoutState = _userLayoutState with { Seen = s };
-        InvokeAsync(StateHasChanged);
-      }
-    );
+          };
+          InvokeAsync(StateHasChanged);
+        },
+        s =>
+        {
+          _userLayoutState = _userLayoutState with { Seen = s };
+          InvokeAsync(StateHasChanged);
+        }
+      );
   }
 
   void OnNotificationCreated(

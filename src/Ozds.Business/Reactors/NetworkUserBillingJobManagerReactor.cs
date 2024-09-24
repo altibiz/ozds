@@ -41,7 +41,8 @@ public class NetworkUserBillingJobManagerReactor(
     {
       var context = scope.ServiceProvider.GetRequiredService<DataDbContext>();
       var manager =
-        scope.ServiceProvider.GetRequiredService<INetworkUserBillingJobManager>();
+        scope.ServiceProvider
+          .GetRequiredService<INetworkUserBillingJobManager>();
 
       var networkUsers = await context.NetworkUsers.ToListAsync(stoppingToken);
       foreach (var networkUser in networkUsers)
@@ -68,7 +69,8 @@ public class NetworkUserBillingJobManagerReactor(
     IServiceProvider serviceProvider,
     EntitiesChangedEventArgs eventArgs)
   {
-    var manager = serviceProvider.GetRequiredService<INetworkUserBillingJobManager>();
+    var manager = serviceProvider
+      .GetRequiredService<INetworkUserBillingJobManager>();
 
     foreach (var entry in eventArgs.Entities)
     {

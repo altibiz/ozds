@@ -19,6 +19,10 @@ public class AgnosticMeasurementRecordPushRequestConverter(
 
     return converter?.ConvertToPushRequest(record)
       ?? throw new InvalidOperationException(
-        $"No converter found for {record.GetType()} with messenger {messengerId}");
+        $"No converter found for {
+          record.GetType()
+        } with messenger {
+          messengerId
+        }");
   }
 }

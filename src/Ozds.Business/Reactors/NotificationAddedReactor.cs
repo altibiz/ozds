@@ -54,7 +54,8 @@ public class NotificationAddedReactor(
     IServiceProvider serviceProvider,
     EntitiesChangedEventArgs eventArgs)
   {
-    var publisher = serviceProvider.GetRequiredService<INotificationCreatedPublisher>();
+    var publisher = serviceProvider
+      .GetRequiredService<INotificationCreatedPublisher>();
     var context = serviceProvider.GetRequiredService<DataDbContext>();
 
     foreach (var entry in eventArgs.Entities)
@@ -67,8 +68,9 @@ public class NotificationAddedReactor(
       }
 
       var notification = await context.Notifications
-        .Where(context.PrimaryKeyEquals<NotificationEntity>(
-          recipient.NotificationId))
+        .Where(
+          context.PrimaryKeyEquals<NotificationEntity>(
+            recipient.NotificationId))
         .FirstOrDefaultAsync();
 
       if (notification is null)

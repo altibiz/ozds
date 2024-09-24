@@ -6,9 +6,8 @@ namespace Ozds.Data.Entities.Base;
 
 public class MessengerEntity : AuditableEntity
 {
-  protected readonly string _stringId = default!;
-
   private readonly long _locationId;
+  protected readonly string _stringId = default!;
 
   public override string Id
   {

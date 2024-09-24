@@ -11,7 +11,8 @@ public class BillingJobManager(ISchedulerFactory schedulerFactory)
   {
     var scheduler = await schedulerFactory.GetScheduler();
 
-    var triggerKey = new TriggerKey(networkUserId, nameof(NetworkUserMonthlyBillingJob));
+    var triggerKey = new TriggerKey(
+      networkUserId, nameof(NetworkUserMonthlyBillingJob));
     if (!await scheduler.CheckExists(triggerKey))
     {
       var job = CreateJob(networkUserId);
@@ -25,7 +26,8 @@ public class BillingJobManager(ISchedulerFactory schedulerFactory)
   {
     var scheduler = await schedulerFactory.GetScheduler();
 
-    var triggerKey = new TriggerKey(networkUserId, nameof(NetworkUserMonthlyBillingJob));
+    var triggerKey = new TriggerKey(
+      networkUserId, nameof(NetworkUserMonthlyBillingJob));
 
     if (await scheduler.CheckExists(triggerKey))
     {
@@ -42,7 +44,8 @@ public class BillingJobManager(ISchedulerFactory schedulerFactory)
   {
     var scheduler = await schedulerFactory.GetScheduler();
 
-    var triggerKey = new TriggerKey(networkUserId, nameof(NetworkUserMonthlyBillingJob));
+    var triggerKey = new TriggerKey(
+      networkUserId, nameof(NetworkUserMonthlyBillingJob));
 
     if (await scheduler.CheckExists(triggerKey))
     {

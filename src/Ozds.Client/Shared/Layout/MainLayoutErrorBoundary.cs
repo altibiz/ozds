@@ -12,11 +12,12 @@ public class MainLayoutErrorBoundary : ErrorBoundary
 
   protected override Task OnErrorAsync(Exception exception)
   {
-    Publisher.PublishError(new ErrorEventArgs
-    {
-      Message = exception.Message,
-      Exception = exception
-    });
+    Publisher.PublishError(
+      new ErrorEventArgs
+      {
+        Message = exception.Message,
+        Exception = exception
+      });
 
     return Task.CompletedTask;
   }

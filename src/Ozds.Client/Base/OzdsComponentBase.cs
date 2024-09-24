@@ -9,6 +9,11 @@ namespace Ozds.Client.Base;
 
 public abstract class OzdsComponentBase : ComponentBase
 {
+  private static readonly JsonSerializerOptions _jsonSerializerOptions = new()
+  {
+    WriteIndented = true
+  };
+
   [Inject]
   public ILocalizer T { get; set; } = default!;
 
@@ -135,9 +140,4 @@ public abstract class OzdsComponentBase : ComponentBase
   {
     return JsonSerializer.Serialize(jsonDocument, _jsonSerializerOptions);
   }
-
-  private static readonly JsonSerializerOptions _jsonSerializerOptions = new()
-  {
-    WriteIndented = true,
-  };
 }

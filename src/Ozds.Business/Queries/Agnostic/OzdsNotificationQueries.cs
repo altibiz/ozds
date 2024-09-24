@@ -83,12 +83,14 @@ public class OzdsNotificationQueries(
 
     var filtered = context.NotificationRecipients
       .Where(nr => nr.RepresentativeId == representative.Id)
-      .Where(seen
-        ? nr => nr.SeenOn != null
-        : nr => nr.SeenOn == null)
+      .Where(
+        seen
+          ? nr => nr.SeenOn != null
+          : nr => nr.SeenOn == null)
       .Join(
         queryable,
-        context.ForeignKeyOf<NotificationRecipientEntity>(nameof(NotificationRecipientEntity.Notification)),
+        context.ForeignKeyOf<NotificationRecipientEntity>(
+          nameof(NotificationRecipientEntity.Notification)),
         context.PrimaryKeyOf<NotificationEntity>(),
         (_, n) => n
       );
@@ -115,11 +117,12 @@ public class OzdsNotificationQueries(
       .ToListAsync();
 
     return representatives
-      .Select(representative => new NotificationRecipientModel
-      {
-        NotificationId = notification.Id,
-        RepresentativeId = representative.Id
-      })
+      .Select(
+        representative => new NotificationRecipientModel
+        {
+          NotificationId = notification.Id,
+          RepresentativeId = representative.Id
+        })
       .ToList();
   }
 }

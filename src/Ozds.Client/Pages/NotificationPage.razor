@@ -1,5 +1,5 @@
 @page "/notification/{id}"
-@using Color = MudBlazor.Color
+@using Align = MudBlazor.Align
 @inherits OzdsOwningComponentBase
 
 
@@ -42,16 +42,14 @@
           </MudItem>
           <MudItem xs="12" sm="@(model.Summary.Length > 30 ? 12 : 9)">
             <MudHidden Breakpoint="Breakpoint.Xs">
-              <MudText Type="Typo.body2" Align="@(model.Summary.Length > 30
-                ? MudBlazor.Align.Left
-                : MudBlazor.Align.Right)"
-                Style="overflow-wrap: break-word;">
+              <MudText Type="Typo.body2" Align="@(model.Summary.Length > 30 ? Align.Left : Align.Right)"
+                       Style="overflow-wrap: break-word;">
                 @model.Summary
               </MudText>
             </MudHidden>
             <MudHidden Breakpoint="Breakpoint.SmAndUp">
               <MudText Type="Typo.body2" Align="MudAlign.Left"
-                Style="overflow-wrap: break-word;">
+                       Style="overflow-wrap: break-word;">
                 @model.Summary
               </MudText>
             </MudHidden>
@@ -66,10 +64,8 @@
           </MudItem>
           <MudItem xs="12" sm="@(model.Content.Length > 30 ? 12 : 9)">
             <MudHidden Breakpoint="Breakpoint.Xs">
-              <MudText Type="Typo.body2" Align="@(model.Content.Length > 30
-                ? MudBlazor.Align.Left
-                : MudBlazor.Align.Right)"
-                Style="overflow-wrap: break-word;">
+              <MudText Type="Typo.body2" Align="@(model.Content.Length > 30 ? Align.Left : Align.Right)"
+                       Style="overflow-wrap: break-word;">
                 <pre>
                   @model.Content
                 </pre>
@@ -77,7 +73,7 @@
             </MudHidden>
             <MudHidden Breakpoint="Breakpoint.SmAndUp">
               <MudText Type="Typo.body2" Align="MudAlign.Left"
-                Style="overflow-wrap: break-word;">
+                       Style="overflow-wrap: break-word;">
                 <pre>
                   @model.Content
                 </pre>
@@ -129,7 +125,8 @@
     var notification = await ScopedServices
       .GetRequiredService<OzdsNotificationQueries>()
       .ReadSingle<NotificationModel>(Id);
-    if (notification is { }) {
+    if (notification is not null)
+    {
       await ScopedServices
         .GetRequiredService<OzdsNotificationMutations>()
         .MarkNotificationAsSeen(
@@ -137,6 +134,8 @@
           RepresentativeState.Representative.Id);
       UserLayoutState.MarkNotificationAsSeen(notification);
     }
+
     return notification;
   }
+
 }

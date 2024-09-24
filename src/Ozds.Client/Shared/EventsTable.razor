@@ -1,6 +1,5 @@
 @using Color = MudBlazor.Color
 @using Size = MudBlazor.Size
-@using Ozds.Business.Models.Abstractions
 @inherits OzdsOwningComponentBase
 
 @if (_shownEvents is not null && _shownEvents.Count() > 0)
@@ -17,7 +16,7 @@
             <MudGrid Class="d-flex pa-2">
               <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large;">
                 <MudText Typo="Typo.h6">
-                 @e.data.Title
+                  @e.data.Title
                 </MudText>
               </MudItem>
               <MudItem xs="2" Class="d-flex align-center justify-end">
@@ -29,9 +28,7 @@
               <MudItem xs="2" Class="d-flex align-center justify-end">
                 <MudIconButton
                   OnClick="() => OnExpandCollapseClick(e.data.Id)"
-                  Icon="@(e.expand
-                    ? Icons.Material.Filled.KeyboardArrowUp
-                    : Icons.Material.Filled.KeyboardArrowDown)"
+                  Icon="@(e.expand ? Icons.Material.Filled.KeyboardArrowUp : Icons.Material.Filled.KeyboardArrowDown)"
                   Color="Color.Default"/>
               </MudItem>
               <MudItem xs="10" Class="d-flex flex-row align-center justify-end">
@@ -40,9 +37,7 @@
                 </MudText>
               </MudItem>
             </MudGrid>
-            <MudCollapse Class="py-2" Expanded="_shownEvents
-              .Where(x => x.data.Id == e.data.Id)
-              .First().expand">
+            <MudCollapse Class="py-2" Expanded="_shownEvents.Where(x => x.data.Id == e.data.Id).First().expand">
               <MudStack>
                 <MudDivider DividerType="DividerType.Middle" Class="mt-2"/>
                 <MudText Typo="Typo.body2" Class="px-8 py-4" Style="overflow-wrap: break-word;">
@@ -157,10 +152,9 @@
 
   protected override async Task OnParametersSetAsync()
   {
-
     _events = (await ScopedServices
-      .GetRequiredService<OzdsEventQueries>()
-      .Read<EventModel>(MinLevel))
+        .GetRequiredService<OzdsEventQueries>()
+        .Read<EventModel>(MinLevel))
       .Items
       .OfType<IEvent>()
       .ToList();

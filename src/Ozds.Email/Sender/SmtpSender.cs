@@ -111,7 +111,7 @@ public class SmtpSender(
     foreach (var mimeMessage in mimeMessages)
     {
       var response = await client.SendAsync(mimeMessage);
-      logger.LogDebug(response.ToString());
+      logger.LogDebug(response);
     }
 
     await client.DisconnectAsync(true);

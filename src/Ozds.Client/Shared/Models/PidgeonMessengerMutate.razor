@@ -50,7 +50,7 @@
       <MudNumericField
         Label="@T["Max inactivity period multiplier"]"
         For="@(() => LoadingState.Value.MaxInactivityPeriod.Multiplier)"
-        @bind-Value ="LoadingState.Value.MaxInactivityPeriod.Multiplier" />
+        @bind-Value="LoadingState.Value.MaxInactivityPeriod.Multiplier"/>
     </MudCardContent>
     <ValidationSummary/>
     <MudCardActions>
@@ -99,6 +99,7 @@
     {
       await mutations.Update(LoadingState.Value);
     }
+
     DialogService.Show<MutateSuccess>("Changes Saved", new DialogOptions { CloseOnEscapeKey = true });
   }
 

@@ -6,6 +6,7 @@ namespace Ozds.Data.Entities.Base;
 
 public class MeterEntity : AuditableEntity
 {
+  private readonly long _measurementValidatorId;
   protected readonly string _stringId = default!;
 
   public override string Id
@@ -26,11 +27,8 @@ public class MeterEntity : AuditableEntity
   public List<PhaseEntity> Phases { get; set; } = default!;
 
   public virtual ICollection<NetworkUserCalculationEntity>
-    NetworkUserCalculations
-  { get; set; } =
+    NetworkUserCalculations { get; set; } =
     default!;
-
-  private readonly long _measurementValidatorId;
 
   public virtual string MeasurementValidatorId
   {

@@ -5,20 +5,22 @@ namespace Ozds.Jobs.Observers;
 
 public class BillingJobObserver : IBillingJobPublisher, IBillingJobSubscriber
 {
-  private event EventHandler<NetworkUserInvoiceEventArgs>? Invoice;
-
   public void PublishInvoice(NetworkUserInvoiceEventArgs args)
   {
     Invoice?.Invoke(this, args);
   }
 
-  public void SubscribeNetworkUserInvoiceCreate(EventHandler<NetworkUserInvoiceEventArgs> handler)
+  public void SubscribeNetworkUserInvoiceCreate(
+    EventHandler<NetworkUserInvoiceEventArgs> handler)
   {
     Invoice += handler;
   }
 
-  public void UnsubscribeNetworkUserInvoiceCreate(EventHandler<NetworkUserInvoiceEventArgs> handler)
+  public void UnsubscribeNetworkUserInvoiceCreate(
+    EventHandler<NetworkUserInvoiceEventArgs> handler)
   {
     Invoice -= handler;
   }
+
+  private event EventHandler<NetworkUserInvoiceEventArgs>? Invoice;
 }

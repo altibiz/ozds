@@ -2,7 +2,6 @@ using System.Text.Json;
 using Ozds.Business.Activation.Base;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Enums;
-using Ozds.Data.Entities;
 
 namespace Ozds.Business.Activation;
 
@@ -24,7 +23,7 @@ public class SystemEventModelActivator : ModelActivator<SystemEventModel>
       Level = LevelModel.Information,
       Categories = new List<CategoryModel>
       {
-        CategoryModel.All,
+        CategoryModel.All
       }
     };
   }

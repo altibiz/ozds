@@ -1,5 +1,5 @@
 @page "/notifications"
-@attribute [Navigation(Icon= Icons.Material.Outlined.Notifications, Title = "Notifications")]
+@attribute [Navigation(Icon = Icons.Material.Outlined.Notifications, Title = "Notifications")]
 
 
 @if (user is null)
@@ -11,8 +11,7 @@
   T="bool"
   Label="@T["Seen"]"
   Checked="@UserLayoutState.Seen"
-  CheckedChanged="@(() => UserLayoutState
-    .SetSeen(!UserLayoutState.Seen))"/>
+  CheckedChanged="@(() => UserLayoutState.SetSeen(!UserLayoutState.Seen))"/>
 
 <NotificationsTable Seen="@UserLayoutState.Seen"/>
 
@@ -27,4 +26,5 @@
 
   [CascadingParameter]
   public UserLayoutState UserLayoutState { get; set; } = default!;
+
 }

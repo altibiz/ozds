@@ -70,7 +70,7 @@ public static class MeterModelEntityConverterExtensions
       DeletedById = entity.DeletedById,
       ConnectionPower_W = (decimal)entity.ConnectionPower_W,
       Phases = entity.Phases.Select(x => x.ToModel()).ToHashSet(),
-      MessengerId = entity.MessengerId,
+      MessengerId = entity.MessengerId
     };
 
     throw new NotSupportedException(

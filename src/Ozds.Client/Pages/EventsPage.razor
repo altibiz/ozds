@@ -16,7 +16,8 @@
   AnchorOrigin="Origin.BottomCenter"
   @bind-Value="_minLevel">
   @foreach (var value in Enum.GetValues<LevelModel>()
-      .Where(l => Environment.IsDevelopment()
+    .Where(
+      l => Environment.IsDevelopment()
         ? l >= LevelModel.Trace
         : l >= LevelModel.Information))
   {

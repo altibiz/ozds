@@ -1,4 +1,5 @@
 // using System.Text.Json;
+
 using Ozds.Jobs.Observers.Abstractions;
 using Ozds.Jobs.Observers.EventArgs;
 using Quartz;
@@ -23,7 +24,7 @@ public class MessengerInactivityMonitorJob(
       StartedAt = context.Trigger.StartTimeUtc,
       ScheduledFireAt = context.ScheduledFireTimeUtc ?? default,
       FiredAt = context.FireTimeUtc,
-      RefireCount = context.RefireCount,
+      RefireCount = context.RefireCount
     };
 
     // logger.LogDebug(

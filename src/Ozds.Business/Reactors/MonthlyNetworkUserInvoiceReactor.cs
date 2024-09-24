@@ -2,7 +2,6 @@ using System.Threading.Channels;
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Conversion;
 using Ozds.Business.Finance.Abstractions;
-using Ozds.Business.Models.Enums;
 using Ozds.Business.Reactors.Abstractions;
 using Ozds.Business.Time;
 using Ozds.Data.Context;
@@ -57,7 +56,8 @@ public class MonthlyNetworkUserInvoiceReactor(
   {
     var context = serviceProvider.GetRequiredService<DataDbContext>();
     var networkUser = (await context.Messengers
-        .Where(context.PrimaryKeyEquals<MessengerEntity>(eventArgs.NetworkUserId))
+        .Where(
+          context.PrimaryKeyEquals<MessengerEntity>(eventArgs.NetworkUserId))
         .FirstOrDefaultAsync())
       ?.ToModel();
     if (networkUser is null)

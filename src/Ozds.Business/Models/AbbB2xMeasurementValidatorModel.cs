@@ -127,7 +127,9 @@ public class
     )
     {
       yield return new ValidationResult(
-        $"ReactivePower must be greater than or equal to {MinReactivePower_VAR}.",
+        $"ReactivePower must be greater than or equal to {
+          MinReactivePower_VAR
+        }.",
         new[] { nameof(AbbB2xMeasurementModel.ReactivePower_VAR) }
       );
     }

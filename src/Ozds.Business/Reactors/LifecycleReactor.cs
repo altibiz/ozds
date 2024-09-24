@@ -52,8 +52,10 @@ public class LifecycleReactor(
 #pragma warning disable S2094 // Classes should not be empty
   private record LifecycleEventContent(string Message);
 
-  private sealed record StartupEventContent() : LifecycleEventContent("Startup");
+  private sealed record StartupEventContent()
+    : LifecycleEventContent("Startup");
 
-  private sealed record ShutdownEventContent() : LifecycleEventContent("Shutdown");
+  private sealed record ShutdownEventContent()
+    : LifecycleEventContent("Shutdown");
 #pragma warning restore S2094 // Classes should not be empty
 }

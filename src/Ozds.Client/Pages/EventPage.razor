@@ -1,6 +1,6 @@
 @page "/event/{id}"
-@using Color = MudBlazor.Color
 @using Ozds.Client.Extensions
+@using Align = MudBlazor.Align
 @inherits OzdsOwningComponentBase
 
 
@@ -8,9 +8,7 @@
 {
   return;
 }
-<Loading TState="EventModel" Load="@(() => ScopedServices
-  .GetRequiredService<OzdsEventQueries>()
-  .ReadSingle<EventModel>(Id))">
+<Loading TState="EventModel" Load="@(() => ScopedServices.GetRequiredService<OzdsEventQueries>().ReadSingle<EventModel>(Id))">
   <Found Context="model">
     @{
       var json = JsonString(model.Content);
@@ -78,10 +76,8 @@
           </MudItem>
           <MudItem xs="12" sm="@(json.Length > 30 ? 12 : 9)">
             <MudHidden Breakpoint="Breakpoint.Xs">
-              <MudText Type="Typo.body2" Align="@(json.Length > 30
-                ? MudBlazor.Align.Left
-                : MudBlazor.Align.Right)"
-                Style="overflow-wrap: break-word;">
+              <MudText Type="Typo.body2" Align="@(json.Length > 30 ? Align.Left : Align.Right)"
+                       Style="overflow-wrap: break-word;">
                 <code Style="overflow-wrap: break-word;">
                   @json
                 </code>

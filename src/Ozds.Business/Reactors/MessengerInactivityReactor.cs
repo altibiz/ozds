@@ -119,6 +119,7 @@ public class MeterInactivityReactor(
       builder.AppendLine($"Refire count: {eventArgs.RefireCount}");
       builder.AppendLine();
     }
+
     if (lastPushEvent is null)
     {
       builder.AppendLine("Meter never pushed");
@@ -133,8 +134,10 @@ public class MeterInactivityReactor(
       builder.AppendLine($"Last pushed at: {lastPushEvent.Timestamp}");
       builder.AppendLine($"Last push details: {lastPushEventDetails}");
     }
+
     notification.Content = builder.ToString();
-    var notificationEntity = converter.ToEntity<MessengerNotificationEntity>(notification);
+    var notificationEntity =
+      converter.ToEntity<MessengerNotificationEntity>(notification);
     context.Add(notificationEntity);
     await context.SaveChangesAsync();
     notification.Id = notificationEntity.Id;

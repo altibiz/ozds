@@ -43,7 +43,8 @@ public class
   )
   {
     if (
-      memberName is null or nameof(SchneideriEM3xxxMeasurementModel.Voltage_V) &&
+      memberName is null or nameof(SchneideriEM3xxxMeasurementModel.Voltage_V)
+      &&
       measurement.Voltage_V.TariffUnary().DuplexAny().PhaseSum()
       < MinVoltage_V * 3 &&
       measurement.Voltage_V.TariffUnary().DuplexAny().PhaseTrough()
@@ -57,7 +58,8 @@ public class
     }
 
     if (
-      memberName is null or nameof(SchneideriEM3xxxMeasurementModel.Voltage_V) &&
+      memberName is null or nameof(SchneideriEM3xxxMeasurementModel.Voltage_V)
+      &&
       measurement.Voltage_V.TariffUnary().DuplexAny().PhaseSum()
       > MaxVoltage_V * 3 &&
       measurement.Voltage_V.TariffUnary().DuplexAny().PhasePeak() > MaxVoltage_V
@@ -70,7 +72,8 @@ public class
     }
 
     if (
-      memberName is null or nameof(SchneideriEM3xxxMeasurementModel.Current_A) &&
+      memberName is null or nameof(SchneideriEM3xxxMeasurementModel.Current_A)
+      &&
       measurement.Current_A.TariffUnary().DuplexAny().PhaseSum()
       < MinCurrent_A * 3 &&
       measurement.Current_A.TariffUnary().DuplexAny().PhaseTrough()
@@ -84,7 +87,8 @@ public class
     }
 
     if (
-      memberName is null or nameof(SchneideriEM3xxxMeasurementModel.Current_A) &&
+      memberName is null or nameof(SchneideriEM3xxxMeasurementModel.Current_A)
+      &&
       measurement.Current_A.TariffUnary().DuplexAny().PhaseSum()
       > MaxCurrent_A * 3 &&
       measurement.Current_A.TariffUnary().DuplexAny().PhasePeak() > MaxCurrent_A
@@ -136,7 +140,9 @@ public class
     )
     {
       yield return new ValidationResult(
-        $"ReactivePower must be greater than or equal to {MinReactivePower_VAR}.",
+        $"ReactivePower must be greater than or equal to {
+          MinReactivePower_VAR
+        }.",
         new[] { nameof(SchneideriEM3xxxMeasurementModel.ReactivePower_VAR) }
       );
     }
@@ -166,7 +172,9 @@ public class
     )
     {
       yield return new ValidationResult(
-        $"ApparentPower must be greater than or equal to {MinApparentPower_VA}.",
+        $"ApparentPower must be greater than or equal to {
+          MinApparentPower_VA
+        }.",
         new[] { nameof(SchneideriEM3xxxMeasurementModel.ApparentPower_VA) }
       );
     }

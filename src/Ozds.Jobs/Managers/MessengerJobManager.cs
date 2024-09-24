@@ -109,8 +109,9 @@ public class MessengerJobManager(
       .WithIdentity(id, nameof(MessengerInactivityMonitorJob))
       .ForJob(id, nameof(MessengerInactivityMonitorJob))
       .StartAt(startAt)
-      .WithSimpleSchedule(x => x
-        .WithMisfireHandlingInstructionNextWithExistingCount())
+      .WithSimpleSchedule(
+        x => x
+          .WithMisfireHandlingInstructionNextWithExistingCount())
       .Build();
   }
 }

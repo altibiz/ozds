@@ -70,6 +70,7 @@ public class EntityChangesPublishingInterceptor(
       PublishEntitiesChanged(entries);
       _contextEntries.Remove(context);
     }
+
     return base.SavedChanges(eventData, result);
   }
 
@@ -90,6 +91,7 @@ public class EntityChangesPublishingInterceptor(
       PublishEntitiesChanged(entries);
       _contextEntries.Remove(context);
     }
+
     return await base.SavedChangesAsync(eventData, result, cancellationToken);
   }
 
@@ -124,6 +126,7 @@ public class EntityChangesPublishingInterceptor(
           },
           entity));
     }
+
     return entries;
   }
 

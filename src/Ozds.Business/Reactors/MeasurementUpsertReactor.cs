@@ -102,11 +102,12 @@ public class MeasurementUpsertReactor(
         .ToList();
 
     if (await Validate(
-      context,
-      upsertMeasurements,
-      upsertAggregates) is { } validationResults)
+        context,
+        upsertMeasurements,
+        upsertAggregates) is { } validationResults)
     {
-      var eventId = await AddPushEvent(context, activator, eventArgs, validationResults);
+      var eventId = await AddPushEvent(
+        context, activator, eventArgs, validationResults);
       await AddInvalidPushNotification(
         context,
         notificationQueries,
@@ -117,10 +118,8 @@ public class MeasurementUpsertReactor(
       );
       return;
     }
-    else
-    {
-      await AddPushEvent(context, activator, eventArgs);
-    }
+
+    await AddPushEvent(context, activator, eventArgs);
 
     var tasks = MakeUpsertMeasurementTasks(
         context, modelEntityConverter, upsertMeasurements)
@@ -196,7 +195,8 @@ public class MeasurementUpsertReactor(
       .Join(
         context.Meters.Where(context.PrimaryKeyIn<MeterEntity>(meterIds)),
         context.PrimaryKeyOf<MeasurementValidatorEntity>(),
-        context.ForeignKeyOf<MeterEntity>(nameof(MeterEntity.MeasurementValidator)),
+        context.ForeignKeyOf<MeterEntity>(
+          nameof(MeterEntity.MeasurementValidator)),
         (validator, _) => validator
       )
       .ToListAsync();
@@ -204,7 +204,6 @@ public class MeasurementUpsertReactor(
     var validationResults = new List<ValidationResult>();
     foreach (var validationMeasurement in validationMeasurements)
     {
-
       var validator = validators
         .FirstOrDefault(x => x.Id == validationMeasurement.MeterId);
       if (validator is null)
@@ -217,8 +216,9 @@ public class MeasurementUpsertReactor(
         Items = { ["MeasurementValidator"] = validator }
       };
 
-      validationResults.AddRange(validationMeasurement
-        .Validate(validationContext));
+      validationResults.AddRange(
+        validationMeasurement
+          .Validate(validationContext));
     }
 
     if (validationResults.Count is not 0)
@@ -293,8 +293,9 @@ public class MeasurementUpsertReactor(
       TopicModel.InvalidPush
     ];
     notification.Summary = $"Messenger \"{messenger.Title}\" push failed";
-    notification.Content = string.Join("\n", validationResults
-      .Select(x => $"{x.MemberNames.First()}: {x.ErrorMessage}"));
+    notification.Content = string.Join(
+      "\n", validationResults
+        .Select(x => $"{x.MemberNames.First()}: {x.ErrorMessage}"));
     notification.EventId = eventId;
     var notificationEntity = notification.ToEntity();
     context.Add(notificationEntity);

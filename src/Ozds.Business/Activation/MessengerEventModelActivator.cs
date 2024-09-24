@@ -15,7 +15,7 @@ public class MessengerEventModelActivator :
 
   public static MessengerEventModel New()
   {
-    return new()
+    return new MessengerEventModel
     {
       Id = default!,
       Title = string.Empty,
@@ -24,9 +24,9 @@ public class MessengerEventModelActivator :
       Level = LevelModel.Information,
       Categories = new List<CategoryModel>
       {
-        CategoryModel.All,
+        CategoryModel.All
       },
-      MessengerId = default!,
+      MessengerId = default!
     };
   }
 }

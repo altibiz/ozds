@@ -4,7 +4,6 @@ using Ozds.Business.Activation.Agnostic;
 using Ozds.Business.Conversion;
 using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Models;
-using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Enums;
 using Ozds.Business.Observers.Abstractions;
 using Ozds.Business.Queries.Agnostic;
@@ -53,9 +52,11 @@ public class ErrorReactor(
     IServiceProvider serviceProvider,
     ErrorEventArgs eventArgs)
   {
-    var activator = serviceProvider.GetRequiredService<AgnosticModelActivator>();
+    var activator =
+      serviceProvider.GetRequiredService<AgnosticModelActivator>();
     var context = serviceProvider.GetRequiredService<DataDbContext>();
-    var converter = serviceProvider.GetRequiredService<AgnosticModelEntityConverter>();
+    var converter =
+      serviceProvider.GetRequiredService<AgnosticModelEntityConverter>();
     var notificationQueries = serviceProvider
       .GetRequiredService<OzdsNotificationQueries>();
 
@@ -81,10 +82,14 @@ public class ErrorReactor(
     @event.Id = eventEntity.Id;
 
     var notification = activator.Activate<SystemNotificationModel>();
-    notification.Title = $"[OZDS]: Exception";
+    notification.Title = "[OZDS]: Exception";
     notification.Summary = content.Message;
     notification.Timestamp = DateTimeOffset.UtcNow;
-    notification.Content = $"Exception: \n{eventArgs.Exception}\nStack trace: \n{eventArgs.Exception.StackTrace}\n";
+    notification.Content = $"Exception: \n{
+      eventArgs.Exception
+    }\nStack trace: \n{
+      eventArgs.Exception.StackTrace
+    }\n";
     notification.EventId = @event.Id;
     notification.Topics = new HashSet<TopicModel>
     {

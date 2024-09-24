@@ -7,7 +7,6 @@ namespace Ozds.Business.Models;
 
 public class SchneideriEM3xxxMeterModel : MeterModel
 {
-
   [Required]
   public required string MeasurementValidatorId { get; set; }
 

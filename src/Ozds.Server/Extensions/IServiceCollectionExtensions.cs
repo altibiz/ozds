@@ -19,13 +19,19 @@ public static class IServiceCollectionExtensions
           service.Lifetime == ServiceLifetime.Singleton)
       .Where(
         service =>
-          !(service.ImplementationInstance?.GetType().Namespace?.StartsWith(nameof(Microsoft))
-          ?? service.ImplementationType?.Namespace?.StartsWith(nameof(Microsoft))
-          ?? service.ImplementationFactory?.Method?.Module.Name?.StartsWith(nameof(Microsoft))
-          ?? false)
-          && !(service.ImplementationInstance?.GetType().Namespace?.StartsWith(nameof(OrchardCore))
-            ?? service.ImplementationType?.Namespace?.StartsWith(nameof(OrchardCore))
-            ?? service.ImplementationFactory?.Method.Module.Name?.StartsWith(nameof(OrchardCore))
+          !(service.ImplementationInstance?.GetType().Namespace
+              ?.StartsWith(nameof(Microsoft))
+            ?? service.ImplementationType?.Namespace?.StartsWith(
+              nameof(Microsoft))
+            ?? service.ImplementationFactory?.Method?.Module.Name?.StartsWith(
+              nameof(Microsoft))
+            ?? false)
+          && !(service.ImplementationInstance?.GetType().Namespace
+              ?.StartsWith(nameof(OrchardCore))
+            ?? service.ImplementationType?.Namespace?.StartsWith(
+              nameof(OrchardCore))
+            ?? service.ImplementationFactory?.Method.Module.Name?.StartsWith(
+              nameof(OrchardCore))
             ?? false)
       )
       .ToList();

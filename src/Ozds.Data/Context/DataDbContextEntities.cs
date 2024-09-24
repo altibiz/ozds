@@ -63,5 +63,6 @@ public partial class DataDbContext : DbContext
 
   public DbSet<NotificationEntity> Notifications { get; set; } = default!;
 
-  public DbSet<NotificationRecipientEntity> NotificationRecipients { get; set; } = default!;
+  public DbSet<NotificationRecipientEntity>
+    NotificationRecipients { get; set; } = default!;
 }
