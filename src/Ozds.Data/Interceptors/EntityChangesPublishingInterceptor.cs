@@ -95,7 +95,8 @@ public class EntityChangesPublishingInterceptor(
     return await base.SavedChangesAsync(eventData, result, cancellationToken);
   }
 
-  private static List<EntityChangesEntry> ProcessSavingChanges(DbContext context)
+  private static List<EntityChangesEntry> ProcessSavingChanges(
+    DbContext context)
   {
     context.ChangeTracker.DetectChanges();
 

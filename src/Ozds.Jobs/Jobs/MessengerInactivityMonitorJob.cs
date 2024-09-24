@@ -10,6 +10,11 @@ public class MessengerInactivityMonitorJob(
   ILogger<MessengerInactivityMonitorJob> logger
 ) : IJob
 {
+  private static readonly JsonSerializerOptions JsonSerializerOptions = new()
+  {
+    WriteIndented = true
+  };
+
   public string Id { get; set; } = default!;
 
   public DateTimeOffset ScheduledAt { get; set; } = default!;
@@ -35,9 +40,4 @@ public class MessengerInactivityMonitorJob(
 
     return Task.CompletedTask;
   }
-
-  private static readonly JsonSerializerOptions JsonSerializerOptions = new()
-  {
-    WriteIndented = true
-  };
 }
