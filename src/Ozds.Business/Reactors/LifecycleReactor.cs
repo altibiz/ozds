@@ -9,6 +9,8 @@ using Ozds.Data.Context;
 
 namespace Ozds.Business.Reactors;
 
+// TODO: startup after migrations
+
 public class LifecycleReactor(
   IDbContextFactory<DataDbContext> factory,
   AgnosticModelActivator activator
@@ -16,13 +18,13 @@ public class LifecycleReactor(
 {
   public async Task StartAsync(CancellationToken cancellationToken)
   {
-    await using var context =
-      await factory.CreateDbContextAsync(cancellationToken);
-    var content = new StartupEventContent();
-    var @event = CreateEvent(content);
-    var eventEntity = @event.ToEntity();
-    context.Add(eventEntity);
-    await context.SaveChangesAsync(cancellationToken);
+    // await using var context =
+    //   await factory.CreateDbContextAsync(cancellationToken);
+    // var content = new StartupEventContent();
+    // var @event = CreateEvent(content);
+    // var eventEntity = @event.ToEntity();
+    // context.Add(eventEntity);
+    // await context.SaveChangesAsync(cancellationToken);
   }
 
   public async Task StopAsync(CancellationToken cancellationToken)
