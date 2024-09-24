@@ -1,4 +1,5 @@
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using Ozds.Iot.Entities.Abstractions;
 using Ozds.Iot.Observers.Abstractions;
@@ -11,7 +12,8 @@ public class IotController(IPushPublisher publisher) : Controller
 {
   public static readonly JsonSerializerOptions Options = new()
   {
-    PropertyNameCaseInsensitive = true
+    PropertyNameCaseInsensitive = true,
+    NumberHandling = JsonNumberHandling.AllowReadingFromString
   };
 
   [HttpPost]

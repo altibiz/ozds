@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
 import argparse
+import logging
 import mmap
 import multiprocessing
 import os
-import logging
 from datetime import datetime, timezone
 from decimal import Decimal
 
@@ -36,6 +36,13 @@ def main():
       type=int,
       default=default_cpu_count,
       help='Max workers for manipulating data',
+    )
+    # Added meter_id argument at the root parser level
+    parser.add_argument(
+      '--meter-id',
+      type=str,
+      required=True,
+      help='Meter ID to filter the data',
     )
 
     subparsers = parser.add_subparsers(dest='command')
@@ -115,6 +122,7 @@ def main():
         args.url,
         args.workers,
         args.batch_size,
+        args.meter_id,
       )
     elif args.command == 'export':
       export_to_csv(
@@ -125,6 +133,7 @@ def main():
         args.batch_size,
         args.date_from,
         args.date_to,
+        args.meter_id,
       )
     elif args.command == 'import':
       import_from_csv(
@@ -133,6 +142,7 @@ def main():
         args.table,
         args.workers,
         args.batch_size,
+        args.meter_id,
       )
     else:
       logging.error('Invalid command')
@@ -146,6 +156,7 @@ def process_export_batch(
   table,
   date_from,
   date_to,
+  meter_id,
   offset,
   limit,
   path,
@@ -156,18 +167,23 @@ def process_export_batch(
     Args:
         connection_string (str): The database connection string.
         table (str): The name of the table to export.
+        date_from (datetime): The starting date to filter data.
+        date_to (datetime): The ending date to filter data.
+        meter_id (str): The meter ID to filter data.
         offset (int): The offset to start reading from.
         limit (int): The max number of rows to read.
         path (str): The path to the CSV file.
-  """
+    """
   try:
     engine = sqlalchemy.create_engine(connection_string)
     query = (
-      f"SELECT * FROM {table} " +
+      f"SELECT * FROM {table} "
       f"WHERE timestamp >= '{date_from.isoformat()}' AND timestamp < '{date_to.isoformat()}' "
-      + f"LIMIT {limit} OFFSET {offset}")
+      f"AND meter_id = '{meter_id}' "
+      f"ORDER BY timestamp "
+      f"LIMIT {limit} OFFSET {offset}")
     chunk = pd.read_sql_query(query, engine)
-    logging.info(f"Processing batch at {offset} limit {limit} "
+    logging.info(f"Processing batch at offset {offset} limit {limit} "
                  f"with {len(chunk)} rows...")
     chunk = chunk.map(convert_sci_notation)
     mode = 'w' if offset == 0 else 'a'
@@ -176,7 +192,8 @@ def process_export_batch(
   except KeyboardInterrupt:
     pass
   except Exception as e:
-    logging.error(f"Error processing batch at {offset} limit {limit}: {e}")
+    logging.error(
+      f"Error processing batch at offset {offset} limit {limit}: {e}")
 
 
 def wrap_process_export_batch(args):
@@ -191,6 +208,7 @@ def export_to_csv(
   batch_size=10000,
   date_from=datetime.min,
   date_to=datetime.max,
+  meter_id=None,
 ):
   """
     Export data from a database table to a CSV file in parallel batches.
@@ -201,31 +219,34 @@ def export_to_csv(
         path (str): The path to the CSV file.
         workers (int): The number of parallel workers.
         batch_size (int): The number of rows per batch.
-  """
+        date_from (datetime): The starting date to filter data.
+        date_to (datetime): The ending date to filter data.
+        meter_id (str): The meter ID to filter data.
+    """
   engine = sqlalchemy.create_engine(connection_string)
-  query = (
-    f"SELECT COUNT(*) FROM {table} " +
-    f"WHERE timestamp >= '{date_from.isoformat()}' AND timestamp < '{date_to.isoformat()}'"
-  )
-  total_rows = pd.read_sql_query(query, engine).iloc[0, 0]
+  count_query = (
+    f"SELECT COUNT(*) FROM {table} "
+    f"WHERE timestamp >= '{date_from.isoformat()}' AND timestamp < '{date_to.isoformat()}' "
+    f"AND meter_id = '{meter_id}'")
+  total_rows = int(str(pd.read_sql_query(count_query, engine).iloc[0, 0]))
   num_batches = (total_rows + batch_size - 1) // batch_size
   logging.info(f"Exporting {total_rows} rows from {table} to {path} "
                f"in {num_batches} batches with {workers} workers...")
 
+  batch_args = [(
+    connection_string,
+    table,
+    date_from,
+    date_to,
+    meter_id,
+    i * batch_size,
+    batch_size,
+    path,
+  ) for i in range(num_batches)]
+
   with multiprocessing.Pool(workers) as executor:
     try:
-      executor.map(
-        wrap_process_export_batch,
-        [(
-          connection_string,
-          table,
-          date_from,
-          date_to,
-          i * batch_size,
-          batch_size,
-          path,
-        ) for i in range(num_batches)],
-      )
+      executor.map(wrap_process_export_batch, batch_args)
     except KeyboardInterrupt:
       executor.terminate()
 
@@ -236,6 +257,7 @@ def process_import_batch(
   end,
   connection_string,
   table,
+  meter_id,
 ):
   """
     Process a batch of rows from the CSV file and insert into the database.
@@ -246,14 +268,21 @@ def process_import_batch(
         end (int): The ending row.
         connection_string (str): The database connection string.
         table (str): The name of the table to insert into.
-  """
+        meter_id (str): The meter ID to filter data.
+    """
   try:
     engine = sqlalchemy.create_engine(connection_string)
     logging.info(f"Processing batch from {start} to {end}...")
-    chunk = pd.read_csv(path, skiprows=start, nrows=end - start)
+    nrows = end - start
+    chunk = pd.read_csv(path, skiprows=start, nrows=nrows)
     chunk.columns = pd.read_csv(path, nrows=0).columns
-    chunk.to_sql(table, engine, if_exists='append', index=False)
-    logging.info(f"Successfully processed batch from {start} to {end}")
+    chunk = chunk[chunk['meter_id'] == meter_id]
+    if not chunk.empty:
+      chunk.to_sql(table, engine, if_exists='append', index=False)
+      logging.info(f"Successfully processed batch from {start} to {end}")
+    else:
+      logging.info(
+        f"No data for meter_id {meter_id} in batch from {start} to {end}")
   except KeyboardInterrupt:
     pass
   except Exception as e:
@@ -270,6 +299,7 @@ def import_from_csv(
   table,
   workers=1,
   batch_size=10000,
+  meter_id=None,
 ):
   """
     Import data from a CSV file to a database table in parallel batches.
@@ -280,24 +310,25 @@ def import_from_csv(
         table (str): The name of the table to import to.
         workers (int): The number of parallel workers.
         batch_size (int): The number of rows per batch.
-  """
-  total_rows = mapcount(path) - 1
+        meter_id (str): The meter ID to filter data.
+    """
+  total_rows = mapcount(path) - 1  # Subtract header
   num_batches = (total_rows + batch_size - 1) // batch_size
   logging.info(f"Importing {total_rows} rows from {path} to {table} "
                f"in {num_batches} batches with {workers} workers...")
 
+  batch_args = [(
+    path,
+    i * batch_size,
+    min((i + 1) * batch_size, total_rows),
+    connection_string,
+    table,
+    meter_id,
+  ) for i in range(num_batches)]
+
   with multiprocessing.Pool(workers) as executor:
     try:
-      executor.map(
-        wrap_process_import_batch,
-        [(
-          path,
-          i * batch_size,
-          (i + 1) * batch_size,
-          connection_string,
-          table,
-        ) for i in range(num_batches)],
-      )
+      executor.map(wrap_process_import_batch, batch_args)
     except KeyboardInterrupt:
       executor.terminate()
 
@@ -307,6 +338,7 @@ def process_push_batch(
   start,
   end,
   url,
+  meter_id,
 ):
   """
     Process a batch of rows from the CSV file and push to the server.
@@ -316,14 +348,21 @@ def process_push_batch(
         start (int): The starting row.
         end (int): The ending row.
         url (str): The server URL to push data to.
-  """
+        meter_id (str): The meter ID to filter data.
+    """
   try:
     logging.info(f"Processing batch from {start} to {end}...")
-    df = pd.read_csv(path, skiprows=start, nrows=end - start)
+    nrows = end - start
+    df = pd.read_csv(path, skiprows=start, nrows=nrows)
     df.columns = pd.read_csv(path, nrows=0).columns
     df = df.dropna(subset=['timestamp', 'meter_id'])
+    df = df[df['meter_id'] == meter_id]
+    if df.empty:
+      logging.info(
+        f"No data for meter_id {meter_id} in batch from {start} to {end}")
+      return
     format_columns(df, ['timestamp', 'meter_id'])
-    batch_data = df.to_dict('records')
+    batch_data = df.to_dict(orient='records')
 
     request_data = {
       "Timestamp":
@@ -368,6 +407,7 @@ def push(
   url="http://localhost:5000/iot/push/messenger",
   workers=1,
   batch_size=10000,
+  meter_id=None,
 ):
   """
     Push data from a CSV file to a server in parallel batches.
@@ -377,19 +417,24 @@ def push(
         url (str): The server URL to push data to.
         workers (int): The number of parallel workers.
         batch_size (int): The number of rows per batch.
-  """
-  length = mapcount(path) - 1
-  num_batches = (length + batch_size - 1) // batch_size
-  logging.info(f"Importing {length} measurements in {num_batches} batches "
+        meter_id (str): The meter ID to filter data.
+    """
+  total_rows = mapcount(path) - 1  # Subtract header
+  num_batches = (total_rows + batch_size - 1) // batch_size
+  logging.info(f"Pushing {total_rows} measurements in {num_batches} batches "
                f"with {workers} workers...")
+
+  batch_args = [(
+    path,
+    i * batch_size,
+    min((i + 1) * batch_size, total_rows),
+    url,
+    meter_id,
+  ) for i in range(num_batches)]
 
   with multiprocessing.Pool(workers) as executor:
     try:
-      executor.map(
-        wrap_process_push_batch,
-        [(path, i * batch_size, (i + 1) * batch_size, url)
-         for i in range(num_batches)],
-      )
+      executor.map(wrap_process_push_batch, batch_args)
     except KeyboardInterrupt:
       executor.terminate()
 
@@ -408,7 +453,7 @@ def format_column(snake_str: str, specific_props=None):
 
     Returns:
         str: The formatted string.
-  """
+    """
   if specific_props is None:
     specific_props = []
 
@@ -432,7 +477,7 @@ def format_columns(df, specific_props=None):
 
     Returns:
         pd.DataFrame: The DataFrame with formatted columns.
-  """
+    """
   df.columns = [format_column(col, specific_props) for col in df.columns]
   return df
 
@@ -449,10 +494,9 @@ def convert_sci_notation(value):
 
     Returns:
         float: The converted value.
-  """
-  if 'e+' in str(value):
-    split_val = str(value).split('e+')
-    return float(Decimal(split_val[0]) * (Decimal(10)**int(split_val[1])))
+    """
+  if isinstance(value, str) and 'e+' in value:
+    return float(Decimal(value))
   return value
 
 
@@ -465,7 +509,7 @@ def mapcount(filename):
 
     Returns:
         int: The number of lines in the file.
-  """
+    """
   with open(filename, "r+") as f:
     buf = mmap.mmap(f.fileno(), 0)
     lines = 0
