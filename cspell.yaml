@@ -22,7 +22,8 @@ ignorePaths:
   - "./src/Ozds.Business/Assets/translations-*.json"
   - "./docs/index.html"
   - "./.config/dotnet-tools.json"
-  - "./scripts/*.*"
+  - "./scripts/database/*.*"
+  - "./scripts/migrations/*.*"
   - "NLog.config"
   - "pyproject.toml"
   - "./scripts/mailserver/mailhog.auth"
@@ -115,6 +116,7 @@ words:
   - "instantiator"
   - "unnest"
   - "unscheduling"
+  - "hypertable"
 
   # Croatian
   - "altibiz"

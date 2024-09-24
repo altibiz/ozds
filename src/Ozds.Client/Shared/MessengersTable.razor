@@ -169,12 +169,12 @@
       }
     }
 
-    var filetered = mobileMessengers
+    var filtered = mobileMessengers
       .Where(
         x => x.data.Title
           .Contains(value, StringComparison.InvariantCultureIgnoreCase))
       .ToList();
-    foreach (var messenger in filetered)
+    foreach (var messenger in filtered)
     {
       messenger.show = true;
     }
