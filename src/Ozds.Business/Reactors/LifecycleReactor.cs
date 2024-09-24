@@ -16,22 +16,22 @@ public class LifecycleReactor(
 {
   public async Task StartAsync(CancellationToken cancellationToken)
   {
-    await using var context = await factory.CreateDbContextAsync();
+    await using var context = await factory.CreateDbContextAsync(cancellationToken);
     var content = new StartupEventContent();
     var @event = CreateEvent(content);
     var eventEntity = @event.ToEntity();
     context.Add(eventEntity);
-    await context.SaveChangesAsync();
+    await context.SaveChangesAsync(cancellationToken);
   }
 
   public async Task StopAsync(CancellationToken cancellationToken)
   {
-    await using var context = await factory.CreateDbContextAsync();
+    await using var context = await factory.CreateDbContextAsync(cancellationToken);
     var content = new ShutdownEventContent();
     var @event = CreateEvent(content);
     var eventEntity = @event.ToEntity();
     context.Add(eventEntity);
-    await context.SaveChangesAsync();
+    await context.SaveChangesAsync(cancellationToken);
   }
 
   private SystemEventModel CreateEvent(LifecycleEventContent content)
