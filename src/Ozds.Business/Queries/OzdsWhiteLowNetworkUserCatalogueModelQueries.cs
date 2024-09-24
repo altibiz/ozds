@@ -2,16 +2,17 @@ using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Conversion;
 using Ozds.Business.Models;
 using Ozds.Business.Queries.Abstractions;
-using Ozds.Data;
+using Ozds.Data.Context;
 using Ozds.Data.Entities;
+using Ozds.Data.Extensions;
 
 namespace Ozds.Business.Queries;
 
 public class OzdsWhiteLowNetworkUserCatalogueModelQueries(
-  OzdsDataDbContext context)
-  : IOzdsQueries
+  DataDbContext context)
+  : IQueries
 {
-  private readonly OzdsDataDbContext context = context;
+  private readonly DataDbContext context = context;
 
   public async Task<WhiteLowNetworkUserCatalogueModel?>
     BlueLowNetworkUserCatalogueById(string id)

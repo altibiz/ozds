@@ -5,13 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0" />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="$(EntityFrameworkCoreVersion)" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="$(EntityFrameworkCoreVersion)" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="$(EntityFrameworkCoreVersion)" />
+    <PackageReference Include="EFCore.NamingConventions" Version="$(EntityFrameworkCoreVersion)" />
+    <PackageReference Include="EFCore.BulkExtensions" Version="$(EntityFrameworkCoreVersion)" />
     <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="8.101.2" />
     <PackageReference Include="FlexLabs.EntityFrameworkCore.Upsert" Version="8.0.0" />
-    <PackageReference Include="EFCore.NamingConventions" Version="8.0.3" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="8.0.0" />
-    <PackageReference Include="EFCore.BulkExtensions" Version="8.0.0" />
   </ItemGroup>
 
 </Project>

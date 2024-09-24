@@ -1,0 +1,131 @@
+@page "/event/{id}"
+@using Ozds.Client.Extensions
+@using Align = MudBlazor.Align
+@inherits OzdsOwningComponentBase
+
+
+@if (user is null)
+{
+  return;
+}
+<Loading TState="EventModel" Load="@(() => ScopedServices.GetRequiredService<OzdsEventQueries>().ReadSingle<EventModel>(Id))">
+  <Found Context="model">
+    @{
+      var json = JsonString(model.Content);
+    }
+
+    <MudContainer MaxWidth="MaxWidth.Small" Class="d-flex  flex-column" Style="float: left;">
+      <MudText Class="d-flex align-center my-2" Typo="@Typo.h5">Event Id: @Id</MudText>
+      <MudPaper class="mt-2 px-4 py-2">
+
+        <MudGrid Spacing="3">
+          <MudItem xs="12" sm="3">
+            <MudText Typo="Typo.body1" Style="font-weight: bold;">
+              @T["Title"]:
+            </MudText>
+          </MudItem>
+          <MudItem xs="12" sm="9">
+            <MudHidden Breakpoint="Breakpoint.Xs">
+              <MudText Type="Typo.body2" Align="MudAlign.Right">
+                @model.Title
+              </MudText>
+            </MudHidden>
+            <MudHidden Breakpoint="Breakpoint.SmAndUp">
+              <MudText Type="Typo.body2" Align="MudAlign.Left">
+                @model.Title
+              </MudText>
+            </MudHidden>
+          </MudItem>
+        </MudGrid>
+
+        <MudGrid Spacing="3">
+          <MudItem xs="12" sm="3">
+            <MudText Typo="Typo.body1" Style="font-weight: bold;">
+              @T["Level"]:
+            </MudText>
+          </MudItem>
+          <MudItem xs="12" sm="9">
+            <MudHidden Breakpoint="Breakpoint.Xs">
+              <div Class="d-flex flex-row justify-end">
+                <MudIcon Icon="@Icons.Material.Filled.Circle" Color="@model.Level.ToColor()"/>
+                <MudText Type="Typo.body2">
+                  <i>
+                    (@T[model.Level.ToTitle()])
+                  </i>
+                </MudText>
+              </div>
+            </MudHidden>
+            <MudHidden Breakpoint="Breakpoint.SmAndUp">
+              <div Class="d-flex flex-row justify-start">
+                <MudIcon Icon="@Icons.Material.Filled.Circle" Color="@model.Level.ToColor()"/>
+                <MudText Type="Typo.body2">
+                  <i>
+                    (@T[model.Level.ToTitle()])
+                  </i>
+                </MudText>
+              </div>
+            </MudHidden>
+          </MudItem>
+        </MudGrid>
+
+        <MudGrid Spacing="3">
+          <MudItem xs="12" sm="@(json.Length > 30 ? 12 : 3)">
+            <MudText Typo="Typo.body1" Style="font-weight: bold;">
+              @T["Content"]:
+            </MudText>
+          </MudItem>
+          <MudItem xs="12" sm="@(json.Length > 30 ? 12 : 9)">
+            <MudHidden Breakpoint="Breakpoint.Xs">
+              <MudText Type="Typo.body2" Align="@(json.Length > 30 ? Align.Left : Align.Right)"
+                       Style="overflow-wrap: break-word;">
+                <code Style="overflow-wrap: break-word;">
+                  @json
+                </code>
+              </MudText>
+            </MudHidden>
+            <MudHidden Breakpoint="Breakpoint.SmAndUp">
+              <MudText Type="Typo.body2" Align="MudAlign.Left">
+                <code Style="overflow-wrap: break-word;">
+                  @json
+                </code>
+              </MudText>
+            </MudHidden>
+          </MudItem>
+        </MudGrid>
+
+        <MudGrid Spacing="3">
+          <MudItem xs="12" sm="3">
+            <MudText Typo="Typo.body1" Style="font-weight: bold;">
+              @T["Date"]:
+            </MudText>
+          </MudItem>
+          <MudItem xs="12" sm="9">
+            <MudHidden Breakpoint="Breakpoint.Xs">
+              <MudText Type="Typo.body2" Align="MudAlign.Right">
+                @DateString(model.Timestamp)
+              </MudText>
+            </MudHidden>
+            <MudHidden Breakpoint="Breakpoint.SmAndUp">
+              <MudText Type="Typo.body2" Align="MudAlign.Left">
+                @DateString(model.Timestamp)
+              </MudText>
+            </MudHidden>
+          </MudItem>
+        </MudGrid>
+      </MudPaper>
+    </MudContainer>
+  </Found>
+</Loading>
+
+@code {
+
+  [CascadingParameter]
+  public UserState user { get; set; } = default!;
+
+  [CascadingParameter]
+  public RepresentativeState RepresentativeState { get; set; } = default!;
+
+  [Parameter]
+  public string Id { get; set; } = default!;
+
+}

@@ -63,7 +63,7 @@ public class SupplyRenewableEnergyCalculationItemCalculatorTest
             start.Add(IntervalModel.QuarterHour.ToTimeSpan(start)),
             end.Subtract(IntervalModel.QuarterHour.ToTimeSpan(start))))
         .RuleFor(
-          x => x.ActiveEnergyTotalImportT0Max_Wh,
+          x => x.ActiveEnergyTotalImportT0Min_Wh,
           (f, _) => f.Random.Decimal(
             Constants.MinEnergyValue, Constants.MaxEnergyValue))
         .Generate(Constants.DefaultFuzzCount);
@@ -73,7 +73,7 @@ public class SupplyRenewableEnergyCalculationItemCalculatorTest
           x => x.Timestamp,
           (_, _) => start)
         .RuleFor(
-          x => x.ActiveEnergyTotalImportT0Max_Wh,
+          x => x.ActiveEnergyTotalImportT0Min_Wh,
           (_, _) => expected.Min_kWh * 1000M)
         .Generate();
     var endAggregate =
@@ -82,7 +82,7 @@ public class SupplyRenewableEnergyCalculationItemCalculatorTest
           x => x.Timestamp,
           (_, _) => end)
         .RuleFor(
-          x => x.ActiveEnergyTotalImportT0Max_Wh,
+          x => x.ActiveEnergyTotalImportT0Min_Wh,
           (_, _) => expected.Max_kWh * 1000M)
         .Generate();
 

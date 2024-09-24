@@ -77,13 +77,14 @@
     White_Low_Catalogue,
     White_Medium_Catalogue,
     Regulatory_Catalogue,
-    Messenger,
+    Pidgeon_Messenger,
     Abb_B2x_validator,
     Schneider_iEM3xxx_validator,
     Abb_B2x_device,
     Schneider_iEM3xxx_device,
     Device_at_location,
-    Device_at_network_user
+    Device_at_network_user,
+    Notifications
   }
 
   protected override async Task OnInitializedAsync()
@@ -97,13 +98,14 @@
     _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.White_Low_Catalogue, T["White Low Catalogue"]));
     _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.White_Medium_Catalogue, T["White Medium Catalogue"]));
     _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.Regulatory_Catalogue, T["Regulatory Catalogue"]));
-    _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.Messenger, T["Messenger"]));
+    _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.Pidgeon_Messenger, T["Messenger"]));
     _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.Abb_B2x_validator, T["Abb B2x validator"]));
     _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.Schneider_iEM3xxx_validator, T["Schneider iEM3xxx validator"]));
     _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.Abb_B2x_device, T["Abb B2x device"]));
     _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.Schneider_iEM3xxx_device, T["Schneider iEM3xxx device"]));
     _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.Device_at_location, T["Device at location"]));
     _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.Device_at_network_user, T["Device at network user"]));
+    _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.Notifications, T["Notifications"]));
 
     await Update(new ValueTuple<EntityEnum, string>(EntityEnum.Locations, T["Locations"]));
   }
@@ -149,7 +151,7 @@
         var g = (await queries.GetRegulatoryCatalogues("")).Items;
         _data = g.Select(x => new TabularData(x.Title, x.Id)).ToList();
         break;
-      case EntityEnum.Messenger:
+      case EntityEnum.Pidgeon_Messenger:
         var h = (await queries.GetMessengers("")).Items;
         _data = h.Select(x => new TabularData(x.Title, x.Id)).ToList();
         break;
@@ -176,6 +178,10 @@
       case EntityEnum.Device_at_network_user:
         var j = (await queries.GetNetworkUserMeasurementLocations("")).Items;
         _data = j.Select(x => new TabularData(x.Title, x.Id)).ToList();
+        break;
+      case EntityEnum.Notifications:
+        var t = (await queries.GetNotifications("")).Items;
+        _data = t.Select(x => new TabularData(x.Title, x.Id)).ToList();
         break;
     }
 
@@ -210,8 +216,8 @@
       case EntityEnum.Regulatory_Catalogue:
         typeString = "regulatory-catalogue";
         break;
-      case EntityEnum.Messenger:
-        typeString = "messenger";
+      case EntityEnum.Pidgeon_Messenger:
+        typeString = "pidgeon-messenger";
         break;
       case EntityEnum.Abb_B2x_validator:
         typeString = "abb-b2x-validator";
@@ -230,6 +236,9 @@
         break;
       case EntityEnum.Device_at_network_user:
         typeString = "device-at-network-user";
+        break;
+      case EntityEnum.Notifications:
+        typeString = "notification";
         break;
     }
 

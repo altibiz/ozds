@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Text.Json;
 using ApexCharts;
 using Microsoft.AspNetCore.Components;
 using Ozds.Business.Localization.Abstractions;
@@ -8,8 +9,13 @@ namespace Ozds.Client.Base;
 
 public abstract class OzdsComponentBase : ComponentBase
 {
+  private static readonly JsonSerializerOptions _jsonSerializerOptions = new()
+  {
+    WriteIndented = true
+  };
+
   [Inject]
-  public IOzdsLocalizer T { get; set; } = default!;
+  public ILocalizer T { get; set; } = default!;
 
   [Inject]
   public NavigationManager NavigationManager { get; set; } = default!;
@@ -128,5 +134,10 @@ public abstract class OzdsComponentBase : ComponentBase
   {
     return dateTimeOffset.UtcDateTime.Add(
       DateTimeOffsetExtensions.GetOffset(dateTimeOffset));
+  }
+
+  protected static string JsonString(JsonDocument jsonDocument)
+  {
+    return JsonSerializer.Serialize(jsonDocument, _jsonSerializerOptions);
   }
 }

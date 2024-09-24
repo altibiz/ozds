@@ -1,35 +1,15 @@
-using OrchardCore.Users;
-using OrchardCore.Users.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace Ozds.Business.Models;
 
-public record UserModel(
-  string Id,
-  string UserName,
-  string Email
-);
-
-public static class UserModelExtensions
+public class UserModel
 {
-  public static UserModel ToModel(this IUser abstractUser)
-  {
-    return abstractUser is User user
-      ? new UserModel(
-        user.UserId,
-        user.UserName,
-        user.Email
-      )
-      : throw new InvalidOperationException(
-        "User is not an Orchard Core user"
-      );
-  }
+  [Required]
+  public required string Id { get; set; }
 
-  public static string GetId(this IUser abstractUser)
-  {
-    return abstractUser is User user
-      ? user.UserId
-      : throw new InvalidOperationException(
-        "User is not an Orchard Core user"
-      );
-  }
+  [Required]
+  public required string UserName { get; set; }
+
+  [Required]
+  public required string Email { get; set; }
 }

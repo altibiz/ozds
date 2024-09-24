@@ -2,4 +2,8 @@
 
   <Import Project="../Directory.Build.props" />
 
+  <PropertyGroup>
+    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+  </PropertyGroup>
+
 </Project>

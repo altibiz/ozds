@@ -17,6 +17,7 @@ _ = options switch
     .AddRecords()
     .AddLoaders()
     .AddGenerators()
+    .AddPackers()
     .AddClient(push.Timeout_s, push.BaseUrl)
     .AddHostedService<PushHostedService>(),
   SeedOptions seed => builder.Services
@@ -24,6 +25,7 @@ _ = options switch
     .AddRecords()
     .AddLoaders()
     .AddGenerators()
+    .AddPackers()
     .AddClient(seed.Timeout_s, seed.BaseUrl)
     .AddHostedService<SeedHostedService>(),
   AltibizOptions altibiz => builder.Services

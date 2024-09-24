@@ -65,12 +65,12 @@ formatter = { command = "prettier", args = ["--parser", "json"] }
 language-servers = ["vscode-json-language-server"]
 
 [[language]]
+name = "toml"
+auto-format = true
+language-servers = ["taplo"]
+
+[[language]]
 name = "markdown"
 auto-format = true
 formatter = { command = "prettier", args = ["--parser", "markdown"] }
 language-servers = ["marksman"]
-
-[[language]]
-name = "toml"
-auto-format = true
-language-servers = ["taplo"]

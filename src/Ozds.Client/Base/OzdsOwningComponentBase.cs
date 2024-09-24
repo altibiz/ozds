@@ -39,9 +39,9 @@ public abstract class OzdsOwningComponentBase : OzdsComponentBase, IDisposable
   {
     if (!IsDisposed)
     {
+      Dispose(true);
       _scope?.Dispose();
       _scope = null;
-      Dispose(true);
       IsDisposed = true;
     }
   }

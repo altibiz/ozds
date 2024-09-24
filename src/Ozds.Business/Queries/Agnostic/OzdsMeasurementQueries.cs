@@ -1,20 +1,20 @@
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Conversion.Agnostic;
-using Ozds.Business.Extensions;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Queries.Abstractions;
-using Ozds.Data;
+using Ozds.Data.Context;
 using Ozds.Data.Entities.Base;
+using Ozds.Data.Extensions;
 
 namespace Ozds.Business.Queries.Agnostic;
 
 public class OzdsMeasurementQueries(
-  OzdsDataDbContext context,
+  DataDbContext context,
   AgnosticModelEntityConverter modelEntityConverter
-) : IOzdsQueries
+) : IQueries
 {
-  private readonly OzdsDataDbContext _context = context;
+  private readonly DataDbContext _context = context;
 
   private readonly AgnosticModelEntityConverter _modelEntityConverter =
     modelEntityConverter;
@@ -30,7 +30,7 @@ public class OzdsMeasurementQueries(
   {
     var dbSetType = _modelEntityConverter.EntityType(typeof(T));
     var queryable =
-      _context.GetDbSet(dbSetType) as IQueryable<MeasurementEntity>
+      _context.GetQueryable(dbSetType) as IQueryable<MeasurementEntity>
       ?? throw new InvalidOperationException(
         $"No DbSet found for {dbSetType}");
     var filtered = whereClauses.Aggregate(

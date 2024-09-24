@@ -1,4 +1,4 @@
-@inherits OwningComponentBase
+@inherits OzdsOwningComponentBase
 @inject IDialogService DialogService
 
 <Loading Load="@(async () => (Model ?? await ScopedServices.GetRequiredService<OzdsRepresentativeQueries>().MaybeRepresentingUserByUserId(Id))!)">
@@ -28,6 +28,16 @@
           <MudItem xs="12" sm="6">
             <MudText Typo="Typo.body1">Name</MudText>
             <MudText Typo="Typo.body2">@representative.PhysicalPerson.Name</MudText>
+          </MudItem>
+          <MudItem xs="12" sm="6">
+            <MudText Typo="Typo.body1">Topics</MudText>
+            <MudText Typo="Typo.body2">
+              @(
+              string
+                .Join(
+                  ", ", representative.Topics
+                    .Select(topic => T[topic.ToTitle()])))
+            </MudText>
           </MudItem>
         </MudGrid>
       </MudPaper>

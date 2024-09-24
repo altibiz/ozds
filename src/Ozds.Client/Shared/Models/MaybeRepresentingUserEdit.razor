@@ -25,7 +25,7 @@
         For="@(() => LoadingState.Value.Representative.Title)"/>
       <MudSelect
         T="RoleModel"
-        Label="Coffee"
+        Label="@T["Role"]"
         AnchorOrigin="Origin.BottomCenter"
         @bind-Value="LoadingState.Value.Representative.Role"
         For="@(() => LoadingState.Value.Representative.Role)">
@@ -38,6 +38,20 @@
         <MudSelectItem Value="@RoleModel.NetworkUserRepresentative">
           Network User Representative
         </MudSelectItem>
+      </MudSelect>
+      <MudSelect
+        T="TopicModel"
+        Label="@T["Topics"]"
+        AnchorOrigin="Origin.BottomCenter"
+        MultiSelection
+        SelectedValues="@LoadingState.Value.Representative.Topics"
+        SelectedValuesChanged="e => LoadingState.Value.Representative.Topics = e.ToList()">
+        @foreach (var value in Enum.GetValues<TopicModel>())
+        {
+          <MudSelectItem Value="value">
+            @T[value.ToTitle()]
+          </MudSelectItem>
+        }
       </MudSelect>
       <MudTextField
         Label="Name"
@@ -81,16 +95,16 @@
     var mutations = ScopedServices.GetRequiredService<OzdsAuditableMutations>();
     if (LoadingState.Value?.Representative is null)
       return;
+
     if (_create)
     {
-      mutations.Create(LoadingState.Value.Representative);
+      await mutations.Create(LoadingState.Value.Representative);
     }
     else
     {
-      mutations.Update(LoadingState.Value.Representative);
+      await mutations.Update(LoadingState.Value.Representative);
     }
 
-    await mutations.SaveChangesAsync();
     DialogService.Show<MutateSuccess>("Changes Saved", new DialogOptions { CloseOnEscapeKey = true });
   }
 

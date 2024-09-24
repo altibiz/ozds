@@ -3,9 +3,10 @@ using Ozds.Business.Conversion;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Queries.Abstractions;
-using Ozds.Data;
+using Ozds.Data.Context;
 using Ozds.Data.Entities;
 using Ozds.Data.Entities.Base;
+using Ozds.Data.Extensions;
 
 // TODO: MeasurementLocation -> MeasurementSpot ?
 // TODO: use surrogate keys
@@ -13,10 +14,10 @@ using Ozds.Data.Entities.Base;
 namespace Ozds.Business.Queries;
 
 public class OzdsLocationMeasurementLocationModelQueries(
-  OzdsDataDbContext context)
-  : IOzdsQueries
+  DataDbContext context)
+  : IQueries
 {
-  private readonly OzdsDataDbContext context = context;
+  private readonly DataDbContext context = context;
 
   public async Task<LocationMeasurementLocationModel?>
     LocationMeasurementLocationById(string id)

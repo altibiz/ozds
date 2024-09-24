@@ -11,7 +11,7 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-ozds-scripts-data = "scripts.data:main"
+ozds-scripts-database-measurements = "scripts.database.measurements:main"
 
 [tool.poetry.dependencies]
 python = "~3.11"

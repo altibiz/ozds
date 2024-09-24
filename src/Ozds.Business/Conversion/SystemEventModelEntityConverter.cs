@@ -30,7 +30,8 @@ public static class SystemEventModelExtensions
       Title = entity.Title,
       Timestamp = entity.Timestamp,
       Level = entity.Level.ToModel(),
-      Description = entity.Description
+      Content = entity.Content,
+      Categories = entity.Categories.Select(c => c.ToModel()).ToList()
     };
   }
 
@@ -42,7 +43,8 @@ public static class SystemEventModelExtensions
       Title = model.Title,
       Timestamp = model.Timestamp,
       Level = model.Level.ToEntity(),
-      Description = model.Description
+      Content = model.Content,
+      Categories = model.Categories.Select(c => c.ToEntity()).ToList()
     };
   }
 }

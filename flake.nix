@@ -173,6 +173,7 @@ rec {
               # Version Control
               git
               dvc-with-remotes
+              delta
 
               # Nix
               nil
@@ -200,6 +201,9 @@ rec {
               usql
               postgresql_14
               mermerd
+
+              # MailHog
+              apacheHttpd
 
               # Spelling
               nodePackages.cspell
