@@ -64,7 +64,7 @@ public static class IServiceCollectionExtensions
         options.AwaitApplicationStarted = true;
       });
 
-    services.AddDbContext<JobsDbContext>(
+    services.AddDbContextFactory<JobsDbContext>(
       options =>
       {
         options.UseNpgsql(
@@ -76,6 +76,19 @@ public static class IServiceCollectionExtensions
               $"__Ozds{nameof(JobsDbContext)}");
           });
       });
+
+    // NOTE: this needs jesus
+    services.AddSingleton<IHostedService, QuartzHostedService>(
+      services =>
+      {
+        using var context = services
+          .GetRequiredService<IDbContextFactory<JobsDbContext>>()
+          .CreateDbContext();
+        context.Database.Migrate();
+
+        return ActivatorUtilities.CreateInstance<QuartzHostedService>(services);
+      }
+    );
   }
 
   private static void AddSingletonAssignableTo(
