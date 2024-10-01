@@ -2,4 +2,4 @@ outs:
 - md5: 0e99bc24e7ce5b1e9479cadc07bfe359
   size: 56257
   hash: md5
-  path: current.sql
+  path: 20241001165913-Ozds.Data-Joins.sql

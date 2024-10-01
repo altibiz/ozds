@@ -164,3 +164,6 @@
 /20241001160135-Ozds.Messaging-CancelReason-hypertables.sql
 /20241001160135-Ozds.Messaging-CancelReason-orchard.sql
 /20241001160135-Ozds.Messaging-CancelReason.sql
+/20241001165913-Ozds.Data-Joins-hypertables.sql
+/20241001165913-Ozds.Data-Joins-orchard.sql
+/20241001165913-Ozds.Data-Joins.sql

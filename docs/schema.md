@@ -162,11 +162,6 @@ erDiagram
         bytea row_version 
     }
 
-    location_entity_representative_entity {
-        bigint locations_id PK,FK 
-        text representatives_string_id PK,FK 
-    }
-
     location_invoices {
         text al_alti_biz_sub_project_code 
         text al_blue_low_network_user_catalogue_id 
@@ -199,6 +194,11 @@ erDiagram
         timestamp_with_time_zone to_date 
         numeric total_eur 
         numeric total_with_tax_eur 
+    }
+
+    location_representatives {
+        bigint location_id PK,FK 
+        text representative_id PK,FK 
     }
 
     locations {
@@ -435,11 +435,6 @@ erDiagram
         text title 
     }
 
-    network_user_entity_representative_entity {
-        bigint network_users_id PK,FK 
-        text representatives_string_id PK,FK 
-    }
-
     network_user_invoice_state {
         text bill_id 
         text cancel_reason 
@@ -522,6 +517,11 @@ erDiagram
         numeric usage_reactive_energy_total_ramped_t0fee_eur 
     }
 
+    network_user_representatives {
+        bigint network_user_id PK,FK 
+        text representative_id PK,FK 
+    }
+
     network_users {
         text alti_biz_sub_project_code 
         text created_by_id FK 
@@ -543,7 +543,7 @@ erDiagram
         text title 
     }
 
-    notification_recipient_entity {
+    notification_recipients {
         bigint notification_id PK,FK 
         text representative_id PK,FK 
         timestamp_with_time_zone seen_on 
@@ -809,10 +809,10 @@ erDiagram
     events }o--|| messengers : "messenger_id"
     events }o--|| representatives : "representative_id"
     notifications }o--|| events : "event_id"
-    location_entity_representative_entity }o--|| locations : "locations_id"
-    location_entity_representative_entity }o--|| representatives : "representatives_string_id"
     location_invoices }o--|| locations : "location_id"
     location_invoices }o--|| representatives : "issued_by_id"
+    location_representatives }o--|| locations : "location_id"
+    location_representatives }o--|| representatives : "representative_id"
     locations }o--|| network_user_catalogues : "blue_low_catalogue_id"
     locations }o--|| network_user_catalogues : "red_low_catalogue_id"
     locations }o--|| network_user_catalogues : "white_low_catalogue_id"
@@ -853,16 +853,16 @@ erDiagram
     network_user_catalogues }o--|| representatives : "created_by_id"
     network_user_catalogues }o--|| representatives : "deleted_by_id"
     network_user_catalogues }o--|| representatives : "last_updated_by_id"
-    network_user_entity_representative_entity }o--|| network_users : "network_users_id"
-    network_user_entity_representative_entity }o--|| representatives : "representatives_string_id"
     network_user_invoices }o--|| network_users : "network_user_id"
     network_user_invoices }o--|| representatives : "issued_by_id"
     notifications }o--|| network_user_invoices : "invoice_id"
+    network_user_representatives }o--|| network_users : "network_user_id"
+    network_user_representatives }o--|| representatives : "representative_id"
     network_users }o--|| representatives : "created_by_id"
     network_users }o--|| representatives : "deleted_by_id"
     network_users }o--|| representatives : "last_updated_by_id"
-    notification_recipient_entity }o--|| notifications : "notification_id"
-    notification_recipient_entity }o--|| representatives : "representative_id"
+    notification_recipients }o--|| notifications : "notification_id"
+    notification_recipients }o--|| representatives : "representative_id"
     notifications }o--|| representatives : "resolved_by_id"
     qrtz_blob_triggers }o--|| qrtz_triggers : "sched_name"
     qrtz_blob_triggers }o--|| qrtz_triggers : "trigger_group"
