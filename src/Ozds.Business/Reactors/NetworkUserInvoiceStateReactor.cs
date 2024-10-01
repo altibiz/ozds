@@ -1,7 +1,9 @@
 using System.Threading.Channels;
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Activation;
+using Ozds.Business.Conversion;
 using Ozds.Business.Conversion.Agnostic;
+using Ozds.Business.Conversion.Joins;
 using Ozds.Business.Localization.Abstractions;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Enums;
@@ -94,9 +96,7 @@ public class NetworkUserInvoiceStateReactor(
       )
       .ToListAsync();
 
-    var notifications = new List<NetworkUserInvoiceNotificationModel>();
-    var notificationRecipients = new List<NotificationRecipientModel>();
-    foreach (var invoice in invoices)
+    var notifications = invoices.Select(invoice =>
     {
       var notification = NetworkUserInvoiceNotificationModelActivator.New();
       notification.InvoiceId = invoice.Id;
@@ -107,21 +107,22 @@ public class NetworkUserInvoiceStateReactor(
       notification.Summary = $"{localizer["Invoice"]} \"{invoice.Title}\" {localizer["issued"]}";
       notification.Content =
         $"{localizer["Invoice url is"]} 'invoices/{invoice.Id}'";
-      notifications.Add(notification);
 
-      foreach (var recipient in recipients)
-      {
-        notificationRecipients.Add(
+      return notification.ToEntity();
+    });
+    context.AddRange(notifications);
+    await context.SaveChangesAsync();
+
+    var notificationRecipients = notifications.SelectMany(notification =>
+      recipients.Select(recipient =>
           new NotificationRecipientModel
           {
             NotificationId = notification.Id,
             RepresentativeId = recipient.Id
-          });
-      }
-    }
-
-    context.AddRange(notifications.Select(converter.ToEntity));
-    context.AddRange(notificationRecipients.Select(converter.ToEntity));
+          }.ToEntity()
+      )
+    );
+    context.AddRange(notificationRecipients);
     await context.SaveChangesAsync();
   }
 }
