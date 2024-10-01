@@ -49,7 +49,7 @@ public class RepresentativeEntity : AuditableEntity
   public virtual ICollection<NotificationEntity> Notifications { get; set; } =
     default!;
 
-  public virtual ICollection<ResolvableNotificationEntity> ResolvedNotifications
+  public virtual ICollection<ResolvableNotificationEntity> ResolvableNotifications
   {
     get;
     set;

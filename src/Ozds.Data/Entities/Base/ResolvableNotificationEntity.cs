@@ -21,7 +21,7 @@ public class ResolvableNotificationEntityModelConfiguration :
 
     builder
       .HasOne(nameof(ResolvableNotificationEntity.ResolvedBy))
-      .WithMany(nameof(RepresentativeEntity.ResolvedNotifications))
+      .WithMany(nameof(RepresentativeEntity.ResolvableNotifications))
       .HasForeignKey(nameof(ResolvableNotificationEntity.ResolvedById));
   }
 }
