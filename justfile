@@ -2,6 +2,7 @@ set windows-shell := ["nu.exe", "-c"]
 set shell := ["nu", "-c"]
 
 # TODO: use hunspell with dictionaries
+# TODO: migrate ensure same timestamp
 # FIXME: pyright '{{root}}'
 
 root := absolute_path('')
