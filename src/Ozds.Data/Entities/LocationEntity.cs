@@ -23,6 +23,8 @@ public class LocationEntity : AuditableEntity
     Representatives
   { get; set; } = default!;
 
+  public virtual ICollection<LocationRepresentativeEntity> LocationRepresentatives { get; set; } = default!;
+
   public virtual ICollection<NetworkUserEntity> NetworkUsers { get; set; } =
     default!;
 
@@ -97,8 +99,6 @@ public class LocationEntity : AuditableEntity
   public LegalPersonEntity LegalPerson { get; set; } = default!;
 
   public string AltiBizSubProjectCode { get; set; } = default!;
-
-  public virtual ICollection<LocationRepresentativeEntity> LocationRepresentatives { get; set; } = default!;
 }
 
 public class

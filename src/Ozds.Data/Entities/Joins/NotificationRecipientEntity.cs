@@ -47,7 +47,7 @@ public class
           .HasForeignKey("_notificationId"),
         configureRight: r => r
           .HasOne(nameof(NotificationRecipientEntity.Representative))
-          .WithMany(nameof(RepresentativeEntity.NotificationRepresentatives))
+          .WithMany(nameof(RepresentativeEntity.NotificationRecipients))
           .HasForeignKey(nameof(NotificationRecipientEntity.RepresentativeId)),
         configureJoinEntityType: entity =>
         {

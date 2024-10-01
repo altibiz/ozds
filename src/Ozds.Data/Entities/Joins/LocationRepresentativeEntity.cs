@@ -32,7 +32,7 @@ public class
 {
   public void Configure(ModelBuilder modelBuilder)
   {
-    var entity = modelBuilder.Entity<LocationRepresentativeEntity>();
+    var entity = modelBuilder.Entity<LocationEntity>();
 
     entity
       .HasMany(nameof(LocationEntity.Representatives))

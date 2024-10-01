@@ -22,7 +22,15 @@ public class RepresentativeEntity : AuditableEntity
   public virtual ICollection<NetworkUserEntity> NetworkUsers { get; set; } =
     default!;
 
+  public virtual ICollection<NetworkUserRepresentativeEntity>
+    NetworkUserRepresentatives
+  { get; set; } = default!;
+
   public virtual ICollection<LocationEntity> Locations { get; set; } = default!;
+
+  public virtual ICollection<LocationRepresentativeEntity>
+    LocationRepresentatives
+  { get; set; } = default!;
 
   public virtual ICollection<RepresentativeEventEntity> Events { get; set; } =
     default!;
@@ -35,7 +43,7 @@ public class RepresentativeEntity : AuditableEntity
     default!;
 
   public virtual ICollection<NotificationRecipientEntity>
-    NotificationRepresentatives
+    NotificationRecipients
   { get; set; } = default!;
 
   public virtual ICollection<NotificationEntity> Notifications { get; set; } =
@@ -50,14 +58,6 @@ public class RepresentativeEntity : AuditableEntity
   public PhysicalPersonEntity PhysicalPerson { get; set; } = default!;
 
   public List<TopicEntity> Topics { get; set; } = default!;
-
-  public virtual ICollection<LocationRepresentativeEntity>
-    LocationRepresentatives
-  { get; set; } = default!;
-
-  public virtual ICollection<NetworkUserRepresentativeEntity>
-    NetworkUserRepresentatives
-  { get; set; } = default!;
 }
 
 public class

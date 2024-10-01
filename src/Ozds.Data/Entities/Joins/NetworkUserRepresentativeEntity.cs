@@ -32,7 +32,7 @@ public class
 {
   public void Configure(ModelBuilder modelBuilder)
   {
-    var entity = modelBuilder.Entity<NetworkUserRepresentativeEntity>();
+    var entity = modelBuilder.Entity<NetworkUserEntity>();
 
     entity
       .HasMany(nameof(NetworkUserEntity.Representatives))
