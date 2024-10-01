@@ -1,24 +1,26 @@
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Conversion;
+using Ozds.Business.Extensions;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Composite;
 using Ozds.Business.Models.Enums;
 using Ozds.Business.Queries.Abstractions;
-using Ozds.Data;
+using Ozds.Data.Context;
 using Ozds.Data.Entities;
 using Ozds.Data.Entities.Base;
 using Ozds.Data.Entities.Enums;
+using Ozds.Data.Extensions;
 
 namespace Ozds.Business.Queries;
 
 // FIXME: get location by representative
 
 public class OzdsMeterTableQueries(
-  OzdsDataDbContext context) : IOzdsQueries
+  DataDbContext context) : IQueries
 {
-  private readonly OzdsDataDbContext context = context;
+  private readonly DataDbContext context = context;
 
   public async Task<IMeter?> GetMeterById(string Id)
   {
@@ -174,10 +176,10 @@ public class OzdsMeterTableQueries(
       )
       .GroupJoin(
         context.Meters,
-        context.ForeignKeyOf(
-          (ViewModelStruct x) => x.MeasurementLocation,
-          nameof(MeasurementLocationEntity.Meter)
-        ),
+        context
+          .ForeignKeyOf<MeasurementLocationEntity>(
+            nameof(MeasurementLocationEntity.Meter))
+          .Prefix((ViewModelStruct x) => x.MeasurementLocation),
         context.PrimaryKeyOf<MeterEntity>(),
         (x, meter) => new
         {
@@ -202,7 +204,9 @@ public class OzdsMeterTableQueries(
           .Where(x => x.Timestamp >= fromDate)
           .Where(x => x.Timestamp <= toDate)
           .Where(x => x.Interval == interval),
-        context.PrimaryKeyOf((ViewModelStruct x) => x.Meter),
+        context
+          .PrimaryKeyOf<MeterEntity>()
+          .Prefix((ViewModelStruct x) => x.Meter),
         context.ForeignKeyOf<AbbB2xAggregateEntity>(
           nameof(AbbB2xAggregateEntity.Meter)),
         (x, abbB2xAggregates) => new
@@ -229,7 +233,9 @@ public class OzdsMeterTableQueries(
           .Where(x => x.Timestamp >= fromDate)
           .Where(x => x.Timestamp <= toDate)
           .Where(x => x.Interval == interval),
-        context.PrimaryKeyOf((ViewModelStruct x) => x.Meter),
+        context
+          .PrimaryKeyOf<MeterEntity>()
+          .Prefix((ViewModelStruct x) => x.Meter),
         context.ForeignKeyOf<SchneideriEM3xxxAggregateEntity>(
           nameof(SchneideriEM3xxxAggregateEntity.Meter)),
         (x, schneideriEM3xxxAggregates) => new

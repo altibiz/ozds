@@ -1,7 +1,8 @@
 using Ozds.Business.Activation.Base;
+using Ozds.Business.Activation.Complex;
 using Ozds.Business.Models;
 
-namespace Ozds.Business.Activation.Complex;
+namespace Ozds.Business.Activation;
 
 public class NetworkUserModelActivator : ModelActivator<NetworkUserModel>
 {

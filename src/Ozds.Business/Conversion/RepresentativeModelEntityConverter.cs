@@ -36,7 +36,8 @@ public static class RepresentativeModelEntityConverterExtensions
       DeletedOn = model.DeletedOn,
       DeletedById = model.DeletedById,
       Role = model.Role.ToEntity(),
-      PhysicalPerson = model.PhysicalPerson.ToEntity()
+      PhysicalPerson = model.PhysicalPerson.ToEntity(),
+      Topics = model.Topics.Select(x => x.ToEntity()).ToList()
     };
   }
 
@@ -54,7 +55,8 @@ public static class RepresentativeModelEntityConverterExtensions
       DeletedOn = entity.DeletedOn,
       DeletedById = entity.DeletedById,
       Role = entity.Role.ToModel(),
-      PhysicalPerson = entity.PhysicalPerson.ToModel()
+      PhysicalPerson = entity.PhysicalPerson.ToModel(),
+      Topics = entity.Topics.Select(x => x.ToModel()).ToList()
     };
   }
 }

@@ -4,8 +4,24 @@ using Ozds.Fake.Records;
 namespace Ozds.Fake.Correction;
 
 public class AbbB2xMeasurementRecordCumulativeCorrector
-  : CumulativeCorrector<AbbB2xMeasurementRecord>
+  : Corrector<AbbB2xMeasurementRecord>
 {
+  protected override AbbB2xMeasurementRecord CorrectMeterId(
+    AbbB2xMeasurementRecord measurementRecord,
+    string meterId
+  )
+  {
+    return measurementRecord with { MeterId = meterId };
+  }
+
+  protected override AbbB2xMeasurementRecord CorrectTimestamp(
+    AbbB2xMeasurementRecord measurementRecord,
+    DateTimeOffset timestamp
+  )
+  {
+    return measurementRecord with { Timestamp = timestamp };
+  }
+
   protected override AbbB2xMeasurementRecord CorrectCumulatives(
     DateTimeOffset timestamp,
     AbbB2xMeasurementRecord measurementRecord,

@@ -13,22 +13,20 @@ ignorePaths:
   - "docker-compose.yml"
   - "omnisharp.json"
   - ".github/workflows/*"
-  - "Doxyfile"
-  - "DoxygenLayout.xml"
-  - "doxygen-awesome.css"
-  - "doxygen-awesome-sidebar-only.css"
   - "cspell.yaml"
   - "./docs/schema.md"
   # TODO: add dicrionary or use aspell/hunspell
   - "./docs/wiki/hr/**/*"
   - "./docs/wiki/**/book.toml"
   # TODO: add dicrionary or use aspell/hunspell
-  - "src/Ozds.Business/Assets/translations-*.json"
+  - "./src/Ozds.Business/Assets/translations-*.json"
   - "./docs/index.html"
   - "./.config/dotnet-tools.json"
-  - "./scripts/*.*"
+  - "./scripts/database/*.*"
+  - "./scripts/migrations/*.*"
   - "NLog.config"
   - "pyproject.toml"
+  - "./scripts/mailserver/mailhog.auth"
 flagWords:
   - "gage"
   - "./rabbitmq.conf"
@@ -115,6 +113,10 @@ words:
   - "xmin"
   - "subproject"
   - "kvarh"
+  - "instantiator"
+  - "unnest"
+  - "unscheduling"
+  - "hypertable"
 
   # Croatian
   - "altibiz"

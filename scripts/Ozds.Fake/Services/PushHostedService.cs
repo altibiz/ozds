@@ -1,6 +1,7 @@
-using Ozds.Business.Iot;
 using Ozds.Fake.Client;
 using Ozds.Fake.Generators.Agnostic;
+using Ozds.Fake.Packing.Agnostic;
+using Ozds.Iot.Entities.Abstractions;
 
 namespace Ozds.Fake.Services;
 
@@ -35,21 +36,23 @@ public class PushHostedService(
           scope.ServiceProvider.GetRequiredService<OzdsPushClient>();
         var generator = scope.ServiceProvider
           .GetRequiredService<AgnosticMeasurementGenerator>();
+        var packer = scope.ServiceProvider
+          .GetRequiredService<AgnosticMessengerPushRequestPacker>();
 
-        var measurements = new List<MessengerPushRequestMeasurement>();
+        var measurements = new List<IMeterPushRequestEntity>();
         foreach (var meterId in push.MeterIds)
         {
           measurements.AddRange(
             await generator.GenerateMeasurements(
-              lastPush, now, meterId, stoppingToken));
+              lastPush, now, push.MessengerId, meterId, stoppingToken));
         }
 
         lastPush = now;
 
-        var request = new MessengerPushRequest(
+        var request = packer.Pack(
+          push.MessengerId,
           now,
-          [.. measurements]
-        );
+          measurements);
 
         await pushClient.Push(
           push.MessengerId,

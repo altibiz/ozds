@@ -2,7 +2,7 @@ using Ozds.Business.Math;
 
 namespace Ozds.Business.Models.Abstractions;
 
-public interface ICalculationItem
+public interface ICalculationItem : IModel
 {
   public SpanningMeasure<decimal> Amount { get; }
 

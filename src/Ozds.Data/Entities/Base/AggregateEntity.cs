@@ -1,10 +1,12 @@
 using Microsoft.EntityFrameworkCore;
-using Ozds.Data.Attributes;
 using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Entities.Enums;
 using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
+
+// TODO: rename meter to concrete meter and ignore it in the generic
+// TODO: create meter in non generic
 
 public abstract class AggregateEntity : IAggregateEntity
 {

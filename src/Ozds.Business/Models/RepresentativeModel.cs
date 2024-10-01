@@ -13,6 +13,9 @@ public class RepresentativeModel : AuditableModel
   [Required]
   public required PhysicalPersonModel PhysicalPerson { get; set; } = default!;
 
+  [Required]
+  public required List<TopicModel> Topics { get; set; } = default!;
+
   public override IEnumerable<ValidationResult> Validate(
     ValidationContext validationContext)
   {

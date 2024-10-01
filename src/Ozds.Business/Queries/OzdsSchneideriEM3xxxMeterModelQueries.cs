@@ -1,16 +1,19 @@
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Conversion;
 using Ozds.Business.Models;
+using Ozds.Business.Models.Base;
 using Ozds.Business.Queries.Abstractions;
-using Ozds.Data;
+using Ozds.Data.Context;
 using Ozds.Data.Entities;
+using Ozds.Data.Entities.Base;
+using Ozds.Data.Extensions;
 
 namespace Ozds.Business.Queries;
 
-public class OzdsSchneideriEM3xxxMeterModelQueries(OzdsDataDbContext context)
-  : IOzdsQueries
+public class OzdsSchneideriEM3xxxMeterModelQueries(DataDbContext context)
+  : IQueries
 {
-  private readonly OzdsDataDbContext context = context;
+  private readonly DataDbContext context = context;
 
   public async Task<SchneideriEM3xxxMeterModel?>
     SchneideriEM3xxxMeterById(string id)

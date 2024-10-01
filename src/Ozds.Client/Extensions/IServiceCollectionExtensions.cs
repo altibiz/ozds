@@ -12,6 +12,34 @@ public static class IServiceCollectionExtensions
     IHostApplicationBuilder builder
   )
   {
+    // Blazor
+    services.AddBlazor(builder);
+
+    // MudBlazor
+    services.AddMudBlazor();
+
+    // State
+    services.AddCascadingAuthenticationState();
+    services.AddCascadingValue(_ => default(UserState));
+    services.AddCascadingValue(_ => default(RepresentativeState));
+    services.AddCascadingValue(_ => default(LogoutTokenState));
+    services.AddCascadingValue(
+      _ => new UserLayoutState(
+        false,
+        [],
+        n => { },
+        s => { },
+        c => { }
+      ));
+
+    return services;
+  }
+
+  private static IServiceCollection AddBlazor(
+    this IServiceCollection services,
+    IHostApplicationBuilder builder
+  )
+  {
     services
       .AddRazorComponents()
       .AddInteractiveServerComponents();
@@ -35,11 +63,14 @@ public static class IServiceCollectionExtensions
           }
         });
 
-    services.AddMudServices();
+    return services;
+  }
 
-    services.AddCascadingAuthenticationState();
-    services.AddCascadingValue(_ => default(UserState));
-    services.AddCascadingValue(_ => default(RepresentativeState));
+  private static IServiceCollection AddMudBlazor(
+    this IServiceCollection services
+  )
+  {
+    services.AddMudServices();
 
     return services;
   }

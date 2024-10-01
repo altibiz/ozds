@@ -1,0 +1,188 @@
+@using Color = MudBlazor.Color
+@using Size = MudBlazor.Size
+
+@if (_shownInvoices is not null && _shownInvoices.Count() > 0)
+{
+  <MudHidden Breakpoint="Breakpoint.MdAndDown">
+    <MudDataGrid
+      T="DemoEventModel"
+      Class="my-6"
+      MultiSelection="true"
+      Items="@_events"
+      SortMode="SortMode.Multiple"
+      Filterable="true"
+      QuickFilter="@_quickFilter">
+      <ToolBarContent>
+        <MudText Typo="Typo.h4">@T["Changes"]</MudText>
+        <MudSpacer/>
+        <MudTextField
+          @bind-Value="_searchString"
+          Placeholder="Search"
+          Adornment="Adornment.Start"
+          Immediate="true"
+          AdornmentIcon="@Icons.Material.Filled.Search"
+          IconSize="Size.Medium"
+          Class="mt-0">
+        </MudTextField>
+      </ToolBarContent>
+      <Columns >
+        <PropertyColumn
+          CellStyle="text-align: start !important;"
+          Property="x => x.Title"
+          Title='@T["Title"]' Sortable="false"/>
+        <PropertyColumn
+          CellStyle="font-size: x-large;"
+          Property="x => x.Timestamp"
+          Title='@T["Date"]'>
+          <CellTemplate>
+            @(context.Item.Timestamp.ToString("HH:mm dd.MM.yyyy."))
+          </CellTemplate>
+        </PropertyColumn>
+        <PropertyColumn
+          CellStyle="font-size: large;"
+          Property="x => x.Author"
+          Title='@T["Author"]'>
+        </PropertyColumn>
+        <TemplateColumn CellClass="d-flex justify-end" Sortable="false" Filterable="false">
+          <CellTemplate>
+            <MudStack Row>
+              <MudButton OnClick="() => InspectEvent(context.Item.Id)" Variant="Variant.Filled" Color="Color.Primary">
+                @T["Overview"]
+              </MudButton>
+            </MudStack>
+          </CellTemplate>
+        </TemplateColumn>
+      </Columns>
+      <PagerContent>
+        <MudDataGridPager T="DemoEventModel"/>
+      </PagerContent>
+    </MudDataGrid>
+  </MudHidden>
+}
+
+@code {
+
+  [CascadingParameter]
+  public UserState user { get; set; } = default!;
+
+  [CascadingParameter]
+  public RepresentativeState representative { get; set; } = default!;
+
+  public string SearchString { get; set; } = "";
+  private List<DemoEventModel> _events = new();
+
+  private class MobileData
+  {
+    public DemoEventModel auditEvent = default!;
+    public bool expand;
+    public bool show;
+  }
+
+  private class DemoEventModel
+  {
+    public string Id = new Random().Next(1, 10000).ToString();
+    public string Title = string.Empty;
+    public string Description = string.Empty;
+    public LevelModel Level;
+    public DateTimeOffset Timestamp = DateTimeOffset.UtcNow.AddMinutes(new Random().Next(60, 180));
+
+    public string Author = "";
+  }
+
+  List<MobileData> _shownInvoices = new();
+  private string? _searchString;
+
+  protected override void OnInitialized()
+  {
+    _events.Add(
+      new DemoEventModel
+      {
+        Title = "Created RepresentativeEntity network-user",
+        Description = "Inserting RepresentativeEntity with _stringId: '4' CreatedById: '' CreatedOn: '4/20/2024 1:20:37 PM +00:00' DeletedById: '' DeletedOn: '' IsDeleted: 'False' LastUpdatedById: '' LastUpdatedOn: '' Role: 'NetworkUserRepresentative' Title: 'network-user' ",
+        Level = LevelModel.Information
+      });
+    _events.Add(
+      new DemoEventModel
+      {
+        Title = "Created AbbB2xMeterEntity test",
+        Description = "Inserting AbbB2xMeterEntity with _stringId: 'abb-B2x-1624226' ConnectionPower_W: '24000' CreatedById: '' CreatedOn: '4/20/2024 11:21:08 AM +00:00' DeletedById: '' DeletedOn: '' IsDeleted: 'False' LastUpdatedById: '' LastUpdatedOn: '' MessengerId: 'messenger' Phases: 'System.Collections.Generic.List`1[Ozds.Data.Entities.Enums.PhaseEntity]' Title: 'test' kind: 'AbbB2xMeterEntity' _measurementValidatorId: '1' ",
+        Level = LevelModel.Information
+      });
+    _events.Add(
+      new DemoEventModel
+      {
+        Title = "Updated NetworkUserEntityProxy DM",
+        Description = "Updating NetworkUserEntity with _id: '1' CreatedById: '' CreatedOn: '20.4.2024. 11:16:00 +00:00' DeletedById: '' DeletedOn: '' IsDeleted: 'False' LastUpdatedById: '' LastUpdatedOn: '22.4.2024. 16:42:56 +00:00' Title: 'DM' _locationId: '1' ",
+        Level = LevelModel.Information
+      });
+    _events.Add(
+      new DemoEventModel
+      {
+        Title = "Updated BlueLowNetworkUserCatalogueEntityProxy test",
+        Description = "Updating BlueLowNetworkUserCatalogueEntity with _id: '2' CreatedById: '' CreatedOn: '4/19/2024 1:37:43 PM +00:00' DeletedById: '' DeletedOn: '' IsDeleted: 'False' LastUpdatedById: '' LastUpdatedOn: '4/29/2024 12:45:42 PM +00:00' Title: 'test' ActiveEnergyTotalImportT0Price_EUR: '0.000041144' MeterFeePrice_EUR: '5.481' ReactiveEnergyTotalRampedT0Price_EUR: '0.000021236' ",
+        Level = LevelModel.Information
+      });
+    if (_events is not null)
+    {
+      foreach (var _auditEvent in _events)
+      {
+        _shownInvoices.Add(new MobileData { auditEvent = _auditEvent, expand = false, show = true });
+      }
+    }
+  }
+
+  private void OnExpandCollapseClick(string invoiceId)
+  {
+    var a = _shownInvoices.Where(x => x.auditEvent.Id == invoiceId).FirstOrDefault();
+    if (a != null)
+    {
+      a.expand = !a.expand;
+    }
+  }
+
+  private Func<DemoEventModel, bool> _quickFilter
+  {
+    get
+    {
+      return x =>
+      {
+        if (string.IsNullOrWhiteSpace(_searchString))
+          return true;
+
+        if (x.Title.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
+          return true;
+
+        return false;
+      };
+    }
+  }
+
+  private Task Filter(string value)
+  {
+    SearchString = value;
+    foreach (var inv in _shownInvoices)
+    {
+      if (value.Trim() != "")
+      {
+        inv.show = false;
+      }
+    }
+
+    ;
+    var a = _shownInvoices.Where(x => x.auditEvent.Title.Contains(value, StringComparison.InvariantCultureIgnoreCase)).ToList();
+    foreach (var inv in a)
+    {
+      inv.show = true;
+    }
+
+    ;
+    StateHasChanged();
+    return Task.CompletedTask;
+  }
+
+  private void InspectEvent(string id)
+  {
+    NavigationManager.NavigateTo($"event/{id}");
+  }
+
+}

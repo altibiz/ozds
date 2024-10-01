@@ -1,17 +1,17 @@
 using System.ComponentModel.DataAnnotations;
 using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Mutations.Abstractions;
-using Ozds.Data;
+using Ozds.Data.Context;
 using IEvent = Ozds.Business.Models.Abstractions.IEvent;
 
 namespace Ozds.Business.Mutations.Agnostic;
 
 public class OzdsEventMutations(
-  OzdsDataDbContext context,
+  DataDbContext context,
   AgnosticModelEntityConverter modelEntityConverter
-) : IOzdsMutations
+) : IMutations
 {
-  private readonly OzdsDataDbContext _context = context;
+  private readonly DataDbContext _context = context;
 
   private readonly AgnosticModelEntityConverter _modelEntityConverter =
     modelEntityConverter;

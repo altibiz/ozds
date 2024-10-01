@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Entities.Enums;
@@ -5,7 +6,9 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
 
-public class EventEntity : IReadonlyEntity, IIdentifiableEntity
+#pragma warning disable S3881 // "IDisposable" should be implemented correctly
+public class EventEntity : IReadonlyEntity, IIdentifiableEntity, IDisposable
+#pragma warning restore S3881 // "IDisposable" should be implemented correctly
 {
   protected readonly long _id;
 
@@ -13,7 +16,19 @@ public class EventEntity : IReadonlyEntity, IIdentifiableEntity
 
   public LevelEntity Level { get; set; }
 
-  public string Description { get; set; } = default!;
+  public JsonDocument Content { get; set; } = default!;
+
+  public virtual ICollection<NotificationEntity> Notifications { get; set; } =
+    default!;
+
+  public List<CategoryEntity> Categories { get; set; } = default!;
+
+#pragma warning disable CA1816 // Dispose methods should call SuppressFinalize
+  public void Dispose()
+#pragma warning restore CA1816 // Dispose methods should call SuppressFinalize
+  {
+    Content?.Dispose();
+  }
 
   public virtual string Id
   {

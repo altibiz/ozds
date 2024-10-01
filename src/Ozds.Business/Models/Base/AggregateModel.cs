@@ -91,17 +91,17 @@ public abstract class AggregateModel : IAggregate
 
   public virtual TariffMeasure<decimal> ActiveEnergy_Wh
   {
-    get { return ActiveEnergySpan_Wh.SpanMax(); }
+    get { return ActiveEnergySpan_Wh.SpanMin(); }
   }
 
   public virtual TariffMeasure<decimal> ReactiveEnergy_VARh
   {
-    get { return ReactiveEnergySpan_VARh.SpanMax(); }
+    get { return ReactiveEnergySpan_VARh.SpanMin(); }
   }
 
   public virtual TariffMeasure<decimal> ApparentEnergy_VAh
   {
-    get { return ApparentEnergySpan_VAh.SpanMax(); }
+    get { return ApparentEnergySpan_VAh.SpanMin(); }
   }
 
   public virtual IEnumerable<ValidationResult> Validate(

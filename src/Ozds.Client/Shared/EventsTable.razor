@@ -1,0 +1,232 @@
+@using Color = MudBlazor.Color
+@using Size = MudBlazor.Size
+@inherits OzdsOwningComponentBase
+
+@if (_shownEvents is not null && _shownEvents.Count() > 0)
+{
+  <MudHidden Breakpoint="Breakpoint.MdAndUp">
+    <MudItem Class="mb-5">
+      <MudText Typo="Typo.h4" Class="d-flex">
+        @(T["Events"])
+      </MudText>
+      @foreach (var e in _shownEvents.Where(x => x.show).ToList())
+      {
+        <MudPaper Elevation="2" Class="ma-1">
+          <MudStack Spacing="0">
+            <MudGrid Class="d-flex pa-2">
+              <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large;">
+                <MudText Typo="Typo.h6">
+                  @e.data.Title
+                </MudText>
+              </MudItem>
+              <MudItem xs="2" Class="d-flex align-center justify-end">
+                <MudIconButton
+                  OnClick="() => InspectEvent(e.data.Id)"
+                  Icon="@Icons.Material.Filled.RemoveRedEye"
+                  Color="Color.Primary"/>
+              </MudItem>
+              <MudItem xs="2" Class="d-flex align-center justify-end">
+                <MudIconButton
+                  OnClick="() => OnExpandCollapseClick(e.data.Id)"
+                  Icon="@(e.expand ? Icons.Material.Filled.KeyboardArrowUp : Icons.Material.Filled.KeyboardArrowDown)"
+                  Color="Color.Default"/>
+              </MudItem>
+              <MudItem xs="10" Class="d-flex flex-row align-center justify-end">
+                <MudText Typo="Typo.body2">
+                  @DateTimeString(e.data.Timestamp)
+                </MudText>
+              </MudItem>
+            </MudGrid>
+            <MudCollapse Class="py-2" Expanded="_shownEvents.Where(x => x.data.Id == e.data.Id).First().expand">
+              <MudStack>
+                <MudDivider DividerType="DividerType.Middle" Class="mt-2"/>
+                <MudText Typo="Typo.body2" Class="px-8 py-4" Style="overflow-wrap: break-word;">
+                  <pre>
+                    @(e.content)
+                  </pre>
+                </MudText>
+              </MudStack>
+            </MudCollapse>
+          </MudStack>
+        </MudPaper>
+      }
+    </MudItem>
+  </MudHidden>
+
+  <MudHidden Breakpoint="Breakpoint.SmAndDown">
+    <MudDataGrid
+      T="IEvent"
+      Class="my-6"
+      MultiSelection="true"
+      Items="@_events"
+      SortMode="SortMode.Multiple"
+      Filterable="true"
+      QuickFilter="@_quickFilter">
+      <ToolBarContent>
+        <MudText Typo="Typo.h4">@T["Events"]</MudText>
+        <MudSpacer/>
+        <MudTextField
+          @bind-Value="_searchString"
+          Placeholder="Search"
+          Adornment="Adornment.Start"
+          Immediate="true"
+          AdornmentIcon="@Icons.Material.Filled.Search"
+          IconSize="Size.Medium"
+          Class="mt-0">
+        </MudTextField>
+      </ToolBarContent>
+      <Columns >
+        <PropertyColumn
+          CellStyle="text-align: start !important;"
+          Property="x => x.Title"
+          Title='@T["Title"]' Sortable="false"/>
+        <PropertyColumn
+          CellStyle="font-size: x-large;"
+          Property="x => x.Timestamp"
+          Title='@T["Date"]'>
+          <CellTemplate>
+            @(context.Item.Timestamp.ToString("HH:mm dd.MM.yyyy."))
+          </CellTemplate>
+        </PropertyColumn>
+        <PropertyColumn
+          CellStyle="font-size: large;"
+          Property="x => x.Level"
+          Title='@T["Level"]'>
+          <CellTemplate>
+            @if (context.Item.Level == LevelModel.Error || context.Item.Level == LevelModel.Critical)
+            {
+              <MudIcon Icon="@Icons.Material.Filled.Circle" Color="Color.Error"/>
+            }
+            else if (context.Item.Level == LevelModel.Warning)
+            {
+              <MudIcon Icon="@Icons.Material.Filled.Circle" Color="Color.Warning"/>
+            }
+            else
+            {
+              <MudIcon Icon="@Icons.Material.Filled.Circle" Color="Color.Success"/>
+            }
+          </CellTemplate>
+        </PropertyColumn>
+        <TemplateColumn CellClass="d-flex justify-end" Sortable="false" Filterable="false">
+          <CellTemplate>
+            <MudStack Row>
+              <MudButton OnClick="() => InspectEvent(context.Item.Id)" Variant="Variant.Filled" Color="Color.Primary">
+                @T["Overview"]
+              </MudButton>
+            </MudStack>
+          </CellTemplate>
+        </TemplateColumn>
+      </Columns>
+      <PagerContent>
+        <MudDataGridPager T="IEvent"/>
+      </PagerContent>
+    </MudDataGrid>
+  </MudHidden>
+}
+
+@code {
+
+  [CascadingParameter]
+  public UserState user { get; set; } = default!;
+
+  [CascadingParameter]
+  public RepresentativeState representative { get; set; } = default!;
+
+  [Parameter]
+  public LevelModel MinLevel { get; set; } = LevelModel.Warning;
+
+  public string SearchString { get; set; } = "";
+  private List<IEvent> _events = new();
+
+  private class MobileData
+  {
+    public IEvent data = default!;
+    public bool expand;
+    public bool show;
+
+    public string content = string.Empty;
+  }
+
+  List<MobileData> _shownEvents = new();
+  private string? _searchString;
+
+  protected override async Task OnParametersSetAsync()
+  {
+    _events = (await ScopedServices
+        .GetRequiredService<OzdsEventQueries>()
+        .Read<EventModel>(MinLevel))
+      .Items
+      .OfType<IEvent>()
+      .ToList();
+    _events = _events.OrderByDescending(x => x.Level).ToList();
+    if (_events is not null)
+    {
+      foreach (var e in _events)
+      {
+        _shownEvents.Add(
+          new MobileData
+          {
+            data = e,
+            expand = false,
+            show = true,
+            content = JsonString(e.Content)
+          });
+      }
+    }
+  }
+
+  private void OnExpandCollapseClick(string eventId)
+  {
+    var a = _shownEvents.Where(x => x.data.Id == eventId).FirstOrDefault();
+    if (a != null)
+    {
+      a.expand = !a.expand;
+    }
+  }
+
+  private Func<IEvent, bool> _quickFilter
+  {
+    get
+    {
+      return x =>
+      {
+        if (string.IsNullOrWhiteSpace(_searchString))
+          return true;
+
+        if (x.Title.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
+          return true;
+
+        return false;
+      };
+    }
+  }
+
+  private Task Filter(string value)
+  {
+    SearchString = value;
+    foreach (var inv in _shownEvents)
+    {
+      if (value.Trim() != "")
+      {
+        inv.show = false;
+      }
+    }
+
+    ;
+    var a = _shownEvents.Where(x => x.data.Title.Contains(value, StringComparison.InvariantCultureIgnoreCase)).ToList();
+    foreach (var inv in a)
+    {
+      inv.show = true;
+    }
+
+    ;
+    StateHasChanged();
+    return Task.CompletedTask;
+  }
+
+  private void InspectEvent(string id)
+  {
+    NavigationManager.NavigateTo($"event/{id}");
+  }
+
+}

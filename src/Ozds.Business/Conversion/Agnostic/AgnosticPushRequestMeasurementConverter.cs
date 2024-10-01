@@ -1,6 +1,6 @@
-using System.Text.Json.Nodes;
 using Ozds.Business.Conversion.Abstractions;
 using Ozds.Business.Models.Abstractions;
+using Ozds.Iot.Entities.Abstractions;
 
 namespace Ozds.Business.Conversion.Agnostic;
 
@@ -9,7 +9,7 @@ public class AgnosticPushRequestMeasurementConverter(
 {
   private readonly IServiceProvider _serviceProvider = serviceProvider;
 
-  public JsonObject ToPushRequest(IMeasurement measurement)
+  public IMeterPushRequestEntity ToPushRequest(IMeasurement measurement)
   {
     return _serviceProvider
         .GetServices<IPushRequestMeasurementConverter>()
@@ -21,27 +21,22 @@ public class AgnosticPushRequestMeasurementConverter(
         $"No converter found for measurement {measurement.GetType()}.");
   }
 
-  public IMeasurement ToMeasurement(
-    JsonObject pushRequest,
-    string meterId,
-    DateTimeOffset timestamp)
+  public IMeasurement ToMeasurement(IMeterPushRequestEntity pushRequest)
   {
     return _serviceProvider
         .GetServices<IPushRequestMeasurementConverter>()
-        .FirstOrDefault(converter => converter.CanConvert(meterId))
-        ?.ToMeasurement(pushRequest, meterId, timestamp)
+        .FirstOrDefault(converter => converter.CanConvert(pushRequest.MeterId))
+        ?.ToMeasurement(pushRequest)
       ?? throw new InvalidOperationException(
-        $"No converter found for meter {meterId}.");
+        $"No converter found for meter {pushRequest.MeterId}.");
   }
 
   public TMeasurement ToMeasurement<TMeasurement>(
-    JsonObject pushRequest,
-    string meterId,
-    DateTimeOffset timestamp)
+    IMeterPushRequestEntity pushRequest)
     where TMeasurement : class, IMeasurement
   {
-    return ToMeasurement(pushRequest, meterId, timestamp) as TMeasurement
+    return ToMeasurement(pushRequest) as TMeasurement
       ?? throw new InvalidOperationException(
-        $"No converter found for meter {meterId}.");
+        $"No converter found for meter {pushRequest.MeterId}.");
   }
 }

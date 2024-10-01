@@ -92,8 +92,10 @@ public class UsageActivePowerTotalImportT1PeakCalculationItemCalculatorTest
         .Generate();
 
     var aggregates = noiseAggregates
+      .SkipLast(1)
       .Append(peakAggregate)
       .OrderBy(_ => Random.Shared.Next())
+      .Append(noiseAggregates.Last())
       .ToList<IAggregate>();
 
     var input = new CalculationItemBasisModel(

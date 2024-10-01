@@ -1,9 +1,9 @@
-using Ozds.Business.Iot;
 using Ozds.Fake.Conversion.Agnostic;
 using Ozds.Fake.Correction.Agnostic;
 using Ozds.Fake.Generators.Abstractions;
 using Ozds.Fake.Loaders;
 using Ozds.Fake.Records.Abstractions;
+using Ozds.Iot.Entities.Abstractions;
 
 // TODO: check time logic here
 // TODO: add energy logic
@@ -21,8 +21,8 @@ public abstract class
     serviceProvider
       .GetRequiredService<AgnosticMeasurementRecordPushRequestConverter>();
 
-  private readonly AgnosticCumulativeCorrector _corrector =
-    serviceProvider.GetRequiredService<AgnosticCumulativeCorrector>();
+  private readonly AgnosticCorrector _corrector =
+    serviceProvider.GetRequiredService<AgnosticCorrector>();
 
   private readonly ResourceCache _resources =
     serviceProvider.GetRequiredService<ResourceCache>();
@@ -36,9 +36,10 @@ public abstract class
     return meterId.StartsWith(MeterIdPrefix);
   }
 
-  public async Task<List<MessengerPushRequestMeasurement>> GenerateMeasurements(
+  public async Task<List<IMeterPushRequestEntity>> GenerateMeasurements(
     DateTimeOffset dateFrom,
     DateTimeOffset dateTo,
+    string messengerId,
     string meterId,
     CancellationToken cancellationToken = default
   )
@@ -48,12 +49,13 @@ public abstract class
         CsvResourceName,
         cancellationToken);
     var pushRequestMeasurements =
-      ExpandRecords(records, meterId, dateFrom, dateTo).ToList();
+      ExpandRecords(records, messengerId, meterId, dateFrom, dateTo).ToList();
     return pushRequestMeasurements;
   }
 
-  private IEnumerable<MessengerPushRequestMeasurement> ExpandRecords(
+  private IEnumerable<IMeterPushRequestEntity> ExpandRecords(
     List<TMeasurement> records,
+    string messengerId,
     string meterId,
     DateTimeOffset dateFrom,
     DateTimeOffset dateTo
@@ -91,18 +93,23 @@ public abstract class
         var timestamp = currentDateFrom.AddTicks(
           (record.Timestamp - dateFromCsv).Ticks
         );
+        var withCorrectedMeterId = _corrector.CorrectMeterId(
+          record,
+          meterId
+        );
+        var withCorrectedTimestamp = _corrector.CorrectTimestamp(
+          withCorrectedMeterId,
+          timestamp
+        );
         var withCorrectedCumulatives = _corrector.CorrectCumulatives(
           timestamp,
-          record,
+          withCorrectedTimestamp,
           firstRecord,
           lastRecord
         );
-        var json = _converter.ConvertToPushRequest(withCorrectedCumulatives);
-        yield return new MessengerPushRequestMeasurement(
-          meterId,
-          timestamp,
-          json
-        );
+        var pushRequest = _converter.ConvertToPushRequest(
+          withCorrectedCumulatives, messengerId);
+        yield return pushRequest;
       }
 
       timeSpan -= dateToCsv - dateFromCsv;

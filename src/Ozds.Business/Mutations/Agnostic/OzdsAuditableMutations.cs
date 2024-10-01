@@ -1,35 +1,18 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Conversion.Agnostic;
-using Ozds.Business.Extensions;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Mutations.Abstractions;
-using Ozds.Data;
-
-// TODO: check representative model user id
+using Ozds.Data.Context;
 
 namespace Ozds.Business.Mutations.Agnostic;
 
 public class OzdsAuditableMutations(
-  OzdsDataDbContext context,
+  IDbContextFactory<DataDbContext> factory,
   AgnosticModelEntityConverter modelEntityConverter
-) : IOzdsMutations
+) : IMutations
 {
-  private readonly OzdsDataDbContext _context = context;
-
-  private readonly AgnosticModelEntityConverter _modelEntityConverter =
-    modelEntityConverter;
-
-  public Task SaveChangesAsync()
-  {
-    return _context.SaveChangesAsync();
-  }
-
-  public void ClearChanges()
-  {
-    _context.ChangeTracker.Clear();
-  }
-
-  public void Create(IAuditable auditable)
+  public async Task Create(IAuditable auditable)
   {
     var validationResults = auditable
       .Validate(new ValidationContext(this))
@@ -39,10 +22,12 @@ public class OzdsAuditableMutations(
       throw new ValidationException(validationResults.First().ErrorMessage);
     }
 
-    _context.AddTracked(_modelEntityConverter.ToEntity(auditable));
+    await using var context = await factory.CreateDbContextAsync();
+    context.Add(modelEntityConverter.ToEntity(auditable));
+    await context.SaveChangesAsync();
   }
 
-  public void Update(IAuditable auditable)
+  public async Task Update(IAuditable auditable)
   {
     var validationResults = auditable
       .Validate(new ValidationContext(this))
@@ -52,11 +37,15 @@ public class OzdsAuditableMutations(
       throw new ValidationException(validationResults.First().ErrorMessage);
     }
 
-    _context.UpdateTracked(_modelEntityConverter.ToEntity(auditable));
+    await using var context = await factory.CreateDbContextAsync();
+    context.Update(modelEntityConverter.ToEntity(auditable));
+    await context.SaveChangesAsync();
   }
 
-  public void Delete(IAuditable auditable)
+  public async Task Delete(IAuditable auditable)
   {
-    _context.DeleteTracked(_modelEntityConverter.ToEntity(auditable));
+    await using var context = await factory.CreateDbContextAsync();
+    context.Remove(modelEntityConverter.ToEntity(auditable));
+    await context.SaveChangesAsync();
   }
 }

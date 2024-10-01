@@ -1,0 +1,5 @@
+outs:
+- md5: 21bcb38e6ae4673a8b4fa7cfc880338d
+  size: 21676
+  hash: md5
+  path: 20240521173629-Ozds.Data-InvoiceRegistration.sql

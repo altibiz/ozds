@@ -1,4 +1,4 @@
-using Ozds.Business.Iot;
+using Ozds.Iot.Entities.Abstractions;
 
 namespace Ozds.Fake.Client;
 
@@ -12,7 +12,7 @@ public class OzdsPushClient(
   public async Task Push(
     string messengerId,
     string apiKey,
-    MessengerPushRequest request,
+    IMessengerPushRequestEntity request,
     CancellationToken cancellationToken = default
   )
   {

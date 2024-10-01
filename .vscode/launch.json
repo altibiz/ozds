@@ -19,6 +19,24 @@
       }
     },
     {
+      "name": "debug-server-sql",
+      "type": "coreclr",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/Ozds.Server/bin/Debug/net8.0/Ozds.Server.dll",
+      "preLaunchTask": "build-server",
+      "cwd": "${workspaceFolder}/src/Ozds.Server",
+      "stopAtEntry": false,
+      "requireExactSource": false,
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DOTNET_ENVIRONMENT": "Development",
+        "OZDS_LOG_SQL": "true"
+      },
+      "logging": {
+        "moduleLoad": false
+      }
+    },
+    {
       "name": "debug-server-external",
       "type": "coreclr",
       "request": "launch",
@@ -30,6 +48,29 @@
       "env": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "DOTNET_ENVIRONMENT": "Development"
+      },
+      "logging": {
+        "moduleLoad": false
+      },
+      "justMyCode": false,
+      "symbolOptions": {
+        "searchMicrosoftSymbolServer": true,
+        "searchNuGetOrgSymbolServer": true
+      }
+    },
+    {
+      "name": "debug-server-sql-external",
+      "type": "coreclr",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/Ozds.Server/bin/Debug/net8.0/Ozds.Server.dll",
+      "preLaunchTask": "build-server",
+      "cwd": "${workspaceFolder}/src/Ozds.Server",
+      "stopAtEntry": false,
+      "requireExactSource": false,
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DOTNET_ENVIRONMENT": "Development",
+        "OZDS_LOG_SQL": "true"
       },
       "logging": {
         "moduleLoad": false

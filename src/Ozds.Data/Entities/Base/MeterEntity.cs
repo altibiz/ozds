@@ -6,6 +6,7 @@ namespace Ozds.Data.Entities.Base;
 
 public class MeterEntity : AuditableEntity
 {
+  private readonly long _measurementValidatorId;
   protected readonly string _stringId = default!;
 
   public override string Id
@@ -28,6 +29,15 @@ public class MeterEntity : AuditableEntity
   public virtual ICollection<NetworkUserCalculationEntity>
     NetworkUserCalculations { get; set; } =
     default!;
+
+  public virtual string MeasurementValidatorId
+  {
+    get { return _measurementValidatorId.ToString(); }
+    init { _measurementValidatorId = long.Parse(value); }
+  }
+
+  public virtual MeasurementValidatorEntity MeasurementValidator { get; set; } =
+    default!;
 }
 
 public class MeterEntity<
@@ -39,21 +49,15 @@ public class MeterEntity<
   where TAggregate : AggregateEntity
   where TMeasurementValidator : MeasurementValidatorEntity
 {
-  private readonly long _measurementValidatorId;
-
-  public virtual string MeasurementValidatorId
-  {
-    get { return _measurementValidatorId.ToString(); }
-    init { _measurementValidatorId = long.Parse(value); }
-  }
-
   public virtual ICollection<TMeasurement> Measurements { get; set; } =
     default!;
 
   public virtual ICollection<TAggregate> Aggregates { get; set; } = default!;
 
+#pragma warning disable CS0114 // Member hides inherited member; missing override keyword
   public virtual TMeasurementValidator MeasurementValidator { get; set; } =
     default!;
+#pragma warning restore CS0114 // Member hides inherited member; missing override keyword
 }
 
 public class
@@ -78,6 +82,18 @@ public class
       .Property(nameof(MeterEntity.ConnectionPower_W))
       .HasColumnName("connection_power_w");
 
+    builder
+      .HasOne(
+        nameof(MeterEntity.MeasurementValidator))
+      .WithMany(nameof(MeasurementValidatorEntity<MeterEntity>.Meters))
+      .HasForeignKey("_measurementValidatorId");
+
+    builder.Ignore(
+      nameof(MeterEntity.MeasurementValidatorId));
+    builder
+      .Property("_measurementValidatorId")
+      .HasColumnName("measurement_validator_id");
+
     if (entity != typeof(MeterEntity))
     {
       builder
@@ -91,20 +107,6 @@ public class
           nameof(MeterEntity<MeasurementEntity, AggregateEntity,
             MeasurementValidatorEntity>.Aggregates))
         .WithOne(nameof(AggregateEntity<MeterEntity>.Meter));
-
-      builder
-        .HasOne(
-          nameof(MeterEntity<MeasurementEntity, AggregateEntity,
-            MeasurementValidatorEntity>.MeasurementValidator))
-        .WithMany(nameof(MeasurementValidatorEntity<MeterEntity>.Meters))
-        .HasForeignKey("_measurementValidatorId");
-
-      builder.Ignore(
-        nameof(MeterEntity<MeasurementEntity, AggregateEntity,
-          MeasurementValidatorEntity>.MeasurementValidatorId));
-      builder
-        .Property("_measurementValidatorId")
-        .HasColumnName("measurement_validator_id");
     }
   }
 }
