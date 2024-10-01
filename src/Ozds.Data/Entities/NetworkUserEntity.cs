@@ -44,10 +44,6 @@ public class
   public override void Configure(EntityTypeBuilder<NetworkUserEntity> builder)
   {
     builder
-      .HasMany(nameof(NetworkUserEntity.Representatives))
-      .WithMany(nameof(RepresentativeEntity.NetworkUsers));
-
-    builder
       .HasOne(nameof(NetworkUserEntity.Location))
       .WithMany(nameof(LocationEntity.NetworkUsers))
       .HasForeignKey("_locationId");

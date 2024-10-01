@@ -107,10 +107,6 @@ public class
   public override void Configure(EntityTypeBuilder<LocationEntity> builder)
   {
     builder
-      .HasMany(nameof(LocationEntity.Representatives))
-      .WithMany(nameof(RepresentativeEntity.Locations));
-
-    builder
       .HasMany(nameof(LocationEntity.NetworkUsers))
       .WithOne(nameof(NetworkUserEntity.Location));
 
