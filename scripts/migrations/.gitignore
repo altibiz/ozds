@@ -121,3 +121,6 @@
 /20241001173042-Ozds.Messaging-NetUserInvoiceStateRename-hypertables.sql
 /20241001173042-Ozds.Messaging-NetUserInvoiceStateRename-orchard.sql
 /20241001173042-Ozds.Messaging-NetUserInvoiceStateRename.sql
+/20241001184151-Ozds.Data-TopicNetworkUserInvoiceState-hypertables.sql
+/20241001184151-Ozds.Data-TopicNetworkUserInvoiceState-orchard.sql
+/20241001184151-Ozds.Data-TopicNetworkUserInvoiceState.sql
