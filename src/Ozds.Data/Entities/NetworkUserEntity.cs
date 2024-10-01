@@ -34,7 +34,7 @@ public class NetworkUserEntity : AuditableEntity
 
   public string AltiBizSubProjectCode { get; set; } = default!;
 
-  public ICollection<NetworkUserRepresentativeEntity> NetworkUserRepresentatives { get; set; } = default!;
+  public virtual ICollection<NetworkUserRepresentativeEntity> NetworkUserRepresentatives { get; set; } = default!;
 }
 
 public class
