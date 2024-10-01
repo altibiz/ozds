@@ -161,3 +161,6 @@
 /20240924032326-Ozds.Data-Notifications7-hypertables.sql
 /20240924032326-Ozds.Data-Notifications7-orchard.sql
 /20240924032326-Ozds.Data-Notifications7.sql
+/20241001160135-Ozds.Messaging-CancelReason-hypertables.sql
+/20241001160135-Ozds.Messaging-CancelReason-orchard.sql
+/20241001160135-Ozds.Messaging-CancelReason.sql
