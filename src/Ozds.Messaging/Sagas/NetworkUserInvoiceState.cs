@@ -12,5 +12,7 @@ public class NetworkUserInvoiceState : SagaStateMachineInstance
 
   public string? BillId { get; set; }
 
+  public string? CancelReason { get; set; }
+
   public Guid CorrelationId { get; set; } = Guid.Empty;
 }

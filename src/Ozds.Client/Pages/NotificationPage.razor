@@ -66,17 +66,17 @@
             <MudHidden Breakpoint="Breakpoint.Xs">
               <MudText Type="Typo.body2" Align="@(model.Content.Length > 30 ? Align.Left : Align.Right)"
                        Style="overflow-wrap: break-word;">
-                <pre>
+                <code Style="overflow-wrap: break-word;">
                   @model.Content
-                </pre>
+                </code>
               </MudText>
             </MudHidden>
             <MudHidden Breakpoint="Breakpoint.SmAndUp">
               <MudText Type="Typo.body2" Align="MudAlign.Left"
                        Style="overflow-wrap: break-word;">
-                <pre>
+                <code Style="overflow-wrap: break-word;">
                   @model.Content
-                </pre>
+                </code>
               </MudText>
             </MudHidden>
           </MudItem>

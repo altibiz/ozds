@@ -57,14 +57,13 @@ public class NetworkUserInvoiceStateMachine
 
     DuringAny(
       When(CancelNetworkUserInvoice)
+        .Then(context => context.Saga.CancelReason = context.Message.Reason)
         .TransitionTo(Cancelled));
 
     During(
       Initiated,
       When(RegisterNetworkUserInvoice)
-        .Then(
-          context => context.Saga.BillId =
-            context.Message.BillId)
+        .Then(context => context.Saga.BillId = context.Message.BillId)
         .Activity(x => x.OfType<NetworkUserInvoiceRegisteredActivity>())
         .TransitionTo(Registered));
   }
@@ -76,11 +75,13 @@ public class NetworkUserInvoiceStateMachine
   public State Registered { get; } = default!;
 
   public Event<IInitiateNetworkUserInvoice>
-    InitiateNetworkUserInvoice { get; } = default!;
+    InitiateNetworkUserInvoice
+  { get; } = default!;
 
   public Event<ICancelNetworkUserInvoice> CancelNetworkUserInvoice { get; } =
     default!;
 
   public Event<IRegisterNetworkUserInvoice>
-    RegisterNetworkUserInvoice { get; } = default!;
+    RegisterNetworkUserInvoice
+  { get; } = default!;
 }

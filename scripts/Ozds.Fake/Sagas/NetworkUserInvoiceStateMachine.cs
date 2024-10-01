@@ -82,7 +82,8 @@ public class NetworkUserInvoiceStateMachine
                   "CancelNetworkUserInvoice endpoint not found")),
               context =>
                 new CancelNetworkUserInvoice(
-                  context.Saga.NetworkUserInvoiceId))
+                  context.Saga.NetworkUserInvoiceId,
+                  context.Saga.CancelReason!))
             .TransitionTo(Cancelled)));
   }
 

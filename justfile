@@ -329,7 +329,7 @@ validate *args:
 
 [confirm("This will clean docker containers. Do you want to continue?")]
 clean:
-    docker ps -a -q | lines | each { |x| docker stop $x }
+    docker compose ps -a -q | lines | each { |x| docker stop $x }
     docker compose --profile "*" down -v
     docker compose up -d
     {{ isready }}

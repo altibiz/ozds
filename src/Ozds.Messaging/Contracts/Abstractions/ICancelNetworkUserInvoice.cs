@@ -6,4 +6,5 @@ namespace Ozds.Messaging.Contracts.Abstractions;
 public interface ICancelNetworkUserInvoice
   : INetworkUserInvoiceCommand
 {
+  public string Reason { get; }
 }

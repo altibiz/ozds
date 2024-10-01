@@ -108,6 +108,7 @@ public class MeterInactivityReactor(
       TopicModel.Messenger,
       TopicModel.MessengerInactivity
     ];
+    notification.Title = "Meter is inactive";
     notification.Summary = $"Meter \"{messenger.Title}\" is inactive";
     var builder = new StringBuilder();
     if (environment.IsDevelopment())

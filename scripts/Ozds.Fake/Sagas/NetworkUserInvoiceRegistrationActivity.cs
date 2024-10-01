@@ -80,6 +80,7 @@ public class NetworkUserInvoiceRegistrationActivity(
     }
     else
     {
+      saga.CancelReason = "Fake cancelled";
       _logger.LogInformation(
         "Network user invoice {NetworkUserInvoiceId} cancelled",
         saga.NetworkUserInvoiceId
