@@ -130,7 +130,7 @@ public abstract class OzdsComponentBase : ComponentBase
     return withTimezone.ToString("dd. MM. yyyy. HH:mm", cultureInfo);
   }
 
-  protected static DateTimeOffset DateTimeGraph(DateTimeOffset dateTimeOffset)
+  protected static DateTimeOffset DateTimeApplyOffset(DateTimeOffset dateTimeOffset)
   {
     var a = dateTimeOffset.UtcDateTime.Add(
       DateTimeOffsetExtensions.GetOffset(dateTimeOffset));

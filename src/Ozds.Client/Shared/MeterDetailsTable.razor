@@ -158,7 +158,7 @@
   public record struct TabularData(string year, string month, decimal? monthStartTotal, decimal? monthEndTotal, decimal maxPower);
 
   private DateTimeOffset startOfThisYear = DateTimeOffset.UtcNow.GetStartOfYear();
-  private DateTimeOffset startOfThisYearNoOffset = DateTimeGraph(DateTimeOffset.UtcNow.GetStartOfYear());
+  private DateTimeOffset startOfThisYearNoOffset = DateTimeApplyOffset(DateTimeOffset.UtcNow.GetStartOfYear());
   private DateTimeOffset startOfThisMonth = DateTimeOffset.UtcNow.GetStartOfMonth();
   private DateTimeOffset now = DateTime.UtcNow;
   private IMeter? _meter;
@@ -186,7 +186,7 @@
 
     foreach (var month in startOfThisYearNoOffset.GetThisYearMonthStarts().Reverse())
     {
-      var monthNoOffset = DateTimeGraph(month);
+      var monthNoOffset = DateTimeApplyOffset(month);
       var measureNextMonthMonthly = measurePerMonth
         .Where(x => x.Timestamp == monthNoOffset.GetStartOfNextMonth())
         .Where(x => x.Interval == IntervalModel.Month)

@@ -16,7 +16,7 @@
                          Items="@series.Data"
                          Name="@series.Name"
                          SeriesType="SeriesType.Line"
-                         XValue="x => DateTimeGraph(x.Date)"
+                         XValue="x => DateTimeApplyOffset(x.Date)"
                          YValue="@(x => x.Value)"/>
       }
     </ApexChart>
@@ -31,7 +31,7 @@
                          Items="@series.Data"
                          Name="@series.Name"
                          SeriesType="SeriesType.Line"
-                         XValue="x => DateTimeGraph(x.Date)"
+                         XValue="x => DateTimeApplyOffset(x.Date)"
                          YValue="@(x => x.Value)"/>
       }
     </ApexChart>
