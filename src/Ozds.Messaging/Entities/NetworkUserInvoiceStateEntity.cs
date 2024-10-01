@@ -1,8 +1,8 @@
 using MassTransit;
 
-namespace Ozds.Messaging.Sagas;
+namespace Ozds.Messaging.Entities;
 
-public class NetworkUserInvoiceState : SagaStateMachineInstance
+public class NetworkUserInvoiceStateEntity : SagaStateMachineInstance
 {
   public string CurrentState { get; set; } = default!;
 

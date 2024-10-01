@@ -1,10 +1,11 @@
 using MassTransit;
 using Ozds.Messaging.Contracts.Abstractions;
+using Ozds.Messaging.Entities;
 
 namespace Ozds.Messaging.Sagas;
 
 public class NetworkUserInvoiceStateMachine
-  : MassTransitStateMachine<NetworkUserInvoiceState>
+  : MassTransitStateMachine<NetworkUserInvoiceStateEntity>
 {
   public NetworkUserInvoiceStateMachine()
   {
@@ -24,7 +25,7 @@ public class NetworkUserInvoiceStateMachine
 
         x.SetSagaFactory(
           context =>
-            new NetworkUserInvoiceState
+            new NetworkUserInvoiceStateEntity
             {
               CorrelationId = context.CorrelationId ?? NewId.NextGuid(),
               NetworkUserInvoiceId = context.Message.NetworkUserInvoiceId

@@ -1,6 +1,7 @@
 using MassTransit;
 using Ozds.Messaging.Contracts;
 using Ozds.Messaging.Contracts.Abstractions;
+using Ozds.Messaging.Entities;
 using Ozds.Messaging.Sagas;
 
 // TODO: make queue names configurable
@@ -8,7 +9,7 @@ using Ozds.Messaging.Sagas;
 namespace Ozds.Fake.Sagas;
 
 public class NetworkUserInvoiceStateMachine
-  : MassTransitStateMachine<NetworkUserInvoiceState>
+  : MassTransitStateMachine<NetworkUserInvoiceStateEntity>
 {
   public NetworkUserInvoiceStateMachine(IConfiguration configuration)
   {
@@ -28,7 +29,7 @@ public class NetworkUserInvoiceStateMachine
 
         x.SetSagaFactory(
           context =>
-            new NetworkUserInvoiceState
+            new NetworkUserInvoiceStateEntity
             {
               CorrelationId = context.CorrelationId ?? NewId.NextGuid(),
               NetworkUserInvoiceId = context.Message.NetworkUserInvoiceId

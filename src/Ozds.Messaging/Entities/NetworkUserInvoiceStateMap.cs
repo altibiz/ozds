@@ -2,17 +2,19 @@ using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Ozds.Messaging.Sagas;
+namespace Ozds.Messaging.Entities;
 
 // TODO: work out foreign keys
 
-public class NetworkUserInvoiceStateMap : SagaClassMap<NetworkUserInvoiceState>
+public class NetworkUserInvoiceStateMap : SagaClassMap<NetworkUserInvoiceStateEntity>
 {
   protected override void Configure(
-    EntityTypeBuilder<NetworkUserInvoiceState> entity,
+    EntityTypeBuilder<NetworkUserInvoiceStateEntity> entity,
     ModelBuilder model
   )
   {
+    entity.ToTable("network_user_invoice_states");
+
     entity
       .Property(x => x.NetworkUserInvoiceId)
       .IsRequired();

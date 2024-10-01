@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Ozds.Data.Entities.Base;
 using Ozds.Data.Entities.Complex;
+using Ozds.Data.Entities.Joins;
 using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities;
@@ -19,7 +20,8 @@ public class LocationEntity : AuditableEntity
   private long _whiteMediumNetworkUserCatalogueId;
 
   public virtual ICollection<RepresentativeEntity>
-    Representatives { get; set; } = default!;
+    Representatives
+  { get; set; } = default!;
 
   public virtual ICollection<NetworkUserEntity> NetworkUsers { get; set; } =
     default!;
@@ -28,7 +30,8 @@ public class LocationEntity : AuditableEntity
     default!;
 
   public virtual ICollection<LocationMeasurementLocationEntity>
-    MeasurementLocations { get; set; } = default!;
+    MeasurementLocations
+  { get; set; } = default!;
 
   public virtual ICollection<LocationInvoiceEntity> Invoices { get; set; } =
     default!;
@@ -40,7 +43,8 @@ public class LocationEntity : AuditableEntity
   }
 
   public virtual WhiteMediumNetworkUserCatalogueEntity
-    WhiteMediumNetworkUserCatalogue { get; set; } =
+    WhiteMediumNetworkUserCatalogue
+  { get; set; } =
     default!;
 
   public string BlueLowNetworkUserCatalogueId
@@ -93,6 +97,8 @@ public class LocationEntity : AuditableEntity
   public LegalPersonEntity LegalPerson { get; set; } = default!;
 
   public string AltiBizSubProjectCode { get; set; } = default!;
+
+  public virtual ICollection<LocationRepresentativeEntity> LocationRepresentatives { get; set; } = default!;
 }
 
 public class

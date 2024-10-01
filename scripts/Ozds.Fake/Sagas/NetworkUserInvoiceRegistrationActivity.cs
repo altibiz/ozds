@@ -1,4 +1,5 @@
 using MassTransit;
+using Ozds.Messaging.Entities;
 using Ozds.Messaging.Sagas;
 
 namespace Ozds.Fake.Sagas;
@@ -6,13 +7,13 @@ namespace Ozds.Fake.Sagas;
 public class NetworkUserInvoiceRegistrationActivity(
   ILogger<NetworkUserInvoiceRegistrationActivity> logger
 )
-  : IStateMachineActivity<NetworkUserInvoiceState>
+  : IStateMachineActivity<NetworkUserInvoiceStateEntity>
 {
   private readonly ILogger _logger = logger;
 
   public async Task Execute(
-    BehaviorContext<NetworkUserInvoiceState> context,
-    IBehavior<NetworkUserInvoiceState> next
+    BehaviorContext<NetworkUserInvoiceStateEntity> context,
+    IBehavior<NetworkUserInvoiceStateEntity> next
   )
   {
     await RegisterNetworkUserInvoice(context.Saga);
@@ -21,8 +22,8 @@ public class NetworkUserInvoiceRegistrationActivity(
   }
 
   public async Task Execute<T>(
-    BehaviorContext<NetworkUserInvoiceState, T> context,
-    IBehavior<NetworkUserInvoiceState, T> next
+    BehaviorContext<NetworkUserInvoiceStateEntity, T> context,
+    IBehavior<NetworkUserInvoiceStateEntity, T> next
   )
     where T : class
   {
@@ -32,8 +33,8 @@ public class NetworkUserInvoiceRegistrationActivity(
   }
 
   public Task Faulted<TException>(
-    BehaviorExceptionContext<NetworkUserInvoiceState, TException> context,
-    IBehavior<NetworkUserInvoiceState> next
+    BehaviorExceptionContext<NetworkUserInvoiceStateEntity, TException> context,
+    IBehavior<NetworkUserInvoiceStateEntity> next
   )
     where TException : Exception
   {
@@ -41,8 +42,8 @@ public class NetworkUserInvoiceRegistrationActivity(
   }
 
   public Task Faulted<T, TException>(
-    BehaviorExceptionContext<NetworkUserInvoiceState, T, TException> context,
-    IBehavior<NetworkUserInvoiceState, T> next
+    BehaviorExceptionContext<NetworkUserInvoiceStateEntity, T, TException> context,
+    IBehavior<NetworkUserInvoiceStateEntity, T> next
   )
     where T : class
     where TException : Exception
@@ -60,7 +61,7 @@ public class NetworkUserInvoiceRegistrationActivity(
     visitor.Visit(this);
   }
 
-  private async Task RegisterNetworkUserInvoice(NetworkUserInvoiceState saga)
+  private async Task RegisterNetworkUserInvoice(NetworkUserInvoiceStateEntity saga)
   {
     await Task.Delay(1000); // NOTE: Simulate fetching
     _logger.LogInformation(
