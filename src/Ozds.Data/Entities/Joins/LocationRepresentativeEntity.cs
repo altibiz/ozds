@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Ozds.Data.Entities.Abstractions;
-using Ozds.Data.Entities.Base;
 using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Joins;

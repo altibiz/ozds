@@ -11,6 +11,7 @@ using Ozds.Business.Reactors.Abstractions;
 using Ozds.Data.Context;
 using Ozds.Data.Entities;
 using Ozds.Data.Entities.Enums;
+using Ozds.Data.Entities.Joins;
 using Ozds.Data.Extensions;
 using Ozds.Messaging.Observers.Abstractions;
 using Ozds.Messaging.Observers.EventArgs;
@@ -68,7 +69,8 @@ public class NetworkUserInvoiceStateReactor(
     var localizer = serviceProvider.GetRequiredService<ILocalizer>();
 
     var invoices = (await context.NetworkUserInvoices
-        .Where(x => x.Id == eventArgs.State.NetworkUserInvoiceId)
+        .Where(context.PrimaryKeyEquals<NetworkUserInvoiceEntity>(
+          eventArgs.State.NetworkUserInvoiceId))
         .ToListAsync())
       .Select(converter.ToModel<NetworkUserInvoiceModel>);
 
@@ -76,12 +78,17 @@ public class NetworkUserInvoiceStateReactor(
       .Select(x => x.NetworkUserId)
       .ToList();
 
-    var recipients = await context.NetworkUsers
-      .Where(context.PrimaryKeyIn<NetworkUserEntity>(networkUserIds))
+    var recipients = await context.NetworkUserRepresentatives
+      .Where(context.ForeignKeyIn<NetworkUserRepresentativeEntity>(
+        nameof(NetworkUserRepresentativeEntity.NetworkUser),
+        networkUserIds
+      ))
       .Join(
-        context.Representatives.Where(r => r.Topics.Contains(TopicEntity.All)),
-        context.ForeignKeyOf<NetworkUserEntity>(
-          nameof(NetworkUserEntity.Representatives)),
+        context.Representatives.Where(r =>
+          r.Topics.Contains(TopicEntity.All)
+          || r.Topics.Contains(TopicEntity.NetworkUserInvoiceState)),
+        context.ForeignKeyOf<NetworkUserRepresentativeEntity>(
+          nameof(NetworkUserRepresentativeEntity.Representative)),
         context.PrimaryKeyOf<RepresentativeEntity>(),
         (_, representative) => representative
       )
@@ -97,13 +104,7 @@ public class NetworkUserInvoiceStateReactor(
       [
         TopicModel.All
       ];
-      notification.Summary = $"{
-        localizer["Invoice"]
-      } \"{
-        invoice.Title
-      }\" {
-        localizer["issued"]
-      }";
+      notification.Summary = $"{localizer["Invoice"]} \"{invoice.Title}\" {localizer["issued"]}";
       notification.Content =
         $"{localizer["Invoice url is"]} 'invoices/{invoice.Id}'";
       notifications.Add(notification);
