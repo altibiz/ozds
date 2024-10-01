@@ -232,7 +232,6 @@ dump name=current:
           --exclude-table-data='"User"*' \
           --exclude-table-data='*aggregates' \
           --exclude-table-data='*measurements' \
-          --exclude-table-data='*state' \
           --exclude-table-data='outbox_state' \
           --exclude-table-data='inbox_state' \
           --exclude-table-data='outbox_message' \
