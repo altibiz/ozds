@@ -16,7 +16,7 @@
                          Items="@series.Data"
                          Name="@series.Name"
                          SeriesType="SeriesType.Line"
-                         XValue="@(x => x.Date)"
+                         XValue="x => DateTimeGraph(x.Date)"
                          YValue="@(x => x.Value)"/>
       }
     </ApexChart>
@@ -31,7 +31,7 @@
                          Items="@series.Data"
                          Name="@series.Name"
                          SeriesType="SeriesType.Line"
-                         XValue="@(x => x.Date)"
+                         XValue="x => DateTimeGraph(x.Date)"
                          YValue="@(x => x.Value)"/>
       }
     </ApexChart>
@@ -47,7 +47,7 @@
   public string Source { get; set; } = "abb";
 
   private DateTime? _month;
-  private readonly DateTimeOffset startOfThisYearNoTransformation = DateTimeOffset.UtcNow.GetStartOfYearNoTransformation();
+  private DateTimeOffset startOfThisYear = DateTimeOffset.UtcNow.GetStartOfYear();
   private readonly DateTimeOffset now = DateTime.UtcNow;
   OzdsAggregateQueries aggregateQueries = default!;
   private List<ChartData> Data1 = new();
@@ -57,7 +57,7 @@
 
   public class ChartData
   {
-    public DateTime Date { get; set; }
+    public DateTimeOffset Date { get; set; }
     public decimal Value { get; set; }
   }
 
@@ -113,7 +113,7 @@
       measures.Select(
         x => new ChartData
         {
-          Date = x.Timestamp.DateTime,
+          Date = x.Timestamp,
           Value = x.ActivePower_W.TariffUnary().DuplexNet().PhaseSplit().ValueL1
         }
       ).ToList();
@@ -121,7 +121,7 @@
       measures.Select(
         x => new ChartData
         {
-          Date = x.Timestamp.DateTime,
+          Date = x.Timestamp,
           Value = x.ActivePower_W.TariffUnary().DuplexNet().PhaseSplit().ValueL2
         }
       ).ToList();
@@ -129,7 +129,7 @@
       measures.Select(
         x => new ChartData
         {
-          Date = x.Timestamp.DateTime,
+          Date = x.Timestamp,
           Value = x.ActivePower_W.TariffUnary().DuplexNet().PhaseSplit().ValueL3
         }
       ).ToList();
@@ -137,7 +137,7 @@
       measures.Select(
         x => new ChartData
         {
-          Date = x.Timestamp.DateTime,
+          Date = x.Timestamp,
           Value = x.ActivePower_W.TariffUnary().DuplexNet().PhaseSplit().PhaseSum()
         }
       ).ToList();
@@ -151,7 +151,7 @@
     aggregateQueries = ScopedServices.GetRequiredService<OzdsAggregateQueries>();
     SetGraphOptionsStart();
 
-    await GetValues(startOfThisYearNoTransformation, now);
+    await GetValues(startOfThisYear, now);
   }
 
   private void SetGraphOptionsStart()
@@ -223,7 +223,6 @@
         Enabled = false
       }
     };
-    @* optionsLine.Tooltip = new Tooltip { X = new TooltipX { Format = @"dd.MM." } }; *@
     optionsLine.Yaxis = new List<YAxis>();
     optionsLine.Yaxis.Add(
       new YAxis
@@ -241,7 +240,7 @@
     if (_month is not null)
     {
       DateTimeOffset month = DateTime.SpecifyKind(_month.Value, DateTimeKind.Utc);
-      await GetValues(month.GetStartOfMonthNoTransformation(), month.GetStartOfNextMonthNoTransformation());
+      await GetValues(month.GetStartOfMonth(), month.GetStartOfNextMonth());
     }
   }
 

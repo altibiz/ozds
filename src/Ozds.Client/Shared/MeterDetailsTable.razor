@@ -158,7 +158,7 @@
   public record struct TabularData(string year, string month, decimal? monthStartTotal, decimal? monthEndTotal, decimal maxPower);
 
   private DateTimeOffset startOfThisYear = DateTimeOffset.UtcNow.GetStartOfYear();
-  private DateTimeOffset startOfThisYearNoTransformation = DateTimeOffset.UtcNow.GetStartOfYearNoTransformation();
+  private DateTimeOffset startOfThisYearNoOffset = DateTimeGraph(DateTimeOffset.UtcNow.GetStartOfYear());
   private DateTimeOffset startOfThisMonth = DateTimeOffset.UtcNow.GetStartOfMonth();
   private DateTimeOffset now = DateTime.UtcNow;
   private IMeter? _meter;
@@ -184,20 +184,21 @@
       .GetRequiredService<OzdsMeterTableQueries>()
       .GetMeterById(Source);
 
-    foreach (var month in startOfThisYearNoTransformation.GetThisYearMonthStartsNoTransformation().Reverse())
+    foreach (var month in startOfThisYearNoOffset.GetThisYearMonthStarts().Reverse())
     {
+      var monthNoOffset = DateTimeGraph(month);
       var measureNextMonthMonthly = measurePerMonth
-        .Where(x => x.Timestamp == month.GetStartOfNextMonth())
+        .Where(x => x.Timestamp == monthNoOffset.GetStartOfNextMonth())
         .Where(x => x.Interval == IntervalModel.Month)
         .FirstOrDefault();
       var measureThisMonthMonthly = measurePerMonth
-        .Where(x => x.Timestamp == month.GetStartOfMonth())
+        .Where(x => x.Timestamp == monthNoOffset.GetStartOfMonth())
         .Where(x => x.Interval == IntervalModel.Month)
         .FirstOrDefault();
       if (measureThisMonthMonthly is null)
         continue;
       var ThisMonthQuarterHourly = measurePerQuarterHour
-        .Where(x => x.Timestamp.GetStartOfMonth() == month.GetStartOfMonth())
+        .Where(x => x.Timestamp.GetStartOfMonth() == monthNoOffset.GetStartOfMonth())
         .Where(x => x.Interval == IntervalModel.QuarterHour)
         .ToList();
 
@@ -215,8 +216,8 @@
       _dataStruct.Add(
         new TabularData
         {
-          year = month.ToString("yy"),
-          month = month.ToString("MM"),
+          year = monthNoOffset.ToString("yy"),
+          month = monthNoOffset.ToString("MM"),
           monthStartTotal = _monthStartTotal,
           monthEndTotal = _monthEndTotal,
           maxPower = _maxPower

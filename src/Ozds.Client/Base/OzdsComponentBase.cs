@@ -126,7 +126,8 @@ public abstract class OzdsComponentBase : ComponentBase
 
   protected static DateTimeOffset DateTimeGraph(DateTimeOffset dateTimeOffset)
   {
-    return dateTimeOffset.UtcDateTime.Add(
+    var a = dateTimeOffset.UtcDateTime.Add(
       DateTimeOffsetExtensions.GetOffset(dateTimeOffset));
+    return a;
   }
 }
