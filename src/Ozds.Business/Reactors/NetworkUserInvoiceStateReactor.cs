@@ -96,33 +96,36 @@ public class NetworkUserInvoiceStateReactor(
       )
       .ToListAsync();
 
-    var notifications = invoices.Select(invoice =>
-    {
-      var notification = NetworkUserInvoiceNotificationModelActivator.New();
-      notification.InvoiceId = invoice.Id;
-      notification.Topics =
-      [
-        TopicModel.All,
-        TopicModel.NetworkUserInvoiceState
-      ];
-      notification.Summary = $"{localizer["Invoice"]} \"{invoice.Title}\" {localizer["issued"]}";
-      notification.Content =
-        $"{localizer["Invoice url is"]} 'invoices/{invoice.Id}'";
+    var notifications = invoices
+      .Select(invoice =>
+      {
+        var notification = NetworkUserInvoiceNotificationModelActivator.New();
+        notification.InvoiceId = invoice.Id;
+        notification.Topics =
+        [
+          TopicModel.All,
+          TopicModel.NetworkUserInvoiceState
+        ];
+        notification.Summary = $"{localizer["Invoice"]} \"{invoice.Title}\" {localizer["issued"]}";
+        notification.Content =
+          $"{localizer["Invoice url is"]} 'invoices/{invoice.Id}'";
 
-      return notification.ToEntity();
-    });
+        return notification.ToEntity();
+      })
+      .ToList();
     context.AddRange(notifications);
     await context.SaveChangesAsync();
 
-    var notificationRecipients = notifications.SelectMany(notification =>
-      recipients.Select(recipient =>
-          new NotificationRecipientModel
-          {
-            NotificationId = notification.Id,
-            RepresentativeId = recipient.Id
-          }.ToEntity()
-      )
-    );
+    var notificationRecipients = notifications
+      .SelectMany(notification => recipients
+        .Select(recipient =>
+            new NotificationRecipientModel
+            {
+              NotificationId = notification.Id,
+              RepresentativeId = recipient.Id
+            }.ToEntity()
+        )
+      );
     context.AddRange(notificationRecipients);
     await context.SaveChangesAsync();
   }
