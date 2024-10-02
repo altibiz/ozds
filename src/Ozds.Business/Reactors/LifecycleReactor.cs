@@ -16,8 +16,11 @@ public class LifecycleReactor(
   AgnosticModelActivator activator
 ) : IReactor
 {
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
   public async Task StartAsync(CancellationToken cancellationToken)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
   {
+#pragma warning disable S125 // Sections of code should not be commented out
     // await using var context =
     //   await factory.CreateDbContextAsync(cancellationToken);
     // var content = new StartupEventContent();
@@ -25,6 +28,7 @@ public class LifecycleReactor(
     // var eventEntity = @event.ToEntity();
     // context.Add(eventEntity);
     // await context.SaveChangesAsync(cancellationToken);
+#pragma warning restore S125 // Sections of code should not be commented out
   }
 
   public async Task StopAsync(CancellationToken cancellationToken)
@@ -53,13 +57,13 @@ public class LifecycleReactor(
     return @event;
   }
 
-#pragma warning disable S2094 // Classes should not be empty
   private record LifecycleEventContent(string Message);
 
-  private sealed record StartupEventContent()
-    : LifecycleEventContent("Startup");
+#pragma warning disable S125 // Sections of code should not be commented out
+  // private sealed record StartupEventContent()
+  //   : LifecycleEventContent("Startup");
+#pragma warning restore S125 // Sections of code should not be commented out
 
   private sealed record ShutdownEventContent()
     : LifecycleEventContent("Shutdown");
-#pragma warning restore S2094 // Classes should not be empty
 }
