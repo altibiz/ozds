@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Ozds.Data.Entities.Base;
@@ -16,8 +15,8 @@ public class NetworkUserInvoiceNotificationEntity : NotificationEntity
     init
     {
       _invoiceId = value is { } notNullValue
-      ? long.Parse(notNullValue)
-      : default;
+        ? long.Parse(notNullValue)
+        : default;
     }
   }
 

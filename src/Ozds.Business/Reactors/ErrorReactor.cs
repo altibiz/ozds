@@ -70,12 +70,13 @@ public class ErrorReactor(
     @event.Title = "Exception";
     @event.Timestamp = DateTimeOffset.UtcNow;
     @event.Level = LevelModel.Error;
-    @event.Content = JsonSerializer.SerializeToDocument(new
-    {
-      content.Message,
-      content.Exception,
-      content.StackTrace,
-    });
+    @event.Content = JsonSerializer.SerializeToDocument(
+      new
+      {
+        content.Message,
+        content.Exception,
+        content.StackTrace
+      });
     @event.Categories = new List<CategoryModel>
     {
       CategoryModel.All,
@@ -90,7 +91,11 @@ public class ErrorReactor(
     notification.Title = "Exception";
     notification.Summary = content.Message;
     notification.Timestamp = DateTimeOffset.UtcNow;
-    notification.Content = $"Exception: \n{eventArgs.Exception}\nStack trace: \n{eventArgs.Exception.StackTrace}\n";
+    notification.Content = $"Exception: \n{
+      eventArgs.Exception
+    }\nStack trace: \n{
+      eventArgs.Exception.StackTrace
+    }\n";
     notification.EventId = @event.Id;
     notification.Topics = new HashSet<TopicModel>
     {

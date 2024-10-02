@@ -71,8 +71,9 @@ public class NetworkUserInvoiceStateReactor(
     var localizer = serviceProvider.GetRequiredService<ILocalizer>();
 
     var invoices = (await context.NetworkUserInvoices
-        .Where(context.PrimaryKeyEquals<NetworkUserInvoiceEntity>(
-          eventArgs.State.NetworkUserInvoiceId))
+        .Where(
+          context.PrimaryKeyEquals<NetworkUserInvoiceEntity>(
+            eventArgs.State.NetworkUserInvoiceId))
         .ToListAsync())
       .Select(converter.ToModel<NetworkUserInvoiceModel>);
 
@@ -81,14 +82,16 @@ public class NetworkUserInvoiceStateReactor(
       .ToList();
 
     var recipients = await context.NetworkUserRepresentatives
-      .Where(context.ForeignKeyIn<NetworkUserRepresentativeEntity>(
-        nameof(NetworkUserRepresentativeEntity.NetworkUser),
-        networkUserIds
-      ))
+      .Where(
+        context.ForeignKeyIn<NetworkUserRepresentativeEntity>(
+          nameof(NetworkUserRepresentativeEntity.NetworkUser),
+          networkUserIds
+        ))
       .Join(
-        context.Representatives.Where(r =>
-          r.Topics.Contains(TopicEntity.All)
-          || r.Topics.Contains(TopicEntity.NetworkUserInvoiceState)),
+        context.Representatives.Where(
+          r =>
+            r.Topics.Contains(TopicEntity.All)
+            || r.Topics.Contains(TopicEntity.NetworkUserInvoiceState)),
         context.ForeignKeyOf<NetworkUserRepresentativeEntity>(
           nameof(NetworkUserRepresentativeEntity.Representative)),
         context.PrimaryKeyOf<RepresentativeEntity>(),
@@ -97,34 +100,43 @@ public class NetworkUserInvoiceStateReactor(
       .ToListAsync();
 
     var notifications = invoices
-      .Select(invoice =>
-      {
-        var notification = NetworkUserInvoiceNotificationModelActivator.New();
-        notification.InvoiceId = invoice.Id;
-        notification.Topics =
-        [
-          TopicModel.All,
-          TopicModel.NetworkUserInvoiceState
-        ];
-        notification.Summary = $"{localizer["Invoice"]} \"{invoice.Title}\" {localizer["issued"]}";
-        notification.Content =
-          $"{localizer["Invoice url is"]} 'invoices/{invoice.Id}'";
+      .Select(
+        invoice =>
+        {
+          var notification = NetworkUserInvoiceNotificationModelActivator.New();
+          notification.InvoiceId = invoice.Id;
+          notification.Topics =
+          [
+            TopicModel.All,
+            TopicModel.NetworkUserInvoiceState
+          ];
+          notification.Summary = $"{
+            localizer["Invoice"]
+          } \"{
+            invoice.Title
+          }\" {
+            localizer["issued"]
+          }";
+          notification.Content =
+            $"{localizer["Invoice url is"]} 'invoices/{invoice.Id}'";
 
-        return notification.ToEntity();
-      })
+          return notification.ToEntity();
+        })
       .ToList();
     context.AddRange(notifications);
     await context.SaveChangesAsync();
 
     var notificationRecipients = notifications
-      .SelectMany(notification => recipients
-        .Select(recipient =>
-            new NotificationRecipientModel
-            {
-              NotificationId = notification.Id,
-              RepresentativeId = recipient.Id
-            }.ToEntity()
-        )
+      .SelectMany(
+        notification => recipients
+          .Select(
+            recipient =>
+              new NotificationRecipientModel
+              {
+                NotificationId = notification.Id,
+                RepresentativeId = recipient.Id
+              }.ToEntity()
+          )
       );
     context.AddRange(notificationRecipients);
     await context.SaveChangesAsync();

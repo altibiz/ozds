@@ -59,11 +59,11 @@ public class LifecycleReactor(
 
   private record LifecycleEventContent(string Message);
 
+  private sealed record ShutdownEventContent()
+    : LifecycleEventContent("Shutdown");
+
 #pragma warning disable S125 // Sections of code should not be commented out
   // private sealed record StartupEventContent()
   //   : LifecycleEventContent("Startup");
 #pragma warning restore S125 // Sections of code should not be commented out
-
-  private sealed record ShutdownEventContent()
-    : LifecycleEventContent("Shutdown");
 }

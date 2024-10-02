@@ -45,7 +45,8 @@ public class
         configureRight: r => r
           .HasOne(nameof(NetworkUserRepresentativeEntity.Representative))
           .WithMany(nameof(RepresentativeEntity.NetworkUserRepresentatives))
-          .HasForeignKey(nameof(NetworkUserRepresentativeEntity.RepresentativeId)),
+          .HasForeignKey(
+            nameof(NetworkUserRepresentativeEntity.RepresentativeId)),
         configureJoinEntityType: entity =>
         {
           entity.ToTable("network_user_representatives");

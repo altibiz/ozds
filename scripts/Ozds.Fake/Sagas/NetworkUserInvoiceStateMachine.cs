@@ -2,7 +2,6 @@ using MassTransit;
 using Ozds.Messaging.Contracts;
 using Ozds.Messaging.Contracts.Abstractions;
 using Ozds.Messaging.Entities;
-using Ozds.Messaging.Sagas;
 
 // TODO: make queue names configurable
 

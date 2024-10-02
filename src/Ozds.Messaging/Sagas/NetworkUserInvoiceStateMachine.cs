@@ -76,13 +76,11 @@ public class NetworkUserInvoiceStateMachine
   public State Registered { get; } = default!;
 
   public Event<IInitiateNetworkUserInvoice>
-    InitiateNetworkUserInvoice
-  { get; } = default!;
+    InitiateNetworkUserInvoice { get; } = default!;
 
   public Event<ICancelNetworkUserInvoice> CancelNetworkUserInvoice { get; } =
     default!;
 
   public Event<IRegisterNetworkUserInvoice>
-    RegisterNetworkUserInvoice
-  { get; } = default!;
+    RegisterNetworkUserInvoice { get; } = default!;
 }

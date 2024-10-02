@@ -1,6 +1,5 @@
 using MassTransit;
 using Ozds.Messaging.Entities;
-using Ozds.Messaging.Sagas;
 
 namespace Ozds.Fake.Sagas;
 
@@ -42,7 +41,8 @@ public class NetworkUserInvoiceRegistrationActivity(
   }
 
   public Task Faulted<T, TException>(
-    BehaviorExceptionContext<NetworkUserInvoiceStateEntity, T, TException> context,
+    BehaviorExceptionContext<NetworkUserInvoiceStateEntity, T, TException>
+      context,
     IBehavior<NetworkUserInvoiceStateEntity, T> next
   )
     where T : class
@@ -61,7 +61,8 @@ public class NetworkUserInvoiceRegistrationActivity(
     visitor.Visit(this);
   }
 
-  private async Task RegisterNetworkUserInvoice(NetworkUserInvoiceStateEntity saga)
+  private async Task RegisterNetworkUserInvoice(
+    NetworkUserInvoiceStateEntity saga)
   {
     await Task.Delay(1000); // NOTE: Simulate fetching
     _logger.LogInformation(

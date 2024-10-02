@@ -64,14 +64,11 @@ public partial class DataDbContext : DbContext
   public DbSet<NotificationEntity> Notifications { get; set; } = default!;
 
   public DbSet<NotificationRecipientEntity>
-    NotificationRecipients
-  { get; set; } = default!;
+    NotificationRecipients { get; set; } = default!;
 
   public DbSet<NetworkUserRepresentativeEntity>
-    NetworkUserRepresentatives
-  { get; set; } = default!;
+    NetworkUserRepresentatives { get; set; } = default!;
 
   public DbSet<LocationRepresentativeEntity>
-    LocationRepresentatives
-  { get; set; } = default!;
+    LocationRepresentatives { get; set; } = default!;
 }
