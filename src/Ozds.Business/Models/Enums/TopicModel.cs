@@ -51,6 +51,7 @@ public static class TopicModelExtensions
       TopicModel.MessengerInactivity => "Messenger inactivity",
       TopicModel.InvalidPush => "Invalid push",
       TopicModel.Error => "Error",
+      TopicModel.NetworkUserInvoiceState => "Network user invoice state",
       _ => throw new ArgumentOutOfRangeException(nameof(model), model, null)
     };
   }

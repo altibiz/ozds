@@ -102,7 +102,8 @@ public class NetworkUserInvoiceStateReactor(
       notification.InvoiceId = invoice.Id;
       notification.Topics =
       [
-        TopicModel.All
+        TopicModel.All,
+        TopicModel.NetworkUserInvoiceState
       ];
       notification.Summary = $"{localizer["Invoice"]} \"{invoice.Title}\" {localizer["issued"]}";
       notification.Content =

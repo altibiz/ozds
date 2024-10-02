@@ -6,3 +6,10 @@ dotnet_diagnostic.CA1861.severity = None
 # Avoid unnecessary zero-length array allocations.
 # Use Array.Empty<int>() instead.
 dotnet_diagnostic.CA1825.severity = None
+
+# A closing brace should not be preceded by a blank line.
+dotnet_diagnostic.SA1508.severity = None
+
+# Add a nested comment explaining why this method is empty,
+# throw a 'NotSupportedException' or complete the implementation.
+dotnet_diagnostic.S1186.severity = None
