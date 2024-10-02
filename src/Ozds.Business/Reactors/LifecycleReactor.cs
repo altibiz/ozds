@@ -30,6 +30,7 @@ public class LifecycleReactor(
     // await context.SaveChangesAsync(cancellationToken);
 #pragma warning restore S125 // Sections of code should not be commented out
   }
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
 
   public async Task StopAsync(CancellationToken cancellationToken)
   {

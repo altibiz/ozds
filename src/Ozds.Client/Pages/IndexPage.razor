@@ -1,5 +1,4 @@
 @page "/"
-@using Ozds.Client.Shared.Dialogs
 @attribute [Navigation(Icon= Icons.Material.Outlined.Home, Title = "Home", Allows = new[] { RoleModel.LocationRepresentative, RoleModel.NetworkUserRepresentative, RoleModel.OperatorRepresentative })]
 @attribute [Authorize]
 
@@ -21,13 +20,6 @@
 }
 @if (representative.Representative.Role is RoleModel.OperatorRepresentative)
 {
-  <MudButton
-    OnClick="View"
-    Variant="Variant.Filled"
-    Color="MudColor.Primary"
-    Class="ml-auto">
-    View
-  </MudButton>
   @* MOBILE *@
   <MudHidden Breakpoint="Breakpoint.MdAndUp">
     <MudGrid Class="my-3 pa-1">
@@ -61,10 +53,5 @@
 
   [CascadingParameter]
   public RepresentativeState representative { get; set; } = default!;
-
-  private void View()
-  {
-    DialogService.Show<BrushGraph>("Details", new DialogOptions { MaxWidth = MaxWidth.ExtraLarge, FullWidth = true, CloseOnEscapeKey = true });
-  }
 
 }

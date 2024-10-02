@@ -24,7 +24,7 @@
                                Items="@_graphValues"
                                Name="@_graphValues.Select(x => x.names[j]).FirstOrDefault()"
                                SeriesType="SeriesType.Line"
-                               XValue='x => DateTimeGraph(x.date)'
+                               XValue='x => DateTimeApplyOffset(x.date)'
                                YValue="x => x.values[j]"
                                Stroke="@(ColorGraph(j))"/>
             }
@@ -35,7 +35,7 @@
                                Items="@_graphValues"
                                Name="n/a"
                                SeriesType="SeriesType.Line"
-                               XValue='x => DateTimeGraph(x.date).DateTime'
+                               XValue='x => DateTimeApplyOffset(x.date).DateTime'
                                YValue="x => 0"
                                Stroke="@(ColorGraph(0))"/>
             }
@@ -97,7 +97,7 @@
                                Items="@_graphValues"
                                Name="@_graphValues.Select(x => x.names[j]).FirstOrDefault()"
                                SeriesType="SeriesType.Line"
-                               XValue='x => DateTimeGraph(x.date)'
+                               XValue='x => DateTimeApplyOffset(x.date)'
                                YValue="x => x.values[j]"
                                Stroke="@(ColorGraph(j))"/>
             }
@@ -107,7 +107,7 @@
                                Items="@_graphValues"
                                Name="n/a"
                                SeriesType="SeriesType.Line"
-                               XValue='x => DateTimeGraph(x.date).DateTime'
+                               XValue='x => DateTimeApplyOffset(x.date).DateTime'
                                YValue="x => 0"
                                Stroke="@(ColorGraph(0))"/>
             }

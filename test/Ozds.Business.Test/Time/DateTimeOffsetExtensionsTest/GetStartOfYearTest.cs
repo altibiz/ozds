@@ -19,6 +19,9 @@ public class GetStartOfYearTest
   [InlineData("2023-11-15T12:34:56Z", "2022-12-31T23:00:00Z")]
   [InlineData("2023-12-15T12:34:56Z", "2022-12-31T23:00:00Z")]
   [InlineData("2024-02-29T12:34:56Z", "2023-12-31T23:00:00Z")]
+  [InlineData(
+    "2024-12-31T23:38:56Z",
+    "2024-12-31T23:00:00Z")] // Edge time, CET offset is +1
   public void GetStartOfYear_ReturnsExpectedStartOfYear(
     string inputDateString,
     string expectedDateString)
