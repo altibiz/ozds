@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Ozds.Data.Entities.Base;
+using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities;
 
@@ -9,21 +10,24 @@ public class NetworkUserInvoiceNotificationEntity : NotificationEntity
 {
   private long _invoiceId;
 
-  // FIXME: idk why the ignore is not working
-  [NotMapped]
   public string InvoiceId
   {
     get { return _invoiceId.ToString(); }
-    init { _invoiceId = long.Parse(value); }
+    init
+    {
+      _invoiceId = value is { } notNullValue
+      ? long.Parse(notNullValue)
+      : default;
+    }
   }
 
   public virtual NetworkUserInvoiceEntity Invoice { get; set; } = default!;
 }
 
 public class NetworkUserInvoiceNotificationEntityConfiguration :
-  IEntityTypeConfiguration<NetworkUserInvoiceNotificationEntity>
+  EntityTypeConfiguration<NetworkUserInvoiceNotificationEntity>
 {
-  public void Configure(
+  public override void Configure(
     EntityTypeBuilder<NetworkUserInvoiceNotificationEntity> builder)
   {
     builder
@@ -33,8 +37,7 @@ public class NetworkUserInvoiceNotificationEntityConfiguration :
 
     builder.Ignore(nameof(NetworkUserInvoiceNotificationEntity.InvoiceId));
     builder
-      .Property<long>("_invoiceId")
-      .HasColumnName("invoice_id")
-      .UsePropertyAccessMode(PropertyAccessMode.Field);
+      .Property("_invoiceId")
+      .HasColumnName("invoice_id");
   }
 }
