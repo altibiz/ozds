@@ -1,11 +1,12 @@
 using MassTransit;
 using Ozds.Messaging.Contracts.Abstractions;
+using Ozds.Messaging.Entities;
 using Ozds.Messaging.Options;
 
 namespace Ozds.Messaging.Sagas;
 
 public class NetworkUserInvoiceStateSagaDefinition
-  : SagaDefinition<NetworkUserInvoiceState>
+  : SagaDefinition<NetworkUserInvoiceStateEntity>
 {
   private const int ConcurrencyLimit = 20;
 
@@ -26,7 +27,7 @@ public class NetworkUserInvoiceStateSagaDefinition
 
   protected override void ConfigureSaga(
     IReceiveEndpointConfigurator endpointConfigurator,
-    ISagaConfigurator<NetworkUserInvoiceState> sagaConfigurator,
+    ISagaConfigurator<NetworkUserInvoiceStateEntity> sagaConfigurator,
     IRegistrationContext context
   )
   {

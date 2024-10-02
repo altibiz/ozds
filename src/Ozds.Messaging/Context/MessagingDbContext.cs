@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ozds.Messaging.Context;
 
-public class MessagingDbContext(
+public partial class MessagingDbContext(
   DbContextOptions<MessagingDbContext> options)
   : SagaDbContext(options)
 {

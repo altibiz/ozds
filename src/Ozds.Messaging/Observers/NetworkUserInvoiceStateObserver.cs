@@ -1,13 +1,13 @@
+using Ozds.Messaging.Entities;
 using Ozds.Messaging.Observers.Abstractions;
 using Ozds.Messaging.Observers.EventArgs;
-using Ozds.Messaging.Sagas;
 
 namespace Ozds.Messaging.Observers;
 
 public class NetworkUserInvoiceStateObserver
   : INetworkUserInvoiceStatePublisher, INetworkUserInvoiceStateSubscriber
 {
-  public void PublishRegistered(NetworkUserInvoiceState state)
+  public void PublishRegistered(NetworkUserInvoiceStateEntity state)
   {
     OnRegistered?.Invoke(
       this, new NetworkUserInvoiceStateEventArgs { State = state });

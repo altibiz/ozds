@@ -33,47 +33,9 @@ namespace Ozds.Data.Migrations
             NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "level_entity", new[] { "trace", "debug", "info", "warning", "error", "critical" });
             NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "phase_entity", new[] { "l1", "l2", "l3" });
             NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "role_entity", new[] { "operator_representative", "location_representative", "network_user_representative" });
-            NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "topic_entity", new[] { "all", "messenger", "messenger_inactivity", "invalid_push", "error" });
+            NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "topic_entity", new[] { "all", "messenger", "messenger_inactivity", "invalid_push", "error", "network_user_invoice_state" });
             NpgsqlModelBuilderExtensions.HasPostgresExtension(modelBuilder, "timescaledb");
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("LocationEntityRepresentativeEntity", b =>
-                {
-                    b.Property<long>("Locations_id")
-                        .HasColumnType("bigint")
-                        .HasColumnName("locations_id");
-
-                    b.Property<string>("Representatives_stringId")
-                        .HasColumnType("text")
-                        .HasColumnName("representatives_string_id");
-
-                    b.HasKey("Locations_id", "Representatives_stringId")
-                        .HasName("pk_location_entity_representative_entity");
-
-                    b.HasIndex("Representatives_stringId")
-                        .HasDatabaseName("ix_location_entity_representative_entity_representatives_strin");
-
-                    b.ToTable("location_entity_representative_entity", (string)null);
-                });
-
-            modelBuilder.Entity("NetworkUserEntityRepresentativeEntity", b =>
-                {
-                    b.Property<long>("NetworkUsers_id")
-                        .HasColumnType("bigint")
-                        .HasColumnName("network_users_id");
-
-                    b.Property<string>("Representatives_stringId")
-                        .HasColumnType("text")
-                        .HasColumnName("representatives_string_id");
-
-                    b.HasKey("NetworkUsers_id", "Representatives_stringId")
-                        .HasName("pk_network_user_entity_representative_entity");
-
-                    b.HasIndex("Representatives_stringId")
-                        .HasDatabaseName("ix_network_user_entity_representative_entity_representatives_s");
-
-                    b.ToTable("network_user_entity_representative_entity", (string)null);
-                });
 
             modelBuilder.Entity("Ozds.Data.Entities.AbbB2xAggregateEntity", b =>
                 {
@@ -1116,6 +1078,44 @@ namespace Ozds.Data.Migrations
                     b.UseTphMappingStrategy();
                 });
 
+            modelBuilder.Entity("Ozds.Data.Entities.Joins.LocationRepresentativeEntity", b =>
+                {
+                    b.Property<string>("RepresentativeId")
+                        .HasColumnType("text")
+                        .HasColumnName("representative_id");
+
+                    b.Property<long>("_locationId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("location_id");
+
+                    b.HasKey("RepresentativeId", "_locationId")
+                        .HasName("pk_location_representatives");
+
+                    b.HasIndex("_locationId")
+                        .HasDatabaseName("ix_location_representatives__location_id");
+
+                    b.ToTable("location_representatives", (string)null);
+                });
+
+            modelBuilder.Entity("Ozds.Data.Entities.Joins.NetworkUserRepresentativeEntity", b =>
+                {
+                    b.Property<string>("RepresentativeId")
+                        .HasColumnType("text")
+                        .HasColumnName("representative_id");
+
+                    b.Property<long>("_networkUserId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("network_user_id");
+
+                    b.HasKey("RepresentativeId", "_networkUserId")
+                        .HasName("pk_network_user_representatives");
+
+                    b.HasIndex("_networkUserId")
+                        .HasDatabaseName("ix_network_user_representatives__network_user_id");
+
+                    b.ToTable("network_user_representatives", (string)null);
+                });
+
             modelBuilder.Entity("Ozds.Data.Entities.Joins.NotificationRecipientEntity", b =>
                 {
                     b.Property<string>("RepresentativeId")
@@ -1131,12 +1131,12 @@ namespace Ozds.Data.Migrations
                         .HasColumnName("seen_on");
 
                     b.HasKey("RepresentativeId", "_notificationId")
-                        .HasName("pk_notification_recipient_entity");
+                        .HasName("pk_notification_recipients");
 
                     b.HasIndex("_notificationId")
-                        .HasDatabaseName("ix_notification_recipient_entity__notification_id");
+                        .HasDatabaseName("ix_notification_recipients__notification_id");
 
-                    b.ToTable("notification_recipient_entity", (string)null);
+                    b.ToTable("notification_recipients", (string)null);
                 });
 
             modelBuilder.Entity("Ozds.Data.Entities.LocationEntity", b =>
@@ -3462,11 +3462,11 @@ namespace Ozds.Data.Migrations
                 {
                     b.HasBaseType("Ozds.Data.Entities.Base.NotificationEntity");
 
-                    b.Property<long>("Invoice_id")
+                    b.Property<long>("_invoiceId")
                         .HasColumnType("bigint")
                         .HasColumnName("invoice_id");
 
-                    b.HasIndex("Invoice_id")
+                    b.HasIndex("_invoiceId")
                         .HasDatabaseName("ix_notifications_invoice_id");
 
                     b.ToTable("notifications", (string)null);
@@ -3631,40 +3631,6 @@ namespace Ozds.Data.Migrations
                     b.ToTable("notifications", (string)null);
 
                     b.HasDiscriminator().HasValue("MessengerNotificationEntity");
-                });
-
-            modelBuilder.Entity("LocationEntityRepresentativeEntity", b =>
-                {
-                    b.HasOne("Ozds.Data.Entities.LocationEntity", null)
-                        .WithMany()
-                        .HasForeignKey("Locations_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_location_entity_representative_entity_locations_locations_id");
-
-                    b.HasOne("Ozds.Data.Entities.RepresentativeEntity", null)
-                        .WithMany()
-                        .HasForeignKey("Representatives_stringId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_location_entity_representative_entity_representatives_repre");
-                });
-
-            modelBuilder.Entity("NetworkUserEntityRepresentativeEntity", b =>
-                {
-                    b.HasOne("Ozds.Data.Entities.NetworkUserEntity", null)
-                        .WithMany()
-                        .HasForeignKey("NetworkUsers_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_network_user_entity_representative_entity_network_users_net");
-
-                    b.HasOne("Ozds.Data.Entities.RepresentativeEntity", null)
-                        .WithMany()
-                        .HasForeignKey("Representatives_stringId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_network_user_entity_representative_entity_representatives_r");
                 });
 
             modelBuilder.Entity("Ozds.Data.Entities.AbbB2xAggregateEntity", b =>
@@ -3877,21 +3843,63 @@ namespace Ozds.Data.Migrations
                     b.Navigation("Event");
                 });
 
-            modelBuilder.Entity("Ozds.Data.Entities.Joins.NotificationRecipientEntity", b =>
+            modelBuilder.Entity("Ozds.Data.Entities.Joins.LocationRepresentativeEntity", b =>
                 {
                     b.HasOne("Ozds.Data.Entities.RepresentativeEntity", "Representative")
-                        .WithMany("NotificationRepresentatives")
+                        .WithMany("LocationRepresentatives")
                         .HasForeignKey("RepresentativeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_notification_recipient_entity_representatives_representativ");
+                        .HasConstraintName("fk_location_representatives_representatives_representative_id");
+
+                    b.HasOne("Ozds.Data.Entities.LocationEntity", "Location")
+                        .WithMany("LocationRepresentatives")
+                        .HasForeignKey("_locationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_location_representatives_locations_location_id");
+
+                    b.Navigation("Location");
+
+                    b.Navigation("Representative");
+                });
+
+            modelBuilder.Entity("Ozds.Data.Entities.Joins.NetworkUserRepresentativeEntity", b =>
+                {
+                    b.HasOne("Ozds.Data.Entities.RepresentativeEntity", "Representative")
+                        .WithMany("NetworkUserRepresentatives")
+                        .HasForeignKey("RepresentativeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_network_user_representatives_representatives_representative");
+
+                    b.HasOne("Ozds.Data.Entities.NetworkUserEntity", "NetworkUser")
+                        .WithMany("NetworkUserRepresentatives")
+                        .HasForeignKey("_networkUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_network_user_representatives_network_users_network_user_id");
+
+                    b.Navigation("NetworkUser");
+
+                    b.Navigation("Representative");
+                });
+
+            modelBuilder.Entity("Ozds.Data.Entities.Joins.NotificationRecipientEntity", b =>
+                {
+                    b.HasOne("Ozds.Data.Entities.RepresentativeEntity", "Representative")
+                        .WithMany("NotificationRecipients")
+                        .HasForeignKey("RepresentativeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_notification_recipients_representatives_representative_id");
 
                     b.HasOne("Ozds.Data.Entities.Base.NotificationEntity", "Notification")
                         .WithMany("NotificationRepresentatives")
                         .HasForeignKey("_notificationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_notification_recipient_entity_notifications_notification_id");
+                        .HasConstraintName("fk_notification_recipients_notifications_notification_id");
 
                     b.Navigation("Notification");
 
@@ -4242,7 +4250,7 @@ namespace Ozds.Data.Migrations
             modelBuilder.Entity("Ozds.Data.Entities.Base.ResolvableNotificationEntity", b =>
                 {
                     b.HasOne("Ozds.Data.Entities.RepresentativeEntity", "ResolvedBy")
-                        .WithMany("ResolvedNotifications")
+                        .WithMany("ResolvableNotifications")
                         .HasForeignKey("ResolvedById")
                         .HasConstraintName("fk_notifications_representatives_resolved_by_id");
 
@@ -4253,7 +4261,7 @@ namespace Ozds.Data.Migrations
                 {
                     b.HasOne("Ozds.Data.Entities.NetworkUserInvoiceEntity", "Invoice")
                         .WithMany("Notifications")
-                        .HasForeignKey("Invoice_id")
+                        .HasForeignKey("_invoiceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_notifications_network_user_invoices_invoice_id");
@@ -4320,6 +4328,8 @@ namespace Ozds.Data.Migrations
                 {
                     b.Navigation("Invoices");
 
+                    b.Navigation("LocationRepresentatives");
+
                     b.Navigation("MeasurementLocations");
 
                     b.Navigation("Messengers");
@@ -4337,6 +4347,8 @@ namespace Ozds.Data.Migrations
                     b.Navigation("Invoices");
 
                     b.Navigation("NetworkUserMeasurementLocations");
+
+                    b.Navigation("NetworkUserRepresentatives");
                 });
 
             modelBuilder.Entity("Ozds.Data.Entities.NetworkUserInvoiceEntity", b =>
@@ -4359,9 +4371,13 @@ namespace Ozds.Data.Migrations
 
                     b.Navigation("Events");
 
-                    b.Navigation("NotificationRepresentatives");
+                    b.Navigation("LocationRepresentatives");
 
-                    b.Navigation("ResolvedNotifications");
+                    b.Navigation("NetworkUserRepresentatives");
+
+                    b.Navigation("NotificationRecipients");
+
+                    b.Navigation("ResolvableNotifications");
                 });
 
             modelBuilder.Entity("Ozds.Data.Entities.NetworkUserMeasurementLocationEntity", b =>

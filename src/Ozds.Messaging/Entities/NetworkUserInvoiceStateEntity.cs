@@ -1,8 +1,8 @@
 using MassTransit;
 
-namespace Ozds.Messaging.Sagas;
+namespace Ozds.Messaging.Entities;
 
-public class NetworkUserInvoiceState : SagaStateMachineInstance
+public class NetworkUserInvoiceStateEntity : SagaStateMachineInstance
 {
   public string CurrentState { get; set; } = default!;
 
@@ -11,6 +11,8 @@ public class NetworkUserInvoiceState : SagaStateMachineInstance
   public string NetworkUserInvoiceId { get; set; } = default!;
 
   public string? BillId { get; set; }
+
+  public string? CancelReason { get; set; }
 
   public Guid CorrelationId { get; set; } = Guid.Empty;
 }

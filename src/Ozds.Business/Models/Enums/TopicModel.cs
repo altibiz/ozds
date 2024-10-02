@@ -8,7 +8,8 @@ public enum TopicModel
   Messenger,
   MessengerInactivity,
   InvalidPush,
-  Error
+  Error,
+  NetworkUserInvoiceState
 }
 
 public static class TopicModelExtensions
@@ -22,6 +23,7 @@ public static class TopicModelExtensions
       TopicEntity.MessengerInactivity => TopicModel.MessengerInactivity,
       TopicEntity.InvalidPush => TopicModel.InvalidPush,
       TopicEntity.Error => TopicModel.Error,
+      TopicEntity.NetworkUserInvoiceState => TopicModel.NetworkUserInvoiceState,
       _ => throw new ArgumentOutOfRangeException(nameof(entity), entity, null)
     };
   }
@@ -35,6 +37,7 @@ public static class TopicModelExtensions
       TopicModel.MessengerInactivity => TopicEntity.MessengerInactivity,
       TopicModel.InvalidPush => TopicEntity.InvalidPush,
       TopicModel.Error => TopicEntity.Error,
+      TopicModel.NetworkUserInvoiceState => TopicEntity.NetworkUserInvoiceState,
       _ => throw new ArgumentOutOfRangeException(nameof(model), model, null)
     };
   }
@@ -48,6 +51,7 @@ public static class TopicModelExtensions
       TopicModel.MessengerInactivity => "Messenger inactivity",
       TopicModel.InvalidPush => "Invalid push",
       TopicModel.Error => "Error",
+      TopicModel.NetworkUserInvoiceState => "Network user invoice state",
       _ => throw new ArgumentOutOfRangeException(nameof(model), model, null)
     };
   }

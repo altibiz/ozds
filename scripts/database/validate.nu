@@ -68,7 +68,7 @@ def main [project_name: string, name: string] {
       continue
     } else {
       $differences = true
-      break  # Exit loop if any dump_type is invalid
+      break
     }
   }
   if $differences {

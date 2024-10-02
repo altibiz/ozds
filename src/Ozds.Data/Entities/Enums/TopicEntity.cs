@@ -10,7 +10,8 @@ public enum TopicEntity
   Messenger,
   MessengerInactivity,
   InvalidPush,
-  Error
+  Error,
+  NetworkUserInvoiceState
 }
 
 public class TopicEntityModelConfiguration : IModelConfiguration
