@@ -67,10 +67,16 @@ public class ErrorReactor(
     );
 
     var @event = activator.Activate<SystemEventModel>();
-    @event.Title = eventArgs.Message;
+    @event.Title = "Exception";
     @event.Timestamp = DateTimeOffset.UtcNow;
     @event.Level = LevelModel.Error;
-    @event.Content = JsonSerializer.SerializeToDocument(content);
+    @event.Content = JsonSerializer.SerializeToDocument(
+      new
+      {
+        content.Message,
+        content.Exception,
+        content.StackTrace
+      });
     @event.Categories = new List<CategoryModel>
     {
       CategoryModel.All,
@@ -82,7 +88,7 @@ public class ErrorReactor(
     @event.Id = eventEntity.Id;
 
     var notification = activator.Activate<SystemNotificationModel>();
-    notification.Title = "[OZDS]: Exception";
+    notification.Title = "Exception";
     notification.Summary = content.Message;
     notification.Timestamp = DateTimeOffset.UtcNow;
     notification.Content = $"Exception: \n{

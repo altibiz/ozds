@@ -5,8 +5,6 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Joins;
 
-// TODO: to notification_recipients
-
 public class NotificationRecipientEntity : IEntity
 {
   private long _notificationId;
@@ -49,11 +47,11 @@ public class
           .HasForeignKey("_notificationId"),
         configureRight: r => r
           .HasOne(nameof(NotificationRecipientEntity.Representative))
-          .WithMany(nameof(RepresentativeEntity.NotificationRepresentatives))
+          .WithMany(nameof(RepresentativeEntity.NotificationRecipients))
           .HasForeignKey(nameof(NotificationRecipientEntity.RepresentativeId)),
         configureJoinEntityType: entity =>
         {
-          entity.ToTable("notification_recipient_entity");
+          entity.ToTable("notification_recipients");
           entity.Ignore(nameof(NotificationRecipientEntity.NotificationId));
           entity
             .Property("_notificationId")

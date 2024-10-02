@@ -1,10 +1,11 @@
 using MassTransit;
 using Ozds.Messaging.Contracts.Abstractions;
+using Ozds.Messaging.Entities;
 
 namespace Ozds.Messaging.Sagas;
 
 public class NetworkUserInvoiceStateMachine
-  : MassTransitStateMachine<NetworkUserInvoiceState>
+  : MassTransitStateMachine<NetworkUserInvoiceStateEntity>
 {
   public NetworkUserInvoiceStateMachine()
   {
@@ -24,7 +25,7 @@ public class NetworkUserInvoiceStateMachine
 
         x.SetSagaFactory(
           context =>
-            new NetworkUserInvoiceState
+            new NetworkUserInvoiceStateEntity
             {
               CorrelationId = context.CorrelationId ?? NewId.NextGuid(),
               NetworkUserInvoiceId = context.Message.NetworkUserInvoiceId
@@ -57,14 +58,13 @@ public class NetworkUserInvoiceStateMachine
 
     DuringAny(
       When(CancelNetworkUserInvoice)
+        .Then(context => context.Saga.CancelReason = context.Message.Reason)
         .TransitionTo(Cancelled));
 
     During(
       Initiated,
       When(RegisterNetworkUserInvoice)
-        .Then(
-          context => context.Saga.BillId =
-            context.Message.BillId)
+        .Then(context => context.Saga.BillId = context.Message.BillId)
         .Activity(x => x.OfType<NetworkUserInvoiceRegisteredActivity>())
         .TransitionTo(Registered));
   }

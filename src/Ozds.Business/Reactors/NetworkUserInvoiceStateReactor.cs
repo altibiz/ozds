@@ -1,7 +1,9 @@
 using System.Threading.Channels;
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Activation;
+using Ozds.Business.Conversion;
 using Ozds.Business.Conversion.Agnostic;
+using Ozds.Business.Conversion.Joins;
 using Ozds.Business.Localization.Abstractions;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Enums;
@@ -11,6 +13,7 @@ using Ozds.Business.Reactors.Abstractions;
 using Ozds.Data.Context;
 using Ozds.Data.Entities;
 using Ozds.Data.Entities.Enums;
+using Ozds.Data.Entities.Joins;
 using Ozds.Data.Extensions;
 using Ozds.Messaging.Observers.Abstractions;
 using Ozds.Messaging.Observers.EventArgs;
@@ -68,7 +71,9 @@ public class NetworkUserInvoiceStateReactor(
     var localizer = serviceProvider.GetRequiredService<ILocalizer>();
 
     var invoices = (await context.NetworkUserInvoices
-        .Where(x => x.Id == eventArgs.State.NetworkUserInvoiceId)
+        .Where(
+          context.PrimaryKeyEquals<NetworkUserInvoiceEntity>(
+            eventArgs.State.NetworkUserInvoiceId))
         .ToListAsync())
       .Select(converter.ToModel<NetworkUserInvoiceModel>);
 
@@ -76,51 +81,64 @@ public class NetworkUserInvoiceStateReactor(
       .Select(x => x.NetworkUserId)
       .ToList();
 
-    var recipients = await context.NetworkUsers
-      .Where(context.PrimaryKeyIn<NetworkUserEntity>(networkUserIds))
+    var recipients = await context.NetworkUserRepresentatives
+      .Where(
+        context.ForeignKeyIn<NetworkUserRepresentativeEntity>(
+          nameof(NetworkUserRepresentativeEntity.NetworkUser),
+          networkUserIds
+        ))
       .Join(
-        context.Representatives.Where(r => r.Topics.Contains(TopicEntity.All)),
-        context.ForeignKeyOf<NetworkUserEntity>(
-          nameof(NetworkUserEntity.Representatives)),
+        context.Representatives.Where(
+          r =>
+            r.Topics.Contains(TopicEntity.All)
+            || r.Topics.Contains(TopicEntity.NetworkUserInvoiceState)),
+        context.ForeignKeyOf<NetworkUserRepresentativeEntity>(
+          nameof(NetworkUserRepresentativeEntity.Representative)),
         context.PrimaryKeyOf<RepresentativeEntity>(),
         (_, representative) => representative
       )
       .ToListAsync();
 
-    var notifications = new List<NetworkUserInvoiceNotificationModel>();
-    var notificationRecipients = new List<NotificationRecipientModel>();
-    foreach (var invoice in invoices)
-    {
-      var notification = NetworkUserInvoiceNotificationModelActivator.New();
-      notification.InvoiceId = invoice.Id;
-      notification.Topics =
-      [
-        TopicModel.All
-      ];
-      notification.Summary = $"{
-        localizer["Invoice"]
-      } \"{
-        invoice.Title
-      }\" {
-        localizer["issued"]
-      }";
-      notification.Content =
-        $"{localizer["Invoice url is"]} 'invoices/{invoice.Id}'";
-      notifications.Add(notification);
+    var notifications = invoices
+      .Select(
+        invoice =>
+        {
+          var notification = NetworkUserInvoiceNotificationModelActivator.New();
+          notification.InvoiceId = invoice.Id;
+          notification.Topics =
+          [
+            TopicModel.All,
+            TopicModel.NetworkUserInvoiceState
+          ];
+          notification.Summary = $"{
+            localizer["Invoice"]
+          } \"{
+            invoice.Title
+          }\" {
+            localizer["issued"]
+          }";
+          notification.Content =
+            $"{localizer["Invoice url is"]} 'invoices/{invoice.Id}'";
 
-      foreach (var recipient in recipients)
-      {
-        notificationRecipients.Add(
-          new NotificationRecipientModel
-          {
-            NotificationId = notification.Id,
-            RepresentativeId = recipient.Id
-          });
-      }
-    }
+          return notification.ToEntity();
+        })
+      .ToList();
+    context.AddRange(notifications);
+    await context.SaveChangesAsync();
 
-    context.AddRange(notifications.Select(converter.ToEntity));
-    context.AddRange(notificationRecipients.Select(converter.ToEntity));
+    var notificationRecipients = notifications
+      .SelectMany(
+        notification => recipients
+          .Select(
+            recipient =>
+              new NotificationRecipientModel
+              {
+                NotificationId = notification.Id,
+                RepresentativeId = recipient.Id
+              }.ToEntity()
+          )
+      );
+    context.AddRange(notificationRecipients);
     await context.SaveChangesAsync();
   }
 }

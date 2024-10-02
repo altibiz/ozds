@@ -1,14 +1,14 @@
 using MassTransit;
 using Ozds.Messaging.Contracts;
 using Ozds.Messaging.Contracts.Abstractions;
-using Ozds.Messaging.Sagas;
+using Ozds.Messaging.Entities;
 
 // TODO: make queue names configurable
 
 namespace Ozds.Fake.Sagas;
 
 public class NetworkUserInvoiceStateMachine
-  : MassTransitStateMachine<NetworkUserInvoiceState>
+  : MassTransitStateMachine<NetworkUserInvoiceStateEntity>
 {
   public NetworkUserInvoiceStateMachine(IConfiguration configuration)
   {
@@ -28,7 +28,7 @@ public class NetworkUserInvoiceStateMachine
 
         x.SetSagaFactory(
           context =>
-            new NetworkUserInvoiceState
+            new NetworkUserInvoiceStateEntity
             {
               CorrelationId = context.CorrelationId ?? NewId.NextGuid(),
               NetworkUserInvoiceId = context.Message.NetworkUserInvoiceId
@@ -82,7 +82,8 @@ public class NetworkUserInvoiceStateMachine
                   "CancelNetworkUserInvoice endpoint not found")),
               context =>
                 new CancelNetworkUserInvoice(
-                  context.Saga.NetworkUserInvoiceId))
+                  context.Saga.NetworkUserInvoiceId,
+                  context.Saga.CancelReason!))
             .TransitionTo(Cancelled)));
   }
 

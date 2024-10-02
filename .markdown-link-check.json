@@ -4,10 +4,16 @@
       "pattern": "^#"
     },
     {
+      "pattern": "^http://localhost"
+    },
+    {
       "pattern": "^https://localhost"
     },
     {
-      "pattern": "^http://localhost"
+      "pattern": "^http://altibiz.github.io"
+    },
+    {
+      "pattern": "^https://altibiz.github.io"
     }
   ]
 }

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Ozds.Messaging.Context;
@@ -11,13 +12,15 @@ using Ozds.Messaging.Context;
 namespace Ozds.Messaging.Migrations
 {
     [DbContext(typeof(MessagingDbContext))]
-    partial class OzdsSagaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241001140231_CancelReason")]
+    partial class CancelReason
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.0")
+                .HasAnnotation("ProductVersion", "8.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -249,6 +252,10 @@ namespace Ozds.Messaging.Migrations
                     b.Property<string>("BillId")
                         .HasColumnType("text")
                         .HasColumnName("bill_id");
+
+                    b.Property<string>("CancelReason")
+                        .HasColumnType("text")
+                        .HasColumnName("cancel_reason");
 
                     b.Property<string>("CurrentState")
                         .IsRequired()

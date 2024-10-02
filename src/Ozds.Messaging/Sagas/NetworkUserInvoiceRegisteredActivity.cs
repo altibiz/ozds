@@ -1,5 +1,6 @@
 using MassTransit;
 using Ozds.Messaging.Contracts.Abstractions;
+using Ozds.Messaging.Entities;
 using Ozds.Messaging.Observers.Abstractions;
 
 namespace Ozds.Messaging.Sagas;
@@ -8,16 +9,16 @@ public class NetworkUserInvoiceRegisteredActivity(
   INetworkUserInvoiceStatePublisher publisher
 )
   : IStateMachineActivity<
-    NetworkUserInvoiceState,
+    NetworkUserInvoiceStateEntity,
     IRegisterNetworkUserInvoice
   >
 {
   public async Task Execute(
     BehaviorContext<
-      NetworkUserInvoiceState,
+      NetworkUserInvoiceStateEntity,
       IRegisterNetworkUserInvoice> context,
     IBehavior<
-      NetworkUserInvoiceState,
+      NetworkUserInvoiceStateEntity,
       IRegisterNetworkUserInvoice> next)
   {
     publisher.PublishRegistered(context.Saga);
@@ -27,11 +28,11 @@ public class NetworkUserInvoiceRegisteredActivity(
 
   public Task Faulted<TException>(
     BehaviorExceptionContext<
-      NetworkUserInvoiceState,
+      NetworkUserInvoiceStateEntity,
       IRegisterNetworkUserInvoice,
       TException> context,
     IBehavior<
-      NetworkUserInvoiceState,
+      NetworkUserInvoiceStateEntity,
       IRegisterNetworkUserInvoice> next
   )
     where TException : Exception

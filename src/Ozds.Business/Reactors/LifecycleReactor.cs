@@ -18,6 +18,7 @@ public class LifecycleReactor(
 {
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
   public async Task StartAsync(CancellationToken cancellationToken)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
   {
 #pragma warning disable S125 // Sections of code should not be commented out
     // await using var context =
@@ -57,15 +58,13 @@ public class LifecycleReactor(
     return @event;
   }
 
-#pragma warning disable S2094 // Classes should not be empty
   private record LifecycleEventContent(string Message);
-
-#pragma warning disable S1144 // Unused private types or members should be removed
-  private sealed record StartupEventContent()
-    : LifecycleEventContent("Startup");
-#pragma warning restore S1144 // Unused private types or members should be removed
 
   private sealed record ShutdownEventContent()
     : LifecycleEventContent("Shutdown");
-#pragma warning restore S2094 // Classes should not be empty
+
+#pragma warning disable S125 // Sections of code should not be commented out
+  // private sealed record StartupEventContent()
+  //   : LifecycleEventContent("Startup");
+#pragma warning restore S125 // Sections of code should not be commented out
 }

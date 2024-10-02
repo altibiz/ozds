@@ -2,6 +2,7 @@ set windows-shell := ["nu.exe", "-c"]
 set shell := ["nu", "-c"]
 
 # TODO: use hunspell with dictionaries
+# TODO: migrate ensure same timestamp
 # FIXME: pyright '{{root}}'
 
 root := absolute_path('')
@@ -232,7 +233,6 @@ dump name=current:
           --exclude-table-data='"User"*' \
           --exclude-table-data='*aggregates' \
           --exclude-table-data='*measurements' \
-          --exclude-table-data='*state' \
           --exclude-table-data='outbox_state' \
           --exclude-table-data='inbox_state' \
           --exclude-table-data='outbox_message' \
@@ -329,7 +329,7 @@ validate *args:
 
 [confirm("This will clean docker containers. Do you want to continue?")]
 clean:
-    docker ps -a -q | lines | each { |x| docker stop $x }
+    docker compose ps -a -q | lines | each { |x| docker stop $x }
     docker compose --profile "*" down -v
     docker compose up -d
     {{ isready }}
