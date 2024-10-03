@@ -130,3 +130,6 @@
 /20241002091115-Ozds.Data-NetworkUserInvoiceNotificationConfig-hypertables.sql
 /20241002091115-Ozds.Data-NetworkUserInvoiceNotificationConfig-orchard.sql
 /20241002091115-Ozds.Data-NetworkUserInvoiceNotificationConfig.sql
+/20241003113906-Ozds.Messaging-NetUserInvoiceCancelToAbort-hypertables.sql
+/20241003113906-Ozds.Messaging-NetUserInvoiceCancelToAbort-orchard.sql
+/20241003113906-Ozds.Messaging-NetUserInvoiceCancelToAbort.sql
