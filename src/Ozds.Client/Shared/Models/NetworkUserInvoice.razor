@@ -1,5 +1,6 @@
 @inherits OzdsOwningComponentBase
 @inject IDialogService DialogService
+@inject IJSRuntime JSRuntime
 
 <Loading Load="@(async () => (Invoice ?? await ScopedServices.GetRequiredService<OzdsInvoiceQueries>().ReadSingle<NetworkUserInvoiceModel>(Id ?? throw new InvalidOperationException()))!)">
   <Found>
@@ -264,9 +265,10 @@
   [Parameter]
   public NetworkUserInvoiceModel? Invoice { get; set; }
 
-  private void InspectInvoicePrint(string id)
+  private async Task InspectInvoicePrint(string id)
   {
-    NavigationManager.NavigateTo($"network-user-invoice-print/{id}");
+    var uri = NavigationManager.ToAbsoluteUri($"network-user-invoice-print/{id}");
+    await JSRuntime.InvokeVoidAsync("open", uri.ToString(), "_blank");
   }
 
 }
