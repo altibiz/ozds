@@ -1,7 +1,9 @@
+@using Ozds.Business.Finance.Abstractions
 @using Ozds.Business.Time
+@using Ozds.Client.Shared.Dialogs
 @using Color = MudBlazor.Color
 @using Size = MudBlazor.Size
-
+@inject IDialogService DialogService
 
 
 @* MOBILE *@
@@ -49,11 +51,9 @@
                 </MudItem>
                 @if (representative is not null && representative.Representative.Role is RoleModel.OperatorRepresentative)
                 {
-                  <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large;">
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary">
-                      <form method="post" action="@($"admin/IssueInvoice/{dataStruct.data.networkUser.Id}")">
-                        <button type="submit">@T["Issue Invoice"]</button>
-                      </form>
+                  <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large;">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="() => CreateInvoice(dataStruct.data.networkUser.Id)">
+                      @T["Issue Invoice"]
                     </MudButton>
                   </MudItem>
                 }
@@ -138,10 +138,8 @@
         <TemplateColumn CellClass="d-flex justify-end" Sortable="false" Filterable="false">
           <CellTemplate>
             <MudStack Row>
-              <MudButton Variant="Variant.Filled" Color="Color.Primary">
-                <form method="post" action="@($"admin/IssueInvoice/{context.Item.networkUser.Id}")">
-                  <button type="submit">@T["Issue Invoice"]</button>
-                </form>
+              <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="() => CreateInvoice(context.Item.networkUser.Id)">
+                @T["Issue Invoice"]
               </MudButton>
             </MudStack>
           </CellTemplate>
@@ -164,14 +162,18 @@
 
   private string? _searchString;
   private List<NetworkUserInvoiceModel>? _invoices = new();
+  private List<NetworkUserInvoiceModel>? _allInvoices = new();
 
   public record struct TabularData(LocationModel location, NetworkUserModel networkUser, decimal thisMonthUsage, decimal lastMonthUsage, decimal lastMonthsPayment);
 
   private List<TabularData> _dataStruct = new();
   private DateTimeOffset startOfThisMonth = DateTimeOffset.UtcNow.GetStartOfMonth();
   private DateTimeOffset startOfLastMonth = DateTimeOffset.UtcNow.GetStartOfLastMonth();
+  private DateTimeOffset startOfThisYear = DateTimeOffset.UtcNow.GetStartOfYear();
   private DateTimeOffset now = DateTimeOffset.UtcNow;
   private List<NetworkUserModel>? _netUsers;
+  private List<IGrouping<string, NetworkUserInvoiceModel>>? groupedInvoices = new();
+  private List<IGrouping<string, NetworkUserInvoiceModel>> groupedAllInvoices = new();
 
   protected override async Task OnInitializedAsync()
   {
@@ -185,7 +187,9 @@
     netUsers = await queries.ViewModelByNetworkUser(_netUserIds, startOfLastMonth, now);
     var groupedNetUsers = netUsers.GroupBy(x => x.NetworkUser.Id).ToList();
     _invoices = await queries.GetNetworkUserInvoicesByRepresentative(representative.Representative, startOfLastMonth, startOfThisMonth);
-    var groupedInvoices = _invoices.GroupBy(x => x.NetworkUserId).ToList();
+    groupedInvoices = _invoices.GroupBy(x => x.NetworkUserId).ToList();
+    _allInvoices = await queries.GetNetworkUserInvoicesByRepresentative(representative.Representative, startOfThisYear, now);
+    groupedAllInvoices = _allInvoices.GroupBy(x => x.NetworkUserId).ToList();
 
     foreach (var netUser in groupedNetUsers)
     {
@@ -318,6 +322,40 @@
     ;
     StateHasChanged();
     return Task.CompletedTask;
+  }
+
+  private async Task CreateInvoice(string id)
+  {
+    var minDate = startOfLastMonth;
+    var maxDate = now;
+    var _lastInvoice = groupedAllInvoices
+      .Where(x => x.Key == id)
+      .SelectMany(x => x)
+      .OrderByDescending(x => x.ToDate)
+      .FirstOrDefault();
+
+    if (_lastInvoice is not null)
+    {
+      minDate = _lastInvoice.ToDate.AddDays(1);
+    }
+
+    var parameters = new DialogParameters
+    {
+      { "MinDate", minDate },
+      { "MaxDate", maxDate }
+    };
+    var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Small };
+    var dialog = DialogService.Show<DateRangeDialog>(T["Select Date Range"], parameters, options);
+    var result = await dialog.Result;
+
+    if (!result.Canceled)
+    {
+      var (dateFrom, dateTo) = ((DateTime, DateTime))result.Data;
+      await ScopedServices
+        .GetRequiredService<INetworkUserInvoiceIssuer>()
+        .IssueNetworkUserInvoiceAsync(id, dateFrom, dateTo);
+      NavigationManager.NavigateTo("invoices");
+    }
   }
 
 }
