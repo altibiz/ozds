@@ -51,7 +51,14 @@
             @(T["This years consumption"] + " (kW):")
           </MudText>
         </MudItem>
-        <NetUserRepGraph/>
+        <MeterGraph
+          Meters="@_meters"
+          Timestamp="@_startOfYear"
+          Resolution="@ResolutionModel.Year"
+          Measure="@MeasureModel.ActivePower"
+          Multiplier="1"
+          Static
+          Sum />
       </MudPaper>
     </MudItem>
   </MudGrid>
@@ -118,7 +125,14 @@
             @(T["This years consumption"] + " (kW):")
           </MudText>
         </MudItem>
-        <NetUserRepGraph/>
+        <MeterGraph
+          Meters="@_meters"
+          Timestamp="@_startOfYear"
+          Resolution="@ResolutionModel.Year"
+          Measure="@MeasureModel.ActivePower"
+          Multiplier="1"
+          Static
+          Sum />
       </MudPaper>
     </MudItem>
   </MudGrid>
@@ -138,6 +152,8 @@
   decimal lastMonthInvoicesTotal = 0m;
   private List<NetworkUserModel>? _netUsers;
   private IEnumerable<NetworkUserInvoiceModel>? _invoices;
+  private List<IMeter>? _meters;
+  private DateTimeOffset _startOfYear = DateTimeOffset.UtcNow.GetStartOfYear();
 
   protected override async Task OnInitializedAsync()
   {
@@ -151,6 +167,7 @@
     if (_netUsers is not null)
       _netUserIds = _netUsers.Select(x => x.Id).ToList();
     var meters = await query.ViewModelByNetworkUser(_netUserIds, startOfLastMonth, now);
+    _meters = meters.Select(m => m.Meter).ToList();
     foreach (var meter in meters)
     {
       var _thisMonthAggregate = meter.Aggregates.Where(x => x.Timestamp == startOfThisMonth).Where(x => x is not null).ToList();

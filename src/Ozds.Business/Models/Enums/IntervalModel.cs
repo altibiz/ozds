@@ -49,4 +49,19 @@ public static class IntervalModelExtensions
       _ => throw new ArgumentOutOfRangeException(nameof(model), model, null)
     };
   }
+
+  public static TimeSpan HigherResolutionTimeSpan(
+    this IntervalModel model,
+#pragma warning disable IDE0060 // Remove unused parameter
+    DateTimeOffset timestamp)
+#pragma warning restore IDE0060 // Remove unused parameter
+  {
+    return model switch
+    {
+      IntervalModel.QuarterHour => TimeSpan.FromSeconds(1),
+      IntervalModel.Day => TimeSpan.FromMinutes(15),
+      IntervalModel.Month => TimeSpan.FromDays(1),
+      _ => throw new ArgumentOutOfRangeException(nameof(model), model, null)
+    };
+  }
 }
