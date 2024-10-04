@@ -1,7 +1,7 @@
 using Ozds.Business.Activation.Base;
 using Ozds.Business.Models;
 
-namespace Ozds.Business.Activation.Complex;
+namespace Ozds.Business.Activation;
 
 public class
   BlueLowNetworkUserCatalogueModelActivator : ModelActivator<

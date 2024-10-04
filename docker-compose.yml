@@ -7,13 +7,13 @@ services:
     volumes:
       - postgres_data:/home/postgres/pgdata/data
     environment:
-      - POSTGRES_DB=ozds
-      - POSTGRES_USER=ozds
-      - POSTGRES_PASSWORD=ozds
+      POSTGRES_DB: ozds
+      POSTGRES_USER: ozds
+      POSTGRES_PASSWORD: ozds
     ports:
       - 5432:5432
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -d ozds -U ozds"]
+      test: pg_isready -d ozds -U ozds
       interval: 1m
       timeout: 10s
       retries: 10
@@ -24,19 +24,39 @@ services:
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
     environment:
-      - RABBITMQ_DEFAULT_USER=ozds
-      - RABBITMQ_DEFAULT_PASS=ozds
+      RABBITMQ_DEFAULT_USER: ozds
+      RABBITMQ_DEFAULT_PASS: ozds
     ports:
       - 5672:5672
       - 15672:15672
     healthcheck:
-      test: ["CMD-SHELL", "rabbitmqctl node_health_check"]
+      test: rabbitmqctl node_health_check
       interval: 1m
       timeout: 10s
       retries: 10
+  mailserver:
+    image: mailhog/mailhog:v1.0.1
+    user: root
+    ports:
+      - 1025:1025
+      - 8025:8025
+    environment:
+      MH_STORAGE: maildir
+      MH_MAILDIR_PATH: /var/lib/mailhog
+      MH_AUTH_FILE: /etc/mailhog/mailhog.auth
+    volumes:
+      - mailserver_data:/var/lib/mailhog
+      - ./scripts/mailserver:/etc/mailhog
+    healthcheck:
+      test: curl --fail http://localhost:8025 || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
 volumes:
   postgres_data:
     driver: local
   rabbitmq_data:
+    driver: local
+  mailserver_data:
     driver: local

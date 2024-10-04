@@ -1,22 +1,65 @@
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Conversion;
+using Ozds.Business.Extensions;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Composite;
 using Ozds.Business.Queries.Abstractions;
-using Ozds.Data;
+using Ozds.Data.Context;
 using Ozds.Data.Entities;
 using Ozds.Data.Entities.Base;
 using Ozds.Data.Entities.Enums;
+using Ozds.Data.Extensions;
 
 // TODO: remove any direct references to aggregate model/entity types
 
 namespace Ozds.Business.Queries;
 
-public class OzdsBillingQueries(OzdsDataDbContext dbContext) : IOzdsQueries
+public class OzdsBillingQueries(DataDbContext dbContext) : IQueries
 {
-  private readonly OzdsDataDbContext _dbContext = dbContext;
+  private readonly DataDbContext _dbContext = dbContext;
 
-  public async Task<List<NetworkUserCalculationBasisModel>>
+  public async Task<NetworkUserInvoiceIssuingBasisModel>
+    IssuingBasisForNetworkUser(
+      string networkUserId,
+      DateTimeOffset fromDate,
+      DateTimeOffset toDate
+    )
+  {
+    var networkUser = await _dbContext.NetworkUsers
+        .Where(
+          _dbContext.PrimaryKeyEquals<NetworkUserEntity>(
+            networkUserId))
+        .Include(x => x.Location)
+        .Include(x => x.Location.RegulatoryCatalogue)
+        .FirstOrDefaultAsync() ??
+      throw new InvalidOperationException(
+        "Network user not found");
+    var calculationBases = await NetworkUserCalculationBasesByNetworkUser(
+      networkUserId,
+      fromDate,
+      toDate
+    );
+
+    return new NetworkUserInvoiceIssuingBasisModel(
+      networkUser.Location.ToModel(),
+      networkUser.ToModel(),
+      networkUser.Location.RegulatoryCatalogue.ToModel(),
+      fromDate,
+      toDate,
+      calculationBases
+    );
+  }
+
+  public Task<LocationInvoiceIssuingBasisModel> IssuingBasisForLocation(
+    string locationId,
+    DateTimeOffset fromDate,
+    DateTimeOffset toDate
+  )
+  {
+    throw new NotImplementedException();
+  }
+
+  private async Task<List<NetworkUserCalculationBasisModel>>
     NetworkUserCalculationBasesByNetworkUser(
       string networkUserId,
       DateTimeOffset fromDate,
@@ -50,11 +93,12 @@ public class OzdsBillingQueries(OzdsDataDbContext dbContext) : IOzdsQueries
         )
         .Join(
           _dbContext.Meters,
-          _dbContext.ForeignKeyOf(
-            (NetworkUserCalculationBasesByNetworkUserIntermediary x) =>
-              x.MeasurementLocation,
-            nameof(MeasurementLocationEntity.Meter)
-          ),
+          _dbContext
+            .ForeignKeyOf<MeasurementLocationEntity>(
+              nameof(MeasurementLocationEntity.Meter))
+            .Prefix(
+              (NetworkUserCalculationBasesByNetworkUserIntermediary x) =>
+                x.MeasurementLocation),
           _dbContext.PrimaryKeyOf<MeterEntity>(),
           (x, meter) =>
             new NetworkUserCalculationBasesByNetworkUserIntermediary
@@ -72,10 +116,11 @@ public class OzdsBillingQueries(OzdsDataDbContext dbContext) : IOzdsQueries
             .Where(x => x.Timestamp >= fromDate)
             .Where(x => x.Timestamp <= toDate)
             .Where(x => x.Interval == IntervalEntity.QuarterHour),
-          _dbContext.PrimaryKeyOf(
-            (NetworkUserCalculationBasesByNetworkUserIntermediary x) =>
-              x.Meter
-          ),
+          _dbContext
+            .PrimaryKeyOf<MeterEntity>()
+            .Prefix(
+              (NetworkUserCalculationBasesByNetworkUserIntermediary x) =>
+                x.Meter),
           _dbContext.ForeignKeyOf<AbbB2xAggregateEntity>(
             nameof(AbbB2xAggregateEntity.Meter)
           ),
@@ -110,10 +155,11 @@ public class OzdsBillingQueries(OzdsDataDbContext dbContext) : IOzdsQueries
             .Where(x => x.Timestamp >= fromDate)
             .Where(x => x.Timestamp <= toDate)
             .Where(x => x.Interval == IntervalEntity.QuarterHour),
-          _dbContext.PrimaryKeyOf(
-            (NetworkUserCalculationBasesByNetworkUserIntermediary x) =>
-              x.Meter
-          ),
+          _dbContext
+            .PrimaryKeyOf<MeterEntity>()
+            .Prefix(
+              (NetworkUserCalculationBasesByNetworkUserIntermediary x) =>
+                x.Meter),
           _dbContext.ForeignKeyOf<SchneideriEM3xxxAggregateEntity>(
             nameof(AbbB2xAggregateEntity.Meter)
           ),
@@ -174,53 +220,12 @@ public class OzdsBillingQueries(OzdsDataDbContext dbContext) : IOzdsQueries
       .ToList();
   }
 
-  public async Task<NetworkUserInvoiceIssuingBasisModel>
-    IssuingBasisForNetworkUser(
-      string networkUserId,
-      DateTimeOffset fromDate,
-      DateTimeOffset toDate
-    )
-  {
-    var networkUser = await _dbContext.NetworkUsers
-        .Where(
-          _dbContext.PrimaryKeyEquals<NetworkUserEntity>(
-            networkUserId))
-        .Include(x => x.Location)
-        .Include(x => x.Location.RegulatoryCatalogue)
-        .FirstOrDefaultAsync() ??
-      throw new InvalidOperationException(
-        "Network user not found");
-    var calculationBases = await NetworkUserCalculationBasesByNetworkUser(
-      networkUserId,
-      fromDate,
-      toDate
-    );
-
-    return new NetworkUserInvoiceIssuingBasisModel(
-      networkUser.Location.ToModel(),
-      networkUser.ToModel(),
-      networkUser.Location.RegulatoryCatalogue.ToModel(),
-      fromDate,
-      toDate,
-      calculationBases
-    );
-  }
-
   public Task<List<LocationNetworkUserCalculationBasisModel>>
     NetworkUserCalculationBasesByLocation(
       string locationId,
       DateTimeOffset fromDate,
       DateTimeOffset toDate
     )
-  {
-    throw new NotImplementedException();
-  }
-
-  public Task<LocationInvoiceIssuingBasisModel> IssuingBasisForLocation(
-    string locationId,
-    DateTimeOffset fromDate,
-    DateTimeOffset toDate
-  )
   {
     throw new NotImplementedException();
   }

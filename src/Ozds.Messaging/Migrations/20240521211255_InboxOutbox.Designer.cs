@@ -5,13 +5,13 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using Ozds.Messaging;
+using Ozds.Messaging.Context;
 
 #nullable disable
 
 namespace Ozds.Messaging.Migrations
 {
-    [DbContext(typeof(OzdsMessagingDbContext))]
+    [DbContext(typeof(MessagingDbContext))]
     [Migration("20240521211255_InboxOutbox")]
     partial class InboxOutbox
     {

@@ -1,19 +1,19 @@
 using System.ComponentModel.DataAnnotations;
 using Ozds.Business.Conversion;
-using Ozds.Business.Extensions;
 using Ozds.Business.Models;
 using Ozds.Business.Mutations.Abstractions;
-using Ozds.Data;
+using Ozds.Data.Context;
+using Ozds.Data.Extensions;
 
 // TODO: check representative model user id
 
 namespace Ozds.Business.Mutations.Agnostic;
 
 public class OzdsLocationMutations(
-  OzdsDataDbContext context
-) : IOzdsMutations
+  DataDbContext context
+) : IMutations
 {
-  private readonly OzdsDataDbContext _context = context;
+  private readonly DataDbContext _context = context;
 
   public Task SaveChangesAsync()
   {

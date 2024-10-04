@@ -1,5 +1,5 @@
 namespace Ozds.Data.Entities.Abstractions;
 
-public interface IReadonlyEntity
+public interface IReadonlyEntity : IEntity
 {
 }

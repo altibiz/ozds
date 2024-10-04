@@ -7,6 +7,7 @@ namespace Ozds.Data.Entities;
 public class MessengerEventEntity : EventEntity
 {
   public string MessengerId { get; set; } = default!;
+
   public virtual MessengerEntity Messenger { get; set; } = default!;
 }
 

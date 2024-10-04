@@ -1,0 +1,5 @@
+outs:
+- md5: ecbf93fbbf770d0bcfd17a8b1f820cb9
+  size: 22502
+  hash: md5
+  path: 20240711100455-Ozds.Data-InvoiceTestAdditions.sql

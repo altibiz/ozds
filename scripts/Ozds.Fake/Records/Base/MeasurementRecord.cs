@@ -4,7 +4,7 @@ using Ozds.Fake.Records.Abstractions;
 
 namespace Ozds.Fake.Records.Base;
 
-public abstract class MeasurementRecord : IMeasurementRecord
+public abstract record class MeasurementRecord : IMeasurementRecord
 {
   public required string MeterId { get; set; }
 

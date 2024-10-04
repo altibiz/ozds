@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Ozds.Data.Entities.Base;
 using Ozds.Data.Entities.Complex;
+using Ozds.Data.Entities.Joins;
 using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities;
@@ -20,6 +21,9 @@ public class LocationEntity : AuditableEntity
 
   public virtual ICollection<RepresentativeEntity>
     Representatives { get; set; } = default!;
+
+  public virtual ICollection<LocationRepresentativeEntity>
+    LocationRepresentatives { get; set; } = default!;
 
   public virtual ICollection<NetworkUserEntity> NetworkUsers { get; set; } =
     default!;
@@ -100,10 +104,6 @@ public class
 {
   public override void Configure(EntityTypeBuilder<LocationEntity> builder)
   {
-    builder
-      .HasMany(nameof(LocationEntity.Representatives))
-      .WithMany(nameof(RepresentativeEntity.Locations));
-
     builder
       .HasMany(nameof(LocationEntity.NetworkUsers))
       .WithOne(nameof(NetworkUserEntity.Location));

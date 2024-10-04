@@ -1,5 +1,5 @@
 namespace Ozds.Business.Models.Abstractions;
 
-public interface IReadonly
+public interface IReadonly : IModel
 {
 }

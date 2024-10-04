@@ -3,15 +3,16 @@ using Ozds.Business.Conversion;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Composite;
 using Ozds.Business.Queries.Abstractions;
-using Ozds.Data;
+using Ozds.Data.Context;
 using Ozds.Data.Entities;
 using Ozds.Data.Entities.Enums;
+using Ozds.Data.Extensions;
 
 namespace Ozds.Business.Queries;
 
-public class OzdsNetworkUserQueries(OzdsDataDbContext context) : IOzdsQueries
+public class OzdsNetworkUserQueries(DataDbContext context) : IQueries
 {
-  private readonly OzdsDataDbContext context = context;
+  private readonly DataDbContext context = context;
 
   public async Task<NetworkUserModel?>
     NetworkUserById(string id)

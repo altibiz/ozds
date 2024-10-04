@@ -45,4 +45,20 @@ public static class LeveLModelExtensions
         null)
     };
   }
+
+  public static string ToTitle(this LevelModel levelModel)
+  {
+    return levelModel switch
+    {
+      LevelModel.Trace => "Trace",
+      LevelModel.Debug => "Debug",
+      LevelModel.Information => "Information",
+      LevelModel.Warning => "Warning",
+      LevelModel.Error => "Error",
+      LevelModel.Critical => "Critical",
+      _ => throw new ArgumentOutOfRangeException(
+        nameof(levelModel), levelModel,
+        null)
+    };
+  }
 }

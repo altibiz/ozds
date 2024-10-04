@@ -1,13 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
 	<ItemGroup>
-    <PackageReference Include="OrchardCore.Logging.NLog" Version="$(OrchardVersion)" />
-    <PackageReference Include="OrchardCore.Application.Cms.Targets" Version="$(OrchardVersion)" />
+    <PackageReference Include="OrchardCore.Logging.NLog" Version="$(OrchardCoreVersion)" />
+    <PackageReference Include="OrchardCore.Application.Cms.Targets" Version="$(OrchardCoreVersion)" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="../../src/Ozds.Client/Ozds.Client.csproj" />
 	  <ProjectReference Include="../../src/Ozds.Business/Ozds.Business.csproj" />
+	  <ProjectReference Include="../../src/Ozds.Iot/Ozds.Iot.csproj" />
+	  <ProjectReference Include="../../src/Ozds.Client/Ozds.Client.csproj" />
 	</ItemGroup>
 
 </Project>

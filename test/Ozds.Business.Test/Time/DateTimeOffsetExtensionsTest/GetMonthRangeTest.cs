@@ -45,6 +45,12 @@ public class GetMonthRangeTest
   [InlineData(
     "2024-02-29T12:34:56Z", "2024-01-31T23:00:00Z",
     "2024-02-29T23:00:00Z")]
+  [InlineData(
+    "2024-11-30T23:38:56Z", "2024-11-30T23:00:00Z",
+    "2024-12-31T23:00:00Z")] // Edge time, CET offset is +1
+  [InlineData(
+    "2024-03-31T23:38:56Z", "2024-03-31T22:00:00Z",
+    "2024-04-30T22:00:00Z")] // Edge time, Leap year, CET offset is +1
   public void GetMonthRange_ReturnsExpectedRange(
     string inputDateString,
     string expectedStartString,

@@ -1,5 +1,5 @@
-using System.Text.Json.Nodes;
 using Ozds.Business.Models.Abstractions;
+using Ozds.Iot.Entities.Abstractions;
 
 namespace Ozds.Business.Conversion.Abstractions;
 
@@ -7,10 +7,7 @@ public interface IPushRequestMeasurementConverter
 {
   bool CanConvert(string meterId);
 
-  IMeasurement ToMeasurement(
-    JsonObject pushRequest,
-    string meterId,
-    DateTimeOffset timestamp);
+  IMeasurement ToMeasurement(IMeterPushRequestEntity pushRequest);
 
-  JsonObject ToPushRequest(IMeasurement measurement);
+  IMeterPushRequestEntity ToPushRequest(IMeasurement measurement);
 }

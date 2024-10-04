@@ -1,3 +1,5 @@
+@using Microsoft.AspNetCore.Components.Web
+@using RenderMode = Microsoft.AspNetCore.Mvc.Rendering.RenderMode
 <!DOCTYPE html>
 
 <html>
@@ -16,8 +18,7 @@
   <link href="/_content/Blazor-ApexCharts/css/apexcharts.css" rel=stylesheet />
   -->
 
-  @* FIXME: There is already a subscriber to the content with the given section ID 'System.Object'. *@
-  @* @(await Html.RenderComponentAsync<Microsoft.AspNetCore.Components.Web.HeadOutlet>(RenderMode.Server)) *@
+  @(await Html.RenderComponentAsync<HeadOutlet>(RenderMode.Server))
 </head>
 
 <body>

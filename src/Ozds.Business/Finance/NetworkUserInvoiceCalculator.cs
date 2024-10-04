@@ -1,3 +1,4 @@
+using Ozds.Business.Finance.Abstractions;
 using Ozds.Business.Finance.Agnostic;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Complex;
@@ -10,7 +11,7 @@ namespace Ozds.Business.Finance;
 
 public class NetworkUserInvoiceCalculator(
   AgnosticNetworkUserCalculationCalculator calculationCalculator
-)
+) : INetworkUserInvoiceCalculator
 {
   private readonly AgnosticNetworkUserCalculationCalculator
     _calculationCalculator = calculationCalculator;

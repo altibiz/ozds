@@ -1,0 +1,42 @@
+@page "/events"
+@using Microsoft.Extensions.Hosting
+@attribute [Navigation(Icon= Icons.Material.Outlined.Event, Title = "Events", Allows = new[] { RoleModel.OperatorRepresentative })]
+@inject IHostEnvironment Environment
+
+@* TODO: tweak min level *@
+
+@if (user is null)
+{
+  return;
+}
+
+<MudSelect
+  T="LevelModel"
+  Label="@T["Min level"]"
+  AnchorOrigin="Origin.BottomCenter"
+  @bind-Value="_minLevel">
+  @foreach (var value in Enum.GetValues<LevelModel>()
+    .Where(
+      l => Environment.IsDevelopment()
+        ? l >= LevelModel.Trace
+        : l >= LevelModel.Information))
+  {
+    <MudSelectItem Value="value">
+      @T[value.ToTitle()]
+    </MudSelectItem>
+  }
+</MudSelect>
+
+<EventsTable MinLevel="_minLevel"/>
+
+@code {
+
+  [CascadingParameter]
+  public UserState user { get; set; } = default!;
+
+  [CascadingParameter]
+  public RepresentativeState RepresentativeState { get; set; } = default!;
+
+  private LevelModel _minLevel = LevelModel.Warning;
+
+}

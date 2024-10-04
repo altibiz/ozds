@@ -2,14 +2,16 @@ namespace Ozds.Business.Time;
 
 // TODO: make time zone configurable
 
-// NOTE: Croatian UTC offset (https://en.wikipedia.org/wiki/List_of_UTC_offsets)
-
 public static class DateTimeOffsetExtensions
 {
   // NOTE: Croatian UTC offset (https://en.wikipedia.org/wiki/List_of_UTC_offsets)
 
+  private static readonly TimeZoneInfo TimeZone =
+    TimeZoneInfo.FindSystemTimeZoneById("Europe/Zagreb");
+
   public static TimeSpan GetOffset(DateTimeOffset forDate)
   {
+    // NOTE: Croatian UTC offset (https://en.wikipedia.org/wiki/List_of_UTC_offsets)
     return TimeZoneInfo.FindSystemTimeZoneById("Europe/Zagreb")
       .GetUtcOffset(forDate);
   }
@@ -18,143 +20,146 @@ public static class DateTimeOffsetExtensions
     this DateTimeOffset dateTimeOffset
   )
   {
-    var dateOnlyStart = new DateTime(
-      dateTimeOffset.Year, dateTimeOffset.Month,
-      1, 0, 0, 0, DateTimeKind.Unspecified);
-    var offsetStart = GetOffset(dateOnlyStart);
+    var localDateTime = TimeZoneInfo.ConvertTime(dateTimeOffset, TimeZone);
 
-    var nextMonth = dateTimeOffset.AddMonths(1);
-    var dateOnlyEnd = new DateTime(
-      nextMonth.Year, nextMonth.Month, 1, 0, 0, 0,
+    var localStartOfMonth = new DateTime(
+      localDateTime.Year, localDateTime.Month, 1, 0, 0, 0,
       DateTimeKind.Unspecified);
-    var offsetEnd = GetOffset(dateOnlyEnd);
 
-    var start = new DateTimeOffset(dateOnlyStart, offsetStart);
-    var end = new DateTimeOffset(dateOnlyEnd, offsetEnd);
-    return (start.ToUniversalTime(), end.ToUniversalTime());
+    var utcStartOfMonth =
+      TimeZoneInfo.ConvertTimeToUtc(localStartOfMonth, TimeZone);
+
+    var localStartOfNextMonth = localStartOfMonth.AddMonths(1);
+
+    var utcStartOfNextMonth =
+      TimeZoneInfo.ConvertTimeToUtc(localStartOfNextMonth, TimeZone);
+
+    return (
+      new DateTimeOffset(utcStartOfMonth, TimeSpan.Zero),
+      new DateTimeOffset(utcStartOfNextMonth, TimeSpan.Zero)
+    );
   }
 
   public static DateTimeOffset GetStartOfQuarterHour(
     this DateTimeOffset dateTimeOffset
   )
   {
-    var quarterHour = dateTimeOffset.Minute / 15;
+    var localDateTime = TimeZoneInfo.ConvertTime(dateTimeOffset, TimeZone);
 
-    dateTimeOffset = dateTimeOffset.ToOffset(GetOffset(dateTimeOffset));
-    return new DateTimeOffset(
-      dateTimeOffset.Year,
-      dateTimeOffset.Month,
-      dateTimeOffset.Day,
-      dateTimeOffset.Hour,
-      quarterHour * 15,
+    var quarterHour = localDateTime.Minute / 15 * 15;
+
+    var localStartOfQuarterHour = new DateTime(
+      localDateTime.Year,
+      localDateTime.Month,
+      localDateTime.Day,
+      localDateTime.Hour,
+      quarterHour,
       0,
-      dateTimeOffset.Offset
-    );
+      DateTimeKind.Unspecified);
+
+    var utcStartOfQuarterHour = TimeZoneInfo.ConvertTimeToUtc(
+      localStartOfQuarterHour, TimeZone);
+
+    return new DateTimeOffset(utcStartOfQuarterHour, TimeSpan.Zero);
   }
 
   public static DateTimeOffset GetStartOfMonth(
     this DateTimeOffset dateTimeOffset
   )
   {
-    var dateOnly = new DateTime(
-      dateTimeOffset.Year, dateTimeOffset.Month, 1, 0,
-      0, 0, DateTimeKind.Unspecified);
-    var offset = GetOffset(dateOnly);
+    var localDateTime = TimeZoneInfo.ConvertTime(dateTimeOffset, TimeZone);
 
-    var startOfMonth = new DateTimeOffset(dateOnly, offset);
-    return startOfMonth.ToUniversalTime();
-  }
+    var localStartOfMonth = new DateTime(
+      localDateTime.Year, localDateTime.Month, 1, 0, 0, 0,
+      DateTimeKind.Unspecified);
 
-  public static DateTimeOffset GetStartOfMonthNoTransformation(
-    this DateTimeOffset dateTimeOffset
-  )
-  {
-    var dateOnly = new DateTime(
-      dateTimeOffset.Year, dateTimeOffset.Month, 1, 0,
-      0, 0, DateTimeKind.Unspecified);
+    var utcStartOfMonth =
+      TimeZoneInfo.ConvertTimeToUtc(localStartOfMonth, TimeZone);
 
-    var startOfMonth = new DateTimeOffset(dateOnly, TimeSpan.Zero);
-    return startOfMonth.ToUniversalTime();
+    return new DateTimeOffset(utcStartOfMonth, TimeSpan.Zero);
   }
 
   public static DateTimeOffset GetStartOfLastMonth(
     this DateTimeOffset dateTimeOffset
   )
   {
-    var lastMonth = dateTimeOffset.AddMonths(-1);
-    var dateOnly = new DateTime(
-      lastMonth.Year, lastMonth.Month, 1, 0, 0, 0,
-      DateTimeKind.Unspecified);
-    var offset = GetOffset(dateOnly);
+    var localDateTime = TimeZoneInfo.ConvertTime(dateTimeOffset, TimeZone);
 
-    var startOfLastMonth = new DateTimeOffset(dateOnly, offset);
-    return startOfLastMonth.ToUniversalTime();
+    var lastMonthLocalDateTime = localDateTime.AddMonths(-1);
+
+    var localStartOfLastMonth = new DateTime(
+      lastMonthLocalDateTime.Year, lastMonthLocalDateTime.Month, 1, 0, 0, 0,
+      DateTimeKind.Unspecified);
+
+    var utcStartOfLastMonth =
+      TimeZoneInfo.ConvertTimeToUtc(localStartOfLastMonth, TimeZone);
+
+    return new DateTimeOffset(utcStartOfLastMonth, TimeSpan.Zero);
   }
 
   public static DateTimeOffset GetStartOfNextMonth(
     this DateTimeOffset dateTimeOffset
   )
   {
-    var nextMonth = dateTimeOffset.AddMonths(1);
-    var dateOnly = new DateTime(
-      nextMonth.Year, nextMonth.Month, 1, 0, 0, 0,
-      DateTimeKind.Unspecified);
-    var offset = GetOffset(dateOnly);
+    var localDateTime = TimeZoneInfo.ConvertTime(dateTimeOffset, TimeZone);
 
-    var startOfNextMonth = new DateTimeOffset(dateOnly, offset);
-    return startOfNextMonth;
+    var nextMonthLocalDateTime = localDateTime.AddMonths(1);
+
+    var localStartOfNextMonth = new DateTime(
+      nextMonthLocalDateTime.Year, nextMonthLocalDateTime.Month, 1, 0, 0, 0,
+      DateTimeKind.Unspecified);
+
+    var utcStartOfNextMonth =
+      TimeZoneInfo.ConvertTimeToUtc(localStartOfNextMonth, TimeZone);
+
+    return new DateTimeOffset(utcStartOfNextMonth, TimeSpan.Zero);
   }
 
   public static DateTimeOffset GetStartOfDay(this DateTimeOffset dateTimeOffset)
   {
-    var dateOnly = new DateTime(
-      dateTimeOffset.Year, dateTimeOffset.Month,
-      dateTimeOffset.Day, 0, 0, 0, DateTimeKind.Unspecified);
-    var offset = GetOffset(dateOnly);
+    var localDateTime = TimeZoneInfo.ConvertTime(dateTimeOffset, TimeZone);
 
-    var startOfDay = new DateTimeOffset(dateOnly, offset);
-    return startOfDay.ToUniversalTime();
+    var localStartOfDay = new DateTime(
+      localDateTime.Year, localDateTime.Month, localDateTime.Day, 0, 0, 0,
+      DateTimeKind.Unspecified);
+
+    var utcStartOfDay =
+      TimeZoneInfo.ConvertTimeToUtc(localStartOfDay, TimeZone);
+
+    return new DateTimeOffset(utcStartOfDay, TimeSpan.Zero);
   }
 
   public static DateTimeOffset GetStartOfYear(
     this DateTimeOffset dateTimeOffset
   )
   {
-    var dateOnly = new DateTime(
-      dateTimeOffset.Year, 1, 1, 0, 0, 0,
-      DateTimeKind.Unspecified);
-    var offset = GetOffset(dateOnly);
+    var localDateTime = TimeZoneInfo.ConvertTime(dateTimeOffset, TimeZone);
 
-    var startOfYear = new DateTimeOffset(dateOnly, offset);
-    return startOfYear.ToUniversalTime();
+    var localStartOfYear = new DateTime(
+      localDateTime.Year, 1, 1, 0, 0, 0, DateTimeKind.Unspecified);
+
+    var utcStartOfYear =
+      TimeZoneInfo.ConvertTimeToUtc(localStartOfYear, TimeZone);
+    return new DateTimeOffset(utcStartOfYear, TimeSpan.Zero);
   }
 
-  public static DateTimeOffset GetStartOfYearNoTransformation(
-    this DateTimeOffset dateTimeOffset
-  )
+  public static IEnumerable<DateTimeOffset> GetThisYearMonthStarts(
+    this DateTimeOffset dateTimeOffset)
   {
-    var dateOnly = new DateTime(
-      dateTimeOffset.Year, 1, 1, 0, 0, 0,
-      DateTimeKind.Unspecified);
+    var localDateTime = TimeZoneInfo.ConvertTime(dateTimeOffset, TimeZone);
 
-    var startOfYear = new DateTimeOffset(dateOnly, TimeSpan.Zero);
-    return startOfYear.ToUniversalTime();
-  }
-
-  public static IEnumerable<DateTimeOffset>
-    GetThisYearMonthStartsNoTransformation(
-      this DateTimeOffset dateTimeOffset
-    )
-  {
-    var year = dateTimeOffset.Year;
+    var year = localDateTime.Year;
 
     return Enumerable.Range(1, 12).Select(
       month =>
       {
-        var dateOnly =
-          new DateTime(year, month, 1, 0, 0, 0, DateTimeKind.Unspecified);
-        var startOfMonth = new DateTimeOffset(dateOnly, TimeSpan.Zero);
-        return startOfMonth.ToUniversalTime();
+        var localStartOfMonth = new DateTime(
+          year, month, 1, 0, 0, 0, DateTimeKind.Unspecified);
+
+        var utcStartOfMonth =
+          TimeZoneInfo.ConvertTimeToUtc(localStartOfMonth, TimeZone);
+
+        return new DateTimeOffset(utcStartOfMonth, TimeSpan.Zero);
       });
   }
 }

@@ -16,9 +16,6 @@ public class MeterModel : AuditableModel, IMeter
   [Required]
   public required string? MessengerId { get; set; }
 
-  [Required]
-  public required string MeasurementValidatorId { get; set; }
-
   public virtual ICapabilities Capabilities
   {
     get { return new NullCapabilities(); }

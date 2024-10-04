@@ -121,7 +121,7 @@
 
       @if (representative is not null && representative.Representative.Role is RoleModel.OperatorRepresentative)
       {
-        <TemplateColumn CellClass="d-flex justify-end">
+        <TemplateColumn CellClass="d-flex justify-end" Sortable="false" Filterable="false">
           <CellTemplate>
             <MudStack Row>
               <MudButton Variant="Variant.Filled" Color="Color.Primary">

@@ -11,7 +11,7 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-ozds-scripts-data = "scripts.data:main"
+ozds-scripts-database-measurements = "scripts.database.measurements:main"
 
 [tool.poetry.dependencies]
 python = "~3.11"
@@ -24,6 +24,7 @@ psycopg2 = "^2.9.9"
 ruff = "^0.5.0"
 pyright = "^1.1.370"
 yapf = "^0.40.2"
+pandas-stubs = "^2.2.2.240909"
 
 [tool.yapf]
 based_on_style = "pep8"

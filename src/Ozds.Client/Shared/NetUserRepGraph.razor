@@ -14,7 +14,7 @@
                            Items="@_graphValues"
                            Name="@T["Consumption"]"
                            SeriesType="SeriesType.Area"
-                           XValue='x => DateTimeGraph(x.date)'
+                           XValue='x => DateTimeApplyOffset(x.date)'
                            YValue="x => x.value"/>
         </ApexChart>
       }
@@ -34,7 +34,7 @@
                          Items="@_graphValues"
                          Name="@T["Consumption"]"
                          SeriesType="SeriesType.Area"
-                         XValue='x => DateTimeGraph(x.date)'
+                         XValue='x => DateTimeApplyOffset(x.date)'
                          YValue="x => x.value"/>
       </ApexChart>
     }

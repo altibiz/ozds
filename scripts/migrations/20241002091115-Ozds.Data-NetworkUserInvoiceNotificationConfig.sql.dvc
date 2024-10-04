@@ -1,0 +1,5 @@
+outs:
+- md5: 590bf8106dd91cef5d93a066c514cbf6
+  size: 41365
+  hash: md5
+  path: 20241002091115-Ozds.Data-NetworkUserInvoiceNotificationConfig.sql
