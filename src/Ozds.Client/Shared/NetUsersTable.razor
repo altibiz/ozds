@@ -1,6 +1,7 @@
 @using Ozds.Business.Finance
 @using Ozds.Business.Time
 @using Ozds.Client.Shared.Dialogs
+@using Ozds.Business.Finance.Abstractions
 @using Color = MudBlazor.Color
 @using Size = MudBlazor.Size
 @inject IDialogService DialogService
@@ -32,20 +33,6 @@
           <MudItem xs="2" Class="d-flex align-center justify-end">
             <MudIconButton OnClick="() => OnExpandCollapseClick(dataStruct.data.networkUser.Id)" Icon="@(dataStruct.expand ? Icons.Material.Filled.KeyboardArrowUp : Icons.Material.Filled.KeyboardArrowDown)" Color="Color.Default"/>
           </MudItem>
-          <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large;">
-            @T["Last months consumption"]: @(NumericString(dataStruct.data.lastMonthUsage / 1000, 0) + " kWh")
-          </MudItem>
-          <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large;">
-            @T["Last months invoice total"]: @(dataStruct.data.lastMonthsPayment == 0 ? T["Invoice pending..."] : NumericString(dataStruct.data.lastMonthsPayment) + " EUR")
-          </MudItem>
-          @if (representative is not null && representative.Representative.Role is RoleModel.OperatorRepresentative)
-          {
-            <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large;">
-              <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="() => CreateInvoice(dataStruct.data.networkUser.Id)">
-                @T["Issue Invoice"]
-              </MudButton>
-            </MudItem>
-          }
         </MudGrid>
 
 
@@ -65,11 +52,9 @@
                 </MudItem>
                 @if (representative is not null && representative.Representative.Role is RoleModel.OperatorRepresentative)
                 {
-                  <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large;">
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary">
-                      <form method="post" action="@($"admin/IssueInvoice/{dataStruct.data.networkUser.Id}")">
-                        <button type="submit">@T["Issue Invoice"]</button>
-                      </form>
+                  <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large;">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="() => CreateInvoice(dataStruct.data.networkUser.Id)">
+                      @T["Issue Invoice"]
                     </MudButton>
                   </MudItem>
                 }
@@ -368,7 +353,7 @@
     {
       var (dateFrom, dateTo) = ((DateTime, DateTime))result.Data;
       await ScopedServices
-        .GetRequiredService<NetworkUserInvoiceIssuer>()
+        .GetRequiredService<INetworkUserInvoiceIssuer>()
         .IssueNetworkUserInvoiceAsync(id, dateFrom, dateTo);
       NavigationManager.NavigateTo("invoices");
     }
