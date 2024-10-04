@@ -18,12 +18,11 @@ namespace Ozds.Business.Queries;
 // FIXME: get location by representative
 
 public class OzdsMeterTableQueries(
-  DataDbContext context) : IQueries
+  IDbContextFactory<DataDbContext> factory) : IQueries
 {
-  private readonly DataDbContext context = context;
-
   public async Task<IMeter?> GetMeterById(string Id)
   {
+    await using var context = await factory.CreateDbContextAsync();
     return await context.Meters.Where(context.PrimaryKeyEquals<MeterEntity>(Id))
       .Select(m => m.ToModel()).FirstOrDefaultAsync();
   }
@@ -31,6 +30,7 @@ public class OzdsMeterTableQueries(
   public async Task<List<NetworkUserModel>?> GetNetworkUsersByRepresentative(
     RepresentativeModel representative)
   {
+    await using var context = await factory.CreateDbContextAsync();
     List<NetworkUserEntity> netUsers = [];
     switch (representative.Role)
     {
@@ -67,6 +67,7 @@ public class OzdsMeterTableQueries(
   public async Task<List<LocationModel>?> GetLocationsByRepresentative(
     RepresentativeModel representative)
   {
+    await using var context = await factory.CreateDbContextAsync();
     return await context.Locations.Select(x => x.ToModel()).ToListAsync();
   }
 
@@ -76,6 +77,7 @@ public class OzdsMeterTableQueries(
       DateTimeOffset fromDate,
       DateTimeOffset toDate)
   {
+    await using var context = await factory.CreateDbContextAsync();
     List<NetworkUserInvoiceEntity> results = [];
     switch (representative.Role)
     {
@@ -129,6 +131,7 @@ public class OzdsMeterTableQueries(
       DateTimeOffset fromDate,
       DateTimeOffset toDate)
   {
+    await using var context = await factory.CreateDbContextAsync();
     var results = await context.MeasurementLocations
       .Where(
         context.PrimaryKeyIn<MeasurementLocationEntity>(
@@ -156,6 +159,7 @@ public class OzdsMeterTableQueries(
       IntervalEntity interval = IntervalEntity.Month
     )
   {
+    await using var context = await factory.CreateDbContextAsync();
     var query = context.NetworkUsers
       .Include(x => x.Location)
       .Include(x => x.Location.RegulatoryCatalogue)

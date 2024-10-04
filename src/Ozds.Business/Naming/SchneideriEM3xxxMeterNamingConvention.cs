@@ -7,7 +7,7 @@ public class SchneideriEM3xxxMeterNamingConvention : MeterNamingConvention
 {
   public override string IdPrefix
   {
-    get { return "schneider-iem3xxx"; }
+    get { return "schneider-iEM3xxx"; }
   }
 
   public override Type MeasurementType
