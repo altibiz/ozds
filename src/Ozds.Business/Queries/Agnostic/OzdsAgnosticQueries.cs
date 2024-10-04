@@ -4,7 +4,7 @@ using Ozds.Business.Conversion.Abstractions;
 using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Queries.Abstractions;
-using Ozds.Data;
+using Ozds.Data.Context;
 using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Extensions;
 
@@ -14,9 +14,9 @@ namespace Ozds.Business.Queries.Agnostic;
 // when ordering by primary key
 
 public class OzdsAgnosticQueries(
-  IDbContextFactory<OzdsDataDbContext> factory,
+  IDbContextFactory<DataDbContext> factory,
   AgnosticModelEntityConverter modelEntityConverter
-) : IOzdsQueries
+) : IQueries
 {
   public async Task<T?> ReadSingle<T>(string id)
     where T : IIdentifiable
