@@ -4,7 +4,7 @@ namespace Ozds.Business.Naming.Agnostic;
 
 public class AgnosticMeterNamingConvention(IServiceProvider serviceProvider)
 {
-  public Type MeasurementTypeForLineAndMeterId(string meterId)
+  public Type MeasurementTypeForMeterId(string meterId)
   {
     var meterNamingConvention = serviceProvider
       .GetServices<IMeterNamingConvention>();
@@ -22,7 +22,7 @@ public class AgnosticMeterNamingConvention(IServiceProvider serviceProvider)
       $"No MeterNamingConvention found for {meterId}");
   }
 
-  public Type AggregateTypeForLineAndMeterId(string meterId)
+  public Type AggregateTypeForMeterId(string meterId)
   {
     var meterNamingConvention = serviceProvider
       .GetServices<IMeterNamingConvention>();
@@ -40,7 +40,7 @@ public class AgnosticMeterNamingConvention(IServiceProvider serviceProvider)
       $"No MeterNamingConvention found for {meterId}");
   }
 
-  public Type ValidatorTypeForLineAndMeterId(string meterId)
+  public Type ValidatorTypeForMeterId(string meterId)
   {
     var meterNamingConvention = serviceProvider
       .GetServices<IMeterNamingConvention>();
@@ -58,7 +58,7 @@ public class AgnosticMeterNamingConvention(IServiceProvider serviceProvider)
       $"No MeterNamingConvention found for {meterId}");
   }
 
-  public Type MeterTypeForLineAndMeterId(string meterId)
+  public Type MeterTypeForMeterId(string meterId)
   {
     var meterNamingConvention = serviceProvider
       .GetServices<IMeterNamingConvention>();
