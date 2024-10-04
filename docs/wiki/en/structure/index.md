@@ -6,7 +6,7 @@ different purpose. Here is an outline of every project
 ## Ozds.Data
 
 This project contains the database schema and queries and nothing else. The
-`OzdsDataDbContext` class contains all database tables and the `OzdsDbClient`
+`DataDbContext` class contains all database tables and the `OzdsDbClient`
 contains all the queries needed for the OZDS server. All the entities (tables)
 are situated in the `Ozds.Data.Entities` namespace.
 

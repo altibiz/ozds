@@ -935,7 +935,7 @@ Contains classes that wrap database requests in functions that mutate data.
 These are separate from other requests in `Ozds.Business.Queries` because
 mutations are always more sensitive and should be handled with care. All the
 classes use `AgnosticModelEntityConverter` from `Ozds.Business.Conversion` to
-convert the mutated business models to database entities and `OzdsDataDbContext`
+convert the mutated business models to database entities and `DataDbContext`
 from `Ozds.Data` to mutate data in the database.
 
 Most mutations are done via agnostic classes that operate on class hierarchies
@@ -948,7 +948,7 @@ in `Ozds.Business.Models`:
 
 class OzdsAuditableMutations
 {
-  - OzdsDataDbContext _context
+  - DataDbContext _context
   - AgnosticModelEntityConverter _modelEntityConverter
 
   + void Create(IAuditable)
@@ -967,7 +967,7 @@ class OzdsAuditableMutations
 
 class OzdsEventMutations
 {
-  - OzdsDataDbContext _context
+  - DataDbContext _context
   - AgnosticModelEntityConverter _modelEntityConverter
 
   + void Create(IEvent)
@@ -984,7 +984,7 @@ class OzdsEventMutations
 
 class OzdsMeasurementMutations
 {
-  - OzdsDataDbContext _context
+  - DataDbContext _context
   - AgnosticModelEntityConverter _modelEntityConverter
 
   + void Create(IMeasurement)
@@ -1001,7 +1001,7 @@ class OzdsMeasurementMutations
 
 class OzdsAggregateMutations
 {
-  - OzdsDataDbContext _context
+  - DataDbContext _context
   - AgnosticModelEntityConverter _modelEntityConverter
 
   + void Create(IAggregate)
@@ -1018,7 +1018,7 @@ class OzdsAggregateMutations
 
 class OzdsInvoiceMutations
 {
-  - OzdsDataDbContext _context
+  - DataDbContext _context
   - AgnosticModelEntityConverter _modelEntityConverter
 
   + void Create(IInvoice)
@@ -1035,7 +1035,7 @@ class OzdsInvoiceMutations
 
 class OzdsCalculationMutations
 {
-  - OzdsDataDbContext _context
+  - DataDbContext _context
   - AgnosticModelEntityConverter _modelEntityConverter
 
   + void Create(ICalculation)
@@ -1049,7 +1049,7 @@ class OzdsCalculationMutations
 Contains classes that wrap database requests in functions that query data. These
 are separate from other requests in `Ozds.Business.Mutations` because queries
 are always less sensitive and should be handled with less care. All the classes
-use `OzdsDataDbContext` from `Ozds.Data` to query data in the database and
+use `DataDbContext` from `Ozds.Data` to query data in the database and
 `AgnosticModelEntityConverter` from `Ozds.Business.Conversion` to convert the
 queried database entities to business models.
 
@@ -1084,7 +1084,7 @@ queried via agnostic classes that operate on class hierarchies in
 
 class OzdsAuditableQueries
 {
-  - OzdsDataDbContext _context
+  - DataDbContext _context
   - AgnosticModelEntityConverter _modelEntityConverter
 
   + Task<T?> ReadSingle<T>(string id) where T : class, IAuditable
@@ -1107,7 +1107,7 @@ class OzdsAuditableQueries
 
 class OzdsEventQueries
 {
-  - OzdsDataDbContext _context
+  - DataDbContext _context
   - AgnosticModelEntityConverter _modelEntityConverter
 
   + public async Task<PaginatedList<T>> Read<T>( \
@@ -1129,7 +1129,7 @@ class OzdsEventQueries
 
 class OzdsMeasurementQueries
 {
-  - OzdsDataDbContext _context
+  - DataDbContext _context
   - AgnosticModelEntityConverter _modelEntityConverter
 
   + Task<PaginatedList<T>> Read<T>( \
@@ -1151,7 +1151,7 @@ class OzdsMeasurementQueries
 
 class OzdsAggregateQueries
 {
-  - OzdsDataDbContext _context
+  - DataDbContext _context
   - AgnosticModelEntityConverter _modelEntityConverter
 
   + Task<PaginatedList<T>> Read<T>( \
@@ -1173,7 +1173,7 @@ class OzdsAggregateQueries
 
 class OzdsInvoiceQueries
 {
-  - OzdsDataDbContext _context
+  - DataDbContext _context
   - AgnosticModelEntityConverter _modelEntityConverter
 
   + Task<T?> ReadSingle<T>(string id) where T : class, IInvoice
@@ -1196,7 +1196,7 @@ class OzdsInvoiceQueries
 
 class OzdsCalculationQueries
 {
-  - OzdsDataDbContext _context
+  - DataDbContext _context
   - AgnosticModelEntityConverter _modelEntityConverter
 
   + Task<T?> ReadSingle<T>(string id) where T : class, ICalculation
