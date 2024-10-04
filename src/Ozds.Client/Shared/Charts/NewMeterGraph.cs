@@ -18,7 +18,7 @@ using Ozds.Client.Extensions;
 namespace Ozds.Client.Shared.Charts;
 
 #pragma warning disable S3881 // "IDisposable" should be implemented correctly
-public partial class MeterGraph : OzdsOwningComponentBase
+public partial class NewMeterGraph : OzdsOwningComponentBase
 #pragma warning restore S3881 // "IDisposable" should be implemented correctly
 {
   [Parameter]

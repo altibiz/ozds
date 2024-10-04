@@ -7,7 +7,7 @@ public class AbbB2xMeterNamingConvention : MeterNamingConvention
 {
   public override string IdPrefix
   {
-    get { return "abb-b2x"; }
+    get { return "abb-B2x"; }
   }
 
   public override Type MeasurementType
