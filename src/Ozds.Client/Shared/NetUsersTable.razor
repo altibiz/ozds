@@ -27,36 +27,36 @@
           <MudItem xs="2" Class="d-flex align-center justify-end">
             <MudIconButton OnClick="() => InspectNetworkUser(dataStruct.data.networkUser)" Icon="@Icons.Material.Filled.RemoveRedEye" Color="Color.Primary"/>
           </MudItem>
-            <MudItem xs="2" Class="d-flex align-center justify-end">
-              <MudIconButton OnClick="() => OnExpandCollapseClick(dataStruct.data.networkUser.Id)" Icon="@(dataStruct.expand ? Icons.Material.Filled.KeyboardArrowUp : Icons.Material.Filled.KeyboardArrowDown)" Color="Color.Default"/>
-            </MudItem>
+          <MudItem xs="2" Class="d-flex align-center justify-end">
+            <MudIconButton OnClick="() => OnExpandCollapseClick(dataStruct.data.networkUser.Id)" Icon="@(dataStruct.expand ? Icons.Material.Filled.KeyboardArrowUp : Icons.Material.Filled.KeyboardArrowDown)" Color="Color.Default"/>
+          </MudItem>
         </MudGrid>
 
 
         <MudCollapse Class="py-2" Expanded="_shownNetUsers.Where(x => x.data.networkUser.Id == dataStruct.data.networkUser.Id).First().expand">
           <MudStack>
             <MudDivider DividerType="DividerType.Middle" Class="mt-2"/>
-              <MudGrid Class="d-flex pa-2">
-                <MudContainer Class="d-flex flex-column pb-1">
+            <MudGrid Class="d-flex pa-2">
+              <MudContainer Class="d-flex flex-column pb-1">
+                <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large;">
+                  @T["Current months consumption"]: @(NumericString(dataStruct.data.thisMonthUsage / 1000, 0) + " kWh")
+                </MudItem>
+                <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large;">
+                  @T["Last months consumption"]: @(NumericString(dataStruct.data.lastMonthUsage / 1000, 0) + " kWh")
+                </MudItem>
+                <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large;">
+                  @T["Last months invoice total"]: @(dataStruct.data.lastMonthsPayment == 0 ? T["Invoice pending..."] : NumericString(dataStruct.data.lastMonthsPayment) + " EUR")
+                </MudItem>
+                @if (representative is not null && representative.Representative.Role is RoleModel.OperatorRepresentative)
+                {
                   <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large;">
-                    @T["Current months consumption"]: @(NumericString(dataStruct.data.thisMonthUsage / 1000, 0) + " kWh")
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary">
+                      <form method="post" action="@($"admin/IssueInvoice/{dataStruct.data.networkUser.Id}")">
+                        <button type="submit">@T["Issue Invoice"]</button>
+                      </form>
+                    </MudButton>
                   </MudItem>
-                  <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large;">
-                    @T["Last months consumption"]: @(NumericString(dataStruct.data.lastMonthUsage / 1000, 0) + " kWh")
-                  </MudItem>
-                  <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large;">
-                    @T["Last months invoice total"]: @(dataStruct.data.lastMonthsPayment == 0 ? T["Invoice pending..."] : NumericString(dataStruct.data.lastMonthsPayment) + " EUR")
-                  </MudItem>
-                  @if (representative is not null && representative.Representative.Role is RoleModel.OperatorRepresentative)
-                  {
-                    <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large;">
-                      <MudButton Variant="Variant.Filled" Color="Color.Primary">
-                        <form method="post" action="@($"admin/IssueInvoice/{dataStruct.data.networkUser.Id}")">
-                          <button type="submit">@T["Issue Invoice"]</button>
-                        </form>
-                      </MudButton>
-                    </MudItem>
-                  }
+                }
               </MudContainer>
             </MudGrid>
           </MudStack>
