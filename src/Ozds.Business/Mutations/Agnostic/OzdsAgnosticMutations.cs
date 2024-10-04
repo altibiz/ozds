@@ -2,16 +2,16 @@ using System.ComponentModel.DataAnnotations;
 using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Mutations.Abstractions;
-using Ozds.Data;
+using Ozds.Data.Context;
 
 // TODO: check representative model user id
 
 namespace Ozds.Business.Mutations.Agnostic;
 
 public class OzdsAgnosticMutations(
-  OzdsDataDbContext context,
+  DataDbContext context,
   AgnosticModelEntityConverter modelEntityConverter
-) : IOzdsMutations
+) : IMutations
 {
   public Task Save()
   {

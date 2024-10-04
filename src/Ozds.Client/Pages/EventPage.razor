@@ -8,7 +8,7 @@
 {
   return;
 }
-<Loading TState="EventModel" Load="@(() => ScopedServices.GetRequiredService<OzdsEventQueries>().ReadSingle<EventModel>(Id))">
+<Loading T="EventModel" LoadAsync="@(() => ScopedServices.GetRequiredService<OzdsEventQueries>().ReadSingle<EventModel>(Id))">
   <Found Context="model">
     @{
       var json = JsonString(model.Content);
