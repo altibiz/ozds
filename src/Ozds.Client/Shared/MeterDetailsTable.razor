@@ -201,11 +201,11 @@
 
     if (measurementLocation is not null && measurementLocation.Items.FirstOrDefault() is not null)
     {
-      var netUserCatalogue = await catalogueQueries.NetworkUserCatalogueById(measurementLocation.Items.FirstOrDefault().NetworkUserCatalogueId);
+      var netUserCatalogue = await catalogueQueries.NetworkUserCatalogueById(measurementLocation.Items.FirstOrDefault()!.NetworkUserCatalogueId);
       if (netUserCatalogue is not null)
         catalogue = netUserCatalogue.Title;
     }
-                                           
+
     foreach (var month in startOfThisYearNoOffset.GetThisYearMonthStarts().Reverse())
     {
       var monthNoOffset = DateTimeApplyOffset(month);
