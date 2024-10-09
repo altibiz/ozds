@@ -43,10 +43,10 @@ public class MeterGraphQueries(
         ? meterNamingConvention.AggregateTypeForMeterId(meter.Id)
         : meterNamingConvention.MeasurementTypeForMeterId(meter.Id));
 
-    using var context = await factory.CreateDbContextAsync();
+    await using var context = await factory.CreateDbContextAsync();
 
-    List<IMeasurement> items;
-    int count;
+    List<IMeasurement> items = new();
+    int count = 0;
     if (isAggregate)
     {
       var futureCounts = new List<QueryDeferred<int>>();
@@ -94,21 +94,17 @@ public class MeterGraphQueries(
         futureItems.Add(paged.Future());
       }
 
-      count = (await Task
-        .WhenAll(futureCounts
-          .Select(x => x
-            .FutureValue()
-            .ValueAsync())))
-        .DefaultIfEmpty(0)
-        .Sum();
-      items = (await Task
-        .WhenAll(futureItems
-          .Select(x => x
-            .ToListAsync())))
-        .SelectMany(x => x
+      foreach (var futureCount in futureCounts)
+      {
+        count += await futureCount.FutureValue().ValueAsync();
+      }
+
+      foreach (var futureItem in futureItems)
+      {
+        items.AddRange((await futureItem.ToListAsync())
           .Select(modelEntityConverter.ToModel)
-          .OfType<IMeasurement>())
-        .ToList();
+          .OfType<IMeasurement>());
+      }
     }
     else
     {
@@ -155,22 +151,17 @@ public class MeterGraphQueries(
         futureItems.Add(paged.Future());
       }
 
-      count = (await Task
-        .WhenAll(futureCounts
-          .Select(x => x
-            .FutureValue()
-            .ValueAsync())))
-        .DefaultIfEmpty(0)
-        .Sum();
+      foreach (var futureCount in futureCounts)
+      {
+        count += await futureCount.FutureValue().ValueAsync();
+      }
 
-      items = (await Task
-        .WhenAll(futureItems
-          .Select(x => x
-            .ToListAsync())))
-        .SelectMany(x => x
+      foreach (var futureItem in futureItems)
+      {
+        items.AddRange((await futureItem.ToListAsync())
           .Select(modelEntityConverter.ToModel)
-          .OfType<IMeasurement>())
-        .ToList();
+          .OfType<IMeasurement>());
+      }
     }
 
     return new PaginatedList<IMeasurement>(
