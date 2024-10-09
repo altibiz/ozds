@@ -1,0 +1,24 @@
+
+<DetailsField Title="@T["Name"]">
+  @Model.Title
+</DetailsField>
+<DetailsField Title="@T["Price of higher tariff active energy consumption (EUR/kWh)"]">
+  @Model.ActiveEnergyTotalImportT1Price_EUR
+</DetailsField>
+<DetailsField Title="@T["Price of active energy consumption in low tariff (EUR/kWh)"]">
+  @Model.ActiveEnergyTotalImportT2Price_EUR
+</DetailsField>
+<DetailsField Title="@T["Price of reactive energy consumption in a single tariff (EUR/kVARh)"]">
+  @Model.ReactiveEnergyTotalRampedT0Price_EUR
+</DetailsField>
+<DetailsField Title="@T["Price of metering fee (EUR)"]">
+  @Model.MeterFeePrice_EUR
+</DetailsField>
+
+
+@code {
+
+  [Parameter]
+  public WhiteLowNetworkUserCatalogueModel Model { get; set; } = default!;
+
+}

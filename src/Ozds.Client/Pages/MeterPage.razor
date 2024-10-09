@@ -1,6 +1,31 @@
 @page "/meter/{source}"
 
+  <MudHidden Breakpoint="Breakpoint.MdAndUp">
+    <MudGrid Class="my-3 pa-1">
+      <MudItem xs="12" Class="pa-1">
+        <MeterGraph Source="@Source"/>
+      </MudItem>
+      <MudItem xs="12" Class="pa-1">
+        <MeterGauge Source="@Source"/>
+      </MudItem>
+    </MudGrid>
+  </MudHidden>
+
 <MeterDetailsTable Source="@Source"/>
+
+  <MudHidden Breakpoint="Breakpoint.SmAndDown">
+    <MudGrid Class="my-3">
+      <MudItem xs="6">
+        <MeterGauge Source="@Source"/>
+      </MudItem>
+      <MudItem xs="6">
+        <MeterGraph Source="@Source"/>
+      </MudItem>
+      <MudItem xs="12">
+        <BrushGraph Source="@Source"/>
+      </MudItem>
+    </MudGrid>
+  </MudHidden>
 @* abb schneider *@
 
 @code {

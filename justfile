@@ -332,7 +332,7 @@ clean:
     docker compose ps -a -q | lines | each { |x| docker stop $x }
     docker compose --profile "*" down -v
     docker compose up -d
-    {{ isready }}
+    nu {{ isready }}
 
     open --raw '{{ migrationassets }}/current-orchard.sql' | \
       docker exec \
