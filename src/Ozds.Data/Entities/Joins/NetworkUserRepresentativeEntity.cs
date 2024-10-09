@@ -4,7 +4,7 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Joins;
 
-public class NetworkUserRepresentativeEntity : IEntity
+public class NetworkUserRepresentativeEntity : IJoinEntity
 {
   private long _networkUserId;
 

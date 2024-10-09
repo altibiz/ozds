@@ -1,9 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
 
-public class MeasurementLocationEntity : AuditableEntity
+public class MeasurementLocationEntity : AuditableEntity, IMeasurementLocationEntity
 {
   public string MeterId { get; set; } = default!;
 

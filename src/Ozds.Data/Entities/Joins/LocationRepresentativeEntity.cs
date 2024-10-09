@@ -4,7 +4,7 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Joins;
 
-public class LocationRepresentativeEntity : IEntity
+public class LocationRepresentativeEntity : IJoinEntity
 {
   private long _locationId;
 

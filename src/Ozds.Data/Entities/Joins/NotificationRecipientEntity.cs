@@ -5,7 +5,7 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Joins;
 
-public class NotificationRecipientEntity : IEntity
+public class NotificationRecipientEntity : IJoinEntity
 {
   private long _notificationId;
 

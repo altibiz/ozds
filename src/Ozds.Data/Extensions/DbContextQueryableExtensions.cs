@@ -4,6 +4,15 @@ namespace Ozds.Data.Extensions;
 
 public static class DbContextQueryableExtensions
 {
+  public static IQueryable<T> GetQueryable<T>(
+    this DbContext context,
+    Type entityType
+  )
+  {
+    return context.GetQueryable(entityType) as IQueryable<T>
+      ?? throw new InvalidOperationException($"No DbSet found for {typeof(T)}");
+  }
+
   public static IQueryable<object> GetQueryable(
     this DbContext context,
     Type type)
