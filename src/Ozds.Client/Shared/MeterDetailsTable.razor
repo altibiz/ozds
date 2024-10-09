@@ -6,15 +6,6 @@
 {
   @* MOBILE *@
   <MudHidden Breakpoint="Breakpoint.MdAndUp">
-    <MudGrid Class="my-3 pa-1">
-      <MudItem xs="12" Class="pa-1">
-        <MeterGraph Source="@Source"/>
-      </MudItem>
-      <MudItem xs="12" Class="pa-1">
-        <MeterGauge Source="@Source"/>
-      </MudItem>
-    </MudGrid>
-
     <MudText Typo="Typo.h4" Class="d-flex">
       @(T["Device"] + ": " + Source)
     </MudText>
@@ -140,18 +131,6 @@
         <MudDataGridPager T="TabularData"/>
       </PagerContent>
     </MudDataGrid>
-
-    <MudGrid Class="my-3">
-      <MudItem xs="6">
-        <MeterGauge Source="@Source"/>
-      </MudItem>
-      <MudItem xs="6">
-        <MeterGraph Source="@Source"/>
-      </MudItem>
-      <MudItem xs="12">
-        <BrushGraph Source="@Source"/>
-      </MudItem>
-    </MudGrid>
   </MudHidden>
 }
 

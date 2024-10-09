@@ -1,0 +1,36 @@
+
+<DetailsField Title="@T["Name"]">
+  @Model.Title
+</DetailsField>
+<DetailsField Title="@T["Min voltage"]">
+  @Model.MinVoltage_V
+</DetailsField>
+<DetailsField Title="@T["Max voltage"]">
+  @Model.MaxVoltage_V
+</DetailsField>
+<DetailsField Title="@T["Min current"]">
+  @Model.MinCurrent_A
+</DetailsField>
+<DetailsField Title="@T["Max current"]">
+  @Model.MaxCurrent_A
+</DetailsField>
+<DetailsField Title="@T["Min active power"]">
+  @Model.MinActivePower_W
+</DetailsField>
+<DetailsField Title="@T["Max active power"]">
+  @Model.MaxActivePower_W
+</DetailsField>
+<DetailsField Title="@T["Min reactive power"]">
+  @Model.MinReactivePower_VAR
+</DetailsField>
+<DetailsField Title="@T["Max reactive power"]">
+  @Model.MaxReactivePower_VAR
+</DetailsField>
+
+
+@code {
+
+  [Parameter]
+  public AbbB2xMeasurementValidatorModel Model { get; set; } = default!;
+
+}

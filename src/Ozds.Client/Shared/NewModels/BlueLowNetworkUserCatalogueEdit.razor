@@ -1,0 +1,26 @@
+
+<MudTextField
+  Label="@T["Name"]"
+  @bind-Value="Model.Title"
+  For="@(() => Model.Title)"/>
+<MudTextField
+  T="decimal"
+  Label="@T["Price of higher tariff active energy consumption (EUR/kWh)"]"
+  @bind-Value="Model.ActiveEnergyTotalImportT0Price_EUR"
+  For="@(() => Model.ActiveEnergyTotalImportT0Price_EUR)"/>
+<MudTextField
+  T="decimal"
+  Label="@T["Price of reactive energy consumption in a single tariff (EUR/kVARh)"]"
+  @bind-Value="Model.ReactiveEnergyTotalRampedT0Price_EUR"
+  For="@(() => Model.ReactiveEnergyTotalRampedT0Price_EUR)"/>
+<MudTextField
+  Label="@T["Price of metering fee (EUR)"]"
+  @bind-Value="Model.MeterFeePrice_EUR"
+  For="@(() => Model.MeterFeePrice_EUR)"/>
+
+@code {
+
+  [Parameter]
+  public BlueLowNetworkUserCatalogueModel Model { get; set; } = default!;
+
+}

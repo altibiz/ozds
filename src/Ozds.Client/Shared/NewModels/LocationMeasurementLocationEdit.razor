@@ -1,0 +1,40 @@
+
+<MudTextField
+  Label="@T["Name"]"
+  @bind-Value="Model.Title"
+  For="@(() => Model.Title)"/>
+
+<MudSelect
+  Label="@T["Location"]"
+  AnchorOrigin="Origin.BottomCenter"
+  @bind-Value="Model.LocationId"
+  For="@(() => Model.LocationId)">
+  <Paging PageAsync="@(page => ScopedServices.GetRequiredService<OzdsLocationMeasurementLocationModelQueries>().GetLocations(title: "", pageNumber: page))">
+    <Summary Context="model">
+      <MudSelectItem Value="model.Id">
+        <LocationSummary Model="model"/>
+      </MudSelectItem>
+    </Summary>
+  </Paging>
+</MudSelect>
+
+<MudSelect
+  Label="@T["Device"]"
+  AnchorOrigin="Origin.BottomCenter"
+  @bind-Value="Model.MeterId"
+  For="@(() => Model.MeterId)">
+  <Paging PageAsync="@(page => ScopedServices.GetRequiredService<OzdsLocationMeasurementLocationModelQueries>().GetMeters(title: "", pageNumber: page))">
+    <Summary Context="model">
+      <MudSelectItem Value="model.Id">
+        <MeterSummary Model="(MeterModel)model"/>
+      </MudSelectItem>
+    </Summary>
+  </Paging>
+</MudSelect>
+
+@code {
+
+  [Parameter]
+  public LocationMeasurementLocationModel Model { get; set; } = default!;
+
+}

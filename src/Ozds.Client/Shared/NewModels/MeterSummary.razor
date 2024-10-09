@@ -1,0 +1,18 @@
+
+
+@if(Model is AbbB2xMeterModel){
+  <AbbB2xMeterSummary Model="(AbbB2xMeterModel)Model"/>
+}
+else if(Model is SchneideriEM3xxxMeterModel){
+  <SchneideriEM3xxxMeterSummary Model="(SchneideriEM3xxxMeterModel)Model"/>
+}
+else{
+  throw new Exception("Meter type not found");
+}
+
+@code {
+
+  [Parameter]
+  public MeterModel Model { get; set; } = default!;
+
+}

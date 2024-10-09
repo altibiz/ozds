@@ -1,0 +1,44 @@
+
+<MudTextField
+  Label="@T["Name"]"
+  @bind-Value="Model.Title"
+  For="@(() => Model.Title)"/>
+<MudTextField
+  Label="@T["Min voltage"]"
+  @bind-Value="Model.MinVoltage_V"
+  For="@(() => Model.MinVoltage_V)"/>
+<MudTextField
+  Label="@T["Max voltage"]"
+  @bind-Value="Model.MaxVoltage_V"
+  For="@(() => Model.MaxVoltage_V)"/>
+<MudTextField
+  Label="@T["Min current"]"
+  @bind-Value="Model.MinCurrent_A"
+  For="@(() => Model.MinCurrent_A)"/>
+<MudTextField
+  Label="@T["Max current"]"
+  @bind-Value="Model.MaxCurrent_A"
+  For="@(() => Model.MaxCurrent_A)"/>
+<MudTextField
+  Label="@T["Min active power"]"
+  @bind-Value="Model.MinActivePower_W"
+  For="@(() => Model.MinActivePower_W)"/>
+<MudTextField
+  Label="@T["Max active power"]"
+  @bind-Value="Model.MaxActivePower_W"
+  For="@(() => Model.MaxActivePower_W)"/>
+<MudTextField
+  Label="@T["Min reactive power"]"
+  @bind-Value="Model.MinReactivePower_VAR"
+  For="@(() => Model.MinReactivePower_VAR)"/>
+<MudTextField
+  Label="@T["Max reactive power"]"
+  @bind-Value="Model.MaxReactivePower_VAR"
+  For="@(() => Model.MaxReactivePower_VAR)"/>
+
+@code {
+
+  [Parameter]
+  public AbbB2xMeasurementValidatorModel Model { get; set; } = default!;
+
+}
