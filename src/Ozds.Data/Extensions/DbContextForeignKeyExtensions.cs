@@ -62,7 +62,7 @@ public static class DbContextForeignKeyExtensions
   public static Func<T, bool> ForeignKeyInCompiled<T>(
     this DbContext context,
     string property,
-    ICollection<string> ids)
+    IEnumerable<string> ids)
   {
     var typeBasedFunc = context.ForeignKeyInCompiled(typeof(T), property, ids);
     return entity => typeBasedFunc(entity!);
@@ -71,7 +71,7 @@ public static class DbContextForeignKeyExtensions
   public static Expression<Func<T, bool>> ForeignKeyIn<T>(
     this DbContext context,
     string property,
-    ICollection<string> ids)
+    IEnumerable<string> ids)
   {
     var typeBasedExpr = context.ForeignKeyIn(typeof(T), property, ids);
     var parameter = Expression.Parameter(typeof(T), "entity");
@@ -139,7 +139,7 @@ public static class DbContextForeignKeyExtensions
     this DbContext context,
     Type entityType,
     string property,
-    ICollection<string> ids)
+    IEnumerable<string> ids)
   {
     return context.ForeignKeyInUncached(entityType, property, ids).Compile();
   }
@@ -148,7 +148,7 @@ public static class DbContextForeignKeyExtensions
     this DbContext context,
     Type entityType,
     string property,
-    ICollection<string> ids)
+    IEnumerable<string> ids)
   {
     return context.ForeignKeyInUncached(entityType, property, ids);
   }
@@ -257,7 +257,7 @@ public static class DbContextForeignKeyExtensions
     this DbContext context,
     Type entityType,
     string property,
-    ICollection<string> ids)
+    IEnumerable<string> ids)
   {
     var keyProperties = context.GetForeignKeyProperties(entityType, property);
     var parameter = Expression.Parameter(typeof(object));

@@ -54,7 +54,7 @@ public static class DbContextPrimaryKeyExtensions
 
   public static Func<T, bool> PrimaryKeyInCompiled<T>(
     this DbContext context,
-    ICollection<string> ids)
+    IEnumerable<string> ids)
   {
     var typeBasedFunc = context.PrimaryKeyInCompiled(typeof(T), ids);
     return entity => typeBasedFunc(entity!);
@@ -62,7 +62,7 @@ public static class DbContextPrimaryKeyExtensions
 
   public static Expression<Func<T, bool>> PrimaryKeyIn<T>(
     this DbContext context,
-    ICollection<string> ids)
+    IEnumerable<string> ids)
   {
     var typeBasedExpr = context.PrimaryKeyIn(typeof(T), ids);
     var parameter = Expression.Parameter(typeof(T), "entity");
@@ -125,7 +125,7 @@ public static class DbContextPrimaryKeyExtensions
   public static Func<object, bool> PrimaryKeyInCompiled(
     this DbContext context,
     Type entityType,
-    ICollection<string> ids)
+    IEnumerable<string> ids)
   {
     return context.PrimaryKeyInUncached(entityType, ids).Compile();
   }
@@ -133,7 +133,7 @@ public static class DbContextPrimaryKeyExtensions
   public static Expression<Func<object, bool>> PrimaryKeyIn(
     this DbContext context,
     Type entityType,
-    ICollection<string> ids)
+    IEnumerable<string> ids)
   {
     return context.PrimaryKeyInUncached(entityType, ids);
   }
@@ -240,7 +240,7 @@ public static class DbContextPrimaryKeyExtensions
   private static Expression<Func<object, bool>> PrimaryKeyInUncached(
     this DbContext context,
     Type entityType,
-    ICollection<string> ids)
+    IEnumerable<string> ids)
   {
     var keyProperties = context.GetPrimaryKeyProperties(entityType);
     var parameter = Expression.Parameter(typeof(object));

@@ -8,7 +8,8 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
 
-public class NetworkUserCalculationEntity : CalculationEntity, IReadonlyEntity
+public class NetworkUserCalculationEntity
+  : CalculationEntity, INetworkUserCalculationEntity
 {
   protected readonly long _networkUserInvoiceId;
 
@@ -52,10 +53,12 @@ public class NetworkUserCalculationEntity : CalculationEntity, IReadonlyEntity
     default!;
 
   public SupplyActiveEnergyTotalImportT1CalculationItemEntity
-    SupplyActiveEnergyTotalImportT1 { get; set; } = default!;
+    SupplyActiveEnergyTotalImportT1
+  { get; set; } = default!;
 
   public SupplyActiveEnergyTotalImportT2CalculationItemEntity
-    SupplyActiveEnergyTotalImportT2 { get; set; } = default!;
+    SupplyActiveEnergyTotalImportT2
+  { get; set; } = default!;
 
   public SupplyBusinessUsageFeeCalculationItemEntity SupplyBusinessUsageFee
   {
@@ -72,7 +75,8 @@ public class NetworkUserCalculationEntity : CalculationEntity, IReadonlyEntity
     default!;
 
   public virtual NetworkUserMeasurementLocationEntity
-    NetworkUserMeasurementLocation { get; set; } =
+    NetworkUserMeasurementLocation
+  { get; set; } =
     default!;
 
   public string NetworkUserMeasurementLocationId
@@ -82,7 +86,8 @@ public class NetworkUserCalculationEntity : CalculationEntity, IReadonlyEntity
   }
 
   public NetworkUserMeasurementLocationEntity
-    ArchivedNetworkUserMeasurementLocation { get; set; } =
+    ArchivedNetworkUserMeasurementLocation
+  { get; set; } =
     default!;
 }
 

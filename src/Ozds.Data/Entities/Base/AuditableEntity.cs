@@ -4,7 +4,7 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
 
-public abstract class AuditableEntity : IIdentifiableEntity
+public abstract class AuditableEntity : IAuditableEntity
 {
   protected readonly long _id;
 

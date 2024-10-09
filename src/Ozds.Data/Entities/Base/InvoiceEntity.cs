@@ -6,7 +6,7 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
 
-public abstract class InvoiceEntity : IReadonlyEntity, IIdentifiableEntity
+public abstract class InvoiceEntity : IInvoiceEntity
 {
   protected readonly long _id;
 

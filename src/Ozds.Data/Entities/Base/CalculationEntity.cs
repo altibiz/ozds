@@ -6,7 +6,7 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
 
-public class CalculationEntity : IReadonlyEntity, IIdentifiableEntity
+public class CalculationEntity : ICalculationEntity
 {
   protected readonly long _id;
 
