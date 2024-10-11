@@ -2,4 +2,4 @@ outs:
 - md5: 9a0dab57b1ff265bb18caaa9d1333019
   size: 41364
   hash: md5
-  path: current.sql
+  path: 20241003113906-Ozds.Messaging-NetUserInvoiceCancelToAbort.sql

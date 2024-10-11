@@ -77,21 +77,21 @@ public class NetworkUserInvoiceStateMachine
           x => x
             .Send(
               new Uri(
-                config["CancelNetworkUserInvoice"]
+                config["AbortNetworkUserInvoice"]
                 ?? throw new InvalidOperationException(
-                  "CancelNetworkUserInvoice endpoint not found")),
+                  "AbortNetworkUserInvoice endpoint not found")),
               context =>
-                new CancelNetworkUserInvoice(
+                new AbortNetworkUserInvoice(
                   context.Saga.NetworkUserInvoiceId,
-                  context.Saga.CancelReason!))
-            .TransitionTo(Cancelled)));
+                  context.Saga.AbortReason!))
+            .TransitionTo(Aborted)));
   }
 
   public State Initiated { get; } = default!;
 
   public State Registered { get; } = default!;
 
-  public State Cancelled { get; } = default!;
+  public State Aborted { get; } = default!;
 
   public Event<IAcknowledgeNetworkUserInvoice> AcknowledgeNetworkUserInvoice
   {

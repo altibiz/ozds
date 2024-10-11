@@ -33,7 +33,7 @@ public class NetworkUserInvoiceStateMachine
       });
 
     Event(
-      () => CancelNetworkUserInvoice,
+      () => AbortNetworkUserInvoice,
       x => x
         .CorrelateBy(
           (state, context) =>
@@ -57,9 +57,9 @@ public class NetworkUserInvoiceStateMachine
         .TransitionTo(Initiated));
 
     DuringAny(
-      When(CancelNetworkUserInvoice)
-        .Then(context => context.Saga.CancelReason = context.Message.Reason)
-        .TransitionTo(Cancelled));
+      When(AbortNetworkUserInvoice)
+        .Then(context => context.Saga.AbortReason = context.Message.Reason)
+        .TransitionTo(Aborted));
 
     During(
       Initiated,
@@ -71,14 +71,14 @@ public class NetworkUserInvoiceStateMachine
 
   public State Initiated { get; } = default!;
 
-  public State Cancelled { get; } = default!;
+  public State Aborted { get; } = default!;
 
   public State Registered { get; } = default!;
 
   public Event<IInitiateNetworkUserInvoice>
     InitiateNetworkUserInvoice { get; } = default!;
 
-  public Event<ICancelNetworkUserInvoice> CancelNetworkUserInvoice { get; } =
+  public Event<IAbortNetworkUserInvoice> AbortNetworkUserInvoice { get; } =
     default!;
 
   public Event<IRegisterNetworkUserInvoice>

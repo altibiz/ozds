@@ -436,8 +436,8 @@ erDiagram
     }
 
     network_user_invoice_states {
+        text abort_reason
         text bill_id
-        text cancel_reason
         uuid correlation_id PK
         text current_state
         text network_user_invoice_id

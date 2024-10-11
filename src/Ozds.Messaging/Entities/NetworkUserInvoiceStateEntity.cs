@@ -12,7 +12,7 @@ public class NetworkUserInvoiceStateEntity : SagaStateMachineInstance
 
   public string? BillId { get; set; }
 
-  public string? CancelReason { get; set; }
+  public string? AbortReason { get; set; }
 
   public Guid CorrelationId { get; set; } = Guid.Empty;
 }

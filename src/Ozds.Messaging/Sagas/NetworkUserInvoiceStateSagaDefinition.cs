@@ -42,7 +42,7 @@ public class NetworkUserInvoiceStateSagaDefinition
 
     var partition = endpointConfigurator.CreatePartitioner(ConcurrencyLimit);
 
-    sagaConfigurator.Message<ICancelNetworkUserInvoice>(
+    sagaConfigurator.Message<IAbortNetworkUserInvoice>(
       x => x
         .UsePartitioner(partition, m => m.Message.NetworkUserInvoiceId));
     sagaConfigurator.Message<IInitiateNetworkUserInvoice>(
