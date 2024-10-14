@@ -1,0 +1,87 @@
+@using Microsoft.AspNetCore.Components.Routing
+@using MudBlazor
+@using Ozds.Client.Base
+@using Ozds.Client.State
+@namespace Ozds.Client.Shared.Layout
+@inherits OzdsComponentBase
+@inject NavigationManager NavigationManager
+@implements IDisposable
+
+<MudDrawer
+  Open="@LayoutState.IsNavigationDrawerOpen"
+  OpenChanged="open => LayoutState.SetNavigationDrawerOpen(open)"
+  ClipMode="DrawerClipMode.Never"
+  Elevation="0"
+  Anchor="Anchor.Top"
+  Variant="DrawerVariant.Temporary"
+  Height="100vh">
+  <MudDrawerHeader Style="padding-inline: 0;">
+    <MudContainer MaxWidth="MaxWidth.Small" Class="d-flex flex-row">
+      <MudImage
+        Src="/favicon.svg"
+        Alt="HelbEx"
+        Style="height: calc(var(--mud-appbar-height) - 24px);"/>
+      <MudSpacer />
+      <MudButton
+        OnClick="e => LayoutState.SetNavigationDrawerOpen(false)"
+        Variant="Variant.Text"
+        Color="MudBlazor.Color.Primary"
+        Style="margin-right: -24px;"
+        Class="d-flex flex-row align-center">
+        <MudIcon Icon="@Icons.Material.Filled.Close"/>
+      </MudButton>
+    </MudContainer>
+  </MudDrawerHeader>
+  <MudDrawerContainer>
+    <MudNavMenu>
+      @foreach (var route in GetNavigationDescriptors())
+      {
+        <MudNavLink
+          Href="@route.Route"
+          Match="NavLinkMatch.All">
+          <MudContainer
+            MaxWidth="MaxWidth.Small"
+            Class="d-flex flex-row">
+            <MudHidden Breakpoint="Breakpoint.Xs">
+              <div
+                style="margin-left: -8px;"
+                class="d-flex flex-row align-center">
+                <MudIcon Icon="@route.Icon" />
+              </div>
+            </MudHidden>
+            <MudHidden Breakpoint="Breakpoint.SmAndUp">
+              <div
+                style="margin-left: -28px;"
+                class="d-flex flex-row align-center">
+                <MudIcon Icon="@route.Icon" />
+              </div>
+            </MudHidden>
+            <MudText Class="ml-4">
+              @T[route.Title]
+            </MudText>
+          </MudContainer>
+        </MudNavLink>
+      }
+    </MudNavMenu>
+  </MudDrawerContainer>
+</MudDrawer>
+
+@code {
+  [CascadingParameter]
+  public LayoutState LayoutState { get; set; } = default!;
+
+  protected override void OnInitialized()
+  {
+    NavigationManager.LocationChanged += OnLocationChanged;
+  }
+
+  public void Dispose()
+  {
+    NavigationManager.LocationChanged -= OnLocationChanged;
+  }
+
+  private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+  {
+    LayoutState.SetNavigationDrawerOpen(false);
+  }
+}
