@@ -1,0 +1,61 @@
+@namespace Ozds.Client.Shared.Layout
+@using Ozds.Business.Models.Joins
+@using MudBlazor
+@using Ozds.Client.Base
+@using Ozds.Client.State
+@using Ozds.Client.Shared.Streaming
+@using Ozds.Business.Queries
+@using Ozds.Business.Models.Base
+@using Ozds.Business.Models
+@using Microsoft.Extensions.DependencyInjection
+@inherits OzdsOwningComponentBase
+
+<MudToolBar Gutters="false">
+  <MudContainer
+    Style="height: 100%;"
+    MaxWidth="MaxWidth.Large"
+    Class="d-flex flex-row">
+    <MudIconButton
+      Icon="@Icons.Material.Outlined.Menu"
+      Style="margin-left: -12px;"
+      OnClick="e => LayoutState.SetNavigationDrawerOpen(true)"/>
+    <MudSpacer />
+    @if (UserState.User.Representative
+      is RepresentativeModel representative)
+    {
+      <Paging PageAsync="@((page) => ScopedServices
+        .GetRequiredService<OzdsNotificationQueries>()
+        .Read(representative.Id, pageNumber: page))">
+        <Found Context="events">
+          <MudButton
+            Size="MudBlazor.Size.Small"
+            Style="margin-right: -20px;"
+            Href="@($"/app/{Culture}/notifications")">
+            <MudIcon Icon="@Icons.Material.Filled.NotificationsActive"/>
+            <MudItem>
+              <MudIcon Icon="@Icons.Material.Filled.Circle"/>
+              <MudText>@events.TotalCount</MudText>
+            </MudItem>
+          </MudButton>
+        </Found>
+        <Empty>
+          <MudButton
+            Size="MudBlazor.Size.Small"
+            Style="margin-right: -20px;"
+            Href="@($"/app/{Culture}/notifications")">
+            <MudIcon Icon="@Icons.Material.Filled.NotificationsNone" />
+          </MudButton>
+        </Empty>
+        <Pagination />
+      </Paging>
+    }
+  </MudContainer>
+</MudToolBar>
+
+@code {
+  [CascadingParameter]
+  public LayoutState LayoutState { get; set; } = default!;
+
+  [CascadingParameter]
+  public NewUserState UserState { get; set; } = default!;
+}

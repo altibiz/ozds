@@ -1,10 +1,13 @@
 using System.Globalization;
+using System.Reflection;
 using System.Text.Json;
 using ApexCharts;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using Ozds.Business.Localization.Abstractions;
+using Ozds.Business.Models.Enums;
 using Ozds.Business.Time;
+using Ozds.Client.Attributes;
 
 namespace Ozds.Client.Base;
 
@@ -14,6 +17,7 @@ public abstract class OzdsComponentBase : ComponentBase
   {
     WriteIndented = true
   };
+  private CultureInfo? _culture;
 
   [Inject]
   public ILocalizer T { get; set; } = default!;
@@ -31,6 +35,34 @@ public abstract class OzdsComponentBase : ComponentBase
         ?? throw new InvalidOperationException("Culture not found"))
       .TrimEnd('/');
     SetCulture(culture);
+  }
+
+  protected CultureInfo Culture
+  {
+    get
+    {
+      if (_culture is not null)
+      {
+        return _culture;
+      }
+
+      var uri = new Uri(NavigationManager.Uri);
+      var culture = uri.Segments[2]?.TrimEnd('/') ?? "en-US";
+      var ci = CultureInfo.GetCultureInfo(culture);
+      return _culture = ci;
+    }
+#pragma warning disable S4275 // Getters and setters should access the expected fields
+    set
+#pragma warning restore S4275 // Getters and setters should access the expected fields
+    {
+      var uri = new Uri(NavigationManager.Uri);
+      var segments = uri.Segments;
+      segments[2] = $"{value}/";
+      var path = string.Join("", segments);
+      CultureInfo.DefaultThreadCurrentCulture = value;
+      CultureInfo.DefaultThreadCurrentUICulture = value;
+      NavigationManager.NavigateTo(path);
+    }
   }
 
   private static void SetCulture(string culture)
@@ -155,4 +187,29 @@ public abstract class OzdsComponentBase : ComponentBase
   {
     JS.InvokeVoidAsync("history.back");
   }
+
+  protected IEnumerable<NavigationDescriptor> GetNavigationDescriptors()
+  {
+    return typeof(OzdsComponentBase).Assembly.GetTypes()
+      .Where(type => type.IsSubclassOf(typeof(OzdsComponentBase)))
+      .SelectMany(type => type.GetCustomAttributes<NavigationAttribute>())
+      .OrderBy(navigationAttribute => navigationAttribute.Order)
+      .Select(navigationAttribute =>
+        navigationAttribute.Title is { } title
+          ? new NavigationDescriptor(
+              title,
+              navigationAttribute.RouteValue ?? title,
+              navigationAttribute.Icon,
+              navigationAttribute.Allows,
+              navigationAttribute.Disallows)
+          : default)
+      .OfType<NavigationDescriptor>();
+  }
+  protected record NavigationDescriptor(
+    string Title,
+    string Route,
+    string? Icon,
+    RoleModel[] Allows,
+    RoleModel[] Disallows
+  );
 }
