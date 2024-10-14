@@ -21,16 +21,23 @@ public static class IServiceCollectionExtensions
     // State
     services.AddCascadingAuthenticationState();
     services.AddCascadingValue(_ => default(UserState));
-    services.AddCascadingValue(_ => default(RepresentativeState));
-    services.AddCascadingValue(_ => default(LogoutTokenState));
     services.AddCascadingValue(
-      _ => new UserLayoutState(
+      _ => new LayoutState(
         false,
-        [],
-        n => { },
-        s => { },
-        c => { }
+        false,
+        false,
+        _ => { },
+        _ => { },
+        _ => { }
       ));
+    services.AddCascadingValue(
+      _ => new ThemeState(
+        ThemeState.Default(),
+        false,
+        _ => { },
+        _ => { }
+      ));
+    services.AddCascadingValue(_ => new LogoutTokenState(string.Empty));
 
     return services;
   }

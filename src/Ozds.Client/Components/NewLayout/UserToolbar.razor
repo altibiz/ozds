@@ -1,0 +1,110 @@
+@namespace Ozds.Client.Components.Layout
+@using MudBlazor
+@using Ozds.Client.Base
+@using Ozds.Client.State
+@inherits OzdsComponentBase
+
+<MudToolBar Gutters="false">
+  <MudContainer
+    Style="height: 100%;"
+    MaxWidth="MaxWidth.Large"
+    Class="d-flex flex-row">
+    <MudHidden Breakpoint="Breakpoint.SmAndDown">
+      <MudButton
+        Href="@($"/app/{Culture}")"
+        Style="margin-left: -8px;"
+        Class="d-flex align-center">
+        <MudImage
+          Src="/logo.svg"
+          Alt="HelbEx"
+          Style="height: 40px;" />
+      </MudButton>
+    </MudHidden>
+    <MudHidden Breakpoint="Breakpoint.MdAndUp">
+      <MudButton
+        Href="@($"/app/{Culture}")"
+        Style="margin-left: -12px;"
+        Class="d-flex align-center">
+        <MudImage
+          Src="/favicon.svg"
+          Alt="HelbEx"
+          Style="height: 40px;" />
+      </MudButton>
+    </MudHidden>
+    <MudSpacer />
+    <div Class="d-flex flex-row justify-end">
+      <MudButton
+        Variant="Variant.Text"
+        Color="MudBlazor.Color.Primary"
+        OnClick="e => ThemeState.SetDarkMode(!ThemeState.IsDarkMode)"
+        Class="d-flex flex-row align-center">
+        @if(ThemeState.IsDarkMode)
+        {
+          <MudIcon Icon="@Icons.Material.Filled.DarkMode" />
+        }
+        else
+        {
+          <MudIcon Icon="@Icons.Material.Filled.LightMode" />
+        }
+        <MudHidden Breakpoint="Breakpoint.SmAndDown">
+          <div Class="ml-2">
+            <MudText>
+              (@T[ThemeState.IsDarkMode ? "Dark" : "Light"])
+            </MudText>
+          </div>
+        </MudHidden>
+      </MudButton>
+      <MudButton
+        Variant="Variant.Text"
+        Color="MudBlazor.Color.Primary"
+        OnClick="e => LayoutState.SetLocalizationDrawerOpen(true)"
+        Class="d-flex flex-row align-center">
+        <MudIcon Icon="@Icons.Material.Filled.Language" />
+        <MudHidden Breakpoint="Breakpoint.SmAndDown">
+          <div Class="ml-2">
+            <MudText>@Culture</MudText>
+          </div>
+        </MudHidden>
+      </MudButton>
+      <MudHidden Breakpoint="Breakpoint.MdAndUp">
+        <MudButton
+          OnClick="e => LayoutState.SetUserDrawerOpen(true)"
+          Variant="Variant.Text"
+          Color="MudBlazor.Color.Primary"
+          Class="d-flex flex-row align-center"
+          Style="margin-right: -18px;">
+          <MudIcon Icon="@Icons.Material.Filled.Person"/>
+        </MudButton>
+      </MudHidden>
+      <MudHidden Breakpoint="Breakpoint.SmAndDown">
+        <MudButton
+          OnClick="e => LayoutState.SetUserDrawerOpen(true)"
+          Variant="Variant.Text"
+          Color="MudBlazor.Color.Primary"
+          Class="d-flex flex-row align-center"
+          Style="margin-right: -8px;">
+          <MudIcon Icon="@Icons.Material.Filled.Person"/>
+          <div Class="ml-2 d-flex flex-column align-center">
+            <MudText>
+              @T["Welcome"],
+            </MudText>
+            <MudText>
+              @UserState.User.User.UserName
+            </MudText>
+          </div>
+        </MudButton>
+      </MudHidden>
+    </div>
+  </MudContainer>
+</MudToolBar>
+
+@code {
+  [CascadingParameter]
+  public LayoutState LayoutState { get; set; } = default!;
+
+  [CascadingParameter]
+  public NewUserState UserState { get; set; } = default!;
+
+  [CascadingParameter]
+  public ThemeState ThemeState { get; set; } = default!;
+}
