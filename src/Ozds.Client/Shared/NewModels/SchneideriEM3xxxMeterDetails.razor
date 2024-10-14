@@ -1,0 +1,23 @@
+
+<DetailsField Title="@T["Id"]">
+  @Model.Id
+</DetailsField>
+
+<DetailsField Title="@T["Name"]">
+  @Model.Title
+</DetailsField>
+
+<DetailsField Title="@T["Connected power"]">
+  @Model.ConnectionPower_W
+</DetailsField>
+
+<DetailsField Title="@T["Phases"]">
+  @(string.Join(", ", Model.Phases))
+</DetailsField>
+
+@code {
+
+  [Parameter]
+  public SchneideriEM3xxxMeterModel Model { get; set; } = default!;
+
+}

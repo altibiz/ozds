@@ -1,0 +1,24 @@
+
+
+@if(Model is BlueLowNetworkUserCatalogueModel){
+  <BlueLowNetworkUserCatalogueSummary Model="(BlueLowNetworkUserCatalogueModel)Model"/>
+}
+else if(Model is RedLowNetworkUserCatalogueModel){
+  <RedLowNetworkUserCatalogueSummary Model="(RedLowNetworkUserCatalogueModel)Model"/>
+}
+else if(Model is WhiteLowNetworkUserCatalogueModel){
+  <WhiteLowNetworkUserCatalogueSummary Model="(WhiteLowNetworkUserCatalogueModel)Model"/>
+}
+else if(Model is WhiteMediumNetworkUserCatalogueModel){
+  <WhiteMediumNetworkUserCatalogueSummary Model="(WhiteMediumNetworkUserCatalogueModel)Model"/>
+}
+else{
+  throw new Exception("Meter type not found");
+}
+
+@code {
+
+  [Parameter]
+  public NetworkUserCatalogueModel Model { get; set; } = default!;
+
+}
