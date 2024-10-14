@@ -17,8 +17,7 @@ public class NavigationAttribute : Attribute
 
   public Type[] Parents { get; set; } = [];
 
-#pragma warning disable SA1011 // Closing square brackets should be spaced correctly
   public RoleModel[] Allows { get; set; } = default!;
-#pragma warning restore SA1011 // Closing square brackets should be spaced correctly
+
   public RoleModel[] Disallows { get; set; } = Array.Empty<RoleModel>();
 }
