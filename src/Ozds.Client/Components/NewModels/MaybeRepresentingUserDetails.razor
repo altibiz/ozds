@@ -1,0 +1,35 @@
+
+<DetailsField Title="@T["User Name"]">
+  @Model.User.UserName
+</DetailsField>
+
+<DetailsField Title="@T["User Email"]">
+  @Model.User.Email
+</DetailsField>
+
+
+@if (Model.Representative is not null)
+{
+  <DetailsField Title="@T["Title"]">
+  @Model.Representative.Title
+</DetailsField>
+
+<DetailsField Title="@T["Name"]">
+  @Model.Representative.PhysicalPerson.Name
+</DetailsField>
+
+<DetailsField Title="@T["Email"]">
+  @Model.Representative.PhysicalPerson.Email
+</DetailsField>
+
+<DetailsField Title="@T["PhoneNumber"]">
+  @Model.Representative.PhysicalPerson.PhoneNumber
+</DetailsField>
+}
+
+@code {
+
+  [Parameter]
+  public MaybeRepresentingUserModel Model { get; set; } = default!;
+
+}

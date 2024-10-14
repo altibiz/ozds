@@ -1,0 +1,43 @@
+
+<DetailsField Title="@T["Name"]">
+  @Model.Title
+</DetailsField>
+
+<DetailsField Title="@T["Person name"]">
+  @Model.LegalPerson.Name
+</DetailsField>
+
+<DetailsField Title="@T["OIB"]">
+  @Model.LegalPerson.SocialSecurityNumber
+</DetailsField>
+
+<DetailsField Title="@T["Address"]">
+  @Model.LegalPerson.Address
+</DetailsField>
+
+<DetailsField Title="@T["Postal code"]">
+  @Model.LegalPerson.PostalCode
+</DetailsField>
+
+<DetailsField Title="@T["City"]">
+  @Model.LegalPerson.City
+</DetailsField>
+
+<DetailsField Title="@T["Email address"]">
+  @Model.LegalPerson.Email
+</DetailsField>
+
+<DetailsField Title="@T["Phone number"]">
+  @Model.LegalPerson.PhoneNumber
+</DetailsField>
+
+<DetailsField Title="@T["AltiBiz subproject code"]">
+  @Model.AltiBizSubProjectCode
+</DetailsField>
+
+@code {
+
+  [Parameter]
+  public NetworkUserModel Model { get; set; } = default!;
+
+}

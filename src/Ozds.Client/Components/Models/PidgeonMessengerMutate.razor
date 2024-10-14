@@ -1,0 +1,131 @@
+@inject IDialogService DialogService
+@inherits OzdsOwningComponentBase
+
+@if (LoadingState.Value is null)
+{
+  <MudProgressCircular/>
+  return;
+}
+
+<MudText Class="my-2" Typo="Typo.h4">@T["Messenger"]</MudText>
+<EditForm
+  Model="@LoadingState.Value"
+  OnValidSubmit="Submit">
+  <DataAnnotationsValidator/>
+  <MudCard>
+    <MudCardContent>
+      <MudTextField
+        Label="Id"
+        @bind-Value="LoadingState.Value.Id"
+        For="@(() => LoadingState.Value.Id)"/>
+      <MudTextField
+        Label="@T["Name"]"
+        @bind-Value="LoadingState.Value.Title"
+        For="@(() => LoadingState.Value.Title)"/>
+      <MudSelect
+        Label="@T["Location"]"
+        AnchorOrigin="Origin.BottomCenter"
+        @bind-Value="LoadingState.Value.LocationId"
+        For="@(() => LoadingState.Value.LocationId)">
+        @foreach (var location in _locations)
+        {
+          <MudSelectItem Value="location.Id">
+            @location.Title
+          </MudSelectItem>
+        }
+      </MudSelect>
+      <MudSelect
+        T="DurationModel"
+        Label="@T["Max inactivity period unit"]"
+        AnchorOrigin="Origin.BottomCenter"
+        For="@(() => LoadingState.Value.MaxInactivityPeriod.Duration)"
+        @bind-Value="LoadingState.Value.MaxInactivityPeriod.Duration">
+        @foreach (var value in Enum.GetValues<DurationModel>())
+        {
+          <MudSelectItem Value="value">
+            @T[value.ToTitle()]
+          </MudSelectItem>
+        }
+      </MudSelect>
+      <MudNumericField
+        Label="@T["Max inactivity period multiplier"]"
+        For="@(() => LoadingState.Value.MaxInactivityPeriod.Multiplier)"
+        @bind-Value="LoadingState.Value.MaxInactivityPeriod.Multiplier"/>
+    </MudCardContent>
+    <ValidationSummary/>
+    <MudCardActions>
+      <MudButton
+        ButtonType="ButtonType.Submit"
+        Variant="Variant.Filled"
+        Color="MudColor.Primary"
+        Class="ml-auto">
+        @if (_create)
+        {
+          <span>@T["Create"]</span>
+        }
+        else
+        {
+          <span>@T["Update"]</span>
+        }
+      </MudButton>
+    </MudCardActions>
+  </MudCard>
+</EditForm>
+
+@code {
+
+  [Parameter]
+  public string Id { get; set; } = default!;
+
+  [Parameter]
+  public PidgeonMessengerModel? Model { get; set; }
+
+  private LoadingState<PidgeonMessengerModel> LoadingState { get; set; } = new();
+  private List<LocationModel> _locations = new();
+
+  private bool _create;
+
+  private async Task Submit()
+  {
+    var mutations = ScopedServices.GetRequiredService<OzdsAuditableMutations>();
+    if (LoadingState.Value is null)
+      return;
+
+    if (_create)
+    {
+      await mutations.Create(LoadingState.Value);
+    }
+    else
+    {
+      await mutations.Update(LoadingState.Value);
+    }
+
+    DialogService.Show<MutateSuccess>("Changes Saved", new DialogOptions { CloseOnEscapeKey = true });
+  }
+
+  protected override void OnInitialized()
+  {
+    if (LoadingState.Value is not null)
+    {
+      LoadingState = LoadingState.WithValue(LoadingState.Value);
+    }
+  }
+
+  protected override async Task OnInitializedAsync()
+  {
+    var queries = ScopedServices.GetRequiredService<OzdsMessengerModelQueries>();
+    _locations = (await queries.GetLocations("")).Items;
+
+    if (LoadingState.Value is null && Id is not null)
+    {
+      LoadingState = LoadingState.WithValue(await queries.MessengerById(Id));
+    }
+
+    if (LoadingState.Value is null)
+    {
+      LoadingState = LoadingState.WithValue(PidgeonMessengerModelActivator.New());
+      _create = true;
+    }
+  }
+
+}
