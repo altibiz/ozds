@@ -1,0 +1,80 @@
+
+<MudTextField
+  Label="@T["Name"]"
+  @bind-Value="Model.Title"
+  For="@(() => Model.Title)"/>
+
+<MudTextField
+  Label="@T["Person name"]"
+  @bind-Value="Model.LegalPerson.Name"
+  For="@(() => Model.LegalPerson.Name)"/>
+
+<MudTextField
+  Label="@T["OIB"]"
+  @bind-Value="Model.LegalPerson.SocialSecurityNumber"
+  For="@(() => Model.LegalPerson.SocialSecurityNumber)"/>
+
+<MudTextField
+  Label="@T["Address"]"
+  @bind-Value="Model.LegalPerson.Address"
+  For="@(() => Model.LegalPerson.Address)"/>
+
+<MudTextField
+  Label="@T["Postal code"]"
+  @bind-Value="Model.LegalPerson.PostalCode"
+  For="@(() => Model.LegalPerson.PostalCode)"/>
+
+<MudTextField
+  Label="@T["City"]"
+  @bind-Value="Model.LegalPerson.City"
+  For="@(() => Model.LegalPerson.City)"/>
+
+<MudTextField
+  Label="@T["Email address"]"
+  @bind-Value="Model.LegalPerson.Email"
+  For="@(() => Model.LegalPerson.Email)"/>
+
+<MudTextField
+  Label="@T["Phone number"]"
+  @bind-Value="Model.LegalPerson.PhoneNumber"
+  For="@(() => Model.LegalPerson.PhoneNumber)"/>
+
+<MudTextField
+  Label="@T["AltiBiz subproject code"]"
+  @bind-Value="Model.AltiBizSubProjectCode"
+  For="@(() => Model.AltiBizSubProjectCode)"/>
+
+<MudSelect
+  Label="@T["Location"]"
+  AnchorOrigin="Origin.BottomCenter"
+  @bind-Value="Model.LocationId"
+  For="@(() => Model.LocationId)">
+  <Paging PageAsync="@(page => ScopedServices.GetRequiredService<OzdsNetworkUserQueries>().GetLocations(title: "", pageNumber: page))">
+    <Summary Context="model">
+      <MudSelectItem Value="model.Id">
+        <LocationSummary Model="model"/>
+      </MudSelectItem>
+    </Summary>
+  </Paging>
+</MudSelect>
+
+@*!!! Figure out this with multiple selection*@
+@* <MudSelect
+  Label="@T["Representatives"]"
+  AnchorOrigin="Origin.BottomCenter"
+  @bind-Value="Model."
+  For="@(() => Model.)">
+  <Paging PageAsync="@(page => ScopedServices.GetRequiredService<OzdsLocationModelQueries>().GetEligibleRepresentatives(title: "", pageNumber: page))">
+    <Summary Context="model">
+      <MudSelectItem Value="model.Id">
+        <MaybeRepresentingUserSummary Model="model"/>
+      </MudSelectItem>
+    </Summary>
+  </Paging>
+</MudSelect> *@
+@code {
+
+  [Parameter]
+  public NetworkUserModel Model { get; set; } = default!;
+
+}

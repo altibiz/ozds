@@ -1,0 +1,15 @@
+
+
+@if(Model is PidgeonMessengerModel){
+  <PidgeonMessengerSummary Model="(PidgeonMessengerModel)Model"/>
+}
+else{
+  throw new Exception("Messenger type not found");
+}
+
+@code {
+
+  [Parameter]
+  public MessengerModel Model { get; set; } = default!;
+
+}

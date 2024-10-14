@@ -1,0 +1,18 @@
+
+<DetailsField Title="@T["Name"]">
+  @Model.Title
+</DetailsField>
+<DetailsField Title="@T["Summary"]">
+  @Model.Summary
+</DetailsField>
+<DetailsField Title="@T["Content"]">
+  @Model.Content
+</DetailsField>
+
+
+@code {
+
+  [Parameter]
+  public SystemNotificationModel Model { get; set; } = default!;
+
+}

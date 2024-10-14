@@ -1,0 +1,18 @@
+
+
+@if(Model is AbbB2xMeasurementValidatorModel){
+  <AbbB2xMeasurementValidatorSummary Model="(AbbB2xMeasurementValidatorModel)Model"/>
+}
+else if(Model is SchneideriEM3xxxMeasurementValidatorModel){
+  <SchneideriEM3xxxMeasurementValidatorSummary Model="(SchneideriEM3xxxMeasurementValidatorModel)Model"/>
+}
+else{
+  throw new Exception("Validator type not found");
+}
+
+@code {
+
+  [Parameter]
+  public MeasurementValidatorModel Model { get; set; } = default!;
+
+}

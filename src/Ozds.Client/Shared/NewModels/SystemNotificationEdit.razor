@@ -1,0 +1,22 @@
+
+<MudTextField
+  Label="@T["Name"]"
+  @bind-Value="Model.Title"
+  For="@(() => Model.Title)"/>
+<MudTextField
+  Label="@T["Summary"]"
+  @bind-Value="Model.Summary"
+  For="@(() => Model.Summary)"/>
+<MudTextField
+  Label="@T["Content"]"
+  @bind-Value="Model.Content"
+  For="@(() => Model.Content)"/>
+
+@code {
+
+  [Parameter]
+  public SystemNotificationModel Model { get; set; } = default!;
+
+  @*!!! Somehow uses ScopedServices.GetRequiredService<OzdsNotificationQueries>().Recipients(LoadingState.Value) *@
+
+}

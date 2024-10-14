@@ -1,0 +1,56 @@
+
+
+<MudTextField
+  Label="Id"
+  @bind-Value="Model.Id"
+  For="@(() => Model.Id)"/>
+
+<MudTextField
+  Label="@T["Name"]"
+  @bind-Value="Model.Title"
+  For="@(() => Model.Title)"/>
+
+<MudTextField
+  Label="@T["Connected power"]"
+  @bind-Value="Model.ConnectionPower_W"
+  For="@(() => Model.ConnectionPower_W)"/>
+
+<MudSelect
+  Label="@T["Messenger"]"
+  AnchorOrigin="Origin.BottomCenter"
+  @bind-Value="Model.MessengerId"
+  For="@(() => Model.MessengerId)">
+  <Paging PageAsync="@(page => ScopedServices.GetRequiredService<OzdsAbbB2xMeterModelQueries>().GetMessengers(title: "", pageNumber: page))">
+    <Summary Context="model">
+      <MudSelectItem Value="model.Id">
+        <MessengerSummary Model="(MessengerModel)model"/>
+      </MudSelectItem>
+    </Summary>
+  </Paging>
+</MudSelect>
+
+<MudSelect
+  Label="@T["Validator"]"
+  AnchorOrigin="Origin.BottomCenter"
+  @bind-Value="Model.MeasurementValidatorId"
+  For="@(() => Model.MeasurementValidatorId)">
+  <Paging PageAsync="@(page => ScopedServices.GetRequiredService<OzdsAbbB2xMeterModelQueries>().GetValidators(title: "", pageNumber: page))">
+    <Summary Context="model">
+      <MudSelectItem Value="model.Id">
+        <ValidatorSummary Model="(MeasurementValidatorModel)model"/>
+      </MudSelectItem>
+    </Summary>
+  </Paging>
+</MudSelect>
+
+<MultiEnumPicker
+  @bind-Value="Model.Phases"
+  Title="@T["Phase"]"
+  Label="x => T[x.ToTitle()]"/>
+
+@code {
+
+  [Parameter]
+  public AbbB2xMeterModel Model { get; set; } = default!;
+
+}
