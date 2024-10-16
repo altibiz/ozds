@@ -1,152 +1,160 @@
 @using Ozds.Business.Time
 @using Ozds.Client.Components.Charts
+@using Ozds.Business.Analysis
+@using Ozds.Client.Components.Streaming
 @inherits OzdsOwningComponentBase
 
-@*
-<MudText Typo="Typo.h4">@T["Network user"]</MudText>
-<MudHidden Breakpoint="Breakpoint.MdAndUp">
+<Loading LoadAsync="@(() => ScopedServices
+    .GetRequiredService<AnalysisQueries>()
+    .ReadAnalysisBasesByRepresentative(
+      RepresentativeState.Representative.Id,
+      RepresentativeState.Representative.Role,
+      DateTimeOffset.UtcNow.GetStartOfLastMonth(),
+      DateTimeOffset.UtcNow,
+      CancellationToken.None
+    ))">
+  <Found>
+    @{
+      var analysis = context.Analysis();
+    }
 
-  <MudGrid Class="my-3 pa-1">
-    <MudItem xs="12" Class="pa-1">
-      <MudPaper Class="d-flex align-center justify-stat mud-width-full pa-1 pb-3 flex-column">
-        <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
-          <MudText Typo="Typo.h6">
-            @T["Current months consumption"]:
-          </MudText>
+    <MudText Typo="Typo.h4">@T["Network user"]</MudText>
+    <MudHidden Breakpoint="Breakpoint.MdAndUp">
+      <MudGrid Class="my-3 pa-1">
+        <MudItem xs="12" Class="pa-1">
+          <MudPaper Class="d-flex align-center justify-stat mud-width-full pa-1 pb-3 flex-column">
+            <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
+              <MudText Typo="Typo.h6">
+                @T["Current months consumption"]:
+              </MudText>
+            </MudItem>
+            <MudContainer Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
+              <MudText Typo="Typo.h4">
+                @(NumericString(_thisMonthTotal / 1000, 0) + " kWh")
+              </MudText>
+            </MudContainer>
+          </MudPaper>
         </MudItem>
-        <MudContainer Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
-          <MudText Typo="Typo.h4">
-            @(NumericString(_thisMonthTotal / 1000, 0) + " kWh")
-          </MudText>
-        </MudContainer>
-      </MudPaper>
-    </MudItem>
 
-    <MudItem xs="12" Class="pa-1">
-      <MudPaper Class="d-flex align-center justify-stat mud-width-full pa-1 pb-3 flex-column">
-        <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
-          <MudText Typo="Typo.h6">
-            @T["Last months consumption"]:
-          </MudText>
+        <MudItem xs="12" Class="pa-1">
+          <MudPaper Class="d-flex align-center justify-stat mud-width-full pa-1 pb-3 flex-column">
+            <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
+              <MudText Typo="Typo.h6">
+                @T["Last months consumption"]:
+              </MudText>
+            </MudItem>
+            <MudContainer Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
+              <MudText Typo="Typo.h4">
+                @(NumericString(_lastMonthTotal / 1000, 0) + " kWh")
+              </MudText>
+            </MudContainer>
+            <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
+              <MudText Typo="Typo.h6">
+                @T["Last months invoice total"]:
+              </MudText>
+            </MudItem>
+            <MudContainer Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
+              <MudText Typo="Typo.h6">
+                @(lastMonthInvoicesTotal == 0 ? T["Invoice pending..."] : NumericString(lastMonthInvoicesTotal) + " EUR")
+              </MudText>
+            </MudContainer>
+          </MudPaper>
         </MudItem>
-        <MudContainer Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
-          <MudText Typo="Typo.h4">
-            @(NumericString(_lastMonthTotal / 1000, 0) + " kWh")
-          </MudText>
-        </MudContainer>
-        <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
-          <MudText Typo="Typo.h6">
-            @T["Last months invoice total"]:
-          </MudText>
+        <MudItem xs="12" Class="pa-1">
+          <MudPaper Class="d-flex align-center justify-stat mud-width-full pa-1 pb-3 flex-column">
+            <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
+              <MudText Typo="Typo.h6">
+                @(T["This years consumption"] + " (kW):")
+              </MudText>
+            </MudItem>
+            <NewMeterGraph
+              Meters="@_meters"
+              Timestamp="@DateTimeOffset.UtcNow.GetStartOfYear()"
+              Resolution="@ResolutionModel.Year"
+              Measure="@MeasureModel.ActivePower"
+              Multiplier="1"
+              Static
+              Sum />
+          </MudPaper>
         </MudItem>
-        <MudContainer Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
-          <MudText Typo="Typo.h6">
-            @(lastMonthInvoicesTotal == 0 ? T["Invoice pending..."] : NumericString(lastMonthInvoicesTotal) + " EUR")
-          </MudText>
-        </MudContainer>
-      </MudPaper>
-    </MudItem>
-    <MudItem xs="12" Class="pa-1">
-      <MudPaper Class="d-flex align-center justify-stat mud-width-full pa-1 pb-3 flex-column">
-        <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
-          <MudText Typo="Typo.h6">
-            @(T["This years consumption"] + " (kW):")
-          </MudText>
-        </MudItem>
-        @if (_meters is not null)
-        {
-          // <NewMeterGraph
-          //   Meters="@_meters"
-          //   Timestamp="@_startOfYear"
-          //   Resolution="@ResolutionModel.Year"
-          //   Measure="@MeasureModel.ActivePower"
-          //   Multiplier="1"
-          //   Static
-          //   Sum />
-        }
-      </MudPaper>
-    </MudItem>
-  </MudGrid>
-</MudHidden>
+      </MudGrid>
+    </MudHidden>
 
-
-<MudHidden Breakpoint="Breakpoint.SmAndDown">
-  <MudGrid Class="my-3">
-    <MudItem xs="4">
-      <MudPaper Class="mud-width-full d-flex flex-column justify-space-between pa-4" Height="320px">
-        <MudItem Class="" Style="font-size: large; font-weight: bold;">
-          <MudText Typo="Typo.h5">
-            @(T["Current months consumption"] + ": ")
-          </MudText>
+    <MudHidden Breakpoint="Breakpoint.SmAndDown">
+      <MudGrid Class="my-3">
+        <MudItem xs="4">
+          <MudPaper Class="mud-width-full d-flex flex-column justify-space-between pa-4" Height="320px">
+            <MudItem Class="" Style="font-size: large; font-weight: bold;">
+              <MudText Typo="Typo.h5">
+                @(T["Current months consumption"] + ": ")
+              </MudText>
+            </MudItem>
+            <MudContainer Class="d-flex align-end justify-center" MaxWidth="MaxWidth.Small">
+              <MudText Typo="Typo.h1">
+                @(NumericString(_thisMonthTotal / 1000, 0))
+              </MudText>
+              <MudText Typo="Typo.h4" Class="mb-3 ml-1">kWh</MudText>
+            </MudContainer>
+            <MudItem Class="" Style="font-size: large; font-weight: bold;color: white;">
+              <MudText Typo="Typo.h6">
+                _____ ______ _ __________ _______:
+              </MudText>
+            </MudItem>
+            <MudItem Class="" Style="font-size: large; font-weight: bold;color: white;">
+              <MudText Typo="Typo.h6">
+                ____
+              </MudText>
+            </MudItem>
+          </MudPaper>
         </MudItem>
-        <MudContainer Class="d-flex align-end justify-center" MaxWidth="MaxWidth.Small">
-          <MudText Typo="Typo.h1">
-            @(NumericString(_thisMonthTotal / 1000, 0))
-          </MudText>
-          <MudText Typo="Typo.h4" Class="mb-3 ml-1">kWh</MudText>
-        </MudContainer>
-        <MudItem Class="" Style="font-size: large; font-weight: bold;color: white;">
-          <MudText Typo="Typo.h6">
-            _____ ______ _ __________ _______:
-          </MudText>
+        <MudItem xs="4">
+          <MudPaper Class="mud-width-full d-flex flex-column justify-space-between pa-4" Height="320px">
+            <MudItem Class="" Style="font-size: large; font-weight: bold;">
+              <MudText Typo="Typo.h5">
+                @(T["Last months consumption"] + ": ")
+              </MudText>
+            </MudItem>
+            <MudContainer Class="d-flex align-end justify-center" MaxWidth="MaxWidth.Small">
+              <MudText Typo="Typo.h1">
+                @(NumericString(_lastMonthTotal / 1000, 0))
+              </MudText>
+              <MudText Typo="Typo.h4" Class="mb-3 ml-1">kWh</MudText>
+            </MudContainer>
+            <MudItem Class="" Style="font-size: large; font-weight: bold;">
+              <MudText Typo="Typo.h6">
+                @(T["Last months invoice total"] + ": ")
+              </MudText>
+            </MudItem>
+            <MudItem Class="" Style="font-size: large; font-weight: bold; align-self: center;">
+              <MudText Typo="Typo.h5">
+                @(lastMonthInvoicesTotal == 0 ? T["Invoice pending..."] : NumericString(lastMonthInvoicesTotal) + " EUR")
+              </MudText>
+            </MudItem>
+          </MudPaper>
         </MudItem>
-        <MudItem Class="" Style="font-size: large; font-weight: bold;color: white;">
-          <MudText Typo="Typo.h6">
-            ____
-          </MudText>
+        <MudItem xs="4">
+          <MudPaper Class="mud-width-full pa-4" Height="320px">
+            <MudItem Class="" Style="font-size: large; font-weight: bold;">
+              <MudText Typo="Typo.h5">
+                @(T["This years consumption"] + " (kW):")
+              </MudText>
+            </MudItem>
+            <NewMeterGraph
+              Meters="@_meters"
+              Timestamp="@DateTimeOffset.UtcNow.GetStartOfYear()"
+              Resolution="@ResolutionModel.Year"
+              Measure="@MeasureModel.ActivePower"
+              Multiplier="1"
+              Static
+              Sum />
+          </MudPaper>
         </MudItem>
-      </MudPaper>
-    </MudItem>
-    <MudItem xs="4">
-      <MudPaper Class="mud-width-full d-flex flex-column justify-space-between pa-4" Height="320px">
-        <MudItem Class="" Style="font-size: large; font-weight: bold;">
-          <MudText Typo="Typo.h5">
-            @(T["Last months consumption"] + ": ")
-          </MudText>
-        </MudItem>
-        <MudContainer Class="d-flex align-end justify-center" MaxWidth="MaxWidth.Small">
-          <MudText Typo="Typo.h1">
-            @(NumericString(_lastMonthTotal / 1000, 0))
-          </MudText>
-          <MudText Typo="Typo.h4" Class="mb-3 ml-1">kWh</MudText>
-        </MudContainer>
-        <MudItem Class="" Style="font-size: large; font-weight: bold;">
-          <MudText Typo="Typo.h6">
-            @(T["Last months invoice total"] + ": ")
-          </MudText>
-        </MudItem>
-        <MudItem Class="" Style="font-size: large; font-weight: bold; align-self: center;">
-          <MudText Typo="Typo.h5">
-            @(lastMonthInvoicesTotal == 0 ? T["Invoice pending..."] : NumericString(lastMonthInvoicesTotal) + " EUR")
-          </MudText>
-        </MudItem>
-      </MudPaper>
-    </MudItem>
-    <MudItem xs="4">
-      <MudPaper Class="mud-width-full pa-4" Height="320px">
-        <MudItem Class="" Style="font-size: large; font-weight: bold;">
-          <MudText Typo="Typo.h5">
-            @(T["This years consumption"] + " (kW):")
-          </MudText>
-        </MudItem>
-      </MudPaper>
-    </MudItem>
-  </MudGrid>
-</MudHidden>
-*@
-
-@if (_meters is not null)
-{
-  <NewMeterGraph
-    Meters="@_meters"
-    Timestamp="@_startOfYear"
-    Resolution="@ResolutionModel.Year"
-    Measure="@MeasureModel.ActivePower"
-    Multiplier="1"/>
-}
+      </MudGrid>
+    </MudHidden>
+  </Found>
+</Loading>
 
 @code {
-
   [CascadingParameter]
   public RepresentativeState representative { get; set; } = default!;
 

@@ -2,11 +2,13 @@ using Ozds.Data.Entities.Base;
 
 namespace Ozds.Data.Entities.Composite;
 
-public record DetailedMeasurementLocationEntity(
+public record AnalysisBasisEntity(
   LocationEntity Location,
   NetworkUserEntity? NetworkUser,
   MeasurementLocationEntity MeasurementLocation,
   MeterEntity Meter,
-  IEnumerable<MeasurementEntity> Measurements,
-  IEnumerable<AggregateEntity> MonthlyAggregates
+  List<CalculationEntity> Calculations,
+  List<InvoiceEntity> Invoices,
+  MeasurementEntity LastMeasurement,
+  List<AggregateEntity> MonthlyAggregates
 );

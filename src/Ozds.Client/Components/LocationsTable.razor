@@ -1,316 +1,173 @@
 @using Ozds.Business.Time
+@using Ozds.Business.Analysis
+@using Ozds.Client.Components.Streaming
 @using Color = MudBlazor.Color
 @using Size = MudBlazor.Size
 
-
-@* MOBILE *@
-<MudHidden Breakpoint="Breakpoint.MdAndUp">
-  <MudItem Class="mb-5">
-    <MudText Typo="Typo.h4" Class="d-flex">
-      @(T["Locations"])
-    </MudText>
-    @foreach (var dataStruct in _shownLocations.Where(x => x.show).ToList())
-    {
-      <MudPaper Elevation="2" Class="ma-1">
-        <MudStack Spacing="0">
-          <MudGrid Class="d-flex pa-2">
-            <MudItem xs="8" Class="d-flex align-center justify-start" Style="font-size: large;">
-              @T["Location"]: @dataStruct.data.location.Title
-            </MudItem>
-            <MudItem xs="2" Class="d-flex align-center justify-end">
-              <MudIconButton OnClick="() => InspectLocation(dataStruct.data.location)" Icon="@Icons.Material.Filled.RemoveRedEye" Color="Color.Primary"/>
-            </MudItem>
-            <MudItem xs="2" Class="d-flex align-center justify-end">
-              <MudIconButton OnClick="() => OnExpandCollapseClick(dataStruct.data.location.Id)" Icon="@(dataStruct.expand ? Icons.Material.Filled.KeyboardArrowUp : Icons.Material.Filled.KeyboardArrowDown)" Color="Color.Default"/>
-            </MudItem>
-          </MudGrid>
-
-          <MudCollapse Class="py-2" Expanded="_shownLocations.Where(x => x.data.location.Id == dataStruct.data.location.Id).First().expand">
-            <MudStack>
-              <MudDivider DividerType="DividerType.Middle" Class="mt-2"/>
-              <MudContainer Class="d-flex flex-column">
-                <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
-                  @T["Current months consumption"]: @(NumericString(dataStruct.data.thisMonthUsage / 1000, 0) + " kWh")
-                </MudItem>
-                <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
-                  @T["Last months consumption"]: @(NumericString(dataStruct.data.lastMonthUsage / 1000, 0) + " kWh")
-                </MudItem>
-                @if (representative.Representative.Role is RoleModel.LocationRepresentative)
-                {
-                  <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
-                    @T["Active power"]: @NumericString(dataStruct.data.currentPower / 1000) kW
-                  </MudItem>
-                }
-                else
-                {
-                  <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
-                    @T["Last months invoice total"]: @(dataStruct.data.lastMonthsPayment == 0 ? T["Invoice pending..."] : NumericString(dataStruct.data.lastMonthsPayment) + " EUR")
-                  </MudItem>
-                }
-              </MudContainer>
-            </MudStack>
-          </MudCollapse>
-        </MudStack>
-      </MudPaper>
+<Loading LoadAsync="@(() => ScopedServices
+    .GetRequiredService<AnalysisQueries>()
+    .ReadAnalysisBasesByRepresentative(
+      RepresentativeState.Representative.Id,
+      RepresentativeState.Representative.Role,
+      DateTimeOffset.UtcNow.GetStartOfLastMonth(),
+      DateTimeOffset.UtcNow,
+      CancellationToken.None
+    ))">
+  <Found>
+    @{
+      var locationAnalyses = context.AnalysesByLocation();
     }
-  </MudItem>
-</MudHidden>
 
-@* DESKTOP *@
-<MudHidden Breakpoint="Breakpoint.SmAndDown">
-  <MudDataGrid
-    T="TabularData"
-    MultiSelection="true"
-    Items="@_dataStruct"
-    SortMode="SortMode.Multiple"
-    Filterable="true"
-    QuickFilter="@_quickFilter"
-    Class="mb-6">
-    <ToolBarContent>
-      <MudText Typo="Typo.h4">@T["Locations"]</MudText>
-      <MudSpacer/>
-      <MudTextField
-        @bind-Value="_searchString"
-        Placeholder="@T["Search"]"
-        Adornment="Adornment.Start"
-        Immediate="true"
-        AdornmentIcon="@Icons.Material.Filled.Search"
-        IconSize="Size.Medium"
-        Class="mt-0">
-      </MudTextField>
-    </ToolBarContent>
-    <Columns>
-      <TemplateColumn Title="@T["Location"]" Sortable="false">
-        <CellTemplate>
-          <MudStack Row>
-            <MudButton OnClick="() => InspectLocation(context.Item.location)" Variant="Variant.Outlined" Color="Color.Primary">
-              @context.Item.location.Title
-            </MudButton>
-          </MudStack>
-        </CellTemplate>
-      </TemplateColumn>
-      <PropertyColumn
-        CellStyle="font-size: x-large;"
-        Property="x => x.thisMonthUsage"
-        Title='@T["Current months consumption"]'>
-        <CellTemplate>
-          @(NumericString(context.Item.thisMonthUsage / 1000, 0) + " kWh")
-        </CellTemplate>
-      </PropertyColumn>
-      <PropertyColumn
-        CellStyle="font-size: x-large;"
-        Property="x => x.lastMonthUsage"
-        Title='@T["Last months consumption"]'>
-        <CellTemplate>
-          @(NumericString(context.Item.lastMonthUsage / 1000, 0) + " kWh")
-        </CellTemplate>
-      </PropertyColumn>
-      @if (representative.Representative.Role is RoleModel.LocationRepresentative)
-      {
-        <PropertyColumn
-          CellStyle="font-size: x-large;"
-          Property="x => x.currentPower"
-          Title='@T["Active power"]'>
-          <CellTemplate>
-            @NumericString(context.Item.currentPower / 1000) kW
-          </CellTemplate>
-        </PropertyColumn>
-      }
-      else
-      {
-        <PropertyColumn
-          CellStyle="font-size: x-large;"
-          Property="x => x.lastMonthsPayment"
-          Title='@T["Last months invoice total"]'>
-          <CellTemplate>
-            @(context.Item.lastMonthsPayment == 0 ? T["Invoice pending..."] : NumericString(context.Item.lastMonthsPayment) + " EUR")
-          </CellTemplate>
-        </PropertyColumn>
-      }
-    </Columns>
-    <PagerContent>
-      <MudDataGridPager T="TabularData"/>
-    </PagerContent>
-  </MudDataGrid>
-</MudHidden>
+    <MudHidden Breakpoint="Breakpoint.MdAndUp">
+      <MudItem Class="mb-5">
+        <MudText Typo="Typo.h4" Class="d-flex">
+          @(T["Locations"])
+        </MudText>
+        @foreach (var locationAnalysis in locationAnalyses)
+        {
+          <MudPaper Elevation="2" Class="ma-1">
+            <MudStack Spacing="0">
+              <MudGrid Class="d-flex pa-2">
+                <MudItem xs="8" Class="d-flex align-center justify-start" Style="font-size: large;">
+                  @T["Location"]: @(locationAnalysis.Location.Title)
+                </MudItem>
+                <MudItem xs="2" Class="d-flex align-center justify-end">
+                  <MudIconButton
+                    OnClick="@(() => NavigationManager.NavigateTo($"location/{locationAnalysis.Location.Id}"))"
+                    Icon="@Icons.Material.Filled.RemoveRedEye"
+                    Color="Color.Primary"/>
+                </MudItem>
+                <MudItem xs="2" Class="d-flex align-center justify-end">
+                  <MudIconButton Icon="@(Icons.Material.Filled.KeyboardArrowUp)" Color="Color.Default"/>
+                </MudItem>
+              </MudGrid>
+
+              <MudCollapse Class="py-2" Expanded="true">
+                <MudStack>
+                  <MudDivider DividerType="DividerType.Middle" Class="mt-2"/>
+                  <MudContainer Class="d-flex flex-column">
+                    <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
+                      @T["Current months consumption"]:
+                      @NumericString(locationAnalysis.Analysis.LastMonthConsumption.ActiveEnergy_kWh, 0) kWh
+                    </MudItem>
+                    <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
+                      @T["Last months consumption"]:
+                      @NumericString(locationAnalysis.Analysis.ThisMonthConsumption.ActiveEnergy_kWh, 0) kWh
+                    </MudItem>
+                    @if (representative.Representative.Role is RoleModel.LocationRepresentative)
+                    {
+                      <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
+                        @T["Active power"]:
+                        @NumericString(locationAnalysis.Analysis.Load.ActivePower_kW) kW
+                      </MudItem>
+                    }
+                    else
+                    {
+                      <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
+                        @T["Last months invoice total"]:
+                        @(locationAnalysis.Analysis.LastMonthExpenses.Total_EUR == 0
+                          ? T["Invoice pending..."]
+                          : NumericString(locationAnalysis.Analysis.LastMonthExpenses.Total_EUR) + " EUR")
+                      </MudItem>
+                    }
+                  </MudContainer>
+                </MudStack>
+              </MudCollapse>
+            </MudStack>
+          </MudPaper>
+        }
+      </MudItem>
+    </MudHidden>
+
+    <MudHidden Breakpoint="Breakpoint.SmAndDown">
+      <MudDataGrid
+        T="LocationAnalysis"
+        MultiSelection="true"
+        Items="@locationAnalyses"
+        SortMode="SortMode.Multiple"
+        Filterable="true"
+        QuickFilter="@(x =>
+          string.IsNullOrWhiteSpace(_searchString) ||
+          x.Location.Title.Contains(_searchString))"
+        Class="mb-6">
+        <ToolBarContent>
+          <MudText Typo="Typo.h4">@T["Locations"]</MudText>
+          <MudSpacer/>
+          <MudTextField
+            @bind-Value="_searchString"
+            Placeholder="@T["Search"]"
+            Adornment="Adornment.Start"
+            Immediate="true"
+            AdornmentIcon="@Icons.Material.Filled.Search"
+            IconSize="Size.Medium"
+            Class="mt-0">
+          </MudTextField>
+        </ToolBarContent>
+        <Columns>
+          <TemplateColumn Title="@T["Location"]" Sortable="false">
+            <CellTemplate>
+              <MudStack Row>
+                <MudButton
+                    OnClick="@(() => NavigationManager.NavigateTo($"location/{context.Item.Location.Id}"))"
+                    Variant="Variant.Outlined"
+                    Color="Color.Primary">
+                  @context.Item.Location.Title
+                </MudButton>
+              </MudStack>
+            </CellTemplate>
+          </TemplateColumn>
+          <PropertyColumn
+            CellStyle="font-size: x-large;"
+            Property="x => x.Analysis.ThisMonthConsumption.ActiveEnergy_kWh"
+            Title='@T["Current months consumption"]'>
+            <CellTemplate>
+              @(NumericString(context.Item.Analysis.ThisMonthConsumption.ActiveEnergy_kWh, 0)) kWh
+            </CellTemplate>
+          </PropertyColumn>
+          <PropertyColumn
+            CellStyle="font-size: x-large;"
+            Property="x => x.Analysis.LastMonthConsumption.ActiveEnergy_kWh"
+            Title='@T["Last months consumption"]'>
+            <CellTemplate>
+              @(NumericString(context.Item.Analysis.LastMonthConsumption.ActiveEnergy_kWh, 0)) kWh
+            </CellTemplate>
+          </PropertyColumn>
+          @if (representative.Representative.Role is RoleModel.LocationRepresentative)
+          {
+            <PropertyColumn
+              CellStyle="font-size: x-large;"
+              Property="x => x.Analysis.Load.ActivePower_kW"
+              Title='@T["Active power"]'>
+              <CellTemplate>
+                @NumericString(context.Item.Analysis.Load.ActivePower_kW) kW
+              </CellTemplate>
+            </PropertyColumn>
+          }
+          else
+          {
+            <PropertyColumn
+              CellStyle="font-size: x-large;"
+              Property="x => x.Analysis.LastMonthExpenses.Total_EUR"
+              Title='@T["Last months invoice total"]'>
+              <CellTemplate>
+                @(context.Item.Analysis.LastMonthExpenses.Total_EUR == 0
+                  ? T["Invoice pending..."]
+                  : NumericString(context.Item.Analysis.LastMonthExpenses.Total_EUR) + " EUR")
+              </CellTemplate>
+            </PropertyColumn>
+          }
+        </Columns>
+        <PagerContent>
+          <MudDataGridPager T="LocationAnalysis"/>
+        </PagerContent>
+      </MudDataGrid>
+    </MudHidden>
+  </Found>
+</Loading>
 
 @code {
-
   [CascadingParameter]
-  public UserState user { get; set; } = default!;
-
-  [CascadingParameter]
-  public RepresentativeState representative { get; set; } = default!;
+  public RepresentativeState RepresentativeState { get; set; } = default!;
 
   private string? _searchString;
-  private IEnumerable<NetworkUserInvoiceModel>? _invoices;
-
-  public record struct TabularData(LocationModel location, decimal thisMonthUsage, decimal lastMonthUsage, decimal lastMonthsPayment, decimal currentPower = 0);
-
-  private List<TabularData> _dataStruct = new();
-  private DateTimeOffset startOfThisMonth = DateTimeOffset.UtcNow.GetStartOfMonth();
-  private DateTimeOffset startOfLastMonth = DateTimeOffset.UtcNow.GetStartOfLastMonth();
-  private DateTimeOffset now = DateTimeOffset.UtcNow;
-  private List<NetworkUserModel>? _netUsers;
-
-  protected override async Task OnInitializedAsync()
-  {
-    var queries = ScopedServices.GetRequiredService<OzdsMeterTableQueries>();
-    var locationQueries = ScopedServices.GetRequiredService<OzdsLocationsTableQueries>();
-    List<MeterTableViewModel> locations = new();
-    List<LocationsTableViewModel> lastMeasurementPerMeterOnLocation = new();
-
-    _netUsers = await queries.GetNetworkUsersByRepresentative(representative.Representative);
-    if (_netUsers is null || _netUsers.Count < 0)
-      return;
-    var _netUserIds = _netUsers.Select(x => x.Id).ToList();
-    locations = await queries.ViewModelByNetworkUser(_netUserIds, startOfLastMonth, now);
-    var groupedLocations = locations.GroupBy(x => x.Location.Id).ToList();
-    lastMeasurementPerMeterOnLocation = await locationQueries.ViewModelByNetworkUser(_netUserIds);
-    _invoices = await queries.GetNetworkUserInvoicesByRepresentative(representative.Representative, startOfLastMonth, startOfThisMonth);
-    var groupedInvoices = _invoices.GroupBy(x => x.NetworkUserId).ToList();
-    foreach (var location in groupedLocations)
-    {
-      if (location is null) continue;
-
-      var firstLocation = location.FirstOrDefault();
-      if (firstLocation is null) continue;
-
-      var _thisMonthAggregate = location.Select(x => x.Aggregates.Where(x => x.Timestamp == startOfThisMonth).FirstOrDefault()).Where(x => x is not null).ToList();
-      var _lastMonthAggregate = location.Select(x => x.Aggregates.Where(x => x.Timestamp == startOfLastMonth).FirstOrDefault()).Where(x => x is not null).ToList();
-      var netUserIds = location.Select(x => x.NetworkUser.Id).ToList();
-      var _lastMonthInvoiceTotals = groupedInvoices
-        .Where(x => netUserIds.Contains(x.Key))
-        .Where(x => x is not null)
-        .Select(x => x.Select(y => y.TotalWithTax_EUR))
-        .FirstOrDefault();
-
-      decimal _currentPower = 0;
-      decimal _lastMonthsPayment = 0;
-      var measureSum = lastMeasurementPerMeterOnLocation
-        .Where(x => x.Location.Id == location.Key)
-        .Select(
-          x => x.Measurement.FirstOrDefault()?
-            .ActivePower_W.TariffUnary().DuplexNet().PhaseSum())
-        .Where(x => x is not null)
-        .DefaultIfEmpty(0).Sum();
-      if (measureSum is not null)
-      {
-        _currentPower = measureSum ?? 0;
-      }
-
-      decimal _thisMonthUsage = 0;
-      decimal _lastMonthUsage = 0;
-      if (_thisMonthAggregate is not null && _thisMonthAggregate.Count > 0)
-      {
-        var agg = _thisMonthAggregate
-          .Select(x => x?.ActiveEnergySpan_Wh.SpanDiff().TariffUnary().DuplexImport().PhaseSum())
-          .DefaultIfEmpty(0)
-          .Sum();
-        if (agg is null)
-          agg = 0;
-        _thisMonthUsage = (decimal)agg;
-      }
-
-      if (_lastMonthAggregate is not null && _lastMonthAggregate.Count > 0)
-      {
-        var agg = _lastMonthAggregate
-          .Select(x => x?.ActiveEnergySpan_Wh.SpanDiff().TariffUnary().DuplexImport().PhaseSum())
-          .DefaultIfEmpty(0)
-          .Sum();
-        if (agg is null)
-          agg = 0;
-        _lastMonthUsage = (decimal)agg;
-      }
-
-      if (_lastMonthInvoiceTotals is not null && _lastMonthInvoiceTotals.Count() > 0)
-        _lastMonthsPayment = _lastMonthInvoiceTotals
-          .DefaultIfEmpty(0)
-          .Sum();
-
-      _dataStruct.Add(
-        new TabularData
-        {
-          location = firstLocation.Location,
-          thisMonthUsage = _thisMonthUsage,
-          lastMonthUsage = _lastMonthUsage,
-          currentPower = _currentPower,
-          lastMonthsPayment = _lastMonthsPayment
-        }
-      );
-    }
-
-    foreach (var data in _dataStruct)
-    {
-      _shownLocations.Add(new ExpandThing { data = data, show = true, expand = false });
-    }
-  }
-
-  private Func<TabularData, bool> _quickFilter
-  {
-    get
-    {
-      return x =>
-      {
-        if (string.IsNullOrWhiteSpace(_searchString))
-          return true;
-
-        if (x.location.Title.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
-          return true;
-
-        return false;
-      };
-    }
-  }
-
-  private void InspectLocation(LocationModel item)
-  {
-    NavigationManager.NavigateTo($"location/{item.Id}");
-  }
-
-
-  @* MOBILE *@
-  public string TextValue { get; set; } = "";
-
-  private class ExpandThing
-  {
-    public TabularData data = default!;
-    public bool expand;
-    public bool show;
-  }
-
-  List<ExpandThing> _shownLocations = new();
-
-  private void OnExpandCollapseClick(string id)
-  {
-    var a = _shownLocations.Where(x => x.data.location.Id == id).FirstOrDefault();
-    if (a != null)
-    {
-      a.expand = !a.expand;
-    }
-  }
-
-  private Task Filter(string value)
-  {
-    TextValue = value;
-    foreach (var inv in _shownLocations)
-    {
-      if (value.Trim() != "")
-      {
-        inv.show = false;
-      }
-    }
-
-    ;
-    var a = _shownLocations.Where(x => x.data.location.Title.Contains(value, StringComparison.InvariantCultureIgnoreCase)).ToList();
-    foreach (var inv in a)
-    {
-      inv.show = true;
-    }
-
-    ;
-    StateHasChanged();
-    return Task.CompletedTask;
-  }
-
 }
