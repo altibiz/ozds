@@ -27,6 +27,7 @@ public record MeasurementLocationAnalysis(
   LocationModel Location,
   NetworkUserModel? NetworkUser,
   MeasurementLocationModel MeasurementLocation,
+  MeterModel Meter,
   Analysis Analysis
 );
 
@@ -115,6 +116,7 @@ public static class AnalysisExtensions
           x.First().Location,
           x.First().NetworkUser!,
           x.First().MeasurementLocation,
+          x.First().Meter,
           x.Analysis()
         );
       })
