@@ -87,8 +87,8 @@
         SortMode="SortMode.Multiple"
         Filterable="true"
         QuickFilter="@(x =>
-          string.IsNullOrWhiteSpace(_searchString) ||
-          x.Location.Title.Contains(_searchString))"
+          string.IsNullOrWhiteSpace(_searchString)
+          || x.Location.Title.Contains(_searchString))"
         Class="mb-6">
         <ToolBarContent>
           <MudText Typo="Typo.h4">@T["Locations"]</MudText>

@@ -18,11 +18,14 @@ public record LocationAnalysis(
 );
 
 public record NetworkUserAnalysis(
-  NetworkUserModel Location,
+  LocationModel Location,
+  NetworkUserModel NetworkUser,
   Analysis Analysis
 );
 
 public record MeasurementLocationAnalysis(
+  LocationModel Location,
+  NetworkUserModel? NetworkUser,
   MeasurementLocationModel MeasurementLocation,
   Analysis Analysis
 );
@@ -92,6 +95,7 @@ public static class AnalysisExtensions
       .Select(x =>
       {
         return new NetworkUserAnalysis(
+          x.First().Location,
           x.First().NetworkUser!,
           x.Analysis()
         );
@@ -108,6 +112,8 @@ public static class AnalysisExtensions
       .Select(x =>
       {
         return new MeasurementLocationAnalysis(
+          x.First().Location,
+          x.First().NetworkUser!,
           x.First().MeasurementLocation,
           x.Analysis()
         );

@@ -1,361 +1,187 @@
 @using Ozds.Business.Finance.Abstractions
 @using Ozds.Business.Time
 @using Ozds.Client.Shared.Dialogs
+@using Ozds.Business.Analysis
+@using Ozds.Client.Components.Streaming
 @using Color = MudBlazor.Color
 @using Size = MudBlazor.Size
 @inject IDialogService DialogService
 
+<Loading LoadAsync="@(() => ScopedServices
+    .GetRequiredService<AnalysisQueries>()
+    .ReadAnalysisBasesByRepresentative(
+      RepresentativeState.Representative.Id,
+      RepresentativeState.Representative.Role,
+      DateTimeOffset.UtcNow.GetStartOfLastMonth(),
+      DateTimeOffset.UtcNow,
+      CancellationToken.None
+    ))">
+  <Found>
+    @{
+      var networkUserAnalyses = context.AnalysesByNetworkUser();
+    }
 
-@* MOBILE *@
-<MudHidden Breakpoint="Breakpoint.MdAndUp">
-  <MudText Typo="Typo.h4" Class="d-flex">
-    @(T["Network users"])
-  </MudText>
-  <MudTextField Class="" ValueChanged="EventCallback.Factory.Create<string>(this, Filter)" Label="@T["Search"]" Variant="Variant.Text"></MudTextField>
-  @foreach (var dataStruct in _shownNetUsers.Where(x => x.show).ToList())
-  {
-    <MudPaper Elevation="2" Class="ma-1">
-      <MudStack Spacing="0">
-        <MudGrid Class="d-flex pa-2">
-          <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
-            @T["Location"]: @dataStruct.data.location.Title
-          </MudItem>
-          <MudItem xs="2" Class="d-flex align-center justify-end">
-            <MudIconButton OnClick="() => InspectLocation(dataStruct.data.location)" Icon="@Icons.Material.Filled.RemoveRedEye" Color="Color.Primary"/>
-          </MudItem>
-          <MudItem xs="8" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
-            @T["Network user"]: @dataStruct.data.networkUser.Title
-          </MudItem>
-          <MudItem xs="2" Class="d-flex align-center justify-end">
-            <MudIconButton OnClick="() => InspectNetworkUser(dataStruct.data.networkUser)" Icon="@Icons.Material.Filled.RemoveRedEye" Color="Color.Primary"/>
-          </MudItem>
-          <MudItem xs="2" Class="d-flex align-center justify-end">
-            <MudIconButton OnClick="() => OnExpandCollapseClick(dataStruct.data.networkUser.Id)" Icon="@(dataStruct.expand ? Icons.Material.Filled.KeyboardArrowUp : Icons.Material.Filled.KeyboardArrowDown)" Color="Color.Default"/>
-          </MudItem>
-        </MudGrid>
-
-
-        <MudCollapse Class="py-2" Expanded="_shownNetUsers.Where(x => x.data.networkUser.Id == dataStruct.data.networkUser.Id).First().expand">
-          <MudStack>
-            <MudDivider DividerType="DividerType.Middle" Class="mt-2"/>
-            <MudGrid Class="d-flex pa-2">
-              <MudContainer Class="d-flex flex-column pb-1">
-                <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large;">
-                  @T["Current months consumption"]: @(NumericString(dataStruct.data.thisMonthUsage / 1000, 0) + " kWh")
-                </MudItem>
-                <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large;">
-                  @T["Last months consumption"]: @(NumericString(dataStruct.data.lastMonthUsage / 1000, 0) + " kWh")
-                </MudItem>
-                <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large;">
-                  @T["Last months invoice total"]: @(dataStruct.data.lastMonthsPayment == 0 ? T["Invoice pending..."] : NumericString(dataStruct.data.lastMonthsPayment) + " EUR")
-                </MudItem>
-                @if (representative is not null && representative.Representative.Role is RoleModel.OperatorRepresentative)
-                {
-                  <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large;">
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="() => CreateInvoice(dataStruct.data.networkUser.Id)">
-                      @T["Issue Invoice"]
-                    </MudButton>
-                  </MudItem>
-                }
-              </MudContainer>
-            </MudGrid>
-          </MudStack>
-        </MudCollapse>
-      </MudStack>
-    </MudPaper>
-  }
-</MudHidden>
-
-
-@* DESKTOP *@
-<MudHidden Breakpoint="Breakpoint.SmAndDown">
-  <MudDataGrid
-    T="TabularData"
-    MultiSelection="true"
-    Items="@_dataStruct"
-    SortMode="SortMode.Multiple"
-    Filterable="true"
-    QuickFilter="@_quickFilter">
-    <ToolBarContent>
-      <MudText Typo="Typo.h4">@T["Network users"]</MudText>
-      <MudSpacer/>
-      <MudTextField
-        @bind-Value="_searchString"
-        Placeholder="@T["Search"]"
-        Adornment="Adornment.Start"
-        Immediate="true"
-        AdornmentIcon="@Icons.Material.Filled.Search"
-        IconSize="Size.Medium"
-        Class="mt-0">
-      </MudTextField>
-    </ToolBarContent>
-    <Columns>
-      <TemplateColumn Title="@T["Location"]" Sortable="false">
-        <CellTemplate>
-          <MudStack Row>
-            <MudButton OnClick="() => InspectLocation(context.Item.location)" Variant="Variant.Outlined" Color="Color.Primary">
-              @context.Item.location.Title
-            </MudButton>
-          </MudStack>
-        </CellTemplate>
-      </TemplateColumn>
-      <TemplateColumn Title="@T["Network users"]" Sortable="false">
-        <CellTemplate>
-          <MudStack Row>
-            <MudButton OnClick="() => InspectNetworkUser(context.Item.networkUser)" Variant="Variant.Outlined" Color="Color.Primary">
-              @context.Item.networkUser.Title
-            </MudButton>
-          </MudStack>
-        </CellTemplate>
-      </TemplateColumn>
-      <PropertyColumn
-        CellStyle="font-size: x-large;"
-        Property="x => x.thisMonthUsage"
-        Title='@T["Current months consumption"]'>
-        <CellTemplate>
-          @(NumericString(context.Item.thisMonthUsage / 1000, 0) + " kWh")
-        </CellTemplate>
-      </PropertyColumn>
-      <PropertyColumn
-        CellStyle="font-size: x-large;"
-        Property="x => x.lastMonthUsage"
-        Title='@T["Last months consumption"]'>
-        <CellTemplate>
-          @(NumericString(context.Item.lastMonthUsage / 1000, 0) + " kWh")
-        </CellTemplate>
-      </PropertyColumn>
-      <PropertyColumn
-        CellStyle="font-size: x-large;"
-        Property="x => x.lastMonthsPayment"
-        Title='@T["Last months invoice total"]'>
-        <CellTemplate>
-          @(context.Item.lastMonthsPayment == 0 ? T["Invoice pending..."] : NumericString(context.Item.lastMonthsPayment) + " EUR")
-        </CellTemplate>
-      </PropertyColumn>
-
-      @if (representative is not null && representative.Representative.Role is RoleModel.OperatorRepresentative)
+    <MudHidden Breakpoint="Breakpoint.MdAndUp">
+      <MudText Typo="Typo.h4" Class="d-flex">
+        @(T["Network users"])
+      </MudText>
+      @foreach (var networkUserAnalysis in networkUserAnalyses)
       {
-        <TemplateColumn CellClass="d-flex justify-end" Sortable="false" Filterable="false">
-          <CellTemplate>
-            <MudStack Row>
-              <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="() => CreateInvoice(context.Item.networkUser.Id)">
-                @T["Issue Invoice"]
-              </MudButton>
-            </MudStack>
-          </CellTemplate>
-        </TemplateColumn>
+        <MudPaper Elevation="2" Class="ma-1">
+          <MudStack Spacing="0">
+            <MudGrid Class="d-flex pa-2">
+              <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
+                @T["Location"]: @(networkUserAnalysis.Location.Title)
+              </MudItem>
+              <MudItem xs="2" Class="d-flex align-center justify-end">
+                <MudIconButton
+                  OnClick="@(() => NavigationManager.NavigateTo($"location/{networkUserAnalysis.Location.Id}"))"
+                  Icon="@Icons.Material.Filled.RemoveRedEye" Color="Color.Primary"/>
+              </MudItem>
+              <MudItem xs="8" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
+                @T["Network user"]: @(networkUserAnalysis.NetworkUser.Title)
+              </MudItem>
+              <MudItem xs="2" Class="d-flex align-center justify-end">
+                <MudIconButton
+                  OnClick="@(() => NavigationManager.NavigateTo($"network-user/{networkUserAnalysis.NetworkUser.Id}"))"
+                  Icon="@Icons.Material.Filled.RemoveRedEye"
+                  Color="Color.Primary"/>
+              </MudItem>
+              <MudItem xs="2" Class="d-flex align-center justify-end">
+                <MudIconButton
+                  Icon="@(Icons.Material.Filled.KeyboardArrowUp)" Color="Color.Default"/>
+              </MudItem>
+            </MudGrid>
+
+
+            <MudCollapse Class="py-2" Expanded="true">
+              <MudStack>
+                <MudDivider DividerType="DividerType.Middle" Class="mt-2"/>
+                <MudGrid Class="d-flex pa-2">
+                  <MudContainer Class="d-flex flex-column pb-1">
+                    <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large;">
+                      @T["Current months consumption"]:
+                      @(NumericString(networkUserAnalysis.Analysis.ThisMonthConsumption.ActiveEnergy_kWh, 0)) kWh
+                    </MudItem>
+                    <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large;">
+                      @T["Last months consumption"]:
+                      @(NumericString(networkUserAnalysis.Analysis.LastMonthConsumption.ActiveEnergy_kWh, 0)) kWh
+                    </MudItem>
+                    <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large;">
+                      @T["Last months invoice total"]:
+                      @(dataStruct.data.lastMonthsPayment == 0
+                        ? T["Invoice pending..."]
+                        : NumericString(networkUserAnalysis.Analysis.LastMonthExpenses.Total_EUR) + " EUR")
+                    </MudItem>
+                  </MudContainer>
+                </MudGrid>
+              </MudStack>
+            </MudCollapse>
+          </MudStack>
+        </MudPaper>
       }
-    </Columns>
-    <PagerContent>
-      <MudDataGridPager T="TabularData"/>
-    </PagerContent>
-  </MudDataGrid>
-</MudHidden>
+    </MudHidden>
+
+    <MudHidden Breakpoint="Breakpoint.SmAndDown">
+      <MudDataGrid
+        T="NetworkUserAnalysis"
+        MultiSelection="true"
+        Items="@(networkUserAnalyses)"
+        SortMode="SortMode.Multiple"
+        Filterable="true"
+        QuickFilter="@(x =>
+          string.IsNullOrWhiteSpace(_searchString)
+          || x.NetworkUser.Title.Contains(_searchString)
+          || x.Location.Title.Contains(_searchString))">
+        <ToolBarContent>
+          <MudText Typo="Typo.h4">@T["Network users"]</MudText>
+          <MudSpacer/>
+          <MudTextField
+            @bind-Value="_searchString"
+            Placeholder="@T["Search"]"
+            Adornment="Adornment.Start"
+            Immediate="true"
+            AdornmentIcon="@Icons.Material.Filled.Search"
+            IconSize="Size.Medium"
+            Class="mt-0">
+          </MudTextField>
+        </ToolBarContent>
+        <Columns>
+          <TemplateColumn Title="@T["Location"]" Sortable="false">
+            <CellTemplate>
+              <MudStack Row>
+                <MudButton
+                  OnClick="@(() => NavigationManager.NavigateTo($"location/{context.Item.Location.Id}"))"
+                  Variant="Variant.Outlined" Color="Color.Primary">
+                  @context.Item.Location.Title
+                </MudButton>
+              </MudStack>
+            </CellTemplate>
+          </TemplateColumn>
+          <TemplateColumn Title="@T["Network users"]" Sortable="false">
+            <CellTemplate>
+              <MudStack Row>
+                <MudButton
+                  OnClick="@(() => NavigationManager.NavigateTo($"network-user/{context.Item.NetworkUser.Id}"))"
+                  Variant="Variant.Outlined" Color="Color.Primary">
+                  @context.Item.NetworkUser.Title
+                </MudButton>
+              </MudStack>
+            </CellTemplate>
+          </TemplateColumn>
+          <PropertyColumn
+            CellStyle="font-size: x-large;"
+            Property="x => x.Analysis.ThisMonthConsumption.ActiveEnergy_kWh"
+            Title='@T["Current months consumption"]'>
+            <CellTemplate>
+              @(NumericString(context.Item.Analysis.ThisMonthConsumption.ActiveEnergy_kWh, 0)) kWh
+            </CellTemplate>
+          </PropertyColumn>
+          <PropertyColumn
+            CellStyle="font-size: x-large;"
+            Property="x => x.Analysis.LastMonthConsumption.ActiveEnergy_kWh"
+            Title='@T["Last months consumption"]'>
+            <CellTemplate>
+              @(NumericString(context.Item.Analysis.LastMonthConsumption.ActiveEnergy_kWh, 0)) kWh
+            </CellTemplate>
+          </PropertyColumn>
+          <PropertyColumn
+            CellStyle="font-size: x-large;"
+            Property="x => x.Analysis.LastMonthExpenses.Total_EUR"
+            Title='@T["Last months invoice total"]'>
+            <CellTemplate>
+              @(dataStruct.data.lastMonthsPayment == 0
+                ? T["Invoice pending..."]
+                : NumericString(networkUserAnalysis.Analysis.LastMonthExpenses.Total_EUR) + " EUR")
+            </CellTemplate>
+          </PropertyColumn>
+
+          @if (representative is not null && representative.Representative.Role is RoleModel.OperatorRepresentative)
+          {
+            <TemplateColumn CellClass="d-flex justify-end" Sortable="false" Filterable="false">
+              <CellTemplate>
+                <MudStack Row>
+                  <MudButton Variant="Variant.Filled" Color="Color.Primary">
+                    <form method="post" action="@($"admin/IssueInvoice/{context.Item.networkUser.Id}")">
+                      <button type="submit">@T["Issue Invoice"]</button>
+                    </form>
+                  </MudButton>
+                </MudStack>
+              </CellTemplate>
+            </TemplateColumn>
+          }
+        </Columns>
+        <PagerContent>
+          <MudDataGridPager T="NetworkUserAnalysis"/>
+        </PagerContent>
+      </MudDataGrid>
+    </MudHidden>
+  </Found>
+</Loading>
 
 @code {
-
-  [CascadingParameter]
-  public UserState user { get; set; } = default!;
-
   [CascadingParameter]
   public RepresentativeState representative { get; set; } = default!;
 
   private string? _searchString;
-  private List<NetworkUserInvoiceModel>? _invoices = new();
-  private List<NetworkUserInvoiceModel>? _allInvoices = new();
-
-  public record struct TabularData(LocationModel location, NetworkUserModel networkUser, decimal thisMonthUsage, decimal lastMonthUsage, decimal lastMonthsPayment);
-
-  private List<TabularData> _dataStruct = new();
-  private DateTimeOffset startOfThisMonth = DateTimeOffset.UtcNow.GetStartOfMonth();
-  private DateTimeOffset startOfLastMonth = DateTimeOffset.UtcNow.GetStartOfLastMonth();
-  private DateTimeOffset startOfThisYear = DateTimeOffset.UtcNow.GetStartOfYear();
-  private DateTimeOffset now = DateTimeOffset.UtcNow;
-  private List<NetworkUserModel>? _netUsers;
-  private List<IGrouping<string, NetworkUserInvoiceModel>>? groupedInvoices = new();
-  private List<IGrouping<string, NetworkUserInvoiceModel>> groupedAllInvoices = new();
-
-  protected override async Task OnInitializedAsync()
-  {
-    var queries = ScopedServices.GetRequiredService<OzdsMeterTableQueries>();
-    List<MeterTableViewModel> netUsers = new();
-
-    _netUsers = await queries.GetNetworkUsersByRepresentative(representative.Representative);
-    if (_netUsers is null || _netUsers.Count < 0)
-      return;
-    var _netUserIds = _netUsers.Select(x => x.Id).ToList();
-    netUsers = await queries.ViewModelByNetworkUser(_netUserIds, startOfLastMonth, now);
-    var groupedNetUsers = netUsers.GroupBy(x => x.NetworkUser.Id).ToList();
-    _invoices = await queries.GetNetworkUserInvoicesByRepresentative(representative.Representative, startOfLastMonth, startOfThisMonth);
-    groupedInvoices = _invoices.GroupBy(x => x.NetworkUserId).ToList();
-    _allInvoices = await queries.GetNetworkUserInvoicesByRepresentative(representative.Representative, startOfThisYear, now);
-    groupedAllInvoices = _allInvoices.GroupBy(x => x.NetworkUserId).ToList();
-
-    foreach (var netUser in groupedNetUsers)
-    {
-      if (netUser is null) continue;
-
-      var firstNetUser = netUser.FirstOrDefault();
-      if (firstNetUser is null) continue;
-
-      var _thisMonthAggregate = netUser.Select(x => x.Aggregates.Where(x => x.Timestamp == startOfThisMonth).FirstOrDefault()).Where(x => x is not null).ToList();
-      var _lastMonthAggregate = netUser.Select(x => x.Aggregates.Where(x => x.Timestamp == startOfLastMonth).FirstOrDefault()).Where(x => x is not null).ToList();
-      var _lastMonthInvoiceTotals = groupedInvoices
-        .Where(x => x.Key == netUser.Key)
-        .Where(x => x is not null)
-        .Select(x => x.Select(y => y.TotalWithTax_EUR))
-        .FirstOrDefault();
-      decimal _thisMonthUsage = 0;
-      decimal _lastMonthUsage = 0;
-      decimal _lastMonthsPayment = 0;
-      if (_thisMonthAggregate is not null && _thisMonthAggregate.Count > 0)
-      {
-        var agg = _thisMonthAggregate
-          .Select(x => x?.ActiveEnergySpan_Wh.SpanDiff().TariffUnary().DuplexImport().PhaseSum())
-          .DefaultIfEmpty(0)
-          .Sum();
-        if (agg is null)
-          agg = 0;
-        _thisMonthUsage = (decimal)agg;
-      }
-
-      if (_lastMonthAggregate is not null && _lastMonthAggregate.Count > 0)
-      {
-        var agg = _lastMonthAggregate
-          .Select(x => x?.ActiveEnergySpan_Wh.SpanDiff().TariffUnary().DuplexImport().PhaseSum())
-          .DefaultIfEmpty(0)
-          .Sum();
-        if (agg is null)
-          agg = 0;
-        _lastMonthUsage = (decimal)agg;
-      }
-
-      if (_lastMonthInvoiceTotals is not null && _lastMonthInvoiceTotals.Count() > 0)
-        _lastMonthsPayment = _lastMonthInvoiceTotals
-          .DefaultIfEmpty(0)
-          .Sum();
-
-      _dataStruct.Add(
-        new TabularData
-        {
-          location = firstNetUser.Location,
-          networkUser = firstNetUser.NetworkUser,
-          thisMonthUsage = _thisMonthUsage,
-          lastMonthUsage = _lastMonthUsage,
-          lastMonthsPayment = _lastMonthsPayment
-        }
-      );
-    }
-
-    foreach (var data in _dataStruct)
-    {
-      _shownNetUsers.Add(new ExpandThing { data = data, show = true, expand = false });
-    }
-  }
-
-  private Func<TabularData, bool> _quickFilter
-  {
-    get
-    {
-      return x =>
-      {
-        if (string.IsNullOrWhiteSpace(_searchString))
-          return true;
-
-        if (x.networkUser.Title.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
-          return true;
-
-        return false;
-      };
-    }
-  }
-
-  private void InspectNetworkUser(NetworkUserModel item)
-  {
-    NavigationManager.NavigateTo($"network-user/{item.Id}");
-  }
-
-  private void InspectLocation(LocationModel item)
-  {
-    NavigationManager.NavigateTo($"location/{item.Id}");
-  }
-
-  @* MOBILE *@
-  public string TextValue { get; set; } = "";
-
-  private class ExpandThing
-  {
-    public TabularData data;
-    public bool expand;
-    public bool show;
-  }
-
-  List<ExpandThing> _shownNetUsers = new();
-
-  private void OnExpandCollapseClick(string id)
-  {
-    var a = _shownNetUsers.Where(x => x.data.networkUser.Id == id).FirstOrDefault();
-    if (a != null)
-    {
-      a.expand = !a.expand;
-    }
-  }
-
-  private Task Filter(string value)
-  {
-    TextValue = value;
-    foreach (var inv in _shownNetUsers)
-    {
-      if (value.Trim() != "")
-      {
-        inv.show = false;
-      }
-    }
-
-    ;
-    var a = _shownNetUsers.Where(x => x.data.networkUser.Title.Contains(value, StringComparison.InvariantCultureIgnoreCase)).ToList();
-    foreach (var inv in a)
-    {
-      inv.show = true;
-    }
-
-    ;
-    StateHasChanged();
-    return Task.CompletedTask;
-  }
-
-  private async Task CreateInvoice(string id)
-  {
-    var minDate = startOfLastMonth;
-    var maxDate = now;
-    var _lastInvoice = groupedAllInvoices
-      .Where(x => x.Key == id)
-      .SelectMany(x => x)
-      .OrderByDescending(x => x.ToDate)
-      .FirstOrDefault();
-
-    if (_lastInvoice is not null)
-    {
-      minDate = _lastInvoice.ToDate.AddDays(1);
-    }
-
-    var parameters = new DialogParameters
-    {
-      { "MinDate", minDate },
-      { "MaxDate", maxDate }
-    };
-    var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Small };
-    var dialog = DialogService.Show<DateRangeDialog>(T["Select Date Range"], parameters, options);
-    var result = await dialog.Result;
-
-    if (!result.Canceled)
-    {
-      var (dateFrom, dateTo) = ((DateTime, DateTime))result.Data;
-      await ScopedServices
-        .GetRequiredService<INetworkUserInvoiceIssuer>()
-        .IssueNetworkUserInvoiceAsync(id, dateFrom, dateTo);
-      NavigationManager.NavigateTo("invoices");
-    }
-  }
-
 }
