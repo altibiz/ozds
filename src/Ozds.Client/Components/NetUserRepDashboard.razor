@@ -16,6 +16,10 @@
   <Found>
     @{
       var analysis = context.Analysis();
+      var meters = context
+        .Select(x => x.Meter)
+        .DistinctBy(x => x.Id)
+        .ToList();
     }
 
     <MudText Typo="Typo.h4">@T["Network user"]</MudText>
@@ -30,7 +34,7 @@
             </MudItem>
             <MudContainer Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
               <MudText Typo="Typo.h4">
-                @(NumericString(_thisMonthTotal / 1000, 0) + " kWh")
+                @(NumericString(analysis.ThisMonthConsumption.ActiveEnergy_kWh, 0)) kWh
               </MudText>
             </MudContainer>
           </MudPaper>
@@ -45,7 +49,7 @@
             </MudItem>
             <MudContainer Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
               <MudText Typo="Typo.h4">
-                @(NumericString(_lastMonthTotal / 1000, 0) + " kWh")
+                @(NumericString(analysis.LastMonthConsumption.ActiveEnergy_kWh, 0)) kWh
               </MudText>
             </MudContainer>
             <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
@@ -55,7 +59,9 @@
             </MudItem>
             <MudContainer Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
               <MudText Typo="Typo.h6">
-                @(lastMonthInvoicesTotal == 0 ? T["Invoice pending..."] : NumericString(lastMonthInvoicesTotal) + " EUR")
+                @(analysis.LastMonthExpenses.Total_EUR == 0
+                  ? T["Invoice pending..."]
+                  : NumericString(analysis.LastMonthExpenses.Total_EUR) + " EUR")
               </MudText>
             </MudContainer>
           </MudPaper>
@@ -68,7 +74,7 @@
               </MudText>
             </MudItem>
             <NewMeterGraph
-              Meters="@_meters"
+              Meters="@meters"
               Timestamp="@DateTimeOffset.UtcNow.GetStartOfYear()"
               Resolution="@ResolutionModel.Year"
               Measure="@MeasureModel.ActivePower"
@@ -91,7 +97,7 @@
             </MudItem>
             <MudContainer Class="d-flex align-end justify-center" MaxWidth="MaxWidth.Small">
               <MudText Typo="Typo.h1">
-                @(NumericString(_thisMonthTotal / 1000, 0))
+                @(NumericString(analysis.ThisMonthConsumption.ActiveEnergy_kWh, 0))
               </MudText>
               <MudText Typo="Typo.h4" Class="mb-3 ml-1">kWh</MudText>
             </MudContainer>
@@ -116,7 +122,7 @@
             </MudItem>
             <MudContainer Class="d-flex align-end justify-center" MaxWidth="MaxWidth.Small">
               <MudText Typo="Typo.h1">
-                @(NumericString(_lastMonthTotal / 1000, 0))
+                @(NumericString(analysis.LastMonthConsumption.ActiveEnergy_kWh, 0))
               </MudText>
               <MudText Typo="Typo.h4" Class="mb-3 ml-1">kWh</MudText>
             </MudContainer>
@@ -127,7 +133,9 @@
             </MudItem>
             <MudItem Class="" Style="font-size: large; font-weight: bold; align-self: center;">
               <MudText Typo="Typo.h5">
-                @(lastMonthInvoicesTotal == 0 ? T["Invoice pending..."] : NumericString(lastMonthInvoicesTotal) + " EUR")
+                @(analysis.LastMonthExpenses.Total_EUR == 0
+                  ? T["Invoice pending..."]
+                  : NumericString(analysis.LastMonthExpenses.Total_EUR) + " EUR")
               </MudText>
             </MudItem>
           </MudPaper>
@@ -140,7 +148,7 @@
               </MudText>
             </MudItem>
             <NewMeterGraph
-              Meters="@_meters"
+              Meters="@meters"
               Timestamp="@DateTimeOffset.UtcNow.GetStartOfYear()"
               Resolution="@ResolutionModel.Year"
               Measure="@MeasureModel.ActivePower"
@@ -157,29 +165,4 @@
 @code {
   [CascadingParameter]
   public RepresentativeState representative { get; set; } = default!;
-
-  private DateTimeOffset now = DateTimeOffset.UtcNow;
-  private DateTimeOffset startOfThisMonth = DateTimeOffset.UtcNow.GetStartOfMonth();
-  private DateTimeOffset startOfNextMonth = DateTimeOffset.UtcNow.GetStartOfNextMonth();
-  private DateTimeOffset startOfLastMonth = DateTimeOffset.UtcNow.GetStartOfLastMonth();
-  private decimal _lastMonthTotal = 0;
-  private decimal _thisMonthTotal = 0;
-  decimal lastMonthInvoicesTotal = 0m;
-  private List<NetworkUserModel>? _netUsers;
-  private IEnumerable<NetworkUserInvoiceModel>? _invoices;
-  private List<IMeter>? _meters;
-  private DateTimeOffset _startOfYear = DateTimeOffset.UtcNow.GetStartOfYear();
-
-  protected override async Task OnInitializedAsync()
-  {
-    var query = ScopedServices.GetRequiredService<OzdsMeterTableQueries>();
-
-    _netUsers = await query.GetNetworkUsersByRepresentative(representative.Representative);
-    List<string> _netUserIds = new();
-    if (_netUsers is not null)
-      _netUserIds = _netUsers.Select(x => x.Id).ToList();
-    var meters = await query.ViewModelByNetworkUser(_netUserIds, startOfLastMonth, now);
-    _meters = meters.Select(m => m.Meter).ToList();
-  }
-
 }
