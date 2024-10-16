@@ -4,7 +4,7 @@ using Ozds.Data.Entities;
 using Ozds.Data.Extensions;
 using Ozds.Data.Mutations.Abstractions;
 
-namespace Ozds.Business.Mutations;
+namespace Ozds.Data.Mutations;
 
 public class NetworkUserInvoiceMutations(
   IDbContextFactory<DataDbContext> factory

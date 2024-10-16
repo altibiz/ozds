@@ -1,5 +1,7 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Ozds.Business.Models.Abstractions;
 
-public interface IModel
+public interface IModel : IValidatableObject
 {
 }

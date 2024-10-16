@@ -1,8 +1,8 @@
-using Ozds.Business.Models.Abstractions;
+using Ozds.Business.Models.Base;
 
 namespace Ozds.Business.Models.Composite;
 
 public record CalculationItemBasisModel(
-  List<IAggregate> Aggregates,
+  List<AggregateModel> Aggregates,
   decimal Price
 );

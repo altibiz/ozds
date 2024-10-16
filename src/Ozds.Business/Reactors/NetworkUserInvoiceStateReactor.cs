@@ -61,9 +61,12 @@ public class NetworkUserInvoiceStateReactor(
     NetworkUserInvoiceStateEventArgs eventArgs)
   {
     var mutations = serviceProvider
-      .GetRequiredService<OzdsNetworkUserInvoiceMutations>();
+      .GetRequiredService<NetworkUserInvoiceMutations>();
     await mutations.UpdateBillId(
-      eventArgs.State.NetworkUserInvoiceId, eventArgs.State.BillId!);
+      eventArgs.State.NetworkUserInvoiceId,
+      eventArgs.State.BillId!,
+      CancellationToken.None
+    );
 
     var context = serviceProvider.GetRequiredService<DataDbContext>();
     var converter =
@@ -110,13 +113,7 @@ public class NetworkUserInvoiceStateReactor(
             TopicModel.All,
             TopicModel.NetworkUserInvoiceState
           ];
-          notification.Summary = $"{
-            localizer["Invoice"]
-          } \"{
-            invoice.Title
-          }\" {
-            localizer["issued"]
-          }";
+          notification.Summary = $"{localizer["Invoice"]} \"{invoice.Title}\" {localizer["issued"]}";
           notification.Content =
             $"{localizer["Invoice url is"]} 'invoices/{invoice.Id}'";
 

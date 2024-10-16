@@ -5,7 +5,7 @@ using Ozds.Business.Models.Enums;
 
 namespace Ozds.Business.Models.Complex;
 
-public class PeriodModel : IModel, IValidatableObject
+public class PeriodModel : IModel
 {
   public DurationModel Duration { get; set; }
 

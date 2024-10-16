@@ -9,7 +9,7 @@ using Ozds.Data.Queries.Abstractions;
 
 namespace Ozds.Data.Queries;
 
-public class OzdsCalculatedInvoiceQueries(
+public class CalculatedInvoiceQueries(
   IDbContextFactory<DataDbContext> factory
 ) : IQueries
 {
@@ -35,25 +35,5 @@ public class OzdsCalculatedInvoiceQueries(
       invoice.NetworkUserCalculations.ToList(),
       invoice
     );
-  }
-
-  public async Task<CalculatedLocationInvoiceEntity?>
-    ReadCalculatedLocationInvoice(
-      string id,
-      CancellationToken cancellationToken
-    )
-  {
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
-
-    var invoice = await context.LocationInvoices
-      .Where(context.PrimaryKeyEquals<LocationInvoiceEntity>(id))
-      .FirstOrDefaultAsync();
-    if (invoice is null)
-    {
-      return null;
-    }
-
-    return new CalculatedLocationInvoiceEntity(invoice);
   }
 }

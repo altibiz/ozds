@@ -1,9 +1,8 @@
-using System.ComponentModel.DataAnnotations;
 using Ozds.Business.Math;
 
 namespace Ozds.Business.Models.Abstractions;
 
-public interface IMeasurement : IValidatableObject, IReadonly
+public interface IMeasurement : IReadonly
 {
   public string MeterId { get; }
 

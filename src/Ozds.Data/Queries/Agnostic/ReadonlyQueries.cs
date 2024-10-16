@@ -2,11 +2,10 @@ using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Ozds.Data.Context;
 using Ozds.Data.Entities.Abstractions;
-using Ozds.Data.Entities.Base;
 using Ozds.Data.Extensions;
 using Ozds.Data.Queries.Abstractions;
 
-namespace Ozds.Business.Queries.Agnostic;
+namespace Ozds.Data.Queries.Agnostic;
 
 public class ReadonlyQueries(
   IDbContextFactory<DataDbContext> factory
@@ -18,15 +17,16 @@ public class ReadonlyQueries(
   )
     where T : class, IReadonlyEntity
   {
-    return await ReadSingleDynamic<T>(id, cancellationToken);
+    var entity = await ReadSingleDynamic(typeof(T), id, cancellationToken);
+    return entity is null ? default : (T)entity;
   }
 
-  public async Task<T?> ReadSingleDynamic<T>(
+  public async Task<object?> ReadSingleDynamic(
+    Type entityType,
     string id,
     CancellationToken cancellationToken
   )
   {
-    var entityType = typeof(T);
     if (!entityType.IsAssignableTo(typeof(IReadonlyEntity)))
     {
       throw new InvalidOperationException(
@@ -39,7 +39,7 @@ public class ReadonlyQueries(
     var item = await queryable
       .Where(context.PrimaryKeyEquals(entityType, id))
       .FirstOrDefaultAsync(cancellationToken);
-    return item is null ? default : (T)item;
+    return item;
   }
 
   public async Task<PaginatedList<T>> Read<T>(
@@ -51,26 +51,35 @@ public class ReadonlyQueries(
     Expression<Func<T, object>>? orderByAsc = null
   )
   {
-    return await ReadDynamic(
+    var entities = await ReadDynamic(
+      typeof(T),
       pageNumber,
       cancellationToken,
       pageCount,
-      where,
-      orderByDesc,
-      orderByAsc
+      where is { }
+        ? Expression.Lambda<Func<object, bool>>(where.Body, where.Parameters)
+        : default,
+      orderByDesc is { }
+        ? Expression.Lambda<Func<object, object>>(orderByDesc.Body, orderByDesc.Parameters)
+        : default,
+      orderByAsc is { }
+      ? Expression.Lambda<Func<object, object>>(orderByAsc.Body, orderByAsc.Parameters)
+      : default
     );
+
+    return entities.Items.OfType<T>().ToPaginatedList(entities.TotalCount);
   }
 
-  public async Task<PaginatedList<T>> ReadDynamic<T>(
+  public async Task<PaginatedList<object>> ReadDynamic(
+    Type entityType,
     int pageNumber,
     CancellationToken cancellationToken,
     int pageCount = QueryConstants.DefaultPageCount,
-    Expression<Func<T, bool>>? where = null,
-    Expression<Func<T, object>>? orderByDesc = null,
-    Expression<Func<T, object>>? orderByAsc = null
+    Expression<Func<object, bool>>? where = null,
+    Expression<Func<object, object>>? orderByDesc = null,
+    Expression<Func<object, object>>? orderByAsc = null
   )
   {
-    var entityType = typeof(T);
     if (!entityType.IsAssignableTo(typeof(IReadonlyEntity)))
     {
       throw new InvalidOperationException(
@@ -103,7 +112,7 @@ public class ReadonlyQueries(
       : ordered;
     if (orderByAsc is null && orderByDesc is null)
     {
-      var primaryKey = context.PrimaryKeyOf<T>();
+      var primaryKey = context.PrimaryKeyOf(entityType);
       ordered = ordered.OrderByDescending(
         Expression.Lambda<Func<IReadonlyEntity, object>>(
           primaryKey.Body,
@@ -116,6 +125,6 @@ public class ReadonlyQueries(
       .Take(pageCount)
       .ToListAsync(cancellationToken);
 
-    return items.OfType<T>().ToPaginatedList(count);
+    return items.OfType<object>().ToPaginatedList(count);
   }
 }

@@ -25,7 +25,6 @@ public class MeasurementLocationQueries(
       int pageNumber,
       CancellationToken cancellationToken,
       int pageCount = QueryConstants.DefaultPageCount
-
     )
   {
     await using var context = await factory
