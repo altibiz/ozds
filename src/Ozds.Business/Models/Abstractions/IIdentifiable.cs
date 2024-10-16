@@ -1,8 +1,6 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace Ozds.Business.Models.Abstractions;
 
-public interface IIdentifiable : IValidatableObject, IModel
+public interface IIdentifiable : IModel
 {
   string Title { get; }
 

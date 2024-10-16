@@ -10,7 +10,7 @@ namespace Ozds.Data.Queries;
 public class NetworkUserQueries(
   IDbContextFactory<DataDbContext> factory) : IQueries
 {
-  public async Task<PaginatedList<NetworkUserEntity>?>
+  public async Task<PaginatedList<NetworkUserEntity>>
     ReadNetworkUsersByRepresentative(
       string representativeId,
       RoleEntity role,

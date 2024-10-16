@@ -9,11 +9,11 @@ using Ozds.Data.Queries.Abstractions;
 
 namespace Ozds.Data.Queries;
 
-public class OzdsMeterTableQueries(
+public class InvoiceQueries(
   IDbContextFactory<DataDbContext> factory) : IQueries
 {
   public async Task<PaginatedList<NetworkUserInvoiceEntity>>
-    GetInvoicesByRepresentative(
+    ReadInvoicesByRepresentative(
       string representativeId,
       RoleEntity role,
       int pageNumber,

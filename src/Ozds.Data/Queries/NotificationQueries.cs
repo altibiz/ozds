@@ -6,27 +6,53 @@ using Ozds.Data.Entities.Joins;
 using Ozds.Data.Extensions;
 using Ozds.Data.Queries.Abstractions;
 
-namespace Ozds.Data.Queries.Agnostic;
+namespace Ozds.Data.Queries;
 
 public class NotificationQueries(
   IDbContextFactory<DataDbContext> factory
 ) : IQueries
 {
-  public async Task<PaginatedList<T>> ReadForRecipient<T>(
+  public async Task<PaginatedList<T>> ReadForRecipients<T>(
     string representativeId,
     bool seen,
     int pageNumber,
     CancellationToken cancellationToken,
     int pageCount = QueryConstants.DefaultPageCount
   )
-    where T : class, INotificationEntity
+    where T : INotificationEntity
   {
-    var entityType = typeof(T);
+    var entities = await ReadForRecipientDynamic(
+      typeof(T),
+      representativeId,
+      seen,
+      pageNumber,
+      cancellationToken,
+      pageCount
+    );
+
+    return entities.Items.OfType<T>().ToPaginatedList(entities.TotalCount);
+  }
+
+  public async Task<PaginatedList<INotificationEntity>> ReadForRecipientDynamic(
+    Type entityType,
+    string representativeId,
+    bool seen,
+    int pageNumber,
+    CancellationToken cancellationToken,
+    int pageCount = QueryConstants.DefaultPageCount
+  )
+  {
+    if (!entityType.IsAssignableTo(typeof(INotificationEntity)))
+    {
+      throw new InvalidOperationException(
+        $"{entityType} is not a ${typeof(INotificationEntity)}"
+      );
+    }
 
     await using var context = await factory
       .CreateDbContextAsync(cancellationToken);
 
-    var queryable = context.GetQueryable<NotificationEntity>(entityType);
+    var queryable = context.Notifications;
 
     var filtered = context.NotificationRecipients
       .Where(recipient => recipient.RepresentativeId == representativeId)
@@ -50,6 +76,6 @@ public class NotificationQueries(
       .Take(pageCount)
       .ToListAsync(cancellationToken);
 
-    return items.OfType<T>().ToPaginatedList(count);
+    return items.OfType<INotificationEntity>().ToPaginatedList(count);
   }
 }

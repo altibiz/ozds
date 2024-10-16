@@ -3,7 +3,7 @@ using Ozds.Business.Models.Abstractions;
 
 namespace Ozds.Business.Models.Complex;
 
-public class PhysicalPersonModel : IValidatableObject, IModel
+public class PhysicalPersonModel : IModel
 {
   [Required]
   public required string Name { get; set; } = default!;

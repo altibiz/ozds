@@ -7,7 +7,7 @@ using Ozds.Data.Extensions;
 namespace Ozds.Data.Entities.Base;
 
 #pragma warning disable S3881 // "IDisposable" should be implemented correctly
-public class EventEntity : IReadonlyEntity, IIdentifiableEntity, IDisposable
+public class EventEntity : IEventEntity, IDisposable
 #pragma warning restore S3881 // "IDisposable" should be implemented correctly
 {
   protected readonly long _id;
