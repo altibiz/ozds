@@ -5,7 +5,7 @@
   return;
 }
 <MudContainer MaxWidth="MaxWidth.ExtraSmall" Class="d-flex  flex-column" Style="float: left;">
-  <MudText Class="d-flex align-center my-2" Typo="@Typo.h5">@user.User.UserName</MudText>
+  <MudText Class="d-flex align-center my-2" Typo="@Typo.h5">@user.RepresentingUser.User.UserName</MudText>
   <MudPaper class="mt-2 px-4 py-2">
     <MudGrid Spacing="3">
 
@@ -17,12 +17,12 @@
       <MudItem xs="12" sm="6">
         <MudHidden Breakpoint="Breakpoint.Xs">
           <MudText Type="Typo.body2" Align="MudAlign.Right">
-            @user.User.Email
+            @user.RepresentingUser.User.Email
           </MudText>
         </MudHidden>
         <MudHidden Breakpoint="Breakpoint.SmAndUp">
           <MudText Type="Typo.body2" Align="MudAlign.Left">
-            @user.User.Email
+            @user.RepresentingUser.User.Email
           </MudText>
         </MudHidden>
       </MudItem>

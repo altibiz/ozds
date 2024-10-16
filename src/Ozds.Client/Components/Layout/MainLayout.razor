@@ -7,10 +7,10 @@
 
   <MainLayoutErrorBoundary>
     <ChildContent>
-      <OldLoading State="_userState">
+      <Loading State="_userState">
         <Found Context="user">
           <CascadingValue Value="user">
-            <OldLoading State="_representativeState">
+            <Loading State="_representativeState">
               <Found Context="representative">
                 <CascadingValue Value="representative">
                   <UserLayout>
@@ -27,10 +27,10 @@
               <NotFound>
                 @Body
               </NotFound>
-            </OldLoading>
+            </Loading>
           </CascadingValue>
         </Found>
-      </OldLoading>
+      </Loading>
     </ChildContent>
     <ErrorContent>
       <MudContainer

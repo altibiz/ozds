@@ -10,7 +10,7 @@
 @using Microsoft.Extensions.DependencyInjection
 @inherits OzdsOwningComponentBase
 
-<MudToolBar Gutters="false">
+ <MudToolBar Gutters="false">
   <MudContainer
     Style="height: 100%;"
     MaxWidth="MaxWidth.Large"
@@ -20,11 +20,11 @@
       Style="margin-left: -12px;"
       OnClick="e => LayoutState.SetNavigationDrawerOpen(true)"/>
     <MudSpacer />
-    @if (UserState.User.Representative
+    @if (UserState.RepresentingUser.Representative
       is RepresentativeModel representative)
     {
       <Paging PageAsync="@((page) => ScopedServices
-        .GetRequiredService<OzdsNotificationQueries>()
+        .GetRequiredService<NewOzdsNotificationQueries>()
         .Read(representative.Id, pageNumber: page))">
         <Found Context="events">
           <MudButton
@@ -57,5 +57,5 @@
   public LayoutState LayoutState { get; set; } = default!;
 
   [CascadingParameter]
-  public NewUserState UserState { get; set; } = default!;
+  public UserState UserState { get; set; } = default!;
 }

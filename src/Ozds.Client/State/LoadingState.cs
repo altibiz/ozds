@@ -61,4 +61,14 @@ public record LoadingState<T>(
       Error = default
     };
   }
+
+  public LoadingState<T> NotFound()
+  {
+    return this with
+    {
+      State = LoadingState.Unfound,
+      Value = default,
+      Error = default
+    };
+  }
 }
