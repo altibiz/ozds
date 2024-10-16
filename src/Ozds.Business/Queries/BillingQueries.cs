@@ -20,7 +20,7 @@ public class BillingQueries(
       CancellationToken cancellationToken
     )
   {
-    var entity = await queries.IssuingBasisForNetworkUser(
+    var entity = await queries.ReadIssuingBasisForNetworkUser(
       networkUserId,
       fromDate,
       toDate,

@@ -17,7 +17,7 @@ public class BillingQueries(
 ) : IQueries
 {
   public async Task<NetworkUserInvoiceIssuingBasisEntity>
-    IssuingBasisForNetworkUser(
+    ReadIssuingBasisForNetworkUser(
       string networkUserId,
       DateTimeOffset fromDate,
       DateTimeOffset toDate,

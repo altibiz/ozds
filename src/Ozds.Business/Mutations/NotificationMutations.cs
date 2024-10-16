@@ -1,6 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-using Ozds.Data.Entities.Joins;
-using Ozds.Data.Extensions;
 using Ozds.Data.Mutations.Abstractions;
 using DataNotificationMutations = Ozds.Data.Mutations.NotificationMutations;
 

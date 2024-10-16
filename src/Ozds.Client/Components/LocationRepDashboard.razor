@@ -1,230 +1,127 @@
 @using Ozds.Business.Time
+@using Ozds.Business.Analysis
+@using Ozds.Client.Components.Streaming
+
 <MudText Typo="Typo.h4">@T["Location"]</MudText>
-@* MOBILE *@
-<MudHidden Breakpoint="Breakpoint.MdAndUp">
-  <MudGrid Class="my-3 pa-1">
-    <MudItem xs="12" Class="pa-1">
-      <MudPaper Class="d-flex align-center justify-stat mud-width-full pa-1 pb-3 flex-column">
-        <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
-          <MudText Typo="Typo.h6">
-            @T["Last months consumption"]:
-          </MudText>
-        </MudItem>
-        <MudContainer Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
-          <MudText Typo="Typo.h4">
-            @(NumericString(_lastMonthUsage / 1000, 0) + " kWh")
-          </MudText>
-        </MudContainer>
-      </MudPaper>
-    </MudItem>
-    <MudItem xs="12" Class="pa-1">
-      <MudPaper Class="d-flex align-center justify-stat mud-width-full pa-1 pb-3 flex-column">
-        <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
-          <MudText Typo="Typo.h6">
-            @T["Current months consumption"]:
-          </MudText>
-        </MudItem>
-        <MudContainer Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
-          <MudText Typo="Typo.h4">
-            @(NumericString(_thisMonthUsage / 1000, 0) + " kWh")
-          </MudText>
-        </MudContainer>
-      </MudPaper>
-    </MudItem>
-    <MudItem xs="12" Class="pa-1">
-      <MudPaper Class="d-flex align-center justify-stat mud-width-full pa-1 pb-3 flex-column">
-        <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
-          <MudText Typo="Typo.h6">
-            @T["Active power"]:
-          </MudText>
-        </MudItem>
-        <MudContainer Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
-          <MudText Typo="Typo.h4">@NumericString(_totalActivePower / 1000) kW</MudText>
-        </MudContainer>
-      </MudPaper>
-    </MudItem>
-  </MudGrid>
-</MudHidden>
 
+<Loading LoadAsync="@(() => ScopedServices
+    .GetRequiredService<AnalysisQueries>()
+    .ReadAnalysisBasesByRepresentative(
+      RepresentativeState.Representative.Id,
+      RepresentativeState.Representative.Role,
+      DateTimeOffset.UtcNow.GetStartOfLastMonth(),
+      DateTimeOffset.UtcNow,
+      CancellationToken.None
+    ))">
+  <Found>
+    @{
+      var analysis = context.Analysis();
+    }
 
-@* DESKTOP *@
-<MudHidden Breakpoint="Breakpoint.SmAndDown">
-  <MudGrid Class="my-3">
-    <MudItem xs="4">
-      <MudPaper Class="mud-width-full d-flex flex-column justify-space-between pa-4" Height="320px">
-        <MudItem Class="" Style="font-size: large; font-weight: bold;">
-          <MudText Typo="Typo.h5">
-            @(T["Current months consumption"] + ": ")
-          </MudText>
+    <MudHidden Breakpoint="Breakpoint.MdAndUp">
+      <MudGrid Class="my-3 pa-1">
+        <MudItem xs="12" Class="pa-1">
+          <MudPaper Class="d-flex align-center justify-stat mud-width-full pa-1 pb-3 flex-column">
+            <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
+              <MudText Typo="Typo.h6">
+                @T["Last months consumption"]:
+              </MudText>
+            </MudItem>
+            <MudContainer Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
+              <MudText Typo="Typo.h4">
+                @(NumericString(analysis.LastMonthConsumption.ActiveEnergy_kWh, 0)) kWh
+              </MudText>
+            </MudContainer>
+          </MudPaper>
         </MudItem>
-        <MudContainer Class="d-flex align-end justify-center pb-10" MaxWidth="MaxWidth.Small">
-          <MudText Typo="Typo.h1">
-            @(NumericString(_thisMonthUsage / 1000, 0))
-          </MudText>
-          <MudText Typo="Typo.h4" Class="mb-3 ml-1">kWh</MudText>
-        </MudContainer>
-      </MudPaper>
-    </MudItem>
-    <MudItem xs="4">
-      <MudPaper Class="mud-width-full d-flex flex-column justify-space-between pa-4" Height="320px">
-        <MudItem Class="" Style="font-size: large; font-weight: bold;">
-          <MudText Typo="Typo.h5">
-            @(T["Last months consumption"] + ": ")
-          </MudText>
-        </MudItem>
-        <MudContainer Class="d-flex align-end justify-center pb-10" MaxWidth="MaxWidth.Small">
-          <MudText Typo="Typo.h1">
-            @(NumericString(_lastMonthUsage / 1000, 0))
-          </MudText>
-          <MudText Typo="Typo.h4" Class="mb-3 ml-1">kWh</MudText>
-        </MudContainer>
-      </MudPaper>
-    </MudItem>
-    <MudItem xs="4">
-      <MudPaper Class="mud-width-full d-flex flex-column justify-space-between pa-4" Height="320px">
-        <MudItem Class="" Style="font-size: large; font-weight: bold;">
-          <MudText Typo="Typo.h5">
-            @(T["Active power"] + ": ")
-          </MudText>
-        </MudItem>
-        <MudContainer Class="d-flex align-end justify-center pb-10" MaxWidth="MaxWidth.Small">
-          <MudText Typo="Typo.h1">
-            @(NumericString(_totalActivePower / 1000))
-          </MudText>
-          <MudText Typo="Typo.h4" Class="mb-3 ml-1">kW</MudText>
-        </MudContainer>
-      </MudPaper>
-    </MudItem>
-  </MudGrid>
-</MudHidden>
 
+        <MudItem xs="12" Class="pa-1">
+          <MudPaper Class="d-flex align-center justify-stat mud-width-full pa-1 pb-3 flex-column">
+            <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
+              <MudText Typo="Typo.h6">
+                @T["Current months consumption"]:
+              </MudText>
+            </MudItem>
+            <MudContainer Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
+              <MudText Typo="Typo.h4">
+                @(NumericString(analysis.ThisMonthConsumption.ActiveEnergy_kWh, 0)) kWh
+              </MudText>
+            </MudContainer>
+          </MudPaper>
+        </MudItem>
+
+        <MudItem xs="12" Class="pa-1">
+          <MudPaper Class="d-flex align-center justify-stat mud-width-full pa-1 pb-3 flex-column">
+            <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
+              <MudText Typo="Typo.h6">
+                @T["Active power"]:
+              </MudText>
+            </MudItem>
+            <MudContainer Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
+              <MudText Typo="Typo.h4">
+                @NumericString(analysis.Load.ActivePower_kW) kW
+              </MudText>
+            </MudContainer>
+          </MudPaper>
+        </MudItem>
+      </MudGrid>
+    </MudHidden>
+
+    <MudHidden Breakpoint="Breakpoint.SmAndDown">
+      <MudGrid Class="my-3">
+        <MudItem xs="4">
+          <MudPaper Class="mud-width-full d-flex flex-column justify-space-between pa-4" Height="320px">
+            <MudItem Class="" Style="font-size: large; font-weight: bold;">
+              <MudText Typo="Typo.h5">
+                @(T["Last months consumption"] + ": ")
+              </MudText>
+            </MudItem>
+            <MudContainer Class="d-flex align-end justify-center pb-10" MaxWidth="MaxWidth.Small">
+              <MudText Typo="Typo.h1">
+                @(NumericString(analysis.LastMonthConsumption.ActiveEnergy_kWh, 0))
+              </MudText>
+              <MudText Typo="Typo.h4" Class="mb-3 ml-1">kWh</MudText>
+            </MudContainer>
+          </MudPaper>
+        </MudItem>
+
+        <MudItem xs="4">
+          <MudPaper Class="mud-width-full d-flex flex-column justify-space-between pa-4" Height="320px">
+            <MudItem Class="" Style="font-size: large; font-weight: bold;">
+              <MudText Typo="Typo.h5">
+                @(T["Current months consumption"] + ": ")
+              </MudText>
+            </MudItem>
+            <MudContainer Class="d-flex align-end justify-center pb-10" MaxWidth="MaxWidth.Small">
+              <MudText Typo="Typo.h1">
+                @(NumericString(analysis.ThisMonthConsumption.ActiveEnergy_kWh, 0))
+              </MudText>
+              <MudText Typo="Typo.h4" Class="mb-3 ml-1">kWh</MudText>
+            </MudContainer>
+          </MudPaper>
+        </MudItem>
+
+        <MudItem xs="4">
+          <MudPaper Class="mud-width-full d-flex flex-column justify-space-between pa-4" Height="320px">
+            <MudItem Class="" Style="font-size: large; font-weight: bold;">
+              <MudText Typo="Typo.h5">
+                @(T["Active power"] + ": ")
+              </MudText>
+            </MudItem>
+            <MudContainer Class="d-flex align-end justify-center pb-10" MaxWidth="MaxWidth.Small">
+              <MudText Typo="Typo.h1">
+                @(NumericString(analysis.Load.ActivePower_kW))
+              </MudText>
+              <MudText Typo="Typo.h4" Class="mb-3 ml-1">kW</MudText>
+            </MudContainer>
+          </MudPaper>
+        </MudItem>
+      </MudGrid>
+    </MudHidden>
+  </Found>
+</Loading>
 
 @code {
-
   [CascadingParameter]
-  public UserState user { get; set; } = default!;
-
-  [CascadingParameter]
-  public RepresentativeState representative { get; set; } = default!;
-
-  private List<NetworkUserModel>? _netUsers;
-
-  public record struct TabularData(LocationModel location, decimal consumption, decimal lastMonthConsumption, decimal lastPower);
-
-  private decimal _thisMonthUsage = 0;
-  private decimal _lastMonthUsage = 0;
-  private decimal _totalActivePower = 0;
-  private List<TabularData> _dataStruct = new();
-  private DateTimeOffset startOfThisMonth = DateTimeOffset.UtcNow.GetStartOfMonth();
-  private DateTimeOffset startOfLastMonth = DateTimeOffset.UtcNow.GetStartOfLastMonth();
-  private DateTimeOffset now = DateTimeOffset.UtcNow;
-
-  protected override async Task OnInitializedAsync()
-  {
-    var queries = ScopedServices.GetRequiredService<OzdsMeterTableQueries>();
-    var locationQueries = ScopedServices.GetRequiredService<OzdsLocationsTableQueries>();
-    List<MeterTableViewModel> locations = new();
-    List<LocationsTableViewModel> locationsTwo = new();
-
-    _netUsers = await queries.GetNetworkUsersByRepresentative(representative.Representative);
-    if (_netUsers is null || _netUsers.Count < 0)
-      return;
-    var _netUserIds = _netUsers.Select(x => x.Id).ToList();
-    locations = await queries.ViewModelByNetworkUser(_netUserIds, startOfLastMonth, now);
-    var groupedLocations = locations.GroupBy(x => x.Location.Id).ToList();
-    locationsTwo = await locationQueries.ViewModelByNetworkUser(_netUserIds);
-
-    foreach (var netUser in groupedLocations)
-    {
-      var _thisMonthAggregate = netUser.Select(x => x.Aggregates.Where(x => x.Timestamp == startOfThisMonth).FirstOrDefault()).Where(x => x is not null).ToList();
-      var _lastMonthAggregate = netUser.Select(x => x.Aggregates.Where(x => x.Timestamp == startOfLastMonth).FirstOrDefault()).Where(x => x is not null).ToList();
-      decimal _currentPower = 0;
-      var measureSum = locationsTwo
-        .Where(x => x.Location.Id == netUser.Key)
-        .Select(
-          x => x.Measurement.FirstOrDefault()?
-            .ActivePower_W.TariffUnary().DuplexNet().PhaseSum())
-        .Where(x => x is not null)
-        .DefaultIfEmpty(0).Sum();
-      if (measureSum is not null)
-      {
-        _currentPower = measureSum ?? 0;
-      }
-
-      if (_thisMonthAggregate is not null && _thisMonthAggregate.Count > 0)
-      {
-        var agg = _thisMonthAggregate
-          .Select(x => x?.ActiveEnergySpan_Wh.SpanDiff().TariffUnary().DuplexImport().PhaseSum())
-          .DefaultIfEmpty(0)
-          .Sum();
-        if (agg is null)
-          agg = 0;
-        _thisMonthUsage += (decimal)agg;
-      }
-
-      if (_lastMonthAggregate is not null && _lastMonthAggregate.Count > 0)
-      {
-        var agg = _lastMonthAggregate
-          .Select(x => x?.ActiveEnergySpan_Wh.SpanDiff().TariffUnary().DuplexImport().PhaseSum())
-          .DefaultIfEmpty(0)
-          .Sum();
-        if (agg is null)
-          agg = 0;
-        _lastMonthUsage += (decimal)agg;
-      }
-
-      _totalActivePower += _currentPower;
-    }
-  }
-
-  private void InspectLocation(LocationModel item)
-  {
-    NavigationManager.NavigateTo($"location/{item.Id}");
-  }
-
-
-  @* MOBILE *@
-  public string TextValue { get; set; } = "";
-
-  private class ExpandThing
-  {
-    public TabularData data = default!;
-    public bool expand;
-    public bool show;
-  }
-
-  List<ExpandThing> _shownLocations = new();
-
-  private void OnExpandCollapseClick(string id)
-  {
-    var a = _shownLocations.Where(x => x.data.location.Id == id).FirstOrDefault();
-    if (a != null)
-    {
-      a.expand = !a.expand;
-    }
-  }
-
-  private Task Filter(string value)
-  {
-    TextValue = value;
-    foreach (var inv in _shownLocations)
-    {
-      if (value.Trim() != "")
-      {
-        inv.show = false;
-      }
-    }
-
-    ;
-    var a = _shownLocations.Where(x => x.data.location.Title.Contains(value, StringComparison.InvariantCultureIgnoreCase)).ToList();
-    foreach (var inv in a)
-    {
-      inv.show = true;
-    }
-
-    ;
-    StateHasChanged();
-    return Task.CompletedTask;
-  }
-
+  public RepresentativeState RepresentativeState { get; set; } = default!;
 }
