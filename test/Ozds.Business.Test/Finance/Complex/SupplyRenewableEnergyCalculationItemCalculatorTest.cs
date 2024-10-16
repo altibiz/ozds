@@ -1,6 +1,6 @@
 using Ozds.Business.Finance.Complex;
 using Ozds.Business.Models;
-using Ozds.Business.Models.Abstractions;
+using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Complex;
 using Ozds.Business.Models.Composite;
 using Ozds.Business.Models.Enums;
@@ -90,7 +90,7 @@ public class SupplyRenewableEnergyCalculationItemCalculatorTest
       .Append(startAggregate)
       .Append(endAggregate)
       .OrderBy(_ => Random.Shared.Next())
-      .ToList<IAggregate>();
+      .ToList<AggregateModel>();
 
     var input = new CalculationItemBasisModel(
       aggregates,

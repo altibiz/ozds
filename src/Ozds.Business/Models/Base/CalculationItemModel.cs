@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Ozds.Business.Math;
 using Ozds.Business.Models.Abstractions;
 
@@ -14,4 +15,9 @@ public abstract class CalculationItemModel : ICalculationItem
   public abstract decimal Total { get; }
 
   public abstract string Kind { get; }
+
+  public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+  {
+    yield break;
+  }
 }
