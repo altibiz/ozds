@@ -1,7 +1,7 @@
 @inherits OzdsOwningComponentBase
 @inject IDialogService DialogService
 
-<Loading Load="@(async () => (Model ?? await ScopedServices.GetRequiredService<OzdsRepresentativeQueries>().MaybeRepresentingUserByUserId(Id))!)">
+<Loading LoadAsync="@(async () => (Model ?? await ScopedServices.GetRequiredService<OzdsRepresentativeQueries>().MaybeRepresentingUserByUserId(Id))!)">
   <Found>
     <MudText Typo="Typo.h5">User</MudText>
     <MudPaper>

@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Conversion;
-using Ozds.Business.Extensions;
 using Ozds.Business.Models.Abstractions;
+using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Composite;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Data.Context;
@@ -205,7 +205,7 @@ public class OzdsBillingQueries(DataDbContext dbContext) : IQueries
             .ToModel(),
           SupplyRegulatoryCatalogue: x.First().SupplyRegulatoryCatalogue
             .ToModel(),
-          Aggregates: Enumerable.Empty<IAggregate>()
+          Aggregates: Enumerable.Empty<AggregateModel>()
             .Concat(
               x
                 .Where(x => x.AbbB2xAggregate is not null)

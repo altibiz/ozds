@@ -3,7 +3,7 @@
 @attribute [Authorize]
 @inherits OwningComponentBase<OzdsRepresentativeQueries>
 
-<Loading Load="@(() => Service.MaybeRepresentingUsers(pageNumber: _page))">
+<Loading LoadAsync="@(() => Service.MaybeRepresentingUsers(pageNumber: _page))">
   <Found>
     @foreach (var maybeRepresentingUser in context.Items)
     {

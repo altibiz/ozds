@@ -44,7 +44,7 @@ public static class MeterModelEntityConverterExtensions
     );
   }
 
-  public static IMeter ToModel(this MeterEntity entity)
+  public static MeterModel ToModel(this MeterEntity entity)
   {
     if (entity is AbbB2xMeterEntity abbB2xMeterEntity)
     {
