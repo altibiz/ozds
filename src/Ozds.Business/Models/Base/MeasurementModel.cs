@@ -4,8 +4,7 @@ using Ozds.Business.Models.Abstractions;
 
 namespace Ozds.Business.Models.Base;
 
-public abstract class MeasurementModel<T> : IMeasurement
-  where T : class, IMeasurementValidator
+public abstract class MeasurementModel : IMeasurement
 {
   [Required]
   public required string MeterId { get; init; }
@@ -29,7 +28,11 @@ public abstract class MeasurementModel<T> : IMeasurement
   public abstract TariffMeasure<decimal> ReactiveEnergy_VARh { get; }
 
   public abstract TariffMeasure<decimal> ApparentEnergy_VAh { get; }
+}
 
+public abstract class MeasurementModel<T> : MeasurementModel
+  where T : class, IMeasurementValidator
+{
   public virtual IEnumerable<ValidationResult> Validate(
     ValidationContext validationContext)
   {
