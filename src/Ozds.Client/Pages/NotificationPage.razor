@@ -128,10 +128,11 @@
     if (notification is not null)
     {
       await ScopedServices
-        .GetRequiredService<OzdsNotificationMutations>()
+        .GetRequiredService<NotificationMutations>()
         .MarkNotificationAsSeen(
           notification.Id,
-          RepresentativeState.Representative.Id);
+          RepresentativeState.Representative.Id,
+          CancellationToken.None);
       UserLayoutState.MarkNotificationAsSeen(notification);
     }
 

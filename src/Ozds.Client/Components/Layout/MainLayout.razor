@@ -1,4 +1,4 @@
-@using Theme = Theme
+@* @using Theme = Theme
 
 <main class="relative" style="height: 100vh;">
   <MudThemeProvider Theme="_theme"/>
@@ -71,11 +71,11 @@
 
   private readonly Theme _theme = new();
 
-  @* protected override void OnLayoutInitialized()
+   protected override void OnLayoutInitialized()
   {
     _theme.Theme = new HelbMudTheme();
     _theme.DrawerClipMode = DrawerClipMode.Always;
     _theme.FontFamily = "Roboto";
     _theme.DefaultBorderRadius = 3;
-  } *@
-}
+  }
+} *@

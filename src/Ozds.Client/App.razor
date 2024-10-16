@@ -8,7 +8,7 @@
 <Router @rendermode="InteractiveServer" AppAssembly="@typeof(App).Assembly">
   <Found Context="routeData">
     <CascadingValue Value="LogoutTokenState">
-      <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+      <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(Layout)">
         <Authorizing>
           <Authorizing/>
         </Authorizing>
@@ -26,7 +26,7 @@
     </CascadingValue>
   </Found>
   <NotFound>
-    <LayoutView Layout="@typeof(MainLayout)">
+    <LayoutView Layout="@typeof(Layout)">
       <NotFound/>
     </LayoutView>
   </NotFound>

@@ -233,9 +233,8 @@
       }
       else if (model?.GetType().IsAssignableTo(typeof(IAuditable)) ?? false)
       {
-        var mutations = ScopedServices.GetRequiredService<OzdsAgnosticMutations>();
-        mutations.Create((model as IAuditable)!);
-        await mutations.Save();
+        var mutations = ScopedServices.GetRequiredService<AuditableMutations>();
+        await mutations.Create((model as IAuditable)!, CancellationToken.None);
       }
       else
       {
@@ -272,9 +271,8 @@
       }
       else if (model?.GetType().IsAssignableTo(typeof(IAuditable)) ?? false)
       {
-        var mutations = ScopedServices.GetRequiredService<OzdsAgnosticMutations>();
-        mutations.Update((model as IAuditable)!);
-        await mutations.Save();
+        var mutations = ScopedServices.GetRequiredService<AuditableMutations>();
+        await mutations.Update((model as IAuditable)!, CancellationToken.None);
       }
       else
       {
@@ -311,9 +309,8 @@
       }
       else if (model?.GetType().IsAssignableTo(typeof(IAuditable)) ?? false)
       {
-        var mutations = ScopedServices.GetRequiredService<OzdsAgnosticMutations>();
-        mutations.Delete((model as IAuditable)!);
-        await mutations.Save();
+        var mutations = ScopedServices.GetRequiredService<AuditableMutations>();
+        await mutations.Delete((model as IAuditable)!, CancellationToken.None);
       }
       else
       {
