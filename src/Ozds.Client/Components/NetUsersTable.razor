@@ -4,7 +4,6 @@
 @using Color = MudBlazor.Color
 @using Size = MudBlazor.Size
 
-
 <Loading LoadAsync="@(() => ScopedServices
     .GetRequiredService<AnalysisQueries>()
     .ReadAnalysisBasesByRepresentative(
