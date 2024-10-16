@@ -1,6 +1,6 @@
 @typeparam TState
 
-@if (State is null)
+@* @if (State is null)
 {
   return;
 }
@@ -51,7 +51,7 @@
 @code {
 
   [Parameter]
-  public OldLoadingState<TState>? State { get; set; } = new();
+  public LoadingState<TState>? State { get; set; } = new();
 
   [Parameter]
   public Func<Task<TState?>>? Load { get; set; }
@@ -88,4 +88,4 @@
     }
   }
 
-}
+} *@

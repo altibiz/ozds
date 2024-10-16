@@ -48,21 +48,21 @@
 
     <MudBreakpointProvider>
       <Loading
-        T="NewUserState"
+        T="UserState"
         LoadAsync="LoadAsync">
         <Found Context="userState">
           <CascadingValue Value="userState">
             <main>
               <MudLayout Class="d-flex flex-column">
                 <UserToolbar />
-                @if (userState.User.Representative is { })
+                @if (userState.RepresentingUser.Representative is { })
                 {
                   <RepresentativeToolbar />
                 }
 
                 <LocalizationDrawer />
                 <UserDrawer />
-                @if (userState.User.Representative is { })
+                @if (userState.RepresentingUser.Representative is { })
                 {
                   <NavigationDrawer />
                 }

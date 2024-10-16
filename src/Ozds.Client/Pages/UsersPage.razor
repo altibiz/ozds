@@ -3,7 +3,7 @@
 @attribute [Authorize]
 @inherits OwningComponentBase<OzdsRepresentativeQueries>
 
-<OldLoading Load="@(() => Service.MaybeRepresentingUsers(pageNumber: _page))">
+<Loading Load="@(() => Service.MaybeRepresentingUsers(pageNumber: _page))">
   <Found>
     @foreach (var maybeRepresentingUser in context.Items)
     {
@@ -36,7 +36,7 @@
       PageSize="QueryConstants.DefaultPageSize"
       TotalItems="context.TotalCount"/>
   </Found>
-</OldLoading>
+</Loading>
 
 @code {
   private int _page = 1;

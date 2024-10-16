@@ -88,7 +88,7 @@ public partial class Layout : OzdsLayoutComponentBase
     );
   }
 
-  private async Task<NewUserState?> LoadAsync()
+  private async Task<UserState?> LoadAsync()
   {
     if (AuthenticationStateTask is null)
     {
@@ -116,6 +116,6 @@ public partial class Layout : OzdsLayoutComponentBase
       return default;
     }
 
-    return new NewUserState(claimsPrincipal, user);
+    return new UserState(claimsPrincipal, user);
   }
 }

@@ -15,9 +15,9 @@ namespace Ozds.Client.Components.Layout;
 
 public partial class MainLayout : OzdsLayoutComponentBase
 {
-  private OldLoadingState<RepresentativeState> _representativeState = new();
+  private LoadingState<RepresentativeState> _representativeState = new();
 
-  private OldLoadingState<UserState> _userState = new();
+  private LoadingState<UserState> _userState = new();
 
   [Inject]
   private IServiceProvider Services { get; set; } = default!;
@@ -71,7 +71,7 @@ public partial class MainLayout : OzdsLayoutComponentBase
     }
 
     _userState =
-      _userState.WithValue(new UserState(maybeRepresentingUser.User));
+      _userState.WithValue(new UserState(claimsPrincipal, maybeRepresentingUser));
     if (maybeRepresentingUser.Representative is null)
     {
       _representativeState = _representativeState.NotFound();
