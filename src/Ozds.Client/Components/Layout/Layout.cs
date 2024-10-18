@@ -2,7 +2,9 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using MudBlazor;
+using Ozds.Business.Models.Base;
 using Ozds.Business.Queries;
+using Ozds.Business.Time;
 using Ozds.Client.Base;
 using Ozds.Client.State;
 
@@ -88,7 +90,7 @@ public partial class Layout : OzdsLayoutComponentBase
     );
   }
 
-  private async Task<UserState?> LoadAsync()
+  private async Task<(UserState? UserState, RepresentativeState? RepresentativeState)> LoadAsync()
   {
     if (AuthenticationStateTask is null)
     {
@@ -106,16 +108,53 @@ public partial class Layout : OzdsLayoutComponentBase
     }
 
     await using var scope = ServiceScopeFactory.CreateAsyncScope();
-    var query =
-      scope.ServiceProvider.GetRequiredService<OzdsRepresentativeQueries>();
-    var user = await query.MaybeRepresentingUserByClaimsPrincipal(
-      claimsPrincipal);
-    if (user is null)
+    var maybeRepresentingUser = await scope.ServiceProvider
+      .GetRequiredService<OzdsRepresentativeQueries>()
+      .MaybeRepresentingUserByClaimsPrincipal(claimsPrincipal);
+    if (maybeRepresentingUser is null)
     {
       NavigateToLogin();
       return default;
     }
 
-    return new UserState(claimsPrincipal, user);
+    var userState = new UserState(claimsPrincipal, maybeRepresentingUser.User);
+    if (maybeRepresentingUser.Representative is not { } representative)
+    {
+      return (userState, null);
+    }
+
+    var now = DateTimeOffset.UtcNow;
+    var analysisBases = await scope.ServiceProvider
+      .GetRequiredService<AnalysisQueries>()
+      .ReadAnalysisBasesByRepresentative(
+        representative.Id,
+        representative.Role,
+        now.GetStartOfYear(),
+        now,
+        CancellationToken.None
+      );
+    var notifications = await scope.ServiceProvider
+      .GetRequiredService<NotificationQueries>()
+      .ReadForRecipient<NotificationModel>(
+        representative.Id,
+        CancellationToken.None
+      );
+    var representativeState =
+      new RepresentativeState(
+        representative,
+        analysisBases,
+        notifications,
+        (notification) =>
+        {
+          notifications.Add(notification);
+          InvokeAsync(StateHasChanged);
+        },
+        (notification) =>
+        {
+          notifications.Remove(notification);
+          InvokeAsync(StateHasChanged);
+        }
+      );
+    return (userState, representativeState);
   }
 }

@@ -10,5 +10,6 @@ public record AnalysisBasisModel(
   List<CalculationModel> Calculations,
   List<InvoiceModel> Invoices,
   MeasurementModel LastMeasurement,
-  List<AggregateModel> MonthlyAggregates
+  List<AggregateModel> MonthlyAggregates,
+  List<AggregateModel> MonthlyMaxPowerAggregates
 );

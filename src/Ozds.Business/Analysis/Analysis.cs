@@ -5,10 +5,17 @@ using Ozds.Business.Time;
 
 namespace Ozds.Business.Analysis;
 
+public record MonthlyAnalysis(
+  DateTimeOffset StartOfMonth,
+  Load? MaxLoad,
+  Consumption? Consumption
+);
+
 public record Analysis(
   Load Load,
   Consumption LastMonthConsumption,
   Consumption ThisMonthConsumption,
+  List<MonthlyAnalysis> Monthly,
   Expenses LastMonthExpenses
 );
 
@@ -31,6 +38,14 @@ public record MeasurementLocationAnalysis(
   Analysis Analysis
 );
 
+public record MeterAnalysis(
+  LocationModel Location,
+  NetworkUserModel? NetworkUser,
+  MeasurementLocationModel MeasurementLocation,
+  MeterModel Meter,
+  Analysis Analysis
+);
+
 public static class AnalysisExtensions
 {
   public static Analysis Analysis(
@@ -41,17 +56,22 @@ public static class AnalysisExtensions
     var startOfLastMonth = now.GetStartOfLastMonth();
     var startOfThisMonth = now.GetStartOfMonth();
 
-    var consumption = models
+    var monthlyConsumption = models
       .SelectMany(x => x.MonthlyAggregates)
       .Consumption()
       .ToList();
-    var lastMonthConsumption = consumption
+    var lastMonthConsumption = monthlyConsumption
       .FirstOrDefault(x => x.Timestamp == startOfLastMonth)
-      ?? new Consumption(startOfLastMonth, 0M, 0M, 0M);
-    var thisMonthConsumption = consumption
+      ?? Consumption.Null;
+    var thisMonthConsumption = monthlyConsumption
       .FirstOrDefault(x => x.Timestamp == startOfThisMonth)
-      ?? new Consumption(startOfLastMonth, 0M, 0M, 0M);
+      ?? Consumption.Null;
 
+    var monthlyMaxLoad = models
+      .SelectMany(x => x.MonthlyMaxPowerAggregates
+        .Select(x => x.Load())
+        .OrderByDescending(x => x.Timestamp))
+      .ToList();
     var load = models
       .Select(x => x.LastMeasurement)
       .Load();
@@ -62,10 +82,24 @@ public static class AnalysisExtensions
       .Where(x => x.Timestamp < startOfThisMonth)
       .Aggregate();
 
+    var monthlyAnalyses = monthlyConsumption
+      .Join(
+        monthlyMaxLoad,
+        x => x.Timestamp.GetStartOfMonth(),
+        x => x.Timestamp.GetStartOfMonth(),
+        (x, y) => new MonthlyAnalysis(
+          x.Timestamp.GetStartOfMonth(),
+          y,
+          x
+        ))
+      .OrderByDescending(x => x.StartOfMonth)
+      .ToList();
+
     return new Analysis(
       load,
       lastMonthConsumption,
       thisMonthConsumption,
+      monthlyAnalyses,
       lastMonthExpenses
     );
   }
@@ -114,12 +148,52 @@ public static class AnalysisExtensions
       {
         return new MeasurementLocationAnalysis(
           x.First().Location,
-          x.First().NetworkUser!,
+          x.First().NetworkUser,
           x.First().MeasurementLocation,
           x.First().Meter,
           x.Analysis()
         );
       })
       .ToList();
+  }
+
+  public static List<MeterAnalysis> AnalysesByMeter(
+    this IEnumerable<AnalysisBasisModel> models
+  )
+  {
+    return models
+      .GroupBy(x => x.Meter.Id)
+      .Select(x =>
+      {
+        return new MeterAnalysis(
+          x.First().Location,
+          x.First().NetworkUser,
+          x.First().MeasurementLocation,
+          x.First().Meter,
+          x.Analysis()
+        );
+      })
+      .ToList();
+  }
+
+  public static MeterAnalysis? AnalysisForMeter(
+    this IEnumerable<AnalysisBasisModel> models,
+    string id
+  )
+  {
+    var bases = models.Where(x => x.Meter.Id == id);
+    var first = bases.FirstOrDefault();
+    if (first is null)
+    {
+      return null;
+    }
+
+    return new MeterAnalysis(
+      first.Location,
+      first.NetworkUser,
+      first.MeasurementLocation,
+      first.Meter,
+      bases.Analysis()
+    );
   }
 }

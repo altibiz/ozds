@@ -2,6 +2,12 @@
 @using Size = MudBlazor.Size
 @inherits OzdsOwningComponentBase
 
+<MudCheckBox
+  T="bool"
+  Label="@T["Seen"]"
+  Checked="@_seen"
+  CheckedChanged="@(() => _seen = !_seen)"/>
+
 @if (_shownNotifications is not null && _shownNotifications.Count() > 0)
 {
   <MudHidden Breakpoint="Breakpoint.MdAndUp">
@@ -108,11 +114,7 @@
   [CascadingParameter]
   public RepresentativeState representative { get; set; } = default!;
 
-  [CascadingParameter]
-  public UserLayoutState UserLayoutState { get; set; } = default!;
-
-  [Parameter]
-  public bool Seen { get; set; } = false;
+  private bool _seen { get; set; } = false;
 
   public string SearchString { get; set; } = "";
   private List<INotification> _notifications = new();
@@ -131,14 +133,14 @@
   {
     _shownNotifications.Clear();
 
-    _notifications = UserLayoutState.Seen
+    _notifications = _seen
       ? (await ScopedServices
         .GetRequiredService<OzdsNotificationQueries>()
         .ReadForRecipient<NotificationModel>(representative.Representative, Seen))
       .Items
       .OfType<INotification>()
       .ToList()
-      : UserLayoutState.Notifications;
+      : representative.Notifications;
     if (_notifications is not null)
     {
       foreach (var notification in _notifications)

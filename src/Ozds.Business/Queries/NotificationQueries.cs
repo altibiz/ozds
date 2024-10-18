@@ -12,9 +12,9 @@ public class NotificationQueries(
 {
   public async Task<PaginatedList<T>> ReadForRecipient<T>(
     string representativeId,
-    bool seen,
     int pageNumber,
     CancellationToken cancellationToken,
+    bool seen = false,
     int pageCount = QueryConstants.DefaultPageCount
   )
     where T : class, INotification
@@ -32,6 +32,26 @@ public class NotificationQueries(
     return entities.Items
       .Select(modelEntityConverter.ToEntity<T>)
       .ToPaginatedList(entities.TotalCount);
+  }
+
+  public async Task<List<T>> ReadForRecipient<T>(
+    string representativeId,
+    CancellationToken cancellationToken,
+    bool seen = false
+  )
+    where T : class, INotification
+  {
+    var entityType = modelEntityConverter.EntityType(typeof(T));
+    var entities = await queries.ReadForRecipientDynamic(
+      entityType,
+      representativeId,
+      seen,
+      cancellationToken
+    );
+
+    return entities
+      .Select(modelEntityConverter.ToEntity<T>)
+      .ToList();
   }
 
   public async Task<PaginatedList<INotification>> ReadForRecipientDynamic(
@@ -63,5 +83,32 @@ public class NotificationQueries(
     return entities.Items
       .Select(modelEntityConverter.ToModel<INotification>)
       .ToPaginatedList(entities.TotalCount);
+  }
+
+  public async Task<List<INotification>> ReadForRecipientDynamic(
+    Type modelType,
+    string representativeId,
+    bool seen,
+    CancellationToken cancellationToken
+  )
+  {
+    if (!modelType.IsAssignableTo(typeof(INotification)))
+    {
+      throw new InvalidOperationException(
+        $"{modelType} is not a ${typeof(INotification)}"
+      );
+    }
+
+    var entityType = modelEntityConverter.EntityType(modelType);
+    var entities = await queries.ReadForRecipientDynamic(
+      entityType,
+      representativeId,
+      seen,
+      cancellationToken
+    );
+
+    return entities
+      .Select(modelEntityConverter.ToModel<INotification>)
+      .ToList();
   }
 }

@@ -16,7 +16,7 @@ public class AnalysisQueries(
 ) : IQueries
 {
   public async Task<PaginatedList<AnalysisBasisModel>>
-    ReadAnalysisBasesByRepresentativePaged(
+    ReadAnalysisBasesByRepresentative(
       string representativeId,
       RoleModel role,
       DateTimeOffset fromDate,
@@ -27,7 +27,7 @@ public class AnalysisQueries(
     )
   {
     var entities = await queries
-      .ReadAnalysisBasesByRepresentativePaged(
+      .ReadAnalysisBasesByRepresentative(
         representativeId,
         role.ToEntity(),
         fromDate,
@@ -54,6 +54,9 @@ public class AnalysisQueries(
           .ToList(),
         modelEntityConverter.ToModel<MeasurementModel>(entity.LastMeasurement),
         entity.MonthlyAggregates
+          .Select(modelEntityConverter.ToModel<AggregateModel>)
+          .ToList(),
+        entity.MonthlyMaxPowerAggregates
           .Select(modelEntityConverter.ToModel<AggregateModel>)
           .ToList()
       ))
@@ -95,6 +98,9 @@ public class AnalysisQueries(
           .ToList(),
         modelEntityConverter.ToModel<MeasurementModel>(entity.LastMeasurement),
         entity.MonthlyAggregates
+          .Select(modelEntityConverter.ToModel<AggregateModel>)
+          .ToList(),
+        entity.MonthlyMaxPowerAggregates
           .Select(modelEntityConverter.ToModel<AggregateModel>)
           .ToList()
       ))
