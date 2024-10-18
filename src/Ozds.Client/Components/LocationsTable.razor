@@ -44,7 +44,7 @@
                   @T["Last months consumption"]:
                   @NumericString(analysis.Analysis.ThisMonthConsumption.ActiveEnergy_kWh, 0) kWh
                 </MudItem>
-                @if (representative.Representative.Role is RoleModel.LocationRepresentative)
+                @if (RepresentativeState.Representative.Role is RoleModel.LocationRepresentative)
                 {
                   <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
                     @T["Active power"]:
@@ -73,7 +73,7 @@
   <MudDataGrid
     T="LocationAnalysis"
     MultiSelection="true"
-    Items="@locationAnalyses"
+    Items="@analyses"
     SortMode="SortMode.Multiple"
     Filterable="true"
     QuickFilter="@(x =>
@@ -122,7 +122,7 @@
           @(NumericString(context.Item.Analysis.LastMonthConsumption.ActiveEnergy_kWh, 0)) kWh
         </CellTemplate>
       </PropertyColumn>
-      @if (representative.Representative.Role is RoleModel.LocationRepresentative)
+      @if (RepresentativeState.Representative.Role is RoleModel.LocationRepresentative)
       {
         <PropertyColumn
           CellStyle="font-size: x-large;"

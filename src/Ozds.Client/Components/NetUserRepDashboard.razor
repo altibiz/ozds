@@ -9,6 +9,7 @@
   var meters = RepresentativeState.AnalysisBases
     .Select(x => x.Meter)
     .DistinctBy(x => x.Id)
+    .OfType<IMeter>()
     .ToList();
 }
 

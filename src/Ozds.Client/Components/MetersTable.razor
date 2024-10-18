@@ -50,7 +50,7 @@
             </MudContainer>
             <MudContainer Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
               @T["Last months invoice total"]: <br>
-              @(dataStruct.data.lastMonthsPayment == 0
+              @(analysis.Analysis.LastMonthExpenses.Total_EUR == 0
                 ? T["Invoice pending..."]
                 : NumericString(analysis.Analysis.LastMonthExpenses.Total_EUR) + " EUR")
             </MudContainer>
@@ -65,7 +65,7 @@
   <MudDataGrid
     T="MeasurementLocationAnalysis"
     MultiSelection="true"
-    Items="@(measurementLocationAnalyses)"
+    Items="@(analyses)"
     SortMode="SortMode.Multiple"
     Filterable="true"
     QuickFilter="@(x =>
