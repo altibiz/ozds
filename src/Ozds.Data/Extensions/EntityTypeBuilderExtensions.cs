@@ -13,13 +13,16 @@ public static class EntityTypeBuilderExtensions
   {
     propertyName ??= complexPropertyBuilder.Metadata.Name;
 
+    // NOTE: navigation properties are virtual and not final
+    // if a property is virtual and final it is not possible to override it
+    // which EF Core will do when it encounters a navigation property
     var propertiesToIgnore = complexPropertyBuilder.Metadata
       .ComplexType
       .ClrType
       .GetProperties()
-      .Where(
-        property => property is { GetMethod.IsVirtual: true } or
-          { GetMethod.IsAbstract: true })
+      .Where(property => property
+        is { GetMethod.IsVirtual: true }
+        and { GetMethod.IsFinal: false })
       .ToList();
 
     var propertiesToArchive = complexPropertyBuilder.Metadata
@@ -37,6 +40,21 @@ public static class EntityTypeBuilderExtensions
       .Except(propertiesToIgnore)
       .Except(propertiesToArchive)
       .ToList();
+
+    // NOTE: good for debug - please leave this in
+#pragma warning disable S125 // Sections of code should not be commented out
+    // Console.Write(
+    //   "Archiving property {0} of {1}"
+    //   + "\nProperties to ignore: {2}"
+    //   + "\nProperties to archive: {3}"
+    //   + "\nProperties to shorten: {4}"
+    //   + "\n\n",
+    //   propertyName,
+    //   complexPropertyBuilder.Metadata.DeclaringType.Name,
+    //   string.Join(", ", propertiesToIgnore.Select(p => p.Name)),
+    //   string.Join(", ", propertiesToArchive.Select(p => p.Name)),
+    //   string.Join(", ", propertiesToShorten.Select(p => p.Name)));
+#pragma warning restore S125 // Sections of code should not be commented out
 
     foreach (var property in propertiesToIgnore)
     {

@@ -129,11 +129,11 @@
 </MudHidden>
 
 @code {
-  [Parameter]
-  public IMeter Meter { get; set; } = default!;
+  [CascadingParameter]
+  public RepresentativeState RepresentativeState { get; set; } = default!;
 
   [Parameter]
-  public RepresentativeState RepresentativeState { get; set; } = default!;
+  public IMeter Meter { get; set; } = default!;
 
   private string? _searchString;
 }
