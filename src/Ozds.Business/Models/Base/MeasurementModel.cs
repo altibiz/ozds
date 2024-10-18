@@ -28,12 +28,14 @@ public abstract class MeasurementModel : IMeasurement
   public abstract TariffMeasure<decimal> ReactiveEnergy_VARh { get; }
 
   public abstract TariffMeasure<decimal> ApparentEnergy_VAh { get; }
+
+  public abstract IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
 }
 
 public abstract class MeasurementModel<T> : MeasurementModel
   where T : class, IMeasurementValidator
 {
-  public virtual IEnumerable<ValidationResult> Validate(
+  public override IEnumerable<ValidationResult> Validate(
     ValidationContext validationContext)
   {
     if (validationContext.ObjectInstance != this)

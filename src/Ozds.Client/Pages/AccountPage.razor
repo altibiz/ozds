@@ -1,11 +1,7 @@
 @page "/account"
 
-@if (user is null || representative is null)
-{
-  return;
-}
 <MudContainer MaxWidth="MaxWidth.ExtraSmall" Class="d-flex  flex-column" Style="float: left;">
-  <MudText Class="d-flex align-center my-2" Typo="@Typo.h5">@user.RepresentingUser.User.UserName</MudText>
+  <MudText Class="d-flex align-center my-2" Typo="@Typo.h5">@UserState.User.UserName</MudText>
   <MudPaper class="mt-2 px-4 py-2">
     <MudGrid Spacing="3">
 
@@ -17,12 +13,12 @@
       <MudItem xs="12" sm="6">
         <MudHidden Breakpoint="Breakpoint.Xs">
           <MudText Type="Typo.body2" Align="MudAlign.Right">
-            @user.RepresentingUser.User.Email
+            @UserState.User.Email
           </MudText>
         </MudHidden>
         <MudHidden Breakpoint="Breakpoint.SmAndUp">
           <MudText Type="Typo.body2" Align="MudAlign.Left">
-            @user.RepresentingUser.User.Email
+            @UserState.User.Email
           </MudText>
         </MudHidden>
       </MudItem>
@@ -31,11 +27,6 @@
 </MudContainer>
 
 @code {
-
   [CascadingParameter]
-  public UserState user { get; set; } = default!;
-
-  [CascadingParameter]
-  public RepresentativeState representative { get; set; } = default!;
-
+  public UserState UserState { get; set; } = default!;
 }

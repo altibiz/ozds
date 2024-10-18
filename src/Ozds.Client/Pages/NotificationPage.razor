@@ -2,13 +2,7 @@
 @using Align = MudBlazor.Align
 @inherits OzdsOwningComponentBase
 
-
-@if (user is null)
-{
-  return;
-}
-
-<Loading T="NotificationModel" LoadAsync="Load">
+<Loading T="NotificationModel" LoadAsync="LoadAsync">
   <Found Context="model">
     <MudContainer MaxWidth="MaxWidth.Small" Class="d-flex  flex-column" Style="float: left;">
       <MudText Class="d-flex align-center my-2" Typo="@Typo.h5">Notification Id: @Id</MudText>
@@ -113,22 +107,25 @@
   [Parameter]
   public string Id { get; set; } = default!;
 
-  private async Task<NotificationModel?> Load()
+  private async Task<NotificationModel?> LoadAsync()
   {
-    var notification = await ScopedServices
-      .GetRequiredService<OzdsNotificationQueries>()
-      .ReadSingle<NotificationModel>(Id);
+    var notification = RepresentativeState.Notifications
+      .FirstOrDefault(x => x.Id == Id)
+      ??  await ScopedServices
+        .GetRequiredService<OzdsNotificationQueries>()
+        .ReadSingle<NotificationModel>(Id);
+
     if (notification is not null)
     {
       await ScopedServices
         .GetRequiredService<NotificationMutations>()
         .MarkNotificationAsSeen(
           notification.Id,
-          RepresentativeState.Representative.Id);
+          RepresentativeState.Representative.Id,
+          CancellationToken.None);
       RepresentativeState.MarkNotificationAsSeen(notification);
     }
 
     return notification;
   }
-
 }

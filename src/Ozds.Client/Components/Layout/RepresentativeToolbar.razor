@@ -20,35 +20,31 @@
       Style="margin-left: -12px;"
       OnClick="e => LayoutState.SetNavigationDrawerOpen(true)"/>
     <MudSpacer />
-    @if (UserState.RepresentingUser.Representative
-      is RepresentativeModel representative)
-    {
-      <Paging PageAsync="@((page) => ScopedServices
-        .GetRequiredService<NewOzdsNotificationQueries>()
-        .Read(representative.Id, pageNumber: page))">
-        <Found Context="events">
-          <MudButton
-            Size="MudBlazor.Size.Small"
-            Style="margin-right: -20px;"
-            Href="@($"/app/{Culture}/notifications")">
-            <MudIcon Icon="@Icons.Material.Filled.NotificationsActive"/>
-            <MudItem>
-              <MudIcon Icon="@Icons.Material.Filled.Circle"/>
-              <MudText>@events.TotalCount</MudText>
-            </MudItem>
-          </MudButton>
-        </Found>
-        <Empty>
-          <MudButton
-            Size="MudBlazor.Size.Small"
-            Style="margin-right: -20px;"
-            Href="@($"/app/{Culture}/notifications")">
-            <MudIcon Icon="@Icons.Material.Filled.NotificationsNone" />
-          </MudButton>
-        </Empty>
-        <Pagination />
-      </Paging>
-    }
+    <Paging PageAsync="@((page) => ScopedServices
+      .GetRequiredService<NewOzdsNotificationQueries>()
+      .Read(RepresentativeState.Representative.Id, pageNumber: page))">
+      <Found Context="events">
+        <MudButton
+          Size="MudBlazor.Size.Small"
+          Style="margin-right: -20px;"
+          Href="@($"/app/{Culture}/notifications")">
+          <MudIcon Icon="@Icons.Material.Filled.NotificationsActive"/>
+          <MudItem>
+            <MudIcon Icon="@Icons.Material.Filled.Circle"/>
+            <MudText>@events.TotalCount</MudText>
+          </MudItem>
+        </MudButton>
+      </Found>
+      <Empty>
+        <MudButton
+          Size="MudBlazor.Size.Small"
+          Style="margin-right: -20px;"
+          Href="@($"/app/{Culture}/notifications")">
+          <MudIcon Icon="@Icons.Material.Filled.NotificationsNone" />
+        </MudButton>
+      </Empty>
+      <Pagination />
+    </Paging>
   </MudContainer>
 </MudToolBar>
 
@@ -58,4 +54,7 @@
 
   [CascadingParameter]
   public UserState UserState { get; set; } = default!;
+
+  [CascadingParameter]
+  public RepresentativeState RepresentativeState { get; set; } = default!;
 }

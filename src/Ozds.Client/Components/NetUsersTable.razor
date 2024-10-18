@@ -59,7 +59,7 @@
                 </MudItem>
                 <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large;">
                   @T["Last months invoice total"]:
-                  @(dataStruct.data.lastMonthsPayment == 0
+                  @(analysis.Analysis.LastMonthExpenses.Total_EUR == 0
                     ? T["Invoice pending..."]
                     : NumericString(analysis.Analysis.LastMonthExpenses.Total_EUR) + " EUR")
                 </MudItem>
@@ -140,26 +140,11 @@
         Property="x => x.Analysis.LastMonthExpenses.Total_EUR"
         Title='@T["Last months invoice total"]'>
         <CellTemplate>
-          @(dataStruct.data.lastMonthsPayment == 0
+          @(context.Item.Analysis.LastMonthExpenses.Total_EUR == 0
             ? T["Invoice pending..."]
-            : NumericString(networkUserAnalysis.Analysis.LastMonthExpenses.Total_EUR) + " EUR")
+            : NumericString(context.Item.Analysis.LastMonthExpenses.Total_EUR) + " EUR")
         </CellTemplate>
       </PropertyColumn>
-
-      @if (representative is not null && representative.Representative.Role is RoleModel.OperatorRepresentative)
-      {
-        <TemplateColumn CellClass="d-flex justify-end" Sortable="false" Filterable="false">
-          <CellTemplate>
-            <MudStack Row>
-              <MudButton Variant="Variant.Filled" Color="Color.Primary">
-                <form method="post" action="@($"admin/IssueInvoice/{context.Item.networkUser.Id}")">
-                  <button type="submit">@T["Issue Invoice"]</button>
-                </form>
-              </MudButton>
-            </MudStack>
-          </CellTemplate>
-        </TemplateColumn>
-      }
     </Columns>
     <PagerContent>
       <MudDataGridPager T="NetworkUserAnalysis"/>
