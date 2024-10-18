@@ -140,7 +140,7 @@
       .Items
       .OfType<INotification>()
       .ToList()
-      : representative.Notifications;
+      : representative.Notifications.OfTyp<INotification>().ToList();
     if (_notifications is not null)
     {
       foreach (var notification in _notifications)
