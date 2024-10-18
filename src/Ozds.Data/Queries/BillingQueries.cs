@@ -26,6 +26,10 @@ public class BillingQueries(
   {
     await using var context = await factory
       .CreateDbContextAsync(cancellationToken);
+
+    await context.Database
+      .ExecuteSqlRawAsync("SET jit = on;", cancellationToken);
+
     var networkUser = await context.NetworkUsers
         .Where(
           context.PrimaryKeyEquals<NetworkUserEntity>(
@@ -50,16 +54,6 @@ public class BillingQueries(
       toDate,
       calculationBases
     );
-  }
-
-  public Task<LocationInvoiceIssuingBasisEntity> IssuingBasisForLocation(
-    string locationId,
-    DateTimeOffset fromDate,
-    DateTimeOffset toDate,
-    CancellationToken cancellationToken
-  )
-  {
-    throw new NotImplementedException();
   }
 
   private async Task<List<NetworkUserCalculationBasisEntity>>
@@ -221,17 +215,6 @@ public class BillingQueries(
         )
       )
       .ToList();
-  }
-
-  public Task<List<LocationNetworkUserCalculationBasisEntity>>
-    NetworkUserCalculationBasesByLocation(
-      string locationId,
-      DateTimeOffset fromDate,
-      DateTimeOffset toDate,
-      CancellationToken cancellationToken
-    )
-  {
-    throw new NotImplementedException();
   }
 
   private readonly struct NetworkUserCalculationBasesByNetworkUserIntermediary

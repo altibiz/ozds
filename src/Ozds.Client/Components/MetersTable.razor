@@ -4,175 +4,163 @@
 @using Color = MudBlazor.Color
 @using Size = MudBlazor.Size
 
-<Loading LoadAsync="@(() => ScopedServices
-    .GetRequiredService<AnalysisQueries>()
-    .ReadAnalysisBasesByRepresentative(
-      RepresentativeState.Representative.Id,
-      RepresentativeState.Representative.Role,
-      DateTimeOffset.UtcNow.GetStartOfLastMonth(),
-      DateTimeOffset.UtcNow,
-      CancellationToken.None
-    ))">
-  <Found>
-    @{
-      var measurementLocationAnalyses = context.AnalysesByMeasurementLocation();
-    }
+@{
+  var analyses = RepresentativeState.AnalysisBases.AnalysesByMeasurementLocation();
+}
 
-    <MudHidden Breakpoint="Breakpoint.MdAndUp">
-      <MudText Typo="Typo.h4" Class="d-flex">
-        @(T["Measurement locations"])
-      </MudText>
-      @foreach (var measurementLocationAnalysis in measurementLocationAnalyses)
-      {
-        <MudPaper Elevation="2" Class="ma-1">
-          <MudStack Spacing="0">
-            <MudGrid Class="d-flex pa-2">
-              <MudItem xs="8" Class="d-flex align-center justify-start" Style="font-size: large;">
-                @T["Device"]: <br> @(measurementLocationAnalysis.Meter.Title)
-              </MudItem>
-              <MudItem xs="2" Class="d-flex align-center justify-end">
-                <MudIconButton
-                  OnClick="@(() => NavigationManager.NavigateTo($"meter/{measurementLocationAnalysis.Meter.Id}"))"
-                  Icon="@Icons.Material.Filled.RemoveRedEye" Color="Color.Primary"/>
-              </MudItem>
-              <MudItem xs="2" Class="d-flex align-center justify-end">
-                <MudIconButton
-                  Icon="@(Icons.Material.Filled.KeyboardArrowDown)" Color="Color.Default"/>
-              </MudItem>
-            </MudGrid>
+<MudHidden Breakpoint="Breakpoint.MdAndUp">
+  <MudText Typo="Typo.h4" Class="d-flex">
+    @(T["Measurement locations"])
+  </MudText>
+  @foreach (var analysis in analyses)
+  {
+    <MudPaper Elevation="2" Class="ma-1">
+      <MudStack Spacing="0">
+        <MudGrid Class="d-flex pa-2">
+          <MudItem xs="8" Class="d-flex align-center justify-start" Style="font-size: large;">
+            @T["Device"]: <br> @(analysis.Meter.Title)
+          </MudItem>
+          <MudItem xs="2" Class="d-flex align-center justify-end">
+            <MudIconButton
+              OnClick="@(() => NavigationManager.NavigateTo($"meter/{analysis.Meter.Id}"))"
+              Icon="@Icons.Material.Filled.RemoveRedEye" Color="Color.Primary"/>
+          </MudItem>
+          <MudItem xs="2" Class="d-flex align-center justify-end">
+            <MudIconButton
+              Icon="@(Icons.Material.Filled.KeyboardArrowDown)" Color="Color.Default"/>
+          </MudItem>
+        </MudGrid>
 
-            <MudCollapse Class="py-2" Expanded="true">
-              <MudStack>
-                <MudDivider DividerType="DividerType.Middle" Class="mt-2"/>
-                <MudContainer>
-                  @T["Location"]: @(measurementLocationAnalysis.Location.Title)
-                </MudContainer>
-                <MudContainer>
-                  @T["Network user"]: @(measurementLocationAnalysis.NetworkUser.Title)
-                </MudContainer>
-                <MudContainer Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
-                  @T["Current months consumption"]: <br>
-                  @NumericString(measurementLocationAnalysis.Analysis.ThisMonthConsumption.ActiveEnergy_kWh, 0) kWh
-                </MudContainer>
-                <MudContainer Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
-                  @T["Last months consumption"]: <br>
-                  @NumericString(measurementLocationAnalysis.Analysis.LastMonthConsumption.ActiveEnergy_kWh, 0) kWh
-                </MudContainer>
-                <MudContainer Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
-                  @T["Last months invoice total"]: <br>
-                  @(dataStruct.data.lastMonthsPayment == 0
-                    ? T["Invoice pending..."]
-                    : NumericString(measurementLocationAnalysis.Analysis.LastMonthExpenses.Total_EUR) + " EUR")
-                </MudContainer>
-              </MudStack>
-            </MudCollapse>
-          </MudStack>
-        </MudPaper>
-      }
-    </MudHidden>
-
-    <MudHidden Breakpoint="Breakpoint.SmAndDown">
-      <MudDataGrid
-        T="MeasurementLocationAnalysis"
-        MultiSelection="true"
-        Items="@(measurementLocationAnalyses)"
-        SortMode="SortMode.Multiple"
-        Filterable="true"
-        QuickFilter="@(x =>
-          string.IsNullOrWhiteSpace(_searchString)
-          || x.Location.Title.Contains(_searchString)
-          || x.NetworkUser.Title.Contains(_searchString)
-          || x.MeasurementLocation.Title.Contains(_searchString)
-          || x.Meter.Title.Contains(_searchString))">
-        <ToolBarContent>
-          <MudText Typo="Typo.h4">@T["Measurement locations"]</MudText>
-          <MudSpacer/>
-          <MudTextField
-            @bind-Value="_searchString"
-            Placeholder="@T["Search"]"
-            Adornment="Adornment.Start"
-            Immediate="true"
-            AdornmentIcon="@Icons.Material.Filled.Search"
-            IconSize="Size.Medium"
-            Class="mt-0">
-          </MudTextField>
-        </ToolBarContent>
-        <Columns>
-
-          <TemplateColumn Title="@T["Location"]" Sortable="false">
-            <CellTemplate>
-              <MudStack Row>
-                <MudButton
-                  OnClick="@(() => NavigationManager.NavigateTo($"location/{context.Item.Location.Id}"))"
-                  Variant="Variant.Outlined" Color="Color.Primary">
-                  @context.Item.Location.Title
-                </MudButton>
-              </MudStack>
-            </CellTemplate>
-          </TemplateColumn>
-
-          <TemplateColumn Title="@T["Network user"]" Sortable="false">
-            <CellTemplate>
-              <MudStack Row>
-                <MudButton
-                  OnClick="@(() => NavigationManager.NavigateTo($"network-user/{context.Item.NetworkUser.Id}"))"
-                  Variant="Variant.Outlined" Color="Color.Primary">
-                  @context.Item.NetworkUser.Title
-                </MudButton>
-              </MudStack>
-            </CellTemplate>
-          </TemplateColumn>
-
-          <TemplateColumn Title="@T["Device"]" Sortable="false">
-            <CellTemplate>
-              <MudStack Row>
-                <MudButton
-                  OnClick="@(() => NavigationManager.NavigateTo($"meter/{context.Item.Meter.Id}"))"
-                  Variant="Variant.Filled" Color="Color.Primary">
-                  @context.Item.Meter.Title
-                </MudButton>
-              </MudStack>
-            </CellTemplate>
-          </TemplateColumn>
-
-          <PropertyColumn
-            CellStyle="font-size: x-large;"
-            Property="x => x.Analysis.ThisMonthConsumption.ActiveEnergy_kWh"
-            Title='@T["Current months consumption"]'>
-            <CellTemplate>
-              @(NumericString(context.Item.Analysis.ThisMonthConsumption.ActiveEnergy_kWh, 0)) kWh
-            </CellTemplate>
-          </PropertyColumn>
-          <PropertyColumn
-            CellStyle="font-size: x-large;"
-            Property="x => x.Analysis.LastMonthConsumption.ActiveEnergy_kWh"
-            Title='@T["Last months consumption"]'>
-            <CellTemplate>
-              @(NumericString(context.Item.Analysis.LastMonthConsumption.ActiveEnergy_kWh, 0)) kWh
-            </CellTemplate>
-          </PropertyColumn>
-          <PropertyColumn
-            CellStyle="font-size: x-large;"
-            Property="x => x.Analysis.LastMonthExpenses.Total_EUR"
-            Title='@T["Last months invoice total"]'>
-            <CellTemplate>
-              @(context.Item.Analysis.LastMonthExpenses.Total_EUR == 0
+        <MudCollapse Class="py-2" Expanded="true">
+          <MudStack>
+            <MudDivider DividerType="DividerType.Middle" Class="mt-2"/>
+            <MudContainer>
+              @T["Location"]: @(analysis.Location.Title)
+            </MudContainer>
+            <MudContainer>
+              @T["Network user"]: @(analysis.NetworkUser.Title)
+            </MudContainer>
+            <MudContainer Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
+              @T["Current months consumption"]: <br>
+              @NumericString(analysis.Analysis.ThisMonthConsumption.ActiveEnergy_kWh, 0) kWh
+            </MudContainer>
+            <MudContainer Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
+              @T["Last months consumption"]: <br>
+              @NumericString(analysis.Analysis.LastMonthConsumption.ActiveEnergy_kWh, 0) kWh
+            </MudContainer>
+            <MudContainer Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
+              @T["Last months invoice total"]: <br>
+              @(dataStruct.data.lastMonthsPayment == 0
                 ? T["Invoice pending..."]
-                : NumericString(context.Item.Analysis.LastMonthExpenses.Total_EUR) + " EUR")
-            </CellTemplate>
-          </PropertyColumn>
-        </Columns>
-        <PagerContent>
-          <MudDataGridPager T="MeasurementLocationAnalysis"/>
-        </PagerContent>
-      </MudDataGrid>
-    </MudHidden>
-  </Found>
-</Loading>
+                : NumericString(analysis.Analysis.LastMonthExpenses.Total_EUR) + " EUR")
+            </MudContainer>
+          </MudStack>
+        </MudCollapse>
+      </MudStack>
+    </MudPaper>
+  }
+</MudHidden>
+
+<MudHidden Breakpoint="Breakpoint.SmAndDown">
+  <MudDataGrid
+    T="MeasurementLocationAnalysis"
+    MultiSelection="true"
+    Items="@(measurementLocationAnalyses)"
+    SortMode="SortMode.Multiple"
+    Filterable="true"
+    QuickFilter="@(x =>
+      string.IsNullOrWhiteSpace(_searchString)
+      || x.Location.Title.Contains(_searchString)
+      || x.NetworkUser.Title.Contains(_searchString)
+      || x.MeasurementLocation.Title.Contains(_searchString)
+      || x.Meter.Title.Contains(_searchString))">
+    <ToolBarContent>
+      <MudText Typo="Typo.h4">@T["Measurement locations"]</MudText>
+      <MudSpacer/>
+      <MudTextField
+        @bind-Value="_searchString"
+        Placeholder="@T["Search"]"
+        Adornment="Adornment.Start"
+        Immediate="true"
+        AdornmentIcon="@Icons.Material.Filled.Search"
+        IconSize="Size.Medium"
+        Class="mt-0">
+      </MudTextField>
+    </ToolBarContent>
+    <Columns>
+
+      <TemplateColumn Title="@T["Location"]" Sortable="false">
+        <CellTemplate>
+          <MudStack Row>
+            <MudButton
+              OnClick="@(() => NavigationManager.NavigateTo($"location/{context.Item.Location.Id}"))"
+              Variant="Variant.Outlined" Color="Color.Primary">
+              @context.Item.Location.Title
+            </MudButton>
+          </MudStack>
+        </CellTemplate>
+      </TemplateColumn>
+
+      <TemplateColumn Title="@T["Network user"]" Sortable="false">
+        <CellTemplate>
+          <MudStack Row>
+            <MudButton
+              OnClick="@(() => NavigationManager.NavigateTo($"network-user/{context.Item.NetworkUser.Id}"))"
+              Variant="Variant.Outlined" Color="Color.Primary">
+              @context.Item.NetworkUser.Title
+            </MudButton>
+          </MudStack>
+        </CellTemplate>
+      </TemplateColumn>
+
+      <TemplateColumn Title="@T["Device"]" Sortable="false">
+        <CellTemplate>
+          <MudStack Row>
+            <MudButton
+              OnClick="@(() => NavigationManager.NavigateTo($"meter/{context.Item.Meter.Id}"))"
+              Variant="Variant.Filled" Color="Color.Primary">
+              @context.Item.Meter.Title
+            </MudButton>
+          </MudStack>
+        </CellTemplate>
+      </TemplateColumn>
+
+      <PropertyColumn
+        CellStyle="font-size: x-large;"
+        Property="x => x.Analysis.ThisMonthConsumption.ActiveEnergy_kWh"
+        Title='@T["Current months consumption"]'>
+        <CellTemplate>
+          @(NumericString(context.Item.Analysis.ThisMonthConsumption.ActiveEnergy_kWh, 0)) kWh
+        </CellTemplate>
+      </PropertyColumn>
+      <PropertyColumn
+        CellStyle="font-size: x-large;"
+        Property="x => x.Analysis.LastMonthConsumption.ActiveEnergy_kWh"
+        Title='@T["Last months consumption"]'>
+        <CellTemplate>
+          @(NumericString(context.Item.Analysis.LastMonthConsumption.ActiveEnergy_kWh, 0)) kWh
+        </CellTemplate>
+      </PropertyColumn>
+      <PropertyColumn
+        CellStyle="font-size: x-large;"
+        Property="x => x.Analysis.LastMonthExpenses.Total_EUR"
+        Title='@T["Last months invoice total"]'>
+        <CellTemplate>
+          @(context.Item.Analysis.LastMonthExpenses.Total_EUR == 0
+            ? T["Invoice pending..."]
+            : NumericString(context.Item.Analysis.LastMonthExpenses.Total_EUR) + " EUR")
+        </CellTemplate>
+      </PropertyColumn>
+    </Columns>
+    <PagerContent>
+      <MudDataGridPager T="MeasurementLocationAnalysis"/>
+    </PagerContent>
+  </MudDataGrid>
+</MudHidden>
 
 @code {
   [CascadingParameter]
-  public RepresentativeState representative { get; set; } = default!;
+  public RepresentativeState RepresentativeState { get; set; } = default!;
 
   private string? _searchString;
 }

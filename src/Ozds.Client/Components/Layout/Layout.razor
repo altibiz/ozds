@@ -6,6 +6,12 @@
 @using Microsoft.AspNetCore.Components.Web
 @inherits Ozds.Client.Base.OzdsLayoutComponentBase
 
+@{
+  var footerBackgroundColor = ThemeState.IsDarkMode
+    ? ThemeState.Theme.PaletteDark.GrayDefault
+    : ThemeState.Theme.Palette.GrayDefault;
+}
+
 <HeadContent>
   <title>HELB</title>
 
@@ -29,9 +35,7 @@
     }
 
     footer {
-      @(ThemeState.IsDarkMode
-        ? $"background-color: {ThemeState.Theme.PaletteDark.GrayDefault};"
-        : $"background-color: {ThemeState.Theme.Palette.GrayDefault};")
+      background-color: @(footerBackgroundColor);
     }
   </style>
 </HeadContent>
@@ -39,7 +43,7 @@
 <CascadingValue Value="ThemeState">
   <CascadingValue Value="LayoutState">
     <MudThemeProvider
-      @ref="_mudThemeProvider"
+      @ref="@(_mudThemeProvider)"
       Theme="ThemeState.Theme"
       IsDarkMode="ThemeState.IsDarkMode" />
     <MudPopoverProvider/>
@@ -48,53 +52,52 @@
 
     <MudBreakpointProvider>
       <Loading
-        T="UserState"
-        LoadAsync="LoadAsync">
-        <Found Context="userState">
-          <CascadingValue Value="userState">
-            <main>
-              <MudLayout Class="d-flex flex-column">
-                <UserToolbar />
-                @if (userState.RepresentingUser.Representative is { })
-                {
-                  <RepresentativeToolbar />
-                }
+        T="(UserState? UserState, RepresentativeState? RepresentativeState)"
+        LoadAsync="@(LoadAsync)">
+        <Found>
+          <CascadingValue Value="@(context.UserState)">
+            <CascadingValue Value="@(context.RepresentativeState)">
+              <main>
+                <MudLayout Class="d-flex flex-column">
+                  <UserToolbar />
+                  @if (context.RepresentativeState?.Representative is { })
+                  {
+                    <RepresentativeToolbar />
+                  }
 
-                <LocalizationDrawer />
-                <UserDrawer />
-                @if (userState.RepresentingUser.Representative is { })
-                {
-                  <NavigationDrawer />
-                }
+                  <LocalizationDrawer />
+                  <UserDrawer />
+                  @if (context.RepresentativeState?.Representative is { })
+                  {
+                    <NavigationDrawer />
+                  }
 
-                <MudHidden Breakpoint="Breakpoint.SmAndDown">
-                  <MudContainer
-                    MaxWidth="MaxWidth.Large"
-                    Class="mt-8 relative"
-                    Style="flex: 1;">
-                    @Body
-                  </MudContainer>
-                </MudHidden>
-                <MudHidden Breakpoint="Breakpoint.MdAndUp">
-                  <MudContainer
-                    MaxWidth="MaxWidth.Large"
-                    Class="mt-4 relative"
-                    Style="flex: 1;">
-                    @Body
-                  </MudContainer>
-                </MudHidden>
-              </MudLayout>
-            </main>
-            <footer style="
-            @(ThemeState.IsDarkMode
-              ? $"background-color: {ThemeState.Theme.PaletteDark.GrayDefault};"
-              : $"background-color: {ThemeState.Theme.Palette.GrayDefault};")">
-              <MudContainer
-                MaxWidth="MaxWidth.Large"
-                Style="height: 100%; padding-top: 12px;">
-                <Footer />
-              </MudContainer>
-            </footer>
+                  <MudHidden Breakpoint="Breakpoint.SmAndDown">
+                    <MudContainer
+                      MaxWidth="MaxWidth.Large"
+                      Class="mt-8 relative"
+                      Style="flex: 1;">
+                      @Body
+                    </MudContainer>
+                  </MudHidden>
+                  <MudHidden Breakpoint="Breakpoint.MdAndUp">
+                    <MudContainer
+                      MaxWidth="MaxWidth.Large"
+                      Class="mt-4 relative"
+                      Style="flex: 1;">
+                      @Body
+                    </MudContainer>
+                  </MudHidden>
+                </MudLayout>
+              </main>
+              <footer>
+                <MudContainer
+                  MaxWidth="MaxWidth.Large"
+                  Style="height: 100%; padding-top: 12px;">
+                  <Footer />
+                </MudContainer>
+              </footer>
+            </CascadingValue>
           </CascadingValue>
         </Found>
       </Loading>

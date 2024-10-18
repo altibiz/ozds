@@ -115,6 +115,7 @@ words:
   - "unnest"
   - "unscheduling"
   - "hypertable"
+  - "unfound"
 
   # Croatian
   - "altibiz"

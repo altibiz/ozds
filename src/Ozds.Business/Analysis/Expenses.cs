@@ -22,6 +22,7 @@ public static class ExpensesExtensions
           .DefaultIfEmpty(0)
           .Sum())
       )
+      .OrderByDescending(x => x.Timestamp)
       .ToList();
   }
 
@@ -38,6 +39,7 @@ public static class ExpensesExtensions
           .DefaultIfEmpty(0)
           .Sum()
       ))
+      .OrderByDescending(x => x.Timestamp)
       .ToList();
   }
 

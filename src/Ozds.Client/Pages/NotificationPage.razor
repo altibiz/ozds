@@ -107,15 +107,8 @@
 </Loading>
 
 @code {
-
-  [CascadingParameter]
-  public UserState user { get; set; } = default!;
-
   [CascadingParameter]
   public RepresentativeState RepresentativeState { get; set; } = default!;
-
-  [CascadingParameter]
-  public UserLayoutState UserLayoutState { get; set; } = default!;
 
   [Parameter]
   public string Id { get; set; } = default!;
@@ -131,9 +124,8 @@
         .GetRequiredService<NotificationMutations>()
         .MarkNotificationAsSeen(
           notification.Id,
-          RepresentativeState.Representative.Id,
-          CancellationToken.None);
-      UserLayoutState.MarkNotificationAsSeen(notification);
+          RepresentativeState.Representative.Id);
+      RepresentativeState.MarkNotificationAsSeen(notification);
     }
 
     return notification;

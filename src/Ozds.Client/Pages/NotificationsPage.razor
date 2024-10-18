@@ -7,24 +7,11 @@
   return;
 }
 
-<MudCheckBox
-  T="bool"
-  Label="@T["Seen"]"
-  Checked="@UserLayoutState.Seen"
-  CheckedChanged="@(() => UserLayoutState.SetSeen(!UserLayoutState.Seen))"/>
-
-<NotificationsTable Seen="@UserLayoutState.Seen"/>
+<NotificationsTable/>
 
 
 @code {
 
   [CascadingParameter]
   public UserState user { get; set; } = default!;
-
-  [CascadingParameter]
-  public RepresentativeState RepresentativeState { get; set; } = default!;
-
-  [CascadingParameter]
-  public UserLayoutState UserLayoutState { get; set; } = default!;
-
 }
