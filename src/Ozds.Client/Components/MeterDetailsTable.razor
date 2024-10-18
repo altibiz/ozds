@@ -13,9 +13,9 @@
 
 <MudHidden Breakpoint="Breakpoint.MdAndUp">
   <MudText Typo="Typo.h4" Class="d-flex">
-    @(T["Device"] + ": " + Source)
+    @(T["Device"] + ": " + Meter.Id)
   </MudText>
-  <MudText Typo="Typo.h5">@(T["Name"] + ": " + _meter.Title)</MudText>
+  <MudText Typo="Typo.h5">@(T["Name"] + ": " + Meter.Title)</MudText>
   @foreach (var analysis in analysis.Analysis.Monthly)
   {
     <MudPaper Elevation="2" Class="ma-1">
@@ -25,7 +25,7 @@
             Class="d-flex align-center justify-start"
             Style="font-size: large; font-weight: bold;">
             @T["Billing period"]:
-            @(x.StartOfMonth.Month + "/" + analysis.StartOfMonth.Year)
+            @(analysis.StartOfMonth.Month + "/" + analysis.StartOfMonth.Year)
           </MudItem>
           <MudItem xs="2" Class="d-flex align-center justify-end">
             <MudIconButton

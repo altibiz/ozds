@@ -21,6 +21,7 @@ public static class IServiceCollectionExtensions
     // State
     services.AddCascadingAuthenticationState();
     services.AddCascadingValue(_ => default(UserState));
+    services.AddCascadingValue(_ => default(RepresentativeState));
     services.AddCascadingValue(
       _ => new LayoutState(
         false,
@@ -38,7 +39,6 @@ public static class IServiceCollectionExtensions
         _ => { }
       ));
     services.AddCascadingValue(_ => new LogoutTokenState(string.Empty));
-    services.AddCascadingValue(_ => new AnalysisState(new()));
 
     return services;
   }

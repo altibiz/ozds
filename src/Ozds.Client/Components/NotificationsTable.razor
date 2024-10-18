@@ -136,7 +136,7 @@
     _notifications = _seen
       ? (await ScopedServices
         .GetRequiredService<OzdsNotificationQueries>()
-        .ReadForRecipient<NotificationModel>(representative.Representative, Seen))
+        .ReadForRecipient<NotificationModel>(representative.Representative, _seen))
       .Items
       .OfType<INotification>()
       .ToList()

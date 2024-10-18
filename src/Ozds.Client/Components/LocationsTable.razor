@@ -5,7 +5,7 @@
 @using Size = MudBlazor.Size
 
 @{
-  var analysis = RepresentativeState.AnalysisBases.AnalysesByLocation();
+  var analyses = RepresentativeState.AnalysisBases.AnalysesByLocation();
 }
 
 <MudHidden Breakpoint="Breakpoint.MdAndUp">
@@ -13,17 +13,17 @@
     <MudText Typo="Typo.h4" Class="d-flex">
       @(T["Locations"])
     </MudText>
-    @foreach (var locationAnalysis in locationAnalyses)
+    @foreach (var analysis in analyses)
     {
       <MudPaper Elevation="2" Class="ma-1">
         <MudStack Spacing="0">
           <MudGrid Class="d-flex pa-2">
             <MudItem xs="8" Class="d-flex align-center justify-start" Style="font-size: large;">
-              @T["Location"]: @(locationAnalysis.Location.Title)
+              @T["Location"]: @(analysis.Location.Title)
             </MudItem>
             <MudItem xs="2" Class="d-flex align-center justify-end">
               <MudIconButton
-                OnClick="@(() => NavigationManager.NavigateTo($"location/{locationAnalysis.Location.Id}"))"
+                OnClick="@(() => NavigationManager.NavigateTo($"location/{analysis.Location.Id}"))"
                 Icon="@Icons.Material.Filled.RemoveRedEye"
                 Color="Color.Primary"/>
             </MudItem>
@@ -38,26 +38,26 @@
               <MudContainer Class="d-flex flex-column">
                 <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
                   @T["Current months consumption"]:
-                  @NumericString(locationAnalysis.Analysis.LastMonthConsumption.ActiveEnergy_kWh, 0) kWh
+                  @NumericString(analysis.Analysis.LastMonthConsumption.ActiveEnergy_kWh, 0) kWh
                 </MudItem>
                 <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
                   @T["Last months consumption"]:
-                  @NumericString(locationAnalysis.Analysis.ThisMonthConsumption.ActiveEnergy_kWh, 0) kWh
+                  @NumericString(analysis.Analysis.ThisMonthConsumption.ActiveEnergy_kWh, 0) kWh
                 </MudItem>
                 @if (representative.Representative.Role is RoleModel.LocationRepresentative)
                 {
                   <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
                     @T["Active power"]:
-                    @NumericString(locationAnalysis.Analysis.Load.ActivePower_kW) kW
+                    @NumericString(analysis.Analysis.Load.ActivePower_kW) kW
                   </MudItem>
                 }
                 else
                 {
                   <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
                     @T["Last months invoice total"]:
-                    @(locationAnalysis.Analysis.LastMonthExpenses.Total_EUR == 0
+                    @(analysis.Analysis.LastMonthExpenses.Total_EUR == 0
                       ? T["Invoice pending..."]
-                      : NumericString(locationAnalysis.Analysis.LastMonthExpenses.Total_EUR) + " EUR")
+                      : NumericString(analysis.Analysis.LastMonthExpenses.Total_EUR) + " EUR")
                   </MudItem>
                 }
               </MudContainer>

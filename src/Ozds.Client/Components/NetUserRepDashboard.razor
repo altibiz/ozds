@@ -6,7 +6,7 @@
 
 @{
   var analysis = RepresentativeState.AnalysisBases.Analysis();
-  var meters = context
+  var meters = RepresentativeState.AnalysisBases
     .Select(x => x.Meter)
     .DistinctBy(x => x.Id)
     .ToList();

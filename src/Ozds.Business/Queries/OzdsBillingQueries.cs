@@ -50,15 +50,6 @@ public class OzdsBillingQueries(DataDbContext dbContext) : IQueries
     );
   }
 
-  public Task<LocationInvoiceIssuingBasisModel> IssuingBasisForLocation(
-    string locationId,
-    DateTimeOffset fromDate,
-    DateTimeOffset toDate
-  )
-  {
-    throw new NotImplementedException();
-  }
-
   private async Task<List<NetworkUserCalculationBasisModel>>
     NetworkUserCalculationBasesByNetworkUser(
       string networkUserId,
@@ -218,16 +209,6 @@ public class OzdsBillingQueries(DataDbContext dbContext) : IQueries
         )
       )
       .ToList();
-  }
-
-  public Task<List<LocationNetworkUserCalculationBasisModel>>
-    NetworkUserCalculationBasesByLocation(
-      string locationId,
-      DateTimeOffset fromDate,
-      DateTimeOffset toDate
-    )
-  {
-    throw new NotImplementedException();
   }
 
   private readonly struct NetworkUserCalculationBasesByNetworkUserIntermediary
