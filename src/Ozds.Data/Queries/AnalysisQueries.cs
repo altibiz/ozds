@@ -253,6 +253,7 @@ public class AnalysisQueries(
           .ThenInclude(x => x.Location)
           .Include(x => x.NetworkUser)
           .ThenInclude(x => x.NetworkUserMeasurementLocations)
+          .ThenInclude(y => y.Meter)
           .SelectMany(x => x.NetworkUser.NetworkUserMeasurementLocations
             .Select(y =>
               new DetailedMeasurementLocationsIntermediary
@@ -260,6 +261,7 @@ public class AnalysisQueries(
                 Location = x.NetworkUser.Location,
                 NetworkUser = x.NetworkUser,
                 MeasurementLocation = y,
+                Meter = y.Meter
               }))
           .Union(context.LocationRepresentatives
             .Where(context.ForeignKeyEquals<LocationRepresentativeEntity>(
@@ -282,17 +284,18 @@ public class AnalysisQueries(
           .OfType<NetworkUserMeasurementLocationEntity>()
           .Include(x => x.NetworkUser)
           .Include(x => x.NetworkUser.Location)
+          .Include(x => x.Meter)
           .Select(x => new DetailedMeasurementLocationsIntermediary
           {
             Location = x.NetworkUser.Location,
             NetworkUser = x.NetworkUser,
             MeasurementLocation = x,
+            Meter = x.Meter
           }),
       _ => throw new ArgumentOutOfRangeException(nameof(role))
     };
 
     var filtered = query
-      .Include(x => x.MeasurementLocation.Meter)
       .Select(x => new DetailedMeasurementLocationsIntermediary
       {
         Location = x.Location,

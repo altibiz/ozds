@@ -46,7 +46,7 @@
       @ref="@(_mudThemeProvider)"
       Theme="ThemeState.Theme"
       IsDarkMode="ThemeState.IsDarkMode" />
-    <MudPopoverProvider/>
+    @* <MudPopoverProvider/> *@
     <MudDialogProvider/>
     <MudSnackbarProvider/>
 
@@ -71,8 +71,8 @@
                   {
                     <NavigationDrawer />
                   }
-
-                  <MudHidden Breakpoint="Breakpoint.SmAndDown">
+                  @Body
+                  @* <MudHidden Breakpoint="Breakpoint.SmAndDown">
                     <MudContainer
                       MaxWidth="MaxWidth.Large"
                       Class="mt-8 relative"
@@ -87,7 +87,7 @@
                       Style="flex: 1;">
                       @Body
                     </MudContainer>
-                  </MudHidden>
+                  </MudHidden> *@
                 </MudLayout>
               </main>
               <footer>

@@ -1,3 +1,4 @@
+using Microsoft.CodeAnalysis.Host;
 using Ozds.Business.Activation.Abstractions;
 using Ozds.Business.Activation.Agnostic;
 using Ozds.Business.Aggregation.Abstractions;
@@ -13,6 +14,7 @@ using Ozds.Business.Mutations.Abstractions;
 using Ozds.Business.Naming.Abstractions;
 using Ozds.Business.Naming.Agnostic;
 using Ozds.Business.Observers.Abstractions;
+using Ozds.Business.Queries;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Business.Reactors.Abstractions;
 
@@ -32,6 +34,10 @@ public static class IServiceCollectionExtensions
     // Aggregation
     services.AddTransientAssignableTo(typeof(IAggregateUpserter));
     services.AddSingleton(typeof(AgnosticAggregateUpserter));
+
+    // Analysis
+    services.AddSingleton(typeof(Data.Queries.AnalysisQueries));
+    services.AddSingleton(typeof(AnalysisQueries));
 
     // Conversion
     services.AddTransientAssignableTo(typeof(IModelEntityConverter));
