@@ -11,6 +11,7 @@ using Ozds.Data.Queries.Abstractions;
 // TODO: remove references to aggregate entity types
 // TODO: location measurement locations
 // TODO: separate out timezone stuff and make it testable
+// TODO: all in one when https://github.com/dotnet/efcore/issues/28125
 
 namespace Ozds.Data.Queries;
 
@@ -35,102 +36,32 @@ public class AnalysisQueries(
     await context.Database
       .ExecuteSqlRawAsync("SET jit = on;", cancellationToken);
 
-    var filtered = MakeReadDetailedMeasurementLocationsByRepresentativeQuery(
-      context,
-      representativeId,
-      role,
-      fromDate,
-      toDate
-    );
+    var byRepresentative =
+      MakeReadDetailedMeasurementLocationsByRepresentativeQuery(
+        context,
+        representativeId,
+        role
+      );
 
-    var ordered = filtered
-      .OrderByDescending(x => x
-        .Aggregate(0f, (current, next) => current
-          + (next.AbbLastMeasurement == null
-            ? 0f
-            : next.AbbLastMeasurement.ActivePowerL1NetT0_W
-              + next.AbbLastMeasurement.ActivePowerL2NetT0_W
-              + next.AbbLastMeasurement.ActivePowerL3NetT0_W)
-          + (next.SchneiderLastMeasurement == null
-            ? 0f
-            : next.SchneiderLastMeasurement.ActivePowerL1NetT0_W
-              + next.SchneiderLastMeasurement.ActivePowerL2NetT0_W
-              + next.SchneiderLastMeasurement.ActivePowerL3NetT0_W)));
-
-    var count = await filtered.CountAsync(cancellationToken);
-    var items = await ordered
+    var count = await byRepresentative.CountAsync();
+    var itemsByRepresentative = await byRepresentative
       .Skip((pageNumber - 1) * pageCount)
       .Take(pageCount)
       .ToListAsync(cancellationToken);
 
-    return items
-      .Select(
-        x =>
-        {
-          var first = x.FirstOrDefault();
-          if (first is null)
-          {
-            return null;
-          }
+    var byMeasurementLocation =
+      MakeReadDetailedMeasurementLocationsByMeasurementLocationIntermediary(
+        context,
+        itemsByRepresentative.Select(x => x.MeasurementLocation).ToList(),
+        itemsByRepresentative.Select(x => x.Meter).ToList(),
+        fromDate,
+        toDate
+      );
 
-          var lastMeasurement =
-            Enumerable.Empty<MeasurementEntity>()
-              .Concat(x
-                .Select(x => x.AbbLastMeasurement)
-                .OfType<MeasurementEntity>())
-              .Concat(x
-                .Select(x => x.SchneiderLastMeasurement)
-                .OfType<MeasurementEntity>())
-              .FirstOrDefault();
-          if (lastMeasurement is null)
-          {
-            return null;
-          }
+    var itemsByMeasurementLocation = await byMeasurementLocation
+      .ToListAsync(cancellationToken);
 
-          var monthlyAggregates =
-            Enumerable.Empty<AggregateEntity>()
-              .Concat(x
-                .Select(x => x.AbbMonthlyAggregate)
-                .OfType<AggregateEntity>())
-              .Concat(x
-                .Select(x => x.SchneiderMonthlyAggregate)
-                .OfType<AggregateEntity>())
-              .ToList();
-
-          var monthlyMaxPowerAggregates =
-            Enumerable.Empty<AggregateEntity>()
-              .Concat(x
-                .Select(x => x.AbbMaxPowerAggregate)
-                .OfType<AggregateEntity>())
-              .Concat(x
-                .Select(x => x.SchneiderMaxPowerAggregate)
-                .OfType<AggregateEntity>())
-              .ToList();
-
-          var calculations = x
-            .Select(x => x.NetworkUserCalculation)
-            .OfType<CalculationEntity>()
-            .ToList();
-
-          var invoices = x
-            .Select(x => x.NetworkUserInvoice)
-            .OfType<InvoiceEntity>()
-            .DistinctBy(x => x.Id)
-            .ToList();
-
-          return new AnalysisBasisEntity(
-            first.Location,
-            first.NetworkUser,
-            first.MeasurementLocation,
-            first.Meter,
-            calculations,
-            invoices,
-            lastMeasurement,
-            monthlyAggregates,
-            monthlyMaxPowerAggregates
-          );
-        })
-      .OfType<AnalysisBasisEntity>()
+    return MakeAnalysisBases(itemsByRepresentative, itemsByMeasurementLocation)
       .ToPaginatedList(count);
   }
 
@@ -149,76 +80,109 @@ public class AnalysisQueries(
     await context.Database
       .ExecuteSqlRawAsync("SET jit = on;", cancellationToken);
 
-    var filtered = MakeReadDetailedMeasurementLocationsByRepresentativeQuery(
-      context,
-      representativeId,
-      role,
-      fromDate,
-      toDate
-    );
+    var byRepresentative =
+      MakeReadDetailedMeasurementLocationsByRepresentativeQuery(
+        context,
+        representativeId,
+        role
+      );
 
-    var items = await filtered.ToListAsync();
+    var itemsByRepresentative = await byRepresentative
+      .ToListAsync(cancellationToken);
 
-    return items
+    var byMeasurementLocation =
+      MakeReadDetailedMeasurementLocationsByMeasurementLocationIntermediary(
+        context,
+        itemsByRepresentative.Select(x => x.MeasurementLocation).ToList(),
+        itemsByRepresentative.Select(x => x.Meter).ToList(),
+        fromDate,
+        toDate
+      );
+
+    var itemsByMeasurementLocation = await byMeasurementLocation
+      .ToListAsync(cancellationToken);
+
+    return MakeAnalysisBases(itemsByRepresentative, itemsByMeasurementLocation)
+      .ToList();
+  }
+
+  private static
+    IEnumerable<AnalysisBasisEntity>
+    MakeAnalysisBases(
+      List<DetailedMeasurementLocationsByRepresentativeIntermediary>
+        byRepresentative,
+      List<DetailedMeasurementLocationsByMeasurementLocationIntermediary>
+        byMeasurementLocation
+    )
+  {
+    var analyses = byRepresentative
       .Select(
-        x =>
+        byRepresentative =>
         {
-          var first = x.FirstOrDefault();
-          if (first is null)
-          {
-            return null;
-          }
-
-          var lastMeasurement =
-            Enumerable.Empty<MeasurementEntity>()
-              .Concat(x
-                .Select(x => x.AbbLastMeasurement)
-                .OfType<MeasurementEntity>())
-              .Concat(x
-                .Select(x => x.SchneiderLastMeasurement)
-                .OfType<MeasurementEntity>())
-              .FirstOrDefault();
+          var lastMeasurement = Enumerable
+            .Empty<MeasurementEntity>()
+            .Concat(byMeasurementLocation
+              .Where(x => x.AbbLastMeasurement?.MeterId
+                == byRepresentative.Meter.Id)
+              .Select(x => x.AbbLastMeasurement)
+              .OfType<MeasurementEntity>())
+            .Concat(byMeasurementLocation
+              .Where(x => x.SchneiderLastMeasurement?.MeterId
+                == byRepresentative.Meter.Id)
+              .Select(x => x.SchneiderLastMeasurement)
+              .OfType<MeasurementEntity>())
+            .FirstOrDefault();
           if (lastMeasurement is null)
           {
             return null;
           }
 
-          var monthlyAggregates =
-            Enumerable.Empty<AggregateEntity>()
-              .Concat(x
-                .Select(x => x.AbbMonthlyAggregate)
-                .OfType<AggregateEntity>())
-              .Concat(x
-                .Select(x => x.SchneiderMonthlyAggregate)
-                .OfType<AggregateEntity>())
-              .ToList();
+          var monthlyAggregates = Enumerable
+            .Empty<AggregateEntity>()
+            .Concat(byMeasurementLocation
+              .Select(x => x.AbbMonthlyAggregate)
+              .OfType<AggregateEntity>()
+              .Where(x => x.MeterId == byRepresentative.Meter.Id))
+            .Concat(byMeasurementLocation
+              .Select(x => x.SchneiderMonthlyAggregate)
+              .OfType<AggregateEntity>())
+              .Where(x => x.MeterId == byRepresentative.Meter.Id)
+            .ToList();
 
-          var monthlyMaxPowerAggregates =
-            Enumerable.Empty<AggregateEntity>()
-              .Concat(x
-                .Select(x => x.AbbMaxPowerAggregate)
-                .OfType<AggregateEntity>())
-              .Concat(x
-                .Select(x => x.SchneiderMaxPowerAggregate)
-                .OfType<AggregateEntity>())
-              .ToList();
+          var monthlyMaxPowerAggregates = Enumerable
+            .Empty<AggregateEntity>()
+            .Concat(byMeasurementLocation
+              .Select(x => x.AbbMaxPowerAggregate)
+              .OfType<AggregateEntity>()
+              .Where(x => x.MeterId == byRepresentative.Meter.Id))
+            .Concat(byMeasurementLocation
+              .Select(x => x.SchneiderMaxPowerAggregate)
+              .OfType<AggregateEntity>()
+              .Where(x => x.MeterId == byRepresentative.Meter.Id))
+            .ToList();
 
-          var calculations = x
+          var calculations = byMeasurementLocation
             .Select(x => x.NetworkUserCalculation)
+            .OfType<NetworkUserCalculationEntity>()
+            .Where(x => x.NetworkUserMeasurementLocationId
+              == byRepresentative.MeasurementLocation.Id)
             .OfType<CalculationEntity>()
             .ToList();
 
-          var invoices = x
+          var invoices = byMeasurementLocation
+            .Where(x =>
+              x.NetworkUserCalculation?.NetworkUserMeasurementLocationId
+              == byRepresentative.MeasurementLocation.Id)
             .Select(x => x.NetworkUserInvoice)
             .OfType<InvoiceEntity>()
             .DistinctBy(x => x.Id)
             .ToList();
 
           return new AnalysisBasisEntity(
-            first.Location,
-            first.NetworkUser,
-            first.MeasurementLocation,
-            first.Meter,
+            byRepresentative.Location,
+            byRepresentative.NetworkUser,
+            byRepresentative.MeasurementLocation,
+            byRepresentative.Meter,
             calculations,
             invoices,
             lastMeasurement,
@@ -226,18 +190,17 @@ public class AnalysisQueries(
             monthlyMaxPowerAggregates
           );
         })
-      .OfType<AnalysisBasisEntity>()
-      .ToList();
+      .OfType<AnalysisBasisEntity>();
+
+    return analyses;
   }
 
   private static
-    IQueryable<IGrouping<string, DetailedMeasurementLocationsIntermediary>>
+    IQueryable<DetailedMeasurementLocationsByRepresentativeIntermediary>
     MakeReadDetailedMeasurementLocationsByRepresentativeQuery(
       DataDbContext context,
       string representativeId,
-      RoleEntity role,
-      DateTimeOffset fromDate,
-      DateTimeOffset toDate
+      RoleEntity role
     )
   {
     var query = role switch
@@ -256,7 +219,7 @@ public class AnalysisQueries(
           .ThenInclude(y => y.Meter)
           .SelectMany(x => x.NetworkUser.NetworkUserMeasurementLocations
             .Select(y =>
-              new DetailedMeasurementLocationsIntermediary
+              new DetailedMeasurementLocationsByRepresentativeIntermediary
               {
                 Location = x.NetworkUser.Location,
                 NetworkUser = x.NetworkUser,
@@ -271,334 +234,191 @@ public class AnalysisQueries(
             .Include(x => x.Location)
             .ThenInclude(x => x.NetworkUsers)
             .ThenInclude(x => x.NetworkUserMeasurementLocations)
+            .ThenInclude(x => x.Meter)
             .SelectMany(x => x.Location.NetworkUsers
               .SelectMany(y => y.NetworkUserMeasurementLocations
-                .Select(z => new DetailedMeasurementLocationsIntermediary
-                {
-                  Location = x.Location,
-                  NetworkUser = y,
-                  MeasurementLocation = z,
-                })))),
+                .Select(z =>
+                  new DetailedMeasurementLocationsByRepresentativeIntermediary
+                  {
+                    Location = x.Location,
+                    NetworkUser = y,
+                    MeasurementLocation = z,
+                    Meter = z.Meter
+                  }))))
+          .DistinctBy(context
+            .PrimaryKeyOf<NetworkUserMeasurementLocationEntity>()
+            .Prefix(
+              (DetailedMeasurementLocationsByRepresentativeIntermediary x) =>
+                x.MeasurementLocation)),
       RoleEntity.OperatorRepresentative =>
         context.MeasurementLocations
           .OfType<NetworkUserMeasurementLocationEntity>()
           .Include(x => x.NetworkUser)
-          .Include(x => x.NetworkUser.Location)
+          .ThenInclude(x => x.Location)
           .Include(x => x.Meter)
-          .Select(x => new DetailedMeasurementLocationsIntermediary
-          {
-            Location = x.NetworkUser.Location,
-            NetworkUser = x.NetworkUser,
-            MeasurementLocation = x,
-            Meter = x.Meter
-          }),
+          .Select(x =>
+            new DetailedMeasurementLocationsByRepresentativeIntermediary
+            {
+              Location = x.NetworkUser.Location,
+              NetworkUser = x.NetworkUser,
+              MeasurementLocation = x,
+              Meter = x.Meter
+            }),
       _ => throw new ArgumentOutOfRangeException(nameof(role))
     };
 
-    var filtered = query
-      .Select(x => new DetailedMeasurementLocationsIntermediary
-      {
-        Location = x.Location,
-        NetworkUser = x.NetworkUser,
-        MeasurementLocation = x.MeasurementLocation,
-        Meter = x.MeasurementLocation.Meter,
-      })
-      .GroupJoin(
-        context.NetworkUserCalculations
-          .Where(x => x.FromDate >= fromDate)
-          .Where(x => x.FromDate < toDate)
-          .Include(x => x.NetworkUserInvoice),
-        context
-          .PrimaryKeyOf<NetworkUserMeasurementLocationEntity>()
-          .Prefix((DetailedMeasurementLocationsIntermediary x) => x.MeasurementLocation),
-        context.ForeignKeyOf<NetworkUserCalculationEntity>(
-          nameof(NetworkUserCalculationEntity.NetworkUserMeasurementLocation)),
-        (x, networkUserCalculations) => new
-        {
-          x.Location,
-          x.NetworkUser,
-          x.MeasurementLocation,
-          x.Meter,
-          networkUserCalculations
-        }
-      )
-      .SelectMany(
-        x => x.networkUserCalculations.DefaultIfEmpty(),
-        (x, networkUserCalculation) => new DetailedMeasurementLocationsIntermediary
-        {
-          Location = x.Location,
-          NetworkUser = x.NetworkUser,
-          MeasurementLocation = x.MeasurementLocation,
-          Meter = x.Meter,
-          NetworkUserCalculation = networkUserCalculation,
-          NetworkUserInvoice = networkUserCalculation == null
-            ? null
-            : networkUserCalculation.NetworkUserInvoice
-        })
-      .GroupJoin(
-        context.AbbB2xMeasurements
-          .Where(x => x.Timestamp >= fromDate)
-          .Where(x => x.Timestamp < toDate)
-          .OrderByDescending(x => x.Timestamp)
-          .Take(1),
-        context
-          .PrimaryKeyOf<MeterEntity>()
-          .Prefix((DetailedMeasurementLocationsIntermediary x) => x.Meter),
-        context.ForeignKeyOf<AbbB2xMeasurementEntity>(
-          nameof(AbbB2xMeasurementEntity.Meter)),
-        (x, abbB2xMeasurements) => new
-        {
-          x.Location,
-          x.NetworkUser,
-          x.MeasurementLocation,
-          x.Meter,
-          x.NetworkUserCalculation,
-          x.NetworkUserInvoice,
-          abbB2xMeasurements
-        }
-      )
-      .SelectMany(
-        x => x.abbB2xMeasurements.DefaultIfEmpty(),
-        (x, abbMeasurement) => new DetailedMeasurementLocationsIntermediary
-        {
-          Location = x.Location,
-          NetworkUser = x.NetworkUser,
-          MeasurementLocation = x.MeasurementLocation,
-          Meter = x.Meter,
-          NetworkUserCalculation = x.NetworkUserCalculation,
-          NetworkUserInvoice = x.NetworkUserInvoice,
-          AbbLastMeasurement = abbMeasurement
-        })
-      .GroupJoin(
-        context.SchneideriEM3xxxMeasurements
-          .Where(x => x.Timestamp >= fromDate)
-          .Where(x => x.Timestamp < toDate)
-          .OrderByDescending(x => x.Timestamp)
-          .Take(1),
-        context
-          .PrimaryKeyOf<MeterEntity>()
-          .Prefix((DetailedMeasurementLocationsIntermediary x) => x.Meter),
-        context.ForeignKeyOf<SchneideriEM3xxxMeasurementEntity>(
-          nameof(SchneideriEM3xxxMeasurementEntity.Meter)),
-        (x, schneideriEM3xxxMeasurements) => new
-        {
-          x.Location,
-          x.NetworkUser,
-          x.MeasurementLocation,
-          x.Meter,
-          x.NetworkUserCalculation,
-          x.NetworkUserInvoice,
-          x.AbbLastMeasurement,
-          schneideriEM3xxxMeasurements
-        }
-      )
-      .SelectMany(
-        x => x.schneideriEM3xxxMeasurements.DefaultIfEmpty(),
-        (x, schneiderMeasurement) => new DetailedMeasurementLocationsIntermediary
-        {
-          Location = x.Location,
-          NetworkUser = x.NetworkUser,
-          MeasurementLocation = x.MeasurementLocation,
-          Meter = x.Meter,
-          NetworkUserCalculation = x.NetworkUserCalculation,
-          NetworkUserInvoice = x.NetworkUserInvoice,
-          AbbLastMeasurement = x.AbbLastMeasurement,
-          SchneiderLastMeasurement = schneiderMeasurement
-        })
-      .GroupJoin(
-        context.AbbB2xAggregates
-          .Where(x => x.Timestamp >= fromDate)
-          .Where(x => x.Timestamp < toDate)
-          .Where(x => x.Interval == IntervalEntity.Month),
-        context
-          .PrimaryKeyOf<MeterEntity>()
-          .Prefix((DetailedMeasurementLocationsIntermediary x) => x.Meter),
-        context.ForeignKeyOf<AbbB2xAggregateEntity>(
-          nameof(AbbB2xAggregateEntity.Meter)),
-        (x, abbB2xAggregates) => new
-        {
-          x.Location,
-          x.NetworkUser,
-          x.MeasurementLocation,
-          x.Meter,
-          x.NetworkUserCalculation,
-          x.NetworkUserInvoice,
-          x.AbbLastMeasurement,
-          x.SchneiderLastMeasurement,
-          abbB2xAggregates
-        }
-      )
-      .SelectMany(
-        x => x.abbB2xAggregates.DefaultIfEmpty(),
-        (x, abbAggregate) => new DetailedMeasurementLocationsIntermediary
-        {
-          Location = x.Location,
-          NetworkUser = x.NetworkUser,
-          MeasurementLocation = x.MeasurementLocation,
-          Meter = x.Meter,
-          NetworkUserCalculation = x.NetworkUserCalculation,
-          NetworkUserInvoice = x.NetworkUserInvoice,
-          AbbLastMeasurement = x.AbbLastMeasurement,
-          SchneiderLastMeasurement = x.SchneiderLastMeasurement,
-          AbbMonthlyAggregate = abbAggregate
-        })
-      .GroupJoin(
-        context.SchneideriEM3xxxAggregates
-          .Where(x => x.Timestamp >= fromDate)
-          .Where(x => x.Timestamp < toDate)
-          .Where(x => x.Interval == IntervalEntity.Month),
-        context
-          .PrimaryKeyOf<MeterEntity>()
-          .Prefix((DetailedMeasurementLocationsIntermediary x) => x.Meter),
-        context.ForeignKeyOf<SchneideriEM3xxxAggregateEntity>(
-          nameof(SchneideriEM3xxxAggregateEntity.Meter)),
-        (x, schneideriEM3xxxAggregates) => new
-        {
-          x.Location,
-          x.NetworkUser,
-          x.MeasurementLocation,
-          x.Meter,
-          x.NetworkUserCalculation,
-          x.NetworkUserInvoice,
-          x.AbbLastMeasurement,
-          x.SchneiderLastMeasurement,
-          x.AbbMonthlyAggregate,
-          schneideriEM3xxxAggregates
-        }
-      )
-      .SelectMany(
-        x => x.schneideriEM3xxxAggregates.DefaultIfEmpty(),
-        (x, schneiderAggregate) => new DetailedMeasurementLocationsIntermediary
-        {
-          Location = x.Location,
-          NetworkUser = x.NetworkUser,
-          MeasurementLocation = x.MeasurementLocation,
-          Meter = x.Meter,
-          NetworkUserCalculation = x.NetworkUserCalculation,
-          NetworkUserInvoice = x.NetworkUserInvoice,
-          AbbLastMeasurement = x.AbbLastMeasurement,
-          SchneiderLastMeasurement = x.SchneiderLastMeasurement,
-          AbbMonthlyAggregate = x.AbbMonthlyAggregate,
-          SchneiderMonthlyAggregate = schneiderAggregate
-        })
-      .GroupJoin(
-        context.AbbB2xAggregates
-          .Where(x => x.Timestamp >= fromDate)
-          .Where(x => x.Timestamp < toDate)
-          .Where(x => x.Interval == IntervalEntity.QuarterHour),
-        context
-          .PrimaryKeyOf<MeterEntity>()
-          .Prefix((DetailedMeasurementLocationsIntermediary x) => x.Meter),
-        context.ForeignKeyOf<AbbB2xAggregateEntity>(
-          nameof(AbbB2xAggregateEntity.Meter)),
-        (x, abbB2xAggregates) => new
-        {
-          x.Location,
-          x.NetworkUser,
-          x.MeasurementLocation,
-          x.Meter,
-          x.NetworkUserCalculation,
-          x.NetworkUserInvoice,
-          x.AbbLastMeasurement,
-          x.SchneiderLastMeasurement,
-          x.AbbMonthlyAggregate,
-          x.SchneiderMonthlyAggregate,
-          abbB2xAggregates
-        }
-      )
-      .SelectMany(
-        x => x.abbB2xAggregates
-          .DefaultIfEmpty()
-          .GroupBy(x => x == null
-            ? null
-            : new
-            {
-              EF.Functions.AtTimeZone(x.Timestamp, "Europe/Zagreb").Year,
-              EF.Functions.AtTimeZone(x.Timestamp, "Europe/Zagreb").Month
-            })
-          .Select(x => x
-            .MaxBy(x => x == null
-              ? 0
-              : x.ActivePowerL1NetT0Avg_W
-                + x.ActivePowerL2NetT0Avg_W
-                + x.ActivePowerL3NetT0Avg_W)),
-        (x, abbAggregate) => new DetailedMeasurementLocationsIntermediary
-        {
-          Location = x.Location,
-          NetworkUser = x.NetworkUser,
-          MeasurementLocation = x.MeasurementLocation,
-          Meter = x.Meter,
-          NetworkUserCalculation = x.NetworkUserCalculation,
-          NetworkUserInvoice = x.NetworkUserInvoice,
-          AbbLastMeasurement = x.AbbLastMeasurement,
-          SchneiderLastMeasurement = x.SchneiderLastMeasurement,
-          AbbMonthlyAggregate = x.AbbMonthlyAggregate,
-          SchneiderMonthlyAggregate = x.SchneiderMonthlyAggregate,
-          AbbMaxPowerAggregate = abbAggregate
-        })
-      .GroupJoin(
-        context.SchneideriEM3xxxAggregates
-          .Where(x => x.Timestamp >= fromDate)
-          .Where(x => x.Timestamp < toDate)
-          .Where(x => x.Interval == IntervalEntity.QuarterHour),
-        context
-          .PrimaryKeyOf<MeterEntity>()
-          .Prefix((DetailedMeasurementLocationsIntermediary x) => x.Meter),
-        context.ForeignKeyOf<SchneideriEM3xxxAggregateEntity>(
-          nameof(SchneideriEM3xxxAggregateEntity.Meter)),
-        (x, schneideriEM3xxxAggregates) => new
-        {
-          x.Location,
-          x.NetworkUser,
-          x.MeasurementLocation,
-          x.Meter,
-          x.NetworkUserCalculation,
-          x.NetworkUserInvoice,
-          x.AbbLastMeasurement,
-          x.SchneiderLastMeasurement,
-          x.AbbMonthlyAggregate,
-          x.SchneiderMonthlyAggregate,
-          x.AbbMaxPowerAggregate,
-          schneideriEM3xxxAggregates
-        }
-      )
-      .SelectMany(
-        x => x.schneideriEM3xxxAggregates
-          .DefaultIfEmpty()
-          .GroupBy(x => x == null
-            ? null
-            : new
-            {
-              EF.Functions.AtTimeZone(x.Timestamp, "Europe/Zagreb").Year,
-              EF.Functions.AtTimeZone(x.Timestamp, "Europe/Zagreb").Month
-            })
-          .Select(x => x
-            .MaxBy(x => x == null
-              ? 0
-              : x.ActivePowerL1NetT0Avg_W
-                + x.ActivePowerL2NetT0Avg_W
-                + x.ActivePowerL3NetT0Avg_W)),
-        (x, schneiderAggregate) => new DetailedMeasurementLocationsIntermediary
-        {
-          Location = x.Location,
-          NetworkUser = x.NetworkUser,
-          MeasurementLocation = x.MeasurementLocation,
-          Meter = x.Meter,
-          NetworkUserCalculation = x.NetworkUserCalculation,
-          NetworkUserInvoice = x.NetworkUserInvoice,
-          AbbLastMeasurement = x.AbbLastMeasurement,
-          SchneiderLastMeasurement = x.SchneiderLastMeasurement,
-          AbbMonthlyAggregate = x.AbbMonthlyAggregate,
-          SchneiderMonthlyAggregate = x.SchneiderMonthlyAggregate,
-          AbbMaxPowerAggregate = x.AbbMaxPowerAggregate,
-          SchneiderMaxPowerAggregate = schneiderAggregate
-        })
-      .GroupBy(x => x.MeasurementLocation.Id);
-
-    return filtered;
+    return query;
   }
 
-  private sealed class DetailedMeasurementLocationsIntermediary
+  private static
+    IQueryable<DetailedMeasurementLocationsByMeasurementLocationIntermediary>
+    MakeReadDetailedMeasurementLocationsByMeasurementLocationIntermediary(
+      DataDbContext context,
+      List<NetworkUserMeasurementLocationEntity> measurementLocations,
+      List<MeterEntity> meters,
+      DateTimeOffset fromDate,
+      DateTimeOffset toDate
+    )
+  {
+    var query = context.NetworkUserCalculations
+      .Where(context.ForeignKeyIn<NetworkUserCalculationEntity>(
+        nameof(NetworkUserCalculationEntity.NetworkUserMeasurementLocation),
+        measurementLocations.Select(x => x.Id)
+      ))
+      .Where(x => x.FromDate >= fromDate)
+      .Where(x => x.FromDate < toDate)
+      .Include(x => x.NetworkUserInvoice)
+      .Select(x =>
+        new DetailedMeasurementLocationsByMeasurementLocationIntermediary
+        {
+          NetworkUserCalculation = x,
+          NetworkUserInvoice = x.NetworkUserInvoice
+        })
+      .Union(context.AbbB2xMeasurements
+        .Where(context.ForeignKeyIn<AbbB2xMeasurementEntity>(
+          nameof(AbbB2xMeasurementEntity.Meter),
+          meters.Select(x => x.Id)
+        ))
+        .Where(x => x.Timestamp >= fromDate)
+        .Where(x => x.Timestamp < toDate)
+        .OrderByDescending(x => x.Timestamp)
+        .Select(x =>
+          new DetailedMeasurementLocationsByMeasurementLocationIntermediary
+          {
+            AbbLastMeasurement = x
+          })
+        .Take(1))
+      .Union(context.SchneideriEM3xxxMeasurements
+        .Where(context.ForeignKeyIn<SchneideriEM3xxxMeasurementEntity>(
+          nameof(SchneideriEM3xxxMeasurementEntity.Meter),
+          meters.Select(x => x.Id)
+        ))
+        .Where(x => x.Timestamp >= fromDate)
+        .Where(x => x.Timestamp < toDate)
+        .OrderByDescending(x => x.Timestamp)
+        .Select(x =>
+          new DetailedMeasurementLocationsByMeasurementLocationIntermediary
+          {
+            SchneiderLastMeasurement = x
+          })
+        .Take(1))
+      .Union(context.AbbB2xAggregates
+        .Where(context.ForeignKeyIn<AbbB2xAggregateEntity>(
+          nameof(AbbB2xAggregateEntity.Meter),
+          meters.Select(x => x.Id)
+        ))
+        .Where(x => x.Timestamp >= fromDate)
+        .Where(x => x.Timestamp < toDate)
+        .Where(x => x.Interval == IntervalEntity.Month)
+        .Select(x =>
+          new DetailedMeasurementLocationsByMeasurementLocationIntermediary
+          {
+            AbbMonthlyAggregate = x
+          }))
+      .Union(context.SchneideriEM3xxxAggregates
+        .Where(context.ForeignKeyIn<SchneideriEM3xxxAggregateEntity>(
+          nameof(SchneideriEM3xxxAggregateEntity.Meter),
+          meters.Select(x => x.Id)
+        ))
+        .Where(x => x.Timestamp >= fromDate)
+        .Where(x => x.Timestamp < toDate)
+        .Where(x => x.Interval == IntervalEntity.Month)
+        .Select(x =>
+          new DetailedMeasurementLocationsByMeasurementLocationIntermediary
+          {
+            SchneiderMonthlyAggregate = x
+          }))
+      .Union(context.AbbB2xAggregates
+        .Where(context.ForeignKeyIn<AbbB2xAggregateEntity>(
+          nameof(AbbB2xAggregateEntity.Meter),
+          meters.Select(x => x.Id)
+        ))
+        .Where(x => x.Timestamp >= fromDate)
+        .Where(x => x.Timestamp < toDate)
+        .Where(x => x.Interval == IntervalEntity.QuarterHour)
+        .GroupBy(x => new
+        {
+          x.MeterId,
+          EF.Functions.AtTimeZone(x.Timestamp, "Europe/Zagreb").Year,
+          EF.Functions.AtTimeZone(x.Timestamp, "Europe/Zagreb").Month
+        })
+        .Select(x => x
+          .Select(x => new
+          {
+            ActivePowerTotalNetT0Avg_W = x == null
+              ? 0
+              : x.ActivePowerL1NetT0Avg_W
+                + x.ActivePowerL2NetT0Avg_W
+                + x.ActivePowerL3NetT0Avg_W,
+            AbbB2xAggregate = x
+          })
+          .OrderByDescending(x => x.ActivePowerTotalNetT0Avg_W)
+          .Select(x => x.AbbB2xAggregate)
+          .FirstOrDefault())
+        .OfType<AbbB2xAggregateEntity>()
+        .Select(x =>
+          new DetailedMeasurementLocationsByMeasurementLocationIntermediary
+          {
+            AbbMaxPowerAggregate = x
+          }))
+      .Union(context.SchneideriEM3xxxAggregates
+        .Where(context.ForeignKeyIn<SchneideriEM3xxxAggregateEntity>(
+          nameof(SchneideriEM3xxxAggregateEntity.Meter),
+          meters.Select(x => x.Id)
+        ))
+        .Where(x => x.Timestamp >= fromDate)
+        .Where(x => x.Timestamp < toDate)
+        .Where(x => x.Interval == IntervalEntity.QuarterHour)
+        .GroupBy(x => new
+        {
+          x.MeterId,
+          EF.Functions.AtTimeZone(x.Timestamp, "Europe/Zagreb").Year,
+          EF.Functions.AtTimeZone(x.Timestamp, "Europe/Zagreb").Month
+        })
+        .Select(x => x
+          .Select(x => new
+          {
+            ActivePowerTotalNetT0Avg_W = x == null
+              ? 0
+              : x.ActivePowerL1NetT0Avg_W
+                + x.ActivePowerL2NetT0Avg_W
+                + x.ActivePowerL3NetT0Avg_W,
+            SchneideriEM3xxxAggregate = x
+          })
+          .OrderByDescending(x => x.ActivePowerTotalNetT0Avg_W)
+          .Select(x => x.SchneideriEM3xxxAggregate)
+          .FirstOrDefault())
+        .OfType<SchneideriEM3xxxAggregateEntity>()
+        .Select(x =>
+          new DetailedMeasurementLocationsByMeasurementLocationIntermediary
+          {
+            SchneiderMaxPowerAggregate = x
+          }));
+
+    return query;
+  }
+
+  private sealed class DetailedMeasurementLocationsByRepresentativeIntermediary
   {
     public LocationEntity Location { get; init; } = default!;
 
@@ -611,7 +431,11 @@ public class AnalysisQueries(
     } = default!;
 
     public MeterEntity Meter { get; init; } = default!;
+  }
 
+  private sealed class
+    DetailedMeasurementLocationsByMeasurementLocationIntermediary
+  {
     public NetworkUserCalculationEntity? NetworkUserCalculation { get; init; }
 
     public NetworkUserInvoiceEntity? NetworkUserInvoice { get; init; }
