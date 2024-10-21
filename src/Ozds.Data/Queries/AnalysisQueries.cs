@@ -11,6 +11,7 @@ using Ozds.Data.Queries.Abstractions;
 // TODO: remove references to aggregate entity types
 // TODO: location measurement locations
 // TODO: separate out timezone stuff and make it testable
+// TODO: proper concat when https://github.com/dotnet/efcore/issues/16298
 // TODO: all in one when https://github.com/dotnet/efcore/issues/28125
 
 namespace Ozds.Data.Queries;
@@ -32,9 +33,6 @@ public class AnalysisQueries(
   {
     await using var context = await factory
       .CreateDbContextAsync(cancellationToken);
-
-    await context.Database
-      .ExecuteSqlRawAsync("SET jit = on;", cancellationToken);
 
     var byRepresentative =
       MakeReadDetailedMeasurementLocationsByRepresentativeQuery(
@@ -76,9 +74,6 @@ public class AnalysisQueries(
   {
     await using var context = await factory
       .CreateDbContextAsync(cancellationToken);
-
-    await context.Database
-      .ExecuteSqlRawAsync("SET jit = on;", cancellationToken);
 
     var byRepresentative =
       MakeReadDetailedMeasurementLocationsByRepresentativeQuery(
@@ -300,7 +295,7 @@ public class AnalysisQueries(
           AbbMaxPowerAggregate = null,
           SchneiderMaxPowerAggregate = null
         })
-      .Union(context.AbbB2xMeasurements
+      .Concat(context.AbbB2xMeasurements
         .Where(context.ForeignKeyIn<AbbB2xMeasurementEntity>(
           nameof(AbbB2xMeasurementEntity.Meter),
           meters.Select(x => x.Id)
@@ -321,7 +316,7 @@ public class AnalysisQueries(
             SchneiderMaxPowerAggregate = null
           })
         .Take(1))
-      .Union(context.SchneideriEM3xxxMeasurements
+      .Concat(context.SchneideriEM3xxxMeasurements
         .Where(context.ForeignKeyIn<SchneideriEM3xxxMeasurementEntity>(
           nameof(SchneideriEM3xxxMeasurementEntity.Meter),
           meters.Select(x => x.Id)
@@ -342,7 +337,7 @@ public class AnalysisQueries(
             SchneiderMaxPowerAggregate = null
           })
         .Take(1))
-      .Union(context.AbbB2xAggregates
+      .Concat(context.AbbB2xAggregates
         .Where(context.ForeignKeyIn<AbbB2xAggregateEntity>(
           nameof(AbbB2xAggregateEntity.Meter),
           meters.Select(x => x.Id)
@@ -362,7 +357,7 @@ public class AnalysisQueries(
             AbbMaxPowerAggregate = null,
             SchneiderMaxPowerAggregate = null
           }))
-      .Union(context.SchneideriEM3xxxAggregates
+      .Concat(context.SchneideriEM3xxxAggregates
         .Where(context.ForeignKeyIn<SchneideriEM3xxxAggregateEntity>(
           nameof(SchneideriEM3xxxAggregateEntity.Meter),
           meters.Select(x => x.Id)
@@ -382,7 +377,7 @@ public class AnalysisQueries(
             AbbMaxPowerAggregate = null,
             SchneiderMaxPowerAggregate = null
           }))
-      .Union(context.AbbB2xAggregates
+      .Concat(context.AbbB2xAggregates
         .Where(context.ForeignKeyIn<AbbB2xAggregateEntity>(
           nameof(AbbB2xAggregateEntity.Meter),
           meters.Select(x => x.Id)
@@ -422,7 +417,7 @@ public class AnalysisQueries(
             AbbMaxPowerAggregate = x,
             SchneiderMaxPowerAggregate = null
           }))
-      .Union(context.SchneideriEM3xxxAggregates
+      .Concat(context.SchneideriEM3xxxAggregates
         .Where(context.ForeignKeyIn<SchneideriEM3xxxAggregateEntity>(
           nameof(SchneideriEM3xxxAggregateEntity.Meter),
           meters.Select(x => x.Id)
@@ -461,7 +456,8 @@ public class AnalysisQueries(
             SchneiderMonthlyAggregate = null,
             AbbMaxPowerAggregate = null,
             SchneiderMaxPowerAggregate = x
-          }));
+          }))
+        .AsSplitQuery();
 
     return query;
   }
