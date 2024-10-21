@@ -292,7 +292,13 @@ public class AnalysisQueries(
         new DetailedMeasurementLocationsByMeasurementLocationIntermediary
         {
           NetworkUserCalculation = x,
-          NetworkUserInvoice = x.NetworkUserInvoice
+          NetworkUserInvoice = x.NetworkUserInvoice,
+          AbbLastMeasurement = null,
+          SchneiderLastMeasurement = null,
+          AbbMonthlyAggregate = null,
+          SchneiderMonthlyAggregate = null,
+          AbbMaxPowerAggregate = null,
+          SchneiderMaxPowerAggregate = null
         })
       .Union(context.AbbB2xMeasurements
         .Where(context.ForeignKeyIn<AbbB2xMeasurementEntity>(
@@ -305,7 +311,14 @@ public class AnalysisQueries(
         .Select(x =>
           new DetailedMeasurementLocationsByMeasurementLocationIntermediary
           {
-            AbbLastMeasurement = x
+            NetworkUserCalculation = null,
+            NetworkUserInvoice = null,
+            AbbLastMeasurement = x,
+            SchneiderLastMeasurement = null,
+            AbbMonthlyAggregate = null,
+            SchneiderMonthlyAggregate = null,
+            AbbMaxPowerAggregate = null,
+            SchneiderMaxPowerAggregate = null
           })
         .Take(1))
       .Union(context.SchneideriEM3xxxMeasurements
@@ -319,7 +332,14 @@ public class AnalysisQueries(
         .Select(x =>
           new DetailedMeasurementLocationsByMeasurementLocationIntermediary
           {
-            SchneiderLastMeasurement = x
+            NetworkUserCalculation = null,
+            NetworkUserInvoice = null,
+            AbbLastMeasurement = null,
+            SchneiderLastMeasurement = x,
+            AbbMonthlyAggregate = null,
+            SchneiderMonthlyAggregate = null,
+            AbbMaxPowerAggregate = null,
+            SchneiderMaxPowerAggregate = null
           })
         .Take(1))
       .Union(context.AbbB2xAggregates
@@ -333,7 +353,14 @@ public class AnalysisQueries(
         .Select(x =>
           new DetailedMeasurementLocationsByMeasurementLocationIntermediary
           {
-            AbbMonthlyAggregate = x
+            NetworkUserCalculation = null,
+            NetworkUserInvoice = null,
+            AbbLastMeasurement = null,
+            SchneiderLastMeasurement = null,
+            AbbMonthlyAggregate = x,
+            SchneiderMonthlyAggregate = null,
+            AbbMaxPowerAggregate = null,
+            SchneiderMaxPowerAggregate = null
           }))
       .Union(context.SchneideriEM3xxxAggregates
         .Where(context.ForeignKeyIn<SchneideriEM3xxxAggregateEntity>(
@@ -346,7 +373,14 @@ public class AnalysisQueries(
         .Select(x =>
           new DetailedMeasurementLocationsByMeasurementLocationIntermediary
           {
-            SchneiderMonthlyAggregate = x
+            NetworkUserCalculation = null,
+            NetworkUserInvoice = null,
+            AbbLastMeasurement = null,
+            SchneiderLastMeasurement = null,
+            AbbMonthlyAggregate = null,
+            SchneiderMonthlyAggregate = x,
+            AbbMaxPowerAggregate = null,
+            SchneiderMaxPowerAggregate = null
           }))
       .Union(context.AbbB2xAggregates
         .Where(context.ForeignKeyIn<AbbB2xAggregateEntity>(
@@ -379,7 +413,14 @@ public class AnalysisQueries(
         .Select(x =>
           new DetailedMeasurementLocationsByMeasurementLocationIntermediary
           {
-            AbbMaxPowerAggregate = x
+            NetworkUserCalculation = null,
+            NetworkUserInvoice = null,
+            AbbLastMeasurement = null,
+            SchneiderLastMeasurement = null,
+            AbbMonthlyAggregate = null,
+            SchneiderMonthlyAggregate = null,
+            AbbMaxPowerAggregate = x,
+            SchneiderMaxPowerAggregate = null
           }))
       .Union(context.SchneideriEM3xxxAggregates
         .Where(context.ForeignKeyIn<SchneideriEM3xxxAggregateEntity>(
@@ -412,6 +453,13 @@ public class AnalysisQueries(
         .Select(x =>
           new DetailedMeasurementLocationsByMeasurementLocationIntermediary
           {
+            NetworkUserCalculation = null,
+            NetworkUserInvoice = null,
+            AbbLastMeasurement = null,
+            SchneiderLastMeasurement = null,
+            AbbMonthlyAggregate = null,
+            SchneiderMonthlyAggregate = null,
+            AbbMaxPowerAggregate = null,
             SchneiderMaxPowerAggregate = x
           }));
 
