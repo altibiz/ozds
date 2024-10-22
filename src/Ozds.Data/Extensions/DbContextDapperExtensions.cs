@@ -99,11 +99,11 @@ public static class DataDbContextDapperExtensions
         ?? throw new InvalidOperationException(
           $"Failed to create instance of {typeof(T).Name}");
 
-      foreach (var property in typeof(T)
+      foreach (var (property, @object) in typeof(T)
         .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-        .Where(property => property.GetIndexParameters().Length > 0))
+        .Zip(objects))
       {
-        property.SetValue(instance, objects[0]);
+        property.SetValue(instance, @object);
       }
 
       return instance as T
