@@ -64,7 +64,7 @@ public static class IServiceCollectionExtensions
         options.AwaitApplicationStarted = true;
       });
 
-    services.AddDbContextFactory<JobsDbContext>(
+    services.AddPooledDbContextFactory<JobsDbContext>(
       options =>
       {
         options.UseNpgsql(
