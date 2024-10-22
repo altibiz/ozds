@@ -1,5 +1,20 @@
 @page "/meter/{source}"
+@using Ozds.Business.Analysis
+@using Ozds.Business.Time
+@using Ozds.Client.Components.Charts
 
+
+@{
+  var analysis = RepresentativeState.AnalysisBases.Analysis();
+  var meters = RepresentativeState.AnalysisBases
+    .Select(x => x.Meter)
+    .Where(x => x.Id == Source)
+    .DistinctBy(x => x.Id)
+    .OfType<IMeter>()
+    .ToList();
+}
+
+  @* MOBILE *@
   <MudHidden Breakpoint="Breakpoint.MdAndUp">
     <MudGrid Class="my-3 pa-1">
       <MudItem xs="12" Class="pa-1">
@@ -13,22 +28,32 @@
 
 <MeterDetailsTable Source="@Source"/>
 
+  @* DESKTOP *@
   <MudHidden Breakpoint="Breakpoint.SmAndDown">
     <MudGrid Class="my-3">
       <MudItem xs="6">
         <MeterGauge Source="@Source"/>
       </MudItem>
       <MudItem xs="6">
-        <MeterGraph Source="@Source"/>
+        <NewMeterGraph
+          Meters="@meters"
+          Timestamp="@DateTimeOffset.UtcNow.GetStartOfDay()"
+          Resolution="@ResolutionModel.Day"
+          Measure="@MeasureModel.ActivePower"
+          Multiplier="1"
+          Static
+          Sum />
       </MudItem>
       <MudItem xs="12">
         <BrushGraph Source="@Source"/>
       </MudItem>
     </MudGrid>
   </MudHidden>
-@* abb schneider *@
 
 @code {
+
+  [CascadingParameter]
+  public RepresentativeState RepresentativeState { get; set; } = default!;
 
   [Parameter]
   public string Source { get; set; } = "abb";

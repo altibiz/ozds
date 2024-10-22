@@ -1,0 +1,50 @@
+@using Ozds.Business.Time
+@using Ozds.Client.Components.Charts
+@using Ozds.Business.Analysis
+@using Ozds.Client.Components.Streaming
+@inherits OzdsOwningComponentBase
+
+@{
+  var analysis = RepresentativeState.AnalysisBases.Analysis();
+  var meters = RepresentativeState.AnalysisBases
+    .Select(x => x.Meter)
+    .DistinctBy(x => x.Id)
+    .OfType<IMeter>()
+    .ToList();
+}
+
+<MudText Typo="Typo.h4">@T["Operator"]</MudText>
+@* MOBILE *@
+<MudHidden Breakpoint="Breakpoint.MdAndUp">
+  <MudGrid Class="my-3 pa-1">
+    <MudItem xs="12" Class="pa-1">
+      <OperatorGraph/>
+    </MudItem>
+    <MudItem xs="12" Class="pa-1">
+      <OperatorGraph/>
+    </MudItem>
+  </MudGrid>
+</MudHidden>
+
+@* DESKTOP *@
+<MudHidden Breakpoint="Breakpoint.SmAndDown">
+
+  <MudGrid Class="my-3 pa-1">
+    <MudItem xs="6" Class="pa-1">
+      <OperatorGraph/>
+    </MudItem>
+    <MudItem xs="6" Class="pa-1">
+      <NewMeterGraph
+        Meters="@meters"
+        Timestamp="@DateTimeOffset.UtcNow.GetStartOfDay()"
+        Resolution="@ResolutionModel.Day"
+        Measure="@MeasureModel.ActivePower"
+        Multiplier="1" />
+    </MudItem>
+  </MudGrid>
+</MudHidden>
+
+@code {
+  [CascadingParameter]
+  public RepresentativeState RepresentativeState { get; set; } = default!;
+}
