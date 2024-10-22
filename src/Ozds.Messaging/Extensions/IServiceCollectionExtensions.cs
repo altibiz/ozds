@@ -50,7 +50,7 @@ public static class IServiceCollectionExtensions
       ?? throw new InvalidOperationException(
         "Missing Ozds:Messaging configuration");
 
-    services.AddDbContext<MessagingDbContext>(
+    services.AddPooledDbContextFactory<MessagingDbContext>(
       builder => builder
         .UseNpgsql(
           messagingOptions.PersistenceConnectionString, m =>
