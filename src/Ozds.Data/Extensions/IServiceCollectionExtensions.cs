@@ -1,3 +1,4 @@
+using System.Data;
 using System.Reflection;
 using Npgsql;
 using Ozds.Data.Context;
@@ -19,6 +20,9 @@ public static class IServiceCollectionExtensions
 
     // Entity Framework Core
     services.AddEntityFrameworkCore(builder);
+
+    // Dapper
+    services.AddDapper(builder);
 
     // Observers
     services.AddSingletonAssignableTo(typeof(IPublisher));
@@ -44,36 +48,53 @@ public static class IServiceCollectionExtensions
       (services, options) =>
       {
         if (builder.Environment.IsDevelopment()
-          && Environment.GetEnvironmentVariable("OZDS_LOG_SQL") is not null)
+      && Environment.GetEnvironmentVariable("OZDS_LOG_SQL") is not null)
         {
           options.EnableSensitiveDataLogging();
           options.EnableDetailedErrors();
           options.UseLoggerFactory(
-            LoggerFactory.Create(builder => builder.AddConsole())
-          );
+        LoggerFactory.Create(builder => builder.AddConsole())
+      );
         }
 
         var dataSourceBuilder =
-          new NpgsqlDataSourceBuilder(dataOptions.ConnectionString);
+      new NpgsqlDataSourceBuilder(dataOptions.ConnectionString);
         dataSourceBuilder.ApplyConfigurationsFromAssembly(
-          Assembly.GetExecutingAssembly());
+      Assembly.GetExecutingAssembly());
         var dataSource = dataSourceBuilder.Build();
 
         options
-          .UseTimescale(
-            dataSource,
-            options =>
-            {
-              options.MigrationsAssembly(
-                typeof(DataDbContext).Assembly.GetName().Name);
-              options.MigrationsHistoryTable(
-                $"__Ozds{nameof(DataDbContext)}");
-            })
-          .AddServedSaveChangesInterceptorsFromAssembly(
-            Assembly.GetExecutingAssembly(),
-            services
-          );
+      .UseTimescale(
+        dataSource,
+        options =>
+        {
+          options.MigrationsAssembly(
+          typeof(DataDbContext).Assembly.GetName().Name);
+          options.MigrationsHistoryTable(
+          $"__Ozds{nameof(DataDbContext)}");
+        })
+      .AddServedSaveChangesInterceptorsFromAssembly(
+        Assembly.GetExecutingAssembly(),
+        services
+      );
       });
+  }
+
+  private static void AddDapper(
+    this IServiceCollection services,
+    IHostApplicationBuilder builder
+  )
+  {
+    var dataOptions =
+      builder.Configuration
+        .GetSection("Ozds:Data")
+        .Get<OzdsDataOptions>()
+      ?? throw new InvalidOperationException(
+        "Ozds:Data not found in configuration"
+      );
+
+    services.AddScoped<IDbConnection>(_ =>
+      new NpgsqlConnection(dataOptions.ConnectionString));
   }
 
   private static void AddSingletonAssignableTo(
