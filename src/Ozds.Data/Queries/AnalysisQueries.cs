@@ -12,7 +12,7 @@ using Ozds.Data.Queries.Abstractions;
 
 namespace Ozds.Data.Queries;
 
-public class DapperAnalysisQueries(
+public class AnalysisQueries(
   IDbContextFactory<DataDbContext> factory
 ) : IQueries
 {
