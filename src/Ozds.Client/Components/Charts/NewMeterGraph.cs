@@ -40,6 +40,12 @@ public partial class NewMeterGraph : OzdsOwningComponentBase
   public bool Sum { get; set; } = false;
 
   [Parameter]
+  public bool SumBars { get; set; } = false;
+
+  [Parameter]
+  public bool Area { get; set; } = false;
+
+  [Parameter]
   public bool Static { get; set; } = false;
 
   [Parameter]
@@ -203,6 +209,11 @@ public partial class NewMeterGraph : OzdsOwningComponentBase
     options = Breakpoint <= Breakpoint.Sm
       ? options.WithSmAndDown(measure)
       : options.WithMdAndUp(measure);
+
+    if (Area)
+    {
+      options = options.WithArea();
+    }
 
     return options;
   }

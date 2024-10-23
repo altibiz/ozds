@@ -17,6 +17,14 @@ public static class ApexChartOptionsExtensions
     };
     return options;
   }
+  public static ApexChartOptions<T> WithArea<T>(
+    this ApexChartOptions<T> options
+  )
+    where T : class
+  {
+    options.Chart.Type = ChartType.Area;
+    return options;
+  }
 
   public static ApexChartOptions<T> WithSmAndDown<T>(
     this ApexChartOptions<T> options,
