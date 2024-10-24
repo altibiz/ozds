@@ -24,13 +24,7 @@ public static class DataDbContextDapperExtensions
       cancellationToken: cancellationToken
     );
 
-    var results = await (typeof(SqlMapper)
-      .GetMethod(
-        "MultiMapAsync",
-        // NOTE: fuck you Dapper
-#pragma warning disable S3011 // Reflection should not be used to increase accessibility of classes, methods, or fields
-        BindingFlags.Static | BindingFlags.NonPublic)!
-#pragma warning restore S3011 // Reflection should not be used to increase accessibility of classes, methods, or fields
+    var results = await (MultiMapAsync
       .MakeGenericMethod(typeof(T))
       .Invoke(
         null,
@@ -151,6 +145,18 @@ public static class DataDbContextDapperExtensions
   }
 
   private static readonly SemaphoreSlim _lock = new(1, 1);
+
+  private static readonly MethodInfo MultiMapAsync =
+    typeof(SqlMapper)
+      .GetMethods(
+#pragma warning disable S3011 // Reflection should not be used to increase accessibility of classes, methods, or fields
+        BindingFlags.Static | BindingFlags.NonPublic
+#pragma warning restore S3011 // Reflection should not be used to increase accessibility of classes, methods, or fields
+      )
+      .FirstOrDefault(method =>
+        method.Name == "MultiMapAsync" &&
+        method.GetGenericArguments().Length == 1)
+      ?? throw new InvalidOperationException("MultiMapAsync doesn't exist");
 
   private static bool _isRegistered = false;
 }

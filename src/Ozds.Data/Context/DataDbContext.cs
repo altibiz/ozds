@@ -8,16 +8,6 @@ public partial class DataDbContext(
   DbContextOptions<DataDbContext> options)
   : DbContext(options)
 {
-  protected override void OnConfiguring(
-    DbContextOptionsBuilder optionsBuilder)
-  {
-    optionsBuilder
-      .UseLazyLoadingProxies()
-      .UseSnakeCaseNamingConvention();
-
-    base.OnConfiguring(optionsBuilder);
-  }
-
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
     modelBuilder
