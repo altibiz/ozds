@@ -43,6 +43,9 @@ public partial class NewMeterGraph : OzdsOwningComponentBase
   public bool SumBars { get; set; } = false;
 
   [Parameter]
+  public bool DounutSum { get; set; } = false;
+
+  [Parameter]
   public bool Area { get; set; } = false;
 
   [Parameter]
