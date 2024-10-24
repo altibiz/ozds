@@ -22,20 +22,27 @@
            @ref="_chart">
   @if (Meters.Count > 1)
   {
-    if (Sum)
+    if(DounutSum){
+        <ApexPointSeries
+          Items="_measurements.Items"
+          SeriesType="SeriesType.Donut"
+          Name="@Measure.ToTitle()"
+          XValue="@(x => x.MeterId)"
+          YAggregate="@(x => x.Sum(m => m.ChartValue(Measure, null)))"/>
+    }
+    else if (Sum)
     {
+      if(SumBars)
+      {
+        <ApexPointSeries
+          Items="@_measurements.Items"
+          Name="@Measure.ToTitle()"
+          SeriesType="SeriesType.Bar"
+          XValue="x => DateTimeApplyOffset(x.Timestamp)"
+          YValue="x => x.ChartValue(Measure, null)" />
+      }
       foreach (var phase in Phases.OrderBy(x => x))
       {
-        if(SumBars)
-        {
-          <ApexPointSeries
-            Items="@_measurements.Items"
-            Name="@phase.ToTitle()"
-            SeriesType="SeriesType.Bar"
-            XValue="x => DateTimeApplyOffset(x.Timestamp)"
-            YValue="x => x.ChartValue(Measure, phase)" />
-        }
-
         <ApexPointSeries
           Items="@_measurements.Items.GroupBy(m => m.Timestamp)"
           Name="@phase.ToTitle()"
