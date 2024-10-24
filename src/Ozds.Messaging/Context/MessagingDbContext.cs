@@ -23,14 +23,6 @@ public partial class MessagingDbContext(
     }
   }
 
-  protected override void OnConfiguring(
-    DbContextOptionsBuilder optionsBuilder)
-  {
-    optionsBuilder.UseSnakeCaseNamingConvention();
-
-    base.OnConfiguring(optionsBuilder);
-  }
-
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
     base.OnModelCreating(modelBuilder);

@@ -9,6 +9,7 @@ public class MessagingDbContextDesignTimeFactory
   public MessagingDbContext CreateDbContext(string[] args)
   {
     var optionsBuilder = new DbContextOptionsBuilder<MessagingDbContext>();
+
     optionsBuilder
       .UseNpgsql(
         "Server=localhost;Port=5432;User Id=ozds;Password=ozds;Database=ozds",
@@ -19,6 +20,9 @@ public class MessagingDbContextDesignTimeFactory
           x.MigrationsHistoryTable(
             $"__Ozds{nameof(MessagingDbContext)}");
         });
+
+    optionsBuilder.UseSnakeCaseNamingConvention();
+
     return new MessagingDbContext(optionsBuilder.Options);
   }
 }

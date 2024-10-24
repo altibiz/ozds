@@ -59,7 +59,8 @@ public static class IServiceCollectionExtensions
               typeof(MessagingDbContext).Assembly.GetName().Name);
             m.MigrationsHistoryTable(
               $"__Ozds{nameof(MessagingDbContext)}");
-          }));
+          })
+        .UseSnakeCaseNamingConvention());
 
     services.AddMassTransit(
       config =>

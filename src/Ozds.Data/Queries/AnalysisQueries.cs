@@ -60,8 +60,8 @@ public class AnalysisQueries(
         WITH initial_measurement_locations AS (
           SELECT
             {context.GetTableName<NetworkUserMeasurementLocationEntity>()}
-              .{context.GetColumnName<NetworkUserMeasurementLocationEntity>(
-                nameof(NetworkUserMeasurementLocationEntity.Id))}
+              .{context.GetPrimaryKeyColumnName<
+                NetworkUserMeasurementLocationEntity>()}
               AS measurement_location_id,
             {context.GetTableName<NetworkUserMeasurementLocationEntity>()}.*,
             {context.GetTableName<NetworkUserEntity>()}.*,
@@ -107,8 +107,8 @@ public class AnalysisQueries(
 
           SELECT
             {context.GetTableName<NetworkUserMeasurementLocationEntity>()}
-              .{context.GetColumnName<NetworkUserMeasurementLocationEntity>(
-                nameof(NetworkUserMeasurementLocationEntity.Id))}
+              .{context.GetPrimaryKeyColumnName<
+                NetworkUserMeasurementLocationEntity>()}
               AS measurement_location_id,
             {context.GetTableName<NetworkUserMeasurementLocationEntity>()}.*,
             {context.GetTableName<NetworkUserEntity>()}.*,
@@ -154,8 +154,8 @@ public class AnalysisQueries(
         WITH initial_measurement_locations AS (
           SELECT
             {context.GetTableName<NetworkUserMeasurementLocationEntity>()}
-              .{context.GetColumnName<NetworkUserMeasurementLocationEntity>(
-              nameof(NetworkUserMeasurementLocationEntity.Id))}
+              .{context.GetPrimaryKeyColumnName<
+                NetworkUserMeasurementLocationEntity>()}
               AS measurement_location_id,
             {context.GetTableName<NetworkUserMeasurementLocationEntity>()}.*,
             {context.GetTableName<NetworkUserEntity>()}.*,

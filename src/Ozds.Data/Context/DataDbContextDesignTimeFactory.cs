@@ -27,6 +27,11 @@ public class DataDbContextDesignTimeFactory
         x.MigrationsHistoryTable(
           $"__Ozds{nameof(DataDbContext)}");
       });
+
+    optionsBuilder
+      .UseLazyLoadingProxies()
+      .UseSnakeCaseNamingConvention();
+
     return new DataDbContext(optionsBuilder.Options);
   }
 }

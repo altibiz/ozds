@@ -1,10 +1,12 @@
 using System.Data;
 using System.Reflection;
-using Dapper;
+using Microsoft.EntityFrameworkCore;
 using Npgsql;
 using Ozds.Data.Context;
+using Ozds.Data.Mutations.Abstractions;
 using Ozds.Data.Observers.Abstractions;
 using Ozds.Data.Options;
+using Ozds.Data.Queries.Abstractions;
 
 namespace Ozds.Data.Extensions;
 
@@ -25,6 +27,10 @@ public static class IServiceCollectionExtensions
     // Observers
     services.AddSingletonAssignableTo(typeof(IPublisher));
     services.AddSingletonAssignableTo(typeof(ISubscriber));
+
+    // Queries
+    services.AddScopedAssignableTo(typeof(IQueries));
+    services.AddScopedAssignableTo(typeof(IMutations));
 
     return services;
   }
@@ -75,6 +81,10 @@ public static class IServiceCollectionExtensions
             Assembly.GetExecutingAssembly(),
             services
           );
+
+        options
+          .UseLazyLoadingProxies()
+          .UseSnakeCaseNamingConvention();
       });
   }
 
@@ -97,6 +107,31 @@ public static class IServiceCollectionExtensions
       foreach (var interfaceType in conversionType.GetAllInterfaces())
       {
         services.AddSingleton(
+          interfaceType, services =>
+            services.GetRequiredService(conversionType));
+      }
+    }
+  }
+
+  private static void AddScopedAssignableTo(
+    this IServiceCollection services,
+    Type assignableTo
+  )
+  {
+    var conversionTypes = typeof(IServiceCollectionExtensions).Assembly
+      .GetTypes()
+      .Where(
+        type =>
+          !type.IsAbstract &&
+          type.IsClass &&
+          type.IsAssignableTo(assignableTo));
+
+    foreach (var conversionType in conversionTypes)
+    {
+      services.AddScoped(conversionType);
+      foreach (var interfaceType in conversionType.GetAllInterfaces())
+      {
+        services.AddScoped(
           interfaceType, services =>
             services.GetRequiredService(conversionType));
       }
