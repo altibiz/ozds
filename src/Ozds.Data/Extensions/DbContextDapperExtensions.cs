@@ -9,7 +9,11 @@ using Ozds.Data.Entities.Enums;
 using static Dapper.SqlMapper;
 
 // TODO: complex properties
-// TODO: more general solution for generic properties
+// try make the complex property a list of simple properties
+
+// TODO: generic type handlers for generic properties
+// when https://github.com/DapperLib/Dapper/issues/1924
+// for now crawl over the model and find all list properties and add that way
 
 namespace Ozds.Data.Extensions;
 
