@@ -47,6 +47,17 @@ public static class DbContextTableExtensions
     return context.Model.FindEntityType(typeof(T))?.GetTableName();
   }
 
+  public static IEnumerable<string> GetColumnNames<T>(
+    this DbContext context
+  )
+  {
+    return context.Model.FindEntityType(typeof(T))
+      ?.GetProperties()
+      .Select(x => x.GetColumnName())
+      ?? throw new InvalidOperationException(
+        $"Entity type {typeof(T).Name} not found");
+  }
+
   public static string? GetColumnName<T>(
     this DbContext context,
     string propertyName

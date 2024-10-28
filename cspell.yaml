@@ -45,6 +45,7 @@ words:
   - "npgsql"
   - "hypertable"
   - "schneideriem3xxx"
+  - "schneideri"
   - "timescale"
   - "timescaledb"
   - "upsert"

@@ -1,9 +1,15 @@
+using System.Collections;
 using System.Data;
 using System.Data.Common;
 using System.Reflection;
 using Dapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Ozds.Data.Entities.Enums;
 using static Dapper.SqlMapper;
+
+// TODO: complex properties
+// TODO: more general solution for generic properties
 
 namespace Ozds.Data.Extensions;
 
@@ -56,25 +62,32 @@ public static class DataDbContextDapperExtensions
     {
       SetTypeMap(
         type.ClrType,
-        new CustomPropertyTypeMap(
+        new CustomPropertyOrFieldTypeMap(
           type.ClrType,
           (type, columnName) =>
           {
-            var propertyName = GetMappedPropertyName(context, type, columnName)
-              ?? throw new InvalidOperationException(
-                $"Property name doesn't exist for {type.Name}.{columnName}");
-            return type.GetProperty(propertyName)
-              ?? throw new InvalidOperationException(
-                $"Property {type.Name}.{propertyName} doesn't exist");
+            var property = GetMappedProperty(context, type, columnName);
+
+            var info = (MemberInfo?)property?.PropertyInfo
+              ?? property?.FieldInfo;
+
+            return info;
           }));
     }
+
+    AddTypeHandler(
+      typeof(List<PhaseEntity>),
+      new GenericListTypeHandler<PhaseEntity>()
+    );
 
     _lock.Release();
 
     return context.Database.GetDbConnection();
   }
 
+#pragma warning disable IDE0060 // Remove unused parameter
   private static Type[] GetDapperTypes(this DbContext context, Type type)
+#pragma warning restore IDE0060 // Remove unused parameter
   {
     return type
       .GetProperties(BindingFlags.Public | BindingFlags.Instance)
@@ -129,7 +142,7 @@ public static class DataDbContextDapperExtensions
     );
   }
 
-  private static string? GetMappedPropertyName(
+  private static IProperty? GetMappedProperty(
     DbContext context,
     Type entityType,
     string columnName
@@ -141,7 +154,7 @@ public static class DataDbContextDapperExtensions
       .FirstOrDefault(property => property
         .GetColumnName()
         .Equals(columnName, StringComparison.OrdinalIgnoreCase));
-    return property?.Name;
+    return property;
   }
 
   private static readonly SemaphoreSlim _lock = new(1, 1);
@@ -159,4 +172,96 @@ public static class DataDbContextDapperExtensions
       ?? throw new InvalidOperationException("MultiMapAsync doesn't exist");
 
   private static bool _isRegistered = false;
+
+  private sealed class CustomPropertyOrFieldTypeMap(
+      Type type,
+      Func<Type, string, MemberInfo?> selector) : ITypeMap
+  {
+    public ConstructorInfo? FindConstructor(string[] names, Type[] types)
+    {
+      return type.GetConstructor(Array.Empty<Type>());
+    }
+
+    public ConstructorInfo? FindExplicitConstructor()
+    {
+      return null;
+    }
+
+    public IMemberMap GetConstructorParameter(ConstructorInfo constructor, string columnName)
+    {
+      throw new NotSupportedException();
+    }
+
+    public IMemberMap? GetMember(string columnName)
+    {
+      var info = selector(type, columnName);
+      return info switch
+      {
+        PropertyInfo propertyInfo =>
+          new SimpleMemberMap(columnName, propertyInfo),
+        FieldInfo fieldInfo => new SimpleMemberMap(columnName, fieldInfo),
+        _ => null
+      };
+    }
+  }
+
+  private sealed class SimpleMemberMap : IMemberMap
+  {
+    public string ColumnName { get; }
+
+    public Type MemberType
+    {
+      get
+      {
+        object? obj = Field?.FieldType;
+        if (obj == null)
+        {
+          obj = Property?.PropertyType;
+          if (obj == null)
+          {
+            ParameterInfo? parameter = Parameter;
+            if (parameter == null)
+            {
+              return default!;
+            }
+
+            obj = parameter.ParameterType;
+          }
+        }
+
+        return (Type)obj;
+      }
+    }
+
+    public PropertyInfo? Property { get; }
+
+    public FieldInfo? Field { get; }
+
+    public ParameterInfo? Parameter { get; }
+
+    public SimpleMemberMap(string columnName, PropertyInfo property)
+    {
+      ColumnName = columnName ?? throw new ArgumentNullException(nameof(columnName));
+      Property = property ?? throw new ArgumentNullException(nameof(property));
+    }
+
+    public SimpleMemberMap(string columnName, FieldInfo field)
+    {
+      ColumnName = columnName ?? throw new ArgumentNullException(nameof(columnName));
+      Field = field ?? throw new ArgumentNullException(nameof(field));
+    }
+  }
+
+  private sealed class GenericListTypeHandler<T> : TypeHandler<List<T>>
+  {
+    public override List<T>? Parse(object value)
+    {
+      return (value as IEnumerable)?.OfType<T>().ToList();
+    }
+
+    public override void SetValue(IDbDataParameter parameter, List<T>? value)
+    {
+      parameter.Value = value?.ToArray();
+    }
+  }
 }
