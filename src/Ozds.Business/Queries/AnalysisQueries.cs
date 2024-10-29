@@ -3,6 +3,7 @@ using Ozds.Business.Models;
 using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Composite;
 using Ozds.Business.Models.Enums;
+using Ozds.Data.Entities.Composite;
 using Ozds.Data.Queries.Abstractions;
 using DataMeasurementLocationQueries = Ozds.Data.Queries.AnalysisQueries;
 
@@ -81,6 +82,13 @@ public class AnalysisQueries(
         cancellationToken
       );
 
+    return MakeAnalysisBasisModelList(entities);
+  }
+
+  private List<AnalysisBasisModel> MakeAnalysisBasisModelList(
+    IEnumerable<AnalysisBasisEntity> entities
+  )
+  {
     return entities
       .Select(entity => new AnalysisBasisModel(
         modelEntityConverter.ToModel<LocationModel>(entity.Location),

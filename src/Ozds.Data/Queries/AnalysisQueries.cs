@@ -1,5 +1,4 @@
 using System.Data;
-using Dapper;
 using Microsoft.EntityFrameworkCore;
 using Ozds.Data.Context;
 using Ozds.Data.Entities;
@@ -28,6 +27,27 @@ public class AnalysisQueries(
     await using var context = await factory
       .CreateDbContextAsync(cancellationToken);
 
+    return await ReadAnalysisBasesByRepresentative(
+      context,
+      representativeId,
+      role,
+      fromDate,
+      toDate,
+      cancellationToken
+    );
+  }
+
+#pragma warning disable CA1822 // Mark members as static
+  internal async Task<List<AnalysisBasisEntity>>
+    ReadAnalysisBasesByRepresentative(
+      DataDbContext context,
+      string representativeId,
+      RoleEntity role,
+      DateTimeOffset fromDate,
+      DateTimeOffset toDate,
+      CancellationToken cancellationToken
+    )
+  {
     var results = await GetDetailedMeasurementLocationsByRepresentative(
       context,
       representativeId,
@@ -41,6 +61,7 @@ public class AnalysisQueries(
 
     return analysisBases;
   }
+#pragma warning restore CA1822 // Mark members as static
 
   private static async
     Task<List<DetailedMeasurementLocationsByRepresentativeIntermediary>>

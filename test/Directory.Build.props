@@ -46,6 +46,7 @@
     <Using Include="AutoFixture.Kernel"/>
     <Using Include="AutoFixture.AutoMoq"/>
     <Using Include="AutoFixture.Xunit2"/>
+    <Using Include="$(ProjectName).Fixtures"/>
   </ItemGroup>
 
 </Project>

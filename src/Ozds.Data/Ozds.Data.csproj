@@ -16,4 +16,8 @@
     <PackageReference Include="FlexLabs.EntityFrameworkCore.Upsert" Version="8.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="Ozds.Data.Test" />
+  </ItemGroup>
+
 </Project>

@@ -1,6 +1,6 @@
 using System.Globalization;
 
-namespace Ozds.Business.Test;
+namespace Ozds.Business.Test.Fixtures;
 
 public static class Constants
 {

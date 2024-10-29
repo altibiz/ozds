@@ -3,6 +3,7 @@ using Microsoft.Extensions.Diagnostics.Metrics;
 using Microsoft.Extensions.Primitives;
 using Ozds.Data.Context;
 using Ozds.Data.Extensions;
+using Ozds.Data.Test.Fixtures;
 using Xunit.DependencyInjection.Logging;
 
 namespace Ozds.Data.Test;
@@ -45,6 +46,8 @@ public class Startup
 
     var builderProxy = new HostApplicationBuilderProxy(context, services);
     services.AddOzdsData(builderProxy);
+
+    services.AddScoped<DataDbContextFixture>();
   }
 
   public void Configure(IServiceProvider serviceProvider)
