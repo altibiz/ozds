@@ -10,9 +10,10 @@ using Ozds.Jobs.Manager.Abstractions;
 namespace Ozds.Business.Reactors;
 
 public class NetworkUserBillingJobManagerReactor(
-  IServiceScopeFactory serviceScopeFactory,
+  IDbContextFactory<DataDbContext> factory,
   IEntityChangesSubscriber subscriber,
-  IHostApplicationLifetime lifetime
+  IHostApplicationLifetime lifetime,
+  INetworkUserBillingJobManager manager
 ) : BackgroundService, IReactor
 {
   private readonly Channel<EntitiesChangedEventArgs> channel =
@@ -37,12 +38,9 @@ public class NetworkUserBillingJobManagerReactor(
       return;
     }
 
-    await using (var scope = serviceScopeFactory.CreateAsyncScope())
     {
-      var context = scope.ServiceProvider.GetRequiredService<DataDbContext>();
-      var manager =
-        scope.ServiceProvider
-          .GetRequiredService<INetworkUserBillingJobManager>();
+      await using var context = await factory
+        .CreateDbContextAsync(stoppingToken);
 
       var networkUsers = await context.NetworkUsers.ToListAsync(stoppingToken);
       foreach (var networkUser in networkUsers)
@@ -53,8 +51,7 @@ public class NetworkUserBillingJobManagerReactor(
 
     await foreach (var eventArgs in channel.Reader.ReadAllAsync(stoppingToken))
     {
-      await using var scope = serviceScopeFactory.CreateAsyncScope();
-      await Handle(scope.ServiceProvider, eventArgs);
+      await Handle(manager, eventArgs);
     }
   }
 
@@ -66,12 +63,9 @@ public class NetworkUserBillingJobManagerReactor(
   }
 
   private static async Task Handle(
-    IServiceProvider serviceProvider,
+    INetworkUserBillingJobManager manager,
     EntitiesChangedEventArgs eventArgs)
   {
-    var manager = serviceProvider
-      .GetRequiredService<INetworkUserBillingJobManager>();
-
     foreach (var entry in eventArgs.Entities)
     {
       if (entry.Entity is not NetworkUserEntity networkUser)

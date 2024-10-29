@@ -10,9 +10,9 @@ public static class IApplicationBuilderExtensions
     IEndpointRouteBuilder endpoints
   )
   {
-    using var scope = app.ApplicationServices.CreateScope();
-    var context =
-      scope.ServiceProvider.GetRequiredService<MessagingDbContext>();
+    using var context = app.ApplicationServices
+      .GetRequiredService<IDbContextFactory<MessagingDbContext>>()
+      .CreateDbContext();
     context.Database.Migrate();
 
     return app;

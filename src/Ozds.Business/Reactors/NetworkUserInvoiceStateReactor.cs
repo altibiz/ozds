@@ -22,7 +22,9 @@ namespace Ozds.Business.Reactors;
 
 public class NetworkUserInvoiceStateReactor(
   INetworkUserInvoiceStateSubscriber subscriber,
-  IServiceScopeFactory serviceScopeFactory
+  IDbContextFactory<DataDbContext> factory,
+  AgnosticModelEntityConverter converter,
+  ILocalizer localizer
 ) : BackgroundService, IReactor
 {
   private readonly Channel<NetworkUserInvoiceStateEventArgs> channel =
@@ -44,8 +46,9 @@ public class NetworkUserInvoiceStateReactor(
   {
     await foreach (var state in channel.Reader.ReadAllAsync(stoppingToken))
     {
-      await using var scope = serviceScopeFactory.CreateAsyncScope();
-      await Handle(scope.ServiceProvider, state);
+      await using var context = await factory
+        .CreateDbContextAsync(stoppingToken);
+      await Handle(context, converter, localizer, state);
     }
   }
 
@@ -57,21 +60,17 @@ public class NetworkUserInvoiceStateReactor(
   }
 
   private static async Task Handle(
-    IServiceProvider serviceProvider,
+    DataDbContext context,
+    AgnosticModelEntityConverter converter,
+    ILocalizer localizer,
     NetworkUserInvoiceStateEventArgs eventArgs)
   {
-    var mutations = serviceProvider
-      .GetRequiredService<NetworkUserInvoiceMutations>();
-    await mutations.UpdateBillId(
-      eventArgs.State.NetworkUserInvoiceId,
-      eventArgs.State.BillId!,
-      CancellationToken.None
-    );
-
-    var context = serviceProvider.GetRequiredService<DataDbContext>();
-    var converter =
-      serviceProvider.GetRequiredService<AgnosticModelEntityConverter>();
-    var localizer = serviceProvider.GetRequiredService<ILocalizer>();
+    await context.NetworkUserInvoices
+      .Where(context
+        .PrimaryKeyEquals<NetworkUserInvoiceEntity>(
+          eventArgs.State.NetworkUserInvoiceId))
+      .ExecuteUpdateAsync(
+        s => s.SetProperty(x => x.BillId, eventArgs.State.BillId));
 
     var invoices = (await context.NetworkUserInvoices
         .Where(

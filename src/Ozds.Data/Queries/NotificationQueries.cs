@@ -135,4 +135,24 @@ public class NotificationQueries(
 
     return items.OfType<INotificationEntity>().ToList();
   }
+
+  public async Task<List<NotificationRecipientEntity>> Recipients(
+    INotificationEntity notification)
+  {
+    await using var context = await factory.CreateDbContextAsync();
+
+    var topics = notification.Topics;
+    var representatives = await context.Representatives
+      .Where(r => r.Topics.Any(t => topics.Contains(t)))
+      .ToListAsync();
+
+    return representatives
+      .Select(
+        representative => new NotificationRecipientEntity
+        {
+          NotificationId = notification.Id,
+          RepresentativeId = representative.Id
+        })
+      .ToList();
+  }
 }

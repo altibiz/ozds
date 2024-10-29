@@ -21,7 +21,8 @@ namespace Ozds.Business.Workers;
 // TODO: paging when fetching
 
 public class NotificationEmailSenderReactor(
-  IServiceScopeFactory serviceScopeFactory,
+  IDbContextFactory<DataDbContext> factory,
+  IServiceProvider serviceProvider,
   IEntityChangesSubscriber subscriber
 ) : BackgroundService, IReactor
 {
@@ -46,8 +47,10 @@ public class NotificationEmailSenderReactor(
   {
     await foreach (var eventArgs in channel.Reader.ReadAllAsync(stoppingToken))
     {
-      await using var scope = serviceScopeFactory.CreateAsyncScope();
-      await Handle(scope.ServiceProvider, eventArgs);
+      await using var context = await factory
+        .CreateDbContextAsync(stoppingToken);
+      var sender = serviceProvider.GetRequiredService<IEmailSender>();
+      await Handle(context, sender, eventArgs);
     }
   }
 
@@ -57,7 +60,8 @@ public class NotificationEmailSenderReactor(
   }
 
   private static async Task Handle(
-    IServiceProvider serviceProvider,
+    DataDbContext context,
+    IEmailSender sender,
     EntitiesChangedEventArgs eventArgs)
   {
     var recipients = eventArgs.Entities
@@ -70,11 +74,6 @@ public class NotificationEmailSenderReactor(
     {
       return;
     }
-
-    var sender = serviceProvider.GetRequiredService<IEmailSender>();
-    var context = serviceProvider.GetRequiredService<DataDbContext>();
-    var emailOptions =
-      serviceProvider.GetRequiredService<IOptions<OzdsEmailOptions>>();
 
     var notifications = await context.Notifications
       .Where(
@@ -137,21 +136,13 @@ public class NotificationEmailSenderReactor(
             titleBuilder.ToString(),
             $"""
               <p style="font-size: large;">
-                <a href="{
-                      emailOptions.Value.Host
-                    }/app/hr/notification/{
-                      notification.Id
-                    }">
-                  {
-                          notification.Summary
-                        }
+                <a href="app/hr/notification/{notification.Id}">
+                  {notification.Summary}
                 </a>
               </p>
               <p style="font-size: small;">
                 <pre style="overflow-wrap: break-word;">
-                  {
-                          notification.Content
-                        }
+                  {notification.Content}
                 </pre>
               </p>
             """

@@ -1,11 +1,13 @@
 using System.Text.Json;
 using System.Threading.Channels;
+using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Activation.Agnostic;
 using Ozds.Business.Conversion;
 using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Enums;
 using Ozds.Business.Observers.Abstractions;
+using Ozds.Business.Queries;
 using Ozds.Business.Queries.Agnostic;
 using Ozds.Business.Reactors.Abstractions;
 using Ozds.Data.Context;
@@ -15,8 +17,11 @@ using ErrorEventArgs = Ozds.Business.Observers.EventArgs.ErrorEventArgs;
 namespace Ozds.Business.Reactors;
 
 public class ErrorReactor(
-  IErrorSubscriber subscriber,
-  IServiceScopeFactory serviceScopeFactory
+  IDbContextFactory<DataDbContext> factory,
+  AgnosticModelActivator activator,
+  AgnosticModelEntityConverter converter,
+  NotificationQueries notificationQueries,
+  IErrorSubscriber subscriber
 ) : BackgroundService, IReactor
 {
   private readonly Channel<ErrorEventArgs> channel =
@@ -38,8 +43,15 @@ public class ErrorReactor(
   {
     await foreach (var eventArgs in channel.Reader.ReadAllAsync(stoppingToken))
     {
-      await using var scope = serviceScopeFactory.CreateAsyncScope();
-      await Handle(scope.ServiceProvider, eventArgs);
+      await using var context = await factory
+        .CreateDbContextAsync(stoppingToken);
+      await Handle(
+        context,
+        activator,
+        converter,
+        notificationQueries,
+        eventArgs
+      );
     }
   }
 
@@ -49,16 +61,12 @@ public class ErrorReactor(
   }
 
   private static async Task Handle(
-    IServiceProvider serviceProvider,
+    DataDbContext context,
+    AgnosticModelActivator activator,
+    AgnosticModelEntityConverter converter,
+    NotificationQueries notificationQueries,
     ErrorEventArgs eventArgs)
   {
-    var activator =
-      serviceProvider.GetRequiredService<AgnosticModelActivator>();
-    var context = serviceProvider.GetRequiredService<DataDbContext>();
-    var converter =
-      serviceProvider.GetRequiredService<AgnosticModelEntityConverter>();
-    var notificationQueries = serviceProvider
-      .GetRequiredService<OzdsNotificationQueries>();
 
     var content = new EventContent(
       eventArgs.Message,
@@ -91,11 +99,7 @@ public class ErrorReactor(
     notification.Title = "Exception";
     notification.Summary = content.Message;
     notification.Timestamp = DateTimeOffset.UtcNow;
-    notification.Content = $"Exception: \n{
-      eventArgs.Exception
-    }\nStack trace: \n{
-      eventArgs.Exception.StackTrace
-    }\n";
+    notification.Content = $"Exception: \n{eventArgs.Exception}\nStack trace: \n{eventArgs.Exception.StackTrace}\n";
     notification.EventId = @event.Id;
     notification.Topics = new HashSet<TopicModel>
     {

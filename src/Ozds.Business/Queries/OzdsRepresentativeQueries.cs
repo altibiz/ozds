@@ -15,12 +15,15 @@ using Ozds.Users.Queries.Abstractions;
 namespace Ozds.Business.Queries;
 
 public class OzdsRepresentativeQueries(
-  DataDbContext context,
+  IDbContextFactory<DataDbContext> factory,
   IUserQueries userQueries
 ) : IQueries
 {
   public async Task<RepresentativeModel?> RepresentativeById(string id)
   {
+    await using var context = await factory
+      .CreateDbContextAsync();
+
     return await context.Representatives
       .Where(context.PrimaryKeyEquals<RepresentativeEntity>(id))
       .FirstOrDefaultAsync() is { } entity
@@ -34,6 +37,9 @@ public class OzdsRepresentativeQueries(
     int pageCount = QueryConstants.DefaultPageCount
   )
   {
+    await using var context = await factory
+      .CreateDbContextAsync();
+
     return await context.Representatives
       .Where(entity => entity.Role == RoleEntity.OperatorRepresentative)
       .OrderBy(context.PrimaryKeyOf<RepresentativeEntity>())
@@ -53,6 +59,9 @@ public class OzdsRepresentativeQueries(
       int pageCount = QueryConstants.DefaultPageCount
     )
   {
+    await using var context = await factory
+      .CreateDbContextAsync();
+
     return await context.Representatives
       .Where(
         entity => entity.NetworkUsers
@@ -73,6 +82,9 @@ public class OzdsRepresentativeQueries(
     int pageCount = QueryConstants.DefaultPageCount
   )
   {
+    await using var context = await factory
+      .CreateDbContextAsync();
+
     return await context.Representatives
       .Where(
         entity => entity.Locations
@@ -89,6 +101,9 @@ public class OzdsRepresentativeQueries(
   public async Task<RepresentativeModel?> RepresentativeByUserId(
     string userId)
   {
+    await using var context = await factory
+      .CreateDbContextAsync();
+
     return await context.Representatives
       .Where(context.PrimaryKeyEquals<RepresentativeEntity>(userId))
       .FirstOrDefaultAsync() is { } entity
@@ -101,6 +116,9 @@ public class OzdsRepresentativeQueries(
       int pageNumber = QueryConstants.StartingPage,
       int pageCount = QueryConstants.DefaultPageCount)
   {
+    await using var context = await factory
+      .CreateDbContextAsync();
+
     var users = await userQueries.Users(pageNumber, pageCount);
     var userIds = users.Items
       .Select(user => user.Id)
@@ -128,6 +146,9 @@ public class OzdsRepresentativeQueries(
     int pageNumber = QueryConstants.StartingPage,
     int pageCount = QueryConstants.DefaultPageCount)
   {
+    await using var context = await factory
+      .CreateDbContextAsync();
+
     var users = await userQueries.Users(pageNumber, pageCount);
     var ids = users.Items
       .Select(user => user.Id)
@@ -144,7 +165,7 @@ public class OzdsRepresentativeQueries(
           representatives
               .FirstOrDefault(
                 context.PrimaryKeyInCompiled<RepresentativeEntity>(ids)) is
-            { } representative
+          { } representative
             ? representative.ToModel()
             : null
         ))
@@ -162,6 +183,9 @@ public class OzdsRepresentativeQueries(
   public async Task<RepresentingUserModel?>
     RepresentingUserByClaimsPrincipal(ClaimsPrincipal claimsPrincipal)
   {
+    await using var context = await factory
+      .CreateDbContextAsync();
+
     var user = await userQueries.UserByClaimsPrincipal(claimsPrincipal);
     if (user is null)
     {
@@ -186,6 +210,9 @@ public class OzdsRepresentativeQueries(
   public async Task<RepresentingUserModel?> RepresentingUserByUserId(
     string id)
   {
+    await using var context = await factory
+      .CreateDbContextAsync();
+
     var user = await userQueries.UserByUserId(id);
     if (user is null)
     {
@@ -210,6 +237,9 @@ public class OzdsRepresentativeQueries(
   public async Task<RepresentingUserModel?>
     RepresentingUserByRepresentativeId(string id)
   {
+    await using var context = await factory
+      .CreateDbContextAsync();
+
     var representative =
       await context.Representatives
         .Where(context.PrimaryKeyEquals<RepresentativeEntity>(id))
@@ -234,6 +264,9 @@ public class OzdsRepresentativeQueries(
   public async Task<MaybeRepresentingUserModel?>
     MaybeRepresentingUserByClaimsPrincipal(ClaimsPrincipal claimsPrincipal)
   {
+    await using var context = await factory
+      .CreateDbContextAsync();
+
     var user = await userQueries.UserByClaimsPrincipal(claimsPrincipal);
     if (user is null)
     {
@@ -258,6 +291,9 @@ public class OzdsRepresentativeQueries(
   public async Task<MaybeRepresentingUserModel?>
     MaybeRepresentingUserByUserId(string id)
   {
+    await using var context = await factory
+      .CreateDbContextAsync();
+
     var user = await userQueries.UserByUserId(id);
     if (user is null)
     {

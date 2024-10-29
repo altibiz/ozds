@@ -12,9 +12,10 @@ using Ozds.Jobs.Manager.Abstractions;
 namespace Ozds.Business.Reactors;
 
 public class MessengerJobManagerReactor(
-  IServiceScopeFactory serviceScopeFactory,
+  IDbContextFactory<DataDbContext> factory,
   IEntityChangesSubscriber subscriber,
-  IHostApplicationLifetime lifetime
+  IHostApplicationLifetime lifetime,
+  IMessengerJobManager manager
 ) : BackgroundService, IReactor
 {
   private readonly Channel<EntitiesChangedEventArgs> channel =
@@ -39,11 +40,9 @@ public class MessengerJobManagerReactor(
       return;
     }
 
-    await using (var scope = serviceScopeFactory.CreateAsyncScope())
     {
-      var context = scope.ServiceProvider.GetRequiredService<DataDbContext>();
-      var manager =
-        scope.ServiceProvider.GetRequiredService<IMessengerJobManager>();
+      await using var context = await factory
+        .CreateDbContextAsync(stoppingToken);
 
       var messengers = await context.Messengers.ToListAsync(stoppingToken);
       foreach (var messenger in messengers)
@@ -57,8 +56,7 @@ public class MessengerJobManagerReactor(
 
     await foreach (var eventArgs in channel.Reader.ReadAllAsync(stoppingToken))
     {
-      await using var scope = serviceScopeFactory.CreateAsyncScope();
-      await Handle(scope.ServiceProvider, eventArgs);
+      await Handle(manager, eventArgs);
     }
   }
 
@@ -70,11 +68,9 @@ public class MessengerJobManagerReactor(
   }
 
   private static async Task Handle(
-    IServiceProvider serviceProvider,
+    IMessengerJobManager manager,
     EntitiesChangedEventArgs eventArgs)
   {
-    var manager = serviceProvider.GetRequiredService<IMessengerJobManager>();
-
     foreach (var entry in eventArgs.Entities)
     {
       if (entry.Entity is not MessengerEntity messenger)

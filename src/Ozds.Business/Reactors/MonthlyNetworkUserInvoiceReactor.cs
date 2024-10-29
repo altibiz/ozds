@@ -13,8 +13,9 @@ using Ozds.Jobs.Observers.EventArgs;
 namespace Ozds.Business.Workers;
 
 public class MonthlyNetworkUserInvoiceReactor(
-  IServiceScopeFactory serviceScopeFactory,
-  IBillingJobSubscriber subscriber
+  IDbContextFactory<DataDbContext> factory,
+  IBillingJobSubscriber subscriber,
+  INetworkUserInvoiceIssuer issuer
 ) : BackgroundService, IReactor
 {
   private readonly Channel<NetworkUserInvoiceEventArgs> channel =
@@ -38,8 +39,8 @@ public class MonthlyNetworkUserInvoiceReactor(
   {
     await foreach (var eventArgs in channel.Reader.ReadAllAsync(stoppingToken))
     {
-      await using var scope = serviceScopeFactory.CreateAsyncScope();
-      await Handle(scope.ServiceProvider, eventArgs);
+      await using var context = await factory.CreateDbContextAsync(stoppingToken);
+      await Handle(context, issuer, eventArgs);
     }
   }
 
@@ -51,10 +52,10 @@ public class MonthlyNetworkUserInvoiceReactor(
   }
 
   private static async Task Handle(
-    IServiceProvider serviceProvider,
+    DataDbContext context,
+    INetworkUserInvoiceIssuer issuer,
     NetworkUserInvoiceEventArgs eventArgs)
   {
-    var context = serviceProvider.GetRequiredService<DataDbContext>();
     var networkUser = (await context.Messengers
         .Where(
           context.PrimaryKeyEquals<MessengerEntity>(eventArgs.NetworkUserId))
@@ -64,9 +65,6 @@ public class MonthlyNetworkUserInvoiceReactor(
     {
       return;
     }
-
-    var issuer = serviceProvider
-      .GetRequiredService<INetworkUserInvoiceIssuer>();
 
     var now = DateTimeOffset.UtcNow;
     var startOfLastMonth = now.GetStartOfLastMonth();

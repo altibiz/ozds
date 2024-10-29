@@ -15,7 +15,8 @@ using Ozds.Data.Observers.EventArgs;
 namespace Ozds.Business.Reactors;
 
 public class NotificationAddedReactor(
-  IServiceScopeFactory serviceScopeFactory,
+  INotificationCreatedPublisher publisher,
+  IDbContextFactory<DataDbContext> factory,
   IEntityChangesSubscriber subscriber
 ) : BackgroundService, IReactor
 {
@@ -40,8 +41,9 @@ public class NotificationAddedReactor(
   {
     await foreach (var eventArgs in channel.Reader.ReadAllAsync(stoppingToken))
     {
-      await using var scope = serviceScopeFactory.CreateAsyncScope();
-      await Handle(scope.ServiceProvider, eventArgs);
+      await using var context = await factory
+        .CreateDbContextAsync(stoppingToken);
+      await Handle(context, publisher, eventArgs);
     }
   }
 
@@ -51,13 +53,10 @@ public class NotificationAddedReactor(
   }
 
   private static async Task Handle(
-    IServiceProvider serviceProvider,
+    DataDbContext context,
+    INotificationCreatedPublisher publisher,
     EntitiesChangedEventArgs eventArgs)
   {
-    var publisher = serviceProvider
-      .GetRequiredService<INotificationCreatedPublisher>();
-    var context = serviceProvider.GetRequiredService<DataDbContext>();
-
     foreach (var entry in eventArgs.Entities)
     {
       if (

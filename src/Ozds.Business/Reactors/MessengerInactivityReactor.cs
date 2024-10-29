@@ -23,8 +23,10 @@ namespace Ozds.Business.Workers;
 // TODO: recipients by role
 
 public class MeterInactivityReactor(
-  IServiceScopeFactory serviceScopeFactory,
-  IMessengerJobSubscriber subscriber
+  IDbContextFactory<DataDbContext> factory,
+  IMessengerJobSubscriber subscriber,
+  IHostEnvironment environment,
+  AgnosticModelEntityConverter converter
 ) : BackgroundService, IReactor
 {
   private static readonly JsonSerializerOptions
@@ -54,8 +56,9 @@ public class MeterInactivityReactor(
   {
     await foreach (var eventArgs in channel.Reader.ReadAllAsync(stoppingToken))
     {
-      await using var scope = serviceScopeFactory.CreateAsyncScope();
-      await Handle(scope.ServiceProvider, eventArgs);
+      await using var context = await factory
+        .CreateDbContextAsync(stoppingToken);
+      await Handle(context, converter, environment, eventArgs);
     }
   }
 
@@ -67,14 +70,11 @@ public class MeterInactivityReactor(
   }
 
   private static async Task Handle(
-    IServiceProvider serviceProvider,
+    DataDbContext context,
+    AgnosticModelEntityConverter converter,
+    IHostEnvironment environment,
     MessengerInactivityEventArgs eventArgs)
   {
-    var context = serviceProvider.GetRequiredService<DataDbContext>();
-    var converter =
-      serviceProvider.GetRequiredService<AgnosticModelEntityConverter>();
-    var environment = serviceProvider.GetRequiredService<IHostEnvironment>();
-
     var messenger = (await context.Messengers
         .Where(context.PrimaryKeyEquals<MessengerEntity>(eventArgs.Id))
         .FirstOrDefaultAsync())

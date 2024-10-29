@@ -1,5 +1,7 @@
 using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Models.Abstractions;
+using Ozds.Business.Models.Joins;
+using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Queries.Abstractions;
 using DataNotificationQueries = Ozds.Data.Queries.NotificationQueries;
 
@@ -109,6 +111,17 @@ public class NotificationQueries(
 
     return entities
       .Select(modelEntityConverter.ToModel<INotification>)
+      .ToList();
+  }
+
+  public async Task<List<NotificationRecipientModel>> Recipients(
+    INotification notification)
+  {
+    var recipients = await queries.Recipients(
+      modelEntityConverter.ToEntity<INotificationEntity>(notification));
+
+    return recipients
+      .Select(modelEntityConverter.ToModel<NotificationRecipientModel>)
       .ToList();
   }
 }

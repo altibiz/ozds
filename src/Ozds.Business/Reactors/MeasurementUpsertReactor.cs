@@ -68,7 +68,9 @@ public class MeasurementUpsertReactor(
     PushEventArgs eventArgs
   )
   {
-    var context = serviceProvider.GetRequiredService<DataDbContext>();
+    await using var context = await serviceProvider
+      .GetRequiredService<IDbContextFactory<DataDbContext>>()
+      .CreateDbContextAsync();
     var pushRequestConverter = serviceProvider
       .GetRequiredService<AgnosticPushRequestMeasurementConverter>();
     var modelEntityConverter = serviceProvider
