@@ -14,7 +14,7 @@ public class AuditableMutations(
 )
 : IMutations
 {
-  public async Task Create(
+  public async Task<string> Create(
     IAuditable model,
     CancellationToken cancellationToken
   )
@@ -30,8 +30,8 @@ public class AuditableMutations(
     }
 
     var entity = modelEntityConverter.ToEntity<IAuditableEntity>(model);
-
     await mutations.Create(entity, cancellationToken);
+    return entity.Id;
   }
 
   public async Task Update(
