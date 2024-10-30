@@ -25,12 +25,6 @@ public sealed class DataDbContextFixtureFactory(
     return context;
   });
 
-  public async Task<Fixture> New()
-  {
-    var context = await Context.Value;
-    var fixture = new Fixture();
-  }
-
   public async ValueTask DisposeAsync()
   {
     if (!Context.IsValueCreated)
