@@ -4,7 +4,7 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Test.Fixtures;
 
-public sealed class DataDbContextFixture(
+public sealed class DataDbContextFixtureFactory(
   IDbContextFactory<DataDbContext> factory
 ) : IAsyncDisposable
 {
@@ -24,6 +24,12 @@ public sealed class DataDbContextFixture(
 
     return context;
   });
+
+  public async Task<Fixture> New()
+  {
+    var context = await Context.Value;
+    var fixture = new Fixture();
+  }
 
   public async ValueTask DisposeAsync()
   {

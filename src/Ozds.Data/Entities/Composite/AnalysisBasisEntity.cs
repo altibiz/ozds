@@ -3,6 +3,9 @@ using Ozds.Data.Entities.Base;
 namespace Ozds.Data.Entities.Composite;
 
 public record AnalysisBasisEntity(
+  RepresentativeEntity Representative,
+  DateTimeOffset FromDate,
+  DateTimeOffset ToDate,
   LocationEntity Location,
   NetworkUserEntity? NetworkUser,
   MeasurementLocationEntity MeasurementLocation,

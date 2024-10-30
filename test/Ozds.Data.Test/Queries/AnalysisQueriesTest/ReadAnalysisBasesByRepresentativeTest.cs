@@ -1,71 +1,53 @@
-using Ozds.Data.Entities.Composite;
-using Ozds.Data.Entities.Enums;
 using Ozds.Data.Queries;
 
 namespace Ozds.Data.Test.Queries.AnalysisQueriesTest;
 
 public class ReadAnalysisBasesByRepresentativeTest(
-  DataDbContextFixture fixture,
+  DataDbContextFixtureFactory contextFixture,
+  AnalysisBasisEntityFactory analysisBasisFixture,
   AnalysisQueries queries
 )
 {
-  public static readonly TheoryData<AnalysisBasisEntity> TestData =
+  public record TestRecord(
+    string RepresentativeId,
+    DateTimeOffset DateFrom,
+    DateTimeOffset DateTo
+  );
+
+  public static readonly TheoryData<TestRecord> TestData =
     new(
-      new Fixture()
-        .CreateMany<AnalysisBasisEntity>()
+      Enumerable.Range(1, Constants.DefaultFuzzCount)
+        .Select(i => new TestRecord(
+          i.ToString(),
+          DateTimeOffset.UtcNow.AddMonths(-i),
+          DateTimeOffset.UtcNow
+        ))
     );
 
   [Theory]
-  [MemberAutoData("id")]
-  public async Task IsValidForOperator(string id)
+  [MemberData(nameof(TestData))]
+  public async Task IsValid(TestRecord @record)
   {
-    var context = await fixture.Context.Value;
+    var analysisBases = await analysisBasisFixture.Create(
+      @record.RepresentativeId,
+      @record.DateFrom,
+      @record.DateTo
+    );
 
+    var representative = analysisBases.First().Representative;
+    var fromDate = analysisBases.First().FromDate;
+    var toDate = analysisBases.First().ToDate;
+
+    var context = await contextFixture.Context.Value;
     var result = await queries.ReadAnalysisBasesByRepresentative(
       context,
-      id,
-      RoleEntity.OperatorRepresentative,
-      DateTimeOffset.MinValue,
-      DateTimeOffset.MaxValue,
+      representative.Id,
+      representative.Role,
+      fromDate,
+      toDate,
       CancellationToken.None
     );
 
-    Assert.NotNull(result);
-  }
-
-  [Theory]
-  [InlineData("id")]
-  public async Task IsValidForLocation(string id)
-  {
-    var context = await fixture.Context.Value;
-
-    var result = await queries.ReadAnalysisBasesByRepresentative(
-      context,
-      id,
-      RoleEntity.LocationRepresentative,
-      DateTimeOffset.MinValue,
-      DateTimeOffset.MaxValue,
-      CancellationToken.None
-    );
-
-    Assert.NotNull(result);
-  }
-
-  [Theory]
-  [InlineData("id")]
-  public async Task IsValidForNetworkUser(string id)
-  {
-    var context = await fixture.Context.Value;
-
-    var result = await queries.ReadAnalysisBasesByRepresentative(
-      context,
-      id,
-      RoleEntity.NetworkUserRepresentative,
-      DateTimeOffset.MinValue,
-      DateTimeOffset.MaxValue,
-      CancellationToken.None
-    );
-
-    Assert.NotNull(result);
+    Assert.Equal(analysisBases, result);
   }
 }

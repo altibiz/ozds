@@ -9,6 +9,8 @@ using Ozds.Data.Entities.Joins;
 using Ozds.Data.Extensions;
 using Ozds.Data.Queries.Abstractions;
 
+// TODO: location measurement locations
+
 namespace Ozds.Data.Queries;
 
 public class AnalysisQueries(
@@ -57,7 +59,7 @@ public class AnalysisQueries(
       cancellationToken
     );
 
-    var analysisBases = MakeAnalysisBases(results);
+    var analysisBases = MakeAnalysisBases(results, fromDate, toDate);
 
     return analysisBases;
   }
@@ -237,12 +239,19 @@ public class AnalysisQueries(
         .{context.GetPrimaryKeyColumnName<
           NetworkUserMeasurementLocationEntity>()}
         AS measurement_location_id,
+      {context.GetTableName<RepresentativeEntity>()}.*,
       {context.GetTableName<NetworkUserMeasurementLocationEntity>()}.*,
       {context.GetTableName<NetworkUserEntity>()}.*,
       {context.GetTableName<LocationEntity>()}.*,
       {context.GetTableName<MeterEntity>()}.*
     FROM
       {context.GetTableName<NetworkUserRepresentativeEntity>()}
+    INNER JOIN {context.GetTableName<RepresentativeEntity>()}
+      ON {context.GetTableName<NetworkUserRepresentativeEntity>()}.
+        {context.GetForeignKeyColumnName<NetworkUserRepresentativeEntity>(
+          nameof(NetworkUserRepresentativeEntity.Representative))}
+        = {context.GetTableName<RepresentativeEntity>()}
+          .{context.GetPrimaryKeyColumnName<RepresentativeEntity>()}
     INNER JOIN {context.GetTableName<NetworkUserEntity>()}
       ON {context.GetTableName<NetworkUserRepresentativeEntity>()}.
         {context.GetForeignKeyColumnName<NetworkUserRepresentativeEntity>(
@@ -282,12 +291,19 @@ public class AnalysisQueries(
         .{context.GetPrimaryKeyColumnName<
           NetworkUserMeasurementLocationEntity>()}
         AS measurement_location_id,
+      {context.GetTableName<RepresentativeEntity>()}.*,
       {context.GetTableName<NetworkUserMeasurementLocationEntity>()}.*,
       {context.GetTableName<NetworkUserEntity>()}.*,
       {context.GetTableName<LocationEntity>()}.*,
       {context.GetTableName<MeterEntity>()}.*
     FROM
       {context.GetTableName<LocationRepresentativeEntity>()}
+    INNER JOIN {context.GetTableName<RepresentativeEntity>()}
+      ON {context.GetTableName<LocationRepresentativeEntity>()}
+        .{context.GetForeignKeyColumnName<LocationRepresentativeEntity>(
+          nameof(LocationRepresentativeEntity.Representative))}
+        = {context.GetTableName<RepresentativeEntity>()}
+          .{context.GetPrimaryKeyColumnName<RepresentativeEntity>()}
     INNER JOIN {context.GetTableName<LocationEntity>()}
       ON {context.GetTableName<LocationRepresentativeEntity>()}
         .{context.GetForeignKeyColumnName<LocationRepresentativeEntity>(
@@ -324,15 +340,14 @@ public class AnalysisQueries(
 
   private static string MakeInitialMeasurementLocationsOperatorQuery(
     DbContext context,
-#pragma warning disable S1172 // Unused method parameters should be removed
     string representativeIdExpression
-#pragma warning restore S1172 // Unused method parameters should be removed
   ) => $@"
     SELECT
       {context.GetTableName<NetworkUserMeasurementLocationEntity>()}
         .{context.GetPrimaryKeyColumnName<
           NetworkUserMeasurementLocationEntity>()}
         AS measurement_location_id,
+      {context.GetTableName<RepresentativeEntity>()}.*,
       {context.GetTableName<NetworkUserMeasurementLocationEntity>()}.*,
       {context.GetTableName<NetworkUserEntity>()}.*,
       {context.GetTableName<LocationEntity>()}.*,
@@ -359,6 +374,13 @@ public class AnalysisQueries(
           nameof(NetworkUserMeasurementLocationEntity.Meter))}
         = {context.GetTableName<MeterEntity>()}
           .{context.GetPrimaryKeyColumnName<MeterEntity>()}
+    CROSS JOIN (
+      SELECT {context.GetTableName<RepresentativeEntity>()}.*
+      FROM {context.GetTableName<RepresentativeEntity>()}
+      WHERE {context.GetTableName<RepresentativeEntity>()}
+        .{context.GetPrimaryKeyColumnName<RepresentativeEntity>()}
+        = {representativeIdExpression}
+    ) AS {context.GetTableName<RepresentativeEntity>()}
   ";
 
   private static string MakeAbbB2xMeasurementsLastQuery(
@@ -585,7 +607,9 @@ public class AnalysisQueries(
 
   private static List<AnalysisBasisEntity>
     MakeAnalysisBases(
-      IEnumerable<DetailedMeasurementLocationsByRepresentativeIntermediary> items
+      IEnumerable<DetailedMeasurementLocationsByRepresentativeIntermediary> items,
+      DateTimeOffset fromDate,
+      DateTimeOffset toDate
     )
   {
     return items
@@ -645,6 +669,9 @@ public class AnalysisQueries(
             .ToList();
 
           return new AnalysisBasisEntity(
+            first.Representative,
+            fromDate,
+            toDate,
             first.Location,
             first.NetworkUser,
             first.MeasurementLocation,
@@ -662,6 +689,12 @@ public class AnalysisQueries(
 
   private sealed class DetailedMeasurementLocationsByRepresentativeIntermediary
   {
+    public RepresentativeEntity Representative
+    {
+      get;
+      init;
+    } = default!;
+
     public LocationEntity Location
     {
       get;
