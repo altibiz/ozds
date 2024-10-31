@@ -45,7 +45,9 @@ public class MeterEntity : AuditableEntity, IMeterEntity
 public class MeterEntity<
   TMeasurement,
   TAggregate,
+#pragma warning disable S2326 // Unused type parameters should be removed
   TMeasurementValidator
+#pragma warning restore S2326 // Unused type parameters should be removed
 > : MeterEntity
   where TMeasurement : MeasurementEntity
   where TAggregate : AggregateEntity
@@ -55,11 +57,6 @@ public class MeterEntity<
     default!;
 
   public virtual ICollection<TAggregate> Aggregates { get; set; } = default!;
-
-#pragma warning disable CS0114 // Member hides inherited member; missing override keyword
-  public virtual TMeasurementValidator MeasurementValidator { get; set; } =
-    default!;
-#pragma warning restore CS0114 // Member hides inherited member; missing override keyword
 }
 
 public class

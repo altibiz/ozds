@@ -3,7 +3,7 @@ using Microsoft.Extensions.Diagnostics.Metrics;
 using Microsoft.Extensions.Primitives;
 using Ozds.Data.Context;
 using Ozds.Data.Extensions;
-using Ozds.Data.Test.Fixtures.Abstractions;
+using Ozds.Data.Test.Context;
 using Xunit.DependencyInjection.Logging;
 
 namespace Ozds.Data.Test;
@@ -47,7 +47,7 @@ public class Startup
     var builderProxy = new HostApplicationBuilderProxy(context, services);
     services.AddOzdsData(builderProxy);
 
-    AddScopedAssignableTo(services, typeof(IFixtureService));
+    services.AddScoped<DataDbContextManager>();
   }
 
   public void Configure(IServiceProvider serviceProvider)
@@ -123,39 +123,5 @@ public class Startup
     {
       return configuration.GetSection(key);
     }
-  }
-
-  private static void AddScopedAssignableTo(
-    IServiceCollection services,
-    Type assignableTo
-  )
-  {
-    var conversionTypes = typeof(IServiceCollectionExtensions).Assembly
-      .GetTypes()
-      .Where(
-        type =>
-          !type.IsAbstract &&
-          type.IsClass &&
-          type.IsAssignableTo(assignableTo));
-
-    foreach (var conversionType in conversionTypes)
-    {
-      services.AddScoped(conversionType);
-      foreach (var interfaceType in GetAllInterfaces(conversionType))
-      {
-        services.AddScoped(
-          interfaceType, services =>
-            services.GetRequiredService(conversionType));
-      }
-    }
-  }
-
-  private static Type[] GetAllInterfaces(Type? type)
-  {
-    return type?.GetInterfaces()
-      .Concat(type.GetInterfaces().SelectMany(GetAllInterfaces))
-      .Concat(GetAllInterfaces(type.BaseType))
-      .Distinct()
-      .ToArray() ?? [];
   }
 }

@@ -1,3 +1,4 @@
+using Ozds.Business.Conversion;
 using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Base;
@@ -91,6 +92,9 @@ public class AnalysisQueries(
   {
     return entities
       .Select(entity => new AnalysisBasisModel(
+        modelEntityConverter.ToModel<RepresentativeModel>(entity.Representative),
+        entity.FromDate,
+        entity.ToDate,
         modelEntityConverter.ToModel<LocationModel>(entity.Location),
         entity.NetworkUser is { }
           ? modelEntityConverter.ToModel<NetworkUserModel>(entity.NetworkUser)

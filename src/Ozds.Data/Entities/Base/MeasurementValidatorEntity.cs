@@ -1,9 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Ozds.Data.Entities.Abstractions;
-using Ozds.Data.Entities.Base;
 using Ozds.Data.Extensions;
 
-namespace Ozds.Data.Entities;
+namespace Ozds.Data.Entities.Base;
 
 public class MeasurementValidatorEntity : AuditableEntity, IMeasurementValidatorEntity
 {
@@ -11,12 +10,13 @@ public class MeasurementValidatorEntity : AuditableEntity, IMeasurementValidator
     default!;
 }
 
-public class MeasurementValidatorEntity<TMeter> : MeasurementValidatorEntity
+public class MeasurementValidatorEntity<
+#pragma warning disable S2326 // Unused type parameters should be removed
+  TMeter
+#pragma warning restore S2326 // Unused type parameters should be removed
+> : MeasurementValidatorEntity
   where TMeter : MeterEntity
 {
-#pragma warning disable CS0114 // Member hides inherited member; missing override keyword
-  public virtual ICollection<TMeter> Meters { get; set; } = default!;
-#pragma warning restore CS0114 // Member hides inherited member; missing override keyword
 }
 
 public class MeasurementValidatorEntityTypeHierarchyConfiguration :

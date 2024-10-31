@@ -4,6 +4,8 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
 
+// TODO: fix the id mess
+
 public abstract class AuditableEntity : IAuditableEntity
 {
   protected readonly long _id;
@@ -67,12 +69,12 @@ public class
       }
     }
 
+    builder.Ignore(nameof(AuditableEntity.Id));
     if (entity == typeof(RepresentativeEntity) ||
       entity.IsAssignableTo(typeof(MeterEntity)) ||
       entity.IsAssignableTo(typeof(MessengerEntity)))
     {
       builder.Ignore("_id");
-      builder.Ignore(nameof(AuditableEntity.Id));
       builder
         .Property("_stringId")
         .HasColumnName("id")
@@ -81,7 +83,6 @@ public class
     }
     else
     {
-      builder.Ignore(nameof(AuditableEntity.Id));
       builder
         .Property("_id")
         .HasColumnName("id")

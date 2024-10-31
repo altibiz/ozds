@@ -2,9 +2,9 @@ using Microsoft.EntityFrameworkCore;
 using Ozds.Data.Context;
 using Ozds.Data.Extensions;
 
-namespace Ozds.Data.Test.Fixtures;
+namespace Ozds.Data.Test.Context;
 
-public sealed class DataDbContextFixtureFactory(
+public sealed class DataDbContextManager(
   IDbContextFactory<DataDbContext> factory
 ) : IAsyncDisposable
 {

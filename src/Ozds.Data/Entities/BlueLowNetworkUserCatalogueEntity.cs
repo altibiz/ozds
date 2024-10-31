@@ -5,7 +5,8 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities;
 
-public class BlueLowNetworkUserCatalogueEntity : NetworkUserCatalogueEntity
+public class BlueLowNetworkUserCatalogueEntity
+  : NetworkUserCatalogueEntity<BlueLowNetworkUserCalculationEntity>
 {
 #pragma warning disable CA1707
   public decimal ActiveEnergyTotalImportT0Price_EUR { get; set; }

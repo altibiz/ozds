@@ -6,13 +6,20 @@ namespace Ozds.Data.Entities.Base;
 
 public class NetworkUserCatalogueEntity : AuditableEntity
 {
+  public virtual ICollection<MeasurementLocationEntity>
+    NetworkUserMeasurementLocations
+  { get; set; } = default!;
+}
+
+public class NetworkUserCatalogueEntity<TNetworkUserCalculation>
+  : NetworkUserCatalogueEntity
+  where TNetworkUserCalculation : NetworkUserCalculationEntity
+{
   public virtual ICollection<LocationEntity> Locations { get; set; } = default!;
 
-  public virtual ICollection<MeasurementLocationEntity>
-    NetworkUserMeasurementLocations { get; set; } = default!;
-
-  public virtual ICollection<NetworkUserCalculationEntity>
-    NetworkUserCalculations { get; set; } =
+  public virtual ICollection<TNetworkUserCalculation>
+    NetworkUserCalculations
+  { get; set; } =
     default!;
 }
 
@@ -23,18 +30,6 @@ public class
   public override void Configure(
     EntityTypeBuilder<NetworkUserCatalogueEntity> builder)
   {
-  }
-}
-
-public class
-  NetworkUserCatalogueEntityTypeHierarchyConfiguration :
-  EntityTypeHierarchyConfiguration<
-    NetworkUserCatalogueEntity>
-{
-  public override void Configure(ModelBuilder modelBuilder, Type entity)
-  {
-    var builder = modelBuilder.Entity(entity);
-
     builder
       .UseTphMappingStrategy()
       .ToTable("network_user_catalogues")

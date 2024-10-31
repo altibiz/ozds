@@ -1,4 +1,4 @@
-namespace Ozds.Data.Test.Fixtures;
+namespace Ozds.Data.Test.Specimens;
 
 public class DateTimeOffsetInRangeSpecimenBuilder(
   DateTimeOffset fromDate,

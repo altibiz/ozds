@@ -208,7 +208,7 @@ public class
         .HasOne(
           nameof(NetworkUserCalculationEntity<NetworkUserCatalogueEntity>
             .UsageNetworkUserCatalogue))
-        .WithMany(nameof(NetworkUserCatalogueEntity.NetworkUserCalculations))
+        .WithMany(nameof(NetworkUserCatalogueEntity<NetworkUserCalculationEntity>.NetworkUserCalculations))
         .HasForeignKey("_usageNetworkUserCatalogueId");
 
       builder.Ignore(
