@@ -52,6 +52,9 @@ public partial class NewMeterGraph : OzdsOwningComponentBase
   public bool Static { get; set; } = false;
 
   [Parameter]
+  public bool Mock { get; set; } = false;
+
+  [Parameter]
   public HashSet<PhaseModel> Phases { get; set; } =
     Enum.GetValues<PhaseModel>().ToHashSet();
 

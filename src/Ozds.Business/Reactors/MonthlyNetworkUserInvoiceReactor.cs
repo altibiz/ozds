@@ -15,7 +15,7 @@ namespace Ozds.Business.Workers;
 public class MonthlyNetworkUserInvoiceReactor(
   IDbContextFactory<DataDbContext> factory,
   IBillingJobSubscriber subscriber,
-  INetworkUserInvoiceIssuer issuer
+  IServiceProvider serviceProvider
 ) : BackgroundService, IReactor
 {
   private readonly Channel<NetworkUserInvoiceEventArgs> channel =
@@ -39,7 +39,10 @@ public class MonthlyNetworkUserInvoiceReactor(
   {
     await foreach (var eventArgs in channel.Reader.ReadAllAsync(stoppingToken))
     {
-      await using var context = await factory.CreateDbContextAsync(stoppingToken);
+      using var scope = serviceProvider.CreateScope();
+      var contextFactory = scope.ServiceProvider.GetRequiredService<IDbContextFactory<DataDbContext>>();
+      var issuer = scope.ServiceProvider.GetRequiredService<INetworkUserInvoiceIssuer>();
+      await using var context = await contextFactory.CreateDbContextAsync(stoppingToken);
       await Handle(context, issuer, eventArgs);
     }
   }

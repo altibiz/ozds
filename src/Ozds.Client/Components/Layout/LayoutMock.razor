@@ -1,0 +1,70 @@
+@namespace Ozds.Client.Components.LayoutMock
+@using Ozds.Business.Models.Composite
+@using Ozds.Client.Components.Streaming
+@using Ozds.Client.State
+@using MudBlazor
+@using Microsoft.AspNetCore.Components.Web
+@inherits Ozds.Client.Base.OzdsLayoutComponentBase
+
+
+
+<HeadContent>
+  <title>HELB</title>
+
+  <style>
+    html, body {
+      height: 100vh;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    main {
+      flex: 1;
+    }
+
+    footer {
+      min-height: 120px;
+      margin-top: 32px;
+    }
+  </style>
+</HeadContent>
+
+
+
+<CascadingValue Value="ThemeState">
+    <MudThemeProvider
+      @ref="@(_mudThemeProvider)"
+      Theme="ThemeState.Theme"
+      IsDarkMode="ThemeState.IsDarkMode" />
+</CascadingValue>
+    <MudDialogProvider/>
+    <MudSnackbarProvider/>
+
+    <MudBreakpointProvider>
+              <main>
+                <MudLayout Class="d-flex flex-column">
+                  <UserToolbar />
+                  @if (false)
+                  {
+                    <RepresentativeToolbar />
+                  }
+                  <LocalizationDrawer />
+                  <UserDrawer />
+                  @if (false)
+                  {
+                    <NavigationDrawer />
+                  }
+                  @Body
+                </MudLayout>
+              </main>
+              <footer>
+                <MudContainer
+                  MaxWidth="MaxWidth.Large"
+                  Style="height: 100%; padding-top: 12px;">
+                  <Footer />
+                </MudContainer>
+              </footer>
+    </MudBreakpointProvider>

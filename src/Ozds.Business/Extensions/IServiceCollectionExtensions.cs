@@ -11,12 +11,17 @@ using Ozds.Business.Finance.Agnostic;
 using Ozds.Business.Localization;
 using Ozds.Business.Localization.Abstractions;
 using Ozds.Business.Mutations.Abstractions;
+using Ozds.Business.Mutations.Agnostic;
 using Ozds.Business.Naming.Abstractions;
 using Ozds.Business.Naming.Agnostic;
 using Ozds.Business.Observers.Abstractions;
 using Ozds.Business.Queries;
 using Ozds.Business.Queries.Abstractions;
+using Ozds.Business.Queries.Agnostic;
 using Ozds.Business.Reactors.Abstractions;
+using Ozds.Business.Validation.Agnostic;
+using Ozds.Data.Context;
+using Ozds.Messaging.Sender.Abstractions;
 
 namespace Ozds.Business.Extensions;
 
@@ -56,7 +61,7 @@ public static class IServiceCollectionExtensions
     services.AddTransient(
       typeof(INetworkUserInvoiceCalculator),
       typeof(NetworkUserInvoiceCalculator));
-    services.AddScoped(
+    services.AddTransient(
       typeof(INetworkUserInvoiceIssuer), typeof(NetworkUserInvoiceIssuer));
 
     // Localization
@@ -64,6 +69,8 @@ public static class IServiceCollectionExtensions
 
     // Mutations
     services.AddScopedAssignableTo(typeof(IMutations));
+    services.AddSingleton(typeof(ReadonlyMutations));
+    services.AddSingleton(typeof(Data.Mutations.Agnostic.ReadonlyMutations));
 
     // Naming
     services.AddTransientAssignableTo(typeof(IMeterNamingConvention));
@@ -75,9 +82,24 @@ public static class IServiceCollectionExtensions
 
     // Queries
     services.AddScopedAssignableTo(typeof(IQueries));
+    services.AddSingleton(typeof(BillingQueries));
+    services.AddSingleton(typeof(Data.Queries.BillingQueries));
+    services.AddSingleton(typeof(NotificationQueries));
+    services.AddSingleton(typeof(Data.Queries.NotificationQueries));
+    services.AddSingleton(typeof(ReadonlyQueries));
+    services.AddSingleton(typeof(Data.Queries.Agnostic.ReadonlyQueries));
+
+    // Validator
+    services.AddSingleton(typeof(AgnosticValidator));
 
     // Reactors
     services.AddSingletonAssignableTo(typeof(IReactor));
+
+    // Messaging
+    services.AddTransientAssignableTo(typeof(IMessageSender));
+
+    // Db
+    services.AddTransient(typeof(DataDbContext));
 
     return services;
   }

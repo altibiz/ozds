@@ -1,0 +1,29 @@
+@page "/mock"
+@using Ozds.Business.Queries.Abstractions
+@using Ozds.Business.Time
+@using Ozds.Client.Components.Charts
+@inherits OzdsOwningComponentBase
+
+@{
+
+  @* var meters = await ScopedServices.GetRequiredService<OzdsNetworkUserMeasurementLocationModelQueries>().GetMeters("").Result.Items; *@
+}
+
+<Loading T="PaginatedList<MeterModel>" LoadAsync="@(() => ScopedServices.GetRequiredService<OzdsNetworkUserMeasurementLocationModelQueries>().GetMeters(""))">
+  <Found Context="paganatedMeters">
+  @{
+    List<IMeter> meters = new List<IMeter>(paganatedMeters.Items);
+  }
+  <MudContainer MaxWidth="MaxWidth.Large">
+    <MudPaper Class="pa-3">
+      <NewMeterGraph
+        Meters="@meters"
+        Timestamp="@DateTimeOffset.UtcNow.GetStartOfYear()"
+        Resolution="@ResolutionModel.Year"
+        Measure="@MeasureModel.ActivePower"
+        Multiplier="1"/>
+    </MudPaper>
+  </MudContainer>
+  </Found>
+</Loading>
+
