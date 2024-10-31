@@ -133,3 +133,6 @@
 /20241003113906-Ozds.Messaging-NetUserInvoiceCancelToAbort-hypertables.sql
 /20241003113906-Ozds.Messaging-NetUserInvoiceCancelToAbort-orchard.sql
 /20241003113906-Ozds.Messaging-NetUserInvoiceCancelToAbort.sql
+/20241031141031-Ozds.Data-AnalysisBasisQueryTestingFixes-hypertables.sql
+/20241031141031-Ozds.Data-AnalysisBasisQueryTestingFixes-orchard.sql
+/20241031141031-Ozds.Data-AnalysisBasisQueryTestingFixes.sql
