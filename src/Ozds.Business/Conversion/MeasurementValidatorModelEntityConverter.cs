@@ -2,6 +2,7 @@ using Ozds.Business.Conversion.Base;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Base;
 using Ozds.Data.Entities;
+using Ozds.Data.Entities.Base;
 
 namespace Ozds.Business.Conversion;
 
@@ -57,9 +58,7 @@ public static class MeasurementValidatorModelEntityConverterExtensions
     }
 
     throw new NotSupportedException(
-      $"MeasurementValidatorEntity type {
-        entity.GetType().Name
-      } is not supported."
+      $"MeasurementValidatorEntity type {entity.GetType().Name} is not supported."
     );
   }
 }
