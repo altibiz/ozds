@@ -9,11 +9,14 @@
 
 <div class="d-flex justify-center">
   <MudText>
+    @if(_selectedMeters.Count() == 1){
+      @T[_selectedMeters.FirstOrDefault()!.Title]
+    }
     @T[Measure.ToTitle()]
     (@T[Measure.ToUnit()]
     over the last
     @(Multiplier == 1 ? "" : Multiplier.ToString())
-    @T[Resolution.ToTitle(Multiplier)]
+    @T[Resolution.ToTitle(Multiplier)])
   </MudText>
 </div>
 
@@ -22,7 +25,7 @@
            @ref="_chart">
   @if (Meters.Count > 1)
   {
-    if(DounutSum){
+    if(DonutSum){
         <ApexPointSeries
           Items="_measurements.Items"
           SeriesType="SeriesType.Donut"
@@ -30,28 +33,29 @@
           XValue="@(x => x.MeterId)"
           YAggregate="@(x => x.Sum(m => m.ChartValue(Measure, null)))"/>
     }
+    else if(SumBars)
+    {
+      <ApexPointSeries
+        Items="@_measurements.Items"
+        Name="@Measure.ToTitle()"
+        SeriesType="SeriesType.Bar"
+        XValue="x => DateTimeApplyOffset(x.Timestamp)"
+      YAggregate="x => x.Sum(m => m.ChartValue(Measure, null))" />
+      <ApexPointSeries
+        Items="@_measurements.Items"
+        Name="@Measure.ToTitle()"
+        SeriesType="SeriesType.Line"
+        XValue='x => DateTimeApplyOffset(x.Timestamp)'
+        YValue="x => _cumulativeSumsByMeasurement[x.Timestamp]"  />
+    }
     else if (Sum)
     {
-      if(SumBars)
-      {
-        <ApexPointSeries
-          Items="@_measurements.Items"
-          Name="@Measure.ToTitle()"
-          SeriesType="SeriesType.Bar"
-          XValue="x => DateTimeApplyOffset(x.Timestamp)"
-          YValue="x => x.ChartValue(Measure, null)" />
-      }
-      foreach (var phase in Phases.OrderBy(x => x))
-      {
-        <ApexPointSeries
-          Items="@_measurements.Items.GroupBy(m => m.Timestamp)"
-          Name="@phase.ToTitle()"
-          SeriesType="SeriesType.Line"
-          XValue="x => DateTimeApplyOffset(x.Key)"
-          YValue="x => x.Sum(m => m.ChartValue(Measure, phase))"
-          Stroke="new SeriesStroke { Color = phase.ToColor(), Width = 4 }"
-          Color="@phase.ToColor()"/>
-      }
+      <ApexPointSeries
+        Items="@_measurements.Items"
+        Name="@Measure.ToTitle()"
+        SeriesType="SeriesType.Line"
+        XValue='x => DateTimeApplyOffset(x.Timestamp)'
+        YValue="x => _cumulativeSumsByMeasurement[x.Timestamp]"  />
     }
     else
     {
@@ -75,6 +79,18 @@
   }
   else
   {
+    if(DonutSumPhases){
+      foreach (var phase in Phases.OrderBy(x => x))
+      {
+        <ApexPointSeries
+          Items="_measurements.Items"
+          SeriesType="SeriesType.Donut"
+          Name="@Measure.ToTitle()"
+          XValue="@(x => x.MeterId)"
+          YAggregate="@(x => x.Sum(m => m.ChartValue(Measure, phase)))"/>
+      }
+    }
+    else{
     foreach (var phase in Phases.OrderBy(x => x))
     {
       <ApexPointSeries
@@ -85,6 +101,7 @@
         YValue="x => x.ChartValue(Measure, phase)"
         Stroke="@(new SeriesStroke { Color = phase.ToColor(), Width = 4 })"
         Color="@(phase.ToColor())"/>
+    }
     }
   }
 </ApexChart>

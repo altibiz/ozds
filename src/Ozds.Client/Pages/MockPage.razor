@@ -14,16 +14,147 @@
   @{
     List<IMeter> meters = new List<IMeter>(paganatedMeters.Items);
   }
-  <MudContainer MaxWidth="MaxWidth.Large">
-    <MudPaper Class="pa-3">
+  @* <MudContainer MaxWidth="MaxWidth.Large" Class="my-3">
+    <BrushGraph Source="abb-B2x-1624226"/>
+  </MudContainer> *@
+
+  @* <MudContainer MaxWidth="MaxWidth.Large" Class="my-3">
+    <MudGrid>
+      <MudItem xs="6">
+        <MudPaper Class="pa-3">
+          <NewMeterGraph
+            Meters="@meters.Where(x => x.Id.StartsWith("abb-B2x-1624226")).ToList()"
+            Resolution="@ResolutionModel.Month"
+            Measure="@MeasureModel.ActivePower"
+            Multiplier="1"
+            ShortDate
+            Static/>
+        </MudPaper>
+      </MudItem>
+      <MudItem xs="6">
+          <MudPaper Class="pa-3">
+            <NewMeterGraph
+              Meters="@meters.Where(x => x.Id.StartsWith("schneider")).ToList()"
+              Resolution="@ResolutionModel.Month"
+              Measure="@MeasureModel.ActivePower"
+              Multiplier="1"
+              ShortDate
+              Static/>
+          </MudPaper>
+      </MudItem>
+    </MudGrid>
+  </MudContainer> *@
+
+  @* <MudContainer MaxWidth="MaxWidth.Medium" Class="my-3">
+    <MudPaper Class="pa-3 ma-3">
+      <NewMeterGraph
+        Meters="@meters.Where(x => x.Id.StartsWith("schneider")).ToList()"
+        Resolution="@ResolutionModel.Day"
+        Measure="@MeasureModel.ActivePower"
+        Multiplier="10"
+        LongDate
+        />
+    </MudPaper>
+  </MudContainer> *@
+
+  <MudContainer MaxWidth="MaxWidth.Medium" Class="my-3">
+    <MudPaper Class="pa-3 ma-3">
       <NewMeterGraph
         Meters="@meters"
-        Timestamp="@DateTimeOffset.UtcNow.GetStartOfYear()"
-        Resolution="@ResolutionModel.Year"
+        Resolution="@ResolutionModel.Day"
         Measure="@MeasureModel.ActivePower"
-        Multiplier="1"/>
+        Multiplier="10"
+        ShortDate
+        Sum
+        />
     </MudPaper>
   </MudContainer>
+
+  @* <MudContainer MaxWidth="MaxWidth.Medium" Class="my-3">
+    <MudPaper Class="pa-3 ma-3">
+      <NewMeterGraph
+        Meters="@meters"
+        Resolution="@ResolutionModel.Month"
+        Measure="@MeasureModel.ActivePower"
+        Multiplier="1"
+        LongDate
+        SumBars
+        Static
+        />
+    </MudPaper>
+  </MudContainer> *@
+
+  @* <MudContainer MaxWidth="MaxWidth.Medium" Class="my-3">
+    <MudPaper Class="pa-3 ma-3">
+      <NewMeterGraph
+        Meters="@meters"
+        Resolution="@ResolutionModel.Month"
+        Measure="@MeasureModel.ActivePower"
+        Multiplier="1"
+        LongDate
+        DonutSum
+        Static
+        />
+    </MudPaper>
+  </MudContainer> *@
+
+  @* <MudContainer MaxWidth="MaxWidth.Large" Class="my-3">
+    <MudGrid>
+      <MudItem xs="3">
+        <MudPaper Class="pa-3">
+          <NewMeterGraph
+            Meters="@meters.Where(x => x.Id.StartsWith("schneider")).ToList()"
+            Resolution="@ResolutionModel.Month"
+            Measure="@MeasureModel.ActivePower"
+            Multiplier="1"
+            LongDate
+            DonutSumPhases
+            Static
+            />
+        </MudPaper>
+      </MudItem>
+      <MudItem xs="3">
+        <MudPaper Class="pa-3">
+          <NewMeterGraph
+            Meters="@meters.Where(x => x.Id.StartsWith("abb-B2x-1624226")).ToList()"
+            Resolution="@ResolutionModel.Month"
+            Measure="@MeasureModel.ActivePower"
+            Multiplier="1"
+            LongDate
+            DonutSumPhases
+            Static
+            />
+        </MudPaper>
+      </MudItem>
+      <MudItem xs="3">
+          <MudPaper Class="pa-3">
+            <NewMeterGraph
+              Meters="@meters.Where(x => x.Id.StartsWith("schneider")).ToList()"
+              Resolution="@ResolutionModel.Month"
+              Measure="@MeasureModel.ActivePower"
+              Multiplier="1"
+              LongDate
+              DonutSumPhases
+              Static
+              />
+          </MudPaper>
+      </MudItem>
+      <MudItem xs="3">
+          <MudPaper Class="pa-3">
+            <NewMeterGraph
+              Meters="@meters.Where(x => x.Id.StartsWith("abb-B2x-1624226")).ToList()"
+              Resolution="@ResolutionModel.Month"
+              Measure="@MeasureModel.ActivePower"
+              Multiplier="1"
+              LongDate
+              DonutSumPhases
+              Static
+              />
+          </MudPaper>
+      </MudItem>
+    </MudGrid>
+  </MudContainer> *@
+
   </Found>
 </Loading>
 

@@ -43,7 +43,9 @@ public partial class NewMeterGraph : OzdsOwningComponentBase
   public bool SumBars { get; set; } = false;
 
   [Parameter]
-  public bool DounutSum { get; set; } = false;
+  public bool DonutSum { get; set; } = false;
+  [Parameter]
+  public bool DonutSumPhases { get; set; } = false;
 
   [Parameter]
   public bool Area { get; set; } = false;
@@ -52,7 +54,10 @@ public partial class NewMeterGraph : OzdsOwningComponentBase
   public bool Static { get; set; } = false;
 
   [Parameter]
-  public bool Mock { get; set; } = false;
+  public bool ShortDate { get; set; } = false;
+
+  [Parameter]
+  public bool LongDate { get; set; } = false;
 
   [Parameter]
   public HashSet<PhaseModel> Phases { get; set; } =
@@ -79,6 +84,13 @@ public partial class NewMeterGraph : OzdsOwningComponentBase
     new ApexChartOptions<IMeasurement>().WithFixedScriptPath();
 
   private HashSet<IMeter> _selectedMeters = new();
+
+  public class MeasurementData
+  {
+    public DateTimeOffset Timestamp { get; set; }
+    public decimal Value { get; set; }
+  }
+  private Dictionary<DateTimeOffset, decimal> _cumulativeSumsByMeasurement = new Dictionary<DateTimeOffset, decimal>();
 
   protected override void OnInitialized()
   {
@@ -109,6 +121,21 @@ public partial class NewMeterGraph : OzdsOwningComponentBase
     await OnParametersSetAsync();
   }
 
+  private void ComputeCumulativeSums()
+  {
+    _cumulativeSumsByMeasurement = new Dictionary<DateTimeOffset, decimal>();
+    decimal cumulativeSum = 0;
+
+    var sortedItems = _measurements.Items
+        .OrderBy(x => DateTimeApplyOffset(x.Timestamp));
+
+    foreach (var item in sortedItems)
+    {
+      cumulativeSum += item.ChartValue(Measure, null);
+      _cumulativeSumsByMeasurement[item.Timestamp] = cumulativeSum;
+    }
+  }
+
   protected override async Task OnParametersSetAsync()
   {
     var queries = ScopedServices.GetRequiredService<MeterGraphQueries>();
@@ -119,11 +146,15 @@ public partial class NewMeterGraph : OzdsOwningComponentBase
       Multiplier,
       fromDate: Timestamp
     );
+
+    ComputeCumulativeSums();
+
     _options = CreateGraphOptions();
 
     if (_chart is { } chart)
     {
       await chart.UpdateSeriesAsync(animate: true);
+      await InvokeAsync(() => StateHasChanged());
       await chart.UpdateOptionsAsync(false, true, false);
     }
   }
@@ -219,6 +250,14 @@ public partial class NewMeterGraph : OzdsOwningComponentBase
     if (Area)
     {
       options = options.WithArea();
+    }
+    if (ShortDate)
+    {
+      options = options.WithShortDate();
+    }
+    if (LongDate)
+    {
+      options = options.WithLongDate();
     }
 
     return options;
