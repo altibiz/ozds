@@ -60,6 +60,9 @@ public partial class NewMeterGraph : OzdsOwningComponentBase
   public bool LongDate { get; set; } = false;
 
   [Parameter]
+  public bool NoMax { get; set; } = false;
+
+  [Parameter]
   public HashSet<PhaseModel> Phases { get; set; } =
     Enum.GetValues<PhaseModel>().ToHashSet();
 
@@ -75,22 +78,39 @@ public partial class NewMeterGraph : OzdsOwningComponentBase
   [Inject]
   public AgnosticAggregateUpserter AggregateUpserter { get; set; } = default!;
 
-  private ApexChart<IMeasurement>? _chart = default!;
+  private ApexChart<MeasurementData>? _chart = default!;
 
   private PaginatedList<IMeasurement> _measurements = new(
     new List<IMeasurement>(), 0);
 
-  private ApexChartOptions<IMeasurement> _options =
-    new ApexChartOptions<IMeasurement>().WithFixedScriptPath();
+  private ApexChartOptions<MeasurementData> _options =
+    new ApexChartOptions<MeasurementData>().WithFixedScriptPath();
 
   private HashSet<IMeter> _selectedMeters = new();
 
   public class MeasurementData
   {
+    public IMeasurement Measurements { get; set; }
+    public MeasureSum MeasureSums { get; set; }
+    public PhasicMeasure PhasicMeasures { get; set; }
+  }
+
+  public class MeasureSum
+  {
     public DateTimeOffset Timestamp { get; set; }
     public decimal Value { get; set; }
   }
-  private Dictionary<DateTimeOffset, decimal> _cumulativeSumsByMeasurement = new Dictionary<DateTimeOffset, decimal>();
+  public class PhasicMeasure
+  {
+    public (PhaseModel phase, decimal value) L1 { get; set; }
+    public (PhaseModel phase, decimal value) L2 { get; set; }
+    public (PhaseModel phase, decimal value) L3 { get; set; }
+    public DateTimeOffset Timestamp { get; set; }
+  }
+  private List<MeasureSum> _cumulativeSumsByMeasurement = new List<MeasureSum>();
+  private List<PhasicMeasure> _phasicMeasurement = new List<PhasicMeasure>();
+
+  private List<MeasurementData> _measurementData = new();
 
   protected override void OnInitialized()
   {
@@ -121,21 +141,6 @@ public partial class NewMeterGraph : OzdsOwningComponentBase
     await OnParametersSetAsync();
   }
 
-  private void ComputeCumulativeSums()
-  {
-    _cumulativeSumsByMeasurement = new Dictionary<DateTimeOffset, decimal>();
-    decimal cumulativeSum = 0;
-
-    var sortedItems = _measurements.Items
-        .OrderBy(x => DateTimeApplyOffset(x.Timestamp));
-
-    foreach (var item in sortedItems)
-    {
-      cumulativeSum += item.ChartValue(Measure, null);
-      _cumulativeSumsByMeasurement[item.Timestamp] = cumulativeSum;
-    }
-  }
-
   protected override async Task OnParametersSetAsync()
   {
     var queries = ScopedServices.GetRequiredService<MeterGraphQueries>();
@@ -148,6 +153,21 @@ public partial class NewMeterGraph : OzdsOwningComponentBase
     );
 
     ComputeCumulativeSums();
+    GetPhasicActivePower();
+
+    var orderedMeasurements = _measurements.Items.OrderBy(m => m.Timestamp).ToList();
+    var orderedMeasureSums = _cumulativeSumsByMeasurement.OrderBy(ms => ms.Timestamp).ToList();
+    var orderedPhasicMeasures = _phasicMeasurement.OrderBy(ms => ms.Timestamp).ToList();
+
+    _measurementData = orderedMeasurements
+    .Zip(orderedMeasureSums, (measurement, measureSum) => new { measurement, measureSum })
+    .Zip(orderedPhasicMeasures, (prev, phasicMeasure) => new MeasurementData
+    {
+      Measurements = prev.measurement,
+      MeasureSums = prev.measureSum,
+      PhasicMeasures = phasicMeasure
+    })
+    .ToList();
 
     _options = CreateGraphOptions();
 
@@ -189,9 +209,26 @@ public partial class NewMeterGraph : OzdsOwningComponentBase
           _measurements.TotalCount + newMeasurements.Count
         );
 
+        ComputeCumulativeSums();
+        GetPhasicActivePower();
+
+        var orderedMeasurements = _measurements.Items.OrderBy(m => m.Timestamp).ToList();
+        var orderedMeasureSums = _cumulativeSumsByMeasurement.OrderBy(ms => ms.Timestamp).ToList();
+        var orderedPhasicMeasures = _phasicMeasurement.OrderBy(ms => ms.Timestamp).ToList();
+
+        _measurementData = orderedMeasurements
+        .Zip(orderedMeasureSums, (measurement, measureSum) => new { measurement, measureSum })
+        .Zip(orderedPhasicMeasures, (prev, phasicMeasure) => new MeasurementData
+        {
+          Measurements = prev.measurement,
+          MeasureSums = prev.measureSum,
+          PhasicMeasures = phasicMeasure
+        })
+        .ToList();
+
         if (_chart is { } chart)
         {
-          await chart.AppendDataAsync(newMeasurements);
+          await chart.AppendDataAsync(_measurementData);
         }
       }
       else
@@ -224,7 +261,7 @@ public partial class NewMeterGraph : OzdsOwningComponentBase
     });
   }
 
-  private ApexChartOptions<IMeasurement> CreateGraphOptions()
+  private ApexChartOptions<MeasurementData> CreateGraphOptions()
   {
     var maxPower = _measurements.Items
       .Select(x => x.ActivePower_W.TariffUnary().DuplexImport().PhaseSum())
@@ -259,7 +296,47 @@ public partial class NewMeterGraph : OzdsOwningComponentBase
     {
       options = options.WithLongDate();
     }
+    if (SumBars || Sum)
+    {
+      options = options.ForBarSum();
+    }
 
     return options;
+  }
+
+  private void ComputeCumulativeSums()
+  {
+    _cumulativeSumsByMeasurement = new List<MeasureSum>();
+    decimal cumulativeSum = 0;
+
+    var sortedItems = _measurements.Items
+        .OrderBy(x => DateTimeApplyOffset(x.Timestamp));
+
+    foreach (var item in sortedItems)
+    {
+      cumulativeSum += item.ChartValue(Measure, null);
+      _cumulativeSumsByMeasurement.Add(
+        new MeasureSum() { Timestamp = item.Timestamp, Value = cumulativeSum });
+    }
+  }
+
+  private void GetPhasicActivePower()
+  {
+    _phasicMeasurement = new List<PhasicMeasure>();
+
+    var sortedItems = _measurements.Items
+        .OrderBy(x => DateTimeApplyOffset(x.Timestamp));
+
+    foreach (var item in sortedItems)
+    {
+      _phasicMeasurement.Add(
+        new PhasicMeasure()
+        {
+          L1 = (PhaseModel.L1, item.ChartValue(Measure, PhaseModel.L1)),
+          L2 = (PhaseModel.L2, item.ChartValue(Measure, PhaseModel.L2)),
+          L3 = (PhaseModel.L3, item.ChartValue(Measure, PhaseModel.L3)),
+          Timestamp = item.Timestamp
+        });
+    }
   }
 }

@@ -165,6 +165,19 @@ public static class ApexChartOptionsExtensions
     return options;
   }
 
+  public static ApexChartOptions<T> ForBarSum<T>(
+    this ApexChartOptions<T> options
+  )
+    where T : class
+  {
+    options.Yaxis.Add(new YAxis
+    {
+      DecimalsInFloat = 0,
+      Opposite = true
+    });
+    return options;
+  }
+
   public static ApexChartOptions<T> WithActivePower<T>(
     this ApexChartOptions<T> options,
     string label,

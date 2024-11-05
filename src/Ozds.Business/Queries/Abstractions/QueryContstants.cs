@@ -8,7 +8,7 @@ public static class QueryConstants
 
   public const int DefaultPageCount = 50;
 
-  public const int MeasurementPageCount = 2000;
+  public const int MeasurementPageCount = 1000;
 
   public static TimeSpan AggregateThreshold(
     IntervalModel interval,

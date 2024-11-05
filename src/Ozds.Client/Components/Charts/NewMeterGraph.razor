@@ -10,7 +10,7 @@
 <div class="d-flex justify-center">
   <MudText>
     @if(_selectedMeters.Count() == 1){
-      @T[_selectedMeters.FirstOrDefault()!.Title]
+      @(T[_selectedMeters.FirstOrDefault()!.Title] + " ")
     }
     @T[Measure.ToTitle()]
     (@T[Measure.ToUnit()]
@@ -27,35 +27,35 @@
   {
     if(DonutSum){
         <ApexPointSeries
-          Items="_measurements.Items"
+          Items="_measurementData"
           SeriesType="SeriesType.Donut"
           Name="@Measure.ToTitle()"
-          XValue="@(x => x.MeterId)"
-          YAggregate="@(x => x.Sum(m => m.ChartValue(Measure, null)))"/>
+          XValue="@(x => x.Measurements.MeterId)"
+          YAggregate="@(x => x.Sum(m => m.Measurements.ChartValue(Measure, null)))"/>
     }
     else if(SumBars)
     {
       <ApexPointSeries
-        Items="@_measurements.Items"
+        Items="@_measurementData"
         Name="@Measure.ToTitle()"
         SeriesType="SeriesType.Bar"
-        XValue="x => DateTimeApplyOffset(x.Timestamp)"
-      YAggregate="x => x.Sum(m => m.ChartValue(Measure, null))" />
+        XValue="x => DateTimeApplyOffset(x.Measurements.Timestamp)"
+      YAggregate="x => x.Sum(m => m.Measurements.ChartValue(Measure, null))" />
       <ApexPointSeries
-        Items="@_measurements.Items"
+        Items="@_measurementData"
         Name="@Measure.ToTitle()"
         SeriesType="SeriesType.Line"
-        XValue='x => DateTimeApplyOffset(x.Timestamp)'
-        YValue="x => _cumulativeSumsByMeasurement[x.Timestamp]"  />
+        XValue='x => DateTimeApplyOffset(x.MeasureSums.Timestamp)'
+        YValue="x => x.MeasureSums.Value"  />
     }
     else if (Sum)
     {
       <ApexPointSeries
-        Items="@_measurements.Items"
+        Items="@_measurementData"
         Name="@Measure.ToTitle()"
-        SeriesType="SeriesType.Line"
-        XValue='x => DateTimeApplyOffset(x.Timestamp)'
-        YValue="x => _cumulativeSumsByMeasurement[x.Timestamp]"  />
+        SeriesType="SeriesType.Area"
+        XValue='x => DateTimeApplyOffset(x.MeasureSums.Timestamp)'
+        YValue="x => x.MeasureSums.Value"  />
     }
     else
     {
@@ -66,11 +66,11 @@
         foreach (var phase in Phases.OrderBy(x => x))
         {
           <ApexPointSeries
-            Items="@(_measurements.Items.Where(x => x.MeterId == selectedMeter.Id))"
+            Items="@(_measurementData.Where(x => x.Measurements.MeterId == selectedMeter.Id).ToList())"
             Name="@($"{selectedMeter.Id} {phase.ToTitle()}")"
             SeriesType="SeriesType.Line"
-            XValue='x => DateTimeApplyOffset(x.Timestamp)'
-            YValue="x => x.ChartValue(Measure, phase)"
+            XValue='x => DateTimeApplyOffset(x.Measurements.Timestamp)'
+            YValue="x => x.Measurements.ChartValue(Measure, phase)"
             Stroke="@(new SeriesStroke { Color = phase.ToColor(i), Width = 4 })"
             Color="@(phase.ToColor(i))"/>
         }
@@ -83,22 +83,24 @@
       foreach (var phase in Phases.OrderBy(x => x))
       {
         <ApexPointSeries
-          Items="_measurements.Items"
+          Items="_measurementData"
           SeriesType="SeriesType.Donut"
           Name="@Measure.ToTitle()"
-          XValue="@(x => x.MeterId)"
-          YAggregate="@(x => x.Sum(m => m.ChartValue(Measure, phase)))"/>
+          XValue="x => x.PhasicMeasures.Timestamp"
+          YAggregate="x => x.SelectMany(m => new [] { m.PhasicMeasures.L1, m.PhasicMeasures.L2, m.PhasicMeasures.L3 })
+                            .Where(pv => pv.phase == phase)
+                            .Sum(pv => pv.value)"/>
       }
     }
     else{
     foreach (var phase in Phases.OrderBy(x => x))
     {
       <ApexPointSeries
-        Items="@(_measurements.Items)"
+        Items="@(_measurementData)"
         Name="@(phase.ToTitle())"
         SeriesType="SeriesType.Line"
-        XValue='x => DateTimeApplyOffset(x.Timestamp)'
-        YValue="x => x.ChartValue(Measure, phase)"
+        XValue='x => DateTimeApplyOffset(x.Measurements.Timestamp)'
+        YValue="x => x.Measurements.ChartValue(Measure, phase)"
         Stroke="@(new SeriesStroke { Color = phase.ToColor(), Width = 4 })"
         Color="@(phase.ToColor())"/>
     }

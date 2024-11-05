@@ -4,21 +4,26 @@
 @using Ozds.Client.Components.Charts
 @inherits OzdsOwningComponentBase
 
-@{
-
-  @* var meters = await ScopedServices.GetRequiredService<OzdsNetworkUserMeasurementLocationModelQueries>().GetMeters("").Result.Items; *@
-}
+  @*  !!! TODO:
+      Fix sum bar display
+      UPDATING NOT WORKING
+      Enable Energy display with kWh
+      Translate
+      Add zoom and preview for connective power annotation
+   *@
 
 <Loading T="PaginatedList<MeterModel>" LoadAsync="@(() => ScopedServices.GetRequiredService<OzdsNetworkUserMeasurementLocationModelQueries>().GetMeters(""))">
   <Found Context="paganatedMeters">
   @{
     List<IMeter> meters = new List<IMeter>(paganatedMeters.Items);
   }
-  @* <MudContainer MaxWidth="MaxWidth.Large" Class="my-3">
+  <MudText Typo="Typo.h2" Style="text-align: center;"> Brush graf </MudText>
+  <MudContainer MaxWidth="MaxWidth.Large" Class="my-3">
     <BrushGraph Source="abb-B2x-1624226"/>
-  </MudContainer> *@
+  </MudContainer>
 
-  @* <MudContainer MaxWidth="MaxWidth.Large" Class="my-3">
+  <MudText Typo="Typo.h2" Style="text-align: center;"> Statićan prikaz po brojilu </MudText>
+  <MudContainer MaxWidth="MaxWidth.Large" Class="my-3">
     <MudGrid>
       <MudItem xs="6">
         <MudPaper Class="pa-3">
@@ -43,20 +48,22 @@
           </MudPaper>
       </MudItem>
     </MudGrid>
-  </MudContainer> *@
+  </MudContainer>
 
-  @* <MudContainer MaxWidth="MaxWidth.Medium" Class="my-3">
+  <MudText Typo="Typo.h2" Style="text-align: center;"> Dinamićan prikaz po brojilu !NOVO! </MudText>
+  <MudContainer MaxWidth="MaxWidth.Medium" Class="my-3">
     <MudPaper Class="pa-3 ma-3">
       <NewMeterGraph
-        Meters="@meters.Where(x => x.Id.StartsWith("schneider")).ToList()"
+        Meters="@meters"
         Resolution="@ResolutionModel.Day"
         Measure="@MeasureModel.ActivePower"
-        Multiplier="10"
+        Multiplier="1"
         LongDate
         />
     </MudPaper>
-  </MudContainer> *@
+  </MudContainer>
 
+  <MudText Typo="Typo.h2" Style="text-align: center;"> Dinamićan prikaz zbrojeva potrošnje !NOVO!  </MudText>
   <MudContainer MaxWidth="MaxWidth.Medium" Class="my-3">
     <MudPaper Class="pa-3 ma-3">
       <NewMeterGraph
@@ -70,22 +77,24 @@
     </MudPaper>
   </MudContainer>
 
-  @* <MudContainer MaxWidth="MaxWidth.Medium" Class="my-3">
+  <MudText Typo="Typo.h2" Style="text-align: center;"> Novi prikazi potrošnje !NOVO!  </MudText>
+  <MudContainer MaxWidth="MaxWidth.Medium" Class="my-3">
     <MudPaper Class="pa-3 ma-3">
       <NewMeterGraph
         Meters="@meters"
-        Resolution="@ResolutionModel.Month"
+        Resolution="@ResolutionModel.Day"
         Measure="@MeasureModel.ActivePower"
         Multiplier="1"
         LongDate
         SumBars
-        Static
         />
     </MudPaper>
-  </MudContainer> *@
+  </MudContainer>
 
-  @* <MudContainer MaxWidth="MaxWidth.Medium" Class="my-3">
-    <MudPaper Class="pa-3 ma-3">
+  <MudText Typo="Typo.h2" Style="text-align: center;"> Novi prikazi potrošnje !NOVO!  </MudText>
+
+  <MudContainer MaxWidth="MaxWidth.Medium">
+    <MudPaper Class="my-3">
       <NewMeterGraph
         Meters="@meters"
         Resolution="@ResolutionModel.Month"
@@ -96,11 +105,12 @@
         Static
         />
     </MudPaper>
-  </MudContainer> *@
+  </MudContainer>
 
-  @* <MudContainer MaxWidth="MaxWidth.Large" Class="my-3">
+  @* <MudText Typo="Typo.h2"> Veliki broj grafova istovremeno !NOVO!  </MudText>
+  <MudContainer MaxWidth="MaxWidth.Large" Class="my-3">
     <MudGrid>
-      <MudItem xs="3">
+      <MudItem xs="4">
         <MudPaper Class="pa-3">
           <NewMeterGraph
             Meters="@meters.Where(x => x.Id.StartsWith("schneider")).ToList()"
@@ -113,7 +123,7 @@
             />
         </MudPaper>
       </MudItem>
-      <MudItem xs="3">
+      <MudItem xs="4">
         <MudPaper Class="pa-3">
           <NewMeterGraph
             Meters="@meters.Where(x => x.Id.StartsWith("abb-B2x-1624226")).ToList()"
@@ -126,7 +136,7 @@
             />
         </MudPaper>
       </MudItem>
-      <MudItem xs="3">
+      <MudItem xs="4">
           <MudPaper Class="pa-3">
             <NewMeterGraph
               Meters="@meters.Where(x => x.Id.StartsWith("schneider")).ToList()"
@@ -139,7 +149,7 @@
               />
           </MudPaper>
       </MudItem>
-      <MudItem xs="3">
+      <MudItem xs="4">
           <MudPaper Class="pa-3">
             <NewMeterGraph
               Meters="@meters.Where(x => x.Id.StartsWith("abb-B2x-1624226")).ToList()"
