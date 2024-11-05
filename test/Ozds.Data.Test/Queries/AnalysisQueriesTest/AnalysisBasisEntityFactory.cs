@@ -66,7 +66,7 @@ public class AnalysisBasisEntityFactory(DbContext context)
 
       var meter = await fixture
         .Build<AbbB2xMeterEntity>()
-        .IndexedWith(x => x.Id, (i) => $"abb-b2x-{i}")
+        .IndexedWith(x => x.Id, (j) => $"abb-b2x-{i + j}")
         .With(x => x.MeasurementValidatorId, validator.Id)
         .CreateInDb(context);
 
@@ -79,17 +79,41 @@ public class AnalysisBasisEntityFactory(DbContext context)
 
       var invoices = await fixture
         .Build<NetworkUserInvoiceEntity>()
+        .With(inv => inv.ArchivedLocation, location)
         .With(inv => inv.NetworkUserId, networkUser.Id)
+        .With(inv => inv.ArchivedNetworkUser, networkUser)
+        .With(inv => inv.ArchivedRegulatoryCatalogue, regulatoryCatalogue)
         .CreateManyInDb(context);
 
       var calculations = await fixture
-        .Build<NetworkUserCalculationEntity>()
+        .Build<RedLowNetworkUserCalculationEntity>()
         .With(
           calc => calc.MeterId,
           meter.Id)
         .With(
           calc => calc.NetworkUserMeasurementLocationId,
-          measurementLocation.Id)
+          measurementLocation.Id
+        )
+        .With(
+          calc => calc.ArchivedNetworkUserMeasurementLocation,
+          measurementLocation
+        )
+        .With(
+          calc => calc.UsageNetworkUserCatalogueId,
+          redLowCatalogue.Id
+        )
+        .With(
+          calc => calc.ArchivedUsageNetworkUserCatalogue,
+          redLowCatalogue
+        )
+        .With(
+          calc => calc.SupplyRegulatoryCatalogueId,
+          regulatoryCatalogue.Id
+        )
+        .With(
+          calc => calc.ArchivedSupplyRegulatoryCatalogue,
+          regulatoryCatalogue
+        )
         .IndexedWith(
           calc => calc.NetworkUserInvoiceId,
           i => invoices[i % invoices.Count].Id)

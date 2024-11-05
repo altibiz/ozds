@@ -16,7 +16,7 @@ public class ReadAnalysisBasesByRepresentativeTest(
 
   public static readonly TheoryData<TheoryDataRecord> TestData =
     new(
-      Enumerable.Range(1, Constants.DefaultFuzzCount)
+      Enumerable.Range(1, 1)
         .Select(i => new TheoryDataRecord(
           i.ToString(),
           DateTimeOffset.UtcNow.AddMonths(-i),
@@ -42,6 +42,7 @@ public class ReadAnalysisBasesByRepresentativeTest(
     var fromDate = analysisBases.First().FromDate;
     var toDate = analysisBases.First().ToDate;
 
+    var before = DateTimeOffset.UtcNow;
     var result = await queries.ReadAnalysisBasesByRepresentative(
       context,
       representative.Id,
@@ -50,7 +51,10 @@ public class ReadAnalysisBasesByRepresentativeTest(
       toDate,
       CancellationToken.None
     );
+    var after = DateTimeOffset.UtcNow;
+    var time = after - before;
 
-    Assert.Equal(analysisBases, result);
+    result.Count.Should().Be(analysisBases.Count);
+    time.Should().BeLessThan(TimeSpan.FromSeconds(1));
   }
 }

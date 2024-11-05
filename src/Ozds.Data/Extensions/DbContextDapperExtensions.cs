@@ -83,6 +83,10 @@ public static class DataDbContextDapperExtensions
       typeof(List<PhaseEntity>),
       new GenericListTypeHandler<PhaseEntity>()
     );
+    AddTypeHandler(
+      typeof(List<TopicEntity>),
+      new GenericListTypeHandler<TopicEntity>()
+    );
 
     _lock.Release();
 
