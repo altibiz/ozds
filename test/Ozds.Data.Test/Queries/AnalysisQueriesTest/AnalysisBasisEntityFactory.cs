@@ -85,6 +85,9 @@ public class AnalysisBasisEntityFactory(DbContext context)
       var calculations = await fixture
         .Build<NetworkUserCalculationEntity>()
         .With(
+          calc => calc.MeterId,
+          meter.Id)
+        .With(
           calc => calc.NetworkUserMeasurementLocationId,
           measurementLocation.Id)
         .IndexedWith(
