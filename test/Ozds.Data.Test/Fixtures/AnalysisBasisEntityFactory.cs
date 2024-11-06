@@ -6,7 +6,7 @@ using Ozds.Data.Entities.Joins;
 using Ozds.Data.Test.Extensions;
 using Ozds.Data.Test.Specimens;
 
-namespace Ozds.Data.Test.Queries.AnalysisQueriesTest;
+namespace Ozds.Data.Test.Fixtures;
 
 public class AnalysisBasisEntityFactory(DbContext context)
 {
@@ -14,7 +14,8 @@ public class AnalysisBasisEntityFactory(DbContext context)
     Create(
       string representativeId,
       DateTimeOffset fromDate,
-      DateTimeOffset toDate
+      DateTimeOffset toDate,
+      CancellationToken cancellationToken = default
     )
   {
     var result = new List<AnalysisBasisEntity>();
@@ -26,20 +27,25 @@ public class AnalysisBasisEntityFactory(DbContext context)
     var representative = await fixture
       .Build<RepresentativeEntity>()
       .With(x => x.Id, representativeId)
-      .CreateInDb(context);
+      .CreateInDb(context, cancellationToken);
 
-    foreach (var i in Enumerable.Range(1, Constants.DefaultRepeatCount))
+    foreach (var i in Enumerable.Range(1, Constants.DefaultFuzzCount))
     {
       var blueLowCatalogue = await fixture
-        .CreateInDb<BlueLowNetworkUserCatalogueEntity>(context);
+        .CreateInDb<BlueLowNetworkUserCatalogueEntity>(
+          context, cancellationToken);
       var redLowCatalogue = await fixture
-        .CreateInDb<RedLowNetworkUserCatalogueEntity>(context);
+        .CreateInDb<RedLowNetworkUserCatalogueEntity>(
+          context, cancellationToken);
       var regulatoryCatalogue = await fixture
-        .CreateInDb<RegulatoryCatalogueEntity>(context);
+        .CreateInDb<RegulatoryCatalogueEntity>(
+          context, cancellationToken);
       var whiteMediumCatalogue = await fixture
-        .CreateInDb<WhiteMediumNetworkUserCatalogueEntity>(context);
+        .CreateInDb<WhiteMediumNetworkUserCatalogueEntity>(
+          context, cancellationToken);
       var whiteLowCatalogue = await fixture
-        .CreateInDb<WhiteLowNetworkUserCatalogueEntity>(context);
+        .CreateInDb<WhiteLowNetworkUserCatalogueEntity>(
+          context, cancellationToken);
 
       var location = await fixture
         .Build<LocationEntity>()
@@ -48,34 +54,35 @@ public class AnalysisBasisEntityFactory(DbContext context)
         .With(x => x.RegulatoryCatalogueId, regulatoryCatalogue.Id)
         .With(x => x.WhiteMediumNetworkUserCatalogueId, whiteMediumCatalogue.Id)
         .With(x => x.WhiteLowNetworkUserCatalogueId, whiteLowCatalogue.Id)
-        .CreateInDb(context);
+        .CreateInDb(context, cancellationToken);
 
       var networkUser = await fixture
         .Build<NetworkUserEntity>()
         .With(x => x.LocationId, location.Id)
-        .CreateInDb(context);
+        .CreateInDb(context, cancellationToken);
 
       _ = await fixture
         .Build<NetworkUserRepresentativeEntity>()
         .With(x => x.RepresentativeId, representative.Id)
         .With(x => x.NetworkUserId, networkUser.Id)
-        .CreateInDb(context);
+        .CreateInDb(context, cancellationToken);
 
       var validator = await fixture
-        .CreateInDb<AbbB2xMeasurementValidatorEntity>(context);
+        .CreateInDb<AbbB2xMeasurementValidatorEntity>(
+          context, cancellationToken);
 
       var meter = await fixture
         .Build<AbbB2xMeterEntity>()
         .IndexedWith(x => x.Id, (j) => $"abb-b2x-{i + j}")
         .With(x => x.MeasurementValidatorId, validator.Id)
-        .CreateInDb(context);
+        .CreateInDb(context, cancellationToken);
 
       var measurementLocation = await fixture
         .Build<NetworkUserMeasurementLocationEntity>()
         .With(ml => ml.NetworkUserId, networkUser.Id)
         .With(ml => ml.MeterId, meter.Id)
         .With(ml => ml.NetworkUserCatalogueId, redLowCatalogue.Id)
-        .CreateInDb(context);
+        .CreateInDb(context, cancellationToken);
 
       var invoices = await fixture
         .Build<NetworkUserInvoiceEntity>()
@@ -83,7 +90,7 @@ public class AnalysisBasisEntityFactory(DbContext context)
         .With(inv => inv.NetworkUserId, networkUser.Id)
         .With(inv => inv.ArchivedNetworkUser, networkUser)
         .With(inv => inv.ArchivedRegulatoryCatalogue, regulatoryCatalogue)
-        .CreateManyInDb(context);
+        .CreateManyInDb(context, cancellationToken: cancellationToken);
 
       var calculations = await fixture
         .Build<RedLowNetworkUserCalculationEntity>()
@@ -117,7 +124,10 @@ public class AnalysisBasisEntityFactory(DbContext context)
         .IndexedWith(
           calc => calc.NetworkUserInvoiceId,
           i => invoices[i % invoices.Count].Id)
-        .CreateManyInDb(context, Constants.DefaultRepeatCount * invoices.Count);
+        .CreateManyInDb(
+          context,
+          Constants.DefaultFuzzCount * invoices.Count,
+          cancellationToken);
 
       var measurements = await fixture
         .Build<AbbB2xMeasurementEntity>()
@@ -127,12 +137,12 @@ public class AnalysisBasisEntityFactory(DbContext context)
       var monthlyAggregates = await fixture
         .Build<AbbB2xAggregateEntity>()
         .With(agg => agg.MeterId, meter.Id)
-        .CreateManyInDb(context);
+        .CreateManyInDb(context, cancellationToken: cancellationToken);
 
       var monthlyMaxPowerAggregates = await fixture
         .Build<AbbB2xAggregateEntity>()
         .With(agg => agg.MeterId, meter.Id)
-        .CreateManyInDb(context);
+        .CreateManyInDb(context, cancellationToken: cancellationToken);
 
       var analysisBasisEntity = new AnalysisBasisEntity(
           Representative: representative,

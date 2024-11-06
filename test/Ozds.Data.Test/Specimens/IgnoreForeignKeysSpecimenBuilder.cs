@@ -1,7 +1,6 @@
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Ozds.Data.Entities;
 
 namespace Ozds.Data.Test.Specimens;
 

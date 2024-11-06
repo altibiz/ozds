@@ -8,32 +8,76 @@ public sealed class DataDbContextManager(
   IDbContextFactory<DataDbContext> factory
 ) : IAsyncDisposable
 {
-  public Lazy<Task<DataDbContext>> Context { get; } = new(async () =>
-  {
-    var context = await factory.CreateDbContextAsync();
-    await context.Database.BeginTransactionAsync();
+  private readonly SemaphoreSlim _semaphore = new(1, 1);
 
-    foreach (var entity in context.Model.GetEntityTypes())
+  private DataDbContext? context;
+
+  public async Task<DataDbContext> GetContext(
+    CancellationToken cancellationToken = default
+  )
+  {
+    try
     {
-#pragma warning disable EF1002 // Risk of vulnerability to SQL injection.
-      await context.Database.ExecuteSqlRawAsync($@"
-        DELETE FROM {entity.GetTableName()} WHERE TRUE;
-      ");
-#pragma warning restore EF1002 // Risk of vulnerability to SQL injection.
+      await _semaphore.WaitAsync(cancellationToken);
+    }
+    catch (ObjectDisposedException)
+    {
+      throw new ObjectDisposedException(
+        "The context manager has been disposed.");
     }
 
-    return context;
-  });
+    try
+    {
+      if (context is not null)
+      {
+        return context;
+      }
+
+      context = await factory.CreateDbContextAsync(cancellationToken);
+      await context.Database.BeginTransactionAsync(cancellationToken);
+
+      foreach (var entity in context.Model.GetEntityTypes())
+      {
+#pragma warning disable EF1002 // Risk of vulnerability to SQL injection.
+        await context.Database.ExecuteSqlRawAsync(
+          $"DELETE FROM {entity.GetTableName()} WHERE TRUE;",
+          cancellationToken);
+#pragma warning restore EF1002 // Risk of vulnerability to SQL injection.
+      }
+
+      return context;
+    }
+    finally
+    {
+      _semaphore.Release();
+    }
+  }
 
   public async ValueTask DisposeAsync()
   {
-    if (!Context.IsValueCreated)
+    try
+    {
+      await _semaphore.WaitAsync();
+    }
+    catch (ObjectDisposedException)
     {
       return;
     }
 
-    var context = await Context.Value;
-    await context.Database.RollbackTransactionAsync();
-    await context.DisposeAsync();
+    try
+    {
+      if (context is null)
+      {
+        return;
+      }
+
+      await context.Database.RollbackTransactionAsync();
+      await context.DisposeAsync();
+    }
+    finally
+    {
+      _semaphore.Release();
+      _semaphore.Dispose();
+    }
   }
 }

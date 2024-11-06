@@ -8,47 +8,51 @@ public static class SpecimenBuilderExtensions
 {
   public static async Task<T> CreateInDb<T>(
     this ISpecimenBuilder builder,
-    DbContext context
+    DbContext context,
+    CancellationToken cancellationToken = default
   )
   {
     var entity = builder.Create<T>()!;
     context.Add(entity);
-    await context.SaveChangesAsync();
+    await context.SaveChangesAsync(cancellationToken);
     return entity;
   }
 
   public static async Task<List<T>> CreateManyInDb<T>(
     this ISpecimenBuilder builder,
     DbContext context,
-    int count = Constants.DefaultFuzzCount
+    int count = Constants.DefaultFuzzCount,
+    CancellationToken cancellationToken = default
   )
   {
     var entities = builder.CreateMany<T>(count).ToList();
     context.AddRange(entities.OfType<object>());
-    await context.SaveChangesAsync();
+    await context.SaveChangesAsync(cancellationToken);
     return entities;
   }
 
   public static async Task<T> CreateInDb<T>(
     this IPostprocessComposer<T> builder,
-    DbContext context
+    DbContext context,
+    CancellationToken cancellationToken = default
   )
   {
     var entity = builder.Create()!;
     context.Add(entity);
-    await context.SaveChangesAsync();
+    await context.SaveChangesAsync(cancellationToken);
     return entity;
   }
 
   public static async Task<List<T>> CreateManyInDb<T>(
     this IPostprocessComposer<T> builder,
     DbContext context,
-    int count = Constants.DefaultFuzzCount
+    int count = Constants.DefaultFuzzCount,
+    CancellationToken cancellationToken = default
   )
   {
     var entities = builder.CreateMany(count).ToList();
     context.AddRange(entities.OfType<object>());
-    await context.SaveChangesAsync();
+    await context.SaveChangesAsync(cancellationToken);
     return entities;
   }
 

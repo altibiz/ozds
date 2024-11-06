@@ -1,56 +1,52 @@
+using Ozds.Data.Entities.Composite;
 using Ozds.Data.Queries;
 using Ozds.Data.Test.Context;
 
 namespace Ozds.Data.Test.Queries.AnalysisQueriesTest;
 
-public class ReadAnalysisBasesByRepresentativeTest(
-  DataDbContextManager manager,
-  AnalysisQueries queries
-)
+public class ReadAnalysisBasesByRepresentativeTest(IServiceProvider services)
 {
-  public record TheoryDataRecord(
-    string RepresentativeId,
-    DateTimeOffset DateFrom,
-    DateTimeOffset DateTo
-  );
-
-  public static readonly TheoryData<TheoryDataRecord> TestData =
-    new(
-      Enumerable.Range(1, 100)
-        .Select(i => new TheoryDataRecord(
-          i.ToString(),
-          DateTimeOffset.UtcNow.AddMonths(-i),
-          DateTimeOffset.UtcNow
-        ))
-    );
-
-  [Theory]
-  [MemberData(nameof(TestData))]
-  public async Task IsValid(TheoryDataRecord data)
+  [Fact]
+  public async Task IsValidTest()
   {
-    var context = await manager.Context.Value;
+    var results = await Task.WhenAll(Enumerable
+      .Range(1, Constants.DefaultRepeatCount)
+      .Select(async i =>
+      {
+        await using var manager = services
+          .GetRequiredService<DataDbContextManager>();
+        var context = await manager.GetContext();
+        var factory = new AnalysisBasisEntityFactory(context);
 
-    var factory = new AnalysisBasisEntityFactory(context);
+        var representativeId = i.ToString();
+        var dateTo = DateTime.UtcNow;
+        var dateFrom = dateTo.AddMonths(-i);
 
-    var analysisBases = await factory.Create(
-      data.RepresentativeId,
-      data.DateFrom,
-      data.DateTo
+        var expected = await factory.Create(
+          representativeId,
+          dateFrom,
+          dateTo
+        );
+
+        var representative = expected.First().Representative;
+        var fromDate = expected.First().FromDate;
+        var toDate = expected.First().ToDate;
+
+        var queries = services.GetRequiredService<AnalysisQueries>();
+        var actual = await queries.ReadAnalysisBasesByRepresentative(
+          context,
+          representative.Id,
+          representative.Role,
+          fromDate,
+          toDate,
+          CancellationToken.None
+        );
+
+        return new TestResult<List<AnalysisBasisEntity>>(expected, actual);
+      })
     );
 
-    var representative = analysisBases.First().Representative;
-    var fromDate = analysisBases.First().FromDate;
-    var toDate = analysisBases.First().ToDate;
-
-    var result = await queries.ReadAnalysisBasesByRepresentative(
-      context,
-      representative.Id,
-      representative.Role,
-      fromDate,
-      toDate,
-      CancellationToken.None
-    );
-
-    result.Count.Should().Be(analysisBases.Count);
+    results.Should().AllSatisfy(result =>
+      result.Actual.Should().HaveCount(result.Actual.Count));
   }
 }

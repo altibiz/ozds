@@ -47,7 +47,7 @@ public class Startup
     var builderProxy = new HostApplicationBuilderProxy(context, services);
     services.AddOzdsData(builderProxy);
 
-    services.AddScoped<DataDbContextManager>();
+    services.AddTransient<DataDbContextManager>();
   }
 
   public void Configure(IServiceProvider serviceProvider)
