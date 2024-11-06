@@ -4,8 +4,8 @@
     <ProjectReference Include="../../src/Ozds.Business/Ozds.Business.csproj" />
   </ItemGroup>
 
-  <PropertyGroup>
-    <EnableXunitDependencyInjectionDefaultTestFrameworkAttribute>false</EnableXunitDependencyInjectionDefaultTestFrameworkAttribute>
-  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Meziantou.Xunit.ParallelTestFramework" Version="2.3.0" />
+  </ItemGroup>
 
 </Project>

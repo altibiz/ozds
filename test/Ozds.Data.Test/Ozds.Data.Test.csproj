@@ -4,4 +4,13 @@
     <ProjectReference Include="../../src/Ozds.Data/Ozds.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Xunit.DependencyInjection" Version="9.5.0" />
+    <PackageReference Include="Xunit.DependencyInjection.Logging" Version="9.0.0" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <ParallelizationMode>Force</ParallelizationMode>
+  </PropertyGroup>
+
 </Project>

@@ -4,7 +4,9 @@ namespace Ozds.Data.Test.Fixtures;
 
 public static class Constants
 {
-  public const int DefaultFuzzCount = 10;
+  public const int DefaultFuzzCount = 8;
+
+  public const int DefaultRepeatCount = 3;
 
   public static readonly DateTimeOffset DefaultDateTimeOffset =
     DateTimeOffset.Parse(

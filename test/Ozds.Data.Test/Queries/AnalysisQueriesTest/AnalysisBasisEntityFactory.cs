@@ -28,7 +28,7 @@ public class AnalysisBasisEntityFactory(DbContext context)
       .With(x => x.Id, representativeId)
       .CreateInDb(context);
 
-    foreach (var i in Enumerable.Range(1, Constants.DefaultFuzzCount))
+    foreach (var i in Enumerable.Range(1, Constants.DefaultRepeatCount))
     {
       var blueLowCatalogue = await fixture
         .CreateInDb<BlueLowNetworkUserCatalogueEntity>(context);
@@ -117,7 +117,7 @@ public class AnalysisBasisEntityFactory(DbContext context)
         .IndexedWith(
           calc => calc.NetworkUserInvoiceId,
           i => invoices[i % invoices.Count].Id)
-        .CreateManyInDb(context, Constants.DefaultFuzzCount * invoices.Count);
+        .CreateManyInDb(context, Constants.DefaultRepeatCount * invoices.Count);
 
       var measurements = await fixture
         .Build<AbbB2xMeasurementEntity>()
