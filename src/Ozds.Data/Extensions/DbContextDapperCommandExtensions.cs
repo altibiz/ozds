@@ -252,13 +252,42 @@ public static class DbContextDapperCommandExtensions
 
       if (columnMapping is PropertyColumnMapping propertyMapping)
       {
-        propertyMapping.Property.SetValue(instance, value);
+        var converted =
+          ConvertValue(value, propertyMapping.Property.PropertyType);
+        propertyMapping.Property.SetValue(instance, converted);
       }
       if (columnMapping is FieldColumnMapping fieldMapping)
       {
-        fieldMapping.Field.SetValue(instance, value);
+        var converted =
+          ConvertValue(value, fieldMapping.Field.FieldType);
+        fieldMapping.Field.SetValue(instance, converted);
       }
     }
+  }
+
+  private static object ConvertValue(object value, Type type)
+  {
+    if (value is DateTime dateTime)
+    {
+      return new DateTimeOffset(
+        DateTime.SpecifyKind(dateTime, DateTimeKind.Utc));
+    }
+
+    if (value.GetType().IsArray
+      && value.GetType().GetElementType() is Type elementType)
+    {
+      return typeof(Enumerable)
+        .GetMethod(nameof(Enumerable.ToList))!
+        .MakeGenericMethod(elementType)!
+        .Invoke(null, [value])!;
+    }
+
+    if (type.IsAssignableTo(typeof(IConvertible)))
+    {
+      return Convert.ChangeType(value, type)!;
+    }
+
+    return value;
   }
 
   private static string GetColumnNameForProperty(
