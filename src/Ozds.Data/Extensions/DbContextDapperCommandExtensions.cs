@@ -1,9 +1,11 @@
 using System.Collections.Concurrent;
 using System.Data;
+using System.Data.Common;
 using System.Reflection;
 using Dapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Pomelo.EntityFrameworkCore.MySql.Metadata.Internal;
 
 namespace Ozds.Data.Extensions;
 
@@ -36,8 +38,9 @@ public static class DbContextDapperCommandExtensions
       (_) => GetPropertyMappings(context, typeof(T)));
     while (await reader.ReadAsync(cancellationToken))
     {
+      var splits = SplitReader(reader, propertyMappings);
       var instance = new T();
-      MapProperties(instance, propertyMappings, reader);
+      MapProperties(instance, splits);
       results.Add(instance);
     }
 
@@ -149,15 +152,14 @@ public static class DbContextDapperCommandExtensions
 
   private static void MapProperties(
     object instance,
-    List<PropertyMapping> propertyMappings,
-    IDataRecord reader
+    List<ReaderSplit> splits
   )
   {
-    foreach (var mapping in propertyMappings)
+    foreach (var split in splits)
     {
-      if (mapping is EntityPropertyMapping entityMapping)
+      if (split is EntityReaderSplit entitySplit)
       {
-        var entityType = entityMapping.EntityType;
+        var entityType = entitySplit.EntityMapping.EntityType;
         var discriminatorProperty = entityType
           .FindDiscriminatorProperty();
         var discriminatorColumnName = discriminatorProperty != null
@@ -167,7 +169,7 @@ public static class DbContextDapperCommandExtensions
         object? discriminatorValue = null;
         if (discriminatorColumnName != null)
         {
-          discriminatorValue = reader[discriminatorColumnName];
+          discriminatorValue = entitySplit.Values[discriminatorColumnName];
         }
 
         var concreteEntityType = GetConcreteEntityType(
@@ -183,25 +185,30 @@ public static class DbContextDapperCommandExtensions
 
         MapColumns(
           entityInstance,
-          entityMapping.ColumnMappings,
-          reader
+          entitySplit.EntityMapping.ColumnMappings,
+          entitySplit.Values
         );
 
         MapComplexProperties(
           entityInstance,
-          entityMapping.ComplexPropertyMappings,
-          reader
+          entitySplit.EntityMapping.ComplexPropertyMappings,
+          entitySplit.Values
         );
 
-        mapping.Property.SetValue(instance, entityInstance);
+        entitySplit.EntityMapping.Property.SetValue(instance, entityInstance);
       }
-      else if (mapping is ScalarPropertyMapping scalarMapping)
+      else if (split is ScalarReaderSplit scalarSplit)
       {
-        var value = reader[scalarMapping.ColumnName];
-        if (value != DBNull.Value)
+        var value = scalarSplit.Value;
+        if (value == DBNull.Value)
         {
-          mapping.Property.SetValue(instance, value);
+          continue;
         }
+
+        var converted = ConvertValue(
+          value,
+          scalarSplit.ScalarMapping.Property.PropertyType);
+        scalarSplit.ScalarMapping.Property.SetValue(instance, converted);
       }
     }
   }
@@ -209,7 +216,7 @@ public static class DbContextDapperCommandExtensions
   private static void MapComplexProperties(
     object instance,
     List<ComplexPropertyMapping> complexPropertyMappings,
-    IDataRecord reader
+    Dictionary<string, object> reader
   )
   {
     foreach (var complexMapping in complexPropertyMappings)
@@ -241,12 +248,12 @@ public static class DbContextDapperCommandExtensions
   private static void MapColumns(
     object instance,
     IEnumerable<ColumnMapping> columnMappings,
-    IDataRecord reader
+    Dictionary<string, object> values
   )
   {
     foreach (var columnMapping in columnMappings)
     {
-      var value = reader[columnMapping.ColumnName];
+      var value = values[columnMapping.ColumnName];
       if (value == DBNull.Value)
       {
         continue;
@@ -265,31 +272,6 @@ public static class DbContextDapperCommandExtensions
         fieldMapping.Field.SetValue(instance, converted);
       }
     }
-  }
-
-  private static object ConvertValue(object value, Type type)
-  {
-    if (value is DateTime dateTime)
-    {
-      return new DateTimeOffset(
-        DateTime.SpecifyKind(dateTime, DateTimeKind.Utc));
-    }
-
-    if (value.GetType().IsArray
-      && value.GetType().GetElementType() is Type elementType)
-    {
-      return typeof(Enumerable)
-        .GetMethod(nameof(Enumerable.ToList))!
-        .MakeGenericMethod(elementType)!
-        .Invoke(null, [value])!;
-    }
-
-    if (type.IsAssignableTo(typeof(IConvertible)))
-    {
-      return Convert.ChangeType(value, type)!;
-    }
-
-    return value;
   }
 
   private static string GetColumnNameForProperty(
@@ -328,6 +310,108 @@ public static class DbContextDapperCommandExtensions
         $"Unknown discriminator value: {discriminatorValue}");
 
     return concreteEntityType;
+  }
+
+  private static List<ReaderSplit> SplitReader(
+    DbDataReader reader,
+    List<PropertyMapping> propertyMappings
+  )
+  {
+    var results = new List<ReaderSplit>();
+    var nextSplit = 0;
+    foreach (var (propertyMapping, nextPropertyMapping) in propertyMappings
+      .Zip(propertyMappings.Skip(1).Append(null)))
+    {
+      var currentSplit = nextSplit;
+
+      if (nextPropertyMapping is EntityPropertyMapping nextEntityMapping)
+      {
+        var primaryKeyColumnName = nextEntityMapping.EntityType.FindPrimaryKey()
+          ?.Properties[0]
+          ?.GetColumnName()
+          ?? throw new InvalidOperationException(
+            $"Primary key not found for entity"
+            + nextEntityMapping.EntityType.ClrType.Name);
+        for (var i = currentSplit; i < reader.FieldCount; i++)
+        {
+          if (reader.GetName(i) == primaryKeyColumnName)
+          {
+            nextSplit = i + 1;
+            break;
+          }
+        }
+      }
+      else if (nextPropertyMapping is ScalarPropertyMapping nextScalarMapping)
+      {
+        var columnName = nextScalarMapping.ColumnName;
+        for (var i = currentSplit; i < reader.FieldCount; i++)
+        {
+          if (reader.GetName(i) == columnName)
+          {
+            nextSplit = i + 1;
+            break;
+          }
+        }
+      }
+      else
+      {
+        nextSplit = reader.FieldCount;
+      }
+
+      if (propertyMapping is EntityPropertyMapping entityMapping)
+      {
+        var values = new Dictionary<string, object>();
+        for (var i = currentSplit; i < nextSplit; i++)
+        {
+          var value = reader[i];
+          values.Add(reader.GetName(i), value);
+        }
+
+        results.Add(new EntityReaderSplit
+        {
+          EntityMapping = entityMapping,
+          Values = values
+        });
+      }
+      if (propertyMapping is ScalarPropertyMapping scalarMapping)
+      {
+        var value = reader[currentSplit];
+        var columnName = reader.GetName(currentSplit);
+        results.Add(new ScalarReaderSplit
+        {
+          ScalarMapping = scalarMapping,
+          Value = value,
+          ColumnName = columnName
+        });
+      }
+    }
+    return results;
+  }
+
+  private static object ConvertValue(object value, Type type)
+  {
+    if (type == typeof(DateTimeOffset))
+    {
+      return new DateTimeOffset(
+        DateTime.SpecifyKind((DateTime)value, DateTimeKind.Utc));
+    }
+
+    if (type.IsGenericType
+      && type.GetGenericTypeDefinition() == typeof(List<>)
+      && type.GetGenericArguments().Single() is { } elementType)
+    {
+      return typeof(Enumerable)
+        .GetMethod(nameof(Enumerable.ToList))!
+        .MakeGenericMethod(elementType)!
+        .Invoke(null, [value])!;
+    }
+
+    if (type.IsAssignableTo(typeof(IConvertible)))
+    {
+      return Convert.ChangeType(value, type)!;
+    }
+
+    return value;
   }
 
   private abstract class PropertyMapping
@@ -379,5 +463,27 @@ public static class DbContextDapperCommandExtensions
   private sealed class FieldColumnMapping : ColumnMapping
   {
     public required FieldInfo Field { get; init; }
+  }
+
+#pragma warning disable S2094 // Classes should not be empty
+  private abstract class ReaderSplit
+#pragma warning restore S2094 // Classes should not be empty
+  {
+  }
+
+  private sealed class EntityReaderSplit : ReaderSplit
+  {
+    public required EntityPropertyMapping EntityMapping { get; init; }
+
+    public required Dictionary<string, object> Values { get; init; }
+  }
+
+  private sealed class ScalarReaderSplit : ReaderSplit
+  {
+    public required ScalarPropertyMapping ScalarMapping { get; init; }
+
+    public required object Value { get; init; }
+
+    public required string ColumnName { get; init; }
   }
 }
