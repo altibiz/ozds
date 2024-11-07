@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Ozds.Data.Extensions;
 
+// TODO: split apart the reader into arrays of objects based on primary keys
+
 public static class DbContextDapperCommandExtensions
 {
   private static readonly ConcurrentDictionary<Type, List<PropertyMapping>>
