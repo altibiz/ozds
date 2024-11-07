@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.Data;
 using System.Reflection;
 using Dapper;
@@ -8,6 +9,9 @@ namespace Ozds.Data.Extensions;
 
 public static class DbContextDapperCommandExtensions
 {
+  private static readonly ConcurrentDictionary<Type, List<PropertyMapping>>
+    _propertyMappingsCache = new();
+
   public static async Task<List<T>> DapperCommand<T>(
       this DbContext context,
       string sql,
@@ -22,202 +26,117 @@ public static class DbContextDapperCommandExtensions
         parameters,
         cancellationToken: cancellationToken
     );
+    using var reader = await connection.ExecuteReaderAsync(command);
 
     var results = new List<T>();
-
-    var propertyMappings = GetPropertyMappings(typeof(T), context, null);
-    using var reader = await connection.ExecuteReaderAsync(command);
+    var propertyMappings = _propertyMappingsCache.GetOrAdd(
+      typeof(T),
+      (_) => GetPropertyMappings(context, typeof(T)));
     while (await reader.ReadAsync(cancellationToken))
     {
-      var instance = Activator.CreateInstance(typeof(T))
-        ?? throw new InvalidOperationException(
-          $"Failed to create instance of {typeof(T).Name}");
-
+      var instance = new T();
       MapProperties(instance, propertyMappings, reader);
-
-      results.Add((T)instance);
+      results.Add(instance);
     }
 
     return results;
   }
 
   private static List<PropertyMapping> GetPropertyMappings(
-    Type clrType,
     DbContext context,
-    ITypeBase? parentTypeBase
+    Type clrType
   )
   {
     var propertyMappings = new List<PropertyMapping>();
 
-    ITypeBase typeBase = parentTypeBase
-      ?? context.Model.FindEntityType(clrType)
-      ?? throw new InvalidOperationException(
-        $"Type {clrType.Name} not found in model");
-
     var properties = clrType
       .GetProperties(BindingFlags.Public | BindingFlags.Instance);
-
     foreach (var property in properties)
     {
-      var propertyType = property.PropertyType;
-
-      if (typeBase is IEntityType entityType)
+      var efType = context.Model.FindEntityType(property.PropertyType);
+      if (efType is { } entityType)
       {
-        var propertyBase = entityType.FindProperty(property.Name);
-        if (propertyBase != null)
+        var columnMappings = GetColumnMappings(efType, efType);
+        var complexPropertyMappings = new List<ComplexPropertyMapping>();
+
+        foreach (var efProperty in entityType.GetComplexProperties())
         {
-          // It's a scalar property
-          var columnName = GetColumnNameForProperty(propertyBase, entityType);
-
-          propertyMappings.Add(new ScalarPropertyMapping
-          {
-            Property = property,
-            ColumnName = columnName
-          });
-
-          continue;
+          var mapping = GetComplexPropertyMapping(efType, efProperty);
+          complexPropertyMappings.Add(mapping);
         }
 
-        // Check if it's a complex property
-        var complexProperty = entityType.FindComplexProperty(property.Name);
-        if (complexProperty != null)
+        var entityPropertyMapping = new EntityPropertyMapping
         {
-          var complexPropertyMapping = GetComplexPropertyMapping(
-            complexProperty,
-            context
-          );
+          EntityType = entityType,
+          ComplexPropertyMappings = complexPropertyMappings,
+          ColumnMappings = columnMappings,
+          Property = property
+        };
 
-          propertyMappings.Add(new ComplexPropertyMapping
-          {
-            Property = complexProperty,
-            ColumnMappings = complexPropertyMapping.ColumnMappings,
-            ComplexPropertyMappings = complexPropertyMapping.ComplexPropertyMappings
-          });
-
-          continue;
-        }
+        propertyMappings.Add(entityPropertyMapping);
       }
-      else if (typeBase is IComplexType complexType)
+      else
       {
-        var propertyBase = complexType.FindProperty(property.Name);
-        if (propertyBase != null)
+        var columnName = property.Name.ToSnakeCase();
+        var scalarPropertyMapping = new ScalarPropertyMapping
         {
-          // It's a scalar property in complex type
-          var columnName = GetColumnNameForProperty(propertyBase, complexType);
-
-          propertyMappings.Add(new ScalarPropertyMapping
-          {
-            Property = property,
-            ColumnName = columnName
-          });
-
-          continue;
-        }
-
-        // Check if it's a nested complex property
-        var nestedComplexProperty = complexType.FindComplexProperty(property.Name);
-        if (nestedComplexProperty != null)
-        {
-          var complexPropertyMapping = GetComplexPropertyMapping(
-            nestedComplexProperty,
-            context
-          );
-
-          propertyMappings.Add(new ComplexPropertyMapping
-          {
-            Property = nestedComplexProperty,
-            ColumnMappings = complexPropertyMapping.ColumnMappings,
-            ComplexPropertyMappings = complexPropertyMapping.ComplexPropertyMappings
-          });
-
-          continue;
-        }
+          Property = property,
+          ColumnName = columnName
+        };
+        propertyMappings.Add(scalarPropertyMapping);
       }
-
-      throw new InvalidOperationException(
-        $"Property {property.Name} not found in type {typeBase.ClrType.Name}");
     }
 
     return propertyMappings;
   }
 
   private static ComplexPropertyMapping GetComplexPropertyMapping(
-    IComplexProperty complexProperty,
-    DbContext context
+    ITypeBase tableType,
+    IComplexProperty complexProperty
   )
   {
-    var columnMappings = new List<ColumnMapping>();
+    var columnMappings = GetColumnMappings(tableType, complexProperty.ComplexType);
     var complexPropertyMappings = new List<ComplexPropertyMapping>();
 
-    var complexType = complexProperty.ComplexType;
-    var properties = complexType.ClrType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
-
-    foreach (var property in properties)
+    foreach (var efProperty in complexProperty.ComplexType.GetComplexProperties())
     {
-      var propertyType = property.PropertyType;
-
-      var propertyBase = complexType.FindProperty(property.Name);
-      if (propertyBase != null)
-      {
-        // It's a scalar property
-        var columnName = GetColumnNameForProperty(propertyBase, complexType);
-
-        columnMappings.Add(new ColumnMapping
-        {
-          PropertyInfo = property,
-          ColumnName = columnName
-        });
-
-        continue;
-      }
-
-      // Check if it's a nested complex property
-      var nestedComplexProperty = complexType.FindComplexProperty(property.Name);
-      if (nestedComplexProperty != null)
-      {
-        var nestedMapping = GetComplexPropertyMapping(nestedComplexProperty, context);
-
-        complexPropertyMappings.Add(nestedMapping);
-
-        continue;
-      }
-
-      throw new InvalidOperationException(
-        $"Property {property.Name} not found in complex type {complexType.ClrType.Name}");
+      var complexPropertyMapping = GetComplexPropertyMapping(tableType, efProperty);
+      complexPropertyMappings.Add(complexPropertyMapping);
     }
 
     return new ComplexPropertyMapping
     {
-      Property = complexProperty,
+      ComplexProperty = complexProperty,
       ColumnMappings = columnMappings,
       ComplexPropertyMappings = complexPropertyMappings
     };
   }
 
   private static List<ColumnMapping> GetColumnMappings(
-    IEntityType entityType
+    ITypeBase tableType,
+    ITypeBase type
   )
   {
     var columnMappings = new List<ColumnMapping>();
-    var properties = entityType.ClrType
-      .GetProperties(BindingFlags.Public | BindingFlags.Instance);
 
-    var storeObjectIdentifier = StoreObjectIdentifier.Create(entityType, StoreObjectType.Table)
-      ?? throw new InvalidOperationException(
-        $"Unable to determine store object identifier for entity type {entityType.ClrType.Name}");
-
-    foreach (var property in properties)
+    foreach (var efProperty in type.GetProperties())
     {
-      var efProperty = entityType.FindProperty(property.Name);
-      if (efProperty != null)
+      var columnName = GetColumnNameForProperty(tableType, efProperty);
+      if (efProperty.PropertyInfo is { } property)
       {
-        var columnName = efProperty.GetColumnName(storeObjectIdentifier)
-          ?? throw new InvalidOperationException(
-            $"Column name not found for property {property.Name} in entity {entityType.ClrType.Name}");
-
-        columnMappings.Add(new ColumnMapping
+        columnMappings.Add(new PropertyColumnMapping
         {
-          PropertyInfo = property,
+          Property = property,
+          ColumnName = columnName
+        });
+
+        continue;
+      }
+      if (efProperty.FieldInfo is { } field)
+      {
+        columnMappings.Add(new FieldColumnMapping
+        {
+          Field = field,
           ColumnName = columnName
         });
       }
@@ -236,11 +155,11 @@ public static class DbContextDapperCommandExtensions
     {
       if (mapping is EntityPropertyMapping entityMapping)
       {
-        var entityColumns = entityMapping.ColumnMappings;
         var entityType = entityMapping.EntityType;
-        var discriminatorProperty = entityMapping.DiscriminatorProperty;
+        var discriminatorProperty = entityType
+          .FindDiscriminatorProperty();
         var discriminatorColumnName = discriminatorProperty != null
-          ? GetColumnNameForProperty(discriminatorProperty, entityType)
+          ? GetColumnNameForProperty(entityType, discriminatorProperty)
           : null;
 
         object? discriminatorValue = null;
@@ -260,44 +179,19 @@ public static class DbContextDapperCommandExtensions
           ?? throw new InvalidOperationException(
             $"Failed to create instance of {concreteType.Name}");
 
-        foreach (var columnMapping in entityColumns)
-        {
-          var value = reader[columnMapping.ColumnName];
-          if (value != DBNull.Value)
-          {
-            columnMapping.PropertyInfo.SetValue(entityInstance, value);
-          }
-        }
+        MapColumns(
+          entityInstance,
+          entityMapping.ColumnMappings,
+          reader
+        );
 
-        // Map complex properties of the entity
-        MapComplexProperties(entityInstance, entityMapping.ComplexPropertyMappings, reader);
+        MapComplexProperties(
+          entityInstance,
+          entityMapping.ComplexPropertyMappings,
+          reader
+        );
 
         mapping.Property.SetValue(instance, entityInstance);
-      }
-      else if (mapping is ComplexPropertyMapping complexMapping)
-      {
-        var complexType = complexMapping.Property.ComplexType.ClrType;
-        var complexInstance = Activator.CreateInstance(complexType)
-          ?? throw new InvalidOperationException(
-            $"Failed to create instance of {complexType.Name}");
-
-        // Map scalar properties
-        foreach (var columnMapping in complexMapping.ColumnMappings)
-        {
-          var value = reader[columnMapping.ColumnName];
-          if (value != DBNull.Value)
-          {
-            columnMapping.PropertyInfo.SetValue(complexInstance, value);
-          }
-        }
-
-        // Map nested complex properties
-        MapComplexProperties(complexInstance, complexMapping.ComplexPropertyMappings, reader);
-
-        if (mapping is PropertyMapping propertyMapping)
-        {
-          propertyMapping.Property.SetValue(instance, complexInstance);
-        }
       }
       else if (mapping is ScalarPropertyMapping scalarMapping)
       {
@@ -318,41 +212,70 @@ public static class DbContextDapperCommandExtensions
   {
     foreach (var complexMapping in complexPropertyMappings)
     {
-      var complexType = complexMapping.Property.ComplexType.ClrType;
+      var complexType = complexMapping.ComplexProperty.ComplexType.ClrType;
       var complexInstance = Activator.CreateInstance(complexType)
         ?? throw new InvalidOperationException(
           $"Failed to create instance of {complexType.Name}");
 
-      // Map scalar properties
-      foreach (var columnMapping in complexMapping.ColumnMappings)
+      MapColumns(complexInstance, complexMapping.ColumnMappings, reader);
+
+      MapComplexProperties(
+        complexInstance,
+        complexMapping.ComplexPropertyMappings,
+        reader
+      );
+
+      if (complexMapping.ComplexProperty.PropertyInfo is { } property)
       {
-        var value = reader[columnMapping.ColumnName];
-        if (value != DBNull.Value)
-        {
-          columnMapping.PropertyInfo.SetValue(complexInstance, value);
-        }
+        property.SetValue(instance, complexInstance);
+      }
+      if (complexMapping.ComplexProperty.FieldInfo is { } field)
+      {
+        field.SetValue(instance, complexInstance);
+      }
+    }
+  }
+
+  private static void MapColumns(
+    object instance,
+    IEnumerable<ColumnMapping> columnMappings,
+    IDataRecord reader
+  )
+  {
+    foreach (var columnMapping in columnMappings)
+    {
+      var value = reader[columnMapping.ColumnName];
+      if (value == DBNull.Value)
+      {
+        continue;
       }
 
-      // Map nested complex properties
-      MapComplexProperties(complexInstance, complexMapping.ComplexPropertyMappings, reader);
-
-      var propertyInfo = complexMapping.Property.PropertyInfo;
-      propertyInfo.SetValue(instance, complexInstance);
+      if (columnMapping is PropertyColumnMapping propertyMapping)
+      {
+        propertyMapping.Property.SetValue(instance, value);
+      }
+      if (columnMapping is FieldColumnMapping fieldMapping)
+      {
+        fieldMapping.Field.SetValue(instance, value);
+      }
     }
   }
 
   private static string GetColumnNameForProperty(
-    IPropertyBase property,
-    ITypeBase typeBase
+    ITypeBase tableType,
+    IProperty property
   )
   {
-    var storeObjectIdentifier = StoreObjectIdentifier.Create(typeBase, StoreObjectType.Table)
+    var storeObjectIdentifier = StoreObjectIdentifier
+      .Create(tableType, StoreObjectType.Table)
       ?? throw new InvalidOperationException(
-        $"Unable to determine store object identifier for type {typeBase.ClrType.Name}");
+        $"Unable to determine store object identifier"
+        + $" for type {tableType.ClrType.Name}");
 
     return property.GetColumnName(storeObjectIdentifier)
       ?? throw new InvalidOperationException(
-        $"Column name not found for property {property.Name} in type {typeBase.ClrType.Name}");
+        $"Column name not found for property"
+        + $" {property.Name} in type {tableType.ClrType.Name}");
   }
 
   private static IEntityType GetConcreteEntityType(
@@ -384,9 +307,14 @@ public static class DbContextDapperCommandExtensions
   private sealed class EntityPropertyMapping : PropertyMapping
   {
     public required IEntityType EntityType { get; init; }
+
     public required List<ColumnMapping> ColumnMappings { get; init; }
-    public required List<ComplexPropertyMapping> ComplexPropertyMappings { get; init; }
-    public IProperty? DiscriminatorProperty { get; init; }
+
+    public required List<ComplexPropertyMapping> ComplexPropertyMappings
+    {
+      get;
+      init;
+    }
   }
 
   private sealed class ScalarPropertyMapping : PropertyMapping
@@ -396,14 +324,29 @@ public static class DbContextDapperCommandExtensions
 
   private sealed class ComplexPropertyMapping
   {
-    public required IComplexProperty Property { get; init; }
+    public required IComplexProperty ComplexProperty { get; init; }
+
     public required List<ColumnMapping> ColumnMappings { get; init; }
-    public required List<ComplexPropertyMapping> ComplexPropertyMappings { get; init; }
+
+    public required List<ComplexPropertyMapping> ComplexPropertyMappings
+    {
+      get;
+      init;
+    }
   }
 
-  private sealed class ColumnMapping
+  private abstract class ColumnMapping
   {
-    public required PropertyInfo PropertyInfo { get; init; }
     public required string ColumnName { get; init; }
+  }
+
+  private sealed class PropertyColumnMapping : ColumnMapping
+  {
+    public required PropertyInfo Property { get; init; }
+  }
+
+  private sealed class FieldColumnMapping : ColumnMapping
+  {
+    public required FieldInfo Field { get; init; }
   }
 }
