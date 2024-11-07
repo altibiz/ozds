@@ -5,11 +5,11 @@
 @inherits OzdsOwningComponentBase
 
   @*  !!! TODO:
-      Fix sum bar display
-      UPDATING NOT WORKING
+      Phase Dounut display
       Enable Energy display with kWh
-      Translate
       Add zoom and preview for connective power annotation
+      UPDATING NOT WORKING
+      Translate
    *@
 
 <Loading T="PaginatedList<MeterModel>" LoadAsync="@(() => ScopedServices.GetRequiredService<OzdsNetworkUserMeasurementLocationModelQueries>().GetMeters(""))">
@@ -68,11 +68,12 @@
     <MudPaper Class="pa-3 ma-3">
       <NewMeterGraph
         Meters="@meters"
+        DisplayType="@SeriesType.Area"
         Resolution="@ResolutionModel.Day"
-        Measure="@MeasureModel.ActivePower"
-        Multiplier="10"
+        Measure="@MeasureModel.ActiveEnergy"
+        Multiplier="3"
         ShortDate
-        Sum
+        PhasesSum
         />
     </MudPaper>
   </MudContainer>
@@ -83,10 +84,11 @@
       <NewMeterGraph
         Meters="@meters"
         Resolution="@ResolutionModel.Day"
-        Measure="@MeasureModel.ActivePower"
-        Multiplier="1"
+        Measure="@MeasureModel.ActiveEnergy"
+        Multiplier="3"
         LongDate
         SumBars
+        PhasesSum
         />
     </MudPaper>
   </MudContainer>

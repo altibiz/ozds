@@ -46,6 +46,17 @@ public static class ChartMeasureExtensions
       PhaseModel.L3 => byPhase.PhaseSplit().ValueL3,
       _ => byPhase.PhaseSum()
     };
+    if (result == 0)
+    {
+      var byPhaseImport = byDuplex.DuplexImport();
+      result = phase switch
+      {
+        PhaseModel.L1 => byPhaseImport.PhaseSplit().ValueL1,
+        PhaseModel.L2 => byPhaseImport.PhaseSplit().ValueL2,
+        PhaseModel.L3 => byPhaseImport.PhaseSplit().ValueL3,
+        _ => byPhaseImport.PhaseSum()
+      };
+    }
 
     return result;
   }

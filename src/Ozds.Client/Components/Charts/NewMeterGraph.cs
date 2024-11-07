@@ -34,10 +34,10 @@ public partial class NewMeterGraph : OzdsOwningComponentBase
   public ResolutionModel Resolution { get; set; } = ResolutionModel.Minute;
 
   [Parameter]
-  public int Multiplier { get; set; } = 5;
+  public SeriesType DisplayType { get; set; } = SeriesType.Line;
 
   [Parameter]
-  public bool Sum { get; set; } = false;
+  public int Multiplier { get; set; } = 5;
 
   [Parameter]
   public bool SumBars { get; set; } = false;
@@ -69,6 +69,9 @@ public partial class NewMeterGraph : OzdsOwningComponentBase
   [Parameter]
   public bool Refresh { get; set; } = true;
 
+  [Parameter]
+  public bool PhasesSum { get; set; } = false;
+
   [CascadingParameter]
   public Breakpoint Breakpoint { get; set; } = default!;
 
@@ -91,15 +94,9 @@ public partial class NewMeterGraph : OzdsOwningComponentBase
   public class MeasurementData
   {
     public IMeasurement Measurements { get; set; }
-    public MeasureSum MeasureSums { get; set; }
     public PhasicMeasure PhasicMeasures { get; set; }
   }
 
-  public class MeasureSum
-  {
-    public DateTimeOffset Timestamp { get; set; }
-    public decimal Value { get; set; }
-  }
   public class PhasicMeasure
   {
     public (PhaseModel phase, decimal value) L1 { get; set; }
@@ -107,7 +104,6 @@ public partial class NewMeterGraph : OzdsOwningComponentBase
     public (PhaseModel phase, decimal value) L3 { get; set; }
     public DateTimeOffset Timestamp { get; set; }
   }
-  private List<MeasureSum> _cumulativeSumsByMeasurement = new List<MeasureSum>();
   private List<PhasicMeasure> _phasicMeasurement = new List<PhasicMeasure>();
 
   private List<MeasurementData> _measurementData = new();
@@ -152,20 +148,16 @@ public partial class NewMeterGraph : OzdsOwningComponentBase
       fromDate: Timestamp
     );
 
-    ComputeCumulativeSums();
     GetPhasicActivePower();
 
     var orderedMeasurements = _measurements.Items.OrderBy(m => m.Timestamp).ToList();
-    var orderedMeasureSums = _cumulativeSumsByMeasurement.OrderBy(ms => ms.Timestamp).ToList();
     var orderedPhasicMeasures = _phasicMeasurement.OrderBy(ms => ms.Timestamp).ToList();
 
     _measurementData = orderedMeasurements
-    .Zip(orderedMeasureSums, (measurement, measureSum) => new { measurement, measureSum })
-    .Zip(orderedPhasicMeasures, (prev, phasicMeasure) => new MeasurementData
+    .Zip(orderedPhasicMeasures, (measurement, measureSum) => new MeasurementData
     {
-      Measurements = prev.measurement,
-      MeasureSums = prev.measureSum,
-      PhasicMeasures = phasicMeasure
+      Measurements = measurement,
+      PhasicMeasures = measureSum
     })
     .ToList();
 
@@ -209,20 +201,16 @@ public partial class NewMeterGraph : OzdsOwningComponentBase
           _measurements.TotalCount + newMeasurements.Count
         );
 
-        ComputeCumulativeSums();
         GetPhasicActivePower();
 
         var orderedMeasurements = _measurements.Items.OrderBy(m => m.Timestamp).ToList();
-        var orderedMeasureSums = _cumulativeSumsByMeasurement.OrderBy(ms => ms.Timestamp).ToList();
         var orderedPhasicMeasures = _phasicMeasurement.OrderBy(ms => ms.Timestamp).ToList();
 
         _measurementData = orderedMeasurements
-        .Zip(orderedMeasureSums, (measurement, measureSum) => new { measurement, measureSum })
-        .Zip(orderedPhasicMeasures, (prev, phasicMeasure) => new MeasurementData
+        .Zip(orderedPhasicMeasures, (measurement, measureSum) => new MeasurementData
         {
-          Measurements = prev.measurement,
-          MeasureSums = prev.measureSum,
-          PhasicMeasures = phasicMeasure
+          Measurements = measurement,
+          PhasicMeasures = measureSum
         })
         .ToList();
 
@@ -296,28 +284,12 @@ public partial class NewMeterGraph : OzdsOwningComponentBase
     {
       options = options.WithLongDate();
     }
-    if (SumBars || Sum)
+    if (SumBars)
     {
       options = options.ForBarSum();
     }
 
     return options;
-  }
-
-  private void ComputeCumulativeSums()
-  {
-    _cumulativeSumsByMeasurement = new List<MeasureSum>();
-    decimal cumulativeSum = 0;
-
-    var sortedItems = _measurements.Items
-        .OrderBy(x => DateTimeApplyOffset(x.Timestamp));
-
-    foreach (var item in sortedItems)
-    {
-      cumulativeSum += item.ChartValue(Measure, null);
-      _cumulativeSumsByMeasurement.Add(
-        new MeasureSum() { Timestamp = item.Timestamp, Value = cumulativeSum });
-    }
   }
 
   private void GetPhasicActivePower()

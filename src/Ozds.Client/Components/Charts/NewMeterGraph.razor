@@ -33,46 +33,43 @@
           XValue="@(x => x.Measurements.MeterId)"
           YAggregate="@(x => x.Sum(m => m.Measurements.ChartValue(Measure, null)))"/>
     }
-    else if(SumBars)
-    {
-      <ApexPointSeries
-        Items="@_measurementData"
-        Name="@Measure.ToTitle()"
-        SeriesType="SeriesType.Bar"
-        XValue="x => DateTimeApplyOffset(x.Measurements.Timestamp)"
-      YAggregate="x => x.Sum(m => m.Measurements.ChartValue(Measure, null))" />
-      <ApexPointSeries
-        Items="@_measurementData"
-        Name="@Measure.ToTitle()"
-        SeriesType="SeriesType.Line"
-        XValue='x => DateTimeApplyOffset(x.MeasureSums.Timestamp)'
-        YValue="x => x.MeasureSums.Value"  />
-    }
-    else if (Sum)
-    {
-      <ApexPointSeries
-        Items="@_measurementData"
-        Name="@Measure.ToTitle()"
-        SeriesType="SeriesType.Area"
-        XValue='x => DateTimeApplyOffset(x.MeasureSums.Timestamp)'
-        YValue="x => x.MeasureSums.Value"  />
-    }
     else
     {
       foreach (var (selectedMeter, i) in _selectedMeters
         .OrderBy(x => x.Id)
         .Select((x, i) => (x, i)))
       {
-        foreach (var phase in Phases.OrderBy(x => x))
+        if(SumBars)
         {
           <ApexPointSeries
             Items="@(_measurementData.Where(x => x.Measurements.MeterId == selectedMeter.Id).ToList())"
-            Name="@($"{selectedMeter.Id} {phase.ToTitle()}")"
-            SeriesType="SeriesType.Line"
+            Name="@(selectedMeter.Id + " " + "Power")"
+            SeriesType="SeriesType.Bar"
+            XValue="x => DateTimeApplyOffset(x.Measurements.Timestamp)"
+          YAggregate="x => x.Sum(m => m.Measurements.ChartValue(MeasureModel.ActivePower, null))" />
+          <ApexPointSeries
+            Items="@(_measurementData.Where(x => x.Measurements.MeterId == selectedMeter.Id).ToList())"
+            Name="@(selectedMeter.Id + " " + "Energy")"
+            SeriesType="DisplayType"
             XValue='x => DateTimeApplyOffset(x.Measurements.Timestamp)'
-            YValue="x => x.Measurements.ChartValue(Measure, phase)"
-            Stroke="@(new SeriesStroke { Color = phase.ToColor(i), Width = 4 })"
-            Color="@(phase.ToColor(i))"/>
+            YValue="x => x.Measurements.ChartValue(MeasureModel.ActiveEnergy, null)" />
+        }
+        else{
+          foreach (var phase in Phases.OrderBy(x => x))
+          {
+            <ApexPointSeries
+              Items="@(_measurementData.Where(x => x.Measurements.MeterId == selectedMeter.Id).ToList())"
+              Name="@(selectedMeter.Id + " " + (PhasesSum ? "Sum" : phase.ToTitle()))"
+              SeriesType="DisplayType"
+              XValue='x => DateTimeApplyOffset(x.Measurements.Timestamp)'
+              YValue="x => x.Measurements.ChartValue(Measure, PhasesSum ? null : phase)"
+              Stroke="@(new SeriesStroke { Color = phase.ToColor(i), Width = 4 })"
+              Color="@(phase.ToColor(i))"/>
+            if(PhasesSum)
+            {
+              break;
+            }
+          }
         }
       }
     }
@@ -98,7 +95,7 @@
       <ApexPointSeries
         Items="@(_measurementData)"
         Name="@(phase.ToTitle())"
-        SeriesType="SeriesType.Line"
+        SeriesType="DisplayType"
         XValue='x => DateTimeApplyOffset(x.Measurements.Timestamp)'
         YValue="x => x.Measurements.ChartValue(Measure, phase)"
         Stroke="@(new SeriesStroke { Color = phase.ToColor(), Width = 4 })"
