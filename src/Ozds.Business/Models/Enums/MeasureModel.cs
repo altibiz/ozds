@@ -58,6 +58,10 @@ public static class ChartMeasureExtensions
       };
     }
 
+    if (measure == MeasureModel.ActivePower || measure == MeasureModel.ActiveEnergy)
+    {
+      return result / 1000;
+    }
     return result;
   }
 
@@ -83,10 +87,10 @@ public static class ChartMeasureExtensions
     {
       MeasureModel.Current => "A",
       MeasureModel.Voltage => "V",
-      MeasureModel.ActivePower => "W",
+      MeasureModel.ActivePower => "kW",
       MeasureModel.ReactivePower => "VAR",
       MeasureModel.ApparentPower => "VA",
-      MeasureModel.ActiveEnergy => "Wh",
+      MeasureModel.ActiveEnergy => "kWh",
       MeasureModel.ReactiveEnergy => "VARh",
       MeasureModel.ApparentEnergy => "VAh",
       _ => throw new ArgumentOutOfRangeException(nameof(measure), measure, null)

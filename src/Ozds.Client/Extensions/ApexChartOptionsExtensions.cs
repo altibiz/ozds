@@ -170,8 +170,11 @@ public static class ApexChartOptionsExtensions
   )
     where T : class
   {
+    options.Yaxis[0].Title = new AxisTitle { Text = "kW" };
     options.Yaxis.Add(new YAxis
     {
+      Title = new AxisTitle { Text = "kWh" },
+      SeriesName = "Active Power",
       DecimalsInFloat = 0,
       Opposite = true
     });
