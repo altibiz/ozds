@@ -5,8 +5,8 @@
 @inherits OzdsOwningComponentBase
 
   @*  !!! TODO:
-      Phase Dounut display
       Enable Energy display with kWh
+
       Add zoom and preview for connective power annotation
       UPDATING NOT WORKING
       Translate
@@ -109,63 +109,6 @@
     </MudPaper>
   </MudContainer>
 
-  @* <MudText Typo="Typo.h2"> Veliki broj grafova istovremeno !NOVO!  </MudText>
-  <MudContainer MaxWidth="MaxWidth.Large" Class="my-3">
-    <MudGrid>
-      <MudItem xs="4">
-        <MudPaper Class="pa-3">
-          <NewMeterGraph
-            Meters="@meters.Where(x => x.Id.StartsWith("schneider")).ToList()"
-            Resolution="@ResolutionModel.Month"
-            Measure="@MeasureModel.ActivePower"
-            Multiplier="1"
-            LongDate
-            DonutSumPhases
-            Static
-            />
-        </MudPaper>
-      </MudItem>
-      <MudItem xs="4">
-        <MudPaper Class="pa-3">
-          <NewMeterGraph
-            Meters="@meters.Where(x => x.Id.StartsWith("abb-B2x-1624226")).ToList()"
-            Resolution="@ResolutionModel.Month"
-            Measure="@MeasureModel.ActivePower"
-            Multiplier="1"
-            LongDate
-            DonutSumPhases
-            Static
-            />
-        </MudPaper>
-      </MudItem>
-      <MudItem xs="4">
-          <MudPaper Class="pa-3">
-            <NewMeterGraph
-              Meters="@meters.Where(x => x.Id.StartsWith("schneider")).ToList()"
-              Resolution="@ResolutionModel.Month"
-              Measure="@MeasureModel.ActivePower"
-              Multiplier="1"
-              LongDate
-              DonutSumPhases
-              Static
-              />
-          </MudPaper>
-      </MudItem>
-      <MudItem xs="4">
-          <MudPaper Class="pa-3">
-            <NewMeterGraph
-              Meters="@meters.Where(x => x.Id.StartsWith("abb-B2x-1624226")).ToList()"
-              Resolution="@ResolutionModel.Month"
-              Measure="@MeasureModel.ActivePower"
-              Multiplier="1"
-              LongDate
-              DonutSumPhases
-              Static
-              />
-          </MudPaper>
-      </MudItem>
-    </MudGrid>
-  </MudContainer> *@
 
   </Found>
 </Loading>

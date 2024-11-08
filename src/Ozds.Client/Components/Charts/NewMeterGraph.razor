@@ -77,30 +77,20 @@
   else
   {
     if(DonutSumPhases){
+      @* TODO: Added Donut graph per phase for sum*@
+    }
+    else{
       foreach (var phase in Phases.OrderBy(x => x))
       {
         <ApexPointSeries
-          Items="_measurementData"
-          SeriesType="SeriesType.Donut"
-          Name="@Measure.ToTitle()"
-          XValue="x => x.PhasicMeasures.Timestamp"
-          YAggregate="x => x.SelectMany(m => new [] { m.PhasicMeasures.L1, m.PhasicMeasures.L2, m.PhasicMeasures.L3 })
-                            .Where(pv => pv.phase == phase)
-                            .Sum(pv => pv.value)"/>
+          Items="@(_measurementData)"
+          Name="@(phase.ToTitle())"
+          SeriesType="DisplayType"
+          XValue='x => DateTimeApplyOffset(x.Measurements.Timestamp)'
+          YValue="x => x.Measurements.ChartValue(Measure, phase)"
+          Stroke="@(new SeriesStroke { Color = phase.ToColor(), Width = 4 })"
+          Color="@(phase.ToColor())"/>
       }
-    }
-    else{
-    foreach (var phase in Phases.OrderBy(x => x))
-    {
-      <ApexPointSeries
-        Items="@(_measurementData)"
-        Name="@(phase.ToTitle())"
-        SeriesType="DisplayType"
-        XValue='x => DateTimeApplyOffset(x.Measurements.Timestamp)'
-        YValue="x => x.Measurements.ChartValue(Measure, phase)"
-        Stroke="@(new SeriesStroke { Color = phase.ToColor(), Width = 4 })"
-        Color="@(phase.ToColor())"/>
-    }
     }
   }
 </ApexChart>

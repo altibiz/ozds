@@ -94,17 +94,7 @@ public partial class NewMeterGraph : OzdsOwningComponentBase
   public class MeasurementData
   {
     public IMeasurement Measurements { get; set; }
-    public PhasicMeasure PhasicMeasures { get; set; }
   }
-
-  public class PhasicMeasure
-  {
-    public (PhaseModel phase, decimal value) L1 { get; set; }
-    public (PhaseModel phase, decimal value) L2 { get; set; }
-    public (PhaseModel phase, decimal value) L3 { get; set; }
-    public DateTimeOffset Timestamp { get; set; }
-  }
-  private List<PhasicMeasure> _phasicMeasurement = new List<PhasicMeasure>();
 
   private List<MeasurementData> _measurementData = new();
 
@@ -148,18 +138,11 @@ public partial class NewMeterGraph : OzdsOwningComponentBase
       fromDate: Timestamp
     );
 
-    GetPhasicActivePower();
-
-    var orderedMeasurements = _measurements.Items.OrderBy(m => m.Timestamp).ToList();
-    var orderedPhasicMeasures = _phasicMeasurement.OrderBy(ms => ms.Timestamp).ToList();
-
-    _measurementData = orderedMeasurements
-    .Zip(orderedPhasicMeasures, (measurement, measureSum) => new MeasurementData
+    _measurementData.Clear();
+    foreach (var measurement in _measurements.Items)
     {
-      Measurements = measurement,
-      PhasicMeasures = measureSum
-    })
-    .ToList();
+      _measurementData.Add(new MeasurementData { Measurements = measurement });
+    }
 
     _options = CreateGraphOptions();
 
@@ -201,18 +184,11 @@ public partial class NewMeterGraph : OzdsOwningComponentBase
           _measurements.TotalCount + newMeasurements.Count
         );
 
-        GetPhasicActivePower();
-
-        var orderedMeasurements = _measurements.Items.OrderBy(m => m.Timestamp).ToList();
-        var orderedPhasicMeasures = _phasicMeasurement.OrderBy(ms => ms.Timestamp).ToList();
-
-        _measurementData = orderedMeasurements
-        .Zip(orderedPhasicMeasures, (measurement, measureSum) => new MeasurementData
+        _measurementData.Clear();
+        foreach (var measurement in _measurements.Items)
         {
-          Measurements = measurement,
-          PhasicMeasures = measureSum
-        })
-        .ToList();
+          _measurementData.Add(new MeasurementData { Measurements = measurement });
+        }
 
         if (_chart is { } chart)
         {
@@ -290,25 +266,5 @@ public partial class NewMeterGraph : OzdsOwningComponentBase
     }
 
     return options;
-  }
-
-  private void GetPhasicActivePower()
-  {
-    _phasicMeasurement = new List<PhasicMeasure>();
-
-    var sortedItems = _measurements.Items
-        .OrderBy(x => DateTimeApplyOffset(x.Timestamp));
-
-    foreach (var item in sortedItems)
-    {
-      _phasicMeasurement.Add(
-        new PhasicMeasure()
-        {
-          L1 = (PhaseModel.L1, item.ChartValue(Measure, PhaseModel.L1)),
-          L2 = (PhaseModel.L2, item.ChartValue(Measure, PhaseModel.L2)),
-          L3 = (PhaseModel.L3, item.ChartValue(Measure, PhaseModel.L3)),
-          Timestamp = item.Timestamp
-        });
-    }
   }
 }
