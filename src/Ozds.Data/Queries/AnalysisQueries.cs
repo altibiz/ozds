@@ -240,9 +240,9 @@ public class AnalysisQueries(
           NetworkUserMeasurementLocationEntity>()}
         AS measurement_location_id,
       {context.GetTableName<RepresentativeEntity>()}.*,
-      {context.GetTableName<NetworkUserMeasurementLocationEntity>()}.*,
-      {context.GetTableName<NetworkUserEntity>()}.*,
       {context.GetTableName<LocationEntity>()}.*,
+      {context.GetTableName<NetworkUserEntity>()}.*,
+      {context.GetTableName<NetworkUserMeasurementLocationEntity>()}.*,
       {context.GetTableName<MeterEntity>()}.*
     FROM
       {context.GetTableName<NetworkUserRepresentativeEntity>()}
@@ -292,9 +292,9 @@ public class AnalysisQueries(
           NetworkUserMeasurementLocationEntity>()}
         AS measurement_location_id,
       {context.GetTableName<RepresentativeEntity>()}.*,
-      {context.GetTableName<NetworkUserMeasurementLocationEntity>()}.*,
-      {context.GetTableName<NetworkUserEntity>()}.*,
       {context.GetTableName<LocationEntity>()}.*,
+      {context.GetTableName<NetworkUserEntity>()}.*,
+      {context.GetTableName<NetworkUserMeasurementLocationEntity>()}.*,
       {context.GetTableName<MeterEntity>()}.*
     FROM
       {context.GetTableName<LocationRepresentativeEntity>()}
@@ -348,9 +348,9 @@ public class AnalysisQueries(
           NetworkUserMeasurementLocationEntity>()}
         AS measurement_location_id,
       {context.GetTableName<RepresentativeEntity>()}.*,
-      {context.GetTableName<NetworkUserMeasurementLocationEntity>()}.*,
-      {context.GetTableName<NetworkUserEntity>()}.*,
       {context.GetTableName<LocationEntity>()}.*,
+      {context.GetTableName<NetworkUserEntity>()}.*,
+      {context.GetTableName<NetworkUserMeasurementLocationEntity>()}.*,
       {context.GetTableName<MeterEntity>()}.*
     FROM
       {context.GetTableName<NetworkUserMeasurementLocationEntity>()}

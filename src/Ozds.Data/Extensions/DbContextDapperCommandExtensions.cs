@@ -318,50 +318,53 @@ public static class DbContextDapperCommandExtensions
   )
   {
     var results = new List<ReaderSplit>();
-    var nextSplit = 0;
-    foreach (var (propertyMapping, nextPropertyMapping) in propertyMappings
-      .Zip(propertyMappings.Skip(1).Append(null)))
+
+    var splitColumns = new Queue<string>(propertyMappings
+      .Select(mapping =>
+      {
+        var splitColumn = mapping switch
+        {
+          EntityPropertyMapping entityMapping => entityMapping
+            .EntityType.FindPrimaryKey()
+              ?.Properties[0]
+              ?.GetColumnName()
+              ?? throw new InvalidOperationException(
+                $"Primary key not found for entity"
+                + entityMapping.EntityType.ClrType.Name),
+          ScalarPropertyMapping scalarMapping => scalarMapping.Property.Name,
+          _ => throw new InvalidOperationException(
+            $"Unknown property mapping type: {mapping.GetType().Name}")
+        };
+        return splitColumn;
+      }));
+
+    var splits = Enumerable.Range(0, reader.FieldCount)
+      .Aggregate(new List<int>(), (splits, i) =>
+      {
+        if (splitColumns.TryPeek(out var splitColumn)
+          && reader.GetName(i) == splitColumn)
+        {
+          splits.Add(i);
+          splitColumns.Dequeue();
+        }
+
+        return splits;
+      });
+
+    if (splitColumns.Count > 0)
     {
-      var currentSplit = nextSplit;
+      throw new InvalidOperationException(
+        $"Unable to find split column for {splitColumns.Peek()}");
+    }
 
-      if (nextPropertyMapping is EntityPropertyMapping nextEntityMapping)
-      {
-        var primaryKeyColumnName = nextEntityMapping.EntityType.FindPrimaryKey()
-          ?.Properties[0]
-          ?.GetColumnName()
-          ?? throw new InvalidOperationException(
-            $"Primary key not found for entity"
-            + nextEntityMapping.EntityType.ClrType.Name);
-        for (var i = currentSplit; i < reader.FieldCount; i++)
-        {
-          if (reader.GetName(i) == primaryKeyColumnName)
-          {
-            nextSplit = i + 1;
-            break;
-          }
-        }
-      }
-      else if (nextPropertyMapping is ScalarPropertyMapping nextScalarMapping)
-      {
-        var columnName = nextScalarMapping.ColumnName;
-        for (var i = currentSplit; i < reader.FieldCount; i++)
-        {
-          if (reader.GetName(i) == columnName)
-          {
-            nextSplit = i + 1;
-            break;
-          }
-        }
-      }
-      else
-      {
-        nextSplit = reader.FieldCount;
-      }
-
-      if (propertyMapping is EntityPropertyMapping entityMapping)
+    foreach (var ((mapping, splitStart), splitEnd) in propertyMappings
+      .Zip(splits)
+      .Zip(splits.Skip(1).Append(reader.FieldCount)))
+    {
+      if (mapping is EntityPropertyMapping entityMapping)
       {
         var values = new Dictionary<string, object>();
-        for (var i = currentSplit; i < nextSplit; i++)
+        for (var i = splitStart; i < splitEnd; i++)
         {
           var value = reader[i];
           values.Add(reader.GetName(i), value);
@@ -373,10 +376,10 @@ public static class DbContextDapperCommandExtensions
           Values = values
         });
       }
-      if (propertyMapping is ScalarPropertyMapping scalarMapping)
+      if (mapping is ScalarPropertyMapping scalarMapping)
       {
-        var value = reader[currentSplit];
-        var columnName = reader.GetName(currentSplit);
+        var value = reader[splitStart];
+        var columnName = reader.GetName(splitStart);
         results.Add(new ScalarReaderSplit
         {
           ScalarMapping = scalarMapping,
@@ -388,9 +391,9 @@ public static class DbContextDapperCommandExtensions
     return results;
   }
 
-  private static object ConvertValue(object value, Type type)
+  private static object? ConvertValue(object value, Type type)
   {
-    if (type == typeof(DateTimeOffset))
+    if (type == typeof(DateTimeOffset) || type == typeof(DateTimeOffset?))
     {
       return new DateTimeOffset(
         DateTime.SpecifyKind((DateTime)value, DateTimeKind.Utc));

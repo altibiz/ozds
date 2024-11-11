@@ -5,7 +5,8 @@ using Ozds.Data.Extensions;
 namespace Ozds.Data.Test.Context;
 
 public sealed class DataDbContextManager(
-  IDbContextFactory<DataDbContext> factory
+  IDbContextFactory<DataDbContext> factory,
+  ILogger<DataDbContextManager> logger
 ) : IAsyncDisposable
 {
   private readonly SemaphoreSlim _semaphore = new(1, 1);
@@ -26,31 +27,61 @@ public sealed class DataDbContextManager(
         "The context manager has been disposed.");
     }
 
-    try
+    if (context is not null)
     {
-      if (context is not null)
-      {
-        return context;
-      }
-
-      context = await factory.CreateDbContextAsync(cancellationToken);
-      await context.Database.BeginTransactionAsync(cancellationToken);
-
-      foreach (var entity in context.Model.GetEntityTypes())
-      {
-#pragma warning disable EF1002 // Risk of vulnerability to SQL injection.
-        await context.Database.ExecuteSqlRawAsync(
-          $"DELETE FROM {entity.GetTableName()} WHERE TRUE;",
-          cancellationToken);
-#pragma warning restore EF1002 // Risk of vulnerability to SQL injection.
-      }
-
       return context;
     }
-    finally
+
+    while (true)
+    {
+      try
+      {
+        context = await factory.CreateDbContextAsync(cancellationToken);
+        await context.Database.BeginTransactionAsync(cancellationToken);
+        break;
+      }
+      catch (Exception exception)
+      {
+        logger.LogError(exception, "Failed to get context");
+      }
+    }
+
+    foreach (var entity in context.Model.GetEntityTypes())
+    {
+      while (true)
+      {
+        try
+        {
+#pragma warning disable EF1002 // Risk of vulnerability to SQL injection.
+          await context.Database.ExecuteSqlRawAsync(
+            $"DELETE FROM {entity.GetTableName()} WHERE TRUE;",
+            cancellationToken);
+#pragma warning restore EF1002 // Risk of vulnerability to SQL injection.
+
+          break;
+        }
+        catch (Exception exception)
+        {
+          logger.LogError(
+            exception,
+            "Failed to delete entities of type {}",
+            entity.ClrType
+          );
+        }
+      }
+    }
+
+    try
     {
       _semaphore.Release();
     }
+    catch (ObjectDisposedException)
+    {
+      throw new ObjectDisposedException(
+        "The context manager has been disposed.");
+    }
+
+    return context;
   }
 
   public async ValueTask DisposeAsync()
