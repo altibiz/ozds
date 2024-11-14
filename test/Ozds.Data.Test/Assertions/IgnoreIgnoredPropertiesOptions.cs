@@ -17,16 +17,10 @@ public class IgnoreIgnoredPropertiesOptions(
     where TSelf : SelfReferenceEquivalencyAssertionOptions<TSelf>
   =>
     options.Excluding(member =>
-      ignoredProperties.Value.Contains(
-        member.DeclaringType
-          .GetMember(member.Name)
-          .OfType<PropertyInfo>()
-          .FirstOrDefault()!) ||
-      ignoredProperties.Value.Contains(
-        member.DeclaringType
-          .GetMember(member.Name)
-          .OfType<FieldInfo>()
-          .FirstOrDefault()!));
+      member.DeclaringType
+        .GetMember(member.Name)
+        .Any(member => ignoredProperties.Value
+          .Contains(member)));
 
   private readonly Lazy<HashSet<MemberInfo>> ignoredProperties =
     new(dbContext.GetIgnoredProperties);

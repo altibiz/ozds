@@ -1,9 +1,6 @@
 using System.Reflection;
-using FluentAssertions.Primitives;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Ozds.Data.Test.Assertions;
-using Ozds.Data.Test.Specimens;
 
 namespace Ozds.Data.Test.Extensions;
 

@@ -17,16 +17,10 @@ public class IgnoreKeysOptions(
     where TSelf : SelfReferenceEquivalencyAssertionOptions<TSelf>
   =>
     options.Excluding(member =>
-      keys.Value.Contains(
-        member.DeclaringType
-          .GetMember(member.Name)
-          .OfType<PropertyInfo>()
-          .FirstOrDefault()!) ||
-      keys.Value.Contains(
-        member.DeclaringType
-          .GetMember(member.Name)
-          .OfType<FieldInfo>()
-          .FirstOrDefault()!));
+      member.DeclaringType
+        .GetMember(member.Name)
+        .Any(member => keys.Value
+          .Contains(member)));
 
   private readonly Lazy<HashSet<MemberInfo>> keys =
     new(dbContext.GetKeys);

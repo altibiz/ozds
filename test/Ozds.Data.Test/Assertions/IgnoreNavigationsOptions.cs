@@ -17,16 +17,10 @@ public class IgnoreNavigationsOptions(
     where TSelf : SelfReferenceEquivalencyAssertionOptions<TSelf>
   =>
     options.Excluding(member =>
-      navigations.Value.Contains(
-        member.DeclaringType
-          .GetMember(member.Name)
-          .OfType<PropertyInfo>()
-          .FirstOrDefault()!) ||
-      navigations.Value.Contains(
-        member.DeclaringType
-          .GetMember(member.Name)
-          .OfType<FieldInfo>()
-          .FirstOrDefault()!));
+      member.DeclaringType
+        .GetMember(member.Name)
+        .Any(member => navigations.Value
+          .Contains(member)));
 
   private readonly Lazy<HashSet<MemberInfo>> navigations =
     new(dbContext.GetNavigations);
