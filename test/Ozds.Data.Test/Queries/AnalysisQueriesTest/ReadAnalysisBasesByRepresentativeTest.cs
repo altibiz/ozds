@@ -43,8 +43,22 @@ public class ReadAnalysisBasesByRepresentativeTest(IServiceProvider services)
           CancellationToken.None
         );
 
-        expected = expected.OrderBy(x => x.MeasurementLocation.Id).ToList();
-        actual = actual.OrderBy(x => x.MeasurementLocation.Id).ToList();
+        expected = expected
+          .Select(x => x with
+          {
+            Calculations = x.Calculations.OrderBy(y => y.Id).ToList(),
+            Invoices = x.Invoices.OrderBy(y => y.Id).ToList()
+          })
+          .OrderBy(x => x.MeasurementLocation.Id)
+          .ToList();
+        actual = actual
+          .Select(x => x with
+          {
+            Calculations = x.Calculations.OrderBy(y => y.Id).ToList(),
+            Invoices = x.Invoices.OrderBy(y => y.Id).ToList()
+          })
+          .OrderBy(x => x.MeasurementLocation.Id)
+          .ToList();
 
         return new TestResult<List<AnalysisBasisEntity>>(expected, actual);
       })
@@ -58,13 +72,43 @@ public class ReadAnalysisBasesByRepresentativeTest(IServiceProvider services)
     {
       result.Actual.Should().HaveCount(result.Actual.Count);
 
-      result.Actual.Zip(result.Expected).Should().AllSatisfy(x =>
+      result.Actual.Should().AllSatisfy(actual =>
       {
-        var (actual, expected) = x;
+        var expected = result.Expected.FirstOrDefault(expected =>
+          expected.MeasurementLocation.Id == actual.MeasurementLocation.Id)!;
+
+        expected.Should().NotBeNull();
 
         actual.Representative
           .Should()
           .BeContextuallyEquivalentTo(context, expected.Representative);
+
+        actual.FromDate.Should().BeExactly(expected.FromDate);
+        actual.ToDate.Should().BeExactly(expected.ToDate);
+
+        actual.Location
+          .Should()
+          .BeContextuallyEquivalentTo(context, expected.Location);
+
+        actual.NetworkUser
+          .Should()
+          .BeContextuallyEquivalentTo(context, expected.NetworkUser);
+
+        actual.MeasurementLocation
+          .Should()
+          .BeContextuallyEquivalentTo(context, expected.MeasurementLocation);
+
+        actual.Meter
+          .Should()
+          .BeContextuallyEquivalentTo(context, expected.Meter);
+
+        actual.Calculations
+          .Should()
+          .BeContextuallyEquivalentTo(context, expected.Calculations);
+
+        actual.Invoices
+          .Should()
+          .BeContextuallyEquivalentTo(context, expected.Invoices);
       });
     });
   }

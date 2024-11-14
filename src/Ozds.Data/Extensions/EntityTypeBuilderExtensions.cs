@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace Ozds.Data.Extensions;
 
 // TODO: better way to find nested archivable properties
+// TODO: ignore navigations by actually getting navigations
 
 public static class EntityTypeBuilderExtensions
 {

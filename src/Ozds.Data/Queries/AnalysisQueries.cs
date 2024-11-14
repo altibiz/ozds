@@ -660,6 +660,7 @@ public class AnalysisQueries(
           var calculations = x
             .Select(x => x.NetworkUserCalculation)
             .OfType<CalculationEntity>()
+            .DistinctBy(x => x.Id)
             .ToList();
 
           var invoices = x
