@@ -44,27 +44,39 @@
     <MudSnackbarProvider/>
 
     <MudBreakpointProvider>
-              <main>
-                <MudLayout Class="d-flex flex-column">
-                  <UserToolbar />
-                  @if (false)
-                  {
-                    <RepresentativeToolbar />
-                  }
-                  <LocalizationDrawer />
-                  <UserDrawer />
-                  @if (false)
-                  {
-                    <NavigationDrawer />
-                  }
-                  @Body
-                </MudLayout>
-              </main>
-              <footer>
-                <MudContainer
-                  MaxWidth="MaxWidth.Large"
-                  Style="height: 100%; padding-top: 12px;">
-                  <Footer />
-                </MudContainer>
-              </footer>
+      <Loading
+        T="(UserState? UserState, RepresentativeState? RepresentativeState)"
+        LoadAsync="@(LoadAsync)">
+        <Found>
+          <CascadingValue Value="LayoutState">
+            <CascadingValue Value="@(context.UserState)">
+              <CascadingValue Value="@(context.RepresentativeState)">
+                <main>
+                  <MudLayout Class="d-flex flex-column">
+                    <UserToolbar />
+                    @if (context.RepresentativeState?.Representative is { })
+                    {
+                      <RepresentativeToolbar />
+                    }
+                    <LocalizationDrawer />
+                    <UserDrawer />
+                    @if (context.RepresentativeState?.Representative is { })
+                    {
+                      <NavigationDrawer />
+                    }
+                    @Body
+                  </MudLayout>
+                </main>
+                <footer>
+                  <MudContainer
+                    MaxWidth="MaxWidth.Large"
+                    Style="height: 100%; padding-top: 12px;">
+                    <Footer />
+                  </MudContainer>
+                </footer>
+              </CascadingValue>
+            </CascadingValue>
+          </CascadingValue>
+        </Found>
+      </Loading>
     </MudBreakpointProvider>

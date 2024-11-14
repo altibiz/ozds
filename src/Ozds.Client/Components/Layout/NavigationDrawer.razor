@@ -4,24 +4,17 @@
 @using Ozds.Client.State
 @namespace Ozds.Client.Components.Layout
 @inherits OzdsComponentBase
-@inject NavigationManager NavigationManager
 @implements IDisposable
 
 <MudDrawer
   Open="@LayoutState.IsNavigationDrawerOpen"
   OpenChanged="open => LayoutState.SetNavigationDrawerOpen(open)"
-  ClipMode="DrawerClipMode.Never"
-  Elevation="0"
+  Elevation="4"
   Anchor="Anchor.Top"
   Variant="DrawerVariant.Temporary"
-  Height="100vh">
+  ClipMode="DrawerClipMode.Never" >
   <MudDrawerHeader Style="padding-inline: 0;">
     <MudContainer MaxWidth="MaxWidth.Small" Class="d-flex flex-row">
-      <MudImage
-        Src="/favicon.svg"
-        Alt="HelbEx"
-        Style="height: calc(var(--mud-appbar-height) - 24px);"/>
-      <MudSpacer />
       <MudButton
         OnClick="e => LayoutState.SetNavigationDrawerOpen(false)"
         Variant="Variant.Text"

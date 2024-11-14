@@ -4,7 +4,7 @@
 @using Ozds.Client.State
 @inherits OzdsComponentBase
 
-<MudToolBar Gutters="false">
+<MudToolBar Gutters="false" Style="background-color: var(--mud-palette-appbar-background);" Class="mud-elevation-4">
   <MudContainer
     Style="height: 100%;"
     MaxWidth="MaxWidth.Large"
@@ -16,7 +16,7 @@
         Class="d-flex align-center">
         <MudImage
           Src="/logo.svg"
-          Alt="HelbEx"
+          Alt="Helb"
           Style="height: 40px;" />
       </MudButton>
     </MudHidden>
@@ -26,8 +26,8 @@
         Style="margin-left: -12px;"
         Class="d-flex align-center">
         <MudImage
-          Src="/favicon.svg"
-          Alt="HelbEx"
+          Src="/favicon.ico"
+          Alt="Helb"
           Style="height: 40px;" />
       </MudButton>
     </MudHidden>
@@ -35,7 +35,7 @@
     <div Class="d-flex flex-row justify-end">
       <MudButton
         Variant="Variant.Text"
-        Color="MudBlazor.Color.Primary"
+        Style="color:white"
         OnClick="e => ThemeState.SetDarkMode(!ThemeState.IsDarkMode)"
         Class="d-flex flex-row align-center">
         @if(ThemeState.IsDarkMode)
@@ -56,7 +56,7 @@
       </MudButton>
       <MudButton
         Variant="Variant.Text"
-        Color="MudBlazor.Color.Primary"
+        Style="color:white"
         OnClick="e => LayoutState.SetLocalizationDrawerOpen(true)"
         Class="d-flex flex-row align-center">
         <MudIcon Icon="@Icons.Material.Filled.Language" />
@@ -70,9 +70,8 @@
         <MudButton
           OnClick="e => LayoutState.SetUserDrawerOpen(true)"
           Variant="Variant.Text"
-          Color="MudBlazor.Color.Primary"
           Class="d-flex flex-row align-center"
-          Style="margin-right: -18px;">
+          Style="margin-right: -18px; color:white;">
           <MudIcon Icon="@Icons.Material.Filled.Person"/>
         </MudButton>
       </MudHidden>
@@ -80,9 +79,8 @@
         <MudButton
           OnClick="e => LayoutState.SetUserDrawerOpen(true)"
           Variant="Variant.Text"
-          Color="MudBlazor.Color.Primary"
           Class="d-flex flex-row align-center"
-          Style="margin-right: -8px;">
+          Style="margin-right: -8px; color:white;">
           <MudIcon Icon="@Icons.Material.Filled.Person"/>
           <div Class="ml-2 d-flex flex-column align-center">
             <MudText>
