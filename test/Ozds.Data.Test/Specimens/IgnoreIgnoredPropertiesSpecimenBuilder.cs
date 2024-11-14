@@ -1,6 +1,6 @@
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+using Ozds.Data.Test.Extensions;
 
 namespace Ozds.Data.Test.Specimens;
 
@@ -10,8 +10,8 @@ public class IgnoreIgnoredPropertiesSpecimenBuilder(
 {
   public object Create(object request, ISpecimenContext context)
   {
-    if (request is PropertyInfo propertyInfo
-      && ignoredProperties.Value.Contains(propertyInfo))
+    if (request is PropertyInfo or FieldInfo
+      && ignoredProperties.Value.Contains(request))
     {
       return new OmitSpecimen();
     }
@@ -19,35 +19,6 @@ public class IgnoreIgnoredPropertiesSpecimenBuilder(
     return new NoSpecimen();
   }
 
-  private readonly Lazy<HashSet<PropertyInfo>> ignoredProperties = new(() =>
-  {
-    var entity = dbContext.Model
-      .GetEntityTypes()
-      .SelectMany(e => e
-        .GetDeclaredProperties()
-        .OfType<IPropertyBase>()
-        .Concat(e.GetDeclaredComplexProperties())
-        .Concat(e.GetDeclaredSkipNavigations())
-        .Concat(e.GetDeclaredNavigations())
-        .Concat(e.GetDeclaredKeys().SelectMany(p => p.Properties))
-        .Select(p => p.PropertyInfo))
-      .OfType<PropertyInfo>()
-      .ToList();
-
-    var clr = dbContext.Model
-      .GetEntityTypes()
-      .SelectMany(e => e.ClrType
-        .GetProperties(
-          BindingFlags.Instance
-          | BindingFlags.Public
-          | BindingFlags.NonPublic))
-      .ToList();
-
-    var ignored = clr
-      .Where(x => !entity
-        .Exists(e => e.DeclaringType == x.DeclaringType && e.Name == x.Name))
-      .ToHashSet();
-
-    return ignored;
-  });
+  private readonly Lazy<HashSet<MemberInfo>> ignoredProperties =
+    new(dbContext.GetIgnoredProperties);
 }

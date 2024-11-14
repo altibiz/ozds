@@ -1,9 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Ozds.Data.Context;
+using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Test.Context;
 
-public sealed class DataDbContextManager(
+public sealed class EphemeralDataDbContextManager(
   IDbContextFactory<DataDbContext> factory,
   ILogger<EphemeralDataDbContextManager> logger
 ) : IAsyncDisposable
@@ -36,11 +37,37 @@ public sealed class DataDbContextManager(
       try
       {
         context = await factory.CreateDbContextAsync(cancellationToken);
+        await context.Database.BeginTransactionAsync(cancellationToken);
         break;
       }
       catch (Exception exception)
       {
         logger.LogError(exception, "Failed to get context");
+      }
+    }
+
+    foreach (var entity in context.Model.GetEntityTypes())
+    {
+      while (true)
+      {
+        try
+        {
+#pragma warning disable EF1002 // Risk of vulnerability to SQL injection.
+          await context.Database.ExecuteSqlRawAsync(
+            $"DELETE FROM {entity.GetTableName()} WHERE TRUE;",
+            cancellationToken);
+#pragma warning restore EF1002 // Risk of vulnerability to SQL injection.
+
+          break;
+        }
+        catch (Exception exception)
+        {
+          logger.LogError(
+            exception,
+            "Failed to delete entities of type {}",
+            entity.ClrType
+          );
+        }
       }
     }
 
@@ -75,6 +102,7 @@ public sealed class DataDbContextManager(
         return;
       }
 
+      await context.Database.RollbackTransactionAsync();
       await context.DisposeAsync();
     }
     finally

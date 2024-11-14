@@ -20,7 +20,7 @@ public class AnalysisBasisEntityFactory(DbContext context)
   {
     var result = new List<AnalysisBasisEntity>();
 
-    var fixture = context.Fixture();
+    var fixture = context.ContextualFixture();
     fixture.Customizations.Add(
       new DateTimeOffsetInRangeSpecimenBuilder(fromDate, toDate));
 
