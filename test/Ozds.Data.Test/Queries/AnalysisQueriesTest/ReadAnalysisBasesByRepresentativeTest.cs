@@ -1,4 +1,3 @@
-using Ozds.Data.Entities;
 using Ozds.Data.Entities.Composite;
 using Ozds.Data.Queries;
 using Ozds.Data.Test.Context;
