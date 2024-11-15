@@ -1,0 +1,42 @@
+@if (Descriptor.Children.Any())
+{
+    <MudNavGroup Title="@T[Descriptor.Title]"
+      Style="justify-self: center; max-width: 600px; font-size:larger;">
+        @foreach (var child in Descriptor.Children.OrderBy(c => c.Title))
+        {
+            <NavigationItem Descriptor="child" />
+        }
+    </MudNavGroup>
+}
+else if (!string.IsNullOrEmpty(Descriptor.Route))
+{
+    <MudNavLink Href="@Descriptor.Route" Match="NavLinkMatch.All">
+        <MudContainer MaxWidth="MaxWidth.Small" Class="d-flex flex-row">
+            <MudHidden Breakpoint="Breakpoint.Xs">
+                <div style="margin-left: -8px;" class="d-flex flex-row align-center">
+                    <MudIcon Icon="@Descriptor.Icon" />
+                </div>
+            </MudHidden>
+            <MudHidden Breakpoint="Breakpoint.SmAndUp">
+                <div style="margin-left: -28px;" class="d-flex flex-row align-center">
+                    <MudIcon Icon="@Descriptor.Icon" />
+                </div>
+            </MudHidden>
+            <MudText Class="ml-4">
+                @T[Descriptor.Title]
+            </MudText>
+        </MudContainer>
+    </MudNavLink>
+}
+else
+{
+    <!-- If needed, handle items without routes and children -->
+    <MudText Class="ml-4">
+        @T[Descriptor.Title]
+    </MudText>
+}
+
+@code {
+    [Parameter]
+    public NavigationDescriptor Descriptor { get; set; } = default!;
+}

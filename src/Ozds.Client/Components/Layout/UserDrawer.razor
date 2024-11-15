@@ -25,28 +25,53 @@
   <MudDivider />
   <MudDrawerContainer>
     <MudNavMenu>
-      <MudNavLink
-        OnClick="e => LayoutState.SetUserDrawerOpen(false)"
-        Icon="@Icons.Material.Outlined.Person"
-        Href="account" >@T["Account"]</MudNavLink>
-
-      <MudNavLink
-          Icon="@Icons.Material.Outlined.Login">
-        <MudForm method="post" action="/Users/LogOff?returnUrl=/login">
-          <input
-            type="hidden"
-            name="__RequestVerificationToken"
-            value="@LogoutTokenState.LogoutToken"/>
-            <MudButton
-              ButtonType="ButtonType.Submit"
-              DropShadow="false"
-              Ripple="false"
-              OnClick="e => LayoutState.SetUserDrawerOpen(false)"
-              Style="">
-                @T["Logout"]
-            </MudButton>
-        </MudForm>
-      </MudNavLink>
+        <MudNavLink
+          OnClick="e => LayoutState.SetUserDrawerOpen(false)"
+          Href="account" >
+            <MudContainer MaxWidth="MaxWidth.Small" Class="d-flex flex-row">
+                <MudHidden Breakpoint="Breakpoint.Xs">
+                    <div style="margin-left: -8px;" class="d-flex flex-row align-center">
+                        <MudIcon Icon="@Icons.Material.Filled.Person" />
+                    </div>
+                </MudHidden>
+                <MudHidden Breakpoint="Breakpoint.SmAndUp">
+                    <div style="margin-left: -28px;" class="d-flex flex-row align-center">
+                        <MudIcon Icon="@Icons.Material.Filled.Person" />
+                    </div>
+                </MudHidden>
+                <MudText Class="ml-4">
+                    @T["Account"]
+                </MudText>
+            </MudContainer>
+          </MudNavLink>
+          <MudForm method="post" action="/Users/LogOff?returnUrl=/login">
+            <input
+              type="hidden"
+              name="__RequestVerificationToken"
+              value="@LogoutTokenState.LogoutToken"/>
+              <MudButton
+                ButtonType="ButtonType.Submit"
+                DropShadow="false"
+                Ripple="false"
+                OnClick="e => LayoutState.SetUserDrawerOpen(false)"
+                Style="width: 100%; padding: 8px 16px 8px 16px;">
+                  <MudContainer MaxWidth="MaxWidth.Small" Class="d-flex flex-row">
+                    <MudHidden Breakpoint="Breakpoint.Xs">
+                        <div style="margin-left: -8px;" class="d-flex flex-row align-center">
+                            <MudIcon Icon="@Icons.Material.Filled.Login" />
+                        </div>
+                    </MudHidden>
+                    <MudHidden Breakpoint="Breakpoint.SmAndUp">
+                        <div style="margin-left: -28px;" class="d-flex flex-row align-center">
+                            <MudIcon Icon="@Icons.Material.Filled.Login" />
+                        </div>
+                    </MudHidden>
+                    <MudText Class="ml-4">
+                        @T["Logout"]
+                    </MudText>
+                </MudContainer>
+              </MudButton>
+          </MudForm>
     </MudNavMenu>
   </MudDrawerContainer>
 </MudDrawer>

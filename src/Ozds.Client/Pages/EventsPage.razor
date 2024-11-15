@@ -1,6 +1,6 @@
 @page "/events"
 @using Microsoft.Extensions.Hosting
-@attribute [Navigation(Icon= Icons.Material.Outlined.Event, Title = "Events", Allows = new[] { RoleModel.OperatorRepresentative })]
+@attribute [Navigation(Icon= Icons.Material.Outlined.Event, ParentTitle = "Alerts",  Title = "Events", Allows = new[] { RoleModel.OperatorRepresentative })]
 @inject IHostEnvironment Environment
 
 @* TODO: tweak min level *@

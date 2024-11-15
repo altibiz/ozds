@@ -13,38 +13,14 @@
   Anchor="@LayoutState.DrawerAnchor"
   Variant="DrawerVariant.Temporary"
   ClipMode="DrawerClipMode.Never" >
-  <MudDrawerContainer>
-    <MudNavMenu>
-      @foreach (var route in GetNavigationDescriptors())
-      {
-        <MudNavLink
-          Href="@route.Route"
-          Match="NavLinkMatch.All">
-          <MudContainer
-            MaxWidth="MaxWidth.Small"
-            Class="d-flex flex-row">
-            <MudHidden Breakpoint="Breakpoint.Xs">
-              <div
-                style="margin-left: -8px;"
-                class="d-flex flex-row align-center">
-                <MudIcon Icon="@route.Icon" />
-              </div>
-            </MudHidden>
-            <MudHidden Breakpoint="Breakpoint.SmAndUp">
-              <div
-                style="margin-left: -28px;"
-                class="d-flex flex-row align-center">
-                <MudIcon Icon="@route.Icon" />
-              </div>
-            </MudHidden>
-            <MudText Class="ml-4">
-              @T[route.Title]
-            </MudText>
-          </MudContainer>
-        </MudNavLink>
-      }
-    </MudNavMenu>
-  </MudDrawerContainer>
+    <MudDrawerContainer>
+        <MudNavMenu>
+            @foreach (var route in GetNavigationDescriptors())
+            {
+                <NavigationItem Descriptor="route" />
+            }
+        </MudNavMenu>
+    </MudDrawerContainer>
 </MudDrawer>
 
 @code {

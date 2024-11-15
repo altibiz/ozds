@@ -1,6 +1,6 @@
 @page "/locations"
 @attribute [Navigation(
-Icon= Icons.Material.Outlined.LocationOn, Title = "Locations", Allows = new[] { RoleModel.LocationRepresentative, RoleModel.OperatorRepresentative })]
+Icon= Icons.Material.Outlined.LocationOn, ParentTitle = "Tables", Title = "Locations", Allows = new[] { RoleModel.LocationRepresentative, RoleModel.OperatorRepresentative })]
 
 @if (user is null)
 {

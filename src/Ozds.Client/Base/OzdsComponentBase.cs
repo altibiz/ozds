@@ -190,26 +190,74 @@ public abstract class OzdsComponentBase : ComponentBase
 
   protected IEnumerable<NavigationDescriptor> GetNavigationDescriptors()
   {
-    return typeof(OzdsComponentBase).Assembly.GetTypes()
-      .Where(type => type.IsSubclassOf(typeof(OzdsComponentBase)))
-      .SelectMany(type => type.GetCustomAttributes<NavigationAttribute>())
-      .OrderBy(navigationAttribute => navigationAttribute.Order)
-      .Select(navigationAttribute =>
-        navigationAttribute.Title is { } title
-          ? new NavigationDescriptor(
-              title,
-              navigationAttribute.RouteValue ?? title,
-              navigationAttribute.Icon,
-              navigationAttribute.Allows,
-              navigationAttribute.Disallows)
-          : default)
-      .OfType<NavigationDescriptor>();
+    var descriptors = typeof(OzdsComponentBase).Assembly.GetTypes()
+        .Where(type => type.IsSubclassOf(typeof(OzdsComponentBase)))
+        .Select(type => new { type, attrs = type.GetCustomAttributes<NavigationAttribute>() })
+        .SelectMany(x => x.attrs.Select(attr => new { x.type, attr }))
+        .OrderBy(x => x.attr.Order)
+        .Select(x => new NavigationDescriptor
+        {
+          Title = x.attr.Title!,
+          Route = x.attr.RouteValue ?? x.attr.Title,
+          Icon = x.attr.Icon,
+          Allows = x.attr.Allows ?? Array.Empty<RoleModel>(),
+          Disallows = x.attr.Disallows ?? Array.Empty<RoleModel>(),
+          ParentTitle = x.attr.ParentTitle
+        })
+        .Where(d => !string.IsNullOrEmpty(d.Title))
+        .ToList();
+
+    // Build a dictionary of descriptors by title
+    var descriptorDict = descriptors.ToDictionary(d => d.Title);
+
+    // Find all parent titles
+    var parentTitles = descriptors
+        .Select(d => d.ParentTitle)
+        .Where(pt => !string.IsNullOrEmpty(pt))
+        .Distinct()
+        .ToList();
+
+    // Add category descriptors for parent titles that don't have descriptors yet
+    foreach (var parentTitle in parentTitles)
+    {
+      if (!descriptorDict.ContainsKey(parentTitle))
+      {
+        var categoryDescriptor = new NavigationDescriptor
+        {
+          Title = parentTitle!,
+          // Categories don't have routes
+          Route = null,
+          Icon = null,
+          Allows = Array.Empty<RoleModel>(),
+          Disallows = Array.Empty<RoleModel>(),
+          Children = new List<NavigationDescriptor>()
+        };
+        descriptors.Add(categoryDescriptor);
+        descriptorDict[parentTitle!] = categoryDescriptor;
+      }
+    }
+
+    // Build the hierarchy
+    foreach (var descriptor in descriptors)
+    {
+      if (!string.IsNullOrEmpty(descriptor.ParentTitle) &&
+          descriptorDict.TryGetValue(descriptor.ParentTitle!, out var parent))
+      {
+        parent.Children.Add(descriptor);
+      }
+    }
+
+    // Return only root descriptors (those without ParentTitle)
+    return descriptors.Where(d => string.IsNullOrEmpty(d.ParentTitle));
   }
-  protected record NavigationDescriptor(
-    string Title,
-    string Route,
-    string? Icon,
-    RoleModel[] Allows,
-    RoleModel[] Disallows
-  );
+  public class NavigationDescriptor
+  {
+    public string Title { get; set; }
+    public string Route { get; set; }
+    public string? Icon { get; set; }
+    public RoleModel[] Allows { get; set; }
+    public RoleModel[] Disallows { get; set; }
+    public string? ParentTitle { get; set; }
+    public List<NavigationDescriptor> Children { get; set; } = new();
+  }
 }

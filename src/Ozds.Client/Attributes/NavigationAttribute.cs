@@ -20,4 +20,6 @@ public class NavigationAttribute : Attribute
   public RoleModel[] Allows { get; set; } = default!;
 
   public RoleModel[] Disallows { get; set; } = Array.Empty<RoleModel>();
+
+  public string? ParentTitle { get; set; }
 }

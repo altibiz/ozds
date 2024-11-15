@@ -1,5 +1,5 @@
 @page "/meters"
-@attribute [Navigation(Icon= Icons.Material.Outlined.ElectricMeter, Title = "Measurement locations", Allows = new[] { RoleModel.LocationRepresentative, RoleModel.NetworkUserRepresentative, RoleModel.OperatorRepresentative })]
+@attribute [Navigation(Icon= Icons.Material.Outlined.ElectricMeter, ParentTitle = "Tables", Title = "Measurement locations", Allows = new[] { RoleModel.LocationRepresentative, RoleModel.NetworkUserRepresentative, RoleModel.OperatorRepresentative })]
 
 @if (user is null)
 {
