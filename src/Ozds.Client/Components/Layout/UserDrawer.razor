@@ -14,37 +14,40 @@
   Open="@LayoutState.IsUserDrawerOpen"
   OpenChanged="open => LayoutState.SetUserDrawerOpen(open)"
   Elevation="0"
-  Anchor="Anchor.Top"
+  Anchor="@LayoutState.DrawerAnchor"
   Variant="DrawerVariant.Temporary"
   ClipMode="DrawerClipMode.Never">
+  <MudDrawerHeader>
+    <MudText Typo="Typo.h6" Style="text-align: center;">
+      @(UserState?.User.UserName)
+    </MudText>
+  </MudDrawerHeader>
+  <MudDivider />
   <MudDrawerContainer>
-    <MudList T="string">
-      <MudListItem
-        Text="@T["Account"]"
+    <MudNavMenu>
+      <MudNavLink
         OnClick="e => LayoutState.SetUserDrawerOpen(false)"
         Icon="@Icons.Material.Outlined.Person"
-        Href="account" />
-      <MudForm method="post" action="/Users/LogOff?returnUrl=/login">
-        <input
-          type="hidden"
-          name="__RequestVerificationToken"
-          value="@LogoutTokenState.LogoutToken"/>
-        <MudButton
-          ButtonType="ButtonType.Submit"
-          DropShadow="false"
-          Ripple="false"
-          OnClick="e => LayoutState.SetUserDrawerOpen(false)"
-          Style="justify-content: start; padding: 0; background-color: inherit;">
-          <MudListItem
-            Text="@T["Logout"]"
-            Icon="@Icons.Material.Outlined.Login">
-              <MudText>
+        Href="account" >@T["Account"]</MudNavLink>
+
+      <MudNavLink
+          Icon="@Icons.Material.Outlined.Login">
+        <MudForm method="post" action="/Users/LogOff?returnUrl=/login">
+          <input
+            type="hidden"
+            name="__RequestVerificationToken"
+            value="@LogoutTokenState.LogoutToken"/>
+            <MudButton
+              ButtonType="ButtonType.Submit"
+              DropShadow="false"
+              Ripple="false"
+              OnClick="e => LayoutState.SetUserDrawerOpen(false)"
+              Style="">
                 @T["Logout"]
-              </MudText>
-          </MudListItem>
-        </MudButton>
-      </MudForm>
-    </MudList>
+            </MudButton>
+        </MudForm>
+      </MudNavLink>
+    </MudNavMenu>
   </MudDrawerContainer>
 </MudDrawer>
 

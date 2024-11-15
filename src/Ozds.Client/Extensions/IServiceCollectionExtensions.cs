@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MudBlazor;
 using MudBlazor.Services;
 using Ozds.Client.State;
 
@@ -29,6 +30,8 @@ public static class IServiceCollectionExtensions
         false,
         _ => { },
         _ => { },
+        _ => { },
+        Breakpoint.None,
         _ => { }
       ));
     services.AddCascadingValue(

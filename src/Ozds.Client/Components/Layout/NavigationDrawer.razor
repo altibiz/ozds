@@ -10,21 +10,9 @@
   Open="@LayoutState.IsNavigationDrawerOpen"
   OpenChanged="open => LayoutState.SetNavigationDrawerOpen(open)"
   Elevation="4"
-  Anchor="Anchor.Top"
+  Anchor="@LayoutState.DrawerAnchor"
   Variant="DrawerVariant.Temporary"
   ClipMode="DrawerClipMode.Never" >
-  <MudDrawerHeader Style="padding-inline: 0;">
-    <MudContainer MaxWidth="MaxWidth.Small" Class="d-flex flex-row">
-      <MudButton
-        OnClick="e => LayoutState.SetNavigationDrawerOpen(false)"
-        Variant="Variant.Text"
-        Color="MudBlazor.Color.Primary"
-        Style="margin-right: -24px;"
-        Class="d-flex flex-row align-center">
-        <MudIcon Icon="@Icons.Material.Filled.Close"/>
-      </MudButton>
-    </MudContainer>
-  </MudDrawerHeader>
   <MudDrawerContainer>
     <MudNavMenu>
       @foreach (var route in GetNavigationDescriptors())
@@ -62,6 +50,9 @@
 @code {
   [CascadingParameter]
   public LayoutState LayoutState { get; set; } = default!;
+
+  [CascadingParameter]
+  public UserState UserState { get; set; } = default!;
 
   protected override void OnInitialized()
   {

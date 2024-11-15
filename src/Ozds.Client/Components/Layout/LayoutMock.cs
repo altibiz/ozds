@@ -30,33 +30,30 @@ public partial class LayoutMock : OzdsLayoutComponentBase
   protected override void OnInitialized()
   {
     LayoutState = new LayoutState(
-      IsUserDrawerOpen: false,
-      IsLocalizationDrawerOpen: false,
-      IsNavigationDrawerOpen: false,
-      SetUserDrawerOpen: isUserDrawerOpen =>
-      {
-        LayoutState = LayoutState with
+        IsUserDrawerOpen: false,
+        IsLocalizationDrawerOpen: false,
+        IsNavigationDrawerOpen: false,
+        SetUserDrawerOpen: isUserDrawerOpen =>
         {
-          IsUserDrawerOpen = isUserDrawerOpen
-        };
-        InvokeAsync(StateHasChanged);
-      },
-      SetLocalizationDrawerOpen: isLocalizationDrawerOpen =>
-      {
-        LayoutState = LayoutState with
+          LayoutState = LayoutState with { IsUserDrawerOpen = isUserDrawerOpen };
+          InvokeAsync(StateHasChanged);
+        },
+        SetLocalizationDrawerOpen: isLocalizationDrawerOpen =>
         {
-          IsLocalizationDrawerOpen = isLocalizationDrawerOpen
-        };
-        InvokeAsync(StateHasChanged);
-      },
-      SetNavigationDrawerOpen: isNavigationDrawerOpen =>
-      {
-        LayoutState = LayoutState with
+          LayoutState = LayoutState with { IsLocalizationDrawerOpen = isLocalizationDrawerOpen };
+          InvokeAsync(StateHasChanged);
+        },
+        SetNavigationDrawerOpen: isNavigationDrawerOpen =>
         {
-          IsNavigationDrawerOpen = isNavigationDrawerOpen
-        };
-        InvokeAsync(StateHasChanged);
-      }
+          LayoutState = LayoutState with { IsNavigationDrawerOpen = isNavigationDrawerOpen };
+          InvokeAsync(StateHasChanged);
+        },
+        Breakpoint: Breakpoint.None,
+        SetBreakpoint: breakpoint =>
+        {
+          LayoutState = LayoutState with { Breakpoint = breakpoint };
+          InvokeAsync(StateHasChanged);
+        }
     );
 
     ThemeState = new ThemeState(
@@ -121,5 +118,10 @@ public partial class LayoutMock : OzdsLayoutComponentBase
         }
       );
     return (userState, representativeState);
+  }
+
+  private void OnBreakpointChanged(Breakpoint breakpoint)
+  {
+    LayoutState.SetBreakpoint(breakpoint);
   }
 }

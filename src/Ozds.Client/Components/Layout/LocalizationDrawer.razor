@@ -9,7 +9,7 @@
   Open="@LayoutState.IsLocalizationDrawerOpen"
   OpenChanged="open => LayoutState.SetLocalizationDrawerOpen(open)"
   Elevation="0"
-  Anchor="Anchor.Top"
+  Anchor="@LayoutState.DrawerAnchor"
   Variant="DrawerVariant.Temporary"
   ClipMode="DrawerClipMode.Never">
   <MudDrawerHeader>
@@ -19,22 +19,20 @@
   </MudDrawerHeader>
   <MudDivider />
   <MudDrawerContainer>
-    <MudList T="string">
-      <MudListItem
-        Text="@(new CultureInfo("hr-HR").NativeName)"
+    <MudNavMenu>
+      <MudNavLink
         Icon="@Icons.Material.Filled.Language"
         OnClick="@(e => {
           Culture = new CultureInfo("hr-HR");
           LayoutState.SetLocalizationDrawerOpen(false);
-        })" />
-      <MudListItem
-        Text="@(new CultureInfo("en-US").NativeName)"
+        })" >@(new CultureInfo("hr-HR").NativeName)</MudNavLink>
+      <MudNavLink
         Icon="@Icons.Material.Filled.Language"
         OnClick="@(e => {
           Culture = new CultureInfo("en-US");
           LayoutState.SetLocalizationDrawerOpen(false);
-        })" />
-    </MudList>
+        })" >@(new CultureInfo("en-US").NativeName)</MudNavLink>
+    </MudNavMenu>
   </MudDrawerContainer>
 </MudDrawer>
 

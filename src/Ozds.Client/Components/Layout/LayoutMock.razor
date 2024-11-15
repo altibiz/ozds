@@ -43,7 +43,7 @@
     <MudDialogProvider/>
     <MudSnackbarProvider/>
 
-    <MudBreakpointProvider>
+    <MudBreakpointProvider OnBreakpointChanged="OnBreakpointChanged">
       <Loading
         T="(UserState? UserState, RepresentativeState? RepresentativeState)"
         LoadAsync="@(LoadAsync)">
