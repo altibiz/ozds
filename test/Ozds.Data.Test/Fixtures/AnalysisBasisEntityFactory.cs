@@ -181,7 +181,8 @@ public class AnalysisBasisEntityFactory(DbContext context)
               .MaxBy(y => y
                 .ToModel()
                 .ActivePower_W
-                .TariffUnary()
+                .TariffBinary()
+                .T1
                 .DuplexImport()
                 .PhaseSum()))
             .Cast<AggregateEntity>()
