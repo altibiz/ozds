@@ -1,3 +1,4 @@
+using Ozds.Data.Entities;
 using Ozds.Data.Entities.Composite;
 using Ozds.Data.Queries;
 using Ozds.Data.Test.Context;
@@ -70,7 +71,7 @@ public class ReadAnalysisBasesByRepresentativeTest(IServiceProvider services)
 
     results.Should().AllSatisfy(result =>
     {
-      result.Actual.Should().HaveCount(result.Actual.Count);
+      result.Actual.Should().HaveCount(result.Expected.Count);
 
       result.Actual.Should().AllSatisfy(actual =>
       {
@@ -109,6 +110,20 @@ public class ReadAnalysisBasesByRepresentativeTest(IServiceProvider services)
         actual.Invoices
           .Should()
           .BeContextuallyEquivalentTo(context, expected.Invoices);
+
+        actual.LastMeasurement
+          .Should()
+          .BeContextuallyEquivalentTo(context, expected.LastMeasurement);
+
+        actual.MonthlyAggregates
+          .Should()
+          .BeContextuallyEquivalentTo(context, expected.MonthlyAggregates);
+
+        actual.MonthlyMaxPowerAggregates
+          .Should()
+          .BeContextuallyEquivalentTo(
+            context,
+            expected.MonthlyMaxPowerAggregates);
       });
     });
   }

@@ -1,4 +1,3 @@
-using System.Reflection;
 using FluentAssertions.Equivalency;
 using Microsoft.EntityFrameworkCore;
 using Ozds.Data.Test.Extensions;
@@ -16,12 +15,16 @@ public class IgnoreIgnoredPropertiesOptions(
   )
     where TSelf : SelfReferenceEquivalencyAssertionOptions<TSelf>
   =>
-    options.Excluding(member =>
-      member.DeclaringType
-        .GetMember(member.Name)
-        .Any(member => ignoredProperties.Value
-          .Contains(member)));
+    options.Excluding(x => Contains(x.Name, x.DeclaringType));
 
-  private readonly Lazy<HashSet<MemberInfo>> ignoredProperties =
-    new(dbContext.GetIgnoredProperties);
+  private bool Contains(string name, Type? declaringType)
+  {
+    return ignored.Value.Contains((name, declaringType));
+  }
+
+  private readonly Lazy<HashSet<(string, Type?)>> ignored =
+    new(() => dbContext
+      .GetIgnoredProperties()
+      .Select(x => (x.Name, x.DeclaringType))
+      .ToHashSet());
 }

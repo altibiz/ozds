@@ -1,4 +1,3 @@
-using System.Reflection;
 using FluentAssertions.Equivalency;
 using Microsoft.EntityFrameworkCore;
 using Ozds.Data.Test.Extensions;
@@ -16,12 +15,16 @@ public class IgnoreNavigationsOptions(
   )
     where TSelf : SelfReferenceEquivalencyAssertionOptions<TSelf>
   =>
-    options.Excluding(member =>
-      member.DeclaringType
-        .GetMember(member.Name)
-        .Any(member => navigations.Value
-          .Contains(member)));
+    options.Excluding(x => Contains(x.Name, x.DeclaringType));
 
-  private readonly Lazy<HashSet<MemberInfo>> navigations =
-    new(dbContext.GetNavigations);
+  private bool Contains(string name, Type? declaringType)
+  {
+    return navigations.Value.Contains((name, declaringType));
+  }
+
+  private readonly Lazy<HashSet<(string, Type?)>> navigations =
+    new(() => dbContext
+      .GetNavigations()
+      .Select(x => (x.Name, x.DeclaringType))
+      .ToHashSet());
 }

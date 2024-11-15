@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="../../src/Ozds.Data/Ozds.Data.csproj" />
+    <ProjectReference Include="../../src/Ozds.Business/Ozds.Business.csproj" />
   </ItemGroup>
 
   <ItemGroup>

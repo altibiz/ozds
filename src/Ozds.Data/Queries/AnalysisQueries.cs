@@ -458,32 +458,28 @@ public class AnalysisQueries(
           .{context.GetColumnName<AbbB2xAggregateEntity>(
             nameof(AbbB2xAggregateEntity.Timestamp))}
           AT TIME ZONE 'Europe/Zagreb') AS month,
-        COALESCE(abb_b2x_aggregates_max_power_window
-          .{context.GetColumnName<AbbB2xAggregateEntity>(
-            nameof(AbbB2xAggregateEntity.ActivePowerL1NetT0Avg_W))}, 0)
-        + COALESCE(abb_b2x_aggregates_max_power_window
-          .{context.GetColumnName<AbbB2xAggregateEntity>(
-            nameof(AbbB2xAggregateEntity.ActivePowerL2NetT0Avg_W))}, 0)
-        + COALESCE(abb_b2x_aggregates_max_power_window
-          .{context.GetColumnName<AbbB2xAggregateEntity>(
-            nameof(AbbB2xAggregateEntity.ActivePowerL3NetT0Avg_W))}, 0)
-          AS active_power_total_net_t0_avg_w,
+        COALESCE(
+          abb_b2x_aggregates_max_power_window
+            .{context.GetColumnName<AbbB2xAggregateEntity>(
+              nameof(AbbB2xAggregateEntity.ActiveEnergyTotalImportT0Max_Wh))},
+          0)
+          - COALESCE(
+              abb_b2x_aggregates_max_power_window
+                .{context.GetColumnName<AbbB2xAggregateEntity>(
+                  nameof(AbbB2xAggregateEntity.ActiveEnergyTotalImportT0Min_Wh))},
+                0)
+          AS active_energy_total_import_t0_sub_w,
         MAX(
           COALESCE(
             abb_b2x_aggregates_max_power_window
               .{context.GetColumnName<AbbB2xAggregateEntity>(
-                nameof(AbbB2xAggregateEntity.ActivePowerL1NetT0Avg_W))},
+                nameof(AbbB2xAggregateEntity.ActiveEnergyTotalImportT0Max_Wh))},
             0)
-          + COALESCE(
-              abb_b2x_aggregates_max_power_window
-                .{context.GetColumnName<AbbB2xAggregateEntity>(
-                  nameof(AbbB2xAggregateEntity.ActivePowerL2NetT0Avg_W))},
-                0)
-          + COALESCE(
-              abb_b2x_aggregates_max_power_window
-                .{context.GetColumnName<AbbB2xAggregateEntity>(
-                  nameof(AbbB2xAggregateEntity.ActivePowerL3NetT0Avg_W))},
-              0)
+            - COALESCE(
+                abb_b2x_aggregates_max_power_window
+                  .{context.GetColumnName<AbbB2xAggregateEntity>(
+                    nameof(AbbB2xAggregateEntity.ActiveEnergyTotalImportT0Min_Wh))},
+                  0)
         ) OVER (
           PARTITION BY
             abb_b2x_aggregates_max_power_window
@@ -497,7 +493,7 @@ public class AnalysisQueries(
                 .{context.GetColumnName<AbbB2xAggregateEntity>(
               nameof(AbbB2xAggregateEntity.Timestamp))}
               AT TIME ZONE 'Europe/Zagreb')
-        ) AS active_power_total_net_t0_max_per_meter_month_w
+        ) AS active_energy_total_import_t0_max_per_meter_month_w
       FROM {context.GetTableName<AbbB2xAggregateEntity>()}
         AS abb_b2x_aggregates_max_power_window
       WHERE
@@ -514,9 +510,9 @@ public class AnalysisQueries(
     ) AS abb_b2x_aggregates_max_power_intermediary
     WHERE
       abb_b2x_aggregates_max_power_intermediary
-        .active_power_total_net_t0_avg_w
+        .active_energy_total_import_t0_sub_w
         = abb_b2x_aggregates_max_power_intermediary
-          .active_power_total_net_t0_max_per_meter_month_w
+          .active_energy_total_import_t0_max_per_meter_month_w
   ";
 
   private static string MakeSchneideriEM3xxxAggregatesMaxPowerQuery(
@@ -542,32 +538,28 @@ public class AnalysisQueries(
           .{context.GetColumnName<SchneideriEM3xxxAggregateEntity>(
             nameof(SchneideriEM3xxxAggregateEntity.Timestamp))}
           AT TIME ZONE 'Europe/Zagreb') AS month,
-        COALESCE(schneider_iem3xxx_aggregates_max_power_window
-          .{context.GetColumnName<SchneideriEM3xxxAggregateEntity>(
-            nameof(SchneideriEM3xxxAggregateEntity.ActivePowerL1NetT0Avg_W))}, 0)
-        + COALESCE(schneider_iem3xxx_aggregates_max_power_window
-          .{context.GetColumnName<SchneideriEM3xxxAggregateEntity>(
-            nameof(SchneideriEM3xxxAggregateEntity.ActivePowerL2NetT0Avg_W))}, 0)
-        + COALESCE(schneider_iem3xxx_aggregates_max_power_window
-          .{context.GetColumnName<SchneideriEM3xxxAggregateEntity>(
-            nameof(SchneideriEM3xxxAggregateEntity.ActivePowerL3NetT0Avg_W))}, 0)
-          AS active_power_total_net_t0_avg_w,
+        COALESCE(
+          schneider_iem3xxx_aggregates_max_power_window
+            .{context.GetColumnName<SchneideriEM3xxxAggregateEntity>(
+              nameof(SchneideriEM3xxxAggregateEntity.ActiveEnergyTotalImportT0Max_Wh))},
+          0)
+          - COALESCE(
+              schneider_iem3xxx_aggregates_max_power_window
+                .{context.GetColumnName<SchneideriEM3xxxAggregateEntity>(
+                nameof(SchneideriEM3xxxAggregateEntity.ActiveEnergyTotalImportT0Min_Wh))},
+              0)
+          AS active_energy_total_import_t0_sub_wh,
         MAX(
           COALESCE(
             schneider_iem3xxx_aggregates_max_power_window
               .{context.GetColumnName<SchneideriEM3xxxAggregateEntity>(
-                nameof(SchneideriEM3xxxAggregateEntity.ActivePowerL1NetT0Avg_W))},
+                nameof(SchneideriEM3xxxAggregateEntity.ActiveEnergyTotalImportT0Max_Wh))},
             0)
-          + COALESCE(
-              schneider_iem3xxx_aggregates_max_power_window
-                .{context.GetColumnName<SchneideriEM3xxxAggregateEntity>(
-                  nameof(SchneideriEM3xxxAggregateEntity.ActivePowerL2NetT0Avg_W))},
+            - COALESCE(
+                schneider_iem3xxx_aggregates_max_power_window
+                  .{context.GetColumnName<SchneideriEM3xxxAggregateEntity>(
+                  nameof(SchneideriEM3xxxAggregateEntity.ActiveEnergyTotalImportT0Min_Wh))},
                 0)
-          + COALESCE(
-              schneider_iem3xxx_aggregates_max_power_window
-                .{context.GetColumnName<SchneideriEM3xxxAggregateEntity>(
-                  nameof(SchneideriEM3xxxAggregateEntity.ActivePowerL3NetT0Avg_W))},
-              0)
         ) OVER (
           PARTITION BY
             schneider_iem3xxx_aggregates_max_power_window
@@ -581,7 +573,7 @@ public class AnalysisQueries(
                 .{context.GetColumnName<SchneideriEM3xxxAggregateEntity>(
               nameof(SchneideriEM3xxxAggregateEntity.Timestamp))}
               AT TIME ZONE 'Europe/Zagreb')
-        ) AS active_power_total_net_t0_max_per_meter_month_w
+        ) AS active_energy_total_import_t0_max_per_meter_month_wh
       FROM {context.GetTableName<SchneideriEM3xxxAggregateEntity>()}
         AS schneider_iem3xxx_aggregates_max_power_window
       WHERE
@@ -600,9 +592,9 @@ public class AnalysisQueries(
     ) AS schneider_iem3xxx_aggregates_max_power_intermediary
     WHERE
       schneider_iem3xxx_aggregates_max_power_intermediary
-        .active_power_total_net_t0_avg_w
+        .active_energy_total_import_t0_sub_wh
         = schneider_iem3xxx_aggregates_max_power_intermediary
-          .active_power_total_net_t0_max_per_meter_month_w
+          .active_energy_total_import_t0_max_per_meter_month_wh
   ";
 
   private static List<AnalysisBasisEntity>
@@ -645,6 +637,8 @@ public class AnalysisQueries(
               .Concat(x
                 .Select(x => x.SchneiderMonthlyAggregate)
                 .OfType<AggregateEntity>())
+              .Where(x => x.MeterId is not null)
+              .DistinctBy(x => (x.MeterId, x.Interval, x.Timestamp))
               .ToList();
 
           var monthlyMaxPowerAggregates =
@@ -655,6 +649,8 @@ public class AnalysisQueries(
               .Concat(x
                 .Select(x => x.SchneiderMaxPowerAggregate)
                 .OfType<AggregateEntity>())
+              .Where(x => x.MeterId is not null)
+              .DistinctBy(x => (x.MeterId, x.Interval, x.Timestamp))
               .ToList();
 
           var calculations = x

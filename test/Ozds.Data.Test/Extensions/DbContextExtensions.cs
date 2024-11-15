@@ -16,7 +16,6 @@ public static class DbContextExtensions
         .OfType<INavigationBase>()
         .Concat(e.GetDeclaredSkipNavigations()))
       .Select(n => (MemberInfo?)n.PropertyInfo ?? n.FieldInfo)
-      .Where(p => p != null)
       .OfType<MemberInfo>()
       .ToHashSet();
 

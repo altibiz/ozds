@@ -1,10 +1,15 @@
 using Microsoft.EntityFrameworkCore;
+using Ozds.Business.Conversion;
+using Ozds.Business.Time;
 using Ozds.Data.Entities;
 using Ozds.Data.Entities.Base;
 using Ozds.Data.Entities.Composite;
+using Ozds.Data.Entities.Enums;
 using Ozds.Data.Entities.Joins;
 using Ozds.Data.Test.Extensions;
 using Ozds.Data.Test.Specimens;
+
+// TODO: remove dependency on Ozds.Business?
 
 namespace Ozds.Data.Test.Fixtures;
 
@@ -137,11 +142,21 @@ public class AnalysisBasisEntityFactory(DbContext context)
       var monthlyAggregates = await fixture
         .Build<AbbB2xAggregateEntity>()
         .With(agg => agg.MeterId, meter.Id)
+        .With(agg => agg.Interval, IntervalEntity.Month)
+        .IndexedWith(
+          agg => agg.Timestamp,
+          (i) => toDate.AddMonths(-i).GetStartOfMonth()
+        )
         .CreateManyInDb(context, cancellationToken: cancellationToken);
 
-      var monthlyMaxPowerAggregates = await fixture
+      var quarterHourlyAggregates = await fixture
         .Build<AbbB2xAggregateEntity>()
         .With(agg => agg.MeterId, meter.Id)
+        .With(agg => agg.Interval, IntervalEntity.QuarterHour)
+        .IndexedWith(
+          agg => agg.Timestamp,
+          (i) => toDate.AddMinutes(-i * 15).GetStartOfQuarterHour()
+        )
         .CreateManyInDb(context, cancellationToken: cancellationToken);
 
       var analysisBasisEntity = new AnalysisBasisEntity(
@@ -154,11 +169,21 @@ public class AnalysisBasisEntityFactory(DbContext context)
           Meter: meter,
           Calculations: calculations.Cast<CalculationEntity>().ToList(),
           Invoices: invoices.Cast<InvoiceEntity>().ToList(),
-          LastMeasurement: measurements.Last(),
+          LastMeasurement: measurements.OrderBy(x => x.Timestamp).Last(),
           MonthlyAggregates: monthlyAggregates
+            .Where(x => x.Timestamp >= fromDate && x.Timestamp < toDate)
             .Cast<AggregateEntity>()
             .ToList(),
-          MonthlyMaxPowerAggregates: monthlyMaxPowerAggregates
+          MonthlyMaxPowerAggregates: quarterHourlyAggregates
+            .Where(x => x.Timestamp >= fromDate && x.Timestamp < toDate)
+            .GroupBy(x => x.Timestamp.GetStartOfMonth())
+            .Select(x => x
+              .MaxBy(y => y
+                .ToModel()
+                .ActivePower_W
+                .TariffUnary()
+                .DuplexImport()
+                .PhaseSum()))
             .Cast<AggregateEntity>()
             .ToList()
       );

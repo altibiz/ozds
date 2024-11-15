@@ -23,8 +23,6 @@ public static class DbContextAssertionsExtensions
     where TAssertions : ObjectAssertions<TSubject, TAssertions>
   {
     var ignoreNavigationsOptions = new IgnoreNavigationsOptions(dbContext);
-    var ignoreKeysOptions = new IgnoreKeysOptions(dbContext);
-    var ignoreForeignKeysOptions = new IgnoreForeignKeysOptions(dbContext);
     var ignoreIgnoredPropertiesOptions = new IgnoreIgnoredPropertiesOptions(
       dbContext);
     var dateTimeOffsetOptions = new DateTimeOffsetOptions(dbContext);
@@ -34,8 +32,6 @@ public static class DbContextAssertionsExtensions
       options =>
       {
         ignoreNavigationsOptions.Configure(options);
-        ignoreKeysOptions.Configure(options);
-        ignoreForeignKeysOptions.Configure(options);
         ignoreIgnoredPropertiesOptions.Configure(options);
         dateTimeOffsetOptions.Configure(options);
         return options;
@@ -58,8 +54,6 @@ public static class DbContextAssertionsExtensions
     where TAssertions : ObjectAssertions<TSubject, TAssertions>
   {
     var ignoreNavigationsOptions = new IgnoreNavigationsOptions(dbContext);
-    var ignoreKeysOptions = new IgnoreKeysOptions(dbContext);
-    var ignoreForeignKeysOptions = new IgnoreForeignKeysOptions(dbContext);
     var ignoreIgnoredPropertiesOptions = new IgnoreIgnoredPropertiesOptions(
       dbContext);
     var dateTimeOffsetOptions = new DateTimeOffsetOptions(dbContext);
@@ -69,8 +63,6 @@ public static class DbContextAssertionsExtensions
       options =>
       {
         ignoreNavigationsOptions.Configure(options);
-        ignoreKeysOptions.Configure(options);
-        ignoreForeignKeysOptions.Configure(options);
         ignoreIgnoredPropertiesOptions.Configure(options);
         dateTimeOffsetOptions.Configure(options);
         return options;
@@ -94,8 +86,6 @@ public static class DbContextAssertionsExtensions
     where TCollection : IEnumerable<TSubject>
   {
     var ignoreNavigationsOptions = new IgnoreNavigationsOptions(dbContext);
-    var ignoreKeysOptions = new IgnoreKeysOptions(dbContext);
-    var ignoreForeignKeysOptions = new IgnoreForeignKeysOptions(dbContext);
     var ignoreIgnoredPropertiesOptions = new IgnoreIgnoredPropertiesOptions(
       dbContext);
     var dateTimeOffsetOptions = new DateTimeOffsetOptions(dbContext);
@@ -105,8 +95,6 @@ public static class DbContextAssertionsExtensions
       options =>
       {
         ignoreNavigationsOptions.Configure(options);
-        ignoreKeysOptions.Configure(options);
-        ignoreForeignKeysOptions.Configure(options);
         ignoreIgnoredPropertiesOptions.Configure(options);
         dateTimeOffsetOptions.Configure(options);
         return options;
@@ -130,8 +118,6 @@ public static class DbContextAssertionsExtensions
     where TCollection : IEnumerable<TSubject>
   {
     var ignoreNavigationsOptions = new IgnoreNavigationsOptions(dbContext);
-    var ignoreKeysOptions = new IgnoreKeysOptions(dbContext);
-    var ignoreForeignKeysOptions = new IgnoreForeignKeysOptions(dbContext);
     var ignoreIgnoredPropertiesOptions = new IgnoreIgnoredPropertiesOptions(
       dbContext);
     var dateTimeOffsetOptions = new DateTimeOffsetOptions(dbContext);
@@ -141,8 +127,6 @@ public static class DbContextAssertionsExtensions
       options =>
       {
         ignoreNavigationsOptions.Configure(options);
-        ignoreKeysOptions.Configure(options);
-        ignoreForeignKeysOptions.Configure(options);
         ignoreIgnoredPropertiesOptions.Configure(options);
         dateTimeOffsetOptions.Configure(options);
         return options;
