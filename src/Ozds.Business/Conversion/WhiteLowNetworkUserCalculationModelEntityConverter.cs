@@ -94,6 +94,8 @@ public static class WhiteLowNetworkUserCalculationModelEntityConverterExtensions
         model.UsageActiveEnergyTotalImportT1.ToEntity(),
       UsageActiveEnergyTotalImportT2 =
         model.UsageActiveEnergyTotalImportT2.ToEntity(),
+      UsageReactiveEnergyTotalRampedT0 =
+        model.UsageReactiveEnergyTotalRampedT0.ToEntity(),
       UsageMeterFee = model.UsageMeterFee.ToEntity(),
       SupplyActiveEnergyTotalImportT1 =
         model.SupplyActiveEnergyTotalImportT1.ToEntity(),
