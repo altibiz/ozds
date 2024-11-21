@@ -125,7 +125,10 @@ public class ReadAnalysisBasesByRepresentativeTest(IServiceProvider services)
             context,
             expected.MonthlyMaxPowerAggregates);
 
-        actual.ToModel().Should().BeEquivalentTo(expected.ToModel());
+        var actualModel = actual.ToModel();
+        var expectedModel = expected.ToModel();
+
+        actualModel.Should().BeBusinesswiseEquivalentTo(expectedModel);
       });
     });
   }

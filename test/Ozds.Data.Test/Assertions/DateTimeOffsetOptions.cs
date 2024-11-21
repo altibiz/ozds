@@ -1,13 +1,8 @@
 using FluentAssertions.Equivalency;
-using Microsoft.EntityFrameworkCore;
 
 namespace Ozds.Data.Test.Assertions;
 
-public class DateTimeOffsetOptions(
-#pragma warning disable CS9113 // Parameter is unread.
-  DbContext dbContext
-#pragma warning restore CS9113 // Parameter is unread.
-)
+public class DateTimeOffsetOptions
 {
   public SelfReferenceEquivalencyAssertionOptions<TSelf> Configure<
     TSelf

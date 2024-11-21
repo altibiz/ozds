@@ -40,7 +40,7 @@ public static class DbContextDapperCommandExtensions
     {
       var splits = SplitReader(reader, propertyMappings);
       var instance = new T();
-      MapProperties(instance, splits);
+      MapProperties(context, instance, splits);
       results.Add(instance);
     }
 
@@ -62,13 +62,7 @@ public static class DbContextDapperCommandExtensions
       if (efType is { } entityType)
       {
         var columnMappings = GetColumnMappings(efType, efType);
-        var complexPropertyMappings = new List<ComplexPropertyMapping>();
-
-        foreach (var efProperty in entityType.GetComplexProperties())
-        {
-          var mapping = GetComplexPropertyMapping(context, efType, efProperty);
-          complexPropertyMappings.Add(mapping);
-        }
+        var complexPropertyMappings = GetComplexPropertyMappings(context, efType, efType);
 
         var entityPropertyMapping = new EntityPropertyMapping
         {
@@ -93,6 +87,24 @@ public static class DbContextDapperCommandExtensions
     }
 
     return propertyMappings;
+  }
+
+  private static List<ComplexPropertyMapping> GetComplexPropertyMappings(
+    DbContext context,
+    ITypeBase tableType,
+    ITypeBase type
+  )
+  {
+    var complexPropertyMappings = new List<ComplexPropertyMapping>();
+
+    foreach (var efProperty in type.GetComplexProperties())
+    {
+      var complexPropertyMapping =
+        GetComplexPropertyMapping(context, tableType, efProperty);
+      complexPropertyMappings.Add(complexPropertyMapping);
+    }
+
+    return complexPropertyMappings;
   }
 
   private static ComplexPropertyMapping GetComplexPropertyMapping(
@@ -161,6 +173,7 @@ public static class DbContextDapperCommandExtensions
   }
 
   private static void MapProperties(
+    DbContext context,
     object instance,
     List<ReaderSplit> splits
   )
@@ -182,26 +195,41 @@ public static class DbContextDapperCommandExtensions
           discriminatorValue = entitySplit.Values[discriminatorColumnName];
         }
 
-        var concreteEntityType = GetConcreteEntityType(
-          entityType,
-          discriminatorValue
-        );
+        var finalType = entityType;
+        var finalColumnMappings = entitySplit.EntityMapping.ColumnMappings;
+        var finalComplexPropertyMappings =
+          entitySplit.EntityMapping.ComplexPropertyMappings;
+        if (discriminatorValue is { })
+        {
+          finalType = GetConcreteEntityType(
+            entityType,
+            discriminatorValue
+          );
+          finalColumnMappings = GetColumnMappings(
+            finalType,
+            finalType
+          );
+          finalComplexPropertyMappings = GetComplexPropertyMappings(
+            context,
+            finalType,
+            finalType
+          );
+        }
 
-        var concreteType = concreteEntityType.ClrType;
-
-        var entityInstance = Activator.CreateInstance(concreteType)
+        var entityInstance = Activator.CreateInstance(finalType.ClrType)
           ?? throw new InvalidOperationException(
-            $"Failed to create instance of {concreteType.Name}");
+            $"Failed to create instance of {finalType.Name}");
 
         MapColumns(
           entityInstance,
-          entitySplit.EntityMapping.ColumnMappings,
+          finalColumnMappings,
           entitySplit.Values
         );
 
         MapComplexProperties(
+          context,
           entityInstance,
-          entitySplit.EntityMapping.ComplexPropertyMappings,
+          finalComplexPropertyMappings,
           entitySplit.Values
         );
 
@@ -224,6 +252,7 @@ public static class DbContextDapperCommandExtensions
   }
 
   private static void MapComplexProperties(
+    DbContext context,
     object instance,
     List<ComplexPropertyMapping> complexPropertyMappings,
     Dictionary<string, object> reader
@@ -247,21 +276,34 @@ public static class DbContextDapperCommandExtensions
         discriminatorValue = reader[discriminatorColumnName];
       }
 
-      var finalType = correspondingEntityType is { }
-        ? (ITypeBase)GetConcreteEntityType(
-            correspondingEntityType,
-            discriminatorValue)
-        : complexMapping.ComplexProperty.ComplexType;
+      var finalType = (ITypeBase)complexMapping.ComplexProperty.ComplexType;
+      var finalColumnMappings = complexMapping.ColumnMappings;
+      var finalComplexPropertyMappings = complexMapping.ComplexPropertyMappings;
+      if (correspondingEntityType is { } && discriminatorValue is { })
+      {
+        var entityType = GetConcreteEntityType(
+          correspondingEntityType,
+          discriminatorValue
+        );
+        if (entityType.ClrType != finalType.ClrType)
+        {
+          throw new InvalidOperationException(
+            $"No mapping for discriminator value '{discriminatorValue}'"
+            + $" on entity type '{entityType.Name}'"
+            + $" to type '{finalType.Name}'.");
+        }
+      }
 
       var complexInstance = Activator.CreateInstance(finalType.ClrType)
         ?? throw new InvalidOperationException(
           $"Failed to create instance of {finalType.ClrType.Name}");
 
-      MapColumns(complexInstance, complexMapping.ColumnMappings, reader);
+      MapColumns(complexInstance, finalColumnMappings, reader);
 
       MapComplexProperties(
+        context,
         complexInstance,
-        complexMapping.ComplexPropertyMappings,
+        finalComplexPropertyMappings,
         reader
       );
 
@@ -324,14 +366,9 @@ public static class DbContextDapperCommandExtensions
 
   private static IEntityType GetConcreteEntityType(
     IEntityType baseEntityType,
-    object? discriminatorValue
+    object discriminatorValue
   )
   {
-    if (discriminatorValue == null)
-    {
-      return baseEntityType;
-    }
-
     var concreteEntityType = baseEntityType
       .GetDerivedTypesInclusive()
       .FirstOrDefault(e => Equals(
