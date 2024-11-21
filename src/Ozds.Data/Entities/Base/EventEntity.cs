@@ -40,6 +40,8 @@ public class EventEntity : IEventEntity, IDisposable
   }
 
   public string Title { get; set; } = default!;
+
+  public string Kind { get; set; } = default!;
 }
 
 public class
@@ -58,7 +60,7 @@ public class
     builder
       .UseTphMappingStrategy()
       .ToTable("events")
-      .HasDiscriminator<string>("kind");
+      .HasDiscriminator<string>(nameof(EventEntity.Kind));
 
     builder.Ignore(nameof(EventEntity.Id));
     builder

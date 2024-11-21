@@ -89,6 +89,8 @@ public class NetworkUserCalculationEntity
     ArchivedNetworkUserMeasurementLocation
   { get; set; } =
     default!;
+
+  public string Kind { get; set; } = default!;
 }
 
 public class
@@ -130,7 +132,7 @@ public class
     builder
       .UseTphMappingStrategy()
       .ToTable("network_user_calculations")
-      .HasDiscriminator<string>("kind");
+      .HasDiscriminator<string>(nameof(NetworkUserCalculationEntity.Kind));
 
     builder
       .HasOne(nameof(NetworkUserCalculationEntity.NetworkUserInvoice))

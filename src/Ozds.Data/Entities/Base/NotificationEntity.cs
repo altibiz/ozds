@@ -49,6 +49,8 @@ public class NotificationEntity : INotificationEntity
   }
 
   public string Title { get; set; } = default!;
+
+  public string Kind { get; set; } = default!;
 }
 
 public class
@@ -67,7 +69,7 @@ public class
     builder
       .UseTphMappingStrategy()
       .ToTable("notifications")
-      .HasDiscriminator<string>("kind");
+      .HasDiscriminator<string>(nameof(NotificationEntity.Kind));
 
     builder.Ignore(nameof(NotificationEntity.Id));
     builder

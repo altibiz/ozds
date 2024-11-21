@@ -8,6 +8,8 @@ public class MeasurementValidatorEntity : AuditableEntity, IMeasurementValidator
 {
   public virtual ICollection<MeterEntity> Meters { get; set; } =
     default!;
+
+  public string Kind { get; set; } = default!;
 }
 
 public class MeasurementValidatorEntity<
@@ -29,6 +31,6 @@ public class MeasurementValidatorEntityTypeHierarchyConfiguration :
     builder
       .UseTphMappingStrategy()
       .ToTable("measurement_validators")
-      .HasDiscriminator<string>("kind");
+      .HasDiscriminator<string>(nameof(MeasurementValidatorEntity.Kind));
   }
 }

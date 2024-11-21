@@ -147,7 +147,10 @@ public class OzdsMeterTableQueries(
       .Where(x => x.ToDate < toDate)
       .ToListAsync();
 
-    return results.Select(x => x.ToModel()).ToList();
+    return results
+      .Select(x => x.ToModel())
+      .OfType<INetworkUserCalculation>()
+      .ToList();
   }
 
   public async Task<List<MeterTableViewModel>>

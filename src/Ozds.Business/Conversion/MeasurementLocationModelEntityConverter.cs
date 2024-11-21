@@ -1,6 +1,7 @@
 using Ozds.Business.Conversion.Base;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Abstractions;
+using Ozds.Business.Models.Base;
 using Ozds.Data.Entities;
 using Ozds.Data.Entities.Base;
 
@@ -43,7 +44,7 @@ public static class MeasurementLocationModelEntityConverterExtensions
     );
   }
 
-  public static IMeasurementLocation ToModel(
+  public static MeasurementLocationModel ToModel(
     this MeasurementLocationEntity entity)
   {
     if (entity is NetworkUserMeasurementLocationEntity
@@ -58,9 +59,7 @@ public static class MeasurementLocationModelEntityConverterExtensions
     }
 
     throw new NotSupportedException(
-      $"MeasurementLocationEntity type {
-        entity.GetType().Name
-      } is not supported."
+      $"MeasurementLocationEntity type {entity.GetType().Name} is not supported."
     );
   }
 }

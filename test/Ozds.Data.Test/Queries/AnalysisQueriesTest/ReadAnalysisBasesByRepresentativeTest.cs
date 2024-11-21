@@ -1,3 +1,4 @@
+using Ozds.Business.Models.Composite;
 using Ozds.Data.Entities.Composite;
 using Ozds.Data.Queries;
 using Ozds.Data.Test.Context;
@@ -123,6 +124,8 @@ public class ReadAnalysisBasesByRepresentativeTest(IServiceProvider services)
           .BeContextuallyEquivalentTo(
             context,
             expected.MonthlyMaxPowerAggregates);
+
+        actual.ToModel().Should().BeEquivalentTo(expected.ToModel());
       });
     });
   }

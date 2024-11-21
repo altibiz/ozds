@@ -9,6 +9,8 @@ public class MeasurementLocationEntity : AuditableEntity, IMeasurementLocationEn
   public string MeterId { get; set; } = default!;
 
   public virtual MeterEntity Meter { get; set; } = default!;
+
+  public string Kind { get; set; } = default!;
 }
 
 public class MeasurementLocationEntityTypeHierarchyConfiguration :
@@ -23,7 +25,7 @@ public class MeasurementLocationEntityTypeHierarchyConfiguration :
       builder
         .UseTphMappingStrategy()
         .ToTable("measurement_locations")
-        .HasDiscriminator<string>("kind");
+        .HasDiscriminator<string>(nameof(MeasurementLocationEntity.Kind));
     }
 
     builder

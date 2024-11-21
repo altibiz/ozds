@@ -9,6 +9,8 @@ public class NetworkUserCatalogueEntity : AuditableEntity
   public virtual ICollection<MeasurementLocationEntity>
     NetworkUserMeasurementLocations
   { get; set; } = default!;
+
+  public string Kind { get; set; } = default!;
 }
 
 public class NetworkUserCatalogueEntity<TNetworkUserCalculation>
@@ -33,6 +35,6 @@ public class
     builder
       .UseTphMappingStrategy()
       .ToTable("network_user_catalogues")
-      .HasDiscriminator<string>("kind");
+      .HasDiscriminator<string>(nameof(NetworkUserCatalogueEntity.Kind));
   }
 }

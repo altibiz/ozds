@@ -1,6 +1,7 @@
 using Ozds.Business.Conversion.Base;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Abstractions;
+using Ozds.Business.Models.Base;
 using Ozds.Data.Entities;
 using Ozds.Data.Entities.Base;
 
@@ -52,13 +53,11 @@ public static class NetworkUserCalculationModelEntityConverterExtensions
     }
 
     throw new NotSupportedException(
-      $"NetworkUserCalculationModel type {
-        model.GetType().Name
-      } is not supported."
+      $"NetworkUserCalculationModel type {model.GetType().Name} is not supported."
     );
   }
 
-  public static INetworkUserCalculation ToModel(
+  public static NetworkUserCalculationModel ToModel(
     this NetworkUserCalculationEntity entity)
   {
     if (entity is RedLowNetworkUserCalculationEntity
@@ -86,9 +85,7 @@ public static class NetworkUserCalculationModelEntityConverterExtensions
     }
 
     throw new NotSupportedException(
-      $"NetworkUserCalculationEntity type {
-        entity.GetType().Name
-      } is not supported."
+      $"NetworkUserCalculationEntity type {entity.GetType().Name} is not supported."
     );
   }
 }

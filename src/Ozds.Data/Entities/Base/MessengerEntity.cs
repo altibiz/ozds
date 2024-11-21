@@ -28,11 +28,14 @@ public class MessengerEntity : AuditableEntity
     default!;
 
   public virtual ICollection<MessengerNotificationEntity>
-    InactivityNotifications { get; set; } = default!;
+    InactivityNotifications
+  { get; set; } = default!;
 
   public PeriodEntity MaxInactivityPeriod { get; set; } = default!;
 
   public PeriodEntity PushDelayPeriod { get; set; } = default!;
+
+  public string Kind { get; set; } = default!;
 }
 
 public class
@@ -46,7 +49,7 @@ public class
     builder
       .UseTphMappingStrategy()
       .ToTable("messengers")
-      .HasDiscriminator<string>("kind");
+      .HasDiscriminator<string>(nameof(MessengerEntity.Kind));
 
     builder
       .HasOne(nameof(MessengerEntity.Location))

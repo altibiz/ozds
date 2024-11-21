@@ -40,6 +40,8 @@ public class MeterEntity : AuditableEntity, IMeterEntity
 
   public virtual MeasurementValidatorEntity MeasurementValidator { get; set; } =
     default!;
+
+  public string Kind { get; set; } = default!;
 }
 
 public class MeterEntity<
@@ -70,7 +72,7 @@ public class
     builder
       .UseTphMappingStrategy()
       .ToTable("meters")
-      .HasDiscriminator<string>("kind");
+      .HasDiscriminator<string>(nameof(MeterEntity.Kind));
 
     builder
       .HasOne(nameof(MeterEntity.Messenger))
