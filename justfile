@@ -35,7 +35,6 @@ default:
     @just --choose
 
 prepare:
-    do -i { dvc install } o+e>| ignore
     dvc pull
     dotnet tool restore
     (not (which prettier | is-empty)) or (npm install -g prettier) | ignore
