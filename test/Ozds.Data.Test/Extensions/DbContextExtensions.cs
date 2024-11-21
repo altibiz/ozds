@@ -185,4 +185,48 @@ public static class DbContextExtensions
 
     return keys;
   }
+
+  public static HashSet<MemberInfo> GetDiscriminatorColumns(
+    this DbContext dbContext
+  )
+  {
+    var entity = dbContext.Model
+      .GetEntityTypes()
+      .Select(e => e.FindDiscriminatorProperty())
+      .Select(p => (MemberInfo?)p?.PropertyInfo ?? p?.FieldInfo)
+      .OfType<MemberInfo>()
+      .ToHashSet();
+
+    var clr = dbContext.Model
+      .GetEntityTypes()
+      .SelectMany(e => e.ClrType
+        .GetProperties(
+          BindingFlags.Instance
+          | BindingFlags.Public
+          | BindingFlags.NonPublic)
+        .OfType<MemberInfo>()
+        .Concat(e.ClrType
+          .GetFields(
+            BindingFlags.Instance
+            | BindingFlags.Public
+            | BindingFlags.NonPublic))
+          .OfType<MemberInfo>())
+      .ToList();
+
+    var keys = clr
+      .Where(i =>
+        i switch
+        {
+          PropertyInfo p => entity
+            .OfType<PropertyInfo>()
+            .Any(e => e.Name == p.Name && e.DeclaringType == p.DeclaringType),
+          FieldInfo f => entity
+            .OfType<FieldInfo>()
+            .Any(e => e.Name == f.Name && e.DeclaringType == f.DeclaringType),
+          _ => false
+        })
+      .ToHashSet();
+
+    return keys;
+  }
 }

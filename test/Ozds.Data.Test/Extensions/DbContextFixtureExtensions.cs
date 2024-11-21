@@ -17,6 +17,8 @@ public static class DbContextFixtureExtensions
       .Add(new IgnoreForeignKeysSpecimenBuilder(context));
     fixture.Customizations
       .Add(new IgnoreIgnoredPropertiesSpecimenBuilder(context));
+    fixture.Customizations
+      .Add(new DiscriminatorColumnSpecimenBuilder(context));
 
     return fixture;
   }
