@@ -6,6 +6,6 @@ public class IndexController : Controller
 {
   public IActionResult Index()
   {
-    return RedirectToAction("Index", "App", new { culture = "en" });
+    return Redirect("/app/hr-HR");
   }
 }

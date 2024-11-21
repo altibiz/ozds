@@ -14,7 +14,7 @@
     }
     @T[Measure.ToTitle()]
     (@T[Measure.ToUnit()]
-    over the last
+    @T["over the last"]
     @(Multiplier == 1 ? "" : Multiplier.ToString())
     @T[Resolution.ToTitle(Multiplier)])
   </MudText>
@@ -29,7 +29,7 @@
         <ApexPointSeries
           Items="_measurementData"
           SeriesType="SeriesType.Donut"
-          Name="@Measure.ToTitle()"
+          Name="@T[Measure.ToTitle()]"
           XValue="@(x => x.Measurements.MeterId)"
           YAggregate="@(x => x.Sum(m => m.Measurements.ChartValue(Measure, null)))"/>
     }
@@ -43,13 +43,13 @@
         {
           <ApexPointSeries
             Items="@(_measurementData.Where(x => x.Measurements.MeterId == selectedMeter.Id).ToList())"
-            Name="@(selectedMeter.Id + " " + "Power")"
+            Name="@(selectedMeter.Id + " " + T["Power"])"
             SeriesType="SeriesType.Bar"
             XValue="x => DateTimeApplyOffset(x.Measurements.Timestamp)"
           YAggregate="x => x.Sum(m => m.Measurements.ChartValue(MeasureModel.ActivePower, null))" />
           <ApexPointSeries
             Items="@(_measurementData.Where(x => x.Measurements.MeterId == selectedMeter.Id).ToList())"
-            Name="@(selectedMeter.Id + " " + "Energy")"
+            Name="@(selectedMeter.Id + " " + T["Energy"])"
             SeriesType="DisplayType"
             XValue='x => DateTimeApplyOffset(x.Measurements.Timestamp)'
             YValue="x => x.Measurements.ChartValue(MeasureModel.ActiveEnergy, null)" />
@@ -59,7 +59,7 @@
           {
             <ApexPointSeries
               Items="@(_measurementData.Where(x => x.Measurements.MeterId == selectedMeter.Id).ToList())"
-              Name="@(selectedMeter.Id + " " + (PhasesSum ? "Sum" : phase.ToTitle()))"
+              Name="@(selectedMeter.Id + " " + (PhasesSum ? T["Sum"] : phase.ToTitle()))"
               SeriesType="DisplayType"
               XValue='x => DateTimeApplyOffset(x.Measurements.Timestamp)'
               YValue="x => x.Measurements.ChartValue(Measure, PhasesSum ? null : phase)"

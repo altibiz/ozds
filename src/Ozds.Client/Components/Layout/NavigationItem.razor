@@ -1,6 +1,6 @@
 @if (Descriptor.Children.Any())
 {
-    <MudNavGroup Title="@T[Descriptor.Title]"
+    <MudNavGroup Expanded="@LayoutState.IsNavigationDrawerOpen" Title="@T[Descriptor.Title]"
       Style="justify-self: center; max-width: 600px; font-size:larger;">
         @foreach (var child in Descriptor.Children.OrderBy(c => c.Title))
         {
@@ -37,6 +37,9 @@ else
 }
 
 @code {
+    [CascadingParameter]
+    public LayoutState LayoutState { get; set; } = default!;
+
     [Parameter]
     public NavigationDescriptor Descriptor { get; set; } = default!;
 }

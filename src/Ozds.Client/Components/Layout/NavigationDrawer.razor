@@ -12,12 +12,31 @@
   Elevation="4"
   Anchor="@LayoutState.DrawerAnchor"
   Variant="DrawerVariant.Temporary"
-  ClipMode="DrawerClipMode.Never" >
+  ClipMode="DrawerClipMode.Never"
+  Style="height: 100vh;">
+  <MudDrawerHeader Style="padding-inline: 0;">
+    <MudContainer MaxWidth="MaxWidth.Small" Class="d-flex flex-row">
+      <MudImage
+        Src="/favicon.ico"
+        Alt="Helb"
+        Style="height: calc(var(--mud-appbar-height) - 24px);"/>
+      <MudSpacer />
+      <MudButton
+        OnClick="e => LayoutState.SetNavigationDrawerOpen(false)"
+        Variant="Variant.Text"
+        Color="MudBlazor.Color.Primary"
+        Style="margin-right: -24px;"
+        Class="d-flex flex-row align-center">
+        <MudIcon Icon="@Icons.Material.Filled.Close"/>
+      </MudButton>
+    </MudContainer>
+  </MudDrawerHeader>
     <MudDrawerContainer>
         <MudNavMenu>
             @foreach (var route in GetNavigationDescriptors())
             {
                 <NavigationItem Descriptor="route" />
+                <MudDivider Style="width: 80%; margin-left: 10%;" />
             }
         </MudNavMenu>
     </MudDrawerContainer>
