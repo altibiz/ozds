@@ -279,7 +279,9 @@ public static class DbContextDapperCommandExtensions
       var finalType = (ITypeBase)complexMapping.ComplexProperty.ComplexType;
       var finalColumnMappings = complexMapping.ColumnMappings;
       var finalComplexPropertyMappings = complexMapping.ComplexPropertyMappings;
-      if (correspondingEntityType is { } && discriminatorValue is { })
+      if (correspondingEntityType is { }
+        && discriminatorValue is { }
+        && !string.IsNullOrEmpty(discriminatorValue.ToString()))
       {
         var entityType = GetConcreteEntityType(
           correspondingEntityType,
