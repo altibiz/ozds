@@ -309,6 +309,7 @@ erDiagram
         text am_deleted_by_id 
         timestamp_with_time_zone am_deleted_on 
         boolean am_is_deleted 
+        text am_kind 
         text am_last_updated_by_id 
         timestamp_with_time_zone am_last_updated_on 
         text am_messenger_id 
@@ -319,6 +320,7 @@ erDiagram
         text anuml_deleted_by_id 
         timestamp_with_time_zone anuml_deleted_on 
         boolean anuml_is_deleted 
+        text anuml_kind 
         text anuml_last_updated_by_id 
         timestamp_with_time_zone anuml_last_updated_on 
         text anuml_meter_id 
@@ -345,6 +347,7 @@ erDiagram
         text aunuc_deleted_by_id 
         timestamp_with_time_zone aunuc_deleted_on 
         boolean aunuc_is_deleted 
+        text aunuc_kind 
         text aunuc_last_updated_by_id 
         timestamp_with_time_zone aunuc_last_updated_on 
         numeric aunuc_meter_fee_price__eur 
@@ -441,11 +444,11 @@ erDiagram
     }
 
     network_user_invoice_states {
-        text abort_reason
-        text bill_id
-        uuid correlation_id PK
-        text current_state
-        text network_user_invoice_id
+        text abort_reason 
+        text bill_id 
+        uuid correlation_id PK 
+        text current_state 
+        text network_user_invoice_id 
     }
 
     network_user_invoices {
@@ -893,3 +896,4 @@ erDiagram
     representatives }o--|| representatives : "created_by_id"
     representatives }o--|| representatives : "deleted_by_id"
     representatives }o--|| representatives : "last_updated_by_id"
+```
