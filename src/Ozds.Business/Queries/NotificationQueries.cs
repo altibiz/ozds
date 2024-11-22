@@ -52,7 +52,7 @@ public class NotificationQueries(
     );
 
     return entities
-      .Select(modelEntityConverter.ToEntity<T>)
+      .Select(modelEntityConverter.ToModel<T>)
       .ToList();
   }
 
