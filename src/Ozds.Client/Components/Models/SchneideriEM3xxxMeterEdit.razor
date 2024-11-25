@@ -1,5 +1,3 @@
-
-
 <MudTextField
   Label="Id"
   @bind-Value="Model.Id"
@@ -20,10 +18,10 @@
   AnchorOrigin="Origin.BottomCenter"
   @bind-Value="Model.MessengerId"
   For="@(() => Model.MessengerId)">
-  <Paging PageAsync="@(page => ScopedServices.GetRequiredService<OzdsSchneideriEM3xxxMeterModelQueries>().GetMessengers(title: "", pageNumber: page))">
+  <Paging T="MessengerModel">
     <Summary Context="model">
       <MudSelectItem Value="model.Id">
-        <MessengerSummary Model="(MessengerModel)model"/>
+        <MessengerSummary Model="model"/>
       </MudSelectItem>
     </Summary>
   </Paging>
@@ -34,10 +32,10 @@
   AnchorOrigin="Origin.BottomCenter"
   @bind-Value="Model.MeasurementValidatorId"
   For="@(() => Model.MeasurementValidatorId)">
-  <Paging PageAsync="@(page => ScopedServices.GetRequiredService<OzdsSchneideriEM3xxxMeterModelQueries>().GetValidators(title: "", pageNumber: page))">
+  <Paging T="MeasurementValidatorModel">
     <Summary Context="model">
       <MudSelectItem Value="model.Id">
-        <ValidatorSummary Model="(MeasurementValidatorModel)model"/>
+        <SchneideriEM3xxxMeasurementValidatorSummary Model="model"/>
       </MudSelectItem>
     </Summary>
   </Paging>
@@ -49,8 +47,6 @@
   Label="x => T[x.ToTitle()]"/>
 
 @code {
-
   [Parameter]
   public SchneideriEM3xxxMeterModel Model { get; set; } = default!;
-
 }

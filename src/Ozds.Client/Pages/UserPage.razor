@@ -1,13 +1,20 @@
 @page "/user/{id}"
+@using Ozds.Client.Components.Models
 @attribute [Navigation(RouteValue = "id", Parents = new[] { typeof(UsersPage) })]
-@attribute [Authorize]
-@attribute [StreamRendering]
+@inherits OzdsOwningComponentBase
 
-<MaybeRepresentingUser Id="@Id"/>
+<Mutating>
+
+</Mutating>
+<Loading LoadAsync="@(() => ScopedServices
+  .GetRequiredService<RepresentativeQueries>()
+  .MaybeRepresentingUserByUserId(Id, CancellationToken.None))">
+  <Found>
+    <MaybeRepresentingUserDetails Model="@context"/>
+  </Found>
+</Loading>
 
 @code {
-
   [Parameter]
   public string? Id { get; set; }
-
 }

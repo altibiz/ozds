@@ -7,7 +7,7 @@ public class NavigationAttribute : Attribute
 {
   public int Order { get; set; }
 
-  public string? Title { get; set; }
+  public required string Title { get; set; }
 
   public bool IsVisible { get; set; } = true;
 
@@ -17,7 +17,7 @@ public class NavigationAttribute : Attribute
 
   public Type[] Parents { get; set; } = [];
 
-  public RoleModel[] Allows { get; set; } = default!;
+  public RoleModel[] Allows { get; set; } = Array.Empty<RoleModel>();
 
   public RoleModel[] Disallows { get; set; } = Array.Empty<RoleModel>();
 

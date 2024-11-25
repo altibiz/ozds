@@ -37,9 +37,12 @@
             <MudContainer>
               @T["Location"]: @(analysis.Location.Title)
             </MudContainer>
-            <MudContainer>
-              @T["Network user"]: @(analysis.NetworkUser.Title)
-            </MudContainer>
+            @if (analysis.NetworkUser is { } networkUser)
+            {
+              <MudContainer>
+                @T["Network user"]: @(networkUser.Title)
+              </MudContainer>
+            }
             <MudContainer Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
               @T["Current months consumption"]: <br>
               @NumericString(analysis.Analysis.ThisMonthConsumption.ActiveEnergy_kWh, 0) kWh
@@ -71,7 +74,7 @@
     QuickFilter="@(x =>
       string.IsNullOrWhiteSpace(_searchString)
       || x.Location.Title.Contains(_searchString)
-      || x.NetworkUser.Title.Contains(_searchString)
+      || (x.NetworkUser?.Title.Contains(_searchString) ?? false)
       || x.MeasurementLocation.Title.Contains(_searchString)
       || x.Meter.Title.Contains(_searchString))">
     <ToolBarContent>
@@ -103,13 +106,16 @@
 
       <TemplateColumn Title="@T["Network user"]" Sortable="false">
         <CellTemplate>
-          <MudStack Row>
-            <MudButton
-              OnClick="@(() => NavigationManager.NavigateTo($"network-user/{context.Item.NetworkUser.Id}"))"
-              Variant="Variant.Outlined" Color="Color.Primary">
-              @context.Item.NetworkUser.Title
-            </MudButton>
-          </MudStack>
+          @if (context.Item.NetworkUser is { } networkUser)
+          {
+            <MudStack Row>
+              <MudButton
+                OnClick="@(() => NavigationManager.NavigateTo($"network-user/{networkUser.Id}"))"
+                Variant="Variant.Outlined" Color="Color.Primary">
+                @networkUser.Title
+              </MudButton>
+            </MudStack>
+          }
         </CellTemplate>
       </TemplateColumn>
 

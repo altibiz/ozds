@@ -1,4 +1,3 @@
-
 <MudTextField
   Label="@T["Name"]"
   @bind-Value="Model.Title"
@@ -24,8 +23,6 @@
   For="@(() => Model.MeterFeePrice_EUR)"/>
 
 @code {
-
   [Parameter]
   public WhiteLowNetworkUserCatalogueModel Model { get; set; } = default!;
-
 }

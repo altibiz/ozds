@@ -153,8 +153,8 @@
   protected override async Task OnParametersSetAsync()
   {
     _events = (await ScopedServices
-        .GetRequiredService<OzdsEventQueries>()
-        .Read<EventModel>(MinLevel))
+        .GetRequiredService<EventQueries>()
+        .ReadByMinLevel<EventModel>(MinLevel, 1, CancellationToken.None))
       .Items
       .OfType<IEvent>()
       .ToList();

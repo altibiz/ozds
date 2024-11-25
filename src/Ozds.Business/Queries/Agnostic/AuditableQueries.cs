@@ -1,7 +1,7 @@
 using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Models.Abstractions;
+using Ozds.Business.Queries.Abstractions;
 using Ozds.Data.Entities.Abstractions;
-using Ozds.Data.Queries.Abstractions;
 using DataAuditableQueries = Ozds.Data.Queries.Agnostic.AuditableQueries;
 
 namespace Ozds.Business.Queries.Agnostic;
@@ -17,7 +17,7 @@ public class AuditableQueries(
     string id,
     CancellationToken cancellationToken
   )
-    where T : class, IAuditableEntity
+    where T : class, IAuditable
   {
     var model = await ReadSingleDynamic(typeof(T), id, cancellationToken);
     return model is null ? default : (T)model;
@@ -49,14 +49,16 @@ public class AuditableQueries(
   public async Task<PaginatedList<T>> Read<T>(
     int pageNumber,
     CancellationToken cancellationToken,
-    int pageCount = QueryConstants.DefaultPageCount
+    int pageCount = QueryConstants.DefaultPageCount,
+    bool deleted = false
   )
   {
     var models = await ReadDynamic(
       typeof(T),
       pageNumber,
       cancellationToken,
-      pageCount
+      pageCount,
+      deleted
     );
 
     return models.Items
@@ -68,7 +70,8 @@ public class AuditableQueries(
     Type modelType,
     int pageNumber,
     CancellationToken cancellationToken,
-    int pageCount = QueryConstants.DefaultPageCount
+    int pageCount = QueryConstants.DefaultPageCount,
+    bool deleted = false
   )
   {
     if (!modelType.IsAssignableTo(typeof(IAuditable)))
@@ -81,7 +84,8 @@ public class AuditableQueries(
       modelType,
       pageNumber,
       cancellationToken,
-      pageCount
+      pageCount,
+      where: !deleted ? x => !((IAuditableEntity)x).IsDeleted : null
     );
 
     return entities.Items

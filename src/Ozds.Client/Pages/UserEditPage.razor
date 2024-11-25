@@ -1,5 +1,8 @@
 @page "/user/{id}/edit"
-@attribute [Navigation(RouteValue = "id", Parents = new[] { typeof(UsersPage) })]
+@attribute [Navigation(
+  Title = "User",
+  RouteValue = "id",
+  Parents = new[] { typeof(UsersPage) })]
 @attribute [Authorize]
 @attribute [StreamRendering]
 

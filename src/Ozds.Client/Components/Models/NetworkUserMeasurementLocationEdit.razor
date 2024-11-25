@@ -1,4 +1,3 @@
-
 <MudTextField
   Label="@T["Name"]"
   @bind-Value="Model.Title"
@@ -9,7 +8,7 @@
   AnchorOrigin="Origin.BottomCenter"
   @bind-Value="Model.NetworkUserId"
   For="@(() => Model.NetworkUserId)">
-  <Paging PageAsync="@(page => ScopedServices.GetRequiredService<OzdsNetworkUserMeasurementLocationModelQueries>().GetNetworkUsers(title: "", pageNumber: page))">
+  <Paging T="NetworkUserModel">
     <Summary Context="model">
       <MudSelectItem Value="model.Id">
         <NetworkUserSummary Model="model"/>
@@ -23,10 +22,10 @@
   AnchorOrigin="Origin.BottomCenter"
   @bind-Value="Model.MeterId"
   For="@(() => Model.MeterId)">
-  <Paging PageAsync="@(page => ScopedServices.GetRequiredService<OzdsNetworkUserMeasurementLocationModelQueries>().GetMeters(title: "", pageNumber: page))">
+  <Paging T="MeterModel">
     <Summary Context="model">
       <MudSelectItem Value="model.Id">
-        <MeterSummary Model="(MeterModel)model"/>
+        <MeterSummary Model="model"/>
       </MudSelectItem>
     </Summary>
   </Paging>
@@ -37,18 +36,16 @@
   AnchorOrigin="Origin.BottomCenter"
   @bind-Value="Model.NetworkUserCatalogueId"
   For="@(() => Model.NetworkUserCatalogueId)">
-  <Paging PageAsync="@(page => ScopedServices.GetRequiredService<OzdsNetworkUserMeasurementLocationModelQueries>().GetCatalogues(title: "", pageNumber: page))">
+  <Paging T="NetworkUserCatalogueModel">
     <Summary Context="model">
       <MudSelectItem Value="model.Id">
-        <CatalogueSummary Model="(NetworkUserCatalogueModel)model"/>
+        <CatalogueSummary Model="model"/>
       </MudSelectItem>
     </Summary>
   </Paging>
 </MudSelect>
 
 @code {
-
   [Parameter]
   public NetworkUserMeasurementLocationModel Model { get; set; } = default!;
-
 }

@@ -1,4 +1,3 @@
-
 <MudTextField
   Label="@T["Name"]"
   @bind-Value="Model.Title"
@@ -49,7 +48,7 @@
   AnchorOrigin="Origin.BottomCenter"
   @bind-Value="Model.LocationId"
   For="@(() => Model.LocationId)">
-  <Paging PageAsync="@(page => ScopedServices.GetRequiredService<OzdsNetworkUserQueries>().GetLocations(title: "", pageNumber: page))">
+  <Paging T="LocationModel">
     <Summary Context="model">
       <MudSelectItem Value="model.Id">
         <LocationSummary Model="model"/>
@@ -58,23 +57,7 @@
   </Paging>
 </MudSelect>
 
-@*!!! Figure out this with multiple selection*@
-@* <MudSelect
-  Label="@T["Representatives"]"
-  AnchorOrigin="Origin.BottomCenter"
-  @bind-Value="Model."
-  For="@(() => Model.)">
-  <Paging PageAsync="@(page => ScopedServices.GetRequiredService<OzdsLocationModelQueries>().GetEligibleRepresentatives(title: "", pageNumber: page))">
-    <Summary Context="model">
-      <MudSelectItem Value="model.Id">
-        <MaybeRepresentingUserSummary Model="model"/>
-      </MudSelectItem>
-    </Summary>
-  </Paging>
-</MudSelect> *@
 @code {
-
   [Parameter]
   public NetworkUserModel Model { get; set; } = default!;
-
 }

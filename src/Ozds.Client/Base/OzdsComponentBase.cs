@@ -178,17 +178,19 @@ public abstract class OzdsComponentBase : ComponentBase
   {
     return JsonSerializer.Serialize(jsonDocument, _jsonSerializerOptions);
   }
+
   protected void NavigateToLogin()
   {
     NavigationManager.NavigateTo(
       $"/login?returnUrl={Uri.EscapeDataString(NavigationManager.Uri)}");
   }
+
   protected void NavigateBack()
   {
     JS.InvokeVoidAsync("history.back");
   }
 
-  protected IEnumerable<NavigationDescriptor> GetNavigationDescriptors()
+  protected static IEnumerable<NavigationDescriptor> GetNavigationDescriptors()
   {
     var descriptors = typeof(OzdsComponentBase).Assembly.GetTypes()
         .Where(type => type.IsSubclassOf(typeof(OzdsComponentBase)))
@@ -197,7 +199,7 @@ public abstract class OzdsComponentBase : ComponentBase
         .OrderBy(x => x.attr.Order)
         .Select(x => new NavigationDescriptor
         {
-          Title = x.attr.Title!,
+          Title = x.attr.Title,
           Route = x.attr.RouteValue ?? x.attr.Title,
           Icon = x.attr.Icon,
           Allows = x.attr.Allows ?? Array.Empty<RoleModel>(),
@@ -207,17 +209,14 @@ public abstract class OzdsComponentBase : ComponentBase
         .Where(d => !string.IsNullOrEmpty(d.Title))
         .ToList();
 
-    // Build a dictionary of descriptors by title
     var descriptorDict = descriptors.ToDictionary(d => d.Title);
 
-    // Find all parent titles
     var parentTitles = descriptors
         .Select(d => d.ParentTitle)
         .Where(pt => !string.IsNullOrEmpty(pt))
         .Distinct()
         .ToList();
 
-    // Add category descriptors for parent titles that don't have descriptors yet
     foreach (var parentTitle in parentTitles)
     {
       if (!descriptorDict.ContainsKey(parentTitle))
@@ -225,7 +224,6 @@ public abstract class OzdsComponentBase : ComponentBase
         var categoryDescriptor = new NavigationDescriptor
         {
           Title = parentTitle!,
-          // Categories don't have routes
           Route = null,
           Icon = null,
           Allows = Array.Empty<RoleModel>(),
@@ -237,7 +235,6 @@ public abstract class OzdsComponentBase : ComponentBase
       }
     }
 
-    // Build the hierarchy
     foreach (var descriptor in descriptors)
     {
       if (!string.IsNullOrEmpty(descriptor.ParentTitle) &&
@@ -247,16 +244,16 @@ public abstract class OzdsComponentBase : ComponentBase
       }
     }
 
-    // Return only root descriptors (those without ParentTitle)
     return descriptors.Where(d => string.IsNullOrEmpty(d.ParentTitle));
   }
+
   public class NavigationDescriptor
   {
-    public string Title { get; set; }
-    public string Route { get; set; }
+    public string Title { get; set; } = default!;
+    public string Route { get; set; } = default!;
     public string? Icon { get; set; }
-    public RoleModel[] Allows { get; set; }
-    public RoleModel[] Disallows { get; set; }
+    public RoleModel[] Allows { get; set; } = new RoleModel[] { };
+    public RoleModel[] Disallows { get; set; } = new RoleModel[] { };
     public string? ParentTitle { get; set; }
     public List<NavigationDescriptor> Children { get; set; } = new();
   }

@@ -16,23 +16,30 @@ public class UserQueries(
 ) : IUserQueries
 {
   public async Task<UserEntity?> UserByClaimsPrincipal(
-    ClaimsPrincipal principal)
+    ClaimsPrincipal principal,
+    CancellationToken cancellationToken
+  )
   {
     return await userManager.GetUserAsync(principal) is { } user
       ? user.ToEntity()
       : null;
   }
 
-  public async Task<UserEntity?> UserByUserId(string userId)
+  public async Task<UserEntity?> UserById(string id, CancellationToken cancellationToken)
   {
-    return await userManager.FindByIdAsync(userId) is { } user
+    return await session
+      .Query<User, UserIndex>()
+      .Where(index => index.UserId == id)
+      .FirstOrDefaultAsync() is { } user
       ? user.ToEntity()
       : null;
   }
 
   public async Task<(List<UserEntity> Items, int TotalCount)> Users(
     int pageNumber,
-    int pageSize)
+    int pageSize,
+    CancellationToken cancellationToken
+  )
   {
     var ordered = session
       .Query<User, UserIndex>()

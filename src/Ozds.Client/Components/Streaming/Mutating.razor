@@ -1,6 +1,6 @@
 @namespace Ozds.Client.Components.Streaming
 
-@typeparam L where L : notnull
+@typeparam T where T : notnull
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Business.Mutations.Agnostic
 @using Microsoft.AspNetCore.Components.Forms
@@ -8,12 +8,11 @@
 @using Ozds.Client.Components.Fields
 @using Ozds.Client.State
 @using MudBlazor
-@inherits Ozds.Client.Base.OzdsOwningComponentBase
 
 @inject IDialogService DialogService
 
 <Loading
-  T="L"
+  T="T"
   Value="@Value"
   Progress="@Progress"
   Error="@Error"
@@ -26,7 +25,7 @@
   <Found Context="model">
     @if (Label is not null)
     {
-      @Label(new MutatingState<L>(model, false))
+      @Label(new MutatingState<T>(model, false))
       <MudDivider Class="mb-4" />
     }
     else if (model is IIdentifiable identifiable)
@@ -52,14 +51,14 @@
           @T["Edit"]
           <span>&nbsp;</span>
         }
-        @(typeof(L).Name)
+        @(typeof(T).Name)
       </MudText>
       <MudDivider Class="mb-4" />
     }
 
     @if (model is IReadonly)
     {
-      @Details(new MutatingState<L>(model, false))
+      @Details(new MutatingState<T>(model, false))
     }
     else
     {
@@ -69,7 +68,7 @@
         <DataAnnotationsValidator/>
         @if (_mutating)
         {
-          @Edit(new MutatingState<L>(model, false))
+          @Edit(new MutatingState<T>(model, false))
           <div Class="d-flex flex-column mt-4">
             <div Class="d-flex flex-row">
               <MudButton
@@ -97,7 +96,7 @@
         }
         else
         {
-          @Details(new MutatingState<L>(model, false))
+          @Details(new MutatingState<T>(model, false))
           @if (model is not IReadonly)
           {
             <div Class="d-flex flex-row mt-4">
@@ -116,12 +115,12 @@
   <Created Context="model">
     @if (Label is not null)
     {
-      @Label(new MutatingState<L>(model, true))
+      @Label(new MutatingState<T>(model, true))
     }
     else
     {
       <MudText Typo="Typo.h5" Class="mb-2">
-        @T["Create"] @(typeof(L).Name)
+        @T["Create"] @(typeof(T).Name)
       </MudText>
     }
     <MudDivider Class="mb-4" />
@@ -131,7 +130,7 @@
       <DataAnnotationsValidator/>
       @if (!_mutating)
       {
-        @Edit(new MutatingState<L>(model, true))
+        @Edit(new MutatingState<T>(model, true))
         <div Class="d-flex flex-row mt-4">
           <MudButton
             ButtonType="ButtonType.Submit"
@@ -150,7 +149,7 @@
       }
       else
       {
-        @Details(new MutatingState<L>(model, true))
+        @Details(new MutatingState<T>(model, true))
         <div Class="d-flex flex-row mt-4">
           <MudButton
             OnClick="@(() => _mutating = !_mutating)"
@@ -163,174 +162,3 @@
     </EditForm>
   </Created>
 </Loading>
-
-@code {
-
-  [Parameter]
-  public L? Value { get; set; }
-
-  [Parameter]
-  public string? Id { get; set; } = default!;
-
-  [Parameter]
-  public RenderFragment? Progress { get; set; }
-
-  [Parameter]
-  public Func<L?>? Load { get; set; }
-
-  [Parameter]
-  public Func<Task<L?>>? LoadAsync { get; set; }
-
-  [Parameter]
-  public Func<L>? New { get; set; }
-
-  [Parameter]
-  public Func<Task<L>>? NewAsync { get; set; }
-
-  [Parameter]
-  public RenderFragment<string>? Error { get; set; }
-
-  [Parameter]
-  public Action<L>? Create { get; set; }
-
-  [Parameter]
-  public Func<L, Task>? CreateAsync { get; set; }
-
-  [Parameter]
-  public Action<L>? Update { get; set; }
-
-  [Parameter]
-  public Func<L, Task>? UpdateAsync { get; set; }
-
-  [Parameter]
-  public Action<L>? Delete { get; set; }
-
-  [Parameter]
-  public Func<L, Task>? DeleteAsync { get; set; }
-
-  [Parameter]
-  public RenderFragment<MutatingState<L>>? Label { get; set; } = default!;
-
-  [Parameter]
-  public RenderFragment<MutatingState<L>> Details { get; set; } = default!;
-
-  [Parameter]
-  public RenderFragment<MutatingState<L>> Edit { get; set; } = default!;
-
-  private bool _mutating;
-
-  private async Task OnCreate(L model)
-  {
-    try
-    {
-      if (Create is not null)
-      {
-        Create(model);
-      }
-      else if (CreateAsync is not null)
-      {
-        await CreateAsync(model);
-      }
-      else if (model?.GetType().IsAssignableTo(typeof(IAuditable)) ?? false)
-      {
-        var mutations = ScopedServices.GetRequiredService<AuditableMutations>();
-        await mutations.Create((model as IAuditable)!, CancellationToken.None);
-      }
-      else
-      {
-        throw new InvalidOperationException(
-          $"No create strategy found for {typeof(L).Name}");
-      }
-    }
-    catch (Exception ex)
-    {
-      DialogService.Show<MutatingResult>(
-        T["Failure"],
-        new DialogParameters { { nameof(MutatingResult.Body), $"{T["Failed creating"]} {T[typeof(L).Name]} - {ex.Message}" } },
-        new DialogOptions { CloseOnEscapeKey = true });
-      return;
-    }
-
-    DialogService.Show<MutatingResult>(
-      T["Success"],
-      new DialogParameters { { nameof(MutatingResult.Body), $"{T["Successfully created"]} {T[typeof(L).Name]}" } },
-      new DialogOptions { CloseOnEscapeKey = true });
-  }
-
-  private async Task OnUpdate(L model)
-  {
-    try
-    {
-      if (Update is not null)
-      {
-        Update(model);
-      }
-      else if (UpdateAsync is not null)
-      {
-        await UpdateAsync(model);
-      }
-      else if (model?.GetType().IsAssignableTo(typeof(IAuditable)) ?? false)
-      {
-        var mutations = ScopedServices.GetRequiredService<AuditableMutations>();
-        await mutations.Update((model as IAuditable)!, CancellationToken.None);
-      }
-      else
-      {
-        throw new InvalidOperationException(
-          $"No update strategy found for {typeof(L).Name}");
-      }
-    }
-    catch (Exception ex)
-    {
-      DialogService.Show<MutatingResult>(
-        T["Failure"],
-        new DialogParameters { { nameof(MutatingResult.Body), $"{T["Failed updating"]} {T[typeof(L).Name]} - {ex.Message}" } },
-        new DialogOptions { CloseOnEscapeKey = true });
-      return;
-    }
-
-    DialogService.Show<MutatingResult>(
-      T["Success"],
-      new DialogParameters { { nameof(MutatingResult.Body), $"{T["Successfully updated"]} {T[typeof(L).Name]}" } },
-      new DialogOptions { CloseOnEscapeKey = true });
-  }
-
-  private async Task OnDelete(L model)
-  {
-    try
-    {
-      if (Delete is not null)
-      {
-        Delete(model);
-      }
-      else if (DeleteAsync is not null)
-      {
-        await DeleteAsync(model);
-      }
-      else if (model?.GetType().IsAssignableTo(typeof(IAuditable)) ?? false)
-      {
-        var mutations = ScopedServices.GetRequiredService<AuditableMutations>();
-        await mutations.Delete((model as IAuditable)!, CancellationToken.None);
-      }
-      else
-      {
-        throw new InvalidOperationException(
-          $"No delete strategy found for {typeof(L).Name}");
-      }
-    }
-    catch (Exception ex)
-    {
-      DialogService.Show<MutatingResult>(
-        T["Failure"],
-        new DialogParameters { { nameof(MutatingResult.Body), $"{T["Failed deleting"]} {T[typeof(L).Name]} - {ex.Message}" } },
-        new DialogOptions { CloseOnEscapeKey = true });
-      return;
-    }
-
-    DialogService.Show<MutatingResult>(
-      T["Success"],
-      new DialogParameters { { nameof(MutatingResult.Body), $"{T["Successfully deleted"]} {T[typeof(L).Name]}" } },
-      new DialogOptions { CloseOnEscapeKey = true });
-  }
-
-}

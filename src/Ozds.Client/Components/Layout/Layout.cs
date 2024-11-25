@@ -106,8 +106,10 @@ public partial class Layout : OzdsLayoutComponentBase
 
     await using var scope = ServiceScopeFactory.CreateAsyncScope();
     var maybeRepresentingUser = await scope.ServiceProvider
-      .GetRequiredService<OzdsRepresentativeQueries>()
-      .MaybeRepresentingUserByClaimsPrincipal(claimsPrincipal);
+      .GetRequiredService<RepresentativeQueries>()
+      .MaybeRepresentingUserByClaimsPrincipal(
+        claimsPrincipal,
+        CancellationToken.None);
     if (maybeRepresentingUser is null)
     {
       NavigateToLogin();

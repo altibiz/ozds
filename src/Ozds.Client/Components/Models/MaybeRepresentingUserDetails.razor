@@ -1,4 +1,3 @@
-
 <DetailsField Title="@T["User Name"]">
   @Model.User.UserName
 </DetailsField>
@@ -7,29 +6,26 @@
   @Model.User.Email
 </DetailsField>
 
-
-@if (Model.Representative is not null)
+@if (Model.Representative is { } representative)
 {
   <DetailsField Title="@T["Title"]">
-  @Model.Representative.Title
-</DetailsField>
+    @representative.Title
+  </DetailsField>
 
-<DetailsField Title="@T["Name"]">
-  @Model.Representative.PhysicalPerson.Name
-</DetailsField>
+  <DetailsField Title="@T["Name"]">
+    @representative.PhysicalPerson.Name
+  </DetailsField>
 
-<DetailsField Title="@T["Email"]">
-  @Model.Representative.PhysicalPerson.Email
-</DetailsField>
+  <DetailsField Title="@T["Email"]">
+    @representative.PhysicalPerson.Email
+  </DetailsField>
 
-<DetailsField Title="@T["PhoneNumber"]">
-  @Model.Representative.PhysicalPerson.PhoneNumber
-</DetailsField>
+  <DetailsField Title="@T["PhoneNumber"]">
+    @representative.PhysicalPerson.PhoneNumber
+  </DetailsField>
 }
 
 @code {
-
   [Parameter]
   public MaybeRepresentingUserModel Model { get; set; } = default!;
-
 }

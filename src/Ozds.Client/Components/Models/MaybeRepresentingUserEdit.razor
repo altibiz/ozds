@@ -1,5 +1,3 @@
-
-
 <MudTextField
   Label="@T["User Name"]"
   @bind-Value="Model.User.UserName"
@@ -7,64 +5,38 @@
 
 @if (Model.Representative is not null)
 {
-<MudTextField
-  Label="@T["Title"]"
-  @bind-Value="Model.Representative.Title"
-  For="@(() => Model.Representative.Title)"/>
+  <MudTextField
+    Label="@T["Title"]"
+    @bind-Value="Model.Representative.Title"
+    For="@(() => Model.Representative.Title)"/>
 
-@*!!! Should I use MultyEnumPicker ? *@
-<MudSelect
-  T="RoleModel"
-  Label="@T["Role"]"
-  AnchorOrigin="Origin.BottomCenter"
-  @bind-Value="Model.Representative.Role"
-  For="@(() => Model.Representative.Role)">
-  <MudSelectItem Value="@RoleModel.OperatorRepresentative">
-    Operator Representative
-  </MudSelectItem>
-  <MudSelectItem Value="@RoleModel.LocationRepresentative">
-    Location Representative
-  </MudSelectItem>
-  <MudSelectItem Value="@RoleModel.NetworkUserRepresentative">
-    Network User Representative
-  </MudSelectItem>
-</MudSelect>
+  <EnumPicker
+    @bind-Value="Model.Representative.Role"
+    Title="@T["Role"]"
+    Label="x => T[x.ToTitle()]"/>
 
-@*!!! Should I use MultyEnumPicker ? *@
-<MudSelect
-  T="TopicModel"
-  Label="@T["Topics"]"
-  AnchorOrigin="Origin.BottomCenter"
-  MultiSelection
-  SelectedValues="@Model.Representative.Topics"
-  SelectedValuesChanged="e => Model.Representative.Topics = e.ToList()">
-  @foreach (var value in Enum.GetValues<TopicModel>())
-  {
-    <MudSelectItem Value="value">
-      @T[value.ToTitle()]
-    </MudSelectItem>
-  }
-</MudSelect>
+  <MultiEnumPicker
+    @bind-Value="Model.Representative.Topics"
+    Title="@T["Topics"]"
+    Label="x => T[x.ToTitle()]"/>
 
-<MudTextField
-  Label="@T["Name"]"
-  @bind-Value="Model.Representative.PhysicalPerson.Name"
-  For="@(() => Model.Representative.PhysicalPerson.Name)"/>
+  <MudTextField
+    Label="@T["Name"]"
+    @bind-Value="Model.Representative.PhysicalPerson.Name"
+    For="@(() => Model.Representative.PhysicalPerson.Name)"/>
 
-<MudTextField
-  Label="@T["Email"]"
-  @bind-Value="Model.Representative.PhysicalPerson.Email"
-  For="@(() => Model.Representative.PhysicalPerson.Email)"/>
+  <MudTextField
+    Label="@T["Email"]"
+    @bind-Value="Model.Representative.PhysicalPerson.Email"
+    For="@(() => Model.Representative.PhysicalPerson.Email)"/>
 
-<MudTextField
-  Label="@T["PhoneNumber"]"
-  @bind-Value="Model.Representative.PhysicalPerson.PhoneNumber"
-  For="@(() => Model.Representative.PhysicalPerson.PhoneNumber)"/>
+  <MudTextField
+    Label="@T["PhoneNumber"]"
+    @bind-Value="Model.Representative.PhysicalPerson.PhoneNumber"
+    For="@(() => Model.Representative.PhysicalPerson.PhoneNumber)"/>
 }
 
 @code {
-
   [Parameter]
   public MaybeRepresentingUserModel Model { get; set; } = default!;
-
 }

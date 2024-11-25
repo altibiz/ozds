@@ -5,10 +5,12 @@ namespace Ozds.Users.Queries.Abstractions;
 
 public interface IUserQueries
 {
-  Task<UserEntity?> UserByClaimsPrincipal(ClaimsPrincipal principal);
-  Task<UserEntity?> UserByUserId(string userId);
+  Task<UserEntity?> UserByClaimsPrincipal(ClaimsPrincipal principal, CancellationToken cancellationToken);
+
+  Task<UserEntity?> UserById(string id, CancellationToken cancellationToken);
 
   Task<(List<UserEntity> Items, int TotalCount)> Users(
     int pageNumber,
-    int pageSize);
+    int pageSize,
+    CancellationToken cancellationToken);
 }

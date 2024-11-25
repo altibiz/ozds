@@ -1,16 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Conversion.Abstractions;
-using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Enums;
-using Ozds.Business.Models.Joins;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Data.Context;
-using Ozds.Data.Entities.Base;
-using Ozds.Data.Entities.Joins;
-using Ozds.Data.Extensions;
-using INotification = Ozds.Business.Models.Abstractions.INotification;
 
 namespace Ozds.Business.Queries.Agnostic;
 

@@ -8,12 +8,13 @@
 {
   return;
 }
-<Loading T="EventModel" LoadAsync="@(() => ScopedServices.GetRequiredService<OzdsEventQueries>().ReadSingle<EventModel>(Id))">
+<Loading T="EventModel" LoadAsync="@(() => ScopedServices
+  .GetRequiredService<ReadonlyQueries>()
+  .ReadSingle<EventModel>(Id, CancellationToken.None))">
   <Found Context="model">
     @{
       var json = JsonString(model.Content);
     }
-
     <MudContainer MaxWidth="MaxWidth.Small" Class="d-flex  flex-column" Style="float: left;">
       <MudText Class="d-flex align-center my-2" Typo="@Typo.h5">Event Id: @Id</MudText>
       <MudPaper class="mt-2 px-4 py-2">
@@ -78,16 +79,12 @@
             <MudHidden Breakpoint="Breakpoint.Xs">
               <MudText Type="Typo.body2" Align="@(json.Length > 30 ? Align.Left : Align.Right)"
                        Style="overflow-wrap: break-word;">
-                <code Style="overflow-wrap: break-word;">
-                  @json
-                </code>
+                <Serialized Value="@model.Content"/>
               </MudText>
             </MudHidden>
             <MudHidden Breakpoint="Breakpoint.SmAndUp">
               <MudText Type="Typo.body2" Align="MudAlign.Left">
-                <code Style="overflow-wrap: break-word;">
-                  @json
-                </code>
+                <Serialized Value="@model.Content"/>
               </MudText>
             </MudHidden>
           </MudItem>

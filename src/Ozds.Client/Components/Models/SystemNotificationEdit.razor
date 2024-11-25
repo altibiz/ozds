@@ -1,4 +1,3 @@
-
 <MudTextField
   Label="@T["Name"]"
   @bind-Value="Model.Title"
@@ -13,8 +12,6 @@
   For="@(() => Model.Content)"/>
 
 @code {
-
   [Parameter]
   public SystemNotificationModel Model { get; set; } = default!;
-
 }

@@ -1,0 +1,24 @@
+
+
+@if(Model is BlueLowNetworkUserCatalogueModel blueLowNetworkUserCatalogueModel){
+  <BlueLowNetworkUserCatalogueSummary Model="blueLowNetworkUserCatalogueModel"/>
+}
+else if(Model is RedLowNetworkUserCatalogueModel redLowNetworkUserCatalogueModel){
+  <RedLowNetworkUserCatalogueSummary Model="redLowNetworkUserCatalogueModel"/>
+}
+else if(Model is WhiteLowNetworkUserCatalogueModel whiteLowNetworkUserCatalogueModel){
+  <WhiteLowNetworkUserCatalogueSummary Model="whiteLowNetworkUserCatalogueModel"/>
+}
+else if(Model is WhiteMediumNetworkUserCatalogueModel whiteMediumNetworkUserCatalogueModel){
+  <WhiteMediumNetworkUserCatalogueSummary Model="whiteMediumNetworkUserCatalogueModel"/>
+}
+else{
+  throw new ArgumentOutOfRangeException(nameof(Model));
+}
+
+@code {
+
+  [Parameter]
+  public NetworkUserCatalogueModel Model { get; set; } = default!;
+
+}

@@ -17,7 +17,7 @@ public class ReadonlyQueries(
     string id,
     CancellationToken cancellationToken
   )
-    where T : class, IReadonlyEntity
+    where T : class, IReadonly
   {
     var model = await ReadSingleDynamic(typeof(T), id, cancellationToken);
     return model is null ? default : (T)model;

@@ -20,10 +20,10 @@
   AnchorOrigin="Origin.BottomCenter"
   @bind-Value="Model.MessengerId"
   For="@(() => Model.MessengerId)">
-  <Paging PageAsync="@(page => ScopedServices.GetRequiredService<OzdsAbbB2xMeterModelQueries>().GetMessengers(title: "", pageNumber: page))">
+  <Paging T="MessengerModel">
     <Summary Context="model">
       <MudSelectItem Value="model.Id">
-        <MessengerSummary Model="(MessengerModel)model"/>
+        <MessengerSummary Model="model"/>
       </MudSelectItem>
     </Summary>
   </Paging>
@@ -34,10 +34,10 @@
   AnchorOrigin="Origin.BottomCenter"
   @bind-Value="Model.MeasurementValidatorId"
   For="@(() => Model.MeasurementValidatorId)">
-  <Paging PageAsync="@(page => ScopedServices.GetRequiredService<OzdsAbbB2xMeterModelQueries>().GetValidators(title: "", pageNumber: page))">
+  <Paging T="AbbB2xMeterValidatorModel">
     <Summary Context="model">
       <MudSelectItem Value="model.Id">
-        <ValidatorSummary Model="(MeasurementValidatorModel)model"/>
+        <AbbB2xM3xxxMeasurementValidatorSummary Model="model"/>
       </MudSelectItem>
     </Summary>
   </Paging>
