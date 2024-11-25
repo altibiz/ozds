@@ -1,42 +1,47 @@
+@using Microsoft.AspNetCore.Components
+@using Ozds.Business.Models
+@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Fields
 
-<DetailsField Title="@T["Name"]">
+@namespace Ozds.Client.Components.Models
+
+@inherits OzdsComponentBase
+
+<DetailsField Title="@Translate("Name")">
   @Model.Title
 </DetailsField>
-<DetailsField Title="@T["Min voltage"]">
+<DetailsField Title="@Translate("Min voltage")">
   @Model.MinVoltage_V
 </DetailsField>
-<DetailsField Title="@T["Max voltage"]">
+<DetailsField Title="@Translate("Max voltage")">
   @Model.MaxVoltage_V
 </DetailsField>
-<DetailsField Title="@T["Min current"]">
+<DetailsField Title="@Translate("Min current")">
   @Model.MinCurrent_A
 </DetailsField>
-<DetailsField Title="@T["Max current"]">
+<DetailsField Title="@Translate("Max current")">
   @Model.MaxCurrent_A
 </DetailsField>
-<DetailsField Title="@T["Min active power"]">
+<DetailsField Title="@Translate("Min active power")">
   @Model.MinActivePower_W
 </DetailsField>
-<DetailsField Title="@T["Max active power"]">
+<DetailsField Title="@Translate("Max active power")">
   @Model.MaxActivePower_W
 </DetailsField>
-<DetailsField Title="@T["Min reactive power"]">
+<DetailsField Title="@Translate("Min reactive power")">
   @Model.MinReactivePower_VAR
 </DetailsField>
-<DetailsField Title="@T["Max reactive power"]">
+<DetailsField Title="@Translate("Max reactive power")">
   @Model.MaxReactivePower_VAR
 </DetailsField>
-<DetailsField Title="@T["Min apparent power"]">
+<DetailsField Title="@Translate("Min apparent power")">
   @Model.MinApparentPower_VA
 </DetailsField>
-<DetailsField Title="@T["Max apparent power"]">
+<DetailsField Title="@Translate("Max apparent power")">
   @Model.MaxApparentPower_VA
 </DetailsField>
 
-
 @code {
-
   [Parameter]
   public SchneideriEM3xxxMeasurementValidatorModel Model { get; set; } = default!;
-
 }

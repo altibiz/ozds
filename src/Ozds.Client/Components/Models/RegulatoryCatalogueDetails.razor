@@ -1,20 +1,28 @@
+@using Microsoft.AspNetCore.Components
+@using Ozds.Business.Models
+@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Fields
 
-<DetailsField Title="@T["Name"]">
+@namespace Ozds.Client.Components.Models
+
+@inherits OzdsComponentBase
+
+<DetailsField Title="@Translate("Name")">
   @Model.Title
 </DetailsField>
-<DetailsField Title="@T["Price of higher tariff active energy consumption (EUR/kWh)"]">
+<DetailsField Title="@Translate("Price of higher tariff active energy consumption (EUR/kWh)")">
   @Model.ActiveEnergyTotalImportT1Price_EUR
 </DetailsField>
-<DetailsField Title="@T["Price of active energy consumption in low tariff (EUR/kWh)"]">
+<DetailsField Title="@Translate("Price of active energy consumption in low tariff (EUR/kWh)")">
   @Model.ActiveEnergyTotalImportT2Price_EUR
 </DetailsField>
-<DetailsField Title="@T["Price of personal use fee (EUR/kWh)"]">
+<DetailsField Title="@Translate("Price of personal use fee (EUR/kWh)")">
   @Model.RenewableEnergyFeePrice_EUR
 </DetailsField>
-<DetailsField Title="@T["Price of business use fee (EUR/kWh)"]">
+<DetailsField Title="@Translate("Price of business use fee (EUR/kWh)")">
   @Model.BusinessUsageFeePrice_EUR
 </DetailsField>
-<DetailsField Title="@T["Tax (%)"]">
+<DetailsField Title="@Translate("Tax (%)")">
   @Model.TaxRate_Percent
 </DetailsField>
 

@@ -1,9 +1,17 @@
 @using Microsoft.Extensions.DependencyInjection
 @using Ozds.Business.Queries
+@using Ozds.Client.Attributes
+@using Ozds.Client.Components.Base
+@using Ozds.Business.Models.Enums
+
+@namespace Ozds.Client.Pages
+
 @page "/users"
+
 @attribute [Navigation(
   Title = "Users",
   Allows = new[] { RoleModel.OperatorRepresentative })]
+
 @inherits OzdsOwningComponentBase
 
 <Paging PageAsync="@((page) => ScopedServices

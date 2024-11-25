@@ -2,12 +2,12 @@
 @using Size = MudBlazor.Size
 <MudHidden Breakpoint="Breakpoint.MdAndUp">
   <MudText Typo="Typo.h4" Class="d-flex">
-    @(T["Messengers"])
+    @(Translate("Messengers"))
   </MudText>
   <MudTextField
     Class=""
     ValueChanged="EventCallback.Factory.Create<string>(this, Filter)"
-    Label="@T["Search"]"
+    Label="@Translate("Search")"
     Variant="Variant.Text"/>
   @foreach (var messenger in mobileMessengers.Where(x => x.show).ToList())
   {
@@ -18,7 +18,7 @@
             xs="10"
             Class="d-flex align-center justify-start"
             Style="font-size: large;">
-            @T["Messenger"]: <br> @messenger.data.Title
+            @Translate("Messenger"): <br> @messenger.data.Title
           </MudItem>
           <MudItem xs="2" Class="d-flex align-center justify-end">
             <MudIconButton
@@ -34,7 +34,7 @@
           <MudStack>
             <MudDivider DividerType="DividerType.Middle" Class="mt-2"/>
             <MudText>
-              @T["Messenger"]: @(messenger.data.Title)
+              @Translate("Messenger"): @(messenger.data.Title)
             </MudText>
           </MudStack>
         </MudCollapse>
@@ -52,11 +52,11 @@
     Filterable="true"
     QuickFilter="@_quickFilter">
     <ToolBarContent>
-      <MudText Typo="Typo.h4">@T["Messengers"]</MudText>
+      <MudText Typo="Typo.h4">@Translate("Messengers")</MudText>
       <MudSpacer/>
       <MudTextField
         @bind-Value="Search"
-        Placeholder="@T["Search"]"
+        Placeholder="@Translate("Search")"
         Adornment="Adornment.Start"
         Immediate="true"
         AdornmentIcon="@Icons.Material.Filled.Search"
@@ -65,7 +65,7 @@
       </MudTextField>
     </ToolBarContent>
     <Columns>
-      <TemplateColumn Title="@T["Messenger"]" Sortable="false">
+      <TemplateColumn Title="@Translate("Messenger")" Sortable="false">
         <CellTemplate>
           <MudStack Row>
             <MudButton
@@ -81,7 +81,7 @@
       <PropertyColumn
         CellStyle="font-size: x-large;"
         Property="x => x.MaxInactivityPeriod"
-        Title='@T["Max Inactivity"]'>
+        Title='@Translate("Max Inactivity")'>
         <CellTemplate>
           @context.Item.MaxInactivityPeriod.ToTitle()
         </CellTemplate>
@@ -90,7 +90,7 @@
       <PropertyColumn
         CellStyle="font-size: x-large;"
         Property="x => x.PushDelayPeriod"
-        Title='@T["Push delay"]'>
+        Title='@Translate("Push delay")'>
         <CellTemplate>
           @context.Item.PushDelayPeriod.ToTitle()
         </CellTemplate>

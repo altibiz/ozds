@@ -12,7 +12,7 @@ public class Localizer : ILocalizer
   private static readonly Lazy<Dictionary<string, string>> _translationsHR =
     new(() => LoadTranslations("translations-hr.json"));
 
-  public string ForCulture(CultureInfo culture, string notLocalized)
+  public string TranslateForCulture(CultureInfo culture, string notLocalized)
   {
     Dictionary<string, string> activeTranslation = [];
     if (culture.Equals(CultureInfo.CreateSpecificCulture("en-US")))
@@ -33,9 +33,14 @@ public class Localizer : ILocalizer
     return notLocalized;
   }
 
+  public string Translate(string notLocalized)
+  {
+    return TranslateForCulture(CultureInfo.CurrentCulture, notLocalized);
+  }
+
   public string this[string notLocalized]
   {
-    get { return ForCulture(CultureInfo.CurrentCulture, notLocalized); }
+    get { return TranslateForCulture(CultureInfo.CurrentCulture, notLocalized); }
   }
 
   private static Dictionary<string, string> LoadTranslations(string fileName)
@@ -54,9 +59,7 @@ public class Localizer : ILocalizer
     var stream = assembly.GetManifestResourceStream(fullName) ??
       throw new InvalidOperationException(
         $"Resource {fullName} does not exist. "
-        + $"Here are the available resources for the given assembly '{
-          assembly.GetName().Name
-        }':\n"
+        + $"Here are the available resources for the given assembly '{assembly.GetName().Name}':\n"
         + string.Join("\n", assembly.GetManifestResourceNames())
       );
     return stream;

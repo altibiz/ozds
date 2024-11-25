@@ -1,15 +1,17 @@
-@namespace Ozds.Client.Components.Streaming
-
-@typeparam T where T : notnull
-@using Ozds.Business.Models.Abstractions
-@using Ozds.Business.Mutations.Agnostic
 @using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.Extensions.DependencyInjection
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Business.Mutations.Agnostic
+@using Ozds.Client.Components.Base
 @using Ozds.Client.Components.Fields
 @using Ozds.Client.State
 @using MudBlazor
 
-@inject IDialogService DialogService
+@namespace Ozds.Client.Components.Streaming
+
+@typeparam T where T : notnull
+
+@inherits OzdsOwningComponentBase
 
 <Loading
   T="T"
@@ -33,13 +35,13 @@
       <MudText Typo="Typo.h5" Class="mb-2">
         @if (_mutating)
         {
-          @T["Edit"]
+          @Translate("Edit")
           <span>&nbsp;</span>
         }
         @(identifiable.Title)
       </MudText>
       <MudDivider Class="mb-4" />
-      <DetailsField Title="@T["Id"]">
+      <DetailsField Title="@Translate("Id")">
         @identifiable.Id
       </DetailsField>
     }
@@ -48,7 +50,7 @@
       <MudText Typo="Typo.h5" Class="mb-2">
         @if (_mutating)
         {
-          @T["Edit"]
+          @Translate("Edit")
           <span>&nbsp;</span>
         }
         @(typeof(T).Name)
@@ -75,14 +77,14 @@
                 Variant="Variant.Filled"
                 Color="MudBlazor.Color.Success"
                 ButtonType="ButtonType.Submit">
-                @T["Update"]
+                @Translate("Update")
               </MudButton>
               <MudButton
                 Variant="Variant.Filled"
                 Color="MudBlazor.Color.Secondary"
                 OnClick="@(() => _mutating = !_mutating)"
                 Class="ml-4">
-                @T["Preview"]
+                @Translate("Preview")
               </MudButton>
             </div>
             <MudButton
@@ -90,7 +92,7 @@
               Color="MudBlazor.Color.Error"
               OnClick="@(() => OnDelete(model))"
               Class="mt-8 align-self-start">
-              @T["Delete"]
+              @Translate("Delete")
             </MudButton>
           </div>
         }
@@ -104,7 +106,7 @@
                 OnClick="@(() => _mutating = !_mutating)"
                 Variant="Variant.Filled"
                 Color="MudBlazor.Color.Warning">
-                @T["Edit"]
+                @Translate("Edit")
               </MudButton>
             </div>
           }
@@ -112,7 +114,7 @@
       </EditForm>
     }
   </Found>
-  <Created Context="model">
+  <Created model="model">
     @if (Label is not null)
     {
       @Label(new MutatingState<T>(model, true))
@@ -120,7 +122,7 @@
     else
     {
       <MudText Typo="Typo.h5" Class="mb-2">
-        @T["Create"] @(typeof(T).Name)
+        @Translate("Create") @(typeof(T).Name)
       </MudText>
     }
     <MudDivider Class="mb-4" />
@@ -136,14 +138,14 @@
             ButtonType="ButtonType.Submit"
             Variant="Variant.Filled"
             Color="MudBlazor.Color.Success">
-            @T["Create"]
+            @Translate("Create")
           </MudButton>
           <MudButton
             OnClick="@(() => _mutating = !_mutating)"
             Variant="Variant.Filled"
             Color="MudBlazor.Color.Secondary"
             Class="ml-4">
-            @T["Preview"]
+            @Translate("Preview")
           </MudButton>
         </div>
       }
@@ -155,10 +157,10 @@
             OnClick="@(() => _mutating = !_mutating)"
             Variant="Variant.Filled"
             Color="MudBlazor.Color.Warning">
-            @T["Edit"]
+            @Translate("Edit")
           </MudButton>
         </div>
       }
     </EditForm>
   </Created>
-</Loading>
+</>

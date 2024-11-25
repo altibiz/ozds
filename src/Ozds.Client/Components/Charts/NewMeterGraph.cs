@@ -93,7 +93,7 @@ public partial class NewMeterGraph : OzdsOwningComponentBase
 
   public class MeasurementData
   {
-    public IMeasurement Measurements { get; set; }
+    public IMeasurement Measurements { get; set; } = default!;
   }
 
   private List<MeasurementData> _measurementData = new();
@@ -237,13 +237,13 @@ public partial class NewMeterGraph : OzdsOwningComponentBase
     foreach (var meter in _selectedMeters)
     {
       options = _options.WithActivePower(
-        $"{meter.Id} {T["CONNECTION POWER"]}",
+        $"{meter.Id} {Translate("CONNECTION POWER")}",
         meter.ConnectionPower_W,
         maxPower
       );
     }
 
-    var measure = $"{T[Measure.ToTitle()]} ({Measure.ToUnit()})";
+    var measure = $"{Translate(Measure.ToTitle())} ({Measure.ToUnit()})";
     options = Breakpoint <= Breakpoint.Sm
       ? options.WithSmAndDown(measure)
       : options.WithMdAndUp(measure);

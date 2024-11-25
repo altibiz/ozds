@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Ozds.Business.Activation.Agnostic;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Queries.Agnostic;
-using Ozds.Client.Base;
+using Ozds.Client.Components.Base;
 using Ozds.Client.State;
 
 namespace Ozds.Client.Components.Streaming;
@@ -11,7 +11,6 @@ namespace Ozds.Client.Components.Streaming;
 public partial class Loading<T> : OzdsOwningComponentBase
   where T : notnull
 {
-
   [Parameter]
   public T? Value { get; set; }
 
@@ -127,7 +126,8 @@ public partial class Loading<T> : OzdsOwningComponentBase
     {
       try
       {
-        var activator = ScopedServices.GetRequiredService<AgnosticModelActivator>();
+        var activator = ScopedServices
+          .GetRequiredService<AgnosticModelActivator>();
         var created = activator.Activate<T>();
         _state = _state.WithCreated(created);
       }
@@ -233,7 +233,8 @@ public partial class Loading<T> : OzdsOwningComponentBase
     {
       try
       {
-        var activator = ScopedServices.GetRequiredService<AgnosticModelActivator>();
+        var activator = ScopedServices
+          .GetRequiredService<AgnosticModelActivator>();
         var created = activator.Activate<T>();
         _state = _state.WithCreated(created);
       }

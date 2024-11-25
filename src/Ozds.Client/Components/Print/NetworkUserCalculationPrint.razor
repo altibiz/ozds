@@ -1,40 +1,34 @@
-@inherits OzdsOwningComponentBase
+@using Microsoft.Extensions.DependencyInjection
+@using Ozds.Business.Models.Base
 
-<Loading LoadAsync="@(async () => (Calculation ?? await ScopedServices.GetRequiredService<OzdsCalculationQueries>().ReadSingle<INetworkUserCalculation>(Id ?? throw new InvalidOperationException()))!)">
-  <Found>
-    <div class="page">
-      <div class="page-header">
-        <img src="/invoice-print-header-hrv.svg"/>
-      </div>
-      <div class="page-content">
-        <NetworkUserCalculationPrintContent Calculation="@context"/>
-        <NetworkUserCalculationPrintAbbreviations/>
-      </div>
-      <div class="page-footer">
-        <img src="/invoice-print-footer-hrv.svg"/>
-      </div>
-    </div"Id is required">
-    <div class="page-break"/>
-    <div class="page">
-      <div class="page-header">
-        <img src="/invoice-print-header-hrv.svg"/>
-      </div>
-      <div class="page-content">
-        <NetworkUserCalculationPrintFooter/>
-      </div>
-      <div class="page-footer">
-        <img src="/invoice-print-footer-hrv.svg"/>
-      </div>
-    </div>
-  </Found>
-</Loading>
+@namespace Ozds.Client.Components.Print
+
+<div class="page">
+  <div class="page-header">
+    <img src="/invoice-print-header-hrv.svg"/>
+  </div>
+  <div class="page-content">
+    <NetworkUserCalculationPrintContent Model="@Model"/>
+    <NetworkUserCalculationPrintAbbreviations/>
+  </div>
+  <div class="page-footer">
+    <img src="/invoice-print-footer-hrv.svg"/>
+  </div>
+</div"Id is required">
+<div class="page-break"/>
+<div class="page">
+  <div class="page-header">
+    <img src="/invoice-print-header-hrv.svg"/>
+  </div>
+  <div class="page-content">
+    <NetworkUserCalculationPrintFooter/>
+  </div>
+  <div class="page-footer">
+    <img src="/invoice-print-footer-hrv.svg"/>
+  </div>
+</div>
 
 @code {
-
   [Parameter]
-  public INetworkUserCalculation? Calculation { get; set; }
-
-  [Parameter]
-  public string? Id { get; set; }
-
+  public NetworkUserCalculationModel Model { get; set; } = default!;
 }

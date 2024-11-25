@@ -1,15 +1,42 @@
+@using Ozds.Client.Components.Base
+
+@namespace Ozds.Client.Components.Print
+
+@inherits OzdsOwningComponentBase
+
 <p>
-  <u><strong>@T["Note to users ZDS-a"]</strong>:</u>
+  <u>
+    <strong>
+      @Translate("Note to users ZDS-a")
+    </strong>
+    &colon;
+  </u>
 </p>
-<p>@T["You can submit questions, complaints, and written grievances to"]:</p>
+<p>
+  @Translate("You can submit questions, complaints, and written grievances to")
+  &colon;
+</p>
 <blockquote>
   <p>
-    @T["Address"]:
-    <strong>HELB d.o.o., Industrijska ulica 1, Božjakovina, 10370 DUGO SELO</strong>
-    @T["or"]
+    @Translate("Address")
+    &colon;
+    <strong>
+      HELB d.o.o., Industrijska ulica 1, Božjakovina, 10370 DUGO SELO
+    </strong>
+    @Translate("or")
   </p>
   <p>
-    E-mail: <a href="mailto:ozds@helb.hr">ozds@helb.hr</a>;
-    @T["Phone"]: <strong>+385 1 2781 440</strong>
+    E-mail
+    &colon;
+    &nbsp;
+    <a href="mailto:ozds@helb.hr">
+      ozds@helb.hr
+    </a>
+    &semi;
+    @Translate("Phone")
+    &colon;
+    <strong>
+      +385 1 2781 440
+    </strong>
   </p>
 </blockquote>

@@ -1,43 +1,49 @@
+@using Microsoft.AspNetCore.Components
+@using Ozds.Business.Models
+@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Fields
 
-<DetailsField Title="@T["Name"]">
+@namespace Ozds.Client.Components.Models
+
+@inherits OzdsComponentBase
+
+<DetailsField Title="@Translate("Name")">
   @Model.Title
 </DetailsField>
 
-<DetailsField Title="@T["Person name"]">
+<DetailsField Title="@Translate("Person name")">
   @Model.LegalPerson.Name
 </DetailsField>
 
-<DetailsField Title="@T["OIB"]">
+<DetailsField Title="@Translate("OIB")">
   @Model.LegalPerson.SocialSecurityNumber
 </DetailsField>
 
-<DetailsField Title="@T["Address"]">
+<DetailsField Title="@Translate("Address")">
   @Model.LegalPerson.Address
 </DetailsField>
 
-<DetailsField Title="@T["Postal code"]">
+<DetailsField Title="@Translate("Postal code")">
   @Model.LegalPerson.PostalCode
 </DetailsField>
 
-<DetailsField Title="@T["City"]">
+<DetailsField Title="@Translate("City")">
   @Model.LegalPerson.City
 </DetailsField>
 
-<DetailsField Title="@T["Email address"]">
+<DetailsField Title="@Translate("Email address")">
   @Model.LegalPerson.Email
 </DetailsField>
 
-<DetailsField Title="@T["Phone number"]">
+<DetailsField Title="@Translate("Phone number")">
   @Model.LegalPerson.PhoneNumber
 </DetailsField>
 
-<DetailsField Title="@T["AltiBiz subproject code"]">
+<DetailsField Title="@Translate("AltiBiz subproject code")">
   @Model.AltiBizSubProjectCode
 </DetailsField>
 
 @code {
-
   [Parameter]
   public NetworkUserModel Model { get; set; } = default!;
-
 }

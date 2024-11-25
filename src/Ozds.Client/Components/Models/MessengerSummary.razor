@@ -1,15 +1,18 @@
+@using Microsoft.AspNetCore.Components
+@using MudBlazor
+@using Ozds.Business.Models.Base
+@using Ozds.Business.Models
 
+@namespace Ozds.Client.Components.Models
 
-@if(Model is PidgeonMessengerModel){
-  <PidgeonMessengerSummary Model="(PidgeonMessengerModel)Model"/>
+@if (Model is PidgeonMessengerModel pidgeonMessengerModel) {
+  <PidgeonMessengerSummary Model="pidgeonMessengerModel"/>
 }
-else{
-  throw new Exception("Messenger type not found");
+else {
+  throw new ArgumentOutOfRangeException(nameof(Model));
 }
 
 @code {
-
   [Parameter]
   public MessengerModel Model { get; set; } = default!;
-
 }

@@ -8,7 +8,7 @@
   <MudHidden Breakpoint="Breakpoint.MdAndUp">
     <MudPaper Class="d-flex align-center justify-stat mud-width-full pa-1 pb-3 flex-column">
       <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
-        @T[_dataTitle] @T["for"]: @Source
+        @Translate(_dataTitle] @T["for"): @Source
       </MudItem>
       <MudContainer Class="d-flex flex-column" MaxWidth="MaxWidth.Small">
         <ApexChart TItem="ChartData"
@@ -81,7 +81,7 @@
   <MudHidden Breakpoint="Breakpoint.SmAndDown">
     <MudPaper Class="d-flex align-center justify-center mud-width-full py-8 px-8 flex-column" Height="450px">
       <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
-        @T[_dataTitle] @T["for"]: @Source
+        @Translate(_dataTitle] @T["for"): @Source
       </MudItem>
       <MudContainer Class="d-flex flex-column" MaxWidth="MaxWidth.Medium">
         @if (_graphValues is not null)
@@ -116,7 +116,7 @@
             <MudMenu Dense="true" Variant="Variant.Filled" Color="Color.Primary">
               <ActivatorContent>
                 <MudButton Variant="Variant.Filled" Color="Color.Primary">
-                  @T[_dataTitle]
+                  @Translate(_dataTitle)
                   <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowDown"/>
                 </MudButton>
               </ActivatorContent>
@@ -193,7 +193,7 @@
   {
     _displayType = new List<(DataEnum type, string name)>
     {
-      (DataEnum.Voltage, T["Voltage"]), (DataEnum.Current, T["Current"]), (DataEnum.Active_Power, T["Active Power"]), (DataEnum.Reactive_Power, T["Reactive Power"])
+      (DataEnum.Voltage, Translate("Voltage"]), (DataEnum.Current, T["Current"]), (DataEnum.Active_Power, T["Active Power"]), (DataEnum.Reactive_Power, T["Reactive Power"))
     };
 
     aggregateQueries = ScopedServices.GetRequiredService<OzdsAggregateQueries>();
@@ -205,7 +205,7 @@
 
     if (_meter != null && _meter.Capabilities.HasApparentPower)
     {
-      _displayType.Add(new ValueTuple<DataEnum, string>(DataEnum.Apparent_Power, T["Apparent Power"]));
+      _displayType.Add(new ValueTuple<DataEnum, string>(DataEnum.Apparent_Power, Translate("Apparent Power")));
     }
 
     SetGraphOptionsStart();
@@ -570,7 +570,7 @@
     {
       Label = new Label
       {
-        Text = T["CONNECTED POWER"],
+        Text = Translate("CONNECTED POWER"),
         Style = new Style { Background = "red", Color = "white", FontSize = "12px" }
       },
       Y = connectionMaxPower,

@@ -1,9 +1,12 @@
 @using MudBlazor
-@inherits Ozds.Client.Base.OzdsComponentBase
+@using Ozds.Client.Components.Base
+
 @namespace Ozds.Client.Components.Streaming
+
+@inherits OzdsComponentBase
 
 <MudContainer MaxWidth="MaxWidth.Small">
   <MudText Typo="Typo.h5">
-    @T["You are not authorized to view this resource."]
+    @Translate("You are not authorized to view this resource.")
   </MudText>
 </MudContainer>

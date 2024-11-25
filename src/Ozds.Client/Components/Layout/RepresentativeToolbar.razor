@@ -1,13 +1,15 @@
-@namespace Ozds.Client.Components.Layout
 @using Ozds.Business.Models.Joins
 @using MudBlazor
-@using Ozds.Client.Base
-@using Ozds.Client.State
+@using Ozds.Client.Components.Base
 @using Ozds.Client.Components.Streaming
+@using Ozds.Client.State
 @using Ozds.Business.Queries
 @using Ozds.Business.Models.Base
 @using Ozds.Business.Models
 @using Microsoft.Extensions.DependencyInjection
+
+@namespace Ozds.Client.Components.Layout
+
 @inherits OzdsOwningComponentBase
 
 <MudToolBar Gutters="false">
@@ -20,10 +22,14 @@
       Style="margin-left: -12px;"
       OnClick="e => LayoutState.SetNavigationDrawerOpen(true)"/>
     <MudSpacer />
-    <Paging PageAsync="@((page) => ScopedServices
-      .GetRequiredService<NewOzdsNotificationQueries>()
-      .Read(RepresentativeState.Representative.Id, pageNumber: page))">
-      <Found Context="events">
+    <Paging
+      PageAsync="@((page) => ScopedServices
+        .GetRequiredService<NotificationQueries>()
+        .ReadForRecipient<NotificationModel>(
+          RepresentativeState.Representative.Id,
+          page,
+          CancellationToken.None))">
+      <Found>
         <MudButton
           Size="MudBlazor.Size.Small"
           Style="margin-right: -20px;"
@@ -31,7 +37,7 @@
           <MudIcon Icon="@Icons.Material.Filled.NotificationsActive"/>
           <MudItem>
             <MudIcon Icon="@Icons.Material.Filled.Circle"/>
-            <MudText>@events.TotalCount</MudText>
+            <MudText>@context.TotalCount</MudText>
           </MudItem>
         </MudButton>
       </Found>

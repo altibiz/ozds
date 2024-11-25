@@ -7,7 +7,7 @@
   <MudHidden Breakpoint="Breakpoint.MdAndUp">
     <MudPaper Class="d-flex align-center justify-space-between mud-width-full pa-1 flex-column">
       <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
-        @(T["Active power"] + ": " + Source)
+        @(Translate("Active power") + ": " + Source)
       </MudItem>
       <MudContainer MaxWidth="MaxWidth.Small">
         <ApexChart TItem="GaugeData"
@@ -16,14 +16,14 @@
           <ApexPointSeries TItem="GaugeData"
                            Items="gaugeValue"
                            SeriesType=SeriesType.RadialBar
-                           Name="@T["Search"]"
+                           Name="@Translate("Search")"
                            XValue="@(e => NumericString(e.value / 1000, 2) + " kW")"
                            YAggregate="@(e => (decimal?)Math.Round((double)e.First().percent, 2))"
                            OrderByDescending="e => e.X"/>
         </ApexChart>
       </MudContainer>
       <MudText Typo="Typo.body1" Style="font-weight: bold;margin-top: -30px;text-align: center; color: #adadad;" Class="m-0">
-        @T["Relative to connected power"] (@(NumericString(connectionMaxPower / 1000) + " kW"))
+        @Translate("Relative to connected power") (@(NumericString(connectionMaxPower / 1000) + " kW"))
       </MudText>
     </MudPaper>
   </MudHidden>
@@ -33,7 +33,7 @@
   <MudHidden Breakpoint="Breakpoint.SmAndDown">
     <MudPaper Class="d-flex align-center justify-space-between mud-width-full py-8 px-8 flex-column" Height="450px">
       <MudItem Class="d-flex" Style="font-size: large; font-weight: bold;">
-        @(T["Active power"] + ": " + Source)
+        @(Translate("Active power") + ": " + Source)
       </MudItem>
       <MudContainer MaxWidth="MaxWidth.Medium">
         <ApexChart TItem="GaugeData"
@@ -42,14 +42,14 @@
           <ApexPointSeries TItem="GaugeData"
                            Items="gaugeValue"
                            SeriesType=SeriesType.RadialBar
-                           Name="@T["Search"]"
+                           Name="@Translate("Search")"
                            XValue="@(e => NumericString(e.value / 1000, 2) + " kW")"
                            YAggregate="@(e => (decimal?)Math.Round((double)e.First().percent, 2))"
                            OrderByDescending="e => e.X"/>
         </ApexChart>
       </MudContainer>
       <MudText Typo="Typo.body1" Style="font-weight: bold;margin-top: -30px;text-align: center; color: #adadad;" Class="m-0">
-        @T["Relative to connected power"] <br> (@(NumericString(connectionMaxPower / 1000) + " kW"))
+        @Translate("Relative to connected power") <br> (@(NumericString(connectionMaxPower / 1000) + " kW"))
       </MudText>
     </MudPaper>
   </MudHidden>

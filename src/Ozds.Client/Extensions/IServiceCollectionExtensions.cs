@@ -13,36 +13,9 @@ public static class IServiceCollectionExtensions
     IHostApplicationBuilder builder
   )
   {
-    // Blazor
     services.AddBlazor(builder);
-
-    // MudBlazor
     services.AddMudBlazor();
-
-    // State
-    services.AddCascadingAuthenticationState();
-    services.AddCascadingValue(_ => default(UserState));
-    services.AddCascadingValue(_ => default(RepresentativeState));
-    services.AddCascadingValue(
-      _ => new LayoutState(
-        false,
-        false,
-        false,
-        _ => { },
-        _ => { },
-        _ => { },
-        Breakpoint.None,
-        _ => { }
-      ));
-    services.AddCascadingValue(
-      _ => new ThemeState(
-        ThemeState.Default(),
-        false,
-        _ => { },
-        _ => { }
-      ));
-    services.AddCascadingValue(_ => new LogoutTokenState(string.Empty));
-
+    services.AddState();
     return services;
   }
 
@@ -82,6 +55,37 @@ public static class IServiceCollectionExtensions
   )
   {
     services.AddMudServices();
+
+    return services;
+  }
+
+  private static IServiceCollection AddState(
+    this IServiceCollection services
+  )
+  {
+    services.AddCascadingAuthenticationState();
+
+    services.AddCascadingValue(_ => default(UserState));
+    services.AddCascadingValue(_ => default(RepresentativeState));
+    services.AddCascadingValue(
+      _ => new LayoutState(
+        false,
+        false,
+        false,
+        _ => { },
+        _ => { },
+        _ => { },
+        Breakpoint.None,
+        _ => { }
+      ));
+    services.AddCascadingValue(
+      _ => new ThemeState(
+        ThemeState.Default(),
+        false,
+        _ => { },
+        _ => { }
+      ));
+    services.AddCascadingValue(_ => new LogoutTokenState(string.Empty));
 
     return services;
   }

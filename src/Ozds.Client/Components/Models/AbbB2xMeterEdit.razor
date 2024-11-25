@@ -1,4 +1,14 @@
+@using Microsoft.AspNetCore.Components
+@using MudBlazor
+@using Ozds.Business.Models
+@using Ozds.Business.Models.Base
+@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Fields
+@using Ozds.Client.Components.Streaming
 
+@namespace Ozds.Client.Components.Models
+
+@inherits OzdsComponentBase
 
 <MudTextField
   Label="Id"
@@ -6,38 +16,38 @@
   For="@(() => Model.Id)"/>
 
 <MudTextField
-  Label="@T["Name"]"
+  Label="@Translate("Name")"
   @bind-Value="Model.Title"
   For="@(() => Model.Title)"/>
 
 <MudTextField
-  Label="@T["Connected power"]"
+  Label="@Translate("Connected power")"
   @bind-Value="Model.ConnectionPower_W"
   For="@(() => Model.ConnectionPower_W)"/>
 
 <MudSelect
-  Label="@T["Messenger"]"
+  Label="@Translate("Messenger")"
   AnchorOrigin="Origin.BottomCenter"
   @bind-Value="Model.MessengerId"
   For="@(() => Model.MessengerId)">
   <Paging T="MessengerModel">
-    <Summary Context="model">
-      <MudSelectItem Value="model.Id">
-        <MessengerSummary Model="model"/>
+    <Summary>
+      <MudSelectItem Value="context.Id">
+        <MessengerSummary Model="context"/>
       </MudSelectItem>
     </Summary>
   </Paging>
 </MudSelect>
 
 <MudSelect
-  Label="@T["Validator"]"
+  Label="@Translate("Validator")"
   AnchorOrigin="Origin.BottomCenter"
   @bind-Value="Model.MeasurementValidatorId"
   For="@(() => Model.MeasurementValidatorId)">
-  <Paging T="AbbB2xMeterValidatorModel">
-    <Summary Context="model">
-      <MudSelectItem Value="model.Id">
-        <AbbB2xM3xxxMeasurementValidatorSummary Model="model"/>
+  <Paging T="AbbB2xMeasurementValidatorModel">
+    <Summary>
+      <MudSelectItem Value="context.Id">
+        <AbbB2xMeasurementValidatorSummary Model="context"/>
       </MudSelectItem>
     </Summary>
   </Paging>
@@ -45,12 +55,10 @@
 
 <MultiEnumPicker
   @bind-Value="Model.Phases"
-  Title="@T["Phase"]"
-  Label="x => T[x.ToTitle()]"/>
+  Title="@Translate("Phases")"
+  Label="x => Translate(x.ToTitle())"/>
 
 @code {
-
   [Parameter]
   public AbbB2xMeterModel Model { get; set; } = default!;
-
 }

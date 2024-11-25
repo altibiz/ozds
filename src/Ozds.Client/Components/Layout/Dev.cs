@@ -2,17 +2,15 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using MudBlazor;
-using Ozds.Business.Models.Base;
 using Ozds.Business.Queries;
-using Ozds.Business.Time;
-using Ozds.Client.Base;
+using Ozds.Client.Components.Base;
 using Ozds.Client.State;
 
 // FIXME: detecting dark mode preference is broken
 
-namespace Ozds.Client.Components.LayoutMock;
+namespace Ozds.Client.Components.Layout;
 
-public partial class LayoutMock : OzdsLayoutComponentBase
+public partial class Dev : OzdsLayoutComponentBase
 {
   [CascadingParameter]
   private Task<AuthenticationState>? AuthenticationStateTask { get; set; }
@@ -25,7 +23,22 @@ public partial class LayoutMock : OzdsLayoutComponentBase
   private ThemeState ThemeState { get; set; } = default!;
 
 #pragma warning disable S4487 // Unread "private" fields should be removed
-  private MudThemeProvider? _mudThemeProvider;
+  private MudThemeProvider _mudThemeProvider = default!;
+#pragma warning restore S4487 // Unread "private" fields should be removed
+
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+  protected override async Task OnAfterRenderAsync(bool firstRender)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+  {
+    if (firstRender)
+    {
+#pragma warning disable S125 // Sections of code should not be commented out
+      // ThemeState.SetDarkMode(
+      //   await _mudThemeProvider?.GetSystemPreference());
+      // StateHasChanged();
+#pragma warning restore S125 // Sections of code should not be commented out
+    }
+  }
 
   protected override void OnInitialized()
   {

@@ -1,5 +1,7 @@
-@namespace Ozds.Client.Components.Fields
 @using MudBlazor
+
+@namespace Ozds.Client.Components.Fields
+
 @typeparam T where T : struct, Enum
 
 <MudSelect
@@ -17,7 +19,6 @@
 </MudSelect>
 
 @code {
-
   [Parameter]
   public HashSet<T> Value { get; set; } = default!;
 
@@ -29,5 +30,4 @@
 
   [Parameter]
   public Func<T, string> Label { get; set; } = default!;
-
 }

@@ -1,10 +1,21 @@
-@if(Model is AbbB2xMeasurementValidatorModel){
-  <AbbB2xMeasurementValidatorSummary Model="(AbbB2xMeasurementValidatorModel)Model"/>
+@using Microsoft.AspNetCore.Components
+@using MudBlazor
+@using Ozds.Business.Models
+@using Ozds.Business.Models.Base
+
+@namespace Ozds.Client.Components.Models
+
+@if (Model
+  is AbbB2xMeasurementValidatorModel abbB2XMeasurementValidatorModel) {
+  <AbbB2xMeasurementValidatorSummary Model="abbB2XMeasurementValidatorModel"/>
 }
-else if(Model is SchneideriEM3xxxMeasurementValidatorModel){
-  <SchneideriEM3xxxMeasurementValidatorSummary Model="(SchneideriEM3xxxMeasurementValidatorModel)Model"/>
+else if (Model
+  is SchneideriEM3xxxMeasurementValidatorModel
+    schneideriEM3XxxMeasurementValidatorModel) {
+  <SchneideriEM3xxxMeasurementValidatorSummary
+    Model="schneideriEM3XxxMeasurementValidatorModel"/>
 }
-else{
+else {
   throw new ArgumentOutOfRangeException(nameof(Model));
 }
 

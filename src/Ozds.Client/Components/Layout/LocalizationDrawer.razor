@@ -1,8 +1,10 @@
-@namespace Ozds.Client.Components.Layout
 @using System.Globalization
-@using Ozds.Client.Base
+@using Ozds.Client.Components.Base
 @using Ozds.Client.State
 @using MudBlazor
+
+@namespace Ozds.Client.Components.Layout
+
 @inherits OzdsComponentBase
 
 <MudDrawer
@@ -14,54 +16,62 @@
   ClipMode="DrawerClipMode.Never">
   <MudDrawerHeader>
     <MudText Typo="Typo.h6" Style="text-align: center;">
-      @T["Localization"]
+      @Translate("Localization")
     </MudText>
   </MudDrawerHeader>
   <MudDivider />
   <MudDrawerContainer>
     <MudNavMenu>
-        <MudNavLink
-          OnClick="@(e => {
-            Culture = new CultureInfo("hr-HR");
-            LayoutState.SetLocalizationDrawerOpen(false);
-          })" >
-            <MudContainer MaxWidth="MaxWidth.Small" Class="d-flex flex-row">
-              <MudHidden Breakpoint="Breakpoint.Xs">
-                  <div style="margin-left: -8px;" class="d-flex flex-row align-center">
-                      <MudIcon Icon="@Icons.Material.Filled.Language" />
-                  </div>
-              </MudHidden>
-              <MudHidden Breakpoint="Breakpoint.SmAndUp">
-                  <div style="margin-left: -28px;" class="d-flex flex-row align-center">
-                      <MudIcon Icon="@Icons.Material.Filled.Language" />
-                  </div>
-              </MudHidden>
-              <MudText Class="ml-4">
-                  @(new CultureInfo("hr-HR").NativeName)
-              </MudText>
-          </MudContainer>
-        </MudNavLink>
-        <MudNavLink
-          OnClick="@(e => {
-            Culture = new CultureInfo("en-US");
-            LayoutState.SetLocalizationDrawerOpen(false);
-          })" >
-            <MudContainer MaxWidth="MaxWidth.Small" Class="d-flex flex-row">
-              <MudHidden Breakpoint="Breakpoint.Xs">
-                  <div style="margin-left: -8px;" class="d-flex flex-row align-center">
-                      <MudIcon Icon="@Icons.Material.Filled.Language" />
-                  </div>
-              </MudHidden>
-              <MudHidden Breakpoint="Breakpoint.SmAndUp">
-                  <div style="margin-left: -28px;" class="d-flex flex-row align-center">
-                      <MudIcon Icon="@Icons.Material.Filled.Language" />
-                  </div>
-              </MudHidden>
-              <MudText Class="ml-4">
-                  @(new CultureInfo("en-US").NativeName)
-              </MudText>
-          </MudContainer>
-        </MudNavLink>
+      <MudNavLink
+        OnClick="@(e => {
+          Culture = new CultureInfo("hr-HR");
+          LayoutState.SetLocalizationDrawerOpen(false);
+        })" >
+        <MudContainer MaxWidth="MaxWidth.Small" Class="d-flex flex-row">
+          <MudHidden Breakpoint="Breakpoint.Xs">
+            <div
+              style="margin-left: -8px;"
+              class="d-flex flex-row align-center">
+              <MudIcon Icon="@Icons.Material.Filled.Language" />
+            </div>
+          </MudHidden>
+          <MudHidden Breakpoint="Breakpoint.SmAndUp">
+            <div
+              style="margin-left: -28px;"
+              class="d-flex flex-row align-center">
+              <MudIcon Icon="@Icons.Material.Filled.Language" />
+            </div>
+          </MudHidden>
+          <MudText Class="ml-4">
+            @(new CultureInfo("hr-HR").NativeName)
+          </MudText>
+        </MudContainer>
+      </MudNavLink>
+      <MudNavLink
+        OnClick="@(e => {
+          Culture = new CultureInfo("en-US");
+          LayoutState.SetLocalizationDrawerOpen(false);
+        })" >
+        <MudContainer MaxWidth="MaxWidth.Small" Class="d-flex flex-row">
+          <MudHidden Breakpoint="Breakpoint.Xs">
+            <div
+              style="margin-left: -8px;"
+              class="d-flex flex-row align-center">
+              <MudIcon Icon="@Icons.Material.Filled.Language" />
+            </div>
+          </MudHidden>
+          <MudHidden Breakpoint="Breakpoint.SmAndUp">
+            <div
+              style="margin-left: -28px;"
+              class="d-flex flex-row align-center">
+              <MudIcon Icon="@Icons.Material.Filled.Language" />
+            </div>
+          </MudHidden>
+        <MudText Class="ml-4">
+            @(new CultureInfo("en-US").NativeName)
+          </MudText>
+        </MudContainer>
+      </MudNavLink>
     </MudNavMenu>
   </MudDrawerContainer>
 </MudDrawer>

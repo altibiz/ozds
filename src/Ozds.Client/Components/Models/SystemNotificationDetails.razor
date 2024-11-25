@@ -1,10 +1,19 @@
-<DetailsField Title="@T["Name"]">
+@using Microsoft.AspNetCore.Components
+@using Ozds.Business.Models
+@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Fields
+
+@namespace Ozds.Client.Components.Models
+
+@inherits OzdsComponentBase
+
+<DetailsField Title="@Translate("Name")">
   @Model.Title
 </DetailsField>
-<DetailsField Title="@T["Summary"]">
+<DetailsField Title="@Translate("Summary")">
   @Model.Summary
 </DetailsField>
-<DetailsField Title="@T["Content"]">
+<DetailsField Title="@Translate("Content")">
   @Model.Content
 </DetailsField>
 

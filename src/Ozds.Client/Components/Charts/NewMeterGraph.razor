@@ -10,13 +10,13 @@
 <div class="d-flex justify-center">
   <MudText>
     @if(_selectedMeters.Count() == 1){
-      @(T[_selectedMeters.FirstOrDefault()!.Title] + " ")
+      @(Translate(_selectedMeters.FirstOrDefault()!.Title) + " ")
     }
-    @T[Measure.ToTitle()]
-    (@T[Measure.ToUnit()]
-    @T["over the last"]
+    @Translate(Measure.ToTitle())
+    (@Translate(Measure.ToUnit())
+    @Translate("over the last")
     @(Multiplier == 1 ? "" : Multiplier.ToString())
-    @T[Resolution.ToTitle(Multiplier)])
+    @Translate(Resolution.ToTitle(Multiplier)))
   </MudText>
 </div>
 
@@ -29,7 +29,7 @@
         <ApexPointSeries
           Items="_measurementData"
           SeriesType="SeriesType.Donut"
-          Name="@T[Measure.ToTitle()]"
+          Name="@Translate(Measure.ToTitle())"
           XValue="@(x => x.Measurements.MeterId)"
           YAggregate="@(x => x.Sum(m => m.Measurements.ChartValue(Measure, null)))"/>
     }
@@ -43,13 +43,13 @@
         {
           <ApexPointSeries
             Items="@(_measurementData.Where(x => x.Measurements.MeterId == selectedMeter.Id).ToList())"
-            Name="@(selectedMeter.Id + " " + T["Power"])"
+            Name="@(selectedMeter.Id + " " + Translate("Power"))"
             SeriesType="SeriesType.Bar"
             XValue="x => DateTimeApplyOffset(x.Measurements.Timestamp)"
           YAggregate="x => x.Sum(m => m.Measurements.ChartValue(MeasureModel.ActivePower, null))" />
           <ApexPointSeries
             Items="@(_measurementData.Where(x => x.Measurements.MeterId == selectedMeter.Id).ToList())"
-            Name="@(selectedMeter.Id + " " + T["Energy"])"
+            Name="@(selectedMeter.Id + " " + Translate("Energy"))"
             SeriesType="DisplayType"
             XValue='x => DateTimeApplyOffset(x.Measurements.Timestamp)'
             YValue="x => x.Measurements.ChartValue(MeasureModel.ActiveEnergy, null)" />
@@ -59,7 +59,7 @@
           {
             <ApexPointSeries
               Items="@(_measurementData.Where(x => x.Measurements.MeterId == selectedMeter.Id).ToList())"
-              Name="@(selectedMeter.Id + " " + (PhasesSum ? T["Sum"] : phase.ToTitle()))"
+              Name="@(selectedMeter.Id + " " + (PhasesSum ? Translate("Sum") : phase.ToTitle()))"
               SeriesType="DisplayType"
               XValue='x => DateTimeApplyOffset(x.Measurements.Timestamp)'
               YValue="x => x.Measurements.ChartValue(Measure, PhasesSum ? null : phase)"
@@ -106,14 +106,14 @@
   <MudExpansionPanel
     id="graph-controls"
     Gutters="false"
-    Text="@T["Graph controls"]">
+    Text="@Translate("Graph controls")">
     <MudGrid Spacing="2" Justify="Justify.Center">
       <MudItem xs="12" md="6">
         @if (Meters.Count > 1)
         {
           <MudSelect
             T="string"
-            Label="@T["Meters"]"
+            Label="@Translate("Meters")"
             SelectedValues="_selectedMeters.Select(meter => meter.Id)"
             SelectedValuesChanged="async e => {
               if (e.Count() == 0)
@@ -142,7 +142,7 @@
               Refresh = e;
               await OnParametersSetAsync();
             }"
-            Label="@T["Refresh"]"/>
+            Label="@Translate("Refresh")"/>
         </MudHidden>
         <MudHidden Breakpoint="Breakpoint.SmAndDown">
           <div class="d-flex justify-end pe-4">
@@ -153,7 +153,7 @@
                 Refresh = e;
                 await OnParametersSetAsync();
               }"
-              Label="@T["Refresh"]"/>
+              Label="@Translate("Refresh")"/>
           </div>
         </MudHidden>
       </MudItem>
@@ -165,8 +165,8 @@
             Measure = e;
             await OnParametersSetAsync();
           }"
-          Title="@T["Measure"]"
-          Label="x => T[x.ToTitle()]"/>
+          Title="@Translate("Measure")"
+          Label="x => Translate(x.ToTitle())"/>
       </MudItem>
       <MudItem xs="12" sm="6" md="3">
         <MultiEnumPicker
@@ -176,8 +176,8 @@
             Phases = e;
             await OnParametersSetAsync();
           }"
-          Title="@T["Phase"]"
-          Label="x => T[x.ToTitle()]"/>
+          Title="@Translate("Phase")"
+          Label="x => Translate(x.ToTitle())"/>
       </MudItem>
       <MudItem xs="12" sm="6" md="3">
         <EnumPicker
@@ -187,8 +187,8 @@
             Resolution = e;
             await OnParametersSetAsync();
           }"
-          Title="@T["Resolution"]"
-          Label="x => T[x.ToTitle(Multiplier)]"/>
+          Title="@Translate("Resolution")"
+          Label="x => Translate(x.ToTitle(Multiplier))"/>
       </MudItem>
       <MudItem xs="12" sm="6" md="3">
         <MudNumericField
@@ -198,7 +198,7 @@
             Multiplier = e;
             await OnParametersSetAsync();
           }"
-          Label="@T["Multiplier"]"
+          Label="@Translate("Multiplier")"
           Min="1"
           Max="@Resolution.MaxMultiplier()"
           Step="1"/>

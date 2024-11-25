@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Ozds.Client.Base;
+namespace Ozds.Client.Components.Base;
 
 #pragma warning disable S3881
 public abstract class OzdsOwningComponentBase : OzdsComponentBase, IDisposable

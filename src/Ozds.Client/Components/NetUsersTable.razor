@@ -13,7 +13,7 @@
 
 <MudHidden Breakpoint="Breakpoint.MdAndUp">
   <MudText Typo="Typo.h4" Class="d-flex">
-    @(T["Network users"])
+    @(Translate("Network users"))
   </MudText>
   @foreach (var analysis in analyses)
   {
@@ -21,7 +21,7 @@
       <MudStack Spacing="0">
         <MudGrid Class="d-flex pa-2">
           <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
-            @T["Location"]: @(analysis.Location.Title)
+            @Translate("Location"): @(analysis.Location.Title)
           </MudItem>
           <MudItem xs="2" Class="d-flex align-center justify-end">
             <MudIconButton
@@ -29,7 +29,7 @@
               Icon="@Icons.Material.Filled.RemoveRedEye" Color="Color.Primary"/>
           </MudItem>
           <MudItem xs="8" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
-            @T["Network user"]: @(analysis.NetworkUser.Title)
+            @Translate("Network user"): @(analysis.NetworkUser.Title)
           </MudItem>
           <MudItem xs="2" Class="d-flex align-center justify-end">
             <MudIconButton
@@ -49,17 +49,17 @@
             <MudGrid Class="d-flex pa-2">
               <MudContainer Class="d-flex flex-column pb-1">
                 <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large;">
-                  @T["Current months consumption"]:
+                  @Translate("Current months consumption"):
                   @(NumericString(analysis.Analysis.ThisMonthConsumption.ActiveEnergy_kWh, 0)) kWh
                 </MudItem>
                 <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large;">
-                  @T["Last months consumption"]:
+                  @Translate("Last months consumption"):
                   @(NumericString(analysis.Analysis.LastMonthConsumption.ActiveEnergy_kWh, 0)) kWh
                 </MudItem>
                 <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large;">
-                  @T["Last months invoice total"]:
+                  @Translate("Last months invoice total"):
                   @(analysis.Analysis.LastMonthExpenses.Total_EUR == 0
-                    ? T["Invoice pending..."]
+                    ? Translate("Invoice pending...")
                     : NumericString(analysis.Analysis.LastMonthExpenses.Total_EUR) + " EUR")
                 </MudItem>
               </MudContainer>
@@ -83,11 +83,11 @@
       || x.NetworkUser.Title.Contains(_searchString)
       || x.Location.Title.Contains(_searchString))">
     <ToolBarContent>
-      <MudText Typo="Typo.h4">@T["Network users"]</MudText>
+      <MudText Typo="Typo.h4">@Translate("Network users")</MudText>
       <MudSpacer/>
       <MudTextField
         @bind-Value="_searchString"
-        Placeholder="@T["Search"]"
+        Placeholder="@Translate("Search")"
         Adornment="Adornment.Start"
         Immediate="true"
         AdornmentIcon="@Icons.Material.Filled.Search"
@@ -96,7 +96,7 @@
       </MudTextField>
     </ToolBarContent>
     <Columns>
-      <TemplateColumn Title="@T["Location"]" Sortable="false">
+      <TemplateColumn Title="@Translate("Location")" Sortable="false">
         <CellTemplate>
           <MudStack Row>
             <MudButton
@@ -107,7 +107,7 @@
           </MudStack>
         </CellTemplate>
       </TemplateColumn>
-      <TemplateColumn Title="@T["Network users"]" Sortable="false">
+      <TemplateColumn Title="@Translate("Network users")" Sortable="false">
         <CellTemplate>
           <MudStack Row>
             <MudButton
@@ -121,7 +121,7 @@
       <PropertyColumn
         CellStyle="font-size: x-large;"
         Property="x => x.Analysis.ThisMonthConsumption.ActiveEnergy_kWh"
-        Title='@T["Current months consumption"]'>
+        Title='@Translate("Current months consumption")'>
         <CellTemplate>
           @(NumericString(context.Item.Analysis.ThisMonthConsumption.ActiveEnergy_kWh, 0)) kWh
         </CellTemplate>
@@ -129,7 +129,7 @@
       <PropertyColumn
         CellStyle="font-size: x-large;"
         Property="x => x.Analysis.LastMonthConsumption.ActiveEnergy_kWh"
-        Title='@T["Last months consumption"]'>
+        Title='@Translate("Last months consumption")'>
         <CellTemplate>
           @(NumericString(context.Item.Analysis.LastMonthConsumption.ActiveEnergy_kWh, 0)) kWh
         </CellTemplate>
@@ -137,10 +137,10 @@
       <PropertyColumn
         CellStyle="font-size: x-large;"
         Property="x => x.Analysis.LastMonthExpenses.Total_EUR"
-        Title='@T["Last months invoice total"]'>
+        Title='@Translate("Last months invoice total")'>
         <CellTemplate>
           @(context.Item.Analysis.LastMonthExpenses.Total_EUR == 0
-            ? T["Invoice pending..."]
+            ? Translate("Invoice pending...")
             : NumericString(context.Item.Analysis.LastMonthExpenses.Total_EUR) + " EUR")
         </CellTemplate>
       </PropertyColumn>

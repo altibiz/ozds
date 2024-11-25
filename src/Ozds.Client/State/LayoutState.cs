@@ -12,5 +12,7 @@ public record LayoutState(
     Action<Breakpoint> SetBreakpoint
 )
 {
-  public Anchor DrawerAnchor => (Breakpoint <= Breakpoint.Sm) ? Anchor.Bottom : Anchor.Top;
+  public Anchor DrawerAnchor => (Breakpoint <= Breakpoint.Sm)
+    ? Anchor.Bottom
+    : Anchor.Top;
 }

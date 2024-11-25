@@ -1,7 +1,10 @@
 @using MudBlazor
-@inherits Ozds.Client.Base.OzdsComponentBase
+@using Ozds.Client.Components.Base
+
 @namespace Ozds.Client.Components.Streaming
 
+@inherits OzdsComponentBase
+
 <MudText Typo="Typo.h5">
-  @T["The resource you were looking for doesn't exist."]
+  @Translate("The resource you were looking for doesn't exist.")
 </MudText>

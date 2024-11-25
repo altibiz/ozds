@@ -13,7 +13,7 @@
       Filterable="true"
       QuickFilter="@_quickFilter">
       <ToolBarContent>
-        <MudText Typo="Typo.h4">@T["Changes"]</MudText>
+        <MudText Typo="Typo.h4">@Translate("Changes")</MudText>
         <MudSpacer/>
         <MudTextField
           @bind-Value="_searchString"
@@ -29,11 +29,11 @@
         <PropertyColumn
           CellStyle="text-align: start !important;"
           Property="x => x.Title"
-          Title='@T["Title"]' Sortable="false"/>
+          Title='@Translate("Title")' Sortable="false"/>
         <PropertyColumn
           CellStyle="font-size: x-large;"
           Property="x => x.Timestamp"
-          Title='@T["Date"]'>
+          Title='@Translate("Date")'>
           <CellTemplate>
             @(context.Item.Timestamp.ToString("HH:mm dd.MM.yyyy."))
           </CellTemplate>
@@ -41,13 +41,13 @@
         <PropertyColumn
           CellStyle="font-size: large;"
           Property="x => x.Author"
-          Title='@T["Author"]'>
+          Title='@Translate("Author")'>
         </PropertyColumn>
         <TemplateColumn CellClass="d-flex justify-end" Sortable="false" Filterable="false">
           <CellTemplate>
             <MudStack Row>
               <MudButton OnClick="() => InspectEvent(context.Item.Id)" Variant="Variant.Filled" Color="Color.Primary">
-                @T["Overview"]
+                @Translate("Overview")
               </MudButton>
             </MudStack>
           </CellTemplate>

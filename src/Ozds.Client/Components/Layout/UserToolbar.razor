@@ -1,10 +1,15 @@
-@namespace Ozds.Client.Components.Layout
 @using MudBlazor
-@using Ozds.Client.Base
+@using Ozds.Client.Components.Base
 @using Ozds.Client.State
+
+@namespace Ozds.Client.Components.Layout
+
 @inherits OzdsComponentBase
 
-<MudToolBar Gutters="false" Style="background-color: var(--mud-palette-appbar-background);" Class="mud-elevation-4">
+<MudToolBar
+  Gutters="false"
+  Style="background-color: var(--mud-palette-appbar-background);"
+  Class="mud-elevation-4">
   <MudContainer
     Style="height: 100%;"
     MaxWidth="MaxWidth.Large"
@@ -49,7 +54,7 @@
         <MudHidden Breakpoint="Breakpoint.SmAndDown">
           <div Class="ml-2">
             <MudText>
-              (@T[ThemeState.IsDarkMode ? "Dark" : "Light"])
+              (@Translate(ThemeState.IsDarkMode ? "Dark" : "Light"))
             </MudText>
           </div>
         </MudHidden>
@@ -84,7 +89,7 @@
           <MudIcon Icon="@Icons.Material.Filled.Person"/>
           <div Class="ml-2 d-flex flex-column align-center">
             <MudText>
-              @T["Welcome"],
+              @Translate("Welcome"),
             </MudText>
             <MudText>
               @(UserState?.User.UserName)

@@ -1,5 +1,8 @@
-@namespace Ozds.Client.Components.Fields
+@using Microsoft.AspNetCore.Components
 @using MudBlazor
+
+@namespace Ozds.Client.Components.Fields
+
 @typeparam T where T : struct, Enum
 
 <MudSelect Label="@Title" Value="Value" ValueChanged="ValueChanged">
@@ -12,7 +15,6 @@
 </MudSelect>
 
 @code {
-
   [Parameter]
   public T Value { get; set; } = default!;
 
@@ -24,5 +26,4 @@
 
   [Parameter]
   public Func<T, string> Label { get; set; } = default!;
-
 }

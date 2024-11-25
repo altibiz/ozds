@@ -1,9 +1,9 @@
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Components;
 
-namespace Ozds.Client.Base;
+namespace Ozds.Client.Components.Base;
 
-public class OzdsLayoutComponentBase : OzdsComponentBase
+public class OzdsOwningLayoutComponentBase : OzdsOwningComponentBase
 {
   [Parameter]
   public RenderFragment? Body { get; set; }

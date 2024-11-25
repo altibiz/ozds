@@ -9,7 +9,7 @@ using Ozds.Business.Models.Enums;
 using Ozds.Business.Time;
 using Ozds.Client.Attributes;
 
-namespace Ozds.Client.Base;
+namespace Ozds.Client.Components.Base;
 
 public abstract class OzdsComponentBase : ComponentBase
 {
@@ -17,6 +17,7 @@ public abstract class OzdsComponentBase : ComponentBase
   {
     WriteIndented = true
   };
+
   private CultureInfo? _culture;
 
   [Inject]
@@ -36,6 +37,8 @@ public abstract class OzdsComponentBase : ComponentBase
       .TrimEnd('/');
     SetCulture(culture);
   }
+
+  protected string Translate(string notLocalized) => T.Translate(notLocalized);
 
   protected CultureInfo Culture
   {
@@ -174,7 +177,7 @@ public abstract class OzdsComponentBase : ComponentBase
     return a;
   }
 
-  protected static string JsonString(JsonDocument jsonDocument)
+  protected static string JsonString(object? jsonDocument)
   {
     return JsonSerializer.Serialize(jsonDocument, _jsonSerializerOptions);
   }

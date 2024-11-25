@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MudBlazor;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Mutations.Agnostic;
-using Ozds.Client.Base;
+using Ozds.Client.Components.Base;
 using Ozds.Client.State;
 
 namespace Ozds.Client.Components.Streaming;
@@ -11,6 +11,9 @@ namespace Ozds.Client.Components.Streaming;
 public partial class Mutating<T> : OzdsOwningComponentBase
   where T : notnull
 {
+  [Inject]
+  public DialogService DialogService { get; set; } = default!;
+
   [Parameter]
   public T? Value { get; set; }
 
@@ -90,15 +93,28 @@ public partial class Mutating<T> : OzdsOwningComponentBase
     catch (Exception ex)
     {
       await DialogService.ShowAsync<MutatingResult>(
-        T["Failure"],
-        new DialogParameters { { nameof(MutatingResult.Body), $"{T["Failed creating"]} {T[typeof(T).Name]} - {ex.Message}" } },
+        Translate("Failure"),
+        new DialogParameters
+        {
+          {
+            nameof(MutatingResult.Body),
+            $"{Translate("Failed creating")}"
+              + $" {Translate(typeof(T).Name)} - {ex.Message}"
+          }
+        },
         new DialogOptions { CloseOnEscapeKey = true });
       return;
     }
 
     await DialogService.ShowAsync<MutatingResult>(
-      T["Success"],
-      new DialogParameters { { nameof(MutatingResult.Body), $"{T["Successfully created"]} {T[typeof(T).Name]}" } },
+      Translate("Success"),
+      new DialogParameters
+      {
+        {
+          nameof(MutatingResult.Body),
+          $"{Translate("Successfully created")} {Translate(typeof(T).Name)}"
+        }
+      },
       new DialogOptions { CloseOnEscapeKey = true });
   }
 
@@ -128,15 +144,28 @@ public partial class Mutating<T> : OzdsOwningComponentBase
     catch (Exception ex)
     {
       await DialogService.ShowAsync<MutatingResult>(
-        T["Failure"],
-        new DialogParameters { { nameof(MutatingResult.Body), $"{T["Failed updating"]} {T[typeof(T).Name]} - {ex.Message}" } },
+        Translate("Failure"),
+        new DialogParameters
+        {
+          {
+            nameof(MutatingResult.Body),
+            $"{Translate("Failed updating")}"
+              + $" {Translate(typeof(T).Name)} - {ex.Message}"
+          }
+        },
         new DialogOptions { CloseOnEscapeKey = true });
       return;
     }
 
     await DialogService.ShowAsync<MutatingResult>(
-      T["Success"],
-      new DialogParameters { { nameof(MutatingResult.Body), $"{T["Successfully updated"]} {T[typeof(T).Name]}" } },
+      Translate("Success"),
+      new DialogParameters
+      {
+        {
+          nameof(MutatingResult.Body),
+          $"{Translate("Successfully updated")} {Translate(typeof(T).Name)}"
+        }
+      },
       new DialogOptions { CloseOnEscapeKey = true });
   }
 
@@ -166,15 +195,28 @@ public partial class Mutating<T> : OzdsOwningComponentBase
     catch (Exception ex)
     {
       await DialogService.ShowAsync<MutatingResult>(
-        T["Failure"],
-        new DialogParameters { { nameof(MutatingResult.Body), $"{T["Failed deleting"]} {T[typeof(T).Name]} - {ex.Message}" } },
+        Translate("Failure"),
+        new DialogParameters
+        {
+          {
+            nameof(MutatingResult.Body),
+            $"{Translate("Failed deleting")}"
+              + $" {Translate(typeof(T).Name)} - {ex.Message}"
+          }
+        },
         new DialogOptions { CloseOnEscapeKey = true });
       return;
     }
 
     await DialogService.ShowAsync<MutatingResult>(
-      T["Success"],
-      new DialogParameters { { nameof(MutatingResult.Body), $"{T["Successfully deleted"]} {T[typeof(T).Name]}" } },
+      Translate("Success"),
+      new DialogParameters
+      {
+        {
+          nameof(MutatingResult.Body),
+          $"{Translate("Successfully deleted")} {Translate(typeof(T).Name)}"
+        }
+      },
       new DialogOptions { CloseOnEscapeKey = true });
   }
 }

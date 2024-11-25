@@ -12,7 +12,7 @@
                    @ref="chart">
           <ApexPointSeries TItem="ChartData"
                            Items="@_graphValues"
-                           Name="@T["Consumption"]"
+                           Name="@Translate("Consumption")"
                            SeriesType="SeriesType.Area"
                            XValue='x => DateTimeApplyOffset(x.date)'
                            YValue="x => x.value"/>
@@ -32,7 +32,7 @@
                  @ref="chart">
         <ApexPointSeries TItem="ChartData"
                          Items="@_graphValues"
-                         Name="@T["Consumption"]"
+                         Name="@Translate("Consumption")"
                          SeriesType="SeriesType.Area"
                          XValue='x => DateTimeApplyOffset(x.date)'
                          YValue="x => x.value"/>

@@ -38,7 +38,10 @@ public static class ApexChartOptionsExtensions
   )
     where T : class
   {
-    options.Tooltip = new Tooltip { X = new TooltipX { Format = @"dd.MM. HH:mm" } };
+    options.Tooltip = new Tooltip
+    {
+      X = new TooltipX { Format = @"dd.MM. HH:mm" }
+    };
     return options;
   }
 
@@ -198,7 +201,8 @@ public static class ApexChartOptionsExtensions
           Max = maxPower * 1.5M,
           Labels = new YAxisLabels
           {
-            Formatter = "function(val, index) { return (val ?? 0).toFixed(0); }"
+            Formatter =
+              "function(val, index) { return (val ?? 0).toFixed(0); }"
           }
         }
       ];
@@ -235,7 +239,8 @@ public static class ApexChartOptionsExtensions
         {
           Labels = new YAxisLabels
           {
-            Formatter = "function(val, index) { return (val ?? 0).toFixed(0); }"
+            Formatter =
+              "function(val, index) { return (val ?? 0).toFixed(0); }"
           }
         }
       ];

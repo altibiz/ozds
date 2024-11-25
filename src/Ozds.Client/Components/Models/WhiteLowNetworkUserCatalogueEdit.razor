@@ -1,24 +1,33 @@
+@using Microsoft.AspNetCore.Components
+@using MudBlazor
+@using Ozds.Business.Models
+@using Ozds.Client.Components.Base
+
+@namespace Ozds.Client.Components.Models
+
+@inherits OzdsComponentBase
+
 <MudTextField
-  Label="@T["Name"]"
+  Label="@Translate("Name")"
   @bind-Value="Model.Title"
   For="@(() => Model.Title)"/>
 <MudTextField
   T="decimal"
-  Label="@T["Price of higher tariff active energy consumption (EUR/kWh)"]"
+  Label="@Translate("Price of higher tariff active energy consumption (EUR/kWh)")"
   @bind-Value="Model.ActiveEnergyTotalImportT1Price_EUR"
   For="@(() => Model.ActiveEnergyTotalImportT1Price_EUR)"/>
 <MudTextField
   T="decimal"
-  Label="@T["Price of active energy consumption in low tariff (EUR/kWh)"]"
+  Label="@Translate("Price of active energy consumption in low tariff (EUR/kWh)")"
   @bind-Value="Model.ActiveEnergyTotalImportT2Price_EUR"
   For="@(() => Model.ActiveEnergyTotalImportT2Price_EUR)"/>
 <MudTextField
   T="decimal"
-  Label="@T["Price of reactive energy consumption in a single tariff (EUR/kVARh)"]"
+  Label="@Translate("Price of reactive energy consumption in a single tariff (EUR/kVARh)")"
   @bind-Value="Model.ReactiveEnergyTotalRampedT0Price_EUR"
   For="@(() => Model.ReactiveEnergyTotalRampedT0Price_EUR)"/>
 <MudTextField
-  Label="@T["Price of metering fee (EUR)"]"
+  Label="@Translate("Price of metering fee (EUR)")"
   @bind-Value="Model.MeterFeePrice_EUR"
   For="@(() => Model.MeterFeePrice_EUR)"/>
 

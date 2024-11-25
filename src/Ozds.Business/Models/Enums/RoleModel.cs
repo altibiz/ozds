@@ -52,4 +52,15 @@ public static class RoleModelExtensions
       _ => throw new ArgumentOutOfRangeException(nameof(model), model, null)
     };
   }
+
+  public static string ToTitle(this RoleModel model)
+  {
+    return model switch
+    {
+      RoleModel.OperatorRepresentative => "Operator representative",
+      RoleModel.LocationRepresentative => "Location representative",
+      RoleModel.NetworkUserRepresentative => "Network user representative",
+      _ => throw new ArgumentOutOfRangeException(nameof(model), model, null)
+    };
+  }
 }

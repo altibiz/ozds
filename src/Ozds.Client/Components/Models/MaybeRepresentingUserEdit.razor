@@ -1,37 +1,50 @@
+@using Microsoft.AspNetCore.Components
+@using MudBlazor
+@using Ozds.Business.Models.Composite
+@using Ozds.Business.Models.Enums
+@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Fields
+
+@namespace Ozds.Client.Components.Models
+
+@inherits OzdsComponentBase
+
 <MudTextField
-  Label="@T["User Name"]"
+  Label="@Translate("User Name")"
   @bind-Value="Model.User.UserName"
   For="@(() => Model.User.UserName)"/>
 
 @if (Model.Representative is not null)
 {
   <MudTextField
-    Label="@T["Title"]"
+    Label="@Translate("Title")"
     @bind-Value="Model.Representative.Title"
     For="@(() => Model.Representative.Title)"/>
 
   <EnumPicker
     @bind-Value="Model.Representative.Role"
-    Title="@T["Role"]"
-    Label="x => T[x.ToTitle()]"/>
+    Title="@Translate("Role")"
+    Label="x => Translate(x.ToTitle())"/>
 
   <MultiEnumPicker
-    @bind-Value="Model.Representative.Topics"
-    Title="@T["Topics"]"
-    Label="x => T[x.ToTitle()]"/>
+    T="TopicModel"
+    Value="@Model.Representative.Topics.ToHashSet()"
+    ValueChanged="@((x) => Model.Representative.Topics = x.ToList())"
+    Title="@Translate("Topics")"
+    Label="x => Translate(x.ToTitle())"/>
 
   <MudTextField
-    Label="@T["Name"]"
+    Label="@Translate("Name")"
     @bind-Value="Model.Representative.PhysicalPerson.Name"
     For="@(() => Model.Representative.PhysicalPerson.Name)"/>
 
   <MudTextField
-    Label="@T["Email"]"
+    Label="@Translate("Email")"
     @bind-Value="Model.Representative.PhysicalPerson.Email"
     For="@(() => Model.Representative.PhysicalPerson.Email)"/>
 
   <MudTextField
-    Label="@T["PhoneNumber"]"
+    Label="@Translate("PhoneNumber")"
     @bind-Value="Model.Representative.PhysicalPerson.PhoneNumber"
     For="@(() => Model.Representative.PhysicalPerson.PhoneNumber)"/>
 }

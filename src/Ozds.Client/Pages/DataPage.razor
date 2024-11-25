@@ -11,13 +11,13 @@
     MaxItems="20"
     Class="pa-4 mt-0"
     T="(EntityEnum type, string name)"
-    Label="@T["Data type:"]"
+    Label="@Translate("Data type:")"
     Value="_dataSelected"
     ValueChanged="e => Update(e)"
     SearchFunc="@Search"
     ToStringFunc="@(e => e.name == null ? null : $"{e.name}")"/>
   <MudButton Class="ma-4" OnClick='() => Edit("-1")' Variant="Variant.Outlined" Color="Color.Primary">
-    @T["Create"]
+    @Translate("Create")
   </MudButton>
 </MudItem>
 
@@ -31,7 +31,7 @@
     <PropertyColumn
       CellStyle="font-size: x-large;"
       Property="x => x.title"
-      Title='@T["Name"]'>
+      Title='@Translate("Name")'>
       <CellTemplate>
         @(context.Item.title)
       </CellTemplate>
@@ -39,7 +39,7 @@
     <PropertyColumn
       CellStyle="font-size: x-large;"
       Property="x => x.id"
-      Title='@T["Id"]'>
+      Title='@Translate("Id")'>
       <CellTemplate>
         @(context.Item.id)
       </CellTemplate>
@@ -48,7 +48,7 @@
       <CellTemplate>
         <MudStack Row>
           <MudButton OnClick="() => Edit(context.Item.id)" Variant="Variant.Outlined" Color="Color.Primary">
-            @T["Edit"]
+            @Translate("Edit")
           </MudButton>
         </MudStack>
       </CellTemplate>
@@ -89,25 +89,25 @@
 
   protected override async Task OnInitializedAsync()
   {
-    _dataSelected = (EntityEnum.Locations, T["Locations"]);
+    _dataSelected = (EntityEnum.Locations, Translate("Locations"));
     queries = ScopedServices.GetRequiredService<OzdsDataQueries>();
-    _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.Locations, T["Locations"]));
-    _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.Network_Users, T["Network Users"]));
-    _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.Red_Low_Catalogue, T["Red Low Catalogue"]));
-    _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.Blue_Low_Catalogue, T["Blue Low Catalogue"]));
-    _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.White_Low_Catalogue, T["White Low Catalogue"]));
-    _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.White_Medium_Catalogue, T["White Medium Catalogue"]));
-    _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.Regulatory_Catalogue, T["Regulatory Catalogue"]));
-    _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.Pidgeon_Messenger, T["Messenger"]));
-    _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.Abb_B2x_validator, T["Abb B2x validator"]));
-    _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.Schneider_iEM3xxx_validator, T["Schneider iEM3xxx validator"]));
-    _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.Abb_B2x_device, T["Abb B2x device"]));
-    _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.Schneider_iEM3xxx_device, T["Schneider iEM3xxx device"]));
-    _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.Device_at_location, T["Device at location"]));
-    _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.Device_at_network_user, T["Device at network user"]));
-    _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.Notifications, T["Notifications"]));
+    _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.Locations, Translate("Locations")));
+    _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.Network_Users, Translate("Network Users")));
+    _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.Red_Low_Catalogue, Translate("Red Low Catalogue")));
+    _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.Blue_Low_Catalogue, Translate("Blue Low Catalogue")));
+    _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.White_Low_Catalogue, Translate("White Low Catalogue")));
+    _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.White_Medium_Catalogue, Translate("White Medium Catalogue")));
+    _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.Regulatory_Catalogue, Translate("Regulatory Catalogue")));
+    _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.Pidgeon_Messenger, Translate("Messenger")));
+    _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.Abb_B2x_validator, Translate("Abb B2x validator")));
+    _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.Schneider_iEM3xxx_validator, Translate("Schneider iEM3xxx validator")));
+    _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.Abb_B2x_device, Translate("Abb B2x device")));
+    _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.Schneider_iEM3xxx_device, Translate("Schneider iEM3xxx device")));
+    _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.Device_at_location, Translate("Device at location")));
+    _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.Device_at_network_user, Translate("Device at network user")));
+    _dataList.Add(new ValueTuple<EntityEnum, string>(EntityEnum.Notifications, Translate("Notifications")));
 
-    await Update(new ValueTuple<EntityEnum, string>(EntityEnum.Locations, T["Locations"]));
+    await Update(new ValueTuple<EntityEnum, string>(EntityEnum.Locations, Translate("Locations")));
   }
 
   private Task<IEnumerable<(EntityEnum type, string name)>> Search(string value)

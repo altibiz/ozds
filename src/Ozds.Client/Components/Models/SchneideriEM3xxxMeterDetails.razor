@@ -1,23 +1,29 @@
+@using Microsoft.AspNetCore.Components
+@using Ozds.Business.Models
+@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Fields
 
-<DetailsField Title="@T["Id"]">
+@namespace Ozds.Client.Components.Models
+
+@inherits OzdsComponentBase
+
+<DetailsField Title="@Translate("Id")">
   @Model.Id
 </DetailsField>
 
-<DetailsField Title="@T["Name"]">
+<DetailsField Title="@Translate("Name")">
   @Model.Title
 </DetailsField>
 
-<DetailsField Title="@T["Connected power"]">
+<DetailsField Title="@Translate("Connected power")">
   @Model.ConnectionPower_W
 </DetailsField>
 
-<DetailsField Title="@T["Phases"]">
+<DetailsField Title="@Translate("Phases")">
   @(string.Join(", ", Model.Phases))
 </DetailsField>
 
 @code {
-
   [Parameter]
   public SchneideriEM3xxxMeterModel Model { get; set; } = default!;
-
 }

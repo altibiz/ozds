@@ -1,4 +1,13 @@
-<!-- TODO: remove summations and store directly on calculation -->
+@using Microsoft.AspNetCore.Components
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Business.Models
+@using Ozds.Business.Models.Complex
+@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Streaming
+
+@namespace Ozds.Client.Components.Print
+
+@inherits OzdsOwningComponentBase
 
 <style>
   table {
@@ -33,23 +42,23 @@
 <p>
   <strong>
     <u>
-      @T["SPECIFICATION OF CONSUMPTION AT BILLING METERING POINTS"]
+      @Translate("SPECIFICATION OF CONSUMPTION AT BILLING METERING POINTS")
     </u>
   </strong>
 </p>
 <p style="margin-top: 0.8rem;">
-  @T["Name of the billing metering point (OMM)"]:
+  @Translate("Name of the billing metering point (OMM)"):
   @(Calculation.ArchivedNetworkUserMeasurementLocation.Title)
 </p>
 <p>
-  @T["Number of the billing metering point (OMM)"]:
+  @Translate("Number of the billing metering point (OMM)"):
   @(Calculation.ArchivedNetworkUserMeasurementLocation.Id)
 </p>
 <p>
-  @T["Tariff model"]: @(Calculation.Kind)
+  @Translate("Tariff model"): @(Calculation.Kind)
 </p>
 <p style="margin-top: 1.2rem; margin-left: 0.8rem;">
-  <strong>@T["A) NETWORK USAGE FEE FOR ZDS"]</strong>
+  <strong>@Translate("A) NETWORK USAGE FEE FOR ZDS")</strong>
 </p>
 <table style="margin-top: 0.8rem; width: 100%">
   <colgroup>
@@ -66,16 +75,16 @@
   </colgroup>
   <thead>
   <tr class="header">
-    <th>@T["Number of devices"]</th>
-    <th>@T["Date from"]</th>
-    <th>@T["Date to"]</th>
-    <th>@T["Tariff item"]</th>
-    <th>@T["Status from"]</th>
-    <th>@T["Status to"]</th>
-    <th>@T["Status"]</th>
-    <th>@T["Usage"] (kWh/kW/kVAR)</th>
-    <th>@T["Unit"] (EUR)</th>
-    <th>@T["Total"] (EUR)</th>
+    <th>@Translate("Number of devices")</th>
+    <th>@Translate("Date from")</th>
+    <th>@Translate("Date to")</th>
+    <th>@Translate("Tariff item")</th>
+    <th>@Translate("Status from")</th>
+    <th>@Translate("Status to")</th>
+    <th>@Translate("Status")</th>
+    <th>@Translate("Usage") (kWh/kW/kVAR)</th>
+    <th>@Translate("Unit") (EUR)</th>
+    <th>@Translate("Total") (EUR)</th>
   </tr>
   </thead>
   <tbody>
@@ -91,19 +100,19 @@
     </td>
     @(
     Calculation.UsageItems.FirstOrDefault() is { } usageItem
-      ? renderItem(usageItem)
+      ? RenderItem(usageItem)
       : null)
   </tr>
   @foreach (var item in Calculation.UsageItems.Skip(1))
   {
     <tr>
-      @renderItem(item)
+      @RenderItem(item)
     </tr>
   }
   <tr class="odd">
     <td colspan="5"></td>
     <td colspan="4">
-      <strong>@T["Network usage fee for ZDS - TOTAL"]:</strong>
+      <strong>@Translate("Network usage fee for ZDS - TOTAL"):</strong>
     </td>
     <td style="text-align: right;">
       <strong>
@@ -114,7 +123,7 @@
   </tbody>
 </table>
 <p style="margin-top: 1.2rem; margin-left: 0.8rem;">
-  <strong>@T["B) ELECTRICITY SUPPLY FEE"]</strong>
+  <strong>@Translate("B) ELECTRICITY SUPPLY FEE")</strong>
 </p>
 <table style="margin-top: 0.8rem;">
   <colgroup>
@@ -131,16 +140,16 @@
   </colgroup>
   <thead>
   <tr class="header">
-    <th>@T["Number of devices"]</th>
-    <th>@T["Date from"]</th>
-    <th>@T["Date to"]</th>
-    <th>@T["Tariff item"]</th>
-    <th>@T["Status from"]</th>
-    <th>@T["Status to"]</th>
-    <th>@T["Status"]</th>
-    <th>@T["Usage"] (kWh)</th>
-    <th>@T["Unit"] (EUR)</th>
-    <th>@T["Total"] (EUR)</th>
+    <th>@Translate("Number of devices")</th>
+    <th>@Translate("Date from")</th>
+    <th>@Translate("Date to")</th>
+    <th>@Translate("Tariff item")</th>
+    <th>@Translate("Status from")</th>
+    <th>@Translate("Status to")</th>
+    <th>@Translate("Status")</th>
+    <th>@Translate("Usage") (kWh)</th>
+    <th>@Translate("Unit") (EUR)</th>
+    <th>@Translate("Total") (EUR)</th>
   </tr>
   </thead>
   <tbody>
@@ -156,19 +165,19 @@
     </td>
     @(
     Calculation.SupplyItems.FirstOrDefault() is { } supplyItem
-      ? renderItem(supplyItem)
+      ? RenderItem(supplyItem)
       : null)
   </tr>
   @foreach (var item in Calculation.SupplyItems.Skip(1))
   {
     <tr>
-      @renderItem(item)
+      @RenderItem(item)
     </tr>
   }
   <tr class="odd">
     <td colspan="4"></td>
     <td colspan="5">
-      <strong>@T["Fee for electricity supply - TOTAL"]:</strong>
+      <strong>@Translate("Fee for electricity supply - TOTAL"):</strong>
     </td>
     <td style="text-align: right;">
       <strong>
@@ -203,16 +212,16 @@
     }
   }
 
-  private RenderFragment renderItem(ICalculationItem item) =>
+  private RenderFragment RenderItem(ICalculationItem item) =>
     item is ReactiveEnergyTotalRampedT0CalculationItemModel reactiveItem
       ? @<Fragment>
           <td>
-            <strong>@T["JEN"]</strong>
+            <strong>@Translate("JEN")</strong>
           </td>
           <td style="padding: 0;">
             <p class="inductive-label">
               <strong>
-                @T["IND"]:
+                @Translate("IND"):
               </strong>
               <span>
                 @NumericString(reactiveItem.ReactiveImportMin_kVARh, 2)
@@ -220,7 +229,7 @@
             </p>
             <p class="capacitative-label">
               <strong>
-                @T["KAP"]:
+                @Translate("KAP"):
               </strong>
               <span>
                 @NumericString(reactiveItem.ReactiveExportMin_kVARh, 2)
@@ -230,7 +239,7 @@
           <td style="padding: 0;">
             <p class="inductive-label">
               <strong>
-                @T["IND"]:
+                @Translate("IND"):
               </strong>
               <span>
                 @NumericString(reactiveItem.ReactiveImportMax_kVARh, 2)
@@ -238,7 +247,7 @@
             </p>
             <p class="capacitative-label">
               <strong>
-                @T["KAP"]:
+                @Translate("KAP"):
               </strong>
               <span>
                 @NumericString(reactiveItem.ReactiveExportMax_kVARh, 2)

@@ -1,11 +1,14 @@
-@using MudBlazor
-@using Ozds.Client.Base
-@using Ozds.Client.State
-@namespace Ozds.Client.Components.Layout
-@inherits OzdsComponentBase
 @using Microsoft.AspNetCore.Http
 @using Microsoft.AspNetCore.Antiforgery
 @using Microsoft.Extensions.Logging
+@using MudBlazor
+@using Ozds.Client.Components.Base
+@using Ozds.Client.State
+
+@namespace Ozds.Client.Components.Layout
+
+@inherits OzdsComponentBase
+
 @inject IAntiforgery Antiforgery
 @inject IHttpContextAccessor HttpContextAccessor
 @inject ILogger<UserDrawer> Logger
@@ -25,59 +28,66 @@
   <MudDivider />
   <MudDrawerContainer>
     <MudNavMenu>
-        <MudNavLink
+      <MudNavLink
+        OnClick="e => LayoutState.SetUserDrawerOpen(false)"
+        Href="account" >
+        <MudContainer MaxWidth="MaxWidth.Small" Class="d-flex flex-row">
+          <MudHidden Breakpoint="Breakpoint.Xs">
+            <div
+              style="margin-left: -8px;"
+              class="d-flex flex-row align-center">
+              <MudIcon Icon="@Icons.Material.Filled.Person" />
+            </div>
+          </MudHidden>
+          <MudHidden Breakpoint="Breakpoint.SmAndUp">
+            <div
+              style="margin-left: -28px;"
+              class="d-flex flex-row align-center">
+              <MudIcon Icon="@Icons.Material.Filled.Person" />
+            </div>
+          </MudHidden>
+          <MudText Class="ml-4">
+            @Translate("Account")
+          </MudText>
+        </MudContainer>
+      </MudNavLink>
+      <MudForm method="post" action="/Users/LogOff?returnUrl=/login">
+        <input
+          type="hidden"
+          name="__RequestVerificationToken"
+          value="@LogoutTokenState.LogoutToken"/>
+        <MudButton
+          ButtonType="ButtonType.Submit"
+          DropShadow="false"
+          Ripple="false"
           OnClick="e => LayoutState.SetUserDrawerOpen(false)"
-          Href="account" >
-            <MudContainer MaxWidth="MaxWidth.Small" Class="d-flex flex-row">
-                <MudHidden Breakpoint="Breakpoint.Xs">
-                    <div style="margin-left: -8px;" class="d-flex flex-row align-center">
-                        <MudIcon Icon="@Icons.Material.Filled.Person" />
-                    </div>
-                </MudHidden>
-                <MudHidden Breakpoint="Breakpoint.SmAndUp">
-                    <div style="margin-left: -28px;" class="d-flex flex-row align-center">
-                        <MudIcon Icon="@Icons.Material.Filled.Person" />
-                    </div>
-                </MudHidden>
-                <MudText Class="ml-4">
-                    @T["Account"]
-                </MudText>
-            </MudContainer>
-          </MudNavLink>
-          <MudForm method="post" action="/Users/LogOff?returnUrl=/login">
-            <input
-              type="hidden"
-              name="__RequestVerificationToken"
-              value="@LogoutTokenState.LogoutToken"/>
-              <MudButton
-                ButtonType="ButtonType.Submit"
-                DropShadow="false"
-                Ripple="false"
-                OnClick="e => LayoutState.SetUserDrawerOpen(false)"
-                Style="width: 100%; padding: 8px 16px 8px 16px;">
-                  <MudContainer MaxWidth="MaxWidth.Small" Class="d-flex flex-row">
-                    <MudHidden Breakpoint="Breakpoint.Xs">
-                        <div style="margin-left: -8px;" class="d-flex flex-row align-center">
-                            <MudIcon Icon="@Icons.Material.Filled.Login" />
-                        </div>
-                    </MudHidden>
-                    <MudHidden Breakpoint="Breakpoint.SmAndUp">
-                        <div style="margin-left: -28px;" class="d-flex flex-row align-center">
-                            <MudIcon Icon="@Icons.Material.Filled.Login" />
-                        </div>
-                    </MudHidden>
-                    <MudText Class="ml-4">
-                        @T["Logout"]
-                    </MudText>
-                </MudContainer>
-              </MudButton>
-          </MudForm>
+          Style="width: 100%; padding: 8px 16px 8px 16px;">
+          <MudContainer MaxWidth="MaxWidth.Small" Class="d-flex flex-row">
+            <MudHidden Breakpoint="Breakpoint.Xs">
+              <div
+                style="margin-left: -8px;"
+                class="d-flex flex-row align-center">
+                <MudIcon Icon="@Icons.Material.Filled.Login" />
+              </div>
+            </MudHidden>
+            <MudHidden Breakpoint="Breakpoint.SmAndUp">
+              <div
+                style="margin-left: -28px;"
+                class="d-flex flex-row align-center">
+                <MudIcon Icon="@Icons.Material.Filled.Login" />
+              </div>
+            </MudHidden>
+            <MudText Class="ml-4">
+              @Translate("Logout")
+            </MudText>
+          </MudContainer>
+        </MudButton>
+      </MudForm>
     </MudNavMenu>
   </MudDrawerContainer>
 </MudDrawer>
 
 @code {
-
   [CascadingParameter]
   public UserState UserState { get; set; } = default!;
 

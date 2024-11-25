@@ -5,7 +5,7 @@ using MudBlazor;
 using Ozds.Business.Models.Base;
 using Ozds.Business.Queries;
 using Ozds.Business.Time;
-using Ozds.Client.Base;
+using Ozds.Client.Components.Base;
 using Ozds.Client.State;
 
 // FIXME: detecting dark mode preference is broken
@@ -25,7 +25,7 @@ public partial class Layout : OzdsLayoutComponentBase
   private ThemeState ThemeState { get; set; } = default!;
 
 #pragma warning disable S4487 // Unread "private" fields should be removed
-  private MudThemeProvider? _mudThemeProvider;
+  private MudThemeProvider _mudThemeProvider = default!;
 #pragma warning restore S4487 // Unread "private" fields should be removed
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously

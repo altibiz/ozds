@@ -1,8 +1,8 @@
 using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Joins;
+using Ozds.Business.Queries.Abstractions;
 using Ozds.Data.Entities.Abstractions;
-using Ozds.Data.Queries.Abstractions;
 using DataNotificationQueries = Ozds.Data.Queries.NotificationQueries;
 
 namespace Ozds.Business.Queries;

@@ -1,3 +1,8 @@
+@using Ozds.Business.Models
+@using Ozds.Client.Components.Base
+
+@inherits OzdsComponentBase
+
 <style>
   .calculation-table {
     border-spacing: 0;
@@ -39,7 +44,7 @@
 </style>
 
 <p style="text-align: right;">
-  @T["INVOICE NO."] @(Invoice.Id)
+  @Translate("INVOICE NO.") @(Model.Id)
 </p>
 <table class="info-table" style="margin-top: 0.8rem; width: 100%;">
   <colgroup>
@@ -50,48 +55,48 @@
   <thead>
   <tr>
     <th style="text-align: start;">
-      <strong>@(Invoice.ArchivedLocation.Title)</strong>
+      <strong>@(Model.ArchivedLocation.Title)</strong>
     </th>
-    <th style="text-align: end;">@T["ISSUE DATE"]:</th>
+    <th style="text-align: end;">@Translate("ISSUE DATE"):</th>
     <th style="text-align: start;">
-      @(DateString(Invoice.ToDate.AddTicks(-1)))
+      @(DateString(Model.ToDate.AddTicks(-1)))
     </th>
   </tr>
   </thead>
   <tbody>
   <tr>
-    <td>@Invoice.ArchivedLocation.Title</td>
-    <td style="text-align: end;">@T["DUE DATE"]:</td>
-    <td>@DateString(Invoice.IssuedOn)</td>
+    <td>@Model.ArchivedLocation.Title</td>
+    <td style="text-align: end;">@Translate("DUE DATE"):</td>
+    <td>@DateString(Model.IssuedOn)</td>
   </tr>
   <tr>
-    <td>@Invoice.ArchivedLocation.LegalPerson.Address</td>
-    <td style="text-align: end;">@T["CONTRACT DATE"]:</td>
-    <td>@DateString(Invoice.IssuedOn)</td>
+    <td>@Model.ArchivedLocation.LegalPerson.Address</td>
+    <td style="text-align: end;">@Translate("CONTRACT DATE"):</td>
+    <td>@DateString(Model.IssuedOn)</td>
   </tr>
   <tr>
     <td>
-      @Invoice.ArchivedLocation.LegalPerson.PostalCode
-      @Invoice.ArchivedLocation.LegalPerson.City
+      @Model.ArchivedLocation.LegalPerson.PostalCode
+      @Model.ArchivedLocation.LegalPerson.City
     </td>
-    <td style="text-align: end;">@T["CONTRACT"]:</td>
-    <td>@Invoice.ArchivedLocation.Id</td>
+    <td style="text-align: end;">@Translate("CONTRACT"):</td>
+    <td>@Model.ArchivedLocation.Id</td>
   </tr>
   <tr>
-    <td>@T["SOCIAL SECURITY CODE"]: @Invoice.ArchivedLocation.LegalPerson.SocialSecurityNumber</td>
-    <td style="text-align: end;">@T["NOSIOC"]:</td>
-    <td>@Invoice.ArchivedLocation.Id</td>
+    <td>@Translate("SOCIAL SECURITY CODE"): @Model.ArchivedLocation.LegalPerson.SocialSecurityNumber</td>
+    <td style="text-align: end;">@Translate("NOSIOC"):</td>
+    <td>@Model.ArchivedLocation.Id</td>
   </tr>
   </tbody>
 </table>
 <p style="margin-top: 1.2rem; text-align: right;">
-  @T["FOR ELECTRICITY FOR THE PERIOD"]: @T["TO"]
+  @Translate("FOR ELECTRICITY FOR THE PERIOD"]: @T["TO")
   <strong>
-    @(DateString(Invoice.FromDate))
+    @(DateString(Model.FromDate))
   </strong>
   DO
   <strong>
-    @(DateString(Invoice.ToDate.AddTicks(-1)))
+    @(DateString(Model.ToDate.AddTicks(-1)))
   </strong>
 </p>
 <table class="calculation-table" style="margin-top: 0.8rem; width: 100%;">
@@ -102,109 +107,109 @@
   </colgroup>
   <thead>
   <tr>
-    <th>@T["RBR"]</th>
-    <th>@T["NAME ARTICLE / SERVICE"]</th>
-    <th>@T["TOTAL"]</th>
+    <th>@Translate("RBR")</th>
+    <th>@Translate("NAME ARTICLE / SERVICE")</th>
+    <th>@Translate("TOTAL")</th>
   </tr>
   </thead>
   <tbody>
   <tr>
     <td style="text-align: center;">1.)</td>
-    <td>@T["Network usage fee for ZDS"]</td>
+    <td>@Translate("Network usage fee for ZDS")</td>
     <td></td>
   </tr>
   <tr>
     <td style="text-align: center; padding-left: 1.2rem;">1.1.)</td>
-    <td>@T["Network usage during one tariff period"]</td>
+    <td>@Translate("Network usage during one tariff period")</td>
     <td style="text-align: end;">
-      @NumericString(Invoice.UsageActiveEnergyTotalImportT0Fee_EUR)
+      @NumericString(Model.UsageActiveEnergyTotalImportT0Fee_EUR)
     </td>
   </tr>
   <tr>
     <td style="text-align: center; padding-left: 1.2rem;">1.2.)</td>
-    <td>@T["Network usage during multiple tariff periods"]</td>
+    <td>@Translate("Network usage during multiple tariff periods")</td>
     <td style="text-align: end;">
-      @NumericString(Invoice.UsageActiveEnergyTotalImportT1Fee_EUR)
+      @NumericString(Model.UsageActiveEnergyTotalImportT1Fee_EUR)
     </td>
   </tr>
   <tr>
     <td style="text-align: center; padding-left: 1.2rem;">1.3.)</td>
-    <td>@T["Network usage during off-peak tariff period"]</td>
+    <td>@Translate("Network usage during off-peak tariff period")</td>
     <td style="text-align: end;">
-      @NumericString(Invoice.UsageActiveEnergyTotalImportT2Fee_EUR)
+      @NumericString(Model.UsageActiveEnergyTotalImportT2Fee_EUR)
     </td>
   </tr>
   <tr>
     <td style="text-align: center; padding-left: 1.2rem;">1.4.)</td>
-    <td>@T["Engaged power during multiple tariff periods"]</td>
+    <td>@Translate("Engaged power during multiple tariff periods")</td>
     <td style="text-align: end;">
-      @NumericString(Invoice.UsageActivePowerTotalImportT1PeakFee_EUR)
+      @NumericString(Model.UsageActivePowerTotalImportT1PeakFee_EUR)
     </td>
   </tr>
   <tr>
     <td style="text-align: center; padding-left: 1.2rem;">1.5.)</td>
-    <td>@T["Excessively taken reactive power"]</td>
+    <td>@Translate("Excessively taken reactive power")</td>
     <td style="text-align: end;">
-      @NumericString(Invoice.UsageReactiveEnergyTotalRampedT0Fee_EUR)
+      @NumericString(Model.UsageReactiveEnergyTotalRampedT0Fee_EUR)
     </td>
   </tr>
   <tr>
     <td style="text-align: center; padding-left: 1.2rem;">1.6.)</td>
-    <td>@T["Metering service fee"]</td>
+    <td>@Translate("Metering service fee")</td>
     <td style="text-align: end;">
-      @NumericString(Invoice.UsageMeterFee_EUR)
+      @NumericString(Model.UsageMeterFee_EUR)
     </td>
   </tr>
   <tr>
     <td></td>
-    <td style="text-align: end;">@T["Network usage fee - TOTAL"]</td>
+    <td style="text-align: end;">@Translate("Network usage fee - TOTAL")</td>
     <td style="text-align: end;">
       <strong>
-        @NumericString(Invoice.UsageFeeTotal_EUR) EUR
+        @NumericString(Model.UsageFeeTotal_EUR) EUR
       </strong>
     </td>
   </tr>
   <tr>
     <td style="text-align: center;">2.)</td>
-    <td>@T["Electricity supply fee"]</td>
+    <td>@Translate("Electricity supply fee")</td>
     <td></td>
   </tr>
   <tr>
     <td style="text-align: center; padding-left: 1.2rem;">2.1.)</td>
-    <td>@T["Electricity supply during multi-rate daily tariff period"]</td>
+    <td>@Translate("Electricity supply during multi-rate daily tariff period")</td>
     <td style="text-align: end;">
-      @NumericString(Invoice.SupplyActiveEnergyTotalImportT1Fee_EUR)
+      @NumericString(Model.SupplyActiveEnergyTotalImportT1Fee_EUR)
     </td>
   </tr>
   <tr>
     <td style="text-align: center; padding-left: 1.2rem;">2.2.)</td>
-    <td>@T["Electricity supply during off-peak daily tariff period"]</td>
+    <td>@Translate("Electricity supply during off-peak daily tariff period")</td>
     <td style="text-align: end;">
-      @NumericString(Invoice.SupplyActiveEnergyTotalImportT2Fee_EUR)
+      @NumericString(Model.SupplyActiveEnergyTotalImportT2Fee_EUR)
     </td>
   </tr>
   <tr>
     <td style="text-align: center; padding-left: 1.2rem;">2.3.)</td>
     <td>
-      @T["Fee for encouraging production from renewable energy sources and cogeneration"]
+      @Translate("Fee for encouraging production from renewable energy sources and cogeneration")
     </td>
     <td style="text-align: end;">
-      @NumericString(Invoice.SupplyRenewableEnergyFee_EUR)
+      @NumericString(Model.SupplyRenewableEnergyFee_EUR)
     </td>
   </tr>
   <tr>
     <td style="text-align: center; padding-left: 1.2rem;">2.4.)</td>
-    <td>@T["Electricity supply during off-peak daily tariff period"]</td>
+    <td>@Translate("Electricity supply during off-peak daily tariff period")</td>
     <td style="text-align: end;">
-      @NumericString(Invoice.SupplyBusinessUsageFee_EUR)
+      @NumericString(Model.SupplyBusinessUsageFee_EUR)
     </td>
   </tr>
   <tr>
     <td></td>
-    <td style="text-align: end;">@T["Supply fee – TOTAL"]</td>
+    <td style="text-align: end;">@Translate("Supply fee – TOTAL")</td>
     <td style="text-align: end;">
       <strong>
-        @NumericString(Invoice.SupplyFeeTotal_EUR) EUR
+        @NumericString(Model.SupplyFeeTotal_EUR) EUR
       </strong>
     </td>
   </tr>
@@ -217,35 +222,33 @@
   </colgroup>
   <thead>
   <tr>
-    <th style="text-align: right;">@T["TOTAL"]:</th>
+    <th style="text-align: right;">@Translate("TOTAL"):</th>
     <th style="text-align: right;">
-      @NumericString(Invoice.Total_EUR) EUR
+      @NumericString(Model.Total_EUR) EUR
     </th>
   </tr>
   </thead>
   <tbody>
   <tr>
     <td style="text-align: right;">
-      @T["VAT"] (@(Invoice.ArchivedRegulatoryCatalogue.TaxRate_Percent)%):
+      @Translate("VAT") (@(Model.ArchivedRegulatoryCatalogue.TaxRate_Percent)%):
     </td>
     <td style="text-align: right;">
-      @NumericString(Invoice.Tax_EUR) EUR
+      @NumericString(Model.Tax_EUR) EUR
     </td>
   </tr>
   <tr>
     <td style="text-align: right;">
-      <strong>@T["FULL TOTAL"]:</strong>
+      <strong>@Translate("FULL TOTAL"):</strong>
     </td>
     <td style="text-align: right;">
-      @NumericString(Invoice.TotalWithTax_EUR) EUR
+      @NumericString(Model.TotalWithTax_EUR) EUR
     </td>
   </tr>
   </tbody>
 </table>
 
 @code {
-
   [Parameter]
-  public NetworkUserInvoiceModel Invoice { get; set; } = default!;
-
+  public NetworkUserInvoiceModel Model { get; set; } = default!;
 }

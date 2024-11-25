@@ -1,18 +1,15 @@
-@namespace Ozds.Client.Components.Streaming
-
-@attribute [StreamRendering]
-
-@typeparam T where T : notnull
 @using Ozds.Business.Activation.Agnostic
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Business.Queries.Agnostic
+@using Ozds.Client.Components.Base
 @using Ozds.Client.State
 @using Microsoft.Extensions.DependencyInjection
 
-@*
-   TODO: indstead of the reload hack preserve height and
-   add a loading indicator until the task is done
-*@
+@namespace Ozds.Client.Components.Streaming
+
+@typeparam T where T : notnull
+
+@inherits OzdsOwningComponentBase
 
 @if (_state.State is LoadingState.Loading)
 {

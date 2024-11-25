@@ -1,0 +1,95 @@
+@using Microsoft.AspNetCore.Components.Web
+@using MudBlazor
+@using Ozds.Business.Models.Composite
+@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Streaming
+@using Ozds.Client.State
+
+@namespace Ozds.Client.Components.Layout
+
+@inherits OzdsLayoutComponentBase
+
+<HeadContent>
+  <title>HELB</title>
+
+  <style>
+    html, body {
+      height: 100vh;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    main {
+      flex: 1;
+    }
+
+    footer {
+      min-height: 120px;
+      margin-top: 32px;
+    }
+  </style>
+</HeadContent>
+
+<CascadingValue Value="ThemeState">
+  <CascadingValue Value="LayoutState">
+    <MudThemeProvider
+      @ref="_mudThemeProvider"
+      Theme="ThemeState.Theme"
+      IsDarkMode="ThemeState.IsDarkMode" />
+    <MudPopoverProvider/>
+    <MudDialogProvider/>
+    <MudSnackbarProvider/>
+
+    <MudBreakpointProvider OnBreakpointChanged="OnBreakpointChanged">
+      <Loading LoadAsync="LoadAsync">
+        <Found>
+          <CascadingValue Value="context.UserState">
+            <CascadingValue Value="context.RepresentativeState">
+              <main>
+                <MudLayout Class="d-flex flex-column">
+                  <UserToolbar />
+                  @if (context.RepresentativeState?.Representative is { })
+                  {
+                    <RepresentativeToolbar />
+                  }
+                  <LocalizationDrawer />
+                  <UserDrawer />
+                  @if (context.RepresentativeState?.Representative is { })
+                  {
+                    <NavigationDrawer />
+                  }
+                  <MudHidden Breakpoint="Breakpoint.SmAndDown">
+                    <MudContainer
+                      MaxWidth="MaxWidth.Large"
+                      Class="mt-8 relative"
+                      Style="flex: 1;">
+                      @Body
+                    </MudContainer>
+                  </MudHidden>
+                  <MudHidden Breakpoint="Breakpoint.MdAndUp">
+                    <MudContainer
+                      MaxWidth="MaxWidth.Large"
+                      Class="mt-4 relative"
+                      Style="flex: 1;">
+                      @Body
+                    </MudContainer>
+                  </MudHidden>
+                </MudLayout>
+              </main>
+              <footer>
+                <MudContainer
+                  MaxWidth="MaxWidth.Large"
+                  Style="height: 100%; padding-top: 12px;">
+                  <Footer />
+                </MudContainer>
+              </footer>
+            </CascadingValue>
+          </CascadingValue>
+        </Found>
+      </Loading>
+    </MudBreakpointProvider>
+  </CascadingValue>
+</CascadingValue>

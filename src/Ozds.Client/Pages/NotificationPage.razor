@@ -11,7 +11,7 @@
         <MudGrid Spacing="3">
           <MudItem xs="12" sm="3">
             <MudText Typo="Typo.body1" Style="font-weight: bold;">
-              @T["Title"]:
+              @Translate("Title"):
             </MudText>
           </MudItem>
           <MudItem xs="12" sm="9">
@@ -31,7 +31,7 @@
         <MudGrid Spacing="3">
           <MudItem xs="12" sm="@(model.Summary.Length > 30 ? 12 : 3)">
             <MudText Typo="Typo.body1" Style="font-weight: bold;">
-              @T["Summary"]:
+              @Translate("Summary"):
             </MudText>
           </MudItem>
           <MudItem xs="12" sm="@(model.Summary.Length > 30 ? 12 : 9)">
@@ -53,7 +53,7 @@
         <MudGrid Spacing="3">
           <MudItem xs="12" sm="@(model.Content.Length > 30 ? 12 : 3)">
             <MudText Typo="Typo.body1" Style="font-weight: bold;">
-              @T["Content"]:
+              @Translate("Content"):
             </MudText>
           </MudItem>
           <MudItem xs="12" sm="@(model.Content.Length > 30 ? 12 : 9)">
@@ -79,7 +79,7 @@
         <MudGrid Spacing="3">
           <MudItem xs="12" sm="3">
             <MudText Typo="Typo.body1" Style="font-weight: bold;">
-              @T["Date"]:
+              @Translate("Date"):
             </MudText>
           </MudItem>
           <MudItem xs="12" sm="9">

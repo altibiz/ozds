@@ -1,20 +1,17 @@
-@using System.Text.Json
 @using MudBlazor
+@using Ozds.Client.Components.Base
+
 @namespace Ozds.Client.Components.Streaming
+
+@inherits OzdsComponentBase
 
 <MudText>
   <code Style="overflow-wrap: break-word;">
-    @JsonSerializer.Serialize(Value, JsonSerializerOptions)
+    @JsonString(Value)
   </code>
 </MudText>
 
 @code {
   [Parameter]
   public object? Value { get; set; }
-
-  private static readonly JsonSerializerOptions JsonSerializerOptions =
-    new()
-    {
-      WriteIndented = true
-    };
 }

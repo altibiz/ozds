@@ -4,7 +4,7 @@
 
 <MudCheckBox
   T="bool"
-  Label="@T["Seen"]"
+  Label="@Translate("Seen")"
   Checked="@_seen"
   CheckedChanged="@(() => _seen = !_seen)"/>
 
@@ -13,7 +13,7 @@
   <MudHidden Breakpoint="Breakpoint.MdAndUp">
     <MudItem Class="mb-5">
       <MudText Typo="Typo.h4" Class="d-flex">
-        @(T["Notifications"])
+        @(Translate("Notifications"))
       </MudText>
       @foreach (var notification in _shownNotifications.Where(x => x.show).ToList())
       {
@@ -58,7 +58,7 @@
       Filterable="true"
       QuickFilter="@_quickFilter">
       <ToolBarContent>
-        <MudText Typo="Typo.h4">@T["Notifications"]</MudText>
+        <MudText Typo="Typo.h4">@Translate("Notifications")</MudText>
         <MudSpacer/>
         <MudTextField
           @bind-Value="_searchString"
@@ -74,11 +74,11 @@
         <PropertyColumn
           CellStyle="text-align: start !important;"
           Property="x => x.Title"
-          Title='@T["Title"]' Sortable="false"/>
+          Title='@Translate("Title")' Sortable="false"/>
         <PropertyColumn
           CellStyle="font-size: x-large;"
           Property="x => x.Timestamp"
-          Title='@T["Date"]'>
+          Title='@Translate("Date")'>
           <CellTemplate>
             @(context.Item.Timestamp.ToString("HH:mm dd.MM.yyyy."))
           </CellTemplate>
@@ -93,7 +93,7 @@
                 OnClick="() => InspectNotification(context.Item.Id)"
                 Variant="Variant.Filled"
                 Color="Color.Primary">
-                @T["Overview"]
+                @Translate("Overview")
               </MudButton>
             </MudStack>
           </CellTemplate>

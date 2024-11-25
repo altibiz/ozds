@@ -1,4 +1,6 @@
 @using MudBlazor
+@using Microsoft.AspNetCore.Components
+
 @namespace Ozds.Client.Components.Streaming
 
 <MudAlert Severity="Severity.Error" Class="m-4">
@@ -6,8 +8,6 @@
 </MudAlert>
 
 @code {
-
   [Parameter]
   public RenderFragment ChildContent { get; set; } = default!;
-
 }

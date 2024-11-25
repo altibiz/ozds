@@ -7,7 +7,7 @@
   <MudHidden Breakpoint="Breakpoint.MdAndUp">
     <MudItem Class="mb-5">
       <MudText Typo="Typo.h4" Class="d-flex">
-        @(T["Events"])
+        @(Translate("Events"))
       </MudText>
       @foreach (var e in _shownEvents.Where(x => x.show).ToList())
       {
@@ -63,7 +63,7 @@
       Filterable="true"
       QuickFilter="@_quickFilter">
       <ToolBarContent>
-        <MudText Typo="Typo.h4">@T["Events"]</MudText>
+        <MudText Typo="Typo.h4">@Translate("Events")</MudText>
         <MudSpacer/>
         <MudTextField
           @bind-Value="_searchString"
@@ -79,11 +79,11 @@
         <PropertyColumn
           CellStyle="text-align: start !important;"
           Property="x => x.Title"
-          Title='@T["Title"]' Sortable="false"/>
+          Title='@Translate("Title")' Sortable="false"/>
         <PropertyColumn
           CellStyle="font-size: x-large;"
           Property="x => x.Timestamp"
-          Title='@T["Date"]'>
+          Title='@Translate("Date")'>
           <CellTemplate>
             @(context.Item.Timestamp.ToString("HH:mm dd.MM.yyyy."))
           </CellTemplate>
@@ -91,7 +91,7 @@
         <PropertyColumn
           CellStyle="font-size: large;"
           Property="x => x.Level"
-          Title='@T["Level"]'>
+          Title='@Translate("Level")'>
           <CellTemplate>
             @if (context.Item.Level == LevelModel.Error || context.Item.Level == LevelModel.Critical)
             {
@@ -111,7 +111,7 @@
           <CellTemplate>
             <MudStack Row>
               <MudButton OnClick="() => InspectEvent(context.Item.Id)" Variant="Variant.Filled" Color="Color.Primary">
-                @T["Overview"]
+                @Translate("Overview")
               </MudButton>
             </MudStack>
           </CellTemplate>

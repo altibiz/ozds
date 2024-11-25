@@ -3,7 +3,7 @@
 
 <MudPaper Class="d-flex align-center justify-center mud-width-full py-8 px-8 flex-column" Height="600px">
   <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
-    @T["Active Power"] @T["for"]: @Source
+    @Translate("Active Power"] @T["for"): @Source
   </MudItem>
   <MudContainer Class="d-flex flex-column">
     <ApexChart TItem="ChartData"
@@ -36,7 +36,7 @@
       }
     </ApexChart>
     <MudItem Class="d-flex">
-      <MudDatePicker Label="@T["Pick month"]" DateChanged="e => MonthChange(e)" OpenTo="OpenTo.Month" FixYear="@DateTime.Today.Year" FixDay="@DateTime.Today.Day" DateFormat="MMM"/>
+      <MudDatePicker Label="@Translate("Pick month")" DateChanged="e => MonthChange(e)" OpenTo="OpenTo.Month" FixYear="@DateTime.Today.Year" FixDay="@DateTime.Today.Day" DateFormat="MMM"/>
     </MudItem>
   </MudContainer>
 </MudPaper>
@@ -78,22 +78,22 @@
       {
         new()
         {
-          Name = "L1 " + T["Active Power"],
+          Name = "L1 " + Translate("Active Power"),
           Data = Data1
         },
         new()
         {
-          Name = "L2 " + T["Active Power"],
+          Name = "L2 " + Translate("Active Power"),
           Data = Data2
         },
         new()
         {
-          Name = "L3 " + T["Active Power"],
+          Name = "L3 " + Translate("Active Power"),
           Data = Data3
         },
         new()
         {
-          Name = T["Total power"],
+          Name = Translate("Total power"),
           Data = Data4
         }
       };

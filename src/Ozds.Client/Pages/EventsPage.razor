@@ -12,7 +12,7 @@
 
 <MudSelect
   T="LevelModel"
-  Label="@T["Min level"]"
+  Label="@Translate("Min level")"
   AnchorOrigin="Origin.BottomCenter"
   @bind-Value="_minLevel">
   @foreach (var value in Enum.GetValues<LevelModel>()
@@ -22,7 +22,7 @@
         : l >= LevelModel.Information))
   {
     <MudSelectItem Value="value">
-      @T[value.ToTitle()]
+      @Translate(value.ToTitle())
     </MudSelectItem>
   }
 </MudSelect>

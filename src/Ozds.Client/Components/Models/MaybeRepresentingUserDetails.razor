@@ -1,26 +1,35 @@
-<DetailsField Title="@T["User Name"]">
+@using Microsoft.AspNetCore.Components
+@using Ozds.Business.Models.Composite
+@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Fields
+
+@namespace Ozds.Client.Components.Models
+
+@inherits OzdsComponentBase
+
+<DetailsField Title="@Translate("User Name")">
   @Model.User.UserName
 </DetailsField>
 
-<DetailsField Title="@T["User Email"]">
+<DetailsField Title="@Translate("User Email")">
   @Model.User.Email
 </DetailsField>
 
 @if (Model.Representative is { } representative)
 {
-  <DetailsField Title="@T["Title"]">
+  <DetailsField Title="@Translate("Title")">
     @representative.Title
   </DetailsField>
 
-  <DetailsField Title="@T["Name"]">
+  <DetailsField Title="@Translate("Name")">
     @representative.PhysicalPerson.Name
   </DetailsField>
 
-  <DetailsField Title="@T["Email"]">
+  <DetailsField Title="@Translate("Email")">
     @representative.PhysicalPerson.Email
   </DetailsField>
 
-  <DetailsField Title="@T["PhoneNumber"]">
+  <DetailsField Title="@Translate("PhoneNumber")">
     @representative.PhysicalPerson.PhoneNumber
   </DetailsField>
 }

@@ -1,4 +1,8 @@
-@using Color = MudBlazor.Color
+@using Microsoft.AspNetCore.Components
+@using MudBlazor
+
+@namespace Ozds.Client.Components.Dialogs
+
 <MudDialog>
   <DialogContent>
     Success
@@ -7,15 +11,3 @@
     <MudButton Color="Color.Primary" OnClick="Submit">Ok</MudButton>
   </DialogActions>
 </MudDialog>
-
-@code {
-
-  [CascadingParameter]
-  MudDialogInstance MudDialog { get; set; } = default!;
-
-  void Submit()
-  {
-    MudDialog.Close(DialogResult.Ok(true));
-  }
-
-}

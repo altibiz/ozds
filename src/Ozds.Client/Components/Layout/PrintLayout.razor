@@ -1,5 +1,10 @@
-@using Theme = Theme
-@inherits Ozds.Client.Base.OzdsLayoutComponentBase
+@using Microsoft.AspNetCore.Components.Web
+@using MudBlazor
+@using Ozds.Client.Components.Base
+
+@namespace Ozds.Client.Components.Layout
+
+@inherits OzdsLayoutComponentBase
 
 <HeadContent>
   <meta charset="utf-8"/>
@@ -114,15 +119,15 @@
   </style>
 </HeadContent>
 
-<main>
-  <MudThemeProvider Theme="_theme"/>
+<CascadingValue Value="ThemeState">
+  <main>
+    <MudThemeProvider
+      @ref="@(_mudThemeProvider)"
+      Theme="ThemeState.Theme"
+      IsDarkMode="ThemeState.IsDarkMode" />
 
-  <div class="container">
-    @Body
-  </div>
-</main>
-
-@code {
-
-  private readonly Theme _theme = new();
-}
+    <div class="container">
+      @Body
+    </div>
+  </main>
+</CascadingValue>

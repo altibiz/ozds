@@ -1,16 +1,28 @@
-<DetailsField Title="@T["Name"]">
+@using Microsoft.AspNetCore.Components
+@using Ozds.Business.Models
+@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Fields
+
+@namespace Ozds.Client.Components.Models
+
+@inherits OzdsComponentBase
+
+<DetailsField Title="@Translate("Name")">
   @Model.Title
 </DetailsField>
-<DetailsField Title="@T["Price of higher tariff active energy consumption (EUR/kWh)"]">
+<DetailsField
+  Title="@Translate("Price of higher tariff active energy consumption (EUR/kWh)")">
   @Model.ActiveEnergyTotalImportT1Price_EUR
 </DetailsField>
-<DetailsField Title="@T["Price of active energy consumption in low tariff (EUR/kWh)"]">
+<DetailsField
+  Title="@Translate("Price of active energy consumption in low tariff (EUR/kWh)")">
   @Model.ActiveEnergyTotalImportT2Price_EUR
 </DetailsField>
-<DetailsField Title="@T["Price of reactive energy consumption in a single tariff (EUR/kVARh)"]">
+<DetailsField
+  Title="@Translate("Price of reactive energy consumption in a single tariff (EUR/kVARh)")">
   @Model.ReactiveEnergyTotalRampedT0Price_EUR
 </DetailsField>
-<DetailsField Title="@T["Price of metering fee (EUR)"]">
+<DetailsField Title="@Translate("Price of metering fee (EUR)")">
   @Model.MeterFeePrice_EUR
 </DetailsField>
 
