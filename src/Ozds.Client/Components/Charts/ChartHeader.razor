@@ -1,5 +1,7 @@
+@using MudBlazor
 @using Ozds.Business.Models.Enums
 @using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Streaming
 
 @namespace Ozds.Client.Components.Charts
 
@@ -20,15 +22,20 @@
     @Translate(Parameters.Measure.ToUnit())
     &rbrack;
     &nbsp;
-    @Translate("over the last")
-    &nbsp;
-    @(Parameters.Multiplier == 1 ? "" : Parameters.Multiplier.ToString())
-    &nbsp;
-    @Translate(Parameters.Resolution.ToTitle(Parameters.Multiplier)))
+    @if (Parameters.Operator != OperatorModel.Last)
+    {
+      <Fragment>
+        @Translate("over the last")
+        &nbsp;
+        @(Parameters.Multiplier == 1 ? "" : Parameters.Multiplier.ToString())
+        &nbsp;
+        @Translate(Parameters.Resolution.ToTitle(Parameters.Multiplier))
+      </Fragment>
+    }
   </MudText>
 </div>
 
 @code {
   [Parameter]
-  public ChartParameters Parameters { get; set; } = default;
+  public ChartParameters Parameters { get; set; } = default!;
 }

@@ -15,10 +15,10 @@
 <Loading
   T="PaginatedList<T>"
   @ref="loading"
-  Load="@OnPage"
-  LoadAsync="@OnPageAsync"
-  Progress="@Progress"
-  Error="@Error">
+  Load="@(OnPage!)"
+  LoadAsync="@(OnPageAsync!)"
+  Progress="@(Progress!)"
+  Error="@(Error!)">
   <Found Context="page">
     @if (page.Items.Count == 0)
     {

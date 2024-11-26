@@ -91,6 +91,22 @@ public static class ApexChartOptionsExtensions
     return options;
   }
 
+  public static ApexChartOptions<T> WithGauge<T>(
+    this ApexChartOptions<T> options
+  )
+    where T : class
+  {
+    options.PlotOptions = new PlotOptions
+    {
+      RadialBar = new PlotOptionsRadialBar
+      {
+        StartAngle = -90,
+        EndAngle = 90
+      }
+    };
+    return options;
+  }
+
   public static ApexChartOptions<T> WithSmAndDown<T>(
     this ApexChartOptions<T> options,
     string measure

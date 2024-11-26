@@ -16,13 +16,13 @@
 <Loading
   T="T"
   Value="@Value"
-  Progress="@Progress"
-  Error="@Error"
-  Id="@Id"
-  Load="@Load"
-  LoadAsync="@LoadAsync"
-  New="@New"
-  NewAsync="@NewAsync"
+  Progress="@(Progress!)"
+  Error="@(Error!)"
+  Id="@(Id!)"
+  Load="@(Load!)"
+  LoadAsync="@(LoadAsync!)"
+  New="@(New!)"
+  NewAsync="@(NewAsync!)"
   ActivateAsync>
   <Found Context="model">
     @if (Label is not null)
@@ -114,7 +114,8 @@
       </EditForm>
     }
   </Found>
-  <Created model="model">
+
+  <Created Context="model">
     @if (Label is not null)
     {
       @Label(new MutatingState<T>(model, true))
@@ -163,4 +164,4 @@
       }
     </EditForm>
   </Created>
-</>
+</Loading>

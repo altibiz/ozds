@@ -14,10 +14,10 @@
 <ChartHeader Parameters="Parameters"/>
 
 <ApexChart
-  XAxisType="XAxisType.Datetime"
+  XAxisType="@XAxisType.Datetime"
   Options="@_options"
   Height="300"
-  @ref="_chart">
+  @ref="@_chart">
   @foreach (var (selectedMeter, i) in Parameters.Selection
     .OrderBy(x => x.Id)
     .Select((x, i) => (x, i)))
@@ -29,7 +29,7 @@
           .Where(x => x.MeterId == selectedMeter.Id)
           .ToList())"
         Name="@(selectedMeter.Id + " " + Translate("Sum"))"
-        SeriesType="@SeriesType.Donut"
+        SeriesType="@SeriesType.RadialBar"
         XValue="@(x => x.MeterId)"
         YAggregate="@(x => x
           .Select(y => y.ChartValue(Parameters.Measure))
@@ -45,10 +45,10 @@
             .Where(x => x.MeterId == selectedMeter.Id)
             .ToList())"
           Name="@(selectedMeter.Id + " " + phase.ToTitle())"
-          SeriesType="@SeriesType.Donut"
+          SeriesType="@SeriesType.RadialBar"
           XValue="@(x => x.MeterId)"
           YAggregate="@(x => x
-            .Select(y => y.ChartValue(Parameters.Measure))
+            .Select(y => y.ChartValue(Parameters.Measure, phase: phase))
             .Apply(Parameters.Operator))"
           Color="@(phase.ToColor(i))"/>
       }

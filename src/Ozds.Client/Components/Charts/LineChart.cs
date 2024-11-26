@@ -85,10 +85,15 @@ public partial class LineChart : OzdsOwningComponentBase
   {
     var queries = ScopedServices.GetRequiredService<MeterGraphQueries>();
 
+    var fromDate = Parameters.FromDate;
+    var toDate = fromDate.Subtract(Parameters.Resolution
+      .ToTimeSpan(Parameters.Multiplier, fromDate));
     _measurements = await queries.Read(
       Meters,
       Parameters.Resolution,
-      Parameters.Multiplier
+      Parameters.Multiplier,
+      fromDate: fromDate,
+      toDate: toDate
     );
 
     _options = CreateGraphOptions();

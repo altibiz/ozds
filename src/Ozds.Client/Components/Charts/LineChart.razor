@@ -14,10 +14,10 @@
 <ChartHeader Parameters="Parameters"/>
 
 <ApexChart
-  XAxisType="XAxisType.Datetime"
+  XAxisType="@XAxisType.Datetime"
   Options="@_options"
   Height="300"
-  @ref="_chart">
+  @ref="@_chart">
   @foreach (var (selectedMeter, i) in Parameters.Selection
     .OrderBy(x => x.Id)
     .Select((x, i) => (x, i)))
@@ -29,9 +29,9 @@
           .Where(x => x.MeterId == selectedMeter.Id)
           .ToList())"
         Name="@(selectedMeter.Id + " " + Translate("Sum"))"
-        SeriesType="Area ? SeriesType.Area : SeriesType.Line"
-        XValue='x => DateTimeApplyOffset(x.Timestamp)'
-        YValue="x => x.ChartValue(Parameters.Measure)"
+        SeriesType="@(Area ? SeriesType.Area : SeriesType.Line)"
+        XValue="@(x => DateTimeApplyOffset(x.Timestamp))"
+        YValue="@(x => x.ChartValue(Parameters.Measure))"
         Stroke="@(new SeriesStroke
         {
           Color = PhaseModel.L1.ToColor(i),
@@ -48,9 +48,9 @@
             .Where(x => x.MeterId == selectedMeter.Id)
             .ToList())"
           Name="@(selectedMeter.Id + " " + phase.ToTitle())"
-          SeriesType="Area ? SeriesType.Area : SeriesType.Line"
-          XValue='x => DateTimeApplyOffset(x.Timestamp)'
-          YValue="x => x.ChartValue(Parameters.Measure, phase: phase)"
+          SeriesType="@(Area ? SeriesType.Area : SeriesType.Line)"
+          XValue="@(x => DateTimeApplyOffset(x.Timestamp))"
+          YValue="@(x => x.ChartValue(Parameters.Measure, phase: phase))"
           Stroke="@(new SeriesStroke
           {
             Color = phase.ToColor(i),
@@ -65,10 +65,10 @@
 @if (Brush)
 {
   <ApexChart
-    XAxisType="XAxisType.Datetime"
+    XAxisType="@XAxisType.Datetime"
     Options="@_brushOptions"
     Height="130"
-    @ref="_brushChart">
+    @ref="@_brushChart">
     @foreach (var (selectedMeter, i) in Parameters.Selection
       .OrderBy(x => x.Id)
       .Select((x, i) => (x, i)))
@@ -80,9 +80,9 @@
             .Where(x => x.MeterId == selectedMeter.Id)
             .ToList())"
           Name="@(selectedMeter.Id + " " + Translate("Sum"))"
-          SeriesType="Area ? SeriesType.Area : SeriesType.Line"
-          XValue='x => DateTimeApplyOffset(x.Timestamp)'
-          YValue="x => x.ChartValue(Parameters.Measure)"
+          SeriesType="@(Area ? SeriesType.Area : SeriesType.Line)"
+          XValue="@(x => DateTimeApplyOffset(x.Timestamp))"
+          YValue="@(x => x.ChartValue(Parameters.Measure))"
           Stroke="@(new SeriesStroke
           {
             Color = PhaseModel.L1.ToColor(i),
@@ -99,9 +99,9 @@
               .Where(x => x.MeterId == selectedMeter.Id)
               .ToList())"
             Name="@(selectedMeter.Id + " " + phase.ToTitle())"
-            SeriesType="Area ? SeriesType.Area : SeriesType.Line"
-            XValue='x => DateTimeApplyOffset(x.Timestamp)'
-            YValue="x => x.ChartValue(Parameters.Measure, phase: phase)"
+            SeriesType="@(Area ? SeriesType.Area : SeriesType.Line)"
+            XValue="@(x => DateTimeApplyOffset(x.Timestamp))"
+            YValue="@(x => x.ChartValue(Parameters.Measure, phase: phase))"
             Stroke="@(new SeriesStroke
             {
               Color = phase.ToColor(i),

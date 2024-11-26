@@ -1,17 +1,37 @@
-@page "/user/{id}"
+@using Microsoft.Extensions.DependencyInjection
+@using Ozds.Business.Mutations.Agnostic
+@using Ozds.Business.Queries
+@using Ozds.Client.Attributes
 @using Ozds.Client.Components.Models
-@attribute [Navigation(RouteValue = "id", Parents = new[] { typeof(UsersPage) })]
+@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Streaming
+
+@page "/user/{id}"
+
+@attribute [Navigation(
+  Title = "User",
+  RouteValue = "id",
+  Parents = new[] { typeof(UsersPage) })]
+
 @inherits OzdsOwningComponentBase
 
-<Mutating>
-
+<Mutating
+  LoadAsync="@(() => Id is null ? null : ScopedServices
+    .GetRequiredService<RepresentativeQueries>()
+    .MaybeRepresentingUserByUserId(Id, CancellationToken.None))"
+  CreateAsync="@((x) => ScopedServices
+    .GetRequiredService<AuditableMutations>()
+    .Create(x.Representative, CancellationToken.None))">
+  <Details>
+    <MaybeRepresentingUserDetails Model="@context.Model"/>
+  </Details>
+  <Edit>
+    <MaybeRepresentingUserEdit Model="@context.Model"/>
+  </Edit>
 </Mutating>
 <Loading LoadAsync="@(() => ScopedServices
   .GetRequiredService<RepresentativeQueries>()
   .MaybeRepresentingUserByUserId(Id, CancellationToken.None))">
-  <Found>
-    <MaybeRepresentingUserDetails Model="@context"/>
-  </Found>
 </Loading>
 
 @code {
