@@ -15,53 +15,20 @@ public enum MeasureModel
   ApparentEnergy
 }
 
-public static class ChartMeasureExtensions
+public static class MeasureExtensions
 {
   public static decimal ChartValue(
     this IMeasurement measurement,
     MeasureModel measure,
-    PhaseModel? phase)
+    TariffModel? tariff = null,
+    DuplexModel? duplex = null,
+    PhaseModel? phase = null
+  )
   {
-    var byTariff = measure switch
-    {
-      MeasureModel.Current => measurement.Current_A,
-      MeasureModel.Voltage => measurement.Voltage_V,
-      MeasureModel.ActivePower => measurement.ActivePower_W,
-      MeasureModel.ReactivePower => measurement.ReactivePower_VAR,
-      MeasureModel.ApparentPower => measurement.ApparentPower_VA,
-      MeasureModel.ActiveEnergy => measurement.ActiveEnergy_Wh,
-      MeasureModel.ReactiveEnergy => measurement.ReactiveEnergy_VARh,
-      MeasureModel.ApparentEnergy => measurement.ApparentEnergy_VAh,
-      _ => throw new ArgumentOutOfRangeException(nameof(measure), measure, null)
-    };
-
-    var byDuplex = byTariff.TariffUnary();
-
-    var byPhase = byDuplex.DuplexAny();
-
-    var result = phase switch
-    {
-      PhaseModel.L1 => byPhase.PhaseSplit().ValueL1,
-      PhaseModel.L2 => byPhase.PhaseSplit().ValueL2,
-      PhaseModel.L3 => byPhase.PhaseSplit().ValueL3,
-      _ => byPhase.PhaseSum()
-    };
-    if (result == 0)
-    {
-      var byPhaseImport = byDuplex.DuplexImport();
-      result = phase switch
-      {
-        PhaseModel.L1 => byPhaseImport.PhaseSplit().ValueL1,
-        PhaseModel.L2 => byPhaseImport.PhaseSplit().ValueL2,
-        PhaseModel.L3 => byPhaseImport.PhaseSplit().ValueL3,
-        _ => byPhaseImport.PhaseSum()
-      };
-    }
-
-    if (measure == MeasureModel.ActivePower || measure == MeasureModel.ActiveEnergy)
-    {
-      return result / 1000;
-    }
+    var byTariff = measurement.GetMeasure(measure);
+    var byDuplex = byTariff.GetMeasure(tariff);
+    var byPhase = byDuplex.GetMeasure(duplex);
+    var result = byPhase.GetMeasure(phase);
     return result;
   }
 

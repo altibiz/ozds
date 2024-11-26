@@ -7,8 +7,8 @@ namespace Ozds.Business.Analysis;
 
 public record MonthlyAnalysis(
   DateTimeOffset StartOfMonth,
-  Load? MaxLoad,
-  Consumption? Consumption
+  Load MaxLoad,
+  Consumption Consumption
 );
 
 public record Analysis(

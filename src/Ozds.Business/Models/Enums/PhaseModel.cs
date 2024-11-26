@@ -1,3 +1,4 @@
+using Ozds.Business.Math;
 using Ozds.Data.Entities.Enums;
 
 namespace Ozds.Business.Models;
@@ -52,6 +53,20 @@ public static class PhaseModelExtensions
       PhaseModel.L2 => Colors[index % Colors.Length][1],
       PhaseModel.L3 => Colors[index % Colors.Length][2],
       _ => throw new ArgumentOutOfRangeException(nameof(phase), phase, null)
+    };
+  }
+
+  public static decimal GetMeasure(
+    this PhasicMeasure<decimal> phasic,
+    PhaseModel? phase
+  )
+  {
+    return phase switch
+    {
+      PhaseModel.L1 => phasic.PhaseSplit().ValueL1,
+      PhaseModel.L2 => phasic.PhaseSplit().ValueL2,
+      PhaseModel.L3 => phasic.PhaseSplit().ValueL3,
+      _ => phasic.PhaseSum()
     };
   }
 

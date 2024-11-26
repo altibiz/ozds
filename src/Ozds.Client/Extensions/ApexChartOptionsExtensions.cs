@@ -17,6 +17,7 @@ public static class ApexChartOptionsExtensions
     };
     return options;
   }
+
   public static ApexChartOptions<T> WithArea<T>(
     this ApexChartOptions<T> options
   )
@@ -25,6 +26,7 @@ public static class ApexChartOptionsExtensions
     options.Chart.Type = ChartType.Area;
     return options;
   }
+
   public static ApexChartOptions<T> WithShortDate<T>(
     this ApexChartOptions<T> options
   )
@@ -33,6 +35,7 @@ public static class ApexChartOptionsExtensions
     options.Tooltip = new Tooltip { X = new TooltipX { Format = @"dd.MM." } };
     return options;
   }
+
   public static ApexChartOptions<T> WithLongDate<T>(
     this ApexChartOptions<T> options
   )

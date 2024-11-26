@@ -1,5 +1,11 @@
-@using Color = MudBlazor.Color
-@using Size = MudBlazor.Size
+@using Microsoft.Extensions.DependencyInjection
+@using MudBlazor
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Business.Models.Base
+@using Ozds.Business.Queries
+@using Ozds.Client.Components.Base
+@using Ozds.Client.State
+
 @inherits OzdsOwningComponentBase
 
 <MudCheckBox
@@ -135,9 +141,11 @@
 
     _notifications = _seen
       ? (await ScopedServices
-        .GetRequiredService<OzdsNotificationQueries>()
-        .ReadForRecipient<NotificationModel>(representative.Representative, _seen))
-      .Items
+        .GetRequiredService<NotificationQueries>()
+        .ReadForRecipient<NotificationModel>(
+          representative.Representative.Id,
+          CancellationToken.None,
+          seen: _seen))
       .OfType<INotification>()
       .ToList()
       : representative.Notifications.OfType<INotification>().ToList();

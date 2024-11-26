@@ -1,7 +1,13 @@
+@using MudBlazor
+@using Ozds.Business.Models.Abstractions
 @using Ozds.Business.Time
 @using Ozds.Business.Analysis
-@using Color = MudBlazor.Color
-@using Size = MudBlazor.Size
+@using Ozds.Client.Components.Base
+@using Ozds.Client.State
+
+@namespace Ozds.Client.Components.Tables
+
+@inherits OzdsComponentBase
 
 @{
   var analysis = RepresentativeState.AnalysisBases.AnalysisForMeter(Meter.Id);
@@ -137,7 +143,3 @@
 
   private string? _searchString;
 }
-
-<style>
-  .mud-table-toolbar{ flex-wrap: wrap; height: inherit; }
-</style>

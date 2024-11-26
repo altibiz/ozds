@@ -1,9 +1,14 @@
+@using ApexCharts
+@using Microsoft.Extensions.DependencyInjection
+@using MudBlazor
 @using Ozds.Business.Time
-@using ChartType = ApexCharts.ChartType
+@using Ozds.Client.Components.Base
+
+@inherits OzdsOwningComponentBase
 
 <MudPaper Class="d-flex align-center justify-center mud-width-full py-8 px-8 flex-column" Height="600px">
   <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
-    @Translate("Active Power"] @T["for"): @Source
+    @Translate("Active Power") @Translate("for"): @Source
   </MudItem>
   <MudContainer Class="d-flex flex-column">
     <ApexChart TItem="ChartData"
@@ -36,7 +41,13 @@
       }
     </ApexChart>
     <MudItem Class="d-flex">
-      <MudDatePicker Label="@Translate("Pick month")" DateChanged="e => MonthChange(e)" OpenTo="OpenTo.Month" FixYear="@DateTime.Today.Year" FixDay="@DateTime.Today.Day" DateFormat="MMM"/>
+      <MudDatePicker
+        Label="@Translate("Pick month")"
+        DateChanged="e => MonthChange(e)"
+        OpenTo="OpenTo.Month"
+        FixYear="@DateTime.Today.Year"
+        FixDay="@DateTime.Today.Day"
+        DateFormat="MMM"/>
     </MudItem>
   </MudContainer>
 </MudPaper>
@@ -158,7 +169,7 @@
   {
     graphLOptions.Chart = new Chart
     {
-      Type = ChartType.Line,
+      Type = ApexCharts.ChartType.Line,
       Height = 130,
       Id = "chart2",
       DropShadow = new DropShadow

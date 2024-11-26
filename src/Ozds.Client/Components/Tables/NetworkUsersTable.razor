@@ -1,10 +1,11 @@
+@using MudBlazor
 @using Ozds.Business.Finance.Abstractions
 @using Ozds.Business.Time
 @using Ozds.Business.Analysis
-@using Ozds.Client.Components.Streaming
-@using Color = MudBlazor.Color
-@using Size = MudBlazor.Size
-@inject IDialogService DialogService
+@using Ozds.Client.Components.Base
+@using Ozds.Client.State
+
+@inherits OzdsComponentBase
 
 @{
   var analyses = RepresentativeState.AnalysisBases
@@ -20,26 +21,42 @@
     <MudPaper Elevation="2" Class="ma-1">
       <MudStack Spacing="0">
         <MudGrid Class="d-flex pa-2">
-          <MudItem xs="10" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
-            @Translate("Location"): @(analysis.Location.Title)
+          <MudItem
+            xs="10"
+            Class="d-flex align-center justify-start"
+            Style="font-size: large; font-weight: bold;">
+            @Translate("Location")
+            &colon;
+            &nbsp;
+            @(analysis.Location.Title)
           </MudItem>
           <MudItem xs="2" Class="d-flex align-center justify-end">
             <MudIconButton
-              OnClick="@(() => NavigationManager.NavigateTo($"location/{analysis.Location.Id}"))"
-              Icon="@Icons.Material.Filled.RemoveRedEye" Color="Color.Primary"/>
+              OnClick="@(() => NavigationManager
+                .NavigateTo($"location/{analysis.Location.Id}"))"
+              Icon="Icons.Material.Filled.RemoveRedEye"
+              Color="Color.Primary"/>
           </MudItem>
-          <MudItem xs="8" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
-            @Translate("Network user"): @(analysis.NetworkUser.Title)
+          <MudItem
+            xs="8"
+            Class="d-flex align-center justify-start"
+            Style="font-size: large; font-weight: bold;">
+            @Translate("Network user")
+            &colon;
+            &nbsp;
+            @(analysis.NetworkUser.Title)
           </MudItem>
           <MudItem xs="2" Class="d-flex align-center justify-end">
             <MudIconButton
-              OnClick="@(() => NavigationManager.NavigateTo($"network-user/{analysis.NetworkUser.Id}"))"
+              OnClick="@(() => NavigationManager
+                .NavigateTo($"network-user/{analysis.NetworkUser.Id}"))"
               Icon="@Icons.Material.Filled.RemoveRedEye"
               Color="Color.Primary"/>
           </MudItem>
           <MudItem xs="2" Class="d-flex align-center justify-end">
             <MudIconButton
-              Icon="@(Icons.Material.Filled.KeyboardArrowUp)" Color="Color.Default"/>
+              Icon="Icons.Material.Filled.KeyboardArrowUp"
+              Color="Color.Default"/>
           </MudItem>
         </MudGrid>
 
@@ -48,19 +65,44 @@
             <MudDivider DividerType="DividerType.Middle" Class="mt-2"/>
             <MudGrid Class="d-flex pa-2">
               <MudContainer Class="d-flex flex-column pb-1">
-                <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large;">
-                  @Translate("Current months consumption"):
-                  @(NumericString(analysis.Analysis.ThisMonthConsumption.ActiveEnergy_kWh, 0)) kWh
+                <MudItem
+                  xs="12"
+                  Class="d-flex align-center justify-start"
+                  Style="font-size: large;">
+                  @Translate("Current months consumption")
+                  &colon;
+                  &nbsp;
+                  @NumericString(
+                    analysis.Analysis.ThisMonthConsumption.ActiveEnergy_kWh,
+                    0)
+                  &nbsp;
+                  kWh
                 </MudItem>
-                <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large;">
-                  @Translate("Last months consumption"):
-                  @(NumericString(analysis.Analysis.LastMonthConsumption.ActiveEnergy_kWh, 0)) kWh
+                <MudItem
+                  xs="12"
+                  Class="d-flex align-center justify-start"
+                  Style="font-size: large;">
+                  @Translate("Last months consumption")
+                  &colon;
+                  &nbsp;
+                  @NumericString(
+                    analysis.Analysis.LastMonthConsumption.ActiveEnergy_kWh,
+                    0)
+                  &nbsp;
+                  kWh
                 </MudItem>
-                <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large;">
-                  @Translate("Last months invoice total"):
+                <MudItem
+                  xs="12"
+                  Class="d-flex align-center justify-start"
+                  Style="font-size: large;">
+                  @Translate("Last months invoice total")
+                  &colon;
+                  &nbsp;
                   @(analysis.Analysis.LastMonthExpenses.Total_EUR == 0
                     ? Translate("Invoice pending...")
-                    : NumericString(analysis.Analysis.LastMonthExpenses.Total_EUR) + " EUR")
+                    : NumericString(
+                        analysis.Analysis.LastMonthExpenses.Total_EUR)
+                        + " EUR")
                 </MudItem>
               </MudContainer>
             </MudGrid>
@@ -83,14 +125,16 @@
       || x.NetworkUser.Title.Contains(_searchString)
       || x.Location.Title.Contains(_searchString))">
     <ToolBarContent>
-      <MudText Typo="Typo.h4">@Translate("Network users")</MudText>
+      <MudText Typo="Typo.h4">
+        @Translate("Network users")
+      </MudText>
       <MudSpacer/>
       <MudTextField
         @bind-Value="_searchString"
         Placeholder="@Translate("Search")"
         Adornment="Adornment.Start"
         Immediate="true"
-        AdornmentIcon="@Icons.Material.Filled.Search"
+        AdornmentIcon="Icons.Material.Filled.Search"
         IconSize="Size.Medium"
         Class="mt-0">
       </MudTextField>
@@ -100,8 +144,10 @@
         <CellTemplate>
           <MudStack Row>
             <MudButton
-              OnClick="@(() => NavigationManager.NavigateTo($"location/{context.Item.Location.Id}"))"
-              Variant="Variant.Outlined" Color="Color.Primary">
+              OnClick="@(() => NavigationManager
+                .NavigateTo($"location/{context.Item.Location.Id}"))"
+              Variant="Variant.Outlined"
+              Color="Color.Primary">
               @context.Item.Location.Title
             </MudButton>
           </MudStack>
@@ -111,8 +157,10 @@
         <CellTemplate>
           <MudStack Row>
             <MudButton
-              OnClick="@(() => NavigationManager.NavigateTo($"network-user/{context.Item.NetworkUser.Id}"))"
-              Variant="Variant.Outlined" Color="Color.Primary">
+              OnClick="@(() => NavigationManager
+                .NavigateTo($"network-user/{context.Item.NetworkUser.Id}"))"
+              Variant="Variant.Outlined"
+              Color="Color.Primary">
               @context.Item.NetworkUser.Title
             </MudButton>
           </MudStack>
@@ -123,7 +171,11 @@
         Property="x => x.Analysis.ThisMonthConsumption.ActiveEnergy_kWh"
         Title='@Translate("Current months consumption")'>
         <CellTemplate>
-          @(NumericString(context.Item.Analysis.ThisMonthConsumption.ActiveEnergy_kWh, 0)) kWh
+          @NumericString(
+            context.Item.Analysis.ThisMonthConsumption.ActiveEnergy_kWh,
+            0)
+          &nbsp;
+          kWh
         </CellTemplate>
       </PropertyColumn>
       <PropertyColumn
@@ -131,7 +183,11 @@
         Property="x => x.Analysis.LastMonthConsumption.ActiveEnergy_kWh"
         Title='@Translate("Last months consumption")'>
         <CellTemplate>
-          @(NumericString(context.Item.Analysis.LastMonthConsumption.ActiveEnergy_kWh, 0)) kWh
+          @NumericString(
+            context.Item.Analysis.LastMonthConsumption.ActiveEnergy_kWh,
+            0)
+          &nbsp;
+          kWh
         </CellTemplate>
       </PropertyColumn>
       <PropertyColumn
@@ -141,7 +197,9 @@
         <CellTemplate>
           @(context.Item.Analysis.LastMonthExpenses.Total_EUR == 0
             ? Translate("Invoice pending...")
-            : NumericString(context.Item.Analysis.LastMonthExpenses.Total_EUR) + " EUR")
+            : NumericString(
+              context.Item.Analysis.LastMonthExpenses.Total_EUR)
+              + " EUR")
         </CellTemplate>
       </PropertyColumn>
     </Columns>

@@ -1,5 +1,14 @@
-@using Color = MudBlazor.Color
-@using Size = MudBlazor.Size
+@using Microsoft.Extensions.DependencyInjection
+@using MudBlazor
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Business.Models.Base
+@using Ozds.Business.Models.Enums
+@using Ozds.Business.Queries
+@using Ozds.Client.Components.Base
+@using Ozds.Client.State
+
+@namespace Ozds.Client.Components.Tables
+
 @inherits OzdsOwningComponentBase
 
 @if (_shownEvents is not null && _shownEvents.Count() > 0)
@@ -91,9 +100,10 @@
         <PropertyColumn
           CellStyle="font-size: large;"
           Property="x => x.Level"
-          Title='@Translate("Level")'>
+          Title="@Translate("Level")">
           <CellTemplate>
-            @if (context.Item.Level == LevelModel.Error || context.Item.Level == LevelModel.Critical)
+            @if (context.Item.Level == LevelModel.Error
+              || context.Item.Level == LevelModel.Critical)
             {
               <MudIcon Icon="@Icons.Material.Filled.Circle" Color="Color.Error"/>
             }

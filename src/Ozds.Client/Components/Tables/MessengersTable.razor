@@ -1,5 +1,15 @@
-@using Color = MudBlazor.Color
-@using Size = MudBlazor.Size
+@using Microsoft.AspNetCore.Components
+@using Microsoft.Extensions.DependencyInjection
+@using MudBlazor
+@using Ozds.Business.Models.Base
+@using Ozds.Business.Models.Complex
+@using Ozds.Business.Queries.Agnostic
+@using Ozds.Client.Components.Base
+
+@namespace Ozds.Client.Components.Tables
+
+@inherits OzdsOwningComponentBase
+
 <MudHidden Breakpoint="Breakpoint.MdAndUp">
   <MudText Typo="Typo.h4" Class="d-flex">
     @(Translate("Messengers"))
@@ -30,7 +40,8 @@
 
         <MudCollapse
           Class="py-2"
-          Expanded="mobileMessengers.Where(x => x.data.Id == messenger.data.Id).First().expand">
+          Expanded="mobileMessengers
+            .Where(x => x.data.Id == messenger.data.Id).First().expand">
           <MudStack>
             <MudDivider DividerType="DividerType.Middle" Class="mt-2"/>
             <MudText>
@@ -81,7 +92,7 @@
       <PropertyColumn
         CellStyle="font-size: x-large;"
         Property="x => x.MaxInactivityPeriod"
-        Title='@Translate("Max Inactivity")'>
+        Title="@Translate("Max Inactivity")">
         <CellTemplate>
           @context.Item.MaxInactivityPeriod.ToTitle()
         </CellTemplate>
@@ -90,7 +101,7 @@
       <PropertyColumn
         CellStyle="font-size: x-large;"
         Property="x => x.PushDelayPeriod"
-        Title='@Translate("Push delay")'>
+        Title="@Translate("Push delay")">
         <CellTemplate>
           @context.Item.PushDelayPeriod.ToTitle()
         </CellTemplate>
@@ -113,8 +124,9 @@
 
   protected override async Task OnInitializedAsync()
   {
-    var context = ScopedServices.GetRequiredService<OzdsAuditableQueries>();
-    var messengers = await context.Read<MessengerModel>([], [], []);
+    var context = ScopedServices.GetRequiredService<AuditableQueries>();
+    var messengers = await context
+      .Read<MessengerModel>(0, CancellationToken.None);
     desktopMessengers = messengers.Items;
     mobileMessengers = messengers.Items
       .Select(

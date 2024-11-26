@@ -1,8 +1,14 @@
+@using MudBlazor
+@using Ozds.Business.Models.Enums
 @using Ozds.Business.Time
 @using Ozds.Business.Analysis
 @using Ozds.Client.Components.Streaming
-@using Color = MudBlazor.Color
-@using Size = MudBlazor.Size
+@using Ozds.Client.State
+@using Ozds.Client.Components.Base
+
+@namespace Ozds.Client.Components.Tables
+
+@inherits OzdsComponentBase
 
 @{
   var analyses = RepresentativeState.AnalysisBases.AnalysesByLocation();
@@ -18,17 +24,26 @@
       <MudPaper Elevation="2" Class="ma-1">
         <MudStack Spacing="0">
           <MudGrid Class="d-flex pa-2">
-            <MudItem xs="8" Class="d-flex align-center justify-start" Style="font-size: large;">
-              @Translate("Location"): @(analysis.Location.Title)
+            <MudItem
+              xs="8"
+              Class="d-flex align-center justify-start"
+              Style="font-size: large;">
+              @Translate("Location")
+              &colon;
+              &nbsp;
+              @(analysis.Location.Title)
             </MudItem>
             <MudItem xs="2" Class="d-flex align-center justify-end">
               <MudIconButton
-                OnClick="@(() => NavigationManager.NavigateTo($"location/{analysis.Location.Id}"))"
-                Icon="@Icons.Material.Filled.RemoveRedEye"
+                OnClick="@(() => NavigationManager
+                  .NavigateTo($"location/{analysis.Location.Id}"))"
+                Icon="Icons.Material.Filled.RemoveRedEye"
                 Color="Color.Primary"/>
             </MudItem>
             <MudItem xs="2" Class="d-flex align-center justify-end">
-              <MudIconButton Icon="@(Icons.Material.Filled.KeyboardArrowUp)" Color="Color.Default"/>
+              <MudIconButton
+                Icon="Icons.Material.Filled.KeyboardArrowUp"
+                Color="Color.Default"/>
             </MudItem>
           </MudGrid>
 
@@ -36,28 +51,61 @@
             <MudStack>
               <MudDivider DividerType="DividerType.Middle" Class="mt-2"/>
               <MudContainer Class="d-flex flex-column">
-                <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
-                  @Translate("Current months consumption"):
-                  @NumericString(analysis.Analysis.LastMonthConsumption.ActiveEnergy_kWh, 0) kWh
+                <MudItem
+                  xs="12"
+                  Class="d-flex align-center justify-start"
+                  Style="font-size: large; font-weight: bold;">
+                  @Translate("Current months consumption")
+                  &colon;
+                  &nbsp;
+                  @NumericString(
+                    analysis.Analysis.LastMonthConsumption.ActiveEnergy_kWh,
+                    0)
+                  &nbsp;
+                  kWh
                 </MudItem>
-                <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
-                  @Translate("Last months consumption"):
-                  @NumericString(analysis.Analysis.ThisMonthConsumption.ActiveEnergy_kWh, 0) kWh
+                <MudItem
+                  xs="12"
+                  Class="d-flex align-center justify-start"
+                  Style="font-size: large; font-weight: bold;">
+                  @Translate("Last months consumption")
+                  &colon;
+                  &nbsp;
+                  @NumericString(
+                    analysis.Analysis.ThisMonthConsumption.ActiveEnergy_kWh,
+                    0)
+                  &nbsp;
+                  kWh
                 </MudItem>
-                @if (RepresentativeState.Representative.Role is RoleModel.LocationRepresentative)
+                @if (RepresentativeState.Representative.Role
+                  is RoleModel.LocationRepresentative)
                 {
-                  <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
-                    @Translate("Active power"):
-                    @NumericString(analysis.Analysis.Load.ActivePower_kW) kW
+                  <MudItem
+                    xs="12"
+                    Class="d-flex align-center justify-start"
+                    Style="font-size: large; font-weight: bold;">
+                    @Translate("Active power")
+                    &colon;
+                    &nbsp;
+                    @NumericString(analysis.Analysis.Load.ActivePower_kW)
+                    &nbsp;
+                    kW
                   </MudItem>
                 }
                 else
                 {
-                  <MudItem xs="12" Class="d-flex align-center justify-start" Style="font-size: large; font-weight: bold;">
-                    @Translate("Last months invoice total"):
+                  <MudItem
+                    xs="12"
+                    Class="d-flex align-center justify-start"
+                    Style="font-size: large; font-weight: bold;">
+                    @Translate("Last months invoice total")
+                    &colon;
+                    &nbsp;
                     @(analysis.Analysis.LastMonthExpenses.Total_EUR == 0
                       ? Translate("Invoice pending...")
-                      : NumericString(analysis.Analysis.LastMonthExpenses.Total_EUR) + " EUR")
+                      : NumericString(
+                          analysis.Analysis.LastMonthExpenses.Total_EUR)
+                          + " EUR")
                   </MudItem>
                 }
               </MudContainer>
@@ -98,7 +146,8 @@
         <CellTemplate>
           <MudStack Row>
             <MudButton
-                OnClick="@(() => NavigationManager.NavigateTo($"location/{context.Item.Location.Id}"))"
+                OnClick="@(() => NavigationManager
+                  .NavigateTo($"location/{context.Item.Location.Id}"))"
                 Variant="Variant.Outlined"
                 Color="Color.Primary">
               @context.Item.Location.Title
@@ -111,7 +160,11 @@
         Property="x => x.Analysis.ThisMonthConsumption.ActiveEnergy_kWh"
         Title='@Translate("Current months consumption")'>
         <CellTemplate>
-          @(NumericString(context.Item.Analysis.ThisMonthConsumption.ActiveEnergy_kWh, 0)) kWh
+          @NumericString(
+            context.Item.Analysis.ThisMonthConsumption.ActiveEnergy_kWh,
+            0)
+          &nbsp;
+          kWh
         </CellTemplate>
       </PropertyColumn>
       <PropertyColumn
@@ -119,17 +172,24 @@
         Property="x => x.Analysis.LastMonthConsumption.ActiveEnergy_kWh"
         Title='@Translate("Last months consumption")'>
         <CellTemplate>
-          @(NumericString(context.Item.Analysis.LastMonthConsumption.ActiveEnergy_kWh, 0)) kWh
+          @NumericString(
+            context.Item.Analysis.LastMonthConsumption.ActiveEnergy_kWh,
+            0)
+          &nbsp;
+          kWh
         </CellTemplate>
       </PropertyColumn>
-      @if (RepresentativeState.Representative.Role is RoleModel.LocationRepresentative)
+      @if (RepresentativeState.Representative.Role
+        is RoleModel.LocationRepresentative)
       {
         <PropertyColumn
           CellStyle="font-size: x-large;"
           Property="x => x.Analysis.Load.ActivePower_kW"
           Title='@Translate("Active power")'>
           <CellTemplate>
-            @NumericString(context.Item.Analysis.Load.ActivePower_kW) kW
+            @NumericString(context.Item.Analysis.Load.ActivePower_kW)
+            &nbsp;
+            kW
           </CellTemplate>
         </PropertyColumn>
       }
@@ -142,7 +202,9 @@
           <CellTemplate>
             @(context.Item.Analysis.LastMonthExpenses.Total_EUR == 0
               ? Translate("Invoice pending...")
-              : NumericString(context.Item.Analysis.LastMonthExpenses.Total_EUR) + " EUR")
+              : NumericString(
+                  context.Item.Analysis.LastMonthExpenses.Total_EUR)
+                  + " EUR")
           </CellTemplate>
         </PropertyColumn>
       }

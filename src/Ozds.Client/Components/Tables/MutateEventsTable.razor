@@ -1,5 +1,9 @@
-@using Color = MudBlazor.Color
-@using Size = MudBlazor.Size
+@using MudBlazor
+@using Ozds.Business.Models.Enums
+@using Ozds.Client.Components.Base
+@using Ozds.Client.State
+
+@inherits OzdsOwningComponentBase
 
 @if (_shownInvoices is not null && _shownInvoices.Count() > 0)
 {
