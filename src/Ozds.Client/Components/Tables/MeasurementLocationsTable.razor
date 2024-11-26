@@ -8,16 +8,11 @@
 
 @inherits OzdsComponentBase
 
-@{
-  var analyses = RepresentativeState.AnalysisBases
-    .AnalysesByMeasurementLocation();
-}
-
 <MudHidden Breakpoint="Breakpoint.MdAndUp">
   <MudText Typo="Typo.h4" Class="d-flex">
     @(Translate("Measurement locations"))
   </MudText>
-  @foreach (var analysis in analyses)
+  @foreach (var analysis in Model)
   {
     <MudPaper Elevation="2" Class="ma-1">
       <MudStack Spacing="0">
@@ -109,7 +104,7 @@
   <MudDataGrid
     T="MeasurementLocationAnalysis"
     MultiSelection="true"
-    Items="@(analyses)"
+    Items="@(Model)"
     SortMode="SortMode.Multiple"
     Filterable="true"
     QuickFilter="@(x =>
@@ -221,8 +216,8 @@
 </MudHidden>
 
 @code {
-  [CascadingParameter]
-  public RepresentativeState RepresentativeState { get; set; } = default!;
+  [Parameter]
+  public List<MeasurementLocationAnalysis> Model { get; set; } = default!;
 
   private string? _searchString;
 }

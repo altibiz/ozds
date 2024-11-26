@@ -1,14 +1,16 @@
 @using MudBlazor
+@using Ozds.Business.Analysis
 @using Ozds.Business.Models.Enums
 @using Ozds.Client.Attributes
 @using Ozds.Client.Components.Tables
 @using Ozds.Client.State
 
-@page "/invoices"
+@page "/network-users"
 
 @attribute [Navigation(
-  Icon= Icons.Material.Outlined.Receipt,
-  Title = "Invoices",
+  Icon= Icons.Material.Outlined.AccountTree,
+  ParentTitle = "Tables",
+  Title = "Network users",
   Allows = new[]
   {
     RoleModel.LocationRepresentative,
@@ -17,12 +19,10 @@
   })]
 
 @{
-  var invoices = RepresentativeState.AnalysisBases
-    .SelectMany(analysisBasis => analysisBasis.Invoices)
-    .ToList();
+  var analyses = RepresentativeState.AnalysisBases.AnalysesByNetworkUser();
 }
 
-<InvoicesTable Model="invoices"/>
+<NetworkUsersTable Model="analyses" />
 
 @code {
   [CascadingParameter]

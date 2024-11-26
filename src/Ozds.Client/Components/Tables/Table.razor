@@ -1,0 +1,60 @@
+@using MudBlazor
+
+@namespace Ozds.Client.Components.Tables
+
+@typeparam T
+
+<MudHidden Breakpoint="Breakpoint.MdAndUp">
+  <MudTextField
+    @bind-Value="_searchString"
+    Placeholder="Search"
+    Adornment="Adornment.Start"
+    Immediate="true"
+    AdornmentIcon="@Icons.Material.Filled.Search"
+    IconSize="Size.Medium"
+    Class="mt-0" />
+  @foreach (var item in Model)
+  {
+    <MudPaper Elevation="2" Class="ma-1">
+      <MudStack Spacing="0">
+        <MudGrid Class="d-flex pa-2">
+          @Card(item)
+        </MudGrid>
+
+        <MudCollapse Class="py-2" Expanded="true">
+          <MudStack>
+            <MudDivider DividerType="DividerType.Middle" Class="mt-2"/>
+            @Details(item)
+          </MudStack>
+        </MudCollapse>
+      </MudStack>
+    </MudPaper>
+  }
+</MudHidden>
+
+<MudHidden Breakpoint="Breakpoint.SmAndDown">
+  <MudDataGrid
+    T="T"
+    MultiSelection="true"
+    Items="@Model"
+    SortMode="SortMode.Multiple"
+    Filterable="true"
+    QuickFilter="@Filter">
+    <ToolBarContent>
+      <MudTextField
+        @bind-Value="_searchString"
+        Placeholder="Search"
+        Adornment="Adornment.Start"
+        Immediate="true"
+        AdornmentIcon="@Icons.Material.Filled.Search"
+        IconSize="Size.Medium">
+      </MudTextField>
+    </ToolBarContent>
+    <Columns>
+      @Columns
+    </Columns>
+    <PagerContent>
+      <MudDataGridPager T="T"/>
+    </PagerContent>
+  </MudDataGrid>
+</MudHidden>

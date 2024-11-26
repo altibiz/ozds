@@ -1,17 +1,48 @@
+@using Microsoft.Extensions.DependencyInjection
+@using MudBlazor
+@using Ozds.Business.Models.Base
+@using Ozds.Business.Queries
+@using Ozds.Business.Queries.Abstractions
+@using Ozds.Client.Attributes
+@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Streaming
+@using Ozds.Client.Components.Tables
+@using Ozds.Client.State
+
 @page "/notifications"
-@attribute [Navigation(Icon = Icons.Material.Outlined.Notifications, ParentTitle = "Alerts", Title = "Notifications")]
 
+@attribute [Navigation(
+  Icon = Icons.Material.Outlined.Notifications,
+  ParentTitle = "Alerts",
+  Title = "Notifications")]
 
-@if (user is null)
-{
-  return;
-}
+@inherits OzdsOwningComponentBase
 
-<NotificationsTable/>
+<MudCheckBox
+  T="bool"
+  Label="@Translate("Seen")"
+  Checked="@_seen"
+  CheckedChanged="@(() => _seen = !_seen)"/>
 
+<Paging
+  PageAsync="@((page) => _seen
+  ? ScopedServices
+      .GetRequiredService<NotificationQueries>()
+      .ReadForRecipient<NotificationModel>(
+        RepresentativeState.Representative.Id,
+        page,
+        CancellationToken.None,
+        seen: _seen)
+  : Task.FromResult(RepresentativeState.Notifications
+      .ToPaginated(RepresentativeState.Notifications.Count)))">
+  <Found>
+    <NotificationsTable Model="context.Items"/>
+  </Found>
+</Paging>
 
 @code {
-
   [CascadingParameter]
-  public UserState user { get; set; } = default!;
+  public RepresentativeState RepresentativeState { get; set; } = default!;
+
+  private bool _seen = false;
 }

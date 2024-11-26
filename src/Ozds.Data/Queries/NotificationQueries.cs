@@ -12,7 +12,40 @@ public class NotificationQueries(
   IDbContextFactory<DataDbContext> factory
 ) : IQueries
 {
-  public async Task<PaginatedList<T>> ReadForRecipients<T>(
+  public async Task<T?> ReadSingle<T>(
+    Type type,
+    string id,
+    CancellationToken cancellationToken
+  )
+    where T : INotificationEntity
+  {
+    var entity = await ReadSingleDynamic(type, id, cancellationToken);
+    return (T?)entity;
+  }
+
+  public async Task<INotificationEntity?> ReadSingleDynamic(
+    Type type,
+    string id,
+    CancellationToken cancellationToken
+  )
+  {
+    if (!type.IsAssignableTo(typeof(INotificationEntity)))
+    {
+      throw new ArgumentException(
+        "Type must be a concrete type of NotificationEntity",
+        nameof(type)
+      );
+    }
+
+    await using var context = await factory
+      .CreateDbContextAsync(cancellationToken);
+
+    return (INotificationEntity?)await context.Notifications
+      .Where(context.PrimaryKeyEquals(type, id))
+      .FirstOrDefaultAsync(cancellationToken);
+  }
+
+  public async Task<PaginatedList<T>> ReadForRecipient<T>(
     string representativeId,
     bool seen,
     int pageNumber,
@@ -33,7 +66,7 @@ public class NotificationQueries(
     return entities.Items.OfType<T>().ToPaginatedList(entities.TotalCount);
   }
 
-  public async Task<List<T>> ReadForRecipients<T>(
+  public async Task<List<T>> ReadForRecipient<T>(
     string representativeId,
     bool seen,
     CancellationToken cancellationToken

@@ -1,19 +1,19 @@
 @using Microsoft.Extensions.DependencyInjection
-@using Ozds.Business.Models.Base
+@using Ozds.Business.Models
 @using Ozds.Business.Queries.Agnostic
-@using Ozds.Client.Components.Base
 @using Ozds.Client.Components.Streaming
-@using Ozds.Client.Extensions
+@using Ozds.Client.Components.Models
+@using Ozds.Client.Components.Base
 
-@page "/event/{id}"
+@page "/invoice/{id}"
 
 @inherits OzdsOwningComponentBase
 
-<Loading T="EventModel" LoadAsync="@(() => ScopedServices
+<Loading LoadAsync="@(() => ScopedServices
   .GetRequiredService<ReadonlyQueries>()
-  .ReadSingle<EventModel>(Id, CancellationToken.None))">
+  .ReadSingle<NetworkUserInvoiceModel>(Id, CancellationToken.None))">
   <Found>
-    <EventDetails Model="context"/>
+    <NetworkUserInvoiceDetails Model="@context"/>
   </Found>
 </Loading>
 

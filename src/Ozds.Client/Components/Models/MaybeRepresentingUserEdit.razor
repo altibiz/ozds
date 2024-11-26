@@ -14,7 +14,7 @@
   @bind-Value="Model.User.UserName"
   For="@(() => Model.User.UserName)"/>
 
-@if (Model.Representative is not null)
+@if (Model.Representative is null)
 {
   <MudTextField
     Label="@Translate("Title")"
@@ -47,6 +47,12 @@
     Label="@Translate("PhoneNumber")"
     @bind-Value="Model.Representative.PhysicalPerson.PhoneNumber"
     For="@(() => Model.Representative.PhysicalPerson.PhoneNumber)"/>
+}
+else
+{
+  <MudButton OnClick="@OnCreateRepresentative">
+    @Translate("Create representative")
+  </MudButton>
 }
 
 @code {

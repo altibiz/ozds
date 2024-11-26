@@ -1,24 +1,17 @@
 @using MudBlazor
 @using Ozds.Business.Models
-@using Ozds.Business.Analysis
+@using Ozds.Business.Models.Base
 @using Ozds.Client.Components.Base
-@using Ozds.Client.State
 
 @namespace Ozds.Client.Components.Tables
 
 @inherits OzdsOwningComponentBase
 
-@{
-  var invoices = RepresentativeState.AnalysisBases
-    .SelectMany(x => x.Invoices)
-    .ToList();
-}
-
 <MudHidden Breakpoint="Breakpoint.LgAndUp">
   <MudText Typo="Typo.h4" Class="d-flex">
     @Translate("Invoices")
   </MudText>
-  @foreach (var invoice in invoices)
+  @foreach (var invoice in Model)
   {
     <MudPaper Elevation="2" Class="ma-1">
       <MudStack Spacing="0">
@@ -101,7 +94,7 @@
 <MudHidden Breakpoint="Breakpoint.MdAndDown">
   <MudDataGrid
     MultiSelection="true"
-    Items="invoices"
+    Items="Model"
     SortMode="SortMode.Multiple"
     Filterable="true"
     QuickFilter="@((x) => string.IsNullOrEmpty(_searchString)
@@ -193,8 +186,8 @@
 </MudHidden>
 
 @code {
-  [CascadingParameter]
-  public RepresentativeState RepresentativeState { get; set; } = default!;
+  [Parameter]
+  public List<InvoiceModel> Model { get; set; } = default!;
 
   private string? _searchString;
 }

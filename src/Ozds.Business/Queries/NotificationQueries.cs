@@ -12,6 +12,38 @@ public class NotificationQueries(
   AgnosticModelEntityConverter modelEntityConverter
 ) : IQueries
 {
+  public async Task<T?> ReadSingle<T>(
+    string id,
+    CancellationToken cancellationToken
+  )
+    where T : INotification
+  {
+    var entity = await ReadSingleDynamic(typeof(T), id, cancellationToken);
+    return (T?)entity;
+  }
+
+  public async Task<INotification?> ReadSingleDynamic(
+    Type type,
+    string id,
+    CancellationToken cancellationToken
+  )
+  {
+    if (!type.IsAssignableTo(typeof(INotification)))
+    {
+      throw new ArgumentException(
+        "Type must be a concrete type of Notification",
+        nameof(type)
+      );
+    }
+
+    var entityType = modelEntityConverter.EntityType(type);
+    var entity = await queries
+      .ReadSingleDynamic(entityType, id, cancellationToken);
+    return entity is null
+      ? null
+      : modelEntityConverter.ToModel<INotification>(entity);
+  }
+
   public async Task<PaginatedList<T>> ReadForRecipient<T>(
     string representativeId,
     int pageNumber,

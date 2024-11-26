@@ -7,16 +7,11 @@
 
 @inherits OzdsComponentBase
 
-@{
-  var analyses = RepresentativeState.AnalysisBases
-    .AnalysesByNetworkUser();
-}
-
 <MudHidden Breakpoint="Breakpoint.MdAndUp">
   <MudText Typo="Typo.h4" Class="d-flex">
     @(Translate("Network users"))
   </MudText>
-  @foreach (var analysis in analyses)
+  @foreach (var analysis in Model)
   {
     <MudPaper Elevation="2" Class="ma-1">
       <MudStack Spacing="0">
@@ -117,7 +112,7 @@
   <MudDataGrid
     T="NetworkUserAnalysis"
     MultiSelection="true"
-    Items="@(analyses)"
+    Items="Model"
     SortMode="SortMode.Multiple"
     Filterable="true"
     QuickFilter="@(x =>
@@ -210,8 +205,8 @@
 </MudHidden>
 
 @code {
-  [CascadingParameter]
-  public RepresentativeState RepresentativeState { get; set; } = default!;
+  [Parameter]
+  public List<NetworkUserAnalysis> Model { get; set; } = default!;
 
   private string? _searchString;
 }

@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Ozds.Data.Context;
+using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Entities.Joins;
 using Ozds.Data.Extensions;
 using Ozds.Data.Mutations.Abstractions;
@@ -10,6 +11,18 @@ public class NotificationMutations(
   IDbContextFactory<DataDbContext> factory
 ) : IMutations
 {
+  public async Task Create(
+    INotificationEntity entity,
+    CancellationToken cancellationToken
+  )
+  {
+    await using var context = await factory
+      .CreateDbContextAsync(cancellationToken);
+
+    context.Add(entity);
+    await context.SaveChangesAsync(cancellationToken);
+  }
+
   public async Task MarkNotificationAsSeen(
     string notificationId,
     string representativeId,

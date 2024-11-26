@@ -1,131 +1,84 @@
-@page "/notification/{id}"
-@using Align = MudBlazor.Align
+@using Microsoft.Extensions.DependencyInjection
+@using MudBlazor
+@using Ozds.Business.Activation.Agnostic
+@using Ozds.Business.Models
+@using Ozds.Business.Models.Base
+@using Ozds.Business.Models.Enums
+@using Ozds.Business.Mutations
+@using Ozds.Business.Queries
+@using Ozds.Business.Queries.Agnostic
+@using Ozds.Client.Components.Streaming
+@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Models
+@using Ozds.Client.State
+
+@namespace Ozds.Client.Pages
+
+@page "/notification/{id?}"
+
 @inherits OzdsOwningComponentBase
 
-<Loading T="NotificationModel" LoadAsync="LoadAsync">
-  <Found Context="model">
-    <MudContainer MaxWidth="MaxWidth.Small" Class="d-flex  flex-column" Style="float: left;">
-      <MudText Class="d-flex align-center my-2" Typo="@Typo.h5">Notification Id: @Id</MudText>
-      <MudPaper class="mt-2 px-4 py-2">
+@if (RepresentativeState.Representative.Role
+  is not RoleModel.OperatorRepresentative)
+{
+  <Loading T="NotificationModel" Id="@Id">
+    <Found Context="model">
+      <NotificationDetails Model="@model"/>
+    </Found>
+  </Loading>
+  return;
+}
 
-        <MudGrid Spacing="3">
-          <MudItem xs="12" sm="3">
-            <MudText Typo="Typo.body1" Style="font-weight: bold;">
-              @Translate("Title"):
-            </MudText>
-          </MudItem>
-          <MudItem xs="12" sm="9">
-            <MudHidden Breakpoint="Breakpoint.Xs">
-              <MudText Type="Typo.body2" Align="MudAlign.Right">
-                @model.Title
-              </MudText>
-            </MudHidden>
-            <MudHidden Breakpoint="Breakpoint.SmAndUp">
-              <MudText Type="Typo.body2" Align="MudAlign.Left">
-                @model.Title
-              </MudText>
-            </MudHidden>
-          </MudItem>
-        </MudGrid>
-
-        <MudGrid Spacing="3">
-          <MudItem xs="12" sm="@(model.Summary.Length > 30 ? 12 : 3)">
-            <MudText Typo="Typo.body1" Style="font-weight: bold;">
-              @Translate("Summary"):
-            </MudText>
-          </MudItem>
-          <MudItem xs="12" sm="@(model.Summary.Length > 30 ? 12 : 9)">
-            <MudHidden Breakpoint="Breakpoint.Xs">
-              <MudText Type="Typo.body2" Align="@(model.Summary.Length > 30 ? Align.Left : Align.Right)"
-                       Style="overflow-wrap: break-word;">
-                @model.Summary
-              </MudText>
-            </MudHidden>
-            <MudHidden Breakpoint="Breakpoint.SmAndUp">
-              <MudText Type="Typo.body2" Align="MudAlign.Left"
-                       Style="overflow-wrap: break-word;">
-                @model.Summary
-              </MudText>
-            </MudHidden>
-          </MudItem>
-        </MudGrid>
-
-        <MudGrid Spacing="3">
-          <MudItem xs="12" sm="@(model.Content.Length > 30 ? 12 : 3)">
-            <MudText Typo="Typo.body1" Style="font-weight: bold;">
-              @Translate("Content"):
-            </MudText>
-          </MudItem>
-          <MudItem xs="12" sm="@(model.Content.Length > 30 ? 12 : 9)">
-            <MudHidden Breakpoint="Breakpoint.Xs">
-              <MudText Type="Typo.body2" Align="@(model.Content.Length > 30 ? Align.Left : Align.Right)"
-                       Style="overflow-wrap: break-word;">
-                <code Style="overflow-wrap: break-word;">
-                  @model.Content
-                </code>
-              </MudText>
-            </MudHidden>
-            <MudHidden Breakpoint="Breakpoint.SmAndUp">
-              <MudText Type="Typo.body2" Align="MudAlign.Left"
-                       Style="overflow-wrap: break-word;">
-                <code Style="overflow-wrap: break-word;">
-                  @model.Content
-                </code>
-              </MudText>
-            </MudHidden>
-          </MudItem>
-        </MudGrid>
-
-        <MudGrid Spacing="3">
-          <MudItem xs="12" sm="3">
-            <MudText Typo="Typo.body1" Style="font-weight: bold;">
-              @Translate("Date"):
-            </MudText>
-          </MudItem>
-          <MudItem xs="12" sm="9">
-            <MudHidden Breakpoint="Breakpoint.Xs">
-              <MudText Type="Typo.body2" Align="MudAlign.Right">
-                @DateTimeString(model.Timestamp)
-              </MudText>
-            </MudHidden>
-            <MudHidden Breakpoint="Breakpoint.SmAndUp">
-              <MudText Type="Typo.body2" Align="MudAlign.Left">
-                @DateTimeString(model.Timestamp)
-              </MudText>
-            </MudHidden>
-          </MudItem>
-        </MudGrid>
-      </MudPaper>
-    </MudContainer>
-  </Found>
-</Loading>
+<Mutating
+  T="NotificationModel"
+  Id="@Id"
+  LoadAsync="@(async () => Id is null
+    ? null
+    : await ScopedServices
+        .GetRequiredService<NotificationQueries>()
+        .ReadSingle<NotificationModel>(Id, CancellationToken.None))"
+  NewAsync="@(async () => ScopedServices
+    .GetRequiredService<AgnosticModelActivator>()
+    .Activate<SystemNotificationModel>())"
+  CreateAsync="@((model) => ScopedServices
+    .GetRequiredService<NotificationMutations>()
+    .Create(model, CancellationToken.None))">
+  <Edit>
+    <NotificationEdit Model="@context.Model"/>
+  </Edit>
+  <Details>
+    <NotificationDetails Model="@context.Model"/>
+    @if (!context.Created)
+    {
+      <div class="d-flex flex-row mt-4 justify-end">
+        <MudButton
+          Variant="Variant.Filled"
+          Class="align-self-end"
+          OnClick="() => OnMarkAsSeen(context.Model)">
+          @Translate("Mark as seen")
+        </MudButton>
+      </div>
+    }
+  </Details>
+</Mutating>
 
 @code {
+
+  [Parameter]
+  public string? Id { get; set; }
+
   [CascadingParameter]
   public RepresentativeState RepresentativeState { get; set; } = default!;
 
-  [Parameter]
-  public string Id { get; set; } = default!;
-
-  private async Task<NotificationModel?> LoadAsync()
+  private async Task OnMarkAsSeen(NotificationModel model)
   {
-    var notification = RepresentativeState.Notifications
-      .FirstOrDefault(x => x.Id == Id)
-      ??  await ScopedServices
-        .GetRequiredService<OzdsNotificationQueries>()
-        .ReadSingle<NotificationModel>(Id);
+    await ScopedServices
+      .GetRequiredService<NotificationMutations>()
+      .MarkNotificationAsSeen(
+        model.Id,
+        RepresentativeState.Representative.Id,
+        CancellationToken.None);
 
-    if (notification is not null)
-    {
-      await ScopedServices
-        .GetRequiredService<NotificationMutations>()
-        .MarkNotificationAsSeen(
-          notification.Id,
-          RepresentativeState.Representative.Id,
-          CancellationToken.None);
-      RepresentativeState.MarkNotificationAsSeen(notification);
-    }
-
-    return notification;
+    NavigationManager.NavigateTo("/notifications");
   }
 }

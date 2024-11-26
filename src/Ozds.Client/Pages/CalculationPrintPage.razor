@@ -1,0 +1,29 @@
+@using Microsoft.Extensions.DependencyInjection
+@using Ozds.Business.Models.Base
+@using Ozds.Business.Queries
+@using Ozds.Business.Queries.Agnostic
+@using Ozds.Client.Components.Layout
+@using Ozds.Client.Components.Print
+@using Ozds.Client.Components.Streaming
+@using Ozds.Client.Components.Base
+
+@namespace Ozds.Client.Pages
+
+@layout PrintLayout
+
+@page "/calculation-print/{id}"
+
+@inherits OzdsOwningComponentBase
+
+<Loading LoadAsync="@(() => ScopedServices
+  .GetRequiredService<ReadonlyQueries>()
+  .ReadSingle<NetworkUserCalculationModel>(Id, CancellationToken.None))">
+  <Found>
+    <NetworkUserCalculationPrint Model="@context"/>
+  </Found>
+</Loading>
+
+@code {
+  [Parameter]
+  public string Id { get; set; } = default!;
+}
