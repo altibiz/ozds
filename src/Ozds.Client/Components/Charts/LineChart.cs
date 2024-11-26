@@ -18,57 +18,23 @@ using Ozds.Client.Extensions;
 namespace Ozds.Client.Components.Charts;
 
 #pragma warning disable S3881 // "IDisposable" should be implemented correctly
-public partial class Line : OzdsOwningComponentBase
+public partial class LineChart : OzdsOwningComponentBase
 #pragma warning restore S3881 // "IDisposable" should be implemented correctly
 {
+  [CascadingParameter]
+  public Breakpoint Breakpoint { get; set; } = default!;
+
   [Parameter]
   public List<IMeter> Meters { get; set; } = default!;
 
   [Parameter]
-  public DateTimeOffset Timestamp { get; set; } = default!;
-
-  [Parameter]
-  public MeasureModel Measure { get; set; } = MeasureModel.ActivePower;
-
-  [Parameter]
-  public ResolutionModel Resolution { get; set; } = ResolutionModel.Minute;
-
-  [Parameter]
-  public SeriesType DisplayType { get; set; } = SeriesType.Line;
-
-  [Parameter]
-  public int Multiplier { get; set; } = 5;
-
-  [Parameter]
-  public bool SumBars { get; set; } = false;
+  public ChartParameters Parameters { get; set; } = default!;
 
   [Parameter]
   public bool Area { get; set; } = false;
 
   [Parameter]
-  public bool Static { get; set; } = false;
-
-  [Parameter]
-  public bool ShortDate { get; set; } = false;
-
-  [Parameter]
-  public bool LongDate { get; set; } = false;
-
-  [Parameter]
-  public bool NoMax { get; set; } = false;
-
-  [Parameter]
-  public HashSet<PhaseModel> Phases { get; set; } =
-    Enum.GetValues<PhaseModel>().ToHashSet();
-
-  [Parameter]
-  public bool Refresh { get; set; } = true;
-
-  [Parameter]
-  public bool PhasesSum { get; set; } = false;
-
-  [CascadingParameter]
-  public Breakpoint Breakpoint { get; set; } = default!;
+  public bool Brush { get; set; } = false;
 
   [Inject]
   public IMeasurementUpsertSubscriber MeasurementSubscriber { get; set; } = default!;
@@ -76,16 +42,22 @@ public partial class Line : OzdsOwningComponentBase
   [Inject]
   public AgnosticAggregateUpserter AggregateUpserter { get; set; } = default!;
 
-  private ApexChart<IMeasurement>? _chart = default!;
+  private readonly string _id = Guid.NewGuid().ToString();
 
   private PaginatedList<IMeasurement> _measurements = new(
     new List<IMeasurement>(), 0);
+
+  private ApexChart<IMeasurement>? _chart = default!;
+
+  private ApexChart<IMeasurement>? _brushChart = default!;
 
   private ApexChartOptions<IMeasurement> _options =
     new ApexChartOptions<IMeasurement>()
       .WithFixedScriptPath();
 
-  private HashSet<IMeter> _selectedMeters = new();
+  private ApexChartOptions<IMeasurement> _brushOptions =
+    new ApexChartOptions<IMeasurement>()
+      .WithFixedScriptPath();
 
   protected override void OnInitialized()
   {
@@ -93,14 +65,7 @@ public partial class Line : OzdsOwningComponentBase
 
     _options = CreateGraphOptions();
 
-    if (Static)
-    {
-      _selectedMeters = Meters.ToHashSet();
-    }
-    else
-    {
-      _selectedMeters = Meters.Take(1).ToHashSet();
-    }
+    _brushOptions = CreateBrushOptions();
   }
 
   protected override void Dispose(bool disposing)
@@ -122,18 +87,22 @@ public partial class Line : OzdsOwningComponentBase
 
     _measurements = await queries.Read(
       Meters,
-      Resolution,
-      Multiplier,
-      fromDate: Timestamp
+      Parameters.Resolution,
+      Parameters.Multiplier
     );
 
     _options = CreateGraphOptions();
-
     if (_chart is { } chart)
     {
       await chart.UpdateSeriesAsync(animate: true);
       await InvokeAsync(() => StateHasChanged());
       await chart.UpdateOptionsAsync(false, true, false);
+    }
+
+    _brushOptions = CreateBrushOptions();
+    if (_brushChart is { } brushChart)
+    {
+      await brushChart.UpdateOptionsAsync(false, true, false);
     }
   }
 
@@ -141,7 +110,7 @@ public partial class Line : OzdsOwningComponentBase
     object? _sender,
     MeasurementUpsertEventArgs args)
   {
-    if (!Refresh)
+    if (!Parameters.Refresh)
     {
       return;
     }
@@ -150,8 +119,10 @@ public partial class Line : OzdsOwningComponentBase
     {
       var now = DateTimeOffset.UtcNow;
       var timestamp = _measurements.Items.LastOrDefault()?.Timestamp ?? now;
-      var timeSpan = Resolution.ToTimeSpan(Multiplier, timestamp);
-      var appropriateInterval = QueryConstants.AppropriateInterval(timeSpan, now);
+      var timeSpan = Parameters.Resolution
+        .ToTimeSpan(Parameters.Multiplier, timestamp);
+      var appropriateInterval = QueryConstants
+        .AppropriateInterval(timeSpan, now);
 
       if (appropriateInterval is null)
       {
@@ -161,7 +132,9 @@ public partial class Line : OzdsOwningComponentBase
             meter.Id == x.MeterId))
           .OrderBy(x => x.Timestamp)
           .ToList();
-        var concatenated = _measurements.Items.Concat(newMeasurements).ToList();
+        var concatenated = _measurements.Items
+          .Concat(newMeasurements)
+          .ToList();
         _measurements = new PaginatedList<IMeasurement>(
           concatenated,
           _measurements.TotalCount + newMeasurements.Count
@@ -204,23 +177,27 @@ public partial class Line : OzdsOwningComponentBase
 
   private ApexChartOptions<IMeasurement> CreateGraphOptions()
   {
+    var options = _options;
+    options.Chart.Id = _id;
+
     var maxPower = _measurements.Items
       .Select(x => x.ActivePower_W.TariffUnary().DuplexImport().PhaseSum())
       .OrderByDescending(x => x)
       .Cast<decimal?>()
       .FirstOrDefault();
-
-    var options = _options;
-    foreach (var meter in _selectedMeters)
+    if (Parameters.Measure == MeasureModel.ActivePower
+      && Parameters.Selection.Count == 1)
     {
       options = _options.WithActivePower(
-        $"{meter.Id} {Translate("CONNECTION POWER")}",
-        meter.ConnectionPower_W,
+        $"{Parameters.Selection.First().Id} {Translate("CONNECTION POWER")}",
+        Parameters.Selection.First().ConnectionPower_W,
         maxPower
       );
     }
 
-    var measure = $"{Translate(Measure.ToTitle())} ({Measure.ToUnit()})";
+    var measure =
+      $"{Translate(Parameters.Measure.ToTitle())}"
+      + $" ({Parameters.Measure.ToUnit()})";
     options = Breakpoint <= Breakpoint.Sm
       ? options.WithSmAndDown(measure)
       : options.WithMdAndUp(measure);
@@ -229,17 +206,40 @@ public partial class Line : OzdsOwningComponentBase
     {
       options = options.WithArea();
     }
-    if (ShortDate)
+
+    var timeSpan = Parameters.Resolution
+      .ToTimeSpan(
+        Parameters.Multiplier,
+        DateTimeOffset.UtcNow);
+    if (timeSpan.TotalDays > 1)
     {
       options = options.WithShortDate();
     }
-    if (LongDate)
+    else
     {
       options = options.WithLongDate();
     }
-    if (SumBars)
+
+    return options;
+  }
+
+  private ApexChartOptions<IMeasurement> CreateBrushOptions()
+  {
+    var options = _brushOptions;
+
+    options.WithBrush(_id);
+
+    var timeSpan = Parameters.Resolution
+      .ToTimeSpan(
+        Parameters.Multiplier,
+        DateTimeOffset.UtcNow);
+    if (timeSpan.TotalDays > 1)
     {
-      options = options.ForBarSum();
+      options = options.WithShortDate();
+    }
+    else
+    {
+      options = options.WithLongDate();
     }
 
     return options;

@@ -12,9 +12,13 @@ public class ChartParameters
 
   public HashSet<PhaseModel> Phases { get; set; } = new();
 
+  public DateTimeOffset StartDate { get; set; } = default;
+
   public ResolutionModel Resolution { get; set; } = ResolutionModel.Hour;
 
   public int Multiplier { get; set; } = 1;
 
   public bool Refresh { get; set; } = true;
+
+  public OperatorModel Operator { get; set; } = OperatorModel.Sum;
 }

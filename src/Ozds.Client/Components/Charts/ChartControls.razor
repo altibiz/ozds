@@ -4,6 +4,8 @@
 @using Ozds.Client.Components.Base
 @using Ozds.Client.Components.Fields
 
+@* TODO: control via profile enum *@
+
 @namespace Ozds.Client.Components.Charts
 
 @inherits OzdsComponentBase
@@ -77,6 +79,12 @@
         Min="1"
         Max="@_parameters.Resolution.MaxMultiplier()"
         Step="1"/>
+    </MudItem>
+    <MudItem xs="12" sm="6" md="3">
+      <EnumPicker
+        @bind-Value="_parameters.Operator"
+        Title="@Translate("Operator")"
+        Label="x => Translate(x.ToTitle())"/>
     </MudItem>
   </MudGrid>
 </MudExpansionPanel>

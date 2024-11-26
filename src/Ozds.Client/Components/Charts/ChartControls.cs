@@ -9,6 +9,9 @@ public partial class ChartControls
   public List<IMeter> Meters { get; set; } = default!;
 
   [Parameter]
+  public HashSet<ChartProfile> Profiles { get; set; } = new();
+
+  [Parameter]
   public RenderFragment<ChartParameters> ChildContent { get; set; } = default!;
 
   private ChartParameters _parameters = new();

@@ -32,7 +32,10 @@ public static class ApexChartOptionsExtensions
   )
     where T : class
   {
-    options.Tooltip = new Tooltip { X = new TooltipX { Format = @"dd.MM." } };
+    options.Tooltip = new Tooltip
+    {
+      X = new TooltipX { Format = @"dd.MM." }
+    };
     return options;
   }
 
@@ -45,6 +48,46 @@ public static class ApexChartOptionsExtensions
     {
       X = new TooltipX { Format = @"dd.MM. HH:mm" }
     };
+    return options;
+  }
+
+  public static ApexChartOptions<T> WithBrush<T>(
+    this ApexChartOptions<T> options,
+    string target
+  )
+    where T : class
+  {
+    options.Chart = new Chart
+    {
+      Height = 130,
+      Brush = new Brush
+      {
+        Target = target,
+        Enabled = true
+      },
+      Selection = new Selection
+      {
+        Enabled = true
+      }
+    };
+    options.Xaxis = new XAxis
+    {
+      Type = XAxisType.Datetime,
+      Labels = new XAxisLabels { Format = @"dd.MM." },
+      Tooltip = new XAxisTooltip
+      {
+        Enabled = false
+      }
+    };
+    options.Yaxis = new List<YAxis>();
+    options.Yaxis.Add(
+      new YAxis
+      {
+        Labels = new YAxisLabels
+        {
+          Formatter = "function(val, index) { return (val ?? 0).toFixed(0); }"
+        }
+      });
     return options;
   }
 
