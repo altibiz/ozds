@@ -1,8 +1,12 @@
 @using MudBlazor
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Client.Components.Base
 
 @namespace Ozds.Client.Components.Streaming
 
 @typeparam T
+
+@inherits OzdsComponentBase
 
 <MudHidden Breakpoint="Breakpoint.MdAndUp">
   <MudTextField
@@ -13,8 +17,13 @@
     AdornmentIcon="@Icons.Material.Filled.Search"
     IconSize="Size.Medium"
     Class="mt-0" />
-  @foreach (var item in Model)
+  @foreach (var (item, index) in Model.Select((x, i) => (x, i)))
   {
+    if (!Filter(item))
+    {
+      continue;
+    }
+
     <MudPaper Elevation="2" Class="ma-1">
       <MudStack Spacing="0">
         <MudGrid Class="d-flex pa-2">
@@ -28,9 +37,16 @@
             Color="Color.Primary"/>
         </MudItem>
         <MudItem xs="2" Class="d-flex align-center justify-end">
-          <MudIconButton Icon="@(Icons.Material.Filled.KeyboardArrowUp)" Color="Color.Default"/>
+          <MudIconButton
+            Icon="@(Icons.Material.Filled.KeyboardArrowUp)"
+            Color="Color.Default"
+            OnClick="@(() =>
+              _metadata[index] = _metadata[index] with
+              {
+                Expanded = !_metadata[index].Expanded
+              })" />
         </MudItem>
-        <MudCollapse Class="py-2" Expanded="true">
+        <MudCollapse Class="py-2" Expanded="@_metadata[index].Expanded">
           <MudStack>
             <MudDivider DividerType="DividerType.Middle" Class="mt-2"/>
             @Details(item)
@@ -60,6 +76,30 @@
       </MudTextField>
     </ToolBarContent>
     <Columns>
+      <TemplateColumn Title="@Translate("Title")" Sortable="false">
+        <CellTemplate>
+          <MudStack Row>
+            <MudButton
+                OnClick="@(() => NavigationManager.NavigateTo(Link))"
+                Variant="Variant.Outlined"
+                Color="Color.Primary">
+              @if (Title is { } title)
+              {
+                @title(context.Item)
+              }
+              else
+              {
+                if (context.Item is IIdentifiable identifiable)
+                {
+                  <MudText>
+                    @identifiable.Title
+                  </MudText>
+                }
+              }
+            </MudButton>
+          </MudStack>
+        </CellTemplate>
+      </TemplateColumn>
       @Columns
     </Columns>
     <PagerContent>
