@@ -1,0 +1,96 @@
+@using MudBlazor
+@using Ozds.Business.Models
+@using Ozds.Business.Models.Complex
+@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Fields
+
+@namespace Ozds.Client.Components.Models
+
+@inherits OzdsComponentBase
+
+<DetailsField Title="@Translate("Title")">
+  @Model.Title
+</DetailsField>
+
+<DetailsField Title="@Translate("Meter ID")">
+  @Model.MeterId
+</DetailsField>
+
+<DetailsField Title="@Translate("From Date")">
+  @DateTimeString(Model.FromDate)
+</DetailsField>
+
+<DetailsField Title="@Translate("To Date")">
+  @DateTimeString(Model.ToDate)
+</DetailsField>
+
+<DetailsField Title="@Translate("Issued On")">
+  @DateTimeString(Model.IssuedOn)
+</DetailsField>
+
+<DetailsField Title="@Translate("Total")">
+  @NumericString(Model.Total_EUR)
+  &nbsp;
+  €
+</DetailsField>
+
+<MudDivider Class="my-2" />
+
+<MudText Typo="Typo.h6">@Translate("Usage Items")</MudText>
+
+<DetailsField Title="@Translate("Active Energy Import T1 Total")">
+  @NumericString(Model.UsageActiveEnergyTotalImportT1.Total_EUR)
+  &nbsp;
+  €
+</DetailsField>
+
+<DetailsField Title="@Translate("Active Energy Import T2 Total")">
+  @NumericString(Model.UsageActiveEnergyTotalImportT2.Total_EUR)
+  &nbsp;
+  €
+</DetailsField>
+
+<DetailsField Title="@Translate("Active Power Import T1 Peak Total")">
+  @NumericString(Model.UsageActivePowerTotalImportT1Peak.Total_EUR)
+  &nbsp;
+  €
+</DetailsField>
+
+<DetailsField Title="@Translate("Reactive Energy Total Ramped T0 Total")">
+  @NumericString(Model.UsageReactiveEnergyTotalRampedT0.Total_EUR)
+  &nbsp;
+  €
+</DetailsField>
+
+<MudDivider Class="my-2" />
+
+<MudText Typo="Typo.h6">@Translate("Supply Items")</MudText>
+
+<DetailsField Title="@Translate("Active Energy Import T1 Total")">
+  @NumericString(Model.SupplyActiveEnergyTotalImportT1.Total_EUR)
+  &nbsp;
+  €
+</DetailsField>
+
+<DetailsField Title="@Translate("Active Energy Import T2 Total")">
+  @NumericString(Model.SupplyActiveEnergyTotalImportT2.Total_EUR)
+  &nbsp;
+  €
+</DetailsField>
+
+<DetailsField Title="@Translate("Business Usage Fee Total")">
+  @NumericString(Model.SupplyBusinessUsageFee.Total_EUR)
+  &nbsp;
+  €
+</DetailsField>
+
+<DetailsField Title="@Translate("Renewable Energy Fee Total")">
+  @NumericString(Model.SupplyRenewableEnergyFee.Total_EUR)
+  &nbsp;
+  €
+</DetailsField>
+
+@code {
+  [Parameter]
+  public RedLowNetworkUserCalculationModel Model { get; set; } = default!;
+}

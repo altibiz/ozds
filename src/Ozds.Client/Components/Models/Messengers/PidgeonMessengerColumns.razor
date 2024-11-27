@@ -1,0 +1,45 @@
+@using MudBlazor
+@using Ozds.Business.Models
+@using Ozds.Business.Models.Enums
+@using Ozds.Business.Models.Complex
+@using Ozds.Client.Components.Base
+
+@inherits OzdsComponentBase
+
+<PropertyColumn
+  T="PidgeonMessengerModel"
+  TProperty="string"
+  Property="x => x.Title"
+  Title='@Translate("Title")'>
+  <CellTemplate>
+    <MudText>@context.Item.Title</MudText>
+  </CellTemplate>
+</PropertyColumn>
+
+<PropertyColumn
+  T="PidgeonMessengerModel"
+  TProperty="PeriodModel"
+  Property="x => x.MaxInactivityPeriod"
+  Title='@Translate("Max Inactivity Period")'>
+  <CellTemplate>
+    <MudText>@FormatPeriod(context.Item.MaxInactivityPeriod)</MudText>
+  </CellTemplate>
+</PropertyColumn>
+
+<PropertyColumn
+  T="PidgeonMessengerModel"
+  TProperty="PeriodModel"
+  Property="x => x.PushDelayPeriod"
+  Title='@Translate("Push Delay Period")'>
+  <CellTemplate>
+    <MudText>@FormatPeriod(context.Item.PushDelayPeriod)</MudText>
+  </CellTemplate>
+</PropertyColumn>
+
+@code {
+  private string FormatPeriod(PeriodModel period)
+  {
+    var durationTitle = period.Duration.ToTitle(plural: period.Multiplier > 1);
+    return $"{period.Multiplier} {Translate(durationTitle)}";
+  }
+}

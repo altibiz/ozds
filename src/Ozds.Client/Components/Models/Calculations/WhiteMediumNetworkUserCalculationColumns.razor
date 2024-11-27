@@ -1,0 +1,107 @@
+@using Microsoft.AspNetCore.Components
+@using MudBlazor
+@using Ozds.Business.Models
+@using Ozds.Business.Models.Complex
+@using Ozds.Client.Components.Base
+
+@namespace Ozds.Client.Components.Models
+
+@inherits OzdsComponentBase
+
+<PropertyColumn
+  T="WhiteMediumNetworkUserCalculationModel"
+  TProperty="string"
+  Property="x => x.Title"
+  Title='@Translate("Title")'>
+  <CellTemplate>
+    <MudText>@context.Item.Title</MudText>
+  </CellTemplate>
+</PropertyColumn>
+
+<PropertyColumn
+  T="WhiteMediumNetworkUserCalculationModel"
+  TProperty="string"
+  Property="x => x.MeterId"
+  Title='@Translate("Meter ID")'>
+  <CellTemplate>
+    <MudText>@context.Item.MeterId</MudText>
+  </CellTemplate>
+</PropertyColumn>
+
+<PropertyColumn
+  T="WhiteMediumNetworkUserCalculationModel"
+  TProperty="DateTimeOffset"
+  Property="x => x.FromDate"
+  Title='@Translate("From Date")'>
+  <CellTemplate>
+    <MudText>@DateTimeString(context.Item.FromDate)</MudText>
+  </CellTemplate>
+</PropertyColumn>
+
+<PropertyColumn
+  T="WhiteMediumNetworkUserCalculationModel"
+  TProperty="DateTimeOffset"
+  Property="x => x.ToDate"
+  Title='@Translate("To Date")'>
+  <CellTemplate>
+    <MudText>@DateTimeString(context.Item.ToDate)</MudText>
+  </CellTemplate>
+</PropertyColumn>
+
+<PropertyColumn
+  T="WhiteMediumNetworkUserCalculationModel"
+  TProperty="decimal"
+  Property="x => x.UsageActiveEnergyTotalImportT1.Total_EUR"
+  Title='@Translate("Usage Active Energy Import T1 Total (€)")'>
+  <CellTemplate>
+    <MudText>
+      @NumericString(context.Item.UsageActiveEnergyTotalImportT1.Total_EUR)
+    </MudText>
+  </CellTemplate>
+</PropertyColumn>
+
+<PropertyColumn
+  T="WhiteMediumNetworkUserCalculationModel"
+  TProperty="decimal"
+  Property="x => x.UsageActiveEnergyTotalImportT2.Total_EUR"
+  Title='@Translate("Usage Active Energy Import T2 Total (€)")'>
+  <CellTemplate>
+    <MudText>
+      @NumericString(context.Item.UsageActiveEnergyTotalImportT2.Total_EUR)
+    </MudText>
+  </CellTemplate>
+</PropertyColumn>
+
+<PropertyColumn
+  T="WhiteMediumNetworkUserCalculationModel"
+  TProperty="decimal"
+  Property="x => x.UsageActivePowerTotalImportT1Peak.Total_EUR"
+  Title='@Translate("Usage Active Power Import T1 Peak Total (€)")'>
+  <CellTemplate>
+    <MudText>
+      @NumericString(context.Item.UsageActivePowerTotalImportT1Peak.Total_EUR)
+    </MudText>
+  </CellTemplate>
+</PropertyColumn>
+
+<PropertyColumn
+  T="WhiteMediumNetworkUserCalculationModel"
+  TProperty="decimal"
+  Property="x => x.UsageReactiveEnergyTotalRampedT0.Total_EUR"
+  Title='@Translate("Usage Reactive Energy Total Ramped T0 Total (€)")'>
+  <CellTemplate>
+    <MudText>
+      @NumericString(context.Item.UsageReactiveEnergyTotalRampedT0.Total_EUR)
+    </MudText>
+  </CellTemplate>
+</PropertyColumn>
+
+<PropertyColumn
+  T="WhiteMediumNetworkUserCalculationModel"
+  TProperty="decimal"
+  Property="x => x.Total_EUR"
+  Title='@Translate("Total (€)")'>
+  <CellTemplate>
+    <MudText>@NumericString(context.Item.Total_EUR)</MudText>
+  </CellTemplate>
+</PropertyColumn>

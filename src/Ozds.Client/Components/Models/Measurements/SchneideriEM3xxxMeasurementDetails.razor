@@ -1,0 +1,119 @@
+@using Ozds.Business.Models
+@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Fields
+@using Ozds.Business.Models.Complex
+
+@namespace Ozds.Client.Components.Models
+
+@inherits OzdsComponentBase
+
+<DetailsField Title="@Translate("Meter ID")">
+  @Model.MeterId
+</DetailsField>
+
+<DetailsField Title="@Translate("Timestamp")">
+  @DateTimeString(Model.Timestamp)
+</DetailsField>
+
+<DetailsField Title="@Translate("Voltage L1")">
+  @NumericString(Model.VoltageL1AnyT0_V / 1000)
+  &nbsp;
+  kV
+</DetailsField>
+<DetailsField Title="@Translate("Voltage L2")">
+  @NumericString(Model.VoltageL2AnyT0_V / 1000)
+  &nbsp;
+  kV
+</DetailsField>
+<DetailsField Title="@Translate("Voltage L3")">
+  @NumericString(Model.VoltageL3AnyT0_V / 1000)
+  &nbsp;
+  kV
+</DetailsField>
+
+<DetailsField Title="@Translate("Current L1")">
+  @NumericString(Model.CurrentL1AnyT0_A)
+  &nbsp;
+  A
+</DetailsField>
+<DetailsField Title="@Translate("Current L2")">
+  @NumericString(Model.CurrentL2AnyT0_A)
+  &nbsp;
+  A
+</DetailsField>
+<DetailsField Title="@Translate("Current L3")">
+  @NumericString(Model.CurrentL3AnyT0_A)
+  &nbsp;
+  A
+</DetailsField>
+
+<DetailsField Title="@Translate("Active Power L1")">
+  @NumericString(Model.ActivePowerL1NetT0_W / 1000)
+  &nbsp;
+  kW
+</DetailsField>
+<DetailsField Title="@Translate("Active Power L2")">
+  @NumericString(Model.ActivePowerL2NetT0_W / 1000)
+  &nbsp;
+  kW
+</DetailsField>
+<DetailsField Title="@Translate("Active Power L3")">
+  @NumericString(Model.ActivePowerL3NetT0_W / 1000)
+  &nbsp;
+  kW
+</DetailsField>
+
+<DetailsField Title="@Translate("Reactive Power Total")">
+  @NumericString(Model.ReactivePowerTotalNetT0_VAR / 1000)
+  &nbsp;
+  kVAR
+</DetailsField>
+
+<DetailsField Title="@Translate("Apparent Power Total")">
+  @NumericString(Model.ApparentPowerTotalNetT0_VA / 1000)
+  &nbsp;
+  kVA
+</DetailsField>
+
+<DetailsField Title="@Translate("Active Energy L1 Import T0")">
+  @NumericString(Model.ActiveEnergyL1ImportT0_Wh / 1000)
+  &nbsp;
+  kWh
+</DetailsField>
+<DetailsField Title="@Translate("Active Energy L2 Import T0")">
+  @NumericString(Model.ActiveEnergyL2ImportT0_Wh / 1000)
+  &nbsp;
+  kWh
+</DetailsField>
+<DetailsField Title="@Translate("Active Energy L3 Import T0")">
+  @NumericString(Model.ActiveEnergyL3ImportT0_Wh / 1000)
+  &nbsp;
+  kWh
+</DetailsField>
+
+<DetailsField Title="@Translate("Active Energy Total Import T0")">
+  @NumericString(Model.ActiveEnergyTotalImportT0_Wh / 1000)
+  &nbsp;
+  kWh
+</DetailsField>
+<DetailsField Title="@Translate("Active Energy Total Export T0")">
+  @NumericString(Model.ActiveEnergyTotalExportT0_Wh / 1000)
+  &nbsp;
+  kWh
+</DetailsField>
+
+<DetailsField Title="@Translate("Reactive Energy Total Import T0")">
+  @NumericString(Model.ReactiveEnergyTotalImportT0_VARh / 1000)
+  &nbsp;
+  kVARh
+</DetailsField>
+<DetailsField Title="@Translate("Reactive Energy Total Export T0")">
+  @NumericString(Model.ReactiveEnergyTotalExportT0_VARh / 1000)
+  &nbsp;
+  kVARh
+</DetailsField>
+
+@code {
+  [Parameter]
+  public SchneideriEM3xxxMeasurementModel Model { get; set; } = default!;
+}

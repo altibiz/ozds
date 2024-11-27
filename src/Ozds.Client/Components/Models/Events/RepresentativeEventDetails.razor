@@ -1,0 +1,34 @@
+@using Ozds.Business.Models
+@using Ozds.Business.Models.Base
+@using Ozds.Business.Models.Enums
+@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Fields
+
+@namespace Ozds.Client.Components.Models
+
+@inherits OzdsComponentBase
+
+<DetailsField Title="@Translate("Title")">
+  @Model.Title
+</DetailsField>
+
+<DetailsField Title="@Translate("Timestamp")">
+  @DateTimeString(Model.Timestamp)
+</DetailsField>
+
+<DetailsField Title="@Translate("Level")">
+  @Model.Level.ToTitle()
+</DetailsField>
+
+<DetailsField Title="@Translate("Categories")">
+  @string.Join(", ", Model.Categories.Select(c => c.ToTitle()))
+</DetailsField>
+
+<DetailsField Title="@Translate("Content")">
+  @JsonString(Model.Content)
+</DetailsField>
+
+@code {
+  [Parameter]
+  public RepresentativeEventModel Model { get; set; } = default!;
+}

@@ -1,0 +1,52 @@
+@using MudBlazor
+@using Ozds.Business.Models
+@using Ozds.Business.Models.Base
+@using Ozds.Business.Models.Enums
+@using Ozds.Client.Components.Base
+
+@namespace Ozds.Client.Components.Models
+
+@inherits OzdsComponentBase
+
+<PropertyColumn
+  T="RepresentativeEventModel"
+  TProperty="string"
+  Property="x => x.Title"
+  Title='@Translate("Title")'>
+  <CellTemplate>
+    <MudText>@context.Item.Title</MudText>
+  </CellTemplate>
+</PropertyColumn>
+
+<PropertyColumn
+  T="RepresentativeEventModel"
+  TProperty="DateTimeOffset"
+  Property="x => x.Timestamp"
+  Title='@Translate("Timestamp")'>
+  <CellTemplate>
+    <MudText>@DateTimeString(context.Item.Timestamp)</MudText>
+  </CellTemplate>
+</PropertyColumn>
+
+<PropertyColumn
+  T="MessengerEventModel"
+  TProperty="LevelModel"
+  CellStyle="font-size: large;"
+  Property="x => x.Level"
+  Title="@Translate("Level")">
+  <CellTemplate>
+    @if (context.Item.Level == LevelModel.Error
+      || context.Item.Level == LevelModel.Critical)
+    {
+      <MudIcon Icon="@Icons.Material.Filled.Circle" Color="Color.Error"/>
+    }
+    else if (context.Item.Level == LevelModel.Warning)
+    {
+      <MudIcon Icon="@Icons.Material.Filled.Circle" Color="Color.Warning"/>
+    }
+    else
+    {
+      <MudIcon Icon="@Icons.Material.Filled.Circle" Color="Color.Success"/>
+    }
+  </CellTemplate>
+</PropertyColumn>

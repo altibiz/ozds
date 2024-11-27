@@ -39,4 +39,18 @@ public static class AuditModelExtensions
         null)
     };
   }
+
+  public static string ToTitle(this AuditModel audit)
+  {
+    return audit switch
+    {
+      AuditModel.Query => "Query",
+      AuditModel.Creation => "Creation",
+      AuditModel.Modification => "Modification",
+      AuditModel.Deletion => "Deletion",
+      _ => throw new ArgumentOutOfRangeException(
+        nameof(audit), audit,
+        null)
+    };
+  }
 }

@@ -1,0 +1,31 @@
+@using MudBlazor
+@using Ozds.Business.Models
+@using Ozds.Client.Components.Base
+
+@inherits OzdsComponentBase
+
+<PropertyColumn
+  T="LocationModel"
+  TProperty="string"
+  CellStyle="font-size: x-large;"
+  Property="x => x.AltiBizSubProjectCode"
+  Title='@Translate("AltiBiz subproject code")'>
+  <CellTemplate>
+    <MudText>
+      @context.Item.AltiBizSubProjectCode
+    </MudText>
+  </CellTemplate>
+</PropertyColumn>
+
+<PropertyColumn
+  T="LocationModel"
+  TProperty="string"
+  CellStyle="font-size: x-large;"
+  Property="x => x.LegalPerson.SocialSecurityNumber"
+  Title='@Translate("Social security number")'>
+  <CellTemplate>
+    <MudText>
+      @context.Item.LegalPerson.SocialSecurityNumber
+    </MudText>
+  </CellTemplate>
+</PropertyColumn>

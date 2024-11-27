@@ -1,0 +1,32 @@
+@using Ozds.Business.Models
+@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Fields
+@using Ozds.Business.Models.Enums
+@using Ozds.Business.Models.Complex
+
+@namespace Ozds.Client.Components.Models
+
+@inherits OzdsComponentBase
+
+<DetailsField Title="@Translate("Title")">
+  @Model.Title
+</DetailsField>
+
+<DetailsField Title="@Translate("Max Inactivity Period")">
+  @FormatPeriod(Model.MaxInactivityPeriod)
+</DetailsField>
+
+<DetailsField Title="@Translate("Push Delay Period")">
+  @FormatPeriod(Model.PushDelayPeriod)
+</DetailsField>
+
+@code {
+  [Parameter]
+  public PidgeonMessengerModel Model { get; set; } = default!;
+
+  private string FormatPeriod(PeriodModel period)
+  {
+    var durationTitle = period.Duration.ToTitle(plural: period.Multiplier > 1);
+    return $"{period.Multiplier} {Translate(durationTitle)}";
+  }
+}
