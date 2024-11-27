@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Ozds.Business.Models.Abstractions;
 
-namespace Ozds.Client.Components.Tables;
+namespace Ozds.Client.Components.Streaming;
 
 public partial class Table<T>
 {
@@ -16,6 +16,9 @@ public partial class Table<T>
 
   [Parameter]
   public RenderFragment<T> Details { get; set; } = default!;
+
+  [Parameter]
+  public string Link { get; set; } = default!;
 
   private string? _searchString;
 

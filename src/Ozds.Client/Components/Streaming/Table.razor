@@ -1,6 +1,6 @@
 @using MudBlazor
 
-@namespace Ozds.Client.Components.Tables
+@namespace Ozds.Client.Components.Streaming
 
 @typeparam T
 
@@ -18,9 +18,18 @@
     <MudPaper Elevation="2" Class="ma-1">
       <MudStack Spacing="0">
         <MudGrid Class="d-flex pa-2">
-          @Card(item)
+          @Summary(item)
         </MudGrid>
 
+        <MudItem xs="2" Class="d-flex align-center justify-end">
+          <MudIconButton
+            OnClick="@(() => NavigationManager.NavigateTo(Link))"
+            Icon="@Icons.Material.Filled.RemoveRedEye"
+            Color="Color.Primary"/>
+        </MudItem>
+        <MudItem xs="2" Class="d-flex align-center justify-end">
+          <MudIconButton Icon="@(Icons.Material.Filled.KeyboardArrowUp)" Color="Color.Default"/>
+        </MudItem>
         <MudCollapse Class="py-2" Expanded="true">
           <MudStack>
             <MudDivider DividerType="DividerType.Middle" Class="mt-2"/>
