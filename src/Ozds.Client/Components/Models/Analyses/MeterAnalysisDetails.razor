@@ -1,0 +1,32 @@
+@using Microsoft.AspNetCore.Components
+@using MudBlazor
+@using Ozds.Business.Analysis
+@using Ozds.Client.Components.Base
+
+@namespace Ozds.Client.Components.Models
+
+@inherits OzdsComponentBase
+
+<MudText
+  xs="10"
+  Class="d-flex align-center justify-start"
+  Style="font-size: large; font-weight: bold;">
+  @Translate("Location")
+  &colon;
+  &nbsp;
+  @(Model.Location.Title)
+</MudText>
+<MudText
+  xs="8"
+  Class="d-flex align-center justify-start"
+  Style="font-size: large; font-weight: bold;">
+  @Translate("Network user")
+  &colon;
+  &nbsp;
+  @(Model.NetworkUser.Title)
+</MudText>
+
+@code {
+  [Parameter]
+  public MeterAnalysis Model { get; set; } = default!;
+}

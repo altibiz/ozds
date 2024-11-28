@@ -1,0 +1,76 @@
+@using Microsoft.AspNetCore.Components
+@using MudBlazor
+@using Ozds.Business.Analysis
+@using Ozds.Client.Components.Base
+
+@namespace Ozds.Client.Components.Models
+
+@inherits OzdsComponentBase
+
+<MudText
+  xs="12"
+  Class="d-flex align-center justify-start"
+  Style="font-size: large; font-weight: bold;">
+  @Translate("Current months consumption")
+  &colon;
+  &nbsp;
+  @NumericString(
+    analysis.Analysis.LastMonthConsumption.ActiveEnergy_kWh,
+    0)
+  &nbsp;
+  kWh
+</MudText>
+
+<MudText
+  xs="12"
+  Class="d-flex align-center justify-start"
+  Style="font-size: large; font-weight: bold;">
+  @Translate("Last months consumption")
+  &colon;
+  &nbsp;
+  @NumericString(
+    analysis.Analysis.ThisMonthConsumption.ActiveEnergy_kWh,
+    0)
+  &nbsp;
+  kWh
+</MudText>
+
+@if (RepresentativeState.Representative.Role
+  is RoleModel.LocationRepresentative)
+{
+  <MudText
+    xs="12"
+    Class="d-flex align-center justify-start"
+    Style="font-size: large; font-weight: bold;">
+    @Translate("Active power")
+    &colon;
+    &nbsp;
+    @NumericString(analysis.Analysis.Load.ActivePower_kW)
+    &nbsp;
+    kW
+  </MudText>
+}
+else
+{
+  <MudText
+    xs="12"
+    Class="d-flex align-center justify-start"
+    Style="font-size: large; font-weight: bold;">
+    @Translate("Last months invoice total")
+    &colon;
+    &nbsp;
+    @(analysis.Analysis.LastMonthExpenses.Total_EUR == 0
+      ? Translate("Invoice pending...")
+      : NumericString(
+          analysis.Analysis.LastMonthExpenses.Total_EUR)
+          + " EUR")
+  </MudText>
+}
+
+@code {
+  [CascadingParameter]
+  public RepresentativeState RepresentativeState { get; set; } = default!;
+
+  [Parameter]
+  public LocationAnalysis Model { get; set; } = default!;
+}

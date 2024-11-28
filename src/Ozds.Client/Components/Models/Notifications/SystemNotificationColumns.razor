@@ -1,0 +1,20 @@
+@using MudBlazor
+@using Ozds.Business.Models
+@using Ozds.Business.Models.Enums
+@using Ozds.Client.Components.Base
+@using Ozds.Client.State
+
+@namespace Ozds.Client.Components.Models
+
+@inherits OzdsComponentBase
+
+<PropertyColumn
+  T="SystemNotificationModel"
+  TProperty="DateTimeOffset"
+  CellStyle="font-size: x-large;"
+  Property="x => x.Timestamp"
+  Title='@Translate("Date")'>
+  <CellTemplate>
+    @(context.Item.Timestamp.ToString("HH:mm dd.MM.yyyy."))
+  </CellTemplate>
+</PropertyColumn>

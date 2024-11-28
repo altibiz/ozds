@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Client.Components.Base;
 
-namespace Ozds.Client.Components.Streaming;
+namespace Ozds.Client.Components.Tables;
 
 public partial class Table<T> : OzdsComponentBase
 {

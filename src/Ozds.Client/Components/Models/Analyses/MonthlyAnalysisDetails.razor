@@ -1,0 +1,30 @@
+@using Microsoft.AspNetCore.Components
+@using MudBlazor
+@using Ozds.Business.Analysis
+@using Ozds.Client.Components.Base
+
+@namespace Ozds.Client.Components.Models
+
+@inherits OzdsComponentBase
+
+<MudText>
+  @Translate("First reading"):
+  @(NumericString(Model.Consumption.MinActiveEnergy_kWh, 0)) kWh
+</MudText>
+<MudText>
+  @Translate("Last reading"):
+  @(NumericString(Model.Consumption.MaxActiveEnergy_kWh, 0)) kWh
+</MudText>
+<MudText Style="font-size: large; font-weight:bold;">
+  @Translate("Total consumption"):
+  @(NumericString(Model.Consumption.ActiveEnergy_kWh, 0)) kWh
+</MudText>
+<MudText Style="font-weight:bold;">
+  @Translate("Max power"):
+  @(NumericString(Model.MaxLoad.ActivePower_kW, 0)) kW
+</MudText>
+
+@code {
+  [Parameter]
+  public MonthlyAnalysis Model { get; set; } = default!;
+}
