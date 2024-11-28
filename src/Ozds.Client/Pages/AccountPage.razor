@@ -1,4 +1,5 @@
 @using MudBlazor
+@using Ozds.Business.Models.Composite
 @using Ozds.Client.Components.Base
 @using Ozds.Client.State
 
@@ -6,35 +7,14 @@
 
 @page "/account"
 
-<MudContainer
-  MaxWidth="MaxWidth.ExtraSmall"
-  Class="d-flex flex-column"
-  Style="float: left;">
-  <MudText Class="d-flex align-center my-2" Typo="@Typo.h5">
-    @UserState.User.UserName
-  </MudText>
-  <MudPaper class="mt-2 px-4 py-2">
-    <MudGrid Spacing="3">
-      <MudItem xs="12" sm="6">
-        <MudText Typo="Typo.body1" Style="font-weight: bold;">
-          @Translate("Email"):
-        </MudText>
-      </MudItem>
-      <MudItem xs="12" sm="6">
-        <MudHidden Breakpoint="Breakpoint.Xs">
-          <MudText Type="Typo.body2" Align="Align.Right">
-            @UserState.User.Email
-          </MudText>
-        </MudHidden>
-        <MudHidden Breakpoint="Breakpoint.SmAndUp">
-          <MudText Type="Typo.body2" Align="Align.Left">
-            @UserState.User.Email
-          </MudText>
-        </MudHidden>
-      </MudItem>
-    </MudGrid>
-  </MudPaper>
-</MudContainer>
+@{
+  var model = new MaybeRepresentingUserModel(
+    UserState.User,
+    null
+  );
+}
+
+<MaybeRepresentingUserDetails Model="@model"/>
 
 @code {
   [CascadingParameter]

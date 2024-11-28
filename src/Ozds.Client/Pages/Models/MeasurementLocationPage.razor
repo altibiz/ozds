@@ -1,0 +1,55 @@
+@using Ozds.Business.Analysis
+@using Ozds.Business.Time
+@using Ozds.Client.Components.Charts
+@using Ozds.Client.Components.Streaming
+
+@page "/measurement-location/{id?}"
+
+@{
+  var analysis = RepresentativeState.AnalysisBases
+    .AnalysisByMeasurementLocation()
+    .FirstOrDefault(x => x.Meter.Id == Id);
+}
+
+@if (analysis is null)
+{
+  <RedirectToLogin />
+  return;
+}
+
+<ResponsiveTable Model="@analysis.Analysis.Monthly">
+  <Summary>
+    <MonthlyAnalysisSummary Model="@context" />
+  </Summary>
+  <Details>
+    <MonthlyAnalysisDetails Model="@context" />
+  </Details>
+  <Columns>
+    <MonthlyAnalysisColumns Model="@context" />
+  </Columns>
+</ResponsiveTable>
+
+@{
+  var meters = new List<IMeter>() { analysis.Meter };
+}
+
+<MeasurementChartControls Meters="@meters">
+  <MeasurementGaugeChart
+    Meters="@meters"
+    Parameters="@context" />
+  <MeasurementLineChart
+    Meters="@meters"
+    Parameters="@context"
+    Brush="@(Breakpoint & Breakpoint.MdAndUp)" />
+</MeasurementChartControls>
+
+@code {
+  [CascadingParameter]
+  public RepresentativeState RepresentativeState { get; set; } = default!;
+
+  [CascadingParameter]
+  public Breakpoint Breakpoint { get; set; } = default!;
+
+  [Parameter]
+  public string Id { get; set; } = default!;
+}

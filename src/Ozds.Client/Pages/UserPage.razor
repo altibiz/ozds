@@ -9,7 +9,7 @@
 
 @namespace Ozds.Client.Pages
 
-@page "/user/{id?}"
+@page "/user/{id}"
 
 @attribute [Navigation(
   Title = "User",
@@ -20,16 +20,9 @@
 
 <Mutating
   T="MaybeRepresentingUserModel"
-  LoadAsync="@(() => Id is null
-    ? Task.FromResult<MaybeRepresentingUserModel?>(null)
-    : ScopedServices
-        .GetRequiredService<RepresentativeQueries>()
-        .MaybeRepresentingUserByUserId(Id, CancellationToken.None))"
-  CreateAsync="@((x) => x.Representative is { } representative
-    ? ScopedServices
-      .GetRequiredService<AuditableMutations>()
-      .Create(representative, CancellationToken.None)
-    : Task.CompletedTask)"
+  LoadAsync="@(() => ScopedServices
+    .GetRequiredService<RepresentativeQueries>()
+    .MaybeRepresentingUserByUserId(Id, CancellationToken.None))"
   UpdateAsync="@((x) => x.Representative is { } representative
     ? ScopedServices
       .GetRequiredService<AuditableMutations>()
@@ -50,5 +43,5 @@
 
 @code {
   [Parameter]
-  public string? Id { get; set; }
+  public string Id { get; set; } = default!;
 }

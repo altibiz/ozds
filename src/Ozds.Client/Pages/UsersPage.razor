@@ -20,32 +20,6 @@
   .GetRequiredService<RepresentativeQueries>()
   .MaybeRepresentingUsers(page, CancellationToken.None))">
   <Summary>
-    @{
-      var href = $"user/{context.User.Id}";
-      var editHref = $"user/{context.User.Id}/edit";
-
-      <MudCard>
-        <MudCardContent>
-          <MudText Typo="Typo.h6">
-            @context.User.UserName
-          </MudText>
-          <MudText>
-            @context.User.Email
-          </MudText>
-        </MudCardContent>
-        <MudCardActions>
-          <MudNavLink Href="@href">
-            Details
-          </MudNavLink>
-          <MudNavLink Href="@editHref">
-            Edit
-          </MudNavLink>
-        </MudCardActions>
-      </MudCard>
-    }
+    <MaybeRepresentingUserSummary Model="@context" />
   </Summary>
 </Paging>
-
-@code {
-  private int _page = 1;
-}

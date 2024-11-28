@@ -1,61 +1,55 @@
-@page "/meter/{source}"
 @using Ozds.Business.Analysis
 @using Ozds.Business.Time
 @using Ozds.Client.Components.Charts
+@using Ozds.Client.Components.Streaming
 
+@page "/meter/{id?}"
 
 @{
-  var analysis = RepresentativeState.AnalysisBases.Analysis();
-  var meters = RepresentativeState.AnalysisBases
-    .Select(x => x.Meter)
-    .Where(x => x.Id == Source)
-    .DistinctBy(x => x.Id)
-    .OfType<IMeter>()
-    .ToList();
+  var analysis = RepresentativeState.AnalysisBases
+    .AnalysisByMeter()
+    .FirstOrDefault(x => x.Meter.Id == Id);
 }
 
-  @* MOBILE *@
-  <MudHidden Breakpoint="Breakpoint.MdAndUp">
-    <MudGrid Class="my-3 pa-1">
-      <MudItem xs="12" Class="pa-1">
-        <MeterGraph Source="@Source"/>
-      </MudItem>
-      <MudItem xs="12" Class="pa-1">
-        <MeterGauge Source="@Source"/>
-      </MudItem>
-    </MudGrid>
-  </MudHidden>
+@if (analysis is null)
+{
+  <RedirectToLogin />
+  return;
+}
 
-<MeterDetailsTable Source="@Source"/>
+<ResponsiveTable Model="@analysis.Analysis.Monthly">
+  <Summary>
+    <MonthlyAnalysisSummary Model="@context" />
+  </Summary>
+  <Details>
+    <MonthlyAnalysisDetails Model="@context" />
+  </Details>
+  <Columns>
+    <MonthlyAnalysisColumns Model="@context" />
+  </Columns>
+</ResponsiveTable>
 
-  @* DESKTOP *@
-  <MudHidden Breakpoint="Breakpoint.SmAndDown">
-    <MudGrid Class="my-3">
-      <MudItem xs="6">
-        <MeterGauge Source="@Source"/>
-      </MudItem>
-      <MudItem xs="6">
-        <NewMeterGraph
-          Meters="@meters"
-          Timestamp="@DateTimeOffset.UtcNow.GetStartOfDay()"
-          Resolution="@ResolutionModel.Day"
-          Measure="@MeasureModel.ActivePower"
-          Multiplier="1"
-          Static
-          Sum />
-      </MudItem>
-      <MudItem xs="12">
-        <BrushGraph Source="@Source"/>
-      </MudItem>
-    </MudGrid>
-  </MudHidden>
+@{
+  var meters = new List<IMeter>() { analysis.Meter };
+}
+
+<MeasurementChartControls Meters="@meters">
+  <MeasurementGaugeChart
+    Meters="@meters"
+    Parameters="@context" />
+  <MeasurementLineChart
+    Meters="@meters"
+    Parameters="@context"
+    Brush="@(Breakpoint & Breakpoint.MdAndUp)" />
+</MeasurementChartControls>
 
 @code {
-
   [CascadingParameter]
   public RepresentativeState RepresentativeState { get; set; } = default!;
 
-  [Parameter]
-  public string Source { get; set; } = "abb";
+  [CascadingParameter]
+  public Breakpoint Breakpoint { get; set; } = default!;
 
+  [Parameter]
+  public string Id { get; set; } = default!;
 }
