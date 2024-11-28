@@ -8,6 +8,8 @@
 @using Ozds.Client.Components.Streaming
 @using Ozds.Client.State
 
+@namespace Ozds.Client.Components.Dashboards
+
 @inherits OzdsOwningComponentBase
 
 @{
@@ -71,14 +73,19 @@
             @(Translate("This years consumption") + " (kW):")
           </MudText>
         </MudItem>
-        <NewMeterGraph
+        @{
+          var parameters = new MeasurementChartParameters {
+            Selection = meters,
+            Measure = MeasureMode.ActivePower,
+            Resolution = ResolutionModel.Year
+            Multiplier = 1,
+            Operator = OperatorModel.Last,
+          };
+        }
+        <MeasurementLineChart
           Meters="@meters"
-          Timestamp="@DateTimeOffset.UtcNow.GetStartOfYear()"
-          Resolution="@ResolutionModel.Year"
-          Measure="@MeasureModel.ActivePower"
-          Multiplier="1"
-          Static
-          Sum />
+          Parameters="@parameters"
+          Area />
       </MudPaper>
     </MudItem>
   </MudGrid>
@@ -145,14 +152,19 @@
             @(Translate("This years consumption") + " (kW):")
           </MudText>
         </MudItem>
-        <NewMeterGraph
+        @{
+          var parameters = new MeasurementChartParameters {
+            Selection = meters,
+            Measure = MeasureMode.ActivePower,
+            Resolution = ResolutionModel.Year
+            Multiplier = 1,
+            Operator = OperatorModel.Last,
+          };
+        }
+        <MeasurementLineChart
           Meters="@meters"
-          Timestamp="@DateTimeOffset.UtcNow.GetStartOfYear()"
-          Resolution="@ResolutionModel.Year"
-          Measure="@MeasureModel.ActivePower"
-          Multiplier="1"
-          Static
-          Sum />
+          Parameters="@parameters"
+          Area />
       </MudPaper>
     </MudItem>
   </MudGrid>

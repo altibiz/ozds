@@ -1,26 +1,38 @@
-@page "/"
 @using Ozds.Business.Time
 @using Ozds.Client.Components.Charts
-@attribute [Navigation(Icon= Icons.Material.Outlined.Home, Title = "Home", Allows = new[] { RoleModel.LocationRepresentative, RoleModel.NetworkUserRepresentative, RoleModel.OperatorRepresentative })]
-@attribute [Authorize]
+@using Ozds.Client.Components.Dashboards
+@using Ozds.Client.Components.Tables
+
+@namespace Ozds.Client.Pages
+
+@page "/"
+
+@attribute [Navigation(
+  Icon= Icons.Material.Outlined.Home,
+  Title = "Home",
+  Allows = new[]
+  {
+    RoleModel.LocationRepresentative,
+    RoleModel.NetworkUserRepresentative,
+    RoleModel.OperatorRepresentative
+  })]
 
 @inject IDialogService DialogService
 
-@if (user is null || RepresentativeState is null)
-{
-  return;
-}
-@if (RepresentativeState.Representative.Role is RoleModel.NetworkUserRepresentative)
+@if (RepresentativeState.Representative.Role
+  is RoleModel.NetworkUserRepresentative)
 {
   <NetUserRepDashboard/>
   <MetersTable/>
 }
-@if (RepresentativeState.Representative.Role is RoleModel.LocationRepresentative)
+@if (RepresentativeState.Representative.Role
+  is RoleModel.LocationRepresentative)
 {
   <LocationRepDashboard/>
   <LocationsTable/>
 }
-@if (RepresentativeState.Representative.Role is RoleModel.OperatorRepresentative)
+@if (RepresentativeState.Representative.Role
+  is RoleModel.OperatorRepresentative)
 {
   <OperatorRepDashboard/>
   <LocationsTable/>
@@ -28,11 +40,6 @@
 }
 
 @code {
-
-  [CascadingParameter]
-  public UserState user { get; set; } = default!;
-
   [CascadingParameter]
   public RepresentativeState RepresentativeState { get; set; } = default!;
-
 }

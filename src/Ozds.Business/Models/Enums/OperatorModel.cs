@@ -15,6 +15,7 @@ public static class OperatorModelExtensions
     {
       OperatorModel.Sum => "sum",
       OperatorModel.Average => "average",
+      OperatorModel.Last => "last",
       _ => throw new ArgumentOutOfRangeException(
         nameof(operatorModel),
         operatorModel,
