@@ -1,0 +1,14 @@
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Streaming
+@using Ozds.Client.Components.Models
+
+@page "/meters"
+
+@inherits OzdsOwningComponentBase
+
+<Paging T="IMeter">
+  <Summary>
+    <MeterSummary Model="@context" />
+  </Summary>
+</Paging>

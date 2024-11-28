@@ -3,16 +3,16 @@ using Ozds.Business.Models.Abstractions;
 
 namespace Ozds.Client.Components.Charts;
 
-public partial class ChartControls
+public partial class MeasurementChartControls
 {
   [Parameter]
   public List<IMeter> Meters { get; set; } = default!;
 
   [Parameter]
-  public HashSet<ChartProfile> Profiles { get; set; } = new();
+  public HashSet<MeasurementChartProfile> Profiles { get; set; } = new();
 
   [Parameter]
-  public RenderFragment<ChartParameters> ChildContent { get; set; } = default!;
+  public RenderFragment<MeasurementChartParameters> ChildContent { get; set; } = default!;
 
-  private ChartParameters _parameters = new();
+  private MeasurementChartParameters _parameters = new();
 }

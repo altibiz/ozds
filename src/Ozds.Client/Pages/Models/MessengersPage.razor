@@ -1,16 +1,14 @@
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Streaming
+@using Ozds.Client.Components.Models
+
 @page "/messengers"
-@attribute [Navigation(Icon= Icons.Material.Outlined.Message, ParentTitle = "Alerts", Title = "Messengers", Allows = new[] { RoleModel.OperatorRepresentative })]
 
-@if (user is null)
-{
-  return;
-}
+@inherits OzdsOwningComponentBase
 
-<MessengersTable/>
-
-@code {
-
-  [CascadingParameter]
-  public UserState user { get; set; } = default!;
-
-}
+<Paging T="IMessenger">
+  <Summary>
+    <MessengerSummary Model="@context" />
+  </Summary>
+</Paging>

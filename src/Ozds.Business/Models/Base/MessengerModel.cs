@@ -1,9 +1,10 @@
 using System.ComponentModel.DataAnnotations;
+using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Complex;
 
 namespace Ozds.Business.Models.Base;
 
-public class MessengerModel : AuditableModel
+public class MessengerModel : AuditableModel, IMessenger
 {
   [Required]
   public required string LocationId { get; set; }

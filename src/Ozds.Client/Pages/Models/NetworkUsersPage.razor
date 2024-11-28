@@ -22,7 +22,17 @@
   var analyses = RepresentativeState.AnalysisBases.AnalysesByNetworkUser();
 }
 
-<NetworkUsersTable Model="analyses" />
+<ResponsiveTable Model="@analyses">
+  <Summary>
+    <NetworkUserAnalysisSummary Model="@context" />
+  </Summary>
+  <Details>
+    <NetworkUserAnalysisDetails Model="@context" />
+  </Details>
+  <Columns>
+    <NetworkUserAnalysisColumns />
+  </Columns>
+</ResponsiveTable>
 
 @code {
   [CascadingParameter]

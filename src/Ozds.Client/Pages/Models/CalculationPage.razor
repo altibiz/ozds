@@ -1,0 +1,22 @@
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Streaming
+@using Ozds.Client.Components.Models
+
+@page "/calculation/{id}"
+
+@inherits OzdsOwningComponentBase
+
+<Mutating T="ICalculation" Id="@Id">
+  <Edit>
+    <CalculationEdit Model="@context" />
+  </Edit>
+  <Details>
+    <CalculationDetails Model="@context" />
+  </Details>
+</Mutating>
+
+@code {
+  [Parameter]
+  public string Id { get; set; } = default!;
+}

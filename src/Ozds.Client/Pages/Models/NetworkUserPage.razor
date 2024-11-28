@@ -11,23 +11,16 @@
 
 @inherits OzdsOwningComponentBase
 
-<Loading LoadAsync="@(() => ScopedServices
-  .GetRequiredService<AuditableQueries>()
-  .ReadSingle<NetworkUserModel>(Id, CancellationToken.None))">
-  <Found>
-    <NetworkUserEdit Model="context" />
-  </Found>
-</Loading>
+<Mutating T="NetworkUserModel" Id="@Id">
+  <Edit>
+    <NetworkUserEdit Model="@context" />
+  </Edit>
+  <Details>
+    <NetworkUserDetails Model="@context" />
+  </Details>
+</Mutating>
 
 @code {
   [Parameter]
   public string Id { get; set; } = default!;
-
-  private async Task CreateInvoice()
-  {
-    var (dateFrom, dateTo) = DateTimeOffset.UtcNow.GetMonthRange();
-    await ScopedServices
-      .GetRequiredService<INetworkUserInvoiceIssuer>()
-      .IssueNetworkUserInvoiceAsync(Id, dateFrom, dateTo);
-  }
 }

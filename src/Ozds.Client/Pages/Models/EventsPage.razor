@@ -1,20 +1,35 @@
-@page "/events"
+@using Microsoft.Extensions.DependencyInjection
 @using Microsoft.Extensions.Hosting
-@attribute [Navigation(Icon= Icons.Material.Outlined.Event, ParentTitle = "Alerts",  Title = "Events", Allows = new[] { RoleModel.OperatorRepresentative })]
+@using MudBlazor
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Business.Models.Enums
+@using Ozds.Business.Queries
+@using Ozds.Client.Attributes
+@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Streaming
+@using Ozds.Client.Components.Tables
+@using Ozds.Client.State
+
+@page "/events"
+
+@attribute [Navigation(
+  Icon= Icons.Material.Outlined.Event,
+  ParentTitle = "Alerts",
+  Title = "Events",
+  Allows = new[]
+  {
+    RoleModel.OperatorRepresentative
+  })]
+
+@inherits OzdsOwningComponentBase
+
 @inject IHostEnvironment Environment
-
-@* TODO: tweak min level *@
-
-@if (user is null)
-{
-  return;
-}
 
 <MudSelect
   T="LevelModel"
-  Label="@Translate("Min level")"
+  Label="@Translate("Minimal level")"
   AnchorOrigin="Origin.BottomCenter"
-  @bind-Value="_minLevel">
+  @bind-Value="@_minLevel">
   @foreach (var value in Enum.GetValues<LevelModel>()
     .Where(
       l => Environment.IsDevelopment()
@@ -27,16 +42,27 @@
   }
 </MudSelect>
 
-<EventsTable MinLevel="_minLevel"/>
+<Paging PageAsync="@((page) => ScopedServices
+  .GetRequiredService<EventQueries>()
+  .ReadByMinLevel<IEvent>(_minLevel, page, CancellationToken.None))">
+  <Found Context="page">
+    <ResponsiveTable Model="@(page.Items)" Link="@(x => $"event/{x.Id}")">
+      <Summary>
+        <EventSummary Model="@context" />
+      </Summary>
+      <Details>
+        <EventDetails Model="@context" />
+      </Details>
+      <Columns>
+        <EventColumns />
+      </Columns>
+    </ResponsiveTable>
+  </Found>
+</Paging>
 
 @code {
-
-  [CascadingParameter]
-  public UserState user { get; set; } = default!;
-
   [CascadingParameter]
   public RepresentativeState RepresentativeState { get; set; } = default!;
 
   private LevelModel _minLevel = LevelModel.Warning;
-
 }

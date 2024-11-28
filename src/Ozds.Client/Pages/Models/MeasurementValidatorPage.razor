@@ -1,0 +1,22 @@
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Streaming
+@using Ozds.Client.Components.Models
+
+@page "/measurement-validator/{id}"
+
+@inherits OzdsOwningComponentBase
+
+<Mutating T="IMeasurementValidator" Id="@Id">
+  <Edit>
+    <MeasurementValidatorEdit Model="@context" />
+  </Edit>
+  <Details>
+    <MeasurementValidatorDetails Model="@context" />
+  </Details>
+</Mutating>
+
+@code {
+  [Parameter]
+  public string Id { get; set; } = default!;
+}

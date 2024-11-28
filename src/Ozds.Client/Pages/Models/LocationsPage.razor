@@ -1,17 +1,14 @@
+@using Ozds.Business.Models
+@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Streaming
+@using Ozds.Client.Components.Models
+
 @page "/locations"
-@attribute [Navigation(
-Icon= Icons.Material.Outlined.LocationOn, ParentTitle = "Tables", Title = "Locations", Allows = new[] { RoleModel.LocationRepresentative, RoleModel.OperatorRepresentative })]
 
-@if (user is null)
-{
-  return;
-}
+@inherits OzdsOwningComponentBase
 
-<LocationsTable/>
-
-@code {
-
-  [CascadingParameter]
-  public UserState user { get; set; } = default!;
-
-}
+<Paging T="LocationModel">
+  <Summary>
+    <Locationsummary Model="@context" />
+  </Summary>
+</Paging>

@@ -1,4 +1,4 @@
-@using Ozds.Business.Models.Base
+@using Ozds.Business.Models.Abstractions
 @using Ozds.Business.Models
 
 @namespace Ozds.Client.Components.Models
@@ -22,5 +22,5 @@ else if (Model is WhiteMediumNetworkUserCalculation blueLowNetworkUserCalculatio
 
 @code {
   [Parameter]
-  public CalculationModel Model { get; set; } = default!;
+  public ICalculation Model { get; set; } = default!;
 }

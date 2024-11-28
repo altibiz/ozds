@@ -1,0 +1,14 @@
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Streaming
+@using Ozds.Client.Components.Models
+
+@page "/catalogues"
+
+@inherits OzdsOwningComponentBase
+
+<Paging T="ICatalogue">
+  <Summary>
+    <CalculationSummary Model="@context" />
+  </Summary>
+</Paging>

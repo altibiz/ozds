@@ -1,5 +1,6 @@
 @using Microsoft.Extensions.DependencyInjection
 @using Ozds.Business.Models
+@using Ozds.Business.Models.Abstractions
 @using Ozds.Business.Queries.Agnostic
 @using Ozds.Client.Components.Streaming
 @using Ozds.Client.Components.Models
@@ -9,11 +10,14 @@
 
 @inherits OzdsOwningComponentBase
 
-<Loading LoadAsync="@(() => ScopedServices
-  .GetRequiredService<ReadonlyQueries>()
-  .ReadSingle<NetworkUserInvoiceModel>(Id, CancellationToken.None))">
+<Loading
+  T="IInvoice"
+  Id="@Id"
+  LoadAsync="@(() => ScopedServices
+    .GetRequiredService<ReadonlyQueries>()
+    .ReadSingle<IInvoice>(Id, CancellationToken.None))">
   <Found>
-    <NetworkUserInvoiceDetails Model="@context"/>
+    <InvoiceDetails Model="@context"/>
   </Found>
 </Loading>
 

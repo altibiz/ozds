@@ -9,9 +9,12 @@
 
 @inherits OzdsOwningComponentBase
 
-<Loading T="EventModel" LoadAsync="@(() => ScopedServices
-  .GetRequiredService<ReadonlyQueries>()
-  .ReadSingle<EventModel>(Id, CancellationToken.None))">
+<Loading
+  T="EventModel"
+  Id="@Id"
+  LoadAsync="@(() => ScopedServices
+    .GetRequiredService<ReadonlyQueries>()
+    .ReadSingle<EventModel>(Id, CancellationToken.None))">
   <Found>
     <EventDetails Model="context"/>
   </Found>

@@ -3,6 +3,7 @@
 @using Ozds.Business.Models.Enums
 @using Ozds.Client.Attributes
 @using Ozds.Client.Components.Tables
+@using Ozds.Client.Components.Models
 @using Ozds.Client.State
 
 @page "/meters"
@@ -19,10 +20,21 @@
   })]
 
 @{
-  var analyses = RepresentativeState.AnalysisBases.AnalysesByMeter();
+  var analyses = RepresentativeState.AnalysisBases
+    .AnalysesByMeasurementLocation();
 }
 
-<MeasurementLocationsTable Model="@analyses" />
+<ResponsiveTable Model="@analyses">
+  <Summary>
+    <MeasurementLocationAnalysisSummary Model="@context" />
+  </Summary>
+  <Details>
+    <MeasurementLocationAnalysisDetails Model="@context" />
+  </Details>
+  <Columns>
+    <MeasurementLocationAnalysisColumns />
+  </Columns>
+</ResponsiveTable>
 
 @code {
   [CascadingParameter]

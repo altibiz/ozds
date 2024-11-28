@@ -1,11 +1,11 @@
 @using MudBlazor
-@using Ozds.Business.Models.Base
+@using Ozds.Business.Models.Abstractions
 @using Ozds.Client.Components.Base
 
 @inherits OzdsComponentBase
 
 <PropertyColumn
-  T="CalculationModel"
+  T="ICalculation"
   TProperty="string"
   Property="x => x.Title"
   Title='@Translate("Title")'>
@@ -15,7 +15,7 @@
 </PropertyColumn>
 
 <PropertyColumn
-  T="CalculationModel"
+  T="ICalculation"
   TProperty="string"
   Property="x => x.MeterId"
   Title='@Translate("Meter ID")'>
@@ -25,7 +25,7 @@
 </PropertyColumn>
 
 <PropertyColumn
-  T="CalculationModel"
+  T="ICalculation"
   TProperty="DateTimeOffset"
   Property="x => x.FromDate"
   Title='@Translate("From Date")'>
@@ -35,7 +35,7 @@
 </PropertyColumn>
 
 <PropertyColumn
-  T="CalculationModel"
+  T="ICalculation"
   TProperty="DateTimeOffset"
   Property="x => x.ToDate"
   Title='@Translate("To Date")'>
@@ -45,7 +45,7 @@
 </PropertyColumn>
 
 <PropertyColumn
-  T="CalculationModel"
+  T="ICalculation"
   TProperty="decimal"
   Property="x => x.Total_EUR"
   Title='@Translate("Total (€)")'>

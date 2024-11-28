@@ -1,0 +1,14 @@
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Streaming
+@using Ozds.Client.Components.Models
+
+@page "/measurement-validator"
+
+@inherits OzdsOwningComponentBase
+
+<Paging T="IMeasurementValidator">
+  <Summary>
+    <MeasurementValidatorSummary Model="@context" />
+  </Summary>
+</Paging>

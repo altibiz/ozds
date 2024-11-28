@@ -1,10 +1,22 @@
-@page "/messenger/{Id}"
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Streaming
+@using Ozds.Client.Components.Models
 
-<PidgeonMessengerMutate Id="@Id"/>
+@page "/messenger/{id}"
+
+@inherits OzdsOwningComponentBase
+
+<Mutating T="IMessenger" Id="@Id">
+  <Edit>
+    <MessengerEdit Model="@context" />
+  </Edit>
+  <Details>
+    <MessengerDetails Model="@context" />
+  </Details>
+</Mutating>
 
 @code {
-
   [Parameter]
-  public string Id { get; set; } = "-1";
-
+  public string Id { get; set; } = default!;
 }
