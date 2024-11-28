@@ -8,12 +8,6 @@
 
 @inherits OzdsComponentBase
 
-@{
-  var analysis = RepresentativeState.AnalysisBases.Analysis();
-}
-
-<MudText Typo="Typo.h4">@Translate("Location")</MudText>
-
 <MudHidden Breakpoint="Breakpoint.MdAndUp">
   <MudGrid Class="my-3 pa-1">
     <MudItem xs="12" Class="pa-1">
@@ -25,7 +19,7 @@
         </MudItem>
         <MudContainer Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
           <MudText Typo="Typo.h4">
-            @(NumericString(analysis.LastMonthConsumption.ActiveEnergy_kWh, 0)) kWh
+            @(NumericString(Model.LastMonthConsumption.ActiveEnergy_kWh, 0)) kWh
           </MudText>
         </MudContainer>
       </MudPaper>
@@ -40,7 +34,7 @@
         </MudItem>
         <MudContainer Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
           <MudText Typo="Typo.h4">
-            @(NumericString(analysis.ThisMonthConsumption.ActiveEnergy_kWh, 0)) kWh
+            @(NumericString(Model.ThisMonthConsumption.ActiveEnergy_kWh, 0)) kWh
           </MudText>
         </MudContainer>
       </MudPaper>
@@ -55,7 +49,7 @@
         </MudItem>
         <MudContainer Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
           <MudText Typo="Typo.h4">
-            @NumericString(analysis.Load.ActivePower_kW) kW
+            @NumericString(Model.Load.ActivePower_kW) kW
           </MudText>
         </MudContainer>
       </MudPaper>
@@ -74,7 +68,7 @@
         </MudItem>
         <MudContainer Class="d-flex align-end justify-center pb-10" MaxWidth="MaxWidth.Small">
           <MudText Typo="Typo.h1">
-            @(NumericString(analysis.LastMonthConsumption.ActiveEnergy_kWh, 0))
+            @(NumericString(Model.LastMonthConsumption.ActiveEnergy_kWh, 0))
           </MudText>
           <MudText Typo="Typo.h4" Class="mb-3 ml-1">kWh</MudText>
         </MudContainer>
@@ -90,7 +84,7 @@
         </MudItem>
         <MudContainer Class="d-flex align-end justify-center pb-10" MaxWidth="MaxWidth.Small">
           <MudText Typo="Typo.h1">
-            @(NumericString(analysis.ThisMonthConsumption.ActiveEnergy_kWh, 0))
+            @(NumericString(Model.ThisMonthConsumption.ActiveEnergy_kWh, 0))
           </MudText>
           <MudText Typo="Typo.h4" Class="mb-3 ml-1">kWh</MudText>
         </MudContainer>
@@ -106,7 +100,7 @@
         </MudItem>
         <MudContainer Class="d-flex align-end justify-center pb-10" MaxWidth="MaxWidth.Small">
           <MudText Typo="Typo.h1">
-            @(NumericString(analysis.Load.ActivePower_kW))
+            @(NumericString(Model.Load.ActivePower_kW))
           </MudText>
           <MudText Typo="Typo.h4" Class="mb-3 ml-1">kW</MudText>
         </MudContainer>
@@ -116,6 +110,9 @@
 </MudHidden>
 
 @code {
-  [CascadingParameter]
-  public RepresentativeState RepresentativeState { get; set; } = default!;
+  [Parameter]
+  public Analysis Model { get; set; } = default!;
+
+  [Parameter]
+  public List<IMeter> Meters { get; set; } = default!;
 }

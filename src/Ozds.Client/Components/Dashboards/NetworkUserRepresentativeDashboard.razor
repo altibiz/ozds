@@ -12,17 +12,6 @@
 
 @inherits OzdsOwningComponentBase
 
-@{
-  var analysis = RepresentativeState.AnalysisBases.Analysis();
-  var meters = RepresentativeState.AnalysisBases
-    .Select(x => x.Meter)
-    .DistinctBy(x => x.Id)
-    .OfType<IMeter>()
-    .ToList();
-}
-
-<MudText Typo="Typo.h4">@Translate("Network user")</MudText>
-
 <MudHidden Breakpoint="Breakpoint.MdAndUp">
   <MudGrid Class="my-3 pa-1">
     <MudItem xs="12" Class="pa-1">
@@ -34,7 +23,7 @@
         </MudItem>
         <MudContainer Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
           <MudText Typo="Typo.h4">
-            @(NumericString(analysis.ThisMonthConsumption.ActiveEnergy_kWh, 0)) kWh
+            @(NumericString(Model.ThisMonthConsumption.ActiveEnergy_kWh, 0)) kWh
           </MudText>
         </MudContainer>
       </MudPaper>
@@ -49,7 +38,7 @@
         </MudItem>
         <MudContainer Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
           <MudText Typo="Typo.h4">
-            @(NumericString(analysis.LastMonthConsumption.ActiveEnergy_kWh, 0)) kWh
+            @(NumericString(Model.LastMonthConsumption.ActiveEnergy_kWh, 0)) kWh
           </MudText>
         </MudContainer>
         <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
@@ -59,9 +48,9 @@
         </MudItem>
         <MudContainer Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
           <MudText Typo="Typo.h6">
-            @(analysis.LastMonthExpenses.Total_EUR == 0
+            @(Model.LastMonthExpenses.Total_EUR == 0
               ? Translate("Invoice pending...")
-              : NumericString(analysis.LastMonthExpenses.Total_EUR) + " EUR")
+              : NumericString(Model.LastMonthExpenses.Total_EUR) + " EUR")
           </MudText>
         </MudContainer>
       </MudPaper>
@@ -102,7 +91,7 @@
         </MudItem>
         <MudContainer Class="d-flex align-end justify-center" MaxWidth="MaxWidth.Small">
           <MudText Typo="Typo.h1">
-            @(NumericString(analysis.ThisMonthConsumption.ActiveEnergy_kWh, 0))
+            @(NumericString(Model.ThisMonthConsumption.ActiveEnergy_kWh, 0))
           </MudText>
           <MudText Typo="Typo.h4" Class="mb-3 ml-1">kWh</MudText>
         </MudContainer>
@@ -127,7 +116,7 @@
         </MudItem>
         <MudContainer Class="d-flex align-end justify-center" MaxWidth="MaxWidth.Small">
           <MudText Typo="Typo.h1">
-            @(NumericString(analysis.LastMonthConsumption.ActiveEnergy_kWh, 0))
+            @(NumericString(Model.LastMonthConsumption.ActiveEnergy_kWh, 0))
           </MudText>
           <MudText Typo="Typo.h4" Class="mb-3 ml-1">kWh</MudText>
         </MudContainer>
@@ -138,9 +127,9 @@
         </MudItem>
         <MudItem Class="" Style="font-size: large; font-weight: bold; align-self: center;">
           <MudText Typo="Typo.h5">
-            @(analysis.LastMonthExpenses.Total_EUR == 0
+            @(Model.LastMonthExpenses.Total_EUR == 0
               ? Translate("Invoice pending...")
-              : NumericString(analysis.LastMonthExpenses.Total_EUR) + " EUR")
+              : NumericString(Model.LastMonthExpenses.Total_EUR) + " EUR")
           </MudText>
         </MudItem>
       </MudPaper>
@@ -154,7 +143,7 @@
         </MudItem>
         @{
           var parameters = new MeasurementChartParameters {
-            Selection = meters,
+            Selection = Meters.ToHashSet(),
             Measure = MeasureMode.ActivePower,
             Resolution = ResolutionModel.Year
             Multiplier = 1,
@@ -162,7 +151,7 @@
           };
         }
         <MeasurementLineChart
-          Meters="@meters"
+          Meters="@Meters"
           Parameters="@parameters"
           Area />
       </MudPaper>
@@ -171,6 +160,9 @@
 </MudHidden>
 
 @code {
-  [CascadingParameter]
-  public RepresentativeState RepresentativeState { get; set; } = default!;
+  [Parameter]
+  public Analysis Model { get; set; } = default!;
+
+  [Parameter]
+  public List<IMeter> Meters { get; set; } = default!;
 }

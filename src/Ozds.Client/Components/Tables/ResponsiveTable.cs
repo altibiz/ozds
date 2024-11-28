@@ -4,7 +4,7 @@ using Ozds.Client.Components.Base;
 
 namespace Ozds.Client.Components.Tables;
 
-public partial class Table<T> : OzdsComponentBase
+public partial class ResponsiveTable<T> : OzdsComponentBase
 {
   [Parameter]
   public List<T> Model { get; set; } = default!;
@@ -19,7 +19,7 @@ public partial class Table<T> : OzdsComponentBase
   public RenderFragment Columns { get; set; } = default!;
 
   [Parameter]
-  public string Link { get; set; } = default!;
+  public Func<T, string> Link { get; set; } = default!;
 
   [Parameter]
   public RenderFragment<T>? Title { get; set; } = default!;

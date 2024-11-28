@@ -1,7 +1,9 @@
 @using Ozds.Business.Time
+@using Ozds.Business.Analysis
 @using Ozds.Client.Components.Charts
 @using Ozds.Client.Components.Dashboards
 @using Ozds.Client.Components.Tables
+@using Ozds.Client.Components.Models
 
 @namespace Ozds.Client.Pages
 
@@ -9,7 +11,7 @@
 
 @attribute [Navigation(
   Icon= Icons.Material.Outlined.Home,
-  Title = "Home",
+  Title = "Dashboard",
   Allows = new[]
   {
     RoleModel.LocationRepresentative,
@@ -17,26 +19,113 @@
     RoleModel.OperatorRepresentative
   })]
 
-@inject IDialogService DialogService
-
+@{
+  var model = RepresentativeState.AnalysisBases.Analysis();
+  var meters = RepresentativeState.AnalysisBases
+    .Select(analysis => (IMeter)analysis.Meter)
+    .DistinctBy(meter => meter.Id)
+    .ToList();
+}
 @if (RepresentativeState.Representative.Role
   is RoleModel.NetworkUserRepresentative)
 {
-  <NetUserRepDashboard/>
-  <MetersTable/>
+  <NetworkUserRepresentativeDashboard Model="@model" Meters="@meters" />
 }
 @if (RepresentativeState.Representative.Role
   is RoleModel.LocationRepresentative)
 {
-  <LocationRepDashboard/>
-  <LocationsTable/>
+  <LocationRepresentativeDashboard  Model="@model" Meters="@meters" />
 }
 @if (RepresentativeState.Representative.Role
   is RoleModel.OperatorRepresentative)
 {
-  <OperatorRepDashboard/>
-  <LocationsTable/>
-  <InvoicesTable/>
+  <OperatorRepresentativeDashboard Model="@model" Meters="@meters" />
+}
+
+@if (RepresentativeState.Representative.Role
+  is RoleModel.OperatorRepresentative
+    | RoleModel.LocationRepresentative)
+{
+  var locations = RepresentativeState.AnalysisBases
+    .AnalysisByLocation();
+
+  <ResponsiveTable
+    Model="@locations"
+    Link="@(x => $"location/${x.Id}")">
+    <Summary>
+      <LocationAnalysisSummary Model="@context" />
+    </Summary>
+    <Details>
+      <LocationAnalysisDetails Model="@context" />
+    </Details>
+    <Columns>
+      <LocationAnalysisColumns Model="@context" />
+    </Columns>
+  </ResponsiveTable>
+}
+
+@if (RepresentativeState.Representative.Role
+  is RoleModel.LocationRepresentative
+    | RoleModel.NetworkUserRepresentative)
+{
+  var networkUsers = RepresentativeState.AnalysisBases
+    .AnalysisByNetworkUser();
+
+  <ResponsiveTable
+    Model="@networkUsers"
+    Link="@(x => $"network-user/${x.Id}")">
+    <Summary>
+      <NetworkUserAnalysisSummary Model="@context" />
+    </Summary>
+    <Details>
+      <NetworkUserAnalysisDetails Model="@context" />
+    </Details>
+    <Columns>
+      <NetworkUserAnalysisColumns Model="@context" />
+    </Columns>
+  </ResponsiveTable>
+}
+
+@if (RepresentativeState.Representative.Role
+  is RoleModel.NetworkUserRepresentative)
+{
+  var measurementLocations = RepresentativeState.AnalysisBases
+    .AnalysisByMeasurementLocation();
+
+  <ResponsiveTable
+    Model="@measurementLocations"
+    Link="@(x => $"measurement-location/${x.Id}")">
+    <Summary>
+      <MeasurementLocationAnalysisSummary Model="@context" />
+    </Summary>
+    <Details>
+      <MeasurementLocationAnalysisDetails Model="@context" />
+    </Details>
+    <Columns>
+      <MeasurementLocationAnalysisColumns Model="@context" />
+    </Columns>
+  </ResponsiveTable>
+}
+
+@{
+  var invoices = RepresentativeState.AnalysisBases
+    .SelectMany(analysis => (IInvoice)analysis.Invoices)
+    .DistinctBy(invoice => invoice.Id)
+    .ToList();
+
+  <ResponsiveTable
+    Model="@invoices"
+    Link="@(x => $"invoice/${x.Id}")">
+    <Summary>
+      <InvoiceSummary Model="@context" />
+    </Summary>
+    <Details>
+      <InvoiceDetails Model="@context" />
+    </Details>
+    <Columns>
+      <InvoiceColumns Model="@context" />
+    </Columns>
+  </ResponsiveTable>
 }
 
 @code {

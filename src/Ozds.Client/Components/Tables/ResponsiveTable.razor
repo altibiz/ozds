@@ -32,7 +32,7 @@
 
         <MudItem xs="2" Class="d-flex align-center justify-end">
           <MudIconButton
-            OnClick="@(() => NavigationManager.NavigateTo(Link))"
+            OnClick="@(() => NavigationManager.NavigateTo(Link(item)))"
             Icon="@Icons.Material.Filled.RemoveRedEye"
             Color="Color.Primary"/>
         </MudItem>
@@ -80,7 +80,7 @@
         <CellTemplate>
           <MudStack Row>
             <MudButton
-                OnClick="@(() => NavigationManager.NavigateTo(Link))"
+                OnClick="@(() => NavigationManager.NavigateTo(Link(item)))"
                 Variant="Variant.Outlined"
                 Color="Color.Primary">
               @if (Title is { } title)

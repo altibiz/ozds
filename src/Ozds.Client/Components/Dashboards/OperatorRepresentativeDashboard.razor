@@ -11,19 +11,12 @@
 
 @inherits OzdsOwningComponentBase
 
-@{
-  var analysis = RepresentativeState.AnalysisBases.Analysis();
-  var meters = RepresentativeState.AnalysisBases
-    .Select(x => (IMeter)x.Meter)
-    .ToList();
-}
-
 <MudContainer MaxWidth="MaxWidth.Large" Class="my-3">
   <MudGrid>
     <MudItem xs="12">
       <MudPaper Class="pa-3">
-        <MeasurementChartControls Meters="@meters">
-          <MeasurementLineChart Meters="@meters" Parameters="@context" />
+        <MeasurementChartControls Meters="@Meters">
+          <MeasurementLineChart Meters="@Meters" Parameters="@context" />
         </MeasurementChartControls>
       </MudPaper>
     </MudItem>
@@ -31,6 +24,9 @@
 </MudContainer>
 
 @code {
-  [CascadingParameter]
-  public RepresentativeState RepresentativeState { get; set; } = default!;
+  [Parameter]
+  public Analysis Model { get; set; } = default!;
+
+  [Parameter]
+  public List<IMeter> Meters { get; set; } = default!;
 }
