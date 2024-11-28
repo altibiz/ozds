@@ -4,7 +4,7 @@ using Ozds.Business.Models.Enums;
 
 namespace Ozds.Client.Components.Charts;
 
-public class ChartParameters
+public class MeasurementChartParameters
 {
   public HashSet<IMeter> Selection { get; set; } = new();
 

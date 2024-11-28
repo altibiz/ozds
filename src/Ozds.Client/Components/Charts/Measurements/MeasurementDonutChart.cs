@@ -18,7 +18,7 @@ using Ozds.Client.Extensions;
 namespace Ozds.Client.Components.Charts;
 
 #pragma warning disable S3881 // "IDisposable" should be implemented correctly
-public partial class DonutChart : OzdsOwningComponentBase
+public partial class MeasurementDonutChart : OzdsOwningComponentBase
 #pragma warning restore S3881 // "IDisposable" should be implemented correctly
 {
   [CascadingParameter]

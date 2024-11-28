@@ -18,7 +18,7 @@ using Ozds.Client.Extensions;
 namespace Ozds.Client.Components.Charts;
 
 #pragma warning disable S3881 // "IDisposable" should be implemented correctly
-public partial class LineChart : OzdsOwningComponentBase
+public partial class MeasurementGaugeChart : OzdsOwningComponentBase
 #pragma warning restore S3881 // "IDisposable" should be implemented correctly
 {
   [CascadingParameter]
@@ -36,6 +36,10 @@ public partial class LineChart : OzdsOwningComponentBase
   [Parameter]
   public bool Brush { get; set; } = false;
 
+  [Parameter]
+  public HashSet<PhaseModel> Phases { get; set; } =
+    Enum.GetValues<PhaseModel>().ToHashSet();
+
   [Inject]
   public IMeasurementUpsertSubscriber MeasurementSubscriber { get; set; } = default!;
 
@@ -44,18 +48,12 @@ public partial class LineChart : OzdsOwningComponentBase
 
   private readonly string _id = Guid.NewGuid().ToString();
 
+  private ApexChart<IMeasurement>? _chart = default!;
+
   private PaginatedList<IMeasurement> _measurements = new(
     new List<IMeasurement>(), 0);
 
-  private ApexChart<IMeasurement>? _chart = default!;
-
-  private ApexChart<IMeasurement>? _brushChart = default!;
-
   private ApexChartOptions<IMeasurement> _options =
-    new ApexChartOptions<IMeasurement>()
-      .WithFixedScriptPath();
-
-  private ApexChartOptions<IMeasurement> _brushOptions =
     new ApexChartOptions<IMeasurement>()
       .WithFixedScriptPath();
 
@@ -64,8 +62,6 @@ public partial class LineChart : OzdsOwningComponentBase
     MeasurementSubscriber.SubscribeUpsert(OnUpsert);
 
     _options = CreateGraphOptions();
-
-    _brushOptions = CreateBrushOptions();
   }
 
   protected override void Dispose(bool disposing)
@@ -97,17 +93,12 @@ public partial class LineChart : OzdsOwningComponentBase
     );
 
     _options = CreateGraphOptions();
+
     if (_chart is { } chart)
     {
       await chart.UpdateSeriesAsync(animate: true);
       await InvokeAsync(() => StateHasChanged());
       await chart.UpdateOptionsAsync(false, true, false);
-    }
-
-    _brushOptions = CreateBrushOptions();
-    if (_brushChart is { } brushChart)
-    {
-      await brushChart.UpdateOptionsAsync(false, true, false);
     }
   }
 
@@ -137,9 +128,7 @@ public partial class LineChart : OzdsOwningComponentBase
             meter.Id == x.MeterId))
           .OrderBy(x => x.Timestamp)
           .ToList();
-        var concatenated = _measurements.Items
-          .Concat(newMeasurements)
-          .ToList();
+        var concatenated = _measurements.Items.Concat(newMeasurements).ToList();
         _measurements = new PaginatedList<IMeasurement>(
           concatenated,
           _measurements.TotalCount + newMeasurements.Count
@@ -207,11 +196,6 @@ public partial class LineChart : OzdsOwningComponentBase
       ? options.WithSmAndDown(measure)
       : options.WithMdAndUp(measure);
 
-    if (Area)
-    {
-      options = options.WithArea();
-    }
-
     var timeSpan = Parameters.Resolution
       .ToTimeSpan(
         Parameters.Multiplier,
@@ -225,27 +209,7 @@ public partial class LineChart : OzdsOwningComponentBase
       options = options.WithLongDate();
     }
 
-    return options;
-  }
-
-  private ApexChartOptions<IMeasurement> CreateBrushOptions()
-  {
-    var options = _brushOptions;
-
-    options.WithBrush(_id);
-
-    var timeSpan = Parameters.Resolution
-      .ToTimeSpan(
-        Parameters.Multiplier,
-        DateTimeOffset.UtcNow);
-    if (timeSpan.TotalDays > 1)
-    {
-      options = options.WithShortDate();
-    }
-    else
-    {
-      options = options.WithLongDate();
-    }
+    options = options.WithGauge();
 
     return options;
   }

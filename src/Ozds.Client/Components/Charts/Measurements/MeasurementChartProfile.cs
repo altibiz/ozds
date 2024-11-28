@@ -1,6 +1,6 @@
 namespace Ozds.Client.Components.Charts;
 
-public enum ChartProfile
+public enum MeasurementChartProfile
 {
   Selection,
   Operator,
