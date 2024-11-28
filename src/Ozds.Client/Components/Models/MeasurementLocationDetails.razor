@@ -1,0 +1,18 @@
+@using Ozds.Business.Models.Base
+@using Ozds.Business.Models
+
+@namespace Ozds.Client.Components.Models
+
+@if (Model is NetworkUserMeasurementLocationModel networkUserMeasurementLocationModel)
+{
+  <NetworkUserMeasurementLocationDetails Model="networkUserMeasurementLocationModel"/>
+}
+else if (Model is LocationMeasurementLocationModel locationMeasurementLocationModel)
+{
+  <LocationMeasurementLocationDetails Model="locationMeasurementLocationModel"/>
+}
+
+@code {
+  [Parameter]
+  public MeasurementLocationModel Model { get; set; } = default!;
+}

@@ -10,11 +10,11 @@
 
 @if (Model is MessengerNotificationModel messengerNotificationModel)
 {
-  <MessengerNotificationDetails Model="messengerNotificationModel"/>
+  <MessengerNotificationSummary Model="messengerNotificationModel"/>
 }
 else if (Model is SystemNotificationModel systemNotificationModel)
 {
-  <SystemNotificationDetails Model="systemNotificationModel"/>
+  <SystemNotificationSummary Model="systemNotificationModel"/>
 }
 
 @code {

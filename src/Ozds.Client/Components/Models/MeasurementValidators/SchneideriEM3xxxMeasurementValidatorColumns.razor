@@ -1,0 +1,15 @@
+@using MudBlazor
+@using Ozds.Business.Models
+@using Ozds.Client.Components.Base
+
+@inherits OzdsComponentBase
+
+<PropertyColumn
+  T="SchneideriEM3xxxMeasurementValidatorModel"
+  TProperty="string"
+  Property="x => x.Title"
+  Title='@Translate("Title")'>
+  <CellTemplate>
+    <MudText>@context.Item.Title</MudText>
+  </CellTemplate>
+</PropertyColumn>

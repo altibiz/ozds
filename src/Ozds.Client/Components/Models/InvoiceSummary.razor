@@ -1,0 +1,14 @@
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Business.Models
+
+@namespace Ozds.Client.Components.Models
+
+@if (Model is NetworkUserInvoiceModel networkUserInvoiceModel)
+{
+  <NetworkUserInvoiceSummary Model="networkUserInvoiceModel"/>
+}
+
+@code {
+  [Parameter]
+  public IInvoice Model { get; set; } = default!;
+}

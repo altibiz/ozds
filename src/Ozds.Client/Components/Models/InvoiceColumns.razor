@@ -1,0 +1,61 @@
+@using MudBlazor
+@using Ozds.Business.Models
+@using Ozds.Business.Models.Enums
+@using Ozds.Client.Components.Base
+@using Ozds.Client.State
+
+@namespace Ozds.Client.Components.Models
+
+@inherits OzdsComponentBase
+
+<TemplateColumn
+  T="NetworkUserInvoiceModel"
+  Title="@Translate("Network user")"
+  Sortable="false">
+  <CellTemplate>
+    <MudStack Row>
+      <MudButton
+        OnClick="@(() => NavigationManager
+          .NavigateTo($"invoice/{context.Item.Id}"))"
+        Variant="Variant.Outlined"
+        Color="Color.Primary">
+        @networkUserInvoice.ArchivedNetworkUser.LegalPerson.Name
+      </MudButton>
+    </MudStack>
+  </CellTemplate>
+</TemplateColumn>
+
+<PropertyColumn
+  T="NetworkUserInvoiceModel"
+  TProperty="decimal"
+  CellStyle="font-size: x-large; text-align: end !important;"
+  Property="x => x.TotalWithTax_EUR"
+  Title='@Translate("Total")'>
+  <CellTemplate>
+    @NumericString(context.Item.TotalWithTax_EUR)
+    &nbsp;
+    EUR
+  </CellTemplate>
+</PropertyColumn>
+
+<PropertyColumn
+  T="NetworkUserInvoiceModel"
+  TProperty="DateTimeOffset"
+  CellStyle="font-size: large;"
+  Property="x => DateString(x.FromDate)"
+  Title='@Translate("From")'/>
+
+<PropertyColumn
+  T="NetworkUserInvoiceModel"
+  TProperty="DateTimeOffset"
+  CellStyle="font-size: large;"
+  Property="x => DateString(x.ToDate)"
+  Title='@Translate("To")'/>
+
+<PropertyColumn
+  T="NetworkUserInvoiceModel"
+  TProperty="string"
+  CellStyle="font-size: large;"
+  Property="x => x.Id"
+  Sortable="false"
+  Title='@Translate("Invoice number")'/>
