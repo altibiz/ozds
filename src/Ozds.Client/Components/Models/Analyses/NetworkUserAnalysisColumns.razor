@@ -1,0 +1,71 @@
+@using MudBlazor
+@using Ozds.Business.Analysis
+@using Ozds.Business.Models.Enums
+@using Ozds.Client.Components.Base
+@using Ozds.Client.State
+
+@namespace Ozds.Client.Components.Models
+
+@inherits OzdsComponentBase
+
+<TemplateColumn
+  T="NetworkUserAnalysis"
+  Title="@Translate("Network users")"
+  Sortable="false">
+  <CellTemplate>
+    <MudStack Row>
+      <MudButton
+        OnClick="@(() => NavigationManager
+          .NavigateTo($"network-user/{context.Item.NetworkUser.Id}"))"
+        Variant="Variant.Outlined"
+        Color="Color.Primary">
+        @context.Item.NetworkUser.Title
+      </MudButton>
+    </MudStack>
+  </CellTemplate>
+</TemplateColumn>
+
+<PropertyColumn
+  T="NetworkUserAnalysis"
+  TProperty="decimal"
+  CellStyle="font-size: x-large;"
+  Property="x => x.Analysis.ThisMonthConsumption.ActiveEnergy_kWh"
+  Title='@Translate("Current months consumption")'>
+  <CellTemplate>
+    @NumericString(
+      context.Item.Analysis.ThisMonthConsumption.ActiveEnergy_kWh,
+      0)
+    &nbsp;
+    kWh
+  </CellTemplate>
+</PropertyColumn>
+
+<PropertyColumn
+  T="NetworkUserAnalysis"
+  TProperty="decimal"
+  CellStyle="font-size: x-large;"
+  Property="x => x.Analysis.LastMonthConsumption.ActiveEnergy_kWh"
+  Title='@Translate("Last months consumption")'>
+  <CellTemplate>
+    @NumericString(
+      context.Item.Analysis.LastMonthConsumption.ActiveEnergy_kWh,
+      0)
+    &nbsp;
+    kWh
+  </CellTemplate>
+</PropertyColumn>
+
+<PropertyColumn
+  T="NetworkUserAnalysis"
+  TProperty="decimal"
+  CellStyle="font-size: x-large;"
+  Property="x => x.Analysis.LastMonthExpenses.Total_EUR"
+  Title='@Translate("Last months invoice total")'>
+  <CellTemplate>
+    @(context.Item.Analysis.LastMonthExpenses.Total_EUR == 0
+      ? Translate("Invoice pending...")
+      : NumericString(
+        context.Item.Analysis.LastMonthExpenses.Total_EUR)
+        + " EUR")
+  </CellTemplate>
+</PropertyColumn>

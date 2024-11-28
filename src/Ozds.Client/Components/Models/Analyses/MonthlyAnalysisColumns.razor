@@ -1,0 +1,64 @@
+@using MudBlazor
+@using Ozds.Business.Time
+@using Ozds.Business.Analysis
+@using Ozds.Client.Components.Base
+@using Ozds.Client.State
+
+@namespace Ozds.Client.Components.Tables
+
+@inherits OzdsComponentBase
+
+<PropertyColumn
+  T="MonthlyAnalysis"
+  TProperty="DateTimeOffset"
+  CellStyle="font-size: x-large;"
+  Property="x => x.StartOfMonth"
+  Title='@Translate("Billing period")'>
+  <CellTemplate>
+    @(context.Item.StartOfMonth.Month)/@(context.Item.StartOfMonth.Year)
+  </CellTemplate>
+</PropertyColumn>
+
+<PropertyColumn
+  T="MonthlyAnalysis"
+  TProperty="decimal"
+  CellStyle="font-size: x-large;"
+  Property="x => x.Consumption.MinActiveEnergy_kWh"
+  Title='@Translate("First reading")'>
+  <CellTemplate>
+    @(NumericString(context.Item.Consumption.MinActiveEnergy_kWh, 0)) kWh
+  </CellTemplate>
+</PropertyColumn>
+
+<PropertyColumn
+  T="MonthlyAnalysis"
+  TProperty="decimal"
+  CellStyle="font-size: x-large;"
+  Property="x => x.Consumption.MaxActiveEnergy_kWh"
+  Title='@Translate("Last reading")'>
+  <CellTemplate>
+    @(NumericString(context.Item.Consumption.MaxActiveEnergy_kWh, 0)) kWh
+  </CellTemplate>
+</PropertyColumn>
+
+<PropertyColumn
+  T="MonthlyAnalysis"
+  TProperty="decimal"
+  CellStyle="font-size: xx-large;"
+  Property="x => x.Consumption.ActiveEnergy_kWh"
+  Title='@Translate("Total consumption")'>
+  <CellTemplate>
+    @(NumericString(context.Item.Consumption.ActiveEnergy_kWh, 0)) kWh
+  </CellTemplate>
+</PropertyColumn>
+
+<PropertyColumn
+  T="MonthlyAnalysis"
+  TProperty="decimal"
+  CellStyle="font-size: x-large;"
+  Property="x => x.MaxLoad.ActivePower_kW"
+  Title='@Translate("Max power")'>
+  <CellTemplate>
+    @(NumericString(context.Item.MaxLoad.ActivePower_kW, 0)) kW
+  </CellTemplate>
+</PropertyColumn>

@@ -1,0 +1,78 @@
+@using MudBlazor
+@using Ozds.Business.Analysis
+@using Ozds.Business.Models.Enums
+@using Ozds.Client.Components.Base
+@using Ozds.Client.State
+
+@namespace Ozds.Client.Components.Models
+
+@inherits OzdsComponentBase
+
+<PropertyColumn
+  T="LocationAnalysis"
+  TProperty="decimal"
+  CellStyle="font-size: x-large;"
+  Property="x => x.Analysis.ThisMonthConsumption.ActiveEnergy_kWh"
+  Title='@Translate("Current months consumption")'>
+  <CellTemplate>
+    @NumericString(
+      context.Item.Analysis.ThisMonthConsumption.ActiveEnergy_kWh,
+      0)
+    &nbsp;
+    kWh
+  </CellTemplate>
+</PropertyColumn>
+
+<PropertyColumn
+  T="LocationAnalysis"
+  TProperty="decimal"
+  CellStyle="font-size: x-large;"
+  Property="x => x.Analysis.LastMonthConsumption.ActiveEnergy_kWh"
+  Title='@Translate("Last months consumption")'>
+  <CellTemplate>
+    @NumericString(
+      context.Item.Analysis.LastMonthConsumption.ActiveEnergy_kWh,
+      0)
+    &nbsp;
+    kWh
+  </CellTemplate>
+</PropertyColumn>
+
+@if (RepresentativeState.Representative.Role
+  is RoleModel.LocationRepresentative)
+{
+  <PropertyColumn
+    T="LocationAnalysis"
+    TProperty="decimal"
+    CellStyle="font-size: x-large;"
+    Property="x => x.Analysis.Load.ActivePower_kW"
+    Title='@Translate("Active power")'>
+    <CellTemplate>
+      @NumericString(context.Item.Analysis.Load.ActivePower_kW)
+      &nbsp;
+      kW
+    </CellTemplate>
+  </PropertyColumn>
+}
+else
+{
+  <PropertyColumn
+    T="LocationAnalysis"
+    TProperty="decimal"
+    CellStyle="font-size: x-large;"
+    Property="x => x.Analysis.LastMonthExpenses.Total_EUR"
+    Title='@Translate("Last months invoice total")'>
+    <CellTemplate>
+      @(context.Item.Analysis.LastMonthExpenses.Total_EUR == 0
+        ? Translate("Invoice pending...")
+        : NumericString(
+            context.Item.Analysis.LastMonthExpenses.Total_EUR)
+            + " EUR")
+    </CellTemplate>
+  </PropertyColumn>
+}
+
+@code {
+  [CascadingParameter]
+  public RepresentativeState RepresentativeState { get; set; } = default!;
+}
