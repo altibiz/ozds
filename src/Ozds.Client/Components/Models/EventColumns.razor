@@ -1,6 +1,6 @@
 @using MudBlazor
 @using Ozds.Business.Models
-@using Ozds.Business.Models.Base
+@using Ozds.Business.Models.Abstractions
 @using Ozds.Business.Models.Enums
 @using Ozds.Client.Components.Base
 
@@ -9,7 +9,7 @@
 @inherits OzdsComponentBase
 
 <PropertyColumn
-  T="RepresentativeAuditEventModel"
+  T="IEvent"
   TProperty="string"
   Property="x => x.Title"
   Title='@Translate("Title")'>
@@ -19,7 +19,7 @@
 </PropertyColumn>
 
 <PropertyColumn
-  T="RepresentativeAuditEventModel"
+  T="IEvent"
   TProperty="DateTimeOffset"
   Property="x => x.Timestamp"
   Title='@Translate("Timestamp")'>
@@ -29,7 +29,7 @@
 </PropertyColumn>
 
 <PropertyColumn
-  T="RepresentativeAuditEventModel"
+  T="IEvent"
   TProperty="LevelModel"
   CellStyle="font-size: large;"
   Property="x => x.Level"
@@ -38,25 +38,15 @@
     @if (context.Item.Level == LevelModel.Error
       || context.Item.Level == LevelModel.Critical)
     {
-      <MudIcon Icon="@Icons.Material.Filled.Circle" Color="Color.Error" />
+      <MudIcon Icon="@Icons.Material.Filled.Circle" Color="Color.Error"/>
     }
     else if (context.Item.Level == LevelModel.Warning)
     {
-      <MudIcon Icon="@Icons.Material.Filled.Circle" Color="Color.Warning" />
+      <MudIcon Icon="@Icons.Material.Filled.Circle" Color="Color.Warning"/>
     }
     else
     {
-      <MudIcon Icon="@Icons.Material.Filled.Circle" Color="Color.Success" />
+      <MudIcon Icon="@Icons.Material.Filled.Circle" Color="Color.Success"/>
     }
-  </CellTemplate>
-</PropertyColumn>
-
-<PropertyColumn
-  T="RepresentativeAuditEventModel"
-  TProperty="AuditModel"
-  Property="x => x.Audit"
-  Title='@Translate("Audit Action")'>
-  <CellTemplate>
-    <MudText>@context.Item.Audit.ToTitle()</MudText>
   </CellTemplate>
 </PropertyColumn>

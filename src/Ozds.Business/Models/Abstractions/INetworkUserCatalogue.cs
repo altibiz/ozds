@@ -1,5 +1,5 @@
 namespace Ozds.Business.Models.Abstractions;
 
-public interface INetworkUserCatalogue : IAuditable
+public interface INetworkUserCatalogue : ICatalogue
 {
 }

@@ -1,0 +1,55 @@
+@using MudBlazor
+@using Ozds.Business.Models.Base
+@using Ozds.Client.Components.Base
+
+@inherits OzdsComponentBase
+
+<PropertyColumn
+  T="CalculationModel"
+  TProperty="string"
+  Property="x => x.Title"
+  Title='@Translate("Title")'>
+  <CellTemplate>
+    <MudText>@context.Item.Title</MudText>
+  </CellTemplate>
+</PropertyColumn>
+
+<PropertyColumn
+  T="CalculationModel"
+  TProperty="string"
+  Property="x => x.MeterId"
+  Title='@Translate("Meter ID")'>
+  <CellTemplate>
+    <MudText>@context.Item.MeterId</MudText>
+  </CellTemplate>
+</PropertyColumn>
+
+<PropertyColumn
+  T="CalculationModel"
+  TProperty="DateTimeOffset"
+  Property="x => x.FromDate"
+  Title='@Translate("From Date")'>
+  <CellTemplate>
+    <MudText>@DateTimeString(context.Item.FromDate)</MudText>
+  </CellTemplate>
+</PropertyColumn>
+
+<PropertyColumn
+  T="CalculationModel"
+  TProperty="DateTimeOffset"
+  Property="x => x.ToDate"
+  Title='@Translate("To Date")'>
+  <CellTemplate>
+    <MudText>@DateTimeString(context.Item.ToDate)</MudText>
+  </CellTemplate>
+</PropertyColumn>
+
+<PropertyColumn
+  T="CalculationModel"
+  TProperty="decimal"
+  Property="x => x.Total_EUR"
+  Title='@Translate("Total (€)")'>
+  <CellTemplate>
+    <MudText>@NumericString(context.Item.Total_EUR)</MudText>
+  </CellTemplate>
+</PropertyColumn>

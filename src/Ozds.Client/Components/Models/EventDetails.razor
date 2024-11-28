@@ -1,0 +1,34 @@
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Business.Models
+
+@namespace Ozds.Client.Components.Models
+
+@if (Model is SystemAuditEventModel systemAuditEventModel)
+{
+  <SystemAuditEventDetails Model="systemAuditEventModel"/>
+}
+else if (Model is RepresentativeAuditEventModel representativeAuditEventModel)
+{
+  <RepresentativeAuditEventDetails Model="representativeAuditEventModel"/>
+}
+else if (Model is MessengerEventModel messengerEventModel)
+{
+  <MessengerEventDetails Model="messengerEventModel"/>
+}
+else if (Model is SystemEventModel systemEventModel)
+{
+  <SystemEventDetails Model="systemEventModel"/>
+}
+else if (Model is RepresentativeEventModel representativeEventModel)
+{
+  <RepresentativeEventDetails Model="representativeEventModel"/>
+}
+else if (Model is AuditEventModel auditEventModel)
+{
+  <AuditEventDetails Model="auditEventModel"/>
+}
+
+@code {
+  [Parameter]
+  public IEvent Model { get; set; } = default!;
+}

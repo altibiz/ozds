@@ -9,7 +9,7 @@
 @inherits OzdsComponentBase
 
 <PropertyColumn
-  T="RepresentativeAuditEventModel"
+  T="AuditEventModel"
   TProperty="string"
   Property="x => x.Title"
   Title='@Translate("Title")'>
@@ -19,7 +19,7 @@
 </PropertyColumn>
 
 <PropertyColumn
-  T="RepresentativeAuditEventModel"
+  T="AuditEventModel"
   TProperty="DateTimeOffset"
   Property="x => x.Timestamp"
   Title='@Translate("Timestamp")'>
@@ -29,7 +29,7 @@
 </PropertyColumn>
 
 <PropertyColumn
-  T="RepresentativeAuditEventModel"
+  T="AuditEventModel"
   TProperty="LevelModel"
   CellStyle="font-size: large;"
   Property="x => x.Level"
@@ -52,7 +52,7 @@
 </PropertyColumn>
 
 <PropertyColumn
-  T="RepresentativeAuditEventModel"
+  T="AuditEventModel"
   TProperty="AuditModel"
   Property="x => x.Audit"
   Title='@Translate("Audit Action")'>

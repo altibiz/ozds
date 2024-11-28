@@ -1,0 +1,26 @@
+@using Ozds.Business.Models.Base
+@using Ozds.Business.Models
+
+@namespace Ozds.Client.Components.Models
+
+@if (Model is BlueLowNetworkUserCalculation blueLowNetworkUserCalculation)
+{
+  <BlueLowNetworkUserCalculationEdit Model="blueLowNetworkUserCalculation"/>
+}
+else if (Model is RedLowNetworkUserCalculation blueLowNetworkUserCalculation)
+{
+  <RedLowNetworkUserCalculationEdit Model="blueLowNetworkUserCalculation"/>
+}
+else if (Model is RedLowNetworkUserCalculation blueLowNetworkUserCalculation)
+{
+  <RedLowNetworkUserCalculationEdit Model="blueLowNetworkUserCalculation"/>
+}
+else if (Model is WhiteMediumNetworkUserCalculation blueLowNetworkUserCalculation)
+{
+  <WhiteMediumNetworkUserCalculationEdit Model="blueLowNetworkUserCalculation"/>
+}
+
+@code {
+  [Parameter]
+  public CalculationModel Model { get; set; } = default!;
+}

@@ -1,0 +1,47 @@
+@using MudBlazor
+@using Ozds.Business.Models.Composite
+@using Ozds.Client.Components.Base
+
+@inherits OzdsComponentBase
+
+<PropertyColumn
+  T="MaybeRepresentingUserModel"
+  TProperty="string"
+  CellStyle="font-size: x-large;"
+  Property="x => x.User.UserName"
+  Title='@Translate("User name")'>
+  <CellTemplate>
+    <MudText>
+      @context.Item.User.UserName
+    </MudText>
+  </CellTemplate>
+</PropertyColumn>
+
+<PropertyColumn
+  T="MaybeRepresentingUserModel"
+  TProperty="string"
+  CellStyle="font-size: x-large;"
+  Property="x => x.User.Email"
+  Title='@Translate("Email")'>
+  <CellTemplate>
+    <MudText>
+      @context.Item.User.Email
+    </MudText>
+  </CellTemplate>
+</PropertyColumn>
+
+<PropertyColumn
+  T="MaybeRepresentingUserModel"
+  TProperty="string"
+  CellStyle="font-size: x-large;"
+  Property="x => x.Representative.PhysicalPerson.SocialSecurityNumber"
+  Title='@Translate("Social security number")'>
+  <CellTemplate>
+    @if (context.Item.Representative is { } repsresentative)
+    {
+      <MudText>
+        @context.Item.Representative.PhysicalPerson.SocialSecurityNumber
+      </MudText>
+    }
+  </CellTemplate>
+</PropertyColumn>

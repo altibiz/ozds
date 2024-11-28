@@ -2,20 +2,24 @@
 @using MudBlazor
 @using Ozds.Business.Models
 @using Ozds.Business.Models.Base
+@using Ozds.Business.Models.Abstractions
 
 @namespace Ozds.Client.Components.Models
 
 @if(Model is BlueLowNetworkUserCatalogueModel blueLowNetworkUserCatalogueModel){
-  <BlueLowNetworkUserCatalogueSummary Model="blueLowNetworkUserCatalogueModel"/>
+  <BlueLowNetworkUserCatalogueDetails Model="blueLowNetworkUserCatalogueModel"/>
 }
 else if(Model is RedLowNetworkUserCatalogueModel redLowNetworkUserCatalogueModel){
-  <RedLowNetworkUserCatalogueSummary Model="redLowNetworkUserCatalogueModel"/>
+  <RedLowNetworkUserCatalogueDetails Model="redLowNetworkUserCatalogueModel"/>
 }
 else if(Model is WhiteLowNetworkUserCatalogueModel whiteLowNetworkUserCatalogueModel){
-  <WhiteLowNetworkUserCatalogueSummary Model="whiteLowNetworkUserCatalogueModel"/>
+  <WhiteLowNetworkUserCatalogueDetails Model="whiteLowNetworkUserCatalogueModel"/>
 }
 else if(Model is WhiteMediumNetworkUserCatalogueModel whiteMediumNetworkUserCatalogueModel){
-  <WhiteMediumNetworkUserCatalogueSummary Model="whiteMediumNetworkUserCatalogueModel"/>
+  <WhiteMediumNetworkUserCatalogueDetails Model="whiteMediumNetworkUserCatalogueModel"/>
+}
+else if(Model is RegulatoryCatalogueeModel regulatoryCatalogueeModel){
+  <RegulatoryCatalogueDetails Model="regulatoryCatalogueeModel"/>
 }
 else{
   throw new ArgumentOutOfRangeException(nameof(Model));
@@ -23,5 +27,5 @@ else{
 
 @code {
   [Parameter]
-  public NetworkUserCatalogueModel Model { get; set; } = default!;
+  public ICatalogue Model { get; set; } = default!;
 }
