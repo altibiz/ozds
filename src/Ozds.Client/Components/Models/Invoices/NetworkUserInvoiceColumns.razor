@@ -19,7 +19,7 @@
           .NavigateTo($"invoice/{context.Item.Id}"))"
         Variant="Variant.Outlined"
         Color="Color.Primary">
-        @networkUserInvoice.ArchivedNetworkUser.LegalPerson.Name
+        @context.Item.ArchivedNetworkUser.LegalPerson.Name
       </MudButton>
     </MudStack>
   </CellTemplate>
@@ -40,14 +40,14 @@
 
 <PropertyColumn
   T="NetworkUserInvoiceModel"
-  TProperty="DateTimeOffset"
+  TProperty="string"
   CellStyle="font-size: large;"
   Property="x => DateString(x.FromDate)"
   Title='@Translate("From")'/>
 
 <PropertyColumn
   T="NetworkUserInvoiceModel"
-  TProperty="DateTimeOffset"
+  TProperty="string"
   CellStyle="font-size: large;"
   Property="x => DateString(x.ToDate)"
   Title='@Translate("To")'/>
@@ -70,7 +70,7 @@
       <MudButton
         OnClick="@(() => NavigationManager
           .NavigateTo(
-            $"network-user/{networkUserInvoice.NetworkUserId}"))"
+            $"network-user/{context.Item.NetworkUserId}"))"
         Variant="Variant.Filled"
         Color="Color.Primary">
         @Translate("View")

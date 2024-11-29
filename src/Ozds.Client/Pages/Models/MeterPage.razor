@@ -1,13 +1,18 @@
+@using MudBlazor
 @using Ozds.Business.Analysis
+@using Ozds.Business.Models.Abstractions
 @using Ozds.Business.Time
 @using Ozds.Client.Components.Charts
 @using Ozds.Client.Components.Streaming
+@using Ozds.Client.Components.Tables
+@using Ozds.Client.Components.Models
+@using Ozds.Client.State
 
 @page "/meter/{id?}"
 
 @{
   var analysis = RepresentativeState.AnalysisBases
-    .AnalysisByMeter()
+    .AnalysesByMeter()
     .FirstOrDefault(x => x.Meter.Id == Id);
 }
 
@@ -25,7 +30,7 @@
     <MonthlyAnalysisDetails Model="@context" />
   </Details>
   <Columns>
-    <MonthlyAnalysisColumns Model="@context" />
+    <MonthlyAnalysisColumns />
   </Columns>
 </ResponsiveTable>
 
@@ -40,7 +45,7 @@
   <MeasurementLineChart
     Meters="@meters"
     Parameters="@context"
-    Brush="@(Breakpoint & Breakpoint.MdAndUp)" />
+    Brush="@(Breakpoint >= Breakpoint.MdAndUp)" />
 </MeasurementChartControls>
 
 @code {

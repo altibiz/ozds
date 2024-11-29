@@ -1,5 +1,5 @@
 @using MudBlazor
-@using Ozds.Business.Models.Base
+@using Ozds.Business.Models.Abstractions
 @using Ozds.Business.Models.Enums
 @using Ozds.Business.Models.Complex
 @using Ozds.Client.Components.Base
@@ -7,7 +7,7 @@
 @inherits OzdsComponentBase
 
 <PropertyColumn
-  T="MessengerModel"
+  T="IMessenger"
   TProperty="string"
   Property="x => x.Title"
   Title='@Translate("Title")'>
@@ -17,7 +17,7 @@
 </PropertyColumn>
 
 <PropertyColumn
-  T="MessengerModel"
+  T="IMessenger"
   TProperty="PeriodModel"
   Property="x => x.MaxInactivityPeriod"
   Title='@Translate("Max Inactivity Period")'>
@@ -27,7 +27,7 @@
 </PropertyColumn>
 
 <PropertyColumn
-  T="MessengerModel"
+  T="IMessenger"
   TProperty="PeriodModel"
   Property="x => x.PushDelayPeriod"
   Title='@Translate("Push Delay Period")'>

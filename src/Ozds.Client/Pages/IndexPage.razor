@@ -1,9 +1,14 @@
+@using MudBlazor
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Business.Models.Enums
 @using Ozds.Business.Time
 @using Ozds.Business.Analysis
+@using Ozds.Client.Attributes
 @using Ozds.Client.Components.Charts
 @using Ozds.Client.Components.Dashboards
 @using Ozds.Client.Components.Tables
 @using Ozds.Client.Components.Models
+@using Ozds.Client.State
 
 @namespace Ozds.Client.Pages
 
@@ -44,14 +49,14 @@
 
 @if (RepresentativeState.Representative.Role
   is RoleModel.OperatorRepresentative
-    | RoleModel.LocationRepresentative)
+    or RoleModel.LocationRepresentative)
 {
   var locations = RepresentativeState.AnalysisBases
-    .AnalysisByLocation();
+    .AnalysesByLocation();
 
   <ResponsiveTable
     Model="@locations"
-    Link="@(x => $"location/${x.Id}")">
+    Link="@(x => $"location/${x.Location.Id}")">
     <Summary>
       <LocationAnalysisSummary Model="@context" />
     </Summary>
@@ -59,21 +64,21 @@
       <LocationAnalysisDetails Model="@context" />
     </Details>
     <Columns>
-      <LocationAnalysisColumns Model="@context" />
+      <LocationAnalysisColumns />
     </Columns>
   </ResponsiveTable>
 }
 
 @if (RepresentativeState.Representative.Role
   is RoleModel.LocationRepresentative
-    | RoleModel.NetworkUserRepresentative)
+    or RoleModel.NetworkUserRepresentative)
 {
   var networkUsers = RepresentativeState.AnalysisBases
-    .AnalysisByNetworkUser();
+    .AnalysesByNetworkUser();
 
   <ResponsiveTable
     Model="@networkUsers"
-    Link="@(x => $"network-user/${x.Id}")">
+    Link="@(x => $"network-user/${x.NetworkUser.Id}")">
     <Summary>
       <NetworkUserAnalysisSummary Model="@context" />
     </Summary>
@@ -81,7 +86,7 @@
       <NetworkUserAnalysisDetails Model="@context" />
     </Details>
     <Columns>
-      <NetworkUserAnalysisColumns Model="@context" />
+      <NetworkUserAnalysisColumns />
     </Columns>
   </ResponsiveTable>
 }
@@ -90,11 +95,11 @@
   is RoleModel.NetworkUserRepresentative)
 {
   var measurementLocations = RepresentativeState.AnalysisBases
-    .AnalysisByMeasurementLocation();
+    .AnalysesByMeasurementLocation();
 
   <ResponsiveTable
     Model="@measurementLocations"
-    Link="@(x => $"measurement-location/${x.Id}")">
+    Link="@(x => $"measurement-location/${x.MeasurementLocation.Id}")">
     <Summary>
       <MeasurementLocationAnalysisSummary Model="@context" />
     </Summary>
@@ -102,15 +107,16 @@
       <MeasurementLocationAnalysisDetails Model="@context" />
     </Details>
     <Columns>
-      <MeasurementLocationAnalysisColumns Model="@context" />
+      <MeasurementLocationAnalysisColumns />
     </Columns>
   </ResponsiveTable>
 }
 
 @{
   var invoices = RepresentativeState.AnalysisBases
-    .SelectMany(analysis => (IInvoice)analysis.Invoices)
+    .SelectMany(analysis => analysis.Invoices)
     .DistinctBy(invoice => invoice.Id)
+    .OfType<IInvoice>()
     .ToList();
 
   <ResponsiveTable
@@ -123,7 +129,7 @@
       <InvoiceDetails Model="@context" />
     </Details>
     <Columns>
-      <InvoiceColumns Model="@context" />
+      <InvoiceColumns />
     </Columns>
   </ResponsiveTable>
 }

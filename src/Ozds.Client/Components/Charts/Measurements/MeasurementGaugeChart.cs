@@ -28,7 +28,7 @@ public partial class MeasurementGaugeChart : OzdsOwningComponentBase
   public List<IMeter> Meters { get; set; } = default!;
 
   [Parameter]
-  public ChartParameters Parameters { get; set; } = default!;
+  public MeasurementChartParameters Parameters { get; set; } = default!;
 
   [Parameter]
   public bool Area { get; set; } = false;

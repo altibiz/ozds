@@ -14,7 +14,7 @@
   @bind-Value="Model.User.UserName"
   For="@(() => Model.User.UserName)"/>
 
-@if (Model.Representative is null)
+@if (Model.Representative is { })
 {
   <MudTextField
     Label="@Translate("Title")"

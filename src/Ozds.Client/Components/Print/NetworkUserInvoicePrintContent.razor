@@ -90,13 +90,15 @@
   </tbody>
 </table>
 <p style="margin-top: 1.2rem; text-align: right;">
-  @Translate("FOR ELECTRICITY FOR THE PERIOD"]: @T["TO")
+  @Translate("FOR ELECTRICITY FOR THE PERIOD")
+  &colon;
+  @Translate("TO")
   <strong>
-    @(DateString(Model.FromDate))
+    @DateString(Model.FromDate)
   </strong>
   DO
   <strong>
-    @(DateString(Model.ToDate.AddTicks(-1)))
+    @DateString(Model.ToDate.AddTicks(-1))
   </strong>
 </p>
 <table class="calculation-table" style="margin-top: 0.8rem; width: 100%;">

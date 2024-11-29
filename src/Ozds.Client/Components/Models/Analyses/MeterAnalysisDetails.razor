@@ -16,15 +16,19 @@
   &nbsp;
   @(Model.Location.Title)
 </MudText>
-<MudText
-  xs="8"
-  Class="d-flex align-center justify-start"
-  Style="font-size: large; font-weight: bold;">
-  @Translate("Network user")
-  &colon;
-  &nbsp;
-  @(Model.NetworkUser.Title)
-</MudText>
+
+@if (Model.NetworkUser is { })
+{
+  <MudText
+    xs="8"
+    Class="d-flex align-center justify-start"
+    Style="font-size: large; font-weight: bold;">
+    @Translate("Network user")
+    &colon;
+    &nbsp;
+    @(Model.NetworkUser.Title)
+  </MudText>
+}
 
 @code {
   [Parameter]

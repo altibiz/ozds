@@ -2,7 +2,7 @@
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Client.Components.Base
 
-@namespace Ozds.Client.Components.Streaming
+@namespace Ozds.Client.Components.Tables
 
 @typeparam T
 
@@ -85,7 +85,8 @@
             @if (Link is { } link)
             {
               <MudButton
-                  OnClick="@(() => NavigationManager.NavigateTo(link(item)))"
+                  OnClick="@(() => NavigationManager
+                    .NavigateTo(link(context.Item)))"
                   Variant="Variant.Outlined"
                   Color="Color.Primary">
                 @if (Title is { } title)

@@ -64,15 +64,15 @@
         </MudItem>
         @{
           var parameters = new MeasurementChartParameters {
-            Selection = meters,
-            Measure = MeasureMode.ActivePower,
-            Resolution = ResolutionModel.Year
+            Selection = Meters.ToHashSet(),
+            Measure = MeasureModel.ActivePower,
+            Resolution = ResolutionModel.Year,
             Multiplier = 1,
             Operator = OperatorModel.Last,
           };
         }
         <MeasurementLineChart
-          Meters="@meters"
+          Meters="@Meters"
           Parameters="@parameters"
           Area />
       </MudPaper>
@@ -144,8 +144,8 @@
         @{
           var parameters = new MeasurementChartParameters {
             Selection = Meters.ToHashSet(),
-            Measure = MeasureMode.ActivePower,
-            Resolution = ResolutionModel.Year
+            Measure = MeasureModel.ActivePower,
+            Resolution = ResolutionModel.Year,
             Multiplier = 1,
             Operator = OperatorModel.Last,
           };

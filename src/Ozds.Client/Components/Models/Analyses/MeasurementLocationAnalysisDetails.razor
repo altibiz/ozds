@@ -11,10 +11,10 @@
   @Translate("Location")
   &colon;
   &nbsp;
-  @analysis.Location.Title
+  @Model.Location.Title
 </MudText>
 
-@if (analysis.NetworkUser is { } networkUser)
+@if (Model.NetworkUser is { } networkUser)
 {
   <MudText>
     @Translate("Network user")
@@ -31,7 +31,7 @@
   &colon;
   &nbsp;
   @NumericString(
-    analysis.Analysis.ThisMonthConsumption.ActiveEnergy_kWh,
+    Model.Analysis.ThisMonthConsumption.ActiveEnergy_kWh,
     0)
   &nbsp;
   kWh
@@ -44,7 +44,7 @@
   &colon;
   &nbsp;
   @NumericString(
-    analysis.Analysis.LastMonthConsumption.ActiveEnergy_kWh,
+    Model.Analysis.LastMonthConsumption.ActiveEnergy_kWh,
     0)
   &nbsp;
   kWh
@@ -56,10 +56,10 @@
   @Translate("Last months invoice total")
   &colon;
   &nbsp;
-  @(analysis.Analysis.LastMonthExpenses.Total_EUR == 0
+  @(Model.Analysis.LastMonthExpenses.Total_EUR == 0
     ? Translate("Invoice pending...")
     : NumericString(
-        analysis.Analysis.LastMonthExpenses.Total_EUR) + " EUR")
+        Model.Analysis.LastMonthExpenses.Total_EUR) + " EUR")
 </MudText>
 
 @code {

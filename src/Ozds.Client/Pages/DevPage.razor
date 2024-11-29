@@ -1,13 +1,19 @@
+@using MudBlazor
 @using Microsoft.Extensions.Hosting
 @using Microsoft.Extensions.Logging
+@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Streaming
 
 @page "/dev"
+
+@inherits OzdsComponentBase
 
 @inject ILogger<DevPage> Logger
 @inject IHostEnvironment Environment
 
 @if (!Environment.IsDevelopment())
 {
+  <RedirectToLogin />
   return;
 }
 

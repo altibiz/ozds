@@ -34,13 +34,13 @@
   T="MaybeRepresentingUserModel"
   TProperty="string"
   CellStyle="font-size: x-large;"
-  Property="x => x.Representative.PhysicalPerson.SocialSecurityNumber"
+  Property="x => x.Representative.PhysicalPerson!.Name"
   Title='@Translate("Social security number")'>
   <CellTemplate>
     @if (context.Item.Representative is { } repsresentative)
     {
       <MudText>
-        @context.Item.Representative.PhysicalPerson.SocialSecurityNumber
+        @context.Item.Representative.PhysicalPerson.Name
       </MudText>
     }
   </CellTemplate>

@@ -227,8 +227,8 @@ public abstract class OzdsComponentBase : ComponentBase
         var categoryDescriptor = new NavigationDescriptor
         {
           Title = parentTitle!,
-          Route = null,
-          Icon = null,
+          Route = null!,
+          Icon = null!,
           Allows = Array.Empty<RoleModel>(),
           Disallows = Array.Empty<RoleModel>(),
           Children = new List<NavigationDescriptor>()

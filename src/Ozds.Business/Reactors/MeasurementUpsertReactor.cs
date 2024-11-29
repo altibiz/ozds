@@ -16,6 +16,7 @@ using Ozds.Business.Models.Complex;
 using Ozds.Business.Models.Enums;
 using Ozds.Business.Observers.Abstractions;
 using Ozds.Business.Observers.EventArgs;
+using Ozds.Business.Queries;
 using Ozds.Business.Queries.Agnostic;
 using Ozds.Business.Reactors.Abstractions;
 using Ozds.Data.Context;
@@ -84,7 +85,7 @@ public class MeasurementUpsertReactor(
     var publisher =
       serviceProvider.GetRequiredService<IMeasurementUpsertPublisher>();
     var notificationQueries = serviceProvider
-      .GetRequiredService<OzdsNotificationQueries>();
+      .GetRequiredService<NotificationQueries>();
     var messengerJobManager = serviceProvider
       .GetRequiredService<IMessengerJobManager>();
 
@@ -271,7 +272,7 @@ public class MeasurementUpsertReactor(
 
   private static async Task AddInvalidPushNotification(
     DataDbContext context,
-    OzdsNotificationQueries queries,
+    NotificationQueries queries,
     AgnosticModelActivator activator,
     PushEventArgs eventArgs,
     List<ValidationResult> validationResults,

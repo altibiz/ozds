@@ -1,7 +1,9 @@
 @using Microsoft.AspNetCore.Components
 @using MudBlazor
 @using Ozds.Business.Analysis
+@using Ozds.Business.Models.Enums
 @using Ozds.Client.Components.Base
+@using Ozds.Client.State
 
 @namespace Ozds.Client.Components.Models
 
@@ -15,7 +17,7 @@
   &colon;
   &nbsp;
   @NumericString(
-    analysis.Analysis.LastMonthConsumption.ActiveEnergy_kWh,
+    Model.Analysis.LastMonthConsumption.ActiveEnergy_kWh,
     0)
   &nbsp;
   kWh
@@ -29,7 +31,7 @@
   &colon;
   &nbsp;
   @NumericString(
-    analysis.Analysis.ThisMonthConsumption.ActiveEnergy_kWh,
+    Model.Analysis.ThisMonthConsumption.ActiveEnergy_kWh,
     0)
   &nbsp;
   kWh
@@ -45,7 +47,7 @@
     @Translate("Active power")
     &colon;
     &nbsp;
-    @NumericString(analysis.Analysis.Load.ActivePower_kW)
+    @NumericString(Model.Analysis.Load.ActivePower_kW)
     &nbsp;
     kW
   </MudText>
@@ -59,10 +61,10 @@ else
     @Translate("Last months invoice total")
     &colon;
     &nbsp;
-    @(analysis.Analysis.LastMonthExpenses.Total_EUR == 0
+    @(Model.Analysis.LastMonthExpenses.Total_EUR == 0
       ? Translate("Invoice pending...")
       : NumericString(
-          analysis.Analysis.LastMonthExpenses.Total_EUR)
+          Model.Analysis.LastMonthExpenses.Total_EUR)
           + " EUR")
   </MudText>
 }
