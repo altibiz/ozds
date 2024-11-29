@@ -6,18 +6,15 @@
 @using Ozds.Client.Components.Models
 @using Ozds.Client.State
 
-@page "/network-users"
+@namespace Ozds.Client.Pages
+
+@page "/administration/network-users"
 
 @attribute [Navigation(
-  Icon= Icons.Material.Outlined.AccountTree,
-  ParentTitle = "Tables",
+  Order = 2,
   Title = "Network users",
-  Allows = new[]
-  {
-    RoleModel.LocationRepresentative,
-    RoleModel.NetworkUserRepresentative,
-    RoleModel.OperatorRepresentative
-  })]
+  Icon = Icons.Material.Filled.VerifiedUser,
+  Parent = typeof(AdministrationPage))]
 
 @{
   var analyses = RepresentativeState.AnalysisBases.AnalysesByNetworkUser();

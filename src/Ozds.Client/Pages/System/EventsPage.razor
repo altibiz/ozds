@@ -11,16 +11,14 @@
 @using Ozds.Client.Components.Models
 @using Ozds.Client.State
 
-@page "/events"
+@namespace Ozds.Client.Pages
+
+@page "/system/events"
 
 @attribute [Navigation(
-  Icon= Icons.Material.Outlined.Event,
-  ParentTitle = "Alerts",
   Title = "Events",
-  Allows = new[]
-  {
-    RoleModel.OperatorRepresentative
-  })]
+  Icon = Icons.Material.Filled.VerifiedUser,
+  Parent = typeof(SystemPage))]
 
 @inherits OzdsOwningComponentBase
 

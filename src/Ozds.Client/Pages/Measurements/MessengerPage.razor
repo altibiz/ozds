@@ -3,20 +3,22 @@
 @using Ozds.Client.Components.Streaming
 @using Ozds.Client.Components.Models
 
-@page "/catalogue/{id?}"
+@namespace Ozds.Client.Pages
+
+@page "/measurements/messenger/{id}"
 
 @inherits OzdsOwningComponentBase
 
-<Mutating T="ICatalogue" Id="@Id">
+<Mutating T="IMessenger" Id="@Id">
   <Edit>
-    <CatalogueEdit Model="@context.Model" />
+    <MessengerEdit Model="@context.Model" />
   </Edit>
   <Details>
-    <CatalogueDetails Model="@context.Model" />
+    <MessengerDetails Model="@context.Model" />
   </Details>
 </Mutating>
 
 @code {
   [Parameter]
-  public string? Id { get; set; } = default!;
+  public string Id { get; set; } = default!;
 }

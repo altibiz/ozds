@@ -2,6 +2,7 @@
 @using MudBlazor
 @using Ozds.Client.Components.Base
 @using Ozds.Client.State
+@using Ozds.Client.Attributes
 
 @namespace Ozds.Client.Components.Layout
 
@@ -36,9 +37,10 @@
   </MudDrawerHeader>
     <MudDrawerContainer>
       <MudNavMenu>
-        @foreach (var route in GetNavigationDescriptors())
+        @foreach (var descriptor in NavigationAttribute
+          .GetNavigationDescriptors())
         {
-          <NavigationItem Descriptor="route" />
+          <NavigationItem Descriptor="descriptor" />
           <MudDivider Style="width: 80%; margin-left: 10%;" />
         }
       </MudNavMenu>

@@ -15,14 +15,9 @@
 @page "/"
 
 @attribute [Navigation(
-  Icon= Icons.Material.Outlined.Home,
+  Order = -1000,
   Title = "Dashboard",
-  Allows = new[]
-  {
-    RoleModel.LocationRepresentative,
-    RoleModel.NetworkUserRepresentative,
-    RoleModel.OperatorRepresentative
-  })]
+  Icon= Icons.Material.Outlined.Home)]
 
 @{
   var model = RepresentativeState.AnalysisBases.Analysis();

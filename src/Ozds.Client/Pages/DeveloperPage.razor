@@ -1,14 +1,20 @@
 @using MudBlazor
 @using Microsoft.Extensions.Hosting
 @using Microsoft.Extensions.Logging
+@using Ozds.Client.Attributes
 @using Ozds.Client.Components.Base
 @using Ozds.Client.Components.Streaming
 
-@page "/dev"
+@page "/developer"
+
+@attribute [Navigation(
+  Order = 0,
+  Title = "Developer",
+  Icon = Icons.Material.Filled.VerifiedUser)]
 
 @inherits OzdsComponentBase
 
-@inject ILogger<DevPage> Logger
+@inject ILogger<DeveloperPage> Logger
 @inject IHostEnvironment Environment
 
 @if (!Environment.IsDevelopment())

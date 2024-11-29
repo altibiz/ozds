@@ -1,6 +1,7 @@
 @using Microsoft.AspNetCore.Components.Routing
 @using MudBlazor
 @using Ozds.Client.State
+@using Ozds.Client.Attributes
 @using Ozds.Client.Components.Base
 
 @namespace Ozds.Client.Components.Layout
@@ -11,45 +12,38 @@
 {
   <MudNavGroup
     Expanded="@LayoutState.IsNavigationDrawerOpen"
-    Title="@Translate(Descriptor.Title)"
+    Title="@Translate(Descriptor.Navigation.Title)"
     Style="justify-self: center; max-width: 600px; font-size:larger;">
-    @foreach (var child in Descriptor.Children.OrderBy(c => c.Title))
+    @foreach (var child in Descriptor.Children)
     {
       <NavigationItem Descriptor="child" />
     }
   </MudNavGroup>
 }
-else if (!string.IsNullOrEmpty(Descriptor.Route))
-{
-  <MudNavLink Href="@Descriptor.Route" Match="NavLinkMatch.All">
-    <MudContainer MaxWidth="MaxWidth.Small" Class="d-flex flex-row">
-      <MudHidden Breakpoint="Breakpoint.Xs">
-        <div style="margin-left: -8px;" class="d-flex flex-row align-center">
-          <MudIcon Icon="@Descriptor.Icon" />
-        </div>
-      </MudHidden>
-      <MudHidden Breakpoint="Breakpoint.SmAndUp">
-        <div style="margin-left: -28px;" class="d-flex flex-row align-center">
-          <MudIcon Icon="@Descriptor.Icon" />
-        </div>
-      </MudHidden>
-      <MudText Class="ml-4">
-        @Translate(Descriptor.Title)
-      </MudText>
-    </MudContainer>
-  </MudNavLink>
-}
-else
-{
+
+<MudNavLink Href="@Descriptor.Route.Template" Match="NavLinkMatch.All">
+  <MudContainer MaxWidth="MaxWidth.Small" Class="d-flex flex-row">
+    <MudHidden Breakpoint="Breakpoint.Xs">
+      <div style="margin-left: -8px;" class="d-flex flex-row align-center">
+        <MudIcon Icon="@Descriptor.Navigation.Icon" />
+      </div>
+    </MudHidden>
+    <MudHidden Breakpoint="Breakpoint.SmAndUp">
+      <div style="margin-left: -28px;" class="d-flex flex-row align-center">
+        <MudIcon Icon="@Descriptor.Navigation.Icon" />
+      </div>
+    </MudHidden>
     <MudText Class="ml-4">
-        @Translate(Descriptor.Title)
+      @Translate(Descriptor.Navigation.Title)
     </MudText>
-}
+  </MudContainer>
+</MudNavLink>
 
 @code {
-    [CascadingParameter]
-    public LayoutState LayoutState { get; set; } = default!;
+  [CascadingParameter]
+  public LayoutState LayoutState { get; set; } = default!;
 
-    [Parameter]
-    public NavigationDescriptor Descriptor { get; set; } = default!;
+  [Parameter]
+  public NavigationAttribute.NavigationDescriptor
+    Descriptor { get; set; } = default!;
 }

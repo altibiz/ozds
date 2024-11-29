@@ -62,8 +62,11 @@ public class NavigationAttribute : Attribute
   public class NavigationDescriptor
   {
     public required Type Type { get; set; }
+
     public required NavigationAttribute Navigation { get; set; }
+
     public required RouteAttribute Route { get; set; }
+
     public List<NavigationDescriptor> Children { get; set; } = new();
   }
 }

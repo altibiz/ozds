@@ -1,9 +1,19 @@
+@using MudBlazor
 @using Ozds.Business.Models.Abstractions
+@using Ozds.Client.Attributes
 @using Ozds.Client.Components.Base
 @using Ozds.Client.Components.Streaming
 @using Ozds.Client.Components.Models
 
-@page "/meters"
+@namespace Ozds.Client.Pages
+
+@page "/measurements/meters"
+
+@attribute [Navigation(
+  Order = 11,
+  Title = "Meters",
+  Icon = Icons.Material.Filled.VerifiedUser,
+  Parent = typeof(MeasurementsPage))]
 
 @inherits OzdsOwningComponentBase
 

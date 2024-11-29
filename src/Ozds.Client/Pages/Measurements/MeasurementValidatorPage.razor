@@ -3,16 +3,18 @@
 @using Ozds.Client.Components.Streaming
 @using Ozds.Client.Components.Models
 
-@page "/messenger/{id}"
+@namespace Ozds.Client.Pages
+
+@page "/measurements/measurement-validator/{id}"
 
 @inherits OzdsOwningComponentBase
 
-<Mutating T="IMessenger" Id="@Id">
+<Mutating T="IMeasurementValidator" Id="@Id">
   <Edit>
-    <MessengerEdit Model="@context.Model" />
+    <MeasurementValidatorEdit Model="@context.Model" />
   </Edit>
   <Details>
-    <MessengerDetails Model="@context.Model" />
+    <MeasurementValidatorDetails Model="@context.Model" />
   </Details>
 </Mutating>
 

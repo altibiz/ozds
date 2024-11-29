@@ -9,11 +9,13 @@
 
 @namespace Ozds.Client.Pages
 
-@page "/users"
+@page "/administration/users"
 
 @attribute [Navigation(
+  Order = -1000,
   Title = "Users",
-  Allows = new[] { RoleModel.OperatorRepresentative })]
+  Icon = Icons.Material.Filled.VerifiedUser,
+  Parent = typeof(AdministrationPage))]
 
 @inherits OzdsOwningComponentBase
 

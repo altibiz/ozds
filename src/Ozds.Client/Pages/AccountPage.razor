@@ -1,5 +1,6 @@
 @using MudBlazor
 @using Ozds.Business.Models.Composite
+@using Ozds.Client.Attributes
 @using Ozds.Client.Components.Base
 @using Ozds.Client.Components.Models
 @using Ozds.Client.State
@@ -7,6 +8,11 @@
 @inherits OzdsComponentBase
 
 @page "/account"
+
+@attribute [Navigation(
+  Order = 1,
+  Title = "Account",
+  Icon = Icons.Material.Filled.VerifiedUser)]
 
 @{
   var model = new MaybeRepresentingUserModel(

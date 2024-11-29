@@ -6,18 +6,15 @@
 @using Ozds.Client.Components.Models
 @using Ozds.Client.State
 
-@page "/meters"
+@namespace Ozds.Client.Pages
+
+@page "/measurements/measurement-locations"
 
 @attribute [Navigation(
-  Icon= Icons.Material.Outlined.ElectricMeter,
-  ParentTitle = "Tables",
+  Order = 0,
   Title = "Measurement locations",
-  Allows = new[]
-  {
-    RoleModel.LocationRepresentative,
-    RoleModel.NetworkUserRepresentative,
-    RoleModel.OperatorRepresentative
-  })]
+  Icon = Icons.Material.Filled.VerifiedUser,
+  Parent = typeof(MeasurementsPage))]
 
 @{
   var analyses = RepresentativeState.AnalysisBases

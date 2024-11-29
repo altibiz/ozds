@@ -10,12 +10,15 @@
 @using Ozds.Client.Components.Models
 @using Ozds.Client.State
 
-@page "/notifications"
+@namespace Ozds.Client.Pages
+
+@page "/system/notifications"
 
 @attribute [Navigation(
-  Icon = Icons.Material.Outlined.Notifications,
-  ParentTitle = "Alerts",
-  Title = "Notifications")]
+  Order = -1000,
+  Title = "Notifications",
+  Icon = Icons.Material.Filled.VerifiedUser,
+  Parent = typeof(SystemPage))]
 
 @inherits OzdsOwningComponentBase
 

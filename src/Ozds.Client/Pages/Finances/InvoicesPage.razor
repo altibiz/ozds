@@ -6,17 +6,15 @@
 @using Ozds.Client.Components.Models
 @using Ozds.Client.State
 
-@page "/invoices"
+@namespace Ozds.Client.Pages
+
+@page "/finances/invoices"
 
 @attribute [Navigation(
-  Icon= Icons.Material.Outlined.Receipt,
+  Order = 0,
   Title = "Invoices",
-  Allows = new[]
-  {
-    RoleModel.LocationRepresentative,
-    RoleModel.NetworkUserRepresentative,
-    RoleModel.OperatorRepresentative
-  })]
+  Icon = Icons.Material.Filled.VerifiedUser,
+  Parent = typeof(FinancesPage))]
 
 @{
   var invoices = RepresentativeState.AnalysisBases
