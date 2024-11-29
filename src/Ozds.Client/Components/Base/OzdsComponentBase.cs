@@ -197,7 +197,11 @@ public abstract class OzdsComponentBase : ComponentBase
   {
     var descriptors = typeof(OzdsComponentBase).Assembly.GetTypes()
         .Where(type => type.IsSubclassOf(typeof(OzdsComponentBase)))
-        .Select(type => new { type, attrs = type.GetCustomAttributes<NavigationAttribute>() })
+        .Select(type => new
+        {
+          type,
+          attrs = type.GetCustomAttributes<NavigationAttribute>()
+        })
         .SelectMany(x => x.attrs.Select(attr => new { x.type, attr }))
         .OrderBy(x => x.attr.Order)
         .Select(x => new NavigationDescriptor
