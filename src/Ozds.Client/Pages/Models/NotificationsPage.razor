@@ -21,7 +21,7 @@
 
 <MudCheckBox
   T="bool"
-  Label="@Translate("Seen")"
+  Label="@(Translate("Seen"))"
   Checked="@_seen"
   CheckedChanged="@(() => _seen = !_seen)"/>
 
@@ -36,8 +36,18 @@
         seen: _seen)
   : Task.FromResult(RepresentativeState.Notifications
       .ToPaginated(RepresentativeState.Notifications.Count)))">
-  <Found>
-    <NotificationsTable Model="context.Items"/>
+  <Found Context="page">
+    <ResponsiveTable Model="@(page.Items)">
+      <Summary>
+        <NotificationSummary Model="@context" />
+      </Summary>
+      <Details>
+        <NotificationDetails Model="@context" />
+      </Details>
+      <Columns>
+        <NotificationColumns />
+      </Columns>
+    </ResponsiveTable>
   </Found>
 </Paging>
 

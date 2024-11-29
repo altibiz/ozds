@@ -13,7 +13,6 @@ using Ozds.Jobs.Observers.EventArgs;
 namespace Ozds.Business.Workers;
 
 public class MonthlyNetworkUserInvoiceReactor(
-  IDbContextFactory<DataDbContext> factory,
   IBillingJobSubscriber subscriber,
   IServiceProvider serviceProvider
 ) : BackgroundService, IReactor

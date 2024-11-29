@@ -222,7 +222,7 @@ public abstract class OzdsComponentBase : ComponentBase
 
     foreach (var parentTitle in parentTitles)
     {
-      if (!descriptorDict.ContainsKey(parentTitle))
+      if (!descriptorDict.ContainsKey(parentTitle!))
       {
         var categoryDescriptor = new NavigationDescriptor
         {
