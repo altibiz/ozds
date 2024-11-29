@@ -1,3 +1,4 @@
+@using Microsoft.AspNetCore.Components.Web
 @using MudBlazor
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Client.Attributes
@@ -14,6 +15,10 @@
   Title = "Measurement validators",
   Icon = Icons.Material.Filled.VerifiedUser,
   Parent = typeof(MeasurementsPage))]
+
+<HeadContent>
+  <title>OZDS - @Translate("Measurement validators")</title>
+</HeadContent>
 
 @inherits OzdsOwningComponentBase
 

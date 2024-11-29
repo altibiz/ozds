@@ -1,3 +1,4 @@
+@using Microsoft.AspNetCore.Components.Web
 @using Microsoft.Extensions.DependencyInjection
 @using Microsoft.Extensions.Hosting
 @using MudBlazor
@@ -23,6 +24,10 @@
 @inherits OzdsOwningComponentBase
 
 @inject IHostEnvironment Environment
+
+<HeadContent>
+  <title>OZDS - @Translate("Events")</title>
+</HeadContent>
 
 <MudSelect
   T="LevelModel"

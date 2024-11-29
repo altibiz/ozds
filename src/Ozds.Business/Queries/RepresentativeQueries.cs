@@ -97,4 +97,31 @@ public class RepresentativeQueries(
       representative.ToModel()
     );
   }
+
+  public async Task<UserModel?> UserByClaimsPrincipal(
+    ClaimsPrincipal claimsPrincipal,
+    CancellationToken cancellationToken
+  )
+  {
+    var user = await userQueries.UserByClaimsPrincipal(
+      claimsPrincipal,
+      cancellationToken
+    );
+    return user?.ToModel();
+  }
+
+  public async Task<RepresentativeModel?> RepresentativeByUserId(
+    string id,
+    CancellationToken cancellationToken
+  )
+  {
+    var representative = await dataAuditableQueries
+      .ReadSingle<RepresentativeEntity>(id, cancellationToken);
+    if (representative is null)
+    {
+      return null;
+    }
+
+    return representative.ToModel();
+  }
 }

@@ -1,0 +1,38 @@
+@using Ozds.Client.Components.Base
+@using MudBlazor
+
+@namespace Ozds.Client.Components.Providers
+
+@inherits OzdsOwningComponentBase
+
+@if (_state is { } state)
+{
+  <CascadingValue Value="_state">
+    @ChildContent
+  </CascadingValue>
+  return;
+}
+
+<MudTextField
+  Placeholder="@Translate("Location search...")"
+  Adornment="Adornment.Start"
+  AdornmentIcon="Icons.Material.Filled.Search"
+  @bind-Value="_filter" />
+
+<MudList>
+  @foreach (var location in _representativeLocations)
+  {
+    @if (
+      !string.IsNullOrWhiteSpace(_filter) &&
+      !location.Title.StartsWith(_filter))
+    {
+      continue;
+    }
+
+    <MudListItem>
+      <MudButton OnClick="@(() => OnLocationSelected(location))">
+        <MudText>@location.Title</MudText>
+      </MudButton>
+    </MudListItem>
+  }
+</MudList>

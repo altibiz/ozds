@@ -1,42 +1,22 @@
-@using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Components.Routing
 @using Microsoft.AspNetCore.Components.Web
 @using Ozds.Client.Components.Layout
+@using Ozds.Client.Components.Providers
 @using Ozds.Client.Components.Streaming
 
 @namespace Ozds.Client
-
-<HeadContent>
-  <title>OZDS</title>
-</HeadContent>
 
 <Router
   @rendermode="RenderMode.InteractiveServer"
   AppAssembly="@typeof(App).Assembly">
   <Found Context="routeData">
-    <CascadingValue Value="@_logoutTokenState">
-      <AuthorizeRouteView
-        RouteData="@routeData"
-        DefaultLayout="@typeof(Layout)">
-        <Authorizing>
-          <Authorizing/>
-        </Authorizing>
-        <NotAuthorized Context="authenticationState">
-          @if (authenticationState.User.Identity?.IsAuthenticated is false)
-          {
-            <RedirectToLogin/>
-          }
-          else
-          {
-            <NotAuthorized/>
-          }
-        </NotAuthorized>
-      </AuthorizeRouteView>
-    </CascadingValue>
+    <UserStateProvider LogoutToken="@LogoutToken">
+      <RouteView RouteData="@routeData" DefaultLayout="@typeof(Layout)" />
+    </UserStateProvider>
   </Found>
   <NotFound>
     <LayoutView Layout="@typeof(Layout)">
-      <NotFound/>
+      <NotFound />
     </LayoutView>
   </NotFound>
 </Router>

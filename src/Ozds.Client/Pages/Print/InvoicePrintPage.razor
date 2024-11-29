@@ -1,3 +1,4 @@
+@using Microsoft.AspNetCore.Components.Web
 @using Microsoft.Extensions.DependencyInjection
 @using Ozds.Business.Queries
 @using Ozds.Client.Components.Print
@@ -17,8 +18,19 @@
   .GetRequiredService<CalculatedInvoiceQueries>()
   .ReadCalculatedNetworkUserInvoice(Id, CancellationToken.None))">
   <Found>
+    <HeadContent>
+      <title>OZDS - @Translate("Invoice print"): @context.Title</title>
+    </HeadContent>
+
     <NetworkUserInvoicePrint Model="@context"/>
   </Found>
+  <NotFound>
+    <HeadContent>
+      <title>OZDS - @Translate("Invoice print")</title>
+    </HeadContent>
+
+    <NotFound />
+  </NotFound>
 </Loading>
 
 @code {

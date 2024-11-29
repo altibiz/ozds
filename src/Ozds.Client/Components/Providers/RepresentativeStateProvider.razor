@@ -1,0 +1,17 @@
+@using Ozds.Client.Components.Streaming
+@using Ozds.Client.Components.Base
+
+@namespace Ozds.Client.Components.Providers
+
+@inherits OzdsOwningComponentBase
+
+<Loading LoadAsync="LoadAsync">
+  <Found>
+    <CascadingValue Value="@context">
+      @Found
+    </CascadingValue>
+  </Found>
+  <NotFound>
+    @NotFound
+  </NotFound>
+</Loading>

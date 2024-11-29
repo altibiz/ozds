@@ -1,0 +1,20 @@
+@using MudBlazor
+@using Ozds.Client.Components.Base
+
+@namespace Ozds.Client.Components.Providers
+
+@inherits OzdsComponentBase
+
+@if (_state is null)
+{
+  return;
+}
+
+<CascadingValue Value="_state">
+  <MudThemeProvider
+    @ref="_mudThemeProvider"
+    Theme="_state.Theme"
+    IsDarkMode="_state.IsDarkMode" />
+
+  @ChildContent
+</CascadingValue>

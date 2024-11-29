@@ -1,6 +1,7 @@
-@using MudBlazor
+@using Microsoft.AspNetCore.Components.Web
 @using Microsoft.Extensions.Hosting
 @using Microsoft.Extensions.Logging
+@using MudBlazor
 @using Ozds.Client.Attributes
 @using Ozds.Client.Components.Base
 @using Ozds.Client.Components.Streaming
@@ -16,6 +17,10 @@
 
 @inject ILogger<DeveloperPage> Logger
 @inject IHostEnvironment Environment
+
+<HeadContent>
+  <title>OZDS - @Translate("Developer")</title>
+</HeadContent>
 
 @if (!Environment.IsDevelopment())
 {

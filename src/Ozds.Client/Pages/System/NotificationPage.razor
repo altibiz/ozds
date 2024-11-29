@@ -1,3 +1,4 @@
+@using Microsoft.AspNetCore.Components.Web
 @using Microsoft.Extensions.DependencyInjection
 @using MudBlazor
 @using Ozds.Business.Activation.Agnostic
@@ -22,9 +23,20 @@
   is not RoleModel.OperatorRepresentative)
 {
   <Loading T="NotificationModel" Id="@Id">
-    <Found Context="model">
-      <NotificationDetails Model="@model"/>
+    <Found>
+      <HeadContent>
+        <title>OZDS - @Translate("Notification"): @context.Title</title>
+      </HeadContent>
+
+      <NotificationDetails Model="@context"/>
     </Found>
+    <NotFound>
+      <HeadContent>
+        <title>OZDS - @Translate("Notification")</title>
+      </HeadContent>
+
+      <NotFound />
+    </NotFound>
   </Loading>
   return;
 }
@@ -44,10 +56,26 @@
     .GetRequiredService<NotificationMutations>()
     .Create(model, CancellationToken.None))">
   <Edit>
+    <HeadContent>
+      @if (context.Created)
+      {
+        <title>OZDS - @Translate("New notification")</title>
+      }
+      else
+      {
+        <title>OZDS - @Translate("Notification"): @context.Model.Title</title>
+      }
+    </HeadContent>
+
     <NotificationEdit Model="@context.Model"/>
   </Edit>
   <Details>
+    <HeadContent>
+      <title>OZDS - @Translate("Notification"): @context.Model.Title</title>
+    </HeadContent>
+
     <NotificationDetails Model="@context.Model"/>
+
     @if (!context.Created)
     {
       <div class="d-flex flex-row mt-4 justify-end">
