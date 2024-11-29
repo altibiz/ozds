@@ -14,9 +14,9 @@ public class AppController(IAntiforgery antiforgery) : Controller
     {
       cultureInfo = new CultureInfo(culture);
     }
-    catch (CultureNotFoundException ex)
+    catch (CultureNotFoundException)
     {
-      return BadRequest(ex);
+      return Redirect("/app/hr");
     }
 
     string? logoutToken;
