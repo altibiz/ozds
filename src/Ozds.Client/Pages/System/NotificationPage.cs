@@ -19,7 +19,7 @@ public partial class NotificationPage : OzdsOwningComponentBase
   [CascadingParameter]
   public RepresentativeState RepresentativeState { get; set; } = default!;
 
-  private async Task OnMarkAsSeen(NotificationModel model)
+  private async Task OnMarkAsSeen(INotification model)
   {
     await ScopedServices
       .GetRequiredService<NotificationMutations>()
@@ -31,7 +31,9 @@ public partial class NotificationPage : OzdsOwningComponentBase
     NavigateToPage<NotificationsPage>();
   }
 
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
   private async Task<INotification> OnNewAsync()
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
   {
     return ScopedServices
       .GetRequiredService<AgnosticModelActivator>()
