@@ -68,48 +68,29 @@ public class BillingQueries(
       .CreateDbContextAsync(cancellationToken);
 
     return (await context.NetworkUsers
+        .Include(x => x.Location)
+        .ThenInclude(x => x.RegulatoryCatalogue)
         .Where(context.PrimaryKeyEquals<NetworkUserEntity>(networkUserId))
         .Join(
           context.MeasurementLocations
             .OfType<NetworkUserMeasurementLocationEntity>()
             .Include(x => x.NetworkUserCatalogue)
-            .Include(x => x.NetworkUser)
-            .Include(x => x.NetworkUser.Location)
-            .Include(x => x.NetworkUser.Location.RegulatoryCatalogue),
+            .Include(x => x.Meter),
           context.PrimaryKeyOf<NetworkUserEntity>(),
           context.ForeignKeyOf<NetworkUserMeasurementLocationEntity>(
             nameof(NetworkUserMeasurementLocationEntity.NetworkUser)),
           (networkUser, measurementLocation) =>
             new NetworkUserCalculationBasesByNetworkUserIntermediary
             {
-              Location = measurementLocation.NetworkUser.Location,
-              NetworkUser = measurementLocation.NetworkUser,
+              Location = networkUser.Location,
+              NetworkUser = networkUser,
               MeasurementLocation = measurementLocation,
               UsageNetworkUserCatalogue =
                 measurementLocation.NetworkUserCatalogue,
-              SupplyRegulatoryCatalogue = measurementLocation.NetworkUser
+              SupplyRegulatoryCatalogue = networkUser
                 .Location
-                .RegulatoryCatalogue
-            }
-        )
-        .Join(
-          context.Meters,
-          context
-            .ForeignKeyOf<MeasurementLocationEntity>(
-              nameof(MeasurementLocationEntity.Meter))
-            .Prefix(
-              (NetworkUserCalculationBasesByNetworkUserIntermediary x) =>
-                x.MeasurementLocation),
-          context.PrimaryKeyOf<MeterEntity>(),
-          (x, meter) =>
-            new NetworkUserCalculationBasesByNetworkUserIntermediary
-            {
-              Location = x.Location,
-              NetworkUser = x.NetworkUser,
-              MeasurementLocation = x.MeasurementLocation,
-              UsageNetworkUserCatalogue = x.UsageNetworkUserCatalogue,
-              SupplyRegulatoryCatalogue = x.SupplyRegulatoryCatalogue,
-              Meter = meter
+                .RegulatoryCatalogue,
+              Meter = measurementLocation.Meter
             }
         )
         .GroupJoin(
@@ -118,12 +99,12 @@ public class BillingQueries(
             .Where(x => x.Timestamp <= toDate)
             .Where(x => x.Interval == IntervalEntity.QuarterHour),
           context
-            .PrimaryKeyOf<MeterEntity>()
+            .PrimaryKeyOf<MeasurementLocationEntity>()
             .Prefix(
               (NetworkUserCalculationBasesByNetworkUserIntermediary x) =>
-                x.Meter),
+                x.MeasurementLocation),
           context.ForeignKeyOf<AbbB2xAggregateEntity>(
-            nameof(AbbB2xAggregateEntity.Meter)
+            nameof(AbbB2xAggregateEntity.MeasurementLocation)
           ),
           (x, abbB2xAggregates) =>
             new
@@ -157,12 +138,12 @@ public class BillingQueries(
             .Where(x => x.Timestamp <= toDate)
             .Where(x => x.Interval == IntervalEntity.QuarterHour),
           context
-            .PrimaryKeyOf<MeterEntity>()
+            .PrimaryKeyOf<MeasurementLocationEntity>()
             .Prefix(
               (NetworkUserCalculationBasesByNetworkUserIntermediary x) =>
-                x.Meter),
+                x.MeasurementLocation),
           context.ForeignKeyOf<SchneideriEM3xxxAggregateEntity>(
-            nameof(AbbB2xAggregateEntity.Meter)
+            nameof(AbbB2xAggregateEntity.MeasurementLocation)
           ),
           (x, schneideriEM3xxxAggregates) =>
             new
