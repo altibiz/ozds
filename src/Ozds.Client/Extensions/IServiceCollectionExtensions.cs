@@ -69,6 +69,7 @@ public static class IServiceCollectionExtensions
     services.AddCascadingValue<RepresentativeState>();
     services.AddCascadingValue<NotificationsState>();
     services.AddCascadingValue<AnalysisState>();
+    services.AddCascadingValue<ThemeState>();
     services.AddCascadingValue<LayoutState>();
 
     return services;

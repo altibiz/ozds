@@ -40,27 +40,29 @@
   </style>
 </HeadContent>
 
-<LayoutStateProvider>
-  <header>
-    <Header />
-  </header>
+<ThemeStateProvider>
+  <LayoutStateProvider>
+    <header>
+      <Header />
+    </header>
 
-  <main>
-    <MudLayout Class="d-flex flex-column">
-      <Main>
-        @Body
-      </Main>
-    </MudLayout>
-  </main>
+    <main>
+      <MudLayout Class="d-flex flex-column">
+        <Main>
+          @Body
+        </Main>
+      </MudLayout>
+    </main>
 
-  <footer>
-    <MudContainer
-      MaxWidth="MaxWidth.Large"
-      Style="height: 100%; padding-top: 12px;">
-      <Footer />
-    </MudContainer>
-  </footer>
-</LayoutStateProvider>
+    <footer>
+      <MudContainer
+        MaxWidth="MaxWidth.Large"
+        Style="height: 100%; padding-top: 12px;">
+        <Footer />
+      </MudContainer>
+    </footer>
+  </LayoutStateProvider>
+</ThemeStateProvider>
 
 @code {
   [Parameter]

@@ -119,15 +119,8 @@
   </style>
 </HeadContent>
 
-<CascadingValue Value="ThemeState">
-  <main>
-    <MudThemeProvider
-      @ref="@(_mudThemeProvider)"
-      Theme="ThemeState.Theme"
-      IsDarkMode="ThemeState.IsDarkMode" />
-
-    <div class="container">
-      @Body
-    </div>
-  </main>
-</CascadingValue>
+<main>
+  <div class="container">
+    @Body
+  </div>
+</main>
