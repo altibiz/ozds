@@ -6,9 +6,20 @@ namespace Ozds.Data.Entities.Base;
 
 public abstract class MeasurementEntity : IMeasurementEntity
 {
+  protected long _measurementLocationId;
+
   public DateTimeOffset Timestamp { get; set; }
 
   public string MeterId { get; set; } = default!;
+
+  public virtual string MeasurementLocationId
+  {
+    get => _measurementLocationId.ToString();
+    set => _measurementLocationId = long.Parse(value);
+  }
+
+  public virtual MeasurementLocationEntity MeasurementLocation { get; set; }
+    = default!;
 }
 
 public class MeasurementEntity<T> : MeasurementEntity
@@ -46,6 +57,12 @@ public class
       .HasOne(nameof(MeasurementEntity<MeterEntity>.Meter))
       .WithMany()
       .HasForeignKey(nameof(MeasurementEntity<MeterEntity>.MeterId));
+
+    builder.Ignore(nameof(MeasurementEntity.MeasurementLocationId));
+    builder
+      .HasOne(nameof(MeasurementEntity.MeasurementLocation))
+      .WithMany()
+      .HasForeignKey("_measurementLocationId");
 
     builder
       .Property<DateTimeOffset>(nameof(MeasurementEntity.Timestamp))

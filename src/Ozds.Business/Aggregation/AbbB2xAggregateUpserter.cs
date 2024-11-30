@@ -17,6 +17,7 @@ public class AbbB2xAggregateUpserter : AggregateUpserter<AbbB2xAggregateModel,
       return (lhs, rhs) => new AbbB2xAggregateEntity
       {
         MeterId = lhs.MeterId,
+        MeasurementLocationId = lhs.MeasurementLocationId,
         Timestamp = lhs.Timestamp,
         Interval = lhs.Interval,
         Count = lhs.Count + rhs.Count,
@@ -133,6 +134,7 @@ public class AbbB2xAggregateUpserter : AggregateUpserter<AbbB2xAggregateModel,
     return new AbbB2xAggregateModel
     {
       MeterId = lhs.MeterId,
+      MeasurementLocationId = lhs.MeasurementLocationId,
       Timestamp = lhs.Timestamp,
       Interval = lhs.Interval,
       Count = lhs.Count + rhs.Count,

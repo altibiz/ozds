@@ -14,9 +14,11 @@ public class PidgeonAbbB2xPushRequestMeasurementConverter :
   }
 
   protected override AbbB2xMeasurementModel ToMeasurement(
-    PidgeonAbbB2xMeterPushRequestEntity pushRequest)
+    PidgeonAbbB2xMeterPushRequestEntity pushRequest,
+    string measurementLocationId
+  )
   {
-    return pushRequest.ToModel();
+    return pushRequest.ToModel(measurementLocationId);
   }
 
   protected override PidgeonAbbB2xMeterPushRequestEntity ToPushRequest(
@@ -29,12 +31,14 @@ public class PidgeonAbbB2xPushRequestMeasurementConverter :
 public static class AbbB2xPushRequestEntityMeasurementConverterExtensions
 {
   public static AbbB2xMeasurementModel ToModel(
-    this PidgeonAbbB2xMeterPushRequestEntity request
+    this PidgeonAbbB2xMeterPushRequestEntity request,
+    string measurementLocationId
   )
   {
     return new AbbB2xMeasurementModel
     {
       MeterId = request.MeterId,
+      MeasurementLocationId = measurementLocationId,
       Timestamp = request.Timestamp,
       VoltageL1AnyT0_V = request.Data.VoltageL1AnyT0_V,
       VoltageL2AnyT0_V = request.Data.VoltageL2AnyT0_V,

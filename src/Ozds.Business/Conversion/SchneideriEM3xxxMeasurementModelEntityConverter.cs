@@ -4,8 +4,10 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Conversion;
 
-public class SchneideriEM3xxxModelEntityConverter : ModelEntityConverter<
-  SchneideriEM3xxxMeasurementModel, SchneideriEM3xxxMeasurementEntity>
+public class SchneideriEM3xxxMeasurementModelEntityConverter :
+  ModelEntityConverter<
+    SchneideriEM3xxxMeasurementModel,
+    SchneideriEM3xxxMeasurementEntity>
 {
   protected override SchneideriEM3xxxMeasurementEntity ToEntity(
     SchneideriEM3xxxMeasurementModel model)
@@ -28,6 +30,7 @@ public static class SchneideriEM3xxxMeasurementModelEntityConverterExtensions
     return new SchneideriEM3xxxMeasurementModel
     {
       MeterId = entity.MeterId,
+      MeasurementLocationId = entity.MeasurementLocationId,
       Timestamp = entity.Timestamp,
       VoltageL1AnyT0_V = (decimal)entity.VoltageL1AnyT0_V,
       VoltageL2AnyT0_V = (decimal)entity.VoltageL2AnyT0_V,
@@ -64,6 +67,7 @@ public static class SchneideriEM3xxxMeasurementModelEntityConverterExtensions
     return new SchneideriEM3xxxMeasurementEntity
     {
       MeterId = model.MeterId,
+      MeasurementLocationId = model.MeasurementLocationId,
       Timestamp = model.Timestamp,
       VoltageL1AnyT0_V = (float)model.VoltageL1AnyT0_V,
       VoltageL2AnyT0_V = (float)model.VoltageL2AnyT0_V,

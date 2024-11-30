@@ -7,7 +7,10 @@ public interface IPushRequestMeasurementConverter
 {
   bool CanConvert(string meterId);
 
-  IMeasurement ToMeasurement(IMeterPushRequestEntity pushRequest);
+  IMeasurement ToMeasurement(
+    IMeterPushRequestEntity pushRequest,
+    string measurementLocationId
+  );
 
   IMeterPushRequestEntity ToPushRequest(IMeasurement measurement);
 }

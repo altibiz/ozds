@@ -6,6 +6,8 @@ public interface IMeasurement : IReadonly
 {
   public string MeterId { get; }
 
+  public string MeasurementLocationId { get; }
+
   public DateTimeOffset Timestamp { get; }
 
   public TariffMeasure<decimal> Current_A { get; }

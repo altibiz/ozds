@@ -10,6 +10,9 @@ public abstract class MeasurementModel : IMeasurement
   public required string MeterId { get; init; }
 
   [Required]
+  public required string MeasurementLocationId { get; init; }
+
+  [Required]
   public required DateTimeOffset Timestamp { get; set; } =
     DateTimeOffset.UtcNow;
 

@@ -25,6 +25,7 @@ public static class SchneideriEM3xxxMeasurementAggregateConverterExtensions
     return new SchneideriEM3xxxAggregateModel
     {
       MeterId = measurement.MeterId,
+      MeasurementLocationId = measurement.MeasurementLocationId,
       Timestamp = measurement.Timestamp,
       Interval = interval,
       Count = 1,

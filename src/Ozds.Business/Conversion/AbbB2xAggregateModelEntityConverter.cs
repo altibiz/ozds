@@ -28,6 +28,7 @@ public static class AbbB2xAggregateModelEntityConverterExtensions
     return new AbbB2xAggregateEntity
     {
       MeterId = model.MeterId,
+      MeasurementLocationId = model.MeasurementLocationId,
       Timestamp = model.Timestamp,
       Interval = model.Interval.ToEntity(),
       Count = model.Count,
@@ -75,6 +76,7 @@ public static class AbbB2xAggregateModelEntityConverterExtensions
     return new AbbB2xAggregateModel
     {
       MeterId = entity.MeterId,
+      MeasurementLocationId = entity.MeasurementLocationId,
       Timestamp = entity.Timestamp,
       Interval = entity.Interval.ToModel(),
       Count = entity.Count,

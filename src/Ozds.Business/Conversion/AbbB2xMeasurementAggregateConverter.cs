@@ -24,6 +24,7 @@ public static class AbbB2xMeasurementAggregateConverterExtensions
     return new AbbB2xAggregateModel
     {
       MeterId = measurement.MeterId,
+      MeasurementLocationId = measurement.MeasurementLocationId,
       Timestamp = measurement.Timestamp,
       Interval = interval,
       Count = 1,

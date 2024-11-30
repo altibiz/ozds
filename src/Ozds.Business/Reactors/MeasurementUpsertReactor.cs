@@ -17,13 +17,12 @@ using Ozds.Business.Models.Enums;
 using Ozds.Business.Observers.Abstractions;
 using Ozds.Business.Observers.EventArgs;
 using Ozds.Business.Queries;
-using Ozds.Business.Queries.Agnostic;
 using Ozds.Business.Reactors.Abstractions;
 using Ozds.Data.Context;
-using Ozds.Data.Entities;
 using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Entities.Base;
 using Ozds.Data.Extensions;
+using Ozds.Iot.Entities.Abstractions;
 using Ozds.Iot.Observers.Abstractions;
 using Ozds.Iot.Observers.EventArgs;
 using Ozds.Jobs.Manager.Abstractions;
@@ -95,9 +94,16 @@ public class MeasurementUpsertReactor(
       eventArgs
     );
 
+    var pushRequestsWithLocations =
+      await GetMeterPushRequestsWithMeasurementLocations(
+        context,
+        eventArgs.Request.Measurements
+      );
+
     IReadOnlyList<IMeasurement> upsertMeasurements =
-      eventArgs.Request.Measurements
-        .Select(pushRequestConverter.ToMeasurement)
+      pushRequestsWithLocations
+        .Select(x => pushRequestConverter
+          .ToMeasurement(x.MeterPushRequest, x.MeasurementLocation.Id))
         .ToList();
 
     IReadOnlyList<IAggregate> upsertAggregates =
@@ -160,6 +166,41 @@ public class MeasurementUpsertReactor(
       messenger.Id,
       messenger.MaxInactivityPeriod.ToTimeSpan()
     );
+  }
+
+  private static async Task<List<(
+    IMeterPushRequestEntity MeterPushRequest,
+    IMeasurementLocationEntity MeasurementLocation
+  )>> GetMeterPushRequestsWithMeasurementLocations(
+    DataDbContext context,
+    IReadOnlyCollection<IMeterPushRequestEntity> pushRequestMeasurements)
+  {
+    var measurementLocations = await context.MeasurementLocations
+      .Where(context.ForeignKeyIn<MeasurementLocationEntity>(
+        nameof(MeasurementLocationEntity.MeterId),
+        pushRequestMeasurements
+          .Select(x => x.MeterId)
+          .Distinct()))
+      .ToListAsync();
+
+    var pushRequestMeasurementsWithLocation =
+      new List<(
+        IMeterPushRequestEntity Measurement,
+        IMeasurementLocationEntity MeasurementLocation)>();
+    foreach (var measurement in pushRequestMeasurements)
+    {
+      var measurementLocation = measurementLocations
+        .FirstOrDefault(x => x.MeterId == measurement.MeterId);
+      if (measurementLocation is null)
+      {
+        continue;
+      }
+
+      pushRequestMeasurementsWithLocation.Add(
+        (measurement, measurementLocation));
+    }
+
+    return pushRequestMeasurementsWithLocation;
   }
 
   private static IEnumerable<IAggregate> MakeAggregates(

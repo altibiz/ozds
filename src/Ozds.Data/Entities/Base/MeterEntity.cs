@@ -8,6 +8,7 @@ namespace Ozds.Data.Entities.Base;
 public class MeterEntity : AuditableEntity, IMeterEntity
 {
   private readonly long _measurementValidatorId;
+
   protected readonly string _stringId = default!;
 
   public override string Id

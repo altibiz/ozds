@@ -28,6 +28,7 @@ public static class AbbB2xMeasurementModelEntityConverterExtensions
     return new AbbB2xMeasurementModel
     {
       MeterId = entity.MeterId,
+      MeasurementLocationId = entity.MeasurementLocationId,
       Timestamp = entity.Timestamp,
       VoltageL1AnyT0_V = (decimal)entity.VoltageL1AnyT0_V,
       VoltageL2AnyT0_V = (decimal)entity.VoltageL2AnyT0_V,
@@ -80,6 +81,7 @@ public static class AbbB2xMeasurementModelEntityConverterExtensions
     return new AbbB2xMeasurementEntity
     {
       MeterId = model.MeterId,
+      MeasurementLocationId = model.MeasurementLocationId,
       Timestamp = model.Timestamp,
       VoltageL1AnyT0_V = (float)model.VoltageL1AnyT0_V,
       VoltageL2AnyT0_V = (float)model.VoltageL2AnyT0_V,

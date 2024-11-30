@@ -21,21 +21,26 @@ public class AgnosticPushRequestMeasurementConverter(
         $"No converter found for measurement {measurement.GetType()}.");
   }
 
-  public IMeasurement ToMeasurement(IMeterPushRequestEntity pushRequest)
+  public IMeasurement ToMeasurement(
+    IMeterPushRequestEntity pushRequest,
+    string measurementLocationId
+  )
   {
     return _serviceProvider
         .GetServices<IPushRequestMeasurementConverter>()
         .FirstOrDefault(converter => converter.CanConvert(pushRequest.MeterId))
-        ?.ToMeasurement(pushRequest)
+        ?.ToMeasurement(pushRequest, measurementLocationId)
       ?? throw new InvalidOperationException(
         $"No converter found for meter {pushRequest.MeterId}.");
   }
 
   public TMeasurement ToMeasurement<TMeasurement>(
-    IMeterPushRequestEntity pushRequest)
+    IMeterPushRequestEntity pushRequest,
+    string measurementLocationId
+  )
     where TMeasurement : class, IMeasurement
   {
-    return ToMeasurement(pushRequest) as TMeasurement
+    return ToMeasurement(pushRequest, measurementLocationId) as TMeasurement
       ?? throw new InvalidOperationException(
         $"No converter found for meter {pushRequest.MeterId}.");
   }

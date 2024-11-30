@@ -30,6 +30,7 @@ public static class SchneideriEM3xxxAggregateModelEntityConverterExtensions
     return new SchneideriEM3xxxAggregateEntity
     {
       MeterId = model.MeterId,
+      MeasurementLocationId = model.MeasurementLocationId,
       Timestamp = model.Timestamp,
       Interval = model.Interval.ToEntity(),
       Count = model.Count,
@@ -79,6 +80,7 @@ public static class SchneideriEM3xxxAggregateModelEntityConverterExtensions
     return new SchneideriEM3xxxAggregateModel
     {
       MeterId = entity.MeterId,
+      MeasurementLocationId = entity.MeasurementLocationId,
       Timestamp = entity.Timestamp,
       Interval = entity.Interval.ToModel(),
       Count = entity.Count,

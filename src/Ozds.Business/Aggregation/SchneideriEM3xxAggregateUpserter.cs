@@ -18,6 +18,7 @@ public class SchneideriEM3xxxAggregateUpserter : AggregateUpserter<
       return (lhs, rhs) => new SchneideriEM3xxxAggregateEntity
       {
         MeterId = lhs.MeterId,
+        MeasurementLocationId = lhs.MeasurementLocationId,
         Timestamp = lhs.Timestamp,
         Interval = lhs.Interval,
         Count = lhs.Count + rhs.Count,
@@ -130,6 +131,7 @@ public class SchneideriEM3xxxAggregateUpserter : AggregateUpserter<
     return new SchneideriEM3xxxAggregateModel
     {
       MeterId = lhs.MeterId,
+      MeasurementLocationId = lhs.MeasurementLocationId,
       Timestamp = lhs.Timestamp,
       Interval = lhs.Interval,
       Count = lhs.Count + rhs.Count,

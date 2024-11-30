@@ -19,6 +19,9 @@ public abstract class AggregateModel : IAggregate
   public required string MeterId { get; set; }
 
   [Required]
+  public required string MeasurementLocationId { get; set; }
+
+  [Required]
   public required DateTimeOffset Timestamp
   {
     get { return _timestamp.ToUniversalTime(); }

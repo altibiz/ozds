@@ -10,6 +10,8 @@ namespace Ozds.Data.Entities.Base;
 
 public abstract class AggregateEntity : IAggregateEntity
 {
+  protected long _measurementLocationId;
+
   public DateTimeOffset Timestamp { get; set; }
 
   public long Count { get; set; }
@@ -17,6 +19,15 @@ public abstract class AggregateEntity : IAggregateEntity
   public IntervalEntity Interval { get; set; }
 
   public string MeterId { get; set; } = default!;
+
+  public virtual string MeasurementLocationId
+  {
+    get => _measurementLocationId.ToString();
+    set => _measurementLocationId = long.Parse(value);
+  }
+
+  public virtual MeasurementLocationEntity MeasurementLocation { get; set; }
+    = default!;
 }
 
 public class AggregateEntity<T> : AggregateEntity
@@ -54,6 +65,12 @@ public class
       .HasOne(nameof(AggregateEntity<MeterEntity>.Meter))
       .WithMany()
       .HasForeignKey(nameof(AggregateEntity<MeterEntity>.MeterId));
+
+    builder.Ignore(nameof(AggregateEntity.MeasurementLocationId));
+    builder
+      .HasOne(nameof(AggregateEntity.MeasurementLocation))
+      .WithMany()
+      .HasForeignKey("_measurementLocationId");
 
     builder
       .Property<DateTimeOffset>(nameof(AggregateEntity.Timestamp))
