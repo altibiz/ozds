@@ -42,8 +42,8 @@
         page,
         CancellationToken.None,
         seen: _seen)
-  : Task.FromResult(RepresentativeState.Notifications
-      .ToPaginated(RepresentativeState.Notifications.Count)))">
+  : Task.FromResult(NotificationsState.Notifications
+      .ToPaginated(NotificationsState.Notifications.Count)))">
   <Found Context="page">
     <ResponsiveTable Model="@(page.Items)">
       <Summary>
@@ -62,6 +62,9 @@
 @code {
   [CascadingParameter]
   public RepresentativeState RepresentativeState { get; set; } = default!;
+
+  [CascadingParameter]
+  public NotificationsState NotificationsState { get; set; } = default!;
 
   private bool _seen = false;
 }

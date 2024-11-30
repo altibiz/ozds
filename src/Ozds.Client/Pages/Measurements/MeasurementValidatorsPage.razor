@@ -16,11 +16,11 @@
   Icon = Icons.Material.Filled.VerifiedUser,
   Parent = typeof(MeasurementsPage))]
 
+@inherits OzdsComponentBase
+
 <HeadContent>
   <title>OZDS - @Translate("Measurement validators")</title>
 </HeadContent>
-
-@inherits OzdsOwningComponentBase
 
 <Paging T="IMeasurementValidator">
   <Summary>

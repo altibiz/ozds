@@ -1,0 +1,22 @@
+@using MudBlazor
+@using Ozds.Client.Components.Base
+@using Ozds.Client.State
+
+@page "/unapproved"
+
+@inherits OzdsComponentBase
+
+@if (RepresentativeState?.Representative is { })
+{
+  NavigateToIndex();
+  return;
+}
+
+<MudText>
+  @Translate("Unapproved")
+</MudText>
+
+@code {
+  [CascadingParameter]
+  public RepresentativeState? RepresentativeState { get; set; }
+}

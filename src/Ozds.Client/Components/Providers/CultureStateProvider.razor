@@ -1,0 +1,10 @@
+@namespace Ozds.Client.Components.Providers
+
+@if (_state is null)
+{
+  return;
+}
+
+<CascadingValue Value="@_state">
+  @ChildContent
+</CascadingValue>

@@ -16,7 +16,7 @@
     Class="d-flex flex-row">
     <MudHidden Breakpoint="Breakpoint.SmAndDown">
       <MudButton
-        Href="@($"/app/{Culture}")"
+        Href="/"
         Style="margin-left: -8px;"
         Class="d-flex align-center">
         <MudImage
@@ -27,7 +27,7 @@
     </MudHidden>
     <MudHidden Breakpoint="Breakpoint.MdAndUp">
       <MudButton
-        Href="@($"/app/{Culture}")"
+        Href="/"
         Style="margin-left: -12px;"
         Class="d-flex align-center">
         <MudImage
@@ -41,9 +41,9 @@
       <MudButton
         Variant="Variant.Text"
         Style="color:white"
-        OnClick="e => ThemeState.SetDarkMode(!ThemeState.IsDarkMode)"
+        OnClick="ToggleDarkMode"
         Class="d-flex flex-row align-center">
-        @if(ThemeState.IsDarkMode)
+        @if (IsDarkMode)
         {
           <MudIcon Icon="@Icons.Material.Filled.DarkMode" />
         }
@@ -54,7 +54,7 @@
         <MudHidden Breakpoint="Breakpoint.SmAndDown">
           <div Class="ml-2">
             <MudText>
-              (@Translate(ThemeState.IsDarkMode ? "Dark" : "Light"))
+              (@DarkModeName)
             </MudText>
           </div>
         </MudHidden>
@@ -62,18 +62,18 @@
       <MudButton
         Variant="Variant.Text"
         Style="color:white"
-        OnClick="e => LayoutState.SetLocalizationDrawerOpen(true)"
+        OnClick="ToggleLocalizationDrawer"
         Class="d-flex flex-row align-center">
         <MudIcon Icon="@Icons.Material.Filled.Language" />
         <MudHidden Breakpoint="Breakpoint.SmAndDown">
           <div Class="ml-2">
-            <MudText>@Culture</MudText>
+            <MudText>@CultureName</MudText>
           </div>
         </MudHidden>
       </MudButton>
       <MudHidden Breakpoint="Breakpoint.MdAndUp">
         <MudButton
-          OnClick="e => LayoutState.SetUserDrawerOpen(true)"
+          OnClick="ToggleUserDrawer"
           Variant="Variant.Text"
           Class="d-flex flex-row align-center"
           Style="margin-right: -18px; color:white;">
@@ -82,7 +82,7 @@
       </MudHidden>
       <MudHidden Breakpoint="Breakpoint.SmAndDown">
         <MudButton
-          OnClick="e => LayoutState.SetUserDrawerOpen(true)"
+          OnClick="ToggleUserDrawer"
           Variant="Variant.Text"
           Class="d-flex flex-row align-center"
           Style="margin-right: -8px; color:white;">
@@ -92,7 +92,7 @@
               @Translate("Welcome"),
             </MudText>
             <MudText>
-              @(UserState?.User.UserName)
+              @UserName
             </MudText>
           </div>
         </MudButton>
@@ -100,14 +100,3 @@
     </div>
   </MudContainer>
 </MudToolBar>
-
-@code {
-  [CascadingParameter]
-  public LayoutState LayoutState { get; set; } = default!;
-
-  [CascadingParameter]
-  public UserState UserState { get; set; } = default!;
-
-  [CascadingParameter]
-  public ThemeState ThemeState { get; set; } = default!;
-}

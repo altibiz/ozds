@@ -40,10 +40,10 @@
 </MudNavLink>
 
 @code {
-  [CascadingParameter]
-  public LayoutState LayoutState { get; set; } = default!;
-
   [Parameter]
   public NavigationAttribute.NavigationDescriptor
     Descriptor { get; set; } = default!;
+
+  [CascadingParameter]
+  private LayoutState LayoutState { get; set; } = default!;
 }

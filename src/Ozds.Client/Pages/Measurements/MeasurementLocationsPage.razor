@@ -3,6 +3,7 @@
 @using Ozds.Business.Analysis
 @using Ozds.Business.Models.Enums
 @using Ozds.Client.Attributes
+@using Ozds.Client.Components.Base
 @using Ozds.Client.Components.Tables
 @using Ozds.Client.Components.Models
 @using Ozds.Client.State
@@ -17,12 +18,14 @@
   Icon = Icons.Material.Filled.VerifiedUser,
   Parent = typeof(MeasurementsPage))]
 
+@inherits OzdsComponentBase
+
 <HeadContent>
   <title>OZDS - @Translate("Measurement locations")</title>
 </HeadContent>
 
 @{
-  var analyses = RepresentativeState.AnalysisBases
+  var analyses = AnalysisState.AnalysisBases.Value
     .AnalysesByMeasurementLocation();
 }
 
@@ -40,5 +43,5 @@
 
 @code {
   [CascadingParameter]
-  public RepresentativeState RepresentativeState { get; set; } = default!;
+  public AnalysisState AnalysisState { get; set; } = default!;
 }

@@ -1,6 +1,6 @@
 @using Microsoft.AspNetCore.Components.Web
 @using Microsoft.Extensions.DependencyInjection
-@using Ozds.Business.Models.Base
+@using Ozds.Business.Models.Abstractions
 @using Ozds.Business.Queries.Agnostic
 @using Ozds.Client.Components.Base
 @using Ozds.Client.Components.Models
@@ -11,14 +11,9 @@
 
 @page "/system/event/{id}"
 
-@inherits OzdsOwningComponentBase
+@inherits OzdsComponentBase
 
-<Loading
-  T="EventModel"
-  Id="@Id"
-  LoadAsync="@(() => ScopedServices
-    .GetRequiredService<ReadonlyQueries>()
-    .ReadSingle<EventModel>(Id, CancellationToken.None))">
+<Loading T="IEvent" Id="@Id">
   <Found>
     <HeadContent>
       <title>OZDS - @Translate("Event"): @context.Title</title>
@@ -37,5 +32,5 @@
 
 @code {
   [Parameter]
-  public string Id { get; set; } = default!;
+  public required string Id { get; set; }
 }

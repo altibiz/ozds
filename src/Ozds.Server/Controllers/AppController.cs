@@ -34,7 +34,7 @@ public class AppController(IAntiforgery antiforgery) : Controller
       new AppViewModel
       {
         Culture = cultureInfo,
-        LogoutToken = logoutToken!
+        LogoutToken = logoutToken!,
       });
   }
 }

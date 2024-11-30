@@ -1,0 +1,26 @@
+@using MudBlazor
+@using Ozds.Client.State
+
+@namespace Ozds.Client.Components.Layout
+
+<MudHidden Breakpoint="Breakpoint.SmAndDown">
+  <MudContainer
+    MaxWidth="MaxWidth.Large"
+    Class="mt-8 relative"
+    Style="flex: 1;">
+    @ChildContent
+  </MudContainer>
+</MudHidden>
+<MudHidden Breakpoint="Breakpoint.MdAndUp">
+  <MudContainer
+    MaxWidth="MaxWidth.Large"
+    Class="mt-4 relative"
+    Style="flex: 1;">
+    @ChildContent
+  </MudContainer>
+</MudHidden>
+
+@code {
+  [Parameter]
+  public RenderFragment? ChildContent { get; set; }
+}

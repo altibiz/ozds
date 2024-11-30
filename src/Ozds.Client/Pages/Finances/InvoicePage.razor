@@ -1,3 +1,4 @@
+@using Microsoft.AspNetCore.Components.Web
 @using Microsoft.Extensions.DependencyInjection
 @using Ozds.Business.Models
 @using Ozds.Business.Models.Abstractions
@@ -10,18 +11,30 @@
 
 @page "/finances/invoice/{id}"
 
-@inherits OzdsOwningComponentBase
+@inherits OzdsComponentBase
 
-<Loading
-  T="IInvoice"
-  Id="@Id"
-  LoadAsync="@(() => ScopedServices
-    .GetRequiredService<ReadonlyQueries>()
-    .ReadSingle<IInvoice>(Id, CancellationToken.None))">
-  <Found>
-    <InvoiceDetails Model="@context"/>
-  </Found>
-</Loading>
+<Mutating T="IInvoice" Id="@Id">
+  <Edit>
+    @if (context.Created)
+    {
+      <NotFound />
+      return;
+    }
+
+    <HeadContent>
+      <title>OZDS - @Translate("Invoice"): @context.Model.Title</title>
+    </HeadContent>
+
+    <InvoiceEdit Model="@context.Model" />
+  </Edit>
+  <Details>
+    <HeadContent>
+      <title>OZDS - @Translate("Invoice"): @context.Model.Title</title>
+    </HeadContent>
+
+    <InvoiceDetails Model="@context.Model" />
+  </Details>
+</Mutating>
 
 @code {
   [Parameter]

@@ -10,7 +10,7 @@
 
 @namespace Ozds.Client.Components.Layout
 
-@inherits OzdsOwningComponentBase
+@inherits OzdsComponentBase
 
 <MudToolBar Gutters="false">
   <MudContainer
@@ -22,35 +22,28 @@
       Style="margin-left: -12px;"
       OnClick="e => LayoutState.SetNavigationDrawerOpen(true)"/>
     <MudSpacer />
-    <Paging
-      PageAsync="@((page) => ScopedServices
-        .GetRequiredService<NotificationQueries>()
-        .ReadForRecipient<NotificationModel>(
-          RepresentativeState.Representative.Id,
-          page,
-          CancellationToken.None))">
-      <Found>
-        <MudButton
-          Size="MudBlazor.Size.Small"
-          Style="margin-right: -20px;"
-          Href="@($"/app/{Culture}/notifications")">
-          <MudIcon Icon="@Icons.Material.Filled.NotificationsActive"/>
-          <MudItem>
-            <MudIcon Icon="@Icons.Material.Filled.Circle"/>
-            <MudText>@context.TotalCount</MudText>
-          </MudItem>
-        </MudButton>
-      </Found>
-      <Empty>
-        <MudButton
-          Size="MudBlazor.Size.Small"
-          Style="margin-right: -20px;"
-          Href="@($"/app/{Culture}/notifications")">
-          <MudIcon Icon="@Icons.Material.Filled.NotificationsNone" />
-        </MudButton>
-      </Empty>
-      <Pagination />
-    </Paging>
+    @if (NotificationsState.Notifications.Count > 0)
+    {
+      <MudButton
+        Size="MudBlazor.Size.Small"
+        Style="margin-right: -20px;"
+        Href="@($"/app/{Culture}/notifications")">
+        <MudIcon Icon="@Icons.Material.Filled.NotificationsActive"/>
+        <MudItem>
+          <MudIcon Icon="@Icons.Material.Filled.Circle"/>
+          <MudText>@NotificationsState.Notifications.Count</MudText>
+        </MudItem>
+      </MudButton>
+    }
+    else
+    {
+      <MudButton
+        Size="MudBlazor.Size.Small"
+        Style="margin-right: -20px;"
+        Href="@($"/app/{Culture}/notifications")">
+        <MudIcon Icon="@Icons.Material.Filled.NotificationsNone" />
+      </MudButton>
+    }
   </MudContainer>
 </MudToolBar>
 
@@ -59,8 +52,5 @@
   public LayoutState LayoutState { get; set; } = default!;
 
   [CascadingParameter]
-  public UserState UserState { get; set; } = default!;
-
-  [CascadingParameter]
-  public RepresentativeState RepresentativeState { get; set; } = default!;
+  public NotificationsState NotificationsState { get; set; } = default!;
 }

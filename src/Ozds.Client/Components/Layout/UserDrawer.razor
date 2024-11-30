@@ -55,7 +55,7 @@
         <input
           type="hidden"
           name="__RequestVerificationToken"
-          value="@LogoutTokenState.LogoutToken"/>
+          value="@UserState.LogoutToken"/>
         <MudButton
           ButtonType="ButtonType.Submit"
           DropShadow="false"
@@ -93,7 +93,4 @@
 
   [CascadingParameter]
   public LayoutState LayoutState { get; set; } = default!;
-
-  [CascadingParameter]
-  public LogoutTokenState LogoutTokenState { get; set; } = default!;
 }

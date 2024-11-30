@@ -16,5 +16,11 @@
     Theme="_state.Theme"
     IsDarkMode="_state.IsDarkMode" />
 
-  @ChildContent
+  <MudPopoverProvider/>
+  <MudDialogProvider/>
+  <MudSnackbarProvider/>
+
+  <MudBreakpointProvider>
+    @ChildContent
+  </MudBreakpointProvider>
 </CascadingValue>

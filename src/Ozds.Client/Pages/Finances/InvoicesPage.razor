@@ -3,6 +3,7 @@
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Business.Models.Enums
 @using Ozds.Client.Attributes
+@using Ozds.Client.Components.Base
 @using Ozds.Client.Components.Tables
 @using Ozds.Client.Components.Models
 @using Ozds.Client.State
@@ -17,12 +18,14 @@
   Icon = Icons.Material.Filled.VerifiedUser,
   Parent = typeof(FinancesPage))]
 
+@inherits OzdsComponentBase
+
 <HeadContent>
   <title>OZDS - @Translate("Invoices")</title>
 </HeadContent>
 
 @{
-  var invoices = RepresentativeState.AnalysisBases
+  var invoices = AnalysisState.AnalysisBases.Value
     .SelectMany(analysisBasis => analysisBasis.Invoices)
     .OfType<IInvoice>()
     .ToList();
@@ -42,5 +45,5 @@
 
 @code {
   [CascadingParameter]
-  public RepresentativeState RepresentativeState { get; set; } = default!;
+  public AnalysisState AnalysisState { get; set; } = default!;
 }

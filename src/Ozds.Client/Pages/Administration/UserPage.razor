@@ -1,3 +1,4 @@
+@using Microsoft.AspNetCore.Components.Web
 @using Microsoft.Extensions.DependencyInjection
 @using Ozds.Business.Models.Composite
 @using Ozds.Business.Mutations.Agnostic
@@ -11,7 +12,7 @@
 
 @page "/administration/user/{id}"
 
-@inherits OzdsOwningComponentBase
+@inherits OzdsComponentBase
 
 <Mutating
   T="MaybeRepresentingUserModel"
@@ -29,9 +30,24 @@
       .Delete(representative, CancellationToken.None)
     : Task.CompletedTask)">
   <Details>
+    <HeadContent>
+      @if (context.Created)
+      {
+        <title>OZDS - @Translate("New user")</title>
+      }
+      else
+      {
+        <title>OZDS - @Translate("User"): @context.Model.Title</title>
+      }
+    </HeadContent>
+
     <MaybeRepresentingUserDetails Model="@context.Model"/>
   </Details>
   <Edit>
+    <HeadContent>
+      <title>OZDS - @Translate("User"): @context.Model.Title</title>
+    </HeadContent>
+
     <MaybeRepresentingUserEdit Model="@context.Model"/>
   </Edit>
 </Mutating>

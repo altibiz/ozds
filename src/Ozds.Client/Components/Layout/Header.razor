@@ -1,0 +1,22 @@
+@using MudBlazor
+@using Ozds.Client.State
+
+@namespace Ozds.Client.Components.Layout
+
+<UserToolbar />
+@if (RepresentativeState?.Representative is { })
+{
+  <RepresentativeToolbar />
+}
+
+<LocalizationDrawer />
+<UserDrawer />
+@if (RepresentativeState?.Representative is { })
+{
+  <NavigationDrawer />
+}
+
+@code {
+  [CascadingParameter]
+  private RepresentativeState? RepresentativeState { get; set; }
+}

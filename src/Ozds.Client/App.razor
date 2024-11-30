@@ -3,20 +3,62 @@
 @using Ozds.Client.Components.Layout
 @using Ozds.Client.Components.Providers
 @using Ozds.Client.Components.Streaming
+@using System.Globalization
 
 @namespace Ozds.Client
 
-<Router
-  @rendermode="RenderMode.InteractiveServer"
-  AppAssembly="@typeof(App).Assembly">
-  <Found Context="routeData">
-    <UserStateProvider LogoutToken="@LogoutToken">
-      <RouteView RouteData="@routeData" DefaultLayout="@typeof(Layout)" />
-    </UserStateProvider>
-  </Found>
-  <NotFound>
-    <LayoutView Layout="@typeof(Layout)">
-      <NotFound />
-    </LayoutView>
-  </NotFound>
-</Router>
+@inject NavigationManager NavigationManager
+
+<CultureStateProvider Culture="@Culture">
+  <UserStateProvider LogoutToken="@LogoutToken">
+    <RepresentativeStateProvider>
+      <Found>
+        <NotificationsStateProvider>
+          <AnalysisStateProvider>
+            <Router AppAssembly="@typeof(App).Assembly">
+              <Found Context="routeData">
+                <RouteView
+                  RouteData="@routeData"
+                  DefaultLayout="@typeof(Layout)" />
+              </Found>
+              <NotFound>
+                <LayoutView Layout="@typeof(Layout)">
+                  <NotFound />
+                </LayoutView>
+              </NotFound>
+            </Router>
+          </AnalysisStateProvider>
+        </NotificationsStateProvider>
+      </Found>
+      <NotFound>
+        @if (NavigationManager.Uri.ToString() != "/unapproved")
+        {
+          NavigationManager.NavigateTo("/unapproved");
+          return;
+        }
+
+        <Router AppAssembly="@typeof(App).Assembly">
+          <Found Context="routeData">
+            <RouteView
+              RouteData="@routeData"
+              DefaultLayout="@typeof(Layout)" />
+          </Found>
+          <NotFound>
+            <LayoutView Layout="@typeof(Layout)">
+              <NotFound />
+            </LayoutView>
+          </NotFound>
+        </Router>
+      </NotFound>
+    </RepresentativeStateProvider>
+  </UserStateProvider>
+</CultureStateProvider>
+
+@code {
+
+  [Parameter]
+  public string LogoutToken { get; set; } = default!;
+
+  [Parameter]
+  public CultureInfo Culture { get; set; } = default!;
+}

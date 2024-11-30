@@ -1,13 +1,12 @@
 using System.Globalization;
 using System.Reflection;
 using System.Text.Json;
-using ApexCharts;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.JSInterop;
 using Ozds.Business.Localization.Abstractions;
-using Ozds.Business.Models.Enums;
 using Ozds.Business.Time;
-using Ozds.Client.Attributes;
 
 namespace Ozds.Client.Components.Base;
 
@@ -18,90 +17,17 @@ public abstract class OzdsComponentBase : ComponentBase
     WriteIndented = true
   };
 
-  private CultureInfo? _culture;
+  [Inject]
+  private ILocalizer Localizer { get; set; } = default!;
 
   [Inject]
-  public ILocalizer T { get; set; } = default!;
-
-  [Inject]
-  public NavigationManager NavigationManager { get; set; } = default!;
+  private NavigationManager NavigationManager { get; set; } = default!;
 
   [Inject]
   private IJSRuntime JS { get; set; } = default!;
 
-  protected override void OnInitialized()
-  {
-    var uri = new Uri(NavigationManager.Uri);
-    var culture = (uri.Segments[2]
-        ?? throw new InvalidOperationException("Culture not found"))
-      .TrimEnd('/');
-    SetCulture(culture);
-  }
-
-  protected string Translate(string notLocalized) => T.Translate(notLocalized);
-
-  protected CultureInfo Culture
-  {
-    get
-    {
-      if (_culture is not null)
-      {
-        return _culture;
-      }
-
-      var uri = new Uri(NavigationManager.Uri);
-      var culture = uri.Segments[2]?.TrimEnd('/') ?? "en-US";
-      var ci = CultureInfo.GetCultureInfo(culture);
-      return _culture = ci;
-    }
-#pragma warning disable S4275 // Getters and setters should access the expected fields
-    set
-#pragma warning restore S4275 // Getters and setters should access the expected fields
-    {
-      var uri = new Uri(NavigationManager.Uri);
-      var segments = uri.Segments;
-      segments[2] = $"{value}/";
-      var path = string.Join("", segments);
-      CultureInfo.DefaultThreadCurrentCulture = value;
-      CultureInfo.DefaultThreadCurrentUICulture = value;
-      NavigationManager.NavigateTo(path);
-    }
-  }
-
-  private static void SetCulture(string culture)
-  {
-    try
-    {
-      var ci = CultureInfo.GetCultureInfo(culture);
-      CultureInfo.DefaultThreadCurrentCulture = ci;
-      CultureInfo.DefaultThreadCurrentUICulture = ci;
-    }
-    catch (CultureNotFoundException)
-    {
-      var defaultCulture = new CultureInfo("en-US");
-      CultureInfo.DefaultThreadCurrentCulture = defaultCulture;
-      CultureInfo.DefaultThreadCurrentUICulture = defaultCulture;
-    }
-  }
-
-  public static string GetCulture()
-  {
-    return CultureInfo.CurrentCulture.Name;
-  }
-
-  public static ApexChartOptions<T> NewApexChartOptions<T>()
-    where T : class
-  {
-    var options = new ApexChartOptions<T>
-    {
-      Blazor = new ApexChartsBlazorOptions
-      {
-        JavascriptPath = "/_content/Blazor-ApexCharts/js/blazor-apexcharts.js"
-      }
-    };
-
-    return options;
-  }
+  [Inject]
+  private LinkGenerator LinkGenerator { get; set; } = default!;
 
   protected static string NumericString(decimal? number, int places = 2)
   {
@@ -182,6 +108,12 @@ public abstract class OzdsComponentBase : ComponentBase
     return JsonSerializer.Serialize(jsonDocument, _jsonSerializerOptions);
   }
 
+  protected string Translate(string notLocalized)
+  {
+    var localized = Localizer.Translate(notLocalized);
+    return localized;
+  }
+
   protected void NavigateToLogin()
   {
     NavigationManager.NavigateTo(
@@ -191,5 +123,38 @@ public abstract class OzdsComponentBase : ComponentBase
   protected void NavigateBack()
   {
     JS.InvokeVoidAsync("history.back");
+  }
+
+  protected void NavigateToIndex()
+  {
+    NavigationManager.NavigateTo("/");
+  }
+
+  protected void NavigateToPage<T>(object? parameters = null)
+  {
+    var attribute = typeof(T).GetCustomAttribute<RouteAttribute>();
+    if (attribute is null)
+    {
+      throw new InvalidOperationException(
+        $"{typeof(T)} is not decorated with {nameof(RouteAttribute)}");
+    }
+
+    var route = attribute.Template;
+    if (parameters is null)
+    {
+      NavigationManager.NavigateTo(route);
+    }
+
+    var uri = LinkGenerator.GetPathByAddress(
+      route,
+      values: new RouteValueDictionary(parameters),
+      pathBase: new PathString("/"));
+    if (uri is null)
+    {
+      throw new InvalidOperationException(
+        $"{typeof(T)} has no route template");
+    }
+
+    NavigationManager.NavigateTo(uri);
   }
 }

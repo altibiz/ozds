@@ -1,6 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using MudBlazor;
 using MudBlazor.Services;
 using Ozds.Client.State;
 
@@ -65,28 +64,19 @@ public static class IServiceCollectionExtensions
   {
     services.AddCascadingAuthenticationState();
 
-    services.AddCascadingValue(_ => default(UserState));
-    services.AddCascadingValue(_ => default(RepresentativeState));
-    services.AddCascadingValue(
-      _ => new LayoutState(
-        false,
-        false,
-        false,
-        _ => { },
-        _ => { },
-        _ => { },
-        Breakpoint.None,
-        _ => { }
-      ));
-    services.AddCascadingValue(
-      _ => new ThemeState(
-        ThemeState.Default(),
-        false,
-        _ => { },
-        _ => { }
-      ));
-    services.AddCascadingValue(_ => new LogoutTokenState(string.Empty));
+    services.AddCascadingValue<CultureState>();
+    services.AddCascadingValue<UserState>();
+    services.AddCascadingValue<RepresentativeState>();
+    services.AddCascadingValue<NotificationsState>();
+    services.AddCascadingValue<AnalysisState>();
+    services.AddCascadingValue<LayoutState>();
 
     return services;
+  }
+
+  private static IServiceCollection AddCascadingValue<T>(
+    this IServiceCollection services)
+  {
+    return services.AddCascadingValue(_ => default(T));
   }
 }

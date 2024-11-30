@@ -16,9 +16,11 @@
 
 @inherits OzdsOwningComponentBase
 
-<Loading LoadAsync="@(() => ScopedServices
-  .GetRequiredService<ReadonlyQueries>()
-  .ReadSingle<NetworkUserCalculationModel>(Id, CancellationToken.None))">
+<Loading
+  T="NetworkUserCalculationModel"
+  LoadAsync="@(() => ScopedServices
+    .GetRequiredService<ReadonlyQueries>()
+    .ReadSingle<NetworkUserCalculationModel>(Id, CancellationToken.None))">
   <Found>
     <HeadContent>
       <title>OZDS - @Translate("Calculation print"): @context.Title</title>
@@ -37,5 +39,5 @@
 
 @code {
   [Parameter]
-  public string Id { get; set; } = default!;
+  public required string Id { get; set; }
 }

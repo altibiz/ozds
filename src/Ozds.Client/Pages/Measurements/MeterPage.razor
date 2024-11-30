@@ -1,7 +1,9 @@
+@using Microsoft.AspNetCore.Components.Web
 @using MudBlazor
 @using Ozds.Business.Analysis
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Business.Time
+@using Ozds.Client.Components.Base
 @using Ozds.Client.Components.Charts
 @using Ozds.Client.Components.Streaming
 @using Ozds.Client.Components.Tables
@@ -12,47 +14,72 @@
 
 @page "/measurements/meter/{id?}"
 
+@inherits OzdsComponentBase
+
 @{
-  var analysis = RepresentativeState.AnalysisBases
+  var analysis = AnalysisState.AnalysisBases.Value
     .AnalysesByMeter()
     .FirstOrDefault(x => x.Meter.Id == Id);
 }
 
-@if (analysis is null)
+@if (analysis is { })
 {
-  <RedirectToLogin />
-  return;
-}
+  <ResponsiveTable Model="@analysis.Analysis.Monthly">
+    <Summary>
+      <MonthlyAnalysisSummary Model="@context" />
+    </Summary>
+    <Details>
+      <MonthlyAnalysisDetails Model="@context" />
+    </Details>
+    <Columns>
+      <MonthlyAnalysisColumns />
+    </Columns>
+  </ResponsiveTable>
 
-<ResponsiveTable Model="@analysis.Analysis.Monthly">
-  <Summary>
-    <MonthlyAnalysisSummary Model="@context" />
-  </Summary>
-  <Details>
-    <MonthlyAnalysisDetails Model="@context" />
-  </Details>
-  <Columns>
-    <MonthlyAnalysisColumns />
-  </Columns>
-</ResponsiveTable>
-
-@{
   var meters = new List<IMeter>() { analysis.Meter };
+
+  <MeasurementChartControls Meters="@meters">
+    <MeasurementGaugeChart
+      Meters="@meters"
+      Parameters="@context" />
+    <MeasurementLineChart
+      Meters="@meters"
+      Parameters="@context"
+      Brush="@(Breakpoint >= Breakpoint.MdAndUp)" />
+  </MeasurementChartControls>
 }
 
-<MeasurementChartControls Meters="@meters">
-  <MeasurementGaugeChart
-    Meters="@meters"
-    Parameters="@context" />
-  <MeasurementLineChart
-    Meters="@meters"
-    Parameters="@context"
-    Brush="@(Breakpoint >= Breakpoint.MdAndUp)" />
-</MeasurementChartControls>
+<Mutating T="IMeter" Id="Id">
+  <Edit>
+    <HeadContent>
+      @if (context.Created)
+      {
+        <title>OZDS - @Translate("New meter")</title>
+      }
+      else
+      {
+        <title>
+          OZDS - @Translate("Meter"): @context.Model.Title
+        </title>
+      }
+    </HeadContent>
+
+    <MeterEdit Model="context.Model" />
+  </Edit>
+  <Details>
+    <HeadContent>
+      <title>
+        OZDS - @Translate("Meter"): @context.Model.Title
+      </title>
+    </HeadContent>
+
+    <MeterDetails Model="context.Model" />
+  </Details>
+</Mutating>
 
 @code {
   [CascadingParameter]
-  public RepresentativeState RepresentativeState { get; set; } = default!;
+  public AnalysisState AnalysisState { get; set; } = default!;
 
   [CascadingParameter]
   public Breakpoint Breakpoint { get; set; } = default!;
