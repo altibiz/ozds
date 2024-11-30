@@ -20,14 +20,14 @@
     <MudIconButton
       Icon="@Icons.Material.Outlined.Menu"
       Style="margin-left: -12px;"
-      OnClick="e => LayoutState.SetNavigationDrawerOpen(true)"/>
+      OnClick="OnNavigationMenuClick"/>
     <MudSpacer />
     @if (NotificationsState.Notifications.Count > 0)
     {
       <MudButton
         Size="MudBlazor.Size.Small"
         Style="margin-right: -20px;"
-        Href="@($"/app/{Culture}/notifications")">
+        OnClick="NavigateToNotifications">
         <MudIcon Icon="@Icons.Material.Filled.NotificationsActive"/>
         <MudItem>
           <MudIcon Icon="@Icons.Material.Filled.Circle"/>
@@ -40,17 +40,9 @@
       <MudButton
         Size="MudBlazor.Size.Small"
         Style="margin-right: -20px;"
-        Href="@($"/app/{Culture}/notifications")">
+        OnClick="NavigateToNotifications">
         <MudIcon Icon="@Icons.Material.Filled.NotificationsNone" />
       </MudButton>
     }
   </MudContainer>
 </MudToolBar>
-
-@code {
-  [CascadingParameter]
-  public LayoutState LayoutState { get; set; } = default!;
-
-  [CascadingParameter]
-  public NotificationsState NotificationsState { get; set; } = default!;
-}

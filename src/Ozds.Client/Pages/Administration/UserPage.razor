@@ -12,7 +12,7 @@
 
 @page "/administration/user/{id}"
 
-@inherits OzdsComponentBase
+@inherits OzdsOwningComponentBase
 
 <Mutating
   T="MaybeRepresentingUserModel"
@@ -37,7 +37,7 @@
       }
       else
       {
-        <title>OZDS - @Translate("User"): @context.Model.Title</title>
+        <title>OZDS - @Translate("User"): @context.Model.User.UserName</title>
       }
     </HeadContent>
 
@@ -45,7 +45,7 @@
   </Details>
   <Edit>
     <HeadContent>
-      <title>OZDS - @Translate("User"): @context.Model.Title</title>
+      <title>OZDS - @Translate("User"): @context.Model.User.UserName</title>
     </HeadContent>
 
     <MaybeRepresentingUserEdit Model="@context.Model"/>

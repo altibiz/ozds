@@ -28,9 +28,7 @@
   <MudDivider />
   <MudDrawerContainer>
     <MudNavMenu>
-      <MudNavLink
-        OnClick="e => LayoutState.SetUserDrawerOpen(false)"
-        Href="account" >
+      <MudNavLink OnClick="OnAccountClick">
         <MudContainer MaxWidth="MaxWidth.Small" Class="d-flex flex-row">
           <MudHidden Breakpoint="Breakpoint.Xs">
             <div
@@ -60,7 +58,7 @@
           ButtonType="ButtonType.Submit"
           DropShadow="false"
           Ripple="false"
-          OnClick="e => LayoutState.SetUserDrawerOpen(false)"
+          OnClick="OnLogoutClick"
           Style="width: 100%; padding: 8px 16px 8px 16px;">
           <MudContainer MaxWidth="MaxWidth.Small" Class="d-flex flex-row">
             <MudHidden Breakpoint="Breakpoint.Xs">
@@ -86,11 +84,3 @@
     </MudNavMenu>
   </MudDrawerContainer>
 </MudDrawer>
-
-@code {
-  [CascadingParameter]
-  public UserState UserState { get; set; } = default!;
-
-  [CascadingParameter]
-  public LayoutState LayoutState { get; set; } = default!;
-}
