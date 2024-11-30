@@ -14,12 +14,10 @@
 
 @inherits OzdsOwningComponentBase
 
-<Loading LoadAsync="@(() => ScopedServices
-  .GetRequiredService<CalculatedInvoiceQueries>()
-  .ReadCalculatedNetworkUserInvoice(Id, CancellationToken.None))">
+<Loading LoadAsync="OnLoadAsync">
   <Found>
     <HeadContent>
-      <title>OZDS - @Translate("Invoice print"): @context.Title</title>
+      <title>OZDS - @Translate("Invoice print"): @context.Invoice.Title</title>
     </HeadContent>
 
     <NetworkUserInvoicePrint Model="@context"/>
@@ -32,8 +30,3 @@
     <NotFound />
   </NotFound>
 </Loading>
-
-@code {
-  [Parameter]
-  public string Id { get; set; } = default!;
-}

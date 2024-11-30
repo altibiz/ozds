@@ -1,5 +1,7 @@
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Business.Models
+@using Ozds.Client.Components.Fields
+@using Ozds.Client.Pages
 
 @namespace Ozds.Client.Components.Models
 
@@ -7,6 +9,11 @@
 {
   <NetworkUserInvoiceDetails Model="networkUserInvoiceModel"/>
 }
+
+<IdentifiableLink
+  T="IInvoice"
+  TPage="InvoicePrintPage"
+  Model="Model" />
 
 @code {
   [Parameter]

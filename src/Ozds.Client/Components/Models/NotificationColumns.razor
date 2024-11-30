@@ -1,5 +1,5 @@
 @using MudBlazor
-@using Ozds.Business.Models.Base
+@using Ozds.Business.Models.Abstractions
 @using Ozds.Business.Models.Enums
 @using Ozds.Client.Components.Base
 @using Ozds.Client.State
@@ -9,7 +9,7 @@
 @inherits OzdsComponentBase
 
 <PropertyColumn
-  T="NotificationModel"
+  T="INotification"
   TProperty="DateTimeOffset"
   CellStyle="font-size: x-large;"
   Property="x => x.Timestamp"

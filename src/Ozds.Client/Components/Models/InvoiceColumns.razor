@@ -2,7 +2,9 @@
 @using Ozds.Business.Models
 @using Ozds.Business.Models.Enums
 @using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Fields
 @using Ozds.Client.State
+@using Ozds.Client.Pages
 
 @namespace Ozds.Client.Components.Models
 
@@ -14,13 +16,10 @@
   Sortable="false">
   <CellTemplate>
     <MudStack Row>
-      <MudButton
-        OnClick="@(() => NavigationManager
-          .NavigateTo($"invoice/{context.Item.Id}"))"
-        Variant="Variant.Outlined"
-        Color="Color.Primary">
-        @context.Item.ArchivedNetworkUser.LegalPerson.Name
-      </MudButton>
+      <IdentifiableLink
+        T="NetworkUserModel"
+        TPage="NetworkUserPage"
+        Model="context.Item.ArchivedNetworkUser" />
     </MudStack>
   </CellTemplate>
 </TemplateColumn>

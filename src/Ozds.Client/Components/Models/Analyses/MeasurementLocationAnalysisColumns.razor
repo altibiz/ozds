@@ -1,8 +1,12 @@
 @using MudBlazor
 @using Ozds.Business.Analysis
 @using Ozds.Business.Models.Enums
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Business.Models
 @using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Fields
 @using Ozds.Client.State
+@using Ozds.Client.Pages
 
 @namespace Ozds.Client.Components.Models
 
@@ -16,12 +20,10 @@
     @if (context.Item.NetworkUser is { } networkUser)
     {
       <MudStack Row>
-        <MudButton
-          OnClick="@(() => NavigationManager
-            .NavigateTo($"network-user/{networkUser.Id}"))"
-          Variant="Variant.Outlined" Color="Color.Primary">
-          @networkUser.Title
-        </MudButton>
+        <IdentifiableLink
+          T="NetworkUserModel"
+          TPage="NetworkUserPage"
+          Model="networkUser" />
       </MudStack>
     }
   </CellTemplate>
@@ -33,12 +35,10 @@
   Sortable="false">
   <CellTemplate>
     <MudStack Row>
-      <MudButton
-        OnClick="@(() => NavigationManager
-          .NavigateTo($"meter/{context.Item.Meter.Id}"))"
-        Variant="Variant.Filled" Color="Color.Primary">
-        @context.Item.Meter.Title
-      </MudButton>
+      <IdentifiableLink
+        T="IMeter"
+        TPage="MeterPage"
+        Model="context.Item" />
     </MudStack>
   </CellTemplate>
 </TemplateColumn>

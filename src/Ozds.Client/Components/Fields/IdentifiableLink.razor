@@ -1,0 +1,17 @@
+@using MudBlazor
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Client.Components.Base
+
+@namespace Ozds.Client.Components.Fields
+
+@typeparam T where T : IIdentifiable
+@typeparam TPage
+
+@inherits OzdsComponentBase
+
+<MudButton
+  OnClick="OnClick"
+  Variant="Variant.Filled"
+  Color="Color.Primary">
+  @Model.Title
+</MudButton>

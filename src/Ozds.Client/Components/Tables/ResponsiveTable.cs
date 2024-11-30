@@ -24,6 +24,9 @@ public partial class ResponsiveTable<T> : OzdsComponentBase
   [Parameter]
   public RenderFragment<T>? Title { get; set; } = default!;
 
+  [Inject]
+  private NavigationManager NavigationManager { get; set; } = default!;
+
   private string? _searchString;
 
   private List<TableItemMetadata> _metadata = new();

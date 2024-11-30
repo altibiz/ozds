@@ -1,5 +1,5 @@
 @using Microsoft.AspNetCore.Components
-@using Ozds.Business.Models.Base
+@using Ozds.Business.Models.Abstractions
 @using Ozds.Business.Models
 @using Ozds.Client.Components.Base
 @using Ozds.Client.Components.Fields
@@ -19,5 +19,5 @@ else if (Model is SystemNotificationModel systemNotificationModel)
 
 @code {
   [Parameter]
-  public NotificationModel Model { get; set; } = default!;
+  public INotification Model { get; set; } = default!;
 }

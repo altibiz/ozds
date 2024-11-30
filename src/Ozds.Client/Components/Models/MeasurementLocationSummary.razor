@@ -1,4 +1,4 @@
-@using Ozds.Business.Models.Base
+@using Ozds.Business.Models.Abstractions
 @using Ozds.Business.Models
 
 @namespace Ozds.Client.Components.Models
@@ -14,5 +14,5 @@ else if (Model is LocationMeasurementLocationModel locationMeasurementLocationMo
 
 @code {
   [Parameter]
-  public MeasurementLocationModel Model { get; set; } = default!;
+  public IMeasurementLocation Model { get; set; } = default!;
 }

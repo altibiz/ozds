@@ -1,8 +1,11 @@
 @using MudBlazor
 @using Ozds.Business.Analysis
 @using Ozds.Business.Models.Enums
+@using Ozds.Business.Models
 @using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Fields
 @using Ozds.Client.State
+@using Ozds.Client.Pages
 
 @namespace Ozds.Client.Components.Models
 
@@ -14,13 +17,10 @@
   Sortable="false">
   <CellTemplate>
     <MudStack Row>
-      <MudButton
-        OnClick="@(() => NavigationManager
-          .NavigateTo($"network-user/{context.Item.NetworkUser.Id}"))"
-        Variant="Variant.Outlined"
-        Color="Color.Primary">
-        @context.Item.NetworkUser.Title
-      </MudButton>
+      <IdentifiableLink
+        T="NetworkUserModel"
+        TPage="NetworkUserPage"
+        Model="context.Item.NetworkUser" />
     </MudStack>
   </CellTemplate>
 </TemplateColumn>
