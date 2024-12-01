@@ -137,11 +137,13 @@ public class AnalysisBasisEntityFactory(DbContext context)
       var measurements = await fixture
         .Build<AbbB2xMeasurementEntity>()
         .With(meas => meas.MeterId, meter.Id)
+        .With(meas => meas.MeasurementLocationId, measurementLocation.Id)
         .CreateManyInDb(context);
 
       var monthlyAggregates = await fixture
         .Build<AbbB2xAggregateEntity>()
         .With(agg => agg.MeterId, meter.Id)
+        .With(agg => agg.MeasurementLocationId, measurementLocation.Id)
         .With(agg => agg.Interval, IntervalEntity.Month)
         .IndexedWith(
           agg => agg.Timestamp,
@@ -152,6 +154,7 @@ public class AnalysisBasisEntityFactory(DbContext context)
       var quarterHourlyAggregates = await fixture
         .Build<AbbB2xAggregateEntity>()
         .With(agg => agg.MeterId, meter.Id)
+        .With(agg => agg.MeasurementLocationId, measurementLocation.Id)
         .With(agg => agg.Interval, IntervalEntity.QuarterHour)
         .IndexedWith(
           agg => agg.Timestamp,

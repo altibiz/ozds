@@ -145,11 +145,8 @@ public class AnalysisQueries(
         AS abb_b2x_aggregates_monthly
         ON abb_b2x_aggregates_monthly
           .{context.GetForeignKeyColumnName<AbbB2xAggregateEntity>(
-            nameof(AbbB2xAggregateEntity.Meter))}
-          = initial_measurement_locations
-            .{context.GetForeignKeyColumnName<
-              NetworkUserMeasurementLocationEntity>(
-              nameof(NetworkUserMeasurementLocationEntity.Meter))}
+            nameof(AbbB2xAggregateEntity.MeasurementLocation))}
+          = initial_measurement_locations.measurement_location_id
         AND abb_b2x_aggregates_monthly
           .{context.GetColumnName<AbbB2xAggregateEntity>(
             nameof(AbbB2xAggregateEntity.Timestamp))} >= @fromDate
@@ -164,11 +161,8 @@ public class AnalysisQueries(
         AS schneider_iem3xxx_aggregates_monthly
         ON schneider_iem3xxx_aggregates_monthly
           .{context.GetForeignKeyColumnName<SchneideriEM3xxxAggregateEntity>(
-            nameof(SchneideriEM3xxxAggregateEntity.Meter))}
-          = initial_measurement_locations
-            .{context.GetForeignKeyColumnName<
-              NetworkUserMeasurementLocationEntity>(
-              nameof(NetworkUserMeasurementLocationEntity.Meter))}
+            nameof(SchneideriEM3xxxAggregateEntity.MeasurementLocation))}
+          = initial_measurement_locations.measurement_location_id
         AND schneider_iem3xxx_aggregates_monthly
           .{context.GetColumnName<SchneideriEM3xxxAggregateEntity>(
             nameof(SchneideriEM3xxxAggregateEntity.Timestamp))} >= @fromDate
@@ -182,11 +176,8 @@ public class AnalysisQueries(
       LEFT JOIN LATERAL (
         {MakeAbbB2xMeasurementsLastQuery(
           context,
-          meterIdExpression: "initial_measurement_locations."
-            + context.GetForeignKeyColumnName<
-              NetworkUserMeasurementLocationEntity>(
-              nameof(NetworkUserMeasurementLocationEntity.Meter)
-            ),
+          measurementLocationIdExpression:
+            "initial_measurement_locations.measurement_location_id",
           fromDateExpression: "@fromDate",
           toDateExpression: "@toDate"
         )}
@@ -194,11 +185,8 @@ public class AnalysisQueries(
       LEFT JOIN LATERAL (
         {MakeSchneideriEM3xxxMeasurementsLastQuery(
           context,
-          meterIdExpression: "initial_measurement_locations."
-            + context.GetForeignKeyColumnName<
-              NetworkUserMeasurementLocationEntity>(
-              nameof(NetworkUserMeasurementLocationEntity.Meter)
-            ),
+          measurementLocationIdExpression:
+            "initial_measurement_locations.measurement_location_id",
           fromDateExpression: "@fromDate",
           toDateExpression: "@toDate"
         )}
@@ -206,19 +194,13 @@ public class AnalysisQueries(
       LEFT JOIN abb_b2x_aggregates_max_power
         ON abb_b2x_aggregates_max_power
           .{context.GetForeignKeyColumnName<AbbB2xAggregateEntity>(
-            nameof(AbbB2xAggregateEntity.Meter))}
-          = initial_measurement_locations
-            .{context.GetForeignKeyColumnName<
-              NetworkUserMeasurementLocationEntity>(
-              nameof(NetworkUserMeasurementLocationEntity.Meter))}
+            nameof(AbbB2xAggregateEntity.MeasurementLocation))}
+          = initial_measurement_locations.measurement_location_id
       LEFT JOIN schneider_iem3xxx_aggregates_max_power
         ON schneider_iem3xxx_aggregates_max_power
           .{context.GetForeignKeyColumnName<SchneideriEM3xxxAggregateEntity>(
-            nameof(AbbB2xAggregateEntity.Meter))}
-          = initial_measurement_locations
-            .{context.GetForeignKeyColumnName<
-              NetworkUserMeasurementLocationEntity>(
-              nameof(NetworkUserMeasurementLocationEntity.Meter))}
+            nameof(AbbB2xAggregateEntity.MeasurementLocation))}
+          = initial_measurement_locations.measurement_location_id
     ";
 
     var parameters = new { representativeId, fromDate, toDate };
@@ -385,7 +367,7 @@ public class AnalysisQueries(
 
   private static string MakeAbbB2xMeasurementsLastQuery(
     DbContext context,
-    string meterIdExpression,
+    string measurementLocationIdExpression,
     string fromDateExpression,
     string toDateExpression
   ) => $@"
@@ -394,8 +376,8 @@ public class AnalysisQueries(
     WHERE
       {context.GetTableName<AbbB2xMeasurementEntity>()}
         .{context.GetForeignKeyColumnName<AbbB2xMeasurementEntity>(
-          nameof(AbbB2xMeasurementEntity.Meter))}
-        = {meterIdExpression}
+          nameof(AbbB2xMeasurementEntity.MeasurementLocation))}
+        = {measurementLocationIdExpression}
       AND {context.GetTableName<AbbB2xMeasurementEntity>()}
         .{context.GetColumnName<AbbB2xMeasurementEntity>(
           nameof(AbbB2xMeasurementEntity.Timestamp))} >= {fromDateExpression}
@@ -410,7 +392,7 @@ public class AnalysisQueries(
 
   private static string MakeSchneideriEM3xxxMeasurementsLastQuery(
     DbContext context,
-    string meterIdExpression,
+    string measurementLocationIdExpression,
     string fromDateExpression,
     string toDateExpression
   ) => $@"
@@ -420,8 +402,8 @@ public class AnalysisQueries(
       {context.GetTableName<SchneideriEM3xxxMeasurementEntity>()}
         .{context.GetForeignKeyColumnName<
           SchneideriEM3xxxMeasurementEntity>(
-          nameof(SchneideriEM3xxxMeasurementEntity.Meter))}
-        = {meterIdExpression}
+          nameof(SchneideriEM3xxxMeasurementEntity.MeasurementLocation))}
+        = {measurementLocationIdExpression}
       AND {context.GetTableName<SchneideriEM3xxxMeasurementEntity>()}
         .{context.GetColumnName<SchneideriEM3xxxMeasurementEntity>(
           nameof(SchneideriEM3xxxMeasurementEntity.Timestamp))}

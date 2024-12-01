@@ -8,8 +8,8 @@ using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Enums;
 using Ozds.Business.Observers.Abstractions;
 using Ozds.Business.Observers.EventArgs;
-using Ozds.Business.Queries;
 using Ozds.Business.Queries.Abstractions;
+using Ozds.Business.Queries.Agnostic;
 using Ozds.Client.Components.Base;
 using Ozds.Client.Extensions;
 
@@ -48,7 +48,9 @@ public partial class MeasurementDonutChart : OzdsOwningComponentBase
 
   private readonly string _id = Guid.NewGuid().ToString();
 
+#pragma warning disable S2933 // Fields that are only assigned in the constructor should be "readonly"
   private ApexChart<IMeasurement>? _chart = default!;
+#pragma warning restore S2933 // Fields that are only assigned in the constructor should be "readonly"
 
   private PaginatedList<IMeasurement> _measurements = new(
     new List<IMeasurement>(), 0);
@@ -79,15 +81,17 @@ public partial class MeasurementDonutChart : OzdsOwningComponentBase
 
   protected override async Task OnParametersSetAsync()
   {
-    var queries = ScopedServices.GetRequiredService<MeterGraphQueries>();
+    var queries = ScopedServices.GetRequiredService<MeasurementQueries>();
 
     var fromDate = Parameters.FromDate;
     var toDate = fromDate.Subtract(Parameters.Resolution
       .ToTimeSpan(Parameters.Multiplier, fromDate));
-    _measurements = await queries.Read(
+    _measurements = await queries.ReadByMeterIdsDynamic(
       Meters,
       Parameters.Resolution,
       Parameters.Multiplier,
+      pageNumber: 1,
+      cancellationToken: CancellationToken.None,
       fromDate: fromDate,
       toDate: toDate
     );

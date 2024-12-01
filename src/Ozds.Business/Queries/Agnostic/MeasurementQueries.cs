@@ -13,7 +13,7 @@ public class MeasurementQueries(
   AgnosticMeterNamingConvention meterNamingConvention
 ) : IQueries
 {
-  public async Task<PaginatedList<IMeasurement>> ReadDynamic(
+  public async Task<PaginatedList<IMeasurement>> ReadByMeterIdsDynamic(
     IEnumerable<IMeter> meters,
     ResolutionModel resolution,
     int multiplier,
@@ -42,7 +42,7 @@ public class MeasurementQueries(
         : modelEntityConverter.EntityType(
             meterNamingConvention.MeasurementTypeForMeterId(id)));
 
-    var entities = await queries.Read(
+    var entities = await queries.ReadByMeterIds(
       modelIdsByEntityType,
       appropriateInterval,
       fromDate,
@@ -59,7 +59,7 @@ public class MeasurementQueries(
     return models;
   }
 
-  public async Task<List<IMeasurement>> ReadLastDynamic(
+  public async Task<List<IMeasurement>> ReadByMeterIdsLastDynamic(
     IEnumerable<IMeter> meters,
     CancellationToken cancellationToken,
     IntervalModel? interval = default,
@@ -79,7 +79,87 @@ public class MeasurementQueries(
         : modelEntityConverter.EntityType(
             meterNamingConvention.MeasurementTypeForMeterId(id)));
 
-    var entities = await queries.ReadLast(
+    var entities = await queries.ReadLastByMeterId(
+      modelIdsByEntityType,
+      interval?.ToEntity(),
+      toDate,
+      cancellationToken
+    );
+
+    return entities
+      .Select(modelEntityConverter.ToModel<IMeasurement>)
+      .ToList();
+  }
+
+  public async Task<PaginatedList<IMeasurement>>
+    ReadByMeasurementLocationIdsDynamic(
+      IEnumerable<IMeter> meters,
+      ResolutionModel resolution,
+      int multiplier,
+      int pageNumber,
+      CancellationToken cancellationToken,
+      DateTimeOffset fromDate = default,
+      DateTimeOffset toDate = default,
+      int pageCount = QueryConstants.MeasurementPageCount
+    )
+  {
+    var now = DateTimeOffset.UtcNow;
+    toDate = toDate == default ? now : toDate;
+    var timeSpan = resolution.ToTimeSpan(multiplier, toDate);
+    fromDate = fromDate == default ? toDate.Subtract(timeSpan) : fromDate;
+
+    var appropriateInterval = QueryConstants
+      .AppropriateInterval(timeSpan, fromDate)
+      ?.ToEntity();
+    var isAggregate = appropriateInterval is { };
+
+    var modelIdsByEntityType = meters
+      .Select(meter => meter.Id)
+      .GroupBy(id => isAggregate
+        ? modelEntityConverter.EntityType(
+            meterNamingConvention.AggregateTypeForMeterId(id))
+        : modelEntityConverter.EntityType(
+            meterNamingConvention.MeasurementTypeForMeterId(id)));
+
+    var entities = await queries.ReadByMeasurementLocationIds(
+      modelIdsByEntityType,
+      appropriateInterval,
+      fromDate,
+      toDate,
+      pageNumber,
+      cancellationToken,
+      pageCount
+    );
+
+    var models = entities.Items
+      .Select(modelEntityConverter.ToModel<IMeasurement>)
+      .ToPaginatedList(entities.TotalCount);
+
+    return models;
+  }
+
+  public async Task<List<IMeasurement>>
+    ReadByMeasurementLocationIdsLastDynamic(
+      IEnumerable<IMeter> meters,
+      CancellationToken cancellationToken,
+      IntervalModel? interval = default,
+      DateTimeOffset toDate = default
+    )
+  {
+    var now = DateTimeOffset.UtcNow;
+    toDate = toDate == default ? now : toDate;
+
+    var isAggregate = interval is { };
+
+    var modelIdsByEntityType = meters
+      .Select(meter => meter.Id)
+      .GroupBy(id => isAggregate
+        ? modelEntityConverter.EntityType(
+            meterNamingConvention.AggregateTypeForMeterId(id))
+        : modelEntityConverter.EntityType(
+            meterNamingConvention.MeasurementTypeForMeterId(id)));
+
+    var entities = await queries.ReadLastByMeasurementLocationIds(
       modelIdsByEntityType,
       interval?.ToEntity(),
       toDate,
