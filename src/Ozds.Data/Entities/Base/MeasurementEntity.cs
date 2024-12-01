@@ -60,6 +60,9 @@ public class
 
     builder.Ignore(nameof(MeasurementEntity.MeasurementLocationId));
     builder
+      .Property("_measurementLocationId")
+      .HasColumnName("measurement_location_id");
+    builder
       .HasOne(nameof(MeasurementEntity.MeasurementLocation))
       .WithMany()
       .HasForeignKey("_measurementLocationId");

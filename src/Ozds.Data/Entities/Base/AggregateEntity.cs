@@ -68,6 +68,9 @@ public class
 
     builder.Ignore(nameof(AggregateEntity.MeasurementLocationId));
     builder
+      .Property("_measurementLocationId")
+      .HasColumnName("measurement_location_id");
+    builder
       .HasOne(nameof(AggregateEntity.MeasurementLocation))
       .WithMany()
       .HasForeignKey("_measurementLocationId");
