@@ -2,4 +2,4 @@ outs:
 - md5: 378d320d1e3d6ecdaff2c7f740e96231
   size: 41785
   hash: md5
-  path: 20241201073931-Ozds.Data-MeasurementMeasurementLocation.sql
+  path: 20241201153856-Ozds.Data-MeasurementMeasurementLocation2.sql

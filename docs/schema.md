@@ -83,7 +83,7 @@ erDiagram
         real current_l2_any_t0_avg_a 
         real current_l3_any_t0_avg_a 
         interval_entity interval PK 
-        bigint measurement_location_id FK 
+        bigint measurement_location_id PK,FK 
         text meter_id PK,FK 
         real reactive_energy_total_export_t0_max_varh 
         real reactive_energy_total_export_t0_min_varh 
@@ -115,7 +115,7 @@ erDiagram
         real current_l1_any_t0_a 
         real current_l2_any_t0_a 
         real current_l3_any_t0_a 
-        bigint measurement_location_id FK 
+        bigint measurement_location_id PK,FK 
         text meter_id PK,FK 
         real reactive_energy_l1_export_t0_varh 
         real reactive_energy_l1_import_t0_varh 
@@ -775,7 +775,7 @@ erDiagram
         real current_l2_any_t0_avg_a 
         real current_l3_any_t0_avg_a 
         interval_entity interval PK 
-        bigint measurement_location_id FK 
+        bigint measurement_location_id PK,FK 
         text meter_id PK,FK 
         real reactive_energy_total_export_t0_max_varh 
         real reactive_energy_total_export_t0_min_varh 
@@ -803,7 +803,7 @@ erDiagram
         real current_l1_any_t0_a 
         real current_l2_any_t0_a 
         real current_l3_any_t0_a 
-        bigint measurement_location_id FK 
+        bigint measurement_location_id PK,FK 
         text meter_id PK,FK 
         real reactive_energy_total_export_t0_varh 
         real reactive_energy_total_import_t0_varh 
