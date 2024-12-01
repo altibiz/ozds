@@ -38,7 +38,7 @@ prepare:
     dvc pull
     dotnet tool restore
     (not (which prettier | is-empty)) or (npm install -g prettier) | ignore
-    just clean
+    @just clean
 
 lfs:
     dvc add {{ fakeassets }}/*.csv
@@ -59,7 +59,7 @@ measurements *args:
     python -m scripts.database.measurements {{ args }}
 
 format:
-    cd '{{ root }}'; just --fmt --unstable
+    cd '{{ root }}'; @just --fmt --unstable
 
     nixpkgs-fmt '{{ root }}'
 
@@ -158,7 +158,7 @@ docs:
     cp '{{ docs }}/favicon.ico' {{ artifacts }}
 
 migrate project name:
-    just clean
+    @just clean
 
     dotnet ef \
       --startup-project '{{ servercsproj }}' \
@@ -172,12 +172,15 @@ migrate project name:
       ('{{ project }}.Migrations' | split row '.' | path join) + '/*') | \
       each { |x| mv -f $x '{{ root }}/src/{{ project }}/Migrations' } | ignore
 
+    @just migrate-continue '{{ project }}' '{{ name }}'
+
+migrate-continue project name:
     dotnet ef \
       --startup-project '{{ servercsproj }}' \
       --project '{{ root }}/src/{{ project }}/{{ project }}.csproj' \
       database update
 
-    just dump '{{ now }}-{{ project }}-{{ name }}'
+    @just dump '{{ now }}-{{ project }}-{{ name }}'
 
     cp -f \
       '{{ migrationassets }}/{{ now }}-{{ project }}-{{ name }}-orchard.sql' \
@@ -396,4 +399,4 @@ purge:
     dotnet tool restore
     dotnet restore
 
-    just clean
+    @just clean
