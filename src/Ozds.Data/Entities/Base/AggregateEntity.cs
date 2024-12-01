@@ -52,7 +52,8 @@ public class
     builder.HasKey(
       nameof(AggregateEntity.Timestamp),
       nameof(AggregateEntity.Interval),
-      nameof(AggregateEntity.MeterId)
+      nameof(AggregateEntity.MeterId),
+      nameof(AggregateEntity.MeasurementLocationId)
     );
 
     builder.HasTimescaleHypertable(

@@ -217,6 +217,7 @@ public class MeasurementUpsertReactor(
         aggregate => new
         {
           Type = aggregate.GetType(),
+          aggregate.MeasurementLocationId,
           aggregate.MeterId,
           aggregate.Timestamp,
           aggregate.Interval
@@ -488,6 +489,7 @@ public class MeasurementUpsertReactor(
       .On(
         measurement => new
         {
+          measurement.MeasurementLocationId,
           measurement.MeterId,
           measurement.Timestamp
         })
@@ -506,6 +508,7 @@ public class MeasurementUpsertReactor(
       .On(
         aggregate => new
         {
+          aggregate.MeasurementLocationId,
           aggregate.MeterId,
           aggregate.Timestamp,
           aggregate.Interval

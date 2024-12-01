@@ -44,7 +44,8 @@ public class
 
     builder.HasKey(
       nameof(MeasurementEntity.Timestamp),
-      nameof(MeasurementEntity.MeterId)
+      nameof(MeasurementEntity.MeterId),
+      nameof(MeasurementEntity.MeasurementLocationId)
     );
 
     builder.HasTimescaleHypertable(
