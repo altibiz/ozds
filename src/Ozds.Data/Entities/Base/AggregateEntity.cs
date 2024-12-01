@@ -53,7 +53,7 @@ public class
       nameof(AggregateEntity.Timestamp),
       nameof(AggregateEntity.Interval),
       nameof(AggregateEntity.MeterId),
-      nameof(AggregateEntity.MeasurementLocationId)
+      "_measurementLocationId"
     );
 
     builder.HasIndex(
@@ -65,7 +65,7 @@ public class
     builder.HasIndex(
       nameof(AggregateEntity.Timestamp),
       nameof(AggregateEntity.Interval),
-      nameof(AggregateEntity.MeasurementLocationId)
+      "_measurementLocationId"
     );
 
     builder.HasTimescaleHypertable(
