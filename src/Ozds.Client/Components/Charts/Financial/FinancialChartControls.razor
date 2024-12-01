@@ -1,0 +1,90 @@
+@using MudBlazor
+@using Ozds.Business.Models
+@using Ozds.Business.Models.Enums
+@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Fields
+
+@* TODO: control via profile enum *@
+
+@namespace Ozds.Client.Components.Charts
+
+@inherits OzdsComponentBase
+
+@ChildContent(_parameters)
+
+<MudExpansionPanel
+  Gutters="false"
+  Text="@Translate("Chart controls")">
+  <MudGrid Spacing="2" Justify="Justify.Center">
+    <MudItem xs="12" md="6">
+      @if (Meters.Count > 1)
+      {
+        <MudSelect
+          T="string"
+          Label="@Translate("Meters")"
+          SelectedValues="_parameters.Selection.Select(meter => meter.Id)"
+          SelectedValuesChanged="@(e => _parameters.Selection = Meters
+            .Where(meter => e.Contains(meter.Id))
+            .ToHashSet())"
+          MultiSelection>
+          @foreach (var meter in Meters)
+          {
+            <MudSelectItem Value="@meter.Id">
+              @meter.Id
+            </MudSelectItem>
+          }
+        </MudSelect>
+      }
+    </MudItem>
+    <MudItem xs="12" md="6">
+      <MudHidden Breakpoint="Breakpoint.MdAndUp">
+        <MudCheckBox
+          T="bool"
+          @bind-Value="_parameters.Refresh"
+          Label="@Translate("Refresh")"/>
+      </MudHidden>
+      <MudHidden Breakpoint="Breakpoint.SmAndDown">
+        <div class="d-flex justify-end pe-4">
+          <MudCheckBox
+            T="bool"
+            @bind-Value="_parameters.Refresh"
+            Label="@Translate("Refresh")"/>
+        </div>
+      </MudHidden>
+    </MudItem>
+    <MudItem xs="12" sm="6" md="3">
+      <EnumPicker
+        @bind-Value="_parameters.Measure"
+        Title="@Translate("Measure")"
+        Label="x => Translate(x.ToTitle())"/>
+    </MudItem>
+    <MudItem xs="12" sm="6" md="3">
+      <MultiEnumPicker
+        @bind-Value="_parameters.Phases"
+        Title="@Translate("Phase")"
+        Label="x => Translate(x.ToTitle())"/>
+    </MudItem>
+    <MudItem xs="12" sm="6" md="3">
+      <EnumPicker
+        T="ResolutionModel"
+        @bind-Value="_parameters.Resolution"
+        Title="@Translate("Resolution")"
+        Label="x => Translate(x.ToTitle(_parameters.Multiplier))"/>
+    </MudItem>
+    <MudItem xs="12" sm="6" md="3">
+      <MudNumericField
+        T="int"
+        @bind-Value="_parameters.Multiplier"
+        Label="@Translate("Multiplier")"
+        Min="1"
+        Max="@_parameters.Resolution.MaxMultiplier()"
+        Step="1"/>
+    </MudItem>
+    <MudItem xs="12" sm="6" md="3">
+      <EnumPicker
+        @bind-Value="_parameters.Operator"
+        Title="@Translate("Operator")"
+        Label="x => Translate(x.ToTitle())"/>
+    </MudItem>
+  </MudGrid>
+</MudExpansionPanel>

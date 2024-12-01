@@ -1,0 +1,57 @@
+@using ApexCharts
+@using MudBlazor
+@using Ozds.Business.Models
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Business.Models.Enums
+@using Ozds.Client.Components.Fields
+@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Streaming
+
+@namespace Ozds.Client.Components.Charts
+
+@inherits OzdsOwningComponentBase
+
+<FinancialChartHeader Parameters="Parameters"/>
+
+<ApexChart
+  XAxisType="XAxisType.Datetime"
+  Options="@_options"
+  Height="300"
+  @ref="_chart">
+  @foreach (var (selectedMeter, i) in Parameters.Selection
+    .OrderBy(x => x.Id)
+    .Select((x, i) => (x, i)))
+  {
+    if (Parameters.Phases.Count == 0)
+    {
+      <ApexPointSeries
+        Items="@(_measurements.Items
+          .Where(x => x.MeterId == selectedMeter.Id)
+          .ToList())"
+        Name="@(selectedMeter.Id + " " + Translate("Sum"))"
+        SeriesType="@SeriesType.Donut"
+        XValue="@(x => x.MeterId)"
+        YAggregate="@(x => x
+          .Select(y => y.ChartValue(Parameters.Measure))
+          .Apply(Parameters.Operator))"
+        Color="@(PhaseModel.L1.ToColor(i))"/>
+    }
+    else
+    {
+      foreach (var phase in Parameters.Phases.OrderBy(x => x))
+      {
+        <ApexPointSeries
+          Items="@(_measurements.Items
+            .Where(x => x.MeterId == selectedMeter.Id)
+            .ToList())"
+          Name="@(selectedMeter.Id + " " + phase.ToTitle())"
+          SeriesType="@SeriesType.Donut"
+          XValue="@(x => x.MeterId)"
+          YAggregate="@(x => x
+            .Select(y => y.ChartValue(Parameters.Measure))
+            .Apply(Parameters.Operator))"
+          Color="@(phase.ToColor(i))"/>
+      }
+    }
+  }
+</ApexChart>

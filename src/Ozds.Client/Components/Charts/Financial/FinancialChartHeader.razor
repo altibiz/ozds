@@ -1,0 +1,41 @@
+@using MudBlazor
+@using Ozds.Business.Models.Enums
+@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Streaming
+
+@namespace Ozds.Client.Components.Charts
+
+@inherits OzdsComponentBase
+
+<div class="d-flex justify-center">
+  <MudText>
+    @if(Parameters.Selection.Count() == 1)
+    {
+      @Translate(Parameters.Selection.FirstOrDefault()!.Title)
+      <Fragment>
+        &nbsp;
+      </Fragment>
+    }
+    @Translate(Parameters.Measure.ToTitle())
+    &nbsp;
+    &lbrack;
+    @Translate(Parameters.Measure.ToUnit())
+    &rbrack;
+    &nbsp;
+    @if (Parameters.Operator != OperatorModel.Last)
+    {
+      <Fragment>
+        @Translate("over the last")
+        &nbsp;
+        @(Parameters.Multiplier == 1 ? "" : Parameters.Multiplier.ToString())
+        &nbsp;
+        @Translate(Parameters.Resolution.ToTitle(Parameters.Multiplier))
+      </Fragment>
+    }
+  </MudText>
+</div>
+
+@code {
+  [Parameter]
+  public FinancialChartParameters Parameters { get; set; } = default!;
+}

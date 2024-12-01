@@ -1,0 +1,117 @@
+@using ApexCharts
+@using MudBlazor
+@using Ozds.Business.Models
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Business.Models.Enums
+@using Ozds.Client.Components.Fields
+@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Streaming
+
+@namespace Ozds.Client.Components.Charts
+
+@inherits OzdsOwningComponentBase
+
+@* TODO: operators - this is how it should be for last *@
+
+<FinancialChartHeader Parameters="Parameters"/>
+
+<ApexChart
+  XAxisType="@XAxisType.Datetime"
+  Options="@_options"
+  Height="300"
+  @ref="@_chart">
+  @foreach (var (selectedMeter, i) in Parameters.Selection
+    .OrderBy(x => x.Id)
+    .Select((x, i) => (x, i)))
+  {
+    if (Parameters.Phases.Count == 0)
+    {
+      <ApexPointSeries
+        Items="@(_measurements.Items
+          .Where(x => x.MeterId == selectedMeter.Id)
+          .ToList())"
+        Name="@(selectedMeter.Id + " " + Translate("Sum"))"
+        SeriesType="@(Area ? SeriesType.Area : SeriesType.Line)"
+        XValue="@(x => DateTimeApplyOffset(x.Timestamp))"
+        YValue="@(x => x.ChartValue(Parameters.Measure))"
+        Stroke="@(new SeriesStroke
+        {
+          Color = PhaseModel.L1.ToColor(i),
+          Width = 4
+        })"
+        Color="@(PhaseModel.L1.ToColor(i))"/>
+    }
+    else
+    {
+      foreach (var phase in Parameters.Phases.OrderBy(x => x))
+      {
+        <ApexPointSeries
+          Items="@(_measurements.Items
+            .Where(x => x.MeterId == selectedMeter.Id)
+            .ToList())"
+          Name="@(selectedMeter.Id + " " + phase.ToTitle())"
+          SeriesType="@(Area ? SeriesType.Area : SeriesType.Line)"
+          XValue="@(x => DateTimeApplyOffset(x.Timestamp))"
+          YValue="@(x => x.ChartValue(Parameters.Measure, phase: phase))"
+          Stroke="@(new SeriesStroke
+          {
+            Color = phase.ToColor(i),
+            Width = 4
+          })"
+          Color="@(phase.ToColor(i))"/>
+      }
+    }
+  }
+</ApexChart>
+
+@if (Brush)
+{
+  <ApexChart
+    XAxisType="@XAxisType.Datetime"
+    Options="@_brushOptions"
+    Height="130"
+    @ref="@_brushChart">
+    @foreach (var (selectedMeter, i) in Parameters.Selection
+      .OrderBy(x => x.Id)
+      .Select((x, i) => (x, i)))
+    {
+      if (Parameters.Phases.Count == 0)
+      {
+        <ApexPointSeries
+          Items="@(_measurements.Items
+            .Where(x => x.MeterId == selectedMeter.Id)
+            .ToList())"
+          Name="@(selectedMeter.Id + " " + Translate("Sum"))"
+          SeriesType="@(Area ? SeriesType.Area : SeriesType.Line)"
+          XValue="@(x => DateTimeApplyOffset(x.Timestamp))"
+          YValue="@(x => x.ChartValue(Parameters.Measure))"
+          Stroke="@(new SeriesStroke
+          {
+            Color = PhaseModel.L1.ToColor(i),
+            Width = 4
+          })"
+          Color="@(PhaseModel.L1.ToColor(i))"/>
+      }
+      else
+      {
+        foreach (var phase in Parameters.Phases.OrderBy(x => x))
+        {
+          <ApexPointSeries
+            Items="@(_measurements.Items
+              .Where(x => x.MeterId == selectedMeter.Id)
+              .ToList())"
+            Name="@(selectedMeter.Id + " " + phase.ToTitle())"
+            SeriesType="@(Area ? SeriesType.Area : SeriesType.Line)"
+            XValue="@(x => DateTimeApplyOffset(x.Timestamp))"
+            YValue="@(x => x.ChartValue(Parameters.Measure, phase: phase))"
+            Stroke="@(new SeriesStroke
+            {
+              Color = phase.ToColor(i),
+              Width = 4
+            })"
+            Color="@(phase.ToColor(i))"/>
+        }
+      }
+    }
+  </ApexChart>
+}
