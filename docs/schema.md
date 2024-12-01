@@ -83,6 +83,7 @@ erDiagram
         real current_l2_any_t0_avg_a 
         real current_l3_any_t0_avg_a 
         interval_entity interval PK 
+        bigint measurement_location_id FK 
         text meter_id PK,FK 
         real reactive_energy_total_export_t0_max_varh 
         real reactive_energy_total_export_t0_min_varh 
@@ -114,6 +115,7 @@ erDiagram
         real current_l1_any_t0_a 
         real current_l2_any_t0_a 
         real current_l3_any_t0_a 
+        bigint measurement_location_id FK 
         text meter_id PK,FK 
         real reactive_energy_l1_export_t0_varh 
         real reactive_energy_l1_import_t0_varh 
@@ -773,6 +775,7 @@ erDiagram
         real current_l2_any_t0_avg_a 
         real current_l3_any_t0_avg_a 
         interval_entity interval PK 
+        bigint measurement_location_id FK 
         text meter_id PK,FK 
         real reactive_energy_total_export_t0_max_varh 
         real reactive_energy_total_export_t0_min_varh 
@@ -800,6 +803,7 @@ erDiagram
         real current_l1_any_t0_a 
         real current_l2_any_t0_a 
         real current_l3_any_t0_a 
+        bigint measurement_location_id FK 
         text meter_id PK,FK 
         real reactive_energy_total_export_t0_varh 
         real reactive_energy_total_import_t0_varh 
@@ -815,7 +819,9 @@ erDiagram
     UserByRoleNameIndex_Document }o--|| Document : "DocumentId"
     UserIndex }o--|| Document : "DocumentId"
     UserByRoleNameIndex_Document }o--|| UserByRoleNameIndex : "UserByRoleNameIndexId"
+    abb_b2x_aggregates }o--|| measurement_locations : "measurement_location_id"
     abb_b2x_aggregates }o--|| meters : "meter_id"
+    abb_b2x_measurements }o--|| measurement_locations : "measurement_location_id"
     abb_b2x_measurements }o--|| meters : "meter_id"
     events }o--|| messengers : "messenger_id"
     events }o--|| representatives : "representative_id"
@@ -842,6 +848,8 @@ erDiagram
     measurement_locations }o--|| representatives : "deleted_by_id"
     measurement_locations }o--|| representatives : "last_updated_by_id"
     network_user_calculations }o--|| measurement_locations : "network_user_measurement_location_id"
+    schneider_iem3xxx_aggregates }o--|| measurement_locations : "measurement_location_id"
+    schneider_iem3xxx_measurements }o--|| measurement_locations : "measurement_location_id"
     measurement_validators }o--|| representatives : "created_by_id"
     measurement_validators }o--|| representatives : "deleted_by_id"
     measurement_validators }o--|| representatives : "last_updated_by_id"
