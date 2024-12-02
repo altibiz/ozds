@@ -9,9 +9,7 @@
 
 @namespace Ozds.Client.Components.Charts
 
-@inherits OzdsOwningComponentBase
-
-<MeasurementChartHeader Parameters="Parameters"/>
+@inherits OzdsComponentBase
 
 <ApexChart
   XAxisType="XAxisType.Datetime"
@@ -25,7 +23,7 @@
     if (Parameters.Phases.Count == 0)
     {
       <ApexPointSeries
-        Items="@(_measurements.Items
+        Items="@(Parameters.Measurements.Items
           .Where(x => x.MeterId == selectedMeter.Id)
           .ToList())"
         Name="@(selectedMeter.Id + " " + Translate("Sum"))"
@@ -41,7 +39,7 @@
       foreach (var phase in Parameters.Phases.OrderBy(x => x))
       {
         <ApexPointSeries
-          Items="@(_measurements.Items
+          Items="@(Parameters.Measurements.Items
             .Where(x => x.MeterId == selectedMeter.Id)
             .ToList())"
           Name="@(selectedMeter.Id + " " + phase.ToTitle())"

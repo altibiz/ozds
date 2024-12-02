@@ -1,6 +1,7 @@
 using Ozds.Business.Models;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Enums;
+using Ozds.Business.Queries.Abstractions;
 
 namespace Ozds.Client.Components.Charts;
 
@@ -21,4 +22,6 @@ public class MeasurementChartParameters
   public bool Refresh { get; set; } = true;
 
   public OperatorModel Operator { get; set; } = OperatorModel.Sum;
+
+  public PaginatedList<IMeasurement> Measurements { get; set; } = new(new(), 0);
 }
