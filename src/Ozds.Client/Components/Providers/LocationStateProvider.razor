@@ -1,5 +1,6 @@
-@using Ozds.Client.Components.Base
 @using MudBlazor
+@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Fields
 
 @namespace Ozds.Client.Components.Providers
 
@@ -31,7 +32,7 @@
 
     <MudListItem>
       <MudButton OnClick="@(() => OnLocationSelected(location))">
-        <MudText>@location.Title</MudText>
+        <LocationSummary Model="location" />
       </MudButton>
     </MudListItem>
   }
