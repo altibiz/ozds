@@ -1,7 +1,13 @@
 @using Microsoft.AspNetCore.Components.Web
 @using MudBlazor
+@using Ozds.Business.Analysis
+@using Ozds.Business.Models.Enums
 @using Ozds.Client.Attributes
 @using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Streaming
+@using Ozds.Client.Components.Tables
+@using Ozds.Client.Components.Models
+@using Ozds.Client.State
 
 @namespace Ozds.Client.Pages
 
@@ -10,10 +16,64 @@
 @attribute [Navigation(
   Order = 11,
   Title = "Measurements",
-  Icon = Icons.Material.Filled.VerifiedUser)]
+  Icon = Icons.Material.Filled.VerifiedUser,
+  Allows = [
+    RoleModel.OperatorRepresentative,
+    RoleModel.LocationRepresentative,
+    RoleModel.NetworkUserRepresentative
+  ])]
 
-@inherits OzdsComponentBase
+@inherits OzdsOwningComponentBase
 
 <HeadContent>
   <title>OZDS - @Translate("Measurements")</title>
 </HeadContent>
+
+@{
+  var measurementLocations = AnalysisState.AnalysisBases.Value
+    .AnalysesByMeasurementLocation();
+}
+
+<ResponsiveTable
+  Model="measurementLocations"
+  Link="@(x => $"/measurement-location/{x.MeasurementLocation.Id}")">
+  <Summary>
+    <MeasurementLocationAnalysisSummary Model="context" />
+  </Summary>
+  <Details>
+    <MeasurementLocationAnalysisDetails Model="context" />
+  </Details>
+  <Columns>
+    <MeasurementLocationAnalysisColumns />
+  </Columns>
+</ResponsiveTable>
+
+@if (RepresentativeState.Representative.Role
+  != RoleModel.OperatorRepresentative)
+{
+  return;
+}
+
+@{
+  var meters = AnalysisState.AnalysisBases.Value.AnalysesByMeter();
+}
+
+<ResponsiveTable
+  Model="meters"
+  Link="@(x => $"/meter/{x.Meter.Id}")">
+  <Summary>
+    <MeterAnalysisSummary Model="context" />
+  </Summary>
+  <Details>
+    <MeterAnalysisDetails Model="context" />
+  </Details>
+  <Columns>
+    <MeterAnalysisColumns />
+  </Columns>
+</ResponsiveTable>
+
+<Paging PageAsync="OnMessengersPageAsync">
+  <Summary>
+    <MessengerSummary Model="context" />
+  </Summary>
+</Paging>

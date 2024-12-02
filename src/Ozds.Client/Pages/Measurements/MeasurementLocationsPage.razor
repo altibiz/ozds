@@ -16,7 +16,12 @@
   Order = 0,
   Title = "Measurement locations",
   Icon = Icons.Material.Filled.VerifiedUser,
-  Parent = typeof(MeasurementsPage))]
+  Parent = typeof(MeasurementsPage),
+  Allows = [
+    RoleModel.OperatorRepresentative,
+    RoleModel.LocationRepresentative,
+    RoleModel.NetworkUserRepresentative
+  ])]
 
 @inherits OzdsComponentBase
 

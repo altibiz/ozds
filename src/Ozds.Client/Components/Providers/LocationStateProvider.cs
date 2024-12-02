@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Ozds.Business.Models;
+using Ozds.Business.Models.Enums;
 using Ozds.Business.Queries;
 using Ozds.Client.Components.Base;
 using Ozds.Client.State;
@@ -30,6 +31,13 @@ public partial class LocationStateProvider : OzdsOwningComponentBase
       return;
     }
     _previousRepresentativeId = RepresentativeState.Representative.Id;
+
+    if (RepresentativeState.Representative.Role
+      is RoleModel.NetworkUserRepresentative)
+    {
+      _state = new(default, default);
+      return;
+    }
 
     var locationQueries = ScopedServices
       .GetRequiredService<LocationQueries>();

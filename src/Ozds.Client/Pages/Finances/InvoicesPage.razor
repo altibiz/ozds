@@ -16,7 +16,12 @@
   Order = 0,
   Title = "Invoices",
   Icon = Icons.Material.Filled.VerifiedUser,
-  Parent = typeof(FinancesPage))]
+  Parent = typeof(FinancesPage),
+  Allows = [
+    RoleModel.OperatorRepresentative,
+    RoleModel.LocationRepresentative,
+    RoleModel.NetworkUserRepresentative
+  ])]
 
 @inherits OzdsComponentBase
 

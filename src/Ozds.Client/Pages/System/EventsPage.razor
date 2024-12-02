@@ -19,7 +19,8 @@
 @attribute [Navigation(
   Title = "Events",
   Icon = Icons.Material.Filled.VerifiedUser,
-  Parent = typeof(SystemPage))]
+  Parent = typeof(SystemPage),
+  Allows = [RoleModel.OperatorRepresentative])]
 
 @inherits OzdsOwningComponentBase
 

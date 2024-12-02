@@ -3,6 +3,7 @@
 @using MudBlazor
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Business.Models.Base
+@using Ozds.Business.Models.Enums
 @using Ozds.Business.Queries
 @using Ozds.Business.Queries.Abstractions
 @using Ozds.Client.Attributes
@@ -20,7 +21,12 @@
   Order = -1000,
   Title = "Notifications",
   Icon = Icons.Material.Filled.VerifiedUser,
-  Parent = typeof(SystemPage))]
+  Parent = typeof(SystemPage),
+  Allows = [
+    RoleModel.OperatorRepresentative,
+    RoleModel.LocationRepresentative,
+    RoleModel.NetworkUserRepresentative
+  ])]
 
 @inherits OzdsOwningComponentBase
 

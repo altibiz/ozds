@@ -18,7 +18,12 @@
 @attribute [Navigation(
   Order = -1000,
   Title = "Dashboard",
-  Icon= Icons.Material.Outlined.Home)]
+  Icon= Icons.Material.Outlined.Home,
+  Allows = [
+    RoleModel.OperatorRepresentative,
+    RoleModel.LocationRepresentative,
+    RoleModel.NetworkUserRepresentative
+  ])]
 
 <HeadContent>
   <title>OZDS</title>
@@ -118,21 +123,21 @@
     .DistinctBy(invoice => invoice.Id)
     .OfType<IInvoice>()
     .ToList();
-
-  <ResponsiveTable
-    Model="@invoices"
-    Link="@(x => $"invoice/${x.Id}")">
-    <Summary>
-      <InvoiceSummary Model="@context" />
-    </Summary>
-    <Details>
-      <InvoiceDetails Model="@context" />
-    </Details>
-    <Columns>
-      <InvoiceColumns />
-    </Columns>
-  </ResponsiveTable>
 }
+
+<ResponsiveTable
+  Model="@invoices"
+  Link="@(x => $"invoice/${x.Id}")">
+  <Summary>
+    <InvoiceSummary Model="@context" />
+  </Summary>
+  <Details>
+    <InvoiceDetails Model="@context" />
+  </Details>
+  <Columns>
+    <InvoiceColumns />
+  </Columns>
+</ResponsiveTable>
 
 @code {
   [CascadingParameter]

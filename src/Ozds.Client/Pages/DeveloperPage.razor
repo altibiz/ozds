@@ -2,6 +2,7 @@
 @using Microsoft.Extensions.Hosting
 @using Microsoft.Extensions.Logging
 @using MudBlazor
+@using Ozds.Business.Models.Enums
 @using Ozds.Client.Attributes
 @using Ozds.Client.Components.Base
 @using Ozds.Client.Components.Streaming
@@ -11,14 +12,17 @@
 @page "/developer"
 
 @attribute [Navigation(
-  Order = 0,
+  Order = 1000,
   Title = "Developer",
-  Icon = Icons.Material.Filled.VerifiedUser)]
+  Icon = Icons.Material.Filled.VerifiedUser,
+  Developer = true,
+  Allows = [
+    RoleModel.OperatorRepresentative,
+    RoleModel.NetworkUserRepresentative,
+    RoleModel.LocationRepresentative,
+  ])]
 
 @inherits OzdsComponentBase
-
-@inject ILogger<DeveloperPage> Logger
-@inject IHostEnvironment Environment
 
 <HeadContent>
   <title>OZDS - @Translate("Developer")</title>
@@ -26,17 +30,8 @@
 
 @if (!Environment.IsDevelopment())
 {
-  <RedirectToLogin />
+  <RedirectToIndex />
   return;
 }
 
 <MudButton OnClick="OnThrowClick">@Translate("Throw")</MudButton>
-
-@code
-{
-  private void OnThrowClick()
-  {
-    Logger.LogDebug("Throw clicked");
-    throw new InvalidOperationException();
-  }
-}

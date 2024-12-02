@@ -120,14 +120,14 @@ public abstract class OzdsComponentBase : ComponentBase
       $"/login?returnUrl={Uri.EscapeDataString(NavigationManager.Uri)}");
   }
 
-  protected void NavigateBack()
-  {
-    JS.InvokeVoidAsync("history.back");
-  }
-
   protected void NavigateToIndex()
   {
     NavigationManager.NavigateTo("/");
+  }
+
+  protected void NavigateBack()
+  {
+    JS.InvokeVoidAsync("history.back");
   }
 
   protected void NavigateToPage<T>(object? parameters = null)

@@ -1,6 +1,7 @@
 @using Microsoft.AspNetCore.Components.Web
 @using MudBlazor
 @using Ozds.Business.Models.Composite
+@using Ozds.Business.Models.Enums
 @using Ozds.Client.Attributes
 @using Ozds.Client.Components.Base
 @using Ozds.Client.Components.Models
@@ -15,7 +16,12 @@
 @attribute [Navigation(
   Order = 1,
   Title = "Account",
-  Icon = Icons.Material.Filled.VerifiedUser)]
+  Icon = Icons.Material.Filled.VerifiedUser,
+  Allows = [
+    RoleModel.OperatorRepresentative,
+    RoleModel.LocationRepresentative,
+    RoleModel.NetworkUserRepresentative
+  ])]
 
 <HeadContent>
   <title>OZDS - @Translate("Account")</title>

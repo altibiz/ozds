@@ -1,7 +1,11 @@
 using System.Reflection;
 using Microsoft.AspNetCore.Components;
+using Ozds.Business.Models.Enums;
 
 namespace Ozds.Client.Attributes;
+
+// TODO: add allows list
+// TODO: display not found page on pages where not allowed
 
 [AttributeUsage(AttributeTargets.Class, Inherited = false)]
 public class NavigationAttribute : Attribute
@@ -13,6 +17,10 @@ public class NavigationAttribute : Attribute
   public string? Icon { get; set; }
 
   public Type? Parent { get; set; }
+
+  public bool Developer { get; set; } = false;
+
+  public required RoleModel[] Allows { get; set; }
 
   public static IEnumerable<NavigationDescriptor> GetNavigationDescriptors()
   {

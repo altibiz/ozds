@@ -16,7 +16,12 @@
   Order = 2,
   Title = "Network users",
   Icon = Icons.Material.Filled.VerifiedUser,
-  Parent = typeof(AdministrationPage))]
+  Parent = typeof(AdministrationPage),
+  Allows = [
+    RoleModel.OperatorRepresentative,
+    RoleModel.LocationRepresentative,
+    RoleModel.NetworkUserRepresentative
+  ])]
 
 @inherits OzdsComponentBase
 

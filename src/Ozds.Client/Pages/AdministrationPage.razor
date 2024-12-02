@@ -1,7 +1,12 @@
 @using Microsoft.AspNetCore.Components.Web
 @using MudBlazor
+@using Ozds.Business.Analysis
+@using Ozds.Business.Models.Enums
 @using Ozds.Client.Attributes
 @using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Models
+@using Ozds.Client.Components.Streaming
+@using Ozds.Client.Components.Tables
 
 @namespace Ozds.Client.Pages
 
@@ -10,10 +15,43 @@
 @attribute [Navigation(
   Order = 13,
   Title = "Administration",
-  Icon = Icons.Material.Filled.VerifiedUser)]
+  Icon = Icons.Material.Filled.VerifiedUser,
+  Allows = [
+    RoleModel.OperatorRepresentative,
+    RoleModel.LocationRepresentative,
+    RoleModel.NetworkUserRepresentative
+  ])]
 
-@inherits OzdsComponentBase
+@inherits OzdsOwningComponentBase
 
 <HeadContent>
   <title>OZDS - @Translate("Administration")</title>
 </HeadContent>
+
+@{
+  var networkUsers = AnalysisState.AnalysisBases.Value.AnalysesByNetworkUser();
+}
+
+<ResponsiveTable
+  Model="networkUsers"
+  Link="@(x => $"/network-user/{x.NetworkUser.Id}")">
+  <Summary>
+    <NetworkUserSummary Model="context" />
+  </Summary>
+  <Details>
+    <NetworkUserDetails Model="context" />
+  </Details>
+  <Columns>
+    <NetworkUserColumns />
+  </Columns>
+</ResponsiveTable>
+
+@if (RepresentativeState.Representative.Role
+  == RoleModel.OperatorRepresentative)
+{
+  <Paging PageAsync="OnUserPageAsync">
+    <Summary>
+      <MaybeRepresentingUserSummary Model="context" />
+    </Summary>
+  </Paging>
+}

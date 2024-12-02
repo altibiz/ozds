@@ -1,5 +1,6 @@
 @using MudBlazor
 @using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Streaming
 @using Ozds.Client.State
 
 @namespace Ozds.Client.Pages
@@ -10,7 +11,7 @@
 
 @if (RepresentativeState?.Representative is { })
 {
-  NavigateToIndex();
+  <RedirectToIndex />
   return;
 }
 
