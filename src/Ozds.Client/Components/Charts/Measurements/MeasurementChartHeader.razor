@@ -9,9 +9,16 @@
 
 <div class="d-flex justify-center">
   <MudText>
-    @if(Parameters.Selection.Count() == 1)
+    @if(Parameters.Meters.Count() == 1)
     {
-      @Translate(Parameters.Selection.FirstOrDefault()!.Title)
+      @Translate(Parameters.Meters.FirstOrDefault()!.Title)
+      <Fragment>
+        &nbsp;
+      </Fragment>
+    }
+    @if(Parameters.MeasurementLocations.Count() == 1)
+    {
+      @Translate(Parameters.MeasurementLocations.FirstOrDefault()!.Title)
       <Fragment>
         &nbsp;
       </Fragment>

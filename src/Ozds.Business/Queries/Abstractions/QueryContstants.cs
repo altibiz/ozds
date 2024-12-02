@@ -8,13 +8,15 @@ public static class QueryConstants
 
   public const int DefaultPageCount = 50;
 
-  public const int MeasurementPageCount = 1000;
+  public const int DefaultFinancialPageCount = 1000;
+
+  public const int DefaultMeasurementPageCount = 1000;
 
   public static TimeSpan AggregateThreshold(
     IntervalModel interval,
     DateTimeOffset timestamp,
     int meterCount = 1,
-    int pageCount = MeasurementPageCount
+    int pageCount = DefaultMeasurementPageCount
   )
   {
     var higherResolutionTimeSpan = interval.HigherResolutionTimeSpan(timestamp);
@@ -25,7 +27,7 @@ public static class QueryConstants
     TimeSpan timeSpan,
     DateTimeOffset timestamp,
     int meterCount = 1,
-    int pageCount = MeasurementPageCount
+    int pageCount = DefaultMeasurementPageCount
   )
   {
     var quarterHourThreshold = AggregateThreshold(

@@ -1,5 +1,6 @@
 @using ApexCharts
 @using MudBlazor
+@using Ozds.Business.Extensions
 @using Ozds.Business.Models
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Business.Models.Enums
@@ -9,49 +10,84 @@
 
 @namespace Ozds.Client.Components.Charts
 
-@inherits OzdsOwningComponentBase
-
-<FinancialChartHeader Parameters="Parameters"/>
+@inherits OzdsComponentBase
 
 <ApexChart
-  XAxisType="XAxisType.Datetime"
+  XAxisType="@XAxisType.Datetime"
   Options="@_options"
   Height="300"
-  @ref="_chart">
-  @foreach (var (selectedMeter, i) in Parameters.Selection
+  @ref="@_chart">
+  @foreach (var (measurementLocation, i) in Parameters.MeasurementLocations
     .OrderBy(x => x.Id)
     .Select((x, i) => (x, i)))
   {
-    if (Parameters.Phases.Count == 0)
-    {
-      <ApexPointSeries
-        Items="@(_measurements.Items
-          .Where(x => x.MeterId == selectedMeter.Id)
-          .ToList())"
-        Name="@(selectedMeter.Id + " " + Translate("Sum"))"
-        SeriesType="@SeriesType.Donut"
-        XValue="@(x => x.MeterId)"
-        YAggregate="@(x => x
-          .Select(y => y.ChartValue(Parameters.Measure))
-          .Apply(Parameters.Operator))"
-        Color="@(PhaseModel.L1.ToColor(i))"/>
-    }
-    else
-    {
-      foreach (var phase in Parameters.Phases.OrderBy(x => x))
-      {
-        <ApexPointSeries
-          Items="@(_measurements.Items
-            .Where(x => x.MeterId == selectedMeter.Id)
-            .ToList())"
-          Name="@(selectedMeter.Id + " " + phase.ToTitle())"
-          SeriesType="@SeriesType.Donut"
-          XValue="@(x => x.MeterId)"
-          YAggregate="@(x => x
-            .Select(y => y.ChartValue(Parameters.Measure))
-            .Apply(Parameters.Operator))"
-          Color="@(phase.ToColor(i))"/>
-      }
-    }
+    var calculations = Parameters.Financials.Items
+      .OfType<INetworkUserCalculation>()
+      .Where(x => x.NetworkUserMeasurementLocationId == measurementLocation.Id)
+      .ToList();
+
+    var invoices = Parameters.Financials.Items
+      .OfType<NetworkUserInvoiceModel>()
+      .Where(x => calculations.Any(y => y.NetworkUserInvoiceId == x.Id))
+      .ToList();
+
+    <ApexPointSeries
+      Items="calculations"
+      Name="@(measurementLocation.Id + " " + Translate("Sum"))"
+      SeriesType="@(SeriesType.Donut)"
+      XValue="@(x => DateTimeApplyOffset(x.IssuedOn))"
+      YAggregate="@(x => x
+        .Select(x => x.TotalWithTax_EUR)
+        .Apply(Parameters.Operator))"
+      Stroke="@(new SeriesStroke { Color = i.ToColor(), Width = 4 })"
+      Color="@(i.ToColor())"/>
+
+    <ApexPointSeries
+      Items="invoices"
+      Name="@(measurementLocation.Id + " " + Translate("Sum"))"
+      SeriesType="@(SeriesType.Donut)"
+      XValue="@(x => DateTimeApplyOffset(x.IssuedOn))"
+      YAggregate="@(x => x
+        .Select(x => x.TotalWithTax_EUR)
+        .Apply(Parameters.Operator))"
+      Stroke="@(new SeriesStroke { Color = i.ToColor(), Width = 4 })"
+      Color="@(i.ToColor())"/>
+  }
+
+  @foreach (var (meter, i) in Parameters.Meters
+    .OrderBy(x => x.Id)
+    .Select((x, i) => (x, i)))
+  {
+    var calculations = Parameters.Financials.Items
+      .OfType<INetworkUserCalculation>()
+      .Where(x => x.MeterId == meter.Id)
+      .ToList();
+
+    var invoices = Parameters.Financials.Items
+      .OfType<NetworkUserInvoiceModel>()
+      .Where(x => calculations.Any(y => y.NetworkUserInvoiceId == x.Id))
+      .ToList();
+
+    <ApexPointSeries
+      Items="calculations"
+      Name="@(meter.Id + " " + Translate("Sum"))"
+      SeriesType="@(SeriesType.Donut)"
+      XValue="@(x => DateTimeApplyOffset(x.IssuedOn))"
+      YAggregate="@(x => x
+        .Select(x => x.TotalWithTax_EUR)
+        .Apply(Parameters.Operator))"
+      Stroke="@(new SeriesStroke { Color = i.ToColor(), Width = 4 })"
+      Color="@(i.ToColor())"/>
+
+    <ApexPointSeries
+      Items="invoices"
+      Name="@(meter.Id + " " + Translate("Sum"))"
+      SeriesType="@(SeriesType.Donut)"
+      XValue="@(x => DateTimeApplyOffset(x.IssuedOn))"
+      YAggregate="@(x => x
+        .Select(x => x.TotalWithTax_EUR)
+        .Apply(Parameters.Operator))"
+      Stroke="@(new SeriesStroke { Color = i.ToColor(), Width = 4 })"
+      Color="@(i.ToColor())"/>
   }
 </ApexChart>

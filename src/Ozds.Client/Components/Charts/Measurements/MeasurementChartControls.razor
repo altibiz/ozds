@@ -18,14 +18,36 @@
   Gutters="false"
   Text="@Translate("Chart controls")">
   <MudGrid Spacing="2" Justify="Justify.Center">
-    <MudItem xs="12" md="6">
-      @if (Meters.Count > 1)
-      {
+    @if (MeasurementLocations.Count > 1)
+    {
+      <MudItem xs="12" md="6">
+        <MudSelect
+          T="string"
+          Label="@Translate("Measurement locations")"
+          SelectedValues="_parameters.MeasurementLocations
+            .Select(measurementLocation => measurementLocation.Id)"
+          SelectedValuesChanged="@(e => _parameters.MeasurementLocations =
+            MeasurementLocations
+              .Where(measurementLocation => e.Contains(measurementLocation.Id))
+              .ToHashSet())"
+          MultiSelection>
+          @foreach (var measurementLocation in MeasurementLocations)
+          {
+            <MudSelectItem Value="@measurementLocation.Id">
+              @measurementLocation.Id
+            </MudSelectItem>
+          }
+        </MudSelect>
+      </MudItem>
+    }
+    @if (Meters.Count > 1)
+    {
+      <MudItem xs="12" md="6">
         <MudSelect
           T="string"
           Label="@Translate("Meters")"
-          SelectedValues="_parameters.Selection.Select(meter => meter.Id)"
-          SelectedValuesChanged="@(e => _parameters.Selection = Meters
+          SelectedValues="_parameters.Meters.Select(meter => meter.Id)"
+          SelectedValuesChanged="@(e => _parameters.Meters = Meters
             .Where(meter => e.Contains(meter.Id))
             .ToHashSet())"
           MultiSelection>
@@ -36,8 +58,8 @@
             </MudSelectItem>
           }
         </MudSelect>
-      }
-    </MudItem>
+      </MudItem>
+    }
     <MudItem xs="12" md="6">
       <MudHidden Breakpoint="Breakpoint.MdAndUp">
         <MudCheckBox

@@ -1,24 +1,22 @@
-using Ozds.Business.Models;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Enums;
+using Ozds.Business.Queries.Abstractions;
 
 namespace Ozds.Client.Components.Charts;
 
 public class FinancialChartParameters
 {
-  public HashSet<IMeter> Selection { get; set; } = new();
+  public HashSet<IMeter> Meters { get; set; } = new();
 
-  public MeasureModel Measure { get; set; } = MeasureModel.ActivePower;
+  public HashSet<IMeasurementLocation> MeasurementLocations { get; set; } = new();
 
-  public HashSet<PhaseModel> Phases { get; set; } = new();
+  public PaginatedList<IFinancial> Financials { get; set; } = new(new(), 0);
 
   public DateTimeOffset FromDate { get; set; } = default;
 
   public ResolutionModel Resolution { get; set; } = ResolutionModel.Hour;
 
   public int Multiplier { get; set; } = 1;
-
-  public bool Refresh { get; set; } = true;
 
   public OperatorModel Operator { get; set; } = OperatorModel.Sum;
 }

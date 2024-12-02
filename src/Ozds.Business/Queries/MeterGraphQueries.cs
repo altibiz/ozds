@@ -25,7 +25,7 @@ public class MeterGraphQueries(
     DateTimeOffset fromDate = default,
     DateTimeOffset toDate = default,
     int pageNumber = QueryConstants.StartingPage,
-    int pageCount = QueryConstants.MeasurementPageCount
+    int pageCount = QueryConstants.DefaultMeasurementPageCount
   )
   {
     var now = DateTimeOffset.UtcNow;

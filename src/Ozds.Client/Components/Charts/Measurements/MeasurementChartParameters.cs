@@ -7,7 +7,11 @@ namespace Ozds.Client.Components.Charts;
 
 public class MeasurementChartParameters
 {
-  public HashSet<IMeter> Selection { get; set; } = new();
+  public HashSet<IMeter> Meters { get; set; } = new();
+
+  public HashSet<IMeasurementLocation> MeasurementLocations { get; set; } = new();
+
+  public PaginatedList<IMeasurement> Measurements { get; set; } = new(new(), 0);
 
   public MeasureModel Measure { get; set; } = MeasureModel.ActivePower;
 
@@ -22,6 +26,4 @@ public class MeasurementChartParameters
   public bool Refresh { get; set; } = true;
 
   public OperatorModel Operator { get; set; } = OperatorModel.Sum;
-
-  public PaginatedList<IMeasurement> Measurements { get; set; } = new(new(), 0);
 }

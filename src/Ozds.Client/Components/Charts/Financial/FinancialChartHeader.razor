@@ -9,19 +9,20 @@
 
 <div class="d-flex justify-center">
   <MudText>
-    @if(Parameters.Selection.Count() == 1)
+    @if(Parameters.Meters.Count() == 1)
     {
-      @Translate(Parameters.Selection.FirstOrDefault()!.Title)
       <Fragment>
+        @Translate(Parameters.Meters.FirstOrDefault()!.Title)
         &nbsp;
       </Fragment>
     }
-    @Translate(Parameters.Measure.ToTitle())
-    &nbsp;
-    &lbrack;
-    @Translate(Parameters.Measure.ToUnit())
-    &rbrack;
-    &nbsp;
+    @if(Parameters.MeasurementLocations.Count() == 1)
+    {
+      <Fragment>
+        @Translate(Parameters.MeasurementLocations.FirstOrDefault()!.Title)
+        &nbsp;
+      </Fragment>
+    }
     @if (Parameters.Operator != OperatorModel.Last)
     {
       <Fragment>

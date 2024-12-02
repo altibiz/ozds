@@ -48,11 +48,11 @@ public partial class MeasurementGaugeChart : OzdsComponentBase
       .Cast<decimal?>()
       .FirstOrDefault();
     if (Parameters.Measure == MeasureModel.ActivePower
-      && Parameters.Selection.Count == 1)
+      && Parameters.Meters.Count == 1)
     {
       options = _options.WithActivePower(
-        $"{Parameters.Selection.First().Id} {Translate("CONNECTION POWER")}",
-        Parameters.Selection.First().ConnectionPower_W,
+        $"{Parameters.Meters.First().Id} {Translate("CONNECTION POWER")}",
+        Parameters.Meters.First().ConnectionPower_W,
         maxPower
       );
     }

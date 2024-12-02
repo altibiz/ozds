@@ -16,7 +16,7 @@
   Options="@_options"
   Height="300"
   @ref="_chart">
-  @foreach (var (selectedMeter, i) in Parameters.Selection
+  @foreach (var (selectedMeter, i) in Parameters.Meters
     .OrderBy(x => x.Id)
     .Select((x, i) => (x, i)))
   {

@@ -26,6 +26,12 @@ public class CalculationEntity : ICalculationEntity
 
   public decimal Total_EUR { get; set; }
 
+  public decimal TaxRate_Percent => 0.0M;
+
+  public decimal Tax_EUR => 0.0M;
+
+  public decimal TotalWithTax_EUR => Total_EUR;
+
   public MeterEntity ArchivedMeter { get; set; } = default!;
 
   public virtual string Id
@@ -54,6 +60,10 @@ public class
     }
 
     var builder = modelBuilder.Entity(entity);
+
+    builder.Ignore(nameof(CalculationEntity.TaxRate_Percent));
+    builder.Ignore(nameof(CalculationEntity.Tax_EUR));
+    builder.Ignore(nameof(CalculationEntity.TotalWithTax_EUR));
 
     if (entity == typeof(NetworkUserCalculationEntity))
     {

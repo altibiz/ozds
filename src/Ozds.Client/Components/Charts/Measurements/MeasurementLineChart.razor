@@ -18,7 +18,7 @@
   Options="@_options"
   Height="300"
   @ref="@_chart">
-  @foreach (var (selectedMeter, i) in Parameters.Selection
+  @foreach (var (selectedMeter, i) in Parameters.Meters
     .OrderBy(x => x.Id)
     .Select((x, i) => (x, i)))
   {
@@ -69,7 +69,7 @@
     Options="@_brushOptions"
     Height="130"
     @ref="@_brushChart">
-    @foreach (var (selectedMeter, i) in Parameters.Selection
+    @foreach (var (selectedMeter, i) in Parameters.Meters
       .OrderBy(x => x.Id)
       .Select((x, i) => (x, i)))
     {

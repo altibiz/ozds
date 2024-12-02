@@ -20,6 +20,9 @@ public partial class MeasurementChartControls : OzdsOwningComponentBase
   public List<IMeter> Meters { get; set; } = default!;
 
   [Parameter]
+  public List<IMeasurementLocation> MeasurementLocations { get; set; } = default!;
+
+  [Parameter]
   public HashSet<MeasurementChartProfile> Profiles { get; set; } = new();
 
   [Parameter]

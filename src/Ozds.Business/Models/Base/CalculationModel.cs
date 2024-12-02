@@ -34,6 +34,12 @@ public abstract class CalculationModel : ICalculation
   [Required]
   public required decimal Total_EUR { get; set; }
 
+  public decimal TaxRate_Percent => 0.0M;
+
+  public decimal Tax_EUR => 0.0M;
+
+  public decimal TotalWithTax_EUR => Total_EUR;
+
   public virtual IEnumerable<ValidationResult> Validate(
     ValidationContext validationContext)
   {

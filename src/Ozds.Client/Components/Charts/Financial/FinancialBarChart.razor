@@ -1,5 +1,6 @@
 @using ApexCharts
 @using MudBlazor
+@using Ozds.Business.Extensions
 @using Ozds.Business.Models
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Business.Models.Enums
@@ -9,109 +10,78 @@
 
 @namespace Ozds.Client.Components.Charts
 
-@inherits OzdsOwningComponentBase
+@inherits OzdsComponentBase
 
 @* TODO: operators - this is how it should be for last *@
-
-<FinancialChartHeader Parameters="Parameters"/>
 
 <ApexChart
   XAxisType="@XAxisType.Datetime"
   Options="@_options"
   Height="300"
   @ref="@_chart">
-  @foreach (var (selectedMeter, i) in Parameters.Selection
+  @foreach (var (measurementLocation, i) in Parameters.MeasurementLocations
     .OrderBy(x => x.Id)
     .Select((x, i) => (x, i)))
   {
-    if (Parameters.Phases.Count == 0)
-    {
-      <ApexPointSeries
-        Items="@(_measurements.Items
-          .Where(x => x.MeterId == selectedMeter.Id)
-          .ToList())"
-        Name="@(selectedMeter.Id + " " + Translate("Sum"))"
-        SeriesType="@(Area ? SeriesType.Area : SeriesType.Line)"
-        XValue="@(x => DateTimeApplyOffset(x.Timestamp))"
-        YValue="@(x => x.ChartValue(Parameters.Measure))"
-        Stroke="@(new SeriesStroke
-        {
-          Color = PhaseModel.L1.ToColor(i),
-          Width = 4
-        })"
-        Color="@(PhaseModel.L1.ToColor(i))"/>
-    }
-    else
-    {
-      foreach (var phase in Parameters.Phases.OrderBy(x => x))
-      {
-        <ApexPointSeries
-          Items="@(_measurements.Items
-            .Where(x => x.MeterId == selectedMeter.Id)
-            .ToList())"
-          Name="@(selectedMeter.Id + " " + phase.ToTitle())"
-          SeriesType="@(Area ? SeriesType.Area : SeriesType.Line)"
-          XValue="@(x => DateTimeApplyOffset(x.Timestamp))"
-          YValue="@(x => x.ChartValue(Parameters.Measure, phase: phase))"
-          Stroke="@(new SeriesStroke
-          {
-            Color = phase.ToColor(i),
-            Width = 4
-          })"
-          Color="@(phase.ToColor(i))"/>
-      }
-    }
+    var calculations = Parameters.Financials.Items
+      .OfType<INetworkUserCalculation>()
+      .Where(x => x.NetworkUserMeasurementLocationId == measurementLocation.Id)
+      .ToList();
+
+    var invoices = Parameters.Financials.Items
+      .OfType<NetworkUserInvoiceModel>()
+      .Where(x => calculations.Any(y => y.NetworkUserInvoiceId == x.Id))
+      .ToList();
+
+    <ApexPointSeries
+      Items="calculations"
+      Name="@(measurementLocation.Id + " " + Translate("Sum"))"
+      SeriesType="@(Area ? SeriesType.Area : SeriesType.Bar)"
+      XValue="@(x => DateTimeApplyOffset(x.IssuedOn))"
+      YValue="@(x => x.TotalWithTax_EUR)"
+      Stroke="@(new SeriesStroke { Color = i.ToColor(), Width = 4 })"
+      Color="@(i.ToColor())"/>
+
+    <ApexPointSeries
+      Items="invoices"
+      Name="@(measurementLocation.Id + " " + Translate("Sum"))"
+      SeriesType="@(Area ? SeriesType.Area : SeriesType.Bar)"
+      XValue="@(x => DateTimeApplyOffset(x.IssuedOn))"
+      YValue="@(x => x.TotalWithTax_EUR)"
+      Stroke="@(new SeriesStroke { Color = i.ToColor(), Width = 4 })"
+      Color="@(i.ToColor())"/>
+  }
+
+  @foreach (var (meter, i) in Parameters.Meters
+    .OrderBy(x => x.Id)
+    .Select((x, i) => (x, i)))
+  {
+    var calculations = Parameters.Financials.Items
+      .OfType<INetworkUserCalculation>()
+      .Where(x => x.MeterId == meter.Id)
+      .ToList();
+
+    var invoices = Parameters.Financials.Items
+      .OfType<NetworkUserInvoiceModel>()
+      .Where(x => calculations.Any(y => y.NetworkUserInvoiceId == x.Id))
+      .ToList();
+
+    <ApexPointSeries
+      Items="calculations"
+      Name="@(meter.Id + " " + Translate("Sum"))"
+      SeriesType="@(Area ? SeriesType.Area : SeriesType.Bar)"
+      XValue="@(x => DateTimeApplyOffset(x.IssuedOn))"
+      YValue="@(x => x.TotalWithTax_EUR)"
+      Stroke="@(new SeriesStroke { Color = i.ToColor(), Width = 4 })"
+      Color="@(i.ToColor())"/>
+
+    <ApexPointSeries
+      Items="invoices"
+      Name="@(meter.Id + " " + Translate("Sum"))"
+      SeriesType="@(Area ? SeriesType.Area : SeriesType.Bar)"
+      XValue="@(x => DateTimeApplyOffset(x.IssuedOn))"
+      YValue="@(x => x.TotalWithTax_EUR)"
+      Stroke="@(new SeriesStroke { Color = i.ToColor(), Width = 4 })"
+      Color="@(i.ToColor())"/>
   }
 </ApexChart>
-
-@if (Brush)
-{
-  <ApexChart
-    XAxisType="@XAxisType.Datetime"
-    Options="@_brushOptions"
-    Height="130"
-    @ref="@_brushChart">
-    @foreach (var (selectedMeter, i) in Parameters.Selection
-      .OrderBy(x => x.Id)
-      .Select((x, i) => (x, i)))
-    {
-      if (Parameters.Phases.Count == 0)
-      {
-        <ApexPointSeries
-          Items="@(_measurements.Items
-            .Where(x => x.MeterId == selectedMeter.Id)
-            .ToList())"
-          Name="@(selectedMeter.Id + " " + Translate("Sum"))"
-          SeriesType="@(Area ? SeriesType.Area : SeriesType.Line)"
-          XValue="@(x => DateTimeApplyOffset(x.Timestamp))"
-          YValue="@(x => x.ChartValue(Parameters.Measure))"
-          Stroke="@(new SeriesStroke
-          {
-            Color = PhaseModel.L1.ToColor(i),
-            Width = 4
-          })"
-          Color="@(PhaseModel.L1.ToColor(i))"/>
-      }
-      else
-      {
-        foreach (var phase in Parameters.Phases.OrderBy(x => x))
-        {
-          <ApexPointSeries
-            Items="@(_measurements.Items
-              .Where(x => x.MeterId == selectedMeter.Id)
-              .ToList())"
-            Name="@(selectedMeter.Id + " " + phase.ToTitle())"
-            SeriesType="@(Area ? SeriesType.Area : SeriesType.Line)"
-            XValue="@(x => DateTimeApplyOffset(x.Timestamp))"
-            YValue="@(x => x.ChartValue(Parameters.Measure, phase: phase))"
-            Stroke="@(new SeriesStroke
-            {
-              Color = phase.ToColor(i),
-              Width = 4
-            })"
-            Color="@(phase.ToColor(i))"/>
-        }
-      }
-    }
-  </ApexChart>
-}

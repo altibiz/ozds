@@ -21,7 +21,7 @@ public class MeasurementQueries(
     CancellationToken cancellationToken,
     DateTimeOffset fromDate = default,
     DateTimeOffset toDate = default,
-    int pageCount = QueryConstants.MeasurementPageCount
+    int pageCount = QueryConstants.DefaultMeasurementPageCount
   )
   {
     var now = DateTimeOffset.UtcNow;
@@ -100,7 +100,7 @@ public class MeasurementQueries(
       CancellationToken cancellationToken,
       DateTimeOffset fromDate = default,
       DateTimeOffset toDate = default,
-      int pageCount = QueryConstants.MeasurementPageCount
+      int pageCount = QueryConstants.DefaultMeasurementPageCount
     )
   {
     var now = DateTimeOffset.UtcNow;

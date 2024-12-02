@@ -6,5 +6,7 @@ public static class QueryConstants
 
   public const int DefaultPageCount = 50;
 
+  public const int DefaultFinancialPageCount = 50;
+
   public const int DefaultMeasurementPageCount = 10000;
 }
