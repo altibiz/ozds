@@ -42,8 +42,9 @@ public partial class LocationStateProvider : OzdsOwningComponentBase
     var locationQueries = ScopedServices
       .GetRequiredService<LocationQueries>();
 
-    var locations = await locationQueries.LocationsByRepresentativeId(
+    var locations = await locationQueries.ReadAllLocationsByRepresentativeId(
       RepresentativeState.Representative.Id,
+      RepresentativeState.Representative.Role,
       CancellationToken.None
     );
 

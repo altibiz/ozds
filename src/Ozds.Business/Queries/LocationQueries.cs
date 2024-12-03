@@ -59,4 +59,23 @@ public class LocationQueries(
 
     return models;
   }
+
+  public async Task<List<LocationModel>> ReadAllLocationsByRepresentativeId(
+    string representativeId,
+    RoleModel role,
+    CancellationToken cancellationToken
+  )
+  {
+    var entities = await dataLocationQueries.ReadAllLocationsByRepresentativeId(
+      representativeId,
+      role.ToEntity(),
+      cancellationToken
+    );
+
+    var models = entities
+      .Select(modelEntityConverter.ToModel<LocationModel>)
+      .ToList();
+
+    return models;
+  }
 }

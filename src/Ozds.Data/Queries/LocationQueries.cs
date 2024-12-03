@@ -115,4 +115,49 @@ public class LocationQueries(
 
     return items.ToPaginatedList(count);
   }
+
+  public async Task<List<LocationEntity>>
+    ReadAllLocationsByRepresentativeId(
+      string representativeId,
+      RoleEntity role,
+      CancellationToken cancellationToken
+    )
+  {
+    await using var context = await factory
+      .CreateDbContextAsync(cancellationToken);
+
+    var filtered = role switch
+    {
+      RoleEntity.OperatorRepresentative => context.Locations,
+      RoleEntity.LocationRepresentative => context.LocationRepresentatives
+        .Where(context.ForeignKeyEquals<LocationRepresentativeEntity>(
+          nameof(LocationRepresentativeEntity.RepresentativeId),
+          representativeId))
+        .Include(x => x.Location)
+        .Select(x => x.Location)
+        .Concat(context.Representatives
+          .Where(context.PrimaryKeyEquals<RepresentativeEntity>(
+            representativeId))
+          .Include(x => x.NetworkUsers)
+          .ThenInclude(x => x.Location)
+          .SelectMany(x => x.NetworkUsers.Select(x => x.Location))),
+      RoleEntity.NetworkUserRepresentative => context.Representatives
+        .Where(context.PrimaryKeyEquals<RepresentativeEntity>(representativeId))
+        .Include(x => x.NetworkUsers)
+        .ThenInclude(x => x.Location)
+        .SelectMany(x => x.NetworkUsers.Select(x => x.Location)),
+      _ => throw new ArgumentOutOfRangeException(nameof(role))
+    };
+
+    filtered = filtered.Where(x => x.DeletedOn == null);
+
+    var ordered = filtered
+      .OrderByDescending(x => x.LastUpdatedOn)
+      .OrderByDescending(x => x.CreatedOn)
+      .OrderByDescending(x => x.DeletedOn);
+
+    var items = await ordered.ToListAsync(cancellationToken);
+
+    return items;
+  }
 }
