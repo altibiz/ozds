@@ -17,10 +17,10 @@ public partial class MeasurementChartControls : OzdsOwningComponentBase
 #pragma warning restore S3881 // "IDisposable" should be implemented correctly
 {
   [Parameter]
-  public List<IMeter> Meters { get; set; } = default!;
+  public List<IMeter> Meters { get; set; } = new();
 
   [Parameter]
-  public List<IMeasurementLocation> MeasurementLocations { get; set; } = default!;
+  public List<IMeasurementLocation> MeasurementLocations { get; set; } = new();
 
   [Parameter]
   public HashSet<MeasurementChartProfile> Profiles { get; set; } = new();
