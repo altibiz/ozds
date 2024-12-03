@@ -9,7 +9,7 @@ namespace Ozds.Business.Queries;
 public class NetworkUserQueries(
   DataNetworkUserQueries dataNetworkUserQueries,
   AgnosticModelEntityConverter modelEntityConverter
-)
+) : IQueries
 {
   public async Task<NetworkUserModel?> ReadNetworkUserByRepresentativeId(
     string representativeId,

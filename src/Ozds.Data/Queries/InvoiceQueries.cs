@@ -10,7 +10,8 @@ using Ozds.Data.Queries.Abstractions;
 namespace Ozds.Data.Queries;
 
 public class InvoiceQueries(
-  IDbContextFactory<DataDbContext> factory) : IQueries
+  IDbContextFactory<DataDbContext> factory
+) : IQueries
 {
   public async Task<PaginatedList<NetworkUserInvoiceEntity>>
     ReadInvoicesByRepresentative(

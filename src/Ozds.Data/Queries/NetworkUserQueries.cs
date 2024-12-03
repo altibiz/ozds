@@ -9,7 +9,8 @@ using Ozds.Data.Queries.Abstractions;
 namespace Ozds.Data.Queries;
 
 public class NetworkUserQueries(
-  IDbContextFactory<DataDbContext> factory) : IQueries
+  IDbContextFactory<DataDbContext> factory
+) : IQueries
 {
   public async Task<NetworkUserEntity?>
     ReadNetworkUserByRepresentativeId(

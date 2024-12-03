@@ -9,7 +9,7 @@ namespace Ozds.Business.Queries;
 public class LocationQueries(
   DataLocationQueries dataLocationQueries,
   AgnosticModelEntityConverter modelEntityConverter
-)
+) : IQueries
 {
   public async Task<LocationModel?> ReadLocationByRepresentativeId(
     string representativeId,
