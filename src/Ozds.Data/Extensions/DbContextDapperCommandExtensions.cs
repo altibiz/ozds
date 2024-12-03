@@ -199,7 +199,7 @@ public static class DbContextDapperCommandExtensions
         var finalColumnMappings = entitySplit.EntityMapping.ColumnMappings;
         var finalComplexPropertyMappings =
           entitySplit.EntityMapping.ComplexPropertyMappings;
-        if (discriminatorValue is { })
+        if (discriminatorValue is { } && discriminatorValue != DBNull.Value)
         {
           finalType = GetConcreteEntityType(
             entityType,
