@@ -2,6 +2,7 @@
 @using MudBlazor
 @using Ozds.Business.Analysis
 @using Ozds.Business.Models.Abstractions
+@using Ozds.Business.Models.Enums
 @using Ozds.Business.Time
 @using Ozds.Client.Components.Base
 @using Ozds.Client.Components.Charts
@@ -15,6 +16,13 @@
 @page "/measurements/meter/{id?}"
 
 @inherits OzdsComponentBase
+
+@if (RepresentativeState.Representative.Role
+  is not RoleModel.OperatorRepresentative)
+{
+  <NotFound />
+  return;
+}
 
 @{
   var analysis = AnalysisState.AnalysisBases.Value
@@ -77,11 +85,14 @@
 
 @code {
   [CascadingParameter]
-  public AnalysisState AnalysisState { get; set; } = default!;
-
-  [CascadingParameter]
-  public Breakpoint Breakpoint { get; set; } = default!;
+  private AnalysisState AnalysisState { get; set; } = default!;
 
   [Parameter]
   public string Id { get; set; } = default!;
+
+  [CascadingParameter]
+  private RepresentativeState RepresentativeState { get; set; } = default!;
+
+  [CascadingParameter]
+  private Breakpoint Breakpoint { get; set; } = default!;
 }

@@ -22,7 +22,7 @@
     RoleModel.LocationRepresentative
   ])]
 
-@inherits OzdsComponentBase
+@inherits OzdsOwningComponentBase
 
 @if (RepresentativeState.Representative.Role
   is not RoleModel.OperatorRepresentative
@@ -32,26 +32,20 @@
   return;
 }
 
-@{
-  var locations = AnalysisState.AnalysisBases.Value
-    .Select(x => x.Location)
-    .DistinctBy(x => (x.Id, x.GetType()));
-}
-
 <HeadContent>
   <title>OZDS - @Translate("Locations")</title>
 </HeadContent>
 
-<Paging T="LocationModel">
+@if (RepresentativeState.Representative.Role
+  == RoleModel.OperatorRepresentative)
+{
+  <MudCheckBox
+    Label="@Translate("Deleted")"
+    @bind-Checked="_deleted" />
+}
+
+<Paging PageAsync="OnPageAsync">
   <Summary>
     <LocationSummary Model="@context" />
   </Summary>
 </Paging>
-
-@code {
-  [CascadingParameter]
-  private RepresentativeState RepresentativeState { get; set; } = default!;
-
-  [CascadingParameter]
-  private AnalysisState AnalysisState { get; set; } = default!;
-}

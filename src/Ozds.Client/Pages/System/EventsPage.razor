@@ -26,6 +26,13 @@
 
 @inject IHostEnvironment Environment
 
+@if (RepresentativeState.Representative.Role
+  is not RoleModel.OperatorRepresentative)
+{
+  <NotFound />
+  return;
+}
+
 <HeadContent>
   <title>OZDS - @Translate("Events")</title>
 </HeadContent>

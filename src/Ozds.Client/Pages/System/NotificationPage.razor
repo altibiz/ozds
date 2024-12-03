@@ -31,10 +31,6 @@
       <NotificationDetails Model="@context"/>
     </Found>
     <NotFound>
-      <HeadContent>
-        <title>OZDS - @Translate("Notification")</title>
-      </HeadContent>
-
       <NotFound />
     </NotFound>
   </Loading>
@@ -48,7 +44,7 @@
   LoadAsync="OnLoadAsync"
   NewAsync="OnNewAsync"
   CreateAsync="OnCreateAsync">
-  <Edit>
+  <Label>
     <HeadContent>
       @if (context.Created)
       {
@@ -59,14 +55,11 @@
         <title>OZDS - @Translate("Notification"): @context.Model.Title</title>
       }
     </HeadContent>
-
+  </Label>
+  <Edit>
     <NotificationEdit Model="@context.Model"/>
   </Edit>
   <Details>
-    <HeadContent>
-      <title>OZDS - @Translate("Notification"): @context.Model.Title</title>
-    </HeadContent>
-
     <NotificationDetails Model="@context.Model"/>
 
     @if (!context.Created)

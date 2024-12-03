@@ -25,9 +25,7 @@
   <title>OZDS - @Translate("Users")</title>
 </HeadContent>
 
-<Paging PageAsync="@((page) => ScopedServices
-  .GetRequiredService<RepresentativeQueries>()
-  .MaybeRepresentingUsers(page, CancellationToken.None))">
+<Paging PageAsync="OnPageAsync">
   <Summary>
     <MaybeRepresentingUserSummary Model="@context" />
   </Summary>

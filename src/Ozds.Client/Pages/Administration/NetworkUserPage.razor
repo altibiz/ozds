@@ -10,12 +10,12 @@
 
 @namespace Ozds.Client.Pages
 
-@page "/administration/network-user/{Id}"
+@page "/administration/network-user/{id?}"
 
-@inherits OzdsComponentBase
+@inherits OzdsOwningComponentBase
 
-<Mutating T="NetworkUserModel" Id="@Id">
-  <Edit>
+<Mutating T="NetworkUserModel" LoadAsync="OnLoadAsync">
+  <Label>
     <HeadContent>
       @if (context.Created)
       {
@@ -26,19 +26,11 @@
         <title>OZDS - @Translate("Network user"): @context.Model.Title</title>
       }
     </HeadContent>
-
+  </Label>
+  <Edit>
     <NetworkUserEdit Model="@context.Model" />
   </Edit>
   <Details>
-    <HeadContent>
-      <title>OZDS - @Translate("Network user"): @context.Model.Title</title>
-    </HeadContent>
-
     <NetworkUserDetails Model="@context.Model" />
   </Details>
 </Mutating>
-
-@code {
-  [Parameter]
-  public string Id { get; set; } = default!;
-}

@@ -17,9 +17,11 @@ public static class PaginatedList
 
   public static PaginatedList<T> ToPaginatedList<T>(
     this IEnumerable<T> data,
-    int totalCount
+    int? totalCount = null
   )
   {
-    return new PaginatedList<T>(data.ToList(), totalCount);
+    var list = data.ToList();
+    totalCount ??= list.Count;
+    return new PaginatedList<T>(data.ToList(), totalCount.Value);
   }
 }

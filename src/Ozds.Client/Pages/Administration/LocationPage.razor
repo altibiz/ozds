@@ -16,7 +16,7 @@
 
 @page "/administration/location/{id?}"
 
-@inherits OzdsComponentBase
+@inherits OzdsOwningComponentBase
 
 @if (RepresentativeState.Representative.Role
   is not RoleModel.OperatorRepresentative
@@ -26,21 +26,16 @@
   return;
 }
 
-@{
-  var location = AnalysisState.AnalysisBases.Value
-    .FirstOrDefault(x => x.Location.Id == Id)?.Location;
-}
+<Mutating T="LocationModel" LoadAsync="OnLoadAsync">
+  <Label>
+    @if (context.Created
+      && RepresentativeState.Representative.Role
+        is RoleModel.LocationRepresentative)
+    {
+      <NotFound />
+      return;
+    }
 
-@if (location is null
-  && RepresentativeState.Representative.Role
-    == RoleModel.LocationRepresentative)
-{
-  <NotFound />
-  return;
-}
-
-<Mutating T="LocationModel" Id="@Id" Value="location">
-  <Edit>
     <HeadContent>
       @if (context.Created)
       {
@@ -48,28 +43,28 @@
       }
       else
       {
-        <title>OZDS - @Translate("Locationotification"): @context.Model.Title</title>
+        <title>OZDS - @Translate("Location"): @context.Model.Title</title>
       }
     </HeadContent>
+  </Label>
+  <Edit>
+    @if (context.Created
+      && RepresentativeState.Representative.Role
+        is RoleModel.LocationRepresentative)
+    {
+      return;
+    }
 
     <LocationEdit Model="@context.Model" />
   </Edit>
   <Details>
-    <HeadContent>
-      <title>OZDS - @Translate("Location"): @context.Model.Title</title>
-    </HeadContent>
+    @if (context.Created
+      && RepresentativeState.Representative.Role
+        is RoleModel.LocationRepresentative)
+    {
+      return;
+    }
 
     <LocationDetails Model="@context.Model" />
   </Details>
 </Mutating>
-
-@code {
-  [Parameter]
-  public string? Id { get; set; } = default!;
-
-  [CascadingParameter]
-  private RepresentativeState RepresentativeState { get; set; } = default!;
-
-  [CascadingParameter]
-  private AnalysisState AnalysisState { get; set; } = default!;
-}

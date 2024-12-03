@@ -16,20 +16,10 @@
 
 <Mutating
   T="MaybeRepresentingUserModel"
-  LoadAsync="@(() => ScopedServices
-    .GetRequiredService<RepresentativeQueries>()
-    .MaybeRepresentingUserByUserId(Id, CancellationToken.None))"
-  UpdateAsync="@((x) => x.Representative is { } representative
-    ? ScopedServices
-      .GetRequiredService<AuditableMutations>()
-      .Update(representative, CancellationToken.None)
-    : Task.CompletedTask)"
-  DeleteAsync="@((x) => x.Representative is { } representative
-    ? ScopedServices
-      .GetRequiredService<AuditableMutations>()
-      .Delete(representative, CancellationToken.None)
-    : Task.CompletedTask)">
-  <Details>
+  LoadAsync="OnLoadAsync"
+  UpdateAsync="OnUpdateAsync"
+  DeleteAsync="OnDeleteAsync">
+  <Label>
     <HeadContent>
       @if (context.Created)
       {
@@ -40,19 +30,11 @@
         <title>OZDS - @Translate("User"): @context.Model.User.UserName</title>
       }
     </HeadContent>
-
+  </Label>
+  <Details>
     <MaybeRepresentingUserDetails Model="@context.Model"/>
   </Details>
   <Edit>
-    <HeadContent>
-      <title>OZDS - @Translate("User"): @context.Model.User.UserName</title>
-    </HeadContent>
-
     <MaybeRepresentingUserEdit Model="@context.Model"/>
   </Edit>
 </Mutating>
-
-@code {
-  [Parameter]
-  public string Id { get; set; } = default!;
-}

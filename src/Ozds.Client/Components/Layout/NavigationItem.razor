@@ -12,7 +12,13 @@
 @inject IHostEnvironment Environment
 
 @if (!Environment.IsDevelopment()
-  || (Descriptor.Navigation.Developer ?? false))
+  || Descriptor.Navigation.Developer)
+{
+  return;
+}
+
+@if (!Descriptor.Navigation.Allows
+  .Contains(RepresentativeState.Representative.Role))
 {
   return;
 }
@@ -56,9 +62,12 @@
 
 @code {
   [Parameter]
-  public NavigationAttribute.NavigationDescriptor
-    Descriptor { get; set; } = default!;
+  public NavigationAttribute.NavigationDescriptor Descriptor { get; set; }
+    = default!;
 
   [CascadingParameter]
   private LayoutState LayoutState { get; set; } = default!;
+
+  [CascadingParameter]
+  private RepresentativeState RepresentativeState { get; set; } = default!;
 }
