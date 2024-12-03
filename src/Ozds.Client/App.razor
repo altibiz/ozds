@@ -9,13 +9,17 @@
 
 @inject NavigationManager NavigationManager
 
-<CultureStateProvider Culture="@Culture">
+@{
+  var culture = new CultureInfo(Culture);
+}
+
+<CultureStateProvider Culture="@culture">
   <UserStateProvider LogoutToken="@LogoutToken">
     <RepresentativeStateProvider>
       <Found>
-        <NotificationsStateProvider>
-          <AnalysisStateProvider>
-            <LocationStateProvider>
+        <LocationStateProvider>
+          <NotificationsStateProvider>
+            <AnalysisStateProvider>
               <Router AppAssembly="@typeof(App).Assembly">
                 <Found Context="routeData">
                   <RouteView
@@ -28,9 +32,9 @@
                   </LayoutView>
                 </NotFound>
               </Router>
-            </LocationStateProvider>
-          </AnalysisStateProvider>
-        </NotificationsStateProvider>
+            </AnalysisStateProvider>
+          </NotificationsStateProvider>
+        </LocationStateProvider>
       </Found>
       <NotFound>
         @if (NavigationManager.Uri.ToString() != "/unapproved")
@@ -57,10 +61,9 @@
 </CultureStateProvider>
 
 @code {
+  [Parameter]
+  public string Culture { get; set; } = default!;
 
   [Parameter]
   public string LogoutToken { get; set; } = default!;
-
-  [Parameter]
-  public CultureInfo Culture { get; set; } = default!;
 }

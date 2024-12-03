@@ -17,7 +17,7 @@ public partial class CultureStateProvider
   [Inject]
   private NavigationManager NavigationManager { get; set; } = default!;
 
-  protected override void OnInitialized()
+  protected override void OnParametersSet()
   {
     _state = new CultureState(
       Culture,

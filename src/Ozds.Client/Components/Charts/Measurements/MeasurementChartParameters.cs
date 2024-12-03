@@ -17,7 +17,8 @@ public class MeasurementChartParameters
 
   public HashSet<PhaseModel> Phases { get; set; } = new();
 
-  public DateTimeOffset FromDate { get; set; } = default;
+  public DateTimeOffset FromDate { get; set; } =
+    DateTime.UtcNow.Subtract(TimeSpan.FromHours(1));
 
   public ResolutionModel Resolution { get; set; } = ResolutionModel.Hour;
 

@@ -1,8 +1,17 @@
 @using Ozds.Client
+
 @namespace Ozds.Server.Views.App
+
+@model Ozds.Client.ViewModels.AppViewModel
 
 @{
   Layout = "_Layout.cshtml";
 }
 
-@(await Html.RenderComponentAsync<App>(RenderMode.Server, new { Model.LogoutToken }))
+@(await Html.RenderComponentAsync<App>(
+  RenderMode.Server,
+  new {
+    Culture = Model.Culture.TwoLetterISOLanguageName,
+    Model.LogoutToken
+  }
+))
