@@ -57,8 +57,11 @@ public partial class LocationStateProvider : OzdsOwningComponentBase
       location,
       () =>
       {
-        _state = default;
-        InvokeAsync(StateHasChanged);
+        InvokeAsync(() =>
+        {
+          _state = default;
+          StateHasChanged();
+        });
       }
     );
   }
