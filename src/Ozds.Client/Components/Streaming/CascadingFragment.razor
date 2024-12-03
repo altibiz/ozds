@@ -1,0 +1,15 @@
+@using Microsoft.AspNetCore.Components
+
+@namespace Ozds.Client.Components.Streaming
+
+@typeparam T
+
+@ChildContent(CascadingParameter)
+
+@code {
+  [Parameter]
+  public RenderFragment<T> ChildContent { get; set; } = default!;
+
+  [CascadingParameter]
+  private T CascadingParameter { get; set; } = default!;
+}

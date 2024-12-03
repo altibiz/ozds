@@ -1,5 +1,6 @@
 using Ozds.Business.Conversion.Base;
 using Ozds.Business.Models;
+using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Enums;
 using Ozds.Data.Entities;
@@ -7,28 +8,34 @@ using Ozds.Data.Entities.Base;
 
 namespace Ozds.Business.Conversion;
 
-public class NotificationModelEntityConverter : ModelEntityConverter<
-  NotificationModel, NotificationEntity>
+public class INotificationEntityConverter : ModelEntityConverter<
+  INotification, NotificationEntity>
 {
-  protected override NotificationEntity ToEntity(NotificationModel model)
+  protected override NotificationEntity ToEntity(INotification model)
   {
     return model.ToEntity();
   }
 
-  protected override NotificationModel ToModel(NotificationEntity entity)
+  protected override INotification ToModel(NotificationEntity entity)
   {
     return entity.ToModel();
   }
 }
 
-public static class NotificationModelEntityConverterExtensions
+public static class INotificationEntityConverterExtensions
 {
-  public static NotificationEntity ToEntity(this NotificationModel model)
+  public static NotificationEntity ToEntity(this INotification model)
   {
     if (model is MessengerNotificationModel
-      messengerInactivityNotificationModel)
+      messengerNotificationModel)
     {
-      return messengerInactivityNotificationModel.ToEntity();
+      return messengerNotificationModel.ToEntity();
+    }
+
+    if (model is SystemNotificationModel
+      systemNotificationModel)
+    {
+      return systemNotificationModel.ToEntity();
     }
 
     if (model is ResolvableNotificationModel resolvableNotificationModel)
@@ -48,12 +55,18 @@ public static class NotificationModelEntityConverterExtensions
     };
   }
 
-  public static NotificationModel ToModel(this NotificationEntity entity)
+  public static INotification ToModel(this NotificationEntity entity)
   {
     if (entity is MessengerNotificationEntity
-      messengerInactivityNotificationEntity)
+      messengerNotificationEntity)
     {
-      return messengerInactivityNotificationEntity.ToModel();
+      return messengerNotificationEntity.ToModel();
+    }
+
+    if (entity is SystemNotificationEntity
+      systemNotificationEntity)
+    {
+      return systemNotificationEntity.ToModel();
     }
 
     if (entity is ResolvableNotificationEntity resolvableNotificationEntity)

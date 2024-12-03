@@ -2,69 +2,67 @@
 @using MudBlazor
 @using Ozds.Client.Components.Providers
 @using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Streaming
 @using Ozds.Client.State
 
 @namespace Ozds.Client.Components.Layout
 
 @inherits OzdsLayoutComponentBase
 
-@{
-  var footerBackgroundColor = ThemeState.IsDarkMode
-    ? ThemeState.Theme.PaletteDark.GrayDefault
-    : ThemeState.Theme.Palette.GrayDefault;
-}
-
-<HeadContent>
-  <style>
-    html, body {
-      height: 100vh;
-    }
-
-    body {
-      display: flex;
-      flex-direction: column;
-    }
-
-    main {
-      flex: 1;
-    }
-
-    footer {
-      min-height: 120px;
-      margin-top: 32px;
-    }
-
-    footer {
-      background-color: @(footerBackgroundColor);
-    }
-  </style>
-</HeadContent>
-
 <ThemeStateProvider>
   <LayoutStateProvider>
-    <header>
-      <Header />
-    </header>
+    <CascadingFragment T="ThemeState">
+      @{
+        var footerBackgroundColor = context.IsDarkMode
+          ? context.Theme.PaletteDark.GrayDefault
+          : context.Theme.Palette.GrayDefault;
+      }
 
-    <main>
-      <MudLayout Class="d-flex flex-column">
-        <Main>
-          @Body
-        </Main>
-      </MudLayout>
-    </main>
+      <HeadContent>
+        <style>
+          html, body {
+            height: 100vh;
+          }
 
-    <footer>
-      <MudContainer
-        MaxWidth="MaxWidth.Large"
-        Style="height: 100%; padding-top: 12px;">
-        <Footer />
-      </MudContainer>
-    </footer>
+          body {
+            display: flex;
+            flex-direction: column;
+          }
+
+          main {
+            flex: 1;
+          }
+
+          footer {
+            min-height: 120px;
+            margin-top: 32px;
+          }
+
+          footer {
+            background-color: @(footerBackgroundColor);
+          }
+        </style>
+      </HeadContent>
+
+      <header>
+        <Header />
+      </header>
+
+      <main>
+        <MudLayout Class="d-flex flex-column">
+          <Main>
+            @Body
+          </Main>
+        </MudLayout>
+      </main>
+
+      <footer>
+        <MudContainer
+          MaxWidth="MaxWidth.Large"
+          Style="height: 100%; padding-top: 12px;">
+          <Footer />
+        </MudContainer>
+      </footer>
+    </CascadingFragment>
   </LayoutStateProvider>
 </ThemeStateProvider>
-
-@code {
-  [Parameter]
-  public required ThemeState ThemeState { get; set; }
-}
