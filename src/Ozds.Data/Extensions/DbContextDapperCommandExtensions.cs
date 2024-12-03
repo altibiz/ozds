@@ -182,6 +182,11 @@ public static class DbContextDapperCommandExtensions
     {
       if (split is EntityReaderSplit entitySplit)
       {
+        if (entitySplit.Values.All(x => x.Value == DBNull.Value))
+        {
+          continue;
+        }
+
         var entityType = entitySplit.EntityMapping.EntityType;
         var discriminatorProperty = entityType
           .FindDiscriminatorProperty();
@@ -237,14 +242,13 @@ public static class DbContextDapperCommandExtensions
       }
       else if (split is ScalarReaderSplit scalarSplit)
       {
-        var value = scalarSplit.Value;
-        if (value == DBNull.Value)
+        if (scalarSplit.Value == DBNull.Value)
         {
           continue;
         }
 
         var converted = ConvertValue(
-          value,
+          scalarSplit.Value,
           scalarSplit.ScalarMapping.Property.PropertyType);
         scalarSplit.ScalarMapping.Property.SetValue(instance, converted);
       }
