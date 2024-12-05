@@ -22,7 +22,7 @@ public class MessengerQueries(
 
     var filtered = context.Messengers
       .Where(context.ForeignKeyEquals<MessengerEntity>(
-        nameof(MessengerEntity.LocationId),
+        nameof(MessengerEntity.Location),
         locationId));
 
     var ordered = filtered

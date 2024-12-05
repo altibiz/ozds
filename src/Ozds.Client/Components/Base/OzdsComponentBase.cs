@@ -1,9 +1,7 @@
 using System.Globalization;
 using System.Reflection;
 using System.Text.Json;
-using Azure;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Routing.Patterns;
 using Microsoft.AspNetCore.Routing.Template;
@@ -117,11 +115,13 @@ public abstract class OzdsComponentBase : ComponentBase
     return localized;
   }
 
+  protected string Href => new Uri(NavigationManager.Uri).AbsolutePath;
+
   protected string LoginHref =>
-    $"/login?returnUrl={Uri.EscapeDataString(NavigationManager.Uri)}";
+    $"/login?returnUrl={Uri.EscapeDataString(Href)}";
 
   protected string LogoutHref =>
-    $"/logout?returnUrl={Uri.EscapeDataString(NavigationManager.Uri)}";
+    $"/users/logoff?returnUrl=/login?returnUrl={Uri.EscapeDataString(Href)}";
 
   protected string IndexHref =>
     BasedHref("/");
@@ -170,7 +170,7 @@ public abstract class OzdsComponentBase : ComponentBase
 
   protected void NavigateToPage<T>(object? parameters = null)
   {
-    NavigateToPage(typeof(T), parameters);
+    NavigationManager.NavigateTo(PageHref<T>(parameters));
   }
 
   protected void NavigateToPage(Type type, object? parameters = null)
