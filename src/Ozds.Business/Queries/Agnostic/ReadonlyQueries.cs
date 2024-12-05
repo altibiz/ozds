@@ -41,7 +41,7 @@ public class ReadonlyQueries(
       return default;
     }
 
-    var model = modelEntityConverter.ToEntity(entity);
+    var model = modelEntityConverter.ToModel(entity);
     return model;
   }
 
@@ -76,15 +76,16 @@ public class ReadonlyQueries(
         $"Type {modelType} is not assignable to {typeof(IReadonly)}");
     }
 
+    var entityType = modelEntityConverter.EntityType(modelType);
     var entities = await queries.ReadDynamic(
-      modelType,
+      entityType,
       pageNumber,
       cancellationToken,
       pageCount
     );
 
     return entities.Items
-      .Select(modelEntityConverter.ToEntity)
+      .Select(modelEntityConverter.ToModel)
       .ToPaginatedList(entities.TotalCount);
   }
 }

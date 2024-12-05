@@ -5,12 +5,13 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities;
 
-public class RegulatoryCatalogueEntity : AuditableEntity
+public class RegulatoryCatalogueEntity : CatalogueEntity
 {
   public virtual ICollection<LocationEntity> Locations { get; set; } = default!;
 
   public virtual ICollection<NetworkUserCalculationEntity>
-    NetworkUserCalculations { get; set; } =
+    NetworkUserCalculations
+  { get; set; } =
     default!;
 
 #pragma warning disable CA1707

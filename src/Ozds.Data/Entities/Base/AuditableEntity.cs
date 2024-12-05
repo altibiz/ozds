@@ -48,14 +48,16 @@ public class
 {
   public override void Configure(ModelBuilder modelBuilder, Type entity)
   {
-    if (entity == typeof(AuditableEntity))
+    if (entity == typeof(AuditableEntity)
+      || entity == typeof(CatalogueEntity))
     {
       return;
     }
 
     var builder = modelBuilder.Entity(entity);
 
-    if (entity.BaseType == typeof(AuditableEntity))
+    if (entity.BaseType == typeof(AuditableEntity)
+      || entity.BaseType == typeof(CatalogueEntity))
     {
       if (entity == typeof(RepresentativeEntity)
         || entity == typeof(MeterEntity)

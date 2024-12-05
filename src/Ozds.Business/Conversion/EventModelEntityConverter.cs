@@ -1,5 +1,6 @@
 using Ozds.Business.Conversion.Base;
 using Ozds.Business.Models;
+using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Base;
 using Ozds.Data.Entities;
 using Ozds.Data.Entities.Base;
@@ -7,14 +8,14 @@ using Ozds.Data.Entities.Base;
 namespace Ozds.Business.Conversion;
 
 public class
-  EventModelEntityConverter : ModelEntityConverter<EventModel, EventEntity>
+  EventModelEntityConverter : ModelEntityConverter<IEvent, EventEntity>
 {
-  protected override EventEntity ToEntity(EventModel model)
+  protected override EventEntity ToEntity(IEvent model)
   {
     return model.ToEntity();
   }
 
-  protected override EventModel ToModel(EventEntity entity)
+  protected override IEvent ToModel(EventEntity entity)
   {
     return entity.ToModel();
   }
@@ -57,7 +58,7 @@ public static class EventModelEntityConverterExtensions
     throw new NotImplementedException();
   }
 
-  public static EventEntity ToEntity(this EventModel model)
+  public static EventEntity ToEntity(this IEvent model)
   {
     if (model is SystemAuditEventModel systemAuditEventModel)
     {

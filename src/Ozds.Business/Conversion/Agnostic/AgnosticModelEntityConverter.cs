@@ -10,9 +10,16 @@ public class AgnosticModelEntityConverter(IServiceProvider serviceProvider)
   {
     return _serviceProvider
         .GetServices<IModelEntityConverter>()
-        .FirstOrDefault(
+        .Where(
           converter =>
             converter.CanConvertToEntity(type))
+        .DefaultIfEmpty(null)
+        .Aggregate((acc, next) =>
+          acc is null
+            ? null
+            : next!.EntityType().IsAssignableTo(acc.EntityType())
+              ? next
+              : acc)
         ?.EntityType()
       ?? throw new InvalidOperationException(
         $"No converter found for model {type}.");
@@ -22,9 +29,16 @@ public class AgnosticModelEntityConverter(IServiceProvider serviceProvider)
   {
     return _serviceProvider
         .GetServices<IModelEntityConverter>()
-        .FirstOrDefault(
+        .Where(
           converter =>
             converter.CanConvertToEntity(model.GetType()))
+        .DefaultIfEmpty(null)
+        .Aggregate((acc, next) =>
+          acc is null
+            ? null
+            : next!.EntityType().IsAssignableTo(acc.EntityType())
+              ? next
+              : acc)
         ?.ToEntity(model)
       ?? throw new InvalidOperationException(
         $"No converter found for model {model.GetType()}.");
@@ -42,9 +56,16 @@ public class AgnosticModelEntityConverter(IServiceProvider serviceProvider)
   {
     return _serviceProvider
         .GetServices<IModelEntityConverter>()
-        .FirstOrDefault(
+        .Where(
           converter =>
             converter.CanConvertToModel(entity.GetType()))
+        .DefaultIfEmpty(null)
+        .Aggregate((acc, next) =>
+          acc is null
+            ? null
+            : next!.EntityType().IsAssignableTo(acc.EntityType())
+              ? next
+              : acc)
         ?.ToModel(entity)
       ?? throw new InvalidOperationException(
         $"No converter found for entity {entity.GetType()}.");

@@ -1,5 +1,6 @@
 using Ozds.Business.Conversion.Base;
 using Ozds.Business.Models;
+using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Base;
 using Ozds.Data.Entities;
 using Ozds.Data.Entities.Base;
@@ -7,15 +8,15 @@ using Ozds.Data.Entities.Base;
 namespace Ozds.Business.Conversion;
 
 public class NetworkUserCatalogueModelEntityConverter : ModelEntityConverter<
-  NetworkUserCatalogueModel, NetworkUserCatalogueEntity>
+  INetworkUserCatalogue, NetworkUserCatalogueEntity>
 {
   protected override NetworkUserCatalogueEntity ToEntity(
-    NetworkUserCatalogueModel model)
+    INetworkUserCatalogue model)
   {
     return model.ToEntity();
   }
 
-  protected override NetworkUserCatalogueModel ToModel(
+  protected override INetworkUserCatalogue ToModel(
     NetworkUserCatalogueEntity entity)
   {
     return entity.ToModel();
@@ -25,7 +26,7 @@ public class NetworkUserCatalogueModelEntityConverter : ModelEntityConverter<
 public static class NetworkUserCatalogueModelEntityConverterExtensions
 {
   public static NetworkUserCatalogueEntity ToEntity(
-    this NetworkUserCatalogueModel model)
+    this INetworkUserCatalogue model)
   {
     if (model is RedLowNetworkUserCatalogueModel
       redLowNetworkUserCatalogueModel)
@@ -84,9 +85,7 @@ public static class NetworkUserCatalogueModelEntityConverterExtensions
     }
 
     throw new NotSupportedException(
-      $"NetworkUserCatalogueEntity type {
-        entity.GetType().Name
-      } is not supported."
+      $"NetworkUserCatalogueEntity type {entity.GetType().Name} is not supported."
     );
   }
 }

@@ -1,10 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
 
-public class NetworkUserCatalogueEntity : AuditableEntity
+public class NetworkUserCatalogueEntity : CatalogueEntity, INetworkUserCatalogueEntity
 {
   public virtual ICollection<MeasurementLocationEntity>
     NetworkUserMeasurementLocations
