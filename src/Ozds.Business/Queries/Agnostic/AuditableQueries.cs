@@ -42,7 +42,7 @@ public class AuditableQueries(
       return default;
     }
 
-    var model = modelEntityConverter.ToEntity(entity);
+    var model = modelEntityConverter.ToModel(entity);
     return model;
   }
 
@@ -80,8 +80,9 @@ public class AuditableQueries(
         $"Type {modelType} is not assignable to {typeof(IAuditable)}");
     }
 
+    var entityType = modelEntityConverter.EntityType(modelType);
     var entities = await queries.ReadDynamic(
-      modelType,
+      entityType,
       pageNumber,
       cancellationToken,
       pageCount,
@@ -89,7 +90,7 @@ public class AuditableQueries(
     );
 
     return entities.Items
-      .Select(modelEntityConverter.ToEntity)
+      .Select(modelEntityConverter.ToModel)
       .ToPaginatedList(entities.TotalCount);
   }
 }

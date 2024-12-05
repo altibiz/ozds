@@ -1,21 +1,21 @@
 using Ozds.Business.Conversion.Base;
 using Ozds.Business.Models;
-using Ozds.Business.Models.Base;
+using Ozds.Business.Models.Abstractions;
 using Ozds.Data.Entities;
 using Ozds.Data.Entities.Base;
 
 namespace Ozds.Business.Conversion;
 
 public class
-  MessengerModelEntityConverter : ModelEntityConverter<MessengerModel,
+  MessengerModelEntityConverter : ModelEntityConverter<IMessenger,
   MessengerEntity>
 {
-  protected override MessengerEntity ToEntity(MessengerModel model)
+  protected override MessengerEntity ToEntity(IMessenger model)
   {
     return model.ToEntity();
   }
 
-  protected override MessengerModel ToModel(MessengerEntity entity)
+  protected override IMessenger ToModel(MessengerEntity entity)
   {
     return entity.ToModel();
   }
@@ -23,7 +23,7 @@ public class
 
 public static class MessengerModelEntityConverterExtensions
 {
-  public static MessengerModel ToModel(this MessengerEntity entity)
+  public static IMessenger ToModel(this MessengerEntity entity)
   {
     if (entity is PidgeonMessengerEntity pidgeonMessenger)
     {
@@ -33,7 +33,7 @@ public static class MessengerModelEntityConverterExtensions
     throw new NotImplementedException();
   }
 
-  public static MessengerEntity ToEntity(this MessengerModel model)
+  public static MessengerEntity ToEntity(this IMessenger model)
   {
     if (model is PidgeonMessengerModel pidgeonMessenger)
     {

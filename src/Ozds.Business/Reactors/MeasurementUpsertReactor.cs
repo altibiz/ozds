@@ -519,7 +519,7 @@ public class MeasurementUpsertReactor(
 
   private static JsonDocument CreateEventContent(
     PushEventArgs eventArgs,
-    MessengerModel messenger)
+    IMessenger messenger)
   {
     var content = new EventContent(
       messenger.Id,
