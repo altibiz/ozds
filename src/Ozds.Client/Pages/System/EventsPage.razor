@@ -58,7 +58,9 @@
   .GetRequiredService<EventQueries>()
   .ReadByMinLevel<IEvent>(_minLevel, page, CancellationToken.None))">
   <Found Context="page">
-    <ResponsiveTable Model="@(page.Items)" Link="@(x => $"event/{x.Id}")">
+    <ResponsiveTable
+      Model="@(page.Items)"
+      Link="@(x => PageHref<EventPage>(new { x.Id }))">
       <Summary>
         <EventSummary Model="@context" />
       </Summary>

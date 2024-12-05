@@ -9,6 +9,7 @@
 @using Ozds.Client.Components.Dashboards
 @using Ozds.Client.Components.Tables
 @using Ozds.Client.Components.Models
+@using Ozds.Client.Components.Base
 @using Ozds.Client.State
 
 @namespace Ozds.Client.Pages
@@ -24,6 +25,8 @@
     RoleModel.LocationRepresentative,
     RoleModel.NetworkUserRepresentative
   ])]
+
+@inherits OzdsComponentBase
 
 <HeadContent>
   <title>OZDS</title>
@@ -61,7 +64,7 @@
 
   <ResponsiveTable
     Model="@locations"
-    Link="@(x => $"location/${x.Location.Id}")">
+    Link="@(x => PageHref<LocationPage>(new { x.Location.Id }))">
     <Summary>
       <LocationAnalysisSummary Model="@context" />
     </Summary>
@@ -83,7 +86,7 @@
 
   <ResponsiveTable
     Model="@networkUsers"
-    Link="@(x => $"network-user/${x.NetworkUser.Id}")">
+    Link="@(x => PageHref<NetworkUserPage>(new { x.NetworkUser.Id }))">
     <Summary>
       <NetworkUserAnalysisSummary Model="@context" />
     </Summary>
@@ -104,7 +107,7 @@
 
   <ResponsiveTable
     Model="@measurementLocations"
-    Link="@(x => $"measurement-location/${x.MeasurementLocation.Id}")">
+    Link="@(x => PageHref<MeasurementLocationPage>(new { x.MeasurementLocation.Id }))">
     <Summary>
       <MeasurementLocationAnalysisSummary Model="@context" />
     </Summary>
@@ -127,7 +130,7 @@
 
 <ResponsiveTable
   Model="@invoices"
-  Link="@(x => $"invoice/${x.Id}")">
+  Link="@(x => PageHref<InvoicePage>(new { x.Id }))">
   <Summary>
     <InvoiceSummary Model="@context" />
   </Summary>

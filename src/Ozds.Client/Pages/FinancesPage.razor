@@ -36,7 +36,7 @@
 
 <ResponsiveTable
   Model="invoices"
-  Link="@(x => $"invoice/{x.Id}")">
+  Link="@(x => PageHref<InvoicePage>(new { x.Id }))">
   <Summary>
     <InvoiceSummary Model="context" />
   </Summary>

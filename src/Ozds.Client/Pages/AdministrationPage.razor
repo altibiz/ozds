@@ -34,7 +34,7 @@
 
 <ResponsiveTable
   Model="networkUsers"
-  Link="@(x => $"/network-user/{x.NetworkUser.Id}")">
+  Link="@(x => PageHref<NetworkUserPage>(new { x.NetworkUser.Id }))">
   <Summary>
     <NetworkUserAnalysisSummary Model="context" />
   </Summary>

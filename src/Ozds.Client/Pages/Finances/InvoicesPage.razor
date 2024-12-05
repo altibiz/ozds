@@ -36,7 +36,9 @@
     .ToList();
 }
 
-<ResponsiveTable Model="@invoices" Link="@(x => $"invoice/{x.Id}")">
+<ResponsiveTable
+  Model="@invoices"
+  Link="@(x => PageHref<InvoicePage>(new { x.Id }))">
   <Summary>
     <InvoiceSummary Model="@context" />
   </Summary>
