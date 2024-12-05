@@ -11,9 +11,6 @@ namespace Ozds.Client.Components.Streaming;
 public partial class Mutating<T> : OzdsOwningComponentBase
   where T : notnull
 {
-  [Inject]
-  public DialogService DialogService { get; set; } = default!;
-
   [Parameter]
   public T? Value { get; set; }
 
@@ -69,6 +66,8 @@ public partial class Mutating<T> : OzdsOwningComponentBase
 
   private async Task OnCreate(T model)
   {
+    var dialogService = ScopedServices.GetRequiredService<IDialogService>();
+
     try
     {
       if (Create is not null)
@@ -92,7 +91,7 @@ public partial class Mutating<T> : OzdsOwningComponentBase
     }
     catch (Exception ex)
     {
-      await DialogService.ShowAsync<MutatingResult>(
+      await dialogService.ShowAsync<MutatingResult>(
         Translate("Failure"),
         new DialogParameters
         {
@@ -106,7 +105,7 @@ public partial class Mutating<T> : OzdsOwningComponentBase
       return;
     }
 
-    await DialogService.ShowAsync<MutatingResult>(
+    await dialogService.ShowAsync<MutatingResult>(
       Translate("Success"),
       new DialogParameters
       {
@@ -120,6 +119,8 @@ public partial class Mutating<T> : OzdsOwningComponentBase
 
   private async Task OnUpdate(T model)
   {
+    var dialogService = ScopedServices.GetRequiredService<IDialogService>();
+
     try
     {
       if (Update is not null)
@@ -143,7 +144,7 @@ public partial class Mutating<T> : OzdsOwningComponentBase
     }
     catch (Exception ex)
     {
-      await DialogService.ShowAsync<MutatingResult>(
+      await dialogService.ShowAsync<MutatingResult>(
         Translate("Failure"),
         new DialogParameters
         {
@@ -157,7 +158,7 @@ public partial class Mutating<T> : OzdsOwningComponentBase
       return;
     }
 
-    await DialogService.ShowAsync<MutatingResult>(
+    await dialogService.ShowAsync<MutatingResult>(
       Translate("Success"),
       new DialogParameters
       {
@@ -171,6 +172,8 @@ public partial class Mutating<T> : OzdsOwningComponentBase
 
   private async Task OnDelete(T model)
   {
+    var dialogService = ScopedServices.GetRequiredService<IDialogService>();
+
     try
     {
       if (Delete is not null)
@@ -194,7 +197,7 @@ public partial class Mutating<T> : OzdsOwningComponentBase
     }
     catch (Exception ex)
     {
-      await DialogService.ShowAsync<MutatingResult>(
+      await dialogService.ShowAsync<MutatingResult>(
         Translate("Failure"),
         new DialogParameters
         {
@@ -208,7 +211,7 @@ public partial class Mutating<T> : OzdsOwningComponentBase
       return;
     }
 
-    await DialogService.ShowAsync<MutatingResult>(
+    await dialogService.ShowAsync<MutatingResult>(
       Translate("Success"),
       new DialogParameters
       {
