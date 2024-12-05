@@ -19,6 +19,11 @@ public class AppController(IAntiforgery antiforgery) : Controller
       return Redirect("/app/hr");
     }
 
+    if (cultureInfo.TwoLetterISOLanguageName != culture)
+    {
+      return Redirect($"/app/{cultureInfo.TwoLetterISOLanguageName}");
+    }
+
     string? logoutToken;
     try
     {

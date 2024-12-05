@@ -4,7 +4,7 @@ using Ozds.Client.State;
 
 namespace Ozds.Client.Components.Providers;
 
-public partial class CultureStateProvider
+public partial class CultureStateProvider : ComponentBase
 {
   [Parameter]
   public RenderFragment? ChildContent { get; set; }

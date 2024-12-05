@@ -1,9 +1,12 @@
 using System.Globalization;
 using System.Reflection;
 using System.Text.Json;
+using Azure;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Routing.Patterns;
+using Microsoft.AspNetCore.Routing.Template;
 using Microsoft.JSInterop;
 using Ozds.Business.Localization.Abstractions;
 using Ozds.Business.Time;
@@ -27,7 +30,7 @@ public abstract class OzdsComponentBase : ComponentBase
   private IJSRuntime JS { get; set; } = default!;
 
   [Inject]
-  private LinkGenerator LinkGenerator { get; set; } = default!;
+  private TemplateBinderFactory TemplateBinderFactory { get; set; } = default!;
 
   protected static string NumericString(decimal? number, int places = 2)
   {
@@ -114,47 +117,70 @@ public abstract class OzdsComponentBase : ComponentBase
     return localized;
   }
 
-  protected void NavigateToLogin()
-  {
-    NavigationManager.NavigateTo(
-      $"/login?returnUrl={Uri.EscapeDataString(NavigationManager.Uri)}");
-  }
+  protected string LoginHref =>
+    $"/login?returnUrl={Uri.EscapeDataString(NavigationManager.Uri)}";
 
-  protected void NavigateToIndex()
+  protected string LogoutHref =>
+    $"/logout?returnUrl={Uri.EscapeDataString(NavigationManager.Uri)}";
+
+  protected string IndexHref =>
+    BasedHref("/");
+
+  protected string PageHref<T>(object? parameters = null) =>
+    PageHref(typeof(T), parameters);
+
+  protected string PageHref(Type type, object? parameters = null)
   {
-    NavigationManager.NavigateTo("/");
+    var attribute = type.GetCustomAttribute<RouteAttribute>()
+      ?? throw new InvalidOperationException(
+        $"{type} is not decorated with {nameof(RouteAttribute)}");
+    var route = attribute.Template;
+    var template = TemplateParser.Parse(route);
+    var pattern = RoutePatternFactory.Parse(route);
+    var values = new RouteValueDictionary(parameters);
+    var uri = TemplateBinderFactory
+      .Create(template, new RouteValueDictionary(pattern.Defaults))
+      .BindValues(values)
+        ?? throw new InvalidOperationException(
+          $"{type} has no route template");
+    return BasedHref(uri);
   }
 
   protected void NavigateBack()
   {
+#pragma warning disable CA2012 // Use ValueTasks correctly
     JS.InvokeVoidAsync("history.back");
+#pragma warning restore CA2012 // Use ValueTasks correctly
+  }
+
+  protected void NavigateToLogin()
+  {
+    NavigationManager.NavigateTo(LoginHref);
+  }
+
+  protected void NavigateToLogout()
+  {
+    NavigationManager.NavigateTo(LogoutHref);
+  }
+
+  protected void NavigateToIndex()
+  {
+    NavigationManager.NavigateTo(IndexHref);
   }
 
   protected void NavigateToPage<T>(object? parameters = null)
   {
-    var attribute = typeof(T).GetCustomAttribute<RouteAttribute>();
-    if (attribute is null)
-    {
-      throw new InvalidOperationException(
-        $"{typeof(T)} is not decorated with {nameof(RouteAttribute)}");
-    }
+    NavigateToPage(typeof(T), parameters);
+  }
 
-    var route = attribute.Template;
-    if (parameters is null)
-    {
-      NavigationManager.NavigateTo(route);
-    }
+  protected void NavigateToPage(Type type, object? parameters = null)
+  {
+    NavigationManager.NavigateTo(PageHref(type, parameters));
+  }
 
-    var uri = LinkGenerator.GetPathByAddress(
-      route,
-      values: new RouteValueDictionary(parameters),
-      pathBase: new PathString("/"));
-    if (uri is null)
-    {
-      throw new InvalidOperationException(
-        $"{typeof(T)} has no route template");
-    }
-
-    NavigationManager.NavigateTo(uri);
+  private string BasedHref(string uri)
+  {
+    var @base = new Uri(NavigationManager.BaseUri).AbsolutePath;
+    return @base + uri.TrimStart('/');
   }
 }

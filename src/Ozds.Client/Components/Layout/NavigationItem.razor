@@ -29,7 +29,7 @@
     : NavLinkMatch.All;
 }
 
-<MudNavLink Href="@Descriptor.Route.Template" Match="match">
+<MudNavLink Href="@PageHref(Descriptor.Type)" Match="match">
   <MudContainer MaxWidth="MaxWidth.Small" Class="d-flex flex-row">
     <MudHidden Breakpoint="Breakpoint.Xs">
       <div style="margin-left: -8px;" class="d-flex flex-row align-center">
