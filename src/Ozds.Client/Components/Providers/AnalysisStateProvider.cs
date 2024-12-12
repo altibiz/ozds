@@ -22,8 +22,6 @@ public partial class AnalysisStateProvider : OzdsOwningComponentBase
 
   private string? _previousLocationId;
 
-  private List<AnalysisBasisModel>? _analysisBases;
-
   private AnalysisState? _state;
 
   protected override void OnParametersSet()
@@ -57,12 +55,12 @@ public partial class AnalysisStateProvider : OzdsOwningComponentBase
               LocationState.Location?.Id
             );
 
-          _analysisBases = analysisBases;
+          _state = new AnalysisState(new(() => analysisBases));
 
           StateHasChanged();
         });
 
-        return _analysisBases ?? new();
+        return new();
       })
     );
   }
