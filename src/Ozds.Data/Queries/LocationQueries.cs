@@ -28,7 +28,7 @@ public class LocationQueries(
       RoleEntity.OperatorRepresentative => context.Locations,
       RoleEntity.LocationRepresentative => context.LocationRepresentatives
         .Where(context.ForeignKeyEquals<LocationRepresentativeEntity>(
-          nameof(LocationRepresentativeEntity.RepresentativeId),
+          nameof(LocationRepresentativeEntity.Representative),
           representativeId))
         .Include(x => x.Location)
         .Select(x => x.Location)
@@ -78,7 +78,7 @@ public class LocationQueries(
       RoleEntity.OperatorRepresentative => context.Locations,
       RoleEntity.LocationRepresentative => context.LocationRepresentatives
         .Where(context.ForeignKeyEquals<LocationRepresentativeEntity>(
-          nameof(LocationRepresentativeEntity.RepresentativeId),
+          nameof(LocationRepresentativeEntity.Representative),
           representativeId))
         .Include(x => x.Location)
         .Select(x => x.Location)
@@ -131,7 +131,7 @@ public class LocationQueries(
       RoleEntity.OperatorRepresentative => context.Locations,
       RoleEntity.LocationRepresentative => context.LocationRepresentatives
         .Where(context.ForeignKeyEquals<LocationRepresentativeEntity>(
-          nameof(LocationRepresentativeEntity.RepresentativeId),
+          nameof(LocationRepresentativeEntity.Representative),
           representativeId))
         .Include(x => x.Location)
         .Select(x => x.Location)
