@@ -51,11 +51,7 @@ public static class DbContextTableExtensions
     this DbContext context
   )
   {
-    return context.Model.FindEntityType(typeof(T))
-      ?.GetProperties()
-      .Select(x => x.GetColumnName())
-      ?? throw new InvalidOperationException(
-        $"Entity type {typeof(T).Name} not found");
+    return GetColumnNames(context, typeof(T));
   }
 
   public static string? GetColumnName<T>(
@@ -63,7 +59,28 @@ public static class DbContextTableExtensions
     string propertyName
   )
   {
-    return context.Model.FindEntityType(typeof(T))
+    return GetColumnName(context, typeof(T), propertyName);
+  }
+
+  public static IEnumerable<string> GetColumnNames(
+    this DbContext context,
+    Type type
+  )
+  {
+    return context.Model.FindEntityType(type)
+      ?.GetProperties()
+      .Select(x => x.GetColumnName())
+      ?? throw new InvalidOperationException(
+        $"Entity type {type.Name} not found");
+  }
+
+  public static string? GetColumnName(
+    this DbContext context,
+    Type type,
+    string propertyName
+  )
+  {
+    return context.Model.FindEntityType(type)
       ?.FindProperty(propertyName)
       ?.GetColumnName();
   }

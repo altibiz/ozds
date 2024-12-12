@@ -20,7 +20,7 @@ public class AnalysisBasisEntityFactory(DbContext context)
       string representativeId,
       DateTimeOffset fromDate,
       DateTimeOffset toDate,
-      CancellationToken cancellationToken = default
+      CancellationToken cancellationToken
     )
   {
     var result = new List<AnalysisBasisEntity>();

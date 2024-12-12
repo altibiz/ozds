@@ -27,7 +27,8 @@ public class ReadAnalysisBasesByRepresentativeTest(IServiceProvider services)
         var expected = await factory.Create(
           representativeId,
           dateFrom,
-          dateTo
+          dateTo,
+          CancellationToken.None
         );
 
         var representative = expected.First().Representative;
