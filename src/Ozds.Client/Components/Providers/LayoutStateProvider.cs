@@ -1,3 +1,4 @@
+using Humanizer;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Ozds.Client.Components.Base;
@@ -5,7 +6,7 @@ using Ozds.Client.State;
 
 namespace Ozds.Client.Components.Providers;
 
-public partial class LayoutStateProvider
+public partial class LayoutStateProvider : ComponentBase
 {
   [Parameter]
   public RenderFragment? ChildContent { get; set; }
@@ -20,24 +21,36 @@ public partial class LayoutStateProvider
         IsNavigationDrawerOpen: false,
         SetUserDrawerOpen: isUserDrawerOpen =>
         {
-          _state = _state! with { IsUserDrawerOpen = isUserDrawerOpen };
-          InvokeAsync(StateHasChanged);
+          InvokeAsync(() =>
+          {
+            _state = _state! with { IsUserDrawerOpen = isUserDrawerOpen };
+            StateHasChanged();
+          });
         },
         SetLocalizationDrawerOpen: isLocalizationDrawerOpen =>
         {
-          _state = _state! with { IsLocalizationDrawerOpen = isLocalizationDrawerOpen };
-          InvokeAsync(StateHasChanged);
+          InvokeAsync(() =>
+          {
+            _state = _state! with { IsLocalizationDrawerOpen = isLocalizationDrawerOpen };
+            StateHasChanged();
+          });
         },
         SetNavigationDrawerOpen: isNavigationDrawerOpen =>
         {
-          _state = _state! with { IsNavigationDrawerOpen = isNavigationDrawerOpen };
-          InvokeAsync(StateHasChanged);
+          InvokeAsync(() =>
+          {
+            _state = _state! with { IsNavigationDrawerOpen = isNavigationDrawerOpen };
+            StateHasChanged();
+          });
         },
         Breakpoint: Breakpoint.None,
         SetBreakpoint: breakpoint =>
         {
-          _state = _state! with { Breakpoint = breakpoint };
-          InvokeAsync(StateHasChanged);
+          InvokeAsync(() =>
+          {
+            _state = _state! with { Breakpoint = breakpoint };
+            StateHasChanged();
+          });
         }
     );
   }

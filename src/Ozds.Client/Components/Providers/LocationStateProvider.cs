@@ -1,3 +1,4 @@
+using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Ozds.Business.Models;
@@ -16,6 +17,11 @@ public partial class LocationStateProvider : OzdsOwningComponentBase
   [CascadingParameter]
   private RepresentativeState RepresentativeState { get; set; } = default!;
 
+  [Inject]
+  private ILocalStorageService LocalStorageService { get; set; } = default!;
+
+  private const string LocationKey = "location";
+
   private string? _previousRepresentativeId;
 
   private LocationState? _state;
@@ -32,37 +38,83 @@ public partial class LocationStateProvider : OzdsOwningComponentBase
     }
     _previousRepresentativeId = RepresentativeState.Representative.Id;
 
-    if (RepresentativeState.Representative.Role
-      is RoleModel.NetworkUserRepresentative)
+    var locationId = await GetLocationFromLocalStorage();
+
+    var locationSet = locationId is not null;
+
+    if (!locationSet
+      && RepresentativeState.Representative.Role
+        is RoleModel.NetworkUserRepresentative)
     {
-      _state = new(default, default);
-      return;
+      await SetLocationToLocalStorage(null);
+      locationSet = true;
     }
 
     var locationQueries = ScopedServices
       .GetRequiredService<LocationQueries>();
 
-    var locations = await locationQueries.ReadAllLocationsByRepresentativeId(
-      RepresentativeState.Representative.Id,
-      RepresentativeState.Representative.Role,
-      CancellationToken.None
-    );
+    if (!locationSet)
+    {
+      var locations = await locationQueries.ReadAllLocationsByRepresentativeId(
+        RepresentativeState.Representative.Id,
+        RepresentativeState.Representative.Role,
+        CancellationToken.None
+      );
 
-    _representativeLocations = locations;
-  }
+      _representativeLocations = locations;
+      return;
+    }
 
-  private void OnLocationSelected(LocationModel location)
-  {
+    LocationModel? location = null;
+    if (locationId is { })
+    {
+      location = await locationQueries.ReadLocationByRepresentativeId(
+        RepresentativeState.Representative.Id,
+        RepresentativeState.Representative.Role,
+        locationId,
+        CancellationToken.None,
+        deleted: false
+      );
+    }
+
     _state = new LocationState(
       location,
       () =>
       {
-        InvokeAsync(() =>
+        InvokeAsync(async () =>
         {
-          _state = default;
+          await SetLocationToLocalStorage(null);
+          _state = _state! with { Location = default };
           StateHasChanged();
         });
       }
     );
+  }
+
+  private async Task OnLocationSelected(LocationModel location)
+  {
+    await SetLocationToLocalStorage(location.Id);
+    _state = new LocationState(
+      location,
+      () =>
+      {
+        InvokeAsync(async () =>
+        {
+          await SetLocationToLocalStorage(null);
+          _state = _state! with { Location = default };
+          StateHasChanged();
+        });
+      }
+    );
+  }
+
+  private async Task SetLocationToLocalStorage(string? location)
+  {
+    await LocalStorageService.SetItemAsync(LocationKey, location);
+  }
+
+  private async Task<string?> GetLocationFromLocalStorage()
+  {
+    return await LocalStorageService.GetItemAsync<string>(LocationKey);
   }
 }

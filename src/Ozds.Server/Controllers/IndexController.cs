@@ -6,6 +6,6 @@ public class IndexController : Controller
 {
   public IActionResult Index()
   {
-    return Redirect("/app/hr");
+    return Redirect("/app");
   }
 }

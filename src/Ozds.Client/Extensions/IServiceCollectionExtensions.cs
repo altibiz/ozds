@@ -1,3 +1,4 @@
+using Blazored.LocalStorage;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MudBlazor.Services;
@@ -13,7 +14,8 @@ public static class IServiceCollectionExtensions
   )
   {
     services.AddBlazor(builder);
-    services.AddMudBlazor();
+    services.AddFramework();
+    services.AddLocalStorage();
     services.AddState();
     return services;
   }
@@ -49,11 +51,20 @@ public static class IServiceCollectionExtensions
     return services;
   }
 
-  private static IServiceCollection AddMudBlazor(
+  private static IServiceCollection AddFramework(
     this IServiceCollection services
   )
   {
     services.AddMudServices();
+
+    return services;
+  }
+
+  private static IServiceCollection AddLocalStorage(
+    this IServiceCollection services
+  )
+  {
+    services.AddBlazoredLocalStorage();
 
     return services;
   }

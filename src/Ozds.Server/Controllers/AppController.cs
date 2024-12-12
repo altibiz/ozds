@@ -7,19 +7,23 @@ namespace Ozds.Server.Controllers;
 
 public class AppController(IAntiforgery antiforgery) : Controller
 {
-  public IActionResult Catchall([FromRoute] string culture)
+  public IActionResult Catchall([FromRoute] string? culture)
   {
-    CultureInfo? cultureInfo;
-    try
+    CultureInfo? cultureInfo = null;
+    if (culture is not null)
     {
-      cultureInfo = new CultureInfo(culture);
-    }
-    catch (CultureNotFoundException)
-    {
-      return Redirect("/app/hr");
+      try
+      {
+        cultureInfo = new CultureInfo(culture);
+      }
+      catch (Exception)
+      {
+        // NOTE: let local storage handle the culture
+      }
     }
 
-    if (cultureInfo.TwoLetterISOLanguageName != culture)
+    if (culture is { } && cultureInfo is { }
+      && cultureInfo.TwoLetterISOLanguageName != culture)
     {
       return Redirect($"/app/{cultureInfo.TwoLetterISOLanguageName}");
     }

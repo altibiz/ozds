@@ -24,7 +24,7 @@ public static class IApplicationBuilderExtensions
     );
 
     endpoints.MapOzdsServerRoute(
-      "/app/{culture}/{**catchall}",
+      "/app/{culture?}/{**catchall}",
       typeof(AppController),
       nameof(AppController.Catchall)
     );

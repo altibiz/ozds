@@ -1,12 +1,23 @@
 @using Microsoft.AspNetCore.Components.Web
 @using RenderMode = Microsoft.AspNetCore.Mvc.Rendering.RenderMode
+@using Ozds.Client.ViewModels;
+
+@model AppViewModel
+
 <!DOCTYPE html>
 
 <html>
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <base href="/app/@(Model.Culture.TwoLetterISOLanguageName)/"/>
+  @if (Model.Culture is { } culture)
+  {
+    <base href="/app/@(culture.TwoLetterISOLanguageName)/"/>
+  }
+  else
+  {
+    <base href="/app/"/>
+  }
 
   <!-- NOTE: we put all css and fonts here because Blazor doesn't handle assets like this well -->
   <link rel="icon" type="image/ico" href="/favicon.ico"/>

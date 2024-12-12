@@ -9,7 +9,7 @@ public record ThemeState(
   Action<bool> SetDarkMode
 )
 {
-  public static MudTheme Default()
+  public static MudTheme DefaultTheme()
   {
     return new()
     {

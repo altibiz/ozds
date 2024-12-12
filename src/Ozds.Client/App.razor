@@ -10,7 +10,7 @@
 @inject NavigationManager NavigationManager
 
 @{
-  var culture = new CultureInfo(Culture);
+  var culture = Culture is null ? null : new CultureInfo(Culture);
 }
 
 <CultureStateProvider Culture="@culture">
@@ -62,7 +62,7 @@
 
 @code {
   [Parameter]
-  public string Culture { get; set; } = default!;
+  public string? Culture { get; set; } = default!;
 
   [Parameter]
   public string LogoutToken { get; set; } = default!;

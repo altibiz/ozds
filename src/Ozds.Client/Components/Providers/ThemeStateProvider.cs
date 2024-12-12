@@ -1,9 +1,8 @@
+using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Ozds.Client.Components.Base;
 using Ozds.Client.State;
-
-// FIXME: detecting dark mode preference is broken
 
 namespace Ozds.Client.Components.Providers;
 
@@ -12,41 +11,61 @@ public partial class ThemeStateProvider : OzdsComponentBase
   [Parameter]
   public RenderFragment ChildContent { get; set; } = default!;
 
+  [Inject]
+  private ILocalStorageService LocalStorageService { get; set; } = default!;
+
+  private const string DarkModeKey = "darkMode";
+
   private ThemeState? _state;
 
-#pragma warning disable S4487 // Unread "private" fields should be removed
   private MudThemeProvider _mudThemeProvider = default!;
-#pragma warning restore S4487 // Unread "private" fields should be removed
 
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-  protected override async Task OnAfterRenderAsync(bool firstRender)
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+  protected override async Task OnInitializedAsync()
   {
-    if (firstRender)
+    var theme = ThemeState.DefaultTheme();
+
+    var darkMode = await GetDarkModeFromLocalStorage();
+    if (darkMode is null)
     {
-#pragma warning disable S125 // Sections of code should not be commented out
-      // ThemeState.SetDarkMode(
-      //   await _mudThemeProvider?.GetSystemPreference());
-      // StateHasChanged();
-#pragma warning restore S125 // Sections of code should not be commented out
+      darkMode = await GetDarkModeFromSystem();
+      await SetDarkModeToLocalStorage(darkMode.Value);
     }
-  }
 
-  protected override void OnInitialized()
-  {
     _state = new ThemeState(
-      Theme: ThemeState.Default(),
-      IsDarkMode: false,
+      Theme: theme,
+      IsDarkMode: darkMode.Value,
       SetTheme: theme =>
       {
-        _state = _state! with { Theme = theme };
-        InvokeAsync(StateHasChanged);
+        InvokeAsync(() =>
+        {
+          _state = _state! with { Theme = theme };
+          StateHasChanged();
+        });
       },
       SetDarkMode: isDarkMode =>
       {
-        _state = _state! with { IsDarkMode = isDarkMode };
-        InvokeAsync(StateHasChanged);
+        InvokeAsync(async () =>
+        {
+          await SetDarkModeToLocalStorage(isDarkMode);
+          _state = _state! with { IsDarkMode = isDarkMode };
+          StateHasChanged();
+        });
       }
     );
+  }
+
+  private async Task SetDarkModeToLocalStorage(bool isDarkMode)
+  {
+    await LocalStorageService.SetItemAsync(DarkModeKey, isDarkMode);
+  }
+
+  private async Task<bool?> GetDarkModeFromLocalStorage()
+  {
+    return await LocalStorageService.GetItemAsync<bool>(DarkModeKey);
+  }
+
+  private async Task<bool> GetDarkModeFromSystem()
+  {
+    return await _mudThemeProvider.GetSystemPreference();
   }
 }
