@@ -1,3 +1,4 @@
+using System.Data;
 using Dapper;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,16 +12,22 @@ public static class DbContextDapperBulkParametersExtensions
   )
   {
     var parameters = new DynamicParameters();
-    foreach (var (i, measurement) in measurements.Select((i, x) => (i, x)))
+    foreach (var (row, index) in measurements.Select((x, i) => (x, i)))
     {
-      var entityType = context.Model.FindEntityType(measurement.GetType())
+      var entityType = context.Model.FindEntityType(row.GetType())
         ?? throw new InvalidOperationException(
-          $"No entity type found for {measurement.GetType()}.");
+          $"No entity type found for {row.GetType()}.");
       foreach (var property in entityType.GetProperties())
       {
-        var name = $"@{i}-{property.GetColumnName()}";
-        var value = property.PropertyInfo?.GetValue(measurement)
-          ?? property.FieldInfo?.GetValue(measurement);
+        var name = $"@p{index}_{property.GetColumnName()}";
+        var value = property.PropertyInfo?.GetValue(row)
+          ?? property.FieldInfo?.GetValue(row);
+
+        if (value is { } enumValue && property.ClrType.IsEnum)
+        {
+          value = enumValue.ToString()?.ToSnakeCase();
+        }
+
         if (value is { })
         {
           parameters.Add(name, value);

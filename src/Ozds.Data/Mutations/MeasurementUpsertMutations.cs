@@ -2,6 +2,7 @@ using System.Data;
 using System.Text;
 using Dapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using Npgsql;
 using Ozds.Data.Context;
 using Ozds.Data.Entities.Abstractions;
@@ -9,6 +10,8 @@ using Ozds.Data.Extensions;
 using Ozds.Data.Mutations.Abstractions;
 
 namespace Ozds.Data.Mutations;
+
+// TODO: enum by model configuration not clr type
 
 public class MeasurementUpsertMutations(
   IDbContextFactory<DataDbContext> factory
@@ -41,25 +44,40 @@ public class MeasurementUpsertMutations(
     var parameters = context.CreateBulkParameters(measurements);
     var sql = Upsert(context, measurements);
 
+    if (context.Database.CurrentTransaction is { } transaction)
+    {
+      var command = new CommandDefinition(
+        sql,
+        parameters,
+        transaction: transaction.GetDbTransaction(),
+        cancellationToken: cancellationToken
+      );
+
+      await connection.ExecuteAsync(command);
+
+      return;
+    }
+
     while (true)
     {
       try
       {
         var isolationLevel = IsolationLevel.RepeatableRead;
 
-        var transaction = await connection
+        transaction = await context.Database
           .BeginTransactionAsync(isolationLevel, cancellationToken);
 
         var command = new CommandDefinition(
-            sql,
-            parameters,
-            transaction: transaction,
-            cancellationToken: cancellationToken
+          sql,
+          parameters,
+          transaction: transaction.GetDbTransaction(),
+          cancellationToken: cancellationToken
         );
 
         await connection.ExecuteAsync(command);
 
-        await context.Database.CommitTransactionAsync(cancellationToken);
+        await context.Database
+          .CommitTransactionAsync(cancellationToken);
 
         break;
       }
@@ -124,8 +142,11 @@ public class MeasurementUpsertMutations(
       foreach (var (index, measurement) in group)
       {
         var columns = string.Join(", ", columnNames);
-        var values = string.Join(", ", columnNames
-          .Select(column => $"@p{index}_{column}"));
+        var values = string.Join(", ", properties
+          .Select(property => $"@p{index}_{property.GetColumnName()}"
+            + (property.ClrType.IsEnum
+              ? $"::{property.ClrType.Name.ToSnakeCase()}"
+              : "")));
         var conflict = string.Join(", ", primaryKeyColumns);
 
         string updateClause;

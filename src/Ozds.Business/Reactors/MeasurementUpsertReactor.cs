@@ -21,6 +21,7 @@ using Ozds.Data.Context;
 using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Entities.Base;
 using Ozds.Data.Extensions;
+using Ozds.Data.Mutations;
 using Ozds.Iot.Entities.Abstractions;
 using Ozds.Iot.Observers.Abstractions;
 using Ozds.Iot.Observers.EventArgs;
@@ -88,6 +89,8 @@ public class MeasurementUpsertReactor(
       .GetRequiredService<NotificationQueries>();
     var messengerJobManager = serviceProvider
       .GetRequiredService<IMessengerJobManager>();
+    var mutations = serviceProvider
+      .GetRequiredService<MeasurementUpsertMutations>();
 
     await RescheduleInactivityMonitorJob(
       messengerJobManager,
@@ -131,14 +134,15 @@ public class MeasurementUpsertReactor(
 
     await AddPushEvent(context, activator, eventArgs);
 
-    var tasks = MakeUpsertMeasurementTasks(
-        context, modelEntityConverter, upsertMeasurements)
-      .Concat(
-        MakeUpsertAggregateTasks(
-          context, modelEntityConverter, aggregateUpserter, upsertAggregates))
-      .ToList();
+    var measurements = upsertMeasurements
+      .Select(modelEntityConverter.ToEntity<IMeasurementEntity>)
+      .Concat(upsertAggregates
+        .Select(modelEntityConverter.ToEntity<IAggregateEntity>));
 
-    await ExecuteTransactionCommands(context, tasks);
+    await mutations.UpsertMeasurements(
+      measurements,
+      CancellationToken.None
+    );
 
     publisher.PublishUpsert(
       new MeasurementUpsertEventArgs
@@ -351,169 +355,6 @@ public class MeasurementUpsertReactor(
     var recipients = await queries.Recipients(notification);
     context.AddRange(recipients);
     await context.SaveChangesAsync();
-  }
-
-  private static async Task ExecuteTransactionCommands(
-    DataDbContext context,
-    IEnumerable<Func<Task>> tasks)
-  {
-    while (true)
-    {
-      try
-      {
-        var isolationLevel = IsolationLevel.RepeatableRead;
-        await context.Database.BeginTransactionAsync(isolationLevel);
-        foreach (var task in tasks)
-        {
-          await task();
-        }
-
-        await context.Database.CommitTransactionAsync();
-        break;
-      }
-      catch (PostgresException ex)
-      {
-        // NOTE: serialization failure
-        if (ex.Message.StartsWith("40001"))
-        {
-          await context.Database.RollbackTransactionAsync();
-          continue;
-        }
-
-        // NOTE: deadlock detected
-        if (ex.Message.StartsWith("40P01"))
-        {
-          await context.Database.RollbackTransactionAsync();
-          continue;
-        }
-
-        // NOTE: inserts don't return rows with concurrency issues
-        if (ex.Message.StartsWith("P0002"))
-        {
-          await context.Database.RollbackTransactionAsync();
-          continue;
-        }
-
-        throw;
-      }
-    }
-  }
-
-  private static IEnumerable<Func<Task>> MakeUpsertMeasurementTasks(
-    DataDbContext context,
-    AgnosticModelEntityConverter modelEntityConverter,
-    IEnumerable<IMeasurement> measurements)
-  {
-    foreach (var group in measurements
-      .Select(modelEntityConverter.ToEntity)
-      .GroupBy(measurement => measurement.GetType()))
-    {
-      var enumerableCastMethod = typeof(Enumerable)
-          .GetMethod(
-            nameof(Enumerable.Cast),
-            BindingFlags.Public | BindingFlags.Static)
-          ?.MakeGenericMethod(group.Key)
-        ?? throw new InvalidOperationException(
-          $"Cannot find method {nameof(Enumerable.Cast)}.");
-      var upsertMeasurementsMethod = typeof(MeasurementUpsertReactor)
-          .GetMethod(
-            nameof(UpsertMeasurements),
-#pragma warning disable S3011
-            BindingFlags.NonPublic |
-#pragma warning restore S3011
-            BindingFlags.Static)
-          ?.MakeGenericMethod(group.Key)
-        ?? throw new InvalidOperationException(
-          $"Cannot find method {nameof(UpsertMeasurements)}.");
-
-      yield return () =>
-        (upsertMeasurementsMethod.Invoke(
-          null,
-          [
-            context,
-            enumerableCastMethod.Invoke(null, [group])
-            ?? throw new InvalidOperationException(
-              $"Cannot cast group to {group.Key.Name}.")
-          ]) as Task)!;
-    }
-  }
-
-  private static IEnumerable<Func<Task>> MakeUpsertAggregateTasks(
-    DataDbContext context,
-    AgnosticModelEntityConverter modelEntityConverter,
-    AgnosticAggregateUpserter aggregateUpserter,
-    IEnumerable<IAggregate> aggregates)
-  {
-    foreach (var group in aggregates
-      .Select(modelEntityConverter.ToEntity)
-      .GroupBy(entity => entity.GetType()))
-    {
-      var enumerableCastMethod = typeof(Enumerable)
-          .GetMethod(
-            nameof(Enumerable.Cast),
-            BindingFlags.Public | BindingFlags.Static)
-          ?.MakeGenericMethod(group.Key)
-        ?? throw new InvalidOperationException(
-          $"Cannot find method {nameof(Enumerable.Cast)}.");
-      var upsertAggregatesMethod = typeof(MeasurementUpsertReactor)
-          .GetMethod(
-            nameof(UpsertAggregates),
-#pragma warning disable S3011
-            BindingFlags.NonPublic |
-#pragma warning restore S3011
-            BindingFlags.Static)
-          ?.MakeGenericMethod(group.Key)
-        ?? throw new InvalidOperationException(
-          $"Cannot find method {nameof(UpsertAggregates)}.");
-
-      yield return () =>
-        (upsertAggregatesMethod.Invoke(
-          null,
-          [
-            context,
-            enumerableCastMethod.Invoke(null, [group])
-            ?? throw new InvalidOperationException(
-              $"Cannot cast group to {group.Key.Name}."),
-            aggregateUpserter
-          ]) as Task)!;
-    }
-  }
-
-  private static async Task UpsertMeasurements<T>(
-    DataDbContext context,
-    IEnumerable<T> measurements
-  )
-    where T : class, IMeasurementEntity
-  {
-    await context
-      .UpsertRange(measurements.ToArray())
-      .On(
-        measurement => new
-        {
-          measurement.MeterId,
-          measurement.Timestamp
-        })
-      .NoUpdate()
-      .RunAsync();
-  }
-
-  private static async Task UpsertAggregates<T>(
-    DataDbContext context,
-    IEnumerable<T> aggregates,
-    AgnosticAggregateUpserter upserter)
-    where T : class, IAggregateEntity
-  {
-    await context
-      .UpsertRange(aggregates.ToArray())
-      .On(
-        aggregate => new
-        {
-          aggregate.MeterId,
-          aggregate.Timestamp,
-          aggregate.Interval
-        })
-      .WhenMatched(upserter.UpsertEntity<T>())
-      .RunAsync();
   }
 
   private static JsonDocument CreateEventContent(
