@@ -48,10 +48,12 @@ public class
       "_measurementLocationId"
     );
 
-    builder.HasIndex(
-      nameof(AggregateEntity.Timestamp),
-      nameof(AggregateEntity.MeterId)
-    );
+    builder
+      .HasIndex(
+        nameof(AggregateEntity.Timestamp),
+        nameof(AggregateEntity.MeterId)
+      )
+      .IsUnique();
 
     builder.HasIndex(
       nameof(AggregateEntity.Timestamp),
