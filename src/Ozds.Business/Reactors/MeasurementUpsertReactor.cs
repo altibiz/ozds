@@ -29,6 +29,8 @@ using Ozds.Jobs.Manager.Abstractions;
 
 namespace Ozds.Business.Reactors;
 
+// TODO: transaction in sql and add measurement_location_id to the upsert
+
 public class MeasurementUpsertReactor(
   IServiceScopeFactory serviceScopeFactory,
   IPushSubscriber subscriber
@@ -177,7 +179,7 @@ public class MeasurementUpsertReactor(
   {
     var measurementLocations = await context.MeasurementLocations
       .Where(context.ForeignKeyIn<MeasurementLocationEntity>(
-        nameof(MeasurementLocationEntity.MeterId),
+        nameof(MeasurementLocationEntity.Meter),
         pushRequestMeasurements
           .Select(x => x.MeterId)
           .Distinct()))
