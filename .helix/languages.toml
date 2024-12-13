@@ -53,6 +53,11 @@ language-servers = ["pyright-langserver"]
 # auto-format = true
 
 [[language]]
+name = "sql"
+auto-format = true
+formatter = { command = "sql-formatter" }
+
+[[language]]
 name = "yaml"
 auto-format = true
 formatter = { command = "prettier", args = ["--parser", "yaml"] }
