@@ -3,6 +3,8 @@ using Ozds.Data.Test.Context;
 
 namespace Ozds.Data.Test.Queries.MeasurementUpsertMutationsTest;
 
+// TODO: check upsert logic
+
 public class UpsertMeasurementsTest(IServiceProvider services)
 {
   [Fact]
