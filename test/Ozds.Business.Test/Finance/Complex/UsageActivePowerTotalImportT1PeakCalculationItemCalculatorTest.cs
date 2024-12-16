@@ -58,14 +58,14 @@ public class UsageActivePowerTotalImportT1PeakCalculationItemCalculatorTest
             start.Add(IntervalModel.QuarterHour.ToTimeSpan(start)),
             end.Subtract(IntervalModel.QuarterHour.ToTimeSpan(start))))
         .RuleFor(
-          x => x.ActiveEnergyTotalImportT1Min_Wh,
+          x => x.ActiveEnergyTotalImportT1_Wh.Min,
           (f, _) => f.Random.Decimal(
             Constants.MinEnergyValue, Constants.MaxEnergyValue))
         .RuleFor(
-          x => x.ActiveEnergyTotalImportT1Max_Wh,
+          x => x.ActiveEnergyTotalImportT1_Wh.Max,
           (f, m) => f.Random.Decimal(
-            m.ActiveEnergyTotalImportT1Min_Wh,
-            m.ActiveEnergyTotalImportT1Min_Wh
+            m.ActiveEnergyTotalImportT1_Wh.Min,
+            m.ActiveEnergyTotalImportT1_Wh.Min
             + expected.Peak_kW * 1000M
             * (decimal)IntervalModel.QuarterHour.ToTimeSpan(start).TotalHours
             - 0.01M))
@@ -81,12 +81,12 @@ public class UsageActivePowerTotalImportT1PeakCalculationItemCalculatorTest
             start.Add(IntervalModel.QuarterHour.ToTimeSpan(start)),
             end.Subtract(IntervalModel.QuarterHour.ToTimeSpan(start))))
         .RuleFor(
-          x => x.ActiveEnergyTotalImportT1Min_Wh,
+          x => x.ActiveEnergyTotalImportT1_Wh.Min,
           (f, _) => f.Random.Decimal(
             Constants.MinEnergyValue, Constants.MaxEnergyValue))
         .RuleFor(
-          x => x.ActiveEnergyTotalImportT1Max_Wh,
-          (_, m) => m.ActiveEnergyTotalImportT1Min_Wh
+          x => x.ActiveEnergyTotalImportT1_Wh.Max,
+          (_, m) => m.ActiveEnergyTotalImportT1_Wh.Min
             + expected.Peak_kW * 1000M
             * (decimal)IntervalModel.QuarterHour.ToTimeSpan(start).TotalHours)
         .Generate();

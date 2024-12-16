@@ -2,6 +2,7 @@ using Ozds.Business.Finance;
 using Ozds.Business.Finance.Agnostic;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Abstractions;
+using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Complex;
 using Ozds.Business.Models.Composite;
 
@@ -17,7 +18,13 @@ public class RedLowNetworkUserCalculationCalculatorTest
     TestData = new(
       new Fixture()
         .Customize(
+          new TypeRelay(typeof(AggregateModel), typeof(AbbB2xAggregateModel))
+            .ToCustomization())
+        .Customize(
           new TypeRelay(typeof(IAggregate), typeof(AbbB2xAggregateModel))
+            .ToCustomization())
+        .Customize(
+          new TypeRelay(typeof(MeterModel), typeof(AbbB2xMeterModel))
             .ToCustomization())
         .Customize(
           new TypeRelay(typeof(IMeter), typeof(AbbB2xMeterModel))
@@ -202,11 +209,21 @@ public class RedLowNetworkUserCalculationCalculatorTest
 
     var fixture = new Fixture()
       .Customize(
+        new TypeRelay(typeof(AggregateModel), typeof(AbbB2xAggregateModel))
+          .ToCustomization())
+      .Customize(
         new TypeRelay(typeof(IAggregate), typeof(AbbB2xAggregateModel))
+          .ToCustomization())
+      .Customize(
+        new TypeRelay(typeof(MeterModel), typeof(AbbB2xMeterModel))
           .ToCustomization())
       .Customize(
         new TypeRelay(typeof(IMeter), typeof(AbbB2xMeterModel))
           .ToCustomization())
+      .Customize(
+        new TypeRelay(
+          typeof(NetworkUserCatalogueModel),
+          typeof(RedLowNetworkUserCatalogueModel)).ToCustomization())
       .Customize(
         new TypeRelay(
           typeof(INetworkUserCatalogue),

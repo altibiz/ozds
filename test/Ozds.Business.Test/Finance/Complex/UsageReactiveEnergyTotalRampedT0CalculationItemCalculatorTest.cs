@@ -106,15 +106,15 @@ public class UsageReactiveEnergyTotalRampedT0CalculationItemCalculatorTest
             start.Add(IntervalModel.QuarterHour.ToTimeSpan(start)),
             end.Subtract(IntervalModel.QuarterHour.ToTimeSpan(start))))
         .RuleFor(
-          x => x.ReactiveEnergyTotalImportT0Min_VARh,
+          x => x.ReactiveEnergyTotalImportT0_VARh.Min,
           (f, _) => f.Random.Decimal(
             Constants.MinEnergyValue, Constants.MaxEnergyValue))
         .RuleFor(
-          x => x.ReactiveEnergyTotalExportT0Min_VARh,
+          x => x.ReactiveEnergyTotalExportT0_VARh.Min,
           (f, _) => f.Random.Decimal(
             Constants.MinEnergyValue, Constants.MaxEnergyValue))
         .RuleFor(
-          x => x.ActiveEnergyTotalImportT0Min_Wh,
+          x => x.ActiveEnergyTotalImportT0_Wh.Min,
           (f, _) => f.Random.Decimal(
             Constants.MinEnergyValue, Constants.MaxEnergyValue))
         .Generate(Constants.DefaultFuzzCount);
@@ -124,13 +124,13 @@ public class UsageReactiveEnergyTotalRampedT0CalculationItemCalculatorTest
           x => x.Timestamp,
           (_, _) => start)
         .RuleFor(
-          x => x.ReactiveEnergyTotalImportT0Min_VARh,
+          x => x.ReactiveEnergyTotalImportT0_VARh.Min,
           (_, _) => expected.ReactiveImportMin_kVARh * 1000M)
         .RuleFor(
-          x => x.ReactiveEnergyTotalExportT0Min_VARh,
+          x => x.ReactiveEnergyTotalExportT0_VARh.Min,
           (_, _) => expected.ReactiveExportMin_kVARh * 1000M)
         .RuleFor(
-          x => x.ActiveEnergyTotalImportT0Min_Wh,
+          x => x.ActiveEnergyTotalImportT0_Wh.Min,
           (_, _) => expected.ActiveImportMin_kWh * 1000M)
         .Generate();
     var endAggregate =
@@ -139,13 +139,13 @@ public class UsageReactiveEnergyTotalRampedT0CalculationItemCalculatorTest
           x => x.Timestamp,
           (_, _) => end)
         .RuleFor(
-          x => x.ReactiveEnergyTotalImportT0Min_VARh,
+          x => x.ReactiveEnergyTotalImportT0_VARh.Min,
           (_, _) => expected.ReactiveImportMax_kVARh * 1000M)
         .RuleFor(
-          x => x.ReactiveEnergyTotalExportT0Min_VARh,
+          x => x.ReactiveEnergyTotalExportT0_VARh.Min,
           (_, _) => expected.ReactiveExportMax_kVARh * 1000M)
         .RuleFor(
-          x => x.ActiveEnergyTotalImportT0Min_Wh,
+          x => x.ActiveEnergyTotalImportT0_Wh.Min,
           (_, _) => expected.ActiveImportMax_kWh * 1000M)
         .Generate();
 
