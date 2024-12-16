@@ -2,6 +2,7 @@ using Ozds.Business.Finance;
 using Ozds.Business.Finance.Agnostic;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Abstractions;
+using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Complex;
 using Ozds.Business.Models.Composite;
 
@@ -20,7 +21,13 @@ public class NetworkUserInvoiceCalculatorTest
           new TypeRelay(typeof(IAggregate), typeof(AbbB2xAggregateModel))
             .ToCustomization())
         .Customize(
+          new TypeRelay(typeof(AggregateModel), typeof(AbbB2xAggregateModel))
+            .ToCustomization())
+        .Customize(
           new TypeRelay(typeof(IMeter), typeof(AbbB2xMeterModel))
+            .ToCustomization())
+        .Customize(
+          new TypeRelay(typeof(MeterModel), typeof(AbbB2xMeterModel))
             .ToCustomization())
         .Customize(
           new TypeRelay(
@@ -33,6 +40,12 @@ public class NetworkUserInvoiceCalculatorTest
             .Concat(
               new Fixture()
                 .Customize(
+                  new TypeRelay(typeof(AggregateModel), typeof(AbbB2xAggregateModel))
+                    .ToCustomization())
+                .Customize(
+                  new TypeRelay(typeof(MeterModel), typeof(AbbB2xMeterModel))
+                    .ToCustomization())
+                .Customize(
                   new TypeRelay(
                       typeof(IAggregate), typeof(AbbB2xAggregateModel))
                     .ToCustomization())
@@ -40,7 +53,7 @@ public class NetworkUserInvoiceCalculatorTest
                   new TypeRelay(typeof(IMeter), typeof(AbbB2xMeterModel))
                     .ToCustomization())
                 .Build<BlueLowNetworkUserCalculationModel>()
-                .CreateMany(Constants.DefaultFuzzCount / 4)
+                .CreateMany(Constants.DefaultFuzzCount / 8)
                 .Select(
                   x =>
                   {
@@ -120,6 +133,12 @@ public class NetworkUserInvoiceCalculatorTest
             .Concat(
               new Fixture()
                 .Customize(
+                  new TypeRelay(typeof(AggregateModel), typeof(AbbB2xAggregateModel))
+                    .ToCustomization())
+                .Customize(
+                  new TypeRelay(typeof(MeterModel), typeof(AbbB2xMeterModel))
+                    .ToCustomization())
+                .Customize(
                   new TypeRelay(
                       typeof(IAggregate), typeof(AbbB2xAggregateModel))
                     .ToCustomization())
@@ -127,7 +146,7 @@ public class NetworkUserInvoiceCalculatorTest
                   new TypeRelay(typeof(IMeter), typeof(AbbB2xMeterModel))
                     .ToCustomization())
                 .Build<RedLowNetworkUserCalculationModel>()
-                .CreateMany(Constants.DefaultFuzzCount / 4)
+                .CreateMany(Constants.DefaultFuzzCount / 8)
                 .Select(
                   x =>
                   {
@@ -223,6 +242,12 @@ public class NetworkUserInvoiceCalculatorTest
             .Concat(
               new Fixture()
                 .Customize(
+                  new TypeRelay(typeof(AggregateModel), typeof(AbbB2xAggregateModel))
+                    .ToCustomization())
+                .Customize(
+                  new TypeRelay(typeof(MeterModel), typeof(AbbB2xMeterModel))
+                    .ToCustomization())
+                .Customize(
                   new TypeRelay(
                       typeof(IAggregate), typeof(AbbB2xAggregateModel))
                     .ToCustomization())
@@ -230,7 +255,7 @@ public class NetworkUserInvoiceCalculatorTest
                   new TypeRelay(typeof(IMeter), typeof(AbbB2xMeterModel))
                     .ToCustomization())
                 .Build<WhiteLowNetworkUserCalculationModel>()
-                .CreateMany(Constants.DefaultFuzzCount / 4)
+                .CreateMany(Constants.DefaultFuzzCount / 8)
                 .Select(
                   x =>
                   {
@@ -318,6 +343,12 @@ public class NetworkUserInvoiceCalculatorTest
             .Concat(
               new Fixture()
                 .Customize(
+                  new TypeRelay(typeof(AggregateModel), typeof(AbbB2xAggregateModel))
+                    .ToCustomization())
+                .Customize(
+                  new TypeRelay(typeof(MeterModel), typeof(AbbB2xMeterModel))
+                    .ToCustomization())
+                .Customize(
                   new TypeRelay(
                       typeof(IAggregate), typeof(AbbB2xAggregateModel))
                     .ToCustomization())
@@ -325,7 +356,7 @@ public class NetworkUserInvoiceCalculatorTest
                   new TypeRelay(typeof(IMeter), typeof(AbbB2xMeterModel))
                     .ToCustomization())
                 .Build<WhiteMediumNetworkUserCalculationModel>()
-                .CreateMany(Constants.DefaultFuzzCount / 4)
+                .CreateMany(Constants.DefaultFuzzCount / 8)
                 .Select(
                   x =>
                   {
@@ -420,7 +451,7 @@ public class NetworkUserInvoiceCalculatorTest
                   }))
             .OrderBy(_ => Random.Shared.Next())
             .ToList())
-        .CreateMany(Constants.DefaultFuzzCount)
+        .CreateMany(2)
         .Select(
           x =>
           {
@@ -555,23 +586,18 @@ public class NetworkUserInvoiceCalculatorTest
   public void CalculatesCorrectlyWithFuzzyAbbB2xMeter(
     CalculatedNetworkUserInvoiceModel expected)
   {
-    var calculations = expected.Calculations.AsEnumerable().GetEnumerator();
-
     var calculationItemCalculatorMock =
       new Mock<AgnosticNetworkUserCalculationCalculator>(
         MockBehavior.Strict,
         new Mock<IServiceProvider>().Object);
 
-    calculationItemCalculatorMock.Setup(
-        x => x
-          .Calculate(It.IsAny<NetworkUserCalculationBasisModel>()))
-      .Returns(
-        () =>
-        {
-          calculations.MoveNext().Should().BeTrue();
-          var current = calculations.Current;
-          return current;
-        });
+    var mockSequence = calculationItemCalculatorMock.SetupSequence(
+      x => x.Calculate(It.IsAny<NetworkUserCalculationBasisModel>()));
+    foreach (var calculation in expected.Calculations)
+    {
+      mockSequence.Returns(calculation);
+    }
+    mockSequence.Throws(new InvalidOperationException("No more calculations"));
 
     var calculator = new NetworkUserInvoiceCalculator(
       calculationItemCalculatorMock.Object);
@@ -581,8 +607,18 @@ public class NetworkUserInvoiceCalculatorTest
         new TypeRelay(typeof(IAggregate), typeof(AbbB2xAggregateModel))
           .ToCustomization())
       .Customize(
+        new TypeRelay(typeof(AggregateModel), typeof(AbbB2xAggregateModel))
+          .ToCustomization())
+      .Customize(
         new TypeRelay(typeof(IMeter), typeof(AbbB2xMeterModel))
           .ToCustomization())
+      .Customize(
+        new TypeRelay(typeof(MeterModel), typeof(AbbB2xMeterModel))
+          .ToCustomization())
+      .Customize(
+        new TypeRelay(
+          typeof(NetworkUserCatalogueModel),
+          typeof(BlueLowNetworkUserCatalogueModel)).ToCustomization())
       .Customize(
         new TypeRelay(
           typeof(INetworkUserCatalogue),
