@@ -1,82 +1,83 @@
 using System.ComponentModel.DataAnnotations;
 using Ozds.Business.Math;
 using Ozds.Business.Models.Base;
+using Ozds.Business.Models.Complex;
 
 namespace Ozds.Business.Models;
 
 public class AbbB2xAggregateModel : AggregateModel
 {
   [Required]
-  public required decimal VoltageL1AnyT0Avg_V { get; set; }
+  public required InstantaneousAggregateMeasureModel VoltageL1AnyT0_V { get; set; } = default!;
 
   [Required]
-  public required decimal VoltageL2AnyT0Avg_V { get; set; }
+  public required InstantaneousAggregateMeasureModel VoltageL2AnyT0_V { get; set; } = default!;
 
   [Required]
-  public required decimal VoltageL3AnyT0Avg_V { get; set; }
+  public required InstantaneousAggregateMeasureModel VoltageL3AnyT0_V { get; set; } = default!;
 
   [Required]
-  public required decimal CurrentL1AnyT0Avg_A { get; set; }
+  public required InstantaneousAggregateMeasureModel CurrentL1AnyT0_A { get; set; } = default!;
 
   [Required]
-  public required decimal CurrentL2AnyT0Avg_A { get; set; }
+  public required InstantaneousAggregateMeasureModel CurrentL2AnyT0_A { get; set; } = default!;
 
   [Required]
-  public required decimal CurrentL3AnyT0Avg_A { get; set; }
+  public required InstantaneousAggregateMeasureModel CurrentL3AnyT0_A { get; set; } = default!;
 
   [Required]
-  public required decimal ActivePowerL1NetT0Avg_W { get; set; }
+  public required InstantaneousAggregateMeasureModel ActivePowerL1NetT0_W { get; set; } = default!;
 
   [Required]
-  public required decimal ActivePowerL2NetT0Avg_W { get; set; }
+  public required InstantaneousAggregateMeasureModel ActivePowerL2NetT0_W { get; set; } = default!;
 
   [Required]
-  public required decimal ActivePowerL3NetT0Avg_W { get; set; }
+  public required InstantaneousAggregateMeasureModel ActivePowerL3NetT0_W { get; set; } = default!;
 
   [Required]
-  public required decimal ReactivePowerL1NetT0Avg_VAR { get; set; }
+  public required InstantaneousAggregateMeasureModel ReactivePowerL1NetT0_VAR { get; set; } = default!;
 
   [Required]
-  public required decimal ReactivePowerL2NetT0Avg_VAR { get; set; }
+  public required InstantaneousAggregateMeasureModel ReactivePowerL2NetT0_VAR { get; set; } = default!;
 
   [Required]
-  public required decimal ReactivePowerL3NetT0Avg_VAR { get; set; }
+  public required InstantaneousAggregateMeasureModel ReactivePowerL3NetT0_VAR { get; set; } = default!;
 
   [Required]
-  public required decimal ActiveEnergyTotalImportT0Min_Wh { get; set; }
+  public required CumulativeAggregateMeasureModel ActiveEnergyTotalImportT0_Wh { get; set; } = default!;
 
   [Required]
-  public required decimal ActiveEnergyTotalImportT0Max_Wh { get; set; }
+  public required InstantaneousAggregateMeasureModel DerivedActivePowerTotalImportT0_W { get; set; } = default!;
 
   [Required]
-  public required decimal ActiveEnergyTotalExportT0Min_Wh { get; set; }
+  public required CumulativeAggregateMeasureModel ActiveEnergyTotalExportT0_Wh { get; set; } = default!;
 
   [Required]
-  public required decimal ActiveEnergyTotalExportT0Max_Wh { get; set; }
+  public required InstantaneousAggregateMeasureModel DerivedActivePowerTotalExportT0_W { get; set; } = default!;
 
   [Required]
-  public required decimal ReactiveEnergyTotalImportT0Min_VARh { get; set; }
+  public required CumulativeAggregateMeasureModel ReactiveEnergyTotalImportT0_VARh { get; set; } = default!;
 
   [Required]
-  public required decimal ReactiveEnergyTotalImportT0Max_VARh { get; set; }
+  public required InstantaneousAggregateMeasureModel DerivedReactivePowerTotalImportT0_VAR { get; set; } = default!;
 
   [Required]
-  public required decimal ReactiveEnergyTotalExportT0Min_VARh { get; set; }
+  public required CumulativeAggregateMeasureModel ReactiveEnergyTotalExportT0_VARh { get; set; } = default!;
 
   [Required]
-  public required decimal ReactiveEnergyTotalExportT0Max_VARh { get; set; }
+  public required InstantaneousAggregateMeasureModel DerivedReactivePowerTotalExportT0_VAR { get; set; } = default!;
 
   [Required]
-  public required decimal ActiveEnergyTotalImportT1Min_Wh { get; set; }
+  public required CumulativeAggregateMeasureModel ActiveEnergyTotalImportT1_Wh { get; set; } = default!;
 
   [Required]
-  public required decimal ActiveEnergyTotalImportT1Max_Wh { get; set; }
+  public required InstantaneousAggregateMeasureModel DerivedActivePowerTotalImportT1_W { get; set; } = default!;
 
   [Required]
-  public required decimal ActiveEnergyTotalImportT2Min_Wh { get; set; }
+  public required CumulativeAggregateMeasureModel ActiveEnergyTotalImportT2_Wh { get; set; } = default!;
 
   [Required]
-  public required decimal ActiveEnergyTotalImportT2Max_Wh { get; set; }
+  public required InstantaneousAggregateMeasureModel DerivedActivePowerTotalImportT2_W { get; set; } = default!;
 
   public override TariffMeasure<decimal> Current_A
   {
@@ -85,9 +86,9 @@ public class AbbB2xAggregateModel : AggregateModel
       return new UnaryTariffMeasure<decimal>(
         new AnyDuplexMeasure<decimal>(
           new TriPhasicMeasure<decimal>(
-            CurrentL1AnyT0Avg_A,
-            CurrentL2AnyT0Avg_A,
-            CurrentL3AnyT0Avg_A
+            CurrentL1AnyT0_A.Avg,
+            CurrentL2AnyT0_A.Avg,
+            CurrentL3AnyT0_A.Avg
           )
         )
       );
@@ -101,9 +102,9 @@ public class AbbB2xAggregateModel : AggregateModel
       return new UnaryTariffMeasure<decimal>(
         new AnyDuplexMeasure<decimal>(
           new TriPhasicMeasure<decimal>(
-            VoltageL1AnyT0Avg_V,
-            VoltageL2AnyT0Avg_V,
-            VoltageL3AnyT0Avg_V
+            VoltageL1AnyT0_V.Avg,
+            VoltageL2AnyT0_V.Avg,
+            VoltageL3AnyT0_V.Avg
           )
         )
       );
@@ -120,9 +121,9 @@ public class AbbB2xAggregateModel : AggregateModel
         new UnaryTariffMeasure<decimal>(
           new NetDuplexMeasure<decimal>(
             new TriPhasicMeasure<decimal>(
-              ActivePowerL1NetT0Avg_W,
-              ActivePowerL2NetT0Avg_W,
-              ActivePowerL3NetT0Avg_W
+              ActivePowerL1NetT0_W.Avg,
+              ActivePowerL2NetT0_W.Avg,
+              ActivePowerL3NetT0_W.Avg
             )
           )
         )
@@ -140,9 +141,9 @@ public class AbbB2xAggregateModel : AggregateModel
         new UnaryTariffMeasure<decimal>(
           new NetDuplexMeasure<decimal>(
             new TriPhasicMeasure<decimal>(
-              ReactivePowerL1NetT0Avg_VAR,
-              ReactivePowerL2NetT0Avg_VAR,
-              ReactivePowerL3NetT0Avg_VAR
+              ReactivePowerL1NetT0_VAR.Avg,
+              ReactivePowerL2NetT0_VAR.Avg,
+              ReactivePowerL3NetT0_VAR.Avg
             )
           )
         )
@@ -160,12 +161,12 @@ public class AbbB2xAggregateModel : AggregateModel
           new BinaryTariffMeasure<decimal>(
             new ImportExportDuplexMeasure<decimal>(
               new SinglePhasicMeasureSum<decimal>(
-                ActiveEnergyTotalImportT1Min_Wh),
+                ActiveEnergyTotalImportT1_Wh.Min),
               new NullPhasicMeasure<decimal>()
             ),
             new ImportExportDuplexMeasure<decimal>(
               new SinglePhasicMeasureSum<decimal>(
-                ActiveEnergyTotalImportT2Min_Wh),
+                ActiveEnergyTotalImportT2_Wh.Min),
               new NullPhasicMeasure<decimal>()
             )
           ),
@@ -173,9 +174,9 @@ public class AbbB2xAggregateModel : AggregateModel
           new UnaryTariffMeasure<decimal>(
             new ImportExportDuplexMeasure<decimal>(
               new SinglePhasicMeasureSum<decimal>(
-                ActiveEnergyTotalImportT0Min_Wh),
+                ActiveEnergyTotalImportT0_Wh.Min),
               new SinglePhasicMeasureSum<decimal>(
-                ActiveEnergyTotalExportT0Min_Wh)
+                ActiveEnergyTotalExportT0_Wh.Min)
             )
           )
         ]),
@@ -184,12 +185,12 @@ public class AbbB2xAggregateModel : AggregateModel
           new BinaryTariffMeasure<decimal>(
             new ImportExportDuplexMeasure<decimal>(
               new SinglePhasicMeasureSum<decimal>(
-                ActiveEnergyTotalImportT1Max_Wh),
+                ActiveEnergyTotalImportT1_Wh.Max),
               new NullPhasicMeasure<decimal>()
             ),
             new ImportExportDuplexMeasure<decimal>(
               new SinglePhasicMeasureSum<decimal>(
-                ActiveEnergyTotalImportT2Max_Wh),
+                ActiveEnergyTotalImportT2_Wh.Max),
               new NullPhasicMeasure<decimal>()
             )
           ),
@@ -197,9 +198,9 @@ public class AbbB2xAggregateModel : AggregateModel
           new UnaryTariffMeasure<decimal>(
             new ImportExportDuplexMeasure<decimal>(
               new SinglePhasicMeasureSum<decimal>(
-                ActiveEnergyTotalImportT0Max_Wh),
+                ActiveEnergyTotalImportT0_Wh.Max),
               new SinglePhasicMeasureSum<decimal>(
-                ActiveEnergyTotalExportT0Max_Wh)
+                ActiveEnergyTotalExportT0_Wh.Max)
             )
           )
         ])
@@ -215,17 +216,17 @@ public class AbbB2xAggregateModel : AggregateModel
         new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
             new SinglePhasicMeasureSum<decimal>(
-              ReactiveEnergyTotalImportT0Min_VARh),
+              ReactiveEnergyTotalImportT0_VARh.Min),
             new SinglePhasicMeasureSum<decimal>(
-              ReactiveEnergyTotalExportT0Min_VARh)
+              ReactiveEnergyTotalExportT0_VARh.Min)
           )
         ),
         new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
             new SinglePhasicMeasureSum<decimal>(
-              ReactiveEnergyTotalImportT0Max_VARh),
+              ReactiveEnergyTotalImportT0_VARh.Max),
             new SinglePhasicMeasureSum<decimal>(
-              ReactiveEnergyTotalExportT0Max_VARh)
+              ReactiveEnergyTotalExportT0_VARh.Max)
           )
         )
       );

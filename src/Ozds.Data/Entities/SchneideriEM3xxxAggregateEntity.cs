@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Ozds.Data.Entities.Base;
+using Ozds.Data.Entities.Complex;
 using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities;
@@ -9,29 +10,29 @@ public class
   SchneideriEM3xxxAggregateEntity : AggregateEntity<SchneideriEM3xxxMeterEntity>
 {
 #pragma warning disable CA1707
-  public float VoltageL1AnyT0Avg_V { get; set; }
-  public float VoltageL2AnyT0Avg_V { get; set; }
-  public float VoltageL3AnyT0Avg_V { get; set; }
-  public float CurrentL1AnyT0Avg_A { get; set; }
-  public float CurrentL2AnyT0Avg_A { get; set; }
-  public float CurrentL3AnyT0Avg_A { get; set; }
-  public float ActivePowerL1NetT0Avg_W { get; set; }
-  public float ActivePowerL2NetT0Avg_W { get; set; }
-  public float ActivePowerL3NetT0Avg_W { get; set; }
-  public float ReactivePowerTotalNetT0Avg_VAR { get; set; }
-  public float ApparentPowerTotalNetT0Avg_VA { get; set; }
-  public float ActiveEnergyTotalImportT0Min_Wh { get; set; }
-  public float ActiveEnergyTotalImportT0Max_Wh { get; set; }
-  public float ActiveEnergyTotalExportT0Min_Wh { get; set; }
-  public float ActiveEnergyTotalExportT0Max_Wh { get; set; }
-  public float ReactiveEnergyTotalImportT0Min_VARh { get; set; }
-  public float ReactiveEnergyTotalImportT0Max_VARh { get; set; }
-  public float ReactiveEnergyTotalExportT0Min_VARh { get; set; }
-  public float ReactiveEnergyTotalExportT0Max_VARh { get; set; }
-  public float ActiveEnergyTotalImportT1Min_Wh { get; set; }
-  public float ActiveEnergyTotalImportT1Max_Wh { get; set; }
-  public float ActiveEnergyTotalImportT2Min_Wh { get; set; }
-  public float ActiveEnergyTotalImportT2Max_Wh { get; set; }
+  public InstantaneousAggregateMeasureEntity VoltageL1AnyT0_V { get; set; } = default!;
+  public InstantaneousAggregateMeasureEntity VoltageL2AnyT0_V { get; set; } = default!;
+  public InstantaneousAggregateMeasureEntity VoltageL3AnyT0_V { get; set; } = default!;
+  public InstantaneousAggregateMeasureEntity CurrentL1AnyT0_A { get; set; } = default!;
+  public InstantaneousAggregateMeasureEntity CurrentL2AnyT0_A { get; set; } = default!;
+  public InstantaneousAggregateMeasureEntity CurrentL3AnyT0_A { get; set; } = default!;
+  public InstantaneousAggregateMeasureEntity ActivePowerL1NetT0_W { get; set; } = default!;
+  public InstantaneousAggregateMeasureEntity ActivePowerL2NetT0_W { get; set; } = default!;
+  public InstantaneousAggregateMeasureEntity ActivePowerL3NetT0_W { get; set; } = default!;
+  public InstantaneousAggregateMeasureEntity ReactivePowerTotalNetT0_VAR { get; set; } = default!;
+  public InstantaneousAggregateMeasureEntity ApparentPowerTotalNetT0_VA { get; set; } = default!;
+  public CumulativeAggregateMeasureEntity ActiveEnergyTotalImportT0_Wh { get; set; } = default!;
+  public InstantaneousAggregateMeasureEntity DerivedActivePowerTotalImportT0_W { get; set; } = default!;
+  public CumulativeAggregateMeasureEntity ActiveEnergyTotalExportT0_Wh { get; set; } = default!;
+  public InstantaneousAggregateMeasureEntity DerivedActivePowerTotalExportT0_W { get; set; } = default!;
+  public CumulativeAggregateMeasureEntity ReactiveEnergyTotalImportT0_VARh { get; set; } = default!;
+  public InstantaneousAggregateMeasureEntity DerivedReactivePowerTotalImportT0_VAR { get; set; } = default!;
+  public CumulativeAggregateMeasureEntity ReactiveEnergyTotalExportT0_VARh { get; set; } = default!;
+  public InstantaneousAggregateMeasureEntity DerivedReactivePowerTotalExportT0_VAR { get; set; } = default!;
+  public CumulativeAggregateMeasureEntity ActiveEnergyTotalImportT1_Wh { get; set; } = default!;
+  public InstantaneousAggregateMeasureEntity DerivedActivePowerTotalImportT1_W { get; set; } = default!;
+  public CumulativeAggregateMeasureEntity ActiveEnergyTotalImportT2_Wh { get; set; } = default!;
+  public InstantaneousAggregateMeasureEntity DerivedActivePowerTotalImportT2_W { get; set; } = default!;
 #pragma warning restore CA1707
 }
 
@@ -45,123 +46,95 @@ public class
     builder.ToTable("schneider_iem3xxx_aggregates");
 
     builder
-      .Property(nameof(SchneideriEM3xxxAggregateEntity.VoltageL1AnyT0Avg_V))
-      .HasColumnName("voltage_l1_any_t0_avg_v");
+      .ComplexProperty(nameof(SchneideriEM3xxxAggregateEntity.VoltageL1AnyT0_V))
+      .InstantaneousAggregateMeasure("voltage_l1_any_t0", "v");
 
     builder
-      .Property(nameof(SchneideriEM3xxxAggregateEntity.VoltageL2AnyT0Avg_V))
-      .HasColumnName("voltage_l2_any_t0_avg_v");
+      .ComplexProperty(nameof(SchneideriEM3xxxAggregateEntity.VoltageL2AnyT0_V))
+      .InstantaneousAggregateMeasure("voltage_l2_any_t0", "v");
 
     builder
-      .Property(nameof(SchneideriEM3xxxAggregateEntity.VoltageL3AnyT0Avg_V))
-      .HasColumnName("voltage_l3_any_t0_avg_v");
+      .ComplexProperty(nameof(SchneideriEM3xxxAggregateEntity.VoltageL3AnyT0_V))
+      .InstantaneousAggregateMeasure("voltage_l3_any_t0", "v");
 
     builder
-      .Property(nameof(SchneideriEM3xxxAggregateEntity.CurrentL1AnyT0Avg_A))
-      .HasColumnName("current_l1_any_t0_avg_a");
+      .ComplexProperty(nameof(SchneideriEM3xxxAggregateEntity.CurrentL1AnyT0_A))
+      .InstantaneousAggregateMeasure("current_l1_any_t0", "a");
 
     builder
-      .Property(nameof(SchneideriEM3xxxAggregateEntity.CurrentL2AnyT0Avg_A))
-      .HasColumnName("current_l2_any_t0_avg_a");
+      .ComplexProperty(nameof(SchneideriEM3xxxAggregateEntity.CurrentL2AnyT0_A))
+      .InstantaneousAggregateMeasure("current_l2_any_t0", "a");
 
     builder
-      .Property(nameof(SchneideriEM3xxxAggregateEntity.CurrentL3AnyT0Avg_A))
-      .HasColumnName("current_l3_any_t0_avg_a");
+      .ComplexProperty(nameof(SchneideriEM3xxxAggregateEntity.CurrentL3AnyT0_A))
+      .InstantaneousAggregateMeasure("current_l3_any_t0", "a");
 
     builder
-      .Property(nameof(SchneideriEM3xxxAggregateEntity.ActivePowerL1NetT0Avg_W))
-      .HasColumnName("active_power_l1_net_t0_avg_w");
+      .ComplexProperty(nameof(SchneideriEM3xxxAggregateEntity.ActivePowerL1NetT0_W))
+      .InstantaneousAggregateMeasure("active_power_l1_net_t0", "w");
 
     builder
-      .Property(nameof(SchneideriEM3xxxAggregateEntity.ActivePowerL2NetT0Avg_W))
-      .HasColumnName("active_power_l2_net_t0_avg_w");
+      .ComplexProperty(nameof(SchneideriEM3xxxAggregateEntity.ActivePowerL2NetT0_W))
+      .InstantaneousAggregateMeasure("active_power_l2_net_t0", "w");
 
     builder
-      .Property(nameof(SchneideriEM3xxxAggregateEntity.ActivePowerL3NetT0Avg_W))
-      .HasColumnName("active_power_l3_net_t0_avg_w");
+      .ComplexProperty(nameof(SchneideriEM3xxxAggregateEntity.ActivePowerL3NetT0_W))
+      .InstantaneousAggregateMeasure("active_power_l3_net_t0", "w");
 
     builder
-      .Property(
-        nameof(SchneideriEM3xxxAggregateEntity
-          .ReactivePowerTotalNetT0Avg_VAR))
-      .HasColumnName("reactive_power_total_net_t0_avg_var");
+      .ComplexProperty(nameof(SchneideriEM3xxxAggregateEntity.ReactivePowerTotalNetT0_VAR))
+      .InstantaneousAggregateMeasure("reactive_power_total_net_t0", "var");
 
     builder
-      .Property(
-        nameof(SchneideriEM3xxxAggregateEntity
-          .ApparentPowerTotalNetT0Avg_VA))
-      .HasColumnName("apparent_power_total_net_t0_avg_va");
+      .ComplexProperty(nameof(SchneideriEM3xxxAggregateEntity.ApparentPowerTotalNetT0_VA))
+      .InstantaneousAggregateMeasure("apparent_power_total_net_t0", "va");
 
     builder
-      .Property(
-        nameof(SchneideriEM3xxxAggregateEntity
-          .ActiveEnergyTotalImportT0Min_Wh))
-      .HasColumnName("active_energy_total_import_t0_min_wh");
+      .ComplexProperty(nameof(SchneideriEM3xxxAggregateEntity.ActiveEnergyTotalImportT0_Wh))
+      .CumulativeAggregateMeasure("active_energy_total_import_t0", "wh");
 
     builder
-      .Property(
-        nameof(SchneideriEM3xxxAggregateEntity
-          .ActiveEnergyTotalImportT0Max_Wh))
-      .HasColumnName("active_energy_total_import_t0_max_wh");
+      .ComplexProperty(nameof(SchneideriEM3xxxAggregateEntity.DerivedActivePowerTotalImportT0_W))
+      .InstantaneousAggregateMeasure("derived_active_power_total_import_t0", "w");
 
     builder
-      .Property(
-        nameof(SchneideriEM3xxxAggregateEntity
-          .ActiveEnergyTotalExportT0Min_Wh))
-      .HasColumnName("active_energy_total_export_t0_min_wh");
+      .ComplexProperty(nameof(SchneideriEM3xxxAggregateEntity.ActiveEnergyTotalExportT0_Wh))
+      .CumulativeAggregateMeasure("active_energy_total_export_t0", "wh");
 
     builder
-      .Property(
-        nameof(SchneideriEM3xxxAggregateEntity
-          .ActiveEnergyTotalExportT0Max_Wh))
-      .HasColumnName("active_energy_total_export_t0_max_wh");
+      .ComplexProperty(nameof(SchneideriEM3xxxAggregateEntity.DerivedActivePowerTotalExportT0_W))
+      .InstantaneousAggregateMeasure("derived_active_power_total_export_t0", "w");
 
     builder
-      .Property(
-        nameof(SchneideriEM3xxxAggregateEntity
-          .ReactiveEnergyTotalImportT0Min_VARh))
-      .HasColumnName("reactive_energy_total_import_t0_min_varh");
+      .ComplexProperty(nameof(SchneideriEM3xxxAggregateEntity.ReactiveEnergyTotalImportT0_VARh))
+      .CumulativeAggregateMeasure("reactive_energy_total_import_t0", "varh");
 
     builder
-      .Property(
-        nameof(SchneideriEM3xxxAggregateEntity
-          .ReactiveEnergyTotalImportT0Max_VARh))
-      .HasColumnName("reactive_energy_total_import_t0_max_varh");
+      .ComplexProperty(nameof(SchneideriEM3xxxAggregateEntity.DerivedReactivePowerTotalImportT0_VAR))
+      .InstantaneousAggregateMeasure("derived_reactive_power_total_import_t0", "var");
 
     builder
-      .Property(
-        nameof(SchneideriEM3xxxAggregateEntity
-          .ReactiveEnergyTotalExportT0Min_VARh))
-      .HasColumnName("reactive_energy_total_export_t0_min_varh");
+      .ComplexProperty(nameof(SchneideriEM3xxxAggregateEntity.ReactiveEnergyTotalExportT0_VARh))
+      .CumulativeAggregateMeasure("reactive_energy_total_export_t0", "varh");
 
     builder
-      .Property(
-        nameof(SchneideriEM3xxxAggregateEntity
-          .ReactiveEnergyTotalExportT0Max_VARh))
-      .HasColumnName("reactive_energy_total_export_t0_max_varh");
+      .ComplexProperty(nameof(SchneideriEM3xxxAggregateEntity.DerivedReactivePowerTotalExportT0_VAR))
+      .InstantaneousAggregateMeasure("derived_reactive_power_total_export_t0", "var");
 
     builder
-      .Property(
-        nameof(SchneideriEM3xxxAggregateEntity
-          .ActiveEnergyTotalImportT1Min_Wh))
-      .HasColumnName("active_energy_total_import_t1_min_wh");
+      .ComplexProperty(nameof(SchneideriEM3xxxAggregateEntity.ActiveEnergyTotalImportT1_Wh))
+      .CumulativeAggregateMeasure("active_energy_total_import_t1", "wh");
 
     builder
-      .Property(
-        nameof(SchneideriEM3xxxAggregateEntity
-          .ActiveEnergyTotalImportT1Max_Wh))
-      .HasColumnName("active_energy_total_import_t1_max_wh");
+      .ComplexProperty(nameof(SchneideriEM3xxxAggregateEntity.DerivedActivePowerTotalImportT1_W))
+      .InstantaneousAggregateMeasure("derived_active_power_total_import_t1", "w");
 
     builder
-      .Property(
-        nameof(SchneideriEM3xxxAggregateEntity
-          .ActiveEnergyTotalImportT2Min_Wh))
-      .HasColumnName("active_energy_total_import_t2_min_wh");
+      .ComplexProperty(nameof(SchneideriEM3xxxAggregateEntity.ActiveEnergyTotalImportT2_Wh))
+      .CumulativeAggregateMeasure("active_energy_total_import_t2", "wh");
 
     builder
-      .Property(
-        nameof(SchneideriEM3xxxAggregateEntity
-          .ActiveEnergyTotalImportT2Max_Wh))
-      .HasColumnName("active_energy_total_import_t2_max_wh");
+      .ComplexProperty(nameof(SchneideriEM3xxxAggregateEntity.DerivedActivePowerTotalImportT2_W))
+      .InstantaneousAggregateMeasure("derived_active_power_total_import_t2", "w");
   }
 }
