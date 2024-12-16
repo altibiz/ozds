@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Ozds.Data.Extensions;
 
@@ -56,7 +57,7 @@ public static class DbContextTableExtensions
 
   public static string? GetColumnName<T>(
     this DbContext context,
-    string propertyName
+    params string[] propertyName
   )
   {
     return GetColumnName(context, typeof(T), propertyName);
@@ -67,22 +68,92 @@ public static class DbContextTableExtensions
     Type type
   )
   {
-    return context.Model.FindEntityType(type)
-      ?.GetProperties()
-      .Select(x => x.GetColumnName())
-      ?? throw new InvalidOperationException(
+    var entityType = context.Model.FindEntityType(type);
+    if (entityType is null)
+    {
+      throw new InvalidOperationException(
         $"Entity type {type.Name} not found");
+    }
+
+    var storeObjectIdentifier = StoreObjectIdentifier
+      .Create(entityType, StoreObjectType.Table);
+    if (storeObjectIdentifier is null)
+    {
+      throw new InvalidOperationException(
+        $"Store object identifier for entity type {type.Name} not found");
+    }
+
+    return entityType
+      .GetProperties()
+      .Select(x => x.GetColumnName())
+      .Concat(entityType
+        .GetComplexProperties()
+        .SelectMany(x => x.ComplexType
+          .GetProperties()
+          .Select(x => x.GetColumnName(storeObjectIdentifier.Value)
+            ?? throw new InvalidOperationException(
+              $"Column name not found for property {x.Name} in type {type.Name}"))));
   }
 
   public static string? GetColumnName(
     this DbContext context,
     Type type,
-    string propertyName
+    params string[] propertyNames
   )
   {
-    return context.Model.FindEntityType(type)
-      ?.FindProperty(propertyName)
-      ?.GetColumnName();
+    string? GetColumnName(
+      ITypeBase type,
+      StoreObjectIdentifier storeObjectIdentifier,
+      params string[] propertyNames
+    )
+    {
+      if (propertyNames.Length == 0)
+      {
+        throw new ArgumentException(
+          "Property name is required.");
+      }
+
+      if (propertyNames.Length == 1)
+      {
+        return type
+          ?.FindProperty(propertyNames[0])
+          ?.GetColumnName();
+      }
+
+      var complexType = type.GetComplexProperties()
+        .FirstOrDefault(x => x.Name == propertyNames[0]);
+      if (complexType is null)
+      {
+        throw new InvalidOperationException(
+          $"No complex type found for property {propertyNames[0]} on type {type.Name}");
+      }
+
+      return GetColumnName(
+        complexType.ComplexType,
+        storeObjectIdentifier,
+        propertyNames.Skip(1).ToArray()
+      );
+    }
+
+    var entityType = context.Model.FindEntityType(type);
+    if (entityType is null)
+    {
+      throw new InvalidOperationException(
+        $"Entity type {type.Name} not found");
+    }
+
+    var storeObjectIdentifier = StoreObjectIdentifier
+      .Create(entityType, StoreObjectType.Table);
+    if (storeObjectIdentifier is null)
+    {
+      throw new InvalidOperationException(
+        $"Store object identifier for entity type {type.Name} not found");
+    }
+
+    return GetColumnName(
+      entityType,
+      storeObjectIdentifier.Value,
+      propertyNames);
   }
 
   public static string? GetPrimaryKeyColumnName<T>(

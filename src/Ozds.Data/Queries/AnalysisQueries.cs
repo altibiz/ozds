@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Ozds.Data.Context;
 using Ozds.Data.Entities;
 using Ozds.Data.Entities.Base;
+using Ozds.Data.Entities.Complex;
 using Ozds.Data.Entities.Composite;
 using Ozds.Data.Entities.Enums;
 using Ozds.Data.Entities.Joins;
@@ -443,24 +444,28 @@ public class AnalysisQueries(
         COALESCE(
           abb_b2x_aggregates_max_power_window
             .{context.GetColumnName<AbbB2xAggregateEntity>(
-              nameof(AbbB2xAggregateEntity.ActiveEnergyTotalImportT1Max_Wh))},
+              nameof(AbbB2xAggregateEntity.ActiveEnergyTotalImportT1_Wh),
+              nameof(CumulativeAggregateMeasureEntity.Max))},
           0)
           - COALESCE(
               abb_b2x_aggregates_max_power_window
                 .{context.GetColumnName<AbbB2xAggregateEntity>(
-                  nameof(AbbB2xAggregateEntity.ActiveEnergyTotalImportT1Min_Wh))},
+                  nameof(AbbB2xAggregateEntity.ActiveEnergyTotalImportT1_Wh),
+                  nameof(CumulativeAggregateMeasureEntity.Min))},
                 0)
           AS active_energy_total_import_t1_sub_w,
         MAX(
           COALESCE(
             abb_b2x_aggregates_max_power_window
               .{context.GetColumnName<AbbB2xAggregateEntity>(
-                nameof(AbbB2xAggregateEntity.ActiveEnergyTotalImportT1Max_Wh))},
+                nameof(AbbB2xAggregateEntity.ActiveEnergyTotalImportT1_Wh),
+                nameof(CumulativeAggregateMeasureEntity.Max))},
             0)
             - COALESCE(
                 abb_b2x_aggregates_max_power_window
                   .{context.GetColumnName<AbbB2xAggregateEntity>(
-                    nameof(AbbB2xAggregateEntity.ActiveEnergyTotalImportT1Min_Wh))},
+                    nameof(AbbB2xAggregateEntity.ActiveEnergyTotalImportT1_Wh),
+                    nameof(CumulativeAggregateMeasureEntity.Min))},
                   0)
         ) OVER (
           PARTITION BY
@@ -523,24 +528,28 @@ public class AnalysisQueries(
         COALESCE(
           schneider_iem3xxx_aggregates_max_power_window
             .{context.GetColumnName<SchneideriEM3xxxAggregateEntity>(
-              nameof(SchneideriEM3xxxAggregateEntity.ActiveEnergyTotalImportT1Max_Wh))},
+              nameof(SchneideriEM3xxxAggregateEntity.ActiveEnergyTotalImportT1_Wh),
+              nameof(CumulativeAggregateMeasureEntity.Max))},
           0)
           - COALESCE(
               schneider_iem3xxx_aggregates_max_power_window
                 .{context.GetColumnName<SchneideriEM3xxxAggregateEntity>(
-                nameof(SchneideriEM3xxxAggregateEntity.ActiveEnergyTotalImportT1Min_Wh))},
+                  nameof(SchneideriEM3xxxAggregateEntity.ActiveEnergyTotalImportT1_Wh),
+                  nameof(CumulativeAggregateMeasureEntity.Min))},
               0)
           AS active_energy_total_import_t1_sub_wh,
         MAX(
           COALESCE(
             schneider_iem3xxx_aggregates_max_power_window
               .{context.GetColumnName<SchneideriEM3xxxAggregateEntity>(
-                nameof(SchneideriEM3xxxAggregateEntity.ActiveEnergyTotalImportT1Max_Wh))},
+                nameof(SchneideriEM3xxxAggregateEntity.ActiveEnergyTotalImportT1_Wh),
+                nameof(CumulativeAggregateMeasureEntity.Max))},
             0)
             - COALESCE(
                 schneider_iem3xxx_aggregates_max_power_window
                   .{context.GetColumnName<SchneideriEM3xxxAggregateEntity>(
-                  nameof(SchneideriEM3xxxAggregateEntity.ActiveEnergyTotalImportT1Min_Wh))},
+                    nameof(SchneideriEM3xxxAggregateEntity.ActiveEnergyTotalImportT1_Wh),
+                    nameof(CumulativeAggregateMeasureEntity.Min))},
                 0)
         ) OVER (
           PARTITION BY
