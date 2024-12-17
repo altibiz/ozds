@@ -11,7 +11,7 @@
 @(await Html.RenderComponentAsync<App>(
   RenderMode.Server,
   new {
-    Culture = Model.Culture.TwoLetterISOLanguageName,
+    Culture = Model.Culture?.TwoLetterISOLanguageName,
     Model.LogoutToken
   }
 ))
