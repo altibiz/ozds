@@ -10,8 +10,7 @@ namespace Ozds.Business.Test.Finance.Complex;
 public class SupplyRenewableEnergyCalculationItemCalculatorTest
 {
   public static readonly
-    TheoryData<
-      SupplyRenewableEnergyCalculationItemModel>
+    TheoryData<SupplyRenewableEnergyCalculationItemModel>
     TestData = new(
       new Faker<SupplyRenewableEnergyCalculationItemModel>()
         .RuleFor(
@@ -52,6 +51,10 @@ public class SupplyRenewableEnergyCalculationItemCalculatorTest
     var start = Constants.DefaultDateTimeOffset;
     var end = start.AddMonths(1);
 
+    var measureFakerNoise = new Faker<CumulativeAggregateMeasureModel>()
+      .RuleFor(m => m.Min, f => f.Random.Decimal(
+        Constants.MinEnergyValue, Constants.MaxEnergyValue));
+
     var noiseAggregates =
       new Faker<AbbB2xAggregateModel>()
         .RuleFor(
@@ -62,28 +65,34 @@ public class SupplyRenewableEnergyCalculationItemCalculatorTest
           (f, _) => f.Date.BetweenOffset(
             start.Add(IntervalModel.QuarterHour.ToTimeSpan(start)),
             end.Subtract(IntervalModel.QuarterHour.ToTimeSpan(start))))
-        .RuleFor(
-          x => x.ActiveEnergyTotalImportT0_Wh.Min,
-          (f, _) => f.Random.Decimal(
-            Constants.MinEnergyValue, Constants.MaxEnergyValue))
+        .RuleFor(x => x.ActiveEnergyTotalImportT0_Wh, f => measureFakerNoise.Generate())
+        .RuleFor(x => x.ActiveEnergyTotalExportT0_Wh, f => measureFakerNoise.Generate())
+        .RuleFor(x => x.ActiveEnergyTotalImportT1_Wh, f => measureFakerNoise.Generate())
+        .RuleFor(x => x.ActiveEnergyTotalImportT2_Wh, f => measureFakerNoise.Generate())
         .Generate(Constants.DefaultFuzzCount);
+
+    var measureFakerStart = new Faker<CumulativeAggregateMeasureModel>()
+      .RuleFor(m => m.Min, (_, _) => expected.Min_kWh * 1000M);
+
     var startAggregate =
       new Faker<AbbB2xAggregateModel>()
-        .RuleFor(
-          x => x.Timestamp,
-          (_, _) => start)
-        .RuleFor(
-          x => x.ActiveEnergyTotalImportT0_Wh.Min,
-          (_, _) => expected.Min_kWh * 1000M)
+        .RuleFor(x => x.Timestamp, (_, _) => start)
+        .RuleFor(x => x.ActiveEnergyTotalImportT0_Wh, f => measureFakerStart.Generate())
+        .RuleFor(x => x.ActiveEnergyTotalExportT0_Wh, f => measureFakerNoise.Generate())
+        .RuleFor(x => x.ActiveEnergyTotalImportT1_Wh, f => measureFakerNoise.Generate())
+        .RuleFor(x => x.ActiveEnergyTotalImportT2_Wh, f => measureFakerNoise.Generate())
         .Generate();
+
+    var measureFakerEnd = new Faker<CumulativeAggregateMeasureModel>()
+      .RuleFor(m => m.Min, (_, _) => expected.Max_kWh * 1000M);
+
     var endAggregate =
       new Faker<AbbB2xAggregateModel>()
-        .RuleFor(
-          x => x.Timestamp,
-          (_, _) => end)
-        .RuleFor(
-          x => x.ActiveEnergyTotalImportT0_Wh.Min,
-          (_, _) => expected.Max_kWh * 1000M)
+        .RuleFor(x => x.Timestamp, (_, _) => end)
+        .RuleFor(x => x.ActiveEnergyTotalImportT0_Wh, f => measureFakerEnd.Generate())
+        .RuleFor(x => x.ActiveEnergyTotalExportT0_Wh, f => measureFakerNoise.Generate())
+        .RuleFor(x => x.ActiveEnergyTotalImportT1_Wh, f => measureFakerNoise.Generate())
+        .RuleFor(x => x.ActiveEnergyTotalImportT2_Wh, f => measureFakerNoise.Generate())
         .Generate();
 
     var aggregates = noiseAggregates

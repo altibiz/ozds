@@ -47,6 +47,36 @@ public class UsageActivePowerTotalImportT1PeakCalculationItemCalculatorTest
     var start = Constants.DefaultDateTimeOffset;
     var end = start.AddMonths(1);
 
+    var instantaneousMeasureFakerNoise = new Faker<InstantaneousAggregateMeasureModel>()
+      .RuleFor(m => m.Avg, f => f.Random.Decimal(
+        Constants.MinPowerValue, Constants.MaxPowerValue));
+    var cumulativeMeasureFakerNoise = new Faker<CumulativeAggregateMeasureModel>()
+      .RuleFor(m => m.Min, f => f.Random.Decimal(
+        Constants.MinEnergyValue, Constants.MaxEnergyValue));
+
+    var measureFakerDud = new Faker<CumulativeAggregateMeasureModel>()
+      .RuleFor(m => m.Min, f => f.Random.Decimal(
+        Constants.MinEnergyValue, Constants.MaxEnergyValue))
+      .RuleFor(
+        x => x.Max,
+        (f, m) => f.Random.Decimal(
+          m.Min,
+          m.Min
+          + expected.Peak_kW * 1000M
+          * (decimal)IntervalModel.QuarterHour.ToTimeSpan(start).TotalHours
+          - 0.01M));
+
+    var measureFakerPeak = new Faker<CumulativeAggregateMeasureModel>()
+      .RuleFor(
+        x => x.Min,
+        (f, _) => f.Random.Decimal(
+          Constants.MinEnergyValue, Constants.MaxEnergyValue))
+      .RuleFor(
+        x => x.Max,
+        (_, m) => m.Min
+          + expected.Peak_kW * 1000M
+          * (decimal)IntervalModel.QuarterHour.ToTimeSpan(start).TotalHours);
+
     var noiseAggregates =
       new Faker<AbbB2xAggregateModel>()
         .RuleFor(
@@ -57,18 +87,15 @@ public class UsageActivePowerTotalImportT1PeakCalculationItemCalculatorTest
           (f, _) => f.Date.BetweenOffset(
             start.Add(IntervalModel.QuarterHour.ToTimeSpan(start)),
             end.Subtract(IntervalModel.QuarterHour.ToTimeSpan(start))))
+        .RuleFor(x => x.ActivePowerL1NetT0_W, f => instantaneousMeasureFakerNoise.Generate())
+        .RuleFor(x => x.ActivePowerL2NetT0_W, f => instantaneousMeasureFakerNoise.Generate())
+        .RuleFor(x => x.ActivePowerL3NetT0_W, f => instantaneousMeasureFakerNoise.Generate())
+        .RuleFor(x => x.ActiveEnergyTotalImportT0_Wh, f => cumulativeMeasureFakerNoise.Generate())
+        .RuleFor(x => x.ActiveEnergyTotalExportT0_Wh, f => cumulativeMeasureFakerNoise.Generate())
+        .RuleFor(x => x.ActiveEnergyTotalImportT2_Wh, f => cumulativeMeasureFakerNoise.Generate())
         .RuleFor(
-          x => x.ActiveEnergyTotalImportT1_Wh.Min,
-          (f, _) => f.Random.Decimal(
-            Constants.MinEnergyValue, Constants.MaxEnergyValue))
-        .RuleFor(
-          x => x.ActiveEnergyTotalImportT1_Wh.Max,
-          (f, m) => f.Random.Decimal(
-            m.ActiveEnergyTotalImportT1_Wh.Min,
-            m.ActiveEnergyTotalImportT1_Wh.Min
-            + expected.Peak_kW * 1000M
-            * (decimal)IntervalModel.QuarterHour.ToTimeSpan(start).TotalHours
-            - 0.01M))
+          x => x.ActiveEnergyTotalImportT1_Wh,
+          (_, _) => measureFakerDud.Generate())
         .Generate(Constants.DefaultFuzzCount);
     var peakAggregate =
       new Faker<AbbB2xAggregateModel>()
@@ -80,15 +107,15 @@ public class UsageActivePowerTotalImportT1PeakCalculationItemCalculatorTest
           (f, _) => f.Date.BetweenOffset(
             start.Add(IntervalModel.QuarterHour.ToTimeSpan(start)),
             end.Subtract(IntervalModel.QuarterHour.ToTimeSpan(start))))
+        .RuleFor(x => x.ActivePowerL1NetT0_W, f => instantaneousMeasureFakerNoise.Generate())
+        .RuleFor(x => x.ActivePowerL2NetT0_W, f => instantaneousMeasureFakerNoise.Generate())
+        .RuleFor(x => x.ActivePowerL3NetT0_W, f => instantaneousMeasureFakerNoise.Generate())
+        .RuleFor(x => x.ActiveEnergyTotalImportT0_Wh, f => cumulativeMeasureFakerNoise.Generate())
+        .RuleFor(x => x.ActiveEnergyTotalExportT0_Wh, f => cumulativeMeasureFakerNoise.Generate())
+        .RuleFor(x => x.ActiveEnergyTotalImportT2_Wh, f => cumulativeMeasureFakerNoise.Generate())
         .RuleFor(
-          x => x.ActiveEnergyTotalImportT1_Wh.Min,
-          (f, _) => f.Random.Decimal(
-            Constants.MinEnergyValue, Constants.MaxEnergyValue))
-        .RuleFor(
-          x => x.ActiveEnergyTotalImportT1_Wh.Max,
-          (_, m) => m.ActiveEnergyTotalImportT1_Wh.Min
-            + expected.Peak_kW * 1000M
-            * (decimal)IntervalModel.QuarterHour.ToTimeSpan(start).TotalHours)
+          x => x.ActiveEnergyTotalImportT1_Wh,
+          (_, _) => measureFakerPeak.Generate())
         .Generate();
 
     var aggregates = noiseAggregates
