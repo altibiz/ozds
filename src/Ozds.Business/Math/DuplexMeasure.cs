@@ -98,7 +98,15 @@ public abstract record class DuplexMeasure<T>
     {
       CompositeDuplexMeasure<T> composite =>
         new CompositePhasicMeasure<T>(
-          composite.Measures.Select(measure => measure.DuplexNet()).ToList()),
+          composite.Measures
+            .OrderBy(measure => measure switch
+            {
+              NetDuplexMeasure<T> => 0,
+              ImportExportDuplexMeasure<T> => 1,
+              _ => 2
+            })
+            .Select(measure => measure.DuplexNet())
+            .ToList()),
       ImportExportDuplexMeasure<T> importExport => importExport.Import
         .Subtract(importExport.Export),
       NetDuplexMeasure<T> net => net.TrueNet,
@@ -113,7 +121,15 @@ public abstract record class DuplexMeasure<T>
       {
         CompositeDuplexMeasure<T> composite =>
           new CompositePhasicMeasure<T>(
-            composite.Measures.Select(measure => measure.DuplexAny()).ToList()),
+            composite.Measures
+              .OrderBy(measure => measure switch
+              {
+                AnyDuplexMeasure<T> => 0,
+                NetDuplexMeasure<T> => 1,
+                _ => 2
+              })
+              .Select(measure => measure.DuplexAny())
+              .ToList()),
         NetDuplexMeasure<T> net => net.TrueNet,
         AnyDuplexMeasure<T> net => net.Value,
         _ => PhasicMeasure<T>.Null
@@ -128,7 +144,13 @@ public abstract record class DuplexMeasure<T>
       {
         CompositeDuplexMeasure<T> composite =>
           new CompositePhasicMeasure<T>(
-            composite.Measures.Select(measure => measure.DuplexImport())
+            composite.Measures
+              .OrderBy(measure => measure switch
+              {
+                ImportExportDuplexMeasure<T> => 0,
+                _ => 1
+              })
+              .Select(measure => measure.DuplexImport())
               .ToList()),
         ImportExportDuplexMeasure<T> importExport => importExport.Import,
         _ => PhasicMeasure<T>.Null
@@ -143,7 +165,13 @@ public abstract record class DuplexMeasure<T>
       {
         CompositeDuplexMeasure<T> composite =>
           new CompositePhasicMeasure<T>(
-            composite.Measures.Select(measure => measure.DuplexExport())
+            composite.Measures
+              .OrderBy(measure => measure switch
+              {
+                ImportExportDuplexMeasure<T> => 0,
+                _ => 1
+              })
+              .Select(measure => measure.DuplexExport())
               .ToList()),
         ImportExportDuplexMeasure<T> importExport => importExport.Export,
         _ => PhasicMeasure<T>.Null
@@ -163,7 +191,16 @@ public abstract record class DuplexMeasure<T>
       {
         CompositeDuplexMeasure<T> composite =>
           new CompositePhasicMeasure<T>(
-            composite.Measures.Select(measure => measure.DuplexSum()).ToList()),
+            composite.Measures
+              .OrderBy(measure => measure switch
+              {
+                ImportExportDuplexMeasure<T> => 0,
+                NetDuplexMeasure<T> => 1,
+                AnyDuplexMeasure<T> => 2,
+                _ => 3
+              })
+              .Select(measure => measure.DuplexSum())
+              .ToList()),
         ImportExportDuplexMeasure<T> importExport => importExport.Import
           .Add(importExport.Export),
         NetDuplexMeasure<T> net => net.TrueNet,
@@ -201,7 +238,6 @@ public abstract record class DuplexMeasure<T>
     };
   }
 
-  // DO NOT TEST
   public DuplexMeasure<T> Select(
     Func<PhasicMeasure<T>, PhasicMeasure<T>> selector)
   {

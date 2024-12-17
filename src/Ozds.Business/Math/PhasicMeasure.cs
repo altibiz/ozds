@@ -106,14 +106,9 @@ public abstract record class PhasicMeasure<T>
               SinglePhasicMeasureSum<T> => 0,
               TriPhasicMeasure<T> => 1,
               _ => 2
-            }).Select(
-            measure => measure switch
-            {
-              SinglePhasicMeasureSum<T> single => single.Value,
-              TriPhasicMeasure<T> tri =>
-                tri.ValueL1 + tri.ValueL2 + tri.ValueL3,
-              _ => (T)Convert.ChangeType(0, typeof(T))
-            }).FirstOrDefault(
+            })
+            .Select(measure => measure.PhaseSum())
+            .FirstOrDefault(
             value => !EqualityComparer<T>.Default.Equals(
               value, (T)Convert.ChangeType(0, typeof(T))),
             (T)Convert.ChangeType(0, typeof(T))),
@@ -135,14 +130,9 @@ public abstract record class PhasicMeasure<T>
             TriPhasicMeasure<T> => 0,
             SinglePhasicMeasureSum<T> => 1,
             _ => 2
-          }).Select(
-          measure => measure switch
-          {
-            TriPhasicMeasure<T> tri => (tri.ValueL1 + tri.ValueL2 + tri.ValueL3)
-              / (T)Convert.ChangeType(3, typeof(T)),
-            SinglePhasicMeasureSum<T> single => single.Value,
-            _ => (T)Convert.ChangeType(0, typeof(T))
-          }).FirstOrDefault(
+          })
+          .Select(measure => measure.PhaseAverage())
+          .FirstOrDefault(
           value => !EqualityComparer<T>.Default.Equals(
             value, (T)Convert.ChangeType(0, typeof(T))),
           (T)Convert.ChangeType(0, typeof(T))),
@@ -165,17 +155,9 @@ public abstract record class PhasicMeasure<T>
               TriPhasicMeasure<T> => 0,
               SinglePhasicMeasureSum<T> => 1,
               _ => 2
-            }).Select(
-            measure => measure switch
-            {
-              TriPhasicMeasure<T> tri => tri.ValueL1 > tri.ValueL2
-                ? tri.ValueL1 > tri.ValueL3 ? tri.ValueL1 : tri.ValueL3
-                : tri.ValueL2 > tri.ValueL3
-                  ? tri.ValueL2
-                  : tri.ValueL3,
-              SinglePhasicMeasureSum<T> single => single.Value,
-              _ => (T)Convert.ChangeType(0, typeof(T))
-            }).FirstOrDefault(
+            })
+            .Select(measure => measure.PhasePeak())
+            .FirstOrDefault(
             value => !EqualityComparer<T>.Default.Equals(
               value, (T)Convert.ChangeType(0, typeof(T))),
             (T)Convert.ChangeType(0, typeof(T))),
@@ -202,17 +184,9 @@ public abstract record class PhasicMeasure<T>
               TriPhasicMeasure<T> => 0,
               SinglePhasicMeasureSum<T> => 1,
               _ => 2
-            }).Select(
-            measure => measure switch
-            {
-              TriPhasicMeasure<T> tri => tri.ValueL1 < tri.ValueL2
-                ? tri.ValueL1 < tri.ValueL3 ? tri.ValueL1 : tri.ValueL3
-                : tri.ValueL2 < tri.ValueL3
-                  ? tri.ValueL2
-                  : tri.ValueL3,
-              SinglePhasicMeasureSum<T> single => single.Value,
-              _ => (T)Convert.ChangeType(0, typeof(T))
-            }).FirstOrDefault(
+            })
+            .Select(measure => measure.PhaseTrough())
+            .FirstOrDefault(
             value => !EqualityComparer<T>.Default.Equals(
               value, (T)Convert.ChangeType(0, typeof(T))),
             (T)Convert.ChangeType(0, typeof(T))),
@@ -238,12 +212,8 @@ public abstract record class PhasicMeasure<T>
             TriPhasicMeasure<T> => 1,
             _ => 2
           })
-        .Select(
-          measure => measure switch
-          {
-            SinglePhasicMeasureSum<T> single => single,
-            _ => new SinglePhasicMeasureSum<T>(default)
-          }).FirstOrDefault(
+          .Select(measure => measure.PhaseSingle())
+          .FirstOrDefault(
           single => !EqualityComparer<T>.Default.Equals(
             single.Value, (T)Convert.ChangeType(0, typeof(T))),
           new SinglePhasicMeasureSum<T>(default)),
@@ -263,19 +233,8 @@ public abstract record class PhasicMeasure<T>
             SinglePhasicMeasureSum<T> => 1,
             _ => 2
           })
-        .Select(
-          measure => measure switch
-          {
-            TriPhasicMeasure<T> tri => tri,
-            SinglePhasicMeasureSum<T> single => new TriPhasicMeasure<T>(
-              single.Value / (T)Convert.ChangeType(3, typeof(T)),
-              single.Value / (T)Convert.ChangeType(3, typeof(T)),
-              single.Value / (T)Convert.ChangeType(3, typeof(T))),
-            _ => new TriPhasicMeasure<T>(
-              (T)Convert.ChangeType(0, typeof(T)),
-              (T)Convert.ChangeType(0, typeof(T)),
-              (T)Convert.ChangeType(0, typeof(T)))
-          }).FirstOrDefault(
+          .Select(measure => measure.PhaseSplit())
+          .FirstOrDefault(
           tri => !EqualityComparer<T>.Default.Equals(
               tri.ValueL1, (T)Convert.ChangeType(0, typeof(T))) &&
             !EqualityComparer<T>.Default.Equals(
