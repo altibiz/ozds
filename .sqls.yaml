@@ -1,0 +1,13 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/sqls-server/sqls/refs/heads/master/schema.json
+lowercaseKeywords: true
+connections:
+  - alias: postgresql
+    driver: postgresql
+    proto: tcp
+    host: localhost
+    port: 5432
+    dbName: ozds
+    user: ozds
+    passwd: ozds
+    params:
+      sslmode: disable

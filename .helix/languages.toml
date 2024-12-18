@@ -3,6 +3,7 @@ nil = { command = "nil" }
 taplo = { command = "taplo", args = ["lsp", "stdio"] }
 yaml-language-server = { command = "yaml-language-server", args = ["--stdio"] }
 marksman = { command = "marksman", args = ["server"] }
+sqls = { command = "sqls" }
 # rzls = { command = "rzls" }
 
 [language-server.omnisharp]
@@ -56,6 +57,7 @@ language-servers = ["pyright-langserver"]
 name = "sql"
 auto-format = true
 formatter = { command = "sql-formatter" }
+language-servers = ["sqls"]
 
 [[language]]
 name = "yaml"

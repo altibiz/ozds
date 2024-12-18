@@ -148,6 +148,14 @@ rec {
                 '';
               };
 
+              sqls = pkgs.writeShellApplication {
+                name = "sqls";
+                runtimeInputs = [ pkgs.sqls pkgs.git ];
+                text = ''
+                  cat | sqls -config "$(git rev-parse --show-toplevel)/.sqls.yaml" "$@"
+                '';
+              };
+
               mermerd = pkgs.writeShellApplication {
                 name = "mermerd";
                 runtimeInputs = [ pkgs.mermerd ];
@@ -202,6 +210,7 @@ rec {
               postgresql_14
               mermerd
               sql-formatter
+              sqls
 
               # MailHog
               apacheHttpd
