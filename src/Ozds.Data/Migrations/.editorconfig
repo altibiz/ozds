@@ -1,4 +1,8 @@
 [*.cs]
+max_line_length = 120
+indent_size = 4
+tab_width = 4
+
 # Prefer 'static readonly' fields over constant array arguments if
 # the called method is called repeatedly and is not mutating the passed array
 dotnet_diagnostic.CA1861.severity = None
