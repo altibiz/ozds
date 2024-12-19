@@ -33,11 +33,11 @@ public static class InstantaneousAggregateMeasureUpserterExtensions
   {
     return new InstantaneousAggregateMeasureModel
     {
-      Avg = lhs.Avg * lhsCount + rhs.Avg * rhsCount / (lhsCount + rhsCount),
+      Avg = (lhs.Avg * lhsCount + rhs.Avg * rhsCount) / (lhsCount + rhsCount),
       Min = lhs.Min < rhs.Min ? lhs.Min : rhs.Min,
       Max = lhs.Max > rhs.Max ? lhs.Max : rhs.Max,
       MinTimestamp = lhs.Min < rhs.Min ? lhs.MinTimestamp : rhs.MinTimestamp,
-      MaxTimestamp = rhs.Min > lhs.Max ? lhs.MaxTimestamp : rhs.MaxTimestamp
+      MaxTimestamp = lhs.Max > rhs.Max ? lhs.MaxTimestamp : rhs.MaxTimestamp
     };
   }
 }

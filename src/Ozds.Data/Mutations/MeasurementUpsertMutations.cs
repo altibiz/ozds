@@ -111,13 +111,12 @@ public class MeasurementUpsertMutations(
     var connection = context.GetDapperDbConnection();
     var commands = Upsert(context, measurements);
 
-    foreach (var x in commands.Chunk(1000))
+    foreach (var x in commands.Chunk(100))
     {
       var parameters = context.CreateBulkParameters(
         x.Select(y => (y.Measurement as object, y.Index)));
       var sql = string.Join("\n", x.Select(y => y.Sql));
 
-      var stopwatch = Stopwatch.StartNew();
       var command = new CommandDefinition(
         sql,
         parameters,
@@ -125,11 +124,6 @@ public class MeasurementUpsertMutations(
         cancellationToken: cancellationToken
       );
       await connection.ExecuteAsync(command);
-      stopwatch.Stop();
-      logger.LogDebug(
-        "Upsert execution of chunk {Length} took {Elapsed}",
-        sql.Length,
-        stopwatch.Elapsed);
     }
   }
 
@@ -152,18 +146,12 @@ public class MeasurementUpsertMutations(
 
     foreach (var (index, measurement) in ordered)
     {
-      var stopwatch = Stopwatch.StartNew();
       var sql = Upsert(
         context,
         measurement.GetType(),
         measurement is IAggregateEntity aggregate ? aggregate.Interval : null,
         index);
       yield return (sql, index, measurement);
-      stopwatch.Stop();
-      logger.LogDebug(
-        "Upsert templating of {Type} took {Elapsed}",
-        measurement.GetType(),
-        stopwatch.Elapsed);
     }
   }
 
@@ -302,6 +290,9 @@ public class MeasurementUpsertMutations(
     var countColumn = context
       .GetColumnName(type,
       nameof(IAggregateEntity.Count));
+    var quarterHourCountColumn = context
+      .GetColumnName(type,
+      nameof(IAggregateEntity.QuarterHourCount));
     var timestampColumn = context
       .GetColumnName(type,
       nameof(IAggregateEntity.Timestamp));
@@ -356,15 +347,22 @@ public class MeasurementUpsertMutations(
           + $" - LEAST({tableName}.{minCol}, EXCLUDED.{minCol}))"
           + $" * 4");
 
+        if (col == quarterHourCountColumn)
+        {
+          deltaUpsertClauses.Add(
+            $"{quarterHourCountColumn} = {tableName}.{quarterHourCountColumn}"
+            + $" + delta.new_count"
+          );
+        }
         if (col.Contains("avg"))
         {
           deltaClauses.Add(
             $"new.{col} - COALESCE(old.{col}, 0) {col}"
           );
           deltaUpsertClauses.Add(
-            $"{col} = ({tableName}.{col} * {tableName}.{countColumn}"
+            $"{col} = ({tableName}.{col} * {tableName}.{quarterHourCountColumn}"
             + $" + delta.{col})"
-            + $" / ({tableName}.{countColumn} + delta.new_count)"
+            + $" / ({tableName}.{quarterHourCountColumn} + delta.new_count)"
           );
         }
         else if (col.Contains("min"))
