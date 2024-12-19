@@ -11,11 +11,11 @@ public static class DbContextDapperBulkParametersExtensions
 {
   public static DynamicParameters? CreateBulkParameters(
     this DbContext context,
-    IEnumerable<object> measurements
+    IEnumerable<(object, int)> rowsWithIndices
   )
   {
     var parameters = new DynamicParameters();
-    foreach (var (row, index) in measurements.Select((x, i) => (x, i)))
+    foreach (var (row, index) in rowsWithIndices)
     {
       var entityType = context.Model.FindEntityType(row.GetType())
         ?? throw new InvalidOperationException(

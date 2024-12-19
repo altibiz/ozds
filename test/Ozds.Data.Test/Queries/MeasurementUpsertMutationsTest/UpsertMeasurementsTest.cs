@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Ozds.Data.Mutations;
 using Ozds.Data.Test.Context;
 
@@ -22,11 +23,14 @@ public class UpsertMeasurementsTest(IServiceProvider services)
         var expected = await factory.Create(CancellationToken.None);
 
         var mutations = services.GetRequiredService<MeasurementUpsertMutations>();
+        var stopwatch = Stopwatch.StartNew();
         await mutations.UpsertMeasurements(
           context,
           expected,
           CancellationToken.None
         );
+        stopwatch.Stop();
+        stopwatch.Elapsed.Should().BeLessThan(TimeSpan.FromSeconds(10));
       })
     );
 
