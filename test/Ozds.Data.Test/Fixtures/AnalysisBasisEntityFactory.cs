@@ -34,7 +34,7 @@ public class AnalysisBasisEntityFactory(DbContext context)
       .With(x => x.Id, representativeId)
       .CreateInDb(context, cancellationToken);
 
-    foreach (var i in Enumerable.Range(1, Constants.DefaultFuzzCount))
+    foreach (var i in Enumerable.Range(1, Constants.DefaultDbFuzzCount))
     {
       var blueLowCatalogue = await fixture
         .CreateInDb<BlueLowNetworkUserCatalogueEntity>(
@@ -131,7 +131,7 @@ public class AnalysisBasisEntityFactory(DbContext context)
           i => invoices[i % invoices.Count].Id)
         .CreateManyInDb(
           context,
-          Constants.DefaultFuzzCount * invoices.Count,
+          Constants.DefaultDbFuzzCount * invoices.Count,
           cancellationToken);
 
       var measurements = await fixture

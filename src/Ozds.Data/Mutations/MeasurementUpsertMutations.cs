@@ -145,7 +145,11 @@ public class MeasurementUpsertMutations(
         ?? throw new InvalidOperationException(
           $"No primary key found for {entityType.Name}.");
       var primaryKeyColumns = primaryKey.Properties
-        .Select(p => p.GetColumnName(storeObjectIdentifier))
+        .Select(p => new
+        {
+          Property = p,
+          ColumnName = p.GetColumnName(storeObjectIdentifier)
+        })
         .ToList();
 
       var groupMeasurements = group
@@ -163,7 +167,9 @@ public class MeasurementUpsertMutations(
               ? $"::{property.ClrType.Name.ToSnakeCase()}"
               : "");
           }));
-        var conflict = string.Join(", ", primaryKeyColumns);
+        var conflict = string.Join(
+          ", ",
+          primaryKeyColumns.Select(c => c.ColumnName));
 
         var updateClause = "DO NOTHING";
 
@@ -208,7 +214,10 @@ public class MeasurementUpsertMutations(
               ? $"::{property.ClrType.Name.ToSnakeCase()}"
               : "");
           }));
-        var conflict = string.Join(", ", primaryKeyColumns);
+        var conflict = string.Join(
+          ", ",
+          primaryKeyColumns.Select(c => c.ColumnName)
+        );
 
         var updateClause = string.Empty;
         var setClauses = new List<string>();
@@ -218,6 +227,12 @@ public class MeasurementUpsertMutations(
         var countColumn = context
           .GetColumnName(aggregate.GetType(),
           nameof(IAggregateEntity.Count));
+        var timestampColumn = context
+          .GetColumnName(aggregate.GetType(),
+          nameof(IAggregateEntity.Timestamp));
+        var intervalColumn = context
+          .GetColumnName(aggregate.GetType(),
+          nameof(IAggregateEntity.Interval));
         setClauses.Add(
           $"{countColumn} = {tableName}.{countColumn} "
             + $"+ EXCLUDED.{countColumn}");
@@ -230,11 +245,30 @@ public class MeasurementUpsertMutations(
             continue;
           }
           if (col.Contains("derived")
+            && !col.Contains("timestamp")
             && aggregate.Interval == IntervalEntity.QuarterHour)
           {
             var energyCol = col
-              .Replace("power", "energy")
-              .Replace("_w", "_wh");
+              .Replace("derived_", "")
+              .Replace("power", "energy");
+            if (energyCol.EndsWith("_w"))
+            {
+              energyCol =
+                string.Join("_", energyCol.Split("_").SkipLast(1))
+                + "_wh";
+            }
+            else if (energyCol.EndsWith("_var"))
+            {
+              energyCol =
+                string.Join("_", energyCol.Split("_").SkipLast(1))
+                + "_varh";
+            }
+            else if (energyCol.EndsWith("_va"))
+            {
+              energyCol =
+                string.Join("_", energyCol.Split("_").SkipLast(1))
+                + "_vah";
+            }
             var maxCol = energyCol
               .Replace("min", "max")
               .Replace("avg", "max");
@@ -250,7 +284,7 @@ public class MeasurementUpsertMutations(
             if (col.Contains("avg"))
             {
               deltaClauses.Add(
-                $"SUM(new.{col} - old.{col}) {col}"
+                $"new.{col} - old.{col} {col}"
               );
               deltaUpsertClauses.Add(
                 $"{col} = ({tableName}.{col} * {tableName}.{countColumn}"
@@ -258,11 +292,8 @@ public class MeasurementUpsertMutations(
                 + $" / ({tableName}.{countColumn} + delta.new_count)"
               );
             }
-            else if (col.Contains("min") && !col.Contains("timestamp"))
+            else if (col.Contains("min"))
             {
-              var unit = $"_{col.Split("_").Last()}";
-              var timestampCol = col.Replace(unit, "_timestamp");
-
               deltaClauses.Add(
                 $"LEAST(new.{col}, old.{col}) {col}"
               );
@@ -270,24 +301,27 @@ public class MeasurementUpsertMutations(
                 $"{col} = LEAST(delta.{col}, {tableName}.{col})"
               );
 
-              deltaClauses.Add(
-                  $"CASE"
-                  + $" WHEN new.{col} < old.{col}"
-                  + $" THEN new.{timestampCol}" +
-                  $" ELSE old.{timestampCol} END {timestampCol}"
-              );
-              deltaUpsertClauses.Add(
-                  $"{timestampCol} = CASE"
-                  + $" WHEN delta.{col} < {tableName}.{col}"
-                  + $" THEN delta.{timestampCol}" +
-                  $" ELSE {tableName}.{timestampCol} END"
-              );
+              if (!col.Contains("energy"))
+              {
+                var timestampCol =
+                  string.Join("_", col.Split("_").SkipLast(1))
+                  + "_timestamp";
+                deltaClauses.Add(
+                    $"CASE"
+                    + $" WHEN new.{col} < old.{col}"
+                    + $" THEN new.{timestampCol}" +
+                    $" ELSE old.{timestampCol} END {timestampCol}"
+                );
+                deltaUpsertClauses.Add(
+                    $"{timestampCol} = CASE"
+                    + $" WHEN delta.{col} < {tableName}.{col}"
+                    + $" THEN delta.{timestampCol}" +
+                    $" ELSE {tableName}.{timestampCol} END"
+                );
+              }
             }
-            else if (col.Contains("max") && !col.Contains("timestamp"))
+            else if (col.Contains("max"))
             {
-              var unit = $"_{col.Split("_").Last()}";
-              var timestampCol = col.Replace(unit, "_timestamp");
-
               deltaClauses.Add(
                 $"GREATEST(new.{col}, old.{col}) {col}"
               );
@@ -295,18 +329,24 @@ public class MeasurementUpsertMutations(
                 $"{col} = GREATEST(delta.{col}, {tableName}.{col})"
               );
 
-              deltaClauses.Add(
-                  $"CASE"
-                  + $" WHEN new.{col} > old.{col}"
-                  + $" THEN new.{timestampCol}"
-                  + $" ELSE old.{timestampCol} END {timestampCol}"
-              );
-              deltaUpsertClauses.Add(
-                  $"{timestampCol} = CASE"
-                  + $" WHEN delta.{col} > {tableName}.{col}"
-                  + $" THEN delta.{timestampCol} "
-                  + $" ELSE {tableName}.{timestampCol} END"
-              );
+              if (!col.Contains("energy"))
+              {
+                var timestampCol =
+                  string.Join("_", col.Split("_").SkipLast(1))
+                  + "_timestamp";
+                deltaClauses.Add(
+                    $"CASE"
+                    + $" WHEN new.{col} > old.{col}"
+                    + $" THEN new.{timestampCol}"
+                    + $" ELSE old.{timestampCol} END {timestampCol}"
+                );
+                deltaUpsertClauses.Add(
+                    $"{timestampCol} = CASE"
+                    + $" WHEN delta.{col} > {tableName}.{col}"
+                    + $" THEN delta.{timestampCol} "
+                    + $" ELSE {tableName}.{timestampCol} END"
+                );
+              }
             }
           }
           else if (col.Contains("avg"))
@@ -318,31 +358,37 @@ public class MeasurementUpsertMutations(
           }
           else if (col.Contains("min") && !col.Contains("timestamp"))
           {
-            var unit = $"_{col.Split("_").Last()}";
-            var timestampCol = col.Replace(unit, "_timestamp");
-
             setClauses.Add(
               $"{col} = LEAST({tableName}.{col}, EXCLUDED.{col})");
 
-            setClauses.Add(
-                $"{timestampCol} = CASE"
-                + $" WHEN EXCLUDED.{col} < {tableName}.{col}"
-                + $" THEN EXCLUDED.{timestampCol}"
-                + $" ELSE {tableName}.{timestampCol} END");
+            if (!col.Contains("energy"))
+            {
+              var timestampCol =
+                string.Join("_", col.Split("_").SkipLast(1))
+                + "_timestamp";
+              setClauses.Add(
+                  $"{timestampCol} = CASE"
+                  + $" WHEN EXCLUDED.{col} < {tableName}.{col}"
+                  + $" THEN EXCLUDED.{timestampCol}"
+                  + $" ELSE {tableName}.{timestampCol} END");
+            }
           }
           else if (col.Contains("max") && !col.Contains("timestamp"))
           {
-            var unit = $"_{col.Split("_").Last()}";
-            var timestampCol = col.Replace(unit, "_timestamp");
-
             setClauses.Add(
               $"{col} = GREATEST({tableName}.{col}, EXCLUDED.{col})");
 
-            setClauses.Add(
-                $"{timestampCol} = CASE"
-                + $" WHEN EXCLUDED.{col} > {tableName}.{col}"
-                + $" THEN EXCLUDED.{timestampCol}"
-                + $" ELSE {tableName}.{timestampCol} END");
+            if (!col.Contains("energy"))
+            {
+              var timestampCol =
+                string.Join("_", col.Split("_").SkipLast(1))
+                + "_timestamp";
+              setClauses.Add(
+                  $"{timestampCol} = CASE"
+                  + $" WHEN EXCLUDED.{col} > {tableName}.{col}"
+                  + $" THEN EXCLUDED.{timestampCol}"
+                  + $" ELSE {tableName}.{timestampCol} END");
+            }
           }
         }
 
@@ -358,7 +404,11 @@ public class MeasurementUpsertMutations(
               FROM {tableName}
               WHERE {string.Join(
                 " AND ",
-                primaryKeyColumns.Select(c => $"{c} = @p{index}_{c}"))}
+                primaryKeyColumns.Select(c =>
+                  $"{tableName}.{c.ColumnName} = @p{index}_{c.ColumnName}"
+                    + (c.Property.ClrType.IsEnum
+                      ? $"::{c.Property.ClrType.Name.ToSnakeCase()}"
+                      : "")))}
             ), new AS (
               INSERT INTO {tableName} ({columns})
               VALUES ({values})
@@ -366,33 +416,64 @@ public class MeasurementUpsertMutations(
               RETURNING *
             ), delta AS (
               SELECT
-                time_bucket(
-                  '1 day',
-                  new.timestamp AT TIME ZONE 'Europe/Zagreb') daily_timestamp,
-                time_bucket(
-                  '1 month',
-                  new.timestamp AT TIME ZONE 'Europe/Zagreb') monthly_timestamp,
-                COUNT(old.timestamp) FILTER (WHERE old.timestamp IS NULL) new_count,
+                date_trunc(
+                  'day',
+                  new.{timestampColumn} AT TIME ZONE 'Europe/Zagreb')
+                  daily_timestamp,
+                date_trunc(
+                  'month',
+                  new.{timestampColumn} AT TIME ZONE 'Europe/Zagreb')
+                  monthly_timestamp,
+                {string.Join(", ", primaryKeyColumns.Select(c => $"new.{c.ColumnName}"))},
+                CASE
+                  WHEN old.{timestampColumn} is null then 1
+                  ELSE 0
+                END new_count,
                 {string.Join(", ", deltaClauses)}
               FROM new
               LEFT JOIN old ON
                 {string.Join(
                   " AND ",
-                  primaryKeyColumns.Select(c => $"old.{c} = new.{c}"))}
+                  primaryKeyColumns.Select(
+                    c => $"old.{c.ColumnName} = new.{c.ColumnName}"))}
             ), daily AS (
               UPDATE {tableName} SET
                 {string.Join(", ", deltaUpsertClauses)}
               FROM delta
-              WHERE {tableName}.timestamp = delta.daily_timestamp
+              WHERE
+                {tableName}.{timestampColumn} = delta.daily_timestamp
+                AND {tableName}.{intervalColumn}
+                  = '{IntervalEntity.Day.ToString().ToSnakeCase()}'::{nameof(IntervalEntity).ToSnakeCase()}
+                AND {string.Join(
+                  " AND ",
+                  primaryKeyColumns
+                    .Where(c =>
+                      c.ColumnName != timestampColumn
+                      && c.ColumnName != intervalColumn)
+                    .Select(c =>
+                      $"{tableName}.{c.ColumnName} = delta.{c.ColumnName}"))}
+              RETURNING *
             ), monthly AS (
               UPDATE {tableName} SET
                 {string.Join(", ", deltaUpsertClauses)}
               FROM delta
-              WHERE {tableName}.timestamp = delta.monthly_timestamp
+              WHERE
+                {tableName}.{timestampColumn} = delta.monthly_timestamp
+                AND {tableName}.{intervalColumn}
+                  = '{IntervalEntity.Month.ToString().ToSnakeCase()}'::{nameof(IntervalEntity).ToSnakeCase()}
+                AND {string.Join(
+                  " AND ",
+                  primaryKeyColumns
+                    .Where(c =>
+                      c.ColumnName != timestampColumn
+                      && c.ColumnName != intervalColumn)
+                    .Select(c =>
+                      $"{tableName}.{c.ColumnName} = delta.{c.ColumnName}"))}
+              RETURNING *
             )
             SELECT * FROM daily
             UNION ALL
-            SELECT * FROM monthly
+            SELECT * FROM monthly;
           ";
           sql.AppendLine(row);
         }

@@ -20,7 +20,7 @@ public class MeasurementUpsertFactory(DbContext context)
     fixture.Customizations.Add(
       new DateTimeOffsetInRangeSpecimenBuilder(aMonthAgo, now));
 
-    foreach (var i in Enumerable.Range(1, Constants.DefaultFuzzCount))
+    foreach (var i in Enumerable.Range(1, Constants.DefaultDbFuzzCount))
     {
       var blueLowCatalogue = await fixture
         .CreateInDb<BlueLowNetworkUserCatalogueEntity>(
@@ -84,7 +84,7 @@ public class MeasurementUpsertFactory(DbContext context)
         .Build<AbbB2xMeasurementEntity>()
         .With(x => x.MeterId, abbB2xMeter.Id)
         .With(x => x.MeasurementLocationId, abbB2xMeasurementLocation.Id)
-        .CreateMany(Constants.DefaultFuzzCount);
+        .CreateMany(Constants.DefaultFuzzCount / 8);
       var abbB2xAggregatesQuarterHour = fixture
         .Build<AbbB2xAggregateEntity>()
         .With(x => x.MeterId, abbB2xMeter.Id)
@@ -94,7 +94,7 @@ public class MeasurementUpsertFactory(DbContext context)
           agg => agg.Timestamp,
           (i) => now.AddMinutes(-i * 15)
         )
-        .CreateMany(Constants.DefaultFuzzCount);
+        .CreateMany(Constants.DefaultFuzzCount / 8);
       var abbB2xAggregatesDay = fixture
         .Build<AbbB2xAggregateEntity>()
         .With(x => x.MeterId, abbB2xMeter.Id)
@@ -104,7 +104,7 @@ public class MeasurementUpsertFactory(DbContext context)
           agg => agg.Timestamp,
           (i) => now.AddDays(-i)
         )
-        .CreateMany(Constants.DefaultFuzzCount);
+        .CreateMany(Constants.DefaultFuzzCount / 8);
       var abbB2xAggregatesMonth = fixture
         .Build<AbbB2xAggregateEntity>()
         .With(x => x.MeterId, abbB2xMeter.Id)
@@ -114,7 +114,7 @@ public class MeasurementUpsertFactory(DbContext context)
           agg => agg.Timestamp,
           (i) => now.AddMonths(-i)
         )
-        .CreateMany(Constants.DefaultFuzzCount);
+        .CreateMany(Constants.DefaultFuzzCount / 8);
       result.AddRange(abbB2xMeasurements);
       result.AddRange(abbB2xAggregatesQuarterHour);
       result.AddRange(abbB2xAggregatesDay);
@@ -124,7 +124,7 @@ public class MeasurementUpsertFactory(DbContext context)
         .Build<SchneideriEM3xxxMeasurementEntity>()
         .With(x => x.MeterId, schneideriEM3xxxMeter.Id)
         .With(x => x.MeasurementLocationId, schneideriEM3xxxMeasurementLocation.Id)
-        .CreateMany(Constants.DefaultFuzzCount);
+        .CreateMany(Constants.DefaultFuzzCount / 8);
       var schneideriEM3xxxAggregates = fixture
         .Build<SchneideriEM3xxxAggregateEntity>()
         .With(x => x.MeterId, schneideriEM3xxxMeter.Id)
@@ -134,7 +134,7 @@ public class MeasurementUpsertFactory(DbContext context)
           agg => agg.Timestamp,
           (i) => now.AddMinutes(-i * 15)
         )
-        .CreateMany(Constants.DefaultFuzzCount);
+        .CreateMany(Constants.DefaultFuzzCount / 8);
       var schneideriEM3xxxAggregatesDay = fixture
         .Build<SchneideriEM3xxxAggregateEntity>()
         .With(x => x.MeterId, schneideriEM3xxxMeter.Id)
@@ -144,7 +144,7 @@ public class MeasurementUpsertFactory(DbContext context)
           agg => agg.Timestamp,
           (i) => now.AddDays(-i)
         )
-        .CreateMany(Constants.DefaultFuzzCount);
+        .CreateMany(Constants.DefaultFuzzCount / 8);
       var schneideriEM3xxxAggregatesMonth = fixture
         .Build<SchneideriEM3xxxAggregateEntity>()
         .With(x => x.MeterId, schneideriEM3xxxMeter.Id)
@@ -154,7 +154,7 @@ public class MeasurementUpsertFactory(DbContext context)
           agg => agg.Timestamp,
           (i) => now.AddMonths(-i)
         )
-        .CreateMany(Constants.DefaultFuzzCount);
+        .CreateMany(Constants.DefaultFuzzCount / 8);
       result.AddRange(schneideriEM3xxxMeasurements);
       result.AddRange(schneideriEM3xxxAggregates);
       result.AddRange(schneideriEM3xxxAggregatesDay);

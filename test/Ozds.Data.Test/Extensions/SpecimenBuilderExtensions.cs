@@ -21,7 +21,7 @@ public static class SpecimenBuilderExtensions
   public static async Task<List<T>> CreateManyInDb<T>(
     this ISpecimenBuilder builder,
     DbContext context,
-    int count = Constants.DefaultFuzzCount,
+    int count = Constants.DefaultDbFuzzCount,
     CancellationToken cancellationToken = default
   )
   {
@@ -46,7 +46,7 @@ public static class SpecimenBuilderExtensions
   public static async Task<List<T>> CreateManyInDb<T>(
     this IPostprocessComposer<T> builder,
     DbContext context,
-    int count = Constants.DefaultFuzzCount,
+    int count = Constants.DefaultDbFuzzCount,
     CancellationToken cancellationToken = default
   )
   {
