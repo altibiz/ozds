@@ -2,6 +2,7 @@ using System.Data;
 using System.Text;
 using Dapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage;
 using Npgsql;
 using Ozds.Data.Context;
@@ -14,6 +15,7 @@ namespace Ozds.Data.Mutations;
 
 // TODO: enum by model configuration not clr type
 // TODO: determining clauses by column name is flaky - needs to be improved
+// TODO: handle nesting hierarchical properties
 
 public class MeasurementUpsertMutations(
   IDbContextFactory<DataDbContext> factory
@@ -123,17 +125,27 @@ public class MeasurementUpsertMutations(
       var entityType = context.Model.FindEntityType(group.Key)
           ?? throw new InvalidOperationException(
             $"No entity type found for {group.Key}.");
+      var storeObjectIdentifier = StoreObjectIdentifier
+        .Create(entityType, StoreObjectType.Table)
+        ?? throw new InvalidOperationException(
+          $"No store object identifier found for {group.Key}.");
       var tableName = entityType.GetTableName()
           ?? throw new InvalidOperationException(
             $"No table name found for {group.Key}.");
+      var properties = entityType.GetProperties()
+        .Concat(entityType
+          .GetComplexProperties()
+          .SelectMany(p => p.ComplexType.GetProperties()))
+        .ToList();
 
-      var properties = entityType.GetProperties().ToList();
-      var columnNames = properties.Select(p => p.GetColumnName()).ToList();
+      var columnNames = properties
+        .Select(p => p.GetColumnName(storeObjectIdentifier))
+        .ToList();
       var primaryKey = entityType.FindPrimaryKey()
         ?? throw new InvalidOperationException(
           $"No primary key found for {entityType.Name}.");
       var primaryKeyColumns = primaryKey.Properties
-        .Select(p => p.GetColumnName())
+        .Select(p => p.GetColumnName(storeObjectIdentifier))
         .ToList();
 
       var groupMeasurements = group
@@ -143,10 +155,14 @@ public class MeasurementUpsertMutations(
       {
         var columns = string.Join(", ", columnNames);
         var values = string.Join(", ", properties
-          .Select(property => $"@p{index}_{property.GetColumnName()}"
+          .Select(property =>
+          {
+            var columnName = property.GetColumnName(storeObjectIdentifier);
+            return $"@p{index}_{columnName}"
             + (property.ClrType.IsEnum
               ? $"::{property.ClrType.Name.ToSnakeCase()}"
-              : "")));
+              : "");
+          }));
         var conflict = string.Join(", ", primaryKeyColumns);
 
         var updateClause = "DO NOTHING";
@@ -184,10 +200,14 @@ public class MeasurementUpsertMutations(
       {
         var columns = string.Join(", ", columnNames);
         var values = string.Join(", ", properties
-          .Select(property => $"@p{index}_{property.GetColumnName()}"
+          .Select(property =>
+          {
+            var columnName = property.GetColumnName(storeObjectIdentifier);
+            return $"@p{index}_{columnName}"
             + (property.ClrType.IsEnum
               ? $"::{property.ClrType.Name.ToSnakeCase()}"
-              : "")));
+              : "");
+          }));
         var conflict = string.Join(", ", primaryKeyColumns);
 
         var updateClause = string.Empty;
@@ -204,8 +224,8 @@ public class MeasurementUpsertMutations(
 
         foreach (var prop in properties)
         {
-          var col = prop.GetColumnName();
-          if (col == countColumn)
+          var col = prop.GetColumnName(storeObjectIdentifier);
+          if (col is null || col == countColumn)
           {
             continue;
           }
@@ -233,7 +253,8 @@ public class MeasurementUpsertMutations(
                 $"SUM(new.{col} - old.{col}) {col}"
               );
               deltaUpsertClauses.Add(
-                $"{col} = ({tableName}.{col} * {tableName}.{countColumn} + delta.{col})"
+                $"{col} = ({tableName}.{col} * {tableName}.{countColumn}"
+                + $" + delta.{col})"
                 + $" / ({tableName}.{countColumn} + delta.new_count)"
               );
             }
@@ -250,14 +271,16 @@ public class MeasurementUpsertMutations(
               );
 
               deltaClauses.Add(
-                  $"CASE " +
-                  $"WHEN new.{col} < old.{col} THEN new.{timestampCol} " +
-                  $"ELSE old.{timestampCol} END {timestampCol}"
+                  $"CASE"
+                  + $" WHEN new.{col} < old.{col}"
+                  + $" THEN new.{timestampCol}" +
+                  $" ELSE old.{timestampCol} END {timestampCol}"
               );
               deltaUpsertClauses.Add(
-                  $"{timestampCol} = CASE " +
-                  $"WHEN delta.{col} < {tableName}.{col} THEN delta.{timestampCol} " +
-                  $"ELSE {tableName}.{timestampCol} END"
+                  $"{timestampCol} = CASE"
+                  + $" WHEN delta.{col} < {tableName}.{col}"
+                  + $" THEN delta.{timestampCol}" +
+                  $" ELSE {tableName}.{timestampCol} END"
               );
             }
             else if (col.Contains("max") && !col.Contains("timestamp"))
@@ -273,14 +296,16 @@ public class MeasurementUpsertMutations(
               );
 
               deltaClauses.Add(
-                  $"CASE " +
-                  $"WHEN new.{col} > old.{col} THEN new.{timestampCol} " +
-                  $"ELSE old.{timestampCol} END {timestampCol}"
+                  $"CASE"
+                  + $" WHEN new.{col} > old.{col}"
+                  + $" THEN new.{timestampCol}"
+                  + $" ELSE old.{timestampCol} END {timestampCol}"
               );
               deltaUpsertClauses.Add(
-                  $"{timestampCol} = CASE " +
-                  $"WHEN delta.{col} > {tableName}.{col} THEN delta.{timestampCol} " +
-                  $"ELSE {tableName}.{timestampCol} END"
+                  $"{timestampCol} = CASE"
+                  + $" WHEN delta.{col} > {tableName}.{col}"
+                  + $" THEN delta.{timestampCol} "
+                  + $" ELSE {tableName}.{timestampCol} END"
               );
             }
           }
@@ -300,9 +325,10 @@ public class MeasurementUpsertMutations(
               $"{col} = LEAST({tableName}.{col}, EXCLUDED.{col})");
 
             setClauses.Add(
-                $"{timestampCol} = CASE " +
-                $"WHEN EXCLUDED.{col} < {tableName}.{col} THEN EXCLUDED.{timestampCol} " +
-                $"ELSE {tableName}.{timestampCol} END");
+                $"{timestampCol} = CASE"
+                + $" WHEN EXCLUDED.{col} < {tableName}.{col}"
+                + $" THEN EXCLUDED.{timestampCol}"
+                + $" ELSE {tableName}.{timestampCol} END");
           }
           else if (col.Contains("max") && !col.Contains("timestamp"))
           {
@@ -313,9 +339,10 @@ public class MeasurementUpsertMutations(
               $"{col} = GREATEST({tableName}.{col}, EXCLUDED.{col})");
 
             setClauses.Add(
-                $"{timestampCol} = CASE " +
-                $"WHEN EXCLUDED.{col} > {tableName}.{col} THEN EXCLUDED.{timestampCol} " +
-                $"ELSE {tableName}.{timestampCol} END");
+                $"{timestampCol} = CASE"
+                + $" WHEN EXCLUDED.{col} > {tableName}.{col}"
+                + $" THEN EXCLUDED.{timestampCol}"
+                + $" ELSE {tableName}.{timestampCol} END");
           }
         }
 

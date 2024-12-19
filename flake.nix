@@ -156,6 +156,14 @@ rec {
                 '';
               };
 
+              sql-formatter = pkgs.writeShellApplication {
+                name = "sql-formatter";
+                runtimeInputs = [ pkgs.sql-formatter ];
+                text = ''
+                  cat | sql-formatter --config "$(git rev-parse --show-toplevel)/.sql-formatter.json" "$@"
+                '';
+              };
+
               mermerd = pkgs.writeShellApplication {
                 name = "mermerd";
                 runtimeInputs = [ pkgs.mermerd ];

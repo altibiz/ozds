@@ -37,7 +37,6 @@ public class MeasurementUpsertFactory(DbContext context)
       var whiteLowCatalogue = await fixture
         .CreateInDb<WhiteLowNetworkUserCatalogueEntity>(
           context, cancellationToken);
-
       var location = await fixture
         .Build<LocationEntity>()
         .With(x => x.BlueLowNetworkUserCatalogueId, blueLowCatalogue.Id)
@@ -46,7 +45,6 @@ public class MeasurementUpsertFactory(DbContext context)
         .With(x => x.WhiteMediumNetworkUserCatalogueId, whiteMediumCatalogue.Id)
         .With(x => x.WhiteLowNetworkUserCatalogueId, whiteLowCatalogue.Id)
         .CreateInDb(context, cancellationToken);
-
       var networkUser = await fixture
         .Build<NetworkUserEntity>()
         .With(x => x.LocationId, location.Id)
@@ -55,13 +53,11 @@ public class MeasurementUpsertFactory(DbContext context)
       var abbB2xValidator = await fixture
         .CreateInDb<AbbB2xMeasurementValidatorEntity>(
           context, cancellationToken);
-
       var abbB2xMeter = await fixture
         .Build<AbbB2xMeterEntity>()
         .IndexedWith(x => x.Id, (j) => $"abb-b2x-{i + j}")
         .With(x => x.MeasurementValidatorId, abbB2xValidator.Id)
         .CreateInDb(context, cancellationToken);
-
       var abbB2xMeasurementLocation = await fixture
         .Build<NetworkUserMeasurementLocationEntity>()
         .With(ml => ml.NetworkUserId, networkUser.Id)
@@ -72,13 +68,11 @@ public class MeasurementUpsertFactory(DbContext context)
       var schneideriEM3xxxValidator = await fixture
         .CreateInDb<SchneideriEM3xxxMeasurementValidatorEntity>(
           context, cancellationToken);
-
       var schneideriEM3xxxMeter = await fixture
         .Build<SchneideriEM3xxxMeterEntity>()
         .IndexedWith(x => x.Id, (j) => $"schneider-iEM3xxx-{i + j}")
         .With(x => x.MeasurementValidatorId, schneideriEM3xxxValidator.Id)
         .CreateInDb(context, cancellationToken);
-
       var schneideriEM3xxxMeasurementLocation = await fixture
         .Build<NetworkUserMeasurementLocationEntity>()
         .With(ml => ml.NetworkUserId, networkUser.Id)
@@ -86,13 +80,12 @@ public class MeasurementUpsertFactory(DbContext context)
         .With(ml => ml.NetworkUserCatalogueId, redLowCatalogue.Id)
         .CreateInDb(context, cancellationToken);
 
-      var abbB2xMeasurements = await fixture
+      var abbB2xMeasurements = fixture
         .Build<AbbB2xMeasurementEntity>()
         .With(x => x.MeterId, abbB2xMeter.Id)
         .With(x => x.MeasurementLocationId, abbB2xMeasurementLocation.Id)
-        .CreateManyInDb(context, cancellationToken: cancellationToken);
-
-      var abbB2xAggregates = await fixture
+        .CreateMany(Constants.DefaultFuzzCount);
+      var abbB2xAggregatesQuarterHour = fixture
         .Build<AbbB2xAggregateEntity>()
         .With(x => x.MeterId, abbB2xMeter.Id)
         .With(x => x.MeasurementLocationId, abbB2xMeasurementLocation.Id)
@@ -101,18 +94,38 @@ public class MeasurementUpsertFactory(DbContext context)
           agg => agg.Timestamp,
           (i) => now.AddMinutes(-i * 15)
         )
-        .CreateManyInDb(context, cancellationToken: cancellationToken);
-
+        .CreateMany(Constants.DefaultFuzzCount);
+      var abbB2xAggregatesDay = fixture
+        .Build<AbbB2xAggregateEntity>()
+        .With(x => x.MeterId, abbB2xMeter.Id)
+        .With(x => x.MeasurementLocationId, abbB2xMeasurementLocation.Id)
+        .With(agg => agg.Interval, IntervalEntity.Day)
+        .IndexedWith(
+          agg => agg.Timestamp,
+          (i) => now.AddDays(-i)
+        )
+        .CreateMany(Constants.DefaultFuzzCount);
+      var abbB2xAggregatesMonth = fixture
+        .Build<AbbB2xAggregateEntity>()
+        .With(x => x.MeterId, abbB2xMeter.Id)
+        .With(x => x.MeasurementLocationId, abbB2xMeasurementLocation.Id)
+        .With(agg => agg.Interval, IntervalEntity.Month)
+        .IndexedWith(
+          agg => agg.Timestamp,
+          (i) => now.AddMonths(-i)
+        )
+        .CreateMany(Constants.DefaultFuzzCount);
       result.AddRange(abbB2xMeasurements);
-      result.AddRange(abbB2xAggregates);
+      result.AddRange(abbB2xAggregatesQuarterHour);
+      result.AddRange(abbB2xAggregatesDay);
+      result.AddRange(abbB2xAggregatesMonth);
 
-      var schneideriEM3xxxMeasurements = await fixture
+      var schneideriEM3xxxMeasurements = fixture
         .Build<SchneideriEM3xxxMeasurementEntity>()
         .With(x => x.MeterId, schneideriEM3xxxMeter.Id)
         .With(x => x.MeasurementLocationId, schneideriEM3xxxMeasurementLocation.Id)
-        .CreateManyInDb(context, cancellationToken: cancellationToken);
-
-      var schneideriEM3xxxAggregates = await fixture
+        .CreateMany(Constants.DefaultFuzzCount);
+      var schneideriEM3xxxAggregates = fixture
         .Build<SchneideriEM3xxxAggregateEntity>()
         .With(x => x.MeterId, schneideriEM3xxxMeter.Id)
         .With(x => x.MeasurementLocationId, schneideriEM3xxxMeasurementLocation.Id)
@@ -121,10 +134,31 @@ public class MeasurementUpsertFactory(DbContext context)
           agg => agg.Timestamp,
           (i) => now.AddMinutes(-i * 15)
         )
-        .CreateManyInDb(context, cancellationToken: cancellationToken);
-
+        .CreateMany(Constants.DefaultFuzzCount);
+      var schneideriEM3xxxAggregatesDay = fixture
+        .Build<SchneideriEM3xxxAggregateEntity>()
+        .With(x => x.MeterId, schneideriEM3xxxMeter.Id)
+        .With(x => x.MeasurementLocationId, schneideriEM3xxxMeasurementLocation.Id)
+        .With(agg => agg.Interval, IntervalEntity.Day)
+        .IndexedWith(
+          agg => agg.Timestamp,
+          (i) => now.AddDays(-i)
+        )
+        .CreateMany(Constants.DefaultFuzzCount);
+      var schneideriEM3xxxAggregatesMonth = fixture
+        .Build<SchneideriEM3xxxAggregateEntity>()
+        .With(x => x.MeterId, schneideriEM3xxxMeter.Id)
+        .With(x => x.MeasurementLocationId, schneideriEM3xxxMeasurementLocation.Id)
+        .With(agg => agg.Interval, IntervalEntity.Month)
+        .IndexedWith(
+          agg => agg.Timestamp,
+          (i) => now.AddMonths(-i)
+        )
+        .CreateMany(Constants.DefaultFuzzCount);
       result.AddRange(schneideriEM3xxxMeasurements);
       result.AddRange(schneideriEM3xxxAggregates);
+      result.AddRange(schneideriEM3xxxAggregatesDay);
+      result.AddRange(schneideriEM3xxxAggregatesMonth);
     }
 
     return result;
