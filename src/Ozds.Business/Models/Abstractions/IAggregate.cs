@@ -9,6 +9,8 @@ public interface IAggregate : IMeasurement
 
   public long Count { get; }
 
+  public long QuarterHourCount { get; }
+
   public SpanningMeasure<decimal> ActiveEnergySpan_Wh { get; }
 
   public SpanningMeasure<decimal> ReactiveEnergySpan_VARh { get; }

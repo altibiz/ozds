@@ -30,6 +30,7 @@ public static class SchneideriEM3xxxMeasurementAggregateConverterExtensions
       Timestamp = measurement.Timestamp,
       Interval = interval,
       Count = 1,
+      QuarterHourCount = 0,
       VoltageL1AnyT0_V = new InstantaneousAggregateMeasureModel
       {
         Avg = measurement.VoltageL1AnyT0_V,

@@ -17,6 +17,7 @@ public class AbbB2xAggregateUpserter : AggregateUpserter<AbbB2xAggregateModel>
       Timestamp = lhs.Timestamp,
       Interval = lhs.Interval,
       Count = lhs.Count + rhs.Count,
+      QuarterHourCount = lhs.QuarterHourCount + rhs.QuarterHourCount,
       VoltageL1AnyT0_V = lhs.VoltageL1AnyT0_V.Upsert(
         lhs.Count,
         rhs.VoltageL1AnyT0_V,

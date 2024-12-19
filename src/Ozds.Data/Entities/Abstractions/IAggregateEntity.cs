@@ -6,5 +6,7 @@ public interface IAggregateEntity : IMeasurementEntity
 {
   public long Count { get; }
 
+  public long QuarterHourCount { get; }
+
   public IntervalEntity Interval { get; }
 }

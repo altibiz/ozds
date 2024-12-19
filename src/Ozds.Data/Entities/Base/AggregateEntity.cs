@@ -16,6 +16,8 @@ public abstract class AggregateEntity : IAggregateEntity
 
   public long Count { get; set; }
 
+  public long QuarterHourCount { get; set; }
+
   public IntervalEntity Interval { get; set; }
 
   public string MeterId { get; set; } = default!;

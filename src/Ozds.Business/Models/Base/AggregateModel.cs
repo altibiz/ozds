@@ -55,6 +55,9 @@ public abstract class AggregateModel : IAggregate
   [Required]
   public required long Count { get; set; } = 0;
 
+  [Required]
+  public required long QuarterHourCount { get; set; } = 0;
+
   public abstract TariffMeasure<decimal> Current_A { get; }
 
   public abstract TariffMeasure<decimal> Voltage_V { get; }
