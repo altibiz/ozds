@@ -139,6 +139,7 @@ erDiagram
         interval_entity interval PK 
         bigint measurement_location_id PK,FK 
         text meter_id PK,FK 
+        bigint quarter_hour_count 
         real reactive_energy_total_export_t0_max_varh 
         real reactive_energy_total_export_t0_min_varh 
         real reactive_energy_total_import_t0_max_varh 
@@ -913,6 +914,7 @@ erDiagram
         interval_entity interval PK 
         bigint measurement_location_id PK,FK 
         text meter_id PK,FK 
+        bigint quarter_hour_count 
         real reactive_energy_total_export_t0_max_varh 
         real reactive_energy_total_export_t0_min_varh 
         real reactive_energy_total_import_t0_max_varh 
