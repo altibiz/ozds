@@ -34,9 +34,11 @@ public class OzdsPushClient(
     var content = JsonContent.Create(request);
 
     var success = false;
+    var retries = 0;
 
-    while (!success)
+    while (!success && retries < 3)
     {
+      retries++;
       try
       {
         var response =

@@ -38,6 +38,11 @@ public class IotController(IPushPublisher publisher) : Controller
       return BadRequest("No request found");
     }
 
+    if (request.Measurements.Count is 0)
+    {
+      return BadRequest("No measurements found");
+    }
+
     publisher.PublishPush(new PushEventArgs(id, request));
 
     return Ok();
