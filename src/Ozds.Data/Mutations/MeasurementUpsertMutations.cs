@@ -1,6 +1,5 @@
 using System.Collections.Concurrent;
 using System.Data;
-using System.Data.Common;
 using System.Diagnostics;
 using Dapper;
 using Microsoft.EntityFrameworkCore;
@@ -360,7 +359,7 @@ public class MeasurementUpsertMutations(
         if (col.Contains("avg"))
         {
           deltaClauses.Add(
-            $"new.{col} - old.{col} {col}"
+            $"new.{col} - COALESCE(old.{col}, 0) {col}"
           );
           deltaUpsertClauses.Add(
             $"{col} = ({tableName}.{col} * {tableName}.{countColumn}"
@@ -371,7 +370,7 @@ public class MeasurementUpsertMutations(
         else if (col.Contains("min"))
         {
           deltaClauses.Add(
-            $"LEAST(new.{col}, old.{col}) {col}"
+            $"LEAST(new.{col}, COALESCE(old.{col}, new.{col})) {col}"
           );
           deltaUpsertClauses.Add(
             $"{col} = LEAST(delta.{col}, {tableName}.{col})"
@@ -384,22 +383,24 @@ public class MeasurementUpsertMutations(
               + "_timestamp";
             deltaClauses.Add(
                 $"CASE"
-                + $" WHEN new.{col} < old.{col}"
-                + $" THEN new.{timestampCol}" +
-                $" ELSE old.{timestampCol} END {timestampCol}"
+                + $" WHEN new.{col} < COALESCE(old.{col}, new.{col})"
+                + $" THEN new.{timestampCol}"
+                + $" ELSE COALESCE(old.{timestampCol}, new.{timestampCol})"
+                + $" END {timestampCol}"
             );
             deltaUpsertClauses.Add(
                 $"{timestampCol} = CASE"
                 + $" WHEN delta.{col} < {tableName}.{col}"
-                + $" THEN delta.{timestampCol}" +
-                $" ELSE {tableName}.{timestampCol} END"
+                + $" THEN delta.{timestampCol}"
+                + $" ELSE {tableName}.{timestampCol}"
+                + $" END"
             );
           }
         }
         else if (col.Contains("max"))
         {
           deltaClauses.Add(
-            $"GREATEST(new.{col}, old.{col}) {col}"
+            $"GREATEST(new.{col}, COALESCE(old.{col}, new.{col})) {col}"
           );
           deltaUpsertClauses.Add(
             $"{col} = GREATEST(delta.{col}, {tableName}.{col})"
@@ -412,9 +413,10 @@ public class MeasurementUpsertMutations(
               + "_timestamp";
             deltaClauses.Add(
                 $"CASE"
-                + $" WHEN new.{col} > old.{col}"
+                + $" WHEN new.{col} > COALESCE(old.{col}, new.{col})"
                 + $" THEN new.{timestampCol}"
-                + $" ELSE old.{timestampCol} END {timestampCol}"
+                + $" ELSE COALESCE(old.{timestampCol}, new.{timestampCol})"
+                + $" END {timestampCol}"
             );
             deltaUpsertClauses.Add(
                 $"{timestampCol} = CASE"
@@ -428,8 +430,8 @@ public class MeasurementUpsertMutations(
       else if (col.Contains("avg"))
       {
         setClauses.Add(
-            $"{col} = (({tableName}.{col} * {tableName}.{countColumn})"
-            + $" + (EXCLUDED.{col} * EXCLUDED.{countColumn}))"
+            $"{col} = ({tableName}.{col} * {tableName}.{countColumn}"
+            + $" + EXCLUDED.{col} * EXCLUDED.{countColumn})"
             + $" / ({tableName}.{countColumn} + EXCLUDED.{countColumn})");
       }
       else if (col.Contains("min") && !col.Contains("timestamp"))

@@ -31,7 +31,8 @@ namespace Ozds.Business.Reactors;
 
 public class MeasurementUpsertReactor(
   IServiceScopeFactory serviceScopeFactory,
-  IPushSubscriber subscriber
+  IPushSubscriber subscriber,
+  ILogger<MeasurementUpsertReactor> logger
 ) : BackgroundService, IReactor
 {
   private readonly Channel<PushEventArgs> channel =
@@ -54,7 +55,14 @@ public class MeasurementUpsertReactor(
     await foreach (var eventArgs in channel.Reader.ReadAllAsync(stoppingToken))
     {
       await using var scope = serviceScopeFactory.CreateAsyncScope();
-      await Handle(scope.ServiceProvider, eventArgs);
+      try
+      {
+        await Handle(scope.ServiceProvider, eventArgs);
+      }
+      catch (Exception ex)
+      {
+        logger.LogError(ex, "Measurement upsert failed");
+      }
     }
   }
 
