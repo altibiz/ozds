@@ -6,12 +6,14 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Npgsql;
 using Ozds.Data.Context;
 using Ozds.Data.Entities.Abstractions;
+using Ozds.Data.Entities.Enums;
 using Ozds.Data.Extensions;
 using Ozds.Data.Mutations.Abstractions;
 
 namespace Ozds.Data.Mutations;
 
 // TODO: enum by model configuration not clr type
+// TODO: determining clauses by column name is flaky - needs to be improved
 
 public class MeasurementUpsertMutations(
   IDbContextFactory<DataDbContext> factory
@@ -134,12 +136,10 @@ public class MeasurementUpsertMutations(
         .Select(p => p.GetColumnName())
         .ToList();
 
-      bool isAggregate = typeof(IAggregateEntity)
-        .IsAssignableFrom(group.Key);
-      bool isMeasurement = typeof(IMeasurementEntity)
-        .IsAssignableFrom(group.Key) && !isAggregate;
-
-      foreach (var (index, measurement) in group)
+      var groupMeasurements = group
+        .Where(x => x.Measurement is not IAggregateEntity)
+        .ToList();
+      foreach (var (index, measurement) in groupMeasurements)
       {
         var columns = string.Join(", ", columnNames);
         var values = string.Join(", ", properties
@@ -149,57 +149,7 @@ public class MeasurementUpsertMutations(
               : "")));
         var conflict = string.Join(", ", primaryKeyColumns);
 
-        string updateClause;
-        if (isMeasurement)
-        {
-          updateClause = "DO NOTHING";
-        }
-        else if (isAggregate)
-        {
-          var countColumn = context
-            .GetColumnName(measurement.GetType(),
-            nameof(IAggregateEntity.Count));
-
-          var setClauses = new List<string>();
-
-          setClauses.Add(
-            $"{countColumn} = {tableName}.{countColumn} "
-              + $"+ EXCLUDED.{countColumn}");
-
-          foreach (var prop in properties)
-          {
-            var col = prop.GetColumnName();
-            if (col == countColumn)
-            {
-              continue;
-            }
-
-            if (col.Contains("avg"))
-            {
-              setClauses.Add(
-                  $"{col} = (({tableName}.{col} * {tableName}.{countColumn})"
-                  + $" + (EXCLUDED.{col} * EXCLUDED.{countColumn}))"
-                  + $" / ({tableName}.{countColumn} + EXCLUDED.{countColumn})");
-            }
-            else if (col.Contains("min"))
-            {
-              setClauses.Add(
-                $"{col} = LEAST({tableName}.{col}, EXCLUDED.{col})");
-            }
-            else if (col.Contains("max"))
-            {
-              setClauses.Add(
-                $"{col} = GREATEST({tableName}.{col}, EXCLUDED.{col})");
-            }
-          }
-
-          updateClause = "DO UPDATE SET " + string.Join(", ", setClauses);
-        }
-        else
-        {
-          throw new InvalidOperationException(
-            $"Unknown measurement type {group.Key}.");
-        }
+        var updateClause = "DO NOTHING";
 
         var row = $@"
           INSERT INTO {tableName} ({columns})
@@ -208,6 +158,226 @@ public class MeasurementUpsertMutations(
         ";
 
         sql.AppendLine(row);
+      }
+
+      var groupAggregates = group
+        .Where(x => x.Measurement is IAggregateEntity)
+        .Zip(group
+          .Select(x => x.Measurement)
+          .OfType<IAggregateEntity>())
+        .Select((x) => new
+        {
+          x.First.Index,
+          Aggregate = x.Second
+        })
+        .OrderBy(measurement => measurement.Aggregate.Interval switch
+        {
+          IntervalEntity.QuarterHour => 0,
+          IntervalEntity.Day => 1,
+          IntervalEntity.Month => 2,
+          _ => throw new InvalidOperationException(
+            $"Unknown interval {measurement.Aggregate.Interval}.")
+        })
+        .Select(measurement => (measurement.Index, measurement.Aggregate))
+        .ToList();
+      foreach (var (index, aggregate) in groupAggregates)
+      {
+        var columns = string.Join(", ", columnNames);
+        var values = string.Join(", ", properties
+          .Select(property => $"@p{index}_{property.GetColumnName()}"
+            + (property.ClrType.IsEnum
+              ? $"::{property.ClrType.Name.ToSnakeCase()}"
+              : "")));
+        var conflict = string.Join(", ", primaryKeyColumns);
+
+        var updateClause = string.Empty;
+        var setClauses = new List<string>();
+        var deltaClauses = new List<string>();
+        var deltaUpsertClauses = new List<string>();
+
+        var countColumn = context
+          .GetColumnName(aggregate.GetType(),
+          nameof(IAggregateEntity.Count));
+        setClauses.Add(
+          $"{countColumn} = {tableName}.{countColumn} "
+            + $"+ EXCLUDED.{countColumn}");
+
+        foreach (var prop in properties)
+        {
+          var col = prop.GetColumnName();
+          if (col == countColumn)
+          {
+            continue;
+          }
+          if (col.Contains("derived")
+            && aggregate.Interval == IntervalEntity.QuarterHour)
+          {
+            var energyCol = col
+              .Replace("power", "energy")
+              .Replace("_w", "_wh");
+            var maxCol = energyCol
+              .Replace("min", "max")
+              .Replace("avg", "max");
+            var minCol = energyCol
+              .Replace("max", "min")
+              .Replace("avg", "min");
+            setClauses.Add(
+              $"{col} ="
+              + $" (GREATEST({tableName}.{maxCol}, EXCLUDED.{maxCol})"
+              + $" - LEAST({tableName}.{minCol}, EXCLUDED.{minCol}))"
+              + $" * 4");
+
+            if (col.Contains("avg"))
+            {
+              deltaClauses.Add(
+                $"SUM(new.{col} - old.{col}) {col}"
+              );
+              deltaUpsertClauses.Add(
+                $"{col} = ({tableName}.{col} * {tableName}.{countColumn} + delta.{col})"
+                + $" / ({tableName}.{countColumn} + delta.new_count)"
+              );
+            }
+            else if (col.Contains("min") && !col.Contains("timestamp"))
+            {
+              var unit = $"_{col.Split("_").Last()}";
+              var timestampCol = col.Replace(unit, "_timestamp");
+
+              deltaClauses.Add(
+                $"LEAST(new.{col}, old.{col}) {col}"
+              );
+              deltaUpsertClauses.Add(
+                $"{col} = LEAST(delta.{col}, {tableName}.{col})"
+              );
+
+              deltaClauses.Add(
+                  $"CASE " +
+                  $"WHEN new.{col} < old.{col} THEN new.{timestampCol} " +
+                  $"ELSE old.{timestampCol} END {timestampCol}"
+              );
+              deltaUpsertClauses.Add(
+                  $"{timestampCol} = CASE " +
+                  $"WHEN delta.{col} < {tableName}.{col} THEN delta.{timestampCol} " +
+                  $"ELSE {tableName}.{timestampCol} END"
+              );
+            }
+            else if (col.Contains("max") && !col.Contains("timestamp"))
+            {
+              var unit = $"_{col.Split("_").Last()}";
+              var timestampCol = col.Replace(unit, "_timestamp");
+
+              deltaClauses.Add(
+                $"GREATEST(new.{col}, old.{col}) {col}"
+              );
+              deltaUpsertClauses.Add(
+                $"{col} = GREATEST(delta.{col}, {tableName}.{col})"
+              );
+
+              deltaClauses.Add(
+                  $"CASE " +
+                  $"WHEN new.{col} > old.{col} THEN new.{timestampCol} " +
+                  $"ELSE old.{timestampCol} END {timestampCol}"
+              );
+              deltaUpsertClauses.Add(
+                  $"{timestampCol} = CASE " +
+                  $"WHEN delta.{col} > {tableName}.{col} THEN delta.{timestampCol} " +
+                  $"ELSE {tableName}.{timestampCol} END"
+              );
+            }
+          }
+          else if (col.Contains("avg"))
+          {
+            setClauses.Add(
+                $"{col} = (({tableName}.{col} * {tableName}.{countColumn})"
+                + $" + (EXCLUDED.{col} * EXCLUDED.{countColumn}))"
+                + $" / ({tableName}.{countColumn} + EXCLUDED.{countColumn})");
+          }
+          else if (col.Contains("min") && !col.Contains("timestamp"))
+          {
+            var unit = $"_{col.Split("_").Last()}";
+            var timestampCol = col.Replace(unit, "_timestamp");
+
+            setClauses.Add(
+              $"{col} = LEAST({tableName}.{col}, EXCLUDED.{col})");
+
+            setClauses.Add(
+                $"{timestampCol} = CASE " +
+                $"WHEN EXCLUDED.{col} < {tableName}.{col} THEN EXCLUDED.{timestampCol} " +
+                $"ELSE {tableName}.{timestampCol} END");
+          }
+          else if (col.Contains("max") && !col.Contains("timestamp"))
+          {
+            var unit = $"_{col.Split("_").Last()}";
+            var timestampCol = col.Replace(unit, "_timestamp");
+
+            setClauses.Add(
+              $"{col} = GREATEST({tableName}.{col}, EXCLUDED.{col})");
+
+            setClauses.Add(
+                $"{timestampCol} = CASE " +
+                $"WHEN EXCLUDED.{col} > {tableName}.{col} THEN EXCLUDED.{timestampCol} " +
+                $"ELSE {tableName}.{timestampCol} END");
+          }
+        }
+
+        updateClause =
+          "DO UPDATE SET "
+          + string.Join(", ", setClauses);
+
+        if (aggregate.Interval == IntervalEntity.QuarterHour)
+        {
+          var row = $@"
+            WITH old AS (
+              SELECT {tableName}.*
+              FROM {tableName}
+              WHERE {string.Join(
+                " AND ",
+                primaryKeyColumns.Select(c => $"{c} = @p{index}_{c}"))}
+            ), new AS (
+              INSERT INTO {tableName} ({columns})
+              VALUES ({values})
+              ON CONFLICT ({conflict}) {updateClause}
+              RETURNING *
+            ), delta AS (
+              SELECT
+                time_bucket(
+                  '1 day',
+                  new.timestamp AT TIME ZONE 'Europe/Zagreb') daily_timestamp,
+                time_bucket(
+                  '1 month',
+                  new.timestamp AT TIME ZONE 'Europe/Zagreb') monthly_timestamp,
+                COUNT(old.timestamp) FILTER (WHERE old.timestamp IS NULL) new_count,
+                {string.Join(", ", deltaClauses)}
+              FROM new
+              LEFT JOIN old ON
+                {string.Join(
+                  " AND ",
+                  primaryKeyColumns.Select(c => $"old.{c} = new.{c}"))}
+            ), daily AS (
+              UPDATE {tableName} SET
+                {string.Join(", ", deltaUpsertClauses)}
+              FROM delta
+              WHERE {tableName}.timestamp = delta.daily_timestamp
+            ), monthly AS (
+              UPDATE {tableName} SET
+                {string.Join(", ", deltaUpsertClauses)}
+              FROM delta
+              WHERE {tableName}.timestamp = delta.monthly_timestamp
+            )
+            SELECT * FROM daily
+            UNION ALL
+            SELECT * FROM monthly
+          ";
+          sql.AppendLine(row);
+        }
+        else
+        {
+          var row = $@"
+            INSERT INTO {tableName} ({columns})
+            VALUES ({values})
+            ON CONFLICT ({conflict}) {updateClause};
+          ";
+          sql.AppendLine(row);
+        }
       }
     }
 
