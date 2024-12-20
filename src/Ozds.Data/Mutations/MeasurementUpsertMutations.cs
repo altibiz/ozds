@@ -313,6 +313,8 @@ public class MeasurementUpsertMutations(
       if (col == quarterHourCountColumn
         && interval == IntervalEntity.QuarterHour)
       {
+        setClauses.Add($"{quarterHourCountColumn} = 1");
+
         deltaUpsertClauses.Add(
           $"{quarterHourCountColumn} = {tableName}.{quarterHourCountColumn}"
           + $" + delta.new_count"
@@ -503,10 +505,12 @@ public class MeasurementUpsertMutations(
           date_trunc(
             'day',
             new.{timestampColumn} AT TIME ZONE 'Europe/Zagreb')
+            AT TIME ZONE 'Europe/Zagreb'
             daily_timestamp,
           date_trunc(
             'month',
             new.{timestampColumn} AT TIME ZONE 'Europe/Zagreb')
+            AT TIME ZONE 'Europe/Zagreb'
             monthly_timestamp,
             {string.Join(", ", primaryKeyColumns.Select(c => $"new.{c.ColumnName}"))},
           CASE

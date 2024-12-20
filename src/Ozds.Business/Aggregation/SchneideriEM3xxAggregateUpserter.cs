@@ -1,6 +1,7 @@
 using Ozds.Business.Aggregation.Base;
 using Ozds.Business.Aggregation.Complex;
 using Ozds.Business.Models;
+using Ozds.Business.Models.Enums;
 
 namespace Ozds.Business.Aggregation;
 
@@ -79,91 +80,136 @@ public class SchneideriEM3xxxAggregateUpserter : AggregateUpserter<
         rhs.ActiveEnergyL1ImportT0_Wh,
         rhs.Count
       ),
-      DerivedActivePowerL1ImportT0_W = lhs.DerivedActivePowerL1ImportT0_W.Upsert(
-        lhs.QuarterHourCount,
-        rhs.DerivedActivePowerL1ImportT0_W,
-        rhs.QuarterHourCount
-      ),
+      DerivedActivePowerL1ImportT0_W = lhs.DerivedActivePowerL1ImportT0_W
+        .UpsertDerivedPowerFromEnergy(
+          lhs.QuarterHourCount,
+          rhs.DerivedActivePowerL1ImportT0_W,
+          rhs.QuarterHourCount,
+          lhs.ActiveEnergyL1ImportT0_Wh,
+          rhs.ActiveEnergyL1ImportT0_Wh,
+          lhs.Timestamp,
+          lhs.Interval
+        ),
       ActiveEnergyL2ImportT0_Wh = lhs.ActiveEnergyL2ImportT0_Wh.Upsert(
         lhs.Count,
         rhs.ActiveEnergyL2ImportT0_Wh,
         rhs.Count
       ),
-      DerivedActivePowerL2ImportT0_W = lhs.DerivedActivePowerL2ImportT0_W.Upsert(
-        lhs.QuarterHourCount,
-        rhs.DerivedActivePowerL2ImportT0_W,
-        rhs.QuarterHourCount
-      ),
+      DerivedActivePowerL2ImportT0_W = lhs.DerivedActivePowerL2ImportT0_W
+        .UpsertDerivedPowerFromEnergy(
+          lhs.QuarterHourCount,
+          rhs.DerivedActivePowerL2ImportT0_W,
+          rhs.QuarterHourCount,
+          lhs.ActiveEnergyL2ImportT0_Wh,
+          rhs.ActiveEnergyL2ImportT0_Wh,
+          lhs.Timestamp,
+          lhs.Interval
+        ),
       ActiveEnergyL3ImportT0_Wh = lhs.ActiveEnergyL3ImportT0_Wh.Upsert(
         lhs.Count,
         rhs.ActiveEnergyL3ImportT0_Wh,
         rhs.Count
       ),
-      DerivedActivePowerL3ImportT0_W = lhs.DerivedActivePowerL3ImportT0_W.Upsert(
-        lhs.QuarterHourCount,
-        rhs.DerivedActivePowerL3ImportT0_W,
-        rhs.QuarterHourCount
-      ),
+      DerivedActivePowerL3ImportT0_W = lhs.DerivedActivePowerL3ImportT0_W
+        .UpsertDerivedPowerFromEnergy(
+          lhs.QuarterHourCount,
+          rhs.DerivedActivePowerL3ImportT0_W,
+          rhs.QuarterHourCount,
+          lhs.ActiveEnergyL3ImportT0_Wh,
+          rhs.ActiveEnergyL3ImportT0_Wh,
+          lhs.Timestamp,
+          lhs.Interval
+        ),
       ActiveEnergyTotalImportT0_Wh = lhs.ActiveEnergyTotalImportT0_Wh.Upsert(
         lhs.Count,
         rhs.ActiveEnergyTotalImportT0_Wh,
         rhs.Count
       ),
-      DerivedActivePowerTotalImportT0_W = lhs.DerivedActivePowerTotalImportT0_W.Upsert(
-        lhs.QuarterHourCount,
-        rhs.DerivedActivePowerTotalImportT0_W,
-        rhs.QuarterHourCount
-      ),
+      DerivedActivePowerTotalImportT0_W = lhs.DerivedActivePowerTotalImportT0_W
+        .UpsertDerivedPowerFromEnergy(
+          lhs.QuarterHourCount,
+          rhs.DerivedActivePowerTotalImportT0_W,
+          rhs.QuarterHourCount,
+          lhs.ActiveEnergyTotalImportT0_Wh,
+          rhs.ActiveEnergyTotalImportT0_Wh,
+          lhs.Timestamp,
+          lhs.Interval
+        ),
       ActiveEnergyTotalExportT0_Wh = lhs.ActiveEnergyTotalExportT0_Wh.Upsert(
         lhs.Count,
         rhs.ActiveEnergyTotalExportT0_Wh,
         rhs.Count
       ),
-      DerivedActivePowerTotalExportT0_W = lhs.DerivedActivePowerTotalExportT0_W.Upsert(
-        lhs.QuarterHourCount,
-        rhs.DerivedActivePowerTotalExportT0_W,
-        rhs.QuarterHourCount
-      ),
+      DerivedActivePowerTotalExportT0_W = lhs.DerivedActivePowerTotalExportT0_W
+        .UpsertDerivedPowerFromEnergy(
+          lhs.QuarterHourCount,
+          rhs.DerivedActivePowerTotalExportT0_W,
+          rhs.QuarterHourCount,
+          lhs.ActiveEnergyTotalExportT0_Wh,
+          rhs.ActiveEnergyTotalExportT0_Wh,
+          lhs.Timestamp,
+          lhs.Interval
+        ),
       ReactiveEnergyTotalImportT0_VARh = lhs.ReactiveEnergyTotalImportT0_VARh.Upsert(
         lhs.Count,
         rhs.ReactiveEnergyTotalImportT0_VARh,
         rhs.Count
       ),
-      DerivedReactivePowerTotalImportT0_VAR = lhs.DerivedReactivePowerTotalImportT0_VAR.Upsert(
-        lhs.QuarterHourCount,
-        rhs.DerivedReactivePowerTotalImportT0_VAR,
-        rhs.QuarterHourCount
-      ),
+      DerivedReactivePowerTotalImportT0_VAR = lhs.DerivedReactivePowerTotalImportT0_VAR
+        .UpsertDerivedPowerFromEnergy(
+          lhs.QuarterHourCount,
+          rhs.DerivedReactivePowerTotalImportT0_VAR,
+          rhs.QuarterHourCount,
+          lhs.ReactiveEnergyTotalImportT0_VARh,
+          rhs.ReactiveEnergyTotalImportT0_VARh,
+          lhs.Timestamp,
+          lhs.Interval
+        ),
       ReactiveEnergyTotalExportT0_VARh = lhs.ReactiveEnergyTotalExportT0_VARh.Upsert(
         lhs.Count,
         rhs.ReactiveEnergyTotalExportT0_VARh,
         rhs.Count
       ),
-      DerivedReactivePowerTotalExportT0_VAR = lhs.DerivedReactivePowerTotalExportT0_VAR.Upsert(
-        lhs.QuarterHourCount,
-        rhs.DerivedReactivePowerTotalExportT0_VAR,
-        rhs.QuarterHourCount
-      ),
+      DerivedReactivePowerTotalExportT0_VAR = lhs.DerivedReactivePowerTotalExportT0_VAR
+        .UpsertDerivedPowerFromEnergy(
+          lhs.QuarterHourCount,
+          rhs.DerivedReactivePowerTotalExportT0_VAR,
+          rhs.QuarterHourCount,
+          lhs.ReactiveEnergyTotalExportT0_VARh,
+          rhs.ReactiveEnergyTotalExportT0_VARh,
+          lhs.Timestamp,
+          lhs.Interval
+        ),
       ActiveEnergyTotalImportT1_Wh = lhs.ActiveEnergyTotalImportT1_Wh.Upsert(
         lhs.Count,
         rhs.ActiveEnergyTotalImportT1_Wh,
         rhs.Count
       ),
-      DerivedActivePowerTotalImportT1_W = lhs.DerivedActivePowerTotalImportT1_W.Upsert(
-        lhs.QuarterHourCount,
-        rhs.DerivedActivePowerTotalImportT1_W,
-        rhs.QuarterHourCount
-      ),
+      DerivedActivePowerTotalImportT1_W = lhs.DerivedActivePowerTotalImportT1_W
+        .UpsertDerivedPowerFromEnergy(
+          lhs.QuarterHourCount,
+          rhs.DerivedActivePowerTotalImportT1_W,
+          rhs.QuarterHourCount,
+          lhs.ActiveEnergyTotalImportT1_Wh,
+          rhs.ActiveEnergyTotalImportT1_Wh,
+          lhs.Timestamp,
+          lhs.Interval
+        ),
       ActiveEnergyTotalImportT2_Wh = lhs.ActiveEnergyTotalImportT2_Wh.Upsert(
         lhs.Count,
         rhs.ActiveEnergyTotalImportT2_Wh,
         rhs.Count
       ),
-      DerivedActivePowerTotalImportT2_W = lhs.DerivedActivePowerTotalImportT2_W.Upsert(
-        lhs.QuarterHourCount,
-        rhs.DerivedActivePowerTotalImportT2_W,
-        rhs.QuarterHourCount
-      )
+      DerivedActivePowerTotalImportT2_W = lhs.DerivedActivePowerTotalImportT2_W
+        .UpsertDerivedPowerFromEnergy(
+          lhs.QuarterHourCount,
+          rhs.DerivedActivePowerTotalImportT2_W,
+          rhs.QuarterHourCount,
+          lhs.ActiveEnergyTotalImportT2_Wh,
+          rhs.ActiveEnergyTotalImportT2_Wh,
+          lhs.Timestamp,
+          lhs.Interval
+        ),
     };
   }
 }
