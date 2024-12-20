@@ -352,7 +352,7 @@ public abstract record class PhasicMeasure<T>
           .Select(measure => measure.AggregateAvg())
           .FirstOrDefault(Null),
       InstantaneousPhaseMeasure<T> instantaneous => instantaneous.Avg,
-      CumulativePhasicMeasure<T> cumulative => cumulative.Diff().AggregateAvg(),
+      CumulativePhasicMeasure<T> cumulative => cumulative.Diff(),
       _ => Null
     };
   }
@@ -372,7 +372,7 @@ public abstract record class PhasicMeasure<T>
         .Select(measure => measure.AggregateMin())
         .FirstOrDefault(Null),
       InstantaneousPhaseMeasure<T> instantaneous => instantaneous.Min,
-      CumulativePhasicMeasure<T> cumulative => cumulative.Diff().AggregateMin(),
+      CumulativePhasicMeasure<T> cumulative => cumulative.Min,
       _ => Null
     };
   }
@@ -392,7 +392,6 @@ public abstract record class PhasicMeasure<T>
           .Select(measure => measure.AggregateMinTimestamp())
           .FirstOrDefault(),
       InstantaneousPhaseMeasure<T> instantaneous => instantaneous.MinTimestamp,
-      CumulativePhasicMeasure<T> cumulative => cumulative.Diff().AggregateMinTimestamp(),
       _ => null
     };
   }
@@ -412,7 +411,7 @@ public abstract record class PhasicMeasure<T>
           .Select(measure => measure.AggregateMax())
           .FirstOrDefault(Null),
       InstantaneousPhaseMeasure<T> instantaneous => instantaneous.Max,
-      CumulativePhasicMeasure<T> cumulative => cumulative.Diff().AggregateMax(),
+      CumulativePhasicMeasure<T> cumulative => cumulative.Max,
       _ => Null
     };
   }
@@ -432,7 +431,6 @@ public abstract record class PhasicMeasure<T>
           .Select(measure => measure.AggregateMaxTimestamp())
           .FirstOrDefault(),
       InstantaneousPhaseMeasure<T> instantaneous => instantaneous.MaxTimestamp,
-      CumulativePhasicMeasure<T> cumulative => cumulative.Diff().AggregateMaxTimestamp(),
       _ => null
     };
   }
