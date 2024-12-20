@@ -136,9 +136,9 @@ public class MeasurementUpsertMutations(
       .OrderBy(x => x.Measurement is IAggregateEntity aggregate
         ? aggregate.Interval switch
         {
-          IntervalEntity.QuarterHour => 1,
+          IntervalEntity.Month => 1,
           IntervalEntity.Day => 2,
-          IntervalEntity.Month => 3,
+          IntervalEntity.QuarterHour => 3,
           _ => throw new InvalidOperationException(
             $"Unknown interval {aggregate.Interval}.")
         }
@@ -310,6 +310,14 @@ public class MeasurementUpsertMutations(
       {
         continue;
       }
+      if (col == quarterHourCountColumn
+        && interval == IntervalEntity.QuarterHour)
+      {
+        deltaUpsertClauses.Add(
+          $"{quarterHourCountColumn} = {tableName}.{quarterHourCountColumn}"
+          + $" + delta.new_count"
+        );
+      }
       if (col.Contains("derived")
         && !col.Contains("timestamp")
         && interval == IntervalEntity.QuarterHour)
@@ -347,13 +355,6 @@ public class MeasurementUpsertMutations(
           + $" - LEAST({tableName}.{minCol}, EXCLUDED.{minCol}))"
           + $" * 4");
 
-        if (col == quarterHourCountColumn)
-        {
-          deltaUpsertClauses.Add(
-            $"{quarterHourCountColumn} = {tableName}.{quarterHourCountColumn}"
-            + $" + delta.new_count"
-          );
-        }
         if (col.Contains("avg"))
         {
           deltaClauses.Add(
