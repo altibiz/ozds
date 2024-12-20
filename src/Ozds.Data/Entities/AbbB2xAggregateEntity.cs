@@ -21,6 +21,30 @@ public class AbbB2xAggregateEntity : AggregateEntity<AbbB2xMeterEntity>
   public InstantaneousAggregateMeasureEntity ReactivePowerL1NetT0_VAR { get; set; } = default!;
   public InstantaneousAggregateMeasureEntity ReactivePowerL2NetT0_VAR { get; set; } = default!;
   public InstantaneousAggregateMeasureEntity ReactivePowerL3NetT0_VAR { get; set; } = default!;
+  public CumulativeAggregateMeasureEntity ActiveEnergyL1ImportT0_Wh { get; set; } = default!;
+  public InstantaneousAggregateMeasureEntity DerivedActivePowerL1ImportT0_W { get; set; } = default!;
+  public CumulativeAggregateMeasureEntity ActiveEnergyL2ImportT0_Wh { get; set; } = default!;
+  public InstantaneousAggregateMeasureEntity DerivedActivePowerL2ImportT0_W { get; set; } = default!;
+  public CumulativeAggregateMeasureEntity ActiveEnergyL3ImportT0_Wh { get; set; } = default!;
+  public InstantaneousAggregateMeasureEntity DerivedActivePowerL3ImportT0_W { get; set; } = default!;
+  public CumulativeAggregateMeasureEntity ActiveEnergyL1ExportT0_Wh { get; set; } = default!;
+  public InstantaneousAggregateMeasureEntity DerivedActivePowerL1ExportT0_W { get; set; } = default!;
+  public CumulativeAggregateMeasureEntity ActiveEnergyL2ExportT0_Wh { get; set; } = default!;
+  public InstantaneousAggregateMeasureEntity DerivedActivePowerL2ExportT0_W { get; set; } = default!;
+  public CumulativeAggregateMeasureEntity ActiveEnergyL3ExportT0_Wh { get; set; } = default!;
+  public InstantaneousAggregateMeasureEntity DerivedActivePowerL3ExportT0_W { get; set; } = default!;
+  public CumulativeAggregateMeasureEntity ReactiveEnergyL1ImportT0_VARh { get; set; } = default!;
+  public InstantaneousAggregateMeasureEntity DerivedReactivePowerL1ImportT0_VAR { get; set; } = default!;
+  public CumulativeAggregateMeasureEntity ReactiveEnergyL2ImportT0_VARh { get; set; } = default!;
+  public InstantaneousAggregateMeasureEntity DerivedReactivePowerL2ImportT0_VAR { get; set; } = default!;
+  public CumulativeAggregateMeasureEntity ReactiveEnergyL3ImportT0_VARh { get; set; } = default!;
+  public InstantaneousAggregateMeasureEntity DerivedReactivePowerL3ImportT0_VAR { get; set; } = default!;
+  public CumulativeAggregateMeasureEntity ReactiveEnergyL1ExportT0_VARh { get; set; } = default!;
+  public InstantaneousAggregateMeasureEntity DerivedReactivePowerL1ExportT0_VAR { get; set; } = default!;
+  public CumulativeAggregateMeasureEntity ReactiveEnergyL2ExportT0_VARh { get; set; } = default!;
+  public InstantaneousAggregateMeasureEntity DerivedReactivePowerL2ExportT0_VAR { get; set; } = default!;
+  public CumulativeAggregateMeasureEntity ReactiveEnergyL3ExportT0_VARh { get; set; } = default!;
+  public InstantaneousAggregateMeasureEntity DerivedReactivePowerL3ExportT0_VAR { get; set; } = default!;
   public CumulativeAggregateMeasureEntity ActiveEnergyTotalImportT0_Wh { get; set; } = default!;
   public InstantaneousAggregateMeasureEntity DerivedActivePowerTotalImportT0_W { get; set; } = default!;
   public CumulativeAggregateMeasureEntity ActiveEnergyTotalExportT0_Wh { get; set; } = default!;
@@ -92,6 +116,102 @@ public class
     builder
       .ComplexProperty(nameof(AbbB2xAggregateEntity.ReactivePowerL3NetT0_VAR))
       .InstantaneousAggregateMeasure("reactive_power_l3_net_t0", "var");
+
+    builder
+      .ComplexProperty(nameof(AbbB2xAggregateEntity.ActiveEnergyL1ImportT0_Wh))
+      .CumulativeAggregateMeasure("active_energy_l1_import_t0", "wh");
+
+    builder
+      .ComplexProperty(nameof(AbbB2xAggregateEntity.DerivedActivePowerL1ImportT0_W))
+      .InstantaneousAggregateMeasure("derived_active_power_l1_import_t0", "w");
+
+    builder
+      .ComplexProperty(nameof(AbbB2xAggregateEntity.ActiveEnergyL2ImportT0_Wh))
+      .CumulativeAggregateMeasure("active_energy_l2_import_t0", "wh");
+
+    builder
+      .ComplexProperty(nameof(AbbB2xAggregateEntity.DerivedActivePowerL2ImportT0_W))
+      .InstantaneousAggregateMeasure("derived_active_power_l2_import_t0", "w");
+
+    builder
+      .ComplexProperty(nameof(AbbB2xAggregateEntity.ActiveEnergyL3ImportT0_Wh))
+      .CumulativeAggregateMeasure("active_energy_l3_import_t0", "wh");
+
+    builder
+      .ComplexProperty(nameof(AbbB2xAggregateEntity.DerivedActivePowerL3ImportT0_W))
+      .InstantaneousAggregateMeasure("derived_active_power_l3_import_t0", "w");
+
+    builder
+      .ComplexProperty(nameof(AbbB2xAggregateEntity.ActiveEnergyL1ExportT0_Wh))
+      .CumulativeAggregateMeasure("active_energy_l1_export_t0", "wh");
+
+    builder
+      .ComplexProperty(nameof(AbbB2xAggregateEntity.DerivedActivePowerL1ExportT0_W))
+      .InstantaneousAggregateMeasure("derived_active_power_l1_export_t0", "w");
+
+    builder
+      .ComplexProperty(nameof(AbbB2xAggregateEntity.ActiveEnergyL2ExportT0_Wh))
+      .CumulativeAggregateMeasure("active_energy_l2_export_t0", "wh");
+
+    builder
+      .ComplexProperty(nameof(AbbB2xAggregateEntity.DerivedActivePowerL2ExportT0_W))
+      .InstantaneousAggregateMeasure("derived_active_power_l2_export_t0", "w");
+
+    builder
+      .ComplexProperty(nameof(AbbB2xAggregateEntity.ActiveEnergyL3ExportT0_Wh))
+      .CumulativeAggregateMeasure("active_energy_l3_export_t0", "wh");
+
+    builder
+      .ComplexProperty(nameof(AbbB2xAggregateEntity.DerivedActivePowerL3ExportT0_W))
+      .InstantaneousAggregateMeasure("derived_active_power_l3_export_t0", "w");
+
+    builder
+      .ComplexProperty(nameof(AbbB2xAggregateEntity.ReactiveEnergyL1ImportT0_VARh))
+      .CumulativeAggregateMeasure("reactive_energy_l1_import_t0", "varh");
+
+    builder
+      .ComplexProperty(nameof(AbbB2xAggregateEntity.DerivedReactivePowerL1ImportT0_VAR))
+      .InstantaneousAggregateMeasure("derived_reactive_power_l1_import_t0", "var");
+
+    builder
+      .ComplexProperty(nameof(AbbB2xAggregateEntity.ReactiveEnergyL2ImportT0_VARh))
+      .CumulativeAggregateMeasure("reactive_energy_l2_import_t0", "varh");
+
+    builder
+      .ComplexProperty(nameof(AbbB2xAggregateEntity.DerivedReactivePowerL2ImportT0_VAR))
+      .InstantaneousAggregateMeasure("derived_reactive_power_l2_import_t0", "var");
+
+    builder
+      .ComplexProperty(nameof(AbbB2xAggregateEntity.ReactiveEnergyL3ImportT0_VARh))
+      .CumulativeAggregateMeasure("reactive_energy_l3_import_t0", "varh");
+
+    builder
+      .ComplexProperty(nameof(AbbB2xAggregateEntity.DerivedReactivePowerL3ImportT0_VAR))
+      .InstantaneousAggregateMeasure("derived_reactive_power_l3_import_t0", "var");
+
+    builder
+      .ComplexProperty(nameof(AbbB2xAggregateEntity.ReactiveEnergyL1ExportT0_VARh))
+      .CumulativeAggregateMeasure("reactive_energy_l1_export_t0", "varh");
+
+    builder
+      .ComplexProperty(nameof(AbbB2xAggregateEntity.DerivedReactivePowerL1ExportT0_VAR))
+      .InstantaneousAggregateMeasure("derived_reactive_power_l1_export_t0", "var");
+
+    builder
+      .ComplexProperty(nameof(AbbB2xAggregateEntity.ReactiveEnergyL2ExportT0_VARh))
+      .CumulativeAggregateMeasure("reactive_energy_l2_export_t0", "varh");
+
+    builder
+      .ComplexProperty(nameof(AbbB2xAggregateEntity.DerivedReactivePowerL2ExportT0_VAR))
+      .InstantaneousAggregateMeasure("derived_reactive_power_l2_export_t0", "var");
+
+    builder
+      .ComplexProperty(nameof(AbbB2xAggregateEntity.ReactiveEnergyL3ExportT0_VARh))
+      .CumulativeAggregateMeasure("reactive_energy_l3_export_t0", "varh");
+
+    builder
+      .ComplexProperty(nameof(AbbB2xAggregateEntity.DerivedReactivePowerL3ExportT0_VAR))
+      .InstantaneousAggregateMeasure("derived_reactive_power_l3_export_t0", "var");
 
     builder
       .ComplexProperty(nameof(AbbB2xAggregateEntity.ActiveEnergyTotalImportT0_Wh))

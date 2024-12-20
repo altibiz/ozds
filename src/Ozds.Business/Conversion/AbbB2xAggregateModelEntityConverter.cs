@@ -46,6 +46,54 @@ public static class AbbB2xAggregateModelEntityConverterExtensions
       ReactivePowerL1NetT0_VAR = model.ReactivePowerL1NetT0_VAR.ToEntity(),
       ReactivePowerL2NetT0_VAR = model.ReactivePowerL2NetT0_VAR.ToEntity(),
       ReactivePowerL3NetT0_VAR = model.ReactivePowerL3NetT0_VAR.ToEntity(),
+      ActiveEnergyL1ImportT0_Wh =
+        model.ActiveEnergyL1ImportT0_Wh.ToEntity(),
+      DerivedActivePowerL1ImportT0_W =
+        model.DerivedActivePowerL1ImportT0_W.ToEntity(),
+      ActiveEnergyL2ImportT0_Wh =
+        model.ActiveEnergyL2ImportT0_Wh.ToEntity(),
+      DerivedActivePowerL2ImportT0_W =
+        model.DerivedActivePowerL2ImportT0_W.ToEntity(),
+      ActiveEnergyL3ImportT0_Wh =
+        model.ActiveEnergyL3ImportT0_Wh.ToEntity(),
+      DerivedActivePowerL3ImportT0_W =
+        model.DerivedActivePowerL3ImportT0_W.ToEntity(),
+      ActiveEnergyL1ExportT0_Wh =
+        model.ActiveEnergyL1ExportT0_Wh.ToEntity(),
+      DerivedActivePowerL1ExportT0_W =
+        model.DerivedActivePowerL1ExportT0_W.ToEntity(),
+      ActiveEnergyL2ExportT0_Wh =
+        model.ActiveEnergyL2ExportT0_Wh.ToEntity(),
+      DerivedActivePowerL2ExportT0_W =
+        model.DerivedActivePowerL2ExportT0_W.ToEntity(),
+      ActiveEnergyL3ExportT0_Wh =
+        model.ActiveEnergyL3ExportT0_Wh.ToEntity(),
+      DerivedActivePowerL3ExportT0_W =
+        model.DerivedActivePowerL3ExportT0_W.ToEntity(),
+      ReactiveEnergyL1ImportT0_VARh =
+        model.ReactiveEnergyL1ImportT0_VARh.ToEntity(),
+      DerivedReactivePowerL1ImportT0_VAR =
+        model.DerivedReactivePowerL1ImportT0_VAR.ToEntity(),
+      ReactiveEnergyL2ImportT0_VARh =
+        model.ReactiveEnergyL2ImportT0_VARh.ToEntity(),
+      DerivedReactivePowerL2ImportT0_VAR =
+        model.DerivedReactivePowerL2ImportT0_VAR.ToEntity(),
+      ReactiveEnergyL3ImportT0_VARh =
+        model.ReactiveEnergyL3ImportT0_VARh.ToEntity(),
+      DerivedReactivePowerL3ImportT0_VAR =
+        model.DerivedReactivePowerL3ImportT0_VAR.ToEntity(),
+      ReactiveEnergyL1ExportT0_VARh =
+        model.ReactiveEnergyL1ExportT0_VARh.ToEntity(),
+      DerivedReactivePowerL1ExportT0_VAR =
+        model.DerivedReactivePowerL1ExportT0_VAR.ToEntity(),
+      ReactiveEnergyL2ExportT0_VARh =
+        model.ReactiveEnergyL2ExportT0_VARh.ToEntity(),
+      DerivedReactivePowerL2ExportT0_VAR =
+        model.DerivedReactivePowerL2ExportT0_VAR.ToEntity(),
+      ReactiveEnergyL3ExportT0_VARh =
+        model.ReactiveEnergyL3ExportT0_VARh.ToEntity(),
+      DerivedReactivePowerL3ExportT0_VAR =
+        model.DerivedReactivePowerL3ExportT0_VAR.ToEntity(),
       ActiveEnergyTotalImportT0_Wh =
         model.ActiveEnergyTotalImportT0_Wh.ToEntity(),
       DerivedActivePowerTotalImportT0_W =
@@ -95,6 +143,54 @@ public static class AbbB2xAggregateModelEntityConverterExtensions
       ReactivePowerL1NetT0_VAR = entity.ReactivePowerL1NetT0_VAR.ToModel(),
       ReactivePowerL2NetT0_VAR = entity.ReactivePowerL2NetT0_VAR.ToModel(),
       ReactivePowerL3NetT0_VAR = entity.ReactivePowerL3NetT0_VAR.ToModel(),
+      ActiveEnergyL1ImportT0_Wh =
+        entity.ActiveEnergyL1ImportT0_Wh.ToModel(),
+      DerivedActivePowerL1ImportT0_W =
+        entity.DerivedActivePowerL1ImportT0_W.ToModel(),
+      ActiveEnergyL2ImportT0_Wh =
+        entity.ActiveEnergyL2ImportT0_Wh.ToModel(),
+      DerivedActivePowerL2ImportT0_W =
+        entity.DerivedActivePowerL2ImportT0_W.ToModel(),
+      ActiveEnergyL3ImportT0_Wh =
+        entity.ActiveEnergyL3ImportT0_Wh.ToModel(),
+      DerivedActivePowerL3ImportT0_W =
+        entity.DerivedActivePowerL3ImportT0_W.ToModel(),
+      ActiveEnergyL1ExportT0_Wh =
+        entity.ActiveEnergyL1ExportT0_Wh.ToModel(),
+      DerivedActivePowerL1ExportT0_W =
+        entity.DerivedActivePowerL1ExportT0_W.ToModel(),
+      ActiveEnergyL2ExportT0_Wh =
+        entity.ActiveEnergyL2ExportT0_Wh.ToModel(),
+      DerivedActivePowerL2ExportT0_W =
+        entity.DerivedActivePowerL2ExportT0_W.ToModel(),
+      ActiveEnergyL3ExportT0_Wh =
+        entity.ActiveEnergyL3ExportT0_Wh.ToModel(),
+      DerivedActivePowerL3ExportT0_W =
+        entity.DerivedActivePowerL3ExportT0_W.ToModel(),
+      ReactiveEnergyL1ImportT0_VARh =
+        entity.ReactiveEnergyL1ImportT0_VARh.ToModel(),
+      DerivedReactivePowerL1ImportT0_VAR =
+        entity.DerivedReactivePowerL1ImportT0_VAR.ToModel(),
+      ReactiveEnergyL2ImportT0_VARh =
+        entity.ReactiveEnergyL2ImportT0_VARh.ToModel(),
+      DerivedReactivePowerL2ImportT0_VAR =
+        entity.DerivedReactivePowerL2ImportT0_VAR.ToModel(),
+      ReactiveEnergyL3ImportT0_VARh =
+        entity.ReactiveEnergyL3ImportT0_VARh.ToModel(),
+      DerivedReactivePowerL3ImportT0_VAR =
+        entity.DerivedReactivePowerL3ImportT0_VAR.ToModel(),
+      ReactiveEnergyL1ExportT0_VARh =
+        entity.ReactiveEnergyL1ExportT0_VARh.ToModel(),
+      DerivedReactivePowerL1ExportT0_VAR =
+        entity.DerivedReactivePowerL1ExportT0_VAR.ToModel(),
+      ReactiveEnergyL2ExportT0_VARh =
+        entity.ReactiveEnergyL2ExportT0_VARh.ToModel(),
+      DerivedReactivePowerL2ExportT0_VAR =
+        entity.DerivedReactivePowerL2ExportT0_VAR.ToModel(),
+      ReactiveEnergyL3ExportT0_VARh =
+        entity.ReactiveEnergyL3ExportT0_VARh.ToModel(),
+      DerivedReactivePowerL3ExportT0_VAR =
+        entity.DerivedReactivePowerL3ExportT0_VAR.ToModel(),
       ActiveEnergyTotalImportT0_Wh =
         entity.ActiveEnergyTotalImportT0_Wh.ToModel(),
       DerivedActivePowerTotalImportT0_W =

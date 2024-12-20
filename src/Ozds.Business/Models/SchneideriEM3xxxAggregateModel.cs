@@ -41,6 +41,24 @@ public class SchneideriEM3xxxAggregateModel : AggregateModel
   public required InstantaneousAggregateMeasureModel ApparentPowerTotalNetT0_VA { get; set; } = default!;
 
   [Required]
+  public required CumulativeAggregateMeasureModel ActiveEnergyL1ImportT0_Wh { get; set; } = default!;
+
+  [Required]
+  public required InstantaneousAggregateMeasureModel DerivedActivePowerL1ImportT0_W { get; set; } = default!;
+
+  [Required]
+  public required CumulativeAggregateMeasureModel ActiveEnergyL2ImportT0_Wh { get; set; } = default!;
+
+  [Required]
+  public required InstantaneousAggregateMeasureModel DerivedActivePowerL2ImportT0_W { get; set; } = default!;
+
+  [Required]
+  public required CumulativeAggregateMeasureModel ActiveEnergyL3ImportT0_Wh { get; set; } = default!;
+
+  [Required]
+  public required InstantaneousAggregateMeasureModel DerivedActivePowerL3ImportT0_W { get; set; } = default!;
+
+  [Required]
   public required CumulativeAggregateMeasureModel ActiveEnergyTotalImportT0_Wh { get; set; } = default!;
 
   [Required]

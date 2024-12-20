@@ -44,6 +44,78 @@ public class AbbB2xAggregateModel : AggregateModel
   public required InstantaneousAggregateMeasureModel ReactivePowerL3NetT0_VAR { get; set; } = default!;
 
   [Required]
+  public required CumulativeAggregateMeasureModel ActiveEnergyL1ImportT0_Wh { get; set; } = default!;
+
+  [Required]
+  public required InstantaneousAggregateMeasureModel DerivedActivePowerL1ImportT0_W { get; set; } = default!;
+
+  [Required]
+  public required CumulativeAggregateMeasureModel ActiveEnergyL2ImportT0_Wh { get; set; } = default!;
+
+  [Required]
+  public required InstantaneousAggregateMeasureModel DerivedActivePowerL2ImportT0_W { get; set; } = default!;
+
+  [Required]
+  public required CumulativeAggregateMeasureModel ActiveEnergyL3ImportT0_Wh { get; set; } = default!;
+
+  [Required]
+  public required InstantaneousAggregateMeasureModel DerivedActivePowerL3ImportT0_W { get; set; } = default!;
+
+  [Required]
+  public required CumulativeAggregateMeasureModel ActiveEnergyL1ExportT0_Wh { get; set; } = default!;
+
+  [Required]
+  public required InstantaneousAggregateMeasureModel DerivedActivePowerL1ExportT0_W { get; set; } = default!;
+
+  [Required]
+  public required CumulativeAggregateMeasureModel ActiveEnergyL2ExportT0_Wh { get; set; } = default!;
+
+  [Required]
+  public required InstantaneousAggregateMeasureModel DerivedActivePowerL2ExportT0_W { get; set; } = default!;
+
+  [Required]
+  public required CumulativeAggregateMeasureModel ActiveEnergyL3ExportT0_Wh { get; set; } = default!;
+
+  [Required]
+  public required InstantaneousAggregateMeasureModel DerivedActivePowerL3ExportT0_W { get; set; } = default!;
+
+  [Required]
+  public required CumulativeAggregateMeasureModel ReactiveEnergyL1ImportT0_VARh { get; set; } = default!;
+
+  [Required]
+  public required InstantaneousAggregateMeasureModel DerivedReactivePowerL1ImportT0_VAR { get; set; } = default!;
+
+  [Required]
+  public required CumulativeAggregateMeasureModel ReactiveEnergyL2ImportT0_VARh { get; set; } = default!;
+
+  [Required]
+  public required InstantaneousAggregateMeasureModel DerivedReactivePowerL2ImportT0_VAR { get; set; } = default!;
+
+  [Required]
+  public required CumulativeAggregateMeasureModel ReactiveEnergyL3ImportT0_VARh { get; set; } = default!;
+
+  [Required]
+  public required InstantaneousAggregateMeasureModel DerivedReactivePowerL3ImportT0_VAR { get; set; } = default!;
+
+  [Required]
+  public required CumulativeAggregateMeasureModel ReactiveEnergyL1ExportT0_VARh { get; set; } = default!;
+
+  [Required]
+  public required InstantaneousAggregateMeasureModel DerivedReactivePowerL1ExportT0_VAR { get; set; } = default!;
+
+  [Required]
+  public required CumulativeAggregateMeasureModel ReactiveEnergyL2ExportT0_VARh { get; set; } = default!;
+
+  [Required]
+  public required InstantaneousAggregateMeasureModel DerivedReactivePowerL2ExportT0_VAR { get; set; } = default!;
+
+  [Required]
+  public required CumulativeAggregateMeasureModel ReactiveEnergyL3ExportT0_VARh { get; set; } = default!;
+
+  [Required]
+  public required InstantaneousAggregateMeasureModel DerivedReactivePowerL3ExportT0_VAR { get; set; } = default!;
+
+  [Required]
   public required CumulativeAggregateMeasureModel ActiveEnergyTotalImportT0_Wh { get; set; } = default!;
 
   [Required]

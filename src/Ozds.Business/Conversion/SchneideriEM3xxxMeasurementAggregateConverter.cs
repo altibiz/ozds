@@ -119,6 +119,45 @@ public static class SchneideriEM3xxxMeasurementAggregateConverterExtensions
         MinTimestamp = measurement.Timestamp,
         MaxTimestamp = measurement.Timestamp
       },
+      ActiveEnergyL1ImportT0_Wh = new CumulativeAggregateMeasureModel
+      {
+        Min = measurement.ActiveEnergyL1ImportT0_Wh,
+        Max = measurement.ActiveEnergyL1ImportT0_Wh
+      },
+      DerivedActivePowerL1ImportT0_W = new InstantaneousAggregateMeasureModel
+      {
+        Avg = measurement.ActiveEnergyL1ImportT0_Wh,
+        Min = 0M,
+        Max = 0M,
+        MinTimestamp = measurement.Timestamp,
+        MaxTimestamp = measurement.Timestamp
+      },
+      ActiveEnergyL2ImportT0_Wh = new CumulativeAggregateMeasureModel
+      {
+        Min = measurement.ActiveEnergyL2ImportT0_Wh,
+        Max = measurement.ActiveEnergyL2ImportT0_Wh
+      },
+      DerivedActivePowerL2ImportT0_W = new InstantaneousAggregateMeasureModel
+      {
+        Avg = measurement.ActiveEnergyL2ImportT0_Wh,
+        Min = 0M,
+        Max = 0M,
+        MinTimestamp = measurement.Timestamp,
+        MaxTimestamp = measurement.Timestamp
+      },
+      ActiveEnergyL3ImportT0_Wh = new CumulativeAggregateMeasureModel
+      {
+        Min = measurement.ActiveEnergyL3ImportT0_Wh,
+        Max = measurement.ActiveEnergyL3ImportT0_Wh
+      },
+      DerivedActivePowerL3ImportT0_W = new InstantaneousAggregateMeasureModel
+      {
+        Avg = measurement.ActiveEnergyL3ImportT0_Wh,
+        Min = 0M,
+        Max = 0M,
+        MinTimestamp = measurement.Timestamp,
+        MaxTimestamp = measurement.Timestamp
+      },
       ActiveEnergyTotalImportT0_Wh = new CumulativeAggregateMeasureModel
       {
         Min = measurement.ActiveEnergyTotalImportT0_Wh,
@@ -126,7 +165,7 @@ public static class SchneideriEM3xxxMeasurementAggregateConverterExtensions
       },
       DerivedActivePowerTotalImportT0_W = new InstantaneousAggregateMeasureModel
       {
-        Avg = 0M,
+        Avg = measurement.ActiveEnergyTotalImportT0_Wh,
         Min = 0M,
         Max = 0M,
         MinTimestamp = measurement.Timestamp,

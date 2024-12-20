@@ -21,6 +21,12 @@ public class
   public InstantaneousAggregateMeasureEntity ActivePowerL3NetT0_W { get; set; } = default!;
   public InstantaneousAggregateMeasureEntity ReactivePowerTotalNetT0_VAR { get; set; } = default!;
   public InstantaneousAggregateMeasureEntity ApparentPowerTotalNetT0_VA { get; set; } = default!;
+  public CumulativeAggregateMeasureEntity ActiveEnergyL1ImportT0_Wh { get; set; } = default!;
+  public InstantaneousAggregateMeasureEntity DerivedActivePowerL1ImportT0_W { get; set; } = default!;
+  public CumulativeAggregateMeasureEntity ActiveEnergyL2ImportT0_Wh { get; set; } = default!;
+  public InstantaneousAggregateMeasureEntity DerivedActivePowerL2ImportT0_W { get; set; } = default!;
+  public CumulativeAggregateMeasureEntity ActiveEnergyL3ImportT0_Wh { get; set; } = default!;
+  public InstantaneousAggregateMeasureEntity DerivedActivePowerL3ImportT0_W { get; set; } = default!;
   public CumulativeAggregateMeasureEntity ActiveEnergyTotalImportT0_Wh { get; set; } = default!;
   public InstantaneousAggregateMeasureEntity DerivedActivePowerTotalImportT0_W { get; set; } = default!;
   public CumulativeAggregateMeasureEntity ActiveEnergyTotalExportT0_Wh { get; set; } = default!;
@@ -88,6 +94,30 @@ public class
     builder
       .ComplexProperty(nameof(SchneideriEM3xxxAggregateEntity.ApparentPowerTotalNetT0_VA))
       .InstantaneousAggregateMeasure("apparent_power_total_net_t0", "va");
+
+    builder
+      .ComplexProperty(nameof(SchneideriEM3xxxAggregateEntity.ActiveEnergyL1ImportT0_Wh))
+      .CumulativeAggregateMeasure("active_energy_l1_import_t0", "wh");
+
+    builder
+      .ComplexProperty(nameof(SchneideriEM3xxxAggregateEntity.DerivedActivePowerL1ImportT0_W))
+      .InstantaneousAggregateMeasure("derived_active_power_l1_import_t0", "w");
+
+    builder
+      .ComplexProperty(nameof(SchneideriEM3xxxAggregateEntity.ActiveEnergyL2ImportT0_Wh))
+      .CumulativeAggregateMeasure("active_energy_l2_import_t0", "wh");
+
+    builder
+      .ComplexProperty(nameof(SchneideriEM3xxxAggregateEntity.DerivedActivePowerL2ImportT0_W))
+      .InstantaneousAggregateMeasure("derived_active_power_l2_import_t0", "w");
+
+    builder
+      .ComplexProperty(nameof(SchneideriEM3xxxAggregateEntity.ActiveEnergyL3ImportT0_Wh))
+      .CumulativeAggregateMeasure("active_energy_l3_import_t0", "wh");
+
+    builder
+      .ComplexProperty(nameof(SchneideriEM3xxxAggregateEntity.DerivedActivePowerL3ImportT0_W))
+      .InstantaneousAggregateMeasure("derived_active_power_l3_import_t0", "w");
 
     builder
       .ComplexProperty(nameof(SchneideriEM3xxxAggregateEntity.ActiveEnergyTotalImportT0_Wh))

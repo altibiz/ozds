@@ -126,6 +126,162 @@ public static class AbbB2xMeasurementAggregateConverterExtensions
         MinTimestamp = measurement.Timestamp,
         MaxTimestamp = measurement.Timestamp
       },
+      ActiveEnergyL1ImportT0_Wh = new CumulativeAggregateMeasureModel
+      {
+        Min = measurement.ActiveEnergyL1ImportT0_Wh,
+        Max = measurement.ActiveEnergyL1ImportT0_Wh
+      },
+      DerivedActivePowerL1ImportT0_W = new InstantaneousAggregateMeasureModel
+      {
+        Avg = 0M,
+        Min = 0M,
+        Max = 0M,
+        MinTimestamp = measurement.Timestamp,
+        MaxTimestamp = measurement.Timestamp
+      },
+      ActiveEnergyL2ImportT0_Wh = new CumulativeAggregateMeasureModel
+      {
+        Min = measurement.ActiveEnergyL2ImportT0_Wh,
+        Max = measurement.ActiveEnergyL2ImportT0_Wh
+      },
+      DerivedActivePowerL2ImportT0_W = new InstantaneousAggregateMeasureModel
+      {
+        Avg = 0M,
+        Min = 0M,
+        Max = 0M,
+        MinTimestamp = measurement.Timestamp,
+        MaxTimestamp = measurement.Timestamp
+      },
+      ActiveEnergyL3ImportT0_Wh = new CumulativeAggregateMeasureModel
+      {
+        Min = measurement.ActiveEnergyL3ImportT0_Wh,
+        Max = measurement.ActiveEnergyL3ImportT0_Wh
+      },
+      DerivedActivePowerL3ImportT0_W = new InstantaneousAggregateMeasureModel
+      {
+        Avg = 0M,
+        Min = 0M,
+        Max = 0M,
+        MinTimestamp = measurement.Timestamp,
+        MaxTimestamp = measurement.Timestamp
+      },
+      ActiveEnergyL1ExportT0_Wh = new CumulativeAggregateMeasureModel
+      {
+        Min = measurement.ActiveEnergyL1ExportT0_Wh,
+        Max = measurement.ActiveEnergyL1ExportT0_Wh
+      },
+      DerivedActivePowerL1ExportT0_W = new InstantaneousAggregateMeasureModel
+      {
+        Avg = 0M,
+        Min = 0M,
+        Max = 0M,
+        MinTimestamp = measurement.Timestamp,
+        MaxTimestamp = measurement.Timestamp
+      },
+      ActiveEnergyL2ExportT0_Wh = new CumulativeAggregateMeasureModel
+      {
+        Min = measurement.ActiveEnergyL2ExportT0_Wh,
+        Max = measurement.ActiveEnergyL2ExportT0_Wh
+      },
+      DerivedActivePowerL2ExportT0_W = new InstantaneousAggregateMeasureModel
+      {
+        Avg = 0M,
+        Min = 0M,
+        Max = 0M,
+        MinTimestamp = measurement.Timestamp,
+        MaxTimestamp = measurement.Timestamp
+      },
+      ActiveEnergyL3ExportT0_Wh = new CumulativeAggregateMeasureModel
+      {
+        Min = measurement.ActiveEnergyL3ExportT0_Wh,
+        Max = measurement.ActiveEnergyL3ExportT0_Wh
+      },
+      DerivedActivePowerL3ExportT0_W = new InstantaneousAggregateMeasureModel
+      {
+        Avg = 0M,
+        Min = 0M,
+        Max = 0M,
+        MinTimestamp = measurement.Timestamp,
+        MaxTimestamp = measurement.Timestamp
+      },
+      ReactiveEnergyL1ImportT0_VARh = new CumulativeAggregateMeasureModel
+      {
+        Min = measurement.ReactiveEnergyL1ImportT0_VARh,
+        Max = measurement.ReactiveEnergyL1ImportT0_VARh
+      },
+      DerivedReactivePowerL1ImportT0_VAR = new InstantaneousAggregateMeasureModel
+      {
+        Avg = 0M,
+        Min = 0M,
+        Max = 0M,
+        MinTimestamp = measurement.Timestamp,
+        MaxTimestamp = measurement.Timestamp
+      },
+      ReactiveEnergyL2ImportT0_VARh = new CumulativeAggregateMeasureModel
+      {
+        Min = measurement.ReactiveEnergyL2ImportT0_VARh,
+        Max = measurement.ReactiveEnergyL2ImportT0_VARh
+      },
+      DerivedReactivePowerL2ImportT0_VAR = new InstantaneousAggregateMeasureModel
+      {
+        Avg = 0M,
+        Min = 0M,
+        Max = 0M,
+        MinTimestamp = measurement.Timestamp,
+        MaxTimestamp = measurement.Timestamp
+      },
+      ReactiveEnergyL3ImportT0_VARh = new CumulativeAggregateMeasureModel
+      {
+        Min = measurement.ReactiveEnergyL3ImportT0_VARh,
+        Max = measurement.ReactiveEnergyL3ImportT0_VARh
+      },
+      DerivedReactivePowerL3ImportT0_VAR = new InstantaneousAggregateMeasureModel
+      {
+        Avg = 0M,
+        Min = 0M,
+        Max = 0M,
+        MinTimestamp = measurement.Timestamp,
+        MaxTimestamp = measurement.Timestamp
+      },
+      ReactiveEnergyL1ExportT0_VARh = new CumulativeAggregateMeasureModel
+      {
+        Min = measurement.ReactiveEnergyL1ExportT0_VARh,
+        Max = measurement.ReactiveEnergyL1ExportT0_VARh
+      },
+      DerivedReactivePowerL1ExportT0_VAR = new InstantaneousAggregateMeasureModel
+      {
+        Avg = 0M,
+        Min = 0M,
+        Max = 0M,
+        MinTimestamp = measurement.Timestamp,
+        MaxTimestamp = measurement.Timestamp
+      },
+      ReactiveEnergyL2ExportT0_VARh = new CumulativeAggregateMeasureModel
+      {
+        Min = measurement.ReactiveEnergyL2ExportT0_VARh,
+        Max = measurement.ReactiveEnergyL2ExportT0_VARh
+      },
+      DerivedReactivePowerL2ExportT0_VAR = new InstantaneousAggregateMeasureModel
+      {
+        Avg = 0M,
+        Min = 0M,
+        Max = 0M,
+        MinTimestamp = measurement.Timestamp,
+        MaxTimestamp = measurement.Timestamp
+      },
+      ReactiveEnergyL3ExportT0_VARh = new CumulativeAggregateMeasureModel
+      {
+        Min = measurement.ReactiveEnergyL3ExportT0_VARh,
+        Max = measurement.ReactiveEnergyL3ExportT0_VARh
+      },
+      DerivedReactivePowerL3ExportT0_VAR = new InstantaneousAggregateMeasureModel
+      {
+        Avg = 0M,
+        Min = 0M,
+        Max = 0M,
+        MinTimestamp = measurement.Timestamp,
+        MaxTimestamp = measurement.Timestamp
+      },
       ActiveEnergyTotalImportT0_Wh = new CumulativeAggregateMeasureModel
       {
         Min = measurement.ActiveEnergyTotalImportT0_Wh,

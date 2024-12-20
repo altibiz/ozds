@@ -49,6 +49,18 @@ public static class SchneideriEM3xxxAggregateModelEntityConverterExtensions
         model.ReactivePowerTotalNetT0_VAR.ToEntity(),
       ApparentPowerTotalNetT0_VA =
         model.ApparentPowerTotalNetT0_VA.ToEntity(),
+      ActiveEnergyL1ImportT0_Wh =
+        model.ActiveEnergyL1ImportT0_Wh.ToEntity(),
+      DerivedActivePowerL1ImportT0_W =
+        model.DerivedActivePowerL1ImportT0_W.ToEntity(),
+      ActiveEnergyL2ImportT0_Wh =
+        model.ActiveEnergyL2ImportT0_Wh.ToEntity(),
+      DerivedActivePowerL2ImportT0_W =
+        model.DerivedActivePowerL2ImportT0_W.ToEntity(),
+      ActiveEnergyL3ImportT0_Wh =
+        model.ActiveEnergyL3ImportT0_Wh.ToEntity(),
+      DerivedActivePowerL3ImportT0_W =
+        model.DerivedActivePowerL3ImportT0_W.ToEntity(),
       ActiveEnergyTotalImportT0_Wh =
         model.ActiveEnergyTotalImportT0_Wh.ToEntity(),
       DerivedActivePowerTotalImportT0_W =
@@ -100,6 +112,18 @@ public static class SchneideriEM3xxxAggregateModelEntityConverterExtensions
         entity.ReactivePowerTotalNetT0_VAR.ToModel(),
       ApparentPowerTotalNetT0_VA =
         entity.ApparentPowerTotalNetT0_VA.ToModel(),
+      ActiveEnergyL1ImportT0_Wh =
+        entity.ActiveEnergyL1ImportT0_Wh.ToModel(),
+      DerivedActivePowerL1ImportT0_W =
+        entity.DerivedActivePowerL1ImportT0_W.ToModel(),
+      ActiveEnergyL2ImportT0_Wh =
+        entity.ActiveEnergyL2ImportT0_Wh.ToModel(),
+      DerivedActivePowerL2ImportT0_W =
+        entity.DerivedActivePowerL2ImportT0_W.ToModel(),
+      ActiveEnergyL3ImportT0_Wh =
+        entity.ActiveEnergyL3ImportT0_Wh.ToModel(),
+      DerivedActivePowerL3ImportT0_W =
+        entity.DerivedActivePowerL3ImportT0_W.ToModel(),
       ActiveEnergyTotalImportT0_Wh =
         entity.ActiveEnergyTotalImportT0_Wh.ToModel(),
       DerivedActivePowerTotalImportT0_W =
