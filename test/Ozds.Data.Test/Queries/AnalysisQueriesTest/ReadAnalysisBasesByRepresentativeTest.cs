@@ -120,12 +120,6 @@ public class ReadAnalysisBasesByRepresentativeTest(IServiceProvider services)
           .Should()
           .BeContextuallyEquivalentTo(context, expected.MonthlyAggregates);
 
-        actual.MonthlyMaxPowerAggregates
-          .Should()
-          .BeContextuallyEquivalentTo(
-            context,
-            expected.MonthlyMaxPowerAggregates);
-
         var actualModel = actual.ToModel();
         var expectedModel = expected.ToModel();
 

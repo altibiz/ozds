@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Ozds.Data.Context;
 using Ozds.Data.Entities;
 using Ozds.Data.Entities.Base;
-using Ozds.Data.Entities.Complex;
 using Ozds.Data.Entities.Composite;
 using Ozds.Data.Entities.Enums;
 using Ozds.Data.Entities.Joins;
@@ -97,20 +96,6 @@ public class AnalysisQueries(
       WITH
         initial_measurement_locations AS (
           {initialMeasurementLocationsQuery}
-        ),
-        abb_b2x_aggregates_max_power AS (
-          {MakeAbbB2xAggregatesMaxPowerQuery(
-            context,
-            fromDateExpression: "@fromDate",
-            toDateExpression: "@toDate"
-          )}
-        ),
-        schneider_iem3xxx_aggregates_max_power AS (
-          {MakeSchneideriEM3xxxAggregatesMaxPowerQuery(
-            context,
-            fromDateExpression: "@fromDate",
-            toDateExpression: "@toDate"
-          )}
         )
 
       SELECT
@@ -120,9 +105,7 @@ public class AnalysisQueries(
         abb_b2x_aggregates_monthly.*,
         schneider_iem3xxx_aggregates_monthly.*,
         abb_b2x_measurements_last.*,
-        schneider_iem3xxx_measurements_last.*,
-        abb_b2x_aggregates_max_power.*,
-        schneider_iem3xxx_aggregates_max_power.*
+        schneider_iem3xxx_measurements_last.*
       FROM
         initial_measurement_locations
       LEFT JOIN {context.GetTableName<NetworkUserCalculationEntity>()}
@@ -192,16 +175,6 @@ public class AnalysisQueries(
           toDateExpression: "@toDate"
         )}
       ) AS schneider_iem3xxx_measurements_last ON TRUE
-      LEFT JOIN abb_b2x_aggregates_max_power
-        ON abb_b2x_aggregates_max_power
-          .{context.GetForeignKeyColumnName<AbbB2xAggregateEntity>(
-            nameof(AbbB2xAggregateEntity.MeasurementLocation))}
-          = initial_measurement_locations.measurement_location_id
-      LEFT JOIN schneider_iem3xxx_aggregates_max_power
-        ON schneider_iem3xxx_aggregates_max_power
-          .{context.GetForeignKeyColumnName<SchneideriEM3xxxAggregateEntity>(
-            nameof(AbbB2xAggregateEntity.MeasurementLocation))}
-          = initial_measurement_locations.measurement_location_id
     ";
 
     var parameters = new { representativeId, fromDate, toDate };
@@ -419,175 +392,6 @@ public class AnalysisQueries(
     LIMIT 1
   ";
 
-  private static string MakeAbbB2xAggregatesMaxPowerQuery(
-    DbContext context,
-    string fromDateExpression,
-    string toDateExpression
-  ) => $@"
-    SELECT
-      {string.Join(
-        ", ",
-        context
-          .GetColumnNames<AbbB2xAggregateEntity>()
-          .Select(x => $"abb_b2x_aggregates_max_power_intermediary.{x}"))}
-    FROM (
-      SELECT
-        abb_b2x_aggregates_max_power_window.*,
-        EXTRACT(YEAR FROM abb_b2x_aggregates_max_power_window
-          .{context.GetColumnName<AbbB2xAggregateEntity>(
-            nameof(AbbB2xAggregateEntity.Timestamp))}
-          AT TIME ZONE 'Europe/Zagreb') AS year,
-        EXTRACT(MONTH FROM abb_b2x_aggregates_max_power_window
-          .{context.GetColumnName<AbbB2xAggregateEntity>(
-            nameof(AbbB2xAggregateEntity.Timestamp))}
-          AT TIME ZONE 'Europe/Zagreb') AS month,
-        COALESCE(
-          abb_b2x_aggregates_max_power_window
-            .{context.GetColumnName<AbbB2xAggregateEntity>(
-              nameof(AbbB2xAggregateEntity.ActiveEnergyTotalImportT1_Wh),
-              nameof(CumulativeAggregateMeasureEntity.Max))},
-          0)
-          - COALESCE(
-              abb_b2x_aggregates_max_power_window
-                .{context.GetColumnName<AbbB2xAggregateEntity>(
-                  nameof(AbbB2xAggregateEntity.ActiveEnergyTotalImportT1_Wh),
-                  nameof(CumulativeAggregateMeasureEntity.Min))},
-                0)
-          AS active_energy_total_import_t1_sub_w,
-        MAX(
-          COALESCE(
-            abb_b2x_aggregates_max_power_window
-              .{context.GetColumnName<AbbB2xAggregateEntity>(
-                nameof(AbbB2xAggregateEntity.ActiveEnergyTotalImportT1_Wh),
-                nameof(CumulativeAggregateMeasureEntity.Max))},
-            0)
-            - COALESCE(
-                abb_b2x_aggregates_max_power_window
-                  .{context.GetColumnName<AbbB2xAggregateEntity>(
-                    nameof(AbbB2xAggregateEntity.ActiveEnergyTotalImportT1_Wh),
-                    nameof(CumulativeAggregateMeasureEntity.Min))},
-                  0)
-        ) OVER (
-          PARTITION BY
-            abb_b2x_aggregates_max_power_window
-              .{context.GetForeignKeyColumnName<AbbB2xAggregateEntity>(
-                nameof(AbbB2xAggregateEntity.Meter))},
-            EXTRACT(YEAR FROM abb_b2x_aggregates_max_power_window
-              .{context.GetColumnName<AbbB2xAggregateEntity>(
-                nameof(AbbB2xAggregateEntity.Timestamp))}
-              AT TIME ZONE 'Europe/Zagreb'),
-            EXTRACT(MONTH FROM abb_b2x_aggregates_max_power_window
-                .{context.GetColumnName<AbbB2xAggregateEntity>(
-              nameof(AbbB2xAggregateEntity.Timestamp))}
-              AT TIME ZONE 'Europe/Zagreb')
-        ) AS active_energy_total_import_t1_max_per_meter_month_w
-      FROM {context.GetTableName<AbbB2xAggregateEntity>()}
-        AS abb_b2x_aggregates_max_power_window
-      WHERE
-        abb_b2x_aggregates_max_power_window
-          .{context.GetColumnName<AbbB2xAggregateEntity>(
-            nameof(AbbB2xAggregateEntity.Timestamp))} >= {fromDateExpression}
-        AND abb_b2x_aggregates_max_power_window
-          .{context.GetColumnName<AbbB2xAggregateEntity>(
-            nameof(AbbB2xAggregateEntity.Timestamp))} < {toDateExpression}
-        AND abb_b2x_aggregates_max_power_window
-          .{context.GetColumnName<AbbB2xAggregateEntity>(
-            nameof(AbbB2xAggregateEntity.Interval))}
-          = '{nameof(IntervalEntity.QuarterHour).ToSnakeCase()}'
-    ) AS abb_b2x_aggregates_max_power_intermediary
-    WHERE
-      abb_b2x_aggregates_max_power_intermediary
-        .active_energy_total_import_t1_sub_w
-        = abb_b2x_aggregates_max_power_intermediary
-          .active_energy_total_import_t1_max_per_meter_month_w
-  ";
-
-  private static string MakeSchneideriEM3xxxAggregatesMaxPowerQuery(
-    DbContext context,
-    string fromDateExpression,
-    string toDateExpression
-  ) => $@"
-    SELECT
-      {string.Join(
-        ", ",
-        context
-          .GetColumnNames<SchneideriEM3xxxAggregateEntity>()
-          .Select(x =>
-            $"schneider_iem3xxx_aggregates_max_power_intermediary.{x}"))}
-    FROM (
-      SELECT
-        schneider_iem3xxx_aggregates_max_power_window.*,
-        EXTRACT(YEAR FROM schneider_iem3xxx_aggregates_max_power_window
-          .{context.GetColumnName<SchneideriEM3xxxAggregateEntity>(
-            nameof(SchneideriEM3xxxAggregateEntity.Timestamp))}
-          AT TIME ZONE 'Europe/Zagreb') AS year,
-        EXTRACT(MONTH FROM schneider_iem3xxx_aggregates_max_power_window
-          .{context.GetColumnName<SchneideriEM3xxxAggregateEntity>(
-            nameof(SchneideriEM3xxxAggregateEntity.Timestamp))}
-          AT TIME ZONE 'Europe/Zagreb') AS month,
-        COALESCE(
-          schneider_iem3xxx_aggregates_max_power_window
-            .{context.GetColumnName<SchneideriEM3xxxAggregateEntity>(
-              nameof(SchneideriEM3xxxAggregateEntity.ActiveEnergyTotalImportT1_Wh),
-              nameof(CumulativeAggregateMeasureEntity.Max))},
-          0)
-          - COALESCE(
-              schneider_iem3xxx_aggregates_max_power_window
-                .{context.GetColumnName<SchneideriEM3xxxAggregateEntity>(
-                  nameof(SchneideriEM3xxxAggregateEntity.ActiveEnergyTotalImportT1_Wh),
-                  nameof(CumulativeAggregateMeasureEntity.Min))},
-              0)
-          AS active_energy_total_import_t1_sub_wh,
-        MAX(
-          COALESCE(
-            schneider_iem3xxx_aggregates_max_power_window
-              .{context.GetColumnName<SchneideriEM3xxxAggregateEntity>(
-                nameof(SchneideriEM3xxxAggregateEntity.ActiveEnergyTotalImportT1_Wh),
-                nameof(CumulativeAggregateMeasureEntity.Max))},
-            0)
-            - COALESCE(
-                schneider_iem3xxx_aggregates_max_power_window
-                  .{context.GetColumnName<SchneideriEM3xxxAggregateEntity>(
-                    nameof(SchneideriEM3xxxAggregateEntity.ActiveEnergyTotalImportT1_Wh),
-                    nameof(CumulativeAggregateMeasureEntity.Min))},
-                0)
-        ) OVER (
-          PARTITION BY
-            schneider_iem3xxx_aggregates_max_power_window
-              .{context.GetForeignKeyColumnName<SchneideriEM3xxxAggregateEntity>(
-                nameof(SchneideriEM3xxxAggregateEntity.Meter))},
-            EXTRACT(YEAR FROM schneider_iem3xxx_aggregates_max_power_window
-              .{context.GetColumnName<SchneideriEM3xxxAggregateEntity>(
-                nameof(SchneideriEM3xxxAggregateEntity.Timestamp))}
-              AT TIME ZONE 'Europe/Zagreb'),
-            EXTRACT(MONTH FROM schneider_iem3xxx_aggregates_max_power_window
-                .{context.GetColumnName<SchneideriEM3xxxAggregateEntity>(
-              nameof(SchneideriEM3xxxAggregateEntity.Timestamp))}
-              AT TIME ZONE 'Europe/Zagreb')
-        ) AS active_energy_total_import_t1_max_per_meter_month_wh
-      FROM {context.GetTableName<SchneideriEM3xxxAggregateEntity>()}
-        AS schneider_iem3xxx_aggregates_max_power_window
-      WHERE
-        schneider_iem3xxx_aggregates_max_power_window
-          .{context.GetColumnName<SchneideriEM3xxxAggregateEntity>(
-            nameof(SchneideriEM3xxxAggregateEntity.Timestamp))}
-          >= {fromDateExpression}
-        AND schneider_iem3xxx_aggregates_max_power_window
-          .{context.GetColumnName<SchneideriEM3xxxAggregateEntity>(
-            nameof(SchneideriEM3xxxAggregateEntity.Timestamp))}
-          < {toDateExpression}
-        AND schneider_iem3xxx_aggregates_max_power_window
-          .{context.GetColumnName<SchneideriEM3xxxAggregateEntity>(
-            nameof(SchneideriEM3xxxAggregateEntity.Interval))}
-          = '{nameof(IntervalEntity.QuarterHour).ToSnakeCase()}'
-    ) AS schneider_iem3xxx_aggregates_max_power_intermediary
-    WHERE
-      schneider_iem3xxx_aggregates_max_power_intermediary
-        .active_energy_total_import_t1_sub_wh
-        = schneider_iem3xxx_aggregates_max_power_intermediary
-          .active_energy_total_import_t1_max_per_meter_month_wh
-  ";
-
   private static List<AnalysisBasisEntity>
     MakeAnalysisBases(
       IEnumerable<DetailedMeasurementLocationsByRepresentativeIntermediary> items,
@@ -632,18 +436,6 @@ public class AnalysisQueries(
               .DistinctBy(x => (x.MeterId, x.Interval, x.Timestamp))
               .ToList();
 
-          var monthlyMaxPowerAggregates =
-            Enumerable.Empty<AggregateEntity>()
-              .Concat(x
-                .Select(x => x.AbbMaxPowerAggregate)
-                .OfType<AggregateEntity>())
-              .Concat(x
-                .Select(x => x.SchneiderMaxPowerAggregate)
-                .OfType<AggregateEntity>())
-              .Where(x => x.MeterId is not null)
-              .DistinctBy(x => (x.MeterId, x.Interval, x.Timestamp))
-              .ToList();
-
           var calculations = x
             .Select(x => x.NetworkUserCalculation)
             .OfType<CalculationEntity>()
@@ -667,8 +459,7 @@ public class AnalysisQueries(
             calculations,
             invoices,
             lastMeasurement,
-            monthlyAggregates,
-            monthlyMaxPowerAggregates
+            monthlyAggregates
           );
         })
       .OfType<AnalysisBasisEntity>()
@@ -738,18 +529,6 @@ public class AnalysisQueries(
     } = default!;
 
     public SchneideriEM3xxxMeasurementEntity? SchneiderLastMeasurement
-    {
-      get;
-      init;
-    } = default!;
-
-    public AbbB2xAggregateEntity? AbbMaxPowerAggregate
-    {
-      get;
-      init;
-    } = default!;
-
-    public SchneideriEM3xxxAggregateEntity? SchneiderMaxPowerAggregate
     {
       get;
       init;

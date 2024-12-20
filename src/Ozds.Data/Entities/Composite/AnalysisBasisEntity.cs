@@ -13,6 +13,5 @@ public record AnalysisBasisEntity(
   List<CalculationEntity> Calculations,
   List<InvoiceEntity> Invoices,
   MeasurementEntity LastMeasurement,
-  List<AggregateEntity> MonthlyAggregates,
-  List<AggregateEntity> MonthlyMaxPowerAggregates
+  List<AggregateEntity> MonthlyAggregates
 );

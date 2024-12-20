@@ -68,7 +68,7 @@ public static class AnalysisExtensions
       ?? Consumption.Null;
 
     var monthlyMaxLoad = models
-      .SelectMany(x => x.MonthlyMaxPowerAggregates
+      .SelectMany(x => x.MonthlyAggregates
         .Select(x => x.Load())
         .OrderByDescending(x => x.Timestamp))
       .ToList();

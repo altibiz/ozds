@@ -15,8 +15,7 @@ public record AnalysisBasisModel(
   List<CalculationModel> Calculations,
   List<InvoiceModel> Invoices,
   MeasurementModel LastMeasurement,
-  List<AggregateModel> MonthlyAggregates,
-  List<AggregateModel> MonthlyMaxPowerAggregates
+  List<AggregateModel> MonthlyAggregates
 );
 
 public static class AnalysisBasisModelExtensions
@@ -43,9 +42,6 @@ public static class AnalysisBasisModelExtensions
         .ToList(),
       entity.LastMeasurement.ToModel(),
       entity.MonthlyAggregates
-        .Select(aggregate => aggregate.ToModel())
-        .ToList(),
-      entity.MonthlyMaxPowerAggregates
         .Select(aggregate => aggregate.ToModel())
         .ToList()
     );

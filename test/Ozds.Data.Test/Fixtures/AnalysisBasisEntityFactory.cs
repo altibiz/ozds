@@ -151,17 +151,6 @@ public class AnalysisBasisEntityFactory(DbContext context)
         )
         .CreateManyInDb(context, cancellationToken: cancellationToken);
 
-      var quarterHourlyAggregates = await fixture
-        .Build<AbbB2xAggregateEntity>()
-        .With(agg => agg.MeterId, meter.Id)
-        .With(agg => agg.MeasurementLocationId, measurementLocation.Id)
-        .With(agg => agg.Interval, IntervalEntity.QuarterHour)
-        .IndexedWith(
-          agg => agg.Timestamp,
-          (i) => toDate.AddMinutes(-i * 15).GetStartOfQuarterHour()
-        )
-        .CreateManyInDb(context, cancellationToken: cancellationToken);
-
       var analysisBasisEntity = new AnalysisBasisEntity(
           Representative: representative,
           FromDate: fromDate,
@@ -175,19 +164,6 @@ public class AnalysisBasisEntityFactory(DbContext context)
           LastMeasurement: measurements.OrderBy(x => x.Timestamp).Last(),
           MonthlyAggregates: monthlyAggregates
             .Where(x => x.Timestamp >= fromDate && x.Timestamp < toDate)
-            .Cast<AggregateEntity>()
-            .ToList(),
-          MonthlyMaxPowerAggregates: quarterHourlyAggregates
-            .Where(x => x.Timestamp >= fromDate && x.Timestamp < toDate)
-            .GroupBy(x => x.Timestamp.GetStartOfMonth())
-            .Select(x => x
-              .MaxBy(y => y
-                .ToModel()
-                .ActivePower_W
-                .TariffBinary()
-                .T1
-                .DuplexImport()
-                .PhaseSum()))
             .Cast<AggregateEntity>()
             .ToList()
       );

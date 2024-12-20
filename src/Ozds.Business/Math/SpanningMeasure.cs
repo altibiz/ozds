@@ -4,6 +4,31 @@ namespace Ozds.Business.Math;
 
 #pragma warning disable S3060
 
+public record class CumulativeSpanningMeasure<T>(
+  TariffMeasure<T> Min,
+  TariffMeasure<T> Max)
+  : SpanningMeasure<T>
+  where T : struct,
+  IComparisonOperators<T, T, bool>,
+  IAdditionOperators<T, T, T>,
+  ISubtractionOperators<T, T, T>,
+  IMultiplyOperators<T, T, T>,
+  IDivisionOperators<T, T, T>;
+
+public record class InstantaneousSpanningMeasure<T>(
+  TariffMeasure<T> Avg,
+  TariffMeasure<T> Min,
+  DateTimeOffset MinTimestamp,
+  TariffMeasure<T> Max,
+  DateTimeOffset MaxTimestamp)
+  : SpanningMeasure<T>
+  where T : struct,
+  IComparisonOperators<T, T, bool>,
+  IAdditionOperators<T, T, T>,
+  ISubtractionOperators<T, T, T>,
+  IMultiplyOperators<T, T, T>,
+  IDivisionOperators<T, T, T>;
+
 public record class MinMaxSpanningMeasure<T>(
   TariffMeasure<T> TrueMin,
   TariffMeasure<T> TrueMax)
@@ -58,6 +83,8 @@ public abstract record class SpanningMeasure<T>
     {
       return this switch
       {
+        CumulativeSpanningMeasure<T> cumulative => cumulative.Min,
+        InstantaneousSpanningMeasure<T> instantaneous => instantaneous.Min,
         MinMaxSpanningMeasure<T> minMax => minMax.TrueMin,
         _ => TariffMeasure<T>.Null
       };
@@ -69,6 +96,8 @@ public abstract record class SpanningMeasure<T>
     {
       return this switch
       {
+        CumulativeSpanningMeasure<T> cumulative => cumulative.Max,
+        InstantaneousSpanningMeasure<T> instantaneous => instantaneous.Max,
         MinMaxSpanningMeasure<T> minMax => minMax.TrueMax,
         _ => TariffMeasure<T>.Null
       };
@@ -80,6 +109,7 @@ public abstract record class SpanningMeasure<T>
     {
       return this switch
       {
+        InstantaneousSpanningMeasure<T> instantaneous => instantaneous.Avg,
         AvgSpanningMeasure<T> avg => avg.TrueAvg,
         _ => TariffMeasure<T>.Null
       };
@@ -91,6 +121,7 @@ public abstract record class SpanningMeasure<T>
     {
       return this switch
       {
+        InstantaneousSpanningMeasure<T> instantaneous => instantaneous.Max,
         PeakSpanningMeasure<T> peak => peak.TruePeak,
         _ => TariffMeasure<T>.Null
       };
