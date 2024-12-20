@@ -2,4 +2,4 @@ outs:
 - md5: 743ac59a2a28d4c72eb1a9bf04895c92
   size: 398325
   hash: md5
-  path: current-hypertables.sql
+  path: 20241220092251-Ozds.Data-AggregateDataExpansion5-hypertables.sql
