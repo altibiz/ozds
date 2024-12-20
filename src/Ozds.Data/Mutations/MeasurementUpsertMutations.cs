@@ -109,7 +109,7 @@ public class MeasurementUpsertMutations(
   )
   {
     var connection = context.GetDapperDbConnection();
-    var commands = Upsert(context, measurements);
+    var commands = CreateCommands(context, measurements);
 
     foreach (var x in commands.Chunk(ChunkSize))
     {
@@ -117,9 +117,27 @@ public class MeasurementUpsertMutations(
         x.Select(y => (y.Measurement as object, y.Index)));
       var sql = string.Join("\n", x.Select(y => y.Sql));
 
+      // NOTE: good for debugging
+#pragma warning disable S125 // Sections of code should not be commented out
+      // var parameterString = string.Join(
+      //   "\n",
+      //   parameters.Select(kv =>
+      //   {
+      //     var key = kv.Key.Replace("@", "");
+      //     var val = kv.Value is DateTimeOffset dt
+      //       ? $"'{dt.ToString("o", System.Globalization.CultureInfo.InvariantCulture)}'"
+      //       : kv.Value is string s
+      //         ? $"'{s}'"
+      //         : kv.Value;
+      //     return $"\\set {key} {val}";
+      //   }));
+      // Console.WriteLine(parameterString);
+      // Console.WriteLine(sql);
+#pragma warning restore S125 // Sections of code should not be commented out
+
       var command = new CommandDefinition(
         sql,
-        parameters,
+        new DynamicParameters(parameters),
         transaction: transaction.GetDbTransaction(),
         cancellationToken: cancellationToken
       );
@@ -127,7 +145,7 @@ public class MeasurementUpsertMutations(
     }
   }
 
-  private IEnumerable<(string Sql, int Index, IMeasurementEntity Measurement)> Upsert(
+  private IEnumerable<(string Sql, int Index, IMeasurementEntity Measurement)> CreateCommands(
       DataDbContext context,
       IEnumerable<IMeasurementEntity> measurements)
   {

@@ -9,12 +9,12 @@ namespace Ozds.Data.Extensions;
 
 public static class DbContextDapperBulkParametersExtensions
 {
-  public static DynamicParameters? CreateBulkParameters(
+  public static Dictionary<string, object> CreateBulkParameters(
     this DbContext context,
     IEnumerable<(object, int)> rowsWithIndices
   )
   {
-    var parameters = new DynamicParameters();
+    var parameters = new Dictionary<string, object>();
     foreach (var (row, index) in rowsWithIndices)
     {
       var entityType = context.Model.FindEntityType(row.GetType())
