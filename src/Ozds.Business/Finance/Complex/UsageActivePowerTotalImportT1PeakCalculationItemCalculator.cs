@@ -27,9 +27,10 @@ public class UsageActivePowerTotalImportT1PeakCalculationItemCalculator :
     var peak = aggregates
       .SkipLast(1)
       .Select(
-        x => x.ActivePower_W
+        x => x.DerivedActivePower_W
           .TariffBinary().T1
           .DuplexImport()
+          .AggregateMax()
           .PhaseSum())
       .Max();
 

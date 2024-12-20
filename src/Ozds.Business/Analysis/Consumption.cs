@@ -40,72 +40,69 @@ public static class ConsumptionExtensions
       .Select(x => new Consumption(
         Timestamp: x.Key,
         MinActiveEnergy_kWh: x
-          .Select(x => x.ActiveEnergySpan_Wh
-            .SpanMin()
+          .Select(x => x.ActiveEnergy_Wh
             .TariffUnary()
             .DuplexImport()
+            .AggregateMin()
             .PhaseSum())
           .DefaultIfEmpty(0M)
-          .Sum() / 1000M,
+          .Min() / 1000M,
         MaxActiveEnergy_kWh: x
-          .Select(x => x.ActiveEnergySpan_Wh
-            .SpanMax()
+          .Select(x => x.ActiveEnergy_Wh
             .TariffUnary()
             .DuplexImport()
+            .AggregateMax()
             .PhaseSum())
           .DefaultIfEmpty(0M)
-          .Sum() / 1000M,
+          .Max() / 1000M,
         ActiveEnergy_kWh: x
-          .Select(x => x.ActiveEnergySpan_Wh
-            .SpanDiff()
+          .Select(x => x.ActiveEnergy_Wh
             .TariffUnary()
             .DuplexImport()
             .PhaseSum())
           .DefaultIfEmpty(0M)
           .Sum() / 1000M,
         MinReactiveEnergy_kVARh: x
-          .Select(x => x.ReactiveEnergySpan_VARh
-            .SpanMin()
+          .Select(x => x.ReactiveEnergy_VARh
             .TariffUnary()
             .DuplexImport()
+            .AggregateMin()
             .PhaseSum())
           .DefaultIfEmpty(0M)
-          .Sum() / 1000M,
+          .Min() / 1000M,
         MaxReactiveEnergy_kVARh: x
-          .Select(x => x.ReactiveEnergySpan_VARh
-            .SpanMax()
+          .Select(x => x.ReactiveEnergy_VARh
             .TariffUnary()
             .DuplexImport()
+            .AggregateMax()
             .PhaseSum())
           .DefaultIfEmpty(0M)
-          .Sum() / 1000M,
+          .Max() / 1000M,
         ReactiveEnergy_kVARh: x
-          .Select(x => x.ReactiveEnergySpan_VARh
-            .SpanDiff()
+          .Select(x => x.ReactiveEnergy_VARh
             .TariffUnary()
             .DuplexImport()
             .PhaseSum())
           .DefaultIfEmpty(0M)
           .Sum() / 1000M,
         MinApparentEnergy_kVAh: x
-          .Select(x => x.ApparentEnergySpan_VAh
-            .SpanMin()
+          .Select(x => x.ApparentEnergy_VAh
             .TariffUnary()
             .DuplexImport()
+            .AggregateMin()
             .PhaseSum())
           .DefaultIfEmpty(0M)
-          .Sum() / 1000M,
+          .Min() / 1000M,
         MaxApparentEnergy_kVAh: x
-          .Select(x => x.ApparentEnergySpan_VAh
-            .SpanMax()
+          .Select(x => x.ApparentEnergy_VAh
             .TariffUnary()
             .DuplexImport()
+            .AggregateMax()
             .PhaseSum())
           .DefaultIfEmpty(0M)
-          .Sum() / 1000M,
+          .Max() / 1000M,
         ApparentEnergy_kVAh: x
-          .Select(x => x.ApparentEnergySpan_VAh
-            .SpanDiff()
+          .Select(x => x.ApparentEnergy_VAh
             .TariffUnary()
             .DuplexImport()
             .PhaseSum())

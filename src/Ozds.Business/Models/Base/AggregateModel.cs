@@ -62,53 +62,23 @@ public abstract class AggregateModel : IAggregate
 
   public abstract TariffMeasure<decimal> Voltage_V { get; }
 
-  public abstract SpanningMeasure<decimal> ActiveEnergySpan_Wh { get; }
+  public abstract TariffMeasure<decimal> ActivePower_W { get; }
 
-  public abstract SpanningMeasure<decimal> ReactiveEnergySpan_VARh { get; }
+  public abstract TariffMeasure<decimal> ReactivePower_VAR { get; }
 
-  public abstract SpanningMeasure<decimal> ApparentEnergySpan_VAh { get; }
+  public abstract TariffMeasure<decimal> ApparentPower_VA { get; }
 
-  public virtual TariffMeasure<decimal> ActivePower_W
-  {
-    get
-    {
-      return ActiveEnergySpan_Wh.SpanDifferential(
-        (decimal)Interval.ToTimeSpan(Timestamp).TotalHours);
-    }
-  }
+  public abstract TariffMeasure<decimal> ActiveEnergy_Wh { get; }
 
-  public virtual TariffMeasure<decimal> ReactivePower_VAR
-  {
-    get
-    {
-      return ReactiveEnergySpan_VARh.SpanDifferential(
-        (decimal)Interval.ToTimeSpan(Timestamp).TotalHours);
-    }
-  }
+  public abstract TariffMeasure<decimal> ReactiveEnergy_VARh { get; }
 
-  public virtual TariffMeasure<decimal> ApparentPower_VA
-  {
-    get
-    {
-      return ApparentEnergySpan_VAh.SpanDifferential(
-        (decimal)Interval.ToTimeSpan(Timestamp).TotalHours);
-    }
-  }
+  public abstract TariffMeasure<decimal> ApparentEnergy_VAh { get; }
 
-  public virtual TariffMeasure<decimal> ActiveEnergy_Wh
-  {
-    get { return ActiveEnergySpan_Wh.SpanMin(); }
-  }
+  public abstract TariffMeasure<decimal> DerivedActivePower_W { get; }
 
-  public virtual TariffMeasure<decimal> ReactiveEnergy_VARh
-  {
-    get { return ReactiveEnergySpan_VARh.SpanMin(); }
-  }
+  public abstract TariffMeasure<decimal> DerivedReactivePower_VAR { get; }
 
-  public virtual TariffMeasure<decimal> ApparentEnergy_VAh
-  {
-    get { return ApparentEnergySpan_VAh.SpanMin(); }
-  }
+  public abstract TariffMeasure<decimal> DerivedApparentPower_VA { get; }
 
   public virtual IEnumerable<ValidationResult> Validate(
     ValidationContext validationContext)

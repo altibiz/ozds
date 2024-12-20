@@ -1,4 +1,5 @@
 using System.Numerics;
+using Humanizer;
 
 namespace Ozds.Business.Math;
 
@@ -44,6 +45,61 @@ public record class CompositePhasicMeasure<T>
           .Zip(Enumerable.Repeat(other, Measures.Count), selector)
           .ToList())
     };
+  }
+}
+
+public record class InstantaneousPhaseMeasure<T>(
+  PhasicMeasure<T> Avg,
+  PhasicMeasure<T> Min,
+  DateTimeOffset MinTimestamp,
+  PhasicMeasure<T> Max,
+  DateTimeOffset MaxTimestamp
+) : PhasicMeasure<T>
+  where T : struct,
+  IComparisonOperators<T, T, bool>,
+  IAdditionOperators<T, T, T>,
+  ISubtractionOperators<T, T, T>,
+  IMultiplyOperators<T, T, T>,
+  IDivisionOperators<T, T, T>
+{
+  public InstantaneousPhaseMeasure<T> Zip(
+    PhasicMeasure<T> other,
+    Func<PhasicMeasure<T>, PhasicMeasure<T>, PhasicMeasure<T>> selector)
+  {
+    return new InstantaneousPhaseMeasure<T>(
+      selector(Avg, other),
+      selector(Min, other),
+      MinTimestamp,
+      selector(Max, other),
+      MaxTimestamp
+    );
+  }
+}
+
+public record class CumulativePhasicMeasure<T>(
+  PhasicMeasure<T> Min,
+  PhasicMeasure<T> Max
+) : PhasicMeasure<T>
+  where T : struct,
+  IComparisonOperators<T, T, bool>,
+  IAdditionOperators<T, T, T>,
+  ISubtractionOperators<T, T, T>,
+  IMultiplyOperators<T, T, T>,
+  IDivisionOperators<T, T, T>
+{
+  public PhasicMeasure<T> Diff()
+  {
+    return Max.Subtract(Min);
+  }
+
+  public CumulativePhasicMeasure<T> Zip(
+    PhasicMeasure<T> other,
+    Func<PhasicMeasure<T>, PhasicMeasure<T>, PhasicMeasure<T>> selector)
+  {
+    return new CumulativePhasicMeasure<T>(
+      selector(Min, other),
+      selector(Max, other)
+    );
   }
 }
 
@@ -112,6 +168,8 @@ public abstract record class PhasicMeasure<T>
             value => !EqualityComparer<T>.Default.Equals(
               value, (T)Convert.ChangeType(0, typeof(T))),
             (T)Convert.ChangeType(0, typeof(T))),
+        InstantaneousPhaseMeasure<T> instantaneous => instantaneous.Avg.PhaseSum(),
+        CumulativePhasicMeasure<T> cumulative => cumulative.Diff().PhaseSum(),
         TriPhasicMeasure<T> tri => tri.ValueL1 + tri.ValueL2 + tri.ValueL3,
         SinglePhasicMeasureSum<T> single => single.Value,
         _ => (T)Convert.ChangeType(0, typeof(T))
@@ -136,6 +194,8 @@ public abstract record class PhasicMeasure<T>
           value => !EqualityComparer<T>.Default.Equals(
             value, (T)Convert.ChangeType(0, typeof(T))),
           (T)Convert.ChangeType(0, typeof(T))),
+      InstantaneousPhaseMeasure<T> instantaneous => instantaneous.Avg.PhaseAverage(),
+      CumulativePhasicMeasure<T> cumulative => cumulative.Diff().PhaseAverage(),
       TriPhasicMeasure<T> tri => (tri.ValueL1 + tri.ValueL2 + tri.ValueL3)
         / (T)Convert.ChangeType(3, typeof(T)),
       SinglePhasicMeasureSum<T> single => single.Value,
@@ -161,6 +221,8 @@ public abstract record class PhasicMeasure<T>
             value => !EqualityComparer<T>.Default.Equals(
               value, (T)Convert.ChangeType(0, typeof(T))),
             (T)Convert.ChangeType(0, typeof(T))),
+        InstantaneousPhaseMeasure<T> instantaneous => instantaneous.Max.PhasePeak(),
+        CumulativePhasicMeasure<T> cumulative => cumulative.Diff().PhasePeak(),
         TriPhasicMeasure<T> tri => tri.ValueL1 > tri.ValueL2
           ? tri.ValueL1 > tri.ValueL3 ? tri.ValueL1 : tri.ValueL3
           : tri.ValueL2 > tri.ValueL3
@@ -190,6 +252,8 @@ public abstract record class PhasicMeasure<T>
             value => !EqualityComparer<T>.Default.Equals(
               value, (T)Convert.ChangeType(0, typeof(T))),
             (T)Convert.ChangeType(0, typeof(T))),
+        InstantaneousPhaseMeasure<T> instantaneous => instantaneous.Min.PhaseTrough(),
+        CumulativePhasicMeasure<T> cumulative => cumulative.Diff().PhaseTrough(),
         TriPhasicMeasure<T> tri => tri.ValueL1 < tri.ValueL2
           ? tri.ValueL1 < tri.ValueL3 ? tri.ValueL1 : tri.ValueL3
           : tri.ValueL2 < tri.ValueL3
@@ -217,6 +281,8 @@ public abstract record class PhasicMeasure<T>
           single => !EqualityComparer<T>.Default.Equals(
             single.Value, (T)Convert.ChangeType(0, typeof(T))),
           new SinglePhasicMeasureSum<T>(default)),
+      InstantaneousPhaseMeasure<T> instantaneous => instantaneous.Avg.PhaseSingle(),
+      CumulativePhasicMeasure<T> cumulative => cumulative.Diff().PhaseSingle(),
       SinglePhasicMeasureSum<T> single => single,
       _ => new SinglePhasicMeasureSum<T>(default)
     };
@@ -245,6 +311,8 @@ public abstract record class PhasicMeasure<T>
             (T)Convert.ChangeType(0, typeof(T)),
             (T)Convert.ChangeType(0, typeof(T)),
             (T)Convert.ChangeType(0, typeof(T)))),
+      InstantaneousPhaseMeasure<T> instantaneous => instantaneous.Avg.PhaseSplit(),
+      CumulativePhasicMeasure<T> cumulative => cumulative.Diff().PhaseSplit(),
       SinglePhasicMeasureSum<T> single => new TriPhasicMeasure<T>(
         single.Value / (T)Convert.ChangeType(3, typeof(T)),
         single.Value / (T)Convert.ChangeType(3, typeof(T)),
@@ -269,6 +337,106 @@ public abstract record class PhasicMeasure<T>
     }
   }
 
+  public PhasicMeasure<T> AggregateAvg()
+  {
+    return this switch
+    {
+      CompositePhasicMeasure<T> composite =>
+        composite.Measures.OrderBy(
+          measure => measure switch
+          {
+            InstantaneousPhaseMeasure<T> => 0,
+            CumulativePhasicMeasure<T> => 1,
+            _ => 2
+          })
+          .Select(measure => measure.AggregateAvg())
+          .FirstOrDefault(Null),
+      InstantaneousPhaseMeasure<T> instantaneous => instantaneous.Avg,
+      CumulativePhasicMeasure<T> cumulative => cumulative.Diff().AggregateAvg(),
+      _ => Null
+    };
+  }
+
+  public PhasicMeasure<T> AggregateMin()
+  {
+    return this switch
+    {
+      CompositePhasicMeasure<T> composite =>
+        composite.Measures.OrderBy(
+          measure => measure switch
+          {
+            InstantaneousPhaseMeasure<T> => 0,
+            CumulativePhasicMeasure<T> => 1,
+            _ => 2
+          })
+        .Select(measure => measure.AggregateMin())
+        .FirstOrDefault(Null),
+      InstantaneousPhaseMeasure<T> instantaneous => instantaneous.Min,
+      CumulativePhasicMeasure<T> cumulative => cumulative.Diff().AggregateMin(),
+      _ => Null
+    };
+  }
+
+  public DateTimeOffset? AggregateMinTimestamp()
+  {
+    return this switch
+    {
+      CompositePhasicMeasure<T> composite =>
+        composite.Measures.OrderBy(
+          measure => measure switch
+          {
+            InstantaneousPhaseMeasure<T> => 0,
+            CumulativePhasicMeasure<T> => 1,
+            _ => 2
+          })
+          .Select(measure => measure.AggregateMinTimestamp())
+          .FirstOrDefault(),
+      InstantaneousPhaseMeasure<T> instantaneous => instantaneous.MinTimestamp,
+      CumulativePhasicMeasure<T> cumulative => cumulative.Diff().AggregateMinTimestamp(),
+      _ => null
+    };
+  }
+
+  public PhasicMeasure<T> AggregateMax()
+  {
+    return this switch
+    {
+      CompositePhasicMeasure<T> composite =>
+        composite.Measures.OrderBy(
+          measure => measure switch
+          {
+            InstantaneousPhaseMeasure<T> => 0,
+            CumulativePhasicMeasure<T> => 1,
+            _ => 2
+          })
+          .Select(measure => measure.AggregateMax())
+          .FirstOrDefault(Null),
+      InstantaneousPhaseMeasure<T> instantaneous => instantaneous.Max,
+      CumulativePhasicMeasure<T> cumulative => cumulative.Diff().AggregateMax(),
+      _ => Null
+    };
+  }
+
+  public DateTimeOffset? AggregateMaxTimestamp()
+  {
+    return this switch
+    {
+      CompositePhasicMeasure<T> composite =>
+        composite.Measures.OrderBy(
+          measure => measure switch
+          {
+            InstantaneousPhaseMeasure<T> => 0,
+            CumulativePhasicMeasure<T> => 1,
+            _ => 2
+          })
+          .Select(measure => measure.AggregateMaxTimestamp())
+          .FirstOrDefault(),
+      InstantaneousPhaseMeasure<T> instantaneous => instantaneous.MaxTimestamp,
+      CumulativePhasicMeasure<T> cumulative => cumulative.Diff().AggregateMaxTimestamp(),
+      _ => null
+    };
+  }
+
   public PhasicMeasure<TConverted> ConvertPrimitiveTo<TConverted>()
     where TConverted : struct,
     IComparisonOperators<TConverted, TConverted, bool>,
@@ -284,6 +452,15 @@ public abstract record class PhasicMeasure<T>
           composite.Measures.Select(
               measure => measure.ConvertPrimitiveTo<TConverted>())
             .ToList()),
+      InstantaneousPhaseMeasure<T> instantaneous => new InstantaneousPhaseMeasure<TConverted>(
+        instantaneous.Avg.ConvertPrimitiveTo<TConverted>(),
+        instantaneous.Min.ConvertPrimitiveTo<TConverted>(),
+        instantaneous.MinTimestamp,
+        instantaneous.Max.ConvertPrimitiveTo<TConverted>(),
+        instantaneous.MaxTimestamp),
+      CumulativePhasicMeasure<T> cumulative => new CumulativePhasicMeasure<TConverted>(
+        cumulative.Min.ConvertPrimitiveTo<TConverted>(),
+        cumulative.Max.ConvertPrimitiveTo<TConverted>()),
       TriPhasicMeasure<T> tri => new TriPhasicMeasure<TConverted>(
         (TConverted)Convert.ChangeType(tri.ValueL1, typeof(TConverted)),
         (TConverted)Convert.ChangeType(tri.ValueL2, typeof(TConverted)),
@@ -302,6 +479,15 @@ public abstract record class PhasicMeasure<T>
       CompositePhasicMeasure<T> composite => new CompositePhasicMeasure<T>(
         composite.Measures.Select(measure => measure.Select(selector))
           .ToList()),
+      InstantaneousPhaseMeasure<T> instantaneous => new InstantaneousPhaseMeasure<T>(
+        instantaneous.Avg.Select(selector),
+        instantaneous.Min.Select(selector),
+        instantaneous.MinTimestamp,
+        instantaneous.Max.Select(selector),
+        instantaneous.MaxTimestamp),
+      CumulativePhasicMeasure<T> cumulative => new CumulativePhasicMeasure<T>(
+        cumulative.Min.Select(selector),
+        cumulative.Max.Select(selector)),
       TriPhasicMeasure<T> tri => new TriPhasicMeasure<T>(
         selector(tri.ValueL1),
         selector(tri.ValueL2),
@@ -319,6 +505,15 @@ public abstract record class PhasicMeasure<T>
       CompositePhasicMeasure<T> composite => composite.Select(
         measure =>
           measure * rhs),
+      InstantaneousPhaseMeasure<T> instantaneous => new InstantaneousPhaseMeasure<T>(
+        instantaneous.Avg.Multiply(rhs),
+        instantaneous.Min.Multiply(rhs),
+        instantaneous.MinTimestamp,
+        instantaneous.Max.Multiply(rhs),
+        instantaneous.MaxTimestamp),
+      CumulativePhasicMeasure<T> cumulative => new CumulativePhasicMeasure<T>(
+        cumulative.Min.Multiply(rhs),
+        cumulative.Max.Multiply(rhs)),
       TriPhasicMeasure<T> tri => new TriPhasicMeasure<T>(
         tri.ValueL1 * rhs,
         tri.ValueL2 * rhs, tri.ValueL3 * rhs),
@@ -336,6 +531,15 @@ public abstract record class PhasicMeasure<T>
       CompositePhasicMeasure<T> composite => composite.Select(
         measure =>
           measure / rhs),
+      InstantaneousPhaseMeasure<T> instantaneous => new InstantaneousPhaseMeasure<T>(
+        instantaneous.Avg.Divide(rhs),
+        instantaneous.Min.Divide(rhs),
+        instantaneous.MinTimestamp,
+        instantaneous.Max.Divide(rhs),
+        instantaneous.MaxTimestamp),
+      CumulativePhasicMeasure<T> cumulative => new CumulativePhasicMeasure<T>(
+        cumulative.Min.Divide(rhs),
+        cumulative.Max.Divide(rhs)),
       TriPhasicMeasure<T> tri => new TriPhasicMeasure<T>(
         tri.ValueL1 / rhs,
         tri.ValueL2 / rhs, tri.ValueL3 / rhs),
@@ -354,6 +558,14 @@ public abstract record class PhasicMeasure<T>
         compositeLhs.Zip(rhs, (lhs, rhs) => lhs.Add(rhs)),
       (_, CompositePhasicMeasure<T> compositeRhs) =>
         compositeRhs.Zip(this, (rhs, lhs) => lhs.Add(rhs)),
+      (InstantaneousPhaseMeasure<T> instantaneousLhs, _) =>
+        instantaneousLhs.Zip(rhs, (lhs, rhs) => lhs.Add(rhs)),
+      (_, InstantaneousPhaseMeasure<T> instantaneousRhs) =>
+        instantaneousRhs.Zip(this, (lhs, rhs) => lhs.Add(rhs)),
+      (CumulativePhasicMeasure<T> cumulativeLhs, _) =>
+        cumulativeLhs.Zip(rhs, (lhs, rhs) => lhs.Add(rhs)),
+      (_, CumulativePhasicMeasure<T> cumulativeRhs) =>
+        cumulativeRhs.Zip(this, (lhs, rhs) => lhs.Add(rhs)),
       (TriPhasicMeasure<T> triLhs, TriPhasicMeasure<T> triRhs) => new
         TriPhasicMeasure<T>(
           triLhs.ValueL1 + triRhs.ValueL1,
@@ -373,6 +585,14 @@ public abstract record class PhasicMeasure<T>
         compositeLhs.Zip(rhs, (lhs, rhs) => lhs.Subtract(rhs)),
       (_, CompositePhasicMeasure<T> compositeRhs) =>
         compositeRhs.Zip(this, (rhs, lhs) => lhs.Subtract(rhs)),
+      (InstantaneousPhaseMeasure<T> instantaneousLhs, _) =>
+        instantaneousLhs.Zip(rhs, (lhs, rhs) => lhs.Subtract(rhs)),
+      (_, InstantaneousPhaseMeasure<T> instantaneousRhs) =>
+        instantaneousRhs.Zip(this, (lhs, rhs) => lhs.Subtract(rhs)),
+      (CumulativePhasicMeasure<T> cumulativeLhs, _) =>
+        cumulativeLhs.Zip(rhs, (lhs, rhs) => lhs.Subtract(rhs)),
+      (_, CumulativePhasicMeasure<T> cumulativeRhs) =>
+        cumulativeRhs.Zip(this, (lhs, rhs) => lhs.Subtract(rhs)),
       (TriPhasicMeasure<T> triLhs, TriPhasicMeasure<T> triRhs) => new
         TriPhasicMeasure<T>(
           triLhs.ValueL1 - triRhs.ValueL1,
@@ -392,6 +612,14 @@ public abstract record class PhasicMeasure<T>
         compositeLhs.Zip(rhs, (lhs, rhs) => lhs.Multiply(rhs)),
       (_, CompositePhasicMeasure<T> compositeRhs) =>
         compositeRhs.Zip(this, (rhs, lhs) => lhs.Multiply(rhs)),
+      (InstantaneousPhaseMeasure<T> instantaneousLhs, _) =>
+        instantaneousLhs.Zip(rhs, (lhs, rhs) => lhs.Multiply(rhs)),
+      (_, InstantaneousPhaseMeasure<T> instantaneousRhs) =>
+        instantaneousRhs.Zip(this, (lhs, rhs) => lhs.Multiply(rhs)),
+      (CumulativePhasicMeasure<T> cumulativeLhs, _) =>
+        cumulativeLhs.Zip(rhs, (lhs, rhs) => lhs.Multiply(rhs)),
+      (_, CumulativePhasicMeasure<T> cumulativeRhs) =>
+        cumulativeRhs.Zip(this, (lhs, rhs) => lhs.Multiply(rhs)),
       (TriPhasicMeasure<T> triLhs, TriPhasicMeasure<T> triRhs) => new
         TriPhasicMeasure<T>(
           triLhs.ValueL1 * triRhs.ValueL1,

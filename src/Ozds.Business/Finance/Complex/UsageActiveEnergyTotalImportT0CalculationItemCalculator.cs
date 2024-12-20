@@ -30,6 +30,7 @@ public class UsageActiveEnergyTotalImportT0CalculationItemCalculator :
       .First().ActiveEnergy_Wh
       .TariffUnary()
       .DuplexImport()
+      .AggregateMin()
       .PhaseSum();
 
     var minKilo = System.Math.Round(min / 1000M, 2);
@@ -38,6 +39,7 @@ public class UsageActiveEnergyTotalImportT0CalculationItemCalculator :
       .Last().ActiveEnergy_Wh
       .TariffUnary()
       .DuplexImport()
+      .AggregateMin()
       .PhaseSum();
 
     var maxKilo = System.Math.Round(max / 1000M, 2);

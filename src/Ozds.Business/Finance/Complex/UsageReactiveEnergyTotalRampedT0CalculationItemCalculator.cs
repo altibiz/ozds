@@ -1,6 +1,7 @@
 using Ozds.Business.Finance.Base;
 using Ozds.Business.Models.Complex;
 using Ozds.Business.Models.Composite;
+using YesSql.Services;
 
 namespace Ozds.Business.Finance.Complex;
 
@@ -38,6 +39,7 @@ public class UsageReactiveEnergyTotalRampedT0CalculationItemCalculator :
       .First().ReactiveEnergy_VARh
       .TariffUnary()
       .DuplexImport()
+      .AggregateMin()
       .PhaseSum();
 
     var reactiveImportMinKilo = System.Math.Round(
@@ -48,6 +50,7 @@ public class UsageReactiveEnergyTotalRampedT0CalculationItemCalculator :
       .Last().ReactiveEnergy_VARh
       .TariffUnary()
       .DuplexImport()
+      .AggregateMin()
       .PhaseSum();
 
     var reactiveImportMaxKilo = System.Math.Round(
@@ -62,6 +65,7 @@ public class UsageReactiveEnergyTotalRampedT0CalculationItemCalculator :
       .First().ReactiveEnergy_VARh
       .TariffUnary()
       .DuplexExport()
+      .AggregateMin()
       .PhaseSum();
 
     var reactiveExportMinKilo = System.Math.Round(
@@ -72,6 +76,7 @@ public class UsageReactiveEnergyTotalRampedT0CalculationItemCalculator :
       .Last().ReactiveEnergy_VARh
       .TariffUnary()
       .DuplexExport()
+      .AggregateMin()
       .PhaseSum();
 
     var reactiveExportMaxKilo = System.Math.Round(
@@ -86,6 +91,7 @@ public class UsageReactiveEnergyTotalRampedT0CalculationItemCalculator :
       .First().ActiveEnergy_Wh
       .TariffUnary()
       .DuplexImport()
+      .AggregateMin()
       .PhaseSum();
 
     var activeImportMinKilo = System.Math.Round(
@@ -96,6 +102,7 @@ public class UsageReactiveEnergyTotalRampedT0CalculationItemCalculator :
       .Last().ActiveEnergy_Wh
       .TariffUnary()
       .DuplexImport()
+      .AggregateMin()
       .PhaseSum();
 
     var activeImportMaxKilo = System.Math.Round(

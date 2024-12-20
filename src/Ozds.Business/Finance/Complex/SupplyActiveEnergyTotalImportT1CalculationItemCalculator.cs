@@ -30,6 +30,7 @@ public class SupplyActiveEnergyTotalImportT1CalculationItemCalculator :
       .First().ActiveEnergy_Wh
       .TariffBinary().T1
       .DuplexImport()
+      .AggregateMin()
       .PhaseSum();
 
     var minKilo = System.Math.Round(min / 1000M, 2);
@@ -38,6 +39,7 @@ public class SupplyActiveEnergyTotalImportT1CalculationItemCalculator :
       .Last().ActiveEnergy_Wh
       .TariffBinary().T1
       .DuplexImport()
+      .AggregateMin()
       .PhaseSum();
 
     var maxKilo = System.Math.Round(max / 1000M, 2);
