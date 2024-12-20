@@ -1,6 +1,5 @@
 using System.Collections.Concurrent;
 using System.Data;
-using System.Diagnostics;
 using Dapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -19,10 +18,11 @@ namespace Ozds.Data.Mutations;
 // TODO: handle nesting hierarchical properties
 
 public class MeasurementUpsertMutations(
-  IDbContextFactory<DataDbContext> factory,
-  ILogger<MeasurementUpsertMutations> logger
+  IDbContextFactory<DataDbContext> factory
 ) : IMutations
 {
+  private const int ChunkSize = 100;
+
   public async Task UpsertMeasurements(
     IEnumerable<IMeasurementEntity> measurements,
     CancellationToken cancellationToken
@@ -111,7 +111,7 @@ public class MeasurementUpsertMutations(
     var connection = context.GetDapperDbConnection();
     var commands = Upsert(context, measurements);
 
-    foreach (var x in commands.Chunk(100))
+    foreach (var x in commands.Chunk(ChunkSize))
     {
       var parameters = context.CreateBulkParameters(
         x.Select(y => (y.Measurement as object, y.Index)));
@@ -486,12 +486,12 @@ public class MeasurementUpsertMutations(
         SELECT {tableName}.*
         FROM {tableName}
         WHERE {string.Join(
-      " AND ",
-      primaryKeyColumns.Select(c =>
-        $"{tableName}.{c.ColumnName} = @p{indexSubstitution}_{c.ColumnName}"
-          + (c.Property.ClrType.IsEnum
-            ? $"::{c.Property.ClrType.Name.ToSnakeCase()}"
-            : "")))}
+          " AND ",
+          primaryKeyColumns.Select(c =>
+            $"{tableName}.{c.ColumnName} = @p{indexSubstitution}_{c.ColumnName}"
+              + (c.Property.ClrType.IsEnum
+                ? $"::{c.Property.ClrType.Name.ToSnakeCase()}"
+                : "")))}
       ), new AS (
         INSERT INTO {tableName} ({columns})
         VALUES ({values})
@@ -507,7 +507,7 @@ public class MeasurementUpsertMutations(
             'month',
             new.{timestampColumn} AT TIME ZONE 'Europe/Zagreb')
             monthly_timestamp,
-          {string.Join(", ", primaryKeyColumns.Select(c => $"new.{c.ColumnName}"))},
+            {string.Join(", ", primaryKeyColumns.Select(c => $"new.{c.ColumnName}"))},
           CASE
             WHEN old.{timestampColumn} is null then 1
             ELSE 0
@@ -516,9 +516,9 @@ public class MeasurementUpsertMutations(
         FROM new
         LEFT JOIN old ON
           {string.Join(
-        " AND ",
-        primaryKeyColumns.Select(
-          c => $"old.{c.ColumnName} = new.{c.ColumnName}"))}
+            " AND ",
+            primaryKeyColumns.Select(
+              c => $"old.{c.ColumnName} = new.{c.ColumnName}"))}
       ), daily AS (
         UPDATE {tableName} SET
           {string.Join(", ", deltaUpsertClauses)}
@@ -528,13 +528,13 @@ public class MeasurementUpsertMutations(
           AND {tableName}.{intervalColumn}
             = '{IntervalEntity.Day.ToString().ToSnakeCase()}'::{nameof(IntervalEntity).ToSnakeCase()}
           AND {string.Join(
-        " AND ",
-        primaryKeyColumns
-          .Where(c =>
-            c.ColumnName != timestampColumn
-            && c.ColumnName != intervalColumn)
-          .Select(c =>
-            $"{tableName}.{c.ColumnName} = delta.{c.ColumnName}"))}
+            " AND ",
+            primaryKeyColumns
+              .Where(c =>
+                c.ColumnName != timestampColumn
+                && c.ColumnName != intervalColumn)
+              .Select(c =>
+                $"{tableName}.{c.ColumnName} = delta.{c.ColumnName}"))}
         RETURNING *
       ), monthly AS (
         UPDATE {tableName} SET
@@ -545,13 +545,13 @@ public class MeasurementUpsertMutations(
           AND {tableName}.{intervalColumn}
             = '{IntervalEntity.Month.ToString().ToSnakeCase()}'::{nameof(IntervalEntity).ToSnakeCase()}
           AND {string.Join(
-        " AND ",
-        primaryKeyColumns
-          .Where(c =>
-            c.ColumnName != timestampColumn
-            && c.ColumnName != intervalColumn)
-          .Select(c =>
-            $"{tableName}.{c.ColumnName} = delta.{c.ColumnName}"))}
+            " AND ",
+            primaryKeyColumns
+              .Where(c =>
+                c.ColumnName != timestampColumn
+                && c.ColumnName != intervalColumn)
+              .Select(c =>
+                $"{tableName}.{c.ColumnName} = delta.{c.ColumnName}"))}
         RETURNING *
       )
       SELECT * FROM daily
