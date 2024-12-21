@@ -5,7 +5,8 @@ using System.Reflection;
 using Dapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Pomelo.EntityFrameworkCore.MySql.Metadata.Internal;
+using Microsoft.EntityFrameworkCore.Storage;
+using Ozds.Data.Attributes;
 
 namespace Ozds.Data.Extensions;
 
@@ -22,26 +23,68 @@ public static class DbContextDapperCommandExtensions
       CancellationToken cancellationToken,
       object? parameters = null
   )
-    where T : class, new()
   {
+    var objects = await DapperCommand(
+      context,
+      typeof(T),
+      sql,
+      cancellationToken,
+      parameters
+    );
+
+    return objects.Select(x => (T)x).ToList();
+  }
+
+  [DapperResult]
+  private sealed class DapperSingleResult<T>
+  {
+#pragma warning disable S1144 // Unused private types or members should be removed
+    public required T Value { get; init; }
+#pragma warning restore S1144 // Unused private types or members should be removed
+  }
+
+  public static async Task<List<object>> DapperCommand(
+      this DbContext context,
+      Type type,
+      string sql,
+      CancellationToken cancellationToken,
+      object? parameters = null
+  )
+  {
+    var resultAttribute = type.GetCustomAttribute<DapperResultAttribute>();
+    if (resultAttribute is null)
+    {
+      type = typeof(DapperSingleResult<>).MakeGenericType(type);
+    }
+
     var connection = context.GetDapperDbConnection();
     var command = new CommandDefinition(
         sql,
         parameters,
+        transaction: context.Database.CurrentTransaction?.GetDbTransaction(),
         cancellationToken: cancellationToken
     );
     using var reader = await connection.ExecuteReaderAsync(command);
 
-    var results = new List<T>();
+    var results = new List<object>();
     var propertyMappings = _propertyMappingsCache.GetOrAdd(
-      typeof(T),
-      (_) => GetPropertyMappings(context, typeof(T)));
+      type,
+      (type) => GetPropertyMappings(context, type));
     while (await reader.ReadAsync(cancellationToken))
     {
       var splits = SplitReader(reader, propertyMappings);
-      var instance = new T();
+      var instance = Activator.CreateInstance(type)
+        ?? throw new InvalidOperationException(
+          $"Failed to create instance of {type.Name}");
       MapProperties(context, instance, splits);
       results.Add(instance);
+    }
+
+    if (resultAttribute is null)
+    {
+      return results
+        .Select(x => type.GetProperty("Value")?.GetValue(x)!)
+        .ToList();
     }
 
     return results;

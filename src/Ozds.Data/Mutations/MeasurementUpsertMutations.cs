@@ -1,9 +1,7 @@
 using System.Collections.Concurrent;
 using System.Data;
-using Dapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Storage;
 using Npgsql;
 using Ozds.Data.Context;
 using Ozds.Data.Entities.Abstractions;
@@ -21,38 +19,38 @@ public class MeasurementUpsertMutations(
   IDbContextFactory<DataDbContext> factory
 ) : IMutations
 {
-  private const int ChunkSize = 100;
+  private const int ChunkSize = 10;
 
-  public async Task UpsertMeasurements(
+  public async Task<List<IMeasurementEntity>> UpsertMeasurements(
     IEnumerable<IMeasurementEntity> measurements,
     CancellationToken cancellationToken
   )
   {
     await using var context = await factory
       .CreateDbContextAsync(cancellationToken);
-    await UpsertMeasurements(
+
+    return await UpsertMeasurements(
       context,
       measurements,
       cancellationToken
     );
   }
 
-  internal async Task UpsertMeasurements(
+  internal async Task<List<IMeasurementEntity>> UpsertMeasurements(
     DataDbContext context,
     IEnumerable<IMeasurementEntity> measurements,
     CancellationToken cancellationToken
   )
   {
-    if (context.Database.CurrentTransaction is { } transaction)
+    if (context.Database.CurrentTransaction is { })
     {
-      await ExecuteCommands(
+      var results = await ExecuteCommands(
         context,
         measurements,
-        transaction,
         cancellationToken
       );
 
-      return;
+      return results;
     }
 
     while (true)
@@ -61,38 +59,37 @@ public class MeasurementUpsertMutations(
       {
         var isolationLevel = IsolationLevel.RepeatableRead;
 
-        transaction = await context.Database
+        await context.Database
           .BeginTransactionAsync(isolationLevel, cancellationToken);
 
-        await ExecuteCommands(
+        var results = await ExecuteCommands(
           context,
           measurements,
-          transaction,
           cancellationToken
         );
 
         await context.Database
           .CommitTransactionAsync(cancellationToken);
 
-        break;
+        return results;
       }
       catch (PostgresException ex)
       {
         if (ex.Message.StartsWith("40001"))
         {
-          await context.Database.RollbackTransactionAsync();
+          await context.Database.RollbackTransactionAsync(cancellationToken);
           continue;
         }
 
         if (ex.Message.StartsWith("40P01"))
         {
-          await context.Database.RollbackTransactionAsync();
+          await context.Database.RollbackTransactionAsync(cancellationToken);
           continue;
         }
 
         if (ex.Message.StartsWith("P0002"))
         {
-          await context.Database.RollbackTransactionAsync();
+          await context.Database.RollbackTransactionAsync(cancellationToken);
           continue;
         }
 
@@ -101,55 +98,13 @@ public class MeasurementUpsertMutations(
     }
   }
 
-  private async Task ExecuteCommands(
+  private async Task<List<IMeasurementEntity>> ExecuteCommands(
     DataDbContext context,
     IEnumerable<IMeasurementEntity> measurements,
-    IDbContextTransaction transaction,
     CancellationToken cancellationToken
   )
   {
-    var connection = context.GetDapperDbConnection();
-    var commands = CreateCommands(context, measurements);
-
-    foreach (var x in commands.Chunk(ChunkSize))
-    {
-      var parameters = context.CreateBulkParameters(
-        x.Select(y => (y.Measurement as object, y.Index)));
-      var sql = string.Join("\n", x.Select(y => y.Sql));
-
-      // NOTE: good for debugging
-#pragma warning disable S125 // Sections of code should not be commented out
-      // var parameterString = string.Join(
-      //   "\n",
-      //   parameters.Select(kv =>
-      //   {
-      //     var key = kv.Key.Replace("@", "");
-      //     var val = kv.Value is DateTimeOffset dt
-      //       ? $"'{dt.ToString("o", System.Globalization.CultureInfo.InvariantCulture)}'"
-      //       : kv.Value is string s
-      //         ? $"'{s}'"
-      //         : kv.Value;
-      //     return $"\\set {key} {val}";
-      //   }));
-      // Console.WriteLine(parameterString);
-      // Console.WriteLine(sql);
-#pragma warning restore S125 // Sections of code should not be commented out
-
-      var command = new CommandDefinition(
-        sql,
-        new DynamicParameters(parameters),
-        transaction: transaction.GetDbTransaction(),
-        cancellationToken: cancellationToken
-      );
-      await connection.ExecuteAsync(command);
-    }
-  }
-
-  private IEnumerable<(string Sql, int Index, IMeasurementEntity Measurement)> CreateCommands(
-      DataDbContext context,
-      IEnumerable<IMeasurementEntity> measurements)
-  {
-    var ordered = measurements
+    var grouped = measurements
       .Select((x, i) => (Index: i, Measurement: x))
       .OrderBy(x => x.Measurement is IAggregateEntity aggregate
         ? aggregate.Interval switch
@@ -160,20 +115,75 @@ public class MeasurementUpsertMutations(
           _ => throw new InvalidOperationException(
             $"Unknown interval {aggregate.Interval}.")
         }
-        : 0);
+        : 0)
+      .GroupBy(x => x.Measurement.GetType());
 
-    foreach (var (index, measurement) in ordered)
+    var results = new List<IMeasurementEntity>();
+    foreach (var group in grouped)
     {
-      var sql = Upsert(
-        context,
-        measurement.GetType(),
-        measurement is IAggregateEntity aggregate ? aggregate.Interval : null,
-        index);
-      yield return (sql, index, measurement);
+      var type = group.Key;
+
+      foreach (var chunk in group.Chunk(ChunkSize))
+      {
+        var parameters = context.CreateBulkParameters(
+          chunk.Select(x => (x.Measurement as object, x.Index)));
+        var commands = chunk
+          .Select(x => CreateCommand(
+            context,
+            type,
+            x.Measurement is IAggregateEntity aggregate
+              ? aggregate.Interval
+              : null,
+            x.Index))
+          .ToList();
+        var queryClauses = commands
+          .Select(x => x.Query)
+          .ToList();
+        var withClauses = commands
+          .Select(x => x.With)
+          .Where(x => x is not null)
+          .ToList();
+        var sql = string.Join("\nUNION ALL\n", queryClauses);
+        if (withClauses.Count > 0)
+        {
+          sql = $@"
+            WITH {string.Join(",\n", withClauses)}
+            {sql}
+          ";
+        }
+
+        // NOTE: good for debugging
+#pragma warning disable S125 // Sections of code should not be commented out
+        // var parameterString = string.Join(
+        //   "\n",
+        //   parameters.Select(kv =>
+        //   {
+        //     var key = kv.Key.Replace("@", "");
+        //     var val = kv.Value is DateTimeOffset dt
+        //       ? $"'{dt.ToString("o", System.Globalization.CultureInfo.InvariantCulture)}'"
+        //       : kv.Value is string s
+        //         ? $"'{s}'"
+        //         : kv.Value;
+        //     return $"\\set {key} {val}";
+        //   }));
+        // Console.WriteLine(parameterString);
+        // Console.WriteLine(sql);
+#pragma warning restore S125 // Sections of code should not be commented out
+
+        var objects = await context.DapperCommand(
+          type,
+          sql,
+          cancellationToken,
+          parameters
+        );
+        results.AddRange(objects.Select(x => (IMeasurementEntity)x));
+      }
     }
+
+    return results;
   }
 
-  private static string Upsert(
+  private static (string? With, string Query) CreateCommand(
     DataDbContext context,
     Type type,
     IntervalEntity? interval,
@@ -188,10 +198,13 @@ public class MeasurementUpsertMutations(
         : CreateUpsertMeasurementTemplate(
             context, type, "{{INDEX}}")
     );
-    return template.Replace("{{INDEX}}", index.ToString());
+    return (
+      template.With?.Replace("{{INDEX}}", index.ToString()),
+      template.Query.Replace("{{INDEX}}", index.ToString())
+    );
   }
 
-  private static string CreateUpsertMeasurementTemplate(
+  private static (string? With, string Query) CreateUpsertMeasurementTemplate(
     DataDbContext context,
     Type type,
     string indexSubstitution)
@@ -242,14 +255,22 @@ public class MeasurementUpsertMutations(
 
     var updateClause = "DO NOTHING";
 
-    return $@"
-      INSERT INTO {tableName} ({columns})
-      VALUES ({values})
-      ON CONFLICT ({conflict}) {updateClause};
-    ";
+    return (
+      $@"
+        value{indexSubstitution} AS (
+          INSERT INTO {tableName} ({columns})
+          VALUES ({values})
+          ON CONFLICT ({conflict}) {updateClause}
+          RETURNING {tableName}.*
+        )
+      ",
+      $@"
+        SELECT * FROM value{indexSubstitution}
+      "
+    );
   }
 
-  private static string CreateUpsertAggregateTemplate(
+  private static (string? With, string Query) CreateUpsertAggregateTemplate(
     DataDbContext context,
     Type type,
     IntervalEntity interval,
@@ -335,7 +356,7 @@ public class MeasurementUpsertMutations(
 
         deltaUpsertClauses.Add(
           $"{quarterHourCountColumn} = {tableName}.{quarterHourCountColumn}"
-          + $" + delta.new_count"
+          + $" + delta{indexSubstitution}.new_count"
         );
       }
       if (col.Contains("derived")
@@ -378,21 +399,27 @@ public class MeasurementUpsertMutations(
         if (col.Contains("avg"))
         {
           deltaClauses.Add(
-            $"new.{col} - COALESCE(old.{col}, 0) {col}"
+            $"new{indexSubstitution}.{col}"
+            + $" - COALESCE(old{indexSubstitution}.{col}, 0) {col}"
           );
           deltaUpsertClauses.Add(
-            $"{col} = ({tableName}.{col} * {tableName}.{quarterHourCountColumn}"
-            + $" + delta.{col})"
-            + $" / ({tableName}.{quarterHourCountColumn} + delta.new_count)"
+            $"{col} = ({tableName}.{col}"
+            + $" * {tableName}.{quarterHourCountColumn}"
+            + $" + delta{indexSubstitution}.{col})"
+            + $" / ({tableName}.{quarterHourCountColumn}"
+            + $" + delta{indexSubstitution}.new_count)"
           );
         }
         else if (col.Contains("min"))
         {
           deltaClauses.Add(
-            $"LEAST(new.{col}, COALESCE(old.{col}, new.{col})) {col}"
+            $"LEAST(new{indexSubstitution}.{col},"
+            + $" COALESCE(old{indexSubstitution}.{col},"
+            + $" new{indexSubstitution}.{col})) {col}"
           );
           deltaUpsertClauses.Add(
-            $"{col} = LEAST(delta.{col}, {tableName}.{col})"
+            $"{col} = LEAST(delta{indexSubstitution}.{col},"
+            + $" {tableName}.{col})"
           );
 
           if (!col.Contains("energy"))
@@ -402,15 +429,19 @@ public class MeasurementUpsertMutations(
               + "_timestamp";
             deltaClauses.Add(
                 $"CASE"
-                + $" WHEN new.{col} < COALESCE(old.{col}, new.{col})"
-                + $" THEN new.{timestampCol}"
-                + $" ELSE COALESCE(old.{timestampCol}, new.{timestampCol})"
+                + $" WHEN new{indexSubstitution}.{col}"
+                + $" < COALESCE(old{indexSubstitution}.{col},"
+                + $" new{indexSubstitution}.{col})"
+                + $" THEN new{indexSubstitution}.{timestampCol}"
+                + $" ELSE COALESCE(old{indexSubstitution}.{timestampCol},"
+                + $" new{indexSubstitution}.{timestampCol})"
                 + $" END {timestampCol}"
             );
             deltaUpsertClauses.Add(
                 $"{timestampCol} = CASE"
-                + $" WHEN delta.{col} < {tableName}.{col}"
-                + $" THEN delta.{timestampCol}"
+                + $" WHEN delta{indexSubstitution}.{col}"
+                + $" < {tableName}.{col}"
+                + $" THEN delta{indexSubstitution}.{timestampCol}"
                 + $" ELSE {tableName}.{timestampCol}"
                 + $" END"
             );
@@ -419,10 +450,13 @@ public class MeasurementUpsertMutations(
         else if (col.Contains("max"))
         {
           deltaClauses.Add(
-            $"GREATEST(new.{col}, COALESCE(old.{col}, new.{col})) {col}"
+            $"GREATEST(new{indexSubstitution}.{col},"
+            + $" COALESCE(old{indexSubstitution}.{col},"
+            + $" new{indexSubstitution}.{col})) {col}"
           );
           deltaUpsertClauses.Add(
-            $"{col} = GREATEST(delta.{col}, {tableName}.{col})"
+            $"{col} = GREATEST(delta{indexSubstitution}.{col},"
+            + $" {tableName}.{col})"
           );
 
           if (!col.Contains("energy"))
@@ -432,16 +466,21 @@ public class MeasurementUpsertMutations(
               + "_timestamp";
             deltaClauses.Add(
                 $"CASE"
-                + $" WHEN new.{col} > COALESCE(old.{col}, new.{col})"
-                + $" THEN new.{timestampCol}"
-                + $" ELSE COALESCE(old.{timestampCol}, new.{timestampCol})"
+                + $" WHEN new{indexSubstitution}.{col}"
+                + $" > COALESCE(old{indexSubstitution}.{col},"
+                + $" new{indexSubstitution}.{col})"
+                + $" THEN new{indexSubstitution}.{timestampCol}"
+                + $" ELSE COALESCE(old{indexSubstitution}.{timestampCol},"
+                + $" new{indexSubstitution}.{timestampCol})"
                 + $" END {timestampCol}"
             );
             deltaUpsertClauses.Add(
                 $"{timestampCol} = CASE"
-                + $" WHEN delta.{col} > {tableName}.{col}"
-                + $" THEN delta.{timestampCol} "
-                + $" ELSE {tableName}.{timestampCol} END"
+                + $" WHEN delta{indexSubstitution}.{col}"
+                + $" > {tableName}.{col}"
+                + $" THEN delta{indexSubstitution}.{timestampCol} "
+                + $" ELSE {tableName}.{timestampCol}"
+                + " END"
             );
           }
         }
@@ -495,95 +534,127 @@ public class MeasurementUpsertMutations(
 
     if (interval != IntervalEntity.QuarterHour)
     {
-      return $@"
-        INSERT INTO {tableName} ({columns})
-        VALUES ({values})
-        ON CONFLICT ({conflict}) {updateClause};
-      ";
+      return (
+        $@"
+          value{indexSubstitution} AS (
+            INSERT INTO {tableName} ({columns})
+            VALUES ({values})
+            ON CONFLICT ({conflict}) {updateClause}
+            RETURNING {tableName}.*
+          )
+        ",
+        $@"
+          SELECT * FROM value{indexSubstitution}
+        "
+      );
     }
 
-    return $@"
-      WITH old AS (
-        SELECT {tableName}.*
-        FROM {tableName}
-        WHERE {string.Join(
-          " AND ",
-          primaryKeyColumns.Select(c =>
-            $"{tableName}.{c.ColumnName} = @p{indexSubstitution}_{c.ColumnName}"
-              + (c.Property.ClrType.IsEnum
-                ? $"::{c.Property.ClrType.Name.ToSnakeCase()}"
-                : "")))}
-      ), new AS (
-        INSERT INTO {tableName} ({columns})
-        VALUES ({values})
-        ON CONFLICT ({conflict}) {updateClause}
-        RETURNING *
-      ), delta AS (
-        SELECT
-          date_trunc(
-            'day',
-            new.{timestampColumn} AT TIME ZONE 'Europe/Zagreb')
-            AT TIME ZONE 'Europe/Zagreb'
-            daily_timestamp,
-          date_trunc(
-            'month',
-            new.{timestampColumn} AT TIME ZONE 'Europe/Zagreb')
-            AT TIME ZONE 'Europe/Zagreb'
-            monthly_timestamp,
-            {string.Join(", ", primaryKeyColumns.Select(c => $"new.{c.ColumnName}"))},
-          CASE
-            WHEN old.{timestampColumn} is null then 1
-            ELSE 0
-          END new_count,
-          {string.Join(", ", deltaClauses)}
-        FROM new
-        LEFT JOIN old ON
-          {string.Join(
+    var dayIntervalValue = IntervalEntity.Day.ToString().ToSnakeCase();
+    var monthIntervalValue = IntervalEntity.Month.ToString().ToSnakeCase();
+    var intervalTypeName = nameof(IntervalEntity).ToSnakeCase();
+
+    return (
+      $@"
+        old{indexSubstitution} AS (
+          SELECT {tableName}.*
+          FROM {tableName}
+          WHERE {string.Join(
             " AND ",
-            primaryKeyColumns.Select(
-              c => $"old.{c.ColumnName} = new.{c.ColumnName}"))}
-      ), daily AS (
-        UPDATE {tableName} SET
-          {string.Join(", ", deltaUpsertClauses)}
-        FROM delta
-        WHERE
-          {tableName}.{timestampColumn} = delta.daily_timestamp
-          AND {tableName}.{intervalColumn}
-            = '{IntervalEntity.Day.ToString().ToSnakeCase()}'::{nameof(IntervalEntity).ToSnakeCase()}
-          AND {string.Join(
-            " AND ",
-            primaryKeyColumns
-              .Where(c =>
-                c.ColumnName != timestampColumn
-                && c.ColumnName != intervalColumn)
-              .Select(c =>
-                $"{tableName}.{c.ColumnName} = delta.{c.ColumnName}"))}
-        RETURNING *
-      ), monthly AS (
-        UPDATE {tableName} SET
-          {string.Join(", ", deltaUpsertClauses)}
-        FROM delta
-        WHERE
-          {tableName}.{timestampColumn} = delta.monthly_timestamp
-          AND {tableName}.{intervalColumn}
-            = '{IntervalEntity.Month.ToString().ToSnakeCase()}'::{nameof(IntervalEntity).ToSnakeCase()}
-          AND {string.Join(
-            " AND ",
-            primaryKeyColumns
-              .Where(c =>
-                c.ColumnName != timestampColumn
-                && c.ColumnName != intervalColumn)
-              .Select(c =>
-                $"{tableName}.{c.ColumnName} = delta.{c.ColumnName}"))}
-        RETURNING *
-      )
-      SELECT * FROM daily
-      UNION ALL
-      SELECT * FROM monthly;
-    ";
+            primaryKeyColumns.Select(c =>
+              $"{tableName}.{c.ColumnName}"
+                + $" = @p{indexSubstitution}_{c.ColumnName}"
+                + (c.Property.ClrType.IsEnum
+                  ? $"::{c.Property.ClrType.Name.ToSnakeCase()}"
+                  : "")))}
+        ), new{indexSubstitution} AS (
+          INSERT INTO {tableName} ({columns})
+          VALUES ({values})
+          ON CONFLICT ({conflict}) {updateClause}
+          RETURNING {tableName}.*
+        ), delta{indexSubstitution} AS (
+          SELECT
+            date_trunc(
+              'day',
+              new{indexSubstitution}.{timestampColumn}
+                AT TIME ZONE 'Europe/Zagreb')
+              AT TIME ZONE 'Europe/Zagreb'
+              daily_timestamp,
+            date_trunc(
+              'month',
+              new{indexSubstitution}.{timestampColumn}
+                AT TIME ZONE 'Europe/Zagreb')
+              AT TIME ZONE 'Europe/Zagreb'
+              monthly_timestamp,
+              {string.Join(
+                ", ",
+                primaryKeyColumns.Select(c =>
+                  $"new{indexSubstitution}.{c.ColumnName}"))},
+            CASE
+              WHEN old{indexSubstitution}.{timestampColumn} is null then 1
+              ELSE 0
+            END new_count,
+            {string.Join(", ", deltaClauses)}
+          FROM new{indexSubstitution}
+          LEFT JOIN old{indexSubstitution} ON
+            {string.Join(
+              " AND ",
+              primaryKeyColumns.Select(
+                c => $"old{indexSubstitution}.{c.ColumnName}"
+                  + $" = new{indexSubstitution}.{c.ColumnName}"))}
+        ), daily{indexSubstitution} AS (
+          UPDATE {tableName} SET
+            {string.Join(", ", deltaUpsertClauses)}
+          FROM delta{indexSubstitution}
+          WHERE
+            {tableName}.{timestampColumn}
+              = delta{indexSubstitution}.daily_timestamp
+            AND {tableName}.{intervalColumn}
+              = '{dayIntervalValue}'::{intervalTypeName}
+            AND {string.Join(
+              " AND ",
+              primaryKeyColumns
+                .Where(c =>
+                  c.ColumnName != timestampColumn
+                  && c.ColumnName != intervalColumn)
+                .Select(c =>
+                  $"{tableName}.{c.ColumnName}"
+                  + $" = delta{indexSubstitution}.{c.ColumnName}"))}
+          RETURNING {tableName}.*
+        ), monthly{indexSubstitution} AS (
+          UPDATE {tableName} SET
+            {string.Join(", ", deltaUpsertClauses)}
+          FROM delta{indexSubstitution}
+          WHERE
+            {tableName}.{timestampColumn}
+              = delta{indexSubstitution}.monthly_timestamp
+            AND {tableName}.{intervalColumn}
+              = '{monthIntervalValue}'::{intervalTypeName}
+            AND {string.Join(
+              " AND ",
+              primaryKeyColumns
+                .Where(c =>
+                  c.ColumnName != timestampColumn
+                  && c.ColumnName != intervalColumn)
+                .Select(c =>
+                  $"{tableName}.{c.ColumnName}"
+                  + $" = delta{indexSubstitution}.{c.ColumnName}"))}
+          RETURNING {tableName}.*
+        )
+      ",
+      $@"
+        SELECT * FROM new{indexSubstitution}
+        UNION ALL
+        SELECT * FROM daily{indexSubstitution}
+        UNION ALL
+        SELECT * FROM monthly{indexSubstitution}
+      "
+    );
   }
 
-  private static readonly ConcurrentDictionary<(Type, IntervalEntity?), string>
-    UpsertTemplateCache =
-      new ConcurrentDictionary<(Type, IntervalEntity?), string>();
+  private static readonly ConcurrentDictionary<
+    (Type, IntervalEntity?),
+    (string? With, string Query)>
+    UpsertTemplateCache = new ConcurrentDictionary<
+      (Type, IntervalEntity?),
+      (string? With, string Query)>();
 }

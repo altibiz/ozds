@@ -1,5 +1,6 @@
 using System.Data;
 using Microsoft.EntityFrameworkCore;
+using Ozds.Data.Attributes;
 using Ozds.Data.Context;
 using Ozds.Data.Entities;
 using Ozds.Data.Entities.Base;
@@ -466,6 +467,7 @@ public class AnalysisQueries(
       .ToList();
   }
 
+  [DapperResult]
   private sealed class DetailedMeasurementLocationsByRepresentativeIntermediary
   {
     public RepresentativeEntity Representative
