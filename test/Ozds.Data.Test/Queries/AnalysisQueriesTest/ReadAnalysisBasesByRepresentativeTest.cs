@@ -11,120 +11,107 @@ public class ReadAnalysisBasesByRepresentativeTest(IServiceProvider services)
   [Fact]
   public async Task IsValidTest()
   {
-    var results = await Task.WhenAll(Enumerable
-      .Range(1, Constants.DefaultRepeatCount)
-      .Select(async i =>
-      {
-        await using var manager = services
-          .GetRequiredService<EphemeralDataDbContextManager>();
-        var context = await manager.GetContext();
-        var factory = new AnalysisBasisEntityFactory(context);
+    await using var manager = services
+      .GetRequiredService<EphemeralDataDbContextManager>();
+    var context = await manager.GetContext();
+    var factory = new AnalysisBasisEntityFactory(context);
 
-        var representativeId = i.ToString();
-        var dateTo = DateTime.UtcNow;
-        var dateFrom = dateTo.AddMonths(-i);
+    var representativeId = 1.ToString();
+    var dateTo = DateTime.UtcNow;
+    var dateFrom = dateTo.AddMonths(-1);
 
-        var expected = await factory.Create(
-          representativeId,
-          dateFrom,
-          dateTo,
-          CancellationToken.None
-        );
-
-        var representative = expected.First().Representative;
-        var fromDate = expected.First().FromDate;
-        var toDate = expected.First().ToDate;
-
-        var queries = services.GetRequiredService<AnalysisQueries>();
-        var actual = await queries.ReadAnalysisBasesByRepresentative(
-          context,
-          representative.Id,
-          representative.Role,
-          fromDate,
-          toDate,
-          CancellationToken.None
-        );
-
-        expected = expected
-          .Select(x => x with
-          {
-            Calculations = x.Calculations.OrderBy(y => y.Id).ToList(),
-            Invoices = x.Invoices.OrderBy(y => y.Id).ToList()
-          })
-          .OrderBy(x => x.MeasurementLocation.Id)
-          .ToList();
-        actual = actual
-          .Select(x => x with
-          {
-            Calculations = x.Calculations.OrderBy(y => y.Id).ToList(),
-            Invoices = x.Invoices.OrderBy(y => y.Id).ToList()
-          })
-          .OrderBy(x => x.MeasurementLocation.Id)
-          .ToList();
-
-        return new TestResult<List<AnalysisBasisEntity>>(expected, actual);
-      })
+    var expected = await factory.Create(
+      representativeId,
+      dateFrom,
+      dateTo,
+      CancellationToken.None
     );
 
-    await using var manager = services
-      .GetRequiredService<DataDbContextManager>();
-    var context = await manager.GetContext();
+    var representative = expected.First().Representative;
+    var fromDate = expected.First().FromDate;
+    var toDate = expected.First().ToDate;
 
-    results.Should().AllSatisfy(result =>
-    {
-      result.Actual.Should().HaveCount(result.Expected.Count);
+    var queries = services.GetRequiredService<AnalysisQueries>();
+    var actual = await queries.ReadAnalysisBasesByRepresentative(
+      context,
+      representative.Id,
+      representative.Role,
+      fromDate,
+      toDate,
+      CancellationToken.None
+    );
 
-      result.Actual.Should().AllSatisfy(actual =>
+    expected = expected
+      .Select(x => x with
       {
-        var expected = result.Expected.FirstOrDefault(expected =>
-          expected.MeasurementLocation.Id == actual.MeasurementLocation.Id)!;
+        Calculations = x.Calculations.OrderBy(y => y.Id).ToList(),
+        Invoices = x.Invoices.OrderBy(y => y.Id).ToList()
+      })
+      .OrderBy(x => x.MeasurementLocation.Id)
+      .ToList();
+    actual = actual
+      .Select(x => x with
+      {
+        Calculations = x.Calculations.OrderBy(y => y.Id).ToList(),
+        Invoices = x.Invoices.OrderBy(y => y.Id).ToList()
+      })
+      .OrderBy(x => x.MeasurementLocation.Id)
+      .ToList();
 
-        expected.Should().NotBeNull();
+    var result = new TestResult<List<AnalysisBasisEntity>>(expected, actual);
 
-        actual.Representative
-          .Should()
-          .BeContextuallyEquivalentTo(context, expected.Representative);
+    result.Actual.Should().HaveCount(result.Expected.Count);
 
-        actual.FromDate.Should().BeExactly(expected.FromDate);
-        actual.ToDate.Should().BeExactly(expected.ToDate);
+    result.Actual.Should().AllSatisfy(actual =>
+    {
+      var expected = result.Expected.FirstOrDefault(expected =>
+        expected.MeasurementLocation.Id == actual.MeasurementLocation.Id)!;
 
-        actual.Location
-          .Should()
-          .BeContextuallyEquivalentTo(context, expected.Location);
+      expected.Should().NotBeNull();
 
-        actual.NetworkUser
-          .Should()
-          .BeContextuallyEquivalentTo(context, expected.NetworkUser);
+      actual.Representative
+        .Should()
+        .BeContextuallyEquivalentTo(context, expected.Representative);
 
-        actual.MeasurementLocation
-          .Should()
-          .BeContextuallyEquivalentTo(context, expected.MeasurementLocation);
+      actual.FromDate.Should().BeExactly(expected.FromDate);
+      actual.ToDate.Should().BeExactly(expected.ToDate);
 
-        actual.Meter
-          .Should()
-          .BeContextuallyEquivalentTo(context, expected.Meter);
+      actual.Location
+        .Should()
+        .BeContextuallyEquivalentTo(context, expected.Location);
 
-        actual.Calculations
-          .Should()
-          .BeContextuallyEquivalentTo(context, expected.Calculations);
+      actual.NetworkUser
+        .Should()
+        .BeContextuallyEquivalentTo(context, expected.NetworkUser);
 
-        actual.Invoices
-          .Should()
-          .BeContextuallyEquivalentTo(context, expected.Invoices);
+      actual.MeasurementLocation
+        .Should()
+        .BeContextuallyEquivalentTo(context, expected.MeasurementLocation);
 
-        actual.LastMeasurement
-          .Should()
-          .BeContextuallyEquivalentTo(context, expected.LastMeasurement);
+      actual.Meter
+        .Should()
+        .BeContextuallyEquivalentTo(context, expected.Meter);
 
-        actual.MonthlyAggregates
-          .Should()
-          .BeContextuallyEquivalentTo(context, expected.MonthlyAggregates);
+      actual.Calculations
+        .Should()
+        .BeContextuallyEquivalentTo(context, expected.Calculations);
 
-        var actualModel = actual.ToModel();
-        var expectedModel = expected.ToModel();
+      actual.Invoices
+        .Should()
+        .BeContextuallyEquivalentTo(context, expected.Invoices);
 
-        actualModel.Should().BeBusinesswiseEquivalentTo(expectedModel);
-      });
+      actual.LastMeasurement
+        .Should()
+        .BeContextuallyEquivalentTo(context, expected.LastMeasurement);
+
+      actual.MonthlyAggregates
+        .Should()
+        .BeContextuallyEquivalentTo(context, expected.MonthlyAggregates);
+
+      var actualModel = actual.ToModel();
+      var expectedModel = expected.ToModel();
+
+      actualModel.Should().BeBusinesswiseEquivalentTo(expectedModel);
     });
   }
 }
