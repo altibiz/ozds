@@ -2,7 +2,7 @@ using System.Diagnostics;
 using Ozds.Data.Mutations;
 using Ozds.Data.Test.Context;
 
-namespace Ozds.Data.Test.Queries.MeasurementUpsertMutationsTest;
+namespace Ozds.Data.Test.Mutations.MeasurementUpsertMutationsTest;
 
 // TODO: check upsert logic
 

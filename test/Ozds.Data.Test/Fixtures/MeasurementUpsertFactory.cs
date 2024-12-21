@@ -14,7 +14,9 @@ public class MeasurementUpsertFactory(DbContext context)
   private const int AggregateCount =
     MeasurementCount / 10;
 
-  public async Task<List<IMeasurementEntity>> Create(CancellationToken cancellationToken)
+  public async Task<List<IMeasurementEntity>> Create(
+    CancellationToken cancellationToken
+  )
   {
     var result = new List<IMeasurementEntity>();
 
