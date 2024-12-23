@@ -1,6 +1,6 @@
 using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Models.Composite;
-using Ozds.Data.Queries.Abstractions;
+using Ozds.Business.Queries.Abstractions;
 using DataBillingQueries = Ozds.Data.Queries.BillingQueries;
 
 // TODO: location invoices

@@ -1,6 +1,6 @@
 using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Models.Abstractions;
-using Ozds.Data.Queries.Abstractions;
+using Ozds.Business.Queries.Abstractions;
 using DataReadonlyQueries = Ozds.Data.Queries.Agnostic.ReadonlyQueries;
 
 namespace Ozds.Business.Queries.Agnostic;
