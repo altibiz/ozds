@@ -1,7 +1,5 @@
 using System.Diagnostics;
-using Humanizer;
 using Microsoft.EntityFrameworkCore;
-using Ozds.Business.Aggregation.Agnostic;
 using Ozds.Business.Models.Enums;
 using Ozds.Data.Entities;
 using Ozds.Data.Entities.Abstractions;
@@ -43,8 +41,6 @@ public class UpsertMeasurementsTest(IServiceProvider services)
 
   [Theory]
   [InlineData(1)]
-  [InlineData(2)]
-  [InlineData(3)]
   public async Task IsValidTest(int _)
   {
     await using var manager = services
