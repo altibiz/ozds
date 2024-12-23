@@ -6,7 +6,9 @@
 using System.Globalization;
 using Ozds.Business.Finance.Abstractions;
 using Ozds.Business.Localization.Abstractions;
+using Ozds.Business.Models;
 using Ozds.Business.Models.Base;
+using Ozds.Business.Models.Composite;
 using Ozds.Business.Mutations;
 using Ozds.Business.Mutations.Agnostic;
 using Ozds.Business.Queries;
@@ -20,10 +22,10 @@ namespace Ozds.Business.Finance;
 // TODO: to mutations
 
 public class NetworkUserInvoiceIssuer(
+  IServiceScopeFactory factory,
   BillingQueries ozdsBillingQueries,
   INetworkUserInvoiceCalculator invoiceCalculator,
   ReadonlyQueries queries,
-  ReadonlyMutations mutations,
   ILocalizer localizer,
   IMessageSender messageSender
 ) : INetworkUserInvoiceIssuer
@@ -34,30 +36,37 @@ public class NetworkUserInvoiceIssuer(
     DateTimeOffset dateTo
   )
   {
-    var basis = await ozdsBillingQueries
-      .IssuingBasisForNetworkUser(
-        networkUserId,
-        dateFrom,
-        dateTo,
-        CancellationToken.None
-      );
-    var invoice = invoiceCalculator.Calculate(basis);
-    var invoiceId = await mutations.Create(invoice.Invoice, CancellationToken.None);
-
-    foreach (var calculation in invoice.Calculations)
+    NetworkUserInvoiceIssuingBasisModel? basis = null;
+    CalculatedNetworkUserInvoiceModel? invoice = null;
     {
-      if (calculation is NetworkUserCalculationModel networkUserCalculation)
+      await using var scope = factory.CreateAsyncScope();
+      var billingQueries = scope.ServiceProvider
+        .GetRequiredService<BillingQueries>();
+      var readonlyMutations = scope.ServiceProvider
+        .GetRequiredService<ReadonlyMutations>();
+      basis = await billingQueries
+        .IssuingBasisForNetworkUser(
+          networkUserId,
+          dateFrom,
+          dateTo,
+          CancellationToken.None
+        );
+      invoice = invoiceCalculator.Calculate(basis);
+      invoice.Invoice.Id = await readonlyMutations.Create(invoice.Invoice, CancellationToken.None);
+      foreach (var calculation in invoice.Calculations)
       {
-        networkUserCalculation.NetworkUserInvoiceId = invoiceId;
+        if (calculation is NetworkUserCalculationModel networkUserCalculation)
+        {
+          networkUserCalculation.NetworkUserInvoiceId = invoice.Invoice.Id;
+        }
+        await readonlyMutations.Create(calculation, CancellationToken.None);
       }
-      await mutations.Create(calculation, CancellationToken.None);
     }
-
     var culture = CultureInfo.CreateSpecificCulture("hr-HR");
 
     await messageSender.AcknowledgeNetworkUserInvoice(
       new AcknowledgeNetworkUserInvoice(
-        invoiceId,
+        invoice.Invoice.Id,
         basis.NetworkUser.AltiBizSubProjectCode,
         basis.ToDate,
         [
