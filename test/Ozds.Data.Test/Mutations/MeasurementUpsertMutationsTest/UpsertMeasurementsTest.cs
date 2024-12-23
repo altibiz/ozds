@@ -11,8 +11,6 @@ using Ozds.Data.Test.Extensions;
 
 namespace Ozds.Data.Test.Mutations.MeasurementUpsertMutationsTest;
 
-// TODO: check upsert logic
-
 public class UpsertMeasurementsTest(IServiceProvider services)
 {
   [Theory]
