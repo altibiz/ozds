@@ -55,17 +55,26 @@ public class SeedHostedService(
 
       async Task GenerateMeasurements()
       {
+        measurements.Clear();
+
         var nextSeedTimeEnd = seedTimeEnd.AddDays(1) > now
           ? now
           : seedTimeEnd.AddDays(1);
-        measurements.Clear();
+        var measurementRanges = new List<List<IMeterPushRequestEntity>>();
+        var tasks = new List<Task>();
         foreach (var meterId in seed.MeterIds)
         {
-          measurements.AddRange(
-            await generator.GenerateMeasurements(
-              seedTimeEnd, nextSeedTimeEnd, seed.MessengerId, meterId,
-              stoppingToken));
+          var measurementRange = new List<IMeterPushRequestEntity>();
+          measurementRanges.Add(measurementRange);
+          tasks.Add(Task.Run(async () =>
+            measurementRange.AddRange(
+              await generator.GenerateMeasurements(
+                seedTimeEnd, nextSeedTimeEnd, seed.MessengerId, meterId,
+                stoppingToken))));
         }
+        await Task.WhenAll(tasks);
+
+        measurements.AddRange(measurementRanges.SelectMany(x => x));
       }
 
       async Task PushMeasurements()

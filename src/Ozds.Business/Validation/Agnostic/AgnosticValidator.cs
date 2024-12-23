@@ -17,10 +17,11 @@ public class AgnosticValidator(
   {
     var validator = serviceProvider
       .GetServices<IValidator>()
-      .FirstOrDefault(service => service.CanValidate(model.GetType()))
-      ?? throw new InvalidOperationException(
-          $"No validator found for {model.GetType()}"
-        );
+      .FirstOrDefault(service => service.CanValidate(model.GetType()));
+    if (validator is null)
+    {
+      return new List<ValidationResult>();
+    }
 
     return await validator.ValidateAsync(model, cancellationToken);
   }
