@@ -113,7 +113,7 @@ public class MeasurementUpsertMutations(
     return null;
   }
 
-  public async Task<List<IMeasurement>> FlushCache(
+  public async Task<List<IAggregate>> FlushCache(
     CancellationToken cancellationToken,
     IEnumerable<IAggregate>? aggregates = null
   )
@@ -129,7 +129,7 @@ public class MeasurementUpsertMutations(
     );
 
     var models = result
-      .Select(modelEntityConverter.ToModel<IMeasurement>)
+      .Select(modelEntityConverter.ToModel<IAggregate>)
       .ToList();
 
     return models;
@@ -153,7 +153,7 @@ public class MeasurementUpsertMutations(
     }
   }
 
-  private List<IMeasurement> FlushCacheInternal(
+  private List<IAggregate> FlushCacheInternal(
     IEnumerable<IAggregate>? aggregates = null
   )
   {
@@ -164,7 +164,7 @@ public class MeasurementUpsertMutations(
 
     if (aggregates is null)
     {
-      var all = new List<IMeasurement>();
+      var all = new List<IAggregate>();
       foreach (var cached in cacheCopy)
       {
         if (UpsertAggregateCache.TryRemove(cached.Key, out var value))
@@ -177,7 +177,7 @@ public class MeasurementUpsertMutations(
       return all;
     }
 
-    var some = new List<IMeasurement>();
+    var some = new List<IAggregate>();
     foreach (var cached in cacheCopy)
     {
       var upserted = cached.Value
