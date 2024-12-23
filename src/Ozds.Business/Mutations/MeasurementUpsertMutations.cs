@@ -5,6 +5,7 @@ using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Enums;
 using Ozds.Business.Mutations.Abstractions;
+using Ozds.Business.Validation.Agnostic;
 using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Queries;
 using DataMeasurementUpsertMutations = Ozds.Data.Mutations.MeasurementUpsertMutations;
@@ -19,9 +20,9 @@ public record UpsertMeasurementsResult(
 public class MeasurementUpsertMutations(
   DataMeasurementUpsertMutations mutations,
   AgnosticModelEntityConverter modelEntityConverter,
-  ValidationQueries validationQueries,
   AgnosticMeasurementAggregateConverter aggregateConverter,
-  AgnosticAggregateUpserter aggregateUpserter
+  AgnosticAggregateUpserter aggregateUpserter,
+  AgnosticValidator validator
 ) : IMutations
 {
   public async Task<UpsertMeasurementsResult> UpsertMeasurements(
@@ -77,33 +78,16 @@ public class MeasurementUpsertMutations(
     IEnumerable<IMeasurement> measurements
   )
   {
-    var meterIds = measurements.Select(x => x.MeterId)
-      .Distinct()
-      .ToList();
-
-    var validators = await validationQueries.ReadMeasurementValidatorByMeters(
-      meterIds,
-      CancellationToken.None
-    );
-
     var validationResults = new List<ValidationResult>();
-    foreach (var validationMeasurement in measurements)
+    foreach (var measurement in measurements)
     {
-      var validator = validators
-        .FirstOrDefault(x => x.Id == validationMeasurement.MeterId);
-      if (validator is null)
-      {
-        continue;
-      }
-
-      var validationContext = new ValidationContext(validationMeasurement)
-      {
-        Items = { ["MeasurementValidator"] = validator }
-      };
+      var validationResult = await validator.ValidateAsync(
+        measurement,
+        CancellationToken.None
+      );
 
       validationResults.AddRange(
-        validationMeasurement
-          .Validate(validationContext));
+        validationResult);
     }
 
     if (validationResults.Count is not 0)
