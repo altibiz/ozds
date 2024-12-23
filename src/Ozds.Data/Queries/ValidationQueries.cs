@@ -24,4 +24,19 @@ public class ValidationQueries(
       .Select(x => x.MeasurementValidator)
       .FirstOrDefaultAsync(cancellationToken);
   }
+
+  public async Task<List<IMeasurementValidatorEntity>> ReadMeasurementValidatorByMeters(
+    IEnumerable<string> meterIds,
+    CancellationToken cancellationToken
+  )
+  {
+    await using var context = await factory
+      .CreateDbContextAsync(cancellationToken);
+    return await context.Meters
+      .Where(context.PrimaryKeyIn<MeterEntity>(meterIds))
+      .Include(x => x.MeasurementValidator)
+      .Select(x => x.MeasurementValidator)
+      .OfType<IMeasurementValidatorEntity>()
+      .ToListAsync(cancellationToken);
+  }
 }

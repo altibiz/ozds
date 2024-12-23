@@ -59,9 +59,6 @@ public class OzdsPushClient(
       catch (Exception ex)
       {
         logger.LogError(ex, "Failed to push measurements");
-      }
-      finally
-      {
         await Task.Delay(1000, cancellationToken);
       }
     }
