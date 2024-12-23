@@ -5,7 +5,7 @@ using Ozds.Business.Finance.Abstractions;
 using Ozds.Business.Reactors.Abstractions;
 using Ozds.Business.Time;
 using Ozds.Data.Context;
-using Ozds.Data.Entities.Base;
+using Ozds.Data.Entities;
 using Ozds.Data.Extensions;
 using Ozds.Jobs.Observers.Abstractions;
 using Ozds.Jobs.Observers.EventArgs;
@@ -58,9 +58,9 @@ public class MonthlyNetworkUserInvoiceReactor(
     INetworkUserInvoiceIssuer issuer,
     NetworkUserInvoiceEventArgs eventArgs)
   {
-    var networkUser = (await context.Messengers
+    var networkUser = (await context.NetworkUsers
         .Where(
-          context.PrimaryKeyEquals<MessengerEntity>(eventArgs.NetworkUserId))
+          context.PrimaryKeyEquals<NetworkUserEntity>(eventArgs.NetworkUserId))
         .FirstOrDefaultAsync())
       ?.ToModel();
     if (networkUser is null)

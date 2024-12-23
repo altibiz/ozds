@@ -23,6 +23,17 @@ public class NotificationMutations(
     await context.SaveChangesAsync(cancellationToken);
   }
 
+  public async Task AddRecipients(
+    IReadOnlyCollection<NotificationRecipientEntity> recipients,
+    CancellationToken cancellationToken
+  )
+  {
+    await using var context = await factory
+      .CreateDbContextAsync(cancellationToken);
+    context.NotificationRecipients.AddRange(recipients);
+    await context.SaveChangesAsync(cancellationToken);
+  }
+
   public async Task MarkNotificationAsSeen(
     string notificationId,
     string representativeId,

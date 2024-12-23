@@ -1,19 +1,16 @@
 using System.Text.Json;
-using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Activation.Agnostic;
-using Ozds.Business.Conversion;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Enums;
+using Ozds.Business.Mutations.Agnostic;
 using Ozds.Business.Reactors.Abstractions;
-using Ozds.Data.Context;
 
 namespace Ozds.Business.Reactors;
 
 // TODO: startup after migrations
 
 public class LifecycleReactor(
-  IDbContextFactory<DataDbContext> factory,
-  AgnosticModelActivator activator
+  IServiceScopeFactory scopeFactory
 ) : IReactor
 {
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
@@ -34,16 +31,19 @@ public class LifecycleReactor(
 
   public async Task StopAsync(CancellationToken cancellationToken)
   {
-    await using var context =
-      await factory.CreateDbContextAsync(cancellationToken);
+    await using var scope = scopeFactory.CreateAsyncScope();
+    var mutations = scope.ServiceProvider
+      .GetRequiredService<ReadonlyMutations>();
+    var activator = scope.ServiceProvider
+      .GetRequiredService<AgnosticModelActivator>();
     var content = new ShutdownEventContent();
-    var @event = CreateEvent(content);
-    var eventEntity = @event.ToEntity();
-    context.Add(eventEntity);
-    await context.SaveChangesAsync(cancellationToken);
+    var @event = CreateEvent(content, activator);
+    await mutations.Create(@event, cancellationToken);
   }
 
-  private SystemEventModel CreateEvent(LifecycleEventContent content)
+  private SystemEventModel CreateEvent(
+    LifecycleEventContent content,
+    AgnosticModelActivator activator)
   {
     var @event = activator.Activate<SystemEventModel>();
     @event.Title = content.Message;

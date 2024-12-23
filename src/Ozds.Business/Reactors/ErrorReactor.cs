@@ -1,27 +1,21 @@
 using System.Text.Json;
 using System.Threading.Channels;
-using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Activation.Agnostic;
-using Ozds.Business.Conversion;
-using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Enums;
+using Ozds.Business.Mutations;
+using Ozds.Business.Mutations.Agnostic;
 using Ozds.Business.Observers.Abstractions;
 using Ozds.Business.Queries;
-using Ozds.Business.Queries.Agnostic;
 using Ozds.Business.Reactors.Abstractions;
-using Ozds.Data.Context;
-using Ozds.Data.Entities.Joins;
 using ErrorEventArgs = Ozds.Business.Observers.EventArgs.ErrorEventArgs;
 
 namespace Ozds.Business.Reactors;
 
 public class ErrorReactor(
-  IDbContextFactory<DataDbContext> factory,
-  AgnosticModelActivator activator,
-  AgnosticModelEntityConverter converter,
-  NotificationQueries notificationQueries,
-  IErrorSubscriber subscriber
+  IServiceScopeFactory scopeFactory,
+  IErrorSubscriber subscriber,
+  ILogger<ErrorReactor> logger
 ) : BackgroundService, IReactor
 {
   private readonly Channel<ErrorEventArgs> channel =
@@ -43,15 +37,15 @@ public class ErrorReactor(
   {
     await foreach (var eventArgs in channel.Reader.ReadAllAsync(stoppingToken))
     {
-      await using var context = await factory
-        .CreateDbContextAsync(stoppingToken);
-      await Handle(
-        context,
-        activator,
-        converter,
-        notificationQueries,
-        eventArgs
-      );
+      await using var scope = scopeFactory.CreateAsyncScope();
+      try
+      {
+        await Handle(scope.ServiceProvider, eventArgs);
+      }
+      catch (Exception ex)
+      {
+        logger.LogError(ex, "Measurement upsert failed");
+      }
     }
   }
 
@@ -61,12 +55,17 @@ public class ErrorReactor(
   }
 
   private static async Task Handle(
-    DataDbContext context,
-    AgnosticModelActivator activator,
-    AgnosticModelEntityConverter converter,
-    NotificationQueries notificationQueries,
+    IServiceProvider serviceProvider,
     ErrorEventArgs eventArgs)
   {
+    var activator = serviceProvider
+      .GetRequiredService<AgnosticModelActivator>();
+    var notificationQueries = serviceProvider
+      .GetRequiredService<NotificationQueries>();
+    var notificationMutations = serviceProvider
+      .GetRequiredService<NotificationMutations>();
+    var readonlyMutations = serviceProvider
+      .GetRequiredService<ReadonlyMutations>();
 
     var content = new EventContent(
       eventArgs.Message,
@@ -90,10 +89,8 @@ public class ErrorReactor(
       CategoryModel.All,
       CategoryModel.Error
     };
-    var eventEntity = @event.ToEntity();
-    context.Events.Add(eventEntity);
-    await context.SaveChangesAsync();
-    @event.Id = eventEntity.Id;
+    @event.Id = await readonlyMutations
+      .Create(@event, CancellationToken.None);
 
     var notification = activator.Activate<SystemNotificationModel>();
     notification.Title = "Exception";
@@ -106,16 +103,12 @@ public class ErrorReactor(
       TopicModel.All,
       TopicModel.Error
     };
-    var notificationEntity = notification.ToEntity();
-    context.Notifications.Add(notificationEntity);
-    await context.SaveChangesAsync();
-    notification.Id = notificationEntity.Id;
+    notification.Id = await notificationMutations
+      .Create(notification, CancellationToken.None);
 
-    var recipients = (await notificationQueries.Recipients(notification))
-      .Select(converter.ToEntity<NotificationRecipientEntity>)
-      .ToArray();
-    context.NotificationRecipients.AddRange(recipients);
-    await context.SaveChangesAsync();
+    var recipients = await notificationQueries.Recipients(notification);
+    await notificationMutations
+      .AddRecipients(recipients, CancellationToken.None);
   }
 
   private sealed record EventContent(
