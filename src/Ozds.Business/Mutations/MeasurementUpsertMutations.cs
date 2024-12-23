@@ -50,24 +50,7 @@ public class MeasurementUpsertMutations(
       .Select(x => x.Aggregate(aggregateUpserter.UpsertModelAgnostic))
       .ToList();
 
-    foreach (var x in aggregates)
-    {
-      var key = new UpsertAggregateCacheKey(
-        x.MeterId,
-        x.MeasurementLocationId,
-        x.Timestamp);
-
-      UpsertAggregateCache
-        .AddOrUpdate(
-          key,
-          _ => new List<IAggregate>() { x },
-          (_, list) =>
-          {
-            list.Add(x);
-            return list;
-          });
-    }
-
+    AddToCacheInternal(aggregates);
     var flushed = FlushCacheInternal(aggregates);
 
     var entities = measurements
@@ -87,71 +70,6 @@ public class MeasurementUpsertMutations(
       models,
       new()
     );
-  }
-
-  public async Task<List<IMeasurement>> FlushCache(
-    CancellationToken cancellationToken,
-    IEnumerable<IAggregate>? aggregates = null
-  )
-  {
-    var measurements = FlushCacheInternal(aggregates);
-
-    var entities = measurements
-      .Select(modelEntityConverter.ToEntity<IMeasurementEntity>);
-
-    var result = await mutations.UpsertMeasurements(
-      entities,
-      cancellationToken
-    );
-
-    var models = result
-      .Select(modelEntityConverter.ToModel<IMeasurement>)
-      .ToList();
-
-    return models;
-  }
-
-  private List<IMeasurement> FlushCacheInternal(
-    IEnumerable<IAggregate>? aggregates = null
-  )
-  {
-    var cacheCopy = UpsertAggregateCache
-      .ToDictionary(
-        x => x.Key,
-        x => x.Value.ToList());
-    if (aggregates is null)
-    {
-      var all = new List<IMeasurement>();
-      foreach (var cached in cacheCopy)
-      {
-        if (UpsertAggregateCache.TryRemove(cached.Key, out var value))
-        {
-          var upserted = value
-            .Aggregate(aggregateUpserter.UpsertModelAgnostic);
-          all.Add(upserted);
-        }
-      }
-      return all;
-    }
-
-    var some = new List<IMeasurement>();
-    foreach (var cached in cacheCopy)
-    {
-      var upserted = cached.Value
-        .Aggregate(aggregateUpserter.UpsertModelAgnostic);
-      if (!aggregates.Any(aggregate =>
-        aggregate.MeterId == upserted.MeterId
-        && aggregate.MeasurementLocationId == upserted.MeasurementLocationId
-        && aggregate.Timestamp == upserted.Timestamp
-        && aggregate.Interval == upserted.Interval)
-        && UpsertAggregateCache.TryRemove(cached.Key, out var value))
-      {
-        upserted = value
-          .Aggregate(aggregateUpserter.UpsertModelAgnostic);
-        some.Add(upserted);
-      }
-    }
-    return some;
   }
 
   private async Task<List<ValidationResult>?> Validate(
@@ -195,6 +113,102 @@ public class MeasurementUpsertMutations(
     return null;
   }
 
+  public async Task<List<IMeasurement>> FlushCache(
+    CancellationToken cancellationToken,
+    IEnumerable<IAggregate>? aggregates = null
+  )
+  {
+    var measurements = FlushCacheInternal(aggregates);
+
+    var entities = measurements
+      .Select(modelEntityConverter.ToEntity<IMeasurementEntity>);
+
+    var result = await mutations.UpsertMeasurements(
+      entities,
+      cancellationToken
+    );
+
+    var models = result
+      .Select(modelEntityConverter.ToModel<IMeasurement>)
+      .ToList();
+
+    return models;
+  }
+
+  private static void AddToCacheInternal(
+    IEnumerable<IAggregate> aggregates
+  )
+  {
+    foreach (var aggregate in aggregates)
+    {
+      UpsertAggregateCache
+        .AddOrUpdate(
+          CreateKey(aggregate),
+          _ => new List<IAggregate>() { aggregate },
+          (_, list) =>
+          {
+            list.Add(aggregate);
+            return list;
+          });
+    }
+  }
+
+  private List<IMeasurement> FlushCacheInternal(
+    IEnumerable<IAggregate>? aggregates = null
+  )
+  {
+    var cacheCopy = UpsertAggregateCache
+      .ToDictionary(
+        x => x.Key,
+        x => x.Value.ToList());
+
+    if (aggregates is null)
+    {
+      var all = new List<IMeasurement>();
+      foreach (var cached in cacheCopy)
+      {
+        if (UpsertAggregateCache.TryRemove(cached.Key, out var value))
+        {
+          var upserted = value
+            .Aggregate(aggregateUpserter.UpsertModelAgnostic);
+          all.Add(upserted);
+        }
+      }
+      return all;
+    }
+
+    var some = new List<IMeasurement>();
+    foreach (var cached in cacheCopy)
+    {
+      var upserted = cached.Value
+        .Aggregate(aggregateUpserter.UpsertModelAgnostic);
+      if (!aggregates.Any(aggregate =>
+        aggregate.MeterId == upserted.MeterId
+        && aggregate.MeasurementLocationId == upserted.MeasurementLocationId
+        && aggregate.Timestamp >= upserted.Timestamp
+        && aggregate.Timestamp < upserted.Timestamp.Add(
+          upserted.Interval.ToTimeSpan(upserted.Timestamp))
+        && aggregate.Interval == IntervalModel.QuarterHour)
+        && UpsertAggregateCache.TryRemove(cached.Key, out var value))
+      {
+        upserted = value
+          .Aggregate(aggregateUpserter.UpsertModelAgnostic);
+        some.Add(upserted);
+      }
+    }
+    return some;
+  }
+
+  private static UpsertAggregateCacheKey CreateKey(
+    IAggregate aggregate)
+  {
+    return new UpsertAggregateCacheKey(
+      aggregate.MeterId,
+      aggregate.MeasurementLocationId,
+      aggregate.Interval,
+      aggregate.Timestamp);
+  }
+
   private static readonly ConcurrentDictionary<
     UpsertAggregateCacheKey,
     List<IAggregate>> UpsertAggregateCache =
@@ -205,6 +219,7 @@ public class MeasurementUpsertMutations(
   private sealed record UpsertAggregateCacheKey(
     string MeterId,
     string MeasurementLocationId,
+    IntervalModel Interval,
     DateTimeOffset Timestamp
   );
 }
