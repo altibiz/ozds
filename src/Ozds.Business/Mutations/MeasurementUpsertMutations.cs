@@ -4,6 +4,7 @@ using Ozds.Business.Aggregation.Agnostic;
 using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Enums;
+using Ozds.Business.Mutations.Abstractions;
 using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Queries;
 using DataMeasurementUpsertMutations = Ozds.Data.Mutations.MeasurementUpsertMutations;
@@ -21,7 +22,7 @@ public class MeasurementUpsertMutations(
   ValidationQueries validationQueries,
   AgnosticMeasurementAggregateConverter aggregateConverter,
   AgnosticAggregateUpserter aggregateUpserter
-)
+) : IMutations
 {
   public async Task<UpsertMeasurementsResult> UpsertMeasurements(
     IEnumerable<IMeasurement> measurements,
