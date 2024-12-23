@@ -5,7 +5,7 @@ using Ozds.Data.Queries;
 namespace Ozds.Business.Validation.Base;
 
 public class MeasurementValidator(
-  ValidationQueries validationQueries
+  IServiceScopeFactory factory
 ) : ModelValidator<IMeasurement>
 {
   public override async Task<List<ValidationResult>> ValidateAsync(
@@ -13,6 +13,10 @@ public class MeasurementValidator(
     CancellationToken cancellationToken
   )
   {
+    await using var scope = factory.CreateAsyncScope();
+    var validationQueries = scope.ServiceProvider
+      .GetRequiredService<ValidationQueries>();
+
     var validator = await validationQueries
       .ReadMeasurementValidatorByMeter(model.MeterId, cancellationToken);
     if (validator is null)

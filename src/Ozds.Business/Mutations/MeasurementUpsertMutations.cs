@@ -7,7 +7,6 @@ using Ozds.Business.Models.Enums;
 using Ozds.Business.Mutations.Abstractions;
 using Ozds.Business.Validation.Agnostic;
 using Ozds.Data.Entities.Abstractions;
-using Ozds.Data.Queries;
 using DataMeasurementUpsertMutations = Ozds.Data.Mutations.MeasurementUpsertMutations;
 
 namespace Ozds.Business.Mutations;
