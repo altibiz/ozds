@@ -13,10 +13,27 @@ public static class IServiceCollectionExtensions
     IHostApplicationBuilder builder
   )
   {
-    services.AddBlazor(builder);
-    services.AddFramework();
-    services.AddLocalStorage();
     services.AddState();
+    services.AddBlazor(builder);
+    services.AddLocalStorage();
+    services.AddMudBlazor();
+    return services;
+  }
+
+  private static IServiceCollection AddState(
+    this IServiceCollection services
+  )
+  {
+    services.AddCascadingAuthenticationState();
+
+    services.AddCascadingValue<CultureState>();
+    services.AddCascadingValue<UserState>();
+    services.AddCascadingValue<RepresentativeState>();
+    services.AddCascadingValue<NotificationsState>();
+    services.AddCascadingValue<AnalysisState>();
+    services.AddCascadingValue<ThemeState>();
+    services.AddCascadingValue<LayoutState>();
+
     return services;
   }
 
@@ -51,7 +68,7 @@ public static class IServiceCollectionExtensions
     return services;
   }
 
-  private static IServiceCollection AddFramework(
+  private static IServiceCollection AddMudBlazor(
     this IServiceCollection services
   )
   {
@@ -65,23 +82,6 @@ public static class IServiceCollectionExtensions
   )
   {
     services.AddBlazoredLocalStorage();
-
-    return services;
-  }
-
-  private static IServiceCollection AddState(
-    this IServiceCollection services
-  )
-  {
-    services.AddCascadingAuthenticationState();
-
-    services.AddCascadingValue<CultureState>();
-    services.AddCascadingValue<UserState>();
-    services.AddCascadingValue<RepresentativeState>();
-    services.AddCascadingValue<NotificationsState>();
-    services.AddCascadingValue<AnalysisState>();
-    services.AddCascadingValue<ThemeState>();
-    services.AddCascadingValue<LayoutState>();
 
     return services;
   }

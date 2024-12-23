@@ -124,6 +124,9 @@ words:
   - "financials"
   - "blazored"
   - "trunc"
+  - "downcasted"
+  - "unproxied"
+  - "unproxy"
 
   # Croatian
   - "altibiz"

@@ -36,15 +36,17 @@ public static class DbContextExtensions
       .ToList();
 
     var navigations = clr
-      .Where(i =>
-        i switch
+      .Where(member =>
+        member switch
         {
-          PropertyInfo p => entity
+          PropertyInfo property => entity
             .OfType<PropertyInfo>()
-            .Any(e => e.Name == p.Name && e.DeclaringType == p.DeclaringType),
-          FieldInfo f => entity
+            .Any(entity => entity.Name == property.Name
+              && entity.DeclaringType == property.DeclaringType),
+          FieldInfo field => entity
             .OfType<FieldInfo>()
-            .Any(e => e.Name == f.Name && e.DeclaringType == f.DeclaringType),
+            .Any(entity => entity.Name == field.Name
+              && entity.DeclaringType == field.DeclaringType),
           _ => false
         })
       .ToHashSet();
@@ -108,11 +110,16 @@ public static class DbContextExtensions
         .GetDeclaredProperties()
         .OfType<IPropertyBase>()
         .Concat(e.GetDeclaredComplexProperties())
+        .Concat(e
+          .GetDeclaredComplexProperties()
+          .SelectMany(p => p.ComplexType
+            .GetProperties()))
         .Concat(e.GetDeclaredSkipNavigations())
         .Concat(e.GetDeclaredNavigations())
         .Concat(e.GetDeclaredKeys().SelectMany(p => p.Properties))
         .Select(p => (MemberInfo?)p.PropertyInfo ?? p.FieldInfo))
       .OfType<MemberInfo>()
+      .Distinct()
       .ToList();
 
     var clr = dbContext.Model
@@ -123,6 +130,13 @@ public static class DbContextExtensions
           | BindingFlags.Public
           | BindingFlags.NonPublic))
       .OfType<MemberInfo>()
+      .Concat(dbContext.Model.GetEntityTypes()
+        .SelectMany(e => e.GetComplexProperties()
+          .SelectMany(p => p.ComplexType.ClrType
+            .GetProperties(
+              BindingFlags.Instance
+              | BindingFlags.Public
+              | BindingFlags.NonPublic))))
       .Concat(dbContext.Model
         .GetEntityTypes()
         .SelectMany(e => e.ClrType
@@ -130,6 +144,14 @@ public static class DbContextExtensions
             BindingFlags.Instance
             | BindingFlags.Public
             | BindingFlags.NonPublic)))
+      .Concat(dbContext.Model.GetEntityTypes()
+        .SelectMany(e => e.GetComplexProperties()
+          .SelectMany(p => p.ComplexType.ClrType
+            .GetFields(
+              BindingFlags.Instance
+              | BindingFlags.Public
+              | BindingFlags.NonPublic))))
+      .Distinct()
       .ToList();
 
     var ignoredProperties = clr

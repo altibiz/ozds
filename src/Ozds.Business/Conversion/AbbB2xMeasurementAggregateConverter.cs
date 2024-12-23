@@ -134,8 +134,8 @@ public static class AbbB2xMeasurementAggregateConverterExtensions
       DerivedActivePowerL1ImportT0_W = new InstantaneousAggregateMeasureModel
       {
         Avg = 0M,
-        Min = 0M,
-        Max = 0M,
+        Min = decimal.MaxValue,
+        Max = decimal.MinValue,
         MinTimestamp = measurement.Timestamp,
         MaxTimestamp = measurement.Timestamp
       },
@@ -147,8 +147,8 @@ public static class AbbB2xMeasurementAggregateConverterExtensions
       DerivedActivePowerL2ImportT0_W = new InstantaneousAggregateMeasureModel
       {
         Avg = 0M,
-        Min = 0M,
-        Max = 0M,
+        Min = decimal.MaxValue,
+        Max = decimal.MinValue,
         MinTimestamp = measurement.Timestamp,
         MaxTimestamp = measurement.Timestamp
       },
@@ -160,8 +160,8 @@ public static class AbbB2xMeasurementAggregateConverterExtensions
       DerivedActivePowerL3ImportT0_W = new InstantaneousAggregateMeasureModel
       {
         Avg = 0M,
-        Min = 0M,
-        Max = 0M,
+        Min = decimal.MaxValue,
+        Max = decimal.MinValue,
         MinTimestamp = measurement.Timestamp,
         MaxTimestamp = measurement.Timestamp
       },
@@ -173,8 +173,8 @@ public static class AbbB2xMeasurementAggregateConverterExtensions
       DerivedActivePowerL1ExportT0_W = new InstantaneousAggregateMeasureModel
       {
         Avg = 0M,
-        Min = 0M,
-        Max = 0M,
+        Min = decimal.MaxValue,
+        Max = decimal.MinValue,
         MinTimestamp = measurement.Timestamp,
         MaxTimestamp = measurement.Timestamp
       },
@@ -186,8 +186,8 @@ public static class AbbB2xMeasurementAggregateConverterExtensions
       DerivedActivePowerL2ExportT0_W = new InstantaneousAggregateMeasureModel
       {
         Avg = 0M,
-        Min = 0M,
-        Max = 0M,
+        Min = decimal.MaxValue,
+        Max = decimal.MinValue,
         MinTimestamp = measurement.Timestamp,
         MaxTimestamp = measurement.Timestamp
       },
@@ -199,8 +199,8 @@ public static class AbbB2xMeasurementAggregateConverterExtensions
       DerivedActivePowerL3ExportT0_W = new InstantaneousAggregateMeasureModel
       {
         Avg = 0M,
-        Min = 0M,
-        Max = 0M,
+        Min = decimal.MaxValue,
+        Max = decimal.MinValue,
         MinTimestamp = measurement.Timestamp,
         MaxTimestamp = measurement.Timestamp
       },
@@ -212,8 +212,8 @@ public static class AbbB2xMeasurementAggregateConverterExtensions
       DerivedReactivePowerL1ImportT0_VAR = new InstantaneousAggregateMeasureModel
       {
         Avg = 0M,
-        Min = 0M,
-        Max = 0M,
+        Min = decimal.MaxValue,
+        Max = decimal.MinValue,
         MinTimestamp = measurement.Timestamp,
         MaxTimestamp = measurement.Timestamp
       },
@@ -225,8 +225,8 @@ public static class AbbB2xMeasurementAggregateConverterExtensions
       DerivedReactivePowerL2ImportT0_VAR = new InstantaneousAggregateMeasureModel
       {
         Avg = 0M,
-        Min = 0M,
-        Max = 0M,
+        Min = decimal.MaxValue,
+        Max = decimal.MinValue,
         MinTimestamp = measurement.Timestamp,
         MaxTimestamp = measurement.Timestamp
       },
@@ -238,8 +238,8 @@ public static class AbbB2xMeasurementAggregateConverterExtensions
       DerivedReactivePowerL3ImportT0_VAR = new InstantaneousAggregateMeasureModel
       {
         Avg = 0M,
-        Min = 0M,
-        Max = 0M,
+        Min = decimal.MaxValue,
+        Max = decimal.MinValue,
         MinTimestamp = measurement.Timestamp,
         MaxTimestamp = measurement.Timestamp
       },
@@ -251,8 +251,8 @@ public static class AbbB2xMeasurementAggregateConverterExtensions
       DerivedReactivePowerL1ExportT0_VAR = new InstantaneousAggregateMeasureModel
       {
         Avg = 0M,
-        Min = 0M,
-        Max = 0M,
+        Min = decimal.MaxValue,
+        Max = decimal.MinValue,
         MinTimestamp = measurement.Timestamp,
         MaxTimestamp = measurement.Timestamp
       },
@@ -264,8 +264,8 @@ public static class AbbB2xMeasurementAggregateConverterExtensions
       DerivedReactivePowerL2ExportT0_VAR = new InstantaneousAggregateMeasureModel
       {
         Avg = 0M,
-        Min = 0M,
-        Max = 0M,
+        Min = decimal.MaxValue,
+        Max = decimal.MinValue,
         MinTimestamp = measurement.Timestamp,
         MaxTimestamp = measurement.Timestamp
       },
@@ -277,8 +277,8 @@ public static class AbbB2xMeasurementAggregateConverterExtensions
       DerivedReactivePowerL3ExportT0_VAR = new InstantaneousAggregateMeasureModel
       {
         Avg = 0M,
-        Min = 0M,
-        Max = 0M,
+        Min = decimal.MaxValue,
+        Max = decimal.MinValue,
         MinTimestamp = measurement.Timestamp,
         MaxTimestamp = measurement.Timestamp
       },
@@ -290,8 +290,8 @@ public static class AbbB2xMeasurementAggregateConverterExtensions
       DerivedActivePowerTotalImportT0_W = new InstantaneousAggregateMeasureModel
       {
         Avg = 0M,
-        Min = 0M,
-        Max = 0M,
+        Min = decimal.MaxValue,
+        Max = decimal.MinValue,
         MinTimestamp = measurement.Timestamp,
         MaxTimestamp = measurement.Timestamp
       },
@@ -303,8 +303,8 @@ public static class AbbB2xMeasurementAggregateConverterExtensions
       DerivedActivePowerTotalExportT0_W = new InstantaneousAggregateMeasureModel
       {
         Avg = 0M,
-        Min = 0M,
-        Max = 0M,
+        Min = decimal.MaxValue,
+        Max = decimal.MinValue,
         MinTimestamp = measurement.Timestamp,
         MaxTimestamp = measurement.Timestamp
       },
@@ -316,8 +316,8 @@ public static class AbbB2xMeasurementAggregateConverterExtensions
       DerivedReactivePowerTotalImportT0_VAR = new InstantaneousAggregateMeasureModel
       {
         Avg = 0M,
-        Min = 0M,
-        Max = 0M,
+        Min = decimal.MaxValue,
+        Max = decimal.MinValue,
         MinTimestamp = measurement.Timestamp,
         MaxTimestamp = measurement.Timestamp
       },
@@ -329,8 +329,8 @@ public static class AbbB2xMeasurementAggregateConverterExtensions
       DerivedReactivePowerTotalExportT0_VAR = new InstantaneousAggregateMeasureModel
       {
         Avg = 0M,
-        Min = 0M,
-        Max = 0M,
+        Min = decimal.MaxValue,
+        Max = decimal.MinValue,
         MinTimestamp = measurement.Timestamp,
         MaxTimestamp = measurement.Timestamp
       },
@@ -342,8 +342,8 @@ public static class AbbB2xMeasurementAggregateConverterExtensions
       DerivedActivePowerTotalImportT1_W = new InstantaneousAggregateMeasureModel
       {
         Avg = 0M,
-        Min = 0M,
-        Max = 0M,
+        Min = decimal.MaxValue,
+        Max = decimal.MinValue,
         MinTimestamp = measurement.Timestamp,
         MaxTimestamp = measurement.Timestamp
       },
@@ -355,8 +355,8 @@ public static class AbbB2xMeasurementAggregateConverterExtensions
       DerivedActivePowerTotalImportT2_W = new InstantaneousAggregateMeasureModel
       {
         Avg = 0M,
-        Min = 0M,
-        Max = 0M,
+        Min = decimal.MaxValue,
+        Max = decimal.MinValue,
         MinTimestamp = measurement.Timestamp,
         MaxTimestamp = measurement.Timestamp
       },

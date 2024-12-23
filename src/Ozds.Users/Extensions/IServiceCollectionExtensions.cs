@@ -10,9 +10,15 @@ public static class IServiceCollectionExtensions
     IHostApplicationBuilder builder
   )
   {
-    // Queries
-    services.AddScoped<IUserQueries, UserQueries>();
+    services.AddQueries();
+    return services;
+  }
 
+  private static IServiceCollection AddQueries(
+    this IServiceCollection services
+  )
+  {
+    services.AddScoped(typeof(IUserQueries), typeof(UserQueries));
     return services;
   }
 }

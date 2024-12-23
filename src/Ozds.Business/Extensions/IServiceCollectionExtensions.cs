@@ -1,4 +1,3 @@
-using Microsoft.CodeAnalysis.Host;
 using Ozds.Business.Activation.Abstractions;
 using Ozds.Business.Activation.Agnostic;
 using Ozds.Business.Aggregation.Abstractions;
@@ -11,17 +10,13 @@ using Ozds.Business.Finance.Agnostic;
 using Ozds.Business.Localization;
 using Ozds.Business.Localization.Abstractions;
 using Ozds.Business.Mutations.Abstractions;
-using Ozds.Business.Mutations.Agnostic;
 using Ozds.Business.Naming.Abstractions;
 using Ozds.Business.Naming.Agnostic;
 using Ozds.Business.Observers.Abstractions;
-using Ozds.Business.Queries;
 using Ozds.Business.Queries.Abstractions;
-using Ozds.Business.Queries.Agnostic;
 using Ozds.Business.Reactors.Abstractions;
+using Ozds.Business.Validation.Abstractions;
 using Ozds.Business.Validation.Agnostic;
-using Ozds.Data.Context;
-using Ozds.Messaging.Sender.Abstractions;
 
 namespace Ozds.Business.Extensions;
 
@@ -32,27 +27,55 @@ public static class IServiceCollectionExtensions
     IHostApplicationBuilder builder
   )
   {
-    // Activation
+    services.AddActivation();
+    services.AddAggregation();
+    services.AddConversion();
+    services.AddFinance();
+    services.AddLocalization();
+    services.AddMutations();
+    services.AddNaming();
+    services.AddObservers();
+    services.AddQueries();
+    services.AddValidation();
+    services.AddReactors();
+    return services;
+  }
+
+  private static IServiceCollection AddActivation(
+    this IServiceCollection services
+  )
+  {
     services.AddTransientAssignableTo(typeof(IModelActivator));
     services.AddSingleton(typeof(AgnosticModelActivator));
+    return services;
+  }
 
-    // Aggregation
+  private static IServiceCollection AddAggregation(
+    this IServiceCollection services
+  )
+  {
     services.AddTransientAssignableTo(typeof(IAggregateUpserter));
     services.AddSingleton(typeof(AgnosticAggregateUpserter));
+    return services;
+  }
 
-    // Analysis
-    services.AddSingleton(typeof(Data.Queries.AnalysisQueries));
-    services.AddSingleton(typeof(AnalysisQueries));
-
-    // Conversion
+  private static IServiceCollection AddConversion(
+    this IServiceCollection services
+  )
+  {
     services.AddTransientAssignableTo(typeof(IModelEntityConverter));
     services.AddSingleton(typeof(AgnosticModelEntityConverter));
     services.AddTransientAssignableTo(typeof(IMeasurementAggregateConverter));
     services.AddSingleton(typeof(AgnosticMeasurementAggregateConverter));
     services.AddTransientAssignableTo(typeof(IPushRequestMeasurementConverter));
     services.AddSingleton(typeof(AgnosticPushRequestMeasurementConverter));
+    return services;
+  }
 
-    // Finance
+  private static IServiceCollection AddFinance(
+    this IServiceCollection services
+  )
+  {
     services.AddTransientAssignableTo(
       typeof(INetworkUserCalculationCalculator));
     services.AddSingleton(typeof(AgnosticNetworkUserCalculationCalculator));
@@ -63,44 +86,65 @@ public static class IServiceCollectionExtensions
       typeof(NetworkUserInvoiceCalculator));
     services.AddTransient(
       typeof(INetworkUserInvoiceIssuer), typeof(NetworkUserInvoiceIssuer));
+    return services;
+  }
 
-    // Localization
+  private static IServiceCollection AddLocalization(
+    this IServiceCollection services
+  )
+  {
     services.AddSingleton(typeof(ILocalizer), typeof(Localizer));
+    return services;
+  }
 
-    // Mutations
+  private static IServiceCollection AddMutations(
+    this IServiceCollection services
+  )
+  {
     services.AddScopedAssignableTo(typeof(IMutations));
-    services.AddSingleton(typeof(ReadonlyMutations));
-    services.AddSingleton(typeof(Data.Mutations.Agnostic.ReadonlyMutations));
+    return services;
+  }
 
-    // Naming
+  private static IServiceCollection AddNaming(
+    this IServiceCollection services
+  )
+  {
     services.AddTransientAssignableTo(typeof(IMeterNamingConvention));
     services.AddSingleton(typeof(AgnosticMeterNamingConvention));
+    return services;
+  }
 
-    // Observers
+  private static IServiceCollection AddObservers(
+    this IServiceCollection services
+  )
+  {
     services.AddSingletonAssignableTo(typeof(IPublisher));
     services.AddSingletonAssignableTo(typeof(ISubscriber));
+    return services;
+  }
 
-    // Queries
+  private static IServiceCollection AddQueries(
+    this IServiceCollection services
+  )
+  {
     services.AddScopedAssignableTo(typeof(IQueries));
-    services.AddSingleton(typeof(BillingQueries));
-    services.AddSingleton(typeof(Data.Queries.BillingQueries));
-    services.AddSingleton(typeof(NotificationQueries));
-    services.AddSingleton(typeof(Data.Queries.NotificationQueries));
-    services.AddSingleton(typeof(ReadonlyQueries));
-    services.AddSingleton(typeof(Data.Queries.Agnostic.ReadonlyQueries));
+    return services;
+  }
 
-    // Validator
+  private static IServiceCollection AddValidation(
+    this IServiceCollection services
+  )
+  {
+    services.AddTransientAssignableTo(typeof(IValidator));
     services.AddSingleton(typeof(AgnosticValidator));
+    return services;
+  }
 
-    // Reactors
+  private static IServiceCollection AddReactors(
+    this IServiceCollection services
+  )
+  {
     services.AddSingletonAssignableTo(typeof(IReactor));
-
-    // Messaging
-    services.AddTransientAssignableTo(typeof(IMessageSender));
-
-    // Db
-    services.AddTransient(typeof(DataDbContext));
-
     return services;
   }
 

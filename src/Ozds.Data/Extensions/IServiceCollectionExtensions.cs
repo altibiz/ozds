@@ -17,21 +17,46 @@ public static class IServiceCollectionExtensions
     IHostApplicationBuilder builder
   )
   {
-    // Options
+    services.AddOptions(builder);
+    services.AddObservers();
+    services.AddQueries();
+    services.AddMutations();
+    services.AddEntityFrameworkCore(builder);
+    return services;
+  }
+
+  private static IServiceCollection AddOptions(
+    this IServiceCollection services,
+    IHostApplicationBuilder builder
+  )
+  {
     services.Configure<OzdsDataOptions>(
       builder.Configuration.GetSection("Ozds:Data"));
+    return services;
+  }
 
-    // Entity Framework Core
-    services.AddEntityFrameworkCore(builder);
-
-    // Observers
+  private static IServiceCollection AddObservers(
+    this IServiceCollection services
+  )
+  {
     services.AddSingletonAssignableTo(typeof(IPublisher));
     services.AddSingletonAssignableTo(typeof(ISubscriber));
+    return services;
+  }
 
-    // Queries
+  private static IServiceCollection AddQueries(
+    this IServiceCollection services
+  )
+  {
     services.AddScopedAssignableTo(typeof(IQueries));
-    services.AddScopedAssignableTo(typeof(IMutations));
+    return services;
+  }
 
+  private static IServiceCollection AddMutations(
+    this IServiceCollection services
+  )
+  {
+    services.AddScopedAssignableTo(typeof(IMutations));
     return services;
   }
 
@@ -82,9 +107,12 @@ public static class IServiceCollectionExtensions
             services
           );
 
-        options
-          .UseLazyLoadingProxies()
-          .UseSnakeCaseNamingConvention();
+        if (dataOptions.UseProxies)
+        {
+          options = options.UseLazyLoadingProxies();
+        }
+
+        options.UseSnakeCaseNamingConvention();
       });
   }
 

@@ -22,20 +22,37 @@ public static class IServiceCollectionExtensions
     IHostApplicationBuilder builder
   )
   {
-    // Options
+    services.AddOptions(builder);
+    services.AddObservers();
+    services.AddSender();
+    services.AddMassTransit(builder);
+    return services;
+  }
+
+  private static IServiceCollection AddOptions(
+    this IServiceCollection services,
+    IHostApplicationBuilder builder
+  )
+  {
     services.Configure<OzdsMessagingOptions>(
       builder.Configuration.GetSection("Ozds:Messaging"));
+    return services;
+  }
 
-    // MassTransit
-    services.AddMassTransit(builder);
-
-    // Observers
+  private static IServiceCollection AddObservers(
+    this IServiceCollection services
+  )
+  {
     services.AddSingletonAssignableTo(typeof(IPublisher));
     services.AddSingletonAssignableTo(typeof(ISubscriber));
+    return services;
+  }
 
-    // Sender
+  private static IServiceCollection AddSender(
+    this IServiceCollection services
+  )
+  {
     services.AddScopedAssignableTo(typeof(IMessageSender));
-
     return services;
   }
 

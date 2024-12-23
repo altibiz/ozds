@@ -34,7 +34,10 @@ public static class DbContextAssertionsExtensions
         ignoreNavigationsOptions.Configure(options);
         ignoreIgnoredPropertiesOptions.Configure(options);
         dateTimeOffsetOptions.Configure(options);
-        return options;
+        return options
+          .AllowingInfiniteRecursion()
+          .IncludingNestedObjects()
+          .RespectingRuntimeTypes();
       },
       because,
       becauseArgs);
@@ -65,7 +68,10 @@ public static class DbContextAssertionsExtensions
         ignoreNavigationsOptions.Configure(options);
         ignoreIgnoredPropertiesOptions.Configure(options);
         dateTimeOffsetOptions.Configure(options);
-        return options;
+        return options
+          .AllowingInfiniteRecursion()
+          .IncludingNestedObjects()
+          .RespectingRuntimeTypes();
       },
       because,
       becauseArgs);
@@ -97,7 +103,10 @@ public static class DbContextAssertionsExtensions
         ignoreNavigationsOptions.Configure(options);
         ignoreIgnoredPropertiesOptions.Configure(options);
         dateTimeOffsetOptions.Configure(options);
-        return options;
+        return options
+          .AllowingInfiniteRecursion()
+          .IncludingNestedObjects()
+          .RespectingRuntimeTypes();
       },
       because,
       becauseArgs);
@@ -129,7 +138,10 @@ public static class DbContextAssertionsExtensions
         ignoreNavigationsOptions.Configure(options);
         ignoreIgnoredPropertiesOptions.Configure(options);
         dateTimeOffsetOptions.Configure(options);
-        return options;
+        return options
+          .AllowingInfiniteRecursion()
+          .IncludingNestedObjects()
+          .RespectingRuntimeTypes();
       },
       because,
       becauseArgs);

@@ -12,16 +12,27 @@ public static class IServiceCollectionExtensions
     IHostApplicationBuilder builder
   )
   {
-    // Options
+    services.AddOptions(builder);
+    services.AddSender();
+    services.AddMailKit(builder);
+    return services;
+  }
+
+  private static IServiceCollection AddOptions(
+    this IServiceCollection services,
+    IHostApplicationBuilder builder
+  )
+  {
     services.Configure<OzdsEmailOptions>(
       builder.Configuration.GetSection("Ozds:Email"));
+    return services;
+  }
 
-    // MailKit
-    services.AddMailKit(builder);
-
-    // Sender
+  private static IServiceCollection AddSender(
+    this IServiceCollection services
+  )
+  {
     services.AddTransient<IEmailSender, SmtpSender>();
-
     return services;
   }
 

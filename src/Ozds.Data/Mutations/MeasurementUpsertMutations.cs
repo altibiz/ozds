@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Npgsql;
 using Ozds.Data.Context;
 using Ozds.Data.Entities.Abstractions;
+using Ozds.Data.Entities.Base;
 using Ozds.Data.Entities.Enums;
 using Ozds.Data.Extensions;
 using Ozds.Data.Mutations.Abstractions;
@@ -19,7 +20,9 @@ public class MeasurementUpsertMutations(
   IDbContextFactory<DataDbContext> factory
 ) : IMutations
 {
-  private const int ChunkSize = 10;
+  private const int QuarterHourChunkSize = 1;
+  private const int UpsertChunkSize = 50;
+  private const int TryInsertChunkSize = 100;
 
   public async Task<List<IMeasurementEntity>> UpsertMeasurements(
     IEnumerable<IMeasurementEntity> measurements,
@@ -36,69 +39,86 @@ public class MeasurementUpsertMutations(
     );
   }
 
+#pragma warning disable CA1822 // Mark members as static
   internal async Task<List<IMeasurementEntity>> UpsertMeasurements(
     DataDbContext context,
     IEnumerable<IMeasurementEntity> measurements,
     CancellationToken cancellationToken
   )
+#pragma warning restore CA1822 // Mark members as static
   {
+    List<IMeasurementEntity>? results = null;
+
     if (context.Database.CurrentTransaction is { })
     {
-      var results = await ExecuteCommands(
+      results = await ExecuteCommands(
         context,
         measurements,
         cancellationToken
       );
-
-      return results;
     }
-
-    while (true)
+    else
     {
-      try
+      while (true)
       {
-        var isolationLevel = IsolationLevel.RepeatableRead;
-
-        await context.Database
-          .BeginTransactionAsync(isolationLevel, cancellationToken);
-
-        var results = await ExecuteCommands(
-          context,
-          measurements,
-          cancellationToken
-        );
-
-        await context.Database
-          .CommitTransactionAsync(cancellationToken);
-
-        return results;
-      }
-      catch (PostgresException ex)
-      {
-        if (ex.Message.StartsWith("40001"))
+        try
         {
-          await context.Database.RollbackTransactionAsync(cancellationToken);
-          continue;
-        }
+          var isolationLevel = IsolationLevel.RepeatableRead;
 
-        if (ex.Message.StartsWith("40P01"))
+          await context.Database
+            .BeginTransactionAsync(isolationLevel, cancellationToken);
+
+          results = await ExecuteCommands(
+            context,
+            measurements,
+            cancellationToken
+          );
+
+          await context.Database
+            .CommitTransactionAsync(cancellationToken);
+
+          break;
+        }
+        catch (PostgresException ex)
         {
-          await context.Database.RollbackTransactionAsync(cancellationToken);
-          continue;
-        }
+          if (ex.Message.StartsWith("40001"))
+          {
+            await context.Database.RollbackTransactionAsync(cancellationToken);
+            continue;
+          }
 
-        if (ex.Message.StartsWith("P0002"))
-        {
-          await context.Database.RollbackTransactionAsync(cancellationToken);
-          continue;
-        }
+          if (ex.Message.StartsWith("40P01"))
+          {
+            await context.Database.RollbackTransactionAsync(cancellationToken);
+            continue;
+          }
 
-        throw;
+          if (ex.Message.StartsWith("P0002"))
+          {
+            await context.Database.RollbackTransactionAsync(cancellationToken);
+            continue;
+          }
+
+          throw;
+        }
       }
     }
+
+    return results
+      .GroupBy(x => new
+      {
+        x.MeterId,
+        x.MeasurementLocationId,
+        x.Timestamp,
+        Interval = x is IAggregateEntity aggregate
+          ? aggregate.Interval
+          : (IntervalEntity?)null
+      })
+      .Select(x => x.Last())
+      .ToList();
   }
 
-  private async Task<List<IMeasurementEntity>> ExecuteCommands(
+  private static async Task<List<IMeasurementEntity>> ExecuteCommands(
     DataDbContext context,
     IEnumerable<IMeasurementEntity> measurements,
     CancellationToken cancellationToken
@@ -116,71 +136,97 @@ public class MeasurementUpsertMutations(
             $"Unknown interval {aggregate.Interval}.")
         }
         : 0)
-      .GroupBy(x => x.Measurement.GetType());
+      .GroupBy(x => (
+        x.Measurement.GetType(),
+        x.Measurement is AggregateEntity aggregate
+          && aggregate.Interval == IntervalEntity.QuarterHour));
 
     var results = new List<IMeasurementEntity>();
     foreach (var group in grouped)
     {
-      var type = group.Key;
+      var type = group.Key.Item1;
+      var isQuarterHour = group.Key.Item2;
+      var chunkSize = isQuarterHour
+        ? QuarterHourChunkSize
+        : type.IsAssignableTo(typeof(IAggregateEntity))
+          ? UpsertChunkSize
+          : TryInsertChunkSize;
 
-      foreach (var chunk in group.Chunk(ChunkSize))
+      foreach (var chunk in group.Chunk(chunkSize))
       {
-        var parameters = context.CreateBulkParameters(
-          chunk.Select(x => (x.Measurement as object, x.Index)));
-        var commands = chunk
-          .Select(x => CreateCommand(
-            context,
-            type,
-            x.Measurement is IAggregateEntity aggregate
-              ? aggregate.Interval
-              : null,
-            x.Index))
-          .ToList();
-        var queryClauses = commands
-          .Select(x => x.Query)
-          .ToList();
-        var withClauses = commands
-          .Select(x => x.With)
-          .Where(x => x is not null)
-          .ToList();
-        var sql = string.Join("\nUNION ALL\n", queryClauses);
-        if (withClauses.Count > 0)
-        {
-          sql = $@"
-            WITH {string.Join(",\n", withClauses)}
-            {sql}
-          ";
-        }
-
-        // NOTE: good for debugging
-#pragma warning disable S125 // Sections of code should not be commented out
-        // var parameterString = string.Join(
-        //   "\n",
-        //   parameters.Select(kv =>
-        //   {
-        //     var key = kv.Key.Replace("@", "");
-        //     var val = kv.Value is DateTimeOffset dt
-        //       ? $"'{dt.ToString("o", System.Globalization.CultureInfo.InvariantCulture)}'"
-        //       : kv.Value is string s
-        //         ? $"'{s}'"
-        //         : kv.Value;
-        //     return $"\\set {key} {val}";
-        //   }));
-        // Console.WriteLine(parameterString);
-        // Console.WriteLine(sql);
-#pragma warning restore S125 // Sections of code should not be commented out
-
-        var objects = await context.DapperCommand(
+        var objects = await ExecuteChunk(
+          context,
+          chunk,
           type,
-          sql,
-          cancellationToken,
-          parameters
+          cancellationToken
         );
         results.AddRange(objects.Select(x => (IMeasurementEntity)x));
       }
     }
 
     return results;
+  }
+
+  private static async Task<List<object>> ExecuteChunk(
+    DataDbContext context,
+    IEnumerable<(int Index, IMeasurementEntity Measurement)> chunk,
+    Type type,
+    CancellationToken cancellationToken
+  )
+  {
+    var parameters = context.CreateBulkParameters(
+      chunk.Select(x => (x.Measurement as object, x.Index)));
+    var commands = chunk
+      .Select(x => CreateCommand(
+        context,
+        type,
+        x.Measurement is IAggregateEntity aggregate
+          ? aggregate.Interval
+          : null,
+        x.Index))
+      .ToList();
+    var queryClauses = commands
+      .Select(x => x.Query)
+      .ToList();
+    var withClauses = commands
+      .Select(x => x.With)
+      .Where(x => x is not null)
+      .ToList();
+    var sql = string.Join("\nUNION ALL\n", queryClauses);
+    if (withClauses.Count > 0)
+    {
+      sql = $@"
+            WITH {string.Join(",\n", withClauses)}
+            {sql}
+          ";
+    }
+
+    // NOTE: good for debugging
+#pragma warning disable S125 // Sections of code should not be commented out
+    // var parameterString = string.Join(
+    //   "\n",
+    //   parameters.Select(kv =>
+    //   {
+    //     var key = kv.Key.Replace("@", "");
+    //     var val = kv.Value is DateTimeOffset dt
+    //       ? $"'{dt.ToString("o", System.Globalization.CultureInfo.InvariantCulture)}'"
+    //       : kv.Value is string s
+    //         ? $"'{s}'"
+    //         : kv.Value;
+    //     return $"\\set {key} {val}";
+    //   }));
+    // Console.WriteLine(parameterString);
+    // Console.WriteLine(sql);
+#pragma warning restore S125 // Sections of code should not be commented out
+
+    var objects = await context.DapperCommand(
+      type,
+      sql,
+      cancellationToken,
+      parameters
+    );
+
+    return objects;
   }
 
   private static (string? With, string Query) CreateCommand(

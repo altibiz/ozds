@@ -14,20 +14,37 @@ public static class IServiceCollectionExtensions
     IHostApplicationBuilder builder
   )
   {
-    // Options
+    services.AddOptions(builder);
+    services.AddObservers();
+    services.AddManagers();
+    services.AddQuartz(builder);
+    return services;
+  }
+
+  private static IServiceCollection AddOptions(
+    this IServiceCollection services,
+    IHostApplicationBuilder builder
+  )
+  {
     services.Configure<OzdsJobsOptions>(
       builder.Configuration.GetSection("Ozds:Jobs"));
+    return services;
+  }
 
-    // Quartz
-    services.AddQuartz(builder);
-
-    // Managers
-    services.AddSingletonAssignableTo(typeof(IJobManager));
-
-    // Observers
+  private static IServiceCollection AddObservers(
+    this IServiceCollection services
+  )
+  {
     services.AddSingletonAssignableTo(typeof(IPublisher));
     services.AddSingletonAssignableTo(typeof(ISubscriber));
+    return services;
+  }
 
+  private static IServiceCollection AddManagers(
+    this IServiceCollection services
+  )
+  {
+    services.AddSingletonAssignableTo(typeof(IJobManager));
     return services;
   }
 

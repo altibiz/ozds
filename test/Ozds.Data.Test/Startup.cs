@@ -22,9 +22,12 @@ public class Startup
       var appsettings = Path.Join(server, "appsettings.json");
       var appsettingsDevelopment =
         Path.Join(server, "appsettings.Development.json");
+      var test = Path.Join(root, "test", "Ozds.Data.Test");
+      var appsettingsTest = Path.Join(test, "appsettings.json");
 
       builder.AddJsonFile(appsettings);
       builder.AddJsonFile(appsettingsDevelopment);
+      builder.AddJsonFile(appsettingsTest);
     });
   }
 

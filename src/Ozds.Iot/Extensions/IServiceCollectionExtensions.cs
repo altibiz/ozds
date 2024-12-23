@@ -9,10 +9,16 @@ public static class IServiceCollectionExtensions
     IHostApplicationBuilder builder
   )
   {
-    // Observers
+    services.AddObservers();
+    return services;
+  }
+
+  private static IServiceCollection AddObservers(
+    this IServiceCollection services
+  )
+  {
     services.AddSingletonAssignableTo(typeof(IPublisher));
     services.AddSingletonAssignableTo(typeof(ISubscriber));
-
     return services;
   }
 
