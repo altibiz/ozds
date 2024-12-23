@@ -16,6 +16,7 @@ public class SeedHostedService(
   )
   {
     var seed = _serviceProvider.GetRequiredService<SeedOptions>();
+    var logger = _serviceProvider.GetRequiredService<ILogger<SeedHostedService>>();
 
     var now = DateTimeOffset.UtcNow;
 
@@ -37,42 +38,75 @@ public class SeedHostedService(
       _ => throw new InvalidOperationException($"Unknown seed: {seed}")
     };
 
+    var measurements = new List<IMeterPushRequestEntity>();
+    var seedTimeEnd = seedTimeBegin.AddDays(1) > now
+      ? now
+      : seedTimeBegin.AddDays(1);
+    foreach (var meterId in seed.MeterIds)
+    {
+      measurements.AddRange(
+        await generator.GenerateMeasurements(
+          seedTimeBegin, seedTimeEnd, seed.MessengerId, meterId,
+          stoppingToken));
+    }
     while (seedTimeBegin < now)
     {
-      var seedTimeEnd = seedTimeBegin.AddDays(1) > now
-        ? now
-        : seedTimeBegin.AddDays(1);
+      var pushMeasurements = measurements.ToList();
 
-      var measurements = new List<IMeterPushRequestEntity>();
-      foreach (var meterId in seed.MeterIds)
+      async Task GenerateMeasurements()
       {
-        measurements.AddRange(
-          await generator.GenerateMeasurements(
-            seedTimeBegin, seedTimeEnd, seed.MessengerId, meterId,
-            stoppingToken));
+        var nextSeedTimeEnd = seedTimeEnd.AddDays(1) > now
+          ? now
+          : seedTimeEnd.AddDays(1);
+        measurements.Clear();
+        foreach (var meterId in seed.MeterIds)
+        {
+          measurements.AddRange(
+            await generator.GenerateMeasurements(
+              seedTimeEnd, nextSeedTimeEnd, seed.MessengerId, meterId,
+              stoppingToken));
+        }
       }
 
-      while (measurements.Count > 0)
+      async Task PushMeasurements()
       {
-        var batch = measurements.Take(seed.BatchSize).ToList();
-        measurements.RemoveRange(0, batch.Count);
+        while (pushMeasurements.Count > 0)
+        {
+          var batch = pushMeasurements.Take(seed.BatchSize).ToList();
+          pushMeasurements.RemoveRange(0, batch.Count);
 
-        var request = packer.Pack(
-          seed.MessengerId,
-          now,
-          batch);
+          var request = packer.Pack(
+            seed.MessengerId,
+            now,
+            batch);
 
-        var pushClient =
-          scope.ServiceProvider.GetRequiredService<OzdsPushClient>();
-        await pushClient.Push(
-          seed.MessengerId,
-          seed.ApiKey,
-          request,
-          stoppingToken
+          var pushClient =
+            scope.ServiceProvider.GetRequiredService<OzdsPushClient>();
+          await pushClient.Push(
+            seed.MessengerId,
+            seed.ApiKey,
+            request,
+            stoppingToken
+          );
+        }
+      }
+
+      try
+      {
+        await Task.WhenAll(
+          GenerateMeasurements(),
+          PushMeasurements()
         );
+      }
+      catch (Exception ex)
+      {
+        logger.LogError(ex, "Failed to generate and push measurements");
       }
 
       seedTimeBegin = seedTimeEnd;
+      seedTimeEnd = seedTimeBegin.AddDays(1) > now
+        ? now
+        : seedTimeBegin.AddDays(1);
     }
   }
 }
