@@ -10,7 +10,8 @@ namespace Ozds.Business.Reactors;
 public class AggregateFlushReactor(
   IAggregateFlushSubscriber subscriber,
   IServiceScopeFactory serviceScopeFactory,
-  ILogger<AggregateFlushReactor> logger
+  ILogger<AggregateFlushReactor> logger,
+  IMeasurementFinalizePublisher publisher
 ) : BackgroundService, IReactor
 {
   private readonly Channel<AggregateFlushEventArgs> channel =
@@ -58,6 +59,13 @@ public class AggregateFlushReactor(
     var mutations = scope.ServiceProvider
       .GetRequiredService<AggregateUpsertMutations>();
     var aggregates = eventArgs.Aggregates;
-    await mutations.UpsertAggregates(aggregates, CancellationToken.None);
+    var result = await mutations
+      .UpsertAggregates(aggregates, CancellationToken.None);
+
+    publisher.PublishFinalize(
+      new MeasurementFinalizeEventArgs
+      {
+        Aggregates = result
+      });
   }
 }
