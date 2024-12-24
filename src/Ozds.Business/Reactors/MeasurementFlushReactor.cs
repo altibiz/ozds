@@ -1,4 +1,5 @@
 using System.Threading.Channels;
+using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Mutations;
 using Ozds.Business.Observers.Abstractions;
 using Ozds.Business.Observers.EventArgs;
@@ -57,14 +58,15 @@ public class MeasurementFlushReactor(
     await using var scope = serviceScopeFactory.CreateAsyncScope();
     var mutations = scope.ServiceProvider
       .GetRequiredService<MeasurementUpsertMutations>();
-    var aggregates = eventArgs.Measurements;
+    var measurements = eventArgs.Measurements;
     var result = await mutations
-      .UpsertMeasurements(aggregates, CancellationToken.None);
+      .UpsertMeasurements(measurements, CancellationToken.None);
 
     publisher.PublishFinalize(
       new MeasurementFinalizeEventArgs
       {
-        Measurements = result
+        Measurements = result.Where(x => x is not IAggregate).ToList(),
+        Aggregates = result.OfType<IAggregate>().ToList()
       });
   }
 }

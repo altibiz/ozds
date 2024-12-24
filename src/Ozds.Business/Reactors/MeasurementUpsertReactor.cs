@@ -3,7 +3,7 @@ using System.Data;
 using System.Text.Json;
 using System.Threading.Channels;
 using Ozds.Business.Activation.Agnostic;
-using Ozds.Business.Caching;
+using Ozds.Business.Buffers;
 using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Abstractions;
@@ -47,9 +47,9 @@ public class MeasurementUpsertReactor(
     try
     {
       await using var scope = serviceScopeFactory.CreateAsyncScope();
-      var cache = scope.ServiceProvider
-        .GetRequiredService<MeasurementUpsertCache>();
-      var flushed = cache.Flush();
+      var buffer = scope.ServiceProvider
+        .GetRequiredService<MeasurementUpsertBuffer>();
+      var flushed = buffer.Flush();
       logger.LogInformation(
         "Flushed {Count} measurements from cache",
         flushed.Count);
@@ -94,8 +94,8 @@ public class MeasurementUpsertReactor(
       .GetRequiredService<AgnosticPushRequestMeasurementConverter>();
     var activator = serviceProvider
       .GetRequiredService<AgnosticModelActivator>();
-    var cache = serviceProvider
-      .GetRequiredService<MeasurementUpsertCache>();
+    var buffer = serviceProvider
+      .GetRequiredService<MeasurementUpsertBuffer>();
     var notificationMutations = serviceProvider
       .GetRequiredService<NotificationMutations>();
     var auditableQueries = serviceProvider
@@ -147,7 +147,7 @@ public class MeasurementUpsertReactor(
       return;
     }
 
-    cache.Add(measurements);
+    buffer.Add(measurements);
 
     await AddPushEvent(
       auditableQueries,

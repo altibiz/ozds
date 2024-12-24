@@ -1,24 +1,23 @@
 using System.Collections.Concurrent;
 using Ozds.Business.Aggregation.Agnostic;
-using Ozds.Business.Caching.Abstractions;
+using Ozds.Business.Buffers.Abstractions;
 using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Enums;
 using Ozds.Business.Observers.Abstractions;
 using Ozds.Business.Observers.EventArgs;
 
-namespace Ozds.Business.Caching;
+namespace Ozds.Business.Buffers;
 
-public class MeasurementUpsertCache(
+public class MeasurementUpsertBuffer(
   AgnosticAggregateUpserter aggregateUpserter,
   AgnosticMeasurementAggregateConverter aggregateConverter,
   IMeasurementFlushPublisher measurementFlushPublisher,
-  IAggregateFlushPublisher aggregateFlushPublisher,
-  ILogger<MeasurementUpsertCache> logger
+  ILogger<MeasurementUpsertBuffer> logger
 )
-  : ICache
+  : IBuffer
 {
-  private const int MaxAggregates = 10000;
+  private const int MaxMeasurements = 10000;
 
   public List<IMeasurement> Add(IEnumerable<IMeasurement> measurements)
   {
@@ -45,26 +44,17 @@ public class MeasurementUpsertCache(
     AddToMeasurementCacheInternal(measurements.Where(x => x is not IAggregate));
     AddToAggregateCacheInternal(aggregates);
 
+    var flushedMeasurements = FlushMeasurementCacheInternal(MaxMeasurements);
     var flushedAggregates = FlushAggregateCacheInternal(aggregates);
-    if (flushedAggregates.Count is > 0)
-    {
-      aggregateFlushPublisher.PublishFlush(new AggregateFlushEventArgs
-      {
-        Aggregates = flushedAggregates
-      });
-    }
-
-    var flushedMeasurements = FlushMeasurementCacheInternal(MaxAggregates);
-    if (flushedMeasurements.Count is > 0)
+    if (flushedMeasurements.Count is > 0 || flushedAggregates.Count is > 0)
     {
       measurementFlushPublisher.PublishFlush(new MeasurementFlushEventArgs
       {
-        Measurements = flushedMeasurements,
+        Measurements = flushedMeasurements.Concat(flushedAggregates).ToList(),
       });
     }
 
     return flushedMeasurements
-      .Concat(flushedAggregates)
       .ToList();
   }
 
@@ -73,18 +63,11 @@ public class MeasurementUpsertCache(
     var measurements = FlushMeasurementCacheInternal();
     var aggregates = FlushAggregateCacheInternal();
 
-    if (measurements.Count is > 0)
+    if (measurements.Count is > 0 || aggregates.Count is > 0)
     {
       measurementFlushPublisher.PublishFlush(new MeasurementFlushEventArgs
       {
-        Measurements = measurements,
-      });
-    }
-    if (aggregates.Count is > 0)
-    {
-      aggregateFlushPublisher.PublishFlush(new AggregateFlushEventArgs
-      {
-        Aggregates = aggregates
+        Measurements = measurements.Concat(aggregates).ToList(),
       });
     }
 
