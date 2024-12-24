@@ -2,6 +2,7 @@ using Ozds.Business.Activation.Abstractions;
 using Ozds.Business.Activation.Agnostic;
 using Ozds.Business.Aggregation.Abstractions;
 using Ozds.Business.Aggregation.Agnostic;
+using Ozds.Business.Caching.Abstractions;
 using Ozds.Business.Conversion.Abstractions;
 using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Finance;
@@ -38,6 +39,7 @@ public static class IServiceCollectionExtensions
     services.AddQueries();
     services.AddValidation();
     services.AddReactors();
+    services.AddCaching();
     return services;
   }
 
@@ -145,6 +147,14 @@ public static class IServiceCollectionExtensions
   )
   {
     services.AddSingletonAssignableTo(typeof(IReactor));
+    return services;
+  }
+
+  private static IServiceCollection AddCaching(
+    this IServiceCollection services
+  )
+  {
+    services.AddSingletonAssignableTo(typeof(ICache));
     return services;
   }
 

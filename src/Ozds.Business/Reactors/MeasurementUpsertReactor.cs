@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Data;
+using System.Diagnostics;
 using System.Text.Json;
 using System.Threading.Channels;
 using Ozds.Business.Activation.Agnostic;
@@ -84,7 +85,7 @@ public class MeasurementUpsertReactor(
     channel.Writer.TryWrite(eventArgs);
   }
 
-  private static async Task Handle(
+  private async Task Handle(
     IServiceProvider serviceProvider,
     PushEventArgs eventArgs
   )
@@ -116,17 +117,29 @@ public class MeasurementUpsertReactor(
       eventArgs
     );
 
+    var stopwatch = Stopwatch.StartNew();
     var pushRequestsWithLocations =
       await GetMeterPushRequestsWithMeasurementLocations(
         measurementLocationQueries,
         eventArgs.Request.Measurements
       );
+    stopwatch.Stop();
+    logger.LogDebug(
+      "Got {Count} meter push requests with measurement locations in {Elapsed}",
+      pushRequestsWithLocations.Count,
+      stopwatch.Elapsed);
 
+    stopwatch = Stopwatch.StartNew();
     var measurements =
       pushRequestsWithLocations
         .Select(x => pushRequestConverter
           .ToMeasurement(x.MeterPushRequest, x.MeasurementLocation.Id))
         .ToList();
+    stopwatch.Stop();
+    logger.LogDebug(
+      "Converted {Count} meter push requests to measurements in {Elapsed}",
+      pushRequestsWithLocations.Count,
+      stopwatch.Elapsed);
 
     var result = await mutations.UpsertMeasurements(
       measurements,

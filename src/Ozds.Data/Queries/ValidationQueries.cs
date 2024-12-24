@@ -39,4 +39,34 @@ public class ValidationQueries(
       .OfType<IMeasurementValidatorEntity>()
       .ToListAsync(cancellationToken);
   }
+
+  public async Task<IMeterEntity?> ReadMeterByMeasurementValidator(
+    string validatorId,
+    CancellationToken cancellationToken
+  )
+  {
+    await using var context = await factory
+      .CreateDbContextAsync(cancellationToken);
+    return await context.Meters
+      .Where(context.ForeignKeyEquals<MeterEntity>(
+        nameof(MeterEntity<MeasurementEntity, AggregateEntity, MeasurementValidatorEntity>.MeasurementValidator),
+        validatorId))
+      .OfType<IMeterEntity>()
+      .FirstOrDefaultAsync(cancellationToken);
+  }
+
+  public async Task<List<IMeterEntity>> ReadMetersByMeasurementValidators(
+    IEnumerable<string> validatorIds,
+    CancellationToken cancellationToken
+  )
+  {
+    await using var context = await factory
+      .CreateDbContextAsync(cancellationToken);
+    return await context.Meters
+      .Where(context.ForeignKeyIn<MeterEntity>(
+        nameof(MeterEntity<MeasurementEntity, AggregateEntity, MeasurementValidatorEntity>.MeasurementValidator),
+        validatorIds))
+      .OfType<IMeterEntity>()
+      .ToListAsync(cancellationToken);
+  }
 }
