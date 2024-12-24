@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using System.Data;
+using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Npgsql;
@@ -17,7 +18,8 @@ namespace Ozds.Data.Mutations;
 // TODO: handle nesting hierarchical properties
 
 public class MeasurementUpsertMutations(
-  IDbContextFactory<DataDbContext> factory
+  IDbContextFactory<DataDbContext> factory,
+  ILogger<MeasurementUpsertMutations> logger
 ) : IMutations
 {
   private const int QuarterHourChunkSize = 1;
@@ -39,16 +41,15 @@ public class MeasurementUpsertMutations(
     );
   }
 
-#pragma warning disable CA1822 // Mark members as static
   internal async Task<List<IMeasurementEntity>> UpsertMeasurements(
     DataDbContext context,
     IEnumerable<IMeasurementEntity> measurements,
     CancellationToken cancellationToken
   )
-#pragma warning restore CA1822 // Mark members as static
   {
-    List<IMeasurementEntity>? results = null;
+    measurements = measurements.ToList();
 
+    List<IMeasurementEntity>? results = null;
     if (context.Database.CurrentTransaction is { })
     {
       results = await ExecuteCommands(
@@ -68,11 +69,17 @@ public class MeasurementUpsertMutations(
           await context.Database
             .BeginTransactionAsync(isolationLevel, cancellationToken);
 
+          var stopwatch = Stopwatch.StartNew();
           results = await ExecuteCommands(
             context,
             measurements,
             cancellationToken
           );
+          stopwatch.Stop();
+          logger.LogDebug(
+            "Upserted {Count} measurements in {Elapsed}",
+            measurements.Count(),
+            stopwatch.Elapsed);
 
           await context.Database
             .CommitTransactionAsync(cancellationToken);

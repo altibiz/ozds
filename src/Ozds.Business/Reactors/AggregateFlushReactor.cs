@@ -58,13 +58,6 @@ public class AggregateFlushReactor(
     var mutations = scope.ServiceProvider
       .GetRequiredService<AggregateUpsertMutations>();
     var aggregates = eventArgs.Aggregates;
-    var stopwatch = Stopwatch.StartNew();
-    var result = await mutations
-      .UpsertAggregates(aggregates, CancellationToken.None);
-    stopwatch.Stop();
-    logger.LogDebug(
-      "Flushed {Count} aggregates in {Elapsed}",
-      result.Count,
-      stopwatch.Elapsed);
+    await mutations.UpsertAggregates(aggregates, CancellationToken.None);
   }
 }
