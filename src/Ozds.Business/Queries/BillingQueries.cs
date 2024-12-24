@@ -1,4 +1,4 @@
-using Ozds.Business.Conversion.Agnostic;
+using Ozds.Business.Conversion;
 using Ozds.Business.Models.Composite;
 using Ozds.Business.Queries.Abstractions;
 using DataBillingQueries = Ozds.Data.Queries.BillingQueries;
@@ -8,8 +8,7 @@ using DataBillingQueries = Ozds.Data.Queries.BillingQueries;
 namespace Ozds.Business.Queries;
 
 public class BillingQueries(
-  DataBillingQueries queries,
-  AgnosticModelEntityConverter modelEntityConverter
+  DataBillingQueries queries
 ) : IQueries
 {
   public async Task<NetworkUserInvoiceIssuingBasisModel>
@@ -27,7 +26,25 @@ public class BillingQueries(
       cancellationToken
     );
 
-    return modelEntityConverter
-      .ToModel<NetworkUserInvoiceIssuingBasisModel>(entity);
+    return new(
+      entity.Location.ToModel(),
+      entity.NetworkUser.ToModel(),
+      entity.RegulatoryCatalogue.ToModel(),
+      fromDate,
+      toDate,
+      entity.NetworkUserCalculationBases
+        .Select(x => new NetworkUserCalculationBasisModel(
+          x.FromDate,
+          x.ToDate,
+          x.Aggregates.Select(y => y.ToModel()).ToList(),
+          x.Location.ToModel(),
+          x.NetworkUser.ToModel(),
+          x.MeasurementLocation.ToModel(),
+          x.UsageNetworkUserCatalogue.ToModel(),
+          x.SupplyRegulatoryCatalogue.ToModel(),
+          x.Meter.ToModel()
+        ))
+        .ToList()
+    );
   }
 }

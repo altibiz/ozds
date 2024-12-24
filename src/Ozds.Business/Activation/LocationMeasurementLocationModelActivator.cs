@@ -26,7 +26,8 @@ public class
       DeletedOn = default,
       DeletedById = default,
       LocationId = default!,
-      MeterId = default!
+      MeterId = default!,
+      Kind = default!
     };
   }
 }

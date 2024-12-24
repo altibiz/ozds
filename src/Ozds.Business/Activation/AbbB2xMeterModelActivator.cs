@@ -26,7 +26,8 @@ public class AbbB2xMeterModelActivator : ModelActivator<AbbB2xMeterModel>
       ConnectionPower_W = default,
       Phases = default!,
       MessengerId = default!,
-      MeasurementValidatorId = default!
+      MeasurementValidatorId = default!,
+      Kind = default!
     };
   }
 }

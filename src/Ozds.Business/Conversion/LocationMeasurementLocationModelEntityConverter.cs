@@ -38,7 +38,8 @@ public static class LocationMeasurementLocationModelEntityConverterExtensions
       DeletedOn = entity.DeletedOn,
       DeletedById = entity.DeletedById,
       MeterId = entity.MeterId,
-      LocationId = entity.LocationId
+      LocationId = entity.LocationId,
+      Kind = entity.Kind
     };
   }
 
@@ -57,7 +58,8 @@ public static class LocationMeasurementLocationModelEntityConverterExtensions
       DeletedOn = model.DeletedOn,
       DeletedById = model.DeletedById,
       MeterId = model.MeterId,
-      LocationId = model.LocationId
+      LocationId = model.LocationId,
+      Kind = model.Kind
     };
   }
 }

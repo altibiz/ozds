@@ -21,6 +21,9 @@ public class MeterModel : AuditableModel, IMeter
     get { return new NullCapabilities(); }
   }
 
+  [Required]
+  public required virtual string Kind { get; set; } = default!;
+
   public override IEnumerable<ValidationResult> Validate(
     ValidationContext validationContext)
   {

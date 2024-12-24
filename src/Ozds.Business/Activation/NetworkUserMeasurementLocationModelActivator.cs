@@ -27,7 +27,8 @@ public class
       DeletedById = default,
       NetworkUserId = default!,
       NetworkUserCatalogueId = default!,
-      MeterId = default!
+      MeterId = default!,
+      Kind = default!
     };
   }
 }

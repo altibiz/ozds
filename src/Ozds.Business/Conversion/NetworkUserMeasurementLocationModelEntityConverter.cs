@@ -39,7 +39,8 @@ public static class NetworkUserMeasurementLocationModelEntityConverterExtensions
       DeletedById = entity.DeletedById,
       MeterId = entity.MeterId,
       NetworkUserId = entity.NetworkUserId,
-      NetworkUserCatalogueId = entity.NetworkUserCatalogueId
+      NetworkUserCatalogueId = entity.NetworkUserCatalogueId,
+      Kind = entity.Kind
     };
   }
 
@@ -59,7 +60,8 @@ public static class NetworkUserMeasurementLocationModelEntityConverterExtensions
       DeletedById = model.DeletedById,
       MeterId = model.MeterId,
       NetworkUserId = model.NetworkUserId,
-      NetworkUserCatalogueId = model.NetworkUserCatalogueId
+      NetworkUserCatalogueId = model.NetworkUserCatalogueId,
+      Kind = model.Kind
     };
   }
 }
