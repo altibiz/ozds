@@ -23,7 +23,7 @@ public class ValidationCache(
     return meter?.Id;
   }
 
-  protected override async Task<IMeasurementValidator?> GetFromDataSourceAsync(
+  protected override async Task<IMeasurementValidator?> GetValueFromDataSourceAsync(
     string key,
     CancellationToken cancellationToken
   )

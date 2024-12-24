@@ -18,7 +18,7 @@ public abstract class ConcurrentDictionaryCacheBase<TKey, TValue> : ICache
       return value;
     }
 
-    value = await GetFromDataSourceAsync(key, cancellationToken);
+    value = await GetValueFromDataSourceAsync(key, cancellationToken);
     if (value is null)
     {
       return default;
@@ -107,7 +107,7 @@ public abstract class ConcurrentDictionaryCacheBase<TKey, TValue> : ICache
     CancellationToken cancellationToken
   );
 
-  protected abstract Task<TValue?> GetFromDataSourceAsync(
+  protected abstract Task<TValue?> GetValueFromDataSourceAsync(
     TKey key,
     CancellationToken cancellationToken
   );
