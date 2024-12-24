@@ -206,6 +206,11 @@ public class MeasurementUpsertMutations(
       }
     }
 
+    if (result.Count is 0)
+    {
+      return result;
+    }
+
     logger.LogDebug(
       "Flushing aggregate cache with {AggregateCount} aggregates",
       result.Count);
