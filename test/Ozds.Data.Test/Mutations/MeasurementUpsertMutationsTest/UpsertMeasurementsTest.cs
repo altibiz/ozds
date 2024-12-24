@@ -39,6 +39,32 @@ public class UpsertMeasurementsTest(IServiceProvider services)
 
   [Theory]
   [InlineData(1)]
+  [InlineData(2)]
+  [InlineData(3)]
+  public async Task FinishesMassiveMeasurementsInTimeTest(int _)
+  {
+    await using var manager = services
+      .GetRequiredService<EphemeralDataDbContextManager>();
+    var context = await manager.GetContext();
+
+    var factory = new MeasurementUpsertFactory(context);
+    var expected = await factory.CreateMassiveMeasurements(
+      CancellationToken.None);
+
+    var mutations = services.GetRequiredService<MeasurementUpsertMutations>();
+    var stopwatch = Stopwatch.StartNew();
+    var actual = await mutations.UpsertMeasurements(
+      context,
+      expected,
+      CancellationToken.None
+    );
+    stopwatch.Stop();
+    stopwatch.Elapsed.Should().BeLessThan(TimeSpan.FromSeconds(10));
+    actual.Should().HaveCount(expected.Count);
+  }
+
+  [Theory]
+  [InlineData(1)]
   public async Task IsValidTest(int _)
   {
     await using var manager = services

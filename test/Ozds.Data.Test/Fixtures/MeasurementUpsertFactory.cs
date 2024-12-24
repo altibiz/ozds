@@ -12,6 +12,8 @@ namespace Ozds.Data.Test.Fixtures;
 
 public class MeasurementUpsertFactory(DbContext context)
 {
+  private const int MassiveMeasurementCount =
+    10000 / Constants.DefaultDbFuzzCount / 2;
   private const int MeasurementCount =
     1000 / Constants.DefaultDbFuzzCount / 2;
   private const int AggregateCount =
@@ -116,10 +118,23 @@ public class MeasurementUpsertFactory(DbContext context)
   {
     return await Create(
       cancellationToken,
-      x => x.CreateMany(MeasurementCount),
+      x => x.CreateMany(MassiveMeasurementCount),
       x => x.CreateMany(AggregateCount),
       x => x.CreateMany(MeasurementCount),
       x => x.CreateMany(AggregateCount)
+    );
+  }
+
+  public async Task<List<IMeasurementEntity>> CreateMassiveMeasurements(
+    CancellationToken cancellationToken
+  )
+  {
+    return await Create(
+      cancellationToken,
+      x => x.CreateMany(MassiveMeasurementCount),
+      x => x.CreateMany(0),
+      x => x.CreateMany(MassiveMeasurementCount),
+      x => x.CreateMany(0)
     );
   }
 

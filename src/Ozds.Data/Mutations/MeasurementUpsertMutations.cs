@@ -24,7 +24,7 @@ public class MeasurementUpsertMutations(
 {
   private const int QuarterHourChunkSize = 1;
   private const int UpsertChunkSize = 50;
-  private const int TryInsertChunkSize = 1000;
+  private const int TryInsertChunkSize = 10000;
 
   public async Task<List<IMeasurementEntity>> UpsertMeasurements(
     IEnumerable<IMeasurementEntity> measurements,
@@ -183,29 +183,22 @@ public class MeasurementUpsertMutations(
   {
     var parameters = context.CreateBulkParameters(
       chunk.Select(x => (x.Measurement as object, x.Index)));
-    var commands = chunk
-      .Select(x => CreateCommand(
-        context,
-        type,
-        x.Measurement is IAggregateEntity aggregate
-          ? aggregate.Interval
-          : null,
-        x.Index))
-      .ToList();
-    var queryClauses = commands
-      .Select(x => x.Query)
-      .ToList();
-    var withClauses = commands
-      .Select(x => x.With)
-      .Where(x => x is not null)
-      .ToList();
-    var sql = string.Join("\nUNION ALL\n", queryClauses);
-    if (withClauses.Count > 0)
+    var commands = new List<UpsertTemplate>();
+    var measurementIndices = new HashSet<int>();
+    foreach (var (index, measurement) in chunk)
     {
-      sql = $@"
-            WITH {string.Join(",\n", withClauses)}
-            {sql}
-          ";
+      if (measurement is IAggregateEntity aggregate)
+      {
+        commands.Add(CreateCommand(
+          context,
+          type,
+          aggregate.Interval,
+          index));
+      }
+      else
+      {
+        measurementIndices.Add(index);
+      }
     }
 
     // NOTE: good for debugging
@@ -226,17 +219,53 @@ public class MeasurementUpsertMutations(
     // Console.WriteLine(sql);
 #pragma warning restore S125 // Sections of code should not be commented out
 
-    var objects = await context.DapperCommand(
-      type,
-      sql,
-      cancellationToken,
-      parameters
-    );
+    var objects = new List<object>();
+    {
+      var queryClauses = commands
+        .Select(x => x.Query)
+        .ToList();
+      var withClauses = commands
+        .Select(x => x.With)
+        .Where(x => x is not null)
+        .ToList();
+      var sql = string.Join("\nUNION ALL\n", queryClauses);
+      if (withClauses.Count > 0)
+      {
+        sql = $@"
+          WITH {string.Join(",\n", withClauses)}
+          {sql}
+        ";
+      }
+      if (!string.IsNullOrEmpty(sql))
+      {
+        objects.AddRange(await context.DapperCommand(
+          type,
+          sql,
+          cancellationToken,
+          parameters
+        ));
+      }
+    }
+    foreach (var sql in
+      CreateMeasurementCommands(
+        context,
+        type,
+        measurementIndices)
+        .Select(x => x.Query)
+        .Where(x => !string.IsNullOrEmpty(x)))
+    {
+      objects.AddRange(await context.DapperCommand(
+        type,
+        sql,
+        cancellationToken,
+        parameters
+      ));
+    }
 
     return objects;
   }
 
-  private static (string? With, string Query) CreateCommand(
+  private static UpsertTemplate CreateCommand(
     DataDbContext context,
     Type type,
     IntervalEntity? interval,
@@ -244,23 +273,130 @@ public class MeasurementUpsertMutations(
   )
   {
     var template = UpsertTemplateCache.GetOrAdd(
-      (type, interval),
+      new(type, interval),
       _ => interval is { } nonNullInterval
         ? CreateUpsertAggregateTemplate(
             context, type, nonNullInterval, "{{INDEX}}")
         : CreateUpsertMeasurementTemplate(
             context, type, "{{INDEX}}")
     );
-    return (
+    return new(
       template.With?.Replace("{{INDEX}}", index.ToString()),
       template.Query.Replace("{{INDEX}}", index.ToString())
     );
   }
 
-  private static (string? With, string Query) CreateUpsertMeasurementTemplate(
+  private static List<UpsertTemplate> CreateMeasurementCommands(
+    DataDbContext context,
+    Type type,
+    IEnumerable<int> indices
+  )
+  {
+    var entityType = context.Model.FindEntityType(type)
+        ?? throw new InvalidOperationException(
+          $"No entity type found for {type}.");
+    var properties = entityType.GetProperties()
+      .Concat(entityType
+        .GetComplexProperties()
+        .SelectMany(p => p.ComplexType.GetProperties()))
+      .ToList();
+    // NOTE: postgresql: A statement cannot have more than 65535 parameters
+    var chunkSize = (int)(Math.Pow(2, 15) / properties.Count);
+    var templates = new List<UpsertTemplate>();
+    foreach (var indexChunk in indices.Chunk(chunkSize))
+    {
+      var values = new List<string>();
+      foreach (var index in indexChunk)
+      {
+        values.Add(CreateValuesMeasurementTemplate(
+          context,
+          type,
+          index.ToString())
+          .Replace("{{INDEX}}", index.ToString()));
+      }
+      var valuesString = string.Join(",\n", values);
+      var template = CreateUpsertMeasurementTemplateFromValues(
+        context,
+        type,
+        valuesString);
+      templates.Add(template);
+    }
+
+    return templates;
+  }
+
+  private static UpsertTemplate CreateUpsertMeasurementTemplate(
     DataDbContext context,
     Type type,
     string indexSubstitution)
+  {
+    var values = CreateValuesMeasurementTemplate(
+      context,
+      type,
+      indexSubstitution);
+    var template = CreateUpsertMeasurementTemplateFromValues(
+      context,
+      type,
+      values);
+
+    return template;
+  }
+
+  private static UpsertTemplate CreateUpsertAggregateTemplate(
+    DataDbContext context,
+    Type type,
+    IntervalEntity interval,
+    string indexSubstitution)
+  {
+    var values = CreateValuesMeasurementTemplate(
+      context,
+      type,
+      indexSubstitution);
+    var template = CreateUpsertAggregateTemplateFromValues(
+      context,
+      type,
+      interval,
+      values,
+      indexSubstitution);
+
+    return template;
+  }
+
+  private static string CreateValuesMeasurementTemplate(
+    DataDbContext context,
+    Type type,
+    string indexSubstitution)
+  {
+    var entityType = context.Model.FindEntityType(type)
+        ?? throw new InvalidOperationException(
+          $"No entity type found for {type}.");
+    var storeObjectIdentifier = StoreObjectIdentifier
+      .Create(entityType, StoreObjectType.Table)
+      ?? throw new InvalidOperationException(
+        $"No store object identifier found for {type}.");
+    var properties = entityType.GetProperties()
+      .Concat(entityType
+        .GetComplexProperties()
+        .SelectMany(p => p.ComplexType.GetProperties()))
+      .ToList();
+
+    var values = $"({string.Join(", ", properties
+      .Select(property =>
+      {
+        var columnName = property.GetColumnName(storeObjectIdentifier);
+        return $"@p{indexSubstitution}_{columnName}"
+        + (property.ClrType.IsEnum
+          ? $"::{property.ClrType.Name.ToSnakeCase()}"
+          : "");
+      }))})";
+
+    return values;
+  }
+
+  private static UpsertTemplate CreateUpsertMeasurementTemplateFromValues(
+    DataDbContext context,
+    Type type,
+    string values)
   {
     var entityType = context.Model.FindEntityType(type)
         ?? throw new InvalidOperationException(
@@ -293,40 +429,25 @@ public class MeasurementUpsertMutations(
       .ToList();
 
     var columns = string.Join(", ", columnNames);
-    var values = string.Join(", ", properties
-      .Select(property =>
-      {
-        var columnName = property.GetColumnName(storeObjectIdentifier);
-        return $"@p{indexSubstitution}_{columnName}"
-        + (property.ClrType.IsEnum
-          ? $"::{property.ClrType.Name.ToSnakeCase()}"
-          : "");
-      }));
     var conflict = string.Join(
       ", ",
       primaryKeyColumns.Select(c => c.ColumnName));
 
     var updateClause = "DO NOTHING";
 
-    return (
-      $@"
-        value{indexSubstitution} AS (
-          INSERT INTO {tableName} ({columns})
-          VALUES ({values})
-          ON CONFLICT ({conflict}) {updateClause}
-          RETURNING {tableName}.*
-        )
-      ",
-      $@"
-        SELECT * FROM value{indexSubstitution}
-      "
-    );
+    return new(null, $@"
+      INSERT INTO {tableName} ({columns})
+      VALUES {values}
+      ON CONFLICT ({conflict}) {updateClause}
+      RETURNING {tableName}.*
+    ");
   }
 
-  private static (string? With, string Query) CreateUpsertAggregateTemplate(
+  private static UpsertTemplate CreateUpsertAggregateTemplateFromValues(
     DataDbContext context,
     Type type,
     IntervalEntity interval,
+    string values,
     string indexSubstitution)
   {
     var entityType = context.Model.FindEntityType(type)
@@ -360,15 +481,6 @@ public class MeasurementUpsertMutations(
       .ToList();
 
     var columns = string.Join(", ", columnNames);
-    var values = string.Join(", ", properties
-      .Select(property =>
-      {
-        var columnName = property.GetColumnName(storeObjectIdentifier);
-        return $"@p{indexSubstitution}_{columnName}"
-        + (property.ClrType.IsEnum
-          ? $"::{property.ClrType.Name.ToSnakeCase()}"
-          : "");
-      }));
     var conflict = string.Join(
       ", ",
       primaryKeyColumns.Select(c => c.ColumnName)
@@ -587,11 +699,11 @@ public class MeasurementUpsertMutations(
 
     if (interval != IntervalEntity.QuarterHour)
     {
-      return (
+      return new(
         $@"
           value{indexSubstitution} AS (
             INSERT INTO {tableName} ({columns})
-            VALUES ({values})
+            VALUES {values}
             ON CONFLICT ({conflict}) {updateClause}
             RETURNING {tableName}.*
           )
@@ -606,7 +718,7 @@ public class MeasurementUpsertMutations(
     var monthIntervalValue = IntervalEntity.Month.ToString().ToSnakeCase();
     var intervalTypeName = nameof(IntervalEntity).ToSnakeCase();
 
-    return (
+    return new(
       $@"
         old{indexSubstitution} AS (
           SELECT {tableName}.*
@@ -621,7 +733,7 @@ public class MeasurementUpsertMutations(
                   : "")))}
         ), new{indexSubstitution} AS (
           INSERT INTO {tableName} ({columns})
-          VALUES ({values})
+          VALUES {values}
           ON CONFLICT ({conflict}) {updateClause}
           RETURNING {tableName}.*
         ), delta{indexSubstitution} AS (
@@ -705,9 +817,19 @@ public class MeasurementUpsertMutations(
   }
 
   private static readonly ConcurrentDictionary<
-    (Type, IntervalEntity?),
-    (string? With, string Query)>
+    UpsertTemplateCacheKey,
+    UpsertTemplate>
     UpsertTemplateCache = new ConcurrentDictionary<
-      (Type, IntervalEntity?),
-      (string? With, string Query)>();
+      UpsertTemplateCacheKey,
+      UpsertTemplate>();
+
+  private sealed record UpsertTemplateCacheKey(
+    Type Type,
+    IntervalEntity? Interval
+  );
+
+  private sealed record UpsertTemplate(
+    string? With,
+    string Query
+  );
 }
