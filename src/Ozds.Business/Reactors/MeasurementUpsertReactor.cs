@@ -1,9 +1,9 @@
 using System.ComponentModel.DataAnnotations;
 using System.Data;
-using System.Diagnostics;
 using System.Text.Json;
 using System.Threading.Channels;
 using Ozds.Business.Activation.Agnostic;
+using Ozds.Business.Caching;
 using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Abstractions;
@@ -12,11 +12,10 @@ using Ozds.Business.Models.Complex;
 using Ozds.Business.Models.Enums;
 using Ozds.Business.Mutations;
 using Ozds.Business.Mutations.Agnostic;
-using Ozds.Business.Observers.Abstractions;
-using Ozds.Business.Observers.EventArgs;
 using Ozds.Business.Queries;
 using Ozds.Business.Queries.Agnostic;
 using Ozds.Business.Reactors.Abstractions;
+using Ozds.Business.Validation.Agnostic;
 using Ozds.Iot.Entities.Abstractions;
 using Ozds.Iot.Observers.Abstractions;
 using Ozds.Iot.Observers.EventArgs;
@@ -28,6 +27,7 @@ namespace Ozds.Business.Reactors;
 
 public class MeasurementUpsertReactor(
   IServiceScopeFactory serviceScopeFactory,
+  AgnosticValidator validator,
   IPushSubscriber subscriber,
   ILogger<MeasurementUpsertReactor> logger
 ) : BackgroundService, IReactor
@@ -47,9 +47,9 @@ public class MeasurementUpsertReactor(
     try
     {
       await using var scope = serviceScopeFactory.CreateAsyncScope();
-      var mutations = scope.ServiceProvider
-        .GetRequiredService<MeasurementUpsertMutations>();
-      var flushed = await mutations.FlushCache(cancellationToken);
+      var cache = scope.ServiceProvider
+        .GetRequiredService<MeasurementUpsertCache>();
+      var flushed = cache.Flush();
       logger.LogInformation(
         "Flushed {Count} measurements from cache",
         flushed.Count);
@@ -94,10 +94,8 @@ public class MeasurementUpsertReactor(
       .GetRequiredService<AgnosticPushRequestMeasurementConverter>();
     var activator = serviceProvider
       .GetRequiredService<AgnosticModelActivator>();
-    var mutations = serviceProvider
-      .GetRequiredService<MeasurementUpsertMutations>();
-    var publisher =
-      serviceProvider.GetRequiredService<IMeasurementUpsertPublisher>();
+    var cache = serviceProvider
+      .GetRequiredService<MeasurementUpsertCache>();
     var notificationMutations = serviceProvider
       .GetRequiredService<NotificationMutations>();
     var auditableQueries = serviceProvider
@@ -117,66 +115,69 @@ public class MeasurementUpsertReactor(
       eventArgs
     );
 
-    var stopwatch = Stopwatch.StartNew();
     var pushRequestsWithLocations =
       await GetMeterPushRequestsWithMeasurementLocations(
         measurementLocationQueries,
         eventArgs.Request.Measurements
       );
-    stopwatch.Stop();
-    logger.LogDebug(
-      "Got {Count} meter push requests with measurement locations in {Elapsed}",
-      pushRequestsWithLocations.Count,
-      stopwatch.Elapsed);
 
-    stopwatch = Stopwatch.StartNew();
     var measurements =
       pushRequestsWithLocations
         .Select(x => pushRequestConverter
           .ToMeasurement(x.MeterPushRequest, x.MeasurementLocation.Id))
         .ToList();
-    stopwatch.Stop();
-    logger.LogDebug(
-      "Converted {Count} meter push requests to measurements in {Elapsed}",
-      pushRequestsWithLocations.Count,
-      stopwatch.Elapsed);
 
-    var result = await mutations.UpsertMeasurements(
-      measurements,
-      CancellationToken.None
-    );
-
-    if (result.ValidationResults.Count > 0)
+    var validationResults = await Validate(measurements);
+    if (validationResults?.Count > 0)
     {
       var eventId = await AddPushEvent(
         auditableQueries,
         readonlyMutations,
         activator,
         eventArgs,
-        result.ValidationResults);
+        validationResults);
       await AddInvalidPushNotification(
         notificationMutations,
         auditableQueries,
         notificationQueries,
         activator,
         eventArgs,
-        result.ValidationResults,
+        validationResults,
         eventId);
       return;
     }
+
+    cache.Add(measurements);
 
     await AddPushEvent(
       auditableQueries,
       readonlyMutations,
       activator,
       eventArgs);
+  }
 
-    publisher.PublishUpsert(
-      new MeasurementUpsertEventArgs
-      {
-        Measurements = result.Measurements.OfType<IMeasurement>().ToList(),
-        Aggregates = result.Measurements.OfType<IAggregate>().ToList()
-      });
+  private async Task<List<ValidationResult>?> Validate(
+    IEnumerable<IMeasurement> measurements
+  )
+  {
+    var validationResults = new List<ValidationResult>();
+    foreach (var measurement in measurements)
+    {
+      var validationResult = await validator.ValidateAsync(
+        measurement,
+        CancellationToken.None
+      );
+
+      validationResults.AddRange(
+        validationResult);
+    }
+
+    if (validationResults.Count is not 0)
+    {
+      return validationResults;
+    }
+
+    return null;
   }
 
   private static async Task RescheduleInactivityMonitorJob(
@@ -200,6 +201,7 @@ public class MeasurementUpsertReactor(
     );
   }
 
+  // TODO: cache this
   private static async Task<List<(
     IMeterPushRequestEntity MeterPushRequest,
     IMeasurementLocation MeasurementLocation

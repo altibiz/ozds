@@ -3,7 +3,7 @@ using Ozds.Business.Observers.EventArgs;
 namespace Ozds.Business.Observers.Abstractions;
 
 public interface
-  IAggregateFlushSubscriber : ISubscriber<IMeasurementUpsertPublisher>
+  IAggregateFlushSubscriber : ISubscriber<IAggregateFlushPublisher>
 {
   public void SubscribeFlush(
     EventHandler<AggregateFlushEventArgs> handler);

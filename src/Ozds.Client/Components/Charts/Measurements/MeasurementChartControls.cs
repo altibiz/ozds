@@ -29,7 +29,7 @@ public partial class MeasurementChartControls : OzdsOwningComponentBase
   public RenderFragment<MeasurementChartParameters> ChildContent { get; set; } = default!;
 
   [Inject]
-  private IMeasurementUpsertSubscriber MeasurementSubscriber { get; set; } = default!;
+  private IMeasurementFinalizeSubscriber MeasurementSubscriber { get; set; } = default!;
 
   [Inject]
   private AgnosticAggregateUpserter AggregateUpserter { get; set; } = default!;
@@ -38,14 +38,14 @@ public partial class MeasurementChartControls : OzdsOwningComponentBase
 
   protected override void OnInitialized()
   {
-    MeasurementSubscriber.SubscribeUpsert(OnUpsert);
+    MeasurementSubscriber.SubscribeFinalize(OnUpsert);
   }
 
   protected override void Dispose(bool disposing)
   {
     if (disposing)
     {
-      MeasurementSubscriber.UnsubscribeUpsert(OnUpsert);
+      MeasurementSubscriber.UnsubscribeFinalize(OnUpsert);
     }
   }
 
@@ -69,7 +69,7 @@ public partial class MeasurementChartControls : OzdsOwningComponentBase
 
   private void OnUpsert(
     object? _sender,
-    MeasurementUpsertEventArgs args)
+    MeasurementFinalizeEventArgs args)
   {
     if (!_parameters.Refresh)
     {
