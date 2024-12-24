@@ -22,7 +22,7 @@ public class MeasurementUpsertMutations(
 {
   private const int QuarterHourChunkSize = 1;
   private const int UpsertChunkSize = 50;
-  private const int TryInsertChunkSize = 100;
+  private const int TryInsertChunkSize = 1000;
 
   public async Task<List<IMeasurementEntity>> UpsertMeasurements(
     IEnumerable<IMeasurementEntity> measurements,

@@ -6,6 +6,8 @@ using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Enums;
 using Ozds.Business.Mutations.Abstractions;
+using Ozds.Business.Observers.Abstractions;
+using Ozds.Business.Observers.EventArgs;
 using Ozds.Business.Validation.Agnostic;
 using Ozds.Data.Entities.Abstractions;
 using DataMeasurementUpsertMutations = Ozds.Data.Mutations.MeasurementUpsertMutations;
@@ -23,6 +25,7 @@ public class MeasurementUpsertMutations(
   AgnosticMeasurementAggregateConverter aggregateConverter,
   AgnosticAggregateUpserter aggregateUpserter,
   AgnosticValidator validator,
+  IAggregateFlushPublisher publisher,
   ILogger<MeasurementUpsertMutations> logger
 ) : IMutations
 {
@@ -31,6 +34,8 @@ public class MeasurementUpsertMutations(
     CancellationToken cancellationToken
   )
   {
+    measurements = measurements.ToList();
+
     var stopwatch = Stopwatch.StartNew();
     var validationResults = await Validate(measurements);
     stopwatch.Stop();
@@ -60,16 +65,25 @@ public class MeasurementUpsertMutations(
       .ToList();
 
     AddToCacheInternal(aggregates);
-    var flushed = FlushCacheInternal(aggregates);
+    FlushCacheInternal(aggregates);
 
     var entities = measurements
-      .Concat(flushed)
-      .Select(modelEntityConverter.ToEntity<IMeasurementEntity>);
+      .Select(modelEntityConverter.ToEntity<IMeasurementEntity>)
+      .ToList();
 
+    logger.LogDebug(
+      "Upserting {Count} measurements...",
+      entities.Count);
+    stopwatch = Stopwatch.StartNew();
     var result = await mutations.UpsertMeasurements(
       entities,
       cancellationToken
     );
+    stopwatch.Stop();
+    logger.LogDebug(
+      "Upserted {Count} measurements in {Elapsed}",
+      entities.Count,
+      stopwatch.Elapsed);
 
     var models = result
       .Select(modelEntityConverter.ToModel<IMeasurement>)
@@ -81,7 +95,6 @@ public class MeasurementUpsertMutations(
     );
   }
 
-  // TODO: optimize!!
   private async Task<List<ValidationResult>?> Validate(
     IEnumerable<IMeasurement> measurements
   )
@@ -196,6 +209,10 @@ public class MeasurementUpsertMutations(
     logger.LogDebug(
       "Flushing aggregate cache with {AggregateCount} aggregates",
       result.Count);
+    publisher.PublishFlush(new AggregateFlushEventArgs
+    {
+      Aggregates = result
+    });
 
     return result;
   }
