@@ -52,7 +52,7 @@ public class MeasurementUpsertMutations(
     List<IMeasurementEntity>? results = null;
     if (context.Database.CurrentTransaction is { })
     {
-      results = await ExecuteCommands(
+      results = await Execute(
         context,
         measurements,
         cancellationToken
@@ -69,17 +69,11 @@ public class MeasurementUpsertMutations(
           await context.Database
             .BeginTransactionAsync(isolationLevel, cancellationToken);
 
-          var stopwatch = Stopwatch.StartNew();
-          results = await ExecuteCommands(
+          results = await Execute(
             context,
             measurements,
             cancellationToken
           );
-          stopwatch.Stop();
-          logger.LogDebug(
-            "Upserted {Count} measurements in {Elapsed}",
-            measurements.Count(),
-            stopwatch.Elapsed);
 
           await context.Database
             .CommitTransactionAsync(cancellationToken);
@@ -125,7 +119,7 @@ public class MeasurementUpsertMutations(
       .ToList();
   }
 
-  private static async Task<List<IMeasurementEntity>> ExecuteCommands(
+  private async Task<List<IMeasurementEntity>> Execute(
     DataDbContext context,
     IEnumerable<IMeasurementEntity> measurements,
     CancellationToken cancellationToken
@@ -174,7 +168,7 @@ public class MeasurementUpsertMutations(
     return results;
   }
 
-  private static async Task<List<object>> ExecuteChunk(
+  private async Task<List<object>> ExecuteChunk(
     DataDbContext context,
     IEnumerable<(int Index, IMeasurementEntity Measurement)> chunk,
     Type type,
@@ -219,6 +213,8 @@ public class MeasurementUpsertMutations(
     // Console.WriteLine(sql);
 #pragma warning restore S125 // Sections of code should not be commented out
 
+    var count = 0;
+    var stopwatch = Stopwatch.StartNew();
     var objects = new List<object>();
     {
       var queryClauses = commands
@@ -238,12 +234,18 @@ public class MeasurementUpsertMutations(
       }
       if (!string.IsNullOrEmpty(sql))
       {
+        count++;
         objects.AddRange(await context.DapperCommand(
           type,
           sql,
           cancellationToken,
           parameters
         ));
+        var elapsed = stopwatch.Elapsed;
+        logger.LogDebug(
+          "Executed {Count} mixed command at {Elapsed}",
+          count,
+          elapsed);
       }
     }
     foreach (var sql in
@@ -254,13 +256,24 @@ public class MeasurementUpsertMutations(
         .Select(x => x.Query)
         .Where(x => !string.IsNullOrEmpty(x)))
     {
+      count++;
       objects.AddRange(await context.DapperCommand(
         type,
         sql,
         cancellationToken,
         parameters
       ));
+      var elapsed = stopwatch.Elapsed;
+      logger.LogDebug(
+        "Executed {Count} measurement command at {Elapsed}",
+        count,
+        elapsed);
     }
+    stopwatch.Stop();
+    logger.LogDebug(
+      "Executed {Count} commands in {Elapsed}",
+      count,
+      stopwatch.Elapsed);
 
     return objects;
   }

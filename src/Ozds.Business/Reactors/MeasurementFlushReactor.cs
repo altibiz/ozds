@@ -1,4 +1,5 @@
 using System.Threading.Channels;
+using Ozds.Business.Buffers;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Mutations;
 using Ozds.Business.Observers.Abstractions;
@@ -23,10 +24,24 @@ public class MeasurementFlushReactor(
     await base.StartAsync(cancellationToken);
   }
 
-  public override Task StopAsync(CancellationToken cancellationToken)
+  public override async Task StopAsync(CancellationToken cancellationToken)
   {
-    subscriber.SubscribeFlush(OnFlush);
-    return base.StopAsync(cancellationToken);
+    try
+    {
+      await using var scope = serviceScopeFactory.CreateAsyncScope();
+      var buffer = scope.ServiceProvider
+        .GetRequiredService<MeasurementBuffer>();
+      var flushed = buffer.Flush();
+      logger.LogInformation(
+        "Flushed {Count} measurements from buffer",
+        flushed.Count);
+    }
+    catch (Exception ex)
+    {
+      logger.LogError(ex, "Failed to flush measurements from cache");
+    }
+    subscriber.UnsubscribeFlush(OnFlush);
+    await base.StopAsync(cancellationToken);
   }
 
   protected override async Task ExecuteAsync(CancellationToken stoppingToken)

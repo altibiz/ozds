@@ -25,11 +25,11 @@ namespace Ozds.Business.Reactors;
 
 // TODO: transaction in sql and add measurement_location_id to the upsert
 
-public class MeasurementUpsertReactor(
+public class MeasurementPushReactor(
   IServiceScopeFactory serviceScopeFactory,
   AgnosticValidator validator,
   IPushSubscriber subscriber,
-  ILogger<MeasurementUpsertReactor> logger
+  ILogger<MeasurementPushReactor> logger
 ) : BackgroundService, IReactor
 {
   private readonly Channel<PushEventArgs> channel =
@@ -44,20 +44,6 @@ public class MeasurementUpsertReactor(
   public override async Task StopAsync(CancellationToken cancellationToken)
   {
     subscriber.UnsubscribePush(OnPush);
-    try
-    {
-      await using var scope = serviceScopeFactory.CreateAsyncScope();
-      var buffer = scope.ServiceProvider
-        .GetRequiredService<MeasurementUpsertBuffer>();
-      var flushed = buffer.Flush();
-      logger.LogInformation(
-        "Flushed {Count} measurements from cache",
-        flushed.Count);
-    }
-    catch (Exception ex)
-    {
-      logger.LogError(ex, "Failed to flush measurements from cache");
-    }
     await base.StopAsync(cancellationToken);
   }
 
@@ -95,7 +81,7 @@ public class MeasurementUpsertReactor(
     var activator = serviceProvider
       .GetRequiredService<AgnosticModelActivator>();
     var buffer = serviceProvider
-      .GetRequiredService<MeasurementUpsertBuffer>();
+      .GetRequiredService<MeasurementBuffer>();
     var notificationMutations = serviceProvider
       .GetRequiredService<NotificationMutations>();
     var auditableQueries = serviceProvider
