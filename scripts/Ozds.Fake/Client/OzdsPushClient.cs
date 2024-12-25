@@ -12,12 +12,16 @@ public class OzdsPushClient(
   public async Task Push(
     string messengerId,
     string apiKey,
+    bool realtime,
     IMessengerPushRequestEntity request,
     CancellationToken cancellationToken = default
   )
   {
     var client = httpClientFactory.CreateClient();
     client.DefaultRequestHeaders.Add("X-Api-Key", apiKey);
+    client.DefaultRequestHeaders.Add(
+      "X-Buffer-Behavior",
+      realtime ? "realtime" : "buffer");
     Console.WriteLine(client.BaseAddress);
 
     // FIXME: this should be configurable

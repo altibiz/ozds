@@ -6,8 +6,7 @@ namespace Ozds.Business.Caching;
 
 public class ValidationCache(
   IServiceScopeFactory factory
-)
-  : ConcurrentDictionaryCacheBase<string, IMeasurementValidator>
+) : ConcurrentDictionaryCacheBase<string, IMeasurementValidator>
 {
   protected override async Task<string?> GetKeyFromDataSourceAsync(
     IMeasurementValidator value,

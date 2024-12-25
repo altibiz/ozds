@@ -9,6 +9,12 @@ using Ozds.Business.Observers.EventArgs;
 
 namespace Ozds.Business.Buffers;
 
+public enum BufferBehavior
+{
+  Realtime,
+  Buffer
+}
+
 public class MeasurementBuffer(
   AgnosticAggregateUpserter aggregateUpserter,
   AgnosticMeasurementAggregateConverter aggregateConverter,
@@ -19,7 +25,10 @@ public class MeasurementBuffer(
 {
   private const int MaxMeasurements = 10000;
 
-  public List<IMeasurement> Add(IEnumerable<IMeasurement> measurements)
+  public List<IMeasurement> Add(
+    IEnumerable<IMeasurement> measurements,
+    BufferBehavior bufferBehavior
+  )
   {
     var aggregates = measurements
       .OfType<IAggregate>()
@@ -41,10 +50,16 @@ public class MeasurementBuffer(
         .ToList();
     }
 
-    AddToMeasurementsInternal(measurements.Where(x => x is not IAggregate));
+    if (bufferBehavior is BufferBehavior.Buffer)
+    {
+      AddToMeasurementsInternal(measurements.Where(x => x is not IAggregate));
+    }
     AddToAggregatesInternal(aggregates);
 
-    var flushedMeasurements = FlushMeasurementsInternal(MaxMeasurements);
+    var flushedMeasurements =
+      bufferBehavior is BufferBehavior.Buffer
+        ? FlushMeasurementsInternal(MaxMeasurements)
+        : measurements.Where(x => x is not IAggregate).ToList();
     var flushedAggregates = FlushAggregatesInternal(aggregates);
     if (flushedMeasurements.Count is > 0 || flushedAggregates.Count is > 0)
     {

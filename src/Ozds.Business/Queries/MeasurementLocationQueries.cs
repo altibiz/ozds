@@ -10,15 +10,25 @@ public class MeasurementLocationQueries(
   AgnosticModelEntityConverter modelEntityConverter
 ) : IQueries
 {
-  public async Task<List<IMeasurementLocation>> ReadByMeters(
-    IEnumerable<string> meterIds,
+  public async Task<IMeasurementLocation?> ReadMeasurementLocationByMeter(
+    string meterId,
     CancellationToken cancellationToken
   )
   {
-    var entities = await queries.ReadByMeters(meterIds, cancellationToken);
-    var models = entities
-      .Select(modelEntityConverter.ToModel<IMeasurementLocation>)
-      .ToList();
-    return models;
+    var entity = await queries.ReadMeasurementLocationByMeter(meterId, cancellationToken);
+    return entity is null
+      ? null
+      : modelEntityConverter.ToModel<IMeasurementLocation>(entity);
+  }
+
+  public async Task<IMeter?> ReadMeterByMeasurementLocation(
+    string measurementLocationId,
+    CancellationToken cancellationToken
+  )
+  {
+    var entity = await queries.ReadMeterByMeasurementLocation(measurementLocationId, cancellationToken);
+    return entity is null
+      ? null
+      : modelEntityConverter.ToModel<IMeter>(entity);
   }
 }

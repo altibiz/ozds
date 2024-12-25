@@ -7,10 +7,10 @@ using Ozds.Data.Observers.EventArgs;
 
 namespace Ozds.Business.Reactors;
 
-public class ValidationCacheUpdateReactor(
+public class MeasurementLocationCacheUpdateReactor(
   IEntityChangesSubscriber subscriber,
-  ValidationCache cache,
-  ILogger<ValidationCacheUpdateReactor> logger
+  MeasurementLocationCache cache,
+  ILogger<MeasurementLocationCacheUpdateReactor> logger
 ) : BackgroundService, IReactor
 {
   private readonly Channel<EntitiesChangedEventArgs> channel =
@@ -40,7 +40,7 @@ public class ValidationCacheUpdateReactor(
       {
         logger.LogError(
           ex,
-          "Validation cache update failed for {Count} entities",
+          "Measurement location cache update failed for {Count} entities",
           eventArgs.Entities.Count);
       }
     }
@@ -56,18 +56,18 @@ public class ValidationCacheUpdateReactor(
   {
     foreach (var entry in eventArgs.Entities)
     {
-      if (entry.Entity is not IMeasurementValidator validator)
+      if (entry.Entity is not IMeasurementLocation measurementLocation)
       {
         continue;
       }
 
       if (entry.State is not EntityChangedState.Modified)
       {
-        await cache.TryUpdateAsync(validator, CancellationToken.None);
+        await cache.TryUpdateAsync(measurementLocation, CancellationToken.None);
       }
       else if (entry.State is EntityChangedState.Removed)
       {
-        await cache.TryRemoveAsync(validator, CancellationToken.None);
+        await cache.TryRemoveAsync(measurementLocation, CancellationToken.None);
       }
     }
   }

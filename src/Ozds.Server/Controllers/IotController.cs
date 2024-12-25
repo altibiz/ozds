@@ -17,7 +17,10 @@ public class IotController(IPushPublisher publisher) : Controller
   };
 
   [HttpPost]
-  public async Task<IActionResult> Push(string id)
+  public async Task<IActionResult> Push(
+    string id,
+    [FromHeader(Name = "X-Buffer-Behavior")] string bufferBehavior
+  )
   {
     IMessengerPushRequestEntity? request;
     try
@@ -43,7 +46,14 @@ public class IotController(IPushPublisher publisher) : Controller
       return BadRequest("No measurements found");
     }
 
-    publisher.PublishPush(new PushEventArgs(id, request));
+    var eventArgs = new PushEventArgs(
+      id,
+      bufferBehavior == "realtime"
+        ? PushEventBufferBehavior.Realtime
+        : PushEventBufferBehavior.Buffer,
+      request);
+
+    publisher.PublishPush(eventArgs);
 
     return Ok();
   }

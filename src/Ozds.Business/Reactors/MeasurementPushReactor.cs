@@ -4,6 +4,7 @@ using System.Text.Json;
 using System.Threading.Channels;
 using Ozds.Business.Activation.Agnostic;
 using Ozds.Business.Buffers;
+using Ozds.Business.Caching;
 using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Abstractions;
@@ -92,8 +93,8 @@ public class MeasurementPushReactor(
       .GetRequiredService<IMessengerJobManager>();
     var readonlyMutations = serviceProvider
       .GetRequiredService<ReadonlyMutations>();
-    var measurementLocationQueries = serviceProvider
-      .GetRequiredService<MeasurementLocationQueries>();
+    var measurementLocationCache = serviceProvider
+      .GetRequiredService<MeasurementLocationCache>();
 
     await RescheduleInactivityMonitorJob(
       messengerJobManager,
@@ -103,7 +104,7 @@ public class MeasurementPushReactor(
 
     var pushRequestsWithLocations =
       await GetMeterPushRequestsWithMeasurementLocations(
-        measurementLocationQueries,
+        measurementLocationCache,
         eventArgs.Request.Measurements
       );
 
@@ -133,7 +134,11 @@ public class MeasurementPushReactor(
       return;
     }
 
-    buffer.Add(measurements);
+    buffer.Add(
+      measurements,
+      eventArgs.BufferBehavior == PushEventBufferBehavior.Realtime
+        ? BufferBehavior.Realtime
+        : BufferBehavior.Buffer);
 
     await AddPushEvent(
       auditableQueries,
@@ -192,10 +197,10 @@ public class MeasurementPushReactor(
     IMeterPushRequestEntity MeterPushRequest,
     IMeasurementLocation MeasurementLocation
   )>> GetMeterPushRequestsWithMeasurementLocations(
-    MeasurementLocationQueries queries,
+    MeasurementLocationCache cache,
     IReadOnlyCollection<IMeterPushRequestEntity> pushRequestMeasurements)
   {
-    var measurementLocations = await queries.ReadByMeters(
+    var measurementLocations = await cache.GetAsync(
       pushRequestMeasurements
         .Select(x => x.MeterId)
         .Distinct(),
