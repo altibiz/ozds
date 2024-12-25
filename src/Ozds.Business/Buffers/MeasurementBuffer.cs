@@ -73,12 +73,12 @@ public class MeasurementBuffer(
       .ToList();
   }
 
-  public List<IMeasurement> Flush()
+  public List<IMeasurement> Flush(bool immediate = false)
   {
     var measurements = FlushMeasurementsInternal();
     var aggregates = FlushAggregatesInternal();
 
-    if (measurements.Count is > 0 || aggregates.Count is > 0)
+    if (!immediate && (measurements.Count is > 0 || aggregates.Count is > 0))
     {
       measurementFlushPublisher.PublishFlush(new MeasurementFlushEventArgs
       {

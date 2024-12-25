@@ -31,7 +31,10 @@ public class MeasurementFlushReactor(
       await using var scope = serviceScopeFactory.CreateAsyncScope();
       var buffer = scope.ServiceProvider
         .GetRequiredService<MeasurementBuffer>();
-      var flushed = buffer.Flush();
+      var mutations = scope.ServiceProvider
+        .GetRequiredService<MeasurementUpsertMutations>();
+      var flushed = buffer.Flush(immediate: true);
+      await mutations.UpsertMeasurements(flushed, CancellationToken.None);
       logger.LogInformation(
         "Flushed {Count} measurements from buffer",
         flushed.Count);
@@ -50,7 +53,7 @@ public class MeasurementFlushReactor(
     {
       try
       {
-        await Handle(eventArgs);
+        await Handle(eventArgs, stoppingToken);
       }
       catch (Exception ex)
       {
@@ -68,14 +71,15 @@ public class MeasurementFlushReactor(
   }
 
   private async Task Handle(
-    MeasurementFlushEventArgs eventArgs)
+    MeasurementFlushEventArgs eventArgs,
+    CancellationToken cancellationToken)
   {
     await using var scope = serviceScopeFactory.CreateAsyncScope();
     var mutations = scope.ServiceProvider
       .GetRequiredService<MeasurementUpsertMutations>();
     var measurements = eventArgs.Measurements;
     var result = await mutations
-      .UpsertMeasurements(measurements, CancellationToken.None);
+      .UpsertMeasurements(measurements, cancellationToken);
 
     publisher.PublishFinalize(
       new MeasurementFinalizeEventArgs
