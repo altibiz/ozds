@@ -1,8 +1,6 @@
 using OrchardCore.Environment.Shell;
 using OrchardCore.Modules;
 
-// TODO: finer control over what services are hosted
-
 namespace Ozds.Server.Extensions;
 
 public static class IServiceCollectionExtensions
