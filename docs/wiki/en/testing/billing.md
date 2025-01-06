@@ -68,6 +68,4 @@ following ways:
   server and start it back up after some time. The server should start working
   again and all data should be stored correctly, and an alarm should be created.
 
-<!-- TODO: add ways to read exceptions from the server? -->
-
 - Altibiz ERP server throws an exception

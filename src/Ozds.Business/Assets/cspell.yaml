@@ -1,0 +1,6 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/streetsidesoftware/cspell/refs/heads/main/cspell.schema.json
+overrides:
+  - filename: "translations-en.json"
+    language: en
+  - filename: "translations-hr.json"
+    language: en,hr

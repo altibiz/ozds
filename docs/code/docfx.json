@@ -8,10 +8,7 @@
           "files": ["src/**/*.csproj"]
         }
       ],
-      "dest": "../../artifacts/code/api",
-      "memberLayout": "separatePages",
-      "namespaceLayout": "nested",
-      "outputFormat": "apiPage"
+      "dest": "../../artifacts/code/api"
     }
   ],
   "build": {

@@ -1,9 +1,7 @@
 set windows-shell := ["nu.exe", "-c"]
 set shell := ["nu", "-c"]
 
-# TODO: use hunspell with dictionaries
 # TODO: migrate ensure same timestamp
-# FIXME: pyright '{{root}}'
 
 root := absolute_path('')
 sln := absolute_path('ozds.sln')
@@ -93,6 +91,7 @@ lint:
     markdownlint '{{ root }}'
     markdown-link-check --config .markdown-link-check.json --quiet ...(glob '**/*.md')
 
+    pyright '{{ root }}'
     ruff check '{{ root }}'
 
     dotnet build --no-incremental /warnaserror '{{ sln }}'

@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/streetsidesoftware/cspell/refs/heads/main/cspell.schema.json
 useGitignore: true
 version: "0.2"
 language: en
@@ -13,10 +14,7 @@ ignorePaths:
   - ".github/workflows/*"
   - "cspell.yaml"
   - "./docs/schema.md"
-  # TODO: add dicrionary or use aspell/hunspell
-  - "./docs/wiki/hr/**/*"
   - "./docs/wiki/**/book.toml"
-  # TODO: add dicrionary or use aspell/hunspell
   - "./src/Ozds.Business/Assets/translations-*.json"
   - "./docs/index.html"
   - "./.config/dotnet-tools.json"

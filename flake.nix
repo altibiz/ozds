@@ -116,9 +116,6 @@ rec {
 
             # Spelling
             nodePackages.cspell
-            hunspell
-            hunspellDicts.hr-hr
-            hunspellDicts.en-us-large
 
             # Misc
             nodePackages.prettier
@@ -225,9 +222,6 @@ rec {
 
               # Spelling
               nodePackages.cspell
-              hunspell
-              hunspellDicts.hr-hr
-              hunspellDicts.en-us-large
 
               # Scripts
               just
