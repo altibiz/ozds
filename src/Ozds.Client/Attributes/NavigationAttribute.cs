@@ -4,9 +4,6 @@ using Ozds.Business.Models.Enums;
 
 namespace Ozds.Client.Attributes;
 
-// TODO: add allows list
-// TODO: display not found page on pages where not allowed
-
 [AttributeUsage(AttributeTargets.Class, Inherited = false)]
 public class NavigationAttribute : Attribute
 {
