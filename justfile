@@ -1,8 +1,6 @@
 set windows-shell := ["nu.exe", "-c"]
 set shell := ["nu", "-c"]
 
-# TODO: migrate ensure same timestamp
-
 root := absolute_path('')
 sln := absolute_path('ozds.sln')
 gitignore := absolute_path('.gitignore')
@@ -26,7 +24,6 @@ rewind := absolute_path('scripts/database/rewind.nu')
 rollback := absolute_path('scripts/database/rollback.nu')
 validate := absolute_path('scripts/database/validate.nu')
 measurements := absolute_path('scripts/database/measurements.nu')
-now := `date now | format date '%Y%m%d%H%M%S'`
 current := "current"
 
 default:
@@ -179,18 +176,24 @@ migrate-continue project name:
       --project '{{ root }}/src/{{ project }}/{{ project }}.csproj' \
       database update
 
-    @just dump '{{ now }}-{{ project }}-{{ name }}'
-
+    let now = ls '{{ root }}/src/{{ project }}/Migrations' \
+      | sort-by name \
+      | reverse \
+      | first \
+      | get name \
+      | path basename \
+      | parse "{timestamp}_{name}.cs" \
+      | get timestamp \
+      | first; \
+    @just dump $"($now)-{{ project }}-{{ name }}"; \
     cp -f \
-      '{{ migrationassets }}/{{ now }}-{{ project }}-{{ name }}-orchard.sql' \
-      '{{ migrationassets }}/current-orchard.sql'
-
+      $"{{ migrationassets }}/($now)-{{ project }}-{{ name }}-orchard.sql" \
+      '{{ migrationassets }}/current-orchard.sql'; \
     cp -f \
-      '{{ migrationassets }}/{{ now }}-{{ project }}-{{ name }}.sql' \
-      '{{ migrationassets }}/current.sql'
-
+      $"{{ migrationassets }}/($now)-{{ project }}-{{ name }}.sql" \
+      '{{ migrationassets }}/current.sql'; \
     cp -f \
-      '{{ migrationassets }}/{{ now }}-{{ project }}-{{ name }}-hypertables.sql' \
+      $"{{ migrationassets }}/($now)-{{ project }}-{{ name }}-hypertables.sql" \
       '{{ migrationassets }}/current-hypertables.sql'
 
     mermerd \
