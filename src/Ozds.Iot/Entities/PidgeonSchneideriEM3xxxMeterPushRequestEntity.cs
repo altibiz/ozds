@@ -1,17 +1,15 @@
+using Ozds.Iot.Attributes;
 using Ozds.Iot.Entities.Abstractions;
 
 namespace Ozds.Iot.Entities;
 
+[MeterIdPrefix("schneider-iEM3xxx")]
 public record PidgeonSchneideriEM3xxxMeterPushRequestEntity(
   string MeterId,
   DateTimeOffset Timestamp,
   PidgeonSchneideriEM3xxxMeterPushRequestData Data
 ) : IPidgeonMeterPushRequestEntity
 {
-  public static string MeterIdPrefix
-  {
-    get { return "schneider-iEM3xxx"; }
-  }
 }
 
 public record PidgeonSchneideriEM3xxxMeterPushRequestData(

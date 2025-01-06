@@ -5,8 +5,6 @@ using Ozds.Business.Models.Base;
 using Ozds.Data.Entities;
 using Ozds.Data.Entities.Base;
 
-// TODO: this is so dirty
-
 namespace Ozds.Business.Conversion;
 
 public class MeterModelEntityConverter : ModelEntityConverter<

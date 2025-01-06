@@ -1,9 +1,7 @@
-using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Ozds.Iot.Attributes;
 using Ozds.Iot.Entities.Abstractions;
-
-// TODO: get rid of ghosts
 
 namespace Ozds.Iot.Converters;
 
@@ -24,31 +22,15 @@ public class PidgeonMeterPushRequestEntityJsonConverter<T>
     if (jsonObject.TryGetProperty("MeterId", out var meterIdProp) ||
       jsonObject.TryGetProperty("meterId", out meterIdProp))
     {
-      var meterId = meterIdProp.GetString();
+      var meterId = meterIdProp.GetString()
+        ?? throw new JsonException(
+          "Invalid JSON: MeterId not found or unrecognized prefix.");
 
-      if (meterId is not null)
-      {
-        var types = typeof(T).Assembly.GetTypes()
-          .Where(
-            t =>
-              !t.IsAbstract
-              && !t.IsGenericType
-              && t.IsAssignableTo(typeof(IPidgeonMeterPushRequestEntity)));
+      var type = GetTypeForMeterId(meterId)
+        ?? throw new JsonException(
+          "Invalid JSON: MeterId not found or unrecognized prefix.");
 
-        foreach (var type in types)
-        {
-          if (type
-              .GetProperties(BindingFlags.Public | BindingFlags.Static)
-              .FirstOrDefault(p => p.Name == "MeterIdPrefix")
-              ?.GetValue(null) is not string meterIdPrefix
-            || !meterId.StartsWith(meterIdPrefix))
-          {
-            continue;
-          }
-
-          return (T?)jsonObject.Deserialize(type, options);
-        }
-      }
+      return (T?)jsonObject.Deserialize(type, options);
     }
 
     throw new JsonException(
@@ -69,5 +51,17 @@ public class PidgeonMeterPushRequestEntityJsonConverter<T>
     }
 
     JsonSerializer.Serialize(writer, value, type, options);
+  }
+
+  private static Type? GetTypeForMeterId(string meterId)
+  {
+    var prefix = string.Join('-', meterId.Split('-').SkipLast(1));
+    if (MeterIdPrefixAttribute.TypesByMeterIdPrefix
+      .TryGetValue(prefix, out var existingType))
+    {
+      return existingType;
+    }
+
+    return null;
   }
 }

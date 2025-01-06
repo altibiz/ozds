@@ -1,17 +1,15 @@
+using Ozds.Iot.Attributes;
 using Ozds.Iot.Entities.Abstractions;
 
 namespace Ozds.Iot.Entities;
 
+[MeterIdPrefix("abb-B2x")]
 public record PidgeonAbbB2xMeterPushRequestEntity(
   string MeterId,
   DateTimeOffset Timestamp,
   PidgeonAbbB2xMeterPushRequestData Data
 ) : IPidgeonMeterPushRequestEntity
 {
-  public static string MeterIdPrefix
-  {
-    get { return "abb-B2x"; }
-  }
 }
 
 public record PidgeonAbbB2xMeterPushRequestData(

@@ -4,8 +4,6 @@ using Ozds.Business.Models.Base;
 
 namespace Ozds.Business.Models.Complex;
 
-// TODO: shortcodes to english
-
 public abstract class
   ActiveEnergyTotalImportCalculationItemModel : CalculationItemModel
 {
