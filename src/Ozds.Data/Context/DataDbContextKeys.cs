@@ -1,6 +1,6 @@
 namespace Ozds.Data.Context;
 
-// TODO: remove
+// NITPICK: i get it but i don't like it
 
 public partial class DataDbContext
 {
