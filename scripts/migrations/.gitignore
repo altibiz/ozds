@@ -172,3 +172,6 @@
 /20241220105716-Ozds.Data-AggregateDataExpansion6-hypertables.sql
 /20241220105716-Ozds.Data-AggregateDataExpansion6-orchard.sql
 /20241220105716-Ozds.Data-AggregateDataExpansion6.sql
+/20250106120316-Ozds.Data-CascadingDelete-hypertables.sql
+/20250106120316-Ozds.Data-CascadingDelete-orchard.sql
+/20250106120316-Ozds.Data-CascadingDelete.sql
