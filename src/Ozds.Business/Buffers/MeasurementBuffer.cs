@@ -9,7 +9,7 @@ using Ozds.Business.Observers.EventArgs;
 
 namespace Ozds.Business.Buffers;
 
-public enum BufferBehavior
+public enum MeasurementBufferBehavior
 {
   Realtime,
   Buffer
@@ -27,7 +27,7 @@ public class MeasurementBuffer(
 
   public List<IMeasurement> Add(
     IEnumerable<IMeasurement> measurements,
-    BufferBehavior bufferBehavior
+    MeasurementBufferBehavior bufferBehavior = MeasurementBufferBehavior.Buffer
   )
   {
     var aggregates = measurements
@@ -50,14 +50,14 @@ public class MeasurementBuffer(
         .ToList();
     }
 
-    if (bufferBehavior is BufferBehavior.Buffer)
+    if (bufferBehavior is MeasurementBufferBehavior.Buffer)
     {
       AddToMeasurementsInternal(measurements.Where(x => x is not IAggregate));
     }
     AddToAggregatesInternal(aggregates);
 
     var flushedMeasurements =
-      bufferBehavior is BufferBehavior.Buffer
+      bufferBehavior is MeasurementBufferBehavior.Buffer
         ? FlushMeasurementsInternal(MaxMeasurements)
         : measurements.Where(x => x is not IAggregate).ToList();
     var flushedAggregates = FlushAggregatesInternal(aggregates);

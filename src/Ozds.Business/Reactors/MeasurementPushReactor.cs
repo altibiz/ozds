@@ -137,8 +137,8 @@ public class MeasurementPushReactor(
     buffer.Add(
       measurements,
       eventArgs.BufferBehavior == PushEventBufferBehavior.Realtime
-        ? BufferBehavior.Realtime
-        : BufferBehavior.Buffer);
+        ? MeasurementBufferBehavior.Realtime
+        : MeasurementBufferBehavior.Buffer);
 
     await AddPushEvent(
       auditableQueries,
