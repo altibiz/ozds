@@ -2,8 +2,6 @@ using Ozds.Iot.Entities.Abstractions;
 
 namespace Ozds.Fake.Client;
 
-// TODO: put some options into appsettings.json
-
 public class OzdsPushClient(
   IHttpClientFactory httpClientFactory,
   ILogger<OzdsPushClient> logger,
