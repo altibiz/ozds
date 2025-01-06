@@ -1,14 +1,15 @@
+using System.Security.Claims;
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Ozds.Data.Entities;
+using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Entities.Base;
 using Ozds.Data.Entities.Enums;
 using Ozds.Data.Extensions;
 
-// TODO: db error events
-// TODO: compress
+// TODO: check representative id
 
 namespace Ozds.Data.Interceptors;
 
@@ -87,7 +88,7 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
         }
         else
         {
-          auditable.Entity.CreatedBy = null;
+          auditable.Entity.CreatedById = null;
           context.Add(
             new SystemAuditEventEntity
             {
@@ -141,7 +142,7 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
         }
         else
         {
-          auditable.Entity.LastUpdatedBy = null;
+          auditable.Entity.LastUpdatedById = null;
           context.Add(
             new SystemAuditEventEntity
             {
@@ -167,57 +168,123 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
 
       if (auditable.State is EntityState.Deleted)
       {
-        auditable.State = EntityState.Modified;
-        auditable.Entity.IsDeleted = true;
-        auditable.Entity.DeletedOn = now;
-        if (representativeId is not null)
+        if (auditable.Entity.Forget)
         {
-          auditable.Entity.DeletedById = representativeId;
-          context.Add(
-            new RepresentativeAuditEventEntity
+          if (!auditable.Entity.IsDeleted)
+          {
+            auditable.Entity.IsDeleted = true;
+            auditable.Entity.DeletedOn = now;
+          }
+          if (representativeId is not null)
+          {
+            if (!auditable.Entity.IsDeleted)
             {
-              Timestamp = now,
-              Title =
-                $"Deleted {auditable.Entity.GetType().Name} {auditable.Entity.Title}",
-              RepresentativeId = representativeId,
-              Level = LevelEntity.Debug,
-              Audit = AuditEntity.Deletion,
-              Content = CreateDeletedMessage(auditable),
-              AuditableEntityId = auditable.Entity.Id,
-              AuditableEntityType = context
-                .GetEntityTypeNameFromEntityType(auditable.Entity.GetType())
-                ?? throw new InvalidOperationException(
-                  $"No type name found for {auditable.Entity.GetType()}"),
-              AuditableEntityTable = context
-                .GetTableNameFromEntityType(auditable.Entity.GetType())
-                ?? throw new InvalidOperationException(
-                  $"No table found for {auditable.Entity.GetType()}"),
-              Categories = [CategoryEntity.All, CategoryEntity.Audit]
-            });
+              auditable.Entity.DeletedById = representativeId;
+            }
+            context.Add(
+              new RepresentativeAuditEventEntity
+              {
+                Timestamp = now,
+                Title =
+                  $"Forgotten {auditable.Entity.GetType().Name} {auditable.Entity.Title}",
+                RepresentativeId = representativeId,
+                Level = LevelEntity.Debug,
+                Audit = AuditEntity.Deletion,
+                Content = CreateForgottenMessage(auditable),
+                AuditableEntityId = auditable.Entity.Id,
+                AuditableEntityType = context
+                  .GetEntityTypeNameFromEntityType(auditable.Entity.GetType())
+                  ?? throw new InvalidOperationException(
+                    $"No type name found for {auditable.Entity.GetType()}"),
+                AuditableEntityTable = context
+                  .GetTableNameFromEntityType(auditable.Entity.GetType())
+                  ?? throw new InvalidOperationException(
+                    $"No table found for {auditable.Entity.GetType()}"),
+                Categories = [CategoryEntity.All, CategoryEntity.Audit]
+              });
+          }
+          else
+          {
+            if (!auditable.Entity.IsDeleted)
+            {
+              auditable.Entity.DeletedById = null;
+            }
+            context.Add(
+              new SystemAuditEventEntity
+              {
+                Timestamp = now,
+                Title =
+                  $"Forgotten {auditable.Entity.GetType().Name} {auditable.Entity.Title}",
+                Level = LevelEntity.Debug,
+                Audit = AuditEntity.Deletion,
+                Content = CreateForgottenMessage(auditable),
+                AuditableEntityId = auditable.Entity.Id,
+                AuditableEntityType = context
+                  .GetEntityTypeNameFromEntityType(auditable.Entity.GetType())
+                  ?? throw new InvalidOperationException(
+                    $"No type name found for {auditable.Entity.GetType()}"),
+                AuditableEntityTable = context
+                  .GetTableNameFromEntityType(auditable.Entity.GetType())
+                  ?? throw new InvalidOperationException(
+                    $"No table found for {auditable.Entity.GetType()}"),
+                Categories = [CategoryEntity.All, CategoryEntity.Audit]
+              });
+          }
         }
         else
         {
-          auditable.Entity.DeletedById = null;
-          context.Add(
-            new SystemAuditEventEntity
-            {
-              Timestamp = now,
-              Title =
-                $"Deleted {auditable.Entity.GetType().Name} {auditable.Entity.Title}",
-              Level = LevelEntity.Debug,
-              Audit = AuditEntity.Deletion,
-              Content = CreateDeletedMessage(auditable),
-              AuditableEntityId = auditable.Entity.Id,
-              AuditableEntityType = context
-                .GetEntityTypeNameFromEntityType(auditable.Entity.GetType())
-                ?? throw new InvalidOperationException(
-                  $"No type name found for {auditable.Entity.GetType()}"),
-              AuditableEntityTable = context
-                .GetTableNameFromEntityType(auditable.Entity.GetType())
-                ?? throw new InvalidOperationException(
-                  $"No table found for {auditable.Entity.GetType()}"),
-              Categories = [CategoryEntity.All, CategoryEntity.Audit]
-            });
+          auditable.State = EntityState.Modified;
+          auditable.Entity.IsDeleted = true;
+          auditable.Entity.DeletedOn = now;
+          if (representativeId is not null)
+          {
+            auditable.Entity.DeletedById = representativeId;
+            context.Add(
+              new RepresentativeAuditEventEntity
+              {
+                Timestamp = now,
+                Title =
+                  $"Deleted {auditable.Entity.GetType().Name} {auditable.Entity.Title}",
+                RepresentativeId = representativeId,
+                Level = LevelEntity.Debug,
+                Audit = AuditEntity.Deletion,
+                Content = CreateDeletedMessage(auditable),
+                AuditableEntityId = auditable.Entity.Id,
+                AuditableEntityType = context
+                  .GetEntityTypeNameFromEntityType(auditable.Entity.GetType())
+                  ?? throw new InvalidOperationException(
+                    $"No type name found for {auditable.Entity.GetType()}"),
+                AuditableEntityTable = context
+                  .GetTableNameFromEntityType(auditable.Entity.GetType())
+                  ?? throw new InvalidOperationException(
+                    $"No table found for {auditable.Entity.GetType()}"),
+                Categories = [CategoryEntity.All, CategoryEntity.Audit]
+              });
+          }
+          else
+          {
+            auditable.Entity.DeletedById = null;
+            context.Add(
+              new SystemAuditEventEntity
+              {
+                Timestamp = now,
+                Title =
+                  $"Deleted {auditable.Entity.GetType().Name} {auditable.Entity.Title}",
+                Level = LevelEntity.Debug,
+                Audit = AuditEntity.Deletion,
+                Content = CreateDeletedMessage(auditable),
+                AuditableEntityId = auditable.Entity.Id,
+                AuditableEntityType = context
+                  .GetEntityTypeNameFromEntityType(auditable.Entity.GetType())
+                  ?? throw new InvalidOperationException(
+                    $"No type name found for {auditable.Entity.GetType()}"),
+                AuditableEntityTable = context
+                  .GetTableNameFromEntityType(auditable.Entity.GetType())
+                  ?? throw new InvalidOperationException(
+                    $"No table found for {auditable.Entity.GetType()}"),
+                Categories = [CategoryEntity.All, CategoryEntity.Audit]
+              });
+          }
         }
       }
     }
@@ -225,9 +292,9 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
 
   private string? GetRepresentativeId()
   {
-    if (serviceProvider.GetService<IHttpContextAccessor>() is not null)
+    if (serviceProvider.GetService<IHttpContextAccessor>() is { } accessor)
     {
-      return null;
+      return accessor.HttpContext?.User.FindFirstValue("id");
     }
 
     return null;
@@ -246,6 +313,11 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
   private static JsonDocument CreateDeletedMessage(EntityEntry entry)
   {
     return CreateMessage(entry, "Deleted");
+  }
+
+  private static JsonDocument CreateForgottenMessage(EntityEntry entry)
+  {
+    return CreateMessage(entry, "Forgotten");
   }
 
   private static JsonDocument CreateMessage(EntityEntry entry, string type)

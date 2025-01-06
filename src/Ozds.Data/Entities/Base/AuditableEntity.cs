@@ -40,6 +40,8 @@ public abstract class AuditableEntity : IAuditableEntity
   }
 
   public string Title { get; set; } = default!;
+
+  public bool Forget { get; set; } = false;
 }
 
 public class
@@ -53,9 +55,9 @@ public class
     {
       return;
     }
-
     var builder = modelBuilder.Entity(entity);
 
+    builder.Ignore(nameof(AuditableEntity.Id));
     if (entity.BaseType == typeof(AuditableEntity)
       || entity.BaseType == typeof(CatalogueEntity))
     {
@@ -70,8 +72,6 @@ public class
         builder.HasKey("_id");
       }
     }
-
-    builder.Ignore(nameof(AuditableEntity.Id));
     if (entity == typeof(RepresentativeEntity) ||
       entity.IsAssignableTo(typeof(MeterEntity)) ||
       entity.IsAssignableTo(typeof(MessengerEntity)))
@@ -106,5 +106,7 @@ public class
       .HasOne(nameof(AuditableEntity.DeletedBy))
       .WithMany()
       .HasForeignKey(nameof(AuditableEntity.DeletedById));
+
+    builder.Ignore(nameof(AuditableEntity.Forget));
   }
 }

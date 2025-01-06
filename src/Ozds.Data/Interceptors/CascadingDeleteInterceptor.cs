@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Ozds.Data.Entities.Abstractions;
+using Ozds.Data.Entities.Base;
 using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Interceptors;
@@ -100,6 +101,13 @@ public class CascadingDeleteInterceptor(IServiceProvider serviceProvider)
       {
         var declaringEntry = context.FindEntry(declaring);
         declaringEntry.State = EntityState.Deleted;
+        if (
+          entry.Entity is AuditableEntity auditableEntry &&
+          declaringEntry.Entity is AuditableEntity auditableDeclaringEntry
+        )
+        {
+          auditableDeclaringEntry.Forget = auditableEntry.Forget;
+        }
 
         await CascadingDelete(
           eventData,

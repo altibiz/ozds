@@ -19,4 +19,6 @@ public interface IAuditableEntity : IIdentifiableEntity
   public DateTimeOffset? DeletedOn { get; }
 
   public string? DeletedById { get; }
+
+  public bool Forget { get; }
 }
