@@ -7,9 +7,6 @@ using Ozds.Data.Entities.Enums;
 using Ozds.Data.Extensions;
 using Ozds.Data.Queries.Abstractions;
 
-// TODO: remove any direct references to aggregate entity types
-// TODO: location invoices
-
 namespace Ozds.Data.Queries;
 
 public class BillingQueries(

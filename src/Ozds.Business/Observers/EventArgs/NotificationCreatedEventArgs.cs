@@ -5,7 +5,7 @@ namespace Ozds.Business.Observers.EventArgs;
 
 public class NotificationCreatedEventArgs : System.EventArgs
 {
-  public INotification Notification { get; set; } = default!;
+  public required INotification Notification { get; init; }
 
-  public NotificationRecipientModel Recipient { get; set; } = default!;
+  public required NotificationRecipientModel Recipient { get; init; }
 }

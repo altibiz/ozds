@@ -134,14 +134,14 @@ public class EntityChangesPublishingInterceptor(
   private void PublishEntitiesChanging(List<EntityChangesEntry> entries)
   {
     var publisher = serviceProvider
-      .GetRequiredService<IEntityChangesPublisher>();
+      .GetRequiredService<IEntitiesChangingPublisher>();
 
-    publisher.PublishEntitiesChanging(
+    publisher.Publish(
       new EntitiesChangingEventArgs
       {
         Entities = entries
           .Select(
-            entry => new EntityChangingRecord(
+            entry => new EntityChangingEntry(
               entry.State switch
               {
                 EntityChanges.Added => EntityChangingState.Adding,
@@ -159,9 +159,9 @@ public class EntityChangesPublishingInterceptor(
   private void PublishEntitiesChanged(List<EntityChangesEntry> entries)
   {
     var publisher = serviceProvider
-      .GetRequiredService<IEntityChangesPublisher>();
+      .GetRequiredService<IEntitiesChangedPublisher>();
 
-    publisher.PublishEntitiesChanged(
+    publisher.Publish(
       new EntitiesChangedEventArgs
       {
         Entities = entries

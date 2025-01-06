@@ -13,7 +13,7 @@ public class NetworkUserMonthlyBillingJob(
   public Task Execute(IJobExecutionContext context)
   {
     messengerJobPublisher.PublishInvoice(
-      new NetworkUserInvoiceEventArgs
+      new BillingJobEventArgs
       {
         NetworkUserId = NetworkUserId
       });

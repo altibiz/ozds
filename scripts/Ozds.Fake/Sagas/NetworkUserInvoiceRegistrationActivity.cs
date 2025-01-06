@@ -17,7 +17,7 @@ public class NetworkUserInvoiceRegistrationActivity(
   {
     await RegisterNetworkUserInvoice(context.Saga);
 
-    await next.Execute(context).ConfigureAwait(false);
+    await next.Execute(context);
   }
 
   public async Task Execute<T>(
@@ -28,7 +28,7 @@ public class NetworkUserInvoiceRegistrationActivity(
   {
     await RegisterNetworkUserInvoice(context.Saga);
 
-    await next.Execute(context).ConfigureAwait(false);
+    await next.Execute(context);
   }
 
   public Task Faulted<TException>(

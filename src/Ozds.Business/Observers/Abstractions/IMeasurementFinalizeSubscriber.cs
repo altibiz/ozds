@@ -2,12 +2,7 @@ using Ozds.Business.Observers.EventArgs;
 
 namespace Ozds.Business.Observers.Abstractions;
 
-public interface
-  IMeasurementFinalizeSubscriber : ISubscriber<IMeasurementFinalizePublisher>
+public interface IMeasurementFinalizeSubscriber
+  : ISubscriber<IMeasurementFinalizePublisher, MeasurementFinalizeEventArgs>
 {
-  public void SubscribeFinalize(
-    EventHandler<MeasurementFinalizeEventArgs> handler);
-
-  public void UnsubscribeFinalize(
-    EventHandler<MeasurementFinalizeEventArgs> handler);
 }

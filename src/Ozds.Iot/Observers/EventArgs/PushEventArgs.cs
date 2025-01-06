@@ -8,15 +8,11 @@ public enum PushEventBufferBehavior
   Buffer
 }
 
-public class PushEventArgs(
-  string messengerId,
-  PushEventBufferBehavior bufferBehavior,
-  IMessengerPushRequestEntity request)
-  : System.EventArgs
+public class PushEventArgs : System.EventArgs
 {
-  public string MessengerId { get; } = messengerId;
+  public required string MessengerId { get; init; }
 
-  public PushEventBufferBehavior BufferBehavior { get; } = bufferBehavior;
+  public required PushEventBufferBehavior BufferBehavior { get; init; }
 
-  public IMessengerPushRequestEntity Request { get; } = request;
+  public required IMessengerPushRequestEntity Request { get; init; }
 }

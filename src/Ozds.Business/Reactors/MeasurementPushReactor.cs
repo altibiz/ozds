@@ -18,7 +18,6 @@ using Ozds.Business.Queries.Agnostic;
 using Ozds.Business.Reactors.Abstractions;
 using Ozds.Business.Validation.Agnostic;
 using Ozds.Iot.Entities.Abstractions;
-using Ozds.Iot.Observers.Abstractions;
 using Ozds.Iot.Observers.EventArgs;
 using Ozds.Jobs.Manager.Abstractions;
 
@@ -26,55 +25,14 @@ namespace Ozds.Business.Reactors;
 
 // TODO: transaction in sql and add measurement_location_id to the upsert
 
-public class MeasurementPushReactor(
-  IServiceScopeFactory serviceScopeFactory,
+public class MeasurementPushHandler(
   AgnosticValidator validator,
-  IPushSubscriber subscriber,
-  ILogger<MeasurementPushReactor> logger
-) : BackgroundService, IReactor
+  IServiceProvider serviceProvider
+) : IHandler<PushEventArgs>
 {
-  private readonly Channel<PushEventArgs> channel =
-    Channel.CreateUnbounded<PushEventArgs>();
-
-  public override async Task StartAsync(CancellationToken cancellationToken)
-  {
-    subscriber.SubscribePush(OnPush);
-    await base.StartAsync(cancellationToken);
-  }
-
-  public override async Task StopAsync(CancellationToken cancellationToken)
-  {
-    subscriber.UnsubscribePush(OnPush);
-    await base.StopAsync(cancellationToken);
-  }
-
-  protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-  {
-    await foreach (var eventArgs in channel.Reader.ReadAllAsync(stoppingToken))
-    {
-      try
-      {
-        await using var scope = serviceScopeFactory.CreateAsyncScope();
-        await Handle(scope.ServiceProvider, eventArgs);
-      }
-      catch (Exception ex)
-      {
-        logger.LogError(
-          ex,
-          "Measurement upsert failed for {Count} measurements",
-          eventArgs.Request.Measurements.Count);
-      }
-    }
-  }
-
-  private void OnPush(object? sender, PushEventArgs eventArgs)
-  {
-    channel.Writer.TryWrite(eventArgs);
-  }
-
-  private async Task Handle(
-    IServiceProvider serviceProvider,
-    PushEventArgs eventArgs
+  public async Task Handle(
+    PushEventArgs eventArgs,
+    CancellationToken cancellationToken
   )
   {
     var pushRequestConverter = serviceProvider
@@ -192,7 +150,6 @@ public class MeasurementPushReactor(
     );
   }
 
-  // TODO: cache this
   private static async Task<List<(
     IMeterPushRequestEntity MeterPushRequest,
     IMeasurementLocation MeasurementLocation

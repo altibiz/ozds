@@ -4,11 +4,6 @@ namespace Ozds.Messaging.Observers.Abstractions;
 
 public interface
   INetworkUserInvoiceStateSubscriber : ISubscriber<
-  INetworkUserInvoiceStatePublisher>
+  INetworkUserInvoiceStatePublisher, NetworkUserInvoiceStateEventArgs>
 {
-  public void SubscribeRegistered(
-    EventHandler<NetworkUserInvoiceStateEventArgs> handler);
-
-  public void UnsubscribeRegistered(
-    EventHandler<NetworkUserInvoiceStateEventArgs> handler);
 }

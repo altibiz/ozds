@@ -1,5 +1,4 @@
 using System.Text.Json;
-using System.Threading.Channels;
 using Ozds.Business.Activation.Agnostic;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Enums;
@@ -8,65 +7,29 @@ using Ozds.Business.Mutations.Agnostic;
 using Ozds.Business.Observers.Abstractions;
 using Ozds.Business.Queries;
 using Ozds.Business.Reactors.Abstractions;
+using Ozds.Business.Reactors.Base;
 using ErrorEventArgs = Ozds.Business.Observers.EventArgs.ErrorEventArgs;
 
 namespace Ozds.Business.Reactors;
 
 public class ErrorReactor(
-  IServiceScopeFactory scopeFactory,
-  IErrorSubscriber subscriber,
-  ILogger<ErrorReactor> logger
-) : BackgroundService, IReactor
+  ISubscriber<ErrorEventArgs> subscriber,
+  IServiceScopeFactory factory
+) : Reactor<ErrorEventArgs, ErrorHandler>(subscriber, factory)
 {
-  private readonly Channel<ErrorEventArgs> channel =
-    Channel.CreateUnbounded<ErrorEventArgs>();
+}
 
-  public override Task StartAsync(CancellationToken cancellationToken)
+public class ErrorHandler(
+  AgnosticModelActivator activator,
+  NotificationQueries notificationQueries,
+  NotificationMutations notificationMutations,
+  ReadonlyMutations readonlyMutations
+) : IHandler<ErrorEventArgs>
+{
+  public async Task Handle(
+    ErrorEventArgs eventArgs,
+    CancellationToken cancellationToken)
   {
-    subscriber.SubscribeError(OnError);
-    return base.StartAsync(cancellationToken);
-  }
-
-  public override Task StopAsync(CancellationToken cancellationToken)
-  {
-    subscriber.UnsubscribeError(OnError);
-    return base.StopAsync(cancellationToken);
-  }
-
-  protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-  {
-    await foreach (var eventArgs in channel.Reader.ReadAllAsync(stoppingToken))
-    {
-      await using var scope = scopeFactory.CreateAsyncScope();
-      try
-      {
-        await Handle(scope.ServiceProvider, eventArgs);
-      }
-      catch (Exception ex)
-      {
-        logger.LogError(ex, "Measurement upsert failed");
-      }
-    }
-  }
-
-  private void OnError(object? sender, ErrorEventArgs eventArgs)
-  {
-    channel.Writer.TryWrite(eventArgs);
-  }
-
-  private static async Task Handle(
-    IServiceProvider serviceProvider,
-    ErrorEventArgs eventArgs)
-  {
-    var activator = serviceProvider
-      .GetRequiredService<AgnosticModelActivator>();
-    var notificationQueries = serviceProvider
-      .GetRequiredService<NotificationQueries>();
-    var notificationMutations = serviceProvider
-      .GetRequiredService<NotificationMutations>();
-    var readonlyMutations = serviceProvider
-      .GetRequiredService<ReadonlyMutations>();
-
     var content = new EventContent(
       eventArgs.Message,
       eventArgs.Exception.ToString(),
@@ -89,8 +52,7 @@ public class ErrorReactor(
       CategoryModel.All,
       CategoryModel.Error
     };
-    @event.Id = await readonlyMutations
-      .Create(@event, CancellationToken.None);
+    @event.Id = await readonlyMutations.Create(@event, cancellationToken);
 
     var notification = activator.Activate<SystemNotificationModel>();
     notification.Title = "Exception";
@@ -104,11 +66,10 @@ public class ErrorReactor(
       TopicModel.Error
     };
     notification.Id = await notificationMutations
-      .Create(notification, CancellationToken.None);
+      .Create(notification, cancellationToken);
 
     var recipients = await notificationQueries.Recipients(notification);
-    await notificationMutations
-      .AddRecipients(recipients, CancellationToken.None);
+    await notificationMutations.AddRecipients(recipients, cancellationToken);
   }
 
   private sealed record EventContent(

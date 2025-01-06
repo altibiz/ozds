@@ -1,7 +1,6 @@
 using System.Text;
 using System.Threading.Channels;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Ozds.Business.Conversion;
 using Ozds.Business.Conversion.Joins;
 using Ozds.Business.Models.Enums;
@@ -13,7 +12,6 @@ using Ozds.Data.Entities.Joins;
 using Ozds.Data.Extensions;
 using Ozds.Data.Observers.Abstractions;
 using Ozds.Data.Observers.EventArgs;
-using Ozds.Email.Options;
 using Ozds.Email.Sender.Abstractions;
 
 namespace Ozds.Business.Workers;

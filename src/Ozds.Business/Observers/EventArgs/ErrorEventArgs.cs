@@ -2,7 +2,7 @@ namespace Ozds.Business.Observers.EventArgs;
 
 public class ErrorEventArgs : System.EventArgs
 {
-  public string Message { get; set; } = default!;
+  public required string Message { get; init; }
 
-  public Exception Exception { get; set; } = default!;
+  public required Exception Exception { get; init; }
 }

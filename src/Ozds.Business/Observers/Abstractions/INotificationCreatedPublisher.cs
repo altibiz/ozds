@@ -2,8 +2,7 @@ using Ozds.Business.Observers.EventArgs;
 
 namespace Ozds.Business.Observers.Abstractions;
 
-public interface
-  INotificationCreatedPublisher : IPublisher<INotificationCreatedSubscriber>
+public interface INotificationCreatedPublisher
+  : IPublisher<INotificationCreatedSubscriber, NotificationCreatedEventArgs>
 {
-  public void PublishCreated(NotificationCreatedEventArgs eventArgs);
 }

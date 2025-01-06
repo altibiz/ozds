@@ -4,8 +4,6 @@ using Ozds.Business.Models.Enums;
 using Ozds.Data.Queries.Abstractions;
 using DataInvoiceQueries = Ozds.Data.Queries.InvoiceQueries;
 
-// TODO: location invoices
-
 namespace Ozds.Business.Queries;
 
 public class InvoiceQueries(

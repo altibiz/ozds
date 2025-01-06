@@ -147,9 +147,7 @@ public static class IServiceCollectionExtensions
         shellSettings.Name
       );
 
-      await hostedService
-        .StartAsync(CancellationToken.None)
-        .ConfigureAwait(false);
+      await hostedService.StartAsync(CancellationToken.None);
 
       _started = true;
     }
@@ -172,9 +170,7 @@ public static class IServiceCollectionExtensions
         shellSettings.Name
       );
 
-      await hostedService
-        .StopAsync(CancellationToken.None)
-        .ConfigureAwait(false);
+      await hostedService.StopAsync(CancellationToken.None);
 
       _started = false;
     }

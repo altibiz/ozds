@@ -1,73 +1,44 @@
-using System.Threading.Channels;
 using Ozds.Business.Caching;
 using Ozds.Business.Models.Abstractions;
+using Ozds.Business.Observers.Abstractions;
+using Ozds.Business.Observers.EventArgs;
 using Ozds.Business.Reactors.Abstractions;
-using Ozds.Data.Observers.Abstractions;
-using Ozds.Data.Observers.EventArgs;
+using Ozds.Business.Reactors.Base;
 
 namespace Ozds.Business.Reactors;
 
 public class MeasurementLocationCacheUpdateReactor(
-  IEntityChangesSubscriber subscriber,
-  MeasurementLocationCache cache,
-  ILogger<MeasurementLocationCacheUpdateReactor> logger
-) : BackgroundService, IReactor
+  IServiceScopeFactory factory,
+  IDataModelsChangedSubscriber subscriber
+) : Reactor<DataModelsChangedEventArgs, MeasurementLocationCacheUpdateHandler>(
+  subscriber,
+  factory
+)
 {
-  private readonly Channel<EntitiesChangedEventArgs> channel =
-    Channel.CreateUnbounded<EntitiesChangedEventArgs>();
+}
 
-  public override async Task StartAsync(CancellationToken cancellationToken)
+public class MeasurementLocationCacheUpdateHandler(
+  MeasurementLocationCache cache
+) : IHandler<DataModelsChangedEventArgs>
+{
+  public async Task Handle(
+    DataModelsChangedEventArgs eventArgs,
+    CancellationToken cancellationToken)
   {
-    subscriber.SubscribeEntitiesChanged(OnChanged);
-    await base.StartAsync(cancellationToken);
-  }
-
-  public override Task StopAsync(CancellationToken cancellationToken)
-  {
-    subscriber.UnsubscribeEntitiesChanged(OnChanged);
-    return base.StopAsync(cancellationToken);
-  }
-
-  protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-  {
-    await foreach (var eventArgs in channel.Reader.ReadAllAsync(stoppingToken))
+    foreach (var entry in eventArgs.Models)
     {
-      try
-      {
-        await Handle(eventArgs);
-      }
-      catch (Exception ex)
-      {
-        logger.LogError(
-          ex,
-          "Measurement location cache update failed for {Count} entities",
-          eventArgs.Entities.Count);
-      }
-    }
-  }
-
-  private void OnChanged(object? sender, EntitiesChangedEventArgs eventArgs)
-  {
-    channel.Writer.TryWrite(eventArgs);
-  }
-
-  private async Task Handle(
-    EntitiesChangedEventArgs eventArgs)
-  {
-    foreach (var entry in eventArgs.Entities)
-    {
-      if (entry.Entity is not IMeasurementLocation measurementLocation)
+      if (entry.Model is not IMeasurementLocation measurementLocation)
       {
         continue;
       }
 
-      if (entry.State is not EntityChangedState.Modified)
+      if (entry.State is not DataModelChangedState.Modified)
       {
-        await cache.TryUpdateAsync(measurementLocation, CancellationToken.None);
+        await cache.TryUpdateAsync(measurementLocation, cancellationToken);
       }
-      else if (entry.State is EntityChangedState.Removed)
+      else if (entry.State is DataModelChangedState.Removed)
       {
-        await cache.TryRemoveAsync(measurementLocation, CancellationToken.None);
+        await cache.TryRemoveAsync(measurementLocation, cancellationToken);
       }
     }
   }

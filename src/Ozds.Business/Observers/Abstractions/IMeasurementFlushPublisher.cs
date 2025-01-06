@@ -3,7 +3,6 @@ using Ozds.Business.Observers.EventArgs;
 namespace Ozds.Business.Observers.Abstractions;
 
 public interface IMeasurementFlushPublisher
-  : IPublisher<IMeasurementFlushSubscriber>
+  : IPublisher<IMeasurementFlushSubscriber, MeasurementFlushEventArgs>
 {
-  public void PublishFlush(MeasurementFlushEventArgs eventArgs);
 }

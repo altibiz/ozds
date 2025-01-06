@@ -149,6 +149,7 @@ public static class IServiceCollectionExtensions
   )
   {
     services.AddSingletonAssignableTo(typeof(IReactor));
+    services.AddScopedAssignableTo(typeof(IHandler));
     return services;
   }
 

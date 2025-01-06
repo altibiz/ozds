@@ -79,7 +79,7 @@ public class NotificationAddedReactor(
 
       if (entry.State is EntityChangedState.Added)
       {
-        publisher.PublishCreated(
+        publisher.Publish(
           new NotificationCreatedEventArgs
           {
             Notification = notification.ToModel(),

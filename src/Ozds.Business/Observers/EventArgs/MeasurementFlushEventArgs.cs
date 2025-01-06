@@ -4,5 +4,5 @@ namespace Ozds.Business.Observers.EventArgs;
 
 public class MeasurementFlushEventArgs : System.EventArgs
 {
-  public IReadOnlyList<IMeasurement> Measurements { get; set; } = default!;
+  public required IReadOnlyList<IMeasurement> Measurements { get; init; }
 }

@@ -17,8 +17,8 @@ public class MonthlyNetworkUserInvoiceReactor(
   IServiceProvider serviceProvider
 ) : BackgroundService, IReactor
 {
-  private readonly Channel<NetworkUserInvoiceEventArgs> channel =
-    Channel.CreateUnbounded<NetworkUserInvoiceEventArgs>();
+  private readonly Channel<BillingJobEventArgs> channel =
+    Channel.CreateUnbounded<BillingJobEventArgs>();
 
   public override async Task StartAsync(CancellationToken cancellationToken)
   {
@@ -48,7 +48,7 @@ public class MonthlyNetworkUserInvoiceReactor(
 
   private void OnNetworkUserCreate(
     object? sender,
-    NetworkUserInvoiceEventArgs eventArgs)
+    BillingJobEventArgs eventArgs)
   {
     channel.Writer.TryWrite(eventArgs);
   }
@@ -56,7 +56,7 @@ public class MonthlyNetworkUserInvoiceReactor(
   private static async Task Handle(
     DataDbContext context,
     INetworkUserInvoiceIssuer issuer,
-    NetworkUserInvoiceEventArgs eventArgs)
+    BillingJobEventArgs eventArgs)
   {
     var networkUser = (await context.NetworkUsers
         .Where(

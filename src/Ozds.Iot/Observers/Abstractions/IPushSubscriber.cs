@@ -2,11 +2,6 @@ using Ozds.Iot.Observers.EventArgs;
 
 namespace Ozds.Iot.Observers.Abstractions;
 
-public interface IPushSubscriber : ISubscriber<IPushPublisher>
+public interface IPushSubscriber : ISubscriber<IPushPublisher, PushEventArgs>
 {
-  public void SubscribePush(
-    EventHandler<PushEventArgs> handler);
-
-  public void UnsubscribePush(
-    EventHandler<PushEventArgs> handler);
 }

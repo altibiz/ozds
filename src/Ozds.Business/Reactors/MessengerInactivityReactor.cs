@@ -35,8 +35,8 @@ public class MeterInactivityReactor(
       WriteIndented = true
     };
 
-  private readonly Channel<MessengerInactivityEventArgs> channel =
-    Channel.CreateUnbounded<MessengerInactivityEventArgs>();
+  private readonly Channel<MessengerJobEventArgs> channel =
+    Channel.CreateUnbounded<MessengerJobEventArgs>();
 
   public override async Task StartAsync(CancellationToken cancellationToken)
   {
@@ -64,7 +64,7 @@ public class MeterInactivityReactor(
 
   private void OnInactivity(
     object? sender,
-    MessengerInactivityEventArgs eventArgs)
+    MessengerJobEventArgs eventArgs)
   {
     channel.Writer.TryWrite(eventArgs);
   }
@@ -73,7 +73,7 @@ public class MeterInactivityReactor(
     DataDbContext context,
     AgnosticModelEntityConverter converter,
     IHostEnvironment environment,
-    MessengerInactivityEventArgs eventArgs)
+    MessengerJobEventArgs eventArgs)
   {
     var messenger = (await context.Messengers
         .Where(context.PrimaryKeyEquals<MessengerEntity>(eventArgs.Id))

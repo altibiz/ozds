@@ -63,7 +63,7 @@ public class MeasurementBuffer(
     var flushedAggregates = FlushAggregatesInternal(aggregates);
     if (flushedMeasurements.Count is > 0 || flushedAggregates.Count is > 0)
     {
-      measurementFlushPublisher.PublishFlush(new MeasurementFlushEventArgs
+      measurementFlushPublisher.Publish(new MeasurementFlushEventArgs
       {
         Measurements = flushedMeasurements.Concat(flushedAggregates).ToList(),
       });
@@ -80,7 +80,7 @@ public class MeasurementBuffer(
 
     if (!immediate && (measurements.Count is > 0 || aggregates.Count is > 0))
     {
-      measurementFlushPublisher.PublishFlush(new MeasurementFlushEventArgs
+      measurementFlushPublisher.Publish(new MeasurementFlushEventArgs
       {
         Measurements = measurements.Concat(aggregates).ToList(),
       });

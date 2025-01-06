@@ -2,7 +2,8 @@ using Ozds.Jobs.Observers.EventArgs;
 
 namespace Ozds.Jobs.Observers.Abstractions;
 
-public interface IBillingJobPublisher : IPublisher<IBillingJobSubscriber>
+public interface IBillingJobPublisher : IPublisher<
+  IBillingJobSubscriber,
+  BillingJobEventArgs>
 {
-  void PublishInvoice(NetworkUserInvoiceEventArgs args);
 }

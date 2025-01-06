@@ -1,87 +1,67 @@
-using System.Threading.Channels;
 using Ozds.Business.Buffers;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Mutations;
 using Ozds.Business.Observers.Abstractions;
 using Ozds.Business.Observers.EventArgs;
 using Ozds.Business.Reactors.Abstractions;
+using Ozds.Business.Reactors.Base;
 
 namespace Ozds.Business.Reactors;
 
 public class MeasurementFlushReactor(
-  IMeasurementFlushSubscriber subscriber,
-  IServiceScopeFactory serviceScopeFactory,
-  IMeasurementFinalizePublisher publisher,
-  ILogger<MeasurementFlushReactor> logger
-) : BackgroundService, IReactor
+  IServiceScopeFactory factory,
+  IMeasurementFlushSubscriber subscriber
+) : Reactor<MeasurementFlushEventArgs, MeasurementFlushHandler>(
+  subscriber,
+  factory
+)
 {
-  private readonly Channel<MeasurementFlushEventArgs> channel =
-    Channel.CreateUnbounded<MeasurementFlushEventArgs>();
-
-  public override async Task StartAsync(CancellationToken cancellationToken)
-  {
-    subscriber.SubscribeFlush(OnFlush);
-    await base.StartAsync(cancellationToken);
-  }
+  private readonly IServiceScopeFactory factory = factory;
 
   public override async Task StopAsync(CancellationToken cancellationToken)
   {
-    try
     {
-      await using var scope = serviceScopeFactory.CreateAsyncScope();
-      var buffer = scope.ServiceProvider
-        .GetRequiredService<MeasurementBuffer>();
-      var mutations = scope.ServiceProvider
-        .GetRequiredService<MeasurementUpsertMutations>();
-      var flushed = buffer.Flush(immediate: true);
-      await mutations.UpsertMeasurements(flushed, CancellationToken.None);
-      logger.LogInformation(
-        "Flushed {Count} measurements from buffer",
-        flushed.Count);
-    }
-    catch (Exception ex)
-    {
-      logger.LogError(ex, "Failed to flush measurements from cache");
-    }
-    subscriber.UnsubscribeFlush(OnFlush);
-    await base.StopAsync(cancellationToken);
-  }
-
-  protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-  {
-    await foreach (var eventArgs in channel.Reader.ReadAllAsync(stoppingToken))
-    {
+      await using var scope = factory.CreateAsyncScope();
       try
       {
-        await Handle(eventArgs, stoppingToken);
+        var buffer = scope.ServiceProvider
+          .GetRequiredService<MeasurementBuffer>();
+        var mutations = scope.ServiceProvider
+          .GetRequiredService<MeasurementUpsertMutations>();
+        var logger = scope.ServiceProvider
+          .GetRequiredService<ILogger<MeasurementFlushHandler>>();
+        var flushed = buffer.Flush(immediate: true);
+        await mutations.UpsertMeasurements(flushed, CancellationToken.None);
+        logger.LogInformation(
+          "Flushed {Count} measurements from buffer",
+          flushed.Count);
       }
       catch (Exception ex)
       {
-        logger.LogError(
-          ex,
-          "Measurement flush failed for {Count} aggregates",
-          eventArgs.Measurements.Count);
+        var logger = scope.ServiceProvider
+          .GetRequiredService<ILogger<MeasurementFlushHandler>>();
+        logger.LogError(ex, "Failed to flush measurements from cache");
       }
     }
-  }
 
-  private void OnFlush(object? sender, MeasurementFlushEventArgs eventArgs)
-  {
-    channel.Writer.TryWrite(eventArgs);
+    await base.StopAsync(cancellationToken);
   }
+}
 
-  private async Task Handle(
+public class MeasurementFlushHandler(
+  IMeasurementFinalizePublisher publisher,
+  MeasurementUpsertMutations mutations
+) : IHandler<MeasurementFlushEventArgs>
+{
+  public async Task Handle(
     MeasurementFlushEventArgs eventArgs,
     CancellationToken cancellationToken)
   {
-    await using var scope = serviceScopeFactory.CreateAsyncScope();
-    var mutations = scope.ServiceProvider
-      .GetRequiredService<MeasurementUpsertMutations>();
     var measurements = eventArgs.Measurements;
     var result = await mutations
       .UpsertMeasurements(measurements, cancellationToken);
 
-    publisher.PublishFinalize(
+    publisher.Publish(
       new MeasurementFinalizeEventArgs
       {
         Measurements = result.Where(x => x is not IAggregate).ToList(),

@@ -1,10 +1,9 @@
-using Ozds.Messaging.Entities;
+using Ozds.Messaging.Observers.EventArgs;
 
 namespace Ozds.Messaging.Observers.Abstractions;
 
 public interface
   INetworkUserInvoiceStatePublisher : IPublisher<
-  INetworkUserInvoiceStateSubscriber>
+  INetworkUserInvoiceStateSubscriber, NetworkUserInvoiceStateEventArgs>
 {
-  public void PublishRegistered(NetworkUserInvoiceStateEntity state);
 }

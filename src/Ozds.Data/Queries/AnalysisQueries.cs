@@ -10,8 +10,6 @@ using Ozds.Data.Entities.Joins;
 using Ozds.Data.Extensions;
 using Ozds.Data.Queries.Abstractions;
 
-// TODO: location measurement locations
-
 namespace Ozds.Data.Queries;
 
 public class AnalysisQueries(

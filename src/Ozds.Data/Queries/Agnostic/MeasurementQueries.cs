@@ -8,6 +8,9 @@ using Ozds.Data.Extensions;
 using Ozds.Data.Queries.Abstractions;
 using Z.EntityFramework.Plus;
 
+// TODO: remove any direct references
+// to concrete aggregate/measurement entity types in all queries
+
 namespace Ozds.Data.Queries.Agnostic;
 
 public class MeasurementQueries(

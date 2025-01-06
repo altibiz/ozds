@@ -21,7 +21,7 @@ public class MessengerInactivityMonitorJob(
 
   public Task Execute(IJobExecutionContext context)
   {
-    var eventArgs = new MessengerInactivityEventArgs
+    var eventArgs = new MessengerJobEventArgs
     {
       Id = Id,
       ScheduledAt = ScheduledAt,

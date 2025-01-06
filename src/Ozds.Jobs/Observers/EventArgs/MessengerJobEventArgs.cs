@@ -1,6 +1,6 @@
 namespace Ozds.Jobs.Observers.EventArgs;
 
-public class MessengerInactivityEventArgs : System.EventArgs
+public class MessengerJobEventArgs : System.EventArgs
 {
   public required string Id { get; init; }
 
@@ -10,7 +10,7 @@ public class MessengerInactivityEventArgs : System.EventArgs
 
   public required DateTimeOffset ScheduledFireAt { get; init; }
 
-  public required DateTimeOffset FiredAt { get; init; }
+  public required DateTimeOffset? FiredAt { get; init; }
 
   public required int RefireCount { get; init; }
 }

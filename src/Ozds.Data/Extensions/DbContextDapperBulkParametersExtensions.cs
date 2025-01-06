@@ -1,11 +1,7 @@
-using System.Data;
-using Dapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Ozds.Data.Extensions;
-
-// TODO: handle nesting hierarchical properties
 
 public static class DbContextDapperBulkParametersExtensions
 {
@@ -24,28 +20,9 @@ public static class DbContextDapperBulkParametersExtensions
         .Create(entityType, StoreObjectType.Table)
         ?? throw new InvalidOperationException(
           $"No store object identifier found for {row.GetType()}.");
-      var properties = entityType.GetProperties()
-        .Select(p =>
-          (p,
-          p.GetColumnName(storeObjectIdentifier),
-          p.PropertyInfo?.GetValue(row) ?? p.FieldInfo?.GetValue(row)))
-        .Concat(entityType
-          .GetComplexProperties()
-          .SelectMany(p =>
-          {
-            var nested = p.PropertyInfo?.GetValue(row)
-              ?? p.FieldInfo?.GetValue(row);
-            return p.ComplexType
-              .GetProperties()
-              .Select(p =>
-                (p,
-                p.GetColumnName(storeObjectIdentifier),
-                p.PropertyInfo?.GetValue(nested)
-                  ?? p.FieldInfo?.GetValue(nested)));
-          }))
-        .ToList();
 
-      foreach (var (property, columnName, value) in properties)
+      foreach (var (property, columnName, value) in entityType
+        .GetProperties(storeObjectIdentifier, row))
       {
         var parameterName = $"@p{index}_{columnName}";
         if (columnName is null)
@@ -72,4 +49,40 @@ public static class DbContextDapperBulkParametersExtensions
 
     return parameters;
   }
+
+  private static IEnumerable<PropertyValue> GetProperties(
+    this ITypeBase type,
+    StoreObjectIdentifier storeObjectIdentifier,
+    object? row
+  )
+  {
+    foreach (var property in type.GetProperties())
+    {
+      yield return new PropertyValue(
+        property,
+        property.GetColumnName(storeObjectIdentifier)
+          ?? throw new InvalidOperationException(
+            $"No column name found for {property.Name} in {type.Name}."),
+        property.PropertyInfo?.GetValue(row)
+          ?? property.FieldInfo?.GetValue(row));
+    }
+    foreach (var complexProperty in type.GetComplexProperties())
+    {
+      var complexRow = complexProperty.PropertyInfo?.GetValue(row)
+        ?? complexProperty.FieldInfo?.GetValue(row);
+      foreach (var property in GetProperties(
+        complexProperty.ComplexType,
+        storeObjectIdentifier,
+        complexRow))
+      {
+        yield return property;
+      }
+    }
+  }
+
+  private sealed record PropertyValue(
+    IProperty Property,
+    string Column,
+    object? Value
+  );
 }

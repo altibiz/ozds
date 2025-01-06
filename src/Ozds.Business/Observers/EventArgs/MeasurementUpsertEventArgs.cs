@@ -4,7 +4,7 @@ namespace Ozds.Business.Observers.EventArgs;
 
 public class MeasurementFinalizeEventArgs : System.EventArgs
 {
-  public IReadOnlyList<IMeasurement> Measurements { get; set; } = default!;
+  public required IReadOnlyList<IMeasurement> Measurements { get; init; }
 
-  public IReadOnlyList<IAggregate> Aggregates { get; set; } = default!;
+  public required IReadOnlyList<IAggregate> Aggregates { get; init; }
 }

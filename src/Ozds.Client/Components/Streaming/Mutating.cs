@@ -8,6 +8,8 @@ using Ozds.Client.State;
 
 namespace Ozds.Client.Components.Streaming;
 
+// TODO: memoize Loading parameters to prevent rerendering
+
 public partial class Mutating<T> : OzdsOwningComponentBase
   where T : notnull
 {

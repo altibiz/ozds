@@ -2,6 +2,7 @@ using MassTransit;
 using Ozds.Messaging.Contracts.Abstractions;
 using Ozds.Messaging.Entities;
 using Ozds.Messaging.Observers.Abstractions;
+using Ozds.Messaging.Observers.EventArgs;
 
 namespace Ozds.Messaging.Sagas;
 
@@ -21,9 +22,12 @@ public class NetworkUserInvoiceRegisteredActivity(
       NetworkUserInvoiceStateEntity,
       IRegisterNetworkUserInvoice> next)
   {
-    publisher.PublishRegistered(context.Saga);
+    publisher.Publish(new NetworkUserInvoiceStateEventArgs
+    {
+      State = context.Saga
+    });
 
-    await next.Execute(context).ConfigureAwait(false);
+    await next.Execute(context);
   }
 
   public Task Faulted<TException>(
