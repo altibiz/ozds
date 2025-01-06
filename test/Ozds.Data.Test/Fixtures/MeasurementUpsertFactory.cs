@@ -8,6 +8,8 @@ using Ozds.Data.Entities.Enums;
 using Ozds.Data.Test.Extensions;
 using Ozds.Data.Test.Specimens;
 
+// NITPICK: remove dependency on Ozds.Business
+
 namespace Ozds.Data.Test.Fixtures;
 
 public class MeasurementUpsertFactory(DbContext context)

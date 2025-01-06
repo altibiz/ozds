@@ -8,15 +8,15 @@ namespace Ozds.Data.Test.Queries.AnalysisQueriesTest;
 
 public class ReadAnalysisBasesByRepresentativeTest(IServiceProvider services)
 {
-  [Fact]
-  public async Task IsValidTest()
+  [Theory]
+  [InlineData("1")]
+  public async Task IsValidTest(string representativeId)
   {
     await using var manager = services
       .GetRequiredService<EphemeralDataDbContextManager>();
     var context = await manager.GetContext();
     var factory = new AnalysisBasisEntityFactory(context);
 
-    var representativeId = 1.ToString();
     var dateTo = DateTime.UtcNow;
     var dateFrom = dateTo.AddMonths(-1);
 

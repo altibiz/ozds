@@ -6,7 +6,7 @@ using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Complex;
 using Ozds.Business.Models.Composite;
 
-// TODO: test issuer and date
+// NITPICK: test issuer and date
 
 namespace Ozds.Business.Test.Finance;
 

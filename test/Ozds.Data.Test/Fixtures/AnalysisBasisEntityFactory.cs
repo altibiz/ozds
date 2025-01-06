@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Ozds.Business.Conversion;
 using Ozds.Business.Time;
 using Ozds.Data.Entities;
 using Ozds.Data.Entities.Base;
@@ -9,7 +8,7 @@ using Ozds.Data.Entities.Joins;
 using Ozds.Data.Test.Extensions;
 using Ozds.Data.Test.Specimens;
 
-// TODO: remove dependency on Ozds.Business?
+// NITPICK: remove dependency on Ozds.Business
 
 namespace Ozds.Data.Test.Fixtures;
 

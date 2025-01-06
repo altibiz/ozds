@@ -14,17 +14,6 @@ public partial class DataDbContext(
       .HasPostgresExtension("timescaledb")
       .ApplyModelConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
-    // TODO: create migration
-#pragma warning disable S125 // Sections of code should not be commented out
-    // foreach (var relationship in modelBuilder.Model
-    //   .GetEntityTypes()
-    //   .SelectMany(e => e.GetForeignKeys()))
-    // Sections of code should not be commented out
-    // {
-    //   relationship.DeleteBehavior = DeleteBehavior.Restrict;
-    // }
-#pragma warning restore S125 // Sections of code should not be commented out
-
     base.OnModelCreating(modelBuilder);
   }
 }

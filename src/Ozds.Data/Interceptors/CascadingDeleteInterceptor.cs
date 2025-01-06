@@ -109,3 +109,16 @@ public class CascadingDeleteInterceptor(IServiceProvider serviceProvider)
     }
   }
 }
+
+public class CascadingDeleteInterceptorModelConfiguration : IModelConfiguration
+{
+  public void Configure(ModelBuilder modelBuilder)
+  {
+    foreach (var relationship in modelBuilder.Model
+      .GetEntityTypes()
+      .SelectMany(e => e.GetForeignKeys()))
+    {
+      relationship.DeleteBehavior = DeleteBehavior.Restrict;
+    }
+  }
+}

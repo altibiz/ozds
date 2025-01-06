@@ -5,8 +5,6 @@ using Ozds.Data.Test.Assertions;
 
 namespace Ozds.Data.Test.Extensions;
 
-// TODO: use weak conditional map for optimization
-
 public static class DbContextAssertionsExtensions
 {
   public static AndConstraint<TAssertions> BeContextuallyEquivalentTo<
