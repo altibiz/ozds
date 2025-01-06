@@ -15,7 +15,7 @@ public class PushHostedService(
     CancellationToken stoppingToken
   )
   {
-    var push = _serviceProvider.GetRequiredService<PushOptions>();
+    var push = _serviceProvider.GetRequiredService<OzdsFakePushArguments>();
 
     var now = DateTimeOffset.UtcNow;
     var lastPush = now;

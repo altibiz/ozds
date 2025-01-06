@@ -2,7 +2,7 @@ using Ozds.Fake;
 using Ozds.Fake.Extensions;
 using Ozds.Fake.Services;
 
-var options = Options.Parse(args);
+var options = OzdsFakeArguments.Parse(args);
 if (options is null)
 {
   return;
@@ -12,7 +12,7 @@ var builder = Host.CreateApplicationBuilder();
 
 _ = options switch
 {
-  PushOptions push => builder.Services
+  OzdsFakePushArguments push => builder.Services
     .AddSingleton(push)
     .AddRecords()
     .AddLoaders()
@@ -20,7 +20,7 @@ _ = options switch
     .AddPackers()
     .AddClient(push.Timeout_s, push.BaseUrl)
     .AddHostedService<PushHostedService>(),
-  SeedOptions seed => builder.Services
+  OzdsFakeSeedArguments seed => builder.Services
     .AddSingleton(seed)
     .AddRecords()
     .AddLoaders()
@@ -28,7 +28,7 @@ _ = options switch
     .AddPackers()
     .AddClient(seed.Timeout_s, seed.BaseUrl)
     .AddHostedService<SeedHostedService>(),
-  AltibizOptions altibiz => builder.Services
+  OzdsFakeAltibizArguments altibiz => builder.Services
     .AddSingleton(altibiz)
     .AddMessaging(
       altibiz.Host,

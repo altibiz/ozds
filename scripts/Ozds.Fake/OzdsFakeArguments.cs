@@ -2,7 +2,7 @@ using CommandLine;
 
 namespace Ozds.Fake;
 
-public enum SeedInterval
+public enum OzdsFakeSeedInterval
 {
   Hour,
   Day,
@@ -13,7 +13,7 @@ public enum SeedInterval
 }
 
 [Verb("push", HelpText = "Push measurements to the API.")]
-public class PushOptions
+public class OzdsFakePushArguments
 {
   [Option('b', "base-url", Required = false, HelpText = "Base URL of the API.")]
   public string BaseUrl { get; set; } = "http://localhost:5000";
@@ -35,10 +35,10 @@ public class PushOptions
 }
 
 [Verb("seed", HelpText = "Seed the database with a desired interval.")]
-public class SeedOptions
+public class OzdsFakeSeedArguments
 {
   [Option('i', "interval", Required = false, HelpText = "Desired interval.")]
-  public SeedInterval Interval { get; set; } = SeedInterval.Month;
+  public OzdsFakeSeedInterval Interval { get; set; } = OzdsFakeSeedInterval.Month;
 
   [Option('b', "batch-size", Required = false, HelpText = "Batch size.")]
   public int BatchSize { get; set; } = 10000;
@@ -60,7 +60,7 @@ public class SeedOptions
 }
 
 [Verb("altibiz", HelpText = "Fake Altibiz ERP web application.")]
-public class AltibizOptions
+public class OzdsFakeAltibizArguments
 {
   [Option('o', "host", Required = false, HelpText = "RabbitMQ host.")]
   public string Host { get; set; } = "localhost";
@@ -77,7 +77,7 @@ public class AltibizOptions
   public string Password { get; set; } = "ozds";
 }
 
-public static class Options
+public static class OzdsFakeArguments
 {
   public static object? Parse(string[] args)
   {
@@ -90,7 +90,7 @@ public static class Options
           with.AutoHelp = true;
           with.AutoVersion = true;
           with.HelpWriter = Console.Out;
-        }).ParseArguments<PushOptions, SeedOptions, AltibizOptions>(args);
+        }).ParseArguments<OzdsFakePushArguments, OzdsFakeSeedArguments, OzdsFakeAltibizArguments>(args);
 
       if (result.Tag == ParserResultType.NotParsed)
       {

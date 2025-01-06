@@ -1,16 +1,15 @@
 using MassTransit;
+using Microsoft.Extensions.Options;
 using Ozds.Messaging.Contracts;
 using Ozds.Messaging.Contracts.Abstractions;
 using Ozds.Messaging.Entities;
-
-// TODO: make queue names configurable
 
 namespace Ozds.Fake.Sagas;
 
 public class NetworkUserInvoiceStateMachine
   : MassTransitStateMachine<NetworkUserInvoiceStateEntity>
 {
-  public NetworkUserInvoiceStateMachine(IConfiguration configuration)
+  public NetworkUserInvoiceStateMachine(IOptions<OzdsFakeOptions> options)
   {
     InstanceState(x => x.CurrentState);
 
@@ -35,11 +34,6 @@ public class NetworkUserInvoiceStateMachine
             });
       });
 
-    var config = configuration
-      .GetSection("Ozds")
-      .GetSection("Messaging")
-      .GetSection("Endpoints");
-
     Initially(
       When(AcknowledgeNetworkUserInvoice)
         .Then(
@@ -47,9 +41,7 @@ public class NetworkUserInvoiceStateMachine
             = context.Message.NetworkUserInvoiceId)
         .Send(
           new Uri(
-            config["InitiateNetworkUserInvoice"]
-            ?? throw new InvalidOperationException(
-              "InitiateNetworkUserInvoice endpoint not found")),
+            options.Value.Messaging.Endpoints.InitiateNetworkUserInvoice),
           context =>
             new InitiateNetworkUserInvoice(
               context.Saga.NetworkUserInvoiceId))
@@ -66,9 +58,7 @@ public class NetworkUserInvoiceStateMachine
           x => x
             .Send(
               new Uri(
-                config["RegisterNetworkUserInvoice"]
-                ?? throw new InvalidOperationException(
-                  "RegisterNetworkUserInvoice endpoint not found")),
+                options.Value.Messaging.Endpoints.RegisterNetworkUserInvoice),
               context =>
                 new RegisterNetworkUserInvoice(
                   context.Saga.NetworkUserInvoiceId,
@@ -77,9 +67,7 @@ public class NetworkUserInvoiceStateMachine
           x => x
             .Send(
               new Uri(
-                config["AbortNetworkUserInvoice"]
-                ?? throw new InvalidOperationException(
-                  "AbortNetworkUserInvoice endpoint not found")),
+                options.Value.Messaging.Endpoints.AbortNetworkUserInvoice),
               context =>
                 new AbortNetworkUserInvoice(
                   context.Saga.NetworkUserInvoiceId,

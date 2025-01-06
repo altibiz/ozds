@@ -6,7 +6,8 @@ namespace Ozds.Fake.Client;
 
 public class OzdsPushClient(
   IHttpClientFactory httpClientFactory,
-  ILogger<OzdsPushClient> logger
+  ILogger<OzdsPushClient> logger,
+  IServiceProvider serviceProvider
 )
 {
   public async Task Push(
@@ -22,12 +23,11 @@ public class OzdsPushClient(
     client.DefaultRequestHeaders.Add(
       "X-Buffer-Behavior",
       realtime ? "realtime" : "buffer");
-    Console.WriteLine(client.BaseAddress);
 
-    // FIXME: this should be configurable
-#pragma warning disable S1075
-    client.BaseAddress = new Uri("http://localhost:5000/");
-#pragma warning restore S1075
+    client.BaseAddress = new Uri(
+      serviceProvider.GetService<OzdsFakePushArguments>()?.BaseUrl
+      ?? serviceProvider.GetService<OzdsFakeSeedArguments>()?.BaseUrl
+      ?? throw new InvalidOperationException("No base URL found"));
 
     logger.LogInformation(
       "Pushing measurements to {BaseUrl} for messenger {MessengerId}",

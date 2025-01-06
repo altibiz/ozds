@@ -15,7 +15,7 @@ public class SeedHostedService(
     CancellationToken stoppingToken
   )
   {
-    var seed = _serviceProvider.GetRequiredService<SeedOptions>();
+    var seed = _serviceProvider.GetRequiredService<OzdsFakeSeedArguments>();
     var logger = _serviceProvider.GetRequiredService<ILogger<SeedHostedService>>();
 
     var now = DateTimeOffset.UtcNow;
@@ -29,12 +29,12 @@ public class SeedHostedService(
 
     var seedTimeBegin = seed.Interval switch
     {
-      SeedInterval.Hour => now.AddHours(-1),
-      SeedInterval.Day => now.AddDays(-1),
-      SeedInterval.Week => now.AddDays(-7),
-      SeedInterval.Month => now.AddMonths(-1),
-      SeedInterval.Season => now.AddMonths(-3),
-      SeedInterval.Year => now.AddYears(-1),
+      OzdsFakeSeedInterval.Hour => now.AddHours(-1),
+      OzdsFakeSeedInterval.Day => now.AddDays(-1),
+      OzdsFakeSeedInterval.Week => now.AddDays(-7),
+      OzdsFakeSeedInterval.Month => now.AddMonths(-1),
+      OzdsFakeSeedInterval.Season => now.AddMonths(-3),
+      OzdsFakeSeedInterval.Year => now.AddYears(-1),
       _ => throw new InvalidOperationException($"Unknown seed: {seed}")
     };
 
