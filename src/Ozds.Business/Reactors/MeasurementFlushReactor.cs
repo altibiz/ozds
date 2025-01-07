@@ -20,7 +20,6 @@ public class MeasurementFlushHandler(
   MeasurementBuffer buffer
 ) : Handler<MeasurementFlushEventArgs>
 {
-
   public override async Task Handle(
     MeasurementFlushEventArgs eventArgs,
     CancellationToken cancellationToken)
