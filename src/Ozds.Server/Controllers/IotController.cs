@@ -46,14 +46,19 @@ public class IotController(IPushPublisher publisher) : Controller
       return BadRequest("No measurements found");
     }
 
-    var eventArgs = new PushEventArgs(
-      id,
-      bufferBehavior == "realtime"
-        ? PushEventBufferBehavior.Realtime
-        : PushEventBufferBehavior.Buffer,
-      request);
+    var eventArgs = new PushEventArgs
+    {
+      MessengerId = id,
+      BufferBehavior = bufferBehavior switch
+      {
+        "realtime" => PushEventBufferBehavior.Realtime,
+        "buffer" => PushEventBufferBehavior.Buffer,
+        _ => throw new ArgumentOutOfRangeException(nameof(bufferBehavior))
+      },
+      Request = request
+    };
 
-    publisher.PublishPush(eventArgs);
+    publisher.Publish(eventArgs);
 
     return Ok();
   }

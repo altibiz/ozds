@@ -16,7 +16,7 @@ public class ExceptionMiddleware(
     }
     catch (Exception ex)
     {
-      publisher.PublishError(
+      publisher.Publish(
         new ErrorEventArgs
         {
           Message = ex.Message,

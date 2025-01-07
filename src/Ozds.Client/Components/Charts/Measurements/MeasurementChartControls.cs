@@ -38,14 +38,14 @@ public partial class MeasurementChartControls : OzdsOwningComponentBase
 
   protected override void OnInitialized()
   {
-    MeasurementSubscriber.SubscribeFinalize(OnUpsert);
+    MeasurementSubscriber.Subscribe(OnUpsert);
   }
 
   protected override void Dispose(bool disposing)
   {
     if (disposing)
     {
-      MeasurementSubscriber.UnsubscribeFinalize(OnUpsert);
+      MeasurementSubscriber.Unsubscribe(OnUpsert);
     }
   }
 

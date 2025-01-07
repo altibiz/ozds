@@ -36,7 +36,7 @@ public class MessengerInactivityMonitorJob(
       Id,
       JsonSerializer.Serialize(eventArgs, JsonSerializerOptions));
 
-    messengerJobPublisher.PublishInactivity(eventArgs);
+    messengerJobPublisher.Publish(eventArgs);
 
     return Task.CompletedTask;
   }
