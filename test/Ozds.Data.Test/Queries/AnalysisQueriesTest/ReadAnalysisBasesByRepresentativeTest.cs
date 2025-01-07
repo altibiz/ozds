@@ -14,7 +14,7 @@ public class ReadAnalysisBasesByRepresentativeTest(IServiceProvider services)
   {
     await using var manager = services
       .GetRequiredService<EphemeralDataDbContextManager>();
-    var context = await manager.GetContext();
+    var context = await manager.GetContext(CancellationToken.None);
     var factory = new AnalysisBasisEntityFactory(context);
 
     var dateTo = DateTime.UtcNow;

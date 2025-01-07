@@ -21,7 +21,7 @@ public class UpsertMeasurementsTest(IServiceProvider services)
   {
     await using var manager = services
       .GetRequiredService<EphemeralDataDbContextManager>();
-    var context = await manager.GetContext();
+    var context = await manager.GetContext(CancellationToken.None);
 
     var factory = new MeasurementUpsertFactory(context);
     var expected = await factory.CreateMany(CancellationToken.None);
@@ -45,7 +45,7 @@ public class UpsertMeasurementsTest(IServiceProvider services)
   {
     await using var manager = services
       .GetRequiredService<EphemeralDataDbContextManager>();
-    var context = await manager.GetContext();
+    var context = await manager.GetContext(CancellationToken.None);
 
     var factory = new MeasurementUpsertFactory(context);
     var expected = await factory.CreateMassiveMeasurements(
@@ -69,7 +69,7 @@ public class UpsertMeasurementsTest(IServiceProvider services)
   {
     await using var manager = services
       .GetRequiredService<EphemeralDataDbContextManager>();
-    var context = await manager.GetContext();
+    var context = await manager.GetContext(CancellationToken.None);
 
     var factory = new MeasurementUpsertFactory(context);
     var measurements = await factory.CreateDerivedNull(CancellationToken.None);
