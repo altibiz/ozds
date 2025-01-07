@@ -1,33 +1,41 @@
 using System.Text;
 using System.Text.Json;
-using System.Threading.Channels;
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Activation;
 using Ozds.Business.Conversion;
 using Ozds.Business.Conversion.Agnostic;
+using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Enums;
 using Ozds.Business.Models.Joins;
-using Ozds.Business.Reactors.Abstractions;
+using Ozds.Business.Observers.Abstractions;
+using Ozds.Business.Observers.EventArgs;
+using Ozds.Business.Queries.Agnostic;
+using Ozds.Business.Reactors.Base;
 using Ozds.Data.Context;
 using Ozds.Data.Entities;
-using Ozds.Data.Entities.Base;
 using Ozds.Data.Entities.Enums;
-using Ozds.Data.Extensions;
-using Ozds.Jobs.Observers.Abstractions;
-using Ozds.Jobs.Observers.EventArgs;
 
-namespace Ozds.Business.Workers;
+namespace Ozds.Business.Reactors;
 
-// TODO: handle null meter
+// TODO: handle null messenger
 // TODO: paging when fetching
 // TODO: recipients by role
 
-public class MeterInactivityReactor(
+public class JobsMessengerJobReactor(
+  IServiceProvider serviceProvider
+) : Reactor<
+  JobsMessengerJobEventArgs,
+  IJobsMessengerJobSubscriber,
+  JobsMessengerJobHandler>(serviceProvider)
+{
+}
+
+public class JobsMessengerJobHandler(
   IDbContextFactory<DataDbContext> factory,
-  IMessengerJobSubscriber subscriber,
   IHostEnvironment environment,
-  AgnosticModelEntityConverter converter
-) : BackgroundService, IReactor
+  AgnosticModelEntityConverter converter,
+  AuditableQueries auditableQueries
+) : Handler<JobsMessengerJobEventArgs>
 {
   private static readonly JsonSerializerOptions
     EventContentSerializationOptions = new()
@@ -35,51 +43,15 @@ public class MeterInactivityReactor(
       WriteIndented = true
     };
 
-  private readonly Channel<MessengerJobEventArgs> channel =
-    Channel.CreateUnbounded<MessengerJobEventArgs>();
-
-  public override async Task StartAsync(CancellationToken cancellationToken)
+  public override async Task Handle(
+    JobsMessengerJobEventArgs eventArgs,
+    CancellationToken cancellationToken)
   {
-    subscriber.SubscribeInactivity(OnInactivity);
+    await using var context = await factory
+      .CreateDbContextAsync(cancellationToken);
 
-    await base.StartAsync(cancellationToken);
-  }
-
-  public override Task StopAsync(CancellationToken cancellationToken)
-  {
-    subscriber.UnsubscribeInactivity(OnInactivity);
-
-    return base.StopAsync(cancellationToken);
-  }
-
-  protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-  {
-    await foreach (var eventArgs in channel.Reader.ReadAllAsync(stoppingToken))
-    {
-      await using var context = await factory
-        .CreateDbContextAsync(stoppingToken);
-      await Handle(context, converter, environment, eventArgs);
-    }
-  }
-
-  private void OnInactivity(
-    object? sender,
-    MessengerJobEventArgs eventArgs)
-  {
-    channel.Writer.TryWrite(eventArgs);
-  }
-
-  private static async Task Handle(
-    DataDbContext context,
-    AgnosticModelEntityConverter converter,
-    IHostEnvironment environment,
-    MessengerJobEventArgs eventArgs)
-  {
-    var messenger = (await context.Messengers
-        .Where(context.PrimaryKeyEquals<MessengerEntity>(eventArgs.Id))
-        .FirstOrDefaultAsync())
-      ?.ToModel();
-
+    var messenger = await auditableQueries
+      .ReadSingle<MessengerModel>(eventArgs.Id, cancellationToken);
     if (messenger is null)
     {
       return;
@@ -140,7 +112,7 @@ public class MeterInactivityReactor(
     var notificationEntity =
       converter.ToEntity<MessengerNotificationEntity>(notification);
     context.Add(notificationEntity);
-    await context.SaveChangesAsync();
+    await context.SaveChangesAsync(cancellationToken);
     notification.Id = notificationEntity.Id;
 
     var notificationRecipients = recipients.Select(
@@ -150,6 +122,6 @@ public class MeterInactivityReactor(
         RepresentativeId = recipient.Id
       });
     context.AddRange(notificationRecipients.Select(converter.ToEntity));
-    await context.SaveChangesAsync();
+    await context.SaveChangesAsync(cancellationToken);
   }
 }

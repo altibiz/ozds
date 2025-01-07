@@ -6,16 +6,14 @@ using Ozds.Business.Mutations;
 using Ozds.Business.Mutations.Agnostic;
 using Ozds.Business.Observers.Abstractions;
 using Ozds.Business.Queries;
-using Ozds.Business.Reactors.Abstractions;
 using Ozds.Business.Reactors.Base;
 using ErrorEventArgs = Ozds.Business.Observers.EventArgs.ErrorEventArgs;
 
 namespace Ozds.Business.Reactors;
 
 public class ErrorReactor(
-  ISubscriber<ErrorEventArgs> subscriber,
-  IServiceScopeFactory factory
-) : Reactor<ErrorEventArgs, ErrorHandler>(subscriber, factory)
+  IServiceProvider serviceProvider
+) : Reactor<ErrorEventArgs, IErrorSubscriber, ErrorHandler>(serviceProvider)
 {
 }
 
@@ -24,9 +22,9 @@ public class ErrorHandler(
   NotificationQueries notificationQueries,
   NotificationMutations notificationMutations,
   ReadonlyMutations readonlyMutations
-) : IHandler<ErrorEventArgs>
+) : Handler<ErrorEventArgs>
 {
-  public async Task Handle(
+  public override async Task Handle(
     ErrorEventArgs eventArgs,
     CancellationToken cancellationToken)
   {
@@ -58,7 +56,9 @@ public class ErrorHandler(
     notification.Title = "Exception";
     notification.Summary = content.Message;
     notification.Timestamp = DateTimeOffset.UtcNow;
-    notification.Content = $"Exception: \n{eventArgs.Exception}\nStack trace: \n{eventArgs.Exception.StackTrace}\n";
+    notification.Content =
+      $"Exception: \n{eventArgs.Exception}"
+      + $"\nStack trace: \n{eventArgs.Exception.StackTrace}\n";
     notification.EventId = @event.Id;
     notification.Topics = new HashSet<TopicModel>
     {

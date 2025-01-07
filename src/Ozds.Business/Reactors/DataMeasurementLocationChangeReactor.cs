@@ -2,26 +2,24 @@ using Ozds.Business.Caching;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Observers.Abstractions;
 using Ozds.Business.Observers.EventArgs;
-using Ozds.Business.Reactors.Abstractions;
 using Ozds.Business.Reactors.Base;
 
 namespace Ozds.Business.Reactors;
 
-public class MeasurementLocationCacheUpdateReactor(
-  IServiceScopeFactory factory,
-  IDataModelsChangedSubscriber subscriber
-) : Reactor<DataModelsChangedEventArgs, MeasurementLocationCacheUpdateHandler>(
-  subscriber,
-  factory
-)
+public class DataMeasurementLocationChangeReactor(
+  IServiceProvider serviceProvider
+) : Reactor<
+  DataModelsChangedEventArgs,
+  IDataModelsChangedSubscriber,
+  DataMeasurementLocationChangeHandler>(serviceProvider)
 {
 }
 
-public class MeasurementLocationCacheUpdateHandler(
+public class DataMeasurementLocationChangeHandler(
   MeasurementLocationCache cache
-) : IHandler<DataModelsChangedEventArgs>
+) : Handler<DataModelsChangedEventArgs>
 {
-  public async Task Handle(
+  public override async Task Handle(
     DataModelsChangedEventArgs eventArgs,
     CancellationToken cancellationToken)
   {

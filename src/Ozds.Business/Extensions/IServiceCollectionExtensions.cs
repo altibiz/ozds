@@ -124,6 +124,7 @@ public static class IServiceCollectionExtensions
   {
     services.AddSingletonAssignableTo(typeof(IPublisher));
     services.AddSingletonAssignableTo(typeof(ISubscriber));
+    services.AddSingletonAssignableTo(typeof(IPipe));
     return services;
   }
 

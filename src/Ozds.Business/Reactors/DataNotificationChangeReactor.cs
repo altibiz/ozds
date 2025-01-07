@@ -1,77 +1,53 @@
 using System.Text;
-using System.Threading.Channels;
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Conversion;
 using Ozds.Business.Conversion.Joins;
 using Ozds.Business.Models.Enums;
-using Ozds.Business.Reactors.Abstractions;
+using Ozds.Business.Models.Joins;
+using Ozds.Business.Observers.Abstractions;
+using Ozds.Business.Observers.EventArgs;
+using Ozds.Business.Reactors.Base;
 using Ozds.Data.Context;
 using Ozds.Data.Entities;
 using Ozds.Data.Entities.Base;
-using Ozds.Data.Entities.Joins;
 using Ozds.Data.Extensions;
-using Ozds.Data.Observers.Abstractions;
-using Ozds.Data.Observers.EventArgs;
 using Ozds.Email.Sender.Abstractions;
 
-namespace Ozds.Business.Workers;
+namespace Ozds.Business.Reactors;
 
 // TODO: paging when fetching
 
 public class NotificationEmailSenderReactor(
-  IDbContextFactory<DataDbContext> factory,
-  IServiceProvider serviceProvider,
-  IEntityChangesSubscriber subscriber
-) : BackgroundService, IReactor
+  IServiceProvider serviceProvider
+) : Reactor<
+  DataModelsChangedEventArgs,
+  IDataModelsChangedSubscriber,
+  DataNotificationChangeHandler>(serviceProvider)
 {
-  private readonly Channel<EntitiesChangedEventArgs> channel =
-    Channel.CreateUnbounded<EntitiesChangedEventArgs>();
+}
 
-  public override async Task StartAsync(CancellationToken cancellationToken)
+public class DataNotificationChangeHandler(
+  IDbContextFactory<DataDbContext> factory,
+  INotificationCreatedPublisher publisher,
+  IEmailSender sender
+) : Handler<DataModelsChangedEventArgs>
+{
+  public override async Task Handle(
+    DataModelsChangedEventArgs eventArgs,
+    CancellationToken cancellationToken)
   {
-    subscriber.SubscribeEntitiesChanged(OnChanged);
-
-    await base.StartAsync(cancellationToken);
-  }
-
-  public override Task StopAsync(CancellationToken cancellationToken)
-  {
-    subscriber.UnsubscribeEntitiesChanged(OnChanged);
-
-    return base.StopAsync(cancellationToken);
-  }
-
-  protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-  {
-    await foreach (var eventArgs in channel.Reader.ReadAllAsync(stoppingToken))
-    {
-      await using var context = await factory
-        .CreateDbContextAsync(stoppingToken);
-      var sender = serviceProvider.GetRequiredService<IEmailSender>();
-      await Handle(context, sender, eventArgs);
-    }
-  }
-
-  private void OnChanged(object? sender, EntitiesChangedEventArgs eventArgs)
-  {
-    channel.Writer.TryWrite(eventArgs);
-  }
-
-  private static async Task Handle(
-    DataDbContext context,
-    IEmailSender sender,
-    EntitiesChangedEventArgs eventArgs)
-  {
-    var recipients = eventArgs.Entities
-      .Where(x => x.State == EntityChangedState.Added)
-      .Select(x => x.Entity)
-      .OfType<NotificationRecipientEntity>()
-      .Select(x => x.ToModel())
+    var recipients = eventArgs.Models
+      .Where(x => x.State == DataModelChangedState.Added)
+      .Select(x => x.Model)
+      .OfType<NotificationRecipientModel>()
       .ToList();
     if (recipients.Count == 0)
     {
       return;
     }
+
+    await using var context = await factory
+      .CreateDbContextAsync(cancellationToken);
 
     var notifications = await context.Notifications
       .Where(
@@ -79,7 +55,7 @@ public class NotificationEmailSenderReactor(
           recipients
             .Select(x => x.NotificationId)
             .ToList()))
-      .ToListAsync();
+      .ToListAsync(cancellationToken);
 
     var representatives = await context.Representatives
       .Where(
@@ -87,7 +63,7 @@ public class NotificationEmailSenderReactor(
           recipients
             .Select(x => x.RepresentativeId)
             .ToList()))
-      .ToListAsync();
+      .ToListAsync(cancellationToken);
 
     var groups = recipients
       .GroupBy(x => x.NotificationId)
@@ -113,6 +89,16 @@ public class NotificationEmailSenderReactor(
       if (group.Notification is null)
       {
         continue;
+      }
+
+      foreach (var recipient in group.Recipients)
+      {
+        publisher.Publish(
+          new NotificationCreatedEventArgs
+          {
+            Notification = group.Notification,
+            Recipient = recipient
+          });
       }
 
       var notification = group.Notification;

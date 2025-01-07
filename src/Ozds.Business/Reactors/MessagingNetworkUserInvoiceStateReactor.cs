@@ -1,4 +1,3 @@
-using System.Threading.Channels;
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Activation;
 using Ozds.Business.Conversion;
@@ -8,75 +7,52 @@ using Ozds.Business.Localization.Abstractions;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Enums;
 using Ozds.Business.Models.Joins;
-using Ozds.Business.Mutations;
-using Ozds.Business.Reactors.Abstractions;
+using Ozds.Business.Observers.Abstractions;
+using Ozds.Business.Observers.EventArgs;
+using Ozds.Business.Reactors.Base;
 using Ozds.Data.Context;
 using Ozds.Data.Entities;
 using Ozds.Data.Entities.Enums;
 using Ozds.Data.Entities.Joins;
 using Ozds.Data.Extensions;
-using Ozds.Messaging.Observers.Abstractions;
-using Ozds.Messaging.Observers.EventArgs;
 
 namespace Ozds.Business.Reactors;
 
-public class NetworkUserInvoiceStateReactor(
-  INetworkUserInvoiceStateSubscriber subscriber,
-  IDbContextFactory<DataDbContext> factory,
-  AgnosticModelEntityConverter converter,
-  ILocalizer localizer
-) : BackgroundService, IReactor
+public class MessagingNetworkUserInvoiceStateReactor(
+  IServiceProvider serviceProvider
+) : Reactor<
+  MessagingNetworkUserInvoiceStateEventArgs,
+  IMessagingNetworkUserInvoiceStateSubscriber,
+  MessagingNetworkUserInvoiceStateHandler>(serviceProvider)
 {
-  private readonly Channel<NetworkUserInvoiceStateEventArgs> channel =
-    Channel.CreateUnbounded<NetworkUserInvoiceStateEventArgs>();
+}
 
-  public override Task StartAsync(CancellationToken cancellationToken)
+public class MessagingNetworkUserInvoiceStateHandler(
+  AgnosticModelEntityConverter converter,
+  IDbContextFactory<DataDbContext> factory,
+  ILocalizer localizer
+) : Handler<MessagingNetworkUserInvoiceStateEventArgs>
+{
+  public override async Task Handle(
+    MessagingNetworkUserInvoiceStateEventArgs eventArgs,
+    CancellationToken cancellationToken)
   {
-    subscriber.SubscribeRegistered(OnRegistered);
-    return base.StartAsync(cancellationToken);
-  }
+    await using var context = await factory
+      .CreateDbContextAsync(cancellationToken);
 
-  public override Task StopAsync(CancellationToken cancellationToken)
-  {
-    subscriber.UnsubscribeRegistered(OnRegistered);
-    return base.StopAsync(cancellationToken);
-  }
-
-  protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-  {
-    await foreach (var state in channel.Reader.ReadAllAsync(stoppingToken))
-    {
-      await using var context = await factory
-        .CreateDbContextAsync(stoppingToken);
-      await Handle(context, converter, localizer, state);
-    }
-  }
-
-  public void OnRegistered(
-    object? sender,
-    NetworkUserInvoiceStateEventArgs state)
-  {
-    channel.Writer.TryWrite(state);
-  }
-
-  private static async Task Handle(
-    DataDbContext context,
-    AgnosticModelEntityConverter converter,
-    ILocalizer localizer,
-    NetworkUserInvoiceStateEventArgs eventArgs)
-  {
     await context.NetworkUserInvoices
       .Where(context
         .PrimaryKeyEquals<NetworkUserInvoiceEntity>(
           eventArgs.State.NetworkUserInvoiceId))
       .ExecuteUpdateAsync(
-        s => s.SetProperty(x => x.BillId, eventArgs.State.BillId));
+        s => s.SetProperty(x => x.BillId, eventArgs.State.BillId),
+        cancellationToken);
 
     var invoices = (await context.NetworkUserInvoices
         .Where(
           context.PrimaryKeyEquals<NetworkUserInvoiceEntity>(
             eventArgs.State.NetworkUserInvoiceId))
-        .ToListAsync())
+        .ToListAsync(cancellationToken))
       .Select(converter.ToModel<NetworkUserInvoiceModel>);
 
     var networkUserIds = invoices
@@ -99,20 +75,23 @@ public class NetworkUserInvoiceStateReactor(
         context.PrimaryKeyOf<RepresentativeEntity>(),
         (_, representative) => representative
       )
-      .ToListAsync();
+      .ToListAsync(cancellationToken);
 
     var notifications = invoices
       .Select(
         invoice =>
         {
-          var notification = NetworkUserInvoiceNotificationModelActivator.New();
+          var notification =
+            NetworkUserInvoiceNotificationModelActivator.New();
           notification.InvoiceId = invoice.Id;
           notification.Topics =
           [
             TopicModel.All,
             TopicModel.NetworkUserInvoiceState
           ];
-          notification.Summary = $"{localizer["Invoice"]} \"{invoice.Title}\" {localizer["issued"]}";
+          notification.Summary =
+            $"{localizer["Invoice"]} \"{invoice.Title}\""
+            + $" {localizer["issued"]}";
           notification.Content =
             $"{localizer["Invoice url is"]} 'invoices/{invoice.Id}'";
 
@@ -120,7 +99,7 @@ public class NetworkUserInvoiceStateReactor(
         })
       .ToList();
     context.AddRange(notifications);
-    await context.SaveChangesAsync();
+    await context.SaveChangesAsync(cancellationToken);
 
     var notificationRecipients = notifications
       .SelectMany(
@@ -135,6 +114,6 @@ public class NetworkUserInvoiceStateReactor(
           )
       );
     context.AddRange(notificationRecipients);
-    await context.SaveChangesAsync();
+    await context.SaveChangesAsync(cancellationToken);
   }
 }

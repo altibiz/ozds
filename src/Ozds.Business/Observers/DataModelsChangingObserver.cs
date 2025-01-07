@@ -1,65 +1,66 @@
 using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Observers.Abstractions;
+using Ozds.Business.Observers.Base;
 using Ozds.Business.Observers.EventArgs;
-using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Observers.Abstractions;
 using Ozds.Data.Observers.EventArgs;
 
 namespace Ozds.Business.Observers;
 
-public class DataModelsChangingObserver(
-  IEntitiesChangingSubscriber subscriber,
-  AgnosticModelEntityConverter modelEntityConverter
-) : IDataModelsChangingSubscriber
+public class DataModelsChangingRelay(
+  IServiceProvider serviceProvider,
+  IEntitiesChangingSubscriber subscriber
+) : Relay<
+  EntitiesChangingEventArgs,
+  DataModelsChangingEventArgs,
+  DataModelsChangingPipe>(
+  serviceProvider
+), IDataModelsChangingSubscriber
 {
-  public void Subscribe(EventHandler<DataModelsChangingEventArgs> eventHandler)
+  protected override void SubscribeIn(
+    EventHandler<EntitiesChangingEventArgs> eventHandler)
   {
-    var modelEventHandler = new Handler(
-      eventHandler,
-      modelEntityConverter
-    );
-    subscriber.Subscribe(modelEventHandler.Handle);
+    subscriber.Subscribe(eventHandler);
   }
 
-  public void Unsubscribe(EventHandler<DataModelsChangingEventArgs> eventHandler)
+  protected override void UnsubscribeIn(
+    EventHandler<EntitiesChangingEventArgs> eventHandler)
   {
-    var modelEventHandler = new Handler(
-      eventHandler,
-      modelEntityConverter
-    );
-    subscriber.Unsubscribe(modelEventHandler.Handle);
+    subscriber.Unsubscribe(eventHandler);
   }
+}
 
-  private record struct Handler(
-    EventHandler<DataModelsChangingEventArgs> EventHandler,
-    AgnosticModelEntityConverter ModelEntityConverter
-  )
+public class DataModelsChangingPipe(
+  AgnosticModelEntityConverter ModelEntityConverter
+) : IPipe<EntitiesChangingEventArgs, DataModelsChangingEventArgs>
+{
+  public Task<DataModelsChangingEventArgs> Transform(
+    EntitiesChangingEventArgs eventArgs,
+    CancellationToken cancellationToken)
   {
-    public void Handle(object? sender, EntitiesChangingEventArgs eventArgs)
+    var models = new List<DataModelChangingEntry>();
+    foreach (var entity in eventArgs.Entities)
     {
-      var models = new List<DataModelChangingEntry>();
-      foreach (var entity in eventArgs.Entities)
-      {
-        models.Add(
-          new DataModelChangingEntry(
-            entity.State switch
-            {
-              EntityChangingState.Adding => DataModelChangingState.Adding,
-              EntityChangingState.Modifying => DataModelChangingState.Modifying,
-              EntityChangingState.Removing => DataModelChangingState.Removing,
-              _ => throw new NotImplementedException()
-            },
-            ModelEntityConverter.ToModel<IModel>(entity.Entity)
-          )
-        );
-      }
-
-      var modelsEventArgs = new DataModelsChangingEventArgs
-      {
-        Models = models
-      };
-      EventHandler(sender, modelsEventArgs);
+      models.Add(
+        new DataModelChangingEntry(
+          entity.State switch
+          {
+            EntityChangingState.Adding => DataModelChangingState.Adding,
+            EntityChangingState.Modifying => DataModelChangingState.Modifying,
+            EntityChangingState.Removing => DataModelChangingState.Removing,
+            _ => throw new NotImplementedException()
+          },
+          ModelEntityConverter.ToModel<IModel>(entity.Entity)
+        )
+      );
     }
+
+    var modelsEventArgs = new DataModelsChangingEventArgs
+    {
+      Models = models
+    };
+
+    return Task.FromResult(modelsEventArgs);
   }
 }

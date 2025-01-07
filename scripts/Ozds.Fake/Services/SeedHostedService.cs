@@ -118,5 +118,9 @@ public class SeedHostedService(
         ? now
         : seedTimeBegin.AddDays(1);
     }
+
+    var lifetime = _serviceProvider
+      .GetRequiredService<IHostApplicationLifetime>();
+    lifetime.StopApplication();
   }
 }
