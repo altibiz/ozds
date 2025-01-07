@@ -5,11 +5,6 @@ using Ozds.Fake.Loaders;
 using Ozds.Fake.Records.Abstractions;
 using Ozds.Iot.Entities.Abstractions;
 
-// TODO: check time logic here
-// TODO: add energy logic
-// TODO: fixup cumulatives
-// TODO: repeating enumerable
-
 namespace Ozds.Fake.Generators.Base;
 
 public abstract class

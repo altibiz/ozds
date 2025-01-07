@@ -1,9 +1,10 @@
 using System.ComponentModel.DataAnnotations;
 using Ozds.Business.Caching;
 using Ozds.Business.Models.Abstractions;
-using Ozds.Data.Queries;
+using Ozds.Business.Models.Base;
+using Ozds.Business.Validation.Base;
 
-namespace Ozds.Business.Validation.Base;
+namespace Ozds.Business.Validation;
 
 public class MeasurementValidator(
   ValidationCache cache
@@ -22,7 +23,7 @@ public class MeasurementValidator(
     }
 
     var validationContext = new ValidationContext(this);
-    validationContext.Items["MeasurementValidator"] = validator;
+    validationContext.Items[MeasurementModel.ValidatorKey] = validator;
     return model.Validate(validationContext).ToList();
   }
 }

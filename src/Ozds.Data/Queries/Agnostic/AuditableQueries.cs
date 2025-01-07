@@ -162,4 +162,17 @@ public class AuditableQueries(
       ?? throw new InvalidOperationException(
         $"Type {entityType} doesn't have a table");
   }
+
+  public async Task<Type> ReadEntityType(
+    string entityTypeName,
+    CancellationToken cancellationToken
+  )
+  {
+    await using var context = await factory
+      .CreateDbContextAsync(cancellationToken);
+
+    return context.GetEntityTypeFromEntityTypeName(entityTypeName)
+      ?? throw new InvalidOperationException(
+        $"Type {entityTypeName} doesn't have a type");
+  }
 }

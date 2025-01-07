@@ -2,6 +2,7 @@ using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Enums;
 using Ozds.Business.Queries.Abstractions;
+using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Entities.Base;
 using DataAuditableQueries = Ozds.Data.Queries.Agnostic.AuditableQueries;
 using DataReadonlyQueries = Ozds.Data.Queries.Agnostic.ReadonlyQueries;
@@ -124,5 +125,31 @@ public class EventQueries(
     return entities.Items
       .Select(modelEntityConverter.ToModel<IAuditEvent>)
       .ToPaginatedList(entities.TotalCount);
+  }
+
+  public async Task<IAuditable?> ReadAuditable(
+    IAuditEvent auditEvent,
+    CancellationToken cancellationToken
+  )
+  {
+    var original = await queries.ReadSingle<IAuditEventEntity>(
+      auditEvent.Id,
+      cancellationToken);
+    if (original is null)
+    {
+      return null;
+    }
+
+    var type = await auditableQueries.ReadEntityType(
+      original.AuditableEntityType,
+      cancellationToken);
+    var entity = await auditableQueries.ReadSingleDynamic(
+      type,
+      original.AuditableEntityId,
+      cancellationToken);
+
+    return entity is null
+      ? null
+      : modelEntityConverter.ToModel<IAuditable>(entity);
   }
 }

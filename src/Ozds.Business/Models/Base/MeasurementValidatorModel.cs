@@ -3,6 +3,8 @@ using Ozds.Business.Models.Abstractions;
 
 namespace Ozds.Business.Models.Base;
 
+// TODO: clearer property naming scheme
+
 public abstract class MeasurementValidatorModel : AuditableModel
 {
 }

@@ -2,8 +2,6 @@ using System.ComponentModel.DataAnnotations;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Validation.Abstractions;
 
-// TODO: default validator
-
 namespace Ozds.Business.Validation.Agnostic;
 
 public class AgnosticValidator(
@@ -20,7 +18,7 @@ public class AgnosticValidator(
       .FirstOrDefault(service => service.CanValidate(model.GetType()));
     if (validator is null)
     {
-      return new List<ValidationResult>();
+      return model.Validate(new ValidationContext(this)).ToList();
     }
 
     return await validator.ValidateAsync(model, cancellationToken);

@@ -6,6 +6,8 @@ namespace Ozds.Business.Models.Base;
 
 public abstract class MeasurementModel : IMeasurement
 {
+  public const string ValidatorKey = "MeasurementValidator";
+
   [Required]
   public required string MeterId { get; init; }
 
@@ -56,7 +58,7 @@ public abstract class MeasurementModel<T> : MeasurementModel
         new[] { nameof(Timestamp) });
     }
 
-    if (validationContext.Items["MeasurementValidator"] is T validator)
+    if (validationContext.Items[ValidatorKey] is T validator)
     {
       foreach (var result in validator.Validate(validationContext))
       {

@@ -2,8 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Extensions;
 
-// TODO: check that all base classes are only used for inheritance
-
 namespace Ozds.Data.Entities.Base;
 
 public class CalculationEntity : ICalculationEntity
