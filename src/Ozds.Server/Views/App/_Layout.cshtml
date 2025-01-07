@@ -24,7 +24,7 @@
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet"/>
   <link href="/_content/MudBlazor/MudBlazor.min.css" rel="stylesheet"/>
   <link href="/_content/MudBlazor.ThemeManager/MudBlazorThemeManager.css" rel="stylesheet"/>
-  <!-- NOTE: https://github.com/apexcharts/Blazor-ApexCharts says it should be imported -->
+  <!-- TODO: check that it actually uses the css because we have a specific loading situation -->
   <!--
   <link href="/_content/Blazor-ApexCharts/css/apexcharts.css" rel=stylesheet />
   -->
@@ -37,7 +37,7 @@
 
 <!-- NOTE: we put all scripts here because Blazor doesn't handle assets like this well -->
 <script src="/_framework/blazor.server.js"></script>
-<!-- NOTE: not found for streaming -->
+<!-- TODO: check streaming options with .NET 9 -->
 <!-- <script src="/_framework/blazor.web.js" suppress-error="BL9992"></script> -->
 <script src="/_content/MudBlazor/MudBlazor.min.js"></script>
 <!-- NOTE: https://github.com/apexcharts/Blazor-ApexCharts says it should be imported -->
