@@ -44,23 +44,33 @@ public class IotPushHandler(
     CancellationToken cancellationToken
   )
   {
-    await RescheduleInactivityMonitorJob(eventArgs);
+    await RescheduleInactivityMonitorJob(eventArgs, cancellationToken);
 
-    var validationResults = await Validate(eventArgs.Measurements);
+    var validationResults = await Validate(
+      eventArgs.Measurements,
+      cancellationToken);
     if (validationResults?.Count > 0)
     {
-      var eventId = await AddPushEvent(eventArgs, validationResults);
-      await AddInvalidPushNotification(eventArgs, validationResults, eventId);
+      var eventId = await AddPushEvent(
+        eventArgs,
+        validationResults,
+        cancellationToken);
+      await AddInvalidPushNotification(
+        eventArgs,
+        validationResults,
+        eventId,
+        cancellationToken);
       return;
     }
 
     buffer.Add(eventArgs.Measurements, eventArgs.BufferBehavior);
 
-    await AddPushEvent(eventArgs);
+    await AddPushEvent(eventArgs, null, cancellationToken);
   }
 
   private async Task<List<ValidationResult>?> Validate(
-    IEnumerable<IMeasurement> measurements
+    IEnumerable<IMeasurement> measurements,
+    CancellationToken cancellationToken
   )
   {
     var validationResults = new List<ValidationResult>();
@@ -68,7 +78,7 @@ public class IotPushHandler(
     {
       var validationResult = await validator.ValidateAsync(
         measurement,
-        CancellationToken.None
+        cancellationToken
       );
 
       validationResults.AddRange(
@@ -84,13 +94,14 @@ public class IotPushHandler(
   }
 
   private async Task RescheduleInactivityMonitorJob(
-    IotPushEventArgs eventArgs
+    IotPushEventArgs eventArgs,
+    CancellationToken cancellationToken
   )
   {
     var messenger = await auditableQueries
       .ReadSingle<MessengerModel>(
         eventArgs.MessengerId,
-        CancellationToken.None);
+        cancellationToken);
     if (messenger is null)
     {
       return;
@@ -98,18 +109,20 @@ public class IotPushHandler(
 
     await messengerJobManager.RescheduleInactivityMonitorJob(
       messenger.Id,
-      messenger.MaxInactivityPeriod.ToTimeSpan()
+      messenger.MaxInactivityPeriod.ToTimeSpan(),
+      cancellationToken
     );
   }
 
   private async Task<string?> AddPushEvent(
     IotPushEventArgs eventArgs,
-    List<ValidationResult>? validationResults = null)
+    List<ValidationResult>? validationResults,
+    CancellationToken cancellationToken)
   {
     var messenger = await auditableQueries
       .ReadSingle<MessengerModel>(
         eventArgs.MessengerId,
-        CancellationToken.None);
+        cancellationToken);
     if (messenger is null)
     {
       return null;
@@ -132,7 +145,7 @@ public class IotPushHandler(
       ? "Messenger \"{messenger.Title}\" pushed"
       : "Messenger \"{messenger.Title}\" pushed with validation errors";
     @event.Id = await readonlyMutations
-      .Create(@event, CancellationToken.None);
+      .Create(@event, cancellationToken);
 
     return @event.Id;
   }
@@ -140,12 +153,13 @@ public class IotPushHandler(
   private async Task AddInvalidPushNotification(
     IotPushEventArgs eventArgs,
     List<ValidationResult> validationResults,
-    string? eventId = null)
+    string? eventId,
+    CancellationToken cancellationToken)
   {
     var messenger = await auditableQueries
       .ReadSingle<MessengerModel>(
         eventArgs.MessengerId,
-        CancellationToken.None);
+        cancellationToken);
     if (messenger is null)
     {
       return;
@@ -165,11 +179,11 @@ public class IotPushHandler(
         .Select(x => $"{x.MemberNames.First()}: {x.ErrorMessage}"));
     notification.EventId = eventId;
     notification.Id = await notificationMutations
-      .Create(notification, CancellationToken.None);
+      .Create(notification, cancellationToken);
 
     var recipients = await notificationQueries.Recipients(notification);
     await notificationMutations
-      .AddRecipients(recipients, CancellationToken.None);
+      .AddRecipients(recipients, cancellationToken);
   }
 
   private static JsonDocument CreateEventContent(

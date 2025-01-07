@@ -12,14 +12,16 @@ public class EndpointMessageSender(
 ) : IMessageSender
 {
   public async Task AcknowledgeNetworkUserInvoice(
-    IAcknowledgeNetworkUserInvoice acknowledgeNetworkUserInvoice
+    IAcknowledgeNetworkUserInvoice acknowledgeNetworkUserInvoice,
+    CancellationToken cancellationToken
   )
   {
     var endpoint = await endpointProvider.GetSendEndpoint(
       new Uri(options.Value.Endpoints.AcknowledgeNetworkUserInvoice));
 
     await endpoint.Send(
-      acknowledgeNetworkUserInvoice
+      acknowledgeNetworkUserInvoice,
+      cancellationToken
     );
   }
 }

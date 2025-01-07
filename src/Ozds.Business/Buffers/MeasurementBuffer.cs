@@ -19,6 +19,7 @@ public class MeasurementBuffer(
   AgnosticAggregateUpserter aggregateUpserter,
   AgnosticMeasurementAggregateConverter aggregateConverter,
   IMeasurementFlushPublisher measurementFlushPublisher,
+  IMeasurementsBufferedPublisher measurementsBufferedPublisher,
   ILogger<MeasurementBuffer> logger
 )
   : IBuffer
@@ -52,7 +53,17 @@ public class MeasurementBuffer(
 
     if (bufferBehavior is MeasurementBufferBehavior.Buffer)
     {
-      AddToMeasurementsInternal(measurements.Where(x => x is not IAggregate));
+      var nonAggregates = measurements
+        .Where(x => x is not IAggregate)
+        .ToList();
+
+      AddToMeasurementsInternal(nonAggregates);
+
+      measurementsBufferedPublisher.Publish(
+        new MeasurementsBufferedEventArgs
+        {
+          Measurements = nonAggregates
+        });
     }
     AddToAggregatesInternal(aggregates);
 

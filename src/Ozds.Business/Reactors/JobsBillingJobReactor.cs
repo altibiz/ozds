@@ -41,7 +41,8 @@ public class JobsBillingJobHandler(
     await issuer.IssueNetworkUserInvoiceAsync(
       networkUser.Id,
       startOfLastMonth,
-      startOfThisMonth
+      startOfThisMonth,
+      cancellationToken
     );
   }
 }

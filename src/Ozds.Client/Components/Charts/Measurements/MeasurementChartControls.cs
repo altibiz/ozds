@@ -28,7 +28,10 @@ public partial class MeasurementChartControls : OzdsOwningComponentBase
   public RenderFragment<MeasurementChartParameters> ChildContent { get; set; } = default!;
 
   [Inject]
-  private IDataModelsChangedSubscriber Subscriber { get; set; } = default!;
+  private IDataModelsChangedSubscriber DataModelsChangedSubscriber { get; set; } = default!;
+
+  [Inject]
+  private IMeasurementsBufferedSubscriber MeasurementsBufferedSubscriber { get; set; } = default!;
 
   [Inject]
   private AgnosticAggregateUpserter AggregateUpserter { get; set; } = default!;
@@ -37,14 +40,16 @@ public partial class MeasurementChartControls : OzdsOwningComponentBase
 
   protected override void OnInitialized()
   {
-    Subscriber.Subscribe(OnMeasurements);
+    DataModelsChangedSubscriber.Subscribe(OnDataModelsChanged);
+    MeasurementsBufferedSubscriber.Subscribe(OnMeasurementsBuffered);
   }
 
   protected override void Dispose(bool disposing)
   {
     if (disposing)
     {
-      Subscriber.Unsubscribe(OnMeasurements);
+      DataModelsChangedSubscriber.Unsubscribe(OnDataModelsChanged);
+      MeasurementsBufferedSubscriber.Unsubscribe(OnMeasurementsBuffered);
     }
   }
 
@@ -66,15 +71,10 @@ public partial class MeasurementChartControls : OzdsOwningComponentBase
     );
   }
 
-  private void OnMeasurements(
+  private void OnDataModelsChanged(
     object? _sender,
     DataModelsChangedEventArgs args)
   {
-    if (!_parameters.Refresh)
-    {
-      return;
-    }
-
     var measurements = args.Models
       .Where(x => x.State is DataModelChangedState.Added)
       .Select(x => x.Model)
@@ -86,7 +86,24 @@ public partial class MeasurementChartControls : OzdsOwningComponentBase
       .Select(x => x.Model)
       .OfType<IAggregate>()
       .ToList();
-    if (measurements.Count == 0 && aggregates.Count == 0)
+
+    Refresh(measurements, aggregates);
+  }
+
+  private void OnMeasurementsBuffered(
+    object? _sender,
+    MeasurementsBufferedEventArgs args)
+  {
+    Refresh(args.Measurements.ToList(), new List<IAggregate>());
+  }
+
+  private void Refresh(
+    List<IMeasurement> measurements,
+    List<IAggregate> aggregates)
+  {
+    if (!_parameters.Refresh
+      || measurements.Count == 0
+      || aggregates.Count == 0)
     {
       return;
     }

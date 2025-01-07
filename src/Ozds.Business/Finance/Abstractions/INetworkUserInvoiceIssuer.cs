@@ -5,6 +5,7 @@ public interface INetworkUserInvoiceIssuer
   public Task IssueNetworkUserInvoiceAsync(
     string networkUserId,
     DateTimeOffset dateFrom,
-    DateTimeOffset dateTo
+    DateTimeOffset dateTo,
+    CancellationToken cancellationToken
   );
 }

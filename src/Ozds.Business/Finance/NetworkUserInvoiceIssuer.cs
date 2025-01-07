@@ -19,7 +19,8 @@ public class NetworkUserInvoiceIssuer(
   public async Task IssueNetworkUserInvoiceAsync(
     string networkUserId,
     DateTimeOffset dateFrom,
-    DateTimeOffset dateTo
+    DateTimeOffset dateTo,
+    CancellationToken cancellationToken
   )
   {
     NetworkUserInvoiceIssuingBasisModel? basis = null;
@@ -35,11 +36,11 @@ public class NetworkUserInvoiceIssuer(
           networkUserId,
           dateFrom,
           dateTo,
-          CancellationToken.None
+          cancellationToken
         );
       invoice = invoiceCalculator.Calculate(basis);
       invoice = await mutations
-        .CreateCalculatedInvoice(invoice, CancellationToken.None);
+        .CreateCalculatedInvoice(invoice, cancellationToken);
     }
     var culture = CultureInfo.CreateSpecificCulture("hr-HR");
 
@@ -136,7 +137,8 @@ public class NetworkUserInvoiceIssuer(
         basis.RegulatoryCatalogue.TaxRate_Percent,
         invoice.Invoice.Tax_EUR,
         invoice.Invoice.TotalWithTax_EUR
-      )
+      ),
+      cancellationToken
     );
   }
 }

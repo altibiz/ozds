@@ -4,52 +4,59 @@ using Quartz;
 namespace Ozds.Jobs.Managers;
 
 public class BillingJobManager(ISchedulerFactory schedulerFactory)
-  : INetworkUserBillingJobManager
+  : IBillingJobManager
 {
   public async Task EnsureMonthlyBillingJob(
-    string networkUserId)
+    string networkUserId,
+    CancellationToken cancellationToken)
   {
-    var scheduler = await schedulerFactory.GetScheduler();
+    var scheduler = await schedulerFactory.GetScheduler(cancellationToken);
 
     var triggerKey = new TriggerKey(
       networkUserId, nameof(NetworkUserMonthlyBillingJob));
-    if (!await scheduler.CheckExists(triggerKey))
+    if (!await scheduler.CheckExists(triggerKey, cancellationToken))
     {
       var job = CreateJob(networkUserId);
       var trigger = CreateTrigger(networkUserId);
 
-      await scheduler.ScheduleJob(job, trigger);
+      await scheduler.ScheduleJob(job, trigger, cancellationToken);
     }
   }
 
-  public async Task RescheduleMonthlyBillingJob(string networkUserId)
+  public async Task RescheduleMonthlyBillingJob(
+    string networkUserId,
+    CancellationToken cancellationToken
+  )
   {
-    var scheduler = await schedulerFactory.GetScheduler();
+    var scheduler = await schedulerFactory.GetScheduler(cancellationToken);
 
     var triggerKey = new TriggerKey(
       networkUserId, nameof(NetworkUserMonthlyBillingJob));
 
-    if (await scheduler.CheckExists(triggerKey))
+    if (await scheduler.CheckExists(triggerKey, cancellationToken))
     {
       var trigger = CreateTrigger(networkUserId);
-      await scheduler.RescheduleJob(triggerKey, trigger);
+      await scheduler.RescheduleJob(triggerKey, trigger, cancellationToken);
     }
     else
     {
-      await EnsureMonthlyBillingJob(networkUserId);
+      await EnsureMonthlyBillingJob(networkUserId, cancellationToken);
     }
   }
 
-  public async Task UnscheduleMonthlyBillingJob(string networkUserId)
+  public async Task UnscheduleMonthlyBillingJob(
+    string networkUserId,
+    CancellationToken cancellationToken
+  )
   {
-    var scheduler = await schedulerFactory.GetScheduler();
+    var scheduler = await schedulerFactory.GetScheduler(cancellationToken);
 
     var triggerKey = new TriggerKey(
       networkUserId, nameof(NetworkUserMonthlyBillingJob));
 
-    if (await scheduler.CheckExists(triggerKey))
+    if (await scheduler.CheckExists(triggerKey, cancellationToken))
     {
-      await scheduler.UnscheduleJob(triggerKey);
+      await scheduler.UnscheduleJob(triggerKey, cancellationToken);
     }
   }
 

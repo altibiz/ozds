@@ -34,7 +34,8 @@ public class DataMessengerChangeHandler(
       {
         await manager.EnsureInactivityMonitorJob(
           messenger.Id,
-          messenger.MaxInactivityPeriod.ToTimeSpan()
+          messenger.MaxInactivityPeriod.ToTimeSpan(),
+          cancellationToken
         );
       }
 
@@ -58,20 +59,24 @@ public class DataMessengerChangeHandler(
       {
         await manager.EnsureInactivityMonitorJob(
           messenger.Id,
-          messenger.MaxInactivityPeriod.ToTimeSpan()
+          messenger.MaxInactivityPeriod.ToTimeSpan(),
+          cancellationToken
         );
       }
 
       if (entry.State is DataModelChangedState.Removed)
       {
-        await manager.UnscheduleInactivityMonitorJob(messenger.Id);
+        await manager.UnscheduleInactivityMonitorJob(
+          messenger.Id,
+          cancellationToken);
       }
 
       if (entry.State is DataModelChangedState.Modified)
       {
         await manager.RescheduleInactivityMonitorJob(
           messenger.Id,
-          messenger.MaxInactivityPeriod.ToTimeSpan()
+          messenger.MaxInactivityPeriod.ToTimeSpan(),
+          cancellationToken
         );
       }
     }

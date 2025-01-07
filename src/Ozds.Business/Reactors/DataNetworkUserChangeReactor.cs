@@ -17,7 +17,7 @@ public class DataNetworkUserChangeReactor(
 }
 
 public class DataNetworkUserChangeHandler(
-  INetworkUserBillingJobManager manager,
+  IBillingJobManager manager,
   AuditableQueries auditableQueries
 ) : Handler<DataModelsChangedEventArgs>
 {
@@ -31,7 +31,9 @@ public class DataNetworkUserChangeHandler(
     {
       foreach (var networkUser in networkUsers.Items)
       {
-        await manager.EnsureMonthlyBillingJob(networkUser.Id);
+        await manager.EnsureMonthlyBillingJob(
+          networkUser.Id,
+          cancellationToken);
       }
 
       networkUsers = await auditableQueries
@@ -52,17 +54,23 @@ public class DataNetworkUserChangeHandler(
 
       if (entry.State is DataModelChangedState.Added)
       {
-        await manager.EnsureMonthlyBillingJob(networkUser.Id);
+        await manager.EnsureMonthlyBillingJob(
+          networkUser.Id,
+          cancellationToken);
       }
 
       if (entry.State is DataModelChangedState.Removed)
       {
-        await manager.UnscheduleMonthlyBillingJob(networkUser.Id);
+        await manager.UnscheduleMonthlyBillingJob(
+          networkUser.Id,
+          cancellationToken);
       }
 
       if (entry.State is DataModelChangedState.Modified)
       {
-        await manager.RescheduleMonthlyBillingJob(networkUser.Id);
+        await manager.RescheduleMonthlyBillingJob(
+          networkUser.Id,
+          cancellationToken);
       }
     }
   }

@@ -11,7 +11,8 @@ public class MessengerJobManager(
 {
   public async Task EnsureInactivityMonitorJob(
     string id,
-    TimeSpan inactivityDuration)
+    TimeSpan inactivityDuration,
+    CancellationToken cancellationToken)
   {
     logger.LogDebug(
       "Ensuring {Group} job for {Id} with inactivity duration {Duration}",
@@ -20,20 +21,21 @@ public class MessengerJobManager(
       inactivityDuration
     );
 
-    var scheduler = await schedulerFactory.GetScheduler();
+    var scheduler = await schedulerFactory.GetScheduler(cancellationToken);
 
     var triggerKey = new TriggerKey(id, nameof(MessengerInactivityMonitorJob));
-    if (!await scheduler.CheckExists(triggerKey))
+    if (!await scheduler.CheckExists(triggerKey, cancellationToken))
     {
       var job = CreateJob(id);
       var trigger = CreateTrigger(id, inactivityDuration);
-      await scheduler.ScheduleJob(job, trigger);
+      await scheduler.ScheduleJob(job, trigger, cancellationToken);
     }
   }
 
   public async Task RescheduleInactivityMonitorJob(
     string id,
-    TimeSpan inactivityDuration)
+    TimeSpan inactivityDuration,
+    CancellationToken cancellationToken)
   {
     logger.LogDebug(
       "Rescheduling {Group} job for {Id} with inactivity duration {Duration}",
@@ -42,25 +44,27 @@ public class MessengerJobManager(
       inactivityDuration
     );
 
-    var scheduler = await schedulerFactory.GetScheduler();
+    var scheduler = await schedulerFactory.GetScheduler(cancellationToken);
 
     var triggerKey = new TriggerKey(id, nameof(MessengerInactivityMonitorJob));
     var trigger = CreateTrigger(id, inactivityDuration);
 
-    if (await scheduler.CheckExists(triggerKey))
+    if (await scheduler.CheckExists(triggerKey, cancellationToken))
     {
-      await scheduler.UnscheduleJob(triggerKey);
+      await scheduler.UnscheduleJob(triggerKey, cancellationToken);
       var job = CreateJob(id);
-      await scheduler.ScheduleJob(job, trigger);
+      await scheduler.ScheduleJob(job, trigger, cancellationToken);
     }
     else
     {
       var job = CreateJob(id);
-      await scheduler.ScheduleJob(job, trigger);
+      await scheduler.ScheduleJob(job, trigger, cancellationToken);
     }
   }
 
-  public async Task UnscheduleInactivityMonitorJob(string id)
+  public async Task UnscheduleInactivityMonitorJob(
+    string id,
+    CancellationToken cancellationToken)
   {
     logger.LogDebug(
       "Unscheduling {Group} job for {Id}",
@@ -68,13 +72,13 @@ public class MessengerJobManager(
       id
     );
 
-    var scheduler = await schedulerFactory.GetScheduler();
+    var scheduler = await schedulerFactory.GetScheduler(cancellationToken);
 
     var triggerKey = new TriggerKey(id, nameof(MessengerInactivityMonitorJob));
 
-    if (await scheduler.CheckExists(triggerKey))
+    if (await scheduler.CheckExists(triggerKey, cancellationToken))
     {
-      await scheduler.UnscheduleJob(triggerKey);
+      await scheduler.UnscheduleJob(triggerKey, cancellationToken);
     }
   }
 
