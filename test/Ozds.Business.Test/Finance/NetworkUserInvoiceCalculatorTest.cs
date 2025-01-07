@@ -5,6 +5,7 @@ using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Complex;
 using Ozds.Business.Models.Composite;
+using Ozds.Messaging.Migrations;
 
 // NITPICK: test issuer and date
 
@@ -33,10 +34,14 @@ public class NetworkUserInvoiceCalculatorTest
           new TypeRelay(
             typeof(INetworkUserCalculation),
             typeof(BlueLowNetworkUserCalculationModel)).ToCustomization())
+        .Customize(
+          new TypeRelay(
+            typeof(NetworkUserCalculationModel),
+            typeof(BlueLowNetworkUserCalculationModel)).ToCustomization())
         .Build<CalculatedNetworkUserInvoiceModel>()
         .With(
           x => x.Calculations,
-          Enumerable.Empty<INetworkUserCalculation>()
+          Enumerable.Empty<NetworkUserCalculationModel>()
             .Concat(
               new Fixture()
                 .Customize(
@@ -591,6 +596,10 @@ public class NetworkUserInvoiceCalculatorTest
         MockBehavior.Strict,
         new Mock<IServiceProvider>().Object);
 
+    var httpContextAccessorMock = new Mock<IHttpContextAccessor>();
+    httpContextAccessorMock.Setup(x => x.HttpContext)
+      .Returns(new DefaultHttpContext());
+
     var mockSequence = calculationItemCalculatorMock.SetupSequence(
       x => x.Calculate(It.IsAny<NetworkUserCalculationBasisModel>()));
     foreach (var calculation in expected.Calculations)
@@ -600,7 +609,8 @@ public class NetworkUserInvoiceCalculatorTest
     mockSequence.Throws(new InvalidOperationException("No more calculations"));
 
     var calculator = new NetworkUserInvoiceCalculator(
-      calculationItemCalculatorMock.Object);
+      calculationItemCalculatorMock.Object,
+      httpContextAccessorMock.Object);
 
     var fixture = new Fixture()
       .Customize(
