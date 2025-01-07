@@ -120,7 +120,9 @@ public class MeasurementBuffer(
         result.Add(measurement);
       }
     }
-    logger.LogDebug("Flushed measurements buffer with {Count} measurements", result.Count);
+    logger.LogDebug(
+      "Flushed measurements buffer with {Count} measurements",
+      result.Count);
 
     return result;
   }
@@ -189,12 +191,13 @@ public class MeasurementBuffer(
         }
       }
     }
-    logger.LogDebug("Flushed aggregates cache with {Count} aggregates", result.Count);
+    logger.LogDebug(
+      "Flushed aggregates cache with {Count} aggregates",
+      result.Count);
     return result;
   }
 
-  private static readonly ConcurrentQueue<IMeasurement> Measurements =
-    new ConcurrentQueue<IMeasurement>();
+  private static readonly ConcurrentQueue<IMeasurement> Measurements = new();
 
   private static UpsertAggregateCacheKey CreateKey(
     IAggregate aggregate)
