@@ -1,5 +1,6 @@
 using Ozds.Business.Finance.Abstractions;
 using Ozds.Business.Models.Abstractions;
+using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Composite;
 
 namespace Ozds.Business.Finance.Agnostic;
@@ -10,7 +11,7 @@ public class AgnosticNetworkUserCalculationCalculator(
   private readonly IServiceProvider _serviceProvider = serviceProvider;
 
   // NOTE: virtual to allow mocking
-  public virtual INetworkUserCalculation Calculate(
+  public virtual NetworkUserCalculationModel Calculate(
     NetworkUserCalculationBasisModel basis)
   {
     return _serviceProvider

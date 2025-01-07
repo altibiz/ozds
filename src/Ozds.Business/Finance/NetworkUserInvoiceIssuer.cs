@@ -1,31 +1,17 @@
-#pragma warning disable CS9113 // Parameter is unread.
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-#pragma warning disable S125 // Sections of code should not be commented out
-#pragma warning disable IDE0005
-
 using System.Globalization;
 using Ozds.Business.Finance.Abstractions;
 using Ozds.Business.Localization.Abstractions;
-using Ozds.Business.Models;
-using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Composite;
 using Ozds.Business.Mutations;
-using Ozds.Business.Mutations.Agnostic;
 using Ozds.Business.Queries;
-using Ozds.Business.Queries.Agnostic;
 using Ozds.Messaging.Contracts;
 using Ozds.Messaging.Sender.Abstractions;
 
 namespace Ozds.Business.Finance;
 
-// TODO: in one transaction
-// TODO: to mutations
-
 public class NetworkUserInvoiceIssuer(
   IServiceScopeFactory factory,
-  BillingQueries ozdsBillingQueries,
   INetworkUserInvoiceCalculator invoiceCalculator,
-  ReadonlyQueries queries,
   ILocalizer localizer,
   IMessageSender messageSender
 ) : INetworkUserInvoiceIssuer
@@ -42,8 +28,8 @@ public class NetworkUserInvoiceIssuer(
       await using var scope = factory.CreateAsyncScope();
       var billingQueries = scope.ServiceProvider
         .GetRequiredService<BillingQueries>();
-      var readonlyMutations = scope.ServiceProvider
-        .GetRequiredService<ReadonlyMutations>();
+      var mutations = scope.ServiceProvider
+        .GetRequiredService<CalculatedInvoiceMutations>();
       basis = await billingQueries
         .IssuingBasisForNetworkUser(
           networkUserId,
@@ -52,15 +38,8 @@ public class NetworkUserInvoiceIssuer(
           CancellationToken.None
         );
       invoice = invoiceCalculator.Calculate(basis);
-      invoice.Invoice.Id = await readonlyMutations.Create(invoice.Invoice, CancellationToken.None);
-      foreach (var calculation in invoice.Calculations)
-      {
-        if (calculation is NetworkUserCalculationModel networkUserCalculation)
-        {
-          networkUserCalculation.NetworkUserInvoiceId = invoice.Invoice.Id;
-        }
-        await readonlyMutations.Create(calculation, CancellationToken.None);
-      }
+      invoice = await mutations
+        .CreateCalculatedInvoice(invoice, CancellationToken.None);
     }
     var culture = CultureInfo.CreateSpecificCulture("hr-HR");
 

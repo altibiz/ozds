@@ -1,5 +1,4 @@
 using Ozds.Business.Finance.Abstractions;
-using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Composite;
 
@@ -16,7 +15,7 @@ public abstract class NetworkUserCalculationCalculator<T> :
       .IsAssignableTo(typeof(T));
   }
 
-  public INetworkUserCalculation Calculate(
+  public NetworkUserCalculationModel Calculate(
     NetworkUserCalculationBasisModel calculationBasis)
   {
     var usageCalculation = CalculateForNetworkUser(
@@ -26,7 +25,7 @@ public abstract class NetworkUserCalculationCalculator<T> :
     return usageCalculation;
   }
 
-  protected abstract INetworkUserCalculation CalculateForNetworkUser(
+  protected abstract NetworkUserCalculationModel CalculateForNetworkUser(
     T catalogue,
     NetworkUserCalculationBasisModel calculationBasis);
 }

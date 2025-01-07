@@ -1,16 +1,17 @@
+using System.Security.Claims;
 using Ozds.Business.Finance.Abstractions;
 using Ozds.Business.Finance.Agnostic;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Complex;
 using Ozds.Business.Models.Composite;
 
-// TODO: get issuer
-// TODO: add assertion that totals match
+// TODO: check representative id
 
 namespace Ozds.Business.Finance;
 
 public class NetworkUserInvoiceCalculator(
-  AgnosticNetworkUserCalculationCalculator calculationCalculator
+  AgnosticNetworkUserCalculationCalculator calculationCalculator,
+  IHttpContextAccessor httpContextAccessor
 ) : INetworkUserInvoiceCalculator
 {
   private readonly AgnosticNetworkUserCalculationCalculator
@@ -129,7 +130,7 @@ public class NetworkUserInvoiceCalculator(
 
     var initial = new NetworkUserInvoiceModel
     {
-      Id = default!,
+      Id = httpContextAccessor.HttpContext?.User.FindFirstValue("id")!,
       Title =
         $"Invoice for {basis.NetworkUser.Title} at {basis.Location.Title}",
       IssuedById = default!,

@@ -1,10 +1,8 @@
-using Ozds.Business.Models.Abstractions;
-
-// TODO: to base model not abstraction
+using Ozds.Business.Models.Base;
 
 namespace Ozds.Business.Models.Composite;
 
 public record CalculatedNetworkUserInvoiceModel(
-  List<INetworkUserCalculation> Calculations,
+  List<NetworkUserCalculationModel> Calculations,
   NetworkUserInvoiceModel Invoice
 );

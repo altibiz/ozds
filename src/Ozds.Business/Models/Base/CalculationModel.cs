@@ -1,8 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Ozds.Business.Models.Abstractions;
 
-// TODO: ArchivedNetworkUserMeasurementLocation
-
 namespace Ozds.Business.Models.Base;
 
 public abstract class CalculationModel : ICalculation

@@ -3,19 +3,16 @@ using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Entities.Complex;
 using Ozds.Data.Extensions;
 
-// TODO: interface
-// TODO: check that all base classes are only used for inheritance
-
 namespace Ozds.Data.Entities.Base;
 
 public class NetworkUserCalculationEntity
   : CalculationEntity, INetworkUserCalculationEntity
 {
-  protected readonly long _networkUserInvoiceId;
-
   protected readonly long _networkUserMeasurementLocationId;
 
   protected readonly long _supplyRegulatoryCatalogueId;
+
+  protected long _networkUserInvoiceId;
 
   public virtual NetworkUserInvoiceEntity NetworkUserInvoice { get; set; } =
     default!;
@@ -23,7 +20,7 @@ public class NetworkUserCalculationEntity
   public string NetworkUserInvoiceId
   {
     get { return _networkUserInvoiceId.ToString(); }
-    init { _networkUserInvoiceId = long.Parse(value); }
+    set { _networkUserInvoiceId = long.Parse(value); }
   }
 
   public decimal UsageFeeTotal_EUR { get; set; }
