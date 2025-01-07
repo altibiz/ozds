@@ -2,8 +2,6 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace Ozds.Data.Interceptors;
 
-// TODO: synchronous versions
-
 public class ServedSaveChangesInterceptor(IServiceProvider serviceProvider)
   : SaveChangesInterceptor
 {

@@ -6,8 +6,6 @@ using DataAuditableQueries = Ozds.Data.Queries.Agnostic.AuditableQueries;
 
 namespace Ozds.Business.Queries.Agnostic;
 
-// TODO: figure out clauses
-
 public class AuditableQueries(
   DataAuditableQueries queries,
   AgnosticModelEntityConverter modelEntityConverter

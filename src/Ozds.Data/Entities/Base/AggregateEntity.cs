@@ -5,9 +5,6 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
 
-// TODO: rename meter to concrete meter and ignore it in the generic
-// TODO: create meter in non generic
-
 public abstract class AggregateEntity : IAggregateEntity
 {
   protected long _measurementLocationId;

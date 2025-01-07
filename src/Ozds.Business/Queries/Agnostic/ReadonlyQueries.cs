@@ -5,8 +5,6 @@ using DataReadonlyQueries = Ozds.Data.Queries.Agnostic.ReadonlyQueries;
 
 namespace Ozds.Business.Queries.Agnostic;
 
-// TODO: figure out clauses
-
 public class ReadonlyQueries(
   DataReadonlyQueries queries,
   AgnosticModelEntityConverter modelEntityConverter

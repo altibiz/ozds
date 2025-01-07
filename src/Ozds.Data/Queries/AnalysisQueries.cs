@@ -22,6 +22,7 @@ public class AnalysisQueries(
       RoleEntity role,
       DateTimeOffset fromDate,
       DateTimeOffset toDate,
+      string locationId,
       CancellationToken cancellationToken
     )
   {
@@ -34,6 +35,7 @@ public class AnalysisQueries(
       role,
       fromDate,
       toDate,
+      locationId,
       cancellationToken
     );
   }
@@ -46,6 +48,7 @@ public class AnalysisQueries(
       RoleEntity role,
       DateTimeOffset fromDate,
       DateTimeOffset toDate,
+      string locationId,
       CancellationToken cancellationToken
     )
   {
@@ -55,6 +58,7 @@ public class AnalysisQueries(
       role,
       fromDate,
       toDate,
+      locationId,
       cancellationToken
     );
 
@@ -72,6 +76,7 @@ public class AnalysisQueries(
       RoleEntity role,
       DateTimeOffset fromDate,
       DateTimeOffset toDate,
+      string locationId,
       CancellationToken cancellationToken
     )
   {
@@ -81,12 +86,14 @@ public class AnalysisQueries(
         or RoleEntity.NetworkUserRepresentative =>
         MakeInitialMeasurementLocationsLocationNetworkUserQuery(
           context,
-          "@representativeId"
+          "@representativeId",
+          "@locationId"
         ),
       RoleEntity.OperatorRepresentative =>
         MakeInitialMeasurementLocationsOperatorQuery(
           context,
-          "@representativeId"
+          "@representativeId",
+          "@locationId"
         ),
       _ => throw new ArgumentOutOfRangeException(nameof(role))
     };
@@ -176,7 +183,7 @@ public class AnalysisQueries(
       ) AS schneider_iem3xxx_measurements_last ON TRUE
     ";
 
-    var parameters = new { representativeId, fromDate, toDate };
+    var parameters = new { representativeId, locationId, fromDate, toDate };
     var result = await context
       .DapperCommand<DetailedMeasurementLocationsByRepresentativeIntermediary>(
         sql,
@@ -187,7 +194,8 @@ public class AnalysisQueries(
 
   private static string MakeInitialMeasurementLocationsLocationNetworkUserQuery(
     DbContext context,
-    string representativeIdExpression
+    string representativeIdExpression,
+    string locationIdExpression
   ) => $@"
     SELECT
       {context.GetTableName<NetworkUserMeasurementLocationEntity>()}
@@ -240,6 +248,9 @@ public class AnalysisQueries(
           NetworkUserRepresentativeEntity>(
           nameof(NetworkUserRepresentativeEntity.Representative))}
         = {representativeIdExpression}
+      AND {context.GetTableName<LocationEntity>()}
+        .{context.GetPrimaryKeyColumnName<LocationEntity>()}
+        = {locationIdExpression}
     UNION
     SELECT
       {context.GetTableName<NetworkUserMeasurementLocationEntity>()}
@@ -291,11 +302,15 @@ public class AnalysisQueries(
         .{context.GetForeignKeyColumnName<LocationRepresentativeEntity>(
           nameof(LocationRepresentativeEntity.Representative))}
         = {representativeIdExpression}
+      AND {context.GetTableName<LocationEntity>()}
+        .{context.GetPrimaryKeyColumnName<LocationEntity>()}
+        = {locationIdExpression}
   ";
 
   private static string MakeInitialMeasurementLocationsOperatorQuery(
     DbContext context,
-    string representativeIdExpression
+    string representativeIdExpression,
+    string locationIdExpression
   ) => $@"
     SELECT
       {context.GetTableName<NetworkUserMeasurementLocationEntity>()}
@@ -336,6 +351,9 @@ public class AnalysisQueries(
         .{context.GetPrimaryKeyColumnName<RepresentativeEntity>()}
         = {representativeIdExpression}
     ) AS {context.GetTableName<RepresentativeEntity>()}
+    WHERE {context.GetTableName<LocationEntity>()}
+      .{context.GetPrimaryKeyColumnName<LocationEntity>()}
+      = {locationIdExpression}
   ";
 
   private static string MakeAbbB2xMeasurementsLastQuery(

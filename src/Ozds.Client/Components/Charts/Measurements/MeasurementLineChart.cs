@@ -7,8 +7,6 @@ using Ozds.Business.Models.Enums;
 using Ozds.Client.Components.Base;
 using Ozds.Client.Extensions;
 
-// FIXME: chart updates are always behind by one render
-
 namespace Ozds.Client.Components.Charts;
 
 public partial class MeasurementLineChart : OzdsComponentBase

@@ -2,8 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Extensions;
 
-// TODO: copy entities via complex properties
-
 namespace Ozds.Data.Entities.Base;
 
 public abstract class InvoiceEntity : IInvoiceEntity

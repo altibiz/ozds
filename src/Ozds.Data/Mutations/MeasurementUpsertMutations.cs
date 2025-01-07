@@ -17,7 +17,6 @@ namespace Ozds.Data.Mutations;
 
 // TODO: enum by model configuration not clr type
 // TODO: determining clauses by column name is flaky - needs to be improved
-// TODO: handle nesting hierarchical properties
 
 public class MeasurementUpsertMutations(
   IDbContextFactory<DataDbContext> factory,
@@ -334,11 +333,8 @@ public class MeasurementUpsertMutations(
     var entityType = context.Model.FindEntityType(type)
         ?? throw new InvalidOperationException(
           $"No entity type found for {type}.");
-    var properties = entityType.GetProperties()
-      .Concat(entityType
-        .GetComplexProperties()
-        .SelectMany(p => p.ComplexType.GetProperties()))
-      .ToList();
+    var properties = entityType.GetScalarPropertiesRecursive().ToList();
+
     // NOTE: postgresql: A statement cannot have more than 65535 parameters
     var chunkSize = (int)(Math.Pow(2, 15) / properties.Count);
     var templates = new List<UpsertTemplate>();
@@ -413,11 +409,7 @@ public class MeasurementUpsertMutations(
       .Create(entityType, StoreObjectType.Table)
       ?? throw new InvalidOperationException(
         $"No store object identifier found for {type}.");
-    var properties = entityType.GetProperties()
-      .Concat(entityType
-        .GetComplexProperties()
-        .SelectMany(p => p.ComplexType.GetProperties()))
-      .ToList();
+    var properties = entityType.GetScalarPropertiesRecursive().ToList();
 
     var values = $"({string.Join(", ", properties
       .Select(property =>
@@ -447,11 +439,7 @@ public class MeasurementUpsertMutations(
     var tableName = entityType.GetTableName()
         ?? throw new InvalidOperationException(
           $"No table name found for {type}.");
-    var properties = entityType.GetProperties()
-      .Concat(entityType
-        .GetComplexProperties()
-        .SelectMany(p => p.ComplexType.GetProperties()))
-      .ToList();
+    var properties = entityType.GetScalarPropertiesRecursive().ToList();
 
     var columnNames = properties
       .Select(p => p.GetColumnName(storeObjectIdentifier))
@@ -499,11 +487,7 @@ public class MeasurementUpsertMutations(
     var tableName = entityType.GetTableName()
         ?? throw new InvalidOperationException(
           $"No table name found for {type}.");
-    var properties = entityType.GetProperties()
-      .Concat(entityType
-        .GetComplexProperties()
-        .SelectMany(p => p.ComplexType.GetProperties()))
-      .ToList();
+    var properties = entityType.GetScalarPropertiesRecursive().ToList();
 
     var columnNames = properties
       .Select(p => p.GetColumnName(storeObjectIdentifier))

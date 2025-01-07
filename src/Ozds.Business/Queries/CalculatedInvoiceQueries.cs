@@ -6,8 +6,6 @@ using Ozds.Business.Models.Composite;
 using Ozds.Data.Queries.Abstractions;
 using DataCalculatedInvoiceQueries = Ozds.Data.Queries.CalculatedInvoiceQueries;
 
-// TODO: location invoices
-
 namespace Ozds.Business.Queries;
 
 public class CalculatedInvoiceQueries(
@@ -29,7 +27,7 @@ public class CalculatedInvoiceQueries(
     return entity is null ? default :
       new CalculatedNetworkUserInvoiceModel(
         entity.Calculations
-          .Select(modelEntityConverter.ToModel<INetworkUserCalculation>)
+          .Select(modelEntityConverter.ToModel<NetworkUserCalculationModel>)
           .ToList(),
         modelEntityConverter.ToModel<NetworkUserInvoiceModel>(entity.Invoice)
       );

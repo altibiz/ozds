@@ -3,8 +3,6 @@ using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Entities.Enums;
 using Ozds.Data.Extensions;
 
-// TODO: extension method for querying auditable entities from these events
-
 namespace Ozds.Data.Entities.Base;
 
 public class AuditEventEntity : EventEntity, IAuditEventEntity

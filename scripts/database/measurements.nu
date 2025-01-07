@@ -1,6 +1,6 @@
 #!/usr/bin/env nu
 
-# FIXME: this has a lot of problems
+# NOTE: please use measurements.py for now
 
 def "main" [] {}
 
@@ -67,7 +67,7 @@ def "main import" [path: path, batch: int = 10000, url: string = "http://localho
     print $"Pushing ($measurements | length) measurements at ($start)..."
     try {
       let $response = (http post
-        --max-time 600
+        --max-time 600sec
         --content-type application/json
         $url
         $request)

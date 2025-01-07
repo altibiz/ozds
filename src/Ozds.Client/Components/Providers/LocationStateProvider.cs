@@ -76,6 +76,10 @@ public partial class LocationStateProvider : OzdsOwningComponentBase
         deleted: false
       );
     }
+    if (location is null)
+    {
+      return;
+    }
 
     _state = new LocationState(
       location,
@@ -84,7 +88,7 @@ public partial class LocationStateProvider : OzdsOwningComponentBase
         InvokeAsync(async () =>
         {
           await SetLocationToLocalStorage(null);
-          _state = _state! with { Location = default };
+          _state = null;
           StateHasChanged();
         });
       }
@@ -101,7 +105,7 @@ public partial class LocationStateProvider : OzdsOwningComponentBase
         InvokeAsync(async () =>
         {
           await SetLocationToLocalStorage(null);
-          _state = _state! with { Location = default };
+          _state = null;
           StateHasChanged();
         });
       }

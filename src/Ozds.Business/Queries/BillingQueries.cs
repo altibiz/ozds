@@ -3,8 +3,6 @@ using Ozds.Business.Models.Composite;
 using Ozds.Business.Queries.Abstractions;
 using DataBillingQueries = Ozds.Data.Queries.BillingQueries;
 
-// TODO: location invoices
-
 namespace Ozds.Business.Queries;
 
 public class BillingQueries(

@@ -31,12 +31,12 @@ public partial class AnalysisStateProvider : OzdsOwningComponentBase
         InvokeAsync(async () =>
         {
           if (_previousRepresentativeId == RepresentativeState.Representative.Id
-          && _previousLocationId == LocationState.Location?.Id)
+          && _previousLocationId == LocationState.Location.Id)
           {
             return;
           }
           _previousRepresentativeId = RepresentativeState.Representative.Id;
-          _previousLocationId = LocationState.Location?.Id;
+          _previousLocationId = LocationState.Location.Id;
 
           var analysisQueries = ScopedServices
             .GetRequiredService<AnalysisQueries>();
@@ -50,8 +50,8 @@ public partial class AnalysisStateProvider : OzdsOwningComponentBase
               RepresentativeState.Representative.Role,
               aYearAgo,
               now,
-              CancellationToken.None,
-              LocationState.Location?.Id
+              LocationState.Location.Id,
+              CancellationToken.None
             );
 
           _state = new AnalysisState(new(() => analysisBases));

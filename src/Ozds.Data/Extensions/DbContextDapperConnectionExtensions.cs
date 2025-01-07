@@ -4,14 +4,12 @@ using System.Data.Common;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Ozds.Data.Entities.Enums;
 using static Dapper.SqlMapper;
 
 namespace Ozds.Data.Extensions;
 
 // TODO: generic type handlers for generic properties
 // when https://github.com/DapperLib/Dapper/issues/1924
-// for now crawl over the model and find all list properties and add that way
 
 public static class DataDbContextDapperConnectionExtensions
 {
@@ -44,14 +42,34 @@ public static class DataDbContextDapperConnectionExtensions
           }));
     }
 
-    AddTypeHandler(
-      typeof(List<PhaseEntity>),
-      new GenericListTypeHandler<PhaseEntity>()
-    );
-    AddTypeHandler(
-      typeof(List<TopicEntity>),
-      new GenericListTypeHandler<TopicEntity>()
-    );
+    var listOfEnumTypes = new HashSet<Type>();
+    foreach (var type in context.Model.GetEntityTypes())
+    {
+      foreach (var propertyType in type
+        .GetScalarPropertiesRecursive()
+        .Select(x => x.ClrType))
+      {
+        if (propertyType.IsGenericType &&
+          propertyType.GetGenericTypeDefinition() == typeof(List<>)
+          && propertyType.GetGenericArguments()[0].IsEnum)
+        {
+          listOfEnumTypes.Add(propertyType.GetGenericArguments()[0]);
+        }
+      }
+    }
+
+    foreach (var type in listOfEnumTypes)
+    {
+      var listType = typeof(List<>).MakeGenericType(type);
+      var handler = typeof(GenericListTypeHandler<>)
+        .MakeGenericType(type)
+        .GetConstructor(Array.Empty<Type>())
+        ?.Invoke(Array.Empty<object>())
+        as ITypeHandler
+        ?? throw new InvalidOperationException(
+          $"Handler construction failed for {listType}.");
+      AddTypeHandler(listType, handler);
+    }
 
     _lock.Release();
 

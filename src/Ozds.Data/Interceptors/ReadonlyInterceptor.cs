@@ -4,13 +4,9 @@ using Ozds.Data.Entities.Abstractions;
 
 namespace Ozds.Data.Interceptors;
 
-public class ReadonlyInterceptor : ServedSaveChangesInterceptor
+public class ReadonlyInterceptor(IServiceProvider serviceProvider)
+  : ServedSaveChangesInterceptor(serviceProvider)
 {
-  public ReadonlyInterceptor(IServiceProvider serviceProvider)
-    : base(serviceProvider)
-  {
-  }
-
   public override int Order
   {
     get { return -100; }

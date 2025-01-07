@@ -2,8 +2,6 @@ using Ozds.Business.Conversion.Base;
 using Ozds.Business.Models.Complex;
 using Ozds.Data.Entities.Complex;
 
-// TODO: split for each concrete type
-
 namespace Ozds.Business.Conversion.Complex;
 
 public class ActivePowerTotalImportT1PeakCalculationItemModelEntityConverter :

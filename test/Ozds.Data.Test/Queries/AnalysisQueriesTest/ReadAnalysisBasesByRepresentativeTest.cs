@@ -20,14 +20,16 @@ public class ReadAnalysisBasesByRepresentativeTest(IServiceProvider services)
     var dateTo = DateTime.UtcNow;
     var dateFrom = dateTo.AddMonths(-1);
 
-    var expected = await factory.Create(
+    var noise = await factory.Create(
       representativeId,
       dateFrom,
       dateTo,
       CancellationToken.None
     );
+    var expected = noise.Take(1).ToList();
 
     var representative = expected.First().Representative;
+    var location = expected.First().Location;
     var fromDate = expected.First().FromDate;
     var toDate = expected.First().ToDate;
 
@@ -38,6 +40,7 @@ public class ReadAnalysisBasesByRepresentativeTest(IServiceProvider services)
       representative.Role,
       fromDate,
       toDate,
+      location.Id,
       CancellationToken.None
     );
 
