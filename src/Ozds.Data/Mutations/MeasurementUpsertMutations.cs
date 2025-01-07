@@ -10,6 +10,8 @@ using Ozds.Data.Entities.Base;
 using Ozds.Data.Entities.Enums;
 using Ozds.Data.Extensions;
 using Ozds.Data.Mutations.Abstractions;
+using Ozds.Data.Observers.Abstractions;
+using Ozds.Data.Observers.EventArgs;
 
 namespace Ozds.Data.Mutations;
 
@@ -19,7 +21,9 @@ namespace Ozds.Data.Mutations;
 
 public class MeasurementUpsertMutations(
   IDbContextFactory<DataDbContext> factory,
-  ILogger<MeasurementUpsertMutations> logger
+  ILogger<MeasurementUpsertMutations> logger,
+  IEntitiesChangingPublisher changingPublisher,
+  IEntitiesChangedPublisher changedPublisher
 ) : IMutations
 {
   private const int QuarterHourChunkSize = 1;
@@ -34,11 +38,33 @@ public class MeasurementUpsertMutations(
     await using var context = await factory
       .CreateDbContextAsync(cancellationToken);
 
-    return await UpsertMeasurements(
+    changingPublisher.Publish(
+      new EntitiesChangingEventArgs
+      {
+        Entities = measurements
+          .Select(measurement => new EntityChangingEntry(
+            EntityChangingState.Adding,
+            measurement))
+          .ToList()
+      });
+
+    var result = await UpsertMeasurements(
       context,
       measurements,
       cancellationToken
     );
+
+    changedPublisher.Publish(
+      new EntitiesChangedEventArgs
+      {
+        Entities = result
+          .Select(measurement => new EntityChangedEntry(
+            EntityChangedState.Added,
+            measurement))
+          .ToList()
+      });
+
+    return result;
   }
 
   internal async Task<List<IMeasurementEntity>> UpsertMeasurements(

@@ -1,5 +1,4 @@
 using Ozds.Business.Buffers;
-using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Mutations;
 using Ozds.Business.Observers.Abstractions;
 using Ozds.Business.Observers.EventArgs;
@@ -17,7 +16,6 @@ public class MeasurementFlushReactor(
 }
 
 public class MeasurementFlushHandler(
-  IMeasurementFinalizePublisher publisher,
   MeasurementUpsertMutations mutations,
   MeasurementBuffer buffer
 ) : Handler<MeasurementFlushEventArgs>
@@ -28,15 +26,7 @@ public class MeasurementFlushHandler(
     CancellationToken cancellationToken)
   {
     var measurements = eventArgs.Measurements;
-    var result = await mutations
-      .UpsertMeasurements(measurements, cancellationToken);
-
-    publisher.Publish(
-      new MeasurementFinalizeEventArgs
-      {
-        Measurements = result.Where(x => x is not IAggregate).ToList(),
-        Aggregates = result.OfType<IAggregate>().ToList()
-      });
+    await mutations.UpsertMeasurements(measurements, cancellationToken);
   }
 
   public override async Task BeforeStopAsync(

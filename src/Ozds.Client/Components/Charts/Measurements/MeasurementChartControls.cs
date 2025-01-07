@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Ozds.Business.Aggregation.Agnostic;
-using Ozds.Business.Aggregation.Base;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Enums;
 using Ozds.Business.Observers.Abstractions;
@@ -29,7 +28,7 @@ public partial class MeasurementChartControls : OzdsOwningComponentBase
   public RenderFragment<MeasurementChartParameters> ChildContent { get; set; } = default!;
 
   [Inject]
-  private IMeasurementFinalizeSubscriber MeasurementSubscriber { get; set; } = default!;
+  private IDataModelsChangedSubscriber Subscriber { get; set; } = default!;
 
   [Inject]
   private AgnosticAggregateUpserter AggregateUpserter { get; set; } = default!;
@@ -38,14 +37,14 @@ public partial class MeasurementChartControls : OzdsOwningComponentBase
 
   protected override void OnInitialized()
   {
-    MeasurementSubscriber.Subscribe(OnUpsert);
+    Subscriber.Subscribe(OnMeasurements);
   }
 
   protected override void Dispose(bool disposing)
   {
     if (disposing)
     {
-      MeasurementSubscriber.Unsubscribe(OnUpsert);
+      Subscriber.Unsubscribe(OnMeasurements);
     }
   }
 
@@ -67,11 +66,27 @@ public partial class MeasurementChartControls : OzdsOwningComponentBase
     );
   }
 
-  private void OnUpsert(
+  private void OnMeasurements(
     object? _sender,
-    MeasurementFinalizeEventArgs args)
+    DataModelsChangedEventArgs args)
   {
     if (!_parameters.Refresh)
+    {
+      return;
+    }
+
+    var measurements = args.Models
+      .Where(x => x.State is DataModelChangedState.Added)
+      .Select(x => x.Model)
+      .OfType<IMeasurement>()
+      .Where(x => x is not IAggregate)
+      .ToList();
+    var aggregates = args.Models
+      .Where(x => x.State is DataModelChangedState.Added)
+      .Select(x => x.Model)
+      .OfType<IAggregate>()
+      .ToList();
+    if (measurements.Count == 0 && aggregates.Count == 0)
     {
       return;
     }
@@ -79,7 +94,8 @@ public partial class MeasurementChartControls : OzdsOwningComponentBase
     InvokeAsync(() =>
     {
       var now = DateTimeOffset.UtcNow;
-      var timestamp = _parameters.Measurements.Items.LastOrDefault()?.Timestamp ?? now;
+      var timestamp =
+        _parameters.Measurements.Items.LastOrDefault()?.Timestamp ?? now;
       var timeSpan = _parameters.Resolution
         .ToTimeSpan(_parameters.Multiplier, timestamp);
       var appropriateInterval = QueryConstants
@@ -87,7 +103,7 @@ public partial class MeasurementChartControls : OzdsOwningComponentBase
 
       if (appropriateInterval is null)
       {
-        var newMeasurements = args.Measurements
+        var newMeasurements = measurements
           .Where(x => x.Timestamp >= timestamp)
           .Where(x => Meters.Exists(meter =>
             meter.Id == x.MeterId))
@@ -103,7 +119,7 @@ public partial class MeasurementChartControls : OzdsOwningComponentBase
       }
       else
       {
-        var newAggregates = args.Aggregates
+        var newAggregates = aggregates
           .Where(x => x.Timestamp >= timestamp)
           .Where(x => x.Interval == appropriateInterval)
           .Where(x => Meters.Exists(meter =>
@@ -120,7 +136,8 @@ public partial class MeasurementChartControls : OzdsOwningComponentBase
           .ToList();
         _parameters.Measurements = new PaginatedList<IMeasurement>(
           aggregated.ToList(),
-          _parameters.Measurements.TotalCount - _parameters.Measurements.Items.Count + aggregated.Count
+          _parameters.Measurements.TotalCount
+            - _parameters.Measurements.Items.Count + aggregated.Count
         );
       }
 
