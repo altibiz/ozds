@@ -34,13 +34,19 @@ public class MeasurementUpsertMutations(
     CancellationToken cancellationToken
   )
   {
+    var measurementsList = measurements.ToList();
+    if (measurementsList.Count == 0)
+    {
+      return new();
+    }
+
     await using var context = await factory
       .CreateDbContextAsync(cancellationToken);
 
     changingPublisher.Publish(
       new EntitiesChangingEventArgs
       {
-        Entities = measurements
+        Entities = measurementsList
           .Select(measurement => new EntityChangingEntry(
             EntityChangingState.Adding,
             measurement))
@@ -49,7 +55,7 @@ public class MeasurementUpsertMutations(
 
     var result = await UpsertMeasurements(
       context,
-      measurements,
+      measurementsList,
       cancellationToken
     );
 
@@ -72,14 +78,18 @@ public class MeasurementUpsertMutations(
     CancellationToken cancellationToken
   )
   {
-    measurements = measurements.ToList();
+    var measurementsList = measurements.ToList();
+    if (measurementsList.Count == 0)
+    {
+      return new();
+    }
 
     List<IMeasurementEntity>? results = null;
     if (context.Database.CurrentTransaction is { })
     {
       results = await Execute(
         context,
-        measurements,
+        measurementsList,
         cancellationToken
       );
     }
@@ -91,12 +101,12 @@ public class MeasurementUpsertMutations(
         {
           var isolationLevel = IsolationLevel.RepeatableRead;
 
-          await context.Database
+          await using var transaction = await context.Database
             .BeginTransactionAsync(isolationLevel, cancellationToken);
 
           results = await Execute(
             context,
-            measurements,
+            measurementsList,
             cancellationToken
           );
 
@@ -107,24 +117,24 @@ public class MeasurementUpsertMutations(
         }
         catch (PostgresException ex)
         {
-          if (ex.Message.StartsWith("40001"))
+          await context.Database.RollbackTransactionAsync(cancellationToken);
+          // NOTE: 40001 = could not serialize access due to
+          // read/write dependencies among transactions
+          // NOTE: 40P01 = deadlock detected
+          if (ex.SqlState == "40001" || ex.SqlState == "40P01")
           {
-            await context.Database.RollbackTransactionAsync(cancellationToken);
+            logger.LogDebug(
+              ex,
+              "Retying insert of {Count} measurements...",
+              measurementsList.Count);
             continue;
           }
 
-          if (ex.Message.StartsWith("40P01"))
-          {
-            await context.Database.RollbackTransactionAsync(cancellationToken);
-            continue;
-          }
-
-          if (ex.Message.StartsWith("P0002"))
-          {
-            await context.Database.RollbackTransactionAsync(cancellationToken);
-            continue;
-          }
-
+          throw;
+        }
+        catch (Exception)
+        {
+          await context.Database.RollbackTransactionAsync(cancellationToken);
           throw;
         }
       }

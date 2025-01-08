@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Npgsql;
 using Ozds.Data.Context;
 using Ozds.Data.Extensions;
 
@@ -38,7 +39,6 @@ public sealed class EphemeralDataDbContextManager(
       try
       {
         context = await factory.CreateDbContextAsync(cancellationToken);
-        await context.Database.BeginTransactionAsync(cancellationToken);
         break;
       }
       catch (Exception exception)
@@ -46,34 +46,61 @@ public sealed class EphemeralDataDbContextManager(
         logger.LogError(exception, "Failed to get context");
       }
     }
-
     var entityTypes = GetDependencyOrderedEntityTypes(context);
-    foreach (var entity in entityTypes)
-    {
-      while (true)
-      {
-        try
-        {
-#pragma warning disable EF1002 // Risk of vulnerability to SQL injection.
-          await context.Database.ExecuteSqlRawAsync(
-            $"DELETE FROM {entity.GetTableName()} WHERE TRUE;",
-            cancellationToken);
-#pragma warning restore EF1002 // Risk of vulnerability to SQL injection.
-        }
-        catch (Exception ex)
-        {
-          if (ex.InnerException is TimeoutException)
-          {
-            await Task.Delay(
-              Random.Shared.Next(100, 1000),
-              cancellationToken
-            );
-            continue;
-          }
+    var tables = entityTypes
+      .Select(entityType => entityType.GetTableName())
+      .Distinct();
 
-          throw;
+    var retries = 0;
+    while (retries++ < 10)
+    {
+      try
+      {
+        await context.Database.BeginTransactionAsync(cancellationToken);
+        foreach (var table in tables)
+        {
+          try
+          {
+#pragma warning disable EF1002 // Risk of vulnerability to SQL injection.
+            await context.Database.ExecuteSqlRawAsync(
+              $"DELETE FROM {table} WHERE TRUE;",
+              cancellationToken);
+#pragma warning restore EF1002 // Risk of vulnerability to SQL injection.
+          }
+          catch (Exception ex)
+          {
+            if (ex.InnerException is TimeoutException)
+            {
+              await Task.Delay(
+                Random.Shared.Next(100, 1000),
+                cancellationToken
+              );
+              continue;
+            }
+
+            throw;
+          }
         }
+        break;
       }
+      catch (Exception ex)
+      {
+        // NOTE: transaction aborted
+        if (ex is NpgsqlException { SqlState: "25P02" })
+        {
+          await Task.Delay(
+            Random.Shared.Next(100, 1000),
+            cancellationToken
+          );
+          continue;
+        }
+
+        throw;
+      }
+    }
+    if (retries >= 10)
+    {
+      throw new TimeoutException("Failed to delete all data");
     }
 
     try

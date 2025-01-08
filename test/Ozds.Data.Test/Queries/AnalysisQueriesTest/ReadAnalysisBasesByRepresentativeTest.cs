@@ -7,6 +7,7 @@ using Ozds.Data.Test.Extensions;
 
 namespace Ozds.Data.Test.Queries.AnalysisQueriesTest;
 
+[Collection(nameof(EphemeralDataDbContextManager))]
 public class ReadAnalysisBasesByRepresentativeTest(
   EphemeralDataDbContextManager manager,
   AnalysisQueries queries,

@@ -5,8 +5,6 @@ using Ozds.Data.Mutations.Abstractions;
 
 namespace Ozds.Data.Mutations;
 
-// TODO: in one transaction
-
 public class CalculatedInvoiceMutations(
   IDbContextFactory<DataDbContext> factory
 ) : IMutations
@@ -18,14 +16,30 @@ public class CalculatedInvoiceMutations(
     await using var context = await factory
       .CreateDbContextAsync(cancellationToken);
 
-    context.Add(invoice.Invoice);
-    await context.SaveChangesAsync(cancellationToken);
-
-    foreach (var calculation in invoice.Calculations)
+    try
     {
-      calculation.NetworkUserInvoiceId = invoice.Invoice.Id;
-      context.Add(calculation);
+      await using var transaction = await context.Database
+        .BeginTransactionAsync(cancellationToken);
+
+      context.Add(invoice.Invoice);
+      await context.SaveChangesAsync(cancellationToken);
+
+      foreach (var calculation in invoice.Calculations)
+      {
+        calculation.NetworkUserInvoiceId = invoice.Invoice.Id;
+        context.Add(calculation);
+      }
+      if (invoice.Calculations.Count > 0)
+      {
+        await context.SaveChangesAsync(cancellationToken);
+      }
+
+      await context.Database.CommitTransactionAsync(cancellationToken);
     }
-    await context.SaveChangesAsync(cancellationToken);
+    catch
+    {
+      await context.Database.RollbackTransactionAsync(cancellationToken);
+      throw;
+    }
   }
 }

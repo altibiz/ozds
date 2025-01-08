@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <ParallelizationMode>Force</ParallelizationMode>
+    <ParallelizationMode>Enhance</ParallelizationMode>
   </PropertyGroup>
 
 </Project>
