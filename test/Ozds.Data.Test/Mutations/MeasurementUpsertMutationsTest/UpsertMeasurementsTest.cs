@@ -11,7 +11,11 @@ using Ozds.Data.Test.Extensions;
 
 namespace Ozds.Data.Test.Mutations.MeasurementUpsertMutationsTest;
 
-public class UpsertMeasurementsTest(IServiceProvider services)
+public class UpsertMeasurementsTest(
+  EphemeralDataDbContextManager manager,
+  MeasurementUpsertMutations mutations,
+  ILogger<UpsertMeasurementsTest> logger
+)
 {
   [Theory]
   [InlineData(1)]
@@ -19,14 +23,11 @@ public class UpsertMeasurementsTest(IServiceProvider services)
   [InlineData(3)]
   public async Task FinishesInTimeTest(int _)
   {
-    await using var manager = services
-      .GetRequiredService<EphemeralDataDbContextManager>();
     var context = await manager.GetContext(CancellationToken.None);
 
     var factory = new MeasurementUpsertFactory(context);
     var expected = await factory.CreateMany(CancellationToken.None);
 
-    var mutations = services.GetRequiredService<MeasurementUpsertMutations>();
     var stopwatch = Stopwatch.StartNew();
     await mutations.UpsertMeasurements(
       context,
@@ -34,6 +35,10 @@ public class UpsertMeasurementsTest(IServiceProvider services)
       CancellationToken.None
     );
     stopwatch.Stop();
+    logger.LogInformation(
+      "Upserted in {Elapsed}",
+      stopwatch.Elapsed
+    );
     stopwatch.Elapsed.Should().BeLessThan(TimeSpan.FromSeconds(10));
   }
 
@@ -43,15 +48,12 @@ public class UpsertMeasurementsTest(IServiceProvider services)
   [InlineData(3)]
   public async Task FinishesMassiveMeasurementsInTimeTest(int _)
   {
-    await using var manager = services
-      .GetRequiredService<EphemeralDataDbContextManager>();
     var context = await manager.GetContext(CancellationToken.None);
 
     var factory = new MeasurementUpsertFactory(context);
     var expected = await factory.CreateMassiveMeasurements(
       CancellationToken.None);
 
-    var mutations = services.GetRequiredService<MeasurementUpsertMutations>();
     var stopwatch = Stopwatch.StartNew();
     var actual = await mutations.UpsertMeasurements(
       context,
@@ -59,6 +61,10 @@ public class UpsertMeasurementsTest(IServiceProvider services)
       CancellationToken.None
     );
     stopwatch.Stop();
+    logger.LogInformation(
+      "Upserted in {Elapsed}",
+      stopwatch.Elapsed
+    );
     stopwatch.Elapsed.Should().BeLessThan(TimeSpan.FromSeconds(10));
     actual.Should().HaveCount(expected.Count);
   }
@@ -67,14 +73,11 @@ public class UpsertMeasurementsTest(IServiceProvider services)
   [InlineData(1)]
   public async Task IsValidTest(int _)
   {
-    await using var manager = services
-      .GetRequiredService<EphemeralDataDbContextManager>();
     var context = await manager.GetContext(CancellationToken.None);
 
     var factory = new MeasurementUpsertFactory(context);
     var measurements = await factory.CreateDerivedNull(CancellationToken.None);
 
-    var mutations = services.GetRequiredService<MeasurementUpsertMutations>();
     var byproduct = (await mutations
       .UpsertMeasurements(
         context,

@@ -6,14 +6,15 @@ using Ozds.Data.Test.Extensions;
 
 namespace Ozds.Data.Test.Queries.AnalysisQueriesTest;
 
-public class ReadAnalysisBasesByRepresentativeTest(IServiceProvider services)
+public class ReadAnalysisBasesByRepresentativeTest(
+  EphemeralDataDbContextManager manager,
+  AnalysisQueries queries
+)
 {
   [Theory]
   [InlineData("1")]
   public async Task IsValidTest(string representativeId)
   {
-    await using var manager = services
-      .GetRequiredService<EphemeralDataDbContextManager>();
     var context = await manager.GetContext(CancellationToken.None);
     var factory = new AnalysisBasisEntityFactory(context);
 
@@ -33,7 +34,6 @@ public class ReadAnalysisBasesByRepresentativeTest(IServiceProvider services)
     var fromDate = expected.First().FromDate;
     var toDate = expected.First().ToDate;
 
-    var queries = services.GetRequiredService<AnalysisQueries>();
     var actual = await queries.ReadAnalysisBasesByRepresentativeAndLocation(
       context,
       representative.Id,

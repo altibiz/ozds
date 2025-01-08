@@ -120,7 +120,7 @@ public class MeasurementUpsertFactory(DbContext context)
   {
     return await Create(
       cancellationToken,
-      x => x.CreateMany(MassiveMeasurementCount),
+      x => x.CreateMany(MeasurementCount),
       x => x.CreateMany(AggregateCount),
       x => x.CreateMany(MeasurementCount),
       x => x.CreateMany(AggregateCount)
