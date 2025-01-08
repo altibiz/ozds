@@ -137,7 +137,7 @@ public class AnalysisBasisEntityFactory(DbContext context)
         .Build<AbbB2xMeasurementEntity>()
         .With(meas => meas.MeterId, meter.Id)
         .With(meas => meas.MeasurementLocationId, measurementLocation.Id)
-        .CreateManyInDb(context);
+        .CreateManyInDb(context, cancellationToken: cancellationToken);
 
       var monthlyAggregates = await fixture
         .Build<AbbB2xAggregateEntity>()
