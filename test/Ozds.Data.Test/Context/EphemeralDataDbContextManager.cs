@@ -50,11 +50,30 @@ public sealed class EphemeralDataDbContextManager(
     var entityTypes = GetDependencyOrderedEntityTypes(context);
     foreach (var entity in entityTypes)
     {
+      while (true)
+      {
+        try
+        {
 #pragma warning disable EF1002 // Risk of vulnerability to SQL injection.
-      await context.Database.ExecuteSqlRawAsync(
-        $"DELETE FROM {entity.GetTableName()} WHERE TRUE;",
-        cancellationToken);
+          await context.Database.ExecuteSqlRawAsync(
+            $"DELETE FROM {entity.GetTableName()} WHERE TRUE;",
+            cancellationToken);
 #pragma warning restore EF1002 // Risk of vulnerability to SQL injection.
+        }
+        catch (Exception ex)
+        {
+          if (ex.InnerException is TimeoutException)
+          {
+            await Task.Delay(
+              Random.Shared.Next(100, 1000),
+              cancellationToken
+            );
+            continue;
+          }
+
+          throw;
+        }
+      }
     }
 
     try
