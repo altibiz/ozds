@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Ozds.Data.Context;
 using Ozds.Data.Extensions;
 
@@ -46,7 +47,8 @@ public sealed class EphemeralDataDbContextManager(
       }
     }
 
-    foreach (var entity in context.Model.GetEntityTypes())
+    var entityTypes = GetDependencyOrderedEntityTypes(context);
+    foreach (var entity in entityTypes)
     {
 #pragma warning disable EF1002 // Risk of vulnerability to SQL injection.
       await context.Database.ExecuteSqlRawAsync(
@@ -94,5 +96,60 @@ public sealed class EphemeralDataDbContextManager(
       _semaphore.Release();
       _semaphore.Dispose();
     }
+  }
+
+  private static List<IEntityType> GetDependencyOrderedEntityTypes(
+    DbContext context
+  )
+  {
+    var hierarchies = context.Model
+      .GetEntityTypes()
+      .Where(entityType => entityType.BaseType is null)
+      .Select(entityType => entityType.GetDerivedTypesInclusive().ToList())
+      .ToList();
+    var reversedEntityTypes = new List<IEntityType>();
+    while (hierarchies.Count > 0)
+    {
+      var newReversedEntityTypes = new List<IEntityType>();
+      foreach (var hierarchy in hierarchies.ToList())
+      {
+        var foreignKeys = hierarchy
+          .SelectMany(entityType => entityType.GetForeignKeys())
+          .ToList();
+        if (foreignKeys.Count == 0 ||
+          foreignKeys
+            .TrueForAll(foreignKey =>
+              reversedEntityTypes
+                .Exists(reversedEntityType =>
+                  foreignKey.PrincipalEntityType == reversedEntityType)))
+        {
+          hierarchies.Remove(hierarchy);
+          newReversedEntityTypes.AddRange(hierarchy);
+        }
+      }
+      if (newReversedEntityTypes.Count == 0)
+      {
+        foreach (var hierarchy in hierarchies.ToList())
+        {
+          var foreignKeys = hierarchy
+            .SelectMany(entityType => entityType.GetForeignKeys())
+            .ToList();
+          if (foreignKeys.Count == 0 ||
+            foreignKeys
+              .TrueForAll(foreignKey =>
+                !foreignKey.IsRequired ||
+                  reversedEntityTypes
+                    .Exists(reversedEntityType =>
+                      foreignKey.PrincipalEntityType == reversedEntityType)))
+          {
+            hierarchies.Remove(hierarchy);
+            newReversedEntityTypes.AddRange(hierarchy);
+          }
+        }
+      }
+      reversedEntityTypes.AddRange(newReversedEntityTypes);
+    }
+    reversedEntityTypes.Reverse();
+    return reversedEntityTypes;
   }
 }

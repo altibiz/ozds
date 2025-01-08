@@ -34,7 +34,7 @@ public class ReadAnalysisBasesByRepresentativeTest(IServiceProvider services)
     var toDate = expected.First().ToDate;
 
     var queries = services.GetRequiredService<AnalysisQueries>();
-    var actual = await queries.ReadAnalysisBasesByRepresentative(
+    var actual = await queries.ReadAnalysisBasesByRepresentativeAndLocation(
       context,
       representative.Id,
       representative.Role,

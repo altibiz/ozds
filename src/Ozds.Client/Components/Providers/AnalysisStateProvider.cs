@@ -45,7 +45,7 @@ public partial class AnalysisStateProvider : OzdsOwningComponentBase
           var aYearAgo = now.AddYears(-1);
 
           var analysisBases = await analysisQueries
-            .ReadAnalysisBasesByRepresentative(
+            .ReadAnalysisBasesByRepresentativeAndLocation(
               RepresentativeState.Representative.Id,
               RepresentativeState.Representative.Role,
               aYearAgo,

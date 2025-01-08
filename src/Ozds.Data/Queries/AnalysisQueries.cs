@@ -17,7 +17,7 @@ public class AnalysisQueries(
 ) : IQueries
 {
   public async Task<List<AnalysisBasisEntity>>
-    ReadAnalysisBasesByRepresentative(
+    ReadAnalysisBasesByRepresentativeAndLocation(
       string representativeId,
       RoleEntity role,
       DateTimeOffset fromDate,
@@ -29,7 +29,7 @@ public class AnalysisQueries(
     await using var context = await factory
       .CreateDbContextAsync(cancellationToken);
 
-    return await ReadAnalysisBasesByRepresentative(
+    return await ReadAnalysisBasesByRepresentativeAndLocation(
       context,
       representativeId,
       role,
@@ -42,7 +42,7 @@ public class AnalysisQueries(
 
 #pragma warning disable CA1822 // Mark members as static
   internal async Task<List<AnalysisBasisEntity>>
-    ReadAnalysisBasesByRepresentative(
+    ReadAnalysisBasesByRepresentativeAndLocation(
       DataDbContext context,
       string representativeId,
       RoleEntity role,
@@ -183,7 +183,13 @@ public class AnalysisQueries(
       ) AS schneider_iem3xxx_measurements_last ON TRUE
     ";
 
-    var parameters = new { representativeId, locationId, fromDate, toDate };
+    var parameters = new
+    {
+      representativeId,
+      locationId = long.Parse(locationId),
+      fromDate,
+      toDate
+    };
     var result = await context
       .DapperCommand<DetailedMeasurementLocationsByRepresentativeIntermediary>(
         sql,

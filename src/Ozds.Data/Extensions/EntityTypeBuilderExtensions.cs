@@ -1,7 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Ozds.Data.Entities.Abstractions;
 
 namespace Ozds.Data.Extensions;
+
+// TODO: forget and entity properties are flakey because
+// they depend on the name of the property
 
 public static class EntityTypeBuilderExtensions
 {
@@ -20,7 +24,8 @@ public static class EntityTypeBuilderExtensions
       .GetProperties()
       .Where(property => property
         is { GetMethod.IsVirtual: true }
-        and { GetMethod.IsFinal: false })
+        and { GetMethod.IsFinal: false }
+        || property.Name == nameof(IAuditableEntity.Forget))
       .ToList();
 
     var propertiesToArchive = complexPropertyBuilder.Metadata

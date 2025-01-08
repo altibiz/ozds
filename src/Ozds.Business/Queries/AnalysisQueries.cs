@@ -14,7 +14,7 @@ public class AnalysisQueries(
 ) : IQueries
 {
   public async Task<List<AnalysisBasisModel>>
-    ReadAnalysisBasesByRepresentative(
+    ReadAnalysisBasesByRepresentativeAndLocation(
       string representativeId,
       RoleModel role,
       DateTimeOffset fromDate,
@@ -24,7 +24,7 @@ public class AnalysisQueries(
     )
   {
     var entities = await queries
-      .ReadAnalysisBasesByRepresentative(
+      .ReadAnalysisBasesByRepresentativeAndLocation(
         representativeId,
         role.ToEntity(),
         fromDate,
