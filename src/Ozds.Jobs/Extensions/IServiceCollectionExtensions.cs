@@ -74,13 +74,6 @@ public static class IServiceCollectionExtensions
           });
       });
 
-    services.AddQuartzHostedService(
-      options =>
-      {
-        options.WaitForJobsToComplete = true;
-        options.AwaitApplicationStarted = true;
-      });
-
     services.AddPooledDbContextFactory<JobsDbContext>(
       options =>
       {
@@ -95,6 +88,12 @@ public static class IServiceCollectionExtensions
       });
 
     // NOTE: this needs jesus
+    services.Configure<QuartzHostedServiceOptions>(
+      options =>
+      {
+        options.WaitForJobsToComplete = true;
+        options.AwaitApplicationStarted = true;
+      });
     services.AddSingleton<IHostedService, QuartzHostedService>(
       services =>
       {
@@ -102,8 +101,8 @@ public static class IServiceCollectionExtensions
           .GetRequiredService<IDbContextFactory<JobsDbContext>>()
           .CreateDbContext();
         context.Database.Migrate();
-
-        return ActivatorUtilities.CreateInstance<QuartzHostedService>(services);
+        return ActivatorUtilities
+          .CreateInstance<QuartzHostedService>(services);
       }
     );
   }
