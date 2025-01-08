@@ -35,10 +35,7 @@ public class UpsertMeasurementsTest(
       CancellationToken.None
     );
     stopwatch.Stop();
-    logger.LogInformation(
-      "Upserted in {Elapsed}",
-      stopwatch.Elapsed
-    );
+    logger.LogInformation("Upserted in {Elapsed}", stopwatch.Elapsed);
     stopwatch.Elapsed.Should().BeLessThan(TimeSpan.FromSeconds(10));
   }
 
@@ -61,10 +58,7 @@ public class UpsertMeasurementsTest(
       CancellationToken.None
     );
     stopwatch.Stop();
-    logger.LogInformation(
-      "Upserted in {Elapsed}",
-      stopwatch.Elapsed
-    );
+    logger.LogInformation("Upserted in {Elapsed}", stopwatch.Elapsed);
     stopwatch.Elapsed.Should().BeLessThan(TimeSpan.FromSeconds(10));
     actual.Should().HaveCount(expected.Count);
   }

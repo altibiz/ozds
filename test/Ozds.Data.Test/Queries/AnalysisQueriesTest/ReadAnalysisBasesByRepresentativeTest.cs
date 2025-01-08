@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Ozds.Business.Models.Composite;
 using Ozds.Data.Entities.Composite;
 using Ozds.Data.Queries;
@@ -8,7 +9,8 @@ namespace Ozds.Data.Test.Queries.AnalysisQueriesTest;
 
 public class ReadAnalysisBasesByRepresentativeTest(
   EphemeralDataDbContextManager manager,
-  AnalysisQueries queries
+  AnalysisQueries queries,
+  ILogger<ReadAnalysisBasesByRepresentativeTest> logger
 )
 {
   [Theory]
@@ -34,6 +36,7 @@ public class ReadAnalysisBasesByRepresentativeTest(
     var fromDate = expected.First().FromDate;
     var toDate = expected.First().ToDate;
 
+    var stopwatch = Stopwatch.StartNew();
     var actual = await queries.ReadAnalysisBasesByRepresentativeAndLocation(
       context,
       representative.Id,
@@ -43,6 +46,9 @@ public class ReadAnalysisBasesByRepresentativeTest(
       location.Id,
       CancellationToken.None
     );
+    stopwatch.Stop();
+    logger.LogInformation("Read in {Elapsed}", stopwatch.Elapsed);
+    stopwatch.Elapsed.Should().BeLessThan(TimeSpan.FromSeconds(1));
 
     expected = expected
       .Select(x => x with
