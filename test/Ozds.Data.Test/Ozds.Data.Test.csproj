@@ -10,6 +10,15 @@
     <PackageReference Include="Xunit.DependencyInjection.Logging" Version="9.0.0" />
   </ItemGroup>
 
+  <!--
+    NOTE: disables parallelization
+    Leave it like this because otherwise
+    the database runs into concurrency problems.
+    Also, it is needed that all test classes that
+    use a specific DBContext manager are
+    in the same test collection which also
+    reduces the amount of database concurrency problems.
+  -->
   <PropertyGroup>
     <ParallelizationMode>Enhance</ParallelizationMode>
   </PropertyGroup>
