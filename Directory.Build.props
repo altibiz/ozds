@@ -17,6 +17,7 @@
     <NpgsqlVersion>8.0.3</NpgsqlVersion>
     <NpgsqlEntityFrameworkCoreVersion>8.0.4</NpgsqlEntityFrameworkCoreVersion>
     <DapperVersion>2.1.35</DapperVersion>
+    <AltibizDependencyInjectionVersion>1.0.5</AltibizDependencyInjectionVersion>
   </PropertyGroup>
 
   <ItemGroup>

@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Altibiz.DependencyInjection.Extensions" Version="1.0.4" />
+    <PackageReference Include="Altibiz.DependencyInjection.Extensions" Version="$(AltibizDependencyInjectionExtensionsVersion)" />
   </ItemGroup>
 
 </Project>
