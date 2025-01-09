@@ -1,3 +1,4 @@
+using Altibiz.DependencyInjection.Extensions;
 using MassTransit;
 using MassTransit.Configuration;
 using MassTransit.EntityFrameworkCoreIntegration;
@@ -8,12 +9,6 @@ using Ozds.Messaging.Options;
 using Ozds.Messaging.Sender.Abstractions;
 
 namespace Ozds.Messaging.Extensions;
-
-// FIXME: outbox and inbox
-#pragma warning disable S125
-// services.RemoveHostedService<BusOutboxDeliveryService<OzdsMessagingDbContext>>();
-// services.RemoveHostedService<InboxCleanupService<OzdsMessagingDbContext>>();
-#pragma warning restore S125
 
 public static class IServiceCollectionExtensions
 {
@@ -145,65 +140,6 @@ public static class IServiceCollectionExtensions
     services
       .RemoveHostedService<BusOutboxDeliveryService<MessagingDbContext>>();
     services.RemoveHostedService<InboxCleanupService<MessagingDbContext>>();
-  }
-
-  private static void AddSingletonAssignableTo(
-    this IServiceCollection services,
-    Type assignableTo
-  )
-  {
-    var conversionTypes = typeof(IServiceCollectionExtensions).Assembly
-      .GetTypes()
-      .Where(
-        type =>
-          !type.IsAbstract &&
-          type.IsClass &&
-          type.IsAssignableTo(assignableTo));
-
-    foreach (var conversionType in conversionTypes)
-    {
-      services.AddSingleton(conversionType);
-      foreach (var interfaceType in conversionType.GetAllInterfaces())
-      {
-        services.AddSingleton(
-          interfaceType, services =>
-            services.GetRequiredService(conversionType));
-      }
-    }
-  }
-
-  private static void AddScopedAssignableTo(
-    this IServiceCollection services,
-    Type assignableTo
-  )
-  {
-    var conversionTypes = typeof(IServiceCollectionExtensions).Assembly
-      .GetTypes()
-      .Where(
-        type =>
-          !type.IsAbstract &&
-          type.IsClass &&
-          type.IsAssignableTo(assignableTo));
-
-    foreach (var conversionType in conversionTypes)
-    {
-      services.AddScoped(conversionType);
-      foreach (var interfaceType in conversionType.GetAllInterfaces())
-      {
-        services.AddScoped(
-          interfaceType, services =>
-            services.GetRequiredService(conversionType));
-      }
-    }
-  }
-
-  private static Type[] GetAllInterfaces(this Type type)
-  {
-    return type.GetInterfaces()
-      .Concat(type.GetInterfaces().SelectMany(GetAllInterfaces))
-      .Concat(type.BaseType?.GetAllInterfaces() ?? Array.Empty<Type>())
-      .Distinct()
-      .ToArray();
   }
 
   private sealed class OzdsSagaRepositoryRegistrationProvider

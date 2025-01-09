@@ -1,3 +1,4 @@
+using Altibiz.DependencyInjection.Extensions;
 using Ozds.Business.Activation.Abstractions;
 using Ozds.Business.Activation.Agnostic;
 using Ozds.Business.Aggregation.Abstractions;
@@ -168,89 +169,5 @@ public static class IServiceCollectionExtensions
   {
     services.AddSingletonAssignableTo(typeof(IBuffer));
     return services;
-  }
-
-  private static void AddSingletonAssignableTo(
-    this IServiceCollection services,
-    Type assignableTo
-  )
-  {
-    var conversionTypes = typeof(IServiceCollectionExtensions).Assembly
-      .GetTypes()
-      .Where(
-        type =>
-          !type.IsAbstract &&
-          type.IsClass &&
-          type.IsAssignableTo(assignableTo));
-
-    foreach (var conversionType in conversionTypes)
-    {
-      services.AddSingleton(conversionType);
-      foreach (var interfaceType in conversionType.GetInterfaces())
-      {
-        services.AddSingleton(
-          interfaceType, services =>
-            services.GetRequiredService(conversionType));
-      }
-    }
-  }
-
-  private static void AddScopedAssignableTo(
-    this IServiceCollection services,
-    Type assignableTo
-  )
-  {
-    var conversionTypes = typeof(IServiceCollectionExtensions).Assembly
-      .GetTypes()
-      .Where(
-        type =>
-          !type.IsAbstract &&
-          type.IsClass &&
-          type.IsAssignableTo(assignableTo));
-
-    foreach (var conversionType in conversionTypes)
-    {
-      services.AddScoped(conversionType);
-      foreach (var interfaceType in conversionType.GetAllInterfaces())
-      {
-        services.AddScoped(
-          interfaceType, services =>
-            services.GetRequiredService(conversionType));
-      }
-    }
-  }
-
-  private static void AddTransientAssignableTo(
-    this IServiceCollection services,
-    Type assignableTo
-  )
-  {
-    var conversionTypes = typeof(IServiceCollectionExtensions).Assembly
-      .GetTypes()
-      .Where(
-        type =>
-          !type.IsAbstract &&
-          type.IsClass &&
-          type.IsAssignableTo(assignableTo));
-
-    foreach (var conversionType in conversionTypes)
-    {
-      services.AddTransient(conversionType);
-      foreach (var interfaceType in conversionType.GetAllInterfaces())
-      {
-        services.AddTransient(
-          interfaceType, services =>
-            services.GetRequiredService(conversionType));
-      }
-    }
-  }
-
-  private static Type[] GetAllInterfaces(this Type type)
-  {
-    return type.GetInterfaces()
-      .Concat(type.GetInterfaces().SelectMany(GetAllInterfaces))
-      .Concat(type.BaseType?.GetAllInterfaces() ?? Array.Empty<Type>())
-      .Distinct()
-      .ToArray();
   }
 }

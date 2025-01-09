@@ -1,5 +1,6 @@
 using System.Data;
 using System.Reflection;
+using Altibiz.DependencyInjection.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
 using Ozds.Data.Context;
@@ -114,64 +115,5 @@ public static class IServiceCollectionExtensions
 
         options.UseSnakeCaseNamingConvention();
       });
-  }
-
-  private static void AddSingletonAssignableTo(
-    this IServiceCollection services,
-    Type assignableTo
-  )
-  {
-    var conversionTypes = typeof(IServiceCollectionExtensions).Assembly
-      .GetTypes()
-      .Where(
-        type =>
-          !type.IsAbstract &&
-          type.IsClass &&
-          type.IsAssignableTo(assignableTo));
-
-    foreach (var conversionType in conversionTypes)
-    {
-      services.AddSingleton(conversionType);
-      foreach (var interfaceType in conversionType.GetAllInterfaces())
-      {
-        services.AddSingleton(
-          interfaceType, services =>
-            services.GetRequiredService(conversionType));
-      }
-    }
-  }
-
-  private static void AddScopedAssignableTo(
-    this IServiceCollection services,
-    Type assignableTo
-  )
-  {
-    var conversionTypes = typeof(IServiceCollectionExtensions).Assembly
-      .GetTypes()
-      .Where(
-        type =>
-          !type.IsAbstract &&
-          type.IsClass &&
-          type.IsAssignableTo(assignableTo));
-
-    foreach (var conversionType in conversionTypes)
-    {
-      services.AddScoped(conversionType);
-      foreach (var interfaceType in conversionType.GetAllInterfaces())
-      {
-        services.AddScoped(
-          interfaceType, services =>
-            services.GetRequiredService(conversionType));
-      }
-    }
-  }
-
-  private static Type[] GetAllInterfaces(this Type type)
-  {
-    return type.GetInterfaces()
-      .Concat(type.GetInterfaces().SelectMany(GetAllInterfaces))
-      .Concat(type.BaseType?.GetAllInterfaces() ?? Array.Empty<Type>())
-      .Distinct()
-      .ToArray();
   }
 }

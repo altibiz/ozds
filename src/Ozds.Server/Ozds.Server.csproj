@@ -11,4 +11,8 @@
 	  <ProjectReference Include="../../src/Ozds.Client/Ozds.Client.csproj" />
 	</ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Altibiz.DependencyInjection.Extensions" Version="1.0.4" />
+  </ItemGroup>
+
 </Project>

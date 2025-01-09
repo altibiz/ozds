@@ -14,4 +14,8 @@
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="$(NpgsqlEntityFrameworkCoreVersion)" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Altibiz.DependencyInjection.Extensions" Version="1.0.4" />
+  </ItemGroup>
+
 </Project>

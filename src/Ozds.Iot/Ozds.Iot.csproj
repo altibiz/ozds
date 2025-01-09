@@ -4,4 +4,8 @@
     <OutputType>Library</OutputType>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Altibiz.DependencyInjection.Extensions" Version="1.0.4" />
+  </ItemGroup>
+
 </Project>
