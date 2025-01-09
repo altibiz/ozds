@@ -2,7 +2,7 @@ using Ozds.Jobs.Observers.Abstractions;
 
 namespace Ozds.Jobs.Observers.Base;
 
-public class Observer<TEventArgs> :
+public abstract class Observer<TEventArgs> :
   IPublisher<TEventArgs>,
   ISubscriber<TEventArgs>
   where TEventArgs : System.EventArgs

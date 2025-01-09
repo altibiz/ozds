@@ -2,7 +2,7 @@ using Ozds.Data.Observers.Abstractions;
 
 namespace Ozds.Data.Observers.Base;
 
-public class Observer<TEventArgs> :
+public abstract class Observer<TEventArgs> :
   IPublisher<TEventArgs>,
   ISubscriber<TEventArgs>
   where TEventArgs : System.EventArgs

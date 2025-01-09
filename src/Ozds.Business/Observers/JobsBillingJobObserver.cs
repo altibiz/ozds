@@ -12,7 +12,8 @@ public class JobsBillingJobRelay(
 ) : Relay<
   BillingJobEventArgs,
   JobsBillingJobEventArgs,
-  JobsBillingJobPipe>(serviceProvider)
+  JobsBillingJobPipe>(serviceProvider),
+  IJobsBillingJobSubscriber
 {
   protected override void SubscribeIn(
     EventHandler<BillingJobEventArgs> eventHandler)

@@ -5,7 +5,7 @@ using Ozds.Business.Reactors.Abstractions;
 
 namespace Ozds.Business.Reactors.Base;
 
-public class Reactor<TEventArgs, TSubscriber, THandler>(
+public abstract class Reactor<TEventArgs, TSubscriber, THandler>(
   IServiceProvider serviceProvider
 ) : BackgroundService, IReactor
   where TEventArgs : EventArgs

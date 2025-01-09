@@ -1,4 +1,4 @@
-using Ozds.Business.Finance;
+using Ozds.Business.Finance.Abstractions;
 using Ozds.Business.Models;
 using Ozds.Business.Observers.Abstractions;
 using Ozds.Business.Observers.EventArgs;
@@ -19,7 +19,7 @@ public class JobsBillingJobReactor(
 
 public class JobsBillingJobHandler(
   AuditableQueries auditableQueries,
-  NetworkUserInvoiceIssuer issuer
+  INetworkUserInvoiceIssuer issuer
 ) : Handler<JobsBillingJobEventArgs>
 {
   public override async Task Handle(

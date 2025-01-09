@@ -114,7 +114,7 @@ public class
       MeterId = calculationBasis.Meter.Id,
       ToDate = calculationBasis.ToDate,
       FromDate = calculationBasis.FromDate,
-      NetworkUserInvoiceId = default!,
+      NetworkUserInvoiceId = "0",
       UsageNetworkUserCatalogueId = usageCatalogue.Id,
       SupplyRegulatoryCatalogueId =
         calculationBasis.SupplyRegulatoryCatalogue.Id,

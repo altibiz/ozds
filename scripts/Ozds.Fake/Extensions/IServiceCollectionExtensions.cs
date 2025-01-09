@@ -1,4 +1,4 @@
-using System.Reflection;
+using Altibiz.DependencyInjection.Extensions;
 using MassTransit;
 using Ozds.Business.Conversion.Abstractions;
 using Ozds.Business.Conversion.Agnostic;
@@ -25,16 +25,10 @@ public static class IServiceCollectionExtensions
     services.AddTransientAssignableTo(typeof(IMeasurementGenerator));
     services.AddSingleton(typeof(AgnosticMeasurementGenerator));
 
-    services.AddTransientAssignableTo(
-      typeof(IPushRequestMeasurementConverter),
-      typeof(IPushRequestMeasurementConverter).Assembly
-    );
+    services.AddTransientAssignableTo(typeof(IPushRequestMeasurementConverter));
     services.AddSingleton(typeof(AgnosticPushRequestMeasurementConverter));
 
-    services.AddTransientAssignableTo(
-      typeof(IModelEntityConverter),
-      typeof(IModelEntityConverter).Assembly
-    );
+    services.AddTransientAssignableTo(typeof(IModelEntityConverter));
     services.AddSingleton(typeof(AgnosticModelEntityConverter));
 
     return services;
@@ -119,41 +113,5 @@ public static class IServiceCollectionExtensions
       });
 
     return services;
-  }
-
-  private static void AddTransientAssignableTo(
-    this IServiceCollection services,
-    Type assignableTo,
-    Assembly? assembly = null
-  )
-  {
-    var conversionTypes =
-      (assembly ?? typeof(IServiceCollectionExtensions).Assembly)
-      .GetTypes()
-      .Where(
-        type =>
-          !type.IsAbstract &&
-          type.IsClass &&
-          type.IsAssignableTo(assignableTo));
-
-    foreach (var conversionType in conversionTypes)
-    {
-      services.AddTransient(conversionType);
-      foreach (var interfaceType in conversionType.GetAllInterfaces())
-      {
-        services.AddTransient(
-          interfaceType, services =>
-            services.GetRequiredService(conversionType));
-      }
-    }
-  }
-
-  private static Type[] GetAllInterfaces(this Type type)
-  {
-    return type.GetInterfaces()
-      .Concat(type.GetInterfaces().SelectMany(GetAllInterfaces))
-      .Concat(type.BaseType?.GetAllInterfaces() ?? Array.Empty<Type>())
-      .Distinct()
-      .ToArray();
   }
 }

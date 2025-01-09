@@ -2,7 +2,7 @@ using Ozds.Iot.Observers.Abstractions;
 
 namespace Ozds.Iot.Observers.Base;
 
-public class Observer<TEventArgs> :
+public abstract class Observer<TEventArgs> :
   IPublisher<TEventArgs>,
   ISubscriber<TEventArgs>
   where TEventArgs : System.EventArgs
