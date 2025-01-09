@@ -19,7 +19,7 @@ public class AnalysisQueries(
       RoleModel role,
       DateTimeOffset fromDate,
       DateTimeOffset toDate,
-      string locationId,
+      string? locationId,
       CancellationToken cancellationToken
     )
   {

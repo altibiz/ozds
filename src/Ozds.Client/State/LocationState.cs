@@ -3,6 +3,6 @@ using Ozds.Business.Models;
 namespace Ozds.Client.State;
 
 public record LocationState(
-  LocationModel Location,
+  LocationModel? Location,
   Action UnsetLocation
 );

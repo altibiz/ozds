@@ -76,10 +76,6 @@ public partial class LocationStateProvider : OzdsOwningComponentBase
         deleted: false
       );
     }
-    if (location is null)
-    {
-      return;
-    }
 
     _state = new LocationState(
       location,

@@ -19,22 +19,14 @@ public class CalculatedInvoiceMutations(
     CalculatedNetworkUserInvoiceModel invoice,
     CancellationToken cancellationToken)
   {
-    var entity = new CalculatedNetworkUserInvoiceEntity(
-      invoice.Calculations
-        .Select(modelEntityConverter.ToEntity<NetworkUserCalculationEntity>)
-        .ToList(),
-      modelEntityConverter.ToEntity<NetworkUserInvoiceEntity>(invoice.Invoice)
-    );
+    var entity = modelEntityConverter
+      .ToEntity<CalculatedNetworkUserInvoiceEntity>(invoice);
     await mutations.CreateCalculatedInvoice(
       entity,
       cancellationToken
     );
-    var model = new CalculatedNetworkUserInvoiceModel(
-      entity.Calculations
-        .Select(modelEntityConverter.ToModel<NetworkUserCalculationModel>)
-        .ToList(),
-      modelEntityConverter.ToModel<NetworkUserInvoiceModel>(entity.Invoice)
-    );
+    var model = modelEntityConverter
+      .ToModel<CalculatedNetworkUserInvoiceModel>(entity);
 
     return model;
   }

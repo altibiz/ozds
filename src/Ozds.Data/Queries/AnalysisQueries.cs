@@ -22,7 +22,7 @@ public class AnalysisQueries(
       RoleEntity role,
       DateTimeOffset fromDate,
       DateTimeOffset toDate,
-      string locationId,
+      string? locationId,
       CancellationToken cancellationToken
     )
   {
@@ -48,7 +48,7 @@ public class AnalysisQueries(
       RoleEntity role,
       DateTimeOffset fromDate,
       DateTimeOffset toDate,
-      string locationId,
+      string? locationId,
       CancellationToken cancellationToken
     )
   {
@@ -76,7 +76,7 @@ public class AnalysisQueries(
       RoleEntity role,
       DateTimeOffset fromDate,
       DateTimeOffset toDate,
-      string locationId,
+      string? locationId,
       CancellationToken cancellationToken
     )
   {
@@ -87,13 +87,13 @@ public class AnalysisQueries(
         MakeInitialMeasurementLocationsLocationNetworkUserQuery(
           context,
           "@representativeId",
-          "@locationId"
+          locationId is null ? null : "@locationId"
         ),
       RoleEntity.OperatorRepresentative =>
         MakeInitialMeasurementLocationsOperatorQuery(
           context,
           "@representativeId",
-          "@locationId"
+          locationId is null ? null : "@locationId"
         ),
       _ => throw new ArgumentOutOfRangeException(nameof(role))
     };
@@ -183,10 +183,15 @@ public class AnalysisQueries(
       ) AS schneider_iem3xxx_measurements_last ON TRUE
     ";
 
-    var parameters = new
+    var parameters = locationId is null ? (object)new
     {
       representativeId,
-      locationId = long.Parse(locationId),
+      fromDate,
+      toDate
+    } : new
+    {
+      representativeId,
+      locationId,
       fromDate,
       toDate
     };
@@ -201,166 +206,182 @@ public class AnalysisQueries(
   private static string MakeInitialMeasurementLocationsLocationNetworkUserQuery(
     DbContext context,
     string representativeIdExpression,
-    string locationIdExpression
-  ) => $@"
-    SELECT
-      {context.GetTableName<NetworkUserMeasurementLocationEntity>()}
-        .{context.GetPrimaryKeyColumnName<
-          NetworkUserMeasurementLocationEntity>()}
-        AS measurement_location_id,
-      {context.GetTableName<RepresentativeEntity>()}.*,
-      {context.GetTableName<LocationEntity>()}.*,
-      {context.GetTableName<NetworkUserEntity>()}.*,
-      {context.GetTableName<NetworkUserMeasurementLocationEntity>()}.*,
-      {context.GetTableName<MeterEntity>()}.*
-    FROM
-      {context.GetTableName<NetworkUserRepresentativeEntity>()}
-    INNER JOIN {context.GetTableName<RepresentativeEntity>()}
-      ON {context.GetTableName<NetworkUserRepresentativeEntity>()}.
-        {context.GetForeignKeyColumnName<NetworkUserRepresentativeEntity>(
-          nameof(NetworkUserRepresentativeEntity.Representative))}
-        = {context.GetTableName<RepresentativeEntity>()}
-          .{context.GetPrimaryKeyColumnName<RepresentativeEntity>()}
-    INNER JOIN {context.GetTableName<NetworkUserEntity>()}
-      ON {context.GetTableName<NetworkUserRepresentativeEntity>()}.
-        {context.GetForeignKeyColumnName<NetworkUserRepresentativeEntity>(
-          nameof(NetworkUserRepresentativeEntity.NetworkUser))}
-        = {context.GetTableName<NetworkUserEntity>()}
+    string? locationIdExpression
+  )
+  {
+    var locationWhereClause = locationIdExpression is null
+      ? ""
+      : $@"
+          AND {context.GetTableName<LocationEntity>()}
+            .{context.GetPrimaryKeyColumnName<LocationEntity>()}
+            = {locationIdExpression}
+        ";
+
+    return $@"
+      SELECT
+        {context.GetTableName<NetworkUserMeasurementLocationEntity>()}
+          .{context.GetPrimaryKeyColumnName<
+            NetworkUserMeasurementLocationEntity>()}
+          AS measurement_location_id,
+        {context.GetTableName<RepresentativeEntity>()}.*,
+        {context.GetTableName<LocationEntity>()}.*,
+        {context.GetTableName<NetworkUserEntity>()}.*,
+        {context.GetTableName<NetworkUserMeasurementLocationEntity>()}.*,
+        {context.GetTableName<MeterEntity>()}.*
+      FROM
+        {context.GetTableName<NetworkUserRepresentativeEntity>()}
+      INNER JOIN {context.GetTableName<RepresentativeEntity>()}
+        ON {context.GetTableName<NetworkUserRepresentativeEntity>()}.
+          {context.GetForeignKeyColumnName<NetworkUserRepresentativeEntity>(
+            nameof(NetworkUserRepresentativeEntity.Representative))}
+          = {context.GetTableName<RepresentativeEntity>()}
+            .{context.GetPrimaryKeyColumnName<RepresentativeEntity>()}
+      INNER JOIN {context.GetTableName<NetworkUserEntity>()}
+        ON {context.GetTableName<NetworkUserRepresentativeEntity>()}.
+          {context.GetForeignKeyColumnName<NetworkUserRepresentativeEntity>(
+            nameof(NetworkUserRepresentativeEntity.NetworkUser))}
+          = {context.GetTableName<NetworkUserEntity>()}
+            .{context.GetPrimaryKeyColumnName<NetworkUserEntity>()}
+      INNER JOIN {context.GetTableName<LocationEntity>()}
+        ON {context.GetTableName<NetworkUserEntity>()}
+          .{context.GetForeignKeyColumnName<NetworkUserEntity>(
+            nameof(NetworkUserEntity.Location))}
+          = {context.GetTableName<LocationEntity>()}
+            .{context.GetPrimaryKeyColumnName<LocationEntity>()}
+      INNER JOIN {context
+        .GetTableName<NetworkUserMeasurementLocationEntity>()}
+        ON {context.GetTableName<NetworkUserEntity>()}
           .{context.GetPrimaryKeyColumnName<NetworkUserEntity>()}
-    INNER JOIN {context.GetTableName<LocationEntity>()}
-      ON {context.GetTableName<NetworkUserEntity>()}
-        .{context.GetForeignKeyColumnName<NetworkUserEntity>(
-          nameof(NetworkUserEntity.Location))}
-        = {context.GetTableName<LocationEntity>()}
+            = {context.GetTableName<NetworkUserMeasurementLocationEntity>()}
+              .{context.GetForeignKeyColumnName<
+                NetworkUserMeasurementLocationEntity>(
+                nameof(NetworkUserMeasurementLocationEntity.NetworkUser))}
+      LEFT JOIN {context.GetTableName<MeterEntity>()}
+        ON {context.GetTableName<NetworkUserMeasurementLocationEntity>()}
+          .{context.GetForeignKeyColumnName<
+            NetworkUserMeasurementLocationEntity>(
+            nameof(NetworkUserMeasurementLocationEntity.Meter))}
+          = {context.GetTableName<MeterEntity>()}
+            .{context.GetPrimaryKeyColumnName<MeterEntity>()}
+      WHERE
+        {context.GetTableName<NetworkUserRepresentativeEntity>()}
+          .{context.GetForeignKeyColumnName<
+            NetworkUserRepresentativeEntity>(
+            nameof(NetworkUserRepresentativeEntity.Representative))}
+          = {representativeIdExpression}
+        {locationWhereClause}
+      UNION
+      SELECT
+        {context.GetTableName<NetworkUserMeasurementLocationEntity>()}
+          .{context.GetPrimaryKeyColumnName<
+            NetworkUserMeasurementLocationEntity>()}
+          AS measurement_location_id,
+        {context.GetTableName<RepresentativeEntity>()}.*,
+        {context.GetTableName<LocationEntity>()}.*,
+        {context.GetTableName<NetworkUserEntity>()}.*,
+        {context.GetTableName<NetworkUserMeasurementLocationEntity>()}.*,
+        {context.GetTableName<MeterEntity>()}.*
+      FROM
+        {context.GetTableName<LocationRepresentativeEntity>()}
+      INNER JOIN {context.GetTableName<RepresentativeEntity>()}
+        ON {context.GetTableName<LocationRepresentativeEntity>()}
+          .{context.GetForeignKeyColumnName<LocationRepresentativeEntity>(
+            nameof(LocationRepresentativeEntity.Representative))}
+          = {context.GetTableName<RepresentativeEntity>()}
+            .{context.GetPrimaryKeyColumnName<RepresentativeEntity>()}
+      INNER JOIN {context.GetTableName<LocationEntity>()}
+        ON {context.GetTableName<LocationRepresentativeEntity>()}
+          .{context.GetForeignKeyColumnName<LocationRepresentativeEntity>(
+            nameof(LocationRepresentativeEntity.Location))}
+          = {context.GetTableName<LocationEntity>()}
+            .{context.GetPrimaryKeyColumnName<LocationEntity>()}
+      INNER JOIN {context.GetTableName<NetworkUserEntity>()}
+        ON {context.GetTableName<LocationEntity>()}
           .{context.GetPrimaryKeyColumnName<LocationEntity>()}
-    INNER JOIN {context
-      .GetTableName<NetworkUserMeasurementLocationEntity>()}
-      ON {context.GetTableName<NetworkUserEntity>()}
-        .{context.GetPrimaryKeyColumnName<NetworkUserEntity>()}
+          = {context.GetTableName<NetworkUserEntity>()}
+            .{context.GetForeignKeyColumnName<NetworkUserEntity>(
+              nameof(NetworkUserEntity.Location))}
+      INNER JOIN {context
+        .GetTableName<NetworkUserMeasurementLocationEntity>()}
+        ON {context.GetTableName<NetworkUserEntity>()}
+          .{context.GetPrimaryKeyColumnName<NetworkUserEntity>()}
           = {context.GetTableName<NetworkUserMeasurementLocationEntity>()}
             .{context.GetForeignKeyColumnName<
               NetworkUserMeasurementLocationEntity>(
               nameof(NetworkUserMeasurementLocationEntity.NetworkUser))}
-    LEFT JOIN {context.GetTableName<MeterEntity>()}
-      ON {context.GetTableName<NetworkUserMeasurementLocationEntity>()}
-        .{context.GetForeignKeyColumnName<
-          NetworkUserMeasurementLocationEntity>(
-          nameof(NetworkUserMeasurementLocationEntity.Meter))}
-        = {context.GetTableName<MeterEntity>()}
-          .{context.GetPrimaryKeyColumnName<MeterEntity>()}
-    WHERE
-      {context.GetTableName<NetworkUserRepresentativeEntity>()}
-        .{context.GetForeignKeyColumnName<
-          NetworkUserRepresentativeEntity>(
-          nameof(NetworkUserRepresentativeEntity.Representative))}
-        = {representativeIdExpression}
-      AND {context.GetTableName<LocationEntity>()}
-        .{context.GetPrimaryKeyColumnName<LocationEntity>()}
-        = {locationIdExpression}
-    UNION
-    SELECT
-      {context.GetTableName<NetworkUserMeasurementLocationEntity>()}
-        .{context.GetPrimaryKeyColumnName<
-          NetworkUserMeasurementLocationEntity>()}
-        AS measurement_location_id,
-      {context.GetTableName<RepresentativeEntity>()}.*,
-      {context.GetTableName<LocationEntity>()}.*,
-      {context.GetTableName<NetworkUserEntity>()}.*,
-      {context.GetTableName<NetworkUserMeasurementLocationEntity>()}.*,
-      {context.GetTableName<MeterEntity>()}.*
-    FROM
-      {context.GetTableName<LocationRepresentativeEntity>()}
-    INNER JOIN {context.GetTableName<RepresentativeEntity>()}
-      ON {context.GetTableName<LocationRepresentativeEntity>()}
-        .{context.GetForeignKeyColumnName<LocationRepresentativeEntity>(
-          nameof(LocationRepresentativeEntity.Representative))}
-        = {context.GetTableName<RepresentativeEntity>()}
-          .{context.GetPrimaryKeyColumnName<RepresentativeEntity>()}
-    INNER JOIN {context.GetTableName<LocationEntity>()}
-      ON {context.GetTableName<LocationRepresentativeEntity>()}
-        .{context.GetForeignKeyColumnName<LocationRepresentativeEntity>(
-          nameof(LocationRepresentativeEntity.Location))}
-        = {context.GetTableName<LocationEntity>()}
-          .{context.GetPrimaryKeyColumnName<LocationEntity>()}
-    INNER JOIN {context.GetTableName<NetworkUserEntity>()}
-      ON {context.GetTableName<LocationEntity>()}
-        .{context.GetPrimaryKeyColumnName<LocationEntity>()}
-        = {context.GetTableName<NetworkUserEntity>()}
-          .{context.GetForeignKeyColumnName<NetworkUserEntity>(
-            nameof(NetworkUserEntity.Location))}
-    INNER JOIN {context
-      .GetTableName<NetworkUserMeasurementLocationEntity>()}
-      ON {context.GetTableName<NetworkUserEntity>()}
-        .{context.GetPrimaryKeyColumnName<NetworkUserEntity>()}
-        = {context.GetTableName<NetworkUserMeasurementLocationEntity>()}
+      LEFT JOIN {context.GetTableName<MeterEntity>()}
+        ON {context.GetTableName<NetworkUserMeasurementLocationEntity>()}
           .{context.GetForeignKeyColumnName<
             NetworkUserMeasurementLocationEntity>(
-            nameof(NetworkUserMeasurementLocationEntity.NetworkUser))}
-    LEFT JOIN {context.GetTableName<MeterEntity>()}
-      ON {context.GetTableName<NetworkUserMeasurementLocationEntity>()}
-        .{context.GetForeignKeyColumnName<
-          NetworkUserMeasurementLocationEntity>(
-          nameof(NetworkUserMeasurementLocationEntity.Meter))}
-        = {context.GetTableName<MeterEntity>()}
-          .{context.GetPrimaryKeyColumnName<MeterEntity>()}
-    WHERE
-      {context.GetTableName<LocationRepresentativeEntity>()}
-        .{context.GetForeignKeyColumnName<LocationRepresentativeEntity>(
-          nameof(LocationRepresentativeEntity.Representative))}
-        = {representativeIdExpression}
-      AND {context.GetTableName<LocationEntity>()}
-        .{context.GetPrimaryKeyColumnName<LocationEntity>()}
-        = {locationIdExpression}
-  ";
+            nameof(NetworkUserMeasurementLocationEntity.Meter))}
+          = {context.GetTableName<MeterEntity>()}
+            .{context.GetPrimaryKeyColumnName<MeterEntity>()}
+      WHERE
+        {context.GetTableName<LocationRepresentativeEntity>()}
+          .{context.GetForeignKeyColumnName<LocationRepresentativeEntity>(
+            nameof(LocationRepresentativeEntity.Representative))}
+          = {representativeIdExpression}
+        {locationWhereClause}
+    ";
+  }
 
   private static string MakeInitialMeasurementLocationsOperatorQuery(
     DbContext context,
     string representativeIdExpression,
-    string locationIdExpression
-  ) => $@"
-    SELECT
-      {context.GetTableName<NetworkUserMeasurementLocationEntity>()}
-        .{context.GetPrimaryKeyColumnName<
-          NetworkUserMeasurementLocationEntity>()}
-        AS measurement_location_id,
-      {context.GetTableName<RepresentativeEntity>()}.*,
-      {context.GetTableName<LocationEntity>()}.*,
-      {context.GetTableName<NetworkUserEntity>()}.*,
-      {context.GetTableName<NetworkUserMeasurementLocationEntity>()}.*,
-      {context.GetTableName<MeterEntity>()}.*
-    FROM
-      {context.GetTableName<NetworkUserMeasurementLocationEntity>()}
-    INNER JOIN {context.GetTableName<NetworkUserEntity>()}
-      ON {context.GetTableName<NetworkUserMeasurementLocationEntity>()}
-        .{context.GetForeignKeyColumnName<
-          NetworkUserMeasurementLocationEntity>(
-          nameof(NetworkUserMeasurementLocationEntity.NetworkUser))}
-        = {context.GetTableName<NetworkUserEntity>()}
-          .{context.GetPrimaryKeyColumnName<NetworkUserEntity>()}
-    INNER JOIN {context.GetTableName<LocationEntity>()}
-      ON {context.GetTableName<NetworkUserEntity>()}
-        .{context.GetForeignKeyColumnName<NetworkUserEntity>(
-          nameof(NetworkUserEntity.Location))}
-        = {context.GetTableName<LocationEntity>()}
-          .{context.GetPrimaryKeyColumnName<LocationEntity>()}
-    LEFT JOIN {context.GetTableName<MeterEntity>()}
-      ON {context.GetTableName<NetworkUserMeasurementLocationEntity>()}
-        .{context.GetForeignKeyColumnName<
-          NetworkUserMeasurementLocationEntity>(
-          nameof(NetworkUserMeasurementLocationEntity.Meter))}
-        = {context.GetTableName<MeterEntity>()}
-          .{context.GetPrimaryKeyColumnName<MeterEntity>()}
-    CROSS JOIN (
-      SELECT {context.GetTableName<RepresentativeEntity>()}.*
-      FROM {context.GetTableName<RepresentativeEntity>()}
-      WHERE {context.GetTableName<RepresentativeEntity>()}
-        .{context.GetPrimaryKeyColumnName<RepresentativeEntity>()}
-        = {representativeIdExpression}
-    ) AS {context.GetTableName<RepresentativeEntity>()}
-    WHERE {context.GetTableName<LocationEntity>()}
-      .{context.GetPrimaryKeyColumnName<LocationEntity>()}
-      = {locationIdExpression}
-  ";
+    string? locationIdExpression
+  )
+  {
+    var locationWhereClause = locationIdExpression is null
+      ? ""
+      : $@"
+          WHERE {context.GetTableName<LocationEntity>()}
+            .{context.GetPrimaryKeyColumnName<LocationEntity>()}
+            = {locationIdExpression}
+        ";
+
+    return $@"
+      SELECT
+        {context.GetTableName<NetworkUserMeasurementLocationEntity>()}
+          .{context.GetPrimaryKeyColumnName<
+            NetworkUserMeasurementLocationEntity>()}
+          AS measurement_location_id,
+        {context.GetTableName<RepresentativeEntity>()}.*,
+        {context.GetTableName<LocationEntity>()}.*,
+        {context.GetTableName<NetworkUserEntity>()}.*,
+        {context.GetTableName<NetworkUserMeasurementLocationEntity>()}.*,
+        {context.GetTableName<MeterEntity>()}.*
+      FROM
+        {context.GetTableName<NetworkUserMeasurementLocationEntity>()}
+      INNER JOIN {context.GetTableName<NetworkUserEntity>()}
+        ON {context.GetTableName<NetworkUserMeasurementLocationEntity>()}
+          .{context.GetForeignKeyColumnName<
+            NetworkUserMeasurementLocationEntity>(
+            nameof(NetworkUserMeasurementLocationEntity.NetworkUser))}
+          = {context.GetTableName<NetworkUserEntity>()}
+            .{context.GetPrimaryKeyColumnName<NetworkUserEntity>()}
+      INNER JOIN {context.GetTableName<LocationEntity>()}
+        ON {context.GetTableName<NetworkUserEntity>()}
+          .{context.GetForeignKeyColumnName<NetworkUserEntity>(
+            nameof(NetworkUserEntity.Location))}
+          = {context.GetTableName<LocationEntity>()}
+            .{context.GetPrimaryKeyColumnName<LocationEntity>()}
+      LEFT JOIN {context.GetTableName<MeterEntity>()}
+        ON {context.GetTableName<NetworkUserMeasurementLocationEntity>()}
+          .{context.GetForeignKeyColumnName<
+            NetworkUserMeasurementLocationEntity>(
+            nameof(NetworkUserMeasurementLocationEntity.Meter))}
+          = {context.GetTableName<MeterEntity>()}
+            .{context.GetPrimaryKeyColumnName<MeterEntity>()}
+      CROSS JOIN (
+        SELECT {context.GetTableName<RepresentativeEntity>()}.*
+        FROM {context.GetTableName<RepresentativeEntity>()}
+        WHERE {context.GetTableName<RepresentativeEntity>()}
+          .{context.GetPrimaryKeyColumnName<RepresentativeEntity>()}
+          = {representativeIdExpression}
+      ) AS {context.GetTableName<RepresentativeEntity>()}
+      {locationWhereClause}
+    ";
+  }
 
   private static string MakeAbbB2xMeasurementsLastQuery(
     DbContext context,
