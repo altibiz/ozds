@@ -10,6 +10,8 @@ using Ozds.Messaging.Sender.Abstractions;
 
 namespace Ozds.Messaging.Extensions;
 
+// FIXME: nothing happens when adding outbox/inbox
+
 public static class IServiceCollectionExtensions
 {
   public static IServiceCollection AddOzdsMessaging(
@@ -80,7 +82,6 @@ public static class IServiceCollectionExtensions
         var assembly = typeof(MessagingDbContext).Assembly;
 
 #pragma warning disable S125
-        // FIXME: nothing happens
         // x.AddEntityFrameworkOutbox<MessagingDbContext>(o =>
         // {
         //   o.UsePostgres();
@@ -136,7 +137,6 @@ public static class IServiceCollectionExtensions
         }
       });
 
-    // FIXME: nothing happens
     services
       .RemoveHostedService<BusOutboxDeliveryService<MessagingDbContext>>();
     services.RemoveHostedService<InboxCleanupService<MessagingDbContext>>();
