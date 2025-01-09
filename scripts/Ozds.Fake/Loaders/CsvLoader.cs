@@ -11,6 +11,7 @@ public class CsvLoader<TRecord> : ILoader<List<TRecord>>
     using var streamReader = new StreamReader(stream);
     using var csvReader =
       new CsvReader(streamReader, CultureInfo.InvariantCulture);
-    return csvReader.GetRecords<TRecord>().ToList();
+    var result = csvReader.GetRecords<TRecord>();
+    return result.ToList();
   }
 }

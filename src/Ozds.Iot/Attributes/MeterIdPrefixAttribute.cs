@@ -17,11 +17,7 @@ public class MeterIdPrefixAttribute(string Prefix) : Attribute
     var assemblyTypes =
       typeof(MeterIdPrefixAttribute).Assembly
         .GetTypes()
-        .Where(
-          t =>
-            !t.IsAbstract
-            && !t.IsGenericType
-            && t.IsAssignableTo(typeof(MeterIdPrefixAttribute)));
+        .Where(t => !t.IsAbstract && !t.IsGenericType);
     foreach (var assemblyType in assemblyTypes)
     {
       if (assemblyType
