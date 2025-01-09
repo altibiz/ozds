@@ -172,7 +172,7 @@
       }
     },
     {
-      "name": "debug-fake-external",
+      "name": "debug-seed-external",
       "type": "coreclr",
       "request": "launch",
       "program": "${workspaceFolder}/scripts/Ozds.Fake/bin/Debug/net8.0/Ozds.Fake.dll",

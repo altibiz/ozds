@@ -31,6 +31,6 @@ public class MeterIdPrefixAttribute(string Prefix) : Attribute
         result[attribute.Prefix] = assemblyType;
       }
     }
-    return TypesByMeterIdPrefix;
+    return new(result);
   }
 }
