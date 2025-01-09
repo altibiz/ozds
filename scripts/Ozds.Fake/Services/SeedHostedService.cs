@@ -51,6 +51,11 @@ public class SeedHostedService(
     }
     while (seedTimeBegin < now)
     {
+      if (stoppingToken.IsCancellationRequested)
+      {
+        break;
+      }
+
       var pushMeasurements = measurements.ToList();
 
       async Task GenerateMeasurements()
@@ -70,7 +75,7 @@ public class SeedHostedService(
             measurementRange.AddRange(
               await generator.GenerateMeasurements(
                 seedTimeEnd, nextSeedTimeEnd, seed.MessengerId, meterId,
-                stoppingToken))));
+                stoppingToken)), stoppingToken));
         }
         await Task.WhenAll(tasks);
 

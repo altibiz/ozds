@@ -53,8 +53,9 @@ public class OzdsPushClient(
         if (!success)
         {
           logger.LogWarning(
-            "Failed to push measurements with {StatusCode}, retrying...",
-            response.StatusCode
+            "Failed to push measurements with {StatusCode} because {Message}, retrying...",
+            response.StatusCode,
+            await response.Content.ReadAsStringAsync(cancellationToken)
           );
         }
       }
