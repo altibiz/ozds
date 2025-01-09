@@ -29,9 +29,10 @@ public class MeasurementLocationCache(
     await using var scope = factory.CreateAsyncScope();
     var queries = scope.ServiceProvider
       .GetRequiredService<MeasurementLocationQueries>();
-    return await queries.ReadMeasurementLocationByMeter(
+    var measurementLocation = await queries.ReadMeasurementLocationByMeter(
       key,
       cancellationToken
     );
+    return measurementLocation;
   }
 }

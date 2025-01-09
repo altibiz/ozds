@@ -8,26 +8,6 @@ public abstract class ConcurrentDictionaryCacheBase<TKey, TValue> : ICache
 {
   private readonly ConcurrentDictionary<TKey, TValue> cache = new();
 
-  public async Task<List<TValue>> GetAsync(
-    IEnumerable<TKey> keys,
-    CancellationToken cancellationToken
-  )
-  {
-    var values = new List<TValue>();
-    foreach (var key in keys)
-    {
-      var value = await GetAsync(key, cancellationToken);
-      if (value is null)
-      {
-        continue;
-      }
-
-      values.Add(value);
-    }
-
-    return values;
-  }
-
   public async Task<TValue?> GetAsync(
     TKey key,
     CancellationToken cancellationToken
@@ -90,6 +70,19 @@ public abstract class ConcurrentDictionaryCacheBase<TKey, TValue> : ICache
     return old;
   }
 
+  public TValue? TryRemove(
+    TKey key,
+    CancellationToken cancellationToken
+  )
+  {
+    if (!cache.TryRemove(key, out var old))
+    {
+      return default;
+    }
+
+    return old;
+  }
+
   public async Task<TValue?> TryRemoveAsync(
     TValue value,
     CancellationToken cancellationToken
@@ -101,19 +94,6 @@ public abstract class ConcurrentDictionaryCacheBase<TKey, TValue> : ICache
       return default;
     }
 
-    if (!cache.TryRemove(key, out var old))
-    {
-      return default;
-    }
-
-    return old;
-  }
-
-  public TValue? TryRemove(
-    TKey key,
-    CancellationToken cancellationToken
-  )
-  {
     if (!cache.TryRemove(key, out var old))
     {
       return default;

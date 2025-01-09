@@ -48,17 +48,10 @@ public class IotPushPipe(
       _ => throw new ArgumentOutOfRangeException(nameof(eventArgs))
     };
 
-    var measurementLocations = await Cache.GetAsync(
-      eventArgs.Request.Measurements
-        .Select(x => x.MeterId)
-        .Distinct(),
-      CancellationToken.None);
-
     var modelMeasurements = new List<IMeasurement>();
     foreach (var meterPushRequest in eventArgs.Request.Measurements)
     {
-      if (measurementLocations.FirstOrDefault(measurementLocation =>
-        measurementLocation.MeterId == meterPushRequest.MeterId)
+      if (await Cache.GetAsync(meterPushRequest.MeterId, cancellationToken)
         is { } measurementLocation)
       {
         modelMeasurements.Add(PushRequestConverter
