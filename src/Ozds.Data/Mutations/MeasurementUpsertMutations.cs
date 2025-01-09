@@ -427,7 +427,7 @@ public class MeasurementUpsertMutations(
         var columnName = property.GetColumnName(storeObjectIdentifier);
         return $"@p{indexSubstitution}_{columnName}"
         + (property.ClrType.IsEnum
-          ? $"::{property.ClrType.Name.ToSnakeCase()}"
+          ? $"::{StringExtensions.ToSnakeCase(property.ClrType.Name)}"
           : "");
       }))})";
 
@@ -747,9 +747,9 @@ public class MeasurementUpsertMutations(
       );
     }
 
-    var dayIntervalValue = IntervalEntity.Day.ToString().ToSnakeCase();
-    var monthIntervalValue = IntervalEntity.Month.ToString().ToSnakeCase();
-    var intervalTypeName = nameof(IntervalEntity).ToSnakeCase();
+    var dayIntervalValue = StringExtensions.ToSnakeCase(IntervalEntity.Day.ToString());
+    var monthIntervalValue = StringExtensions.ToSnakeCase(IntervalEntity.Month.ToString());
+    var intervalTypeName = StringExtensions.ToSnakeCase(nameof(IntervalEntity));
 
     return new(
       $@"
@@ -762,7 +762,7 @@ public class MeasurementUpsertMutations(
               $"{tableName}.{c.ColumnName}"
                 + $" = @p{indexSubstitution}_{c.ColumnName}"
                 + (c.Property.ClrType.IsEnum
-                  ? $"::{c.Property.ClrType.Name.ToSnakeCase()}"
+                  ? $"::{StringExtensions.ToSnakeCase(c.Property.ClrType.Name)}"
                   : "")))}
         ), new{indexSubstitution} AS (
           INSERT INTO {tableName} ({columns})

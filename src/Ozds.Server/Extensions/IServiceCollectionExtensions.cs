@@ -5,7 +5,8 @@ namespace Ozds.Server.Extensions;
 public static class IServiceCollectionExtensions
 {
   public static IServiceCollection AddOzdsServer(
-    this IServiceCollection services
+    this IServiceCollection services,
+    IHostApplicationBuilder builder
   )
   {
     services.ConvertHostedServicesToModularTenantEvents();

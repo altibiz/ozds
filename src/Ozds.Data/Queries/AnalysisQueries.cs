@@ -146,7 +146,7 @@ public class AnalysisQueries(
         AND abb_b2x_aggregates_monthly
           .{context.GetColumnName<AbbB2xAggregateEntity>(
             nameof(AbbB2xAggregateEntity.Interval))}
-          = '{nameof(IntervalEntity.Month).ToSnakeCase()}'
+          = '{StringExtensions.ToSnakeCase(nameof(IntervalEntity.Month))}'
       LEFT JOIN {context.GetTableName<SchneideriEM3xxxAggregateEntity>()}
         AS schneider_iem3xxx_aggregates_monthly
         ON schneider_iem3xxx_aggregates_monthly
@@ -162,7 +162,7 @@ public class AnalysisQueries(
         AND schneider_iem3xxx_aggregates_monthly
           .{context.GetColumnName<SchneideriEM3xxxAggregateEntity>(
             nameof(SchneideriEM3xxxAggregateEntity.Interval))}
-          = '{nameof(IntervalEntity.Month).ToSnakeCase()}'
+          = '{StringExtensions.ToSnakeCase(nameof(IntervalEntity.Month))}'
       LEFT JOIN LATERAL (
         {MakeAbbB2xMeasurementsLastQuery(
           context,
