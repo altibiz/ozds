@@ -114,17 +114,15 @@ public class AnalysisQueries(
         calculations_and_invoices AS (
           {MakeCalculationsAndInvoicesQuery(
             context,
-            "initial_measurement_locations.measurement_location_id",
+            "initial_measurement_locations",
+            "measurement_location_id",
             "@fromDate",
             "@toDate"
           )}
         ),
-        last_measurements AS (
-          SELECT
-            abb_b2x_last_measurement.*,
-            schneider_iem3xxx_last_measurement.*
-          FROM
-            initial_measurement_locations
+        abb_b2x_last_measurements AS (
+          SELECT abb_b2x_last_measurements.*
+          FROM initial_measurement_locations
           LEFT JOIN LATERAL (
             {MakeLastMeasurementQuery<AbbB2xMeasurementEntity>(
               context,
@@ -132,7 +130,11 @@ public class AnalysisQueries(
               "@fromDate",
               "@toDate"
             )}
-          ) as abb_b2x_last_measurement ON TRUE
+          ) as abb_b2x_last_measurements ON TRUE
+        ),
+        schneider_iem3xxx_last_measurements AS (
+          SELECT schneider_iem3xxx_last_measurements.*
+          FROM initial_measurement_locations
           LEFT JOIN LATERAL (
             {MakeLastMeasurementQuery<SchneideriEM3xxxMeasurementEntity>(
               context,
@@ -140,48 +142,55 @@ public class AnalysisQueries(
               "@fromDate",
               "@toDate"
             )}
-          ) AS schneider_iem3xxx_last_measurement ON TRUE
+          ) AS schneider_iem3xxx_last_measurements ON TRUE
         ),
-        monthly_aggregates AS (
-          SELECT
-            abb_b2x_monthly_aggregates.*,
-            schneider_iem3xxx_monthly_aggregates.*
-          FROM
-            initial_measurement_locations
-          LEFT JOIN (
-            {MakeMonthlyAggregatesQuery<AbbB2xAggregateEntity>(
-              context,
-              "initial_measurement_locations.measurement_location_id",
-              "@fromDate",
-              "@toDate"
-            )}
-          ) AS abb_b2x_monthly_aggregates
-          LEFT JOIN (
-            {MakeMonthlyAggregatesQuery<SchneideriEM3xxxAggregateEntity>(
-              context,
-              "initial_measurement_locations.measurement_location_id",
-              "@fromDate",
-              "@toDate"
-            )}
-          ) as schneider_iem3xxx_monthly_aggregates
+        abb_b2x_monthly_aggregates AS (
+          SELECT {context.GetTableName<AbbB2xAggregateEntity>()}.*
+          FROM initial_measurement_locations
+          LEFT JOIN
+          {MakeMonthlyAggregatesJoin<AbbB2xAggregateEntity>(
+            context,
+            "initial_measurement_locations.measurement_location_id",
+            "@fromDate",
+            "@toDate"
+          )}
+        ),
+        schneider_iem3xxx_monthly_aggregates AS (
+          SELECT {context.GetTableName<SchneideriEM3xxxAggregateEntity>()}.*
+          FROM initial_measurement_locations
+          LEFT JOIN
+          {MakeMonthlyAggregatesJoin<SchneideriEM3xxxAggregateEntity>(
+            context,
+            "initial_measurement_locations.measurement_location_id",
+            "@fromDate",
+            "@toDate"
+          )}
         )
 
       SELECT
         initial_measurement_locations.*,
         calculations_and_invoices.*,
-        last_measurements.*,
-        monthly_aggregates.*
+        abb_b2x_last_measurements.*,
+        schneider_iem3xxx_last_measurements.*,
+        abb_b2x_monthly_aggregates.*,
+        schneider_iem3xxx_monthly_aggregates.*
       FROM
         initial_measurement_locations
       LEFT JOIN calculations_and_invoices
-        ON initial_measurement_locations.id
+        ON initial_measurement_locations.measurement_location_id
           = calculations_and_invoices.measurement_location_id
-      LEFT JOIN last_measurements
-        ON initial_measurement_locations.id
-          = last_measurements.measurement_location_id
-      LEFT JOIN monthly_aggregates
-        ON initial_measurement_locations.id
-          = monthly_aggregates.measurement_location_id
+      LEFT JOIN abb_b2x_last_measurements
+        ON initial_measurement_locations.measurement_location_id
+          = abb_b2x_last_measurements.measurement_location_id
+      LEFT JOIN schneider_iem3xxx_last_measurements
+        ON initial_measurement_locations.measurement_location_id
+          = schneider_iem3xxx_last_measurements.measurement_location_id
+      LEFT JOIN abb_b2x_monthly_aggregates
+        ON initial_measurement_locations.measurement_location_id
+          = abb_b2x_monthly_aggregates.measurement_location_id
+      LEFT JOIN schneider_iem3xxx_monthly_aggregates
+        ON initial_measurement_locations.measurement_location_id
+          = schneider_iem3xxx_monthly_aggregates.measurement_location_id
     ";
 
     var parameters = locationId is null ? (object)new
@@ -393,20 +402,22 @@ public class AnalysisQueries(
 
   private static string MakeCalculationsAndInvoicesQuery(
     DbContext context,
-    string measurementLocationIdExpression,
+    string measurementLocationsExpression,
+    string measurementLocationIdProperty,
     string fromDateExpression,
     string toDateExpression
   ) => $@"
     SELECT
+      {measurementLocationsExpression}.{measurementLocationIdProperty},
       {context.GetTableName<NetworkUserCalculationEntity>()}.*,
       {context.GetTableName<NetworkUserInvoiceEntity>()}.*
     FROM
-      {context.GetTableName<NetworkUserMeasurementLocationEntity>()}
+      {measurementLocationsExpression}
     INNER JOIN {context.GetTableName<NetworkUserCalculationEntity>()}
       ON {context.GetTableName<NetworkUserCalculationEntity>()}
         .{context.GetForeignKeyColumnName<NetworkUserCalculationEntity>(
           nameof(NetworkUserCalculationEntity.NetworkUserMeasurementLocation))}
-        = {measurementLocationIdExpression}
+        = {measurementLocationsExpression}.{measurementLocationIdProperty}
         AND {context.GetTableName<NetworkUserCalculationEntity>()}
           .{context.GetColumnName<NetworkUserCalculationEntity>(
           nameof(NetworkUserCalculationEntity.FromDate))}
@@ -458,7 +469,7 @@ public class AnalysisQueries(
     LIMIT 1
   ";
 
-  private static string MakeMonthlyAggregatesQuery<T>(
+  private static string MakeMonthlyAggregatesJoin<T>(
     DbContext context,
     string measurementLocationIdExpression,
     string fromDateExpression,
@@ -466,25 +477,23 @@ public class AnalysisQueries(
   )
   where T : IAggregateEntity
   => $@"
-    SELECT *
-    FROM {context.GetTableName<T>()}
-    WHERE {context.GetTableName<AbbB2xAggregateEntity>()}
-      ON {context.GetTableName<AbbB2xAggregateEntity>()}
-        .{context.GetForeignKeyColumnName<AbbB2xAggregateEntity>(
-          nameof(AbbB2xAggregateEntity.MeasurementLocation))}
-        = {measurementLocationIdExpression}
-      AND {context.GetTableName<AbbB2xAggregateEntity>()}
-        .{context.GetColumnName<AbbB2xAggregateEntity>(
-          nameof(AbbB2xAggregateEntity.Timestamp))}
-        >= {fromDateExpression}
-      AND {context.GetTableName<AbbB2xAggregateEntity>()}
-        .{context.GetColumnName<AbbB2xAggregateEntity>(
-          nameof(AbbB2xAggregateEntity.Timestamp))}
-        < {toDateExpression}
-      AND {context.GetTableName<AbbB2xAggregateEntity>()}
-        .{context.GetColumnName<AbbB2xAggregateEntity>(
-          nameof(AbbB2xAggregateEntity.Interval))}
-        = '{StringExtensions.ToSnakeCase(nameof(IntervalEntity.Month))}'
+    {context.GetTableName<T>()}
+    ON {context.GetTableName<T>()}
+      .{context.GetForeignKeyColumnName<T>(
+        nameof(AggregateEntity.MeasurementLocation))}
+      = {measurementLocationIdExpression}
+    AND {context.GetTableName<T>()}
+      .{context.GetColumnName<T>(
+        nameof(AggregateEntity.Timestamp))}
+      >= {fromDateExpression}
+    AND {context.GetTableName<T>()}
+      .{context.GetColumnName<T>(
+        nameof(AggregateEntity.Timestamp))}
+      < {toDateExpression}
+    AND {context.GetTableName<T>()}
+      .{context.GetColumnName<T>(
+        nameof(AggregateEntity.Interval))}
+      = '{StringExtensions.ToSnakeCase(nameof(IntervalEntity.Month))}'
   ";
 
   private static List<AnalysisBasisEntity>
@@ -606,18 +615,6 @@ public class AnalysisQueries(
       init;
     } = default!;
 
-    public AbbB2xAggregateEntity? AbbMonthlyAggregate
-    {
-      get;
-      init;
-    } = default!;
-
-    public SchneideriEM3xxxAggregateEntity? SchneiderMonthlyAggregate
-    {
-      get;
-      init;
-    } = default!;
-
     public AbbB2xMeasurementEntity AbbLastMeasurement
     {
       get;
@@ -625,6 +622,18 @@ public class AnalysisQueries(
     } = default!;
 
     public SchneideriEM3xxxMeasurementEntity? SchneiderLastMeasurement
+    {
+      get;
+      init;
+    } = default!;
+
+    public AbbB2xAggregateEntity? AbbMonthlyAggregate
+    {
+      get;
+      init;
+    } = default!;
+
+    public SchneideriEM3xxxAggregateEntity? SchneiderMonthlyAggregate
     {
       get;
       init;
