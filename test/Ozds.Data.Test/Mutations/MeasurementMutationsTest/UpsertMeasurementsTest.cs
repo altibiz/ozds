@@ -12,10 +12,10 @@ using Ozds.Data.Test.Extensions;
 namespace Ozds.Data.Test.Mutations.MeasurementUpsertMutationsTest;
 
 [Collection(nameof(EphemeralDataDbContextManager))]
-public class UpsertMeasurementsTest(
+public class CreateMeasurementsTest(
   EphemeralDataDbContextManager manager,
   MeasurementMutations mutations,
-  ILogger<UpsertMeasurementsTest> logger
+  ILogger<CreateMeasurementsTest> logger
 )
 {
   [Theory]
