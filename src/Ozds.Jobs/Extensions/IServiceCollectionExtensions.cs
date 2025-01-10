@@ -63,6 +63,7 @@ public static class IServiceCollectionExtensions
     services.AddQuartz(
       options =>
       {
+        options.InterruptJobsOnShutdown = true;
         options.UsePersistentStore(
           options =>
           {
@@ -88,11 +89,9 @@ public static class IServiceCollectionExtensions
           });
       });
 
-    // NOTE: this needs jesus
     services.Configure<QuartzHostedServiceOptions>(
       options =>
       {
-        options.WaitForJobsToComplete = true;
         options.AwaitApplicationStarted = true;
       });
     services.AddSingleton<IHostedService, QuartzHostedService>(

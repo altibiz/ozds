@@ -1,4 +1,5 @@
 using Ozds.Business.Conversion.Base;
+using Ozds.Business.Conversion.Primitive;
 using Ozds.Business.Models.Complex;
 using Ozds.Data.Entities.Complex;
 
@@ -29,8 +30,8 @@ public static class CumulativeAggregateMeasureModelEntityConverterExtensions
   {
     return new CumulativeAggregateMeasureEntity
     {
-      Min = (float)model.Min,
-      Max = (float)model.Max,
+      Min = model.Min.ToFloat(),
+      Max = model.Max.ToFloat(),
     };
   }
 
@@ -39,8 +40,8 @@ public static class CumulativeAggregateMeasureModelEntityConverterExtensions
   {
     return new CumulativeAggregateMeasureModel
     {
-      Min = (decimal)entity.Min,
-      Max = (decimal)entity.Max,
+      Min = entity.Min.ToDecimal(),
+      Max = entity.Max.ToDecimal(),
     };
   }
 }

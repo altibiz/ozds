@@ -1,4 +1,5 @@
 using Ozds.Business.Conversion.Base;
+using Ozds.Business.Conversion.Primitive;
 using Ozds.Business.Models.Complex;
 using Ozds.Data.Entities.Complex;
 
@@ -29,9 +30,9 @@ public static class InstantaneousAggregateMeasureModelEntityConverterExtensions
   {
     return new InstantaneousAggregateMeasureEntity
     {
-      Avg = (float)model.Avg,
-      Min = (float)model.Min,
-      Max = (float)model.Max,
+      Avg = model.Avg.ToFloat(),
+      Min = model.Min.ToFloat(),
+      Max = model.Max.ToFloat(),
       MinTimestamp = model.MinTimestamp,
       MaxTimestamp = model.MaxTimestamp
     };
@@ -42,9 +43,9 @@ public static class InstantaneousAggregateMeasureModelEntityConverterExtensions
   {
     return new InstantaneousAggregateMeasureModel
     {
-      Avg = (decimal)entity.Avg,
-      Min = (decimal)entity.Min,
-      Max = (decimal)entity.Max,
+      Avg = entity.Avg.ToDecimal(),
+      Min = entity.Min.ToDecimal(),
+      Max = entity.Max.ToDecimal(),
       MinTimestamp = entity.MinTimestamp,
       MaxTimestamp = entity.MaxTimestamp
     };

@@ -278,8 +278,7 @@ public class MeasurementUpsertMutations(
         ));
         var elapsed = stopwatch.Elapsed;
         logger.LogDebug(
-          "Executed {Count} mixed command at {Elapsed}",
-          count,
+          "Executed mixed command at {Elapsed}",
           elapsed);
       }
     }
@@ -300,8 +299,7 @@ public class MeasurementUpsertMutations(
       ));
       var elapsed = stopwatch.Elapsed;
       logger.LogDebug(
-        "Executed {Count} measurement command at {Elapsed}",
-        count,
+        "Executed measurement command at {Elapsed}",
         elapsed);
     }
     stopwatch.Stop();

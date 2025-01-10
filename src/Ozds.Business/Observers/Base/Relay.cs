@@ -3,6 +3,9 @@ using Ozds.Business.Observers.Abstractions;
 
 namespace Ozds.Business.Observers.Base;
 
+// TODO: preserve events in db on shutdown and restore on startup and do not
+// pass stopping token to handler
+
 public abstract class Relay<TInEventArgs, TOutEventArgs, TPipe>(
   IServiceProvider serviceProvider
 ) : BackgroundService, ISubscriber<TOutEventArgs>

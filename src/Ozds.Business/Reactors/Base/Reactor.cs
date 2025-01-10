@@ -5,6 +5,9 @@ using Ozds.Business.Reactors.Abstractions;
 
 namespace Ozds.Business.Reactors.Base;
 
+// TODO: preserve events in db on shutdown and restore on startup and do not
+// pass stopping token to handler
+
 public abstract class Reactor<TEventArgs, TSubscriber, THandler>(
   IServiceProvider serviceProvider
 ) : BackgroundService, IReactor
