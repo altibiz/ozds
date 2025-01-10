@@ -1,4 +1,5 @@
 using System.Data;
+using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using Ozds.Data.Attributes;
 using Ozds.Data.Context;
@@ -13,7 +14,8 @@ using Ozds.Data.Queries.Abstractions;
 namespace Ozds.Data.Queries;
 
 public class AnalysisQueries(
-  IDbContextFactory<DataDbContext> factory
+  IDbContextFactory<DataDbContext> factory,
+  ILogger<AnalysisQueries> logger
 ) : IQueries
 {
   public async Task<List<AnalysisBasisEntity>>
@@ -52,6 +54,7 @@ public class AnalysisQueries(
       CancellationToken cancellationToken
     )
   {
+    var stopwatch = Stopwatch.StartNew();
     var results = await GetDetailedMeasurementLocationsByRepresentative(
       context,
       representativeId,
@@ -61,8 +64,13 @@ public class AnalysisQueries(
       locationId,
       cancellationToken
     );
-
     var analysisBases = MakeAnalysisBases(results, fromDate, toDate);
+    stopwatch.Stop();
+    logger.LogDebug(
+      "Read {Count} analysis bases in {Elapsed}",
+      analysisBases.Count,
+      stopwatch.Elapsed
+    );
 
     return analysisBases;
   }
