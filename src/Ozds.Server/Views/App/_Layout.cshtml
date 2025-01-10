@@ -1,6 +1,7 @@
 @using Microsoft.AspNetCore.Components.Web
 @using RenderMode = Microsoft.AspNetCore.Mvc.Rendering.RenderMode
-@using Ozds.Client.ViewModels;
+@using Ozds.Server.Controllers
+@using Ozds.Server.ViewModels
 
 @model AppViewModel
 
@@ -16,7 +17,7 @@
   }
   else
   {
-    <base href="/app/"/>
+    <base href="/app/@(AppController.LocalStorageCulture)/"/>
   }
 
   <!-- NOTE: we put all css and fonts here because Blazor doesn't handle assets like this well -->

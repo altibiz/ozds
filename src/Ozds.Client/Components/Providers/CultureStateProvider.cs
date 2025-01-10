@@ -27,20 +27,14 @@ public partial class CultureStateProvider : ComponentBase
   {
     var culture = Culture;
 
-    if (culture is null)
-    {
-      culture = GetCultureFromUri();
-    }
+    culture ??= GetCultureFromUri();
 
     if (culture is { })
     {
       await SetCultureToLocalStorage(culture);
     }
 
-    if (culture is null)
-    {
-      culture = await GetCultureFromLocalStorage();
-    }
+    culture ??= await GetCultureFromLocalStorage();
 
     if (culture is null)
     {

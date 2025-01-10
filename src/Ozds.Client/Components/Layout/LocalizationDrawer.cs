@@ -27,10 +27,12 @@ public partial class LocalizationDrawer : OzdsComponentBase
   private void OnCroatianClick()
   {
     CultureState.SetCulture(_croatianCulture);
+    LayoutState.SetLocalizationDrawerOpen(false);
   }
 
   private void OnEnglishClick()
   {
     CultureState.SetCulture(_englishCulture);
+    LayoutState.SetLocalizationDrawerOpen(false);
   }
 }

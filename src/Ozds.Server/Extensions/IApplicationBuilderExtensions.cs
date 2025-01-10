@@ -19,30 +19,36 @@ public static class IApplicationBuilderExtensions
 
     endpoints.MapOzdsServerRoute(
       "/",
-      typeof(IndexController),
-      nameof(IndexController.Index)
+      typeof(AppController),
+      nameof(AppController.Uncultured)
     );
 
     endpoints.MapOzdsServerRoute(
-      "/app/{culture?}/{**catchall}",
+      "/app",
       typeof(AppController),
-      nameof(AppController.Catchall)
+      nameof(AppController.Uncultured)
+    );
+
+    endpoints.MapBlazorHub("/app/{culture}/_blazor");
+
+    endpoints.MapOzdsServerRoute(
+      "/app/{culture}/{**catchall}",
+      typeof(AppController),
+      nameof(AppController.Cultured)
     );
 
     app.UseMiddleware<ExceptionMiddleware>();
 
-    endpoints.MapBlazorHub("/app/{culture}/_blazor");
-
     return app;
   }
 
-  private static void MapOzdsServerRoute(
+  private static ControllerActionEndpointConventionBuilder MapOzdsServerRoute(
     this IEndpointRouteBuilder endpoints,
     string pattern,
     Type controller,
     string action)
   {
-    endpoints.MapAreaControllerRoute(
+    return endpoints.MapAreaControllerRoute(
       areaName: $"{nameof(Ozds)}.{nameof(Server)}",
       name: $"{controller.Namespace}.{controller.Name}.{action}",
       pattern: pattern,

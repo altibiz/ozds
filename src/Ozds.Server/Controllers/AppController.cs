@@ -1,16 +1,23 @@
 using System.Globalization;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Mvc;
-using Ozds.Client.ViewModels;
+using Ozds.Server.ViewModels;
 
 namespace Ozds.Server.Controllers;
 
 public class AppController(IAntiforgery antiforgery) : Controller
 {
-  public IActionResult Catchall([FromRoute] string? culture)
+  public const string LocalStorageCulture = "_";
+
+  public IActionResult Uncultured()
+  {
+    return Redirect($"/app/{LocalStorageCulture}");
+  }
+
+  public IActionResult Cultured(string culture)
   {
     CultureInfo? cultureInfo = null;
-    if (culture is not null)
+    if (culture is { })
     {
       try
       {
@@ -18,12 +25,14 @@ public class AppController(IAntiforgery antiforgery) : Controller
       }
       catch (Exception)
       {
-        // NOTE: let local storage handle the culture
+        if (culture != LocalStorageCulture)
+        {
+          return Redirect($"/app/{LocalStorageCulture}");
+        }
       }
     }
 
-    if (culture is { } && cultureInfo is { }
-      && cultureInfo.TwoLetterISOLanguageName != culture)
+    if (cultureInfo is { } && cultureInfo.TwoLetterISOLanguageName != culture)
     {
       return Redirect($"/app/{cultureInfo.TwoLetterISOLanguageName}");
     }

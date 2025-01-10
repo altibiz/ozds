@@ -1,6 +1,6 @@
 using System.Globalization;
 
-namespace Ozds.Client.ViewModels;
+namespace Ozds.Server.ViewModels;
 
 public class AppViewModel
 {
