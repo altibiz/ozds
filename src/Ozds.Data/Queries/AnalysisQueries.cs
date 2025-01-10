@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Ozds.Data.Attributes;
 using Ozds.Data.Context;
 using Ozds.Data.Entities;
+using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Entities.Base;
 using Ozds.Data.Entities.Composite;
 using Ozds.Data.Entities.Enums;
@@ -109,91 +110,78 @@ public class AnalysisQueries(
       WITH
         initial_measurement_locations AS (
           {initialMeasurementLocationsQuery}
+        ),
+        calculations_and_invoices AS (
+          {MakeCalculationsAndInvoicesQuery(
+            context,
+            "initial_measurement_locations.measurement_location_id",
+            "@fromDate",
+            "@toDate"
+          )}
+        ),
+        last_measurements AS (
+          SELECT
+            abb_b2x_last_measurement.*,
+            schneider_iem3xxx_last_measurement.*
+          FROM
+            initial_measurement_locations
+          LEFT JOIN LATERAL (
+            {MakeLastMeasurementQuery<AbbB2xMeasurementEntity>(
+              context,
+              "initial_measurement_locations.measurement_location_id",
+              "@fromDate",
+              "@toDate"
+            )}
+          ) as abb_b2x_last_measurement ON TRUE
+          LEFT JOIN LATERAL (
+            {MakeLastMeasurementQuery<SchneideriEM3xxxMeasurementEntity>(
+              context,
+              "initial_measurement_locations.measurement_location_id",
+              "@fromDate",
+              "@toDate"
+            )}
+          ) AS schneider_iem3xxx_last_measurement ON TRUE
+        ),
+        monthly_aggregates AS (
+          SELECT
+            abb_b2x_monthly_aggregates.*,
+            schneider_iem3xxx_monthly_aggregates.*
+          FROM
+            initial_measurement_locations
+          LEFT JOIN (
+            {MakeMonthlyAggregatesQuery<AbbB2xAggregateEntity>(
+              context,
+              "initial_measurement_locations.measurement_location_id",
+              "@fromDate",
+              "@toDate"
+            )}
+          ) AS abb_b2x_monthly_aggregates
+          LEFT JOIN (
+            {MakeMonthlyAggregatesQuery<SchneideriEM3xxxAggregateEntity>(
+              context,
+              "initial_measurement_locations.measurement_location_id",
+              "@fromDate",
+              "@toDate"
+            )}
+          ) as schneider_iem3xxx_monthly_aggregates
         )
 
       SELECT
         initial_measurement_locations.*,
-        {context.GetTableName<NetworkUserCalculationEntity>()}.*,
-        {context.GetTableName<NetworkUserInvoiceEntity>()}.*,
-        abb_b2x_aggregates_monthly.*,
-        schneider_iem3xxx_aggregates_monthly.*,
-        abb_b2x_measurements_last.*,
-        schneider_iem3xxx_measurements_last.*
+        calculations_and_invoices.*,
+        last_measurements.*,
+        monthly_aggregates.*
       FROM
         initial_measurement_locations
-      LEFT JOIN {context.GetTableName<NetworkUserCalculationEntity>()}
-        ON {context.GetTableName<NetworkUserCalculationEntity>()}
-          .{context.GetForeignKeyColumnName<NetworkUserCalculationEntity>(
-            nameof(NetworkUserCalculationEntity.NetworkUserMeasurementLocation))}
-          = initial_measurement_locations.measurement_location_id
-        AND {context.GetTableName<NetworkUserCalculationEntity>()}
-          .{context.GetColumnName<NetworkUserCalculationEntity>(
-          nameof(NetworkUserCalculationEntity.FromDate))} >= @fromDate
-        AND {context.GetTableName<NetworkUserCalculationEntity>()}
-          .{context.GetColumnName<NetworkUserCalculationEntity>(
-            nameof(NetworkUserCalculationEntity.FromDate))} < @toDate
-      LEFT JOIN {context.GetTableName<NetworkUserInvoiceEntity>()}
-        ON {context.GetTableName<NetworkUserCalculationEntity>()}
-          .{context.GetForeignKeyColumnName<NetworkUserCalculationEntity>(
-            nameof(NetworkUserCalculationEntity.NetworkUserInvoice))}
-          = {context.GetTableName<NetworkUserInvoiceEntity>()}
-            .{context.GetPrimaryKeyColumnName<NetworkUserInvoiceEntity>()}
-        AND {context.GetTableName<NetworkUserInvoiceEntity>()}
-          .{context.GetColumnName<NetworkUserInvoiceEntity>(
-          nameof(NetworkUserInvoiceEntity.FromDate))} >= @fromDate
-        AND {context.GetTableName<NetworkUserInvoiceEntity>()}
-          .{context.GetColumnName<NetworkUserInvoiceEntity>(
-            nameof(NetworkUserInvoiceEntity.FromDate))} < @toDate
-      LEFT JOIN {context.GetTableName<AbbB2xAggregateEntity>()}
-        AS abb_b2x_aggregates_monthly
-        ON abb_b2x_aggregates_monthly
-          .{context.GetForeignKeyColumnName<AbbB2xAggregateEntity>(
-            nameof(AbbB2xAggregateEntity.MeasurementLocation))}
-          = initial_measurement_locations.measurement_location_id
-        AND abb_b2x_aggregates_monthly
-          .{context.GetColumnName<AbbB2xAggregateEntity>(
-            nameof(AbbB2xAggregateEntity.Timestamp))} >= @fromDate
-        AND abb_b2x_aggregates_monthly
-          .{context.GetColumnName<AbbB2xAggregateEntity>(
-            nameof(AbbB2xAggregateEntity.Timestamp))} < @toDate
-        AND abb_b2x_aggregates_monthly
-          .{context.GetColumnName<AbbB2xAggregateEntity>(
-            nameof(AbbB2xAggregateEntity.Interval))}
-          = '{StringExtensions.ToSnakeCase(nameof(IntervalEntity.Month))}'
-      LEFT JOIN {context.GetTableName<SchneideriEM3xxxAggregateEntity>()}
-        AS schneider_iem3xxx_aggregates_monthly
-        ON schneider_iem3xxx_aggregates_monthly
-          .{context.GetForeignKeyColumnName<SchneideriEM3xxxAggregateEntity>(
-            nameof(SchneideriEM3xxxAggregateEntity.MeasurementLocation))}
-          = initial_measurement_locations.measurement_location_id
-        AND schneider_iem3xxx_aggregates_monthly
-          .{context.GetColumnName<SchneideriEM3xxxAggregateEntity>(
-            nameof(SchneideriEM3xxxAggregateEntity.Timestamp))} >= @fromDate
-        AND schneider_iem3xxx_aggregates_monthly
-          .{context.GetColumnName<SchneideriEM3xxxAggregateEntity>(
-            nameof(SchneideriEM3xxxAggregateEntity.Timestamp))} < @toDate
-        AND schneider_iem3xxx_aggregates_monthly
-          .{context.GetColumnName<SchneideriEM3xxxAggregateEntity>(
-            nameof(SchneideriEM3xxxAggregateEntity.Interval))}
-          = '{StringExtensions.ToSnakeCase(nameof(IntervalEntity.Month))}'
-      LEFT JOIN LATERAL (
-        {MakeAbbB2xMeasurementsLastQuery(
-          context,
-          measurementLocationIdExpression:
-            "initial_measurement_locations.measurement_location_id",
-          fromDateExpression: "@fromDate",
-          toDateExpression: "@toDate"
-        )}
-      ) as abb_b2x_measurements_last ON TRUE
-      LEFT JOIN LATERAL (
-        {MakeSchneideriEM3xxxMeasurementsLastQuery(
-          context,
-          measurementLocationIdExpression:
-            "initial_measurement_locations.measurement_location_id",
-          fromDateExpression: "@fromDate",
-          toDateExpression: "@toDate"
-        )}
-      ) AS schneider_iem3xxx_measurements_last ON TRUE
+      LEFT JOIN calculations_and_invoices
+        ON initial_measurement_locations.id
+          = calculations_and_invoices.measurement_location_id
+      LEFT JOIN last_measurements
+        ON initial_measurement_locations.id
+          = last_measurements.measurement_location_id
+      LEFT JOIN monthly_aggregates
+        ON initial_measurement_locations.id
+          = monthly_aggregates.measurement_location_id
     ";
 
     var parameters = locationId is null ? (object)new
@@ -403,57 +391,100 @@ public class AnalysisQueries(
     ";
   }
 
-  private static string MakeAbbB2xMeasurementsLastQuery(
+  private static string MakeCalculationsAndInvoicesQuery(
     DbContext context,
     string measurementLocationIdExpression,
     string fromDateExpression,
     string toDateExpression
   ) => $@"
-    SELECT *
-    FROM {context.GetTableName<AbbB2xMeasurementEntity>()}
-    WHERE
-      {context.GetTableName<AbbB2xMeasurementEntity>()}
-        .{context.GetForeignKeyColumnName<AbbB2xMeasurementEntity>(
-          nameof(AbbB2xMeasurementEntity.MeasurementLocation))}
+    SELECT
+      {context.GetTableName<NetworkUserCalculationEntity>()}.*,
+      {context.GetTableName<NetworkUserInvoiceEntity>()}.*
+    FROM
+      {context.GetTableName<NetworkUserMeasurementLocationEntity>()}
+    INNER JOIN {context.GetTableName<NetworkUserCalculationEntity>()}
+      ON {context.GetTableName<NetworkUserCalculationEntity>()}
+        .{context.GetForeignKeyColumnName<NetworkUserCalculationEntity>(
+          nameof(NetworkUserCalculationEntity.NetworkUserMeasurementLocation))}
         = {measurementLocationIdExpression}
-      AND {context.GetTableName<AbbB2xMeasurementEntity>()}
-        .{context.GetColumnName<AbbB2xMeasurementEntity>(
-          nameof(AbbB2xMeasurementEntity.Timestamp))} >= {fromDateExpression}
-      AND {context.GetTableName<AbbB2xMeasurementEntity>()}
-        .{context.GetColumnName<AbbB2xMeasurementEntity>(
-          nameof(AbbB2xMeasurementEntity.Timestamp))} < {toDateExpression}
-    ORDER BY {context.GetTableName<AbbB2xMeasurementEntity>()}
-      .{context.GetColumnName<AbbB2xMeasurementEntity>(
-        nameof(AbbB2xMeasurementEntity.Timestamp))} DESC
+        AND {context.GetTableName<NetworkUserCalculationEntity>()}
+          .{context.GetColumnName<NetworkUserCalculationEntity>(
+          nameof(NetworkUserCalculationEntity.FromDate))}
+          >= {fromDateExpression}
+        AND {context.GetTableName<NetworkUserCalculationEntity>()}
+          .{context.GetColumnName<NetworkUserCalculationEntity>(
+            nameof(NetworkUserCalculationEntity.FromDate))}
+          < {toDateExpression}
+    LEFT JOIN {context.GetTableName<NetworkUserInvoiceEntity>()}
+      ON {context.GetTableName<NetworkUserCalculationEntity>()}
+        .{context.GetForeignKeyColumnName<NetworkUserCalculationEntity>(
+          nameof(NetworkUserCalculationEntity.NetworkUserInvoice))}
+        = {context.GetTableName<NetworkUserInvoiceEntity>()}
+          .{context.GetPrimaryKeyColumnName<NetworkUserInvoiceEntity>()}
+      AND {context.GetTableName<NetworkUserInvoiceEntity>()}
+        .{context.GetColumnName<NetworkUserInvoiceEntity>(
+          nameof(NetworkUserInvoiceEntity.FromDate))}
+        >= {fromDateExpression}
+      AND {context.GetTableName<NetworkUserInvoiceEntity>()}
+        .{context.GetColumnName<NetworkUserInvoiceEntity>(
+          nameof(NetworkUserInvoiceEntity.FromDate))}
+        < {toDateExpression}
+  ";
+
+  private static string MakeLastMeasurementQuery<T>(
+    DbContext context,
+    string measurementLocationIdExpression,
+    string fromDateExpression,
+    string toDateExpression
+  )
+  where T : IMeasurementEntity
+  => $@"
+    SELECT *
+    FROM {context.GetTableName<T>()}
+    WHERE
+      {context.GetTableName<T>()}
+        .{context.GetForeignKeyColumnName<T>(
+          nameof(MeasurementEntity.MeasurementLocation))}
+        = {measurementLocationIdExpression}
+      AND {context.GetTableName<T>()}
+        .{context.GetColumnName<T>(
+          nameof(MeasurementEntity.Timestamp))} >= {fromDateExpression}
+      AND {context.GetTableName<T>()}
+        .{context.GetColumnName<T>(
+          nameof(MeasurementEntity.Timestamp))} < {toDateExpression}
+    ORDER BY {context.GetTableName<T>()}
+      .{context.GetColumnName<T>(
+        nameof(MeasurementEntity.Timestamp))} DESC
     LIMIT 1
   ";
 
-  private static string MakeSchneideriEM3xxxMeasurementsLastQuery(
+  private static string MakeMonthlyAggregatesQuery<T>(
     DbContext context,
     string measurementLocationIdExpression,
     string fromDateExpression,
     string toDateExpression
-  ) => $@"
+  )
+  where T : IAggregateEntity
+  => $@"
     SELECT *
-    FROM {context.GetTableName<SchneideriEM3xxxMeasurementEntity>()}
-    WHERE
-      {context.GetTableName<SchneideriEM3xxxMeasurementEntity>()}
-        .{context.GetForeignKeyColumnName<
-          SchneideriEM3xxxMeasurementEntity>(
-          nameof(SchneideriEM3xxxMeasurementEntity.MeasurementLocation))}
+    FROM {context.GetTableName<T>()}
+    WHERE {context.GetTableName<AbbB2xAggregateEntity>()}
+      ON {context.GetTableName<AbbB2xAggregateEntity>()}
+        .{context.GetForeignKeyColumnName<AbbB2xAggregateEntity>(
+          nameof(AbbB2xAggregateEntity.MeasurementLocation))}
         = {measurementLocationIdExpression}
-      AND {context.GetTableName<SchneideriEM3xxxMeasurementEntity>()}
-        .{context.GetColumnName<SchneideriEM3xxxMeasurementEntity>(
-          nameof(SchneideriEM3xxxMeasurementEntity.Timestamp))}
+      AND {context.GetTableName<AbbB2xAggregateEntity>()}
+        .{context.GetColumnName<AbbB2xAggregateEntity>(
+          nameof(AbbB2xAggregateEntity.Timestamp))}
         >= {fromDateExpression}
-      AND {context.GetTableName<SchneideriEM3xxxMeasurementEntity>()}
-        .{context.GetColumnName<SchneideriEM3xxxMeasurementEntity>(
-          nameof(SchneideriEM3xxxMeasurementEntity.Timestamp))}
+      AND {context.GetTableName<AbbB2xAggregateEntity>()}
+        .{context.GetColumnName<AbbB2xAggregateEntity>(
+          nameof(AbbB2xAggregateEntity.Timestamp))}
         < {toDateExpression}
-    ORDER BY {context.GetTableName<SchneideriEM3xxxMeasurementEntity>()}
-      .{context.GetColumnName<SchneideriEM3xxxMeasurementEntity>(
-        nameof(SchneideriEM3xxxMeasurementEntity.Timestamp))} DESC
-    LIMIT 1
+      AND {context.GetTableName<AbbB2xAggregateEntity>()}
+        .{context.GetColumnName<AbbB2xAggregateEntity>(
+          nameof(AbbB2xAggregateEntity.Interval))}
+        = '{StringExtensions.ToSnakeCase(nameof(IntervalEntity.Month))}'
   ";
 
   private static List<AnalysisBasisEntity>
