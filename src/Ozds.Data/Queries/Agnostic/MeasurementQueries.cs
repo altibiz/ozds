@@ -54,7 +54,7 @@ public class MeasurementQueries(
           .Lambda<Func<IMeasurementEntity, bool>>(
             Expression.Equal(
               Expression.Property(
-                intervalParameter,
+                Expression.Convert(intervalParameter, typeof(IAggregateEntity)),
                 nameof(AggregateEntity<MeterEntity>.Interval)),
               Expression.Constant(interval)),
             intervalParameter);

@@ -10,6 +10,9 @@ using Ozds.Data.Attributes;
 
 namespace Ozds.Data.Extensions;
 
+// NITPICK: figure out what to do when discriminated type is different from
+// clr type on complex properties
+
 public static class DbContextDapperCommandExtensions
 {
   private static readonly ConcurrentDictionary<Type, List<PropertyMapping>>
@@ -334,10 +337,12 @@ public static class DbContextDapperCommandExtensions
         );
         if (entityType.ClrType != finalType.ClrType)
         {
-          throw new InvalidOperationException(
-            $"No mapping for discriminator value '{discriminatorValue}'"
-            + $" on entity type '{entityType.Name}'"
-            + $" to type '{finalType.Name}'.");
+#pragma warning disable S125 // Sections of code should not be commented out
+          // throw new InvalidOperationException(
+          //   $"No mapping for discriminator value '{discriminatorValue}'"
+          //   + $" on entity type '{entityType.Name}'"
+          //   + $" to type '{finalType.Name}'.");
+#pragma warning restore S125 // Sections of code should not be commented out
         }
       }
 
