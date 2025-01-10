@@ -3,17 +3,17 @@ using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Mutations.Abstractions;
 using Ozds.Data.Entities.Abstractions;
-using DataMeasurementUpsertMutations = Ozds.Data.Mutations.MeasurementUpsertMutations;
+using DataMeasurementUpsertMutations = Ozds.Data.Mutations.MeasurementMutations;
 
 namespace Ozds.Business.Mutations;
 
-public class MeasurementUpsertMutations(
+public class MeasurementMutations(
   DataMeasurementUpsertMutations mutations,
   AgnosticModelEntityConverter modelEntityConverter,
-  ILogger<MeasurementUpsertMutations> logger
+  ILogger<MeasurementMutations> logger
 ) : IMutations
 {
-  public async Task<List<IMeasurement>> UpsertMeasurements(
+  public async Task<List<IMeasurement>> CreateMeasurements(
     IEnumerable<IMeasurement> measurements,
     CancellationToken cancellationToken
   )
@@ -28,7 +28,7 @@ public class MeasurementUpsertMutations(
       "Upserting {Count} measurements...",
       entities.Count);
     var stopwatch = Stopwatch.StartNew();
-    var result = await mutations.UpsertMeasurements(
+    var result = await mutations.CreateMeasurements(
       entities,
       cancellationToken
     );

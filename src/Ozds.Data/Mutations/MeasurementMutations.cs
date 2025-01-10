@@ -18,9 +18,9 @@ namespace Ozds.Data.Mutations;
 // TODO: enum by model configuration not clr type
 // TODO: determining clauses by column name is flaky - needs to be improved
 
-public class MeasurementUpsertMutations(
+public class MeasurementMutations(
   IDbContextFactory<DataDbContext> factory,
-  ILogger<MeasurementUpsertMutations> logger,
+  ILogger<MeasurementMutations> logger,
   IEntitiesChangingPublisher changingPublisher,
   IEntitiesChangedPublisher changedPublisher
 ) : IMutations
@@ -29,7 +29,7 @@ public class MeasurementUpsertMutations(
   private const int UpsertChunkSize = 50;
   private const int TryInsertChunkSize = 10000;
 
-  public async Task<List<IMeasurementEntity>> UpsertMeasurements(
+  public async Task<List<IMeasurementEntity>> CreateMeasurements(
     IEnumerable<IMeasurementEntity> measurements,
     CancellationToken cancellationToken
   )
@@ -53,7 +53,7 @@ public class MeasurementUpsertMutations(
           .ToList()
       });
 
-    var result = await UpsertMeasurements(
+    var result = await CreateMeasurements(
       context,
       measurementsList,
       cancellationToken
@@ -72,7 +72,7 @@ public class MeasurementUpsertMutations(
     return result;
   }
 
-  internal async Task<List<IMeasurementEntity>> UpsertMeasurements(
+  internal async Task<List<IMeasurementEntity>> CreateMeasurements(
     DataDbContext context,
     IEnumerable<IMeasurementEntity> measurements,
     CancellationToken cancellationToken

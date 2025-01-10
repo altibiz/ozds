@@ -14,7 +14,7 @@ namespace Ozds.Data.Test.Mutations.MeasurementUpsertMutationsTest;
 [Collection(nameof(EphemeralDataDbContextManager))]
 public class UpsertMeasurementsTest(
   EphemeralDataDbContextManager manager,
-  MeasurementUpsertMutations mutations,
+  MeasurementMutations mutations,
   ILogger<UpsertMeasurementsTest> logger
 )
 {
@@ -30,7 +30,7 @@ public class UpsertMeasurementsTest(
     var expected = await factory.CreateMany(CancellationToken.None);
 
     var stopwatch = Stopwatch.StartNew();
-    await mutations.UpsertMeasurements(
+    await mutations.CreateMeasurements(
       context,
       expected,
       CancellationToken.None
@@ -53,7 +53,7 @@ public class UpsertMeasurementsTest(
       CancellationToken.None);
 
     var stopwatch = Stopwatch.StartNew();
-    var actual = await mutations.UpsertMeasurements(
+    var actual = await mutations.CreateMeasurements(
       context,
       expected,
       CancellationToken.None
@@ -74,7 +74,7 @@ public class UpsertMeasurementsTest(
     var measurements = await factory.CreateDerivedNull(CancellationToken.None);
 
     var byproduct = (await mutations
-      .UpsertMeasurements(
+      .CreateMeasurements(
         context,
         measurements,
         CancellationToken.None))
