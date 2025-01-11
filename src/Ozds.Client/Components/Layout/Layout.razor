@@ -14,54 +14,46 @@
     <CascadingFragment T="ThemeState">
       @{
         var footerBackgroundColor = context.IsDarkMode
-          ? context.Theme.PaletteDark.GrayDefault
-          : context.Theme.Palette.GrayDefault;
+          ? context.Theme.PaletteDark.BackgroundGrey
+          : context.Theme.Palette.BackgroundGrey;
       }
 
-      <HeadContent>
-        <style>
-          html, body {
-            height: 100vh;
-          }
+      <style>
+        html, body {
+          height: 100vh;
+        }
 
-          body {
-            display: flex;
-            flex-direction: column;
-          }
+        body {
+          display: flex;
+          flex-direction: column;
+        }
 
-          main {
-            flex: 1;
-          }
+        main {
+          flex: 1;
+        }
 
-          footer {
-            min-height: 120px;
-            margin-top: 32px;
-          }
+        footer {
+          min-height: 120px;
+          margin-top: 32px;
+        }
 
-          footer {
-            background-color: @(footerBackgroundColor);
-          }
-        </style>
-      </HeadContent>
+        footer {
+          background-color: @(footerBackgroundColor);
+        }
+      </style>
 
       <header>
-        <Header />
+        <Header MaxWidth="@MaxWidth.Large" />
       </header>
 
       <main>
-        <MudLayout Class="d-flex flex-column">
-          <Main>
-            @Body
-          </Main>
-        </MudLayout>
+        <Main MaxWidth="@MaxWidth.Large" >
+          @Body
+        </Main>
       </main>
 
       <footer>
-        <MudContainer
-          MaxWidth="MaxWidth.Large"
-          Style="height: 100%; padding-top: 12px;">
-          <Footer />
-        </MudContainer>
+        <Footer MaxWidth="@MaxWidth.Large" />
       </footer>
     </CascadingFragment>
   </LayoutStateProvider>

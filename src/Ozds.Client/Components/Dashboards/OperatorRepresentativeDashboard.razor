@@ -11,17 +11,15 @@
 
 @inherits OzdsOwningComponentBase
 
-<MudContainer MaxWidth="MaxWidth.Large" Class="my-3">
-  <MudGrid>
-    <MudItem xs="12">
-      <MudPaper Class="pa-3">
-        <MeasurementChartControls Meters="@Meters">
-          <MeasurementLineChart Parameters="@context" />
-        </MeasurementChartControls>
-      </MudPaper>
-    </MudItem>
-  </MudGrid>
-</MudContainer>
+<MudGrid>
+  <MudItem xs="12">
+    <MudPaper Class="pa-3">
+      <MeasurementChartControls Meters="@Meters">
+        <MeasurementLineChart Parameters="@context" />
+      </MeasurementChartControls>
+    </MudPaper>
+  </MudItem>
+</MudGrid>
 
 @code {
   [Parameter]

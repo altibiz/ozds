@@ -19,7 +19,7 @@ public partial class NavigationDrawer : OzdsComponentBase, IDisposable
   [Inject]
   private NavigationManager NavigationManager { get; set; } = default!;
 
-  private List<NavigationAttribute.NavigationDescriptor> Descriptors { get; }
+  private List<NavigationDescriptor> Descriptors { get; }
     = NavigationAttribute.GetNavigationDescriptors().ToList();
 
   protected override void OnInitialized()

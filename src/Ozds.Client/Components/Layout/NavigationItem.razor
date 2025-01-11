@@ -30,7 +30,10 @@
 }
 
 <MudNavLink Href="@PageHref(Descriptor.Type)" Match="match">
-  <MudContainer MaxWidth="MaxWidth.Small" Class="d-flex flex-row">
+  <MudContainer
+    MaxWidth="@MaxWidth.Large"
+    Class="@($"d-flex flex-row {Class}")"
+    Style="@($"height: 100%; {Style}")">
     <MudHidden Breakpoint="Breakpoint.Xs">
       <div style="margin-left: -8px;" class="d-flex flex-row align-center">
         <MudIcon Icon="@Descriptor.Navigation.Icon" />
@@ -62,8 +65,16 @@
 
 @code {
   [Parameter]
-  public NavigationAttribute.NavigationDescriptor Descriptor { get; set; }
-    = default!;
+  public NavigationDescriptor Descriptor { get; set; } = default!;
+
+  [Parameter]
+  public MaxWidth MaxWidth { get; set; } = default;
+
+  [Parameter]
+  public string Style { get; set; } = string.Empty;
+
+  [Parameter]
+  public string Class { get; set; } = string.Empty;
 
   [CascadingParameter]
   private LayoutState LayoutState { get; set; } = default!;

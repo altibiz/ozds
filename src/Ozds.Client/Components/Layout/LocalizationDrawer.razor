@@ -15,15 +15,23 @@
   Variant="DrawerVariant.Temporary"
   ClipMode="DrawerClipMode.Never">
   <MudDrawerHeader>
-    <MudText Typo="Typo.h6" Style="text-align: center;">
-      @Translate("Localization")
-    </MudText>
+    <MudContainer
+      MaxWidth="@MaxWidth"
+      Class="@($"d-flex flex-column {Class}")"
+      Style="@($"width: 100%; {Style}")">
+      <MudText Typo="Typo.h6" Style="text-align: center;">
+        @Translate("Localization")
+      </MudText>
+    </MudContainer>
   </MudDrawerHeader>
   <MudDivider />
   <MudDrawerContainer>
     <MudNavMenu>
       <MudNavLink OnClick="OnCroatianClick">
-        <MudContainer MaxWidth="MaxWidth.Small" Class="d-flex flex-row">
+        <MudContainer
+          MaxWidth="@MaxWidth"
+          Class="@($"d-flex flex-column {Class}")"
+          Style="@($"width: 100%; {Style}")">
           <MudHidden Breakpoint="Breakpoint.Xs">
             <div
               style="margin-left: -8px;"
@@ -44,7 +52,10 @@
         </MudContainer>
       </MudNavLink>
       <MudNavLink OnClick="OnEnglishClick">
-        <MudContainer MaxWidth="MaxWidth.Small" Class="d-flex flex-row">
+        <MudContainer
+          MaxWidth="@MaxWidth"
+          Class="@($"d-flex flex-column {Class}")"
+          Style="@($"width: 100%; {Style}")">
           <MudHidden Breakpoint="Breakpoint.Xs">
             <div
               style="margin-left: -8px;"
@@ -67,3 +78,14 @@
     </MudNavMenu>
   </MudDrawerContainer>
 </MudDrawer>
+
+@code {
+  [Parameter]
+  public MaxWidth MaxWidth { get; set; } = MaxWidth.Large;
+
+  [Parameter]
+  public string Style { get; set; } = string.Empty;
+
+  [Parameter]
+  public string Class { get; set; } = string.Empty;
+}

@@ -21,11 +21,11 @@
             @Translate("Current months consumption"):
           </MudText>
         </MudItem>
-        <MudContainer Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
+        <div Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
           <MudText Typo="Typo.h4">
             @(NumericString(Model.ThisMonthConsumption.ActiveEnergy_kWh, 0)) kWh
           </MudText>
-        </MudContainer>
+        </div>
       </MudPaper>
     </MudItem>
 
@@ -36,23 +36,23 @@
             @Translate("Last months consumption"):
           </MudText>
         </MudItem>
-        <MudContainer Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
+        <div Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
           <MudText Typo="Typo.h4">
             @(NumericString(Model.LastMonthConsumption.ActiveEnergy_kWh, 0)) kWh
           </MudText>
-        </MudContainer>
+        </div>
         <MudItem Class="d-flex justify-center align-center" Style="font-size: large; font-weight: bold;">
           <MudText Typo="Typo.h6">
             @Translate("Last months invoice total"):
           </MudText>
         </MudItem>
-        <MudContainer Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
+        <div Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
           <MudText Typo="Typo.h6">
             @(Model.LastMonthExpenses.Total_EUR == 0
               ? Translate("Invoice pending...")
               : NumericString(Model.LastMonthExpenses.Total_EUR) + " EUR")
           </MudText>
-        </MudContainer>
+        </div>
       </MudPaper>
     </MudItem>
     <MudItem xs="12" Class="pa-1">
@@ -86,12 +86,12 @@
             @(Translate("Current months consumption") + ": ")
           </MudText>
         </MudItem>
-        <MudContainer Class="d-flex align-end justify-center" MaxWidth="MaxWidth.Small">
+        <div Class="d-flex align-end justify-center" MaxWidth="MaxWidth.Small">
           <MudText Typo="Typo.h1">
             @(NumericString(Model.ThisMonthConsumption.ActiveEnergy_kWh, 0))
           </MudText>
           <MudText Typo="Typo.h4" Class="mb-3 ml-1">kWh</MudText>
-        </MudContainer>
+        </div>
         <MudItem Class="" Style="font-size: large; font-weight: bold;color: white;">
           <MudText Typo="Typo.h6">
             _____ ______ _ __________ _______:
@@ -111,12 +111,12 @@
             @(Translate("Last months consumption") + ": ")
           </MudText>
         </MudItem>
-        <MudContainer Class="d-flex align-end justify-center" MaxWidth="MaxWidth.Small">
+        <div Class="d-flex align-end justify-center" MaxWidth="MaxWidth.Small">
           <MudText Typo="Typo.h1">
             @(NumericString(Model.LastMonthConsumption.ActiveEnergy_kWh, 0))
           </MudText>
           <MudText Typo="Typo.h4" Class="mb-3 ml-1">kWh</MudText>
-        </MudContainer>
+        </div>
         <MudItem Class="" Style="font-size: large; font-weight: bold;">
           <MudText Typo="Typo.h6">
             @(Translate("Last months invoice total") + ": ")

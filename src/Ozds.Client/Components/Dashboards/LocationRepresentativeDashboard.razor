@@ -18,11 +18,11 @@
             @Translate("Last months consumption"):
           </MudText>
         </MudItem>
-        <MudContainer Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
+        <div Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
           <MudText Typo="Typo.h4">
             @(NumericString(Model.LastMonthConsumption.ActiveEnergy_kWh, 0)) kWh
           </MudText>
-        </MudContainer>
+        </div>
       </MudPaper>
     </MudItem>
 
@@ -33,11 +33,9 @@
             @Translate("Current months consumption"):
           </MudText>
         </MudItem>
-        <MudContainer Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
-          <MudText Typo="Typo.h4">
-            @(NumericString(Model.ThisMonthConsumption.ActiveEnergy_kWh, 0)) kWh
-          </MudText>
-        </MudContainer>
+        <MudText Typo="Typo.h4">
+          @(NumericString(Model.ThisMonthConsumption.ActiveEnergy_kWh, 0)) kWh
+        </MudText>
       </MudPaper>
     </MudItem>
 
@@ -48,11 +46,11 @@
             @Translate("Active power"):
           </MudText>
         </MudItem>
-        <MudContainer Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
+        <div Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
           <MudText Typo="Typo.h4">
             @NumericString(Model.Load.ActivePower_kW) kW
           </MudText>
-        </MudContainer>
+        </div>
       </MudPaper>
     </MudItem>
   </MudGrid>
@@ -67,12 +65,12 @@
             @(Translate("Last months consumption") + ": ")
           </MudText>
         </MudItem>
-        <MudContainer Class="d-flex align-end justify-center pb-10" MaxWidth="MaxWidth.Small">
+        <div Class="d-flex align-end justify-center pb-10" MaxWidth="MaxWidth.Small">
           <MudText Typo="Typo.h1">
             @(NumericString(Model.LastMonthConsumption.ActiveEnergy_kWh, 0))
           </MudText>
           <MudText Typo="Typo.h4" Class="mb-3 ml-1">kWh</MudText>
-        </MudContainer>
+        </div>
       </MudPaper>
     </MudItem>
 
@@ -83,12 +81,12 @@
             @(Translate("Current months consumption") + ": ")
           </MudText>
         </MudItem>
-        <MudContainer Class="d-flex align-end justify-center pb-10" MaxWidth="MaxWidth.Small">
+        <div Class="d-flex align-end justify-center pb-10" MaxWidth="MaxWidth.Small">
           <MudText Typo="Typo.h1">
             @(NumericString(Model.ThisMonthConsumption.ActiveEnergy_kWh, 0))
           </MudText>
           <MudText Typo="Typo.h4" Class="mb-3 ml-1">kWh</MudText>
-        </MudContainer>
+        </div>
       </MudPaper>
     </MudItem>
 
@@ -99,12 +97,12 @@
             @(Translate("Active power") + ": ")
           </MudText>
         </MudItem>
-        <MudContainer Class="d-flex align-end justify-center pb-10" MaxWidth="MaxWidth.Small">
+        <div Class="d-flex align-end justify-center pb-10" MaxWidth="MaxWidth.Small">
           <MudText Typo="Typo.h1">
             @(NumericString(Model.Load.ActivePower_kW))
           </MudText>
           <MudText Typo="Typo.h4" Class="mb-3 ml-1">kW</MudText>
-        </MudContainer>
+        </div>
       </MudPaper>
     </MudItem>
   </MudGrid>

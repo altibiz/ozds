@@ -3,24 +3,23 @@
 
 @namespace Ozds.Client.Components.Layout
 
-<MudHidden Breakpoint="Breakpoint.SmAndDown">
-  <MudContainer
-    MaxWidth="MaxWidth.Large"
-    Class="mt-8 relative"
-    Style="flex: 1;">
-    @ChildContent
-  </MudContainer>
-</MudHidden>
-<MudHidden Breakpoint="Breakpoint.MdAndUp">
-  <MudContainer
-    MaxWidth="MaxWidth.Large"
-    Class="mt-4 relative"
-    Style="flex: 1;">
-    @ChildContent
-  </MudContainer>
-</MudHidden>
+<MudContainer
+  MaxWidth="@MaxWidth"
+  Class="@Class"
+  Style="@Style">
+  @ChildContent
+</MudContainer>
 
 @code {
   [Parameter]
   public RenderFragment? ChildContent { get; set; }
+
+  [Parameter]
+  public MaxWidth MaxWidth { get; set; } = MaxWidth.Large;
+
+  [Parameter]
+  public string Style { get; set; } = string.Empty;
+
+  [Parameter]
+  public string Class { get; set; } = string.Empty;
 }

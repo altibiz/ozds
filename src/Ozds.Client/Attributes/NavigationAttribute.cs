@@ -19,7 +19,13 @@ public class NavigationAttribute : Attribute
 
   public required RoleModel[] Allows { get; set; }
 
+  private static readonly List<NavigationDescriptor> _navigationDescriptors =
+    CreateNavigationDescriptors().ToList();
+
   public static IEnumerable<NavigationDescriptor> GetNavigationDescriptors()
+    => _navigationDescriptors;
+
+  private static IEnumerable<NavigationDescriptor> CreateNavigationDescriptors()
   {
     var descriptors = typeof(NavigationAttribute).Assembly
       .GetTypes()
@@ -63,15 +69,15 @@ public class NavigationAttribute : Attribute
 
     return result;
   }
+}
 
-  public class NavigationDescriptor
-  {
-    public required Type Type { get; set; }
+public class NavigationDescriptor
+{
+  public required Type Type { get; set; }
 
-    public required NavigationAttribute Navigation { get; set; }
+  public required NavigationAttribute Navigation { get; set; }
 
-    public required RouteAttribute Route { get; set; }
+  public required RouteAttribute Route { get; set; }
 
-    public List<NavigationDescriptor> Children { get; set; } = new();
-  }
+  public List<NavigationDescriptor> Children { get; set; } = new();
 }

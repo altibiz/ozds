@@ -16,22 +16,24 @@ public record ThemeState(
       Palette = new PaletteLight
       {
         Primary = "#0072bc",
-        Secondary = Colors.DeepPurple.Accent2,
-        Background = "#e3e3e3",
         AppbarBackground = "#0072bc",
-        DrawerBackground = "#FFF",
-        DrawerText = "rgba(0,0,0, 0.7)",
-        Success = "#06d79c"
+      },
+      PaletteDark = new PaletteDark
+      {
+        Primary = "#23a8ff",
+        AppbarBackground = "#0072bc",
       },
       LayoutProperties = new LayoutProperties
       {
         DefaultBorderRadius = "0px"
       },
+      Shadows = new Shadow(),
+      ZIndex = new ZIndex(),
       Typography = new Typography
       {
         Default = new Default
         {
-          FontFamily = ["Montserrat", "Helvetica", "Arial", "sans-serif"],
+          FontFamily = ["Roboto"],
           FontSize = ".875rem",
           FontWeight = 400,
           LineHeight = 1.43,
@@ -39,7 +41,7 @@ public record ThemeState(
         },
         H1 = new H1
         {
-          FontFamily = ["Montserrat", "Helvetica", "Arial", "sans-serif"],
+          FontFamily = ["Roboto"],
           FontSize = "6rem",
           FontWeight = 300,
           LineHeight = 1.167,
@@ -47,7 +49,7 @@ public record ThemeState(
         },
         H2 = new H2
         {
-          FontFamily = ["Montserrat", "Helvetica", "Arial", "sans-serif"],
+          FontFamily = ["Roboto"],
           FontSize = "3.75rem",
           FontWeight = 300,
           LineHeight = 1.2,
@@ -55,7 +57,7 @@ public record ThemeState(
         },
         H3 = new H3
         {
-          FontFamily = ["Montserrat", "Helvetica", "Arial", "sans-serif"],
+          FontFamily = ["Roboto"],
           FontSize = "3rem",
           FontWeight = 400,
           LineHeight = 1.167,
@@ -63,7 +65,7 @@ public record ThemeState(
         },
         H4 = new H4
         {
-          FontFamily = ["Montserrat", "Helvetica", "Arial", "sans-serif"],
+          FontFamily = ["Roboto"],
           FontSize = "2.125rem",
           FontWeight = 400,
           LineHeight = 1.235,
@@ -71,7 +73,7 @@ public record ThemeState(
         },
         H5 = new H5
         {
-          FontFamily = ["Montserrat", "Helvetica", "Arial", "sans-serif"],
+          FontFamily = ["Roboto"],
           FontSize = "1.5rem",
           FontWeight = 400,
           LineHeight = 1.334,
@@ -79,7 +81,7 @@ public record ThemeState(
         },
         H6 = new H6
         {
-          FontFamily = ["Montserrat", "Helvetica", "Arial", "sans-serif"],
+          FontFamily = ["Roboto"],
           FontSize = "1.25rem",
           FontWeight = 400,
           LineHeight = 1.6,
@@ -87,7 +89,7 @@ public record ThemeState(
         },
         Button = new Button
         {
-          FontFamily = ["Montserrat", "Helvetica", "Arial", "sans-serif"],
+          FontFamily = ["Roboto"],
           FontSize = ".875rem",
           FontWeight = 500,
           LineHeight = 1.75,
@@ -95,7 +97,7 @@ public record ThemeState(
         },
         Body1 = new Body1
         {
-          FontFamily = ["Montserrat", "Helvetica", "Arial", "sans-serif"],
+          FontFamily = ["Roboto"],
           FontSize = "1rem",
           FontWeight = 400,
           LineHeight = 1.5,
@@ -103,7 +105,7 @@ public record ThemeState(
         },
         Body2 = new Body2
         {
-          FontFamily = ["Montserrat", "Helvetica", "Arial", "sans-serif"],
+          FontFamily = ["Roboto"],
           FontSize = ".875rem",
           FontWeight = 400,
           LineHeight = 1.43,
@@ -111,7 +113,7 @@ public record ThemeState(
         },
         Caption = new Caption
         {
-          FontFamily = ["Montserrat", "Helvetica", "Arial", "sans-serif"],
+          FontFamily = ["Roboto"],
           FontSize = ".75rem",
           FontWeight = 400,
           LineHeight = 1.66,
@@ -119,15 +121,13 @@ public record ThemeState(
         },
         Subtitle2 = new Subtitle2
         {
-          FontFamily = ["Montserrat", "Helvetica", "Arial", "sans-serif"],
+          FontFamily = ["Roboto"],
           FontSize = ".875rem",
           FontWeight = 500,
           LineHeight = 1.57,
           LetterSpacing = ".00714em"
         }
       },
-      Shadows = new Shadow(),
-      ZIndex = new ZIndex()
     };
   }
 }

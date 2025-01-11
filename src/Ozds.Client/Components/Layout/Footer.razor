@@ -3,8 +3,23 @@
 
 @namespace Ozds.Client.Components.Layout
 
-<div class="d-flex flex-row">
+<MudContainer
+  MaxWidth="@MaxWidth"
+  Class="@($"d-flex flex-row py-2 {Class}")"
+  Style="@($"height: 100%; {Style}")">
   <MudText Typo="Typo.body1" Style="margin-left: auto">
     © 2024 HELB
   </MudText>
-</div>
+</MudContainer>
+
+@code {
+  [Parameter]
+  public MaxWidth MaxWidth { get; set; } = MaxWidth.Large;
+
+  [Parameter]
+  public string Style { get; set; } = string.Empty;
+
+  [Parameter]
+  public string Class { get; set; } = string.Empty;
+}
+

@@ -7,13 +7,13 @@
 @inherits OzdsComponentBase
 
 <MudToolBar
-  Gutters="false"
+  DisableGutters
   Style="background-color: var(--mud-palette-appbar-background);"
   Class="mud-elevation-4">
   <MudContainer
-    Style="height: 100%;"
-    MaxWidth="MaxWidth.Large"
-    Class="d-flex flex-row">
+    MaxWidth="@MaxWidth.Large"
+    Class="@($"d-flex flex-row {Class}")"
+    Style="@($"height: 100%; {Style}")">
     <MudHidden Breakpoint="Breakpoint.SmAndDown">
       <MudButton
         OnClick="NavigateToIndex"
@@ -31,7 +31,7 @@
         Style="margin-left: -12px;"
         Class="d-flex align-center">
         <MudImage
-          Src="/favicon.ico"
+          Src="/favicon.png"
           Alt="Helb"
           Style="height: 40px;" />
       </MudButton>
@@ -100,3 +100,14 @@
     </div>
   </MudContainer>
 </MudToolBar>
+
+@code {
+  [Parameter]
+  public MaxWidth MaxWidth { get; set; } = default;
+
+  [Parameter]
+  public string Style { get; set; } = string.Empty;
+
+  [Parameter]
+  public string Class { get; set; } = string.Empty;
+}

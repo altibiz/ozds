@@ -12,11 +12,11 @@
 
 @inherits OzdsComponentBase
 
-<MudToolBar Gutters="false">
+<MudToolBar DisableGutters>
   <MudContainer
-    Style="height: 100%;"
-    MaxWidth="MaxWidth.Large"
-    Class="d-flex flex-row">
+    MaxWidth="@MaxWidth.Large"
+    Class="@($"d-flex flex-row {Class}")"
+    Style="@($"height: 100%; {Style}")">
     <MudIconButton
       Icon="@Icons.Material.Outlined.Menu"
       Style="margin-left: -12px;"
@@ -24,21 +24,44 @@
     <MudSpacer />
     @if (NotificationsState.Notifications.Count > 0)
     {
+      var iconSize = 16;
+      var fontSize = 10;
+
       <MudButton
         Size="MudBlazor.Size.Small"
-        Style="margin-right: -20px;"
+        Class="p-2"
+        Style="margin-right: -10px; position: relative;"
         OnClick="NavigateToNotifications">
         <MudIcon Icon="@Icons.Material.Filled.NotificationsActive"/>
-        <MudItem>
-          <MudIcon Icon="@Icons.Material.Filled.Circle"/>
-          <MudText>@NotificationsState.Notifications.Count</MudText>
-        </MudItem>
+        <MudIcon
+          Style="@($@"
+            width: {iconSize}px;
+            height: {iconSize}px;
+            position: absolute;
+            left: 32px;
+            top: 16px;
+          ")"
+          Color="@Color.Error"
+          Icon="@Icons.Material.Filled.Circle"/>
+        <MudText
+          Style="@($@"
+            width: {iconSize}px;
+            height: {iconSize}px;
+            position: absolute;
+            font-size: {fontSize}px;
+            left: 32px;
+            top: 16px;
+          ")"
+          Typo="@Typo.button">
+          @NotificationsState.Notifications.Count
+        </MudText>
       </MudButton>
     }
     else
     {
       <MudButton
         Size="MudBlazor.Size.Small"
+        Class="p-2"
         Style="margin-right: -20px;"
         OnClick="NavigateToNotifications">
         <MudIcon Icon="@Icons.Material.Filled.NotificationsNone" />
@@ -46,3 +69,14 @@
     }
   </MudContainer>
 </MudToolBar>
+
+@code {
+  [Parameter]
+  public MaxWidth MaxWidth { get; set; } = default;
+
+  [Parameter]
+  public string Style { get; set; } = string.Empty;
+
+  [Parameter]
+  public string Class { get; set; } = string.Empty;
+}

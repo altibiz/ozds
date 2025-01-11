@@ -3,20 +3,29 @@
 
 @namespace Ozds.Client.Components.Layout
 
-<UserToolbar />
+<UserToolbar MaxWidth="@MaxWidth" Class="@Class" Style="@Style" />
 @if (RepresentativeState?.Representative is { })
 {
-  <RepresentativeToolbar />
+  <RepresentativeToolbar MaxWidth="@MaxWidth" Class="@Class" Style="@Style" />
 }
 
-<LocalizationDrawer />
-<UserDrawer />
+<LocalizationDrawer MaxWidth="@MaxWidth" Class="@Class" Style="@Style" />
+<UserDrawer MaxWidth="@MaxWidth" />
 @if (RepresentativeState?.Representative is { })
 {
-  <NavigationDrawer />
+  <NavigationDrawer MaxWidth="@MaxWidth" Class="@Class" Style="@Style" />
 }
 
 @code {
   [CascadingParameter]
   private RepresentativeState? RepresentativeState { get; set; }
+
+  [Parameter]
+  public MaxWidth MaxWidth { get; set; } = MaxWidth.Large;
+
+  [Parameter]
+  public string Style { get; set; } = string.Empty;
+
+  [Parameter]
+  public string Class { get; set; } = string.Empty;
 }

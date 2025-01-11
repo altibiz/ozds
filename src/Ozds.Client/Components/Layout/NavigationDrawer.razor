@@ -19,7 +19,10 @@
   ClipMode="DrawerClipMode.Never"
   Style="height: 100vh;">
   <MudDrawerHeader Style="padding-inline: 0;">
-    <MudContainer MaxWidth="MaxWidth.Small" Class="d-flex flex-row">
+    <MudContainer
+      MaxWidth="@MaxWidth"
+      Class="@($"d-flex flex-column {Class}")"
+      Style="@($"width: 100%; {Style}")">
       <MudImage
         Src="/favicon.ico"
         Alt="Helb"
@@ -39,9 +42,27 @@
       <MudNavMenu>
         @foreach (var descriptor in Descriptors)
         {
-          <NavigationItem Descriptor="descriptor" />
-          <MudDivider Style="width: 80%; margin-left: 10%;" />
+          <NavigationItem
+            Descriptor="descriptor"
+          />
+          <MudContainer
+            MaxWidth="@MaxWidth"
+            Class="@Class"
+            Style="@Style">
+            <MudDivider />
+          </MudContainer>
         }
       </MudNavMenu>
     </MudDrawerContainer>
 </MudDrawer>
+
+@code {
+  [Parameter]
+  public MaxWidth MaxWidth { get; set; } = default;
+
+  [Parameter]
+  public string Style { get; set; } = string.Empty;
+
+  [Parameter]
+  public string Class { get; set; } = string.Empty;
+}
