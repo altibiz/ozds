@@ -21,10 +21,10 @@
   <MudDrawerHeader Style="padding-inline: 0;">
     <MudContainer
       MaxWidth="@MaxWidth"
-      Class="@($"d-flex flex-column {Class}")"
+      Class="@($"d-flex flex-row {Class}")"
       Style="@($"width: 100%; {Style}")">
       <MudImage
-        Src="/favicon.ico"
+        Src="/favicon.png"
         Alt="Helb"
         Style="height: calc(var(--mud-appbar-height) - 24px);"/>
       <MudSpacer />
@@ -45,12 +45,6 @@
           <NavigationItem
             Descriptor="descriptor"
           />
-          <MudContainer
-            MaxWidth="@MaxWidth"
-            Class="@Class"
-            Style="@Style">
-            <MudDivider />
-          </MudContainer>
         }
       </MudNavMenu>
     </MudDrawerContainer>

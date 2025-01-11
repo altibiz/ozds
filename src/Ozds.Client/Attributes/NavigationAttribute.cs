@@ -44,6 +44,7 @@ public class NavigationAttribute : Attribute
             Navigation = navigation,
             Route = route
           })))
+      .OrderBy(x => x.Navigation.Order)
       .ToList();
 
     var lastLayer = descriptors

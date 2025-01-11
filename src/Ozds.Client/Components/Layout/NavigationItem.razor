@@ -29,39 +29,69 @@
     : NavLinkMatch.All;
 }
 
-<MudNavLink Href="@PageHref(Descriptor.Type)" Match="match">
-  <MudContainer
-    MaxWidth="@MaxWidth.Large"
-    Class="@($"d-flex flex-row {Class}")"
-    Style="@($"height: 100%; {Style}")">
-    <MudHidden Breakpoint="Breakpoint.Xs">
-      <div style="margin-left: -8px;" class="d-flex flex-row align-center">
-        <MudIcon Icon="@Descriptor.Navigation.Icon" />
-      </div>
-    </MudHidden>
-    <MudHidden Breakpoint="Breakpoint.SmAndUp">
-      <div style="margin-left: -28px;" class="d-flex flex-row align-center">
-        <MudIcon Icon="@Descriptor.Navigation.Icon" />
-      </div>
-    </MudHidden>
-    <MudText Class="ml-4">
-      @Translate(Descriptor.Navigation.Title)
-    </MudText>
-  </MudContainer>
+<div style="position: relative">
+  <style>
+    a {
+      padding-inline: 0 !important;
+    }
 
-  @if (Descriptor.Children.Any())
-  {
-    <MudNavGroup
-      Expanded="@LayoutState.IsNavigationDrawerOpen"
-      Title="@Translate(Descriptor.Navigation.Title)"
-      Style="justify-self: center; max-width: 600px; font-size:larger;">
-      @foreach (var child in Descriptor.Children)
+    .mud-nav-link-text {
+      margin-inline: 0 !important;
+    }
+  </style>
+  <MudNavLink
+    Href="@PageHref(Descriptor.Type)"
+    Match="match">
+    <MudContainer
+      MaxWidth="@MaxWidth"
+      Class="@($"d-flex flex-row {Class}")"
+      Style="@($"height: 100%; {Style}")">
+      <MudHidden Breakpoint="Breakpoint.Xs">
+        <div class="d-flex flex-row align-center">
+          <MudIcon Icon="@Descriptor.Navigation.Icon" />
+        </div>
+      </MudHidden>
+      <MudHidden Breakpoint="Breakpoint.SmAndUp">
+        <div class="d-flex flex-row align-center">
+          <MudIcon Icon="@Descriptor.Navigation.Icon" />
+        </div>
+      </MudHidden>
+      <MudText Class="ml-4">
+        @Translate(Descriptor.Navigation.Title)
+      </MudText>
+      @if (Descriptor.Children.Any())
       {
-        <NavigationItem Descriptor="child" />
+        <MudSpacer />
+        <MudButton
+          Variant="Variant.Text"
+          Style="margin-right: -24px;"
+          OnClick="@(() => _expanded = !_expanded)">
+          <MudIcon
+            Icon="@(_expanded
+              ? Icons.Material.Filled.ExpandLess
+              : Icons.Material.Filled.ExpandMore)"
+            Size="@Size.Small" />
+        </MudButton>
       }
-    </MudNavGroup>
-  }
-</MudNavLink>
+    </MudContainer>
+  </MudNavLink>
+</div>
+
+@if (Descriptor.Children.Any() && _expanded)
+{
+  <div>
+    @foreach (var child in Descriptor.Children)
+    {
+      <NavigationItem Descriptor="child" />
+    }
+    <MudContainer
+      MaxWidth="@MaxWidth"
+      Class="@Class"
+      Style="@Style">
+      <MudDivider />
+    </MudContainer>
+  </div>
+}
 
 @code {
   [Parameter]
@@ -81,4 +111,6 @@
 
   [CascadingParameter]
   private RepresentativeState RepresentativeState { get; set; } = default!;
+
+  private bool _expanded = false;
 }
