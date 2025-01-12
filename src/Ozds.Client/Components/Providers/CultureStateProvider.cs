@@ -1,11 +1,12 @@
 using System.Globalization;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
+using Ozds.Client.Components.Base;
 using Ozds.Client.State;
 
 namespace Ozds.Client.Components.Providers;
 
-public partial class CultureStateProvider : ComponentBase
+public partial class CultureStateProvider : OzdsComponentBase
 {
   [Parameter]
   public RenderFragment? ChildContent { get; set; }
@@ -94,7 +95,10 @@ public partial class CultureStateProvider : ComponentBase
   private async Task SetCultureToLocalStorage(CultureInfo culture)
   {
     await LocalStorageService
-      .SetItemAsync(CultureKey, culture.TwoLetterISOLanguageName);
+      .SetItemAsync(
+        CultureKey,
+        culture.TwoLetterISOLanguageName,
+        CancellationToken);
   }
 
   private CultureInfo? GetCultureFromUri()
@@ -109,7 +113,9 @@ public partial class CultureStateProvider : ComponentBase
 
   private async Task<CultureInfo?> GetCultureFromLocalStorage()
   {
-    return await LocalStorageService.GetItemAsync<string>(CultureKey)
+    return await LocalStorageService.GetItemAsync<string>(
+      CultureKey,
+      CancellationToken)
       is { } cultureString
         ? ParseCultureString(cultureString)
         : default;

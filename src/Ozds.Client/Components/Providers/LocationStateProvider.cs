@@ -104,11 +104,18 @@ public partial class LocationStateProvider : OzdsOwningComponentBase
 
   private async Task SetLocationToLocalStorage(string? location)
   {
-    await LocalStorageService.SetItemAsync(LocationKey, location);
+    await LocalStorageService.SetItemAsync(
+      LocationKey,
+      location,
+      CancellationToken
+    );
   }
 
   private async Task<string?> GetLocationFromLocalStorage()
   {
-    return await LocalStorageService.GetItemAsync<string>(LocationKey);
+    return await LocalStorageService.GetItemAsync<string>(
+      LocationKey,
+      CancellationToken
+    );
   }
 }
