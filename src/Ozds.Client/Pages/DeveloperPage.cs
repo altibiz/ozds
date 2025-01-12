@@ -13,9 +13,17 @@ public partial class DeveloperPage : OzdsComponentBase
   [Inject]
   private IHostEnvironment Environment { get; set; } = default!;
 
+  [Inject]
+  private IHostApplicationLifetime ApplicationLifetime { get; set; } = default!;
+
   private void OnThrowClick()
   {
     Logger.LogDebug("Throw clicked");
     throw new InvalidOperationException();
+  }
+
+  private void OnStopClick()
+  {
+    ApplicationLifetime.StopApplication();
   }
 }

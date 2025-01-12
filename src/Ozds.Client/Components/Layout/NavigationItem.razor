@@ -11,8 +11,7 @@
 
 @inject IHostEnvironment Environment
 
-@if (!Environment.IsDevelopment()
-  || Descriptor.Navigation.Developer)
+@if (Descriptor.Navigation.Developer && !Environment.IsDevelopment())
 {
   return;
 }

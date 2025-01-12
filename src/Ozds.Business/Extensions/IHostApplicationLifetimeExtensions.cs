@@ -1,6 +1,6 @@
 namespace Ozds.Business.Extensions;
 
-public static class IHosApplicationLifetimeExtensions
+public static class IHostApplicationLifetimeExtensions
 {
   public static async Task<bool> WaitForAppStartup(
     this IHostApplicationLifetime lifetime,
