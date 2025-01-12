@@ -25,7 +25,7 @@ public partial class NotificationPage : OzdsOwningComponentBase
       .MarkNotificationAsSeen(
         model.Id,
         RepresentativeState.Representative.Id,
-        CancellationToken.None);
+        CancellationToken);
 
     NavigateToPage<NotificationsPage>();
   }
@@ -45,14 +45,14 @@ public partial class NotificationPage : OzdsOwningComponentBase
       ? null
       : await ScopedServices
           .GetRequiredService<NotificationQueries>()
-          .ReadSingle<INotification>(Id, CancellationToken.None);
+          .ReadSingle<INotification>(Id, CancellationToken);
   }
 
   private async Task OnCreateAsync(INotification model)
   {
     await ScopedServices
       .GetRequiredService<NotificationMutations>()
-      .Create(model, CancellationToken.None);
+      .Create(model, CancellationToken);
 
     NavigateToPage<NotificationsPage>();
   }

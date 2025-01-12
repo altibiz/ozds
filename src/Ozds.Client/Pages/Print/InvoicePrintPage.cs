@@ -15,6 +15,6 @@ public partial class InvoicePrintPage : OzdsOwningComponentBase
   {
     return ScopedServices
       .GetRequiredService<CalculatedInvoiceQueries>()
-      .ReadCalculatedNetworkUserInvoice(Id, CancellationToken.None);
+      .ReadCalculatedNetworkUserInvoice(Id, CancellationToken);
   }
 }

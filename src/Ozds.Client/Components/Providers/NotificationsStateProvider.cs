@@ -37,7 +37,7 @@ public partial class NotificationsStateProvider : OzdsOwningComponentBase
     var notifications = await notificationQueries
       .ReadForRecipient<INotification>(
         RepresentativeState.Representative.Id,
-        CancellationToken.None
+        CancellationToken
       );
 
     var state = new NotificationsState(

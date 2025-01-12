@@ -28,7 +28,7 @@ public partial class NetworkUserPage : OzdsOwningComponentBase
       RepresentativeState.Representative.Id,
       RepresentativeState.Representative.Role,
       Id,
-      CancellationToken.None
+      CancellationToken
     );
 
     return networkUser;

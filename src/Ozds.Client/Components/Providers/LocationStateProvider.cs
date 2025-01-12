@@ -58,7 +58,7 @@ public partial class LocationStateProvider : OzdsOwningComponentBase
       var locations = await locationQueries.ReadAllLocationsByRepresentativeId(
         RepresentativeState.Representative.Id,
         RepresentativeState.Representative.Role,
-        CancellationToken.None
+        CancellationToken
       );
 
       _representativeLocations = locations;
@@ -72,7 +72,7 @@ public partial class LocationStateProvider : OzdsOwningComponentBase
         RepresentativeState.Representative.Id,
         RepresentativeState.Representative.Role,
         locationId,
-        CancellationToken.None,
+        CancellationToken,
         deleted: false
       );
     }

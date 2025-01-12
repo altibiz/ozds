@@ -100,7 +100,7 @@ public partial class Paging<T> : OzdsOwningComponentBase
             .ReadDynamic(
               typeof(T),
               _pageNumber,
-              CancellationToken.None,
+              CancellationToken,
               pageCount: PageCount)
             .ContinueWith(x => x.Result.Items
               .OfType<T>()
@@ -111,7 +111,7 @@ public partial class Paging<T> : OzdsOwningComponentBase
               .ReadDynamic(
                 typeof(T),
                 _pageNumber,
-                CancellationToken.None,
+                CancellationToken,
                 pageCount: PageCount)
               .ContinueWith(x => x.Result.Items
                 .OfType<T>()

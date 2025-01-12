@@ -57,7 +57,7 @@ public partial class AnalysisStateProvider : OzdsOwningComponentBase
                 aYearAgo,
                 now,
                 LocationState.Location?.Id,
-                CancellationToken.None
+                CancellationToken
               );
 
             _state = new AnalysisState(new(() => analysisBases));

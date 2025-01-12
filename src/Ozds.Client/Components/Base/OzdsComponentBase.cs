@@ -11,12 +11,21 @@ using Ozds.Business.Time;
 
 namespace Ozds.Client.Components.Base;
 
-public abstract class OzdsComponentBase : ComponentBase
+#pragma warning disable S3881 // "IDisposable" should be implemented correctly
+public abstract class OzdsComponentBase : ComponentBase, IDisposable
 {
   private static readonly JsonSerializerOptions _jsonSerializerOptions = new()
   {
     WriteIndented = true
   };
+
+  private static readonly CancellationTokenSource _cancelledTokenSource =
+    CreateCancelledTokenSource();
+
+  protected CancellationToken CancellationToken =>
+    cancellationTokenSource?.Token ?? _cancelledTokenSource.Token;
+
+  protected bool IsDisposed { get; private set; }
 
   [Inject]
   private ILocalizer Localizer { get; set; } = default!;
@@ -29,6 +38,8 @@ public abstract class OzdsComponentBase : ComponentBase
 
   [Inject]
   private TemplateBinderFactory TemplateBinderFactory { get; set; } = default!;
+
+  private CancellationTokenSource? cancellationTokenSource = new();
 
   protected static string NumericString(decimal? number, int places = 2)
   {
@@ -183,4 +194,37 @@ public abstract class OzdsComponentBase : ComponentBase
     var @base = new Uri(NavigationManager.BaseUri).AbsolutePath;
     return @base + uri.TrimStart('/');
   }
+
+#pragma warning disable CA1816
+  void IDisposable.Dispose()
+  {
+    if (!IsDisposed)
+    {
+      Dispose(true);
+
+      if (cancellationTokenSource is { })
+      {
+        cancellationTokenSource.Cancel();
+        cancellationTokenSource.Dispose();
+        cancellationTokenSource = null;
+      }
+
+      IsDisposed = true;
+    }
+  }
+#pragma warning restore CA1816
+
+#pragma warning disable S2953
+  protected virtual void Dispose(bool disposing)
+  {
+  }
+#pragma warning restore S2953
+
+  private static CancellationTokenSource CreateCancelledTokenSource()
+  {
+    var cancellationTokenSource = new CancellationTokenSource();
+    cancellationTokenSource.Cancel();
+    return cancellationTokenSource;
+  }
 }
+#pragma warning restore S3881 // "IDisposable" should be implemented correctly

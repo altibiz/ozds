@@ -53,6 +53,7 @@ public partial class MeasurementChartControls : OzdsOwningComponentBase
       DataModelsChangedSubscriber.Unsubscribe(OnDataModelsChanged);
       MeasurementsBufferedSubscriber.Unsubscribe(OnMeasurementsBuffered);
     }
+    base.Dispose(disposing);
   }
 
   protected override async Task OnParametersSetAsync()
@@ -67,7 +68,7 @@ public partial class MeasurementChartControls : OzdsOwningComponentBase
       _parameters.Resolution,
       _parameters.Multiplier,
       pageNumber: 1,
-      cancellationToken: CancellationToken.None,
+      cancellationToken: CancellationToken,
       fromDate: fromDate,
       toDate: toDate
     );

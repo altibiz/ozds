@@ -28,7 +28,7 @@ public partial class RepresentativeStateProvider : OzdsOwningComponentBase
     var representative = await representativeQueries
       .RepresentativeByUserId(
         UserState.User.Id,
-        CancellationToken.None);
+        CancellationToken);
     if (representative is null)
     {
       return default;

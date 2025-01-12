@@ -25,7 +25,7 @@ public partial class LocationsPage : OzdsOwningComponentBase
       RepresentativeState.Representative.Id,
       RepresentativeState.Representative.Role,
       page,
-      CancellationToken.None,
+      CancellationToken,
       deleted: _deleted
     );
 

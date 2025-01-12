@@ -26,7 +26,7 @@ public partial class NotificationsPage : OzdsOwningComponentBase
           .ReadForRecipient<INotification>(
             RepresentativeState.Representative.Id,
             page,
-            CancellationToken.None,
+            CancellationToken,
             seen: _seen)
       : Task.FromResult(NotificationsState.Notifications
           .ToPaginated(NotificationsState.Notifications.Count));

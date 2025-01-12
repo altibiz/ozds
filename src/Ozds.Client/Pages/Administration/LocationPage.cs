@@ -30,7 +30,7 @@ public partial class LocationPage : OzdsOwningComponentBase
       RepresentativeState.Representative.Id,
       RepresentativeState.Representative.Role,
       Id,
-      CancellationToken.None
+      CancellationToken
     );
 
     return location;

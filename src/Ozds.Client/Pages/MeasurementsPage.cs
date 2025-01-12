@@ -28,7 +28,7 @@ public partial class MeasurementsPage : OzdsOwningComponentBase
         ?? throw new InvalidOperationException(
           $"Location is null for {nameof(MeasurementsPage)}"),
       page,
-      CancellationToken.None
+      CancellationToken
     );
   }
 }

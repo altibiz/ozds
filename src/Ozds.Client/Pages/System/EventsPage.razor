@@ -56,7 +56,7 @@
 
 <Paging PageAsync="@((page) => ScopedServices
   .GetRequiredService<EventQueries>()
-  .ReadByMinLevel<IEvent>(_minLevel, page, CancellationToken.None))">
+  .ReadByMinLevel<IEvent>(_minLevel, page, CancellationToken))">
   <Found Context="page">
     <ResponsiveTable
       Model="@(page.Items)"

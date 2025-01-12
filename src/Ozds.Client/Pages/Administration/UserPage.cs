@@ -45,7 +45,7 @@ public partial class UserPage : OzdsOwningComponentBase
 
     var user = await queries.MaybeRepresentingUserByUserId(
       Id,
-      CancellationToken.None
+      CancellationToken
     );
 
     return user;
@@ -60,7 +60,7 @@ public partial class UserPage : OzdsOwningComponentBase
 
     var mutations = ScopedServices.GetRequiredService<AuditableMutations>();
 
-    await mutations.Update(model.Representative, CancellationToken.None);
+    await mutations.Update(model.Representative, CancellationToken);
   }
 
   private async Task OnDeleteAsync(MaybeRepresentingUserModel model)
@@ -72,6 +72,6 @@ public partial class UserPage : OzdsOwningComponentBase
 
     var mutations = ScopedServices.GetRequiredService<AuditableMutations>();
 
-    await mutations.Delete(model.Representative, CancellationToken.None);
+    await mutations.Delete(model.Representative, CancellationToken);
   }
 }

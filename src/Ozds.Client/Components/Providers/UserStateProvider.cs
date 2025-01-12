@@ -38,7 +38,7 @@ public partial class UserStateProvider : OzdsOwningComponentBase
     var user = await representativeQueries
       .UserByClaimsPrincipal(
         claimsPrincipal,
-        CancellationToken.None);
+        CancellationToken);
     if (user is null)
     {
       return default;

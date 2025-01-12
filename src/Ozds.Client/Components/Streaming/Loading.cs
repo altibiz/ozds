@@ -184,7 +184,7 @@ public partial class Loading<T> : OzdsOwningComponentBase
         _state = _state.WithValue(
           (T?)await ScopedServices
             .GetRequiredService<AuditableQueries>()
-            .ReadSingleDynamic(typeof(T), Id, CancellationToken.None));
+            .ReadSingleDynamic(typeof(T), Id, CancellationToken));
       }
       catch (Exception e)
       {
@@ -199,7 +199,7 @@ public partial class Loading<T> : OzdsOwningComponentBase
         _state = _state.WithValue(
           (T?)await ScopedServices
             .GetRequiredService<ReadonlyQueries>()
-            .ReadSingleDynamic(typeof(T), Id, CancellationToken.None));
+            .ReadSingleDynamic(typeof(T), Id, CancellationToken));
       }
       catch (Exception e)
       {

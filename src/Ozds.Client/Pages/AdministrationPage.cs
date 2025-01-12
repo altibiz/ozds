@@ -23,7 +23,7 @@ public partial class AdministrationPage : OzdsOwningComponentBase
 
     var users = await queries.MaybeRepresentingUsers(
       page,
-      CancellationToken.None
+      CancellationToken
     );
 
     return users;

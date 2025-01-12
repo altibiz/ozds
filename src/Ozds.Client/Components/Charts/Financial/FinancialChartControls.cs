@@ -38,7 +38,7 @@ public partial class FinancialChartControls : OzdsOwningComponentBase
       _parameters.Resolution,
       _parameters.Multiplier,
       pageNumber: 1,
-      cancellationToken: CancellationToken.None,
+      cancellationToken: CancellationToken,
       fromDate: fromDate,
       toDate: toDate
     );
@@ -48,7 +48,7 @@ public partial class FinancialChartControls : OzdsOwningComponentBase
       _parameters.Resolution,
       _parameters.Multiplier,
       pageNumber: 1,
-      cancellationToken: CancellationToken.None,
+      cancellationToken: CancellationToken,
       fromDate: fromDate,
       toDate: toDate
     );

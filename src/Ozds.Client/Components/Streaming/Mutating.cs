@@ -83,7 +83,7 @@ public partial class Mutating<T> : OzdsOwningComponentBase
       else if (model?.GetType().IsAssignableTo(typeof(IAuditable)) ?? false)
       {
         var mutations = ScopedServices.GetRequiredService<AuditableMutations>();
-        await mutations.Create((model as IAuditable)!, CancellationToken.None);
+        await mutations.Create((model as IAuditable)!, CancellationToken);
       }
       else
       {
@@ -136,7 +136,7 @@ public partial class Mutating<T> : OzdsOwningComponentBase
       else if (model?.GetType().IsAssignableTo(typeof(IAuditable)) ?? false)
       {
         var mutations = ScopedServices.GetRequiredService<AuditableMutations>();
-        await mutations.Update((model as IAuditable)!, CancellationToken.None);
+        await mutations.Update((model as IAuditable)!, CancellationToken);
       }
       else
       {
@@ -189,7 +189,7 @@ public partial class Mutating<T> : OzdsOwningComponentBase
       else if (model?.GetType().IsAssignableTo(typeof(IAuditable)) ?? false)
       {
         var mutations = ScopedServices.GetRequiredService<AuditableMutations>();
-        await mutations.Delete((model as IAuditable)!, CancellationToken.None);
+        await mutations.Delete((model as IAuditable)!, CancellationToken);
       }
       else
       {
