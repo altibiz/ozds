@@ -14,42 +14,42 @@ public partial class LayoutStateProvider : ComponentBase
   protected override void OnInitialized()
   {
     _state = new LayoutState(
-        IsUserDrawerOpen: false,
-        IsLocalizationDrawerOpen: false,
-        IsNavigationDrawerOpen: false,
-        SetUserDrawerOpen: isUserDrawerOpen =>
+      IsUserDrawerOpen: false,
+      IsLocalizationDrawerOpen: false,
+      IsNavigationDrawerOpen: false,
+      SetUserDrawerOpen: isUserDrawerOpen =>
+      {
+        InvokeAsync(() =>
         {
-          InvokeAsync(() =>
-          {
-            _state = _state! with { IsUserDrawerOpen = isUserDrawerOpen };
-            StateHasChanged();
-          });
-        },
-        SetLocalizationDrawerOpen: isLocalizationDrawerOpen =>
+          _state = _state! with { IsUserDrawerOpen = isUserDrawerOpen };
+          StateHasChanged();
+        });
+      },
+      SetLocalizationDrawerOpen: isLocalizationDrawerOpen =>
+      {
+        InvokeAsync(() =>
         {
-          InvokeAsync(() =>
-          {
-            _state = _state! with { IsLocalizationDrawerOpen = isLocalizationDrawerOpen };
-            StateHasChanged();
-          });
-        },
-        SetNavigationDrawerOpen: isNavigationDrawerOpen =>
+          _state = _state! with { IsLocalizationDrawerOpen = isLocalizationDrawerOpen };
+          StateHasChanged();
+        });
+      },
+      SetNavigationDrawerOpen: isNavigationDrawerOpen =>
+      {
+        InvokeAsync(() =>
         {
-          InvokeAsync(() =>
-          {
-            _state = _state! with { IsNavigationDrawerOpen = isNavigationDrawerOpen };
-            StateHasChanged();
-          });
-        },
-        Breakpoint: Breakpoint.None,
-        SetBreakpoint: breakpoint =>
+          _state = _state! with { IsNavigationDrawerOpen = isNavigationDrawerOpen };
+          StateHasChanged();
+        });
+      },
+      Breakpoint: Breakpoint.None,
+      SetBreakpoint: breakpoint =>
+      {
+        InvokeAsync(() =>
         {
-          InvokeAsync(() =>
-          {
-            _state = _state! with { Breakpoint = breakpoint };
-            StateHasChanged();
-          });
-        }
+          _state = _state! with { Breakpoint = breakpoint };
+          StateHasChanged();
+        });
+      }
     );
   }
 }

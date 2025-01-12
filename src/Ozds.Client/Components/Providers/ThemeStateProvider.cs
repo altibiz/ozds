@@ -34,22 +34,16 @@ public partial class ThemeStateProvider : OzdsComponentBase
     _state = new ThemeState(
       Theme: theme,
       IsDarkMode: darkMode.Value,
-      SetTheme: theme =>
+      SetTheme: async theme =>
       {
-        InvokeAsync(() =>
-        {
-          _state = _state! with { Theme = theme };
-          StateHasChanged();
-        });
+        _state = _state! with { Theme = theme };
+        await InvokeAsync(StateHasChanged);
       },
-      SetDarkMode: isDarkMode =>
+      SetDarkMode: async isDarkMode =>
       {
-        InvokeAsync(async () =>
-        {
-          await SetDarkModeToLocalStorage(isDarkMode);
-          _state = _state! with { IsDarkMode = isDarkMode };
-          StateHasChanged();
-        });
+        await SetDarkModeToLocalStorage(isDarkMode);
+        _state = _state! with { IsDarkMode = isDarkMode };
+        await InvokeAsync(StateHasChanged);
       }
     );
   }

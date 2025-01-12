@@ -26,9 +26,9 @@ public partial class UserToolbar : OzdsComponentBase
 
   private string DarkModeName => Translate(IsDarkMode ? "Dark" : "Light");
 
-  private void ToggleDarkMode()
+  private Task ToggleDarkMode()
   {
-    ThemeState.SetDarkMode(!ThemeState.IsDarkMode);
+    return ThemeState.SetDarkMode(!ThemeState.IsDarkMode);
   }
 
   private void ToggleLocalizationDrawer()

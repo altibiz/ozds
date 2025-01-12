@@ -79,14 +79,11 @@ public partial class LocationStateProvider : OzdsOwningComponentBase
 
     _state = new LocationState(
       location,
-      () =>
+      async () =>
       {
-        InvokeAsync(async () =>
-        {
-          await SetLocationToLocalStorage(null);
-          _state = null;
-          StateHasChanged();
-        });
+        await SetLocationToLocalStorage(null);
+        _state = null;
+        await InvokeAsync(StateHasChanged);
       }
     );
   }
@@ -96,14 +93,11 @@ public partial class LocationStateProvider : OzdsOwningComponentBase
     await SetLocationToLocalStorage(location.Id);
     _state = new LocationState(
       location,
-      () =>
+      async () =>
       {
-        InvokeAsync(async () =>
-        {
-          await SetLocationToLocalStorage(null);
-          _state = null;
-          StateHasChanged();
-        });
+        await SetLocationToLocalStorage(null);
+        _state = null;
+        await InvokeAsync(StateHasChanged);
       }
     );
   }

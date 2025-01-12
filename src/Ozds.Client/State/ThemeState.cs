@@ -5,8 +5,8 @@ namespace Ozds.Client.State;
 public record ThemeState(
   MudTheme Theme,
   bool IsDarkMode,
-  Action<MudTheme> SetTheme,
-  Action<bool> SetDarkMode
+  Func<MudTheme, Task> SetTheme,
+  Func<bool, Task> SetDarkMode
 )
 {
   public static MudTheme DefaultTheme()
@@ -27,105 +27,55 @@ public record ThemeState(
       {
         DefaultBorderRadius = "0px"
       },
-      Shadows = new Shadow(),
-      ZIndex = new ZIndex(),
       Typography = new Typography
       {
         Default = new Default
         {
           FontFamily = ["Roboto"],
-          FontSize = ".875rem",
-          FontWeight = 400,
-          LineHeight = 1.43,
-          LetterSpacing = ".01071em"
         },
         H1 = new H1
         {
           FontFamily = ["Roboto"],
-          FontSize = "6rem",
-          FontWeight = 300,
-          LineHeight = 1.167,
-          LetterSpacing = "-.01562em"
         },
         H2 = new H2
         {
           FontFamily = ["Roboto"],
-          FontSize = "3.75rem",
-          FontWeight = 300,
-          LineHeight = 1.2,
-          LetterSpacing = "-.00833em"
         },
         H3 = new H3
         {
           FontFamily = ["Roboto"],
-          FontSize = "3rem",
-          FontWeight = 400,
-          LineHeight = 1.167,
-          LetterSpacing = "0"
         },
         H4 = new H4
         {
           FontFamily = ["Roboto"],
-          FontSize = "2.125rem",
-          FontWeight = 400,
-          LineHeight = 1.235,
-          LetterSpacing = ".00735em"
         },
         H5 = new H5
         {
           FontFamily = ["Roboto"],
-          FontSize = "1.5rem",
-          FontWeight = 400,
-          LineHeight = 1.334,
-          LetterSpacing = "0"
         },
         H6 = new H6
         {
           FontFamily = ["Roboto"],
-          FontSize = "1.25rem",
-          FontWeight = 400,
-          LineHeight = 1.6,
-          LetterSpacing = ".0075em"
         },
         Button = new Button
         {
           FontFamily = ["Roboto"],
-          FontSize = ".875rem",
-          FontWeight = 500,
-          LineHeight = 1.75,
-          LetterSpacing = ".02857em"
         },
         Body1 = new Body1
         {
           FontFamily = ["Roboto"],
-          FontSize = "1rem",
-          FontWeight = 400,
-          LineHeight = 1.5,
-          LetterSpacing = ".00938em"
         },
         Body2 = new Body2
         {
           FontFamily = ["Roboto"],
-          FontSize = ".875rem",
-          FontWeight = 400,
-          LineHeight = 1.43,
-          LetterSpacing = ".01071em"
         },
         Caption = new Caption
         {
           FontFamily = ["Roboto"],
-          FontSize = ".75rem",
-          FontWeight = 400,
-          LineHeight = 1.66,
-          LetterSpacing = ".03333em"
         },
         Subtitle2 = new Subtitle2
         {
           FontFamily = ["Roboto"],
-          FontSize = ".875rem",
-          FontWeight = 500,
-          LineHeight = 1.57,
-          LetterSpacing = ".00714em"
         }
       },
     };

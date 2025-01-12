@@ -38,16 +38,19 @@
       </MudButton>
     </MudContainer>
   </MudDrawerHeader>
-    <MudDrawerContainer>
-      <MudNavMenu>
+  <MudDrawerContainer>
+    <MudNavMenu>
+      <MudContainer
+        MaxWidth="@MaxWidth"
+        Class="@($"d-flex flex-column {Class}")"
+        Style="@($"height: 100%; {Style}")">
         @foreach (var descriptor in Descriptors)
         {
-          <NavigationItem
-            Descriptor="descriptor"
-          />
+          <NavigationItem Descriptor="descriptor" />
         }
-      </MudNavMenu>
-    </MudDrawerContainer>
+      </MudContainer>
+    </MudNavMenu>
+  </MudDrawerContainer>
 </MudDrawer>
 
 @code {

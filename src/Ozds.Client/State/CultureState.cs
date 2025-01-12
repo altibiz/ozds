@@ -4,5 +4,5 @@ namespace Ozds.Client.State;
 
 public record CultureState(
   CultureInfo Culture,
-  Action<CultureInfo> SetCulture
+  Func<CultureInfo, Task> SetCulture
 );

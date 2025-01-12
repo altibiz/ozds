@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Ozds.Business.Queries;
 using Ozds.Client.Components.Base;
 using Ozds.Client.State;
@@ -17,6 +18,9 @@ public partial class AnalysisStateProvider : OzdsOwningComponentBase
   [CascadingParameter]
   private LocationState LocationState { get; set; } = default!;
 
+  [Inject]
+  private ILogger<AnalysisStateProvider> Logger { get; set; } = default!;
+
   private string? _previousRepresentativeId;
 
   private string? _previousLocationId;
@@ -25,38 +29,45 @@ public partial class AnalysisStateProvider : OzdsOwningComponentBase
 
   protected override void OnParametersSet()
   {
+    if (_previousRepresentativeId == RepresentativeState.Representative.Id
+    && _previousLocationId == LocationState.Location?.Id)
+    {
+      return;
+    }
+    _previousRepresentativeId = RepresentativeState.Representative.Id;
+    _previousLocationId = LocationState.Location?.Id;
+
     _state = new AnalysisState(
       new(() =>
       {
-        InvokeAsync(async () =>
+        Task.Run(async () =>
         {
-          if (_previousRepresentativeId == RepresentativeState.Representative.Id
-          && _previousLocationId == LocationState.Location?.Id)
+          try
           {
-            return;
+            var analysisQueries = ScopedServices
+              .GetRequiredService<AnalysisQueries>();
+
+            var now = DateTimeOffset.UtcNow;
+            var aYearAgo = now.AddYears(-1);
+
+            var analysisBases = await analysisQueries
+              .ReadAnalysisBasesByRepresentativeAndLocation(
+                RepresentativeState.Representative.Id,
+                RepresentativeState.Representative.Role,
+                aYearAgo,
+                now,
+                LocationState.Location?.Id,
+                CancellationToken.None
+              );
+
+            _state = new AnalysisState(new(() => analysisBases));
+
+            await InvokeAsync(StateHasChanged);
           }
-          _previousRepresentativeId = RepresentativeState.Representative.Id;
-          _previousLocationId = LocationState.Location?.Id;
-
-          var analysisQueries = ScopedServices
-            .GetRequiredService<AnalysisQueries>();
-
-          var now = DateTimeOffset.UtcNow;
-          var aYearAgo = now.AddYears(-1);
-
-          var analysisBases = await analysisQueries
-            .ReadAnalysisBasesByRepresentativeAndLocation(
-              RepresentativeState.Representative.Id,
-              RepresentativeState.Representative.Role,
-              aYearAgo,
-              now,
-              LocationState.Location?.Id,
-              CancellationToken.None
-            );
-
-          _state = new AnalysisState(new(() => analysisBases));
-
-          StateHasChanged();
+          catch (Exception ex)
+          {
+            Logger.LogError(ex, "Error setting analysis bases");
+          }
         });
 
         return new();

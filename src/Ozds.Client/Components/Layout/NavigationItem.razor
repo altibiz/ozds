@@ -29,94 +29,69 @@
     : NavLinkMatch.All;
 }
 
-<div style="position: relative; height: 48px;">
-  <style>
-    .mud-nav-item {
-      height: 100% !important;
-    }
+<style>
+  .ozds-nav-link {
+    min-height: 48px;
+  }
 
-    a {
-      padding-inline: 0 !important;
-      height: 100% !important;
-      align-items: center !important;
-    }
+  .ozds-nav-link .mud-nav-link-text {
+    margin-inline: 0 !important;
+  }
 
-    .mud-nav-link-text {
-      margin-inline: 0 !important;
-    }
-  </style>
-  <MudNavLink
-    Href="@PageHref(Descriptor.Type)"
-    Match="match">
-    <MudContainer
-      MaxWidth="@MaxWidth"
-      Class="@($"d-flex flex-row {Class}")"
-      Style="@($"height: 100%; {Style}")">
-      <MudHidden Breakpoint="Breakpoint.Xs">
-        <div class="d-flex flex-row align-center">
-          <MudIcon Icon="@Descriptor.Navigation.Icon" />
-        </div>
-      </MudHidden>
-      <MudHidden Breakpoint="Breakpoint.SmAndUp">
-        <div class="d-flex flex-row align-center">
-          <MudIcon Icon="@Descriptor.Navigation.Icon" />
-        </div>
-      </MudHidden>
-      <MudText Class="ml-4">
-        @Translate(Descriptor.Navigation.Title)
-      </MudText>
-      @if (Descriptor.Children.Any())
-      {
-        <MudSpacer />
-        <MudButton
-          Variant="Variant.Text"
-          Style="margin-right: -24px;"
-          OnClick="@(() => _expanded = !_expanded)">
-          <MudIcon
-            Icon="@(_expanded
-              ? Icons.Material.Filled.ExpandLess
-              : Icons.Material.Filled.ExpandMore)"
-            Size="@Size.Small" />
-        </MudButton>
-      }
-    </MudContainer>
-  </MudNavLink>
-</div>
+  .ozds-nav-link .mud-nav-link {
+    padding-inline: 0 !important;
+  }
 
-@if (Descriptor.Children.Any() && _expanded)
+  .ozds-nav-link .mud-collapse-container {
+    margin-left: 12px;
+  }
+</style>
+
+@if (Descriptor.Children.Any())
 {
-  <div>
+  <MudNavGroup
+    Title="@Descriptor.Navigation.Title"
+    Class="ozds-nav-link">
+    <MudNavLink
+      Href="@PageHref(Descriptor.Type)"
+      Match="match"
+      Class="ozds-nav-link">
+      <div class="d-flex flex-row align-center">
+        <MudIcon Icon="@Descriptor.Navigation.Icon" />
+        <MudText Class="ml-4 d-flex flex-row" Style="align-items: center;">
+          @Translate(Descriptor.Navigation.Title)
+        </MudText>
+      </div>
+    </MudNavLink>
+
     @foreach (var child in Descriptor.Children)
     {
       <NavigationItem Descriptor="child" />
     }
-    <MudContainer
-      MaxWidth="@MaxWidth"
-      Class="@Class"
-      Style="@Style">
-      <MudDivider />
-    </MudContainer>
-  </div>
+  </MudNavGroup>
+}
+else
+{
+  <MudNavLink
+    Href="@PageHref(Descriptor.Type)"
+    Match="match"
+    Class="ozds-nav-link">
+    <div class="d-flex flex-row align-center">
+      <MudIcon Icon="@Descriptor.Navigation.Icon" />
+      <MudText Class="ml-4 d-flex flex-row" Style="align-items: center;">
+        @Translate(Descriptor.Navigation.Title)
+      </MudText>
+    </div>
+  </MudNavLink>
 }
 
 @code {
   [Parameter]
   public NavigationDescriptor Descriptor { get; set; } = default!;
 
-  [Parameter]
-  public MaxWidth MaxWidth { get; set; } = default;
-
-  [Parameter]
-  public string Style { get; set; } = string.Empty;
-
-  [Parameter]
-  public string Class { get; set; } = string.Empty;
-
   [CascadingParameter]
   private LayoutState LayoutState { get; set; } = default!;
 
   [CascadingParameter]
   private RepresentativeState RepresentativeState { get; set; } = default!;
-
-  private bool _expanded = false;
 }

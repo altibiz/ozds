@@ -24,15 +24,15 @@ public partial class LocalizationDrawer : OzdsComponentBase
     LayoutState.SetLocalizationDrawerOpen(open);
   }
 
-  private void OnCroatianClick()
+  private async Task OnCroatianClick()
   {
-    CultureState.SetCulture(_croatianCulture);
+    await CultureState.SetCulture(_croatianCulture);
     LayoutState.SetLocalizationDrawerOpen(false);
   }
 
-  private void OnEnglishClick()
+  private async Task OnEnglishClick()
   {
-    CultureState.SetCulture(_englishCulture);
+    await CultureState.SetCulture(_englishCulture);
     LayoutState.SetLocalizationDrawerOpen(false);
   }
 }

@@ -44,7 +44,7 @@ public partial class CultureStateProvider : ComponentBase
 
     _state = new CultureState(
       culture,
-      (culture) => InvokeAsync(async () =>
+      async (culture) =>
       {
         await SetCultureToLocalStorage(culture);
 
@@ -56,8 +56,9 @@ public partial class CultureStateProvider : ComponentBase
         }
 
         _state = _state! with { Culture = culture };
-        StateHasChanged();
-      })
+
+        await InvokeAsync(StateHasChanged);
+      }
     );
   }
 

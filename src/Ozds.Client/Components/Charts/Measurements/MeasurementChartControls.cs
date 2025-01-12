@@ -110,57 +110,54 @@ public partial class MeasurementChartControls : OzdsOwningComponentBase
       return;
     }
 
-    InvokeAsync(() =>
+    var now = DateTimeOffset.UtcNow;
+    var timestamp =
+      _parameters.Measurements.Items.LastOrDefault()?.Timestamp ?? now;
+    var timeSpan = _parameters.Resolution
+      .ToTimeSpan(_parameters.Multiplier, timestamp);
+    var appropriateInterval = QueryConstants
+      .AppropriateInterval(timeSpan, now);
+
+    if (appropriateInterval is null)
     {
-      var now = DateTimeOffset.UtcNow;
-      var timestamp =
-        _parameters.Measurements.Items.LastOrDefault()?.Timestamp ?? now;
-      var timeSpan = _parameters.Resolution
-        .ToTimeSpan(_parameters.Multiplier, timestamp);
-      var appropriateInterval = QueryConstants
-        .AppropriateInterval(timeSpan, now);
+      var newMeasurements = measurements
+        .Where(x => x.Timestamp >= timestamp)
+        .Where(x => Meters.Exists(meter =>
+          meter.Id == x.MeterId))
+        .OrderBy(x => x.Timestamp)
+        .ToList();
+      var concatenated = _parameters.Measurements.Items
+        .Concat(newMeasurements)
+        .ToList();
+      _parameters.Measurements = new PaginatedList<IMeasurement>(
+        concatenated,
+        _parameters.Measurements.TotalCount + newMeasurements.Count
+      );
+    }
+    else
+    {
+      var newAggregates = aggregates
+        .Where(x => x.Timestamp >= timestamp)
+        .Where(x => x.Interval == appropriateInterval)
+        .Where(x => Meters.Exists(meter =>
+          meter.Id == x.MeterId))
+        .OrderBy(x => x.Timestamp)
+        .OfType<IAggregate>()
+        .ToList();
+      var aggregated = _parameters.Measurements.Items.OfType<IAggregate>()
+        .Concat(newAggregates)
+        .GroupBy(x => x.Timestamp)
+        .Select(x => x
+          .Aggregate(AggregateUpserter.UpsertModelAgnostic))
+        .OfType<IMeasurement>()
+        .ToList();
+      _parameters.Measurements = new PaginatedList<IMeasurement>(
+        aggregated.ToList(),
+        _parameters.Measurements.TotalCount
+          - _parameters.Measurements.Items.Count + aggregated.Count
+      );
+    }
 
-      if (appropriateInterval is null)
-      {
-        var newMeasurements = measurements
-          .Where(x => x.Timestamp >= timestamp)
-          .Where(x => Meters.Exists(meter =>
-            meter.Id == x.MeterId))
-          .OrderBy(x => x.Timestamp)
-          .ToList();
-        var concatenated = _parameters.Measurements.Items
-          .Concat(newMeasurements)
-          .ToList();
-        _parameters.Measurements = new PaginatedList<IMeasurement>(
-          concatenated,
-          _parameters.Measurements.TotalCount + newMeasurements.Count
-        );
-      }
-      else
-      {
-        var newAggregates = aggregates
-          .Where(x => x.Timestamp >= timestamp)
-          .Where(x => x.Interval == appropriateInterval)
-          .Where(x => Meters.Exists(meter =>
-            meter.Id == x.MeterId))
-          .OrderBy(x => x.Timestamp)
-          .OfType<IAggregate>()
-          .ToList();
-        var aggregated = _parameters.Measurements.Items.OfType<IAggregate>()
-          .Concat(newAggregates)
-          .GroupBy(x => x.Timestamp)
-          .Select(x => x
-            .Aggregate(AggregateUpserter.UpsertModelAgnostic))
-          .OfType<IMeasurement>()
-          .ToList();
-        _parameters.Measurements = new PaginatedList<IMeasurement>(
-          aggregated.ToList(),
-          _parameters.Measurements.TotalCount
-            - _parameters.Measurements.Items.Count + aggregated.Count
-        );
-      }
-
-      StateHasChanged();
-    });
+    InvokeAsync(StateHasChanged);
   }
 }
