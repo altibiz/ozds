@@ -17,7 +17,7 @@ namespace Ozds.Business.Reactors;
 
 // TODO: paging when fetching
 
-public class NotificationEmailSenderReactor(
+public class DataNotificationChangeReactor(
   IServiceProvider serviceProvider
 ) : Reactor<
   DataModelsChangedEventArgs,
