@@ -44,10 +44,7 @@ public class LifecycleReactor(
       }
     }
 
-    if (!await lifetime.WaitForAppShutdown(stoppingToken))
-    {
-      return;
-    }
+    await Task.Delay(Timeout.Infinite, stoppingToken);
 
     {
       await using var scope = factory.CreateAsyncScope();

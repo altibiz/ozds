@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Threading.Channels;
 using Ozds.Business.Extensions;
 using Ozds.Business.Observers.Abstractions;
@@ -18,18 +19,37 @@ public abstract class Reactor<TEventArgs, TSubscriber, THandler>(
   private readonly Channel<TEventArgs> channel =
     Channel.CreateUnbounded<TEventArgs>();
 
-  public override Task StartAsync(CancellationToken cancellationToken)
+  public override async Task StartAsync(CancellationToken cancellationToken)
   {
     var subscriber = serviceProvider.GetRequiredService<TSubscriber>();
     subscriber.Subscribe(OnEvent);
-    return base.StartAsync(cancellationToken);
+    await base.StartAsync(cancellationToken);
+    var logger = serviceProvider.GetRequiredService<
+      ILogger<Reactor<TEventArgs, TSubscriber, THandler>>>();
+    logger.LogInformation(
+      "Reactor {Reactor} started",
+      GetType().Name
+    );
   }
 
-  public override Task StopAsync(CancellationToken cancellationToken)
+  public override async Task StopAsync(CancellationToken cancellationToken)
   {
     var subscriber = serviceProvider.GetRequiredService<TSubscriber>();
     subscriber.Unsubscribe(OnEvent);
-    return base.StopAsync(cancellationToken);
+    var logger = serviceProvider.GetRequiredService<
+      ILogger<Reactor<TEventArgs, TSubscriber, THandler>>>();
+    if (!channel.Writer.TryComplete())
+    {
+      logger.LogWarning(
+        "Reactor {Reactor} channel already completed",
+        GetType().Name
+      );
+    }
+    await base.StopAsync(cancellationToken);
+    logger.LogInformation(
+      "Reactor {Reactor} stopped",
+      GetType().Name
+    );
   }
 
   protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -46,61 +66,97 @@ public abstract class Reactor<TEventArgs, TSubscriber, THandler>(
 
     {
       await using var scope = factory.CreateAsyncScope();
+      var handler = scope.ServiceProvider
+        .GetRequiredService<THandler>();
+      var logger = scope.ServiceProvider.GetRequiredService<
+        ILogger<Reactor<TEventArgs, TSubscriber, THandler>>>();
       try
       {
-        var handler = scope.ServiceProvider
-          .GetRequiredService<THandler>();
+        logger.LogDebug(
+          "Invoking handler {Handler} for reactor {Reactor} after start",
+          handler.GetType().Name,
+          GetType().Name
+        );
         await handler.AfterStartAsync(stoppingToken);
       }
       catch (Exception ex)
       {
-        var logger = scope.ServiceProvider.GetRequiredService<
-          ILogger<Reactor<TEventArgs, TSubscriber, THandler>>>();
-        logger.LogError(ex, "Reactor {Type} failed", GetType().Name);
+        logger.LogError(
+          ex,
+          "Reactor {Reactor} handler {Handler} after start failed",
+          GetType().Name,
+          handler.GetType().Name
+        );
       }
     }
 
     await foreach (var eventArgs in channel.Reader.ReadAllAsync(stoppingToken))
     {
       await using var scope = factory.CreateAsyncScope();
+      var logger = scope.ServiceProvider.GetRequiredService<
+        ILogger<Reactor<TEventArgs, TSubscriber, THandler>>>();
+      var handler = scope.ServiceProvider
+        .GetRequiredService<THandler>();
+
+      logger.LogDebug(
+        "Invoking handler {Handler} for reactor {Reactor} event {Event}",
+        handler.GetType().Name,
+        GetType().Name,
+        eventArgs.GetType().Name
+      );
       try
       {
-        var handler = scope.ServiceProvider
-          .GetRequiredService<THandler>();
         await handler.Handle(eventArgs, stoppingToken);
       }
       catch (Exception ex)
       {
-        var logger = scope.ServiceProvider.GetRequiredService<
-          ILogger<Reactor<TEventArgs, TSubscriber, THandler>>>();
-        logger.LogError(ex, "Reactor {Type} failed", GetType().Name);
+        logger.LogError(
+          ex,
+          "Reactor {Reactor} handler {Handler} failed",
+          GetType().Name,
+          handler.GetType().Name
+        );
       }
-    }
-
-    if (!await lifetime.WaitForAppShutdown(stoppingToken))
-    {
-      return;
     }
 
     {
       await using var scope = factory.CreateAsyncScope();
+      var handler = scope.ServiceProvider
+        .GetRequiredService<THandler>();
+      var logger = scope.ServiceProvider.GetRequiredService<
+        ILogger<Reactor<TEventArgs, TSubscriber, THandler>>>();
       try
       {
-        var handler = scope.ServiceProvider
-          .GetRequiredService<THandler>();
+        logger.LogDebug(
+          "Invoking handler {Handler} for reactor {Reactor} before stop",
+          handler.GetType().Name,
+          GetType().Name
+        );
         await handler.BeforeStopAsync(stoppingToken);
       }
       catch (Exception ex)
       {
-        var logger = scope.ServiceProvider.GetRequiredService<
-          ILogger<Reactor<TEventArgs, TSubscriber, THandler>>>();
-        logger.LogError(ex, "Reactor {Type} failed", GetType().Name);
+        logger.LogError(
+          ex,
+          "Reactor {Reactor} handler {Handler} before stop failed",
+          GetType().Name,
+          handler.GetType().Name
+        );
       }
     }
   }
 
   private void OnEvent(object? sender, TEventArgs eventArgs)
   {
-    channel.Writer.TryWrite(eventArgs);
+    if (!channel.Writer.TryWrite(eventArgs))
+    {
+      var logger = serviceProvider.GetRequiredService<
+        ILogger<Reactor<TEventArgs, TSubscriber, THandler>>>();
+      logger.LogWarning(
+        "Reactor {Reactor} event {Event} dropped",
+        GetType().Name,
+        eventArgs.GetType().Name
+      );
+    }
   }
 }

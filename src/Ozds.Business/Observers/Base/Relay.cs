@@ -34,43 +34,85 @@ public abstract class Relay<TInEventArgs, TOutEventArgs, TPipe>(
   protected abstract void UnsubscribeIn(
     EventHandler<TInEventArgs> eventHandler);
 
-  public override Task StartAsync(CancellationToken cancellationToken)
+  public override async Task StartAsync(CancellationToken cancellationToken)
   {
     SubscribeIn(OnEvent);
-    return base.StartAsync(cancellationToken);
+    await base.StartAsync(cancellationToken);
+    var logger = serviceProvider.GetRequiredService<
+      ILogger<Relay<TInEventArgs, TOutEventArgs, TPipe>>>();
+    logger.LogInformation(
+      "Relay {Relay} started",
+      GetType().Name
+    );
   }
 
-  public override Task StopAsync(CancellationToken cancellationToken)
+  public override async Task StopAsync(CancellationToken cancellationToken)
   {
     UnsubscribeIn(OnEvent);
-    return base.StopAsync(cancellationToken);
+    var logger = serviceProvider.GetRequiredService<
+      ILogger<Relay<TInEventArgs, TOutEventArgs, TPipe>>>();
+    if (!inChannel.Writer.TryComplete())
+    {
+      logger.LogWarning(
+        "Relay {Relay} channel already completed",
+        GetType().Name
+      );
+    }
+    await base.StopAsync(cancellationToken);
+    logger.LogInformation(
+      "Relay {Relay} stopped",
+      GetType().Name
+    );
   }
 
   protected override async Task ExecuteAsync(CancellationToken stoppingToken)
   {
     var factory = serviceProvider
       .GetRequiredService<IServiceScopeFactory>();
+
     await foreach (var inEventArgs in inChannel.Reader
       .ReadAllAsync(stoppingToken))
     {
       await using var scope = factory.CreateAsyncScope();
+      var logger = scope.ServiceProvider.GetRequiredService<
+        ILogger<Relay<TInEventArgs, TOutEventArgs, TPipe>>>();
+      var pipe = scope.ServiceProvider
+        .GetRequiredService<TPipe>();
+
+      logger.LogDebug(
+        "Invoking pipe {Pipe} for relay {Relay} event {Event}",
+        pipe.GetType().Name,
+        GetType().Name,
+        inEventArgs.GetType().Name
+      );
       try
       {
-        var pipe = scope.ServiceProvider.GetRequiredService<TPipe>();
         var outEventArgs = await pipe.Transform(inEventArgs, stoppingToken);
         OutEvent?.Invoke(this, outEventArgs);
       }
       catch (Exception ex)
       {
-        var logger = scope.ServiceProvider.GetRequiredService<
-          ILogger<Relay<TInEventArgs, TOutEventArgs, TPipe>>>();
-        logger.LogError(ex, "Relay {Type} failed", GetType().Name);
+        logger.LogError(
+          ex,
+          "Relay {Relay} handler {Handler} failed",
+          GetType().Name,
+          pipe.GetType().Name
+        );
       }
     }
   }
 
   private void OnEvent(object? sender, TInEventArgs eventArgs)
   {
-    inChannel.Writer.TryWrite(eventArgs);
+    if (!inChannel.Writer.TryWrite(eventArgs))
+    {
+      var logger = serviceProvider.GetRequiredService<
+        ILogger<Relay<TInEventArgs, TOutEventArgs, TPipe>>>();
+      logger.LogWarning(
+        "Relay {Relay} event {Event} dropped",
+        GetType().Name,
+        eventArgs.GetType().Name
+      );
+    }
   }
 }
