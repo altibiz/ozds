@@ -16,11 +16,15 @@
 }
 
 <MudContainer MaxWidth="@MaxWidth.Small">
+  <MudText Class="mt-12" Typo="@Typo.h5">
+    @Translate("Please select a location")
+  </MudText>
+
   <div class="d-flex flex-column my-auto">
     <MudTextField
-      Placeholder="@Translate("Location search...")"
+      Placeholder="@Translate("Type here to search...")"
       Adornment="Adornment.Start"
-      AdornmentIcon="Icons.Material.Filled.Search"
+      AdornmentIcon="@Icons.Material.Filled.Search"
       @bind-Value="_filter" />
 
     <MudList>

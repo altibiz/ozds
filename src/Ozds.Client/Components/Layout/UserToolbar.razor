@@ -40,7 +40,6 @@
     <div Class="d-flex flex-row justify-end">
       <MudButton
         Variant="Variant.Text"
-        Style="color:white"
         OnClick="ToggleDarkMode"
         Class="d-flex flex-row align-center">
         @if (IsDarkMode)
@@ -61,7 +60,6 @@
       </MudButton>
       <MudButton
         Variant="Variant.Text"
-        Style="color:white"
         OnClick="ToggleLocalizationDrawer"
         Class="d-flex flex-row align-center">
         <MudIcon Icon="@Icons.Material.Filled.Language" />
@@ -76,7 +74,7 @@
           OnClick="ToggleUserDrawer"
           Variant="Variant.Text"
           Class="d-flex flex-row align-center"
-          Style="margin-right: -18px; color:white;">
+          Style="margin-right: -18px;">
           <MudIcon Icon="@Icons.Material.Filled.Person"/>
         </MudButton>
       </MudHidden>
@@ -84,8 +82,7 @@
         <MudButton
           OnClick="ToggleUserDrawer"
           Variant="Variant.Text"
-          Class="d-flex flex-row align-center"
-          Style="margin-right: -8px; color:white;">
+          Class="d-flex flex-row align-center">
           <MudIcon Icon="@Icons.Material.Filled.Person"/>
           <div Class="ml-2 d-flex flex-column align-center">
             <MudText>
@@ -99,7 +96,10 @@
       </MudHidden>
       @if (LocationState is { })
       {
-        <MudButton OnClick="ExitLocation">
+        <MudButton
+          OnClick="ExitLocation"
+          Variant="Variant.Text"
+          Style="margin-right: -10px;">
           <MudIcon Icon="@(Icons.Material.Filled.ExitToApp)" />
         </MudButton>
       }

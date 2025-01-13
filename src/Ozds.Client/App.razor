@@ -19,20 +19,28 @@
       <Found>
         <Router AppAssembly="@typeof(App).Assembly">
           <Found Context="routeData">
-            <LocationStateProvider>
-              <NotificationsStateProvider>
-                <AnalysisStateProvider>
-                  <RouteView
-                    RouteData="@routeData"
-                    DefaultLayout="@typeof(Layout)" />
-                </AnalysisStateProvider>
-              </NotificationsStateProvider>
-            </LocationStateProvider>
+            <LayoutStateProvider>
+              <ThemeStateProvider>
+                <LocationStateProvider>
+                  <NotificationsStateProvider>
+                    <AnalysisStateProvider>
+                      <RouteView
+                        RouteData="@routeData"
+                        DefaultLayout="@typeof(Layout)" />
+                    </AnalysisStateProvider>
+                  </NotificationsStateProvider>
+                </LocationStateProvider>
+              </ThemeStateProvider>
+            </LayoutStateProvider>
           </Found>
           <NotFound>
-            <LayoutView Layout="@typeof(Layout)">
-              <NotFound />
-            </LayoutView>
+            <LayoutStateProvider>
+              <ThemeStateProvider>
+                <LayoutView Layout="@typeof(Layout)">
+                  <NotFound />
+                </LayoutView>
+              </ThemeStateProvider>
+            </LayoutStateProvider>
           </NotFound>
         </Router>
       </Found>
@@ -45,14 +53,22 @@
 
         <Router AppAssembly="@typeof(App).Assembly">
           <Found Context="routeData">
-            <RouteView
-              RouteData="@routeData"
-              DefaultLayout="@typeof(Layout)" />
+            <LayoutStateProvider>
+              <ThemeStateProvider>
+                <RouteView
+                  RouteData="@routeData"
+                  DefaultLayout="@typeof(Layout)" />
+              </ThemeStateProvider>
+            </LayoutStateProvider>
           </Found>
           <NotFound>
-            <LayoutView Layout="@typeof(Layout)">
-              <NotFound />
-            </LayoutView>
+            <LayoutStateProvider>
+              <ThemeStateProvider>
+                <LayoutView Layout="@typeof(Layout)">
+                  <NotFound />
+                </LayoutView>
+              </ThemeStateProvider>
+            </LayoutStateProvider>
           </NotFound>
         </Router>
       </NotFound>

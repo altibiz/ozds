@@ -9,63 +9,62 @@
 
 @inherits OzdsLayoutComponentBase
 
-<ThemeStateProvider>
-  <LayoutStateProvider>
-    <CascadingFragment T="ThemeState" Context="themeState">
-      @{
-        var footerBackgroundColor = themeState.IsDarkMode
-          ? themeState.Theme.PaletteDark.BackgroundGrey
-          : themeState.Theme.Palette.BackgroundGrey;
-      }
-      <CascadingFragment T="LayoutState" Context="layoutState">
-        @{
-          var anyDrawerOpen = layoutState.IsUserDrawerOpen
-            || layoutState.IsLocalizationDrawerOpen
-            || layoutState.IsNavigationDrawerOpen;
-        }
+@{
+  var footerBackgroundColor = ThemeState.IsDarkMode
+    ? ThemeState.Theme.PaletteDark.BackgroundGrey
+    : ThemeState.Theme.Palette.BackgroundGrey;
 
-        <style>
-          html, body {
-            height: 100vh;
-          }
+  var anyDrawerOpen = LayoutState.IsUserDrawerOpen
+    || LayoutState.IsLocalizationDrawerOpen
+    || LayoutState.IsNavigationDrawerOpen;
+}
 
-          body {
-            display: flex;
-            flex-direction: column;
-          }
+<style>
+  html, body {
+    height: 100vh;
+  }
 
-          body {
-            overflow-y: @(anyDrawerOpen ? "hidden" : "auto");
-          }
+  body {
+    display: flex;
+    flex-direction: column;
+  }
 
-          main {
-            flex: 1;
-          }
+  body {
+    overflow-y: @(anyDrawerOpen ? "hidden" : "auto");
+  }
 
-          footer {
-            min-height: 120px;
-            margin-top: 32px;
-          }
+  main {
+    flex: 1;
+  }
 
-          footer {
-            background-color: @(footerBackgroundColor);
-          }
-        </style>
+  footer {
+    min-height: 120px;
+    margin-top: 32px;
+  }
 
-        <header>
-          <Header MaxWidth="@MaxWidth.Large" />
-        </header>
+  footer {
+    background-color: @(footerBackgroundColor);
+  }
+</style>
 
-        <main>
-          <Main MaxWidth="@MaxWidth.Large" >
-            @Body
-          </Main>
-        </main>
+<header>
+  <Header MaxWidth="@MaxWidth.Large" />
+</header>
 
-        <footer>
-          <Footer MaxWidth="@MaxWidth.Large" />
-        </footer>
-      </CascadingFragment>
-    </CascadingFragment>
-  </LayoutStateProvider>
-</ThemeStateProvider>
+<main>
+  <Main MaxWidth="@MaxWidth.Large" >
+    @Body
+  </Main>
+</main>
+
+<footer>
+  <Footer MaxWidth="@MaxWidth.Large" />
+</footer>
+
+@code {
+  [CascadingParameter]
+  public LayoutState LayoutState { get; set; } = default!;
+
+  [CascadingParameter]
+  public ThemeState ThemeState { get; set; } = default!;
+}
