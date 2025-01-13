@@ -22,50 +22,53 @@
       Style="margin-left: -12px;"
       OnClick="OnNavigationMenuClick"/>
     <MudSpacer />
-    @if (NotificationsState.Notifications.Count > 0)
+    @if (NotificationsState is { })
     {
-      var iconSize = 16;
-      var fontSize = 10;
+      @if (NotificationsState.Notifications.Count > 0)
+      {
+        var iconSize = 16;
+        var fontSize = 10;
 
-      <MudButton
-        Size="MudBlazor.Size.Small"
-        Class="p-2"
-        Style="margin-right: -10px; position: relative;"
-        OnClick="NavigateToNotifications">
-        <MudIcon Icon="@Icons.Material.Filled.NotificationsActive"/>
-        <MudIcon
-          Style="@($@"
-            width: {iconSize}px;
-            height: {iconSize}px;
-            position: absolute;
-            left: 32px;
-            top: 16px;
-          ")"
-          Color="@Color.Error"
-          Icon="@Icons.Material.Filled.Circle"/>
-        <MudText
-          Style="@($@"
-            width: {iconSize}px;
-            height: {iconSize}px;
-            position: absolute;
-            font-size: {fontSize}px;
-            left: 32px;
-            top: 16px;
-          ")"
-          Typo="@Typo.button">
-          @NotificationsState.Notifications.Count
-        </MudText>
-      </MudButton>
-    }
-    else
-    {
-      <MudButton
-        Size="MudBlazor.Size.Small"
-        Class="p-2"
-        Style="margin-right: -20px;"
-        OnClick="NavigateToNotifications">
-        <MudIcon Icon="@Icons.Material.Filled.NotificationsNone" />
-      </MudButton>
+        <MudButton
+          Size="MudBlazor.Size.Small"
+          Class="p-2"
+          Style="margin-right: -10px; position: relative;"
+          OnClick="NavigateToNotifications">
+          <MudIcon Icon="@Icons.Material.Filled.NotificationsActive"/>
+          <MudIcon
+            Style="@($@"
+              width: {iconSize}px;
+              height: {iconSize}px;
+              position: absolute;
+              left: 32px;
+              top: 16px;
+            ")"
+            Color="@Color.Error"
+            Icon="@Icons.Material.Filled.Circle"/>
+          <MudText
+            Style="@($@"
+              width: {iconSize}px;
+              height: {iconSize}px;
+              position: absolute;
+              font-size: {fontSize}px;
+              left: 32px;
+              top: 16px;
+            ")"
+            Typo="@Typo.button">
+            @NotificationsState.Notifications.Count
+          </MudText>
+        </MudButton>
+      }
+      else
+      {
+        <MudButton
+          Size="MudBlazor.Size.Small"
+          Class="p-2"
+          Style="margin-right: -20px;"
+          OnClick="NavigateToNotifications">
+          <MudIcon Icon="@Icons.Material.Filled.NotificationsNone" />
+        </MudButton>
+      }
     }
   </MudContainer>
 </MudToolBar>

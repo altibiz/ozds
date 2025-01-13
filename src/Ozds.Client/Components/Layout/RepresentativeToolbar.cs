@@ -11,7 +11,7 @@ public partial class RepresentativeToolbar : OzdsComponentBase
   public LayoutState LayoutState { get; set; } = default!;
 
   [CascadingParameter]
-  public NotificationsState NotificationsState { get; set; } = default!;
+  public NotificationsState? NotificationsState { get; set; } = default!;
 
   private void OnNavigationMenuClick()
   {

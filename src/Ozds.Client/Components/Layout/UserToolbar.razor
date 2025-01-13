@@ -97,9 +97,12 @@
           </div>
         </MudButton>
       </MudHidden>
-      <MudButton OnClick="ExitLocation">
-        <MudIcon Icon="@(Icons.Material.Filled.ExitToApp)" />
-      </MudButton>
+      @if (LocationState is { })
+      {
+        <MudButton OnClick="ExitLocation">
+          <MudIcon Icon="@(Icons.Material.Filled.ExitToApp)" />
+        </MudButton>
+      }
     </div>
   </MudContainer>
 </MudToolBar>

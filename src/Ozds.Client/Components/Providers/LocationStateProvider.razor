@@ -15,26 +15,30 @@
   return;
 }
 
-<MudTextField
-  Placeholder="@Translate("Location search...")"
-  Adornment="Adornment.Start"
-  AdornmentIcon="Icons.Material.Filled.Search"
-  @bind-Value="_filter" />
+<MudContainer MaxWidth="@MaxWidth.Small">
+  <div class="d-flex flex-column my-auto">
+    <MudTextField
+      Placeholder="@Translate("Location search...")"
+      Adornment="Adornment.Start"
+      AdornmentIcon="Icons.Material.Filled.Search"
+      @bind-Value="_filter" />
 
-<MudList>
-  @foreach (var location in _representativeLocations)
-  {
-    @if (
-      !string.IsNullOrWhiteSpace(_filter) &&
-      !location.Title.StartsWith(_filter))
-    {
-      continue;
-    }
+    <MudList>
+      @foreach (var location in _representativeLocations)
+      {
+        @if (
+          !string.IsNullOrWhiteSpace(_filter) &&
+          !location.Title.StartsWith(_filter))
+        {
+          continue;
+        }
 
-    <MudListItem>
-      <MudButton OnClick="@(() => OnLocationSelected(location))">
-        <LocationSummary Model="location" />
-      </MudButton>
-    </MudListItem>
-  }
-</MudList>
+        <MudListItem>
+          <MudButton OnClick="@(() => OnLocationSelected(location))">
+            <LocationSummary Model="location" />
+          </MudButton>
+        </MudListItem>
+      }
+    </MudList>
+  </div>
+</MudContainer>

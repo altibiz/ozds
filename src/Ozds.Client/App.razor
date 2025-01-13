@@ -17,24 +17,24 @@
   <UserStateProvider LogoutToken="@LogoutToken">
     <RepresentativeStateProvider>
       <Found>
-        <LocationStateProvider>
-          <NotificationsStateProvider>
-            <AnalysisStateProvider>
-              <Router AppAssembly="@typeof(App).Assembly">
-                <Found Context="routeData">
+        <Router AppAssembly="@typeof(App).Assembly">
+          <Found Context="routeData">
+            <LocationStateProvider>
+              <NotificationsStateProvider>
+                <AnalysisStateProvider>
                   <RouteView
                     RouteData="@routeData"
                     DefaultLayout="@typeof(Layout)" />
-                </Found>
-                <NotFound>
-                  <LayoutView Layout="@typeof(Layout)">
-                    <NotFound />
-                  </LayoutView>
-                </NotFound>
-              </Router>
-            </AnalysisStateProvider>
-          </NotificationsStateProvider>
-        </LocationStateProvider>
+                </AnalysisStateProvider>
+              </NotificationsStateProvider>
+            </LocationStateProvider>
+          </Found>
+          <NotFound>
+            <LayoutView Layout="@typeof(Layout)">
+              <NotFound />
+            </LayoutView>
+          </NotFound>
+        </Router>
       </Found>
       <NotFound>
         @if (NavigationManager.Uri.ToString() != "/unapproved")

@@ -19,7 +19,7 @@ public partial class UserToolbar : OzdsComponentBase
   public CultureState CultureState { get; set; } = default!;
 
   [CascadingParameter]
-  public LocationState LocationState { get; set; } = default!;
+  public LocationState? LocationState { get; set; } = default!;
 
   private string CultureName => CultureState.Culture.TwoLetterISOLanguageName;
 
@@ -31,7 +31,7 @@ public partial class UserToolbar : OzdsComponentBase
 
   private Task ExitLocation()
   {
-    return LocationState.UnsetLocation();
+    return LocationState?.UnsetLocation() ?? Task.CompletedTask;
   }
 
   private Task ToggleDarkMode()
