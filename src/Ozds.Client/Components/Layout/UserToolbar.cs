@@ -27,7 +27,7 @@ public partial class UserToolbar : OzdsComponentBase
 
   private bool IsDarkMode => ThemeState.IsDarkMode;
 
-  private string DarkModeName => Translate(IsDarkMode ? "Dark" : "Light");
+  private string DarkModeName => Translate(IsDarkMode ? "Light" : "Dark");
 
   private Task ExitLocation()
   {
