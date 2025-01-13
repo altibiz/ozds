@@ -18,6 +18,9 @@ public partial class UserToolbar : OzdsComponentBase
   [CascadingParameter]
   public CultureState CultureState { get; set; } = default!;
 
+  [CascadingParameter]
+  public LocationState LocationState { get; set; } = default!;
+
   private string CultureName => CultureState.Culture.TwoLetterISOLanguageName;
 
   private string UserName => UserState.User.UserName;
@@ -25,6 +28,11 @@ public partial class UserToolbar : OzdsComponentBase
   private bool IsDarkMode => ThemeState.IsDarkMode;
 
   private string DarkModeName => Translate(IsDarkMode ? "Dark" : "Light");
+
+  private Task ExitLocation()
+  {
+    return LocationState.UnsetLocation();
+  }
 
   private Task ToggleDarkMode()
   {
