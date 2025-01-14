@@ -24,6 +24,7 @@ public static class ApexChartOptionsExtensions
   )
     where T : class
   {
+    options.Theme ??= new();
     options.Theme.Mode = isDarkMode ? Mode.Dark : Mode.Light;
     return options;
   }
