@@ -5,6 +5,7 @@ using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Enums;
 using Ozds.Client.Components.Base;
 using Ozds.Client.Extensions;
+using Ozds.Client.State;
 
 namespace Ozds.Client.Components.Charts;
 
@@ -15,6 +16,9 @@ public partial class FinancialDonutChart : OzdsComponentBase
 
   [CascadingParameter]
   public Breakpoint Breakpoint { get; set; } = default!;
+
+  [CascadingParameter]
+  public ThemeState ThemeState { get; set; } = default!;
 
   private readonly string _id = Guid.NewGuid().ToString();
 
@@ -55,6 +59,8 @@ public partial class FinancialDonutChart : OzdsComponentBase
     {
       options = options.WithLongDate();
     }
+
+    options = options.WithColorMode(ThemeState.IsDarkMode);
 
     return options;
   }

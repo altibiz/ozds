@@ -6,6 +6,7 @@ using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Enums;
 using Ozds.Client.Components.Base;
 using Ozds.Client.Extensions;
+using Ozds.Client.State;
 
 namespace Ozds.Client.Components.Charts;
 
@@ -13,6 +14,9 @@ public partial class MeasurementDonutChart : OzdsComponentBase
 {
   [CascadingParameter]
   public Breakpoint Breakpoint { get; set; } = default!;
+
+  [CascadingParameter]
+  public ThemeState ThemeState { get; set; } = default!;
 
   [Parameter]
   public MeasurementChartParameters Parameters { get; set; } = default!;
@@ -90,6 +94,8 @@ public partial class MeasurementDonutChart : OzdsComponentBase
     {
       options = options.WithLongDate();
     }
+
+    options = options.WithColorMode(ThemeState.IsDarkMode);
 
     return options;
   }

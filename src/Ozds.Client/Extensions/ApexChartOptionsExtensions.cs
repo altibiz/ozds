@@ -18,6 +18,16 @@ public static class ApexChartOptionsExtensions
     return options;
   }
 
+  public static ApexChartOptions<T> WithColorMode<T>(
+    this ApexChartOptions<T> options,
+    bool isDarkMode
+  )
+    where T : class
+  {
+    options.Theme.Mode = isDarkMode ? Mode.Dark : Mode.Light;
+    return options;
+  }
+
   public static ApexChartOptions<T> WithArea<T>(
     this ApexChartOptions<T> options
   )
