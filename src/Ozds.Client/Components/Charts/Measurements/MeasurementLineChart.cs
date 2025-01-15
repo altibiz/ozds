@@ -133,6 +133,8 @@ public partial class MeasurementLineChart : OzdsComponentBase
       options = options.WithLongDate();
     }
 
+    options = options.WithColorMode(ThemeState.IsDarkMode);
+
     return options;
   }
 }
