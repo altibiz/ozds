@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Ozds.Business.Aggregation.Agnostic;
+using Ozds.Business.Models;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Enums;
 using Ozds.Business.Observers.Abstractions;
@@ -56,22 +57,78 @@ public partial class MeasurementChartControls : OzdsOwningComponentBase
     base.Dispose(disposing);
   }
 
+  protected override void OnParametersSet()
+  {
+    if (MeasurementLocations.Count == 1)
+    {
+      _parameters.MeasurementLocations = MeasurementLocations.ToHashSet();
+    }
+    if (Meters.Count == 1)
+    {
+      _parameters.Meters = Meters.ToHashSet();
+    }
+  }
+
   protected override async Task OnParametersSetAsync()
   {
-    var queries = ScopedServices.GetRequiredService<MeasurementQueries>();
+    await Fetch();
+  }
 
-    var fromDate = _parameters.FromDate;
-    var toDate = fromDate.Subtract(_parameters.Resolution
-      .ToTimeSpan(_parameters.Multiplier, fromDate));
-    _parameters.Measurements = await queries.ReadByMeterIdsDynamic(
-      Meters,
-      _parameters.Resolution,
-      _parameters.Multiplier,
-      pageNumber: 1,
-      cancellationToken: CancellationToken,
-      fromDate: fromDate,
-      toDate: toDate
-    );
+  private async Task OnMeasurementLocationsChanged(
+    IEnumerable<string> measurementLocationIds)
+  {
+    _parameters.MeasurementLocations = MeasurementLocations
+      .Where(measurementLocation =>
+        measurementLocationIds.Contains(measurementLocation.Id))
+      .ToHashSet();
+    await Fetch();
+  }
+
+  private async Task OnMetersChanged(IEnumerable<string> meterIds)
+  {
+    _parameters.Meters = Meters
+      .Where(meter => meterIds.Contains(meter.Id))
+      .ToHashSet();
+    await Fetch();
+  }
+
+  private async Task OnRefreshChanged(bool refresh)
+  {
+    _parameters.Refresh = refresh;
+    if (_parameters.Refresh)
+    {
+      var now = DateTimeOffset.UtcNow;
+      _parameters.FromDate = now.Subtract(
+        _parameters.Resolution.ToTimeSpan(
+          _parameters.Multiplier, now));
+      await Fetch();
+    }
+  }
+
+  private async Task OnResolutionChanged(ResolutionModel resolution)
+  {
+    _parameters.Resolution = resolution;
+    if (_parameters.Refresh)
+    {
+      var now = DateTimeOffset.UtcNow;
+      _parameters.FromDate = now.Subtract(
+        _parameters.Resolution.ToTimeSpan(
+          _parameters.Multiplier, now));
+    }
+    await Fetch();
+  }
+
+  private async Task OnMultiplierChanged(int multiplier)
+  {
+    _parameters.Multiplier = multiplier;
+    if (_parameters.Refresh)
+    {
+      var now = DateTimeOffset.UtcNow;
+      _parameters.FromDate = now.Subtract(
+        _parameters.Resolution.ToTimeSpan(
+          _parameters.Multiplier, now));
+    }
+    await Fetch();
   }
 
   private void OnDataModelsChanged(
@@ -98,6 +155,23 @@ public partial class MeasurementChartControls : OzdsOwningComponentBase
     MeasurementsBufferedEventArgs args)
   {
     Refresh(args.Measurements.ToList(), new List<IAggregate>());
+  }
+
+  private async Task Fetch()
+  {
+    var queries = ScopedServices.GetRequiredService<MeasurementQueries>();
+    var fromDate = _parameters.FromDate;
+    var toDate = fromDate.Add(_parameters.Resolution
+      .ToTimeSpan(_parameters.Multiplier, fromDate));
+    _parameters.Measurements = await queries.ReadByMeterIdsDynamic(
+      Meters,
+      _parameters.Resolution,
+      _parameters.Multiplier,
+      pageNumber: 1,
+      cancellationToken: CancellationToken,
+      fromDate: fromDate,
+      toDate: toDate
+    );
   }
 
   private void Refresh(

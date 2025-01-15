@@ -12,9 +12,6 @@
     <PackageReference Include="AppAny.Quartz.EntityFrameworkCore.Migrations.PostgreSQL" Version="0.5.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="$(EntityFrameworkCoreVersion)" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="$(NpgsqlEntityFrameworkCoreVersion)" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Altibiz.DependencyInjection.Extensions" Version="$(AltibizDependencyInjectionExtensionsVersion)" />
   </ItemGroup>
 

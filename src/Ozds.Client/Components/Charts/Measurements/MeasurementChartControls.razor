@@ -26,10 +26,7 @@
           Label="@Translate("Measurement locations")"
           SelectedValues="_parameters.MeasurementLocations
             .Select(measurementLocation => measurementLocation.Id)"
-          SelectedValuesChanged="@(e => _parameters.MeasurementLocations =
-            MeasurementLocations
-              .Where(measurementLocation => e.Contains(measurementLocation.Id))
-              .ToHashSet())"
+          SelectedValuesChanged="OnMeasurementLocationsChanged"
           MultiSelection>
           @foreach (var measurementLocation in MeasurementLocations)
           {
@@ -47,9 +44,7 @@
           T="string"
           Label="@Translate("Meters")"
           SelectedValues="_parameters.Meters.Select(meter => meter.Id)"
-          SelectedValuesChanged="@(e => _parameters.Meters = Meters
-            .Where(meter => e.Contains(meter.Id))
-            .ToHashSet())"
+          SelectedValuesChanged="OnMetersChanged"
           MultiSelection>
           @foreach (var meter in Meters)
           {
@@ -64,14 +59,16 @@
       <MudHidden Breakpoint="Breakpoint.MdAndUp">
         <MudCheckBox
           T="bool"
-          @bind-Value="_parameters.Refresh"
+          Checked="_parameters.Refresh"
+          CheckedChanged="OnRefreshChanged"
           Label="@Translate("Refresh")"/>
       </MudHidden>
       <MudHidden Breakpoint="Breakpoint.SmAndDown">
         <div class="d-flex justify-end pe-4">
           <MudCheckBox
             T="bool"
-            @bind-Value="_parameters.Refresh"
+            Checked="_parameters.Refresh"
+            CheckedChanged="OnRefreshChanged"
             Label="@Translate("Refresh")"/>
         </div>
       </MudHidden>
@@ -91,14 +88,16 @@
     <MudItem xs="12" sm="6" md="3">
       <EnumPicker
         T="ResolutionModel"
-        @bind-Value="_parameters.Resolution"
+        Value="_parameters.Resolution"
+        ValueChanged="OnResolutionChanged"
         Title="@Translate("Resolution")"
         Label="x => Translate(x.ToTitle(_parameters.Multiplier))"/>
     </MudItem>
     <MudItem xs="12" sm="6" md="3">
       <MudNumericField
         T="int"
-        @bind-Value="_parameters.Multiplier"
+        Value="_parameters.Multiplier"
+        ValueChanged="OnMultiplierChanged"
         Label="@Translate("Multiplier")"
         Min="1"
         Max="@_parameters.Resolution.MaxMultiplier()"

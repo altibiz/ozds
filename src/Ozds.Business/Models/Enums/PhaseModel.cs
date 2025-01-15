@@ -1,4 +1,5 @@
 using Ozds.Business.Math;
+using Ozds.Business.Models.Enums;
 using Ozds.Data.Entities.Enums;
 
 namespace Ozds.Business.Models;
@@ -58,7 +59,8 @@ public static class PhaseModelExtensions
 
   public static decimal GetMeasure(
     this PhasicMeasure<decimal> phasic,
-    PhaseModel? phase
+    PhaseModel? phase,
+    MeasureModel? measure
   )
   {
     return phase switch
@@ -66,7 +68,18 @@ public static class PhaseModelExtensions
       PhaseModel.L1 => phasic.PhaseSplit().ValueL1,
       PhaseModel.L2 => phasic.PhaseSplit().ValueL2,
       PhaseModel.L3 => phasic.PhaseSplit().ValueL3,
-      _ => phasic.PhaseSum()
+      _ => measure switch
+      {
+        MeasureModel.Voltage
+          or MeasureModel.Current
+          or MeasureModel.ActivePower
+          or MeasureModel.ReactivePower
+          or MeasureModel.ApparentPower => phasic.PhaseAverage(),
+        MeasureModel.ActiveEnergy
+          or MeasureModel.ReactiveEnergy
+          or MeasureModel.ApparentEnergy => phasic.PhaseSum(),
+        _ => phasic.PhaseSum()
+      }
     };
   }
 

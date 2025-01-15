@@ -12,7 +12,8 @@ public class FinancialChartParameters
 
   public PaginatedList<IFinancial> Financials { get; set; } = new(new(), 0);
 
-  public DateTimeOffset FromDate { get; set; } = default;
+  public DateTimeOffset FromDate { get; set; } =
+    DateTimeOffset.UtcNow.Subtract(TimeSpan.FromHours(1));
 
   public ResolutionModel Resolution { get; set; } = ResolutionModel.Hour;
 

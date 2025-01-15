@@ -30,8 +30,8 @@ public partial class FinancialChartControls : OzdsOwningComponentBase
 
     var fromDate = _parameters.FromDate;
     var toDate = fromDate
-      .Subtract(_parameters.Resolution
-      .ToTimeSpan(_parameters.Multiplier, fromDate));
+      .Add(_parameters.Resolution
+        .ToTimeSpan(_parameters.Multiplier, fromDate));
 
     var fromMeters = await queries.ReadByMeterIds(
       Meters.Select(meter => meter.Id),

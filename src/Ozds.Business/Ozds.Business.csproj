@@ -17,4 +17,8 @@
     <PackageReference Include="Altibiz.DependencyInjection.Extensions" Version="$(AltibizDependencyInjectionExtensionsVersion)" />
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="Ozds.Business.Test" />
+  </ItemGroup>
+
 </Project>

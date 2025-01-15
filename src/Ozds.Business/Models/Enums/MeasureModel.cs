@@ -26,9 +26,9 @@ public static class MeasureExtensions
   )
   {
     var byTariff = measurement.GetMeasure(measure);
-    var byDuplex = byTariff.GetMeasure(tariff);
-    var byPhase = byDuplex.GetMeasure(duplex);
-    var result = byPhase.GetMeasure(phase);
+    var byDuplex = byTariff.GetMeasure(tariff, measure);
+    var byPhase = byDuplex.GetMeasure(duplex, measure);
+    var result = byPhase.GetMeasure(phase, measure);
     return result;
   }
 

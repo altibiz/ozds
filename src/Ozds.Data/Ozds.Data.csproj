@@ -14,14 +14,11 @@
     <PackageReference Include="EFCore.BulkExtensions" Version="$(EntityFrameworkCoreVersion)" />
     <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="8.101.2" />
     <PackageReference Include="FlexLabs.EntityFrameworkCore.Upsert" Version="8.0.0" />
+    <PackageReference Include="Altibiz.DependencyInjection.Extensions" Version="$(AltibizDependencyInjectionExtensionsVersion)" />
   </ItemGroup>
 
   <ItemGroup>
     <InternalsVisibleTo Include="Ozds.Data.Test" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Altibiz.DependencyInjection.Extensions" Version="$(AltibizDependencyInjectionExtensionsVersion)" />
   </ItemGroup>
 
 </Project>

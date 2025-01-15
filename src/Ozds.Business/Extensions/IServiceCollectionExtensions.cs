@@ -46,7 +46,8 @@ public static class IServiceCollectionExtensions
     return services;
   }
 
-  private static IServiceCollection AddActivation(
+  // NOTE: internal to expose for testing
+  internal static IServiceCollection AddActivation(
     this IServiceCollection services
   )
   {
@@ -64,7 +65,8 @@ public static class IServiceCollectionExtensions
     return services;
   }
 
-  private static IServiceCollection AddConversion(
+  // NOTE: internal to expose for testing
+  internal static IServiceCollection AddConversion(
     this IServiceCollection services
   )
   {

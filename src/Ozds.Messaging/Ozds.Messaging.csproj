@@ -12,9 +12,6 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="$(EntityFrameworkCoreVersion)" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="$(NpgsqlEntityFrameworkCoreVersion)" />
     <PackageReference Include="EFCore.NamingConventions" Version="$(EntityFrameworkCoreVersion)" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Altibiz.DependencyInjection.Extensions" Version="$(AltibizDependencyInjectionExtensionsVersion)" />
   </ItemGroup>
 
