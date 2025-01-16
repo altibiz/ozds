@@ -1,33 +1,18 @@
 using Ozds.Business.Activation.Base;
 using Ozds.Business.Models;
+using Ozds.Business.Models.Base;
 
 namespace Ozds.Business.Activation;
 
 public class
-  LocationMeasurementLocationModelActivator : ModelActivator<
-  LocationMeasurementLocationModel>
+  LocationMeasurementLocationModelActivator(IServiceProvider serviceProvider)
+  : InheritingModelActivator<
+  LocationMeasurementLocationModel,
+  MeasurementLocationModel>(serviceProvider)
 {
-  public override LocationMeasurementLocationModel ActivateConcrete()
+  public override void Initialize(LocationMeasurementLocationModel model)
   {
-    return New();
-  }
-
-  public static LocationMeasurementLocationModel New()
-  {
-    return new LocationMeasurementLocationModel
-    {
-      Id = default!,
-      Title = "",
-      CreatedOn = DateTimeOffset.UtcNow,
-      CreatedById = default,
-      LastUpdatedOn = default,
-      LastUpdatedById = default,
-      IsDeleted = false,
-      DeletedOn = default,
-      DeletedById = default,
-      LocationId = default!,
-      MeterId = default!,
-      Kind = default!
-    };
+    base.Initialize(model);
+    model.LocationId = default!;
   }
 }

@@ -1,10 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Activation;
+using Ozds.Business.Activation.Agnostic;
 using Ozds.Business.Conversion;
 using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Conversion.Joins;
 using Ozds.Business.Localization.Abstractions;
 using Ozds.Business.Models;
+using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Enums;
 using Ozds.Business.Models.Joins;
 using Ozds.Business.Observers.Abstractions;
@@ -28,6 +30,7 @@ public class MessagingNetworkUserInvoiceStateReactor(
 }
 
 public class MessagingNetworkUserInvoiceStateHandler(
+  AgnosticModelActivator activator,
   AgnosticModelEntityConverter converter,
   IDbContextFactory<DataDbContext> factory,
   ILocalizer localizer
@@ -81,8 +84,8 @@ public class MessagingNetworkUserInvoiceStateHandler(
       .Select(
         invoice =>
         {
-          var notification =
-            NetworkUserInvoiceNotificationModelActivator.New();
+          var notification = activator
+            .Activate<NetworkUserInvoiceNotificationModel>();
           notification.InvoiceId = invoice.Id;
           notification.Topics =
           [

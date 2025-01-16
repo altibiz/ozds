@@ -1,34 +1,19 @@
 using Ozds.Business.Activation.Base;
 using Ozds.Business.Models;
+using Ozds.Business.Models.Base;
 
 namespace Ozds.Business.Activation;
 
-public class
-  NetworkUserMeasurementLocationModelActivator : ModelActivator<
-  NetworkUserMeasurementLocationModel>
+public class NetworkUserMeasurementLocationModelActivator(
+  IServiceProvider serviceProvider
+) : InheritingModelActivator<
+  NetworkUserMeasurementLocationModel,
+  MeasurementLocationModel>(serviceProvider)
 {
-  public override NetworkUserMeasurementLocationModel ActivateConcrete()
+  public override void Initialize(NetworkUserMeasurementLocationModel model)
   {
-    return New();
-  }
-
-  public static NetworkUserMeasurementLocationModel New()
-  {
-    return new NetworkUserMeasurementLocationModel
-    {
-      Id = default!,
-      Title = "",
-      CreatedOn = DateTimeOffset.UtcNow,
-      CreatedById = default,
-      LastUpdatedOn = default,
-      LastUpdatedById = default,
-      IsDeleted = false,
-      DeletedOn = default,
-      DeletedById = default,
-      NetworkUserId = default!,
-      NetworkUserCatalogueId = default!,
-      MeterId = default!,
-      Kind = default!
-    };
+    base.Initialize(model);
+    model.NetworkUserId = default!;
+    model.NetworkUserCatalogueId = default!;
   }
 }

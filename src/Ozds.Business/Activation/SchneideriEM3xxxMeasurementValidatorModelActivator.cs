@@ -1,40 +1,29 @@
 using Ozds.Business.Activation.Base;
 using Ozds.Business.Models;
+using Ozds.Business.Models.Base;
 
 namespace Ozds.Business.Activation;
 
-public class
-  SchneideriEM3xxxMeasurementValidatorModelActivator : ModelActivator<
-  SchneideriEM3xxxMeasurementValidatorModel>
+public class SchneideriEM3xxxMeasurementValidatorModelActivator(
+  IServiceProvider serviceProvider
+) : InheritingModelActivator<
+  SchneideriEM3xxxMeasurementValidatorModel,
+  MeasurementValidatorModel>(serviceProvider)
 {
-  public override SchneideriEM3xxxMeasurementValidatorModel ActivateConcrete()
+  public override void Initialize(
+    SchneideriEM3xxxMeasurementValidatorModel model
+  )
   {
-    return New();
-  }
-
-  public static SchneideriEM3xxxMeasurementValidatorModel New()
-  {
-    return new SchneideriEM3xxxMeasurementValidatorModel
-    {
-      Id = default!,
-      Title = "",
-      CreatedOn = DateTimeOffset.UtcNow,
-      CreatedById = default,
-      LastUpdatedOn = default,
-      LastUpdatedById = default,
-      IsDeleted = false,
-      DeletedOn = default,
-      DeletedById = default,
-      MinVoltage_V = default,
-      MaxVoltage_V = default,
-      MinCurrent_A = default,
-      MaxCurrent_A = default,
-      MinActivePower_W = default,
-      MaxActivePower_W = default,
-      MinReactivePower_VAR = default,
-      MaxReactivePower_VAR = default,
-      MinApparentPower_VA = default,
-      MaxApparentPower_VA = default
-    };
+    base.Initialize(model);
+    model.MinVoltage_V = default;
+    model.MaxVoltage_V = default;
+    model.MinCurrent_A = default;
+    model.MaxCurrent_A = default;
+    model.MinActivePower_W = default;
+    model.MaxActivePower_W = default;
+    model.MinReactivePower_VAR = default;
+    model.MaxReactivePower_VAR = default;
+    model.MinApparentPower_VA = default;
+    model.MaxApparentPower_VA = default;
   }
 }

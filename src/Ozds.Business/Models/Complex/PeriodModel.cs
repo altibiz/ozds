@@ -7,9 +7,11 @@ namespace Ozds.Business.Models.Complex;
 
 public class PeriodModel : IModel
 {
-  public DurationModel Duration { get; set; }
+  [Required]
+  public required DurationModel Duration { get; set; }
 
-  public uint Multiplier { get; set; }
+  [Required]
+  public required uint Multiplier { get; set; }
 
   public IEnumerable<ValidationResult> Validate(
     ValidationContext validationContext)

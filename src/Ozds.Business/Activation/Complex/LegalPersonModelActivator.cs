@@ -3,33 +3,17 @@ using Ozds.Business.Models.Complex;
 
 namespace Ozds.Business.Activation.Complex;
 
-public class LegalPersonModelActivator : ModelActivator<LegalPersonModel>
+public class LegalPersonModelActivator
+  : ConcreteModelActivator<LegalPersonModel>
 {
-  public override LegalPersonModel ActivateConcrete()
+  public override void Initialize(LegalPersonModel model)
   {
-    return new LegalPersonModel
-    {
-      Name = string.Empty,
-      SocialSecurityNumber = string.Empty,
-      Address = string.Empty,
-      PostalCode = string.Empty,
-      City = string.Empty,
-      Email = string.Empty,
-      PhoneNumber = string.Empty
-    };
-  }
-
-  public static LegalPersonModel New()
-  {
-    return new LegalPersonModel
-    {
-      Name = string.Empty,
-      SocialSecurityNumber = string.Empty,
-      Address = string.Empty,
-      PostalCode = string.Empty,
-      City = string.Empty,
-      Email = string.Empty,
-      PhoneNumber = string.Empty
-    };
+    model.Name = string.Empty;
+    model.SocialSecurityNumber = string.Empty;
+    model.Address = string.Empty;
+    model.PostalCode = string.Empty;
+    model.City = string.Empty;
+    model.Email = string.Empty;
+    model.PhoneNumber = string.Empty;
   }
 }

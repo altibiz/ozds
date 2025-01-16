@@ -1,52 +1,26 @@
+using Ozds.Business.Activation.Agnostic;
 using Ozds.Business.Activation.Base;
-using Ozds.Business.Activation.Complex;
 using Ozds.Business.Models;
+using Ozds.Business.Models.Base;
+using Ozds.Business.Models.Complex;
 using Ozds.Business.Models.Enums;
 
 namespace Ozds.Business.Activation;
 
-public class RepresentativeModelActivator : ModelActivator<RepresentativeModel>
+public class RepresentativeModelActivator(IServiceProvider serviceProvider)
+  : InheritingModelActivator<RepresentativeModel, AuditableModel>(
+    serviceProvider
+  )
 {
-  public override RepresentativeModel ActivateConcrete()
-  {
-    return New();
-  }
+  private readonly AgnosticModelActivator _agnosticModelActivator =
+    serviceProvider.GetRequiredService<AgnosticModelActivator>();
 
-  public static RepresentativeModel New()
+  public override void Initialize(RepresentativeModel model)
   {
-    return new RepresentativeModel
-    {
-      Id = default!,
-      Title = "",
-      CreatedOn = DateTimeOffset.UtcNow,
-      CreatedById = null,
-      LastUpdatedOn = null,
-      LastUpdatedById = null,
-      IsDeleted = false,
-      DeletedOn = null,
-      DeletedById = null,
-      Role = RoleModel.NetworkUserRepresentative,
-      PhysicalPerson = PhysicalPersonModelActivator.New(),
-      Topics = RoleModel.NetworkUserRepresentative.ToTopics()
-    };
-  }
-
-  public static RepresentativeModel New(UserModel user)
-  {
-    return new RepresentativeModel
-    {
-      Id = user.Id,
-      Title = user.UserName,
-      CreatedOn = DateTimeOffset.UtcNow,
-      CreatedById = null,
-      LastUpdatedOn = null,
-      LastUpdatedById = null,
-      IsDeleted = false,
-      DeletedOn = null,
-      DeletedById = null,
-      Role = RoleModel.NetworkUserRepresentative,
-      PhysicalPerson = PhysicalPersonModelActivator.New(),
-      Topics = RoleModel.NetworkUserRepresentative.ToTopics()
-    };
+    base.Initialize(model);
+    model.Role = RoleModel.NetworkUserRepresentative;
+    model.PhysicalPerson = _agnosticModelActivator
+      .Activate<PhysicalPersonModel>();
+    model.Topics = RoleModel.NetworkUserRepresentative.ToTopics();
   }
 }

@@ -1,22 +1,21 @@
 using Ozds.Business.Activation.Agnostic;
 using Ozds.Business.Activation.Base;
-using Ozds.Business.Models;
 using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Complex;
 
 namespace Ozds.Business.Activation;
 
-public class NetworkUserModelActivator(IServiceProvider serviceProvider)
-  : InheritingModelActivator<NetworkUserModel, AuditableModel>(serviceProvider)
+public class MessengerModelActivator(IServiceProvider serviceProvider)
+  : InheritingModelActivator<MessengerModel, AuditableModel>(serviceProvider)
 {
   private readonly AgnosticModelActivator _agnosticModelActivator =
     serviceProvider.GetRequiredService<AgnosticModelActivator>();
 
-  public override void Initialize(NetworkUserModel model)
+  public override void Initialize(MessengerModel model)
   {
     base.Initialize(model);
     model.LocationId = default!;
-    model.LegalPerson = _agnosticModelActivator.Activate<LegalPersonModel>();
-    model.AltiBizSubProjectCode = default!;
+    model.MaxInactivityPeriod = _agnosticModelActivator.Activate<PeriodModel>();
+    model.PushDelayPeriod = _agnosticModelActivator.Activate<PeriodModel>();
   }
 }

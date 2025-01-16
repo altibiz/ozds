@@ -1,35 +1,22 @@
 using Ozds.Business.Activation.Base;
 using Ozds.Business.Models;
+using Ozds.Business.Models.Base;
 
 namespace Ozds.Business.Activation;
 
-public class
-  RedLowNetworkUserCatalogueModelActivator : ModelActivator<
-  RedLowNetworkUserCatalogueModel>
+public class RedLowNetworkUserCatalogueModelActivator(
+  IServiceProvider serviceProvider
+) : InheritingModelActivator<
+  RedLowNetworkUserCatalogueModel,
+  NetworkUserCatalogueModel>(serviceProvider)
 {
-  public override RedLowNetworkUserCatalogueModel ActivateConcrete()
+  public override void Initialize(RedLowNetworkUserCatalogueModel model)
   {
-    return New();
-  }
-
-  public static RedLowNetworkUserCatalogueModel New()
-  {
-    return new RedLowNetworkUserCatalogueModel
-    {
-      Id = default!,
-      Title = "",
-      CreatedOn = DateTimeOffset.UtcNow,
-      CreatedById = default,
-      LastUpdatedOn = default,
-      LastUpdatedById = default,
-      IsDeleted = false,
-      DeletedOn = default,
-      DeletedById = default,
-      ActiveEnergyTotalImportT1Price_EUR = 0,
-      ActiveEnergyTotalImportT2Price_EUR = 0,
-      ActivePowerTotalImportT1Price_EUR = 0,
-      ReactiveEnergyTotalRampedT0Price_EUR = 0,
-      MeterFeePrice_EUR = 0
-    };
+    base.Initialize(model);
+    model.ActiveEnergyTotalImportT1Price_EUR = 0;
+    model.ActiveEnergyTotalImportT2Price_EUR = 0;
+    model.ActivePowerTotalImportT1Price_EUR = 0;
+    model.ReactiveEnergyTotalRampedT0Price_EUR = 0;
+    model.MeterFeePrice_EUR = 0;
   }
 }

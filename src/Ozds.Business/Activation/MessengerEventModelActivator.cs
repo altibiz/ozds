@@ -1,32 +1,15 @@
-using System.Text.Json;
 using Ozds.Business.Activation.Base;
 using Ozds.Business.Models;
-using Ozds.Business.Models.Enums;
+using Ozds.Business.Models.Base;
 
 namespace Ozds.Business.Activation;
 
-public class MessengerEventModelActivator :
-  ModelActivator<MessengerEventModel>
+public class MessengerEventModelActivator(IServiceProvider serviceProvider) :
+  InheritingModelActivator<MessengerEventModel, EventModel>(serviceProvider)
 {
-  public override MessengerEventModel ActivateConcrete()
+  public override void Initialize(MessengerEventModel model)
   {
-    return New();
-  }
-
-  public static MessengerEventModel New()
-  {
-    return new MessengerEventModel
-    {
-      Id = default!,
-      Title = string.Empty,
-      Timestamp = DateTimeOffset.UtcNow,
-      Content = JsonSerializer.SerializeToDocument(string.Empty),
-      Level = LevelModel.Information,
-      Categories = new List<CategoryModel>
-      {
-        CategoryModel.All
-      },
-      MessengerId = default!
-    };
+    base.Initialize(model);
+    model.MessengerId = default!;
   }
 }

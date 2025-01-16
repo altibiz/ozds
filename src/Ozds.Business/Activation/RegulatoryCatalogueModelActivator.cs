@@ -1,34 +1,22 @@
 using Ozds.Business.Activation.Base;
 using Ozds.Business.Models;
+using Ozds.Business.Models.Base;
 
 namespace Ozds.Business.Activation;
 
-public class
-  RegulatoryCatalogueModelActivator : ModelActivator<RegulatoryCatalogueModel>
+public class RegulatoryCatalogueModelActivator(
+  IServiceProvider serviceProvider
+) : InheritingModelActivator<RegulatoryCatalogueModel, AuditableModel>(
+  serviceProvider
+)
 {
-  public override RegulatoryCatalogueModel ActivateConcrete()
+  public override void Initialize(RegulatoryCatalogueModel model)
   {
-    return New();
-  }
-
-  public static RegulatoryCatalogueModel New()
-  {
-    return new RegulatoryCatalogueModel
-    {
-      Id = default!,
-      Title = "",
-      CreatedOn = DateTimeOffset.UtcNow,
-      CreatedById = default,
-      LastUpdatedOn = default,
-      LastUpdatedById = default,
-      IsDeleted = false,
-      DeletedOn = default,
-      DeletedById = default,
-      ActiveEnergyTotalImportT1Price_EUR = 0,
-      ActiveEnergyTotalImportT2Price_EUR = 0,
-      RenewableEnergyFeePrice_EUR = 0,
-      BusinessUsageFeePrice_EUR = 0,
-      TaxRate_Percent = 0
-    };
+    base.Initialize(model);
+    model.ActiveEnergyTotalImportT1Price_EUR = 0;
+    model.ActiveEnergyTotalImportT2Price_EUR = 0;
+    model.RenewableEnergyFeePrice_EUR = 0;
+    model.BusinessUsageFeePrice_EUR = 0;
+    model.TaxRate_Percent = 0;
   }
 }

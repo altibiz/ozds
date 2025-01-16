@@ -1,35 +1,18 @@
 using Ozds.Business.Activation.Base;
 using Ozds.Business.Models;
+using Ozds.Business.Models.Base;
 
 namespace Ozds.Business.Activation;
 
-public class
-  SchneideriEM3xxxMeterModelActivator : ModelActivator<
-  SchneideriEM3xxxMeterModel>
+public class SchneideriEM3xxxMeterModelActivator(
+  IServiceProvider serviceProvider
+) : InheritingModelActivator<
+  SchneideriEM3xxxMeterModel,
+  MeterModel>(serviceProvider)
 {
-  public override SchneideriEM3xxxMeterModel ActivateConcrete()
+  public override void Initialize(SchneideriEM3xxxMeterModel model)
   {
-    return New();
-  }
-
-  public static SchneideriEM3xxxMeterModel New()
-  {
-    return new SchneideriEM3xxxMeterModel
-    {
-      Id = default!,
-      Title = "",
-      CreatedOn = DateTimeOffset.UtcNow,
-      CreatedById = default,
-      LastUpdatedOn = default,
-      LastUpdatedById = default,
-      IsDeleted = false,
-      DeletedOn = default,
-      DeletedById = default,
-      ConnectionPower_W = default,
-      Phases = default!,
-      MessengerId = default!,
-      MeasurementValidatorId = default!,
-      Kind = default!
-    };
+    base.Initialize(model);
+    model.MeasurementValidatorId = default!;
   }
 }

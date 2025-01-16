@@ -1,38 +1,25 @@
 using Ozds.Business.Activation.Base;
 using Ozds.Business.Models;
+using Ozds.Business.Models.Base;
 
 namespace Ozds.Business.Activation;
 
 public class
-  AbbB2xMeasurementValidatorModelActivator : ModelActivator<
-  AbbB2xMeasurementValidatorModel>
+  AbbB2xMeasurementValidatorModelActivator(IServiceProvider serviceProvider)
+  : InheritingModelActivator<
+  AbbB2xMeasurementValidatorModel,
+  MeasurementValidatorModel>(serviceProvider)
 {
-  public override AbbB2xMeasurementValidatorModel ActivateConcrete()
+  public override void Initialize(AbbB2xMeasurementValidatorModel model)
   {
-    return New();
-  }
-
-  public static AbbB2xMeasurementValidatorModel New()
-  {
-    return new AbbB2xMeasurementValidatorModel
-    {
-      Id = default!,
-      Title = "",
-      CreatedOn = DateTimeOffset.UtcNow,
-      CreatedById = default,
-      LastUpdatedOn = default,
-      LastUpdatedById = default,
-      IsDeleted = false,
-      DeletedOn = default,
-      DeletedById = default,
-      MinVoltage_V = default,
-      MaxVoltage_V = default,
-      MinCurrent_A = default,
-      MaxCurrent_A = default,
-      MinActivePower_W = default,
-      MaxActivePower_W = default,
-      MinReactivePower_VAR = default,
-      MaxReactivePower_VAR = default
-    };
+    base.Initialize(model);
+    model.MinVoltage_V = default;
+    model.MaxVoltage_V = default;
+    model.MinCurrent_A = default;
+    model.MaxCurrent_A = default;
+    model.MinActivePower_W = default;
+    model.MaxActivePower_W = default;
+    model.MinReactivePower_VAR = default;
+    model.MaxReactivePower_VAR = default;
   }
 }

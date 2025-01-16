@@ -4,19 +4,11 @@ using Ozds.Business.Models.Enums;
 
 namespace Ozds.Business.Activation.Complex;
 
-public class PeriodModelActivator : ModelActivator<PeriodModel>
+public class PeriodModelActivator : ConcreteModelActivator<PeriodModel>
 {
-  public override PeriodModel ActivateConcrete()
+  public override void Initialize(PeriodModel model)
   {
-    return New();
-  }
-
-  public static PeriodModel New()
-  {
-    return new PeriodModel
-    {
-      Duration = DurationModel.Second,
-      Multiplier = 1
-    };
+    model.Duration = DurationModel.Second;
+    model.Multiplier = 1;
   }
 }

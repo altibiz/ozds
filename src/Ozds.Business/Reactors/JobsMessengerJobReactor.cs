@@ -2,8 +2,10 @@ using System.Text;
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Activation;
+using Ozds.Business.Activation.Agnostic;
 using Ozds.Business.Conversion;
 using Ozds.Business.Conversion.Agnostic;
+using Ozds.Business.Models;
 using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Enums;
 using Ozds.Business.Models.Joins;
@@ -33,6 +35,7 @@ public class JobsMessengerJobReactor(
 public class JobsMessengerJobHandler(
   IDbContextFactory<DataDbContext> factory,
   IHostEnvironment environment,
+  AgnosticModelActivator activator,
   AgnosticModelEntityConverter converter,
   AuditableQueries auditableQueries
 ) : Handler<JobsMessengerJobEventArgs>
@@ -72,7 +75,7 @@ public class JobsMessengerJobHandler(
         .ToListAsync())
       .Select(x => x.ToModel());
 
-    var notification = MessengerNotificationModelActivator.New();
+    var notification = activator.Activate<MessengerNotificationModel>();
     notification.MessengerId = messenger.Id;
     notification.Topics =
     [

@@ -1,30 +1,18 @@
 using Ozds.Business.Activation.Base;
 using Ozds.Business.Models;
+using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Enums;
 
 namespace Ozds.Business.Activation;
 
-public class MessengerNotificationModelActivator
-  : ModelActivator<MessengerNotificationModel>
+public class MessengerNotificationModelActivator(IServiceProvider serviceProvider)
+  : InheritingModelActivator<
+  MessengerNotificationModel,
+  NotificationModel>(serviceProvider)
 {
-  public override MessengerNotificationModel ActivateConcrete()
+  public override void Initialize(MessengerNotificationModel model)
   {
-    return New();
-  }
-
-  public static MessengerNotificationModel New()
-  {
-    return new MessengerNotificationModel
-    {
-      Id = default!,
-      Title = string.Empty,
-      Timestamp = DateTimeOffset.UtcNow,
-      Content = string.Empty,
-      Summary = string.Empty,
-      Topics = new HashSet<TopicModel>(),
-      ResolvedOn = default!,
-      ResolvedById = default!,
-      MessengerId = default!
-    };
+    base.Initialize(model);
+    model.MessengerId = default!;
   }
 }

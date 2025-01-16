@@ -1,33 +1,15 @@
 using Ozds.Business.Activation.Base;
-using Ozds.Business.Models;
 using Ozds.Business.Models.Complex;
 
 namespace Ozds.Business.Activation.Complex;
 
-public class PhysicalPersonModelActivator : ModelActivator<PhysicalPersonModel>
+public class PhysicalPersonModelActivator
+  : ConcreteModelActivator<PhysicalPersonModel>
 {
-  public override PhysicalPersonModel ActivateConcrete()
+  public override void Initialize(PhysicalPersonModel model)
   {
-    return New();
-  }
-
-  public static PhysicalPersonModel New()
-  {
-    return new PhysicalPersonModel
-    {
-      Email = string.Empty,
-      PhoneNumber = string.Empty,
-      Name = string.Empty
-    };
-  }
-
-  public static PhysicalPersonModel New(UserModel user)
-  {
-    return new PhysicalPersonModel
-    {
-      Name = string.Empty,
-      Email = user.Email,
-      PhoneNumber = string.Empty
-    };
+    model.Name = string.Empty;
+    model.Email = string.Empty;
+    model.PhoneNumber = string.Empty;
   }
 }

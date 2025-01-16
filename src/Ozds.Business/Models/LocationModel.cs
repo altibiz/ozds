@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using Ozds.Business.Activation.Complex;
 using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Complex;
 
@@ -27,29 +26,6 @@ public class LocationModel : AuditableModel
 
   [Required]
   public required string AltiBizSubProjectCode { get; set; } = default!;
-
-  public static LocationModel New()
-  {
-    return new LocationModel
-    {
-      Id = default!,
-      Title = "",
-      CreatedOn = DateTimeOffset.UtcNow,
-      CreatedById = default,
-      LastUpdatedOn = default,
-      LastUpdatedById = default,
-      IsDeleted = false,
-      DeletedOn = default,
-      DeletedById = default,
-      WhiteMediumNetworkUserCatalogueId = default!,
-      BlueLowNetworkUserCatalogueId = default!,
-      WhiteLowNetworkUserCatalogueId = default!,
-      RedLowNetworkUserCatalogueId = default!,
-      RegulatoryCatalogueId = default!,
-      LegalPerson = LegalPersonModelActivator.New(),
-      AltiBizSubProjectCode = ""
-    };
-  }
 
   public override IEnumerable<ValidationResult> Validate(
     ValidationContext validationContext)
