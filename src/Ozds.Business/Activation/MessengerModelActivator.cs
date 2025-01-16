@@ -14,7 +14,7 @@ public class MessengerModelActivator(IServiceProvider serviceProvider)
   public override void Initialize(MessengerModel model)
   {
     base.Initialize(model);
-    model.LocationId = default!;
+    model.LocationId = "0";
     model.MaxInactivityPeriod = _agnosticModelActivator.Activate<PeriodModel>();
     model.PushDelayPeriod = _agnosticModelActivator.Activate<PeriodModel>();
   }

@@ -13,8 +13,8 @@ public class NetworkUserInvoiceModelActivator(IServiceProvider serviceProvider)
   {
     base.Initialize(model);
 
-    model.BillId = default!;
-    model.NetworkUserId = default!;
+    model.BillId = string.Empty;
+    model.NetworkUserId = "0";
     model.ArchivedLocation = default!;
     model.ArchivedNetworkUser = default!;
     model.ArchivedRegulatoryCatalogue = default!;

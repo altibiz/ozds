@@ -28,12 +28,12 @@ public class NetworkUserCalculationModelActivator(
       .Activate<SupplyBusinessUsageCalculationItemModel>();
     model.SupplyRenewableEnergyFee = _agnosticModelActivator
       .Activate<SupplyRenewableEnergyCalculationItemModel>();
-    model.NetworkUserMeasurementLocationId = default!;
+    model.NetworkUserMeasurementLocationId = "0";
     model.ArchivedNetworkUserMeasurementLocation = default!;
-    model.UsageNetworkUserCatalogueId = default!;
-    model.SupplyRegulatoryCatalogueId = default!;
+    model.UsageNetworkUserCatalogueId = "0";
+    model.SupplyRegulatoryCatalogueId = "0";
     model.ArchivedSupplyRegulatoryCatalogue = default!;
-    model.NetworkUserInvoiceId = default!;
+    model.NetworkUserInvoiceId = "0";
     model.UsageFeeTotal_EUR = 0;
     model.SupplyFeeTotal_EUR = 0;
   }

@@ -9,8 +9,10 @@ public class MeasurementModelActivator : ConcreteModelActivator<MeasurementModel
   {
     base.Initialize(model);
 
-    model.Timestamp = DateTimeOffset.UtcNow;
-    model.MeterId = default!;
-    model.MeasurementLocationId = default!;
+    var now = DateTimeOffset.UtcNow;
+
+    model.Timestamp = now;
+    model.MeterId = string.Empty;
+    model.MeasurementLocationId = "0";
   }
 }

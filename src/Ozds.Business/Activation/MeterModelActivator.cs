@@ -11,9 +11,9 @@ public class MeterModelActivator(IServiceProvider serviceProvider)
   public override void Initialize(MeterModel model)
   {
     base.Initialize(model);
-    model.ConnectionPower_W = default;
+    model.ConnectionPower_W = 0;
     model.Phases = new();
-    model.MessengerId = default!;
-    model.Kind = default!;
+    model.MessengerId = string.Empty;
+    model.Kind = string.Empty;
   }
 }

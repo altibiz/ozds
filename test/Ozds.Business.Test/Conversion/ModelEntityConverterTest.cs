@@ -32,17 +32,17 @@ public class ModelEntityConverterTest
     var activationType = (TestData as IEnumerable<Type>)
       .FirstOrDefault(type =>
         !type.IsAbstract
-        && type.IsAssignableTo(typeof(IModel)));
+        && type.IsAssignableTo(modelType))!;
     activationType.Should().NotBeNull();
-    var activated = activator.ActivateDynamic(modelType);
-    activated.Should().NotBeNull().And.BeOfType(modelType);
+    var activated = activator.ActivateDynamic(activationType);
+    activated.Should().NotBeNull().And.BeOfType(activationType);
 
     var entityType = modelEntityConverter.EntityType(modelType);
     var entity = modelEntityConverter.ToEntity(activated);
-    entity.Should().NotBeNull().And.BeOfType(entityType);
+    entity.Should().NotBeNull().And.BeAssignableTo(entityType);
 
     var converted = modelEntityConverter.ToModel(entity);
-    converted.Should().NotBeNull().And.BeOfType(modelType);
+    converted.Should().NotBeNull().And.BeAssignableTo(modelType);
     converted.Should().BeEquivalentTo(activated);
   }
 }

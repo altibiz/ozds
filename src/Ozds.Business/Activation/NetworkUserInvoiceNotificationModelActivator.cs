@@ -13,6 +13,6 @@ public class NetworkUserInvoiceNotificationModelActivator(
   public override void Initialize(NetworkUserInvoiceNotificationModel model)
   {
     base.Initialize(model);
-    model.InvoiceId = default!;
+    model.InvoiceId = "0";
   }
 }

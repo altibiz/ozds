@@ -14,6 +14,6 @@ public class RepresentativeAuditEventModelActivator(
   {
     base.Initialize(model);
 
-    model.RepresentativeId = default!;
+    model.RepresentativeId = string.Empty;
   }
 }

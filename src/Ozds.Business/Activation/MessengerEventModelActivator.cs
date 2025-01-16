@@ -10,6 +10,6 @@ public class MessengerEventModelActivator(IServiceProvider serviceProvider) :
   public override void Initialize(MessengerEventModel model)
   {
     base.Initialize(model);
-    model.MessengerId = default!;
+    model.MessengerId = string.Empty;
   }
 }

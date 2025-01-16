@@ -13,6 +13,6 @@ public class SchneideriEM3xxxMeterModelActivator(
   public override void Initialize(SchneideriEM3xxxMeterModel model)
   {
     base.Initialize(model);
-    model.MeasurementValidatorId = default!;
+    model.MeasurementValidatorId = "0";
   }
 }

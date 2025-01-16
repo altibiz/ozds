@@ -12,7 +12,7 @@ public class MeasurementLocationModelActivator(
   public override void Initialize(MeasurementLocationModel model)
   {
     base.Initialize(model);
-    model.MeterId = default!;
-    model.Kind = default!;
+    model.MeterId = "0";
+    model.Kind = string.Empty;
   }
 }

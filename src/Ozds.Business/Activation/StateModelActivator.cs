@@ -9,6 +9,6 @@ public class StateModelActivator : ConcreteModelActivator<StateModel>
   {
     base.Initialize(model);
 
-    model.CurrentState = default!;
+    model.CurrentState = string.Empty;
   }
 }

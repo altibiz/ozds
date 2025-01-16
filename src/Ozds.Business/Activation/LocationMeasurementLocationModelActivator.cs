@@ -13,6 +13,6 @@ public class
   public override void Initialize(LocationMeasurementLocationModel model)
   {
     base.Initialize(model);
-    model.LocationId = default!;
+    model.LocationId = "0";
   }
 }

@@ -3,8 +3,10 @@ using Ozds.Business.Models.Base;
 
 namespace Ozds.Business.Activation;
 
-public class NotificationModelActivator
-  : ConcreteModelActivator<NotificationModel>
+public class NotificationModelActivator(IServiceProvider serviceProvider)
+  : InheritingModelActivator<NotificationModel, IdentifiableModel>(
+      serviceProvider
+    )
 {
   public override void Initialize(NotificationModel model)
   {
@@ -12,7 +14,7 @@ public class NotificationModelActivator
     model.Timestamp = DateTimeOffset.UtcNow;
     model.Content = string.Empty;
     model.Summary = string.Empty;
-    model.EventId = default!;
+    model.EventId = "0";
     model.Topics = new();
   }
 }

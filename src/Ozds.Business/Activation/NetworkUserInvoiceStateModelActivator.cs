@@ -14,6 +14,6 @@ public class NetworkUserInvoiceStateModelActivator(
   {
     base.Initialize(model);
 
-    model.NetworkUserInvoiceId = default!;
+    model.NetworkUserInvoiceId = "0";
   }
 }

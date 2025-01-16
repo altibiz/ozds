@@ -13,7 +13,7 @@ public class NetworkUserMeasurementLocationModelActivator(
   public override void Initialize(NetworkUserMeasurementLocationModel model)
   {
     base.Initialize(model);
-    model.NetworkUserId = default!;
-    model.NetworkUserCatalogueId = default!;
+    model.NetworkUserId = "0";
+    model.NetworkUserCatalogueId = "0";
   }
 }

@@ -13,13 +13,14 @@ public class
   public override void Initialize(AbbB2xMeasurementValidatorModel model)
   {
     base.Initialize(model);
-    model.MinVoltage_V = default;
-    model.MaxVoltage_V = default;
-    model.MinCurrent_A = default;
-    model.MaxCurrent_A = default;
-    model.MinActivePower_W = default;
-    model.MaxActivePower_W = default;
-    model.MinReactivePower_VAR = default;
-    model.MaxReactivePower_VAR = default;
+
+    model.MinVoltage_V = 0;
+    model.MaxVoltage_V = 0;
+    model.MinCurrent_A = 0;
+    model.MaxCurrent_A = 0;
+    model.MinActivePower_W = 0;
+    model.MaxActivePower_W = 0;
+    model.MinReactivePower_VAR = 0;
+    model.MaxReactivePower_VAR = 0;
   }
 }

@@ -12,7 +12,7 @@ public class LocationInvoiceModelActivator(IServiceProvider serviceProvider)
   public override void Initialize(LocationInvoiceModel model)
   {
     base.Initialize(model);
-    model.LocationId = default!;
+    model.LocationId = "0";
     model.ArchivedLocation = default!;
   }
 }

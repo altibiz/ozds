@@ -9,7 +9,7 @@ public class IdentifiableModelActivator
   public override void Initialize(IdentifiableModel model)
   {
     base.Initialize(model);
-    model.Id = default!;
+    model.Id = "0";
     model.Title = string.Empty;
   }
 }

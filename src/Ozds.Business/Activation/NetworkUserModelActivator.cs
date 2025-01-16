@@ -16,8 +16,8 @@ public class NetworkUserModelActivator(IServiceProvider serviceProvider)
   {
     base.Initialize(model);
 
-    model.LocationId = default!;
+    model.LocationId = "0";
     model.LegalPerson = _agnosticModelActivator.Activate<LegalPersonModel>();
-    model.AltiBizSubProjectCode = default!;
+    model.AltiBizSubProjectCode = string.Empty;
   }
 }

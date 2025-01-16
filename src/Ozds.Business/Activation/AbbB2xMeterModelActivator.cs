@@ -10,6 +10,7 @@ public class AbbB2xMeterModelActivator(IServiceProvider serviceProvider)
   public override void Initialize(AbbB2xMeterModel model)
   {
     base.Initialize(model);
-    model.MeasurementValidatorId = default!;
+
+    model.MeasurementValidatorId = "0";
   }
 }

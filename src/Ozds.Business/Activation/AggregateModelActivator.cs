@@ -12,7 +12,7 @@ public class AggregateModelActivator : ConcreteModelActivator<AggregateModel>
 
     model.Interval = IntervalModel.QuarterHour;
     model.Timestamp = DateTimeOffset.UtcNow;
-    model.MeterId = default!;
-    model.MeasurementLocationId = default!;
+    model.MeterId = string.Empty;
+    model.MeasurementLocationId = "0";
   }
 }
