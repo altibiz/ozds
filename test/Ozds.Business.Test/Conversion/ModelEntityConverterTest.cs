@@ -13,7 +13,9 @@ public class ModelEntityConverterTest
         .GetAssemblies()
         .SelectMany(assembly => assembly
           .GetTypes()
-          .Where(type => type.IsAssignableTo(typeof(IModel)))));
+          .Where(type =>
+            !type.IsGenericType &&
+            type.IsAssignableTo(typeof(IModel)))));
 
   [Theory]
   [MemberData(nameof(TestData))]
@@ -32,6 +34,7 @@ public class ModelEntityConverterTest
     var activationType = (TestData as IEnumerable<Type>)
       .FirstOrDefault(type =>
         !type.IsAbstract
+        && !type.IsGenericType
         && type.IsAssignableTo(modelType))!;
     activationType.Should().NotBeNull();
     var activated = activator.ActivateDynamic(activationType);

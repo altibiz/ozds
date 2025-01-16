@@ -10,6 +10,7 @@ public class NotificationModelActivator(IServiceProvider serviceProvider)
 {
   public override void Initialize(NotificationModel model)
   {
+    base.Initialize(model);
     model.Title = string.Empty;
     model.Timestamp = DateTimeOffset.UtcNow;
     model.Content = string.Empty;

@@ -14,7 +14,7 @@ public class NotificationRecipientModelActivator(
   {
     base.Initialize(model);
 
-    model.NotificationId = default!;
-    model.RepresentativeId = default!;
+    model.NotificationId = "0";
+    model.RepresentativeId = string.Empty;
   }
 }

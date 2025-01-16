@@ -5,16 +5,10 @@ using IEvent = Ozds.Business.Models.Abstractions.IEvent;
 
 namespace Ozds.Business.Models.Base;
 
-public abstract class EventModel : IEvent
+public abstract class EventModel : IdentifiableModel, IEvent
 {
   [Required]
   public required List<CategoryModel> Categories { get; set; }
-
-  [Required]
-  public required string Id { get; set; }
-
-  [Required]
-  public required string Title { get; set; }
 
   [Required]
   public required DateTimeOffset Timestamp { get; set; }
@@ -25,7 +19,7 @@ public abstract class EventModel : IEvent
   [Required]
   public required JsonDocument Content { get; set; }
 
-  public virtual IEnumerable<ValidationResult> Validate(
+  public override IEnumerable<ValidationResult> Validate(
     ValidationContext validationContext)
   {
     if (validationContext.ObjectInstance != this)

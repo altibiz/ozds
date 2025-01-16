@@ -13,8 +13,9 @@ public class ModelActivatorTest
         .SelectMany(assembly => assembly
           .GetTypes()
           .Where(type =>
-            !type.IsAbstract &&
-            type.IsAssignableTo(typeof(IModel)))));
+            !type.IsAbstract
+            && !type.IsGenericType
+            && type.IsAssignableTo(typeof(IModel)))));
 
   [Theory]
   [MemberData(nameof(TestData))]

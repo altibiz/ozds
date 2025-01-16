@@ -5,7 +5,8 @@ using Ozds.Business.Models.Enums;
 
 namespace Ozds.Business.Activation;
 
-public class EventModelActivator : ConcreteModelActivator<EventModel>
+public class EventModelActivator(IServiceProvider serviceProvider)
+  : InheritingModelActivator<EventModel, IdentifiableModel>(serviceProvider)
 {
   public override void Initialize(EventModel model)
   {
