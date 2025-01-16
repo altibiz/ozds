@@ -9,10 +9,10 @@ public abstract class MeasurementModel : IMeasurement
   public const string ValidatorKey = "MeasurementValidator";
 
   [Required]
-  public required string MeterId { get; init; }
+  public required string MeterId { get; set; }
 
   [Required]
-  public required string MeasurementLocationId { get; init; }
+  public required string MeasurementLocationId { get; set; }
 
   [Required]
   public required DateTimeOffset Timestamp { get; set; } =

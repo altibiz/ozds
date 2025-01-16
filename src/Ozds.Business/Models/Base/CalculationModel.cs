@@ -3,7 +3,7 @@ using Ozds.Business.Models.Abstractions;
 
 namespace Ozds.Business.Models.Base;
 
-public abstract class CalculationModel : ICalculation
+public abstract class CalculationModel : IdentifiableModel, ICalculation
 {
   [Required]
   public required DateTimeOffset FromDate { get; set; } = default!;
@@ -16,12 +16,6 @@ public abstract class CalculationModel : ICalculation
 
   [Required]
   public required string? IssuedById { get; set; } = default!;
-
-  [Required]
-  public required string Id { get; init; } = default!;
-
-  [Required]
-  public required string Title { get; set; } = default!;
 
   [Required]
   public required string MeterId { get; set; } = default!;
@@ -38,7 +32,7 @@ public abstract class CalculationModel : ICalculation
 
   public decimal TotalWithTax_EUR => Total_EUR;
 
-  public virtual IEnumerable<ValidationResult> Validate(
+  public override IEnumerable<ValidationResult> Validate(
     ValidationContext validationContext)
   {
     if ((validationContext.MemberName is null ||

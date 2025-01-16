@@ -15,6 +15,7 @@ public class NetworkUserModelActivator(IServiceProvider serviceProvider)
   public override void Initialize(NetworkUserModel model)
   {
     base.Initialize(model);
+
     model.LocationId = default!;
     model.LegalPerson = _agnosticModelActivator.Activate<LegalPersonModel>();
     model.AltiBizSubProjectCode = default!;

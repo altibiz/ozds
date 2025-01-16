@@ -16,12 +16,6 @@ public abstract class
   [Required]
   public required decimal Amount_kWh { get; set; }
 
-  [Required]
-  public required decimal Price_EUR { get; set; }
-
-  [Required]
-  public required decimal Total_EUR { get; set; }
-
   public override decimal Total
   {
     get { return Total_EUR; }
