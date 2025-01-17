@@ -3,7 +3,7 @@ using Ozds.Business.Conversion.Primitive;
 using Ozds.Business.Models.Complex;
 using Ozds.Data.Entities.Complex;
 
-namespace Ozds.Business.Conversion.Complex;
+namespace Ozds.Business.Conversion.Implementations.Measurements;
 
 public class InstantaneousAggregateMeasureModelEntityConverter
   : ConcreteModelEntityConverter<

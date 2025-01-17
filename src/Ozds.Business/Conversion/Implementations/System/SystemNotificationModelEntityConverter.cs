@@ -3,7 +3,7 @@ using Ozds.Business.Models;
 using Ozds.Business.Models.Enums;
 using Ozds.Data.Entities;
 
-namespace Ozds.Business.Conversion;
+namespace Ozds.Business.Conversion.Implementations.System;
 
 public class SystemNotificationModelEntityConverter : ConcreteModelEntityConverter<
   SystemNotificationModel, SystemNotificationEntity>

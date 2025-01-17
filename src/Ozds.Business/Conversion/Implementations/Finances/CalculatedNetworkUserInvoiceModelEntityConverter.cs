@@ -2,7 +2,7 @@ using Ozds.Business.Conversion.Base;
 using Ozds.Business.Models.Composite;
 using Ozds.Data.Entities.Composite;
 
-namespace Ozds.Business.Conversion.Composite;
+namespace Ozds.Business.Conversion.Implementations.Finances;
 
 public class CalculatedNetworkUserInvoiceModelEntityConverter :
   ConcreteModelEntityConverter<

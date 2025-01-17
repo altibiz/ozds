@@ -2,7 +2,7 @@ using Ozds.Business.Conversion.Base;
 using Ozds.Business.Models;
 using Ozds.Iot.Entities;
 
-namespace Ozds.Business.Conversion;
+namespace Ozds.Business.Conversion.Implementations.Measurements;
 
 public class PidgeonSchneideriEM3xxxPushRequestMeasurementConverter :
   ConcretePushRequestMeasurementConverter<PidgeonSchneideriEM3xxxMeterPushRequestEntity,

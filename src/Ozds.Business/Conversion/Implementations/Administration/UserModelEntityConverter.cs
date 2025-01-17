@@ -2,7 +2,7 @@ using Ozds.Business.Conversion.Base;
 using Ozds.Business.Models;
 using Ozds.Users.Entities;
 
-namespace Ozds.Business.Conversion;
+namespace Ozds.Business.Conversion.Implementations.Administration;
 
 public class
   UserModelEntityConverter : ConcreteModelEntityConverter<UserModel, UserEntity>

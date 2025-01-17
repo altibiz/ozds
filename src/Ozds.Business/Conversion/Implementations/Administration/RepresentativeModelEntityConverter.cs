@@ -4,7 +4,7 @@ using Ozds.Business.Models;
 using Ozds.Business.Models.Enums;
 using Ozds.Data.Entities;
 
-namespace Ozds.Business.Conversion;
+namespace Ozds.Business.Conversion.Implementations.Administration;
 
 public class RepresentativeModelEntityConverter : ConcreteModelEntityConverter<
   RepresentativeModel, RepresentativeEntity>

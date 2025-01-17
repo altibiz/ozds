@@ -2,7 +2,7 @@ using Ozds.Business.Conversion.Base;
 using Ozds.Business.Models.Complex;
 using Ozds.Data.Entities.Complex;
 
-namespace Ozds.Business.Conversion.Complex;
+namespace Ozds.Business.Conversion.Implementations.Finances;
 
 public class ActiveEnergyTotalImportCalculationItemModelEntityConverter :
   ConcreteModelEntityConverter<

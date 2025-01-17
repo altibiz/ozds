@@ -2,7 +2,7 @@ using Ozds.Business.Conversion.Base;
 using Ozds.Business.Models.Joins;
 using Ozds.Data.Entities.Joins;
 
-namespace Ozds.Business.Conversion.Joins;
+namespace Ozds.Business.Conversion.Implementations.System;
 
 public class NotificationRecipientModelEntityConverter
   : ConcreteModelEntityConverter<NotificationRecipientModel,

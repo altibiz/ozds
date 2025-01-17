@@ -3,7 +3,7 @@ using Ozds.Business.Conversion.Complex;
 using Ozds.Business.Models;
 using Ozds.Data.Entities;
 
-namespace Ozds.Business.Conversion;
+namespace Ozds.Business.Conversion.Implementations.Administration;
 
 public class
   NetworkUserModelEntityConverter : ConcreteModelEntityConverter<NetworkUserModel,

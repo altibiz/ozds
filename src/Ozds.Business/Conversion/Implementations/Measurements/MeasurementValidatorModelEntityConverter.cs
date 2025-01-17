@@ -4,7 +4,7 @@ using Ozds.Business.Models.Abstractions;
 using Ozds.Data.Entities;
 using Ozds.Data.Entities.Base;
 
-namespace Ozds.Business.Conversion;
+namespace Ozds.Business.Conversion.Implementations.Measurements;
 
 public class MeasurementValidatorModelEntityConverter : ConcreteModelEntityConverter<
   IMeasurementValidator, MeasurementValidatorEntity>

@@ -3,7 +3,7 @@ using Ozds.Business.Models;
 using Ozds.Business.Models.Complex;
 using Ozds.Business.Models.Enums;
 
-namespace Ozds.Business.Conversion;
+namespace Ozds.Business.Conversion.Implementations.Measurements;
 
 public class SchneideriEM3xxxMeasurementAggregateConverter :
   ConcreteMeasurementAggregateConverter<SchneideriEM3xxxMeasurementModel,

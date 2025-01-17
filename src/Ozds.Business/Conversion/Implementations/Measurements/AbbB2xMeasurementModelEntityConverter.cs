@@ -3,7 +3,7 @@ using Ozds.Business.Conversion.Primitive;
 using Ozds.Business.Models;
 using Ozds.Data.Entities;
 
-namespace Ozds.Business.Conversion;
+namespace Ozds.Business.Conversion.Implementations.Measurements;
 
 public class AbbB2xMeasurementModelEntityConverter : ConcreteModelEntityConverter<
   AbbB2xMeasurementModel, AbbB2xMeasurementEntity>
