@@ -5,7 +5,7 @@ using Ozds.Data.Entities.Complex;
 namespace Ozds.Business.Conversion.Complex;
 
 public class
-  LegalPersonModelEntityConverter : ModelEntityConverter<LegalPersonModel,
+  LegalPersonModelEntityConverter : ConcreteModelEntityConverter<LegalPersonModel,
   LegalPersonEntity>
 {
   protected override LegalPersonEntity ToEntity(LegalPersonModel model)

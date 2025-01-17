@@ -6,7 +6,7 @@ using Ozds.Data.Entities;
 namespace Ozds.Business.Conversion;
 
 public class SchneideriEM3xxxMeasurementModelEntityConverter :
-  ModelEntityConverter<
+  ConcreteModelEntityConverter<
     SchneideriEM3xxxMeasurementModel,
     SchneideriEM3xxxMeasurementEntity>
 {

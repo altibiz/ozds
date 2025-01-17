@@ -5,7 +5,7 @@ using Ozds.Data.Entities;
 namespace Ozds.Business.Conversion;
 
 public class BlueLowNetworkUserCatalogueModelEntityConverter :
-  ModelEntityConverter<
+  ConcreteModelEntityConverter<
     BlueLowNetworkUserCatalogueModel, BlueLowNetworkUserCatalogueEntity>
 {
   protected override BlueLowNetworkUserCatalogueEntity ToEntity(

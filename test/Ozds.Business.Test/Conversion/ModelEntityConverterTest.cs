@@ -33,8 +33,7 @@ public class ModelEntityConverterTest
 
     var activationType = (TestData as IEnumerable<Type>)
       .FirstOrDefault(type =>
-        !type.IsAbstract
-        && !type.IsGenericType
+        !type.IsGenericType
         && type.IsAssignableTo(modelType))!;
     activationType.Should().NotBeNull();
     var activated = activator.ActivateDynamic(activationType);

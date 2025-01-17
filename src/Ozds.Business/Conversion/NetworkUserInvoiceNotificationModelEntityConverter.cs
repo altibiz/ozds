@@ -6,7 +6,7 @@ using Ozds.Data.Entities;
 namespace Ozds.Business.Conversion;
 
 public class NetworkUserInvoiceNotificationModelEntityConverter :
-  ModelEntityConverter<
+  ConcreteModelEntityConverter<
     NetworkUserInvoiceNotificationModel,
     NetworkUserInvoiceNotificationEntity>
 {

@@ -11,25 +11,30 @@ public class AgnosticModelActivator(IServiceProvider serviceProvider)
     return (T)ActivateDynamic(typeof(T));
   }
 
-  public object ActivateDynamic(Type modelType)
+  public object ActivateDynamic(Type type)
   {
-    if (modelActivators.TryGetValue(modelType, out var activator))
+    if (cache.TryGetValue(type, out var activator))
     {
       return activator.Activate();
     }
 
     activator = serviceProvider
       .GetServices<IModelActivator>()
-      .FirstOrDefault(
-        activator => activator.ModelType == modelType)
+      .Where(converter => converter.CanActivate(type))
+      .DefaultIfEmpty(null)
+      .Aggregate((acc, next) =>
+        acc is null
+          ? null
+          : next!.ModelType.IsAssignableTo(acc.ModelType)
+            ? next
+            : acc)
       ?? throw new InvalidOperationException(
-          $"No model activator found for {modelType}");
+          $"No model activator found for {type}");
 
-    modelActivators.TryAdd(modelType, activator);
+    cache.TryAdd(type, activator);
 
     return activator.Activate();
   }
 
-  private readonly ConcurrentDictionary<Type, IModelActivator> modelActivators =
-    new();
+  private readonly ConcurrentDictionary<Type, IModelActivator> cache = new();
 }

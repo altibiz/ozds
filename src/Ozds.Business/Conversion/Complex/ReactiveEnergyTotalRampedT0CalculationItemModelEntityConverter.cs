@@ -5,7 +5,7 @@ using Ozds.Data.Entities.Complex;
 namespace Ozds.Business.Conversion.Complex;
 
 public class ReactiveEnergyTotalRampedT0CalculationItemModelEntityConverter :
-  ModelEntityConverter<
+  ConcreteModelEntityConverter<
     ReactiveEnergyTotalRampedT0CalculationItemModel,
     ReactiveEnergyTotalRampedT0CalculationItemEntity>
 {

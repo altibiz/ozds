@@ -5,7 +5,7 @@ using Ozds.Data.Entities.Complex;
 
 namespace Ozds.Business.Conversion.Complex;
 
-public class PeriodModelEntityConverter : ModelEntityConverter<PeriodModel,
+public class PeriodModelEntityConverter : ConcreteModelEntityConverter<PeriodModel,
   PeriodEntity>
 {
   protected override PeriodEntity ToEntity(PeriodModel model)

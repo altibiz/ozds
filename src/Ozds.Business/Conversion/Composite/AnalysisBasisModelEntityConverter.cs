@@ -4,7 +4,7 @@ using Ozds.Data.Entities.Composite;
 
 namespace Ozds.Business.Conversion.Composite;
 
-public class AnalysisBasisModelEntityConverter : ModelEntityConverter<
+public class AnalysisBasisModelEntityConverter : ConcreteModelEntityConverter<
   AnalysisBasisModel, AnalysisBasisEntity>
 {
   protected override AnalysisBasisEntity ToEntity(

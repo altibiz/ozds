@@ -4,7 +4,7 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Conversion;
 
-public class SchneideriEM3xxxMeterModelEntityConverter : ModelEntityConverter<
+public class SchneideriEM3xxxMeterModelEntityConverter : ConcreteModelEntityConverter<
   SchneideriEM3xxxMeterModel, SchneideriEM3xxxMeterEntity>
 {
   protected override SchneideriEM3xxxMeterEntity ToEntity(

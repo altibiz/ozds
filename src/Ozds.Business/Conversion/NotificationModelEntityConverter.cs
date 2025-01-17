@@ -8,7 +8,7 @@ using Ozds.Data.Entities.Base;
 
 namespace Ozds.Business.Conversion;
 
-public class INotificationEntityConverter : ModelEntityConverter<
+public class INotificationEntityConverter : ConcreteModelEntityConverter<
   INotification, NotificationEntity>
 {
   protected override NotificationEntity ToEntity(INotification model)

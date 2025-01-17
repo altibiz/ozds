@@ -5,7 +5,7 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Conversion;
 
-public class SystemNotificationModelEntityConverter : ModelEntityConverter<
+public class SystemNotificationModelEntityConverter : ConcreteModelEntityConverter<
   SystemNotificationModel, SystemNotificationEntity>
 {
   protected override SystemNotificationEntity ToEntity(

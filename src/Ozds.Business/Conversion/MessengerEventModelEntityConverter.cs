@@ -5,7 +5,7 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Conversion;
 
-public class MessengerEventModelEntityConverter : ModelEntityConverter<
+public class MessengerEventModelEntityConverter : ConcreteModelEntityConverter<
   MessengerEventModel, MessengerEventEntity>
 {
   protected override MessengerEventEntity ToEntity(MessengerEventModel model)

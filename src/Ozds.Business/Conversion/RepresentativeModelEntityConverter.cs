@@ -6,7 +6,7 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Conversion;
 
-public class RepresentativeModelEntityConverter : ModelEntityConverter<
+public class RepresentativeModelEntityConverter : ConcreteModelEntityConverter<
   RepresentativeModel, RepresentativeEntity>
 {
   protected override RepresentativeEntity ToEntity(RepresentativeModel model)

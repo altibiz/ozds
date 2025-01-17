@@ -4,7 +4,7 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Conversion;
 
-public class NetworkUserInvoiceModelEntityConverter : ModelEntityConverter<
+public class NetworkUserInvoiceModelEntityConverter : ConcreteModelEntityConverter<
   NetworkUserInvoiceModel, NetworkUserInvoiceEntity>
 {
   protected override NetworkUserInvoiceEntity ToEntity(

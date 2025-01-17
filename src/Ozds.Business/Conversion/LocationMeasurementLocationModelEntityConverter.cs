@@ -5,7 +5,7 @@ using Ozds.Data.Entities;
 namespace Ozds.Business.Conversion;
 
 public class LocationMeasurementLocationModelEntityConverter :
-  ModelEntityConverter<LocationMeasurementLocationModel,
+  ConcreteModelEntityConverter<LocationMeasurementLocationModel,
     LocationMeasurementLocationEntity>
 {
   protected override LocationMeasurementLocationEntity ToEntity(

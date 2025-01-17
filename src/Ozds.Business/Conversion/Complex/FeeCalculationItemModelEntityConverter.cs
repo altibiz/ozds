@@ -4,7 +4,7 @@ using Ozds.Data.Entities.Complex;
 
 namespace Ozds.Business.Conversion.Complex;
 
-public class FeeCalculationItemModelEntityConverter : ModelEntityConverter<
+public class FeeCalculationItemModelEntityConverter : ConcreteModelEntityConverter<
   FeeCalculationItemModel, FeeCalculationItemEntity>
 {
   protected override FeeCalculationItemEntity ToEntity(

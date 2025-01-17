@@ -5,7 +5,7 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Conversion;
 
-public class RepresentativeEventModelEntityConverter : ModelEntityConverter<
+public class RepresentativeEventModelEntityConverter : ConcreteModelEntityConverter<
   RepresentativeEventModel, RepresentativeEventEntity>
 {
   protected override RepresentativeEventEntity ToEntity(

@@ -4,7 +4,7 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Conversion;
 
-public class LocationInvoiceModelEntityConverter : ModelEntityConverter<
+public class LocationInvoiceModelEntityConverter : ConcreteModelEntityConverter<
   LocationInvoiceModel, LocationInvoiceEntity>
 {
   protected override LocationInvoiceEntity ToEntity(LocationInvoiceModel model)

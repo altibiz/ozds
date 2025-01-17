@@ -5,7 +5,7 @@ using Ozds.Data.Entities;
 namespace Ozds.Business.Conversion;
 
 public class WhiteMediumNetworkUserCatalogueModelEntityConverter :
-  ModelEntityConverter<
+  ConcreteModelEntityConverter<
     WhiteMediumNetworkUserCatalogueModel, WhiteMediumNetworkUserCatalogueEntity>
 {
   protected override WhiteMediumNetworkUserCatalogueEntity ToEntity(

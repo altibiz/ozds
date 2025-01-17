@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using Ozds.Business.Conversion.Abstractions;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Iot.Entities.Abstractions;
@@ -5,20 +6,43 @@ using Ozds.Iot.Entities.Abstractions;
 namespace Ozds.Business.Conversion.Agnostic;
 
 public class AgnosticPushRequestMeasurementConverter(
-  IServiceProvider serviceProvider)
+  IServiceProvider serviceProvider
+)
 {
-  private readonly IServiceProvider _serviceProvider = serviceProvider;
+  public TPushRequest ToPushRequest<TPushRequest>(
+    IMeasurement measurement
+  )
+  {
+    return (TPushRequest)ToPushRequest(measurement);
+  }
+
+  public TMeasurement ToMeasurement<TMeasurement>(
+    IMeterPushRequestEntity pushRequest,
+    string measurementLocationId
+  )
+    where TMeasurement : IMeasurement
+  {
+    return (TMeasurement)ToMeasurement(pushRequest, measurementLocationId);
+  }
 
   public IMeterPushRequestEntity ToPushRequest(IMeasurement measurement)
   {
-    return _serviceProvider
+    if (pushRequestCache.TryGetValue(measurement.GetType(), out var converter))
+    {
+      return converter.ToPushRequest(measurement);
+    }
+
+    converter = serviceProvider
         .GetServices<IPushRequestMeasurementConverter>()
         .FirstOrDefault(
           converter =>
-            converter.CanConvert(measurement.MeterId))
-        ?.ToPushRequest(measurement)
+            converter.CanConvertToPushRequest(measurement))
       ?? throw new InvalidOperationException(
         $"No converter found for measurement {measurement.GetType()}.");
+
+    pushRequestCache.TryAdd(measurement.GetType(), converter);
+
+    return converter.ToPushRequest(measurement);
   }
 
   public IMeasurement ToMeasurement(
@@ -26,22 +50,26 @@ public class AgnosticPushRequestMeasurementConverter(
     string measurementLocationId
   )
   {
-    return _serviceProvider
-        .GetServices<IPushRequestMeasurementConverter>()
-        .FirstOrDefault(converter => converter.CanConvert(pushRequest.MeterId))
-        ?.ToMeasurement(pushRequest, measurementLocationId)
+    if (measurementCache.TryGetValue(pushRequest.GetType(), out var converter))
+    {
+      return converter.ToMeasurement(pushRequest, measurementLocationId);
+    }
+
+    converter = serviceProvider
+      .GetServices<IPushRequestMeasurementConverter>()
+      .FirstOrDefault(converter => converter
+        .CanConvertToMeasurement(pushRequest))
       ?? throw new InvalidOperationException(
         $"No converter found for meter {pushRequest.MeterId}.");
+
+    measurementCache.TryAdd(pushRequest.GetType(), converter);
+
+    return converter.ToMeasurement(pushRequest, measurementLocationId);
   }
 
-  public TMeasurement ToMeasurement<TMeasurement>(
-    IMeterPushRequestEntity pushRequest,
-    string measurementLocationId
-  )
-    where TMeasurement : class, IMeasurement
-  {
-    return ToMeasurement(pushRequest, measurementLocationId) as TMeasurement
-      ?? throw new InvalidOperationException(
-        $"No converter found for meter {pushRequest.MeterId}.");
-  }
+  private readonly ConcurrentDictionary<Type, IPushRequestMeasurementConverter>
+    pushRequestCache = new();
+
+  private readonly ConcurrentDictionary<Type, IPushRequestMeasurementConverter>
+    measurementCache = new();
 }

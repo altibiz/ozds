@@ -6,7 +6,7 @@ using Ozds.Data.Entities;
 namespace Ozds.Business.Conversion;
 
 public class
-  NetworkUserModelEntityConverter : ModelEntityConverter<NetworkUserModel,
+  NetworkUserModelEntityConverter : ConcreteModelEntityConverter<NetworkUserModel,
   NetworkUserEntity>
 {
   protected override NetworkUserEntity ToEntity(NetworkUserModel model)

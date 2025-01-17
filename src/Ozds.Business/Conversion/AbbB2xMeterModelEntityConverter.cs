@@ -5,7 +5,7 @@ using Ozds.Data.Entities;
 namespace Ozds.Business.Conversion;
 
 public class
-  AbbB2xMeterModelEntityConverter : ModelEntityConverter<AbbB2xMeterModel,
+  AbbB2xMeterModelEntityConverter : ConcreteModelEntityConverter<AbbB2xMeterModel,
   AbbB2xMeterEntity>
 {
   protected override AbbB2xMeterEntity ToEntity(AbbB2xMeterModel model)

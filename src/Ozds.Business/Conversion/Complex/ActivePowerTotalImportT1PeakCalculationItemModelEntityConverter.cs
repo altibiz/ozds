@@ -5,7 +5,7 @@ using Ozds.Data.Entities.Complex;
 namespace Ozds.Business.Conversion.Complex;
 
 public class ActivePowerTotalImportT1PeakCalculationItemModelEntityConverter :
-  ModelEntityConverter<
+  ConcreteModelEntityConverter<
     ActivePowerTotalImportT1PeakCalculationItemModel,
     ActivePowerTotalImportT1PeakCalculationItemEntity>
 {

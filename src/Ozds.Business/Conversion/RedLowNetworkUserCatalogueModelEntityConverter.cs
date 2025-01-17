@@ -5,7 +5,7 @@ using Ozds.Data.Entities;
 namespace Ozds.Business.Conversion;
 
 public class RedLowNetworkUserCatalogueModelEntityConverter :
-  ModelEntityConverter<
+  ConcreteModelEntityConverter<
     RedLowNetworkUserCatalogueModel, RedLowNetworkUserCatalogueEntity>
 {
   protected override RedLowNetworkUserCatalogueEntity ToEntity(

@@ -6,7 +6,7 @@ using Ozds.Data.Entities.Base;
 namespace Ozds.Business.Conversion;
 
 public class ResolvableNotificationModelEntityConverter :
-  ModelEntityConverter<
+  ConcreteModelEntityConverter<
     ResolvableNotificationModel,
     ResolvableNotificationEntity>
 {

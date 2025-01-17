@@ -1,9 +1,11 @@
 namespace Ozds.Business.Conversion.Abstractions;
 
-// TODO: overhaul model conversion to hierarchically aware conversion
-
 public interface IModelEntityConverter
 {
+  Type EntityType { get; }
+
+  Type ModelType { get; }
+
   bool CanConvertToEntity(Type modelType);
 
   bool CanConvertToModel(Type entityType);
@@ -11,6 +13,4 @@ public interface IModelEntityConverter
   object ToEntity(object model);
 
   object ToModel(object entity);
-
-  Type EntityType();
 }

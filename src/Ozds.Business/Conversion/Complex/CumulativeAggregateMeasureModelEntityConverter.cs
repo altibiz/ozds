@@ -6,7 +6,7 @@ using Ozds.Data.Entities.Complex;
 namespace Ozds.Business.Conversion.Complex;
 
 public class CumulativeAggregateMeasureModelEntityConverter
-  : ModelEntityConverter<
+  : ConcreteModelEntityConverter<
     CumulativeAggregateMeasureModel,
     CumulativeAggregateMeasureEntity>
 {

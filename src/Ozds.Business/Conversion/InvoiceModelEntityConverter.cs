@@ -7,7 +7,7 @@ using Ozds.Data.Entities.Base;
 
 namespace Ozds.Business.Conversion;
 
-public class InvoiceModelEntityConverter : ModelEntityConverter<
+public class InvoiceModelEntityConverter : ConcreteModelEntityConverter<
   IInvoice, InvoiceEntity>
 {
   protected override InvoiceEntity ToEntity(

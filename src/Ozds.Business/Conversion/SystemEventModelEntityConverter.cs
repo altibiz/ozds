@@ -6,7 +6,7 @@ using Ozds.Data.Entities;
 namespace Ozds.Business.Conversion;
 
 public class
-  SystemEventModelEntityConverter : ModelEntityConverter<SystemEventModel,
+  SystemEventModelEntityConverter : ConcreteModelEntityConverter<SystemEventModel,
   SystemEventEntity>
 {
   protected override SystemEventEntity ToEntity(SystemEventModel model)

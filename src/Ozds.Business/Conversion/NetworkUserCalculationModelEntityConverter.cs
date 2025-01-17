@@ -7,7 +7,7 @@ using Ozds.Data.Entities.Base;
 
 namespace Ozds.Business.Conversion;
 
-public class NetworkUserCalculationModelEntityConverter : ModelEntityConverter<
+public class NetworkUserCalculationModelEntityConverter : ConcreteModelEntityConverter<
   INetworkUserCalculation, NetworkUserCalculationEntity>
 {
   protected override NetworkUserCalculationEntity ToEntity(

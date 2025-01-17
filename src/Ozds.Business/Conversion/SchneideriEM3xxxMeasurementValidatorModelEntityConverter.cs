@@ -5,7 +5,7 @@ using Ozds.Data.Entities;
 namespace Ozds.Business.Conversion;
 
 public class SchneideriEM3xxxMeasurementValidatorModelEntityConverter :
-  ModelEntityConverter<SchneideriEM3xxxMeasurementValidatorModel,
+  ConcreteModelEntityConverter<SchneideriEM3xxxMeasurementValidatorModel,
     SchneideriEM3xxxMeasurementValidatorEntity>
 {
   protected override SchneideriEM3xxxMeasurementValidatorEntity ToEntity(

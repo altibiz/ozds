@@ -5,7 +5,7 @@ using Ozds.Data.Entities.Composite;
 namespace Ozds.Business.Conversion.Composite;
 
 public class CalculatedNetworkUserInvoiceModelEntityConverter :
-  ModelEntityConverter<
+  ConcreteModelEntityConverter<
     CalculatedNetworkUserInvoiceModel,
     CalculatedNetworkUserInvoiceEntity>
 {

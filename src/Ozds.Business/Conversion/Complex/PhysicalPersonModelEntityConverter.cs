@@ -4,7 +4,7 @@ using Ozds.Data.Entities.Complex;
 
 namespace Ozds.Business.Conversion.Complex;
 
-public class PhysicalPersonModelEntityConverter : ModelEntityConverter<
+public class PhysicalPersonModelEntityConverter : ConcreteModelEntityConverter<
   PhysicalPersonModel, PhysicalPersonEntity>
 {
   protected override PhysicalPersonEntity ToEntity(PhysicalPersonModel model)

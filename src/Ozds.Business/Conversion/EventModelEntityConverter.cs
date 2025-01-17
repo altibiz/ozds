@@ -8,7 +8,7 @@ using Ozds.Data.Entities.Base;
 namespace Ozds.Business.Conversion;
 
 public class
-  EventModelEntityConverter : ModelEntityConverter<IEvent, EventEntity>
+  EventModelEntityConverter : ConcreteModelEntityConverter<IEvent, EventEntity>
 {
   protected override EventEntity ToEntity(IEvent model)
   {

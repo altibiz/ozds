@@ -1,56 +1,52 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using Ozds.Business.Conversion.Abstractions;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Iot.Entities.Abstractions;
 
 namespace Ozds.Business.Conversion.Base;
 
-public abstract class PushRequestMeasurementConverter<TPushRequest,
+public abstract class PushRequestMeasurementConverter<
+  TPushRequest,
   TMeasurement> : IPushRequestMeasurementConverter
-  where TMeasurement : class, IMeasurement
-  where TPushRequest : class, IMeterPushRequestEntity
+  where TMeasurement : IMeasurement
+  where TPushRequest : IMeterPushRequestEntity
 {
-  protected abstract string MeterIdPrefix { get; }
+  public abstract string MeterIdPrefix { get; }
 
-  public bool CanConvert(string meterId)
-  {
-    return meterId.StartsWith(MeterIdPrefix);
-  }
+  public abstract TPushRequest ToPushRequest(TMeasurement measurement);
 
-  public IMeasurement ToMeasurement(
-    IMeterPushRequestEntity pushRequest,
-    string measurementLocationId
-  )
-  {
-    return ToMeasurement(
-      (TPushRequest)pushRequest
-        ?? throw new ArgumentNullException(nameof(pushRequest)),
-      measurementLocationId
-    );
-  }
-
-  public IMeterPushRequestEntity ToPushRequest(IMeasurement measurement)
-  {
-    return ToPushRequest(
-      measurement as TMeasurement
-      ?? throw new ArgumentNullException(nameof(measurement)));
-  }
-
-  protected abstract TMeasurement ToMeasurement(
+  public abstract TMeasurement ToMeasurement(
     TPushRequest pushRequest,
     string measurementLocationId
   );
 
-  protected abstract TPushRequest ToPushRequest(TMeasurement measurement);
-}
+  public virtual Type PushRequestType => typeof(TPushRequest);
 
-internal static class PushRequestMeasurementConverterOptions
-{
-  public static readonly JsonSerializerOptions Options =
-    new()
-    {
-      PropertyNameCaseInsensitive = true,
-      NumberHandling = JsonNumberHandling.AllowReadingFromString
-    };
+  public virtual Type MeasurementType => typeof(TMeasurement);
+
+  public virtual bool CanConvertToPushRequest(
+    IMeasurement measurement
+  )
+  {
+    return measurement.MeterId.StartsWith(MeterIdPrefix);
+  }
+
+  public virtual bool CanConvertToMeasurement(
+    IMeterPushRequestEntity pushRequest
+  )
+  {
+    return pushRequest.MeterId.StartsWith(MeterIdPrefix);
+  }
+
+  public virtual IMeterPushRequestEntity ToPushRequest(IMeasurement measurement)
+  {
+    return ToPushRequest((TMeasurement)measurement);
+  }
+
+  public virtual IMeasurement ToMeasurement(
+    IMeterPushRequestEntity pushRequest,
+    string measurementLocationId
+  )
+  {
+    return ToMeasurement((TPushRequest)pushRequest, measurementLocationId);
+  }
 }

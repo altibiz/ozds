@@ -4,7 +4,7 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Conversion;
 
-public class RegulatoryCatalogueModelEntityConverter : ModelEntityConverter<
+public class RegulatoryCatalogueModelEntityConverter : ConcreteModelEntityConverter<
   RegulatoryCatalogueModel, RegulatoryCatalogueEntity>
 {
   protected override RegulatoryCatalogueEntity ToEntity(

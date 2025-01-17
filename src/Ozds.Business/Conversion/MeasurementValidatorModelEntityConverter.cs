@@ -6,7 +6,7 @@ using Ozds.Data.Entities.Base;
 
 namespace Ozds.Business.Conversion;
 
-public class MeasurementValidatorModelEntityConverter : ModelEntityConverter<
+public class MeasurementValidatorModelEntityConverter : ConcreteModelEntityConverter<
   IMeasurementValidator, MeasurementValidatorEntity>
 {
   protected override MeasurementValidatorEntity ToEntity(

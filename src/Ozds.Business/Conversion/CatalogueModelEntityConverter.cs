@@ -7,7 +7,7 @@ using Ozds.Data.Entities.Base;
 
 namespace Ozds.Business.Conversion;
 
-public class CatalogueModelEntityConverter : ModelEntityConverter<
+public class CatalogueModelEntityConverter : ConcreteModelEntityConverter<
   ICatalogue, CatalogueEntity>
 {
   protected override CatalogueEntity ToEntity(ICatalogue model)

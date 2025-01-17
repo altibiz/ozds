@@ -7,7 +7,7 @@ using Ozds.Data.Entities.Base;
 namespace Ozds.Business.Conversion;
 
 public class
-  MessengerModelEntityConverter : ModelEntityConverter<IMessenger,
+  MessengerModelEntityConverter : ConcreteModelEntityConverter<IMessenger,
   MessengerEntity>
 {
   protected override MessengerEntity ToEntity(IMessenger model)

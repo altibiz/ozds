@@ -6,7 +6,7 @@ using Ozds.Data.Entities;
 namespace Ozds.Business.Conversion;
 
 public class WhiteLowNetworkUserCalculationModelEntityConverter :
-  ModelEntityConverter<
+  ConcreteModelEntityConverter<
     WhiteLowNetworkUserCalculationModel, WhiteLowNetworkUserCalculationEntity>
 {
   protected override WhiteLowNetworkUserCalculationEntity ToEntity(

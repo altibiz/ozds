@@ -7,7 +7,7 @@ using Ozds.Data.Entities;
 namespace Ozds.Business.Conversion;
 
 public class SchneideriEM3xxxAggregateModelEntityConverter :
-  ModelEntityConverter<SchneideriEM3xxxAggregateModel,
+  ConcreteModelEntityConverter<SchneideriEM3xxxAggregateModel,
     SchneideriEM3xxxAggregateEntity>
 {
   protected override SchneideriEM3xxxAggregateEntity ToEntity(

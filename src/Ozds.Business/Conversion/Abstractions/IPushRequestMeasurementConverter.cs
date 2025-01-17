@@ -5,12 +5,18 @@ namespace Ozds.Business.Conversion.Abstractions;
 
 public interface IPushRequestMeasurementConverter
 {
-  bool CanConvert(string meterId);
+  Type PushRequestType { get; }
+
+  Type MeasurementType { get; }
+
+  bool CanConvertToPushRequest(IMeasurement measurement);
+
+  bool CanConvertToMeasurement(IMeterPushRequestEntity pushRequest);
+
+  IMeterPushRequestEntity ToPushRequest(IMeasurement measurement);
 
   IMeasurement ToMeasurement(
     IMeterPushRequestEntity pushRequest,
     string measurementLocationId
   );
-
-  IMeterPushRequestEntity ToPushRequest(IMeasurement measurement);
 }

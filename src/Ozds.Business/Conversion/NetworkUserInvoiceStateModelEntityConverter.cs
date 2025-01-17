@@ -5,7 +5,7 @@ using Ozds.Messaging.Entities;
 namespace Ozds.Business.Conversion;
 
 public class NetworkUserInvoiceStateModelEntityConverter :
-  ModelEntityConverter<
+  ConcreteModelEntityConverter<
     NetworkUserInvoiceStateModel,
     NetworkUserInvoiceStateEntity>
 {

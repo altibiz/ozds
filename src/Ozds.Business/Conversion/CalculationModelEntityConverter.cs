@@ -5,7 +5,7 @@ using Ozds.Data.Entities.Base;
 
 namespace Ozds.Business.Conversion;
 
-public class CalculationModelEntityConverter : ModelEntityConverter<
+public class CalculationModelEntityConverter : ConcreteModelEntityConverter<
   ICalculation, CalculationEntity>
 {
   protected override CalculationEntity ToEntity(

@@ -5,7 +5,7 @@ using Ozds.Data.Entities;
 
 namespace Ozds.Business.Conversion;
 
-public class SystemAuditEventModelEntityConverter : ModelEntityConverter<
+public class SystemAuditEventModelEntityConverter : ConcreteModelEntityConverter<
   SystemAuditEventModel, SystemAuditEventEntity>
 {
   protected override SystemAuditEventEntity ToEntity(

@@ -13,8 +13,7 @@ public class ModelActivatorTest
         .SelectMany(assembly => assembly
           .GetTypes()
           .Where(type =>
-            !type.IsAbstract
-            && !type.IsGenericType
+            !type.IsGenericType
             && type.IsAssignableTo(typeof(IModel)))));
 
   [Theory]
