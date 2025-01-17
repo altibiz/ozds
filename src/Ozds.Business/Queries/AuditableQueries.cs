@@ -2,7 +2,7 @@ using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Data.Entities.Abstractions;
-using DataAuditableQueries = Ozds.Data.Queries.Agnostic.AuditableQueries;
+using DataAuditableQueries = Ozds.Data.Queries.AuditableQueries;
 
 namespace Ozds.Business.Queries;
 

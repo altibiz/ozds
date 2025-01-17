@@ -3,14 +3,14 @@ using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Enums;
 using Ozds.Business.Naming.Agnostic;
 using Ozds.Business.Queries.Abstractions;
-using DataMeasurementQueries = Ozds.Data.Queries.Agnostic.MeasurementQueries;
+using DataMeasurementQueries = Ozds.Data.Queries.MeasurementQueries;
 
 namespace Ozds.Business.Queries;
 
 public class MeasurementQueries(
   DataMeasurementQueries queries,
   AgnosticModelEntityConverter modelEntityConverter,
-  AgnosticMeterNamingConvention meterNamingConvention
+  MeterNamingConvention meterNamingConvention
 ) : IQueries
 {
   public async Task<PaginatedList<IMeasurement>> ReadByMeterIdsDynamic(

@@ -4,8 +4,8 @@ using Ozds.Business.Models.Enums;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Entities.Base;
-using DataAuditableQueries = Ozds.Data.Queries.Agnostic.AuditableQueries;
-using DataReadonlyQueries = Ozds.Data.Queries.Agnostic.ReadonlyQueries;
+using DataAuditableQueries = Ozds.Data.Queries.AuditableQueries;
+using DataReadonlyQueries = Ozds.Data.Queries.ReadonlyQueries;
 
 namespace Ozds.Business.Queries;
 

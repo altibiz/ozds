@@ -1,25 +1,25 @@
 using Altibiz.DependencyInjection.Extensions;
+using Ozds.Business.Activation;
 using Ozds.Business.Activation.Abstractions;
-using Ozds.Business.Activation.Agnostic;
+using Ozds.Business.Aggregation;
 using Ozds.Business.Aggregation.Abstractions;
-using Ozds.Business.Aggregation.Agnostic;
 using Ozds.Business.Buffers.Abstractions;
 using Ozds.Business.Caching.Abstractions;
 using Ozds.Business.Conversion.Abstractions;
 using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Finance;
 using Ozds.Business.Finance.Abstractions;
-using Ozds.Business.Finance;
-using Ozds.Business.Localization;
+using Ozds.Business.Finance.Implementations;
 using Ozds.Business.Localization.Abstractions;
+using Ozds.Business.Localization.Implementations;
 using Ozds.Business.Mutations.Abstractions;
 using Ozds.Business.Naming.Abstractions;
 using Ozds.Business.Naming.Agnostic;
 using Ozds.Business.Observers.Abstractions;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Business.Reactors.Abstractions;
-using Ozds.Business.Validation.Abstractions;
 using Ozds.Business.Validation;
+using Ozds.Business.Validation.Abstractions;
 
 namespace Ozds.Business.Extensions;
 
@@ -52,7 +52,7 @@ public static class IServiceCollectionExtensions
   )
   {
     services.AddTransientAssignableTo(typeof(IModelActivator));
-    services.AddSingleton(typeof(AgnosticModelActivator));
+    services.AddSingleton(typeof(ModelActivator));
     return services;
   }
 
@@ -61,7 +61,7 @@ public static class IServiceCollectionExtensions
   )
   {
     services.AddTransientAssignableTo(typeof(IAggregateUpserter));
-    services.AddSingleton(typeof(AgnosticAggregateUpserter));
+    services.AddSingleton(typeof(AggregateUpserter));
     return services;
   }
 
@@ -117,7 +117,7 @@ public static class IServiceCollectionExtensions
   )
   {
     services.AddTransientAssignableTo(typeof(IMeterNamingConvention));
-    services.AddSingleton(typeof(AgnosticMeterNamingConvention));
+    services.AddSingleton(typeof(MeterNamingConvention));
     return services;
   }
 

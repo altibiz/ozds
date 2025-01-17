@@ -2,7 +2,7 @@ using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Enums;
 using Ozds.Business.Queries.Abstractions;
-using DataFinancialQueries = Ozds.Data.Queries.Agnostic.FinancialQueries;
+using DataFinancialQueries = Ozds.Data.Queries.FinancialQueries;
 
 namespace Ozds.Business.Queries;
 

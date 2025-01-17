@@ -5,7 +5,7 @@ using Ozds.Business.Models.Composite;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Data.Entities;
 using Ozds.Users.Queries.Abstractions;
-using DataAuditableQueries = Ozds.Data.Queries.Agnostic.AuditableQueries;
+using DataAuditableQueries = Ozds.Data.Queries.AuditableQueries;
 using DataRepresentativeQueries = Ozds.Data.Queries.RepresentativeQueries;
 
 namespace Ozds.Business.Queries;

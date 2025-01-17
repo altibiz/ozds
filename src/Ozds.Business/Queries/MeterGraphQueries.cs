@@ -15,7 +15,7 @@ namespace Ozds.Business.Queries;
 public class MeterGraphQueries(
   IDbContextFactory<DataDbContext> factory,
   AgnosticModelEntityConverter modelEntityConverter,
-  AgnosticMeterNamingConvention meterNamingConvention
+  MeterNamingConvention meterNamingConvention
 ) : IQueries
 {
   public async Task<PaginatedList<IMeasurement>> Read(

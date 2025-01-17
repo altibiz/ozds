@@ -4,7 +4,7 @@ using Ozds.Business.Mutations.Abstractions;
 using Ozds.Business.Validation;
 using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Entities.Base;
-using DataAuditableMutations = Ozds.Data.Mutations.Agnostic.AuditableMutations;
+using DataAuditableMutations = Ozds.Data.Mutations.AuditableMutations;
 
 namespace Ozds.Business.Mutations;
 

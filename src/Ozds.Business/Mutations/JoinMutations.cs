@@ -3,7 +3,7 @@ using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Validation;
 using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Mutations.Abstractions;
-using DataJoinMutations = Ozds.Data.Mutations.Agnostic.JoinMutations;
+using DataJoinMutations = Ozds.Data.Mutations.JoinMutations;
 
 namespace Ozds.Business.Mutations;
 
