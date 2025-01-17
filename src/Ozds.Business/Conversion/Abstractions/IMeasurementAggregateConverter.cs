@@ -5,11 +5,11 @@ namespace Ozds.Business.Conversion.Abstractions;
 
 public interface IMeasurementAggregateConverter
 {
-  Type AggregateType { get; }
+  public Type AggregateType { get; }
 
-  Type MeasurementType { get; }
+  public Type MeasurementType { get; }
 
-  bool CanConvertToAggregate(Type measurement);
+  public bool CanConvertToAggregate(Type measurement);
 
-  IAggregate ToAggregate(IMeasurement measurement, IntervalModel interval);
+  public IAggregate ToAggregate(IMeasurement measurement, IntervalModel interval);
 }

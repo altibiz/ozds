@@ -13,7 +13,7 @@ public class NetworkUserMeasurementLocationEntity : MeasurementLocationEntity
   public virtual string NetworkUserId
   {
     get { return _networkUserId.ToString(); }
-    init { _networkUserId = long.Parse(value); }
+    set { _networkUserId = long.Parse(value); }
   }
 
   public virtual NetworkUserEntity NetworkUser { get; set; } = default!;
@@ -21,7 +21,7 @@ public class NetworkUserMeasurementLocationEntity : MeasurementLocationEntity
   public virtual string NetworkUserCatalogueId
   {
     get { return _networkUserCatalogueId.ToString(); }
-    init { _networkUserCatalogueId = long.Parse(value); }
+    set { _networkUserCatalogueId = long.Parse(value); }
   }
 
   public virtual NetworkUserCatalogueEntity NetworkUserCatalogue { get; set; } =

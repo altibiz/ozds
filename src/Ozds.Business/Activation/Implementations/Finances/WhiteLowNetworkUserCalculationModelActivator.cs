@@ -11,18 +11,18 @@ public class WhiteLowNetworkUserCalculationModelActivator(
       WhiteLowNetworkUserCalculationModel,
       NetworkUserCalculationModel>(serviceProvider)
 {
-  private readonly ModelActivator _agnosticModelActivator =
+  private readonly ModelActivator modelActivator =
     serviceProvider.GetRequiredService<ModelActivator>();
 
   public override void Initialize(WhiteLowNetworkUserCalculationModel model)
   {
     base.Initialize(model);
 
-    model.UsageActiveEnergyTotalImportT1 = _agnosticModelActivator
+    model.UsageActiveEnergyTotalImportT1 = modelActivator
       .Activate<UsageActiveEnergyTotalImportT1CalculationItemModel>();
-    model.UsageActiveEnergyTotalImportT2 = _agnosticModelActivator
+    model.UsageActiveEnergyTotalImportT2 = modelActivator
       .Activate<UsageActiveEnergyTotalImportT2CalculationItemModel>();
-    model.UsageReactiveEnergyTotalRampedT0 = _agnosticModelActivator
+    model.UsageReactiveEnergyTotalRampedT0 = modelActivator
       .Activate<UsageReactiveEnergyTotalRampedT0CalculationItemModel>();
     model.ConcreteArchivedUsageNetworkUserCatalogue = default!;
   }

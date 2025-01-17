@@ -4,12 +4,11 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
 
-// TODO: fix the id mess
+// TODO: fix the base class mess
+//       - set types not in database as abstract
 
-public abstract class AuditableEntity : IAuditableEntity
+public abstract class AuditableEntity : IdentifiableEntity, IAuditableEntity
 {
-  protected readonly long _id;
-
   public DateTimeOffset CreatedOn { get; set; } = DateTimeOffset.UtcNow;
 
   public string? CreatedById { get; set; }
@@ -30,16 +29,7 @@ public abstract class AuditableEntity : IAuditableEntity
 
   public virtual RepresentativeEntity? DeletedBy { get; set; }
 
-  public virtual string Id
-  {
-    get { return _id.ToString(); }
-    init
-    {
-      _id = value is { } notNullValue ? long.Parse(notNullValue) : default;
-    }
-  }
-
-  public string Title { get; set; } = default!;
+  public bool Restore { get; set; } = false;
 
   public bool Forget { get; set; } = false;
 }
@@ -57,41 +47,6 @@ public class
     }
     var builder = modelBuilder.Entity(entity);
 
-    builder.Ignore(nameof(AuditableEntity.Id));
-    if (entity.BaseType == typeof(AuditableEntity)
-      || entity.BaseType == typeof(CatalogueEntity))
-    {
-      if (entity == typeof(RepresentativeEntity)
-        || entity == typeof(MeterEntity)
-        || entity == typeof(MessengerEntity))
-      {
-        builder.HasKey("_stringId");
-      }
-      else
-      {
-        builder.HasKey("_id");
-      }
-    }
-    if (entity == typeof(RepresentativeEntity) ||
-      entity.IsAssignableTo(typeof(MeterEntity)) ||
-      entity.IsAssignableTo(typeof(MessengerEntity)))
-    {
-      builder.Ignore("_id");
-      builder
-        .Property("_stringId")
-        .HasColumnName("id")
-        .HasColumnType("text")
-        .ValueGeneratedNever();
-    }
-    else
-    {
-      builder
-        .Property("_id")
-        .HasColumnName("id")
-        .HasColumnType("bigint")
-        .UseIdentityAlwaysColumn();
-    }
-
     builder
       .HasOne(nameof(AuditableEntity.CreatedBy))
       .WithMany()
@@ -107,6 +62,7 @@ public class
       .WithMany()
       .HasForeignKey(nameof(AuditableEntity.DeletedById));
 
+    builder.Ignore(nameof(AuditableEntity.Restore));
     builder.Ignore(nameof(AuditableEntity.Forget));
   }
 }

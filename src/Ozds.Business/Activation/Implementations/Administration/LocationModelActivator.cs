@@ -11,7 +11,7 @@ public class LocationModelActivator(
       serviceProvider
     )
 {
-  private readonly ModelActivator _agnosticModelActivator =
+  private readonly ModelActivator modelActivator =
     serviceProvider.GetRequiredService<ModelActivator>();
 
   public override void Initialize(LocationModel model)
@@ -23,7 +23,7 @@ public class LocationModelActivator(
     model.WhiteLowNetworkUserCatalogueId = "0";
     model.RedLowNetworkUserCatalogueId = "0";
     model.RegulatoryCatalogueId = "0";
-    model.LegalPerson = _agnosticModelActivator
+    model.LegalPerson = modelActivator
       .Activate<LegalPersonModel>();
     model.AltiBizSubProjectCode = string.Empty;
   }

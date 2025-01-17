@@ -14,7 +14,7 @@ public class MeterEntity : AuditableEntity, IMeterEntity
   public override string Id
   {
     get { return _stringId; }
-    init { _stringId = value; }
+    set { _stringId = value; }
   }
 
   public string? MessengerId { get; set; } = default!;
@@ -36,7 +36,7 @@ public class MeterEntity : AuditableEntity, IMeterEntity
   public virtual string MeasurementValidatorId
   {
     get { return _measurementValidatorId.ToString(); }
-    init { _measurementValidatorId = long.Parse(value); }
+    set { _measurementValidatorId = long.Parse(value); }
   }
 
   public virtual MeasurementValidatorEntity MeasurementValidator { get; set; } =

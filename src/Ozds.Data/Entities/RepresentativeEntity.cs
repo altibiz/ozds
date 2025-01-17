@@ -14,7 +14,7 @@ public class RepresentativeEntity : AuditableEntity
   public override string Id
   {
     get { return _stringId; }
-    init { _stringId = value; }
+    set { _stringId = value; }
   }
 
   public RoleEntity Role { get; set; }

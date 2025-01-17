@@ -15,7 +15,7 @@ public class NetworkUserInvoiceEntity : InvoiceEntity
   public virtual string NetworkUserId
   {
     get { return _networkUserId.ToString(); }
-    init { _networkUserId = long.Parse(value); }
+    set { _networkUserId = long.Parse(value); }
   }
 
   public virtual NetworkUserEntity NetworkUser { get; set; } = default!;

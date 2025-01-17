@@ -4,48 +4,36 @@ using Ozds.Data.Entities.Complex;
 
 namespace Ozds.Business.Conversion.Implementations.Administration;
 
-public class
-  LegalPersonModelEntityConverter : ConcreteModelEntityConverter<LegalPersonModel,
-  LegalPersonEntity>
+public class LegalPersonModelEntityConverter
+  : ConcreteModelEntityConverter<LegalPersonModel, LegalPersonEntity>
 {
-  protected override LegalPersonEntity ToEntity(LegalPersonModel model)
+  public override void InitializeEntity(
+    LegalPersonModel model,
+    LegalPersonEntity entity
+  )
   {
-    return model.ToEntity();
+    base.InitializeEntity(model, entity);
+    entity.Name = model.Name;
+    entity.Email = model.Email;
+    entity.PhoneNumber = model.PhoneNumber;
+    entity.Address = model.Address;
+    entity.City = model.City;
+    entity.PostalCode = model.PostalCode;
+    entity.SocialSecurityNumber = model.SocialSecurityNumber;
   }
 
-  protected override LegalPersonModel ToModel(LegalPersonEntity entity)
+  public override void InitializeModel(
+    LegalPersonEntity entity,
+    LegalPersonModel model
+  )
   {
-    return entity.ToModel();
-  }
-}
-
-public static class LegalPersonModelEntityConverterExtensions
-{
-  public static LegalPersonModel ToModel(this LegalPersonEntity entity)
-  {
-    return new LegalPersonModel
-    {
-      Name = entity.Name,
-      Email = entity.Email,
-      PhoneNumber = entity.PhoneNumber,
-      Address = entity.Address,
-      City = entity.City,
-      PostalCode = entity.PostalCode,
-      SocialSecurityNumber = entity.SocialSecurityNumber
-    };
-  }
-
-  public static LegalPersonEntity ToEntity(this LegalPersonModel model)
-  {
-    return new LegalPersonEntity
-    {
-      Name = model.Name,
-      Email = model.Email,
-      PhoneNumber = model.PhoneNumber,
-      Address = model.Address,
-      City = model.City,
-      PostalCode = model.PostalCode,
-      SocialSecurityNumber = model.SocialSecurityNumber
-    };
+    base.InitializeModel(entity, model);
+    model.Name = entity.Name;
+    model.Email = entity.Email;
+    model.PhoneNumber = entity.PhoneNumber;
+    model.Address = entity.Address;
+    model.City = entity.City;
+    model.PostalCode = entity.PostalCode;
+    model.SocialSecurityNumber = entity.SocialSecurityNumber;
   }
 }

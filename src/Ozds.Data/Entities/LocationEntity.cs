@@ -40,7 +40,7 @@ public class LocationEntity : AuditableEntity
   public string WhiteMediumNetworkUserCatalogueId
   {
     get { return _whiteMediumNetworkUserCatalogueId.ToString(); }
-    init { _whiteMediumNetworkUserCatalogueId = long.Parse(value); }
+    set { _whiteMediumNetworkUserCatalogueId = long.Parse(value); }
   }
 
   public virtual WhiteMediumNetworkUserCatalogueEntity
@@ -50,7 +50,7 @@ public class LocationEntity : AuditableEntity
   public string BlueLowNetworkUserCatalogueId
   {
     get { return _blueLowNetworkUserCatalogueId.ToString(); }
-    init { _blueLowNetworkUserCatalogueId = long.Parse(value); }
+    set { _blueLowNetworkUserCatalogueId = long.Parse(value); }
   }
 
   public virtual BlueLowNetworkUserCatalogueEntity BlueLowNetworkUserCatalogue
@@ -63,7 +63,7 @@ public class LocationEntity : AuditableEntity
   public string WhiteLowNetworkUserCatalogueId
   {
     get { return _whiteLowNetworkUserCatalogueId.ToString(); }
-    init { _whiteLowNetworkUserCatalogueId = long.Parse(value); }
+    set { _whiteLowNetworkUserCatalogueId = long.Parse(value); }
   }
 
   public virtual WhiteLowNetworkUserCatalogueEntity WhiteLowNetworkUserCatalogue
@@ -76,7 +76,7 @@ public class LocationEntity : AuditableEntity
   public string RedLowNetworkUserCatalogueId
   {
     get { return _redLowNetworkUserCatalogueId.ToString(); }
-    init { _redLowNetworkUserCatalogueId = long.Parse(value); }
+    set { _redLowNetworkUserCatalogueId = long.Parse(value); }
   }
 
   public virtual RedLowNetworkUserCatalogueEntity RedLowNetworkUserCatalogue
@@ -88,7 +88,7 @@ public class LocationEntity : AuditableEntity
   public string RegulatoryCatalogueId
   {
     get { return _regulatoryNetworkUserCatalogueId.ToString(); }
-    init { _regulatoryNetworkUserCatalogueId = long.Parse(value); }
+    set { _regulatoryNetworkUserCatalogueId = long.Parse(value); }
   }
 
   public virtual RegulatoryCatalogueEntity RegulatoryCatalogue { get; set; } =

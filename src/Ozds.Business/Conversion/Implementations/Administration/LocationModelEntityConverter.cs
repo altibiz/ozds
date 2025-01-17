@@ -1,72 +1,63 @@
 using Ozds.Business.Conversion.Base;
-using Ozds.Business.Conversion.Complex;
 using Ozds.Business.Models;
+using Ozds.Business.Models.Base;
+using Ozds.Business.Models.Complex;
 using Ozds.Data.Entities;
+using Ozds.Data.Entities.Base;
+using Ozds.Data.Entities.Complex;
 
 namespace Ozds.Business.Conversion.Implementations.Administration;
 
-public class
-  LocationModelEntityConverter : ConcreteModelEntityConverter<LocationModel,
-  LocationEntity>
+public class LocationModelEntityConverter(IServiceProvider serviceProvider)
+  : InheritingModelEntityConverter<
+      LocationModel,
+      AuditableModel,
+      LocationEntity,
+      AuditableEntity>(serviceProvider)
 {
-  protected override LocationEntity ToEntity(LocationModel model)
+  private readonly ModelEntityConverter modelEntityConverter =
+    serviceProvider.GetRequiredService<ModelEntityConverter>();
+
+  public override void InitializeEntity(
+    LocationModel model,
+    LocationEntity entity)
   {
-    return model.ToEntity();
+    base.InitializeEntity(model, entity);
+    entity.WhiteMediumNetworkUserCatalogueId =
+      model.WhiteMediumNetworkUserCatalogueId;
+    entity.BlueLowNetworkUserCatalogueId =
+      model.BlueLowNetworkUserCatalogueId;
+    entity.WhiteLowNetworkUserCatalogueId =
+      model.WhiteLowNetworkUserCatalogueId;
+    entity.RedLowNetworkUserCatalogueId =
+      model.RedLowNetworkUserCatalogueId;
+    entity.RegulatoryCatalogueId = model.RegulatoryCatalogueId;
+    entity.LegalPerson =
+      entity.LegalPerson is null
+        ? null!
+        : modelEntityConverter
+            .ToEntity<LegalPersonEntity>(model.LegalPerson);
+    entity.AltiBizSubProjectCode = model.AltiBizSubProjectCode;
   }
 
-  protected override LocationModel ToModel(LocationEntity entity)
+  public override void InitializeModel(
+    LocationEntity entity,
+    LocationModel model)
   {
-    return entity.ToModel();
-  }
-}
-
-public static class LocationModelEntityConverterExtensions
-{
-  public static LocationModel ToModel(this LocationEntity entity)
-  {
-    return new LocationModel
-    {
-      Id = entity.Id,
-      Title = entity.Title,
-      CreatedOn = entity.CreatedOn,
-      CreatedById = entity.CreatedById,
-      LastUpdatedOn = entity.LastUpdatedOn,
-      LastUpdatedById = entity.LastUpdatedById,
-      IsDeleted = entity.IsDeleted,
-      DeletedOn = entity.DeletedOn,
-      DeletedById = entity.DeletedById,
-      WhiteMediumNetworkUserCatalogueId =
-        entity.WhiteMediumNetworkUserCatalogueId,
-      BlueLowNetworkUserCatalogueId = entity.BlueLowNetworkUserCatalogueId,
-      WhiteLowNetworkUserCatalogueId = entity.WhiteLowNetworkUserCatalogueId,
-      RedLowNetworkUserCatalogueId = entity.RedLowNetworkUserCatalogueId,
-      RegulatoryCatalogueId = entity.RegulatoryCatalogueId,
-      LegalPerson = entity.LegalPerson.ToModel(),
-      AltiBizSubProjectCode = entity.AltiBizSubProjectCode
-    };
-  }
-
-  public static LocationEntity ToEntity(this LocationModel model)
-  {
-    return new LocationEntity
-    {
-      Id = model.Id,
-      Title = model.Title,
-      CreatedOn = model.CreatedOn,
-      CreatedById = model.CreatedById,
-      LastUpdatedOn = model.LastUpdatedOn,
-      LastUpdatedById = model.LastUpdatedById,
-      IsDeleted = model.IsDeleted,
-      DeletedOn = model.DeletedOn,
-      DeletedById = model.DeletedById,
-      WhiteMediumNetworkUserCatalogueId =
-        model.WhiteMediumNetworkUserCatalogueId,
-      BlueLowNetworkUserCatalogueId = model.BlueLowNetworkUserCatalogueId,
-      WhiteLowNetworkUserCatalogueId = model.WhiteLowNetworkUserCatalogueId,
-      RedLowNetworkUserCatalogueId = model.RedLowNetworkUserCatalogueId,
-      RegulatoryCatalogueId = model.RegulatoryCatalogueId,
-      LegalPerson = model.LegalPerson.ToEntity(),
-      AltiBizSubProjectCode = model.AltiBizSubProjectCode
-    };
+    base.InitializeModel(entity, model);
+    model.WhiteMediumNetworkUserCatalogueId =
+      entity.WhiteMediumNetworkUserCatalogueId;
+    model.BlueLowNetworkUserCatalogueId =
+      entity.BlueLowNetworkUserCatalogueId;
+    model.WhiteLowNetworkUserCatalogueId =
+      entity.WhiteLowNetworkUserCatalogueId;
+    model.RedLowNetworkUserCatalogueId =
+      entity.RedLowNetworkUserCatalogueId;
+    model.RegulatoryCatalogueId = entity.RegulatoryCatalogueId;
+    model.LegalPerson = entity.LegalPerson is null
+      ? null!
+      : modelEntityConverter
+          .ToModel<LegalPersonModel>(entity.LegalPerson);
+    model.AltiBizSubProjectCode = entity.AltiBizSubProjectCode;
   }
 }

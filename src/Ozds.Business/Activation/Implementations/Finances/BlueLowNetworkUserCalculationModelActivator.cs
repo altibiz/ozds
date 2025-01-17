@@ -11,7 +11,7 @@ public class BlueLowNetworkUserCalculationModelActivator(
       BlueLowNetworkUserCalculationModel,
       NetworkUserCalculationModel>(serviceProvider)
 {
-  private readonly ModelActivator _agnosticModelActivator =
+  private readonly ModelActivator modelActivator =
     serviceProvider.GetRequiredService<ModelActivator>();
 
   public override void Initialize(
@@ -20,9 +20,9 @@ public class BlueLowNetworkUserCalculationModelActivator(
   {
     base.Initialize(model);
 
-    model.UsageActiveEnergyTotalImportT0 = _agnosticModelActivator
+    model.UsageActiveEnergyTotalImportT0 = modelActivator
       .Activate<UsageActiveEnergyTotalImportT0CalculationItemModel>();
-    model.UsageReactiveEnergyTotalRampedT0 = _agnosticModelActivator
+    model.UsageReactiveEnergyTotalRampedT0 = modelActivator
       .Activate<UsageReactiveEnergyTotalRampedT0CalculationItemModel>();
     model.ConcreteArchivedUsageNetworkUserCatalogue = default!;
   }

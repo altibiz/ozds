@@ -12,7 +12,7 @@ public class LocationInvoiceEntity : InvoiceEntity
   public virtual string LocationId
   {
     get { return _locationId.ToString(); }
-    init { _locationId = long.Parse(value); }
+    set { _locationId = long.Parse(value); }
   }
 
   public virtual LocationEntity Location { get; set; } = default!;

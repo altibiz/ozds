@@ -37,7 +37,7 @@ public class NetworkUserCalculationEntity
   public string SupplyRegulatoryCatalogueId
   {
     get { return _supplyRegulatoryCatalogueId.ToString(); }
-    init { _supplyRegulatoryCatalogueId = long.Parse(value); }
+    set { _supplyRegulatoryCatalogueId = long.Parse(value); }
   }
 
   public virtual RegulatoryCatalogueEntity SupplyRegulatoryCatalogue
@@ -79,7 +79,7 @@ public class NetworkUserCalculationEntity
   public string NetworkUserMeasurementLocationId
   {
     get { return _networkUserMeasurementLocationId.ToString(); }
-    init { _networkUserMeasurementLocationId = long.Parse(value); }
+    set { _networkUserMeasurementLocationId = long.Parse(value); }
   }
 
   public NetworkUserMeasurementLocationEntity
@@ -100,7 +100,7 @@ public class
   public string UsageNetworkUserCatalogueId
   {
     get { return _usageNetworkUserCatalogueId.ToString(); }
-    init { _usageNetworkUserCatalogueId = long.Parse(value); }
+    set { _usageNetworkUserCatalogueId = long.Parse(value); }
   }
 
   public virtual TUsageNetworkUserCatalogue UsageNetworkUserCatalogue

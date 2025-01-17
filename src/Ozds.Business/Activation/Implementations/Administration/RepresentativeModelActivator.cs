@@ -11,14 +11,14 @@ public class RepresentativeModelActivator(IServiceProvider serviceProvider)
     serviceProvider
   )
 {
-  private readonly ModelActivator _agnosticModelActivator =
+  private readonly ModelActivator modelActivator =
     serviceProvider.GetRequiredService<ModelActivator>();
 
   public override void Initialize(RepresentativeModel model)
   {
     base.Initialize(model);
     model.Role = RoleModel.NetworkUserRepresentative;
-    model.PhysicalPerson = _agnosticModelActivator
+    model.PhysicalPerson = modelActivator
       .Activate<PhysicalPersonModel>();
     model.Topics = RoleModel.NetworkUserRepresentative.ToTopics();
   }

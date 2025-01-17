@@ -4,12 +4,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Ozds.Data.Entities;
-using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Entities.Base;
 using Ozds.Data.Entities.Enums;
 using Ozds.Data.Extensions;
 
 // TODO: check representative id
+// TODO: restoration
+// TODO: cascade delete and remove events when forgetting
+//       - add interceptor after this one that cascade deletes and events
 
 namespace Ozds.Data.Interceptors;
 
@@ -168,7 +170,7 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
 
       if (auditable.State is EntityState.Deleted)
       {
-        if (auditable.Entity.Forget)
+        if (auditable.Entity.Forget || auditable.Entity.IsDeleted)
         {
           if (!auditable.Entity.IsDeleted)
           {

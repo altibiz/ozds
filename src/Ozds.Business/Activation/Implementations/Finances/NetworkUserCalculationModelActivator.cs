@@ -10,22 +10,22 @@ public class NetworkUserCalculationModelActivator(
       NetworkUserCalculationModel,
       CalculationModel>(serviceProvider)
 {
-  private readonly ModelActivator _agnosticModelActivator =
+  private readonly ModelActivator modelActivator =
     serviceProvider.GetRequiredService<ModelActivator>();
 
   public override void Initialize(NetworkUserCalculationModel model)
   {
     base.Initialize(model);
 
-    model.UsageMeterFee = _agnosticModelActivator
+    model.UsageMeterFee = modelActivator
       .Activate<UsageMeterFeeCalculationItemModel>();
-    model.SupplyActiveEnergyTotalImportT1 = _agnosticModelActivator
+    model.SupplyActiveEnergyTotalImportT1 = modelActivator
       .Activate<SupplyActiveEnergyTotalImportT1CalculationItemModel>();
-    model.SupplyActiveEnergyTotalImportT2 = _agnosticModelActivator
+    model.SupplyActiveEnergyTotalImportT2 = modelActivator
       .Activate<SupplyActiveEnergyTotalImportT2CalculationItemModel>();
-    model.SupplyBusinessUsageFee = _agnosticModelActivator
+    model.SupplyBusinessUsageFee = modelActivator
       .Activate<SupplyBusinessUsageCalculationItemModel>();
-    model.SupplyRenewableEnergyFee = _agnosticModelActivator
+    model.SupplyRenewableEnergyFee = modelActivator
       .Activate<SupplyRenewableEnergyCalculationItemModel>();
     model.NetworkUserMeasurementLocationId = "0";
     model.ArchivedNetworkUserMeasurementLocation = default!;

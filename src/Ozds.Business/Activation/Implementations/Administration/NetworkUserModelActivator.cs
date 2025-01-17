@@ -8,7 +8,7 @@ namespace Ozds.Business.Activation.Implementations.Administration;
 public class NetworkUserModelActivator(IServiceProvider serviceProvider)
   : InheritingModelActivator<NetworkUserModel, AuditableModel>(serviceProvider)
 {
-  private readonly ModelActivator _agnosticModelActivator =
+  private readonly ModelActivator modelActivator =
     serviceProvider.GetRequiredService<ModelActivator>();
 
   public override void Initialize(NetworkUserModel model)
@@ -16,7 +16,7 @@ public class NetworkUserModelActivator(IServiceProvider serviceProvider)
     base.Initialize(model);
 
     model.LocationId = "0";
-    model.LegalPerson = _agnosticModelActivator.Activate<LegalPersonModel>();
+    model.LegalPerson = modelActivator.Activate<LegalPersonModel>();
     model.AltiBizSubProjectCode = string.Empty;
   }
 }

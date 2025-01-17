@@ -12,13 +12,13 @@ public class MessengerEntity : AuditableEntity
   public override string Id
   {
     get { return _stringId; }
-    init { _stringId = value; }
+    set { _stringId = value; }
   }
 
   public virtual string LocationId
   {
     get { return _locationId.ToString(); }
-    init { _locationId = long.Parse(value); }
+    set { _locationId = long.Parse(value); }
   }
 
   public virtual LocationEntity Location { get; set; } = default!;

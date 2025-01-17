@@ -10,7 +10,7 @@ public abstract class
   where TAggregate : IAggregate
   where TMeasurement : IMeasurement
 {
-  protected abstract TAggregate ToAggregate(
+  public abstract TAggregate ToAggregate(
     TMeasurement measurement,
     IntervalModel interval);
 
