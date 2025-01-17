@@ -4,39 +4,26 @@ using Ozds.Data.Entities.Complex;
 
 namespace Ozds.Business.Conversion.Implementations.Administration;
 
-public class PhysicalPersonModelEntityConverter : ConcreteModelEntityConverter<
-  PhysicalPersonModel, PhysicalPersonEntity>
+public class PhysicalPersonModelEntityConverter
+  : ConcreteModelEntityConverter<PhysicalPersonModel, PhysicalPersonEntity>
 {
-  protected override PhysicalPersonEntity ToEntity(PhysicalPersonModel model)
+  public override void InitializeEntity(
+    PhysicalPersonModel model,
+    PhysicalPersonEntity entity)
   {
-    return model.ToEntity();
+    base.InitializeEntity(model, entity);
+    entity.Name = model.Name;
+    entity.Email = model.Email;
+    entity.PhoneNumber = model.PhoneNumber;
   }
 
-  protected override PhysicalPersonModel ToModel(PhysicalPersonEntity entity)
+  public override void InitializeModel(
+    PhysicalPersonEntity entity,
+    PhysicalPersonModel model)
   {
-    return entity.ToModel();
-  }
-}
-
-public static class PhysicalPersonModelEntityConverterExtensions
-{
-  public static PhysicalPersonModel ToModel(this PhysicalPersonEntity entity)
-  {
-    return new PhysicalPersonModel
-    {
-      Name = entity.Name,
-      Email = entity.Email,
-      PhoneNumber = entity.PhoneNumber
-    };
-  }
-
-  public static PhysicalPersonEntity ToEntity(this PhysicalPersonModel model)
-  {
-    return new PhysicalPersonEntity
-    {
-      Name = model.Name,
-      Email = model.Email,
-      PhoneNumber = model.PhoneNumber
-    };
+    base.InitializeModel(entity, model);
+    model.Name = entity.Name;
+    model.Email = entity.Email;
+    model.PhoneNumber = entity.PhoneNumber;
   }
 }

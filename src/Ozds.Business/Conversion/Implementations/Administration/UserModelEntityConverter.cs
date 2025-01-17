@@ -4,38 +4,26 @@ using Ozds.Users.Entities;
 
 namespace Ozds.Business.Conversion.Implementations.Administration;
 
-public class
-  UserModelEntityConverter : ConcreteModelEntityConverter<UserModel, UserEntity>
+public class UserModelEntityConverter
+  : ConcreteModelEntityConverter<UserModel, UserEntity>
 {
-  protected override UserEntity ToEntity(UserModel model)
+  public override void InitializeEntity(
+    UserModel model,
+    UserEntity entity
+  )
   {
-    return model.ToEntity();
+    base.InitializeEntity(model, entity);
+    entity.UserName = model.UserName;
+    entity.Email = model.Email;
   }
 
-  protected override UserModel ToModel(UserEntity entity)
+  public override void InitializeModel(
+    UserEntity entity,
+    UserModel model
+  )
   {
-    return entity.ToModel();
-  }
-}
-
-public static class UserModelEntityConverterExtensions
-{
-  public static UserEntity ToEntity(this UserModel model)
-  {
-    return new UserEntity(
-      model.Id,
-      model.UserName,
-      model.Email
-    );
-  }
-
-  public static UserModel ToModel(this UserEntity entity)
-  {
-    return new UserModel
-    {
-      Id = entity.Id,
-      UserName = entity.UserName,
-      Email = entity.Email
-    };
+    base.InitializeModel(entity, model);
+    model.UserName = entity.UserName;
+    model.Email = entity.Email;
   }
 }
