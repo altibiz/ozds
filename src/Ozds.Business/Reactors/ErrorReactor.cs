@@ -3,7 +3,7 @@ using Ozds.Business.Activation.Agnostic;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Enums;
 using Ozds.Business.Mutations;
-using Ozds.Business.Mutations.Agnostic;
+using Ozds.Business.Mutations;
 using Ozds.Business.Observers.Abstractions;
 using Ozds.Business.Queries;
 using Ozds.Business.Reactors.Base;

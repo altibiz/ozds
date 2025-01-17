@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using MudBlazor;
 using Ozds.Business.Models.Abstractions;
-using Ozds.Business.Mutations.Agnostic;
+using Ozds.Business.Mutations;
 using Ozds.Client.Components.Base;
 using Ozds.Client.State;
 

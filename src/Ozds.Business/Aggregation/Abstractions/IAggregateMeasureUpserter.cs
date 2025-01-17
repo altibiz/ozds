@@ -4,9 +4,11 @@ namespace Ozds.Business.Aggregation.Abstractions;
 
 public interface IAggregateMeasureUpserter
 {
-  bool CanUpsertModel(Type modelType);
+  public Type ModelType { get; }
 
-  IAggregateMeasure UpsertModel(
+  public bool CanUpsert(Type type);
+
+  public IAggregateMeasure Upsert(
     IAggregateMeasure lhs,
     long lhsCount,
     IAggregateMeasure rhs,

@@ -7,7 +7,7 @@ using Ozds.Business.Models.Enums;
 using Ozds.Business.Observers.Abstractions;
 using Ozds.Business.Observers.EventArgs;
 using Ozds.Business.Queries.Abstractions;
-using Ozds.Business.Queries.Agnostic;
+using Ozds.Business.Queries;
 using Ozds.Client.Components.Base;
 
 namespace Ozds.Client.Components.Charts;

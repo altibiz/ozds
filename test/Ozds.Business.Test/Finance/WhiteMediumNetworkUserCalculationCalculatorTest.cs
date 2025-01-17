@@ -124,7 +124,7 @@ public class WhiteMediumNetworkUserCalculationCalculatorTest
     WhiteMediumNetworkUserCalculationModel expected)
   {
     var calculationItemCalculatorMock =
-      new Mock<AgnosticCalculationItemCalculator>(
+      new Mock<CalculationItemCalculator>(
         MockBehavior.Strict,
         new Mock<IServiceProvider>().Object);
 

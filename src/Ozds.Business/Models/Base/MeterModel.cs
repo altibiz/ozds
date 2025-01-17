@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
-using Ozds.Business.Capabilities;
-using Ozds.Business.Capabilities.Abstractions;
+using Ozds.Business.Capabilities.Implementations;
+using Ozds.Business.Capabilities.Implementations.Abstractions;
 using Ozds.Business.Models.Abstractions;
 
 namespace Ozds.Business.Models.Base;

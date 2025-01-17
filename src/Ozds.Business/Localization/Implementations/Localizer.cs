@@ -38,11 +38,6 @@ public class Localizer : ILocalizer
     return TranslateForCulture(CultureInfo.CurrentCulture, notLocalized);
   }
 
-  public string this[string notLocalized]
-  {
-    get { return TranslateForCulture(CultureInfo.CurrentCulture, notLocalized); }
-  }
-
   private static Dictionary<string, string> LoadTranslations(string fileName)
   {
     var jsonStream = Load(fileName);
@@ -58,8 +53,9 @@ public class Localizer : ILocalizer
 
     var stream = assembly.GetManifestResourceStream(fullName) ??
       throw new InvalidOperationException(
-        $"Resource {fullName} does not exist. "
-        + $"Here are the available resources for the given assembly '{assembly.GetName().Name}':\n"
+        $"Resource {fullName} does not exist."
+        + $" Here are the available resources for the given assembly"
+        + $" '{assembly.GetName().Name}':\n"
         + string.Join("\n", assembly.GetManifestResourceNames())
       );
     return stream;

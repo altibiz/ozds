@@ -30,7 +30,7 @@ public class MessagingNetworkUserInvoiceStateReactor(
 }
 
 public class MessagingNetworkUserInvoiceStateHandler(
-  AgnosticModelActivator activator,
+  ModelActivator activator,
   AgnosticModelEntityConverter converter,
   IDbContextFactory<DataDbContext> factory,
   ILocalizer localizer

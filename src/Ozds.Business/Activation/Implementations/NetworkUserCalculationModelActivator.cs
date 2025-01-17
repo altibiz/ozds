@@ -1,4 +1,3 @@
-using Ozds.Business.Activation.Agnostic;
 using Ozds.Business.Activation.Base;
 using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Complex;
@@ -11,8 +10,8 @@ public class NetworkUserCalculationModelActivator(
       NetworkUserCalculationModel,
       CalculationModel>(serviceProvider)
 {
-  private readonly AgnosticModelActivator _agnosticModelActivator =
-    serviceProvider.GetRequiredService<AgnosticModelActivator>();
+  private readonly ModelActivator _agnosticModelActivator =
+    serviceProvider.GetRequiredService<ModelActivator>();
 
   public override void Initialize(NetworkUserCalculationModel model)
   {

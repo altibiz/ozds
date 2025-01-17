@@ -1,4 +1,3 @@
-using Ozds.Business.Activation.Agnostic;
 using Ozds.Business.Activation.Base;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Base;
@@ -9,8 +8,8 @@ namespace Ozds.Business.Activation.Implementations;
 public class NetworkUserModelActivator(IServiceProvider serviceProvider)
   : InheritingModelActivator<NetworkUserModel, AuditableModel>(serviceProvider)
 {
-  private readonly AgnosticModelActivator _agnosticModelActivator =
-    serviceProvider.GetRequiredService<AgnosticModelActivator>();
+  private readonly ModelActivator _agnosticModelActivator =
+    serviceProvider.GetRequiredService<ModelActivator>();
 
   public override void Initialize(NetworkUserModel model)
   {

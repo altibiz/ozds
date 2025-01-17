@@ -9,13 +9,13 @@ using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Complex;
 using Ozds.Business.Models.Enums;
 using Ozds.Business.Mutations;
-using Ozds.Business.Mutations.Agnostic;
+using Ozds.Business.Mutations;
 using Ozds.Business.Observers.Abstractions;
 using Ozds.Business.Observers.EventArgs;
 using Ozds.Business.Queries;
-using Ozds.Business.Queries.Agnostic;
+using Ozds.Business.Queries;
 using Ozds.Business.Reactors.Base;
-using Ozds.Business.Validation.Agnostic;
+using Ozds.Business.Validation;
 using Ozds.Jobs.Manager.Abstractions;
 
 namespace Ozds.Business.Reactors;
@@ -29,7 +29,7 @@ public class IotPushReactor(
 }
 
 public class IotPushHandler(
-  AgnosticValidator validator,
+  ModelValidator validator,
   AgnosticModelActivator activator,
   MeasurementBuffer buffer,
   NotificationMutations notificationMutations,

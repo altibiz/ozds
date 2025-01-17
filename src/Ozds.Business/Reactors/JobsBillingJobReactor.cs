@@ -2,7 +2,7 @@ using Ozds.Business.Finance.Abstractions;
 using Ozds.Business.Models;
 using Ozds.Business.Observers.Abstractions;
 using Ozds.Business.Observers.EventArgs;
-using Ozds.Business.Queries.Agnostic;
+using Ozds.Business.Queries;
 using Ozds.Business.Reactors.Base;
 using Ozds.Business.Time;
 

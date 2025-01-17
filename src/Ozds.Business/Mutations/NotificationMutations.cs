@@ -2,7 +2,7 @@ using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Joins;
 using Ozds.Business.Mutations.Abstractions;
-using Ozds.Business.Validation.Agnostic;
+using Ozds.Business.Validation;
 using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Entities.Joins;
 using DataNotificationMutations = Ozds.Data.Mutations.NotificationMutations;
@@ -12,7 +12,7 @@ namespace Ozds.Business.Mutations;
 public class NotificationMutations(
   DataNotificationMutations mutations,
   AgnosticModelEntityConverter modelEntityConverter,
-  AgnosticValidator validator
+  ModelValidator validator
 ) : IMutations
 {
   public async Task<string> Create(

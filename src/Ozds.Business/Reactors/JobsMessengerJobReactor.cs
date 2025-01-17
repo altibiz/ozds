@@ -11,7 +11,7 @@ using Ozds.Business.Models.Enums;
 using Ozds.Business.Models.Joins;
 using Ozds.Business.Observers.Abstractions;
 using Ozds.Business.Observers.EventArgs;
-using Ozds.Business.Queries.Agnostic;
+using Ozds.Business.Queries;
 using Ozds.Business.Reactors.Base;
 using Ozds.Data.Context;
 using Ozds.Data.Entities;
@@ -35,7 +35,7 @@ public class JobsMessengerJobReactor(
 public class JobsMessengerJobHandler(
   IDbContextFactory<DataDbContext> factory,
   IHostEnvironment environment,
-  AgnosticModelActivator activator,
+  ModelActivator activator,
   AgnosticModelEntityConverter converter,
   AuditableQueries auditableQueries
 ) : Handler<JobsMessengerJobEventArgs>

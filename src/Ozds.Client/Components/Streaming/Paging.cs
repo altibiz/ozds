@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Queries.Abstractions;
-using Ozds.Business.Queries.Agnostic;
+using Ozds.Business.Queries;
 using Ozds.Client.Components.Base;
 
 namespace Ozds.Client.Components.Streaming;

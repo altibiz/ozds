@@ -592,7 +592,7 @@ public class NetworkUserInvoiceCalculatorTest
     CalculatedNetworkUserInvoiceModel expected)
   {
     var calculationItemCalculatorMock =
-      new Mock<AgnosticNetworkUserCalculationCalculator>(
+      new Mock<NetworkUserCalculationCalculator>(
         MockBehavior.Strict,
         new Mock<IServiceProvider>().Object);
 

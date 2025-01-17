@@ -9,7 +9,7 @@ using Ozds.Business.Conversion.Abstractions;
 using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Finance;
 using Ozds.Business.Finance.Abstractions;
-using Ozds.Business.Finance.Agnostic;
+using Ozds.Business.Finance;
 using Ozds.Business.Localization;
 using Ozds.Business.Localization.Abstractions;
 using Ozds.Business.Mutations.Abstractions;
@@ -19,7 +19,7 @@ using Ozds.Business.Observers.Abstractions;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Business.Reactors.Abstractions;
 using Ozds.Business.Validation.Abstractions;
-using Ozds.Business.Validation.Agnostic;
+using Ozds.Business.Validation;
 
 namespace Ozds.Business.Extensions;
 
@@ -85,9 +85,9 @@ public static class IServiceCollectionExtensions
   {
     services.AddTransientAssignableTo(
       typeof(INetworkUserCalculationCalculator));
-    services.AddSingleton(typeof(AgnosticNetworkUserCalculationCalculator));
+    services.AddSingleton(typeof(NetworkUserCalculationCalculator));
     services.AddTransientAssignableTo(typeof(ICalculationItemCalculator));
-    services.AddSingleton(typeof(AgnosticCalculationItemCalculator));
+    services.AddSingleton(typeof(CalculationItemCalculator));
     services.AddTransient(
       typeof(INetworkUserInvoiceCalculator),
       typeof(NetworkUserInvoiceCalculator));
@@ -144,7 +144,7 @@ public static class IServiceCollectionExtensions
   )
   {
     services.AddTransientAssignableTo(typeof(IValidator));
-    services.AddSingleton(typeof(AgnosticValidator));
+    services.AddSingleton(typeof(ModelValidator));
     return services;
   }
 

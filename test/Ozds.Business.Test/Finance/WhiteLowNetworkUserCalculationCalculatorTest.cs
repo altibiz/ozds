@@ -117,7 +117,7 @@ public class WhiteLowNetworkUserCalculationCalculatorTest
     WhiteLowNetworkUserCalculationModel expected)
   {
     var calculationItemCalculatorMock =
-      new Mock<AgnosticCalculationItemCalculator>(
+      new Mock<CalculationItemCalculator>(
         MockBehavior.Strict,
         new Mock<IServiceProvider>().Object);
 
