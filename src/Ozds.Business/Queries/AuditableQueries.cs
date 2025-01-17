@@ -1,4 +1,4 @@
-using Ozds.Business.Conversion.Agnostic;
+using Ozds.Business.Conversion;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Data.Entities.Abstractions;
@@ -8,7 +8,7 @@ namespace Ozds.Business.Queries;
 
 public class AuditableQueries(
   DataAuditableQueries queries,
-  AgnosticModelEntityConverter modelEntityConverter
+  ModelEntityConverter modelEntityConverter
 ) : IQueries
 {
   public async Task<T?> ReadSingle<T>(

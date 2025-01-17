@@ -1,9 +1,9 @@
 using System.Collections.Concurrent;
 using Ozds.Business.Conversion.Abstractions;
 
-namespace Ozds.Business.Conversion.Agnostic;
+namespace Ozds.Business.Conversion;
 
-public class AgnosticModelEntityConverter(IServiceProvider serviceProvider)
+public class ModelEntityConverter(IServiceProvider serviceProvider)
 {
   public TEntity ToEntity<TEntity>(object model)
   {

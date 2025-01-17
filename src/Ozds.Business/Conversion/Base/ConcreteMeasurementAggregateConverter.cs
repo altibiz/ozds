@@ -5,7 +5,7 @@ using Ozds.Business.Models.Enums;
 namespace Ozds.Business.Conversion.Base;
 
 public abstract class
-  MeasurementAggregateConverter<TMeasurement, TAggregate> :
+  ConcreteMeasurementAggregateConverter<TMeasurement, TAggregate> :
   IMeasurementAggregateConverter
   where TAggregate : IAggregate
   where TMeasurement : IMeasurement

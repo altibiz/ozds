@@ -1,5 +1,5 @@
 using System.Diagnostics;
-using Ozds.Business.Conversion.Agnostic;
+using Ozds.Business.Conversion;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Mutations.Abstractions;
 using Ozds.Data.Entities.Abstractions;
@@ -9,7 +9,7 @@ namespace Ozds.Business.Mutations;
 
 public class MeasurementMutations(
   DataMeasurementUpsertMutations mutations,
-  AgnosticModelEntityConverter modelEntityConverter,
+  ModelEntityConverter modelEntityConverter,
   ILogger<MeasurementMutations> logger
 ) : IMutations
 {

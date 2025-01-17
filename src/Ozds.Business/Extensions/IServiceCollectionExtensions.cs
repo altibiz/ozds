@@ -6,7 +6,7 @@ using Ozds.Business.Aggregation.Abstractions;
 using Ozds.Business.Buffers.Abstractions;
 using Ozds.Business.Caching.Abstractions;
 using Ozds.Business.Conversion.Abstractions;
-using Ozds.Business.Conversion.Agnostic;
+using Ozds.Business.Conversion;
 using Ozds.Business.Finance;
 using Ozds.Business.Finance.Abstractions;
 using Ozds.Business.Finance.Implementations;
@@ -71,11 +71,11 @@ public static class IServiceCollectionExtensions
   )
   {
     services.AddTransientAssignableTo(typeof(IModelEntityConverter));
-    services.AddSingleton(typeof(AgnosticModelEntityConverter));
+    services.AddSingleton(typeof(ModelEntityConverter));
     services.AddTransientAssignableTo(typeof(IMeasurementAggregateConverter));
-    services.AddSingleton(typeof(AgnosticMeasurementAggregateConverter));
+    services.AddSingleton(typeof(MeasurementAggregateConverter));
     services.AddTransientAssignableTo(typeof(IPushRequestMeasurementConverter));
-    services.AddSingleton(typeof(AgnosticPushRequestMeasurementConverter));
+    services.AddSingleton(typeof(PushRequestMeasurementConverter));
     return services;
   }
 

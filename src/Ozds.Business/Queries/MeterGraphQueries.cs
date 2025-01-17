@@ -1,6 +1,6 @@
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
-using Ozds.Business.Conversion.Agnostic;
+using Ozds.Business.Conversion;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Enums;
 using Ozds.Business.Naming.Agnostic;
@@ -14,7 +14,7 @@ namespace Ozds.Business.Queries;
 
 public class MeterGraphQueries(
   IDbContextFactory<DataDbContext> factory,
-  AgnosticModelEntityConverter modelEntityConverter,
+  ModelEntityConverter modelEntityConverter,
   MeterNamingConvention meterNamingConvention
 ) : IQueries
 {

@@ -1,5 +1,5 @@
 using Ozds.Business.Conversion;
-using Ozds.Business.Conversion.Agnostic;
+using Ozds.Business.Conversion;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Composite;
 using Ozds.Business.Models.Enums;
@@ -10,7 +10,7 @@ namespace Ozds.Business.Queries;
 
 public class AnalysisQueries(
   DataMeasurementLocationQueries queries,
-  AgnosticModelEntityConverter modelEntityConverter
+  ModelEntityConverter modelEntityConverter
 ) : IQueries
 {
   public async Task<List<AnalysisBasisModel>>

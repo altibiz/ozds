@@ -3,9 +3,9 @@ using Ozds.Business.Conversion.Abstractions;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Iot.Entities.Abstractions;
 
-namespace Ozds.Business.Conversion.Agnostic;
+namespace Ozds.Business.Conversion;
 
-public class AgnosticPushRequestMeasurementConverter(
+public class PushRequestMeasurementConverter(
   IServiceProvider serviceProvider
 )
 {

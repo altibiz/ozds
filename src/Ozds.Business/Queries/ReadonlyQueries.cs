@@ -1,4 +1,4 @@
-using Ozds.Business.Conversion.Agnostic;
+using Ozds.Business.Conversion;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Queries.Abstractions;
 using DataReadonlyQueries = Ozds.Data.Queries.ReadonlyQueries;
@@ -7,7 +7,7 @@ namespace Ozds.Business.Queries;
 
 public class ReadonlyQueries(
   DataReadonlyQueries queries,
-  AgnosticModelEntityConverter modelEntityConverter
+  ModelEntityConverter modelEntityConverter
 ) : IQueries
 {
   public async Task<T?> ReadSingle<T>(

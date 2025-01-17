@@ -1,4 +1,4 @@
-using Ozds.Business.Conversion.Agnostic;
+using Ozds.Business.Conversion;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Validation;
 using Ozds.Data.Entities.Abstractions;
@@ -9,7 +9,7 @@ namespace Ozds.Business.Mutations;
 
 public class JoinMutations(
   DataJoinMutations mutations,
-  AgnosticModelEntityConverter modelEntityConverter,
+  ModelEntityConverter modelEntityConverter,
   ModelValidator validator
 ) : IMutations
 {

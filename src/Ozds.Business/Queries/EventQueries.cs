@@ -1,4 +1,4 @@
-using Ozds.Business.Conversion.Agnostic;
+using Ozds.Business.Conversion;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Enums;
 using Ozds.Business.Queries.Abstractions;
@@ -12,7 +12,7 @@ namespace Ozds.Business.Queries;
 public class EventQueries(
   DataReadonlyQueries queries,
   DataAuditableQueries auditableQueries,
-  AgnosticModelEntityConverter modelEntityConverter
+  ModelEntityConverter modelEntityConverter
 ) : IQueries
 {
   public async Task<PaginatedList<T>> ReadByMinLevel<T>(

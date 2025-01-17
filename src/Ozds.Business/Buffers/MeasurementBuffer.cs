@@ -1,7 +1,7 @@
 using System.Collections.Concurrent;
 using Ozds.Business.Aggregation;
 using Ozds.Business.Buffers.Abstractions;
-using Ozds.Business.Conversion.Agnostic;
+using Ozds.Business.Conversion;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Enums;
 using Ozds.Business.Observers.Abstractions;
@@ -17,7 +17,7 @@ public enum MeasurementBufferBehavior
 
 public class MeasurementBuffer(
   AggregateUpserter aggregateUpserter,
-  AgnosticMeasurementAggregateConverter aggregateConverter,
+  MeasurementAggregateConverter aggregateConverter,
   IMeasurementFlushPublisher measurementFlushPublisher,
   IMeasurementsBufferedPublisher measurementsBufferedPublisher,
   ILogger<MeasurementBuffer> logger

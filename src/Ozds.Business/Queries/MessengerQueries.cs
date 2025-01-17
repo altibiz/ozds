@@ -1,4 +1,4 @@
-using Ozds.Business.Conversion.Agnostic;
+using Ozds.Business.Conversion;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Queries.Abstractions;
 using DataMessengerQueries = Ozds.Data.Queries.MessengerQueries;
@@ -7,7 +7,7 @@ namespace Ozds.Business.Queries;
 
 public class MessengerQueries(
   DataMessengerQueries queries,
-  AgnosticModelEntityConverter modelEntityConverter
+  ModelEntityConverter modelEntityConverter
 ) : IQueries
 {
   public async Task<PaginatedList<IMessenger>> ReadByLocationId(

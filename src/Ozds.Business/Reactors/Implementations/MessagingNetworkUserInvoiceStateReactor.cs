@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Activation;
 using Ozds.Business.Conversion;
-using Ozds.Business.Conversion.Agnostic;
+using Ozds.Business.Conversion;
 using Ozds.Business.Conversion.Joins;
 using Ozds.Business.Localization.Abstractions;
 using Ozds.Business.Models;
@@ -29,7 +29,7 @@ public class MessagingNetworkUserInvoiceStateReactor(
 
 public class MessagingNetworkUserInvoiceStateHandler(
   ModelActivator activator,
-  AgnosticModelEntityConverter converter,
+  ModelEntityConverter converter,
   IDbContextFactory<DataDbContext> factory,
   ILocalizer localizer
 ) : Handler<MessagingNetworkUserInvoiceStateEventArgs>

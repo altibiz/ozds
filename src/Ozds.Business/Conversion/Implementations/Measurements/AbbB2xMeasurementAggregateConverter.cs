@@ -5,7 +5,7 @@ using Ozds.Business.Models.Enums;
 
 namespace Ozds.Business.Conversion;
 
-public class AbbB2xMeasurementAggregateConverter : MeasurementAggregateConverter
+public class AbbB2xMeasurementAggregateConverter : ConcreteMeasurementAggregateConverter
   <AbbB2xMeasurementModel, AbbB2xAggregateModel>
 {
   protected override AbbB2xAggregateModel ToAggregate(

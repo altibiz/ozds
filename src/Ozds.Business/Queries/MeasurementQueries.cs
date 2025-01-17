@@ -1,4 +1,4 @@
-using Ozds.Business.Conversion.Agnostic;
+using Ozds.Business.Conversion;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Enums;
 using Ozds.Business.Naming.Agnostic;
@@ -9,7 +9,7 @@ namespace Ozds.Business.Queries;
 
 public class MeasurementQueries(
   DataMeasurementQueries queries,
-  AgnosticModelEntityConverter modelEntityConverter,
+  ModelEntityConverter modelEntityConverter,
   MeterNamingConvention meterNamingConvention
 ) : IQueries
 {

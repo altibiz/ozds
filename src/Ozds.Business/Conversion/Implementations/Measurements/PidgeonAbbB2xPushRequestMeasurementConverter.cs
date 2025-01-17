@@ -5,7 +5,7 @@ using Ozds.Iot.Entities;
 namespace Ozds.Business.Conversion;
 
 public class PidgeonAbbB2xPushRequestMeasurementConverter :
-  PushRequestMeasurementConverter<PidgeonAbbB2xMeterPushRequestEntity,
+  ConcretePushRequestMeasurementConverter<PidgeonAbbB2xMeterPushRequestEntity,
     AbbB2xMeasurementModel>
 {
   protected override string MeterIdPrefix

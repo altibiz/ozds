@@ -3,9 +3,9 @@ using Ozds.Business.Conversion.Abstractions;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Enums;
 
-namespace Ozds.Business.Conversion.Agnostic;
+namespace Ozds.Business.Conversion;
 
-public class AgnosticMeasurementAggregateConverter(
+public class MeasurementAggregateConverter(
   IServiceProvider serviceProvider)
 {
   public TAggregate ToAggregate<TAggregate>(

@@ -1,4 +1,4 @@
-using Ozds.Business.Conversion.Agnostic;
+using Ozds.Business.Conversion;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Enums;
 using Ozds.Business.Queries.Abstractions;
@@ -8,7 +8,7 @@ namespace Ozds.Business.Queries;
 
 public class LocationQueries(
   DataLocationQueries dataLocationQueries,
-  AgnosticModelEntityConverter modelEntityConverter
+  ModelEntityConverter modelEntityConverter
 ) : IQueries
 {
   public async Task<LocationModel?> ReadLocationByRepresentativeId(

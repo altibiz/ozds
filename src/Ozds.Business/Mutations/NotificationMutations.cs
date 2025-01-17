@@ -1,4 +1,4 @@
-using Ozds.Business.Conversion.Agnostic;
+using Ozds.Business.Conversion;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Joins;
 using Ozds.Business.Mutations.Abstractions;
@@ -11,7 +11,7 @@ namespace Ozds.Business.Mutations;
 
 public class NotificationMutations(
   DataNotificationMutations mutations,
-  AgnosticModelEntityConverter modelEntityConverter,
+  ModelEntityConverter modelEntityConverter,
   ModelValidator validator
 ) : IMutations
 {

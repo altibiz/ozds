@@ -6,7 +6,7 @@ using Ozds.Business.Models.Enums;
 namespace Ozds.Business.Conversion;
 
 public class SchneideriEM3xxxMeasurementAggregateConverter :
-  MeasurementAggregateConverter<SchneideriEM3xxxMeasurementModel,
+  ConcreteMeasurementAggregateConverter<SchneideriEM3xxxMeasurementModel,
     SchneideriEM3xxxAggregateModel>
 {
   protected override SchneideriEM3xxxAggregateModel ToAggregate(

@@ -1,4 +1,4 @@
-using Ozds.Business.Conversion.Agnostic;
+using Ozds.Business.Conversion;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Queries.Abstractions;
 using DataMeasurementLocationQueries = Ozds.Data.Queries.MeasurementLocationQueries;
@@ -7,7 +7,7 @@ namespace Ozds.Business.Queries;
 
 public class MeasurementLocationQueries(
   DataMeasurementLocationQueries queries,
-  AgnosticModelEntityConverter modelEntityConverter
+  ModelEntityConverter modelEntityConverter
 ) : IQueries
 {
   public async Task<IMeasurementLocation?> ReadMeasurementLocationByMeter(

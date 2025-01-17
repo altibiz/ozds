@@ -1,6 +1,6 @@
 using Ozds.Business.Buffers;
 using Ozds.Business.Caching;
-using Ozds.Business.Conversion.Agnostic;
+using Ozds.Business.Conversion;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Observers.Abstractions;
 using Ozds.Business.Observers.Base;
@@ -32,7 +32,7 @@ public class IotPushRelay(
 
 public class IotPushPipe(
   MeasurementLocationCache Cache,
-  AgnosticPushRequestMeasurementConverter PushRequestConverter
+  PushRequestMeasurementConverter PushRequestConverter
 ) : IPipe<PushEventArgs, IotPushEventArgs>
 {
   public async Task<IotPushEventArgs> Transform(

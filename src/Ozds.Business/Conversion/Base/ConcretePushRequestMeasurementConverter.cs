@@ -4,7 +4,7 @@ using Ozds.Iot.Entities.Abstractions;
 
 namespace Ozds.Business.Conversion.Base;
 
-public abstract class PushRequestMeasurementConverter<
+public abstract class ConcretePushRequestMeasurementConverter<
   TPushRequest,
   TMeasurement> : IPushRequestMeasurementConverter
   where TMeasurement : IMeasurement

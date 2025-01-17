@@ -1,4 +1,4 @@
-using Ozds.Business.Conversion.Agnostic;
+using Ozds.Business.Conversion;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Joins;
 using Ozds.Business.Queries.Abstractions;
@@ -9,7 +9,7 @@ namespace Ozds.Business.Queries;
 
 public class NotificationQueries(
   DataNotificationQueries queries,
-  AgnosticModelEntityConverter modelEntityConverter
+  ModelEntityConverter modelEntityConverter
 ) : IQueries
 {
   public async Task<T?> ReadSingle<T>(

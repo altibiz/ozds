@@ -1,4 +1,4 @@
-using Ozds.Business.Conversion.Agnostic;
+using Ozds.Business.Conversion;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Mutations.Abstractions;
 using Ozds.Business.Validation;
@@ -9,7 +9,7 @@ namespace Ozds.Business.Mutations;
 
 public class ReadonlyMutations(
   DataReadonlyMutations mutations,
-  AgnosticModelEntityConverter modelEntityConverter,
+  ModelEntityConverter modelEntityConverter,
   ModelValidator validator
 ) : IMutations
 {

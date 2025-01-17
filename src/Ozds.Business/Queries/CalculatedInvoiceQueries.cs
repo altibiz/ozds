@@ -1,4 +1,4 @@
-using Ozds.Business.Conversion.Agnostic;
+using Ozds.Business.Conversion;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Base;
@@ -10,7 +10,7 @@ namespace Ozds.Business.Queries;
 
 public class CalculatedInvoiceQueries(
   DataCalculatedInvoiceQueries queries,
-  AgnosticModelEntityConverter modelEntityConverter
+  ModelEntityConverter modelEntityConverter
 ) : IQueries
 {
   public async Task<CalculatedNetworkUserInvoiceModel?>

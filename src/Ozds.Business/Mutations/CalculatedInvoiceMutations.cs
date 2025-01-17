@@ -1,4 +1,4 @@
-using Ozds.Business.Conversion.Agnostic;
+using Ozds.Business.Conversion;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Composite;
@@ -12,7 +12,7 @@ namespace Ozds.Business.Mutations;
 
 public class CalculatedInvoiceMutations(
   DataCalculatedInvoiceMutations mutations,
-  AgnosticModelEntityConverter modelEntityConverter
+  ModelEntityConverter modelEntityConverter
 ) : IMutations
 {
   public async Task<CalculatedNetworkUserInvoiceModel> CreateCalculatedInvoice(

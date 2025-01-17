@@ -1,5 +1,5 @@
 using Ozds.Business.Activation.Agnostic;
-using Ozds.Business.Conversion.Agnostic;
+using Ozds.Business.Conversion;
 using Ozds.Business.Extensions;
 using Ozds.Business.Models.Abstractions;
 
@@ -29,7 +29,7 @@ public class ModelEntityConverterTest
     var activator = serviceProvider
       .GetRequiredService<AgnosticModelActivator>();
     var modelEntityConverter = serviceProvider
-      .GetRequiredService<AgnosticModelEntityConverter>();
+      .GetRequiredService<ModelEntityConverter>();
 
     var activationType = (TestData as IEnumerable<Type>)
       .FirstOrDefault(type =>

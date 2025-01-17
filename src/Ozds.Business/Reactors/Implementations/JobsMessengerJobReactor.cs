@@ -3,7 +3,7 @@ using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Activation;
 using Ozds.Business.Conversion;
-using Ozds.Business.Conversion.Agnostic;
+using Ozds.Business.Conversion;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Enums;
@@ -33,7 +33,7 @@ public class JobsMessengerJobHandler(
   IDbContextFactory<DataDbContext> factory,
   IHostEnvironment environment,
   ModelActivator activator,
-  AgnosticModelEntityConverter converter,
+  ModelEntityConverter converter,
   AuditableQueries auditableQueries
 ) : Handler<JobsMessengerJobEventArgs>
 {

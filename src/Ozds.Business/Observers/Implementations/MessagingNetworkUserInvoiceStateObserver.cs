@@ -1,4 +1,4 @@
-using Ozds.Business.Conversion.Agnostic;
+using Ozds.Business.Conversion;
 using Ozds.Business.Models;
 using Ozds.Business.Observers.Abstractions;
 using Ozds.Business.Observers.Base;
@@ -32,7 +32,7 @@ public class MessagingNetworkUserInvoiceStateRelay(
 }
 
 public class MessagingNetworkUserInvoiceStatePipe(
-  AgnosticModelEntityConverter modelEntityConverter
+  ModelEntityConverter modelEntityConverter
 )
   : IPipe<
     NetworkUserInvoiceStateEventArgs,

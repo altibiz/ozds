@@ -1,4 +1,4 @@
-using Ozds.Business.Conversion.Agnostic;
+using Ozds.Business.Conversion;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Observers.Abstractions;
 using Ozds.Business.Observers.Base;
@@ -32,7 +32,7 @@ public class DataModelsChangedRelay(
 }
 
 public class DataModelsChangedPipe(
-  AgnosticModelEntityConverter ModelEntityConverter
+  ModelEntityConverter ModelEntityConverter
 ) : IPipe<EntitiesChangedEventArgs, DataModelsChangedEventArgs>
 {
   public Task<DataModelsChangedEventArgs> Transform(
