@@ -2,7 +2,7 @@ using System.Globalization;
 using Ozds.Jobs.Manager.Abstractions;
 using Quartz;
 
-namespace Ozds.Jobs.Managers;
+namespace Ozds.Jobs.Managers.Implementations;
 
 public class MessengerJobManager(
   ISchedulerFactory schedulerFactory,

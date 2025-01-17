@@ -1,5 +1,5 @@
 using System.Collections.Concurrent;
-using Ozds.Business.Aggregation.Agnostic;
+using Ozds.Business.Aggregation;
 using Ozds.Business.Buffers.Abstractions;
 using Ozds.Business.Conversion.Agnostic;
 using Ozds.Business.Models.Abstractions;
@@ -16,7 +16,7 @@ public enum MeasurementBufferBehavior
 }
 
 public class MeasurementBuffer(
-  AgnosticAggregateUpserter aggregateUpserter,
+  AggregateUpserter aggregateUpserter,
   AgnosticMeasurementAggregateConverter aggregateConverter,
   IMeasurementFlushPublisher measurementFlushPublisher,
   IMeasurementsBufferedPublisher measurementsBufferedPublisher,
@@ -47,7 +47,7 @@ public class MeasurementBuffer(
           x.Timestamp,
           x.Interval
         })
-        .Select(x => x.Aggregate(aggregateUpserter.UpsertModelAgnostic))
+        .Select(x => x.Aggregate(aggregateUpserter.UpsertModel))
         .ToList();
     }
 
@@ -176,7 +176,7 @@ public class MeasurementBuffer(
         if (Aggregates.TryRemove(cached.Key, out var value))
         {
           var upserted = value
-            .Aggregate(aggregateUpserter.UpsertModelAgnostic);
+            .Aggregate(aggregateUpserter.UpsertModel);
           result.Add(upserted);
         }
       }
@@ -186,7 +186,7 @@ public class MeasurementBuffer(
       foreach (var cached in cacheCopy)
       {
         var upserted = cached.Value
-          .Aggregate(aggregateUpserter.UpsertModelAgnostic);
+          .Aggregate(aggregateUpserter.UpsertModel);
         if (!toStay.Any(aggregate =>
           aggregate.MeterId == upserted.MeterId
           && aggregate.MeasurementLocationId == upserted.MeasurementLocationId
@@ -197,7 +197,7 @@ public class MeasurementBuffer(
           && Aggregates.TryRemove(cached.Key, out var value))
         {
           upserted = value
-            .Aggregate(aggregateUpserter.UpsertModelAgnostic);
+            .Aggregate(aggregateUpserter.UpsertModel);
           result.Add(upserted);
         }
       }

@@ -4,7 +4,7 @@ using Ozds.Messaging.Contracts.Abstractions;
 using Ozds.Messaging.Options;
 using Ozds.Messaging.Sender.Abstractions;
 
-namespace Ozds.Messaging.Sender;
+namespace Ozds.Messaging.Sender.Implementations;
 
 public class EndpointMessageSender(
   ISendEndpointProvider endpointProvider,
