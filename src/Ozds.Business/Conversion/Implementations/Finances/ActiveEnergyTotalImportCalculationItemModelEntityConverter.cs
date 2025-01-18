@@ -1,243 +1,107 @@
 using Ozds.Business.Conversion.Base;
+using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Complex;
 using Ozds.Data.Entities.Complex;
 
 namespace Ozds.Business.Conversion.Implementations.Finances;
 
-public class ActiveEnergyTotalImportCalculationItemModelEntityConverter :
-  ConcreteModelEntityConverter<
-    ActiveEnergyTotalImportCalculationItemModel,
-    ActiveEnergyTotalImportCalculationItemEntity>
+public class ActiveEnergyTotalImportCalculationItemModelEntityConverter(
+  IServiceProvider serviceProvider
+) : InheritingModelEntityConverter<
+      ActiveEnergyTotalImportCalculationItemModel,
+      CalculationItemModel,
+      ActiveEnergyTotalImportCalculationItemEntity,
+      CalculationItemEntity>(serviceProvider)
 {
-  protected override ActiveEnergyTotalImportCalculationItemEntity ToEntity(
-    ActiveEnergyTotalImportCalculationItemModel model)
+  public override void InitializeEntity(
+    ActiveEnergyTotalImportCalculationItemModel model,
+    ActiveEnergyTotalImportCalculationItemEntity entity
+  )
   {
-    return model switch
-    {
-      UsageActiveEnergyTotalImportT0CalculationItemModel t0Model =>
-        t0Model.ToEntity(),
-      UsageActiveEnergyTotalImportT1CalculationItemModel t1Model =>
-        t1Model.ToEntity(),
-      UsageActiveEnergyTotalImportT2CalculationItemModel t2Model =>
-        t2Model.ToEntity(),
-      SupplyActiveEnergyTotalImportT1CalculationItemModel t1Model =>
-        t1Model.ToEntity(),
-      SupplyActiveEnergyTotalImportT2CalculationItemModel t2Model =>
-        t2Model.ToEntity(),
-      SupplyBusinessUsageCalculationItemModel businessUsageModel =>
-        businessUsageModel.ToEntity(),
-      SupplyRenewableEnergyCalculationItemModel renewableEnergyModel =>
-        renewableEnergyModel.ToEntity(),
-      _ => throw new InvalidOperationException("Unknown tariff type")
-    };
+    base.InitializeEntity(model, entity);
+    entity.Min_kWh = model.Min_kWh;
+    entity.Max_kWh = model.Max_kWh;
+    entity.Amount_kWh = model.Amount_kWh;
   }
 
-  protected override ActiveEnergyTotalImportCalculationItemModel ToModel(
-    ActiveEnergyTotalImportCalculationItemEntity entity)
+  public override void InitializeModel(
+    ActiveEnergyTotalImportCalculationItemEntity entity,
+    ActiveEnergyTotalImportCalculationItemModel model
+  )
   {
-    return entity switch
-    {
-      UsageActiveEnergyTotalImportT0CalculationItemEntity t0Entity => t0Entity
-        .ToModel(),
-      UsageActiveEnergyTotalImportT1CalculationItemEntity t1Entity => t1Entity
-        .ToModel(),
-      UsageActiveEnergyTotalImportT2CalculationItemEntity t2Entity => t2Entity
-        .ToModel(),
-      SupplyActiveEnergyTotalImportT1CalculationItemEntity t1Entity => t1Entity
-        .ToModel(),
-      SupplyActiveEnergyTotalImportT2CalculationItemEntity t2Entity => t2Entity
-        .ToModel(),
-      SupplyBusinessUsageFeeCalculationItemEntity businessUsageEntity =>
-        businessUsageEntity.ToModel(),
-      SupplyRenewableEnergyFeeCalculationItemEntity renewableEnergyEntity =>
-        renewableEnergyEntity.ToModel(),
-      _ => throw new InvalidOperationException("Unknown tariff type")
-    };
+    base.InitializeModel(entity, model);
+    model.Min_kWh = entity.Min_kWh;
+    model.Max_kWh = entity.Max_kWh;
+    model.Amount_kWh = entity.Amount_kWh;
   }
 }
 
-public static class
-  ActiveEnergyTotalImportCalculationItemModelEntityConverterExtensions
+public class UsageActiveEnergyTotalImportT0CalculationItemModelEntityConverter(
+  IServiceProvider serviceProvider
+) : InheritingModelEntityConverter<
+      UsageActiveEnergyTotalImportT0CalculationItemModel,
+      ActiveEnergyTotalImportCalculationItemModel,
+      UsageActiveEnergyTotalImportT0CalculationItemEntity,
+      ActiveEnergyTotalImportCalculationItemEntity>(serviceProvider)
 {
-  public static UsageActiveEnergyTotalImportT0CalculationItemModel ToModel(
-    this UsageActiveEnergyTotalImportT0CalculationItemEntity entity)
-  {
-    return new UsageActiveEnergyTotalImportT0CalculationItemModel
-    {
-      Min_kWh = entity.Min_kWh,
-      Max_kWh = entity.Max_kWh,
-      Amount_kWh = entity.Amount_kWh,
-      Price_EUR = entity.Price_EUR,
-      Total_EUR = entity.Total_EUR
-    };
-  }
+}
 
-  public static UsageActiveEnergyTotalImportT1CalculationItemModel ToModel(
-    this UsageActiveEnergyTotalImportT1CalculationItemEntity entity)
-  {
-    return new UsageActiveEnergyTotalImportT1CalculationItemModel
-    {
-      Min_kWh = entity.Min_kWh,
-      Max_kWh = entity.Max_kWh,
-      Amount_kWh = entity.Amount_kWh,
-      Price_EUR = entity.Price_EUR,
-      Total_EUR = entity.Total_EUR
-    };
-  }
+public class UsageActiveEnergyTotalImportT1CalculationItemModelEntityConverter(
+  IServiceProvider serviceProvider
+) : InheritingModelEntityConverter<
+      UsageActiveEnergyTotalImportT1CalculationItemModel,
+      ActiveEnergyTotalImportCalculationItemModel,
+      UsageActiveEnergyTotalImportT1CalculationItemEntity,
+      ActiveEnergyTotalImportCalculationItemEntity>(serviceProvider)
+{
+}
 
-  public static UsageActiveEnergyTotalImportT2CalculationItemModel ToModel(
-    this UsageActiveEnergyTotalImportT2CalculationItemEntity entity)
-  {
-    return new UsageActiveEnergyTotalImportT2CalculationItemModel
-    {
-      Min_kWh = entity.Min_kWh,
-      Max_kWh = entity.Max_kWh,
-      Amount_kWh = entity.Amount_kWh,
-      Price_EUR = entity.Price_EUR,
-      Total_EUR = entity.Total_EUR
-    };
-  }
+public class UsageActiveEnergyTotalImportT2CalculationItemModelEntityConverter(
+  IServiceProvider serviceProvider
+) : InheritingModelEntityConverter<
+      UsageActiveEnergyTotalImportT2CalculationItemModel,
+      ActiveEnergyTotalImportCalculationItemModel,
+      UsageActiveEnergyTotalImportT2CalculationItemEntity,
+      ActiveEnergyTotalImportCalculationItemEntity>(serviceProvider)
+{
+}
 
-  public static SupplyActiveEnergyTotalImportT1CalculationItemModel ToModel(
-    this SupplyActiveEnergyTotalImportT1CalculationItemEntity entity)
-  {
-    return new SupplyActiveEnergyTotalImportT1CalculationItemModel
-    {
-      Min_kWh = entity.Min_kWh,
-      Max_kWh = entity.Max_kWh,
-      Amount_kWh = entity.Amount_kWh,
-      Price_EUR = entity.Price_EUR,
-      Total_EUR = entity.Total_EUR
-    };
-  }
+public class SupplyActiveEnergyTotalImportT1CalculationItemModelEntityConverter(
+  IServiceProvider serviceProvider
+) : InheritingModelEntityConverter<
+      SupplyActiveEnergyTotalImportT1CalculationItemModel,
+      ActiveEnergyTotalImportCalculationItemModel,
+      SupplyActiveEnergyTotalImportT1CalculationItemEntity,
+      ActiveEnergyTotalImportCalculationItemEntity>(serviceProvider)
+{
+}
 
-  public static SupplyActiveEnergyTotalImportT2CalculationItemModel ToModel(
-    this SupplyActiveEnergyTotalImportT2CalculationItemEntity entity)
-  {
-    return new SupplyActiveEnergyTotalImportT2CalculationItemModel
-    {
-      Min_kWh = entity.Min_kWh,
-      Max_kWh = entity.Max_kWh,
-      Amount_kWh = entity.Amount_kWh,
-      Price_EUR = entity.Price_EUR,
-      Total_EUR = entity.Total_EUR
-    };
-  }
+public class SupplyActiveEnergyTotalImportT2CalculationItemModelEntityConverter(
+  IServiceProvider serviceProvider
+) : InheritingModelEntityConverter<
+      SupplyActiveEnergyTotalImportT2CalculationItemModel,
+      ActiveEnergyTotalImportCalculationItemModel,
+      SupplyActiveEnergyTotalImportT2CalculationItemEntity,
+      ActiveEnergyTotalImportCalculationItemEntity>(serviceProvider)
+{
+}
 
-  public static SupplyBusinessUsageCalculationItemModel ToModel(
-    this SupplyBusinessUsageFeeCalculationItemEntity entity)
-  {
-    return new SupplyBusinessUsageCalculationItemModel
-    {
-      Min_kWh = entity.Min_kWh,
-      Max_kWh = entity.Max_kWh,
-      Amount_kWh = entity.Amount_kWh,
-      Price_EUR = entity.Price_EUR,
-      Total_EUR = entity.Total_EUR
-    };
-  }
+public class SupplyBusinessUsageCalculationItemModelEntityConverter(
+  IServiceProvider serviceProvider
+) : InheritingModelEntityConverter<
+      SupplyBusinessUsageCalculationItemModel,
+      ActiveEnergyTotalImportCalculationItemModel,
+      SupplyBusinessUsageFeeCalculationItemEntity,
+      ActiveEnergyTotalImportCalculationItemEntity>(serviceProvider)
+{
+}
 
-  public static SupplyRenewableEnergyCalculationItemModel ToModel(
-    this SupplyRenewableEnergyFeeCalculationItemEntity entity)
-  {
-    return new SupplyRenewableEnergyCalculationItemModel
-    {
-      Min_kWh = entity.Min_kWh,
-      Max_kWh = entity.Max_kWh,
-      Amount_kWh = entity.Amount_kWh,
-      Price_EUR = entity.Price_EUR,
-      Total_EUR = entity.Total_EUR
-    };
-  }
-
-  public static UsageActiveEnergyTotalImportT0CalculationItemEntity ToEntity(
-    this ActiveEnergyTotalImportT0CalculationItemModel model)
-  {
-    return new UsageActiveEnergyTotalImportT0CalculationItemEntity
-    {
-      Min_kWh = model.Min_kWh,
-      Max_kWh = model.Max_kWh,
-      Amount_kWh = model.Amount_kWh,
-      Price_EUR = model.Price_EUR,
-      Total_EUR = model.Total_EUR
-    };
-  }
-
-  public static UsageActiveEnergyTotalImportT1CalculationItemEntity ToEntity(
-    this ActiveEnergyTotalImportT1CalculationItemModel model)
-  {
-    return new UsageActiveEnergyTotalImportT1CalculationItemEntity
-    {
-      Min_kWh = model.Min_kWh,
-      Max_kWh = model.Max_kWh,
-      Amount_kWh = model.Amount_kWh,
-      Price_EUR = model.Price_EUR,
-      Total_EUR = model.Total_EUR
-    };
-  }
-
-  public static UsageActiveEnergyTotalImportT2CalculationItemEntity ToEntity(
-    this ActiveEnergyTotalImportT2CalculationItemModel model)
-  {
-    return new UsageActiveEnergyTotalImportT2CalculationItemEntity
-    {
-      Min_kWh = model.Min_kWh,
-      Max_kWh = model.Max_kWh,
-      Amount_kWh = model.Amount_kWh,
-      Price_EUR = model.Price_EUR,
-      Total_EUR = model.Total_EUR
-    };
-  }
-
-  public static SupplyActiveEnergyTotalImportT1CalculationItemEntity ToEntity(
-    this SupplyActiveEnergyTotalImportT1CalculationItemModel model)
-  {
-    return new SupplyActiveEnergyTotalImportT1CalculationItemEntity
-    {
-      Min_kWh = model.Min_kWh,
-      Max_kWh = model.Max_kWh,
-      Amount_kWh = model.Amount_kWh,
-      Price_EUR = model.Price_EUR,
-      Total_EUR = model.Total_EUR
-    };
-  }
-
-  public static SupplyActiveEnergyTotalImportT2CalculationItemEntity ToEntity(
-    this SupplyActiveEnergyTotalImportT2CalculationItemModel model)
-  {
-    return new SupplyActiveEnergyTotalImportT2CalculationItemEntity
-    {
-      Min_kWh = model.Min_kWh,
-      Max_kWh = model.Max_kWh,
-      Amount_kWh = model.Amount_kWh,
-      Price_EUR = model.Price_EUR,
-      Total_EUR = model.Total_EUR
-    };
-  }
-
-  public static SupplyBusinessUsageFeeCalculationItemEntity ToEntity(
-    this SupplyBusinessUsageCalculationItemModel model)
-  {
-    return new SupplyBusinessUsageFeeCalculationItemEntity
-    {
-      Min_kWh = model.Min_kWh,
-      Max_kWh = model.Max_kWh,
-      Amount_kWh = model.Amount_kWh,
-      Price_EUR = model.Price_EUR,
-      Total_EUR = model.Total_EUR
-    };
-  }
-
-  public static SupplyRenewableEnergyFeeCalculationItemEntity ToEntity(
-    this SupplyRenewableEnergyCalculationItemModel model)
-  {
-    return new SupplyRenewableEnergyFeeCalculationItemEntity
-    {
-      Min_kWh = model.Min_kWh,
-      Max_kWh = model.Max_kWh,
-      Amount_kWh = model.Amount_kWh,
-      Price_EUR = model.Price_EUR,
-      Total_EUR = model.Total_EUR
-    };
-  }
+public class SupplyRenewableEnergyCalculationItemModelEntityConverter(
+  IServiceProvider serviceProvider
+) : InheritingModelEntityConverter<
+      SupplyRenewableEnergyCalculationItemModel,
+      ActiveEnergyTotalImportCalculationItemModel,
+      SupplyRenewableEnergyFeeCalculationItemEntity,
+      ActiveEnergyTotalImportCalculationItemEntity>(serviceProvider)
+{
 }

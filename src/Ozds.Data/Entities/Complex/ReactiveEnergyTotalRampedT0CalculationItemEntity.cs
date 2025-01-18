@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace Ozds.Data.Entities.Complex;
 
 public abstract class ReactiveEnergyTotalRampedT0CalculationItemEntity
+  : CalculationItemEntity
 {
   public decimal ReactiveImportMin_kVARh { get; set; }
   public decimal ReactiveImportMax_kVARh { get; set; }
@@ -15,8 +16,6 @@ public abstract class ReactiveEnergyTotalRampedT0CalculationItemEntity
   public decimal ActiveImportMax_kWh { get; set; }
   public decimal ActiveImportAmount_kWh { get; set; }
   public decimal Amount_kVARh { get; set; }
-  public decimal Price_EUR { get; set; }
-  public decimal Total_EUR { get; set; }
 }
 
 public class UsageReactiveEnergyTotalRampedT0CalculationItemEntity

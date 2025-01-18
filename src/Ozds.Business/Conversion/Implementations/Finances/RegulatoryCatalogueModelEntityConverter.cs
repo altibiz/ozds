@@ -1,72 +1,50 @@
 using Ozds.Business.Conversion.Base;
 using Ozds.Business.Models;
+using Ozds.Business.Models.Base;
 using Ozds.Data.Entities;
+using Ozds.Data.Entities.Base;
 
 namespace Ozds.Business.Conversion.Implementations.Finances;
 
-public class RegulatoryCatalogueModelEntityConverter : ConcreteModelEntityConverter<
-  RegulatoryCatalogueModel, RegulatoryCatalogueEntity>
+public class RegulatoryCatalogueModelEntityConverter(
+  IServiceProvider serviceProvider
+) : InheritingModelEntityConverter<
+      RegulatoryCatalogueModel,
+      AuditableModel,
+      RegulatoryCatalogueEntity,
+      AuditableEntity>(serviceProvider)
 {
-  protected override RegulatoryCatalogueEntity ToEntity(
-    RegulatoryCatalogueModel model)
+  public override void InitializeEntity(
+    RegulatoryCatalogueModel model,
+    RegulatoryCatalogueEntity entity
+  )
   {
-    return model.ToEntity();
+    base.InitializeEntity(model, entity);
+    entity.ActiveEnergyTotalImportT1Price_EUR =
+      model.ActiveEnergyTotalImportT1Price_EUR;
+    entity.ActiveEnergyTotalImportT2Price_EUR =
+      model.ActiveEnergyTotalImportT2Price_EUR;
+    entity.RenewableEnergyFeePrice_EUR =
+      model.RenewableEnergyFeePrice_EUR;
+    entity.BusinessUsageFeePrice_EUR =
+      model.BusinessUsageFeePrice_EUR;
+    entity.TaxRate_Percent = model.TaxRate_Percent;
   }
 
-  protected override RegulatoryCatalogueModel ToModel(
-    RegulatoryCatalogueEntity entity)
+  public override void InitializeModel(
+    RegulatoryCatalogueEntity entity,
+    RegulatoryCatalogueModel model
+  )
   {
-    return entity.ToModel();
-  }
-}
-
-public static class RegulatoryCatalogueModelEntityConverterExtensions
-{
-  public static RegulatoryCatalogueModel ToModel(
-    this RegulatoryCatalogueEntity entity)
-  {
-    return new RegulatoryCatalogueModel
-    {
-      Id = entity.Id,
-      Title = entity.Title,
-      CreatedOn = entity.CreatedOn,
-      CreatedById = entity.CreatedById,
-      LastUpdatedOn = entity.LastUpdatedOn,
-      LastUpdatedById = entity.LastUpdatedById,
-      IsDeleted = entity.IsDeleted,
-      DeletedOn = entity.DeletedOn,
-      DeletedById = entity.DeletedById,
-      ActiveEnergyTotalImportT1Price_EUR =
-        entity.ActiveEnergyTotalImportT1Price_EUR,
-      ActiveEnergyTotalImportT2Price_EUR =
-        entity.ActiveEnergyTotalImportT2Price_EUR,
-      RenewableEnergyFeePrice_EUR = entity.RenewableEnergyFeePrice_EUR,
-      BusinessUsageFeePrice_EUR = entity.BusinessUsageFeePrice_EUR,
-      TaxRate_Percent = entity.TaxRate_Percent
-    };
-  }
-
-  public static RegulatoryCatalogueEntity ToEntity(
-    this RegulatoryCatalogueModel model)
-  {
-    return new RegulatoryCatalogueEntity
-    {
-      Id = model.Id,
-      Title = model.Title,
-      CreatedOn = model.CreatedOn,
-      CreatedById = model.CreatedById,
-      LastUpdatedOn = model.LastUpdatedOn,
-      LastUpdatedById = model.LastUpdatedById,
-      IsDeleted = model.IsDeleted,
-      DeletedOn = model.DeletedOn,
-      DeletedById = model.DeletedById,
-      ActiveEnergyTotalImportT1Price_EUR =
-        model.ActiveEnergyTotalImportT1Price_EUR,
-      ActiveEnergyTotalImportT2Price_EUR =
-        model.ActiveEnergyTotalImportT2Price_EUR,
-      RenewableEnergyFeePrice_EUR = model.RenewableEnergyFeePrice_EUR,
-      BusinessUsageFeePrice_EUR = model.BusinessUsageFeePrice_EUR,
-      TaxRate_Percent = model.TaxRate_Percent
-    };
+    base.InitializeModel(entity, model);
+    model.ActiveEnergyTotalImportT1Price_EUR =
+      entity.ActiveEnergyTotalImportT1Price_EUR;
+    model.ActiveEnergyTotalImportT2Price_EUR =
+      entity.ActiveEnergyTotalImportT2Price_EUR;
+    model.RenewableEnergyFeePrice_EUR =
+      entity.RenewableEnergyFeePrice_EUR;
+    model.BusinessUsageFeePrice_EUR =
+      entity.BusinessUsageFeePrice_EUR;
+    model.TaxRate_Percent = entity.TaxRate_Percent;
   }
 }

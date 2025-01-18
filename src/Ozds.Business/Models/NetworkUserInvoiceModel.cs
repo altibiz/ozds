@@ -8,10 +8,13 @@ public class NetworkUserInvoiceModel : InvoiceModel
   public string? BillId { get; set; }
 
   [Required]
-  public required string NetworkUserId { get; set; }
+  public required string LocationId { get; set; }
 
   [Required]
   public required LocationModel ArchivedLocation { get; set; } = default!;
+
+  [Required]
+  public required string NetworkUserId { get; set; }
 
   [Required]
   public required NetworkUserModel ArchivedNetworkUser { get; set; } = default!;
@@ -37,11 +40,13 @@ public class NetworkUserInvoiceModel : InvoiceModel
 
   [Required]
   public required decimal
-    UsageActivePowerTotalImportT1PeakFee_EUR { get; set; } = default!;
+    UsageActivePowerTotalImportT1PeakFee_EUR
+  { get; set; } = default!;
 
   [Required]
   public required decimal
-    UsageReactiveEnergyTotalRampedT0Fee_EUR { get; set; } = default!;
+    UsageReactiveEnergyTotalRampedT0Fee_EUR
+  { get; set; } = default!;
 
   [Required]
   public required decimal UsageMeterFee_EUR { get; set; } = default!;

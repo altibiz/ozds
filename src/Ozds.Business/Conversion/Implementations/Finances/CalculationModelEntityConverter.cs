@@ -1,53 +1,36 @@
 using Ozds.Business.Conversion.Base;
-using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Base;
 using Ozds.Data.Entities.Base;
 
 namespace Ozds.Business.Conversion.Implementations.Finances;
 
-public class CalculationModelEntityConverter : ConcreteModelEntityConverter<
-  ICalculation, CalculationEntity>
+public class CalculationModelEntityConverter(IServiceProvider serviceProvider)
+  : InheritingModelEntityConverter<
+      CalculationModel,
+      IdentifiableModel,
+      CalculationEntity,
+      IdentifiableEntity>(serviceProvider)
 {
-  protected override CalculationEntity ToEntity(
-    ICalculation model)
-  {
-    return model.ToEntity();
-  }
+  private readonly ModelEntityConverter modelEntityConverter =
+    serviceProvider.GetRequiredService<ModelEntityConverter>();
 
-  protected override ICalculation ToModel(
+  public override void InitializeEntity(
+    CalculationModel model,
     CalculationEntity entity)
   {
-    return entity.ToModel();
-  }
-}
-
-public static class CalculationModelEntityConverterExtensions
-{
-  public static CalculationEntity ToEntity(
-    this ICalculation model)
-  {
-    if (model is NetworkUserCalculationModel
-      networkUserLowCalculationModel)
-    {
-      return networkUserLowCalculationModel.ToEntity();
-    }
-
-    throw new NotSupportedException(
-      $"CalculationModel type {model.GetType().Name} is not supported."
-    );
+    base.InitializeEntity(model, entity);
+    entity.MeterId = model.MeterId;
+    entity.ArchivedMeter = model.ArchivedMeter is null ? null! :
+      modelEntityConverter.ToEntity<MeterEntity>(model.ArchivedMeter);
   }
 
-  public static CalculationModel ToModel(
-    this CalculationEntity entity)
+  public override void InitializeModel(
+    CalculationEntity entity,
+    CalculationModel model)
   {
-    if (entity is NetworkUserCalculationEntity
-      networkUserCalculationEntity)
-    {
-      return networkUserCalculationEntity.ToModel();
-    }
-
-    throw new NotSupportedException(
-      $"CalculationEntity type {entity.GetType().Name} is not supported."
-    );
+    base.InitializeModel(entity, model);
+    model.MeterId = entity.MeterId;
+    model.ArchivedMeter = entity.ArchivedMeter is null ? null! :
+      modelEntityConverter.ToModel<MeterModel>(entity.ArchivedMeter);
   }
 }

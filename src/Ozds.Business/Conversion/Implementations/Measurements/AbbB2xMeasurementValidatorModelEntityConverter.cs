@@ -1,75 +1,49 @@
 using Ozds.Business.Conversion.Base;
+using Ozds.Business.Conversion.Primitive;
 using Ozds.Business.Models;
+using Ozds.Business.Models.Base;
 using Ozds.Data.Entities;
+using Ozds.Data.Entities.Base;
 
 namespace Ozds.Business.Conversion.Implementations.Measurements;
 
-public class AbbB2xMeasurementValidatorModelEntityConverter :
-  ConcreteModelEntityConverter<AbbB2xMeasurementValidatorModel,
-    AbbB2xMeasurementValidatorEntity>
+public class AbbB2xMeasurementValidatorModelEntityConverter(
+  IServiceProvider serviceProvider
+) : InheritingModelEntityConverter<
+      AbbB2xMeasurementValidatorModel,
+      AuditableModel,
+      AbbB2xMeasurementValidatorEntity,
+      AuditableEntity>(serviceProvider)
 {
-  protected override AbbB2xMeasurementValidatorEntity ToEntity(
-    AbbB2xMeasurementValidatorModel model)
+  public override void InitializeEntity(
+    AbbB2xMeasurementValidatorModel model,
+    AbbB2xMeasurementValidatorEntity entity
+  )
   {
-    return model.ToEntity();
+    base.InitializeEntity(model, entity);
+    entity.MinVoltage_V = model.MinVoltage_V.ToFloat();
+    entity.MaxVoltage_V = model.MaxVoltage_V.ToFloat();
+    entity.MinCurrent_A = model.MinCurrent_A.ToFloat();
+    entity.MaxCurrent_A = model.MaxCurrent_A.ToFloat();
+    entity.MinActivePower_W = model.MinActivePower_W.ToFloat();
+    entity.MaxActivePower_W = model.MaxActivePower_W.ToFloat();
+    entity.MinReactivePower_VAR = model.MinReactivePower_VAR.ToFloat();
+    entity.MaxReactivePower_VAR = model.MaxReactivePower_VAR.ToFloat();
   }
 
-  protected override AbbB2xMeasurementValidatorModel ToModel(
-    AbbB2xMeasurementValidatorEntity entity)
+  public override void InitializeModel(
+    AbbB2xMeasurementValidatorEntity entity,
+    AbbB2xMeasurementValidatorModel model
+  )
   {
-    return entity.ToModel();
-  }
-}
-
-public static class AbbB2xMeasurementValidatorModelEntityConverterExtensions
-{
-  public static AbbB2xMeasurementValidatorModel ToModel(
-    this AbbB2xMeasurementValidatorEntity entity)
-  {
-    return new AbbB2xMeasurementValidatorModel
-    {
-      Id = entity.Id,
-      Title = entity.Title,
-      CreatedOn = entity.CreatedOn,
-      CreatedById = entity.CreatedById,
-      LastUpdatedOn = entity.LastUpdatedOn,
-      LastUpdatedById = entity.LastUpdatedById,
-      IsDeleted = entity.IsDeleted,
-      DeletedOn = entity.DeletedOn,
-      DeletedById = entity.DeletedById,
-      MinVoltage_V = (decimal)entity.MinVoltage_V,
-      MaxVoltage_V = (decimal)entity.MaxVoltage_V,
-      MinCurrent_A = (decimal)entity.MinCurrent_A,
-      MaxCurrent_A = (decimal)entity.MaxCurrent_A,
-      MinActivePower_W = (decimal)entity.MinActivePower_W,
-      MaxActivePower_W = (decimal)entity.MaxActivePower_W,
-      MinReactivePower_VAR = (decimal)entity.MinReactivePower_VAR,
-      MaxReactivePower_VAR = (decimal)entity.MaxReactivePower_VAR
-    };
-  }
-
-  public static AbbB2xMeasurementValidatorEntity ToEntity(
-    this AbbB2xMeasurementValidatorModel model)
-  {
-    return new AbbB2xMeasurementValidatorEntity
-    {
-      Id = model.Id,
-      Title = model.Title,
-      CreatedOn = model.CreatedOn,
-      CreatedById = model.CreatedById,
-      LastUpdatedOn = model.LastUpdatedOn,
-      LastUpdatedById = model.LastUpdatedById,
-      IsDeleted = model.IsDeleted,
-      DeletedOn = model.DeletedOn,
-      DeletedById = model.DeletedById,
-      MinVoltage_V = (float)model.MinVoltage_V,
-      MaxVoltage_V = (float)model.MaxVoltage_V,
-      MinCurrent_A = (float)model.MinCurrent_A,
-      MaxCurrent_A = (float)model.MaxCurrent_A,
-      MinActivePower_W = (float)model.MinActivePower_W,
-      MaxActivePower_W = (float)model.MaxActivePower_W,
-      MinReactivePower_VAR = (float)model.MinReactivePower_VAR,
-      MaxReactivePower_VAR = (float)model.MaxReactivePower_VAR
-    };
+    base.InitializeModel(entity, model);
+    model.MinVoltage_V = entity.MinVoltage_V.ToDecimal();
+    model.MaxVoltage_V = entity.MaxVoltage_V.ToDecimal();
+    model.MinCurrent_A = entity.MinCurrent_A.ToDecimal();
+    model.MaxCurrent_A = entity.MaxCurrent_A.ToDecimal();
+    model.MinActivePower_W = entity.MinActivePower_W.ToDecimal();
+    model.MaxActivePower_W = entity.MaxActivePower_W.ToDecimal();
+    model.MinReactivePower_VAR = entity.MinReactivePower_VAR.ToDecimal();
+    model.MaxReactivePower_VAR = entity.MaxReactivePower_VAR.ToDecimal();
   }
 }

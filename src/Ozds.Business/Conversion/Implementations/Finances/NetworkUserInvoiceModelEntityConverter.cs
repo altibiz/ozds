@@ -1,108 +1,114 @@
 using Ozds.Business.Conversion.Base;
 using Ozds.Business.Models;
+using Ozds.Business.Models.Base;
 using Ozds.Data.Entities;
+using Ozds.Data.Entities.Base;
 
 namespace Ozds.Business.Conversion.Implementations.Finances;
 
-public class NetworkUserInvoiceModelEntityConverter : ConcreteModelEntityConverter<
-  NetworkUserInvoiceModel, NetworkUserInvoiceEntity>
+public class NetworkUserInvoiceModelEntityConverter(
+  IServiceProvider serviceProvider
+) : InheritingModelEntityConverter<
+      NetworkUserInvoiceModel,
+      InvoiceModel,
+      NetworkUserInvoiceEntity,
+      InvoiceEntity>(serviceProvider)
 {
-  protected override NetworkUserInvoiceEntity ToEntity(
-    NetworkUserInvoiceModel model)
+  private readonly ModelEntityConverter modelEntityConverter =
+    serviceProvider.GetRequiredService<ModelEntityConverter>();
+
+  public override void InitializeEntity(
+    NetworkUserInvoiceModel model,
+    NetworkUserInvoiceEntity entity
+  )
   {
-    return model.ToEntity();
+    base.InitializeEntity(model, entity);
+    entity.BillId = model.BillId;
+    entity.LocationId = model.LocationId;
+    entity.ArchivedLocation =
+      model.ArchivedLocation is null
+        ? null!
+        : modelEntityConverter.ToEntity<LocationEntity>(
+            model.ArchivedLocation);
+    entity.NetworkUserId = model.NetworkUserId;
+    entity.ArchivedNetworkUser =
+      model.ArchivedNetworkUser is null
+        ? null!
+        : modelEntityConverter.ToEntity<NetworkUserEntity>(
+            model.ArchivedNetworkUser);
+    entity.ArchivedRegulatoryCatalogue =
+      model.ArchivedRegulatoryCatalogue.ToEntity();
+    entity.UsageActiveEnergyTotalImportT0Fee_EUR =
+      model.UsageActiveEnergyTotalImportT0Fee_EUR;
+    entity.UsageActiveEnergyTotalImportT1Fee_EUR =
+      model.UsageActiveEnergyTotalImportT1Fee_EUR;
+    entity.UsageActiveEnergyTotalImportT2Fee_EUR =
+      model.UsageActiveEnergyTotalImportT2Fee_EUR;
+    entity.UsageActivePowerTotalImportT1PeakFee_EUR =
+      model.UsageActivePowerTotalImportT1PeakFee_EUR;
+    entity.UsageReactiveEnergyTotalRampedT0Fee_EUR =
+      model.UsageReactiveEnergyTotalRampedT0Fee_EUR;
+    entity.UsageMeterFee_EUR = model.UsageMeterFee_EUR;
+    entity.UsageFeeTotal_EUR = model.UsageFeeTotal_EUR;
+    entity.SupplyActiveEnergyTotalImportT1Fee_EUR =
+      model.SupplyActiveEnergyTotalImportT1Fee_EUR;
+    entity.SupplyActiveEnergyTotalImportT2Fee_EUR =
+      model.SupplyActiveEnergyTotalImportT2Fee_EUR;
+    entity.SupplyBusinessUsageFee_EUR = model.SupplyBusinessUsageFee_EUR;
+    entity.SupplyRenewableEnergyFee_EUR = model.SupplyRenewableEnergyFee_EUR;
+    entity.SupplyFeeTotal_EUR = model.SupplyFeeTotal_EUR;
+    entity.Total_EUR = model.Total_EUR;
+    entity.InvoiceTaxRate_Percent = model.InvoiceTaxRate_Percent;
+    entity.InvoiceTax_EUR = model.InvoiceTax_EUR;
+    entity.InvoiceTotalWithTax_EUR = model.InvoiceTotalWithTax_EUR;
   }
 
-  protected override NetworkUserInvoiceModel ToModel(
-    NetworkUserInvoiceEntity entity)
+  public override void InitializeModel(
+    NetworkUserInvoiceEntity entity,
+    NetworkUserInvoiceModel model
+  )
   {
-    return entity.ToModel();
-  }
-}
-
-public static class NetworkUserInvoiceModelEntityConverterExtensions
-{
-  public static NetworkUserInvoiceModel ToModel(
-    this NetworkUserInvoiceEntity entity)
-  {
-    return new NetworkUserInvoiceModel
-    {
-      Id = entity.Id,
-      Title = entity.Title,
-      IssuedOn = entity.IssuedOn,
-      IssuedById = entity.IssuedById,
-      FromDate = entity.FromDate,
-      ToDate = entity.ToDate,
-      NetworkUserId = entity.NetworkUserId,
-      ArchivedLocation = entity.ArchivedLocation.ToModel(),
-      ArchivedNetworkUser = entity.ArchivedNetworkUser.ToModel(),
-      ArchivedRegulatoryCatalogue =
-        entity.ArchivedRegulatoryCatalogue.ToModel(),
-      UsageActiveEnergyTotalImportT0Fee_EUR =
-        entity.UsageActiveEnergyTotalImportT0Fee_EUR,
-      UsageActiveEnergyTotalImportT1Fee_EUR =
-        entity.UsageActiveEnergyTotalImportT1Fee_EUR,
-      UsageActiveEnergyTotalImportT2Fee_EUR =
-        entity.UsageActiveEnergyTotalImportT2Fee_EUR,
-      UsageActivePowerTotalImportT1PeakFee_EUR =
-        entity.UsageActivePowerTotalImportT1PeakFee_EUR,
-      UsageReactiveEnergyTotalRampedT0Fee_EUR =
-        entity.UsageReactiveEnergyTotalRampedT0Fee_EUR,
-      UsageMeterFee_EUR = entity.UsageMeterFee_EUR,
-      UsageFeeTotal_EUR = entity.UsageFeeTotal_EUR,
-      SupplyActiveEnergyTotalImportT1Fee_EUR =
-        entity.SupplyActiveEnergyTotalImportT1Fee_EUR,
-      SupplyActiveEnergyTotalImportT2Fee_EUR =
-        entity.SupplyActiveEnergyTotalImportT2Fee_EUR,
-      SupplyBusinessUsageFee_EUR = entity.SupplyBusinessUsageFee_EUR,
-      SupplyRenewableEnergyFee_EUR = entity.SupplyRenewableEnergyFee_EUR,
-      SupplyFeeTotal_EUR = entity.SupplyFeeTotal_EUR,
-      Total_EUR = entity.Total_EUR,
-      TaxRate_Percent = entity.TaxRate_Percent,
-      Tax_EUR = entity.Tax_EUR,
-      TotalWithTax_EUR = entity.TotalWithTax_EUR
-    };
-  }
-
-  public static NetworkUserInvoiceEntity ToEntity(
-    this NetworkUserInvoiceModel model)
-  {
-    return new NetworkUserInvoiceEntity
-    {
-      Id = model.Id,
-      Title = model.Title,
-      IssuedOn = model.IssuedOn,
-      IssuedById = model.IssuedById,
-      FromDate = model.FromDate,
-      ToDate = model.ToDate,
-      NetworkUserId = model.NetworkUserId,
-      ArchivedLocation = model.ArchivedLocation.ToEntity(),
-      ArchivedNetworkUser = model.ArchivedNetworkUser.ToEntity(),
-      ArchivedRegulatoryCatalogue =
-        model.ArchivedRegulatoryCatalogue.ToEntity(),
-      UsageActiveEnergyTotalImportT0Fee_EUR =
-        model.UsageActiveEnergyTotalImportT0Fee_EUR,
-      UsageActiveEnergyTotalImportT1Fee_EUR =
-        model.UsageActiveEnergyTotalImportT1Fee_EUR,
-      UsageActiveEnergyTotalImportT2Fee_EUR =
-        model.UsageActiveEnergyTotalImportT2Fee_EUR,
-      UsageActivePowerTotalImportT1PeakFee_EUR =
-        model.UsageActivePowerTotalImportT1PeakFee_EUR,
-      UsageReactiveEnergyTotalRampedT0Fee_EUR =
-        model.UsageReactiveEnergyTotalRampedT0Fee_EUR,
-      UsageMeterFee_EUR = model.UsageMeterFee_EUR,
-      UsageFeeTotal_EUR = model.UsageFeeTotal_EUR,
-      SupplyActiveEnergyTotalImportT1Fee_EUR =
-        model.SupplyActiveEnergyTotalImportT1Fee_EUR,
-      SupplyActiveEnergyTotalImportT2Fee_EUR =
-        model.SupplyActiveEnergyTotalImportT2Fee_EUR,
-      SupplyBusinessUsageFee_EUR = model.SupplyBusinessUsageFee_EUR,
-      SupplyRenewableEnergyFee_EUR = model.SupplyRenewableEnergyFee_EUR,
-      SupplyFeeTotal_EUR = model.SupplyFeeTotal_EUR,
-      Total_EUR = model.Total_EUR,
-      TaxRate_Percent = model.TaxRate_Percent,
-      Tax_EUR = model.Tax_EUR,
-      TotalWithTax_EUR = model.TotalWithTax_EUR
-    };
+    base.InitializeModel(entity, model);
+    model.BillId = entity.BillId;
+    model.LocationId = entity.LocationId;
+    model.ArchivedLocation =
+      entity.ArchivedLocation is null
+        ? null!
+        : modelEntityConverter.ToModel<LocationModel>(
+            entity.ArchivedLocation);
+    model.NetworkUserId = entity.NetworkUserId;
+    model.ArchivedNetworkUser =
+      entity.ArchivedNetworkUser is null
+        ? null!
+        : modelEntityConverter.ToModel<NetworkUserModel>(
+            entity.ArchivedNetworkUser);
+    model.ArchivedRegulatoryCatalogue =
+      entity.ArchivedRegulatoryCatalogue is null
+        ? null!
+        : modelEntityConverter.ToModel<RegulatoryCatalogueModel>(
+            entity.ArchivedRegulatoryCatalogue);
+    model.UsageActiveEnergyTotalImportT0Fee_EUR =
+      entity.UsageActiveEnergyTotalImportT0Fee_EUR;
+    model.UsageActiveEnergyTotalImportT1Fee_EUR =
+      entity.UsageActiveEnergyTotalImportT1Fee_EUR;
+    model.UsageActiveEnergyTotalImportT2Fee_EUR =
+      entity.UsageActiveEnergyTotalImportT2Fee_EUR;
+    model.UsageActivePowerTotalImportT1PeakFee_EUR =
+      entity.UsageActivePowerTotalImportT1PeakFee_EUR;
+    model.UsageReactiveEnergyTotalRampedT0Fee_EUR =
+      entity.UsageReactiveEnergyTotalRampedT0Fee_EUR;
+    model.UsageMeterFee_EUR = entity.UsageMeterFee_EUR;
+    model.UsageFeeTotal_EUR = entity.UsageFeeTotal_EUR;
+    model.SupplyActiveEnergyTotalImportT1Fee_EUR =
+      entity.SupplyActiveEnergyTotalImportT1Fee_EUR;
+    model.SupplyActiveEnergyTotalImportT2Fee_EUR =
+      entity.SupplyActiveEnergyTotalImportT2Fee_EUR;
+    model.SupplyBusinessUsageFee_EUR = entity.SupplyBusinessUsageFee_EUR;
+    model.SupplyRenewableEnergyFee_EUR = entity.SupplyRenewableEnergyFee_EUR;
+    model.SupplyFeeTotal_EUR = entity.SupplyFeeTotal_EUR;
+    model.Total_EUR = entity.Total_EUR;
+    model.InvoiceTaxRate_Percent = entity.InvoiceTaxRate_Percent;
+    model.InvoiceTax_EUR = entity.InvoiceTax_EUR;
+    model.InvoiceTotalWithTax_EUR = entity.InvoiceTotalWithTax_EUR;
   }
 }

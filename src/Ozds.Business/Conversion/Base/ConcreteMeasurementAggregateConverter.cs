@@ -1,4 +1,3 @@
-using Ozds.Business.Conversion.Abstractions;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Enums;
 
@@ -6,27 +5,37 @@ namespace Ozds.Business.Conversion.Base;
 
 public abstract class
   ConcreteMeasurementAggregateConverter<TMeasurement, TAggregate> :
-  IMeasurementAggregateConverter
+  InitializingMeasurementAggregateConverter
   where TAggregate : IAggregate
   where TMeasurement : IMeasurement
 {
-  public abstract TAggregate ToAggregate(
+  public abstract void Initialize(
+    TAggregate aggregate,
     TMeasurement measurement,
     IntervalModel interval);
 
-  public virtual Type AggregateType => typeof(TAggregate);
+  public override Type AggregateType => typeof(TAggregate);
 
-  public virtual Type MeasurementType => typeof(TMeasurement);
+  public override Type MeasurementType => typeof(TMeasurement);
 
-  public virtual bool CanConvertToAggregate(Type measurement)
+  public override bool CanConvertToAggregate(Type measurement)
   {
     return measurement.IsAssignableTo(typeof(TMeasurement));
   }
 
-  public virtual IAggregate ToAggregate(
+  public override IAggregate Box()
+  {
+    return Activator.CreateInstance<TAggregate>();
+  }
+
+  public override void Initialize(
+    IAggregate aggregate,
     IMeasurement measurement,
     IntervalModel interval)
   {
-    return ToAggregate((TMeasurement)measurement, interval);
+    Initialize(
+      (TAggregate)aggregate,
+      (TMeasurement)measurement,
+      interval);
   }
 }

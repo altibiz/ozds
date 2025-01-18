@@ -4,12 +4,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace Ozds.Data.Entities.Complex;
 
 public abstract class ActiveEnergyTotalImportCalculationItemEntity
+  : CalculationItemEntity
 {
   public decimal Min_kWh { get; set; }
   public decimal Max_kWh { get; set; }
   public decimal Amount_kWh { get; set; }
-  public decimal Price_EUR { get; set; }
-  public decimal Total_EUR { get; set; }
 }
 
 public class UsageActiveEnergyTotalImportT0CalculationItemEntity

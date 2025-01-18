@@ -1,45 +1,44 @@
 using Ozds.Business.Conversion.Base;
-using Ozds.Business.Models;
-using Ozds.Business.Models.Abstractions;
-using Ozds.Data.Entities;
+using Ozds.Business.Models.Base;
+using Ozds.Business.Models.Complex;
 using Ozds.Data.Entities.Base;
+using Ozds.Data.Entities.Complex;
 
 namespace Ozds.Business.Conversion.Implementations.Measurements;
 
-public class
-  MessengerModelEntityConverter : ConcreteModelEntityConverter<IMessenger,
-  MessengerEntity>
+public class MessengerEntityConverter(IServiceProvider serviceProvider)
+  : InheritingModelEntityConverter<
+      MessengerModel,
+      AuditableModel,
+      MessengerEntity,
+      AuditableEntity>(serviceProvider)
 {
-  protected override MessengerEntity ToEntity(IMessenger model)
+  private readonly ModelEntityConverter modelEntityConverter =
+    serviceProvider.GetRequiredService<ModelEntityConverter>();
+
+  public override void InitializeEntity(
+    MessengerModel model,
+    MessengerEntity entity
+  )
   {
-    return model.ToEntity();
+    base.InitializeEntity(model, entity);
+    entity.LocationId = model.LocationId;
+    entity.MaxInactivityPeriod = modelEntityConverter.ToEntity<PeriodEntity>(
+      model.MaxInactivityPeriod);
+    entity.PushDelayPeriod = modelEntityConverter.ToEntity<PeriodEntity>(
+      model.PushDelayPeriod);
   }
 
-  protected override IMessenger ToModel(MessengerEntity entity)
+  public override void InitializeModel(
+    MessengerEntity entity,
+    MessengerModel model
+  )
   {
-    return entity.ToModel();
-  }
-}
-
-public static class MessengerModelEntityConverterExtensions
-{
-  public static IMessenger ToModel(this MessengerEntity entity)
-  {
-    if (entity is PidgeonMessengerEntity pidgeonMessenger)
-    {
-      return pidgeonMessenger.ToModel();
-    }
-
-    throw new NotImplementedException();
-  }
-
-  public static MessengerEntity ToEntity(this IMessenger model)
-  {
-    if (model is PidgeonMessengerModel pidgeonMessenger)
-    {
-      return pidgeonMessenger.ToEntity();
-    }
-
-    throw new NotImplementedException();
+    base.InitializeModel(entity, model);
+    model.LocationId = entity.LocationId;
+    model.MaxInactivityPeriod = modelEntityConverter.ToModel<PeriodModel>(
+      entity.MaxInactivityPeriod);
+    model.PushDelayPeriod = modelEntityConverter.ToModel<PeriodModel>(
+      entity.PushDelayPeriod);
   }
 }

@@ -4,44 +4,19 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
 
-public class CalculationEntity : ICalculationEntity
+public class CalculationEntity : FinancialEntity, ICalculationEntity
 {
-  protected readonly long _id;
-
-  public DateTimeOffset IssuedOn { get; set; } = DateTimeOffset.UtcNow;
-
-  public string? IssuedById { get; set; }
-
-  public virtual RepresentativeEntity? IssuedBy { get; set; }
-
-  public DateTimeOffset FromDate { get; set; } = default!;
-
-  public DateTimeOffset ToDate { get; set; } = default!;
-
   public virtual MeterEntity Meter { get; set; } = default!;
 
   public string MeterId { get; set; } = default!;
 
-  public decimal Total_EUR { get; set; }
-
-  public decimal TaxRate_Percent => 0.0M;
-
-  public decimal Tax_EUR => 0.0M;
-
-  public decimal TotalWithTax_EUR => Total_EUR;
-
   public MeterEntity ArchivedMeter { get; set; } = default!;
 
-  public virtual string Id
-  {
-    get { return _id.ToString(); }
-    init
-    {
-      _id = value is { } notNullValue ? long.Parse(notNullValue) : default;
-    }
-  }
+  public override decimal TaxRate_Percent => 0.0M;
 
-  public string Title { get; set; } = default!;
+  public override decimal Tax_EUR => 0.0M;
+
+  public override decimal TotalWithTax_EUR => Total_EUR;
 }
 
 public class
@@ -59,47 +34,12 @@ public class
 
     var builder = modelBuilder.Entity(entity);
 
-    builder.Ignore(nameof(CalculationEntity.TaxRate_Percent));
-    builder.Ignore(nameof(CalculationEntity.Tax_EUR));
-    builder.Ignore(nameof(CalculationEntity.TotalWithTax_EUR));
-
-    if (entity == typeof(NetworkUserCalculationEntity))
-    {
-      builder.HasKey("_id");
-    }
-
-    if (entity.IsAssignableTo(typeof(NetworkUserCalculationEntity)))
-    {
-      builder
-        .HasOne(nameof(CalculationEntity.Meter))
-        .WithMany(nameof(MeterEntity.NetworkUserCalculations))
-        .HasForeignKey(nameof(CalculationEntity.MeterId));
-    }
-
-    builder.Ignore(nameof(CalculationEntity.Id));
     builder
-      .Property("_id")
-      .HasColumnName("id")
-      .HasColumnType("bigint")
-      .UseIdentityAlwaysColumn();
-
-    builder
-      .HasOne(nameof(CalculationEntity.IssuedBy))
-      .WithMany()
-      .HasForeignKey(nameof(CalculationEntity.IssuedById));
+      .HasOne(nameof(CalculationEntity.Meter))
+      .WithMany(nameof(MeterEntity.NetworkUserCalculations))
+      .HasForeignKey(nameof(CalculationEntity.MeterId));
 
     builder
       .ArchivedProperty(nameof(CalculationEntity.ArchivedMeter));
-
-    builder
-      .Property<DateTimeOffset>(nameof(CalculationEntity.IssuedOn))
-      .HasConversion(
-        x => x.ToUniversalTime(),
-        x => x.ToUniversalTime()
-      );
-
-    builder
-      .Property(nameof(CalculationEntity.Total_EUR))
-      .HasColumnName("total_eur");
   }
 }

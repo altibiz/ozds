@@ -4,98 +4,94 @@ using Ozds.Iot.Entities;
 
 namespace Ozds.Business.Conversion.Implementations.Measurements;
 
-public class PidgeonSchneideriEM3xxxPushRequestMeasurementConverter :
-  ConcretePushRequestMeasurementConverter<PidgeonSchneideriEM3xxxMeterPushRequestEntity,
-    SchneideriEM3xxxMeasurementModel>
+public class PidgeonSchneideriEM3xxxPushRequestMeasurementConverter
+  : ConcretePushRequestMeasurementConverter<
+      PidgeonSchneideriEM3xxxMeterPushRequestEntity,
+      SchneideriEM3xxxMeasurementModel>
 {
-  protected override string MeterIdPrefix
+  public override string MeterIdPrefix
   {
     get { return "schneider-iEM3xxx"; }
   }
 
-  protected override SchneideriEM3xxxMeasurementModel ToMeasurement(
+  public override void InitializePushRequest(
+    SchneideriEM3xxxMeasurementModel measurement,
+    PidgeonSchneideriEM3xxxMeterPushRequestEntity pushRequest
+  )
+  {
+#pragma warning disable IDE0017 // Simplify object initialization
+    var data = new PidgeonSchneideriEM3xxxMeterPushRequestData();
+    data.VoltageL1AnyT0_V = measurement.VoltageL1AnyT0_V;
+    data.VoltageL2AnyT0_V = measurement.VoltageL2AnyT0_V;
+    data.VoltageL3AnyT0_V = measurement.VoltageL3AnyT0_V;
+    data.CurrentL1AnyT0_A = measurement.CurrentL1AnyT0_A;
+    data.CurrentL2AnyT0_A = measurement.CurrentL2AnyT0_A;
+    data.CurrentL3AnyT0_A = measurement.CurrentL3AnyT0_A;
+    data.ActivePowerL1NetT0_W = measurement.ActivePowerL1NetT0_W;
+    data.ActivePowerL2NetT0_W = measurement.ActivePowerL2NetT0_W;
+    data.ActivePowerL3NetT0_W = measurement.ActivePowerL3NetT0_W;
+    data.ReactivePowerTotalNetT0_VAR = measurement.ReactivePowerTotalNetT0_VAR;
+    data.ApparentPowerTotalNetT0_VA = measurement.ApparentPowerTotalNetT0_VA;
+    data.ActiveEnergyL1ImportT0_Wh = measurement.ActiveEnergyL1ImportT0_Wh;
+    data.ActiveEnergyL2ImportT0_Wh = measurement.ActiveEnergyL2ImportT0_Wh;
+    data.ActiveEnergyL3ImportT0_Wh = measurement.ActiveEnergyL3ImportT0_Wh;
+    data.ActiveEnergyTotalImportT0_Wh =
+      measurement.ActiveEnergyTotalImportT0_Wh;
+    data.ActiveEnergyTotalExportT0_Wh =
+      measurement.ActiveEnergyTotalExportT0_Wh;
+    data.ReactiveEnergyTotalImportT0_VARh =
+      measurement.ReactiveEnergyTotalImportT0_VARh;
+    data.ReactiveEnergyTotalExportT0_VARh =
+      measurement.ReactiveEnergyTotalExportT0_VARh;
+    data.ActiveEnergyTotalImportT1_Wh =
+      measurement.ActiveEnergyTotalImportT1_Wh;
+    data.ActiveEnergyTotalImportT2_Wh =
+      measurement.ActiveEnergyTotalImportT2_Wh;
+#pragma warning restore IDE0017 // Simplify object initialization
+    pushRequest.Data = data;
+    pushRequest.Timestamp = measurement.Timestamp;
+    pushRequest.MeterId = measurement.MeterId;
+  }
+
+  public override void InitializeMeasurement(
     PidgeonSchneideriEM3xxxMeterPushRequestEntity pushRequest,
-    string measurementLocationId
+    string measurementLocationId,
+    SchneideriEM3xxxMeasurementModel measurement
   )
   {
-    return pushRequest.ToModel(measurementLocationId);
-  }
-
-  protected override PidgeonSchneideriEM3xxxMeterPushRequestEntity
-    ToPushRequest(
-      SchneideriEM3xxxMeasurementModel measurement)
-  {
-    return measurement.ToPushRequest();
-  }
-}
-
-public static class
-  SchneideriEM3xxxPushRequestEntityMeasurementConverterExtensions
-{
-  public static SchneideriEM3xxxMeasurementModel ToModel(
-    this PidgeonSchneideriEM3xxxMeterPushRequestEntity request,
-    string measurementLocationId
-  )
-  {
-    return new SchneideriEM3xxxMeasurementModel
-    {
-      MeterId = request.MeterId,
-      MeasurementLocationId = measurementLocationId,
-      Timestamp = request.Timestamp,
-      VoltageL1AnyT0_V = request.Data.VoltageL1AnyT0_V,
-      VoltageL2AnyT0_V = request.Data.VoltageL2AnyT0_V,
-      VoltageL3AnyT0_V = request.Data.VoltageL3AnyT0_V,
-      CurrentL1AnyT0_A = request.Data.CurrentL1AnyT0_A,
-      CurrentL2AnyT0_A = request.Data.CurrentL2AnyT0_A,
-      CurrentL3AnyT0_A = request.Data.CurrentL3AnyT0_A,
-      ActivePowerL1NetT0_W = request.Data.ActivePowerL1NetT0_W,
-      ActivePowerL2NetT0_W = request.Data.ActivePowerL2NetT0_W,
-      ActivePowerL3NetT0_W = request.Data.ActivePowerL3NetT0_W,
-      ReactivePowerTotalNetT0_VAR = request.Data.ReactivePowerTotalNetT0_VAR,
-      ApparentPowerTotalNetT0_VA = request.Data.ApparentPowerTotalNetT0_VA,
-      ActiveEnergyL1ImportT0_Wh = request.Data.ActiveEnergyL1ImportT0_Wh,
-      ActiveEnergyL2ImportT0_Wh = request.Data.ActiveEnergyL2ImportT0_Wh,
-      ActiveEnergyL3ImportT0_Wh = request.Data.ActiveEnergyL3ImportT0_Wh,
-      ActiveEnergyTotalImportT0_Wh = request.Data.ActiveEnergyTotalImportT0_Wh,
-      ActiveEnergyTotalExportT0_Wh = request.Data.ActiveEnergyTotalExportT0_Wh,
-      ReactiveEnergyTotalImportT0_VARh =
-        request.Data.ReactiveEnergyTotalImportT0_VARh,
-      ReactiveEnergyTotalExportT0_VARh =
-        request.Data.ReactiveEnergyTotalExportT0_VARh,
-      ActiveEnergyTotalImportT1_Wh = request.Data.ActiveEnergyTotalImportT1_Wh,
-      ActiveEnergyTotalImportT2_Wh = request.Data.ActiveEnergyTotalImportT2_Wh
-    };
-  }
-
-  public static PidgeonSchneideriEM3xxxMeterPushRequestEntity ToPushRequest(
-    this SchneideriEM3xxxMeasurementModel model
-  )
-  {
-    return new PidgeonSchneideriEM3xxxMeterPushRequestEntity(
-      model.MeterId,
-      model.Timestamp,
-      new PidgeonSchneideriEM3xxxMeterPushRequestData(
-        model.VoltageL1AnyT0_V,
-        model.VoltageL2AnyT0_V,
-        model.VoltageL3AnyT0_V,
-        model.CurrentL1AnyT0_A,
-        model.CurrentL2AnyT0_A,
-        model.CurrentL3AnyT0_A,
-        model.ActivePowerL1NetT0_W,
-        model.ActivePowerL2NetT0_W,
-        model.ActivePowerL3NetT0_W,
-        model.ReactivePowerTotalNetT0_VAR,
-        model.ApparentPowerTotalNetT0_VA,
-        model.ActiveEnergyL1ImportT0_Wh,
-        model.ActiveEnergyL2ImportT0_Wh,
-        model.ActiveEnergyL3ImportT0_Wh,
-        model.ActiveEnergyTotalImportT0_Wh,
-        model.ActiveEnergyTotalExportT0_Wh,
-        model.ReactiveEnergyTotalImportT0_VARh,
-        model.ReactiveEnergyTotalExportT0_VARh,
-        model.ActiveEnergyTotalImportT1_Wh,
-        model.ActiveEnergyTotalImportT2_Wh
-      )
-    );
+    measurement.MeterId = pushRequest.MeterId;
+    measurement.MeasurementLocationId = measurementLocationId;
+    measurement.Timestamp = pushRequest.Timestamp;
+    measurement.VoltageL1AnyT0_V = pushRequest.Data.VoltageL1AnyT0_V;
+    measurement.VoltageL2AnyT0_V = pushRequest.Data.VoltageL2AnyT0_V;
+    measurement.VoltageL3AnyT0_V = pushRequest.Data.VoltageL3AnyT0_V;
+    measurement.CurrentL1AnyT0_A = pushRequest.Data.CurrentL1AnyT0_A;
+    measurement.CurrentL2AnyT0_A = pushRequest.Data.CurrentL2AnyT0_A;
+    measurement.CurrentL3AnyT0_A = pushRequest.Data.CurrentL3AnyT0_A;
+    measurement.ActivePowerL1NetT0_W = pushRequest.Data.ActivePowerL1NetT0_W;
+    measurement.ActivePowerL2NetT0_W = pushRequest.Data.ActivePowerL2NetT0_W;
+    measurement.ActivePowerL3NetT0_W = pushRequest.Data.ActivePowerL3NetT0_W;
+    measurement.ReactivePowerTotalNetT0_VAR =
+      pushRequest.Data.ReactivePowerTotalNetT0_VAR;
+    measurement.ApparentPowerTotalNetT0_VA =
+      pushRequest.Data.ApparentPowerTotalNetT0_VA;
+    measurement.ActiveEnergyL1ImportT0_Wh =
+      pushRequest.Data.ActiveEnergyL1ImportT0_Wh;
+    measurement.ActiveEnergyL2ImportT0_Wh =
+      pushRequest.Data.ActiveEnergyL2ImportT0_Wh;
+    measurement.ActiveEnergyL3ImportT0_Wh =
+      pushRequest.Data.ActiveEnergyL3ImportT0_Wh;
+    measurement.ActiveEnergyTotalImportT0_Wh =
+      pushRequest.Data.ActiveEnergyTotalImportT0_Wh;
+    measurement.ActiveEnergyTotalExportT0_Wh =
+      pushRequest.Data.ActiveEnergyTotalExportT0_Wh;
+    measurement.ReactiveEnergyTotalImportT0_VARh =
+      pushRequest.Data.ReactiveEnergyTotalImportT0_VARh;
+    measurement.ReactiveEnergyTotalExportT0_VARh =
+      pushRequest.Data.ReactiveEnergyTotalExportT0_VARh;
+    measurement.ActiveEnergyTotalImportT1_Wh =
+      pushRequest.Data.ActiveEnergyTotalImportT1_Wh;
+    measurement.ActiveEnergyTotalImportT2_Wh =
+      pushRequest.Data.ActiveEnergyTotalImportT2_Wh;
   }
 }

@@ -1,10 +1,5 @@
-using MassTransit;
-
 namespace Ozds.Messaging.Entities.Abstractions;
 
-public interface IEntity : SagaStateMachineInstance
+public interface IEntity
 {
-  public string CurrentState { get; }
-
-  public uint RowVersion { get; }
 }

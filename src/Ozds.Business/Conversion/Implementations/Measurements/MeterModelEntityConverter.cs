@@ -1,79 +1,47 @@
 using Ozds.Business.Conversion.Base;
+using Ozds.Business.Conversion.Primitive;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Base;
 using Ozds.Data.Entities;
 using Ozds.Data.Entities.Base;
+using Ozds.Data.Entities.Enums;
 
 namespace Ozds.Business.Conversion.Implementations.Measurements;
 
-public class MeterModelEntityConverter : ConcreteModelEntityConverter<
-  IMeter, MeterEntity>
+public class MeterModelEntityConverter(IServiceProvider serviceProvider)
+  : InheritingModelEntityConverter<
+      MeterModel,
+      AuditableModel,
+      MeterEntity,
+      AuditableEntity>(serviceProvider)
 {
-  protected override MeterEntity ToEntity(
-    IMeter model)
-  {
-    return model.ToEntity();
-  }
+  private readonly ModelEntityConverter modelEntityConverter =
+    serviceProvider.GetRequiredService<ModelEntityConverter>();
 
-  protected override IMeter ToModel(
+  public override void InitializeEntity(
+    MeterModel model,
     MeterEntity entity)
   {
-    return entity.ToModel();
-  }
-}
-
-public static class MeterModelEntityConverterExtensions
-{
-  public static MeterEntity ToEntity(this IMeter model)
-  {
-    if (model is AbbB2xMeterModel abbB2xMeterModel)
-    {
-      return abbB2xMeterModel.ToEntity();
-    }
-
-    if (model is SchneideriEM3xxxMeterModel schneideriEM3xxxMeterModel)
-    {
-      return schneideriEM3xxxMeterModel.ToEntity();
-    }
-
-    throw new NotSupportedException(
-      $"MeterModel type {model.GetType().Name} is not supported."
-    );
+    base.InitializeEntity(model, entity);
+    entity.ConnectionPower_W = model.ConnectionPower_W.ToFloat();
+    entity.MessengerId = model.MessengerId;
+    entity.Phases = model.Phases
+      .Select(phase => modelEntityConverter.ToEntity<PhaseEntity>(phase))
+      .ToList();
+    entity.Kind = model.Kind;
   }
 
-  public static MeterModel ToModel(this MeterEntity entity)
+  public override void InitializeModel(
+    MeterEntity entity,
+    MeterModel model)
   {
-    if (entity is AbbB2xMeterEntity abbB2xMeterEntity)
-    {
-      return abbB2xMeterEntity.ToModel();
-    }
-
-    if (entity is SchneideriEM3xxxMeterEntity schneideriEM3xxxMeterEntity)
-    {
-      return schneideriEM3xxxMeterEntity.ToModel();
-    }
-
-    // NOTE: for archived properties
-    return new MeterModel
-    {
-      Id = entity.Id,
-      Title = entity.Title,
-      CreatedOn = entity.CreatedOn,
-      CreatedById = entity.CreatedById,
-      LastUpdatedOn = entity.LastUpdatedOn,
-      LastUpdatedById = entity.LastUpdatedById,
-      IsDeleted = entity.IsDeleted,
-      DeletedOn = entity.DeletedOn,
-      DeletedById = entity.DeletedById,
-      ConnectionPower_W = (decimal)entity.ConnectionPower_W,
-      Phases = entity.Phases.Select(x => x.ToModel()).ToHashSet(),
-      MessengerId = entity.MessengerId,
-      Kind = entity.Kind
-    };
-
-    throw new NotSupportedException(
-      $"MeterEntity type {entity.GetType().Name} is not supported."
-    );
+    base.InitializeModel(entity, model);
+    model.ConnectionPower_W = entity.ConnectionPower_W.ToDecimal();
+    model.MessengerId = entity.MessengerId;
+    model.Phases = entity.Phases
+      .Select(phase => modelEntityConverter.ToModel<PhaseModel>(phase))
+      .ToHashSet();
+    model.Kind = entity.Kind;
   }
 }

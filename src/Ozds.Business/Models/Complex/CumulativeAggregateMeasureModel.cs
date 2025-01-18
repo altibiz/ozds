@@ -1,13 +1,7 @@
-using System.ComponentModel.DataAnnotations;
-using Ozds.Business.Models.Abstractions;
-
 namespace Ozds.Business.Models.Complex;
 
-public class CumulativeAggregateMeasureModel : IAggregateMeasure
+#pragma warning disable S2094 // Classes should not be empty
+public class CumulativeAggregateMeasureModel : AggregateMeasureModel
+#pragma warning restore S2094 // Classes should not be empty
 {
-  [Required]
-  public decimal Min { get; set; } = default!;
-
-  [Required]
-  public decimal Max { get; set; } = default!;
 }

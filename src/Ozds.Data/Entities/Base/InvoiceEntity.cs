@@ -4,38 +4,19 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
 
-public abstract class InvoiceEntity : IInvoiceEntity
+public abstract class InvoiceEntity : FinancialEntity, IInvoiceEntity
 {
-  protected readonly long _id;
+  public decimal InvoiceTaxRate_Percent { get; set; } = default!;
 
-  public DateTimeOffset IssuedOn { get; set; } = DateTimeOffset.UtcNow;
+  public decimal InvoiceTax_EUR { get; set; } = default!;
 
-  public string? IssuedById { get; set; }
+  public decimal InvoiceTotalWithTax_EUR { get; set; } = default!;
 
-  public virtual RepresentativeEntity? IssuedBy { get; set; }
+  public override decimal TaxRate_Percent => InvoiceTaxRate_Percent;
 
-  public DateTimeOffset FromDate { get; set; } = default!;
+  public override decimal Tax_EUR => InvoiceTax_EUR;
 
-  public DateTimeOffset ToDate { get; set; } = default!;
-
-  public decimal Total_EUR { get; set; } = default!;
-
-  public decimal TaxRate_Percent { get; set; } = default!;
-
-  public decimal Tax_EUR { get; set; } = default!;
-
-  public decimal TotalWithTax_EUR { get; set; } = default!;
-
-  public virtual string Id
-  {
-    get { return _id.ToString(); }
-    init
-    {
-      _id = value is { } notNullValue ? long.Parse(notNullValue) : default;
-    }
-  }
-
-  public string Title { get; set; } = default!;
+  public override decimal TotalWithTax_EUR => InvoiceTotalWithTax_EUR;
 }
 
 public class
@@ -51,36 +32,16 @@ public class
 
     var builder = modelBuilder.Entity(entity);
 
-    builder.HasKey("_id");
-    builder.Ignore(nameof(InvoiceEntity.Id));
     builder
-      .Property("_id")
-      .HasColumnName("id")
-      .HasColumnType("bigint")
-      .UseIdentityAlwaysColumn();
+      .Property(nameof(InvoiceEntity.InvoiceTaxRate_Percent))
+      .HasColumnName("tax_rate_percent");
 
     builder
-      .Property<DateTimeOffset>(nameof(InvoiceEntity.IssuedOn))
-      .HasConversion(
-        x => x.ToUniversalTime(),
-        x => x.ToUniversalTime()
-      );
-
-    builder
-      .HasOne(nameof(InvoiceEntity.IssuedBy))
-      .WithMany()
-      .HasForeignKey(nameof(InvoiceEntity.IssuedById));
-
-    builder
-      .Property(nameof(InvoiceEntity.Total_EUR))
-      .HasColumnName("total_eur");
-
-    builder
-      .Property(nameof(InvoiceEntity.Tax_EUR))
+      .Property(nameof(InvoiceEntity.InvoiceTax_EUR))
       .HasColumnName("tax_eur");
 
     builder
-      .Property(nameof(InvoiceEntity.TotalWithTax_EUR))
+      .Property(nameof(InvoiceEntity.InvoiceTotalWithTax_EUR))
       .HasColumnName("total_with_tax_eur");
   }
 }

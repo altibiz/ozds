@@ -1,115 +1,102 @@
 using Ozds.Business.Conversion.Base;
 using Ozds.Business.Conversion.Complex;
 using Ozds.Business.Models;
+using Ozds.Business.Models.Base;
+using Ozds.Business.Models.Complex;
 using Ozds.Data.Entities;
+using Ozds.Data.Entities.Base;
+using Ozds.Data.Entities.Complex;
 
 namespace Ozds.Business.Conversion.Implementations.Finances;
 
-public class RedLowNetworkUserCalculationModelEntityConverter :
-  ConcreteModelEntityConverter<
-    RedLowNetworkUserCalculationModel, RedLowNetworkUserCalculationEntity>
+public class RedLowNetworkUserCalculationModelEntityConverter(
+  IServiceProvider serviceProvider
+) : InheritingModelEntityConverter<
+      RedLowNetworkUserCalculationModel,
+      NetworkUserCalculationModel,
+      RedLowNetworkUserCalculationEntity,
+      NetworkUserCalculationEntity>(serviceProvider)
 {
-  protected override RedLowNetworkUserCalculationEntity ToEntity(
-    RedLowNetworkUserCalculationModel model)
+  private readonly ModelEntityConverter modelEntityConverter =
+    serviceProvider.GetRequiredService<ModelEntityConverter>();
+
+  public override void InitializeEntity(
+    RedLowNetworkUserCalculationModel model,
+    RedLowNetworkUserCalculationEntity entity
+  )
   {
-    return model.ToEntity();
+    base.InitializeEntity(model, entity);
+    entity.UsageNetworkUserCatalogueId =
+      model.UsageNetworkUserCatalogueId;
+    entity.ArchivedUsageNetworkUserCatalogue =
+      model.ConcreteArchivedUsageNetworkUserCatalogue is null
+        ? null!
+        : modelEntityConverter.ToEntity<
+            RedLowNetworkUserCatalogueEntity>(
+              model.ConcreteArchivedUsageNetworkUserCatalogue);
+    entity.UsageActiveEnergyTotalImportT1 =
+      model.UsageActiveEnergyTotalImportT1 is null
+        ? null!
+        : modelEntityConverter.ToEntity<
+            UsageActiveEnergyTotalImportT1CalculationItemEntity>(
+              model.UsageActiveEnergyTotalImportT1);
+    entity.UsageActiveEnergyTotalImportT2 =
+      model.UsageActiveEnergyTotalImportT2 is null
+        ? null!
+        : modelEntityConverter.ToEntity<
+            UsageActiveEnergyTotalImportT2CalculationItemEntity>(
+              model.UsageActiveEnergyTotalImportT2);
+    entity.UsageActivePowerTotalImportT1Peak =
+      model.UsageActivePowerTotalImportT1Peak is null
+        ? null!
+        : modelEntityConverter.ToEntity<
+            UsageActivePowerTotalImportT1PeakCalculationItemEntity>(
+              model.UsageActivePowerTotalImportT1Peak);
+    entity.UsageReactiveEnergyTotalRampedT0 =
+      model.UsageReactiveEnergyTotalRampedT0 is null
+        ? null!
+        : modelEntityConverter.ToEntity<
+            UsageReactiveEnergyTotalRampedT0CalculationItemEntity>(
+              model.UsageReactiveEnergyTotalRampedT0);
   }
 
-  protected override RedLowNetworkUserCalculationModel ToModel(
-    RedLowNetworkUserCalculationEntity entity)
+  public override void InitializeModel(
+    RedLowNetworkUserCalculationEntity entity,
+    RedLowNetworkUserCalculationModel model
+  )
   {
-    return entity.ToModel();
-  }
-}
-
-public static class RedLowNetworkUserCalculationModelEntityConverterExtensions
-{
-  public static RedLowNetworkUserCalculationModel ToModel(
-    this RedLowNetworkUserCalculationEntity entity)
-  {
-    return new RedLowNetworkUserCalculationModel
-    {
-      Id = entity.Id,
-      Title = entity.Title,
-      IssuedOn = entity.IssuedOn,
-      IssuedById = entity.IssuedById,
-      FromDate = entity.FromDate,
-      ToDate = entity.ToDate,
-      MeterId = entity.MeterId,
-      NetworkUserMeasurementLocationId =
-        entity.NetworkUserMeasurementLocationId,
-      UsageNetworkUserCatalogueId = entity.UsageNetworkUserCatalogueId,
-      SupplyRegulatoryCatalogueId = entity.SupplyRegulatoryCatalogueId,
-      NetworkUserInvoiceId = entity.NetworkUserInvoiceId,
-      ArchivedNetworkUserMeasurementLocation =
-        entity.ArchivedNetworkUserMeasurementLocation.ToModel(),
-      ArchivedSupplyRegulatoryCatalogue =
-        entity.ArchivedSupplyRegulatoryCatalogue.ToModel(),
-      ConcreteArchivedUsageNetworkUserCatalogue =
-        entity.ArchivedUsageNetworkUserCatalogue.ToModel(),
-      ArchivedMeter = entity.ArchivedMeter.ToModel(),
-      UsageActiveEnergyTotalImportT1 =
-        entity.UsageActiveEnergyTotalImportT1.ToModel(),
-      UsageActiveEnergyTotalImportT2 =
-        entity.UsageActiveEnergyTotalImportT2.ToModel(),
-      UsageActivePowerTotalImportT1Peak =
-        entity.UsageActivePowerTotalImportT1Peak.ToModel(),
-      UsageReactiveEnergyTotalRampedT0 =
-        entity.UsageReactiveEnergyTotalRampedT0.ToModel(),
-      UsageMeterFee = entity.UsageMeterFee.ToModel(),
-      SupplyActiveEnergyTotalImportT1 =
-        entity.SupplyActiveEnergyTotalImportT1.ToModel(),
-      SupplyActiveEnergyTotalImportT2 =
-        entity.SupplyActiveEnergyTotalImportT2.ToModel(),
-      SupplyBusinessUsageFee = entity.SupplyBusinessUsageFee.ToModel(),
-      SupplyRenewableEnergyFee = entity.SupplyRenewableEnergyFee.ToModel(),
-      SupplyFeeTotal_EUR = entity.SupplyFeeTotal_EUR,
-      UsageFeeTotal_EUR = entity.UsageFeeTotal_EUR,
-      Total_EUR = entity.Total_EUR
-    };
-  }
-
-  public static RedLowNetworkUserCalculationEntity ToEntity(
-    this RedLowNetworkUserCalculationModel model)
-  {
-    return new RedLowNetworkUserCalculationEntity
-    {
-      Id = model.Id,
-      Title = model.Title,
-      IssuedOn = model.IssuedOn,
-      IssuedById = model.IssuedById,
-      FromDate = model.FromDate,
-      ToDate = model.ToDate,
-      MeterId = model.MeterId,
-      NetworkUserMeasurementLocationId = model.NetworkUserMeasurementLocationId,
-      UsageNetworkUserCatalogueId = model.UsageNetworkUserCatalogueId,
-      SupplyRegulatoryCatalogueId = model.SupplyRegulatoryCatalogueId,
-      NetworkUserInvoiceId = model.NetworkUserInvoiceId,
-      ArchivedNetworkUserMeasurementLocation =
-        model.ArchivedNetworkUserMeasurementLocation.ToEntity(),
-      ArchivedSupplyRegulatoryCatalogue =
-        model.ArchivedSupplyRegulatoryCatalogue.ToEntity(),
-      ArchivedUsageNetworkUserCatalogue =
-        model.ConcreteArchivedUsageNetworkUserCatalogue.ToEntity(),
-      ArchivedMeter = model.ArchivedMeter.ToEntity(),
-      UsageActiveEnergyTotalImportT1 =
-        model.UsageActiveEnergyTotalImportT1.ToEntity(),
-      UsageActiveEnergyTotalImportT2 =
-        model.UsageActiveEnergyTotalImportT2.ToEntity(),
-      UsageActivePowerTotalImportT1Peak =
-        model.UsageActivePowerTotalImportT1Peak.ToEntity(),
-      UsageReactiveEnergyTotalRampedT0 =
-        model.UsageReactiveEnergyTotalRampedT0.ToEntity(),
-      UsageMeterFee = model.UsageMeterFee.ToEntity(),
-      SupplyActiveEnergyTotalImportT1 =
-        model.SupplyActiveEnergyTotalImportT1.ToEntity(),
-      SupplyActiveEnergyTotalImportT2 =
-        model.SupplyActiveEnergyTotalImportT2.ToEntity(),
-      SupplyBusinessUsageFee = model.SupplyBusinessUsageFee.ToEntity(),
-      SupplyRenewableEnergyFee = model.SupplyRenewableEnergyFee.ToEntity(),
-      SupplyFeeTotal_EUR = model.SupplyFeeTotal_EUR,
-      UsageFeeTotal_EUR = model.UsageFeeTotal_EUR,
-      Total_EUR = model.Total_EUR
-    };
+    base.InitializeModel(entity, model);
+    model.UsageNetworkUserCatalogueId =
+      entity.UsageNetworkUserCatalogueId;
+    model.ConcreteArchivedUsageNetworkUserCatalogue =
+      entity.ArchivedUsageNetworkUserCatalogue is null
+        ? null!
+        : modelEntityConverter.ToModel<
+            RedLowNetworkUserCatalogueModel>(
+              entity.ArchivedUsageNetworkUserCatalogue);
+    model.UsageActiveEnergyTotalImportT1 =
+      entity.UsageActiveEnergyTotalImportT1 is null
+        ? null!
+        : modelEntityConverter.ToModel<
+            UsageActiveEnergyTotalImportT1CalculationItemModel>(
+              entity.UsageActiveEnergyTotalImportT1);
+    model.UsageActiveEnergyTotalImportT2 =
+      entity.UsageActiveEnergyTotalImportT2 is null
+        ? null!
+        : modelEntityConverter.ToModel<
+            UsageActiveEnergyTotalImportT2CalculationItemModel>(
+              entity.UsageActiveEnergyTotalImportT2);
+    model.UsageActivePowerTotalImportT1Peak =
+      entity.UsageActivePowerTotalImportT1Peak is null
+        ? null!
+        : modelEntityConverter.ToModel<
+            UsageActivePowerTotalImportT1PeakCalculationItemModel>(
+              entity.UsageActivePowerTotalImportT1Peak);
+    model.UsageReactiveEnergyTotalRampedT0 =
+      entity.UsageReactiveEnergyTotalRampedT0 is null
+        ? null!
+        : modelEntityConverter.ToModel<
+            UsageReactiveEnergyTotalRampedT0CalculationItemModel>(
+              entity.UsageReactiveEnergyTotalRampedT0);
   }
 }

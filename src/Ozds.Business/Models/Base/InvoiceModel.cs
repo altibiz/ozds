@@ -3,90 +3,20 @@ using Ozds.Business.Models.Abstractions;
 
 namespace Ozds.Business.Models.Base;
 
-public abstract class InvoiceModel : IdentifiableModel, IInvoice
+public abstract class InvoiceModel : FinancialModel, IInvoice
 {
   [Required]
-  public required decimal Total_EUR { get; set; }
+  public required decimal InvoiceTaxRate_Percent { get; set; }
 
   [Required]
-  public required decimal TaxRate_Percent { get; set; }
+  public required decimal InvoiceTax_EUR { get; set; }
 
   [Required]
-  public required decimal Tax_EUR { get; set; }
+  public required decimal InvoiceTotalWithTax_EUR { get; set; }
 
-  [Required]
-  public required decimal TotalWithTax_EUR { get; set; }
+  public override decimal TaxRate_Percent => InvoiceTaxRate_Percent;
 
-  [Required]
-  public required DateTimeOffset IssuedOn { get; set; }
+  public override decimal Tax_EUR => InvoiceTax_EUR;
 
-  [Required]
-  public required string? IssuedById { get; set; }
-
-  [Required]
-  public required DateTimeOffset FromDate { get; set; }
-
-  [Required]
-  public required DateTimeOffset ToDate { get; set; }
-
-  public override IEnumerable<ValidationResult> Validate(
-    ValidationContext validationContext)
-  {
-    if (validationContext.ObjectInstance != this)
-    {
-      yield break;
-    }
-
-    if (
-      validationContext.MemberName is null or nameof(FromDate)
-        or nameof(ToDate) &&
-      FromDate > ToDate
-    )
-    {
-      yield return new ValidationResult(
-        "From date must be before to date",
-        new[] { nameof(FromDate), nameof(ToDate) });
-    }
-
-    if (
-      (validationContext.MemberName is null or nameof(IssuedOn)
-          or nameof(FromDate) or nameof(ToDate) &&
-        IssuedOn < FromDate) || IssuedOn < ToDate
-    )
-    {
-      yield return new ValidationResult(
-        "Issued on must be after from date and to date",
-        new[] { nameof(IssuedOn), nameof(FromDate), nameof(ToDate) });
-    }
-
-    if (
-      validationContext.MemberName is null or nameof(IssuedOn) &&
-      IssuedOn > DateTimeOffset.UtcNow
-    )
-    {
-      yield return new ValidationResult(
-        "Issued on must be in the past",
-        new[] { nameof(IssuedOn) });
-    }
-
-    if (
-      validationContext.MemberName is null or nameof(FromDate) &&
-      FromDate > DateTimeOffset.UtcNow
-    )
-    {
-      yield return new ValidationResult(
-        "From date must be in the past",
-        new[] { nameof(FromDate) });
-    }
-
-    if (
-      validationContext.MemberName is null or nameof(ToDate) &&
-      ToDate > DateTimeOffset.UtcNow
-    )
-    {
-      yield return new ValidationResult(
-        "To date must be in the past",
-        new[] { nameof(ToDate) });
-    }
-  }
+  public override decimal TotalWithTax_EUR => InvoiceTotalWithTax_EUR;
 }

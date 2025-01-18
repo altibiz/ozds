@@ -1,77 +1,62 @@
 using Ozds.Business.Conversion.Base;
+using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Complex;
 using Ozds.Data.Entities.Complex;
 
 namespace Ozds.Business.Conversion.Implementations.Finances;
 
-public class ReactiveEnergyTotalRampedT0CalculationItemModelEntityConverter :
-  ConcreteModelEntityConverter<
-    ReactiveEnergyTotalRampedT0CalculationItemModel,
-    ReactiveEnergyTotalRampedT0CalculationItemEntity>
+public class ReactiveEnergyTotalRampedT0CalculationItemModelEntityConverter(
+  IServiceProvider serviceProvider
+) : InheritingModelEntityConverter<
+      ReactiveEnergyTotalRampedT0CalculationItemModel,
+      CalculationItemModel,
+      ReactiveEnergyTotalRampedT0CalculationItemEntity,
+      CalculationItemEntity>(serviceProvider)
 {
-  protected override ReactiveEnergyTotalRampedT0CalculationItemEntity ToEntity(
-    ReactiveEnergyTotalRampedT0CalculationItemModel model)
+  public override void InitializeEntity(
+    ReactiveEnergyTotalRampedT0CalculationItemModel model,
+    ReactiveEnergyTotalRampedT0CalculationItemEntity entity
+  )
   {
-    return model switch
-    {
-      UsageReactiveEnergyTotalRampedT0CalculationItemModel t0Model =>
-        t0Model.ToEntity(),
-      _ => throw new InvalidOperationException("Unknown tariff type")
-    };
+    base.InitializeEntity(model, entity);
+    entity.ReactiveImportMin_kVARh = model.ReactiveImportMin_kVARh;
+    entity.ReactiveImportMax_kVARh = model.ReactiveImportMax_kVARh;
+    entity.ReactiveImportAmount_kVARh = model.ReactiveImportAmount_kVARh;
+    entity.ReactiveExportMin_kVARh = model.ReactiveExportMin_kVARh;
+    entity.ReactiveExportMax_kVARh = model.ReactiveExportMax_kVARh;
+    entity.ReactiveExportAmount_kVARh = model.ReactiveExportAmount_kVARh;
+    entity.ActiveImportMin_kWh = model.ActiveImportMin_kWh;
+    entity.ActiveImportMax_kWh = model.ActiveImportMax_kWh;
+    entity.ActiveImportAmount_kWh = model.ActiveImportAmount_kWh;
+    entity.Amount_kVARh = model.Amount_kVARh;
   }
 
-  protected override ReactiveEnergyTotalRampedT0CalculationItemModel ToModel(
-    ReactiveEnergyTotalRampedT0CalculationItemEntity entity)
+  public override void InitializeModel(
+    ReactiveEnergyTotalRampedT0CalculationItemEntity entity,
+    ReactiveEnergyTotalRampedT0CalculationItemModel model
+  )
   {
-    return entity switch
-    {
-      UsageReactiveEnergyTotalRampedT0CalculationItemEntity t0Entity => t0Entity
-        .ToModel(),
-      _ => throw new InvalidOperationException("Unknown tariff type")
-    };
+    base.InitializeModel(entity, model);
+    model.ReactiveImportMin_kVARh = entity.ReactiveImportMin_kVARh;
+    model.ReactiveImportMax_kVARh = entity.ReactiveImportMax_kVARh;
+    model.ReactiveImportAmount_kVARh = entity.ReactiveImportAmount_kVARh;
+    model.ReactiveExportMin_kVARh = entity.ReactiveExportMin_kVARh;
+    model.ReactiveExportMax_kVARh = entity.ReactiveExportMax_kVARh;
+    model.ReactiveExportAmount_kVARh = entity.ReactiveExportAmount_kVARh;
+    model.ActiveImportMin_kWh = entity.ActiveImportMin_kWh;
+    model.ActiveImportMax_kWh = entity.ActiveImportMax_kWh;
+    model.ActiveImportAmount_kWh = entity.ActiveImportAmount_kWh;
+    model.Amount_kVARh = entity.Amount_kVARh;
   }
 }
 
-public static class
-  ReactiveEnergyTotalRampedT0CalculationItemModelEntityConverterExtensions
+public class
+  UsageReactiveEnergyTotalRampedT0CalculationItemModelEntityConverter(
+    IServiceProvider serviceProvider
+  ) : InheritingModelEntityConverter<
+        UsageReactiveEnergyTotalRampedT0CalculationItemModel,
+        ReactiveEnergyTotalRampedT0CalculationItemModel,
+        UsageReactiveEnergyTotalRampedT0CalculationItemEntity,
+        ReactiveEnergyTotalRampedT0CalculationItemEntity>(serviceProvider)
 {
-  public static UsageReactiveEnergyTotalRampedT0CalculationItemEntity ToEntity(
-    this UsageReactiveEnergyTotalRampedT0CalculationItemModel model)
-  {
-    return new UsageReactiveEnergyTotalRampedT0CalculationItemEntity
-    {
-      ReactiveImportMin_kVARh = model.ReactiveImportMin_kVARh,
-      ReactiveImportMax_kVARh = model.ReactiveImportMax_kVARh,
-      ReactiveImportAmount_kVARh = model.ReactiveImportAmount_kVARh,
-      ReactiveExportMin_kVARh = model.ReactiveExportMin_kVARh,
-      ReactiveExportMax_kVARh = model.ReactiveExportMax_kVARh,
-      ReactiveExportAmount_kVARh = model.ReactiveExportAmount_kVARh,
-      ActiveImportMin_kWh = model.ActiveImportMin_kWh,
-      ActiveImportMax_kWh = model.ActiveImportMax_kWh,
-      ActiveImportAmount_kWh = model.ActiveImportAmount_kWh,
-      Amount_kVARh = model.Amount_kVARh,
-      Price_EUR = model.Price_EUR,
-      Total_EUR = model.Total_EUR
-    };
-  }
-
-  public static UsageReactiveEnergyTotalRampedT0CalculationItemModel ToModel(
-    this UsageReactiveEnergyTotalRampedT0CalculationItemEntity entity)
-  {
-    return new UsageReactiveEnergyTotalRampedT0CalculationItemModel
-    {
-      ReactiveImportMin_kVARh = entity.ReactiveImportMin_kVARh,
-      ReactiveImportMax_kVARh = entity.ReactiveImportMax_kVARh,
-      ReactiveImportAmount_kVARh = entity.ReactiveImportAmount_kVARh,
-      ReactiveExportMin_kVARh = entity.ReactiveExportMin_kVARh,
-      ReactiveExportMax_kVARh = entity.ReactiveExportMax_kVARh,
-      ReactiveExportAmount_kVARh = entity.ReactiveExportAmount_kVARh,
-      ActiveImportMin_kWh = entity.ActiveImportMin_kWh,
-      ActiveImportMax_kWh = entity.ActiveImportMax_kWh,
-      ActiveImportAmount_kWh = entity.ActiveImportAmount_kWh,
-      Amount_kVARh = entity.Amount_kVARh,
-      Price_EUR = entity.Price_EUR,
-      Total_EUR = entity.Total_EUR
-    };
-  }
 }

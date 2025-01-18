@@ -1,62 +1,47 @@
 using Ozds.Business.Conversion.Base;
+using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Complex;
 using Ozds.Data.Entities.Complex;
 
 namespace Ozds.Business.Conversion.Implementations.Finances;
 
-public class ActivePowerTotalImportT1PeakCalculationItemModelEntityConverter :
-  ConcreteModelEntityConverter<
-    ActivePowerTotalImportT1PeakCalculationItemModel,
-    ActivePowerTotalImportT1PeakCalculationItemEntity>
+public class ActivePowerTotalImportT1PeakCalculationItemModelEntityConverter(
+  IServiceProvider serviceProvider
+)
+  : InheritingModelEntityConverter<
+      ActivePowerTotalImportT1PeakCalculationItemModel,
+      CalculationItemModel,
+      ActivePowerTotalImportT1PeakCalculationItemEntity,
+      CalculationItemEntity>(serviceProvider)
 {
-  protected override ActivePowerTotalImportT1PeakCalculationItemEntity ToEntity(
-    ActivePowerTotalImportT1PeakCalculationItemModel model)
+  public override void InitializeEntity(
+    ActivePowerTotalImportT1PeakCalculationItemModel model,
+    ActivePowerTotalImportT1PeakCalculationItemEntity entity
+  )
   {
-    return model switch
-    {
-      UsageActivePowerTotalImportT1PeakCalculationItemModel t1Model =>
-        t1Model.ToEntity(),
-      _ => throw new InvalidOperationException("Unknown tariff type")
-    };
+    base.InitializeEntity(model, entity);
+    entity.Peak_kW = model.Peak_kW;
+    entity.Amount_kW = model.Amount_kW;
   }
 
-  protected override ActivePowerTotalImportT1PeakCalculationItemModel ToModel(
-    ActivePowerTotalImportT1PeakCalculationItemEntity entity)
+  public override void InitializeModel(
+    ActivePowerTotalImportT1PeakCalculationItemEntity entity,
+    ActivePowerTotalImportT1PeakCalculationItemModel model
+  )
   {
-    return entity switch
-    {
-      UsageActivePowerTotalImportT1PeakCalculationItemEntity t1Entity =>
-        t1Entity
-          .ToModel(),
-      _ => throw new InvalidOperationException("Unknown tariff type")
-    };
+    base.InitializeModel(entity, model);
+    model.Peak_kW = entity.Peak_kW;
+    model.Amount_kW = entity.Amount_kW;
   }
 }
 
-public static class
-  ActivePowerTotalImportT1PeakCalculationItemModelEntityConverterExtensions
+public class
+  UsageActivePowerTotalImportT1PeakCalculationItemModelEntityConverter(
+    IServiceProvider serviceProvider
+  ) : InheritingModelEntityConverter<
+        UsageActivePowerTotalImportT1PeakCalculationItemModel,
+        ActivePowerTotalImportT1PeakCalculationItemModel,
+        UsageActivePowerTotalImportT1PeakCalculationItemEntity,
+        ActivePowerTotalImportT1PeakCalculationItemEntity>(serviceProvider)
 {
-  public static UsageActivePowerTotalImportT1PeakCalculationItemEntity ToEntity(
-    this UsageActivePowerTotalImportT1PeakCalculationItemModel model)
-  {
-    return new UsageActivePowerTotalImportT1PeakCalculationItemEntity
-    {
-      Peak_kW = model.Peak_kW,
-      Amount_kW = model.Amount_kW,
-      Price_EUR = model.Price_EUR,
-      Total_EUR = model.Total_EUR
-    };
-  }
-
-  public static UsageActivePowerTotalImportT1PeakCalculationItemModel ToModel(
-    this UsageActivePowerTotalImportT1PeakCalculationItemEntity entity)
-  {
-    return new UsageActivePowerTotalImportT1PeakCalculationItemModel
-    {
-      Peak_kW = entity.Peak_kW,
-      Amount_kW = entity.Amount_kW,
-      Price_EUR = entity.Price_EUR,
-      Total_EUR = entity.Total_EUR
-    };
-  }
 }

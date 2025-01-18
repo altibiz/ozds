@@ -8,9 +8,9 @@ namespace Ozds.Data.Entities.Base;
 public class NetworkUserCalculationEntity
   : CalculationEntity, INetworkUserCalculationEntity
 {
-  protected readonly long _networkUserMeasurementLocationId;
+  protected long _networkUserMeasurementLocationId;
 
-  protected readonly long _supplyRegulatoryCatalogueId;
+  protected long _supplyRegulatoryCatalogueId;
 
   protected long _networkUserInvoiceId;
 
@@ -95,7 +95,7 @@ public class
   NetworkUserCalculationEntity
   where TUsageNetworkUserCatalogue : NetworkUserCatalogueEntity
 {
-  protected readonly long _usageNetworkUserCatalogueId;
+  protected long _usageNetworkUserCatalogueId;
 
   public string UsageNetworkUserCatalogueId
   {

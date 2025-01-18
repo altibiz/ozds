@@ -1,65 +1,34 @@
 using Ozds.Business.Conversion.Base;
-using Ozds.Business.Models;
-using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Base;
-using Ozds.Data.Entities;
 using Ozds.Data.Entities.Base;
 
 namespace Ozds.Business.Conversion.Implementations.Measurements;
 
-public class MeasurementLocationModelEntityConverter : ConcreteModelEntityConverter<
-  IMeasurementLocation, MeasurementLocationEntity>
+public class MeasurementLocationEntityConverter(
+  IServiceProvider serviceProvider
+) : InheritingModelEntityConverter<
+      MeasurementLocationModel,
+      AuditableModel,
+      MeasurementLocationEntity,
+      AuditableEntity>(serviceProvider)
 {
-  protected override MeasurementLocationEntity ToEntity(
-    IMeasurementLocation model)
+  public override void InitializeEntity(
+    MeasurementLocationModel model,
+    MeasurementLocationEntity entity
+  )
   {
-    return model.ToEntity();
+    base.InitializeEntity(model, entity);
+    entity.MeterId = model.MeterId;
+    entity.Kind = model.Kind;
   }
 
-  protected override IMeasurementLocation ToModel(
-    MeasurementLocationEntity entity)
+  public override void InitializeModel(
+    MeasurementLocationEntity entity,
+    MeasurementLocationModel model
+  )
   {
-    return entity.ToModel();
-  }
-}
-
-public static class MeasurementLocationModelEntityConverterExtensions
-{
-  public static MeasurementLocationEntity ToEntity(
-    this IMeasurementLocation model)
-  {
-    if (model is NetworkUserMeasurementLocationModel
-      networkUserMeasurementLocation)
-    {
-      return networkUserMeasurementLocation.ToEntity();
-    }
-
-    if (model is LocationMeasurementLocationModel locationMeasurementLocation)
-    {
-      return locationMeasurementLocation.ToEntity();
-    }
-
-    throw new NotSupportedException(
-      $"MeasurementLocationModel type {model.GetType().Name} is not supported."
-    );
-  }
-
-  public static MeasurementLocationModel ToModel(
-    this MeasurementLocationEntity entity)
-  {
-    if (entity is NetworkUserMeasurementLocationEntity
-      networkUserMeasurementLocation)
-    {
-      return networkUserMeasurementLocation.ToModel();
-    }
-
-    if (entity is LocationMeasurementLocationEntity locationMeasurementLocation)
-    {
-      return locationMeasurementLocation.ToModel();
-    }
-
-    throw new NotSupportedException(
-      $"MeasurementLocationEntity type {entity.GetType().Name} is not supported."
-    );
+    base.InitializeModel(entity, model);
+    model.MeterId = entity.MeterId;
+    model.Kind = entity.Kind;
   }
 }

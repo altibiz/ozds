@@ -1,4 +1,4 @@
-using Ozds.Business.Capabilities.Implementations.Abstractions;
+using Ozds.Business.Capabilities.Abstractions;
 
 namespace Ozds.Business.Models.Abstractions;
 

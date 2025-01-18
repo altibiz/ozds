@@ -4,11 +4,10 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace Ozds.Data.Entities.Complex;
 
 public abstract class ActivePowerTotalImportT1PeakCalculationItemEntity
+  : CalculationItemEntity
 {
   public decimal Peak_kW { get; set; }
   public decimal Amount_kW { get; set; }
-  public decimal Price_EUR { get; set; }
-  public decimal Total_EUR { get; set; }
 }
 
 public class UsageActivePowerTotalImportT1PeakCalculationItemEntity

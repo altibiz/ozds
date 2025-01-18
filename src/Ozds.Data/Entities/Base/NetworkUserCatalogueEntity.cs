@@ -11,6 +11,8 @@ public class NetworkUserCatalogueEntity : CatalogueEntity, INetworkUserCatalogue
     NetworkUserMeasurementLocations
   { get; set; } = default!;
 
+  public virtual ICollection<LocationEntity> Locations { get; set; } = default!;
+
   public string Kind { get; set; } = default!;
 }
 
@@ -18,8 +20,6 @@ public class NetworkUserCatalogueEntity<TNetworkUserCalculation>
   : NetworkUserCatalogueEntity
   where TNetworkUserCalculation : NetworkUserCalculationEntity
 {
-  public virtual ICollection<LocationEntity> Locations { get; set; } = default!;
-
   public virtual ICollection<TNetworkUserCalculation>
     NetworkUserCalculations
   { get; set; } =

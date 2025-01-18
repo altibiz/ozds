@@ -1,52 +1,47 @@
 using Ozds.Business.Conversion.Base;
+using Ozds.Business.Models;
+using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Composite;
+using Ozds.Data.Entities;
+using Ozds.Data.Entities.Base;
 using Ozds.Data.Entities.Composite;
 
 namespace Ozds.Business.Conversion.Implementations.Finances;
 
-public class CalculatedNetworkUserInvoiceModelEntityConverter :
-  ConcreteModelEntityConverter<
-    CalculatedNetworkUserInvoiceModel,
-    CalculatedNetworkUserInvoiceEntity>
+public class CalculatedNetworkUserInvoiceModelEntityConverter(
+  IServiceProvider serviceProvider
+) : ConcreteModelEntityConverter<
+      CalculatedNetworkUserInvoiceModel,
+      CalculatedNetworkUserInvoiceEntity>
 {
-  protected override CalculatedNetworkUserInvoiceEntity ToEntity(
-    CalculatedNetworkUserInvoiceModel model
-  )
-  {
-    return model.ToEntity();
-  }
+  private readonly ModelEntityConverter modelEntityConverter =
+    serviceProvider.GetRequiredService<ModelEntityConverter>();
 
-  protected override CalculatedNetworkUserInvoiceModel ToModel(
+  public override void InitializeEntity(
+    CalculatedNetworkUserInvoiceModel model,
     CalculatedNetworkUserInvoiceEntity entity
   )
   {
-    return entity.ToModel();
-  }
-}
-
-public static class CalculatedNetworkUserInvoiceModelEntityConverterExtensions
-{
-  public static CalculatedNetworkUserInvoiceModel ToModel(
-    this CalculatedNetworkUserInvoiceEntity entity
-  )
-  {
-    return new CalculatedNetworkUserInvoiceModel(
-      entity.Calculations
-        .Select(calculation => calculation.ToModel())
-        .ToList(),
-      entity.Invoice.ToModel()
+    base.InitializeEntity(model, entity);
+    entity.Calculations = model.Calculations
+      .Select(modelEntityConverter.ToEntity<NetworkUserCalculationEntity>)
+      .ToList();
+    entity.Invoice = modelEntityConverter.ToEntity<NetworkUserInvoiceEntity>(
+      model.Invoice
     );
   }
 
-  public static CalculatedNetworkUserInvoiceEntity ToEntity(
-    this CalculatedNetworkUserInvoiceModel model
+  public override void InitializeModel(
+    CalculatedNetworkUserInvoiceEntity entity,
+    CalculatedNetworkUserInvoiceModel model
   )
   {
-    return new CalculatedNetworkUserInvoiceEntity(
-      model.Calculations
-        .Select(calculation => calculation.ToEntity())
-        .ToList(),
-      model.Invoice.ToEntity()
+    base.InitializeModel(entity, model);
+    model.Calculations = entity.Calculations
+      .Select(modelEntityConverter.ToModel<NetworkUserCalculationModel>)
+      .ToList();
+    model.Invoice = modelEntityConverter.ToModel<NetworkUserInvoiceModel>(
+      entity.Invoice
     );
   }
 }

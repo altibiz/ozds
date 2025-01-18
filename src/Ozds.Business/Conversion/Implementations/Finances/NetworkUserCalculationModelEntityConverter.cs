@@ -1,91 +1,132 @@
 using Ozds.Business.Conversion.Base;
 using Ozds.Business.Models;
-using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Base;
-using Ozds.Data.Entities;
+using Ozds.Business.Models.Complex;
 using Ozds.Data.Entities.Base;
 
 namespace Ozds.Business.Conversion.Implementations.Finances;
 
-public class NetworkUserCalculationModelEntityConverter : ConcreteModelEntityConverter<
-  INetworkUserCalculation, NetworkUserCalculationEntity>
+public class NetworkUserCalculationModelEntityConverter(
+  IServiceProvider serviceProvider
+) : InheritingModelEntityConverter<
+      NetworkUserCalculationModel,
+      CalculationModel,
+      NetworkUserCalculationEntity,
+      CalculationEntity>(serviceProvider)
 {
-  protected override NetworkUserCalculationEntity ToEntity(
-    INetworkUserCalculation model)
+  private readonly ModelEntityConverter modelEntityConverter =
+    serviceProvider.GetRequiredService<ModelEntityConverter>();
+
+  public override void InitializeEntity(
+    NetworkUserCalculationModel model,
+    NetworkUserCalculationEntity entity
+  )
   {
-    return model.ToEntity();
+    base.InitializeEntity(model, entity);
+    model.UsageMeterFee =
+      entity.UsageMeterFee is null
+        ? null!
+        : modelEntityConverter
+            .ToModel<UsageMeterFeeCalculationItemModel>(
+              entity.UsageMeterFee);
+    model.SupplyActiveEnergyTotalImportT1 =
+      entity.SupplyActiveEnergyTotalImportT1 is null
+        ? null!
+        : modelEntityConverter
+            .ToModel<SupplyActiveEnergyTotalImportT1CalculationItemModel>(
+              entity.SupplyActiveEnergyTotalImportT1);
+    model.SupplyActiveEnergyTotalImportT2 =
+      entity.SupplyActiveEnergyTotalImportT2 is null
+        ? null!
+        : modelEntityConverter
+            .ToModel<SupplyActiveEnergyTotalImportT2CalculationItemModel>(
+              entity.SupplyActiveEnergyTotalImportT2);
+    model.SupplyBusinessUsageFee =
+      entity.SupplyBusinessUsageFee is null
+        ? null!
+        : modelEntityConverter
+            .ToModel<SupplyBusinessUsageCalculationItemModel>(
+              entity.SupplyBusinessUsageFee);
+    model.SupplyRenewableEnergyFee =
+      entity.SupplyRenewableEnergyFee is null
+        ? null!
+        : modelEntityConverter
+            .ToModel<SupplyRenewableEnergyCalculationItemModel>(
+              entity.SupplyRenewableEnergyFee);
+    model.NetworkUserMeasurementLocationId =
+      entity.NetworkUserMeasurementLocationId;
+    model.ArchivedNetworkUserMeasurementLocation =
+      entity.ArchivedNetworkUserMeasurementLocation is null
+        ? null!
+        : modelEntityConverter
+            .ToModel<NetworkUserMeasurementLocationModel>(
+              entity.ArchivedNetworkUserMeasurementLocation);
+    model.SupplyRegulatoryCatalogueId =
+      entity.SupplyRegulatoryCatalogueId;
+    model.ArchivedSupplyRegulatoryCatalogue =
+      entity.ArchivedSupplyRegulatoryCatalogue is null
+        ? null!
+        : modelEntityConverter
+            .ToModel<RegulatoryCatalogueModel>(
+              entity.ArchivedSupplyRegulatoryCatalogue);
+    model.NetworkUserInvoiceId = entity.NetworkUserInvoiceId;
+    model.Kind = entity.Kind;
+    model.UsageFeeTotal_EUR = entity.UsageFeeTotal_EUR;
+    model.SupplyFeeTotal_EUR = entity.SupplyFeeTotal_EUR;
+    model.Total_EUR = entity.Total_EUR;
   }
 
-  protected override INetworkUserCalculation ToModel(
-    NetworkUserCalculationEntity entity)
+  public override void InitializeModel(
+    NetworkUserCalculationEntity entity,
+    NetworkUserCalculationModel model
+  )
   {
-    return entity.ToModel();
-  }
-}
-
-public static class NetworkUserCalculationModelEntityConverterExtensions
-{
-  public static NetworkUserCalculationEntity ToEntity(
-    this INetworkUserCalculation model)
-  {
-    if (model is RedLowNetworkUserCalculationModel
-      redLowNetworkUserCalculationModel)
-    {
-      return redLowNetworkUserCalculationModel.ToEntity();
-    }
-
-    if (model is BlueLowNetworkUserCalculationModel
-      blueLowNetworkUserCalculationModel)
-    {
-      return blueLowNetworkUserCalculationModel.ToEntity();
-    }
-
-    if (model is WhiteLowNetworkUserCalculationModel
-      whiteLowNetworkUserCalculationModel)
-    {
-      return whiteLowNetworkUserCalculationModel.ToEntity();
-    }
-
-    if (model is WhiteMediumNetworkUserCalculationModel
-      whiteMediumNetworkUserCalculationModel)
-    {
-      return whiteMediumNetworkUserCalculationModel.ToEntity();
-    }
-
-    throw new NotSupportedException(
-      $"NetworkUserCalculationModel type {model.GetType().Name} is not supported."
-    );
-  }
-
-  public static NetworkUserCalculationModel ToModel(
-    this NetworkUserCalculationEntity entity)
-  {
-    if (entity is RedLowNetworkUserCalculationEntity
-      redLowNetworkUserCalculationEntity)
-    {
-      return redLowNetworkUserCalculationEntity.ToModel();
-    }
-
-    if (entity is BlueLowNetworkUserCalculationEntity
-      blueLowNetworkUserCalculationEntity)
-    {
-      return blueLowNetworkUserCalculationEntity.ToModel();
-    }
-
-    if (entity is WhiteLowNetworkUserCalculationEntity
-      whiteLowNetworkUserCalculationEntity)
-    {
-      return whiteLowNetworkUserCalculationEntity.ToModel();
-    }
-
-    if (entity is WhiteMediumNetworkUserCalculationEntity
-      whiteMediumNetworkUserCalculationEntity)
-    {
-      return whiteMediumNetworkUserCalculationEntity.ToModel();
-    }
-
-    throw new NotSupportedException(
-      $"NetworkUserCalculationEntity type {entity.GetType().Name} is not supported."
-    );
+    base.InitializeModel(entity, model);
+    model.UsageMeterFee = entity.UsageMeterFee is null
+      ? null!
+      : modelEntityConverter
+          .ToModel<UsageMeterFeeCalculationItemModel>(
+            entity.UsageMeterFee);
+    model.SupplyActiveEnergyTotalImportT1 = entity.SupplyActiveEnergyTotalImportT1 is null
+      ? null!
+      : modelEntityConverter
+          .ToModel<SupplyActiveEnergyTotalImportT1CalculationItemModel>(
+            entity.SupplyActiveEnergyTotalImportT1);
+    model.SupplyActiveEnergyTotalImportT2 = entity.SupplyActiveEnergyTotalImportT2 is null
+      ? null!
+      : modelEntityConverter
+          .ToModel<SupplyActiveEnergyTotalImportT2CalculationItemModel>(
+            entity.SupplyActiveEnergyTotalImportT2);
+    model.SupplyBusinessUsageFee = entity.SupplyBusinessUsageFee is null
+      ? null!
+      : modelEntityConverter
+          .ToModel<SupplyBusinessUsageCalculationItemModel>(
+            entity.SupplyBusinessUsageFee);
+    model.SupplyRenewableEnergyFee = entity.SupplyRenewableEnergyFee is null
+      ? null!
+      : modelEntityConverter
+          .ToModel<SupplyRenewableEnergyCalculationItemModel>(
+            entity.SupplyRenewableEnergyFee);
+    model.NetworkUserMeasurementLocationId =
+      entity.NetworkUserMeasurementLocationId;
+    model.ArchivedNetworkUserMeasurementLocation =
+      entity.ArchivedNetworkUserMeasurementLocation is null
+        ? null!
+        : modelEntityConverter
+            .ToModel<NetworkUserMeasurementLocationModel>(
+              entity.ArchivedNetworkUserMeasurementLocation);
+    model.SupplyRegulatoryCatalogueId =
+      entity.SupplyRegulatoryCatalogueId;
+    model.ArchivedSupplyRegulatoryCatalogue =
+      entity.ArchivedSupplyRegulatoryCatalogue is null
+        ? null!
+        : modelEntityConverter
+            .ToModel<RegulatoryCatalogueModel>(
+              entity.ArchivedSupplyRegulatoryCatalogue);
+    model.NetworkUserInvoiceId = entity.NetworkUserInvoiceId;
+    model.Kind = entity.Kind;
+    model.UsageFeeTotal_EUR = entity.UsageFeeTotal_EUR;
+    model.SupplyFeeTotal_EUR = entity.SupplyFeeTotal_EUR;
+    model.Total_EUR = entity.Total_EUR;
   }
 }

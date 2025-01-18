@@ -1,4 +1,3 @@
-using Ozds.Business.Conversion.Abstractions;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Iot.Entities.Abstractions;
 
@@ -6,47 +5,68 @@ namespace Ozds.Business.Conversion.Base;
 
 public abstract class ConcretePushRequestMeasurementConverter<
   TPushRequest,
-  TMeasurement> : IPushRequestMeasurementConverter
+  TMeasurement> : InitializingPushRequestMeasurementConverter
   where TMeasurement : IMeasurement
   where TPushRequest : IMeterPushRequestEntity
 {
   public abstract string MeterIdPrefix { get; }
 
-  public abstract TPushRequest ToPushRequest(TMeasurement measurement);
-
-  public abstract TMeasurement ToMeasurement(
-    TPushRequest pushRequest,
-    string measurementLocationId
+  public abstract void InitializePushRequest(
+    TMeasurement measurement,
+    TPushRequest pushRequest
   );
 
-  public virtual Type PushRequestType => typeof(TPushRequest);
+  public abstract void InitializeMeasurement(
+    TPushRequest pushRequest,
+    string measurementLocationId,
+    TMeasurement measurement
+  );
 
-  public virtual Type MeasurementType => typeof(TMeasurement);
+  public override Type PushRequestType => typeof(TPushRequest);
 
-  public virtual bool CanConvertToPushRequest(
+  public override Type MeasurementType => typeof(TMeasurement);
+
+  public override bool CanConvertToPushRequest(
     IMeasurement measurement
   )
   {
     return measurement.MeterId.StartsWith(MeterIdPrefix);
   }
 
-  public virtual bool CanConvertToMeasurement(
+  public override bool CanConvertToMeasurement(
     IMeterPushRequestEntity pushRequest
   )
   {
     return pushRequest.MeterId.StartsWith(MeterIdPrefix);
   }
 
-  public virtual IMeterPushRequestEntity ToPushRequest(IMeasurement measurement)
+  public override IMeterPushRequestEntity BoxPushRequest()
   {
-    return ToPushRequest((TMeasurement)measurement);
+    return Activator.CreateInstance<TPushRequest>();
   }
 
-  public virtual IMeasurement ToMeasurement(
-    IMeterPushRequestEntity pushRequest,
-    string measurementLocationId
-  )
+  public override IMeasurement BoxMeasurement()
   {
-    return ToMeasurement((TPushRequest)pushRequest, measurementLocationId);
+    return Activator.CreateInstance<TMeasurement>();
+  }
+
+  public override void InitializePushRequest(
+    IMeasurement measurement,
+    IMeterPushRequestEntity pushRequest)
+  {
+    InitializePushRequest(
+      (TMeasurement)measurement,
+      (TPushRequest)pushRequest);
+  }
+
+  public override void InitializeMeasurement(
+    IMeterPushRequestEntity pushRequest,
+    string measurementLocationId,
+    IMeasurement measurement)
+  {
+    InitializeMeasurement(
+      (TPushRequest)pushRequest,
+      measurementLocationId,
+      (TMeasurement)measurement);
   }
 }

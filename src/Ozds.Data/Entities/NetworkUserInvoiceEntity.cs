@@ -9,8 +9,9 @@ namespace Ozds.Data.Entities;
 
 public class NetworkUserInvoiceEntity : InvoiceEntity
 {
-  private long _networkUserId;
   public string? BillId { get; set; }
+
+  protected long _networkUserId;
 
   public virtual string NetworkUserId
   {
@@ -20,13 +21,23 @@ public class NetworkUserInvoiceEntity : InvoiceEntity
 
   public virtual NetworkUserEntity NetworkUser { get; set; } = default!;
 
-  public virtual ICollection<NetworkUserInvoiceNotificationEntity>
-    Notifications
-  { get; set; } = default!;
+  public NetworkUserEntity ArchivedNetworkUser { get; set; } = default!;
+
+  protected long _locationId;
+
+  public virtual string LocationId
+  {
+    get { return _locationId.ToString(); }
+    set { _locationId = long.Parse(value); }
+  }
+
+  public virtual LocationEntity Location { get; set; } = default!;
 
   public LocationEntity ArchivedLocation { get; set; } = default!;
 
-  public NetworkUserEntity ArchivedNetworkUser { get; set; } = default!;
+  public virtual ICollection<NetworkUserInvoiceNotificationEntity>
+    Notifications
+  { get; set; } = default!;
 
   public RegulatoryCatalogueEntity ArchivedRegulatoryCatalogue { get; set; } =
     default!;
@@ -79,10 +90,23 @@ public class
       .HasColumnName("network_user_id");
 
     builder
-      .ArchivedProperty(nameof(NetworkUserInvoiceEntity.ArchivedLocation));
+      .ArchivedProperty(nameof(NetworkUserInvoiceEntity.ArchivedNetworkUser));
 
     builder
-      .ArchivedProperty(nameof(NetworkUserInvoiceEntity.ArchivedNetworkUser));
+      .HasOne(nameof(NetworkUserInvoiceEntity.Location))
+      .WithMany(nameof(LocationEntity.Invoices))
+      .HasForeignKey("_locationId");
+
+    builder.Ignore(nameof(NetworkUserInvoiceEntity.LocationId));
+    builder
+      .Property("_locationId")
+      .HasColumnName("location_id");
+
+    builder
+      .Ignore(nameof(NetworkUserInvoiceEntity.LocationId));
+
+    builder
+      .ArchivedProperty(nameof(NetworkUserInvoiceEntity.ArchivedLocation));
 
     builder
       .ArchivedProperty(

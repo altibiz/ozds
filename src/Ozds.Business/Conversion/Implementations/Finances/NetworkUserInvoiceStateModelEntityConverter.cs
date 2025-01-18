@@ -1,54 +1,38 @@
 using Ozds.Business.Conversion.Base;
 using Ozds.Business.Models;
+using Ozds.Business.Models.Base;
 using Ozds.Messaging.Entities;
+using Ozds.Messaging.Entities.Base;
 
 namespace Ozds.Business.Conversion.Implementations.Finances;
 
-public class NetworkUserInvoiceStateModelEntityConverter :
-  ConcreteModelEntityConverter<
-    NetworkUserInvoiceStateModel,
-    NetworkUserInvoiceStateEntity>
+public class NetworkUserInvoiceStateEntityConverter(
+  IServiceProvider serviceProvider
+) : InheritingModelEntityConverter<
+      NetworkUserInvoiceStateModel,
+      StateModel,
+      NetworkUserInvoiceStateEntity,
+      StateEntity>(serviceProvider)
 {
-  protected override NetworkUserInvoiceStateEntity ToEntity(
-    NetworkUserInvoiceStateModel model
-  )
-  {
-    return model.ToEntity();
-  }
-
-  protected override NetworkUserInvoiceStateModel ToModel(
+  public override void InitializeEntity(
+    NetworkUserInvoiceStateModel model,
     NetworkUserInvoiceStateEntity entity
   )
   {
-    return entity.ToModel();
-  }
-}
-
-public static class NetworkUserInvoiceStateModelEntityConverterExtensions
-{
-  public static NetworkUserInvoiceStateModel ToModel(
-    this NetworkUserInvoiceStateEntity entity
-  )
-  {
-    return new()
-    {
-      CurrentState = entity.CurrentState,
-      NetworkUserInvoiceId = entity.NetworkUserInvoiceId,
-      BillId = entity.BillId,
-      AbortReason = entity.AbortReason
-    };
+    base.InitializeEntity(model, entity);
+    entity.NetworkUserInvoiceId = model.NetworkUserInvoiceId;
+    entity.BillId = model.BillId;
+    entity.AbortReason = model.AbortReason;
   }
 
-  public static NetworkUserInvoiceStateEntity ToEntity(
-    this NetworkUserInvoiceStateModel model
+  public override void InitializeModel(
+    NetworkUserInvoiceStateEntity entity,
+    NetworkUserInvoiceStateModel model
   )
   {
-    return new()
-    {
-      CurrentState = model.CurrentState,
-      NetworkUserInvoiceId = model.NetworkUserInvoiceId,
-      BillId = model.BillId,
-      AbortReason = model.AbortReason
-    };
+    base.InitializeModel(entity, model);
+    model.NetworkUserInvoiceId = entity.NetworkUserInvoiceId;
+    model.BillId = entity.BillId;
+    model.AbortReason = entity.AbortReason;
   }
 }

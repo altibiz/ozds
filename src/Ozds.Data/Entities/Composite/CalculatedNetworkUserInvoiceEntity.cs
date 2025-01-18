@@ -2,7 +2,10 @@ using Ozds.Data.Entities.Base;
 
 namespace Ozds.Data.Entities.Composite;
 
-public record CalculatedNetworkUserInvoiceEntity(
-  List<NetworkUserCalculationEntity> Calculations,
-  NetworkUserInvoiceEntity Invoice
-);
+public class CalculatedNetworkUserInvoiceEntity
+{
+  public List<NetworkUserCalculationEntity> Calculations { get; set; }
+    = default!;
+
+  public NetworkUserInvoiceEntity Invoice { get; set; } = default!;
+}

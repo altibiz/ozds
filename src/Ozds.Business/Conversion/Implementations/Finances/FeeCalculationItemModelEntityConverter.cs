@@ -1,54 +1,33 @@
 using Ozds.Business.Conversion.Base;
+using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Complex;
 using Ozds.Data.Entities.Complex;
 
 namespace Ozds.Business.Conversion.Implementations.Finances;
 
-public class FeeCalculationItemModelEntityConverter : ConcreteModelEntityConverter<
-  FeeCalculationItemModel, FeeCalculationItemEntity>
+public class FeeCalculationItemModelEntityConverter(
+  IServiceProvider serviceProvider
+) : InheritingModelEntityConverter<
+      FeeCalculationItemModel,
+      CalculationItemModel,
+      FeeCalculationItemEntity,
+      CalculationItemEntity>(serviceProvider)
 {
-  protected override FeeCalculationItemEntity ToEntity(
-    FeeCalculationItemModel model)
+  public override void InitializeEntity(
+    FeeCalculationItemModel model,
+    FeeCalculationItemEntity entity
+  )
   {
-    return model switch
-    {
-      UsageMeterFeeCalculationItemModel usageModel => usageModel.ToEntity(),
-      _ => throw new InvalidOperationException("Unknown tariff type")
-    };
+    base.InitializeEntity(model, entity);
+    entity.Amount_N = model.Amount_N;
   }
 
-  protected override FeeCalculationItemModel ToModel(
-    FeeCalculationItemEntity entity)
+  public override void InitializeModel(
+    FeeCalculationItemEntity entity,
+    FeeCalculationItemModel model
+  )
   {
-    return entity switch
-    {
-      UsageMeterFeeCalculationItemEntity usageEntity => usageEntity.ToModel(),
-      _ => throw new InvalidOperationException("Unknown tariff type")
-    };
-  }
-}
-
-public static class FeeCalculationItemModelEntityConverterExtensions
-{
-  public static UsageMeterFeeCalculationItemModel ToModel(
-    this UsageMeterFeeCalculationItemEntity entity)
-  {
-    return new UsageMeterFeeCalculationItemModel
-    {
-      Amount_N = entity.Amount_N,
-      Price_EUR = entity.Price_EUR,
-      Total_EUR = entity.Total_EUR
-    };
-  }
-
-  public static UsageMeterFeeCalculationItemEntity ToEntity(
-    this UsageMeterFeeCalculationItemModel model)
-  {
-    return new UsageMeterFeeCalculationItemEntity
-    {
-      Amount_N = model.Amount_N,
-      Price_EUR = model.Price_EUR,
-      Total_EUR = model.Total_EUR
-    };
+    base.InitializeModel(entity, model);
+    model.Amount_N = entity.Amount_N;
   }
 }

@@ -5,7 +5,7 @@ using Ozds.Messaging.Entities.Base;
 
 namespace Ozds.Messaging.Entities;
 
-public class NetworkUserInvoiceStateEntity : Entity
+public class NetworkUserInvoiceStateEntity : StateEntity
 {
   public string NetworkUserInvoiceId { get; set; } = default!;
 

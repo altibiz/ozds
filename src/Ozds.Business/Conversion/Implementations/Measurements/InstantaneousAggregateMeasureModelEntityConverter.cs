@@ -5,49 +5,33 @@ using Ozds.Data.Entities.Complex;
 
 namespace Ozds.Business.Conversion.Implementations.Measurements;
 
-public class InstantaneousAggregateMeasureModelEntityConverter
-  : ConcreteModelEntityConverter<
-    InstantaneousAggregateMeasureModel,
-    InstantaneousAggregateMeasureEntity>
+public class InstantaneousAggregateMeasureEntityConverter(
+  IServiceProvider serviceProvider
+) : InheritingModelEntityConverter<
+      InstantaneousAggregateMeasureModel,
+      AggregateMeasureModel,
+      InstantaneousAggregateMeasureEntity,
+      AggregateMeasureEntity>(serviceProvider)
 {
-  protected override InstantaneousAggregateMeasureEntity ToEntity(
-    InstantaneousAggregateMeasureModel model)
+  public override void InitializeEntity(
+    InstantaneousAggregateMeasureModel model,
+    InstantaneousAggregateMeasureEntity entity
+  )
   {
-    return model.ToEntity();
+    base.InitializeEntity(model, entity);
+    entity.Avg = model.Avg.ToFloat();
+    entity.MinTimestamp = model.MinTimestamp;
+    entity.MaxTimestamp = model.MaxTimestamp;
   }
 
-  protected override InstantaneousAggregateMeasureModel ToModel(
-    InstantaneousAggregateMeasureEntity entity)
+  public override void InitializeModel(
+    InstantaneousAggregateMeasureEntity entity,
+    InstantaneousAggregateMeasureModel model
+  )
   {
-    return entity.ToModel();
-  }
-}
-
-public static class InstantaneousAggregateMeasureModelEntityConverterExtensions
-{
-  public static InstantaneousAggregateMeasureEntity ToEntity(
-    this InstantaneousAggregateMeasureModel model)
-  {
-    return new InstantaneousAggregateMeasureEntity
-    {
-      Avg = model.Avg.ToFloat(),
-      Min = model.Min.ToFloat(),
-      Max = model.Max.ToFloat(),
-      MinTimestamp = model.MinTimestamp,
-      MaxTimestamp = model.MaxTimestamp
-    };
-  }
-
-  public static InstantaneousAggregateMeasureModel ToModel(
-    this InstantaneousAggregateMeasureEntity entity)
-  {
-    return new InstantaneousAggregateMeasureModel
-    {
-      Avg = entity.Avg.ToDecimal(),
-      Min = entity.Min.ToDecimal(),
-      Max = entity.Max.ToDecimal(),
-      MinTimestamp = entity.MinTimestamp,
-      MaxTimestamp = entity.MaxTimestamp
-    };
+    base.InitializeModel(entity, model);
+    model.Avg = entity.Avg.ToDecimal();
+    model.MinTimestamp = entity.MinTimestamp;
+    model.MaxTimestamp = entity.MaxTimestamp;
   }
 }

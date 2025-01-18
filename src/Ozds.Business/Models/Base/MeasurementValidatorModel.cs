@@ -7,6 +7,7 @@ namespace Ozds.Business.Models.Base;
 
 public abstract class MeasurementValidatorModel : AuditableModel
 {
+  public string Kind { get; set; } = default!;
 }
 
 public abstract class MeasurementValidatorModel<T> : MeasurementValidatorModel,
