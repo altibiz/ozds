@@ -28,16 +28,10 @@ public static class FeeCalculationItemEntityExtensions
     string prefix
   )
   {
+    builder.CalculationItem(prefix);
+
     builder
       .Property(nameof(FeeCalculationItemEntity.Amount_N))
       .HasColumnName($"{prefix}_fee_amount");
-
-    builder
-      .Property(nameof(FeeCalculationItemEntity.Price_EUR))
-      .HasColumnName($"{prefix}_fee_price_eur");
-
-    builder
-      .Property(nameof(FeeCalculationItemEntity.Total_EUR))
-      .HasColumnName($"{prefix}_total_eur");
   }
 }

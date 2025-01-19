@@ -22,6 +22,8 @@ public static class ActivePowerTotalImportT1PeakCalculationItemEntityExtensions
     this ComplexPropertyBuilder builder
   )
   {
+    builder.CalculationItem("svt");
+
     builder
       .Property(
         nameof(ActivePowerTotalImportT1PeakCalculationItemEntity.Peak_kW))
@@ -32,17 +34,5 @@ public static class ActivePowerTotalImportT1PeakCalculationItemEntityExtensions
         nameof(ActivePowerTotalImportT1PeakCalculationItemEntity
           .Amount_kW))
       .HasColumnName("svt_amount_kw");
-
-    builder
-      .Property(
-        nameof(ActivePowerTotalImportT1PeakCalculationItemEntity
-          .Price_EUR))
-      .HasColumnName("svt_price_eur");
-
-    builder
-      .Property(
-        nameof(ActivePowerTotalImportT1PeakCalculationItemEntity
-          .Total_EUR))
-      .HasColumnName("svt_total_eur");
   }
 }

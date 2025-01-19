@@ -30,6 +30,8 @@ public static class ReactiveEnergyTotalRampedT0CalculationItemEntityExtensions
     this ComplexPropertyBuilder builder
   )
   {
+    builder.CalculationItem("jen");
+
     builder
       .Property(
         nameof(ReactiveEnergyTotalRampedT0CalculationItemEntity
@@ -99,17 +101,5 @@ public static class ReactiveEnergyTotalRampedT0CalculationItemEntityExtensions
           .Amount_kVARh))
       .HasColumnName(
         "jen_ramped_amount_kvarh");
-
-    builder
-      .Property(
-        nameof(ReactiveEnergyTotalRampedT0CalculationItemEntity
-          .Price_EUR))
-      .HasColumnName("jen_ramped_price_eur");
-
-    builder
-      .Property(
-        nameof(ReactiveEnergyTotalRampedT0CalculationItemEntity
-          .Total_EUR))
-      .HasColumnName("jen_ramped_total_eur");
   }
 }

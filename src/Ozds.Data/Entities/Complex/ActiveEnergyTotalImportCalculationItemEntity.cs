@@ -105,6 +105,8 @@ public static class ActiveEnergyImportCalculationItemEntityExtensions
     string prefix
   )
   {
+    builder.CalculationItem(prefix);
+
     builder
       .Property(nameof(ActiveEnergyTotalImportCalculationItemEntity.Min_kWh))
       .HasColumnName(
@@ -119,15 +121,5 @@ public static class ActiveEnergyImportCalculationItemEntityExtensions
       .Property(nameof(ActiveEnergyTotalImportCalculationItemEntity.Amount_kWh))
       .HasColumnName(
         $"{prefix}_amount_kwh");
-
-    builder
-      .Property(nameof(ActiveEnergyTotalImportCalculationItemEntity.Price_EUR))
-      .HasColumnName(
-        $"{prefix}_price_eur");
-
-    builder
-      .Property(nameof(ActiveEnergyTotalImportCalculationItemEntity.Total_EUR))
-      .HasColumnName(
-        $"{prefix}_total_eur");
   }
 }
