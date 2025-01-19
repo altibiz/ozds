@@ -28,7 +28,6 @@ public class EventModelEntityConverter(IServiceProvider serviceProvider)
     entity.Timestamp = model.Timestamp;
     entity.Level = modelEntityConverter.ToEntity<LevelEntity>(model.Level);
     entity.Content = model.Content;
-    entity.Kind = model.Kind;
   }
 
   public override void InitializeModel(
@@ -43,6 +42,5 @@ public class EventModelEntityConverter(IServiceProvider serviceProvider)
     model.Timestamp = entity.Timestamp;
     model.Level = modelEntityConverter.ToModel<LevelModel>(entity.Level);
     model.Content = entity.Content;
-    model.Kind = entity.Kind;
   }
 }

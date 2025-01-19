@@ -125,7 +125,6 @@ public class
     var initial = new WhiteMediumNetworkUserCalculationModel
     {
       Id = default!,
-      Kind = default!,
       Title =
         $"{usageCatalogue.Title} calculation for "
         + $"{calculationBasis.NetworkUser.Title} at "

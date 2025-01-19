@@ -11,7 +11,6 @@ public interface INetworkUserCalculation : ICalculation
   public string SupplyRegulatoryCatalogueId { get; }
   public string NetworkUserInvoiceId { get; }
   public string NetworkUserMeasurementLocationId { get; }
-  public string Kind { get; }
   public NetworkUserCatalogueModel ArchivedUsageNetworkUserCatalogue { get; }
   public RegulatoryCatalogueModel ArchivedSupplyRegulatoryCatalogue { get; }
 

@@ -124,7 +124,6 @@ public class
     var initial = new RedLowNetworkUserCalculationModel
     {
       Id = default!,
-      Kind = default!,
       Title =
         $"{usageCatalogue.Title} calculation for "
         + $"{calculationBasis.NetworkUser.Title} at "

@@ -9,7 +9,4 @@ public abstract class MeasurementLocationModel :
 {
   [Required]
   public required string MeterId { get; set; }
-
-  [Required]
-  public required string Kind { get; set; }
 }

@@ -114,7 +114,6 @@ public class
     var initial = new WhiteLowNetworkUserCalculationModel
     {
       Id = default!,
-      Kind = default!,
       Title =
         $"{usageCatalogue.Title} calculation for "
         + $"{calculationBasis.NetworkUser.Title} at "

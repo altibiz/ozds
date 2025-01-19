@@ -19,7 +19,6 @@ public class MeasurementLocationEntityConverter(
   {
     base.InitializeEntity(model, entity);
     entity.MeterId = model.MeterId;
-    entity.Kind = model.Kind;
   }
 
   public override void InitializeModel(
@@ -29,6 +28,5 @@ public class MeasurementLocationEntityConverter(
   {
     base.InitializeModel(entity, model);
     model.MeterId = entity.MeterId;
-    model.Kind = entity.Kind;
   }
 }

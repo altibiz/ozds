@@ -13,6 +13,5 @@ public class MeasurementLocationModelActivator(
   {
     base.Initialize(model);
     model.MeterId = "0";
-    model.Kind = string.Empty;
   }
 }

@@ -12,21 +12,4 @@ public class MeasurementValidatorModelEntityConverter(
       MeasurementValidatorEntity,
       AuditableEntity>(serviceProvider)
 {
-  public override void InitializeEntity(
-    MeasurementValidatorModel model,
-    MeasurementValidatorEntity entity
-  )
-  {
-    base.InitializeEntity(model, entity);
-    entity.Kind = model.Kind;
-  }
-
-  public override void InitializeModel(
-    MeasurementValidatorEntity entity,
-    MeasurementValidatorModel model
-  )
-  {
-    base.InitializeModel(entity, model);
-    model.Kind = entity.Kind;
-  }
 }

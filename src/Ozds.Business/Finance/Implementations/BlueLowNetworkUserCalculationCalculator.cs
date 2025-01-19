@@ -25,7 +25,8 @@ public class
 
     var usageActiveEnergyTotalImportT0 = _calculationItemCalculator
       .Calculate<UsageActiveEnergyTotalImportT0CalculationItemModel>(
-        new CalculationItemBasisModel {
+        new CalculationItemBasisModel
+        {
           Aggregates = calculationBasis.Aggregates,
           Price_EUR = usageCatalogue.ActiveEnergyTotalImportT0Price_EUR
         }
@@ -33,7 +34,8 @@ public class
 
     var usageReactiveEnergyTotalRampedT0 = _calculationItemCalculator
       .Calculate<UsageReactiveEnergyTotalRampedT0CalculationItemModel>(
-        new CalculationItemBasisModel {
+        new CalculationItemBasisModel
+        {
           Aggregates = calculationBasis.Aggregates,
           Price_EUR = usageCatalogue.ReactiveEnergyTotalRampedT0Price_EUR
         }
@@ -41,7 +43,8 @@ public class
 
     var usageMeterFee = _calculationItemCalculator
       .Calculate<UsageMeterFeeCalculationItemModel>(
-        new CalculationItemBasisModel {
+        new CalculationItemBasisModel
+        {
           Aggregates = calculationBasis.Aggregates,
           Price_EUR = usageCatalogue.MeterFeePrice_EUR
         }
@@ -55,7 +58,8 @@ public class
 
     var supplyActiveEnergyTotalImportT1 = _calculationItemCalculator
       .Calculate<SupplyActiveEnergyTotalImportT1CalculationItemModel>(
-        new CalculationItemBasisModel {
+        new CalculationItemBasisModel
+        {
           Aggregates = calculationBasis.Aggregates,
           Price_EUR = supplyCatalogue.ActiveEnergyTotalImportT1Price_EUR
         }
@@ -63,7 +67,8 @@ public class
 
     var supplyActiveEnergyTotalImportT2 = _calculationItemCalculator
       .Calculate<SupplyActiveEnergyTotalImportT2CalculationItemModel>(
-        new CalculationItemBasisModel {
+        new CalculationItemBasisModel
+        {
           Aggregates = calculationBasis.Aggregates,
           Price_EUR = supplyCatalogue.ActiveEnergyTotalImportT2Price_EUR
         }
@@ -71,7 +76,8 @@ public class
 
     var supplyBusinessUsageFee = _calculationItemCalculator
       .Calculate<SupplyBusinessUsageCalculationItemModel>(
-        new CalculationItemBasisModel {
+        new CalculationItemBasisModel
+        {
           Aggregates = calculationBasis.Aggregates,
           Price_EUR = supplyCatalogue.BusinessUsageFeePrice_EUR
         }
@@ -79,7 +85,8 @@ public class
 
     var supplyRenewableEnergyFee = _calculationItemCalculator
       .Calculate<SupplyRenewableEnergyCalculationItemModel>(
-        new CalculationItemBasisModel {
+        new CalculationItemBasisModel
+        {
           Aggregates = calculationBasis.Aggregates,
           Price_EUR = supplyCatalogue.RenewableEnergyFeePrice_EUR
         }
@@ -97,7 +104,6 @@ public class
     var initial = new BlueLowNetworkUserCalculationModel
     {
       Id = default!,
-      Kind = default!,
       Title =
         $"{usageCatalogue.Title} calculation for "
         + $"{calculationBasis.NetworkUser.Title} at "
