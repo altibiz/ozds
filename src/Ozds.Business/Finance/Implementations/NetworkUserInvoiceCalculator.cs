@@ -127,13 +127,14 @@ public class NetworkUserInvoiceCalculator(
     var tax = System.Math.Round(total * taxRate / 100M, 2);
     var totalWithTax = System.Math.Round(total + tax, 2);
 
-    var initial = new NetworkUserInvoiceModel
+    var invoice = new NetworkUserInvoiceModel
     {
       Id = httpContextAccessor.HttpContext?.User.FindFirstValue("id")!,
       Title =
         $"Invoice for {basis.NetworkUser.Title} at {basis.Location.Title}",
       IssuedById = default!,
       IssuedOn = DateTimeOffset.UtcNow,
+      LocationId = basis.Location.Id,
       NetworkUserId = basis.NetworkUser.Id,
       FromDate = basis.FromDate,
       ToDate = basis.ToDate,
@@ -157,14 +158,15 @@ public class NetworkUserInvoiceCalculator(
       SupplyRenewableEnergyFee_EUR = supplyRenewableEnergyFee,
       SupplyFeeTotal_EUR = supplyFeeTotal,
       Total_EUR = total,
-      TaxRate_Percent = taxRate,
-      Tax_EUR = tax,
-      TotalWithTax_EUR = totalWithTax
+      InvoiceTaxRate_Percent = taxRate,
+      InvoiceTax_EUR = tax,
+      InvoiceTotalWithTax_EUR = totalWithTax
     };
 
-    return new CalculatedNetworkUserInvoiceModel(
-      Invoice: initial,
-      Calculations: calculations
-    );
+    return new CalculatedNetworkUserInvoiceModel
+    {
+      Invoice = invoice,
+      Calculations = calculations
+    };
   }
 }
