@@ -37,7 +37,10 @@ public class NetworkUserInvoiceModelEntityConverter(
         : modelEntityConverter.ToEntity<NetworkUserEntity>(
             model.ArchivedNetworkUser);
     entity.ArchivedRegulatoryCatalogue =
-      model.ArchivedRegulatoryCatalogue.ToEntity();
+      model.ArchivedRegulatoryCatalogue is null
+        ? null!
+        : modelEntityConverter.ToEntity<RegulatoryCatalogueEntity>(
+            model.ArchivedRegulatoryCatalogue);
     entity.UsageActiveEnergyTotalImportT0Fee_EUR =
       model.UsageActiveEnergyTotalImportT0Fee_EUR;
     entity.UsageActiveEnergyTotalImportT1Fee_EUR =
