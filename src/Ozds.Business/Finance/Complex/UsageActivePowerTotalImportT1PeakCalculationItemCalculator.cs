@@ -17,7 +17,7 @@ public class UsageActivePowerTotalImportT1PeakCalculationItemCalculator :
       {
         Peak_kW = 0,
         Amount_kW = 0,
-        Price_EUR = calculationBasis.Price,
+        Price_EUR = calculationBasis.Price_EUR,
         Total_EUR = 0
       };
     }
@@ -38,7 +38,7 @@ public class UsageActivePowerTotalImportT1PeakCalculationItemCalculator :
 
     var amountKilo = System.Math.Round(peakKilo, 0);
 
-    var price = System.Math.Round(calculationBasis.Price, 3);
+    var price = System.Math.Round(calculationBasis.Price_EUR, 3);
 
     var total = System.Math.Round(amountKilo * price, 2);
 

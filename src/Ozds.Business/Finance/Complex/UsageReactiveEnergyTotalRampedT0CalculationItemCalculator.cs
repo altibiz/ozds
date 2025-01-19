@@ -25,7 +25,7 @@ public class UsageReactiveEnergyTotalRampedT0CalculationItemCalculator :
         ActiveImportMin_kWh = 0,
         ActiveImportMax_kWh = 0,
         ActiveImportAmount_kWh = 0,
-        Price_EUR = calculationBasis.Price,
+        Price_EUR = calculationBasis.Price_EUR,
         Amount_kVARh = 0,
         Total_EUR = 0
       };
@@ -122,7 +122,7 @@ public class UsageReactiveEnergyTotalRampedT0CalculationItemCalculator :
       0);
 
     var price = System.Math.Round(
-      calculationBasis.Price,
+      calculationBasis.Price_EUR,
       6);
 
     var total = System.Math.Round(

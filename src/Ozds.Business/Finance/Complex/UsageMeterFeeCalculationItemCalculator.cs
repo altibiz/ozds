@@ -12,7 +12,7 @@ public class UsageMeterFeeCalculationItemCalculator :
   {
     var amount = System.Math.Round(1M, 0);
 
-    var price = System.Math.Round(calculationBasis.Price, 3);
+    var price = System.Math.Round(calculationBasis.Price_EUR, 3);
 
     var total = System.Math.Round(amount * price, 2);
 

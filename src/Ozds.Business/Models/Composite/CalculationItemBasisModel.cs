@@ -6,5 +6,5 @@ public class CalculationItemBasisModel
 {
   public List<AggregateModel> Aggregates { get; set; } = default!;
 
-  public decimal Price { get; set; }
+  public decimal Price_EUR { get; set; }
 }

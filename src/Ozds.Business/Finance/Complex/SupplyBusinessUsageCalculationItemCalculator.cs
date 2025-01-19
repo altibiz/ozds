@@ -17,7 +17,7 @@ public class SupplyBusinessUsageCalculationItemCalculator :
         Min_kWh = 0,
         Max_kWh = 0,
         Amount_kWh = 0,
-        Price_EUR = calculationBasis.Price,
+        Price_EUR = calculationBasis.Price_EUR,
         Total_EUR = 0
       };
     }
@@ -46,7 +46,7 @@ public class SupplyBusinessUsageCalculationItemCalculator :
 
     var amountKilo = System.Math.Round(maxKilo - minKilo, 0);
 
-    var price = System.Math.Round(calculationBasis.Price, 6);
+    var price = System.Math.Round(calculationBasis.Price_EUR, 6);
 
     var total = System.Math.Round(amountKilo * price, 2);
 
