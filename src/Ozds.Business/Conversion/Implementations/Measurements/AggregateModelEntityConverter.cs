@@ -38,7 +38,7 @@ public class AggregateModelEntityConverter(IServiceProvider serviceProvider)
     model.Interval = modelEntityConverter.ToModel<IntervalModel>(
       entity.Interval);
     model.Timestamp = entity.Timestamp;
-    entity.MeterId = model.MeterId;
+    model.MeterId = entity.MeterId;
     model.MeasurementLocationId = entity.MeasurementLocationId;
   }
 }

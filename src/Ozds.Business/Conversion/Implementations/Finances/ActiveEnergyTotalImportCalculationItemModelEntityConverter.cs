@@ -92,7 +92,7 @@ public class SupplyBusinessUsageCalculationItemModelEntityConverter(
 ) : InheritingModelEntityConverter<
       SupplyBusinessUsageCalculationItemModel,
       ActiveEnergyTotalImportCalculationItemModel,
-      SupplyBusinessUsageFeeCalculationItemEntity,
+      SupplyBusinessUsageCalculationItemEntity,
       ActiveEnergyTotalImportCalculationItemEntity>(serviceProvider)
 {
 }
@@ -102,7 +102,7 @@ public class SupplyRenewableEnergyCalculationItemModelEntityConverter(
 ) : InheritingModelEntityConverter<
       SupplyRenewableEnergyCalculationItemModel,
       ActiveEnergyTotalImportCalculationItemModel,
-      SupplyRenewableEnergyFeeCalculationItemEntity,
+      SupplyRenewableEnergyCalculationItemEntity,
       ActiveEnergyTotalImportCalculationItemEntity>(serviceProvider)
 {
 }

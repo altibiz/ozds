@@ -26,6 +26,8 @@ public class RedLowNetworkUserCalculationModelActivator(
       .Activate<UsageActiveEnergyTotalImportT2CalculationItemModel>();
     model.UsageReactiveEnergyTotalRampedT0 = modelActivator
       .Activate<UsageReactiveEnergyTotalRampedT0CalculationItemModel>();
+    model.UsageActivePowerTotalImportT1Peak = modelActivator
+      .Activate<UsageActivePowerTotalImportT1PeakCalculationItemModel>();
     model.ConcreteArchivedUsageNetworkUserCatalogue = default!;
   }
 }

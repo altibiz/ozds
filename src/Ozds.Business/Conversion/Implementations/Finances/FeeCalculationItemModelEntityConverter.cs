@@ -32,3 +32,13 @@ public class FeeCalculationItemModelEntityConverter(
     model.Amount_N = entity.Amount_N;
   }
 }
+
+public class UsageMeterFeeCalculationItemModelEntityConverter(
+  IServiceProvider serviceProvider
+) : InheritingModelEntityConverter<
+      UsageMeterFeeCalculationItemModel,
+      FeeCalculationItemModel,
+      UsageMeterFeeCalculationItemEntity,
+      FeeCalculationItemEntity>(serviceProvider)
+{
+}

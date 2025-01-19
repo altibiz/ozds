@@ -57,14 +57,14 @@ public class NetworkUserCalculationEntity
     SupplyActiveEnergyTotalImportT2
   { get; set; } = default!;
 
-  public SupplyBusinessUsageFeeCalculationItemEntity SupplyBusinessUsageFee
+  public SupplyBusinessUsageCalculationItemEntity SupplyBusinessUsageFee
   {
     get;
     set;
   } =
     default!;
 
-  public SupplyRenewableEnergyFeeCalculationItemEntity SupplyRenewableEnergyFee
+  public SupplyRenewableEnergyCalculationItemEntity SupplyRenewableEnergyFee
   {
     get;
     set;

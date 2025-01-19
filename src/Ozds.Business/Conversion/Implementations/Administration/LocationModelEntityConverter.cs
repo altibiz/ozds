@@ -1,9 +1,9 @@
 using Ozds.Business.Conversion.Base;
 using Ozds.Business.Models;
-using Ozds.Business.Models.Abstractions;
+using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Complex;
 using Ozds.Data.Entities;
-using Ozds.Data.Entities.Abstractions;
+using Ozds.Data.Entities.Base;
 using Ozds.Data.Entities.Complex;
 
 namespace Ozds.Business.Conversion.Implementations.Administration;
@@ -11,9 +11,9 @@ namespace Ozds.Business.Conversion.Implementations.Administration;
 public class LocationModelEntityConverter(IServiceProvider serviceProvider)
   : InheritingModelEntityConverter<
       LocationModel,
-      IAuditable,
+      AuditableModel,
       LocationEntity,
-      IAuditableEntity>(serviceProvider)
+      AuditableEntity>(serviceProvider)
 {
   private readonly ModelEntityConverter modelEntityConverter =
     serviceProvider.GetRequiredService<ModelEntityConverter>();
@@ -33,7 +33,7 @@ public class LocationModelEntityConverter(IServiceProvider serviceProvider)
       model.RedLowNetworkUserCatalogueId;
     entity.RegulatoryCatalogueId = model.RegulatoryCatalogueId;
     entity.LegalPerson =
-      entity.LegalPerson is null
+      model.LegalPerson is null
         ? null!
         : modelEntityConverter
             .ToEntity<LegalPersonEntity>(model.LegalPerson);

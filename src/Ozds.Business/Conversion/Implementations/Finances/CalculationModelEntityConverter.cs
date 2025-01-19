@@ -7,8 +7,8 @@ namespace Ozds.Business.Conversion.Implementations.Finances;
 public class CalculationModelEntityConverter(IServiceProvider serviceProvider)
   : InheritingModelEntityConverter<
       CalculationModel,
-      IdentifiableModel,
+      FinancialModel,
       CalculationEntity,
-      IdentifiableEntity>(serviceProvider)
+      FinancialEntity>(serviceProvider)
 {
 }

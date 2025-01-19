@@ -55,6 +55,14 @@ public class WhiteLowNetworkUserCalculationModelEntityConverter(
       ? null!
       : modelEntityConverter.ToEntity<UsageMeterFeeCalculationItemEntity>(
         model.UsageMeterFee);
+    entity.UsageNetworkUserCatalogueId =
+      model.UsageNetworkUserCatalogueId;
+    entity.ArchivedUsageNetworkUserCatalogue =
+      model.ConcreteArchivedUsageNetworkUserCatalogue is null
+        ? null!
+        : modelEntityConverter.ToEntity<
+            WhiteLowNetworkUserCatalogueEntity>(
+              model.ConcreteArchivedUsageNetworkUserCatalogue);
   }
 
   public override void InitializeModel(
@@ -93,5 +101,13 @@ public class WhiteLowNetworkUserCalculationModelEntityConverter(
       ? null!
       : modelEntityConverter.ToModel<UsageMeterFeeCalculationItemModel>(
         entity.UsageMeterFee);
+    model.UsageNetworkUserCatalogueId =
+      entity.UsageNetworkUserCatalogueId;
+    model.ConcreteArchivedUsageNetworkUserCatalogue =
+      entity.ArchivedUsageNetworkUserCatalogue is null
+        ? null!
+        : modelEntityConverter.ToModel<
+            WhiteLowNetworkUserCatalogueModel>(
+              entity.ArchivedUsageNetworkUserCatalogue);
   }
 }

@@ -36,6 +36,14 @@ public class BlueLowNetworkUserCalculationModelEntityConverter(
         : modelEntityConverter.ToEntity<
             UsageReactiveEnergyTotalRampedT0CalculationItemEntity>(
               model.UsageReactiveEnergyTotalRampedT0);
+    entity.UsageNetworkUserCatalogueId =
+      model.UsageNetworkUserCatalogueId;
+    entity.ArchivedUsageNetworkUserCatalogue =
+      model.ConcreteArchivedUsageNetworkUserCatalogue is null
+        ? null!
+        : modelEntityConverter.ToEntity<
+            BlueLowNetworkUserCatalogueEntity>(
+              model.ConcreteArchivedUsageNetworkUserCatalogue);
   }
 
   public override void InitializeModel(
@@ -55,5 +63,13 @@ public class BlueLowNetworkUserCalculationModelEntityConverter(
         : modelEntityConverter
             .ToModel<UsageReactiveEnergyTotalRampedT0CalculationItemModel>(
               entity.UsageReactiveEnergyTotalRampedT0);
+    model.UsageNetworkUserCatalogueId =
+      entity.UsageNetworkUserCatalogueId;
+    model.ConcreteArchivedUsageNetworkUserCatalogue =
+      entity.ArchivedUsageNetworkUserCatalogue is null
+        ? null!
+        : modelEntityConverter.ToModel<
+            BlueLowNetworkUserCatalogueModel>(
+              entity.ArchivedUsageNetworkUserCatalogue);
   }
 }

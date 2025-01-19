@@ -2,7 +2,9 @@ using Ozds.Business.Conversion.Base;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Complex;
+using Ozds.Data.Entities;
 using Ozds.Data.Entities.Base;
+using Ozds.Data.Entities.Complex;
 
 namespace Ozds.Business.Conversion.Implementations.Finances;
 
@@ -23,59 +25,60 @@ public class NetworkUserCalculationModelEntityConverter(
   )
   {
     base.InitializeEntity(model, entity);
-    model.UsageMeterFee =
-      entity.UsageMeterFee is null
+    entity.UsageMeterFee = model.UsageMeterFee is null
+      ? null!
+      : modelEntityConverter
+          .ToEntity<UsageMeterFeeCalculationItemEntity>(
+            model.UsageMeterFee);
+    entity.SupplyActiveEnergyTotalImportT1 =
+      model.SupplyActiveEnergyTotalImportT1 is null
         ? null!
-        : modelEntityConverter
-            .ToModel<UsageMeterFeeCalculationItemModel>(
-              entity.UsageMeterFee);
-    model.SupplyActiveEnergyTotalImportT1 =
-      entity.SupplyActiveEnergyTotalImportT1 is null
+        : modelEntityConverter.ToEntity<
+            SupplyActiveEnergyTotalImportT1CalculationItemEntity>(
+              model.SupplyActiveEnergyTotalImportT1);
+    entity.SupplyActiveEnergyTotalImportT2 =
+      model.SupplyActiveEnergyTotalImportT2 is null
         ? null!
-        : modelEntityConverter
-            .ToModel<SupplyActiveEnergyTotalImportT1CalculationItemModel>(
-              entity.SupplyActiveEnergyTotalImportT1);
-    model.SupplyActiveEnergyTotalImportT2 =
-      entity.SupplyActiveEnergyTotalImportT2 is null
+        : modelEntityConverter.ToEntity<
+            SupplyActiveEnergyTotalImportT2CalculationItemEntity>(
+              model.SupplyActiveEnergyTotalImportT2);
+    entity.SupplyBusinessUsageFee =
+      model.SupplyBusinessUsageFee is null
         ? null!
-        : modelEntityConverter
-            .ToModel<SupplyActiveEnergyTotalImportT2CalculationItemModel>(
-              entity.SupplyActiveEnergyTotalImportT2);
-    model.SupplyBusinessUsageFee =
-      entity.SupplyBusinessUsageFee is null
+        : modelEntityConverter.ToEntity<
+            SupplyBusinessUsageCalculationItemEntity>(
+              model.SupplyBusinessUsageFee);
+    entity.SupplyRenewableEnergyFee =
+      model.SupplyRenewableEnergyFee is null
         ? null!
-        : modelEntityConverter
-            .ToModel<SupplyBusinessUsageCalculationItemModel>(
-              entity.SupplyBusinessUsageFee);
-    model.SupplyRenewableEnergyFee =
-      entity.SupplyRenewableEnergyFee is null
+        : modelEntityConverter.ToEntity<
+            SupplyRenewableEnergyCalculationItemEntity>(
+              model.SupplyRenewableEnergyFee);
+    entity.NetworkUserMeasurementLocationId =
+      model.NetworkUserMeasurementLocationId;
+    entity.ArchivedNetworkUserMeasurementLocation =
+      model.ArchivedNetworkUserMeasurementLocation is null
         ? null!
-        : modelEntityConverter
-            .ToModel<SupplyRenewableEnergyCalculationItemModel>(
-              entity.SupplyRenewableEnergyFee);
-    model.NetworkUserMeasurementLocationId =
-      entity.NetworkUserMeasurementLocationId;
-    model.ArchivedNetworkUserMeasurementLocation =
-      entity.ArchivedNetworkUserMeasurementLocation is null
+        : modelEntityConverter.ToEntity<
+            NetworkUserMeasurementLocationEntity>(
+              model.ArchivedNetworkUserMeasurementLocation);
+    entity.SupplyRegulatoryCatalogueId =
+      model.SupplyRegulatoryCatalogueId;
+    entity.ArchivedSupplyRegulatoryCatalogue =
+      model.ArchivedSupplyRegulatoryCatalogue is null
         ? null!
-        : modelEntityConverter
-            .ToModel<NetworkUserMeasurementLocationModel>(
-              entity.ArchivedNetworkUserMeasurementLocation);
-    model.SupplyRegulatoryCatalogueId =
-      entity.SupplyRegulatoryCatalogueId;
-    model.ArchivedSupplyRegulatoryCatalogue =
-      entity.ArchivedSupplyRegulatoryCatalogue is null
-        ? null!
-        : modelEntityConverter
-            .ToModel<RegulatoryCatalogueModel>(
-              entity.ArchivedSupplyRegulatoryCatalogue);
+        : modelEntityConverter.ToEntity<
+            RegulatoryCatalogueEntity>(
+              model.ArchivedSupplyRegulatoryCatalogue);
+    entity.NetworkUserInvoiceId = model.NetworkUserInvoiceId;
     entity.MeterId = model.MeterId;
-    entity.ArchivedMeter = model.ArchivedMeter is null ? null! :
-      modelEntityConverter.ToEntity<MeterEntity>(model.ArchivedMeter);
-    model.NetworkUserInvoiceId = entity.NetworkUserInvoiceId;
-    model.UsageFeeTotal_EUR = entity.UsageFeeTotal_EUR;
-    model.SupplyFeeTotal_EUR = entity.SupplyFeeTotal_EUR;
-    model.Total_EUR = entity.Total_EUR;
+    entity.ArchivedMeter = model.ArchivedMeter is null
+      ? null!
+      : modelEntityConverter.ToEntity<MeterEntity>(
+          model.ArchivedMeter);
+    entity.UsageFeeTotal_EUR = model.UsageFeeTotal_EUR;
+    entity.SupplyFeeTotal_EUR = model.SupplyFeeTotal_EUR;
+    entity.Total_EUR = model.Total_EUR;
   }
 
   public override void InitializeModel(

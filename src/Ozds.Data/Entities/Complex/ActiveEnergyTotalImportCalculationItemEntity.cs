@@ -38,13 +38,13 @@ public class SupplyActiveEnergyTotalImportT2CalculationItemEntity
 }
 
 public class
-  SupplyBusinessUsageFeeCalculationItemEntity :
+  SupplyBusinessUsageCalculationItemEntity :
   ActiveEnergyTotalImportCalculationItemEntity
 {
 }
 
 public class
-  SupplyRenewableEnergyFeeCalculationItemEntity :
+  SupplyRenewableEnergyCalculationItemEntity :
   ActiveEnergyTotalImportCalculationItemEntity
 {
 }

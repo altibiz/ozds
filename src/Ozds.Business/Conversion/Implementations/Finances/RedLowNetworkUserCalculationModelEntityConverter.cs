@@ -57,6 +57,14 @@ public class RedLowNetworkUserCalculationModelEntityConverter(
         : modelEntityConverter.ToEntity<
             UsageReactiveEnergyTotalRampedT0CalculationItemEntity>(
               model.UsageReactiveEnergyTotalRampedT0);
+    entity.UsageNetworkUserCatalogueId =
+      model.UsageNetworkUserCatalogueId;
+    entity.ArchivedUsageNetworkUserCatalogue =
+      model.ConcreteArchivedUsageNetworkUserCatalogue is null
+        ? null!
+        : modelEntityConverter.ToEntity<
+            RedLowNetworkUserCatalogueEntity>(
+              model.ConcreteArchivedUsageNetworkUserCatalogue);
   }
 
   public override void InitializeModel(
@@ -97,5 +105,13 @@ public class RedLowNetworkUserCalculationModelEntityConverter(
         : modelEntityConverter.ToModel<
             UsageReactiveEnergyTotalRampedT0CalculationItemModel>(
               entity.UsageReactiveEnergyTotalRampedT0);
+    model.UsageNetworkUserCatalogueId =
+      entity.UsageNetworkUserCatalogueId;
+    model.ConcreteArchivedUsageNetworkUserCatalogue =
+      entity.ArchivedUsageNetworkUserCatalogue is null
+        ? null!
+        : modelEntityConverter.ToModel<
+            RedLowNetworkUserCatalogueModel>(
+              entity.ArchivedUsageNetworkUserCatalogue);
   }
 }
