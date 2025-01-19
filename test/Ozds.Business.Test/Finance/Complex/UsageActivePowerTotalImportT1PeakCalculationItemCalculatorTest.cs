@@ -115,10 +115,10 @@ public class UsageActivePowerTotalImportT1PeakCalculationItemCalculatorTest
       .Append(noiseAggregates.Last())
       .ToList<AggregateModel>();
 
-    var input = new CalculationItemBasisModel(
-      aggregates,
-      expected.Price_EUR
-    );
+    var input = new CalculationItemBasisModel {
+      Aggregates = aggregates,
+      Price_EUR = expected.Price_EUR
+    };
 
     var calculator =
       new UsageActivePowerTotalImportT1PeakCalculationItemCalculator();

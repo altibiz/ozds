@@ -203,10 +203,10 @@ public class UsageReactiveEnergyTotalRampedT0CalculationItemCalculatorTest
       .OrderBy(_ => Random.Shared.Next())
       .ToList<AggregateModel>();
 
-    var input = new CalculationItemBasisModel(
-      aggregates,
-      expected.Price_EUR
-    );
+    var input = new CalculationItemBasisModel {
+      Aggregates = aggregates,
+      Price_EUR = expected.Price_EUR
+    };
 
     var calculator =
       new UsageReactiveEnergyTotalRampedT0CalculationItemCalculator();
