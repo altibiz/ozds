@@ -94,7 +94,6 @@ public class NetworkUserCalculationEntity
   public string MeterId { get; set; } = default!;
 
   public MeterEntity ArchivedMeter { get; set; } = default!;
-
 }
 
 public class
