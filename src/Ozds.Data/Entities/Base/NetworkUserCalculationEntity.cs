@@ -88,6 +88,13 @@ public class NetworkUserCalculationEntity
     default!;
 
   public string Kind { get; set; } = default!;
+
+  public virtual MeterEntity Meter { get; set; } = default!;
+
+  public string MeterId { get; set; } = default!;
+
+  public MeterEntity ArchivedMeter { get; set; } = default!;
+
 }
 
 public class
@@ -200,6 +207,14 @@ public class
         nameof(NetworkUserCalculationEntity
           .SupplyRenewableEnergyFee))
       .SupplyRenewableEnergyCalculationItem();
+
+    builder
+      .HasOne(nameof(NetworkUserCalculationEntity.Meter))
+      .WithMany(nameof(MeterEntity.NetworkUserCalculations))
+      .HasForeignKey(nameof(NetworkUserCalculationEntity.MeterId));
+
+    builder
+      .ArchivedProperty(nameof(NetworkUserCalculationEntity.ArchivedMeter));
 
     if (entity != typeof(NetworkUserCalculationEntity))
     {
