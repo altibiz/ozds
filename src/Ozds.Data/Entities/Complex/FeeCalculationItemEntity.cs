@@ -28,7 +28,7 @@ public static class FeeCalculationItemEntityExtensions
     string prefix
   )
   {
-    builder.CalculationItem(prefix);
+    builder.CalculationItem($"{prefix}_fee");
 
     builder
       .Property(nameof(FeeCalculationItemEntity.Amount_N))

@@ -38,7 +38,7 @@ public static class DbContextTrackingExtensions
     this DbContext context,
     object entity,
     ICollection<T> collection)
-    where T : notnull
+    where T : class
   {
     var entry = context.FindEntry(entity);
 
@@ -59,13 +59,14 @@ public static class DbContextTrackingExtensions
       .ToList();
   }
 
-  public static EntityEntry FindEntry(
+  public static EntityEntry<T> FindEntry<T>(
     this DbContext context,
-    object entity
+    T entity
   )
+    where T : class
   {
     var entry = context.ChangeTracker
-      .Entries()
+      .Entries<T>()
       .FirstOrDefault(entry => entry.HasSamePrimaryKey(entity));
     if (entry is null)
     {

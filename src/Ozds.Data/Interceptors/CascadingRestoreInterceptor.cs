@@ -6,12 +6,12 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Interceptors;
 
-public class CascadingDeleteInterceptor(IServiceProvider serviceProvider)
+public class CascadingRestoreInterceptor(IServiceProvider serviceProvider)
   : ServedSaveChangesInterceptor(serviceProvider)
 {
   public override int Order
   {
-    get { return 10; }
+    get { return 11; }
   }
 
   public override InterceptionResult<int> SavingChanges(
@@ -19,7 +19,7 @@ public class CascadingDeleteInterceptor(IServiceProvider serviceProvider)
     InterceptionResult<int> result
   )
   {
-    AddCascadingDeletes(eventData).GetAwaiter().GetResult();
+    AddCascadingRestores(eventData).GetAwaiter().GetResult();
     return base.SavingChanges(eventData, result);
   }
 
@@ -28,11 +28,11 @@ public class CascadingDeleteInterceptor(IServiceProvider serviceProvider)
     InterceptionResult<int> result,
     CancellationToken cancellationToken = default)
   {
-    await AddCascadingDeletes(eventData);
+    await AddCascadingRestores(eventData);
     return await base.SavingChangesAsync(eventData, result, cancellationToken);
   }
 
-  private static async Task AddCascadingDeletes(
+  private static async Task AddCascadingRestores(
     DbContextEventData eventData)
   {
     var context = eventData.Context;
@@ -44,16 +44,19 @@ public class CascadingDeleteInterceptor(IServiceProvider serviceProvider)
     context.ChangeTracker.DetectChanges();
     var entries = context.ChangeTracker.Entries<IAuditableEntity>().ToList();
 
-    foreach (var entry in entries.Where(e => e.State is EntityState.Deleted))
+    foreach (var entry in entries.Where(e =>
+      e.State is EntityState.Added
+      && e.Entity.IsDeleted
+      && e.Entity.Restore))
     {
-      await CascadingDelete(
+      await CascadingRestore(
         eventData,
         entry
       );
     }
   }
 
-  private static async Task CascadingDelete(
+  private static async Task CascadingRestore(
     DbContextEventData eventData,
     EntityEntry<IAuditableEntity> entry)
   {
@@ -91,40 +94,12 @@ public class CascadingDeleteInterceptor(IServiceProvider serviceProvider)
       foreach (var declaring in declarers)
       {
         var declaringEntry = context.FindEntry(declaring);
-        declaringEntry.State = EntityState.Deleted;
-        declaringEntry.Entity.Forget = entry.Entity.Forget;
-
-        await CascadingDelete(
+        declaringEntry.State = EntityState.Added;
+        declaringEntry.Entity.Restore = entry.Entity.Restore;
+        await CascadingRestore(
           eventData,
           declaringEntry
         );
-      }
-    }
-  }
-}
-
-public class CascadingDeleteInterceptorModelConfiguration : IModelConfiguration
-{
-  public void Configure(ModelBuilder modelBuilder)
-  {
-    foreach (var relationship in modelBuilder.Model
-      .GetEntityTypes()
-      .SelectMany(e => e.GetForeignKeys()))
-    {
-      if (relationship.IsRequired)
-      {
-        if (relationship.DeclaringEntityType is IAuditableEntity)
-        {
-          relationship.DeleteBehavior = DeleteBehavior.Restrict;
-        }
-        else
-        {
-          relationship.DeleteBehavior = DeleteBehavior.Cascade;
-        }
-      }
-      else
-      {
-        relationship.DeleteBehavior = DeleteBehavior.SetNull;
       }
     }
   }

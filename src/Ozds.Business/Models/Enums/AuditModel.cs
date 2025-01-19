@@ -7,7 +7,9 @@ public enum AuditModel
   Query,
   Creation,
   Modification,
-  Deletion
+  Deletion,
+  Restoration,
+  Forgetting
 }
 
 public static class AuditModelExtensions
@@ -20,6 +22,8 @@ public static class AuditModelExtensions
       AuditEntity.Creation => AuditModel.Creation,
       AuditEntity.Modification => AuditModel.Modification,
       AuditEntity.Deletion => AuditModel.Deletion,
+      AuditEntity.Restoration => AuditModel.Restoration,
+      AuditEntity.Forgetting => AuditModel.Forgetting,
       _ => throw new ArgumentOutOfRangeException(
         nameof(auditEntity),
         auditEntity, null)
@@ -34,6 +38,8 @@ public static class AuditModelExtensions
       AuditModel.Creation => AuditEntity.Creation,
       AuditModel.Modification => AuditEntity.Modification,
       AuditModel.Deletion => AuditEntity.Deletion,
+      AuditModel.Restoration => AuditEntity.Restoration,
+      AuditModel.Forgetting => AuditEntity.Forgetting,
       _ => throw new ArgumentOutOfRangeException(
         nameof(auditModel), auditModel,
         null)
@@ -48,6 +54,8 @@ public static class AuditModelExtensions
       AuditModel.Creation => "Creation",
       AuditModel.Modification => "Modification",
       AuditModel.Deletion => "Deletion",
+      AuditModel.Restoration => "Restoration",
+      AuditModel.Forgetting => "Forgetting",
       _ => throw new ArgumentOutOfRangeException(
         nameof(audit), audit,
         null)

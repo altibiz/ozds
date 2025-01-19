@@ -9,7 +9,9 @@ public enum AuditEntity
   Query,
   Creation,
   Modification,
-  Deletion
+  Deletion,
+  Restoration,
+  Forgetting
 }
 
 public class AuditEntityTypeConfiguration : IModelConfiguration

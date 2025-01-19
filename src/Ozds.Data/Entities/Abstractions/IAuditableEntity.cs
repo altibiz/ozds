@@ -20,5 +20,7 @@ public interface IAuditableEntity : IIdentifiableEntity
 
   public string? DeletedById { get; }
 
-  public bool Forget { get; }
+  public bool Forget { get; set; }
+
+  public bool Restore { get; set; }
 }

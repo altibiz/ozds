@@ -25,7 +25,8 @@ public static class EntityTypeBuilderExtensions
       .Where(property => property
         is { GetMethod.IsVirtual: true }
         and { GetMethod.IsFinal: false }
-        || property.Name == nameof(IAuditableEntity.Forget))
+        || property.Name == nameof(IAuditableEntity.Forget)
+        || property.Name == nameof(IAuditableEntity.Restore))
       .ToList();
 
     var propertiesToArchive = complexPropertyBuilder.Metadata
