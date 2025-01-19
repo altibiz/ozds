@@ -23,16 +23,6 @@ public class NetworkUserInvoiceEntity : InvoiceEntity
 
   public NetworkUserEntity ArchivedNetworkUser { get; set; } = default!;
 
-  protected long _locationId;
-
-  public virtual string LocationId
-  {
-    get { return _locationId.ToString(); }
-    set { _locationId = long.Parse(value); }
-  }
-
-  public virtual LocationEntity Location { get; set; } = default!;
-
   public LocationEntity ArchivedLocation { get; set; } = default!;
 
   public virtual ICollection<NetworkUserInvoiceNotificationEntity>
@@ -91,19 +81,6 @@ public class
 
     builder
       .ArchivedProperty(nameof(NetworkUserInvoiceEntity.ArchivedNetworkUser));
-
-    builder
-      .HasOne(nameof(NetworkUserInvoiceEntity.Location))
-      .WithMany(nameof(LocationEntity.NetworkUserInvoices))
-      .HasForeignKey("_locationId");
-
-    builder.Ignore(nameof(NetworkUserInvoiceEntity.LocationId));
-    builder
-      .Property("_locationId")
-      .HasColumnName("location_id");
-
-    builder
-      .Ignore(nameof(NetworkUserInvoiceEntity.LocationId));
 
     builder
       .ArchivedProperty(nameof(NetworkUserInvoiceEntity.ArchivedLocation));

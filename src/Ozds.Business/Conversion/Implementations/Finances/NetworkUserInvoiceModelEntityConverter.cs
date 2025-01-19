@@ -24,7 +24,6 @@ public class NetworkUserInvoiceModelEntityConverter(
   {
     base.InitializeEntity(model, entity);
     entity.BillId = model.BillId;
-    entity.LocationId = model.LocationId;
     entity.ArchivedLocation =
       model.ArchivedLocation is null
         ? null!
@@ -73,7 +72,6 @@ public class NetworkUserInvoiceModelEntityConverter(
   {
     base.InitializeModel(entity, model);
     model.BillId = entity.BillId;
-    model.LocationId = entity.LocationId;
     model.ArchivedLocation =
       entity.ArchivedLocation is null
         ? null!
