@@ -37,7 +37,7 @@ public class ModelEntityConverterTest
         && type.IsAssignableTo(modelType))!;
     activationType.Should().NotBeNull();
     var activated = activator.ActivateDynamic(activationType);
-    activated.Should().NotBeNull().And.BeOfType(activationType);
+    activated.Should().NotBeNull().And.BeAssignableTo(activationType);
 
     var entityType = modelEntityConverter.EntityType(activated.GetType());
     var entity = modelEntityConverter.ToEntity(activated);
