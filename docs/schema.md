@@ -327,41 +327,6 @@ erDiagram
         bytea row_version 
     }
 
-    location_invoices {
-        text al_alti_biz_sub_project_code 
-        text al_blue_low_network_user_catalogue_id 
-        text al_created_by_id 
-        timestamp_with_time_zone al_created_on 
-        text al_deleted_by_id 
-        timestamp_with_time_zone al_deleted_on 
-        boolean al_is_deleted 
-        text al_last_updated_by_id 
-        timestamp_with_time_zone al_last_updated_on 
-        text al_lp_address 
-        text al_lp_city 
-        text al_lp_email 
-        text al_lp_name 
-        text al_lp_phone_number 
-        text al_lp_postal_code 
-        text al_lp_social_security_number 
-        text al_red_low_network_user_catalogue_id 
-        text al_regulatory_catalogue_id 
-        text al_title 
-        text al_white_low_network_user_catalogue_id 
-        text al_white_medium_network_user_catalogue_id 
-        timestamp_with_time_zone from_date 
-        bigint id PK 
-        text issued_by_id FK 
-        timestamp_with_time_zone issued_on 
-        bigint location_id FK 
-        numeric tax_eur 
-        numeric tax_rate_percent 
-        text title 
-        timestamp_with_time_zone to_date 
-        numeric total_eur 
-        numeric total_with_tax_eur 
-    }
-
     location_representatives {
         bigint location_id PK,FK 
         text representative_id PK,FK 
@@ -402,7 +367,6 @@ erDiagram
         character_varying kind 
         text last_updated_by_id FK 
         timestamp_with_time_zone last_updated_on 
-        bigint location_id FK 
         text meter_id FK 
         bigint network_user_catalogue_id FK 
         bigint network_user_id FK 
@@ -525,15 +489,15 @@ erDiagram
         numeric jen_active_import_amount_kwh 
         numeric jen_active_import_max_kwh 
         numeric jen_active_import_min_kwh 
+        numeric jen_price_eur 
         numeric jen_ramped_amount_kvarh 
-        numeric jen_ramped_price_eur 
-        numeric jen_ramped_total_eur 
         numeric jen_reactive_export_amount_kvarh 
         numeric jen_reactive_export_max_kvarh 
         numeric jen_reactive_export_min_kvarh 
         numeric jen_reactive_import_amount_kvarh 
         numeric jen_reactive_import_max_kvarh 
         numeric jen_reactive_import_min_kvarh 
+        numeric jen_total_eur 
         character_varying kind 
         text meter_id FK 
         numeric mjt_amount_kwh 
@@ -585,7 +549,7 @@ erDiagram
         numeric usage_fee_total_eur 
         numeric usage_meter_fee_amount 
         numeric usage_meter_fee_price_eur 
-        numeric usage_meter_total_eur 
+        numeric usage_meter_fee_total_eur 
         bigint usage_network_user_catalogue_id FK 
     }
 
@@ -1085,8 +1049,6 @@ erDiagram
     events }o--|| messengers : "messenger_id"
     events }o--|| representatives : "representative_id"
     notifications }o--|| events : "event_id"
-    location_invoices }o--|| locations : "location_id"
-    location_invoices }o--|| representatives : "issued_by_id"
     location_representatives }o--|| locations : "location_id"
     location_representatives }o--|| representatives : "representative_id"
     locations }o--|| network_user_catalogues : "blue_low_catalogue_id"
@@ -1097,7 +1059,6 @@ erDiagram
     locations }o--|| representatives : "created_by_id"
     locations }o--|| representatives : "deleted_by_id"
     locations }o--|| representatives : "last_updated_by_id"
-    measurement_locations }o--|| locations : "location_id"
     messengers }o--|| locations : "location_id"
     network_users }o--|| locations : "location_id"
     measurement_locations }o--|| meters : "meter_id"

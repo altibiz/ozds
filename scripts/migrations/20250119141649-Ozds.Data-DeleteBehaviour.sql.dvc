@@ -2,4 +2,4 @@ outs:
 - md5: 2a52052c9081a418642e161cc8882dac
   size: 40849
   hash: md5
-  path: current.sql
+  path: 20250119141649-Ozds.Data-DeleteBehaviour.sql
