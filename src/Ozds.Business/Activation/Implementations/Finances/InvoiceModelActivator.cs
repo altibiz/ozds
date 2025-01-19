@@ -16,9 +16,9 @@ public class InvoiceModelActivator(IServiceProvider serviceProvider)
     var startOfThisMonth = now.GetStartOfMonth();
 
     model.Total_EUR = 0;
-    model.TaxRate_Percent = 0;
-    model.Tax_EUR = 0;
-    model.TotalWithTax_EUR = 0;
+    model.InvoiceTaxRate_Percent = 0;
+    model.InvoiceTax_EUR = 0;
+    model.InvoiceTotalWithTax_EUR = 0;
     model.IssuedOn = now;
     model.IssuedById = default!;
     model.FromDate = startOfLastMonth;

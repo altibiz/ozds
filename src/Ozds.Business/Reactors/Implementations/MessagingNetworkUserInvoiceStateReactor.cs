@@ -1,8 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Activation;
 using Ozds.Business.Conversion;
-using Ozds.Business.Conversion;
-using Ozds.Business.Conversion.Joins;
 using Ozds.Business.Localization.Abstractions;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Enums;
@@ -96,7 +94,8 @@ public class MessagingNetworkUserInvoiceStateHandler(
           notification.Content =
             $"{localizer.Translate("Invoice url is")} 'invoices/{invoice.Id}'";
 
-          return notification.ToEntity();
+          return converter
+            .ToEntity<NetworkUserInvoiceNotificationEntity>(notification);
         })
       .ToList();
     context.AddRange(notifications);
@@ -107,13 +106,12 @@ public class MessagingNetworkUserInvoiceStateHandler(
         notification => recipients
           .Select(
             recipient =>
-              new NotificationRecipientModel
-              {
-                NotificationId = notification.Id,
-                RepresentativeId = recipient.Id
-              }.ToEntity()
-          )
-      );
+              converter.ToEntity<NotificationRecipientEntity>(
+                new NotificationRecipientModel
+                {
+                  NotificationId = notification.Id,
+                  RepresentativeId = recipient.Id
+                })));
     context.AddRange(notificationRecipients);
     await context.SaveChangesAsync(cancellationToken);
   }

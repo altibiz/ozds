@@ -3,7 +3,6 @@ using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Activation;
 using Ozds.Business.Conversion;
-using Ozds.Business.Conversion;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Enums;
@@ -70,7 +69,7 @@ public class JobsMessengerJobHandler(
             || x.Topics.Contains(TopicEntity.Messenger)
             || x.Topics.Contains(TopicEntity.MessengerInactivity))
         .ToListAsync())
-      .Select(x => x.ToModel());
+      .Select(x => converter.ToModel<RepresentativeModel>(x));
 
     var notification = activator.Activate<MessengerNotificationModel>();
     notification.MessengerId = messenger.Id;

@@ -1,6 +1,10 @@
 namespace Ozds.Business.Models.Composite;
 
-public record RepresentingUserModel(
-  UserModel User,
-  RepresentativeModel Representative
-) : MaybeRepresentingUserModel(User, Representative);
+public class RepresentingUserModel : MaybeRepresentingUserModel
+{
+  public new RepresentativeModel Representative
+  {
+    get => base.Representative!;
+    set => base.Representative = value;
+  }
+}

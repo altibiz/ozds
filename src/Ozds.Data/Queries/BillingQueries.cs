@@ -43,14 +43,15 @@ public class BillingQueries(
       cancellationToken
     );
 
-    return new NetworkUserInvoiceIssuingBasisEntity(
-      networkUser.Location,
-      networkUser,
-      networkUser.Location.RegulatoryCatalogue,
-      fromDate,
-      toDate,
-      calculationBases
-    );
+    return new NetworkUserInvoiceIssuingBasisEntity
+    {
+      Location = networkUser.Location,
+      NetworkUser = networkUser,
+      RegulatoryCatalogue = networkUser.Location.RegulatoryCatalogue,
+      FromDate = fromDate,
+      ToDate = toDate,
+      NetworkUserCalculationBases = calculationBases
+    };
   }
 
   private async Task<List<NetworkUserCalculationBasisEntity>>
@@ -173,16 +174,17 @@ public class BillingQueries(
         .ToListAsync(cancellationToken))
       .GroupBy(x => x.MeasurementLocation.Id)
       .Select(
-        x => new NetworkUserCalculationBasisEntity(
-          fromDate,
-          toDate,
-          Location: x.First().Location,
-          NetworkUser: x.First().NetworkUser,
-          MeasurementLocation: x.First().MeasurementLocation,
-          Meter: x.First().Meter,
-          UsageNetworkUserCatalogue: x.First().UsageNetworkUserCatalogue,
-          SupplyRegulatoryCatalogue: x.First().SupplyRegulatoryCatalogue,
-          Aggregates: Enumerable.Empty<AggregateEntity>()
+        x => new NetworkUserCalculationBasisEntity
+        {
+          FromDate = fromDate,
+          ToDate = toDate,
+          Location = x.First().Location,
+          NetworkUser = x.First().NetworkUser,
+          MeasurementLocation = x.First().MeasurementLocation,
+          Meter = x.First().Meter,
+          UsageNetworkUserCatalogue = x.First().UsageNetworkUserCatalogue,
+          SupplyRegulatoryCatalogue = x.First().SupplyRegulatoryCatalogue,
+          Aggregates = Enumerable.Empty<AggregateEntity>()
             .Concat(x
               .Where(x => x.AbbB2xAggregate is not null)
               .Select(x => x.AbbB2xAggregate!))
@@ -190,7 +192,7 @@ public class BillingQueries(
               .Where(x => x.SchneideriEM3xxxAggregate is not null)
               .Select(x => x.SchneideriEM3xxxAggregate!))
             .ToList()
-        )
+        }
       )
       .ToList();
   }

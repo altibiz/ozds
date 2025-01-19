@@ -74,6 +74,8 @@ public abstract class NetworkUserCalculationModel : CalculationModel,
   [Required]
   public required string Kind { get; set; }
 
+  public abstract string KindTitle { get; }
+
   public virtual IEnumerable<ICalculationItem> UsageItems
   {
     get

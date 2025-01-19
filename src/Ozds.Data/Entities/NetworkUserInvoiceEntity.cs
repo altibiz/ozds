@@ -94,7 +94,7 @@ public class
 
     builder
       .HasOne(nameof(NetworkUserInvoiceEntity.Location))
-      .WithMany(nameof(LocationEntity.Invoices))
+      .WithMany(nameof(LocationEntity.NetworkUserInvoices))
       .HasForeignKey("_locationId");
 
     builder.Ignore(nameof(NetworkUserInvoiceEntity.LocationId));

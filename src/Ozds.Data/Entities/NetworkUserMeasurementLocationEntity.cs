@@ -7,7 +7,7 @@ namespace Ozds.Data.Entities;
 
 public class NetworkUserMeasurementLocationEntity : MeasurementLocationEntity
 {
-  private readonly long _networkUserCatalogueId;
+  private long _networkUserCatalogueId;
   private long _networkUserId;
 
   public virtual string NetworkUserId
@@ -28,7 +28,8 @@ public class NetworkUserMeasurementLocationEntity : MeasurementLocationEntity
     default!;
 
   public virtual ICollection<NetworkUserCalculationEntity>
-    NetworkUserCalculations { get; set; } =
+    NetworkUserCalculations
+  { get; set; } =
     default!;
 }
 

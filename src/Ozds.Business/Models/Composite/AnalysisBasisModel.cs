@@ -1,49 +1,29 @@
-using Ozds.Business.Conversion;
 using Ozds.Business.Models.Base;
-using Ozds.Data.Entities.Composite;
 
 namespace Ozds.Business.Models.Composite;
 
-public record AnalysisBasisModel(
-  RepresentativeModel Representative,
-  DateTimeOffset FromDate,
-  DateTimeOffset ToDate,
-  LocationModel Location,
-  NetworkUserModel? NetworkUser,
-  MeasurementLocationModel MeasurementLocation,
-  MeterModel Meter,
-  List<CalculationModel> Calculations,
-  List<InvoiceModel> Invoices,
-  MeasurementModel LastMeasurement,
-  List<AggregateModel> MonthlyAggregates
-);
-
-public static class AnalysisBasisModelExtensions
+public class AnalysisBasisModel
 {
-  public static AnalysisBasisModel ToModel(
-    this AnalysisBasisEntity entity
-  )
-  {
-    return new AnalysisBasisModel(
-      entity.Representative.ToModel(),
-      entity.FromDate,
-      entity.ToDate,
-      entity.Location.ToModel(),
-      entity.NetworkUser is { }
-        ? entity.NetworkUser.ToModel()
-        : null,
-      entity.MeasurementLocation.ToModel(),
-      entity.Meter.ToModel(),
-      entity.Calculations
-        .Select(calculation => calculation.ToModel())
-        .ToList(),
-      entity.Invoices
-        .Select(invoice => invoice.ToModel())
-        .ToList(),
-      entity.LastMeasurement.ToModel(),
-      entity.MonthlyAggregates
-        .Select(aggregate => aggregate.ToModel())
-        .ToList()
-    );
-  }
+  public RepresentativeModel Representative { get; set; } = default!;
+
+  public DateTimeOffset FromDate { get; set; }
+
+  public DateTimeOffset ToDate { get; set; }
+
+  public LocationModel Location { get; set; } = default!;
+
+  public NetworkUserModel? NetworkUser { get; set; } = default!;
+
+  public MeasurementLocationModel MeasurementLocation { get; set; } =
+    default!;
+
+  public MeterModel Meter { get; set; } = default!;
+
+  public List<CalculationModel> Calculations { get; set; } = default!;
+
+  public List<InvoiceModel> Invoices { get; set; } = default!;
+
+  public MeasurementModel LastMeasurement { get; set; } = default!;
+
+  public List<AggregateModel> MonthlyAggregates { get; set; } = default!;
 }

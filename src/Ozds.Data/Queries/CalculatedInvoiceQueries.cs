@@ -29,9 +29,10 @@ public class CalculatedInvoiceQueries(
       return null;
     }
 
-    return new CalculatedNetworkUserInvoiceEntity(
-      invoice.NetworkUserCalculations.ToList(),
-      invoice
-    );
+    return new CalculatedNetworkUserInvoiceEntity()
+    {
+      Calculations = invoice.NetworkUserCalculations.ToList(),
+      Invoice = invoice
+    };
   }
 }

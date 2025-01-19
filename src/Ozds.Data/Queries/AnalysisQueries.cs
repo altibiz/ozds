@@ -552,19 +552,20 @@ public class AnalysisQueries(
             .DistinctBy(x => x.Id)
             .ToList();
 
-          return new AnalysisBasisEntity(
-            first.Representative,
-            fromDate,
-            toDate,
-            first.Location,
-            first.NetworkUser,
-            first.MeasurementLocation,
-            first.Meter,
-            calculations,
-            invoices,
-            lastMeasurement,
-            monthlyAggregates
-          );
+          return new AnalysisBasisEntity
+          {
+            Representative = first.Representative,
+            FromDate = fromDate,
+            ToDate = toDate,
+            Location = first.Location,
+            NetworkUser = first.NetworkUser,
+            MeasurementLocation = first.MeasurementLocation,
+            Meter = first.Meter,
+            Calculations = calculations,
+            Invoices = invoices,
+            LastMeasurement = lastMeasurement,
+            MonthlyAggregates = monthlyAggregates
+          };
         })
       .OfType<AnalysisBasisEntity>()
       .ToList();

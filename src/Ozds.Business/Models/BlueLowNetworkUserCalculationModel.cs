@@ -11,13 +11,15 @@ public class BlueLowNetworkUserCalculationModel
 {
   [Required]
   public required UsageActiveEnergyTotalImportT0CalculationItemModel
-    UsageActiveEnergyTotalImportT0 { get; set; } = default!;
+    UsageActiveEnergyTotalImportT0
+  { get; set; } = default!;
 
   [Required]
   public required UsageReactiveEnergyTotalRampedT0CalculationItemModel
-    UsageReactiveEnergyTotalRampedT0 { get; set; } = default!;
+    UsageReactiveEnergyTotalRampedT0
+  { get; set; } = default!;
 
-  public override string Kind
+  public override string KindTitle
   {
     get { return "Blue Low Voltage"; }
   }

@@ -52,8 +52,6 @@ public partial class DataDbContext : DbContext
   } =
     default!;
 
-  public DbSet<LocationInvoiceEntity> LocationInvoices { get; set; } = default!;
-
   public DbSet<NetworkUserInvoiceEntity> NetworkUserInvoices { get; set; } =
     default!;
 

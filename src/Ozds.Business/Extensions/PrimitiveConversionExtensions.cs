@@ -1,4 +1,4 @@
-namespace Ozds.Business.Conversion.Primitive;
+namespace Ozds.Business.Extensions;
 
 public static class PrimitiveConversionExtensions
 {
