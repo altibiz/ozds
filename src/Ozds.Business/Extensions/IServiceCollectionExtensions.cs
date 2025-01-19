@@ -30,9 +30,9 @@ public static class IServiceCollectionExtensions
     IHostApplicationBuilder builder
   )
   {
-    services.AddActivation();
+    services.AddOzdsActivation();
     services.AddAggregation();
-    services.AddConversion();
+    services.AddOzdsConversion();
     services.AddFinance();
     services.AddLocalization();
     services.AddMutations();
@@ -46,8 +46,7 @@ public static class IServiceCollectionExtensions
     return services;
   }
 
-  // NOTE: internal to expose for testing
-  internal static IServiceCollection AddActivation(
+  public static IServiceCollection AddOzdsActivation(
     this IServiceCollection services
   )
   {
@@ -56,17 +55,7 @@ public static class IServiceCollectionExtensions
     return services;
   }
 
-  private static IServiceCollection AddAggregation(
-    this IServiceCollection services
-  )
-  {
-    services.AddTransientAssignableTo(typeof(IAggregateUpserter));
-    services.AddSingleton(typeof(AggregateUpserter));
-    return services;
-  }
-
-  // NOTE: internal to expose for testing
-  internal static IServiceCollection AddConversion(
+  public static IServiceCollection AddOzdsConversion(
     this IServiceCollection services
   )
   {
@@ -76,6 +65,15 @@ public static class IServiceCollectionExtensions
     services.AddSingleton(typeof(MeasurementAggregateConverter));
     services.AddTransientAssignableTo(typeof(IPushRequestMeasurementConverter));
     services.AddSingleton(typeof(PushRequestMeasurementConverter));
+    return services;
+  }
+
+  private static IServiceCollection AddAggregation(
+    this IServiceCollection services
+  )
+  {
+    services.AddTransientAssignableTo(typeof(IAggregateUpserter));
+    services.AddSingleton(typeof(AggregateUpserter));
     return services;
   }
 

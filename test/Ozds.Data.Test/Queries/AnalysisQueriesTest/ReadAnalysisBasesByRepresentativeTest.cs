@@ -55,16 +55,44 @@ public class ReadAnalysisBasesByRepresentativeTest(
     expectedResults = expectedResults
       .Select(x => new AnalysisBasisEntity
       {
+        Representative = x.Representative,
+        FromDate = x.FromDate,
+        ToDate = x.ToDate,
+        Location = x.Location,
+        NetworkUser = x.NetworkUser,
+        MeasurementLocation = x.MeasurementLocation,
+        Meter = x.Meter,
         Calculations = x.Calculations.OrderBy(y => y.Id).ToList(),
-        Invoices = x.Invoices.OrderBy(y => y.Id).ToList()
+        Invoices = x.Invoices.OrderBy(y => y.Id).ToList(),
+        LastMeasurement = x.LastMeasurement,
+        MonthlyAggregates = x.MonthlyAggregates
+          .OrderBy(x => x.MeasurementLocationId)
+          .ThenBy(x => x.MeterId)
+          .ThenBy(x => x.Timestamp)
+          .ThenBy(x => x.Interval)
+          .ToList(),
       })
       .OrderBy(x => x.MeasurementLocation.Id)
       .ToList();
     actualResults = actualResults
       .Select(x => new AnalysisBasisEntity
       {
+        Representative = x.Representative,
+        FromDate = x.FromDate,
+        ToDate = x.ToDate,
+        Location = x.Location,
+        NetworkUser = x.NetworkUser,
+        MeasurementLocation = x.MeasurementLocation,
+        Meter = x.Meter,
         Calculations = x.Calculations.OrderBy(y => y.Id).ToList(),
-        Invoices = x.Invoices.OrderBy(y => y.Id).ToList()
+        Invoices = x.Invoices.OrderBy(y => y.Id).ToList(),
+        LastMeasurement = x.LastMeasurement,
+        MonthlyAggregates = x.MonthlyAggregates
+          .OrderBy(x => x.MeasurementLocationId)
+          .ThenBy(x => x.MeterId)
+          .ThenBy(x => x.Timestamp)
+          .ThenBy(x => x.Interval)
+          .ToList(),
       })
       .OrderBy(x => x.MeasurementLocation.Id)
       .ToList();

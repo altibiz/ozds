@@ -50,7 +50,8 @@ public class Startup
 
     var builderProxy = new HostApplicationBuilderProxy(context, services);
     services.AddOzdsData(builderProxy);
-    services.AddOzdsBusiness(builderProxy);
+    services.AddOzdsConversion();
+    services.AddOzdsActivation();
 
     services.AddScoped<EphemeralDataDbContextManager>();
     services.AddScoped<DataDbContextManager>();
