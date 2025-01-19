@@ -113,10 +113,6 @@ public class
       .WithOne(nameof(MessengerEntity.Location));
 
     builder
-      .HasMany(nameof(LocationEntity.NetworkUserInvoices))
-      .WithOne(nameof(NetworkUserInvoiceEntity.Location));
-
-    builder
       .HasOne(nameof(LocationEntity.WhiteMediumNetworkUserCatalogue))
       .WithMany(nameof(WhiteMediumNetworkUserCatalogueEntity.Locations))
       .HasForeignKey("_whiteMediumNetworkUserCatalogueId");
