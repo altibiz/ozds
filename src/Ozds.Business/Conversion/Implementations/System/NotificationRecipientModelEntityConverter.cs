@@ -1,47 +1,36 @@
 using Ozds.Business.Conversion.Base;
+using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Joins;
+using Ozds.Data.Entities.Base;
 using Ozds.Data.Entities.Joins;
 
 namespace Ozds.Business.Conversion.Implementations.System;
 
-public class NotificationRecipientModelEntityConverter
-  : ConcreteModelEntityConverter<NotificationRecipientModel,
-    NotificationRecipientEntity>
+public class NotificationRecipientEntityConverter(
+  IServiceProvider serviceProvider
+) : InheritingModelEntityConverter<
+      NotificationRecipientModel,
+      JoinModel,
+      NotificationRecipientEntity,
+      JoinEntity>(serviceProvider)
 {
-  protected override NotificationRecipientEntity ToEntity(
-    NotificationRecipientModel model)
-  {
-    return model.ToEntity();
-  }
-
-  protected override NotificationRecipientModel ToModel(
+  public override void InitializeEntity(
+    NotificationRecipientModel model,
     NotificationRecipientEntity entity)
   {
-    return entity.ToModel();
-  }
-}
-
-public static class NotificationRepresentativeModelEntityConverterExtensions
-{
-  public static NotificationRecipientEntity ToEntity(
-    this NotificationRecipientModel model)
-  {
-    return new NotificationRecipientEntity
-    {
-      NotificationId = model.NotificationId,
-      RepresentativeId = model.RepresentativeId,
-      SeenOn = model.SeenOn
-    };
+    base.InitializeEntity(model, entity);
+    entity.NotificationId = model.NotificationId;
+    entity.RepresentativeId = model.RepresentativeId;
+    entity.SeenOn = model.SeenOn;
   }
 
-  public static NotificationRecipientModel ToModel(
-    this NotificationRecipientEntity entity)
+  public override void InitializeModel(
+    NotificationRecipientEntity entity,
+    NotificationRecipientModel model)
   {
-    return new NotificationRecipientModel
-    {
-      NotificationId = entity.NotificationId,
-      RepresentativeId = entity.RepresentativeId,
-      SeenOn = entity.SeenOn
-    };
+    base.InitializeModel(entity, model);
+    model.NotificationId = entity.NotificationId;
+    model.RepresentativeId = entity.RepresentativeId;
+    model.SeenOn = entity.SeenOn;
   }
 }

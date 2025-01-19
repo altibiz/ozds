@@ -1,61 +1,32 @@
 using Ozds.Business.Conversion.Base;
 using Ozds.Business.Models.Base;
-using Ozds.Business.Models.Enums;
 using Ozds.Data.Entities.Base;
 
 namespace Ozds.Business.Conversion.Implementations.System;
 
-public class ResolvableNotificationModelEntityConverter :
-  ConcreteModelEntityConverter<
-    ResolvableNotificationModel,
-    ResolvableNotificationEntity>
+public class ResolvableNotificationEntityConverter(
+  IServiceProvider serviceProvider
+) : InheritingModelEntityConverter<
+      ResolvableNotificationModel,
+      NotificationModel,
+      ResolvableNotificationEntity,
+      NotificationEntity>(serviceProvider)
 {
-  protected override ResolvableNotificationEntity ToEntity(
-    ResolvableNotificationModel model)
-  {
-    return model.ToEntity();
-  }
-
-  protected override ResolvableNotificationModel ToModel(
+  public override void InitializeEntity(
+    ResolvableNotificationModel model,
     ResolvableNotificationEntity entity)
   {
-    return entity.ToModel();
-  }
-}
-
-public static class ResolvableNotificationModelEntityConverterExtensions
-{
-  public static ResolvableNotificationEntity ToEntity(
-    this ResolvableNotificationModel model)
-  {
-    return new ResolvableNotificationEntity
-    {
-      Id = model.Id,
-      Title = model.Title,
-      Summary = model.Summary,
-      Content = model.Content,
-      Timestamp = model.Timestamp,
-      EventId = model.EventId,
-      ResolvedById = model.ResolvedById,
-      ResolvedOn = model.ResolvedOn,
-      Topics = model.Topics.Select(x => x.ToEntity()).ToList()
-    };
+    base.InitializeEntity(model, entity);
+    entity.ResolvedById = model.ResolvedById;
+    entity.ResolvedOn = model.ResolvedOn;
   }
 
-  public static ResolvableNotificationModel ToModel(
-    this ResolvableNotificationEntity entity)
+  public override void InitializeModel(
+    ResolvableNotificationEntity entity,
+    ResolvableNotificationModel model)
   {
-    return new ResolvableNotificationModel
-    {
-      Id = entity.Id,
-      Title = entity.Title,
-      Summary = entity.Summary,
-      Content = entity.Content,
-      Timestamp = entity.Timestamp,
-      EventId = entity.EventId,
-      ResolvedById = entity.ResolvedById,
-      ResolvedOn = entity.ResolvedOn,
-      Topics = entity.Topics.Select(x => x.ToModel()).ToHashSet()
-    };
+    base.InitializeModel(entity, model);
+    model.ResolvedById = entity.ResolvedById;
+    model.ResolvedOn = entity.ResolvedOn;
   }
 }

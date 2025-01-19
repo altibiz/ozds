@@ -1,55 +1,32 @@
 using Ozds.Business.Conversion.Base;
 using Ozds.Business.Models;
-using Ozds.Business.Models.Enums;
+using Ozds.Business.Models.Base;
 using Ozds.Data.Entities;
+using Ozds.Data.Entities.Base;
 
 namespace Ozds.Business.Conversion.Implementations.System;
 
-public class RepresentativeEventModelEntityConverter : ConcreteModelEntityConverter<
-  RepresentativeEventModel, RepresentativeEventEntity>
+public class RepresentativeEventEntityConverter(
+  IServiceProvider serviceProvider
+) : InheritingModelEntityConverter<
+      RepresentativeEventModel,
+      EventModel,
+      RepresentativeEventEntity,
+      EventEntity>(serviceProvider)
 {
-  protected override RepresentativeEventEntity ToEntity(
-    RepresentativeEventModel model)
-  {
-    return model.ToEntity();
-  }
-
-  protected override RepresentativeEventModel ToModel(
+  public override void InitializeEntity(
+    RepresentativeEventModel model,
     RepresentativeEventEntity entity)
   {
-    return entity.ToModel();
-  }
-}
-
-public static class RepresentativeEventModelEntityConverterExtensions
-{
-  public static RepresentativeEventModel ToModel(
-    this RepresentativeEventEntity entity)
-  {
-    return new RepresentativeEventModel
-    {
-      Id = entity.Id,
-      Title = entity.Title,
-      Timestamp = entity.Timestamp,
-      Level = entity.Level.ToModel(),
-      Content = entity.Content,
-      RepresentativeId = entity.RepresentativeId,
-      Categories = entity.Categories.Select(c => c.ToModel()).ToList()
-    };
+    base.InitializeEntity(model, entity);
+    entity.RepresentativeId = model.RepresentativeId;
   }
 
-  public static RepresentativeEventEntity ToEntity(
-    this RepresentativeEventModel model)
+  public override void InitializeModel(
+    RepresentativeEventEntity entity,
+    RepresentativeEventModel model)
   {
-    return new RepresentativeEventEntity
-    {
-      Id = model.Id,
-      Title = model.Title,
-      Timestamp = model.Timestamp,
-      Level = model.Level.ToEntity(),
-      Content = model.Content,
-      RepresentativeId = model.RepresentativeId,
-      Categories = model.Categories.Select(c => c.ToEntity()).ToList()
-    };
+    base.InitializeModel(entity, model);
+    model.RepresentativeId = entity.RepresentativeId;
   }
 }

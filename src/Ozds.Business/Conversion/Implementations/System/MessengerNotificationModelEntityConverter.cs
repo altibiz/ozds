@@ -1,62 +1,32 @@
 using Ozds.Business.Conversion.Base;
 using Ozds.Business.Models;
-using Ozds.Business.Models.Enums;
+using Ozds.Business.Models.Base;
 using Ozds.Data.Entities;
+using Ozds.Data.Entities.Base;
 
 namespace Ozds.Business.Conversion.Implementations.System;
 
-public class MessengerNotificationModelEntityConverter :
-  ConcreteModelEntityConverter<MessengerNotificationModel, MessengerNotificationEntity>
+public class MessengerNotificationModelEntityConverter(
+  IServiceProvider serviceProvider
+) : InheritingModelEntityConverter<
+      MessengerNotificationModel,
+      NotificationModel,
+      MessengerNotificationEntity,
+      NotificationEntity>(serviceProvider)
 {
-  protected override MessengerNotificationEntity ToEntity(
-    MessengerNotificationModel model)
-  {
-    return model.ToEntity();
-  }
-
-  protected override MessengerNotificationModel ToModel(
+  public override void InitializeEntity(
+    MessengerNotificationModel model,
     MessengerNotificationEntity entity)
   {
-    return entity.ToModel();
-  }
-}
-
-public static class
-  MessengerInactivityNotificationModelEntityConverterExtensions
-{
-  public static MessengerNotificationModel ToModel(
-    this MessengerNotificationEntity entity)
-  {
-    return new MessengerNotificationModel
-    {
-      Id = entity.Id,
-      Title = entity.Title,
-      Summary = entity.Summary,
-      Content = entity.Content,
-      Timestamp = entity.Timestamp,
-      EventId = entity.EventId,
-      ResolvedById = entity.ResolvedById,
-      ResolvedOn = entity.ResolvedOn,
-      Topics = entity.Topics.Select(x => x.ToModel()).ToHashSet(),
-      MessengerId = entity.MessengerId
-    };
+    base.InitializeEntity(model, entity);
+    entity.MessengerId = model.MessengerId;
   }
 
-  public static MessengerNotificationEntity ToEntity(
-    this MessengerNotificationModel model)
+  public override void InitializeModel(
+    MessengerNotificationEntity entity,
+    MessengerNotificationModel model)
   {
-    return new MessengerNotificationEntity
-    {
-      Id = model.Id,
-      Title = model.Title,
-      Summary = model.Summary,
-      Content = model.Content,
-      Timestamp = model.Timestamp,
-      EventId = model.EventId,
-      ResolvedById = model.ResolvedById,
-      ResolvedOn = model.ResolvedOn,
-      Topics = model.Topics.Select(x => x.ToEntity()).ToList(),
-      MessengerId = model.MessengerId
-    };
+    base.InitializeModel(entity, model);
+    model.MessengerId = entity.MessengerId;
   }
 }

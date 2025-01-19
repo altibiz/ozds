@@ -1,50 +1,18 @@
 using Ozds.Business.Conversion.Base;
 using Ozds.Business.Models;
+using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Enums;
 using Ozds.Data.Entities;
+using Ozds.Data.Entities.Base;
 
 namespace Ozds.Business.Conversion.Implementations.System;
 
-public class
-  SystemEventModelEntityConverter : ConcreteModelEntityConverter<SystemEventModel,
-  SystemEventEntity>
+public class SystemEventEntityConverter(
+  IServiceProvider serviceProvider
+) : InheritingModelEntityConverter<
+      SystemEventModel,
+      EventModel,
+      SystemEventEntity,
+      EventEntity>(serviceProvider)
 {
-  protected override SystemEventEntity ToEntity(SystemEventModel model)
-  {
-    return model.ToEntity();
-  }
-
-  protected override SystemEventModel ToModel(SystemEventEntity entity)
-  {
-    return entity.ToModel();
-  }
-}
-
-public static class SystemEventModelExtensions
-{
-  public static SystemEventModel ToModel(this SystemEventEntity entity)
-  {
-    return new SystemEventModel
-    {
-      Id = entity.Id,
-      Title = entity.Title,
-      Timestamp = entity.Timestamp,
-      Level = entity.Level.ToModel(),
-      Content = entity.Content,
-      Categories = entity.Categories.Select(c => c.ToModel()).ToList()
-    };
-  }
-
-  public static SystemEventEntity ToEntity(this SystemEventModel model)
-  {
-    return new SystemEventEntity
-    {
-      Id = model.Id,
-      Title = model.Title,
-      Timestamp = model.Timestamp,
-      Level = model.Level.ToEntity(),
-      Content = model.Content,
-      Categories = model.Categories.Select(c => c.ToEntity()).ToList()
-    };
-  }
 }

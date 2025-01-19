@@ -12,7 +12,7 @@ public class NetworkUserInvoiceNotificationEntity : NotificationEntity
   public string InvoiceId
   {
     get { return _invoiceId.ToString(); }
-    init
+    set
     {
       _invoiceId = value is { } notNullValue
         ? long.Parse(notNullValue)

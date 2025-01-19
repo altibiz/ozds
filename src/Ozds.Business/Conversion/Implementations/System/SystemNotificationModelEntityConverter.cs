@@ -1,55 +1,17 @@
 using Ozds.Business.Conversion.Base;
 using Ozds.Business.Models;
-using Ozds.Business.Models.Enums;
+using Ozds.Business.Models.Base;
 using Ozds.Data.Entities;
+using Ozds.Data.Entities.Base;
 
 namespace Ozds.Business.Conversion.Implementations.System;
 
-public class SystemNotificationModelEntityConverter : ConcreteModelEntityConverter<
-  SystemNotificationModel, SystemNotificationEntity>
+public class SystemNotificationEntityConverter(
+  IServiceProvider serviceProvider
+) : InheritingModelEntityConverter<
+      SystemNotificationModel,
+      NotificationModel,
+      SystemNotificationEntity,
+      NotificationEntity>(serviceProvider)
 {
-  protected override SystemNotificationEntity ToEntity(
-    SystemNotificationModel model)
-  {
-    return model.ToEntity();
-  }
-
-  protected override SystemNotificationModel ToModel(
-    SystemNotificationEntity entity)
-  {
-    return entity.ToModel();
-  }
-}
-
-public static class SystemNotificationModelEntityConverterExtensions
-{
-  public static SystemNotificationEntity ToEntity(
-    this SystemNotificationModel model)
-  {
-    return new SystemNotificationEntity
-    {
-      Id = model.Id,
-      Title = model.Title,
-      Summary = model.Summary,
-      Content = model.Content,
-      Topics = model.Topics.Select(x => x.ToEntity()).ToList(),
-      EventId = model.EventId,
-      Timestamp = model.Timestamp
-    };
-  }
-
-  public static SystemNotificationModel ToModel(
-    this SystemNotificationEntity entity)
-  {
-    return new SystemNotificationModel
-    {
-      Id = entity.Id,
-      Title = entity.Title,
-      Summary = entity.Summary,
-      Content = entity.Content,
-      Topics = entity.Topics.Select(x => x.ToModel()).ToHashSet(),
-      EventId = entity.EventId,
-      Timestamp = entity.Timestamp
-    };
-  }
 }

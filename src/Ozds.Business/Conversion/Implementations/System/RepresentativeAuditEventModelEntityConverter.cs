@@ -1,57 +1,32 @@
 using Ozds.Business.Conversion.Base;
 using Ozds.Business.Models;
-using Ozds.Business.Models.Enums;
+using Ozds.Business.Models.Base;
 using Ozds.Data.Entities;
+using Ozds.Data.Entities.Base;
 
 namespace Ozds.Business.Conversion.Implementations.System;
 
-public class RepresentativeAuditEventModelEntityConverter : ConcreteModelEntityConverter
-  <RepresentativeAuditEventModel, RepresentativeAuditEventEntity>
+public class RepresentativeAuditEventEntityConverter(
+  IServiceProvider serviceProvider
+) : InheritingModelEntityConverter<
+      RepresentativeAuditEventModel,
+      AuditEventModel,
+      RepresentativeAuditEventEntity,
+      AuditEventEntity>(serviceProvider)
 {
-  protected override RepresentativeAuditEventEntity ToEntity(
-    RepresentativeAuditEventModel model)
-  {
-    return model.ToEntity();
-  }
-
-  protected override RepresentativeAuditEventModel ToModel(
+  public override void InitializeEntity(
+    RepresentativeAuditEventModel model,
     RepresentativeAuditEventEntity entity)
   {
-    return entity.ToModel();
-  }
-}
-
-public static class RepresentativeAuditEventModelEntityConverterExtensions
-{
-  public static RepresentativeAuditEventModel ToModel(
-    this RepresentativeAuditEventEntity entity)
-  {
-    return new RepresentativeAuditEventModel
-    {
-      Id = entity.Id,
-      Title = entity.Title,
-      Timestamp = entity.Timestamp,
-      Level = entity.Level.ToModel(),
-      Content = entity.Content,
-      Audit = entity.Audit.ToModel(),
-      RepresentativeId = entity.RepresentativeId,
-      Categories = entity.Categories.Select(c => c.ToModel()).ToList()
-    };
+    base.InitializeEntity(model, entity);
+    entity.RepresentativeId = model.RepresentativeId;
   }
 
-  public static RepresentativeAuditEventEntity ToEntity(
-    this RepresentativeAuditEventModel model)
+  public override void InitializeModel(
+    RepresentativeAuditEventEntity entity,
+    RepresentativeAuditEventModel model)
   {
-    return new RepresentativeAuditEventEntity
-    {
-      Id = model.Id,
-      Title = model.Title,
-      Timestamp = model.Timestamp,
-      Level = model.Level.ToEntity(),
-      Content = model.Content,
-      Audit = model.Audit.ToEntity(),
-      RepresentativeId = model.RepresentativeId,
-      Categories = model.Categories.Select(c => c.ToEntity()).ToList()
-    };
+    base.InitializeModel(entity, model);
+    model.RepresentativeId = entity.RepresentativeId;
   }
 }
