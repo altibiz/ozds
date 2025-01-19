@@ -134,7 +134,6 @@ public class NetworkUserInvoiceCalculator(
         $"Invoice for {basis.NetworkUser.Title} at {basis.Location.Title}",
       IssuedById = default!,
       IssuedOn = DateTimeOffset.UtcNow,
-      LocationId = basis.Location.Id,
       NetworkUserId = basis.NetworkUser.Id,
       FromDate = basis.FromDate,
       ToDate = basis.ToDate,
