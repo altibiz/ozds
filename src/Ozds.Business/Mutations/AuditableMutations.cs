@@ -75,7 +75,7 @@ public class AuditableMutations(
     await mutations.Delete(entity, cancellationToken);
   }
 
-  public async Task Forget(
+  public async Task Restore(
     IAuditable model,
     CancellationToken cancellationToken
   )
@@ -90,6 +90,17 @@ public class AuditableMutations(
       );
     }
 
+    var entity = modelEntityConverter.ToEntity<AuditableEntity>(model);
+    entity.Restore = true;
+
+    await mutations.Create(entity, cancellationToken);
+  }
+
+  public async Task Forget(
+    IAuditable model,
+    CancellationToken cancellationToken
+  )
+  {
     var entity = modelEntityConverter.ToEntity<AuditableEntity>(model);
     entity.Forget = true;
 

@@ -182,7 +182,6 @@ migrate-continue project name:
     let now = ls '{{ root }}/src/{{ project }}/Migrations' \
       | sort-by name \
       | reverse \
-      | first \
       | get name \
       | path basename \
       | parse "{timestamp}_{name}.cs" \
