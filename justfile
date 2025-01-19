@@ -103,6 +103,9 @@ lint:
       -o='{{ jbinspectlog }}' \
       --exclude='**/.git/**/*;**/.nuget/**/*;**/obj/**/*;**/bin/**/*'
 
+    @just lint-model
+
+lint-model:
     dotnet ef migrations \
       --startup-project '{{ servercsproj }}' \
       --project '{{ datacsproj }}' \
