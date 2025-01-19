@@ -1,95 +1,48 @@
 using Ozds.Business.Conversion.Base;
-using Ozds.Business.Models;
-using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Base;
-using Ozds.Data.Entities;
+using Ozds.Business.Models.Enums;
 using Ozds.Data.Entities.Base;
+using Ozds.Data.Entities.Enums;
 
 namespace Ozds.Business.Conversion.Implementations.System;
 
-public class
-  EventModelEntityConverter : ConcreteModelEntityConverter<IEvent, EventEntity>
+public class EventModelEntityConverter(IServiceProvider serviceProvider)
+  : InheritingModelEntityConverter<
+      EventModel,
+      IdentifiableModel,
+      EventEntity,
+      IdentifiableEntity>(serviceProvider)
 {
-  protected override EventEntity ToEntity(IEvent model)
+  private readonly ModelEntityConverter modelEntityConverter =
+    serviceProvider.GetRequiredService<ModelEntityConverter>();
+
+  public override void InitializeEntity(
+    EventModel model,
+    EventEntity entity)
   {
-    return model.ToEntity();
+    base.InitializeEntity(model, entity);
+    entity.Categories = model.Categories
+      .Select(category => modelEntityConverter
+        .ToEntity<CategoryEntity>(category))
+      .ToList();
+    entity.Timestamp = model.Timestamp;
+    entity.Level = modelEntityConverter.ToEntity<LevelEntity>(model.Level);
+    entity.Content = model.Content;
+    entity.Kind = model.Kind;
   }
 
-  protected override IEvent ToModel(EventEntity entity)
+  public override void InitializeModel(
+    EventEntity entity,
+    EventModel model)
   {
-    return entity.ToModel();
-  }
-}
-
-public static class EventModelEntityConverterExtensions
-{
-  public static EventModel ToModel(this EventEntity entity)
-  {
-    if (entity is SystemAuditEventEntity systemAuditEventEntity)
-    {
-      return systemAuditEventEntity.ToModel();
-    }
-
-    if (entity is SystemEventEntity systemEventEntity)
-    {
-      return systemEventEntity.ToModel();
-    }
-
-    if (entity is RepresentativeAuditEventEntity representativeAuditEventEntity)
-    {
-      return representativeAuditEventEntity.ToModel();
-    }
-
-    if (entity is RepresentativeEventEntity representativeEventEntity)
-    {
-      return representativeEventEntity.ToModel();
-    }
-
-    if (entity is MessengerEventEntity messengerEventEntity)
-    {
-      return messengerEventEntity.ToModel();
-    }
-
-    if (entity is AuditEventEntity auditEventEntity)
-    {
-      return auditEventEntity.ToModel();
-    }
-
-    throw new NotImplementedException();
-  }
-
-  public static EventEntity ToEntity(this IEvent model)
-  {
-    if (model is SystemAuditEventModel systemAuditEventModel)
-    {
-      return systemAuditEventModel.ToEntity();
-    }
-
-    if (model is SystemEventModel systemEventModel)
-    {
-      return systemEventModel.ToEntity();
-    }
-
-    if (model is RepresentativeAuditEventModel representativeAuditEventModel)
-    {
-      return representativeAuditEventModel.ToEntity();
-    }
-
-    if (model is RepresentativeEventModel representativeEventModel)
-    {
-      return representativeEventModel.ToEntity();
-    }
-
-    if (model is MessengerEventModel messengerEventModel)
-    {
-      return messengerEventModel.ToEntity();
-    }
-
-    if (model is AuditEventModel auditEventModel)
-    {
-      return auditEventModel.ToEntity();
-    }
-
-    throw new NotImplementedException();
+    base.InitializeModel(entity, model);
+    model.Categories = entity.Categories
+      .Select(category => modelEntityConverter
+        .ToModel<CategoryModel>(category))
+      .ToList();
+    model.Timestamp = entity.Timestamp;
+    model.Level = modelEntityConverter.ToModel<LevelModel>(entity.Level);
+    model.Content = entity.Content;
+    model.Kind = entity.Kind;
   }
 }

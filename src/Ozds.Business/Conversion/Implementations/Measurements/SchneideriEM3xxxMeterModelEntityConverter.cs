@@ -1,68 +1,32 @@
 using Ozds.Business.Conversion.Base;
 using Ozds.Business.Models;
+using Ozds.Business.Models.Base;
 using Ozds.Data.Entities;
+using Ozds.Data.Entities.Base;
 
 namespace Ozds.Business.Conversion.Implementations.Measurements;
 
-public class SchneideriEM3xxxMeterModelEntityConverter : ConcreteModelEntityConverter<
-  SchneideriEM3xxxMeterModel, SchneideriEM3xxxMeterEntity>
+public class SchneideriEM3xxxMeterModelEntityConverter(
+  IServiceProvider serviceProvider
+) : InheritingModelEntityConverter<
+      SchneideriEM3xxxMeterModel,
+      MeterModel,
+      SchneideriEM3xxxMeterEntity,
+      MeterEntity>(serviceProvider)
 {
-  protected override SchneideriEM3xxxMeterEntity ToEntity(
-    SchneideriEM3xxxMeterModel model)
-  {
-    return model.ToEntity();
-  }
-
-  protected override SchneideriEM3xxxMeterModel ToModel(
+  public override void InitializeEntity(
+    SchneideriEM3xxxMeterModel model,
     SchneideriEM3xxxMeterEntity entity)
   {
-    return entity.ToModel();
-  }
-}
-
-public static class SchneideriEM3xxxMeterModelEntityConverterExtensions
-{
-  public static SchneideriEM3xxxMeterEntity ToEntity(
-    this SchneideriEM3xxxMeterModel model)
-  {
-    return new SchneideriEM3xxxMeterEntity
-    {
-      Id = model.Id,
-      Title = model.Title,
-      CreatedOn = model.CreatedOn,
-      CreatedById = model.CreatedById,
-      LastUpdatedOn = model.LastUpdatedOn,
-      LastUpdatedById = model.LastUpdatedById,
-      IsDeleted = model.IsDeleted,
-      DeletedOn = model.DeletedOn,
-      DeletedById = model.DeletedById,
-      MessengerId = model.MessengerId,
-      MeasurementValidatorId = model.MeasurementValidatorId,
-      ConnectionPower_W = (float)model.ConnectionPower_W,
-      Phases = model.Phases.Select(phase => phase.ToEntity()).ToList(),
-      Kind = model.Kind
-    };
+    base.InitializeEntity(model, entity);
+    entity.MeasurementValidatorId = model.MeasurementValidatorId;
   }
 
-  public static SchneideriEM3xxxMeterModel ToModel(
-    this SchneideriEM3xxxMeterEntity entity)
+  public override void InitializeModel(
+    SchneideriEM3xxxMeterEntity entity,
+    SchneideriEM3xxxMeterModel model)
   {
-    return new SchneideriEM3xxxMeterModel
-    {
-      Id = entity.Id,
-      Title = entity.Title,
-      CreatedOn = entity.CreatedOn,
-      CreatedById = entity.CreatedById,
-      LastUpdatedOn = entity.LastUpdatedOn,
-      LastUpdatedById = entity.LastUpdatedById,
-      IsDeleted = entity.IsDeleted,
-      DeletedOn = entity.DeletedOn,
-      DeletedById = entity.DeletedById,
-      MessengerId = entity.MessengerId,
-      MeasurementValidatorId = entity.MeasurementValidatorId,
-      ConnectionPower_W = (decimal)entity.ConnectionPower_W,
-      Phases = entity.Phases.Select(phase => phase.ToModel()).ToHashSet(),
-      Kind = entity.Kind
-    };
+    base.InitializeModel(entity, model);
+    model.MeasurementValidatorId = entity.MeasurementValidatorId;
   }
 }

@@ -19,6 +19,9 @@ public abstract class EventModel : IdentifiableModel, IEvent
   [Required]
   public required JsonDocument Content { get; set; }
 
+  [Required]
+  public required string Kind { get; set; }
+
   public override IEnumerable<ValidationResult> Validate(
     ValidationContext validationContext)
   {

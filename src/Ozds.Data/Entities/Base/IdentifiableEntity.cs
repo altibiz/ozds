@@ -39,7 +39,8 @@ public class IdentifiableEntityConfiguration
     var builder = modelBuilder.Entity(entity);
 
     builder.Ignore(nameof(IdentifiableEntity.Id));
-    if (entity.BaseType == typeof(AuditableEntity)
+    if (entity.BaseType == typeof(IdentifiableEntity)
+      || entity.BaseType == typeof(AuditableEntity)
       || entity.BaseType == typeof(CatalogueEntity))
     {
       if (entity == typeof(RepresentativeEntity)
@@ -53,7 +54,7 @@ public class IdentifiableEntityConfiguration
         builder.HasKey("_id");
       }
     }
-    if (entity == typeof(RepresentativeEntity) ||
+    if (entity.IsAssignableTo(typeof(RepresentativeEntity)) ||
       entity.IsAssignableTo(typeof(MeterEntity)) ||
       entity.IsAssignableTo(typeof(MessengerEntity)))
     {

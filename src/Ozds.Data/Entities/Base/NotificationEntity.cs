@@ -6,18 +6,16 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
 
-public class NotificationEntity : INotificationEntity
+public class NotificationEntity : IdentifiableEntity, INotificationEntity
 {
-  protected readonly long? _eventId;
-
-  protected readonly long _id;
+  protected long? _eventId;
 
   public DateTimeOffset Timestamp { get; set; }
 
   public string? EventId
   {
     get { return _eventId?.ToString(); }
-    init
+    set
     {
       _eventId = value is { } notNullValue ? long.Parse(notNullValue) : null;
     }
@@ -39,17 +37,6 @@ public class NotificationEntity : INotificationEntity
 
   public List<TopicEntity> Topics { get; set; } = default!;
 
-  public virtual string Id
-  {
-    get { return _id.ToString(); }
-    init
-    {
-      _id = value is { } notNullValue ? long.Parse(notNullValue) : default;
-    }
-  }
-
-  public string Title { get; set; } = default!;
-
   public string Kind { get; set; } = default!;
 }
 
@@ -61,22 +48,10 @@ public class
   {
     var builder = modelBuilder.Entity(entity);
 
-    if (entity == typeof(NotificationEntity))
-    {
-      builder.HasKey("_id");
-    }
-
     builder
       .UseTphMappingStrategy()
       .ToTable("notifications")
       .HasDiscriminator<string>(nameof(NotificationEntity.Kind));
-
-    builder.Ignore(nameof(NotificationEntity.Id));
-    builder
-      .Property("_id")
-      .HasColumnName("id")
-      .HasColumnType("bigint")
-      .UseIdentityAlwaysColumn();
 
     builder
       .Property<DateTimeOffset>(nameof(NotificationEntity.Timestamp))

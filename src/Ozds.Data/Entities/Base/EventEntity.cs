@@ -7,11 +7,9 @@ using Ozds.Data.Extensions;
 namespace Ozds.Data.Entities.Base;
 
 #pragma warning disable S3881 // "IDisposable" should be implemented correctly
-public class EventEntity : IEventEntity, IDisposable
+public class EventEntity : IdentifiableEntity, IEventEntity, IDisposable
 #pragma warning restore S3881 // "IDisposable" should be implemented correctly
 {
-  protected readonly long _id;
-
   public DateTimeOffset Timestamp { get; set; }
 
   public LevelEntity Level { get; set; }
@@ -30,17 +28,6 @@ public class EventEntity : IEventEntity, IDisposable
     Content?.Dispose();
   }
 
-  public virtual string Id
-  {
-    get { return _id.ToString(); }
-    init
-    {
-      _id = value is { } notNullValue ? long.Parse(notNullValue) : default;
-    }
-  }
-
-  public string Title { get; set; } = default!;
-
   public string Kind { get; set; } = default!;
 }
 
@@ -52,22 +39,10 @@ public class
   {
     var builder = modelBuilder.Entity(entity);
 
-    if (entity == typeof(EventEntity))
-    {
-      builder.HasKey("_id");
-    }
-
     builder
       .UseTphMappingStrategy()
       .ToTable("events")
       .HasDiscriminator<string>(nameof(EventEntity.Kind));
-
-    builder.Ignore(nameof(EventEntity.Id));
-    builder
-      .Property("_id")
-      .HasColumnName("id")
-      .HasColumnType("bigint")
-      .UseIdentityAlwaysColumn();
 
     builder
       .Property<DateTimeOffset>(nameof(EventEntity.Timestamp))
