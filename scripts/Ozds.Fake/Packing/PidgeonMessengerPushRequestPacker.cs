@@ -17,9 +17,12 @@ public class PidgeonMessengerPushRequestPacker : IMessengerPushRequestPacker
     IEnumerable<IMeterPushRequestEntity> requests
   )
   {
-    return new PidgeonMessengerPushRequestEntity(
-      timestamp,
-      requests.OfType<IPidgeonMeterPushRequestEntity>().ToArray()
-    );
+    var entity = new PidgeonMessengerPushRequestEntity
+    {
+      Timestamp = timestamp,
+      Measurements = requests.OfType<IPidgeonMeterPushRequestEntity>().ToArray()
+    };
+
+    return entity;
   }
 }

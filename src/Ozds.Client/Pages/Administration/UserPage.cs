@@ -35,10 +35,11 @@ public partial class UserPage : OzdsOwningComponentBase
         return null;
       }
 
-      return new MaybeRepresentingUserModel(
-        UserState.User,
-        RepresentativeState.Representative
-      );
+      return new MaybeRepresentingUserModel
+      {
+        User = UserState.User,
+        Representative = RepresentativeState.Representative
+      };
     }
 
     var queries = ScopedServices.GetRequiredService<RepresentativeQueries>();

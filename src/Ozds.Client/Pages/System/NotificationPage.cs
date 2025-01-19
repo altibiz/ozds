@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
-using Ozds.Business.Activation.Agnostic;
+using Ozds.Business.Activation;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Mutations;
@@ -35,7 +35,7 @@ public partial class NotificationPage : OzdsOwningComponentBase
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
   {
     return ScopedServices
-      .GetRequiredService<AgnosticModelActivator>()
+      .GetRequiredService<ModelActivator>()
       .Activate<SystemNotificationModel>();
   }
 

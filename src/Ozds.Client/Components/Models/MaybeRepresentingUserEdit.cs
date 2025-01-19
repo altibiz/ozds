@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components;
-using Ozds.Business.Activation.Agnostic;
+using Ozds.Business.Activation;
 using Ozds.Business.Models;
+using Ozds.Business.Models.Composite;
 using Ozds.Client.Components.Base;
 
 namespace Ozds.Client.Components.Models;
@@ -8,14 +9,14 @@ namespace Ozds.Client.Components.Models;
 public partial class MaybeRepresentingUserEdit : OzdsComponentBase
 {
   [Inject]
-  private AgnosticModelActivator AgnosticModelActivator { get; set; }
+  private ModelActivator ModelActivator { get; set; }
     = default!;
+
+  [Parameter]
+  public MaybeRepresentingUserModel Model { get; set; } = default!;
 
   private void OnCreateRepresentative()
   {
-    Model = Model with
-    {
-      Representative = AgnosticModelActivator.Activate<RepresentativeModel>()
-    };
+    Model.Representative = ModelActivator.Activate<RepresentativeModel>();
   }
 }

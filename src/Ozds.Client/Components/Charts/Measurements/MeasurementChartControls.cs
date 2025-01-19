@@ -1,13 +1,12 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
-using Ozds.Business.Aggregation.Agnostic;
-using Ozds.Business.Models;
+using Ozds.Business.Aggregation;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Enums;
 using Ozds.Business.Observers.Abstractions;
 using Ozds.Business.Observers.EventArgs;
-using Ozds.Business.Queries.Abstractions;
 using Ozds.Business.Queries;
+using Ozds.Business.Queries.Abstractions;
 using Ozds.Client.Components.Base;
 
 namespace Ozds.Client.Components.Charts;
@@ -37,7 +36,7 @@ public partial class MeasurementChartControls : OzdsOwningComponentBase
   private IMeasurementsBufferedSubscriber MeasurementsBufferedSubscriber { get; set; } = default!;
 
   [Inject]
-  private AgnosticAggregateUpserter AggregateUpserter { get; set; } = default!;
+  private AggregateUpserter AggregateUpserter { get; set; } = default!;
 
   private readonly MeasurementChartParameters _parameters = new();
 
@@ -223,7 +222,7 @@ public partial class MeasurementChartControls : OzdsOwningComponentBase
         .Concat(newAggregates)
         .GroupBy(x => x.Timestamp)
         .Select(x => x
-          .Aggregate(AggregateUpserter.UpsertModelAgnostic))
+          .Aggregate(AggregateUpserter.UpsertModelDynamic))
         .OfType<IMeasurement>()
         .ToList();
       _parameters.Measurements = new PaginatedList<IMeasurement>(

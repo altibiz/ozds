@@ -28,10 +28,10 @@
 </HeadContent>
 
 @{
-  var model = new MaybeRepresentingUserModel(
-    UserState.User,
-    null
-  );
+  var model = new MaybeRepresentingUserModel
+  {
+    User = UserState.User
+  };
 }
 
 <MaybeRepresentingUserDetails Model="@model"/>

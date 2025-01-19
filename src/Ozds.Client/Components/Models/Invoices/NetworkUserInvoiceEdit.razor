@@ -112,15 +112,15 @@
 <MudNumericField
   T="decimal"
   Label="@Translate("Tax Rate (%)")"
-  @bind-Value="Model.TaxRate_Percent"
-  For="@(() => Model.TaxRate_Percent)"
+  @bind-Value="Model.InvoiceTaxRate_Percent"
+  For="@(() => Model.InvoiceTaxRate_Percent)"
   Required="true" />
 
 <MudNumericField
   T="decimal"
   Label="@Translate("Tax (€)")"
-  @bind-Value="Model.Tax_EUR"
-  For="@(() => Model.Tax_EUR)"
+  @bind-Value="Model.InvoiceTax_EUR"
+  For="@(() => Model.InvoiceTax_EUR)"
   Required="true" />
 
 <MudNumericField
@@ -133,8 +133,8 @@
 <MudNumericField
   T="decimal"
   Label="@Translate("Total with Tax (€)")"
-  @bind-Value="Model.TotalWithTax_EUR"
-  For="@(() => Model.TotalWithTax_EUR)"
+  @bind-Value="Model.InvoiceTotalWithTax_EUR"
+  For="@(() => Model.InvoiceTotalWithTax_EUR)"
   Required="true" />
 
 @code {

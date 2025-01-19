@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
-using Ozds.Business.Activation.Agnostic;
+using Ozds.Business.Activation;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Queries;
 using Ozds.Client.Components.Base;
@@ -127,7 +127,7 @@ public partial class Loading<T> : OzdsOwningComponentBase
       try
       {
         var activator = ScopedServices
-          .GetRequiredService<AgnosticModelActivator>();
+          .GetRequiredService<ModelActivator>();
         var created = activator.Activate<T>();
         _state = _state.WithCreated(created);
       }
@@ -234,7 +234,7 @@ public partial class Loading<T> : OzdsOwningComponentBase
       try
       {
         var activator = ScopedServices
-          .GetRequiredService<AgnosticModelActivator>();
+          .GetRequiredService<ModelActivator>();
         var created = activator.Activate<T>();
         _state = _state.WithCreated(created);
       }

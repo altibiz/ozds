@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Ozds.Business.Models;
-using Ozds.Business.Models.Enums;
-using Ozds.Business.Queries;
 using Ozds.Business.Queries;
 using Ozds.Client.Components.Base;
 using Ozds.Client.State;
