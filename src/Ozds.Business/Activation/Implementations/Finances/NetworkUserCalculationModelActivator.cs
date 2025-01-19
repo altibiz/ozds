@@ -17,6 +17,8 @@ public class NetworkUserCalculationModelActivator(
   {
     base.Initialize(model);
 
+    model.MeterId = "0";
+    model.ArchivedMeter = default!;
     model.UsageMeterFee = modelActivator
       .Activate<UsageMeterFeeCalculationItemModel>();
     model.SupplyActiveEnergyTotalImportT1 = modelActivator

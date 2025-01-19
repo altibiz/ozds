@@ -5,6 +5,8 @@ namespace Ozds.Business.Models.Abstractions;
 
 public interface INetworkUserCalculation : ICalculation
 {
+  public string MeterId { get; }
+  public IMeter ArchivedMeter { get; }
   public string UsageNetworkUserCatalogueId { get; }
   public string SupplyRegulatoryCatalogueId { get; }
   public string NetworkUserInvoiceId { get; }
@@ -14,7 +16,8 @@ public interface INetworkUserCalculation : ICalculation
   public RegulatoryCatalogueModel ArchivedSupplyRegulatoryCatalogue { get; }
 
   public NetworkUserMeasurementLocationModel
-    ArchivedNetworkUserMeasurementLocation { get; }
+    ArchivedNetworkUserMeasurementLocation
+  { get; }
 
   public decimal UsageFeeTotal_EUR { get; }
   public decimal SupplyFeeTotal_EUR { get; }

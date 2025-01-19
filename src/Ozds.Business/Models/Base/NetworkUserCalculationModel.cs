@@ -9,6 +9,12 @@ public abstract class NetworkUserCalculationModel : CalculationModel,
   INetworkUserCalculation
 {
   [Required]
+  public required string MeterId { get; set; } = default!;
+
+  [Required]
+  public required IMeter ArchivedMeter { get; set; } = default!;
+
+  [Required]
   public required UsageMeterFeeCalculationItemModel
     UsageMeterFee
   { get; set; } = default!;

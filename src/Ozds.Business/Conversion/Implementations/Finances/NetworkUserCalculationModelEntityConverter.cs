@@ -69,6 +69,9 @@ public class NetworkUserCalculationModelEntityConverter(
         : modelEntityConverter
             .ToModel<RegulatoryCatalogueModel>(
               entity.ArchivedSupplyRegulatoryCatalogue);
+    entity.MeterId = model.MeterId;
+    entity.ArchivedMeter = model.ArchivedMeter is null ? null! :
+      modelEntityConverter.ToEntity<MeterEntity>(model.ArchivedMeter);
     model.NetworkUserInvoiceId = entity.NetworkUserInvoiceId;
     model.Kind = entity.Kind;
     model.UsageFeeTotal_EUR = entity.UsageFeeTotal_EUR;
@@ -124,6 +127,9 @@ public class NetworkUserCalculationModelEntityConverter(
             .ToModel<RegulatoryCatalogueModel>(
               entity.ArchivedSupplyRegulatoryCatalogue);
     model.NetworkUserInvoiceId = entity.NetworkUserInvoiceId;
+    model.MeterId = entity.MeterId;
+    model.ArchivedMeter = entity.ArchivedMeter is null ? null! :
+      modelEntityConverter.ToModel<MeterModel>(entity.ArchivedMeter);
     model.Kind = entity.Kind;
     model.UsageFeeTotal_EUR = entity.UsageFeeTotal_EUR;
     model.SupplyFeeTotal_EUR = entity.SupplyFeeTotal_EUR;

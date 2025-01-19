@@ -16,16 +16,6 @@
 
 <PropertyColumn
   T="ICalculation"
-  TProperty="string"
-  Property="x => x.MeterId"
-  Title='@Translate("Meter ID")'>
-  <CellTemplate>
-    <MudText>@context.Item.MeterId</MudText>
-  </CellTemplate>
-</PropertyColumn>
-
-<PropertyColumn
-  T="ICalculation"
   TProperty="DateTimeOffset"
   Property="x => x.FromDate"
   Title='@Translate("From Date")'>

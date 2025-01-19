@@ -20,8 +20,6 @@ public class CalculationModelActivator(IServiceProvider serviceProvider)
     model.Total_EUR = 0;
     model.IssuedOn = now;
     model.IssuedById = default!;
-    model.MeterId = "0";
-    model.ArchivedMeter = default!;
     model.FromDate = startOfLastMonth;
     model.ToDate = startOfThisMonth;
   }
