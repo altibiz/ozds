@@ -5,6 +5,29 @@ namespace Ozds.Fake.Records;
 
 public record class SchneideriEM3xxxMeasurementRecord : MeasurementRecord
 {
+#pragma warning disable CA1707
+  public required decimal VoltageL1AnyT0_V { get; set; }
+  public required decimal VoltageL2AnyT0_V { get; set; }
+  public required decimal VoltageL3AnyT0_V { get; set; }
+  public required decimal CurrentL1AnyT0_A { get; set; }
+  public required decimal CurrentL2AnyT0_A { get; set; }
+  public required decimal CurrentL3AnyT0_A { get; set; }
+  public required decimal ActivePowerL1NetT0_W { get; set; }
+  public required decimal ActivePowerL2NetT0_W { get; set; }
+  public required decimal ActivePowerL3NetT0_W { get; set; }
+  public required decimal ReactivePowerTotalNetT0_VAR { get; set; }
+  public required decimal ApparentPowerTotalNetT0_VA { get; set; }
+  public required decimal ActiveEnergyL1ImportT0_Wh { get; set; }
+  public required decimal ActiveEnergyL2ImportT0_Wh { get; set; }
+  public required decimal ActiveEnergyL3ImportT0_Wh { get; set; }
+  public required decimal ActiveEnergyTotalImportT0_Wh { get; set; }
+  public required decimal ActiveEnergyTotalExportT0_Wh { get; set; }
+  public required decimal ReactiveEnergyTotalImportT0_VARh { get; set; }
+  public required decimal ReactiveEnergyTotalExportT0_VARh { get; set; }
+  public required decimal ActiveEnergyTotalImportT1_Wh { get; set; }
+  public required decimal ActiveEnergyTotalImportT2_Wh { get; set; }
+#pragma warning restore CA1707
+
   public override TariffMeasure<decimal> ActiveEnergy_Wh
   {
     get
@@ -76,26 +99,4 @@ public record class SchneideriEM3xxxMeasurementRecord : MeasurementRecord
   {
     get { return TariffMeasure<decimal>.Null; }
   }
-#pragma warning disable CA1707
-  public required decimal VoltageL1AnyT0_V { get; set; }
-  public required decimal VoltageL2AnyT0_V { get; set; }
-  public required decimal VoltageL3AnyT0_V { get; set; }
-  public required decimal CurrentL1AnyT0_A { get; set; }
-  public required decimal CurrentL2AnyT0_A { get; set; }
-  public required decimal CurrentL3AnyT0_A { get; set; }
-  public required decimal ActivePowerL1NetT0_W { get; set; }
-  public required decimal ActivePowerL2NetT0_W { get; set; }
-  public required decimal ActivePowerL3NetT0_W { get; set; }
-  public required decimal ReactivePowerTotalNetT0_VAR { get; set; }
-  public required decimal ApparentPowerTotalNetT0_VA { get; set; }
-  public required decimal ActiveEnergyL1ImportT0_Wh { get; set; }
-  public required decimal ActiveEnergyL2ImportT0_Wh { get; set; }
-  public required decimal ActiveEnergyL3ImportT0_Wh { get; set; }
-  public required decimal ActiveEnergyTotalImportT0_Wh { get; set; }
-  public required decimal ActiveEnergyTotalExportT0_Wh { get; set; }
-  public required decimal ReactiveEnergyTotalImportT0_VARh { get; set; }
-  public required decimal ReactiveEnergyTotalExportT0_VARh { get; set; }
-  public required decimal ActiveEnergyTotalImportT1_Wh { get; set; }
-  public required decimal ActiveEnergyTotalImportT2_Wh { get; set; }
-#pragma warning restore CA1707
 }

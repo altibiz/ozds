@@ -150,22 +150,23 @@ public class AnalysisBasisEntityFactory(DbContext context)
         )
         .CreateManyInDb(context, cancellationToken: cancellationToken);
 
-      var analysisBasisEntity = new AnalysisBasisEntity(
-          Representative: representative,
-          FromDate: fromDate,
-          ToDate: toDate,
-          Location: location,
-          NetworkUser: networkUser,
-          MeasurementLocation: measurementLocation,
-          Meter: meter,
-          Calculations: calculations.Cast<CalculationEntity>().ToList(),
-          Invoices: invoices.Cast<InvoiceEntity>().ToList(),
-          LastMeasurement: measurements.OrderBy(x => x.Timestamp).Last(),
-          MonthlyAggregates: monthlyAggregates
-            .Where(x => x.Timestamp >= fromDate && x.Timestamp < toDate)
-            .Cast<AggregateEntity>()
-            .ToList()
-      );
+      var analysisBasisEntity = new AnalysisBasisEntity
+      {
+        Representative = representative,
+        FromDate = fromDate,
+        ToDate = toDate,
+        Location = location,
+        NetworkUser = networkUser,
+        MeasurementLocation = measurementLocation,
+        Meter = meter,
+        Calculations = calculations.Cast<CalculationEntity>().ToList(),
+        Invoices = invoices.Cast<InvoiceEntity>().ToList(),
+        LastMeasurement = measurements.OrderBy(x => x.Timestamp).Last(),
+        MonthlyAggregates = monthlyAggregates
+          .Where(x => x.Timestamp >= fromDate && x.Timestamp < toDate)
+          .Cast<AggregateEntity>()
+          .ToList()
+      };
 
       result.Add(analysisBasisEntity);
     }

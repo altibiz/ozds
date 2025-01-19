@@ -1,5 +1,5 @@
 using System.Diagnostics;
-using Ozds.Business.Models.Composite;
+using Ozds.Business.Conversion;
 using Ozds.Data.Entities.Composite;
 using Ozds.Data.Queries;
 using Ozds.Data.Test.Context;
@@ -11,7 +11,8 @@ namespace Ozds.Data.Test.Queries.AnalysisQueriesTest;
 public class ReadAnalysisBasesByRepresentativeTest(
   EphemeralDataDbContextManager manager,
   AnalysisQueries queries,
-  ILogger<ReadAnalysisBasesByRepresentativeTest> logger
+  ILogger<ReadAnalysisBasesByRepresentativeTest> logger,
+  ModelEntityConverter modelEntityConverter
 )
 {
   [Theory]
@@ -30,15 +31,15 @@ public class ReadAnalysisBasesByRepresentativeTest(
       dateTo,
       CancellationToken.None
     );
-    var expected = noise.Take(1).ToList();
+    var expectedResults = noise.Take(1).ToList();
 
-    var representative = expected.First().Representative;
-    var location = expected.First().Location;
-    var fromDate = expected.First().FromDate;
-    var toDate = expected.First().ToDate;
+    var representative = expectedResults.First().Representative;
+    var location = expectedResults.First().Location;
+    var fromDate = expectedResults.First().FromDate;
+    var toDate = expectedResults.First().ToDate;
 
     var stopwatch = Stopwatch.StartNew();
-    var actual = await queries.ReadAnalysisBasesByRepresentativeAndLocation(
+    var actualResults = await queries.ReadAnalysisBasesByRepresentativeAndLocation(
       context,
       representative.Id,
       representative.Role,
@@ -51,16 +52,16 @@ public class ReadAnalysisBasesByRepresentativeTest(
     logger.LogInformation("Read in {Elapsed}", stopwatch.Elapsed);
     stopwatch.Elapsed.Should().BeLessThan(TimeSpan.FromSeconds(1));
 
-    expected = expected
-      .Select(x => x with
+    expectedResults = expectedResults
+      .Select(x => new AnalysisBasisEntity
       {
         Calculations = x.Calculations.OrderBy(y => y.Id).ToList(),
         Invoices = x.Invoices.OrderBy(y => y.Id).ToList()
       })
       .OrderBy(x => x.MeasurementLocation.Id)
       .ToList();
-    actual = actual
-      .Select(x => x with
+    actualResults = actualResults
+      .Select(x => new AnalysisBasisEntity
       {
         Calculations = x.Calculations.OrderBy(y => y.Id).ToList(),
         Invoices = x.Invoices.OrderBy(y => y.Id).ToList()
@@ -68,13 +69,11 @@ public class ReadAnalysisBasesByRepresentativeTest(
       .OrderBy(x => x.MeasurementLocation.Id)
       .ToList();
 
-    var result = new TestResult<List<AnalysisBasisEntity>>(expected, actual);
+    actualResults.Should().HaveCount(expectedResults.Count);
 
-    result.Actual.Should().HaveCount(result.Expected.Count);
-
-    result.Actual.Should().AllSatisfy(actual =>
+    actualResults.Should().AllSatisfy(actual =>
     {
-      var expected = result.Expected.FirstOrDefault(expected =>
+      var expected = expectedResults.FirstOrDefault(expected =>
         expected.MeasurementLocation.Id == actual.MeasurementLocation.Id)!;
 
       expected.Should().NotBeNull();
@@ -118,8 +117,8 @@ public class ReadAnalysisBasesByRepresentativeTest(
         .Should()
         .BeContextuallyEquivalentTo(context, expected.MonthlyAggregates);
 
-      var actualModel = actual.ToModel();
-      var expectedModel = expected.ToModel();
+      var actualModel = modelEntityConverter.ToModel(actual);
+      var expectedModel = modelEntityConverter.ToModel(expected);
 
       actualModel.Should().BeBusinesswiseEquivalentTo(expectedModel);
     });

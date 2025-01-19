@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.Metrics;
 using Microsoft.Extensions.Primitives;
+using Ozds.Business.Extensions;
 using Ozds.Data.Context;
 using Ozds.Data.Extensions;
 using Ozds.Data.Test.Context;
@@ -49,6 +50,7 @@ public class Startup
 
     var builderProxy = new HostApplicationBuilderProxy(context, services);
     services.AddOzdsData(builderProxy);
+    services.AddOzdsBusiness(builderProxy);
 
     services.AddScoped<EphemeralDataDbContextManager>();
     services.AddScoped<DataDbContextManager>();

@@ -24,6 +24,7 @@ public class MeasurementUpsertFactory(DbContext context)
     MeasurementCount / 4;
   private const int AggregateCountFew =
     MeasurementCountFew / 10;
+
   private static readonly DateTimeOffset Now = new(
     DateTime.SpecifyKind(
       DateTimeOffset.Parse(
