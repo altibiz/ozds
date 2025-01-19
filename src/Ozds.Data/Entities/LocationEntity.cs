@@ -33,9 +33,6 @@ public class LocationEntity : AuditableEntity
   public virtual ICollection<MessengerEntity> Messengers { get; set; } =
     default!;
 
-  public virtual ICollection<NetworkUserInvoiceEntity> NetworkUserInvoices { get; set; } =
-    default!;
-
   public string WhiteMediumNetworkUserCatalogueId
   {
     get { return _whiteMediumNetworkUserCatalogueId.ToString(); }
