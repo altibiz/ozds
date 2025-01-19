@@ -113,7 +113,8 @@ public class CascadingDeleteInterceptorModelConfiguration : IModelConfiguration
     {
       if (relationship.IsRequired)
       {
-        if (relationship.DeclaringEntityType is IAuditableEntity)
+        if (relationship.DeclaringEntityType.ClrType
+          .IsAssignableTo(typeof(IAuditableEntity)))
         {
           relationship.DeleteBehavior = DeleteBehavior.Restrict;
         }
