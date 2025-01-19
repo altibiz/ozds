@@ -13,6 +13,7 @@ namespace Ozds.Business.Queries;
 public class RepresentativeQueries(
   DataRepresentativeQueries dataRepresentativeQueries,
   DataAuditableQueries dataAuditableQueries,
+  ModelEntityConverter modelEntityConverter,
   IUserQueries userQueries
 ) : IQueries
 {
@@ -32,13 +33,19 @@ public class RepresentativeQueries(
       .ReadSingle<RepresentativeEntity>(user.Id, cancellationToken);
     if (representative is null)
     {
-      return new MaybeRepresentingUserModel(user.ToModel(), null);
+      return new MaybeRepresentingUserModel
+      {
+        User = modelEntityConverter.ToModel<UserModel>(user),
+        Representative = null
+      };
     }
 
-    return new RepresentingUserModel(
-      user.ToModel(),
-      representative.ToModel()
-    );
+    return new RepresentingUserModel
+    {
+      User = modelEntityConverter.ToModel<UserModel>(user),
+      Representative = modelEntityConverter
+        .ToModel<RepresentativeModel>(representative)
+    };
   }
 
   public async Task<PaginatedList<MaybeRepresentingUserModel>>
@@ -49,7 +56,11 @@ public class RepresentativeQueries(
       bool deleted = false
     )
   {
-    var users = await userQueries.Users(pageNumber, pageCount, cancellationToken);
+    var users = await userQueries.Users(
+      pageNumber,
+      pageCount,
+      cancellationToken
+    );
     var userIds = users.Items
       .Select(user => user.Id)
       .ToList();
@@ -62,14 +73,15 @@ public class RepresentativeQueries(
 
     return users.Items
       .Select(
-        user => new MaybeRepresentingUserModel(
-          user.ToModel(),
-          representatives
+        user => new MaybeRepresentingUserModel
+        {
+          User = modelEntityConverter.ToModel<UserModel>(user),
+          Representative = representatives
             .FirstOrDefault(x => x.Id == user.Id)
               is { } representative
-              ? representative.ToModel()
+              ? modelEntityConverter.ToModel<RepresentativeModel>(representative)
               : null
-        ))
+        })
       .ToPaginatedList(users.TotalCount);
   }
 
@@ -89,13 +101,19 @@ public class RepresentativeQueries(
       .ReadSingle<RepresentativeEntity>(user.Id, cancellationToken);
     if (representative is null)
     {
-      return new MaybeRepresentingUserModel(user.ToModel(), null);
+      return new MaybeRepresentingUserModel
+      {
+        User = modelEntityConverter.ToModel<UserModel>(user),
+      };
     }
 
-    return new RepresentingUserModel(
-      user.ToModel(),
-      representative.ToModel()
-    );
+    return new RepresentingUserModel
+    {
+      User = modelEntityConverter.ToModel<UserModel>(user),
+      Representative = modelEntityConverter.ToEntity<RepresentativeModel>(
+        representative
+      )
+    };
   }
 
   public async Task<UserModel?> UserByClaimsPrincipal(
@@ -107,7 +125,7 @@ public class RepresentativeQueries(
       claimsPrincipal,
       cancellationToken
     );
-    return user?.ToModel();
+    return user is null ? null : modelEntityConverter.ToModel<UserModel>(user);
   }
 
   public async Task<RepresentativeModel?> RepresentativeByUserId(
@@ -117,11 +135,9 @@ public class RepresentativeQueries(
   {
     var representative = await dataAuditableQueries
       .ReadSingle<RepresentativeEntity>(id, cancellationToken);
-    if (representative is null)
-    {
-      return null;
-    }
 
-    return representative.ToModel();
+    return representative is null
+      ? null
+      : modelEntityConverter.ToModel<RepresentativeModel>(representative);
   }
 }
