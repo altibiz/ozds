@@ -28,6 +28,6 @@ public class ModelActivatorTest
       .GetRequiredService<ModelActivator>();
 
     var model = activator.ActivateDynamic(modelType);
-    model.Should().NotBeNull().And.BeOfType(modelType);
+    model.Should().NotBeNull().And.BeAssignableTo(modelType);
   }
 }

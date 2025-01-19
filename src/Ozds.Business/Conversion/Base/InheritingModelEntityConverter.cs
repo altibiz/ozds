@@ -39,7 +39,7 @@ public abstract class InheritingModelEntityConverter<
         .FirstOrDefault(x => x.ModelType == typeof(TSuperModel))
         as InitializingModelEntityConverter
           ?? throw new InvalidOperationException(
-            $"No model entity converter found for  type {typeof(TSuperModel)}");
+            $"No model entity converter found for type {typeof(TSuperModel)}");
 
     base.InitializeModel(entity, model);
     _baseModelConverter.InitializeModel(entity, model);

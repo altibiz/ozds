@@ -47,7 +47,7 @@ public class ModelEntityConverter(IServiceProvider serviceProvider)
   {
     if (entityCache.TryGetValue(model.GetType(), out var converter))
     {
-      return converter.ToModel(model);
+      return converter.ToEntity(model);
     }
 
     converter = FindEntityConverter(model.GetType());
