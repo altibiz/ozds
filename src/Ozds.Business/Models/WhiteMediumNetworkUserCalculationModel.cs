@@ -29,7 +29,7 @@ public class WhiteMediumNetworkUserCalculationModel
     UsageReactiveEnergyTotalRampedT0
   { get; set; } = default!;
 
-  public override string KindTitle
+  public override string Kind
   {
     get { return "White Medium Voltage"; }
   }

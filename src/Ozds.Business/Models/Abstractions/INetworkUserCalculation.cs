@@ -5,6 +5,7 @@ namespace Ozds.Business.Models.Abstractions;
 
 public interface INetworkUserCalculation : ICalculation
 {
+  public string Kind { get; }
   public string MeterId { get; }
   public IMeter ArchivedMeter { get; }
   public string UsageNetworkUserCatalogueId { get; }

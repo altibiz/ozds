@@ -29,7 +29,7 @@ public class RedLowNetworkUserCalculationModel
     UsageReactiveEnergyTotalRampedT0
   { get; set; } = default!;
 
-  public override string KindTitle
+  public override string Kind
   {
     get { return "Red Low Voltage"; }
   }

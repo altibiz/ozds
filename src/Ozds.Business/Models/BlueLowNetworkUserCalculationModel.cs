@@ -19,7 +19,7 @@ public class BlueLowNetworkUserCalculationModel
     UsageReactiveEnergyTotalRampedT0
   { get; set; } = default!;
 
-  public override string KindTitle
+  public override string Kind
   {
     get { return "Blue Low Voltage"; }
   }

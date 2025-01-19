@@ -82,11 +82,11 @@ public class ModelEntityConverter(IServiceProvider serviceProvider)
       .Aggregate((acc, next) =>
         acc is null
           ? null
-          : next!.EntityType.IsAssignableTo(acc.EntityType)
+          : next!.ModelType.IsAssignableTo(acc.ModelType)
             ? next
             : acc)
       ?? throw new InvalidOperationException(
-        $"No converter found for entity {type}.");
+        $"No converter found for model {type}.");
   }
 
   private IModelEntityConverter FindModelConverter(Type type)
@@ -100,11 +100,11 @@ public class ModelEntityConverter(IServiceProvider serviceProvider)
       .Aggregate((acc, next) =>
         acc is null
           ? null
-          : next!.ModelType.IsAssignableTo(acc.ModelType)
+          : next!.EntityType.IsAssignableTo(acc.EntityType)
             ? next
             : acc)
       ?? throw new InvalidOperationException(
-        $"No converter found for model {type}.");
+        $"No converter found for entity {type}.");
   }
 
   private readonly
