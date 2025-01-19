@@ -12,7 +12,7 @@ public class AnalysisBasisEntity
 
   public LocationEntity Location { get; set; } = default!;
 
-  public NetworkUserEntity? NetworkUser { get; set; } = default!;
+  public NetworkUserEntity NetworkUser { get; set; } = default!;
 
   public MeasurementLocationEntity MeasurementLocation { get; set; } =
     default!;

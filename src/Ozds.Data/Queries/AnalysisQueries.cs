@@ -586,7 +586,7 @@ public class AnalysisQueries(
       init;
     } = default!;
 
-    public NetworkUserEntity? NetworkUser
+    public NetworkUserEntity NetworkUser
     {
       get;
       init;

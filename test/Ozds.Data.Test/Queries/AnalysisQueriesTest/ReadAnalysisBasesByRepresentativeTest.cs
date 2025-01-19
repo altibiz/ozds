@@ -1,5 +1,8 @@
 using System.Diagnostics;
 using Ozds.Business.Conversion;
+using Ozds.Business.Models;
+using Ozds.Business.Models.Base;
+using Ozds.Business.Models.Composite;
 using Ozds.Data.Entities.Composite;
 using Ozds.Data.Queries;
 using Ozds.Data.Test.Context;
@@ -145,8 +148,56 @@ public class ReadAnalysisBasesByRepresentativeTest(
         .Should()
         .BeContextuallyEquivalentTo(context, expected.MonthlyAggregates);
 
-      var actualModel = modelEntityConverter.ToModel(actual);
-      var expectedModel = modelEntityConverter.ToModel(expected);
+      var actualModel = new AnalysisBasisModel
+      {
+        Representative = modelEntityConverter
+          .ToModel<RepresentativeModel>(actual.Representative),
+        FromDate = actual.FromDate,
+        ToDate = actual.ToDate,
+        Location = modelEntityConverter
+          .ToModel<LocationModel>(actual.Location),
+        NetworkUser = modelEntityConverter
+          .ToModel<NetworkUserModel>(actual.NetworkUser),
+        MeasurementLocation = modelEntityConverter
+          .ToModel<MeasurementLocationModel>(actual.MeasurementLocation),
+        Meter = modelEntityConverter.ToModel<MeterModel>(actual.Meter),
+        Calculations = actual.Calculations
+          .Select(x => modelEntityConverter.ToModel<CalculationModel>(x))
+          .ToList(),
+        Invoices = actual.Invoices
+          .Select(x => modelEntityConverter.ToModel<InvoiceModel>(x))
+          .ToList(),
+        LastMeasurement = modelEntityConverter
+          .ToModel<MeasurementModel>(actual.LastMeasurement),
+        MonthlyAggregates = actual.MonthlyAggregates
+          .Select(x => modelEntityConverter.ToModel<AggregateModel>(x))
+          .ToList(),
+      };
+      var expectedModel = new AnalysisBasisModel
+      {
+        Representative = modelEntityConverter
+          .ToModel<RepresentativeModel>(expected.Representative),
+        FromDate = expected.FromDate,
+        ToDate = expected.ToDate,
+        Location = modelEntityConverter
+          .ToModel<LocationModel>(expected.Location),
+        NetworkUser = modelEntityConverter
+          .ToModel<NetworkUserModel>(expected.NetworkUser),
+        MeasurementLocation = modelEntityConverter
+          .ToModel<MeasurementLocationModel>(expected.MeasurementLocation),
+        Meter = modelEntityConverter.ToModel<MeterModel>(expected.Meter),
+        Calculations = expected.Calculations
+          .Select(x => modelEntityConverter.ToModel<CalculationModel>(x))
+          .ToList(),
+        Invoices = expected.Invoices
+          .Select(x => modelEntityConverter.ToModel<InvoiceModel>(x))
+          .ToList(),
+        LastMeasurement = modelEntityConverter
+          .ToModel<MeasurementModel>(expected.LastMeasurement),
+        MonthlyAggregates = expected.MonthlyAggregates
+          .Select(x => modelEntityConverter.ToModel<AggregateModel>(x))
+          .ToList(),
+      };
 
       actualModel.Should().BeBusinesswiseEquivalentTo(expectedModel);
     });
