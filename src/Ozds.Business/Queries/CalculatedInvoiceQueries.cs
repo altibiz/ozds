@@ -25,11 +25,14 @@ public class CalculatedInvoiceQueries(
     );
 
     return entity is null ? default :
-      new CalculatedNetworkUserInvoiceModel(
-        entity.Calculations
+      new CalculatedNetworkUserInvoiceModel
+      {
+        Calculations = entity.Calculations
           .Select(modelEntityConverter.ToModel<NetworkUserCalculationModel>)
           .ToList(),
-        modelEntityConverter.ToModel<NetworkUserInvoiceModel>(entity.Invoice)
-      );
+        Invoice = modelEntityConverter.ToModel<NetworkUserInvoiceModel>(
+          entity.Invoice
+        )
+      };
   }
 }

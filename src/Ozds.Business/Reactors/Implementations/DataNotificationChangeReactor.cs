@@ -1,7 +1,8 @@
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Conversion;
-using Ozds.Business.Conversion.Joins;
+using Ozds.Business.Models;
+using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Enums;
 using Ozds.Business.Models.Joins;
 using Ozds.Business.Observers.Abstractions;
@@ -29,7 +30,8 @@ public class DataNotificationChangeReactor(
 public class DataNotificationChangeHandler(
   IDbContextFactory<DataDbContext> factory,
   INotificationCreatedPublisher publisher,
-  IEmailSender sender
+  IEmailSender sender,
+  ModelEntityConverter converter
 ) : Handler<DataModelsChangedEventArgs>
 {
   public override async Task Handle(
@@ -71,15 +73,16 @@ public class DataNotificationChangeHandler(
         x => new
         {
           Notification = notifications
-            .FirstOrDefault(y => y.Id == x.Key)
-            ?.ToModel(),
+            .FirstOrDefault(y => y.Id == x.Key) is { } notification
+            ? converter.ToModel<NotificationModel>(notification)
+            : null,
           Recipients = x.ToList(),
           Representatives = x
             .Select(
               y => representatives
                 .FirstOrDefault(z => z.Id == y.RepresentativeId))
             .OfType<RepresentativeEntity>()
-            .Select(z => z.ToModel())
+            .Select(z => converter.ToModel<RepresentativeModel>(z))
             .ToList()
         });
 
