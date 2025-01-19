@@ -5,17 +5,10 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
 
-public class MeterEntity : AuditableEntity, IMeterEntity
+public class MeterEntity
+  : AuditableEntity, ICustomIdentifiableEntity, IMeterEntity
 {
   private long _measurementValidatorId;
-
-  protected string _stringId = default!;
-
-  public override string Id
-  {
-    get { return _stringId; }
-    set { _stringId = value; }
-  }
 
   public string? MessengerId { get; set; } = default!;
 

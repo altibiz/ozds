@@ -20,13 +20,10 @@ public class MeasurementLocationEntityTypeHierarchyConfiguration :
   {
     var builder = modelBuilder.Entity(entity);
 
-    if (entity == typeof(MeasurementLocationEntity))
-    {
-      builder
-        .UseTphMappingStrategy()
-        .ToTable("measurement_locations")
-        .HasDiscriminator<string>(nameof(MeasurementLocationEntity.Kind));
-    }
+    builder
+      .UseTphMappingStrategy()
+      .ToTable("measurement_locations")
+      .HasDiscriminator<string>(nameof(MeasurementLocationEntity.Kind));
 
     builder
       .HasOne(nameof(MeasurementLocationEntity.Meter))

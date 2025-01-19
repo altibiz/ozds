@@ -1,8 +1,8 @@
 using Ozds.Data.Entities.Abstractions;
 
-namespace Ozds.Data.Entities.Complex;
+namespace Ozds.Data.Entities.Base;
 
-public abstract class CalculationItemEntity : ICalculationItemEntity
+public class CalculationItemEntity : ICalculationItemEntity
 {
   public decimal Price_EUR { get; set; }
 

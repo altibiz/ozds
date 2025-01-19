@@ -34,8 +34,8 @@ public abstract class
       .GetTypes()
       .Where(
         type =>
+          !type.IsAbstract &&
           !type.IsGenericType &&
-          type.IsClass &&
           typeof(TBase).IsAssignableFrom(type))
       .OrderBy(
         type =>
@@ -81,7 +81,8 @@ public static class ModelBuilderExtensions
     return assembly
       .GetTypes()
       .Where(
-        type => !type.IsAbstract &&
+        type =>
+          !type.IsAbstract &&
           typeof(IModelConfiguration).IsAssignableFrom(type))
       .Aggregate(
         modelBuilder,

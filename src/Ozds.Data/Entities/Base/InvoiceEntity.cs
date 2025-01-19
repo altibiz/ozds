@@ -25,11 +25,6 @@ public class
 {
   public override void Configure(ModelBuilder modelBuilder, Type entity)
   {
-    if (entity == typeof(InvoiceEntity))
-    {
-      return;
-    }
-
     var builder = modelBuilder.Entity(entity);
 
     builder

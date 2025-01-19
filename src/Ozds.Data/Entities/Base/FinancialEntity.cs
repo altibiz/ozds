@@ -30,13 +30,6 @@ public class FinancialEntityTypeHierarchyConfiguration
 {
   public override void Configure(ModelBuilder modelBuilder, Type entity)
   {
-    if (entity == typeof(FinancialEntity)
-      || entity == typeof(InvoiceEntity)
-      || entity == typeof(CalculationEntity))
-    {
-      return;
-    }
-
     var builder = modelBuilder.Entity(entity);
 
     builder.Ignore(nameof(FinancialEntity.TaxRate_Percent));

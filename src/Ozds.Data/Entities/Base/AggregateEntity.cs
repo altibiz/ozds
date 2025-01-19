@@ -41,11 +41,6 @@ public class
 {
   public override void Configure(ModelBuilder modelBuilder, Type entity)
   {
-    if (entity == typeof(AggregateEntity))
-    {
-      return;
-    }
-
     var builder = modelBuilder.Entity(entity);
 
     builder.HasKey(

@@ -1,19 +1,13 @@
 using Microsoft.EntityFrameworkCore;
+using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Entities.Complex;
 using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
 
-public class MessengerEntity : AuditableEntity
+public class MessengerEntity : AuditableEntity, ICustomIdentifiableEntity
 {
   private long _locationId;
-  protected string _stringId = default!;
-
-  public override string Id
-  {
-    get { return _stringId; }
-    set { _stringId = value; }
-  }
 
   public virtual string LocationId
   {

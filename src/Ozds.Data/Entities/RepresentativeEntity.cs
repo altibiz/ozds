@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Entities.Base;
 using Ozds.Data.Entities.Complex;
 using Ozds.Data.Entities.Enums;
@@ -7,16 +8,8 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities;
 
-public class RepresentativeEntity : AuditableEntity
+public class RepresentativeEntity : AuditableEntity, ICustomIdentifiableEntity
 {
-  protected string _stringId = default!;
-
-  public override string Id
-  {
-    get { return _stringId; }
-    set { _stringId = value; }
-  }
-
   public RoleEntity Role { get; set; }
 
   public virtual ICollection<NetworkUserEntity> NetworkUsers { get; set; } =

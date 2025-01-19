@@ -35,11 +35,6 @@ public class
 {
   public override void Configure(ModelBuilder modelBuilder, Type entity)
   {
-    if (entity == typeof(MeasurementEntity))
-    {
-      return;
-    }
-
     var builder = modelBuilder.Entity(entity);
 
     builder.HasKey(

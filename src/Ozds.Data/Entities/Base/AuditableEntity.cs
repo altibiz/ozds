@@ -4,9 +4,6 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
 
-// TODO: fix the base class mess
-//       - set types not in database as abstract
-
 public abstract class AuditableEntity : IdentifiableEntity, IAuditableEntity
 {
   public DateTimeOffset CreatedOn { get; set; } = DateTimeOffset.UtcNow;
@@ -40,11 +37,6 @@ public class
 {
   public override void Configure(ModelBuilder modelBuilder, Type entity)
   {
-    if (entity == typeof(AuditableEntity)
-      || entity == typeof(CatalogueEntity))
-    {
-      return;
-    }
     var builder = modelBuilder.Entity(entity);
 
     builder

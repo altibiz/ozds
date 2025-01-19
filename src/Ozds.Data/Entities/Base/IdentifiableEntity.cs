@@ -4,21 +4,31 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
 
-// TODO: fix the base class mess
-//       - set types not in database as abstract
-// TODO: fix id mess
-//       - make marker interface for string id types
-
 public abstract class IdentifiableEntity : IIdentifiableEntity
 {
   protected long _id;
 
+  protected string _stringId = default!;
+
   public virtual string Id
   {
-    get { return _id.ToString(); }
+#pragma warning disable S3060 // "is" should not be used with "this"
+    get => this is ICustomIdentifiableEntity
+        ? _stringId
+        : _id.ToString();
+#pragma warning restore S3060 // "is" should not be used with "this"
     set
     {
-      _id = value is { } notNullValue ? long.Parse(notNullValue) : default;
+#pragma warning disable S3060 // "is" should not be used with "this"
+      if (this is ICustomIdentifiableEntity)
+      {
+        _stringId = value;
+      }
+      else
+      {
+        _id = value is { } notNullValue ? long.Parse(notNullValue) : default;
+      }
+#pragma warning restore S3060 // "is" should not be used with "this"
     }
   }
 
@@ -30,22 +40,12 @@ public class IdentifiableEntityConfiguration
 {
   public override void Configure(ModelBuilder modelBuilder, Type entity)
   {
-    if (entity == typeof(IdentifiableEntity)
-      || entity == typeof(AuditableEntity)
-      || entity == typeof(CatalogueEntity))
-    {
-      return;
-    }
     var builder = modelBuilder.Entity(entity);
 
     builder.Ignore(nameof(IdentifiableEntity.Id));
-    if (entity.BaseType == typeof(IdentifiableEntity)
-      || entity.BaseType == typeof(AuditableEntity)
-      || entity.BaseType == typeof(CatalogueEntity))
+    if (entity.BaseType?.IsAbstract ?? false)
     {
-      if (entity == typeof(RepresentativeEntity)
-        || entity == typeof(MeterEntity)
-        || entity == typeof(MessengerEntity))
+      if (entity.IsAssignableTo(typeof(ICustomIdentifiableEntity)))
       {
         builder.HasKey("_stringId");
       }
@@ -54,9 +54,7 @@ public class IdentifiableEntityConfiguration
         builder.HasKey("_id");
       }
     }
-    if (entity.IsAssignableTo(typeof(RepresentativeEntity)) ||
-      entity.IsAssignableTo(typeof(MeterEntity)) ||
-      entity.IsAssignableTo(typeof(MessengerEntity)))
+    if (entity.IsAssignableTo(typeof(ICustomIdentifiableEntity)))
     {
       builder.Ignore("_id");
       builder
@@ -67,6 +65,7 @@ public class IdentifiableEntityConfiguration
     }
     else
     {
+      builder.Ignore("_stringId");
       builder
         .Property("_id")
         .HasColumnName("id")
