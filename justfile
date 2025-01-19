@@ -187,7 +187,7 @@ migrate-continue project name:
       | parse "{timestamp}_{name}.cs" \
       | get timestamp \
       | first; \
-    @just dump $"($now)-{{ project }}-{{ name }}"; \
+    just dump $"($now)-{{ project }}-{{ name }}"; \
     cp -f \
       $"{{ migrationassets }}/($now)-{{ project }}-{{ name }}-orchard.sql" \
       '{{ migrationassets }}/current-orchard.sql'; \
