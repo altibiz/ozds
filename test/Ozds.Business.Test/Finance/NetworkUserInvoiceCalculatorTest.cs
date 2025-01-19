@@ -1,5 +1,5 @@
 using Ozds.Business.Finance;
-using Ozds.Business.Finance.Agnostic;
+using Ozds.Business.Finance.Implementations;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Base;
@@ -573,13 +573,13 @@ public class NetworkUserInvoiceCalculatorTest
             x.Invoice.Total_EUR = System.Math.Round(
               x.Invoice.UsageFeeTotal_EUR + x.Invoice.SupplyFeeTotal_EUR,
               2);
-            x.Invoice.TaxRate_Percent = System.Math.Round(
+            x.Invoice.InvoiceTaxRate_Percent = System.Math.Round(
               x.Invoice.ArchivedRegulatoryCatalogue.TaxRate_Percent,
               2);
-            x.Invoice.Tax_EUR = System.Math.Round(
+            x.Invoice.InvoiceTax_EUR = System.Math.Round(
               x.Invoice.Total_EUR * x.Invoice.TaxRate_Percent / 100M,
               2);
-            x.Invoice.TotalWithTax_EUR = System.Math.Round(
+            x.Invoice.InvoiceTotalWithTax_EUR = System.Math.Round(
               x.Invoice.Total_EUR + x.Invoice.Tax_EUR,
               2);
 

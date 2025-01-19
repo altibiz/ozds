@@ -1,4 +1,4 @@
-using Ozds.Business.Activation.Agnostic;
+using Ozds.Business.Activation;
 using Ozds.Business.Extensions;
 using Ozds.Business.Models.Abstractions;
 
@@ -25,7 +25,7 @@ public class ModelActivatorTest
 
     var serviceProvider = serviceCollection.BuildServiceProvider();
     var activator = serviceProvider
-      .GetRequiredService<AgnosticModelActivator>();
+      .GetRequiredService<ModelActivator>();
 
     var model = activator.ActivateDynamic(modelType);
     model.Should().NotBeNull().And.BeOfType(modelType);
