@@ -15,7 +15,7 @@ public class NotificationModelActivator(IServiceProvider serviceProvider)
     model.Timestamp = DateTimeOffset.UtcNow;
     model.Content = string.Empty;
     model.Summary = string.Empty;
-    model.EventId = "0";
+    model.EventId = default!;
     model.Topics = new();
   }
 }

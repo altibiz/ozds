@@ -12,6 +12,6 @@ public class MessengerNotificationModelActivator(IServiceProvider serviceProvide
   public override void Initialize(MessengerNotificationModel model)
   {
     base.Initialize(model);
-    model.MessengerId = "0";
+    model.MessengerId = string.Empty;
   }
 }
