@@ -1,9 +1,10 @@
 using System.ComponentModel.DataAnnotations;
+using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Base;
 
 namespace Ozds.Business.Models;
 
-public class NetworkUserInvoiceModel : InvoiceModel
+public class NetworkUserInvoiceModel : InvoiceModel, INetworkUserInvoice
 {
   public string? BillId { get; set; }
 
