@@ -48,14 +48,14 @@
 </p>
 <p style="margin-top: 0.8rem;">
   @Translate("Name of the billing metering point (OMM)"):
-  @(Calculation.ArchivedNetworkUserMeasurementLocation.Title)
+  @(Model.ArchivedNetworkUserMeasurementLocation.Title)
 </p>
 <p>
   @Translate("Number of the billing metering point (OMM)"):
-  @(Calculation.ArchivedNetworkUserMeasurementLocation.Id)
+  @(Model.ArchivedNetworkUserMeasurementLocation.Id)
 </p>
 <p>
-  @Translate("Tariff model"): @(Calculation.Kind)
+  @Translate("Tariff model"): @(Model.Kind)
 </p>
 <p style="margin-top: 1.2rem; margin-left: 0.8rem;">
   <strong>@Translate("A) NETWORK USAGE FEE FOR ZDS")</strong>
@@ -90,20 +90,20 @@
   <tbody>
   <tr class="odd">
     <td rowspan="@usageRowspan">
-      @(Calculation.ArchivedMeter.Id)
+      @(Model.ArchivedMeter.Id)
     </td>
     <td rowspan="@usageRowspan">
-      @DateString(Calculation.FromDate)
+      @DateString(Model.FromDate)
     </td>
     <td rowspan="@usageRowspan">
-      @DateString(Calculation.ToDate)
+      @DateString(Model.ToDate)
     </td>
     @(
-    Calculation.UsageItems.FirstOrDefault() is { } usageItem
+    Model.UsageItems.FirstOrDefault() is { } usageItem
       ? RenderItem(usageItem)
       : null)
   </tr>
-  @foreach (var item in Calculation.UsageItems.Skip(1))
+  @foreach (var item in Model.UsageItems.Skip(1))
   {
     <tr>
       @RenderItem(item)
@@ -116,7 +116,7 @@
     </td>
     <td style="text-align: right;">
       <strong>
-        @NumericString(Calculation.UsageFeeTotal_EUR, 2) EUR
+        @NumericString(Model.UsageFeeTotal_EUR, 2) EUR
       </strong>
     </td>
   </tr>
@@ -155,20 +155,20 @@
   <tbody>
   <tr class="odd">
     <td rowspan="@supplyRowspan">
-      @Calculation.ArchivedMeter.Id
+      @Model.ArchivedMeter.Id
     </td>
     <td rowspan="@supplyRowspan">
-      @DateString(Calculation.FromDate)
+      @DateString(Model.FromDate)
     </td>
     <td rowspan="@supplyRowspan">
-      @DateString(Calculation.ToDate)
+      @DateString(Model.ToDate)
     </td>
     @(
-    Calculation.SupplyItems.FirstOrDefault() is { } supplyItem
+    Model.SupplyItems.FirstOrDefault() is { } supplyItem
       ? RenderItem(supplyItem)
       : null)
   </tr>
-  @foreach (var item in Calculation.SupplyItems.Skip(1))
+  @foreach (var item in Model.SupplyItems.Skip(1))
   {
     <tr>
       @RenderItem(item)
@@ -181,7 +181,7 @@
     </td>
     <td style="text-align: right;">
       <strong>
-        @NumericString(Calculation.SupplyFeeTotal_EUR, 2) EUR
+        @NumericString(Model.SupplyFeeTotal_EUR, 2) EUR
       </strong>
     </td>
   </tr>
@@ -192,13 +192,13 @@
 @code {
 
   [Parameter]
-  public INetworkUserCalculation Calculation { get; set; } = default!;
+  public INetworkUserCalculation Model { get; set; } = default!;
 
   private int usageRowspan
   {
     get
     {
-      var usageItemCount = Calculation.UsageItems.Count();
+      var usageItemCount = Model.UsageItems.Count();
       return usageItemCount == 0 ? 1 : usageItemCount;
     }
   }
@@ -207,7 +207,7 @@
   {
     get
     {
-      var supplyItemCount = Calculation.SupplyItems.Count();
+      var supplyItemCount = Model.SupplyItems.Count();
       return supplyItemCount == 0 ? 1 : supplyItemCount;
     }
   }
