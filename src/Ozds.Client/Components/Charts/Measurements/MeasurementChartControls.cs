@@ -61,10 +61,26 @@ public partial class MeasurementChartControls : OzdsOwningComponentBase
     if (MeasurementLocations.Count == 1)
     {
       _parameters.MeasurementLocations = MeasurementLocations.ToHashSet();
+      return;
     }
     if (Meters.Count == 1)
     {
       _parameters.Meters = Meters.ToHashSet();
+      return;
+    }
+
+    if (MeasurementLocations.Count > 0)
+    {
+      _parameters.MeasurementLocations = MeasurementLocations
+        .Take(1)
+        .ToHashSet();
+      return;
+    }
+    if (Meters.Count > 0)
+    {
+      _parameters.Meters = Meters
+        .Take(1)
+        .ToHashSet();
     }
   }
 
