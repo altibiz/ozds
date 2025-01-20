@@ -6,6 +6,7 @@
 @using Ozds.Client.Components.Base
 @using Ozds.Client.Components.Streaming
 @using Ozds.Client.Components.Models
+@using Ozds.Client.Components.Fields
 @using Ozds.Client.State
 
 @namespace Ozds.Client.Pages
@@ -34,6 +35,11 @@
 
 <Paging T="IMessenger">
   <Summary>
+    <IdentifiableLink
+      T="IMessenger"
+      TPage="MessengerPage"
+      Model="@context" />
+
     <MessengerSummary Model="@context" />
   </Summary>
 </Paging>

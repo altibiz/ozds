@@ -34,7 +34,9 @@
     .AnalysesByNetworkUser();
 }
 
-<ResponsiveTable Model="@analyses">
+<ResponsiveTable
+  Model="@analyses"
+  Link="@(x => PageHref<NetworkUserPage>(new { x.NetworkUser.Id }))">
   <Summary>
     <NetworkUserAnalysisSummary Model="@context" />
   </Summary>
