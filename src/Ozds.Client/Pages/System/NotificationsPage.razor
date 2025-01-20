@@ -41,7 +41,9 @@
 
 <Paging PageAsync="OnPageAsync">
   <Found Context="page">
-    <ResponsiveTable Model="@(page.Items)">
+    <ResponsiveTable
+      Model="@(page.Items)"
+      Link="@(x => PageHref<NotificationPage>(new { x.Id }))">
       <Summary>
         <NotificationSummary Model="@context" />
       </Summary>

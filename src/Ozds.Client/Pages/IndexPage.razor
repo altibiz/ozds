@@ -65,6 +65,11 @@
   <ResponsiveTable
     Model="@locations"
     Link="@(x => PageHref<LocationPage>(new { x.Location.Id }))">
+    <Title>
+      <MudText>
+        @context.Location.Title
+      </MudText>
+    </Title>
     <Summary>
       <LocationAnalysisSummary Model="@context" />
     </Summary>

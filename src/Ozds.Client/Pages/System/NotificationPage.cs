@@ -18,6 +18,9 @@ public partial class NotificationPage : OzdsOwningComponentBase
   [CascadingParameter]
   public RepresentativeState RepresentativeState { get; set; } = default!;
 
+  [CascadingParameter]
+  public NotificationsState NotificationsState { get; set; } = default!;
+
   private async Task OnMarkAsSeen(INotification model)
   {
     await ScopedServices
@@ -26,6 +29,8 @@ public partial class NotificationPage : OzdsOwningComponentBase
         model.Id,
         RepresentativeState.Representative.Id,
         CancellationToken);
+
+    NotificationsState.MarkNotificationAsSeen(model);
 
     NavigateToPage<NotificationsPage>();
   }

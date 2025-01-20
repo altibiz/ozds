@@ -44,17 +44,22 @@ public partial class NotificationsStateProvider : OzdsOwningComponentBase
       notifications,
       (notification) =>
       {
-        InvokeAsync(() =>
+        var actual = notifications
+          .FirstOrDefault(x => x.Id == notification.Id);
+        if (actual is { })
         {
-          notifications.Add(notification);
-          StateHasChanged();
-        });
+          InvokeAsync(() =>
+          {
+            notifications.Remove(actual);
+            StateHasChanged();
+          });
+        }
       },
       (notification) =>
       {
         InvokeAsync(() =>
         {
-          notifications.Remove(notification);
+          notifications.Add(notification);
           StateHasChanged();
         });
       }
