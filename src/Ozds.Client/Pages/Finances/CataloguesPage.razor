@@ -6,6 +6,7 @@
 @using Ozds.Client.Components.Base
 @using Ozds.Client.Components.Streaming
 @using Ozds.Client.Components.Models
+@using Ozds.Client.Components.Fields
 
 @namespace Ozds.Client.Pages
 
@@ -26,8 +27,32 @@
   <title>OZDS - @Translate("Catalogues")</title>
 </HeadContent>
 
+<MudText>
+  @Translate("Network user catalogues")
+</MudText>
+
 <Paging T="INetworkUserCatalogue">
   <Summary>
+    <IdentifiableLink
+      T="INetworkUserCatalogue"
+      TPage="NetworkUserCataloguePage"
+      Model="@context" />
+
+    <CatalogueSummary Model="@context" />
+  </Summary>
+</Paging>
+
+<MudText>
+  @Translate("Regulatory catalogues")
+</MudText>
+
+<Paging T="IRegulatoryCatalogue">
+  <Summary>
+    <IdentifiableLink
+      T="IRegulatoryCatalogue"
+      TPage="RegulatoryCataloguePage"
+      Model="@context" />
+
     <CatalogueSummary Model="@context" />
   </Summary>
 </Paging>

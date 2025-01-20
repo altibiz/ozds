@@ -32,13 +32,13 @@
 @{
   var invoices = AnalysisState.AnalysisBases.Value
     .SelectMany(analysisBasis => analysisBasis.Invoices)
-    .OfType<IInvoice>()
+    .OfType<INetworkUserInvoice>()
     .ToList();
 }
 
 <ResponsiveTable
   Model="@invoices"
-  Link="@(x => PageHref<InvoicePage>(new { x.Id }))">
+  Link="@(x => PageHref<NetworkUserInvoicePage>(new { x.Id }))">
   <Summary>
     <InvoiceSummary Model="@context" />
   </Summary>

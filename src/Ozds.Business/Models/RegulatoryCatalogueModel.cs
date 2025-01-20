@@ -1,9 +1,10 @@
 using System.ComponentModel.DataAnnotations;
+using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Base;
 
 namespace Ozds.Business.Models;
 
-public class RegulatoryCatalogueModel : CatalogueModel
+public class RegulatoryCatalogueModel : CatalogueModel, IRegulatoryCatalogue
 {
   [Required]
   [Range(0, uint.MaxValue)]

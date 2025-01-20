@@ -1,0 +1,40 @@
+@using Microsoft.AspNetCore.Components.Web
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Streaming
+@using Ozds.Client.Components.Models
+
+@namespace Ozds.Client.Pages
+
+@page "/finances/network-user-catalogue/{id?}"
+
+@inherits OzdsComponentBase
+
+<Mutating T="INetworkUserCatalogue" Id="@Id">
+  <Edit>
+    <HeadContent>
+      @if (context.Created)
+      {
+        <title>OZDS - @Translate("New catalogue")</title>
+      }
+      else
+      {
+        <title>OZDS - @Translate("Catalogue"): @context.Model.Title</title>
+      }
+    </HeadContent>
+
+    <CatalogueEdit Model="@context.Model" />
+  </Edit>
+  <Details>
+    <HeadContent>
+      <title>OZDS - @Translate("Catalogue"): @context.Model.Title</title>
+    </HeadContent>
+
+    <CatalogueDetails Model="@context.Model" />
+  </Details>
+</Mutating>
+
+@code {
+  [Parameter]
+  public string? Id { get; set; } = default!;
+}

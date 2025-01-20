@@ -6,6 +6,7 @@
 @using Ozds.Client.Components.Base
 @using Ozds.Client.Components.Streaming
 @using Ozds.Client.Components.Models
+@using Ozds.Client.Components.Fields
 
 @namespace Ozds.Client.Pages
 
@@ -30,6 +31,11 @@
 
 <Paging T="INetworkUserCalculation">
   <Summary>
+    <IdentifiableLink
+      T="INetworkUserCalculation"
+      TPage="NetworkUserCalculationPage"
+      Model="@context" />
+
     <CalculationSummary Model="@context" />
   </Summary>
 </Paging>

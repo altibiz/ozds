@@ -6,11 +6,11 @@
 
 @namespace Ozds.Client.Pages
 
-@page "/finances/calculation/{id}"
+@page "/finances/network-user-calculation/{id}"
 
 @inherits OzdsComponentBase
 
-<Mutating T="ICalculation" Id="@Id">
+<Mutating T="INetworkUserCalculation" Id="@Id">
   <Edit>
     @if (context.Created)
     {

@@ -6,11 +6,11 @@
 
 @namespace Ozds.Client.Pages
 
-@page "/finances/catalogue/{id?}"
+@page "/finances/regulatory-catalogue/{id?}"
 
 @inherits OzdsComponentBase
 
-<Mutating T="ICatalogue" Id="@Id">
+<Mutating T="IRegulatoryCatalogue" Id="@Id">
   <Edit>
     <HeadContent>
       @if (context.Created)
