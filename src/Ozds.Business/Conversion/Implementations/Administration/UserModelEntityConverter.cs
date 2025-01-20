@@ -15,6 +15,7 @@ public class UserModelEntityConverter
     base.InitializeEntity(model, entity);
     entity.UserName = model.UserName;
     entity.Email = model.Email;
+    entity.Id = model.Id;
   }
 
   public override void InitializeModel(
@@ -25,5 +26,6 @@ public class UserModelEntityConverter
     base.InitializeModel(entity, model);
     model.UserName = entity.UserName;
     model.Email = entity.Email;
+    model.Id = entity.Id;
   }
 }
