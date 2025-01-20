@@ -44,6 +44,12 @@ public class BlueLowNetworkUserCalculationModelEntityConverter(
         : modelEntityConverter.ToEntity<
             BlueLowNetworkUserCatalogueEntity>(
               model.ConcreteArchivedUsageNetworkUserCatalogue);
+    if (entity.ArchivedUsageNetworkUserCatalogue
+      is { } archivedUsageNetworkUserCatalogue)
+    {
+      archivedUsageNetworkUserCatalogue.Kind =
+        archivedUsageNetworkUserCatalogue.GetType().Name;
+    }
   }
 
   public override void InitializeModel(

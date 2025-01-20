@@ -5,7 +5,7 @@ using IEvent = Ozds.Business.Models.Abstractions.IEvent;
 
 namespace Ozds.Business.Models.Base;
 
-public abstract class EventModel : IdentifiableModel, IEvent
+public class EventModel : IdentifiableModel, IEvent
 {
   [Required]
   public required List<CategoryModel> Categories { get; set; }

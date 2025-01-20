@@ -54,6 +54,12 @@ public class ModelEntityConverter(IServiceProvider serviceProvider)
 
     entityCache.TryAdd(model.GetType(), converter);
 
+    if (!converter.CanConvertToEntity(model.GetType()))
+    {
+      throw new InvalidOperationException(
+        $"No entity converter found for model {model.GetType()}.");
+    }
+
     return converter.ToEntity(model);
   }
 
@@ -68,6 +74,12 @@ public class ModelEntityConverter(IServiceProvider serviceProvider)
 
     modelCache.TryAdd(entity.GetType(), converter);
 
+    if (!converter.CanConvertToModel(entity.GetType()))
+    {
+      throw new InvalidOperationException(
+        $"No model converter found for entity {entity.GetType()}.");
+    }
+
     return converter.ToModel(entity);
   }
 
@@ -75,9 +87,7 @@ public class ModelEntityConverter(IServiceProvider serviceProvider)
   {
     return serviceProvider
       .GetServices<IModelEntityConverter>()
-      .Where(
-        converter =>
-          converter.CanConvertToEntity(type))
+      .Where(converter => type.IsAssignableTo(converter.ModelType))
       .DefaultIfEmpty(null)
       .Aggregate((acc, next) =>
         acc is null
@@ -85,6 +95,16 @@ public class ModelEntityConverter(IServiceProvider serviceProvider)
           : next!.ModelType.IsAssignableTo(acc.ModelType)
             ? next
             : acc)
+      ?? serviceProvider
+          .GetServices<IModelEntityConverter>()
+          .Where(converter => converter.ModelType.IsAssignableTo(type))
+          .DefaultIfEmpty(null)
+          .Aggregate((acc, next) =>
+            acc is null
+              ? null
+              : next!.ModelType.IsAssignableTo(acc.ModelType)
+                ? acc
+                : next)
       ?? throw new InvalidOperationException(
         $"No converter found for model {type}.");
   }
@@ -93,9 +113,7 @@ public class ModelEntityConverter(IServiceProvider serviceProvider)
   {
     return serviceProvider
       .GetServices<IModelEntityConverter>()
-      .Where(
-        converter =>
-          converter.CanConvertToModel(type))
+      .Where(converter => type.IsAssignableTo(converter.EntityType))
       .DefaultIfEmpty(null)
       .Aggregate((acc, next) =>
         acc is null
@@ -103,6 +121,16 @@ public class ModelEntityConverter(IServiceProvider serviceProvider)
           : next!.EntityType.IsAssignableTo(acc.EntityType)
             ? next
             : acc)
+      ?? serviceProvider
+          .GetServices<IModelEntityConverter>()
+          .Where(converter => converter.EntityType.IsAssignableTo(type))
+          .DefaultIfEmpty(null)
+          .Aggregate((acc, next) =>
+            acc is null
+              ? null
+              : next!.EntityType.IsAssignableTo(acc.EntityType)
+                ? acc
+                : next)
       ?? throw new InvalidOperationException(
         $"No converter found for entity {type}.");
   }

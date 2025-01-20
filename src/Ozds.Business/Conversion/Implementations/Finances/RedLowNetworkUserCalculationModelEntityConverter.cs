@@ -65,6 +65,12 @@ public class RedLowNetworkUserCalculationModelEntityConverter(
         : modelEntityConverter.ToEntity<
             RedLowNetworkUserCatalogueEntity>(
               model.ConcreteArchivedUsageNetworkUserCatalogue);
+    if (entity.ArchivedUsageNetworkUserCatalogue
+      is { } archivedUsageNetworkUserCatalogue)
+    {
+      archivedUsageNetworkUserCatalogue.Kind =
+        archivedUsageNetworkUserCatalogue.GetType().Name;
+    }
   }
 
   public override void InitializeModel(

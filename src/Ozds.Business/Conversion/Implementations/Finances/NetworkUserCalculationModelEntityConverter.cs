@@ -62,6 +62,12 @@ public class NetworkUserCalculationModelEntityConverter(
         : modelEntityConverter.ToEntity<
             NetworkUserMeasurementLocationEntity>(
               model.ArchivedNetworkUserMeasurementLocation);
+    if (entity.ArchivedNetworkUserMeasurementLocation
+      is { } archivedNetworkUserMeasurementLocation)
+    {
+      archivedNetworkUserMeasurementLocation.Kind =
+        archivedNetworkUserMeasurementLocation.GetType().Name;
+    }
     entity.SupplyRegulatoryCatalogueId =
       model.SupplyRegulatoryCatalogueId;
     entity.ArchivedSupplyRegulatoryCatalogue =
@@ -76,6 +82,10 @@ public class NetworkUserCalculationModelEntityConverter(
       ? null!
       : modelEntityConverter.ToEntity<MeterEntity>(
           model.ArchivedMeter);
+    if (entity.ArchivedMeter is { } archivedMeter)
+    {
+      archivedMeter.Kind = archivedMeter.GetType().Name;
+    }
     entity.UsageFeeTotal_EUR = model.UsageFeeTotal_EUR;
     entity.SupplyFeeTotal_EUR = model.SupplyFeeTotal_EUR;
     entity.Total_EUR = model.Total_EUR;

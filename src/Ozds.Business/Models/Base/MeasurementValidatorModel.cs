@@ -5,11 +5,11 @@ namespace Ozds.Business.Models.Base;
 
 // TODO: clearer property naming scheme
 
-public abstract class MeasurementValidatorModel : AuditableModel
+public class MeasurementValidatorModel : AuditableModel
 {
 }
 
-public abstract class MeasurementValidatorModel<T> : MeasurementValidatorModel,
+public class MeasurementValidatorModel<T> : MeasurementValidatorModel,
   IMeasurementValidator
   where T : IMeasurement
 {

@@ -69,6 +69,12 @@ public class WhiteMediumNetworkUserCalculationModelEntityConverter(
         : modelEntityConverter.ToEntity<
             WhiteMediumNetworkUserCatalogueEntity>(
               model.ConcreteArchivedUsageNetworkUserCatalogue);
+    if (entity.ArchivedUsageNetworkUserCatalogue
+      is { } archivedUsageNetworkUserCatalogue)
+    {
+      archivedUsageNetworkUserCatalogue.Kind =
+        archivedUsageNetworkUserCatalogue.GetType().Name;
+    }
   }
 
   public override void InitializeModel(
