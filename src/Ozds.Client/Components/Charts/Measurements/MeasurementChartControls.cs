@@ -194,8 +194,8 @@ public partial class MeasurementChartControls : OzdsOwningComponentBase
     List<IAggregate> aggregates)
   {
     if (!_parameters.Refresh
-      || measurements.Count == 0
-      || aggregates.Count == 0)
+      || (measurements.Count == 0
+      && aggregates.Count == 0))
     {
       return;
     }
