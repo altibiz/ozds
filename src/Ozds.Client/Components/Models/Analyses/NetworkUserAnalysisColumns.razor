@@ -11,20 +11,6 @@
 
 @inherits OzdsComponentBase
 
-<TemplateColumn
-  T="NetworkUserAnalysis"
-  Title="@Translate("Network users")"
-  Sortable="false">
-  <CellTemplate>
-    <MudStack Row>
-      <IdentifiableLink
-        T="NetworkUserModel"
-        TPage="NetworkUserPage"
-        Model="context.Item.NetworkUser" />
-    </MudStack>
-  </CellTemplate>
-</TemplateColumn>
-
 <PropertyColumn
   T="NetworkUserAnalysis"
   TProperty="decimal"
