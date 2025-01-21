@@ -24,9 +24,6 @@ public class BillingQueries(
     await using var context = await factory
       .CreateDbContextAsync(cancellationToken);
 
-    await context.Database
-      .ExecuteSqlRawAsync("SET jit = on;", cancellationToken);
-
     var networkUser = await context.NetworkUsers
         .Where(
           context.PrimaryKeyEquals<NetworkUserEntity>(

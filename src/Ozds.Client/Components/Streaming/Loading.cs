@@ -83,6 +83,12 @@ public partial class Loading<T> : OzdsOwningComponentBase
       _state = _state.WithReset();
     }
 
+    if (Value is not null)
+    {
+      _state = _state.WithValue(Value);
+      return;
+    }
+
     if (_state.State is not LoadingState.Loading and not LoadingState.Unfound)
     {
       return;
@@ -153,6 +159,12 @@ public partial class Loading<T> : OzdsOwningComponentBase
     if (reset)
     {
       _state = _state.WithReset();
+    }
+
+    if (Value is not null)
+    {
+      _state = _state.WithValue(Value);
+      return;
     }
 
     if (_state.State is not LoadingState.Loading and not LoadingState.Unfound)

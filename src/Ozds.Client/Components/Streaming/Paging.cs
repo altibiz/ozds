@@ -59,6 +59,26 @@ public partial class Paging<T> : OzdsOwningComponentBase
     }
   }
 
+  protected override void OnParametersSet()
+  {
+    if (loading is null)
+    {
+      return;
+    }
+
+    loading.Reload(reset: true);
+  }
+
+  protected override async Task OnParametersSetAsync()
+  {
+    if (loading is null)
+    {
+      return;
+    }
+
+    await loading.ReloadAsync(reset: true);
+  }
+
   [JSInvokable]
   public void OnScrollInView(bool isInView)
   {
@@ -102,9 +122,11 @@ public partial class Paging<T> : OzdsOwningComponentBase
               _pageNumber,
               CancellationToken,
               pageCount: PageCount)
-            .ContinueWith(x => x.Result.Items
-              .OfType<T>()
-              .ToPaginatedList(x.Result.TotalCount))
+            .ContinueWith(x => x.IsCanceled
+              ? new PaginatedList<T>(new List<T>(), 0)
+              : x.Result.Items
+                .OfType<T>()
+                .ToPaginatedList(x.Result.TotalCount))
           : Page is null && typeof(T).IsAssignableTo(typeof(IReadonly))
             ? () => ScopedServices
               .GetRequiredService<ReadonlyQueries>()
@@ -113,9 +135,11 @@ public partial class Paging<T> : OzdsOwningComponentBase
                 _pageNumber,
                 CancellationToken,
                 pageCount: PageCount)
-              .ContinueWith(x => x.Result.Items
-                .OfType<T>()
-                .ToPaginatedList(x.Result.TotalCount))
+              .ContinueWith(x => x.IsCanceled
+                ? new PaginatedList<T>(new List<T>(), 0)
+                : x.Result.Items
+                  .OfType<T>()
+                  .ToPaginatedList(x.Result.TotalCount))
             : null;
     }
   }

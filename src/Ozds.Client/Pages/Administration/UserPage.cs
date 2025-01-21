@@ -44,7 +44,7 @@ public partial class UserPage : OzdsOwningComponentBase
 
     var queries = ScopedServices.GetRequiredService<RepresentativeQueries>();
 
-    var user = await queries.MaybeRepresentingUserByUserId(
+    var user = await queries.ReadMaybeRepresentingUserByUserId(
       Id,
       CancellationToken
     );

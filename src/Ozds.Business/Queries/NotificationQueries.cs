@@ -64,7 +64,7 @@ public class NotificationQueries(
     );
 
     return entities.Items
-      .Select(modelEntityConverter.ToEntity<T>)
+      .Select(modelEntityConverter.ToModel<T>)
       .ToPaginatedList(entities.TotalCount);
   }
 

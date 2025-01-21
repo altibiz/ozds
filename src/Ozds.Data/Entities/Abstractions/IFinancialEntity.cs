@@ -2,6 +2,8 @@ namespace Ozds.Data.Entities.Abstractions;
 
 public interface IFinancialEntity : IReadonlyEntity, IIdentifiableEntity
 {
+  public string? RepresentativeId { get; set; }
+
   public DateTimeOffset IssuedOn { get; }
 
   public string? IssuedById { get; }

@@ -33,6 +33,15 @@ public partial class NotificationPage : OzdsOwningComponentBase
     NavigateToPage<NotificationsPage>();
   }
 
+  private async Task OnMarkAsResolved(IResolvableNotification model)
+  {
+    await ScopedServices
+      .GetRequiredService<NotificationMutations>()
+      .MarkNotificationAsResolved(
+        model,
+        CancellationToken);
+  }
+
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
   private async Task<INotification> OnNewAsync()
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously

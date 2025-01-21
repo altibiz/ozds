@@ -17,10 +17,14 @@
 
 @inherits OzdsOwningComponentBase
 
+@{
+  var value = NotificationsState.Notifications.Find(x => x.Id == Id);
+}
+
 @if (RepresentativeState.Representative.Role
   is not RoleModel.OperatorRepresentative)
 {
-  <Loading T="INotification" Id="@Id">
+  <Loading T="INotification" Id="@Id" Value="@value">
     <Found>
       <HeadContent>
         <title>OZDS - @Translate("Notification"): @context.Title</title>
@@ -39,10 +43,11 @@
 <Mutating
   T="INotification"
   Id="@Id"
+  Value="@value"
   LoadAsync="OnLoadAsync"
   NewAsync="OnNewAsync"
   CreateAsync="OnCreateAsync"
-  DisallowEdit>
+  AsReadonly>
   <Label>
     <HeadContent>
       @if (context.Created)
@@ -66,11 +71,24 @@
       <div class="d-flex flex-row mt-4 justify-end">
         <MudButton
           Variant="Variant.Filled"
-          Class="align-self-end"
+          Class="align-self-end" fre
           OnClick="@(() => OnMarkAsSeen(context.Model))">
           @Translate("Mark as seen")
         </MudButton>
       </div>
+
+      @if (context.Model is IResolvableNotification resolvableNotification
+        && resolvableNotification.ResolvedOn is null)
+      {
+        <div class="d-flex flex-row mt-4 justify-end">
+          <MudButton
+            Variant="Variant.Filled"
+            Class="align-self-end"
+            OnClick="@(() => OnMarkAsResolved(resolvableNotification))">
+            @Translate("Mark as resolved")
+          </MudButton>
+        </div>
+      }
     }
   </Details>
 </Mutating>

@@ -6,6 +6,8 @@ namespace Ozds.Data.Entities.Base;
 
 public abstract class FinancialEntity : IdentifiableEntity, IFinancialEntity
 {
+  public string? RepresentativeId { get; set; }
+
   public DateTimeOffset IssuedOn { get; set; } = DateTimeOffset.UtcNow;
 
   public string? IssuedById { get; set; }
@@ -65,5 +67,7 @@ public class FinancialEntityTypeHierarchyConfiguration
     builder
       .Property(nameof(FinancialEntity.Total_EUR))
       .HasColumnName("total_eur");
+
+    builder.Ignore(nameof(FinancialEntity.RepresentativeId));
   }
 }

@@ -7,6 +7,8 @@ namespace Ozds.Data.Entities.Base;
 public class ResolvableNotificationEntity
   : NotificationEntity, IResolvableNotificationEntity
 {
+  public string? RepresentativeId { get; set; }
+
   public string? ResolvedById { get; set; } = default!;
 
   public virtual RepresentativeEntity? ResolvedBy { get; set; } = default!;
@@ -25,5 +27,7 @@ public class ResolvableNotificationEntityModelConfiguration :
       .HasOne(nameof(ResolvableNotificationEntity.ResolvedBy))
       .WithMany(nameof(RepresentativeEntity.ResolvableNotifications))
       .HasForeignKey(nameof(ResolvableNotificationEntity.ResolvedById));
+
+    builder.Ignore(nameof(ResolvableNotificationEntity.RepresentativeId));
   }
 }

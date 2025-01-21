@@ -24,8 +24,6 @@ public static class IServiceCollectionExtensions
     this IServiceCollection services
   )
   {
-    services.AddCascadingAuthenticationState();
-
     services.AddCascadingValue<CultureState>();
     services.AddCascadingValue<UserState>();
     services.AddCascadingValue<RepresentativeState>();
@@ -64,6 +62,8 @@ public static class IServiceCollectionExtensions
             options.EnableDetailedErrors = true;
           }
         });
+
+    services.AddCascadingAuthenticationState();
 
     return services;
   }

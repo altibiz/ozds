@@ -93,20 +93,38 @@ public partial class NotificationsStateProvider : OzdsOwningComponentBase
       .Where(x => x.SeenOn is not null)
       .ToList();
 
-    var relevantNotifications = _state.Notifications
+    var actualNotificationsMarkedAsSeen = _state.Notifications
       .Where(x => notificationsMarkedAsSeen
         .Exists(y =>
           y.NotificationId == x.Id
           && y.RepresentativeId == RepresentativeState.Representative.Id))
       .ToList();
 
-    if (relevantNotifications.Count > 0)
+    var indexedNotificationsMarkedAsResolved = args.Models
+      .Where(x => x.State == DataModelChangedState.Modified)
+      .Select(x => x.Model)
+      .OfType<IResolvableNotification>()
+      .Where(x => x.ResolvedOn is not null)
+      .Select(x => new
+      {
+        Notification = x,
+        Index = _state.Notifications.FindIndex(y => y.Id == x.Id)
+      })
+      .Where(x => x.Index is not -1)
+      .ToList();
+
+    if (actualNotificationsMarkedAsSeen.Count > 0 ||
+      indexedNotificationsMarkedAsResolved.Count > 0)
     {
       InvokeAsync(() =>
       {
-        foreach (var notification in relevantNotifications)
+        foreach (var notification in actualNotificationsMarkedAsSeen)
         {
           _state.Notifications.Remove(notification);
+        }
+        foreach (var x in indexedNotificationsMarkedAsResolved)
+        {
+          _state.Notifications[x.Index] = x.Notification;
         }
         StateHasChanged();
       });

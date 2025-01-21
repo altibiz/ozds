@@ -38,7 +38,11 @@ public class CalculatedInvoiceMutations(
     }
     catch
     {
-      await context.Database.RollbackTransactionAsync(cancellationToken);
+      if (context.Database.CurrentTransaction is { } transaction)
+      {
+        await transaction.RollbackAsync(cancellationToken);
+      }
+
       throw;
     }
   }

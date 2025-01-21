@@ -65,4 +65,19 @@ public class NotificationMutations(
 
     return recipient;
   }
+
+  public async Task<IResolvableNotificationEntity> MarkNotificationAsResolved(
+    IResolvableNotificationEntity notification,
+    CancellationToken cancellationToken
+  )
+  {
+    await using var context = await factory
+      .CreateDbContextAsync(cancellationToken);
+
+    context.Update(notification);
+
+    await context.SaveChangesAsync(cancellationToken);
+
+    return notification;
+  }
 }

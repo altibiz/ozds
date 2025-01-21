@@ -29,6 +29,8 @@ public abstract class AuditableEntity : IdentifiableEntity, IAuditableEntity
   public bool Restore { get; set; } = false;
 
   public bool Forget { get; set; } = false;
+
+  public string? RepresentativeId { get; set; }
 }
 
 public class
@@ -56,5 +58,6 @@ public class
 
     builder.Ignore(nameof(AuditableEntity.Restore));
     builder.Ignore(nameof(AuditableEntity.Forget));
+    builder.Ignore(nameof(AuditableEntity.RepresentativeId));
   }
 }

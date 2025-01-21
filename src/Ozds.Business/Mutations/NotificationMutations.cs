@@ -1,7 +1,9 @@
 using Ozds.Business.Conversion;
 using Ozds.Business.Models.Abstractions;
+using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Joins;
 using Ozds.Business.Mutations.Abstractions;
+using Ozds.Business.Queries;
 using Ozds.Business.Validation;
 using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Entities.Joins;
@@ -12,7 +14,8 @@ namespace Ozds.Business.Mutations;
 public class NotificationMutations(
   DataNotificationMutations mutations,
   ModelEntityConverter modelEntityConverter,
-  ModelValidator validator
+  ModelValidator validator,
+  RepresentativeQueries representativeQueries
 ) : IMutations
 {
   public async Task<string> Create(
@@ -61,6 +64,41 @@ public class NotificationMutations(
     var model = entity is null
       ? null
       : modelEntityConverter.ToModel<NotificationRecipientModel>(entity);
+
+    return model;
+  }
+
+  public async Task<IResolvableNotification> MarkNotificationAsResolved(
+    IResolvableNotification notification,
+    CancellationToken cancellationToken
+  )
+  {
+    if (notification is not ResolvableNotificationModel resolvableNotification)
+    {
+      throw new ArgumentException(
+        $"{nameof(notification)} is not of type {nameof(ResolvableNotificationModel)}"
+      );
+    }
+
+    if (resolvableNotification.ResolvedOn is not null)
+    {
+      throw new InvalidOperationException(
+        $"{nameof(resolvableNotification)} is already resolved"
+      );
+    }
+
+    var representativeId = await representativeQueries
+      .ReadAuthenticatedRepresentativeId(cancellationToken);
+
+    var entity = modelEntityConverter.ToEntity<IResolvableNotificationEntity>(
+      resolvableNotification
+    );
+    entity.RepresentativeId = representativeId;
+
+    var updated = await mutations
+      .MarkNotificationAsResolved(entity, cancellationToken);
+
+    var model = modelEntityConverter.ToModel<IResolvableNotification>(updated);
 
     return model;
   }

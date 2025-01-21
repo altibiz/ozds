@@ -1,6 +1,7 @@
 using Ozds.Business.Conversion;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Mutations.Abstractions;
+using Ozds.Business.Queries;
 using Ozds.Business.Validation;
 using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Entities.Base;
@@ -11,7 +12,8 @@ namespace Ozds.Business.Mutations;
 public class AuditableMutations(
   DataAuditableMutations mutations,
   ModelEntityConverter modelEntityConverter,
-  ModelValidator validator
+  ModelValidator validator,
+  RepresentativeQueries representativeQueries
 )
 : IMutations
 {
@@ -30,8 +32,14 @@ public class AuditableMutations(
       );
     }
 
+    var representativeId = await representativeQueries
+      .ReadAuthenticatedRepresentativeId(cancellationToken);
+
     var entity = modelEntityConverter.ToEntity<IAuditableEntity>(model);
+    entity.RepresentativeId = representativeId;
+
     await mutations.Create(entity, cancellationToken);
+
     return entity.Id;
   }
 
@@ -50,7 +58,11 @@ public class AuditableMutations(
       );
     }
 
+    var representativeId = await representativeQueries
+      .ReadAuthenticatedRepresentativeId(cancellationToken);
+
     var entity = modelEntityConverter.ToEntity<IAuditableEntity>(model);
+    entity.RepresentativeId = representativeId;
 
     await mutations.Update(entity, cancellationToken);
   }
@@ -70,7 +82,11 @@ public class AuditableMutations(
       );
     }
 
+    var representativeId = await representativeQueries
+      .ReadAuthenticatedRepresentativeId(cancellationToken);
+
     var entity = modelEntityConverter.ToEntity<IAuditableEntity>(model);
+    entity.RepresentativeId = representativeId;
 
     await mutations.Delete(entity, cancellationToken);
   }
@@ -90,7 +106,11 @@ public class AuditableMutations(
       );
     }
 
+    var representativeId = await representativeQueries
+      .ReadAuthenticatedRepresentativeId(cancellationToken);
+
     var entity = modelEntityConverter.ToEntity<AuditableEntity>(model);
+    entity.RepresentativeId = representativeId;
     entity.Restore = true;
 
     await mutations.Create(entity, cancellationToken);
@@ -101,8 +121,12 @@ public class AuditableMutations(
     CancellationToken cancellationToken
   )
   {
+    var representativeId = await representativeQueries
+      .ReadAuthenticatedRepresentativeId(cancellationToken);
+
     var entity = modelEntityConverter.ToEntity<AuditableEntity>(model);
     entity.Forget = true;
+    entity.RepresentativeId = representativeId;
 
     await mutations.Delete(entity, cancellationToken);
   }

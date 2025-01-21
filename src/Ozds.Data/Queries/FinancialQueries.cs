@@ -47,7 +47,7 @@ public class FinancialQueries(
         .Concat(items
           .Select(calculation => calculation.NetworkUserInvoice)
           .OfType<IFinancialEntity>()
-        .DistinctBy(invoice => invoice.Id))
+          .DistinctBy(invoice => invoice.Id))
         .ToList(),
       count
     );
@@ -89,7 +89,7 @@ public class FinancialQueries(
         .Concat(items
           .Select(calculation => calculation.NetworkUserInvoice)
           .OfType<IFinancialEntity>()
-        .DistinctBy(invoice => invoice.Id))
+          .DistinctBy(invoice => invoice.Id))
         .ToList(),
       count
     );

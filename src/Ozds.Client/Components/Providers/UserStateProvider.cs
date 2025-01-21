@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Ozds.Business.Queries;
 using Ozds.Client.Components.Base;
@@ -9,9 +8,6 @@ namespace Ozds.Client.Components.Providers;
 
 public partial class UserStateProvider : OzdsOwningComponentBase
 {
-  [CascadingParameter]
-  private Task<AuthenticationState>? AuthenticationStateTask { get; set; }
-
   [Parameter]
   public string LogoutToken { get; set; } = default!;
 
@@ -20,24 +16,19 @@ public partial class UserStateProvider : OzdsOwningComponentBase
 
   private async Task<UserState?> LoadAsync()
   {
-    if (AuthenticationStateTask is null)
-    {
-      return default;
-    }
-
-    var authenticationState = await AuthenticationStateTask;
-    var claimsPrincipal = authenticationState?.User;
-    if (!(claimsPrincipal?.Identity?.IsAuthenticated ?? false))
-    {
-      return default;
-    }
-
     var representativeQueries = ScopedServices
       .GetRequiredService<RepresentativeQueries>();
 
+    var representativeId = await representativeQueries
+      .ReadAuthenticatedRepresentativeId(CancellationToken);
+    if (representativeId is null)
+    {
+      return default;
+    }
+
     var user = await representativeQueries
-      .UserByClaimsPrincipal(
-        claimsPrincipal,
+      .ReadUserByUserId(
+        representativeId,
         CancellationToken);
     if (user is null)
     {
@@ -45,7 +36,6 @@ public partial class UserStateProvider : OzdsOwningComponentBase
     }
 
     var state = new UserState(
-      claimsPrincipal,
       LogoutToken,
       user
     );

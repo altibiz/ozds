@@ -26,7 +26,8 @@ public static class EntityTypeBuilderExtensions
         is { GetMethod.IsVirtual: true }
         and { GetMethod.IsFinal: false }
         || property.Name == nameof(IAuditableEntity.Forget)
-        || property.Name == nameof(IAuditableEntity.Restore))
+        || property.Name == nameof(IAuditableEntity.Restore)
+        || property.Name == nameof(IAuditableEntity.RepresentativeId))
       .ToList();
 
     var propertiesToArchive = complexPropertyBuilder.Metadata

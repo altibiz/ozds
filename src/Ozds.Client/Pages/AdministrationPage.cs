@@ -21,7 +21,7 @@ public partial class AdministrationPage : OzdsOwningComponentBase
   {
     var queries = ScopedServices.GetRequiredService<RepresentativeQueries>();
 
-    var users = await queries.MaybeRepresentingUsers(
+    var users = await queries.ReadMaybeRepresentingUsers(
       page,
       CancellationToken
     );

@@ -1,16 +1,12 @@
-using System.Security.Claims;
 using Ozds.Business.Finance.Abstractions;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Complex;
 using Ozds.Business.Models.Composite;
 
-// TODO: check representative id
-
 namespace Ozds.Business.Finance.Implementations;
 
 public class NetworkUserInvoiceCalculator(
-  NetworkUserCalculationCalculator calculationCalculator,
-  IHttpContextAccessor httpContextAccessor
+  NetworkUserCalculationCalculator calculationCalculator
 ) : INetworkUserInvoiceCalculator
 {
   private readonly NetworkUserCalculationCalculator
@@ -129,7 +125,7 @@ public class NetworkUserInvoiceCalculator(
 
     var invoice = new NetworkUserInvoiceModel
     {
-      Id = httpContextAccessor.HttpContext?.User.FindFirstValue("id")!,
+      Id = default!,
       Title =
         $"Invoice for {basis.NetworkUser.Title} at {basis.Location.Title}",
       IssuedById = default!,

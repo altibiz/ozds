@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using OrchardCore.Users;
 using OrchardCore.Users.Indexes;
@@ -12,10 +13,11 @@ namespace Ozds.Users.Queries;
 
 public class UserQueries(
   UserManager<IUser> userManager,
+  IServiceProvider serviceProvider,
   ISession session
 ) : IUserQueries
 {
-  public async Task<UserEntity?> UserByClaimsPrincipal(
+  public async Task<UserEntity?> ReadUserByClaimsPrincipal(
     ClaimsPrincipal principal,
     CancellationToken cancellationToken
   )
@@ -25,7 +27,7 @@ public class UserQueries(
       : null;
   }
 
-  public async Task<UserEntity?> UserById(string id, CancellationToken cancellationToken)
+  public async Task<UserEntity?> ReadUserById(string id, CancellationToken cancellationToken)
   {
     return await session
       .Query<User, UserIndex>()
@@ -35,7 +37,7 @@ public class UserQueries(
       : null;
   }
 
-  public async Task<(List<UserEntity> Items, int TotalCount)> Users(
+  public async Task<(List<UserEntity> Items, int TotalCount)> ReadUsers(
     int pageNumber,
     int pageSize,
     CancellationToken cancellationToken
@@ -53,5 +55,39 @@ public class UserQueries(
     var users = await filtered.ListAsync();
 
     return (users.Select(user => user.ToEntity()).ToList(), count);
+  }
+
+  public async Task<string?> ReadAuthenticatedUserId(
+    CancellationToken cancellationToken
+  )
+  {
+    var httpContextAccessor = serviceProvider
+      .GetService<IHttpContextAccessor>();
+    if (httpContextAccessor?.HttpContext?.User.Claims
+      .FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value
+      is { } mvcUserId)
+    {
+      return mvcUserId;
+    }
+
+    try
+    {
+      var authenticationState = serviceProvider
+        .GetService<AuthenticationStateProvider>();
+      if (authenticationState is { } authenticationStateProvider
+        && (await authenticationStateProvider
+          .GetAuthenticationStateAsync()).User.Claims
+          .FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value
+          is { } fluxUserId)
+      {
+        return fluxUserId;
+      }
+    }
+    catch (Exception)
+    {
+      // NOTE: throws saying you can't call it outside of component DI container
+    }
+
+    return null;
   }
 }

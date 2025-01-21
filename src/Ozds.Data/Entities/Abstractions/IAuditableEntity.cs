@@ -23,4 +23,6 @@ public interface IAuditableEntity : IIdentifiableEntity
   public bool Forget { get; set; }
 
   public bool Restore { get; set; }
+
+  public string? RepresentativeId { get; set; }
 }

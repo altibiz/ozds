@@ -1,16 +1,15 @@
-using System.Security.Claims;
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Ozds.Data.Entities;
+using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Entities.Base;
 using Ozds.Data.Entities.Enums;
 using Ozds.Data.Extensions;
 
-// TODO: check representative id
-// TODO: cascade delete and remove events when forgetting
-//       - add interceptor after this one that cascade deletes and events
+// TODO: cascade delete events when forgetting
+//       - add interceptor after this one that cascade deletes events
 
 namespace Ozds.Data.Interceptors;
 
@@ -49,16 +48,17 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
       return;
     }
 
-    var representativeId = GetRepresentativeId();
     var now = DateTimeOffset.UtcNow;
 
     context.ChangeTracker.DetectChanges();
-    var entries = context.ChangeTracker
+    var auditableEntries = context.ChangeTracker
       .Entries<AuditableEntity>()
       .ToList();
 
-    foreach (var auditable in entries)
+    foreach (var auditable in auditableEntries)
     {
+      var representativeId = auditable.Entity.RepresentativeId;
+
       if (auditable.State is EntityState.Added)
       {
         if (auditable.Entity.Restore && auditable.Entity.IsDeleted)
@@ -333,16 +333,35 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
         }
       }
     }
-  }
 
-  private string? GetRepresentativeId()
-  {
-    if (serviceProvider.GetService<IHttpContextAccessor>() is { } accessor)
+    var financialEntries = context.ChangeTracker
+      .Entries<FinancialEntity>()
+      .ToList();
+
+    foreach (var financial in financialEntries)
     {
-      return accessor.HttpContext?.User.FindFirstValue("id");
+      var representativeId = financial.Entity.RepresentativeId;
+
+      if (financial.State is EntityState.Added)
+      {
+        financial.Entity.IssuedOn = now;
+        financial.Entity.IssuedById = representativeId;
+      }
     }
 
-    return null;
+    var resolvableNotificationEntries = context.ChangeTracker
+      .Entries<IResolvableNotificationEntity>()
+      .ToList();
+
+    foreach (var resolvableNotification in resolvableNotificationEntries)
+    {
+      var representativeId = resolvableNotification.Entity.RepresentativeId;
+      if (resolvableNotification.State is EntityState.Modified)
+      {
+        resolvableNotification.Entity.ResolvedById = representativeId;
+        resolvableNotification.Entity.ResolvedOn = now;
+      }
+    }
   }
 
   private static JsonDocument CreateAddedMessage(EntityEntry entry)
