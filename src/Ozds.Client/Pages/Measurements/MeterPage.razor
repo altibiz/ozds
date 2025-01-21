@@ -55,7 +55,10 @@
   </MeasurementChartControls>
 }
 
-<Mutating T="IMeter" Id="Id">
+<Mutating
+  T="IMeter"
+  Value="@(analysis?.Meter)"
+  Id="@Id">
   <Edit>
     <HeadContent>
       @if (context.Created)
