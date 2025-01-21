@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Ozds.Business.Models.Abstractions;
+using Ozds.Business.Models.Joins;
+using Ozds.Business.Observers.Abstractions;
+using Ozds.Business.Observers.EventArgs;
 using Ozds.Business.Queries;
 using Ozds.Client.Components.Base;
 using Ozds.Client.State;
@@ -15,13 +18,34 @@ public partial class NotificationsStateProvider : OzdsOwningComponentBase
   [CascadingParameter]
   private RepresentativeState RepresentativeState { get; set; } = default!;
 
+  [Inject]
+  private INotificationCreatedSubscriber NotificationCreatedSubscriber
+  { get; set; } = default!;
+
+  [Inject]
+  private IDataModelsChangedSubscriber DataModelsChangedSubscriber
+  { get; set; } = default!;
+
   private string? _previousRepresentativeId;
 
-  private NotificationsState _state = new(
-    new(),
-    _ => { },
-    _ => { }
-  );
+  private NotificationsState _state = new(new());
+
+  protected override void OnInitialized()
+  {
+    base.OnInitialized();
+    NotificationCreatedSubscriber.Subscribe(OnNotificationCreated);
+    DataModelsChangedSubscriber.Subscribe(OnDataModelsChanged);
+  }
+
+  protected override void Dispose(bool disposing)
+  {
+    if (disposing)
+    {
+      DataModelsChangedSubscriber.Unsubscribe(OnDataModelsChanged);
+      NotificationCreatedSubscriber.Unsubscribe(OnNotificationCreated);
+    }
+    base.Dispose(disposing);
+  }
 
   protected override async Task OnParametersSetAsync()
   {
@@ -40,31 +64,52 @@ public partial class NotificationsStateProvider : OzdsOwningComponentBase
         CancellationToken
       );
 
-    var state = new NotificationsState(
-      notifications,
-      (notification) =>
-      {
-        var actual = notifications
-          .FirstOrDefault(x => x.Id == notification.Id);
-        if (actual is { })
-        {
-          InvokeAsync(() =>
-          {
-            notifications.Remove(actual);
-            StateHasChanged();
-          });
-        }
-      },
-      (notification) =>
-      {
-        InvokeAsync(() =>
-        {
-          notifications.Add(notification);
-          StateHasChanged();
-        });
-      }
-    );
+    var state = new NotificationsState(notifications);
 
     _state = state;
+  }
+
+  private void OnNotificationCreated(
+    object? sender,
+    NotificationCreatedEventArgs args
+  )
+  {
+    InvokeAsync(() =>
+    {
+      _state.Notifications.Add(args.Notification);
+      StateHasChanged();
+    });
+  }
+
+  private void OnDataModelsChanged(
+    object? sender,
+    DataModelsChangedEventArgs args
+  )
+  {
+    var notificationsMarkedAsSeen = args.Models
+      .Where(x => x.State == DataModelChangedState.Modified)
+      .Select(x => x.Model)
+      .OfType<NotificationRecipientModel>()
+      .Where(x => x.SeenOn is not null)
+      .ToList();
+
+    var relevantNotifications = _state.Notifications
+      .Where(x => notificationsMarkedAsSeen
+        .Exists(y =>
+          y.NotificationId == x.Id
+          && y.RepresentativeId == RepresentativeState.Representative.Id))
+      .ToList();
+
+    if (relevantNotifications.Count > 0)
+    {
+      InvokeAsync(() =>
+      {
+        foreach (var notification in relevantNotifications)
+        {
+          _state.Notifications.Remove(notification);
+        }
+        StateHasChanged();
+      });
+    }
   }
 }

@@ -34,7 +34,7 @@ public class NotificationMutations(
     await context.SaveChangesAsync(cancellationToken);
   }
 
-  public async Task MarkNotificationAsSeen(
+  public async Task<NotificationRecipientEntity?> MarkNotificationAsSeen(
     string notificationId,
     string representativeId,
     CancellationToken cancellationToken
@@ -42,7 +42,9 @@ public class NotificationMutations(
   {
     await using var context = await factory
       .CreateDbContextAsync(cancellationToken);
-    await context.NotificationRecipients
+
+    // NOTE: like this instead of direct update because of events
+    var recipient = await context.NotificationRecipients
       .Where(
         context.ForeignKeyEquals<NotificationRecipientEntity>(
           nameof(NotificationRecipientEntity.Notification),
@@ -51,8 +53,16 @@ public class NotificationMutations(
         context.ForeignKeyEquals<NotificationRecipientEntity>(
           nameof(NotificationRecipientEntity.Representative),
           representativeId))
-      .ExecuteUpdateAsync(
-        s => s.SetProperty(x => x.SeenOn, DateTimeOffset.UtcNow),
-        cancellationToken);
+      .FirstOrDefaultAsync(cancellationToken);
+
+    if (recipient is null)
+    {
+      return null;
+    }
+
+    recipient.SeenOn = DateTimeOffset.UtcNow;
+    await context.SaveChangesAsync(cancellationToken);
+
+    return recipient;
   }
 }

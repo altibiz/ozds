@@ -46,16 +46,22 @@ public class NotificationMutations(
     await mutations.AddRecipients(entities, cancellationToken);
   }
 
-  public async Task MarkNotificationAsSeen(
+  public async Task<NotificationRecipientModel?> MarkNotificationAsSeen(
     string notificationId,
     string representativeId,
     CancellationToken cancellationToken
   )
   {
-    await mutations.MarkNotificationAsSeen(
+    var entity = await mutations.MarkNotificationAsSeen(
       notificationId,
       representativeId,
       cancellationToken
     );
+
+    var model = entity is null
+      ? null
+      : modelEntityConverter.ToModel<NotificationRecipientModel>(entity);
+
+    return model;
   }
 }

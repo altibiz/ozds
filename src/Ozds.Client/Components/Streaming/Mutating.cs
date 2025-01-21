@@ -64,6 +64,9 @@ public partial class Mutating<T> : OzdsOwningComponentBase
   [Parameter]
   public RenderFragment<MutatingState<T>> Edit { get; set; } = default!;
 
+  [Parameter]
+  public bool AsReadonly { get; set; } = false;
+
   private bool _mutating;
 
   private async Task OnCreate(T model)

@@ -10,9 +10,9 @@ public class MessengerNotificationModelEntityConverter(
   IServiceProvider serviceProvider
 ) : InheritingModelEntityConverter<
       MessengerNotificationModel,
-      NotificationModel,
+      ResolvableNotificationModel,
       MessengerNotificationEntity,
-      NotificationEntity>(serviceProvider)
+      ResolvableNotificationEntity>(serviceProvider)
 {
   public override void InitializeEntity(
     MessengerNotificationModel model,

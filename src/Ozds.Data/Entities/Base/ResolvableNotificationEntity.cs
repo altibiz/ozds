@@ -1,9 +1,11 @@
 using Microsoft.EntityFrameworkCore;
+using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
 
-public class ResolvableNotificationEntity : NotificationEntity
+public class ResolvableNotificationEntity
+  : NotificationEntity, IResolvableNotificationEntity
 {
   public string? ResolvedById { get; set; } = default!;
 

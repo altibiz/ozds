@@ -58,7 +58,7 @@
       <MudDivider Class="mb-4" />
     }
 
-    @if (model is IReadonly)
+    @if (model is IReadonly || AsReadonly)
     {
       @Details(new MutatingState<T>(model, false))
     }

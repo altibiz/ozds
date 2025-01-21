@@ -30,8 +30,6 @@ public partial class NotificationPage : OzdsOwningComponentBase
         RepresentativeState.Representative.Id,
         CancellationToken);
 
-    NotificationsState.MarkNotificationAsSeen(model);
-
     NavigateToPage<NotificationsPage>();
   }
 
