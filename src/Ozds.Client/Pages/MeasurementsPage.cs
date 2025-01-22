@@ -8,7 +8,7 @@ using Ozds.Client.State;
 
 namespace Ozds.Client.Pages;
 
-public partial class MeasurementsPage : OzdsOwningComponentBase
+public partial class MeasurementsPage : OzdsComponentBase
 {
   [CascadingParameter]
   private RepresentativeState RepresentativeState { get; set; } = default!;

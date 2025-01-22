@@ -13,9 +13,7 @@ namespace Ozds.Client.Components.Charts;
 
 // TODO: joins
 
-#pragma warning disable S3881 // "IDisposable" should be implemented correctly
-public partial class MeasurementChartControls : OzdsOwningComponentBase
-#pragma warning restore S3881 // "IDisposable" should be implemented correctly
+public partial class MeasurementChartControls : OzdsComponentBase
 {
   [Parameter]
   public List<IMeter> Meters { get; set; } = new();
@@ -48,11 +46,17 @@ public partial class MeasurementChartControls : OzdsOwningComponentBase
 
   protected override void Dispose(bool disposing)
   {
+    if (IsDisposed)
+    {
+      return;
+    }
+
     if (disposing)
     {
       DataModelsChangedSubscriber.Unsubscribe(OnDataModelsChanged);
       MeasurementsBufferedSubscriber.Unsubscribe(OnMeasurementsBuffered);
     }
+
     base.Dispose(disposing);
   }
 

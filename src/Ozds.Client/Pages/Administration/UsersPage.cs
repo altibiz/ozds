@@ -6,7 +6,7 @@ using Ozds.Client.Components.Base;
 
 namespace Ozds.Client.Pages;
 
-public partial class UsersPage : OzdsOwningComponentBase
+public partial class UsersPage : OzdsComponentBase
 {
   private async Task<PaginatedList<MaybeRepresentingUserModel>> OnPageAsync(
     int page

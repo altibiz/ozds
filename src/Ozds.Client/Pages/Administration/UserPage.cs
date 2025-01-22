@@ -9,7 +9,7 @@ using Ozds.Client.State;
 
 namespace Ozds.Client.Pages;
 
-public partial class UserPage : OzdsOwningComponentBase
+public partial class UserPage : OzdsComponentBase
 {
   [Parameter]
   public string? Id { get; set; } = default!;

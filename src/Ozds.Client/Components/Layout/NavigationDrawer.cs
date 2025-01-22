@@ -6,9 +6,7 @@ using Ozds.Client.State;
 
 namespace Ozds.Client.Components.Layout;
 
-#pragma warning disable S3881 // "IDisposable" should be implemented correctly
-public partial class NavigationDrawer : OzdsComponentBase, IDisposable
-#pragma warning restore S3881 // "IDisposable" should be implemented correctly
+public partial class NavigationDrawer : OzdsComponentBase
 {
   [CascadingParameter]
   private LayoutState LayoutState { get; set; } = default!;
@@ -27,11 +25,19 @@ public partial class NavigationDrawer : OzdsComponentBase, IDisposable
     NavigationManager.LocationChanged += OnLocationChanged;
   }
 
-#pragma warning disable CA1816 // Dispose methods should call SuppressFinalize
-  public void Dispose()
-#pragma warning restore CA1816 // Dispose methods should call SuppressFinalize
+  protected override void Dispose(bool disposing)
   {
-    NavigationManager.LocationChanged -= OnLocationChanged;
+    if (IsDisposed)
+    {
+      return;
+    }
+
+    if (disposing)
+    {
+      NavigationManager.LocationChanged -= OnLocationChanged;
+    }
+
+    base.Dispose(true);
   }
 
   private void OnLocationChanged(object? sender, LocationChangedEventArgs e)

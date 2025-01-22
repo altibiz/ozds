@@ -6,7 +6,7 @@ using Ozds.Client.State;
 
 namespace Ozds.Client.Components.Providers;
 
-public partial class UserStateProvider : OzdsOwningComponentBase
+public partial class UserStateProvider : OzdsComponentBase
 {
   [Parameter]
   public string LogoutToken { get; set; } = default!;

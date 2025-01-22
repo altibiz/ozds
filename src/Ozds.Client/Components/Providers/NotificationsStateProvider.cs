@@ -10,7 +10,7 @@ using Ozds.Client.State;
 
 namespace Ozds.Client.Components.Providers;
 
-public partial class NotificationsStateProvider : OzdsOwningComponentBase
+public partial class NotificationsStateProvider : OzdsComponentBase
 {
   [Parameter]
   public RenderFragment ChildContent { get; set; } = default!;
@@ -32,18 +32,23 @@ public partial class NotificationsStateProvider : OzdsOwningComponentBase
 
   protected override void OnInitialized()
   {
-    base.OnInitialized();
     NotificationCreatedSubscriber.Subscribe(OnNotificationCreated);
     DataModelsChangedSubscriber.Subscribe(OnDataModelsChanged);
   }
 
   protected override void Dispose(bool disposing)
   {
+    if (IsDisposed)
+    {
+      return;
+    }
+
     if (disposing)
     {
       DataModelsChangedSubscriber.Unsubscribe(OnDataModelsChanged);
       NotificationCreatedSubscriber.Unsubscribe(OnNotificationCreated);
     }
+
     base.Dispose(disposing);
   }
 

@@ -10,7 +10,7 @@ using Ozds.Client.State;
 
 namespace Ozds.Client.Pages;
 
-public partial class NotificationPage : OzdsOwningComponentBase
+public partial class NotificationPage : OzdsComponentBase
 {
   [Parameter]
   public string? Id { get; set; }

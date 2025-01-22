@@ -8,7 +8,7 @@ using Ozds.Client.Components.Base;
 
 namespace Ozds.Client.Components.Charts;
 
-public partial class FinancialChartControls : OzdsOwningComponentBase
+public partial class FinancialChartControls : OzdsComponentBase
 {
   [Parameter]
   public List<IMeasurementLocation> MeasurementLocations { get; set; } = default!;

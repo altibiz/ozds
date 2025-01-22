@@ -8,7 +8,7 @@ using Ozds.Client.State;
 
 namespace Ozds.Client.Pages;
 
-public partial class NotificationsPage : OzdsOwningComponentBase
+public partial class NotificationsPage : OzdsComponentBase
 {
   [CascadingParameter]
   public RepresentativeState RepresentativeState { get; set; } = default!;

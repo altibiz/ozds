@@ -5,42 +5,15 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Routing.Patterns;
 using Microsoft.AspNetCore.Routing.Template;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop;
 using Ozds.Business.Localization.Abstractions;
 using Ozds.Business.Time;
 
 namespace Ozds.Client.Components.Base;
 
-#pragma warning disable S3881 // "IDisposable" should be implemented correctly
 public abstract class OzdsComponentBase : ComponentBase, IDisposable
 {
-  private static readonly JsonSerializerOptions _jsonSerializerOptions = new()
-  {
-    WriteIndented = true
-  };
-
-  private static readonly CancellationTokenSource _cancelledTokenSource =
-    CreateCancelledTokenSource();
-
-  protected CancellationToken CancellationToken =>
-    cancellationTokenSource?.Token ?? _cancelledTokenSource.Token;
-
-  protected bool IsDisposed { get; private set; }
-
-  [Inject]
-  private ILocalizer Localizer { get; set; } = default!;
-
-  [Inject]
-  private NavigationManager NavigationManager { get; set; } = default!;
-
-  [Inject]
-  private IJSRuntime JS { get; set; } = default!;
-
-  [Inject]
-  private TemplateBinderFactory TemplateBinderFactory { get; set; } = default!;
-
-  private CancellationTokenSource? cancellationTokenSource = new();
-
   protected static string NumericString(decimal? number, int places = 2)
   {
     if (number is null)
@@ -115,16 +88,24 @@ public abstract class OzdsComponentBase : ComponentBase, IDisposable
     return a;
   }
 
-  protected static string JsonString(object? jsonDocument)
-  {
-    return JsonSerializer.Serialize(jsonDocument, _jsonSerializerOptions);
-  }
-
   protected string Translate(string notLocalized)
   {
     var localized = Localizer.Translate(notLocalized);
     return localized;
   }
+
+  [Inject]
+  private ILocalizer Localizer { get; set; } = default!;
+
+  protected static string JsonString(object? jsonDocument)
+  {
+    return JsonSerializer.Serialize(jsonDocument, JsonSerializerOptions);
+  }
+
+  private static readonly JsonSerializerOptions JsonSerializerOptions = new()
+  {
+    WriteIndented = true
+  };
 
   protected string Href => new Uri(NavigationManager.Uri).AbsolutePath;
 
@@ -195,30 +176,45 @@ public abstract class OzdsComponentBase : ComponentBase, IDisposable
     return @base + uri.TrimStart('/');
   }
 
-#pragma warning disable CA1816
-  void IDisposable.Dispose()
-  {
-    if (!IsDisposed)
-    {
-      Dispose(true);
+  [Inject]
+  private NavigationManager NavigationManager { get; set; } = default!;
 
-      if (cancellationTokenSource is { })
+  [Inject]
+  private IJSRuntime JS { get; set; } = default!;
+
+  [Inject]
+  private TemplateBinderFactory TemplateBinderFactory { get; set; } = default!;
+
+  private CancellationTokenSource? cancellationTokenSource = new();
+
+  protected IServiceProvider ScopedServices
+  {
+    get
+    {
+      if (ScopeFactory == null)
       {
-        cancellationTokenSource.Cancel();
-        cancellationTokenSource.Dispose();
-        cancellationTokenSource = null;
+        throw new InvalidOperationException(
+          "Services cannot be accessed before the component is initialized."
+        );
       }
 
-      IsDisposed = true;
+      ObjectDisposedException.ThrowIf(IsDisposed, this);
+      scope ??= ScopeFactory.CreateScope();
+
+      return scope.ServiceProvider;
     }
   }
-#pragma warning restore CA1816
 
-#pragma warning disable S2953
-  protected virtual void Dispose(bool disposing)
-  {
-  }
-#pragma warning restore S2953
+  [Inject]
+  private IServiceScopeFactory ScopeFactory { get; set; } = default!;
+
+  private IServiceScope? scope;
+
+  protected CancellationToken CancellationToken =>
+    cancellationTokenSource?.Token ?? _cancelledTokenSource.Token;
+
+  private static readonly CancellationTokenSource _cancelledTokenSource =
+    CreateCancelledTokenSource();
 
   private static CancellationTokenSource CreateCancelledTokenSource()
   {
@@ -226,5 +222,37 @@ public abstract class OzdsComponentBase : ComponentBase, IDisposable
     cancellationTokenSource.Cancel();
     return cancellationTokenSource;
   }
+
+  protected bool IsDisposed { get; private set; }
+
+  protected virtual void Dispose(bool disposing)
+  {
+    if (IsDisposed)
+    {
+      return;
+    }
+
+    if (disposing)
+    {
+      if (cancellationTokenSource is { })
+      {
+        cancellationTokenSource.Cancel();
+        cancellationTokenSource.Dispose();
+        cancellationTokenSource = null;
+      }
+
+      if (scope is { })
+      {
+        scope.Dispose();
+      }
+    }
+
+    IsDisposed = true;
+  }
+
+  public void Dispose()
+  {
+    Dispose(true);
+    GC.SuppressFinalize(this);
+  }
 }
-#pragma warning restore S3881 // "IDisposable" should be implemented correctly

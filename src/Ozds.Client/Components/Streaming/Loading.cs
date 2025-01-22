@@ -8,7 +8,7 @@ using Ozds.Client.State;
 
 namespace Ozds.Client.Components.Streaming;
 
-public partial class Loading<T> : OzdsOwningComponentBase
+public partial class Loading<T> : OzdsComponentBase
   where T : notnull
 {
   [Parameter]

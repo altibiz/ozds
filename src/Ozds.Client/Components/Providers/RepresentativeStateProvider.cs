@@ -6,7 +6,7 @@ using Ozds.Client.State;
 
 namespace Ozds.Client.Components.Providers;
 
-public partial class RepresentativeStateProvider : OzdsOwningComponentBase
+public partial class RepresentativeStateProvider : OzdsComponentBase
 {
   [Parameter]
   public RenderFragment Found { get; set; } = default!;

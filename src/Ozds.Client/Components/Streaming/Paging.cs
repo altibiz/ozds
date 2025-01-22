@@ -10,7 +10,7 @@ namespace Ozds.Client.Components.Streaming;
 
 // TODO: memoize Loading parameters to prevent rerendering
 
-public partial class Paging<T> : OzdsOwningComponentBase
+public partial class Paging<T> : OzdsComponentBase
   where T : notnull
 {
   [Parameter]

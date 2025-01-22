@@ -7,7 +7,7 @@ using Ozds.Client.State;
 
 namespace Ozds.Client.Pages;
 
-public partial class LocationPage : OzdsOwningComponentBase
+public partial class LocationPage : OzdsComponentBase
 {
   [Parameter]
   public string? Id { get; set; } = default!;

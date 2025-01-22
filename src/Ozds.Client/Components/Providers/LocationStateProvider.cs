@@ -9,7 +9,7 @@ using Ozds.Client.State;
 
 namespace Ozds.Client.Components.Providers;
 
-public partial class LocationStateProvider : OzdsOwningComponentBase
+public partial class LocationStateProvider : OzdsComponentBase
 {
   [Parameter]
   public RenderFragment ChildContent { get; set; } = default!;

@@ -15,7 +15,7 @@
 
 @page "/system/notification/{id?}"
 
-@inherits OzdsOwningComponentBase
+@inherits OzdsComponentBase
 
 @{
   var value = NotificationsState.Notifications.Find(x => x.Id == Id);

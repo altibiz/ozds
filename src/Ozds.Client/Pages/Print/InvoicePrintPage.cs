@@ -6,7 +6,7 @@ using Ozds.Client.Components.Base;
 
 namespace Ozds.Client.Pages;
 
-public partial class InvoicePrintPage : OzdsOwningComponentBase
+public partial class InvoicePrintPage : OzdsComponentBase
 {
   [Parameter]
   public string Id { get; set; } = default!;

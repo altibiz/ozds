@@ -1,7 +1,9 @@
+using Altibiz.DependencyInjection.Extensions;
 using Blazored.LocalStorage;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MudBlazor.Services;
+using Ozds.Client.Components.Models.Abstractions;
 using Ozds.Client.State;
 
 namespace Ozds.Client.Extensions;
@@ -14,6 +16,7 @@ public static class IServiceCollectionExtensions
   )
   {
     services.AddState();
+    services.AddModels();
     services.AddBlazor(builder);
     services.AddLocalStorage();
     services.AddMudBlazor();
@@ -31,6 +34,15 @@ public static class IServiceCollectionExtensions
     services.AddCascadingValue<AnalysisState>();
     services.AddCascadingValue<ThemeState>();
     services.AddCascadingValue<LayoutState>();
+
+    return services;
+  }
+
+  private static IServiceCollection AddModels(
+    this IServiceCollection services
+  )
+  {
+    services.AddSingletonAssignableTo(typeof(IModelComponentProvider));
 
     return services;
   }

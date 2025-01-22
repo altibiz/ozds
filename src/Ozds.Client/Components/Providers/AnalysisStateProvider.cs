@@ -7,7 +7,7 @@ using Ozds.Client.State;
 
 namespace Ozds.Client.Components.Providers;
 
-public partial class AnalysisStateProvider : OzdsOwningComponentBase
+public partial class AnalysisStateProvider : OzdsComponentBase
 {
   [Parameter]
   public RenderFragment ChildContent { get; set; } = default!;
