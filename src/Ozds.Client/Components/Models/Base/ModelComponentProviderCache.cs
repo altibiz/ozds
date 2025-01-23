@@ -12,7 +12,14 @@ public class ModelComponentProviderCache(
     ModelComponentKind componentKind
   )
   {
-    return GetComponentProvider(modelType, componentKind).ComponentType;
+    var componentType =
+      GetComponentProvider(modelType, componentKind).ComponentType;
+    if (componentType.IsGenericType)
+    {
+      componentType = componentType.MakeGenericType(modelType);
+    }
+
+    return componentType;
   }
 
   private IModelComponentProvider GetComponentProvider(
@@ -44,6 +51,7 @@ public class ModelComponentProviderCache(
     return provider;
   }
 
-  private readonly Dictionary<(Type, ModelComponentKind), IModelComponentProvider> cache =
-    new();
+  private readonly Dictionary<
+    (Type, ModelComponentKind),
+    IModelComponentProvider> cache = new();
 }

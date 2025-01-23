@@ -12,6 +12,13 @@ public abstract class ConcreteModelActivator<TModel> : InitializingModelActivato
     get { return typeof(TModel); }
   }
 
+  public override object Activate()
+  {
+    var model = Create();
+    Initialize(model);
+    return model;
+  }
+
   public override bool CanActivate(Type type)
   {
     return ModelType.IsAssignableTo(type);

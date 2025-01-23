@@ -1,0 +1,18 @@
+@using MudBlazor
+@using Ozds.Business.Models.Base
+@using Ozds.Client.Components.Models.Base
+
+@namespace Ozds.Client.Components.Models
+
+@typeparam TModel where TModel : IdentifiableModel
+@inherits OzdsColumnsComponentBase<TModel>
+
+<TemplateColumn T="TModel">
+  <CellTemplate>
+    <MudLink Href="@context.Item.Id">
+      <MudText>
+        @context.Item.Title
+      </MudText>
+    </MudLink>
+  </CellTemplate>
+</TemplateColumn>

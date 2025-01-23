@@ -5,11 +5,21 @@ namespace Ozds.Client.Components.Models.Base;
 
 public abstract partial class ModelComponent : ComponentBase
 {
-  protected abstract Type ModelType { get; }
+  protected virtual Type ModelType =>
+    modelType ??= CreateModelType();
+
+  private Type? modelType;
+
+  protected abstract Type CreateModelType();
 
   protected abstract ModelComponentKind ComponentKind { get; }
 
-  protected abstract Dictionary<string, object> Parameters { get; }
+  protected Dictionary<string, object> Parameters =>
+    parameters ??= CreateParameters();
+
+  private Dictionary<string, object>? parameters;
+
+  protected abstract Dictionary<string, object> CreateParameters();
 
   [Inject]
   private ModelComponentProviderCache Cache { get; set; } = default!;
@@ -26,6 +36,21 @@ public abstract partial class ModelComponent : ComponentBase
 
   protected override void OnParametersSet()
   {
-    componentType = CreateComponentType();
+    base.OnParametersSet();
+
+    if (componentType is { })
+    {
+      componentType = CreateComponentType();
+    }
+
+    if (parameters is { })
+    {
+      parameters = CreateParameters();
+    }
+
+    if (modelType is { })
+    {
+      modelType = CreateModelType();
+    }
   }
 }

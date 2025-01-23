@@ -7,20 +7,7 @@ public abstract class ListModelComponent : ModelComponent
   [Parameter]
   public IEnumerable<object> Models { get; set; } = default!;
 
-  protected override Type ModelType =>
-    modelType ??= CreateModelType();
-
-  protected override Dictionary<string, object> Parameters => new();
-
-  private Type? modelType;
-
-  protected override void OnParametersSet()
-  {
-    base.OnParametersSet();
-    modelType = CreateModelType();
-  }
-
-  private Type CreateModelType()
+  protected override Type CreateModelType()
   {
     return Models
       .Select(x => x.GetType())
@@ -33,5 +20,10 @@ public abstract class ListModelComponent : ModelComponent
             : acc)
       ?? throw new InvalidOperationException(
         $"No model type found for {nameof(Models)}.");
+  }
+
+  protected override Dictionary<string, object> CreateParameters()
+  {
+    return new();
   }
 }

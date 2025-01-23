@@ -1,0 +1,17 @@
+@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Models.Abstractions
+
+@namespace Ozds.Client.Components.Models.Base
+
+@typeparam TModel
+@inherits OzdsComponentBase
+@implements IModelComponentProvider
+
+@Base
+
+@code {
+  public RenderFragment Base =>
+    @<DynamicComponent
+      Type="@(Cache.GetComponentType(BaseModelType, ComponentKind))"
+      Parameters="@(BaseParameters)" />;
+}

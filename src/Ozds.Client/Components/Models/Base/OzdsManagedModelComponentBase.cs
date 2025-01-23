@@ -7,4 +7,17 @@ public abstract class OzdsManagedModelComponentBase<TModel> :
 {
   [Parameter]
   public TModel? Model { get; set; }
+
+  protected override Dictionary<string, object> CreateBaseParameters()
+  {
+    if (Model is null)
+    {
+      return new();
+    }
+
+    return new()
+    {
+      { "Model", Model }
+    };
+  }
 }

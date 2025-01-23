@@ -1,32 +1,50 @@
+using Microsoft.AspNetCore.Components;
 using Ozds.Client.Components.Base;
 using Ozds.Client.Components.Models.Abstractions;
 
 namespace Ozds.Client.Components.Models.Base;
 
-public abstract class OzdsModelComponentBase<TModel> : OzdsComponentBase
+// NITPICK: decouple from IModelComponentProvider
+
+public abstract partial class OzdsModelComponentBase<TModel>
+  : OzdsComponentBase, IModelComponentProvider
 {
-  public abstract class ModelComponentProviderBase : IModelComponentProvider
+  [Inject]
+  protected ModelComponentProviderCache Cache { get; set; } = default!;
+
+  public virtual Type ModelType => typeof(TModel);
+
+  public bool CanRender(Type type)
   {
-    public Type ModelType => typeof(TModel);
+    return type.IsAssignableTo(ModelType);
+  }
 
-    public bool CanRender(Type type)
+  public virtual Type ComponentType => GetType();
+
+  public abstract ModelComponentKind ComponentKind { get; }
+
+  public virtual Type BaseModelType =>
+    ModelType.BaseType
+    ?? throw new InvalidOperationException(
+      $"{ModelType} does not have a base type.");
+
+  public virtual Dictionary<string, object> BaseParameters =>
+    baseParameters ??= CreateBaseParameters();
+
+  private Dictionary<string, object>? baseParameters;
+
+  protected override void OnParametersSet()
+  {
+    base.OnParametersSet();
+
+    if (baseParameters is { })
     {
-      return type.IsAssignableTo(ModelType);
+      baseParameters = CreateBaseParameters();
     }
+  }
 
-    public abstract Type ComponentType { get; }
-
-    public abstract ModelComponentKind ComponentKind { get; }
-
-    protected Type FindComponentType(Type baseType)
-    {
-      return typeof(OzdsModelComponentBase<>).Assembly
-        .GetTypes()
-        .First(type =>
-          !type.IsGenericType
-          && !type.IsAbstract
-          && type.IsClass
-          && type.IsAssignableTo(baseType));
-    }
+  protected virtual Dictionary<string, object> CreateBaseParameters()
+  {
+    return new();
   }
 }

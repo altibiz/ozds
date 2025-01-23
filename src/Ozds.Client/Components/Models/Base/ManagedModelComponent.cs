@@ -7,24 +7,16 @@ public abstract class ManagedModelComponent : ModelComponent
   [Parameter]
   public object Model { get; set; } = default!;
 
-  protected override Type ModelType => Model.GetType();
+  protected override Type CreateModelType()
+  {
+    return Model.GetType();
+  }
 
-  protected override Dictionary<string, object> Parameters =>
-    parameters ??= CreateParameters();
-
-  private Dictionary<string, object>? parameters;
-
-  private Dictionary<string, object> CreateParameters()
+  protected override Dictionary<string, object> CreateParameters()
   {
     return new()
     {
       ["Model"] = Model
     };
-  }
-
-  protected override void OnParametersSet()
-  {
-    base.OnParametersSet();
-    parameters = CreateParameters();
   }
 }
