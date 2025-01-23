@@ -23,7 +23,8 @@ public abstract partial class OzdsModelComponentBase<TModel>
 
   public abstract ModelComponentKind ComponentKind { get; }
 
-  public abstract Type BaseComponentType { get; }
+  public Type BaseComponentType =>
+    baseComponentType ??= CreateBaseComponentType();
 
   private Type? baseComponentType;
 
@@ -39,7 +40,7 @@ public abstract partial class OzdsModelComponentBase<TModel>
     return Cache.GetComponentType(baseModelType, ComponentKind);
   }
 
-  public virtual Dictionary<string, object> BaseParameters =>
+  public Dictionary<string, object> BaseParameters =>
     baseParameters ??= CreateBaseParameters();
 
   private Dictionary<string, object>? baseParameters;
