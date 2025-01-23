@@ -16,7 +16,7 @@ public abstract class ManagedModelComponent : ModelComponent
   {
     return new()
     {
-      ["Model"] = Model
+      [nameof(OzdsManagedModelComponentBase<object>.Model)] = Model
     };
   }
 }

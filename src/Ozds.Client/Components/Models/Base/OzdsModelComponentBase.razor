@@ -13,7 +13,7 @@
 @code {
   public RenderFragment Base()
   {
-    if (!IsTopLevel)
+    if (Isolate)
     {
       return @<Fragment />;
     }
@@ -30,7 +30,7 @@
 
   public RenderFragment Base(Type baseModelType)
   {
-    if (!IsTopLevel)
+    if (Isolate)
     {
       return @<Fragment />;
     }

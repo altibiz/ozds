@@ -1,15 +1,17 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
+using Ozds.Business.Models;
 using Ozds.Business.Models.Composite;
 using Ozds.Business.Models.Enums;
 using Ozds.Business.Mutations;
 using Ozds.Business.Queries;
-using Ozds.Client.Components.Base;
+using Ozds.Client.Components.Models.Base;
 using Ozds.Client.State;
 
 namespace Ozds.Client.Pages;
 
-public partial class UserPage : OzdsComponentBase
+public partial class UserPage
+  : OzdsIdentifiableModelPageComponentBase<RepresentativeModel>
 {
   [Parameter]
   public string? Id { get; set; } = default!;

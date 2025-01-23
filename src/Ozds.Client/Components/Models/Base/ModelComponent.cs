@@ -5,6 +5,9 @@ namespace Ozds.Client.Components.Models.Base;
 
 public abstract partial class ModelComponent : ComponentBase
 {
+  [Parameter]
+  public bool Isolate { get; set; } = false;
+
   protected virtual Type ModelType =>
     modelType ??= CreateModelType();
 
@@ -15,13 +18,22 @@ public abstract partial class ModelComponent : ComponentBase
   protected abstract ModelComponentKind ComponentKind { get; }
 
   protected Dictionary<string, object> Parameters =>
-    parameters ??= CreateParameters();
+    parameters ??= CreateFixedParameters();
 
   private Dictionary<string, object>? parameters;
 
   protected virtual Dictionary<string, object> CreateParameters()
   {
     return new();
+  }
+
+  private Dictionary<string, object> CreateFixedParameters()
+  {
+    var fixedParameters = CreateParameters();
+    fixedParameters.Add(
+      nameof(OzdsModelComponentBase<object>.Isolate),
+      Isolate);
+    return fixedParameters;
   }
 
   [Inject]
@@ -48,7 +60,7 @@ public abstract partial class ModelComponent : ComponentBase
 
     if (parameters is { })
     {
-      parameters = CreateParameters();
+      parameters = CreateFixedParameters();
     }
 
     if (modelType is { })

@@ -10,7 +10,7 @@ public abstract partial class OzdsModelComponentBase<TModel>
   : OzdsComponentBase, IModelComponentProvider
 {
   [Parameter]
-  public bool IsTopLevel { get; set; } = true;
+  public bool Isolate { get; set; } = false;
 
   [Inject]
   protected ModelComponentProviderCache Cache { get; set; } = default!;
@@ -81,7 +81,7 @@ public abstract partial class OzdsModelComponentBase<TModel>
   private Dictionary<string, object> CreateFixedBaseParameters()
   {
     var parameters = CreateBaseParameters();
-    parameters.Add(nameof(IsTopLevel), false);
+    parameters.Add(nameof(Isolate), true);
     return parameters;
   }
 

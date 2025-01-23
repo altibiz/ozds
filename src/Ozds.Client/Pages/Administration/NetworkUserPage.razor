@@ -5,6 +5,7 @@
 @using Ozds.Business.Queries
 @using Ozds.Business.Time
 @using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Models.Base
 @using Ozds.Client.Components.Models
 @using Ozds.Client.Components.Streaming
 
@@ -12,7 +13,7 @@
 
 @page "/administration/network-user/{id?}"
 
-@inherits OzdsComponentBase
+@inherits OzdsIdentifiableModelPageComponentBase<NetworkUserModel>
 
 <Mutating T="NetworkUserModel" LoadAsync="OnLoadAsync">
   <Label>
