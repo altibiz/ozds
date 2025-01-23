@@ -5,7 +5,7 @@
 @namespace Ozds.Client.Components.Models
 
 @typeparam TModel where TModel : IdentifiableModel
-@inherits OzdsColumnsComponentBase<TModel>
+@inherits OzdsColumnsComponentBase<TModel, IdentifiableModel>
 
 <TemplateColumn T="TModel">
   <CellTemplate>

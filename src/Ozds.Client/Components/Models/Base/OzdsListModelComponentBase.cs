@@ -1,19 +1,14 @@
 namespace Ozds.Client.Components.Models.Base;
 
-public abstract class OzdsListModelComponentBase<TModel> :
+public abstract class OzdsListModelComponentBase<TModel, TConstraintType> :
   OzdsModelComponentBase<TModel>
+  where TModel : TConstraintType
 {
   protected override Type CreateBaseComponentType()
   {
-    var constraintType = ModelType.BaseType;
-    if (constraintType is null)
-    {
-      constraintType = ModelType;
-    }
-
     return Cache.GetGenericComponentType(
       ModelType,
-      constraintType,
+      typeof(TConstraintType),
       ComponentKind
     );
   }
