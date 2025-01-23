@@ -23,15 +23,31 @@ public abstract partial class OzdsModelComponentBase<TModel>
 
   public abstract ModelComponentKind ComponentKind { get; }
 
-  public virtual Type BaseModelType =>
-    ModelType.BaseType
-    ?? throw new InvalidOperationException(
-      $"{ModelType} does not have a base type.");
+  public abstract Type BaseComponentType { get; }
+
+  private Type? baseComponentType;
+
+  protected virtual Type CreateBaseComponentType()
+  {
+    var baseModelType = ModelType.BaseType;
+    if (baseModelType is null)
+    {
+      throw new InvalidOperationException(
+        $"No base type found for {ModelType.FullName}");
+    }
+
+    return Cache.GetComponentType(baseModelType, ComponentKind);
+  }
 
   public virtual Dictionary<string, object> BaseParameters =>
     baseParameters ??= CreateBaseParameters();
 
   private Dictionary<string, object>? baseParameters;
+
+  protected virtual Dictionary<string, object> CreateBaseParameters()
+  {
+    return new();
+  }
 
   protected override void OnParametersSet()
   {
@@ -41,10 +57,10 @@ public abstract partial class OzdsModelComponentBase<TModel>
     {
       baseParameters = CreateBaseParameters();
     }
-  }
 
-  protected virtual Dictionary<string, object> CreateBaseParameters()
-  {
-    return new();
+    if (baseComponentType is { })
+    {
+      baseComponentType = CreateBaseComponentType();
+    }
   }
 }

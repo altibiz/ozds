@@ -12,14 +12,17 @@ public class ModelComponentProviderCache(
     ModelComponentKind componentKind
   )
   {
-    var componentType =
-      GetComponentProvider(modelType, componentKind).ComponentType;
-    if (componentType.IsGenericType)
-    {
-      componentType = componentType.MakeGenericType(modelType);
-    }
+    return GetComponentProvider(modelType, componentKind).ComponentType;
+  }
 
-    return componentType;
+  public Type GetGenericComponentType(
+    Type modelType,
+    Type constraintType,
+    ModelComponentKind componentKind
+  )
+  {
+    return GetGenericComponentProvider(modelType, constraintType, componentKind)
+      .ComponentType;
   }
 
   private IModelComponentProvider GetComponentProvider(
@@ -42,51 +45,68 @@ public class ModelComponentProviderCache(
           ? null
           : next!.ModelType.IsAssignableTo(acc.ModelType)
             ? acc
-            : next);
-
-    if (provider is null)
-    {
-      var generic = typeof(ModelComponentProviderCache).Assembly
-        .GetTypes()
-        .FirstOrDefault(type =>
-        {
-          if (!type.IsAssignableTo(typeof(IModelComponentProvider)))
-          {
-            return false;
-          }
-
-          if (!type.IsGenericType)
-          {
-            return false;
-          }
-
-          var genericTypeArguments = type.GenericTypeArguments;
-          if (genericTypeArguments.Length != 1)
-          {
-            return false;
-          }
-
-          var genericArgumentConstraints = genericTypeArguments
-            .First()
-            .GetGenericParameterConstraints();
-          if (genericArgumentConstraints.Length != 1)
-          {
-            return false;
-          }
-
-          return modelType.IsAssignableTo(genericArgumentConstraints.First());
-        }) ?? throw new InvalidOperationException(
-          "No model component provider found for model type "
-          + modelType.FullName);
-
-      provider = ServiceProvider.GetService(generic.MakeGenericType(modelType))
-        as IModelComponentProvider
-        ?? throw new InvalidOperationException(
-          "No model component provider found for model type "
-          + modelType.FullName);
-    }
+            : next)
+      ?? throw new InvalidOperationException(
+        "No model component provider found for model type "
+        + modelType.FullName);
 
     cache.TryAdd(key, provider);
+
+    return provider;
+  }
+
+  private IModelComponentProvider GetGenericComponentProvider(
+    Type modelType,
+    Type constraintType,
+    ModelComponentKind kind)
+  {
+    var key = (modelType, constraintType, kind);
+
+    if (genericCache.TryGetValue(key, out var provider))
+    {
+      return provider;
+    }
+
+    var generic = typeof(ModelComponentProviderCache).Assembly
+      .GetTypes()
+      .FirstOrDefault(type =>
+      {
+        if (!type.IsAssignableTo(typeof(IModelComponentProvider)))
+        {
+          return false;
+        }
+
+        if (!type.IsGenericType)
+        {
+          return false;
+        }
+
+        var genericTypeArguments = type.GenericTypeArguments;
+        if (genericTypeArguments.Length != 1)
+        {
+          return false;
+        }
+
+        var genericArgumentConstraints = genericTypeArguments
+          .First()
+          .GetGenericParameterConstraints();
+        if (genericArgumentConstraints.Length != 1)
+        {
+          return false;
+        }
+
+        return genericArgumentConstraints.First() == constraintType;
+      }) ?? throw new InvalidOperationException(
+        "No model component provider found for model type "
+        + modelType.FullName);
+
+    provider = ServiceProvider.GetService(generic.MakeGenericType(modelType))
+      as IModelComponentProvider
+      ?? throw new InvalidOperationException(
+        "No model component provider found for model type "
+        + modelType.FullName);
+
+    genericCache.TryAdd(key, provider);
 
     return provider;
   }
@@ -94,4 +114,8 @@ public class ModelComponentProviderCache(
   private readonly Dictionary<
     (Type, ModelComponentKind),
     IModelComponentProvider> cache = new();
+
+  private readonly Dictionary<
+    (Type, Type, ModelComponentKind),
+    IModelComponentProvider> genericCache = new();
 }

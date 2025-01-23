@@ -19,7 +19,10 @@ public abstract partial class ModelComponent : ComponentBase
 
   private Dictionary<string, object>? parameters;
 
-  protected abstract Dictionary<string, object> CreateParameters();
+  protected virtual Dictionary<string, object> CreateParameters()
+  {
+    return new();
+  }
 
   [Inject]
   private ModelComponentProviderCache Cache { get; set; } = default!;

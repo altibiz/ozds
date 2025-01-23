@@ -21,9 +21,4 @@ public abstract class ListModelComponent : ModelComponent
       ?? throw new InvalidOperationException(
         $"No model type found for {nameof(Models)}.");
   }
-
-  protected override Dictionary<string, object> CreateParameters()
-  {
-    return new();
-  }
 }
