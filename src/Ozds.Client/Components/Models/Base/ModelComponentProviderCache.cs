@@ -25,6 +25,16 @@ public class ModelComponentProviderCache(
       .ComponentType;
   }
 
+  public Type GetPageComponentType(Type modelType)
+  {
+    return GetPageProvider(modelType).PageType;
+  }
+
+  public string CreatePageComponentLink(object model)
+  {
+    return GetPageProvider(model.GetType()).CreateLink(model);
+  }
+
   private IModelComponentProvider GetComponentProvider(
     Type modelType,
     ModelComponentKind componentKind
@@ -120,6 +130,32 @@ public class ModelComponentProviderCache(
     return provider;
   }
 
+  private IModelPageComponentProvider GetPageProvider(Type modelType)
+  {
+    if (pageCache.TryGetValue(modelType, out var provider))
+    {
+      return provider;
+    }
+
+    provider = ServiceProvider
+      .GetServices<IModelPageComponentProvider>()
+      .Where(provider => provider.CanRender(modelType))
+      .DefaultIfEmpty(null)
+      .Aggregate((acc, next) =>
+        acc is null
+          ? null
+          : next!.ModelType.IsAssignableTo(acc.ModelType)
+            ? acc
+            : next)
+      ?? throw new InvalidOperationException(
+        "No model component provider found for model type "
+        + modelType.FullName);
+
+    pageCache.TryAdd(modelType, provider);
+
+    return provider;
+  }
+
   private readonly Dictionary<
     (Type, ModelComponentKind),
     IModelComponentProvider> cache = new();
@@ -127,4 +163,6 @@ public class ModelComponentProviderCache(
   private readonly Dictionary<
     (Type, Type, ModelComponentKind),
     IModelComponentProvider> genericCache = new();
+
+  private readonly Dictionary<Type, IModelPageComponentProvider> pageCache = new();
 }

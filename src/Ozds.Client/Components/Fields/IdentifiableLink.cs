@@ -4,15 +4,18 @@ using Ozds.Client.Components.Base;
 
 namespace Ozds.Client.Components.Fields;
 
-public partial class IdentifiableLink<T, TPage> : OzdsComponentBase
+public partial class IdentifiableLink<T> : OzdsComponentBase
   where T : IIdentifiable
 {
   [Parameter]
   public T Model { get; set; } = default!;
 
+  [Parameter]
+  public Type PageType { get; set; } = default!;
+
   private void OnClick()
   {
     var parameters = new { Model.Id };
-    NavigateToPage<TPage>(parameters);
+    NavigateToPage(PageType, parameters);
   }
 }

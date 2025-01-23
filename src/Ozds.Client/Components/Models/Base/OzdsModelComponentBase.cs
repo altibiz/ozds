@@ -23,6 +23,8 @@ public abstract partial class OzdsModelComponentBase<TModel>
 
   public abstract ModelComponentKind ComponentKind { get; }
 
+  public virtual Type? PageType => null;
+
   public Type BaseComponentType =>
     baseComponentType ??= CreateBaseComponentType();
 
