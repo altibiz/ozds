@@ -30,7 +30,7 @@ public class ModelComponentProviderCache(
     return GetPageProvider(modelType).PageType;
   }
 
-  public string CreatePageComponentLink(object model)
+  public string CreateLink(object model)
   {
     return GetPageProvider(model.GetType()).CreateLink(model);
   }

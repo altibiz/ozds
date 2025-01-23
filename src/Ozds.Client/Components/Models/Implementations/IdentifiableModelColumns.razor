@@ -9,7 +9,7 @@
 
 <TemplateColumn T="TModel">
   <CellTemplate>
-    <MudLink Href="@Cache.CreatePageComponentLink(context.Item)">
+    <MudLink Href="@Cache.CreateLink(context.Item)">
       <MudText>
         @context.Item.Title
       </MudText>
