@@ -4,7 +4,7 @@
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Business.Models.Enums
 @using Ozds.Business.Time
-@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Models.Base
 @using Ozds.Client.Components.Charts
 @using Ozds.Client.Components.Streaming
 @using Ozds.Client.Components.Tables
@@ -15,7 +15,7 @@
 
 @page "/measurements/meter/{id?}"
 
-@inherits OzdsComponentBase
+@inherits OzdsIdentifiableModelPageComponentBase<IMeter>
 
 @if (RepresentativeState.Representative.Role
   is not RoleModel.OperatorRepresentative)

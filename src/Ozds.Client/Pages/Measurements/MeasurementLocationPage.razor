@@ -4,6 +4,7 @@
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Business.Time
 @using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Models.Base
 @using Ozds.Client.Components.Charts
 @using Ozds.Client.Components.Tables
 @using Ozds.Client.Components.Streaming
@@ -14,7 +15,7 @@
 
 @page "/measurements/measurement-location/{id?}"
 
-@inherits OzdsComponentBase
+@inherits OzdsIdentifiableModelPageComponentBase<IMeasurementLocation>
 
 @{
   var analysis = AnalysisState.AnalysisBases.Value

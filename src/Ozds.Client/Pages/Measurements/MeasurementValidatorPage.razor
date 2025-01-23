@@ -4,13 +4,14 @@
 @using Ozds.Client.Components.Base
 @using Ozds.Client.Components.Streaming
 @using Ozds.Client.Components.Models
+@using Ozds.Client.Components.Models.Base
 @using Ozds.Client.State
 
 @namespace Ozds.Client.Pages
 
 @page "/measurements/measurement-validator/{id?}"
 
-@inherits OzdsComponentBase
+@inherits OzdsIdentifiableModelPageComponentBase<IMeasurementValidator>
 
 @if (RepresentativeState.Representative.Role
   is not RoleModel.OperatorRepresentative)

@@ -5,13 +5,14 @@
 @using Ozds.Business.Queries
 @using Ozds.Client.Components.Streaming
 @using Ozds.Client.Components.Models
+@using Ozds.Client.Components.Models.Base
 @using Ozds.Client.Components.Base
 
 @namespace Ozds.Client.Pages
 
 @page "/finances/network-user-invoice/{id}"
 
-@inherits OzdsComponentBase
+@inherits OzdsIdentifiableModelPageComponentBase<INetworkUserInvoice>
 
 <Mutating T="INetworkUserInvoice" Id="@Id">
   <Edit>

@@ -5,12 +5,13 @@ using Ozds.Business.Models;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Mutations;
 using Ozds.Business.Queries;
-using Ozds.Client.Components.Base;
+using Ozds.Client.Components.Models.Base;
 using Ozds.Client.State;
 
 namespace Ozds.Client.Pages;
 
-public partial class NotificationPage : OzdsComponentBase
+public partial class NotificationPage
+  : OzdsIdentifiableModelPageComponentBase<INotification>
 {
   [Parameter]
   public string? Id { get; set; }
