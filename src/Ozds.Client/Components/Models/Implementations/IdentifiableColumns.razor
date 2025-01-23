@@ -1,11 +1,11 @@
 @using MudBlazor
-@using Ozds.Business.Models.Base
+@using Ozds.Business.Models.Abstractions
 @using Ozds.Client.Components.Models.Base
 
 @namespace Ozds.Client.Components.Models
 
-@typeparam TModel where TModel : IdentifiableModel
-@inherits OzdsColumnsComponentBase<TModel, IdentifiableModel>
+@typeparam TModel where TModel : IIdentifiable
+@inherits OzdsColumnsComponentBase<TModel>
 
 <TemplateColumn T="TModel">
   <CellTemplate>

@@ -33,10 +33,15 @@ public abstract partial class OzdsModelComponentBase<TModel>
 
   protected Type BaseComponentType<T>()
   {
-    return BaseComponentType(typeof(T));
+    return CreateBaseComponentType(typeof(T));
   }
 
   protected Type BaseComponentType(Type baseModelType)
+  {
+    return CreateBaseComponentType(baseModelType);
+  }
+
+  protected virtual Type CreateBaseComponentType(Type baseModelType)
   {
     if (!baseModelType.IsAssignableFrom(ModelType))
     {

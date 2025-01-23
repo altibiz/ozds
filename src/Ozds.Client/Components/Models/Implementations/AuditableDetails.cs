@@ -1,14 +1,12 @@
 using Microsoft.Extensions.DependencyInjection;
 using Ozds.Business.Models.Abstractions;
-using Ozds.Business.Models.Base;
 using Ozds.Business.Queries;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Client.Components.Models.Base;
 
 namespace Ozds.Client.Components.Models;
 
-public partial class AuditableModelDetails
-  : OzdsDetailsComponentBase<AuditableModel>
+public partial class AuditableDetails : OzdsDetailsComponentBase<IAuditable>
 {
   private async Task<PaginatedList<IAuditEvent>> OnPageAsync(int page)
   {

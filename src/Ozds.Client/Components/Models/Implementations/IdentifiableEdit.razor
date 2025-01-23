@@ -1,10 +1,10 @@
 @using MudBlazor
-@using Ozds.Business.Models.Base
+@using Ozds.Business.Models.Abstractions
 @using Ozds.Client.Components.Models.Base
 
 @namespace Ozds.Client.Components.Models
 
-@inherits OzdsDetailsComponentBase<IdentifiableModel>
+@inherits OzdsDetailsComponentBase<IIdentifiable>
 
 <MudTextField
   Label="@Translate("Name")"

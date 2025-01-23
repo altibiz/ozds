@@ -100,6 +100,11 @@ public class ModelComponentProviderCache(
         var genericArgumentConstraints = genericTypeArguments
           .First()
           .GetGenericParameterConstraints();
+        if (genericArgumentConstraints.Length == 0)
+        {
+          return true;
+        }
+
         if (genericArgumentConstraints.Length != 1)
         {
           return false;
@@ -108,17 +113,32 @@ public class ModelComponentProviderCache(
         return constraintType.IsAssignableTo(
           genericArgumentConstraints.First());
       })
-      .Select(generic => ServiceProvider
-        .GetService(generic.MakeGenericType(modelType)))
-      .OfType<IModelComponentProvider>()
-      .Where(type => type.CanRender(modelType))
+      .Select(generic =>
+      {
+        var constraintType = generic
+          .GetGenericArguments()[0]
+          .GetGenericParameterConstraints()
+          .FirstOrDefault()
+          ?? typeof(object);
+        var service = (ServiceProvider
+          .GetService(generic.MakeGenericType(modelType))
+          as IModelComponentProvider)!;
+
+        return new
+        {
+          Service = service,
+          ConstraintType = constraintType
+        };
+      })
+      .Where(x => x.Service.CanRender(modelType))
       .DefaultIfEmpty(null)
       .Aggregate((acc, next) =>
         acc is null
           ? null
-          : next!.ModelType.IsAssignableTo(acc.ModelType)
+          : next!.ConstraintType.IsAssignableTo(acc.ConstraintType)
             ? acc
             : next)
+      ?.Service
       ?? throw new InvalidOperationException(
         "No model component provider found for model type "
         + modelType.FullName
