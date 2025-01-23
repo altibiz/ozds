@@ -106,6 +106,13 @@ public class ModelComponentProviderCache(
         "No model component provider found for model type "
         + modelType.FullName);
 
+    if (!provider.CanRender(modelType))
+    {
+      throw new InvalidOperationException(
+        "Model component provider for model type "
+        + modelType.FullName);
+    }
+
     genericCache.TryAdd(key, provider);
 
     return provider;
