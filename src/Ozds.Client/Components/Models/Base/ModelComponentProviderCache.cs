@@ -67,9 +67,9 @@ public class ModelComponentProviderCache(
       return provider;
     }
 
-    var generic = typeof(ModelComponentProviderCache).Assembly
+    provider = typeof(ModelComponentProviderCache).Assembly
       .GetTypes()
-      .FirstOrDefault(type =>
+      .Where(type =>
       {
         if (!type.IsAssignableTo(typeof(IModelComponentProvider)))
         {
@@ -95,23 +95,25 @@ public class ModelComponentProviderCache(
           return false;
         }
 
-        return genericArgumentConstraints.First() == constraintType;
-      }) ?? throw new InvalidOperationException(
-        "No model component provider found for model type "
-        + modelType.FullName);
-
-    provider = ServiceProvider.GetService(generic.MakeGenericType(modelType))
-      as IModelComponentProvider
+        return constraintType.IsAssignableTo(
+          genericArgumentConstraints.First());
+      })
+      .Select(generic => ServiceProvider
+        .GetService(generic.MakeGenericType(modelType)))
+      .OfType<IModelComponentProvider>()
+      .Where(type => type.CanRender(modelType))
+      .DefaultIfEmpty(null)
+      .Aggregate((acc, next) =>
+        acc is null
+          ? null
+          : next!.ModelType.IsAssignableTo(acc.ModelType)
+            ? acc
+            : next)
       ?? throw new InvalidOperationException(
         "No model component provider found for model type "
-        + modelType.FullName);
-
-    if (!provider.CanRender(modelType))
-    {
-      throw new InvalidOperationException(
-        "Model component provider for model type "
-        + modelType.FullName);
-    }
+        + modelType.FullName
+        + " with constraint type "
+        + constraintType.FullName);
 
     genericCache.TryAdd(key, provider);
 
