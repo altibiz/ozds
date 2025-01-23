@@ -6,18 +6,13 @@ public abstract class OzdsManagedModelComponentBase<TModel> :
   OzdsModelComponentBase<TModel>
 {
   [Parameter]
-  public TModel? Model { get; set; }
+  public TModel Model { get; set; } = default!;
 
   protected override Dictionary<string, object> CreateBaseParameters()
   {
-    if (Model is null)
-    {
-      return new();
-    }
-
     return new()
     {
-      { "Model", Model }
+      { "Model", Model! }
     };
   }
 }

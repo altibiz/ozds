@@ -9,6 +9,9 @@ namespace Ozds.Client.Components.Models.Base;
 public abstract partial class OzdsModelComponentBase<TModel>
   : OzdsComponentBase, IModelComponentProvider
 {
+  [Parameter]
+  public bool IsTopLevel { get; set; } = true;
+
   [Inject]
   protected ModelComponentProviderCache Cache { get; set; } = default!;
 
@@ -23,10 +26,26 @@ public abstract partial class OzdsModelComponentBase<TModel>
 
   public abstract ModelComponentKind ComponentKind { get; }
 
-  public virtual Type? PageType => null;
+  protected Type BaseComponentType()
+  {
+    return baseComponentType ??= CreateBaseComponentType();
+  }
 
-  public Type BaseComponentType =>
-    baseComponentType ??= CreateBaseComponentType();
+  protected Type BaseComponentType<T>()
+  {
+    return BaseComponentType(typeof(T));
+  }
+
+  protected Type BaseComponentType(Type baseModelType)
+  {
+    if (!baseModelType.IsAssignableFrom(ModelType))
+    {
+      throw new InvalidOperationException(
+        $"{baseModelType} is not assignable from {ModelType}");
+    }
+
+    return Cache.GetComponentType(baseModelType, ComponentKind);
+  }
 
   private Type? baseComponentType;
 
@@ -42,8 +61,10 @@ public abstract partial class OzdsModelComponentBase<TModel>
     return Cache.GetComponentType(baseModelType, ComponentKind);
   }
 
-  public Dictionary<string, object> BaseParameters =>
-    baseParameters ??= CreateBaseParameters();
+  protected Dictionary<string, object> BaseParameters()
+  {
+    return baseParameters ??= CreateFixedBaseParameters();
+  }
 
   private Dictionary<string, object>? baseParameters;
 
@@ -52,13 +73,20 @@ public abstract partial class OzdsModelComponentBase<TModel>
     return new();
   }
 
+  private Dictionary<string, object> CreateFixedBaseParameters()
+  {
+    var parameters = CreateBaseParameters();
+    parameters.Add(nameof(IsTopLevel), false);
+    return parameters;
+  }
+
   protected override void OnParametersSet()
   {
     base.OnParametersSet();
 
     if (baseParameters is { })
     {
-      baseParameters = CreateBaseParameters();
+      baseParameters = CreateFixedBaseParameters();
     }
 
     if (baseComponentType is { })

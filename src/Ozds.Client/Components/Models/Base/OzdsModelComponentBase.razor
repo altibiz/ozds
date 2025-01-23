@@ -1,5 +1,6 @@
 @using Ozds.Client.Components.Base
 @using Ozds.Client.Components.Models.Abstractions
+@using Ozds.Client.Components.Streaming
 
 @namespace Ozds.Client.Components.Models.Base
 
@@ -7,11 +8,35 @@
 @inherits OzdsComponentBase
 @implements IModelComponentProvider
 
-@Base
+@Base()
 
 @code {
-  public RenderFragment Base =>
-    @<DynamicComponent
-      Type="@(BaseComponentType)"
-      Parameters="@(BaseParameters)" />;
+  public RenderFragment Base()
+  {
+    if (!IsTopLevel)
+    {
+      return @<Fragment />;
+    }
+
+    return @<DynamicComponent
+      Type="@(BaseComponentType())"
+      Parameters="@(BaseParameters())" />;
+  }
+
+  public RenderFragment Base<T>()
+  {
+    return Base(typeof(T));
+  }
+
+  public RenderFragment Base(Type baseModelType)
+  {
+    if (!IsTopLevel)
+    {
+      return @<Fragment />;
+    }
+
+    return @<DynamicComponent
+      Type="@(BaseComponentType(baseModelType))"
+      Parameters="@(BaseParameters())" />;
+  }
 }
