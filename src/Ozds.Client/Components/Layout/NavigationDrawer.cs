@@ -37,7 +37,7 @@ public partial class NavigationDrawer : OzdsComponentBase
       NavigationManager.LocationChanged -= OnLocationChanged;
     }
 
-    base.Dispose(true);
+    base.Dispose(disposing);
   }
 
   private void OnLocationChanged(object? sender, LocationChangedEventArgs e)

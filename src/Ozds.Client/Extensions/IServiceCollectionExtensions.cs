@@ -4,7 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MudBlazor.Services;
 using Ozds.Client.Components.Models.Abstractions;
-using Ozds.Client.State;
 
 namespace Ozds.Client.Extensions;
 
@@ -15,26 +14,10 @@ public static class IServiceCollectionExtensions
     IHostApplicationBuilder builder
   )
   {
-    services.AddState();
     services.AddModels();
     services.AddBlazor(builder);
     services.AddLocalStorage();
     services.AddMudBlazor();
-    return services;
-  }
-
-  private static IServiceCollection AddState(
-    this IServiceCollection services
-  )
-  {
-    services.AddCascadingValue<CultureState>();
-    services.AddCascadingValue<UserState>();
-    services.AddCascadingValue<RepresentativeState>();
-    services.AddCascadingValue<NotificationsState>();
-    services.AddCascadingValue<AnalysisState>();
-    services.AddCascadingValue<ThemeState>();
-    services.AddCascadingValue<LayoutState>();
-
     return services;
   }
 
@@ -96,11 +79,5 @@ public static class IServiceCollectionExtensions
     services.AddBlazoredLocalStorage();
 
     return services;
-  }
-
-  private static IServiceCollection AddCascadingValue<T>(
-    this IServiceCollection services)
-  {
-    return services.AddCascadingValue(_ => default(T));
   }
 }

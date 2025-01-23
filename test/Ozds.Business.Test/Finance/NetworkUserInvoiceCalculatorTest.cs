@@ -609,8 +609,7 @@ public class NetworkUserInvoiceCalculatorTest
     mockSequence.Throws(new InvalidOperationException("No more calculations"));
 
     var calculator = new NetworkUserInvoiceCalculator(
-      calculationItemCalculatorMock.Object,
-      httpContextAccessorMock.Object);
+      calculationItemCalculatorMock.Object);
 
     var fixture = new Fixture()
       .Customize(
