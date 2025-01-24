@@ -13,7 +13,7 @@ public abstract partial class OzdsModelComponentBase<TModel>
   public bool Isolate { get; set; } = false;
 
   [Inject]
-  protected ModelComponentProviderCache Cache { get; set; } = default!;
+  protected ModelComponentProvider Cache { get; set; } = default!;
 
   public virtual Type ModelType => typeof(TModel);
 

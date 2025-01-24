@@ -1,49 +1,19 @@
 @using Microsoft.AspNetCore.Components
 @using Ozds.Business.Models
-@using Ozds.Client.Components.Base
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Client.Components.Models.Base
 @using Ozds.Client.Components.Fields
 
-@namespace Ozds.Client.Components.Models
+@namespace Ozds.Client.Components.Models.Implementations.Administration
 
-@inherits OzdsComponentBase
+@inherits OzdsDetailsComponentBase<NetworkUserModel>
 
-<DetailsField Title="@Translate("Name")">
-  @Model.Title
-</DetailsField>
-
-<DetailsField Title="@Translate("Person name")">
-  @Model.LegalPerson.Name
-</DetailsField>
-
-<DetailsField Title="@Translate("OIB")">
-  @Model.LegalPerson.SocialSecurityNumber
-</DetailsField>
-
-<DetailsField Title="@Translate("Address")">
-  @Model.LegalPerson.Address
-</DetailsField>
-
-<DetailsField Title="@Translate("Postal code")">
-  @Model.LegalPerson.PostalCode
-</DetailsField>
-
-<DetailsField Title="@Translate("City")">
-  @Model.LegalPerson.City
-</DetailsField>
-
-<DetailsField Title="@Translate("Email address")">
-  @Model.LegalPerson.Email
-</DetailsField>
-
-<DetailsField Title="@Translate("Phone number")">
-  @Model.LegalPerson.PhoneNumber
-</DetailsField>
+@(Base<IIdentifiable>())
 
 <DetailsField Title="@Translate("AltiBiz subproject code")">
   @Model.AltiBizSubProjectCode
 </DetailsField>
 
-@code {
-  [Parameter]
-  public NetworkUserModel Model { get; set; } = default!;
-}
+<Details Model="@Model.LegalPerson" />
+
+@(Base<IAuditable>())

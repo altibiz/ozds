@@ -1,9 +1,8 @@
-using Ozds.Client.Components.Models.Abstractions;
 using Ozds.Client.Components.Models.Base;
 
 namespace Ozds.Client.Components.Models;
 
-public partial class Columns : ListModelComponent
+public class Columns : ListModelComponent<object, object>
 {
   protected override ModelComponentKind ComponentKind =>
     ModelComponentKind.Columns;

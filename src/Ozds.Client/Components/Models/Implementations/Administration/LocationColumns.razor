@@ -1,31 +1,25 @@
 @using MudBlazor
 @using Ozds.Business.Models
-@using Ozds.Client.Components.Base
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Client.Components.Models.Base
 
-@inherits OzdsComponentBase
+@namespace Ozds.Client.Components.Models.Implementations.Administration
+
+@typeparam TModel where TModel : LocationModel
+@inherits OzdsColumnsComponentBase<TModel>
+
+@(Base<IIdentifiable>())
+
+<PrefixedColumns Prefix="@(x => x.LegalPerson)" Models="@Models" />
 
 <PropertyColumn
-  T="LocationModel"
+  T="TModel"
   TProperty="string"
-  CellStyle="font-size: x-large;"
   Property="x => x.AltiBizSubProjectCode"
   Title='@Translate("AltiBiz subproject code")'>
   <CellTemplate>
     <MudText>
       @context.Item.AltiBizSubProjectCode
-    </MudText>
-  </CellTemplate>
-</PropertyColumn>
-
-<PropertyColumn
-  T="LocationModel"
-  TProperty="string"
-  CellStyle="font-size: x-large;"
-  Property="x => x.LegalPerson.SocialSecurityNumber"
-  Title='@Translate("Social security number")'>
-  <CellTemplate>
-    <MudText>
-      @context.Item.LegalPerson.SocialSecurityNumber
     </MudText>
   </CellTemplate>
 </PropertyColumn>

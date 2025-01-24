@@ -12,7 +12,7 @@ public abstract class OzdsManagedModelComponentBase<TModel> :
   {
     return new()
     {
-      { "Model", Model! }
+      { nameof(Model), Model! }
     };
   }
 }

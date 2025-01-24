@@ -11,7 +11,7 @@
 @Base()
 
 @code {
-  public RenderFragment Base()
+  protected RenderFragment Base()
   {
     if (Isolate)
     {
@@ -23,12 +23,12 @@
       Parameters="@(BaseParameters())" />;
   }
 
-  public RenderFragment Base<T>()
+  protected RenderFragment Base<T>()
   {
     return Base(typeof(T));
   }
 
-  public RenderFragment Base(Type baseModelType)
+  protected RenderFragment Base(Type baseModelType)
   {
     if (Isolate)
     {

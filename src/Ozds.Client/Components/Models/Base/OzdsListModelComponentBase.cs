@@ -1,8 +1,35 @@
+using Microsoft.AspNetCore.Components;
+
 namespace Ozds.Client.Components.Models.Base;
 
-public abstract class OzdsListModelComponentBase<TModel> :
+public abstract class OzdsListModelComponentBase<TPrefix, TModel> :
   OzdsModelComponentBase<TModel>
 {
+  [Parameter]
+  public IEnumerable<TModel> Models { get; set; } = default!;
+
+  [Parameter]
+  public Func<TPrefix, TModel>? Prefix { get; set; } = default!;
+
+  protected Func<TPrefix, TModel> Fix =>
+    fix ??= CreateFix();
+
+  private Func<TPrefix, TModel>? fix;
+
+  protected Func<TPrefix, TModel> CreateFix()
+  {
+    return Prefix ?? new Func<TPrefix, TModel>((TPrefix x) => (TModel)x);
+  }
+
+  protected override Dictionary<string, object> CreateBaseParameters()
+  {
+    return new()
+    {
+      { nameof(Models), Models! },
+      { nameof(Prefix), Prefix! }
+    };
+  }
+
   protected override Type CreateBaseComponentType()
   {
     var baseModelType = ModelType.BaseType;
@@ -12,9 +39,10 @@ public abstract class OzdsListModelComponentBase<TModel> :
         $"No base type found for {ModelType.FullName}");
     }
 
-    return Cache.GetGenericComponentType(
+    return Cache.GetPrefixedComponentType(
       ModelType,
       baseModelType,
+      typeof(TPrefix),
       ComponentKind
     );
   }
@@ -27,10 +55,21 @@ public abstract class OzdsListModelComponentBase<TModel> :
         $"{baseModelType} is not assignable to {typeof(TModel)}");
     }
 
-    return Cache.GetGenericComponentType(
+    return Cache.GetPrefixedComponentType(
       ModelType,
       baseModelType,
+      typeof(TPrefix),
       ComponentKind
     );
+  }
+
+  protected override void OnParametersSet()
+  {
+    base.OnParametersSet();
+
+    if (fix is { })
+    {
+      fix = CreateFix();
+    }
   }
 }

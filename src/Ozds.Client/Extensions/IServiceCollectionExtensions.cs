@@ -3,8 +3,8 @@ using Blazored.LocalStorage;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MudBlazor.Services;
+using Ozds.Client.Components.Models;
 using Ozds.Client.Components.Models.Abstractions;
-using Ozds.Client.Components.Models.Base;
 
 namespace Ozds.Client.Extensions;
 
@@ -27,7 +27,8 @@ public static class IServiceCollectionExtensions
   )
   {
     services.AddSingletonAssignableTo(typeof(IModelComponentProvider));
-    services.AddSingleton<ModelComponentProviderCache>();
+    services.AddSingletonAssignableTo(typeof(IModelPageComponentProvider));
+    services.AddSingleton<ModelComponentProvider>();
 
     return services;
   }

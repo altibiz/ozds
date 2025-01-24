@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Components;
-using Ozds.Client.Components.Models.Abstractions;
 
 namespace Ozds.Client.Components.Models.Base;
 
@@ -37,14 +36,14 @@ public abstract partial class ModelComponent : ComponentBase
   }
 
   [Inject]
-  private ModelComponentProviderCache Cache { get; set; } = default!;
+  protected ModelComponentProvider Cache { get; set; } = default!;
 
   private Type ComponentType =>
     componentType ??= CreateComponentType();
 
   private Type? componentType;
 
-  private Type CreateComponentType()
+  protected virtual Type CreateComponentType()
   {
     return Cache.GetComponentType(ModelType, ComponentKind);
   }

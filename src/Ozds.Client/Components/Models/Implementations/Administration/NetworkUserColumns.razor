@@ -1,15 +1,25 @@
 @using MudBlazor
 @using Ozds.Business.Models
-@using Ozds.Client.Components.Base
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Client.Components.Models.Base
 
-@inherits OzdsComponentBase
+@namespace Ozds.Client.Components.Models.Implementations.Administration
+
+@typeparam TModel where TModel : NetworkUserModel
+@inherits OzdsColumnsComponentBase<TModel>
+
+@(Base<IIdentifiable>())
+
+<PrefixedColumns Prefix="@(x => x.LegalPerson)" Models="@Models" />
 
 <PropertyColumn
-  T="NetworkUserModel"
+  T="TModel"
   TProperty="string"
-  Property="x => x.Title"
-  Title='@Translate("Title")'>
+  Property="x => x.AltiBizSubProjectCode"
+  Title='@Translate("AltiBiz subproject code")'>
   <CellTemplate>
-    <MudText>@context.Item.Title</MudText>
+    <MudText>
+      @context.Item.AltiBizSubProjectCode
+    </MudText>
   </CellTemplate>
 </PropertyColumn>

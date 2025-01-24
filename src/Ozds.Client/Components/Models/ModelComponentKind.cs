@@ -1,4 +1,4 @@
-namespace Ozds.Client.Components.Models.Abstractions;
+namespace Ozds.Client.Components.Models;
 
 public enum ModelComponentKind
 {
