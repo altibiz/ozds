@@ -4,14 +4,15 @@
 
 @namespace Ozds.Client.Components.Models
 
+@typeparam TPrefix
 @typeparam TModel where TModel : IIdentifiable
-@inherits OzdsColumnsComponentBase<TModel>
+@inherits OzdsColumnsComponentBase<TPrefix, TModel>
 
-<TemplateColumn T="TModel">
+<TemplateColumn T="TPrefix">
   <CellTemplate>
-    <MudLink Href="@Cache.CreateLink(context.Item)">
+    <MudLink Href="@(Cache.CreateLink(Fix(context.Item)))">
       <MudText>
-        @context.Item.Title
+        @(Fix(context.Item).Title)
       </MudText>
     </MudLink>
   </CellTemplate>

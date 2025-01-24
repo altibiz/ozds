@@ -5,21 +5,22 @@
 
 @namespace Ozds.Client.Components.Models.Implementations.Administration
 
+@typeparam TPrefix
 @typeparam TModel where TModel : LocationModel
-@inherits OzdsColumnsComponentBase<TModel>
+@inherits OzdsColumnsComponentBase<TPrefix, TModel>
 
 @(Base<IIdentifiable>())
 
-<PrefixedColumns Prefix="@(x => x.LegalPerson)" Models="@Models" />
+<PrefixedColumns Models="@Models" Prefix="@(x => Fix(x).LegalPerson)" />
 
 <PropertyColumn
-  T="TModel"
+  T="TPrefix"
   TProperty="string"
-  Property="x => x.AltiBizSubProjectCode"
+  Property="@(x => Fix(x).AltiBizSubProjectCode)"
   Title='@Translate("AltiBiz subproject code")'>
   <CellTemplate>
     <MudText>
-      @context.Item.AltiBizSubProjectCode
+      @(Fix(context.Item).AltiBizSubProjectCode)
     </MudText>
   </CellTemplate>
 </PropertyColumn>

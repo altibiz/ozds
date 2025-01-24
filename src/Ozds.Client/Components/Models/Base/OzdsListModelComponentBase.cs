@@ -6,7 +6,7 @@ public abstract class OzdsListModelComponentBase<TPrefix, TModel> :
   OzdsModelComponentBase<TModel>
 {
   [Parameter]
-  public IEnumerable<TModel> Models { get; set; } = default!;
+  public IEnumerable<TPrefix> Models { get; set; } = default!;
 
   [Parameter]
   public Func<TPrefix, TModel>? Prefix { get; set; } = default!;
