@@ -2,7 +2,7 @@ using Ozds.Client.Components.Models.Base;
 
 namespace Ozds.Client.Components.Models;
 
-public class Columns : ListModelComponent<object, object>
+public class Columns<TPrefix> : ListModelComponent<TPrefix, TPrefix>
 {
   protected override ModelComponentKind ComponentKind =>
     ModelComponentKind.Columns;
