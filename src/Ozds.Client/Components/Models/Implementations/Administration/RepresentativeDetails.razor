@@ -1,0 +1,24 @@
+@using Microsoft.AspNetCore.Components
+@using Ozds.Business.Models
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Business.Models.Enums
+@using Ozds.Client.Components.Models.Base
+@using Ozds.Client.Components.Fields
+
+@namespace Ozds.Client.Components.Models.Implementations.Administration
+
+@inherits OzdsDetailsComponentBase<RepresentativeModel>
+
+@(Base<IIdentifiable>())
+
+<DetailsField Title="@Translate("Role")">
+  @Model.Role.ToTitle()
+</DetailsField>
+
+<Details Model="@Model.PhysicalPerson" />
+
+<DetailsField Title="@Translate("Topics")">
+  @string.Join(", ", Model.Topics.Select(x => x.ToTitle()))
+</DetailsField>
+
+@(Base<IAuditable>())
