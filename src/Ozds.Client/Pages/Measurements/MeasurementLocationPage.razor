@@ -27,13 +27,13 @@
 {
   <ResponsiveTable Model="@analysis.Analysis.Monthly">
     <Summary>
-      <MonthlyAnalysisSummary Model="@context" />
+      <Summary Model="@context" />
     </Summary>
     <Details>
-      <MonthlyAnalysisDetails Model="@context" />
+      <Details Model="@context" />
     </Details>
     <Columns>
-      <MonthlyAnalysisColumns />
+      <Columns Models="@analysis.Analysis.Monthly" />
     </Columns>
   </ResponsiveTable>
 
@@ -63,7 +63,7 @@
       }
     </HeadContent>
 
-    <MeasurementLocationEdit Model="context.Model" />
+    <Edit Model="context.Model" />
   </Edit>
   <Details>
     <HeadContent>
@@ -72,7 +72,7 @@
       </title>
     </HeadContent>
 
-    <MeasurementLocationDetails Model="context.Model" />
+    <Details Model="context.Model" />
   </Details>
 </Mutating>
 

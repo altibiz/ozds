@@ -38,13 +38,13 @@
   Model="measurementLocations"
   Link="@(x => PageHref<MeasurementLocationPage>(new { x.MeasurementLocation.Id }))">
   <Summary>
-    <MeasurementLocationAnalysisSummary Model="context" />
+    <Summary Model="context" />
   </Summary>
   <Details>
-    <MeasurementLocationAnalysisDetails Model="context" />
+    <Details Model="context" />
   </Details>
   <Columns>
-    <MeasurementLocationAnalysisColumns />
+    <Columns Models="@measurementLocations" />
   </Columns>
 </ResponsiveTable>
 
@@ -62,18 +62,18 @@
   Model="meters"
   Link="@(x => PageHref<MeterPage>(new { x.Meter.Id }))">
   <Summary>
-    <MeterAnalysisSummary Model="context" />
+    <Summary Model="context" />
   </Summary>
   <Details>
-    <MeterAnalysisDetails Model="context" />
+    <Details Model="context" />
   </Details>
   <Columns>
-    <MeterAnalysisColumns />
+    <Columns Models="@meters" />
   </Columns>
 </ResponsiveTable>
 
 <Paging PageAsync="OnMessengersPageAsync">
   <Summary>
-    <MessengerSummary Model="context" />
+    <Summary Model="@context" />
   </Summary>
 </Paging>

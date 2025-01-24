@@ -37,13 +37,13 @@
   Model="notifications"
   Link="@(x => PageHref<NotificationPage>(new { x.Id }))">
   <Summary>
-    <NotificationSummary Model="context" />
+    <Summary Model="context" />
   </Summary>
   <Details>
-    <NotificationDetails Model="context" />
+    <Details Model="context" />
   </Details>
   <Columns>
-    <NotificationColumns />
+    <Columns Models="@notifications" />
   </Columns>
 </ResponsiveTable>
 
@@ -55,7 +55,7 @@
 
 <Paging T="IEvent">
   <Summary>
-    <EventSummary Model="context" />
+    <Summary Model="context" />
   </Summary>
 </Paging>
 

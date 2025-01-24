@@ -38,13 +38,13 @@
   Model="@analyses"
   Link="@(x => PageHref<NetworkUserPage>(new { x.NetworkUser.Id }))">
   <Summary>
-    <NetworkUserAnalysisSummary Model="@context" />
+    <Summary Model="@context" />
   </Summary>
   <Details>
-    <NetworkUserAnalysisDetails Model="@context" />
+    <Details Model="@context" />
   </Details>
   <Columns>
-    <NetworkUserAnalysisColumns />
+    <Columns Models="@analyses" />
   </Columns>
 </ResponsiveTable>
 

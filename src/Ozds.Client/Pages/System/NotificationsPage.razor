@@ -45,13 +45,13 @@
       Model="@(page.Items)"
       Link="@(x => PageHref<NotificationPage>(new { x.Id }))">
       <Summary>
-        <NotificationSummary Model="@context" />
+        <Summary Model="@context" />
       </Summary>
       <Details>
-        <NotificationDetails Model="@context" />
+        <Details Model="@context" />
       </Details>
       <Columns>
-        <NotificationColumns />
+        <Columns TPrefix="INotification" Model="page.Items" />
       </Columns>
     </ResponsiveTable>
   </Found>

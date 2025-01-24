@@ -71,13 +71,13 @@
       </MudText>
     </Title>
     <Summary>
-      <LocationAnalysisSummary Model="@context" />
+      <Summary Model="@context" />
     </Summary>
     <Details>
-      <LocationAnalysisDetails Model="@context" />
+      <Details Model="@context" />
     </Details>
     <Columns>
-      <LocationAnalysisColumns />
+      <Columns Models="@locations" />
     </Columns>
   </ResponsiveTable>
 }
@@ -93,13 +93,13 @@
     Model="@networkUsers"
     Link="@(x => PageHref<NetworkUserPage>(new { x.NetworkUser.Id }))">
     <Summary>
-      <NetworkUserAnalysisSummary Model="@context" />
+      <Summary Model="@context" />
     </Summary>
     <Details>
-      <NetworkUserAnalysisDetails Model="@context" />
+      <Details Model="@context" />
     </Details>
     <Columns>
-      <NetworkUserAnalysisColumns />
+      <Columns TPrefix="NetworkUserAnalysis" Model="@networkUsers" />
     </Columns>
   </ResponsiveTable>
 }
@@ -114,13 +114,13 @@
     Model="@measurementLocations"
     Link="@(x => PageHref<MeasurementLocationPage>(new { x.MeasurementLocation.Id }))">
     <Summary>
-      <MeasurementLocationAnalysisSummary Model="@context" />
+      <Summary Model="@context" />
     </Summary>
     <Details>
-      <MeasurementLocationAnalysisDetails Model="@context" />
+      <Details Model="@context" />
     </Details>
     <Columns>
-      <MeasurementLocationAnalysisColumns />
+      <Columns Models="@measurementLocations" />
     </Columns>
   </ResponsiveTable>
 }
@@ -137,13 +137,13 @@
   Model="@invoices"
   Link="@(x => PageHref<NetworkUserInvoicePage>(new { x.Id }))">
   <Summary>
-    <InvoiceSummary Model="@context" />
+    <Summary Model="@context" />
   </Summary>
   <Details>
-    <InvoiceDetails Model="@context" />
+    <Details Model="@context" />
   </Details>
   <Columns>
-    <InvoiceColumns />
+    <Columns Models="@invoices" />
   </Columns>
 </ResponsiveTable>
 

@@ -41,13 +41,13 @@
     </MudText>
   </Title>
   <Summary>
-    <NetworkUserAnalysisSummary Model="context" />
+    <Summary Model="context" />
   </Summary>
   <Details>
-    <NetworkUserAnalysisDetails Model="context" />
+    <Details Model="context" />
   </Details>
   <Columns>
-    <NetworkUserAnalysisColumns />
+    <Columns Models="networkUsers" />
   </Columns>
 </ResponsiveTable>
 
@@ -56,7 +56,7 @@
 {
   <Paging PageAsync="OnUserPageAsync">
     <Summary>
-      <MaybeRepresentingUserSummary Model="context" />
+      <Summary Model="context" />
     </Summary>
   </Paging>
 }

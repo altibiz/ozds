@@ -62,13 +62,13 @@
       Model="@(page.Items)"
       Link="@(x => PageHref<EventPage>(new { x.Id }))">
       <Summary>
-        <EventSummary Model="@context" />
+        <Summary Model="@context" />
       </Summary>
       <Details>
-        <EventDetails Model="@context" />
+        <Details Model="@context" />
       </Details>
       <Columns>
-        <EventColumns />
+        <Columns Models="page.Items" />
       </Columns>
     </ResponsiveTable>
   </Found>

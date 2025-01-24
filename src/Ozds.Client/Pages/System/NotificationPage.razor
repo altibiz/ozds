@@ -30,7 +30,7 @@
         <title>OZDS - @Translate("Notification"): @context.Title</title>
       </HeadContent>
 
-      <NotificationDetails Model="@context"/>
+      <Details Model="@context"/>
     </Found>
     <NotFound>
       <NotFound />
@@ -61,10 +61,10 @@
     </HeadContent>
   </Label>
   <Edit>
-    <NotificationEdit Model="@context.Model"/>
+    <Edit Model="@context.Model"/>
   </Edit>
   <Details>
-    <NotificationDetails Model="@context.Model"/>
+    <Details Model="@context.Model"/>
 
     @if (!context.Created)
     {

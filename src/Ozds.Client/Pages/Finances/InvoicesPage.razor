@@ -40,13 +40,13 @@
   Model="@invoices"
   Link="@(x => PageHref<NetworkUserInvoicePage>(new { x.Id }))">
   <Summary>
-    <InvoiceSummary Model="@context" />
+    <Summary Model="@context" />
   </Summary>
   <Details>
-    <InvoiceDetails Model="@context" />
+    <Details Model="@context" />
   </Details>
   <Columns>
-    <InvoiceColumns />
+    <Columns Models="@invoices" />
   </Columns>
 </ResponsiveTable>
 
