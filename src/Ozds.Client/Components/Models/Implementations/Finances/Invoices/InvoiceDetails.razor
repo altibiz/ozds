@@ -3,7 +3,11 @@
 @using Ozds.Client.Components.Fields
 @using Ozds.Client.Pages
 
+@using Ozds.Client.Components.Models.Base
+
 @namespace Ozds.Client.Components.Models
+
+@inherits OzdsDetailsComponentBase<IInvoice>
 
 @if (Model is NetworkUserInvoiceModel networkUserInvoiceModel)
 {
@@ -15,7 +19,4 @@
   TPage="InvoicePrintPage"
   Model="Model" />
 
-@code {
-  [Parameter]
-  public IInvoice Model { get; set; } = default!;
-}
+@code {}

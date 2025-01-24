@@ -1,11 +1,11 @@
 @using Microsoft.AspNetCore.Components
 @using Ozds.Business.Models
-@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Models.Base
 @using Ozds.Client.Components.Fields
 
 @namespace Ozds.Client.Components.Models
 
-@inherits OzdsComponentBase
+@inherits OzdsDetailsComponentBase<SchneideriEM3xxxMeterModel>
 
 <DetailsField Title="@Translate("Id")">
   @Model.Id
@@ -23,7 +23,4 @@
   @(string.Join(", ", Model.Phases))
 </DetailsField>
 
-@code {
-  [Parameter]
-  public SchneideriEM3xxxMeterModel Model { get; set; } = default!;
-}
+@code {}

@@ -1,10 +1,10 @@
 @using Ozds.Business.Models
-@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Models.Base
 @using Ozds.Client.Components.Fields
 
 @namespace Ozds.Client.Components.Models
 
-@inherits OzdsComponentBase
+@inherits OzdsDetailsComponentBase<AbbB2xMeterModel>
 
 <DetailsField Title="@Translate("Id")">
   @Model.Id
@@ -22,7 +22,4 @@
   @(string.Join(", ", Model.Phases))
 </DetailsField>
 
-@code {
-  [Parameter]
-  public AbbB2xMeterModel Model { get; set; } = default!;
-}
+@code {}

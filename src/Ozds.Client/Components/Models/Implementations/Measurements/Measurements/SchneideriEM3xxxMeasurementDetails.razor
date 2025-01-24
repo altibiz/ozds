@@ -1,11 +1,11 @@
 @using Ozds.Business.Models
-@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Models.Base
 @using Ozds.Client.Components.Fields
 @using Ozds.Business.Models.Complex
 
 @namespace Ozds.Client.Components.Models
 
-@inherits OzdsComponentBase
+@inherits OzdsDetailsComponentBase<SchneideriEM3xxxMeasurementModel>
 
 <DetailsField Title="@Translate("Meter ID")">
   @Model.MeterId
@@ -113,7 +113,4 @@
   kVARh
 </DetailsField>
 
-@code {
-  [Parameter]
-  public SchneideriEM3xxxMeasurementModel Model { get; set; } = default!;
-}
+@code {}

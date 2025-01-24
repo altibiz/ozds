@@ -1,12 +1,12 @@
 @using Microsoft.AspNetCore.Components
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Business.Models
-@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Models.Base
 @using Ozds.Client.Components.Fields
 
 @namespace Ozds.Client.Components.Models
 
-@inherits OzdsComponentBase
+@inherits OzdsDetailsComponentBase<INotification>
 
 @if (Model is MessengerNotificationModel messengerNotificationModel)
 {
@@ -17,7 +17,4 @@ else if (Model is SystemNotificationModel systemNotificationModel)
   <SystemNotificationDetails Model="systemNotificationModel"/>
 }
 
-@code {
-  [Parameter]
-  public INotification Model { get; set; } = default!;
-}
+@code {}

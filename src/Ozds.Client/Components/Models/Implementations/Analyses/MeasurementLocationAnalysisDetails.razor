@@ -1,11 +1,11 @@
 @using Microsoft.AspNetCore.Components
 @using MudBlazor
 @using Ozds.Business.Analysis
-@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Models.Base
 
 @namespace Ozds.Client.Components.Models
 
-@inherits OzdsComponentBase
+@inherits OzdsDetailsComponentBase<MeasurementLocationAnalysis>
 
 <MudText>
   @Translate("Location")
@@ -62,7 +62,4 @@
         Model.Analysis.LastMonthExpenses.Total_EUR) + " EUR")
 </MudText>
 
-@code {
-  [Parameter]
-  public MeasurementLocationAnalysis Model { get; set; } = default!;
-}
+@code {}

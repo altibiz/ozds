@@ -3,7 +3,11 @@
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Business.Models
 
+@using Ozds.Client.Components.Models.Base
+
 @namespace Ozds.Client.Components.Models
+
+@inherits OzdsDetailsComponentBase<IMessenger>
 
 @if (Model is PidgeonMessengerModel pidgeonMessengerModel) {
   <PidgeonMessengerDetails Model="pidgeonMessengerModel"/>
@@ -12,7 +16,4 @@ else {
   throw new ArgumentOutOfRangeException(nameof(Model));
 }
 
-@code {
-  [Parameter]
-  public IMessenger Model { get; set; } = default!;
-}
+@code {}

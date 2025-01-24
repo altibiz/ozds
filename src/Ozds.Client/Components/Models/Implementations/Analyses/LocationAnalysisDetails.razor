@@ -2,12 +2,12 @@
 @using MudBlazor
 @using Ozds.Business.Analysis
 @using Ozds.Business.Models.Enums
-@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Models.Base
 @using Ozds.Client.State
 
 @namespace Ozds.Client.Components.Models
 
-@inherits OzdsComponentBase
+@inherits OzdsDetailsComponentBase<LocationAnalysis>
 
 <MudText
   xs="12"
@@ -72,7 +72,4 @@ else
 @code {
   [CascadingParameter]
   public RepresentativeState RepresentativeState { get; set; } = default!;
-
-  [Parameter]
-  public LocationAnalysis Model { get; set; } = default!;
 }

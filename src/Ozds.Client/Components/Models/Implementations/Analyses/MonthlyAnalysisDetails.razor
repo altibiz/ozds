@@ -1,11 +1,11 @@
 @using Microsoft.AspNetCore.Components
 @using MudBlazor
 @using Ozds.Business.Analysis
-@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Models.Base
 
 @namespace Ozds.Client.Components.Models
 
-@inherits OzdsComponentBase
+@inherits OzdsDetailsComponentBase<MonthlyAnalysis>
 
 <MudText>
   @Translate("First reading"):
@@ -24,7 +24,4 @@
   @(NumericString(Model.MaxLoad.ActivePower_kW, 0)) kW
 </MudText>
 
-@code {
-  [Parameter]
-  public MonthlyAnalysis Model { get; set; } = default!;
-}
+@code {}

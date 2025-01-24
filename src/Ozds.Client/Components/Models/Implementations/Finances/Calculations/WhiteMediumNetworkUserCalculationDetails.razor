@@ -2,12 +2,12 @@
 @using MudBlazor
 @using Ozds.Business.Models
 @using Ozds.Business.Models.Complex
-@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Models.Base
 @using Ozds.Client.Components.Fields
 
 @namespace Ozds.Client.Components.Models
 
-@inherits OzdsComponentBase
+@inherits OzdsDetailsComponentBase<WhiteMediumNetworkUserCalculationModel>
 
 <DetailsField Title="@Translate("Title")">
   @Model.Title
@@ -91,7 +91,4 @@
   €
 </DetailsField>
 
-@code {
-  [Parameter]
-  public WhiteMediumNetworkUserCalculationModel Model { get; set; } = default!;
-}
+@code {}

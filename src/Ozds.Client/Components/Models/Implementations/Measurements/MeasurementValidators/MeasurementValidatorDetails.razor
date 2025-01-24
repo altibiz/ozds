@@ -3,7 +3,11 @@
 @using Ozds.Business.Models
 @using Ozds.Business.Models.Abstractions
 
+@using Ozds.Client.Components.Models.Base
+
 @namespace Ozds.Client.Components.Models
+
+@inherits OzdsDetailsComponentBase<IMeasurementValidator>
 
 @if (Model
   is AbbB2xMeasurementValidatorModel abbB2XMeasurementValidatorModel) {
@@ -19,7 +23,4 @@ else {
   throw new ArgumentOutOfRangeException(nameof(Model));
 }
 
-@code {
-  [Parameter]
-  public IMeasurementValidator Model { get; set; } = default!;
-}
+@code {}

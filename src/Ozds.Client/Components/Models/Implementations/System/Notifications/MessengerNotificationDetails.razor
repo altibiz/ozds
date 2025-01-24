@@ -1,11 +1,11 @@
 @using Microsoft.AspNetCore.Components
 @using Ozds.Business.Models
-@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Models.Base
 @using Ozds.Client.Components.Fields
 
 @namespace Ozds.Client.Components.Models
 
-@inherits OzdsComponentBase
+@inherits OzdsDetailsComponentBase<MessengerNotificationModel>
 
 <DetailsField Title="@Translate("Name")">
   @Model.Title
@@ -17,7 +17,4 @@
   @Model.Content
 </DetailsField>
 
-@code {
-  [Parameter]
-  public MessengerNotificationModel Model { get; set; } = default!;
-}
+@code {}

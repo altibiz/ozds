@@ -2,12 +2,12 @@
 @using Ozds.Business.Models
 @using Ozds.Business.Models.Base
 @using Ozds.Business.Models.Enums
-@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Models.Base
 @using Ozds.Client.Components.Fields
 
 @namespace Ozds.Client.Components.Models
 
-@inherits OzdsComponentBase
+@inherits OzdsDetailsComponentBase<MessengerEventModel>
 
 <DetailsField Title="@Translate("Title")">
   @Model.Title
@@ -33,7 +33,4 @@
   @JsonString(Model.Content)
 </DetailsField>
 
-@code {
-  [Parameter]
-  public MessengerEventModel Model { get; set; } = default!;
-}
+@code {}

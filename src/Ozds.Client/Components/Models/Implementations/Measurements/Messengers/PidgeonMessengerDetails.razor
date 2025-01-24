@@ -1,12 +1,12 @@
 @using Ozds.Business.Models
-@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Models.Base
 @using Ozds.Client.Components.Fields
 @using Ozds.Business.Models.Enums
 @using Ozds.Business.Models.Complex
 
 @namespace Ozds.Client.Components.Models
 
-@inherits OzdsComponentBase
+@inherits OzdsDetailsComponentBase<PidgeonMessengerModel>
 
 <DetailsField Title="@Translate("Title")">
   @Model.Title
@@ -21,9 +21,6 @@
 </DetailsField>
 
 @code {
-  [Parameter]
-  public PidgeonMessengerModel Model { get; set; } = default!;
-
   private string FormatPeriod(PeriodModel period)
   {
     var durationTitle = period.Duration.ToTitle(plural: period.Multiplier > 1);
