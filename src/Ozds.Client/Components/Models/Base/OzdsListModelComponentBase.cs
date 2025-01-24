@@ -18,7 +18,7 @@ public abstract class OzdsListModelComponentBase<TPrefix, TModel> :
 
   protected Func<TPrefix, TModel> CreateFix()
   {
-    return Prefix ?? new Func<TPrefix, TModel>((TPrefix x) => (TModel)x);
+    return Prefix ?? ((TPrefix x) => (TModel)(object)x!);
   }
 
   protected override Dictionary<string, object> CreateBaseParameters()
