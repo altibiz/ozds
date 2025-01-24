@@ -2,13 +2,14 @@
 @using MudBlazor
 @using Ozds.Business.Models
 
+@using Ozds.Client.Components.Models.Base
+
 @namespace Ozds.Client.Components.Models
+
+@inherits OzdsSummaryComponentBase<SchneideriEM3xxxMeasurementValidatorModel>
 
 <MudText Typo="Typo.h6">
   @Model.Title
 </MudText>
 
-@code {
-  [Parameter]
-  public SchneideriEM3xxxMeasurementValidatorModel Model { get; set; } = default!;
-}
+@code {}

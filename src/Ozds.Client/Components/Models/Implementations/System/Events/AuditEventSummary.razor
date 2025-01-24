@@ -2,11 +2,11 @@
 @using MudBlazor
 @using Ozds.Business.Models
 @using Ozds.Business.Models.Base
-@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Models.Base
 
 @namespace Ozds.Client.Components.Models
 
-@inherits OzdsComponentBase
+@inherits OzdsSummaryComponentBase<AuditEventModel>
 
 <MudText Typo="Typo.h6">
   @Model.Title
@@ -17,7 +17,4 @@
   @DateTimeString(Model.Timestamp)
 </MudText>
 
-@code {
-  [Parameter]
-  public AuditEventModel Model { get; set; } = default!;
-}
+@code {}

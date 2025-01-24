@@ -4,7 +4,11 @@
 @using Ozds.Business.Models.Base
 @using Ozds.Business.Models.Abstractions
 
+@using Ozds.Client.Components.Models.Base
+
 @namespace Ozds.Client.Components.Models
+
+@inherits OzdsSummaryComponentBase<ICatalogue>
 
 @if(Model is BlueLowNetworkUserCatalogueModel blueLowNetworkUserCatalogueModel){
   <BlueLowNetworkUserCatalogueSummary Model="blueLowNetworkUserCatalogueModel"/>
@@ -25,7 +29,4 @@ else{
   throw new ArgumentOutOfRangeException(nameof(Model));
 }
 
-@code {
-  [Parameter]
-  public ICatalogue Model { get; set; } = default!;
-}
+@code {}

@@ -3,7 +3,11 @@
 @using Ozds.Business.Models
 @using Ozds.Business.Models.Abstractions
 
+@using Ozds.Client.Components.Models.Base
+
 @namespace Ozds.Client.Components.Models
+
+@inherits OzdsSummaryComponentBase<IMeter>
 
 @if (Model is AbbB2xMeterModel abbB2XMeterModel) {
   <AbbB2xMeterSummary Model="abbB2XMeterModel"/>
@@ -15,7 +19,4 @@ else{
   throw new ArgumentOutOfRangeException(nameof(Model));
 }
 
-@code {
-  [Parameter]
-  public IMeter Model { get; set; } = default!;
-}
+@code {}

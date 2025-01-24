@@ -2,7 +2,11 @@
 @using Ozds.Business.Models.Base
 @using Ozds.Business.Models
 
+@using Ozds.Client.Components.Models.Base
+
 @namespace Ozds.Client.Components.Models
+
+@inherits OzdsSummaryComponentBase<IEvent>
 
 @if (Model is SystemAuditEventModel systemAuditEventModel)
 {
@@ -29,7 +33,4 @@ else if (Model is AuditEventModel auditEventModel)
   <AuditEventSummary Model="auditEventModel"/>
 }
 
-@code {
-  [Parameter]
-  public IEvent Model { get; set; } = default!;
-}
+@code {}

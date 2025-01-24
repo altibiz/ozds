@@ -1,7 +1,11 @@
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Business.Models
 
+@using Ozds.Client.Components.Models.Base
+
 @namespace Ozds.Client.Components.Models
+
+@inherits OzdsSummaryComponentBase<ICalculation>
 
 @if (Model is BlueLowNetworkUserCalculationModel blueLowNetworkUserCalculation)
 {
@@ -20,7 +24,4 @@ else if (Model is WhiteMediumNetworkUserCalculationModel whiteMediumNetworkUserC
   <WhiteMediumNetworkUserCalculationSummary Model="whiteMediumNetworkUserCalculation"/>
 }
 
-@code {
-  [Parameter]
-  public ICalculation Model { get; set; } = default!;
-}
+@code {}

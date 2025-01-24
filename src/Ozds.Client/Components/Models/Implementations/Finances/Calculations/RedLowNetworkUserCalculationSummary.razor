@@ -1,11 +1,11 @@
 @using MudBlazor
 @using Microsoft.AspNetCore.Components
 @using Ozds.Business.Models
-@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Models.Base
 
 @namespace Ozds.Client.Components.Models
 
-@inherits OzdsComponentBase
+@inherits OzdsSummaryComponentBase<RedLowNetworkUserCalculationModel>
 
 <MudText Typo="Typo.h6">
   @Model.Title
@@ -21,7 +21,4 @@
   @DateTimeString(Model.ToDate)
 </MudText>
 
-@code {
-  [Parameter]
-  public RedLowNetworkUserCalculationModel Model { get; set; } = default!;
-}
+@code {}

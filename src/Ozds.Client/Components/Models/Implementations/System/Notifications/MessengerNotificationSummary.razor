@@ -2,13 +2,14 @@
 @using MudBlazor
 @using Ozds.Business.Models
 
+@using Ozds.Client.Components.Models.Base
+
 @namespace Ozds.Client.Components.Models
+
+@inherits OzdsSummaryComponentBase<MessengerNotificationModel>
 
 <MudText Typo="Typo.h6">
   @Model.Title
 </MudText>
 
-@code {
-  [Parameter]
-  public MessengerNotificationModel Model { get; set; } = default!;
-}
+@code {}

@@ -1,17 +1,14 @@
 @using Microsoft.AspNetCore.Components
 @using MudBlazor
 @using Ozds.Business.Analysis
-@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Models.Base
 
 @namespace Ozds.Client.Components.Models
 
-@inherits OzdsComponentBase
+@inherits OzdsSummaryComponentBase<LocationAnalysis>
 
 <MudText Typo="Typo.h6">
   @Model.Location.Title
 </MudText>
 
-@code {
-  [Parameter]
-  public LocationAnalysis Model { get; set; } = default!;
-}
+@code {}

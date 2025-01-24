@@ -1,14 +1,15 @@
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Business.Models
 
+@using Ozds.Client.Components.Models.Base
+
 @namespace Ozds.Client.Components.Models
+
+@inherits OzdsSummaryComponentBase<IMeasurementLocation>
 
 @if (Model is NetworkUserMeasurementLocationModel networkUserMeasurementLocationModel)
 {
   <NetworkUserMeasurementLocationDetails Model="networkUserMeasurementLocationModel"/>
 }
 
-@code {
-  [Parameter]
-  public IMeasurementLocation Model { get; set; } = default!;
-}
+@code {}
