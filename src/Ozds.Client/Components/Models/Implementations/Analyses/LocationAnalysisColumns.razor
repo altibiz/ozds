@@ -1,22 +1,23 @@
 @using MudBlazor
 @using Ozds.Business.Analysis
 @using Ozds.Business.Models.Enums
-@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Models.Base
 @using Ozds.Client.State
 
 @namespace Ozds.Client.Components.Models
 
-@inherits OzdsComponentBase
+@typeparam TPrefix
+@typeparam TModel where TModel : LocationAnalysis
+@inherits OzdsColumnsComponentBase<TPrefix, TModel>
 
 <PropertyColumn
-  T="LocationAnalysis"
+  T="TPrefix"
   TProperty="decimal"
-  CellStyle="font-size: x-large;"
-  Property="x => x.Analysis.ThisMonthConsumption.ActiveEnergy_kWh"
+  Property="x => Fix(x)!.Analysis.ThisMonthConsumption.ActiveEnergy_kWh"
   Title='@Translate("Current months consumption")'>
   <CellTemplate>
     @NumericString(
-      context.Item.Analysis.ThisMonthConsumption.ActiveEnergy_kWh,
+      Fix(context.Item)?.Analysis.ThisMonthConsumption.ActiveEnergy_kWh,
       0)
     &nbsp;
     kWh
@@ -24,14 +25,13 @@
 </PropertyColumn>
 
 <PropertyColumn
-  T="LocationAnalysis"
+  T="TPrefix"
   TProperty="decimal"
-  CellStyle="font-size: x-large;"
-  Property="x => x.Analysis.LastMonthConsumption.ActiveEnergy_kWh"
+  Property="x => Fix(x)!.Analysis.LastMonthConsumption.ActiveEnergy_kWh"
   Title='@Translate("Last months consumption")'>
   <CellTemplate>
     @NumericString(
-      context.Item.Analysis.LastMonthConsumption.ActiveEnergy_kWh,
+      Fix(context.Item)?.Analysis.LastMonthConsumption.ActiveEnergy_kWh,
       0)
     &nbsp;
     kWh
@@ -42,13 +42,12 @@
   is RoleModel.LocationRepresentative)
 {
   <PropertyColumn
-    T="LocationAnalysis"
+    T="TPrefix"
     TProperty="decimal"
-    CellStyle="font-size: x-large;"
-    Property="x => x.Analysis.Load.ActivePower_kW"
+    Property="x => Fix(x)!.Analysis.Load.ActivePower_kW"
     Title='@Translate("Active power")'>
     <CellTemplate>
-      @NumericString(context.Item.Analysis.Load.ActivePower_kW)
+      @NumericString(Fix(context.Item)?.Analysis.Load.ActivePower_kW)
       &nbsp;
       kW
     </CellTemplate>
@@ -57,16 +56,15 @@
 else
 {
   <PropertyColumn
-    T="LocationAnalysis"
+    T="TPrefix"
     TProperty="decimal"
-    CellStyle="font-size: x-large;"
-    Property="x => x.Analysis.LastMonthExpenses.Total_EUR"
+    Property="x => Fix(x)!.Analysis.LastMonthExpenses.Total_EUR"
     Title='@Translate("Last months invoice total")'>
     <CellTemplate>
-      @(context.Item.Analysis.LastMonthExpenses.Total_EUR == 0
+      @(Fix(context.Item)?.Analysis.LastMonthExpenses.Total_EUR == 0
         ? Translate("Invoice pending...")
         : NumericString(
-            context.Item.Analysis.LastMonthExpenses.Total_EUR)
+            Fix(context.Item)?.Analysis.LastMonthExpenses.Total_EUR)
             + " EUR")
     </CellTemplate>
   </PropertyColumn>

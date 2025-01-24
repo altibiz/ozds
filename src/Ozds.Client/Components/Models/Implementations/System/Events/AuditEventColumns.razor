@@ -2,45 +2,46 @@
 @using Ozds.Business.Models
 @using Ozds.Business.Models.Base
 @using Ozds.Business.Models.Enums
-@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Models.Base
 
 @namespace Ozds.Client.Components.Models
 
-@inherits OzdsComponentBase
+@typeparam TPrefix
+@typeparam TModel where TModel : AuditEventModel
+@inherits OzdsColumnsComponentBase<TPrefix, TModel>
 
 <PropertyColumn
-  T="AuditEventModel"
+  T="TPrefix"
   TProperty="string"
-  Property="x => x.Title"
+  Property="x => Fix(x)!.Title"
   Title='@Translate("Title")'>
   <CellTemplate>
-    <MudText>@context.Item.Title</MudText>
+    <MudText>@Fix(context.Item)?.Title</MudText>
   </CellTemplate>
 </PropertyColumn>
 
 <PropertyColumn
-  T="AuditEventModel"
+  T="TPrefix"
   TProperty="DateTimeOffset"
-  Property="x => x.Timestamp"
+  Property="x => Fix(x)!.Timestamp"
   Title='@Translate("Timestamp")'>
   <CellTemplate>
-    <MudText>@DateTimeString(context.Item.Timestamp)</MudText>
+    <MudText>@DateTimeString(Fix(context.Item)?.Timestamp)</MudText>
   </CellTemplate>
 </PropertyColumn>
 
 <PropertyColumn
-  T="AuditEventModel"
+  T="TPrefix"
   TProperty="LevelModel"
-  CellStyle="font-size: large;"
-  Property="x => x.Level"
+  Property="x => Fix(x)!.Level"
   Title="@Translate("Level")">
   <CellTemplate>
-    @if (context.Item.Level == LevelModel.Error
-      || context.Item.Level == LevelModel.Critical)
+    @if (Fix(context.Item)?.Level == LevelModel.Error
+      || Fix(context.Item)?.Level == LevelModel.Critical)
     {
       <MudIcon Icon="@Icons.Material.Filled.Circle" Color="Color.Error" />
     }
-    else if (context.Item.Level == LevelModel.Warning)
+    else if (Fix(context.Item)?.Level == LevelModel.Warning)
     {
       <MudIcon Icon="@Icons.Material.Filled.Circle" Color="Color.Warning" />
     }
@@ -52,11 +53,11 @@
 </PropertyColumn>
 
 <PropertyColumn
-  T="AuditEventModel"
+  T="TPrefix"
   TProperty="AuditModel"
-  Property="x => x.Audit"
+  Property="x => Fix(x)!.Audit"
   Title='@Translate("Audit Action")'>
   <CellTemplate>
-    <MudText>@context.Item.Audit.ToTitle()</MudText>
+    <MudText>@Fix(context.Item)?.Audit.ToTitle()</MudText>
   </CellTemplate>
 </PropertyColumn>

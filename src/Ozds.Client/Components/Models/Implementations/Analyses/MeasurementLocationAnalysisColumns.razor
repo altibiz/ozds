@@ -3,21 +3,23 @@
 @using Ozds.Business.Models.Enums
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Business.Models
-@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Models.Base
 @using Ozds.Client.Components.Fields
 @using Ozds.Client.State
 @using Ozds.Client.Pages
 
 @namespace Ozds.Client.Components.Models
 
-@inherits OzdsComponentBase
+@typeparam TPrefix
+@typeparam TModel where TModel : MeasurementLocationAnalysis
+@inherits OzdsColumnsComponentBase<TPrefix, TModel>
 
 <TemplateColumn
-  T="MeasurementLocationAnalysis"
+  T="TPrefix"
   Title="@Translate("Network user")"
   Sortable="false">
   <CellTemplate>
-    @if (context.Item.NetworkUser is { } networkUser)
+    @if (Fix(context.Item)?.NetworkUser is { } networkUser)
     {
       <MudStack Row>
         <IdentifiableLink
@@ -30,7 +32,7 @@
 </TemplateColumn>
 
 <TemplateColumn
-  T="MeasurementLocationAnalysis"
+  T="TPrefix"
   Title="@Translate("Device")"
   Sortable="false">
   <CellTemplate>
@@ -38,20 +40,19 @@
       <IdentifiableLink
         T="IMeter"
         TPage="MeterPage"
-        Model="context.Item.Meter" />
+        Model="Fix(context.Item)?.Meter" />
     </MudStack>
   </CellTemplate>
 </TemplateColumn>
 
 <PropertyColumn
-  T="MeasurementLocationAnalysis"
+  T="TPrefix"
   TProperty="decimal"
-  CellStyle="font-size: x-large;"
-  Property="x => x.Analysis.ThisMonthConsumption.ActiveEnergy_kWh"
+  Property="x => Fix(x)!.Analysis.ThisMonthConsumption.ActiveEnergy_kWh"
   Title='@Translate("Current months consumption")'>
   <CellTemplate>
     @NumericString(
-      context.Item.Analysis.ThisMonthConsumption.ActiveEnergy_kWh,
+      Fix(context.Item)?.Analysis.ThisMonthConsumption.ActiveEnergy_kWh,
       0)
     &nbsp;
     kWh
@@ -59,14 +60,13 @@
 </PropertyColumn>
 
 <PropertyColumn
-  T="MeasurementLocationAnalysis"
+  T="TPrefix"
   TProperty="decimal"
-  CellStyle="font-size: x-large;"
-  Property="x => x.Analysis.LastMonthConsumption.ActiveEnergy_kWh"
+  Property="x => Fix(x)!.Analysis.LastMonthConsumption.ActiveEnergy_kWh"
   Title='@Translate("Last months consumption")'>
   <CellTemplate>
     @NumericString(
-      context.Item.Analysis.LastMonthConsumption.ActiveEnergy_kWh,
+      Fix(context.Item)?.Analysis.LastMonthConsumption.ActiveEnergy_kWh,
       0)
     &nbsp;
     kWh
@@ -74,16 +74,15 @@
 </PropertyColumn>
 
 <PropertyColumn
-  T="MeasurementLocationAnalysis"
+  T="TPrefix"
   TProperty="decimal"
-  CellStyle="font-size: x-large;"
-  Property="x => x.Analysis.LastMonthExpenses.Total_EUR"
+  Property="x => Fix(x)!.Analysis.LastMonthExpenses.Total_EUR"
   Title='@Translate("Last months invoice total")'>
   <CellTemplate>
-    @(context.Item.Analysis.LastMonthExpenses.Total_EUR == 0
+    @(Fix(context.Item)?.Analysis.LastMonthExpenses.Total_EUR == 0
       ? Translate("Invoice pending...")
       : NumericString(
-          context.Item.Analysis.LastMonthExpenses.Total_EUR)
+          Fix(context.Item)?.Analysis.LastMonthExpenses.Total_EUR)
           + " EUR")
   </CellTemplate>
 </PropertyColumn>

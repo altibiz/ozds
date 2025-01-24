@@ -1,15 +1,17 @@
 @using MudBlazor
 @using Ozds.Business.Models.Abstractions
-@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Models.Base
 
-@inherits OzdsComponentBase
+@typeparam TPrefix
+@typeparam TModel where TModel : IMeasurementValidator
+@inherits OzdsColumnsComponentBase<TPrefix, TModel>
 
 <PropertyColumn
-  T="IMeasurementValidator"
+  T="TPrefix"
   TProperty="string"
-  Property="x => x.Title"
+  Property="x => Fix(x)!.Title"
   Title='@Translate("Title")'>
   <CellTemplate>
-    <MudText>@context.Item.Title</MudText>
+    <MudText>@Fix(context.Item)?.Title</MudText>
   </CellTemplate>
 </PropertyColumn>

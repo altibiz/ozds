@@ -2,43 +2,50 @@
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Business.Models.Enums
 @using Ozds.Business.Models.Complex
-@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Models.Base
 
-@inherits OzdsComponentBase
+@typeparam TPrefix
+@typeparam TModel where TModel : IMessenger
+@inherits OzdsColumnsComponentBase<TPrefix, TModel>
 
 <PropertyColumn
-  T="IMessenger"
+  T="TPrefix"
   TProperty="string"
-  Property="x => x.Title"
+  Property="x => Fix(x)!.Title"
   Title='@Translate("Title")'>
   <CellTemplate>
-    <MudText>@context.Item.Title</MudText>
+    <MudText>@Fix(context.Item)?.Title</MudText>
   </CellTemplate>
 </PropertyColumn>
 
 <PropertyColumn
-  T="IMessenger"
+  T="TPrefix"
   TProperty="PeriodModel"
-  Property="x => x.MaxInactivityPeriod"
+  Property="x => Fix(x)!.MaxInactivityPeriod"
   Title='@Translate("Max Inactivity Period")'>
   <CellTemplate>
-    <MudText>@FormatPeriod(context.Item.MaxInactivityPeriod)</MudText>
+    <MudText>@FormatPeriod(Fix(context.Item)?.MaxInactivityPeriod)</MudText>
   </CellTemplate>
 </PropertyColumn>
 
 <PropertyColumn
-  T="IMessenger"
+  T="TPrefix"
   TProperty="PeriodModel"
-  Property="x => x.PushDelayPeriod"
+  Property="x => Fix(x)!.PushDelayPeriod"
   Title='@Translate("Push Delay Period")'>
   <CellTemplate>
-    <MudText>@FormatPeriod(context.Item.PushDelayPeriod)</MudText>
+    <MudText>@FormatPeriod(Fix(context.Item)?.PushDelayPeriod)</MudText>
   </CellTemplate>
 </PropertyColumn>
 
 @code {
-  private string FormatPeriod(PeriodModel period)
+  private string FormatPeriod(PeriodModel? period)
   {
+    if (period is null)
+    {
+      return "";
+    }
+
     var durationTitle = period.Duration.ToTitle(plural: period.Multiplier > 1);
     return $"{period.Multiplier} {Translate(durationTitle)}";
   }

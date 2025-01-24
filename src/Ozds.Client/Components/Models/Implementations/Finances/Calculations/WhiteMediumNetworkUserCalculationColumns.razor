@@ -2,106 +2,108 @@
 @using MudBlazor
 @using Ozds.Business.Models
 @using Ozds.Business.Models.Complex
-@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Models.Base
 
 @namespace Ozds.Client.Components.Models
 
-@inherits OzdsComponentBase
+@typeparam TPrefix
+@typeparam TModel where TModel : WhiteMediumNetworkUserCalculationModel
+@inherits OzdsColumnsComponentBase<TPrefix, TModel>
 
 <PropertyColumn
-  T="WhiteMediumNetworkUserCalculationModel"
+  T="TPrefix"
   TProperty="string"
-  Property="x => x.Title"
+  Property="x => Fix(x)!.Title"
   Title='@Translate("Title")'>
   <CellTemplate>
-    <MudText>@context.Item.Title</MudText>
+    <MudText>@Fix(context.Item)?.Title</MudText>
   </CellTemplate>
 </PropertyColumn>
 
 <PropertyColumn
-  T="WhiteMediumNetworkUserCalculationModel"
+  T="TPrefix"
   TProperty="string"
-  Property="x => x.MeterId"
+  Property="x => Fix(x)!.MeterId"
   Title='@Translate("Meter ID")'>
   <CellTemplate>
-    <MudText>@context.Item.MeterId</MudText>
+    <MudText>@Fix(context.Item)?.MeterId</MudText>
   </CellTemplate>
 </PropertyColumn>
 
 <PropertyColumn
-  T="WhiteMediumNetworkUserCalculationModel"
+  T="TPrefix"
   TProperty="DateTimeOffset"
-  Property="x => x.FromDate"
+  Property="x => Fix(x)!.FromDate"
   Title='@Translate("From Date")'>
   <CellTemplate>
-    <MudText>@DateTimeString(context.Item.FromDate)</MudText>
+    <MudText>@DateTimeString(Fix(context.Item)?.FromDate)</MudText>
   </CellTemplate>
 </PropertyColumn>
 
 <PropertyColumn
-  T="WhiteMediumNetworkUserCalculationModel"
+  T="TPrefix"
   TProperty="DateTimeOffset"
-  Property="x => x.ToDate"
+  Property="x => Fix(x)!.ToDate"
   Title='@Translate("To Date")'>
   <CellTemplate>
-    <MudText>@DateTimeString(context.Item.ToDate)</MudText>
+    <MudText>@DateTimeString(Fix(context.Item)?.ToDate)</MudText>
   </CellTemplate>
 </PropertyColumn>
 
 <PropertyColumn
-  T="WhiteMediumNetworkUserCalculationModel"
+  T="TPrefix"
   TProperty="decimal"
-  Property="x => x.UsageActiveEnergyTotalImportT1.Total_EUR"
+  Property="x => Fix(x)!.UsageActiveEnergyTotalImportT1.Total_EUR"
   Title='@Translate("Usage Active Energy Import T1 Total (€)")'>
   <CellTemplate>
     <MudText>
-      @NumericString(context.Item.UsageActiveEnergyTotalImportT1.Total_EUR)
+      @NumericString(Fix(context.Item)?.UsageActiveEnergyTotalImportT1.Total_EUR)
     </MudText>
   </CellTemplate>
 </PropertyColumn>
 
 <PropertyColumn
-  T="WhiteMediumNetworkUserCalculationModel"
+  T="TPrefix"
   TProperty="decimal"
-  Property="x => x.UsageActiveEnergyTotalImportT2.Total_EUR"
+  Property="x => Fix(x)!.UsageActiveEnergyTotalImportT2.Total_EUR"
   Title='@Translate("Usage Active Energy Import T2 Total (€)")'>
   <CellTemplate>
     <MudText>
-      @NumericString(context.Item.UsageActiveEnergyTotalImportT2.Total_EUR)
+      @NumericString(Fix(context.Item)?.UsageActiveEnergyTotalImportT2.Total_EUR)
     </MudText>
   </CellTemplate>
 </PropertyColumn>
 
 <PropertyColumn
-  T="WhiteMediumNetworkUserCalculationModel"
+  T="TPrefix"
   TProperty="decimal"
-  Property="x => x.UsageActivePowerTotalImportT1Peak.Total_EUR"
+  Property="x => Fix(x)!.UsageActivePowerTotalImportT1Peak.Total_EUR"
   Title='@Translate("Usage Active Power Import T1 Peak Total (€)")'>
   <CellTemplate>
     <MudText>
-      @NumericString(context.Item.UsageActivePowerTotalImportT1Peak.Total_EUR)
+      @NumericString(Fix(context.Item)?.UsageActivePowerTotalImportT1Peak.Total_EUR)
     </MudText>
   </CellTemplate>
 </PropertyColumn>
 
 <PropertyColumn
-  T="WhiteMediumNetworkUserCalculationModel"
+  T="TPrefix"
   TProperty="decimal"
-  Property="x => x.UsageReactiveEnergyTotalRampedT0.Total_EUR"
+  Property="x => Fix(x)!.UsageReactiveEnergyTotalRampedT0.Total_EUR"
   Title='@Translate("Usage Reactive Energy Total Ramped T0 Total (€)")'>
   <CellTemplate>
     <MudText>
-      @NumericString(context.Item.UsageReactiveEnergyTotalRampedT0.Total_EUR)
+      @NumericString(Fix(context.Item)?.UsageReactiveEnergyTotalRampedT0.Total_EUR)
     </MudText>
   </CellTemplate>
 </PropertyColumn>
 
 <PropertyColumn
-  T="WhiteMediumNetworkUserCalculationModel"
+  T="TPrefix"
   TProperty="decimal"
-  Property="x => x.Total_EUR"
+  Property="x => Fix(x)!.Total_EUR"
   Title='@Translate("Total (€)")'>
   <CellTemplate>
-    <MudText>@NumericString(context.Item.Total_EUR)</MudText>
+    <MudText>@NumericString(Fix(context.Item)?.Total_EUR)</MudText>
   </CellTemplate>
 </PropertyColumn>
