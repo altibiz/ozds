@@ -11,16 +11,16 @@
 
 @(Base<IIdentifiable>())
 
-<PrefixedColumns Models="@Models" Prefix="@(x => Fix(x).LegalPerson)" />
+<PrefixedColumns Models="@Models" Prefix="@(x => Fix(x)?.LegalPerson)" />
 
 <PropertyColumn
   T="TPrefix"
   TProperty="string"
-  Property="@(x => Fix(x).AltiBizSubProjectCode)"
+  Property="@(x => Fix(x)!.AltiBizSubProjectCode)"
   Title='@Translate("AltiBiz subproject code")'>
   <CellTemplate>
     <MudText>
-      @(Fix(context.Item).AltiBizSubProjectCode)
+      @(Fix(context.Item)?.AltiBizSubProjectCode)
     </MudText>
   </CellTemplate>
 </PropertyColumn>

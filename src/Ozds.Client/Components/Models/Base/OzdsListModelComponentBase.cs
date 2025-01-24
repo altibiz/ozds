@@ -9,16 +9,16 @@ public abstract class OzdsListModelComponentBase<TPrefix, TModel> :
   public IEnumerable<TPrefix> Models { get; set; } = default!;
 
   [Parameter]
-  public Func<TPrefix, TModel>? Prefix { get; set; } = default!;
+  public Func<TPrefix, TModel?>? Prefix { get; set; } = default!;
 
-  protected Func<TPrefix, TModel> Fix =>
+  protected Func<TPrefix, TModel?> Fix =>
     fix ??= CreateFix();
 
-  private Func<TPrefix, TModel>? fix;
+  private Func<TPrefix, TModel?>? fix;
 
-  protected Func<TPrefix, TModel> CreateFix()
+  protected Func<TPrefix, TModel?> CreateFix()
   {
-    return Prefix ?? ((TPrefix x) => (TModel)(object)x!);
+    return Prefix ?? ((TPrefix x) => (TModel?)(object?)x);
   }
 
   protected override Dictionary<string, object> CreateBaseParameters()
@@ -40,9 +40,9 @@ public abstract class OzdsListModelComponentBase<TPrefix, TModel> :
     }
 
     return Cache.GetPrefixedComponentType(
+      typeof(TPrefix),
       ModelType,
       baseModelType,
-      typeof(TPrefix),
       ComponentKind
     );
   }
@@ -56,9 +56,9 @@ public abstract class OzdsListModelComponentBase<TPrefix, TModel> :
     }
 
     return Cache.GetPrefixedComponentType(
+      typeof(TPrefix),
       ModelType,
       baseModelType,
-      typeof(TPrefix),
       ComponentKind
     );
   }

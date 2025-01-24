@@ -33,16 +33,16 @@ public class ModelComponentProvider(
   }
 
   public Type GetPrefixedComponentType(
+    Type prefixType,
     Type modelType,
     Type constraintType,
-    Type prefixType,
     ModelComponentKind componentKind
   )
   {
     var provider = GetPrefixedComponentProvider(
+      prefixType,
       modelType,
       constraintType,
-      prefixType,
       componentKind
     );
 
@@ -178,12 +178,12 @@ public class ModelComponentProvider(
   }
 
   private IModelComponentProvider GetPrefixedComponentProvider(
+    Type prefixType,
     Type modelType,
     Type constraintType,
-    Type prefixType,
     ModelComponentKind kind)
   {
-    var key = new PrefixedCacheKey(modelType, constraintType, prefixType, kind);
+    var key = new PrefixedCacheKey(prefixType, modelType, constraintType, kind);
 
     if (prefixedCache.TryGetValue(key, out var provider))
     {
@@ -316,9 +316,9 @@ public class ModelComponentProvider(
   );
 
   private sealed record PrefixedCacheKey(
+    Type PrefixType,
     Type ModelType,
     Type ConstraintType,
-    Type PrefixType,
     ModelComponentKind ComponentKind
   );
 }
