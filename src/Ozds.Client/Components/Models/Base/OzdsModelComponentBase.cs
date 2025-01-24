@@ -13,7 +13,7 @@ public abstract partial class OzdsModelComponentBase<TModel>
   public bool Isolate { get; set; } = false;
 
   [Inject]
-  protected ModelComponentProvider Cache { get; set; } = default!;
+  protected ModelComponentProvider Provider { get; set; } = default!;
 
   public virtual Type ModelType => typeof(TModel);
 
@@ -49,7 +49,7 @@ public abstract partial class OzdsModelComponentBase<TModel>
         $"{baseModelType} is not assignable from {ModelType}");
     }
 
-    return Cache.GetComponentType(baseModelType, ComponentKind);
+    return Provider.GetComponentType(baseModelType, ComponentKind);
   }
 
   private Type? baseComponentType;
@@ -63,7 +63,7 @@ public abstract partial class OzdsModelComponentBase<TModel>
         $"No base type found for {ModelType.FullName}");
     }
 
-    return Cache.GetComponentType(baseModelType, ComponentKind);
+    return Provider.GetComponentType(baseModelType, ComponentKind);
   }
 
   protected Dictionary<string, object> BaseParameters()

@@ -10,10 +10,13 @@
 
 <TemplateColumn T="TPrefix">
   <CellTemplate>
-    <MudLink Href="@(Cache.CreateLink(Fix(context.Item)))">
-      <MudText>
-        @(Fix(context.Item).Title)
-      </MudText>
-    </MudLink>
+    @if (Fix(context.Item) is { } item)
+    {
+      <MudLink Href="@(Provider.CreateLink(item))">
+        <MudText>
+          @(item.Title)
+        </MudText>
+      </MudLink>
+    }
   </CellTemplate>
 </TemplateColumn>

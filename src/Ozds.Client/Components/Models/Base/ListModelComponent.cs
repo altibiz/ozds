@@ -17,7 +17,7 @@ public abstract class ListModelComponent<TPrefix, TModel> : ModelComponent
 
   protected override Type CreateComponentType()
   {
-    return Cache.GetPrefixedComponentType(
+    return Provider.GetPrefixedComponentType(
       typeof(TPrefix),
       ModelType,
       typeof(TModel),

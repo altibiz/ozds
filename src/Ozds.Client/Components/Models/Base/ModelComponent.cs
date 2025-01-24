@@ -36,7 +36,7 @@ public abstract partial class ModelComponent : ComponentBase
   }
 
   [Inject]
-  protected ModelComponentProvider Cache { get; set; } = default!;
+  protected ModelComponentProvider Provider { get; set; } = default!;
 
   private Type ComponentType =>
     componentType ??= CreateComponentType();
@@ -45,7 +45,7 @@ public abstract partial class ModelComponent : ComponentBase
 
   protected virtual Type CreateComponentType()
   {
-    return Cache.GetComponentType(ModelType, ComponentKind);
+    return Provider.GetComponentType(ModelType, ComponentKind);
   }
 
   protected override void OnParametersSet()

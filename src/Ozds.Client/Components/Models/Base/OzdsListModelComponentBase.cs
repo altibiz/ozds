@@ -39,7 +39,7 @@ public abstract class OzdsListModelComponentBase<TPrefix, TModel> :
         $"No base type found for {ModelType.FullName}");
     }
 
-    return Cache.GetPrefixedComponentType(
+    return Provider.GetPrefixedComponentType(
       typeof(TPrefix),
       ModelType,
       baseModelType,
@@ -55,7 +55,7 @@ public abstract class OzdsListModelComponentBase<TPrefix, TModel> :
         $"{baseModelType} is not assignable to {typeof(TModel)}");
     }
 
-    return Cache.GetPrefixedComponentType(
+    return Provider.GetPrefixedComponentType(
       typeof(TPrefix),
       ModelType,
       baseModelType,
