@@ -10,10 +10,10 @@
 
 @(Base<IIdentifiable>())
 
+<Details Model="@Model.LegalPerson" />
+
 <DetailsField Title="@Translate("AltiBiz subproject code")">
   @Model.AltiBizSubProjectCode
 </DetailsField>
-
-<Details Model="@Model.LegalPerson" />
 
 @(Base<IAuditable>())
