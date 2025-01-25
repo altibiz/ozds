@@ -2,6 +2,8 @@
 @using System.Linq.Expressions
 @using Ozds.Client.Components.Fields
 
+@* TODO: use .NET 9 OverloadResolutionPriorityAttribute *@
+
 @namespace Ozds.Client.Components.Models.Base
 
 @typeparam TModel
@@ -23,6 +25,28 @@
     return @<DetailsField Title="label">
         <MudText>
           @nextFunc(Model)
+        </MudText>
+      </DetailsField>;
+  }
+
+  protected RenderFragment EnumerableField<T>(
+    Expression<Func<TModel, IEnumerable<T>?>> next
+  )
+  {
+    var label = "";
+    if (next.Body is MemberExpression nextMember)
+    {
+      label = Translate(nextMember.Member.Name);
+    }
+
+    var nextFunc = next.Compile();
+
+    return @<DetailsField Title="label">
+        <MudText>
+          @if (nextFunc(Model) is { } model)
+          {
+            @string.Join(", ", model)
+          }
         </MudText>
       </DetailsField>;
   }

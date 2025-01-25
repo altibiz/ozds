@@ -15,8 +15,6 @@
 
 <Details Model="@Model.PhysicalPerson" />
 
-<DetailsField Title="@Translate("Topics")">
-  @string.Join(", ", Model.Topics.Select(x => x.ToTitle()))
-</DetailsField>
+@EnumerableField(x => x.Topics)
 
 @(Base<IAuditable>())
