@@ -11,30 +11,30 @@
 <PropertyColumn
   T="TPrefix"
   TProperty="string"
-  Property="x => Fix(x)!.Title"
+  Property="x => Raw(x)!.Title"
   Title='@Translate("Title")'>
   <CellTemplate>
-    <MudText>@Fix(context.Item)?.Title</MudText>
+    <MudText>@Raw(context.Item)?.Title</MudText>
   </CellTemplate>
 </PropertyColumn>
 
 <PropertyColumn
   T="TPrefix"
   TProperty="PeriodModel"
-  Property="x => Fix(x)!.MaxInactivityPeriod"
+  Property="x => Raw(x)!.MaxInactivityPeriod"
   Title='@Translate("Max Inactivity Period")'>
   <CellTemplate>
-    <MudText>@FormatPeriod(Fix(context.Item)?.MaxInactivityPeriod)</MudText>
+    <MudText>@FormatPeriod(Raw(context.Item)?.MaxInactivityPeriod)</MudText>
   </CellTemplate>
 </PropertyColumn>
 
 <PropertyColumn
   T="TPrefix"
   TProperty="PeriodModel"
-  Property="x => Fix(x)!.PushDelayPeriod"
+  Property="x => Raw(x)!.PushDelayPeriod"
   Title='@Translate("Push Delay Period")'>
   <CellTemplate>
-    <MudText>@FormatPeriod(Fix(context.Item)?.PushDelayPeriod)</MudText>
+    <MudText>@FormatPeriod(Raw(context.Item)?.PushDelayPeriod)</MudText>
   </CellTemplate>
 </PropertyColumn>
 

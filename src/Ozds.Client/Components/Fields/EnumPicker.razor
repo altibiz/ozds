@@ -1,15 +1,25 @@
 @using Microsoft.AspNetCore.Components
 @using MudBlazor
+@using System.Linq.Expressions
 
 @namespace Ozds.Client.Components.Fields
 
-@typeparam T where T : struct, Enum
+@* TODO: null handling *@
 
-<MudSelect Label="@Title" Value="Value" ValueChanged="ValueChanged">
-  @foreach (var value in Enum.GetValues<T>())
+@typeparam T
+
+<MudSelect Label="@Title" Value="Value" ValueChanged="ValueChanged" For="For">
+  @foreach (var value in Enum.GetValues(typeof(T)))
   {
     <MudSelectItem Value="value">
-      @Label(value)
+      @if (Label is { } label)
+      {
+        @label((T)value)
+      }
+      else
+      {
+        @value.ToString()
+      }
     </MudSelectItem>
   }
 </MudSelect>
@@ -25,5 +35,8 @@
   public string Title { get; set; } = default!;
 
   [Parameter]
-  public Func<T, string> Label { get; set; } = default!;
+  public Func<T, string>? Label { get; set; } = default!;
+
+  [Parameter]
+  public Expression<Func<T>> For { get; set; } = default!;
 }

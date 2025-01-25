@@ -13,51 +13,51 @@
 <PropertyColumn
   T="TPrefix"
   TProperty="string"
-  Property="x => Fix(x)!.Title"
+  Property="x => Raw(x)!.Title"
   Title='@Translate("Title")'>
   <CellTemplate>
-    <MudText>@Fix(context.Item)?.Title</MudText>
+    <MudText>@Raw(context.Item)?.Title</MudText>
   </CellTemplate>
 </PropertyColumn>
 
 <PropertyColumn
   T="TPrefix"
   TProperty="string"
-  Property="x => Fix(x)!.MeterId"
+  Property="x => Raw(x)!.MeterId"
   Title='@Translate("Meter ID")'>
   <CellTemplate>
-    <MudText>@Fix(context.Item)?.MeterId</MudText>
+    <MudText>@Raw(context.Item)?.MeterId</MudText>
   </CellTemplate>
 </PropertyColumn>
 
 <PropertyColumn
   T="TPrefix"
   TProperty="DateTimeOffset"
-  Property="x => Fix(x)!.FromDate"
+  Property="x => Raw(x)!.FromDate"
   Title='@Translate("From Date")'>
   <CellTemplate>
-    <MudText>@DateTimeString(Fix(context.Item)?.FromDate)</MudText>
+    <MudText>@DateTimeString(Raw(context.Item)?.FromDate)</MudText>
   </CellTemplate>
 </PropertyColumn>
 
 <PropertyColumn
   T="TPrefix"
   TProperty="DateTimeOffset"
-  Property="x => Fix(x)!.ToDate"
+  Property="x => Raw(x)!.ToDate"
   Title='@Translate("To Date")'>
   <CellTemplate>
-    <MudText>@DateTimeString(Fix(context.Item)?.ToDate)</MudText>
+    <MudText>@DateTimeString(Raw(context.Item)?.ToDate)</MudText>
   </CellTemplate>
 </PropertyColumn>
 
 <PropertyColumn
   T="TPrefix"
   TProperty="decimal"
-  Property="x => Fix(x)!.UsageActiveEnergyTotalImportT1.Total_EUR"
+  Property="x => Raw(x)!.UsageActiveEnergyTotalImportT1.Total_EUR"
   Title='@Translate("Usage Active Energy Import T1 Total (€)")'>
   <CellTemplate>
     <MudText>
-      @NumericString(Fix(context.Item)?.UsageActiveEnergyTotalImportT1.Total_EUR)
+      @NumericString(Raw(context.Item)?.UsageActiveEnergyTotalImportT1.Total_EUR)
     </MudText>
   </CellTemplate>
 </PropertyColumn>
@@ -65,11 +65,11 @@
 <PropertyColumn
   T="TPrefix"
   TProperty="decimal"
-  Property="x => Fix(x)!.UsageActiveEnergyTotalImportT2.Total_EUR"
+  Property="x => Raw(x)!.UsageActiveEnergyTotalImportT2.Total_EUR"
   Title='@Translate("Usage Active Energy Import T2 Total (€)")'>
   <CellTemplate>
     <MudText>
-      @NumericString(Fix(context.Item)?.UsageActiveEnergyTotalImportT2.Total_EUR)
+      @NumericString(Raw(context.Item)?.UsageActiveEnergyTotalImportT2.Total_EUR)
     </MudText>
   </CellTemplate>
 </PropertyColumn>
@@ -77,11 +77,11 @@
 <PropertyColumn
   T="TPrefix"
   TProperty="decimal"
-  Property="x => Fix(x)!.UsageActivePowerTotalImportT1Peak.Total_EUR"
+  Property="x => Raw(x)!.UsageActivePowerTotalImportT1Peak.Total_EUR"
   Title='@Translate("Usage Active Power Import T1 Peak Total (€)")'>
   <CellTemplate>
     <MudText>
-      @NumericString(Fix(context.Item)?.UsageActivePowerTotalImportT1Peak.Total_EUR)
+      @NumericString(Raw(context.Item)?.UsageActivePowerTotalImportT1Peak.Total_EUR)
     </MudText>
   </CellTemplate>
 </PropertyColumn>
@@ -89,11 +89,11 @@
 <PropertyColumn
   T="TPrefix"
   TProperty="decimal"
-  Property="x => Fix(x)!.UsageReactiveEnergyTotalRampedT0.Total_EUR"
+  Property="x => Raw(x)!.UsageReactiveEnergyTotalRampedT0.Total_EUR"
   Title='@Translate("Usage Reactive Energy Total Ramped T0 Total (€)")'>
   <CellTemplate>
     <MudText>
-      @NumericString(Fix(context.Item)?.UsageReactiveEnergyTotalRampedT0.Total_EUR)
+      @NumericString(Raw(context.Item)?.UsageReactiveEnergyTotalRampedT0.Total_EUR)
     </MudText>
   </CellTemplate>
 </PropertyColumn>
@@ -101,9 +101,9 @@
 <PropertyColumn
   T="TPrefix"
   TProperty="decimal"
-  Property="x => Fix(x)!.Total_EUR"
+  Property="x => Raw(x)!.Total_EUR"
   Title='@Translate("Total (€)")'>
   <CellTemplate>
-    <MudText>@NumericString(Fix(context.Item)?.Total_EUR)</MudText>
+    <MudText>@NumericString(Raw(context.Item)?.Total_EUR)</MudText>
   </CellTemplate>
 </PropertyColumn>

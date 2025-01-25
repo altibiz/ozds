@@ -1,22 +1,69 @@
+using System.Linq.Expressions;
 using Microsoft.AspNetCore.Components;
 
 namespace Ozds.Client.Components.Models.Base;
 
 public abstract class OzdsListModelComponentBase<TPrefix, TModel> :
-  OzdsModelComponentBase<TModel>
+  OzdsPrefixedModelComponentBase<TPrefix, TModel>
 {
   [Parameter]
   public IEnumerable<TPrefix> Models { get; set; } = default!;
 
-  [Parameter]
-  public Func<TPrefix, TModel?>? Prefix { get; set; } = default!;
+  protected Func<TPrefix, T?> Get<T>(
+    Func<TModel, T?> next
+  )
+  {
+    var first = Raw;
+    return x => first(x) is { } y ? next(y) : default;
+  }
 
-  protected Func<TPrefix, TModel?> Fix =>
-    fix ??= CreateFix();
+  protected Expression<Func<TPrefix, T?>> Wrap<T>(
+    Expression<Func<TModel, T?>> next
+  )
+  {
+    var first = Exp;
+    var param = first.Parameters[0];
+    var modelExpression = first.Body;
+    var nullCheck = Expression.Equal(
+      modelExpression,
+      Expression.Constant(null, typeof(TModel))
+    );
+    var ifTrue = Expression.Constant(default(T), typeof(T));
+    var ifFalse = Expression.Invoke(next, modelExpression);
+    var body = Expression.Condition(nullCheck, ifTrue, ifFalse);
+    return Expression.Lambda<Func<TPrefix, T?>>(body, param);
+  }
 
-  private Func<TPrefix, TModel?>? fix;
+  protected Expression<Func<TPrefix, T>> Member<T>(
+    Expression<Func<TModel, T>> next
+  )
+  {
+    var first = Exp;
+    var prefixParam = first.Parameters[0];
+    var replacedBody = ParameterReplacer.Replace(
+      next.Body,
+      next.Parameters[0],
+      first.Body
+    );
+    return Expression.Lambda<Func<TPrefix, T>>(replacedBody, prefixParam);
+  }
 
-  protected Func<TPrefix, TModel?> CreateFix()
+  protected Func<TPrefix, TModel?> Raw =>
+    raw ??= CreateRaw();
+
+  private Func<TPrefix, TModel?>? raw;
+
+  protected virtual Func<TPrefix, TModel?> CreateRaw()
+  {
+    return Prefix?.Compile() ?? ((TPrefix x) => (TModel?)(object?)x);
+  }
+
+  protected Expression<Func<TPrefix, TModel?>> Exp =>
+    exp ??= CreateExp();
+
+  private Expression<Func<TPrefix, TModel?>>? exp;
+
+  protected virtual Expression<Func<TPrefix, TModel?>> CreateExp()
   {
     return Prefix ?? ((TPrefix x) => (TModel?)(object?)x);
   }
@@ -30,46 +77,18 @@ public abstract class OzdsListModelComponentBase<TPrefix, TModel> :
     };
   }
 
-  protected override Type CreateBaseComponentType()
-  {
-    var baseModelType = ModelType.BaseType;
-    if (baseModelType is null)
-    {
-      throw new InvalidOperationException(
-        $"No base type found for {ModelType.FullName}");
-    }
-
-    return Provider.GetPrefixedComponentType(
-      typeof(TPrefix),
-      ModelType,
-      baseModelType,
-      ComponentKind
-    );
-  }
-
-  protected override Type CreateBaseComponentType(Type baseModelType)
-  {
-    if (!baseModelType.IsAssignableFrom(typeof(TModel)))
-    {
-      throw new InvalidOperationException(
-        $"{baseModelType} is not assignable to {typeof(TModel)}");
-    }
-
-    return Provider.GetPrefixedComponentType(
-      typeof(TPrefix),
-      ModelType,
-      baseModelType,
-      ComponentKind
-    );
-  }
-
   protected override void OnParametersSet()
   {
     base.OnParametersSet();
 
-    if (fix is { })
+    if (raw is { })
     {
-      fix = CreateFix();
+      raw = CreateRaw();
+    }
+
+    if (exp is { })
+    {
+      exp = CreateExp();
     }
   }
 }

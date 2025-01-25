@@ -21,7 +21,7 @@
       <IdentifiableLink
         T="NetworkUserModel"
         TPage="NetworkUserPage"
-        Model="Fix(context.Item)?.ArchivedNetworkUser" />
+        Model="Raw(context.Item)?.ArchivedNetworkUser" />
     </MudStack>
   </CellTemplate>
 </TemplateColumn>
@@ -29,10 +29,10 @@
 <PropertyColumn
   T="TPrefix"
   TProperty="decimal"
-  Property="x => Fix(x)!.TotalWithTax_EUR"
+  Property="x => Raw(x)!.TotalWithTax_EUR"
   Title='@Translate("Total")'>
   <CellTemplate>
-    @NumericString(Fix(context.Item)?.TotalWithTax_EUR)
+    @NumericString(Raw(context.Item)?.TotalWithTax_EUR)
     &nbsp;
     EUR
   </CellTemplate>
@@ -41,18 +41,18 @@
 <PropertyColumn
   T="TPrefix"
   TProperty="string"
-  Property="x => DateString(Fix(x)!.FromDate)"
+  Property="x => DateString(Raw(x)!.FromDate)"
   Title='@Translate("From")'/>
 
 <PropertyColumn
   T="TPrefix"
   TProperty="string"
-  Property="x => DateString(Fix(x)!.ToDate)"
+  Property="x => DateString(Raw(x)!.ToDate)"
   Title='@Translate("To")'/>
 
 <PropertyColumn
   T="TPrefix"
   TProperty="string"
-  Property="x => Fix(x)!.Id"
+  Property="x => Raw(x)!.Id"
   Sortable="false"
   Title='@Translate("Invoice number")'/>

@@ -13,9 +13,9 @@
 <PropertyColumn
   T="TPrefix"
   TProperty="DateTimeOffset"
-  Property="x => Fix(x)!.Timestamp"
+  Property="x => Raw(x)!.Timestamp"
   Title='@Translate("Date")'>
   <CellTemplate>
-    @(Fix(context.Item)?.Timestamp.ToString("HH:mm dd.MM.yyyy."))
+    @(Raw(context.Item)?.Timestamp.ToString("HH:mm dd.MM.yyyy."))
   </CellTemplate>
 </PropertyColumn>

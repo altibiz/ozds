@@ -1,19 +1,30 @@
 @using MudBlazor
+@using System.Linq.Expressions
 
 @namespace Ozds.Client.Components.Fields
 
-@typeparam T where T : struct, Enum
+@* TODO: null handling *@
+
+@typeparam T
 
 <MudSelect
   T="T"
   Label="@Title"
   SelectedValues="Value"
   SelectedValuesChanged="e => ValueChanged.InvokeAsync(e.ToHashSet())"
-  MultiSelection>
-  @foreach (var value in Enum.GetValues<T>())
+  MultiSelection
+  For="For">
+  @foreach (var value in Enum.GetValues(typeof(T)))
   {
     <MudSelectItem Value="value">
-      @Label(value)
+      @if (Label is { } label)
+      {
+        @label((T)value)
+      }
+      else
+      {
+        @value.ToString()
+      }
     </MudSelectItem>
   }
 </MudSelect>
@@ -29,5 +40,8 @@
   public string Title { get; set; } = default!;
 
   [Parameter]
-  public Func<T, string> Label { get; set; } = default!;
+  public Func<T, string>? Label { get; set; } = default!;
+
+  [Parameter]
+  public Expression<Func<T>> For { get; set; } = default!;
 }

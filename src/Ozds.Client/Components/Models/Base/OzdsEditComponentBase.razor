@@ -1,0 +1,135 @@
+@using MudBlazor
+@using System.Linq.Expressions
+@using Ozds.Client.Components.Fields
+
+@namespace Ozds.Client.Components.Models.Base
+
+@* TODO: good way todo multi enum fields *@
+
+@typeparam TPrefix
+@typeparam TModel
+@inherits OzdsManagedModelComponentBase<TPrefix, TModel>
+
+@Base()
+
+@code {
+  protected RenderFragment Field(Expression<Func<TModel, string?>> next)
+  {
+    var label = "";
+    if (next.Body is MemberExpression nextMember)
+    {
+      label = Translate(nextMember.Member.Name);
+    }
+
+    var nextFunc = next.Compile();
+
+    return @<MudTextField
+      Label="label"
+      Value="@Get(nextFunc)"
+      ValueChanged="@Set(next)"
+      For="@For(next)" />;
+  }
+
+  protected RenderFragment Field(Expression<Func<TModel, decimal?>> next)
+  {
+    var label = "";
+    if (next.Body is MemberExpression nextMember)
+    {
+      label = Translate(nextMember.Member.Name);
+    }
+
+    var nextFunc = next.Compile();
+
+    return @<MudNumericField
+      Label="label"
+      Value="@Get(nextFunc)"
+      ValueChanged="@Set(next)"
+      For="@For(next)" />;
+  }
+
+  protected RenderFragment Field(Expression<Func<TModel, Enum?>> next)
+  {
+    var label = "";
+    if (next.Body is MemberExpression nextMember)
+    {
+      label = Translate(nextMember.Member.Name);
+    }
+
+    var nextFunc = next.Compile();
+
+    return @<EnumPicker
+      Title="@label"
+      Value="@Get(nextFunc)"
+      ValueChanged="@Set(next)"
+      For="@For(next)" />;
+  }
+
+  protected RenderFragment TextField<T>(Expression<Func<TModel, T?>> next)
+  {
+    var label = "";
+    if (next.Body is MemberExpression nextMember)
+    {
+      label = Translate(nextMember.Member.Name);
+    }
+
+    var nextFunc = next.Compile();
+
+    return @<MudTextField
+      Label="label"
+      Value="@Get(nextFunc)"
+      ValueChanged="@Set(next)"
+      For="@For(next)" />;
+  }
+
+  protected RenderFragment NumericField<T>(Expression<Func<TModel, T?>> next)
+  {
+    var label = "";
+    if (next.Body is MemberExpression nextMember)
+    {
+      label = Translate(nextMember.Member.Name);
+    }
+
+    var nextFunc = next.Compile();
+
+    return @<MudNumericField
+      Label="label"
+      Value="@Get(nextFunc)"
+      ValueChanged="@Set(next)"
+      For="@For(next)" />;
+  }
+
+  protected RenderFragment EnumField<T>(Expression<Func<TModel, T?>> next)
+  {
+    var label = "";
+    if (next.Body is MemberExpression nextMember)
+    {
+      label = Translate(nextMember.Member.Name);
+    }
+
+    var nextFunc = next.Compile();
+
+    return @<EnumPicker
+      Title="@label"
+      Value="@Get(nextFunc)"
+      ValueChanged="@Set(next)"
+      For="@For(next)" />;
+  }
+
+  protected RenderFragment MultiEnumField<T>(
+    Expression<Func<TModel, List<T>?>> next
+  )
+  {
+    var label = "";
+    if (next.Body is MemberExpression nextMember)
+    {
+      label = Translate(nextMember.Member.Name);
+    }
+
+    var nextFunc = next.Compile();
+
+    return @<MultiEnumPicker
+      Title="@label"
+      Value="@Get(x => nextFunc(x)?.ToHashSet(), () => new HashSet<T>())"
+      ValueChanged="@Set(next, (HashSet<T> x) => x.ToList())" />;
+  }
+}

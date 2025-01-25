@@ -1,0 +1,27 @@
+@using MudBlazor
+@using System.Linq.Expressions
+
+@namespace Ozds.Client.Components.Models.Base
+
+@typeparam TPrefix
+@typeparam TModel
+@inherits OzdsListModelComponentBase<TPrefix, TModel>
+
+@Base()
+
+@code {
+  protected RenderFragment Column<T>(Expression<Func<TModel, T?>> next)
+  {
+    var label = "";
+    if (next.Body is MemberExpression nextMember)
+    {
+      label = Translate(nextMember.Member.Name);
+    }
+
+    return @<PropertyColumn
+        T="TPrefix"
+        TProperty="T"
+        Title='@label'
+        Property="@Member(next)" />;
+  }
+}

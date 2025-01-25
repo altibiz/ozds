@@ -10,31 +10,31 @@
 <PropertyColumn
   T="TPrefix"
   TProperty="string"
-  Property="x => Fix(x)!.MeterId"
+  Property="x => Raw(x)!.MeterId"
   Title='@Translate("Meter ID")'>
   <CellTemplate>
-    <MudText>@Fix(context.Item)?.MeterId</MudText>
+    <MudText>@Raw(context.Item)?.MeterId</MudText>
   </CellTemplate>
 </PropertyColumn>
 
 <PropertyColumn
   T="TPrefix"
   TProperty="DateTimeOffset"
-  Property="x => Fix(x)!.Timestamp"
+  Property="x => Raw(x)!.Timestamp"
   Title='@Translate("Timestamp")'>
   <CellTemplate>
-    <MudText>@DateTimeString(Fix(context.Item)?.Timestamp)</MudText>
+    <MudText>@DateTimeString(Raw(context.Item)?.Timestamp)</MudText>
   </CellTemplate>
 </PropertyColumn>
 
 <PropertyColumn
   T="TPrefix"
   TProperty="decimal"
-  Property="x => TotalActivePower_W(Fix(x)!) / 1000"
+  Property="x => TotalActivePower_W(Raw(x)!) / 1000"
   Title='@Translate("Active Power (W)")'>
   <CellTemplate>
     <MudText>
-      @NumericString(TotalActivePower_W(Fix(context.Item)!) / 1000)
+      @NumericString(TotalActivePower_W(Raw(context.Item)!) / 1000)
     </MudText>
   </CellTemplate>
 </PropertyColumn>
@@ -42,11 +42,11 @@
 <PropertyColumn
   T="TPrefix"
   TProperty="decimal"
-  Property="x => Fix(x)!.ActiveEnergyTotalImportT0_Wh / 1000"
+  Property="x => Raw(x)!.ActiveEnergyTotalImportT0_Wh / 1000"
   Title='@Translate("Energy Import T0 (kWh)")'>
   <CellTemplate>
     <MudText>
-      @NumericString(Fix(context.Item)?.ActiveEnergyTotalImportT0_Wh / 1000)
+      @NumericString(Raw(context.Item)?.ActiveEnergyTotalImportT0_Wh / 1000)
     </MudText>
   </CellTemplate>
 </PropertyColumn>

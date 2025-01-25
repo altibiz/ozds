@@ -13,45 +13,45 @@
 <PropertyColumn
   T="TPrefix"
   TProperty="string"
-  Property="x => Fix(x)!.Title"
+  Property="x => Raw(x)!.Title"
   Title='@Translate("Title")'>
   <CellTemplate>
-    <MudText>@Fix(context.Item)?.Title</MudText>
+    <MudText>@Raw(context.Item)?.Title</MudText>
   </CellTemplate>
 </PropertyColumn>
 
 <PropertyColumn
   T="TPrefix"
   TProperty="string"
-  Property="x => Fix(x)!.MessengerId"
+  Property="x => Raw(x)!.MessengerId"
   Title='@Translate("Messenger ID")'>
   <CellTemplate>
-    <MudText>@Fix(context.Item)?.MessengerId</MudText>
+    <MudText>@Raw(context.Item)?.MessengerId</MudText>
   </CellTemplate>
 </PropertyColumn>
 
 <PropertyColumn
   T="TPrefix"
   TProperty="DateTimeOffset"
-  Property="x => Fix(x)!.Timestamp"
+  Property="x => Raw(x)!.Timestamp"
   Title='@Translate("Timestamp")'>
   <CellTemplate>
-    <MudText>@DateTimeString(Fix(context.Item)?.Timestamp)</MudText>
+    <MudText>@DateTimeString(Raw(context.Item)?.Timestamp)</MudText>
   </CellTemplate>
 </PropertyColumn>
 
 <PropertyColumn
   T="TPrefix"
   TProperty="LevelModel"
-  Property="x => Fix(x)!.Level"
+  Property="x => Raw(x)!.Level"
   Title="@Translate("Level")">
   <CellTemplate>
-    @if (Fix(context.Item)?.Level == LevelModel.Error
-      || Fix(context.Item)?.Level == LevelModel.Critical)
+    @if (Raw(context.Item)?.Level == LevelModel.Error
+      || Raw(context.Item)?.Level == LevelModel.Critical)
     {
       <MudIcon Icon="@Icons.Material.Filled.Circle" Color="Color.Error" />
     }
-    else if (Fix(context.Item)?.Level == LevelModel.Warning)
+    else if (Raw(context.Item)?.Level == LevelModel.Warning)
     {
       <MudIcon Icon="@Icons.Material.Filled.Circle" Color="Color.Warning" />
     }

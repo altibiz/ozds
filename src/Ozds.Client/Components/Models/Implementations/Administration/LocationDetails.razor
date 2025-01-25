@@ -11,8 +11,6 @@
 
 <Details Model="@Model.LegalPerson" />
 
-<DetailsField Title="@Translate("Subproject code")">
-  @Model.AltiBizSubProjectCode
-</DetailsField>
+@Field(x => x.AltiBizSubProjectCode)
 
 @(Base<IAuditable>())

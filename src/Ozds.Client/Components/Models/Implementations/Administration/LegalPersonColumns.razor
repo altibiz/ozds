@@ -8,26 +8,6 @@
 @typeparam TModel where TModel : LegalPersonModel
 @inherits OzdsColumnsComponentBase<TPrefix, TModel>
 
-<PropertyColumn
-  T="TPrefix"
-  TProperty="string"
-  Property="@(x => Fix(x)!.Name)"
-  Title='@Translate("Legal name")'>
-  <CellTemplate>
-    <MudText>
-      @(Fix(context.Item)?.Name)
-    </MudText>
-  </CellTemplate>
-</PropertyColumn>
+@Column(x => x.Name)
 
-<PropertyColumn
-  T="TPrefix"
-  TProperty="string"
-  Property="@(x => Fix(x)!.SocialSecurityNumber)"
-  Title='@Translate("Social security number")'>
-  <CellTemplate>
-    <MudText>
-      @(Fix(context.Item)?.SocialSecurityNumber)
-    </MudText>
-  </CellTemplate>
-</PropertyColumn>
+@Column(x => x.SocialSecurityNumber)

@@ -1,0 +1,29 @@
+@using MudBlazor
+@using System.Linq.Expressions
+@using Ozds.Client.Components.Fields
+
+@namespace Ozds.Client.Components.Models.Base
+
+@typeparam TModel
+@inherits OzdsManagedModelComponentBase<TModel>
+
+@Base()
+
+@code {
+  protected RenderFragment Field<T>(Expression<Func<TModel, T?>> next)
+  {
+    var label = "";
+    if (next.Body is MemberExpression nextMember)
+    {
+      label = Translate(nextMember.Member.Name);
+    }
+
+    var nextFunc = next.Compile();
+
+    return @<DetailsField Title="label">
+        <MudText>
+          @nextFunc(Model)
+        </MudText>
+      </DetailsField>;
+  }
+}

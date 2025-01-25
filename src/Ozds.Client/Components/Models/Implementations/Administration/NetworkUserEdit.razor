@@ -8,21 +8,21 @@
 
 @namespace Ozds.Client.Components.Models
 
-@inherits OzdsDetailsComponentBase<NetworkUserModel>
+@typeparam TPrefix
+@typeparam TModel where TModel : NetworkUserModel
+@inherits OzdsEditComponentBase<TPrefix, TModel>
 
 @(Base<IIdentifiable>())
 
-<Edit Model="@(Model.LegalPerson)" />
+<Edit Model="@Get(x => x.LegalPerson)" />
 
-<MudTextField
-  Label="@Translate("AltiBiz subproject code")"
-  @bind-Value="Model.AltiBizSubProjectCode"
-  For="@(() => Model.AltiBizSubProjectCode)"/>
+@Field(x => x.AltiBizSubProjectCode)
 
 <MudSelect
   Label="@Translate("Location")"
-  @bind-Value="Model.LocationId"
-  For="@(() => Model.LocationId)">
+  Value="@Get(x => x.LocationId)"
+  ValueChanged="@Set(x => x.LocationId)"
+  For="@For(x => x.LocationId)">
   <Paging T="LocationModel">
     <Summary>
       <MudSelectItem Value="context.Id">

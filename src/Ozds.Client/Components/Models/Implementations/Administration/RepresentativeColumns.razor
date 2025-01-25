@@ -12,16 +12,6 @@
 
 @(Base<IIdentifiable>())
 
-<PrefixedColumns Models="@Models" Prefix="@(x => Fix(x)?.PhysicalPerson)" />
+<PrefixedColumns Models="@Models" Prefix="@Member(x => x.PhysicalPerson)" />
 
-<PropertyColumn
-  T="TPrefix"
-  TProperty="RoleModel"
-  Property="@(x => Fix(x)!.Role)"
-  Title='@Translate("Role")'>
-  <CellTemplate>
-    <MudText>
-      @(Fix(context.Item)?.Role.ToTitle())
-    </MudText>
-  </CellTemplate>
-</PropertyColumn>
+@Column(x => x.Role)

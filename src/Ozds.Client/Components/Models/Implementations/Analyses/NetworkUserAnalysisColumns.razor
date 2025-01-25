@@ -16,11 +16,11 @@
 <PropertyColumn
   T="TPrefix"
   TProperty="decimal"
-  Property="x => Fix(x)!.Analysis.ThisMonthConsumption.ActiveEnergy_kWh"
+  Property="x => Raw(x)!.Analysis.ThisMonthConsumption.ActiveEnergy_kWh"
   Title='@Translate("Current months consumption")'>
   <CellTemplate>
     @NumericString(
-      Fix(context.Item)?.Analysis.ThisMonthConsumption.ActiveEnergy_kWh,
+      Raw(context.Item)?.Analysis.ThisMonthConsumption.ActiveEnergy_kWh,
       0)
     &nbsp;
     kWh
@@ -30,11 +30,11 @@
 <PropertyColumn
   T="TPrefix"
   TProperty="decimal"
-  Property="x => Fix(x)!.Analysis.LastMonthConsumption.ActiveEnergy_kWh"
+  Property="x => Raw(x)!.Analysis.LastMonthConsumption.ActiveEnergy_kWh"
   Title='@Translate("Last months consumption")'>
   <CellTemplate>
     @NumericString(
-      Fix(context.Item)?.Analysis.LastMonthConsumption.ActiveEnergy_kWh,
+      Raw(context.Item)?.Analysis.LastMonthConsumption.ActiveEnergy_kWh,
       0)
     &nbsp;
     kWh
@@ -44,13 +44,13 @@
 <PropertyColumn
   T="TPrefix"
   TProperty="decimal"
-  Property="x => Fix(x)!.Analysis.LastMonthExpenses.Total_EUR"
+  Property="x => Raw(x)!.Analysis.LastMonthExpenses.Total_EUR"
   Title='@Translate("Last months invoice total")'>
   <CellTemplate>
-    @(Fix(context.Item)?.Analysis.LastMonthExpenses.Total_EUR == 0
+    @(Raw(context.Item)?.Analysis.LastMonthExpenses.Total_EUR == 0
       ? Translate("Invoice pending...")
       : NumericString(
-        Fix(context.Item)?.Analysis.LastMonthExpenses.Total_EUR)
+        Raw(context.Item)?.Analysis.LastMonthExpenses.Total_EUR)
         + " EUR")
   </CellTemplate>
 </PropertyColumn>

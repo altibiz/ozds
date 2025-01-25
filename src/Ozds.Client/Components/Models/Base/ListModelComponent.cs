@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Microsoft.AspNetCore.Components;
 
 namespace Ozds.Client.Components.Models.Base;
@@ -8,7 +9,7 @@ public abstract class ListModelComponent<TPrefix, TModel> : ModelComponent
   public IEnumerable<TPrefix> Models { get; set; } = default!;
 
   [Parameter]
-  public Func<TPrefix, TModel?>? Prefix { get; set; } = default!;
+  public Expression<Func<TPrefix, TModel?>>? Prefix { get; set; } = default!;
 
   protected override Type CreateModelType()
   {

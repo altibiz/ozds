@@ -10,7 +10,7 @@
 
 <TemplateColumn T="TPrefix">
   <CellTemplate>
-    @if (Fix(context.Item) is { } item)
+    @if (Raw(context.Item) is { } item)
     {
       <MudLink Href="@(Provider.CreateLink(item))">
         <MudText>

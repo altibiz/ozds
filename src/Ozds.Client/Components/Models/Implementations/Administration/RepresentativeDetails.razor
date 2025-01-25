@@ -11,9 +11,7 @@
 
 @(Base<IIdentifiable>())
 
-<DetailsField Title="@Translate("Role")">
-  @Model.Role.ToTitle()
-</DetailsField>
+@Field(x => x.Role)
 
 <Details Model="@Model.PhysicalPerson" />
 

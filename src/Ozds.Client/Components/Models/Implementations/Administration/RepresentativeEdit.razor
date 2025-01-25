@@ -9,18 +9,14 @@
 
 @namespace Ozds.Client.Components.Models.Implementations.Administration
 
-@inherits OzdsEditComponentBase<RepresentativeModel>
+@typeparam TPrefix
+@typeparam TModel where TModel : RepresentativeModel
+@inherits OzdsEditComponentBase<TPrefix, TModel>
 
 @(Base<IIdentifiable>())
 
-<EnumPicker
-  Label="@(_ => Translate("Role"))"
-  @bind-Value="@Model.Role" />
+@Field(x => x.Role)
 
-<Edit Model="@(Model.PhysicalPerson)" />
+<Edit Model="@Get(x => x.PhysicalPerson)" />
 
-<MultiEnumPicker
-  T="TopicModel"
-  Label="@(_ => Translate("Topics"))"
-  Value="@Model.Topics.ToHashSet()"
-  ValueChanged="@(topics => Model.Topics = topics.ToList())" />
+@MultiEnumField(x => x.Topics)

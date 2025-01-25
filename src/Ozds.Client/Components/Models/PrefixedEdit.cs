@@ -2,7 +2,8 @@ using Ozds.Client.Components.Models.Base;
 
 namespace Ozds.Client.Components.Models;
 
-public class Edit<TPrefix> : ManagedModelComponent<TPrefix, TPrefix>
+public partial class PrefixedEdit<TPrefix, TModel>
+  : ManagedModelComponent<TPrefix, TModel>
 {
   protected override ModelComponentKind ComponentKind =>
     ModelComponentKind.Edit;

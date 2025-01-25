@@ -9,39 +9,39 @@
 <PropertyColumn
   T="TPrefix"
   TProperty="string"
-  Property="x => Fix(x)!.Title"
+  Property="x => Raw(x)!.Title"
   Title='@Translate("Title")'>
   <CellTemplate>
-    <MudText>@Fix(context.Item)?.Title</MudText>
+    <MudText>@Raw(context.Item)?.Title</MudText>
   </CellTemplate>
 </PropertyColumn>
 
 <PropertyColumn
   T="TPrefix"
   TProperty="DateTimeOffset"
-  Property="x => Fix(x)!.FromDate"
+  Property="x => Raw(x)!.FromDate"
   Title='@Translate("From Date")'>
   <CellTemplate>
-    <MudText>@DateTimeString(Fix(context.Item)?.FromDate)</MudText>
+    <MudText>@DateTimeString(Raw(context.Item)?.FromDate)</MudText>
   </CellTemplate>
 </PropertyColumn>
 
 <PropertyColumn
   T="TPrefix"
   TProperty="DateTimeOffset"
-  Property="x => Fix(x)!.ToDate"
+  Property="x => Raw(x)!.ToDate"
   Title='@Translate("To Date")'>
   <CellTemplate>
-    <MudText>@DateTimeString(Fix(context.Item)?.ToDate)</MudText>
+    <MudText>@DateTimeString(Raw(context.Item)?.ToDate)</MudText>
   </CellTemplate>
 </PropertyColumn>
 
 <PropertyColumn
   T="TPrefix"
   TProperty="decimal"
-  Property="x => Fix(x)!.Total_EUR"
+  Property="x => Raw(x)!.Total_EUR"
   Title='@Translate("Total (€)")'>
   <CellTemplate>
-    <MudText>@NumericString(Fix(context.Item)?.Total_EUR)</MudText>
+    <MudText>@NumericString(Raw(context.Item)?.Total_EUR)</MudText>
   </CellTemplate>
 </PropertyColumn>

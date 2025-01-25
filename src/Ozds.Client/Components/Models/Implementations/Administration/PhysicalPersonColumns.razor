@@ -8,14 +8,4 @@
 @typeparam TModel where TModel : PhysicalPersonModel
 @inherits OzdsColumnsComponentBase<TPrefix, TModel>
 
-<PropertyColumn
-  T="TPrefix"
-  TProperty="string"
-  Property="@(x => Fix(x)!.Name)"
-  Title='@Translate("Person name")'>
-  <CellTemplate>
-    <MudText>
-      @(Fix(context.Item)?.Name)
-    </MudText>
-  </CellTemplate>
-</PropertyColumn>
+@Column(x => x.Name)

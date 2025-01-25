@@ -6,31 +6,14 @@
 
 @inherits OzdsDetailsComponentBase<LegalPersonModel>
 
-<DetailsField Title="@Translate("Legal name")">
-  @Model.Name
-</DetailsField>
+@Field(x => x.Name)
 
-<DetailsField Title="@Translate("Social security number")">
-  @Model.SocialSecurityNumber
-</DetailsField>
+@Field(x => x.SocialSecurityNumber)
 
-<DetailsField Title="@Translate("Email address")">
-  @Model.Email
-</DetailsField>
+@Field(x => x.Email)
 
-<DetailsField Title="@Translate("Phone number")">
-  @Model.PhoneNumber
-</DetailsField>
+@Field(x => x.PhoneNumber)
 
-<DetailsField Title="@Translate("Address")">
-  @Model.Address
-</DetailsField>
+@Field(x => x.Address)
 
-<DetailsField Title="@Translate("City")">
-  @Model.Address
-</DetailsField>
-
-<DetailsField Title="@Translate("Postal code")">
-  @Model.PostalCode
-</DetailsField>
-
+@Field(x => x.PostalCode)

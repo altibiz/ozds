@@ -9,9 +9,9 @@
 <PropertyColumn
   T="TPrefix"
   TProperty="string"
-  Property="x => Fix(x)!.Title"
+  Property="x => Raw(x)!.Title"
   Title='@Translate("Title")'>
   <CellTemplate>
-    <MudText>@Fix(context.Item)?.Title</MudText>
+    <MudText>@Raw(context.Item)?.Title</MudText>
   </CellTemplate>
 </PropertyColumn>

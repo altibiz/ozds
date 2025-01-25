@@ -13,49 +13,49 @@
 <PropertyColumn
   T="TPrefix"
   TProperty="DateTimeOffset"
-  Property="x => Fix(x)!.StartOfMonth"
+  Property="x => Raw(x)!.StartOfMonth"
   Title='@Translate("Billing period")'>
   <CellTemplate>
-    @(Fix(context.Item)?.StartOfMonth.Month)/@(Fix(context.Item)?.StartOfMonth.Year)
+    @(Raw(context.Item)?.StartOfMonth.Month)/@(Raw(context.Item)?.StartOfMonth.Year)
   </CellTemplate>
 </PropertyColumn>
 
 <PropertyColumn
   T="TPrefix"
   TProperty="decimal"
-  Property="x => Fix(x)!.Consumption.MinActiveEnergy_kWh"
+  Property="x => Raw(x)!.Consumption.MinActiveEnergy_kWh"
   Title='@Translate("First reading")'>
   <CellTemplate>
-    @(NumericString(Fix(context.Item)?.Consumption.MinActiveEnergy_kWh, 0)) kWh
+    @(NumericString(Raw(context.Item)?.Consumption.MinActiveEnergy_kWh, 0)) kWh
   </CellTemplate>
 </PropertyColumn>
 
 <PropertyColumn
   T="TPrefix"
   TProperty="decimal"
-  Property="x => Fix(x)!.Consumption.MaxActiveEnergy_kWh"
+  Property="x => Raw(x)!.Consumption.MaxActiveEnergy_kWh"
   Title='@Translate("Last reading")'>
   <CellTemplate>
-    @(NumericString(Fix(context.Item)?.Consumption.MaxActiveEnergy_kWh, 0)) kWh
+    @(NumericString(Raw(context.Item)?.Consumption.MaxActiveEnergy_kWh, 0)) kWh
   </CellTemplate>
 </PropertyColumn>
 
 <PropertyColumn
   T="TPrefix"
   TProperty="decimal"
-  Property="x => Fix(x)!.Consumption.ActiveEnergy_kWh"
+  Property="x => Raw(x)!.Consumption.ActiveEnergy_kWh"
   Title='@Translate("Total consumption")'>
   <CellTemplate>
-    @(NumericString(Fix(context.Item)?.Consumption.ActiveEnergy_kWh, 0)) kWh
+    @(NumericString(Raw(context.Item)?.Consumption.ActiveEnergy_kWh, 0)) kWh
   </CellTemplate>
 </PropertyColumn>
 
 <PropertyColumn
   T="TPrefix"
   TProperty="decimal"
-  Property="x => Fix(x)!.MaxLoad.ActivePower_kW"
+  Property="x => Raw(x)!.MaxLoad.ActivePower_kW"
   Title='@Translate("Max power")'>
   <CellTemplate>
-    @(NumericString(Fix(context.Item)?.MaxLoad.ActivePower_kW, 0)) kW
+    @(NumericString(Raw(context.Item)?.MaxLoad.ActivePower_kW, 0)) kW
   </CellTemplate>
 </PropertyColumn>

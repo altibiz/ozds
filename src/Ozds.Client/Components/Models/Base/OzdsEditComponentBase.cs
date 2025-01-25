@@ -1,7 +1,7 @@
 namespace Ozds.Client.Components.Models.Base;
 
-public abstract class OzdsEditComponentBase<TModel> :
-  OzdsManagedModelComponentBase<TModel>
+public abstract partial class OzdsEditComponentBase<TPrefix, TModel> :
+  OzdsManagedModelComponentBase<TPrefix, TModel>
 {
   public override ModelComponentKind ComponentKind =>
     ModelComponentKind.Edit;

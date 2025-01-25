@@ -8,21 +8,21 @@
 
 @namespace Ozds.Client.Components.Models.Implementations.Administration
 
-@inherits OzdsEditComponentBase<LocationModel>
+@typeparam TPrefix
+@typeparam TModel where TModel : LocationModel
+@inherits OzdsEditComponentBase<TPrefix, TModel>
 
 @(Base<IIdentifiable>())
 
-<Edit Model="@Model.LegalPerson" />
+<Edit Model="@Get(x => x.LegalPerson)" />
 
-<MudTextField
-  Label="@Translate("AltiBiz subproject code")"
-  @bind-Value="Model.AltiBizSubProjectCode"
-  For="@(() => Model.AltiBizSubProjectCode)"/>
+@Field(x => x.AltiBizSubProjectCode)
 
 <MudSelect
-  Label="@Translate("White Medium Network User Catalogues")"
-  @bind-Value="Model.WhiteMediumNetworkUserCatalogueId"
-  For="@(() => Model.WhiteMediumNetworkUserCatalogueId)">
+  Label="@Translate("White Medium Network User Catalogue")"
+  Value="@Get(x => x.WhiteMediumNetworkUserCatalogueId)"
+  ValueChanged="@Set(x => x.WhiteMediumNetworkUserCatalogueId)"
+  For="@For(x => x.WhiteMediumNetworkUserCatalogueId)">
   <Paging T="WhiteMediumNetworkUserCatalogueModel">
     <Summary Context="model">
       <MudSelectItem Value="@model.Id">
@@ -34,8 +34,9 @@
 
 <MudSelect
   Label="@Translate("Blue Low Network User Catalogues")"
-  @bind-Value="Model.BlueLowNetworkUserCatalogueId"
-  For="@(() => Model.BlueLowNetworkUserCatalogueId)">
+  Value="@Get(x => x.BlueLowNetworkUserCatalogueId)"
+  ValueChanged="@Set(x => x.BlueLowNetworkUserCatalogueId)"
+  For="@For(x => x.BlueLowNetworkUserCatalogueId)">
   <Paging T="BlueLowNetworkUserCatalogueModel">
     <Summary Context="model">
       <MudSelectItem Value="@model.Id">
@@ -47,8 +48,9 @@
 
 <MudSelect
   Label="@Translate("White Low Network User Catalogues")"
-  @bind-Value="Model.WhiteLowNetworkUserCatalogueId"
-  For="@(() => Model.WhiteLowNetworkUserCatalogueId)">
+  Value="@Get(x => x.WhiteLowNetworkUserCatalogueId)"
+  ValueChanged="@Set(x => x.WhiteLowNetworkUserCatalogueId)"
+  For="@For(x => x.WhiteLowNetworkUserCatalogueId)">
   <Paging T="WhiteLowNetworkUserCatalogueModel">
     <Summary Context="model">
       <MudSelectItem Value="@model.Id">
@@ -60,8 +62,9 @@
 
 <MudSelect
   Label="@Translate("Red Low Network User Catalogues")"
-  @bind-Value="Model.RedLowNetworkUserCatalogueId"
-  For="@(() => Model.RedLowNetworkUserCatalogueId)">
+  Value="@Get(x => x.RedLowNetworkUserCatalogueId)"
+  ValueChanged="@Set(x => x.RedLowNetworkUserCatalogueId)"
+  For="@For(x => x.RedLowNetworkUserCatalogueId)">
   <Paging T="RedLowNetworkUserCatalogueModel">
     <Summary Context="model">
       <MudSelectItem Value="@model.Id">
@@ -73,8 +76,9 @@
 
 <MudSelect
   Label="@Translate("Regulatory Network User Catalogues")"
-  @bind-Value="Model.RegulatoryCatalogueId"
-  For="@(() => Model.RegulatoryCatalogueId)">
+  Value="@Get(x => x.RegulatoryCatalogueId)"
+  ValueChanged="@Set(x => x.RegulatoryCatalogueId)"
+  For="@For(x => x.RegulatoryCatalogueId)">
   <Paging T="RegulatoryCatalogueModel">
     <Summary Context="model">
       <MudSelectItem Value="@model.Id">

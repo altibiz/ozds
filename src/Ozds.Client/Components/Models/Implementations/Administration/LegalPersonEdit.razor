@@ -7,39 +7,18 @@
 
 @namespace Ozds.Client.Components.Models.Implementations.Administration
 
-@inherits OzdsEditComponentBase<LegalPersonModel>
+@typeparam TPrefix
+@typeparam TModel where TModel : LegalPersonModel
+@inherits OzdsEditComponentBase<TPrefix, TModel>
 
-<MudTextField
-  Label="@Translate("Legal name")"
-  @bind-Value="Model.Name"
-  For="@(() => Model.Name)"/>
+@Field(x => x.Name)
 
-<MudTextField
-  Label="@Translate("Social security number")"
-  @bind-Value="Model.SocialSecurityNumber"
-  For="@(() => Model.SocialSecurityNumber)"/>
+@Field(x => x.SocialSecurityNumber)
 
-<MudTextField
-  Label="@Translate("Email address")"
-  @bind-Value="Model.Email"
-  For="@(() => Model.Email)"/>
+@Field(x => x.Email)
 
-<MudTextField
-  Label="@Translate("Phone number")"
-  @bind-Value="Model.PhoneNumber"
-  For="@(() => Model.PhoneNumber)"/>
+@Field(x => x.PhoneNumber)
 
-<MudTextField
-  Label="@Translate("Address")"
-  @bind-Value="Model.Address"
-  For="@(() => Model.Address)"/>
+@Field(x => x.Address)
 
-<MudTextField
-  Label="@Translate("City")"
-  @bind-Value="Model.City"
-  For="@(() => Model.City)"/>
-
-<MudTextField
-  Label="@Translate("Postal code")"
-  @bind-Value="Model.PostalCode"
-  For="@(() => Model.PostalCode)"/>
+@Field(x => x.PostalCode)
