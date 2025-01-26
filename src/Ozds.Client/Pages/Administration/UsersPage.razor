@@ -31,10 +31,7 @@
   <Summary>
     @if (context.Representative is { } representative)
     {
-      <IdentifiableLink
-        T="RepresentativeModel"
-        TPage="UserPage"
-        Model="@representative" />
+      <IdentifiableLink Model="@representative" />
     }
 
     <Summary Model="@context" />

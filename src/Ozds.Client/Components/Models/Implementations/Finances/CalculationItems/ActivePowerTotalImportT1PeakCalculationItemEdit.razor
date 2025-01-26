@@ -1,0 +1,14 @@
+@using Ozds.Business.Models.Complex
+@using Ozds.Client.Components.Models.Base
+
+@namespace Ozds.Client.Components.Models.Implementations.Finances
+
+@typeparam TPrefix
+@typeparam TModel where TModel : ActivePowerTotalImportT1PeakCalculationItemModel
+@inherits OzdsEditComponentBase<TPrefix, TModel>
+
+@Field(x => x.Peak_kW)
+
+@Field(x => x.Amount_kW)
+
+@Base()

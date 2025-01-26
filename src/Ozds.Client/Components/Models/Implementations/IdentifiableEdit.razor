@@ -6,7 +6,4 @@
 
 @inherits OzdsDetailsComponentBase<IIdentifiable>
 
-<MudTextField
-  Label="@Translate("Name")"
-  @bind-Value="Model.Title"
-  For="@(() => Model.Title)"/>
+@Field(x => x.Title)

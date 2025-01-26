@@ -1,0 +1,18 @@
+@using Ozds.Business.Models.Complex
+@using Ozds.Client.Components.Models.Base
+
+@namespace Ozds.Client.Components.Models.Implementations.Finances
+
+@typeparam TPrefix
+@typeparam TModel where TModel : ReactiveEnergyTotalRampedT0CalculationItemModel
+@inherits OzdsColumnsComponentBase<TPrefix, TModel>
+
+@Column(x => x.ReactiveImportAmount_kVARh)
+
+@Column(x => x.ReactiveExportAmount_kVARh)
+
+@Column(x => x.ActiveImportAmount_kWh)
+
+@Column(x => x.Amount_kVARh)
+
+@Base()

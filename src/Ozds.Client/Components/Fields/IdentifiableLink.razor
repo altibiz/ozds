@@ -4,13 +4,8 @@
 
 @namespace Ozds.Client.Components.Fields
 
-@typeparam T where T : IIdentifiable
-
 @inherits OzdsComponentBase
 
-<MudButton
-  OnClick="OnClick"
-  Variant="Variant.Filled"
-  Color="Color.Primary">
+<MudLink Href="@(Provider.CreateLink(Model))">
   @Model.Title
-</MudButton>
+</MudLink>

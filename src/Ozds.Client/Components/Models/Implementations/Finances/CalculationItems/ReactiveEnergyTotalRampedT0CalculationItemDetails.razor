@@ -1,0 +1,28 @@
+@using Ozds.Business.Models.Complex
+@using Ozds.Client.Components.Models.Base
+
+@namespace Ozds.Client.Components.Models.Implementations.Finances
+
+@inherits OzdsDetailsComponentBase<ReactiveEnergyTotalRampedT0CalculationItemModel>
+
+@Field(x => x.ReactiveImportMin_kVARh)
+
+@Field(x => x.ReactiveImportMax_kVARh)
+
+@Field(x => x.ReactiveImportAmount_kVARh)
+
+@Field(x => x.ReactiveExportMin_kVARh)
+
+@Field(x => x.ReactiveExportMax_kVARh)
+
+@Field(x => x.ReactiveExportAmount_kVARh)
+
+@Field(x => x.ActiveImportMin_kWh)
+
+@Field(x => x.ActiveImportMax_kWh)
+
+@Field(x => x.ActiveImportAmount_kWh)
+
+@Field(x => x.Amount_kVARh)
+
+@Base()

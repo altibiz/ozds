@@ -1,0 +1,10 @@
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Client.Components.Models.Base
+
+@namespace Ozds.Client.Components.Models.Implementations.Finances
+
+@inherits OzdsDetailsComponentBase<ICalculationItem>
+
+@Field(x => x.Price_EUR)
+
+@Field(x => x.Total_EUR)

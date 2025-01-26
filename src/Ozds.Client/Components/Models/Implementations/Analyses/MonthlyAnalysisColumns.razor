@@ -1,5 +1,3 @@
-@using MudBlazor
-@using Ozds.Business.Time
 @using Ozds.Business.Analysis
 @using Ozds.Client.Components.Models.Base
 @using Ozds.Client.State
@@ -10,52 +8,12 @@
 @typeparam TModel where TModel : MonthlyAnalysis
 @inherits OzdsColumnsComponentBase<TPrefix, TModel>
 
-<PropertyColumn
-  T="TPrefix"
-  TProperty="DateTimeOffset"
-  Property="x => Raw(x)!.StartOfMonth"
-  Title='@Translate("Billing period")'>
-  <CellTemplate>
-    @(Raw(context.Item)?.StartOfMonth.Month)/@(Raw(context.Item)?.StartOfMonth.Year)
-  </CellTemplate>
-</PropertyColumn>
+@Column(x => x.StartOfMonth)
 
-<PropertyColumn
-  T="TPrefix"
-  TProperty="decimal"
-  Property="x => Raw(x)!.Consumption.MinActiveEnergy_kWh"
-  Title='@Translate("First reading")'>
-  <CellTemplate>
-    @(NumericString(Raw(context.Item)?.Consumption.MinActiveEnergy_kWh, 0)) kWh
-  </CellTemplate>
-</PropertyColumn>
+@Column(x => x.Consumption.MinActiveEnergy_kWh)
 
-<PropertyColumn
-  T="TPrefix"
-  TProperty="decimal"
-  Property="x => Raw(x)!.Consumption.MaxActiveEnergy_kWh"
-  Title='@Translate("Last reading")'>
-  <CellTemplate>
-    @(NumericString(Raw(context.Item)?.Consumption.MaxActiveEnergy_kWh, 0)) kWh
-  </CellTemplate>
-</PropertyColumn>
+@Column(x => x.Consumption.MaxActiveEnergy_kWh)
 
-<PropertyColumn
-  T="TPrefix"
-  TProperty="decimal"
-  Property="x => Raw(x)!.Consumption.ActiveEnergy_kWh"
-  Title='@Translate("Total consumption")'>
-  <CellTemplate>
-    @(NumericString(Raw(context.Item)?.Consumption.ActiveEnergy_kWh, 0)) kWh
-  </CellTemplate>
-</PropertyColumn>
+@Column(x => x.Consumption.ActiveEnergy_kWh)
 
-<PropertyColumn
-  T="TPrefix"
-  TProperty="decimal"
-  Property="x => Raw(x)!.MaxLoad.ActivePower_kW"
-  Title='@Translate("Max power")'>
-  <CellTemplate>
-    @(NumericString(Raw(context.Item)?.MaxLoad.ActivePower_kW, 0)) kW
-  </CellTemplate>
-</PropertyColumn>
+@Column(x => x.MaxLoad.ActivePower_kW)

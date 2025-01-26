@@ -1,65 +1,14 @@
-@using Microsoft.AspNetCore.Components
-@using MudBlazor
 @using Ozds.Business.Analysis
 @using Ozds.Client.Components.Models.Base
 
-@namespace Ozds.Client.Components.Models
+@namespace Ozds.Client.Components.Models.Implementations.Analyses
 
 @inherits OzdsDetailsComponentBase<MeasurementLocationAnalysis>
 
-<MudText>
-  @Translate("Location")
-  &colon;
-  &nbsp;
-  @Model.Location.Title
-</MudText>
+@Field(x => x.MeasurementLocation.Title)
 
-@if (Model.NetworkUser is { } networkUser)
-{
-  <MudText>
-    @Translate("Network user")
-    &colon;
-    &nbsp;
-    @networkUser.Title
-  </MudText>
-}
+@Field(x => x.Analysis.ThisMonthConsumption.ActiveEnergy_kWh)
 
-<MudText
-  Class="d-flex align-center justify-start"
-  Style="font-size: large; font-weight: bold;">
-  @Translate("Current months consumption")
-  &colon;
-  &nbsp;
-  @NumericString(
-    Model.Analysis.ThisMonthConsumption.ActiveEnergy_kWh,
-    0)
-  &nbsp;
-  kWh
-</MudText>
+@Field(x => x.Analysis.LastMonthConsumption.ActiveEnergy_kWh)
 
-<MudText
-  Class="d-flex align-center justify-start"
-  Style="font-size: large; font-weight: bold;">
-  @Translate("Last months consumption")
-  &colon;
-  &nbsp;
-  @NumericString(
-    Model.Analysis.LastMonthConsumption.ActiveEnergy_kWh,
-    0)
-  &nbsp;
-  kWh
-</MudText>
-
-<MudText
-  Class="d-flex align-center justify-start"
-  Style="font-size: large; font-weight: bold;">
-  @Translate("Last months invoice total")
-  &colon;
-  &nbsp;
-  @(Model.Analysis.LastMonthExpenses.Total_EUR == 0
-    ? Translate("Invoice pending...")
-    : NumericString(
-        Model.Analysis.LastMonthExpenses.Total_EUR) + " EUR")
-</MudText>
-
-@code {}
+@Field(x => x.Analysis.LastMonthExpenses.Total_EUR)

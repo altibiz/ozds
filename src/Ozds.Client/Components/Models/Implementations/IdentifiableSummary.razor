@@ -6,6 +6,4 @@
 
 @inherits OzdsSummaryComponentBase<IIdentifiable>
 
-<MudText Typo="Typo.h6">
-  @Model.Title
-</MudText>
+@Title(x => x.Title)

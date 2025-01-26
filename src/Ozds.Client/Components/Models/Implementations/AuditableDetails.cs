@@ -11,7 +11,7 @@ public partial class AuditableDetails : OzdsDetailsComponentBase<IAuditable>
   private async Task<PaginatedList<IAuditEvent>> OnPageAsync(int page)
   {
     var queries = ScopedServices
-      .RawRequiredService<EventQueries>();
+      .GetRequiredService<EventQueries>();
 
     var events = await queries.ReadAuditEvents<IAuditEvent>(
       Model,

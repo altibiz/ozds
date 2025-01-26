@@ -1,0 +1,24 @@
+@using MudBlazor
+
+@namespace Ozds.Client.Components.Models.Base
+
+@typeparam TModel
+@inherits OzdsManagedModelComponentBase<TModel>
+
+@Base()
+
+@code {
+  protected RenderFragment Title<T>(Func<TModel, T> next)
+  {
+    return @<MudText Typo="Typo.h6">
+        @next(Model)
+      </MudText>;
+  }
+
+  protected RenderFragment Subtitle<T>(Func<TModel, T> next)
+  {
+    return @<MudText Typo="Typo.body2">
+        @next(Model)
+      </MudText>;
+  }
+}

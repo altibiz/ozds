@@ -18,10 +18,7 @@
   Sortable="false">
   <CellTemplate>
     <MudStack Row>
-      <IdentifiableLink
-        T="NetworkUserModel"
-        TPage="NetworkUserPage"
-        Model="Raw(context.Item)?.ArchivedNetworkUser" />
+      <IdentifiableLink Model="Raw(context.Item)?.ArchivedNetworkUser" />
     </MudStack>
   </CellTemplate>
 </TemplateColumn>
@@ -64,10 +61,7 @@
   Filterable="false">
   <CellTemplate>
     <MudStack Row>
-      <IdentifiableLink
-        T="TModel"
-        TPage="NetworkUserInvoicePage"
-        Model="Raw(context.Item)" />
+      <IdentifiableLink Model="Raw(context.Item)" />
     </MudStack>
   </CellTemplate>
 </TemplateColumn>

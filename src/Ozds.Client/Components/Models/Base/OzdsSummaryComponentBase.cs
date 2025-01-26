@@ -1,6 +1,6 @@
 namespace Ozds.Client.Components.Models.Base;
 
-public abstract class OzdsSummaryComponentBase<TModel> :
+public abstract partial class OzdsSummaryComponentBase<TModel> :
   OzdsManagedModelComponentBase<TModel>
 {
   public override ModelComponentKind ComponentKind =>

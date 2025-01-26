@@ -1,14 +1,8 @@
-@using Microsoft.AspNetCore.Components
-@using MudBlazor
 @using Ozds.Business.Analysis
 @using Ozds.Client.Components.Models.Base
 
-@namespace Ozds.Client.Components.Models
+@namespace Ozds.Client.Components.Models.Implementations.Analyses
 
 @inherits OzdsSummaryComponentBase<NetworkUserAnalysis>
 
-<MudText Typo="Typo.h6">
-  @Model.NetworkUser.Title
-</MudText>
-
-@code {}
+@Title(x => x.NetworkUser.Title)

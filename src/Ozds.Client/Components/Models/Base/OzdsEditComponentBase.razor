@@ -1,10 +1,10 @@
 @using MudBlazor
 @using System.Linq.Expressions
+@using Ozds.Business.Models.Abstractions
 @using Ozds.Client.Components.Fields
+@using Ozds.Client.Components.Streaming
 
 @namespace Ozds.Client.Components.Models.Base
-
-@* TODO: good way todo multi enum fields *@
 
 @typeparam TPrefix
 @typeparam TModel
@@ -131,5 +131,33 @@
       Title="@label"
       Value="@Get(x => nextFunc(x)?.ToHashSet(), () => new HashSet<T>())"
       ValueChanged="@Set(next, (HashSet<T> x) => x.ToList())" />;
+  }
+
+  protected RenderFragment ForeignKeyField<T>(
+    Expression<Func<TModel, string?>> next
+  )
+    where T : IIdentifiable
+  {
+    var label = "";
+    if (next.Body is MemberExpression nextMember)
+    {
+      label = Translate(nextMember.Member.Name);
+    }
+
+    var nextFunc = next.Compile();
+
+    return @<MudSelect
+        Label="@label"
+        Value="@Get(nextFunc)"
+        ValueChanged="@Set(next)"
+        For="@For(next)">
+        <Paging T="T">
+          <Summary Context="model">
+            <MudSelectItem Value="@model.Id">
+              <Summary Model="@model"/>
+            </MudSelectItem>
+          </Summary>
+        </Paging>
+      </MudSelect>;
   }
 }

@@ -1,72 +1,26 @@
-@using Microsoft.AspNetCore.Components
-@using MudBlazor
 @using Ozds.Business.Analysis
 @using Ozds.Business.Models.Enums
 @using Ozds.Client.Components.Models.Base
 @using Ozds.Client.State
 
-@namespace Ozds.Client.Components.Models
+@namespace Ozds.Client.Components.Models.Implementations.Analyses
 
 @inherits OzdsDetailsComponentBase<LocationAnalysis>
 
-<MudText
-  xs="12"
-  Class="d-flex align-center justify-start"
-  Style="font-size: large; font-weight: bold;">
-  @Translate("Current months consumption")
-  &colon;
-  &nbsp;
-  @NumericString(
-    Model.Analysis.LastMonthConsumption.ActiveEnergy_kWh,
-    0)
-  &nbsp;
-  kWh
-</MudText>
+@Field(x => x.Location.Title)
 
-<MudText
-  xs="12"
-  Class="d-flex align-center justify-start"
-  Style="font-size: large; font-weight: bold;">
-  @Translate("Last months consumption")
-  &colon;
-  &nbsp;
-  @NumericString(
-    Model.Analysis.ThisMonthConsumption.ActiveEnergy_kWh,
-    0)
-  &nbsp;
-  kWh
-</MudText>
+@Field(x => x.Analysis.LastMonthConsumption.ActiveEnergy_kWh)
+
+@Field(x => x.Analysis.ThisMonthConsumption.ActiveEnergy_kWh)
 
 @if (RepresentativeState.Representative.Role
   is RoleModel.LocationRepresentative)
 {
-  <MudText
-    xs="12"
-    Class="d-flex align-center justify-start"
-    Style="font-size: large; font-weight: bold;">
-    @Translate("Active power")
-    &colon;
-    &nbsp;
-    @NumericString(Model.Analysis.Load.ActivePower_kW)
-    &nbsp;
-    kW
-  </MudText>
+  @Field(x => x.Analysis.Load.ActivePower_kW)
 }
 else
 {
-  <MudText
-    xs="12"
-    Class="d-flex align-center justify-start"
-    Style="font-size: large; font-weight: bold;">
-    @Translate("Last months invoice total")
-    &colon;
-    &nbsp;
-    @(Model.Analysis.LastMonthExpenses.Total_EUR == 0
-      ? Translate("Invoice pending...")
-      : NumericString(
-          Model.Analysis.LastMonthExpenses.Total_EUR)
-          + " EUR")
-  </MudText>
+  @Field(x => x.Analysis.LastMonthExpenses.Total_EUR)
 }
 
 @code {

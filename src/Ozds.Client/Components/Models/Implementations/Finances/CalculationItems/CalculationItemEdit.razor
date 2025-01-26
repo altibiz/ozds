@@ -1,0 +1,12 @@
+@using Ozds.Business.Models.Base
+@using Ozds.Client.Components.Models.Base
+
+@namespace Ozds.Client.Components.Models.Implementations.Finances
+
+@typeparam TPrefix
+@typeparam TModel where TModel : CalculationItemModel
+@inherits OzdsEditComponentBase<TPrefix, TModel>
+
+@Field(x => x.Price_EUR)
+
+@Field(x => x.Total_EUR)

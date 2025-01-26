@@ -1,5 +1,9 @@
 @using MudBlazor
 @using System.Linq.Expressions
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Client.Components.Fields
+
+@* TODO: use .NET 9 OverloadResolutionPriorityAttribute *@
 
 @namespace Ozds.Client.Components.Models.Base
 
@@ -23,5 +27,27 @@
         TProperty="T"
         Title='@label'
         Property="@Member(next)" />;
+  }
+
+  protected RenderFragment LinkColumn(
+    Expression<Func<TModel, IIdentifiable?>> next
+  )
+  {
+    var label = "";
+    if (next.Body is MemberExpression nextMember)
+    {
+      label = Translate(nextMember.Member.Name);
+    }
+
+    var nextFunc = next.Compile();
+
+    return @<TemplateColumn T="TPrefix" Title="@label">
+        <CellTemplate>
+          @if (Get(nextFunc)(context.Item) is { } model)
+          {
+            <IdentifiableLink Model="model" />
+          }
+        </CellTemplate>
+      </TemplateColumn>;
   }
 }

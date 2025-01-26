@@ -1,88 +1,18 @@
-@using MudBlazor
 @using Ozds.Business.Analysis
-@using Ozds.Business.Models.Enums
-@using Ozds.Business.Models.Abstractions
-@using Ozds.Business.Models
 @using Ozds.Client.Components.Models.Base
-@using Ozds.Client.Components.Fields
-@using Ozds.Client.State
-@using Ozds.Client.Pages
 
-@namespace Ozds.Client.Components.Models
+@namespace Ozds.Client.Components.Models.Implementations.Analyses
 
 @typeparam TPrefix
 @typeparam TModel where TModel : MeterAnalysis
 @inherits OzdsColumnsComponentBase<TPrefix, TModel>
 
-<TemplateColumn
-  T="TPrefix"
-  Title="@Translate("Network user")"
-  Sortable="false">
-  <CellTemplate>
-    @if (Raw(context.Item)?.NetworkUser is { } networkUser)
-    {
-      <MudStack Row>
-        <IdentifiableLink
-          T="NetworkUserModel"
-          TPage="NetworkUserPage"
-          Model="networkUser" />
-      </MudStack>
-    }
-  </CellTemplate>
-</TemplateColumn>
+@LinkColumn(x => x.NetworkUser)
 
-<TemplateColumn
-  T="TPrefix"
-  Title="@Translate("Device")"
-  Sortable="false">
-  <CellTemplate>
-    <MudStack Row>
-      <IdentifiableLink
-        T="IMeter"
-        TPage="MeterPage"
-        Model="Raw(context.Item)?.Meter" />
-    </MudStack>
-  </CellTemplate>
-</TemplateColumn>
+@LinkColumn(x => x.Meter)
 
-<PropertyColumn
-  T="TPrefix"
-  TProperty="decimal"
-  Property="x => Raw(x)!.Analysis.ThisMonthConsumption.ActiveEnergy_kWh"
-  Title='@Translate("Current months consumption")'>
-  <CellTemplate>
-    @NumericString(
-      Raw(context.Item)?.Analysis.ThisMonthConsumption.ActiveEnergy_kWh,
-      0)
-    &nbsp;
-    kWh
-  </CellTemplate>
-</PropertyColumn>
+@Column(x => x.Analysis.ThisMonthConsumption.ActiveEnergy_kWh)
 
-<PropertyColumn
-  T="TPrefix"
-  TProperty="decimal"
-  Property="x => Raw(x)!.Analysis.LastMonthConsumption.ActiveEnergy_kWh"
-  Title='@Translate("Last months consumption")'>
-  <CellTemplate>
-    @NumericString(
-      Raw(context.Item)?.Analysis.LastMonthConsumption.ActiveEnergy_kWh,
-      0)
-    &nbsp;
-    kWh
-  </CellTemplate>
-</PropertyColumn>
+@Column(x => x.Analysis.LastMonthConsumption.ActiveEnergy_kWh)
 
-<PropertyColumn
-  T="TPrefix"
-  TProperty="decimal"
-  Property="x => Raw(x)!.Analysis.LastMonthExpenses.Total_EUR"
-  Title='@Translate("Last months invoice total")'>
-  <CellTemplate>
-    @(Raw(context.Item)?.Analysis.LastMonthExpenses.Total_EUR == 0
-      ? Translate("Invoice pending...")
-      : NumericString(
-          Raw(context.Item)?.Analysis.LastMonthExpenses.Total_EUR)
-          + " EUR")
-  </CellTemplate>
-</PropertyColumn>
+@Column(x => x.Analysis.LastMonthExpenses.Total_EUR)
