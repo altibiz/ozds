@@ -1,0 +1,16 @@
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Client.Components.Models.Base
+
+@namespace Ozds.Client.Components.Models
+
+@inherits OzdsDetailsComponentBase<IMeter>
+
+@(Base<IIdentifiable>())
+
+@(LinkField<IMessenger>(x => x.MessengerId))
+
+@Field(x => x.ConnectionPower_W)
+
+@EnumerableField(x => x.Phases)
+
+@(Base<IAuditable>())

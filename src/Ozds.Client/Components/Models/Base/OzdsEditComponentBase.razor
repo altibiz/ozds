@@ -133,6 +133,24 @@
       ValueChanged="@Set(next, (HashSet<T> x) => x.ToList())" />;
   }
 
+  protected RenderFragment MultiEnumField<T>(
+    Expression<Func<TModel, HashSet<T>?>> next
+  )
+  {
+    var label = "";
+    if (next.Body is MemberExpression nextMember)
+    {
+      label = Translate(nextMember.Member.Name);
+    }
+
+    var nextFunc = next.Compile();
+
+    return @<MultiEnumPicker
+      Title="@label"
+      Value="@Get(nextFunc)"
+      ValueChanged="@Set(next)" />;
+  }
+
   protected RenderFragment LinkField<T>(
     Expression<Func<TModel, string?>> next
   )

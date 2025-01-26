@@ -14,19 +14,4 @@ public class SchneideriEM3xxxMeterModelEntityConverter(
       SchneideriEM3xxxMeterEntity,
       MeterEntity>(serviceProvider)
 {
-  public override void InitializeEntity(
-    SchneideriEM3xxxMeterModel model,
-    SchneideriEM3xxxMeterEntity entity)
-  {
-    base.InitializeEntity(model, entity);
-    entity.MeasurementValidatorId = model.MeasurementValidatorId;
-  }
-
-  public override void InitializeModel(
-    SchneideriEM3xxxMeterEntity entity,
-    SchneideriEM3xxxMeterModel model)
-  {
-    base.InitializeModel(entity, model);
-    model.MeasurementValidatorId = entity.MeasurementValidatorId;
-  }
 }

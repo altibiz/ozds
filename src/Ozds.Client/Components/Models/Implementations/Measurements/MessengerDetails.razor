@@ -1,0 +1,17 @@
+@using Ozds.Business.Models
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Client.Components.Models.Base
+
+@namespace Ozds.Client.Components.Models
+
+@inherits OzdsDetailsComponentBase<IMessenger>
+
+@(Base<IIdentifiable>())
+
+@(LinkField<LocationModel>(x => x.LocationId))
+
+<Details Model="@Model.MaxInactivityPeriod" />
+
+<Details Model="@Model.PushDelayPeriod" />
+
+@(Base<IAuditable>())

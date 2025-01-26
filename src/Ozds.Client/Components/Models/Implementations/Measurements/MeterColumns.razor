@@ -1,0 +1,15 @@
+@using MudBlazor
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Client.Components.Models.Base
+
+@typeparam TPrefix
+@typeparam TModel where TModel : IMeter
+@inherits OzdsColumnsComponentBase<TPrefix, TModel>
+
+@(Base<IIdentifiable>())
+
+@(LinkColumn<IMessenger>(x => x.MessengerId))
+
+@Column(x => x.ConnectionPower_W)
+
+@EnumerableColumn(x => x.Phases)

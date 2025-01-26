@@ -29,6 +29,34 @@
         Property="@Member(next)" />;
   }
 
+  protected RenderFragment EnumerableColumn<T>(
+    Expression<Func<TModel, IEnumerable<T>?>> next
+  )
+  {
+    var label = "";
+    if (next.Body is MemberExpression nextMember)
+    {
+      label = Translate(nextMember.Member.Name);
+    }
+
+    var nextFunc = next.Compile();
+
+    return @<PropertyColumn
+        T="TPrefix"
+        TProperty="IEnumerable<T>"
+        Title='@label'
+        Property="@Member(next)">
+        <CellTemplate>
+          @if (Get(nextFunc)(context.Item) is { } item)
+          {
+            <MudText>
+              @string.Join(", ", item)
+            </MudText>
+          }
+        </CellTemplate>
+      </PropertyColumn>;
+  }
+
   protected RenderFragment LinkColumn(
     Expression<Func<TModel, IIdentifiable?>> next
   )

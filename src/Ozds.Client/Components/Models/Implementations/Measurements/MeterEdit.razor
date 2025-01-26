@@ -1,0 +1,18 @@
+@using Ozds.Business.Models
+@using Ozds.Business.Models.Base
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Client.Components.Models.Base
+
+@namespace Ozds.Client.Components.Models
+
+@typeparam TPrefix
+@typeparam TModel where TModel : MeterModel
+@inherits OzdsEditComponentBase<TPrefix, TModel>
+
+@(Base<IdentifiableModel>())
+
+@(LinkField<IMessenger>(x => x.MessengerId))
+
+@Field(x => x.ConnectionPower_W)
+
+@MultiEnumField(x => x.Phases)

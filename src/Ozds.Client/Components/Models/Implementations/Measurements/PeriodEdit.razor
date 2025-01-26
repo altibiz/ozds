@@ -1,0 +1,10 @@
+@using Ozds.Business.Models.Complex
+@using Ozds.Client.Components.Models.Base
+
+@typeparam TPrefix
+@typeparam TModel where TModel : PeriodModel
+@inherits OzdsEditComponentBase<TPrefix, TModel>
+
+@Field(x => x.Duration)
+
+@Field(x => x.Multiplier)

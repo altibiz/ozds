@@ -1,0 +1,11 @@
+@using Ozds.Business.Models
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Client.Components.Models.Base
+
+@typeparam TPrefix
+@typeparam TModel where TModel : IMessenger
+@inherits OzdsColumnsComponentBase<TPrefix, TModel>
+
+@(Base<IIdentifiable>())
+
+@(LinkColumn<LocationModel>(x => x.LocationId))
