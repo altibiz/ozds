@@ -1,14 +1,13 @@
 @using Ozds.Business.Models.Abstractions
-@using Ozds.Business.Models
+@using Ozds.Business.Models.Base
+@using Ozds.Client.Components.Models.Base
 
 @namespace Ozds.Client.Components.Models
 
-@if (Model is NetworkUserMeasurementLocationModel networkUserMeasurementLocationModel)
-{
-  <NetworkUserMeasurementLocationEdit Model="networkUserMeasurementLocationModel"/>
-}
+@typeparam TPrefix
+@typeparam TModel where TModel : MeasurementLocationModel
+@inherits OzdsEditComponentBase<TPrefix, TModel>
 
-@code {
-  [Parameter]
-  public IMeasurementLocation Model { get; set; } = default!;
-}
+@(Base<IdentifiableModel>())
+
+@(LinkField<IMeter>(x => x.MeterId))

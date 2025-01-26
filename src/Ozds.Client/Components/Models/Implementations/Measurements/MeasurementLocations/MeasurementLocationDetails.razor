@@ -1,15 +1,10 @@
 @using Ozds.Business.Models.Abstractions
-@using Ozds.Business.Models
-
 @using Ozds.Client.Components.Models.Base
 
 @namespace Ozds.Client.Components.Models
 
 @inherits OzdsDetailsComponentBase<IMeasurementLocation>
 
-@if (Model is NetworkUserMeasurementLocationModel networkUserMeasurementLocationModel)
-{
-  <NetworkUserMeasurementLocationDetails Model="networkUserMeasurementLocationModel"/>
-}
+@(Base<IIdentifiable>())
 
-@code {}
+@(LinkField<IMeter>(x => x.MeterId))

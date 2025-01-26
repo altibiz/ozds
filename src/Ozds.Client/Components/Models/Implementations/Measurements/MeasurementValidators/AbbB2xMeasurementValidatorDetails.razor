@@ -1,38 +1,23 @@
-@using Microsoft.AspNetCore.Components
 @using Ozds.Business.Models
+@using Ozds.Business.Models.Abstractions
 @using Ozds.Client.Components.Models.Base
-@using Ozds.Client.Components.Fields
 
 @namespace Ozds.Client.Components.Models
 
 @inherits OzdsDetailsComponentBase<AbbB2xMeasurementValidatorModel>
 
-<DetailsField Title="@Translate("Name")">
-  @Model.Title
-</DetailsField>
-<DetailsField Title="@Translate("Min voltage")">
-  @Model.MinVoltage_V
-</DetailsField>
-<DetailsField Title="@Translate("Max voltage")">
-  @Model.MaxVoltage_V
-</DetailsField>
-<DetailsField Title="@Translate("Min current")">
-  @Model.MinCurrent_A
-</DetailsField>
-<DetailsField Title="@Translate("Max current")">
-  @Model.MaxCurrent_A
-</DetailsField>
-<DetailsField Title="@Translate("Min active power")">
-  @Model.MinActivePower_W
-</DetailsField>
-<DetailsField Title="@Translate("Max active power")">
-  @Model.MaxActivePower_W
-</DetailsField>
-<DetailsField Title="@Translate("Min reactive power")">
-  @Model.MinReactivePower_VAR
-</DetailsField>
-<DetailsField Title="@Translate("Max reactive power")">
-  @Model.MaxReactivePower_VAR
-</DetailsField>
+@(Base<IIdentifiable>())
 
-@code {}
+@Field(x => x.MinVoltage_V)
+@Field(x => x.MaxVoltage_V)
+
+@Field(x => x.MinCurrent_A)
+@Field(x => x.MaxCurrent_A)
+
+@Field(x => x.MinActivePower_W)
+@Field(x => x.MaxActivePower_W)
+
+@Field(x => x.MinReactivePower_VAR)
+@Field(x => x.MaxReactivePower_VAR)
+
+@(Base<IAuditable>())

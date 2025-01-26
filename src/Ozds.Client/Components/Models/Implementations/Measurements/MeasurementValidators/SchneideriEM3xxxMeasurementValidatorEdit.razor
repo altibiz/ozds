@@ -1,60 +1,26 @@
-@using Microsoft.AspNetCore.Components
-@using MudBlazor
 @using Ozds.Business.Models
-@using Ozds.Client.Components.Base
+@using Ozds.Business.Models.Base
+@using Ozds.Client.Components.Models.Base
 
 @namespace Ozds.Client.Components.Models
 
-@inherits OzdsComponentBase
+@typeparam TPrefix
+@typeparam TModel where TModel : SchneideriEM3xxxMeasurementValidatorModel
+@inherits OzdsEditComponentBase<TPrefix, TModel>
 
-<MudTextField
-  Label="@Translate("Name")"
-  @bind-Value="Model.Title"
-  For="@(() => Model.Title)"/>
-<MudTextField
-  Label="@Translate("Min voltage")"
-  @bind-Value="Model.MinVoltage_V"
-  For="@(() => Model.MinVoltage_V)"/>
-<MudTextField
-  Label="@Translate("Max voltage")"
-  @bind-Value="Model.MaxVoltage_V"
-  For="@(() => Model.MaxVoltage_V)"/>
-<MudTextField
-  Label="@Translate("Min current")"
-  @bind-Value="Model.MinCurrent_A"
-  For="@(() => Model.MinCurrent_A)"/>
-<MudTextField
-  Label="@Translate("Max current")"
-  @bind-Value="Model.MaxCurrent_A"
-  For="@(() => Model.MaxCurrent_A)"/>
-<MudTextField
-  Label="@Translate("Min active power")"
-  @bind-Value="Model.MinActivePower_W"
-  For="@(() => Model.MinActivePower_W)"/>
-<MudTextField
-  Label="@Translate("Max active power")"
-  @bind-Value="Model.MaxActivePower_W"
-  For="@(() => Model.MaxActivePower_W)"/>
-<MudTextField
-  Label="@Translate("Min reactive power")"
-  @bind-Value="Model.MinReactivePower_VAR"
-  For="@(() => Model.MinReactivePower_VAR)"/>
-<MudTextField
-  Label="@Translate("Max reactive power")"
-  @bind-Value="Model.MaxReactivePower_VAR"
-  For="@(() => Model.MaxReactivePower_VAR)"/>
-<MudTextField
-  Label="@Translate("Min apparent power")"
-  @bind-Value="Model.MinApparentPower_VA"
-  For="@(() => Model.MinApparentPower_VA)"/>
-<MudTextField
-  Label="@Translate("Max apparent power")"
-  @bind-Value="Model.MaxApparentPower_VA"
-  For="@(() => Model.MaxApparentPower_VA)"/>
+@(Base<IdentifiableModel>())
 
-@code {
+@Field(x => x.MinVoltage_V)
+@Field(x => x.MaxVoltage_V)
 
-  [Parameter]
-  public SchneideriEM3xxxMeasurementValidatorModel Model { get; set; } = default!;
+@Field(x => x.MinCurrent_A)
+@Field(x => x.MaxCurrent_A)
 
-}
+@Field(x => x.MinActivePower_W)
+@Field(x => x.MaxActivePower_W)
+
+@Field(x => x.MinReactivePower_VAR)
+@Field(x => x.MaxReactivePower_VAR)
+
+@Field(x => x.MinApparentPower_VA)
+@Field(x => x.MaxApparentPower_VA)
