@@ -1,143 +1,29 @@
-@using Microsoft.AspNetCore.Components
-@using MudBlazor
 @using Ozds.Business.Models
 @using Ozds.Business.Models.Base
-@using Ozds.Client.Components.Base
-@using Ozds.Client.Components.Fields
+@using Ozds.Client.Components.Models.Base
+@using Ozds.Client.Components.Streaming
 
-@namespace Ozds.Client.Components.Models
+@typeparam TPrefix
+@typeparam TModel where TModel : NetworkUserInvoiceModel
+@inherits OzdsEditComponentBase<TPrefix, TModel>
 
-@inherits OzdsComponentBase
+@(Base<IdentifiableModel>())
 
-<MudText Typo="Typo.h6">@Translate("Usage Fees")</MudText>
+@(Base<FinancialModel>(@<Fragment>
+  @Field(x => x.UsageActiveEnergyTotalImportT0Fee_EUR)
+  @Field(x => x.UsageActiveEnergyTotalImportT1Fee_EUR)
+  @Field(x => x.UsageActiveEnergyTotalImportT2Fee_EUR)
+  @Field(x => x.UsageActivePowerTotalImportT1PeakFee_EUR)
+  @Field(x => x.UsageReactiveEnergyTotalRampedT0Fee_EUR)
+  @Field(x => x.UsageMeterFee_EUR)
+  @Field(x => x.UsageFeeTotal_EUR)
 
-<MudDivider Class="my-2" />
+  @Field(x => x.SupplyActiveEnergyTotalImportT1Fee_EUR)
+  @Field(x => x.SupplyActiveEnergyTotalImportT2Fee_EUR)
+  @Field(x => x.SupplyBusinessUsageFee_EUR)
+  @Field(x => x.SupplyRenewableEnergyFee_EUR)
+  @Field(x => x.SupplyFeeTotal_EUR)
+</Fragment>))
 
-<MudNumericField
-  T="decimal"
-  Label="@Translate("Usage Active Energy Total Import T0 Fee (€)")"
-  @bind-Value="Model.UsageActiveEnergyTotalImportT0Fee_EUR"
-  For="@(() => Model.UsageActiveEnergyTotalImportT0Fee_EUR)"
-  Required="true" />
-
-<MudNumericField
-  T="decimal"
-  Label="@Translate("Usage Active Energy Total Import T1 Fee (€)")"
-  @bind-Value="Model.UsageActiveEnergyTotalImportT1Fee_EUR"
-  For="@(() => Model.UsageActiveEnergyTotalImportT1Fee_EUR)"
-  Required="true" />
-
-<MudNumericField
-  T="decimal"
-  Label="@Translate("Usage Active Energy Total Import T2 Fee (€)")"
-  @bind-Value="Model.UsageActiveEnergyTotalImportT2Fee_EUR"
-  For="@(() => Model.UsageActiveEnergyTotalImportT2Fee_EUR)"
-  Required="true" />
-
-<MudNumericField
-  T="decimal"
-  Label="@Translate("Usage Active Power Total Import T1 Peak Fee (€)")"
-  @bind-Value="Model.UsageActivePowerTotalImportT1PeakFee_EUR"
-  For="@(() => Model.UsageActivePowerTotalImportT1PeakFee_EUR)"
-  Required="true" />
-
-<MudNumericField
-  T="decimal"
-  Label="@Translate("Usage Reactive Energy Total Ramped T0 Fee (€)")"
-  @bind-Value="Model.UsageReactiveEnergyTotalRampedT0Fee_EUR"
-  For="@(() => Model.UsageReactiveEnergyTotalRampedT0Fee_EUR)"
-  Required="true" />
-
-<MudNumericField
-  T="decimal"
-  Label="@Translate("Usage Meter Fee (€)")"
-  @bind-Value="Model.UsageMeterFee_EUR"
-  For="@(() => Model.UsageMeterFee_EUR)"
-  Required="true" />
-
-<MudNumericField
-  T="decimal"
-  Label="@Translate("Usage Fee Total (€)")"
-  @bind-Value="Model.UsageFeeTotal_EUR"
-  For="@(() => Model.UsageFeeTotal_EUR)"
-  Required="true" />
-
-<MudDivider Class="my-2" />
-
-<MudText Typo="Typo.h6">@Translate("Supply Fees")</MudText>
-
-<MudDivider Class="my-2" />
-
-<MudNumericField
-  T="decimal"
-  Label="@Translate("Supply Active Energy Total Import T1 Fee (€)")"
-  @bind-Value="Model.SupplyActiveEnergyTotalImportT1Fee_EUR"
-  For="@(() => Model.SupplyActiveEnergyTotalImportT1Fee_EUR)"
-  Required="true" />
-
-<MudNumericField
-  T="decimal"
-  Label="@Translate("Supply Active Energy Total Import T2 Fee (€)")"
-  @bind-Value="Model.SupplyActiveEnergyTotalImportT2Fee_EUR"
-  For="@(() => Model.SupplyActiveEnergyTotalImportT2Fee_EUR)"
-  Required="true" />
-
-<MudNumericField
-  T="decimal"
-  Label="@Translate("Supply Business Usage Fee (€)")"
-  @bind-Value="Model.SupplyBusinessUsageFee_EUR"
-  For="@(() => Model.SupplyBusinessUsageFee_EUR)"
-  Required="true" />
-
-<MudNumericField
-  T="decimal"
-  Label="@Translate("Supply Renewable Energy Fee (€)")"
-  @bind-Value="Model.SupplyRenewableEnergyFee_EUR"
-  For="@(() => Model.SupplyRenewableEnergyFee_EUR)"
-  Required="true" />
-
-<MudNumericField
-  T="decimal"
-  Label="@Translate("Supply Fee Total (€)")"
-  @bind-Value="Model.SupplyFeeTotal_EUR"
-  For="@(() => Model.SupplyFeeTotal_EUR)"
-  Required="true" />
-
-<MudDivider Class="my-2" />
-
-<MudText Typo="Typo.h6">@Translate("Tax and Totals")</MudText>
-
-<MudDivider Class="my-2" />
-
-<MudNumericField
-  T="decimal"
-  Label="@Translate("Tax Rate (%)")"
-  @bind-Value="Model.InvoiceTaxRate_Percent"
-  For="@(() => Model.InvoiceTaxRate_Percent)"
-  Required="true" />
-
-<MudNumericField
-  T="decimal"
-  Label="@Translate("Tax (€)")"
-  @bind-Value="Model.InvoiceTax_EUR"
-  For="@(() => Model.InvoiceTax_EUR)"
-  Required="true" />
-
-<MudNumericField
-  T="decimal"
-  Label="@Translate("Total (€)")"
-  @bind-Value="Model.Total_EUR"
-  For="@(() => Model.Total_EUR)"
-  Required="true" />
-
-<MudNumericField
-  T="decimal"
-  Label="@Translate("Total with Tax (€)")"
-  @bind-Value="Model.InvoiceTotalWithTax_EUR"
-  For="@(() => Model.InvoiceTotalWithTax_EUR)"
-  Required="true" />
-
-@code {
-  [Parameter]
-  public NetworkUserInvoiceModel Model { get; set; } = default!;
-}
+@Field(x => x.Tax_EUR)
+@Field(x => x.TotalWithTax_EUR)

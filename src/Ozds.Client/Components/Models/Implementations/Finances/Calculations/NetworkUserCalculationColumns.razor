@@ -10,12 +10,11 @@
 
 @(Base<IIdentifiable>())
 
-@(LinkColumn<IMeter>(x => x.MeterId))
-
-@(LinkColumn<NetworkUserMeasurementLocationModel>(
-  x => x.NetworkUserMeasurementLocationId))
-
-@(Base<IFinancial>())
+@(Base<IFinancial>(@<Fragment>
+  @(LinkColumn<IMeter>(x => x.MeterId))
+  @(LinkColumn<NetworkUserMeasurementLocationModel>(
+    x => x.NetworkUserMeasurementLocationId))
+</Fragment>))
 
 @(LinkColumn<INetworkUserCatalogue>(x => x.UsageNetworkUserCatalogueId))
 

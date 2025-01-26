@@ -1,14 +1,14 @@
-@using Ozds.Business.Models.Abstractions
-@using Ozds.Business.Models
+@using Ozds.Business.Models.Base
+@using Ozds.Client.Components.Models.Base
 
-@namespace Ozds.Client.Components.Models
+@typeparam TPrefix
+@typeparam TModel where TModel : InvoiceModel
+@inherits OzdsEditComponentBase<TPrefix, TModel>
 
-@if (Model is NetworkUserInvoiceModel networkUserInvoiceModel)
-{
-  <NetworkUserInvoiceEdit Model="networkUserInvoiceModel"/>
-}
+@(Base<IdentifiableModel>())
 
-@code {
-  [Parameter]
-  public IInvoice Model { get; set; } = default!;
-}
+@(Base<FinancialModel>(Sub()))
+
+@Field(x => x.Tax_EUR)
+
+@Field(x => x.TotalWithTax_EUR)

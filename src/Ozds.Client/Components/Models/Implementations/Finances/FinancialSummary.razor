@@ -3,12 +3,10 @@
 
 @namespace Ozds.Client.Components.Models
 
-@inherits OzdsDetailsComponentBase<IInvoice>
+@inherits OzdsSummaryComponentBase<IFinancial>
 
 @(Base<IIdentifiable>())
 
-@(Base<IFinancial>(Sub()))
+@Subtitle(x => x.FromDate)
 
-@Field(x => x.Tax_EUR)
-
-@Field(x => x.TotalWithTax_EUR)
+@Subtitle(x => x.ToDate)
