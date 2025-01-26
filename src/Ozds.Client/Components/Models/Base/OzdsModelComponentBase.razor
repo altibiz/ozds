@@ -11,9 +11,13 @@
 @Base()
 
 @code {
-  protected RenderFragment Base()
+
+  [Parameter]
+  public RenderFragment ChildContent { get; set; } = @<Fragment />;
+
+  protected RenderFragment Base(bool anyway = false)
   {
-    if (Isolate)
+    if (Isolate && !anyway)
     {
       return @<Fragment />;
     }
@@ -23,14 +27,14 @@
       Parameters="@(BaseParameters())" />;
   }
 
-  protected RenderFragment Base<T>()
+  protected RenderFragment Base<T>(bool anyway = false)
   {
-    return Base(typeof(T));
+    return Base(typeof(T), anyway);
   }
 
-  protected RenderFragment Base(Type baseModelType)
+  protected RenderFragment Base(Type baseModelType, bool anyway = false)
   {
-    if (Isolate)
+    if (Isolate && !anyway)
     {
       return @<Fragment />;
     }
@@ -38,5 +42,54 @@
     return @<DynamicComponent
       Type="@(BaseComponentType(baseModelType))"
       Parameters="@(BaseParameters())" />;
+  }
+
+  protected RenderFragment Base(
+    RenderFragment childContent,
+    bool anyway = false
+  )
+  {
+    if (Isolate && !anyway)
+    {
+      return @<Fragment />;
+    }
+
+    return @<DynamicComponent
+      Type="@(BaseComponentType())"
+      Parameters="@(BaseParameters(childContent))" />;
+  }
+
+  protected RenderFragment Base<T>(
+    RenderFragment childContent,
+    bool anyway = false
+  )
+  {
+    return Base(typeof(T), childContent, anyway);
+  }
+
+  protected RenderFragment Base(
+    Type baseModelType,
+    RenderFragment childContent,
+    bool anyway = false
+  )
+  {
+    if (Isolate && !anyway)
+    {
+      return @<Fragment />;
+    }
+
+    return @<DynamicComponent
+      Type="@(BaseComponentType(baseModelType))"
+      Parameters="@(BaseParameters(childContent))" />;
+  }
+
+  protected RenderFragment Sub()
+  {
+    if (!Isolate)
+    {
+      return @<Fragment />;
+    }
+
+    return ChildContent;
   }
 }

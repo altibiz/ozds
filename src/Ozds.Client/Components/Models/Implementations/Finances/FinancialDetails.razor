@@ -1,0 +1,21 @@
+@using Ozds.Business.Models
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Client.Components.Models.Base
+
+@inherits OzdsDetailsComponentBase<IFinancial>
+
+@(Base<IIdentifiable>())
+
+@Field(x => x.IssuedOn)
+
+@(LinkField<RepresentativeModel>(x => x.IssuedById))
+
+@Field(x => x.FromDate)
+
+@Field(x => x.ToDate)
+
+@Field(x => x.Total_EUR)
+
+@Field(x => x.Tax_EUR)
+
+@Field(x => x.TotalWithTax_EUR)

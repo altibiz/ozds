@@ -15,14 +15,14 @@
 
 @Field(x => x.AltiBizSubProjectCode)
 
-@(ForeignKeyField<WhiteMediumNetworkUserCatalogueModel>(
+@(LinkField<WhiteMediumNetworkUserCatalogueModel>(
     x => x.WhiteMediumNetworkUserCatalogueId))
 
-@(ForeignKeyField<BlueLowNetworkUserCatalogueModel>(
+@(LinkField<BlueLowNetworkUserCatalogueModel>(
     x => x.BlueLowNetworkUserCatalogueId))
 
-@(ForeignKeyField<RedLowNetworkUserCatalogueModel>(
+@(LinkField<RedLowNetworkUserCatalogueModel>(
     x => x.RedLowNetworkUserCatalogueId))
 
-@(ForeignKeyField<WhiteLowNetworkUserCatalogueModel>(
+@(LinkField<WhiteLowNetworkUserCatalogueModel>(
     x => x.WhiteLowNetworkUserCatalogueId))

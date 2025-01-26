@@ -1,0 +1,29 @@
+@using Ozds.Business.Models.Base
+@using Ozds.Business.Models.Complex
+@using Ozds.Client.Components.Models.Base
+
+@typeparam TPrefix
+@typeparam TModel where TModel : NetworkUserCalculationModel
+@inherits OzdsEditComponentBase<TPrefix, TModel>
+
+@(Base<IdentifiableModel>())
+
+<PrefixedEdit Model="@Model" Prefix="@Wrap(x => x.UsageMeterFee)" />
+
+@Field(x => x.UsageFeeTotal_EUR)
+
+<PrefixedEdit
+  Model="@Model"
+  Prefix="@Wrap(x => x.SupplyActiveEnergyTotalImportT1)" />
+
+<PrefixedEdit
+  Model="@Model"
+  Prefix="@Wrap(x => x.SupplyActiveEnergyTotalImportT2)" />
+
+<PrefixedEdit Model="@Model" Prefix="@Wrap(x => x.SupplyBusinessUsageFee)" />
+
+<PrefixedEdit Model="@Model" Prefix="@Wrap(x => x.SupplyRenewableEnergyFee)" />
+
+@Field(x => x.SupplyFeeTotal_EUR)
+
+@(Base<FinancialModel>())

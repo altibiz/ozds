@@ -133,7 +133,7 @@
       ValueChanged="@Set(next, (HashSet<T> x) => x.ToList())" />;
   }
 
-  protected RenderFragment ForeignKeyField<T>(
+  protected RenderFragment LinkField<T>(
     Expression<Func<TModel, string?>> next
   )
     where T : IIdentifiable

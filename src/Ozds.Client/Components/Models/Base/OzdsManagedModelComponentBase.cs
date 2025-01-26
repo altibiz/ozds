@@ -56,7 +56,7 @@ public abstract class OzdsManagedModelComponentBase<TPrefix, TModel> :
   )
   {
     var parameter = Expression.Parameter(typeof(T));
-    var prefixGetter = Exp;
+    var prefixGetter = Fix;
     var nullCheck = Expression.NotEqual(
       prefixGetter,
       Expression.Constant(default(TModel))
@@ -85,7 +85,7 @@ public abstract class OzdsManagedModelComponentBase<TPrefix, TModel> :
   {
     var parameter = Expression.Parameter(typeof(TAdapter));
     var adapted = Expression.Invoke(adapt, parameter);
-    var prefixGetter = Exp;
+    var prefixGetter = Fix;
     var nullCheck = Expression.NotEqual(
       prefixGetter,
       Expression.Constant(default(TModel))
@@ -111,7 +111,7 @@ public abstract class OzdsManagedModelComponentBase<TPrefix, TModel> :
     Expression<Func<TModel, T?>> next
   )
   {
-    var first = Exp;
+    var first = Fix;
     var replacedBody = ParameterReplacer.Replace(
       next.Body,
       next.Parameters[0],
@@ -136,12 +136,12 @@ public abstract class OzdsManagedModelComponentBase<TPrefix, TModel> :
     return () => compiled(Model);
   }
 
-  protected Expression<Func<TModel?>> Exp =>
-    exp ??= CreateExp();
+  protected Expression<Func<TModel?>> Fix =>
+    fix ??= CreateFix();
 
-  private Expression<Func<TModel?>>? exp;
+  private Expression<Func<TModel?>>? fix;
 
-  protected virtual Expression<Func<TModel?>> CreateExp()
+  protected virtual Expression<Func<TModel?>> CreateFix()
   {
     var prefix = Prefix;
     if (prefix is null)
@@ -175,9 +175,9 @@ public abstract class OzdsManagedModelComponentBase<TPrefix, TModel> :
       raw = CreateRaw();
     }
 
-    if (exp is { })
+    if (fix is { })
     {
-      exp = CreateExp();
+      fix = CreateFix();
     }
   }
 }

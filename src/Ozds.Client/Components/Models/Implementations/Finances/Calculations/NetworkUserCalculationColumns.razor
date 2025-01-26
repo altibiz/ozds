@@ -1,0 +1,22 @@
+@using MudBlazor
+@using Ozds.Business.Models
+@using Ozds.Business.Models.Complex
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Client.Components.Models.Base
+
+@typeparam TPrefix
+@typeparam TModel where TModel : INetworkUserCalculation
+@inherits OzdsColumnsComponentBase<TPrefix, TModel>
+
+@(Base<IIdentifiable>())
+
+@(LinkColumn<IMeter>(x => x.MeterId))
+
+@(LinkColumn<NetworkUserMeasurementLocationModel>(
+  x => x.NetworkUserMeasurementLocationId))
+
+@(Base<IFinancial>())
+
+@(LinkColumn<INetworkUserCatalogue>(x => x.UsageNetworkUserCatalogueId))
+
+@(LinkColumn<IRegulatoryCatalogue>(x => x.SupplyRegulatoryCatalogueId))

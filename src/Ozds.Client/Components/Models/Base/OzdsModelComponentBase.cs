@@ -71,6 +71,13 @@ public abstract partial class OzdsModelComponentBase<TModel>
     return baseParameters ??= CreateFixedBaseParameters();
   }
 
+  protected Dictionary<string, object> BaseParameters(
+    RenderFragment childContent
+  )
+  {
+    return CreateFixedBaseParameters(childContent);
+  }
+
   private Dictionary<string, object>? baseParameters;
 
   protected virtual Dictionary<string, object> CreateBaseParameters()
@@ -82,6 +89,16 @@ public abstract partial class OzdsModelComponentBase<TModel>
   {
     var parameters = CreateBaseParameters();
     parameters.Add(nameof(Isolate), true);
+    return parameters;
+  }
+
+  private Dictionary<string, object> CreateFixedBaseParameters(
+    RenderFragment childContent
+  )
+  {
+    var parameters = CreateBaseParameters();
+    parameters.Add(nameof(Isolate), true);
+    parameters.Add(nameof(ChildContent), childContent);
     return parameters;
   }
 

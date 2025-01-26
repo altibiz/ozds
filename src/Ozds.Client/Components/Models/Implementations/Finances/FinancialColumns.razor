@@ -1,0 +1,14 @@
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Client.Components.Models.Base
+
+@typeparam TPrefix
+@typeparam TModel where TModel : IFinancial
+@inherits OzdsColumnsComponentBase<TPrefix, TModel>
+
+@(Base<IIdentifiable>())
+
+@Column(x => x.FromDate)
+
+@Column(x => x.ToDate)
+
+@Column(x => x.Total_EUR)

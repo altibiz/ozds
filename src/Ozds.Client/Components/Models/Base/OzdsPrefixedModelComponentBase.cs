@@ -9,6 +9,33 @@ public abstract class OzdsPrefixedModelComponentBase<TPrefix, TModel> :
   [Parameter]
   public Expression<Func<TPrefix, TModel?>>? Prefix { get; set; } = default!;
 
+  protected Expression<Func<TPrefix, T?>> Wrap<T>(
+    Expression<Func<TModel, T?>> next
+  )
+  {
+    var first = Exp;
+    var param = first.Parameters[0];
+    var modelExpression = first.Body;
+    var nullCheck = Expression.Equal(
+      modelExpression,
+      Expression.Constant(null, typeof(TModel))
+    );
+    var ifTrue = Expression.Constant(default(T), typeof(T));
+    var ifFalse = Expression.Invoke(next, modelExpression);
+    var body = Expression.Condition(nullCheck, ifTrue, ifFalse);
+    return Expression.Lambda<Func<TPrefix, T?>>(body, param);
+  }
+
+  protected Expression<Func<TPrefix, TModel?>> Exp =>
+    exp ??= CreateExp();
+
+  private Expression<Func<TPrefix, TModel?>>? exp;
+
+  protected virtual Expression<Func<TPrefix, TModel?>> CreateExp()
+  {
+    return Prefix ?? ((TPrefix x) => (TModel?)(object?)x);
+  }
+
   protected override Type CreateBaseComponentType()
   {
     var baseModelType = ModelType.BaseType;
@@ -40,5 +67,15 @@ public abstract class OzdsPrefixedModelComponentBase<TPrefix, TModel> :
       baseModelType,
       ComponentKind
     );
+  }
+
+  protected override void OnParametersSet()
+  {
+    base.OnParametersSet();
+
+    if (exp is { })
+    {
+      exp = CreateExp();
+    }
   }
 }

@@ -1,6 +1,8 @@
 @using MudBlazor
 @using System.Linq.Expressions
+@using Ozds.Business.Models.Abstractions
 @using Ozds.Client.Components.Fields
+@using Ozds.Client.Components.Streaming
 
 @* TODO: use .NET 9 OverloadResolutionPriorityAttribute *@
 
@@ -22,7 +24,7 @@
 
     var nextFunc = next.Compile();
 
-    return @<DetailsField Title="label">
+    return @<DetailsField Title="@label">
         <MudText>
           @nextFunc(Model)
         </MudText>
@@ -49,5 +51,57 @@
           }
         </MudText>
       </DetailsField>;
+  }
+
+  protected RenderFragment LinkField<T>(
+    Expression<Func<TModel, string?>> next
+  )
+    where T : IIdentifiable
+  {
+    var label = "";
+    if (next.Body is MemberExpression nextMember)
+    {
+      label = Translate(nextMember.Member.Name);
+    }
+
+    var nextFunc = next.Compile();
+
+    var id = nextFunc(Model);
+
+    var href = id is null
+      ? null
+      : PageHref(Provider.GetPageComponentType(typeof(T)), new { id });
+
+    return @<DetailsField Title="@label">
+        @if (id is null || href is null)
+        {
+          <Fragment />
+        }
+        else
+        {
+          <MudLink Href="@href">
+            @id
+          </MudLink>
+        }
+      </DetailsField>;
+  }
+
+  protected RenderFragment ArchivedField<T>(
+    Expression<Func<TModel, T?>> next
+  )
+  {
+    var label = "";
+    if (next.Body is MemberExpression nextMember)
+    {
+      label = Translate(nextMember.Member.Name);
+    }
+
+    var nextFunc = next.Compile();
+
+    var archived = nextFunc(Model);
+
+    return @<CollapseField Title="@label">
+        <Details Model="@archived" />
+      </CollapseField>;
   }
 }

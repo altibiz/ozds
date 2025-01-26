@@ -50,4 +50,30 @@
         </CellTemplate>
       </TemplateColumn>;
   }
+
+  protected RenderFragment LinkColumn<T>(
+    Expression<Func<TModel, string?>> next
+  )
+    where T : IIdentifiable
+  {
+    var label = "";
+    if (next.Body is MemberExpression nextMember)
+    {
+      label = Translate(nextMember.Member.Name);
+    }
+
+    var nextFunc = next.Compile();
+
+    return @<TemplateColumn T="TPrefix" Title="@label">
+        <CellTemplate>
+          @if (Get(nextFunc)(context.Item) is { } id)
+          {
+            var href = PageHref(Provider.GetPageComponentType(typeof(T)), id);
+            <MudLink Href="@href">
+              @id
+            </MudLink>
+          }
+        </CellTemplate>
+      </TemplateColumn>;
+  }
 }

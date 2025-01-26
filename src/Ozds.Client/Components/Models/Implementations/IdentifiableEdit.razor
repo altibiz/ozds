@@ -1,9 +1,9 @@
 @using MudBlazor
-@using Ozds.Business.Models.Abstractions
+@using Ozds.Business.Models.Base
 @using Ozds.Client.Components.Models.Base
 
 @namespace Ozds.Client.Components.Models
 
-@inherits OzdsDetailsComponentBase<IIdentifiable>
+@inherits OzdsDetailsComponentBase<IdentifiableModel>
 
 @Field(x => x.Title)

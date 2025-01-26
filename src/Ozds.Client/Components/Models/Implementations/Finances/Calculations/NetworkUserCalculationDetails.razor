@@ -1,0 +1,48 @@
+@using MudBlazor
+@using Ozds.Business.Models
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Client.Components.Models.Base
+@using Ozds.Client.Components.Fields
+
+@namespace Ozds.Client.Components.Models
+
+@inherits OzdsDetailsComponentBase<INetworkUserCalculation>
+
+@(Base<IIdentifiable>())
+
+@(LinkField<INetworkUserInvoice>(x => x.NetworkUserInvoiceId))
+
+@(LinkField<IMeter>(x => x.MeterId))
+
+@(LinkField<NetworkUserMeasurementLocationModel>(
+    x => x.NetworkUserMeasurementLocationId))
+
+@(LinkField<INetworkUserCatalogue>(x => x.UsageNetworkUserCatalogueId))
+
+@(LinkField<IRegulatoryCatalogue>(x => x.SupplyRegulatoryCatalogueId))
+
+@Sub()
+
+<Details Model="@Model.UsageMeterFee" />
+
+@Field(x => x.UsageFeeTotal_EUR)
+
+<Details Model="@Model.SupplyActiveEnergyTotalImportT1" />
+
+<Details Model="@Model.SupplyActiveEnergyTotalImportT2" />
+
+<Details Model="@Model.SupplyBusinessUsageFee" />
+
+<Details Model="@Model.SupplyRenewableEnergyFee" />
+
+@Field(x => x.SupplyFeeTotal_EUR)
+
+@(Base<IFinancial>(anyway: true))
+
+@(ArchivedField(x => x.ArchivedMeter))
+
+@(ArchivedField(x => x.ArchivedNetworkUserMeasurementLocation))
+
+@(ArchivedField(x => x.ArchivedUsageNetworkUserCatalogue))
+
+@(ArchivedField(x => x.ArchivedSupplyRegulatoryCatalogue))

@@ -17,23 +17,6 @@ public abstract class OzdsListModelComponentBase<TPrefix, TModel> :
     return x => first(x) is { } y ? next(y) : default;
   }
 
-  protected Expression<Func<TPrefix, T?>> Wrap<T>(
-    Expression<Func<TModel, T?>> next
-  )
-  {
-    var first = Exp;
-    var param = first.Parameters[0];
-    var modelExpression = first.Body;
-    var nullCheck = Expression.Equal(
-      modelExpression,
-      Expression.Constant(null, typeof(TModel))
-    );
-    var ifTrue = Expression.Constant(default(T), typeof(T));
-    var ifFalse = Expression.Invoke(next, modelExpression);
-    var body = Expression.Condition(nullCheck, ifTrue, ifFalse);
-    return Expression.Lambda<Func<TPrefix, T?>>(body, param);
-  }
-
   protected Expression<Func<TPrefix, T>> Member<T>(
     Expression<Func<TModel, T>> next
   )
@@ -58,16 +41,6 @@ public abstract class OzdsListModelComponentBase<TPrefix, TModel> :
     return Prefix?.Compile() ?? ((TPrefix x) => (TModel?)(object?)x);
   }
 
-  protected Expression<Func<TPrefix, TModel?>> Exp =>
-    exp ??= CreateExp();
-
-  private Expression<Func<TPrefix, TModel?>>? exp;
-
-  protected virtual Expression<Func<TPrefix, TModel?>> CreateExp()
-  {
-    return Prefix ?? ((TPrefix x) => (TModel?)(object?)x);
-  }
-
   protected override Dictionary<string, object> CreateBaseParameters()
   {
     return new()
@@ -84,11 +57,6 @@ public abstract class OzdsListModelComponentBase<TPrefix, TModel> :
     if (raw is { })
     {
       raw = CreateRaw();
-    }
-
-    if (exp is { })
-    {
-      exp = CreateExp();
     }
   }
 }

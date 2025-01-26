@@ -1,0 +1,10 @@
+@using Ozds.Business.Models.Base
+@using Ozds.Client.Components.Models.Base
+
+@typeparam TPrefix
+@typeparam TModel where TModel : FinancialModel
+@inherits OzdsEditComponentBase<TPrefix, TModel>
+
+@(Base<IdentifiableModel>())
+
+@Field(x => x.Total_EUR)
