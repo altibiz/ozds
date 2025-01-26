@@ -1,36 +1,18 @@
 @using Ozds.Business.Models.Abstractions
-@using Ozds.Business.Models.Base
-@using Ozds.Business.Models
-
 @using Ozds.Client.Components.Models.Base
 
 @namespace Ozds.Client.Components.Models
 
 @inherits OzdsDetailsComponentBase<IEvent>
 
-@if (Model is SystemAuditEventModel systemAuditEventModel)
-{
-  <SystemAuditEventDetails Model="systemAuditEventModel"/>
-}
-else if (Model is RepresentativeAuditEventModel representativeAuditEventModel)
-{
-  <RepresentativeAuditEventDetails Model="representativeAuditEventModel"/>
-}
-else if (Model is MessengerEventModel messengerEventModel)
-{
-  <MessengerEventDetails Model="messengerEventModel"/>
-}
-else if (Model is SystemEventModel systemEventModel)
-{
-  <SystemEventDetails Model="systemEventModel"/>
-}
-else if (Model is RepresentativeEventModel representativeEventModel)
-{
-  <RepresentativeEventDetails Model="representativeEventModel"/>
-}
-else if (Model is AuditEventModel auditEventModel)
-{
-  <AuditEventDetails Model="auditEventModel"/>
-}
+@(Base<IIdentifiable>())
 
-@code {}
+@Field(x => x.Timestamp)
+
+@Sub()
+
+@Field(x => x.Level)
+
+@Field(x => x.Content)
+
+@EnumerableField(x => x.Categories)

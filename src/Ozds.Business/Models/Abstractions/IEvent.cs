@@ -10,4 +10,6 @@ public interface IEvent : IIdentifiable, IReadonly
   public LevelModel Level { get; }
 
   public JsonDocument Content { get; }
+
+  public List<CategoryModel> Categories { get; }
 }

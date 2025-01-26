@@ -1,20 +1,20 @@
-@using Microsoft.AspNetCore.Components
 @using Ozds.Business.Models.Abstractions
-@using Ozds.Business.Models
 @using Ozds.Client.Components.Models.Base
-@using Ozds.Client.Components.Fields
 
 @namespace Ozds.Client.Components.Models
 
 @inherits OzdsDetailsComponentBase<INotification>
 
-@if (Model is MessengerNotificationModel messengerNotificationModel)
-{
-  <MessengerNotificationDetails Model="messengerNotificationModel"/>
-}
-else if (Model is SystemNotificationModel systemNotificationModel)
-{
-  <SystemNotificationDetails Model="systemNotificationModel"/>
-}
+@(Base<IIdentifiable>())
 
-@code {}
+@Field(x => x.Timestamp)
+
+@Field(x => x.Summary)
+
+@Field(x => x.Content)
+
+@Sub()
+
+@(LinkField<IEvent>(x => x.EventId))
+
+@EnumerableField(x => x.Topics)

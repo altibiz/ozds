@@ -4,10 +4,11 @@
 
 @namespace Ozds.Client.Components.Models
 
-@inherits OzdsDetailsComponentBase<MessengerNotificationModel>
+@typeparam TPrefix
+@typeparam TModel where TModel : NetworkUserInvoiceNotificationModel
+@inherits OzdsColumnsComponentBase<TPrefix, TModel>
 
 @(Base<IIdentifiable>())
 
 @(Base<INotification>(
-    Base<IResolvableNotification>(
-      LinkField<IMessenger>(x => x.MessengerId))))
+    LinkColumn<INetworkUserInvoice>(x => x.InvoiceId)))

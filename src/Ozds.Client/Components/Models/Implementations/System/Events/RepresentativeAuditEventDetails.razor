@@ -1,35 +1,13 @@
 @using Ozds.Business.Models
-@using Ozds.Business.Models.Base
-@using Ozds.Business.Models.Enums
+@using Ozds.Business.Models.Abstractions
 @using Ozds.Client.Components.Models.Base
-@using Ozds.Client.Components.Fields
 
 @namespace Ozds.Client.Components.Models
 
 @inherits OzdsDetailsComponentBase<RepresentativeAuditEventModel>
 
-<DetailsField Title="@Translate("Title")">
-  @Model.Title
-</DetailsField>
+@(Base<IIdentifiable>())
 
-<DetailsField Title="@Translate("Timestamp")">
-  @DateTimeString(Model.Timestamp)
-</DetailsField>
-
-<DetailsField Title="@Translate("Level")">
-  @Model.Level.ToTitle()
-</DetailsField>
-
-<DetailsField Title="@Translate("Audit Action")">
-  @Model.Audit.ToTitle()
-</DetailsField>
-
-<DetailsField Title="@Translate("Categories")">
-  @string.Join(", ", Model.Categories.Select(c => c.ToTitle()))
-</DetailsField>
-
-<DetailsField Title="@Translate("Content")">
-  @JsonString(Model.Content)
-</DetailsField>
-
-@code {}
+@(Base<IEvent>(
+    Base<IAuditEvent>(
+      LinkField<RepresentativeModel>(x => x.RepresentativeId))))

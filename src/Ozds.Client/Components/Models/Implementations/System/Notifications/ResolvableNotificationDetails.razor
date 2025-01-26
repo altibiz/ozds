@@ -1,14 +1,16 @@
+@using Ozds.Business.Models
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Client.Components.Models.Base
 @using Ozds.Client.Components.Streaming
 
 @namespace Ozds.Client.Components.Models
 
-@inherits OzdsDetailsComponentBase<IAuditEvent>
+@inherits OzdsDetailsComponentBase<IResolvableNotification>
 
 @(Base<IIdentifiable>())
 
-@(Base<IEvent>(@<Fragment>
-  @Field(x => x.Audit)
+@(Base<INotification>(@<Fragment>
   @Sub()
+  @Field(x => x.ResolvedOn)
+  @(LinkField<RepresentativeModel>(x => x.ResolvedById))
 </Fragment>))

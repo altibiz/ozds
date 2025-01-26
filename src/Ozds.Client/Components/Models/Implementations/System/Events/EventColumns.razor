@@ -10,44 +10,10 @@
 @typeparam TModel where TModel : IEvent
 @inherits OzdsColumnsComponentBase<TPrefix, TModel>
 
-<PropertyColumn
-  T="TPrefix"
-  TProperty="string"
-  Property="x => Raw(x)!.Title"
-  Title='@Translate("Title")'>
-  <CellTemplate>
-    <MudText>@Raw(context.Item)?.Title</MudText>
-  </CellTemplate>
-</PropertyColumn>
+@(Base<IIdentifiable>())
 
-<PropertyColumn
-  T="TPrefix"
-  TProperty="DateTimeOffset"
-  Property="x => Raw(x)!.Timestamp"
-  Title='@Translate("Timestamp")'>
-  <CellTemplate>
-    <MudText>@DateTimeString(Raw(context.Item)?.Timestamp)</MudText>
-  </CellTemplate>
-</PropertyColumn>
+@Column(x => x.Timestamp)
 
-<PropertyColumn
-  T="TPrefix"
-  TProperty="LevelModel"
-  Property="x => Raw(x)!.Level"
-  Title="@Translate("Level")">
-  <CellTemplate>
-    @if (Raw(context.Item)?.Level == LevelModel.Error
-      || Raw(context.Item)?.Level == LevelModel.Critical)
-    {
-      <MudIcon Icon="@Icons.Material.Filled.Circle" Color="Color.Error"/>
-    }
-    else if (Raw(context.Item)?.Level == LevelModel.Warning)
-    {
-      <MudIcon Icon="@Icons.Material.Filled.Circle" Color="Color.Warning"/>
-    }
-    else
-    {
-      <MudIcon Icon="@Icons.Material.Filled.Circle" Color="Color.Success"/>
-    }
-  </CellTemplate>
-</PropertyColumn>
+@Sub()
+
+@Column(x => x.Level)

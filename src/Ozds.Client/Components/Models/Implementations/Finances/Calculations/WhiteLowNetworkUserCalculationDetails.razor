@@ -9,8 +9,9 @@
 
 @(Base<IIdentifiable>())
 
-@(Base<INetworkUserCalculation>(@<Fragment>
-  <Details Model="@Model.UsageActiveEnergyTotalImportT1" />
-  <Details Model="@Model.UsageActiveEnergyTotalImportT2" />
-  <Details Model="@Model.UsageReactiveEnergyTotalRampedT0" />
-</Fragment>))
+@(Base<IFinancial>(
+    Base<INetworkUserCalculation>(@<Fragment>
+      <Details Model="@Model.UsageActiveEnergyTotalImportT1" />
+      <Details Model="@Model.UsageActiveEnergyTotalImportT2" />
+      <Details Model="@Model.UsageReactiveEnergyTotalRampedT0" />
+    </Fragment>)))
