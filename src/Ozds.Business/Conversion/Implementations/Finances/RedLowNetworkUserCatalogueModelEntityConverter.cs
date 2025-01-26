@@ -28,7 +28,6 @@ public class RedLowNetworkUserCatalogueModelEntityConverter(
       model.ActivePowerTotalImportT1Price_EUR;
     entity.ReactiveEnergyTotalRampedT0Price_EUR =
       model.ReactiveEnergyTotalRampedT0Price_EUR;
-    entity.MeterFeePrice_EUR = model.MeterFeePrice_EUR;
   }
 
   public override void InitializeModel(
@@ -45,6 +44,5 @@ public class RedLowNetworkUserCatalogueModelEntityConverter(
       entity.ActivePowerTotalImportT1Price_EUR;
     model.ReactiveEnergyTotalRampedT0Price_EUR =
       entity.ReactiveEnergyTotalRampedT0Price_EUR;
-    model.MeterFeePrice_EUR = entity.MeterFeePrice_EUR;
   }
 }

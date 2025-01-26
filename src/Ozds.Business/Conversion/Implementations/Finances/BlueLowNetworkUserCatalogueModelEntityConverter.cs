@@ -23,7 +23,6 @@ public class BlueLowNetworkUserCatalogueModelEntityConverter(
       model.ActiveEnergyTotalImportT0Price_EUR;
     entity.ReactiveEnergyTotalRampedT0Price_EUR =
       model.ReactiveEnergyTotalRampedT0Price_EUR;
-    entity.MeterFeePrice_EUR = model.MeterFeePrice_EUR;
   }
 
   public override void InitializeModel(
@@ -35,6 +34,5 @@ public class BlueLowNetworkUserCatalogueModelEntityConverter(
       entity.ActiveEnergyTotalImportT0Price_EUR;
     model.ReactiveEnergyTotalRampedT0Price_EUR =
       entity.ReactiveEnergyTotalRampedT0Price_EUR;
-    model.MeterFeePrice_EUR = entity.MeterFeePrice_EUR;
   }
 }

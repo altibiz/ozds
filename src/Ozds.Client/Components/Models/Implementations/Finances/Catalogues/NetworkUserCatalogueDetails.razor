@@ -1,0 +1,12 @@
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Client.Components.Models.Base
+
+@namespace Ozds.Client.Components.Models
+
+@inherits OzdsDetailsComponentBase<INetworkUserCatalogue>
+
+@(Base<IIdentifiable>())
+
+@Field(x => x.MeterFeePrice_EUR)
+
+@(Base<IAuditable>())

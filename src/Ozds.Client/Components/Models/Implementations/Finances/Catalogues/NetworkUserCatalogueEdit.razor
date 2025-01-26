@@ -1,0 +1,12 @@
+@using Ozds.Business.Models.Base
+@using Ozds.Client.Components.Models.Base
+
+@namespace Ozds.Client.Components.Models
+
+@typeparam TPrefix
+@typeparam TModel where TModel : NetworkUserCatalogueModel
+@inherits OzdsEditComponentBase<TPrefix, TModel>
+
+@(Base<IdentifiableModel>())
+
+@Field(x => x.MeterFeePrice_EUR)

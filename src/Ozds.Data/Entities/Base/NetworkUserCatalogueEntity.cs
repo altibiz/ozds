@@ -14,6 +14,8 @@ public class NetworkUserCatalogueEntity : CatalogueEntity, INetworkUserCatalogue
   public virtual ICollection<LocationEntity> Locations { get; set; } = default!;
 
   public string Kind { get; set; } = default!;
+
+  public decimal MeterFeePrice_EUR { get; set; }
 }
 
 public class NetworkUserCatalogueEntity<TNetworkUserCalculation>
@@ -37,5 +39,9 @@ public class
       .UseTphMappingStrategy()
       .ToTable("network_user_catalogues")
       .HasDiscriminator<string>(nameof(NetworkUserCatalogueEntity.Kind));
+
+    builder
+      .Property(nameof(BlueLowNetworkUserCatalogueEntity.MeterFeePrice_EUR))
+      .HasColumnName("meter_fee_price_eur");
   }
 }

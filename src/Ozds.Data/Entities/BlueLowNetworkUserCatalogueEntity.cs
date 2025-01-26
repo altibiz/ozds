@@ -11,7 +11,6 @@ public class BlueLowNetworkUserCatalogueEntity
 #pragma warning disable CA1707
   public decimal ActiveEnergyTotalImportT0Price_EUR { get; set; }
   public decimal ReactiveEnergyTotalRampedT0Price_EUR { get; set; }
-  public decimal MeterFeePrice_EUR { get; set; }
 #pragma warning restore CA1707
 }
 
@@ -33,9 +32,5 @@ public class
         nameof(BlueLowNetworkUserCatalogueEntity
           .ReactiveEnergyTotalRampedT0Price_EUR))
       .HasColumnName("reactive_energy_total_ramped_t0_price_eur");
-
-    builder
-      .Property(nameof(BlueLowNetworkUserCatalogueEntity.MeterFeePrice_EUR))
-      .HasColumnName("meter_fee_price_eur");
   }
 }

@@ -12,4 +12,21 @@ public class NetworkUserCatalogueModelEntityConverter(
       NetworkUserCatalogueEntity,
       CatalogueEntity>(serviceProvider)
 {
+  public override void InitializeEntity(
+    NetworkUserCatalogueModel model,
+    NetworkUserCatalogueEntity entity
+  )
+  {
+    base.InitializeEntity(model, entity);
+    entity.MeterFeePrice_EUR = model.MeterFeePrice_EUR;
+  }
+
+  public override void InitializeModel(
+    NetworkUserCatalogueEntity entity,
+    NetworkUserCatalogueModel model
+  )
+  {
+    base.InitializeModel(entity, model);
+    model.MeterFeePrice_EUR = entity.MeterFeePrice_EUR;
+  }
 }
