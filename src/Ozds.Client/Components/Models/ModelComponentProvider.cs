@@ -81,7 +81,9 @@ public class ModelComponentProvider(
             : acc)
       ?? throw new InvalidOperationException(
         "No model component provider found for model type "
-        + modelType.FullName);
+        + modelType.FullName
+        + " and kind "
+        + componentKind);
 
     cache.TryAdd(key, provider);
 
@@ -173,7 +175,9 @@ public class ModelComponentProvider(
         "No model component provider found for model type "
         + modelType.FullName
         + " with constraint type "
-        + constraintType.FullName);
+        + constraintType.FullName
+        + " and kind "
+        + componentKind);
 
     prefixedCache.TryAdd(key, provider);
 
