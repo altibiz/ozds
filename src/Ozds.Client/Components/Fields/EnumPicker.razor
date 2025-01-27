@@ -11,7 +11,7 @@
 <MudSelect Label="@Title" Value="Value" ValueChanged="ValueChanged" For="For">
   @foreach (var value in Enum.GetValues(typeof(T)))
   {
-    <MudSelectItem Value="value">
+    <MudSelectItem Value="@((T)value)">
       @if (Label is { } label)
       {
         @label((T)value)
