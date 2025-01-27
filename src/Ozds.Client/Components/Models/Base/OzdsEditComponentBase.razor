@@ -64,6 +64,26 @@
       For="@For(next)" />;
   }
 
+  // NOTE: doesn't work with just Enum
+  protected RenderFragment Field<T>(
+    Expression<Func<TModel, IEnumerable<T>?>> next
+  )
+    where T : Enum
+  {
+    var label = "";
+    if (next.Body is MemberExpression nextMember)
+    {
+      label = Translate(nextMember.Member.Name);
+    }
+
+    var nextFunc = next.Compile();
+
+    return @<MultiEnumPicker
+      Title="@label"
+      Value="@Get(x => nextFunc(x)?.ToHashSet(), () => new HashSet<T>())"
+      ValueChanged="@Set(next, (HashSet<T> x) => x.ToList())" />;
+  }
+
   protected RenderFragment TextField<T>(Expression<Func<TModel, T?>> next)
   {
     var label = "";
@@ -116,7 +136,7 @@
   }
 
   protected RenderFragment MultiEnumField<T>(
-    Expression<Func<TModel, List<T>?>> next
+    Expression<Func<TModel, IEnumerable<T>?>> next
   )
   {
     var label = "";
@@ -131,24 +151,6 @@
       Title="@label"
       Value="@Get(x => nextFunc(x)?.ToHashSet(), () => new HashSet<T>())"
       ValueChanged="@Set(next, (HashSet<T> x) => x.ToList())" />;
-  }
-
-  protected RenderFragment MultiEnumField<T>(
-    Expression<Func<TModel, HashSet<T>?>> next
-  )
-  {
-    var label = "";
-    if (next.Body is MemberExpression nextMember)
-    {
-      label = Translate(nextMember.Member.Name);
-    }
-
-    var nextFunc = next.Compile();
-
-    return @<MultiEnumPicker
-      Title="@label"
-      Value="@Get(nextFunc)"
-      ValueChanged="@Set(next)" />;
   }
 
   protected RenderFragment LinkField<T>(

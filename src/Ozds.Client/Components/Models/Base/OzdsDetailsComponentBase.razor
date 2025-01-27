@@ -1,5 +1,6 @@
 @using MudBlazor
 @using System.Linq.Expressions
+@using System.Text.Json
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Client.Components.Fields
 @using Ozds.Client.Components.Streaming
@@ -14,7 +15,7 @@
 @Base()
 
 @code {
-  protected RenderFragment Field<T>(Expression<Func<TModel, T?>> next)
+  protected RenderFragment Field(Expression<Func<TModel, string?>> next)
   {
     var label = "";
     if (next.Body is MemberExpression nextMember)
@@ -27,6 +28,225 @@
     return @<DetailsField Title="@label">
         <MudText>
           @nextFunc(Model)
+        </MudText>
+      </DetailsField>;
+  }
+
+  protected RenderFragment Field(Expression<Func<TModel, Enum?>> next)
+  {
+    var label = "";
+    if (next.Body is MemberExpression nextMember)
+    {
+      label = Translate(nextMember.Member.Name);
+    }
+
+    var nextFunc = next.Compile();
+
+    return @<DetailsField Title="@label">
+        <MudText>
+          @nextFunc(Model)
+        </MudText>
+      </DetailsField>;
+  }
+
+  protected RenderFragment Field(Expression<Func<TModel, decimal?>> next)
+  {
+    var label = "";
+    if (next.Body is MemberExpression nextMember)
+    {
+      label = Translate(nextMember.Member.Name);
+    }
+
+    var nextFunc = next.Compile();
+
+    return @<DetailsField Title="@label">
+        <MudText>
+          @NumericString(nextFunc(Model))
+        </MudText>
+      </DetailsField>;
+  }
+
+  protected RenderFragment Field(Expression<Func<TModel, DateTimeOffset?>> next)
+  {
+    var label = "";
+    if (next.Body is MemberExpression nextMember)
+    {
+      label = Translate(nextMember.Member.Name);
+    }
+
+    var nextFunc = next.Compile();
+
+    return @<DetailsField Title="@label">
+        <MudText>
+          @DateTimeString(nextFunc(Model))
+        </MudText>
+      </DetailsField>;
+  }
+
+  protected RenderFragment Field(Expression<Func<TModel, JsonDocument?>> next)
+  {
+    var label = "";
+    if (next.Body is MemberExpression nextMember)
+    {
+      label = Translate(nextMember.Member.Name);
+    }
+
+    var nextFunc = next.Compile();
+
+    return @<DetailsField Title="@label">
+        <MudText>
+          @JsonString(nextFunc(Model))
+        </MudText>
+      </DetailsField>;
+  }
+
+  protected RenderFragment Field<T>(
+    Expression<Func<TModel, IEnumerable<T>?>> next
+  )
+  {
+    var label = "";
+    if (next.Body is MemberExpression nextMember)
+    {
+      label = Translate(nextMember.Member.Name);
+    }
+
+    var nextFunc = next.Compile();
+
+    return @<DetailsField Title="label">
+        <MudText>
+          @if (nextFunc(Model) is { } model)
+          {
+            @string.Join(", ", model)
+          }
+        </MudText>
+      </DetailsField>;
+  }
+
+  protected RenderFragment TextField<T>(Expression<Func<TModel, T?>> next)
+  {
+    var label = "";
+    if (next.Body is MemberExpression nextMember)
+    {
+      label = Translate(nextMember.Member.Name);
+    }
+
+    var nextFunc = next.Compile();
+
+    return @<DetailsField Title="@label">
+        <MudText>
+          @nextFunc(Model)
+        </MudText>
+      </DetailsField>;
+  }
+
+  protected RenderFragment NumericField<T>(Expression<Func<TModel, T?>> next)
+  {
+    var label = "";
+    if (next.Body is MemberExpression nextMember)
+    {
+      label = Translate(nextMember.Member.Name);
+    }
+
+    var nextFunc = next.Compile();
+
+    return @<DetailsField Title="@label">
+        <MudText>
+          @{
+            var value = nextFunc(Model);
+
+            @if (value is decimal @decimal)
+            {
+              @NumericString(@decimal)
+            }
+            else
+            {
+              @value
+            }
+          }
+        </MudText>
+      </DetailsField>;
+  }
+
+  protected RenderFragment DateTimeField<T>(Expression<Func<TModel, T?>> next)
+  {
+    var label = "";
+    if (next.Body is MemberExpression nextMember)
+    {
+      label = Translate(nextMember.Member.Name);
+    }
+
+    var nextFunc = next.Compile();
+
+    return @<DetailsField Title="@label">
+        <MudText>
+          @{
+            var value = nextFunc(Model);
+
+            @if (value is DateTimeOffset @decimal)
+            {
+              @DateTimeString(@decimal)
+            }
+            else
+            {
+              @value
+            }
+          }
+        </MudText>
+      </DetailsField>;
+  }
+
+  protected RenderFragment DateField<T>(Expression<Func<TModel, T?>> next)
+  {
+    var label = "";
+    if (next.Body is MemberExpression nextMember)
+    {
+      label = Translate(nextMember.Member.Name);
+    }
+
+    var nextFunc = next.Compile();
+
+    return @<DetailsField Title="@label">
+        <MudText>
+          @{
+            var value = nextFunc(Model);
+
+            @if (value is DateTimeOffset @decimal)
+            {
+              @DateString(@decimal)
+            }
+            else
+            {
+              @value
+            }
+          }
+        </MudText>
+      </DetailsField>;
+  }
+
+  protected RenderFragment JsonField<T>(Expression<Func<TModel, T?>> next)
+  {
+    var label = "";
+    if (next.Body is MemberExpression nextMember)
+    {
+      label = Translate(nextMember.Member.Name);
+    }
+
+    var nextFunc = next.Compile();
+
+    return @<DetailsField Title="@label">
+        <MudText>
+          @{
+            var value = nextFunc(Model);
+
+            @if (value is JsonDocument @decimal)
+            {
+              @JsonString(@decimal)
+            }
+            else
+            {
+              @value
+            }
+          }
         </MudText>
       </DetailsField>;
   }

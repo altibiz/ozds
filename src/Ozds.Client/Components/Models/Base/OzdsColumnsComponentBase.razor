@@ -1,5 +1,6 @@
 @using MudBlazor
 @using System.Linq.Expressions
+@using System.Collections
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Client.Components.Fields
 
@@ -14,7 +15,7 @@
 @Base()
 
 @code {
-  protected RenderFragment Column<T>(Expression<Func<TModel, T?>> next)
+  protected RenderFragment Column(Expression<Func<TModel, string?>> next)
   {
     var label = "";
     if (next.Body is MemberExpression nextMember)
@@ -24,12 +25,42 @@
 
     return @<PropertyColumn
         T="TPrefix"
-        TProperty="T"
+        TProperty="string"
         Title='@label'
         Property="@Member(next)" />;
   }
 
-  protected RenderFragment EnumerableColumn<T>(
+  protected RenderFragment Column(Expression<Func<TModel, Enum?>> next)
+  {
+    var label = "";
+    if (next.Body is MemberExpression nextMember)
+    {
+      label = Translate(nextMember.Member.Name);
+    }
+
+    return @<PropertyColumn
+        T="TPrefix"
+        TProperty="Enum"
+        Title='@label'
+        Property="@Member(next)" />;
+  }
+
+  protected RenderFragment Column(Expression<Func<TModel, decimal?>> next)
+  {
+    var label = "";
+    if (next.Body is MemberExpression nextMember)
+    {
+      label = Translate(nextMember.Member.Name);
+    }
+
+    return @<PropertyColumn
+        T="TPrefix"
+        TProperty="decimal?"
+        Title='@label'
+        Property="@Member(next)" />;
+  }
+
+  protected RenderFragment Column<T>(
     Expression<Func<TModel, IEnumerable<T>?>> next
   )
   {
@@ -55,6 +86,144 @@
           }
         </CellTemplate>
       </PropertyColumn>;
+  }
+
+  protected RenderFragment Column(
+    Expression<Func<TModel, DateTimeOffset?>> next
+  )
+  {
+    var label = "";
+    if (next.Body is MemberExpression nextMember)
+    {
+      label = Translate(nextMember.Member.Name);
+    }
+
+    var nextFunc = next.Compile();
+
+    return @<PropertyColumn
+        T="TPrefix"
+        TProperty="DateTimeOffset?"
+        Title='@label'
+        Property="@Member(next)">
+          <CellTemplate>
+            <MudText>
+              @if (Get(nextFunc)(context.Item) is { } date)
+              {
+                @DateTimeString(date)
+              }
+            </MudText>
+          </CellTemplate>
+        </PropertyColumn>;
+  }
+
+  protected RenderFragment EnumerableColumn<T>(
+    Expression<Func<TModel, T?>> next
+  )
+  {
+    var label = "";
+    if (next.Body is MemberExpression nextMember)
+    {
+      label = Translate(nextMember.Member.Name);
+    }
+
+    var nextFunc = next.Compile();
+
+    return @<PropertyColumn
+        T="TPrefix"
+        TProperty="T"
+        Title='@label'
+        Property="@Member(next)">
+        <CellTemplate>
+          @if (Get(nextFunc)(context.Item) is IEnumerable item)
+          {
+            <MudText>
+              @string.Join(", ", item)
+            </MudText>
+          }
+        </CellTemplate>
+      </PropertyColumn>;
+  }
+
+  protected RenderFragment TextColumn<T>(Expression<Func<TModel, T?>> next)
+  {
+    var label = "";
+    if (next.Body is MemberExpression nextMember)
+    {
+      label = Translate(nextMember.Member.Name);
+    }
+
+    return @<PropertyColumn
+        T="TPrefix"
+        TProperty="T"
+        Title='@label'
+        Property="@Member(next)" />;
+  }
+
+  protected RenderFragment EnumColumn<T>(Expression<Func<TModel, T?>> next)
+  {
+    var label = "";
+    if (next.Body is MemberExpression nextMember)
+    {
+      label = Translate(nextMember.Member.Name);
+    }
+
+    return @<PropertyColumn
+        T="TPrefix"
+        TProperty="T"
+        Title='@label'
+        Property="@Member(next)" />;
+  }
+
+  protected RenderFragment DateColumn<T>(Expression<Func<TModel, T?>> next)
+  {
+    var label = "";
+    if (next.Body is MemberExpression nextMember)
+    {
+      label = Translate(nextMember.Member.Name);
+    }
+
+    var nextFunc = next.Compile();
+
+    return @<PropertyColumn
+        T="TPrefix"
+        TProperty="T"
+        Title='@label'
+        Property="@Member(next)">
+          <CellTemplate>
+            <MudText>
+              @if (Get(nextFunc)(context.Item) is DateTimeOffset date)
+              {
+                @DateString(date)
+              }
+            </MudText>
+          </CellTemplate>
+        </PropertyColumn>;
+  }
+
+  protected RenderFragment DateTimeColumn<T>(Expression<Func<TModel, T?>> next)
+  {
+    var label = "";
+    if (next.Body is MemberExpression nextMember)
+    {
+      label = Translate(nextMember.Member.Name);
+    }
+
+    var nextFunc = next.Compile();
+
+    return @<PropertyColumn
+        T="TPrefix"
+        TProperty="T"
+        Title='@label'
+        Property="@Member(next)">
+          <CellTemplate>
+            <MudText>
+              @if (Get(nextFunc)(context.Item) is DateTimeOffset date)
+              {
+                @DateTimeString(date)
+              }
+            </MudText>
+          </CellTemplate>
+        </PropertyColumn>;
   }
 
   protected RenderFragment LinkColumn(
