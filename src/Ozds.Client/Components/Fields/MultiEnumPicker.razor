@@ -10,11 +10,7 @@
 <MudSelect
   T="T"
   Label="@Title"
-  SelectedValues="Value"
-  SelectedValuesChanged="@(async e => {
-    Console.WriteLine(string.Join(",", e));
-    await ValueChanged.InvokeAsync(e.ToHashSet());
-  })"
+  @bind-SelectedValues="Value"
   MultiSelection
   For="For">
   @foreach (var value in Enum.GetValues(typeof(T)))
@@ -34,10 +30,10 @@
 
 @code {
   [Parameter]
-  public HashSet<T> Value { get; set; } = default!;
+  public IEnumerable<T> Value { get; set; } = default!;
 
   [Parameter]
-  public EventCallback<HashSet<T>> ValueChanged { get; set; } = default!;
+  public EventCallback<IEnumerable<T>> ValueChanged { get; set; } = default!;
 
   [Parameter]
   public string Title { get; set; } = default!;

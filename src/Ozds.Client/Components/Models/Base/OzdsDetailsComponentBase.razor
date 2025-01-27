@@ -59,7 +59,9 @@
     var nextFunc = next.Compile();
     return @<DetailsField Title="@(Translate(next.Label()))">
         <MudText>
-          @JsonString(nextFunc(Model))
+          <pre>
+            @JsonString(nextFunc(Model))
+          </pre>
         </MudText>
       </DetailsField>;
   }
@@ -85,6 +87,18 @@
     return @<DetailsField Title="@(Translate(next.Label()))">
         <MudText>
           @nextFunc(Model)
+        </MudText>
+      </DetailsField>;
+  }
+
+  protected RenderFragment PreField<T>(Expression<Func<TModel, T?>> next)
+  {
+    var nextFunc = next.Compile();
+    return @<DetailsField Title="@(Translate(next.Label()))">
+        <MudText>
+          <pre>
+            @nextFunc(Model)
+          </pre>
         </MudText>
       </DetailsField>;
   }
@@ -157,18 +171,20 @@
     var nextFunc = next.Compile();
     return @<DetailsField Title="@(Translate(next.Label()))">
         <MudText>
-          @{
-            var value = nextFunc(Model);
+          <pre>
+            @{
+              var value = nextFunc(Model);
 
-            @if (value is JsonDocument @decimal)
-            {
-              @JsonString(@decimal)
+              @if (value is JsonDocument @decimal)
+              {
+                @JsonString(@decimal)
+              }
+              else
+              {
+                @value
+              }
             }
-            else
-            {
-              @value
-            }
-          }
+          </pre>
         </MudText>
       </DetailsField>;
   }

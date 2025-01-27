@@ -81,7 +81,9 @@
     </MudItem>
     <MudItem xs="12" sm="6" md="3">
       <MultiEnumPicker
-        @bind-Value="_parameters.Phases"
+        T="PhaseModel"
+        Value="_parameters.Phases"
+        ValueChanged="@(e => _parameters.Phases = e.ToHashSet())"
         Title="@Translate("Phase")"
         Label="x => Translate(x.ToTitle())"/>
     </MudItem>

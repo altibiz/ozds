@@ -1,5 +1,5 @@
 @using Ozds.Business.Models
-@using Ozds.Business.Models.Abstractions
+@using Ozds.Business.Models.Base
 @using Ozds.Client.Components.Models.Base
 
 @namespace Ozds.Client.Components.Models
@@ -8,7 +8,7 @@
 @typeparam TModel where TModel : NetworkUserModel
 @inherits OzdsEditComponentBase<TPrefix, TModel>
 
-@(Base<IIdentifiable>())
+@(Base<IdentifiableModel>())
 
 <Edit Model="@Get(x => x.LegalPerson)" />
 

@@ -56,7 +56,7 @@
     return @<MultiEnumPicker
       Title="@(Translate(next.Label()))"
       Value="@Get(nextFunc)"
-      ValueChanged="@Set(next)" />;
+      ValueChanged="@Set(next, (IEnumerable<T> x) => x.ToHashSet())" />;
   }
 
   // NOTE: doesn't work with just Enum
@@ -68,8 +68,8 @@
     var nextFunc = next.Compile();
     return @<MultiEnumPicker
       Title="@(Translate(next.Label()))"
-      Value="@Get(x => nextFunc(x)?.ToHashSet(), () => new HashSet<T>())"
-      ValueChanged="@Set(next, (HashSet<T> x) => x.ToList())" />;
+      Value="@Get(nextFunc)"
+      ValueChanged="@Set(next, (IEnumerable<T> x) => x.ToList())" />;
   }
 
   protected RenderFragment TextField<T>(Expression<Func<TModel, T?>> next)
@@ -110,7 +110,7 @@
     return @<MultiEnumPicker
       Title="@(Translate(next.Label()))"
       Value="@Get(nextFunc)"
-      ValueChanged="@Set(next)" />;
+      ValueChanged="@Set(next, (IEnumerable<T> x) => x.ToHashSet())" />;
   }
 
   protected RenderFragment MultiEnumField<T>(
@@ -120,8 +120,8 @@
     var nextFunc = next.Compile();
     return @<MultiEnumPicker
       Title="@(Translate(next.Label()))"
-      Value="@Get(x => nextFunc(x)?.ToHashSet(), () => new HashSet<T>())"
-      ValueChanged="@Set(next, (HashSet<T> x) => x.ToList())" />;
+      Value="@Get(nextFunc)"
+      ValueChanged="@Set(next, (IEnumerable<T> x) => x.ToList())" />;
   }
 
   protected RenderFragment LinkField<T>(

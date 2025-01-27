@@ -8,7 +8,10 @@
 
 @typeparam T
 
-<MudSelect Label="@Title" Value="Value" ValueChanged="ValueChanged" For="For">
+<MudSelect
+  Label="@Title"
+  @bind-Value="@Value"
+  For="For">
   @foreach (var value in Enum.GetValues(typeof(T)))
   {
     <MudSelectItem Value="@((T)value)">

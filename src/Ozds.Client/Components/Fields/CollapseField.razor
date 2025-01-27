@@ -2,18 +2,24 @@
 
 @namespace Ozds.Client.Components.Fields
 
-<MudGrid>
-  <MudText Typo="Typo.body1">
-    @Title
-  </MudText>
-  <MudIconButton
-    Icon="@(_expanded
-      ? Icons.Material.Filled.KeyboardArrowUp
-      : Icons.Material.Filled.KeyboardArrowDown)"
-    OnClick="@(() => _expanded = !_expanded)" />
-  <MudCollapse Expanded="@_expanded">
-    @ChildContent
-  </MudCollapse>
+<MudGrid Justify="Justify.SpaceBetween" Spacing="0" Class="mt-4">
+  <MudItem xs="11">
+    <MudText Typo="Typo.body1">
+      @Title
+    </MudText>
+  </MudItem>
+  <MudItem>
+    <MudIconButton
+      Icon="@(_expanded
+        ? Icons.Material.Filled.KeyboardArrowUp
+        : Icons.Material.Filled.KeyboardArrowDown)"
+      OnClick="@(() => _expanded = !_expanded)" />
+  </MudItem>
+  <MudItem xs="12">
+    <MudCollapse Expanded="@_expanded">
+      @ChildContent
+    </MudCollapse>
+  </MudItem>
 </MudGrid>
 
 @code {
