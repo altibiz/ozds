@@ -1,0 +1,12 @@
+@using Ozds.Business.Models
+@using Ozds.Client.Components.Models.Base
+
+@namespace Ozds.Client.Components.Models.Implementations.Administration
+
+@typeparam TPrefix
+@typeparam TModel where TModel : UserModel
+@inherits OzdsColumnsComponentBase<TPrefix, TModel>
+
+@Column(x => x.UserName)
+
+@Column(x => x.Email)
