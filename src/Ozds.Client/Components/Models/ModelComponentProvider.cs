@@ -114,7 +114,7 @@ public class ModelComponentProvider(
           return false;
         }
 
-        if (!type.IsGenericType)
+        if (!type.IsGenericType || type.IsAbstract)
         {
           return false;
         }
@@ -199,7 +199,7 @@ public class ModelComponentProvider(
           return false;
         }
 
-        if (!type.IsGenericType)
+        if (!type.IsGenericType || type.IsAbstract)
         {
           return false;
         }
