@@ -21,21 +21,6 @@ public class ModelComponentProvider(
     return provider.ComponentType;
   }
 
-  public Type GetGenericComponentType(
-    Type modelType,
-    Type constraintType,
-    ModelComponentKind componentKind
-  )
-  {
-    var provider = GetGenericComponentProvider(
-      modelType,
-      constraintType,
-      componentKind
-    );
-
-    return provider.ComponentType;
-  }
-
   public Type GetPrefixedComponentType(
     Type prefixType,
     Type modelType,
@@ -97,90 +82,6 @@ public class ModelComponentProvider(
         + modelType.FullName);
 
     cache.TryAdd(key, provider);
-
-    return provider;
-  }
-
-  private IModelComponentProvider GetGenericComponentProvider(
-    Type modelType,
-    Type constraintType,
-    ModelComponentKind kind)
-  {
-    var key = new GenericCacheKey(modelType, constraintType, kind);
-
-    if (genericCache.TryGetValue(key, out var provider))
-    {
-      return provider;
-    }
-
-    provider = typeof(ModelComponentProvider).Assembly
-      .GetTypes()
-      .Where(type =>
-      {
-        if (!type.IsAssignableTo(typeof(IModelComponentProvider)))
-        {
-          return false;
-        }
-
-        if (!type.IsGenericType || type.IsAbstract)
-        {
-          return false;
-        }
-
-        var genericTypeArguments = type.GetGenericArguments();
-        if (genericTypeArguments.Length != 1)
-        {
-          return false;
-        }
-
-        var genericArgumentConstraints = genericTypeArguments[0]
-          .GetGenericParameterConstraints();
-        if (genericArgumentConstraints.Length == 0)
-        {
-          return true;
-        }
-
-        if (genericArgumentConstraints.Length != 1)
-        {
-          return false;
-        }
-
-        return constraintType.IsAssignableTo(
-          genericArgumentConstraints.First());
-      })
-      .Select(generic =>
-      {
-        var constraintType = generic
-          .GetGenericArguments()[0]
-          .GetGenericParameterConstraints()
-          .FirstOrDefault()
-          ?? typeof(object);
-        var service = (ServiceProvider
-          .GetRequiredService(generic.MakeGenericType(modelType))
-          as IModelComponentProvider)!;
-
-        return new
-        {
-          Service = service,
-          ConstraintType = constraintType
-        };
-      })
-      .Where(x => x.Service.CanRender(modelType))
-      .DefaultIfEmpty(null)
-      .Aggregate((acc, next) =>
-        acc is null
-          ? null
-          : next!.ConstraintType.IsAssignableTo(acc.ConstraintType)
-            ? acc
-            : next)
-      ?.Service
-      ?? throw new InvalidOperationException(
-        "No model component provider found for model type "
-        + modelType.FullName
-        + " with constraint type "
-        + constraintType.FullName);
-
-    genericCache.TryAdd(key, provider);
 
     return provider;
   }
@@ -256,8 +157,8 @@ public class ModelComponentProvider(
         acc is null
           ? null
           : next!.ConstraintType.IsAssignableTo(acc.ConstraintType)
-            ? acc
-            : next)
+            ? next
+            : acc)
       ?.Service
       ?? throw new InvalidOperationException(
         "No model component provider found for model type "
@@ -301,10 +202,6 @@ public class ModelComponentProvider(
     IModelComponentProvider> cache = new();
 
   private readonly Dictionary<
-    GenericCacheKey,
-    IModelComponentProvider> genericCache = new();
-
-  private readonly Dictionary<
     PrefixedCacheKey,
     IModelComponentProvider> prefixedCache = new();
 
@@ -314,12 +211,6 @@ public class ModelComponentProvider(
 
   private sealed record CacheKey(
     Type ModelType,
-    ModelComponentKind ComponentKind
-  );
-
-  private sealed record GenericCacheKey(
-    Type ModelType,
-    Type ConstraintType,
     ModelComponentKind ComponentKind
   );
 

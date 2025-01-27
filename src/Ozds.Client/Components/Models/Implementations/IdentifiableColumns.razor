@@ -8,8 +8,7 @@
 @typeparam TModel where TModel : IIdentifiable
 @inherits OzdsColumnsComponentBase<TPrefix, TModel>
 
-
-<TemplateColumn T="TPrefix" Title="@Translate(typeof(TModel).Name)">
+<TemplateColumn T="TPrefix" Title="Title">
   <CellTemplate>
     @if (Raw(context.Item) is { } model)
     {
