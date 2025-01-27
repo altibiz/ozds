@@ -1,4 +1,5 @@
 @using MudBlazor
+@using Ozds.Business.Models.Abstractions
 
 @namespace Ozds.Client.Components.Models.Base
 
@@ -19,6 +20,26 @@
   {
     return @<MudText Typo="Typo.body2">
         @next(Model)
+      </MudText>;
+  }
+
+  protected RenderFragment LinkTitle(Func<TModel, IIdentifiable> next)
+  {
+    var model = next(Model);
+    return @<MudText Typo="Typo.h6">
+        <MudLink Href="@(Provider.CreateLink(model))">
+          @model.Title
+        </MudLink>
+      </MudText>;
+  }
+
+  protected RenderFragment LinkSubtitle(Func<TModel, IIdentifiable> next)
+  {
+    var model = next(Model);
+    return @<MudText Typo="Typo.body2">
+        <MudLink Href="@(Provider.CreateLink(model))">
+          @model.Title
+        </MudLink>
       </MudText>;
   }
 }
