@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Routing.Template;
 using Ozds.Business.Models.Abstractions;
+using Ozds.Client.Extensions;
 
 namespace Ozds.Client.Components.Models.Base;
 
@@ -8,10 +10,11 @@ public abstract class OzdsIdentifiableModelPageComponentBase<T>
   where T : IIdentifiable
 {
   protected override string CreateLink(
+    NavigationManager navigationManager,
     TemplateBinderFactory factory,
     T model
   )
   {
-    return PageHref(PageType, new { model.Id });
+    return navigationManager.PageHref(factory, PageType, new { model.Id });
   }
 }

@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop;
 using Ozds.Business.Localization.Abstractions;
 using Ozds.Business.Time;
+using Ozds.Client.Extensions;
 
 namespace Ozds.Client.Components.Base;
 
@@ -123,24 +124,14 @@ public abstract class OzdsComponentBase : ComponentBase, IDisposable
 
   protected string PageHref(
     Type type,
-    object? parameters = null,
-    TemplateBinderFactory? factory = null
+    object? parameters = null
   )
   {
-    factory ??= TemplateBinderFactory;
-    var attribute = type.GetCustomAttribute<RouteAttribute>()
-      ?? throw new InvalidOperationException(
-        $"{type} is not decorated with {nameof(RouteAttribute)}");
-    var route = attribute.Template;
-    var template = TemplateParser.Parse(route);
-    var pattern = RoutePatternFactory.Parse(route);
-    var values = new RouteValueDictionary(parameters);
-    var binder = factory
-      .Create(template, new RouteValueDictionary(pattern.Defaults));
-    var uri = binder.BindValues(values)
-      ?? throw new InvalidOperationException(
-        $"{type} has no route template");
-    return BasedHref(uri);
+    return NavigationManager.PageHref(
+      TemplateBinderFactory,
+      type,
+      parameters
+    );
   }
 
   protected void NavigateBack()
@@ -177,8 +168,7 @@ public abstract class OzdsComponentBase : ComponentBase, IDisposable
 
   private string BasedHref(string uri)
   {
-    var @base = new Uri(NavigationManager.BaseUri).AbsolutePath;
-    return @base + uri.TrimStart('/');
+    return NavigationManager.BasedHref(uri);
   }
 
   [Inject]

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Routing.Template;
 
 namespace Ozds.Client.Components.Models.Abstractions;
@@ -10,5 +11,9 @@ public interface IModelPageComponentProvider
 
   public Type PageType { get; }
 
-  public string CreateLink(TemplateBinderFactory factory, object model);
+  public string CreateLink(
+    NavigationManager navigationManager,
+    TemplateBinderFactory factory,
+    object model
+  );
 }
