@@ -121,8 +121,13 @@ public abstract class OzdsComponentBase : ComponentBase, IDisposable
   protected string PageHref<T>(object? parameters = null) =>
     PageHref(typeof(T), parameters);
 
-  protected string PageHref(Type type, object? parameters = null)
+  protected string PageHref(
+    Type type,
+    object? parameters = null,
+    TemplateBinderFactory? factory = null
+  )
   {
+    factory ??= TemplateBinderFactory;
     var attribute = type.GetCustomAttribute<RouteAttribute>()
       ?? throw new InvalidOperationException(
         $"{type} is not decorated with {nameof(RouteAttribute)}");
@@ -130,11 +135,11 @@ public abstract class OzdsComponentBase : ComponentBase, IDisposable
     var template = TemplateParser.Parse(route);
     var pattern = RoutePatternFactory.Parse(route);
     var values = new RouteValueDictionary(parameters);
-    var uri = TemplateBinderFactory
-      .Create(template, new RouteValueDictionary(pattern.Defaults))
-      .BindValues(values)
-        ?? throw new InvalidOperationException(
-          $"{type} has no route template");
+    var binder = factory
+      .Create(template, new RouteValueDictionary(pattern.Defaults));
+    var uri = binder.BindValues(values)
+      ?? throw new InvalidOperationException(
+        $"{type} has no route template");
     return BasedHref(uri);
   }
 

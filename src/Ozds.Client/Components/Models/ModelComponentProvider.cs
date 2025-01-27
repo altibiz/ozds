@@ -1,10 +1,12 @@
+using Microsoft.AspNetCore.Routing.Template;
 using Microsoft.Extensions.DependencyInjection;
 using Ozds.Client.Components.Models.Abstractions;
 
 namespace Ozds.Client.Components.Models;
 
 public class ModelComponentProvider(
-  IServiceProvider ServiceProvider
+  IServiceProvider ServiceProvider,
+  TemplateBinderFactory TemplateBinderFactory
 )
 {
   public Type GetComponentType(
@@ -60,7 +62,10 @@ public class ModelComponentProvider(
   {
     var provider = GetPageProvider(model.GetType());
 
-    return provider.CreateLink(model);
+    return provider.CreateLink(
+      TemplateBinderFactory,
+      model
+    );
   }
 
   private IModelComponentProvider GetComponentProvider(
