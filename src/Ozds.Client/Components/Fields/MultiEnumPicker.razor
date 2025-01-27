@@ -11,7 +11,10 @@
   T="T"
   Label="@Title"
   SelectedValues="Value"
-  SelectedValuesChanged="e => ValueChanged.InvokeAsync(e.ToHashSet())"
+  SelectedValuesChanged="@(async e => {
+    Console.WriteLine(string.Join(",", e));
+    await ValueChanged.InvokeAsync(e.ToHashSet());
+  })"
   MultiSelection
   For="For">
   @foreach (var value in Enum.GetValues(typeof(T)))

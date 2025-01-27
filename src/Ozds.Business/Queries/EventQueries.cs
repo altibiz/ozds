@@ -101,16 +101,18 @@ public class EventQueries(
         $"Type {modelType} is not assignable to {typeof(IAuditEvent)}");
     }
 
-    var entityType = modelEntityConverter.EntityType(modelType);
+    var auditableEntityType = modelEntityConverter.EntityType(
+      auditable.GetType());
     var entityTableName = await auditableQueries
-      .ReadEntityTableName(entityType, cancellationToken)
+      .ReadEntityTableName(auditableEntityType, cancellationToken)
       ?? throw new InvalidOperationException(
-        $"Type {entityType} doesn't have a table");
+        $"Type {auditableEntityType} doesn't have a table");
     var entityTypeName = await auditableQueries
-      .ReadEntityTypeName(entityType, cancellationToken)
+      .ReadEntityTypeName(auditableEntityType, cancellationToken)
       ?? throw new InvalidOperationException(
-        $"Type {entityType} doesn't have a type name");
+        $"Type {auditableEntityType} doesn't have a type name");
 
+    var entityType = modelEntityConverter.EntityType(modelType);
     var entities = await queries.ReadDynamic(
       entityType,
       pageNumber,

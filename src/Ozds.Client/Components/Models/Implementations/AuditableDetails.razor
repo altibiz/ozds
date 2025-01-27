@@ -9,10 +9,10 @@
 @(Base<IIdentifiable>())
 
 <Paging PageAsync="OnPageAsync">
-  <Found>
-    @foreach(var item in context.Items)
-    {
-      <Summary Model="@item" />
-    }
-  </Found>
+  <Summary>
+    <Summary Model="@context" />
+  </Summary>
+  <Empty>
+    @Translate("No audit events found")
+  </Empty>
 </Paging>
