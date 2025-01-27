@@ -33,9 +33,17 @@
     </HeadContent>
   </Label>
   <Details>
-    <Details Model="@context.Model"/>
+    <Details Model="@context.Model.User"/>
+    @if (context.Model.Representative is { } representative)
+    {
+      <Details Model="@representative"/>
+    }
   </Details>
   <Edit>
-    <Edit Model="@context.Model"/>
+    <Edit Model="@context.Model.User"/>
+    @if (context.Model.Representative is { } representative)
+    {
+      <Edit Model="@representative"/>
+    }
   </Edit>
 </Mutating>

@@ -27,14 +27,7 @@
   <title>OZDS - @Translate("Account")</title>
 </HeadContent>
 
-@{
-  var model = new MaybeRepresentingUserModel
-  {
-    User = UserState.User
-  };
-}
-
-<Details Model="@model"/>
+<Details Model="@UserState.User"/>
 
 @code {
   [CascadingParameter]
