@@ -148,7 +148,7 @@ public class ModelComponentProvider(
           .FirstOrDefault()
           ?? typeof(object);
         var service = (ServiceProvider
-          .GetService(generic.MakeGenericType(modelType))
+          .GetRequiredService(generic.MakeGenericType(modelType))
           as IModelComponentProvider)!;
 
         return new
@@ -233,7 +233,7 @@ public class ModelComponentProvider(
           .FirstOrDefault()
           ?? typeof(object);
         var service = (ServiceProvider
-          .GetService(generic.MakeGenericType(prefixType, modelType))
+          .GetRequiredService(generic.MakeGenericType(prefixType, modelType))
           as IModelComponentProvider)!;
 
         return new
