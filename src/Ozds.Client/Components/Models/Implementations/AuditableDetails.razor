@@ -10,6 +10,9 @@
 
 <Paging PageAsync="OnPageAsync">
   <Found>
-    <Summary Model="@context" />
+    @foreach(var item in context.Items)
+    {
+      <Summary Model="@item" />
+    }
   </Found>
 </Paging>

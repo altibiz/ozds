@@ -25,39 +25,6 @@
   NewAsync="@(NewAsync!)"
   ActivateAsync>
   <Found Context="model">
-    @if (Label is not null)
-    {
-      @Label(new MutatingState<T>(model, false))
-      <MudDivider Class="mb-4" />
-    }
-    else if (model is IIdentifiable identifiable)
-    {
-      <MudText Typo="Typo.h5" Class="mb-2">
-        @if (_mutating)
-        {
-          @Translate("Edit")
-          <span>&nbsp;</span>
-        }
-        @(identifiable.Title)
-      </MudText>
-      <MudDivider Class="mb-4" />
-      <DetailsField Title="@Translate("Id")">
-        @identifiable.Id
-      </DetailsField>
-    }
-    else
-    {
-      <MudText Typo="Typo.h5" Class="mb-2">
-        @if (_mutating)
-        {
-          @Translate("Edit")
-          <span>&nbsp;</span>
-        }
-        @(typeof(T).Name)
-      </MudText>
-      <MudDivider Class="mb-4" />
-    }
-
     @if (model is IReadonly || AsReadonly)
     {
       @Details(new MutatingState<T>(model, false))
@@ -116,17 +83,6 @@
   </Found>
 
   <Created Context="model">
-    @if (Label is not null)
-    {
-      @Label(new MutatingState<T>(model, true))
-    }
-    else
-    {
-      <MudText Typo="Typo.h5" Class="mb-2">
-        @Translate("Create") @(typeof(T).Name)
-      </MudText>
-    }
-    <MudDivider Class="mb-4" />
     <EditForm
       Model="@model"
       OnValidSubmit="@(() => OnCreate(model))">
