@@ -75,8 +75,8 @@ public class ModelComponentProvider(
         acc is null
           ? null
           : next!.ModelType.IsAssignableTo(acc.ModelType)
-            ? acc
-            : next)
+            ? next
+            : acc)
       ?? throw new InvalidOperationException(
         "No model component provider found for model type "
         + modelType.FullName);
