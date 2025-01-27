@@ -10,6 +10,6 @@ public partial class IdentifiableLink : OzdsComponentBase
   [Parameter]
   public IIdentifiable Model { get; set; } = default!;
 
-  [CascadingParameter]
+  [Inject]
   public ModelComponentProvider Provider { get; set; } = default!;
 }

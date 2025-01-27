@@ -26,9 +26,9 @@ public static class IServiceCollectionExtensions
     this IServiceCollection services
   )
   {
-    services.AddSingletonAssignableTo(typeof(IModelComponentProvider));
-    services.AddSingletonAssignableTo(typeof(IModelPageComponentProvider));
-    services.AddSingleton<ModelComponentProvider>();
+    services.AddScopedAssignableTo(typeof(IModelComponentProvider));
+    services.AddScopedAssignableTo(typeof(IModelPageComponentProvider));
+    services.AddScoped<ModelComponentProvider>();
 
     return services;
   }
