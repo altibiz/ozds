@@ -4,8 +4,7 @@
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Client.Components.Fields
 @using Ozds.Client.Components.Streaming
-
-@* TODO: use .NET 9 OverloadResolutionPriorityAttribute *@
+@using Ozds.Client.Extensions
 
 @namespace Ozds.Client.Components.Models.Base
 
@@ -17,15 +16,8 @@
 @code {
   protected RenderFragment Field(Expression<Func<TModel, string?>> next)
   {
-    var label = "";
-    if (next.Body is MemberExpression nextMember)
-    {
-      label = Translate(nextMember.Member.Name);
-    }
-
     var nextFunc = next.Compile();
-
-    return @<DetailsField Title="@label">
+    return @<DetailsField Title="@(Translate(next.Label()))">
         <MudText>
           @nextFunc(Model)
         </MudText>
@@ -34,15 +26,8 @@
 
   protected RenderFragment Field(Expression<Func<TModel, Enum?>> next)
   {
-    var label = "";
-    if (next.Body is MemberExpression nextMember)
-    {
-      label = Translate(nextMember.Member.Name);
-    }
-
     var nextFunc = next.Compile();
-
-    return @<DetailsField Title="@label">
+    return @<DetailsField Title="@(Translate(next.Label()))">
         <MudText>
           @nextFunc(Model)
         </MudText>
@@ -51,15 +36,8 @@
 
   protected RenderFragment Field(Expression<Func<TModel, decimal?>> next)
   {
-    var label = "";
-    if (next.Body is MemberExpression nextMember)
-    {
-      label = Translate(nextMember.Member.Name);
-    }
-
     var nextFunc = next.Compile();
-
-    return @<DetailsField Title="@label">
+    return @<DetailsField Title="@(Translate(next.Label()))">
         <MudText>
           @NumericString(nextFunc(Model))
         </MudText>
@@ -68,15 +46,8 @@
 
   protected RenderFragment Field(Expression<Func<TModel, DateTimeOffset?>> next)
   {
-    var label = "";
-    if (next.Body is MemberExpression nextMember)
-    {
-      label = Translate(nextMember.Member.Name);
-    }
-
     var nextFunc = next.Compile();
-
-    return @<DetailsField Title="@label">
+    return @<DetailsField Title="@(Translate(next.Label()))">
         <MudText>
           @DateTimeString(nextFunc(Model))
         </MudText>
@@ -85,15 +56,8 @@
 
   protected RenderFragment Field(Expression<Func<TModel, JsonDocument?>> next)
   {
-    var label = "";
-    if (next.Body is MemberExpression nextMember)
-    {
-      label = Translate(nextMember.Member.Name);
-    }
-
     var nextFunc = next.Compile();
-
-    return @<DetailsField Title="@label">
+    return @<DetailsField Title="@(Translate(next.Label()))">
         <MudText>
           @JsonString(nextFunc(Model))
         </MudText>
@@ -104,15 +68,8 @@
     Expression<Func<TModel, IEnumerable<T>?>> next
   )
   {
-    var label = "";
-    if (next.Body is MemberExpression nextMember)
-    {
-      label = Translate(nextMember.Member.Name);
-    }
-
     var nextFunc = next.Compile();
-
-    return @<DetailsField Title="label">
+    return @<DetailsField Title="@(Translate(next.Label()))">
         <MudText>
           @if (nextFunc(Model) is { } model)
           {
@@ -124,15 +81,8 @@
 
   protected RenderFragment TextField<T>(Expression<Func<TModel, T?>> next)
   {
-    var label = "";
-    if (next.Body is MemberExpression nextMember)
-    {
-      label = Translate(nextMember.Member.Name);
-    }
-
     var nextFunc = next.Compile();
-
-    return @<DetailsField Title="@label">
+    return @<DetailsField Title="@(Translate(next.Label()))">
         <MudText>
           @nextFunc(Model)
         </MudText>
@@ -141,15 +91,8 @@
 
   protected RenderFragment NumericField<T>(Expression<Func<TModel, T?>> next)
   {
-    var label = "";
-    if (next.Body is MemberExpression nextMember)
-    {
-      label = Translate(nextMember.Member.Name);
-    }
-
     var nextFunc = next.Compile();
-
-    return @<DetailsField Title="@label">
+    return @<DetailsField Title="@(Translate(next.Label()))">
         <MudText>
           @{
             var value = nextFunc(Model);
@@ -169,15 +112,8 @@
 
   protected RenderFragment DateTimeField<T>(Expression<Func<TModel, T?>> next)
   {
-    var label = "";
-    if (next.Body is MemberExpression nextMember)
-    {
-      label = Translate(nextMember.Member.Name);
-    }
-
     var nextFunc = next.Compile();
-
-    return @<DetailsField Title="@label">
+    return @<DetailsField Title="@(Translate(next.Label()))">
         <MudText>
           @{
             var value = nextFunc(Model);
@@ -197,15 +133,8 @@
 
   protected RenderFragment DateField<T>(Expression<Func<TModel, T?>> next)
   {
-    var label = "";
-    if (next.Body is MemberExpression nextMember)
-    {
-      label = Translate(nextMember.Member.Name);
-    }
-
     var nextFunc = next.Compile();
-
-    return @<DetailsField Title="@label">
+    return @<DetailsField Title="@(Translate(next.Label()))">
         <MudText>
           @{
             var value = nextFunc(Model);
@@ -225,15 +154,8 @@
 
   protected RenderFragment JsonField<T>(Expression<Func<TModel, T?>> next)
   {
-    var label = "";
-    if (next.Body is MemberExpression nextMember)
-    {
-      label = Translate(nextMember.Member.Name);
-    }
-
     var nextFunc = next.Compile();
-
-    return @<DetailsField Title="@label">
+    return @<DetailsField Title="@(Translate(next.Label()))">
         <MudText>
           @{
             var value = nextFunc(Model);
@@ -255,15 +177,8 @@
     Expression<Func<TModel, IEnumerable<T>?>> next
   )
   {
-    var label = "";
-    if (next.Body is MemberExpression nextMember)
-    {
-      label = Translate(nextMember.Member.Name);
-    }
-
     var nextFunc = next.Compile();
-
-    return @<DetailsField Title="label">
+    return @<DetailsField Title="@(Translate(next.Label()))">
         <MudText>
           @if (nextFunc(Model) is { } model)
           {
@@ -278,21 +193,12 @@
   )
     where T : IIdentifiable
   {
-    var label = "";
-    if (next.Body is MemberExpression nextMember)
-    {
-      label = Translate(nextMember.Member.Name);
-    }
-
     var nextFunc = next.Compile();
-
     var id = nextFunc(Model);
-
     var href = id is null
       ? null
       : PageHref(Provider.GetPageComponentType(typeof(T)), new { id });
-
-    return @<DetailsField Title="@label">
+    return @<DetailsField Title="@(Translate(next.Label()))">
         @if (id is null || href is null)
         {
           <Fragment />
@@ -310,17 +216,9 @@
     Expression<Func<TModel, T?>> next
   )
   {
-    var label = "";
-    if (next.Body is MemberExpression nextMember)
-    {
-      label = Translate(nextMember.Member.Name);
-    }
-
     var nextFunc = next.Compile();
-
     var archived = nextFunc(Model);
-
-    return @<CollapseField Title="@label">
+    return @<CollapseField Title="@(Translate(next.Label()))">
         <Details Model="@archived" />
       </CollapseField>;
   }

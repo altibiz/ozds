@@ -3,8 +3,7 @@
 @using System.Collections
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Client.Components.Fields
-
-@* TODO: use .NET 9 OverloadResolutionPriorityAttribute *@
+@using Ozds.Client.Extensions
 
 @namespace Ozds.Client.Components.Models.Base
 
@@ -17,46 +16,28 @@
 @code {
   protected RenderFragment Column(Expression<Func<TModel, string?>> next)
   {
-    var label = "";
-    if (next.Body is MemberExpression nextMember)
-    {
-      label = Translate(nextMember.Member.Name);
-    }
-
     return @<PropertyColumn
         T="TPrefix"
         TProperty="string"
-        Title='@label'
+        Title="@(Translate(next.Label()))"
         Property="@Member(next)" />;
   }
 
   protected RenderFragment Column(Expression<Func<TModel, Enum?>> next)
   {
-    var label = "";
-    if (next.Body is MemberExpression nextMember)
-    {
-      label = Translate(nextMember.Member.Name);
-    }
-
     return @<PropertyColumn
         T="TPrefix"
         TProperty="Enum"
-        Title='@label'
+        Title="@(Translate(next.Label()))"
         Property="@Member(next)" />;
   }
 
   protected RenderFragment Column(Expression<Func<TModel, decimal?>> next)
   {
-    var label = "";
-    if (next.Body is MemberExpression nextMember)
-    {
-      label = Translate(nextMember.Member.Name);
-    }
-
     return @<PropertyColumn
         T="TPrefix"
         TProperty="decimal?"
-        Title='@label'
+        Title="@(Translate(next.Label()))"
         Property="@Member(next)" />;
   }
 
@@ -64,18 +45,11 @@
     Expression<Func<TModel, IEnumerable<T>?>> next
   )
   {
-    var label = "";
-    if (next.Body is MemberExpression nextMember)
-    {
-      label = Translate(nextMember.Member.Name);
-    }
-
     var nextFunc = next.Compile();
-
     return @<PropertyColumn
         T="TPrefix"
         TProperty="IEnumerable<T>"
-        Title='@label'
+        Title="@(Translate(next.Label()))"
         Property="@Member(next)">
         <CellTemplate>
           @if (Get(nextFunc)(context.Item) is { } item)
@@ -92,18 +66,11 @@
     Expression<Func<TModel, DateTimeOffset?>> next
   )
   {
-    var label = "";
-    if (next.Body is MemberExpression nextMember)
-    {
-      label = Translate(nextMember.Member.Name);
-    }
-
     var nextFunc = next.Compile();
-
     return @<PropertyColumn
         T="TPrefix"
         TProperty="DateTimeOffset?"
-        Title='@label'
+        Title="@(Translate(next.Label()))"
         Property="@Member(next)">
           <CellTemplate>
             <MudText>
@@ -120,18 +87,11 @@
     Expression<Func<TModel, T?>> next
   )
   {
-    var label = "";
-    if (next.Body is MemberExpression nextMember)
-    {
-      label = Translate(nextMember.Member.Name);
-    }
-
     var nextFunc = next.Compile();
-
     return @<PropertyColumn
         T="TPrefix"
         TProperty="T"
-        Title='@label'
+        Title="@(Translate(next.Label()))"
         Property="@Member(next)">
         <CellTemplate>
           @if (Get(nextFunc)(context.Item) is IEnumerable item)
@@ -146,48 +106,29 @@
 
   protected RenderFragment TextColumn<T>(Expression<Func<TModel, T?>> next)
   {
-    var label = "";
-    if (next.Body is MemberExpression nextMember)
-    {
-      label = Translate(nextMember.Member.Name);
-    }
-
     return @<PropertyColumn
         T="TPrefix"
         TProperty="T"
-        Title='@label'
+        Title="@(Translate(next.Label()))"
         Property="@Member(next)" />;
   }
 
   protected RenderFragment EnumColumn<T>(Expression<Func<TModel, T?>> next)
   {
-    var label = "";
-    if (next.Body is MemberExpression nextMember)
-    {
-      label = Translate(nextMember.Member.Name);
-    }
-
     return @<PropertyColumn
         T="TPrefix"
         TProperty="T"
-        Title='@label'
+        Title="@(Translate(next.Label()))"
         Property="@Member(next)" />;
   }
 
   protected RenderFragment DateColumn<T>(Expression<Func<TModel, T?>> next)
   {
-    var label = "";
-    if (next.Body is MemberExpression nextMember)
-    {
-      label = Translate(nextMember.Member.Name);
-    }
-
     var nextFunc = next.Compile();
-
     return @<PropertyColumn
         T="TPrefix"
         TProperty="T"
-        Title='@label'
+        Title="@(Translate(next.Label()))"
         Property="@Member(next)">
           <CellTemplate>
             <MudText>
@@ -202,18 +143,11 @@
 
   protected RenderFragment DateTimeColumn<T>(Expression<Func<TModel, T?>> next)
   {
-    var label = "";
-    if (next.Body is MemberExpression nextMember)
-    {
-      label = Translate(nextMember.Member.Name);
-    }
-
     var nextFunc = next.Compile();
-
     return @<PropertyColumn
         T="TPrefix"
         TProperty="T"
-        Title='@label'
+        Title="@(Translate(next.Label()))"
         Property="@Member(next)">
           <CellTemplate>
             <MudText>
@@ -230,15 +164,8 @@
     Expression<Func<TModel, IIdentifiable?>> next
   )
   {
-    var label = "";
-    if (next.Body is MemberExpression nextMember)
-    {
-      label = Translate(nextMember.Member.Name);
-    }
-
     var nextFunc = next.Compile();
-
-    return @<TemplateColumn T="TPrefix" Title="@label">
+    return @<TemplateColumn T="TPrefix" Title="@(Translate(next.Label()))">
         <CellTemplate>
           @if (Get(nextFunc)(context.Item) is { } model)
           {
@@ -255,15 +182,8 @@
   )
     where T : IIdentifiable
   {
-    var label = "";
-    if (next.Body is MemberExpression nextMember)
-    {
-      label = Translate(nextMember.Member.Name);
-    }
-
     var nextFunc = next.Compile();
-
-    return @<TemplateColumn T="TPrefix" Title="@label">
+    return @<TemplateColumn T="TPrefix" Title="@(Translate(next.Label()))">
         <CellTemplate>
           @if (Get(nextFunc)(context.Item) is { } id)
           {
