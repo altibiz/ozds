@@ -1,9 +1,12 @@
 [book]
-authors = ["Hrvoje Jurić <hrvoje@altibiz.com>", "Gabrijel Čmelić <gabrijel@altibiz.com>"]
+authors = [
+  "Hrvoje Jurić <hrvoje@altibiz.com>",
+  "Gabrijel Čmelić <gabrijel@altibiz.com>",
+]
 language = "en"
 multilingual = false
-src = "."
+src = "src"
 title = "ozds"
 
 [preprocessor.plantuml]
-plantuml-cmd="plantuml"
+plantuml-cmd = "plantuml"
