@@ -34,9 +34,7 @@
     .AnalysesByMeasurementLocation();
 }
 
-<ResponsiveTable
-  Model="measurementLocations"
-  Link="@(x => PageHref<MeasurementLocationPage>(new { x.MeasurementLocation.Id }))">
+<ResponsiveTable Model="measurementLocations">
   <Summary>
     <Summary Model="context" />
   </Summary>
@@ -58,9 +56,7 @@
   var meters = AnalysisState.AnalysisBases.Value.AnalysesByMeter();
 }
 
-<ResponsiveTable
-  Model="meters"
-  Link="@(x => PageHref<MeterPage>(new { x.Meter.Id }))">
+<ResponsiveTable Model="meters">
   <Summary>
     <Summary Model="context" />
   </Summary>

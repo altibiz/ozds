@@ -33,9 +33,7 @@
   var notifications = NotificationsState.Notifications;
 }
 
-<ResponsiveTable
-  Model="notifications"
-  Link="@(x => PageHref<NotificationPage>(new { x.Id }))">
+<ResponsiveTable Model="notifications">
   <Summary>
     <Summary Model="context" />
   </Summary>

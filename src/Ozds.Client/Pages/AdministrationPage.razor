@@ -32,14 +32,7 @@
   var networkUsers = AnalysisState.AnalysisBases.Value.AnalysesByNetworkUser();
 }
 
-<ResponsiveTable
-  Model="networkUsers"
-  Link="@(x => PageHref<NetworkUserPage>(new { x.NetworkUser.Id }))">
-  <Title>
-    <MudText>
-      @context.NetworkUser.Title
-    </MudText>
-  </Title>
+<ResponsiveTable Model="networkUsers">
   <Summary>
     <Summary Model="context" />
   </Summary>

@@ -18,12 +18,6 @@ public partial class ResponsiveTable<T> : OzdsComponentBase
   [Parameter]
   public RenderFragment Columns { get; set; } = default!;
 
-  [Parameter]
-  public Func<T, string>? Link { get; set; } = default!;
-
-  [Parameter]
-  public RenderFragment<T>? Title { get; set; } = default!;
-
   [Inject]
   private NavigationManager NavigationManager { get; set; } = default!;
 

@@ -34,9 +34,7 @@
     .AnalysesByMeasurementLocation();
 }
 
-<ResponsiveTable
-  Model="@analyses"
-  Link="@(x => PageHref<MeasurementLocationPage>(new { x.MeasurementLocation.Id }))">
+<ResponsiveTable Model="@analyses">
   <Summary>
     <Summary Model="@context" />
   </Summary>

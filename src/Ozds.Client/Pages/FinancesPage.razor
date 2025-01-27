@@ -36,9 +36,7 @@
     .ToList();
 }
 
-<ResponsiveTable
-  Model="invoices"
-  Link="@(x => PageHref<NetworkUserInvoicePage>(new { x.Id }))">
+<ResponsiveTable Model="invoices">
   <Summary>
     <Summary Model="context" />
   </Summary>

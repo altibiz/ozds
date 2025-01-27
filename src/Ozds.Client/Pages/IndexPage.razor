@@ -62,14 +62,7 @@
   var locations = AnalysisState.AnalysisBases.Value
     .AnalysesByLocation();
 
-  <ResponsiveTable
-    Model="@locations"
-    Link="@(x => PageHref<LocationPage>(new { x.Location.Id }))">
-    <Title>
-      <MudText>
-        @context.Location.Title
-      </MudText>
-    </Title>
+  <ResponsiveTable Model="@locations">
     <Summary>
       <Summary Model="@context" />
     </Summary>
@@ -89,9 +82,7 @@
   var networkUsers = AnalysisState.AnalysisBases.Value
     .AnalysesByNetworkUser();
 
-  <ResponsiveTable
-    Model="@networkUsers"
-    Link="@(x => PageHref<NetworkUserPage>(new { x.NetworkUser.Id }))">
+  <ResponsiveTable Model="@networkUsers">
     <Summary>
       <Summary Model="@context" />
     </Summary>
@@ -110,9 +101,7 @@
   var measurementLocations = AnalysisState.AnalysisBases.Value
     .AnalysesByMeasurementLocation();
 
-  <ResponsiveTable
-    Model="@measurementLocations"
-    Link="@(x => PageHref<MeasurementLocationPage>(new { x.MeasurementLocation.Id }))">
+  <ResponsiveTable Model="@measurementLocations">
     <Summary>
       <Summary Model="@context" />
     </Summary>
@@ -133,9 +122,7 @@
     .ToList();
 }
 
-<ResponsiveTable
-  Model="@invoices"
-  Link="@(x => PageHref<NetworkUserInvoicePage>(new { x.Id }))">
+<ResponsiveTable Model="@invoices">
   <Summary>
     <Summary Model="@context" />
   </Summary>
