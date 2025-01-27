@@ -69,7 +69,9 @@ public class ModelComponentProvider(
 
     provider = ServiceProvider
       .GetServices<IModelComponentProvider>()
-      .Where(provider => provider.CanRender(modelType))
+      .Where(provider =>
+        provider.CanRender(modelType)
+        && provider.ComponentKind == componentKind)
       .DefaultIfEmpty(null)
       .Aggregate((acc, next) =>
         acc is null
@@ -90,9 +92,14 @@ public class ModelComponentProvider(
     Type prefixType,
     Type modelType,
     Type constraintType,
-    ModelComponentKind kind)
+    ModelComponentKind componentKind)
   {
-    var key = new PrefixedCacheKey(prefixType, modelType, constraintType, kind);
+    var key = new PrefixedCacheKey(
+      prefixType,
+      modelType,
+      constraintType,
+      componentKind
+    );
 
     if (prefixedCache.TryGetValue(key, out var provider))
     {
@@ -151,7 +158,9 @@ public class ModelComponentProvider(
           ConstraintType = constraintType
         };
       })
-      .Where(x => x.Service.CanRender(modelType))
+      .Where(x =>
+        x.Service.CanRender(modelType) &&
+        x.Service.ComponentKind == componentKind)
       .DefaultIfEmpty(null)
       .Aggregate((acc, next) =>
         acc is null
