@@ -30,16 +30,6 @@
           @Summary(item)
         </MudGrid>
 
-        @if (Link is { } link)
-        {
-          <MudItem xs="2" Class="d-flex align-center justify-end">
-            <MudIconButton
-              OnClick="@(() => NavigationManager.NavigateTo(link(item)))"
-              Icon="@Icons.Material.Filled.RemoveRedEye"
-              Color="Color.Primary"/>
-          </MudItem>
-        }
-
         <MudItem xs="2" Class="d-flex align-center justify-end">
           <MudIconButton
             Icon="@(Icons.Material.Filled.KeyboardArrowUp)"

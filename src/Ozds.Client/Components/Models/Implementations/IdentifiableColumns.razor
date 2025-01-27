@@ -8,4 +8,14 @@
 @typeparam TModel where TModel : IIdentifiable
 @inherits OzdsColumnsComponentBase<TPrefix, TModel>
 
-@LinkColumn(x => x)
+
+<TemplateColumn T="TPrefix" Title="@Translate(typeof(TModel).Name)">
+  <CellTemplate>
+    @if (Raw(context.Item) is { } model)
+    {
+      <MudLink Href="@(Provider.CreateLink(model))">
+        @model.Title
+      </MudLink>
+    }
+  </CellTemplate>
+</TemplateColumn>
