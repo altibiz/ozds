@@ -73,7 +73,9 @@
         <CellTemplate>
           @if (Get(nextFunc)(context.Item) is { } model)
           {
-            <IdentifiableLink Model="model" />
+            <MudLink Href="@(Provider.CreateLink(model))">
+              @model.Title
+            </MudLink>
           }
         </CellTemplate>
       </TemplateColumn>;
