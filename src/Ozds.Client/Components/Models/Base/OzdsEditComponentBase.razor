@@ -34,7 +34,9 @@
       For="@For(next)" />;
   }
 
-  protected RenderFragment Field(Expression<Func<TModel, Enum?>> next)
+  // NOTE: doesn't work with just Enum
+  protected RenderFragment Field<T>(Expression<Func<TModel, T?>> next)
+    where T : Enum
   {
     var nextFunc = next.Compile();
     return @<EnumPicker
@@ -46,7 +48,20 @@
 
   // NOTE: doesn't work with just Enum
   protected RenderFragment Field<T>(
-    Expression<Func<TModel, IEnumerable<T>?>> next
+    Expression<Func<TModel, HashSet<T>?>> next
+  )
+    where T : Enum
+  {
+    var nextFunc = next.Compile();
+    return @<MultiEnumPicker
+      Title="@(Translate(next.Label()))"
+      Value="@Get(nextFunc)"
+      ValueChanged="@Set(next)" />;
+  }
+
+  // NOTE: doesn't work with just Enum
+  protected RenderFragment Field<T>(
+    Expression<Func<TModel, List<T>?>> next
   )
     where T : Enum
   {
@@ -88,7 +103,18 @@
   }
 
   protected RenderFragment MultiEnumField<T>(
-    Expression<Func<TModel, IEnumerable<T>?>> next
+    Expression<Func<TModel, HashSet<T>?>> next
+  )
+  {
+    var nextFunc = next.Compile();
+    return @<MultiEnumPicker
+      Title="@(Translate(next.Label()))"
+      Value="@Get(nextFunc)"
+      ValueChanged="@Set(next)" />;
+  }
+
+  protected RenderFragment MultiEnumField<T>(
+    Expression<Func<TModel, List<T>?>> next
   )
   {
     var nextFunc = next.Compile();

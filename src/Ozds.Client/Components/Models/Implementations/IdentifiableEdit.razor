@@ -4,6 +4,8 @@
 
 @namespace Ozds.Client.Components.Models
 
-@inherits OzdsDetailsComponentBase<IdentifiableModel>
+@typeparam TPrefix
+@typeparam TModel where TModel : IdentifiableModel
+@inherits OzdsEditComponentBase<TPrefix, TModel>
 
 @Field(x => x.Title)
