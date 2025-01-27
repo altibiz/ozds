@@ -13,7 +13,7 @@ public record ThemeState(
   {
     return new()
     {
-      Palette = new PaletteLight
+      PaletteLight = new PaletteLight
       {
         Primary = "#0072bc",
         AppbarBackground = "#0072bc",
@@ -29,51 +29,51 @@ public record ThemeState(
       },
       Typography = new Typography
       {
-        Default = new Default
+        Default = new DefaultTypography
         {
           FontFamily = ["Roboto"],
         },
-        H1 = new H1
+        H1 = new H1Typography
         {
           FontFamily = ["Roboto"],
         },
-        H2 = new H2
+        H2 = new H2Typography
         {
           FontFamily = ["Roboto"],
         },
-        H3 = new H3
+        H3 = new H3Typography
         {
           FontFamily = ["Roboto"],
         },
-        H4 = new H4
+        H4 = new H4Typography
         {
           FontFamily = ["Roboto"],
         },
-        H5 = new H5
+        H5 = new H5Typography
         {
           FontFamily = ["Roboto"],
         },
-        H6 = new H6
+        H6 = new H6Typography
         {
           FontFamily = ["Roboto"],
         },
-        Button = new Button
+        Button = new ButtonTypography
         {
           FontFamily = ["Roboto"],
         },
-        Body1 = new Body1
+        Body1 = new Body1Typography
         {
           FontFamily = ["Roboto"],
         },
-        Body2 = new Body2
+        Body2 = new Body2Typography
         {
           FontFamily = ["Roboto"],
         },
-        Caption = new Caption
+        Caption = new CaptionTypography
         {
           FontFamily = ["Roboto"],
         },
-        Subtitle2 = new Subtitle2
+        Subtitle2 = new Subtitle2Typography
         {
           FontFamily = ["Roboto"],
         }

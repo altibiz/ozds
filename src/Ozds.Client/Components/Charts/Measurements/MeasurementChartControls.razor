@@ -59,16 +59,16 @@
       <MudHidden Breakpoint="Breakpoint.MdAndUp">
         <MudCheckBox
           T="bool"
-          Checked="_parameters.Refresh"
-          CheckedChanged="OnRefreshChanged"
+          Value="_parameters.Refresh"
+          ValueChanged="OnRefreshChanged"
           Label="@Translate("Refresh")"/>
       </MudHidden>
       <MudHidden Breakpoint="Breakpoint.SmAndDown">
         <div class="d-flex justify-end pe-4">
           <MudCheckBox
             T="bool"
-            Checked="_parameters.Refresh"
-            CheckedChanged="OnRefreshChanged"
+            Value="_parameters.Refresh"
+            ValueChanged="OnRefreshChanged"
             Label="@Translate("Refresh")"/>
         </div>
       </MudHidden>

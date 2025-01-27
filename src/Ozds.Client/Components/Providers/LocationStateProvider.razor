@@ -27,7 +27,7 @@
       AdornmentIcon="@Icons.Material.Filled.Search"
       @bind-Value="_filter" />
 
-    <MudList>
+    <div>
       @foreach (var location in _representativeLocations)
       {
         @if (
@@ -37,12 +37,12 @@
           continue;
         }
 
-        <MudListItem>
+        <div>
           <MudButton OnClick="@(() => OnLocationSelected(location))">
             <Summary Model="location" />
           </MudButton>
-        </MudListItem>
+        </div>
       }
-    </MudList>
+    </div>
   </div>
 </MudContainer>

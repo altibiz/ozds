@@ -7,7 +7,7 @@ namespace Ozds.Client.Components.Streaming;
 public partial class MutatingResult : OzdsComponentBase
 {
   [CascadingParameter]
-  public MudDialogInstance MudDialog { get; set; } = default!;
+  public IMudDialogInstance MudDialog { get; set; } = default!;
 
   [Parameter]
   public string? Body { get; set; } = default!;

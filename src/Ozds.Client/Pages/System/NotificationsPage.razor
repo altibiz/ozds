@@ -37,7 +37,7 @@
 <MudCheckBox
   T="bool"
   Label="@(Translate("Seen"))"
-  @bind-Checked="_seen" />
+  @bind-Value="_seen" />
 
 <Paging PageAsync="OnPageAsync">
   <Found Context="page">

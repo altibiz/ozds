@@ -7,7 +7,7 @@ namespace Ozds.Client.Components.Dialogs;
 public partial class DateRangeDialog : OzdsComponentBase
 {
   [CascadingParameter]
-  public MudDialogInstance MudDialog { get; set; } = default!;
+  public IMudDialogInstance MudDialog { get; set; } = default!;
 
   [Parameter]
   public DateTimeOffset? MinDate { get; set; }
