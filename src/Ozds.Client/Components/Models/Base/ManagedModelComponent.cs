@@ -17,7 +17,7 @@ public abstract class ManagedModelComponent : ModelComponent
   {
     return new()
     {
-      [nameof(OzdsManagedModelComponentBase<object>.Model)] = Model
+      { nameof(OzdsManagedModelComponentBase<object>.Model), Model }
     };
   }
 }
@@ -49,8 +49,8 @@ public abstract class ManagedModelComponent<TPrefix, TModel> : ModelComponent
   {
     return new()
     {
-      [nameof(OzdsManagedModelComponentBase<object, object>.Model)] = Model!,
-      [nameof(OzdsManagedModelComponentBase<object, object>.Prefix)] = Prefix!,
+      { nameof(OzdsManagedModelComponentBase<object, object>.Model), Model! },
+      { nameof(OzdsManagedModelComponentBase<object, object>.Prefix), Prefix! },
     };
   }
 }

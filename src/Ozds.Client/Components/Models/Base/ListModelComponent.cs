@@ -30,8 +30,8 @@ public abstract class ListModelComponent<TPrefix, TModel> : ModelComponent
   {
     return new()
     {
-      [nameof(OzdsListModelComponentBase<object, object>.Models)] = Models!,
-      [nameof(OzdsListModelComponentBase<object, object>.Prefix)] = Prefix!,
+      { nameof(OzdsListModelComponentBase<object, object>.Models), Models! },
+      { nameof(OzdsListModelComponentBase<object, object>.Prefix), Prefix! },
     };
   }
 }
