@@ -42,4 +42,32 @@
         </MudLink>
       </MudText>;
   }
+
+  protected RenderFragment LinkTitle<T>(Func<TModel, string?> next)
+    where T : IIdentifiable
+  {
+    var id = next(Model);
+    var href = id is null
+      ? null
+      : PageHref(Provider.GetPageComponentType(typeof(T)), new { id });
+    return @<MudText Typo="Typo.h6">
+        <MudLink Href="@href">
+          @id
+        </MudLink>
+      </MudText>;
+  }
+
+  protected RenderFragment LinkSubtitle<T>(Func<TModel, string?> next)
+    where T : IIdentifiable
+  {
+    var id = next(Model);
+    var href = id is null
+      ? null
+      : PageHref(Provider.GetPageComponentType(typeof(T)), new { id });
+    return @<MudText Typo="Typo.body2">
+        <MudLink Href="@href">
+          @id
+        </MudLink>
+      </MudText>;
+  }
 }
