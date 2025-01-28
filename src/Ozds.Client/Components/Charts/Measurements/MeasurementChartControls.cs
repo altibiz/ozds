@@ -126,6 +126,7 @@ public partial class MeasurementChartControls : OzdsComponentBase
 
   private async Task OnResolutionChanged(ResolutionModel resolution)
   {
+    Console.WriteLine($"Resolution changed: {resolution}");
     _parameters.Resolution = resolution;
     if (_parameters.Refresh)
     {

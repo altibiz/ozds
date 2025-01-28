@@ -38,22 +38,22 @@ cloud "Cloud" {
 }
 
 cloud "Location 1" {
-  node "Schneider iEM3xxx 1" as schneider11
-  node "Schneider iEM3xxx 2" as schneider12
+  node "Meter 1" as meter11
+  node "Meter 2" as meter12
   node "Raspberry Pi 4B 1" as messenger1
 }
 
 cloud "Location 2" {
-  node "Schneider iEM3xxx 1" as schneider21
-  node "Schneider iEM3xxx 2" as schneider22
+  node "Meter 1" as meter21
+  node "Meter 2" as meter22
   node "Raspberry Pi 4B 2" as messenger2
 }
 
-schneider11 --> messenger1 : RS485
-schneider12 --> messenger1 : RS485
+meter11 --> messenger1 : RS485
+meter12 --> messenger1 : RS485
 
-schneider21 --> messenger2 : RS485
-schneider22 --> messenger2 : RS485
+meter21 --> messenger2 : RS485
+meter22 --> messenger2 : RS485
 
 node "Client1" as C1
 node "Client2" as C2
