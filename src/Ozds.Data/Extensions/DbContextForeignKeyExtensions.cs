@@ -300,7 +300,9 @@ public static class DbContextForeignKeyExtensions
       idExpressions.Add(keyMatchExpression!);
     }
 
-    var finalOrExpression = idExpressions.Aggregate(Expression.OrElse);
+    var finalOrExpression = idExpressions
+      .DefaultIfEmpty(Expression.Constant(false))
+      .Aggregate(Expression.OrElse);
 
     return Expression.Lambda<Func<object, bool>>(finalOrExpression, parameter);
   }

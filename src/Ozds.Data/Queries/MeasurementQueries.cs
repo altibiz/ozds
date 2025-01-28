@@ -1,6 +1,7 @@
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Ozds.Data.Context;
+using Ozds.Data.Entities;
 using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Entities.Base;
 using Ozds.Data.Entities.Enums;
@@ -54,7 +55,9 @@ public class MeasurementQueries(
           .Lambda<Func<IMeasurementEntity, bool>>(
             Expression.Equal(
               Expression.Property(
-                Expression.Convert(intervalParameter, typeof(IAggregateEntity)),
+                Expression.Convert(
+                  intervalParameter,
+                  typeof(IAggregateEntity)),
                 nameof(AggregateEntity<MeterEntity>.Interval)),
               Expression.Constant(interval)),
             intervalParameter);
@@ -133,7 +136,9 @@ public class MeasurementQueries(
           .Lambda<Func<IMeasurementEntity, bool>>(
             Expression.Equal(
               Expression.Property(
-                intervalParameter,
+                Expression.Convert(
+                  intervalParameter,
+                  typeof(IAggregateEntity)),
                 nameof(AggregateEntity<MeterEntity>.Interval)),
               Expression.Constant(interval)),
             intervalParameter);
@@ -169,7 +174,7 @@ public class MeasurementQueries(
   }
 
   public async Task<PaginatedList<IMeasurementEntity>> ReadByMeasurementLocationIds(
-    IEnumerable<IGrouping<Type, string>> meterIdsByEntityType,
+    IEnumerable<string> measurementLocationIds,
     IntervalEntity? interval,
     DateTimeOffset fromDate,
     DateTimeOffset toDate,
@@ -187,10 +192,13 @@ public class MeasurementQueries(
     var futureCounts = new List<QueryDeferred<int>>();
     var futureItems = new List<QueryFutureEnumerable<IMeasurementEntity>>();
 
-    foreach (var group in meterIdsByEntityType)
+    foreach (var entityType in new Type[] {
+      typeof(AbbB2xAggregateEntity),
+      typeof(AbbB2xMeasurementEntity),
+      typeof(SchneideriEM3xxxAggregateEntity),
+      typeof(SchneideriEM3xxxMeasurementEntity),
+    })
     {
-      var entityType = group.Key;
-      var meterIds = group;
       var queryable = context.GetQueryable<IMeasurementEntity>(entityType);
 
       var filtered = queryable
@@ -205,7 +213,9 @@ public class MeasurementQueries(
           .Lambda<Func<IMeasurementEntity, bool>>(
             Expression.Equal(
               Expression.Property(
-                intervalParameter,
+                Expression.Convert(
+                  intervalParameter,
+                  typeof(IAggregateEntity)),
                 nameof(AggregateEntity<MeterEntity>.Interval)),
               Expression.Constant(interval)),
             intervalParameter);
@@ -220,8 +230,8 @@ public class MeasurementQueries(
           Expression.Invoke(
             context.ForeignKeyIn(
               entityType,
-              nameof(MeasurementEntity<MeterEntity>.Meter),
-              meterIds),
+              nameof(MeasurementEntity<MeterEntity>.MeasurementLocation),
+              measurementLocationIds),
             Expression.Convert(foreignKeyParameter, typeof(object))),
           foreignKeyParameter);
       filtered = filtered.Where(foreignKeyExpression);
@@ -254,7 +264,7 @@ public class MeasurementQueries(
   }
 
   public async Task<List<IMeasurementEntity>> ReadLastByMeasurementLocationIds(
-    IEnumerable<IGrouping<Type, string>> meterIdsByEntityType,
+    IEnumerable<string> measurementLocationIds,
     IntervalEntity? interval,
     DateTimeOffset toDate,
     CancellationToken cancellationToken
@@ -267,10 +277,13 @@ public class MeasurementQueries(
 
     var futureItems = new List<QueryDeferred<IMeasurementEntity>>();
 
-    foreach (var group in meterIdsByEntityType)
+    foreach (var entityType in new Type[] {
+      typeof(AbbB2xAggregateEntity),
+      typeof(AbbB2xMeasurementEntity),
+      typeof(SchneideriEM3xxxAggregateEntity),
+      typeof(SchneideriEM3xxxMeasurementEntity),
+    })
     {
-      var entityType = group.Key;
-      var meterIds = group;
       var queryable = context.GetQueryable<IMeasurementEntity>(entityType);
 
       var filtered = queryable
@@ -284,7 +297,9 @@ public class MeasurementQueries(
           .Lambda<Func<IMeasurementEntity, bool>>(
             Expression.Equal(
               Expression.Property(
-                intervalParameter,
+                Expression.Convert(
+                  intervalParameter,
+                  typeof(IAggregateEntity)),
                 nameof(AggregateEntity<MeterEntity>.Interval)),
               Expression.Constant(interval)),
             intervalParameter);
@@ -299,8 +314,8 @@ public class MeasurementQueries(
           Expression.Invoke(
             context.ForeignKeyIn(
               entityType,
-              nameof(MeasurementEntity<MeterEntity>.Meter),
-              meterIds),
+              nameof(MeasurementEntity<MeterEntity>.MeasurementLocation),
+              measurementLocationIds),
             Expression.Convert(foreignKeyParameter, typeof(object))),
           foreignKeyParameter);
       filtered = filtered.Where(foreignKeyExpression);

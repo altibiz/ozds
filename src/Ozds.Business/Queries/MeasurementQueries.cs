@@ -93,7 +93,7 @@ public class MeasurementQueries(
 
   public async Task<PaginatedList<IMeasurement>>
     ReadByMeasurementLocationIdsDynamic(
-      IEnumerable<IMeter> meters,
+      IEnumerable<IMeasurementLocation> measurementLocations,
       ResolutionModel resolution,
       int multiplier,
       int pageNumber,
@@ -111,18 +111,9 @@ public class MeasurementQueries(
     var appropriateInterval = QueryConstants
       .AppropriateInterval(timeSpan, fromDate)
       ?.ToEntity();
-    var isAggregate = appropriateInterval is { };
-
-    var modelIdsByEntityType = meters
-      .Select(meter => meter.Id)
-      .GroupBy(id => isAggregate
-        ? modelEntityConverter.EntityType(
-            meterNamingConvention.AggregateTypeForMeterId(id))
-        : modelEntityConverter.EntityType(
-            meterNamingConvention.MeasurementTypeForMeterId(id)));
 
     var entities = await queries.ReadByMeasurementLocationIds(
-      modelIdsByEntityType,
+      measurementLocations.Select(x => x.Id),
       appropriateInterval,
       fromDate,
       toDate,
@@ -140,7 +131,7 @@ public class MeasurementQueries(
 
   public async Task<List<IMeasurement>>
     ReadByMeasurementLocationIdsLastDynamic(
-      IEnumerable<IMeter> meters,
+      IEnumerable<IMeasurementLocation> measurementLocations,
       CancellationToken cancellationToken,
       IntervalModel? interval = default,
       DateTimeOffset toDate = default
@@ -149,18 +140,8 @@ public class MeasurementQueries(
     var now = DateTimeOffset.UtcNow;
     toDate = toDate == default ? now : toDate;
 
-    var isAggregate = interval is { };
-
-    var modelIdsByEntityType = meters
-      .Select(meter => meter.Id)
-      .GroupBy(id => isAggregate
-        ? modelEntityConverter.EntityType(
-            meterNamingConvention.AggregateTypeForMeterId(id))
-        : modelEntityConverter.EntityType(
-            meterNamingConvention.MeasurementTypeForMeterId(id)));
-
     var entities = await queries.ReadLastByMeasurementLocationIds(
-      modelIdsByEntityType,
+      measurementLocations.Select(x => x.Id),
       interval?.ToEntity(),
       toDate,
       cancellationToken

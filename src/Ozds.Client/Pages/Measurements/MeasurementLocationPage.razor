@@ -20,7 +20,7 @@
 @{
   var analysis = AnalysisState.AnalysisBases.Value
     .AnalysesByMeasurementLocation()
-    .FirstOrDefault(x => x.Meter.Id == Id);
+    .FirstOrDefault(x => x.MeasurementLocation.Id == Id);
 }
 
 @if (analysis is { })
@@ -37,9 +37,12 @@
     </Columns>
   </ResponsiveTable>
 
-  var meters = new List<IMeter>() { analysis.Meter };
+  var measurementLocations = new List<IMeasurementLocation>()
+  {
+    analysis.MeasurementLocation
+  };
 
-  <MeasurementChartControls Meters="@meters">
+  <MeasurementChartControls MeasurementLocations="@measurementLocations">
     <MeasurementGaugeChart
       Parameters="@context" />
     <MeasurementLineChart

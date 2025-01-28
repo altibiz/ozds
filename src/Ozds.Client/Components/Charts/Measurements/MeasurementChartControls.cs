@@ -11,8 +11,6 @@ using Ozds.Client.Components.Base;
 
 namespace Ozds.Client.Components.Charts;
 
-// TODO: joins
-
 public partial class MeasurementChartControls : OzdsComponentBase
 {
   [Parameter]
@@ -183,7 +181,7 @@ public partial class MeasurementChartControls : OzdsComponentBase
     var fromDate = _parameters.FromDate;
     var toDate = fromDate.Add(_parameters.Resolution
       .ToTimeSpan(_parameters.Multiplier, fromDate));
-    _parameters.Measurements = await queries.ReadByMeterIdsDynamic(
+    var fromMeters = await queries.ReadByMeterIdsDynamic(
       Meters,
       _parameters.Resolution,
       _parameters.Multiplier,
@@ -191,6 +189,20 @@ public partial class MeasurementChartControls : OzdsComponentBase
       cancellationToken: CancellationToken,
       fromDate: fromDate,
       toDate: toDate
+    );
+    var fromMeasurementLocations = await queries
+      .ReadByMeasurementLocationIdsDynamic(
+        MeasurementLocations,
+        _parameters.Resolution,
+        _parameters.Multiplier,
+        pageNumber: 1,
+        cancellationToken: CancellationToken,
+        fromDate: fromDate,
+        toDate: toDate
+      );
+    _parameters.Measurements = new(
+      fromMeters.Items.Concat(fromMeasurementLocations.Items).ToList(),
+      fromMeters.TotalCount + fromMeasurementLocations.TotalCount
     );
   }
 
@@ -217,8 +229,10 @@ public partial class MeasurementChartControls : OzdsComponentBase
     {
       var newMeasurements = measurements
         .Where(x => x.Timestamp >= timestamp)
-        .Where(x => Meters.Exists(meter =>
-          meter.Id == x.MeterId))
+        .Where(x =>
+          Meters.Exists(meter => meter.Id == x.MeterId)
+          || MeasurementLocations.Exists(
+              location => location.Id == x.MeasurementLocationId))
         .OrderBy(x => x.Timestamp)
         .ToList();
       var concatenated = _parameters.Measurements.Items
@@ -234,14 +248,17 @@ public partial class MeasurementChartControls : OzdsComponentBase
       var newAggregates = aggregates
         .Where(x => x.Timestamp >= timestamp)
         .Where(x => x.Interval == appropriateInterval)
-        .Where(x => Meters.Exists(meter =>
-          meter.Id == x.MeterId))
+        .Where(x =>
+          Meters.Exists(meter => meter.Id == x.MeterId)
+          || MeasurementLocations.Exists(
+              location => location.Id == x.MeasurementLocationId))
         .OrderBy(x => x.Timestamp)
         .OfType<IAggregate>()
         .ToList();
       var aggregated = _parameters.Measurements.Items.OfType<IAggregate>()
         .Concat(newAggregates)
-        .GroupBy(x => x.Timestamp)
+        .GroupBy(x =>
+          (x.Timestamp, x.MeasurementLocationId, x.MeterId, x.GetType()))
         .Select(x => x
           .Aggregate(AggregateUpserter.UpsertModelDynamic))
         .OfType<IMeasurement>()
