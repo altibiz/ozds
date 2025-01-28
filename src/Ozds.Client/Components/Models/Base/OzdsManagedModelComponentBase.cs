@@ -66,6 +66,7 @@ public abstract class OzdsManagedModelComponentBase<TPrefix, TModel> :
       next.Parameters[0],
       prefixGetter.Body
     );
+    Console.WriteLine(memberGetter);
     var memberAssignment = Expression.Assign(
       memberGetter,
       parameter
