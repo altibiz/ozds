@@ -125,6 +125,7 @@ words:
   - "downcasted"
   - "unproxied"
   - "unproxy"
+  - "notnull"
 
   # Croatian
   - "altibiz"

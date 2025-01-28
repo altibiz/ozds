@@ -34,6 +34,16 @@
       For="@For(next)" />;
   }
 
+  protected RenderFragment Field(Expression<Func<TModel, decimal>> next)
+  {
+    var nextFunc = next.Compile();
+    return @<MudNumericField
+      Label="@(Translate(next.Label()))"
+      Value="@Get(nextFunc)"
+      ValueChanged="@Set(next)"
+      For="@For(next)" />;
+  }
+
   // NOTE: doesn't work with just Enum
   protected RenderFragment Field<T>(Expression<Func<TModel, T?>> next)
     where T : Enum
@@ -83,6 +93,18 @@
   }
 
   protected RenderFragment NumericField<T>(Expression<Func<TModel, T?>> next)
+    where T : struct
+  {
+    var nextFunc = next.Compile();
+    return @<MudNumericField
+      Label="@(Translate(next.Label()))"
+      Value="@Get(nextFunc)"
+      ValueChanged="@Set(next)"
+      For="@For(next)" />;
+  }
+
+  protected RenderFragment NumericField<T>(Expression<Func<TModel, T>> next)
+    where T : struct
   {
     var nextFunc = next.Compile();
     return @<MudNumericField

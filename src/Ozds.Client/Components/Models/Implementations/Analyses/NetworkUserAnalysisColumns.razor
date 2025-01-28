@@ -1,4 +1,5 @@
 @using Ozds.Business.Analysis
+@using Ozds.Business.Models
 @using Ozds.Client.Components.Models.Base
 
 @namespace Ozds.Client.Components.Models.Implementations.Analyses
@@ -6,6 +7,8 @@
 @typeparam TPrefix
 @typeparam TModel where TModel : NetworkUserAnalysis
 @inherits OzdsColumnsComponentBase<TPrefix, TModel>
+
+@(LinkColumn(x => x.NetworkUser))
 
 @Column(x => x.Analysis.ThisMonthConsumption.ActiveEnergy_kWh)
 

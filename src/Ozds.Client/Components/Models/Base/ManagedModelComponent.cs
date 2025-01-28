@@ -32,7 +32,9 @@ public abstract class ManagedModelComponent<TPrefix, TModel> : ModelComponent
 
   protected override Type CreateModelType()
   {
-    return typeof(TModel);
+    var prefixFunc = Prefix?.Compile() ?? ((TPrefix x) => (TModel?)(object?)x);
+    var model = prefixFunc(Model);
+    return model?.GetType() ?? typeof(TModel);
   }
 
   protected override Type CreateComponentType()
@@ -40,7 +42,7 @@ public abstract class ManagedModelComponent<TPrefix, TModel> : ModelComponent
     return Provider.GetPrefixedComponentType(
       typeof(TPrefix),
       ModelType,
-      typeof(TModel),
+      ModelType,
       ComponentKind
     );
   }

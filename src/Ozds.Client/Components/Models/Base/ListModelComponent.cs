@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using Microsoft.AspNetCore.Components;
+using Ozds.Client.Extensions;
 
 namespace Ozds.Client.Components.Models.Base;
 
@@ -13,7 +14,13 @@ public abstract class ListModelComponent<TPrefix, TModel> : ModelComponent
 
   protected override Type CreateModelType()
   {
-    return typeof(TModel);
+    var prefixFunc = Prefix?.Compile() ?? ((TPrefix x) => (TModel?)(object?)x);
+    var modelType = Models
+      .Select(prefixFunc)
+      .Select(x => x?.GetType())
+      .OfType<Type>()
+      .CommonType();
+    return modelType ?? typeof(TModel);
   }
 
   protected override Type CreateComponentType()
@@ -21,7 +28,7 @@ public abstract class ListModelComponent<TPrefix, TModel> : ModelComponent
     return Provider.GetPrefixedComponentType(
       typeof(TPrefix),
       ModelType,
-      typeof(TModel),
+      ModelType,
       ComponentKind
     );
   }
