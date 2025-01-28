@@ -187,7 +187,9 @@
         <CellTemplate>
           @if (Get(nextFunc)(context.Item) is { } id)
           {
-            var href = PageHref(Provider.GetPageComponentType(typeof(T)), id);
+            var href = PageHref(
+              Provider.GetPageComponentType(typeof(T)),
+              new { id });
             <MudLink Href="@href">
               @id
             </MudLink>
