@@ -106,7 +106,7 @@
         : new List<IMeasurement>();
     var phaseName = phase is { } selectedPhase
       ? selectedPhase.ToTitle()
-      : Translate("Sum");
+      : Translate("Phase sum");
     var name = meter is { } nameMeter
       ? nameMeter.Id + " " + phaseName
       : measurementLocation is { } nameMeasurementLocation

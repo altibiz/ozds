@@ -166,7 +166,7 @@ public static class ApexChartOptionsExtensions
       {
         Labels = new YAxisLabels
         {
-          Formatter = "function(val, index) { return (val ?? 0).toFixed(0); }"
+          Formatter = "function(val, index) { return (val ?? 0).toFixed(2); }"
         }
       }
     ];
@@ -227,7 +227,7 @@ public static class ApexChartOptionsExtensions
       {
         Labels = new YAxisLabels
         {
-          Formatter = "function(val, index) { return (val ?? 0).toFixed(0); }"
+          Formatter = "function(val, index) { return (val ?? 0).toFixed(2); }"
         }
       }
     ];

@@ -1,8 +1,8 @@
-namespace Ozds.Business.Capabilities.Abstractions;
+using Ozds.Business.Models.Enums;
 
-// TODO: expand
+namespace Ozds.Business.Capabilities.Abstractions;
 
 public interface ICapabilities
 {
-  bool HasApparentPower { get; set; }
+  public IEnumerable<MeasureModel> Measures { get; }
 }

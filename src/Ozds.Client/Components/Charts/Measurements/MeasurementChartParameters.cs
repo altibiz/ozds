@@ -26,5 +26,5 @@ public class MeasurementChartParameters
 
   public bool Refresh { get; set; } = true;
 
-  public OperatorModel Operator { get; set; } = OperatorModel.Sum;
+  public OperatorModel Operator { get; set; } = OperatorModel.Last;
 }

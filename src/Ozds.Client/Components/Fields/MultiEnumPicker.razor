@@ -1,5 +1,6 @@
 @using MudBlazor
 @using System.Linq.Expressions
+@using System.Collections
 
 @namespace Ozds.Client.Components.Fields
 
@@ -14,7 +15,7 @@
   SelectedValuesChanged="@ValueChanged"
   MultiSelection
   For="For">
-  @foreach (var item in Enum.GetValues(typeof(T)))
+  @foreach (var item in Values)
   {
     var value = (T)item;
     <MudSelectItem Value="@value">
@@ -45,4 +46,7 @@
 
   [Parameter]
   public Expression<Func<T>> For { get; set; } = default!;
+
+  [Parameter]
+  public IEnumerable Values { get; set; } = Enum.GetValues(typeof(T));
 }

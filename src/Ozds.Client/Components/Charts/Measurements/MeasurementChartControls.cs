@@ -86,6 +86,23 @@ public partial class MeasurementChartControls : OzdsComponentBase
     }
   }
 
+  private IEnumerable<MeasureModel> Measures()
+  {
+    if (MeasurementLocations.Count > 0)
+    {
+      return Enum.GetValues<MeasureModel>();
+    }
+
+    if (Meters.Count > 0)
+    {
+      return Meters
+        .SelectMany(x => x.Capabilities.Measures)
+        .Distinct();
+    }
+
+    return [];
+  }
+
   protected override async Task OnParametersSetAsync()
   {
     await Fetch();

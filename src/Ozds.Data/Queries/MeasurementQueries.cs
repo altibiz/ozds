@@ -198,12 +198,19 @@ public class MeasurementQueries(
     var futureCounts = new List<QueryDeferred<int>>();
     var futureItems = new List<QueryFutureEnumerable<IMeasurementEntity>>();
 
-    foreach (var entityType in new Type[] {
-      typeof(AbbB2xAggregateEntity),
-      typeof(AbbB2xMeasurementEntity),
-      typeof(SchneideriEM3xxxAggregateEntity),
-      typeof(SchneideriEM3xxxMeasurementEntity),
-    })
+    var types = interval is { }
+      ? new Type[]
+        {
+          typeof(AbbB2xAggregateEntity),
+          typeof(SchneideriEM3xxxAggregateEntity),
+        }
+      : new Type[]
+        {
+          typeof(AbbB2xMeasurementEntity),
+          typeof(SchneideriEM3xxxMeasurementEntity),
+        };
+
+    foreach (var entityType in types)
     {
       var queryable = context.GetQueryable<IMeasurementEntity>(entityType);
 
