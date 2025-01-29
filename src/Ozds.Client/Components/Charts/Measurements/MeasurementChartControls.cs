@@ -238,17 +238,18 @@ public partial class MeasurementChartControls : OzdsComponentBase
     }
 
     var now = DateTimeOffset.UtcNow;
-    var timestamp =
-      _parameters.Measurements.Items.LastOrDefault()?.Timestamp ?? now;
     var timeSpan = _parameters.Resolution
-      .ToTimeSpan(_parameters.Multiplier, timestamp);
+      .ToTimeSpan(_parameters.Multiplier, now);
+    var min = now.Subtract(timeSpan);
+    var minNew =
+      _parameters.Measurements.Items.LastOrDefault()?.Timestamp ?? min;
     var appropriateInterval = QueryConstants
       .AppropriateInterval(timeSpan, now);
 
     if (appropriateInterval is null)
     {
       var newMeasurements = measurements
-        .Where(x => x.Timestamp >= timestamp)
+        .Where(x => x.Timestamp >= minNew)
         .Where(x =>
           Meters.Exists(meter => meter.Id == x.MeterId)
           || MeasurementLocations.Exists(
@@ -256,6 +257,7 @@ public partial class MeasurementChartControls : OzdsComponentBase
         .ToList();
       var concatenated = _parameters.Measurements.Items
         .Concat(newMeasurements)
+        .Where(x => x.Timestamp >= min)
         .DistinctBy(x =>
           (x.MeterId,
           x.MeasurementLocationId,
@@ -271,7 +273,7 @@ public partial class MeasurementChartControls : OzdsComponentBase
     else
     {
       var newAggregates = aggregates
-        .Where(x => x.Timestamp >= timestamp)
+        .Where(x => x.Timestamp >= minNew)
         .Where(x => x.Interval == appropriateInterval)
         .Where(x =>
           Meters.Exists(meter => meter.Id == x.MeterId)
@@ -280,6 +282,7 @@ public partial class MeasurementChartControls : OzdsComponentBase
         .OfType<IAggregate>();
       var aggregated = _parameters.Measurements.Items.OfType<IAggregate>()
         .Concat(newAggregates)
+        .Where(x => x.Timestamp >= min)
         .GroupBy(x =>
           (x.Timestamp, x.MeasurementLocationId, x.MeterId, x.GetType()))
         .Select(x => x
