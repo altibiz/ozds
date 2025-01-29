@@ -16,40 +16,70 @@
   Options="@_options"
   Height="300"
   @ref="@_chart">
-  @foreach (var (selectedMeter, i) in Parameters.Meters
+  @foreach (var (meter, measurementLocation, i) in Parameters.Meters
     .OrderBy(x => x.Id)
-    .Select((x, i) => (x, i)))
+    .Select((x, i) => ((IMeter?)x,(IMeasurementLocation?)null, i))
+    .Concat(Parameters.MeasurementLocations
+      .OrderBy(x => x.Id)
+      .Select((x, i) => ((IMeter?)null, (IMeasurementLocation?)x, i))))
   {
     if (Parameters.Phases.Count == 0)
     {
-      <ApexPointSeries
-        Items="@(Parameters.Measurements.Items
-          .Where(x => x.MeterId == selectedMeter.Id)
-          .ToList())"
-        Name="@(selectedMeter.Id + " " + Translate("Sum"))"
-        SeriesType="@SeriesType.RadialBar"
-        XValue="@(x => x.MeterId)"
-        YAggregate="@(x => x
-          .Select(y => y.ChartValue(Parameters.Measure))
-          .Apply(Parameters.Operator))"
-        Color="@(PhaseModel.L1.ToColor(i))"/>
+      @(Series(
+        PhaseModel.L1.ToColor(i),
+        meter: meter,
+        measurementLocation: measurementLocation
+      ))
     }
     else
     {
       foreach (var phase in Parameters.Phases.OrderBy(x => x))
       {
-        <ApexPointSeries
-          Items="@(Parameters.Measurements.Items
-            .Where(x => x.MeterId == selectedMeter.Id)
-            .ToList())"
-          Name="@(selectedMeter.Id + " " + phase.ToTitle())"
-          SeriesType="@SeriesType.RadialBar"
-          XValue="@(x => x.MeterId)"
-          YAggregate="@(x => x
-            .Select(y => y.ChartValue(Parameters.Measure, phase: phase))
-            .Apply(Parameters.Operator))"
-          Color="@(phase.ToColor(i))"/>
+        @(Series(
+          phase.ToColor(i),
+          meter: meter,
+          measurementLocation: measurementLocation,
+          phase: phase
+        ))
       }
     }
   }
 </ApexChart>
+
+@code {
+  private RenderFragment Series(
+    string color,
+    IMeter? meter = null,
+    IMeasurementLocation? measurementLocation = null,
+    PhaseModel? phase = null)
+  {
+    var measurements = meter is { } measurementMeter
+      ? Parameters.Measurements.Items
+          .Where(x => x.MeterId == measurementMeter.Id)
+          .ToList()
+      : measurementLocation is { } measurementMeasurementLocation
+        ? Parameters.Measurements.Items
+            .Where(x =>
+              x.MeasurementLocationId == measurementMeasurementLocation?.Id)
+            .ToList()
+        : new List<IMeasurement>();
+    var phaseName = phase is { } selectedPhase
+      ? selectedPhase.ToTitle()
+      : Translate("Sum");
+    var name = meter is { } nameMeter
+      ? nameMeter.Id + " " + phaseName
+      : measurementLocation is { } nameMeasurementLocation
+        ? nameMeasurementLocation.Title + " " + phaseName
+        : "";
+
+    return @<ApexPointSeries
+      Items="@measurements"
+      Name="@name"
+      SeriesType="@SeriesType.RadialBar"
+      XValue="@(x => x.MeterId)"
+      YAggregate="@(x => x
+        .Select(y => y.ChartValue(Parameters.Measure))
+        .Apply(Parameters.Operator))"
+      Color="@color" />;
+  }
+}
