@@ -1,3 +1,5 @@
+using Ozds.Business.Capabilities.Abstractions;
+using Ozds.Business.Capabilities.Implementations;
 using Ozds.Business.Models;
 using Ozds.Business.Naming.Base;
 
@@ -28,5 +30,10 @@ public class AbbB2xMeterNamingConvention : ConcreteMeterNamingConvention
   public override Type MeterType
   {
     get { return typeof(AbbB2xMeterModel); }
+  }
+
+  public override ICapabilities Capabilities
+  {
+    get { return new AbbB2xCapabilities(); }
   }
 }

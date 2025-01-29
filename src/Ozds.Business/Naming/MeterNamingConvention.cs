@@ -1,7 +1,8 @@
 using System.Collections.Concurrent;
+using Ozds.Business.Capabilities.Abstractions;
 using Ozds.Business.Naming.Abstractions;
 
-namespace Ozds.Business.Naming.Agnostic;
+namespace Ozds.Business.Naming;
 
 public class MeterNamingConvention(IServiceProvider serviceProvider)
 {
@@ -23,6 +24,11 @@ public class MeterNamingConvention(IServiceProvider serviceProvider)
   public Type MeterTypeForMeterId(string meterId)
   {
     return GetMeterNamingConvention(meterId).MeterType;
+  }
+
+  public ICapabilities CapabilitiesForMeterId(string meterId)
+  {
+    return GetMeterNamingConvention(meterId).Capabilities;
   }
 
   private IMeterNamingConvention GetMeterNamingConvention(

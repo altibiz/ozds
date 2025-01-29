@@ -1,3 +1,5 @@
+using Ozds.Business.Capabilities.Abstractions;
+using Ozds.Business.Capabilities.Implementations;
 using Ozds.Business.Models;
 using Ozds.Business.Naming.Base;
 
@@ -28,5 +30,10 @@ public class SchneideriEM3xxxMeterNamingConvention : ConcreteMeterNamingConventi
   public override Type MeterType
   {
     get { return typeof(SchneideriEM3xxxMeterModel); }
+  }
+
+  public override ICapabilities Capabilities
+  {
+    get { return new SchneideriEM3xxxCapabilities(); }
   }
 }

@@ -1,7 +1,7 @@
 using Ozds.Business.Conversion;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Enums;
-using Ozds.Business.Naming.Agnostic;
+using Ozds.Business.Naming;
 using Ozds.Business.Queries.Abstractions;
 using DataMeasurementQueries = Ozds.Data.Queries.MeasurementQueries;
 

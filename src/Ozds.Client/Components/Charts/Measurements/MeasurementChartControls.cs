@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Ozds.Business.Aggregation;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Enums;
+using Ozds.Business.Naming;
 using Ozds.Business.Observers.Abstractions;
 using Ozds.Business.Observers.EventArgs;
 using Ozds.Business.Queries;
@@ -33,6 +34,9 @@ public partial class MeasurementChartControls : OzdsComponentBase
 
   [Inject]
   private AggregateUpserter AggregateUpserter { get; set; } = default!;
+
+  [Inject]
+  private MeterNamingConvention MeterNamingConvention { get; set; } = default!;
 
   private readonly MeasurementChartParameters _parameters = new();
 
@@ -88,19 +92,11 @@ public partial class MeasurementChartControls : OzdsComponentBase
 
   private IEnumerable<MeasureModel> Measures()
   {
-    if (MeasurementLocations.Count > 0)
-    {
-      return Enum.GetValues<MeasureModel>();
-    }
-
-    if (Meters.Count > 0)
-    {
-      return Meters
-        .SelectMany(x => x.Capabilities.Measures)
-        .Distinct();
-    }
-
-    return [];
+    return _parameters.MeasurementLocations
+      .SelectMany(x => MeterNamingConvention
+        .CapabilitiesForMeterId(x.MeterId).Measures)
+      .Concat(Meters.SelectMany(x => x.Capabilities.Measures))
+      .Distinct();
   }
 
   protected override async Task OnParametersSetAsync()

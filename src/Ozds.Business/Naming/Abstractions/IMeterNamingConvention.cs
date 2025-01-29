@@ -1,3 +1,5 @@
+using Ozds.Business.Capabilities.Abstractions;
+
 namespace Ozds.Business.Naming.Abstractions;
 
 public interface IMeterNamingConvention
@@ -7,4 +9,5 @@ public interface IMeterNamingConvention
   public Type AggregateType { get; }
   public Type MeasurementValidatorType { get; }
   public Type MeterType { get; }
+  public ICapabilities Capabilities { get; }
 }

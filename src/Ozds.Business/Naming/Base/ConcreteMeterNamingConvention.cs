@@ -1,3 +1,4 @@
+using Ozds.Business.Capabilities.Abstractions;
 using Ozds.Business.Naming.Abstractions;
 
 namespace Ozds.Business.Naming.Base;
@@ -11,4 +12,5 @@ public abstract class ConcreteMeterNamingConvention : IMeterNamingConvention
   public abstract Type AggregateType { get; }
   public abstract Type MeasurementValidatorType { get; }
   public abstract Type MeterType { get; }
+  public abstract ICapabilities Capabilities { get; }
 }
