@@ -59,7 +59,10 @@ public class MeasurementQueries(
                   intervalParameter,
                   typeof(IAggregateEntity)),
                 nameof(AggregateEntity<MeterEntity>.Interval)),
-              Expression.Constant(interval)),
+              Expression.Constant(
+                interval
+                  ?? throw new InvalidOperationException("Interval is null"),
+                typeof(IntervalEntity))),
             intervalParameter);
 
         filtered = filtered.Where(intervalExpression);
@@ -140,7 +143,10 @@ public class MeasurementQueries(
                   intervalParameter,
                   typeof(IAggregateEntity)),
                 nameof(AggregateEntity<MeterEntity>.Interval)),
-              Expression.Constant(interval)),
+              Expression.Constant(
+                interval
+                  ?? throw new InvalidOperationException("Interval is null"),
+                typeof(IntervalEntity))),
             intervalParameter);
 
         filtered = filtered.Where(intervalExpression);
@@ -217,7 +223,10 @@ public class MeasurementQueries(
                   intervalParameter,
                   typeof(IAggregateEntity)),
                 nameof(AggregateEntity<MeterEntity>.Interval)),
-              Expression.Constant(interval)),
+              Expression.Constant(
+                interval
+                  ?? throw new InvalidOperationException("Interval is null"),
+                typeof(IntervalEntity))),
             intervalParameter);
 
         filtered = filtered.Where(intervalExpression);
@@ -301,7 +310,10 @@ public class MeasurementQueries(
                   intervalParameter,
                   typeof(IAggregateEntity)),
                 nameof(AggregateEntity<MeterEntity>.Interval)),
-              Expression.Constant(interval)),
+              Expression.Constant(
+                interval
+                  ?? throw new InvalidOperationException("Interval is null"),
+                typeof(IntervalEntity))),
             intervalParameter);
 
         filtered = filtered.Where(intervalExpression);

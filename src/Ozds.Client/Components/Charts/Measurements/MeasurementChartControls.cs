@@ -124,7 +124,6 @@ public partial class MeasurementChartControls : OzdsComponentBase
 
   private async Task OnResolutionChanged(ResolutionModel resolution)
   {
-    Console.WriteLine($"Resolution changed: {resolution}");
     _parameters.Resolution = resolution;
     if (_parameters.Refresh)
     {
@@ -201,7 +200,15 @@ public partial class MeasurementChartControls : OzdsComponentBase
         toDate: toDate
       );
     _parameters.Measurements = new(
-      fromMeters.Items.Concat(fromMeasurementLocations.Items).ToList(),
+      fromMeters.Items
+        .Concat(fromMeasurementLocations.Items)
+        .DistinctBy(x =>
+          (x.MeterId,
+          x.MeasurementLocationId,
+          x.Timestamp,
+          x.GetType()))
+        .OrderBy(x => x.Timestamp)
+        .ToList(),
       fromMeters.TotalCount + fromMeasurementLocations.TotalCount
     );
   }
@@ -233,10 +240,15 @@ public partial class MeasurementChartControls : OzdsComponentBase
           Meters.Exists(meter => meter.Id == x.MeterId)
           || MeasurementLocations.Exists(
               location => location.Id == x.MeasurementLocationId))
-        .OrderBy(x => x.Timestamp)
         .ToList();
       var concatenated = _parameters.Measurements.Items
         .Concat(newMeasurements)
+        .DistinctBy(x =>
+          (x.MeterId,
+          x.MeasurementLocationId,
+          x.Timestamp,
+          x.GetType()))
+        .OrderBy(x => x.Timestamp)
         .ToList();
       _parameters.Measurements = new PaginatedList<IMeasurement>(
         concatenated,
@@ -252,9 +264,7 @@ public partial class MeasurementChartControls : OzdsComponentBase
           Meters.Exists(meter => meter.Id == x.MeterId)
           || MeasurementLocations.Exists(
               location => location.Id == x.MeasurementLocationId))
-        .OrderBy(x => x.Timestamp)
-        .OfType<IAggregate>()
-        .ToList();
+        .OfType<IAggregate>();
       var aggregated = _parameters.Measurements.Items.OfType<IAggregate>()
         .Concat(newAggregates)
         .GroupBy(x =>
@@ -262,6 +272,12 @@ public partial class MeasurementChartControls : OzdsComponentBase
         .Select(x => x
           .Aggregate(AggregateUpserter.UpsertModelDynamic))
         .OfType<IMeasurement>()
+        .DistinctBy(x =>
+          (x.MeterId,
+          x.MeasurementLocationId,
+          x.Timestamp,
+          x.GetType()))
+        .OrderBy(x => x.Timestamp)
         .ToList();
       _parameters.Measurements = new PaginatedList<IMeasurement>(
         aggregated.ToList(),

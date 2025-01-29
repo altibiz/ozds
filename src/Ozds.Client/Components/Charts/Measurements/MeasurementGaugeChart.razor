@@ -14,7 +14,7 @@
 <ApexChart
   XAxisType="@XAxisType.Datetime"
   Options="@_options"
-  Height="300"
+  Height="400"
   @ref="@_chart">
   @foreach (var (meter, measurementLocation, i) in Parameters.Meters
     .OrderBy(x => x.Id)

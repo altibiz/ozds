@@ -55,11 +55,11 @@ public static class MeasureExtensions
       MeasureModel.Current => "A",
       MeasureModel.Voltage => "V",
       MeasureModel.ActivePower => "kW",
-      MeasureModel.ReactivePower => "VAR",
-      MeasureModel.ApparentPower => "VA",
+      MeasureModel.ReactivePower => "kVAR",
+      MeasureModel.ApparentPower => "kVA",
       MeasureModel.ActiveEnergy => "kWh",
-      MeasureModel.ReactiveEnergy => "VARh",
-      MeasureModel.ApparentEnergy => "VAh",
+      MeasureModel.ReactiveEnergy => "kVARh",
+      MeasureModel.ApparentEnergy => "kVAh",
       _ => throw new ArgumentOutOfRangeException(nameof(measure), measure, null)
     };
   }
@@ -72,12 +72,12 @@ public static class MeasureExtensions
     {
       MeasureModel.Current => measurement.Current_A,
       MeasureModel.Voltage => measurement.Voltage_V,
-      MeasureModel.ActivePower => measurement.ActivePower_W,
-      MeasureModel.ReactivePower => measurement.ReactivePower_VAR,
-      MeasureModel.ApparentPower => measurement.ApparentPower_VA,
-      MeasureModel.ActiveEnergy => measurement.ActiveEnergy_Wh,
-      MeasureModel.ReactiveEnergy => measurement.ReactiveEnergy_VARh,
-      MeasureModel.ApparentEnergy => measurement.ApparentEnergy_VAh,
+      MeasureModel.ActivePower => measurement.ActivePower_W.Divide(1000),
+      MeasureModel.ReactivePower => measurement.ReactivePower_VAR.Divide(1000),
+      MeasureModel.ApparentPower => measurement.ApparentPower_VA.Divide(1000),
+      MeasureModel.ActiveEnergy => measurement.ActiveEnergy_Wh.Divide(1000),
+      MeasureModel.ReactiveEnergy => measurement.ReactiveEnergy_VARh.Divide(1000),
+      MeasureModel.ApparentEnergy => measurement.ApparentEnergy_VAh.Divide(1000),
       _ => throw new ArgumentOutOfRangeException(nameof(measure), measure, null)
     };
   }

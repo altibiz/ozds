@@ -10,15 +10,17 @@
 <MudSelect
   T="T"
   Label="@Title"
-  @bind-SelectedValues="Value"
+  SelectedValues="@Value"
+  SelectedValuesChanged="@ValueChanged"
   MultiSelection
   For="For">
-  @foreach (var value in Enum.GetValues(typeof(T)))
+  @foreach (var item in Enum.GetValues(typeof(T)))
   {
-    <MudSelectItem Value="@((T)value)">
+    var value = (T)item;
+    <MudSelectItem Value="@value">
       @if (Label is { } label)
       {
-        @label((T)value)
+        @label(value)
       }
       else
       {
