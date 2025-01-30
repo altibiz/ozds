@@ -68,7 +68,7 @@ public class JobsMessengerJobHandler(
           x => x.Topics.Contains(TopicEntity.All)
             || x.Topics.Contains(TopicEntity.Messenger)
             || x.Topics.Contains(TopicEntity.MessengerInactivity))
-        .ToListAsync())
+        .ToListAsync(cancellationToken))
       .Select(x => converter.ToModel<RepresentativeModel>(x));
 
     var notification = activator.Activate<MessengerNotificationModel>();
