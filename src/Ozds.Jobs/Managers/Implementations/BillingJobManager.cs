@@ -112,7 +112,7 @@ public class BillingJobManager(
       .WithIdentity(id, nameof(NetworkUserMonthlyBillingJob))
       .ForJob(id, nameof(NetworkUserMonthlyBillingJob))
       .WithCronSchedule(
-        "0 * * */1 * ?",
+        "0 0 0 1 * ?",
         x => x.WithMisfireHandlingInstructionFireAndProceed())
       .Build();
   }
