@@ -37,7 +37,7 @@ public class JobsBillingJobPipe
   {
     var modelEventArgs = new JobsBillingJobEventArgs
     {
-      NetworkUserId = eventArgs.NetworkUserId
+      NetworkUserId = eventArgs.Id
     };
     return Task.FromResult(modelEventArgs);
   }

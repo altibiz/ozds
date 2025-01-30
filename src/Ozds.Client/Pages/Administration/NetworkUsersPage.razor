@@ -6,6 +6,7 @@
 @using Ozds.Client.Components.Base
 @using Ozds.Client.Components.Tables
 @using Ozds.Client.Components.Models
+@using Ozds.Client.Components.Fields
 @using Ozds.Client.State
 
 @namespace Ozds.Client.Pages
@@ -45,6 +46,10 @@
     <Columns Models="@analyses" />
   </Columns>
 </ResponsiveTable>
+
+<MudLink Href="@(PageHref<NetworkUserPage>())">
+  @Translate("Create")
+</MudLink>
 
 @code {
   [CascadingParameter]
