@@ -1,2 +1,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/streetsidesoftware/cspell/refs/heads/main/cspell.schema.json
-language: en,hr
+# TODO: figure out how to install @cpell/dict-hr-hr
+useGitignore: true
+version: "0.2"
+ignorePaths:
+  - "./**/*"
+# language: en,hr

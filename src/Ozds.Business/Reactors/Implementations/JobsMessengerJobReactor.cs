@@ -61,7 +61,7 @@ public class JobsMessengerJobHandler(
       .Where(x => x.MessengerId == messenger.Id)
       .Where(x => x.Categories.Contains(CategoryEntity.MessengerPush))
       .OrderByDescending(x => x.Timestamp)
-      .FirstOrDefaultAsync();
+      .FirstOrDefaultAsync(cancellationToken);
 
     var recipients = (await context.Representatives
         .Where(

@@ -14,7 +14,8 @@ public class AuditableMutations(
     CancellationToken cancellationToken
   )
   {
-    await using var context = await factory.CreateDbContextAsync();
+    await using var context = await factory
+      .CreateDbContextAsync(cancellationToken);
     context.Add(entity);
     await context.SaveChangesAsync(cancellationToken);
   }
@@ -24,7 +25,8 @@ public class AuditableMutations(
     CancellationToken cancellationToken
   )
   {
-    await using var context = await factory.CreateDbContextAsync();
+    await using var context = await factory
+      .CreateDbContextAsync(cancellationToken);
     context.Update(entity);
     await context.SaveChangesAsync(cancellationToken);
   }

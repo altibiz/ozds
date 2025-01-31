@@ -126,6 +126,8 @@ words:
   - "unproxied"
   - "unproxy"
   - "notnull"
+  - "lbrack"
+  - "rbrack"
 
   # Croatian
   - "altibiz"

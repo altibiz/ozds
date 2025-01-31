@@ -3,3 +3,8 @@
 # if the called method is called repeatedly and is not mutating
 # the passed array
 dotnet_diagnostic.CA1861.severity = None
+
+# The type argument might not be serializable, which may cause Test Explorer
+# to not enumerate individual data rows. Consider using a type
+# that is known to be serializable.
+dotnet_diagnostic.xUnit1045.severity = None

@@ -82,7 +82,6 @@ public class MeasurementUpsertFactory(DbContext context)
     }
 
     return await Create(
-      cancellationToken,
       x => x
         .CreateMany(MeasurementCountFew),
       x => x
@@ -135,7 +134,8 @@ public class MeasurementUpsertFactory(DbContext context)
           x => x.DerivedActivePowerTotalImportT1_W, DerivedPowerFactory)
         .IndexedWith(
           x => x.DerivedActivePowerTotalImportT2_W, DerivedPowerFactory)
-        .CreateMany(AggregateCountFew)
+        .CreateMany(AggregateCountFew),
+      cancellationToken
     );
   }
 
@@ -144,11 +144,11 @@ public class MeasurementUpsertFactory(DbContext context)
   )
   {
     return await Create(
-      cancellationToken,
       x => x.CreateMany(MeasurementCount),
       x => x.CreateMany(AggregateCount),
       x => x.CreateMany(MeasurementCount),
-      x => x.CreateMany(AggregateCount)
+      x => x.CreateMany(AggregateCount),
+      cancellationToken
     );
   }
 
@@ -157,16 +157,15 @@ public class MeasurementUpsertFactory(DbContext context)
   )
   {
     return await Create(
-      cancellationToken,
       x => x.CreateMany(MassiveMeasurementCount),
       x => x.CreateMany(0),
       x => x.CreateMany(MassiveMeasurementCount),
-      x => x.CreateMany(0)
+      x => x.CreateMany(0),
+      cancellationToken
     );
   }
 
   private async Task<List<IMeasurementEntity>> Create(
-    CancellationToken cancellationToken,
     Func<
         IPostprocessComposer<AbbB2xMeasurementEntity>,
         IEnumerable<AbbB2xMeasurementEntity>>
@@ -182,7 +181,8 @@ public class MeasurementUpsertFactory(DbContext context)
     Func<
         IPostprocessComposer<SchneideriEM3xxxAggregateEntity>,
         IEnumerable<SchneideriEM3xxxAggregateEntity>>
-      schneideriEM3xxxAggregateFactory
+      schneideriEM3xxxAggregateFactory,
+    CancellationToken cancellationToken
   )
   {
     var result = new List<IMeasurementEntity>();

@@ -23,7 +23,7 @@ public class CalculatedInvoiceQueries(
     var invoice = await context.NetworkUserInvoices
       .Where(context.PrimaryKeyEquals<NetworkUserInvoiceEntity>(id))
       .Include(invoice => invoice.NetworkUserCalculations)
-      .FirstOrDefaultAsync();
+      .FirstOrDefaultAsync(cancellationToken);
     if (invoice is null)
     {
       return null;

@@ -27,7 +27,7 @@ public class NavigationAttribute : Attribute
     return _navigationDescriptors;
   }
 
-  private static IEnumerable<NavigationDescriptor> CreateNavigationDescriptors()
+  private static List<NavigationDescriptor> CreateNavigationDescriptors()
   {
     var descriptors = typeof(NavigationAttribute).Assembly
       .GetTypes()
