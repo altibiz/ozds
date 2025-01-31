@@ -98,83 +98,83 @@ csharp_indent_anonymous_method_block = false
 ###############################################################################
 
 # Using directive should appear within a namespace declaration
-dotnet_diagnostic.SA1200.severity = None
+dotnet_diagnostic.SA1200.severity = none
 # XML comment analysis is disabled due to project configuration
-dotnet_diagnostic.SA0001.severity = None
+dotnet_diagnostic.SA0001.severity = none
 # The file header is missing or not located at the top of the file
-dotnet_diagnostic.SA1633.severity = None
+dotnet_diagnostic.SA1633.severity = none
 # Use string.Empty for empty strings
-dotnet_diagnostic.SA1122.severity = None
+dotnet_diagnostic.SA1122.severity = none
 # Prefix local calls with this
-dotnet_diagnostic.SA1101.severity = None
+dotnet_diagnostic.SA1101.severity = none
 # 'public' members should come before 'private' members
-dotnet_diagnostic.SA1202.severity = None
+dotnet_diagnostic.SA1202.severity = none
 # Constant fields should appear before non-constant fields
-dotnet_diagnostic.SA1203.severity = None
+dotnet_diagnostic.SA1203.severity = none
 # A method should not follow a class
-dotnet_diagnostic.SA1201.severity = None
+dotnet_diagnostic.SA1201.severity = none
 # Static members should appear before non-static members
-dotnet_diagnostic.SA1204.severity = None
+dotnet_diagnostic.SA1204.severity = none
 # File name should match first type name
-dotnet_diagnostic.SA1649.severity = None
+dotnet_diagnostic.SA1649.severity = none
 # File may only contain a single type
-dotnet_diagnostic.SA1402.severity = None
+dotnet_diagnostic.SA1402.severity = none
 # Field should not begin with an underscore
-dotnet_diagnostic.SA1309.severity = None
+dotnet_diagnostic.SA1309.severity = none
 # Parameter should begin with lower case letters (records...)
-dotnet_diagnostic.SA1313.severity = None
+dotnet_diagnostic.SA1313.severity = none
 # Arithmetic expressions should declare precedence
-dotnet_diagnostic.SA1407.severity = None
+dotnet_diagnostic.SA1407.severity = none
 # Parameter spans multiple lines
-dotnet_diagnostic.SA1118.severity = None
+dotnet_diagnostic.SA1118.severity = none
 
 # Documentation - disabled because we don't want to document everything
 
 # Elements should be documented
-dotnet_diagnostic.SA1600.severity = None
+dotnet_diagnostic.SA1600.severity = none
 # Enumeration items should be documented
-dotnet_diagnostic.SA1602.severity = None
+dotnet_diagnostic.SA1602.severity = none
 # Partial elements should be documented
-dotnet_diagnostic.SA1601.severity = None
+dotnet_diagnostic.SA1601.severity = none
 
 # Formatting - disabled because we're using ReSharper
 
 # Use trailing comma in multi-line initializers
-dotnet_diagnostic.SA1413.severity = None
+dotnet_diagnostic.SA1413.severity = none
 # Put constructor initializers on their own line
-dotnet_diagnostic.SA1128.severity = None
+dotnet_diagnostic.SA1128.severity = none
 # The parameter should begin on the line after the previous parameter
-dotnet_diagnostic.SA1115.severity = None
+dotnet_diagnostic.SA1115.severity = none
 # Single-line comments should not be followed by blank line
-dotnet_diagnostic.SA1512.severity = None
+dotnet_diagnostic.SA1512.severity = none
 # Element should not be on a single line
-dotnet_diagnostic.SA1502.severity = None
+dotnet_diagnostic.SA1502.severity = none
 # Closing parenthesis should not be followed by a space
-dotnet_diagnostic.SA1009.severity = None
+dotnet_diagnostic.SA1009.severity = none
 # Closing parenthesis should be on line of last parameter
-dotnet_diagnostic.SA1111.severity = None
+dotnet_diagnostic.SA1111.severity = none
 # The keyword new should be followed by a space
-dotnet_diagnostic.SA1000.severity = None
+dotnet_diagnostic.SA1000.severity = none
 # Opening square brackets should not be preceded by a space
-dotnet_diagnostic.SA1010.severity = None
+dotnet_diagnostic.SA1010.severity = none
 # Closing brace should not be preceded by a space
-dotnet_diagnostic.SA1013.severity = None
+dotnet_diagnostic.SA1013.severity = none
 # Closing brace should be followed by a blank line
-dotnet_diagnostic.SA1513.severity = None
+dotnet_diagnostic.SA1513.severity = none
 # Opening braces should not be preceded by a blank line
-dotnet_diagnostic.SA1509.severity = None
+dotnet_diagnostic.SA1509.severity = none
 # Modifier 'required' should appear before 'public'
-dotnet_diagnostic.SA1206.severity = None
+dotnet_diagnostic.SA1206.severity = none
 # Elements should be separated by a blank line
-dotnet_diagnostic.SA1516.severity = None
+dotnet_diagnostic.SA1516.severity = none
 # All accessors should be single-line or multi-line
-dotnet_diagnostic.SA1504.severity = None
+dotnet_diagnostic.SA1504.severity = none
 # Braces for multi-line statements should not share line
-dotnet_diagnostic.SA1500.severity = None
+dotnet_diagnostic.SA1500.severity = none
 # All parameters should be on the same line or each on a different line
-dotnet_diagnostic.SA1117.severity = None
+dotnet_diagnostic.SA1117.severity = none
 # An opening brace should not be followed by a blank line
-dotnet_diagnostic.SA1505.severity = None
+dotnet_diagnostic.SA1505.severity = none
 # Single-line comment should be preceded by blank line
 dotnet_diagnostic.SA1515.severity = none
 # Split parameters should start on line after declaration
@@ -185,26 +185,26 @@ dotnet_diagnostic.SA1116.severity = none
 ###############################################################################
 
 # Update this method so that its implementation is not identical to 'blah'
-dotnet_diagnostic.S4144.severity = None
+dotnet_diagnostic.S4144.severity = none
 # Rename class 'IOCActivator' to match pascal case naming rules, consider using 'IocActivator'
-dotnet_diagnostic.S101.severity = None
+dotnet_diagnostic.S101.severity = none
 # Extract this nested code block into a separate method
-dotnet_diagnostic.S1199.severity = None
+dotnet_diagnostic.S1199.severity = none
 # 'ModelState.IsValid' should be checked in controller actions
-dotnet_diagnostic.S6967.severity = None
+dotnet_diagnostic.S6967.severity = none
 # All method overloads should be adjacent
-dotnet_diagnostic.S4136.severity = None
+dotnet_diagnostic.S4136.severity = none
 # Use Find instead of FirstOrDefault
-dotnet_diagnostic.S6602.severity = None
+dotnet_diagnostic.S6602.severity = none
 # Extract nested ternary into a separate method
-dotnet_diagnostic.S3358.severity = None
+dotnet_diagnostic.S3358.severity = none
 # Add 'out' keyword to make covariant
-dotnet_diagnostic.S3246.severity = None
+dotnet_diagnostic.S3246.severity = none
 # Prefer indexing instead of "Enumerable" methods on types implementing "IList"
 dotnet_diagnostic.S6608.severity = none
 
 # TODO: put issues on github
 # Complete TODO
-dotnet_diagnostic.S1135.severity = None
+dotnet_diagnostic.S1135.severity = none
 # Complete FIXME
-dotnet_diagnostic.S1134.severity = None
+dotnet_diagnostic.S1134.severity = none

@@ -1,3 +1,3 @@
 [*.{cs,cshtml,razor}]
 # Namespace does not match folder structure
-dotnet_diagnostic.IDE0130.severity = None
+dotnet_diagnostic.IDE0130.severity = none
