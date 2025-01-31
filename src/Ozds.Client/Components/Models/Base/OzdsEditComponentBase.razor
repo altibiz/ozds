@@ -172,19 +172,22 @@
     where T : IIdentifiable
   {
     var nextFunc = next.Compile();
-    return @<MudSelect
-              Label="@(Translate(next.Label()))"
-              Value="@Get(nextFunc)"
-              ValueChanged="@Set(next)"
-              For="@For(next)">
-      <Paging T="T">
-        <Summary Context="model">
-          <MudSelectItem Value="@model.Id">
-            <Summary Model="@model"/>
-          </MudSelectItem>
-        </Summary>
-      </Paging>
-    </MudSelect>;
+    return @<Paging T="T">
+      <Found Context="models">
+        <MudSelect Label="@(Translate(next.Label()))"
+                   Value="@Get(nextFunc)"
+                   ValueChanged="@Set(next)"
+                   For="@For(next)">
+          @foreach (var model in models.Items)
+          {
+            <MudSelectItem Value="@model.Id">
+              <MudText>
+                @model.Title
+              </MudText>
+            </MudSelectItem>
+          }
+        </MudSelect>
+      </Found>
+    </Paging>;
   }
-
 }

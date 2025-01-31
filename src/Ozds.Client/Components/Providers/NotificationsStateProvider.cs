@@ -23,7 +23,7 @@ public partial class NotificationsStateProvider : OzdsComponentBase
   private RepresentativeState RepresentativeState { get; set; } = default!;
 
   [Inject]
-  private INotificationCreatedSubscriber NotificationCreatedSubscriber
+  private INotificationRecipientCreatedSubscriber NotificationCreatedSubscriber
   {
     get;
     set;
@@ -38,7 +38,7 @@ public partial class NotificationsStateProvider : OzdsComponentBase
 
   protected override void OnInitialized()
   {
-    NotificationCreatedSubscriber.Subscribe(OnNotificationCreated);
+    NotificationCreatedSubscriber.Subscribe(OnNotificationRecipientCreated);
     DataModelsChangedSubscriber.Subscribe(OnDataModelsChanged);
   }
 
@@ -52,7 +52,7 @@ public partial class NotificationsStateProvider : OzdsComponentBase
     if (disposing)
     {
       DataModelsChangedSubscriber.Unsubscribe(OnDataModelsChanged);
-      NotificationCreatedSubscriber.Unsubscribe(OnNotificationCreated);
+      NotificationCreatedSubscriber.Unsubscribe(OnNotificationRecipientCreated);
     }
 
     base.Dispose(disposing);
@@ -81,11 +81,17 @@ public partial class NotificationsStateProvider : OzdsComponentBase
     _state = state;
   }
 
-  private void OnNotificationCreated(
+  private void OnNotificationRecipientCreated(
     object? sender,
-    NotificationCreatedEventArgs args
+    NotificationRecipientCreatedEventArgs args
   )
   {
+    if (args.Recipient.RepresentativeId
+      != RepresentativeState.Representative.Id)
+    {
+      return;
+    }
+
     InvokeAsync(
       () =>
       {

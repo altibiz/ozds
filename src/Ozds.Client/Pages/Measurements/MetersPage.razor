@@ -1,3 +1,4 @@
+@using MudBlazor
 @namespace Ozds.Client.Pages
 
 @page "/measurements/meters"
@@ -32,6 +33,10 @@ Allows = [RoleModel.OperatorRepresentative])]
     <Summary Model="@context"/>
   </Summary>
 </Paging>
+
+<MudLink Href="@(PageHref<MeterPage>())">
+  @Translate("Create")
+</MudLink>
 
 @code {
 

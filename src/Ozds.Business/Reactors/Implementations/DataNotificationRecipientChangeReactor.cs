@@ -18,18 +18,17 @@ namespace Ozds.Business.Reactors.Implementations;
 
 // TODO: remove db context references
 
-public class DataNotificationChangeReactor(
+public class DataNotificationRecipientChangeReactor(
   IServiceProvider serviceProvider
 ) : Reactor<
   DataModelsChangedEventArgs,
   IDataModelsChangedSubscriber,
-  DataNotificationChangeHandler>(serviceProvider)
+  DataNotificationRecipientChangeHandler>(serviceProvider)
 {
 }
 
-public class DataNotificationChangeHandler(
+public class DataNotificationRecipientChangeHandler(
   IDbContextFactory<DataDbContext> factory,
-  INotificationCreatedPublisher publisher,
   IEmailSender sender,
   ModelEntityConverter converter
 ) : Handler<DataModelsChangedEventArgs>
@@ -94,16 +93,6 @@ public class DataNotificationChangeHandler(
         continue;
       }
 
-      foreach (var recipient in group.Recipients)
-      {
-        publisher.Publish(
-          new NotificationCreatedEventArgs
-          {
-            Notification = group.Notification,
-            Recipient = recipient
-          });
-      }
-
       var notification = group.Notification;
       var titleBuilder = new StringBuilder(
         $"[{nameof(Ozds)}]: {notification.Title}");
@@ -123,19 +112,13 @@ public class DataNotificationChangeHandler(
             titleBuilder.ToString(),
             $"""
               <p style="font-size: large;">
-                <a href="app/hr/notification/{
-                      notification.Id
-                    }">
-                  {
-                          notification.Summary
-                        }
+                <a href="app/hr/notification/{notification.Id}">
+                  {notification.Summary}
                 </a>
               </p>
               <p style="font-size: small;">
                 <pre style="overflow-wrap: break-word;">
-                  {
-                          notification.Content
-                        }
+                  {notification.Content}
                 </pre>
               </p>
             """

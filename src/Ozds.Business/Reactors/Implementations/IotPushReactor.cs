@@ -31,7 +31,6 @@ public class IotPushHandler(
   MeasurementBuffer buffer,
   NotificationMutations notificationMutations,
   AuditableQueries auditableQueries,
-  NotificationQueries notificationQueries,
   IMessengerJobManager messengerJobManager,
   ReadonlyMutations readonlyMutations
 ) : Handler<IotPushEventArgs>
@@ -177,10 +176,6 @@ public class IotPushHandler(
     notification.EventId = eventId;
     notification.Id = await notificationMutations
       .Create(notification, cancellationToken);
-
-    var recipients = await notificationQueries.Recipients(notification);
-    await notificationMutations
-      .AddRecipients(recipients, cancellationToken);
   }
 
   private static JsonDocument CreateEventContent(

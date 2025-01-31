@@ -32,6 +32,10 @@ RoleModel.OperatorRepresentative,
   </Summary>
 </Paging>
 
+<MudLink Href="@(PageHref<NetworkUserCataloguePage>())">
+  @Translate("Create")
+</MudLink>
+
 <MudText>
   @Translate("Regulatory catalogues")
 </MudText>
@@ -41,3 +45,7 @@ RoleModel.OperatorRepresentative,
     <Summary Model="@context"/>
   </Summary>
 </Paging>
+
+<MudLink Href="@(PageHref<RegulatoryCataloguePage>())">
+  @Translate("Create")
+</MudLink>

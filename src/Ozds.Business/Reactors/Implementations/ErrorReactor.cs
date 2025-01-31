@@ -4,7 +4,6 @@ using Ozds.Business.Models;
 using Ozds.Business.Models.Enums;
 using Ozds.Business.Mutations;
 using Ozds.Business.Observers.Abstractions;
-using Ozds.Business.Queries;
 using Ozds.Business.Reactors.Base;
 using ErrorEventArgs = Ozds.Business.Observers.EventArgs.ErrorEventArgs;
 
@@ -18,7 +17,6 @@ public class ErrorReactor(
 
 public class ErrorHandler(
   ModelActivator activator,
-  NotificationQueries notificationQueries,
   NotificationMutations notificationMutations,
   ReadonlyMutations readonlyMutations
 ) : Handler<ErrorEventArgs>
@@ -66,9 +64,6 @@ public class ErrorHandler(
     };
     notification.Id = await notificationMutations
       .Create(notification, cancellationToken);
-
-    var recipients = await notificationQueries.Recipients(notification);
-    await notificationMutations.AddRecipients(recipients, cancellationToken);
   }
 
   private sealed record EventContent(

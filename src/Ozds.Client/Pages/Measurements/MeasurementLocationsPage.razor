@@ -1,3 +1,4 @@
+@using MudBlazor
 @namespace Ozds.Client.Pages
 
 @page "/measurements/measurement-locations"
@@ -40,6 +41,10 @@ RoleModel.NetworkUserRepresentative
     <Columns Models="@analyses"/>
   </Columns>
 </ResponsiveTable>
+
+<MudLink Href="@(PageHref<MeasurementLocationPage>())">
+  @Translate("Create")
+</MudLink>
 
 @code {
 
