@@ -45,6 +45,10 @@ RoleModel.NetworkUserRepresentative
   </Found>
 </Paging>
 
-<MudLink Href="@(PageHref<NotificationPage>())">
-  @Translate("Create")
-</MudLink>
+@if (RepresentativeState.Representative.Role
+  == RoleModel.OperatorRepresentative)
+{
+  <MudLink Href="@(PageHref<NotificationPage>())">
+    @Translate("Create")
+  </MudLink>
+}

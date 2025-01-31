@@ -34,13 +34,16 @@ Allows = [RoleModel.OperatorRepresentative])]
   </Summary>
 </Paging>
 
-<MudLink Href="@(PageHref<MeasurementValidatorPage>())">
-  @Translate("Create")
-</MudLink>
+@if (RepresentativeState.Representative.Role
+  == RoleModel.OperatorRepresentative)
+{
+  <MudLink Href="@(PageHref<MeasurementValidatorPage>())">
+    @Translate("Create")
+  </MudLink>
+}
 
 @code {
 
   [CascadingParameter]
   private RepresentativeState RepresentativeState { get; set; } = default!;
-
 }

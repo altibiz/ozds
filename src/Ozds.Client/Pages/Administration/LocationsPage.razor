@@ -44,6 +44,10 @@ RoleModel.LocationRepresentative
   </Summary>
 </Paging>
 
-<MudLink Href="@(PageHref<LocationPage>())">
-  @Translate("Create")
-</MudLink>
+@if (RepresentativeState.Representative.Role
+  == RoleModel.OperatorRepresentative)
+{
+  <MudLink Href="@(PageHref<LocationPage>())">
+    @Translate("Create")
+  </MudLink>
+}

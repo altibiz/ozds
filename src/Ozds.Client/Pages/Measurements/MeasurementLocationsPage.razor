@@ -42,13 +42,20 @@ RoleModel.NetworkUserRepresentative
   </Columns>
 </ResponsiveTable>
 
-<MudLink Href="@(PageHref<MeasurementLocationPage>())">
-  @Translate("Create")
-</MudLink>
+
+@if (RepresentativeState.Representative.Role
+  == RoleModel.OperatorRepresentative)
+{
+  <MudLink Href="@(PageHref<MeasurementLocationPage>())">
+    @Translate("Create")
+  </MudLink>
+}
 
 @code {
 
   [CascadingParameter]
   public AnalysisState AnalysisState { get; set; } = default!;
 
+  [CascadingParameter]
+  private RepresentativeState RepresentativeState { get; set; } = default!;
 }

@@ -34,9 +34,13 @@ Allows = [RoleModel.OperatorRepresentative])]
   </Summary>
 </Paging>
 
-<MudLink Href="@(PageHref<MeterPage>())">
-  @Translate("Create")
-</MudLink>
+@if (RepresentativeState.Representative.Role
+  == RoleModel.OperatorRepresentative)
+{
+  <MudLink Href="@(PageHref<MeterPage>())">
+    @Translate("Create")
+  </MudLink>
+}
 
 @code {
 
