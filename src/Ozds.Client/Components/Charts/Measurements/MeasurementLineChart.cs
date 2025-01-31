@@ -51,14 +51,14 @@ public partial class MeasurementLineChart : OzdsComponentBase
     _options = CreateGraphOptions();
     if (_chart is { } chart)
     {
-      await chart.UpdateSeriesAsync(true);
+      await chart.UpdateSeriesAsync();
       await chart.UpdateOptionsAsync(false, true, false);
     }
 
     _brushOptions = CreateBrushOptions();
     if (_brushChart is { } brushChart)
     {
-      await brushChart.UpdateSeriesAsync(true);
+      await brushChart.UpdateSeriesAsync();
       await brushChart.UpdateOptionsAsync(false, true, false);
     }
   }

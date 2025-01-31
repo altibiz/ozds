@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Ozds.Data.Attributes;
 using Ozds.Data.Context;
@@ -584,7 +585,10 @@ public class AnalysisQueries(
       .ToList();
   }
 
+#pragma warning disable S3459 // Unassigned members should be removed
+#pragma warning disable S1144 // Unused private types or members should be removed
   [DapperResult]
+  [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
   private sealed class DetailedMeasurementLocationsByRepresentativeIntermediary
   {
     public RepresentativeEntity Representative { get; set; } = default!;
@@ -593,26 +597,35 @@ public class AnalysisQueries(
 
     public NetworkUserEntity NetworkUser { get; set; } = default!;
 
-    public NetworkUserMeasurementLocationEntity MeasurementLocation { get; set; } =
+    public NetworkUserMeasurementLocationEntity MeasurementLocation
+    {
+      get;
+      set;
+    } =
       default!;
 
     public MeterEntity Meter { get; set; } = default!;
 
-    public NetworkUserCalculationEntity? NetworkUserCalculation { get; set; } =
-      default!;
+    public NetworkUserCalculationEntity? NetworkUserCalculation { get; set; }
 
-    public NetworkUserInvoiceEntity? NetworkUserInvoice { get; set; } = default!;
+    public NetworkUserInvoiceEntity? NetworkUserInvoice { get; set; }
 
     public AbbB2xMeasurementEntity AbbLastMeasurement { get; set; } = default!;
 
     public SchneideriEM3xxxMeasurementEntity? SchneiderLastMeasurement
     {
-      get; set;
-    } = default!;
+      get;
+      set;
+    }
 
-    public AbbB2xAggregateEntity? AbbMonthlyAggregate { get; set; } = default!;
+    public AbbB2xAggregateEntity? AbbMonthlyAggregate { get; set; }
 
-    public SchneideriEM3xxxAggregateEntity? SchneiderMonthlyAggregate { get; set; } =
-      default!;
+    public SchneideriEM3xxxAggregateEntity? SchneiderMonthlyAggregate
+    {
+      get;
+      set;
+    }
   }
+#pragma warning restore S1144 // Unused private types or members should be removed
+#pragma warning restore S3459 // Unassigned members should be removed
 }

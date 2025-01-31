@@ -128,6 +128,7 @@ words:
   - "notnull"
   - "lbrack"
   - "rbrack"
+  - "dowhile"
 
   # Croatian
   - "altibiz"

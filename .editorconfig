@@ -60,7 +60,7 @@ csharp_wrap_after_declaration_lpar = true
 csharp_wrap_after_property_in_chained_method_calls = true
 csharp_wrap_before_binary_opsign = true
 csharp_wrap_before_ternary_opsigns = true
-csharp_wrap_verbatim_interpolated_strings = chop_if_long
+csharp_wrap_verbatim_interpolated_strings = no_wrap
 
 csharp_align_multiline_binary_expressions_chain = false
 csharp_align_multiline_calls_chain = false
@@ -75,8 +75,8 @@ csharp_align_tuple_components = false
 csharp_align_multiline_expression = false
 csharp_align_multiline_statement_conditions = false
 csharp_align_multiline_for_stmt = false
-csharp_align_multline_type_parameter_list = false
-csharp_align_multline_type_parameter_constrains = false
+csharp_align_multiline_type_parameter_list = false
+csharp_align_multiline_type_parameter_constrains = false
 csharp_int_align_fields = false
 csharp_int_align_properties = false
 csharp_int_align_methods = false
@@ -92,11 +92,6 @@ csharp_int_align_switch_expressions = false
 
 csharp_indent_raw_literal_string = do_not_change
 csharp_indent_anonymous_method_block = false
-
-# NOTE: it looks weird but I'm keeping it here to discuss
-# csharp_outdent_binary_pattern_ops = true
-# csharp_outdent_binary_ops = true
-# csharp_outdent_dots = true
 
 ###############################################################################
 # StyleCop Analyzers                                                          #
@@ -197,7 +192,7 @@ dotnet_diagnostic.S101.severity = None
 dotnet_diagnostic.S1199.severity = None
 # 'ModelState.IsValid' should be checked in controller actions
 dotnet_diagnostic.S6967.severity = None
-# All method overloads should be adjecent
+# All method overloads should be adjacent
 dotnet_diagnostic.S4136.severity = None
 # Use Find instead of FirstOrDefault
 dotnet_diagnostic.S6602.severity = None

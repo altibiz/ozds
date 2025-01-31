@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using System.Data.Common;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Dapper;
 using Microsoft.EntityFrameworkCore;
@@ -545,11 +546,10 @@ public static class DbContextDapperCommandExtensions
   }
 
   [DapperResult]
+  [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
   private sealed class DapperSingleResult<T>
   {
-#pragma warning disable S1144 // Unused private types or members should be removed
-    public required T Value { get; init; }
-#pragma warning restore S1144 // Unused private types or members should be removed
+    public required T Value { get; set; }
   }
 
   private abstract class PropertyMapping

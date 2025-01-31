@@ -49,7 +49,7 @@ public partial class MeasurementDonutChart : OzdsComponentBase
     _options = CreateGraphOptions();
     if (_chart is { } chart)
     {
-      await chart.UpdateSeriesAsync(true);
+      await chart.UpdateSeriesAsync();
       await chart.UpdateOptionsAsync(false, true, false);
     }
   }

@@ -73,8 +73,7 @@ public partial class LocationStateProvider : OzdsComponentBase
         RepresentativeState.Representative.Id,
         RepresentativeState.Representative.Role,
         locationId,
-        CancellationToken,
-        false
+        CancellationToken
       );
     }
 
