@@ -37,6 +37,8 @@ public class FinancialEntityTypeHierarchyConfiguration
     builder.Ignore(nameof(FinancialEntity.Tax_EUR));
     builder.Ignore(nameof(FinancialEntity.TotalWithTax_EUR));
 
+    builder.HasIndex(nameof(FinancialEntity.FromDate));
+
     builder
       .Property<DateTimeOffset>(nameof(FinancialEntity.FromDate))
       .HasConversion(
