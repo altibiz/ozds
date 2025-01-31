@@ -34,14 +34,15 @@ public class LocationQueries(
     return model;
   }
 
-  public async Task<PaginatedList<LocationModel>> ReadLocationsByRepresentativeId(
-    string representativeId,
-    RoleModel role,
-    int pageNumber,
-    CancellationToken cancellationToken,
-    int pageSize = QueryConstants.DefaultPageCount,
-    bool deleted = false
-  )
+  public async Task<PaginatedList<LocationModel>>
+    ReadLocationsByRepresentativeId(
+      string representativeId,
+      RoleModel role,
+      int pageNumber,
+      CancellationToken cancellationToken,
+      int pageSize = QueryConstants.DefaultPageCount,
+      bool deleted = false
+    )
   {
     var entities = await dataLocationQueries.ReadLocationsByRepresentativeId(
       representativeId,

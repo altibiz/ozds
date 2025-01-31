@@ -1,9 +1,7 @@
-@using MudBlazor
-@using Ozds.Client.Components.Base
-
 @namespace Ozds.Client.Components.Streaming
 
-@inherits OzdsComponentBase
+@using MudBlazor
+@inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 <MudText>
   <code Style="overflow-wrap: break-word;">
@@ -12,6 +10,8 @@
 </MudText>
 
 @code {
+
   [Parameter]
   public object? Value { get; set; }
+
 }

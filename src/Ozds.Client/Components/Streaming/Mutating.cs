@@ -13,6 +13,8 @@ namespace Ozds.Client.Components.Streaming;
 public partial class Mutating<T> : OzdsComponentBase
   where T : notnull
 {
+  private bool _mutating;
+
   [Parameter]
   public T? Value { get; set; }
 
@@ -67,8 +69,6 @@ public partial class Mutating<T> : OzdsComponentBase
   [Parameter]
   public bool AsReadonly { get; set; } = false;
 
-  private bool _mutating;
-
   private async Task OnCreate(T model)
   {
     var dialogService = ScopedServices.GetRequiredService<IDialogService>();
@@ -103,7 +103,7 @@ public partial class Mutating<T> : OzdsComponentBase
           {
             nameof(MutatingResult.Body),
             $"{Translate("Failed creating")}"
-              + $" {Translate(typeof(T).Name)} - {ex.Message}"
+            + $" {Translate(typeof(T).Name)} - {ex.Message}"
           }
         },
         new DialogOptions { CloseOnEscapeKey = true });
@@ -156,7 +156,7 @@ public partial class Mutating<T> : OzdsComponentBase
           {
             nameof(MutatingResult.Body),
             $"{Translate("Failed updating")}"
-              + $" {Translate(typeof(T).Name)} - {ex.Message}"
+            + $" {Translate(typeof(T).Name)} - {ex.Message}"
           }
         },
         new DialogOptions { CloseOnEscapeKey = true });
@@ -209,7 +209,7 @@ public partial class Mutating<T> : OzdsComponentBase
           {
             nameof(MutatingResult.Body),
             $"{Translate("Failed deleting")}"
-              + $" {Translate(typeof(T).Name)} - {ex.Message}"
+            + $" {Translate(typeof(T).Name)} - {ex.Message}"
           }
         },
         new DialogOptions { CloseOnEscapeKey = true });

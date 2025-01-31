@@ -1,29 +1,25 @@
-@using Microsoft.AspNetCore.Components.Web
-@using MudBlazor
-@using Ozds.Business.Analysis
-@using Ozds.Business.Models.Enums
-@using Ozds.Client.Attributes
-@using Ozds.Client.Components.Base
-@using Ozds.Client.Components.Streaming
-@using Ozds.Client.Components.Tables
-@using Ozds.Client.Components.Models
-@using Ozds.Client.State
-
 @namespace Ozds.Client.Pages
 
 @page "/measurements"
 
 @attribute [Navigation(
-  Order = 11,
-  Title = "Measurements",
-  Icon = Icons.Material.Filled.VerifiedUser,
-  Allows = [
-    RoleModel.OperatorRepresentative,
-    RoleModel.LocationRepresentative,
-    RoleModel.NetworkUserRepresentative
-  ])]
+Order = 11,
+Title = "Measurements",
+Icon = Icons.Material.Filled.VerifiedUser,
+Allows = [
+RoleModel.OperatorRepresentative,
+RoleModel.LocationRepresentative,
+RoleModel.NetworkUserRepresentative
+])]
 
-@inherits OzdsComponentBase
+@using Microsoft.AspNetCore.Components.Web
+@using Ozds.Business.Analysis
+@using Ozds.Business.Models.Enums
+@using Ozds.Client.Attributes
+@using Ozds.Client.Components.Models
+@using Ozds.Client.Components.Streaming
+@using Ozds.Client.Components.Tables
+@inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 <HeadContent>
   <title>OZDS - @Translate("Measurements")</title>
@@ -36,13 +32,13 @@
 
 <ResponsiveTable Model="measurementLocations">
   <Summary>
-    <Summary Model="context" />
+    <Summary Model="context"/>
   </Summary>
   <Details>
-    <Details Model="context" />
+    <Details Model="context"/>
   </Details>
   <Columns>
-    <Columns Models="@measurementLocations" />
+    <Columns Models="@measurementLocations"/>
   </Columns>
 </ResponsiveTable>
 
@@ -58,18 +54,18 @@
 
 <ResponsiveTable Model="meters">
   <Summary>
-    <Summary Model="context" />
+    <Summary Model="context"/>
   </Summary>
   <Details>
-    <Details Model="context" />
+    <Details Model="context"/>
   </Details>
   <Columns>
-    <Columns Models="@meters" />
+    <Columns Models="@meters"/>
   </Columns>
 </ResponsiveTable>
 
 <Paging PageAsync="OnMessengersPageAsync">
   <Summary>
-    <Summary Model="@context" />
+    <Summary Model="@context"/>
   </Summary>
 </Paging>

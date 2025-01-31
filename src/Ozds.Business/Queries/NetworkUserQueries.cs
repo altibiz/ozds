@@ -44,14 +44,15 @@ public class NetworkUserQueries(
       bool deleted = false
     )
   {
-    var entities = await dataNetworkUserQueries.ReadNetworkUsersByRepresentativeId(
-      representativeId,
-      role.ToEntity(),
-      pageNumber,
-      cancellationToken,
-      pageSize,
-      deleted
-    );
+    var entities =
+      await dataNetworkUserQueries.ReadNetworkUsersByRepresentativeId(
+        representativeId,
+        role.ToEntity(),
+        pageNumber,
+        cancellationToken,
+        pageSize,
+        deleted
+      );
 
     var models = entities
       .Items

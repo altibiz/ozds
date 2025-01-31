@@ -1,16 +1,10 @@
-@using Microsoft.Extensions.DependencyInjection
-@using Microsoft.JSInterop
-@using MudBlazor
-@using Ozds.Business.Models.Abstractions
-@using Ozds.Business.Queries.Abstractions
-@using Ozds.Business.Queries
-@using Ozds.Client.Components.Base
-
 @namespace Ozds.Client.Components.Streaming
 
 @typeparam T where T : notnull
 
-@inherits OzdsComponentBase
+@using MudBlazor
+@using Ozds.Business.Queries.Abstractions
+@inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 <Loading
   T="PaginatedList<T>"
@@ -49,7 +43,7 @@
         foreach (var item in page.Items)
         {
           <MudText>
-            <Serialized Value="@item" />
+            <Serialized Value="@item"/>
           </MudText>
         }
       }
@@ -89,12 +83,12 @@
             <div
               id="@infiniteScrollId"
               style="width: 100%; text-align: center;">
-              <MudProgressCircular />
+              <MudProgressCircular/>
             </div>
             <MudScrollToTop>
               <MudFab
-                Color="MudBlazor.Color.Tertiary"
-                StartIcon="@Icons.Material.Filled.ArrowCircleUp" />
+                Color="Color.Tertiary"
+                StartIcon="@Icons.Material.Filled.ArrowCircleUp"/>
             </MudScrollToTop>
           }
         }

@@ -28,31 +28,36 @@ public class NetworkUserQueries(
     {
       RoleEntity.NetworkUserRepresentative =>
         context.NetworkUserRepresentatives
-          .Where(context.ForeignKeyEquals<NetworkUserRepresentativeEntity>(
-            nameof(NetworkUserRepresentativeEntity.RepresentativeId),
-            representativeId
-          ))
+          .Where(
+            context.ForeignKeyEquals<NetworkUserRepresentativeEntity>(
+              nameof(NetworkUserRepresentativeEntity.RepresentativeId),
+              representativeId
+            ))
           .Include(x => x.NetworkUser)
           .Select(x => x.NetworkUser),
       RoleEntity.LocationRepresentative =>
         context.Representatives
-          .Where(context.PrimaryKeyEquals<RepresentativeEntity>(representativeId))
+          .Where(
+            context.PrimaryKeyEquals<RepresentativeEntity>(representativeId))
           .Include(x => x.Locations)
           .ThenInclude(x => x.NetworkUsers)
           .SelectMany(x => x.Locations.SelectMany(x => x.NetworkUsers))
-          .Concat(context.NetworkUserRepresentatives
-            .Where(context.ForeignKeyEquals<NetworkUserRepresentativeEntity>(
-              nameof(NetworkUserRepresentativeEntity.RepresentativeId),
-              representativeId
-            ))
-            .Include(x => x.NetworkUser)
-            .Select(x => x.NetworkUser)),
+          .Concat(
+            context.NetworkUserRepresentatives
+              .Where(
+                context.ForeignKeyEquals<NetworkUserRepresentativeEntity>(
+                  nameof(NetworkUserRepresentativeEntity.RepresentativeId),
+                  representativeId
+                ))
+              .Include(x => x.NetworkUser)
+              .Select(x => x.NetworkUser)),
       RoleEntity.OperatorRepresentative => context.NetworkUsers,
       _ => throw new ArgumentOutOfRangeException(nameof(role))
     };
 
-    filtered = filtered.Where(context
-      .PrimaryKeyEquals<NetworkUserEntity>(networkUserId));
+    filtered = filtered.Where(
+      context
+        .PrimaryKeyEquals<NetworkUserEntity>(networkUserId));
 
     if (!deleted)
     {
@@ -82,25 +87,29 @@ public class NetworkUserQueries(
     {
       RoleEntity.NetworkUserRepresentative =>
         context.NetworkUserRepresentatives
-          .Where(context.ForeignKeyEquals<NetworkUserRepresentativeEntity>(
-            nameof(NetworkUserRepresentativeEntity.RepresentativeId),
-            representativeId
-          ))
+          .Where(
+            context.ForeignKeyEquals<NetworkUserRepresentativeEntity>(
+              nameof(NetworkUserRepresentativeEntity.RepresentativeId),
+              representativeId
+            ))
           .Include(x => x.NetworkUser)
           .Select(x => x.NetworkUser),
       RoleEntity.LocationRepresentative =>
         context.Representatives
-          .Where(context.PrimaryKeyEquals<RepresentativeEntity>(representativeId))
+          .Where(
+            context.PrimaryKeyEquals<RepresentativeEntity>(representativeId))
           .Include(x => x.Locations)
           .ThenInclude(x => x.NetworkUsers)
           .SelectMany(x => x.Locations.SelectMany(x => x.NetworkUsers))
-          .Concat(context.NetworkUserRepresentatives
-            .Where(context.ForeignKeyEquals<NetworkUserRepresentativeEntity>(
-              nameof(NetworkUserRepresentativeEntity.RepresentativeId),
-              representativeId
-            ))
-            .Include(x => x.NetworkUser)
-            .Select(x => x.NetworkUser)),
+          .Concat(
+            context.NetworkUserRepresentatives
+              .Where(
+                context.ForeignKeyEquals<NetworkUserRepresentativeEntity>(
+                  nameof(NetworkUserRepresentativeEntity.RepresentativeId),
+                  representativeId
+                ))
+              .Include(x => x.NetworkUser)
+              .Select(x => x.NetworkUser)),
       RoleEntity.OperatorRepresentative => context.NetworkUsers,
       _ => throw new ArgumentOutOfRangeException(nameof(role))
     };

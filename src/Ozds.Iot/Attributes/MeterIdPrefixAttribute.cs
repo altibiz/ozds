@@ -6,10 +6,10 @@ namespace Ozds.Iot.Attributes;
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
 public class MeterIdPrefixAttribute(string Prefix) : Attribute
 {
-  public string Prefix { get; set; } = Prefix;
-
   public static readonly ReadOnlyDictionary<string, Type> TypesByMeterIdPrefix =
     GetMeterIdPrefixes();
+
+  public string Prefix { get; set; } = Prefix;
 
   private static ReadOnlyDictionary<string, Type> GetMeterIdPrefixes()
   {
@@ -27,6 +27,7 @@ public class MeterIdPrefixAttribute(string Prefix) : Attribute
         result[attribute.Prefix] = assemblyType;
       }
     }
-    return new(result);
+
+    return new ReadOnlyDictionary<string, Type>(result);
   }
 }

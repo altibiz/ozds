@@ -10,32 +10,31 @@ public class MeterEntity
 {
   private long _measurementValidatorId;
 
-  public string? MessengerId { get; set; } = default!;
-
   public virtual MessengerEntity? Messenger { get; set; } = default!;
 
   public virtual MeasurementLocationEntity? MeasurementLocation { get; set; } =
     default!;
 
+  public virtual ICollection<NetworkUserCalculationEntity>
+    NetworkUserCalculations { get; set; } =
+    default!;
+
+  public virtual MeasurementValidatorEntity MeasurementValidator { get; set; } =
+    default!;
+
+  public string Kind { get; set; } = default!;
+
+  public string? MessengerId { get; set; } = default!;
+
   public float ConnectionPower_W { get; set; } = default!;
 
   public List<PhaseEntity> Phases { get; set; } = default!;
-
-  public virtual ICollection<NetworkUserCalculationEntity>
-    NetworkUserCalculations
-  { get; set; } =
-    default!;
 
   public virtual string MeasurementValidatorId
   {
     get { return _measurementValidatorId.ToString(); }
     set { _measurementValidatorId = long.Parse(value); }
   }
-
-  public virtual MeasurementValidatorEntity MeasurementValidator { get; set; } =
-    default!;
-
-  public string Kind { get; set; } = default!;
 }
 
 public class MeterEntity<

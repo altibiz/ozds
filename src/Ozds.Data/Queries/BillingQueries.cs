@@ -182,12 +182,14 @@ public class BillingQueries(
           UsageNetworkUserCatalogue = x.First().UsageNetworkUserCatalogue,
           SupplyRegulatoryCatalogue = x.First().SupplyRegulatoryCatalogue,
           Aggregates = Enumerable.Empty<AggregateEntity>()
-            .Concat(x
-              .Where(x => x.AbbB2xAggregate is not null)
-              .Select(x => x.AbbB2xAggregate!))
-            .Concat(x
-              .Where(x => x.SchneideriEM3xxxAggregate is not null)
-              .Select(x => x.SchneideriEM3xxxAggregate!))
+            .Concat(
+              x
+                .Where(x => x.AbbB2xAggregate is not null)
+                .Select(x => x.AbbB2xAggregate!))
+            .Concat(
+              x
+                .Where(x => x.SchneideriEM3xxxAggregate is not null)
+                .Select(x => x.SchneideriEM3xxxAggregate!))
             .ToList()
         }
       )

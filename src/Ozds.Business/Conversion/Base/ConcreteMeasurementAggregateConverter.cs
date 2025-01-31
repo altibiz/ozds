@@ -9,14 +9,20 @@ public abstract class
   where TAggregate : IAggregate
   where TMeasurement : IMeasurement
 {
+  public override Type AggregateType
+  {
+    get { return typeof(TAggregate); }
+  }
+
+  public override Type MeasurementType
+  {
+    get { return typeof(TMeasurement); }
+  }
+
   public abstract void Initialize(
     TAggregate aggregate,
     TMeasurement measurement,
     IntervalModel interval);
-
-  public override Type AggregateType => typeof(TAggregate);
-
-  public override Type MeasurementType => typeof(TMeasurement);
 
   public override bool CanConvertToAggregate(Type measurement)
   {

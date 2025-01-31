@@ -1,7 +1,5 @@
 @using Ozds.Business.Models
-@using Ozds.Client.Components.Base
-
-@inherits OzdsComponentBase
+@inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 <p style="margin-top: 0.8rem;">
   @Translate("Make the payment to the transaction account")
@@ -45,6 +43,8 @@
 </table>
 
 @code {
+
   [Parameter]
   public NetworkUserInvoiceModel Model { get; set; } = default!;
+
 }

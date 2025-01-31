@@ -1,22 +1,22 @@
 @using MudBlazor
 @using Ozds.Client.State
-
 @namespace Ozds.Client.Components.Layout
 
-<UserToolbar MaxWidth="@MaxWidth" Class="@Class" Style="@Style" />
-@if (RepresentativeState?.Representative is { })
+<UserToolbar MaxWidth="@MaxWidth" Class="@Class" Style="@Style"/>
+@if (RepresentativeState?.Representative is not null)
 {
-  <RepresentativeToolbar MaxWidth="@MaxWidth" Class="@Class" Style="@Style" />
+  <RepresentativeToolbar MaxWidth="@MaxWidth" Class="@Class" Style="@Style"/>
 }
 
-<LocalizationDrawer MaxWidth="@MaxWidth" Class="@Class" Style="@Style" />
-<UserDrawer MaxWidth="@MaxWidth" />
-@if (RepresentativeState?.Representative is { })
+<LocalizationDrawer MaxWidth="@MaxWidth" Class="@Class" Style="@Style"/>
+<UserDrawer MaxWidth="@MaxWidth"/>
+@if (RepresentativeState?.Representative is not null)
 {
-  <NavigationDrawer MaxWidth="@MaxWidth" Class="@Class" Style="@Style" />
+  <NavigationDrawer MaxWidth="@MaxWidth" Class="@Class" Style="@Style"/>
 }
 
 @code {
+
   [CascadingParameter]
   private RepresentativeState? RepresentativeState { get; set; }
 
@@ -28,4 +28,5 @@
 
   [Parameter]
   public string Class { get; set; } = string.Empty;
+
 }

@@ -10,11 +10,13 @@ public class ModelActivatorTest
     TheoryData<Type> TestData = new(
       AppDomain.CurrentDomain
         .GetAssemblies()
-        .SelectMany(assembly => assembly
-          .GetTypes()
-          .Where(type =>
-            !type.IsGenericType
-            && type.IsAssignableTo(typeof(IModel)))));
+        .SelectMany(
+          assembly => assembly
+            .GetTypes()
+            .Where(
+              type =>
+                !type.IsGenericType
+                && type.IsAssignableTo(typeof(IModel)))));
 
   [Theory]
   [MemberData(nameof(TestData))]

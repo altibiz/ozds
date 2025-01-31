@@ -86,13 +86,20 @@ public static class DbContextTableExtensions
     return entityType
       .GetProperties()
       .Select(x => x.GetColumnName())
-      .Concat(entityType
-        .GetComplexProperties()
-        .SelectMany(x => x.ComplexType
-          .GetProperties()
-          .Select(x => x.GetColumnName(storeObjectIdentifier.Value)
-            ?? throw new InvalidOperationException(
-              $"Column name not found for property {x.Name} in type {type.Name}"))));
+      .Concat(
+        entityType
+          .GetComplexProperties()
+          .SelectMany(
+            x => x.ComplexType
+              .GetProperties()
+              .Select(
+                x => x.GetColumnName(storeObjectIdentifier.Value)
+                  ?? throw new InvalidOperationException(
+                    $"Column name not found for property {
+                      x.Name
+                    } in type {
+                      type.Name
+                    }"))));
   }
 
   public static string? GetColumnName(
@@ -125,7 +132,11 @@ public static class DbContextTableExtensions
       if (complexType is null)
       {
         throw new InvalidOperationException(
-          $"No complex type found for property {propertyNames[0]} on type {type.Name}");
+          $"No complex type found for property {
+            propertyNames[0]
+          } on type {
+            type.Name
+          }");
       }
 
       return GetColumnName(

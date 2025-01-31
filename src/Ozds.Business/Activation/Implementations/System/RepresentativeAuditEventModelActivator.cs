@@ -7,8 +7,8 @@ namespace Ozds.Business.Activation.Implementations.System;
 public class RepresentativeAuditEventModelActivator(
   IServiceProvider serviceProvider
 ) : InheritingModelActivator<RepresentativeAuditEventModel, AuditEventModel>(
-      serviceProvider
-    )
+  serviceProvider
+)
 {
   public override void Initialize(RepresentativeAuditEventModel model)
   {

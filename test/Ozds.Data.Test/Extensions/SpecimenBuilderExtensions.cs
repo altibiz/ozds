@@ -75,6 +75,6 @@ public static class SpecimenBuilderExtensions
     var i = 0;
     return builder.With<TProperty, TInput>(
       propertyPicker,
-      (input) => valueFactory(input, i++));
+      input => valueFactory(input, i++));
   }
 }

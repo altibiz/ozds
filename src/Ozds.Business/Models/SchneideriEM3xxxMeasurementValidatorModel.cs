@@ -140,7 +140,9 @@ public class
     )
     {
       yield return new ValidationResult(
-        $"ReactivePower must be greater than or equal to {MinReactivePower_VAR}.",
+        $"ReactivePower must be greater than or equal to {
+          MinReactivePower_VAR
+        }.",
         new[] { nameof(SchneideriEM3xxxMeasurementModel.ReactivePower_VAR) }
       );
     }
@@ -170,7 +172,9 @@ public class
     )
     {
       yield return new ValidationResult(
-        $"ApparentPower must be greater than or equal to {MinApparentPower_VA}.",
+        $"ApparentPower must be greater than or equal to {
+          MinApparentPower_VA
+        }.",
         new[] { nameof(SchneideriEM3xxxMeasurementModel.ApparentPower_VA) }
       );
     }

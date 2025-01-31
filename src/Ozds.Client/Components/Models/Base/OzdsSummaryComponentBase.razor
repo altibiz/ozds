@@ -1,46 +1,46 @@
-@using MudBlazor
-@using Ozds.Business.Models.Abstractions
-
 @namespace Ozds.Client.Components.Models.Base
 
 @typeparam TModel
+@using MudBlazor
+@using Ozds.Business.Models.Abstractions
 @inherits OzdsManagedModelComponentBase<TModel>
 
 @Base()
 
 @code {
+
   protected RenderFragment Title<T>(Func<TModel, T> next)
   {
     return @<MudText Typo="Typo.h6">
-        @next(Model)
-      </MudText>;
+      @next(Model)
+    </MudText>;
   }
 
   protected RenderFragment Subtitle<T>(Func<TModel, T> next)
   {
     return @<MudText Typo="Typo.body2">
-        @next(Model)
-      </MudText>;
+      @next(Model)
+    </MudText>;
   }
 
   protected RenderFragment LinkTitle(Func<TModel, IIdentifiable> next)
   {
     var model = next(Model);
     return @<MudText Typo="Typo.h6">
-        <MudLink Href="@(Provider.CreateLink(model))">
-          @model.Title
-        </MudLink>
-      </MudText>;
+      <MudLink Href="@(Provider.CreateLink(model))">
+        @model.Title
+      </MudLink>
+    </MudText>;
   }
 
   protected RenderFragment LinkSubtitle(Func<TModel, IIdentifiable> next)
   {
     var model = next(Model);
     return @<MudText Typo="Typo.body2">
-        <MudLink Href="@(Provider.CreateLink(model))">
-          @model.Title
-        </MudLink>
-      </MudText>;
+      <MudLink Href="@(Provider.CreateLink(model))">
+        @model.Title
+      </MudLink>
+    </MudText>;
   }
 
   protected RenderFragment LinkTitle<T>(Func<TModel, string?> next)
@@ -51,10 +51,10 @@
       ? null
       : PageHref(Provider.GetPageComponentType(typeof(T)), new { id });
     return @<MudText Typo="Typo.h6">
-        <MudLink Href="@href">
-          @id
-        </MudLink>
-      </MudText>;
+      <MudLink Href="@href">
+        @id
+      </MudLink>
+    </MudText>;
   }
 
   protected RenderFragment LinkSubtitle<T>(Func<TModel, string?> next)
@@ -65,9 +65,10 @@
       ? null
       : PageHref(Provider.GetPageComponentType(typeof(T)), new { id });
     return @<MudText Typo="Typo.body2">
-        <MudLink Href="@href">
-          @id
-        </MudLink>
-      </MudText>;
+      <MudLink Href="@href">
+        @id
+      </MudLink>
+    </MudText>;
   }
+
 }

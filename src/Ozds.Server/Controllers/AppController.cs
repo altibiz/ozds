@@ -17,7 +17,7 @@ public class AppController(IAntiforgery antiforgery) : Controller
   public IActionResult Cultured(string culture)
   {
     CultureInfo? cultureInfo = null;
-    if (culture is { })
+    if (culture is not null)
     {
       try
       {
@@ -32,7 +32,8 @@ public class AppController(IAntiforgery antiforgery) : Controller
       }
     }
 
-    if (cultureInfo is { } && cultureInfo.TwoLetterISOLanguageName != culture)
+    if (cultureInfo is not null
+      && cultureInfo.TwoLetterISOLanguageName != culture)
     {
       return Redirect($"/app/{cultureInfo.TwoLetterISOLanguageName}");
     }
@@ -52,7 +53,7 @@ public class AppController(IAntiforgery antiforgery) : Controller
       new AppViewModel
       {
         Culture = cultureInfo,
-        LogoutToken = logoutToken!,
+        LogoutToken = logoutToken!
       });
   }
 }

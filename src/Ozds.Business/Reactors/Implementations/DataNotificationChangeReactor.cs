@@ -123,13 +123,19 @@ public class DataNotificationChangeHandler(
             titleBuilder.ToString(),
             $"""
               <p style="font-size: large;">
-                <a href="app/hr/notification/{notification.Id}">
-                  {notification.Summary}
+                <a href="app/hr/notification/{
+                      notification.Id
+                    }">
+                  {
+                          notification.Summary
+                        }
                 </a>
               </p>
               <p style="font-size: small;">
                 <pre style="overflow-wrap: break-word;">
-                  {notification.Content}
+                  {
+                          notification.Content
+                        }
                 </pre>
               </p>
             """

@@ -9,10 +9,10 @@ namespace Ozds.Business.Conversion.Implementations.System;
 public class NotificationRecipientEntityConverter(
   IServiceProvider serviceProvider
 ) : InheritingModelEntityConverter<
-      NotificationRecipientModel,
-      JoinModel,
-      NotificationRecipientEntity,
-      JoinEntity>(serviceProvider)
+  NotificationRecipientModel,
+  JoinModel,
+  NotificationRecipientEntity,
+  JoinEntity>(serviceProvider)
 {
   public override void InitializeEntity(
     NotificationRecipientModel model,

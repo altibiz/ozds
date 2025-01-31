@@ -14,8 +14,8 @@ public abstract class IdentifiableEntity : IIdentifiableEntity
   {
 #pragma warning disable S3060 // "is" should not be used with "this"
     get => this is ICustomIdentifiableEntity
-        ? _stringId
-        : _id.ToString();
+      ? _stringId
+      : _id.ToString();
 #pragma warning restore S3060 // "is" should not be used with "this"
     set
     {
@@ -54,6 +54,7 @@ public class IdentifiableEntityConfiguration
         builder.HasKey("_id");
       }
     }
+
     if (entity.IsAssignableTo(typeof(ICustomIdentifiableEntity)))
     {
       builder.Ignore("_id");

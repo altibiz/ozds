@@ -9,9 +9,8 @@ namespace Ozds.Data.Entities;
 
 public class NetworkUserInvoiceEntity : InvoiceEntity
 {
-  public string? BillId { get; set; }
-
   protected long _networkUserId;
+  public string? BillId { get; set; }
 
   public virtual string NetworkUserId
   {
@@ -26,8 +25,7 @@ public class NetworkUserInvoiceEntity : InvoiceEntity
   public LocationEntity ArchivedLocation { get; set; } = default!;
 
   public virtual ICollection<NetworkUserInvoiceNotificationEntity>
-    Notifications
-  { get; set; } = default!;
+    Notifications { get; set; } = default!;
 
   public RegulatoryCatalogueEntity ArchivedRegulatoryCatalogue { get; set; } =
     default!;
@@ -57,8 +55,7 @@ public class NetworkUserInvoiceEntity : InvoiceEntity
   public decimal SupplyFeeTotal_EUR { get; set; }
 
   public virtual ICollection<NetworkUserCalculationEntity>
-    NetworkUserCalculations
-  { get; set; } =
+    NetworkUserCalculations { get; set; } =
     default!;
 }
 

@@ -5,6 +5,12 @@ namespace Ozds.Business.Conversion;
 
 public class ModelEntityConverter(IServiceProvider serviceProvider)
 {
+  private readonly
+    ConcurrentDictionary<Type, IModelEntityConverter> entityCache = new();
+
+  private readonly
+    ConcurrentDictionary<Type, IModelEntityConverter> modelCache = new();
+
   public TEntity ToEntity<TEntity>(object model)
   {
     return (TEntity)ToEntity(model);
@@ -86,20 +92,22 @@ public class ModelEntityConverter(IServiceProvider serviceProvider)
   private IModelEntityConverter FindEntityConverter(Type type)
   {
     return serviceProvider
-      .GetServices<IModelEntityConverter>()
-      .Where(converter => type.IsAssignableTo(converter.ModelType))
-      .DefaultIfEmpty(null)
-      .Aggregate((acc, next) =>
-        acc is null
-          ? null
-          : next!.ModelType.IsAssignableTo(acc.ModelType)
-            ? next
-            : acc)
+        .GetServices<IModelEntityConverter>()
+        .Where(converter => type.IsAssignableTo(converter.ModelType))
+        .DefaultIfEmpty(null)
+        .Aggregate(
+          (acc, next) =>
+            acc is null
+              ? null
+              : next!.ModelType.IsAssignableTo(acc.ModelType)
+                ? next
+                : acc)
       ?? serviceProvider
-          .GetServices<IModelEntityConverter>()
-          .Where(converter => converter.ModelType.IsAssignableTo(type))
-          .DefaultIfEmpty(null)
-          .Aggregate((acc, next) =>
+        .GetServices<IModelEntityConverter>()
+        .Where(converter => converter.ModelType.IsAssignableTo(type))
+        .DefaultIfEmpty(null)
+        .Aggregate(
+          (acc, next) =>
             acc is null
               ? null
               : next!.ModelType.IsAssignableTo(acc.ModelType)
@@ -112,20 +120,22 @@ public class ModelEntityConverter(IServiceProvider serviceProvider)
   private IModelEntityConverter FindModelConverter(Type type)
   {
     return serviceProvider
-      .GetServices<IModelEntityConverter>()
-      .Where(converter => type.IsAssignableTo(converter.EntityType))
-      .DefaultIfEmpty(null)
-      .Aggregate((acc, next) =>
-        acc is null
-          ? null
-          : next!.EntityType.IsAssignableTo(acc.EntityType)
-            ? next
-            : acc)
+        .GetServices<IModelEntityConverter>()
+        .Where(converter => type.IsAssignableTo(converter.EntityType))
+        .DefaultIfEmpty(null)
+        .Aggregate(
+          (acc, next) =>
+            acc is null
+              ? null
+              : next!.EntityType.IsAssignableTo(acc.EntityType)
+                ? next
+                : acc)
       ?? serviceProvider
-          .GetServices<IModelEntityConverter>()
-          .Where(converter => converter.EntityType.IsAssignableTo(type))
-          .DefaultIfEmpty(null)
-          .Aggregate((acc, next) =>
+        .GetServices<IModelEntityConverter>()
+        .Where(converter => converter.EntityType.IsAssignableTo(type))
+        .DefaultIfEmpty(null)
+        .Aggregate(
+          (acc, next) =>
             acc is null
               ? null
               : next!.EntityType.IsAssignableTo(acc.EntityType)
@@ -134,10 +144,4 @@ public class ModelEntityConverter(IServiceProvider serviceProvider)
       ?? throw new InvalidOperationException(
         $"No converter found for entity {type}.");
   }
-
-  private readonly
-    ConcurrentDictionary<Type, IModelEntityConverter> entityCache = new();
-
-  private readonly
-    ConcurrentDictionary<Type, IModelEntityConverter> modelCache = new();
 }

@@ -7,8 +7,8 @@ namespace Ozds.Business.Conversion.Implementations.Measurements;
 
 public class AggregateMeasureModelEntityConverter
   : ConcreteModelEntityConverter<
-      AggregateMeasureModel,
-      AggregateMeasureEntity>
+    AggregateMeasureModel,
+    AggregateMeasureEntity>
 {
   public override void InitializeEntity(
     AggregateMeasureModel model,

@@ -7,10 +7,10 @@ namespace Ozds.Business.Conversion.Implementations.System;
 public class ResolvableNotificationEntityConverter(
   IServiceProvider serviceProvider
 ) : InheritingModelEntityConverter<
-      ResolvableNotificationModel,
-      NotificationModel,
-      ResolvableNotificationEntity,
-      NotificationEntity>(serviceProvider)
+  ResolvableNotificationModel,
+  NotificationModel,
+  ResolvableNotificationEntity,
+  NotificationEntity>(serviceProvider)
 {
   public override void InitializeEntity(
     ResolvableNotificationModel model,

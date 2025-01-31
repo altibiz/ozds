@@ -11,11 +11,13 @@ public class ModelEntityConverterTest
     TheoryData<Type> TestData = new(
       AppDomain.CurrentDomain
         .GetAssemblies()
-        .SelectMany(assembly => assembly
-          .GetTypes()
-          .Where(type =>
-            !type.IsGenericType &&
-            type.IsAssignableTo(typeof(IModel)))));
+        .SelectMany(
+          assembly => assembly
+            .GetTypes()
+            .Where(
+              type =>
+                !type.IsGenericType &&
+                type.IsAssignableTo(typeof(IModel)))));
 
   [Theory]
   [MemberData(nameof(TestData))]
@@ -32,9 +34,10 @@ public class ModelEntityConverterTest
       .GetRequiredService<ModelEntityConverter>();
 
     var activationType = (TestData as IEnumerable<Type>)
-      .FirstOrDefault(type =>
-        !type.IsGenericType
-        && type.IsAssignableTo(modelType))!;
+      .FirstOrDefault(
+        type =>
+          !type.IsGenericType
+          && type.IsAssignableTo(modelType))!;
     activationType.Should().NotBeNull();
     var activated = activator.ActivateDynamic(activationType);
     activated.Should().NotBeNull().And.BeAssignableTo(activationType);

@@ -6,8 +6,15 @@ namespace Ozds.Client.Components.Models.Base;
 public abstract class OzdsPrefixedModelComponentBase<TPrefix, TModel> :
   OzdsModelComponentBase<TModel>
 {
+  private Expression<Func<TPrefix, TModel?>>? exp;
+
   [Parameter]
-  public Expression<Func<TPrefix, TModel?>>? Prefix { get; set; } = default!;
+  public Expression<Func<TPrefix, TModel?>>? Prefix { get; set; }
+
+  protected Expression<Func<TPrefix, TModel?>> Exp
+  {
+    get { return exp ??= CreateExp(); }
+  }
 
   protected Expression<Func<TPrefix, T?>> Wrap<T>(
     Expression<Func<TModel, T?>> next
@@ -26,14 +33,9 @@ public abstract class OzdsPrefixedModelComponentBase<TPrefix, TModel> :
     return Expression.Lambda<Func<TPrefix, T?>>(body, param);
   }
 
-  protected Expression<Func<TPrefix, TModel?>> Exp =>
-    exp ??= CreateExp();
-
-  private Expression<Func<TPrefix, TModel?>>? exp;
-
   protected virtual Expression<Func<TPrefix, TModel?>> CreateExp()
   {
-    return Prefix ?? ((TPrefix x) => (TModel?)(object?)x);
+    return Prefix ?? (x => (TModel?)(object?)x);
   }
 
   protected override Type CreateBaseComponentType()
@@ -73,7 +75,7 @@ public abstract class OzdsPrefixedModelComponentBase<TPrefix, TModel> :
   {
     base.OnParametersSet();
 
-    if (exp is { })
+    if (exp is not null)
     {
       exp = CreateExp();
     }

@@ -1,9 +1,7 @@
-@using Ozds.Client.Components.Streaming
-@using Ozds.Client.Components.Base
-
 @namespace Ozds.Client.Components.Providers
 
-@inherits OzdsComponentBase
+@using Ozds.Client.Components.Streaming
+@inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 <Loading LoadAsync="LoadAsync">
   <Found>
@@ -12,6 +10,6 @@
     </CascadingValue>
   </Found>
   <NotFound>
-    <RedirectToLogin />
+    <RedirectToLogin/>
   </NotFound>
 </Loading>

@@ -24,7 +24,7 @@ public static class ApexChartOptionsExtensions
   )
     where T : class
   {
-    options.Theme ??= new();
+    options.Theme ??= new Theme();
     options.Theme.Mode = isDarkMode ? Mode.Dark : Mode.Light;
     return options;
   }
@@ -173,7 +173,7 @@ public static class ApexChartOptionsExtensions
 
     options.Xaxis = new XAxis
     {
-      Labels = new XAxisLabels { Show = false },
+      Labels = new XAxisLabels { Show = false }
     };
 
     return options;
@@ -235,7 +235,7 @@ public static class ApexChartOptionsExtensions
     options.Xaxis = new XAxis
     {
       Type = XAxisType.Datetime,
-      AxisTicks = new AxisTicks(),
+      AxisTicks = new AxisTicks()
     };
 
     return options;
@@ -247,13 +247,14 @@ public static class ApexChartOptionsExtensions
     where T : class
   {
     options.Yaxis[0].Title = new AxisTitle { Text = "kW" };
-    options.Yaxis.Add(new YAxis
-    {
-      Title = new AxisTitle { Text = "kWh" },
-      SeriesName = "Active Power",
-      DecimalsInFloat = 0,
-      Opposite = true
-    });
+    options.Yaxis.Add(
+      new YAxis
+      {
+        Title = new AxisTitle { Text = "kWh" },
+        SeriesName = "Active Power",
+        DecimalsInFloat = 0,
+        Opposite = true
+      });
     return options;
   }
 
@@ -282,7 +283,8 @@ public static class ApexChartOptionsExtensions
 
       options.Annotations = new Annotations
       {
-        Yaxis = [
+        Yaxis =
+        [
           new AnnotationsYAxis
           {
             Label = new Label

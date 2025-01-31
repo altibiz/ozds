@@ -6,10 +6,10 @@ namespace Ozds.Business.Conversion.Implementations;
 
 public class AuditableModelEntityConverter(IServiceProvider serviceProvider)
   : InheritingModelEntityConverter<
-  AuditableModel,
-  IdentifiableModel,
-  AuditableEntity,
-  IdentifiableEntity>(serviceProvider)
+    AuditableModel,
+    IdentifiableModel,
+    AuditableEntity,
+    IdentifiableEntity>(serviceProvider)
 {
   public override void InitializeEntity(
     AuditableModel model,

@@ -20,12 +20,10 @@ public class LocationEntity : AuditableEntity
   private long _whiteMediumNetworkUserCatalogueId;
 
   public virtual ICollection<RepresentativeEntity>
-    Representatives
-  { get; set; } = default!;
+    Representatives { get; set; } = default!;
 
   public virtual ICollection<LocationRepresentativeEntity>
-    LocationRepresentatives
-  { get; set; } = default!;
+    LocationRepresentatives { get; set; } = default!;
 
   public virtual ICollection<NetworkUserEntity> NetworkUsers { get; set; } =
     default!;
@@ -40,8 +38,7 @@ public class LocationEntity : AuditableEntity
   }
 
   public virtual WhiteMediumNetworkUserCatalogueEntity
-    WhiteMediumNetworkUserCatalogue
-  { get; set; } =
+    WhiteMediumNetworkUserCatalogue { get; set; } =
     default!;
 
   public string BlueLowNetworkUserCatalogueId

@@ -6,7 +6,7 @@ namespace Ozds.Messaging.Observers.Implementations;
 
 public class NetworkUserInvoiceStateObserver
   : Observer<NetworkUserInvoiceStateEventArgs>,
-  INetworkUserInvoiceStatePublisher,
-  INetworkUserInvoiceStateSubscriber
+    INetworkUserInvoiceStatePublisher,
+    INetworkUserInvoiceStateSubscriber
 {
 }

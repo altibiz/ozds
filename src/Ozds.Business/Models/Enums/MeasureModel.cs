@@ -76,8 +76,10 @@ public static class MeasureExtensions
       MeasureModel.ReactivePower => measurement.ReactivePower_VAR.Divide(1000),
       MeasureModel.ApparentPower => measurement.ApparentPower_VA.Divide(1000),
       MeasureModel.ActiveEnergy => measurement.ActiveEnergy_Wh.Divide(1000),
-      MeasureModel.ReactiveEnergy => measurement.ReactiveEnergy_VARh.Divide(1000),
-      MeasureModel.ApparentEnergy => measurement.ApparentEnergy_VAh.Divide(1000),
+      MeasureModel.ReactiveEnergy => measurement.ReactiveEnergy_VARh.Divide(
+        1000),
+      MeasureModel.ApparentEnergy =>
+        measurement.ApparentEnergy_VAh.Divide(1000),
       _ => throw new ArgumentOutOfRangeException(nameof(measure), measure, null)
     };
   }

@@ -83,7 +83,8 @@ public class NetworkUserInvoiceIssuer(
             invoice.Invoice.UsageActivePowerTotalImportT1PeakFee_EUR
           ),
           new AcknowledgeNetworkUserInvoiceItem(
-            localizer.TranslateForCulture(culture, "Excessively taken reactive power"),
+            localizer.TranslateForCulture(
+              culture, "Excessively taken reactive power"),
             localizer.TranslateForCulture(culture, "Month"),
             "1.5.",
             1,

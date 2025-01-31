@@ -9,10 +9,10 @@ namespace Ozds.Business.Conversion.Implementations.Finances;
 public class RegulatoryCatalogueModelEntityConverter(
   IServiceProvider serviceProvider
 ) : InheritingModelEntityConverter<
-      RegulatoryCatalogueModel,
-      AuditableModel,
-      RegulatoryCatalogueEntity,
-      AuditableEntity>(serviceProvider)
+  RegulatoryCatalogueModel,
+  AuditableModel,
+  RegulatoryCatalogueEntity,
+  AuditableEntity>(serviceProvider)
 {
   public override void InitializeEntity(
     RegulatoryCatalogueModel model,

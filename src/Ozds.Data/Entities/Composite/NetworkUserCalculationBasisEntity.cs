@@ -21,17 +21,11 @@ public class NetworkUserCalculationBasisEntity
   } =
     default!;
 
-  public NetworkUserCatalogueEntity UsageNetworkUserCatalogue
-  {
-    get;
-    set;
-  } = default!;
+  public NetworkUserCatalogueEntity UsageNetworkUserCatalogue { get; set; } =
+    default!;
 
-  public RegulatoryCatalogueEntity SupplyRegulatoryCatalogue
-  {
-    get;
-    set;
-  } = default!;
+  public RegulatoryCatalogueEntity SupplyRegulatoryCatalogue { get; set; } =
+    default!;
 
   public MeterEntity Meter { get; set; } = default!;
 }

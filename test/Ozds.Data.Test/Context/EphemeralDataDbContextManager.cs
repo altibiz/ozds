@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Npgsql;
 using Ozds.Data.Context;
-using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Test.Context;
 
@@ -14,6 +13,34 @@ public sealed class EphemeralDataDbContextManager(
   private readonly SemaphoreSlim _semaphore = new(1, 1);
 
   private DataDbContext? context;
+
+  public async ValueTask DisposeAsync()
+  {
+    try
+    {
+      await _semaphore.WaitAsync();
+    }
+    catch (ObjectDisposedException)
+    {
+      return;
+    }
+
+    try
+    {
+      if (context is null)
+      {
+        return;
+      }
+
+      await context.Database.RollbackTransactionAsync();
+      await context.DisposeAsync();
+    }
+    finally
+    {
+      _semaphore.Release();
+      _semaphore.Dispose();
+    }
+  }
 
   public async Task<DataDbContext> GetContext(
     CancellationToken cancellationToken
@@ -46,6 +73,7 @@ public sealed class EphemeralDataDbContextManager(
         logger.LogError(exception, "Failed to get context");
       }
     }
+
     var entityTypes = GetDependencyOrderedEntityTypes(context);
     var tables = entityTypes
       .Select(entityType => entityType.GetTableName())
@@ -81,6 +109,7 @@ public sealed class EphemeralDataDbContextManager(
             throw;
           }
         }
+
         break;
       }
       catch (Exception ex)
@@ -98,6 +127,7 @@ public sealed class EphemeralDataDbContextManager(
         throw;
       }
     }
+
     if (retries >= 10)
     {
       throw new TimeoutException("Failed to delete all data");
@@ -114,34 +144,6 @@ public sealed class EphemeralDataDbContextManager(
     }
 
     return context;
-  }
-
-  public async ValueTask DisposeAsync()
-  {
-    try
-    {
-      await _semaphore.WaitAsync();
-    }
-    catch (ObjectDisposedException)
-    {
-      return;
-    }
-
-    try
-    {
-      if (context is null)
-      {
-        return;
-      }
-
-      await context.Database.RollbackTransactionAsync();
-      await context.DisposeAsync();
-    }
-    finally
-    {
-      _semaphore.Release();
-      _semaphore.Dispose();
-    }
   }
 
   private static List<IEntityType> GetDependencyOrderedEntityTypes(
@@ -164,15 +166,18 @@ public sealed class EphemeralDataDbContextManager(
           .ToList();
         if (foreignKeys.Count == 0 ||
           foreignKeys
-            .TrueForAll(foreignKey =>
-              reversedEntityTypes
-                .Exists(reversedEntityType =>
-                  foreignKey.PrincipalEntityType == reversedEntityType)))
+            .TrueForAll(
+              foreignKey =>
+                reversedEntityTypes
+                  .Exists(
+                    reversedEntityType =>
+                      foreignKey.PrincipalEntityType == reversedEntityType)))
         {
           hierarchies.Remove(hierarchy);
           newReversedEntityTypes.AddRange(hierarchy);
         }
       }
+
       if (newReversedEntityTypes.Count == 0)
       {
         foreach (var hierarchy in hierarchies.ToList())
@@ -182,19 +187,23 @@ public sealed class EphemeralDataDbContextManager(
             .ToList();
           if (foreignKeys.Count == 0 ||
             foreignKeys
-              .TrueForAll(foreignKey =>
-                !foreignKey.IsRequired ||
+              .TrueForAll(
+                foreignKey =>
+                  !foreignKey.IsRequired ||
                   reversedEntityTypes
-                    .Exists(reversedEntityType =>
-                      foreignKey.PrincipalEntityType == reversedEntityType)))
+                    .Exists(
+                      reversedEntityType =>
+                        foreignKey.PrincipalEntityType == reversedEntityType)))
           {
             hierarchies.Remove(hierarchy);
             newReversedEntityTypes.AddRange(hierarchy);
           }
         }
       }
+
       reversedEntityTypes.AddRange(newReversedEntityTypes);
     }
+
     reversedEntityTypes.Reverse();
     return reversedEntityTypes;
   }

@@ -19,7 +19,7 @@ public class FeeCalculationItemModelActivator
 public class UsageMeterFeeCalculationItemModelActivator(
   IServiceProvider serviceProvider
 ) : InheritingModelActivator<
-      UsageMeterFeeCalculationItemModel,
-      FeeCalculationItemModel>(serviceProvider)
+  UsageMeterFeeCalculationItemModel,
+  FeeCalculationItemModel>(serviceProvider)
 {
 }

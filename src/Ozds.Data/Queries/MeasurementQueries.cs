@@ -32,7 +32,7 @@ public class MeasurementQueries(
       .CreateDbContextAsync(cancellationToken);
 
     List<IMeasurementEntity> items = new();
-    int count = 0;
+    var count = 0;
 
     var futureCounts = new List<QueryDeferred<int>>();
     var futureItems = new List<QueryFutureEnumerable<IMeasurementEntity>>();
@@ -61,7 +61,7 @@ public class MeasurementQueries(
                 nameof(AggregateEntity<MeterEntity>.Interval)),
               Expression.Constant(
                 interval
-                  ?? throw new InvalidOperationException("Interval is null"),
+                ?? throw new InvalidOperationException("Interval is null"),
                 typeof(IntervalEntity))),
             intervalParameter);
 
@@ -145,7 +145,7 @@ public class MeasurementQueries(
                 nameof(AggregateEntity<MeterEntity>.Interval)),
               Expression.Constant(
                 interval
-                  ?? throw new InvalidOperationException("Interval is null"),
+                ?? throw new InvalidOperationException("Interval is null"),
                 typeof(IntervalEntity))),
             intervalParameter);
 
@@ -179,36 +179,37 @@ public class MeasurementQueries(
     return items;
   }
 
-  public async Task<PaginatedList<IMeasurementEntity>> ReadByMeasurementLocationIds(
-    IEnumerable<string> measurementLocationIds,
-    IntervalEntity? interval,
-    DateTimeOffset fromDate,
-    DateTimeOffset toDate,
-    int pageNumber,
-    CancellationToken cancellationToken,
-    int pageCount = QueryConstants.DefaultMeasurementPageCount
-  )
+  public async Task<PaginatedList<IMeasurementEntity>>
+    ReadByMeasurementLocationIds(
+      IEnumerable<string> measurementLocationIds,
+      IntervalEntity? interval,
+      DateTimeOffset fromDate,
+      DateTimeOffset toDate,
+      int pageNumber,
+      CancellationToken cancellationToken,
+      int pageCount = QueryConstants.DefaultMeasurementPageCount
+    )
   {
     await using var context = await factory
       .CreateDbContextAsync(cancellationToken);
 
     List<IMeasurementEntity> items = new();
-    int count = 0;
+    var count = 0;
 
     var futureCounts = new List<QueryDeferred<int>>();
     var futureItems = new List<QueryFutureEnumerable<IMeasurementEntity>>();
 
-    var types = interval is { }
-      ? new Type[]
-        {
-          typeof(AbbB2xAggregateEntity),
-          typeof(SchneideriEM3xxxAggregateEntity),
-        }
-      : new Type[]
-        {
-          typeof(AbbB2xMeasurementEntity),
-          typeof(SchneideriEM3xxxMeasurementEntity),
-        };
+    var types = interval is not null
+      ? new[]
+      {
+        typeof(AbbB2xAggregateEntity),
+        typeof(SchneideriEM3xxxAggregateEntity)
+      }
+      : new[]
+      {
+        typeof(AbbB2xMeasurementEntity),
+        typeof(SchneideriEM3xxxMeasurementEntity)
+      };
 
     foreach (var entityType in types)
     {
@@ -232,7 +233,7 @@ public class MeasurementQueries(
                 nameof(AggregateEntity<MeterEntity>.Interval)),
               Expression.Constant(
                 interval
-                  ?? throw new InvalidOperationException("Interval is null"),
+                ?? throw new InvalidOperationException("Interval is null"),
                 typeof(IntervalEntity))),
             intervalParameter);
 
@@ -293,12 +294,13 @@ public class MeasurementQueries(
 
     var futureItems = new List<QueryDeferred<IMeasurementEntity>>();
 
-    foreach (var entityType in new Type[] {
-      typeof(AbbB2xAggregateEntity),
-      typeof(AbbB2xMeasurementEntity),
-      typeof(SchneideriEM3xxxAggregateEntity),
-      typeof(SchneideriEM3xxxMeasurementEntity),
-    })
+    foreach (var entityType in new[]
+      {
+        typeof(AbbB2xAggregateEntity),
+        typeof(AbbB2xMeasurementEntity),
+        typeof(SchneideriEM3xxxAggregateEntity),
+        typeof(SchneideriEM3xxxMeasurementEntity)
+      })
     {
       var queryable = context.GetQueryable<IMeasurementEntity>(entityType);
 
@@ -319,7 +321,7 @@ public class MeasurementQueries(
                 nameof(AggregateEntity<MeterEntity>.Interval)),
               Expression.Constant(
                 interval
-                  ?? throw new InvalidOperationException("Interval is null"),
+                ?? throw new InvalidOperationException("Interval is null"),
                 typeof(IntervalEntity))),
             intervalParameter);
 

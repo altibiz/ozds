@@ -1,16 +1,7 @@
-@using Ozds.Business.Models.Joins
-@using MudBlazor
-@using Ozds.Client.Components.Base
-@using Ozds.Client.Components.Streaming
-@using Ozds.Client.State
-@using Ozds.Business.Queries
-@using Ozds.Business.Models.Base
-@using Ozds.Business.Models
-@using Microsoft.Extensions.DependencyInjection
-
 @namespace Ozds.Client.Components.Layout
 
-@inherits OzdsComponentBase
+@using MudBlazor
+@inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 <MudToolBar Gutters="false">
   <MudContainer
@@ -21,8 +12,8 @@
       Icon="@Icons.Material.Outlined.Menu"
       Style="margin-left: -12px;"
       OnClick="OnNavigationMenuClick"/>
-    <MudSpacer />
-    @if (NotificationsState is { })
+    <MudSpacer/>
+    @if (NotificationsState is not null)
     {
       @if (NotificationsState.Notifications.Count > 0)
       {
@@ -30,7 +21,7 @@
         var fontSize = 10;
 
         <MudButton
-          Size="MudBlazor.Size.Small"
+          Size="Size.Small"
           Class="p-2"
           Style="margin-right: -10px; position: relative;"
           OnClick="NavigateToNotifications">
@@ -62,11 +53,11 @@
       else
       {
         <MudButton
-          Size="MudBlazor.Size.Small"
+          Size="Size.Small"
           Class="p-2"
           Style="margin-right: -20px;"
           OnClick="NavigateToNotifications">
-          <MudIcon Icon="@Icons.Material.Filled.NotificationsNone" />
+          <MudIcon Icon="@Icons.Material.Filled.NotificationsNone"/>
         </MudButton>
       }
     }
@@ -74,6 +65,7 @@
 </MudToolBar>
 
 @code {
+
   [Parameter]
   public MaxWidth MaxWidth { get; set; } = default;
 
@@ -82,4 +74,5 @@
 
   [Parameter]
   public string Class { get; set; } = string.Empty;
+
 }

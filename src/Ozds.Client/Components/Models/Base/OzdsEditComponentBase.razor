@@ -1,67 +1,67 @@
-@using MudBlazor
-@using System.Linq.Expressions
-@using Ozds.Business.Models.Abstractions
-@using Ozds.Client.Components.Fields
-@using Ozds.Client.Components.Streaming
-@using Ozds.Client.Extensions
-
 @namespace Ozds.Client.Components.Models.Base
 
 @typeparam TPrefix
 @typeparam TModel
+@using System.Linq.Expressions
+@using MudBlazor
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Client.Components.Fields
+@using Ozds.Client.Components.Streaming
+@using Ozds.Client.Extensions
 @inherits OzdsManagedModelComponentBase<TPrefix, TModel>
 
 @Base()
 
 @code {
+
   protected RenderFragment Field(Expression<Func<TModel, string?>> next)
   {
     var nextFunc = next.Compile();
     return @<MudTextField
-      Label="@(Translate(next.Label()))"
-      Value="@Get(nextFunc)"
-      ValueChanged="@Set(next)"
-      For="@For(next)" />;
+              Label="@(Translate(next.Label()))"
+              Value="@Get(nextFunc)"
+              ValueChanged="@Set(next)"
+              For="@For(next)"/>;
   }
 
   protected RenderFragment Field(Expression<Func<TModel, decimal?>> next)
   {
     var nextFunc = next.Compile();
     return @<MudNumericField
-      Label="@(Translate(next.Label()))"
-      Value="@Get(nextFunc)"
-      ValueChanged="@Set(next)"
-      For="@For(next)" />;
+              Label="@(Translate(next.Label()))"
+              Value="@Get(nextFunc)"
+              ValueChanged="@Set(next)"
+              For="@For(next)"/>;
   }
 
   protected RenderFragment Field(Expression<Func<TModel, decimal>> next)
   {
     var nextFunc = next.Compile();
     return @<MudNumericField
-      Label="@(Translate(next.Label()))"
-      Value="@Get(nextFunc)"
-      ValueChanged="@Set(next)"
-      For="@For(next)" />;
+              Label="@(Translate(next.Label()))"
+              Value="@Get(nextFunc)"
+              ValueChanged="@Set(next)"
+              For="@For(next)"/>;
   }
 
   protected RenderFragment Field(Expression<Func<TModel, uint?>> next)
   {
     var nextFunc = next.Compile();
     return @<MudNumericField
-      Label="@(Translate(next.Label()))"
-      Value="@Get(nextFunc)"
-      ValueChanged="@Set(next)"
-      For="@For(next)" />;
+              Label="@(Translate(next.Label()))"
+              Value="@Get(nextFunc)"
+              ValueChanged="@Set(next)"
+              For="@For(next)"/>;
   }
 
   protected RenderFragment Field(Expression<Func<TModel, uint>> next)
   {
     var nextFunc = next.Compile();
     return @<MudNumericField
-      Label="@(Translate(next.Label()))"
-      Value="@Get(nextFunc)"
-      ValueChanged="@Set(next)"
-      For="@For(next)" />;
+              Label="@(Translate(next.Label()))"
+              Value="@Get(nextFunc)"
+              ValueChanged="@Set(next)"
+              For="@For(next)"/>;
   }
 
   // NOTE: doesn't work with just Enum
@@ -70,10 +70,10 @@
   {
     var nextFunc = next.Compile();
     return @<EnumPicker
-      Title="@(Translate(next.Label()))"
-      Value="@Get(nextFunc)"
-      ValueChanged="@Set(next)"
-      For="@For(next)" />;
+              Title="@(Translate(next.Label()))"
+              Value="@Get(nextFunc)"
+              ValueChanged="@Set(next)"
+              For="@For(next)"/>;
   }
 
   // NOTE: doesn't work with just Enum
@@ -84,9 +84,9 @@
   {
     var nextFunc = next.Compile();
     return @<MultiEnumPicker
-      Title="@(Translate(next.Label()))"
-      Value="@Get(nextFunc)"
-      ValueChanged="@Set(next, (IEnumerable<T> x) => x.ToHashSet())" />;
+              Title="@(Translate(next.Label()))"
+              Value="@Get(nextFunc)"
+              ValueChanged="@Set(next, (IEnumerable<T> x) => x.ToHashSet())"/>;
   }
 
   // NOTE: doesn't work with just Enum
@@ -97,19 +97,19 @@
   {
     var nextFunc = next.Compile();
     return @<MultiEnumPicker
-      Title="@(Translate(next.Label()))"
-      Value="@Get(nextFunc)"
-      ValueChanged="@Set(next, (IEnumerable<T> x) => x.ToList())" />;
+              Title="@(Translate(next.Label()))"
+              Value="@Get(nextFunc)"
+              ValueChanged="@Set(next, (IEnumerable<T> x) => x.ToList())"/>;
   }
 
   protected RenderFragment TextField<T>(Expression<Func<TModel, T?>> next)
   {
     var nextFunc = next.Compile();
     return @<MudTextField
-      Label="@(Translate(next.Label()))"
-      Value="@Get(nextFunc)"
-      ValueChanged="@Set(next)"
-      For="@For(next)" />;
+              Label="@(Translate(next.Label()))"
+              Value="@Get(nextFunc)"
+              ValueChanged="@Set(next)"
+              For="@For(next)"/>;
   }
 
   protected RenderFragment NumericField<T>(Expression<Func<TModel, T?>> next)
@@ -117,10 +117,10 @@
   {
     var nextFunc = next.Compile();
     return @<MudNumericField
-      Label="@(Translate(next.Label()))"
-      Value="@Get(nextFunc)"
-      ValueChanged="@Set(next)"
-      For="@For(next)" />;
+              Label="@(Translate(next.Label()))"
+              Value="@Get(nextFunc)"
+              ValueChanged="@Set(next)"
+              For="@For(next)"/>;
   }
 
   protected RenderFragment NumericField<T>(Expression<Func<TModel, T>> next)
@@ -128,20 +128,20 @@
   {
     var nextFunc = next.Compile();
     return @<MudNumericField
-      Label="@(Translate(next.Label()))"
-      Value="@Get(nextFunc)"
-      ValueChanged="@Set(next)"
-      For="@For(next)" />;
+              Label="@(Translate(next.Label()))"
+              Value="@Get(nextFunc)"
+              ValueChanged="@Set(next)"
+              For="@For(next)"/>;
   }
 
   protected RenderFragment EnumField<T>(Expression<Func<TModel, T?>> next)
   {
     var nextFunc = next.Compile();
     return @<EnumPicker
-      Title="@(Translate(next.Label()))"
-      Value="@Get(nextFunc)"
-      ValueChanged="@Set(next)"
-      For="@For(next)" />;
+              Title="@(Translate(next.Label()))"
+              Value="@Get(nextFunc)"
+              ValueChanged="@Set(next)"
+              For="@For(next)"/>;
   }
 
   protected RenderFragment MultiEnumField<T>(
@@ -150,9 +150,9 @@
   {
     var nextFunc = next.Compile();
     return @<MultiEnumPicker
-      Title="@(Translate(next.Label()))"
-      Value="@Get(nextFunc)"
-      ValueChanged="@Set(next, (IEnumerable<T> x) => x.ToHashSet())" />;
+              Title="@(Translate(next.Label()))"
+              Value="@Get(nextFunc)"
+              ValueChanged="@Set(next, (IEnumerable<T> x) => x.ToHashSet())"/>;
   }
 
   protected RenderFragment MultiEnumField<T>(
@@ -161,9 +161,9 @@
   {
     var nextFunc = next.Compile();
     return @<MultiEnumPicker
-      Title="@(Translate(next.Label()))"
-      Value="@Get(nextFunc)"
-      ValueChanged="@Set(next, (IEnumerable<T> x) => x.ToList())" />;
+              Title="@(Translate(next.Label()))"
+              Value="@Get(nextFunc)"
+              ValueChanged="@Set(next, (IEnumerable<T> x) => x.ToList())"/>;
   }
 
   protected RenderFragment LinkField<T>(
@@ -173,17 +173,18 @@
   {
     var nextFunc = next.Compile();
     return @<MudSelect
-        Label="@(Translate(next.Label()))"
-        Value="@Get(nextFunc)"
-        ValueChanged="@Set(next)"
-        For="@For(next)">
-        <Paging T="T">
-          <Summary Context="model">
-            <MudSelectItem Value="@model.Id">
-              <Summary Model="@model"/>
-            </MudSelectItem>
-          </Summary>
-        </Paging>
-      </MudSelect>;
+              Label="@(Translate(next.Label()))"
+              Value="@Get(nextFunc)"
+              ValueChanged="@Set(next)"
+              For="@For(next)">
+      <Paging T="T">
+        <Summary Context="model">
+          <MudSelectItem Value="@model.Id">
+            <Summary Model="@model"/>
+          </MudSelectItem>
+        </Summary>
+      </Paging>
+    </MudSelect>;
   }
+
 }

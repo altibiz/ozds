@@ -1,13 +1,11 @@
+@namespace Ozds.Client.Components.Layout
+
 @using Microsoft.AspNetCore.Components.Routing
 @using Microsoft.Extensions.Hosting
 @using MudBlazor
-@using Ozds.Client.State
 @using Ozds.Client.Attributes
-@using Ozds.Client.Components.Base
-
-@namespace Ozds.Client.Components.Layout
-
-@inherits OzdsComponentBase
+@using Ozds.Client.State
+@inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 @inject IHostEnvironment Environment
 
@@ -56,7 +54,7 @@
       Match="match"
       Class="ozds-nav-link">
       <div class="d-flex flex-row align-center">
-        <MudIcon Icon="@Descriptor.Navigation.Icon" />
+        <MudIcon Icon="@Descriptor.Navigation.Icon"/>
         <MudText Class="ml-4 d-flex flex-row" Style="align-items: center;">
           @Translate(Descriptor.Navigation.Title)
         </MudText>
@@ -65,7 +63,7 @@
 
     @foreach (var child in Descriptor.Children)
     {
-      <NavigationItem Descriptor="child" />
+      <NavigationItem Descriptor="child"/>
     }
   </MudNavGroup>
 }
@@ -76,7 +74,7 @@ else
     Match="match"
     Class="ozds-nav-link">
     <div class="d-flex flex-row align-center">
-      <MudIcon Icon="@Descriptor.Navigation.Icon" />
+      <MudIcon Icon="@Descriptor.Navigation.Icon"/>
       <MudText Class="ml-4 d-flex flex-row" Style="align-items: center;">
         @Translate(Descriptor.Navigation.Title)
       </MudText>
@@ -85,6 +83,7 @@ else
 }
 
 @code {
+
   [Parameter]
   public NavigationDescriptor Descriptor { get; set; } = default!;
 
@@ -93,4 +92,5 @@ else
 
   [CascadingParameter]
   private RepresentativeState RepresentativeState { get; set; } = default!;
+
 }

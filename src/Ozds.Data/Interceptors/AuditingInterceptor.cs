@@ -74,18 +74,22 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
               {
                 Timestamp = now,
                 Title =
-                  $"Restored {auditable.Entity.GetType().Name} {auditable.Entity.Title}",
+                  $"Restored {
+                    auditable.Entity.GetType().Name
+                  } {
+                    auditable.Entity.Title
+                  }",
                 RepresentativeId = representativeId,
                 Level = LevelEntity.Debug,
                 Audit = AuditEntity.Restoration,
                 Content = CreateRestoredMessage(auditable),
                 AuditableEntityId = auditable.Entity.Id,
                 AuditableEntityType = context
-                  .GetEntityTypeNameFromEntityType(auditable.Entity.GetType())
+                    .GetEntityTypeNameFromEntityType(auditable.Entity.GetType())
                   ?? throw new InvalidOperationException(
                     $"No type name found for {auditable.Entity.GetType()}"),
                 AuditableEntityTable = context
-                  .GetTableNameFromEntityType(auditable.Entity.GetType())
+                    .GetTableNameFromEntityType(auditable.Entity.GetType())
                   ?? throw new InvalidOperationException(
                     $"No table found for {auditable.Entity.GetType()}"),
                 Categories = [CategoryEntity.All, CategoryEntity.Audit]
@@ -98,17 +102,21 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
               {
                 Timestamp = now,
                 Title =
-                  $"Restored {auditable.Entity.GetType().Name} {auditable.Entity.Title}",
+                  $"Restored {
+                    auditable.Entity.GetType().Name
+                  } {
+                    auditable.Entity.Title
+                  }",
                 Level = LevelEntity.Debug,
                 Audit = AuditEntity.Restoration,
                 Content = CreateRestoredMessage(auditable),
                 AuditableEntityId = auditable.Entity.Id,
                 AuditableEntityType = context
-                  .GetEntityTypeNameFromEntityType(auditable.Entity.GetType())
+                    .GetEntityTypeNameFromEntityType(auditable.Entity.GetType())
                   ?? throw new InvalidOperationException(
                     $"No type name found for {auditable.Entity.GetType()}"),
                 AuditableEntityTable = context
-                  .GetTableNameFromEntityType(auditable.Entity.GetType())
+                    .GetTableNameFromEntityType(auditable.Entity.GetType())
                   ?? throw new InvalidOperationException(
                     $"No table found for {auditable.Entity.GetType()}"),
                 Categories = [CategoryEntity.All, CategoryEntity.Audit]
@@ -126,18 +134,22 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
               {
                 Timestamp = now,
                 Title =
-                  $"Created {auditable.Entity.GetType().Name} {auditable.Entity.Title}",
+                  $"Created {
+                    auditable.Entity.GetType().Name
+                  } {
+                    auditable.Entity.Title
+                  }",
                 RepresentativeId = representativeId,
                 Level = LevelEntity.Debug,
                 Audit = AuditEntity.Creation,
                 Content = CreateAddedMessage(auditable),
                 AuditableEntityId = auditable.Entity.Id,
                 AuditableEntityType = context
-                  .GetEntityTypeNameFromEntityType(auditable.Entity.GetType())
+                    .GetEntityTypeNameFromEntityType(auditable.Entity.GetType())
                   ?? throw new InvalidOperationException(
                     $"No type name found for {auditable.Entity.GetType()}"),
                 AuditableEntityTable = context
-                  .GetTableNameFromEntityType(auditable.Entity.GetType())
+                    .GetTableNameFromEntityType(auditable.Entity.GetType())
                   ?? throw new InvalidOperationException(
                     $"No table found for {auditable.Entity.GetType()}"),
                 Categories = [CategoryEntity.All, CategoryEntity.Audit]
@@ -151,17 +163,21 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
               {
                 Timestamp = now,
                 Title =
-                  $"Created {auditable.Entity.GetType().Name} {auditable.Entity.Title}",
+                  $"Created {
+                    auditable.Entity.GetType().Name
+                  } {
+                    auditable.Entity.Title
+                  }",
                 Level = LevelEntity.Debug,
                 Audit = AuditEntity.Creation,
                 Content = CreateAddedMessage(auditable),
                 AuditableEntityId = auditable.Entity.Id,
                 AuditableEntityType = context
-                  .GetEntityTypeNameFromEntityType(auditable.Entity.GetType())
+                    .GetEntityTypeNameFromEntityType(auditable.Entity.GetType())
                   ?? throw new InvalidOperationException(
                     $"No type name found for {auditable.Entity.GetType()}"),
                 AuditableEntityTable = context
-                  .GetTableNameFromEntityType(auditable.Entity.GetType())
+                    .GetTableNameFromEntityType(auditable.Entity.GetType())
                   ?? throw new InvalidOperationException(
                     $"No table found for {auditable.Entity.GetType()}"),
                 Categories = [CategoryEntity.All, CategoryEntity.Audit]
@@ -181,18 +197,22 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
             {
               Timestamp = now,
               Title =
-                $"Updated {auditable.Entity.GetType().Name} {auditable.Entity.Title}",
+                $"Updated {
+                  auditable.Entity.GetType().Name
+                } {
+                  auditable.Entity.Title
+                }",
               RepresentativeId = representativeId,
               Level = LevelEntity.Debug,
               Audit = AuditEntity.Modification,
               Content = CreateModifiedMessage(auditable),
               AuditableEntityId = auditable.Entity.Id,
               AuditableEntityType = context
-                .GetEntityTypeNameFromEntityType(auditable.Entity.GetType())
+                  .GetEntityTypeNameFromEntityType(auditable.Entity.GetType())
                 ?? throw new InvalidOperationException(
                   $"No type name found for {auditable.Entity.GetType()}"),
               AuditableEntityTable = context
-                .GetTableNameFromEntityType(auditable.Entity.GetType())
+                  .GetTableNameFromEntityType(auditable.Entity.GetType())
                 ?? throw new InvalidOperationException(
                   $"No table found for {auditable.Entity.GetType()}"),
               Categories = [CategoryEntity.All, CategoryEntity.Audit]
@@ -206,17 +226,21 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
             {
               Timestamp = now,
               Title =
-                $"Updated {auditable.Entity.GetType().Name} {auditable.Entity.Title}",
+                $"Updated {
+                  auditable.Entity.GetType().Name
+                } {
+                  auditable.Entity.Title
+                }",
               Level = LevelEntity.Debug,
               Audit = AuditEntity.Modification,
               Content = CreateModifiedMessage(auditable),
               AuditableEntityId = auditable.Entity.Id,
               AuditableEntityType = context
-                .GetEntityTypeNameFromEntityType(auditable.Entity.GetType())
+                  .GetEntityTypeNameFromEntityType(auditable.Entity.GetType())
                 ?? throw new InvalidOperationException(
                   $"No type name found for {auditable.Entity.GetType()}"),
               AuditableEntityTable = context
-                .GetTableNameFromEntityType(auditable.Entity.GetType())
+                  .GetTableNameFromEntityType(auditable.Entity.GetType())
                 ?? throw new InvalidOperationException(
                   $"No table found for {auditable.Entity.GetType()}"),
               Categories = [CategoryEntity.All, CategoryEntity.Audit]
@@ -235,18 +259,22 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
               {
                 Timestamp = now,
                 Title =
-                  $"Forgotten {auditable.Entity.GetType().Name} {auditable.Entity.Title}",
+                  $"Forgotten {
+                    auditable.Entity.GetType().Name
+                  } {
+                    auditable.Entity.Title
+                  }",
                 RepresentativeId = representativeId,
                 Level = LevelEntity.Debug,
                 Audit = AuditEntity.Forgetting,
                 Content = CreateForgottenMessage(auditable),
                 AuditableEntityId = auditable.Entity.Id,
                 AuditableEntityType = context
-                  .GetEntityTypeNameFromEntityType(auditable.Entity.GetType())
+                    .GetEntityTypeNameFromEntityType(auditable.Entity.GetType())
                   ?? throw new InvalidOperationException(
                     $"No type name found for {auditable.Entity.GetType()}"),
                 AuditableEntityTable = context
-                  .GetTableNameFromEntityType(auditable.Entity.GetType())
+                    .GetTableNameFromEntityType(auditable.Entity.GetType())
                   ?? throw new InvalidOperationException(
                     $"No table found for {auditable.Entity.GetType()}"),
                 Categories = [CategoryEntity.All, CategoryEntity.Audit]
@@ -259,17 +287,21 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
               {
                 Timestamp = now,
                 Title =
-                  $"Forgotten {auditable.Entity.GetType().Name} {auditable.Entity.Title}",
+                  $"Forgotten {
+                    auditable.Entity.GetType().Name
+                  } {
+                    auditable.Entity.Title
+                  }",
                 Level = LevelEntity.Debug,
                 Audit = AuditEntity.Forgetting,
                 Content = CreateForgottenMessage(auditable),
                 AuditableEntityId = auditable.Entity.Id,
                 AuditableEntityType = context
-                  .GetEntityTypeNameFromEntityType(auditable.Entity.GetType())
+                    .GetEntityTypeNameFromEntityType(auditable.Entity.GetType())
                   ?? throw new InvalidOperationException(
                     $"No type name found for {auditable.Entity.GetType()}"),
                 AuditableEntityTable = context
-                  .GetTableNameFromEntityType(auditable.Entity.GetType())
+                    .GetTableNameFromEntityType(auditable.Entity.GetType())
                   ?? throw new InvalidOperationException(
                     $"No table found for {auditable.Entity.GetType()}"),
                 Categories = [CategoryEntity.All, CategoryEntity.Audit]
@@ -289,18 +321,22 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
               {
                 Timestamp = now,
                 Title =
-                  $"Deleted {auditable.Entity.GetType().Name} {auditable.Entity.Title}",
+                  $"Deleted {
+                    auditable.Entity.GetType().Name
+                  } {
+                    auditable.Entity.Title
+                  }",
                 RepresentativeId = representativeId,
                 Level = LevelEntity.Debug,
                 Audit = AuditEntity.Deletion,
                 Content = CreateDeletedMessage(auditable),
                 AuditableEntityId = auditable.Entity.Id,
                 AuditableEntityType = context
-                  .GetEntityTypeNameFromEntityType(auditable.Entity.GetType())
+                    .GetEntityTypeNameFromEntityType(auditable.Entity.GetType())
                   ?? throw new InvalidOperationException(
                     $"No type name found for {auditable.Entity.GetType()}"),
                 AuditableEntityTable = context
-                  .GetTableNameFromEntityType(auditable.Entity.GetType())
+                    .GetTableNameFromEntityType(auditable.Entity.GetType())
                   ?? throw new InvalidOperationException(
                     $"No table found for {auditable.Entity.GetType()}"),
                 Categories = [CategoryEntity.All, CategoryEntity.Audit]
@@ -314,17 +350,21 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
               {
                 Timestamp = now,
                 Title =
-                  $"Deleted {auditable.Entity.GetType().Name} {auditable.Entity.Title}",
+                  $"Deleted {
+                    auditable.Entity.GetType().Name
+                  } {
+                    auditable.Entity.Title
+                  }",
                 Level = LevelEntity.Debug,
                 Audit = AuditEntity.Deletion,
                 Content = CreateDeletedMessage(auditable),
                 AuditableEntityId = auditable.Entity.Id,
                 AuditableEntityType = context
-                  .GetEntityTypeNameFromEntityType(auditable.Entity.GetType())
+                    .GetEntityTypeNameFromEntityType(auditable.Entity.GetType())
                   ?? throw new InvalidOperationException(
                     $"No type name found for {auditable.Entity.GetType()}"),
                 AuditableEntityTable = context
-                  .GetTableNameFromEntityType(auditable.Entity.GetType())
+                    .GetTableNameFromEntityType(auditable.Entity.GetType())
                   ?? throw new InvalidOperationException(
                     $"No table found for {auditable.Entity.GetType()}"),
                 Categories = [CategoryEntity.All, CategoryEntity.Audit]

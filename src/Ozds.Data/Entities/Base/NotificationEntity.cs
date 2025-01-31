@@ -10,6 +10,16 @@ public class NotificationEntity : IdentifiableEntity, INotificationEntity
 {
   protected long? _eventId;
 
+  public virtual EventEntity? Event { get; set; } = default!;
+
+  public virtual ICollection<NotificationRecipientEntity>
+    NotificationRepresentatives { get; set; } = default!;
+
+  public virtual ICollection<RepresentativeEntity>
+    Representatives { get; set; } = default!;
+
+  public string Kind { get; set; } = default!;
+
   public DateTimeOffset Timestamp { get; set; }
 
   public string? EventId
@@ -21,23 +31,11 @@ public class NotificationEntity : IdentifiableEntity, INotificationEntity
     }
   }
 
-  public virtual EventEntity? Event { get; set; } = default!;
-
-  public virtual ICollection<NotificationRecipientEntity>
-    NotificationRepresentatives
-  { get; set; } = default!;
-
-  public virtual ICollection<RepresentativeEntity>
-    Representatives
-  { get; set; } = default!;
-
   public string Summary { get; set; } = default!;
 
   public string Content { get; set; } = default!;
 
   public List<TopicEntity> Topics { get; set; } = default!;
-
-  public string Kind { get; set; } = default!;
 }
 
 public class

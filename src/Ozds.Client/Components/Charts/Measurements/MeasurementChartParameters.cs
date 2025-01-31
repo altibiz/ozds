@@ -9,9 +9,11 @@ public class MeasurementChartParameters
 {
   public HashSet<IMeter> Meters { get; set; } = new();
 
-  public HashSet<IMeasurementLocation> MeasurementLocations { get; set; } = new();
+  public HashSet<IMeasurementLocation> MeasurementLocations { get; set; } =
+    new();
 
-  public PaginatedList<IMeasurement> Measurements { get; set; } = new(new(), 0);
+  public PaginatedList<IMeasurement> Measurements { get; set; } =
+    new(new List<IMeasurement>(), 0);
 
   public MeasureModel Measure { get; set; } = MeasureModel.ActivePower;
 

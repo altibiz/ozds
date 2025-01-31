@@ -8,15 +8,15 @@ namespace Ozds.Client.Components.Models.Base;
 public abstract class OzdsModelPageComponentBase<T>
   : OzdsComponentBase, IModelPageComponentProvider
 {
-  protected abstract string CreateLink(
-    NavigationManager navigationManager,
-    TemplateBinderFactory factory,
-    T model
-  );
+  public Type ModelType
+  {
+    get { return typeof(T); }
+  }
 
-  public Type ModelType => typeof(T);
-
-  public Type PageType => GetType();
+  public Type PageType
+  {
+    get { return GetType(); }
+  }
 
   public bool CanRender(Type modelType)
   {
@@ -31,4 +31,10 @@ public abstract class OzdsModelPageComponentBase<T>
   {
     return CreateLink(navigationManager, factory, (T)model);
   }
+
+  protected abstract string CreateLink(
+    NavigationManager navigationManager,
+    TemplateBinderFactory factory,
+    T model
+  );
 }

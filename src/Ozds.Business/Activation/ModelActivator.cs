@@ -5,6 +5,8 @@ namespace Ozds.Business.Activation;
 
 public class ModelActivator(IServiceProvider serviceProvider)
 {
+  private readonly ConcurrentDictionary<Type, IModelActivator> cache = new();
+
   public T Activate<T>()
     where T : notnull
   {
@@ -19,22 +21,21 @@ public class ModelActivator(IServiceProvider serviceProvider)
     }
 
     activator = serviceProvider
-      .GetServices<IModelActivator>()
-      .Where(converter => converter.CanActivate(type))
-      .DefaultIfEmpty(null)
-      .Aggregate((acc, next) =>
-        acc is null
-          ? null
-          : next!.ModelType.IsAssignableTo(acc.ModelType)
-            ? next
-            : acc)
+        .GetServices<IModelActivator>()
+        .Where(converter => converter.CanActivate(type))
+        .DefaultIfEmpty(null)
+        .Aggregate(
+          (acc, next) =>
+            acc is null
+              ? null
+              : next!.ModelType.IsAssignableTo(acc.ModelType)
+                ? next
+                : acc)
       ?? throw new InvalidOperationException(
-          $"No model activator found for {type}");
+        $"No model activator found for {type}");
 
     cache.TryAdd(type, activator);
 
     return activator.Activate();
   }
-
-  private readonly ConcurrentDictionary<Type, IModelActivator> cache = new();
 }

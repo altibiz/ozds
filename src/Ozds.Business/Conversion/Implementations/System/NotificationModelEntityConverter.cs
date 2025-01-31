@@ -1,5 +1,4 @@
 using Ozds.Business.Conversion.Base;
-using Ozds.Business.Models;
 using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Enums;
 using Ozds.Data.Entities.Base;
@@ -10,10 +9,10 @@ namespace Ozds.Business.Conversion.Implementations.System;
 public class NotificationModelEntityConverter(
   IServiceProvider serviceProvider
 ) : InheritingModelEntityConverter<
-      NotificationModel,
-      IdentifiableModel,
-      NotificationEntity,
-      IdentifiableEntity>(serviceProvider)
+  NotificationModel,
+  IdentifiableModel,
+  NotificationEntity,
+  IdentifiableEntity>(serviceProvider)
 {
   private readonly ModelEntityConverter modelEntityConverter =
     serviceProvider.GetRequiredService<ModelEntityConverter>();

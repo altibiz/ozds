@@ -49,6 +49,7 @@ public static class TypeExtensions
       {
         return current;
       }
+
       current = current.BaseType;
     }
 

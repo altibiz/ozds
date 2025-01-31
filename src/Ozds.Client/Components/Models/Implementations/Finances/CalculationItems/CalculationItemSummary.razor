@@ -1,8 +1,5 @@
-@using Ozds.Client.Components.Models.Base
-@using Ozds.Business.Models.Abstractions
-
 @namespace Ozds.Client.Components.Models.Implementations.Finances
 
-@inherits OzdsSummaryComponentBase<ICalculationItem>
+@inherits Ozds.Client.Components.Models.Base.OzdsSummaryComponentBase<Ozds.Business.Models.Abstractions.ICalculationItem>
 
 @Title(x => x.Total_EUR)

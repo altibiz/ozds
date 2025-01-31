@@ -8,6 +8,9 @@ namespace Ozds.Business.Conversion;
 public class MeasurementAggregateConverter(
   IServiceProvider serviceProvider)
 {
+  private readonly
+    ConcurrentDictionary<Type, IMeasurementAggregateConverter> cache = new();
+
   public TAggregate ToAggregate<TAggregate>(
     IMeasurement model,
     IntervalModel interval)
@@ -38,7 +41,4 @@ public class MeasurementAggregateConverter(
 
     return converter.ToAggregate(measurement, interval);
   }
-
-  private readonly
-    ConcurrentDictionary<Type, IMeasurementAggregateConverter> cache = new();
 }

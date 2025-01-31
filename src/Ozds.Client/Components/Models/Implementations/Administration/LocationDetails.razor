@@ -1,14 +1,11 @@
-@using Ozds.Business.Models
-@using Ozds.Business.Models.Abstractions
-@using Ozds.Client.Components.Models.Base
-
 @namespace Ozds.Client.Components.Models.Implementations.Administration
 
-@inherits OzdsDetailsComponentBase<LocationModel>
+@using Ozds.Business.Models.Abstractions
+@inherits Ozds.Client.Components.Models.Base.OzdsDetailsComponentBase<Ozds.Business.Models.LocationModel>
 
 @(Base<IIdentifiable>())
 
-<Details Model="@Model.LegalPerson" />
+<Details Model="@Model.LegalPerson"/>
 
 @Field(x => x.AltiBizSubProjectCode)
 

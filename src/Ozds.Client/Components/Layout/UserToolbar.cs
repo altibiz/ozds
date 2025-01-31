@@ -21,13 +21,25 @@ public partial class UserToolbar : OzdsComponentBase
   [CascadingParameter]
   public LocationState? LocationState { get; set; } = default!;
 
-  private string CultureName => CultureState.Culture.TwoLetterISOLanguageName;
+  private string CultureName
+  {
+    get { return CultureState.Culture.TwoLetterISOLanguageName; }
+  }
 
-  private string UserName => UserState.User.UserName;
+  private string UserName
+  {
+    get { return UserState.User.UserName; }
+  }
 
-  private bool IsDarkMode => ThemeState.IsDarkMode;
+  private bool IsDarkMode
+  {
+    get { return ThemeState.IsDarkMode; }
+  }
 
-  private string DarkModeName => Translate(IsDarkMode ? "Light" : "Dark");
+  private string DarkModeName
+  {
+    get { return Translate(IsDarkMode ? "Light" : "Dark"); }
+  }
 
   private Task ExitLocation()
   {
@@ -41,7 +53,8 @@ public partial class UserToolbar : OzdsComponentBase
 
   private void ToggleLocalizationDrawer()
   {
-    LayoutState.SetLocalizationDrawerOpen(!LayoutState.IsLocalizationDrawerOpen);
+    LayoutState.SetLocalizationDrawerOpen(
+      !LayoutState.IsLocalizationDrawerOpen);
   }
 
   private void ToggleUserDrawer()

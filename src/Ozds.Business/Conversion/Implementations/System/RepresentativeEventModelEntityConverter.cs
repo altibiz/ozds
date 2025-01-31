@@ -9,10 +9,10 @@ namespace Ozds.Business.Conversion.Implementations.System;
 public class RepresentativeEventEntityConverter(
   IServiceProvider serviceProvider
 ) : InheritingModelEntityConverter<
-      RepresentativeEventModel,
-      EventModel,
-      RepresentativeEventEntity,
-      EventEntity>(serviceProvider)
+  RepresentativeEventModel,
+  EventModel,
+  RepresentativeEventEntity,
+  EventEntity>(serviceProvider)
 {
   public override void InitializeEntity(
     RepresentativeEventModel model,

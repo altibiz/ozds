@@ -4,7 +4,8 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
 
-public class MeasurementValidatorEntity : AuditableEntity, IMeasurementValidatorEntity
+public class MeasurementValidatorEntity : AuditableEntity,
+  IMeasurementValidatorEntity
 {
   public virtual ICollection<MeterEntity> Meters { get; set; } =
     default!;

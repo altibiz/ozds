@@ -44,10 +44,11 @@ public class CascadingRestoreInterceptor(IServiceProvider serviceProvider)
     context.ChangeTracker.DetectChanges();
     var entries = context.ChangeTracker.Entries<IAuditableEntity>().ToList();
 
-    foreach (var entry in entries.Where(e =>
-      e.State is EntityState.Added
-      && e.Entity.IsDeleted
-      && e.Entity.Restore))
+    foreach (var entry in entries.Where(
+      e =>
+        e.State is EntityState.Added
+        && e.Entity.IsDeleted
+        && e.Entity.Restore))
     {
       await CascadingRestore(
         eventData,

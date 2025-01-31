@@ -76,7 +76,11 @@ public class NotificationMutations(
     if (notification is not ResolvableNotificationModel resolvableNotification)
     {
       throw new ArgumentException(
-        $"{nameof(notification)} is not of type {nameof(ResolvableNotificationModel)}"
+        $"{
+          nameof(notification)
+        } is not of type {
+          nameof(ResolvableNotificationModel)
+        }"
       );
     }
 

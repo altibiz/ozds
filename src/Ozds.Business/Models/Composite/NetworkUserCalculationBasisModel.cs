@@ -14,23 +14,14 @@ public class NetworkUserCalculationBasisModel
 
   public NetworkUserModel NetworkUser { get; set; } = default!;
 
-  public NetworkUserMeasurementLocationModel MeasurementLocation
-  {
-    get;
-    set;
-  } = default!;
+  public NetworkUserMeasurementLocationModel MeasurementLocation { get; set; } =
+    default!;
 
-  public NetworkUserCatalogueModel UsageNetworkUserCatalogue
-  {
-    get;
-    set;
-  } = default!;
+  public NetworkUserCatalogueModel UsageNetworkUserCatalogue { get; set; } =
+    default!;
 
-  public RegulatoryCatalogueModel SupplyRegulatoryCatalogue
-  {
-    get;
-    set;
-  } = default!;
+  public RegulatoryCatalogueModel SupplyRegulatoryCatalogue { get; set; } =
+    default!;
 
   public MeterModel Meter { get; set; } = default!;
 }

@@ -11,7 +11,7 @@ public partial class LocationPage
   : OzdsIdentifiableModelPageComponentBase<LocationModel>
 {
   [Parameter]
-  public string? Id { get; set; } = default!;
+  public string? Id { get; set; }
 
   [CascadingParameter]
   private RepresentativeState RepresentativeState { get; set; } = default!;

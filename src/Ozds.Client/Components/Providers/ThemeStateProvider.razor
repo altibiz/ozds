@@ -1,9 +1,7 @@
-@using MudBlazor
-@using Ozds.Client.Components.Base
-
 @namespace Ozds.Client.Components.Providers
 
-@inherits OzdsComponentBase
+@using MudBlazor
+@inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 @if (_state is null)
 {
@@ -14,7 +12,7 @@
   <MudThemeProvider
     @ref="_mudThemeProvider"
     Theme="_state.Theme"
-    IsDarkMode="_state.IsDarkMode" />
+    IsDarkMode="_state.IsDarkMode"/>
   <MudPopoverProvider/>
   <MudDialogProvider/>
   <MudSnackbarProvider/>

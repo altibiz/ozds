@@ -27,17 +27,20 @@ public class LocationQueries(
     {
       RoleEntity.OperatorRepresentative => context.Locations,
       RoleEntity.LocationRepresentative => context.LocationRepresentatives
-        .Where(context.ForeignKeyEquals<LocationRepresentativeEntity>(
-          nameof(LocationRepresentativeEntity.Representative),
-          representativeId))
+        .Where(
+          context.ForeignKeyEquals<LocationRepresentativeEntity>(
+            nameof(LocationRepresentativeEntity.Representative),
+            representativeId))
         .Include(x => x.Location)
         .Select(x => x.Location)
-        .Concat(context.Representatives
-          .Where(context.PrimaryKeyEquals<RepresentativeEntity>(
-            representativeId))
-          .Include(x => x.NetworkUsers)
-          .ThenInclude(x => x.Location)
-          .SelectMany(x => x.NetworkUsers.Select(x => x.Location))),
+        .Concat(
+          context.Representatives
+            .Where(
+              context.PrimaryKeyEquals<RepresentativeEntity>(
+                representativeId))
+            .Include(x => x.NetworkUsers)
+            .ThenInclude(x => x.Location)
+            .SelectMany(x => x.NetworkUsers.Select(x => x.Location))),
       RoleEntity.NetworkUserRepresentative => context.Representatives
         .Where(context.PrimaryKeyEquals<RepresentativeEntity>(representativeId))
         .Include(x => x.NetworkUsers)
@@ -46,8 +49,9 @@ public class LocationQueries(
       _ => throw new ArgumentOutOfRangeException(nameof(role))
     };
 
-    filtered = filtered.Where(context
-      .PrimaryKeyEquals<LocationEntity>(locationId));
+    filtered = filtered.Where(
+      context
+        .PrimaryKeyEquals<LocationEntity>(locationId));
 
     if (!deleted)
     {
@@ -77,17 +81,20 @@ public class LocationQueries(
     {
       RoleEntity.OperatorRepresentative => context.Locations,
       RoleEntity.LocationRepresentative => context.LocationRepresentatives
-        .Where(context.ForeignKeyEquals<LocationRepresentativeEntity>(
-          nameof(LocationRepresentativeEntity.Representative),
-          representativeId))
+        .Where(
+          context.ForeignKeyEquals<LocationRepresentativeEntity>(
+            nameof(LocationRepresentativeEntity.Representative),
+            representativeId))
         .Include(x => x.Location)
         .Select(x => x.Location)
-        .Concat(context.Representatives
-          .Where(context.PrimaryKeyEquals<RepresentativeEntity>(
-            representativeId))
-          .Include(x => x.NetworkUsers)
-          .ThenInclude(x => x.Location)
-          .SelectMany(x => x.NetworkUsers.Select(x => x.Location))),
+        .Concat(
+          context.Representatives
+            .Where(
+              context.PrimaryKeyEquals<RepresentativeEntity>(
+                representativeId))
+            .Include(x => x.NetworkUsers)
+            .ThenInclude(x => x.Location)
+            .SelectMany(x => x.NetworkUsers.Select(x => x.Location))),
       RoleEntity.NetworkUserRepresentative => context.Representatives
         .Where(context.PrimaryKeyEquals<RepresentativeEntity>(representativeId))
         .Include(x => x.NetworkUsers)
@@ -130,17 +137,20 @@ public class LocationQueries(
     {
       RoleEntity.OperatorRepresentative => context.Locations,
       RoleEntity.LocationRepresentative => context.LocationRepresentatives
-        .Where(context.ForeignKeyEquals<LocationRepresentativeEntity>(
-          nameof(LocationRepresentativeEntity.Representative),
-          representativeId))
+        .Where(
+          context.ForeignKeyEquals<LocationRepresentativeEntity>(
+            nameof(LocationRepresentativeEntity.Representative),
+            representativeId))
         .Include(x => x.Location)
         .Select(x => x.Location)
-        .Concat(context.Representatives
-          .Where(context.PrimaryKeyEquals<RepresentativeEntity>(
-            representativeId))
-          .Include(x => x.NetworkUsers)
-          .ThenInclude(x => x.Location)
-          .SelectMany(x => x.NetworkUsers.Select(x => x.Location))),
+        .Concat(
+          context.Representatives
+            .Where(
+              context.PrimaryKeyEquals<RepresentativeEntity>(
+                representativeId))
+            .Include(x => x.NetworkUsers)
+            .ThenInclude(x => x.Location)
+            .SelectMany(x => x.NetworkUsers.Select(x => x.Location))),
       RoleEntity.NetworkUserRepresentative => context.Representatives
         .Where(context.PrimaryKeyEquals<RepresentativeEntity>(representativeId))
         .Include(x => x.NetworkUsers)

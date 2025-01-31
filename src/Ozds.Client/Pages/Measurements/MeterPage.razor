@@ -1,26 +1,23 @@
+@namespace Ozds.Client.Pages
+
+@page "/measurements/meter/{id?}"
+
 @using Microsoft.AspNetCore.Components.Web
 @using MudBlazor
 @using Ozds.Business.Analysis
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Business.Models.Enums
-@using Ozds.Business.Time
-@using Ozds.Client.Components.Models.Base
 @using Ozds.Client.Components.Charts
+@using Ozds.Client.Components.Models
 @using Ozds.Client.Components.Streaming
 @using Ozds.Client.Components.Tables
-@using Ozds.Client.Components.Models
 @using Ozds.Client.State
-
-@namespace Ozds.Client.Pages
-
-@page "/measurements/meter/{id?}"
-
-@inherits OzdsIdentifiableModelPageComponentBase<IMeter>
+@inherits Ozds.Client.Components.Models.Base.OzdsIdentifiableModelPageComponentBase<Ozds.Business.Models.Abstractions.IMeter>
 
 @if (RepresentativeState.Representative.Role
   is not RoleModel.OperatorRepresentative)
 {
-  <NotFound />
+  <NotFound/>
   return;
 }
 
@@ -30,28 +27,28 @@
     .FirstOrDefault(x => x.Meter.Id == Id);
 }
 
-@if (analysis is { })
+@if (analysis is not null)
 {
   <ResponsiveTable Model="@analysis.Analysis.Monthly">
     <Summary>
-      <Summary Model="@context" />
+      <Summary Model="@context"/>
     </Summary>
     <Details>
-      <Details Model="@context" />
+      <Details Model="@context"/>
     </Details>
     <Columns>
-      <Columns Models="@analysis.Analysis.Monthly" />
+      <Columns Models="@analysis.Analysis.Monthly"/>
     </Columns>
   </ResponsiveTable>
 
-  var meters = new List<IMeter>() { analysis.Meter };
+  var meters = new List<IMeter> { analysis.Meter };
 
   <MeasurementChartControls Meters="@meters">
     <MeasurementGaugeChart
-      Parameters="@context" />
+      Parameters="@context"/>
     <MeasurementLineChart
       Parameters="@context"
-      Brush="@(Breakpoint >= Breakpoint.MdAndUp)" />
+      Brush="@(Breakpoint >= Breakpoint.MdAndUp)"/>
   </MeasurementChartControls>
 }
 
@@ -73,7 +70,7 @@
       }
     </HeadContent>
 
-    <Edit Model="context.Model" />
+    <Edit Model="context.Model"/>
   </Edit>
   <Details>
     <HeadContent>
@@ -82,11 +79,12 @@
       </title>
     </HeadContent>
 
-    <Details Model="context.Model" />
+    <Details Model="context.Model"/>
   </Details>
 </Mutating>
 
 @code {
+
   [CascadingParameter]
   private AnalysisState AnalysisState { get; set; } = default!;
 
@@ -97,5 +95,6 @@
   private RepresentativeState RepresentativeState { get; set; } = default!;
 
   [CascadingParameter]
-  private Breakpoint Breakpoint { get; set; } = default!;
+  private Breakpoint Breakpoint { get; set; }
+
 }

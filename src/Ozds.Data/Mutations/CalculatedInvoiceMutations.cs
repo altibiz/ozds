@@ -29,6 +29,7 @@ public class CalculatedInvoiceMutations(
         calculation.NetworkUserInvoiceId = invoice.Invoice.Id;
         context.Add(calculation);
       }
+
       if (invoice.Calculations.Count > 0)
       {
         await context.SaveChangesAsync(cancellationToken);

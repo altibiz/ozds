@@ -1,11 +1,10 @@
-@using MudBlazor
-@using System.Linq.Expressions
-@using System.Collections
-
 @namespace Ozds.Client.Components.Fields
 
 @* TODO: null handling *@
 
+@using System.Collections
+@using System.Linq.Expressions
+@using MudBlazor
 @typeparam T
 
 <MudSelect
@@ -32,6 +31,7 @@
 </MudSelect>
 
 @code {
+
   [Parameter]
   public IEnumerable<T> Value { get; set; } = default!;
 
@@ -49,4 +49,5 @@
 
   [Parameter]
   public IEnumerable Values { get; set; } = Enum.GetValues(typeof(T));
+
 }

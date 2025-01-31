@@ -1,32 +1,27 @@
-@using Microsoft.AspNetCore.Components.Web
-@using MudBlazor
-@using Ozds.Business.Models.Abstractions
-@using Ozds.Business.Models.Enums
-@using Ozds.Business.Time
-@using Ozds.Business.Analysis
-@using Ozds.Client.Attributes
-@using Ozds.Client.Components.Charts
-@using Ozds.Client.Components.Dashboards
-@using Ozds.Client.Components.Tables
-@using Ozds.Client.Components.Models
-@using Ozds.Client.Components.Base
-@using Ozds.Client.State
-
 @namespace Ozds.Client.Pages
 
 @page "/"
 
 @attribute [Navigation(
-  Order = -1000,
-  Title = "Dashboard",
-  Icon= Icons.Material.Outlined.Home,
-  Allows = [
-    RoleModel.OperatorRepresentative,
-    RoleModel.LocationRepresentative,
-    RoleModel.NetworkUserRepresentative
-  ])]
+Order = -1000,
+Title = "Dashboard",
+Icon= Icons.Material.Outlined.Home,
+Allows = [
+RoleModel.OperatorRepresentative,
+RoleModel.LocationRepresentative,
+RoleModel.NetworkUserRepresentative
+])]
 
-@inherits OzdsComponentBase
+@using Microsoft.AspNetCore.Components.Web
+@using Ozds.Business.Analysis
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Business.Models.Enums
+@using Ozds.Client.Attributes
+@using Ozds.Client.Components.Dashboards
+@using Ozds.Client.Components.Models
+@using Ozds.Client.Components.Tables
+@using Ozds.Client.State
+@inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 <HeadContent>
   <title>OZDS</title>
@@ -42,55 +37,55 @@
 @if (RepresentativeState.Representative.Role
   is RoleModel.NetworkUserRepresentative)
 {
-  <NetworkUserRepresentativeDashboard Model="@model" Meters="@meters" />
+  <NetworkUserRepresentativeDashboard Model="@model" Meters="@meters"/>
 }
 @if (RepresentativeState.Representative.Role
   is RoleModel.LocationRepresentative)
 {
-  <LocationRepresentativeDashboard  Model="@model" Meters="@meters" />
+  <LocationRepresentativeDashboard Model="@model" Meters="@meters"/>
 }
 @if (RepresentativeState.Representative.Role
   is RoleModel.OperatorRepresentative)
 {
-  <OperatorRepresentativeDashboard Model="@model" Meters="@meters" />
+  <OperatorRepresentativeDashboard Model="@model" Meters="@meters"/>
 }
 
 @if (RepresentativeState.Representative.Role
   is RoleModel.OperatorRepresentative
-    or RoleModel.LocationRepresentative)
+  or RoleModel.LocationRepresentative)
 {
   var locations = AnalysisState.AnalysisBases.Value
     .AnalysesByLocation();
 
   <ResponsiveTable Model="@locations">
     <Summary>
-      <Summary Model="@context" />
+      <Summary Model="@context"/>
     </Summary>
     <Details>
-      <Details Model="@context" />
+      <Details Model="@context"/>
     </Details>
     <Columns>
-      <Columns Models="@locations" />
+      <Columns Models="@locations"/>
     </Columns>
   </ResponsiveTable>
 }
 
 @if (RepresentativeState.Representative.Role
   is RoleModel.LocationRepresentative
-    or RoleModel.NetworkUserRepresentative)
+  or RoleModel.NetworkUserRepresentative)
 {
   var networkUsers = AnalysisState.AnalysisBases.Value
     .AnalysesByNetworkUser();
 
   <ResponsiveTable Model="@networkUsers">
     <Summary>
-      <Summary Model="@context" />
+      <Summary Model="@context"/>
     </Summary>
     <Details>
-      <Details Model="@context" />
+      <Details Model="@context"/>
     </Details>
     <Columns>
-      <Columns Models="@networkUsers" />
+      <Columns Models="@networkUsers"/>
     </Columns>
   </ResponsiveTable>
 }
@@ -103,13 +98,13 @@
 
   <ResponsiveTable Model="@measurementLocations">
     <Summary>
-      <Summary Model="@context" />
+      <Summary Model="@context"/>
     </Summary>
     <Details>
-      <Details Model="@context" />
+      <Details Model="@context"/>
     </Details>
     <Columns>
-      <Columns Models="@measurementLocations" />
+      <Columns Models="@measurementLocations"/>
     </Columns>
   </ResponsiveTable>
 }
@@ -124,20 +119,22 @@
 
 <ResponsiveTable Model="@invoices">
   <Summary>
-    <Summary Model="@context" />
+    <Summary Model="@context"/>
   </Summary>
   <Details>
-    <Details Model="@context" />
+    <Details Model="@context"/>
   </Details>
   <Columns>
-    <Columns Models="@invoices" />
+    <Columns Models="@invoices"/>
   </Columns>
 </ResponsiveTable>
 
 @code {
+
   [CascadingParameter]
   public RepresentativeState RepresentativeState { get; set; } = default!;
 
   [CascadingParameter]
   public AnalysisState AnalysisState { get; set; } = default!;
+
 }

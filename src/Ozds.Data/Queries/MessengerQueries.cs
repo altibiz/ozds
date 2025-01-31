@@ -21,9 +21,10 @@ public class MessengerQueries(
       .CreateDbContextAsync(cancellationToken);
 
     var filtered = context.Messengers
-      .Where(context.ForeignKeyEquals<MessengerEntity>(
-        nameof(MessengerEntity.Location),
-        locationId));
+      .Where(
+        context.ForeignKeyEquals<MessengerEntity>(
+          nameof(MessengerEntity.Location),
+          locationId));
 
     var ordered = filtered
       .OrderBy(context.PrimaryKeyOf<MessengerEntity>());

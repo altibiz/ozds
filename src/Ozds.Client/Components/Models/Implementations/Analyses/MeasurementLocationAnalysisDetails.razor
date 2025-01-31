@@ -1,9 +1,6 @@
-@using Ozds.Business.Analysis
-@using Ozds.Client.Components.Models.Base
-
 @namespace Ozds.Client.Components.Models.Implementations.Analyses
 
-@inherits OzdsDetailsComponentBase<MeasurementLocationAnalysis>
+@inherits Ozds.Client.Components.Models.Base.OzdsDetailsComponentBase<Ozds.Business.Analysis.MeasurementLocationAnalysis>
 
 @Field(x => x.MeasurementLocation.Title)
 

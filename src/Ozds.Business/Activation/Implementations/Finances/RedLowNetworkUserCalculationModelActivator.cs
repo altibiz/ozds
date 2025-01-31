@@ -8,8 +8,8 @@ namespace Ozds.Business.Activation.Implementations.Finances;
 public class RedLowNetworkUserCalculationModelActivator(
   IServiceProvider serviceProvider
 ) : InheritingModelActivator<
-      RedLowNetworkUserCalculationModel,
-      NetworkUserCalculationModel>(serviceProvider)
+  RedLowNetworkUserCalculationModel,
+  NetworkUserCalculationModel>(serviceProvider)
 {
   private readonly ModelActivator modelActivator =
     serviceProvider.GetRequiredService<ModelActivator>();

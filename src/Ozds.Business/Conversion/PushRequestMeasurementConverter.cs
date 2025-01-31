@@ -9,6 +9,12 @@ public class PushRequestMeasurementConverter(
   IServiceProvider serviceProvider
 )
 {
+  private readonly ConcurrentDictionary<Type, IPushRequestMeasurementConverter>
+    measurementCache = new();
+
+  private readonly ConcurrentDictionary<Type, IPushRequestMeasurementConverter>
+    pushRequestCache = new();
+
   public TPushRequest ToPushRequest<TPushRequest>(
     IMeasurement measurement
   )
@@ -56,9 +62,10 @@ public class PushRequestMeasurementConverter(
     }
 
     converter = serviceProvider
-      .GetServices<IPushRequestMeasurementConverter>()
-      .FirstOrDefault(converter => converter
-        .CanConvertToMeasurement(pushRequest))
+        .GetServices<IPushRequestMeasurementConverter>()
+        .FirstOrDefault(
+          converter => converter
+            .CanConvertToMeasurement(pushRequest))
       ?? throw new InvalidOperationException(
         $"No converter found for meter {pushRequest.MeterId}.");
 
@@ -66,10 +73,4 @@ public class PushRequestMeasurementConverter(
 
     return converter.ToMeasurement(pushRequest, measurementLocationId);
   }
-
-  private readonly ConcurrentDictionary<Type, IPushRequestMeasurementConverter>
-    pushRequestCache = new();
-
-  private readonly ConcurrentDictionary<Type, IPushRequestMeasurementConverter>
-    measurementCache = new();
 }

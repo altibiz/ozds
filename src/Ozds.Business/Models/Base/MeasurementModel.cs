@@ -34,7 +34,8 @@ public abstract class MeasurementModel : IMeasurement
 
   public abstract TariffMeasure<decimal> ApparentEnergy_VAh { get; }
 
-  public abstract IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+  public abstract IEnumerable<ValidationResult> Validate(
+    ValidationContext validationContext);
 }
 
 public abstract class MeasurementModel<T> : MeasurementModel

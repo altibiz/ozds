@@ -1,7 +1,8 @@
 using Ozds.Business.Conversion;
 using Ozds.Business.Models;
 using Ozds.Business.Queries.Abstractions;
-using MessagingNetworkUserInvoiceStateQueries = Ozds.Messaging.Queries.NetworkUserInvoiceStateQueries;
+using MessagingNetworkUserInvoiceStateQueries =
+  Ozds.Messaging.Queries.NetworkUserInvoiceStateQueries;
 
 namespace Ozds.Business.Queries;
 

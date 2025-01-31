@@ -54,8 +54,9 @@ public class IotPushPipe(
       if (await Cache.GetAsync(meterPushRequest.MeterId, cancellationToken)
         is { } measurementLocation)
       {
-        modelMeasurements.Add(PushRequestConverter
-          .ToMeasurement(meterPushRequest, measurementLocation.Id));
+        modelMeasurements.Add(
+          PushRequestConverter
+            .ToMeasurement(meterPushRequest, measurementLocation.Id));
       }
     }
 

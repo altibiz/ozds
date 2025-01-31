@@ -14,8 +14,7 @@ public class InstantaneousAggregateMeasureUpserter :
     long rhsCount
   )
   {
-    return InstantaneousAggregateMeasureUpserterExtensions.Upsert(
-      lhs,
+    return lhs.Upsert(
       lhsCount,
       rhs,
       rhsCount
@@ -34,7 +33,7 @@ public static class InstantaneousAggregateMeasureUpserterExtensions
   {
     return new InstantaneousAggregateMeasureModel
     {
-      Avg = (lhsCount + rhsCount == 0)
+      Avg = lhsCount + rhsCount == 0
         ? 0
         : (lhs.Avg * lhsCount + rhs.Avg * rhsCount) / (lhsCount + rhsCount),
       Min = lhs.Min < rhs.Min ? lhs.Min : rhs.Min,
@@ -64,8 +63,10 @@ public static class InstantaneousAggregateMeasureUpserterExtensions
       );
     }
 
-    var minEnergy = lhsEnergy.Min < rhsEnergy.Min ? lhsEnergy.Min : rhsEnergy.Min;
-    var maxEnergy = lhsEnergy.Max > rhsEnergy.Max ? lhsEnergy.Max : rhsEnergy.Max;
+    var minEnergy =
+      lhsEnergy.Min < rhsEnergy.Min ? lhsEnergy.Min : rhsEnergy.Min;
+    var maxEnergy =
+      lhsEnergy.Max > rhsEnergy.Max ? lhsEnergy.Max : rhsEnergy.Max;
     var power = (maxEnergy - minEnergy)
       / (decimal)interval.ToTimeSpan(timestamp).TotalHours;
 

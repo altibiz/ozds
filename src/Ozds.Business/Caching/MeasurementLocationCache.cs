@@ -22,9 +22,10 @@ public class MeasurementLocationCache(
     return meter?.Id;
   }
 
-  protected override async Task<IMeasurementLocation?> GetValueFromDataSourceAsync(
-    string key,
-    CancellationToken cancellationToken)
+  protected override async Task<IMeasurementLocation?>
+    GetValueFromDataSourceAsync(
+      string key,
+      CancellationToken cancellationToken)
   {
     await using var scope = factory.CreateAsyncScope();
     var queries = scope.ServiceProvider

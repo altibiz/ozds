@@ -14,11 +14,11 @@ public abstract class InheritingModelActivator<TModel, TSuperModel>(
   {
     _baseModelActivator ??=
       serviceProvider
-        .GetServices<IModelActivator>()
-        .FirstOrDefault(x => x.ModelType == typeof(TSuperModel))
+          .GetServices<IModelActivator>()
+          .FirstOrDefault(x => x.ModelType == typeof(TSuperModel))
         as InitializingModelActivator
-          ?? throw new InvalidOperationException(
-            $"No model activator found for type {typeof(TSuperModel)}");
+      ?? throw new InvalidOperationException(
+        $"No model activator found for type {typeof(TSuperModel)}");
 
     base.Initialize(model);
     _baseModelActivator.Initialize(model);

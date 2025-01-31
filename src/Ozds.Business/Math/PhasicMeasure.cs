@@ -156,18 +156,19 @@ public abstract record class PhasicMeasure<T>
       {
         CompositePhasicMeasure<T> composite =>
           composite.Measures.OrderBy(
-            measure => measure switch
-            {
-              SinglePhasicMeasureSum<T> => 0,
-              TriPhasicMeasure<T> => 1,
-              _ => 2
-            })
+              measure => measure switch
+              {
+                SinglePhasicMeasureSum<T> => 0,
+                TriPhasicMeasure<T> => 1,
+                _ => 2
+              })
             .Select(measure => measure.PhaseSum())
             .FirstOrDefault(
-            value => !EqualityComparer<T>.Default.Equals(
-              value, (T)Convert.ChangeType(0, typeof(T))),
-            (T)Convert.ChangeType(0, typeof(T))),
-        InstantaneousPhaseMeasure<T> instantaneous => instantaneous.Avg.PhaseSum(),
+              value => !EqualityComparer<T>.Default.Equals(
+                value, (T)Convert.ChangeType(0, typeof(T))),
+              (T)Convert.ChangeType(0, typeof(T))),
+        InstantaneousPhaseMeasure<T> instantaneous =>
+          instantaneous.Avg.PhaseSum(),
         CumulativePhasicMeasure<T> cumulative => cumulative.Diff().PhaseSum(),
         TriPhasicMeasure<T> tri => tri.ValueL1 + tri.ValueL2 + tri.ValueL3,
         SinglePhasicMeasureSum<T> single => single.Value,
@@ -182,18 +183,19 @@ public abstract record class PhasicMeasure<T>
     {
       CompositePhasicMeasure<T> composite =>
         composite.Measures.OrderBy(
-          measure => measure switch
-          {
-            TriPhasicMeasure<T> => 0,
-            SinglePhasicMeasureSum<T> => 1,
-            _ => 2
-          })
+            measure => measure switch
+            {
+              TriPhasicMeasure<T> => 0,
+              SinglePhasicMeasureSum<T> => 1,
+              _ => 2
+            })
           .Select(measure => measure.PhaseAverage())
           .FirstOrDefault(
-          value => !EqualityComparer<T>.Default.Equals(
-            value, (T)Convert.ChangeType(0, typeof(T))),
-          (T)Convert.ChangeType(0, typeof(T))),
-      InstantaneousPhaseMeasure<T> instantaneous => instantaneous.Avg.PhaseAverage(),
+            value => !EqualityComparer<T>.Default.Equals(
+              value, (T)Convert.ChangeType(0, typeof(T))),
+            (T)Convert.ChangeType(0, typeof(T))),
+      InstantaneousPhaseMeasure<T> instantaneous => instantaneous.Avg
+        .PhaseAverage(),
       CumulativePhasicMeasure<T> cumulative => cumulative.Diff().PhaseAverage(),
       TriPhasicMeasure<T> tri => (tri.ValueL1 + tri.ValueL2 + tri.ValueL3)
         / (T)Convert.ChangeType(3, typeof(T)),
@@ -209,18 +211,19 @@ public abstract record class PhasicMeasure<T>
       {
         CompositePhasicMeasure<T> composite =>
           composite.Measures.OrderBy(
-            measure => measure switch
-            {
-              TriPhasicMeasure<T> => 0,
-              SinglePhasicMeasureSum<T> => 1,
-              _ => 2
-            })
+              measure => measure switch
+              {
+                TriPhasicMeasure<T> => 0,
+                SinglePhasicMeasureSum<T> => 1,
+                _ => 2
+              })
             .Select(measure => measure.PhasePeak())
             .FirstOrDefault(
-            value => !EqualityComparer<T>.Default.Equals(
-              value, (T)Convert.ChangeType(0, typeof(T))),
-            (T)Convert.ChangeType(0, typeof(T))),
-        InstantaneousPhaseMeasure<T> instantaneous => instantaneous.Max.PhasePeak(),
+              value => !EqualityComparer<T>.Default.Equals(
+                value, (T)Convert.ChangeType(0, typeof(T))),
+              (T)Convert.ChangeType(0, typeof(T))),
+        InstantaneousPhaseMeasure<T> instantaneous => instantaneous.Max
+          .PhasePeak(),
         CumulativePhasicMeasure<T> cumulative => cumulative.Diff().PhasePeak(),
         TriPhasicMeasure<T> tri => tri.ValueL1 > tri.ValueL2
           ? tri.ValueL1 > tri.ValueL3 ? tri.ValueL1 : tri.ValueL3
@@ -240,19 +243,21 @@ public abstract record class PhasicMeasure<T>
       {
         CompositePhasicMeasure<T> composite =>
           composite.Measures.OrderBy(
-            measure => measure switch
-            {
-              TriPhasicMeasure<T> => 0,
-              SinglePhasicMeasureSum<T> => 1,
-              _ => 2
-            })
+              measure => measure switch
+              {
+                TriPhasicMeasure<T> => 0,
+                SinglePhasicMeasureSum<T> => 1,
+                _ => 2
+              })
             .Select(measure => measure.PhaseTrough())
             .FirstOrDefault(
-            value => !EqualityComparer<T>.Default.Equals(
-              value, (T)Convert.ChangeType(0, typeof(T))),
-            (T)Convert.ChangeType(0, typeof(T))),
-        InstantaneousPhaseMeasure<T> instantaneous => instantaneous.Min.PhaseTrough(),
-        CumulativePhasicMeasure<T> cumulative => cumulative.Diff().PhaseTrough(),
+              value => !EqualityComparer<T>.Default.Equals(
+                value, (T)Convert.ChangeType(0, typeof(T))),
+              (T)Convert.ChangeType(0, typeof(T))),
+        InstantaneousPhaseMeasure<T> instantaneous => instantaneous.Min
+          .PhaseTrough(),
+        CumulativePhasicMeasure<T> cumulative =>
+          cumulative.Diff().PhaseTrough(),
         TriPhasicMeasure<T> tri => tri.ValueL1 < tri.ValueL2
           ? tri.ValueL1 < tri.ValueL3 ? tri.ValueL1 : tri.ValueL3
           : tri.ValueL2 < tri.ValueL3
@@ -275,12 +280,13 @@ public abstract record class PhasicMeasure<T>
             TriPhasicMeasure<T> => 1,
             _ => 2
           })
-          .Select(measure => measure.PhaseSingle())
-          .FirstOrDefault(
+        .Select(measure => measure.PhaseSingle())
+        .FirstOrDefault(
           single => !EqualityComparer<T>.Default.Equals(
             single.Value, (T)Convert.ChangeType(0, typeof(T))),
           new SinglePhasicMeasureSum<T>(default)),
-      InstantaneousPhaseMeasure<T> instantaneous => instantaneous.Avg.PhaseSingle(),
+      InstantaneousPhaseMeasure<T> instantaneous => instantaneous.Avg
+        .PhaseSingle(),
       CumulativePhasicMeasure<T> cumulative => cumulative.Diff().PhaseSingle(),
       SinglePhasicMeasureSum<T> single => single,
       _ => new SinglePhasicMeasureSum<T>(default)
@@ -298,8 +304,8 @@ public abstract record class PhasicMeasure<T>
             SinglePhasicMeasureSum<T> => 1,
             _ => 2
           })
-          .Select(measure => measure.PhaseSplit())
-          .FirstOrDefault(
+        .Select(measure => measure.PhaseSplit())
+        .FirstOrDefault(
           tri => !EqualityComparer<T>.Default.Equals(
               tri.ValueL1, (T)Convert.ChangeType(0, typeof(T))) &&
             !EqualityComparer<T>.Default.Equals(
@@ -310,7 +316,8 @@ public abstract record class PhasicMeasure<T>
             (T)Convert.ChangeType(0, typeof(T)),
             (T)Convert.ChangeType(0, typeof(T)),
             (T)Convert.ChangeType(0, typeof(T)))),
-      InstantaneousPhaseMeasure<T> instantaneous => instantaneous.Avg.PhaseSplit(),
+      InstantaneousPhaseMeasure<T> instantaneous =>
+        instantaneous.Avg.PhaseSplit(),
       CumulativePhasicMeasure<T> cumulative => cumulative.Diff().PhaseSplit(),
       SinglePhasicMeasureSum<T> single => new TriPhasicMeasure<T>(
         single.Value / (T)Convert.ChangeType(3, typeof(T)),
@@ -342,12 +349,12 @@ public abstract record class PhasicMeasure<T>
     {
       CompositePhasicMeasure<T> composite =>
         composite.Measures.OrderBy(
-          measure => measure switch
-          {
-            InstantaneousPhaseMeasure<T> => 0,
-            CumulativePhasicMeasure<T> => 1,
-            _ => 2
-          })
+            measure => measure switch
+            {
+              InstantaneousPhaseMeasure<T> => 0,
+              CumulativePhasicMeasure<T> => 1,
+              _ => 2
+            })
           .Select(measure => measure.AggregateAvg())
           .FirstOrDefault(Null),
       InstantaneousPhaseMeasure<T> instantaneous => instantaneous.Avg,
@@ -362,14 +369,14 @@ public abstract record class PhasicMeasure<T>
     {
       CompositePhasicMeasure<T> composite =>
         composite.Measures.OrderBy(
-          measure => measure switch
-          {
-            InstantaneousPhaseMeasure<T> => 0,
-            CumulativePhasicMeasure<T> => 1,
-            _ => 2
-          })
-        .Select(measure => measure.AggregateMin())
-        .FirstOrDefault(Null),
+            measure => measure switch
+            {
+              InstantaneousPhaseMeasure<T> => 0,
+              CumulativePhasicMeasure<T> => 1,
+              _ => 2
+            })
+          .Select(measure => measure.AggregateMin())
+          .FirstOrDefault(Null),
       InstantaneousPhaseMeasure<T> instantaneous => instantaneous.Min,
       CumulativePhasicMeasure<T> cumulative => cumulative.Min,
       _ => Null
@@ -382,12 +389,12 @@ public abstract record class PhasicMeasure<T>
     {
       CompositePhasicMeasure<T> composite =>
         composite.Measures.OrderBy(
-          measure => measure switch
-          {
-            InstantaneousPhaseMeasure<T> => 0,
-            CumulativePhasicMeasure<T> => 1,
-            _ => 2
-          })
+            measure => measure switch
+            {
+              InstantaneousPhaseMeasure<T> => 0,
+              CumulativePhasicMeasure<T> => 1,
+              _ => 2
+            })
           .Select(measure => measure.AggregateMinTimestamp())
           .FirstOrDefault(),
       InstantaneousPhaseMeasure<T> instantaneous => instantaneous.MinTimestamp,
@@ -401,12 +408,12 @@ public abstract record class PhasicMeasure<T>
     {
       CompositePhasicMeasure<T> composite =>
         composite.Measures.OrderBy(
-          measure => measure switch
-          {
-            InstantaneousPhaseMeasure<T> => 0,
-            CumulativePhasicMeasure<T> => 1,
-            _ => 2
-          })
+            measure => measure switch
+            {
+              InstantaneousPhaseMeasure<T> => 0,
+              CumulativePhasicMeasure<T> => 1,
+              _ => 2
+            })
           .Select(measure => measure.AggregateMax())
           .FirstOrDefault(Null),
       InstantaneousPhaseMeasure<T> instantaneous => instantaneous.Max,
@@ -421,12 +428,12 @@ public abstract record class PhasicMeasure<T>
     {
       CompositePhasicMeasure<T> composite =>
         composite.Measures.OrderBy(
-          measure => measure switch
-          {
-            InstantaneousPhaseMeasure<T> => 0,
-            CumulativePhasicMeasure<T> => 1,
-            _ => 2
-          })
+            measure => measure switch
+            {
+              InstantaneousPhaseMeasure<T> => 0,
+              CumulativePhasicMeasure<T> => 1,
+              _ => 2
+            })
           .Select(measure => measure.AggregateMaxTimestamp())
           .FirstOrDefault(),
       InstantaneousPhaseMeasure<T> instantaneous => instantaneous.MaxTimestamp,
@@ -449,15 +456,17 @@ public abstract record class PhasicMeasure<T>
           composite.Measures.Select(
               measure => measure.ConvertPrimitiveTo<TConverted>())
             .ToList()),
-      InstantaneousPhaseMeasure<T> instantaneous => new InstantaneousPhaseMeasure<TConverted>(
-        instantaneous.Avg.ConvertPrimitiveTo<TConverted>(),
-        instantaneous.Min.ConvertPrimitiveTo<TConverted>(),
-        instantaneous.MinTimestamp,
-        instantaneous.Max.ConvertPrimitiveTo<TConverted>(),
-        instantaneous.MaxTimestamp),
-      CumulativePhasicMeasure<T> cumulative => new CumulativePhasicMeasure<TConverted>(
-        cumulative.Min.ConvertPrimitiveTo<TConverted>(),
-        cumulative.Max.ConvertPrimitiveTo<TConverted>()),
+      InstantaneousPhaseMeasure<T> instantaneous => new
+        InstantaneousPhaseMeasure<TConverted>(
+          instantaneous.Avg.ConvertPrimitiveTo<TConverted>(),
+          instantaneous.Min.ConvertPrimitiveTo<TConverted>(),
+          instantaneous.MinTimestamp,
+          instantaneous.Max.ConvertPrimitiveTo<TConverted>(),
+          instantaneous.MaxTimestamp),
+      CumulativePhasicMeasure<T> cumulative => new
+        CumulativePhasicMeasure<TConverted>(
+          cumulative.Min.ConvertPrimitiveTo<TConverted>(),
+          cumulative.Max.ConvertPrimitiveTo<TConverted>()),
       TriPhasicMeasure<T> tri => new TriPhasicMeasure<TConverted>(
         (TConverted)Convert.ChangeType(tri.ValueL1, typeof(TConverted)),
         (TConverted)Convert.ChangeType(tri.ValueL2, typeof(TConverted)),
@@ -476,12 +485,13 @@ public abstract record class PhasicMeasure<T>
       CompositePhasicMeasure<T> composite => new CompositePhasicMeasure<T>(
         composite.Measures.Select(measure => measure.Select(selector))
           .ToList()),
-      InstantaneousPhaseMeasure<T> instantaneous => new InstantaneousPhaseMeasure<T>(
-        instantaneous.Avg.Select(selector),
-        instantaneous.Min.Select(selector),
-        instantaneous.MinTimestamp,
-        instantaneous.Max.Select(selector),
-        instantaneous.MaxTimestamp),
+      InstantaneousPhaseMeasure<T> instantaneous => new
+        InstantaneousPhaseMeasure<T>(
+          instantaneous.Avg.Select(selector),
+          instantaneous.Min.Select(selector),
+          instantaneous.MinTimestamp,
+          instantaneous.Max.Select(selector),
+          instantaneous.MaxTimestamp),
       CumulativePhasicMeasure<T> cumulative => new CumulativePhasicMeasure<T>(
         cumulative.Min.Select(selector),
         cumulative.Max.Select(selector)),
@@ -502,12 +512,13 @@ public abstract record class PhasicMeasure<T>
       CompositePhasicMeasure<T> composite => composite.Select(
         measure =>
           measure * rhs),
-      InstantaneousPhaseMeasure<T> instantaneous => new InstantaneousPhaseMeasure<T>(
-        instantaneous.Avg.Multiply(rhs),
-        instantaneous.Min.Multiply(rhs),
-        instantaneous.MinTimestamp,
-        instantaneous.Max.Multiply(rhs),
-        instantaneous.MaxTimestamp),
+      InstantaneousPhaseMeasure<T> instantaneous => new
+        InstantaneousPhaseMeasure<T>(
+          instantaneous.Avg.Multiply(rhs),
+          instantaneous.Min.Multiply(rhs),
+          instantaneous.MinTimestamp,
+          instantaneous.Max.Multiply(rhs),
+          instantaneous.MaxTimestamp),
       CumulativePhasicMeasure<T> cumulative => new CumulativePhasicMeasure<T>(
         cumulative.Min.Multiply(rhs),
         cumulative.Max.Multiply(rhs)),
@@ -528,12 +539,13 @@ public abstract record class PhasicMeasure<T>
       CompositePhasicMeasure<T> composite => composite.Select(
         measure =>
           measure / rhs),
-      InstantaneousPhaseMeasure<T> instantaneous => new InstantaneousPhaseMeasure<T>(
-        instantaneous.Avg.Divide(rhs),
-        instantaneous.Min.Divide(rhs),
-        instantaneous.MinTimestamp,
-        instantaneous.Max.Divide(rhs),
-        instantaneous.MaxTimestamp),
+      InstantaneousPhaseMeasure<T> instantaneous => new
+        InstantaneousPhaseMeasure<T>(
+          instantaneous.Avg.Divide(rhs),
+          instantaneous.Min.Divide(rhs),
+          instantaneous.MinTimestamp,
+          instantaneous.Max.Divide(rhs),
+          instantaneous.MaxTimestamp),
       CumulativePhasicMeasure<T> cumulative => new CumulativePhasicMeasure<T>(
         cumulative.Min.Divide(rhs),
         cumulative.Max.Divide(rhs)),

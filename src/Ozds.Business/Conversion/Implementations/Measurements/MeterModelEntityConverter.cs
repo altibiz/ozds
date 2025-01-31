@@ -9,10 +9,10 @@ namespace Ozds.Business.Conversion.Implementations.Measurements;
 
 public class MeterModelEntityConverter(IServiceProvider serviceProvider)
   : InheritingModelEntityConverter<
-      MeterModel,
-      AuditableModel,
-      MeterEntity,
-      AuditableEntity>(serviceProvider)
+    MeterModel,
+    AuditableModel,
+    MeterEntity,
+    AuditableEntity>(serviceProvider)
 {
   private readonly ModelEntityConverter modelEntityConverter =
     serviceProvider.GetRequiredService<ModelEntityConverter>();

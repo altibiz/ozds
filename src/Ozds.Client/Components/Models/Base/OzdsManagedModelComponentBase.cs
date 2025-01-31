@@ -11,7 +11,7 @@ public abstract class OzdsManagedModelComponentBase<TModel> :
 
   protected override Dictionary<string, object> CreateBaseParameters()
   {
-    return new()
+    return new Dictionary<string, object>
     {
       { nameof(Model), Model! }
     };
@@ -21,15 +21,29 @@ public abstract class OzdsManagedModelComponentBase<TModel> :
 public abstract class OzdsManagedModelComponentBase<TPrefix, TModel> :
   OzdsPrefixedModelComponentBase<TPrefix, TModel>
 {
+  private Expression<Func<TModel?>>? fix;
+
+  private Func<TModel?>? raw;
+
   [Parameter]
   public TPrefix Model { get; set; } = default!;
+
+  protected Func<TModel?> Raw
+  {
+    get { return raw ??= CreateRaw(); }
+  }
+
+  protected Expression<Func<TModel?>> Fix
+  {
+    get { return fix ??= CreateFix(); }
+  }
 
   protected T? Get<T>(
     Func<TModel, T> next
   )
   {
     var first = Raw();
-    if (first is { })
+    if (first is not null)
     {
       return next(first);
     }
@@ -43,7 +57,7 @@ public abstract class OzdsManagedModelComponentBase<TPrefix, TModel> :
   )
   {
     var first = Raw();
-    if (first is { })
+    if (first is not null)
     {
       return next(first);
     }
@@ -75,7 +89,7 @@ public abstract class OzdsManagedModelComponentBase<TPrefix, TModel> :
       memberAssignment
     );
     var lambda = Expression.Lambda<Action<T?>>(body, parameter);
-    return new(null, lambda.Compile());
+    return new EventCallback<T?>(null, lambda.Compile());
   }
 
   protected EventCallback<TAdapter> Set<TField, TAdapter>(
@@ -104,7 +118,7 @@ public abstract class OzdsManagedModelComponentBase<TPrefix, TModel> :
       memberAssignment
     );
     var lambda = Expression.Lambda<Action<TAdapter>>(body, parameter);
-    return new(null, lambda.Compile());
+    return new EventCallback<TAdapter>(null, lambda.Compile());
   }
 
   protected Expression<Func<T?>> For<T>(
@@ -120,11 +134,6 @@ public abstract class OzdsManagedModelComponentBase<TPrefix, TModel> :
     return Expression.Lambda<Func<T?>>(replacedBody);
   }
 
-  protected Func<TModel?> Raw =>
-    raw ??= CreateRaw();
-
-  private Func<TModel?>? raw;
-
   protected virtual Func<TModel?> CreateRaw()
   {
     var compiled = Prefix?.Compile();
@@ -135,11 +144,6 @@ public abstract class OzdsManagedModelComponentBase<TPrefix, TModel> :
 
     return () => compiled(Model);
   }
-
-  protected Expression<Func<TModel?>> Fix =>
-    fix ??= CreateFix();
-
-  private Expression<Func<TModel?>>? fix;
 
   protected virtual Expression<Func<TModel?>> CreateFix()
   {
@@ -159,7 +163,7 @@ public abstract class OzdsManagedModelComponentBase<TPrefix, TModel> :
 
   protected override Dictionary<string, object> CreateBaseParameters()
   {
-    return new()
+    return new Dictionary<string, object>
     {
       { nameof(Model), Model! },
       { nameof(Prefix), Prefix! }
@@ -170,12 +174,12 @@ public abstract class OzdsManagedModelComponentBase<TPrefix, TModel> :
   {
     base.OnParametersSet();
 
-    if (raw is { })
+    if (raw is not null)
     {
       raw = CreateRaw();
     }
 
-    if (fix is { })
+    if (fix is not null)
     {
       fix = CreateFix();
     }

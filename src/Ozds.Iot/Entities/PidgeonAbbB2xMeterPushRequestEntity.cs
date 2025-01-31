@@ -7,11 +7,10 @@ namespace Ozds.Iot.Entities;
 public record PidgeonAbbB2xMeterPushRequestEntity
   : IPidgeonMeterPushRequestEntity
 {
+  public PidgeonAbbB2xMeterPushRequestData Data { get; set; } = default!;
   public string MeterId { get; set; } = default!;
 
   public DateTimeOffset Timestamp { get; set; } = default!;
-
-  public PidgeonAbbB2xMeterPushRequestData Data { get; set; } = default!;
 }
 
 public class PidgeonAbbB2xMeterPushRequestData

@@ -1,15 +1,12 @@
-@using Ozds.Business.Models
-@using Ozds.Business.Models.Abstractions
-@using Ozds.Client.Components.Models.Base
-
 @namespace Ozds.Client.Components.Models.Implementations.Administration
 
 @typeparam TPrefix
-@typeparam TModel where TModel : LocationModel
-@inherits OzdsColumnsComponentBase<TPrefix, TModel>
+@typeparam TModel where TModel : Ozds.Business.Models.LocationModel
+@using Ozds.Business.Models.Abstractions
+@inherits Ozds.Client.Components.Models.Base.OzdsColumnsComponentBase<TPrefix, TModel>
 
 @(Base<IIdentifiable>())
 
-<PrefixedColumns Models="@Models" Prefix="@Member(x => x.LegalPerson)" />
+<PrefixedColumns Models="@Models" Prefix="@Member(x => x.LegalPerson)"/>
 
 @Column(x => x.AltiBizSubProjectCode)

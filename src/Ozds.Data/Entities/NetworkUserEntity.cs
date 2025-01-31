@@ -12,12 +12,10 @@ public class NetworkUserEntity : AuditableEntity
   private long _locationId;
 
   public virtual ICollection<RepresentativeEntity>
-    Representatives
-  { get; set; } = default!;
+    Representatives { get; set; } = default!;
 
   public virtual ICollection<NetworkUserRepresentativeEntity>
-    NetworkUserRepresentatives
-  { get; set; } = default!;
+    NetworkUserRepresentatives { get; set; } = default!;
 
   public virtual string LocationId
   {
@@ -28,8 +26,7 @@ public class NetworkUserEntity : AuditableEntity
   public virtual LocationEntity Location { get; set; } = default!;
 
   public virtual ICollection<NetworkUserMeasurementLocationEntity>
-    NetworkUserMeasurementLocations
-  { get; set; } = default!;
+    NetworkUserMeasurementLocations { get; set; } = default!;
 
   public virtual ICollection<NetworkUserInvoiceEntity> Invoices { get; set; } =
     default!;

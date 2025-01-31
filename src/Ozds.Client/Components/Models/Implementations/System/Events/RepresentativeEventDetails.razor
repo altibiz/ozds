@@ -1,10 +1,8 @@
-@using Ozds.Business.Models
-@using Ozds.Business.Models.Abstractions
-@using Ozds.Client.Components.Models.Base
-
 @namespace Ozds.Client.Components.Models
 
-@inherits OzdsDetailsComponentBase<RepresentativeEventModel>
+@using Ozds.Business.Models
+@using Ozds.Business.Models.Abstractions
+@inherits Ozds.Client.Components.Models.Base.OzdsDetailsComponentBase<Ozds.Business.Models.RepresentativeEventModel>
 
 @(Base<IIdentifiable>())
 

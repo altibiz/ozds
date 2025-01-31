@@ -56,15 +56,17 @@ public class AuditableQueries(
       pageNumber,
       cancellationToken,
       pageCount,
-      where is { }
+      where is not null
         ? Expression.Lambda<Func<object, bool>>(where.Body, where.Parameters)
         : default,
-      orderByDesc is { }
-        ? Expression.Lambda<Func<object, object>>(orderByDesc.Body, orderByDesc.Parameters)
+      orderByDesc is not null
+        ? Expression.Lambda<Func<object, object>>(
+          orderByDesc.Body, orderByDesc.Parameters)
         : default,
-      orderByAsc is { }
-      ? Expression.Lambda<Func<object, object>>(orderByAsc.Body, orderByAsc.Parameters)
-      : default
+      orderByAsc is not null
+        ? Expression.Lambda<Func<object, object>>(
+          orderByAsc.Body, orderByAsc.Parameters)
+        : default
     );
 
     return entities.Items.OfType<T>().ToPaginatedList(entities.TotalCount);
@@ -90,7 +92,7 @@ public class AuditableQueries(
       .CreateDbContextAsync(cancellationToken);
     var queryable = context.GetQueryable<IAuditableEntity>(entityType);
 
-    var filtered = where is { }
+    var filtered = where is not null
       ? queryable.Where(
         Expression.Lambda<Func<IAuditableEntity, bool>>(
           where.Body,
@@ -98,13 +100,13 @@ public class AuditableQueries(
       : queryable;
 
     var ordered = filtered;
-    ordered = orderByAsc is { }
+    ordered = orderByAsc is not null
       ? ordered.OrderBy(
         Expression.Lambda<Func<IAuditableEntity, object>>(
           orderByAsc.Body,
           orderByAsc.Parameters))
       : ordered;
-    ordered = orderByDesc is { }
+    ordered = orderByDesc is not null
       ? ordered.OrderByDescending(
         Expression.Lambda<Func<IAuditableEntity, object>>(
           orderByDesc.Body,
@@ -137,6 +139,7 @@ public class AuditableQueries(
       throw new InvalidOperationException(
         $"Type {entityType} is not assignable to {typeof(IAuditableEntity)}");
     }
+
     await using var context = await factory
       .CreateDbContextAsync(cancellationToken);
 
@@ -155,6 +158,7 @@ public class AuditableQueries(
       throw new InvalidOperationException(
         $"Type {entityType} is not assignable to {typeof(IAuditableEntity)}");
     }
+
     await using var context = await factory
       .CreateDbContextAsync(cancellationToken);
 

@@ -6,8 +6,15 @@ namespace Ozds.Client.Components.Models.Base;
 public abstract class OzdsListModelComponentBase<TPrefix, TModel> :
   OzdsPrefixedModelComponentBase<TPrefix, TModel>
 {
+  private Func<TPrefix, TModel?>? raw;
+
   [Parameter]
   public IEnumerable<TPrefix> Models { get; set; } = default!;
+
+  protected Func<TPrefix, TModel?> Raw
+  {
+    get { return raw ??= CreateRaw(); }
+  }
 
   protected Func<TPrefix, T?> Get<T>(
     Func<TModel, T?> next
@@ -31,19 +38,14 @@ public abstract class OzdsListModelComponentBase<TPrefix, TModel> :
     return Expression.Lambda<Func<TPrefix, T>>(replacedBody, prefixParam);
   }
 
-  protected Func<TPrefix, TModel?> Raw =>
-    raw ??= CreateRaw();
-
-  private Func<TPrefix, TModel?>? raw;
-
   protected virtual Func<TPrefix, TModel?> CreateRaw()
   {
-    return Prefix?.Compile() ?? ((TPrefix x) => (TModel?)(object?)x);
+    return Prefix?.Compile() ?? (x => (TModel?)(object?)x);
   }
 
   protected override Dictionary<string, object> CreateBaseParameters()
   {
-    return new()
+    return new Dictionary<string, object>
     {
       { nameof(Models), Models! },
       { nameof(Prefix), Prefix! }
@@ -54,7 +56,7 @@ public abstract class OzdsListModelComponentBase<TPrefix, TModel> :
   {
     base.OnParametersSet();
 
-    if (raw is { })
+    if (raw is not null)
     {
       raw = CreateRaw();
     }

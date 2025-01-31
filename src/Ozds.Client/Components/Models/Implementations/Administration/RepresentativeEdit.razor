@@ -1,17 +1,14 @@
-@using Ozds.Business.Models
-@using Ozds.Business.Models.Base
-@using Ozds.Client.Components.Models.Base
-
 @namespace Ozds.Client.Components.Models.Implementations.Administration
 
 @typeparam TPrefix
-@typeparam TModel where TModel : RepresentativeModel
-@inherits OzdsEditComponentBase<TPrefix, TModel>
+@typeparam TModel where TModel : Ozds.Business.Models.RepresentativeModel
+@using Ozds.Business.Models.Base
+@inherits Ozds.Client.Components.Models.Base.OzdsEditComponentBase<TPrefix, TModel>
 
 @(Base<IdentifiableModel>())
 
 @Field(x => x.Role)
 
-<Edit Model="@Get(x => x.PhysicalPerson)" />
+<Edit Model="@Get(x => x.PhysicalPerson)"/>
 
 @Field(x => x.Topics)

@@ -22,12 +22,13 @@ public static class EntityTypeBuilderExtensions
       .ComplexType
       .ClrType
       .GetProperties()
-      .Where(property => property
-        is { GetMethod.IsVirtual: true }
-        and { GetMethod.IsFinal: false }
-        || property.Name == nameof(IAuditableEntity.Forget)
-        || property.Name == nameof(IAuditableEntity.Restore)
-        || property.Name == nameof(IAuditableEntity.RepresentativeId))
+      .Where(
+        property => property
+            is { GetMethod.IsVirtual: true }
+            and { GetMethod.IsFinal: false }
+          || property.Name == nameof(IAuditableEntity.Forget)
+          || property.Name == nameof(IAuditableEntity.Restore)
+          || property.Name == nameof(IAuditableEntity.RepresentativeId))
       .ToList();
 
     var propertiesToArchive = complexPropertyBuilder.Metadata

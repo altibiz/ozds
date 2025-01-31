@@ -1,29 +1,26 @@
-@using Microsoft.AspNetCore.Components.Web
-@using MudBlazor
-@using Ozds.Business.Models.Abstractions
-@using Ozds.Business.Models.Enums
-@using Ozds.Client.Attributes
-@using Ozds.Client.Components.Base
-@using Ozds.Client.Components.Streaming
-@using Ozds.Client.Components.Tables
-@using Ozds.Client.Components.Models
-@using Ozds.Client.State
-
 @namespace Ozds.Client.Pages
 
 @page "/system"
 
 @attribute [Navigation(
-  Order = 20,
-  Title = "System",
-  Icon = Icons.Material.Filled.VerifiedUser,
-  Allows = [
-    RoleModel.OperatorRepresentative,
-    RoleModel.LocationRepresentative,
-    RoleModel.NetworkUserRepresentative
-  ])]
+Order = 20,
+Title = "System",
+Icon = Icons.Material.Filled.VerifiedUser,
+Allows = [
+RoleModel.OperatorRepresentative,
+RoleModel.LocationRepresentative,
+RoleModel.NetworkUserRepresentative
+])]
 
-@inherits OzdsComponentBase
+@using Microsoft.AspNetCore.Components.Web
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Business.Models.Enums
+@using Ozds.Client.Attributes
+@using Ozds.Client.Components.Models
+@using Ozds.Client.Components.Streaming
+@using Ozds.Client.Components.Tables
+@using Ozds.Client.State
+@inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 <HeadContent>
   <title>OZDS - @Translate("System")</title>
@@ -35,17 +32,17 @@
 
 <ResponsiveTable Model="notifications">
   <Summary>
-    <Summary Model="context" />
+    <Summary Model="context"/>
   </Summary>
   <Details>
-    <Details Model="context" />
+    <Details Model="context"/>
   </Details>
   <Columns>
-    <Columns Models="@notifications" />
+    <Columns Models="@notifications"/>
   </Columns>
 </ResponsiveTable>
 
-@if(RepresentativeState.Representative.Role
+@if (RepresentativeState.Representative.Role
   != RoleModel.OperatorRepresentative)
 {
   return;
@@ -53,14 +50,16 @@
 
 <Paging T="IEvent">
   <Summary>
-    <Summary Model="context" />
+    <Summary Model="context"/>
   </Summary>
 </Paging>
 
 @code {
+
   [CascadingParameter]
   private RepresentativeState RepresentativeState { get; set; } = default!;
 
   [CascadingParameter]
   private NotificationsState NotificationsState { get; set; } = default!;
+
 }

@@ -8,8 +8,8 @@ namespace Ozds.Business.Activation.Implementations.Measurements;
 public class AbbB2xAggregateModelActivator(
   IServiceProvider serviceProvider
 ) : InheritingModelActivator<AbbB2xAggregateModel, AggregateModel>(
-      serviceProvider
-    )
+  serviceProvider
+)
 {
   private readonly ModelActivator modelActivator =
     serviceProvider.GetRequiredService<ModelActivator>();

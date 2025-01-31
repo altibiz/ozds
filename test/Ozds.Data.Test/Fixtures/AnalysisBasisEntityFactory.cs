@@ -77,7 +77,7 @@ public class AnalysisBasisEntityFactory(DbContext context)
 
       var meter = await fixture
         .Build<AbbB2xMeterEntity>()
-        .IndexedWith(x => x.Id, (j) => $"abb-b2x-{i + j}")
+        .IndexedWith(x => x.Id, j => $"abb-b2x-{i + j}")
         .With(x => x.MeasurementValidatorId, validator.Id)
         .CreateInDb(context, cancellationToken);
 
@@ -146,7 +146,7 @@ public class AnalysisBasisEntityFactory(DbContext context)
         .With(agg => agg.Interval, IntervalEntity.Month)
         .IndexedWith(
           agg => agg.Timestamp,
-          (i) => toDate.AddMonths(-i).GetStartOfMonth()
+          i => toDate.AddMonths(-i).GetStartOfMonth()
         )
         .CreateManyInDb(context, cancellationToken: cancellationToken);
 

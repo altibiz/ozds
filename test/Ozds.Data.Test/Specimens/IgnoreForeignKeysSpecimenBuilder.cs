@@ -8,6 +8,9 @@ public class IgnoreForeignKeysSpecimenBuilder(
   DbContext dbContext
 ) : ISpecimenBuilder
 {
+  private readonly Lazy<HashSet<MemberInfo>> foreignKeys =
+    new(dbContext.GetForeignKeys);
+
   public object Create(object request, ISpecimenContext context)
   {
     if (request is PropertyInfo or FieldInfo
@@ -18,7 +21,4 @@ public class IgnoreForeignKeysSpecimenBuilder(
 
     return new NoSpecimen();
   }
-
-  private readonly Lazy<HashSet<MemberInfo>> foreignKeys =
-    new(dbContext.GetForeignKeys);
 }

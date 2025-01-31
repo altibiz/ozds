@@ -6,6 +6,10 @@ namespace Ozds.Client.Components.Dialogs;
 
 public partial class DateRangeDialog : OzdsComponentBase
 {
+  private DateTime? endDate;
+
+  private DateTime? startDate;
+
   [CascadingParameter]
   public IMudDialogInstance MudDialog { get; set; } = default!;
 
@@ -14,10 +18,6 @@ public partial class DateRangeDialog : OzdsComponentBase
 
   [Parameter]
   public DateTimeOffset? MaxDate { get; set; }
-
-  private DateTime? startDate;
-
-  private DateTime? endDate;
 
   public DateTime? StartDate
   {
@@ -49,10 +49,12 @@ public partial class DateRangeDialog : OzdsComponentBase
   {
     if (startDate.HasValue && endDate.HasValue)
     {
-      MudDialog.Close(DialogResult
-        .Ok((
-          startDate.Value.ToUniversalTime(),
-          endDate.Value.ToUniversalTime())));
+      MudDialog.Close(
+        DialogResult
+          .Ok(
+            (
+              startDate.Value.ToUniversalTime(),
+              endDate.Value.ToUniversalTime())));
     }
   }
 

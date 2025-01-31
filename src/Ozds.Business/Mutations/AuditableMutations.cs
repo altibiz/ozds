@@ -15,7 +15,7 @@ public class AuditableMutations(
   ModelValidator validator,
   RepresentativeQueries representativeQueries
 )
-: IMutations
+  : IMutations
 {
   public async Task<string> Create(
     IAuditable model,

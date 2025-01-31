@@ -1,5 +1,4 @@
 @using MudBlazor
-
 @namespace Ozds.Client.Components.Fields
 
 <MudGrid Justify="Justify.SpaceBetween" Spacing="0" Class="mt-2">
@@ -16,9 +15,11 @@
 </MudGrid>
 
 @code {
+
   [Parameter]
   public string Title { get; set; } = default!;
 
   [Parameter]
   public RenderFragment? ChildContent { get; set; }
+
 }

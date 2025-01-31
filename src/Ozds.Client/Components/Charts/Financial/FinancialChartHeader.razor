@@ -1,22 +1,20 @@
-@using MudBlazor
-@using Ozds.Business.Models.Enums
-@using Ozds.Client.Components.Base
-@using Ozds.Client.Components.Streaming
-
 @namespace Ozds.Client.Components.Charts
 
-@inherits OzdsComponentBase
+@using MudBlazor
+@using Ozds.Business.Models.Enums
+@using Ozds.Client.Components.Streaming
+@inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 <div class="d-flex justify-center">
   <MudText>
-    @if(Parameters.Meters.Count() == 1)
+    @if (Parameters.Meters.Count() == 1)
     {
       <Fragment>
         @Translate(Parameters.Meters.FirstOrDefault()!.Title)
         &nbsp;
       </Fragment>
     }
-    @if(Parameters.MeasurementLocations.Count() == 1)
+    @if (Parameters.MeasurementLocations.Count() == 1)
     {
       <Fragment>
         @Translate(Parameters.MeasurementLocations.FirstOrDefault()!.Title)
@@ -37,6 +35,8 @@
 </div>
 
 @code {
+
   [Parameter]
   public FinancialChartParameters Parameters { get; set; } = default!;
+
 }

@@ -16,19 +16,6 @@ public abstract class InitializingPushRequestMeasurementConverter
 
   public abstract bool CanConvertToPushRequest(IMeasurement measurement);
 
-  public abstract IMeterPushRequestEntity BoxPushRequest();
-
-  public abstract IMeasurement BoxMeasurement();
-
-  public abstract void InitializePushRequest(
-    IMeasurement measurement,
-    IMeterPushRequestEntity pushRequest);
-
-  public abstract void InitializeMeasurement(
-    IMeterPushRequestEntity pushRequest,
-    string measurementLocationId,
-    IMeasurement measurement);
-
   public IMeterPushRequestEntity ToPushRequest(
     IMeasurement measurement)
   {
@@ -45,4 +32,17 @@ public abstract class InitializingPushRequestMeasurementConverter
     InitializeMeasurement(pushRequest, measurementLocationId, measurement);
     return measurement;
   }
+
+  public abstract IMeterPushRequestEntity BoxPushRequest();
+
+  public abstract IMeasurement BoxMeasurement();
+
+  public abstract void InitializePushRequest(
+    IMeasurement measurement,
+    IMeterPushRequestEntity pushRequest);
+
+  public abstract void InitializeMeasurement(
+    IMeterPushRequestEntity pushRequest,
+    string measurementLocationId,
+    IMeasurement measurement);
 }

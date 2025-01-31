@@ -77,10 +77,10 @@ public class RepresentativeQueries(
         {
           User = modelEntityConverter.ToModel<UserModel>(user),
           Representative = representatives
-            .FirstOrDefault(x => x.Id == user.Id)
-              is { } representative
-              ? modelEntityConverter.ToModel<RepresentativeModel>(representative)
-              : null
+              .FirstOrDefault(x => x.Id == user.Id)
+            is { } representative
+            ? modelEntityConverter.ToModel<RepresentativeModel>(representative)
+            : null
         })
       .ToPaginatedList(users.TotalCount);
   }
@@ -103,7 +103,7 @@ public class RepresentativeQueries(
     {
       return new MaybeRepresentingUserModel
       {
-        User = modelEntityConverter.ToModel<UserModel>(user),
+        User = modelEntityConverter.ToModel<UserModel>(user)
       };
     }
 

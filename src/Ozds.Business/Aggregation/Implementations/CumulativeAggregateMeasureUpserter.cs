@@ -13,8 +13,7 @@ public class CumulativeAggregateMeasureUpserter :
     long rhsCount
   )
   {
-    return CumulativeAggregateMeasureUpserterExtensions.Upsert(
-      lhs,
+    return lhs.Upsert(
       lhsCount,
       rhs,
       rhsCount

@@ -1,5 +1,3 @@
-using Humanizer;
-
 namespace Ozds.Business.Conversion.Base;
 
 public abstract class ConcreteModelEntityConverter<TModel, TEntity>
@@ -7,9 +5,23 @@ public abstract class ConcreteModelEntityConverter<TModel, TEntity>
   where TModel : notnull
   where TEntity : notnull
 {
-  public virtual void InitializeEntity(TModel model, TEntity entity) { }
+  public override Type EntityType
+  {
+    get { return typeof(TEntity); }
+  }
 
-  public virtual void InitializeModel(TEntity entity, TModel model) { }
+  public override Type ModelType
+  {
+    get { return typeof(TModel); }
+  }
+
+  public virtual void InitializeEntity(TModel model, TEntity entity)
+  {
+  }
+
+  public virtual void InitializeModel(TEntity entity, TModel model)
+  {
+  }
 
   public virtual TEntity ToEntity(TModel model)
   {
@@ -24,10 +36,6 @@ public abstract class ConcreteModelEntityConverter<TModel, TEntity>
     InitializeModel(entity, model);
     return model;
   }
-
-  public override Type EntityType => typeof(TEntity);
-
-  public override Type ModelType => typeof(TModel);
 
   public override bool CanConvertToEntity(Type modelType)
   {

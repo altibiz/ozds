@@ -28,10 +28,11 @@ public class ValidationQueries(
     return model;
   }
 
-  public async Task<List<IMeasurementValidator>> ReadMeasurementValidatorsByMeters(
-    IEnumerable<string> meterIds,
-    CancellationToken cancellationToken
-  )
+  public async Task<List<IMeasurementValidator>>
+    ReadMeasurementValidatorsByMeters(
+      IEnumerable<string> meterIds,
+      CancellationToken cancellationToken
+    )
   {
     var entities = await queries.ReadMeasurementValidatorByMeters(
       meterIds,

@@ -148,12 +148,14 @@ public class SchneideriEM3xxxAggregateUpserter : ConcreteAggregateUpserter<
           lhs.Timestamp,
           lhs.Interval
         ),
-      ReactiveEnergyTotalImportT0_VARh = lhs.ReactiveEnergyTotalImportT0_VARh.Upsert(
-        lhs.Count,
-        rhs.ReactiveEnergyTotalImportT0_VARh,
-        rhs.Count
-      ),
-      DerivedReactivePowerTotalImportT0_VAR = lhs.DerivedReactivePowerTotalImportT0_VAR
+      ReactiveEnergyTotalImportT0_VARh =
+        lhs.ReactiveEnergyTotalImportT0_VARh.Upsert(
+          lhs.Count,
+          rhs.ReactiveEnergyTotalImportT0_VARh,
+          rhs.Count
+        ),
+      DerivedReactivePowerTotalImportT0_VAR = lhs
+        .DerivedReactivePowerTotalImportT0_VAR
         .UpsertDerivedPowerFromEnergy(
           lhs.QuarterHourCount,
           rhs.DerivedReactivePowerTotalImportT0_VAR,
@@ -163,12 +165,14 @@ public class SchneideriEM3xxxAggregateUpserter : ConcreteAggregateUpserter<
           lhs.Timestamp,
           lhs.Interval
         ),
-      ReactiveEnergyTotalExportT0_VARh = lhs.ReactiveEnergyTotalExportT0_VARh.Upsert(
-        lhs.Count,
-        rhs.ReactiveEnergyTotalExportT0_VARh,
-        rhs.Count
-      ),
-      DerivedReactivePowerTotalExportT0_VAR = lhs.DerivedReactivePowerTotalExportT0_VAR
+      ReactiveEnergyTotalExportT0_VARh =
+        lhs.ReactiveEnergyTotalExportT0_VARh.Upsert(
+          lhs.Count,
+          rhs.ReactiveEnergyTotalExportT0_VARh,
+          rhs.Count
+        ),
+      DerivedReactivePowerTotalExportT0_VAR = lhs
+        .DerivedReactivePowerTotalExportT0_VAR
         .UpsertDerivedPowerFromEnergy(
           lhs.QuarterHourCount,
           rhs.DerivedReactivePowerTotalExportT0_VAR,
@@ -207,7 +211,7 @@ public class SchneideriEM3xxxAggregateUpserter : ConcreteAggregateUpserter<
           rhs.ActiveEnergyTotalImportT2_Wh,
           lhs.Timestamp,
           lhs.Interval
-        ),
+        )
     };
   }
 }

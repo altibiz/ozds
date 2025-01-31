@@ -1,16 +1,16 @@
-@using Ozds.Business.Models.Abstractions
-@using Ozds.Client.Components.Models.Base
-@using Ozds.Client.Components.Streaming
-
 @namespace Ozds.Client.Components.Models
 
 @typeparam TPrefix
-@typeparam TModel where TModel : IResolvableNotification
-@inherits OzdsColumnsComponentBase<TPrefix, TModel>
+@typeparam TModel where TModel : Ozds.Business.Models.Abstractions.IResolvableNotification
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Client.Components.Streaming
+@inherits Ozds.Client.Components.Models.Base.OzdsColumnsComponentBase<TPrefix, TModel>
 
 @(Base<IIdentifiable>())
 
-@(Base<INotification>(@<Fragment>
-  @Sub()
-  @Column(x => x.ResolvedOn)
-</Fragment>))
+@(
+Base<INotification>(
+  @<Fragment>
+    @Sub()
+    @Column(x => x.ResolvedOn)
+  </Fragment>))

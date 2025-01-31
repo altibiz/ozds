@@ -10,7 +10,7 @@ public partial class MutatingResult : OzdsComponentBase
   public IMudDialogInstance MudDialog { get; set; } = default!;
 
   [Parameter]
-  public string? Body { get; set; } = default!;
+  public string? Body { get; set; }
 
   private void OnExit()
   {

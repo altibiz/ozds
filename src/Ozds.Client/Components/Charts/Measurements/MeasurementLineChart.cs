@@ -1,7 +1,6 @@
 using ApexCharts;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using Ozds.Business.Models;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Enums;
 using Ozds.Client.Components.Base;
@@ -12,6 +11,20 @@ namespace Ozds.Client.Components.Charts;
 
 public partial class MeasurementLineChart : OzdsComponentBase
 {
+  private readonly string _id = Guid.NewGuid().ToString();
+
+  private ApexChart<IMeasurement>? _brushChart = default!;
+
+  private ApexChartOptions<IMeasurement> _brushOptions =
+    new ApexChartOptions<IMeasurement>()
+      .WithFixedScriptPath();
+
+  private ApexChart<IMeasurement>? _chart = default!;
+
+  private ApexChartOptions<IMeasurement> _options =
+    new ApexChartOptions<IMeasurement>()
+      .WithFixedScriptPath();
+
   [CascadingParameter]
   public Breakpoint Breakpoint { get; set; } = default!;
 
@@ -27,20 +40,6 @@ public partial class MeasurementLineChart : OzdsComponentBase
   [Parameter]
   public bool Brush { get; set; } = false;
 
-  private readonly string _id = Guid.NewGuid().ToString();
-
-  private ApexChart<IMeasurement>? _chart = default!;
-
-  private ApexChart<IMeasurement>? _brushChart = default!;
-
-  private ApexChartOptions<IMeasurement> _options =
-    new ApexChartOptions<IMeasurement>()
-      .WithFixedScriptPath();
-
-  private ApexChartOptions<IMeasurement> _brushOptions =
-    new ApexChartOptions<IMeasurement>()
-      .WithFixedScriptPath();
-
   protected override void OnInitialized()
   {
     _options = CreateGraphOptions();
@@ -52,14 +51,14 @@ public partial class MeasurementLineChart : OzdsComponentBase
     _options = CreateGraphOptions();
     if (_chart is { } chart)
     {
-      await chart.UpdateSeriesAsync(animate: true);
+      await chart.UpdateSeriesAsync(true);
       await chart.UpdateOptionsAsync(false, true, false);
     }
 
     _brushOptions = CreateBrushOptions();
     if (_brushChart is { } brushChart)
     {
-      await brushChart.UpdateSeriesAsync(animate: true);
+      await brushChart.UpdateSeriesAsync(true);
       await brushChart.UpdateOptionsAsync(false, true, false);
     }
   }

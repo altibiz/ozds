@@ -1,16 +1,11 @@
+@namespace Ozds.Client.Components.Charts
+
 @using ApexCharts
-@using MudBlazor
 @using Ozds.Business.Extensions
 @using Ozds.Business.Models
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Business.Models.Enums
-@using Ozds.Client.Components.Fields
-@using Ozds.Client.Components.Base
-@using Ozds.Client.Components.Streaming
-
-@namespace Ozds.Client.Components.Charts
-
-@inherits OzdsComponentBase
+@inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 <ApexChart
   XAxisType="@XAxisType.Datetime"
@@ -36,9 +31,7 @@
       Name="@(measurementLocation.Id + " " + Translate("Sum"))"
       SeriesType="@(SeriesType.Donut)"
       XValue="@(x => DateTimeApplyOffset(x.IssuedOn))"
-      YAggregate="@(x => x
-        .Select(x => x.TotalWithTax_EUR)
-        .Apply(Parameters.Operator))"
+      YAggregate="@(x => x.Select(x => x.TotalWithTax_EUR).Apply(Parameters.Operator))"
       Stroke="@(new SeriesStroke { Color = i.ToColor(), Width = 4 })"
       Color="@(i.ToColor())"/>
 
@@ -47,9 +40,7 @@
       Name="@(measurementLocation.Id + " " + Translate("Sum"))"
       SeriesType="@(SeriesType.Donut)"
       XValue="@(x => DateTimeApplyOffset(x.IssuedOn))"
-      YAggregate="@(x => x
-        .Select(x => x.TotalWithTax_EUR)
-        .Apply(Parameters.Operator))"
+      YAggregate="@(x => x.Select(x => x.TotalWithTax_EUR).Apply(Parameters.Operator))"
       Stroke="@(new SeriesStroke { Color = i.ToColor(), Width = 4 })"
       Color="@(i.ToColor())"/>
   }
@@ -73,9 +64,7 @@
       Name="@(meter.Id + " " + Translate("Sum"))"
       SeriesType="@(SeriesType.Donut)"
       XValue="@(x => DateTimeApplyOffset(x.IssuedOn))"
-      YAggregate="@(x => x
-        .Select(x => x.TotalWithTax_EUR)
-        .Apply(Parameters.Operator))"
+      YAggregate="@(x => x.Select(x => x.TotalWithTax_EUR).Apply(Parameters.Operator))"
       Stroke="@(new SeriesStroke { Color = i.ToColor(), Width = 4 })"
       Color="@(i.ToColor())"/>
 
@@ -84,9 +73,7 @@
       Name="@(meter.Id + " " + Translate("Sum"))"
       SeriesType="@(SeriesType.Donut)"
       XValue="@(x => DateTimeApplyOffset(x.IssuedOn))"
-      YAggregate="@(x => x
-        .Select(x => x.TotalWithTax_EUR)
-        .Apply(Parameters.Operator))"
+      YAggregate="@(x => x.Select(x => x.TotalWithTax_EUR).Apply(Parameters.Operator))"
       Stroke="@(new SeriesStroke { Color = i.ToColor(), Width = 4 })"
       Color="@(i.ToColor())"/>
   }

@@ -17,7 +17,7 @@ public static class UserModelExtensions
   public static UserEntity ToEntity(this IUser abstractUser)
   {
     return abstractUser is User user
-      ? new()
+      ? new UserEntity
       {
         Id = user.UserId,
         UserName = user.UserName,

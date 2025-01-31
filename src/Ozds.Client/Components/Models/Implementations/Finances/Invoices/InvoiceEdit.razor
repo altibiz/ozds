@@ -1,9 +1,7 @@
-@using Ozds.Business.Models.Base
-@using Ozds.Client.Components.Models.Base
-
 @typeparam TPrefix
-@typeparam TModel where TModel : InvoiceModel
-@inherits OzdsEditComponentBase<TPrefix, TModel>
+@typeparam TModel where TModel : Ozds.Business.Models.Base.InvoiceModel
+@using Ozds.Business.Models.Base
+@inherits Ozds.Client.Components.Models.Base.OzdsEditComponentBase<TPrefix, TModel>
 
 @(Base<IdentifiableModel>())
 

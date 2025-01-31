@@ -1,13 +1,8 @@
-@using Microsoft.AspNetCore.Components.Routing
-@using MudBlazor
-@using Ozds.Client.Components.Base
-@using Ozds.Client.State
-@using Ozds.Client.Attributes
-
 @namespace Ozds.Client.Components.Layout
 
-@inherits OzdsComponentBase
+@inherits Ozds.Client.Components.Base.OzdsComponentBase
 
+@using MudBlazor
 @implements IDisposable
 
 <MudDrawer
@@ -27,11 +22,11 @@
         Src="/favicon.png"
         Alt="Helb"
         Style="height: calc(var(--mud-appbar-height) - 24px);"/>
-      <MudSpacer />
+      <MudSpacer/>
       <MudButton
         OnClick="ToggleNavigationDrawer"
         Variant="Variant.Text"
-        Color="MudBlazor.Color.Primary"
+        Color="Color.Primary"
         Style="margin-right: -24px;"
         Class="d-flex flex-row align-center">
         <MudIcon Icon="@Icons.Material.Filled.Close"/>
@@ -46,7 +41,7 @@
         Style="@($"height: 100%; {Style}")">
         @foreach (var descriptor in Descriptors)
         {
-          <NavigationItem Descriptor="descriptor" />
+          <NavigationItem Descriptor="descriptor"/>
         }
       </MudContainer>
     </MudNavMenu>
@@ -54,6 +49,7 @@
 </MudDrawer>
 
 @code {
+
   [Parameter]
   public MaxWidth MaxWidth { get; set; } = default;
 
@@ -62,4 +58,5 @@
 
   [Parameter]
   public string Class { get; set; } = string.Empty;
+
 }

@@ -10,25 +10,26 @@ namespace Ozds.Client.Pages;
 
 public partial class NotificationsPage : OzdsComponentBase
 {
+  private bool _seen;
+
   [CascadingParameter]
   public RepresentativeState RepresentativeState { get; set; } = default!;
 
   [CascadingParameter]
   public NotificationsState NotificationsState { get; set; } = default!;
 
-  private bool _seen = false;
-
   private Task<PaginatedList<INotification>> OnPageAsync(int page)
   {
     return _seen
       ? ScopedServices
-          .GetRequiredService<NotificationQueries>()
-          .ReadForRecipient<INotification>(
-            RepresentativeState.Representative.Id,
-            page,
-            CancellationToken,
-            seen: _seen)
-      : Task.FromResult(NotificationsState.Notifications
+        .GetRequiredService<NotificationQueries>()
+        .ReadForRecipient<INotification>(
+          RepresentativeState.Representative.Id,
+          page,
+          CancellationToken,
+          _seen)
+      : Task.FromResult(
+        NotificationsState.Notifications
           .ToPaginated(NotificationsState.Notifications.Count));
   }
 }

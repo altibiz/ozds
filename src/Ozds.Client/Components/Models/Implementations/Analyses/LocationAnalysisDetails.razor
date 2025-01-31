@@ -1,11 +1,8 @@
-@using Ozds.Business.Analysis
-@using Ozds.Business.Models.Enums
-@using Ozds.Client.Components.Models.Base
-@using Ozds.Client.State
-
 @namespace Ozds.Client.Components.Models.Implementations.Analyses
 
-@inherits OzdsDetailsComponentBase<LocationAnalysis>
+@using Ozds.Business.Models.Enums
+@using Ozds.Client.State
+@inherits Ozds.Client.Components.Models.Base.OzdsDetailsComponentBase<Ozds.Business.Analysis.LocationAnalysis>
 
 @Field(x => x.Location.Title)
 
@@ -24,6 +21,8 @@ else
 }
 
 @code {
+
   [CascadingParameter]
   public RepresentativeState RepresentativeState { get; set; } = default!;
+
 }

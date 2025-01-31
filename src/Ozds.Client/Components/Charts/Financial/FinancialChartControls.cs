@@ -10,8 +10,11 @@ namespace Ozds.Client.Components.Charts;
 
 public partial class FinancialChartControls : OzdsComponentBase
 {
+  private readonly FinancialChartParameters _parameters = new();
+
   [Parameter]
-  public List<IMeasurementLocation> MeasurementLocations { get; set; } = default!;
+  public List<IMeasurementLocation> MeasurementLocations { get; set; } =
+    default!;
 
   [Parameter]
   public List<IMeter> Meters { get; set; } = default!;
@@ -20,9 +23,8 @@ public partial class FinancialChartControls : OzdsComponentBase
   public HashSet<FinancialChartProfile> Profiles { get; set; } = new();
 
   [Parameter]
-  public RenderFragment<FinancialChartParameters> ChildContent { get; set; } = default!;
-
-  private FinancialChartParameters _parameters = new();
+  public RenderFragment<FinancialChartParameters> ChildContent { get; set; } =
+    default!;
 
   protected override async Task OnParametersSetAsync()
   {
@@ -30,37 +32,40 @@ public partial class FinancialChartControls : OzdsComponentBase
 
     var fromDate = _parameters.FromDate;
     var toDate = fromDate
-      .Add(_parameters.Resolution
-        .ToTimeSpan(_parameters.Multiplier, fromDate));
+      .Add(
+        _parameters.Resolution
+          .ToTimeSpan(_parameters.Multiplier, fromDate));
 
     var fromMeters = await queries.ReadByMeterIds(
       Meters.Select(meter => meter.Id),
       _parameters.Resolution,
       _parameters.Multiplier,
-      pageNumber: 1,
-      cancellationToken: CancellationToken,
-      fromDate: fromDate,
-      toDate: toDate
+      1,
+      CancellationToken,
+      fromDate,
+      toDate
     );
 
     var fromMeasurementLocations = await queries.ReadByMeasurementLocationIds(
-      MeasurementLocations.Select(measurementLocation => measurementLocation.Id),
+      MeasurementLocations.Select(
+        measurementLocation => measurementLocation.Id),
       _parameters.Resolution,
       _parameters.Multiplier,
-      pageNumber: 1,
-      cancellationToken: CancellationToken,
-      fromDate: fromDate,
-      toDate: toDate
+      1,
+      CancellationToken,
+      fromDate,
+      toDate
     );
 
     _parameters.Financials = new PaginatedList<IFinancial>(
       fromMeters.Items
         .Concat(fromMeasurementLocations.Items)
-        .DistinctBy(financial => new
-        {
-          Type = financial.GetType(),
-          financial.Id,
-        })
+        .DistinctBy(
+          financial => new
+          {
+            Type = financial.GetType(),
+            financial.Id
+          })
         .ToList(),
       fromMeters.TotalCount + fromMeasurementLocations.TotalCount
     );

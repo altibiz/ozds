@@ -7,8 +7,8 @@ namespace Ozds.Business.Activation.Implementations.Finances;
 public class NetworkUserCalculationModelActivator(
   IServiceProvider serviceProvider
 ) : InheritingModelActivator<
-      NetworkUserCalculationModel,
-      CalculationModel>(serviceProvider)
+  NetworkUserCalculationModel,
+  CalculationModel>(serviceProvider)
 {
   private readonly ModelActivator modelActivator =
     serviceProvider.GetRequiredService<ModelActivator>();

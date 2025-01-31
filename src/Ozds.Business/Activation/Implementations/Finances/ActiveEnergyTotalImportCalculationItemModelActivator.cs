@@ -7,8 +7,8 @@ namespace Ozds.Business.Activation.Implementations.Finances;
 public class ActiveEnergyTotalImportCalculationItemModelActivator(
   IServiceProvider serviceProvider
 ) : InheritingModelActivator<
-      ActiveEnergyTotalImportCalculationItemModel,
-      CalculationItemModel>(serviceProvider)
+  ActiveEnergyTotalImportCalculationItemModel,
+  CalculationItemModel>(serviceProvider)
 {
   public override void Initialize(
     ActiveEnergyTotalImportCalculationItemModel model
@@ -25,55 +25,55 @@ public class ActiveEnergyTotalImportCalculationItemModelActivator(
 public class UsageActiveEnergyTotalImportT0CalculationItemModelActivator(
   IServiceProvider serviceProvider
 ) : InheritingModelActivator<
-      UsageActiveEnergyTotalImportT0CalculationItemModel,
-      ActiveEnergyTotalImportCalculationItemModel>(serviceProvider)
+  UsageActiveEnergyTotalImportT0CalculationItemModel,
+  ActiveEnergyTotalImportCalculationItemModel>(serviceProvider)
 {
 }
 
 public class UsageActiveEnergyTotalImportT1CalculationItemModelActivator(
   IServiceProvider serviceProvider
 ) : InheritingModelActivator<
-      UsageActiveEnergyTotalImportT1CalculationItemModel,
-      ActiveEnergyTotalImportCalculationItemModel>(serviceProvider)
+  UsageActiveEnergyTotalImportT1CalculationItemModel,
+  ActiveEnergyTotalImportCalculationItemModel>(serviceProvider)
 {
 }
 
 public class UsageActiveEnergyTotalImportT2CalculationItemModelActivator(
   IServiceProvider serviceProvider
 ) : InheritingModelActivator<
-      UsageActiveEnergyTotalImportT2CalculationItemModel,
-      ActiveEnergyTotalImportCalculationItemModel>(serviceProvider)
+  UsageActiveEnergyTotalImportT2CalculationItemModel,
+  ActiveEnergyTotalImportCalculationItemModel>(serviceProvider)
 {
 }
 
 public class SupplyActiveEnergyTotalImportT1CalculationItemModelActivator(
   IServiceProvider serviceProvider
 ) : InheritingModelActivator<
-      SupplyActiveEnergyTotalImportT1CalculationItemModel,
-      ActiveEnergyTotalImportCalculationItemModel>(serviceProvider)
+  SupplyActiveEnergyTotalImportT1CalculationItemModel,
+  ActiveEnergyTotalImportCalculationItemModel>(serviceProvider)
 {
 }
 
 public class SupplyActiveEnergyTotalImportT2CalculationItemModelActivator(
   IServiceProvider serviceProvider
 ) : InheritingModelActivator<
-      SupplyActiveEnergyTotalImportT2CalculationItemModel,
-      ActiveEnergyTotalImportCalculationItemModel>(serviceProvider)
+  SupplyActiveEnergyTotalImportT2CalculationItemModel,
+  ActiveEnergyTotalImportCalculationItemModel>(serviceProvider)
 {
 }
 
 public class SupplyBusinessUsageCalculationItemModelActivator(
   IServiceProvider serviceProvider
 ) : InheritingModelActivator<
-      SupplyBusinessUsageCalculationItemModel,
-      ActiveEnergyTotalImportCalculationItemModel>(serviceProvider)
+  SupplyBusinessUsageCalculationItemModel,
+  ActiveEnergyTotalImportCalculationItemModel>(serviceProvider)
 {
 }
 
 public class SupplyRenewableEnergyCalculationItemModelActivator(
   IServiceProvider serviceProvider
 ) : InheritingModelActivator<
-      SupplyRenewableEnergyCalculationItemModel,
-      ActiveEnergyTotalImportCalculationItemModel>(serviceProvider)
+  SupplyRenewableEnergyCalculationItemModel,
+  ActiveEnergyTotalImportCalculationItemModel>(serviceProvider)
 {
 }

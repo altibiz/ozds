@@ -19,9 +19,10 @@ public class MeasurementLocationQueries(
     await using var context = await factory
       .CreateDbContextAsync(cancellationToken);
     var measurementLocation = await context.MeasurementLocations
-      .Where(context.ForeignKeyEquals<MeasurementLocationEntity>(
-        nameof(MeasurementLocationEntity.Meter),
-        meterId))
+      .Where(
+        context.ForeignKeyEquals<MeasurementLocationEntity>(
+          nameof(MeasurementLocationEntity.Meter),
+          meterId))
       .FirstOrDefaultAsync(cancellationToken);
     return measurementLocation;
   }
@@ -34,8 +35,9 @@ public class MeasurementLocationQueries(
     await using var context = await factory
       .CreateDbContextAsync(cancellationToken);
     var meter = await context.MeasurementLocations
-      .Where(context.PrimaryKeyEquals<MeasurementLocationEntity>(
-        measurementLocationId))
+      .Where(
+        context.PrimaryKeyEquals<MeasurementLocationEntity>(
+          measurementLocationId))
       .Include(x => x.Meter)
       .Select(x => x.Meter)
       .FirstOrDefaultAsync(cancellationToken);

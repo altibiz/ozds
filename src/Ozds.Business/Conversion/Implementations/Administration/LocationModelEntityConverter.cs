@@ -10,10 +10,10 @@ namespace Ozds.Business.Conversion.Implementations.Administration;
 
 public class LocationModelEntityConverter(IServiceProvider serviceProvider)
   : InheritingModelEntityConverter<
-      LocationModel,
-      AuditableModel,
-      LocationEntity,
-      AuditableEntity>(serviceProvider)
+    LocationModel,
+    AuditableModel,
+    LocationEntity,
+    AuditableEntity>(serviceProvider)
 {
   private readonly ModelEntityConverter modelEntityConverter =
     serviceProvider.GetRequiredService<ModelEntityConverter>();
@@ -36,7 +36,7 @@ public class LocationModelEntityConverter(IServiceProvider serviceProvider)
       model.LegalPerson is null
         ? null!
         : modelEntityConverter
-            .ToEntity<LegalPersonEntity>(model.LegalPerson);
+          .ToEntity<LegalPersonEntity>(model.LegalPerson);
     entity.AltiBizSubProjectCode = model.AltiBizSubProjectCode;
   }
 
@@ -57,7 +57,7 @@ public class LocationModelEntityConverter(IServiceProvider serviceProvider)
     model.LegalPerson = entity.LegalPerson is null
       ? null!
       : modelEntityConverter
-          .ToModel<LegalPersonModel>(entity.LegalPerson);
+        .ToModel<LegalPersonModel>(entity.LegalPerson);
     model.AltiBizSubProjectCode = entity.AltiBizSubProjectCode;
   }
 }

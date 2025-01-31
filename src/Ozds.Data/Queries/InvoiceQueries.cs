@@ -26,7 +26,8 @@ public class InvoiceQueries(
 
     var filtered = role switch
     {
-      RoleEntity.LocationRepresentative or RoleEntity.NetworkUserRepresentative =>
+      RoleEntity.LocationRepresentative
+        or RoleEntity.NetworkUserRepresentative =>
         context.Representatives
           .Where(
             context.PrimaryKeyEquals<RepresentativeEntity>(
@@ -36,11 +37,14 @@ public class InvoiceQueries(
           .ThenInclude(x => x.Invoices)
           .Include(x => x.NetworkUsers)
           .ThenInclude(x => x.Invoices)
-          .SelectMany(x => x.Locations
-            .SelectMany(x => x.NetworkUsers
-              .SelectMany(x => x.Invoices))
-            .Concat(x.NetworkUsers
-              .SelectMany(x => x.Invoices))),
+          .SelectMany(
+            x => x.Locations
+              .SelectMany(
+                x => x.NetworkUsers
+                  .SelectMany(x => x.Invoices))
+              .Concat(
+                x.NetworkUsers
+                  .SelectMany(x => x.Invoices))),
       RoleEntity.OperatorRepresentative => context.NetworkUserInvoices,
       _ => throw new ArgumentOutOfRangeException(nameof(role))
     };
@@ -49,6 +53,7 @@ public class InvoiceQueries(
     {
       filtered = filtered.Where(x => x.FromDate >= fromDate);
     }
+
     if (toDate is not null)
     {
       filtered = filtered.Where(x => x.ToDate <= toDate);

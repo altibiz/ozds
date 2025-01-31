@@ -16,8 +16,6 @@ public abstract class Relay<TInEventArgs, TOutEventArgs, TPipe>(
   private readonly Channel<TInEventArgs> inChannel =
     Channel.CreateUnbounded<TInEventArgs>();
 
-  private event EventHandler<TOutEventArgs>? OutEvent;
-
   public void Subscribe(EventHandler<TOutEventArgs> eventHandler)
   {
     OutEvent += eventHandler;
@@ -27,6 +25,8 @@ public abstract class Relay<TInEventArgs, TOutEventArgs, TPipe>(
   {
     OutEvent -= eventHandler;
   }
+
+  private event EventHandler<TOutEventArgs>? OutEvent;
 
   protected abstract void SubscribeIn(
     EventHandler<TInEventArgs> eventHandler);
@@ -58,6 +58,7 @@ public abstract class Relay<TInEventArgs, TOutEventArgs, TPipe>(
         GetType().Name
       );
     }
+
     await base.StopAsync(cancellationToken);
     logger.LogInformation(
       "Relay {Relay} stopped",

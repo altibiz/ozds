@@ -9,10 +9,10 @@ namespace Ozds.Business.Conversion.Implementations.Finances;
 public class ReactiveEnergyTotalRampedT0CalculationItemModelEntityConverter(
   IServiceProvider serviceProvider
 ) : InheritingModelEntityConverter<
-      ReactiveEnergyTotalRampedT0CalculationItemModel,
-      CalculationItemModel,
-      ReactiveEnergyTotalRampedT0CalculationItemEntity,
-      CalculationItemEntity>(serviceProvider)
+  ReactiveEnergyTotalRampedT0CalculationItemModel,
+  CalculationItemModel,
+  ReactiveEnergyTotalRampedT0CalculationItemEntity,
+  CalculationItemEntity>(serviceProvider)
 {
   public override void InitializeEntity(
     ReactiveEnergyTotalRampedT0CalculationItemModel model,
@@ -55,9 +55,9 @@ public class
   UsageReactiveEnergyTotalRampedT0CalculationItemModelEntityConverter(
     IServiceProvider serviceProvider
   ) : InheritingModelEntityConverter<
-        UsageReactiveEnergyTotalRampedT0CalculationItemModel,
-        ReactiveEnergyTotalRampedT0CalculationItemModel,
-        UsageReactiveEnergyTotalRampedT0CalculationItemEntity,
-        ReactiveEnergyTotalRampedT0CalculationItemEntity>(serviceProvider)
+  UsageReactiveEnergyTotalRampedT0CalculationItemModel,
+  ReactiveEnergyTotalRampedT0CalculationItemModel,
+  UsageReactiveEnergyTotalRampedT0CalculationItemEntity,
+  ReactiveEnergyTotalRampedT0CalculationItemEntity>(serviceProvider)
 {
 }

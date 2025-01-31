@@ -12,6 +12,33 @@ public sealed class DataDbContextManager(
 
   private DataDbContext? context;
 
+  public async ValueTask DisposeAsync()
+  {
+    try
+    {
+      await _semaphore.WaitAsync();
+    }
+    catch (ObjectDisposedException)
+    {
+      return;
+    }
+
+    try
+    {
+      if (context is null)
+      {
+        return;
+      }
+
+      await context.DisposeAsync();
+    }
+    finally
+    {
+      _semaphore.Release();
+      _semaphore.Dispose();
+    }
+  }
+
   public async Task<DataDbContext> GetContext(
     CancellationToken cancellationToken = default
   )
@@ -55,32 +82,5 @@ public sealed class DataDbContextManager(
     }
 
     return context;
-  }
-
-  public async ValueTask DisposeAsync()
-  {
-    try
-    {
-      await _semaphore.WaitAsync();
-    }
-    catch (ObjectDisposedException)
-    {
-      return;
-    }
-
-    try
-    {
-      if (context is null)
-      {
-        return;
-      }
-
-      await context.DisposeAsync();
-    }
-    finally
-    {
-      _semaphore.Release();
-      _semaphore.Dispose();
-    }
   }
 }

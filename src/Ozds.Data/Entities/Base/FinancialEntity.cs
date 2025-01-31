@@ -6,13 +6,12 @@ namespace Ozds.Data.Entities.Base;
 
 public abstract class FinancialEntity : IdentifiableEntity, IFinancialEntity
 {
+  public virtual RepresentativeEntity? IssuedBy { get; set; }
   public string? RepresentativeId { get; set; }
 
   public DateTimeOffset IssuedOn { get; set; } = DateTimeOffset.UtcNow;
 
   public string? IssuedById { get; set; }
-
-  public virtual RepresentativeEntity? IssuedBy { get; set; }
 
   public DateTimeOffset FromDate { get; set; } = default!;
 

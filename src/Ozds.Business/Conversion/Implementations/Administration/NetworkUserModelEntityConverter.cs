@@ -10,10 +10,10 @@ namespace Ozds.Business.Conversion.Implementations.Administration;
 
 public class NetworkUserModelEntityConverter(IServiceProvider serviceProvider)
   : InheritingModelEntityConverter<
-      NetworkUserModel,
-      AuditableModel,
-      NetworkUserEntity,
-      AuditableEntity>(serviceProvider)
+    NetworkUserModel,
+    AuditableModel,
+    NetworkUserEntity,
+    AuditableEntity>(serviceProvider)
 {
   private readonly ModelEntityConverter modelEntityConverter =
     serviceProvider.GetRequiredService<ModelEntityConverter>();

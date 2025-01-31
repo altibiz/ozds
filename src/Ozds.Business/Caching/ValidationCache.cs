@@ -22,10 +22,11 @@ public class ValidationCache(
     return meter?.Id;
   }
 
-  protected override async Task<IMeasurementValidator?> GetValueFromDataSourceAsync(
-    string key,
-    CancellationToken cancellationToken
-  )
+  protected override async Task<IMeasurementValidator?>
+    GetValueFromDataSourceAsync(
+      string key,
+      CancellationToken cancellationToken
+    )
   {
     await using var scope = factory.CreateAsyncScope();
     var queries = scope.ServiceProvider

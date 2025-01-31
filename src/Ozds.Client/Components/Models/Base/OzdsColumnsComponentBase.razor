@@ -1,44 +1,43 @@
-@using MudBlazor
-@using System.Linq.Expressions
-@using System.Collections
-@using Ozds.Business.Models.Abstractions
-@using Ozds.Client.Components.Fields
-@using Ozds.Client.Extensions
-
 @namespace Ozds.Client.Components.Models.Base
 
 @typeparam TPrefix
 @typeparam TModel
+@using System.Collections
+@using System.Linq.Expressions
+@using MudBlazor
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Client.Extensions
 @inherits OzdsListModelComponentBase<TPrefix, TModel>
 
 @Base()
 
 @code {
+
   protected RenderFragment Column(Expression<Func<TModel, string?>> next)
   {
     return @<PropertyColumn
-        T="TPrefix"
-        TProperty="string"
-        Title="@(Translate(next.Label()))"
-        Property="@Member(next)" />;
+              T="TPrefix"
+              TProperty="string"
+              Title="@(Translate(next.Label()))"
+              Property="@Member(next)"/>;
   }
 
   protected RenderFragment Column(Expression<Func<TModel, Enum?>> next)
   {
     return @<PropertyColumn
-        T="TPrefix"
-        TProperty="Enum"
-        Title="@(Translate(next.Label()))"
-        Property="@Member(next)" />;
+              T="TPrefix"
+              TProperty="Enum"
+              Title="@(Translate(next.Label()))"
+              Property="@Member(next)"/>;
   }
 
   protected RenderFragment Column(Expression<Func<TModel, decimal?>> next)
   {
     return @<PropertyColumn
-        T="TPrefix"
-        TProperty="decimal?"
-        Title="@(Translate(next.Label()))"
-        Property="@Member(next)" />;
+              T="TPrefix"
+              TProperty="decimal?"
+              Title="@(Translate(next.Label()))"
+              Property="@Member(next)"/>;
   }
 
   protected RenderFragment Column<T>(
@@ -47,19 +46,19 @@
   {
     var nextFunc = next.Compile();
     return @<PropertyColumn
-        T="TPrefix"
-        TProperty="IEnumerable<T>"
-        Title="@(Translate(next.Label()))"
-        Property="@Member(next)">
-        <CellTemplate>
-          @if (Get(nextFunc)(context.Item) is { } item)
-          {
-            <MudText>
-              @string.Join(", ", item)
-            </MudText>
-          }
-        </CellTemplate>
-      </PropertyColumn>;
+              T="TPrefix"
+              TProperty="IEnumerable<T>"
+              Title="@(Translate(next.Label()))"
+              Property="@Member(next)">
+      <CellTemplate>
+        @if (Get(nextFunc)(context.Item) is { } item)
+        {
+          <MudText>
+            @string.Join(", ", item)
+          </MudText>
+        }
+      </CellTemplate>
+    </PropertyColumn>;
   }
 
   protected RenderFragment Column(
@@ -68,19 +67,19 @@
   {
     var nextFunc = next.Compile();
     return @<PropertyColumn
-        T="TPrefix"
-        TProperty="DateTimeOffset?"
-        Title="@(Translate(next.Label()))"
-        Property="@Member(next)">
-          <CellTemplate>
-            <MudText>
-              @if (Get(nextFunc)(context.Item) is { } date)
-              {
-                @DateTimeString(date)
-              }
-            </MudText>
-          </CellTemplate>
-        </PropertyColumn>;
+              T="TPrefix"
+              TProperty="DateTimeOffset?"
+              Title="@(Translate(next.Label()))"
+              Property="@Member(next)">
+      <CellTemplate>
+        <MudText>
+          @if (Get(nextFunc)(context.Item) is { } date)
+          {
+            @DateTimeString(date)
+          }
+        </MudText>
+      </CellTemplate>
+    </PropertyColumn>;
   }
 
   protected RenderFragment EnumerableColumn<T>(
@@ -89,75 +88,75 @@
   {
     var nextFunc = next.Compile();
     return @<PropertyColumn
-        T="TPrefix"
-        TProperty="T"
-        Title="@(Translate(next.Label()))"
-        Property="@Member(next)">
-        <CellTemplate>
-          @if (Get(nextFunc)(context.Item) is IEnumerable item)
-          {
-            <MudText>
-              @string.Join(", ", item)
-            </MudText>
-          }
-        </CellTemplate>
-      </PropertyColumn>;
+              T="TPrefix"
+              TProperty="T"
+              Title="@(Translate(next.Label()))"
+              Property="@Member(next)">
+      <CellTemplate>
+        @if (Get(nextFunc)(context.Item) is IEnumerable item)
+        {
+          <MudText>
+            @string.Join(", ", item)
+          </MudText>
+        }
+      </CellTemplate>
+    </PropertyColumn>;
   }
 
   protected RenderFragment TextColumn<T>(Expression<Func<TModel, T?>> next)
   {
     return @<PropertyColumn
-        T="TPrefix"
-        TProperty="T"
-        Title="@(Translate(next.Label()))"
-        Property="@Member(next)" />;
+              T="TPrefix"
+              TProperty="T"
+              Title="@(Translate(next.Label()))"
+              Property="@Member(next)"/>;
   }
 
   protected RenderFragment EnumColumn<T>(Expression<Func<TModel, T?>> next)
   {
     return @<PropertyColumn
-        T="TPrefix"
-        TProperty="T"
-        Title="@(Translate(next.Label()))"
-        Property="@Member(next)" />;
+              T="TPrefix"
+              TProperty="T"
+              Title="@(Translate(next.Label()))"
+              Property="@Member(next)"/>;
   }
 
   protected RenderFragment DateColumn<T>(Expression<Func<TModel, T?>> next)
   {
     var nextFunc = next.Compile();
     return @<PropertyColumn
-        T="TPrefix"
-        TProperty="T"
-        Title="@(Translate(next.Label()))"
-        Property="@Member(next)">
-          <CellTemplate>
-            <MudText>
-              @if (Get(nextFunc)(context.Item) is DateTimeOffset date)
-              {
-                @DateString(date)
-              }
-            </MudText>
-          </CellTemplate>
-        </PropertyColumn>;
+              T="TPrefix"
+              TProperty="T"
+              Title="@(Translate(next.Label()))"
+              Property="@Member(next)">
+      <CellTemplate>
+        <MudText>
+          @if (Get(nextFunc)(context.Item) is DateTimeOffset date)
+          {
+            @DateString(date)
+          }
+        </MudText>
+      </CellTemplate>
+    </PropertyColumn>;
   }
 
   protected RenderFragment DateTimeColumn<T>(Expression<Func<TModel, T?>> next)
   {
     var nextFunc = next.Compile();
     return @<PropertyColumn
-        T="TPrefix"
-        TProperty="T"
-        Title="@(Translate(next.Label()))"
-        Property="@Member(next)">
-          <CellTemplate>
-            <MudText>
-              @if (Get(nextFunc)(context.Item) is DateTimeOffset date)
-              {
-                @DateTimeString(date)
-              }
-            </MudText>
-          </CellTemplate>
-        </PropertyColumn>;
+              T="TPrefix"
+              TProperty="T"
+              Title="@(Translate(next.Label()))"
+              Property="@Member(next)">
+      <CellTemplate>
+        <MudText>
+          @if (Get(nextFunc)(context.Item) is DateTimeOffset date)
+          {
+            @DateTimeString(date)
+          }
+        </MudText>
+      </CellTemplate>
+    </PropertyColumn>;
   }
 
   protected RenderFragment LinkColumn(
@@ -166,15 +165,15 @@
   {
     var nextFunc = next.Compile();
     return @<TemplateColumn T="TPrefix" Title="@(Translate(next.Label()))">
-        <CellTemplate>
-          @if (Get(nextFunc)(context.Item) is { } model)
-          {
-            <MudLink Href="@(Provider.CreateLink(model))">
-              @model.Title
-            </MudLink>
-          }
-        </CellTemplate>
-      </TemplateColumn>;
+      <CellTemplate>
+        @if (Get(nextFunc)(context.Item) is { } model)
+        {
+          <MudLink Href="@(Provider.CreateLink(model))">
+            @model.Title
+          </MudLink>
+        }
+      </CellTemplate>
+    </TemplateColumn>;
   }
 
   protected RenderFragment LinkColumn<T>(
@@ -184,17 +183,18 @@
   {
     var nextFunc = next.Compile();
     return @<TemplateColumn T="TPrefix" Title="@(Translate(next.Label()))">
-        <CellTemplate>
-          @if (Get(nextFunc)(context.Item) is { } id)
-          {
-            var href = PageHref(
-              Provider.GetPageComponentType(typeof(T)),
-              new { id });
-            <MudLink Href="@href">
-              @id
-            </MudLink>
-          }
-        </CellTemplate>
-      </TemplateColumn>;
+      <CellTemplate>
+        @if (Get(nextFunc)(context.Item) is { } id)
+        {
+          var href = PageHref(
+            Provider.GetPageComponentType(typeof(T)),
+            new { id });
+          <MudLink Href="@href">
+            @id
+          </MudLink>
+        }
+      </CellTemplate>
+    </TemplateColumn>;
   }
+
 }

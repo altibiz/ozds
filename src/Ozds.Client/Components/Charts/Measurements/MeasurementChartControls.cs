@@ -14,6 +14,8 @@ namespace Ozds.Client.Components.Charts;
 
 public partial class MeasurementChartControls : OzdsComponentBase
 {
+  private readonly MeasurementChartParameters _parameters = new();
+
   [Parameter]
   public List<IMeter> Meters { get; set; } = new();
 
@@ -24,21 +26,25 @@ public partial class MeasurementChartControls : OzdsComponentBase
   public HashSet<MeasurementChartProfile> Profiles { get; set; } = new();
 
   [Parameter]
-  public RenderFragment<MeasurementChartParameters> ChildContent { get; set; } = default!;
+  public RenderFragment<MeasurementChartParameters> ChildContent { get; set; } =
+    default!;
 
   [Inject]
-  private IDataModelsChangedSubscriber DataModelsChangedSubscriber { get; set; } = default!;
+  private IDataModelsChangedSubscriber
+    DataModelsChangedSubscriber { get; set; } = default!;
 
   [Inject]
-  private IMeasurementsBufferedSubscriber MeasurementsBufferedSubscriber { get; set; } = default!;
+  private IMeasurementsBufferedSubscriber MeasurementsBufferedSubscriber
+  {
+    get;
+    set;
+  } = default!;
 
   [Inject]
   private AggregateUpserter AggregateUpserter { get; set; } = default!;
 
   [Inject]
   private MeterNamingConvention MeterNamingConvention { get; set; } = default!;
-
-  private readonly MeasurementChartParameters _parameters = new();
 
   protected override void OnInitialized()
   {
@@ -69,6 +75,7 @@ public partial class MeasurementChartControls : OzdsComponentBase
       _parameters.MeasurementLocations = MeasurementLocations.ToHashSet();
       return;
     }
+
     if (Meters.Count == 1)
     {
       _parameters.Meters = Meters.ToHashSet();
@@ -82,6 +89,7 @@ public partial class MeasurementChartControls : OzdsComponentBase
         .ToHashSet();
       return;
     }
+
     if (Meters.Count > 0)
     {
       _parameters.Meters = Meters
@@ -93,8 +101,9 @@ public partial class MeasurementChartControls : OzdsComponentBase
   private IEnumerable<MeasureModel> Measures()
   {
     return _parameters.MeasurementLocations
-      .SelectMany(x => MeterNamingConvention
-        .CapabilitiesForMeterId(x.MeterId).Measures)
+      .SelectMany(
+        x => MeterNamingConvention
+          .CapabilitiesForMeterId(x.MeterId).Measures)
       .Concat(Meters.SelectMany(x => x.Capabilities.Measures))
       .Distinct();
   }
@@ -108,8 +117,9 @@ public partial class MeasurementChartControls : OzdsComponentBase
     IEnumerable<string> measurementLocationIds)
   {
     _parameters.MeasurementLocations = MeasurementLocations
-      .Where(measurementLocation =>
-        measurementLocationIds.Contains(measurementLocation.Id))
+      .Where(
+        measurementLocation =>
+          measurementLocationIds.Contains(measurementLocation.Id))
       .ToHashSet();
     await Fetch();
   }
@@ -145,6 +155,7 @@ public partial class MeasurementChartControls : OzdsComponentBase
         _parameters.Resolution.ToTimeSpan(
           _parameters.Multiplier, now));
     }
+
     await Fetch();
   }
 
@@ -158,6 +169,7 @@ public partial class MeasurementChartControls : OzdsComponentBase
         _parameters.Resolution.ToTimeSpan(
           _parameters.Multiplier, now));
     }
+
     await Fetch();
   }
 
@@ -191,35 +203,37 @@ public partial class MeasurementChartControls : OzdsComponentBase
   {
     var queries = ScopedServices.GetRequiredService<MeasurementQueries>();
     var fromDate = _parameters.FromDate;
-    var toDate = fromDate.Add(_parameters.Resolution
-      .ToTimeSpan(_parameters.Multiplier, fromDate));
+    var toDate = fromDate.Add(
+      _parameters.Resolution
+        .ToTimeSpan(_parameters.Multiplier, fromDate));
     var fromMeters = await queries.ReadByMeterIdsDynamic(
       Meters,
       _parameters.Resolution,
       _parameters.Multiplier,
-      pageNumber: 1,
-      cancellationToken: CancellationToken,
-      fromDate: fromDate,
-      toDate: toDate
+      1,
+      CancellationToken,
+      fromDate,
+      toDate
     );
     var fromMeasurementLocations = await queries
       .ReadByMeasurementLocationIdsDynamic(
         MeasurementLocations,
         _parameters.Resolution,
         _parameters.Multiplier,
-        pageNumber: 1,
-        cancellationToken: CancellationToken,
-        fromDate: fromDate,
-        toDate: toDate
+        1,
+        CancellationToken,
+        fromDate,
+        toDate
       );
-    _parameters.Measurements = new(
+    _parameters.Measurements = new PaginatedList<IMeasurement>(
       fromMeters.Items
         .Concat(fromMeasurementLocations.Items)
-        .DistinctBy(x =>
-          (x.MeterId,
-          x.MeasurementLocationId,
-          x.Timestamp,
-          x.GetType()))
+        .DistinctBy(
+          x =>
+            (x.MeterId,
+              x.MeasurementLocationId,
+              x.Timestamp,
+              x.GetType()))
         .OrderBy(x => x.Timestamp)
         .ToList(),
       fromMeters.TotalCount + fromMeasurementLocations.TotalCount
@@ -232,7 +246,7 @@ public partial class MeasurementChartControls : OzdsComponentBase
   {
     if (!_parameters.Refresh
       || (measurements.Count == 0
-      && aggregates.Count == 0))
+        && aggregates.Count == 0))
     {
       return;
     }
@@ -250,19 +264,21 @@ public partial class MeasurementChartControls : OzdsComponentBase
     {
       var newMeasurements = measurements
         .Where(x => x.Timestamp >= minNew)
-        .Where(x =>
-          Meters.Exists(meter => meter.Id == x.MeterId)
-          || MeasurementLocations.Exists(
+        .Where(
+          x =>
+            Meters.Exists(meter => meter.Id == x.MeterId)
+            || MeasurementLocations.Exists(
               location => location.Id == x.MeasurementLocationId))
         .ToList();
       var concatenated = _parameters.Measurements.Items
         .Concat(newMeasurements)
         .Where(x => x.Timestamp >= min)
-        .DistinctBy(x =>
-          (x.MeterId,
-          x.MeasurementLocationId,
-          x.Timestamp,
-          x.GetType()))
+        .DistinctBy(
+          x =>
+            (x.MeterId,
+              x.MeasurementLocationId,
+              x.Timestamp,
+              x.GetType()))
         .OrderBy(x => x.Timestamp)
         .ToList();
       _parameters.Measurements = new PaginatedList<IMeasurement>(
@@ -275,30 +291,34 @@ public partial class MeasurementChartControls : OzdsComponentBase
       var newAggregates = aggregates
         .Where(x => x.Timestamp >= minNew)
         .Where(x => x.Interval == appropriateInterval)
-        .Where(x =>
-          Meters.Exists(meter => meter.Id == x.MeterId)
-          || MeasurementLocations.Exists(
+        .Where(
+          x =>
+            Meters.Exists(meter => meter.Id == x.MeterId)
+            || MeasurementLocations.Exists(
               location => location.Id == x.MeasurementLocationId))
         .OfType<IAggregate>();
       var aggregated = _parameters.Measurements.Items.OfType<IAggregate>()
         .Concat(newAggregates)
         .Where(x => x.Timestamp >= min)
-        .GroupBy(x =>
-          (x.Timestamp, x.MeasurementLocationId, x.MeterId, x.GetType()))
-        .Select(x => x
-          .Aggregate(AggregateUpserter.UpsertModelDynamic))
+        .GroupBy(
+          x =>
+            (x.Timestamp, x.MeasurementLocationId, x.MeterId, x.GetType()))
+        .Select(
+          x => x
+            .Aggregate(AggregateUpserter.UpsertModelDynamic))
         .OfType<IMeasurement>()
-        .DistinctBy(x =>
-          (x.MeterId,
-          x.MeasurementLocationId,
-          x.Timestamp,
-          x.GetType()))
+        .DistinctBy(
+          x =>
+            (x.MeterId,
+              x.MeasurementLocationId,
+              x.Timestamp,
+              x.GetType()))
         .OrderBy(x => x.Timestamp)
         .ToList();
       _parameters.Measurements = new PaginatedList<IMeasurement>(
         aggregated.ToList(),
         _parameters.Measurements.TotalCount
-          - _parameters.Measurements.Items.Count + aggregated.Count
+        - _parameters.Measurements.Items.Count + aggregated.Count
       );
     }
 

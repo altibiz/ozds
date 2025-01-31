@@ -32,7 +32,7 @@ public class MeasurementFlushHandler(
     CancellationToken cancellationToken
   )
   {
-    var flushed = buffer.Flush(immediate: true);
+    var flushed = buffer.Flush(true);
     await mutations.CreateMeasurements(flushed, cancellationToken);
   }
 }

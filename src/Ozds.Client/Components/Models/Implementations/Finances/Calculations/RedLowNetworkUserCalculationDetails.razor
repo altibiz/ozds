@@ -1,18 +1,17 @@
-@using Ozds.Business.Models
-@using Ozds.Business.Models.Abstractions
-@using Ozds.Client.Components.Models.Base
-@using Ozds.Client.Components.Streaming
-
 @namespace Ozds.Client.Components.Models
 
-@inherits OzdsDetailsComponentBase<RedLowNetworkUserCalculationModel>
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Client.Components.Streaming
+@inherits Ozds.Client.Components.Models.Base.OzdsDetailsComponentBase<Ozds.Business.Models.RedLowNetworkUserCalculationModel>
 
 @(Base<IIdentifiable>())
 
-@(Base<IFinancial>(
-    Base<INetworkUserCalculation>(@<Fragment>
-      <Details Model="@Model.UsageActiveEnergyTotalImportT1" />
-      <Details Model="@Model.UsageActiveEnergyTotalImportT2" />
-      <Details Model="@Model.UsageActivePowerTotalImportT1Peak" />
-      <Details Model="@Model.UsageReactiveEnergyTotalRampedT0" />
+@(
+Base<IFinancial>(
+  Base<INetworkUserCalculation>(
+    @<Fragment>
+      <Details Model="@Model.UsageActiveEnergyTotalImportT1"/>
+      <Details Model="@Model.UsageActiveEnergyTotalImportT2"/>
+      <Details Model="@Model.UsageActivePowerTotalImportT1Peak"/>
+      <Details Model="@Model.UsageReactiveEnergyTotalRampedT0"/>
     </Fragment>)))

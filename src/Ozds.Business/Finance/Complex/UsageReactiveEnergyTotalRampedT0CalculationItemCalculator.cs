@@ -1,7 +1,6 @@
 using Ozds.Business.Finance.Base;
 using Ozds.Business.Models.Complex;
 using Ozds.Business.Models.Composite;
-using YesSql.Services;
 
 namespace Ozds.Business.Finance.Complex;
 

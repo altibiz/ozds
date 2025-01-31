@@ -1,17 +1,15 @@
-@using Ozds.Business.Models
-@using Ozds.Business.Models.Base
-@using Ozds.Client.Components.Models.Base
-
 @namespace Ozds.Client.Components.Models
 
 @typeparam TPrefix
-@typeparam TModel where TModel : MessengerModel
-@inherits OzdsEditComponentBase<TPrefix, TModel>
+@typeparam TModel where TModel : Ozds.Business.Models.Base.MessengerModel
+@using Ozds.Business.Models
+@using Ozds.Business.Models.Base
+@inherits Ozds.Client.Components.Models.Base.OzdsEditComponentBase<TPrefix, TModel>
 
 @(Base<IdentifiableModel>())
 
 @(LinkField<LocationModel>(x => x.LocationId))
 
-<PrefixedEdit Model="@Model" Prefix="@Wrap(x => x.MaxInactivityPeriod)" />
+<PrefixedEdit Model="@Model" Prefix="@Wrap(x => x.MaxInactivityPeriod)"/>
 
-<PrefixedEdit Model="@Model" Prefix="@Wrap(x => x.PushDelayPeriod)" />
+<PrefixedEdit Model="@Model" Prefix="@Wrap(x => x.PushDelayPeriod)"/>

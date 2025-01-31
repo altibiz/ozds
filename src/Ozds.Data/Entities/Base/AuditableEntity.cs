@@ -6,6 +6,7 @@ namespace Ozds.Data.Entities.Base;
 
 public abstract class AuditableEntity : IdentifiableEntity, IAuditableEntity
 {
+  public virtual RepresentativeEntity? DeletedBy { get; set; }
   public DateTimeOffset CreatedOn { get; set; } = DateTimeOffset.UtcNow;
 
   public string? CreatedById { get; set; }
@@ -23,8 +24,6 @@ public abstract class AuditableEntity : IdentifiableEntity, IAuditableEntity
   public DateTimeOffset? DeletedOn { get; set; }
 
   public string? DeletedById { get; set; }
-
-  public virtual RepresentativeEntity? DeletedBy { get; set; }
 
   public bool Restore { get; set; } = false;
 

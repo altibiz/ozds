@@ -5,11 +5,11 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
 
-public class NetworkUserCatalogueEntity : CatalogueEntity, INetworkUserCatalogueEntity
+public class NetworkUserCatalogueEntity : CatalogueEntity,
+  INetworkUserCatalogueEntity
 {
   public virtual ICollection<MeasurementLocationEntity>
-    NetworkUserMeasurementLocations
-  { get; set; } = default!;
+    NetworkUserMeasurementLocations { get; set; } = default!;
 
   public virtual ICollection<LocationEntity> Locations { get; set; } = default!;
 
@@ -23,8 +23,7 @@ public class NetworkUserCatalogueEntity<TNetworkUserCalculation>
   where TNetworkUserCalculation : NetworkUserCalculationEntity
 {
   public virtual ICollection<TNetworkUserCalculation>
-    NetworkUserCalculations
-  { get; set; } =
+    NetworkUserCalculations { get; set; } =
     default!;
 }
 

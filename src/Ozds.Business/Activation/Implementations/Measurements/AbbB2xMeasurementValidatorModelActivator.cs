@@ -7,8 +7,8 @@ namespace Ozds.Business.Activation.Implementations.Measurements;
 public class
   AbbB2xMeasurementValidatorModelActivator(IServiceProvider serviceProvider)
   : InheritingModelActivator<
-  AbbB2xMeasurementValidatorModel,
-  MeasurementValidatorModel>(serviceProvider)
+    AbbB2xMeasurementValidatorModel,
+    MeasurementValidatorModel>(serviceProvider)
 {
   public override void Initialize(AbbB2xMeasurementValidatorModel model)
   {

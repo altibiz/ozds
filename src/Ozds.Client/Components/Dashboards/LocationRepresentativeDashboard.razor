@@ -1,13 +1,9 @@
-@using MudBlazor
-@using Ozds.Business.Models.Abstractions
-@using Ozds.Business.Time
-@using Ozds.Business.Analysis
-@using Ozds.Client.Components.Base
-@using Ozds.Client.State
-
 @namespace Ozds.Client.Components.Dashboards
 
-@inherits OzdsComponentBase
+@using MudBlazor
+@using Ozds.Business.Analysis
+@using Ozds.Business.Models.Abstractions
+@inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 <MudHidden Breakpoint="Breakpoint.MdAndUp">
   <MudGrid Class="my-3 pa-1">
@@ -109,9 +105,11 @@
 </MudHidden>
 
 @code {
+
   [Parameter]
   public Analysis Model { get; set; } = default!;
 
   [Parameter]
   public List<IMeter> Meters { get; set; } = default!;
+
 }

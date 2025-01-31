@@ -3,7 +3,8 @@ using Ozds.Business.Models.Base;
 
 namespace Ozds.Business.Activation.Implementations.Measurements;
 
-public class MeasurementModelActivator : ConcreteModelActivator<MeasurementModel>
+public class
+  MeasurementModelActivator : ConcreteModelActivator<MeasurementModel>
 {
   public override void Initialize(MeasurementModel model)
   {

@@ -80,13 +80,15 @@ public static class DbContextAssertionsExtensions
     TAssertions,
     TCollection
   >(
-    this GenericCollectionAssertions<TCollection, TSubject, TAssertions> assertions,
+    this GenericCollectionAssertions<TCollection, TSubject, TAssertions>
+      assertions,
     DbContext dbContext,
     TCollection expectation,
     string because = "",
     params object[] becauseArgs
   )
-    where TAssertions : GenericCollectionAssertions<TCollection, TSubject, TAssertions>
+    where TAssertions : GenericCollectionAssertions<TCollection, TSubject,
+      TAssertions>
     where TCollection : IEnumerable<TSubject>
   {
     var ignoreNavigationsOptions = new IgnoreNavigationsOptions(dbContext);
@@ -115,13 +117,15 @@ public static class DbContextAssertionsExtensions
     TAssertions,
     TCollection
   >(
-    this GenericCollectionAssertions<TCollection, TSubject, TAssertions> assertions,
+    this GenericCollectionAssertions<TCollection, TSubject, TAssertions>
+      assertions,
     DbContext dbContext,
     TCollection expectation,
     string because = "",
     params object[] becauseArgs
   )
-    where TAssertions : GenericCollectionAssertions<TCollection, TSubject, TAssertions>
+    where TAssertions : GenericCollectionAssertions<TCollection, TSubject,
+      TAssertions>
     where TCollection : IEnumerable<TSubject>
   {
     var ignoreNavigationsOptions = new IgnoreNavigationsOptions(dbContext);

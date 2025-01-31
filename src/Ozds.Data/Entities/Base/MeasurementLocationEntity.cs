@@ -4,13 +4,13 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
 
-public class MeasurementLocationEntity : AuditableEntity, IMeasurementLocationEntity
+public class MeasurementLocationEntity : AuditableEntity,
+  IMeasurementLocationEntity
 {
-  public string MeterId { get; set; } = default!;
-
   public virtual MeterEntity Meter { get; set; } = default!;
 
   public string Kind { get; set; } = default!;
+  public string MeterId { get; set; } = default!;
 }
 
 public class MeasurementLocationEntityTypeHierarchyConfiguration :

@@ -15,12 +15,13 @@ public static class ExpensesExtensions
   {
     return models
       .GroupBy(x => x.FromDate)
-      .Select(x => new Expenses(
-        x.Key,
-        x
-          .Select(x => x.Total_EUR)
-          .DefaultIfEmpty(0)
-          .Sum())
+      .Select(
+        x => new Expenses(
+          x.Key,
+          x
+            .Select(x => x.Total_EUR)
+            .DefaultIfEmpty(0)
+            .Sum())
       )
       .OrderByDescending(x => x.Timestamp)
       .ToList();
@@ -32,13 +33,14 @@ public static class ExpensesExtensions
   {
     return models
       .GroupBy(x => x.FromDate)
-      .Select(x => new Expenses(
-        x.Key,
-        x
-          .Select(x => x.TotalWithTax_EUR)
-          .DefaultIfEmpty(0)
-          .Sum()
-      ))
+      .Select(
+        x => new Expenses(
+          x.Key,
+          x
+            .Select(x => x.TotalWithTax_EUR)
+            .DefaultIfEmpty(0)
+            .Sum()
+        ))
       .OrderByDescending(x => x.Timestamp)
       .ToList();
   }

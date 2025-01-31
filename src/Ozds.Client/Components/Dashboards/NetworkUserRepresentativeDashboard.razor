@@ -1,16 +1,11 @@
+@namespace Ozds.Client.Components.Dashboards
+
 @using MudBlazor
 @using Ozds.Business.Analysis
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Business.Models.Enums
-@using Ozds.Business.Time
-@using Ozds.Client.Components.Base
 @using Ozds.Client.Components.Charts
-@using Ozds.Client.Components.Streaming
-@using Ozds.Client.State
-
-@namespace Ozds.Client.Components.Dashboards
-
-@inherits OzdsComponentBase
+@inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 <MudHidden Breakpoint="Breakpoint.MdAndUp">
   <MudGrid Class="my-3 pa-1">
@@ -48,7 +43,8 @@
         </MudItem>
         <div Class="d-flex justify-center" MaxWidth="MaxWidth.Small">
           <MudText Typo="Typo.h6">
-            @(Model.LastMonthExpenses.Total_EUR == 0
+            @(
+            Model.LastMonthExpenses.Total_EUR == 0
               ? Translate("Invoice pending...")
               : NumericString(Model.LastMonthExpenses.Total_EUR) + " EUR")
           </MudText>
@@ -63,15 +59,16 @@
           </MudText>
         </MudItem>
         @{
-          var parameters = new MeasurementChartParameters {
+          var parameters = new MeasurementChartParameters
+          {
             Meters = Meters.ToHashSet(),
             Measure = MeasureModel.ActivePower,
             Resolution = ResolutionModel.Year,
             Multiplier = 1,
-            Operator = OperatorModel.Last,
+            Operator = OperatorModel.Last
           };
         }
-        <MeasurementLineChart Parameters="@parameters" Area />
+        <MeasurementLineChart Parameters="@parameters" Area/>
       </MudPaper>
     </MudItem>
   </MudGrid>
@@ -124,7 +121,8 @@
         </MudItem>
         <MudItem Class="" Style="font-size: large; font-weight: bold; align-self: center;">
           <MudText Typo="Typo.h5">
-            @(Model.LastMonthExpenses.Total_EUR == 0
+            @(
+            Model.LastMonthExpenses.Total_EUR == 0
               ? Translate("Invoice pending...")
               : NumericString(Model.LastMonthExpenses.Total_EUR) + " EUR")
           </MudText>
@@ -139,24 +137,27 @@
           </MudText>
         </MudItem>
         @{
-          var parameters = new MeasurementChartParameters {
+          var parameters = new MeasurementChartParameters
+          {
             Meters = Meters.ToHashSet(),
             Measure = MeasureModel.ActivePower,
             Resolution = ResolutionModel.Year,
             Multiplier = 1,
-            Operator = OperatorModel.Last,
+            Operator = OperatorModel.Last
           };
         }
-        <MeasurementLineChart Parameters="@parameters" Area />
+        <MeasurementLineChart Parameters="@parameters" Area/>
       </MudPaper>
     </MudItem>
   </MudGrid>
 </MudHidden>
 
 @code {
+
   [Parameter]
   public Analysis Model { get; set; } = default!;
 
   [Parameter]
   public List<IMeter> Meters { get; set; } = default!;
+
 }

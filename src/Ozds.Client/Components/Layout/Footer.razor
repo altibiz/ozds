@@ -1,6 +1,4 @@
 @using MudBlazor
-@using Ozds.Client.State
-
 @namespace Ozds.Client.Components.Layout
 
 <MudContainer
@@ -13,6 +11,7 @@
 </MudContainer>
 
 @code {
+
   [Parameter]
   public MaxWidth MaxWidth { get; set; } = MaxWidth.Large;
 
@@ -21,5 +20,5 @@
 
   [Parameter]
   public string Class { get; set; } = string.Empty;
-}
 
+}

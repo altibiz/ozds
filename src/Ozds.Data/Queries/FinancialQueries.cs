@@ -25,9 +25,10 @@ public class FinancialQueries(
       .CreateDbContextAsync(cancellationToken);
 
     var filtered = context.NetworkUserCalculations
-      .Where(context.ForeignKeyIn<NetworkUserCalculationEntity>(
-        nameof(NetworkUserCalculationEntity.NetworkUserMeasurementLocationId),
-        measurementLocationIds))
+      .Where(
+        context.ForeignKeyIn<NetworkUserCalculationEntity>(
+          nameof(NetworkUserCalculationEntity.NetworkUserMeasurementLocationId),
+          measurementLocationIds))
       .Where(calculation => calculation.FromDate >= fromDate)
       .Where(calculation => calculation.FromDate < toDate)
       .Include(calculation => calculation.NetworkUserInvoice);
@@ -42,12 +43,13 @@ public class FinancialQueries(
       .Take(pageCount)
       .ToListAsync(cancellationToken);
 
-    return new(
+    return new PaginatedList<IFinancialEntity>(
       items
-        .Concat(items
-          .Select(calculation => calculation.NetworkUserInvoice)
-          .OfType<IFinancialEntity>()
-          .DistinctBy(invoice => invoice.Id))
+        .Concat(
+          items
+            .Select(calculation => calculation.NetworkUserInvoice)
+            .OfType<IFinancialEntity>()
+            .DistinctBy(invoice => invoice.Id))
         .ToList(),
       count
     );
@@ -67,15 +69,17 @@ public class FinancialQueries(
       .CreateDbContextAsync(cancellationToken);
 
     var filtered = context.NetworkUserCalculations
-      .Where(context.ForeignKeyIn<NetworkUserCalculationEntity>(
-        nameof(NetworkUserCalculationEntity.MeterId),
-        meterIds))
+      .Where(
+        context.ForeignKeyIn<NetworkUserCalculationEntity>(
+          nameof(NetworkUserCalculationEntity.MeterId),
+          meterIds))
       .Where(calculation => calculation.FromDate >= fromDate)
       .Where(calculation => calculation.FromDate < toDate)
       .Include(calculation => calculation.NetworkUserInvoice);
 
     var ordered = filtered
-      .OrderByDescending(calculation => calculation.NetworkUserInvoice.IssuedOn);
+      .OrderByDescending(
+        calculation => calculation.NetworkUserInvoice.IssuedOn);
 
     var count = await filtered.CountAsync(cancellationToken);
 
@@ -84,12 +88,13 @@ public class FinancialQueries(
       .Take(pageCount)
       .ToListAsync(cancellationToken);
 
-    return new(
+    return new PaginatedList<IFinancialEntity>(
       items
-        .Concat(items
-          .Select(calculation => calculation.NetworkUserInvoice)
-          .OfType<IFinancialEntity>()
-          .DistinctBy(invoice => invoice.Id))
+        .Concat(
+          items
+            .Select(calculation => calculation.NetworkUserInvoice)
+            .OfType<IFinancialEntity>()
+            .DistinctBy(invoice => invoice.Id))
         .ToList(),
       count
     );

@@ -2,13 +2,9 @@ namespace Ozds.Business.Extensions;
 
 public static class IntExtensions
 {
-  public static string ToColor(this int i)
-  {
-    return Colors[i / 3 % Colors.Length][i % 3];
-  }
-
   // NOTE: generate { |$i| if $i <= 10 { { out: (["#FB8C00", "#E91E63", "#20F97B"] | each { |x| pastel rotate ($i * 10) $x | pastel format hex }), next: ($i + 1) } } } 1 | to json
-  private static readonly string[][] Colors = [
+  private static readonly string[][] Colors =
+  [
     [
       "#fbd500",
       "#e91e25",
@@ -60,4 +56,9 @@ public static class IntExtensions
       "#f9209f"
     ]
   ];
+
+  public static string ToColor(this int i)
+  {
+    return Colors[i / 3 % Colors.Length][i % 3];
+  }
 }

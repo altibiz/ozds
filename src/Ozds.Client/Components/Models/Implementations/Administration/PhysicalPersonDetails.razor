@@ -1,9 +1,6 @@
-@using Ozds.Business.Models.Complex
-@using Ozds.Client.Components.Models.Base
-
 @namespace Ozds.Client.Components.Models.Implementations.Administration
 
-@inherits OzdsDetailsComponentBase<PhysicalPersonModel>
+@inherits Ozds.Client.Components.Models.Base.OzdsDetailsComponentBase<Ozds.Business.Models.Complex.PhysicalPersonModel>
 
 @Field(x => x.Name)
 

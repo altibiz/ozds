@@ -14,6 +14,6 @@ public class AbbB2xCapabilities : ICapabilities
     MeasureModel.ApparentPower,
     MeasureModel.ActiveEnergy,
     MeasureModel.ReactiveEnergy,
-    MeasureModel.ApparentEnergy,
+    MeasureModel.ApparentEnergy
   };
 }

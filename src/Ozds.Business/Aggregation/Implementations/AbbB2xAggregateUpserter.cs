@@ -3,7 +3,8 @@ using Ozds.Business.Models;
 
 namespace Ozds.Business.Aggregation.Implementations;
 
-public class AbbB2xAggregateUpserter : ConcreteAggregateUpserter<AbbB2xAggregateModel>
+public class
+  AbbB2xAggregateUpserter : ConcreteAggregateUpserter<AbbB2xAggregateModel>
 {
   protected override AbbB2xAggregateModel UpsertConcreteModel(
     AbbB2xAggregateModel lhs,
@@ -172,7 +173,8 @@ public class AbbB2xAggregateUpserter : ConcreteAggregateUpserter<AbbB2xAggregate
         rhs.ReactiveEnergyL1ImportT0_VARh,
         rhs.Count
       ),
-      DerivedReactivePowerL1ImportT0_VAR = lhs.DerivedReactivePowerL1ImportT0_VAR
+      DerivedReactivePowerL1ImportT0_VAR = lhs
+        .DerivedReactivePowerL1ImportT0_VAR
         .UpsertDerivedPowerFromEnergy(
           lhs.QuarterHourCount,
           rhs.DerivedReactivePowerL1ImportT0_VAR,
@@ -187,7 +189,8 @@ public class AbbB2xAggregateUpserter : ConcreteAggregateUpserter<AbbB2xAggregate
         rhs.ReactiveEnergyL2ImportT0_VARh,
         rhs.Count
       ),
-      DerivedReactivePowerL2ImportT0_VAR = lhs.DerivedReactivePowerL2ImportT0_VAR
+      DerivedReactivePowerL2ImportT0_VAR = lhs
+        .DerivedReactivePowerL2ImportT0_VAR
         .UpsertDerivedPowerFromEnergy(
           lhs.QuarterHourCount,
           rhs.DerivedReactivePowerL2ImportT0_VAR,
@@ -202,7 +205,8 @@ public class AbbB2xAggregateUpserter : ConcreteAggregateUpserter<AbbB2xAggregate
         rhs.ReactiveEnergyL3ImportT0_VARh,
         rhs.Count
       ),
-      DerivedReactivePowerL3ImportT0_VAR = lhs.DerivedReactivePowerL3ImportT0_VAR
+      DerivedReactivePowerL3ImportT0_VAR = lhs
+        .DerivedReactivePowerL3ImportT0_VAR
         .UpsertDerivedPowerFromEnergy(
           lhs.QuarterHourCount,
           rhs.DerivedReactivePowerL3ImportT0_VAR,
@@ -217,7 +221,8 @@ public class AbbB2xAggregateUpserter : ConcreteAggregateUpserter<AbbB2xAggregate
         rhs.ReactiveEnergyL1ExportT0_VARh,
         rhs.Count
       ),
-      DerivedReactivePowerL1ExportT0_VAR = lhs.DerivedReactivePowerL1ExportT0_VAR
+      DerivedReactivePowerL1ExportT0_VAR = lhs
+        .DerivedReactivePowerL1ExportT0_VAR
         .UpsertDerivedPowerFromEnergy(
           lhs.QuarterHourCount,
           rhs.DerivedReactivePowerL1ExportT0_VAR,
@@ -232,7 +237,8 @@ public class AbbB2xAggregateUpserter : ConcreteAggregateUpserter<AbbB2xAggregate
         rhs.ReactiveEnergyL2ExportT0_VARh,
         rhs.Count
       ),
-      DerivedReactivePowerL2ExportT0_VAR = lhs.DerivedReactivePowerL2ExportT0_VAR
+      DerivedReactivePowerL2ExportT0_VAR = lhs
+        .DerivedReactivePowerL2ExportT0_VAR
         .UpsertDerivedPowerFromEnergy(
           lhs.QuarterHourCount,
           rhs.DerivedReactivePowerL2ExportT0_VAR,
@@ -247,7 +253,8 @@ public class AbbB2xAggregateUpserter : ConcreteAggregateUpserter<AbbB2xAggregate
         rhs.ReactiveEnergyL3ExportT0_VARh,
         rhs.Count
       ),
-      DerivedReactivePowerL3ExportT0_VAR = lhs.DerivedReactivePowerL3ExportT0_VAR
+      DerivedReactivePowerL3ExportT0_VAR = lhs
+        .DerivedReactivePowerL3ExportT0_VAR
         .UpsertDerivedPowerFromEnergy(
           lhs.QuarterHourCount,
           rhs.DerivedReactivePowerL3ExportT0_VAR,
@@ -287,12 +294,14 @@ public class AbbB2xAggregateUpserter : ConcreteAggregateUpserter<AbbB2xAggregate
           lhs.Timestamp,
           lhs.Interval
         ),
-      ReactiveEnergyTotalImportT0_VARh = lhs.ReactiveEnergyTotalImportT0_VARh.Upsert(
-        lhs.Count,
-        rhs.ReactiveEnergyTotalImportT0_VARh,
-        rhs.Count
-      ),
-      DerivedReactivePowerTotalImportT0_VAR = lhs.DerivedReactivePowerTotalImportT0_VAR
+      ReactiveEnergyTotalImportT0_VARh =
+        lhs.ReactiveEnergyTotalImportT0_VARh.Upsert(
+          lhs.Count,
+          rhs.ReactiveEnergyTotalImportT0_VARh,
+          rhs.Count
+        ),
+      DerivedReactivePowerTotalImportT0_VAR = lhs
+        .DerivedReactivePowerTotalImportT0_VAR
         .UpsertDerivedPowerFromEnergy(
           lhs.QuarterHourCount,
           rhs.DerivedReactivePowerTotalImportT0_VAR,
@@ -302,12 +311,14 @@ public class AbbB2xAggregateUpserter : ConcreteAggregateUpserter<AbbB2xAggregate
           lhs.Timestamp,
           lhs.Interval
         ),
-      ReactiveEnergyTotalExportT0_VARh = lhs.ReactiveEnergyTotalExportT0_VARh.Upsert(
-        lhs.Count,
-        rhs.ReactiveEnergyTotalExportT0_VARh,
-        rhs.Count
-      ),
-      DerivedReactivePowerTotalExportT0_VAR = lhs.DerivedReactivePowerTotalExportT0_VAR
+      ReactiveEnergyTotalExportT0_VARh =
+        lhs.ReactiveEnergyTotalExportT0_VARh.Upsert(
+          lhs.Count,
+          rhs.ReactiveEnergyTotalExportT0_VARh,
+          rhs.Count
+        ),
+      DerivedReactivePowerTotalExportT0_VAR = lhs
+        .DerivedReactivePowerTotalExportT0_VAR
         .UpsertDerivedPowerFromEnergy(
           lhs.QuarterHourCount,
           rhs.DerivedReactivePowerTotalExportT0_VAR,
@@ -346,7 +357,7 @@ public class AbbB2xAggregateUpserter : ConcreteAggregateUpserter<AbbB2xAggregate
           rhs.ActiveEnergyTotalImportT2_Wh,
           lhs.Timestamp,
           lhs.Interval
-        ),
+        )
     };
   }
 }

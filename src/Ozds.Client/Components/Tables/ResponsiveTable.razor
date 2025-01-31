@@ -1,12 +1,9 @@
-@using MudBlazor
-@using Ozds.Business.Models.Abstractions
-@using Ozds.Client.Components.Base
-
 @namespace Ozds.Client.Components.Tables
 
 @typeparam T
 
-@inherits OzdsComponentBase
+@using MudBlazor
+@inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 <MudHidden Breakpoint="Breakpoint.MdAndUp">
   <MudTextField
@@ -16,7 +13,7 @@
     Immediate="true"
     AdornmentIcon="@Icons.Material.Filled.Search"
     IconSize="Size.Medium"
-    Class="mt-0" />
+    Class="mt-0"/>
   @foreach (var (item, index) in Model.Select((x, i) => (x, i)))
   {
     if (!Filter(item))
@@ -34,11 +31,7 @@
           <MudIconButton
             Icon="@(Icons.Material.Filled.KeyboardArrowUp)"
             Color="Color.Default"
-            OnClick="@(() =>
-              _metadata[index] = _metadata[index] with
-              {
-                Expanded = !_metadata[index].Expanded
-              })" />
+            OnClick="@(() => _metadata[index] = _metadata[index] with { Expanded = !_metadata[index].Expanded })"/>
         </MudItem>
         <MudCollapse Class="py-2" Expanded="@_metadata[index].Expanded">
           <MudStack>

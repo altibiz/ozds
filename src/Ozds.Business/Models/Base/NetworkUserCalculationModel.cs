@@ -8,6 +8,8 @@ namespace Ozds.Business.Models.Base;
 public abstract class NetworkUserCalculationModel : CalculationModel,
   INetworkUserCalculation
 {
+  protected abstract IEnumerable<ICalculationItem> AdditionalUsageItems { get; }
+
   [Required]
   public required string MeterId { get; set; } = default!;
 
@@ -16,30 +18,23 @@ public abstract class NetworkUserCalculationModel : CalculationModel,
 
   [Required]
   public required UsageMeterFeeCalculationItemModel
-    UsageMeterFee
-  { get; set; } = default!;
+    UsageMeterFee { get; set; } = default!;
 
   [Required]
   public required SupplyActiveEnergyTotalImportT1CalculationItemModel
-    SupplyActiveEnergyTotalImportT1
-  { get; set; } = default!;
+    SupplyActiveEnergyTotalImportT1 { get; set; } = default!;
 
   [Required]
   public required SupplyActiveEnergyTotalImportT2CalculationItemModel
-    SupplyActiveEnergyTotalImportT2
-  { get; set; } = default!;
+    SupplyActiveEnergyTotalImportT2 { get; set; } = default!;
 
   [Required]
   public required SupplyBusinessUsageCalculationItemModel
-    SupplyBusinessUsageFee
-  { get; set; } = default!;
+    SupplyBusinessUsageFee { get; set; } = default!;
 
   [Required]
   public required SupplyRenewableEnergyCalculationItemModel
-    SupplyRenewableEnergyFee
-  { get; set; } = default!;
-
-  protected abstract IEnumerable<ICalculationItem> AdditionalUsageItems { get; }
+    SupplyRenewableEnergyFee { get; set; } = default!;
 
   [Required]
   public required string NetworkUserMeasurementLocationId { get; set; } =
@@ -47,8 +42,7 @@ public abstract class NetworkUserCalculationModel : CalculationModel,
 
   [Required]
   public required NetworkUserMeasurementLocationModel
-    ArchivedNetworkUserMeasurementLocation
-  { get; set; } = default!;
+    ArchivedNetworkUserMeasurementLocation { get; set; } = default!;
 
   [Required]
   public required string UsageNetworkUserCatalogueId { get; set; } = default!;
@@ -180,8 +174,7 @@ public abstract class NetworkUserCalculationModel<TNetworkUserCatalogue>
 {
   [Required]
   public required TNetworkUserCatalogue
-    ConcreteArchivedUsageNetworkUserCatalogue
-  { get; set; } = default!;
+    ConcreteArchivedUsageNetworkUserCatalogue { get; set; } = default!;
 
   public override NetworkUserCatalogueModel ArchivedUsageNetworkUserCatalogue
   {

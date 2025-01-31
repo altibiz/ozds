@@ -6,8 +6,8 @@ namespace Ozds.Business.Conversion.Implementations.Measurements;
 
 public class PidgeonSchneideriEM3xxxPushRequestMeasurementConverter
   : ConcretePushRequestMeasurementConverter<
-      PidgeonSchneideriEM3xxxMeterPushRequestEntity,
-      SchneideriEM3xxxMeasurementModel>
+    PidgeonSchneideriEM3xxxMeterPushRequestEntity,
+    SchneideriEM3xxxMeasurementModel>
 {
   public override string MeterIdPrefix
   {

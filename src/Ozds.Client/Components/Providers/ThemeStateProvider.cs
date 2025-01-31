@@ -8,17 +8,17 @@ namespace Ozds.Client.Components.Providers;
 
 public partial class ThemeStateProvider : OzdsComponentBase
 {
+  private const string DarkModeKey = "darkMode";
+
+  private MudThemeProvider _mudThemeProvider = default!;
+
+  private ThemeState? _state;
+
   [Parameter]
   public RenderFragment ChildContent { get; set; } = default!;
 
   [Inject]
   private ILocalStorageService LocalStorageService { get; set; } = default!;
-
-  private const string DarkModeKey = "darkMode";
-
-  private ThemeState? _state;
-
-  private MudThemeProvider _mudThemeProvider = default!;
 
   protected override async Task OnInitializedAsync()
   {
@@ -32,14 +32,14 @@ public partial class ThemeStateProvider : OzdsComponentBase
     }
 
     _state = new ThemeState(
-      Theme: theme,
-      IsDarkMode: darkMode.Value,
-      SetTheme: async theme =>
+      theme,
+      darkMode.Value,
+      async theme =>
       {
         _state = _state! with { Theme = theme };
         await InvokeAsync(StateHasChanged);
       },
-      SetDarkMode: async isDarkMode =>
+      async isDarkMode =>
       {
         await SetDarkModeToLocalStorage(isDarkMode);
         _state = _state! with { IsDarkMode = isDarkMode };

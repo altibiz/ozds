@@ -7,7 +7,7 @@ namespace Ozds.Business.Activation.Implementations.System;
 public class SystemAuditEventModelActivator(
   IServiceProvider serviceProvider
 ) : InheritingModelActivator<SystemAuditEventModel, AuditEventModel>(
-      serviceProvider
-    )
+  serviceProvider
+)
 {
 }

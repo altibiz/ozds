@@ -8,9 +8,11 @@ public class FinancialChartParameters
 {
   public HashSet<IMeter> Meters { get; set; } = new();
 
-  public HashSet<IMeasurementLocation> MeasurementLocations { get; set; } = new();
+  public HashSet<IMeasurementLocation> MeasurementLocations { get; set; } =
+    new();
 
-  public PaginatedList<IFinancial> Financials { get; set; } = new(new(), 0);
+  public PaginatedList<IFinancial> Financials { get; set; } =
+    new(new List<IFinancial>(), 0);
 
   public DateTimeOffset FromDate { get; set; } =
     DateTimeOffset.UtcNow.Subtract(TimeSpan.FromHours(1));

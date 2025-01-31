@@ -1,3 +1,13 @@
+@namespace Ozds.Client.Pages
+
+@page "/system/events"
+
+@attribute [Navigation(
+Title = "Events",
+Icon = Icons.Material.Filled.VerifiedUser,
+Parent = typeof(SystemPage),
+Allows = [RoleModel.OperatorRepresentative])]
+
 @using Microsoft.AspNetCore.Components.Web
 @using Microsoft.Extensions.DependencyInjection
 @using Microsoft.Extensions.Hosting
@@ -6,30 +16,18 @@
 @using Ozds.Business.Models.Enums
 @using Ozds.Business.Queries
 @using Ozds.Client.Attributes
-@using Ozds.Client.Components.Base
+@using Ozds.Client.Components.Models
 @using Ozds.Client.Components.Streaming
 @using Ozds.Client.Components.Tables
-@using Ozds.Client.Components.Models
 @using Ozds.Client.State
-
-@namespace Ozds.Client.Pages
-
-@page "/system/events"
-
-@attribute [Navigation(
-  Title = "Events",
-  Icon = Icons.Material.Filled.VerifiedUser,
-  Parent = typeof(SystemPage),
-  Allows = [RoleModel.OperatorRepresentative])]
-
-@inherits OzdsComponentBase
+@inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 @inject IHostEnvironment Environment
 
 @if (RepresentativeState.Representative.Role
   is not RoleModel.OperatorRepresentative)
 {
-  <NotFound />
+  <NotFound/>
   return;
 }
 
@@ -54,25 +52,24 @@
   }
 </MudSelect>
 
-<Paging PageAsync="@((page) => ScopedServices
-  .GetRequiredService<EventQueries>()
-  .ReadByMinLevel<IEvent>(_minLevel, page, CancellationToken))">
+<Paging PageAsync="@(page => ScopedServices.GetRequiredService<EventQueries>().ReadByMinLevel<IEvent>(_minLevel, page, CancellationToken))">
   <Found Context="page">
     <ResponsiveTable Model="@(page.Items)">
       <Summary>
-        <Summary Model="@context" />
+        <Summary Model="@context"/>
       </Summary>
       <Details>
-        <Details Model="@context" />
+        <Details Model="@context"/>
       </Details>
       <Columns>
-        <Columns Models="page.Items" />
+        <Columns Models="page.Items"/>
       </Columns>
     </ResponsiveTable>
   </Found>
 </Paging>
 
 @code {
+
   [CascadingParameter]
   public RepresentativeState RepresentativeState { get; set; } = default!;
 

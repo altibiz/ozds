@@ -6,10 +6,10 @@ namespace Ozds.Business.Conversion.Implementations.Finances;
 
 public class FinancialModelEntityConverter(IServiceProvider serviceProvider)
   : InheritingModelEntityConverter<
-      FinancialModel,
-      IdentifiableModel,
-      FinancialEntity,
-      IdentifiableEntity>(serviceProvider)
+    FinancialModel,
+    IdentifiableModel,
+    FinancialEntity,
+    IdentifiableEntity>(serviceProvider)
 {
   public override void InitializeEntity(
     FinancialModel model,

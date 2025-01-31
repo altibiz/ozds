@@ -16,7 +16,8 @@ public class SeedHostedService(
   )
   {
     var seed = _serviceProvider.GetRequiredService<OzdsFakeSeedArguments>();
-    var logger = _serviceProvider.GetRequiredService<ILogger<SeedHostedService>>();
+    var logger =
+      _serviceProvider.GetRequiredService<ILogger<SeedHostedService>>();
 
     var now = DateTimeOffset.UtcNow;
 
@@ -49,6 +50,7 @@ public class SeedHostedService(
           seedTimeBegin, seedTimeEnd, seed.MessengerId, meterId,
           stoppingToken));
     }
+
     while (seedTimeBegin < now)
     {
       if (stoppingToken.IsCancellationRequested)
@@ -71,12 +73,15 @@ public class SeedHostedService(
         {
           var measurementRange = new List<IMeterPushRequestEntity>();
           measurementRanges.Add(measurementRange);
-          tasks.Add(Task.Run(async () =>
-            measurementRange.AddRange(
-              await generator.GenerateMeasurements(
-                seedTimeEnd, nextSeedTimeEnd, seed.MessengerId, meterId,
-                stoppingToken)), stoppingToken));
+          tasks.Add(
+            Task.Run(
+              async () =>
+                measurementRange.AddRange(
+                  await generator.GenerateMeasurements(
+                    seedTimeEnd, nextSeedTimeEnd, seed.MessengerId, meterId,
+                    stoppingToken)), stoppingToken));
         }
+
         await Task.WhenAll(tasks);
 
         measurements.AddRange(measurementRanges.SelectMany(x => x));
@@ -99,7 +104,7 @@ public class SeedHostedService(
           await pushClient.Push(
             seed.MessengerId,
             seed.ApiKey,
-            realtime: false,
+            false,
             request,
             stoppingToken
           );

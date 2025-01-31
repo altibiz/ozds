@@ -4,6 +4,8 @@ namespace Ozds.Client.Components.Models;
 
 public class Details : ManagedModelComponent
 {
-  protected override ModelComponentKind ComponentKind =>
-    ModelComponentKind.Details;
+  protected override ModelComponentKind ComponentKind
+  {
+    get { return ModelComponentKind.Details; }
+  }
 }

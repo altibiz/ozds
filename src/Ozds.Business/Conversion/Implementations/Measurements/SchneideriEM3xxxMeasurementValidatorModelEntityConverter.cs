@@ -10,10 +10,10 @@ namespace Ozds.Business.Conversion.Implementations.Measurements;
 public class SchneideriEM3xxxMeasurementValidatorModelEntityConverter(
   IServiceProvider serviceProvider
 ) : InheritingModelEntityConverter<
-      SchneideriEM3xxxMeasurementValidatorModel,
-      MeasurementValidatorModel,
-      SchneideriEM3xxxMeasurementValidatorEntity,
-      MeasurementValidatorEntity>(serviceProvider)
+  SchneideriEM3xxxMeasurementValidatorModel,
+  MeasurementValidatorModel,
+  SchneideriEM3xxxMeasurementValidatorEntity,
+  MeasurementValidatorEntity>(serviceProvider)
 {
   public override void InitializeEntity(
     SchneideriEM3xxxMeasurementValidatorModel model,

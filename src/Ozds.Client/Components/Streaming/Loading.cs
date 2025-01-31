@@ -11,6 +11,8 @@ namespace Ozds.Client.Components.Streaming;
 public partial class Loading<T> : OzdsComponentBase
   where T : notnull
 {
+  private LoadingState<T> _state = new();
+
   [Parameter]
   public T? Value { get; set; }
 
@@ -49,8 +51,6 @@ public partial class Loading<T> : OzdsComponentBase
 
   [Parameter]
   public RenderFragment<T>? Created { get; set; }
-
-  private LoadingState<T> _state = new();
 
   public void Initialize(
     bool reset = false,

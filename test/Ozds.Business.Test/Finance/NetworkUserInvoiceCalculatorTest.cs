@@ -5,7 +5,6 @@ using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Complex;
 using Ozds.Business.Models.Composite;
-using Ozds.Messaging.Migrations;
 
 // NITPICK: test issuer and date
 
@@ -45,7 +44,8 @@ public class NetworkUserInvoiceCalculatorTest
             .Concat(
               new Fixture()
                 .Customize(
-                  new TypeRelay(typeof(AggregateModel), typeof(AbbB2xAggregateModel))
+                  new TypeRelay(
+                      typeof(AggregateModel), typeof(AbbB2xAggregateModel))
                     .ToCustomization())
                 .Customize(
                   new TypeRelay(typeof(MeterModel), typeof(AbbB2xMeterModel))
@@ -138,7 +138,8 @@ public class NetworkUserInvoiceCalculatorTest
             .Concat(
               new Fixture()
                 .Customize(
-                  new TypeRelay(typeof(AggregateModel), typeof(AbbB2xAggregateModel))
+                  new TypeRelay(
+                      typeof(AggregateModel), typeof(AbbB2xAggregateModel))
                     .ToCustomization())
                 .Customize(
                   new TypeRelay(typeof(MeterModel), typeof(AbbB2xMeterModel))
@@ -247,7 +248,8 @@ public class NetworkUserInvoiceCalculatorTest
             .Concat(
               new Fixture()
                 .Customize(
-                  new TypeRelay(typeof(AggregateModel), typeof(AbbB2xAggregateModel))
+                  new TypeRelay(
+                      typeof(AggregateModel), typeof(AbbB2xAggregateModel))
                     .ToCustomization())
                 .Customize(
                   new TypeRelay(typeof(MeterModel), typeof(AbbB2xMeterModel))
@@ -348,7 +350,8 @@ public class NetworkUserInvoiceCalculatorTest
             .Concat(
               new Fixture()
                 .Customize(
-                  new TypeRelay(typeof(AggregateModel), typeof(AbbB2xAggregateModel))
+                  new TypeRelay(
+                      typeof(AggregateModel), typeof(AbbB2xAggregateModel))
                     .ToCustomization())
                 .Customize(
                   new TypeRelay(typeof(MeterModel), typeof(AbbB2xMeterModel))
@@ -606,6 +609,7 @@ public class NetworkUserInvoiceCalculatorTest
     {
       mockSequence.Returns(calculation);
     }
+
     mockSequence.Throws(new InvalidOperationException("No more calculations"));
 
     var calculator = new NetworkUserInvoiceCalculator(

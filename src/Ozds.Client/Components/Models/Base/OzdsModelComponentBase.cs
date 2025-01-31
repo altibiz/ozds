@@ -9,20 +9,30 @@ namespace Ozds.Client.Components.Models.Base;
 public abstract partial class OzdsModelComponentBase<TModel>
   : OzdsComponentBase, IModelComponentProvider
 {
+  private Type? baseComponentType;
+
+  private Dictionary<string, object>? baseParameters;
+
   [Parameter]
-  public bool Isolate { get; set; } = false;
+  public bool Isolate { get; set; }
 
   [Inject]
   protected ModelComponentProvider Provider { get; set; } = default!;
 
-  public virtual Type ModelType => typeof(TModel);
+  public virtual Type ModelType
+  {
+    get { return typeof(TModel); }
+  }
 
   public bool CanRender(Type type)
   {
     return type.IsAssignableTo(ModelType);
   }
 
-  public virtual Type ComponentType => GetType();
+  public virtual Type ComponentType
+  {
+    get { return GetType(); }
+  }
 
   public abstract ModelComponentKind ComponentKind { get; }
 
@@ -52,8 +62,6 @@ public abstract partial class OzdsModelComponentBase<TModel>
     return Provider.GetComponentType(baseModelType, ComponentKind);
   }
 
-  private Type? baseComponentType;
-
   protected virtual Type CreateBaseComponentType()
   {
     var baseModelType = ModelType.BaseType;
@@ -78,11 +86,9 @@ public abstract partial class OzdsModelComponentBase<TModel>
     return CreateFixedBaseParameters(childContent);
   }
 
-  private Dictionary<string, object>? baseParameters;
-
   protected virtual Dictionary<string, object> CreateBaseParameters()
   {
-    return new();
+    return new Dictionary<string, object>();
   }
 
   private Dictionary<string, object> CreateFixedBaseParameters()
@@ -106,12 +112,12 @@ public abstract partial class OzdsModelComponentBase<TModel>
   {
     base.OnParametersSet();
 
-    if (baseParameters is { })
+    if (baseParameters is not null)
     {
       baseParameters = CreateFixedBaseParameters();
     }
 
-    if (baseComponentType is { })
+    if (baseComponentType is not null)
     {
       baseComponentType = CreateBaseComponentType();
     }

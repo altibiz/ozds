@@ -7,9 +7,9 @@ public interface IModelPageComponentProvider
 {
   public Type ModelType { get; }
 
-  public bool CanRender(Type modelType);
-
   public Type PageType { get; }
+
+  public bool CanRender(Type modelType);
 
   public string CreateLink(
     NavigationManager navigationManager,

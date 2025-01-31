@@ -9,6 +9,9 @@ public abstract class AggregateEntity : IAggregateEntity
 {
   protected long _measurementLocationId;
 
+  public virtual MeasurementLocationEntity MeasurementLocation { get; set; }
+    = default!;
+
   public DateTimeOffset Timestamp { get; set; }
 
   public long Count { get; set; }
@@ -21,12 +24,9 @@ public abstract class AggregateEntity : IAggregateEntity
 
   public virtual string MeasurementLocationId
   {
-    get => _measurementLocationId.ToString();
-    set => _measurementLocationId = long.Parse(value);
+    get { return _measurementLocationId.ToString(); }
+    set { _measurementLocationId = long.Parse(value); }
   }
-
-  public virtual MeasurementLocationEntity MeasurementLocation { get; set; }
-    = default!;
 }
 
 public class AggregateEntity<T> : AggregateEntity

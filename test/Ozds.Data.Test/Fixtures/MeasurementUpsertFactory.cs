@@ -1,4 +1,5 @@
 using System.Globalization;
+using AutoFixture.Dsl;
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Time;
 using Ozds.Data.Entities;
@@ -16,12 +17,16 @@ public class MeasurementUpsertFactory(DbContext context)
 {
   private const int MassiveMeasurementCount =
     10000 / Constants.DefaultDbFuzzCount / 2;
+
   private const int MeasurementCount =
     1000 / Constants.DefaultDbFuzzCount / 2;
+
   private const int AggregateCount =
     MeasurementCount / 10;
+
   private const int MeasurementCountFew =
     MeasurementCount / 4;
+
   private const int AggregateCountFew =
     MeasurementCountFew / 10;
 
@@ -47,6 +52,7 @@ public class MeasurementUpsertFactory(DbContext context)
   )
   {
     var faker = new Faker();
+
     InstantaneousAggregateMeasureEntity DerivedPowerFactory(int i)
     {
       var interval = IntervalByIndex(i);
@@ -83,21 +89,33 @@ public class MeasurementUpsertFactory(DbContext context)
         .IndexedWith(x => x.DerivedActivePowerL1ImportT0_W, DerivedPowerFactory)
         .IndexedWith(x => x.DerivedActivePowerL2ImportT0_W, DerivedPowerFactory)
         .IndexedWith(x => x.DerivedActivePowerL3ImportT0_W, DerivedPowerFactory)
-        .IndexedWith(x => x.DerivedActivePowerTotalImportT0_W, DerivedPowerFactory)
+        .IndexedWith(
+          x => x.DerivedActivePowerTotalImportT0_W, DerivedPowerFactory)
         .IndexedWith(x => x.DerivedActivePowerL1ExportT0_W, DerivedPowerFactory)
         .IndexedWith(x => x.DerivedActivePowerL2ExportT0_W, DerivedPowerFactory)
         .IndexedWith(x => x.DerivedActivePowerL3ExportT0_W, DerivedPowerFactory)
-        .IndexedWith(x => x.DerivedActivePowerTotalExportT0_W, DerivedPowerFactory)
-        .IndexedWith(x => x.DerivedReactivePowerL1ImportT0_VAR, DerivedPowerFactory)
-        .IndexedWith(x => x.DerivedReactivePowerL2ImportT0_VAR, DerivedPowerFactory)
-        .IndexedWith(x => x.DerivedReactivePowerL3ImportT0_VAR, DerivedPowerFactory)
-        .IndexedWith(x => x.DerivedReactivePowerTotalImportT0_VAR, DerivedPowerFactory)
-        .IndexedWith(x => x.DerivedReactivePowerL1ExportT0_VAR, DerivedPowerFactory)
-        .IndexedWith(x => x.DerivedReactivePowerL2ExportT0_VAR, DerivedPowerFactory)
-        .IndexedWith(x => x.DerivedReactivePowerL3ExportT0_VAR, DerivedPowerFactory)
-        .IndexedWith(x => x.DerivedReactivePowerTotalExportT0_VAR, DerivedPowerFactory)
-        .IndexedWith(x => x.DerivedActivePowerTotalImportT1_W, DerivedPowerFactory)
-        .IndexedWith(x => x.DerivedActivePowerTotalImportT2_W, DerivedPowerFactory)
+        .IndexedWith(
+          x => x.DerivedActivePowerTotalExportT0_W, DerivedPowerFactory)
+        .IndexedWith(
+          x => x.DerivedReactivePowerL1ImportT0_VAR, DerivedPowerFactory)
+        .IndexedWith(
+          x => x.DerivedReactivePowerL2ImportT0_VAR, DerivedPowerFactory)
+        .IndexedWith(
+          x => x.DerivedReactivePowerL3ImportT0_VAR, DerivedPowerFactory)
+        .IndexedWith(
+          x => x.DerivedReactivePowerTotalImportT0_VAR, DerivedPowerFactory)
+        .IndexedWith(
+          x => x.DerivedReactivePowerL1ExportT0_VAR, DerivedPowerFactory)
+        .IndexedWith(
+          x => x.DerivedReactivePowerL2ExportT0_VAR, DerivedPowerFactory)
+        .IndexedWith(
+          x => x.DerivedReactivePowerL3ExportT0_VAR, DerivedPowerFactory)
+        .IndexedWith(
+          x => x.DerivedReactivePowerTotalExportT0_VAR, DerivedPowerFactory)
+        .IndexedWith(
+          x => x.DerivedActivePowerTotalImportT1_W, DerivedPowerFactory)
+        .IndexedWith(
+          x => x.DerivedActivePowerTotalImportT2_W, DerivedPowerFactory)
         .CreateMany(AggregateCountFew),
       x => x
         .CreateMany(MeasurementCountFew),
@@ -105,12 +123,18 @@ public class MeasurementUpsertFactory(DbContext context)
         .IndexedWith(x => x.DerivedActivePowerL1ImportT0_W, DerivedPowerFactory)
         .IndexedWith(x => x.DerivedActivePowerL2ImportT0_W, DerivedPowerFactory)
         .IndexedWith(x => x.DerivedActivePowerL3ImportT0_W, DerivedPowerFactory)
-        .IndexedWith(x => x.DerivedActivePowerTotalImportT0_W, DerivedPowerFactory)
-        .IndexedWith(x => x.DerivedActivePowerTotalExportT0_W, DerivedPowerFactory)
-        .IndexedWith(x => x.DerivedReactivePowerTotalImportT0_VAR, DerivedPowerFactory)
-        .IndexedWith(x => x.DerivedReactivePowerTotalExportT0_VAR, DerivedPowerFactory)
-        .IndexedWith(x => x.DerivedActivePowerTotalImportT1_W, DerivedPowerFactory)
-        .IndexedWith(x => x.DerivedActivePowerTotalImportT2_W, DerivedPowerFactory)
+        .IndexedWith(
+          x => x.DerivedActivePowerTotalImportT0_W, DerivedPowerFactory)
+        .IndexedWith(
+          x => x.DerivedActivePowerTotalExportT0_W, DerivedPowerFactory)
+        .IndexedWith(
+          x => x.DerivedReactivePowerTotalImportT0_VAR, DerivedPowerFactory)
+        .IndexedWith(
+          x => x.DerivedReactivePowerTotalExportT0_VAR, DerivedPowerFactory)
+        .IndexedWith(
+          x => x.DerivedActivePowerTotalImportT1_W, DerivedPowerFactory)
+        .IndexedWith(
+          x => x.DerivedActivePowerTotalImportT2_W, DerivedPowerFactory)
         .CreateMany(AggregateCountFew)
     );
   }
@@ -144,20 +168,20 @@ public class MeasurementUpsertFactory(DbContext context)
   private async Task<List<IMeasurementEntity>> Create(
     CancellationToken cancellationToken,
     Func<
-      AutoFixture.Dsl.IPostprocessComposer<AbbB2xMeasurementEntity>,
-      IEnumerable<AbbB2xMeasurementEntity>>
+        IPostprocessComposer<AbbB2xMeasurementEntity>,
+        IEnumerable<AbbB2xMeasurementEntity>>
       abbB2xMeasurementFactory,
     Func<
-      AutoFixture.Dsl.IPostprocessComposer<AbbB2xAggregateEntity>,
-      IEnumerable<AbbB2xAggregateEntity>>
+        IPostprocessComposer<AbbB2xAggregateEntity>,
+        IEnumerable<AbbB2xAggregateEntity>>
       abbB2xAggregateFactory,
     Func<
-      AutoFixture.Dsl.IPostprocessComposer<SchneideriEM3xxxMeasurementEntity>,
-      IEnumerable<SchneideriEM3xxxMeasurementEntity>>
+        IPostprocessComposer<SchneideriEM3xxxMeasurementEntity>,
+        IEnumerable<SchneideriEM3xxxMeasurementEntity>>
       schneideriEM3xxxMeasurementFactory,
     Func<
-      AutoFixture.Dsl.IPostprocessComposer<SchneideriEM3xxxAggregateEntity>,
-      IEnumerable<SchneideriEM3xxxAggregateEntity>>
+        IPostprocessComposer<SchneideriEM3xxxAggregateEntity>,
+        IEnumerable<SchneideriEM3xxxAggregateEntity>>
       schneideriEM3xxxAggregateFactory
   )
   {
@@ -203,7 +227,7 @@ public class MeasurementUpsertFactory(DbContext context)
           context, cancellationToken);
       var abbB2xMeter = await fixture
         .Build<AbbB2xMeterEntity>()
-        .IndexedWith(x => x.Id, (j) => $"abb-b2x-{i + j}")
+        .IndexedWith(x => x.Id, j => $"abb-b2x-{i + j}")
         .With(x => x.MeasurementValidatorId, abbB2xValidator.Id)
         .CreateInDb(context, cancellationToken);
       var abbB2xMeasurementLocation = await fixture
@@ -218,7 +242,7 @@ public class MeasurementUpsertFactory(DbContext context)
           context, cancellationToken);
       var schneideriEM3xxxMeter = await fixture
         .Build<SchneideriEM3xxxMeterEntity>()
-        .IndexedWith(x => x.Id, (j) => $"schneider-iEM3xxx-{i + j}")
+        .IndexedWith(x => x.Id, j => $"schneider-iEM3xxx-{i + j}")
         .With(x => x.MeasurementValidatorId, schneideriEM3xxxValidator.Id)
         .CreateInDb(context, cancellationToken);
       var schneideriEM3xxxMeasurementLocation = await fixture
@@ -228,25 +252,27 @@ public class MeasurementUpsertFactory(DbContext context)
         .With(ml => ml.NetworkUserCatalogueId, redLowCatalogue.Id)
         .CreateInDb(context, cancellationToken);
 
-      var abbB2xMeasurements = abbB2xMeasurementFactory(fixture
-        .Build<AbbB2xMeasurementEntity>()
-        .IndexedWith(x => x.Timestamp, MeasurementTimestampByIndex)
-        .With(x => x.MeterId, abbB2xMeter.Id)
-        .With(x => x.MeasurementLocationId, abbB2xMeasurementLocation.Id));
-      var abbB2xAggregates = abbB2xAggregateFactory(fixture
-        .Build<AbbB2xAggregateEntity>()
-        .IndexedWith(x => x.Timestamp, AggregateTimestampByIndex)
-        .IndexedWith(x => x.Interval, IntervalByIndex)
-        .IndexedWith(x => x.QuarterHourCount, QuarterHourCountByIndex)
-        .With(x => x.MeterId, abbB2xMeter.Id)
-        .With(x => x.MeasurementLocationId, abbB2xMeasurementLocation.Id));
+      var abbB2xMeasurements = abbB2xMeasurementFactory(
+        fixture
+          .Build<AbbB2xMeasurementEntity>()
+          .IndexedWith(x => x.Timestamp, MeasurementTimestampByIndex)
+          .With(x => x.MeterId, abbB2xMeter.Id)
+          .With(x => x.MeasurementLocationId, abbB2xMeasurementLocation.Id));
+      var abbB2xAggregates = abbB2xAggregateFactory(
+        fixture
+          .Build<AbbB2xAggregateEntity>()
+          .IndexedWith(x => x.Timestamp, AggregateTimestampByIndex)
+          .IndexedWith(x => x.Interval, IntervalByIndex)
+          .IndexedWith(x => x.QuarterHourCount, QuarterHourCountByIndex)
+          .With(x => x.MeterId, abbB2xMeter.Id)
+          .With(x => x.MeasurementLocationId, abbB2xMeasurementLocation.Id));
       result.AddRange(abbB2xMeasurements);
       result.AddRange(abbB2xAggregates);
 
       var schneideriEM3xxxMeasurements = schneideriEM3xxxMeasurementFactory(
         fixture
           .Build<SchneideriEM3xxxMeasurementEntity>()
-        .IndexedWith(x => x.Timestamp, MeasurementTimestampByIndex)
+          .IndexedWith(x => x.Timestamp, MeasurementTimestampByIndex)
           .With(x => x.MeterId, schneideriEM3xxxMeter.Id)
           .With(
             x => x.MeasurementLocationId,
@@ -268,25 +294,33 @@ public class MeasurementUpsertFactory(DbContext context)
     return result;
   }
 
-  private static DateTimeOffset MeasurementTimestampByIndex(int i) =>
-    Now.AddMinutes(-i);
+  private static DateTimeOffset MeasurementTimestampByIndex(int i)
+  {
+    return Now.AddMinutes(-i);
+  }
 
-  private static DateTimeOffset AggregateTimestampByIndex(int i) =>
-      i % 3 == 0
-    ? NowStartOfQuarterHour.AddMinutes(-(i / 3) * 15)
-    : i % 3 == 1
-      ? NowStartOfDay.AddDays(-(i / 3))
-      : NowStartOfMonth.AddMonths(-(i / 3));
+  private static DateTimeOffset AggregateTimestampByIndex(int i)
+  {
+    return i % 3 == 0
+      ? NowStartOfQuarterHour.AddMinutes(-(i / 3) * 15)
+      : i % 3 == 1
+        ? NowStartOfDay.AddDays(-(i / 3))
+        : NowStartOfMonth.AddMonths(-(i / 3));
+  }
 
-  private static IntervalEntity IntervalByIndex(int i) =>
-      i % 3 == 0
-    ? IntervalEntity.QuarterHour
-    : i % 3 == 1
-      ? IntervalEntity.Day
-      : IntervalEntity.Month;
+  private static IntervalEntity IntervalByIndex(int i)
+  {
+    return i % 3 == 0
+      ? IntervalEntity.QuarterHour
+      : i % 3 == 1
+        ? IntervalEntity.Day
+        : IntervalEntity.Month;
+  }
 
-  private static long QuarterHourCountByIndex(int i) =>
-    IntervalByIndex(i) == IntervalEntity.QuarterHour
+  private static long QuarterHourCountByIndex(int i)
+  {
+    return IntervalByIndex(i) == IntervalEntity.QuarterHour
       ? 1
       : 0;
+  }
 }

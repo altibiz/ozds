@@ -8,6 +8,9 @@ public class IgnoreIgnoredPropertiesSpecimenBuilder(
   DbContext dbContext
 ) : ISpecimenBuilder
 {
+  private readonly Lazy<HashSet<MemberInfo>> ignoredProperties =
+    new(dbContext.GetIgnoredProperties);
+
   public object Create(object request, ISpecimenContext context)
   {
     if (request is PropertyInfo or FieldInfo
@@ -18,7 +21,4 @@ public class IgnoreIgnoredPropertiesSpecimenBuilder(
 
     return new NoSpecimen();
   }
-
-  private readonly Lazy<HashSet<MemberInfo>> ignoredProperties =
-    new(dbContext.GetIgnoredProperties);
 }

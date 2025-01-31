@@ -96,8 +96,9 @@ public class UsageReactiveEnergyTotalRampedT0CalculationItemCalculatorTest
     var end = start.AddMonths(1);
 
     var measureFakerNoise = new Faker<CumulativeAggregateMeasureModel>()
-      .RuleFor(m => m.Min, f => f.Random.Decimal(
-        Constants.MinEnergyValue, Constants.MaxEnergyValue));
+      .RuleFor(
+        m => m.Min, f => f.Random.Decimal(
+          Constants.MinEnergyValue, Constants.MaxEnergyValue));
 
     var noiseAggregates =
       new Faker<AbbB2xAggregateModel>()
@@ -109,92 +110,192 @@ public class UsageReactiveEnergyTotalRampedT0CalculationItemCalculatorTest
           (f, _) => f.Date.BetweenOffset(
             start.Add(IntervalModel.QuarterHour.ToTimeSpan(start)),
             end.Subtract(IntervalModel.QuarterHour.ToTimeSpan(start))))
-        .RuleFor(x => x.ReactiveEnergyL1ImportT0_VARh, f => measureFakerNoise.Generate())
-        .RuleFor(x => x.ReactiveEnergyL2ImportT0_VARh, f => measureFakerNoise.Generate())
-        .RuleFor(x => x.ReactiveEnergyL3ImportT0_VARh, f => measureFakerNoise.Generate())
-        .RuleFor(x => x.ReactiveEnergyTotalImportT0_VARh, f => measureFakerNoise.Generate())
-        .RuleFor(x => x.ReactiveEnergyL1ExportT0_VARh, f => measureFakerNoise.Generate())
-        .RuleFor(x => x.ReactiveEnergyL2ExportT0_VARh, f => measureFakerNoise.Generate())
-        .RuleFor(x => x.ReactiveEnergyL3ExportT0_VARh, f => measureFakerNoise.Generate())
-        .RuleFor(x => x.ReactiveEnergyTotalExportT0_VARh, f => measureFakerNoise.Generate())
-        .RuleFor(x => x.ActiveEnergyL1ImportT0_Wh, f => measureFakerNoise.Generate())
-        .RuleFor(x => x.ActiveEnergyL2ImportT0_Wh, f => measureFakerNoise.Generate())
-        .RuleFor(x => x.ActiveEnergyL3ImportT0_Wh, f => measureFakerNoise.Generate())
-        .RuleFor(x => x.ActiveEnergyTotalImportT0_Wh, f => measureFakerNoise.Generate())
-        .RuleFor(x => x.ActiveEnergyL1ExportT0_Wh, f => measureFakerNoise.Generate())
-        .RuleFor(x => x.ActiveEnergyL2ExportT0_Wh, f => measureFakerNoise.Generate())
-        .RuleFor(x => x.ActiveEnergyL3ExportT0_Wh, f => measureFakerNoise.Generate())
-        .RuleFor(x => x.ActiveEnergyTotalExportT0_Wh, f => measureFakerNoise.Generate())
-        .RuleFor(x => x.ActiveEnergyTotalImportT1_Wh, f => measureFakerNoise.Generate())
-        .RuleFor(x => x.ActiveEnergyTotalImportT2_Wh, f => measureFakerNoise.Generate())
+        .RuleFor(
+          x => x.ReactiveEnergyL1ImportT0_VARh,
+          f => measureFakerNoise.Generate())
+        .RuleFor(
+          x => x.ReactiveEnergyL2ImportT0_VARh,
+          f => measureFakerNoise.Generate())
+        .RuleFor(
+          x => x.ReactiveEnergyL3ImportT0_VARh,
+          f => measureFakerNoise.Generate())
+        .RuleFor(
+          x => x.ReactiveEnergyTotalImportT0_VARh,
+          f => measureFakerNoise.Generate())
+        .RuleFor(
+          x => x.ReactiveEnergyL1ExportT0_VARh,
+          f => measureFakerNoise.Generate())
+        .RuleFor(
+          x => x.ReactiveEnergyL2ExportT0_VARh,
+          f => measureFakerNoise.Generate())
+        .RuleFor(
+          x => x.ReactiveEnergyL3ExportT0_VARh,
+          f => measureFakerNoise.Generate())
+        .RuleFor(
+          x => x.ReactiveEnergyTotalExportT0_VARh,
+          f => measureFakerNoise.Generate())
+        .RuleFor(
+          x => x.ActiveEnergyL1ImportT0_Wh, f => measureFakerNoise.Generate())
+        .RuleFor(
+          x => x.ActiveEnergyL2ImportT0_Wh, f => measureFakerNoise.Generate())
+        .RuleFor(
+          x => x.ActiveEnergyL3ImportT0_Wh, f => measureFakerNoise.Generate())
+        .RuleFor(
+          x => x.ActiveEnergyTotalImportT0_Wh,
+          f => measureFakerNoise.Generate())
+        .RuleFor(
+          x => x.ActiveEnergyL1ExportT0_Wh, f => measureFakerNoise.Generate())
+        .RuleFor(
+          x => x.ActiveEnergyL2ExportT0_Wh, f => measureFakerNoise.Generate())
+        .RuleFor(
+          x => x.ActiveEnergyL3ExportT0_Wh, f => measureFakerNoise.Generate())
+        .RuleFor(
+          x => x.ActiveEnergyTotalExportT0_Wh,
+          f => measureFakerNoise.Generate())
+        .RuleFor(
+          x => x.ActiveEnergyTotalImportT1_Wh,
+          f => measureFakerNoise.Generate())
+        .RuleFor(
+          x => x.ActiveEnergyTotalImportT2_Wh,
+          f => measureFakerNoise.Generate())
         .Generate(Constants.DefaultFuzzCount);
 
-    var measureFakerStartReactiveImport = new Faker<CumulativeAggregateMeasureModel>()
-      .RuleFor(m => m.Min, (_, _) => expected.ReactiveImportMin_kVARh * 1000M);
+    var measureFakerStartReactiveImport =
+      new Faker<CumulativeAggregateMeasureModel>()
+        .RuleFor(
+          m => m.Min, (_, _) => expected.ReactiveImportMin_kVARh * 1000M);
 
-    var measureFakerStartReactiveExport = new Faker<CumulativeAggregateMeasureModel>()
-      .RuleFor(m => m.Min, (_, _) => expected.ReactiveExportMin_kVARh * 1000M);
+    var measureFakerStartReactiveExport =
+      new Faker<CumulativeAggregateMeasureModel>()
+        .RuleFor(
+          m => m.Min, (_, _) => expected.ReactiveExportMin_kVARh * 1000M);
 
-    var measureFakerStartActiveImport = new Faker<CumulativeAggregateMeasureModel>()
-      .RuleFor(m => m.Min, (_, _) => expected.ActiveImportMin_kWh * 1000M);
+    var measureFakerStartActiveImport =
+      new Faker<CumulativeAggregateMeasureModel>()
+        .RuleFor(m => m.Min, (_, _) => expected.ActiveImportMin_kWh * 1000M);
 
     var startAggregate =
       new Faker<AbbB2xAggregateModel>()
         .RuleFor(
           x => x.Timestamp,
           (_, _) => start)
-        .RuleFor(x => x.ReactiveEnergyL1ImportT0_VARh, f => measureFakerNoise.Generate())
-        .RuleFor(x => x.ReactiveEnergyL2ImportT0_VARh, f => measureFakerNoise.Generate())
-        .RuleFor(x => x.ReactiveEnergyL3ImportT0_VARh, f => measureFakerNoise.Generate())
-        .RuleFor(x => x.ReactiveEnergyTotalImportT0_VARh, f => measureFakerStartReactiveImport.Generate())
-        .RuleFor(x => x.ReactiveEnergyL1ExportT0_VARh, f => measureFakerNoise.Generate())
-        .RuleFor(x => x.ReactiveEnergyL2ExportT0_VARh, f => measureFakerNoise.Generate())
-        .RuleFor(x => x.ReactiveEnergyL3ExportT0_VARh, f => measureFakerNoise.Generate())
-        .RuleFor(x => x.ReactiveEnergyTotalExportT0_VARh, f => measureFakerStartReactiveExport.Generate())
-        .RuleFor(x => x.ActiveEnergyL1ImportT0_Wh, f => measureFakerNoise.Generate())
-        .RuleFor(x => x.ActiveEnergyL2ImportT0_Wh, f => measureFakerNoise.Generate())
-        .RuleFor(x => x.ActiveEnergyL3ImportT0_Wh, f => measureFakerNoise.Generate())
-        .RuleFor(x => x.ActiveEnergyTotalImportT0_Wh, f => measureFakerStartActiveImport.Generate())
-        .RuleFor(x => x.ActiveEnergyL1ExportT0_Wh, f => measureFakerNoise.Generate())
-        .RuleFor(x => x.ActiveEnergyL2ExportT0_Wh, f => measureFakerNoise.Generate())
-        .RuleFor(x => x.ActiveEnergyL3ExportT0_Wh, f => measureFakerNoise.Generate())
-        .RuleFor(x => x.ActiveEnergyTotalExportT0_Wh, f => measureFakerNoise.Generate())
-        .RuleFor(x => x.ActiveEnergyTotalImportT1_Wh, f => measureFakerNoise.Generate())
-        .RuleFor(x => x.ActiveEnergyTotalImportT2_Wh, f => measureFakerNoise.Generate())
+        .RuleFor(
+          x => x.ReactiveEnergyL1ImportT0_VARh,
+          f => measureFakerNoise.Generate())
+        .RuleFor(
+          x => x.ReactiveEnergyL2ImportT0_VARh,
+          f => measureFakerNoise.Generate())
+        .RuleFor(
+          x => x.ReactiveEnergyL3ImportT0_VARh,
+          f => measureFakerNoise.Generate())
+        .RuleFor(
+          x => x.ReactiveEnergyTotalImportT0_VARh,
+          f => measureFakerStartReactiveImport.Generate())
+        .RuleFor(
+          x => x.ReactiveEnergyL1ExportT0_VARh,
+          f => measureFakerNoise.Generate())
+        .RuleFor(
+          x => x.ReactiveEnergyL2ExportT0_VARh,
+          f => measureFakerNoise.Generate())
+        .RuleFor(
+          x => x.ReactiveEnergyL3ExportT0_VARh,
+          f => measureFakerNoise.Generate())
+        .RuleFor(
+          x => x.ReactiveEnergyTotalExportT0_VARh,
+          f => measureFakerStartReactiveExport.Generate())
+        .RuleFor(
+          x => x.ActiveEnergyL1ImportT0_Wh, f => measureFakerNoise.Generate())
+        .RuleFor(
+          x => x.ActiveEnergyL2ImportT0_Wh, f => measureFakerNoise.Generate())
+        .RuleFor(
+          x => x.ActiveEnergyL3ImportT0_Wh, f => measureFakerNoise.Generate())
+        .RuleFor(
+          x => x.ActiveEnergyTotalImportT0_Wh,
+          f => measureFakerStartActiveImport.Generate())
+        .RuleFor(
+          x => x.ActiveEnergyL1ExportT0_Wh, f => measureFakerNoise.Generate())
+        .RuleFor(
+          x => x.ActiveEnergyL2ExportT0_Wh, f => measureFakerNoise.Generate())
+        .RuleFor(
+          x => x.ActiveEnergyL3ExportT0_Wh, f => measureFakerNoise.Generate())
+        .RuleFor(
+          x => x.ActiveEnergyTotalExportT0_Wh,
+          f => measureFakerNoise.Generate())
+        .RuleFor(
+          x => x.ActiveEnergyTotalImportT1_Wh,
+          f => measureFakerNoise.Generate())
+        .RuleFor(
+          x => x.ActiveEnergyTotalImportT2_Wh,
+          f => measureFakerNoise.Generate())
         .Generate();
 
-    var measureFakerEndReactiveImport = new Faker<CumulativeAggregateMeasureModel>()
-      .RuleFor(m => m.Min, (_, _) => expected.ReactiveImportMax_kVARh * 1000M);
+    var measureFakerEndReactiveImport =
+      new Faker<CumulativeAggregateMeasureModel>()
+        .RuleFor(
+          m => m.Min, (_, _) => expected.ReactiveImportMax_kVARh * 1000M);
 
-    var measureFakerEndReactiveExport = new Faker<CumulativeAggregateMeasureModel>()
-      .RuleFor(m => m.Min, (_, _) => expected.ReactiveExportMax_kVARh * 1000M);
+    var measureFakerEndReactiveExport =
+      new Faker<CumulativeAggregateMeasureModel>()
+        .RuleFor(
+          m => m.Min, (_, _) => expected.ReactiveExportMax_kVARh * 1000M);
 
-    var measureFakerEndActiveImport = new Faker<CumulativeAggregateMeasureModel>()
-      .RuleFor(m => m.Min, (_, _) => expected.ActiveImportMax_kWh * 1000M);
+    var measureFakerEndActiveImport =
+      new Faker<CumulativeAggregateMeasureModel>()
+        .RuleFor(m => m.Min, (_, _) => expected.ActiveImportMax_kWh * 1000M);
 
     var endAggregate =
       new Faker<AbbB2xAggregateModel>()
         .RuleFor(
           x => x.Timestamp,
           (_, _) => end)
-        .RuleFor(x => x.ReactiveEnergyL1ImportT0_VARh, f => measureFakerNoise.Generate())
-        .RuleFor(x => x.ReactiveEnergyL2ImportT0_VARh, f => measureFakerNoise.Generate())
-        .RuleFor(x => x.ReactiveEnergyL3ImportT0_VARh, f => measureFakerNoise.Generate())
-        .RuleFor(x => x.ReactiveEnergyTotalImportT0_VARh, f => measureFakerEndReactiveImport.Generate())
-        .RuleFor(x => x.ReactiveEnergyL1ExportT0_VARh, f => measureFakerNoise.Generate())
-        .RuleFor(x => x.ReactiveEnergyL2ExportT0_VARh, f => measureFakerNoise.Generate())
-        .RuleFor(x => x.ReactiveEnergyL3ExportT0_VARh, f => measureFakerNoise.Generate())
-        .RuleFor(x => x.ReactiveEnergyTotalExportT0_VARh, f => measureFakerEndReactiveExport.Generate())
-        .RuleFor(x => x.ActiveEnergyL1ImportT0_Wh, f => measureFakerNoise.Generate())
-        .RuleFor(x => x.ActiveEnergyL2ImportT0_Wh, f => measureFakerNoise.Generate())
-        .RuleFor(x => x.ActiveEnergyL3ImportT0_Wh, f => measureFakerNoise.Generate())
-        .RuleFor(x => x.ActiveEnergyTotalImportT0_Wh, f => measureFakerEndActiveImport.Generate())
-        .RuleFor(x => x.ActiveEnergyL1ExportT0_Wh, f => measureFakerNoise.Generate())
-        .RuleFor(x => x.ActiveEnergyL2ExportT0_Wh, f => measureFakerNoise.Generate())
-        .RuleFor(x => x.ActiveEnergyL3ExportT0_Wh, f => measureFakerNoise.Generate())
-        .RuleFor(x => x.ActiveEnergyTotalExportT0_Wh, f => measureFakerNoise.Generate())
-        .RuleFor(x => x.ActiveEnergyTotalImportT1_Wh, f => measureFakerNoise.Generate())
-        .RuleFor(x => x.ActiveEnergyTotalImportT2_Wh, f => measureFakerNoise.Generate())
+        .RuleFor(
+          x => x.ReactiveEnergyL1ImportT0_VARh,
+          f => measureFakerNoise.Generate())
+        .RuleFor(
+          x => x.ReactiveEnergyL2ImportT0_VARh,
+          f => measureFakerNoise.Generate())
+        .RuleFor(
+          x => x.ReactiveEnergyL3ImportT0_VARh,
+          f => measureFakerNoise.Generate())
+        .RuleFor(
+          x => x.ReactiveEnergyTotalImportT0_VARh,
+          f => measureFakerEndReactiveImport.Generate())
+        .RuleFor(
+          x => x.ReactiveEnergyL1ExportT0_VARh,
+          f => measureFakerNoise.Generate())
+        .RuleFor(
+          x => x.ReactiveEnergyL2ExportT0_VARh,
+          f => measureFakerNoise.Generate())
+        .RuleFor(
+          x => x.ReactiveEnergyL3ExportT0_VARh,
+          f => measureFakerNoise.Generate())
+        .RuleFor(
+          x => x.ReactiveEnergyTotalExportT0_VARh,
+          f => measureFakerEndReactiveExport.Generate())
+        .RuleFor(
+          x => x.ActiveEnergyL1ImportT0_Wh, f => measureFakerNoise.Generate())
+        .RuleFor(
+          x => x.ActiveEnergyL2ImportT0_Wh, f => measureFakerNoise.Generate())
+        .RuleFor(
+          x => x.ActiveEnergyL3ImportT0_Wh, f => measureFakerNoise.Generate())
+        .RuleFor(
+          x => x.ActiveEnergyTotalImportT0_Wh,
+          f => measureFakerEndActiveImport.Generate())
+        .RuleFor(
+          x => x.ActiveEnergyL1ExportT0_Wh, f => measureFakerNoise.Generate())
+        .RuleFor(
+          x => x.ActiveEnergyL2ExportT0_Wh, f => measureFakerNoise.Generate())
+        .RuleFor(
+          x => x.ActiveEnergyL3ExportT0_Wh, f => measureFakerNoise.Generate())
+        .RuleFor(
+          x => x.ActiveEnergyTotalExportT0_Wh,
+          f => measureFakerNoise.Generate())
+        .RuleFor(
+          x => x.ActiveEnergyTotalImportT1_Wh,
+          f => measureFakerNoise.Generate())
+        .RuleFor(
+          x => x.ActiveEnergyTotalImportT2_Wh,
+          f => measureFakerNoise.Generate())
         .Generate();
 
     var aggregates = noiseAggregates
@@ -203,7 +304,8 @@ public class UsageReactiveEnergyTotalRampedT0CalculationItemCalculatorTest
       .OrderBy(_ => Random.Shared.Next())
       .ToList<AggregateModel>();
 
-    var input = new CalculationItemBasisModel {
+    var input = new CalculationItemBasisModel
+    {
       Aggregates = aggregates,
       Price_EUR = expected.Price_EUR
     };

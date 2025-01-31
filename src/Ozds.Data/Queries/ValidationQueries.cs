@@ -11,10 +11,11 @@ public class ValidationQueries(
   IDbContextFactory<DataDbContext> factory
 ) : IQueries
 {
-  public async Task<IMeasurementValidatorEntity?> ReadMeasurementValidatorByMeter(
-    string meterId,
-    CancellationToken cancellationToken
-  )
+  public async Task<IMeasurementValidatorEntity?>
+    ReadMeasurementValidatorByMeter(
+      string meterId,
+      CancellationToken cancellationToken
+    )
   {
     await using var context = await factory
       .CreateDbContextAsync(cancellationToken);
@@ -25,10 +26,11 @@ public class ValidationQueries(
       .FirstOrDefaultAsync(cancellationToken);
   }
 
-  public async Task<List<IMeasurementValidatorEntity>> ReadMeasurementValidatorByMeters(
-    IEnumerable<string> meterIds,
-    CancellationToken cancellationToken
-  )
+  public async Task<List<IMeasurementValidatorEntity>>
+    ReadMeasurementValidatorByMeters(
+      IEnumerable<string> meterIds,
+      CancellationToken cancellationToken
+    )
   {
     await using var context = await factory
       .CreateDbContextAsync(cancellationToken);
@@ -48,9 +50,11 @@ public class ValidationQueries(
     await using var context = await factory
       .CreateDbContextAsync(cancellationToken);
     return await context.Meters
-      .Where(context.ForeignKeyEquals<MeterEntity>(
-        nameof(MeterEntity<MeasurementEntity, AggregateEntity, MeasurementValidatorEntity>.MeasurementValidator),
-        validatorId))
+      .Where(
+        context.ForeignKeyEquals<MeterEntity>(
+          nameof(MeterEntity<MeasurementEntity, AggregateEntity,
+            MeasurementValidatorEntity>.MeasurementValidator),
+          validatorId))
       .OfType<IMeterEntity>()
       .FirstOrDefaultAsync(cancellationToken);
   }
@@ -63,9 +67,11 @@ public class ValidationQueries(
     await using var context = await factory
       .CreateDbContextAsync(cancellationToken);
     return await context.Meters
-      .Where(context.ForeignKeyIn<MeterEntity>(
-        nameof(MeterEntity<MeasurementEntity, AggregateEntity, MeasurementValidatorEntity>.MeasurementValidator),
-        validatorIds))
+      .Where(
+        context.ForeignKeyIn<MeterEntity>(
+          nameof(MeterEntity<MeasurementEntity, AggregateEntity,
+            MeasurementValidatorEntity>.MeasurementValidator),
+          validatorIds))
       .OfType<IMeterEntity>()
       .ToListAsync(cancellationToken);
   }

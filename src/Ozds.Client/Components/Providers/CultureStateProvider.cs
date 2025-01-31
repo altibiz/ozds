@@ -8,6 +8,10 @@ namespace Ozds.Client.Components.Providers;
 
 public partial class CultureStateProvider : OzdsComponentBase
 {
+  private const string CultureKey = "culture";
+
+  private CultureState? _state;
+
   [Parameter]
   public RenderFragment? ChildContent { get; set; }
 
@@ -20,17 +24,13 @@ public partial class CultureStateProvider : OzdsComponentBase
   [Inject]
   private ILocalStorageService LocalStorageService { get; set; } = default!;
 
-  private const string CultureKey = "culture";
-
-  private CultureState? _state;
-
   protected override async Task OnParametersSetAsync()
   {
     var culture = Culture;
 
     culture ??= GetCultureFromUri();
 
-    if (culture is { })
+    if (culture is not null)
     {
       await SetCultureToLocalStorage(culture);
     }
@@ -45,12 +45,12 @@ public partial class CultureStateProvider : OzdsComponentBase
 
     _state = new CultureState(
       culture,
-      async (culture) =>
+      async culture =>
       {
         await SetCultureToLocalStorage(culture);
 
         var uriCulture = GetCultureFromUri();
-        if (uriCulture is { })
+        if (uriCulture is not null)
         {
           SetCultureToUri(culture);
           return;
@@ -77,7 +77,7 @@ public partial class CultureStateProvider : OzdsComponentBase
       var segments = uri.Segments;
       segments[2] = $"{culture.TwoLetterISOLanguageName}/";
       var path = string.Join("", segments);
-      NavigationManager.NavigateTo(path, forceLoad: true);
+      NavigationManager.NavigateTo(path, true);
     }
     else
     {
@@ -88,7 +88,7 @@ public partial class CultureStateProvider : OzdsComponentBase
         .Append($"{culture.TwoLetterISOLanguageName}/")
         .Concat(segments.Skip(1));
       var path = string.Join("", newSegments);
-      NavigationManager.NavigateTo(path, forceLoad: true);
+      NavigationManager.NavigateTo(path, true);
     }
   }
 
@@ -114,11 +114,11 @@ public partial class CultureStateProvider : OzdsComponentBase
   private async Task<CultureInfo?> GetCultureFromLocalStorage()
   {
     return await LocalStorageService.GetItemAsync<string>(
-      CultureKey,
-      CancellationToken)
+        CultureKey,
+        CancellationToken)
       is { } cultureString
-        ? ParseCultureString(cultureString)
-        : default;
+      ? ParseCultureString(cultureString)
+      : default;
   }
 
   private static CultureInfo? ParseCultureString(string? cultureString)

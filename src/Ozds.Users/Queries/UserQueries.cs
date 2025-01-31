@@ -27,7 +27,9 @@ public class UserQueries(
       : null;
   }
 
-  public async Task<UserEntity?> ReadUserById(string id, CancellationToken cancellationToken)
+  public async Task<UserEntity?> ReadUserById(
+    string id,
+    CancellationToken cancellationToken)
   {
     return await session
       .Query<User, UserIndex>()
@@ -64,7 +66,7 @@ public class UserQueries(
     var httpContextAccessor = serviceProvider
       .GetService<IHttpContextAccessor>();
     if (httpContextAccessor?.HttpContext?.User.Claims
-      .FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value
+        .FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value
       is { } mvcUserId)
     {
       return mvcUserId;
@@ -77,8 +79,8 @@ public class UserQueries(
       if (authenticationState is { } authenticationStateProvider
         && (await authenticationStateProvider
           .GetAuthenticationStateAsync()).User.Claims
-          .FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value
-          is { } fluxUserId)
+        .FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value
+        is { } fluxUserId)
       {
         return fluxUserId;
       }

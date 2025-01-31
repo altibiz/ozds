@@ -6,5 +6,5 @@ public enum MeasurementChartProfile
   Operator,
   Realtime,
   Monthly,
-  Yearly,
+  Yearly
 }

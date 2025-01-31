@@ -1,11 +1,9 @@
-@using Ozds.Business.Models.Base
-@using Ozds.Client.Components.Models.Base
-
 @namespace Ozds.Client.Components.Models
 
 @typeparam TPrefix
-@typeparam TModel where TModel : NetworkUserCatalogueModel
-@inherits OzdsEditComponentBase<TPrefix, TModel>
+@typeparam TModel where TModel : Ozds.Business.Models.Base.NetworkUserCatalogueModel
+@using Ozds.Business.Models.Base
+@inherits Ozds.Client.Components.Models.Base.OzdsEditComponentBase<TPrefix, TModel>
 
 @(Base<IdentifiableModel>())
 

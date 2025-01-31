@@ -1,11 +1,8 @@
-@using Ozds.Business.Models
-@using Ozds.Client.Components.Models.Base
-
 @namespace Ozds.Client.Components.Models.Implementations.Administration
 
 @typeparam TPrefix
-@typeparam TModel where TModel : UserModel
-@inherits OzdsEditComponentBase<TPrefix, TModel>
+@typeparam TModel where TModel : Ozds.Business.Models.UserModel
+@inherits Ozds.Client.Components.Models.Base.OzdsEditComponentBase<TPrefix, TModel>
 
 @Field(x => x.UserName)
 

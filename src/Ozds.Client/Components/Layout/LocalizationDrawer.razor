@@ -1,11 +1,7 @@
-@using System.Globalization
-@using Ozds.Client.Components.Base
-@using Ozds.Client.State
-@using MudBlazor
-
 @namespace Ozds.Client.Components.Layout
 
-@inherits OzdsComponentBase
+@using MudBlazor
+@inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 <MudDrawer
   Open="@LayoutState.IsLocalizationDrawerOpen"
@@ -24,7 +20,7 @@
       </MudText>
     </MudContainer>
   </MudDrawerHeader>
-  <MudDivider />
+  <MudDivider/>
   <MudDrawerContainer>
     <MudNavMenu>
       <MudNavLink OnClick="OnCroatianClick">
@@ -36,14 +32,14 @@
             <div
               style="margin-left: -8px;"
               class="d-flex flex-row align-center">
-              <MudIcon Icon="@Icons.Material.Filled.Language" />
+              <MudIcon Icon="@Icons.Material.Filled.Language"/>
             </div>
           </MudHidden>
           <MudHidden Breakpoint="Breakpoint.SmAndUp">
             <div
               style="margin-left: -28px;"
               class="d-flex flex-row align-center">
-              <MudIcon Icon="@Icons.Material.Filled.Language" />
+              <MudIcon Icon="@Icons.Material.Filled.Language"/>
             </div>
           </MudHidden>
           <MudText Class="ml-4">
@@ -60,17 +56,17 @@
             <div
               style="margin-left: -8px;"
               class="d-flex flex-row align-center">
-              <MudIcon Icon="@Icons.Material.Filled.Language" />
+              <MudIcon Icon="@Icons.Material.Filled.Language"/>
             </div>
           </MudHidden>
           <MudHidden Breakpoint="Breakpoint.SmAndUp">
             <div
               style="margin-left: -28px;"
               class="d-flex flex-row align-center">
-              <MudIcon Icon="@Icons.Material.Filled.Language" />
+              <MudIcon Icon="@Icons.Material.Filled.Language"/>
             </div>
           </MudHidden>
-        <MudText Class="ml-4">
+          <MudText Class="ml-4">
             @_englishCulture.NativeName
           </MudText>
         </MudContainer>
@@ -80,6 +76,7 @@
 </MudDrawer>
 
 @code {
+
   [Parameter]
   public MaxWidth MaxWidth { get; set; } = MaxWidth.Large;
 
@@ -88,4 +85,5 @@
 
   [Parameter]
   public string Class { get; set; } = string.Empty;
+
 }

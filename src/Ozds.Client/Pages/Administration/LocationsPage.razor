@@ -1,35 +1,30 @@
-@using Microsoft.AspNetCore.Components.Web
-@using MudBlazor
-@using Ozds.Business.Models
-@using Ozds.Business.Models.Enums
-@using Ozds.Client.Attributes
-@using Ozds.Client.Components.Base
-@using Ozds.Client.Components.Streaming
-@using Ozds.Client.Components.Models
-@using Ozds.Client.Components.Fields
-@using Ozds.Client.State
-
 @namespace Ozds.Client.Pages
 
 @page "/administration/locations"
 
 @attribute [Navigation(
-  Order = 1,
-  Title = "Locations",
-  Icon = Icons.Material.Filled.VerifiedUser,
-  Parent = typeof(AdministrationPage),
-  Allows = [
-    RoleModel.OperatorRepresentative,
-    RoleModel.LocationRepresentative
-  ])]
+Order = 1,
+Title = "Locations",
+Icon = Icons.Material.Filled.VerifiedUser,
+Parent = typeof(AdministrationPage),
+Allows = [
+RoleModel.OperatorRepresentative,
+RoleModel.LocationRepresentative
+])]
 
-@inherits OzdsComponentBase
+@using Microsoft.AspNetCore.Components.Web
+@using MudBlazor
+@using Ozds.Business.Models.Enums
+@using Ozds.Client.Attributes
+@using Ozds.Client.Components.Models
+@using Ozds.Client.Components.Streaming
+@inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 @if (RepresentativeState.Representative.Role
   is not (RoleModel.OperatorRepresentative
-    or RoleModel.LocationRepresentative))
+  or RoleModel.LocationRepresentative))
 {
-  <NotFound />
+  <NotFound/>
   return;
 }
 
@@ -42,11 +37,11 @@
 {
   <MudCheckBox
     Label="@Translate("Deleted")"
-    @bind-Value="_deleted" />
+    @bind-Value="_deleted"/>
 }
 
 <Paging PageAsync="OnPageAsync">
   <Summary>
-    <Summary Model="@context" />
+    <Summary Model="@context"/>
   </Summary>
 </Paging>

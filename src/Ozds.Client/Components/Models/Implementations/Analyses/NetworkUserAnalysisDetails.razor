@@ -1,9 +1,6 @@
-@using Ozds.Business.Analysis
-@using Ozds.Client.Components.Models.Base
-
 @namespace Ozds.Client.Components.Models.Implementations.Analyses
 
-@inherits OzdsDetailsComponentBase<NetworkUserAnalysis>
+@inherits Ozds.Client.Components.Models.Base.OzdsDetailsComponentBase<Ozds.Business.Analysis.NetworkUserAnalysis>
 
 @Field(x => x.Location.Title)
 

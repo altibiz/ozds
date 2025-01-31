@@ -1,22 +1,21 @@
-@using Ozds.Business.Models.Base
-@using Ozds.Business.Models
-@using Ozds.Client.Components.Models.Base
-@using Ozds.Client.Components.Streaming
-
 @typeparam TPrefix
-@typeparam TModel where TModel : BlueLowNetworkUserCalculationModel
-@inherits OzdsEditComponentBase<TPrefix, TModel>
+@typeparam TModel where TModel : Ozds.Business.Models.BlueLowNetworkUserCalculationModel
+@using Ozds.Business.Models.Base
+@using Ozds.Client.Components.Streaming
+@inherits Ozds.Client.Components.Models.Base.OzdsEditComponentBase<TPrefix, TModel>
 
 @(Base<IdentifiableModel>())
 
-@(Base<NetworkUserCalculationModel>(@<Fragment>
-  <PrefixedEdit
-    Model="@Model"
-    Prefix="@Wrap(x => x.UsageActiveEnergyTotalImportT0)" />
+@(
+Base<NetworkUserCalculationModel>(
+  @<Fragment>
+    <PrefixedEdit
+      Model="@Model"
+      Prefix="@Wrap(x => x.UsageActiveEnergyTotalImportT0)"/>
 
-  <PrefixedEdit
-    Model="@Model"
-    Prefix="@Wrap(x => x.UsageReactiveEnergyTotalRampedT0)" />
-</Fragment>))
+    <PrefixedEdit
+      Model="@Model"
+      Prefix="@Wrap(x => x.UsageReactiveEnergyTotalRampedT0)"/>
+  </Fragment>))
 
 @(Base<FinancialModel>())

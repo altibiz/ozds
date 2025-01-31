@@ -7,11 +7,9 @@ namespace Ozds.Client.Components.Layout;
 
 public partial class LocalizationDrawer : OzdsComponentBase
 {
-  private static readonly CultureInfo _croatianCulture =
-    new CultureInfo("hr-HR");
+  private static readonly CultureInfo _croatianCulture = new("hr-HR");
 
-  private static readonly CultureInfo _englishCulture =
-    new CultureInfo("en-US");
+  private static readonly CultureInfo _englishCulture = new("en-US");
 
   [CascadingParameter]
   private LayoutState LayoutState { get; set; } = default!;

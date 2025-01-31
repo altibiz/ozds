@@ -1,9 +1,6 @@
-@using MudBlazor
-@using Ozds.Business.Models
-@using Ozds.Client.Components.Models.Base
-
 @namespace Ozds.Client.Components.Models
 
-@inherits OzdsSummaryComponentBase<UserModel>
+@using Ozds.Business.Models
+@inherits Ozds.Client.Components.Models.Base.OzdsSummaryComponentBase<Ozds.Business.Models.UserModel>
 
 @(LinkTitle<RepresentativeModel>(x => x.Id))

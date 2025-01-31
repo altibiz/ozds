@@ -34,7 +34,8 @@ public class AuditableQueries(
     }
 
     var entityType = modelEntityConverter.EntityType(modelType);
-    var entity = await queries.ReadSingleDynamic(entityType, id, cancellationToken);
+    var entity = await queries.ReadSingleDynamic(
+      entityType, id, cancellationToken);
     if (entity is null)
     {
       return default;
@@ -84,7 +85,7 @@ public class AuditableQueries(
       pageNumber,
       cancellationToken,
       pageCount,
-      where: !deleted ? x => !((IAuditableEntity)x).IsDeleted : null
+      !deleted ? x => !((IAuditableEntity)x).IsDeleted : null
     );
 
     return entities.Items

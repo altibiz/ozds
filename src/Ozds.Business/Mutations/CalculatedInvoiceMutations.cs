@@ -7,7 +7,8 @@ using Ozds.Business.Queries;
 using Ozds.Data.Entities;
 using Ozds.Data.Entities.Base;
 using Ozds.Data.Entities.Composite;
-using DataCalculatedInvoiceMutations = Ozds.Data.Mutations.CalculatedInvoiceMutations;
+using DataCalculatedInvoiceMutations =
+  Ozds.Data.Mutations.CalculatedInvoiceMutations;
 
 namespace Ozds.Business.Mutations;
 
@@ -37,6 +38,7 @@ public class CalculatedInvoiceMutations(
     {
       calculation.RepresentativeId = representativeId;
     }
+
     entity.Invoice.RepresentativeId = representativeId;
 
     await mutations.CreateCalculatedInvoice(

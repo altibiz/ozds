@@ -1,24 +1,19 @@
-@using Microsoft.AspNetCore.Components.Web
-@using Microsoft.Extensions.DependencyInjection
-@using Ozds.Business.Models.Abstractions
-@using Ozds.Business.Models.Enums
-@using Ozds.Business.Queries
-@using Ozds.Client.Components.Models
-@using Ozds.Client.Components.Models.Base
-@using Ozds.Client.Components.Streaming
-@using Ozds.Client.Extensions
-@using Ozds.Client.State
-
 @namespace Ozds.Client.Pages
 
 @page "/system/event/{id}"
 
-@inherits OzdsIdentifiableModelPageComponentBase<IEvent>
+@using Microsoft.AspNetCore.Components.Web
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Business.Models.Enums
+@using Ozds.Client.Components.Models
+@using Ozds.Client.Components.Streaming
+@using Ozds.Client.State
+@inherits Ozds.Client.Components.Models.Base.OzdsIdentifiableModelPageComponentBase<Ozds.Business.Models.Abstractions.IEvent>
 
 @if (RepresentativeState.Representative.Role
   is not RoleModel.OperatorRepresentative)
 {
-  <NotFound />
+  <NotFound/>
   return;
 }
 
@@ -31,14 +26,16 @@
     <Details Model="context"/>
   </Found>
   <NotFound>
-    <NotFound />
+    <NotFound/>
   </NotFound>
 </Loading>
 
 @code {
+
   [Parameter]
   public required string Id { get; set; }
 
   [CascadingParameter]
   private RepresentativeState RepresentativeState { get; set; } = default!;
+
 }

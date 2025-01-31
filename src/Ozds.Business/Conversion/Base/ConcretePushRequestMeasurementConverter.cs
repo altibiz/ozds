@@ -11,6 +11,16 @@ public abstract class ConcretePushRequestMeasurementConverter<
 {
   public abstract string MeterIdPrefix { get; }
 
+  public override Type PushRequestType
+  {
+    get { return typeof(TPushRequest); }
+  }
+
+  public override Type MeasurementType
+  {
+    get { return typeof(TMeasurement); }
+  }
+
   public abstract void InitializePushRequest(
     TMeasurement measurement,
     TPushRequest pushRequest
@@ -21,10 +31,6 @@ public abstract class ConcretePushRequestMeasurementConverter<
     string measurementLocationId,
     TMeasurement measurement
   );
-
-  public override Type PushRequestType => typeof(TPushRequest);
-
-  public override Type MeasurementType => typeof(TMeasurement);
 
   public override bool CanConvertToPushRequest(
     IMeasurement measurement

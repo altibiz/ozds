@@ -8,8 +8,8 @@ namespace Ozds.Business.Activation.Implementations.Finances;
 public class WhiteMediumNetworkUserCalculationModelActivator(
   IServiceProvider serviceProvider
 ) : InheritingModelActivator<
-      WhiteMediumNetworkUserCalculationModel,
-      NetworkUserCalculationModel>(serviceProvider)
+  WhiteMediumNetworkUserCalculationModel,
+  NetworkUserCalculationModel>(serviceProvider)
 {
   private readonly ModelActivator modelActivator =
     serviceProvider.GetRequiredService<ModelActivator>();

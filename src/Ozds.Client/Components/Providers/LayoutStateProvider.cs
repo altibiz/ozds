@@ -6,49 +6,59 @@ namespace Ozds.Client.Components.Providers;
 
 public partial class LayoutStateProvider : ComponentBase
 {
+  private LayoutState? _state;
+
   [Parameter]
   public RenderFragment? ChildContent { get; set; }
-
-  private LayoutState? _state;
 
   protected override void OnInitialized()
   {
     _state = new LayoutState(
-      IsUserDrawerOpen: false,
-      IsLocalizationDrawerOpen: false,
-      IsNavigationDrawerOpen: false,
-      SetUserDrawerOpen: isUserDrawerOpen =>
+      false,
+      false,
+      false,
+      isUserDrawerOpen =>
       {
-        InvokeAsync(() =>
-        {
-          _state = _state! with { IsUserDrawerOpen = isUserDrawerOpen };
-          StateHasChanged();
-        });
+        InvokeAsync(
+          () =>
+          {
+            _state = _state! with { IsUserDrawerOpen = isUserDrawerOpen };
+            StateHasChanged();
+          });
       },
-      SetLocalizationDrawerOpen: isLocalizationDrawerOpen =>
+      isLocalizationDrawerOpen =>
       {
-        InvokeAsync(() =>
-        {
-          _state = _state! with { IsLocalizationDrawerOpen = isLocalizationDrawerOpen };
-          StateHasChanged();
-        });
+        InvokeAsync(
+          () =>
+          {
+            _state = _state! with
+            {
+              IsLocalizationDrawerOpen = isLocalizationDrawerOpen
+            };
+            StateHasChanged();
+          });
       },
-      SetNavigationDrawerOpen: isNavigationDrawerOpen =>
+      isNavigationDrawerOpen =>
       {
-        InvokeAsync(() =>
-        {
-          _state = _state! with { IsNavigationDrawerOpen = isNavigationDrawerOpen };
-          StateHasChanged();
-        });
+        InvokeAsync(
+          () =>
+          {
+            _state = _state! with
+            {
+              IsNavigationDrawerOpen = isNavigationDrawerOpen
+            };
+            StateHasChanged();
+          });
       },
-      Breakpoint: Breakpoint.None,
-      SetBreakpoint: breakpoint =>
+      Breakpoint.None,
+      breakpoint =>
       {
-        InvokeAsync(() =>
-        {
-          _state = _state! with { Breakpoint = breakpoint };
-          StateHasChanged();
-        });
+        InvokeAsync(
+          () =>
+          {
+            _state = _state! with { Breakpoint = breakpoint };
+            StateHasChanged();
+          });
       }
     );
   }

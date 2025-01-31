@@ -5,7 +5,8 @@ using Ozds.Business.Naming.Base;
 
 namespace Ozds.Business.Naming.Implementations;
 
-public class SchneideriEM3xxxMeterNamingConvention : ConcreteMeterNamingConvention
+public class
+  SchneideriEM3xxxMeterNamingConvention : ConcreteMeterNamingConvention
 {
   public override string IdPrefix
   {

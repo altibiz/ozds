@@ -1,11 +1,8 @@
-@using MudBlazor
-@using Ozds.Client.Components.Base
-@using Ozds.Client.Components.Fields
-@using Ozds.Client.Components.Models
-
 @namespace Ozds.Client.Components.Providers
 
-@inherits OzdsComponentBase
+@using MudBlazor
+@using Ozds.Client.Components.Models
+@inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 @if (_state is { } state)
 {
@@ -25,7 +22,7 @@
       Placeholder="@Translate("Type here to search...")"
       Adornment="Adornment.Start"
       AdornmentIcon="@Icons.Material.Filled.Search"
-      @bind-Value="_filter" />
+      @bind-Value="_filter"/>
 
     <div>
       @foreach (var location in _representativeLocations)
@@ -39,7 +36,7 @@
 
         <div>
           <MudButton OnClick="@(() => OnLocationSelected(location))">
-            <Summary Model="location" />
+            <Summary Model="location"/>
           </MudButton>
         </div>
       }

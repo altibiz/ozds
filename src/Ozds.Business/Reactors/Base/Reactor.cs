@@ -44,6 +44,7 @@ public abstract class Reactor<TEventArgs, TSubscriber, THandler>(
         GetType().Name
       );
     }
+
     await base.StopAsync(cancellationToken);
     logger.LogInformation(
       "Reactor {Reactor} stopped",

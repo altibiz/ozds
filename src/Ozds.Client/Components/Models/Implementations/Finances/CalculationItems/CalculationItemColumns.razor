@@ -1,10 +1,7 @@
-@using Ozds.Business.Models.Abstractions
-@using Ozds.Client.Components.Models.Base
-
 @namespace Ozds.Client.Components.Models.Implementations.Finances
 
 @typeparam TPrefix
-@typeparam TModel where TModel : ICalculationItem
-@inherits OzdsColumnsComponentBase<TPrefix, TModel>
+@typeparam TModel where TModel : Ozds.Business.Models.Abstractions.ICalculationItem
+@inherits Ozds.Client.Components.Models.Base.OzdsColumnsComponentBase<TPrefix, TModel>
 
 @Column(x => x.Total_EUR)

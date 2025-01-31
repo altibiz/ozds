@@ -1,5 +1,6 @@
 using Ozds.Data.Mutations.Abstractions;
-using DataNetworkUserInvoiceMutations = Ozds.Data.Mutations.NetworkUserInvoiceMutations;
+using DataNetworkUserInvoiceMutations =
+  Ozds.Data.Mutations.NetworkUserInvoiceMutations;
 
 namespace Ozds.Business.Mutations;
 

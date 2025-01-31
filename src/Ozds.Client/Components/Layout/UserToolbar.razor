@@ -1,10 +1,7 @@
-@using MudBlazor
-@using Ozds.Client.Components.Base
-@using Ozds.Client.State
-
 @namespace Ozds.Client.Components.Layout
 
-@inherits OzdsComponentBase
+@using MudBlazor
+@inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 <MudToolBar
   Gutters="false"
@@ -22,7 +19,7 @@
         <MudImage
           Src="/logo.svg"
           Alt="Helb"
-          Style="height: 40px;" />
+          Style="height: 40px;"/>
       </MudButton>
     </MudHidden>
     <MudHidden Breakpoint="Breakpoint.MdAndUp">
@@ -33,10 +30,10 @@
         <MudImage
           Src="/favicon.png"
           Alt="Helb"
-          Style="height: 40px;" />
+          Style="height: 40px;"/>
       </MudButton>
     </MudHidden>
-    <MudSpacer />
+    <MudSpacer/>
     <div Class="d-flex flex-row justify-end">
       <MudButton
         Variant="Variant.Text"
@@ -44,11 +41,11 @@
         Class="d-flex flex-row align-center">
         @if (IsDarkMode)
         {
-          <MudIcon Icon="@Icons.Material.Filled.LightMode" />
+          <MudIcon Icon="@Icons.Material.Filled.LightMode"/>
         }
         else
         {
-          <MudIcon Icon="@Icons.Material.Filled.DarkMode" />
+          <MudIcon Icon="@Icons.Material.Filled.DarkMode"/>
         }
         <MudHidden Breakpoint="Breakpoint.SmAndDown">
           <div Class="ml-2">
@@ -62,7 +59,7 @@
         Variant="Variant.Text"
         OnClick="ToggleLocalizationDrawer"
         Class="d-flex flex-row align-center">
-        <MudIcon Icon="@Icons.Material.Filled.Language" />
+        <MudIcon Icon="@Icons.Material.Filled.Language"/>
         <MudHidden Breakpoint="Breakpoint.SmAndDown">
           <div Class="ml-2">
             <MudText>@CultureName</MudText>
@@ -93,13 +90,13 @@
           </div>
         </MudButton>
       </MudHidden>
-      @if (LocationState is { })
+      @if (LocationState is not null)
       {
         <MudButton
           OnClick="ExitLocation"
           Variant="Variant.Text"
           Style="margin-right: -20px;">
-          <MudIcon Icon="@(Icons.Material.Filled.ExitToApp)" />
+          <MudIcon Icon="@(Icons.Material.Filled.ExitToApp)"/>
         </MudButton>
       }
     </div>
@@ -107,6 +104,7 @@
 </MudToolBar>
 
 @code {
+
   [Parameter]
   public MaxWidth MaxWidth { get; set; } = default;
 
@@ -115,4 +113,5 @@
 
   [Parameter]
   public string Class { get; set; } = string.Empty;
+
 }

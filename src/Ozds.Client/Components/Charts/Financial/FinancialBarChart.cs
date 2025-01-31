@@ -11,6 +11,14 @@ namespace Ozds.Client.Components.Charts;
 
 public partial class FinancialBarChart : OzdsComponentBase
 {
+  private readonly string _id = Guid.NewGuid().ToString();
+
+  private ApexChart<IFinancial>? _chart;
+
+  private ApexChartOptions<IFinancial> _options =
+    new ApexChartOptions<IFinancial>()
+      .WithFixedScriptPath();
+
   [Parameter]
   public FinancialChartParameters Parameters { get; set; } = default!;
 
@@ -18,18 +26,10 @@ public partial class FinancialBarChart : OzdsComponentBase
   public bool Area { get; set; }
 
   [CascadingParameter]
-  private Breakpoint Breakpoint { get; set; } = default!;
+  private Breakpoint Breakpoint { get; set; }
 
   [CascadingParameter]
   private ThemeState ThemeState { get; set; } = default!;
-
-  private readonly string _id = Guid.NewGuid().ToString();
-
-  private ApexChart<IFinancial>? _chart = default!;
-
-  private ApexChartOptions<IFinancial> _options =
-    new ApexChartOptions<IFinancial>()
-      .WithFixedScriptPath();
 
   protected override void OnInitialized()
   {
@@ -41,7 +41,7 @@ public partial class FinancialBarChart : OzdsComponentBase
     _options = CreateGraphOptions();
     if (_chart is { } chart)
     {
-      await chart.UpdateSeriesAsync(animate: true);
+      await chart.UpdateSeriesAsync(true);
       await chart.UpdateOptionsAsync(false, true, false);
     }
   }

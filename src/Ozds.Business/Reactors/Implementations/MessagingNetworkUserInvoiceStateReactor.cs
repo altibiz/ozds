@@ -40,9 +40,10 @@ public class MessagingNetworkUserInvoiceStateHandler(
       .CreateDbContextAsync(cancellationToken);
 
     await context.NetworkUserInvoices
-      .Where(context
-        .PrimaryKeyEquals<NetworkUserInvoiceEntity>(
-          eventArgs.State.NetworkUserInvoiceId))
+      .Where(
+        context
+          .PrimaryKeyEquals<NetworkUserInvoiceEntity>(
+            eventArgs.State.NetworkUserInvoiceId))
       .ExecuteUpdateAsync(
         s => s.SetProperty(x => x.BillId, eventArgs.State.BillId),
         cancellationToken);

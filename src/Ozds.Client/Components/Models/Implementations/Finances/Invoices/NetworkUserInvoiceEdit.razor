@@ -1,29 +1,28 @@
-@using Ozds.Business.Models
-@using Ozds.Business.Models.Base
-@using Ozds.Client.Components.Models.Base
-@using Ozds.Client.Components.Streaming
-
 @typeparam TPrefix
-@typeparam TModel where TModel : NetworkUserInvoiceModel
-@inherits OzdsEditComponentBase<TPrefix, TModel>
+@typeparam TModel where TModel : Ozds.Business.Models.NetworkUserInvoiceModel
+@using Ozds.Business.Models.Base
+@using Ozds.Client.Components.Streaming
+@inherits Ozds.Client.Components.Models.Base.OzdsEditComponentBase<TPrefix, TModel>
 
 @(Base<IdentifiableModel>())
 
-@(Base<FinancialModel>(@<Fragment>
-  @Field(x => x.UsageActiveEnergyTotalImportT0Fee_EUR)
-  @Field(x => x.UsageActiveEnergyTotalImportT1Fee_EUR)
-  @Field(x => x.UsageActiveEnergyTotalImportT2Fee_EUR)
-  @Field(x => x.UsageActivePowerTotalImportT1PeakFee_EUR)
-  @Field(x => x.UsageReactiveEnergyTotalRampedT0Fee_EUR)
-  @Field(x => x.UsageMeterFee_EUR)
-  @Field(x => x.UsageFeeTotal_EUR)
+@(
+Base<FinancialModel>(
+  @<Fragment>
+    @Field(x => x.UsageActiveEnergyTotalImportT0Fee_EUR)
+    @Field(x => x.UsageActiveEnergyTotalImportT1Fee_EUR)
+    @Field(x => x.UsageActiveEnergyTotalImportT2Fee_EUR)
+    @Field(x => x.UsageActivePowerTotalImportT1PeakFee_EUR)
+    @Field(x => x.UsageReactiveEnergyTotalRampedT0Fee_EUR)
+    @Field(x => x.UsageMeterFee_EUR)
+    @Field(x => x.UsageFeeTotal_EUR)
 
-  @Field(x => x.SupplyActiveEnergyTotalImportT1Fee_EUR)
-  @Field(x => x.SupplyActiveEnergyTotalImportT2Fee_EUR)
-  @Field(x => x.SupplyBusinessUsageFee_EUR)
-  @Field(x => x.SupplyRenewableEnergyFee_EUR)
-  @Field(x => x.SupplyFeeTotal_EUR)
-</Fragment>))
+    @Field(x => x.SupplyActiveEnergyTotalImportT1Fee_EUR)
+    @Field(x => x.SupplyActiveEnergyTotalImportT2Fee_EUR)
+    @Field(x => x.SupplyBusinessUsageFee_EUR)
+    @Field(x => x.SupplyRenewableEnergyFee_EUR)
+    @Field(x => x.SupplyFeeTotal_EUR)
+  </Fragment>))
 
 @Field(x => x.Tax_EUR)
 @Field(x => x.TotalWithTax_EUR)

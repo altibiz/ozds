@@ -14,7 +14,7 @@ public partial class UserPage
   : OzdsIdentifiableModelPageComponentBase<RepresentativeModel>
 {
   [Parameter]
-  public string? Id { get; set; } = default!;
+  public string? Id { get; set; }
 
   [CascadingParameter]
   private UserState UserState { get; set; } = default!;

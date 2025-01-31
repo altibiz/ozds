@@ -32,14 +32,15 @@ public class MeasurementQueries(
     var appropriateInterval = QueryConstants
       .AppropriateInterval(timeSpan, fromDate)
       ?.ToEntity();
-    var isAggregate = appropriateInterval is { };
+    var isAggregate = appropriateInterval is not null;
 
     var modelIdsByEntityType = meters
       .Select(meter => meter.Id)
-      .GroupBy(id => isAggregate
-        ? modelEntityConverter.EntityType(
+      .GroupBy(
+        id => isAggregate
+          ? modelEntityConverter.EntityType(
             meterNamingConvention.AggregateTypeForMeterId(id))
-        : modelEntityConverter.EntityType(
+          : modelEntityConverter.EntityType(
             meterNamingConvention.MeasurementTypeForMeterId(id)));
 
     var entities = await queries.ReadByMeterIds(
@@ -69,14 +70,15 @@ public class MeasurementQueries(
     var now = DateTimeOffset.UtcNow;
     toDate = toDate == default ? now : toDate;
 
-    var isAggregate = interval is { };
+    var isAggregate = interval is not null;
 
     var modelIdsByEntityType = meters
       .Select(meter => meter.Id)
-      .GroupBy(id => isAggregate
-        ? modelEntityConverter.EntityType(
+      .GroupBy(
+        id => isAggregate
+          ? modelEntityConverter.EntityType(
             meterNamingConvention.AggregateTypeForMeterId(id))
-        : modelEntityConverter.EntityType(
+          : modelEntityConverter.EntityType(
             meterNamingConvention.MeasurementTypeForMeterId(id)));
 
     var entities = await queries.ReadLastByMeterId(

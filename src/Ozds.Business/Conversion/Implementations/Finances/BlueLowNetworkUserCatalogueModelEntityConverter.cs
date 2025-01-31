@@ -9,10 +9,10 @@ namespace Ozds.Business.Conversion.Implementations.Finances;
 public class BlueLowNetworkUserCatalogueModelEntityConverter(
   IServiceProvider serviceProvider
 ) : InheritingModelEntityConverter<
-      BlueLowNetworkUserCatalogueModel,
-      NetworkUserCatalogueModel,
-      BlueLowNetworkUserCatalogueEntity,
-      NetworkUserCatalogueEntity>(serviceProvider)
+  BlueLowNetworkUserCatalogueModel,
+  NetworkUserCatalogueModel,
+  BlueLowNetworkUserCatalogueEntity,
+  NetworkUserCatalogueEntity>(serviceProvider)
 {
   public override void InitializeEntity(
     BlueLowNetworkUserCatalogueModel model,

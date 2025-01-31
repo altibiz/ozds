@@ -26,6 +26,12 @@ public class MeasurementBuffer(
 {
   private const int MaxMeasurements = 10000;
 
+  private static readonly ConcurrentQueue<IMeasurement> Measurements = new();
+
+  private static readonly ConcurrentDictionary<
+    UpsertAggregateCacheKey,
+    List<IAggregate>> Aggregates = new();
+
   public List<IMeasurement> Add(
     IEnumerable<IMeasurement> measurements,
     MeasurementBufferBehavior bufferBehavior = MeasurementBufferBehavior.Buffer
@@ -38,15 +44,17 @@ public class MeasurementBuffer(
     if (initialAggregateCount is 0)
     {
       aggregates = measurements
-        .SelectMany(x => Enum.GetValues<IntervalModel>()
-          .Select(interval => aggregateConverter.ToAggregate(x, interval)))
-        .GroupBy(x => new
-        {
-          x.MeterId,
-          x.MeasurementLocationId,
-          x.Timestamp,
-          x.Interval
-        })
+        .SelectMany(
+          x => Enum.GetValues<IntervalModel>()
+            .Select(interval => aggregateConverter.ToAggregate(x, interval)))
+        .GroupBy(
+          x => new
+          {
+            x.MeterId,
+            x.MeasurementLocationId,
+            x.Timestamp,
+            x.Interval
+          })
         .Select(x => x.Aggregate(aggregateUpserter.UpsertModel))
         .ToList();
     }
@@ -65,6 +73,7 @@ public class MeasurementBuffer(
           Measurements = nonAggregates
         });
     }
+
     AddToAggregatesInternal(aggregates);
 
     var flushedMeasurements =
@@ -74,10 +83,11 @@ public class MeasurementBuffer(
     var flushedAggregates = FlushAggregatesInternal(aggregates);
     if (flushedMeasurements.Count is > 0 || flushedAggregates.Count is > 0)
     {
-      measurementFlushPublisher.Publish(new MeasurementFlushEventArgs
-      {
-        Measurements = flushedMeasurements.Concat(flushedAggregates).ToList(),
-      });
+      measurementFlushPublisher.Publish(
+        new MeasurementFlushEventArgs
+        {
+          Measurements = flushedMeasurements.Concat(flushedAggregates).ToList()
+        });
     }
 
     return flushedMeasurements
@@ -91,10 +101,11 @@ public class MeasurementBuffer(
 
     if (!immediate && (measurements.Count is > 0 || aggregates.Count is > 0))
     {
-      measurementFlushPublisher.Publish(new MeasurementFlushEventArgs
-      {
-        Measurements = measurements.Concat(aggregates).ToList(),
-      });
+      measurementFlushPublisher.Publish(
+        new MeasurementFlushEventArgs
+        {
+          Measurements = measurements.Concat(aggregates).ToList()
+        });
     }
 
     return measurements
@@ -112,15 +123,16 @@ public class MeasurementBuffer(
       count++;
       Measurements.Enqueue(measurement);
     }
+
     logger.LogDebug("Added {Count} measurements to buffer", count);
   }
 
   public List<IMeasurement> FlushMeasurementsInternal(int? withMax = null)
   {
     var count = Measurements.Count;
-    if (withMax is { } && count < withMax)
+    if (withMax is not null && count < withMax)
     {
-      return new();
+      return new List<IMeasurement>();
     }
 
     var result = new List<IMeasurement>();
@@ -131,6 +143,7 @@ public class MeasurementBuffer(
         result.Add(measurement);
       }
     }
+
     logger.LogDebug(
       "Flushed measurements buffer with {Count} measurements",
       result.Count);
@@ -149,13 +162,14 @@ public class MeasurementBuffer(
       Aggregates
         .AddOrUpdate(
           CreateKey(aggregate),
-          _ => new List<IAggregate>() { aggregate },
+          _ => new List<IAggregate> { aggregate },
           (_, list) =>
           {
             list.Add(aggregate);
             return list;
           });
     }
+
     logger.LogDebug("Added {Count} aggregates to buffer", count);
   }
 
@@ -187,13 +201,15 @@ public class MeasurementBuffer(
       {
         var upserted = cached.Value
           .Aggregate(aggregateUpserter.UpsertModel);
-        if (!toStay.Any(aggregate =>
-          aggregate.MeterId == upserted.MeterId
-          && aggregate.MeasurementLocationId == upserted.MeasurementLocationId
-          && aggregate.Timestamp >= upserted.Timestamp
-          && aggregate.Timestamp < upserted.Timestamp.Add(
-            upserted.Interval.ToTimeSpan(upserted.Timestamp))
-          && aggregate.Interval == IntervalModel.QuarterHour)
+        if (!toStay.Any(
+            aggregate =>
+              aggregate.MeterId == upserted.MeterId
+              && aggregate.MeasurementLocationId
+              == upserted.MeasurementLocationId
+              && aggregate.Timestamp >= upserted.Timestamp
+              && aggregate.Timestamp < upserted.Timestamp.Add(
+                upserted.Interval.ToTimeSpan(upserted.Timestamp))
+              && aggregate.Interval == IntervalModel.QuarterHour)
           && Aggregates.TryRemove(cached.Key, out var value))
         {
           upserted = value
@@ -202,13 +218,12 @@ public class MeasurementBuffer(
         }
       }
     }
+
     logger.LogDebug(
       "Flushed aggregates cache with {Count} aggregates",
       result.Count);
     return result;
   }
-
-  private static readonly ConcurrentQueue<IMeasurement> Measurements = new();
 
   private static UpsertAggregateCacheKey CreateKey(
     IAggregate aggregate)
@@ -219,13 +234,6 @@ public class MeasurementBuffer(
       aggregate.Interval,
       aggregate.Timestamp);
   }
-
-  private static readonly ConcurrentDictionary<
-    UpsertAggregateCacheKey,
-    List<IAggregate>> Aggregates =
-      new ConcurrentDictionary<
-        UpsertAggregateCacheKey,
-        List<IAggregate>>();
 
   private sealed record UpsertAggregateCacheKey(
     string MeterId,

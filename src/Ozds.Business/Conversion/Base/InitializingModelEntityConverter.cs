@@ -12,14 +12,6 @@ public abstract class InitializingModelEntityConverter : IModelEntityConverter
 
   public abstract bool CanConvertToModel(Type entityType);
 
-  public abstract object BoxEntity();
-
-  public abstract object BoxModel();
-
-  public virtual void InitializeEntity(object model, object entity) { }
-
-  public virtual void InitializeModel(object entity, object model) { }
-
   public virtual object ToEntity(object model)
   {
     var entity = BoxEntity();
@@ -32,5 +24,17 @@ public abstract class InitializingModelEntityConverter : IModelEntityConverter
     var model = BoxModel();
     InitializeModel(entity, model);
     return model;
+  }
+
+  public abstract object BoxEntity();
+
+  public abstract object BoxModel();
+
+  public virtual void InitializeEntity(object model, object entity)
+  {
+  }
+
+  public virtual void InitializeModel(object entity, object model)
+  {
   }
 }

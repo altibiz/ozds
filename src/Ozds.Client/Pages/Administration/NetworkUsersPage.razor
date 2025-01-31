@@ -1,30 +1,26 @@
-@using Microsoft.AspNetCore.Components.Web
-@using MudBlazor
-@using Ozds.Business.Analysis
-@using Ozds.Business.Models.Enums
-@using Ozds.Client.Attributes
-@using Ozds.Client.Components.Base
-@using Ozds.Client.Components.Tables
-@using Ozds.Client.Components.Models
-@using Ozds.Client.Components.Fields
-@using Ozds.Client.State
-
 @namespace Ozds.Client.Pages
 
 @page "/administration/network-users"
 
 @attribute [Navigation(
-  Order = 2,
-  Title = "Network users",
-  Icon = Icons.Material.Filled.VerifiedUser,
-  Parent = typeof(AdministrationPage),
-  Allows = [
-    RoleModel.OperatorRepresentative,
-    RoleModel.LocationRepresentative,
-    RoleModel.NetworkUserRepresentative
-  ])]
+Order = 2,
+Title = "Network users",
+Icon = Icons.Material.Filled.VerifiedUser,
+Parent = typeof(AdministrationPage),
+Allows = [
+RoleModel.OperatorRepresentative,
+RoleModel.LocationRepresentative,
+RoleModel.NetworkUserRepresentative
+])]
 
-@inherits OzdsComponentBase
+@using Microsoft.AspNetCore.Components.Web
+@using MudBlazor
+@using Ozds.Business.Analysis
+@using Ozds.Client.Attributes
+@using Ozds.Client.Components.Models
+@using Ozds.Client.Components.Tables
+@using Ozds.Client.State
+@inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 <HeadContent>
   <title>OZDS - @Translate("Network users")</title>
@@ -37,13 +33,13 @@
 
 <ResponsiveTable Model="@analyses">
   <Summary>
-    <Summary Model="@context" />
+    <Summary Model="@context"/>
   </Summary>
   <Details>
-    <Details Model="@context" />
+    <Details Model="@context"/>
   </Details>
   <Columns>
-    <Columns Models="@analyses" />
+    <Columns Models="@analyses"/>
   </Columns>
 </ResponsiveTable>
 
@@ -52,6 +48,8 @@
 </MudLink>
 
 @code {
+
   [CascadingParameter]
   public AnalysisState AnalysisState { get; set; } = default!;
+
 }

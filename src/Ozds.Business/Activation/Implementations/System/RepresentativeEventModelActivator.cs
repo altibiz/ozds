@@ -7,8 +7,8 @@ namespace Ozds.Business.Activation.Implementations.System;
 public class RepresentativeEventModelActivator(
   IServiceProvider serviceProvider
 ) : InheritingModelActivator<RepresentativeEventModel, EventModel>(
-      serviceProvider
-    )
+  serviceProvider
+)
 {
   public override void Initialize(RepresentativeEventModel model)
   {

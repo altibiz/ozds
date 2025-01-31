@@ -1,13 +1,11 @@
-@using Ozds.Business.Models
-@using Ozds.Business.Models.Abstractions
-@using Ozds.Client.Components.Models.Base
-
 @namespace Ozds.Client.Components.Models
 
-@inherits OzdsDetailsComponentBase<MessengerNotificationModel>
+@using Ozds.Business.Models.Abstractions
+@inherits Ozds.Client.Components.Models.Base.OzdsDetailsComponentBase<Ozds.Business.Models.MessengerNotificationModel>
 
 @(Base<IIdentifiable>())
 
-@(Base<INotification>(
-    Base<IResolvableNotification>(
-      LinkField<IMessenger>(x => x.MessengerId))))
+@(
+Base<INotification>(
+  Base<IResolvableNotification>(
+    LinkField<IMessenger>(x => x.MessengerId))))

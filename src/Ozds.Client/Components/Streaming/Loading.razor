@@ -1,14 +1,9 @@
-@using Ozds.Business.Models.Abstractions
-@using Ozds.Business.Queries
-@using Ozds.Client.Components.Base
-@using Ozds.Client.State
-@using Microsoft.Extensions.DependencyInjection
-
 @namespace Ozds.Client.Components.Streaming
 
 @typeparam T where T : notnull
 
-@inherits OzdsComponentBase
+@using Ozds.Client.State
+@inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 @if (_state.State is LoadingState.Loading)
 {

@@ -5,7 +5,7 @@ namespace Ozds.Client.Extensions;
 public static class ExpressionExtensions
 {
   public static string Label<TIn, TOut>(
-      this Expression<Func<TIn, TOut>> expression
+    this Expression<Func<TIn, TOut>> expression
   )
   {
     if (expression.Body is MemberExpression memberExpression)

@@ -38,7 +38,8 @@ public class OzdsFakePushArguments
 public class OzdsFakeSeedArguments
 {
   [Option('i', "interval", Required = false, HelpText = "Desired interval.")]
-  public OzdsFakeSeedInterval Interval { get; set; } = OzdsFakeSeedInterval.Month;
+  public OzdsFakeSeedInterval Interval { get; set; } =
+    OzdsFakeSeedInterval.Month;
 
   [Option('b', "batch-size", Required = false, HelpText = "Batch size.")]
   public int BatchSize { get; set; } = 10000;
@@ -90,7 +91,8 @@ public static class OzdsFakeArguments
           with.AutoHelp = true;
           with.AutoVersion = true;
           with.HelpWriter = Console.Out;
-        }).ParseArguments<OzdsFakePushArguments, OzdsFakeSeedArguments, OzdsFakeAltibizArguments>(args);
+        }).ParseArguments<OzdsFakePushArguments, OzdsFakeSeedArguments,
+        OzdsFakeAltibizArguments>(args);
 
       if (result.Tag == ParserResultType.NotParsed)
       {

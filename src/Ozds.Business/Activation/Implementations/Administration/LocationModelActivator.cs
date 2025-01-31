@@ -8,8 +8,8 @@ namespace Ozds.Business.Activation.Implementations.Administration;
 public class LocationModelActivator(
   IServiceProvider serviceProvider
 ) : InheritingModelActivator<LocationModel, AuditableModel>(
-      serviceProvider
-    )
+  serviceProvider
+)
 {
   private readonly ModelActivator modelActivator =
     serviceProvider.GetRequiredService<ModelActivator>();

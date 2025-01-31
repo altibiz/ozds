@@ -5,5 +5,8 @@ namespace Ozds.Business.Capabilities.Implementations;
 
 public class NullCapabilities : ICapabilities
 {
-  public IEnumerable<MeasureModel> Measures => [];
+  public IEnumerable<MeasureModel> Measures
+  {
+    get { return []; }
+  }
 }

@@ -74,45 +74,52 @@ public class CreateMeasurementsTest(
     var measurements = await factory.CreateDerivedNull(CancellationToken.None);
 
     var byproduct = (await mutations
-      .CreateMeasurements(
-        context,
-        measurements,
-        CancellationToken.None))
-      .OrderBy(x => x is IAggregateEntity aggregate
-        ? aggregate.Interval
-        : (IntervalEntity?)null)
-      .ThenBy(x => (
-        x.GetType().Name,
-        x.MeterId,
-        x.MeasurementLocationId,
-        x.Timestamp,
-        x is IAggregateEntity aggregate
+        .CreateMeasurements(
+          context,
+          measurements,
+          CancellationToken.None))
+      .OrderBy(
+        x => x is IAggregateEntity aggregate
           ? aggregate.Interval
-          : (IntervalEntity?)null
-      ))
+          : (IntervalEntity?)null)
+      .ThenBy(
+        x => (
+          x.GetType().Name,
+          x.MeterId,
+          x.MeasurementLocationId,
+          x.Timestamp,
+          x is IAggregateEntity aggregate
+            ? aggregate.Interval
+            : (IntervalEntity?)null
+        ))
       .ToList();
 
     var actual = (await context.AbbB2xAggregates
         .ToListAsync(CancellationToken.None))
       .OfType<IMeasurementEntity>()
-      .Concat(await context.AbbB2xMeasurements
-        .ToListAsync(CancellationToken.None))
-      .Concat(await context.SchneideriEM3xxxAggregates
-        .ToListAsync(CancellationToken.None))
-      .Concat(await context.SchneideriEM3xxxMeasurements
-        .ToListAsync(CancellationToken.None))
-      .OrderBy(x => x is IAggregateEntity aggregate
-        ? aggregate.Interval
-        : (IntervalEntity?)null)
-      .ThenBy(x => (
-        x.GetType().Name,
-        x.MeterId,
-        x.MeasurementLocationId,
-        x.Timestamp,
-        x is IAggregateEntity aggregate
+      .Concat(
+        await context.AbbB2xMeasurements
+          .ToListAsync(CancellationToken.None))
+      .Concat(
+        await context.SchneideriEM3xxxAggregates
+          .ToListAsync(CancellationToken.None))
+      .Concat(
+        await context.SchneideriEM3xxxMeasurements
+          .ToListAsync(CancellationToken.None))
+      .OrderBy(
+        x => x is IAggregateEntity aggregate
           ? aggregate.Interval
-          : (IntervalEntity?)null
-      ))
+          : (IntervalEntity?)null)
+      .ThenBy(
+        x => (
+          x.GetType().Name,
+          x.MeterId,
+          x.MeasurementLocationId,
+          x.Timestamp,
+          x is IAggregateEntity aggregate
+            ? aggregate.Interval
+            : (IntervalEntity?)null
+        ))
       .ToList();
 
     byproduct.Should().BeContextuallyEquivalentTo(context, actual);
@@ -120,73 +127,89 @@ public class CreateMeasurementsTest(
     measurements.Should().NotBeContextuallyEquivalentTo(context, actual);
 
     var expected = measurements
-      .GroupBy(x => (
-        x.GetType(),
-        x.MeterId,
-        x.MeasurementLocationId,
-        x.Timestamp,
-        x is IAggregateEntity aggregate
-          ? aggregate.Interval
-          : (IntervalEntity?)null
-      ))
-      .Select(x =>
-        x.Key.Item4 is { }
-        ? x.Aggregate((lhs, rhs) => (lhs, rhs) switch
-          {
-            (AbbB2xAggregateEntity lhsAggregate,
-              AbbB2xAggregateEntity rhsAggregate) => Upserts
-                .Upsert(lhsAggregate, rhsAggregate),
-            (SchneideriEM3xxxAggregateEntity lhsAggregate,
-              SchneideriEM3xxxAggregateEntity rhsAggregate) => Upserts
-                .Upsert(lhsAggregate, rhsAggregate),
-            _ => lhs
-          })
-        : x.First())
+      .GroupBy(
+        x => (
+          x.GetType(),
+          x.MeterId,
+          x.MeasurementLocationId,
+          x.Timestamp,
+          x is IAggregateEntity aggregate
+            ? aggregate.Interval
+            : (IntervalEntity?)null
+        ))
+      .Select(
+        x =>
+          x.Key.Item4 is { }
+            ? x.Aggregate(
+              (lhs, rhs) => (lhs, rhs) switch
+              {
+                (AbbB2xAggregateEntity lhsAggregate,
+                  AbbB2xAggregateEntity rhsAggregate) => Upserts
+                    .Upsert(lhsAggregate, rhsAggregate),
+                (SchneideriEM3xxxAggregateEntity lhsAggregate,
+                  SchneideriEM3xxxAggregateEntity rhsAggregate) => Upserts
+                    .Upsert(lhsAggregate, rhsAggregate),
+                _ => lhs
+              })
+            : x.First())
       .ToList();
-    expected = expected.Select(item =>
-      item is IAggregateEntity aggregateItem
-        && aggregateItem.Interval != IntervalEntity.QuarterHour
-      ? aggregateItem switch
-      {
-        AbbB2xAggregateEntity abbB2XAggregateItem =>
-          expected
-            .OfType<AbbB2xAggregateEntity>()
-            .Where(x => x.Interval == IntervalEntity.QuarterHour)
-            .Where(x => x.MeterId == abbB2XAggregateItem.MeterId)
-            .Where(x => x.MeasurementLocationId == abbB2XAggregateItem.MeasurementLocationId)
-            .Where(x => x.Timestamp >= abbB2XAggregateItem.Timestamp
-              && x.Timestamp < abbB2XAggregateItem.Timestamp
-                .Add(abbB2XAggregateItem.Interval
-                  .ToModel()
-                  .ToTimeSpan(abbB2XAggregateItem.Timestamp)))
-            .Aggregate(abbB2XAggregateItem, Upserts.Upsert),
-        SchneideriEM3xxxAggregateEntity schneideriEM3xxxAggregateItem =>
-          expected
-            .OfType<SchneideriEM3xxxAggregateEntity>()
-            .Where(x => x.Interval == IntervalEntity.QuarterHour)
-            .Where(x => x.MeterId == schneideriEM3xxxAggregateItem.MeterId)
-            .Where(x => x.MeasurementLocationId == schneideriEM3xxxAggregateItem.MeasurementLocationId)
-            .Where(x => x.Timestamp >= schneideriEM3xxxAggregateItem.Timestamp
-              && x.Timestamp < schneideriEM3xxxAggregateItem.Timestamp
-                .Add(schneideriEM3xxxAggregateItem.Interval
-                  .ToModel()
-                  .ToTimeSpan(schneideriEM3xxxAggregateItem.Timestamp)))
-            .Aggregate(schneideriEM3xxxAggregateItem, Upserts.Upsert),
-        _ => item
-      }
-      : item)
-      .OrderBy(x => x is IAggregateEntity aggregate
-        ? aggregate.Interval
-        : (IntervalEntity?)null)
-      .ThenBy(x => (
-        x.GetType().Name,
-        x.MeterId,
-        x.MeasurementLocationId,
-        x.Timestamp,
-        x is IAggregateEntity aggregate
+    expected = expected.Select(
+        item =>
+          item is IAggregateEntity aggregateItem
+          && aggregateItem.Interval != IntervalEntity.QuarterHour
+            ? aggregateItem switch
+            {
+              AbbB2xAggregateEntity abbB2XAggregateItem =>
+                expected
+                  .OfType<AbbB2xAggregateEntity>()
+                  .Where(x => x.Interval == IntervalEntity.QuarterHour)
+                  .Where(x => x.MeterId == abbB2XAggregateItem.MeterId)
+                  .Where(
+                    x => x.MeasurementLocationId
+                      == abbB2XAggregateItem.MeasurementLocationId)
+                  .Where(
+                    x => x.Timestamp >= abbB2XAggregateItem.Timestamp
+                      && x.Timestamp < abbB2XAggregateItem.Timestamp
+                        .Add(
+                          abbB2XAggregateItem.Interval
+                            .ToModel()
+                            .ToTimeSpan(abbB2XAggregateItem.Timestamp)))
+                  .Aggregate(abbB2XAggregateItem, Upserts.Upsert),
+              SchneideriEM3xxxAggregateEntity schneideriEM3xxxAggregateItem =>
+                expected
+                  .OfType<SchneideriEM3xxxAggregateEntity>()
+                  .Where(x => x.Interval == IntervalEntity.QuarterHour)
+                  .Where(
+                    x => x.MeterId == schneideriEM3xxxAggregateItem.MeterId)
+                  .Where(
+                    x => x.MeasurementLocationId
+                      == schneideriEM3xxxAggregateItem.MeasurementLocationId)
+                  .Where(
+                    x => x.Timestamp >= schneideriEM3xxxAggregateItem.Timestamp
+                      && x.Timestamp < schneideriEM3xxxAggregateItem.Timestamp
+                        .Add(
+                          schneideriEM3xxxAggregateItem.Interval
+                            .ToModel()
+                            .ToTimeSpan(
+                              schneideriEM3xxxAggregateItem.Timestamp)))
+                  .Aggregate(schneideriEM3xxxAggregateItem, Upserts.Upsert),
+              _ => item
+            }
+            : item)
+      .OrderBy(
+        x => x is IAggregateEntity aggregate
           ? aggregate.Interval
-          : (IntervalEntity?)null
-      ))
+          : (IntervalEntity?)null)
+      .ThenBy(
+        x => (
+          x.GetType().Name,
+          x.MeterId,
+          x.MeasurementLocationId,
+          x.Timestamp,
+          x is IAggregateEntity aggregate
+            ? aggregate.Interval
+            : (IntervalEntity?)null
+        ))
       .ToList();
 
     actual.Should().BeContextuallyEquivalentTo(context, expected);
@@ -350,19 +373,27 @@ public class CreateMeasurementsTest(
         result.ActiveEnergyL1ImportT0_Wh = lhs.ActiveEnergyL1ImportT0_Wh;
         result.ActiveEnergyL2ImportT0_Wh = lhs.ActiveEnergyL2ImportT0_Wh;
         result.ActiveEnergyL3ImportT0_Wh = lhs.ActiveEnergyL3ImportT0_Wh;
-        result.ReactiveEnergyL1ImportT0_VARh = lhs.ReactiveEnergyL1ImportT0_VARh;
-        result.ReactiveEnergyL2ImportT0_VARh = lhs.ReactiveEnergyL2ImportT0_VARh;
-        result.ReactiveEnergyL3ImportT0_VARh = lhs.ReactiveEnergyL3ImportT0_VARh;
+        result.ReactiveEnergyL1ImportT0_VARh =
+          lhs.ReactiveEnergyL1ImportT0_VARh;
+        result.ReactiveEnergyL2ImportT0_VARh =
+          lhs.ReactiveEnergyL2ImportT0_VARh;
+        result.ReactiveEnergyL3ImportT0_VARh =
+          lhs.ReactiveEnergyL3ImportT0_VARh;
         result.ActiveEnergyL1ExportT0_Wh = lhs.ActiveEnergyL1ExportT0_Wh;
         result.ActiveEnergyL2ExportT0_Wh = lhs.ActiveEnergyL2ExportT0_Wh;
         result.ActiveEnergyL3ExportT0_Wh = lhs.ActiveEnergyL3ExportT0_Wh;
-        result.ReactiveEnergyL1ExportT0_VARh = lhs.ReactiveEnergyL1ExportT0_VARh;
-        result.ReactiveEnergyL2ExportT0_VARh = lhs.ReactiveEnergyL2ExportT0_VARh;
-        result.ReactiveEnergyL3ExportT0_VARh = lhs.ReactiveEnergyL3ExportT0_VARh;
+        result.ReactiveEnergyL1ExportT0_VARh =
+          lhs.ReactiveEnergyL1ExportT0_VARh;
+        result.ReactiveEnergyL2ExportT0_VARh =
+          lhs.ReactiveEnergyL2ExportT0_VARh;
+        result.ReactiveEnergyL3ExportT0_VARh =
+          lhs.ReactiveEnergyL3ExportT0_VARh;
         result.ActiveEnergyTotalImportT0_Wh = lhs.ActiveEnergyTotalImportT0_Wh;
         result.ActiveEnergyTotalExportT0_Wh = lhs.ActiveEnergyTotalExportT0_Wh;
-        result.ReactiveEnergyTotalImportT0_VARh = lhs.ReactiveEnergyTotalImportT0_VARh;
-        result.ReactiveEnergyTotalExportT0_VARh = lhs.ReactiveEnergyTotalExportT0_VARh;
+        result.ReactiveEnergyTotalImportT0_VARh =
+          lhs.ReactiveEnergyTotalImportT0_VARh;
+        result.ReactiveEnergyTotalExportT0_VARh =
+          lhs.ReactiveEnergyTotalExportT0_VARh;
         result.ActiveEnergyTotalImportT1_Wh = lhs.ActiveEnergyTotalImportT1_Wh;
         result.ActiveEnergyTotalImportT2_Wh = lhs.ActiveEnergyTotalImportT2_Wh;
       }
@@ -666,8 +697,10 @@ public class CreateMeasurementsTest(
         result.ActiveEnergyL3ImportT0_Wh = lhs.ActiveEnergyL3ImportT0_Wh;
         result.ActiveEnergyTotalImportT0_Wh = lhs.ActiveEnergyTotalImportT0_Wh;
         result.ActiveEnergyTotalExportT0_Wh = lhs.ActiveEnergyTotalExportT0_Wh;
-        result.ReactiveEnergyTotalImportT0_VARh = lhs.ReactiveEnergyTotalImportT0_VARh;
-        result.ReactiveEnergyTotalExportT0_VARh = lhs.ReactiveEnergyTotalExportT0_VARh;
+        result.ReactiveEnergyTotalImportT0_VARh =
+          lhs.ReactiveEnergyTotalImportT0_VARh;
+        result.ReactiveEnergyTotalExportT0_VARh =
+          lhs.ReactiveEnergyTotalExportT0_VARh;
         result.ActiveEnergyTotalImportT1_Wh = lhs.ActiveEnergyTotalImportT1_Wh;
         result.ActiveEnergyTotalImportT2_Wh = lhs.ActiveEnergyTotalImportT2_Wh;
       }
@@ -783,7 +816,7 @@ public class CreateMeasurementsTest(
         Max = Math.Max(lhs.Max, rhs.Max),
         MaxTimestamp = lhs.Max > rhs.Max
           ? lhs.MaxTimestamp
-          : rhs.MaxTimestamp,
+          : rhs.MaxTimestamp
       };
     }
 
@@ -795,7 +828,7 @@ public class CreateMeasurementsTest(
       return new CumulativeAggregateMeasureEntity
       {
         Min = Math.Min(lhs.Min, rhs.Min),
-        Max = Math.Max(lhs.Max, rhs.Max),
+        Max = Math.Max(lhs.Max, rhs.Max)
       };
     }
 
@@ -813,7 +846,7 @@ public class CreateMeasurementsTest(
         Min = value,
         MinTimestamp = timestamp,
         Max = value,
-        MaxTimestamp = timestamp,
+        MaxTimestamp = timestamp
       };
     }
   }

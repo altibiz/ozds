@@ -8,24 +8,13 @@ namespace Ozds.Data.Entities.Base;
 public class NetworkUserCalculationEntity
   : CalculationEntity, INetworkUserCalculationEntity
 {
+  protected long _networkUserInvoiceId;
   protected long _networkUserMeasurementLocationId;
 
   protected long _supplyRegulatoryCatalogueId;
 
-  protected long _networkUserInvoiceId;
-
   public virtual NetworkUserInvoiceEntity NetworkUserInvoice { get; set; } =
     default!;
-
-  public string NetworkUserInvoiceId
-  {
-    get { return _networkUserInvoiceId.ToString(); }
-    set { _networkUserInvoiceId = long.Parse(value); }
-  }
-
-  public decimal UsageFeeTotal_EUR { get; set; }
-
-  public decimal SupplyFeeTotal_EUR { get; set; }
 
   public RegulatoryCatalogueEntity ArchivedSupplyRegulatoryCatalogue
   {
@@ -33,12 +22,6 @@ public class NetworkUserCalculationEntity
     set;
   } =
     default!;
-
-  public string SupplyRegulatoryCatalogueId
-  {
-    get { return _supplyRegulatoryCatalogueId.ToString(); }
-    set { _supplyRegulatoryCatalogueId = long.Parse(value); }
-  }
 
   public virtual RegulatoryCatalogueEntity SupplyRegulatoryCatalogue
   {
@@ -50,12 +33,10 @@ public class NetworkUserCalculationEntity
     default!;
 
   public SupplyActiveEnergyTotalImportT1CalculationItemEntity
-    SupplyActiveEnergyTotalImportT1
-  { get; set; } = default!;
+    SupplyActiveEnergyTotalImportT1 { get; set; } = default!;
 
   public SupplyActiveEnergyTotalImportT2CalculationItemEntity
-    SupplyActiveEnergyTotalImportT2
-  { get; set; } = default!;
+    SupplyActiveEnergyTotalImportT2 { get; set; } = default!;
 
   public SupplyBusinessUsageCalculationItemEntity SupplyBusinessUsageFee
   {
@@ -72,19 +53,11 @@ public class NetworkUserCalculationEntity
     default!;
 
   public virtual NetworkUserMeasurementLocationEntity
-    NetworkUserMeasurementLocation
-  { get; set; } =
+    NetworkUserMeasurementLocation { get; set; } =
     default!;
 
-  public string NetworkUserMeasurementLocationId
-  {
-    get { return _networkUserMeasurementLocationId.ToString(); }
-    set { _networkUserMeasurementLocationId = long.Parse(value); }
-  }
-
   public NetworkUserMeasurementLocationEntity
-    ArchivedNetworkUserMeasurementLocation
-  { get; set; } =
+    ArchivedNetworkUserMeasurementLocation { get; set; } =
     default!;
 
   public string Kind { get; set; } = default!;
@@ -94,6 +67,28 @@ public class NetworkUserCalculationEntity
   public string MeterId { get; set; } = default!;
 
   public MeterEntity ArchivedMeter { get; set; } = default!;
+
+  public string NetworkUserInvoiceId
+  {
+    get { return _networkUserInvoiceId.ToString(); }
+    set { _networkUserInvoiceId = long.Parse(value); }
+  }
+
+  public decimal UsageFeeTotal_EUR { get; set; }
+
+  public decimal SupplyFeeTotal_EUR { get; set; }
+
+  public string SupplyRegulatoryCatalogueId
+  {
+    get { return _supplyRegulatoryCatalogueId.ToString(); }
+    set { _supplyRegulatoryCatalogueId = long.Parse(value); }
+  }
+
+  public string NetworkUserMeasurementLocationId
+  {
+    get { return _networkUserMeasurementLocationId.ToString(); }
+    set { _networkUserMeasurementLocationId = long.Parse(value); }
+  }
 }
 
 public class
@@ -221,7 +216,9 @@ public class
         .HasOne(
           nameof(NetworkUserCalculationEntity<NetworkUserCatalogueEntity>
             .UsageNetworkUserCatalogue))
-        .WithMany(nameof(NetworkUserCatalogueEntity<NetworkUserCalculationEntity>.NetworkUserCalculations))
+        .WithMany(
+          nameof(NetworkUserCatalogueEntity<NetworkUserCalculationEntity>
+            .NetworkUserCalculations))
         .HasForeignKey("_usageNetworkUserCatalogueId");
 
       builder.Ignore(

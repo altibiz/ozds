@@ -11,7 +11,7 @@ public partial class NetworkUserPage
   : OzdsIdentifiableModelPageComponentBase<NetworkUserModel>
 {
   [Parameter]
-  public string? Id { get; set; } = default!;
+  public string? Id { get; set; }
 
   [CascadingParameter]
   private RepresentativeState RepresentativeState { get; set; } = default!;

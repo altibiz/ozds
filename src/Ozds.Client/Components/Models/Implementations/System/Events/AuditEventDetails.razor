@@ -1,14 +1,14 @@
-@using Ozds.Business.Models.Abstractions
-@using Ozds.Client.Components.Models.Base
-@using Ozds.Client.Components.Streaming
-
 @namespace Ozds.Client.Components.Models
 
-@inherits OzdsDetailsComponentBase<IAuditEvent>
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Client.Components.Streaming
+@inherits Ozds.Client.Components.Models.Base.OzdsDetailsComponentBase<Ozds.Business.Models.Abstractions.IAuditEvent>
 
 @(Base<IIdentifiable>())
 
-@(Base<IEvent>(@<Fragment>
-  @Field(x => x.Audit)
-  @Sub()
-</Fragment>))
+@(
+Base<IEvent>(
+  @<Fragment>
+    @Field(x => x.Audit)
+    @Sub()
+  </Fragment>))

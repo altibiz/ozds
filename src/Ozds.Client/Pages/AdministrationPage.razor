@@ -1,28 +1,25 @@
-@using Microsoft.AspNetCore.Components.Web
-@using MudBlazor
-@using Ozds.Business.Analysis
-@using Ozds.Business.Models.Enums
-@using Ozds.Client.Attributes
-@using Ozds.Client.Components.Base
-@using Ozds.Client.Components.Models
-@using Ozds.Client.Components.Streaming
-@using Ozds.Client.Components.Tables
-
 @namespace Ozds.Client.Pages
 
 @page "/administration"
 
 @attribute [Navigation(
-  Order = 13,
-  Title = "Administration",
-  Icon = Icons.Material.Filled.VerifiedUser,
-  Allows = [
-    RoleModel.OperatorRepresentative,
-    RoleModel.LocationRepresentative,
-    RoleModel.NetworkUserRepresentative
-  ])]
+Order = 13,
+Title = "Administration",
+Icon = Icons.Material.Filled.VerifiedUser,
+Allows = [
+RoleModel.OperatorRepresentative,
+RoleModel.LocationRepresentative,
+RoleModel.NetworkUserRepresentative
+])]
 
-@inherits OzdsComponentBase
+@using Microsoft.AspNetCore.Components.Web
+@using Ozds.Business.Analysis
+@using Ozds.Business.Models.Enums
+@using Ozds.Client.Attributes
+@using Ozds.Client.Components.Models
+@using Ozds.Client.Components.Streaming
+@using Ozds.Client.Components.Tables
+@inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 <HeadContent>
   <title>OZDS - @Translate("Administration")</title>
@@ -34,13 +31,13 @@
 
 <ResponsiveTable Model="networkUsers">
   <Summary>
-    <Summary Model="context" />
+    <Summary Model="context"/>
   </Summary>
   <Details>
-    <Details Model="context" />
+    <Details Model="context"/>
   </Details>
   <Columns>
-    <Columns Models="networkUsers" />
+    <Columns Models="networkUsers"/>
   </Columns>
 </ResponsiveTable>
 
@@ -49,7 +46,7 @@
 {
   <Paging PageAsync="OnUserPageAsync">
     <Summary>
-      <Summary Model="context.User" />
+      <Summary Model="context.User"/>
     </Summary>
   </Paging>
 }

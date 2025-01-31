@@ -1,13 +1,8 @@
-@using Microsoft.AspNetCore.Components.Web
-@using MudBlazor
-@using Ozds.Client.Components.Providers
-@using Ozds.Client.Components.Base
-@using Ozds.Client.Components.Streaming
-@using Ozds.Client.State
-
 @namespace Ozds.Client.Components.Layout
 
-@inherits OzdsLayoutComponentBase
+@using MudBlazor
+@using Ozds.Client.State
+@inherits Ozds.Client.Components.Base.OzdsLayoutComponentBase
 
 @{
   var footerBackgroundColor = ThemeState.IsDarkMode
@@ -48,23 +43,25 @@
 </style>
 
 <header>
-  <Header MaxWidth="@MaxWidth.Large" />
+  <Header MaxWidth="@MaxWidth.Large"/>
 </header>
 
 <main>
-  <Main MaxWidth="@MaxWidth.Large" >
+  <Main MaxWidth="@MaxWidth.Large">
     @Body
   </Main>
 </main>
 
 <footer>
-  <Footer MaxWidth="@MaxWidth.Large" />
+  <Footer MaxWidth="@MaxWidth.Large"/>
 </footer>
 
 @code {
+
   [CascadingParameter]
   public LayoutState LayoutState { get; set; } = default!;
 
   [CascadingParameter]
   public ThemeState ThemeState { get; set; } = default!;
+
 }

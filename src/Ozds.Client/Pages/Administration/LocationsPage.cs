@@ -10,10 +10,10 @@ namespace Ozds.Client.Pages;
 
 public partial class LocationsPage : OzdsComponentBase
 {
+  private bool _deleted;
+
   [CascadingParameter]
   private RepresentativeState RepresentativeState { get; set; } = default!;
-
-  private bool _deleted = false;
 
   private async Task<PaginatedList<LocationModel>> OnPageAsync(int page)
   {

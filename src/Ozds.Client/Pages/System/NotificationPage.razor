@@ -1,21 +1,14 @@
-@using Microsoft.AspNetCore.Components.Web
-@using Microsoft.Extensions.DependencyInjection
-@using MudBlazor
-@using Ozds.Business.Models
-@using Ozds.Business.Models.Abstractions
-@using Ozds.Business.Models.Enums
-@using Ozds.Business.Mutations
-@using Ozds.Business.Queries
-@using Ozds.Client.Components.Streaming
-@using Ozds.Client.Components.Models
-@using Ozds.Client.Components.Models.Base
-@using Ozds.Client.State
-
 @namespace Ozds.Client.Pages
 
 @page "/system/notification/{id?}"
 
-@inherits OzdsIdentifiableModelPageComponentBase<INotification>
+@using Microsoft.AspNetCore.Components.Web
+@using MudBlazor
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Business.Models.Enums
+@using Ozds.Client.Components.Models
+@using Ozds.Client.Components.Streaming
+@inherits Ozds.Client.Components.Models.Base.OzdsIdentifiableModelPageComponentBase<Ozds.Business.Models.Abstractions.INotification>
 
 @{
   var value = NotificationsState.Notifications.Find(x => x.Id == Id);
@@ -33,7 +26,7 @@
       <Details Model="@context"/>
     </Found>
     <NotFound>
-      <NotFound />
+      <NotFound/>
     </NotFound>
   </Loading>
 

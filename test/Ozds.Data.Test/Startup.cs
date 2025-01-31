@@ -13,23 +13,24 @@ public class Startup
 {
   public void ConfigureHost(IHostBuilder hostBuilder)
   {
-    hostBuilder.ConfigureAppConfiguration((context, builder) =>
-    {
-      var root = Directory
-        .GetParent(context.HostingEnvironment.ContentRootPath)
-        ?.Parent?.Parent?.Parent?.Parent?.Parent?.FullName
-        ?? throw new InvalidOperationException("Root is null");
-      var server = Path.Join(root, "src", "Ozds.Server");
-      var appsettings = Path.Join(server, "appsettings.json");
-      var appsettingsDevelopment =
-        Path.Join(server, "appsettings.Development.json");
-      var test = Path.Join(root, "test", "Ozds.Data.Test");
-      var appsettingsTest = Path.Join(test, "appsettings.json");
+    hostBuilder.ConfigureAppConfiguration(
+      (context, builder) =>
+      {
+        var root = Directory
+            .GetParent(context.HostingEnvironment.ContentRootPath)
+            ?.Parent?.Parent?.Parent?.Parent?.Parent?.FullName
+          ?? throw new InvalidOperationException("Root is null");
+        var server = Path.Join(root, "src", "Ozds.Server");
+        var appsettings = Path.Join(server, "appsettings.json");
+        var appsettingsDevelopment =
+          Path.Join(server, "appsettings.Development.json");
+        var test = Path.Join(root, "test", "Ozds.Data.Test");
+        var appsettingsTest = Path.Join(test, "appsettings.json");
 
-      builder.AddJsonFile(appsettings);
-      builder.AddJsonFile(appsettingsDevelopment);
-      builder.AddJsonFile(appsettingsTest);
-    });
+        builder.AddJsonFile(appsettings);
+        builder.AddJsonFile(appsettingsDevelopment);
+        builder.AddJsonFile(appsettingsTest);
+      });
   }
 
   public void ConfigureServices(
@@ -42,10 +43,8 @@ public class Startup
 
     services.AddLogging(
       builder =>
-        builder.AddXunitOutput(builder =>
-        {
-          builder.Filter = (_, level) => level >= logLevel;
-        })
+        builder.AddXunitOutput(
+          builder => { builder.Filter = (_, level) => level >= logLevel; })
     );
 
     var builderProxy = new HostApplicationBuilderProxy(context, services);
@@ -73,15 +72,30 @@ public class Startup
     public IConfigurationManager Configuration { get; } =
       new ConfigurationManagerProxy(context.Configuration);
 
-    public IHostEnvironment Environment => context.HostingEnvironment;
+    public IHostEnvironment Environment
+    {
+      get { return context.HostingEnvironment; }
+    }
 
-    public ILoggingBuilder Logging => default!;
+    public ILoggingBuilder Logging
+    {
+      get { return default!; }
+    }
 
-    public IMetricsBuilder Metrics => default!;
+    public IMetricsBuilder Metrics
+    {
+      get { return default!; }
+    }
 
-    public IDictionary<object, object> Properties => context.Properties;
+    public IDictionary<object, object> Properties
+    {
+      get { return context.Properties; }
+    }
 
-    public IServiceCollection Services => services;
+    public IServiceCollection Services
+    {
+      get { return services; }
+    }
 
     public void ConfigureContainer<TContainerBuilder>(
       IServiceProviderFactory<TContainerBuilder> factory,
@@ -98,13 +112,19 @@ public class Startup
   {
     public string? this[string key]
     {
-      get => configuration[key];
-      set => configuration[key] = value;
+      get { return configuration[key]; }
+      set { configuration[key] = value; }
     }
 
-    public IDictionary<string, object> Properties => default!;
+    public IDictionary<string, object> Properties
+    {
+      get { return default!; }
+    }
 
-    public IList<IConfigurationSource> Sources => default!;
+    public IList<IConfigurationSource> Sources
+    {
+      get { return default!; }
+    }
 
     public IConfigurationBuilder Add(IConfigurationSource source)
     {

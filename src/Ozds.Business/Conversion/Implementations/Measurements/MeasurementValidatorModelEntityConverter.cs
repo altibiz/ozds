@@ -7,9 +7,9 @@ namespace Ozds.Business.Conversion.Implementations.Measurements;
 public class MeasurementValidatorModelEntityConverter(
   IServiceProvider serviceProvider
 ) : InheritingModelEntityConverter<
-      MeasurementValidatorModel,
-      AuditableModel,
-      MeasurementValidatorEntity,
-      AuditableEntity>(serviceProvider)
+  MeasurementValidatorModel,
+  AuditableModel,
+  MeasurementValidatorEntity,
+  AuditableEntity>(serviceProvider)
 {
 }

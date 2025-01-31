@@ -1,17 +1,15 @@
-@using MudBlazor
-@using Ozds.Client.Components.Base
-@using Ozds.Client.Components.Streaming
-@using Ozds.Client.State
-
 @namespace Ozds.Client.Pages
 
 @page "/unapproved"
 
-@inherits OzdsComponentBase
+@using MudBlazor
+@using Ozds.Client.Components.Streaming
+@using Ozds.Client.State
+@inherits Ozds.Client.Components.Base.OzdsComponentBase
 
-@if (RepresentativeState?.Representative is { })
+@if (RepresentativeState?.Representative is not null)
 {
-  <RedirectToIndex />
+  <RedirectToIndex/>
   return;
 }
 
@@ -20,6 +18,8 @@
 </MudText>
 
 @code {
+
   [CascadingParameter]
   public RepresentativeState? RepresentativeState { get; set; }
+
 }

@@ -17,7 +17,7 @@ public static class DbContextDapperBulkParametersExtensions
         ?? throw new InvalidOperationException(
           $"No entity type found for {row.GetType()}.");
       var storeObjectIdentifier = StoreObjectIdentifier
-        .Create(entityType, StoreObjectType.Table)
+          .Create(entityType, StoreObjectType.Table)
         ?? throw new InvalidOperationException(
           $"No store object identifier found for {row.GetType()}.");
 
@@ -36,7 +36,7 @@ public static class DbContextDapperBulkParametersExtensions
           updated = enumValue.ToString()?.ToSnakeCase();
         }
 
-        if (updated is { })
+        if (updated is not null)
         {
           parameters.Add(parameterName, updated);
         }
@@ -61,11 +61,12 @@ public static class DbContextDapperBulkParametersExtensions
       yield return new PropertyValue(
         property,
         property.GetColumnName(storeObjectIdentifier)
-          ?? throw new InvalidOperationException(
-            $"No column name found for {property.Name} in {type.Name}."),
+        ?? throw new InvalidOperationException(
+          $"No column name found for {property.Name} in {type.Name}."),
         property.PropertyInfo?.GetValue(row)
-          ?? property.FieldInfo?.GetValue(row));
+        ?? property.FieldInfo?.GetValue(row));
     }
+
     foreach (var complexProperty in type.GetComplexProperties())
     {
       var complexRow = complexProperty.PropertyInfo?.GetValue(row)

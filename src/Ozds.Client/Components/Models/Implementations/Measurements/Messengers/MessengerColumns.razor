@@ -1,10 +1,8 @@
+@typeparam TPrefix
+@typeparam TModel where TModel : Ozds.Business.Models.Abstractions.IMessenger
 @using Ozds.Business.Models
 @using Ozds.Business.Models.Abstractions
-@using Ozds.Client.Components.Models.Base
-
-@typeparam TPrefix
-@typeparam TModel where TModel : IMessenger
-@inherits OzdsColumnsComponentBase<TPrefix, TModel>
+@inherits Ozds.Client.Components.Models.Base.OzdsColumnsComponentBase<TPrefix, TModel>
 
 @(Base<IIdentifiable>())
 

@@ -1,10 +1,7 @@
-@using Ozds.Business.Models
-@using Ozds.Business.Models.Abstractions
-@using Ozds.Client.Components.Models.Base
-
 @namespace Ozds.Client.Components.Models
 
-@inherits OzdsDetailsComponentBase<SchneideriEM3xxxMeasurementValidatorModel>
+@using Ozds.Business.Models.Abstractions
+@inherits Ozds.Client.Components.Models.Base.OzdsDetailsComponentBase<Ozds.Business.Models.SchneideriEM3xxxMeasurementValidatorModel>
 
 @(Base<IIdentifiable>())
 

@@ -1,13 +1,10 @@
-@using Microsoft.AspNetCore.Http
-@using Microsoft.AspNetCore.Antiforgery
-@using Microsoft.Extensions.Logging
-@using MudBlazor
-@using Ozds.Client.Components.Base
-@using Ozds.Client.State
-
 @namespace Ozds.Client.Components.Layout
 
-@inherits OzdsComponentBase
+@using Microsoft.AspNetCore.Antiforgery
+@using Microsoft.AspNetCore.Http
+@using Microsoft.Extensions.Logging
+@using MudBlazor
+@inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 @inject IAntiforgery Antiforgery
 @inject IHttpContextAccessor HttpContextAccessor
@@ -30,7 +27,7 @@
       </MudText>
     </MudContainer>
   </MudDrawerHeader>
-  <MudDivider />
+  <MudDivider/>
   <MudDrawerContainer>
     <MudNavMenu>
       <MudNavLink OnClick="OnAccountClick">
@@ -42,14 +39,14 @@
             <div
               style="margin-left: -8px;"
               class="d-flex flex-row align-center">
-              <MudIcon Icon="@Icons.Material.Filled.Person" />
+              <MudIcon Icon="@Icons.Material.Filled.Person"/>
             </div>
           </MudHidden>
           <MudHidden Breakpoint="Breakpoint.SmAndUp">
             <div
               style="margin-left: -28px;"
               class="d-flex flex-row align-center">
-              <MudIcon Icon="@Icons.Material.Filled.Person" />
+              <MudIcon Icon="@Icons.Material.Filled.Person"/>
             </div>
           </MudHidden>
           <MudText Class="ml-4">
@@ -76,14 +73,14 @@
               <div
                 style="margin-left: -8px;"
                 class="d-flex flex-row align-center">
-                <MudIcon Icon="@Icons.Material.Filled.Login" />
+                <MudIcon Icon="@Icons.Material.Filled.Login"/>
               </div>
             </MudHidden>
             <MudHidden Breakpoint="Breakpoint.SmAndUp">
               <div
                 style="margin-left: -28px;"
                 class="d-flex flex-row align-center">
-                <MudIcon Icon="@Icons.Material.Filled.Login" />
+                <MudIcon Icon="@Icons.Material.Filled.Login"/>
               </div>
             </MudHidden>
             <MudText Class="ml-4">
@@ -97,6 +94,7 @@
 </MudDrawer>
 
 @code {
+
   [Parameter]
   public MaxWidth MaxWidth { get; set; } = default;
 
@@ -105,4 +103,5 @@
 
   [Parameter]
   public string Class { get; set; } = string.Empty;
+
 }

@@ -1,69 +1,69 @@
-@using MudBlazor
+@namespace Ozds.Client.Components.Models.Base
+
+@typeparam TModel
 @using System.Linq.Expressions
 @using System.Text.Json
+@using MudBlazor
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Client.Components.Fields
 @using Ozds.Client.Components.Streaming
 @using Ozds.Client.Extensions
-
-@namespace Ozds.Client.Components.Models.Base
-
-@typeparam TModel
 @inherits OzdsManagedModelComponentBase<TModel>
 
 @Base()
 
 @code {
+
   protected RenderFragment Field(Expression<Func<TModel, string?>> next)
   {
     var nextFunc = next.Compile();
     return @<DetailsField Title="@(Translate(next.Label()))">
-        <MudText>
-          @nextFunc(Model)
-        </MudText>
-      </DetailsField>;
+      <MudText>
+        @nextFunc(Model)
+      </MudText>
+    </DetailsField>;
   }
 
   protected RenderFragment Field(Expression<Func<TModel, Enum?>> next)
   {
     var nextFunc = next.Compile();
     return @<DetailsField Title="@(Translate(next.Label()))">
-        <MudText>
-          @nextFunc(Model)
-        </MudText>
-      </DetailsField>;
+      <MudText>
+        @nextFunc(Model)
+      </MudText>
+    </DetailsField>;
   }
 
   protected RenderFragment Field(Expression<Func<TModel, decimal?>> next)
   {
     var nextFunc = next.Compile();
     return @<DetailsField Title="@(Translate(next.Label()))">
-        <MudText>
-          @NumericString(nextFunc(Model))
-        </MudText>
-      </DetailsField>;
+      <MudText>
+        @NumericString(nextFunc(Model))
+      </MudText>
+    </DetailsField>;
   }
 
   protected RenderFragment Field(Expression<Func<TModel, DateTimeOffset?>> next)
   {
     var nextFunc = next.Compile();
     return @<DetailsField Title="@(Translate(next.Label()))">
-        <MudText>
-          @DateTimeString(nextFunc(Model))
-        </MudText>
-      </DetailsField>;
+      <MudText>
+        @DateTimeString(nextFunc(Model))
+      </MudText>
+    </DetailsField>;
   }
 
   protected RenderFragment Field(Expression<Func<TModel, JsonDocument?>> next)
   {
     var nextFunc = next.Compile();
     return @<DetailsField Title="@(Translate(next.Label()))">
-        <MudText>
-          <pre>
+      <MudText>
+        <pre>
             @JsonString(nextFunc(Model))
           </pre>
-        </MudText>
-      </DetailsField>;
+      </MudText>
+    </DetailsField>;
   }
 
   protected RenderFragment Field<T>(
@@ -72,106 +72,106 @@
   {
     var nextFunc = next.Compile();
     return @<DetailsField Title="@(Translate(next.Label()))">
-        <MudText>
-          @if (nextFunc(Model) is { } model)
-          {
-            @string.Join(", ", model)
-          }
-        </MudText>
-      </DetailsField>;
+      <MudText>
+        @if (nextFunc(Model) is { } model)
+        {
+          @string.Join(", ", model)
+        }
+      </MudText>
+    </DetailsField>;
   }
 
   protected RenderFragment TextField<T>(Expression<Func<TModel, T?>> next)
   {
     var nextFunc = next.Compile();
     return @<DetailsField Title="@(Translate(next.Label()))">
-        <MudText>
-          @nextFunc(Model)
-        </MudText>
-      </DetailsField>;
+      <MudText>
+        @nextFunc(Model)
+      </MudText>
+    </DetailsField>;
   }
 
   protected RenderFragment PreField<T>(Expression<Func<TModel, T?>> next)
   {
     var nextFunc = next.Compile();
     return @<DetailsField Title="@(Translate(next.Label()))">
-        <MudText>
-          <pre>
+      <MudText>
+        <pre>
             @nextFunc(Model)
           </pre>
-        </MudText>
-      </DetailsField>;
+      </MudText>
+    </DetailsField>;
   }
 
   protected RenderFragment NumericField<T>(Expression<Func<TModel, T?>> next)
   {
     var nextFunc = next.Compile();
     return @<DetailsField Title="@(Translate(next.Label()))">
-        <MudText>
-          @{
-            var value = nextFunc(Model);
+      <MudText>
+        @{
+          var value = nextFunc(Model);
 
-            @if (value is decimal @decimal)
-            {
-              @NumericString(@decimal)
-            }
-            else
-            {
-              @value
-            }
+          @if (value is decimal @decimal)
+          {
+            @NumericString(@decimal)
           }
-        </MudText>
-      </DetailsField>;
+          else
+          {
+            @value
+          }
+        }
+      </MudText>
+    </DetailsField>;
   }
 
   protected RenderFragment DateTimeField<T>(Expression<Func<TModel, T?>> next)
   {
     var nextFunc = next.Compile();
     return @<DetailsField Title="@(Translate(next.Label()))">
-        <MudText>
-          @{
-            var value = nextFunc(Model);
+      <MudText>
+        @{
+          var value = nextFunc(Model);
 
-            @if (value is DateTimeOffset @decimal)
-            {
-              @DateTimeString(@decimal)
-            }
-            else
-            {
-              @value
-            }
+          @if (value is DateTimeOffset @decimal)
+          {
+            @DateTimeString(@decimal)
           }
-        </MudText>
-      </DetailsField>;
+          else
+          {
+            @value
+          }
+        }
+      </MudText>
+    </DetailsField>;
   }
 
   protected RenderFragment DateField<T>(Expression<Func<TModel, T?>> next)
   {
     var nextFunc = next.Compile();
     return @<DetailsField Title="@(Translate(next.Label()))">
-        <MudText>
-          @{
-            var value = nextFunc(Model);
+      <MudText>
+        @{
+          var value = nextFunc(Model);
 
-            @if (value is DateTimeOffset @decimal)
-            {
-              @DateString(@decimal)
-            }
-            else
-            {
-              @value
-            }
+          @if (value is DateTimeOffset @decimal)
+          {
+            @DateString(@decimal)
           }
-        </MudText>
-      </DetailsField>;
+          else
+          {
+            @value
+          }
+        }
+      </MudText>
+    </DetailsField>;
   }
 
   protected RenderFragment JsonField<T>(Expression<Func<TModel, T?>> next)
   {
     var nextFunc = next.Compile();
     return @<DetailsField Title="@(Translate(next.Label()))">
-        <MudText>
-          <pre>
+      <MudText>
+        <pre>
             @{
               var value = nextFunc(Model);
 
@@ -185,8 +185,8 @@
               }
             }
           </pre>
-        </MudText>
-      </DetailsField>;
+      </MudText>
+    </DetailsField>;
   }
 
   protected RenderFragment EnumerableField<T>(
@@ -195,13 +195,13 @@
   {
     var nextFunc = next.Compile();
     return @<DetailsField Title="@(Translate(next.Label()))">
-        <MudText>
-          @if (nextFunc(Model) is { } model)
-          {
-            @string.Join(", ", model)
-          }
-        </MudText>
-      </DetailsField>;
+      <MudText>
+        @if (nextFunc(Model) is { } model)
+        {
+          @string.Join(", ", model)
+        }
+      </MudText>
+    </DetailsField>;
   }
 
   protected RenderFragment LinkField<T>(
@@ -215,17 +215,17 @@
       ? null
       : PageHref(Provider.GetPageComponentType(typeof(T)), new { id });
     return @<DetailsField Title="@(Translate(next.Label()))">
-        @if (id is null || href is null)
-        {
-          <Fragment />
-        }
-        else
-        {
-          <MudLink Href="@href">
-            @id
-          </MudLink>
-        }
-      </DetailsField>;
+      @if (id is null || href is null)
+      {
+        <Fragment/>
+      }
+      else
+      {
+        <MudLink Href="@href">
+          @id
+        </MudLink>
+      }
+    </DetailsField>;
   }
 
   protected RenderFragment ArchivedField<T>(
@@ -235,7 +235,8 @@
     var nextFunc = next.Compile();
     var archived = nextFunc(Model);
     return @<CollapseField Title="@(Translate(next.Label()))">
-        <Details Model="@archived" />
-      </CollapseField>;
+      <Details Model="@archived"/>
+    </CollapseField>;
   }
+
 }

@@ -6,6 +6,10 @@ namespace Ozds.Client.Components.Tables;
 
 public partial class ResponsiveTable<T> : OzdsComponentBase
 {
+  private List<TableItemMetadata> _metadata = new();
+
+  private string? _searchString;
+
   [Parameter]
   public List<T> Model { get; set; } = default!;
 
@@ -21,10 +25,6 @@ public partial class ResponsiveTable<T> : OzdsComponentBase
   [Inject]
   private NavigationManager NavigationManager { get; set; } = default!;
 
-  private string? _searchString;
-
-  private List<TableItemMetadata> _metadata = new();
-
   protected override void OnParametersSet()
   {
     _metadata = Model.Select(x => new TableItemMetadata(false)).ToList();
@@ -39,8 +39,8 @@ public partial class ResponsiveTable<T> : OzdsComponentBase
 
     if (value is IIdentifiable identifiable
       && identifiable.Title.Contains(
-          _searchString,
-          StringComparison.OrdinalIgnoreCase))
+        _searchString,
+        StringComparison.OrdinalIgnoreCase))
     {
       return true;
     }

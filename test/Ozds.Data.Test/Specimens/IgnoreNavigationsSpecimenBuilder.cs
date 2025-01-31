@@ -8,6 +8,9 @@ public class IgnoreNavigationsSpecimenBuilder(
   DbContext dbContext
 ) : ISpecimenBuilder
 {
+  private readonly Lazy<HashSet<MemberInfo>> navigations =
+    new(dbContext.GetNavigations);
+
   public object Create(object request, ISpecimenContext context)
   {
     if (request is PropertyInfo or FieldInfo
@@ -18,7 +21,4 @@ public class IgnoreNavigationsSpecimenBuilder(
 
     return new NoSpecimen();
   }
-
-  private readonly Lazy<HashSet<MemberInfo>> navigations =
-    new(dbContext.GetNavigations);
 }

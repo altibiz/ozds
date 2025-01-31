@@ -22,8 +22,7 @@ public class MessengerEntity : AuditableEntity, ICustomIdentifiableEntity
     default!;
 
   public virtual ICollection<MessengerNotificationEntity>
-    InactivityNotifications
-  { get; set; } = default!;
+    InactivityNotifications { get; set; } = default!;
 
   public PeriodEntity MaxInactivityPeriod { get; set; } = default!;
 

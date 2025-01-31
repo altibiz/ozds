@@ -9,10 +9,10 @@ namespace Ozds.Business.Conversion.Implementations.System;
 public class MessengerNotificationModelEntityConverter(
   IServiceProvider serviceProvider
 ) : InheritingModelEntityConverter<
-      MessengerNotificationModel,
-      ResolvableNotificationModel,
-      MessengerNotificationEntity,
-      ResolvableNotificationEntity>(serviceProvider)
+  MessengerNotificationModel,
+  ResolvableNotificationModel,
+  MessengerNotificationEntity,
+  ResolvableNotificationEntity>(serviceProvider)
 {
   public override void InitializeEntity(
     MessengerNotificationModel model,

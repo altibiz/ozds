@@ -9,10 +9,10 @@ namespace Ozds.Business.Conversion.Implementations.System;
 public class NetworkUserInvoiceNotificationEntityConverter(
   IServiceProvider serviceProvider
 ) : InheritingModelEntityConverter<
-      NetworkUserInvoiceNotificationModel,
-      NotificationModel,
-      NetworkUserInvoiceNotificationEntity,
-      NotificationEntity>(serviceProvider)
+  NetworkUserInvoiceNotificationModel,
+  NotificationModel,
+  NetworkUserInvoiceNotificationEntity,
+  NotificationEntity>(serviceProvider)
 {
   public override void InitializeEntity(
     NetworkUserInvoiceNotificationModel model,

@@ -1,30 +1,27 @@
+@namespace Ozds.Client.Components.Dashboards
+
 @using MudBlazor
 @using Ozds.Business.Analysis
 @using Ozds.Business.Models.Abstractions
-@using Ozds.Business.Models.Enums
-@using Ozds.Business.Time
 @using Ozds.Client.Components.Charts
-@using Ozds.Client.Components.Base
-@using Ozds.Client.State
-
-@namespace Ozds.Client.Components.Dashboards
-
-@inherits OzdsComponentBase
+@inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 <MudGrid>
   <MudItem xs="12">
     <MudPaper Class="pa-3">
       <MeasurementChartControls Meters="@Meters">
-        <MeasurementLineChart Parameters="@context" />
+        <MeasurementLineChart Parameters="@context"/>
       </MeasurementChartControls>
     </MudPaper>
   </MudItem>
 </MudGrid>
 
 @code {
+
   [Parameter]
   public Analysis Model { get; set; } = default!;
 
   [Parameter]
   public List<IMeter> Meters { get; set; } = default!;
+
 }

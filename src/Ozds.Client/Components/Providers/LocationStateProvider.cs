@@ -11,6 +11,16 @@ namespace Ozds.Client.Components.Providers;
 
 public partial class LocationStateProvider : OzdsComponentBase
 {
+  private const string LocationKey = "location";
+
+  private string _filter = "";
+
+  private string? _previousRepresentativeId;
+
+  private List<LocationModel> _representativeLocations = new();
+
+  private LocationState? _state;
+
   [Parameter]
   public RenderFragment ChildContent { get; set; } = default!;
 
@@ -20,22 +30,13 @@ public partial class LocationStateProvider : OzdsComponentBase
   [Inject]
   private ILocalStorageService LocalStorageService { get; set; } = default!;
 
-  private const string LocationKey = "location";
-
-  private string? _previousRepresentativeId;
-
-  private LocationState? _state;
-
-  private List<LocationModel> _representativeLocations = new();
-
-  private string _filter = "";
-
   protected override async Task OnParametersSetAsync()
   {
     if (_previousRepresentativeId == RepresentativeState.Representative.Id)
     {
       return;
     }
+
     _previousRepresentativeId = RepresentativeState.Representative.Id;
 
     var locationId = await GetLocationFromLocalStorage();
@@ -66,14 +67,14 @@ public partial class LocationStateProvider : OzdsComponentBase
     }
 
     LocationModel? location = null;
-    if (locationId is { })
+    if (locationId is not null)
     {
       location = await locationQueries.ReadLocationByRepresentativeId(
         RepresentativeState.Representative.Id,
         RepresentativeState.Representative.Role,
         locationId,
         CancellationToken,
-        deleted: false
+        false
       );
     }
 

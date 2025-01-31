@@ -1,9 +1,7 @@
-@using Ozds.Business.Models.Abstractions
-@using Ozds.Client.Components.Models.Base
-
 @namespace Ozds.Client.Components.Models
 
-@inherits OzdsSummaryComponentBase<IFinancial>
+@using Ozds.Business.Models.Abstractions
+@inherits Ozds.Client.Components.Models.Base.OzdsSummaryComponentBase<Ozds.Business.Models.Abstractions.IFinancial>
 
 @(Base<IIdentifiable>())
 

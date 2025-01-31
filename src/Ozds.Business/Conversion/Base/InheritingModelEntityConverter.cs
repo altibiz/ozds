@@ -21,11 +21,11 @@ public abstract class InheritingModelEntityConverter<
   {
     _baseEntityConverter ??=
       serviceProvider
-        .GetServices<IModelEntityConverter>()
-        .FirstOrDefault(x => x.EntityType == typeof(TSuperEntity))
+          .GetServices<IModelEntityConverter>()
+          .FirstOrDefault(x => x.EntityType == typeof(TSuperEntity))
         as InitializingModelEntityConverter
-          ?? throw new InvalidOperationException(
-            $"No model entity converter found for type {typeof(TSuperEntity)}");
+      ?? throw new InvalidOperationException(
+        $"No model entity converter found for type {typeof(TSuperEntity)}");
 
     base.InitializeEntity(model, entity);
     _baseEntityConverter.InitializeEntity(model, entity);
@@ -35,11 +35,11 @@ public abstract class InheritingModelEntityConverter<
   {
     _baseModelConverter ??=
       serviceProvider
-        .GetServices<IModelEntityConverter>()
-        .FirstOrDefault(x => x.ModelType == typeof(TSuperModel))
+          .GetServices<IModelEntityConverter>()
+          .FirstOrDefault(x => x.ModelType == typeof(TSuperModel))
         as InitializingModelEntityConverter
-          ?? throw new InvalidOperationException(
-            $"No model entity converter found for type {typeof(TSuperModel)}");
+      ?? throw new InvalidOperationException(
+        $"No model entity converter found for type {typeof(TSuperModel)}");
 
     base.InitializeModel(entity, model);
     _baseModelConverter.InitializeModel(entity, model);

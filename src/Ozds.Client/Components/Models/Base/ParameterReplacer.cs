@@ -5,7 +5,7 @@ namespace Ozds.Client.Components.Models.Base;
 internal sealed class ParameterReplacer(
   ParameterExpression oldParam,
   Expression newExpression
-  ) : ExpressionVisitor
+) : ExpressionVisitor
 {
   protected override Expression VisitParameter(ParameterExpression node)
   {
@@ -13,9 +13,9 @@ internal sealed class ParameterReplacer(
   }
 
   public static Expression Replace(
-      Expression body,
-      ParameterExpression oldParam,
-      Expression newExpression)
+    Expression body,
+    ParameterExpression oldParam,
+    Expression newExpression)
   {
     return new ParameterReplacer(oldParam, newExpression).Visit(body);
   }

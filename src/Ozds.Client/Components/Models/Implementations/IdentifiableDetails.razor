@@ -1,11 +1,7 @@
-@using MudBlazor
-@using Ozds.Business.Models.Abstractions
-@using Ozds.Client.Components.Models.Base
-@using Ozds.Client.Components.Fields
-
 @namespace Ozds.Client.Components.Models
 
-@inherits OzdsDetailsComponentBase<IIdentifiable>
+@using MudBlazor
+@inherits Ozds.Client.Components.Models.Base.OzdsDetailsComponentBase<Ozds.Business.Models.Abstractions.IIdentifiable>
 
 <MudText Typo="Typo.h5">
   @Model.Title

@@ -1,4 +1,3 @@
-using System.Data;
 using System.Reflection;
 using Altibiz.DependencyInjection.Extensions;
 using Microsoft.EntityFrameworkCore;
@@ -83,8 +82,8 @@ public static class IServiceCollectionExtensions
           options.EnableSensitiveDataLogging();
           options.EnableDetailedErrors();
           options.UseLoggerFactory(
-        LoggerFactory.Create(builder => builder.AddConsole())
-      );
+            LoggerFactory.Create(builder => builder.AddConsole())
+          );
         }
 
         var dataSourceBuilder =
@@ -99,9 +98,9 @@ public static class IServiceCollectionExtensions
             options =>
             {
               options.MigrationsAssembly(
-              typeof(DataDbContext).Assembly.GetName().Name);
+                typeof(DataDbContext).Assembly.GetName().Name);
               options.MigrationsHistoryTable(
-              $"__Ozds{nameof(DataDbContext)}");
+                $"__Ozds{nameof(DataDbContext)}");
             })
           .AddServedSaveChangesInterceptorsFromAssembly(
             Assembly.GetExecutingAssembly(),

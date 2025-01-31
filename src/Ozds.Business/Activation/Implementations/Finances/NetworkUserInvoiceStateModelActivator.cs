@@ -7,8 +7,8 @@ namespace Ozds.Business.Activation.Implementations.Finances;
 public class NetworkUserInvoiceStateModelActivator(
   IServiceProvider serviceProvider
 ) : InheritingModelActivator<NetworkUserInvoiceStateModel, StateModel>(
-      serviceProvider
-    )
+  serviceProvider
+)
 {
   public override void Initialize(NetworkUserInvoiceStateModel model)
   {

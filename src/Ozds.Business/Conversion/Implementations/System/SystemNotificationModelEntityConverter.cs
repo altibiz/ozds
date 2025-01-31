@@ -9,9 +9,9 @@ namespace Ozds.Business.Conversion.Implementations.System;
 public class SystemNotificationEntityConverter(
   IServiceProvider serviceProvider
 ) : InheritingModelEntityConverter<
-      SystemNotificationModel,
-      NotificationModel,
-      SystemNotificationEntity,
-      NotificationEntity>(serviceProvider)
+  SystemNotificationModel,
+  NotificationModel,
+  SystemNotificationEntity,
+  NotificationEntity>(serviceProvider)
 {
 }

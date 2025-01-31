@@ -93,12 +93,13 @@ public abstract record class TariffMeasure<T>
         CompositeTariffMeasure<T> composite =>
           new CompositeDuplexMeasure<T>(
             composite.Measures
-              .OrderBy(measure => measure switch
-              {
-                UnaryTariffMeasure<T> => 0,
-                BinaryTariffMeasure<T> => 1,
-                _ => 2
-              })
+              .OrderBy(
+                measure => measure switch
+                {
+                  UnaryTariffMeasure<T> => 0,
+                  BinaryTariffMeasure<T> => 1,
+                  _ => 2
+                })
               .Select(measure => measure.TariffUnary())
               .ToList()),
         BinaryTariffMeasure<T> binary => binary.T1.Add(binary.T2),
@@ -117,20 +118,22 @@ public abstract record class TariffMeasure<T>
           new BinaryTariffMeasure<T>(
             new CompositeDuplexMeasure<T>(
               composite.Measures
-                .OrderBy(measure => measure switch
-                {
-                  BinaryTariffMeasure<T> => 0,
-                  _ => 1
-                })
+                .OrderBy(
+                  measure => measure switch
+                  {
+                    BinaryTariffMeasure<T> => 0,
+                    _ => 1
+                  })
                 .Select(measure => measure.TariffBinary().T1)
                 .ToList()),
             new CompositeDuplexMeasure<T>(
               composite.Measures
-                .OrderBy(measure => measure switch
-                {
-                  BinaryTariffMeasure<T> => 0,
-                  _ => 1
-                })
+                .OrderBy(
+                  measure => measure switch
+                  {
+                    BinaryTariffMeasure<T> => 0,
+                    _ => 1
+                  })
                 .Select(measure => measure.TariffBinary().T2)
                 .ToList())),
         BinaryTariffMeasure<T> binary => binary,

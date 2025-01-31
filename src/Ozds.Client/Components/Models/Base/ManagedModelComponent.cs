@@ -15,7 +15,7 @@ public abstract class ManagedModelComponent : ModelComponent
 
   protected override Dictionary<string, object> CreateParameters()
   {
-    return new()
+    return new Dictionary<string, object>
     {
       { nameof(OzdsManagedModelComponentBase<object>.Model), Model }
     };
@@ -28,11 +28,11 @@ public abstract class ManagedModelComponent<TPrefix, TModel> : ModelComponent
   public TPrefix Model { get; set; } = default!;
 
   [Parameter]
-  public Expression<Func<TPrefix, TModel?>>? Prefix { get; set; } = default!;
+  public Expression<Func<TPrefix, TModel?>>? Prefix { get; set; }
 
   protected override Type CreateModelType()
   {
-    var prefixFunc = Prefix?.Compile() ?? ((TPrefix x) => (TModel?)(object?)x);
+    var prefixFunc = Prefix?.Compile() ?? (x => (TModel?)(object?)x);
     var model = prefixFunc(Model);
     return model?.GetType() ?? typeof(TModel);
   }
@@ -49,10 +49,10 @@ public abstract class ManagedModelComponent<TPrefix, TModel> : ModelComponent
 
   protected override Dictionary<string, object> CreateParameters()
   {
-    return new()
+    return new Dictionary<string, object>
     {
       { nameof(OzdsManagedModelComponentBase<object, object>.Model), Model! },
-      { nameof(OzdsManagedModelComponentBase<object, object>.Prefix), Prefix! },
+      { nameof(OzdsManagedModelComponentBase<object, object>.Prefix), Prefix! }
     };
   }
 }

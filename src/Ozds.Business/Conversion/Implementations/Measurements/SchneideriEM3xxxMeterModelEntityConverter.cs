@@ -9,9 +9,9 @@ namespace Ozds.Business.Conversion.Implementations.Measurements;
 public class SchneideriEM3xxxMeterModelEntityConverter(
   IServiceProvider serviceProvider
 ) : InheritingModelEntityConverter<
-      SchneideriEM3xxxMeterModel,
-      MeterModel,
-      SchneideriEM3xxxMeterEntity,
-      MeterEntity>(serviceProvider)
+  SchneideriEM3xxxMeterModel,
+  MeterModel,
+  SchneideriEM3xxxMeterEntity,
+  MeterEntity>(serviceProvider)
 {
 }

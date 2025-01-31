@@ -1,16 +1,14 @@
-@using Ozds.Business.Models.Abstractions
-@using Ozds.Client.Components.Models.Base
-@using Ozds.Client.Components.Streaming
-
 @namespace Ozds.Client.Components.Models
 
-@inherits OzdsDetailsComponentBase<IAuditable>
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Client.Components.Streaming
+@inherits Ozds.Client.Components.Models.Base.OzdsDetailsComponentBase<Ozds.Business.Models.Abstractions.IAuditable>
 
 @(Base<IIdentifiable>())
 
 <Paging PageAsync="OnPageAsync">
   <Summary>
-    <Summary Model="@context" />
+    <Summary Model="@context"/>
   </Summary>
   <Empty>
     @Translate("No audit events found")

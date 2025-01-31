@@ -1,16 +1,13 @@
-@using Ozds.Business.Models
-@using Ozds.Business.Models.Abstractions
-@using Ozds.Client.Components.Models.Base
-
 @namespace Ozds.Client.Components.Models.Implementations.Administration
 
-@inherits OzdsDetailsComponentBase<RepresentativeModel>
+@using Ozds.Business.Models.Abstractions
+@inherits Ozds.Client.Components.Models.Base.OzdsDetailsComponentBase<Ozds.Business.Models.RepresentativeModel>
 
 @(Base<IIdentifiable>())
 
 @Field(x => x.Role)
 
-<Details Model="@Model.PhysicalPerson" />
+<Details Model="@Model.PhysicalPerson"/>
 
 @Field(x => x.Topics)
 

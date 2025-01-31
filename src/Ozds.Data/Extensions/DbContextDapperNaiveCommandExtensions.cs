@@ -1,4 +1,3 @@
-using System.Data;
 using System.Reflection;
 using Dapper;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +6,18 @@ namespace Ozds.Data.Extensions;
 
 public static class DataDbContextDapperNaiveCommandExtensions
 {
+  private static readonly MethodInfo MultiMapAsync =
+    typeof(SqlMapper)
+      .GetMethods(
+#pragma warning disable S3011 // Reflection should not be used to increase accessibility of classes, methods, or fields
+        BindingFlags.Static | BindingFlags.NonPublic
+#pragma warning restore S3011 // Reflection should not be used to increase accessibility of classes, methods, or fields
+      )
+      .FirstOrDefault(
+        method =>
+          method.Name == "MultiMapAsync" &&
+          method.GetGenericArguments().Length == 1)
+    ?? throw new InvalidOperationException("MultiMapAsync doesn't exist");
 #pragma warning disable S1133 // Deprecated code should be removed
   [Obsolete("Use DapperCommand instead")]
 #pragma warning restore S1133 // Deprecated code should be removed
@@ -81,32 +92,21 @@ public static class DataDbContextDapperNaiveCommandExtensions
       ",",
       type
         .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-        .Select(property =>
-        {
-          var entityType = context.Model.FindEntityType(property.PropertyType)
-            ?? throw new InvalidOperationException(
-              $"Entity type not found for {property.PropertyType.Name}");
+        .Select(
+          property =>
+          {
+            var entityType = context.Model.FindEntityType(property.PropertyType)
+              ?? throw new InvalidOperationException(
+                $"Entity type not found for {property.PropertyType.Name}");
 
-          var primaryKey = entityType.FindPrimaryKey()?.Properties[0]
-            ?? throw new InvalidOperationException(
-              $"Primary key not found for entity {entityType.ClrType.Name}");
+            var primaryKey = entityType.FindPrimaryKey()?.Properties[0]
+              ?? throw new InvalidOperationException(
+                $"Primary key not found for entity {entityType.ClrType.Name}");
 
-          var columnName = primaryKey.GetColumnName();
+            var columnName = primaryKey.GetColumnName();
 
-          return columnName;
-        })
+            return columnName;
+          })
     );
   }
-
-  private static readonly MethodInfo MultiMapAsync =
-    typeof(SqlMapper)
-      .GetMethods(
-#pragma warning disable S3011 // Reflection should not be used to increase accessibility of classes, methods, or fields
-        BindingFlags.Static | BindingFlags.NonPublic
-#pragma warning restore S3011 // Reflection should not be used to increase accessibility of classes, methods, or fields
-      )
-      .FirstOrDefault(method =>
-        method.Name == "MultiMapAsync" &&
-        method.GetGenericArguments().Length == 1)
-      ?? throw new InvalidOperationException("MultiMapAsync doesn't exist");
 }

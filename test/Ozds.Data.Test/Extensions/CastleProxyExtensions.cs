@@ -1,4 +1,5 @@
 using System.Reflection;
+using Castle.DynamicProxy;
 using Microsoft.CSharp.RuntimeBinder;
 using Ozds.Data.Entities.Abstractions;
 
@@ -25,13 +26,16 @@ public static class CastleProxyExtensions
   )
     where TProxy : class, IEntity
   {
-    public TProxy Into() => Into<TProxy>();
+    public TProxy Into()
+    {
+      return Into<TProxy>();
+    }
 
     public TEntity Into<TEntity>()
       where TEntity : class, TProxy
     {
       var proxyType = proxy.GetType();
-      if (Castle.DynamicProxy.ProxyUtil.IsProxyType(proxyType))
+      if (ProxyUtil.IsProxyType(proxyType))
       {
         try
         {
@@ -46,6 +50,7 @@ public static class CastleProxyExtensions
           return (proxy as TEntity)!;
         }
       }
+
       return (proxy as TEntity)!;
     }
   }
@@ -55,7 +60,10 @@ public static class CastleProxyExtensions
   )
     where TProxy : class, IEntity
   {
-    public IEnumerable<TProxy> Into() => Into<TProxy>();
+    public IEnumerable<TProxy> Into()
+    {
+      return Into<TProxy>();
+    }
 
     public IEnumerable<TEntity> Into<TEntity>()
       where TEntity : class, TProxy
@@ -64,15 +72,18 @@ public static class CastleProxyExtensions
       {
         return Enumerable.Empty<TEntity>();
       }
-      Type proxyType = proxies.First().GetType();
-      if (Castle.DynamicProxy.ProxyUtil.IsProxyType(proxyType))
+
+      var proxyType = proxies.First().GetType();
+      if (ProxyUtil.IsProxyType(proxyType))
       {
         var unproxied = proxies
-          .Select(proxy => proxy
-            .Unproxy()
-            .Into<TEntity>());
+          .Select(
+            proxy => proxy
+              .Unproxy()
+              .Into<TEntity>());
         return unproxied;
       }
+
       return proxies.Cast<TEntity>();
     }
   }

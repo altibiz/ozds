@@ -1,9 +1,6 @@
 using System.Globalization;
-using System.Reflection;
 using System.Text.Json;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.AspNetCore.Routing.Patterns;
 using Microsoft.AspNetCore.Routing.Template;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop;
@@ -15,6 +12,92 @@ namespace Ozds.Client.Components.Base;
 
 public abstract class OzdsComponentBase : ComponentBase, IDisposable
 {
+  private static readonly JsonSerializerOptions JsonSerializerOptions = new()
+  {
+    WriteIndented = true
+  };
+
+  private static readonly CancellationTokenSource _cancelledTokenSource =
+    CreateCancelledTokenSource();
+
+  private CancellationTokenSource? cancellationTokenSource = new();
+
+  private IServiceScope? scope;
+
+  [Inject]
+  private ILocalizer Localizer { get; set; } = default!;
+
+  protected string Href
+  {
+    get { return new Uri(NavigationManager.Uri).AbsolutePath; }
+  }
+
+  protected string LoginHref
+  {
+    get { return $"/login?returnUrl={Uri.EscapeDataString(Href)}"; }
+  }
+
+  protected string LogoutHref
+  {
+    get
+    {
+      return $"/users/logoff?returnUrl=/login?returnUrl={
+        Uri.EscapeDataString(Href)
+      }";
+    }
+  }
+
+  protected string IndexHref
+  {
+    get { return BasedHref("/"); }
+  }
+
+  [Inject]
+  private NavigationManager NavigationManager { get; set; } = default!;
+
+  [Inject]
+  private IJSRuntime JS { get; set; } = default!;
+
+  [Inject]
+  private TemplateBinderFactory TemplateBinderFactory { get; set; } = default!;
+
+  protected IServiceProvider ScopedServices
+  {
+    get
+    {
+      if (ScopeFactory == null)
+      {
+        throw new InvalidOperationException(
+          "Services cannot be accessed before the component is initialized."
+        );
+      }
+
+      ObjectDisposedException.ThrowIf(IsDisposed, this);
+      scope ??= ScopeFactory.CreateScope();
+
+      return scope.ServiceProvider;
+    }
+  }
+
+  [Inject]
+  private IServiceScopeFactory ScopeFactory { get; set; } = default!;
+
+  protected CancellationToken CancellationToken
+  {
+    get
+    {
+      return cancellationTokenSource?.Token ?? _cancelledTokenSource.Token;
+    }
+  }
+
+  protected bool IsDisposed { get; private set; }
+
+  public void Dispose()
+  {
+    Dispose(true);
+    GC.SuppressFinalize(this);
+  }
+
   protected static string NumericString(decimal? number, int places = 2)
   {
     if (number is null)
@@ -95,32 +178,15 @@ public abstract class OzdsComponentBase : ComponentBase, IDisposable
     return localized;
   }
 
-  [Inject]
-  private ILocalizer Localizer { get; set; } = default!;
-
   protected static string JsonString(object? jsonDocument)
   {
     return JsonSerializer.Serialize(jsonDocument, JsonSerializerOptions);
   }
 
-  private static readonly JsonSerializerOptions JsonSerializerOptions = new()
+  protected string PageHref<T>(object? parameters = null)
   {
-    WriteIndented = true
-  };
-
-  protected string Href => new Uri(NavigationManager.Uri).AbsolutePath;
-
-  protected string LoginHref =>
-    $"/login?returnUrl={Uri.EscapeDataString(Href)}";
-
-  protected string LogoutHref =>
-    $"/users/logoff?returnUrl=/login?returnUrl={Uri.EscapeDataString(Href)}";
-
-  protected string IndexHref =>
-    BasedHref("/");
-
-  protected string PageHref<T>(object? parameters = null) =>
-    PageHref(typeof(T), parameters);
+    return PageHref(typeof(T), parameters);
+  }
 
   protected string PageHref(
     Type type,
@@ -171,54 +237,12 @@ public abstract class OzdsComponentBase : ComponentBase, IDisposable
     return NavigationManager.BasedHref(uri);
   }
 
-  [Inject]
-  private NavigationManager NavigationManager { get; set; } = default!;
-
-  [Inject]
-  private IJSRuntime JS { get; set; } = default!;
-
-  [Inject]
-  private TemplateBinderFactory TemplateBinderFactory { get; set; } = default!;
-
-  private CancellationTokenSource? cancellationTokenSource = new();
-
-  protected IServiceProvider ScopedServices
-  {
-    get
-    {
-      if (ScopeFactory == null)
-      {
-        throw new InvalidOperationException(
-          "Services cannot be accessed before the component is initialized."
-        );
-      }
-
-      ObjectDisposedException.ThrowIf(IsDisposed, this);
-      scope ??= ScopeFactory.CreateScope();
-
-      return scope.ServiceProvider;
-    }
-  }
-
-  [Inject]
-  private IServiceScopeFactory ScopeFactory { get; set; } = default!;
-
-  private IServiceScope? scope;
-
-  protected CancellationToken CancellationToken =>
-    cancellationTokenSource?.Token ?? _cancelledTokenSource.Token;
-
-  private static readonly CancellationTokenSource _cancelledTokenSource =
-    CreateCancelledTokenSource();
-
   private static CancellationTokenSource CreateCancelledTokenSource()
   {
     var cancellationTokenSource = new CancellationTokenSource();
     cancellationTokenSource.Cancel();
     return cancellationTokenSource;
   }
-
-  protected bool IsDisposed { get; private set; }
 
   protected virtual void Dispose(bool disposing)
   {
@@ -229,25 +253,19 @@ public abstract class OzdsComponentBase : ComponentBase, IDisposable
 
     if (disposing)
     {
-      if (cancellationTokenSource is { })
+      if (cancellationTokenSource is not null)
       {
         cancellationTokenSource.Cancel();
         cancellationTokenSource.Dispose();
         cancellationTokenSource = null;
       }
 
-      if (scope is { })
+      if (scope is not null)
       {
         scope.Dispose();
       }
     }
 
     IsDisposed = true;
-  }
-
-  public void Dispose()
-  {
-    Dispose(true);
-    GC.SuppressFinalize(this);
   }
 }

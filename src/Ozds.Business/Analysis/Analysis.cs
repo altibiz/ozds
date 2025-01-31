@@ -61,16 +61,17 @@ public static class AnalysisExtensions
       .Consumption()
       .ToList();
     var lastMonthConsumption = monthlyConsumption
-      .FirstOrDefault(x => x.Timestamp == startOfLastMonth)
+        .FirstOrDefault(x => x.Timestamp == startOfLastMonth)
       ?? Consumption.Null;
     var thisMonthConsumption = monthlyConsumption
-      .FirstOrDefault(x => x.Timestamp == startOfThisMonth)
+        .FirstOrDefault(x => x.Timestamp == startOfThisMonth)
       ?? Consumption.Null;
 
     var monthlyMaxLoad = models
-      .SelectMany(x => x.MonthlyAggregates
-        .Select(x => x.Load())
-        .OrderByDescending(x => x.Timestamp))
+      .SelectMany(
+        x => x.MonthlyAggregates
+          .Select(x => x.Load())
+          .OrderByDescending(x => x.Timestamp))
       .ToList();
     var load = models
       .Select(x => x.LastMeasurement)
@@ -110,13 +111,14 @@ public static class AnalysisExtensions
   {
     return models
       .GroupBy(x => x.Location.Id)
-      .Select(x =>
-      {
-        return new LocationAnalysis(
-          x.First().Location,
-          x.Analysis()
-        );
-      })
+      .Select(
+        x =>
+        {
+          return new LocationAnalysis(
+            x.First().Location,
+            x.Analysis()
+          );
+        })
       .ToList();
   }
 
@@ -125,16 +127,17 @@ public static class AnalysisExtensions
   )
   {
     return models
-      .Where(x => x.NetworkUser is { })
+      .Where(x => x.NetworkUser is not null)
       .GroupBy(x => x.NetworkUser!.Id)
-      .Select(x =>
-      {
-        return new NetworkUserAnalysis(
-          x.First().Location,
-          x.First().NetworkUser!,
-          x.Analysis()
-        );
-      })
+      .Select(
+        x =>
+        {
+          return new NetworkUserAnalysis(
+            x.First().Location,
+            x.First().NetworkUser!,
+            x.Analysis()
+          );
+        })
       .ToList();
   }
 
@@ -144,16 +147,17 @@ public static class AnalysisExtensions
   {
     return models
       .GroupBy(x => x.MeasurementLocation.Id)
-      .Select(x =>
-      {
-        return new MeasurementLocationAnalysis(
-          x.First().Location,
-          x.First().NetworkUser,
-          x.First().MeasurementLocation,
-          x.First().Meter,
-          x.Analysis()
-        );
-      })
+      .Select(
+        x =>
+        {
+          return new MeasurementLocationAnalysis(
+            x.First().Location,
+            x.First().NetworkUser,
+            x.First().MeasurementLocation,
+            x.First().Meter,
+            x.Analysis()
+          );
+        })
       .ToList();
   }
 
@@ -163,16 +167,17 @@ public static class AnalysisExtensions
   {
     return models
       .GroupBy(x => x.Meter.Id)
-      .Select(x =>
-      {
-        return new MeterAnalysis(
-          x.First().Location,
-          x.First().NetworkUser,
-          x.First().MeasurementLocation,
-          x.First().Meter,
-          x.Analysis()
-        );
-      })
+      .Select(
+        x =>
+        {
+          return new MeterAnalysis(
+            x.First().Location,
+            x.First().NetworkUser,
+            x.First().MeasurementLocation,
+            x.First().Meter,
+            x.Analysis()
+          );
+        })
       .ToList();
   }
 

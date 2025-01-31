@@ -23,8 +23,9 @@ public class CalculatedInvoiceQueries(
       cancellationToken
     );
 
-    return entity is null ? default :
-      new CalculatedNetworkUserInvoiceModel
+    return entity is null
+      ? default
+      : new CalculatedNetworkUserInvoiceModel
       {
         Calculations = entity.Calculations
           .Select(modelEntityConverter.ToModel<NetworkUserCalculationModel>)

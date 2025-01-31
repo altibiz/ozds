@@ -12,6 +12,6 @@ public class SchneideriEM3xxxCapabilities : ICapabilities
     MeasureModel.ActivePower,
     MeasureModel.ReactivePower,
     MeasureModel.ActiveEnergy,
-    MeasureModel.ReactiveEnergy,
+    MeasureModel.ReactiveEnergy
   };
 }

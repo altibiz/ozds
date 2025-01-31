@@ -8,6 +8,12 @@ namespace Ozds.Business.Models.Base;
 public class MeterModel : AuditableModel, IMeter
 {
   [Required]
+  public virtual required string Kind { get; set; } = default!;
+
+  [Required]
+  public required string MeasurementValidatorId { get; set; }
+
+  [Required]
   public required string? MessengerId { get; set; }
 
   [Required]
@@ -20,12 +26,6 @@ public class MeterModel : AuditableModel, IMeter
   {
     get { return new NullCapabilities(); }
   }
-
-  [Required]
-  public required virtual string Kind { get; set; } = default!;
-
-  [Required]
-  public required string MeasurementValidatorId { get; set; }
 
   public override IEnumerable<ValidationResult> Validate(
     ValidationContext validationContext)

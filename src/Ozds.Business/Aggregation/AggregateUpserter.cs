@@ -6,6 +6,10 @@ namespace Ozds.Business.Aggregation;
 
 public class AggregateUpserter(IServiceProvider serviceProvider)
 {
+  private readonly ConcurrentDictionary<(Type, Type), IAggregateUpserter>
+    cache =
+      new();
+
   public TModel UpsertModel<TModel>(TModel lhs, TModel rhs)
     where TModel : IAggregate
   {
@@ -21,9 +25,10 @@ public class AggregateUpserter(IServiceProvider serviceProvider)
 
     upserter = serviceProvider
         .GetServices<IAggregateUpserter>()
-        .FirstOrDefault(upserter =>
-          upserter.CanUpsert(lhs.GetType())
-          && upserter.CanUpsert(rhs.GetType()))
+        .FirstOrDefault(
+          upserter =>
+            upserter.CanUpsert(lhs.GetType())
+            && upserter.CanUpsert(rhs.GetType()))
       ?? throw new InvalidOperationException(
         $"No upserter found for models {lhs.GetType()} and {rhs.GetType()}.");
 
@@ -31,7 +36,4 @@ public class AggregateUpserter(IServiceProvider serviceProvider)
 
     return upserter.Upsert(lhs, rhs);
   }
-
-  private readonly ConcurrentDictionary<(Type, Type), IAggregateUpserter> cache =
-    new();
 }

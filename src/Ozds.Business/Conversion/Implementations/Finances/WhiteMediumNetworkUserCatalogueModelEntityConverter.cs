@@ -9,10 +9,10 @@ namespace Ozds.Business.Conversion.Implementations.Finances;
 public class WhiteMediumNetworkUserCatalogueModelEntityConverter(
   IServiceProvider serviceProvider
 ) : InheritingModelEntityConverter<
-      WhiteMediumNetworkUserCatalogueModel,
-      NetworkUserCatalogueModel,
-      WhiteMediumNetworkUserCatalogueEntity,
-      NetworkUserCatalogueEntity>(serviceProvider)
+  WhiteMediumNetworkUserCatalogueModel,
+  NetworkUserCatalogueModel,
+  WhiteMediumNetworkUserCatalogueEntity,
+  NetworkUserCatalogueEntity>(serviceProvider)
 {
   public override void InitializeEntity(
     WhiteMediumNetworkUserCatalogueModel model,

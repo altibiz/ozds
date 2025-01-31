@@ -10,11 +10,11 @@ public abstract class ListModelComponent<TPrefix, TModel> : ModelComponent
   public IEnumerable<TPrefix> Models { get; set; } = default!;
 
   [Parameter]
-  public Expression<Func<TPrefix, TModel?>>? Prefix { get; set; } = default!;
+  public Expression<Func<TPrefix, TModel?>>? Prefix { get; set; }
 
   protected override Type CreateModelType()
   {
-    var prefixFunc = Prefix?.Compile() ?? ((TPrefix x) => (TModel?)(object?)x);
+    var prefixFunc = Prefix?.Compile() ?? (x => (TModel?)(object?)x);
     var modelType = Models
       .Select(prefixFunc)
       .Select(x => x?.GetType())
@@ -35,10 +35,10 @@ public abstract class ListModelComponent<TPrefix, TModel> : ModelComponent
 
   protected override Dictionary<string, object> CreateParameters()
   {
-    return new()
+    return new Dictionary<string, object>
     {
       { nameof(OzdsListModelComponentBase<object, object>.Models), Models! },
-      { nameof(OzdsListModelComponentBase<object, object>.Prefix), Prefix! },
+      { nameof(OzdsListModelComponentBase<object, object>.Prefix), Prefix! }
     };
   }
 }

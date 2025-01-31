@@ -1,7 +1,6 @@
 using ApexCharts;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using Ozds.Business.Models;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Enums;
 using Ozds.Client.Components.Base;
@@ -12,8 +11,16 @@ namespace Ozds.Client.Components.Charts;
 
 public partial class MeasurementDonutChart : OzdsComponentBase
 {
+  private readonly string _id = Guid.NewGuid().ToString();
+
+  private ApexChart<IMeasurement>? _chart;
+
+  private ApexChartOptions<IMeasurement> _options =
+    new ApexChartOptions<IMeasurement>()
+      .WithFixedScriptPath();
+
   [CascadingParameter]
-  public Breakpoint Breakpoint { get; set; } = default!;
+  public Breakpoint Breakpoint { get; set; }
 
   [CascadingParameter]
   public ThemeState ThemeState { get; set; } = default!;
@@ -22,18 +29,10 @@ public partial class MeasurementDonutChart : OzdsComponentBase
   public MeasurementChartParameters Parameters { get; set; } = default!;
 
   [Parameter]
-  public bool Area { get; set; } = false;
+  public bool Area { get; set; }
 
   [Parameter]
-  public bool Brush { get; set; } = false;
-
-  private readonly string _id = Guid.NewGuid().ToString();
-
-  private ApexChart<IMeasurement>? _chart = default!;
-
-  private ApexChartOptions<IMeasurement> _options =
-    new ApexChartOptions<IMeasurement>()
-      .WithFixedScriptPath();
+  public bool Brush { get; set; }
 
   protected override void OnInitialized()
   {
@@ -50,7 +49,7 @@ public partial class MeasurementDonutChart : OzdsComponentBase
     _options = CreateGraphOptions();
     if (_chart is { } chart)
     {
-      await chart.UpdateSeriesAsync(animate: true);
+      await chart.UpdateSeriesAsync(true);
       await chart.UpdateOptionsAsync(false, true, false);
     }
   }

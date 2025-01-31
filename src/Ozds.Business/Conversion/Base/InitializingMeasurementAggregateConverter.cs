@@ -13,13 +13,6 @@ public abstract class InitializingMeasurementAggregateConverter
 
   public abstract bool CanConvertToAggregate(Type measurement);
 
-  public abstract IAggregate Box();
-
-  public abstract void Initialize(
-    IAggregate aggregate,
-    IMeasurement measurement,
-    IntervalModel interval);
-
   public IAggregate ToAggregate(
     IMeasurement measurement,
     IntervalModel interval
@@ -29,4 +22,11 @@ public abstract class InitializingMeasurementAggregateConverter
     Initialize(aggregate, measurement, interval);
     return aggregate;
   }
+
+  public abstract IAggregate Box();
+
+  public abstract void Initialize(
+    IAggregate aggregate,
+    IMeasurement measurement,
+    IntervalModel interval);
 }

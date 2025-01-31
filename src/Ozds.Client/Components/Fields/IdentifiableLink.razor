@@ -1,10 +1,7 @@
-@using MudBlazor
-@using Ozds.Business.Models.Abstractions
-@using Ozds.Client.Components.Base
-
 @namespace Ozds.Client.Components.Fields
 
-@inherits OzdsComponentBase
+@using MudBlazor
+@inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 <MudLink Href="@(Provider.CreateLink(Model))">
   @Model.Title

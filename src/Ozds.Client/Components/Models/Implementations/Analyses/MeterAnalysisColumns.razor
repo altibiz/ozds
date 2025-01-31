@@ -1,11 +1,8 @@
-@using Ozds.Business.Analysis
-@using Ozds.Client.Components.Models.Base
-
 @namespace Ozds.Client.Components.Models.Implementations.Analyses
 
 @typeparam TPrefix
-@typeparam TModel where TModel : MeterAnalysis
-@inherits OzdsColumnsComponentBase<TPrefix, TModel>
+@typeparam TModel where TModel : Ozds.Business.Analysis.MeterAnalysis
+@inherits Ozds.Client.Components.Models.Base.OzdsColumnsComponentBase<TPrefix, TModel>
 
 @LinkColumn(x => x.NetworkUser)
 

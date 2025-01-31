@@ -6,6 +6,9 @@ namespace Ozds.Business.Naming;
 
 public class MeterNamingConvention(IServiceProvider serviceProvider)
 {
+  private readonly ConcurrentDictionary<string, IMeterNamingConvention> cache =
+    new();
+
   public Type MeasurementTypeForMeterId(string meterId)
   {
     return GetMeterNamingConvention(meterId).MeasurementType;
@@ -43,8 +46,8 @@ public class MeterNamingConvention(IServiceProvider serviceProvider)
     }
 
     meterNamingConvention = serviceProvider
-      .GetServices<IMeterNamingConvention>()
-      .FirstOrDefault(service => meterIdPrefix == service.IdPrefix)
+        .GetServices<IMeterNamingConvention>()
+        .FirstOrDefault(service => meterIdPrefix == service.IdPrefix)
       ?? throw new InvalidOperationException(
         $"No MeterNamingConvention found for {meterId}");
 
@@ -52,7 +55,4 @@ public class MeterNamingConvention(IServiceProvider serviceProvider)
 
     return meterNamingConvention;
   }
-
-  private readonly ConcurrentDictionary<string, IMeterNamingConvention> cache =
-    new();
 }

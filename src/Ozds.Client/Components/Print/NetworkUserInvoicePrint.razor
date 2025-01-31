@@ -1,11 +1,7 @@
-@using Microsoft.Extensions.DependencyInjection
-@using Ozds.Business.Queries
-@using Ozds.Business.Models.Composite
-@using Ozds.Client.Components.Base
-
 @namespace Ozds.Client.Components.Print
 
-@inherits OzdsComponentBase
+@using Ozds.Business.Models.Composite
+@inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 <div class="page">
   <div class="page-header">
@@ -66,6 +62,8 @@
 </div>
 
 @code {
+
   [Parameter]
   public CalculatedNetworkUserInvoiceModel Model { get; set; } = default!;
+
 }

@@ -6,5 +6,5 @@ public enum FinancialChartProfile
   Operator,
   Realtime,
   Monthly,
-  Yearly,
+  Yearly
 }

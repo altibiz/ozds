@@ -57,8 +57,8 @@ public class EventQueries(
       entityType,
       pageNumber,
       cancellationToken,
-      pageCount: pageCount,
-      where: entity => ((EventEntity)entity).Level >= minLevelEntity
+      pageCount,
+      entity => ((EventEntity)entity).Level >= minLevelEntity
     );
 
     return entities.Items
@@ -104,11 +104,11 @@ public class EventQueries(
     var auditableEntityType = modelEntityConverter.EntityType(
       auditable.GetType());
     var entityTableName = await auditableQueries
-      .ReadEntityTableName(auditableEntityType, cancellationToken)
+        .ReadEntityTableName(auditableEntityType, cancellationToken)
       ?? throw new InvalidOperationException(
         $"Type {auditableEntityType} doesn't have a table");
     var entityTypeName = await auditableQueries
-      .ReadEntityTypeName(auditableEntityType, cancellationToken)
+        .ReadEntityTypeName(auditableEntityType, cancellationToken)
       ?? throw new InvalidOperationException(
         $"Type {auditableEntityType} doesn't have a type name");
 
@@ -117,8 +117,8 @@ public class EventQueries(
       entityType,
       pageNumber,
       cancellationToken,
-      pageCount: pageCount,
-      where: entity =>
+      pageCount,
+      entity =>
         ((AuditEventEntity)entity).AuditableEntityId == auditable.Id
         && ((AuditEventEntity)entity).AuditableEntityType == entityTypeName
         && ((AuditEventEntity)entity).AuditableEntityTable == entityTableName

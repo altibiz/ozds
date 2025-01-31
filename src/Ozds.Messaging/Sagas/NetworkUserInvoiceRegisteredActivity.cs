@@ -22,10 +22,11 @@ public class NetworkUserInvoiceRegisteredActivity(
       NetworkUserInvoiceStateEntity,
       IRegisterNetworkUserInvoice> next)
   {
-    publisher.Publish(new NetworkUserInvoiceStateEventArgs
-    {
-      State = context.Saga
-    });
+    publisher.Publish(
+      new NetworkUserInvoiceStateEventArgs
+      {
+        State = context.Saga
+      });
 
     await next.Execute(context);
   }

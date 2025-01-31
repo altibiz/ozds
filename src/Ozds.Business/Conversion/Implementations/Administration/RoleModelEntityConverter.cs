@@ -13,7 +13,8 @@ public class RoleModelEntityConverter
     {
       RoleModel.OperatorRepresentative => RoleEntity.OperatorRepresentative,
       RoleModel.LocationRepresentative => RoleEntity.LocationRepresentative,
-      RoleModel.NetworkUserRepresentative => RoleEntity.NetworkUserRepresentative,
+      RoleModel.NetworkUserRepresentative => RoleEntity
+        .NetworkUserRepresentative,
       _ => throw new NotImplementedException()
     };
   }
@@ -24,7 +25,8 @@ public class RoleModelEntityConverter
     {
       RoleEntity.OperatorRepresentative => RoleModel.OperatorRepresentative,
       RoleEntity.LocationRepresentative => RoleModel.LocationRepresentative,
-      RoleEntity.NetworkUserRepresentative => RoleModel.NetworkUserRepresentative,
+      RoleEntity.NetworkUserRepresentative => RoleModel
+        .NetworkUserRepresentative,
       _ => throw new NotImplementedException()
     };
   }

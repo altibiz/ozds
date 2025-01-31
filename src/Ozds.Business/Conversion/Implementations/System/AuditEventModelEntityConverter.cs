@@ -9,10 +9,10 @@ namespace Ozds.Business.Conversion.Implementations.System;
 public class AuditEventModelEntityConverter(
   IServiceProvider serviceProvider
 ) : InheritingModelEntityConverter<
-      AuditEventModel,
-      EventModel,
-      AuditEventEntity,
-      EventEntity>(serviceProvider)
+  AuditEventModel,
+  EventModel,
+  AuditEventEntity,
+  EventEntity>(serviceProvider)
 {
   private readonly ModelEntityConverter modelEntityConverter =
     serviceProvider.GetRequiredService<ModelEntityConverter>();

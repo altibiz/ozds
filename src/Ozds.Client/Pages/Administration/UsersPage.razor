@@ -1,27 +1,19 @@
-@using Microsoft.AspNetCore.Components.Web
-@using Microsoft.Extensions.DependencyInjection
-@using MudBlazor
-@using Ozds.Business.Queries
-@using Ozds.Client.Attributes
-@using Ozds.Client.Components.Base
-@using Ozds.Business.Models.Enums
-@using Ozds.Business.Models
-@using Ozds.Client.Components.Streaming
-@using Ozds.Client.Components.Models
-@using Ozds.Client.Components.Fields
-
 @namespace Ozds.Client.Pages
 
 @page "/administration/users"
 
 @attribute [Navigation(
-  Order = -1000,
-  Title = "Users",
-  Icon = Icons.Material.Filled.VerifiedUser,
-  Parent = typeof(AdministrationPage),
-  Allows = [RoleModel.OperatorRepresentative])]
+Order = -1000,
+Title = "Users",
+Icon = Icons.Material.Filled.VerifiedUser,
+Parent = typeof(AdministrationPage),
+Allows = [RoleModel.OperatorRepresentative])]
 
-@inherits OzdsComponentBase
+@using Microsoft.AspNetCore.Components.Web
+@using Ozds.Client.Attributes
+@using Ozds.Client.Components.Models
+@using Ozds.Client.Components.Streaming
+@inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 <HeadContent>
   <title>OZDS - @Translate("Users")</title>
@@ -29,6 +21,6 @@
 
 <Paging PageAsync="OnPageAsync">
   <Summary>
-    <Summary Model="@context.User" />
+    <Summary Model="@context.User"/>
   </Summary>
 </Paging>

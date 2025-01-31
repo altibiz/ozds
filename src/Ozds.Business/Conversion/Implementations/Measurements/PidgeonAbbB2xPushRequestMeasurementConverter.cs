@@ -6,8 +6,8 @@ namespace Ozds.Business.Conversion.Implementations.Measurements;
 
 public class PidgeonAbbB2xPushRequestMeasurementConverter
   : ConcretePushRequestMeasurementConverter<
-      PidgeonAbbB2xMeterPushRequestEntity,
-      AbbB2xMeasurementModel>
+    PidgeonAbbB2xMeterPushRequestEntity,
+    AbbB2xMeasurementModel>
 {
   public override string MeterIdPrefix
   {
@@ -39,18 +39,30 @@ public class PidgeonAbbB2xPushRequestMeasurementConverter
     data.ActiveEnergyL1ExportT0_Wh = measurement.ActiveEnergyL1ExportT0_Wh;
     data.ActiveEnergyL2ExportT0_Wh = measurement.ActiveEnergyL2ExportT0_Wh;
     data.ActiveEnergyL3ExportT0_Wh = measurement.ActiveEnergyL3ExportT0_Wh;
-    data.ReactiveEnergyL1ImportT0_VARh = measurement.ReactiveEnergyL1ImportT0_VARh;
-    data.ReactiveEnergyL2ImportT0_VARh = measurement.ReactiveEnergyL2ImportT0_VARh;
-    data.ReactiveEnergyL3ImportT0_VARh = measurement.ReactiveEnergyL3ImportT0_VARh;
-    data.ReactiveEnergyL1ExportT0_VARh = measurement.ReactiveEnergyL1ExportT0_VARh;
-    data.ReactiveEnergyL2ExportT0_VARh = measurement.ReactiveEnergyL2ExportT0_VARh;
-    data.ReactiveEnergyL3ExportT0_VARh = measurement.ReactiveEnergyL3ExportT0_VARh;
-    data.ActiveEnergyTotalImportT0_Wh = measurement.ActiveEnergyTotalImportT0_Wh;
-    data.ActiveEnergyTotalExportT0_Wh = measurement.ActiveEnergyTotalExportT0_Wh;
-    data.ReactiveEnergyTotalImportT0_VARh = measurement.ReactiveEnergyTotalImportT0_VARh;
-    data.ReactiveEnergyTotalExportT0_VARh = measurement.ReactiveEnergyTotalExportT0_VARh;
-    data.ActiveEnergyTotalImportT1_Wh = measurement.ActiveEnergyTotalImportT1_Wh;
-    data.ActiveEnergyTotalImportT2_Wh = measurement.ActiveEnergyTotalImportT2_Wh;
+    data.ReactiveEnergyL1ImportT0_VARh =
+      measurement.ReactiveEnergyL1ImportT0_VARh;
+    data.ReactiveEnergyL2ImportT0_VARh =
+      measurement.ReactiveEnergyL2ImportT0_VARh;
+    data.ReactiveEnergyL3ImportT0_VARh =
+      measurement.ReactiveEnergyL3ImportT0_VARh;
+    data.ReactiveEnergyL1ExportT0_VARh =
+      measurement.ReactiveEnergyL1ExportT0_VARh;
+    data.ReactiveEnergyL2ExportT0_VARh =
+      measurement.ReactiveEnergyL2ExportT0_VARh;
+    data.ReactiveEnergyL3ExportT0_VARh =
+      measurement.ReactiveEnergyL3ExportT0_VARh;
+    data.ActiveEnergyTotalImportT0_Wh =
+      measurement.ActiveEnergyTotalImportT0_Wh;
+    data.ActiveEnergyTotalExportT0_Wh =
+      measurement.ActiveEnergyTotalExportT0_Wh;
+    data.ReactiveEnergyTotalImportT0_VARh =
+      measurement.ReactiveEnergyTotalImportT0_VARh;
+    data.ReactiveEnergyTotalExportT0_VARh =
+      measurement.ReactiveEnergyTotalExportT0_VARh;
+    data.ActiveEnergyTotalImportT1_Wh =
+      measurement.ActiveEnergyTotalImportT1_Wh;
+    data.ActiveEnergyTotalImportT2_Wh =
+      measurement.ActiveEnergyTotalImportT2_Wh;
 #pragma warning restore IDE0017 // Simplify object initialization
     pushRequest.Data = data;
     pushRequest.Timestamp = measurement.Timestamp;

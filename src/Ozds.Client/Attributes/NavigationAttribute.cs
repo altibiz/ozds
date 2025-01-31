@@ -7,6 +7,9 @@ namespace Ozds.Client.Attributes;
 [AttributeUsage(AttributeTargets.Class, Inherited = false)]
 public class NavigationAttribute : Attribute
 {
+  private static readonly List<NavigationDescriptor> _navigationDescriptors =
+    CreateNavigationDescriptors().ToList();
+
   public int Order { get; set; } = 1;
 
   public required string Title { get; set; }
@@ -19,31 +22,34 @@ public class NavigationAttribute : Attribute
 
   public required RoleModel[] Allows { get; set; }
 
-  private static readonly List<NavigationDescriptor> _navigationDescriptors =
-    CreateNavigationDescriptors().ToList();
-
   public static IEnumerable<NavigationDescriptor> GetNavigationDescriptors()
-    => _navigationDescriptors;
+  {
+    return _navigationDescriptors;
+  }
 
   private static IEnumerable<NavigationDescriptor> CreateNavigationDescriptors()
   {
     var descriptors = typeof(NavigationAttribute).Assembly
       .GetTypes()
-      .Select(type => new
-      {
-        Type = type,
-        Navigation = type.GetCustomAttributes<NavigationAttribute>(),
-        Route = type.GetCustomAttributes<RouteAttribute>()
-      })
+      .Select(
+        type => new
+        {
+          Type = type,
+          Navigation = type.GetCustomAttributes<NavigationAttribute>(),
+          Route = type.GetCustomAttributes<RouteAttribute>()
+        })
       .Where(type => type.Navigation.Any() && type.Route.Any())
-      .SelectMany(type => type.Navigation
-        .SelectMany(navigation => type.Route
-          .Select(route => new NavigationDescriptor
-          {
-            Type = type.Type,
-            Navigation = navigation,
-            Route = route
-          })))
+      .SelectMany(
+        type => type.Navigation
+          .SelectMany(
+            navigation => type.Route
+              .Select(
+                route => new NavigationDescriptor
+                {
+                  Type = type.Type,
+                  Navigation = navigation,
+                  Route = route
+                })))
       .OrderBy(x => x.Navigation.Order)
       .ToList();
 
@@ -65,6 +71,7 @@ public class NavigationAttribute : Attribute
           descriptors.Remove(descriptor);
         }
       }
+
       lastLayer = layer;
     }
 

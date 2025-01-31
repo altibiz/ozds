@@ -1,17 +1,12 @@
-@using Microsoft.AspNetCore.Components.Forms
-@using Microsoft.Extensions.DependencyInjection
-@using Ozds.Business.Models.Abstractions
-@using Ozds.Business.Mutations
-@using Ozds.Client.Components.Base
-@using Ozds.Client.Components.Fields
-@using Ozds.Client.State
-@using MudBlazor
-
 @namespace Ozds.Client.Components.Streaming
 
 @typeparam T where T : notnull
 
-@inherits OzdsComponentBase
+@using Microsoft.AspNetCore.Components.Forms
+@using MudBlazor
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Client.State
+@inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 <Loading
   T="T"
@@ -42,13 +37,13 @@
             <div Class="d-flex flex-row">
               <MudButton
                 Variant="Variant.Filled"
-                Color="MudBlazor.Color.Success"
+                Color="Color.Success"
                 ButtonType="ButtonType.Submit">
                 @Translate("Update")
               </MudButton>
               <MudButton
                 Variant="Variant.Filled"
-                Color="MudBlazor.Color.Secondary"
+                Color="Color.Secondary"
                 OnClick="@(() => _mutating = !_mutating)"
                 Class="ml-4">
                 @Translate("Preview")
@@ -56,7 +51,7 @@
             </div>
             <MudButton
               Variant="Variant.Filled"
-              Color="MudBlazor.Color.Error"
+              Color="Color.Error"
               OnClick="@(() => OnDelete(model))"
               Class="mt-8 align-self-start">
               @Translate("Delete")
@@ -72,7 +67,7 @@
               <MudButton
                 OnClick="@(() => _mutating = !_mutating)"
                 Variant="Variant.Filled"
-                Color="MudBlazor.Color.Warning">
+                Color="Color.Warning">
                 @Translate("Edit")
               </MudButton>
             </div>
@@ -94,13 +89,13 @@
           <MudButton
             ButtonType="ButtonType.Submit"
             Variant="Variant.Filled"
-            Color="MudBlazor.Color.Success">
+            Color="Color.Success">
             @Translate("Create")
           </MudButton>
           <MudButton
             OnClick="@(() => _mutating = !_mutating)"
             Variant="Variant.Filled"
-            Color="MudBlazor.Color.Secondary"
+            Color="Color.Secondary"
             Class="ml-4">
             @Translate("Preview")
           </MudButton>
@@ -113,7 +108,7 @@
           <MudButton
             OnClick="@(() => _mutating = !_mutating)"
             Variant="Variant.Filled"
-            Color="MudBlazor.Color.Warning">
+            Color="Color.Warning">
             @Translate("Edit")
           </MudButton>
         </div>

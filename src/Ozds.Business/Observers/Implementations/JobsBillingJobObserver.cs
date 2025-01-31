@@ -10,9 +10,9 @@ public class JobsBillingJobRelay(
   IServiceProvider serviceProvider,
   IBillingJobSubscriber subscriber
 ) : Relay<
-  BillingJobEventArgs,
-  JobsBillingJobEventArgs,
-  JobsBillingJobPipe>(serviceProvider),
+    BillingJobEventArgs,
+    JobsBillingJobEventArgs,
+    JobsBillingJobPipe>(serviceProvider),
   IJobsBillingJobSubscriber
 {
   protected override void SubscribeIn(

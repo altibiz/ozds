@@ -31,8 +31,10 @@ public class SchneideriEM3xxxMeasurementRecordPushRequestConverter
       ActiveEnergyL3ImportT0_Wh = record.ActiveEnergyL3ImportT0_Wh,
       ActiveEnergyTotalImportT0_Wh = record.ActiveEnergyTotalImportT0_Wh,
       ActiveEnergyTotalExportT0_Wh = record.ActiveEnergyTotalExportT0_Wh,
-      ReactiveEnergyTotalImportT0_VARh = record.ReactiveEnergyTotalImportT0_VARh,
-      ReactiveEnergyTotalExportT0_VARh = record.ReactiveEnergyTotalExportT0_VARh,
+      ReactiveEnergyTotalImportT0_VARh =
+        record.ReactiveEnergyTotalImportT0_VARh,
+      ReactiveEnergyTotalExportT0_VARh =
+        record.ReactiveEnergyTotalExportT0_VARh,
       ActiveEnergyTotalImportT1_Wh = record.ActiveEnergyTotalImportT1_Wh,
       ActiveEnergyTotalImportT2_Wh = record.ActiveEnergyTotalImportT2_Wh
     };

@@ -13,6 +13,12 @@ namespace Ozds.Client.Components.Streaming;
 public partial class Paging<T> : OzdsComponentBase
   where T : notnull
 {
+  private int _pageNumber = 1;
+
+  private Guid infiniteScrollId = Guid.NewGuid();
+
+  private Loading<PaginatedList<T>>? loading;
+
   [Parameter]
   public Func<int, PaginatedList<T>>? Page { get; set; }
 
@@ -46,9 +52,53 @@ public partial class Paging<T> : OzdsComponentBase
   [Inject]
   public IJSRuntime JS { get; set; } = default!;
 
-  private Guid infiniteScrollId = Guid.NewGuid();
+  private Func<PaginatedList<T>>? OnPage
+  {
+    get
+    {
+      return Page is null
+        ? null
+        : () => Page(_pageNumber);
+    }
+  }
 
-  private Loading<PaginatedList<T>>? loading;
+  private Func<Task<PaginatedList<T>>>? OnPageAsync
+  {
+    get
+    {
+      return PageAsync is not null
+        ? () => PageAsync(_pageNumber)
+        : Page is null && typeof(T).IsAssignableTo(typeof(IAuditable))
+          ? () => ScopedServices
+            .GetRequiredService<AuditableQueries>()
+            .ReadDynamic(
+              typeof(T),
+              _pageNumber,
+              CancellationToken,
+              PageCount)
+            .ContinueWith(
+              x => x.IsCanceled
+                ? new PaginatedList<T>(new List<T>(), 0)
+                : x.Result.Items
+                  .OfType<T>()
+                  .ToPaginatedList(x.Result.TotalCount))
+          : Page is null && typeof(T).IsAssignableTo(typeof(IReadonly))
+            ? () => ScopedServices
+              .GetRequiredService<ReadonlyQueries>()
+              .ReadDynamic(
+                typeof(T),
+                _pageNumber,
+                CancellationToken,
+                PageCount)
+              .ContinueWith(
+                x => x.IsCanceled
+                  ? new PaginatedList<T>(new List<T>(), 0)
+                  : x.Result.Items
+                    .OfType<T>()
+                    .ToPaginatedList(x.Result.TotalCount))
+            : null;
+    }
+  }
 
   protected override async Task OnAfterRenderAsync(bool firstRender)
   {
@@ -66,7 +116,7 @@ public partial class Paging<T> : OzdsComponentBase
       return;
     }
 
-    loading.Reload(reset: true);
+    loading.Reload(true);
   }
 
   protected override async Task OnParametersSetAsync()
@@ -76,7 +126,7 @@ public partial class Paging<T> : OzdsComponentBase
       return;
     }
 
-    await loading.ReloadAsync(reset: true);
+    await loading.ReloadAsync(true);
   }
 
   [JSInvokable]
@@ -85,17 +135,7 @@ public partial class Paging<T> : OzdsComponentBase
     if (isInView && Pagination is null && Scroll is Scroll.Infinite)
     {
       _pageNumber++;
-      loading?.ReloadAsync(reset: true);
-    }
-  }
-
-  private Func<PaginatedList<T>>? OnPage
-  {
-    get
-    {
-      return Page is null
-        ? null
-        : () => Page(_pageNumber);
+      loading?.ReloadAsync(true);
     }
   }
 
@@ -104,43 +144,7 @@ public partial class Paging<T> : OzdsComponentBase
     _pageNumber = pageNumber;
     if (loading is { } nonNullLoading)
     {
-      await nonNullLoading.ReloadAsync(reset: true);
-    }
-  }
-
-  private Func<Task<PaginatedList<T>>>? OnPageAsync
-  {
-    get
-    {
-      return PageAsync is not null
-        ? () => PageAsync(_pageNumber)
-        : Page is null && typeof(T).IsAssignableTo(typeof(IAuditable))
-          ? () => ScopedServices
-            .GetRequiredService<AuditableQueries>()
-            .ReadDynamic(
-              typeof(T),
-              _pageNumber,
-              CancellationToken,
-              pageCount: PageCount)
-            .ContinueWith(x => x.IsCanceled
-              ? new PaginatedList<T>(new List<T>(), 0)
-              : x.Result.Items
-                .OfType<T>()
-                .ToPaginatedList(x.Result.TotalCount))
-          : Page is null && typeof(T).IsAssignableTo(typeof(IReadonly))
-            ? () => ScopedServices
-              .GetRequiredService<ReadonlyQueries>()
-              .ReadDynamic(
-                typeof(T),
-                _pageNumber,
-                CancellationToken,
-                pageCount: PageCount)
-              .ContinueWith(x => x.IsCanceled
-                ? new PaginatedList<T>(new List<T>(), 0)
-                : x.Result.Items
-                  .OfType<T>()
-                  .ToPaginatedList(x.Result.TotalCount))
-            : null;
+      await nonNullLoading.ReloadAsync(true);
     }
   }
 
@@ -149,6 +153,4 @@ public partial class Paging<T> : OzdsComponentBase
     _pageNumber = pageNumber;
     InvokeAsync(StateHasChanged);
   }
-
-  private int _pageNumber = 1;
 }

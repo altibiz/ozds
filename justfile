@@ -54,7 +54,7 @@ measurements *args:
     python -m scripts.database.measurements {{ args }}
 
 format:
-    cd '{{ root }}'; @just --fmt --unstable
+    cd '{{ root }}'; just --fmt --unstable
 
     nixpkgs-fmt '{{ root }}'
 

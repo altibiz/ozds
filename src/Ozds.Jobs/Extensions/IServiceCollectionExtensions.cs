@@ -90,10 +90,7 @@ public static class IServiceCollectionExtensions
       });
 
     services.Configure<QuartzHostedServiceOptions>(
-      options =>
-      {
-        options.AwaitApplicationStarted = true;
-      });
+      options => { options.AwaitApplicationStarted = true; });
     services.AddSingleton<IHostedService, QuartzHostedService>(
       services =>
       {

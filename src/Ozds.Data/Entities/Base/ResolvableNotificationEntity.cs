@@ -7,11 +7,10 @@ namespace Ozds.Data.Entities.Base;
 public class ResolvableNotificationEntity
   : NotificationEntity, IResolvableNotificationEntity
 {
+  public virtual RepresentativeEntity? ResolvedBy { get; set; } = default!;
   public string? RepresentativeId { get; set; }
 
   public string? ResolvedById { get; set; } = default!;
-
-  public virtual RepresentativeEntity? ResolvedBy { get; set; } = default!;
 
   public DateTimeOffset? ResolvedOn { get; set; } = default!;
 }

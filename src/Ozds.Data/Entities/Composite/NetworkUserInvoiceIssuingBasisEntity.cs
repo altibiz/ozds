@@ -14,6 +14,5 @@ public class NetworkUserInvoiceIssuingBasisEntity
   public DateTimeOffset ToDate { get; set; }
 
   public List<NetworkUserCalculationBasisEntity>
-    NetworkUserCalculationBases
-  { get; set; } = default!;
+    NetworkUserCalculationBases { get; set; } = default!;
 }

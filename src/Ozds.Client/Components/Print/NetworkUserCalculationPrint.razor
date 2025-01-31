@@ -1,6 +1,4 @@
-@using Microsoft.Extensions.DependencyInjection
 @using Ozds.Business.Models.Base
-
 @namespace Ozds.Client.Components.Print
 
 <div class="page">
@@ -29,6 +27,8 @@
 </div>
 
 @code {
+
   [Parameter]
   public NetworkUserCalculationModel Model { get; set; } = default!;
+
 }

@@ -13,6 +13,10 @@ namespace Ozds.Data.Extensions;
 
 public static class DataDbContextDapperConnectionExtensions
 {
+  private static readonly SemaphoreSlim _lock = new(1, 1);
+
+  private static bool _isRegistered;
+
   public static DbConnection GetDapperDbConnection(this DbContext context)
   {
     _lock.Wait();
@@ -62,10 +66,10 @@ public static class DataDbContextDapperConnectionExtensions
     {
       var listType = typeof(List<>).MakeGenericType(type);
       var handler = typeof(GenericListTypeHandler<>)
-        .MakeGenericType(type)
-        .GetConstructor(Array.Empty<Type>())
-        ?.Invoke(Array.Empty<object>())
-        as ITypeHandler
+            .MakeGenericType(type)
+            .GetConstructor(Array.Empty<Type>())
+            ?.Invoke(Array.Empty<object>())
+          as ITypeHandler
         ?? throw new InvalidOperationException(
           $"Handler construction failed for {listType}.");
       AddTypeHandler(listType, handler);
@@ -74,6 +78,22 @@ public static class DataDbContextDapperConnectionExtensions
     _lock.Release();
 
     return context.Database.GetDbConnection();
+  }
+
+  private static IProperty? GetMappedProperty(
+    DbContext context,
+    Type entityType,
+    string columnName
+  )
+  {
+    var entityTypeModel = context.Model.FindEntityType(entityType);
+    var property = entityTypeModel
+      ?.GetProperties()
+      .FirstOrDefault(
+        property => property
+          .GetColumnName()
+          .Equals(columnName, StringComparison.OrdinalIgnoreCase));
+    return property;
   }
 
   private sealed class GenericListTypeHandler<T> : TypeHandler<List<T>>
@@ -89,13 +109,9 @@ public static class DataDbContextDapperConnectionExtensions
     }
   }
 
-  private static readonly SemaphoreSlim _lock = new(1, 1);
-
-  private static bool _isRegistered = false;
-
   private sealed class CustomPropertyOrFieldTypeMap(
-      Type type,
-      Func<Type, string, MemberInfo?> selector) : ITypeMap
+    Type type,
+    Func<Type, string, MemberInfo?> selector) : ITypeMap
   {
     public ConstructorInfo? FindConstructor(string[] names, Type[] types)
     {
@@ -107,7 +123,9 @@ public static class DataDbContextDapperConnectionExtensions
       return null;
     }
 
-    public IMemberMap GetConstructorParameter(ConstructorInfo constructor, string columnName)
+    public IMemberMap GetConstructorParameter(
+      ConstructorInfo constructor,
+      string columnName)
     {
       throw new NotSupportedException();
     }
@@ -127,6 +145,20 @@ public static class DataDbContextDapperConnectionExtensions
 
   private sealed class SimpleMemberMap : IMemberMap
   {
+    public SimpleMemberMap(string columnName, PropertyInfo property)
+    {
+      ColumnName = columnName
+        ?? throw new ArgumentNullException(nameof(columnName));
+      Property = property ?? throw new ArgumentNullException(nameof(property));
+    }
+
+    public SimpleMemberMap(string columnName, FieldInfo field)
+    {
+      ColumnName = columnName
+        ?? throw new ArgumentNullException(nameof(columnName));
+      Field = field ?? throw new ArgumentNullException(nameof(field));
+    }
+
     public string ColumnName { get; }
 
     public Type MemberType
@@ -139,7 +171,7 @@ public static class DataDbContextDapperConnectionExtensions
           obj = Property?.PropertyType;
           if (obj == null)
           {
-            ParameterInfo? parameter = Parameter;
+            var parameter = Parameter;
             if (parameter == null)
             {
               return default!;
@@ -158,32 +190,5 @@ public static class DataDbContextDapperConnectionExtensions
     public FieldInfo? Field { get; }
 
     public ParameterInfo? Parameter { get; }
-
-    public SimpleMemberMap(string columnName, PropertyInfo property)
-    {
-      ColumnName = columnName ?? throw new ArgumentNullException(nameof(columnName));
-      Property = property ?? throw new ArgumentNullException(nameof(property));
-    }
-
-    public SimpleMemberMap(string columnName, FieldInfo field)
-    {
-      ColumnName = columnName ?? throw new ArgumentNullException(nameof(columnName));
-      Field = field ?? throw new ArgumentNullException(nameof(field));
-    }
-  }
-
-  private static IProperty? GetMappedProperty(
-    DbContext context,
-    Type entityType,
-    string columnName
-  )
-  {
-    var entityTypeModel = context.Model.FindEntityType(entityType);
-    var property = entityTypeModel
-      ?.GetProperties()
-      .FirstOrDefault(property => property
-        .GetColumnName()
-        .Equals(columnName, StringComparison.OrdinalIgnoreCase));
-    return property;
   }
 }

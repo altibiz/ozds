@@ -11,29 +11,29 @@ namespace Ozds.Client.Components.Charts;
 
 public partial class FinancialDonutChart : OzdsComponentBase
 {
-  [Parameter]
-  public FinancialChartParameters Parameters { get; set; } = default!;
-
-  [CascadingParameter]
-  public Breakpoint Breakpoint { get; set; } = default!;
-
-  [CascadingParameter]
-  public ThemeState ThemeState { get; set; } = default!;
-
   private readonly string _id = Guid.NewGuid().ToString();
 
-  private ApexChart<IFinancial>? _chart = default!;
+  private ApexChart<IFinancial>? _chart;
 
   private ApexChartOptions<IFinancial> _options =
     new ApexChartOptions<IFinancial>()
       .WithFixedScriptPath();
+
+  [Parameter]
+  public FinancialChartParameters Parameters { get; set; } = default!;
+
+  [CascadingParameter]
+  public Breakpoint Breakpoint { get; set; }
+
+  [CascadingParameter]
+  public ThemeState ThemeState { get; set; } = default!;
 
   protected override async Task OnParametersSetAsync()
   {
     _options = CreateGraphOptions();
     if (_chart is { } chart)
     {
-      await chart.UpdateSeriesAsync(animate: true);
+      await chart.UpdateSeriesAsync(true);
       await chart.UpdateOptionsAsync(false, true, false);
     }
   }

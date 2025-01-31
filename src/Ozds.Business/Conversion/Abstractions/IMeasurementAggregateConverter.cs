@@ -11,5 +11,7 @@ public interface IMeasurementAggregateConverter
 
   public bool CanConvertToAggregate(Type measurement);
 
-  public IAggregate ToAggregate(IMeasurement measurement, IntervalModel interval);
+  public IAggregate ToAggregate(
+    IMeasurement measurement,
+    IntervalModel interval);
 }

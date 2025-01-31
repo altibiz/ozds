@@ -11,7 +11,11 @@ public partial class DataDbContext : DbContext
 
   public DbSet<LocationEntity> Locations { get; set; } = default!;
 
-  public DbSet<LocationRepresentativeEntity> LocationRepresentatives { get; set; } = default!;
+  public DbSet<LocationRepresentativeEntity> LocationRepresentatives
+  {
+    get;
+    set;
+  } = default!;
 
   public DbSet<NetworkUserCatalogueEntity> NetworkUserCatalogues { get; set; } =
     default!;
@@ -21,7 +25,11 @@ public partial class DataDbContext : DbContext
 
   public DbSet<NetworkUserEntity> NetworkUsers { get; set; } = default!;
 
-  public DbSet<NetworkUserRepresentativeEntity> NetworkUserRepresentatives { get; set; } = default!;
+  public DbSet<NetworkUserRepresentativeEntity> NetworkUserRepresentatives
+  {
+    get;
+    set;
+  } = default!;
 
   public DbSet<MeasurementLocationEntity> MeasurementLocations { get; set; } =
     default!;
@@ -66,6 +74,5 @@ public partial class DataDbContext : DbContext
   public DbSet<NotificationEntity> Notifications { get; set; } = default!;
 
   public DbSet<NotificationRecipientEntity>
-    NotificationRecipients
-  { get; set; } = default!;
+    NotificationRecipients { get; set; } = default!;
 }

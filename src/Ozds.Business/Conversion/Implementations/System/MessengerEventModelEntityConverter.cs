@@ -9,10 +9,10 @@ namespace Ozds.Business.Conversion.Implementations.System;
 public class MessengerEventModelEntityConverter(
   IServiceProvider serviceProvider
 ) : InheritingModelEntityConverter<
-      MessengerEventModel,
-      EventModel,
-      MessengerEventEntity,
-      EventEntity>(serviceProvider)
+  MessengerEventModel,
+  EventModel,
+  MessengerEventEntity,
+  EventEntity>(serviceProvider)
 {
   public override void InitializeEntity(
     MessengerEventModel model,

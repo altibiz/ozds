@@ -4,26 +4,40 @@ namespace Ozds.Client.Components.Models.Base;
 
 public abstract partial class ModelComponent : ComponentBase
 {
-  [Parameter]
-  public bool Isolate { get; set; } = false;
-
-  protected virtual Type ModelType =>
-    modelType ??= CreateModelType();
+  private Type? componentType;
 
   private Type? modelType;
 
-  protected abstract Type CreateModelType();
+  private Dictionary<string, object>? parameters;
+
+  [Parameter]
+  public bool Isolate { get; set; }
+
+  protected virtual Type ModelType
+  {
+    get { return modelType ??= CreateModelType(); }
+  }
 
   protected abstract ModelComponentKind ComponentKind { get; }
 
-  protected Dictionary<string, object> Parameters =>
-    parameters ??= CreateFixedParameters();
+  protected Dictionary<string, object> Parameters
+  {
+    get { return parameters ??= CreateFixedParameters(); }
+  }
 
-  private Dictionary<string, object>? parameters;
+  [Inject]
+  protected ModelComponentProvider Provider { get; set; } = default!;
+
+  private Type ComponentType
+  {
+    get { return componentType ??= CreateComponentType(); }
+  }
+
+  protected abstract Type CreateModelType();
 
   protected virtual Dictionary<string, object> CreateParameters()
   {
-    return new();
+    return new Dictionary<string, object>();
   }
 
   private Dictionary<string, object> CreateFixedParameters()
@@ -35,14 +49,6 @@ public abstract partial class ModelComponent : ComponentBase
     return fixedParameters;
   }
 
-  [Inject]
-  protected ModelComponentProvider Provider { get; set; } = default!;
-
-  private Type ComponentType =>
-    componentType ??= CreateComponentType();
-
-  private Type? componentType;
-
   protected virtual Type CreateComponentType()
   {
     return Provider.GetComponentType(ModelType, ComponentKind);
@@ -52,17 +58,17 @@ public abstract partial class ModelComponent : ComponentBase
   {
     base.OnParametersSet();
 
-    if (componentType is { })
+    if (componentType is not null)
     {
       componentType = CreateComponentType();
     }
 
-    if (parameters is { })
+    if (parameters is not null)
     {
       parameters = CreateFixedParameters();
     }
 
-    if (modelType is { })
+    if (modelType is not null)
     {
       modelType = CreateModelType();
     }

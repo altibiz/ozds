@@ -9,10 +9,10 @@ namespace Ozds.Business.Conversion.Implementations.Finances;
 public class NetworkUserInvoiceStateEntityConverter(
   IServiceProvider serviceProvider
 ) : InheritingModelEntityConverter<
-      NetworkUserInvoiceStateModel,
-      StateModel,
-      NetworkUserInvoiceStateEntity,
-      StateEntity>(serviceProvider)
+  NetworkUserInvoiceStateModel,
+  StateModel,
+  NetworkUserInvoiceStateEntity,
+  StateEntity>(serviceProvider)
 {
   public override void InitializeEntity(
     NetworkUserInvoiceStateModel model,

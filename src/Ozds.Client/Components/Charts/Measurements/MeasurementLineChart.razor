@@ -1,15 +1,10 @@
+@namespace Ozds.Client.Components.Charts
+
 @using ApexCharts
-@using MudBlazor
 @using Ozds.Business.Models
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Business.Models.Enums
-@using Ozds.Client.Components.Fields
-@using Ozds.Client.Components.Base
-@using Ozds.Client.Components.Streaming
-
-@namespace Ozds.Client.Components.Charts
-
-@inherits OzdsComponentBase
+@inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 @* TODO: operators - this is how it should be for last *@
 
@@ -20,28 +15,31 @@
   @ref="@_chart">
   @foreach (var (meter, measurementLocation, i) in Parameters.Meters
     .OrderBy(x => x.Id)
-    .Select((x, i) => ((IMeter?)x,(IMeasurementLocation?)null, i))
-    .Concat(Parameters.MeasurementLocations
-      .OrderBy(x => x.Id)
-      .Select((x, i) => ((IMeter?)null, (IMeasurementLocation?)x, i))))
+    .Select((x, i) => ((IMeter?)x, (IMeasurementLocation?)null, i))
+    .Concat(
+      Parameters.MeasurementLocations
+        .OrderBy(x => x.Id)
+        .Select((x, i) => ((IMeter?)null, (IMeasurementLocation?)x, i))))
   {
     if (Parameters.Phases.Count == 0)
     {
-      @(Series(
+      @(
+      Series(
         PhaseModel.L1.ToColor(i),
-        meter: meter,
-        measurementLocation: measurementLocation
+        meter,
+        measurementLocation
       ))
     }
     else
     {
       foreach (var phase in Parameters.Phases.OrderBy(x => x))
       {
-        @(Series(
+        @(
+        Series(
           phase.ToColor(i),
-          meter: meter,
-          measurementLocation: measurementLocation,
-          phase: phase
+          meter,
+          measurementLocation,
+          phase
         ))
       }
     }
@@ -57,28 +55,31 @@
     @ref="@_brushChart">
     @foreach (var (meter, measurementLocation, i) in Parameters.Meters
       .OrderBy(x => x.Id)
-      .Select((x, i) => ((IMeter?)x,(IMeasurementLocation?)null, i))
-      .Concat(Parameters.MeasurementLocations
-        .OrderBy(x => x.Id)
-        .Select((x, i) => ((IMeter?)null, (IMeasurementLocation?)x, i))))
+      .Select((x, i) => ((IMeter?)x, (IMeasurementLocation?)null, i))
+      .Concat(
+        Parameters.MeasurementLocations
+          .OrderBy(x => x.Id)
+          .Select((x, i) => ((IMeter?)null, (IMeasurementLocation?)x, i))))
     {
       if (Parameters.Phases.Count == 0)
       {
-        @(Series(
+        @(
+        Series(
           PhaseModel.L1.ToColor(i),
-          meter: meter,
-          measurementLocation: measurementLocation
+          meter,
+          measurementLocation
         ))
       }
       else
       {
         foreach (var phase in Parameters.Phases.OrderBy(x => x))
         {
-          @(Series(
+          @(
+          Series(
             phase.ToColor(i),
-            meter: meter,
-            measurementLocation: measurementLocation,
-            phase: phase
+            meter,
+            measurementLocation,
+            phase
           ))
         }
       }
@@ -87,6 +88,7 @@
 }
 
 @code {
+
   private RenderFragment Series(
     string color,
     IMeter? meter = null,
@@ -96,13 +98,14 @@
   {
     var measurements = meter is { } measurementMeter
       ? Parameters.Measurements.Items
-          .Where(x => x.MeterId == measurementMeter.Id)
-          .ToList()
+        .Where(x => x.MeterId == measurementMeter.Id)
+        .ToList()
       : measurementLocation is { } measurementMeasurementLocation
         ? Parameters.Measurements.Items
-            .Where(x =>
+          .Where(
+            x =>
               x.MeasurementLocationId == measurementMeasurementLocation?.Id)
-            .ToList()
+          .ToList()
         : new List<IMeasurement>();
     var phaseName = phase is { } selectedPhase
       ? selectedPhase.ToTitle()
@@ -114,16 +117,13 @@
         : "";
 
     return @<ApexPointSeries
-      Items="@measurements"
-      Name="@name"
-      SeriesType="@(Area ? SeriesType.Area : SeriesType.Line)"
-      XValue="@(x => DateTimeApplyOffset(x.Timestamp))"
-      YValue="@(x => x.ChartValue(Parameters.Measure, phase: phase))"
-      Stroke="@(new SeriesStroke
-      {
-        Color = color,
-        Width = 4
-      })"
-      Color="@color"/>;
+              Items="@measurements"
+              Name="@name"
+              SeriesType="@(Area ? SeriesType.Area : SeriesType.Line)"
+              XValue="@(x => DateTimeApplyOffset(x.Timestamp))"
+              YValue="@(x => x.ChartValue(Parameters.Measure, phase: phase))"
+              Stroke="@(new SeriesStroke { Color = color, Width = 4 })"
+              Color="@color"/>;
   }
+
 }

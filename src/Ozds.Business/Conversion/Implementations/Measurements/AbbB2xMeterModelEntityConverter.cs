@@ -8,9 +8,9 @@ namespace Ozds.Business.Conversion.Implementations.Measurements;
 
 public class AbbB2xMeterModelEntityConverter(IServiceProvider serviceProvider)
   : InheritingModelEntityConverter<
-      AbbB2xMeterModel,
-      MeterModel,
-      AbbB2xMeterEntity,
-      MeterEntity>(serviceProvider)
+    AbbB2xMeterModel,
+    MeterModel,
+    AbbB2xMeterEntity,
+    MeterEntity>(serviceProvider)
 {
 }

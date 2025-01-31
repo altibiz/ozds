@@ -10,16 +10,10 @@ namespace Ozds.Data.Entities.Base;
 public class EventEntity : IdentifiableEntity, IEventEntity, IDisposable
 #pragma warning restore S3881 // "IDisposable" should be implemented correctly
 {
-  public DateTimeOffset Timestamp { get; set; }
-
-  public LevelEntity Level { get; set; }
-
-  public JsonDocument Content { get; set; } = default!;
-
   public virtual ICollection<NotificationEntity> Notifications { get; set; } =
     default!;
 
-  public List<CategoryEntity> Categories { get; set; } = default!;
+  public string Kind { get; set; } = default!;
 
 #pragma warning disable CA1816 // Dispose methods should call SuppressFinalize
   public void Dispose()
@@ -28,7 +22,13 @@ public class EventEntity : IdentifiableEntity, IEventEntity, IDisposable
     Content?.Dispose();
   }
 
-  public string Kind { get; set; } = default!;
+  public DateTimeOffset Timestamp { get; set; }
+
+  public LevelEntity Level { get; set; }
+
+  public JsonDocument Content { get; set; } = default!;
+
+  public List<CategoryEntity> Categories { get; set; } = default!;
 }
 
 public class

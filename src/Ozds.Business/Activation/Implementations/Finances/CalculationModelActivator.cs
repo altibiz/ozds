@@ -6,8 +6,8 @@ namespace Ozds.Business.Activation.Implementations.Finances;
 
 public class CalculationModelActivator(IServiceProvider serviceProvider)
   : InheritingModelActivator<CalculationModel, IdentifiableModel>(
-      serviceProvider
-    )
+    serviceProvider
+  )
 {
   public override void Initialize(CalculationModel model)
   {

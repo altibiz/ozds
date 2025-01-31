@@ -29,7 +29,7 @@ public class CalculatedInvoiceQueries(
       return null;
     }
 
-    return new CalculatedNetworkUserInvoiceEntity()
+    return new CalculatedNetworkUserInvoiceEntity
     {
       Calculations = invoice.NetworkUserCalculations.ToList(),
       Invoice = invoice
