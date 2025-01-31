@@ -14,6 +14,9 @@ public class EntityChangesPublishingInterceptor(
   private readonly ConditionalWeakTable<DbContext, List<EntityChangesEntry>>
     _contextEntries = new();
 
+  private readonly ConditionalWeakTable<DbContext, List<EntityChangesEntry>>
+    _contextAsyncEntries = new();
+
   public override int Order
   {
     get { return 0; }
@@ -30,7 +33,7 @@ public class EntityChangesPublishingInterceptor(
     }
 
     var entries = ProcessSavingChanges(context);
-    _contextEntries.Add(context, entries);
+    _contextEntries.AddOrUpdate(context, entries);
     PublishEntitiesChanging(entries);
 
     return base.SavingChanges(eventData, result);
@@ -49,7 +52,7 @@ public class EntityChangesPublishingInterceptor(
     }
 
     var entries = ProcessSavingChanges(context);
-    _contextEntries.Add(context, entries);
+    _contextAsyncEntries.AddOrUpdate(context, entries);
     PublishEntitiesChanging(entries);
 
     return await base.SavingChangesAsync(eventData, result, cancellationToken);
@@ -86,10 +89,10 @@ public class EntityChangesPublishingInterceptor(
       return await base.SavedChangesAsync(eventData, result, cancellationToken);
     }
 
-    if (_contextEntries.TryGetValue(context, out var entries))
+    if (_contextAsyncEntries.TryGetValue(context, out var entries))
     {
       PublishEntitiesChanged(entries);
-      _contextEntries.Remove(context);
+      _contextAsyncEntries.Remove(context);
     }
 
     return await base.SavedChangesAsync(eventData, result, cancellationToken);
