@@ -6,7 +6,6 @@ using Ozds.Business.Conversion;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Enums;
-using Ozds.Business.Models.Joins;
 using Ozds.Business.Observers.Abstractions;
 using Ozds.Business.Observers.EventArgs;
 using Ozds.Business.Queries;
@@ -63,14 +62,6 @@ public class JobsMessengerJobHandler(
       .OrderByDescending(x => x.Timestamp)
       .FirstOrDefaultAsync(cancellationToken);
 
-    var recipients = (await context.Representatives
-        .Where(
-          x => x.Topics.Contains(TopicEntity.All)
-            || x.Topics.Contains(TopicEntity.Messenger)
-            || x.Topics.Contains(TopicEntity.MessengerInactivity))
-        .ToListAsync(cancellationToken))
-      .Select(x => converter.ToModel<RepresentativeModel>(x));
-
     var notification = activator.Activate<MessengerNotificationModel>();
     notification.MessengerId = messenger.Id;
     notification.Topics =
@@ -113,14 +104,5 @@ public class JobsMessengerJobHandler(
     context.Add(notificationEntity);
     await context.SaveChangesAsync(cancellationToken);
     notification.Id = notificationEntity.Id;
-
-    var notificationRecipients = recipients.Select(
-      recipient => new NotificationRecipientModel
-      {
-        NotificationId = notification.Id,
-        RepresentativeId = recipient.Id
-      });
-    context.AddRange(notificationRecipients.Select(converter.ToEntity));
-    await context.SaveChangesAsync(cancellationToken);
   }
 }
