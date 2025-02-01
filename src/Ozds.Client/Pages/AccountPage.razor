@@ -25,13 +25,15 @@ RoleModel.NetworkUserRepresentative
 
 @if (RepresentativeState is { } representativeState)
 {
-  <Details Model="@representativeState.Representative" />
+  <Details Model="@representativeState.Representative"/>
 }
 
 @code {
+
   [CascadingParameter]
   public UserState UserState { get; set; } = default!;
 
   [CascadingParameter]
-  public RepresentativeState? RepresentativeState { get; set; } = default!;
+  public RepresentativeState? RepresentativeState { get; set; }
+
 }

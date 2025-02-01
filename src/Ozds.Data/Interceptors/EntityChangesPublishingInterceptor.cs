@@ -12,10 +12,10 @@ public class EntityChangesPublishingInterceptor(
   : ServedSaveChangesInterceptor(serviceProvider)
 {
   private readonly ConditionalWeakTable<DbContext, List<EntityChangesEntry>>
-    _contextEntries = new();
+    _contextAsyncEntries = new();
 
   private readonly ConditionalWeakTable<DbContext, List<EntityChangesEntry>>
-    _contextAsyncEntries = new();
+    _contextEntries = new();
 
   public override int Order
   {

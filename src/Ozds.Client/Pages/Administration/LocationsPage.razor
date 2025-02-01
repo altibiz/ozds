@@ -14,7 +14,6 @@ RoleModel.LocationRepresentative
 @using Microsoft.AspNetCore.Components.Web
 @using MudBlazor
 @using Ozds.Client.Attributes
-@using Ozds.Client.Components.Models
 @using Ozds.Client.Components.Streaming
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
@@ -38,7 +37,7 @@ RoleModel.LocationRepresentative
     @bind-Value="_deleted"/>
 }
 
-<Paging PageAsync="OnPageAsync" Deleted="_deleted" />
+<Paging PageAsync="OnPageAsync" Deleted="_deleted"/>
 
 @if (RepresentativeState.Representative.Role
   == RoleModel.OperatorRepresentative)

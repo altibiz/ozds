@@ -79,7 +79,7 @@ public partial class Paging<T> : OzdsComponentBase
               _pageNumber,
               CancellationToken,
               PageCount,
-              deleted: Deleted)
+              Deleted)
             .ContinueWith(
               x => x.IsCanceled
                 ? new PaginatedList<T>(new List<T>(), 0)

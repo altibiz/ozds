@@ -15,8 +15,8 @@ RoleModel.NetworkUserRepresentative
 @using Microsoft.AspNetCore.Components.Web
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Client.Attributes
-@using Ozds.Client.State
 @using Ozds.Client.Components.Tables
+@using Ozds.Client.State
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 <HeadContent>
@@ -30,9 +30,11 @@ RoleModel.NetworkUserRepresentative
     .ToList();
 }
 
-<ResponsiveTable Model="calculations" />
+<ResponsiveTable Model="calculations"/>
 
 @code {
+
   [CascadingParameter]
   public AnalysisState AnalysisState { get; set; } = default!;
+
 }

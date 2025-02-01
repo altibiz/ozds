@@ -55,7 +55,7 @@
           @Details(new MutatingState<T>(model, false))
           @if (model is not IReadonly
             && RepresentativeState.Representative.Role
-              == RoleModel.OperatorRepresentative)
+            == RoleModel.OperatorRepresentative)
           {
             <div Class="d-flex flex-row mt-4">
               <MudButton
@@ -64,7 +64,7 @@
                 Color="Color.Warning">
                 @Translate("Edit")
               </MudButton>
-              <MudSpacer />
+              <MudSpacer/>
               @if (model is IAuditable auditable)
               {
                 if (auditable.IsDeleted)
@@ -85,6 +85,7 @@
                     @Translate("Delete")
                   </MudButton>
                 }
+
                 <MudButton
                   Variant="Variant.Outlined"
                   Class="ml-2"

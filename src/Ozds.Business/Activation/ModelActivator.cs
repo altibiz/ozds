@@ -5,7 +5,8 @@ namespace Ozds.Business.Activation;
 
 public class ModelActivator(IServiceProvider serviceProvider)
 {
-  private readonly ConcurrentDictionary<Type, IModelActivator> activatorCache = new();
+  private readonly ConcurrentDictionary<Type, IModelActivator> activatorCache =
+    new();
 
   private readonly ConcurrentDictionary<Type, List<Type>> subtypeCache = new();
 
@@ -50,11 +51,12 @@ public class ModelActivator(IServiceProvider serviceProvider)
 
     subtypes = serviceProvider
       .GetServices<IModelActivator>()
-      .Where(converter =>
-        !converter.ModelType.IsAbstract
-        && !converter.ModelType.IsInterface
-        && converter.ModelType.IsAssignableTo(type)
-        && converter.CanActivate(type))
+      .Where(
+        converter =>
+          !converter.ModelType.IsAbstract
+          && !converter.ModelType.IsInterface
+          && converter.ModelType.IsAssignableTo(type)
+          && converter.CanActivate(type))
       .Select(converter => converter.ModelType)
       .ToList();
 

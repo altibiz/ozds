@@ -23,9 +23,9 @@
 
     <ResponsiveTableCollapse>
       <Summary>
-        @if(Summary is null)
+        @if (Summary is null)
         {
-          <Summary Model="item" />
+          <Summary Model="item"/>
         }
         else
         {
@@ -35,7 +35,7 @@
       <Details>
         @if (Details is null)
         {
-          <Details Model="item" />
+          <Details Model="item"/>
         }
         else
         {
@@ -67,7 +67,7 @@
     <Columns>
       @if (Columns is null)
       {
-        <Columns TPrefix="T" Models="@Model" />
+        <Columns TPrefix="T" Models="@Model"/>
       }
       else
       {

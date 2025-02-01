@@ -1,4 +1,3 @@
-@using MudBlazor
 @namespace Ozds.Client.Pages
 
 @page "/measurements/measurement-locations"
@@ -14,12 +13,12 @@ RoleModel.LocationRepresentative,
 RoleModel.NetworkUserRepresentative
 ])]
 @using Microsoft.AspNetCore.Components.Web
+@using MudBlazor
 @using Ozds.Business.Analysis
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Client.Attributes
-@using Ozds.Client.Components.Models
-@using Ozds.Client.Components.Tables
 @using Ozds.Client.Components.Streaming
+@using Ozds.Client.Components.Tables
 @using Ozds.Client.State
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
@@ -42,11 +41,11 @@ RoleModel.NetworkUserRepresentative
 
 @if (_deleted)
 {
-  <Paging T="IMeasurementLocation" Deleted="@_deleted" />
+  <Paging T="IMeasurementLocation" Deleted="@_deleted"/>
 }
 else
 {
-  <ResponsiveTable Model="@analyses" />
+  <ResponsiveTable Model="@analyses"/>
 }
 
 
@@ -66,5 +65,5 @@ else
   [CascadingParameter]
   private RepresentativeState RepresentativeState { get; set; } = default!;
 
-  private bool _deleted = false;
+  private bool _deleted;
 }

@@ -11,9 +11,8 @@ namespace Ozds.Client.Components.Streaming;
 public partial class Loading<T> : OzdsComponentBase
   where T : notnull
 {
-  private LoadingState<T> _state = new();
-
   private Type? _activationType = default!;
+  private LoadingState<T> _state = new();
 
   [Parameter]
   public T? Value { get; set; }
@@ -56,6 +55,16 @@ public partial class Loading<T> : OzdsComponentBase
 
   [Parameter]
   public RenderFragment<T>? Created { get; set; }
+
+  private List<Type> ActivatableSubtypes
+  {
+    get
+    {
+      return ScopedServices
+        .GetRequiredService<ModelActivator>()
+        .ActivatableSubtypes(typeof(T));
+    }
+  }
 
   public void Initialize(
     bool reset = false,
@@ -318,11 +327,6 @@ public partial class Loading<T> : OzdsComponentBase
       }
     }
   }
-
-  private List<Type> ActivatableSubtypes =>
-    ScopedServices
-      .GetRequiredService<ModelActivator>()
-      .ActivatableSubtypes(typeof(T));
 
   protected override void OnInitialized()
   {

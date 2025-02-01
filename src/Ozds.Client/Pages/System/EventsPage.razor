@@ -8,17 +8,11 @@ Icon = Icons.Material.Filled.VerifiedUser,
 Parent = typeof(SystemPage),
 Allows = [RoleModel.OperatorRepresentative])]
 @using Microsoft.AspNetCore.Components.Web
-@using Microsoft.Extensions.DependencyInjection
 @using Microsoft.Extensions.Hosting
 @using MudBlazor
-@using Ozds.Business.Models.Abstractions
 @using Ozds.Business.Models.Enums
-@using Ozds.Business.Queries
 @using Ozds.Client.Attributes
-@using Ozds.Client.Components.Models
 @using Ozds.Client.Components.Streaming
-@using Ozds.Client.Components.Tables
-@using Ozds.Client.State
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 @inject IHostEnvironment Environment
@@ -51,4 +45,4 @@ Allows = [RoleModel.OperatorRepresentative])]
   }
 </MudSelect>
 
-<Paging PageAsync="@OnPageAsync" />
+<Paging PageAsync="@OnPageAsync"/>

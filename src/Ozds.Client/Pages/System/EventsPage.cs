@@ -11,10 +11,10 @@ namespace Ozds.Client.Pages;
 
 public partial class EventsPage : OzdsComponentBase
 {
+  private LevelModel _minLevel = LevelModel.Warning;
+
   [CascadingParameter]
   public RepresentativeState RepresentativeState { get; set; } = default!;
-
-  private LevelModel _minLevel = LevelModel.Warning;
 
   private async Task<PaginatedList<IEvent>> OnPageAsync(int page)
   {

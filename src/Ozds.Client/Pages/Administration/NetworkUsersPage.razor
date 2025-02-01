@@ -17,9 +17,8 @@ RoleModel.NetworkUserRepresentative
 @using Ozds.Business.Analysis
 @using Ozds.Business.Models
 @using Ozds.Client.Attributes
-@using Ozds.Client.Components.Models
-@using Ozds.Client.Components.Tables
 @using Ozds.Client.Components.Streaming
+@using Ozds.Client.Components.Tables
 @using Ozds.Client.State
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
@@ -42,11 +41,11 @@ RoleModel.NetworkUserRepresentative
 
 @if (_deleted)
 {
-  <Paging T="NetworkUserModel" Deleted="@_deleted" />
+  <Paging T="NetworkUserModel" Deleted="@_deleted"/>
 }
 else
 {
-  <ResponsiveTable Model="@analyses" />
+  <ResponsiveTable Model="@analyses"/>
 }
 
 @if (RepresentativeState.Representative.Role
@@ -65,5 +64,5 @@ else
   [CascadingParameter]
   private RepresentativeState RepresentativeState { get; set; } = default!;
 
-  private bool _deleted = false;
+  private bool _deleted;
 }
