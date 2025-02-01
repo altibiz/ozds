@@ -1,0 +1,31 @@
+@using MudBlazor
+@namespace Ozds.Client.Components.Tables
+
+<MudGrid Justify="Justify.SpaceBetween" Spacing="0" Class="mt-4">
+  <MudItem xs="11">
+    <MudText Typo="Typo.body1">
+      @Summary
+    </MudText>
+  </MudItem>
+  <MudItem>
+    <MudIconButton
+      Icon="@(_expanded ? Icons.Material.Filled.KeyboardArrowUp : Icons.Material.Filled.KeyboardArrowDown)"
+      OnClick="@(() => _expanded = !_expanded)"/>
+  </MudItem>
+  <MudItem xs="12">
+    <MudCollapse Expanded="@_expanded">
+      @Details
+    </MudCollapse>
+  </MudItem>
+</MudGrid>
+
+@code {
+
+  [Parameter]
+  public RenderFragment Summary { get; set; } = default!;
+
+  [Parameter]
+  public RenderFragment Details { get; set; } = default!;
+
+  private bool _expanded = false;
+}
