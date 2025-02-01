@@ -129,6 +129,7 @@ words:
   - "lbrack"
   - "rbrack"
   - "dowhile"
+  - "activatable"
 
   # Croatian
   - "altibiz"

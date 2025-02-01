@@ -55,7 +55,7 @@
         T="Type"
         Value="@_activationType"
         ValueChanged="@Reactivate">
-        @foreach (var type in ConcreteTypes)
+        @foreach (var type in ActivatableSubtypes)
         {
           <MudSelectItem Value="@type">
             <MudText>

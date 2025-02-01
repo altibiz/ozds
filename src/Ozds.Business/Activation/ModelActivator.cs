@@ -5,7 +5,9 @@ namespace Ozds.Business.Activation;
 
 public class ModelActivator(IServiceProvider serviceProvider)
 {
-  private readonly ConcurrentDictionary<Type, IModelActivator> cache = new();
+  private readonly ConcurrentDictionary<Type, IModelActivator> activatorCache = new();
+
+  private readonly ConcurrentDictionary<Type, List<Type>> subtypeCache = new();
 
   public T Activate<T>()
     where T : notnull
@@ -15,7 +17,7 @@ public class ModelActivator(IServiceProvider serviceProvider)
 
   public object ActivateDynamic(Type type)
   {
-    if (cache.TryGetValue(type, out var activator))
+    if (activatorCache.TryGetValue(type, out var activator))
     {
       return activator.Activate();
     }
@@ -34,8 +36,27 @@ public class ModelActivator(IServiceProvider serviceProvider)
       ?? throw new InvalidOperationException(
         $"No model activator found for {type}");
 
-    cache.TryAdd(type, activator);
+    activatorCache.TryAdd(type, activator);
 
     return activator.Activate();
+  }
+
+  public List<Type> ActivatableSubtypes(Type type)
+  {
+    if (subtypeCache.TryGetValue(type, out var subtypes))
+    {
+      return subtypes;
+    }
+
+    subtypes = serviceProvider
+      .GetServices<IModelActivator>()
+      .Where(converter => converter.CanActivate(type))
+      .Select(converter => converter.ModelType)
+      .Distinct()
+      .ToList();
+
+    subtypeCache.TryAdd(type, subtypes);
+
+    return subtypes;
   }
 }

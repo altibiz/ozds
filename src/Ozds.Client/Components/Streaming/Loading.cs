@@ -13,7 +13,7 @@ public partial class Loading<T> : OzdsComponentBase
 {
   private LoadingState<T> _state = new();
 
-  private Type _activationType = ConcreteTypes.First();
+  private Type _activationType = default!;
 
   [Parameter]
   public T? Value { get; set; }
@@ -62,6 +62,8 @@ public partial class Loading<T> : OzdsComponentBase
     bool render = false
   )
   {
+    _activationType = ActivatableSubtypes.First();
+
     if (reset)
     {
       _state = _state.WithReset();
@@ -315,6 +317,11 @@ public partial class Loading<T> : OzdsComponentBase
     }
   }
 
+  private List<Type> ActivatableSubtypes =>
+    ScopedServices
+      .GetRequiredService<ModelActivator>()
+      .ActivatableSubtypes(typeof(T));
+
   protected override void OnInitialized()
   {
     Initialize();
@@ -329,13 +336,4 @@ public partial class Loading<T> : OzdsComponentBase
   {
     await ReloadAsync();
   }
-
-  private static readonly List<Type> ConcreteTypes =
-    AppDomain.CurrentDomain.GetAssemblies()
-      .SelectMany(assembly => assembly.GetTypes())
-      .Where(type =>
-        !type.IsAbstract
-        && !type.IsGenericType
-        && type.IsAssignableTo(typeof(T)))
-      .ToList();
 }
