@@ -32,28 +32,19 @@
         @if (_mutating)
         {
           @Edit(new MutatingState<T>(model, false))
-          <div Class="d-flex flex-column mt-4">
-            <div Class="d-flex flex-row">
-              <MudButton
-                Variant="Variant.Filled"
-                Color="Color.Success"
-                ButtonType="ButtonType.Submit">
-                @Translate("Update")
-              </MudButton>
-              <MudButton
-                Variant="Variant.Filled"
-                Color="Color.Secondary"
-                OnClick="@(() => _mutating = !_mutating)"
-                Class="ml-4">
-                @Translate("Preview")
-              </MudButton>
-            </div>
+          <div Class="d-flex flex-row mt-4">
             <MudButton
               Variant="Variant.Filled"
-              Color="Color.Error"
-              OnClick="@(() => OnDelete(model))"
-              Class="mt-8 align-self-start">
-              @Translate("Delete")
+              Color="Color.Success"
+              ButtonType="ButtonType.Submit">
+              @Translate("Update")
+            </MudButton>
+            <MudButton
+              Variant="Variant.Filled"
+              Color="Color.Secondary"
+              OnClick="@(() => _mutating = !_mutating)"
+              Class="ml-4">
+              @Translate("Preview")
             </MudButton>
           </div>
         }
@@ -69,6 +60,23 @@
                 Color="Color.Warning">
                 @Translate("Edit")
               </MudButton>
+              <MudSpacer />
+              @if (model is IAuditable)
+              {
+                <MudButton
+                  Variant="Variant.Filled"
+                  Color="Color.Error"
+                  OnClick="@(() => OnDelete(model))">
+                  @Translate("Delete")
+                </MudButton>
+                <MudButton
+                  Variant="Variant.Outlined"
+                  Class="ml-2"
+                  Color="Color.Error"
+                  OnClick="@(() => OnDelete(model))">
+                  @Translate("Forget")
+                </MudButton>
+              }
             </div>
           }
         }
