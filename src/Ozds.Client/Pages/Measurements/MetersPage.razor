@@ -14,6 +14,7 @@ Allows = [RoleModel.OperatorRepresentative])]
 @using Ozds.Client.Attributes
 @using Ozds.Client.Components.Models
 @using Ozds.Client.Components.Streaming
+@using Ozds.Client.Components.Tables
 @using Ozds.Client.State
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
@@ -29,9 +30,19 @@ Allows = [RoleModel.OperatorRepresentative])]
 </HeadContent>
 
 <Paging T="IMeter">
-  <Summary>
-    <Summary Model="@context"/>
-  </Summary>
+  <Found Context="models">
+    <ResponsiveTable Model="@models.Items">
+      <Summary>
+        <Summary Model="@context"/>
+      </Summary>
+      <Details>
+        <Details Model="@context"/>
+      </Details>
+      <Columns>
+        <Columns Models="@models.Items"/>
+      </Columns>
+    </ResponsiveTable>
+  </Found>
 </Paging>
 
 @if (RepresentativeState.Representative.Role

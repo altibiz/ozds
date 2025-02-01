@@ -43,8 +43,18 @@ RoleModel.NetworkUserRepresentative
   == RoleModel.OperatorRepresentative)
 {
   <Paging PageAsync="OnUserPageAsync">
-    <Summary>
-      <Summary Model="context.User"/>
-    </Summary>
+    <Found Context="models">
+      <ResponsiveTable Model="@models.Items">
+        <Summary>
+          <Summary Model="@context"/>
+        </Summary>
+        <Details>
+          <Details Model="@context"/>
+        </Details>
+        <Columns>
+          <Columns Models="@models.Items"/>
+        </Columns>
+      </ResponsiveTable>
+    </Found>
   </Paging>
 }

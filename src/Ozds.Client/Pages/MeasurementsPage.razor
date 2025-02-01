@@ -63,7 +63,17 @@ RoleModel.NetworkUserRepresentative
 </ResponsiveTable>
 
 <Paging PageAsync="OnMessengersPageAsync">
-  <Summary>
-    <Summary Model="@context"/>
-  </Summary>
+  <Found Context="models">
+    <ResponsiveTable Model="@models.Items">
+      <Summary>
+        <Summary Model="@context"/>
+      </Summary>
+      <Details>
+        <Details Model="@context"/>
+      </Details>
+      <Columns>
+        <Columns Models="@models.Items"/>
+      </Columns>
+    </ResponsiveTable>
+  </Found>
 </Paging>
