@@ -58,6 +58,12 @@ public partial class Mutating<T> : OzdsComponentBase
   public Func<T, Task>? DeleteAsync { get; set; }
 
   [Parameter]
+  public Action<T>? Forget { get; set; }
+
+  [Parameter]
+  public Func<T, Task>? ForgetAsync { get; set; }
+
+  [Parameter]
   public RenderFragment<MutatingState<T>>? Label { get; set; } = default!;
 
   [Parameter]
@@ -209,6 +215,59 @@ public partial class Mutating<T> : OzdsComponentBase
           {
             nameof(MutatingResult.Body),
             $"{Translate("Failed deleting")}"
+            + $" {Translate(typeof(T).Name)} - {ex.Message}"
+          }
+        },
+        new DialogOptions { CloseOnEscapeKey = true });
+      return;
+    }
+
+    await dialogService.ShowAsync<MutatingResult>(
+      Translate("Success"),
+      new DialogParameters
+      {
+        {
+          nameof(MutatingResult.Body),
+          $"{Translate("Successfully deleted")} {Translate(typeof(T).Name)}"
+        }
+      },
+      new DialogOptions { CloseOnEscapeKey = true });
+  }
+
+  private async Task OnForget(T model)
+  {
+    var dialogService = ScopedServices.GetRequiredService<IDialogService>();
+
+    try
+    {
+      if (Delete is not null)
+      {
+        Delete(model);
+      }
+      else if (DeleteAsync is not null)
+      {
+        await DeleteAsync(model);
+      }
+      else if (model?.GetType().IsAssignableTo(typeof(IAuditable)) ?? false)
+      {
+        var mutations = ScopedServices.GetRequiredService<AuditableMutations>();
+        await mutations.Forget((model as IAuditable)!, CancellationToken);
+      }
+      else
+      {
+        throw new InvalidOperationException(
+          $"No forget strategy found for {typeof(T).Name}");
+      }
+    }
+    catch (Exception ex)
+    {
+      await dialogService.ShowAsync<MutatingResult>(
+        Translate("Failure"),
+        new DialogParameters
+        {
+          {
+            nameof(MutatingResult.Body),
+            $"{Translate("Failed forgetting")}"
             + $" {Translate(typeof(T).Name)} - {ex.Message}"
           }
         },
