@@ -75,7 +75,7 @@ public partial class Mutating<T> : OzdsComponentBase
   [Parameter]
   public bool AsReadonly { get; set; } = false;
 
-  [Inject]
+  [CascadingParameter]
   private RepresentativeState RepresentativeState { get; set; } = default!;
 
   private async Task OnCreate(T model)
