@@ -34,7 +34,8 @@ public abstract class ManagedModelComponent<TPrefix, TModel> : ModelComponent
   {
     var prefixFunc = Prefix?.Compile() ?? (x => (TModel?)(object?)x);
     var model = prefixFunc(Model);
-    return model?.GetType() ?? typeof(TModel);
+    var type = model?.GetType() ?? typeof(TModel);
+    return type;
   }
 
   protected override Type CreateComponentType()

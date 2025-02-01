@@ -309,7 +309,7 @@ public partial class Loading<T> : OzdsComponentBase
       {
         var activator = ScopedServices
           .GetRequiredService<ModelActivator>();
-        var created = activator.Activate<T>();
+        var created = (T)activator.ActivateDynamic(_activationType);
         _state = _state.WithCreated(created);
       }
       catch (Exception e)
