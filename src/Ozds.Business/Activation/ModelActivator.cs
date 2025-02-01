@@ -50,7 +50,11 @@ public class ModelActivator(IServiceProvider serviceProvider)
 
     subtypes = serviceProvider
       .GetServices<IModelActivator>()
-      .Where(converter => converter.CanActivate(type))
+      .Where(converter =>
+        !converter.ModelType.IsAbstract
+        && !converter.ModelType.IsInterface
+        && converter.ModelType.IsAssignableTo(type)
+        && converter.CanActivate(type))
       .Select(converter => converter.ModelType)
       .Distinct()
       .ToList();
