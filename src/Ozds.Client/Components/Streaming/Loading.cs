@@ -13,6 +13,8 @@ public partial class Loading<T> : OzdsComponentBase
 {
   private LoadingState<T> _state = new();
 
+  private Type _activationType = ConcreteTypes.First();
+
   [Parameter]
   public T? Value { get; set; }
 
@@ -134,7 +136,7 @@ public partial class Loading<T> : OzdsComponentBase
       {
         var activator = ScopedServices
           .GetRequiredService<ModelActivator>();
-        var created = activator.Activate<T>();
+        var created = (T)activator.ActivateDynamic(_activationType);
         _state = _state.WithCreated(created);
       }
       catch (Exception e)
@@ -247,7 +249,7 @@ public partial class Loading<T> : OzdsComponentBase
       {
         var activator = ScopedServices
           .GetRequiredService<ModelActivator>();
-        var created = activator.Activate<T>();
+        var created = (T)activator.ActivateDynamic(_activationType);
         _state = _state.WithCreated(created);
       }
       catch (Exception e)
@@ -276,4 +278,13 @@ public partial class Loading<T> : OzdsComponentBase
   {
     await ReloadAsync();
   }
+
+  private static readonly List<Type> ConcreteTypes =
+    AppDomain.CurrentDomain.GetAssemblies()
+      .SelectMany(assembly => assembly.GetTypes())
+      .Where(type =>
+        !type.IsAbstract
+        && !type.IsGenericType
+        && type.IsAssignableTo(typeof(T)))
+      .ToList();
 }

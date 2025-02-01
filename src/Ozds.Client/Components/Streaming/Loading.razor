@@ -1,6 +1,7 @@
 @namespace Ozds.Client.Components.Streaming
 
 @typeparam T where T : notnull
+@using MudBlazor
 @using Ozds.Client.State
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
@@ -42,6 +43,20 @@
 
 @if (_state.State is LoadingState.Created)
 {
+  @if (Activate || ActivateAsync)
+  {
+    <MudSelect T="Type" @bind-Value="@_activationType">
+      @foreach (var type in ConcreteTypes)
+      {
+        <MudSelectItem Value="@type">
+          <MudText>
+            @Translate(type.Name)
+          </MudText>
+        </MudSelectItem>
+      }
+    </MudSelect>
+  }
+
   if (Created is not null)
   {
     @Created(_state.Value!)
