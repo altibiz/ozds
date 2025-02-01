@@ -12,13 +12,13 @@ public partial class ResponsiveTable<T> : OzdsComponentBase
   public List<T> Model { get; set; } = default!;
 
   [Parameter]
-  public RenderFragment<T> Summary { get; set; } = default!;
+  public RenderFragment<T>? Summary { get; set; } = default!;
 
   [Parameter]
-  public RenderFragment<T> Details { get; set; } = default!;
+  public RenderFragment<T>? Details { get; set; } = default!;
 
   [Parameter]
-  public RenderFragment Columns { get; set; } = default!;
+  public RenderFragment? Columns { get; set; } = default!;
 
   [Inject]
   private NavigationManager NavigationManager { get; set; } = default!;

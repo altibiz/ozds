@@ -8,6 +8,7 @@ Title = "Users",
 Icon = Icons.Material.Filled.VerifiedUser,
 Parent = typeof(AdministrationPage),
 Allows = [RoleModel.OperatorRepresentative])]
+@using MudBlazor
 @using Microsoft.AspNetCore.Components.Web
 @using Ozds.Client.Attributes
 @using Ozds.Client.Components.Models
@@ -15,22 +16,15 @@ Allows = [RoleModel.OperatorRepresentative])]
 @using Ozds.Client.Components.Tables
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
+@if (RepresentativeState.Representative.Role
+  is not RoleModel.OperatorRepresentative)
+{
+  <NotFound/>
+  return;
+}
+
 <HeadContent>
   <title>OZDS - @Translate("Users")</title>
 </HeadContent>
 
-<Paging PageAsync="OnPageAsync">
-  <Found Context="models">
-    <ResponsiveTable Model="@models.Items">
-      <Summary>
-        <Summary Model="@context"/>
-      </Summary>
-      <Details>
-        <Details Model="@context"/>
-      </Details>
-      <Columns>
-        <Columns Models="@models.Items"/>
-      </Columns>
-    </ResponsiveTable>
-  </Found>
-</Paging>
+<Paging PageAsync="OnPageAsync" />

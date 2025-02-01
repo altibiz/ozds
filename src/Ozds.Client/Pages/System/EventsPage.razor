@@ -51,26 +51,4 @@ Allows = [RoleModel.OperatorRepresentative])]
   }
 </MudSelect>
 
-<Paging PageAsync="@(page => ScopedServices.GetRequiredService<EventQueries>().ReadByMinLevel<IEvent>(_minLevel, page, CancellationToken))">
-  <Found Context="page">
-    <ResponsiveTable Model="@(page.Items)">
-      <Summary>
-        <Summary Model="@context"/>
-      </Summary>
-      <Details>
-        <Details Model="@context"/>
-      </Details>
-      <Columns>
-        <Columns Models="page.Items"/>
-      </Columns>
-    </ResponsiveTable>
-  </Found>
-</Paging>
-
-@code {
-
-  [CascadingParameter]
-  public RepresentativeState RepresentativeState { get; set; } = default!;
-
-  private LevelModel _minLevel = LevelModel.Warning;
-}
+<Paging PageAsync="@OnPageAsync" />

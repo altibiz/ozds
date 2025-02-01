@@ -49,6 +49,9 @@ public partial class Paging<T> : OzdsComponentBase
   [Parameter]
   public Scroll Scroll { get; set; } = Scroll.Paged;
 
+  [Parameter]
+  public bool Deleted { get; set; } = false;
+
   [Inject]
   public IJSRuntime JS { get; set; } = default!;
 
@@ -75,7 +78,8 @@ public partial class Paging<T> : OzdsComponentBase
               typeof(T),
               _pageNumber,
               CancellationToken,
-              PageCount)
+              PageCount,
+              deleted: Deleted)
             .ContinueWith(
               x => x.IsCanceled
                 ? new PaginatedList<T>(new List<T>(), 0)

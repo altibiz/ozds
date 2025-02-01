@@ -53,6 +53,7 @@
     {
       <MudSelect
         T="Type"
+        Label="@Translate("Type")"
         Value="@_activationType"
         ValueChanged="@Reactivate">
         @foreach (var type in ActivatableSubtypes)

@@ -16,7 +16,6 @@ RoleModel.LocationRepresentative
 @using Ozds.Client.Attributes
 @using Ozds.Client.Components.Models
 @using Ozds.Client.Components.Streaming
-@using Ozds.Client.Components.Tables
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 @if (RepresentativeState.Representative.Role
@@ -39,21 +38,7 @@ RoleModel.LocationRepresentative
     @bind-Value="_deleted"/>
 }
 
-<Paging PageAsync="OnPageAsync">
-  <Found Context="models">
-    <ResponsiveTable Model="@models.Items">
-      <Summary>
-        <Summary Model="@context"/>
-      </Summary>
-      <Details>
-        <Details Model="@context"/>
-      </Details>
-      <Columns>
-        <Columns Models="@models.Items"/>
-      </Columns>
-    </ResponsiveTable>
-  </Found>
-</Paging>
+<Paging PageAsync="OnPageAsync" Deleted="_deleted" />
 
 @if (RepresentativeState.Representative.Role
   == RoleModel.OperatorRepresentative)

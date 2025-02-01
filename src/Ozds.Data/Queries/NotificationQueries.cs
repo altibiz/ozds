@@ -104,12 +104,10 @@ public class NotificationQueries(
 
     var queryable = context.Notifications;
 
-    var filtered = context.NotificationRecipients
-      .Where(recipient => recipient.RepresentativeId == representativeId)
-      .Where(
-        seen
-          ? nr => nr.SeenOn != null
-          : nr => nr.SeenOn == null)
+    var initial = context.NotificationRecipients
+      .Where(recipient => recipient.RepresentativeId == representativeId);
+    initial = seen ? initial.Where(nr => nr.SeenOn != null) : initial;
+    var filtered = initial
       .Join(
         queryable,
         context.ForeignKeyOf<NotificationRecipientEntity>(
@@ -148,12 +146,10 @@ public class NotificationQueries(
 
     var queryable = context.Notifications;
 
-    var filtered = context.NotificationRecipients
-      .Where(recipient => recipient.RepresentativeId == representativeId)
-      .Where(
-        seen
-          ? nr => nr.SeenOn != null
-          : nr => nr.SeenOn == null)
+    var initial = context.NotificationRecipients
+      .Where(recipient => recipient.RepresentativeId == representativeId);
+    initial = seen ? initial.Where(nr => nr.SeenOn != null) : initial;
+    var filtered = initial
       .Join(
         queryable,
         context.ForeignKeyOf<NotificationRecipientEntity>(

@@ -2,6 +2,8 @@
 
 @typeparam T where T : notnull
 @using MudBlazor
+@using Ozds.Client.Components.Models
+@using Ozds.Client.Components.Tables
 @using Ozds.Business.Queries.Abstractions
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
@@ -39,12 +41,7 @@
       }
       else
       {
-        foreach (var item in page.Items)
-        {
-          <MudText>
-            <Serialized Value="@item"/>
-          </MudText>
-        }
+        <ResponsiveTable T="T" Value="@(page.Items)" />
       }
 
       if (page.TotalCount != page.Items.Count)

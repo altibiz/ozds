@@ -15,9 +15,11 @@ RoleModel.NetworkUserRepresentative
 ])]
 @using Microsoft.AspNetCore.Components.Web
 @using Ozds.Business.Analysis
+@using Ozds.Business.Models.Abstractions
 @using Ozds.Client.Attributes
 @using Ozds.Client.Components.Models
 @using Ozds.Client.Components.Tables
+@using Ozds.Client.Components.Streaming
 @using Ozds.Client.State
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
@@ -30,17 +32,22 @@ RoleModel.NetworkUserRepresentative
     .AnalysesByMeasurementLocation();
 }
 
-<ResponsiveTable Model="@analyses">
-  <Summary>
-    <Summary Model="@context"/>
-  </Summary>
-  <Details>
-    <Details Model="@context"/>
-  </Details>
-  <Columns>
-    <Columns Models="@analyses"/>
-  </Columns>
-</ResponsiveTable>
+@if (RepresentativeState.Representative.Role
+  == RoleModel.OperatorRepresentative)
+{
+  <MudCheckBox
+    Label="@Translate("Deleted")"
+    @bind-Value="_deleted"/>
+}
+
+@if (_deleted)
+{
+  <Paging T="IMeasurementLocation" Deleted="@_deleted" />
+}
+else
+{
+  <ResponsiveTable Model="@analyses" />
+}
 
 
 @if (RepresentativeState.Representative.Role
@@ -58,4 +65,6 @@ RoleModel.NetworkUserRepresentative
 
   [CascadingParameter]
   private RepresentativeState RepresentativeState { get; set; } = default!;
+
+  private bool _deleted = false;
 }

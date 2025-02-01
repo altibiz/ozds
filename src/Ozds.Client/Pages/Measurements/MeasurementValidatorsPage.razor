@@ -29,21 +29,11 @@ Allows = [RoleModel.OperatorRepresentative])]
   <title>OZDS - @Translate("Measurement validators")</title>
 </HeadContent>
 
-<Paging T="IMeasurementValidator">
-  <Found Context="models">
-    <ResponsiveTable Model="@models.Items">
-      <Summary>
-        <Summary Model="@context"/>
-      </Summary>
-      <Details>
-        <Details Model="@context"/>
-      </Details>
-      <Columns>
-        <Columns Models="@models.Items"/>
-      </Columns>
-    </ResponsiveTable>
-  </Found>
-</Paging>
+<MudCheckBox
+  Label="@Translate("Deleted")"
+  @bind-Value="_deleted"/>
+
+<Paging T="IMeasurementValidator" Deleted="_deleted" />
 
 @if (RepresentativeState.Representative.Role
   == RoleModel.OperatorRepresentative)
@@ -57,4 +47,6 @@ Allows = [RoleModel.OperatorRepresentative])]
 
   [CascadingParameter]
   private RepresentativeState RepresentativeState { get; set; } = default!;
+
+  private bool _deleted = false;
 }

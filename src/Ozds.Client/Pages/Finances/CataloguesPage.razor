@@ -12,36 +12,35 @@ RoleModel.OperatorRepresentative,
 ])]
 @using Microsoft.AspNetCore.Components.Web
 @using MudBlazor
+@using Ozds.Business.Models.Enums
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Client.Attributes
 @using Ozds.Client.Components.Models
 @using Ozds.Client.Components.Streaming
 @using Ozds.Client.Components.Tables
+@using Ozds.Client.State
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
+
+@if (RepresentativeState.Representative.Role
+  is not RoleModel.OperatorRepresentative)
+{
+  <NotFound />
+  return;
+}
 
 <HeadContent>
   <title>OZDS - @Translate("Catalogues")</title>
 </HeadContent>
 
+<MudCheckBox
+  Label="@Translate("Deleted")"
+  @bind-Value="_deleted"/>
+
 <MudText>
   @Translate("Network user catalogues")
 </MudText>
 
-<Paging T="INetworkUserCatalogue">
-  <Found Context="models">
-    <ResponsiveTable Model="@models.Items">
-      <Summary>
-        <Summary Model="@context"/>
-      </Summary>
-      <Details>
-        <Details Model="@context"/>
-      </Details>
-      <Columns>
-        <Columns Models="@models.Items"/>
-      </Columns>
-    </ResponsiveTable>
-  </Found>
-</Paging>
+<Paging T="INetworkUserCatalogue" Deleted="@_deleted" />
 
 <MudLink Href="@(PageHref<NetworkUserCataloguePage>())">
   @Translate("Create")
@@ -51,22 +50,15 @@ RoleModel.OperatorRepresentative,
   @Translate("Regulatory catalogues")
 </MudText>
 
-<Paging T="IRegulatoryCatalogue">
-  <Found Context="models">
-    <ResponsiveTable Model="@models.Items">
-      <Summary>
-        <Summary Model="@context"/>
-      </Summary>
-      <Details>
-        <Details Model="@context"/>
-      </Details>
-      <Columns>
-        <Columns Models="@models.Items"/>
-      </Columns>
-    </ResponsiveTable>
-  </Found>
-</Paging>
+<Paging T="IRegulatoryCatalogue" Deleted="@_deleted" />
 
 <MudLink Href="@(PageHref<RegulatoryCataloguePage>())">
   @Translate("Create")
 </MudLink>
+
+@code {
+  private bool _deleted = false;
+
+  [CascadingParameter]
+  private RepresentativeState RepresentativeState { get; set; } = default!;
+}

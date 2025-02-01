@@ -15,8 +15,7 @@ RoleModel.NetworkUserRepresentative
 @using Microsoft.AspNetCore.Components.Web
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Client.Attributes
-@using Ozds.Client.Components.Models
-@using Ozds.Client.Components.Streaming
+@using Ozds.Client.State
 @using Ozds.Client.Components.Tables
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
@@ -24,18 +23,16 @@ RoleModel.NetworkUserRepresentative
   <title>OZDS - @Translate("Calculations")</title>
 </HeadContent>
 
-<Paging T="INetworkUserCalculation">
-  <Found Context="models">
-    <ResponsiveTable Model="@models.Items">
-      <Summary>
-        <Summary Model="@context"/>
-      </Summary>
-      <Details>
-        <Details Model="@context"/>
-      </Details>
-      <Columns>
-        <Columns Models="@models.Items"/>
-      </Columns>
-    </ResponsiveTable>
-  </Found>
-</Paging>
+@{
+  var calculations = AnalysisState.AnalysisBases.Value
+    .SelectMany(analysisBasis => analysisBasis.Calculations)
+    .OfType<INetworkUserCalculation>()
+    .ToList();
+}
+
+<ResponsiveTable Model="calculations" />
+
+@code {
+  [CascadingParameter]
+  public AnalysisState AnalysisState { get; set; } = default!;
+}

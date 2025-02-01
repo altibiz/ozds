@@ -2,6 +2,7 @@
 
 @typeparam T
 @using MudBlazor
+@using Ozds.Client.Components.Models
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 <MudHidden Breakpoint="Breakpoint.MdAndUp">
@@ -22,10 +23,24 @@
 
     <ResponsiveTableCollapse>
       <Summary>
-        @Summary(item)
+        @if(Summary is null)
+        {
+          <Summary Model="item" />
+        }
+        else
+        {
+          @Summary(item)
+        }
       </Summary>
       <Details>
-        @Details(item)
+        @if (Details is null)
+        {
+          <Details Model="item" />
+        }
+        else
+        {
+          @Details(item)
+        }
       </Details>
     </ResponsiveTableCollapse>
   }
@@ -50,7 +65,14 @@
       </MudTextField>
     </ToolBarContent>
     <Columns>
-      @Columns
+      @if (Columns is null)
+      {
+        <Columns Model="@Model" />
+      }
+      else
+      {
+        @Columns
+      }
     </Columns>
     <PagerContent>
       <MudDataGridPager T="T"/>
