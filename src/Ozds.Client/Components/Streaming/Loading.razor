@@ -45,16 +45,23 @@
 {
   @if (Activate || ActivateAsync)
   {
-    <MudSelect T="Type" @bind-Value="@_activationType">
-      @foreach (var type in ConcreteTypes)
-      {
-        <MudSelectItem Value="@type">
-          <MudText>
-            @Translate(type.Name)
-          </MudText>
-        </MudSelectItem>
-      }
-    </MudSelect>
+    if (Concretize is not null)
+    {
+      @Concretize(_state.Value!)
+    }
+    else
+    {
+      <MudSelect T="Type" @bind-Value="@_activationType">
+        @foreach (var type in ConcreteTypes)
+        {
+          <MudSelectItem Value="@type">
+            <MudText>
+              @Translate(type.Name)
+            </MudText>
+          </MudSelectItem>
+        }
+      </MudSelect>
+    }
   }
 
   if (Created is not null)

@@ -52,6 +52,9 @@ public partial class Loading<T> : OzdsComponentBase
   public RenderFragment<T>? Found { get; set; }
 
   [Parameter]
+  public RenderFragment<T>? Concretize { get; set; }
+
+  [Parameter]
   public RenderFragment<T>? Created { get; set; }
 
   public void Initialize(
