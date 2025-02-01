@@ -267,6 +267,46 @@ public partial class Loading<T> : OzdsComponentBase
     }
   }
 
+  public void Reactivate(Type type)
+  {
+    _activationType = type;
+
+    if (_state.State is not LoadingState.Created)
+    {
+      return;
+    }
+
+    if (Activate)
+    {
+      try
+      {
+        var activator = ScopedServices
+          .GetRequiredService<ModelActivator>();
+        var created = (T)activator.ActivateDynamic(_activationType);
+        _state = _state.WithCreated(created);
+      }
+      catch (Exception e)
+      {
+        _state = _state.WithError(e.Message);
+      }
+    }
+
+    if (ActivateAsync)
+    {
+      try
+      {
+        var activator = ScopedServices
+          .GetRequiredService<ModelActivator>();
+        var created = activator.Activate<T>();
+        _state = _state.WithCreated(created);
+      }
+      catch (Exception e)
+      {
+        _state = _state.WithError(e.Message);
+      }
+    }
+  }
+
   protected override void OnInitialized()
   {
     Initialize();

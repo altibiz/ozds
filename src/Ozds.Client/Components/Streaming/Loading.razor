@@ -51,7 +51,10 @@
     }
     else
     {
-      <MudSelect T="Type" @bind-Value="@_activationType">
+      <MudSelect
+        T="Type"
+        Value="@_activationType"
+        ValueChanged="@Reactivate">
         @foreach (var type in ConcreteTypes)
         {
           <MudSelectItem Value="@type">
