@@ -269,6 +269,14 @@ public partial class Loading<T> : OzdsComponentBase
 
   public void Reactivate(Type type)
   {
+    if (!type.IsAssignableTo(typeof(T)))
+    {
+      throw new ArgumentException(
+        $"Type {type} is not assignable to {typeof(T)}",
+        nameof(type)
+      );
+    }
+
     _activationType = type;
 
     if (_state.State is not LoadingState.Created)
