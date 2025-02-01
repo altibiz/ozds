@@ -4,6 +4,7 @@
 @using Microsoft.AspNetCore.Components.Forms
 @using MudBlazor
 @using Ozds.Business.Models.Abstractions
+@using Ozds.Business.Models.Enums
 @using Ozds.Client.State
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
@@ -51,7 +52,9 @@
         else
         {
           @Details(new MutatingState<T>(model, false))
-          @if (model is not IReadonly)
+          @if (model is not IReadonly
+            && RepresentativeState.Representative.Role
+              == RoleModel.OperatorRepresentative)
           {
             <div Class="d-flex flex-row mt-4">
               <MudButton
