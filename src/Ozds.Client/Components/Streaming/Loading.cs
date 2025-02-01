@@ -13,7 +13,7 @@ public partial class Loading<T> : OzdsComponentBase
 {
   private LoadingState<T> _state = new();
 
-  private Type _activationType = default!;
+  private Type? _activationType = default!;
 
   [Parameter]
   public T? Value { get; set; }
@@ -23,6 +23,9 @@ public partial class Loading<T> : OzdsComponentBase
 
   [Parameter]
   public RenderFragment<string>? Error { get; set; }
+
+  [Parameter]
+  public RenderFragment? Concretize { get; set; }
 
   [Parameter]
   public string? Id { get; set; }
@@ -52,9 +55,6 @@ public partial class Loading<T> : OzdsComponentBase
   public RenderFragment<T>? Found { get; set; }
 
   [Parameter]
-  public RenderFragment<T>? Concretize { get; set; }
-
-  [Parameter]
   public RenderFragment<T>? Created { get; set; }
 
   public void Initialize(
@@ -62,7 +62,7 @@ public partial class Loading<T> : OzdsComponentBase
     bool render = false
   )
   {
-    _activationType = ActivatableSubtypes.First();
+    _activationType = ActivatableSubtypes.FirstOrDefault();
 
     if (reset)
     {
@@ -141,7 +141,8 @@ public partial class Loading<T> : OzdsComponentBase
       {
         var activator = ScopedServices
           .GetRequiredService<ModelActivator>();
-        var created = (T)activator.ActivateDynamic(_activationType);
+        var created = (T)activator.ActivateDynamic(
+          _activationType ?? typeof(T));
         _state = _state.WithCreated(created);
       }
       catch (Exception e)
@@ -254,7 +255,8 @@ public partial class Loading<T> : OzdsComponentBase
       {
         var activator = ScopedServices
           .GetRequiredService<ModelActivator>();
-        var created = (T)activator.ActivateDynamic(_activationType);
+        var created = (T)activator.ActivateDynamic(
+          _activationType ?? typeof(T));
         _state = _state.WithCreated(created);
       }
       catch (Exception e)

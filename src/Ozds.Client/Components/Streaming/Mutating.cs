@@ -25,6 +25,9 @@ public partial class Mutating<T> : OzdsComponentBase
   public RenderFragment? Progress { get; set; }
 
   [Parameter]
+  public RenderFragment? Concretize { get; set; }
+
+  [Parameter]
   public Func<T?>? Load { get; set; }
 
   [Parameter]

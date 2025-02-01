@@ -47,9 +47,9 @@
   {
     if (Concretize is not null)
     {
-      @Concretize(_state.Value!)
+      @Concretize
     }
-    else
+    else if (_activationType is not null && ActivatableSubtypes.Count > 1)
     {
       <MudSelect
         T="Type"

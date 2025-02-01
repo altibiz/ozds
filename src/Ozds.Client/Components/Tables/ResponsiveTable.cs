@@ -6,8 +6,6 @@ namespace Ozds.Client.Components.Tables;
 
 public partial class ResponsiveTable<T> : OzdsComponentBase
 {
-  private List<TableItemMetadata> _metadata = new();
-
   private string? _searchString;
 
   [Parameter]
@@ -24,11 +22,6 @@ public partial class ResponsiveTable<T> : OzdsComponentBase
 
   [Inject]
   private NavigationManager NavigationManager { get; set; } = default!;
-
-  protected override void OnParametersSet()
-  {
-    _metadata = Model.Select(x => new TableItemMetadata(false)).ToList();
-  }
 
   private bool Filter(T value)
   {
@@ -47,6 +40,4 @@ public partial class ResponsiveTable<T> : OzdsComponentBase
 
     return false;
   }
-
-  private sealed record TableItemMetadata(bool Expanded);
 }

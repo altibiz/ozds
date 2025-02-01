@@ -56,7 +56,10 @@ public class ModelActivator(IServiceProvider serviceProvider)
         && converter.ModelType.IsAssignableTo(type)
         && converter.CanActivate(type))
       .Select(converter => converter.ModelType)
-      .Distinct()
+      .ToList();
+
+    subtypes = subtypes
+      .Where(subtype => !subtypes.Exists(type => type.BaseType == subtype))
       .ToList();
 
     subtypeCache.TryAdd(type, subtypes);
