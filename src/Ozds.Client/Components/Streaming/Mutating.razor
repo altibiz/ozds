@@ -65,14 +65,26 @@
                 @Translate("Edit")
               </MudButton>
               <MudSpacer />
-              @if (model is IAuditable)
+              @if (model is IAuditable auditable)
               {
-                <MudButton
-                  Variant="Variant.Filled"
-                  Color="Color.Error"
-                  OnClick="@(() => OnDelete(model))">
-                  @Translate("Delete")
-                </MudButton>
+                if (auditable.IsDeleted)
+                {
+                  <MudButton
+                    Variant="Variant.Filled"
+                    Color="Color.Secondary"
+                    OnClick="@(() => OnRestore(model))">
+                    @Translate("Restore")
+                  </MudButton>
+                }
+                else
+                {
+                  <MudButton
+                    Variant="Variant.Filled"
+                    Color="Color.Error"
+                    OnClick="@(() => OnDelete(model))">
+                    @Translate("Delete")
+                  </MudButton>
+                }
                 <MudButton
                   Variant="Variant.Outlined"
                   Class="ml-2"

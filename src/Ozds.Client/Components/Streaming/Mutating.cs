@@ -61,6 +61,12 @@ public partial class Mutating<T> : OzdsComponentBase
   public Func<T, Task>? DeleteAsync { get; set; }
 
   [Parameter]
+  public Action<T>? Restore { get; set; }
+
+  [Parameter]
+  public Func<T, Task>? RestoreAsync { get; set; }
+
+  [Parameter]
   public Action<T>? Forget { get; set; }
 
   [Parameter]
@@ -240,19 +246,72 @@ public partial class Mutating<T> : OzdsComponentBase
       new DialogOptions { CloseOnEscapeKey = true });
   }
 
+  private async Task OnRestore(T model)
+  {
+    var dialogService = ScopedServices.GetRequiredService<IDialogService>();
+
+    try
+    {
+      if (Restore is not null)
+      {
+        Restore(model);
+      }
+      else if (RestoreAsync is not null)
+      {
+        await RestoreAsync(model);
+      }
+      else if (model?.GetType().IsAssignableTo(typeof(IAuditable)) ?? false)
+      {
+        var mutations = ScopedServices.GetRequiredService<AuditableMutations>();
+        await mutations.Restore((model as IAuditable)!, CancellationToken);
+      }
+      else
+      {
+        throw new InvalidOperationException(
+          $"No restore strategy found for {typeof(T).Name}");
+      }
+    }
+    catch (Exception ex)
+    {
+      await dialogService.ShowAsync<MutatingResult>(
+        Translate("Failure"),
+        new DialogParameters
+        {
+          {
+            nameof(MutatingResult.Body),
+            $"{Translate("Failed restoring")}"
+            + $" {Translate(typeof(T).Name)} - {ex.Message}"
+          }
+        },
+        new DialogOptions { CloseOnEscapeKey = true });
+      return;
+    }
+
+    await dialogService.ShowAsync<MutatingResult>(
+      Translate("Success"),
+      new DialogParameters
+      {
+        {
+          nameof(MutatingResult.Body),
+          $"{Translate("Successfully restored")} {Translate(typeof(T).Name)}"
+        }
+      },
+      new DialogOptions { CloseOnEscapeKey = true });
+  }
+
   private async Task OnForget(T model)
   {
     var dialogService = ScopedServices.GetRequiredService<IDialogService>();
 
     try
     {
-      if (Delete is not null)
+      if (Forget is not null)
       {
-        Delete(model);
+        Forget(model);
       }
-      else if (DeleteAsync is not null)
+      else if (ForgetAsync is not null)
       {
-        await DeleteAsync(model);
+        await ForgetAsync(model);
       }
       else if (model?.GetType().IsAssignableTo(typeof(IAuditable)) ?? false)
       {
@@ -287,7 +346,7 @@ public partial class Mutating<T> : OzdsComponentBase
       {
         {
           nameof(MutatingResult.Body),
-          $"{Translate("Successfully deleted")} {Translate(typeof(T).Name)}"
+          $"{Translate("Successfully forgotten")} {Translate(typeof(T).Name)}"
         }
       },
       new DialogOptions { CloseOnEscapeKey = true });
