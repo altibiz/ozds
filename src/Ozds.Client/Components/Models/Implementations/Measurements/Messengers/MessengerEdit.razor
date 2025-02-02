@@ -6,6 +6,10 @@
 @using Ozds.Business.Models.Base
 @inherits Ozds.Client.Components.Models.Base.OzdsEditComponentBase<TPrefix, TModel>
 
+@* TODO: messenger naming convention *@
+@* TODO: prevent user error based on type and naming convention here *@
+@Field(x => x.Id)
+
 @(Base<IdentifiableModel>())
 
 @(LinkField<LocationModel>(x => x.LocationId))

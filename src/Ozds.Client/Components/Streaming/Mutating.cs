@@ -88,10 +88,11 @@ public partial class Mutating<T> : OzdsComponentBase
   [CascadingParameter]
   private RepresentativeState RepresentativeState { get; set; } = default!;
 
+  [Inject]
+  private IDialogService DialogService { get; set; } = default!;
+
   private async Task OnCreate(T model)
   {
-    var dialogService = ScopedServices.GetRequiredService<IDialogService>();
-
     try
     {
       if (Create is not null)
@@ -115,7 +116,7 @@ public partial class Mutating<T> : OzdsComponentBase
     }
     catch (Exception ex)
     {
-      await dialogService.ShowAsync<MutatingResult>(
+      await DialogService.ShowAsync<MutatingResult>(
         Translate("Failure"),
         new DialogParameters
         {
@@ -129,7 +130,7 @@ public partial class Mutating<T> : OzdsComponentBase
       return;
     }
 
-    await dialogService.ShowAsync<MutatingResult>(
+    await DialogService.ShowAsync<MutatingResult>(
       Translate("Success"),
       new DialogParameters
       {
@@ -143,8 +144,6 @@ public partial class Mutating<T> : OzdsComponentBase
 
   private async Task OnUpdate(T model)
   {
-    var dialogService = ScopedServices.GetRequiredService<IDialogService>();
-
     try
     {
       if (Update is not null)
@@ -168,7 +167,7 @@ public partial class Mutating<T> : OzdsComponentBase
     }
     catch (Exception ex)
     {
-      await dialogService.ShowAsync<MutatingResult>(
+      await DialogService.ShowAsync<MutatingResult>(
         Translate("Failure"),
         new DialogParameters
         {
@@ -182,7 +181,7 @@ public partial class Mutating<T> : OzdsComponentBase
       return;
     }
 
-    await dialogService.ShowAsync<MutatingResult>(
+    await DialogService.ShowAsync<MutatingResult>(
       Translate("Success"),
       new DialogParameters
       {
@@ -196,8 +195,6 @@ public partial class Mutating<T> : OzdsComponentBase
 
   private async Task OnDelete(T model)
   {
-    var dialogService = ScopedServices.GetRequiredService<IDialogService>();
-
     try
     {
       if (Delete is not null)
@@ -221,7 +218,7 @@ public partial class Mutating<T> : OzdsComponentBase
     }
     catch (Exception ex)
     {
-      await dialogService.ShowAsync<MutatingResult>(
+      await DialogService.ShowAsync<MutatingResult>(
         Translate("Failure"),
         new DialogParameters
         {
@@ -235,7 +232,7 @@ public partial class Mutating<T> : OzdsComponentBase
       return;
     }
 
-    await dialogService.ShowAsync<MutatingResult>(
+    await DialogService.ShowAsync<MutatingResult>(
       Translate("Success"),
       new DialogParameters
       {
@@ -249,8 +246,6 @@ public partial class Mutating<T> : OzdsComponentBase
 
   private async Task OnRestore(T model)
   {
-    var dialogService = ScopedServices.GetRequiredService<IDialogService>();
-
     try
     {
       if (Restore is not null)
@@ -274,7 +269,7 @@ public partial class Mutating<T> : OzdsComponentBase
     }
     catch (Exception ex)
     {
-      await dialogService.ShowAsync<MutatingResult>(
+      await DialogService.ShowAsync<MutatingResult>(
         Translate("Failure"),
         new DialogParameters
         {
@@ -288,7 +283,7 @@ public partial class Mutating<T> : OzdsComponentBase
       return;
     }
 
-    await dialogService.ShowAsync<MutatingResult>(
+    await DialogService.ShowAsync<MutatingResult>(
       Translate("Success"),
       new DialogParameters
       {
@@ -302,8 +297,6 @@ public partial class Mutating<T> : OzdsComponentBase
 
   private async Task OnForget(T model)
   {
-    var dialogService = ScopedServices.GetRequiredService<IDialogService>();
-
     try
     {
       if (Forget is not null)
@@ -327,7 +320,7 @@ public partial class Mutating<T> : OzdsComponentBase
     }
     catch (Exception ex)
     {
-      await dialogService.ShowAsync<MutatingResult>(
+      await DialogService.ShowAsync<MutatingResult>(
         Translate("Failure"),
         new DialogParameters
         {
@@ -341,7 +334,7 @@ public partial class Mutating<T> : OzdsComponentBase
       return;
     }
 
-    await dialogService.ShowAsync<MutatingResult>(
+    await DialogService.ShowAsync<MutatingResult>(
       Translate("Success"),
       new DialogParameters
       {
