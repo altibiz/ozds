@@ -32,12 +32,12 @@
         <EditForm
           Model="@model"
           OnValidSubmit="@(() => OnUpdate(model))">
-          <DataAnnotationsValidator />
+          <DataAnnotationsValidator/>
 
           @Edit(new MutatingState<T>(model, false))
 
           <MudText Color="Color.Error" Class="ml-4">
-            <ValidationSummary />
+            <ValidationSummary/>
           </MudText>
 
           <div Class="d-flex flex-row mt-4">
@@ -116,12 +116,12 @@
       <EditForm
         Model="@model"
         OnValidSubmit="@(() => OnCreate(model))">
-        <DataAnnotationsValidator />
+        <DataAnnotationsValidator/>
 
         @Edit(new MutatingState<T>(model, true))
 
         <MudText Color="Color.Error" Class="ml-4">
-          <ValidationSummary />
+          <ValidationSummary/>
         </MudText>
 
         <div Class="d-flex flex-row">

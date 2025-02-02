@@ -14,7 +14,6 @@ RoleModel.NetworkUserRepresentative
 @using Microsoft.AspNetCore.Components.Web
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Client.Attributes
-@using Ozds.Client.Components.Models
 @using Ozds.Client.Components.Streaming
 @using Ozds.Client.Components.Tables
 @using Ozds.Client.State
@@ -28,7 +27,7 @@ RoleModel.NetworkUserRepresentative
   var notifications = NotificationsState.Notifications;
 }
 
-<ResponsiveTable Model="notifications" />
+<ResponsiveTable Model="notifications"/>
 
 @if (RepresentativeState.Representative.Role
   != RoleModel.OperatorRepresentative)
@@ -36,7 +35,7 @@ RoleModel.NetworkUserRepresentative
   return;
 }
 
-<Paging T="IEvent" />
+<Paging T="IEvent"/>
 
 @code {
 

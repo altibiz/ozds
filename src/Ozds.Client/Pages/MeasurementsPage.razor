@@ -14,7 +14,6 @@ RoleModel.NetworkUserRepresentative
 @using Microsoft.AspNetCore.Components.Web
 @using Ozds.Business.Analysis
 @using Ozds.Client.Attributes
-@using Ozds.Client.Components.Models
 @using Ozds.Client.Components.Streaming
 @using Ozds.Client.Components.Tables
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
@@ -28,7 +27,7 @@ RoleModel.NetworkUserRepresentative
     .AnalysesByMeasurementLocation();
 }
 
-<ResponsiveTable Model="measurementLocations" />
+<ResponsiveTable Model="measurementLocations"/>
 
 @if (RepresentativeState.Representative.Role
   != RoleModel.OperatorRepresentative)
@@ -40,6 +39,6 @@ RoleModel.NetworkUserRepresentative
   var meters = AnalysisState.AnalysisBases.Value.AnalysesByMeter();
 }
 
-<ResponsiveTable Model="meters" />
+<ResponsiveTable Model="meters"/>
 
-<Paging PageAsync="OnMessengersPageAsync" />
+<Paging PageAsync="OnMessengersPageAsync"/>

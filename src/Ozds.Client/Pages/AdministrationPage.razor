@@ -27,7 +27,7 @@ RoleModel.NetworkUserRepresentative
   var networkUsers = AnalysisState.AnalysisBases.Value.AnalysesByNetworkUser();
 }
 
-<ResponsiveTable Model="networkUsers" />
+<ResponsiveTable Model="networkUsers"/>
 
 @if (RepresentativeState.Representative.Role
   == RoleModel.OperatorRepresentative)
@@ -48,10 +48,10 @@ RoleModel.NetworkUserRepresentative
         <Columns>
           <PrefixedColumns
             Models="@models.Items"
-            Prefix="@(x => x.User)" />
+            Prefix="@(x => x.User)"/>
           <PrefixedColumns
             Models="@models.Items"
-            Prefix="@(x => x.Representative)" />
+            Prefix="@(x => x.Representative)"/>
         </Columns>
       </ResponsiveTable>
     </Found>

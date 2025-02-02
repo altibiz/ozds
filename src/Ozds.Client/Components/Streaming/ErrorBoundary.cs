@@ -7,13 +7,13 @@ namespace Ozds.Client.Components.Streaming;
 
 public partial class ErrorBoundary : OzdsComponentBase
 {
+  private InnerErrorBoundary? inner;
+
   [Parameter]
   public RenderFragment? ChildContent { get; set; } = default!;
 
   [Inject]
   private IErrorPublisher ErrorPublisher { get; set; } = default!;
-
-  private InnerErrorBoundary? inner;
 
   private void OnRecover()
   {

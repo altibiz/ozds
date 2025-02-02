@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using MudBlazor;
@@ -116,7 +117,7 @@ public partial class Mutating<T> : OzdsComponentBase
     }
     catch (Exception ex)
     {
-      Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(model));
+      Console.WriteLine(JsonSerializer.Serialize(model));
       await DialogService.ShowAsync<MutatingResult>(
         Translate("Failure"),
         new DialogParameters
