@@ -1,9 +1,11 @@
+using System.Runtime.Serialization;
 using Altibiz.DependencyInjection.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Ozds.Jobs.Context;
 using Ozds.Jobs.Manager.Abstractions;
 using Ozds.Jobs.Observers.Abstractions;
 using Ozds.Jobs.Options;
+using Ozds.Jobs.Services;
 using Quartz;
 
 namespace Ozds.Jobs.Extensions;
@@ -18,6 +20,7 @@ public static class IServiceCollectionExtensions
     services.AddOptions(builder);
     services.AddObservers();
     services.AddManagers();
+    services.AddServices();
     services.AddQuartz(builder);
     return services;
   }
@@ -46,6 +49,14 @@ public static class IServiceCollectionExtensions
   )
   {
     services.AddSingletonAssignableTo(typeof(IJobManager));
+    return services;
+  }
+
+  private static IServiceCollection AddServices(
+    this IServiceCollection services
+  )
+  {
+    services.AddSingleton<IHostedService, MigrationService>();
     return services;
   }
 

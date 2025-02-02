@@ -7,6 +7,7 @@ using Ozds.Messaging.Context;
 using Ozds.Messaging.Observers.Abstractions;
 using Ozds.Messaging.Options;
 using Ozds.Messaging.Sender.Abstractions;
+using Ozds.Messaging.Services;
 
 namespace Ozds.Messaging.Extensions;
 
@@ -22,6 +23,7 @@ public static class IServiceCollectionExtensions
     services.AddOptions(builder);
     services.AddObservers();
     services.AddSender();
+    services.AddServices();
     services.AddMassTransit(builder);
     return services;
   }
@@ -50,6 +52,14 @@ public static class IServiceCollectionExtensions
   )
   {
     services.AddScopedAssignableTo(typeof(IMessageSender));
+    return services;
+  }
+
+  private static IServiceCollection AddServices(
+    this IServiceCollection services
+  )
+  {
+    services.AddSingleton<IHostedService, MigrationService>();
     return services;
   }
 

@@ -7,6 +7,7 @@ using Ozds.Data.Mutations.Abstractions;
 using Ozds.Data.Observers.Abstractions;
 using Ozds.Data.Options;
 using Ozds.Data.Queries.Abstractions;
+using Ozds.Data.Services;
 
 namespace Ozds.Data.Extensions;
 
@@ -21,6 +22,7 @@ public static class IServiceCollectionExtensions
     services.AddObservers();
     services.AddQueries();
     services.AddMutations();
+    services.AddServices();
     services.AddEntityFrameworkCore(builder);
     return services;
   }
@@ -57,6 +59,14 @@ public static class IServiceCollectionExtensions
   )
   {
     services.AddScopedAssignableTo(typeof(IMutations));
+    return services;
+  }
+
+  private static IServiceCollection AddServices(
+    this IServiceCollection services
+  )
+  {
+    services.AddSingleton<IHostedService, MigrationService>();
     return services;
   }
 
