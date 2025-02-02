@@ -66,6 +66,7 @@ public sealed class EphemeralDataDbContextManager(
       try
       {
         context = await factory.CreateDbContextAsync(cancellationToken);
+        await context.Database.MigrateAsync(cancellationToken);
         break;
       }
       catch (Exception exception)
