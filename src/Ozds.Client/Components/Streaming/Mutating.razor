@@ -27,13 +27,15 @@
     }
     else
     {
-      <EditForm
-        Model="@model"
-        OnValidSubmit="@(() => OnUpdate(model))">
-        <DataAnnotationsValidator/>
-        @if (_mutating)
-        {
+      @if (_mutating)
+      {
+        <EditForm
+          Model="@model"
+          OnValidSubmit="@(() => OnUpdate(model))">
+          <DataAnnotationsValidator/>
+
           @Edit(new MutatingState<T>(model, false))
+
           <div Class="d-flex flex-row mt-4">
             <MudButton
               Variant="Variant.Filled"
@@ -49,66 +51,71 @@
               @Translate("Preview")
             </MudButton>
           </div>
-        }
-        else
+        </EditForm>
+      }
+      else
+      {
+        @Details(new MutatingState<T>(model, false))
+        @if (model is not IReadonly
+          && RepresentativeState.Representative.Role
+          == RoleModel.OperatorRepresentative)
         {
-          @Details(new MutatingState<T>(model, false))
-          @if (model is not IReadonly
-            && RepresentativeState.Representative.Role
-            == RoleModel.OperatorRepresentative)
-          {
-            <div Class="d-flex flex-row mt-4">
-              <MudButton
-                OnClick="@(() => _mutating = !_mutating)"
-                Variant="Variant.Filled"
-                Color="Color.Warning">
-                @Translate("Edit")
-              </MudButton>
-              <MudSpacer/>
-              @if (model is IAuditable auditable)
-              {
-                if (auditable.IsDeleted)
-                {
-                  <MudButton
-                    Variant="Variant.Filled"
-                    Color="Color.Success"
-                    OnClick="@(() => OnRestore(model))">
-                    @Translate("Restore")
-                  </MudButton>
-                }
-                else
-                {
-                  <MudButton
-                    Variant="Variant.Filled"
-                    Color="Color.Error"
-                    OnClick="@(() => OnDelete(model))">
-                    @Translate("Delete")
-                  </MudButton>
-                }
+          <div Class="d-flex flex-row mt-4">
+            <MudButton
+              OnClick="@(() => _mutating = !_mutating)"
+              Variant="Variant.Filled"
+              Color="Color.Warning">
+              @Translate("Edit")
+            </MudButton>
 
+            <MudSpacer/>
+
+            @if (model is IAuditable auditable)
+            {
+              if (auditable.IsDeleted)
+              {
                 <MudButton
-                  Variant="Variant.Outlined"
-                  Class="ml-2"
-                  Color="Color.Error"
-                  OnClick="@(() => OnForget(model))">
-                  @Translate("Forget")
+                  Variant="Variant.Filled"
+                  Color="Color.Success"
+                  OnClick="@(() => OnRestore(model))">
+                  @Translate("Restore")
                 </MudButton>
               }
-            </div>
-          }
+              else
+              {
+                <MudButton
+                  Variant="Variant.Filled"
+                  Color="Color.Error"
+                  OnClick="@(() => OnDelete(model))">
+                  @Translate("Delete")
+                </MudButton>
+              }
+
+              <MudButton
+                Variant="Variant.Outlined"
+                Class="ml-2"
+                Color="Color.Error"
+                OnClick="@(() => OnForget(model))">
+                @Translate("Forget")
+              </MudButton>
+            }
+          </div>
         }
-      </EditForm>
+      }
     }
   </Found>
 
   <Created Context="model">
-    <EditForm
-      Model="@model"
-      OnValidSubmit="@(() => OnCreate(model))">
-      <DataAnnotationsValidator/>
-      @if (!_mutating)
-      {
+    @* NOTE: if created we want to start with editing *@
+    @if (!_mutating)
+    {
+      <EditForm
+        Model="@model"
+        OnValidSubmit="@(() => { Console.WriteLine("here"); return OnCreate(model); })">
+        <DataAnnotationsValidator />
+
         @Edit(new MutatingState<T>(model, true))
+
         <div Class="d-flex flex-row mt-4">
           <MudButton
             ButtonType="ButtonType.Submit"
@@ -124,19 +131,20 @@
             @Translate("Preview")
           </MudButton>
         </div>
-      }
-      else
-      {
-        @Details(new MutatingState<T>(model, true))
-        <div Class="d-flex flex-row mt-4">
-          <MudButton
-            OnClick="@(() => _mutating = !_mutating)"
-            Variant="Variant.Filled"
-            Color="Color.Warning">
-            @Translate("Edit")
-          </MudButton>
-        </div>
-      }
-    </EditForm>
+      </EditForm>
+    }
+    else
+    {
+      @Details(new MutatingState<T>(model, true))
+
+      <div Class="d-flex flex-row mt-4">
+        <MudButton
+          OnClick="@(() => _mutating = !_mutating)"
+          Variant="Variant.Filled"
+          Color="Color.Warning">
+          @Translate("Edit")
+        </MudButton>
+      </div>
+    }
   </Created>
 </Loading>
