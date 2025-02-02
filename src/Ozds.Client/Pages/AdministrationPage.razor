@@ -27,17 +27,7 @@ RoleModel.NetworkUserRepresentative
   var networkUsers = AnalysisState.AnalysisBases.Value.AnalysesByNetworkUser();
 }
 
-<ResponsiveTable Model="networkUsers">
-  <Summary>
-    <Summary Model="context"/>
-  </Summary>
-  <Details>
-    <Details Model="context"/>
-  </Details>
-  <Columns>
-    <Columns Models="networkUsers"/>
-  </Columns>
-</ResponsiveTable>
+<ResponsiveTable Model="networkUsers" />
 
 @if (RepresentativeState.Representative.Role
   == RoleModel.OperatorRepresentative)
@@ -46,13 +36,22 @@ RoleModel.NetworkUserRepresentative
     <Found Context="models">
       <ResponsiveTable Model="@models.Items">
         <Summary>
-          <Summary Model="@context"/>
+          <Summary Model="@context.User"/>
         </Summary>
         <Details>
-          <Details Model="@context"/>
+          <Details Model="@context.User"/>
+          @if (context.Representative is { } representative)
+          {
+            <Details Model="@representative"/>
+          }
         </Details>
         <Columns>
-          <Columns Models="@models.Items"/>
+          <PrefixedColumns
+            Models="@models.Items"
+            Prefix="@(x => x.User)" />
+          <PrefixedColumns
+            Models="@models.Items"
+            Prefix="@(x => x.Representative)" />
         </Columns>
       </ResponsiveTable>
     </Found>

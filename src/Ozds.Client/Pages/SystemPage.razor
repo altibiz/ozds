@@ -28,17 +28,7 @@ RoleModel.NetworkUserRepresentative
   var notifications = NotificationsState.Notifications;
 }
 
-<ResponsiveTable Model="notifications">
-  <Summary>
-    <Summary Model="context"/>
-  </Summary>
-  <Details>
-    <Details Model="context"/>
-  </Details>
-  <Columns>
-    <Columns Models="@notifications"/>
-  </Columns>
-</ResponsiveTable>
+<ResponsiveTable Model="notifications" />
 
 @if (RepresentativeState.Representative.Role
   != RoleModel.OperatorRepresentative)
@@ -46,21 +36,7 @@ RoleModel.NetworkUserRepresentative
   return;
 }
 
-<Paging T="IEvent">
-  <Found Context="models">
-    <ResponsiveTable Model="@models.Items">
-      <Summary>
-        <Summary Model="@context"/>
-      </Summary>
-      <Details>
-        <Details Model="@context"/>
-      </Details>
-      <Columns>
-        <Columns Models="@models.Items"/>
-      </Columns>
-    </ResponsiveTable>
-  </Found>
-</Paging>
+<Paging T="IEvent" />
 
 @code {
 

@@ -11,6 +11,8 @@ Allows = [RoleModel.OperatorRepresentative])]
 @using Microsoft.AspNetCore.Components.Web
 @using Ozds.Client.Attributes
 @using Ozds.Client.Components.Streaming
+@using Ozds.Client.Components.Tables
+@using Ozds.Client.Components.Models
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 @if (RepresentativeState.Representative.Role
@@ -24,4 +26,27 @@ Allows = [RoleModel.OperatorRepresentative])]
   <title>OZDS - @Translate("Users")</title>
 </HeadContent>
 
-<Paging PageAsync="OnPageAsync"/>
+<Paging PageAsync="OnPageAsync">
+  <Found Context="models">
+    <ResponsiveTable Model="@models.Items">
+      <Summary>
+        <Summary Model="@context.User"/>
+      </Summary>
+      <Details>
+        <Details Model="@context.User"/>
+        @if (context.Representative is { } representative)
+        {
+          <Details Model="@representative"/>
+        }
+      </Details>
+      <Columns>
+        <PrefixedColumns
+          Models="@models.Items"
+          Prefix="@(x => x.User)" />
+        <PrefixedColumns
+          Models="@models.Items"
+          Prefix="@(x => x.Representative)" />
+      </Columns>
+    </ResponsiveTable>
+  </Found>
+</Paging>

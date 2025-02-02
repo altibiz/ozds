@@ -55,17 +55,7 @@ RoleModel.NetworkUserRepresentative
   var locations = AnalysisState.AnalysisBases.Value
     .AnalysesByLocation();
 
-  <ResponsiveTable Model="@locations">
-    <Summary>
-      <Summary Model="@context"/>
-    </Summary>
-    <Details>
-      <Details Model="@context"/>
-    </Details>
-    <Columns>
-      <Columns Models="@locations"/>
-    </Columns>
-  </ResponsiveTable>
+  <ResponsiveTable Model="@locations" />
 }
 
 @if (RepresentativeState.Representative.Role
@@ -75,17 +65,7 @@ RoleModel.NetworkUserRepresentative
   var networkUsers = AnalysisState.AnalysisBases.Value
     .AnalysesByNetworkUser();
 
-  <ResponsiveTable Model="@networkUsers">
-    <Summary>
-      <Summary Model="@context"/>
-    </Summary>
-    <Details>
-      <Details Model="@context"/>
-    </Details>
-    <Columns>
-      <Columns Models="@networkUsers"/>
-    </Columns>
-  </ResponsiveTable>
+  <ResponsiveTable Model="@networkUsers" />
 }
 
 @if (RepresentativeState.Representative.Role
@@ -94,17 +74,7 @@ RoleModel.NetworkUserRepresentative
   var measurementLocations = AnalysisState.AnalysisBases.Value
     .AnalysesByMeasurementLocation();
 
-  <ResponsiveTable Model="@measurementLocations">
-    <Summary>
-      <Summary Model="@context"/>
-    </Summary>
-    <Details>
-      <Details Model="@context"/>
-    </Details>
-    <Columns>
-      <Columns Models="@measurementLocations"/>
-    </Columns>
-  </ResponsiveTable>
+  <ResponsiveTable Model="@measurementLocations" />
 }
 
 @{
@@ -115,17 +85,7 @@ RoleModel.NetworkUserRepresentative
     .ToList();
 }
 
-<ResponsiveTable Model="@invoices">
-  <Summary>
-    <Summary Model="@context"/>
-  </Summary>
-  <Details>
-    <Details Model="@context"/>
-  </Details>
-  <Columns>
-    <Columns Models="@invoices"/>
-  </Columns>
-</ResponsiveTable>
+<ResponsiveTable Model="@invoices" />
 
 @code {
 

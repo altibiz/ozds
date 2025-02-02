@@ -28,17 +28,7 @@ RoleModel.NetworkUserRepresentative
     .AnalysesByMeasurementLocation();
 }
 
-<ResponsiveTable Model="measurementLocations">
-  <Summary>
-    <Summary Model="context"/>
-  </Summary>
-  <Details>
-    <Details Model="context"/>
-  </Details>
-  <Columns>
-    <Columns Models="@measurementLocations"/>
-  </Columns>
-</ResponsiveTable>
+<ResponsiveTable Model="measurementLocations" />
 
 @if (RepresentativeState.Representative.Role
   != RoleModel.OperatorRepresentative)
@@ -50,30 +40,6 @@ RoleModel.NetworkUserRepresentative
   var meters = AnalysisState.AnalysisBases.Value.AnalysesByMeter();
 }
 
-<ResponsiveTable Model="meters">
-  <Summary>
-    <Summary Model="context"/>
-  </Summary>
-  <Details>
-    <Details Model="context"/>
-  </Details>
-  <Columns>
-    <Columns Models="@meters"/>
-  </Columns>
-</ResponsiveTable>
+<ResponsiveTable Model="meters" />
 
-<Paging PageAsync="OnMessengersPageAsync">
-  <Found Context="models">
-    <ResponsiveTable Model="@models.Items">
-      <Summary>
-        <Summary Model="@context"/>
-      </Summary>
-      <Details>
-        <Details Model="@context"/>
-      </Details>
-      <Columns>
-        <Columns Models="@models.Items"/>
-      </Columns>
-    </ResponsiveTable>
-  </Found>
-</Paging>
+<Paging PageAsync="OnMessengersPageAsync" />

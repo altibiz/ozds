@@ -58,9 +58,9 @@ public abstract partial class ModelComponent : ComponentBase
   {
     base.OnParametersSet();
 
-    if (componentType is not null)
+    if (modelType is not null)
     {
-      componentType = CreateComponentType();
+      modelType = CreateModelType();
     }
 
     if (parameters is not null)
@@ -68,9 +68,9 @@ public abstract partial class ModelComponent : ComponentBase
       parameters = CreateFixedParameters();
     }
 
-    if (modelType is not null)
+    if (componentType is not null)
     {
-      modelType = CreateModelType();
+      componentType = CreateComponentType();
     }
   }
 }
