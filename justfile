@@ -41,6 +41,7 @@ lfs:
     dvc push
 
 dev *args:
+    docker compose up -d
     $env.ASPNETCORE_ENVIRONMENT = "Development"; \
       $env.DOTNET_ENVIRONMENT = "Development"; \
       dotnet watch --project '{{ servercsproj }}' {{ args }}
