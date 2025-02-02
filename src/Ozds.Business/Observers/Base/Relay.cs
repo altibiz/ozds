@@ -77,17 +77,17 @@ public abstract class Relay<TInEventArgs, TOutEventArgs, TPipe>(
       await using var scope = factory.CreateAsyncScope();
       var logger = scope.ServiceProvider.GetRequiredService<
         ILogger<Relay<TInEventArgs, TOutEventArgs, TPipe>>>();
-      var pipe = scope.ServiceProvider
-        .GetRequiredService<TPipe>();
 
       logger.LogDebug(
         "Invoking pipe {Pipe} for relay {Relay} event {Event}",
-        pipe.GetType().Name,
+        typeof(TPipe).Name,
         GetType().Name,
         inEventArgs.GetType().Name
       );
       try
       {
+        var pipe = scope.ServiceProvider
+          .GetRequiredService<TPipe>();
         var outEventArgs = await pipe.Transform(inEventArgs, stoppingToken);
         OutEvent?.Invoke(this, outEventArgs);
       }
@@ -97,7 +97,7 @@ public abstract class Relay<TInEventArgs, TOutEventArgs, TPipe>(
           ex,
           "Relay {Relay} handler {Handler} failed",
           GetType().Name,
-          pipe.GetType().Name
+          typeof(TPipe).Name
         );
       }
     }

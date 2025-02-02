@@ -66,12 +66,12 @@ public abstract class Reactor<TEventArgs, TSubscriber, THandler>(
 
     {
       await using var scope = factory.CreateAsyncScope();
-      var handler = scope.ServiceProvider
-        .GetRequiredService<THandler>();
       var logger = scope.ServiceProvider.GetRequiredService<
         ILogger<Reactor<TEventArgs, TSubscriber, THandler>>>();
       try
       {
+        var handler = scope.ServiceProvider
+          .GetRequiredService<THandler>();
         logger.LogDebug(
           "Invoking handler {Handler} for reactor {Reactor} after start",
           handler.GetType().Name,
@@ -85,7 +85,7 @@ public abstract class Reactor<TEventArgs, TSubscriber, THandler>(
           ex,
           "Reactor {Reactor} handler {Handler} after start failed",
           GetType().Name,
-          handler.GetType().Name
+          typeof(THandler).Name
         );
       }
     }
@@ -95,17 +95,17 @@ public abstract class Reactor<TEventArgs, TSubscriber, THandler>(
       await using var scope = factory.CreateAsyncScope();
       var logger = scope.ServiceProvider.GetRequiredService<
         ILogger<Reactor<TEventArgs, TSubscriber, THandler>>>();
-      var handler = scope.ServiceProvider
-        .GetRequiredService<THandler>();
 
       logger.LogDebug(
         "Invoking handler {Handler} for reactor {Reactor} event {Event}",
-        handler.GetType().Name,
+        typeof(THandler).Name,
         GetType().Name,
         eventArgs.GetType().Name
       );
       try
       {
+        var handler = scope.ServiceProvider
+          .GetRequiredService<THandler>();
         await handler.Handle(eventArgs, stoppingToken);
       }
       catch (Exception ex)
@@ -114,7 +114,7 @@ public abstract class Reactor<TEventArgs, TSubscriber, THandler>(
           ex,
           "Reactor {Reactor} handler {Handler} failed",
           GetType().Name,
-          handler.GetType().Name
+          typeof(THandler).Name
         );
       }
     }
