@@ -32,7 +32,11 @@
         <EditForm
           Model="@model"
           OnValidSubmit="@(() => OnUpdate(model))">
-          <DataAnnotationsValidator/>
+          <DataAnnotationsValidator />
+
+          <MudText Color="Color.Error">
+            <ValidationSummary />
+          </MudText>
 
           @Edit(new MutatingState<T>(model, false))
 
@@ -111,8 +115,12 @@
     {
       <EditForm
         Model="@model"
-        OnValidSubmit="@(() => { Console.WriteLine("here"); return OnCreate(model); })">
+        OnValidSubmit="@(() => OnCreate(model))">
         <DataAnnotationsValidator />
+
+        <MudText Color="Color.Error">
+          <ValidationSummary />
+        </MudText>
 
         @Edit(new MutatingState<T>(model, true))
 
