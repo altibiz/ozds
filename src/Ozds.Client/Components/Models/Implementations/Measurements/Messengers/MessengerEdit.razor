@@ -2,6 +2,7 @@
 
 @typeparam TPrefix
 @typeparam TModel where TModel : Ozds.Business.Models.Base.MessengerModel
+@using MudBlazor
 @using Ozds.Business.Models
 @using Ozds.Business.Models.Base
 @inherits Ozds.Client.Components.Models.Base.OzdsEditComponentBase<TPrefix, TModel>
@@ -14,6 +15,14 @@
 
 @(LinkField<LocationModel>(x => x.LocationId))
 
+<MudText>
+  @Translate("Max inactivity")
+</MudText>
+
 <PrefixedEdit Model="@Model" Prefix="@Wrap(x => x.MaxInactivityPeriod)"/>
+
+<MudText>
+  @Translate("Push delay period")
+</MudText>
 
 <PrefixedEdit Model="@Model" Prefix="@Wrap(x => x.PushDelayPeriod)"/>

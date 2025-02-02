@@ -10,9 +10,4 @@ public class SchneideriEM3xxxMeterModelActivator(
   SchneideriEM3xxxMeterModel,
   MeterModel>(serviceProvider)
 {
-  public override void Initialize(SchneideriEM3xxxMeterModel model)
-  {
-    base.Initialize(model);
-    model.MeasurementValidatorId = "0";
-  }
 }

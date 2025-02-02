@@ -48,7 +48,7 @@ public class LegalPersonModel : IModel
     )
     {
       yield return new ValidationResult(
-        "Social security number must contain only digits.",
+        "Social security number must contain only 11 digits.",
         new[] { nameof(SocialSecurityNumber) }
       );
     }
