@@ -8,9 +8,6 @@ namespace Ozds.Business.Models.Base;
 public class MeterModel : AuditableModel, IMeter
 {
   [Required]
-  public virtual required string Kind { get; set; } = default!;
-
-  [Required]
   public required string MeasurementValidatorId { get; set; }
 
   [Required]

@@ -6,7 +6,6 @@ namespace Ozds.Business.Models.Base;
 
 public abstract class CalculationItemModel : ICalculationItem
 {
-  public abstract string Kind { get; }
   public abstract SpanningMeasure<decimal> Amount { get; }
 
   public abstract ExpenditureMeasure<decimal> Price { get; }

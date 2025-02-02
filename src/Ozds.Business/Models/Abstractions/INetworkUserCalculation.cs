@@ -6,7 +6,6 @@ namespace Ozds.Business.Models.Abstractions;
 
 public interface INetworkUserCalculation : ICalculation
 {
-  public string Kind { get; }
   public string MeterId { get; }
   public IMeter ArchivedMeter { get; }
   public string UsageNetworkUserCatalogueId { get; }
@@ -17,21 +16,26 @@ public interface INetworkUserCalculation : ICalculation
   public RegulatoryCatalogueModel ArchivedSupplyRegulatoryCatalogue { get; }
 
   public NetworkUserMeasurementLocationModel
-    ArchivedNetworkUserMeasurementLocation { get; }
+    ArchivedNetworkUserMeasurementLocation
+  { get; }
 
   public UsageMeterFeeCalculationItemModel UsageMeterFee { get; }
 
   public SupplyActiveEnergyTotalImportT1CalculationItemModel
-    SupplyActiveEnergyTotalImportT1 { get; }
+    SupplyActiveEnergyTotalImportT1
+  { get; }
 
   public SupplyActiveEnergyTotalImportT2CalculationItemModel
-    SupplyActiveEnergyTotalImportT2 { get; }
+    SupplyActiveEnergyTotalImportT2
+  { get; }
 
   public SupplyBusinessUsageCalculationItemModel
-    SupplyBusinessUsageFee { get; }
+    SupplyBusinessUsageFee
+  { get; }
 
   public SupplyRenewableEnergyCalculationItemModel
-    SupplyRenewableEnergyFee { get; }
+    SupplyRenewableEnergyFee
+  { get; }
 
   public decimal UsageFeeTotal_EUR { get; }
   public decimal SupplyFeeTotal_EUR { get; }

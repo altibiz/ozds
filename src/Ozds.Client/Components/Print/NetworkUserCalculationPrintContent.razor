@@ -50,7 +50,7 @@
   @(Model.ArchivedNetworkUserMeasurementLocation.Id)
 </p>
 <p>
-  @Translate("Tariff model"): @(Model.Kind)
+  @Translate("Tariff model"): @Translate(Model.GetType().Name)
 </p>
 <p style="margin-top: 1.2rem; margin-left: 0.8rem;">
   <strong>@Translate("A) NETWORK USAGE FEE FOR ZDS")</strong>
@@ -211,7 +211,7 @@
     item is ReactiveEnergyTotalRampedT0CalculationItemModel reactiveItem
       ? @<Fragment>
           <td>
-            <strong>@Translate("JEN")</strong>
+            <strong>@Translate(reactiveItem.GetType().Name)</strong>
           </td>
           <td style="padding: 0;">
             <p class="inductive-label">
@@ -263,7 +263,7 @@
       : item is ActiveEnergyTotalImportCalculationItemModel energyItem
         ? @<Fragment>
             <td>
-              <strong>@energyItem.Kind</strong>
+              <strong>@Translate(energyItem.GetType().Name)</strong>
             </td>
             <td style="text-align: right;">
               @NumericString(energyItem.Min_kWh, 2)
@@ -285,7 +285,7 @@
         : item is ActivePowerTotalImportT1PeakCalculationItemModel powerItem
           ? @<Fragment>
               <td>
-                <strong>@powerItem.Kind</strong>
+                <strong>@Translate(powerItem.GetType().Name)</strong>
               </td>
               <td style="text-align: right;"></td>
               <td style="text-align: right;"></td>
@@ -303,7 +303,7 @@
           : item is FeeCalculationItemModel feeItem
             ? @<Fragment>
                 <td colspan="4">
-                  <strong>@feeItem.Kind</strong>
+                  <strong>@Translate(feeItem.GetType().Name)</strong>
                 </td>
                 <td style="text-align: right;">
                   @NumericString(feeItem.Amount_N, 0)

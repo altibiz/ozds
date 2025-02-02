@@ -103,10 +103,10 @@ public partial class Mutating<T> : OzdsComponentBase
       {
         await CreateAsync(model);
       }
-      else if (model?.GetType().IsAssignableTo(typeof(IAuditable)) ?? false)
+      else if (model is IAuditable auditable)
       {
         var mutations = ScopedServices.GetRequiredService<AuditableMutations>();
-        await mutations.Create((model as IAuditable)!, CancellationToken);
+        await mutations.Create(auditable, CancellationToken);
       }
       else
       {
@@ -116,6 +116,7 @@ public partial class Mutating<T> : OzdsComponentBase
     }
     catch (Exception ex)
     {
+      Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(model));
       await DialogService.ShowAsync<MutatingResult>(
         Translate("Failure"),
         new DialogParameters
@@ -154,10 +155,10 @@ public partial class Mutating<T> : OzdsComponentBase
       {
         await UpdateAsync(model);
       }
-      else if (model?.GetType().IsAssignableTo(typeof(IAuditable)) ?? false)
+      else if (model is IAuditable auditable)
       {
         var mutations = ScopedServices.GetRequiredService<AuditableMutations>();
-        await mutations.Update((model as IAuditable)!, CancellationToken);
+        await mutations.Update(auditable, CancellationToken);
       }
       else
       {
@@ -205,10 +206,10 @@ public partial class Mutating<T> : OzdsComponentBase
       {
         await DeleteAsync(model);
       }
-      else if (model?.GetType().IsAssignableTo(typeof(IAuditable)) ?? false)
+      else if (model is IAuditable auditable)
       {
         var mutations = ScopedServices.GetRequiredService<AuditableMutations>();
-        await mutations.Delete((model as IAuditable)!, CancellationToken);
+        await mutations.Delete(auditable, CancellationToken);
       }
       else
       {
@@ -256,10 +257,10 @@ public partial class Mutating<T> : OzdsComponentBase
       {
         await RestoreAsync(model);
       }
-      else if (model?.GetType().IsAssignableTo(typeof(IAuditable)) ?? false)
+      else if (model is IAuditable auditable)
       {
         var mutations = ScopedServices.GetRequiredService<AuditableMutations>();
-        await mutations.Restore((model as IAuditable)!, CancellationToken);
+        await mutations.Restore(auditable, CancellationToken);
       }
       else
       {
@@ -307,10 +308,10 @@ public partial class Mutating<T> : OzdsComponentBase
       {
         await ForgetAsync(model);
       }
-      else if (model?.GetType().IsAssignableTo(typeof(IAuditable)) ?? false)
+      else if (model is IAuditable auditable)
       {
         var mutations = ScopedServices.GetRequiredService<AuditableMutations>();
-        await mutations.Forget((model as IAuditable)!, CancellationToken);
+        await mutations.Forget(auditable, CancellationToken);
       }
       else
       {

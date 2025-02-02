@@ -67,11 +67,6 @@ public abstract class
 public class UsageReactiveEnergyTotalRampedT0CalculationItemModel
   : ReactiveEnergyTotalRampedT0CalculationItemModel
 {
-  public override string Kind
-  {
-    get { return "JEN"; }
-  }
-
   public override ExpenditureMeasure<decimal> Price
   {
     get

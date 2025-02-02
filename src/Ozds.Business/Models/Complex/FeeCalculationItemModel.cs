@@ -31,11 +31,6 @@ public abstract class FeeCalculationItemModel : CalculationItemModel
 
 public class UsageMeterFeeCalculationItemModel : FeeCalculationItemModel
 {
-  public override string Kind
-  {
-    get { return "MU"; }
-  }
-
   public override ExpenditureMeasure<decimal> Price
   {
     get

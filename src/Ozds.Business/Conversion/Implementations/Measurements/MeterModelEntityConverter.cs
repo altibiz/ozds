@@ -28,7 +28,6 @@ public class MeterModelEntityConverter(IServiceProvider serviceProvider)
       .Select(phase => modelEntityConverter.ToEntity<PhaseEntity>(phase))
       .ToList();
     entity.MeasurementValidatorId = model.MeasurementValidatorId;
-    entity.Kind = model.Kind;
   }
 
   public override void InitializeModel(
@@ -42,6 +41,5 @@ public class MeterModelEntityConverter(IServiceProvider serviceProvider)
       .Select(phase => modelEntityConverter.ToModel<PhaseModel>(phase))
       .ToHashSet();
     model.MeasurementValidatorId = entity.MeasurementValidatorId;
-    model.Kind = entity.Kind;
   }
 }

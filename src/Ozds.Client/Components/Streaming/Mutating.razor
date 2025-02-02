@@ -34,11 +34,11 @@
           OnValidSubmit="@(() => OnUpdate(model))">
           <DataAnnotationsValidator />
 
-          <MudText Color="Color.Error">
+          @Edit(new MutatingState<T>(model, false))
+
+          <MudText Color="Color.Error" Class="ml-4">
             <ValidationSummary />
           </MudText>
-
-          @Edit(new MutatingState<T>(model, false))
 
           <div Class="d-flex flex-row mt-4">
             <MudButton
@@ -118,13 +118,13 @@
         OnValidSubmit="@(() => OnCreate(model))">
         <DataAnnotationsValidator />
 
-        <MudText Color="Color.Error">
+        @Edit(new MutatingState<T>(model, true))
+
+        <MudText Color="Color.Error" Class="ml-4">
           <ValidationSummary />
         </MudText>
 
-        @Edit(new MutatingState<T>(model, true))
-
-        <div Class="d-flex flex-row mt-4">
+        <div Class="d-flex flex-row">
           <MudButton
             ButtonType="ButtonType.Submit"
             Variant="Variant.Filled"

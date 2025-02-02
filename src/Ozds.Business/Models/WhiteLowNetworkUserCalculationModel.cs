@@ -11,20 +11,18 @@ public class WhiteLowNetworkUserCalculationModel
 {
   [Required]
   public required UsageActiveEnergyTotalImportT1CalculationItemModel
-    UsageActiveEnergyTotalImportT1 { get; set; } = default!;
+    UsageActiveEnergyTotalImportT1
+  { get; set; } = default!;
 
   [Required]
   public required UsageActiveEnergyTotalImportT2CalculationItemModel
-    UsageActiveEnergyTotalImportT2 { get; set; } = default!;
+    UsageActiveEnergyTotalImportT2
+  { get; set; } = default!;
 
   [Required]
   public required UsageReactiveEnergyTotalRampedT0CalculationItemModel
-    UsageReactiveEnergyTotalRampedT0 { get; set; } = default!;
-
-  public override string Kind
-  {
-    get { return "White Low Voltage"; }
-  }
+    UsageReactiveEnergyTotalRampedT0
+  { get; set; } = default!;
 
   protected override IEnumerable<ICalculationItem> AdditionalUsageItems
   {

@@ -15,6 +15,5 @@ public class MeterModelActivator(IServiceProvider serviceProvider)
     model.ConnectionPower_W = 0;
     model.Phases = new HashSet<PhaseModel>();
     model.MessengerId = string.Empty;
-    model.Kind = string.Empty;
   }
 }
