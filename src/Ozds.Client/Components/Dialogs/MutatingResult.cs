@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Ozds.Client.Components.Base;
 
-namespace Ozds.Client.Components.Streaming;
+namespace Ozds.Client.Components.Dialogs;
 
 public partial class MutatingResult : OzdsComponentBase
 {

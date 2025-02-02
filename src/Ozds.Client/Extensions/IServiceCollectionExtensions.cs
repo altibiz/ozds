@@ -18,7 +18,7 @@ public static class IServiceCollectionExtensions
     services.AddModels();
     services.AddBlazor(builder);
     services.AddLocalStorage();
-    services.AddMudBlazor();
+    services.AddUi();
     return services;
   }
 
@@ -66,7 +66,7 @@ public static class IServiceCollectionExtensions
     return services;
   }
 
-  private static IServiceCollection AddMudBlazor(
+  private static IServiceCollection AddUi(
     this IServiceCollection services
   )
   {
