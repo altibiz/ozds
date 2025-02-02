@@ -10,6 +10,7 @@ using Ozds.Data.Extensions;
 
 // TODO: cascade delete events when forgetting
 //       - add interceptor after this one that cascade deletes events
+// FIXME: auditable id is wrongly set to 0 for audit events when creating
 
 namespace Ozds.Data.Interceptors;
 
@@ -74,11 +75,7 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
               {
                 Timestamp = now,
                 Title =
-                  $"Restored {
-                    auditable.Entity.GetType().Name
-                  } {
-                    auditable.Entity.Title
-                  }",
+                  $"Restored {auditable.Entity.GetType().Name} {auditable.Entity.Title}",
                 RepresentativeId = representativeId,
                 Level = LevelEntity.Debug,
                 Audit = AuditEntity.Restoration,
@@ -102,11 +99,7 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
               {
                 Timestamp = now,
                 Title =
-                  $"Restored {
-                    auditable.Entity.GetType().Name
-                  } {
-                    auditable.Entity.Title
-                  }",
+                  $"Restored {auditable.Entity.GetType().Name} {auditable.Entity.Title}",
                 Level = LevelEntity.Debug,
                 Audit = AuditEntity.Restoration,
                 Content = CreateRestoredMessage(auditable),
@@ -134,11 +127,7 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
               {
                 Timestamp = now,
                 Title =
-                  $"Created {
-                    auditable.Entity.GetType().Name
-                  } {
-                    auditable.Entity.Title
-                  }",
+                  $"Created {auditable.Entity.GetType().Name} {auditable.Entity.Title}",
                 RepresentativeId = representativeId,
                 Level = LevelEntity.Debug,
                 Audit = AuditEntity.Creation,
@@ -163,11 +152,7 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
               {
                 Timestamp = now,
                 Title =
-                  $"Created {
-                    auditable.Entity.GetType().Name
-                  } {
-                    auditable.Entity.Title
-                  }",
+                  $"Created {auditable.Entity.GetType().Name} {auditable.Entity.Title}",
                 Level = LevelEntity.Debug,
                 Audit = AuditEntity.Creation,
                 Content = CreateAddedMessage(auditable),
@@ -185,8 +170,7 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
           }
         }
       }
-
-      if (auditable.State is EntityState.Modified)
+      else if (auditable.State is EntityState.Modified)
       {
         auditable.Entity.LastUpdatedOn = now;
         if (representativeId is not null)
@@ -197,11 +181,7 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
             {
               Timestamp = now,
               Title =
-                $"Updated {
-                  auditable.Entity.GetType().Name
-                } {
-                  auditable.Entity.Title
-                }",
+                $"Updated {auditable.Entity.GetType().Name} {auditable.Entity.Title}",
               RepresentativeId = representativeId,
               Level = LevelEntity.Debug,
               Audit = AuditEntity.Modification,
@@ -226,11 +206,7 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
             {
               Timestamp = now,
               Title =
-                $"Updated {
-                  auditable.Entity.GetType().Name
-                } {
-                  auditable.Entity.Title
-                }",
+                $"Updated {auditable.Entity.GetType().Name} {auditable.Entity.Title}",
               Level = LevelEntity.Debug,
               Audit = AuditEntity.Modification,
               Content = CreateModifiedMessage(auditable),
@@ -247,8 +223,7 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
             });
         }
       }
-
-      if (auditable.State is EntityState.Deleted)
+      else if (auditable.State is EntityState.Deleted)
       {
         if (auditable.Entity.Forget || auditable.Entity.IsDeleted)
         {
@@ -259,11 +234,7 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
               {
                 Timestamp = now,
                 Title =
-                  $"Forgotten {
-                    auditable.Entity.GetType().Name
-                  } {
-                    auditable.Entity.Title
-                  }",
+                  $"Forgotten {auditable.Entity.GetType().Name} {auditable.Entity.Title}",
                 RepresentativeId = representativeId,
                 Level = LevelEntity.Debug,
                 Audit = AuditEntity.Forgetting,
@@ -287,11 +258,7 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
               {
                 Timestamp = now,
                 Title =
-                  $"Forgotten {
-                    auditable.Entity.GetType().Name
-                  } {
-                    auditable.Entity.Title
-                  }",
+                  $"Forgotten {auditable.Entity.GetType().Name} {auditable.Entity.Title}",
                 Level = LevelEntity.Debug,
                 Audit = AuditEntity.Forgetting,
                 Content = CreateForgottenMessage(auditable),
@@ -321,11 +288,7 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
               {
                 Timestamp = now,
                 Title =
-                  $"Deleted {
-                    auditable.Entity.GetType().Name
-                  } {
-                    auditable.Entity.Title
-                  }",
+                  $"Deleted {auditable.Entity.GetType().Name} {auditable.Entity.Title}",
                 RepresentativeId = representativeId,
                 Level = LevelEntity.Debug,
                 Audit = AuditEntity.Deletion,
@@ -350,11 +313,7 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
               {
                 Timestamp = now,
                 Title =
-                  $"Deleted {
-                    auditable.Entity.GetType().Name
-                  } {
-                    auditable.Entity.Title
-                  }",
+                  $"Deleted {auditable.Entity.GetType().Name} {auditable.Entity.Title}",
                 Level = LevelEntity.Debug,
                 Audit = AuditEntity.Deletion,
                 Content = CreateDeletedMessage(auditable),
