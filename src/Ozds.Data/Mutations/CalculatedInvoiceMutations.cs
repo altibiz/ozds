@@ -37,7 +37,7 @@ public class CalculatedInvoiceMutations(
 
       await context.Database.CommitTransactionAsync(cancellationToken);
     }
-    catch
+    catch (Exception)
     {
       if (context.Database.CurrentTransaction is { } transaction)
       {

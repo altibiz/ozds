@@ -142,7 +142,17 @@ public abstract class OzdsManagedModelComponentBase<TPrefix, TModel> :
       return () => (TModel?)(object?)Model;
     }
 
-    return () => compiled(Model);
+    return () =>
+    {
+      try
+      {
+        return compiled(Model);
+      }
+      catch (Exception)
+      {
+        return default;
+      }
+    };
   }
 
   protected virtual Expression<Func<TModel?>> CreateFix()

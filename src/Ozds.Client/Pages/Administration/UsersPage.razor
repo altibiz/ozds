@@ -42,10 +42,10 @@ Allows = [RoleModel.OperatorRepresentative])]
       <Columns>
         <PrefixedColumns
           Models="@models.Items"
-          Prefix="@(x => x.User)"/>
+          Prefix="@(x => x.Representative)"/>
         <PrefixedColumns
           Models="@models.Items"
-          Prefix="@(x => x.Representative)"/>
+          Prefix="@(x => x.User)"/>
       </Columns>
     </ResponsiveTable>
   </Found>
