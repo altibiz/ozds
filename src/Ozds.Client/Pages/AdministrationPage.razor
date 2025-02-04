@@ -13,7 +13,6 @@ RoleModel.NetworkUserRepresentative
 ])]
 @using Microsoft.AspNetCore.Components.Web
 @using Ozds.Business.Analysis
-@using Ozds.Business.Queries.Abstractions
 @using Ozds.Client.Attributes
 @using Ozds.Client.Components.Models
 @using Ozds.Client.Components.Streaming
@@ -27,7 +26,7 @@ RoleModel.NetworkUserRepresentative
   var networkUsers = AnalysisState.AnalysisBases.Value.AnalysesByNetworkUser();
 }
 
-<Table Model="@networkUsers" />
+<Table Model="@networkUsers"/>
 
 @if (RepresentativeState.Representative.Role
   == RoleModel.OperatorRepresentative)

@@ -1,4 +1,3 @@
-using System.Runtime.Serialization;
 using Altibiz.DependencyInjection.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Ozds.Jobs.Context;

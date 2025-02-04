@@ -10,11 +10,10 @@ namespace Ozds.Client.Components.Streaming;
 
 public partial class Table<T> : OzdsComponentBase
 {
-  private string? searchString;
-
   private MudDataGrid<T>? dataGrid;
 
   private PaginatedList<T> model = new([], 0);
+  private string? searchString;
 
   [Parameter]
   public bool Deleted { get; set; } = false;

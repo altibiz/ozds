@@ -5,8 +5,8 @@
 [
   (fetchNuGet {
     pname = "Altibiz.DependencyInjection.Extensions";
-    version = "1.0.9";
-    hash = "sha256-GHAg1HlbDXxV76cRfGg/C0k4NHX64LGl2xUs5tNOsJQ=";
+    version = "1.0.10";
+    hash = "sha256-e5/WOqJ0J1/hqyt47/L0PGiShGIOTXXD8apZHKgTI3k=";
   })
   (fetchNuGet {
     pname = "AngleSharp";

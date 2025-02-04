@@ -17,7 +17,7 @@ public abstract class OzdsPrefixedModelComponentBase<TPrefix, TModel> :
   }
 
   protected Expression<Func<TPrefix, T?>> Wrap<T>(
-      Expression<Func<TModel, T?>> next
+    Expression<Func<TModel, T?>> next
   )
   {
     var inner = Exp;
