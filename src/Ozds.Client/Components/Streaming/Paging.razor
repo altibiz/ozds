@@ -3,7 +3,7 @@
 @typeparam T where T : notnull
 @using MudBlazor
 @using Ozds.Business.Queries.Abstractions
-@using Ozds.Client.Components.Tables
+@using Ozds.Client.Components.Models
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 <Loading
@@ -40,7 +40,10 @@
       }
       else
       {
-        <ResponsiveTable T="T" Model="@(page.Items)"/>
+        foreach (var item in page.Items)
+        {
+          <Summary Model="@item"/>
+        }
       }
 
       if (page.TotalCount != page.Items.Count)

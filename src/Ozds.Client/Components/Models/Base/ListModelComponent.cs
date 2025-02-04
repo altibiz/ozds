@@ -6,17 +6,40 @@ namespace Ozds.Client.Components.Models.Base;
 
 public abstract class ListModelComponent<TPrefix, TModel> : ModelComponent
 {
+  private Func<TPrefix, TModel?>? raw;
+
   [Parameter]
   public IEnumerable<TPrefix> Models { get; set; } = default!;
 
   [Parameter]
   public Expression<Func<TPrefix, TModel?>>? Prefix { get; set; }
 
+  protected Func<TPrefix, TModel?> Raw
+  {
+    get { return raw ??= CreateRaw(); }
+  }
+
+  protected virtual Func<TPrefix, TModel?> CreateRaw()
+  {
+    var prefix = Prefix?.Compile() ?? (x => (TModel?)(object?)x);
+    return x =>
+    {
+      try
+      {
+        return prefix(x);
+      }
+      catch (Exception)
+      {
+        return default;
+      }
+    };
+  }
+
   protected override Type CreateModelType()
   {
-    var prefixFunc = Prefix?.Compile() ?? (x => (TModel?)(object?)x);
+    var prefix = Raw;
     var modelType = Models
-      .Select(prefixFunc)
+      .Select(prefix)
       .Select(x => x?.GetType())
       .OfType<Type>()
       .CommonType();
@@ -40,5 +63,15 @@ public abstract class ListModelComponent<TPrefix, TModel> : ModelComponent
       { nameof(OzdsListModelComponentBase<object, object>.Models), Models! },
       { nameof(OzdsListModelComponentBase<object, object>.Prefix), Prefix! }
     };
+  }
+
+  protected override void OnParametersSet()
+  {
+    base.OnParametersSet();
+
+    if (raw is not null)
+    {
+      raw = CreateRaw();
+    }
   }
 }

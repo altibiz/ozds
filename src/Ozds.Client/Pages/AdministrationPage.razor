@@ -16,7 +16,6 @@ RoleModel.NetworkUserRepresentative
 @using Ozds.Client.Attributes
 @using Ozds.Client.Components.Models
 @using Ozds.Client.Components.Streaming
-@using Ozds.Client.Components.Tables
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 <HeadContent>
@@ -27,33 +26,29 @@ RoleModel.NetworkUserRepresentative
   var networkUsers = AnalysisState.AnalysisBases.Value.AnalysesByNetworkUser();
 }
 
-<ResponsiveTable Model="networkUsers"/>
+<Table Model="@networkUsers"/>
 
 @if (RepresentativeState.Representative.Role
   == RoleModel.OperatorRepresentative)
 {
-  <Paging PageAsync="OnUserPageAsync">
-    <Found Context="models">
-      <ResponsiveTable Model="@models.Items">
-        <Summary>
-          <Summary Model="@context.User"/>
-        </Summary>
-        <Details>
-          <Details Model="@context.User"/>
-          @if (context.Representative is { } representative)
-          {
-            <Details Model="@representative"/>
-          }
-        </Details>
-        <Columns>
-          <PrefixedColumns
-            Models="@models.Items"
-            Prefix="@(x => x.User)"/>
-          <PrefixedColumns
-            Models="@models.Items"
-            Prefix="@(x => x.Representative)"/>
-        </Columns>
-      </ResponsiveTable>
-    </Found>
-  </Paging>
+  <Table PageAsync="@OnUserPageAsync">
+    <Summary>
+      <Summary Model="@context.User"/>
+    </Summary>
+    <Details>
+      <Details Model="@context.User"/>
+      @if (context.Representative is { } representative)
+      {
+        <Details Model="@representative"/>
+      }
+    </Details>
+    <Columns>
+      <PrefixedColumns
+        Models="@context"
+        Prefix="@(x => x.User)"/>
+      <PrefixedColumns
+        Models="@context"
+        Prefix="@(x => x.Representative)"/>
+    </Columns>
+  </Table>
 }

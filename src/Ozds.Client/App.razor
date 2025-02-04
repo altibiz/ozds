@@ -1,9 +1,11 @@
+@namespace Ozds.Client
 @using System.Globalization
 @using Microsoft.AspNetCore.Components.Routing
 @using Ozds.Client.Components.Layout
 @using Ozds.Client.Components.Providers
 @using Ozds.Client.Components.Streaming
-@namespace Ozds.Client
+@using Ozds.Client.Pages
+@inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 @inject NavigationManager NavigationManager
 
@@ -44,9 +46,9 @@
           </Router>
         </Found>
         <NotFound>
-          @if (NavigationManager.Uri != "/unapproved")
+          @if (NavigationManager.Uri != PageHref<UnapprovedPage>())
           {
-            NavigationManager.NavigateTo("/unapproved");
+            NavigateToPage<UnapprovedPage>();
             return;
           }
 

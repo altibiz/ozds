@@ -51,7 +51,7 @@ public class UserQueries(
 
     var count = await ordered.CountAsync();
     var filtered = ordered
-      .Skip((pageNumber - 1) * pageSize)
+      .Skip(pageNumber * pageSize)
       .Take(pageSize);
 
     var users = await filtered.ListAsync();

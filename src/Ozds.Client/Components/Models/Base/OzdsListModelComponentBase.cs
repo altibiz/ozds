@@ -1,4 +1,3 @@
-using System.Linq.Expressions;
 using Microsoft.AspNetCore.Components;
 
 namespace Ozds.Client.Components.Models.Base;
@@ -24,23 +23,10 @@ public abstract class OzdsListModelComponentBase<TPrefix, TModel> :
     return x => first(x) is { } y ? next(y) : default;
   }
 
-  protected Expression<Func<TPrefix, T>> Member<T>(
-    Expression<Func<TModel, T>> next
-  )
-  {
-    var first = Exp;
-    var prefixParam = first.Parameters[0];
-    var replacedBody = ParameterReplacer.Replace(
-      next.Body,
-      next.Parameters[0],
-      first.Body
-    );
-    return Expression.Lambda<Func<TPrefix, T>>(replacedBody, prefixParam);
-  }
-
   protected virtual Func<TPrefix, TModel?> CreateRaw()
   {
-    return Prefix?.Compile() ?? (x => (TModel?)(object?)x);
+    var prefix = Prefix?.Compile() ?? (x => (TModel?)(object?)x);
+    return prefix;
   }
 
   protected override Dictionary<string, object> CreateBaseParameters()

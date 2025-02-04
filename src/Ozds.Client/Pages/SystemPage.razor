@@ -15,7 +15,6 @@ RoleModel.NetworkUserRepresentative
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Client.Attributes
 @using Ozds.Client.Components.Streaming
-@using Ozds.Client.Components.Tables
 @using Ozds.Client.State
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
@@ -27,7 +26,7 @@ RoleModel.NetworkUserRepresentative
   var notifications = NotificationsState.Notifications;
 }
 
-<ResponsiveTable Model="notifications"/>
+<Table Model="@notifications"/>
 
 @if (RepresentativeState.Representative.Role
   != RoleModel.OperatorRepresentative)
@@ -35,7 +34,7 @@ RoleModel.NetworkUserRepresentative
   return;
 }
 
-<Paging T="IEvent"/>
+<Table T="IEvent"/>
 
 @code {
 

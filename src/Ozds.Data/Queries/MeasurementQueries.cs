@@ -85,7 +85,7 @@ public class MeasurementQueries(
         .OrderBy(measurement => measurement.Timestamp);
 
       var paged = ordered
-        .Skip((pageNumber - 1) * pageCount)
+        .Skip(pageNumber * pageCount)
         .Take(pageCount);
 
       futureCounts.Add(filtered.DeferredCount());
@@ -257,7 +257,7 @@ public class MeasurementQueries(
         .OrderBy(measurement => measurement.Timestamp);
 
       var paged = ordered
-        .Skip((pageNumber - 1) * pageCount)
+        .Skip(pageNumber * pageCount)
         .Take(pageCount);
 
       futureCounts.Add(filtered.DeferredCount());

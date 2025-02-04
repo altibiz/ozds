@@ -136,13 +136,9 @@ public abstract class OzdsManagedModelComponentBase<TPrefix, TModel> :
 
   protected virtual Func<TModel?> CreateRaw()
   {
-    var compiled = Prefix?.Compile();
-    if (compiled is null)
-    {
-      return () => (TModel?)(object?)Model;
-    }
-
-    return () => compiled(Model);
+    return Prefix?.Compile() is { } compiled
+      ? () => compiled(Model)
+      : () => (TModel?)(object?)Model;
   }
 
   protected virtual Expression<Func<TModel?>> CreateFix()

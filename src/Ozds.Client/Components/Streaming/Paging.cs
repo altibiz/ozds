@@ -13,7 +13,7 @@ namespace Ozds.Client.Components.Streaming;
 public partial class Paging<T> : OzdsComponentBase
   where T : notnull
 {
-  private int _pageNumber = 1;
+  private int _pageNumber = 0;
 
   private Guid infiniteScrollId = Guid.NewGuid();
 

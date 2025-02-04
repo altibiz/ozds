@@ -122,7 +122,7 @@ public class AuditableQueries(
 
     var count = await filtered.CountAsync(cancellationToken);
     var items = await ordered
-      .Skip((pageNumber - 1) * pageCount)
+      .Skip(pageNumber * pageCount)
       .Take(pageCount)
       .ToListAsync(cancellationToken);
 

@@ -116,7 +116,7 @@ public class LocationQueries(
     var count = await filtered.CountAsync(cancellationToken);
 
     var items = await ordered
-      .Skip((pageNumber - 1) * pageSize)
+      .Skip(pageNumber * pageSize)
       .Take(pageSize)
       .ToListAsync(cancellationToken);
 

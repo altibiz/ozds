@@ -18,7 +18,6 @@ RoleModel.NetworkUserRepresentative
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Client.Attributes
 @using Ozds.Client.Components.Streaming
-@using Ozds.Client.Components.Tables
 @using Ozds.Client.State
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
@@ -45,7 +44,7 @@ RoleModel.NetworkUserRepresentative
 }
 else
 {
-  <ResponsiveTable Model="@analyses"/>
+  <Table Model="@analyses"/>
 }
 
 
