@@ -9,6 +9,16 @@ jobs:
     name: check
     runs-on: ubuntu-latest
 
+    services:
+      timescaledb:
+        image: timescale/timescaledb-ha:pg14-latest
+        env:
+          POSTGRES_DB: ozds
+          POSTGRES_USER: ozds
+          POSTGRES_PASSWORD: ozds
+        ports:
+          - 5432:5432
+
     steps:
       - uses: actions/checkout@v4
 
