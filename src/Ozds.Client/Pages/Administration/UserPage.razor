@@ -32,10 +32,7 @@
     }
   </Details>
   <Edit>
-    <Edit Model="@context.Model.User"/>
-    @if (context.Model.Representative is { } representative)
-    {
-      <Edit Model="@representative"/>
-    }
+    <PrefixedEdit Model="@context.Model" Prefix="@(x => x.User)" />
+    <PrefixedEdit Model="@context.Model" Prefix="@(x => x.Representative)" />
   </Edit>
 </Mutating>
