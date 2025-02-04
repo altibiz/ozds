@@ -92,11 +92,11 @@ public partial class Table<T> : OzdsComponentBase
 
   private async Task<PaginatedList<T>> Fetch(int pageNumber)
   {
-    if (Model is { } model)
+    if (Model is { } nonNullModel)
     {
       var result = new PaginatedList<T>(
-        model.Skip(pageNumber * PageCount).Take(PageCount).ToList(),
-        model.Count()
+        nonNullModel.Skip(pageNumber * PageCount).Take(PageCount).ToList(),
+        nonNullModel.Count()
       );
       return result;
     }
