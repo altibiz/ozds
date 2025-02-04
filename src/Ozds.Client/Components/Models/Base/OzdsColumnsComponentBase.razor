@@ -15,7 +15,7 @@
 @code {
   protected RenderFragment Column(Expression<Func<TModel, string?>> next)
   {
-    return Fragment(@<PropertyColumn
+    return Nest(@<PropertyColumn
               T="TPrefix"
               TProperty="string"
               Title="@(Translate(next.Label()))"
@@ -24,7 +24,7 @@
 
   protected RenderFragment Column(Expression<Func<TModel, Enum?>> next)
   {
-    return Fragment(@<PropertyColumn
+    return Nest(@<PropertyColumn
               T="TPrefix"
               TProperty="Enum"
               Title="@(Translate(next.Label()))"
@@ -33,7 +33,7 @@
 
   protected RenderFragment Column(Expression<Func<TModel, decimal?>> next)
   {
-    return Fragment(@<PropertyColumn
+    return Nest(@<PropertyColumn
               T="TPrefix"
               TProperty="decimal?"
               Title="@(Translate(next.Label()))"
@@ -45,7 +45,7 @@
   )
   {
     var nextFunc = next.Compile();
-    return Fragment(@<PropertyColumn
+    return Nest(@<PropertyColumn
               T="TPrefix"
               TProperty="IEnumerable<T>"
               Title="@(Translate(next.Label()))"
@@ -66,7 +66,7 @@
   )
   {
     var nextFunc = next.Compile();
-    return Fragment(@<PropertyColumn
+    return Nest(@<PropertyColumn
               T="TPrefix"
               TProperty="DateTimeOffset?"
               Title="@(Translate(next.Label()))"
@@ -87,7 +87,7 @@
   )
   {
     var nextFunc = next.Compile();
-    return Fragment(@<PropertyColumn
+    return Nest(@<PropertyColumn
               T="TPrefix"
               TProperty="T"
               Title="@(Translate(next.Label()))"
@@ -105,7 +105,7 @@
 
   protected RenderFragment TextColumn<T>(Expression<Func<TModel, T?>> next)
   {
-    return Fragment(@<PropertyColumn
+    return Nest(@<PropertyColumn
               T="TPrefix"
               TProperty="T"
               Title="@(Translate(next.Label()))"
@@ -114,7 +114,7 @@
 
   protected RenderFragment EnumColumn<T>(Expression<Func<TModel, T?>> next)
   {
-    return Fragment(@<PropertyColumn
+    return Nest(@<PropertyColumn
               T="TPrefix"
               TProperty="T"
               Title="@(Translate(next.Label()))"
@@ -124,7 +124,7 @@
   protected RenderFragment DateColumn<T>(Expression<Func<TModel, T?>> next)
   {
     var nextFunc = next.Compile();
-    return Fragment(@<PropertyColumn
+    return Nest(@<PropertyColumn
               T="TPrefix"
               TProperty="T"
               Title="@(Translate(next.Label()))"
@@ -143,7 +143,7 @@
   protected RenderFragment DateTimeColumn<T>(Expression<Func<TModel, T?>> next)
   {
     var nextFunc = next.Compile();
-    return Fragment(@<PropertyColumn
+    return Nest(@<PropertyColumn
               T="TPrefix"
               TProperty="T"
               Title="@(Translate(next.Label()))"
@@ -164,7 +164,7 @@
   )
   {
     var nextFunc = next.Compile();
-    return Fragment(@<TemplateColumn
+    return Nest(@<TemplateColumn
       T="TPrefix"
       Title="@(Translate(next.Label()))">
       <CellTemplate>
@@ -184,7 +184,7 @@
     where T : IIdentifiable
   {
     var nextFunc = next.Compile();
-    return Fragment(@<TemplateColumn
+    return Nest(@<TemplateColumn
       T="TPrefix"
       Title="@(Translate(next.Label()))">
       <CellTemplate>
@@ -201,7 +201,7 @@
     </TemplateColumn>);
   }
 
-  protected RenderFragment Fragment(
+  protected RenderFragment Nest(
     RenderFragment fragment
   )
   {
@@ -210,10 +210,13 @@
       return fragment;
     }
 
-    return @<Fragment>
-      <Fragment>
-        @fragment
-      </Fragment>
-    </Fragment>;
+    return Enumerable
+      .Range(0, NestingLevel)
+      .Aggregate(fragment, (acc, _) =>
+        @<Fragment>
+          <Fragment>
+            @acc
+          </Fragment>
+        </Fragment>);
   }
 }

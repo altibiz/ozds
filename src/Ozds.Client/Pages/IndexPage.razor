@@ -16,7 +16,7 @@ RoleModel.NetworkUserRepresentative
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Client.Attributes
 @using Ozds.Client.Components.Dashboards
-@using Ozds.Client.Components.Tables
+@using Ozds.Client.Components.Streaming
 @using Ozds.Client.State
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
@@ -54,7 +54,7 @@ RoleModel.NetworkUserRepresentative
   var locations = AnalysisState.AnalysisBases.Value
     .AnalysesByLocation();
 
-  <ResponsiveTable Model="@locations"/>
+  <Table Model="@locations"/>
 }
 
 @if (RepresentativeState.Representative.Role
@@ -64,7 +64,7 @@ RoleModel.NetworkUserRepresentative
   var networkUsers = AnalysisState.AnalysisBases.Value
     .AnalysesByNetworkUser();
 
-  <ResponsiveTable Model="@networkUsers"/>
+  <Table Model="@networkUsers"/>
 }
 
 @if (RepresentativeState.Representative.Role
@@ -73,7 +73,7 @@ RoleModel.NetworkUserRepresentative
   var measurementLocations = AnalysisState.AnalysisBases.Value
     .AnalysesByMeasurementLocation();
 
-  <ResponsiveTable Model="@measurementLocations"/>
+  <Table Model="@measurementLocations"/>
 }
 
 @{
@@ -84,7 +84,7 @@ RoleModel.NetworkUserRepresentative
     .ToList();
 }
 
-<ResponsiveTable Model="@invoices"/>
+<Table Model="@invoices"/>
 
 @code {
 

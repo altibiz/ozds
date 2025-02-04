@@ -14,8 +14,8 @@ RoleModel.NetworkUserRepresentative
 ])]
 @using Microsoft.AspNetCore.Components.Web
 @using Ozds.Business.Models.Abstractions
+@using Ozds.Client.Components.Streaming
 @using Ozds.Client.Attributes
-@using Ozds.Client.Components.Tables
 @using Ozds.Client.State
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
@@ -30,7 +30,7 @@ RoleModel.NetworkUserRepresentative
     .ToList();
 }
 
-<ResponsiveTable Model="@invoices"/>
+<Table Model="@invoices"/>
 
 @code {
 

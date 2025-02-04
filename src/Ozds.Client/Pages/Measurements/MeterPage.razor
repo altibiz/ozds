@@ -8,7 +8,6 @@
 @using Ozds.Client.Components.Charts
 @using Ozds.Client.Components.Models
 @using Ozds.Client.Components.Streaming
-@using Ozds.Client.Components.Tables
 @using Ozds.Client.State
 @inherits Ozds.Client.Components.Models.Base.OzdsIdentifiableModelPageComponentBase<Ozds.Business.Models.Abstractions.IMeter>
 
@@ -27,7 +26,7 @@
 
 @if (analysis is not null)
 {
-  <ResponsiveTable Model="@analysis.Analysis.Monthly">
+  <Table Model="@analysis.Analysis.Monthly">
     <Summary>
       <Summary Model="@context"/>
     </Summary>
@@ -37,7 +36,7 @@
     <Columns>
       <Columns Models="@analysis.Analysis.Monthly"/>
     </Columns>
-  </ResponsiveTable>
+  </Table>
 
   var meters = new List<IMeter> { analysis.Meter };
 

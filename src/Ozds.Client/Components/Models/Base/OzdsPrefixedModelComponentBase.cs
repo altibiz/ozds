@@ -30,7 +30,7 @@ public abstract class OzdsPrefixedModelComponentBase<TPrefix, TModel> :
 
     var condition = Expression.Condition(
       Expression.Equal(inner.Body, Expression.Default(typeof(TModel))),
-      Expression.Default(typeof(T)),
+      Expression.Default(nextReplaced.Type),
       nextReplaced
     );
 

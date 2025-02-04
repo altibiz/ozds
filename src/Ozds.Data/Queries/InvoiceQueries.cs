@@ -63,7 +63,7 @@ public class InvoiceQueries(
 
     var count = await ordered.CountAsync(cancellationToken);
     var items = await ordered
-      .Skip((pageNumber - 1) * pageCount)
+      .Skip(pageNumber * pageCount)
       .Take(pageCount)
       .ToListAsync(cancellationToken);
 

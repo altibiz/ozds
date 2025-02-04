@@ -1,0 +1,86 @@
+@namespace Ozds.Client.Components.Streaming
+
+@typeparam T
+@using MudBlazor
+@using Ozds.Client.Components.Models
+@inherits Ozds.Client.Components.Base.OzdsComponentBase
+
+<MudHidden Breakpoint="Breakpoint.MdAndUp">
+  <MudTextField
+    T="string"
+    Value="@searchString"
+    ValueChanged="@OnPagingSearch"
+    Placeholder="Search"
+    Adornment="Adornment.Start"
+    Immediate="true"
+    AdornmentIcon="@Icons.Material.Filled.Search"
+    IconSize="Size.Medium"/>
+  <Paging T="T" PageAsync="@OnPagingPage">
+    <Found>
+      @foreach (var (item, index) in context.Items.Select((x, i) => (x, i)))
+      {
+        if (!Filter(item))
+        {
+          continue;
+        }
+
+        <TableCollapse>
+          <Summary>
+            @if (Summary is null)
+            {
+              <Summary Model="item"/>
+            }
+            else
+            {
+              @Summary(item)
+            }
+          </Summary>
+          <Details>
+            @if (Details is null)
+            {
+              <Details Model="item"/>
+            }
+            else
+            {
+              @Details(item)
+            }
+          </Details>
+        </TableCollapse>
+      }
+    </Found>
+  </Paging>
+</MudHidden>
+
+<MudHidden Breakpoint="Breakpoint.SmAndDown">
+  <MudDataGrid
+    T="T"
+    SortMode="@SortMode.None"
+    ServerData="@OnDataGridServerData"
+    @ref="@dataGrid">
+    <ToolBarContent>
+      <MudTextField
+        T="string"
+        Value="@searchString"
+        ValueChanged="@OnDataGridSearch"
+        Placeholder="Search"
+        Adornment="Adornment.Start"
+        Immediate="true"
+        AdornmentIcon="@Icons.Material.Filled.Search"
+        IconSize="Size.Medium">
+      </MudTextField>
+    </ToolBarContent>
+    <Columns>
+      @if (Columns is null)
+      {
+        <Columns TPrefix="T" Models="@model.Items"/>
+      }
+      else
+      {
+        @Columns(model.Items)
+      }
+    </Columns>
+    <PagerContent>
+      <MudDataGridPager T="T"/>
+    </PagerContent>
+  </MudDataGrid>
+</MudHidden>

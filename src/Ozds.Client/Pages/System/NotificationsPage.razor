@@ -17,7 +17,6 @@ RoleModel.NetworkUserRepresentative
 @using Ozds.Client.Attributes
 @using Ozds.Client.Components.Models
 @using Ozds.Client.Components.Streaming
-@using Ozds.Client.Components.Tables
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 <HeadContent>
@@ -31,7 +30,7 @@ RoleModel.NetworkUserRepresentative
 
 <Paging PageAsync="OnPageAsync">
   <Found Context="page">
-    <ResponsiveTable Model="@(page.Items)">
+    <Table Model="@(page.Items)">
       <Summary>
         <Summary Model="@context"/>
       </Summary>
@@ -41,7 +40,7 @@ RoleModel.NetworkUserRepresentative
       <Columns>
         <Columns Models="page.Items"/>
       </Columns>
-    </ResponsiveTable>
+    </Table>
   </Found>
 </Paging>
 
