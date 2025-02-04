@@ -24,34 +24,10 @@ public abstract class OzdsListModelComponentBase<TPrefix, TModel> :
     return x => first(x) is { } y ? next(y) : default;
   }
 
-  protected Expression<Func<TPrefix, T>> Member<T>(
-    Expression<Func<TModel, T>> next
-  )
-  {
-    var first = Exp;
-    var prefixParam = first.Parameters[0];
-    var replacedBody = ParameterReplacer.Replace(
-      next.Body,
-      next.Parameters[0],
-      first.Body
-    );
-    return Expression.Lambda<Func<TPrefix, T>>(replacedBody, prefixParam);
-  }
-
   protected virtual Func<TPrefix, TModel?> CreateRaw()
   {
     var prefix = Prefix?.Compile() ?? (x => (TModel?)(object?)x);
-    return x =>
-    {
-      try
-      {
-        return prefix(x);
-      }
-      catch (Exception)
-      {
-        return default;
-      }
-    };
+    return prefix;
   }
 
   protected override Dictionary<string, object> CreateBaseParameters()

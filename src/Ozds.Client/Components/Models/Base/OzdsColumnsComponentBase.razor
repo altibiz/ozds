@@ -7,37 +7,37 @@
 @using MudBlazor
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Client.Extensions
+@using Ozds.Client.Components.Streaming
 @inherits OzdsListModelComponentBase<TPrefix, TModel>
 
 @Base()
 
 @code {
-
   protected RenderFragment Column(Expression<Func<TModel, string?>> next)
   {
-    return @<PropertyColumn
+    return Fragment(@<PropertyColumn
               T="TPrefix"
               TProperty="string"
               Title="@(Translate(next.Label()))"
-              Property="@Member(next)"/>;
+              Property="@Wrap(next)"/>);
   }
 
   protected RenderFragment Column(Expression<Func<TModel, Enum?>> next)
   {
-    return @<PropertyColumn
+    return Fragment(@<PropertyColumn
               T="TPrefix"
               TProperty="Enum"
               Title="@(Translate(next.Label()))"
-              Property="@Member(next)"/>;
+              Property="@Wrap(next)"/>);
   }
 
   protected RenderFragment Column(Expression<Func<TModel, decimal?>> next)
   {
-    return @<PropertyColumn
+    return Fragment(@<PropertyColumn
               T="TPrefix"
               TProperty="decimal?"
               Title="@(Translate(next.Label()))"
-              Property="@Member(next)"/>;
+              Property="@Wrap(next)"/>);
   }
 
   protected RenderFragment Column<T>(
@@ -45,11 +45,11 @@
   )
   {
     var nextFunc = next.Compile();
-    return @<PropertyColumn
+    return Fragment(@<PropertyColumn
               T="TPrefix"
               TProperty="IEnumerable<T>"
               Title="@(Translate(next.Label()))"
-              Property="@Member(next)">
+              Property="@Wrap(next)">
       <CellTemplate>
         @if (Get(nextFunc)(context.Item) is { } item)
         {
@@ -58,7 +58,7 @@
           </MudText>
         }
       </CellTemplate>
-    </PropertyColumn>;
+    </PropertyColumn>);
   }
 
   protected RenderFragment Column(
@@ -66,11 +66,11 @@
   )
   {
     var nextFunc = next.Compile();
-    return @<PropertyColumn
+    return Fragment(@<PropertyColumn
               T="TPrefix"
               TProperty="DateTimeOffset?"
               Title="@(Translate(next.Label()))"
-              Property="@Member(next)">
+              Property="@Wrap(next)">
       <CellTemplate>
         <MudText>
           @if (Get(nextFunc)(context.Item) is { } date)
@@ -79,7 +79,7 @@
           }
         </MudText>
       </CellTemplate>
-    </PropertyColumn>;
+    </PropertyColumn>);
   }
 
   protected RenderFragment EnumerableColumn<T>(
@@ -87,11 +87,11 @@
   )
   {
     var nextFunc = next.Compile();
-    return @<PropertyColumn
+    return Fragment(@<PropertyColumn
               T="TPrefix"
               TProperty="T"
               Title="@(Translate(next.Label()))"
-              Property="@Member(next)">
+              Property="@Wrap(next)">
       <CellTemplate>
         @if (Get(nextFunc)(context.Item) is IEnumerable item)
         {
@@ -100,35 +100,35 @@
           </MudText>
         }
       </CellTemplate>
-    </PropertyColumn>;
+    </PropertyColumn>);
   }
 
   protected RenderFragment TextColumn<T>(Expression<Func<TModel, T?>> next)
   {
-    return @<PropertyColumn
+    return Fragment(@<PropertyColumn
               T="TPrefix"
               TProperty="T"
               Title="@(Translate(next.Label()))"
-              Property="@Member(next)"/>;
+              Property="@Wrap(next)"/>);
   }
 
   protected RenderFragment EnumColumn<T>(Expression<Func<TModel, T?>> next)
   {
-    return @<PropertyColumn
+    return Fragment(@<PropertyColumn
               T="TPrefix"
               TProperty="T"
               Title="@(Translate(next.Label()))"
-              Property="@Member(next)"/>;
+              Property="@Wrap(next)"/>);
   }
 
   protected RenderFragment DateColumn<T>(Expression<Func<TModel, T?>> next)
   {
     var nextFunc = next.Compile();
-    return @<PropertyColumn
+    return Fragment(@<PropertyColumn
               T="TPrefix"
               TProperty="T"
               Title="@(Translate(next.Label()))"
-              Property="@Member(next)">
+              Property="@Wrap(next)">
       <CellTemplate>
         <MudText>
           @if (Get(nextFunc)(context.Item) is DateTimeOffset date)
@@ -137,17 +137,17 @@
           }
         </MudText>
       </CellTemplate>
-    </PropertyColumn>;
+    </PropertyColumn>);
   }
 
   protected RenderFragment DateTimeColumn<T>(Expression<Func<TModel, T?>> next)
   {
     var nextFunc = next.Compile();
-    return @<PropertyColumn
+    return Fragment(@<PropertyColumn
               T="TPrefix"
               TProperty="T"
               Title="@(Translate(next.Label()))"
-              Property="@Member(next)">
+              Property="@Wrap(next)">
       <CellTemplate>
         <MudText>
           @if (Get(nextFunc)(context.Item) is DateTimeOffset date)
@@ -156,7 +156,7 @@
           }
         </MudText>
       </CellTemplate>
-    </PropertyColumn>;
+    </PropertyColumn>);
   }
 
   protected RenderFragment LinkColumn(
@@ -164,7 +164,9 @@
   )
   {
     var nextFunc = next.Compile();
-    return @<TemplateColumn T="TPrefix" Title="@(Translate(next.Label()))">
+    return Fragment(@<TemplateColumn
+      T="TPrefix"
+      Title="@(Translate(next.Label()))">
       <CellTemplate>
         @if (Get(nextFunc)(context.Item) is { } model)
         {
@@ -173,7 +175,7 @@
           </MudLink>
         }
       </CellTemplate>
-    </TemplateColumn>;
+    </TemplateColumn>);
   }
 
   protected RenderFragment LinkColumn<T>(
@@ -182,7 +184,9 @@
     where T : IIdentifiable
   {
     var nextFunc = next.Compile();
-    return @<TemplateColumn T="TPrefix" Title="@(Translate(next.Label()))">
+    return Fragment(@<TemplateColumn
+      T="TPrefix"
+      Title="@(Translate(next.Label()))">
       <CellTemplate>
         @if (Get(nextFunc)(context.Item) is { } id)
         {
@@ -194,7 +198,22 @@
           </MudLink>
         }
       </CellTemplate>
-    </TemplateColumn>;
+    </TemplateColumn>);
   }
 
+  protected RenderFragment Fragment(
+    RenderFragment fragment
+  )
+  {
+    if (Isolate)
+    {
+      return fragment;
+    }
+
+    return @<Fragment>
+      <Fragment>
+        @fragment
+      </Fragment>
+    </Fragment>;
+  }
 }

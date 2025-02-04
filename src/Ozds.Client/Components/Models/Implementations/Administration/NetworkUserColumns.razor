@@ -7,6 +7,6 @@
 
 @(Base<IIdentifiable>())
 
-<PrefixedColumns Models="@Models" Prefix="@Member(x => x.LegalPerson)"/>
+<PrefixedColumns Models="@Models" Prefix="@Wrap(x => x.LegalPerson)"/>
 
 @Column(x => x.AltiBizSubProjectCode)

@@ -17,20 +17,27 @@ public abstract class OzdsPrefixedModelComponentBase<TPrefix, TModel> :
   }
 
   protected Expression<Func<TPrefix, T?>> Wrap<T>(
-    Expression<Func<TModel, T?>> next
+      Expression<Func<TModel, T?>> next
   )
   {
-    var first = Exp;
-    var param = first.Parameters[0];
-    var modelExpression = first.Body;
-    var nullCheck = Expression.Equal(
-      modelExpression,
-      Expression.Constant(null, typeof(TModel))
+    var inner = Exp;
+
+    var nextReplaced = ParameterReplacer.Replace(
+      next.Body,
+      next.Parameters[0],
+      inner.Body
     );
-    var ifTrue = Expression.Constant(default(T), typeof(T));
-    var ifFalse = Expression.Invoke(next, modelExpression);
-    var body = Expression.Condition(nullCheck, ifTrue, ifFalse);
-    return Expression.Lambda<Func<TPrefix, T?>>(body, param);
+
+    var condition = Expression.Condition(
+      Expression.Equal(inner.Body, Expression.Default(typeof(TModel))),
+      Expression.Default(typeof(T)),
+      nextReplaced
+    );
+
+    return Expression.Lambda<Func<TPrefix, T?>>(
+      condition,
+      inner.Parameters[0]
+    );
   }
 
   protected virtual Expression<Func<TPrefix, TModel?>> CreateExp()
