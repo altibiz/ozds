@@ -25,7 +25,7 @@
   </thead>
   <tbody>
   <tr>
-    <td>Božjakovina, @(DateString(Model.IssuedOn))</td>
+    <td>Božjakovina, @(DateString(Entity.IssuedOn))</td>
     <td></td>
   </tr>
   <tr>
@@ -46,6 +46,6 @@
 @code {
 
   [Parameter]
-  public NetworkUserInvoiceEntity Model { get; set; } = default!;
+  public NetworkUserInvoiceEntity Entity { get; set; } = default!;
 
 }

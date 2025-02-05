@@ -7,14 +7,14 @@
     <img src="/invoice-print-header-hrv.svg"/>
   </div>
   <div class="page-content">
-    <NetworkUserInvoiceDocumentContent Model="@Model.Invoice"/>
+    <NetworkUserInvoiceDocumentContent Entity="@Entity.Invoice"/>
   </div>
   <div class="page-footer">
     <img src="/invoice-print-footer-hrv.svg"/>
   </div>
 </div>
 
-@foreach (var calculation in Model.Calculations)
+@foreach (var calculation in Entity.Calculations)
 {
   <div class="page-break"/>
   <div class="page">
@@ -22,7 +22,7 @@
       <img src="/invoice-print-header-hrv.svg"/>
     </div>
     <div class="page-content">
-      <NetworkUserCalculationDocumentContent Model="@calculation"/>
+      <NetworkUserCalculationDocumentContent Entity="@calculation"/>
     </div>
     <div class="page-footer">
       <img src="/invoice-print-footer-hrv.svg"/>
@@ -30,7 +30,7 @@
   </div>
 }
 
-@if (Model.Calculations.Count > 0)
+@if (Entity.Calculations.Count > 0)
 {
   <div class="page-break"/>
   <div class="page">
@@ -53,7 +53,7 @@
   </div>
   <div class="page-content">
     <NetworkUserCalculationDocumentFooter/>
-    <NetworkUserInvoiceDocumentFooter Model="@Model.Invoice"/>
+    <NetworkUserInvoiceDocumentFooter Entity="@Entity.Invoice"/>
   </div>
   <div class="page-footer">
     <img src="/invoice-print-footer-hrv.svg"/>
@@ -63,6 +63,6 @@
 @code {
 
   [Parameter]
-  public CalculatedNetworkUserInvoiceEntity Model { get; set; } = default!;
+  public CalculatedNetworkUserInvoiceEntity Entity { get; set; } = default!;
 
 }

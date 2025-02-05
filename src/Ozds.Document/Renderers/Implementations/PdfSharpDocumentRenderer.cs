@@ -1,3 +1,7 @@
+// TODO: add if the only way
+#pragma warning disable S125 // Sections of code should not be commented out
+/*
+
 using Ozds.Document.Renderers.Abstractions;
 using PdfSharp;
 using TheArtOfDev.HtmlRenderer.PdfSharp;
@@ -32,3 +36,6 @@ public class PdfSharpDocumentRenderer(
     });
   }
 }
+
+*/
+#pragma warning restore S125 // Sections of code should not be commented out

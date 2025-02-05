@@ -7,7 +7,7 @@
     <img src="/invoice-print-header-hrv.svg"/>
   </div>
   <div class="page-content">
-    <NetworkUserCalculationDocumentContent Model="@Model"/>
+    <NetworkUserCalculationDocumentContent Entity="@Entity"/>
     <NetworkUserCalculationDocumentAbbreviations/>
   </div>
   <div class="page-footer">
@@ -30,6 +30,6 @@
 @code {
 
   [Parameter]
-  public NetworkUserCalculationEntity Model { get; set; } = default!;
+  public NetworkUserCalculationEntity Entity { get; set; } = default!;
 
 }

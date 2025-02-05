@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.Extensions.Logging;
+using Ozds.Document.Components;
 using Ozds.Document.Entities;
 using Ozds.Document.Renderers.Abstractions;
 
@@ -11,9 +13,11 @@ public class DocumentRenderer(
   ILoggerFactory loggerFactory
 )
 {
+#pragma warning disable SA1011 // Closing square brackets should be spaced correctly
   public async Task<byte[]?> RenderCalculatedNetworkUserInvoice(
     CalculatedNetworkUserInvoiceEntity entity
   )
+#pragma warning restore SA1011 // Closing square brackets should be spaced correctly
   {
     await using var htmlRenderer =
       new HtmlRenderer(serviceProvider, loggerFactory);
@@ -22,7 +26,7 @@ public class DocumentRenderer(
     {
       var dictionary = new Dictionary<string, object?>
       {
-        { "Model", entity }
+        { nameof(NetworkUserCalculationDocument.Entity), entity }
       };
 
       var parameters = ParameterView.FromDictionary(dictionary);
@@ -30,5 +34,7 @@ public class DocumentRenderer(
 
       return output.ToHtmlString();
     });
+
+    return await documentRenderer.RenderHtmlToPdf(html);
   }
 }
