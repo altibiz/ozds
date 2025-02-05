@@ -4,10 +4,10 @@ using Ozds.Document.Renderers.Abstractions;
 
 namespace Ozds.Document.Renderers.Implementations;
 
-public class LibwkhtmltoxDocumentRenderer(
+public class LibwkhtmltoxHtmlToPdfRenderer(
   IConverter pdfToHtmlConverter,
-  ILogger<LibwkhtmltoxDocumentRenderer> logger
-) : IDocumentRenderer
+  ILogger<LibwkhtmltoxHtmlToPdfRenderer> logger
+) : IHtmlToPdfRenderer
 {
 #pragma warning disable SA1011 // Closing square brackets should be spaced correctly
   public Task<byte[]?> RenderHtmlToPdf(string html)

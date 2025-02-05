@@ -12,20 +12,12 @@ public static class IServiceCollectionExtensions
     IHostApplicationBuilder builder
   )
   {
-    services.AddLibwkhtmltoxRenderer();
-    services.AddPdfSharpRenderer();
+    services.AddHtmlToPdfConverter();
     services.AddDocumentRenderer();
     return services;
   }
 
-  public static IServiceCollection AddPdfSharpRenderer(
-    this IServiceCollection services
-  )
-  {
-    return services;
-  }
-
-  public static IServiceCollection AddLibwkhtmltoxRenderer(
+  public static IServiceCollection AddHtmlToPdfConverter(
     this IServiceCollection services
   )
   {
@@ -39,11 +31,8 @@ public static class IServiceCollectionExtensions
     this IServiceCollection services
   )
   {
-    services.AddSingleton<IDocumentRenderer, LibwkhtmltoxDocumentRenderer>();
-#pragma warning disable S125 // Sections of code should not be commented out
-    // services.AddSingleton<IDocumentRenderer, PdfSharpDocumentRenderer>();
-#pragma warning restore S125 // Sections of code should not be commented out
-
+    services.AddSingleton<IHtmlToPdfRenderer, LibwkhtmltoxHtmlToPdfRenderer>();
+    services.AddSingleton<IComponentToHtmlRenderer, AspNetCoreComponentsComponentToHtmlRenderer>();
     services.AddSingleton<DocumentRenderer>();
 
     return services;
