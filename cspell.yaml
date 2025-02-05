@@ -130,6 +130,8 @@ words:
   - "rbrack"
   - "dowhile"
   - "activatable"
+  - "libwkhtmltox"
+  - "dylib"
 
   # Croatian
   - "altibiz"
