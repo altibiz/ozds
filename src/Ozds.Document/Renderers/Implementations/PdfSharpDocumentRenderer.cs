@@ -2,7 +2,7 @@ using Ozds.Document.Renderers.Abstractions;
 using PdfSharp;
 using TheArtOfDev.HtmlRenderer.PdfSharp;
 
-namespace Ozds.Document.Renderers;
+namespace Ozds.Document.Renderers.Implementations;
 
 public class PdfSharpDocumentRenderer(
   ILogger<PdfSharpDocumentRenderer> logger

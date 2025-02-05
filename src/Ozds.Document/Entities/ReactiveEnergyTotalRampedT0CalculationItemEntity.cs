@@ -1,4 +1,3 @@
-
 namespace Ozds.Document.Entities;
 
 public abstract class
@@ -24,27 +23,6 @@ public abstract class
 
   public decimal Amount_kVARh { get; set; }
 
-  public override SpanningMeasure<decimal> Amount
-  {
-    get
-    {
-      return new MinMaxSpanningMeasure<decimal>(
-        new UnaryTariffMeasure<decimal>(
-          new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(ReactiveImportMin_kVARh),
-            new SinglePhasicMeasure<decimal>(ReactiveExportMin_kVARh)
-          )
-        ),
-        new UnaryTariffMeasure<decimal>(
-          new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(ReactiveImportMax_kVARh),
-            new SinglePhasicMeasure<decimal>(ReactiveExportMax_kVARh)
-          )
-        )
-      );
-    }
-  }
-
   public override decimal Total
   {
     get { return Total_EUR; }
@@ -54,17 +32,4 @@ public abstract class
 public class UsageReactiveEnergyTotalRampedT0CalculationItemEntity
   : ReactiveEnergyTotalRampedT0CalculationItemEntity
 {
-  public override ExpenditureMeasure<decimal> Price
-  {
-    get
-    {
-      return new UsageExpenditureMeasure<decimal>(
-        new UnaryTariffMeasure<decimal>(
-          new AnyDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(Price_EUR)
-          )
-        )
-      );
-    }
-  }
 }

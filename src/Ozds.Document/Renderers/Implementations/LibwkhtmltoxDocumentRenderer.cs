@@ -2,7 +2,7 @@ using DinkToPdf;
 using DinkToPdf.Contracts;
 using Ozds.Document.Renderers.Abstractions;
 
-namespace Ozds.Document.Renderers;
+namespace Ozds.Document.Renderers.Implementations;
 
 public class LibwkhtmltoxDocumentRenderer(
   IConverter pdfToHtmlConverter,

@@ -1,8 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
-
-  <PropertyGroup>
-    <OutputType>Library</OutputType>
-  </PropertyGroup>
+<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
     <DinkToPdfVersion>1.0.8</DinkToPdfVersion>
