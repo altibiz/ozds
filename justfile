@@ -401,7 +401,8 @@ purge:
       -e !.idea/** \
       -e !**/*.csproj.user \
       -e !.direnv/ \
-      -e !.direnv/bin/
+      -e !.direnv/bin/ \
+      -e !.dvc/config.local
     dotnet tool restore
     dotnet restore
 
