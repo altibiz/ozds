@@ -42,4 +42,16 @@
     <EmbeddedResource Include="Assets/**/*" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <NativeLibDir>Libraries</NativeLibDir>
+  </PropertyGroup>
+
+  <Target Name="MakeNativeLibDir" AfterTargets="Compile">
+    <MakeDir Directories="$(NativeLibDir)" />
+  </Target>
+
+  <ItemGroup>
+    <None Include="$(NativeLibDir)\**\*.*" CopyToOutputDirectory="Always" />
+  </ItemGroup>
+
 </Project>
