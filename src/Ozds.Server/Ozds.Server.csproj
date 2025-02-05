@@ -7,7 +7,6 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="../../src/Ozds.Business/Ozds.Business.csproj" />
-	  <ProjectReference Include="../../src/Ozds.Iot/Ozds.Iot.csproj" />
 	  <ProjectReference Include="../../src/Ozds.Client/Ozds.Client.csproj" />
 	</ItemGroup>
 
