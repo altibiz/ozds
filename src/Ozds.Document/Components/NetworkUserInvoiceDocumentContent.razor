@@ -1,0 +1,257 @@
+@namespace Ozds.Document.Components
+@using Ozds.Document.Entities
+@inherits DocumentBase
+
+<style>
+  .calculation-table {
+    border-spacing: 0;
+    border-collapse: collapse;
+    border: 2px solid black;
+  }
+
+  .calculation-table th {
+    background-color: #DDDDDD;
+  }
+
+  .calculation-table th, .calculation-table td {
+    border: 1px solid black;
+    padding: 2px;
+  }
+
+  .info-table {
+    border-spacing: 0;
+    border-collapse: collapse;
+    border: 2px solid black;
+    margin-top: 1.2rem;
+    margin-left: auto;
+    width: 75%;
+  }
+
+  .info-table th, .info-table td {
+    border: 1px solid black;
+    padding: 2px;
+  }
+
+  .info-table th {
+    font-weight: normal;
+  }
+
+  .info-table tr {
+    height: 1.2rem;
+    align-items: center;
+  }
+</style>
+
+<p style="text-align: right;">
+  @Translate("INVOICE NO.") @(Entity.Id)
+</p>
+<table class="info-table" style="margin-top: 0.8rem; width: 100%;">
+  <colgroup>
+    <col style="width: 57%"/>
+    <col style="width: 19%"/>
+    <col style="width: 23%"/>
+  </colgroup>
+  <thead>
+  <tr>
+    <th style="text-align: start;">
+      <strong>@(Entity.Location.Title)</strong>
+    </th>
+    <th style="text-align: end;">@Translate("ISSUE DATE"):</th>
+    <th style="text-align: start;">
+      @(DateString(Entity.ToDate.AddTicks(-1)))
+    </th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td>@Entity.Location.Title</td>
+    <td style="text-align: end;">@Translate("DUE DATE"):</td>
+    <td>@DateString(Entity.IssuedOn)</td>
+  </tr>
+  <tr>
+    <td>@Entity.Location.LegalPerson.Address</td>
+    <td style="text-align: end;">@Translate("CONTRACT DATE"):</td>
+    <td>@DateString(Entity.IssuedOn)</td>
+  </tr>
+  <tr>
+    <td>
+      @Entity.Location.LegalPerson.PostalCode
+      @Entity.Location.LegalPerson.City
+    </td>
+    <td style="text-align: end;">@Translate("CONTRACT"):</td>
+    <td>@Entity.Location.Id</td>
+  </tr>
+  <tr>
+    <td>@Translate("SOCIAL SECURITY CODE"): @Entity.Location.LegalPerson.SocialSecurityNumber</td>
+    <td style="text-align: end;">@Translate("NOSIOC"):</td>
+    <td>@Entity.Location.Id</td>
+  </tr>
+  </tbody>
+</table>
+<p style="margin-top: 1.2rem; text-align: right;">
+  @Translate("FOR ELECTRICITY FOR THE PERIOD")
+  &colon;
+  @Translate("TO")
+  <strong>
+    @DateString(Entity.FromDate)
+  </strong>
+  DO
+  <strong>
+    @DateString(Entity.ToDate.AddTicks(-1))
+  </strong>
+</p>
+<table class="calculation-table" style="margin-top: 0.8rem; width: 100%;">
+  <colgroup>
+    <col style="width: 10%;"/>
+    <col style="width: 80%;"/>
+    <col style="width: 10%;"/>
+  </colgroup>
+  <thead>
+  <tr>
+    <th>@Translate("RBR")</th>
+    <th>@Translate("NAME ARTICLE / SERVICE")</th>
+    <th>@Translate("TOTAL")</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td style="text-align: center;">1.)</td>
+    <td>@Translate("Network usage fee for ZDS")</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td style="text-align: center; padding-left: 1.2rem;">1.1.)</td>
+    <td>@Translate("Network usage during one tariff period")</td>
+    <td style="text-align: end;">
+      @NumericString(Entity.UsageActiveEnergyTotalImportT0Fee_EUR)
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align: center; padding-left: 1.2rem;">1.2.)</td>
+    <td>@Translate("Network usage during multiple tariff periods")</td>
+    <td style="text-align: end;">
+      @NumericString(Entity.UsageActiveEnergyTotalImportT1Fee_EUR)
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align: center; padding-left: 1.2rem;">1.3.)</td>
+    <td>@Translate("Network usage during off-peak tariff period")</td>
+    <td style="text-align: end;">
+      @NumericString(Entity.UsageActiveEnergyTotalImportT2Fee_EUR)
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align: center; padding-left: 1.2rem;">1.4.)</td>
+    <td>@Translate("Engaged power during multiple tariff periods")</td>
+    <td style="text-align: end;">
+      @NumericString(Entity.UsageActivePowerTotalImportT1PeakFee_EUR)
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align: center; padding-left: 1.2rem;">1.5.)</td>
+    <td>@Translate("Excessively taken reactive power")</td>
+    <td style="text-align: end;">
+      @NumericString(Entity.UsageReactiveEnergyTotalRampedT0Fee_EUR)
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align: center; padding-left: 1.2rem;">1.6.)</td>
+    <td>@Translate("Metering service fee")</td>
+    <td style="text-align: end;">
+      @NumericString(Entity.UsageMeterFee_EUR)
+    </td>
+  </tr>
+  <tr>
+    <td></td>
+    <td style="text-align: end;">@Translate("Network usage fee - TOTAL")</td>
+    <td style="text-align: end;">
+      <strong>
+        @NumericString(Entity.UsageFeeTotal_EUR) EUR
+      </strong>
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align: center;">2.)</td>
+    <td>@Translate("Electricity supply fee")</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td style="text-align: center; padding-left: 1.2rem;">2.1.)</td>
+    <td>@Translate("Electricity supply during multi-rate daily tariff period")</td>
+    <td style="text-align: end;">
+      @NumericString(Entity.SupplyActiveEnergyTotalImportT1Fee_EUR)
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align: center; padding-left: 1.2rem;">2.2.)</td>
+    <td>@Translate("Electricity supply during off-peak daily tariff period")</td>
+    <td style="text-align: end;">
+      @NumericString(Entity.SupplyActiveEnergyTotalImportT2Fee_EUR)
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align: center; padding-left: 1.2rem;">2.3.)</td>
+    <td>
+      @Translate("Fee for encouraging production from renewable energy sources and cogeneration")
+    </td>
+    <td style="text-align: end;">
+      @NumericString(Entity.SupplyRenewableEnergyFee_EUR)
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align: center; padding-left: 1.2rem;">2.4.)</td>
+    <td>@Translate("Electricity supply during off-peak daily tariff period")</td>
+    <td style="text-align: end;">
+      @NumericString(Entity.SupplyBusinessUsageFee_EUR)
+    </td>
+  </tr>
+  <tr>
+    <td></td>
+    <td style="text-align: end;">@Translate("Supply fee – TOTAL")</td>
+    <td style="text-align: end;">
+      <strong>
+        @NumericString(Entity.SupplyFeeTotal_EUR) EUR
+      </strong>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<table class="info-table">
+  <colgroup>
+    <col style="width: 76%"/>
+    <col style="width: 23%"/>
+  </colgroup>
+  <thead>
+  <tr>
+    <th style="text-align: right;">@Translate("TOTAL"):</th>
+    <th style="text-align: right;">
+      @NumericString(Entity.Total_EUR) EUR
+    </th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td style="text-align: right;">
+      @Translate("VAT") (@(Entity.RegulatoryCatalogue.TaxRate_Percent)%):
+    </td>
+    <td style="text-align: right;">
+      @NumericString(Entity.Tax_EUR) EUR
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align: right;">
+      <strong>@Translate("FULL TOTAL"):</strong>
+    </td>
+    <td style="text-align: right;">
+      @NumericString(Entity.TotalWithTax_EUR) EUR
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+@code {
+
+  [Parameter]
+  public NetworkUserInvoiceEntity Entity { get; set; } = default!;
+
+}

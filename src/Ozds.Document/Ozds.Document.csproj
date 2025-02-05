@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <PackageReference Include="DinkToPdf" Version="$(DinkToPdfVersion)" />
+    <PackageReference Include="HtmlRenderer.PdfSharp" Version="1.5.0.6" />
   </ItemGroup>
 
   <Target Name="FetchLibwkhtmltox" AfterTargets="Compile">

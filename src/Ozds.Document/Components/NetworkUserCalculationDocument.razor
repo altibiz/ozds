@@ -1,0 +1,37 @@
+@namespace Ozds.Document.Components
+@using Ozds.Document.Entities
+@inherits DocumentBase
+
+@* TODO: transfer print to model components as a component kind *@
+
+<div class="page">
+  <div class="page-header">
+    <img src="/invoice-print-header-hrv.svg"/>
+  </div>
+  <div class="page-content">
+    <NetworkUserCalculationDocumentContent Model="@Model"/>
+    <NetworkUserCalculationDocumentAbbreviations/>
+  </div>
+  <div class="page-footer">
+    <img src="/invoice-print-footer-hrv.svg"/>
+  </div>
+</div"Id is required">
+<div class="page-break"/>
+<div class="page">
+  <div class="page-header">
+    <img src="/invoice-print-header-hrv.svg"/>
+  </div>
+  <div class="page-content">
+    <NetworkUserCalculationDocumentFooter/>
+  </div>
+  <div class="page-footer">
+    <img src="/invoice-print-footer-hrv.svg"/>
+  </div>
+</div>
+
+@code {
+
+  [Parameter]
+  public NetworkUserCalculationEntity Model { get; set; } = default!;
+
+}

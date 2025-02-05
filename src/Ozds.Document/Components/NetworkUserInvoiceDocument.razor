@@ -1,0 +1,68 @@
+@namespace Ozds.Document.Components
+@using Ozds.Document.Entities
+@inherits DocumentBase
+
+<div class="page">
+  <div class="page-header">
+    <img src="/invoice-print-header-hrv.svg"/>
+  </div>
+  <div class="page-content">
+    <NetworkUserInvoiceDocumentContent Model="@Model.Invoice"/>
+  </div>
+  <div class="page-footer">
+    <img src="/invoice-print-footer-hrv.svg"/>
+  </div>
+</div>
+
+@foreach (var calculation in Model.Calculations)
+{
+  <div class="page-break"/>
+  <div class="page">
+    <div class="page-header">
+      <img src="/invoice-print-header-hrv.svg"/>
+    </div>
+    <div class="page-content">
+      <NetworkUserCalculationDocumentContent Model="@calculation"/>
+    </div>
+    <div class="page-footer">
+      <img src="/invoice-print-footer-hrv.svg"/>
+    </div>
+  </div>
+}
+
+@if (Model.Calculations.Count > 0)
+{
+  <div class="page-break"/>
+  <div class="page">
+    <div class="page-header">
+      <img src="/invoice-print-header-hrv.svg"/>
+    </div>
+    <div class="page-content">
+      <NetworkUserCalculationDocumentAbbreviations/>
+    </div>
+    <div class="page-footer">
+      <img src="/invoice-print-footer-hrv.svg"/>
+    </div>
+  </div>
+}
+
+<div class="page-break"/>
+<div class="page">
+  <div class="page-header">
+    <img src="/invoice-print-header-hrv.svg"/>
+  </div>
+  <div class="page-content">
+    <NetworkUserCalculationDocumentFooter/>
+    <NetworkUserInvoiceDocumentFooter Model="@Model.Invoice"/>
+  </div>
+  <div class="page-footer">
+    <img src="/invoice-print-footer-hrv.svg"/>
+  </div>
+</div>
+
+@code {
+
+  [Parameter]
+  public CalculatedNetworkUserInvoiceEntity Model { get; set; } = default!;
+
+}
