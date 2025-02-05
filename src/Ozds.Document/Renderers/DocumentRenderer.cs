@@ -30,7 +30,8 @@ public class DocumentRenderer(
       };
 
       var parameters = ParameterView.FromDictionary(dictionary);
-      var output = await htmlRenderer.RenderComponentAsync<NetworkUserInvoiceDocument>(parameters);
+      var output = await htmlRenderer
+        .RenderComponentAsync<NetworkUserInvoiceDocument>(parameters);
 
       return output.ToHtmlString();
     });

@@ -8,8 +8,6 @@ using Ozds.Data.Entities.Joins;
 using Ozds.Data.Test.Extensions;
 using Ozds.Data.Test.Specimens;
 
-// NITPICK: remove dependency on Ozds.Business
-
 namespace Ozds.Data.Test.Fixtures;
 
 public class AnalysisBasisEntityFactory(DbContext context)

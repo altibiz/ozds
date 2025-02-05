@@ -40,10 +40,11 @@ public static class IServiceCollectionExtensions
   )
   {
     services.AddSingleton<IDocumentRenderer, LibwkhtmltoxDocumentRenderer>();
-
 #pragma warning disable S125 // Sections of code should not be commented out
     // services.AddSingleton<IDocumentRenderer, PdfSharpDocumentRenderer>();
 #pragma warning restore S125 // Sections of code should not be commented out
+
+    services.AddSingleton<DocumentRenderer>();
 
     return services;
   }
