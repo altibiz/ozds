@@ -9,23 +9,98 @@
     <LibwkhtmltoxVersion>0.12.4</LibwkhtmltoxVersion>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <NativeLibDir>Native</NativeLibDir>
-  </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="DinkToPdf" Version="$(DinkToPdfVersion)" />
   </ItemGroup>
 
-  <Target Name="FetchLibwkhtmltox" AfterTargets="Compile">
-    <Exec Condition="'$(OS)' == 'Windows_NT'"
-          Command="powershell -Command &quot;If (!(Test-Path '$(NativeLibDir)\libwkhtmltox.dll')) { Invoke-WebRequest -Uri 'https://github.com/rdvojmoc/DinkToPdf/raw/refs/tags/v$(DinkToPdfVersion)/v$(LibwkhtmltoxVersion)/64%2520bit/libwkhtmltox.dll' -OutFile '$(NativeLibDir)\libwkhtmltox.dll' }&quot;" />
+  <PropertyGroup>
+    <NativeDownloadBaseUrl>https://github.com/rdvojmoc/DinkToPdf/raw/refs/tags/v$(DinkToPdfVersion)/v$(LibwkhtmltoxVersion)</NativeDownloadBaseUrl>
+    <NativeAssetsDir>$(ProjectDir)runtimes</NativeAssetsDir>
+  </PropertyGroup>
 
-    <Exec Condition="'$(OS)' != 'Windows_NT' And '$([MSBuild]::IsOsPlatform(&quot;OSX&quot;))' == 'true'"
-          Command="curl -Lso '$(NativeLibDir)/libwkhtmltox.dylib' 'https://github.com/rdvojmoc/DinkToPdf/raw/refs/tags/v$(DinkToPdfVersion)/v$(LibwkhtmltoxVersion)/64%2520bit/libwkhtmltox.dylib'" />
+  <ItemGroup>
+    <NativeLib Include="win-x86">
+      <Rid>win-x86</Rid>
+      <Folder>win-x86</Folder>
+      <Arch>32%2520bit</Arch>
+      <File>libwkhtmltox.dll</File>
+    </NativeLib>
+    <NativeLib Include="win-x64">
+      <Rid>win-x64</Rid>
+      <Folder>win-x64</Folder>
+      <Arch>64%2520bit</Arch>
+      <File>libwkhtmltox.dll</File>
+    </NativeLib>
+    <NativeLib Include="linux-x86">
+      <Rid>linux-x86</Rid>
+      <Folder>linux-x86</Folder>
+      <Arch>32%2520bit</Arch>
+      <File>libwkhtmltox.so</File>
+    </NativeLib>
+    <NativeLib Include="linux-x64">
+      <Rid>linux-x64</Rid>
+      <Folder>linux-x64</Folder>
+      <Arch>64%2520bit</Arch>
+      <File>libwkhtmltox.so</File>
+    </NativeLib>
+    <NativeLib Include="osx-x64">
+      <Rid>osx-x64</Rid>
+      <Folder>osx-x64</Folder>
+      <Arch>64%2520bit</Arch>
+      <File>libwkhtmltox.dylib</File>
+    </NativeLib>
+  </ItemGroup>
 
-    <Exec Condition="'$(OS)' != 'Windows_NT' And '$([MSBuild]::IsOsPlatform(&quot;Linux&quot;))' == 'true'"
-          Command="curl -Lso '$(NativeLibDir)/libwkhtmltox.so' 'https://github.com/rdvojmoc/DinkToPdf/raw/refs/tags/v$(DinkToPdfVersion)/v$(LibwkhtmltoxVersion)/64%2520bit/libwkhtmltox.so'" />
+  <Target Name="FetchNativeLibraries" AfterTargets="Compile">
+    <ItemGroup>
+      <NativeLibToDownload Include="@(NativeLib)">
+        <DestinationDir>$(NativeAssetsDir)/%(Folder)/native</DestinationDir>
+        <Destination>$(NativeAssetsDir)/%(Folder)/native/%(File)</Destination>
+        <Url>$(NativeDownloadBaseUrl)/%(Arch)/%(File)</Url>
+      </NativeLibToDownload>
+    </ItemGroup>
+
+    <PropertyGroup>
+      <DownloadCommandTemplateWindows>
+        powershell -Command "if (!(Test-Path '{destination}')) { New-Item -ItemType Directory -Force -Path '{destDir}'; Invoke-WebRequest -Uri '{url}' -OutFile '{destination}' }"
+      </DownloadCommandTemplateWindows>
+      <DownloadCommandTemplateNonWindows>
+        mkdir -p '{destDir}' &amp;&amp; curl -Lso '{destination}' '{url}'
+      </DownloadCommandTemplateNonWindows>
+    </PropertyGroup>
+
+    <Message
+      Text="Downloading native library: %(NativeLibToDownload.Destination)"
+      Importance="high" />
+
+    <Exec Condition="'$(OS)'=='Windows_NT'"
+          Command="$([System.String]::Copy($(DownloadCommandTemplateWindows))
+                     .Replace('{destination}', '%(NativeLibToDownload.Destination)')
+                     .Replace('{destDir}', '%(NativeLibToDownload.DestinationDir)')
+                     .Replace('{url}', '%(NativeLibToDownload.Url)'))" />
+
+    <Exec Condition="'$(OS)'!='Windows_NT'"
+          Command="$([System.String]::Copy($(DownloadCommandTemplateNonWindows))
+                     .Replace('{destination}', '%(NativeLibToDownload.Destination)')
+                     .Replace('{destDir}', '%(NativeLibToDownload.DestinationDir)')
+                     .Replace('{url}', '%(NativeLibToDownload.Url)'))" />
+  </Target>
+
+  <ItemGroup>
+    <Content Include="runtimes\**\native\*.*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <Target Name="CopyNativeAssetsToOutput" AfterTargets="Build">
+    <ItemGroup>
+      <NativeAssets
+        Include="$(ProjectDir)runtimes\**\native\*.*" />
+    </ItemGroup>
+    <Copy
+      SourceFiles="@(NativeAssets)"
+      DestinationFolder="$(OutputPath)"
+      SkipUnchangedFiles="true" />
   </Target>
 
 </Project>

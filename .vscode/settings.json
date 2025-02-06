@@ -10,7 +10,8 @@
     "artifacts": true,
     "**/cache": true,
     "**/.ruff_cache": true,
-    "**/__pycache__": true
+    "**/__pycache__": true,
+    "**/runtimes": true
   },
   "files.exclude": {
     "**/bin": true,
@@ -23,7 +24,8 @@
     "artifacts": true,
     "**/cache": true,
     "**/.ruff_cache": true,
-    "**/__pycache__": true
+    "**/__pycache__": true,
+    "**/runtimes": true
   },
   "prettier.ignorePath": ".prettierignore",
   "editor.defaultFormatter": "esbenp.prettier-vscode",

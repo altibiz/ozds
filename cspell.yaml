@@ -23,6 +23,7 @@ ignorePaths:
   - "NLog.config"
   - "pyproject.toml"
   - "./scripts/mailserver/mailhog.auth"
+  - ".gitignore"
 flagWords:
   - gage
   - ./rabbitmq.conf
