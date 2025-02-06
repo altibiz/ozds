@@ -58,7 +58,7 @@
     </th>
     <th style="text-align: end;">@Translate("ISSUE DATE"):</th>
     <th style="text-align: start;">
-      @(DateString(Entity.ToDate.AddTicks(-1)))
+      @(Date(Entity.ToDate.AddTicks(-1)))
     </th>
   </tr>
   </thead>
@@ -66,12 +66,12 @@
   <tr>
     <td>@Entity.Location.Title</td>
     <td style="text-align: end;">@Translate("DUE DATE"):</td>
-    <td>@DateString(Entity.IssuedOn)</td>
+    <td>@Date(Entity.IssuedOn)</td>
   </tr>
   <tr>
     <td>@Entity.Location.LegalPerson.Address</td>
     <td style="text-align: end;">@Translate("CONTRACT DATE"):</td>
-    <td>@DateString(Entity.IssuedOn)</td>
+    <td>@Date(Entity.IssuedOn)</td>
   </tr>
   <tr>
     <td>
@@ -93,11 +93,11 @@
   &colon;
   @Translate("TO")
   <strong>
-    @DateString(Entity.FromDate)
+    @Date(Entity.FromDate)
   </strong>
   DO
   <strong>
-    @DateString(Entity.ToDate.AddTicks(-1))
+    @Date(Entity.ToDate.AddTicks(-1))
   </strong>
 </p>
 <table class="calculation-table" style="margin-top: 0.8rem; width: 100%;">
@@ -123,42 +123,42 @@
     <td style="text-align: center; padding-left: 1.2rem;">1.1.)</td>
     <td>@Translate("Network usage during one tariff period")</td>
     <td style="text-align: end;">
-      @NumericString(Entity.UsageActiveEnergyTotalImportT0Fee_EUR)
+      @Number(Entity.UsageActiveEnergyTotalImportT0Fee_EUR)
     </td>
   </tr>
   <tr>
     <td style="text-align: center; padding-left: 1.2rem;">1.2.)</td>
     <td>@Translate("Network usage during multiple tariff periods")</td>
     <td style="text-align: end;">
-      @NumericString(Entity.UsageActiveEnergyTotalImportT1Fee_EUR)
+      @Number(Entity.UsageActiveEnergyTotalImportT1Fee_EUR)
     </td>
   </tr>
   <tr>
     <td style="text-align: center; padding-left: 1.2rem;">1.3.)</td>
     <td>@Translate("Network usage during off-peak tariff period")</td>
     <td style="text-align: end;">
-      @NumericString(Entity.UsageActiveEnergyTotalImportT2Fee_EUR)
+      @Number(Entity.UsageActiveEnergyTotalImportT2Fee_EUR)
     </td>
   </tr>
   <tr>
     <td style="text-align: center; padding-left: 1.2rem;">1.4.)</td>
     <td>@Translate("Engaged power during multiple tariff periods")</td>
     <td style="text-align: end;">
-      @NumericString(Entity.UsageActivePowerTotalImportT1PeakFee_EUR)
+      @Number(Entity.UsageActivePowerTotalImportT1PeakFee_EUR)
     </td>
   </tr>
   <tr>
     <td style="text-align: center; padding-left: 1.2rem;">1.5.)</td>
     <td>@Translate("Excessively taken reactive power")</td>
     <td style="text-align: end;">
-      @NumericString(Entity.UsageReactiveEnergyTotalRampedT0Fee_EUR)
+      @Number(Entity.UsageReactiveEnergyTotalRampedT0Fee_EUR)
     </td>
   </tr>
   <tr>
     <td style="text-align: center; padding-left: 1.2rem;">1.6.)</td>
     <td>@Translate("Metering service fee")</td>
     <td style="text-align: end;">
-      @NumericString(Entity.UsageMeterFee_EUR)
+      @Number(Entity.UsageMeterFee_EUR)
     </td>
   </tr>
   <tr>
@@ -166,7 +166,7 @@
     <td style="text-align: end;">@Translate("Network usage fee - TOTAL")</td>
     <td style="text-align: end;">
       <strong>
-        @NumericString(Entity.UsageFeeTotal_EUR) EUR
+        @Number(Entity.UsageFeeTotal_EUR) EUR
       </strong>
     </td>
   </tr>
@@ -179,14 +179,14 @@
     <td style="text-align: center; padding-left: 1.2rem;">2.1.)</td>
     <td>@Translate("Electricity supply during multi-rate daily tariff period")</td>
     <td style="text-align: end;">
-      @NumericString(Entity.SupplyActiveEnergyTotalImportT1Fee_EUR)
+      @Number(Entity.SupplyActiveEnergyTotalImportT1Fee_EUR)
     </td>
   </tr>
   <tr>
     <td style="text-align: center; padding-left: 1.2rem;">2.2.)</td>
     <td>@Translate("Electricity supply during off-peak daily tariff period")</td>
     <td style="text-align: end;">
-      @NumericString(Entity.SupplyActiveEnergyTotalImportT2Fee_EUR)
+      @Number(Entity.SupplyActiveEnergyTotalImportT2Fee_EUR)
     </td>
   </tr>
   <tr>
@@ -195,14 +195,14 @@
       @Translate("Fee for encouraging production from renewable energy sources and cogeneration")
     </td>
     <td style="text-align: end;">
-      @NumericString(Entity.SupplyRenewableEnergyFee_EUR)
+      @Number(Entity.SupplyRenewableEnergyFee_EUR)
     </td>
   </tr>
   <tr>
     <td style="text-align: center; padding-left: 1.2rem;">2.4.)</td>
     <td>@Translate("Electricity supply during off-peak daily tariff period")</td>
     <td style="text-align: end;">
-      @NumericString(Entity.SupplyBusinessUsageFee_EUR)
+      @Number(Entity.SupplyBusinessUsageFee_EUR)
     </td>
   </tr>
   <tr>
@@ -210,7 +210,7 @@
     <td style="text-align: end;">@Translate("Supply fee – TOTAL")</td>
     <td style="text-align: end;">
       <strong>
-        @NumericString(Entity.SupplyFeeTotal_EUR) EUR
+        @Number(Entity.SupplyFeeTotal_EUR) EUR
       </strong>
     </td>
   </tr>
@@ -225,7 +225,7 @@
   <tr>
     <th style="text-align: right;">@Translate("TOTAL"):</th>
     <th style="text-align: right;">
-      @NumericString(Entity.Total_EUR) EUR
+      @Number(Entity.Total_EUR) EUR
     </th>
   </tr>
   </thead>
@@ -235,7 +235,7 @@
       @Translate("VAT") (@(Entity.RegulatoryCatalogue.TaxRate_Percent)%):
     </td>
     <td style="text-align: right;">
-      @NumericString(Entity.Tax_EUR) EUR
+      @Number(Entity.Tax_EUR) EUR
     </td>
   </tr>
   <tr>
@@ -243,7 +243,7 @@
       <strong>@Translate("FULL TOTAL"):</strong>
     </td>
     <td style="text-align: right;">
-      @NumericString(Entity.TotalWithTax_EUR) EUR
+      @Number(Entity.TotalWithTax_EUR) EUR
     </td>
   </tr>
   </tbody>

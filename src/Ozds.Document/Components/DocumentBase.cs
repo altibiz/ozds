@@ -1,4 +1,7 @@
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Html;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Ozds.Document.Loaders.Abstractions;
 
 namespace Ozds.Document.Components;
@@ -11,28 +14,28 @@ public abstract class DocumentBase : ComponentBase
   [Inject]
   private IDocumentAssetLoader AssetLoader { get; set; } = default!;
 
-  public string Translate(string notLocalized)
+  [Inject]
+  private IHtmlHelper Html { get; set; } = default!;
+
+  public IHtmlContent Translate(string notLocalized)
   {
-    return Localizer.Translate(notLocalized);
+    return new StringHtmlContent(Localizer.Translate(notLocalized));
   }
 
-  public string Svg(string name)
+  public IHtmlContent Svg(string name)
   {
-    return AssetLoader.LoadSvg(name);
+    return Html.Raw(AssetLoader.LoadSvg(name));
   }
 
-  public string DateString(DateTimeOffset date)
+  public IHtmlContent Date(DateTimeOffset date)
   {
-    return date.ToString("dd.MM.yyyy.");
+    return new StringHtmlContent(date.ToString("dd.MM.yyyy."));
   }
 
-  public string NumericString(decimal number, int precision = 2)
+  public IHtmlContent Number(decimal number, int precision = 2)
   {
-    return number.ToString($"0.{new string('#', precision)}");
-  }
-
-  public string NumericString(double number, int precision = 2)
-  {
-    return number.ToString($"0.{new string('#', precision)}");
+    return new StringHtmlContent(
+      number.ToString($"0.{new string('#', precision)}")
+    );
   }
 }

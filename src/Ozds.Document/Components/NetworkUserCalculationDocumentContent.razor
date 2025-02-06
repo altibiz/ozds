@@ -86,10 +86,10 @@
       @(Entity.MeterId)
     </td>
     <td rowspan="@usageRowspan">
-      @DateString(Entity.FromDate)
+      @Date(Entity.FromDate)
     </td>
     <td rowspan="@usageRowspan">
-      @DateString(Entity.ToDate)
+      @Date(Entity.ToDate)
     </td>
     @(
     Entity.UsageItems.FirstOrDefault() is { } usageItem
@@ -109,7 +109,7 @@
     </td>
     <td style="text-align: right;">
       <strong>
-        @NumericString(Entity.UsageFeeTotal_EUR, 2) EUR
+        @Number(Entity.UsageFeeTotal_EUR, 2) EUR
       </strong>
     </td>
   </tr>
@@ -151,10 +151,10 @@
       @Entity.MeterId
     </td>
     <td rowspan="@supplyRowspan">
-      @DateString(Entity.FromDate)
+      @Date(Entity.FromDate)
     </td>
     <td rowspan="@supplyRowspan">
-      @DateString(Entity.ToDate)
+      @Date(Entity.ToDate)
     </td>
     @(
     Entity.SupplyItems.FirstOrDefault() is { } supplyItem
@@ -174,7 +174,7 @@
     </td>
     <td style="text-align: right;">
       <strong>
-        @NumericString(Entity.SupplyFeeTotal_EUR, 2) EUR
+        @Number(Entity.SupplyFeeTotal_EUR, 2) EUR
       </strong>
     </td>
   </tr>
@@ -217,7 +217,7 @@
                 @Translate("IND"):
               </strong>
               <span>
-                @NumericString(reactiveItem.ReactiveImportMin_kVARh, 2)
+                @Number(reactiveItem.ReactiveImportMin_kVARh, 2)
               </span>
             </p>
             <p class="capacitative-label">
@@ -225,7 +225,7 @@
                 @Translate("KAP"):
               </strong>
               <span>
-                @NumericString(reactiveItem.ReactiveExportMin_kVARh, 2)
+                @Number(reactiveItem.ReactiveExportMin_kVARh, 2)
               </span>
             </p>
           </td>
@@ -235,7 +235,7 @@
                 @Translate("IND"):
               </strong>
               <span>
-                @NumericString(reactiveItem.ReactiveImportMax_kVARh, 2)
+                @Number(reactiveItem.ReactiveImportMax_kVARh, 2)
               </span>
             </p>
             <p class="capacitative-label">
@@ -243,19 +243,19 @@
                 @Translate("KAP"):
               </strong>
               <span>
-                @NumericString(reactiveItem.ReactiveExportMax_kVARh, 2)
+                @Number(reactiveItem.ReactiveExportMax_kVARh, 2)
               </span>
             </p>
           </td>
           <td style="text-align: center;">O</td>
           <td style="text-align: right;">
-            @NumericString(reactiveItem.Amount_kVARh, 0)
+            @Number(reactiveItem.Amount_kVARh, 0)
           </td>
           <td style="text-align: right;">
-            @NumericString(reactiveItem.Price_EUR, 6)
+            @Number(reactiveItem.Price_EUR, 6)
           </td>
           <td style="text-align: right;">
-            @NumericString(reactiveItem.Total_EUR, 2)
+            @Number(reactiveItem.Total_EUR, 2)
           </td>
         </Fragment>
       : item is ActiveEnergyTotalImportCalculationItemEntity energyItem
@@ -264,20 +264,20 @@
               <strong>@Translate(energyItem.GetType().Name)</strong>
             </td>
             <td style="text-align: right;">
-              @NumericString(energyItem.Min_kWh, 2)
+              @Number(energyItem.Min_kWh, 2)
             </td>
             <td style="text-align: right;">
-              @NumericString(energyItem.Max_kWh, 2)
+              @Number(energyItem.Max_kWh, 2)
             </td>
             <td style="text-align: center;">O</td>
             <td style="text-align: right;">
-              @NumericString(energyItem.Amount_kWh, 0)
+              @Number(energyItem.Amount_kWh, 0)
             </td>
             <td style="text-align: right;">
-              @NumericString(energyItem.Price_EUR, 6)
+              @Number(energyItem.Price_EUR, 6)
             </td>
             <td style="text-align: right;">
-              @NumericString(energyItem.Total_EUR, 2)
+              @Number(energyItem.Total_EUR, 2)
             </td>
           </Fragment>
         : item is ActivePowerTotalImportT1PeakCalculationItemEntity powerItem
@@ -289,13 +289,13 @@
               <td style="text-align: right;"></td>
               <td style="text-align: center;">O</td>
               <td style="text-align: right;">
-                @NumericString(powerItem.Amount_kW, 0)
+                @Number(powerItem.Amount_kW, 0)
               </td>
               <td style="text-align: right;">
-                @NumericString(powerItem.Price_EUR, 3)
+                @Number(powerItem.Price_EUR, 3)
               </td>
               <td style="text-align: right;">
-                @NumericString(powerItem.Total_EUR, 2)
+                @Number(powerItem.Total_EUR, 2)
               </td>
             </Fragment>
           : item is FeeCalculationItemEntity feeItem
@@ -304,13 +304,13 @@
                   <strong>@Translate(feeItem.GetType().Name)</strong>
                 </td>
                 <td style="text-align: right;">
-                  @NumericString(feeItem.Amount_N, 0)
+                  @Number(feeItem.Amount_N, 0)
                 </td>
                 <td style="text-align: right;">
-                  @NumericString(feeItem.Price_EUR, 3)
+                  @Number(feeItem.Price_EUR, 3)
                 </td>
                 <td style="text-align: right;">
-                  @NumericString(feeItem.Total_EUR, 2)
+                  @Number(feeItem.Total_EUR, 2)
                 </td>
               </Fragment>
             : throw new InvalidOperationException(
