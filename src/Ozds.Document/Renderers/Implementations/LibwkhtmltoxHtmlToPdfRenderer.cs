@@ -29,19 +29,12 @@ public class LibwkhtmltoxHtmlToPdfRenderer(
           {
             new ObjectSettings()
             {
-              PagesCount = true,
               HtmlContent = html,
               WebSettings =
               {
-                DefaultEncoding = "utf-8"
+                DefaultEncoding = "utf-8",
+                LoadImages = true
               },
-              HeaderSettings =
-              {
-                FontSize = 9,
-                Right = "Page [page] of [toPage]",
-                Line = true,
-                Spacing = 2.812
-              }
             }
           }
         };
@@ -53,7 +46,7 @@ public class LibwkhtmltoxHtmlToPdfRenderer(
       catch (Exception ex)
       {
         logger.LogError(ex, "Error while rendering html to pdf");
-        throw;
+        return null;
       }
     });
   }

@@ -137,8 +137,6 @@ rec {
 
           buildInputs = [
             pkgs.wkhtmltopdf
-            pkgs.libgdiplus
-            pkgs.xorg.libXrender
           ];
 
           packages =

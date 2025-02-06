@@ -1,12 +1,24 @@
 using Microsoft.AspNetCore.Components;
+using Ozds.Document.Loaders.Abstractions;
 
 namespace Ozds.Document.Components;
 
 public abstract class DocumentBase : ComponentBase
 {
+  [Inject]
+  private IDocumentLocalizer Localizer { get; set; } = default!;
+
+  [Inject]
+  private IDocumentAssetLoader AssetLoader { get; set; } = default!;
+
   public string Translate(string notLocalized)
   {
-    return notLocalized;
+    return Localizer.Translate(notLocalized);
+  }
+
+  public string Svg(string name)
+  {
+    return AssetLoader.LoadSvg(name);
   }
 
   public string DateString(DateTimeOffset date)

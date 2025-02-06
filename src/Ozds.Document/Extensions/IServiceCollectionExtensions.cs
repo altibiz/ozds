@@ -1,5 +1,8 @@
 using DinkToPdf;
 using DinkToPdf.Contracts;
+using Ozds.Document.Components;
+using Ozds.Document.Loaders;
+using Ozds.Document.Loaders.Abstractions;
 using Ozds.Document.Renderers.Abstractions;
 using Ozds.Document.Renderers.Implementations;
 
@@ -14,6 +17,7 @@ public static class IServiceCollectionExtensions
   {
     services.AddHtmlToPdfConverter();
     services.AddDocumentRenderer();
+    services.AddDocumentServices();
     return services;
   }
 
@@ -35,6 +39,15 @@ public static class IServiceCollectionExtensions
     services.AddSingleton<IComponentToHtmlRenderer, AspNetCoreComponentsComponentToHtmlRenderer>();
     services.AddSingleton<DocumentRenderer>();
 
+    return services;
+  }
+
+  public static IServiceCollection AddDocumentServices(
+    this IServiceCollection services
+  )
+  {
+    services.AddSingleton<IDocumentAssetLoader, DocumentAssetLoader>();
+    services.AddSingleton<IDocumentLocalizer, DocumentLocalizer>();
     return services;
   }
 }

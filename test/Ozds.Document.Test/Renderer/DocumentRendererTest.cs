@@ -8,10 +8,11 @@ public class DocumentRendererTest
   [Fact]
   public async Task RendersCalculatedNetworkUserInvoiceTest()
   {
-    var serviceProvider = new ServiceCollection()
-      .AddLogging()
-      .AddOzdsDocument(null!)
-      .BuildServiceProvider();
+    var serviceCollection = new ServiceCollection();
+    serviceCollection.AddLogging();
+    serviceCollection.AddOzdsDocument(null!);
+    serviceCollection.BuildServiceProvider();
+    var serviceProvider = serviceCollection.BuildServiceProvider();
 
     var documentRenderer = serviceProvider
       .GetRequiredService<DocumentRenderer>();
@@ -22,9 +23,23 @@ public class DocumentRendererTest
     foreach (var entity in entities)
     {
       var html = await documentRenderer
-        .RenderCalculatedNetworkUserInvoice(entity);
-
+        .RenderCalculatedNetworkUserInvoiceToHtml(entity);
       Assert.NotNull(html);
+
+      var pdf = await documentRenderer
+        .RenderCalculatedNetworkUserInvoiceToPdf(entity);
+      Assert.NotNull(pdf);
+
+      await File.WriteAllTextAsync(
+        Path.Combine(
+          Environment.CurrentDirectory,
+          $"invoice.html"),
+        html);
+      await File.WriteAllBytesAsync(
+        Path.Combine(
+          Environment.CurrentDirectory,
+          $"invoice.pdf"),
+        pdf);
     }
   }
 }

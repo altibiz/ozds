@@ -6,4 +6,9 @@ public interface IComponentToHtmlRenderer
     Type type,
     Dictionary<string, object?> parameters
   );
+
+  public Task<string?> RenderPageToHtml(
+    Type type,
+    Dictionary<string, object?> parameters
+  );
 }

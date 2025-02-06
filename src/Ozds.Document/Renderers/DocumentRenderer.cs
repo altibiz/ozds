@@ -9,13 +9,32 @@ public class DocumentRenderer(
   IComponentToHtmlRenderer componentToHtmlRenderer
 )
 {
+  public async Task<string?> RenderCalculatedNetworkUserInvoiceToHtml(
+    CalculatedNetworkUserInvoiceEntity entity
+  )
+  {
+    var html = await componentToHtmlRenderer.RenderComponentToHtml(
+      typeof(NetworkUserInvoiceDocument),
+      new Dictionary<string, object?>
+      {
+        [nameof(NetworkUserInvoiceDocument.Entity)] = entity
+      }
+    );
+    if (html is null)
+    {
+      return null;
+    }
+
+    return html;
+  }
+
 #pragma warning disable SA1011 // Closing square brackets should be spaced correctly
-  public async Task<byte[]?> RenderCalculatedNetworkUserInvoice(
+  public async Task<byte[]?> RenderCalculatedNetworkUserInvoiceToPdf(
     CalculatedNetworkUserInvoiceEntity entity
   )
 #pragma warning restore SA1011 // Closing square brackets should be spaced correctly
   {
-    var html = await componentToHtmlRenderer.RenderComponentToHtml(
+    var html = await componentToHtmlRenderer.RenderPageToHtml(
       typeof(NetworkUserInvoiceDocument),
       new Dictionary<string, object?>
       {
