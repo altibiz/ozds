@@ -14,6 +14,13 @@ public class DocumentLocalizer(
 
   public string TranslateForCulture(CultureInfo culture, string notLocalized)
   {
-    return assetLoader.LoadTranslations(culture)[notLocalized] ?? notLocalized;
+    if (assetLoader
+      .LoadTranslations(culture)
+      .TryGetValue(notLocalized, out var localized))
+    {
+      return localized;
+    }
+
+    return notLocalized;
   }
 }
