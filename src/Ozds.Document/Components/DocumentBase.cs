@@ -13,9 +13,9 @@ public abstract class DocumentBase : ComponentBase
   [Inject]
   private IDocumentAssetLoader AssetLoader { get; set; } = default!;
 
-  public IHtmlContent Translate(string notLocalized)
+  public string Translate(string notLocalized)
   {
-    return new StringHtmlContent(Localizer.Translate(notLocalized));
+    return Localizer.Translate(notLocalized);
   }
 
   public MarkupString Svg(string name)
@@ -23,15 +23,13 @@ public abstract class DocumentBase : ComponentBase
     return new MarkupString(AssetLoader.LoadSvg(name));
   }
 
-  public IHtmlContent Date(DateTimeOffset date)
+  public string Date(DateTimeOffset date)
   {
-    return new StringHtmlContent(date.ToString("dd.MM.yyyy."));
+    return date.ToString("dd.MM.yyyy.");
   }
 
-  public IHtmlContent Number(decimal number, int precision = 2)
+  public string Number(decimal number, int precision = 2)
   {
-    return new StringHtmlContent(
-      number.ToString($"0.{new string('#', precision)}")
-    );
+    return number.ToString($"0.{new string('#', precision)}");
   }
 }
