@@ -18,9 +18,9 @@ public abstract class DocumentBase : ComponentBase
     return new StringHtmlContent(Localizer.Translate(notLocalized));
   }
 
-  public IHtmlContent Svg(string name)
+  public MarkupString Svg(string name)
   {
-    return new HtmlString(AssetLoader.LoadSvg(name));
+    return new MarkupString(AssetLoader.LoadSvg(name));
   }
 
   public IHtmlContent Date(DateTimeOffset date)
