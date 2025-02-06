@@ -9,11 +9,11 @@
     <LibwkhtmltoxVersion>0.12.4</LibwkhtmltoxVersion>
   </PropertyGroup>
 
-  <!--
   <ItemGroup>
     <PackageReference Include="DinkToPdf" Version="$(DinkToPdfVersion)" />
   </ItemGroup>
 
+  <!--
   <PropertyGroup>
     <NativeDownloadBaseUrl>https://github.com/rdvojmoc/DinkToPdf/raw/refs/tags/v$(DinkToPdfVersion)/v$(LibwkhtmltoxVersion)</NativeDownloadBaseUrl>
     <NativeAssetsDir>$(ProjectDir)runtimes</NativeAssetsDir>

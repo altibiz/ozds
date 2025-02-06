@@ -403,6 +403,7 @@ purge:
       -e !.direnv/ \
       -e !.direnv/bin/ \
       -e !.dvc/config.local
+    dvc pull
     dotnet tool restore
     dotnet restore
 
