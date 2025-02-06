@@ -121,7 +121,7 @@ rec {
             nodePackages.prettier
           ];
         };
-        devShells.default = pkgs.mkShell {
+        devShells.default = pkgs.mkShell rec {
           PGHOST = "localhost";
           PGPORT = "5432";
           PGDATABASE = "ozds";
@@ -132,6 +132,14 @@ rec {
           DOXYGEN_PLANTUML_JAR_PATH = "${pkgs.plantuml}/lib/plantuml.jar";
 
           COMPOSE_PROFILES = "*";
+
+          LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath buildInputs;
+
+          buildInputs = [
+            pkgs.wkhtmltopdf
+            pkgs.libgdiplus
+            pkgs.xorg.libXrender
+          ];
 
           packages =
             let

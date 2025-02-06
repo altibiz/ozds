@@ -53,7 +53,7 @@ public class LibwkhtmltoxHtmlToPdfRenderer(
       catch (Exception ex)
       {
         logger.LogError(ex, "Error while rendering html to pdf");
-        return null;
+        throw;
       }
     });
   }

@@ -16,10 +16,10 @@ public class DocumentRenderer(
 #pragma warning restore SA1011 // Closing square brackets should be spaced correctly
   {
     var html = await componentToHtmlRenderer.RenderComponentToHtml(
-      typeof(NetworkUserCalculationDocument),
+      typeof(NetworkUserInvoiceDocument),
       new Dictionary<string, object?>
       {
-        [nameof(NetworkUserCalculationDocument.Entity)] = entity
+        [nameof(NetworkUserInvoiceDocument.Entity)] = entity
       }
     );
     if (html is null)

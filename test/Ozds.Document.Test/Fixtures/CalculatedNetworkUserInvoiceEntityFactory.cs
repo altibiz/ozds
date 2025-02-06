@@ -12,6 +12,10 @@ public class CalculatedNetworkUserInvoiceEntityFactory
       new TypeRelay(
         typeof(NetworkUserCalculationEntity),
         typeof(BlueLowNetworkUserCalculationEntity)));
+    fixture.Customizations.Add(
+      new TypeRelay(
+        typeof(NetworkUserCatalogueEntity),
+        typeof(BlueLowNetworkUserCatalogueEntity)));
 
     return fixture
       .CreateMany<CalculatedNetworkUserInvoiceEntity>(

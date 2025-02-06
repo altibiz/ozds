@@ -9,6 +9,7 @@
     <LibwkhtmltoxVersion>0.12.4</LibwkhtmltoxVersion>
   </PropertyGroup>
 
+  <!--
   <ItemGroup>
     <PackageReference Include="DinkToPdf" Version="$(DinkToPdfVersion)" />
   </ItemGroup>
@@ -102,5 +103,5 @@
       DestinationFolder="$(OutputPath)"
       SkipUnchangedFiles="true" />
   </Target>
-
+  -->
 </Project>
