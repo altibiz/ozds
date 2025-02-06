@@ -35,7 +35,11 @@ public static class IServiceCollectionExtensions
     this IServiceCollection services
   )
   {
-    services.AddSingleton<IHtmlToPdfRenderer, LibwkhtmltoxHtmlToPdfRenderer>();
+
+#pragma warning disable S125 // Sections of code should not be commented out
+    // services.AddSingleton<IHtmlToPdfRenderer, LibwkhtmltoxHtmlToPdfRenderer>();
+#pragma warning restore S125 // Sections of code should not be commented out
+    services.AddSingleton<IHtmlToPdfRenderer, PlaywrightHtmlToPdfRenderer>();
     services.AddSingleton<IComponentToHtmlRenderer, AspNetCoreComponentsComponentToHtmlRenderer>();
     services.AddSingleton<DocumentRenderer>();
 
