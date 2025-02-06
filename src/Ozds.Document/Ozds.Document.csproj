@@ -65,7 +65,7 @@
         powershell -Command "if (!(Test-Path '{destination}')) { New-Item -ItemType Directory -Force -Path '{destDir}'; Invoke-WebRequest -Uri '{url}' -OutFile '{destination}' }"
       </DownloadCommandTemplateWindows>
       <DownloadCommandTemplateNonWindows>
-        mkdir -p '{destDir}' &amp;&amp; curl -Lso '{destination}' '{url}'
+        if [ ! -f '{destination}' ]; then mkdir -p '{destDir}' &amp;&amp; curl -Lso '{destination}' '{url}'; fi
       </DownloadCommandTemplateNonWindows>
     </PropertyGroup>
 
