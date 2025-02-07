@@ -11,19 +11,11 @@ public class PlaywrightHtmlToPdfRenderer : IHtmlToPdfRenderer
   {
     using var playwright = await Playwright.CreateAsync();
 
-    await using var browser = await playwright.Chromium.LaunchAsync(
-      new BrowserTypeLaunchOptions
-      {
-        Headless = false,
-      });
+    await using var browser = await playwright.Chromium.LaunchAsync();
 
     var context = await browser.NewContextAsync();
     var page = await context.NewPageAsync();
-
-    await page.SetContentAsync(html, new PageSetContentOptions
-    {
-      WaitUntil = WaitUntilState.DOMContentLoaded
-    });
+    await page.SetContentAsync(html);
 
     var pdfBytes = await page.PdfAsync(new PagePdfOptions
     {
