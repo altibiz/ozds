@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Text.Json;
 using Ozds.Document.Loaders.Abstractions;
 
-namespace Ozds.Document.Loaders;
+namespace Ozds.Document.Loaders.Implementations;
 
 public class DocumentAssetLoader : IDocumentAssetLoader
 {

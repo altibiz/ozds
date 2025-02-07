@@ -15,7 +15,10 @@ public class PlaywrightHtmlToPdfRenderer : IHtmlToPdfRenderer
 
     var context = await browser.NewContextAsync();
     var page = await context.NewPageAsync();
-    await page.SetContentAsync(html);
+    await page.SetContentAsync(html, new PageSetContentOptions
+    {
+      WaitUntil = WaitUntilState.DOMContentLoaded
+    });
 
     var pdfBytes = await page.PdfAsync(new PagePdfOptions
     {

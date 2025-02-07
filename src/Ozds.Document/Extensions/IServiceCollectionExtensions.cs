@@ -1,8 +1,5 @@
-using DinkToPdf;
-using DinkToPdf.Contracts;
-using Ozds.Document.Components;
-using Ozds.Document.Loaders;
 using Ozds.Document.Loaders.Abstractions;
+using Ozds.Document.Loaders.Implementations;
 using Ozds.Document.Renderers.Abstractions;
 using Ozds.Document.Renderers.Implementations;
 
@@ -15,19 +12,8 @@ public static class IServiceCollectionExtensions
     IHostApplicationBuilder builder
   )
   {
-    services.AddHtmlToPdfConverter();
     services.AddDocumentRenderer();
     services.AddDocumentServices();
-    return services;
-  }
-
-  public static IServiceCollection AddHtmlToPdfConverter(
-    this IServiceCollection services
-  )
-  {
-    services.AddSingleton<IConverter>(
-      _ => new SynchronizedConverter(new PdfTools()));
-
     return services;
   }
 
@@ -35,10 +21,6 @@ public static class IServiceCollectionExtensions
     this IServiceCollection services
   )
   {
-
-#pragma warning disable S125 // Sections of code should not be commented out
-    // services.AddSingleton<IHtmlToPdfRenderer, LibwkhtmltoxHtmlToPdfRenderer>();
-#pragma warning restore S125 // Sections of code should not be commented out
     services.AddSingleton<IHtmlToPdfRenderer, PlaywrightHtmlToPdfRenderer>();
     services.AddSingleton<IComponentToHtmlRenderer, AspNetCoreComponentsComponentToHtmlRenderer>();
     services.AddSingleton<DocumentRenderer>();

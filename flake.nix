@@ -135,15 +135,6 @@ rec {
 
           PLAYWRIGHT_NODEJS_PATH = "${pkgs.nodejs}/bin/node";
           PLAYWRIGHT_BROWSERS_PATH = "${pkgs.playwright-driver.browsers}";
-          PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS = true;
-          PLAYWRIGHT_LAUNCH_OPTIONS_EXECUTABLE_PATH =
-            "${pkgs.playwright-driver.browsers}/chromium-1134/chrome-linux/chrome";
-
-          LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath buildInputs;
-
-          buildInputs = [
-            pkgs.wkhtmltopdf
-          ];
 
           packages =
             let
@@ -203,10 +194,6 @@ rec {
               # Nix
               nil
               nixpkgs-fmt
-
-              # Playwright
-              playwright-driver.browsers
-              nodejs
 
               # C#
               dotnet-sdk

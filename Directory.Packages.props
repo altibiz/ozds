@@ -11,8 +11,6 @@
     <EntityFrameworkCoreVersion>8.0.3</EntityFrameworkCoreVersion>
     <QuartzVersion>3.13.0</QuartzVersion>
     <MassTransitVersion>8.2.2</MassTransitVersion>
-    <DinkToPdfVersion>1.0.8</DinkToPdfVersion>
-    <LibwkhtmltoxVersion>0.12.4</LibwkhtmltoxVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -79,8 +77,6 @@
     <PackageVersion Include="StyleCop.Analyzers" Version="1.1.118" />
 
     <PackageVersion Include="SonarAnalyzer.CSharp" Version="9.28.0.94264" />
-
-    <PackageVersion Include="DinkToPdf" Version="$(DinkToPdfVersion)" />
   </ItemGroup>
 
 </Project>

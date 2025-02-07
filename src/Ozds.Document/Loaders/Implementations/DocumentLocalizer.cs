@@ -1,7 +1,7 @@
 using System.Globalization;
 using Ozds.Document.Loaders.Abstractions;
 
-namespace Ozds.Document.Loaders;
+namespace Ozds.Document.Loaders.Implementations;
 
 public class DocumentLocalizer(
   IDocumentAssetLoader assetLoader
