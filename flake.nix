@@ -139,10 +139,6 @@ rec {
           PLAYWRIGHT_LAUNCH_OPTIONS_EXECUTABLE_PATH =
             "${pkgs.playwright-driver.browsers}/chromium-1134/chrome-linux/chrome";
 
-          nativeBuildInputs = [
-            pkgs.playwright-driver.browsers
-          ];
-
           LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath buildInputs;
 
           buildInputs = [
