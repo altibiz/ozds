@@ -5,14 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Quartz" Version="3.13.0" />
-    <PackageReference Include="Quartz.Serialization.SystemTextJson" Version="3.13.0" />
-    <PackageReference Include="Quartz.Extensions.DependencyInjection" Version="3.13.0" />
-    <PackageReference Include="Quartz.Extensions.Hosting" Version="3.13.0" />
-    <PackageReference Include="AppAny.Quartz.EntityFrameworkCore.Migrations.PostgreSQL" Version="0.5.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="$(EntityFrameworkCoreVersion)" />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="$(NpgsqlEntityFrameworkCoreVersion)" />
-    <PackageReference Include="Altibiz.DependencyInjection.Extensions" Version="$(AltibizDependencyInjectionExtensionsVersion)" />
+    <PackageReference Include="Quartz" />
+    <PackageReference Include="Quartz.Serialization.SystemTextJson" />
+    <PackageReference Include="Quartz.Extensions.DependencyInjection" />
+    <PackageReference Include="Quartz.Extensions.Hosting" />
+    <PackageReference Include="AppAny.Quartz.EntityFrameworkCore.Migrations.PostgreSQL" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
+    <PackageReference Include="Altibiz.DependencyInjection.Extensions" />
   </ItemGroup>
 
 </Project>

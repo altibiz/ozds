@@ -4,14 +4,9 @@
     <OutputType>Library</OutputType>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <DinkToPdfVersion>1.0.8</DinkToPdfVersion>
-    <LibwkhtmltoxVersion>0.12.4</LibwkhtmltoxVersion>
-  </PropertyGroup>
-
   <ItemGroup>
-    <PackageReference Include="DinkToPdf" Version="$(DinkToPdfVersion)" />
-    <PackageReference Include="Microsoft.Playwright" Version="$(PlaywrightVersion)" />
+    <PackageReference Include="DinkToPdf" />
+    <PackageReference Include="Microsoft.Playwright" />
   </ItemGroup>
 
   <!--

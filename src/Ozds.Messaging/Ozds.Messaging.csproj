@@ -5,14 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MassTransit" Version="8.2.2" />
-    <PackageReference Include="MassTransit.RabbitMQ" Version="8.2.2" />
-    <PackageReference Include="MassTransit.Azure.ServiceBus.Core" Version="8.2.2" />
-    <PackageReference Include="MassTransit.EntityFrameworkCore" Version="8.2.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="$(EntityFrameworkCoreVersion)" />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="$(NpgsqlEntityFrameworkCoreVersion)" />
-    <PackageReference Include="EFCore.NamingConventions" Version="$(EntityFrameworkCoreVersion)" />
-    <PackageReference Include="Altibiz.DependencyInjection.Extensions" Version="$(AltibizDependencyInjectionExtensionsVersion)" />
+    <PackageReference Include="MassTransit" />
+    <PackageReference Include="MassTransit.RabbitMQ" />
+    <PackageReference Include="MassTransit.Azure.ServiceBus.Core" />
+    <PackageReference Include="MassTransit.EntityFrameworkCore" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
+    <PackageReference Include="EFCore.NamingConventions" />
+    <PackageReference Include="Altibiz.DependencyInjection.Extensions" />
   </ItemGroup>
 
 </Project>

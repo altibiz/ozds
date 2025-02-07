@@ -11,20 +11,9 @@
     <NoDefaultLaunchSettingsFile>true</NoDefaultLaunchSettingsFile>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <OrchardCoreVersion>1.8.1</OrchardCoreVersion>
-    <EntityFrameworkCoreVersion>8.0.3</EntityFrameworkCoreVersion>
-    <NpgsqlVersion>8.0.3</NpgsqlVersion>
-    <NpgsqlEntityFrameworkCoreVersion>8.0.4</NpgsqlEntityFrameworkCoreVersion>
-    <DapperVersion>2.1.35</DapperVersion>
-    <PlaywrightVersion>1.47.0</PlaywrightVersion>
-    <AltibizDependencyInjectionExtensionsVersion>1.0.10</AltibizDependencyInjectionExtensionsVersion>
-  </PropertyGroup>
-
   <ItemGroup>
     <PackageReference
         Include="StyleCop.Analyzers"
-        Version="1.1.118"
         Condition="$(MSBuildProjectExtension) == '.csproj'">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
@@ -32,7 +21,6 @@
 
     <PackageReference
         Include="SonarAnalyzer.CSharp"
-        Version="9.28.0.94264"
         Condition="$(MSBuildProjectExtension) == '.csproj'">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
