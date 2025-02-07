@@ -7,8 +7,7 @@ namespace Ozds.Document.Renderers.Implementations;
 
 public class AspNetCoreComponentsComponentToHtmlRenderer(
   IServiceProvider serviceProvider,
-  ILoggerFactory loggerFactory,
-  ILogger<AspNetCoreComponentsComponentToHtmlRenderer> logger
+  ILoggerFactory loggerFactory
 ) : IComponentToHtmlRenderer
 {
 
@@ -48,36 +47,20 @@ public class AspNetCoreComponentsComponentToHtmlRenderer(
     Dictionary<string, object?> parameters
   )
   {
-    try
-    {
-      await using var htmlRenderer =
-        new HtmlRenderer(serviceProvider, loggerFactory);
-      var indexParameters = new Dictionary<string, object?>()
+    await using var htmlRenderer =
+      new HtmlRenderer(serviceProvider, loggerFactory);
+    var indexParameters = new Dictionary<string, object?>()
       {
         { typeParameterName, type },
         { parametersParameterName, parameters },
       };
-      var parameterView = ParameterView.FromDictionary(indexParameters);
-      var html = await htmlRenderer.Dispatcher.InvokeAsync(async () =>
-      {
-        try
-        {
-          var output = await htmlRenderer
-            .RenderComponentAsync(rootType, parameterView);
-          return output.ToHtmlString();
-        }
-        catch (Exception ex)
-        {
-          logger.LogError(ex, "Error while rendering component to html");
-          return null;
-        }
-      });
-      return html;
-    }
-    catch (Exception ex)
+    var parameterView = ParameterView.FromDictionary(indexParameters);
+    var html = await htmlRenderer.Dispatcher.InvokeAsync(async () =>
     {
-      logger.LogError(ex, "Error while rendering component to html");
-      return null;
-    }
+      var output = await htmlRenderer
+        .RenderComponentAsync(rootType, parameterView);
+      return output.ToHtmlString();
+    });
+    return html;
   }
 }

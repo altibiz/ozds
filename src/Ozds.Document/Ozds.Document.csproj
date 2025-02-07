@@ -11,7 +11,7 @@
 
   <ItemGroup>
     <PackageReference Include="DinkToPdf" Version="$(DinkToPdfVersion)" />
-    <PackageReference Include="Microsoft.Playwright" Version="1.50.0" />
+    <PackageReference Include="Microsoft.Playwright" Version="$(PlaywrightVersion)" />
   </ItemGroup>
 
   <!--
