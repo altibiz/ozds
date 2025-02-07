@@ -40,7 +40,7 @@ public class DocumentAssetLoader : IDocumentAssetLoader
 
   private string LoadTtfBase64Uncached(string name)
   {
-    var stream = Load($"Font.{name}.ttf");
+    var stream = Load($"Fonts.{name}.ttf");
     using var memoryStream = new MemoryStream();
     stream.CopyTo(memoryStream);
     var bytes = memoryStream.ToArray();

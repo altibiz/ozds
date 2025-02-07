@@ -4,7 +4,7 @@ using Ozds.Business.Models.Base;
 using Ozds.Messaging.Entities;
 using Ozds.Messaging.Entities.Base;
 
-namespace Ozds.Business.Conversion.Implementations.Finances;
+namespace Ozds.Business.Conversion.Implementations.Messaging;
 
 public class NetworkUserInvoiceStateEntityConverter(
   IServiceProvider serviceProvider

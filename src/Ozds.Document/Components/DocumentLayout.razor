@@ -3,6 +3,39 @@
 @inherits DocumentLayoutBase
 
 <style>
+  @@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 300;
+    font-stretch: normal;
+    font-display: swap;
+    src: url(data:font/ttf;base64,@TtfBase64("roboto-300")) format('truetype');
+  }
+  @@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-stretch: normal;
+    font-display: swap;
+    src: url(data:font/ttf;base64,@TtfBase64("roboto-400")) format('truetype');
+  }
+  @@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 500;
+    font-stretch: normal;
+    font-display: swap;
+    src: url(data:font/ttf;base64,@TtfBase64("roboto-500")) format('truetype');
+  }
+  @@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 700;
+    font-stretch: normal;
+    font-display: swap;
+    src: url(data:font/ttf;base64,@TtfBase64("roboto-700")) format('truetype');
+  }
+
   :root {
     --page-width: 8.27in;
     --page-height: 11.69in;
@@ -19,6 +52,7 @@
   }
 
   * {
+    font-family: 'Roboto';
     font-size: 11pt;
   }
 

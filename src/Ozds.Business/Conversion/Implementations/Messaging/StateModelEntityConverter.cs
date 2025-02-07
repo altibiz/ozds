@@ -2,7 +2,7 @@ using Ozds.Business.Conversion.Base;
 using Ozds.Business.Models.Base;
 using Ozds.Messaging.Entities.Base;
 
-namespace Ozds.Business.Conversion.Implementations;
+namespace Ozds.Business.Conversion.Implementations.Messaging;
 
 public class StateModelEntityConverter
   : ConcreteModelEntityConverter<StateModel, StateEntity>
