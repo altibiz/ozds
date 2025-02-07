@@ -29,8 +29,10 @@ public partial class UserPage
       return null;
     }
 
-    if (RepresentativeState.Representative.Role
-      is not RoleModel.OperatorRepresentative)
+    if (
+      RepresentativeState.Representative.Role
+      is not RoleModel.OperatorRepresentative
+    )
     {
       if (RepresentativeState.Representative.Id != Id)
       {
@@ -62,8 +64,17 @@ public partial class UserPage
     }
 
     var mutations = ScopedServices.GetRequiredService<AuditableMutations>();
+    var userUpdateMutations =
+      ScopedServices.GetRequiredService<UserUpdateMutations>();
 
     await mutations.Update(model.Representative, CancellationToken);
+
+    await userUpdateMutations.UpdateUser(
+      model.User.Id,
+      model.User.UserName,
+      model.User.Email,
+      CancellationToken
+    );
   }
 
   private async Task OnDeleteAsync(MaybeRepresentingUserModel model)
