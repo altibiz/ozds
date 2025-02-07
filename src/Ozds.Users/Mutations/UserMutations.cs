@@ -1,6 +1,7 @@
 // TODO: validation in Ozds.Business
 
 using Microsoft.AspNetCore.Identity;
+using OrchardCore.Users;
 using OrchardCore.Users.Models;
 using Ozds.Users.Entities;
 using Ozds.Users.Mutations.Abstractions;
@@ -9,9 +10,9 @@ namespace Ozds.Users.Mutations;
 
 public class UserMutations : IUserMutations
 {
-  private readonly UserManager<User> _userManager;
+  private readonly UserManager<IUser> _userManager;
 
-  public UserMutations(UserManager<User> userManager)
+  public UserMutations(UserManager<IUser> userManager)
   {
     _userManager = userManager;
   }
@@ -55,8 +56,11 @@ public class UserMutations : IUserMutations
       throw new InvalidOperationException(message);
     }
 
-    user.UserName = userEntity.UserName;
-    user.Email = userEntity.Email;
+    if (user is User concreteUser)
+    {
+      concreteUser.UserName = userEntity.UserName;
+      concreteUser.Email = userEntity.Email;
+    }
 
     var result = await _userManager.UpdateAsync(user);
     if (!result.Succeeded)
