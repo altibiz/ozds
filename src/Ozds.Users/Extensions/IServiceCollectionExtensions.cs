@@ -1,3 +1,4 @@
+using Ozds.Users.Mutations;
 using Ozds.Users.Mutations.Abstractions;
 using Ozds.Users.Queries;
 using Ozds.Users.Queries.Abstractions;
@@ -26,7 +27,7 @@ public static class IServiceCollectionExtensions
     this IServiceCollection services
   )
   {
-    services.AddScoped(typeof(IMutations));
+    services.AddScoped(typeof(IUserMutations), typeof(UserMutations));
     return services;
   }
 }

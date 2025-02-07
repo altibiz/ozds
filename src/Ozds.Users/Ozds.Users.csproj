@@ -7,7 +7,6 @@
   <ItemGroup>
 		<PackageReference Include="OrchardCore.Abstractions" Version="$(OrchardCoreVersion)" />
 		<PackageReference Include="OrchardCore.Users" Version="$(OrchardCoreVersion)" />
-	  <ProjectReference Include="../../src/Ozds.Business/Ozds.Business.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,5 +1,5 @@
 namespace Ozds.Users.Mutations.Abstractions;
 
-public interface IMutations
+public interface IUserMutations
 {
 }

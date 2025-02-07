@@ -6,7 +6,7 @@ using UserMutationsBase = Ozds.Users.Mutations.UserMutations;
 
 namespace Ozds.Business.Mutations
 {
-  public class UserMutations : IMutations
+  public class UserMutations : IUserMutations
   {
     private readonly UserMutationsBase _mutations;
     private readonly ModelEntityConverter _converter;

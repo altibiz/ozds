@@ -1,13 +1,12 @@
 // TODO: validation in Ozds.Business
 using Microsoft.AspNetCore.Identity;
 using OrchardCore.Users.Models;
-using Ozds.Business.Models;
 using Ozds.Users.Entities;
 using Ozds.Users.Mutations.Abstractions;
 
 namespace Ozds.Users.Mutations;
 
-public class UserMutations : IMutations
+public class UserMutations : IUserMutations
 {
   private readonly UserManager<User> _userManager;
 
