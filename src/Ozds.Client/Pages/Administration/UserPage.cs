@@ -65,14 +65,12 @@ public partial class UserPage
 
     var mutations = ScopedServices.GetRequiredService<AuditableMutations>();
     var userUpdateMutations =
-      ScopedServices.GetRequiredService<UserUpdateMutations>();
+      ScopedServices.GetRequiredService<UserMutations>();
 
     await mutations.Update(model.Representative, CancellationToken);
 
     await userUpdateMutations.UpdateUser(
-      model.User.Id,
-      model.User.UserName,
-      model.User.Email,
+      model.User,
       CancellationToken
     );
   }
