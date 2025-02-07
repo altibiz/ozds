@@ -1,3 +1,5 @@
+using Ozds.Users.Mutations;
+using Ozds.Users.Mutations.Abstractions;
 using Ozds.Users.Queries;
 using Ozds.Users.Queries.Abstractions;
 
@@ -11,14 +13,21 @@ public static class IServiceCollectionExtensions
   )
   {
     services.AddQueries();
+    services.AddMutations();
     return services;
   }
 
-  private static IServiceCollection AddQueries(
+  private static IServiceCollection AddQueries(this IServiceCollection services)
+  {
+    services.AddScoped(typeof(IUserQueries), typeof(UserQueries));
+    return services;
+  }
+
+  private static IServiceCollection AddMutations(
     this IServiceCollection services
   )
   {
-    services.AddScoped(typeof(IUserQueries), typeof(UserQueries));
+    services.AddScoped(typeof(IUserMutations), typeof(UserMutations));
     return services;
   }
 }
