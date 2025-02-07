@@ -17,20 +17,35 @@ public class DocumentAssetLoader : IDocumentAssetLoader
     return svgCache.GetOrAdd(name, LoadSvgUncached);
   }
 
+  public string LoadTtfBase64(string name)
+  {
+    return fontCache.GetOrAdd(name, LoadTtfBase64Uncached);
+  }
+
   private Dictionary<string, string> LoadTranslationsUncached(
     CultureInfo culture
   )
   {
     var cultureString = culture.TwoLetterISOLanguageName;
-    var jsonStream = Load($"Translations.{cultureString}.json");
-    return JsonSerializer.Deserialize<Dictionary<string, string>>(jsonStream)!;
+    var stream = Load($"Translations.{cultureString}.json");
+    return JsonSerializer.Deserialize<Dictionary<string, string>>(stream)!;
   }
 
   private string LoadSvgUncached(string name)
   {
-    var jsonStream = Load($"Images.{name}.svg");
-    using var jsonStreamReader = new StreamReader(jsonStream);
-    return jsonStreamReader.ReadToEnd();
+    var stream = Load($"Images.{name}.svg");
+    using var reader = new StreamReader(stream);
+    return reader.ReadToEnd();
+  }
+
+  private string LoadTtfBase64Uncached(string name)
+  {
+    var stream = Load($"Font.{name}.ttf");
+    using var memoryStream = new MemoryStream();
+    stream.CopyTo(memoryStream);
+    var bytes = memoryStream.ToArray();
+    var base64 = Convert.ToBase64String(bytes);
+    return base64;
   }
 
   private static Stream Load(string name)
@@ -49,6 +64,9 @@ public class DocumentAssetLoader : IDocumentAssetLoader
   }
 
   private readonly ConcurrentDictionary<string, string> svgCache =
+    new();
+
+  private readonly ConcurrentDictionary<string, string> fontCache =
     new();
 
   private readonly

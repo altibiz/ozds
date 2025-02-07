@@ -1,6 +1,4 @@
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Html;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Ozds.Document.Loaders.Abstractions;
 
 namespace Ozds.Document.Components;
@@ -20,7 +18,14 @@ public abstract class DocumentBase : ComponentBase
 
   public MarkupString Svg(string name)
   {
-    return new MarkupString(AssetLoader.LoadSvg(name));
+    var svg = AssetLoader.LoadSvg(name);
+    return new MarkupString(svg);
+  }
+
+  public MarkupString TtfBase64(string name)
+  {
+    var ttf = AssetLoader.LoadTtfBase64(name);
+    return new MarkupString(ttf);
   }
 
   public string Date(DateTimeOffset date)
