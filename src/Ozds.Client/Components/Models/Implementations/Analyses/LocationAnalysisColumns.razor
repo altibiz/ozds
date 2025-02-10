@@ -8,9 +8,9 @@
 
 @LinkColumn(x => x.Location)
 
-@Column(x => x.Analysis.ThisMonthConsumption.ActiveEnergy_kWh)
-
 @Column(x => x.Analysis.LastMonthConsumption.ActiveEnergy_kWh)
+
+@Column(x => x.Analysis.ThisMonthConsumption.ActiveEnergy_kWh)
 
 @if (RepresentativeState.Representative.Role
   is RoleModel.LocationRepresentative)
