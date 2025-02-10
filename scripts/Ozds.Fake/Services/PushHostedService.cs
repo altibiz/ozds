@@ -57,7 +57,7 @@ public class PushHostedService(
         await pushClient.Push(
           push.MessengerId,
           push.ApiKey,
-          true,
+          realtime: true,
           request,
           stoppingToken
         );
