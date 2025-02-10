@@ -30,9 +30,6 @@ public abstract class NetworkUserCalculationEntity : CalculationEntity
     SupplyRenewableEnergyFee
   { get; set; } = default!;
 
-  public string NetworkUserMeasurementLocationId { get; set; } =
-    default!;
-
   public abstract NetworkUserCatalogueEntity UsageNetworkUserCatalogue
   {
     get;
