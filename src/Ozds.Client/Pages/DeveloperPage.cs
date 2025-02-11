@@ -31,7 +31,7 @@ public partial class DeveloperPage : OzdsComponentBase
   private async Task OnPdfClick()
   {
     var invoice = await ScopedServices
-      .GetRequiredService<AuditableQueries>()
+      .GetRequiredService<ReadonlyQueries>()
       .Read<NetworkUserInvoiceModel>(
         0,
         CancellationToken.None
