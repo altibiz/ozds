@@ -79,7 +79,7 @@ public sealed class PlaywrightHtmlToPdfRenderer(
   )
 #pragma warning restore SA1011 // Closing square brackets should be spaced correctly
   {
-    await _lock.WaitAsync();
+    await _lock.WaitAsync(cancellationToken);
 
     try
     {
