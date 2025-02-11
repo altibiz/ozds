@@ -25,20 +25,9 @@ public class DocumentRendererTest
       var html = await documentRenderer
         .RenderCalculatedNetworkUserInvoiceToHtml(entity);
       Assert.NotNull(html);
-      await File.WriteAllTextAsync(
-        Path.Combine(
-          Environment.CurrentDirectory,
-          $"invoice.html"),
-        html);
-
       var pdf = await documentRenderer
         .RenderCalculatedNetworkUserInvoiceToPdf(entity);
       Assert.NotNull(pdf);
-      await File.WriteAllBytesAsync(
-        Path.Combine(
-          Environment.CurrentDirectory,
-          $"invoice.pdf"),
-        pdf);
     }
   }
 }

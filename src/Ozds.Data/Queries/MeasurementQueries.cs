@@ -108,7 +108,7 @@ public class MeasurementQueries(
     );
   }
 
-  public async Task<List<IMeasurementEntity>> ReadLastByMeterId(
+  public async Task<List<IMeasurementEntity>> ReadLastByMeterIds(
     IEnumerable<IGrouping<Type, string>> meterIdsByEntityType,
     IntervalEntity? interval,
     DateTimeOffset toDate,
