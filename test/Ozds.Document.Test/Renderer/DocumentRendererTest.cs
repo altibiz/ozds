@@ -23,10 +23,12 @@ public class DocumentRendererTest
     foreach (var entity in entities)
     {
       var html = await documentRenderer
-        .RenderCalculatedNetworkUserInvoiceToHtml(entity);
+        .RenderCalculatedNetworkUserInvoiceToHtml(
+          entity, CancellationToken.None);
       Assert.NotNull(html);
       var pdf = await documentRenderer
-        .RenderCalculatedNetworkUserInvoiceToPdf(entity);
+        .RenderCalculatedNetworkUserInvoiceToPdf(
+          entity, CancellationToken.None);
       Assert.NotNull(pdf);
     }
   }
