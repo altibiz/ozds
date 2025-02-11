@@ -1,0 +1,28 @@
+@namespace Ozds.Document.Components
+
+@inherits DocumentBase
+
+<!DOCTYPE html>
+
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+
+<body>
+<LayoutView Layout="@typeof(DocumentLayout)">
+  <DynamicComponent Type="@Type" Parameters="@Parameters"/>
+</LayoutView>
+</body>
+</html>
+
+@code {
+
+  [Parameter]
+  public Type? Type { get; set; }
+
+  [Parameter]
+  public Dictionary<string, object?> Parameters { get; set; } = default!;
+
+}

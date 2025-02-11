@@ -5,9 +5,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="CsvHelper" Version="31.0.3" />
-    <PackageReference Include="CommandLineParser" Version="2.9.1" />
-    <PackageReference Include="Altibiz.DependencyInjection.Extensions" Version="$(AltibizDependencyInjectionExtensionsVersion)" />
+    <PackageReference Include="CsvHelper" />
+    <PackageReference Include="CommandLineParser" />
+    <PackageReference Include="Altibiz.DependencyInjection.Extensions" />
   </ItemGroup>
 
 </Project>

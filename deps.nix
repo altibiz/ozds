@@ -340,11 +340,6 @@
   })
   (fetchNuGet {
     pname = "MailKit";
-    version = "4.3.0";
-    hash = "sha256-ZBgFcV4FzlQSHrXc1EGWo3rcxpXwta0wOuGJ78EpSn8=";
-  })
-  (fetchNuGet {
-    pname = "MailKit";
     version = "4.7.1.1";
     hash = "sha256-g9VnuGYTPNUa6woEO/gVbxNfaidHgGtoQw2qOgYLK0o=";
   })
@@ -1349,6 +1344,11 @@
     hash = "sha256-0AqQ2gMS8iNlYkrD+BxtIg7cXMnr9xZHtKAuN4bjfaQ=";
   })
   (fetchNuGet {
+    pname = "Microsoft.Playwright";
+    version = "1.47.0";
+    hash = "sha256-RtqQ9UPMAUZgJcJmLKADoAan2aVzYopVwe9ZGq+FhH0=";
+  })
+  (fetchNuGet {
     pname = "Microsoft.SqlServer.Server";
     version = "1.0.0";
     hash = "sha256-mx/iqHmBMwA8Ulot0n6YFVIKsU1Tx7q4Tru7MSjbEgQ=";
@@ -1530,11 +1530,6 @@
   })
   (fetchNuGet {
     pname = "Npgsql";
-    version = "7.0.6";
-    hash = "sha256-sUfwC9y2N1Pa+pLip8fW6BW2SQmRhTEhsP+7R1W/w4U=";
-  })
-  (fetchNuGet {
-    pname = "Npgsql";
     version = "8.0.3";
     hash = "sha256-weBGo/IXKI5ufixBCuWG7OqDSyIqvGV07oxrG0XnQIQ=";
   })
@@ -1635,13 +1630,8 @@
   })
   (fetchNuGet {
     pname = "OrchardCore";
-    version = "1.8.1";
-    hash = "sha256-l5A/u9Rbs1fVBFiilODEmL0I1BKfJQbNUJjtTh2phkk=";
-  })
-  (fetchNuGet {
-    pname = "OrchardCore.Abstractions";
-    version = "1.8.1";
-    hash = "sha256-bk/g+b2QxpTup64yjaWOWzqGdUUbcXbJVWe9nGb2yrs=";
+    version = "1.8.3";
+    hash = "sha256-/qcZ6BEyFWfomgGX3vmJ4ebXtfbLilYWN8wQkqnSuFs=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Abstractions";
@@ -1650,778 +1640,778 @@
   })
   (fetchNuGet {
     pname = "OrchardCore.Admin";
-    version = "1.8.1";
-    hash = "sha256-Xflw8Slq1KD/V3I/TE7a5LkzSqzEr/MIVSKSSBq+5A4=";
+    version = "1.8.3";
+    hash = "sha256-NqcH3ZCFRoei0X0T53zYNzcA1GBwM32xhky7xboFOQc=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Admin.Abstractions";
-    version = "1.8.1";
-    hash = "sha256-32H+GxkYbHv9eWV56A1vQwojbFobux9OrtFLJN1uDss=";
+    version = "1.8.3";
+    hash = "sha256-xkfaJa0oqFyDsxKNUjxh+Y1vPtnvwJ+aTDVPKGwKC9U=";
   })
   (fetchNuGet {
     pname = "OrchardCore.AdminDashboard";
-    version = "1.8.1";
-    hash = "sha256-MdXY5QWmFwsyilbSLZQz5iJ7SM1WZMePjP8DogIpI3E=";
+    version = "1.8.3";
+    hash = "sha256-QMWnpiU3F/JOBc4nxoBV4jDlgrmQmEy41nbhtkEFTCg=";
   })
   (fetchNuGet {
     pname = "OrchardCore.AdminMenu";
-    version = "1.8.1";
-    hash = "sha256-F+gVnPH+dsSaN9g+FDeLXTYD7HnU13C9wJbUgGmiGVg=";
+    version = "1.8.3";
+    hash = "sha256-U2QIfwg/lz5qhsztS7XfigPBC6eXi9/yyF/aPufLr6Y=";
   })
   (fetchNuGet {
     pname = "OrchardCore.AdminMenu.Abstractions";
-    version = "1.8.1";
-    hash = "sha256-vpzFa8c4RlEztSU8oucroInnmgaCEhID+oG0JNL+XR8=";
+    version = "1.8.3";
+    hash = "sha256-wU374IlmrOr1j4IsPgTdNrovcxFtA+YBe1WT89DARos=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Alias";
-    version = "1.8.1";
-    hash = "sha256-aRqk4BPOmyAYV+ySM2tIazL6Jwrl9U1ZipSjzno2REY=";
+    version = "1.8.3";
+    hash = "sha256-MKVAb39Vx6ZKbEneOwNajEiJ8ARq0nZZi3xGvXLhXk8=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Apis.GraphQL";
-    version = "1.8.1";
-    hash = "sha256-tSlcvHpiIhW9V5EACFg7/cwefg0TcVDZZc5wtGnmhh0=";
+    version = "1.8.3";
+    hash = "sha256-6+IubSmVOzgQr+xMOxWjfSU8qoFr6tO2H1ZX02hzVQo=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Apis.GraphQL.Abstractions";
-    version = "1.8.1";
-    hash = "sha256-6vck4oWHOjKAlGJ//4BH1ElNH4Gea4FeHJoL2XSi378=";
+    version = "1.8.3";
+    hash = "sha256-uiLqVqplAW8nagKskV+iFZiWz7KUUBX9e2TIiSZPuj0=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Application.Cms.Core.Targets";
-    version = "1.8.1";
-    hash = "sha256-c/2w2fpjw0FvZLDsU9G0AfEDEQg4/b+gLc9oe6leV04=";
+    version = "1.8.3";
+    hash = "sha256-MvA0nbasynsP0Rvo4U+7wJClQghWzY6eZu1sJfLqBiY=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Application.Cms.Targets";
-    version = "1.8.1";
-    hash = "sha256-TjcdMPPOksEHhpgApAdKB9xT0FFkV0I3/8P6TN4dd8w=";
+    version = "1.8.3";
+    hash = "sha256-vCOfVv02kn29JRrdDjM4u7IBXGbFL+wByjV+hhV/rDs=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Application.Targets";
-    version = "1.8.1";
-    hash = "sha256-DKEDkiR5rMF1X3Wftoruq2dDqz2g69ubSlZhZ0T0NyE=";
+    version = "1.8.3";
+    hash = "sha256-XdePqjN1gnPguPjWMG2ZG7jd5tvkOt2K5xv63h+VO5o=";
   })
   (fetchNuGet {
     pname = "OrchardCore.ArchiveLater";
-    version = "1.8.1";
-    hash = "sha256-vJ2ldOdDpvERVSUXZ8uVx5oFABaZFDRUrXRKWxA6GLE=";
+    version = "1.8.3";
+    hash = "sha256-H5aotBisRTcazwCVrScsK0EoAyQeILI9ygWhdA1BJ3s=";
   })
   (fetchNuGet {
     pname = "OrchardCore.AuditTrail";
-    version = "1.8.1";
-    hash = "sha256-W9o/GbLdEEFb6nvevH9/9FUkHiLYZYkB0DT7ULrXK2U=";
+    version = "1.8.3";
+    hash = "sha256-Y2ebNvgOPWeUvkBbLJ4aG/cPnIq/Dmvv5pgXabwZ65c=";
   })
   (fetchNuGet {
     pname = "OrchardCore.AuditTrail.Abstractions";
-    version = "1.8.1";
-    hash = "sha256-qbAxV7H46l3UvaRqeH9ABUElUlmo8AkifgFFqiuMCRk=";
+    version = "1.8.3";
+    hash = "sha256-GwNW0aSePMwF6xqL76mUD9QlZOgdtE6eZZs0h1iXtII=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Autoroute";
-    version = "1.8.1";
-    hash = "sha256-PqbGyRi+tZM750tW1A+Dm8M35zctxSb9qKYKuE6wUaM=";
+    version = "1.8.3";
+    hash = "sha256-TiKeEzc+ulk8D69a5Lp5IIcudFWEjai0oPPq+K7FP60=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Autoroute.Core";
-    version = "1.8.1";
-    hash = "sha256-d+fV8ljDEevbdq0nyJ1lyjlfOrwoY1yVZOEBdRv6Nms=";
+    version = "1.8.3";
+    hash = "sha256-doX1YNffiRcEfN+90LtHdt244D7Gjp0QugAjQYrjTAA=";
   })
   (fetchNuGet {
     pname = "OrchardCore.AutoSetup";
-    version = "1.8.1";
-    hash = "sha256-4h62z1iY1SrQ0OKYVFRVveQ4nJd1BU+2dNO4TGEx5Ss=";
+    version = "1.8.3";
+    hash = "sha256-gzDRs8RIUReUlzXdkXfH2zR44Zt1r+JHdKcw+62BEDk=";
   })
   (fetchNuGet {
     pname = "OrchardCore.BackgroundTasks";
-    version = "1.8.1";
-    hash = "sha256-ZRk+tMjyPFD+eI5vacQhwKNzEwHJ4mLxSz8x/KQ1m14=";
+    version = "1.8.3";
+    hash = "sha256-BsUNHQWXC3XIogsK1QcE/xbs1xBUnueB05H/xqVWrns=";
   })
   (fetchNuGet {
     pname = "OrchardCore.ContentFields";
-    version = "1.8.1";
-    hash = "sha256-jWQVOGrjSmKL9s4lpc9zrcMk8rIVistEaisUFt+ifjo=";
+    version = "1.8.3";
+    hash = "sha256-eXKIcv1EnJBljIno5oCw6dIljHe3LmetvvfxNkRdBEo=";
   })
   (fetchNuGet {
     pname = "OrchardCore.ContentLocalization";
-    version = "1.8.1";
-    hash = "sha256-hylUtETpiIz7qe6EGivz14+7EWZOnAt9VijTpNg66uY=";
+    version = "1.8.3";
+    hash = "sha256-htix5WOWcsckpBR2q4i0P/Nxc2G0UG140RMBRJtco4E=";
   })
   (fetchNuGet {
     pname = "OrchardCore.ContentLocalization.Abstractions";
-    version = "1.8.1";
-    hash = "sha256-XtrsMTly83IV5V/yNeGDMVbths3IDlJV/NH5utVHWYA=";
+    version = "1.8.3";
+    hash = "sha256-NkYQfYE0+ij06ECdMe8NVTtCw4J0YBOfwChL05OCWfw=";
   })
   (fetchNuGet {
     pname = "OrchardCore.ContentManagement";
-    version = "1.8.1";
-    hash = "sha256-7E1Jc0GF9p5boN7tSmON8H2LcUD2/p4NSjeybFTZjmU=";
+    version = "1.8.3";
+    hash = "sha256-7kzbS7mdAkBql1pZSKMI+bSnUWlhoFMdcnKNw+CrBls=";
   })
   (fetchNuGet {
     pname = "OrchardCore.ContentManagement.Abstractions";
-    version = "1.8.1";
-    hash = "sha256-PDQI4m2qbbyw67Mvk5JOvGF/1P+PI9UHLslAjm5j4h4=";
+    version = "1.8.3";
+    hash = "sha256-Dq7CjAAM4uyB/VwYDe9CmuJpggVsj66I94sywiXW0jA=";
   })
   (fetchNuGet {
     pname = "OrchardCore.ContentManagement.Display";
-    version = "1.8.1";
-    hash = "sha256-xeCPL9dOygTTceGr9laA2b5CHfCZtCnAUOYTtiYKYPw=";
+    version = "1.8.3";
+    hash = "sha256-4NaYR7/2irJp/3PwWd0z4n97db8XlY+WtEeQm/alvuQ=";
   })
   (fetchNuGet {
     pname = "OrchardCore.ContentManagement.GraphQL";
-    version = "1.8.1";
-    hash = "sha256-7CB4GNPYXWChdvYmXTs3/GsGhVwOjYVE+ipcCArX4ec=";
+    version = "1.8.3";
+    hash = "sha256-B0YzbX7rgAi4Y1ExNb6IPE5Q43JsDNXw8XD87XZAXOM=";
   })
   (fetchNuGet {
     pname = "OrchardCore.ContentPreview";
-    version = "1.8.1";
-    hash = "sha256-gvi27XQwgLpdZP2JcTxMNA5QoG8DfOD0dSrNdtGz+YE=";
+    version = "1.8.3";
+    hash = "sha256-7RwrwkK4aksigXHmvyRw5vs1fpK9A9cKBWMEh2+fd4c=";
   })
   (fetchNuGet {
     pname = "OrchardCore.ContentPreview.Abstractions";
-    version = "1.8.1";
-    hash = "sha256-AicLhzzv5iIgsprRXSkD4OkwCXjKcWlMdDmeLECnZmQ=";
+    version = "1.8.3";
+    hash = "sha256-6yHpVbjNxmakj3IQ3y0A3VRDdHdoR5mi0Nnn2g1+UyA=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Contents";
-    version = "1.8.1";
-    hash = "sha256-v3CYuLqYtYL9x0LyPgAYHq5QWkrOGgzwFg77/NMbW7o=";
+    version = "1.8.3";
+    hash = "sha256-fgrB8VERNO4WSqXxvYctPAvPwMoaul79/AWBdl7FiQ0=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Contents.Core";
-    version = "1.8.1";
-    hash = "sha256-BJGv+luUGiiGPLVmSAp7/BvecON9C4Ipdcq+Mu1UfNc=";
+    version = "1.8.3";
+    hash = "sha256-afUMm1dKR0OrrTALjXkxjEQAhQ5iKS6RTr2Sgdr/9HE=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Contents.TagHelpers";
-    version = "1.8.1";
-    hash = "sha256-TM3aSOfcLGH+sdY0t62xqhBN7h8lnDkWREyzknculUw=";
+    version = "1.8.3";
+    hash = "sha256-JGWbF6OKWiOnFimJxalQyfR+l0qrrGDvBO1fNAJp4v4=";
   })
   (fetchNuGet {
     pname = "OrchardCore.ContentTypes";
-    version = "1.8.1";
-    hash = "sha256-BRHbg1WaHrdBKdLKtZhep4UqucSGw+trmNfWRfJ+95o=";
+    version = "1.8.3";
+    hash = "sha256-9hMdon48p6/mRbdaRQIjq7jnz2iNRvWqAaeimsBhxlQ=";
   })
   (fetchNuGet {
     pname = "OrchardCore.ContentTypes.Abstractions";
-    version = "1.8.1";
-    hash = "sha256-lAqm+L1R77lh3Tn6pJbw6MSYugBR+KZ/ub+UWwX7M8s=";
+    version = "1.8.3";
+    hash = "sha256-OidHpZHvXACuBh8QxVCS1X1y5PI+VJgYbrekOhsyHsU=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Cors";
-    version = "1.8.1";
-    hash = "sha256-3jzMNoZPTJFqDhWE+M9EKTS4kaFn2ZOUszV+gchjp2g=";
+    version = "1.8.3";
+    hash = "sha256-DZqqqKpttEzuhVLHS3jykiKe6FwYh/HgXfD3R2QmMDI=";
   })
   (fetchNuGet {
     pname = "OrchardCore.CustomSettings";
-    version = "1.8.1";
-    hash = "sha256-vcve3Vi5bMNwcFqvWljytzR5z8niRpKKHLx1Lpemcj0=";
+    version = "1.8.3";
+    hash = "sha256-hZlHuX0NdQOu4SEN8SAbC7l/RlrX9tkHY1NQD8c6FCw=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Data";
-    version = "1.8.1";
-    hash = "sha256-mmNoyKIo7NO5K5ExeZ67ajuFFo/Y8gX7l+Zm58OlIvg=";
+    version = "1.8.3";
+    hash = "sha256-21WTVZj6dtv/X+EOh8aUBBDdAlgNXfoQ3LykWTUuR4E=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Data.Abstractions";
-    version = "1.8.1";
-    hash = "sha256-3ECiWVRYHYRWDR+jxNon+muSwLJkgOKX/aBDciLPgJw=";
+    version = "1.8.3";
+    hash = "sha256-5QuMF5ltajUjtfJQFw0UPDe+8z9GZgPW8xFfnqo/+RA=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Data.YesSql";
-    version = "1.8.1";
-    hash = "sha256-27R9Bo1jdlx7L9U1wnXC+GRRwpAlvwSa1dTTcPYAVt0=";
+    version = "1.8.3";
+    hash = "sha256-Wm5bhKYf2/l/DxU5liHNIrx1LPXmqxEgtifm7116xIQ=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Data.YesSql.Abstractions";
-    version = "1.8.1";
-    hash = "sha256-SKGU0MYqcaGsdJE/mpd25JcGsrbI8Xgi5uWv1vodJaw=";
+    version = "1.8.3";
+    hash = "sha256-8IagfnkiGUWvPd9neKSZH9pqEDNOM8FWONrxZT+Hr8U=";
   })
   (fetchNuGet {
     pname = "OrchardCore.DataProtection.Azure";
-    version = "1.8.1";
-    hash = "sha256-p+XBdKSv1vWNIrYRZj/+Y5n7zmGwlt6Z/dJC9k2HzSw=";
+    version = "1.8.3";
+    hash = "sha256-U1Oue0rxocN6gpkC96hzzqoRuvahTalsJP2Y+UQOroE=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Deployment";
-    version = "1.8.1";
-    hash = "sha256-gq3x8SjyB6j580oaFVYnShu+bTCLDbRi00VPPT4thfI=";
+    version = "1.8.3";
+    hash = "sha256-lwIsfDP2BgJhy97vRgT4zsfQmPWVlHS3QgkFGDZNHb4=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Deployment.Abstractions";
-    version = "1.8.1";
-    hash = "sha256-j/OUoATvxryQSbznhZUYlAzDKB/vJGuENjjfkwnAnsQ=";
+    version = "1.8.3";
+    hash = "sha256-5B7HitZ5A0YgdGYEh2bHFt5T5RT59WCPuu+Z7WeRya4=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Deployment.Core";
-    version = "1.8.1";
-    hash = "sha256-qJ5BAaDA9LzGD2bsyQ0+WzBu/FLUhfcEdeDDsQJA5rU=";
+    version = "1.8.3";
+    hash = "sha256-MCyQBOn2cSvMbmOKcNcF8oySk9TJ4JpHvnBVYU+ZamU=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Deployment.Remote";
-    version = "1.8.1";
-    hash = "sha256-Gb6fwkU1kIFT4J/QzbNFTHWOk2N7d1SDoIZEhKD8YzU=";
+    version = "1.8.3";
+    hash = "sha256-pqQesx8X7C82mQKGx16YJql9+iYc2l5f0etyx8hBMaM=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Diagnostics";
-    version = "1.8.1";
-    hash = "sha256-iwwZE0c8kc+RkQkVx5pH9WRCBGJMxB8gdRjd15sgDpw=";
+    version = "1.8.3";
+    hash = "sha256-TYSJ+9g3kzM3LT2VbbtSSXY+NDayPxL9yMUm5CDGtL4=";
   })
   (fetchNuGet {
     pname = "OrchardCore.DisplayManagement";
-    version = "1.8.1";
-    hash = "sha256-nOlD0n1OCB45EQ0WmLz6Ce16C4Y+f0LegnAe+4XISvg=";
+    version = "1.8.3";
+    hash = "sha256-TAxqwyktrHfsFmfupsvIMk+Ur20HWTFg2sIRSjnT9m4=";
   })
   (fetchNuGet {
     pname = "OrchardCore.DisplayManagement.Abstractions";
-    version = "1.8.1";
-    hash = "sha256-fh+3w3kpHLieP8e1okU/NgfvNvbGQ5dYz1XswnuPZ8U=";
+    version = "1.8.3";
+    hash = "sha256-dfWGPtBf8Oi+aboaJI2KFcJGe8GZAwA5cQwm/yq1uAE=";
   })
   (fetchNuGet {
     pname = "OrchardCore.DisplayManagement.Liquid";
-    version = "1.8.1";
-    hash = "sha256-GcTaQJAqthP+gIymTNx/fpUum/RcdXf5/sbQfWhevbs=";
+    version = "1.8.3";
+    hash = "sha256-dSHAQ2GriLs+lOZjMIQ65FuIN3E9FJJE26Y70MmW3k8=";
   })
   (fetchNuGet {
     pname = "OrchardCore.DynamicCache";
-    version = "1.8.1";
-    hash = "sha256-hPDtF8f9hptqomgtvrHUKuZS4ML++9RuKrlMqp3Nq/A=";
+    version = "1.8.3";
+    hash = "sha256-Y8oTrMOeNfN0ipfZxUcYfhCiY+McCyewJvJpdynZHx0=";
   })
   (fetchNuGet {
     pname = "OrchardCore.DynamicCache.Abstractions";
-    version = "1.8.1";
-    hash = "sha256-SVA3WLJQyJrent/P1MCnuif/kYmTPdkg899Oe9UZw34=";
+    version = "1.8.3";
+    hash = "sha256-l2gYJAZ/r6ou0K+lJ/D0wS4smer4hx2WsdHTAGF6lzY=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Email";
-    version = "1.8.1";
-    hash = "sha256-BBCZ+QuhsDzamnEIXsahHsL9RT4/w8kPLpBaGs6Dn1k=";
+    version = "1.8.3";
+    hash = "sha256-0sqp8e+twMvSs9MmIo9CHEbDNBF+6L7lSb9SEzwZCYc=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Email.Abstractions";
-    version = "1.8.1";
-    hash = "sha256-ue7P9we9rwMyj+KjHAD+DCMWHhyM4AhkD0+5zGYmY0Y=";
+    version = "1.8.3";
+    hash = "sha256-l9tVTSLtFDyzVjV6RTncP5OZvhZvbdPpFM/AFcqft/Q=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Email.Core";
-    version = "1.8.1";
-    hash = "sha256-6sbCdspL6BwBPNCjaenCi2VdP41Rq02K8Zx4fGHiKlM=";
+    version = "1.8.3";
+    hash = "sha256-rqZd/b0lWUEG/EV4EqdI8URagLRmJjOOFiyQ5+8qkC4=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Facebook";
-    version = "1.8.1";
-    hash = "sha256-pMoDSM6mQwqC6d30quKmH6BjQkOY51Kcy40emVtbn/s=";
+    version = "1.8.3";
+    hash = "sha256-2sL2dwLjxY8Qw6Bgqj9+yr4xqszBemCfnn8RQcvn938=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Features";
-    version = "1.8.1";
-    hash = "sha256-RCeFxJkUi69WLoG+L8EHAFB9G1QL2UMKmYJU8Nijjis=";
+    version = "1.8.3";
+    hash = "sha256-RK3D9vT6aOZ9ct+i4CA2qYyV6JrTFqdY/0z+GgX/TqY=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Features.Core";
-    version = "1.8.1";
-    hash = "sha256-sKxuUXHGbqD43HkFkjuVmi6gqMIqNiSeQL4VTyPMQIY=";
+    version = "1.8.3";
+    hash = "sha256-4cLrA4bTI/LfyHZtcl0JdRkWQ9AMvp+mMkL7V3NQFd8=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Feeds";
-    version = "1.8.1";
-    hash = "sha256-PiUL7bYT8643O78JV+Rm4X/BLX8JTwv4jv8DVCaXioY=";
+    version = "1.8.3";
+    hash = "sha256-3RaxHVSvGaV0ejHkiGpv15ab1cClMh+6ouOeOevdJCY=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Feeds.Abstractions";
-    version = "1.8.1";
-    hash = "sha256-DWiuQFn2XK/kaqjBwu5kGxiPexs8jcM/Ts5zx4RVBBw=";
+    version = "1.8.3";
+    hash = "sha256-M78lXgvJu6POMhvJdV50SFAk8pSU4CruqLtFIgUOphM=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Feeds.Core";
-    version = "1.8.1";
-    hash = "sha256-4D1L9Dh41P2HqO6AbVuaPdhd07ha5+thoWXgoNbe42I=";
+    version = "1.8.3";
+    hash = "sha256-+7uXeYK1ifRvU1I8rLkCMpEZKKrSqfccCDYuQ9YKhYo=";
   })
   (fetchNuGet {
     pname = "OrchardCore.FileStorage.Abstractions";
-    version = "1.8.1";
-    hash = "sha256-lQP7HvdEohYJpNNIVajCg43BcUqpsUa8HjqBUyyxLCA=";
+    version = "1.8.3";
+    hash = "sha256-BwLbl55E7XbZQm7MmfznqQVl35AbMZ1wHHXa+svf2h4=";
   })
   (fetchNuGet {
     pname = "OrchardCore.FileStorage.AmazonS3";
-    version = "1.8.1";
-    hash = "sha256-LSF4JRdi/NE44+nGVWa3nWyrQpM7WEwjPokAHo9SW+0=";
+    version = "1.8.3";
+    hash = "sha256-zHnECin+H9ACx1cJVCPGjOnKBSpmvxA07mA6erNjPUs=";
   })
   (fetchNuGet {
     pname = "OrchardCore.FileStorage.AzureBlob";
-    version = "1.8.1";
-    hash = "sha256-EvksHX/mA5VZ6NegzZcv+bhqC6ijDsNYrJ2XkblEWlY=";
+    version = "1.8.3";
+    hash = "sha256-dOYbDdbj98WiBlrZwy0ljf3LeI1GnpvTwGIm7LLZg6o=";
   })
   (fetchNuGet {
     pname = "OrchardCore.FileStorage.FileSystem";
-    version = "1.8.1";
-    hash = "sha256-uXZLaCLEpQLB9Yew8hfk0cGk2fK4O5lDgD/BkV4aXeI=";
+    version = "1.8.3";
+    hash = "sha256-vzzpsdnWeCGF/9PPaLS8mBLarTeln8e9wD+IoizAjFY=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Flows";
-    version = "1.8.1";
-    hash = "sha256-tLkVF4HZC4mdvyCai7wt6CR65TUnbRtoMohOhAXfxrc=";
+    version = "1.8.3";
+    hash = "sha256-6iaa/D/vlymK/ybwgotJoToGtMU2SejqxRSIjniawsk=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Forms";
-    version = "1.8.1";
-    hash = "sha256-NSWcxj5FChnmwI8Ao9yKeaFKMBEUxfwU5tZQ50glVow=";
+    version = "1.8.3";
+    hash = "sha256-uqOBAzQ+oDTqagi/SsL5EW21j/+e/cmmz9xXzQhgfow=";
   })
   (fetchNuGet {
     pname = "OrchardCore.GitHub";
-    version = "1.8.1";
-    hash = "sha256-Isz2eeYCio3oqMR3neIIVtiOBkhbhE2Q2hjFZdmSahQ=";
+    version = "1.8.3";
+    hash = "sha256-TIv9CMGML5SsoaESDMajXtMA6ayxASk3TSCEob6JF6k=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Google";
-    version = "1.8.1";
-    hash = "sha256-yeV2EO9YImF16t6uho14Lc43OjvVxQ+ob/Ekkf7yclA=";
+    version = "1.8.3";
+    hash = "sha256-x6ejJAflqphTDa9UXPe3XAgCqPyRi+9xuQxqFc0jeLk=";
   })
   (fetchNuGet {
     pname = "OrchardCore.HealthChecks";
-    version = "1.8.1";
-    hash = "sha256-tUtYBMeyLF3AE3Ancfx0rYVXNrZ1nqI8JqxThu2261s=";
+    version = "1.8.3";
+    hash = "sha256-zIRZYpKpnfSLdJRhyA+c3HHkhwKJ6OesaSnUXPReec8=";
   })
   (fetchNuGet {
     pname = "OrchardCore.HomeRoute";
-    version = "1.8.1";
-    hash = "sha256-zQxlUImS5Vq0Nx1C/LOdVZwvdhj53j3qsZGmNwrI/B8=";
+    version = "1.8.3";
+    hash = "sha256-Abttl+Rn+D2SdFxkrCPCEqqJ3xRyYuXdYcL3oY3CQks=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Html";
-    version = "1.8.1";
-    hash = "sha256-3l9+HkfH/v71YeNM/Hk13I5aqvKQQK99xsw+oRexlf0=";
+    version = "1.8.3";
+    hash = "sha256-1+2YABofAcAjp3+chqPVS7GS9brcEPCnDcXUdgUKSzc=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Https";
-    version = "1.8.1";
-    hash = "sha256-OzVLpiE4sWwc1yk09hxEXruL8UH3Y9QFoRY/EW9ETPo=";
+    version = "1.8.3";
+    hash = "sha256-1NLYHzwNA8YgkTwO+7ymRLH1GsUuwVBgq3sVEzaYF9o=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Indexing";
-    version = "1.8.1";
-    hash = "sha256-RcZuJUR4D6UmN01sjV+l9QQYqDeauMZGAnMB+1ghsLM=";
+    version = "1.8.3";
+    hash = "sha256-4yG83Yj0G5912qzwEwXp4ImADAqiGtNUD0FSkc40fjY=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Indexing.Abstractions";
-    version = "1.8.1";
-    hash = "sha256-wdZy10NCfSxBvnBlv9du1RA2vabn7xALO8UQypCGJuQ=";
+    version = "1.8.3";
+    hash = "sha256-nW+Nxm3DT/ydMuzkZ3TVvk/leT04ebSsnJJPAZ45Fz4=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Infrastructure";
-    version = "1.8.1";
-    hash = "sha256-iQxLvh0E8Km0xvLw8B70nUAy+/A14O276Dq3JX/09bc=";
+    version = "1.8.3";
+    hash = "sha256-V5eYZQvh1yWIYB2hm0shx3ZidtNOW0uTTJqjwJEwaVU=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Infrastructure.Abstractions";
-    version = "1.8.1";
-    hash = "sha256-MGnZjc9DcwL3IMLYFrqIeonKOUb6j0n7b8X50d8Wmj4=";
+    version = "1.8.3";
+    hash = "sha256-KDUAR84/HXkcn64ljroNdSUh641+u352Yn7VAKETP3A=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Layers";
-    version = "1.8.1";
-    hash = "sha256-9R6+gebRLYbjzF7C9NSdYm6pSlaR7p2UBrxFgzcvKOg=";
+    version = "1.8.3";
+    hash = "sha256-mFS06oUtY7sWsNYjQ/y4h7xVDAhUYjCfKr/Wuv737fQ=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Liquid";
-    version = "1.8.1";
-    hash = "sha256-DwdEWcxSM/Zg352exiB56sSpCmtiuQrR78luNCZduH4=";
+    version = "1.8.3";
+    hash = "sha256-lfrdviZbfLx+yTTHluFB/VApLYmX+nf4UXFBFA1NFIE=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Liquid.Abstractions";
-    version = "1.8.1";
-    hash = "sha256-ExfyEy5NqMUHHbYvgzVb5sgCWND8XYcjAcHnw+ePOAo=";
+    version = "1.8.3";
+    hash = "sha256-nIj9Jp7P61k065PGkO1IKp400rR4suOxvroVQzBEn3w=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Lists";
-    version = "1.8.1";
-    hash = "sha256-/uY41s6c7ZzvvDYxrIBv4NdT5qNZ3jYEzpp13v3bI3U=";
+    version = "1.8.3";
+    hash = "sha256-5wvmgbIzZT068Y3EJU8i+SE/a9/JeurNKDHEdTVo1dE=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Localization";
-    version = "1.8.1";
-    hash = "sha256-VpjUeeUld/n1oaTBB7g2XrlmlPZN8nqh2li3LTGgxis=";
+    version = "1.8.3";
+    hash = "sha256-HvuNFDiQkkdY2VG6KFUCFfEdjwWcVptX4OFO78zASEM=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Localization.Abstractions";
-    version = "1.8.1";
-    hash = "sha256-OskmFo3T7m5ewJX7Mo+dWu7HhJuhQSOhz+rOaQ6XvY0=";
+    version = "1.8.3";
+    hash = "sha256-Uxgd5SOn8CC1zloS7YCRaSlXM9S2lix9tUDEr/A6dUg=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Localization.Core";
-    version = "1.8.1";
-    hash = "sha256-nNj2joMbVurYgGXe3cjXgxYZjiaJ3g89W+wUgpKEee4=";
+    version = "1.8.3";
+    hash = "sha256-80RU42vTt+Gykn0KaqkwXc24asntjhne1/+6ovgFVoQ=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Logging.NLog";
-    version = "1.8.1";
-    hash = "sha256-8h+zDXHDUnvCDMC8glz1+1Oi7bhe8kOIBALvz6WQUB0=";
+    version = "1.8.3";
+    hash = "sha256-924HW6Nu99CivcIUg1JqJmq8QR4JU6QwjlXVs4HGK9g=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Markdown";
-    version = "1.8.1";
-    hash = "sha256-Gy9tuMF6HLBrj9AJMk5n70m6qfxOp/Cjg+X2IWwq2fs=";
+    version = "1.8.3";
+    hash = "sha256-QJ1L026zpPiL64QduaWp6isJr1sjAZZumQLChQdBOK0=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Markdown.Abstractions";
-    version = "1.8.1";
-    hash = "sha256-lWSah8feM9O9+vS8ZJY0pIZJqC12+rK98I0Fv+8ofNg=";
+    version = "1.8.3";
+    hash = "sha256-qC1OeCmwv1DNoAM02GBfnW3H3ywbsPI7aJNXp4VRrZk=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Media";
-    version = "1.8.1";
-    hash = "sha256-H5bzAvIPZ3PeCWCaQtOX83gWeVqs2vYBW1O7RxbYBRY=";
+    version = "1.8.3";
+    hash = "sha256-D8UTH6XjfQsS1pVGMnQFDtYDNPVQfPjO+l55gPO7Ui8=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Media.Abstractions";
-    version = "1.8.1";
-    hash = "sha256-Qpg4CosIuTBFfMzvVa9Y5TstAbbDvpbl688F06QPhGY=";
+    version = "1.8.3";
+    hash = "sha256-tR9bORCWbO2Cr7bIpREelZTDL6GLkyM+NeNeIMd4NrM=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Media.AmazonS3";
-    version = "1.8.1";
-    hash = "sha256-fsANT6A2pqTbEqToyqhAeSjvkUGyxijRuJZ0twkbH8E=";
+    version = "1.8.3";
+    hash = "sha256-5Cq807kazEsKaO7Z6Yb46a5GjGsf7aHhH3E/IscMoNg=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Media.Azure";
-    version = "1.8.1";
-    hash = "sha256-lSORDLTwvcbZTw1Q8+Y2a3cx9P3em+GIk4jeIoGHo+g=";
+    version = "1.8.3";
+    hash = "sha256-bqA/ODvm69g3Kt0FDL8T9zBhK6VkeNIBD5Qe5R24E5Q=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Media.Core";
-    version = "1.8.1";
-    hash = "sha256-8ahozcIaOjsTxrNmwWiF0/hMa5SwHk9WMg0Kyp1rIJw=";
+    version = "1.8.3";
+    hash = "sha256-gdcUYCe7ZPRfa9+Nkw3T7kj83hPMkwKknO+jdd2vgSc=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Menu";
-    version = "1.8.1";
-    hash = "sha256-ADdvwaUX9KkAsLa7j6kMruq9zr3Iw5Nwa0M4ToVTGHE=";
+    version = "1.8.3";
+    hash = "sha256-kiF3w9UVDfvR2ob5Vqh7yJBFKKVDiaOzlY488GLK6ZY=";
   })
   (fetchNuGet {
     pname = "OrchardCore.MetaWeblog.Abstractions";
-    version = "1.8.1";
-    hash = "sha256-8SITmZwb/FEtz0LPSHkJgWPB6n+vJE0E2LeSlRw2zYc=";
+    version = "1.8.3";
+    hash = "sha256-GhaZD3E/GtMLmov5Ua/QJ5PTqjqgsncJXqVpNo/BGpE=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Microsoft.Authentication";
-    version = "1.8.1";
-    hash = "sha256-vmZgRDzQ9DOzRIj1IwJ++QHnkREC53+60UnXPPnWXXs=";
+    version = "1.8.3";
+    hash = "sha256-3kvL0pBhKJPiCZT2k/HJB3fZoePJUYJHrj6dR2fg4Hs=";
   })
   (fetchNuGet {
     pname = "OrchardCore.MiniProfiler";
-    version = "1.8.1";
-    hash = "sha256-jI5nqlEmGemMuKbVOKJNvAsDK2CRofTo9/hAVTgL/5A=";
+    version = "1.8.3";
+    hash = "sha256-vChagoxFQzj4/MuO/xJlUFefgmNOD/38m7FjguoMTbo=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Module.Targets";
-    version = "1.8.1";
-    hash = "sha256-dfqJN3Y69B9r6+smnovnqnip9pOx99fVQNR+Oyk7Svw=";
+    version = "1.8.3";
+    hash = "sha256-ovGrDJm6pYeFYNruTeB5Y2SHmLF9A8FoyJhogshk2P4=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Mvc.Core";
-    version = "1.8.1";
-    hash = "sha256-4bVNfpV8i3xv5J2cswr1uUBCCuocYIJyeBjXh7QtSAQ=";
+    version = "1.8.3";
+    hash = "sha256-q8VXZLgcd2k7Gtz2TmciF1W8Nfa2xqgBq3u8VqhiE5c=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Navigation";
-    version = "1.8.1";
-    hash = "sha256-Sx7hJSnaB8Yka/i6CvGRUVXpraFg7YQl7gX2tk154h8=";
+    version = "1.8.3";
+    hash = "sha256-z8Btab8frEpuxTaLh2DQuOy0J5ua/TC7/sUPUCpZSQA=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Navigation.Core";
-    version = "1.8.1";
-    hash = "sha256-7qbfSw6gNxK2LVAAxC10sGGBvNnMy+6FFiiFo/krPko=";
+    version = "1.8.3";
+    hash = "sha256-qPZj2PO7/exoC7/OLhJmZ6OGHb3tI4v9wXA9dPgQpT4=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Notifications";
-    version = "1.8.1";
-    hash = "sha256-Dc2F3d3EvwN4X7n/UJJIXEfSr5e56KYO+qAFnrOe8PE=";
+    version = "1.8.3";
+    hash = "sha256-zazWHF85YgfbL0OhA+0p+8PPpRVdGPOTofgXc12LD5w=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Notifications.Abstractions";
-    version = "1.8.1";
-    hash = "sha256-Cd0fLM3eu7ilMxvyHs9TdRAKmfi6/6vwst8VKV8by28=";
+    version = "1.8.3";
+    hash = "sha256-oD09WP2VTjvnA3C5bopJ9tnUIb7OcDChBFbYIOIEjiA=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Notifications.Core";
-    version = "1.8.1";
-    hash = "sha256-bmQP/q5UPNXLEFA02mYLIv7jozfklWNf4gtR6WeJl/U=";
+    version = "1.8.3";
+    hash = "sha256-Qhca1Em7ueuX2Mva6qYnCMXe2O969B953/39j8y7oOo=";
   })
   (fetchNuGet {
     pname = "OrchardCore.OpenId";
-    version = "1.8.1";
-    hash = "sha256-RJFPKGNrhL1MRmF5yMB73De87gm+ALgaVn/lycwP2hs=";
+    version = "1.8.3";
+    hash = "sha256-zd+EmEaZ3ftvUOshBi2UARIIjw3gcG6hl5SiU0iTCWo=";
   })
   (fetchNuGet {
     pname = "OrchardCore.OpenId.Core";
-    version = "1.8.1";
-    hash = "sha256-s8oK5wZoNIYbAJm1h2Yl49zNoELB65IFpsWBodfhH1g=";
+    version = "1.8.3";
+    hash = "sha256-Kdmj6EMtPT2glHHuTDY2/R8tFueMOPPDXX02fWusaPc=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Placements";
-    version = "1.8.1";
-    hash = "sha256-BhcIbKc+NbW+Es57x8Az8GIgpda1aylyvR5epcT2xv4=";
+    version = "1.8.3";
+    hash = "sha256-KC9FDlCQQ+kR4QM/Jx3Dnv+gJmxN6vQs+dwXSey/9Vk=";
   })
   (fetchNuGet {
     pname = "OrchardCore.PublishLater";
-    version = "1.8.1";
-    hash = "sha256-wh9qKPJxn4qiMIERuOvhDM/GGdY48Ehkpb5icuTJlPU=";
+    version = "1.8.3";
+    hash = "sha256-rB1eYQuHypWq3FGYiliwUPy5evjZiq3oSUUi0klW4t0=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Queries";
-    version = "1.8.1";
-    hash = "sha256-lKHP9zyeQ7Ymudvu1pCwc6fnFXMLmqTiDrx3iWo9Uoo=";
+    version = "1.8.3";
+    hash = "sha256-xfMrR9iPSULR+hmFWar16N4K8SpVpcGvmi+F79mt3SY=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Queries.Abstractions";
-    version = "1.8.1";
-    hash = "sha256-HIwZVXYIh9wzgIudIdjXvz3sCUKGHArAwNowwC5Yxf8=";
+    version = "1.8.3";
+    hash = "sha256-u+reBmMw0yMhsNbWK2YaYIAecFgG0diF6ha/iUDYDe4=";
   })
   (fetchNuGet {
     pname = "OrchardCore.ReCaptcha";
-    version = "1.8.1";
-    hash = "sha256-GmFuCjbpFW6RczUaLGq1aQNO18nazCXkl7hPQrwhCbI=";
+    version = "1.8.3";
+    hash = "sha256-C/xysmW4lmjr3K47+totVSEt6ZoL0c2yxrxJT9CxWSs=";
   })
   (fetchNuGet {
     pname = "OrchardCore.ReCaptcha.Core";
-    version = "1.8.1";
-    hash = "sha256-QGMz3FmTye+a/BR1KCGc816lU+lUqo0xUgPGZym4SzA=";
+    version = "1.8.3";
+    hash = "sha256-v0cQRcdgcWz5nkWclHcYvWWivndrUZWfBJVOIxoh0as=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Recipes";
-    version = "1.8.1";
-    hash = "sha256-HM4TzeYkLOlbJatJmWG5vISGHSeOk1azOiBtTp1cgOU=";
+    version = "1.8.3";
+    hash = "sha256-Szwg+HXi/JGRDyK8PAgaxsCct+gWjsY1NpnD1FBZ3Ss=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Recipes.Abstractions";
-    version = "1.8.1";
-    hash = "sha256-plT7M6D8KVbrTwynqAJInXOu4Lo67aT3ZlFpRZczO0o=";
+    version = "1.8.3";
+    hash = "sha256-qc4Tu/iKprxSf1TG18y519v0O+SYjrfrY7/T+X798cw=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Recipes.Core";
-    version = "1.8.1";
-    hash = "sha256-NzynzaN+OF0QTBz5TPBfajybwsqbDvWf/6BNhGyJR0w=";
+    version = "1.8.3";
+    hash = "sha256-b9YHMnNw9NIZiv0YfSArZ0oYib17kD8pbv3+SoWrt5E=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Redis";
-    version = "1.8.1";
-    hash = "sha256-e21Tf3ggl/UZCBY1CRdSi7+rUe8r+BpVCW6GN3u6D9w=";
+    version = "1.8.3";
+    hash = "sha256-oGGNUaKbitiX+BYL8EP7aK5XbWOC/D4C7aGs5KzkcA8=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Redis.Abstractions";
-    version = "1.8.1";
-    hash = "sha256-z0YDgpb5nLTc6qJ+L1ynzwYQtUnKI34U3bnpWiae/jU=";
+    version = "1.8.3";
+    hash = "sha256-Chtt0aaMJMjuRhhNB1cpkjoj/VymQ6f0uSmP1VM5Ejg=";
   })
   (fetchNuGet {
     pname = "OrchardCore.ResourceManagement";
-    version = "1.8.1";
-    hash = "sha256-3jfjeS3VCFWIy0iDt5qsgytmPs6HCqJ1cZphNtY8gWk=";
+    version = "1.8.3";
+    hash = "sha256-BrB896p29qBuoD6NQ1b0BALxit/dh0g2K5c3RKFMU6c=";
   })
   (fetchNuGet {
     pname = "OrchardCore.ResourceManagement.Abstractions";
-    version = "1.8.1";
-    hash = "sha256-UWqe5ug5rRoLfWGWUp93RpB/QvIvBAIYwAMxQ5uhihM=";
+    version = "1.8.3";
+    hash = "sha256-5yEg0pkPvv0DN/Y1FVoOQJHXMUgtdtLbJ9kKXC6w60Q=";
   })
   (fetchNuGet {
     pname = "OrchardCore.ResourceManagement.Core";
-    version = "1.8.1";
-    hash = "sha256-dXJOluDd8/rifzl3MBv0MieP6/TFsQGFsOWzoGXSiqk=";
+    version = "1.8.3";
+    hash = "sha256-IiJERxA0UfeuIGrMqMH5VhLMWO8LT9YA/Fpk1qMvMTg=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Resources";
-    version = "1.8.1";
-    hash = "sha256-zXagnLSULpP/L4/jDfTaEgTTPDKRsR7h19/Q5TxFktE=";
+    version = "1.8.3";
+    hash = "sha256-3+V4K5DCbqQW8pxafKGLe3JY1NJEE3LxoGJ7E2Fj6jI=";
   })
   (fetchNuGet {
     pname = "OrchardCore.ResponseCompression";
-    version = "1.8.1";
-    hash = "sha256-Kt/aOYbN4LrFacG9XTKlVaK3P7aGbdAGvK/ntX3w41k=";
+    version = "1.8.3";
+    hash = "sha256-llTUi9NxgU0dLcszQD5l5wygz/de0xVoSXgnm58WRxE=";
   })
   (fetchNuGet {
     pname = "OrchardCore.ReverseProxy";
-    version = "1.8.1";
-    hash = "sha256-I40y1+Iy9c5WNDRrvcrVfafo+G6VA1uDQclBFvTCQnI=";
+    version = "1.8.3";
+    hash = "sha256-mXsn4i4qPUrYlk/XJzYdzEU8xbSQBLcYZAONEAqzVzM=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Roles";
-    version = "1.8.1";
-    hash = "sha256-bBGtFsZboLNNaIw0G51h0SIFn2rWRVHyqEgwaGMlKMQ=";
+    version = "1.8.3";
+    hash = "sha256-e8z49c4PqcWGfDjsg5QYx8puHzXRm62r+xzA2NvNPCw=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Roles.Core";
-    version = "1.8.1";
-    hash = "sha256-PXIFeD/nFV1eyeR2miqMob0spRkVTiWCku0fjMchPNE=";
+    version = "1.8.3";
+    hash = "sha256-RTjd80GYIeou1R2gfO/ByzetAW80jsg9mjt0wHfGnlo=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Rules";
-    version = "1.8.1";
-    hash = "sha256-9HZQpVE9D8rJJXAGNA9QHCna2wvKHM/9wn7KJcf2i70=";
+    version = "1.8.3";
+    hash = "sha256-bvA1pzizpXrrsALmDeqprtkJQ3oLg2dFz4+xyH43LGg=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Rules.Abstractions";
-    version = "1.8.1";
-    hash = "sha256-YL3HuAJWRCzXrYZ5Fzf/ucYYp+tCC9GB4XJSXW5sZuI=";
+    version = "1.8.3";
+    hash = "sha256-qtl+KHMwoN4oPfTxUFnkwzt72E/605k/0k73YRO1/nw=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Scripting";
-    version = "1.8.1";
-    hash = "sha256-WnmrENtz4RdiiKilnNmT+vEyB64j3LnNOtMQXLtp7ww=";
+    version = "1.8.3";
+    hash = "sha256-T8KfS3vekRH/0dBIWbd8a2vf1I2oAlRPZrXWvdiPbAo=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Scripting.JavaScript";
-    version = "1.8.1";
-    hash = "sha256-od0laSb30bgAegISJS+gWfw9coDDW3ix6EzRnWmrqkg=";
+    version = "1.8.3";
+    hash = "sha256-YELtz4Fk6PcTaCjjatdbnPGqH2cl+zhI//OBuFnbECk=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Search";
-    version = "1.8.1";
-    hash = "sha256-R/sHvB8qCvzWLNS8jKYiighKLZbDnpYzjGQu4CCb7AQ=";
+    version = "1.8.3";
+    hash = "sha256-JPB5aqRABMaEzRCteY5fmeX3BVCShgThI2GDqlZ9pSg=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Search.Abstractions";
-    version = "1.8.1";
-    hash = "sha256-nHaCVjJT2NCuJNLYcs4PNfQPMKvYT80ku7U+/nuVrrQ=";
+    version = "1.8.3";
+    hash = "sha256-gs+ZN9gDrK9dLwPripaPUwu+z0p/oHpEvxLM4LjThTM=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Search.Elasticsearch";
-    version = "1.8.1";
-    hash = "sha256-8Ldbyek4O9uTxAsivELJs8+rNESzIqB92FnPryyBiUk=";
+    version = "1.8.3";
+    hash = "sha256-VDleg/FVLlGB0wAVX1p/s8ouOoF6udWIkIzS29fIt0A=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Search.Elasticsearch.Abstractions";
-    version = "1.8.1";
-    hash = "sha256-aPx0TFn8FxRuAhBQ+e0UknU11QfYIjtX04tPoqC02Co=";
+    version = "1.8.3";
+    hash = "sha256-Z87TIrC5L6KODb8IKxWdwxvDOVX/+G0uX4CHKVD3urc=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Search.Elasticsearch.Core";
-    version = "1.8.1";
-    hash = "sha256-EQTCWwGjtD+J9paI47f8JiF6GzbjR4a7iToPvwwaiW4=";
+    version = "1.8.3";
+    hash = "sha256-ZNHt/QF+PFkr1nacHRq63B3e9dqYTo4LOmKoCIEFDrA=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Search.Lucene";
-    version = "1.8.1";
-    hash = "sha256-j+sHahGs4mmGpBuy8AUVH8cYySHOjefQw1Og31oV8Wg=";
+    version = "1.8.3";
+    hash = "sha256-/8Zix73cIbuh4QG/iMWLGfUjPK86+pkyp4AZbPJssrk=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Search.Lucene.Abstractions";
-    version = "1.8.1";
-    hash = "sha256-16L7aydP5xNoHHs2n45h4zUbTFaQxu0yI0asaUam7XI=";
+    version = "1.8.3";
+    hash = "sha256-bNtJCdnqkk4u/M/s11b10BrrvMbEh12iOsEje6rFBX0=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Search.Lucene.Core";
-    version = "1.8.1";
-    hash = "sha256-DDMaXoFPAr2DMVQ1o2wTybkqR0shef70Ghru8FALIWU=";
+    version = "1.8.3";
+    hash = "sha256-UDai0B1oZzZ/S8dVhfVz8oBuungOvWCBYR8AlEYtlaU=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Security";
-    version = "1.8.1";
-    hash = "sha256-61MdDY97SHpkAtQRtfjHPwppbLtjx2hZinvh56g1uBs=";
+    version = "1.8.3";
+    hash = "sha256-cQWvuv3ZxUvZXvSFn3ipTQOHa7fV98yUc5veVBjn6UE=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Seo";
-    version = "1.8.1";
-    hash = "sha256-SVB5PFPf8GpvIilIq9zO+YYQIuuvPa1y6aKdl545utY=";
+    version = "1.8.3";
+    hash = "sha256-0KS3fb7vSEfRwgu3l53AQP6Y61JlOxvDiujYZsW9aoE=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Seo.Abstractions";
-    version = "1.8.1";
-    hash = "sha256-hb7QO/yGuJPLLe8yaHkJA3c++2AQgJJ9yl1sq3P+f28=";
+    version = "1.8.3";
+    hash = "sha256-XuP2kfT0T3Y3Tu48vlrUl0+ETAnj0YzgSi8psdhxwkE=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Settings";
-    version = "1.8.1";
-    hash = "sha256-re1rSQfmUsaa4jt81+oGlFFmzN6stRF5oDzZdJGKuLU=";
+    version = "1.8.3";
+    hash = "sha256-d8QQpv0MnQp3rKl8gA/MnoHMqXW3gLWAIo3GWbBwJ90=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Settings.Core";
-    version = "1.8.1";
-    hash = "sha256-qtMXWgy75rXYnJ7qHVoLkQ3StBK5ZkzS0qTvMn7WrxE=";
+    version = "1.8.3";
+    hash = "sha256-CKu9uheARMQ0LQJImBnKO/grgrbUkg0ORC4dDKPcpE0=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Setup";
-    version = "1.8.1";
-    hash = "sha256-MItSENo4a6NWmHAeS+yukVvvKYi5ZGKbEhQ2xyzEU8Y=";
+    version = "1.8.3";
+    hash = "sha256-Tkci+xQz64jVrjVp8DvKlofYvEZFVUZrqWeA5ds5/6U=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Setup.Abstractions";
-    version = "1.8.1";
-    hash = "sha256-adHPSrZFBmb46bnDGUbxURV0gPnk+XCGV0fiqstwuug=";
+    version = "1.8.3";
+    hash = "sha256-0bvYsgp9IpItO7AFssizhctIZd251R917+XJcHYKGlQ=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Setup.Core";
-    version = "1.8.1";
-    hash = "sha256-XZQcwp7leh826PnA/sIGy1vCyaNKz7KaHMs0dY2V9CI=";
+    version = "1.8.3";
+    hash = "sha256-iyLO5tU5fIXxbl37ZU/OrtWobE5aqE0bANijS0oBBVA=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Shortcodes";
-    version = "1.8.1";
-    hash = "sha256-6wVm/ufcSA2CRF2MlX1bukzhTU5AJdex2gyZ8WyvsOM=";
+    version = "1.8.3";
+    hash = "sha256-fK3/UKRgPCoWDu+GhI8do6zNnwtj2VrscwRGtHuj9jQ=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Shortcodes.Abstractions";
-    version = "1.8.1";
-    hash = "sha256-VIDVPbQ7mT2Eto0XUzhKRaAzNhNlzwitAfZNOH24RBQ=";
+    version = "1.8.3";
+    hash = "sha256-KOLo6CtkmdVkSn4eVAoNgH2/V6MBJJzg4Qlw0GEXSaI=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Sitemaps";
-    version = "1.8.1";
-    hash = "sha256-MTJciVg0K4Ept6Kws/2U0uuA1EBpSGpXf20qSKOg/c4=";
+    version = "1.8.3";
+    hash = "sha256-4MElq4X9kYJ5h9M1uby6PCIinfCcA2PcnsUBEXG5k/8=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Sitemaps.Abstractions";
-    version = "1.8.1";
-    hash = "sha256-9BNAEwgvfU7M9VjvsGhwnydOkVTIqBYZoTIlcKfpwB4=";
+    version = "1.8.3";
+    hash = "sha256-f/YyFNO3H28OmilXnCBOfs4XExv0iCMBCPztI7siImE=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Sms";
-    version = "1.8.1";
-    hash = "sha256-ldiRv2v916Q5Q5tvsaZchzzH++71Q2i9f9SZ2eAXYxU=";
+    version = "1.8.3";
+    hash = "sha256-vBobi34sm1Jx44vpYs9AvOjPhuMOnbyThtvYk2b1ujE=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Sms.Abstractions";
-    version = "1.8.1";
-    hash = "sha256-YekWvxBvUPZM0jr+MKZjxkbB6TCEPcLkqCbbMA2udcc=";
+    version = "1.8.3";
+    hash = "sha256-thqTt9yPEW6bWhl0E9bv+XF1BpwqFUqwvEEC5k6YVz0=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Sms.Core";
-    version = "1.8.1";
-    hash = "sha256-FhPUSAZzL4kY+sF6JOTT0Ct9CuT9u718+n6b77t+1y8=";
+    version = "1.8.3";
+    hash = "sha256-Lh5d8iP538fqV5ue1+0+q4DKaTCuR/pIUGbMM+4yfa4=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Spatial";
-    version = "1.8.1";
-    hash = "sha256-HTjElq9sGs+V8QTIC/Hq7f4lzSaSrgctam5f3n55FYs=";
+    version = "1.8.3";
+    hash = "sha256-ih7Z/irWorfAnzIeb42DhkX+32pBGp2w8/4THTB53Gs=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Taxonomies";
-    version = "1.8.1";
-    hash = "sha256-icTqM3UblUtAWGwmaCKxcMBBevGAdoCo9G1/t3IRYV8=";
+    version = "1.8.3";
+    hash = "sha256-f3o/xRWZWzBhKFUNxHOq1eGLojslCsGP81OCUTHRNgs=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Templates";
-    version = "1.8.1";
-    hash = "sha256-MepnAKt6baFb+v58C5yGgJ92QDItPG9h+NNlhARnO+s=";
+    version = "1.8.3";
+    hash = "sha256-p5Il22KqeItAwX78CiKe6XFrKYymoz0zrPOfAkVVlls=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Tenants";
-    version = "1.8.1";
-    hash = "sha256-hacTIGa3A9Ig7RvQWuYymTvJm4qFsnzecXYk6DEbypY=";
+    version = "1.8.3";
+    hash = "sha256-pgGZC9P9fDDXmwrk+zZvVWC/CvOMR3MKxNNR7BkfHcM=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Theme.Targets";
-    version = "1.8.1";
-    hash = "sha256-iyWADuf5bxcoZacvPc90zCT1O+NhXnyg393ovyGgTz4=";
+    version = "1.8.3";
+    hash = "sha256-5lXuJRoZ5WqTMWesy8kR0hFtjpX0Tn76rw5pDAkawFI=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Themes";
-    version = "1.8.1";
-    hash = "sha256-SVD8zawE8J02CrRLSBNbo9J/y6Fak68JILq4w/h18Zw=";
+    version = "1.8.3";
+    hash = "sha256-vn4fbUo7wJECTCAlA23xbKG0PrIKybYw7N3VtmcErQc=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Title";
-    version = "1.8.1";
-    hash = "sha256-u4Ru071Bj2/WKFm/mpqjdS+NtpOGjbmsXpg+grvDMus=";
+    version = "1.8.3";
+    hash = "sha256-PHd9/Zvr0ktFjD6zXBaYUF8aqNevKpxqList7JBqdMY=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Translations.All";
@@ -2535,48 +2525,48 @@
   })
   (fetchNuGet {
     pname = "OrchardCore.Twitter";
-    version = "1.8.1";
-    hash = "sha256-BEvS2AQLcnZog03obvPhi/ViwNvteF+Ev+DKWvybkbc=";
+    version = "1.8.3";
+    hash = "sha256-79Ai1peL/w3vJdoJSQnbdzLZNN90Ye2XQPT+j6iy32Y=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Users";
-    version = "1.8.1";
-    hash = "sha256-31OxpqOtNubpm/pIY7e3p3PGp9eChw7pOv+Cx+JUoW0=";
+    version = "1.8.3";
+    hash = "sha256-8aJ+SDWnaMSjxIVR1w64HjYbTxoXnVRlxVeTFjwnR+o=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Users.Abstractions";
-    version = "1.8.1";
-    hash = "sha256-htOknqPpglP1aZk7yC/lY/U7GRhVsaA6FRIfL+TTm+c=";
+    version = "1.8.3";
+    hash = "sha256-6CaxwwZCMY5OQ2GiG1Y2R0hwIMCswjvlSP4L2wpD3Ak=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Users.Core";
-    version = "1.8.1";
-    hash = "sha256-GJ2Kxdja0Idzdc0jys8lNJTr4CleGj9wwC0mBxFX6jY=";
+    version = "1.8.3";
+    hash = "sha256-f4YSgdZza8slHXfOoWCyLoD0uyld1FRLsBRmlGyK70A=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Widgets";
-    version = "1.8.1";
-    hash = "sha256-go96Qw+YYlNMMfgDd1gFbFUQ8LHXVaYpxPIYuMa+mmk=";
+    version = "1.8.3";
+    hash = "sha256-PMe/b14Zg0knmLwtymsmph3uvI0rbgbHdxhrGtmntS0=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Workflows";
-    version = "1.8.1";
-    hash = "sha256-Od02Dj7tgtm82m04p6tWpmc5Ik38mwlT6ZK804pUbvk=";
+    version = "1.8.3";
+    hash = "sha256-bJtEJ0EPQX0z0xlh7IJ4PvIv3SpIGfQYDHPgeoaXHt0=";
   })
   (fetchNuGet {
     pname = "OrchardCore.Workflows.Abstractions";
-    version = "1.8.1";
-    hash = "sha256-zyfo/xJIDF2t33T0QAGTi/Iem31581DXJlSU2qGDOqY=";
+    version = "1.8.3";
+    hash = "sha256-N+uEOriFHFFKC1SwKC35OYMfjC5XmnIvo2vo9nqDrlM=";
   })
   (fetchNuGet {
     pname = "OrchardCore.XmlRpc";
-    version = "1.8.1";
-    hash = "sha256-8q2SLwZtOmaBYXHka5F2jGvFOos08rdAleBka+mpQHA=";
+    version = "1.8.3";
+    hash = "sha256-2uvKibkZh/+jodwPKF0wXX9i/GJ46QQVpADnsckKEBc=";
   })
   (fetchNuGet {
     pname = "OrchardCore.XmlRpc.Abstractions";
-    version = "1.8.1";
-    hash = "sha256-9mABeQFHS97VcXcEXAhUHlqnq5XOovmWVLtZt/yAE7g=";
+    version = "1.8.3";
+    hash = "sha256-wFGqAH2BBUkHD0M2OQ6wHyCO2/o9m6+1M0ErT8Hw+Nc=";
   })
   (fetchNuGet {
     pname = "Parlot";
@@ -2850,8 +2840,8 @@
   })
   (fetchNuGet {
     pname = "SafeMode";
-    version = "1.8.1";
-    hash = "sha256-dZerA1KA0YNqXwF8cjneJDAhJopqNIXnyqSvdCB/GfM=";
+    version = "1.8.3";
+    hash = "sha256-YTvniusWAGeAy/63049RKOHUvR3nLK/+Fpxfo5RfQtw=";
   })
   (fetchNuGet {
     pname = "Shortcodes";
@@ -2860,13 +2850,13 @@
   })
   (fetchNuGet {
     pname = "SixLabors.ImageSharp";
-    version = "3.1.0";
-    hash = "sha256-x/KJuilaplpvpTfSjB9bLB21cu5ZgtmUZkB4Tr5cO3E=";
+    version = "3.1.4";
+    hash = "sha256-zOqHVIInvJiqmx4JF+8USYvdKAGRZVUqQpdncrrjRjM=";
   })
   (fetchNuGet {
     pname = "SixLabors.ImageSharp.Web";
-    version = "3.1.0";
-    hash = "sha256-qlBXxF3wkzsVetgbeIMvCE+BOaCdcQ2hczIaYDiFLFc=";
+    version = "3.1.2";
+    hash = "sha256-MuBwlcy8C85ifov9RfKuygrupt5ocObXJnTcA/3f1fs=";
   })
   (fetchNuGet {
     pname = "SonarAnalyzer.CSharp";
@@ -2982,6 +2972,11 @@
     pname = "System.ComponentModel.Annotations";
     version = "4.7.0";
     hash = "sha256-PxG9lvf2v/IAIs7LhO4Ur+EpX/L5nYbEs0D21gypoRs=";
+  })
+  (fetchNuGet {
+    pname = "System.ComponentModel.Annotations";
+    version = "5.0.0";
+    hash = "sha256-0pST1UHgpeE6xJrYf5R+U7AwIlH3rVC3SpguilI/MAg=";
   })
   (fetchNuGet {
     pname = "System.ComponentModel.Primitives";
@@ -3745,6 +3740,11 @@
   })
   (fetchNuGet {
     pname = "System.Text.Json";
+    version = "6.0.0";
+    hash = "sha256-9AE/5ds4DqEfb0l+27fCBTSeYCdRWhxh2Bhg8IKvIuo=";
+  })
+  (fetchNuGet {
+    pname = "System.Text.Json";
     version = "8.0.0";
     hash = "sha256-XFcCHMW1u2/WujlWNHaIWkbW1wn8W4kI0QdrwPtWmow=";
   })
@@ -3855,28 +3855,28 @@
   })
   (fetchNuGet {
     pname = "TheAdmin";
-    version = "1.8.1";
-    hash = "sha256-oqsUzauJe7ro4UuXF/TK6T8Z9MS4fYQ/fVmjd+GwffU=";
+    version = "1.8.3";
+    hash = "sha256-YeaccRQefRe27lRbkja8GlPH6QoZAqD07AIvon4AygI=";
   })
   (fetchNuGet {
     pname = "TheAgencyTheme";
-    version = "1.8.1";
-    hash = "sha256-8qBFejltqyhftHbg+gDhoWTWXi+vsjiDU+u00bA6+5U=";
+    version = "1.8.3";
+    hash = "sha256-DQo/FP1RcK2CN/VKeAGgh85vp1uyOb9JzcSUzBPhXH0=";
   })
   (fetchNuGet {
     pname = "TheBlogTheme";
-    version = "1.8.1";
-    hash = "sha256-LltYAiuyAIIOxjgP+pjC+jAf4h8mWRXy/mY0FxFcmsI=";
+    version = "1.8.3";
+    hash = "sha256-Y/CN/I/Q5v8TSk32cGb8IFzMbDuPj0ZO+Orq+K6E1T0=";
   })
   (fetchNuGet {
     pname = "TheComingSoonTheme";
-    version = "1.8.1";
-    hash = "sha256-4yVgs4DzqIF3z+y5DoTGK2Btv9alldENqnQUqkIvHxI=";
+    version = "1.8.3";
+    hash = "sha256-cgTyeT0wO9aawTXIC52Pz6htrIYy3hoTlqxW2AvEEoo=";
   })
   (fetchNuGet {
     pname = "TheTheme";
-    version = "1.8.1";
-    hash = "sha256-lri9E4QOwhK1GFKEjklVO0fLcIm/9hDae8OAkp9UIfY=";
+    version = "1.8.3";
+    hash = "sha256-BiLn1fqntUMCDnRRUTRlfIXJUOicr1ZftDURVXyDk+o=";
   })
   (fetchNuGet {
     pname = "TimeZoneConverter";

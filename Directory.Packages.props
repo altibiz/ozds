@@ -1,0 +1,82 @@
+<Project>
+
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+    <CentralPackageVersionOverrideEnabled>false</CentralPackageVersionOverrideEnabled>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <OrchardCoreVersion>1.8.3</OrchardCoreVersion>
+    <EntityFrameworkCoreVersion>8.0.3</EntityFrameworkCoreVersion>
+    <QuartzVersion>3.13.0</QuartzVersion>
+    <MassTransitVersion>8.2.2</MassTransitVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageVersion Include="Altibiz.DependencyInjection.Extensions" Version="1.0.10" />
+
+    <PackageVersion Include="Npgsql" Version="8.0.3" />
+
+    <PackageVersion Include="Dapper" Version="2.1.35" />
+
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="$(EntityFrameworkCoreVersion)" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Proxies" Version="$(EntityFrameworkCoreVersion)" />
+    <PackageVersion Include="EFCore.NamingConventions" Version="$(EntityFrameworkCoreVersion)" />
+    <PackageVersion Include="EFCore.BulkExtensions" Version="$(EntityFrameworkCoreVersion)" />
+    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.4" />
+    <PackageVersion Include="Z.EntityFramework.Plus.EFCore" Version="8.101.2" />
+
+    <PackageVersion Include="Quartz" Version="$(QuartzVersion)" />
+    <PackageVersion Include="Quartz.Serialization.SystemTextJson" Version="$(QuartzVersion)" />
+    <PackageVersion Include="Quartz.Extensions.DependencyInjection" Version="$(QuartzVersion)" />
+    <PackageVersion Include="Quartz.Extensions.Hosting" Version="$(QuartzVersion)" />
+    <PackageVersion Include="AppAny.Quartz.EntityFrameworkCore.Migrations.PostgreSQL" Version="0.5.1" />
+
+    <PackageVersion Include="MassTransit" Version="$(MassTransitVersion)" />
+    <PackageVersion Include="MassTransit.RabbitMQ" Version="$(MassTransitVersion)" />
+    <PackageVersion Include="MassTransit.Azure.ServiceBus.Core" Version="$(MassTransitVersion)" />
+    <PackageVersion Include="MassTransit.EntityFrameworkCore" Version="$(MassTransitVersion)" />
+
+    <PackageVersion Include="OrchardCore.Logging.NLog" Version="$(OrchardCoreVersion)" />
+    <PackageVersion Include="OrchardCore.Application.Cms.Targets" Version="$(OrchardCoreVersion)" />
+    <PackageVersion Include="OrchardCore.Abstractions" Version="$(OrchardCoreVersion)" />
+    <PackageVersion Include="OrchardCore.Users" Version="$(OrchardCoreVersion)" />
+
+    <PackageVersion Include="MailKit" Version="4.7.1.1" />
+
+    <PackageVersion Include="CsvHelper" Version="31.0.3" />
+
+    <PackageVersion Include="CommandLineParser" Version="2.9.1" />
+
+    <PackageVersion Include="MudBlazor" Version="8.1.0" />
+    <PackageVersion Include="MudBlazor.ThemeManager" Version="3.0.0" />
+    <PackageVersion Include="Blazor-ApexCharts" Version="5.0.1" />
+    <PackageVersion Include="Blazored.LocalStorage" Version="4.5.0" />
+
+    <PackageVersion Include="Microsoft.Playwright" Version="1.47.0" />
+
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+    <PackageVersion Include="xunit" Version="2.9.2" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="2.8.2" />
+    <PackageVersion Include="coverlet.collector" Version="6.0.0" />
+    <PackageVersion Include="Xunit.DependencyInjection" Version="9.5.0" />
+    <PackageVersion Include="Xunit.DependencyInjection.Logging" Version="9.0.0" />
+    <PackageVersion Include="Meziantou.Xunit.ParallelTestFramework" Version="2.3.0" />
+
+    <PackageVersion Include="FluentAssertions" Version="6.12.0" />
+
+    <PackageVersion Include="Moq" Version="4.20.70" />
+
+    <PackageVersion Include="Bogus" Version="35.5.1" />
+
+    <PackageVersion Include="AutoFixture" Version="4.18.1" />
+    <PackageVersion Include="AutoFixture.Xunit2" Version="4.18.1" />
+    <PackageVersion Include="AutoFixture.AutoMoq" Version="4.18.1" />
+
+    <PackageVersion Include="StyleCop.Analyzers" Version="1.1.118" />
+
+    <PackageVersion Include="SonarAnalyzer.CSharp" Version="9.28.0.94264" />
+  </ItemGroup>
+
+</Project>

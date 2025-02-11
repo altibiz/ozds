@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.DependencyInjection;
 using MudBlazor;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Queries;
@@ -13,6 +12,7 @@ public partial class Table<T> : OzdsComponentBase
   private MudDataGrid<T>? dataGrid;
 
   private PaginatedList<T> model = new([], 0);
+
   private string? searchString;
 
   [Parameter]
@@ -41,6 +41,11 @@ public partial class Table<T> : OzdsComponentBase
 
   [Inject]
   private NavigationManager NavigationManager { get; set; } = default!;
+
+  protected override Task OnParametersSetAsync()
+  {
+    return dataGrid?.ReloadServerData() ?? Task.CompletedTask;
+  }
 
   private bool Filter(T value)
   {

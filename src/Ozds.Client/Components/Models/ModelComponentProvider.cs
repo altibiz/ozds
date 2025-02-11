@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Routing.Template;
-using Microsoft.Extensions.DependencyInjection;
 using Ozds.Client.Components.Models.Abstractions;
 
 namespace Ozds.Client.Components.Models;

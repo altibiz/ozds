@@ -2,7 +2,6 @@ using System.Globalization;
 using System.Text.Json;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Routing.Template;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop;
 using Ozds.Business.Localization.Abstractions;
 using Ozds.Business.Time;

@@ -1,0 +1,35 @@
+@namespace Ozds.Document.Components
+@using Ozds.Document.Entities
+@inherits DocumentBase
+
+<div class="page">
+  <div class="page-header">
+    @Svg("invoice-print-header-hrv")
+  </div>
+  <div class="page-content">
+    <NetworkUserCalculationDocumentContent Entity="@Entity"/>
+    <NetworkUserCalculationDocumentAbbreviations/>
+  </div>
+  <div class="page-footer">
+    @Svg("invoice-print-footer-hrv")
+  </div>
+</div"Id is required">
+<div class="page-break"/>
+<div class="page">
+  <div class="page-header">
+    @Svg("invoice-print-header-hrv")
+  </div>
+  <div class="page-content">
+    <NetworkUserCalculationDocumentFooter/>
+  </div>
+  <div class="page-footer">
+    @Svg("invoice-print-footer-hrv")
+  </div>
+</div>
+
+@code {
+
+  [Parameter]
+  public NetworkUserCalculationEntity Entity { get; set; } = default!;
+
+}

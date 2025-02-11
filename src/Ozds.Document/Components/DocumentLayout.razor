@@ -1,0 +1,150 @@
+@namespace Ozds.Document.Components
+@inherits DocumentLayoutBase
+
+<style>
+  @@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 300;
+    font-stretch: normal;
+    font-display: swap;
+    src: url(data:font/ttf;base64,@TtfBase64("roboto-300")) format('truetype');
+  }
+  @@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-stretch: normal;
+    font-display: swap;
+    src: url(data:font/ttf;base64,@TtfBase64("roboto-400")) format('truetype');
+  }
+  @@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 500;
+    font-stretch: normal;
+    font-display: swap;
+    src: url(data:font/ttf;base64,@TtfBase64("roboto-500")) format('truetype');
+  }
+  @@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 700;
+    font-stretch: normal;
+    font-display: swap;
+    src: url(data:font/ttf;base64,@TtfBase64("roboto-700")) format('truetype');
+  }
+
+  :root {
+    --page-width: 8.27in;
+    --page-height: 11.69in;
+    --page-margin-inline: 0.55in;
+    --page-margin-top: 0.39in;
+    --page-margin-bottom: 0.20in;
+    --page-header-height: 2.68in;
+    --page-footer-height: 0.65in;
+  }
+
+  @@page {
+    margin: 0;
+    size: var(--page-width) var(--page-height);
+  }
+
+  * {
+    font-family: 'Roboto';
+    font-size: 11pt;
+  }
+
+  table * {
+    font-size: 8pt;
+  }
+
+  .container {
+    max-width: var(--page-width);
+    margin: 0 auto;
+    padding-inline: var(--page-margin-inline);
+    background-color: white;
+  }
+
+  @@media screen {
+    .container {
+      border-inline: 2px solid black;
+    }
+  }
+
+  .page {
+    page-break-after: always;
+    padding-top: var(--page-margin-top);
+    padding-bottom: var(--page-margin-bottom);
+  }
+  .page:last-child {
+    page-break-after: avoid;
+  }
+  .page-break {
+    border-block: 2px solid black;
+    margin-inline: calc(var(--page-margin-inline) * -1);
+    text-align: center;
+  }
+  .page-break::after {
+    content: "PAGE BREAK";
+  }
+  @@media print {
+    .page-break {
+      display: none;
+    }
+  }
+
+  .page-content {
+    position: relative;
+    height: calc(
+      var(--page-height)
+      - var(--page-margin-top)
+      - var(--page-margin-bottom)
+      - var(--page-header-height)
+      - var(--page-footer-height));
+  }
+  .page-header {
+    height: var(--page-header-height);
+    position: relative;
+  }
+  .page-header > img {
+    position: floating;
+    top: 0;
+    border-bottom: 1px solid #DDDDDD;
+    margin-top: calc(var(--page-margin-top) * -1);
+    margin-inline: calc(var(--page-margin-inline) * -1);
+  }
+  .page-footer {
+    height: var(--page-footer-height);
+    position: relative;
+  }
+  .page-footer > img {
+    position: absolute;
+    bottom: 0;
+    border-top: 1px solid #DDDDDD;
+    margin-bottom: calc(var(--page-margin-bottom) * -1);
+    margin-inline: calc(var(--page-margin-inline) * -1);
+  }
+
+  .on-print {
+  }
+  @@media screen {
+    .on-print {
+      display: none;
+    }
+  }
+
+  .on-screen {
+  }
+  @@media print {
+    .on-screen {
+      display: none;
+    }
+  }
+</style>
+
+<main>
+  <div class="container">
+    @Body
+  </div>
+</main>

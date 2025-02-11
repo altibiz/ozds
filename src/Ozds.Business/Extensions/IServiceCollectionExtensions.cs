@@ -20,7 +20,6 @@ using Ozds.Business.Queries.Abstractions;
 using Ozds.Business.Reactors.Abstractions;
 using Ozds.Business.Validation;
 using Ozds.Business.Validation.Abstractions;
-using Ozds.Users.Mutations.Abstractions;
 
 namespace Ozds.Business.Extensions;
 
@@ -31,13 +30,12 @@ public static class IServiceCollectionExtensions
     IHostApplicationBuilder builder
   )
   {
-    services.AddOzdsActivation();
+    services.AddActivation();
     services.AddAggregation();
-    services.AddOzdsConversion();
+    services.AddConversion();
     services.AddFinance();
     services.AddLocalization();
     services.AddMutations();
-    services.AddUserMutations();
     services.AddNaming();
     services.AddObservers();
     services.AddQueries();
@@ -48,7 +46,7 @@ public static class IServiceCollectionExtensions
     return services;
   }
 
-  public static IServiceCollection AddOzdsActivation(
+  public static IServiceCollection AddActivation(
     this IServiceCollection services
   )
   {
@@ -57,12 +55,14 @@ public static class IServiceCollectionExtensions
     return services;
   }
 
-  public static IServiceCollection AddOzdsConversion(
+  public static IServiceCollection AddConversion(
     this IServiceCollection services
   )
   {
     services.AddTransientAssignableTo(typeof(IModelEntityConverter));
     services.AddSingleton(typeof(ModelEntityConverter));
+    services.AddTransientAssignableTo(typeof(IModelDocumentEntityConverter));
+    services.AddSingleton(typeof(ModelDocumentEntityConverter));
     services.AddTransientAssignableTo(typeof(IMeasurementAggregateConverter));
     services.AddSingleton(typeof(MeasurementAggregateConverter));
     services.AddTransientAssignableTo(typeof(IPushRequestMeasurementConverter));
@@ -109,14 +109,6 @@ public static class IServiceCollectionExtensions
   )
   {
     services.AddScopedAssignableTo(typeof(IMutations));
-    return services;
-  }
-
-  private static IServiceCollection AddUserMutations(
-    this IServiceCollection services
-  )
-  {
-    services.AddScopedAssignableTo(typeof(IUserMutations));
     return services;
   }
 

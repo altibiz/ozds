@@ -1,0 +1,52 @@
+@namespace Ozds.Document.Components
+@using Ozds.Document.Entities
+@inherits DocumentBase
+
+<p style="margin-top: 0.8rem;">
+  @Translate("Make the payment to the transaction account")
+  &comma;
+  @Translate("IBAN")
+  @Translate("«InvoiceNumberForPayment»")
+  &comma;
+  @Translate("Reference number")
+  &colon;
+  @Translate("«ReferenceNumber»")
+</p>
+<table class="info-table" style="margin-top: 0.8rem; width: 100%;">
+  <colgroup>
+    NetworkUserCalculationDocumentFooter
+    <col style="width: 71%"/>
+    <col style="width: 28%"/>
+  </colgroup>
+  <thead>
+  <tr>
+    <th style="text-align: left;">@Translate("Operator"): HELB d.o.o.</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td>Božjakovina, @(Date(Entity.IssuedOn))</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td style="text-align: center;">@Translate("Director")</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td style="text-align: center;">Stjepan Horvat</td>
+  </tr>
+  </tbody>
+</table>
+
+@code {
+
+  [Parameter]
+  public NetworkUserInvoiceEntity Entity { get; set; } = default!;
+
+}

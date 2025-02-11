@@ -1,0 +1,68 @@
+@namespace Ozds.Document.Components
+@using Ozds.Document.Entities
+@inherits DocumentBase
+
+<div class="page">
+  <div class="page-header">
+    @Svg("invoice-print-header-hrv")
+  </div>
+  <div class="page-content">
+    <NetworkUserInvoiceDocumentContent Entity="@Entity.Invoice"/>
+  </div>
+  <div class="page-footer">
+    @Svg("invoice-print-footer-hrv")
+  </div>
+</div>
+
+@foreach (var calculation in Entity.Calculations)
+{
+  <div class="page-break"/>
+  <div class="page">
+    <div class="page-header">
+      @Svg("invoice-print-header-hrv")
+    </div>
+    <div class="page-content">
+      <NetworkUserCalculationDocumentContent Entity="@calculation"/>
+    </div>
+    <div class="page-footer">
+      @Svg("invoice-print-footer-hrv")
+    </div>
+  </div>
+}
+
+@if (Entity.Calculations.Count > 0)
+{
+  <div class="page-break"/>
+  <div class="page">
+    <div class="page-header">
+      @Svg("invoice-print-header-hrv")
+    </div>
+    <div class="page-content">
+      <NetworkUserCalculationDocumentAbbreviations/>
+    </div>
+    <div class="page-footer">
+      @Svg("invoice-print-footer-hrv")
+    </div>
+  </div>
+}
+
+<div class="page-break"/>
+<div class="page">
+  <div class="page-header">
+    @Svg("invoice-print-header-hrv")
+  </div>
+  <div class="page-content">
+    <NetworkUserCalculationDocumentFooter/>
+    <NetworkUserInvoiceDocumentFooter Entity="@Entity.Invoice"/>
+  </div>
+  <div class="page-footer">
+    @Svg("invoice-print-footer-hrv")
+  </div>
+</div>
+
+@code {
+
+  [Parameter]
+  public CalculatedNetworkUserInvoiceEntity Entity { get; set; } = default!;
+
+}

@@ -24,6 +24,9 @@ rewind := absolute_path('scripts/database/rewind.nu')
 rollback := absolute_path('scripts/database/rollback.nu')
 validate := absolute_path('scripts/database/validate.nu')
 measurements := absolute_path('scripts/database/measurements.nu')
+playwright := absolute_path('src/Ozds.Server/bin/Debug/net8.0/playwright.ps1')
+ozdsserver := absolute_path('scripts/startup/ozds-server.sh')
+ozdsserverdev := absolute_path('scripts/startup/ozds-server-dev.sh')
 current := "current"
 
 default:
@@ -31,8 +34,12 @@ default:
 
 prepare:
     dvc pull
+    dotnet restore
     dotnet tool restore
-    (not (which prettier | is-empty)) or (npm install -g prettier) | ignore
+    dotnet build
+    (which prettier | is-not-empty) or (npm install -g prettier)
+    ($env.PLAYWRIGHT_BROWSERS_PATH | is-not-empty) or \
+      (pwsh '{{ playwright }}' install --with-deps chromium)
     @just clean
 
 lfs:
@@ -87,7 +94,10 @@ lint:
       --no-progress
 
     markdownlint '{{ root }}'
-    markdown-link-check --config .markdown-link-check.json --quiet ...(glob '**/*.md')
+    markdown-link-check \
+      --config .markdown-link-check.json \
+      --quiet \
+      ...(fd '^.*.md$' | lines)
 
     # TODO: make it work in CI
     ($env | get CI? | is-not-empty) or (pyright '{{ root }}')
@@ -130,7 +140,7 @@ publish *args:
     rm -rf '{{ artifacts }}'
     mkdir '{{ artifacts }}'
 
-    dotnet publish '{{ sln }}' \
+    dotnet publish '{{ servercsproj }}' \
       --property PublishDir='{{ artifacts }}' \
       --property ConsoleLoggerParameters=ErrorsOnly \
       --property IsWebConfigTransformDisabled=true \
@@ -139,7 +149,22 @@ publish *args:
       --configuration Release \
       {{ args }}
 
-    rm -rf '{{ artifacts }}/App_Data'
+    mkdir ("{{ artifacts }}/.playwright/package/.local-browsers" \
+      + "/chromium-1134/chrome-linux")
+
+    cd ("{{ artifacts }}/.playwright/package/.local-browsers" \
+      + "/chromium-1134/chrome-linux"); \
+      nix-bundle \
+        "playwright-driver.browsers.override { \
+          withFirefox = false; \
+          withWebkit = false; \
+        }" \
+        "/chromium-1134/chrome-linux/chrome"
+
+    cp '{{ ozdsserver }}' '{{ artifacts }}/ozds-server'
+    cp '{{ ozdsserverdev }}' '{{ artifacts }}/ozds-server-dev'
+
+    mv '{{ artifacts }}/App_Data' '{{ artifacts }}/App_Data_Dev'
 
 docs:
     rm -rf '{{ artifacts }}'
@@ -401,7 +426,9 @@ purge:
       -e !.idea/** \
       -e !**/*.csproj.user \
       -e !.direnv/ \
-      -e !.direnv/bin/
+      -e !.direnv/bin/ \
+      -e !.dvc/config.local
+    dvc pull
     dotnet tool restore
     dotnet restore
 

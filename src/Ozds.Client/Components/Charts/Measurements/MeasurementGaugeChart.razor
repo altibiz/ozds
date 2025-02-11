@@ -29,16 +29,14 @@
     }
     else
     {
-      foreach (var phase in Parameters.Phases.OrderBy(x => x))
-      {
-        @(
-        Series(
-          phase.ToColor(i),
-          meter,
-          measurementLocation,
-          phase
-        ))
-      }
+      var phase = Parameters.Phases.First();
+      @(
+      Series(
+        phase.ToColor(i),
+        meter,
+        measurementLocation,
+        phase
+      ))
     }
   }
 </ApexChart>

@@ -23,7 +23,7 @@ public class ModelActivatorTest
   public void Activates(Type modelType)
   {
     var serviceCollection = new ServiceCollection();
-    serviceCollection.AddOzdsActivation();
+    serviceCollection.AddActivation();
 
     var serviceProvider = serviceCollection.BuildServiceProvider();
     var activator = serviceProvider

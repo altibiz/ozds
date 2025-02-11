@@ -13,71 +13,69 @@ namespace Ozds.Data.Extensions;
 
 public static class DataDbContextDapperConnectionExtensions
 {
-  private static readonly SemaphoreSlim _lock = new(1, 1);
+  private static readonly object _lock = new();
 
   private static bool _isRegistered;
 
   public static DbConnection GetDapperDbConnection(this DbContext context)
   {
-    _lock.Wait();
-
-    if (_isRegistered)
+    lock (_lock)
     {
-      _lock.Release();
-      return context.Database.GetDbConnection();
-    }
-
-    _isRegistered = true;
-
-    foreach (var type in context.Model.GetEntityTypes())
-    {
-      SetTypeMap(
-        type.ClrType,
-        new CustomPropertyOrFieldTypeMap(
-          type.ClrType,
-          (type, columnName) =>
-          {
-            var property = GetMappedProperty(context, type, columnName);
-
-            var info = (MemberInfo?)property?.PropertyInfo
-              ?? property?.FieldInfo;
-
-            return info;
-          }));
-    }
-
-    var listOfEnumTypes = new HashSet<Type>();
-    foreach (var type in context.Model.GetEntityTypes())
-    {
-      foreach (var propertyType in type
-        .GetScalarPropertiesRecursive()
-        .Select(x => x.ClrType))
+      if (_isRegistered)
       {
-        if (propertyType.IsGenericType &&
-          propertyType.GetGenericTypeDefinition() == typeof(List<>)
-          && propertyType.GetGenericArguments()[0].IsEnum)
+        return context.Database.GetDbConnection();
+      }
+
+      _isRegistered = true;
+
+      foreach (var type in context.Model.GetEntityTypes())
+      {
+        SetTypeMap(
+          type.ClrType,
+          new CustomPropertyOrFieldTypeMap(
+            type.ClrType,
+            (type, columnName) =>
+            {
+              var property = GetMappedProperty(context, type, columnName);
+
+              var info = (MemberInfo?)property?.PropertyInfo
+                ?? property?.FieldInfo;
+
+              return info;
+            }));
+      }
+
+      var listOfEnumTypes = new HashSet<Type>();
+      foreach (var type in context.Model.GetEntityTypes())
+      {
+        foreach (var propertyType in type
+          .GetScalarPropertiesRecursive()
+          .Select(x => x.ClrType))
         {
-          listOfEnumTypes.Add(propertyType.GetGenericArguments()[0]);
+          if (propertyType.IsGenericType &&
+            propertyType.GetGenericTypeDefinition() == typeof(List<>)
+            && propertyType.GetGenericArguments()[0].IsEnum)
+          {
+            listOfEnumTypes.Add(propertyType.GetGenericArguments()[0]);
+          }
         }
       }
+
+      foreach (var type in listOfEnumTypes)
+      {
+        var listType = typeof(List<>).MakeGenericType(type);
+        var handler = typeof(GenericListTypeHandler<>)
+              .MakeGenericType(type)
+              .GetConstructor(Array.Empty<Type>())
+              ?.Invoke(Array.Empty<object>())
+            as ITypeHandler
+          ?? throw new InvalidOperationException(
+            $"Handler construction failed for {listType}.");
+        AddTypeHandler(listType, handler);
+      }
+
+      return context.Database.GetDbConnection();
     }
-
-    foreach (var type in listOfEnumTypes)
-    {
-      var listType = typeof(List<>).MakeGenericType(type);
-      var handler = typeof(GenericListTypeHandler<>)
-            .MakeGenericType(type)
-            .GetConstructor(Array.Empty<Type>())
-            ?.Invoke(Array.Empty<object>())
-          as ITypeHandler
-        ?? throw new InvalidOperationException(
-          $"Handler construction failed for {listType}.");
-      AddTypeHandler(listType, handler);
-    }
-
-    _lock.Release();
-
-    return context.Database.GetDbConnection();
   }
 
   private static IProperty? GetMappedProperty(

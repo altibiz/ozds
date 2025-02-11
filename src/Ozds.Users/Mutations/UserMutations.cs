@@ -17,7 +17,7 @@ public class UserMutations : IUserMutations
     _userManager = userManager;
   }
 
-  public async Task<User> CreateUser(
+  public async Task CreateUser(
     UserEntity userEntity,
     CancellationToken cancellationToken
   )
@@ -39,7 +39,7 @@ public class UserMutations : IUserMutations
       );
     }
 
-    return user;
+    userEntity.Id = user.UserId;
   }
 
   public async Task UpdateUser(

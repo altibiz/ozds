@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <ItemGroup>
+    <ProjectReference Include="../../src/Ozds.Document/Ozds.Document.csproj" />
+    <ProjectReference Include="../../src/Ozds.Business/Ozds.Business.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Meziantou.Xunit.ParallelTestFramework" />
+  </ItemGroup>
+
+</Project>

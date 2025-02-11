@@ -5,15 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapper" Version="$(DapperVersion)" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="$(EntityFrameworkCoreVersion)" />
-    <PackageReference Include="Npgsql" Version="$(NpgsqlVersion)" />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="$(NpgsqlEntityFrameworkCoreVersion)" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="$(EntityFrameworkCoreVersion)" />
-    <PackageReference Include="EFCore.NamingConventions" Version="$(EntityFrameworkCoreVersion)" />
-    <PackageReference Include="EFCore.BulkExtensions" Version="$(EntityFrameworkCoreVersion)" />
-    <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="8.101.2" />
-    <PackageReference Include="Altibiz.DependencyInjection.Extensions" Version="$(AltibizDependencyInjectionExtensionsVersion)" />
+    <PackageReference Include="Dapper" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" />
+    <PackageReference Include="Npgsql" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" />
+    <PackageReference Include="EFCore.NamingConventions" />
+    <PackageReference Include="EFCore.BulkExtensions" />
+    <PackageReference Include="Z.EntityFramework.Plus.EFCore" />
+    <PackageReference Include="Altibiz.DependencyInjection.Extensions" />
   </ItemGroup>
 
   <ItemGroup>

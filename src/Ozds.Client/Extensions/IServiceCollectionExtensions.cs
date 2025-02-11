@@ -1,7 +1,5 @@
 using Altibiz.DependencyInjection.Extensions;
 using Blazored.LocalStorage;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using MudBlazor.Services;
 using Ozds.Client.Components.Models;
 using Ozds.Client.Components.Models.Abstractions;

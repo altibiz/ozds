@@ -1,4 +1,3 @@
-using Microsoft.Extensions.DependencyInjection;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Queries;
 using Ozds.Business.Queries.Abstractions;

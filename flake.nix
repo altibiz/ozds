@@ -56,6 +56,11 @@ rec {
             });
           });
         };
+
+        playwright_browsers = pkgs.playwright-driver.browsers.override {
+          withFirefox = false;
+          withWebkit = false;
+        };
       in
       {
         devShells.deploy = pkgs.mkShell {
@@ -63,6 +68,7 @@ rec {
             # Scripts
             just
             nushell
+            nix-bundle
 
             # C#
             dotnet-sdk
@@ -91,10 +97,14 @@ rec {
           ];
         };
         devShells.check = pkgs.mkShell {
+          PLAYWRIGHT_NODEJS_PATH = "${pkgs.nodejs}/bin/node";
+          PLAYWRIGHT_BROWSERS_PATH = "${playwright_browsers}";
+
           packages = with pkgs; [
             # Scripts
             just
             nushell
+            fd
 
             # Nix
             nixpkgs-fmt
@@ -121,7 +131,7 @@ rec {
             nodePackages.prettier
           ];
         };
-        devShells.default = pkgs.mkShell {
+        devShells.default = pkgs.mkShell rec {
           PGHOST = "localhost";
           PGPORT = "5432";
           PGDATABASE = "ozds";
@@ -132,6 +142,9 @@ rec {
           DOXYGEN_PLANTUML_JAR_PATH = "${pkgs.plantuml}/lib/plantuml.jar";
 
           COMPOSE_PROFILES = "*";
+
+          PLAYWRIGHT_NODEJS_PATH = "${pkgs.nodejs}/bin/node";
+          PLAYWRIGHT_BROWSERS_PATH = "${playwright_browsers}";
 
           packages =
             let
@@ -198,6 +211,7 @@ rec {
               dotnet-aspnetcore
               omnisharp-roslyn
               netcoredbg
+              powershell
 
               # Python
               poetry
@@ -226,6 +240,8 @@ rec {
               # Scripts
               just
               nushell
+              nix-bundle
+              fd
 
               # Documentation
               simple-http-server

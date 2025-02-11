@@ -2,6 +2,7 @@ using OrchardCore.Logging;
 using Ozds.Business.Extensions;
 using Ozds.Client.Extensions;
 using Ozds.Data.Extensions;
+using Ozds.Document.Extensions;
 using Ozds.Email.Extensions;
 using Ozds.Iot.Extensions;
 using Ozds.Jobs.Extensions;
@@ -20,6 +21,7 @@ builder.Services
   .AddSetupFeatures("OrchardCore.AutoSetup")
   .ConfigureServices(
     services => services
+      .AddOzdsDocument(builder)
       .AddOzdsUsers(builder)
       .AddOzdsData(builder)
       .AddOzdsMessaging(builder)
@@ -39,7 +41,8 @@ builder.Services
       .UseOzdsJobs(endpoints)
       .UseOzdsMessaging(endpoints)
       .UseOzdsData(endpoints)
-      .UseOzdsUsers(endpoints));
+      .UseOzdsUsers(endpoints)
+      .UseOzdsDocument(endpoints));
 
 var app = builder.Build();
 

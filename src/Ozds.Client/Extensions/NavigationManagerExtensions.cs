@@ -1,6 +1,5 @@
 using System.Reflection;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Routing.Patterns;
 using Microsoft.AspNetCore.Routing.Template;
 

@@ -1,0 +1,15 @@
+@namespace Ozds.Document.Components
+
+<LayoutView Layout="@typeof(DocumentLayout)">
+  <DynamicComponent Type="@Type" Parameters="@Parameters"/>
+</LayoutView>
+
+@code {
+
+  [Parameter]
+  public Type? Type { get; set; }
+
+  [Parameter]
+  public Dictionary<string, object?> Parameters { get; set; } = default!;
+
+}

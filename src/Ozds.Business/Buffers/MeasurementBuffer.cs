@@ -9,6 +9,8 @@ using Ozds.Business.Observers.EventArgs;
 
 namespace Ozds.Business.Buffers;
 
+// TODO: only flush monthly/daily when a quarter hourly gets flushed
+
 public enum MeasurementBufferBehavior
 {
   Realtime,
@@ -26,7 +28,9 @@ public class MeasurementBuffer(
 {
   private const int MaxMeasurements = 10000;
 
-  private static readonly ConcurrentQueue<IMeasurement> Measurements = new();
+  private static readonly object _measurementsLock = new();
+
+  private static readonly List<IMeasurement> Measurements = new();
 
   private static readonly ConcurrentDictionary<
     UpsertAggregateCacheKey,
@@ -94,6 +98,16 @@ public class MeasurementBuffer(
       .ToList();
   }
 
+  public List<IMeasurement> Peak()
+  {
+    var measurements = PeakMeasurementsInternal();
+    var aggregates = PeakAggregatesInternal();
+
+    return measurements
+      .Concat(aggregates)
+      .ToList();
+  }
+
   public List<IMeasurement> Flush(bool immediate = false)
   {
     var measurements = FlushMeasurementsInternal();
@@ -117,31 +131,41 @@ public class MeasurementBuffer(
     IEnumerable<IMeasurement> measurements
   )
   {
-    var count = 0;
-    foreach (var measurement in measurements)
+    var measurementsList = measurements.ToList();
+    var count = measurementsList.Count;
+    var totalCount = 0;
+
+    lock (_measurementsLock)
     {
-      count++;
-      Measurements.Enqueue(measurement);
+      Measurements.AddRange(measurementsList);
+      totalCount = Measurements.Count;
     }
 
-    logger.LogDebug("Added {Count} measurements to buffer", count);
+    logger.LogDebug(
+      "Added {Count} measurements to buffer now at {TotalCount}",
+      count,
+      totalCount
+    );
   }
 
   public List<IMeasurement> FlushMeasurementsInternal(int? withMax = null)
   {
-    var count = Measurements.Count;
+    var count = 0;
+    lock (_measurementsLock)
+    {
+      count = Measurements.Count;
+    }
+
     if (withMax is not null && count < withMax)
     {
       return new List<IMeasurement>();
     }
 
-    var result = new List<IMeasurement>();
-    foreach (var index in Enumerable.Range(0, count))
+    List<IMeasurement>? result = null;
+    lock (_measurementsLock)
     {
-      if (Measurements.TryDequeue(out var measurement))
-      {
-        result.Add(measurement);
-      }
+      result = Measurements[..count].ToList();
+      Measurements.RemoveRange(0, count);
     }
 
     logger.LogDebug(
@@ -151,21 +175,37 @@ public class MeasurementBuffer(
     return result;
   }
 
+  public List<IMeasurement> PeakMeasurementsInternal()
+  {
+    var result = new List<IMeasurement>();
+    lock (_measurementsLock)
+    {
+      result.AddRange(Measurements);
+    }
+
+    return result;
+  }
+
   private void AddToAggregatesInternal(
     IEnumerable<IAggregate> aggregates
   )
   {
     var count = 0;
-    foreach (var aggregate in aggregates)
+    var aggregateGroups = aggregates
+      .GroupBy(CreateKey)
+      .ToList();
+
+    foreach (var group in aggregateGroups)
     {
-      count++;
+      var groupList = group.ToList();
+      count += groupList.Count;
       Aggregates
         .AddOrUpdate(
-          CreateKey(aggregate),
-          _ => new List<IAggregate> { aggregate },
+          group.Key,
+          _ => groupList,
           (_, list) =>
           {
-            list.Add(aggregate);
+            list.AddRange(groupList);
             return list;
           });
     }
@@ -202,14 +242,15 @@ public class MeasurementBuffer(
         var upserted = cached.Value
           .Aggregate(aggregateUpserter.UpsertModel);
         if (!toStay.Any(
-            aggregate =>
-              aggregate.MeterId == upserted.MeterId
-              && aggregate.MeasurementLocationId
+            toStayAggregate =>
+              toStayAggregate.Interval == IntervalModel.QuarterHour
+              && upserted.Interval == IntervalModel.QuarterHour
+              && toStayAggregate.MeterId == upserted.MeterId
+              && toStayAggregate.MeasurementLocationId
               == upserted.MeasurementLocationId
-              && aggregate.Timestamp >= upserted.Timestamp
-              && aggregate.Timestamp < upserted.Timestamp.Add(
-                upserted.Interval.ToTimeSpan(upserted.Timestamp))
-              && aggregate.Interval == IntervalModel.QuarterHour)
+              && toStayAggregate.Timestamp >= upserted.Timestamp
+              && toStayAggregate.Timestamp < upserted.Timestamp.Add(
+                upserted.Interval.ToTimeSpan(upserted.Timestamp)))
           && Aggregates.TryRemove(cached.Key, out var value))
         {
           upserted = value
@@ -220,9 +261,14 @@ public class MeasurementBuffer(
     }
 
     logger.LogDebug(
-      "Flushed aggregates cache with {Count} aggregates",
+      "Flushed aggregates buffer with {Count} aggregates",
       result.Count);
     return result;
+  }
+
+  public List<IAggregate> PeakAggregatesInternal()
+  {
+    return Aggregates.Values.SelectMany(x => x).ToList();
   }
 
   private static UpsertAggregateCacheKey CreateKey(

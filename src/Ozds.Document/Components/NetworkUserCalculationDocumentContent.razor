@@ -1,0 +1,319 @@
+@namespace Ozds.Document.Components
+@using Ozds.Document.Entities
+@inherits DocumentBase
+
+<style>
+  table {
+    border-spacing: 0;
+    border-collapse: collapse;
+    border: 2px solid black;
+  }
+
+  th {
+    background-color: #DDDDDD;
+  }
+
+  th, td {
+    border: 1px solid black;
+    padding: 2px;
+  }
+
+  .inductive-label {
+    border-bottom: 1px solid black;
+    padding: 2px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .capacitative-label {
+    padding: 2px;
+    display: flex;
+    justify-content: space-between;
+  }
+</style>
+
+<p>
+  <strong>
+    <u>
+      @Translate("SPECIFICATION OF CONSUMPTION AT BILLING METERING POINTS")
+    </u>
+  </strong>
+</p>
+<p style="margin-top: 0.8rem;">
+  @Translate("Name of the billing metering point (OMM)"):
+  @(Entity.MeasurementLocationTitle)
+</p>
+<p>
+  @Translate("Number of the billing metering point (OMM)"):
+  @(Entity.MeasurementLocationId)
+</p>
+<p>
+  @Translate("Tariff model"): @Translate(Entity.GetType().Name)
+</p>
+<p style="margin-top: 1.2rem; margin-left: 0.8rem;">
+  <strong>@Translate("A) NETWORK USAGE FEE FOR ZDS")</strong>
+</p>
+<table style="margin-top: 0.8rem; width: 100%">
+  <colgroup>
+    <col style="width: 15%"/>
+    <col style="width: 8%"/>
+    <col style="width: 8%"/>
+    <col style="width: 9%"/>
+    <col style="width: 10%"/>
+    <col style="width: 10%"/>
+    <col style="width: 6%"/>
+    <col style="width: 12%"/>
+    <col style="width: 8%"/>
+    <col style="width: 8%"/>
+  </colgroup>
+  <thead>
+  <tr class="header">
+    <th>@Translate("Number of devices")</th>
+    <th>@Translate("Date from")</th>
+    <th>@Translate("Date to")</th>
+    <th>@Translate("Tariff item")</th>
+    <th>@Translate("Status from")</th>
+    <th>@Translate("Status to")</th>
+    <th>@Translate("Status")</th>
+    <th>@Translate("Usage") (kWh/kW/kVAR)</th>
+    <th>@Translate("Unit") (EUR)</th>
+    <th>@Translate("Total") (EUR)</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr class="odd">
+    <td rowspan="@usageRowspan">
+      @(Entity.MeterId)
+    </td>
+    <td rowspan="@usageRowspan">
+      @Date(Entity.FromDate)
+    </td>
+    <td rowspan="@usageRowspan">
+      @Date(Entity.ToDate)
+    </td>
+    @(
+    Entity.UsageItems.FirstOrDefault() is { } usageItem
+      ? RenderItem(usageItem)
+      : null)
+  </tr>
+  @foreach (var item in Entity.UsageItems.Skip(1))
+  {
+    <tr>
+      @RenderItem(item)
+    </tr>
+  }
+  <tr class="odd">
+    <td colspan="5"></td>
+    <td colspan="4">
+      <strong>@Translate("Network usage fee for ZDS - TOTAL"):</strong>
+    </td>
+    <td style="text-align: right;">
+      <strong>
+        @Number(Entity.UsageFeeTotal_EUR, 2) EUR
+      </strong>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<p style="margin-top: 1.2rem; margin-left: 0.8rem;">
+  <strong>@Translate("B) ELECTRICITY SUPPLY FEE")</strong>
+</p>
+<table style="margin-top: 0.8rem;">
+  <colgroup>
+    <col style="width: 15%"/>
+    <col style="width: 8%"/>
+    <col style="width: 8%"/>
+    <col style="width: 9%"/>
+    <col style="width: 10%"/>
+    <col style="width: 10%"/>
+    <col style="width: 5%"/>
+    <col style="width: 12%"/>
+    <col style="width: 9%"/>
+    <col style="width: 8%"/>
+  </colgroup>
+  <thead>
+  <tr class="header">
+    <th>@Translate("Number of devices")</th>
+    <th>@Translate("Date from")</th>
+    <th>@Translate("Date to")</th>
+    <th>@Translate("Tariff item")</th>
+    <th>@Translate("Status from")</th>
+    <th>@Translate("Status to")</th>
+    <th>@Translate("Status")</th>
+    <th>@Translate("Usage") (kWh)</th>
+    <th>@Translate("Unit") (EUR)</th>
+    <th>@Translate("Total") (EUR)</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr class="odd">
+    <td rowspan="@supplyRowspan">
+      @Entity.MeterId
+    </td>
+    <td rowspan="@supplyRowspan">
+      @Date(Entity.FromDate)
+    </td>
+    <td rowspan="@supplyRowspan">
+      @Date(Entity.ToDate)
+    </td>
+    @(
+    Entity.SupplyItems.FirstOrDefault() is { } supplyItem
+      ? RenderItem(supplyItem)
+      : null)
+  </tr>
+  @foreach (var item in Entity.SupplyItems.Skip(1))
+  {
+    <tr>
+      @RenderItem(item)
+    </tr>
+  }
+  <tr class="odd">
+    <td colspan="4"></td>
+    <td colspan="5">
+      <strong>@Translate("Fee for electricity supply - TOTAL"):</strong>
+    </td>
+    <td style="text-align: right;">
+      <strong>
+        @Number(Entity.SupplyFeeTotal_EUR, 2) EUR
+      </strong>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+
+@code {
+
+  [Parameter]
+  public NetworkUserCalculationEntity Entity { get; set; } = default!;
+
+  private int usageRowspan
+  {
+    get
+    {
+      var usageItemCount = Entity.UsageItems.Count();
+      return usageItemCount == 0 ? 1 : usageItemCount;
+    }
+  }
+
+  private int supplyRowspan
+  {
+    get
+    {
+      var supplyItemCount = Entity.SupplyItems.Count();
+      return supplyItemCount == 0 ? 1 : supplyItemCount;
+    }
+  }
+
+  private RenderFragment RenderItem(CalculationItemEntity item) =>
+    item is ReactiveEnergyTotalRampedT0CalculationItemEntity reactiveItem
+      ? @<Fragment>
+          <td>
+            <strong>@Translate(reactiveItem.GetType().Name)</strong>
+          </td>
+          <td style="padding: 0;">
+            <p class="inductive-label">
+              <strong>
+                @Translate("IND"):
+              </strong>
+              <span>
+                @Number(reactiveItem.ReactiveImportMin_kVARh, 2)
+              </span>
+            </p>
+            <p class="capacitative-label">
+              <strong>
+                @Translate("KAP"):
+              </strong>
+              <span>
+                @Number(reactiveItem.ReactiveExportMin_kVARh, 2)
+              </span>
+            </p>
+          </td>
+          <td style="padding: 0;">
+            <p class="inductive-label">
+              <strong>
+                @Translate("IND"):
+              </strong>
+              <span>
+                @Number(reactiveItem.ReactiveImportMax_kVARh, 2)
+              </span>
+            </p>
+            <p class="capacitative-label">
+              <strong>
+                @Translate("KAP"):
+              </strong>
+              <span>
+                @Number(reactiveItem.ReactiveExportMax_kVARh, 2)
+              </span>
+            </p>
+          </td>
+          <td style="text-align: center;">O</td>
+          <td style="text-align: right;">
+            @Number(reactiveItem.Amount_kVARh, 0)
+          </td>
+          <td style="text-align: right;">
+            @Number(reactiveItem.Price_EUR, 6)
+          </td>
+          <td style="text-align: right;">
+            @Number(reactiveItem.Total_EUR, 2)
+          </td>
+        </Fragment>
+      : item is ActiveEnergyTotalImportCalculationItemEntity energyItem
+        ? @<Fragment>
+            <td>
+              <strong>@Translate(energyItem.GetType().Name)</strong>
+            </td>
+            <td style="text-align: right;">
+              @Number(energyItem.Min_kWh, 2)
+            </td>
+            <td style="text-align: right;">
+              @Number(energyItem.Max_kWh, 2)
+            </td>
+            <td style="text-align: center;">O</td>
+            <td style="text-align: right;">
+              @Number(energyItem.Amount_kWh, 0)
+            </td>
+            <td style="text-align: right;">
+              @Number(energyItem.Price_EUR, 6)
+            </td>
+            <td style="text-align: right;">
+              @Number(energyItem.Total_EUR, 2)
+            </td>
+          </Fragment>
+        : item is ActivePowerTotalImportT1PeakCalculationItemEntity powerItem
+          ? @<Fragment>
+              <td>
+                <strong>@Translate(powerItem.GetType().Name)</strong>
+              </td>
+              <td style="text-align: right;"></td>
+              <td style="text-align: right;"></td>
+              <td style="text-align: center;">O</td>
+              <td style="text-align: right;">
+                @Number(powerItem.Amount_kW, 0)
+              </td>
+              <td style="text-align: right;">
+                @Number(powerItem.Price_EUR, 3)
+              </td>
+              <td style="text-align: right;">
+                @Number(powerItem.Total_EUR, 2)
+              </td>
+            </Fragment>
+          : item is FeeCalculationItemEntity feeItem
+            ? @<Fragment>
+                <td colspan="4">
+                  <strong>@Translate(feeItem.GetType().Name)</strong>
+                </td>
+                <td style="text-align: right;">
+                  @Number(feeItem.Amount_N, 0)
+                </td>
+                <td style="text-align: right;">
+                  @Number(feeItem.Price_EUR, 3)
+                </td>
+                <td style="text-align: right;">
+                  @Number(feeItem.Total_EUR, 2)
+                </td>
+              </Fragment>
+            : throw new InvalidOperationException(
+              $"Unsupported item type: {item.GetType()}");
+
+}

@@ -6,6 +6,8 @@ using Ozds.Business.Reactors.Base;
 
 namespace Ozds.Business.Reactors.Implementations;
 
+// FIXME: BeforeStopAsync always fails
+
 public class MeasurementFlushReactor(
   IServiceProvider serviceProvider
 ) : Reactor<
