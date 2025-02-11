@@ -68,6 +68,7 @@ rec {
             dotnet-sdk
             dotnet-runtime
             dotnet-aspnetcore
+            powershell
           ];
         };
         devShells.docs = pkgs.mkShell {
@@ -91,6 +92,9 @@ rec {
           ];
         };
         devShells.check = pkgs.mkShell {
+          PLAYWRIGHT_NODEJS_PATH = "${pkgs.nodejs}/bin/node";
+          PLAYWRIGHT_BROWSERS_PATH = "${pkgs.playwright-driver.browsers}";
+
           packages = with pkgs; [
             # Scripts
             just
@@ -201,6 +205,7 @@ rec {
               dotnet-aspnetcore
               omnisharp-roslyn
               netcoredbg
+              powershell
 
               # Python
               poetry
