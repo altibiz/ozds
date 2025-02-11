@@ -9,13 +9,8 @@ public class DocumentLocalizer(
 {
   public string Translate(string notLocalized)
   {
-    return TranslateForCulture(CultureInfo.CurrentCulture, notLocalized);
-  }
-
-  public string TranslateForCulture(CultureInfo culture, string notLocalized)
-  {
     if (assetLoader
-      .LoadTranslations(culture)
+      .LoadTranslations(new CultureInfo("hr"))
       .TryGetValue(notLocalized, out var localized))
     {
       return localized;
