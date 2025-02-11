@@ -9,6 +9,8 @@ using Ozds.Business.Observers.EventArgs;
 
 namespace Ozds.Business.Buffers;
 
+// TODO: only flush monthly/daily when a quarter hourly gets flushed
+
 public enum MeasurementBufferBehavior
 {
   Realtime,
@@ -131,13 +133,19 @@ public class MeasurementBuffer(
   {
     var measurementsList = measurements.ToList();
     var count = measurementsList.Count;
+    var totalCount = 0;
 
     lock (_measurementsLock)
     {
       Measurements.AddRange(measurementsList);
+      totalCount = Measurements.Count;
     }
 
-    logger.LogDebug("Added {Count} measurements to buffer", count);
+    logger.LogDebug(
+      "Added {Count} measurements to buffer now at {TotalCount}",
+      count,
+      totalCount
+    );
   }
 
   public List<IMeasurement> FlushMeasurementsInternal(int? withMax = null)
@@ -233,14 +241,15 @@ public class MeasurementBuffer(
         var upserted = cached.Value
           .Aggregate(aggregateUpserter.UpsertModel);
         if (!toStay.Any(
-            aggregate =>
-              aggregate.MeterId == upserted.MeterId
-              && aggregate.MeasurementLocationId
+            toStayAggregate =>
+              toStayAggregate.Interval == IntervalModel.QuarterHour
+              && upserted.Interval == IntervalModel.QuarterHour
+              && toStayAggregate.MeterId == upserted.MeterId
+              && toStayAggregate.MeasurementLocationId
               == upserted.MeasurementLocationId
-              && aggregate.Timestamp >= upserted.Timestamp
-              && aggregate.Timestamp < upserted.Timestamp.Add(
-                upserted.Interval.ToTimeSpan(upserted.Timestamp))
-              && aggregate.Interval == IntervalModel.QuarterHour)
+              && toStayAggregate.Timestamp >= upserted.Timestamp
+              && toStayAggregate.Timestamp < upserted.Timestamp.Add(
+                upserted.Interval.ToTimeSpan(upserted.Timestamp)))
           && Aggregates.TryRemove(cached.Key, out var value))
         {
           upserted = value
@@ -251,7 +260,7 @@ public class MeasurementBuffer(
     }
 
     logger.LogDebug(
-      "Flushed aggregates cache with {Count} aggregates",
+      "Flushed aggregates buffer with {Count} aggregates",
       result.Count);
     return result;
   }
