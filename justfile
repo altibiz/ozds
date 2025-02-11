@@ -26,6 +26,7 @@ validate := absolute_path('scripts/database/validate.nu')
 measurements := absolute_path('scripts/database/measurements.nu')
 playwright := absolute_path('src/Ozds.Server/bin/Debug/net8.0/playwright.ps1')
 ozdsserver := absolute_path('scripts/startup/ozds-server.sh')
+ozdsserverdev := absolute_path('scripts/startup/ozds-server-dev.sh')
 current := "current"
 
 default:
@@ -159,6 +160,7 @@ publish *args:
       + "/chromium-1134/chrome-linux")
 
     cp '{{ ozdsserver }}' '{{ artifacts }}/ozds-server'
+    cp '{{ ozdsserverdev }}' '{{ artifacts }}/ozds-server-dev'
 
     rm -rf '{{ artifacts }}/App_Data'
 
