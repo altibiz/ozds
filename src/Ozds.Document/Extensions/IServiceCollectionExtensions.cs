@@ -1,5 +1,6 @@
 using Ozds.Document.Loaders.Abstractions;
 using Ozds.Document.Loaders.Implementations;
+using Ozds.Document.Queries;
 using Ozds.Document.Renderers.Abstractions;
 using Ozds.Document.Renderers.Implementations;
 
@@ -43,6 +44,6 @@ public static class IServiceCollectionExtensions
   )
   {
     services.AddScoped<DocumentQueries>();
+    return services;
   }
 }
-
