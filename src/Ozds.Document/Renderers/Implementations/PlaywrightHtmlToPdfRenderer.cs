@@ -3,8 +3,9 @@ using Ozds.Document.Renderers.Abstractions;
 
 namespace Ozds.Document.Renderers.Implementations;
 
-public sealed class PlaywrightHtmlToPdfRenderer
-  : IHtmlToPdfRenderer, IAsyncDisposable
+public sealed class PlaywrightHtmlToPdfRenderer(
+  ILogger<PlaywrightHtmlToPdfRenderer> logger
+) : IHtmlToPdfRenderer, IAsyncDisposable
 {
   private readonly SemaphoreSlim _lock = new(1, 1);
 
@@ -85,9 +86,33 @@ public sealed class PlaywrightHtmlToPdfRenderer
     }
 
     var context = await _browserContext.Value;
-    await context.Context.DisposeAsync();
-    await context.Browser.DisposeAsync();
-    context.Playwright.Dispose();
+
+    try
+    {
+      await context.Context.DisposeAsync();
+    }
+    catch (Exception ex)
+    {
+      logger.LogError(ex, "Failed to dispose context.");
+    }
+
+    try
+    {
+      await context.Browser.DisposeAsync();
+    }
+    catch (Exception ex)
+    {
+      logger.LogError(ex, "Failed to dispose browser.");
+    }
+
+    try
+    {
+      context.Playwright.Dispose();
+    }
+    catch (Exception ex)
+    {
+      logger.LogError(ex, "Failed to dispose playwright.");
+    }
   }
 
   private record struct BrowserContext(
