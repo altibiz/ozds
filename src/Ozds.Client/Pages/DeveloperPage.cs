@@ -1,6 +1,7 @@
+using Fluid;
 using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Ozds.Business.Models;
+using Ozds.Business.Queries;
 using Ozds.Client.Components.Base;
 
 namespace Ozds.Client.Pages;
@@ -25,5 +26,31 @@ public partial class DeveloperPage : OzdsComponentBase
   private void OnStopClick()
   {
     ApplicationLifetime.StopApplication();
+  }
+
+  private async Task OnPdfClick()
+  {
+    var invoice = await ScopedServices
+      .GetRequiredService<AuditableQueries>()
+      .Read<NetworkUserInvoiceModel>(
+        0,
+        CancellationToken.None
+      );
+
+    var pdf = await ScopedServices
+      .GetRequiredService<DocumentQueries>()
+      .ReadPdfForNetworkUserInvoice(
+        invoice.Items.First().Id,
+        CancellationToken.None
+      );
+
+    if (pdf is null)
+    {
+      Logger.LogError("PDF is null");
+    }
+    else
+    {
+      Logger.LogDebug("PDF: {Length} bytes", pdf.Length);
+    }
   }
 }

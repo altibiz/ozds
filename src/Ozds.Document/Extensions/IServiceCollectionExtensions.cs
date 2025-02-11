@@ -14,6 +14,7 @@ public static class IServiceCollectionExtensions
   {
     services.AddDocumentRenderer();
     services.AddDocumentServices();
+    services.AddDocumentQueries();
     return services;
   }
 
@@ -36,4 +37,12 @@ public static class IServiceCollectionExtensions
     services.AddSingleton<IDocumentLocalizer, DocumentLocalizer>();
     return services;
   }
+
+  public static IServiceCollection AddDocumentQueries(
+    this IServiceCollection services
+  )
+  {
+    services.AddScoped<DocumentQueries>();
+  }
 }
+

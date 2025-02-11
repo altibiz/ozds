@@ -24,7 +24,10 @@ public sealed class PlaywrightHtmlToPdfRenderer
   });
 
 #pragma warning disable SA1011 // Closing square brackets should be spaced correctly
-  public async Task<byte[]?> RenderHtmlToPdf(string html)
+  public async Task<byte[]?> RenderHtmlToPdf(
+    string html,
+    CancellationToken cancellationToken
+  )
 #pragma warning restore SA1011 // Closing square brackets should be spaced correctly
   {
     await _lock.WaitAsync();
@@ -32,18 +35,40 @@ public sealed class PlaywrightHtmlToPdfRenderer
     try
     {
       var context = await _browserContext.Value;
+      if (cancellationToken.IsCancellationRequested)
+      {
+        return null;
+      }
+
       var page = await context.Context.NewPageAsync();
+      if (cancellationToken.IsCancellationRequested)
+      {
+        await page.CloseAsync();
+        return null;
+      }
+
       await page.SetContentAsync(html, new PageSetContentOptions
       {
         WaitUntil = WaitUntilState.DOMContentLoaded
       });
+      if (cancellationToken.IsCancellationRequested)
+      {
+        await page.CloseAsync();
+        return null;
+      }
+
       var pdfBytes = await page.PdfAsync(new PagePdfOptions
       {
         Format = "A4",
         PrintBackground = true,
       });
-      await page.CloseAsync();
+      if (cancellationToken.IsCancellationRequested)
+      {
+        await page.CloseAsync();
+        return null;
+      }
 
+      await page.CloseAsync();
       return pdfBytes;
     }
     finally
