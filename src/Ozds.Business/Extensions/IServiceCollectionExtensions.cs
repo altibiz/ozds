@@ -30,9 +30,9 @@ public static class IServiceCollectionExtensions
     IHostApplicationBuilder builder
   )
   {
-    services.AddOzdsActivation();
+    services.AddActivation();
     services.AddAggregation();
-    services.AddOzdsConversion();
+    services.AddConversion();
     services.AddFinance();
     services.AddLocalization();
     services.AddMutations();
@@ -46,7 +46,7 @@ public static class IServiceCollectionExtensions
     return services;
   }
 
-  public static IServiceCollection AddOzdsActivation(
+  public static IServiceCollection AddActivation(
     this IServiceCollection services
   )
   {
@@ -55,7 +55,7 @@ public static class IServiceCollectionExtensions
     return services;
   }
 
-  public static IServiceCollection AddOzdsConversion(
+  public static IServiceCollection AddConversion(
     this IServiceCollection services
   )
   {
