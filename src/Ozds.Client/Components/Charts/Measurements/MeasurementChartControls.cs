@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.DependencyInjection;
 using Ozds.Business.Aggregation;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Enums;
@@ -31,7 +30,8 @@ public partial class MeasurementChartControls : OzdsComponentBase
 
   [Inject]
   private IDataModelsChangedSubscriber
-    DataModelsChangedSubscriber { get; set; } = default!;
+    DataModelsChangedSubscriber
+  { get; set; } = default!;
 
   [Inject]
   private IMeasurementsBufferedSubscriber MeasurementsBufferedSubscriber
