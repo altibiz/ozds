@@ -14,7 +14,9 @@ public class DocumentRendererTest
     serviceCollection.BuildServiceProvider();
     var serviceProvider = serviceCollection.BuildServiceProvider();
 
-    var documentRenderer = serviceProvider
+    await using var scope = serviceProvider.CreateAsyncScope();
+
+    var documentRenderer = scope.ServiceProvider
       .GetRequiredService<DocumentRenderer>();
 
     var factory = new CalculatedNetworkUserInvoiceEntityFactory();

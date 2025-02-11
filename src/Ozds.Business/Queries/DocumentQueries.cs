@@ -1,5 +1,4 @@
 using Ozds.Business.Conversion;
-using Ozds.Business.Models.Composite;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Document.Entities;
 using DocumentDocumentQueries = Ozds.Document.Queries.DocumentQueries;

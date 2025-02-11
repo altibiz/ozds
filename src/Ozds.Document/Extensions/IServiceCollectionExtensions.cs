@@ -24,8 +24,10 @@ public static class IServiceCollectionExtensions
   )
   {
     services.AddSingleton<IHtmlToPdfRenderer, PlaywrightHtmlToPdfRenderer>();
-    services.AddSingleton<IComponentToHtmlRenderer, AspNetCoreComponentsComponentToHtmlRenderer>();
-    services.AddSingleton<DocumentRenderer>();
+    services.AddScoped<
+      IComponentToHtmlRenderer,
+      AspNetCoreComponentsComponentToHtmlRenderer>();
+    services.AddScoped<DocumentRenderer>();
 
     return services;
   }
