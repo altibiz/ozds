@@ -24,6 +24,7 @@ rewind := absolute_path('scripts/database/rewind.nu')
 rollback := absolute_path('scripts/database/rollback.nu')
 validate := absolute_path('scripts/database/validate.nu')
 measurements := absolute_path('scripts/database/measurements.nu')
+playwright := absolute_path('src/Ozds.Server/bin/Debug/net8.0/playwright.ps1')
 current := "current"
 
 default:
@@ -31,8 +32,12 @@ default:
 
 prepare:
     dvc pull
+    dotnet restore
     dotnet tool restore
-    (not (which prettier | is-empty)) or (npm install -g prettier) | ignore
+    dotnet build
+    (which prettier | is-not-empty) or (npm install -g prettier)
+    ($env.PLAYWRIGHT_BROWSERS_PATH | is-not-empty) or \
+      (pwsh {{ playwright }} install)
     @just clean
 
 lfs:
