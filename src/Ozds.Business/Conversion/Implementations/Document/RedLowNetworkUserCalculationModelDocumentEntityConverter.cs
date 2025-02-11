@@ -1,14 +1,17 @@
 using Ozds.Business.Conversion.Base;
 using Ozds.Business.Models;
+using Ozds.Business.Models.Base;
 using Ozds.Document.Entities;
 
 namespace Ozds.Business.Conversion.Implementations.Document;
 
 public class RedLowNetworkUserCalculationModelDocumentEntityConverter(
   IServiceProvider serviceProvider
-) : ConcreteModelDocumentEntityConverter<
+) : InheritingModelDocumentEntityConverter<
   RedLowNetworkUserCalculationModel,
-  RedLowNetworkUserCalculationEntity>
+  NetworkUserCalculationModel,
+  RedLowNetworkUserCalculationEntity,
+  NetworkUserCalculationEntity>(serviceProvider)
 {
   private readonly ModelDocumentEntityConverter modelDocumentEntityConverter =
     serviceProvider.GetRequiredService<ModelDocumentEntityConverter>();
@@ -31,5 +34,8 @@ public class RedLowNetworkUserCalculationModelDocumentEntityConverter(
     entity.UsageReactiveEnergyTotalRampedT0 = modelDocumentEntityConverter
       .ToEntity<UsageReactiveEnergyTotalRampedT0CalculationItemEntity>(
         model.UsageReactiveEnergyTotalRampedT0);
+    entity.ConcreteUsageNetworkUserCatalogue = modelDocumentEntityConverter
+      .ToEntity<RedLowNetworkUserCatalogueEntity>(
+        model.ConcreteArchivedUsageNetworkUserCatalogue);
   }
 }
