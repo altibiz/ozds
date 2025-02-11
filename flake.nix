@@ -104,6 +104,7 @@ rec {
             # Scripts
             just
             nushell
+            fd
 
             # Nix
             nixpkgs-fmt
@@ -240,6 +241,7 @@ rec {
               just
               nushell
               nix-bundle
+              fd
 
               # Documentation
               simple-http-server
