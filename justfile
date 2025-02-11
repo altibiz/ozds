@@ -37,7 +37,7 @@ prepare:
     dotnet build
     (which prettier | is-not-empty) or (npm install -g prettier)
     ($env.PLAYWRIGHT_BROWSERS_PATH | is-not-empty) or \
-      (pwsh '{{ playwright }}' install)
+      (pwsh '{{ playwright }}' install --with-deps)
     @just clean
 
 lfs:
@@ -144,8 +144,8 @@ publish *args:
       --configuration Release \
       {{ args }}
 
-    ($env.PLAYWRIGHT_BROWSERS_PATH | is-not-empty) or \
-      (pwsh '{{ artifacts }}/playwright.ps1' install)
+    ($env.PLAYWRIGHT_BROWSERS_PATH | is-empty) \
+      pwsh '{{ artifacts }}/playwright.ps1' install --with-deps
 
     rm -rf '{{ artifacts }}/App_Data'
 
