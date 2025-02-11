@@ -20,7 +20,6 @@ using Ozds.Business.Queries.Abstractions;
 using Ozds.Business.Reactors.Abstractions;
 using Ozds.Business.Validation;
 using Ozds.Business.Validation.Abstractions;
-using Ozds.Users.Mutations.Abstractions;
 
 namespace Ozds.Business.Extensions;
 
@@ -37,7 +36,6 @@ public static class IServiceCollectionExtensions
     services.AddFinance();
     services.AddLocalization();
     services.AddMutations();
-    services.AddUserMutations();
     services.AddNaming();
     services.AddObservers();
     services.AddQueries();
@@ -109,14 +107,6 @@ public static class IServiceCollectionExtensions
   )
   {
     services.AddScopedAssignableTo(typeof(IMutations));
-    return services;
-  }
-
-  private static IServiceCollection AddUserMutations(
-    this IServiceCollection services
-  )
-  {
-    services.AddScopedAssignableTo(typeof(IUserMutations));
     return services;
   }
 
