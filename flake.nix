@@ -64,6 +64,8 @@ rec {
       in
       {
         devShells.deploy = pkgs.mkShell {
+          NIX_PATH = "nixpkgs=${pkgs.path}";
+
           packages = with pkgs; [
             # Scripts
             just
