@@ -85,12 +85,8 @@ public sealed class PlaywrightHtmlToPdfRenderer
     }
 
     var context = await _browserContext.Value;
-    await context.Context.CloseAsync();
     await context.Context.DisposeAsync();
-
-    await context.Browser.CloseAsync();
     await context.Browser.DisposeAsync();
-
     context.Playwright.Dispose();
   }
 
