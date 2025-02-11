@@ -94,7 +94,10 @@ lint:
       --no-progress
 
     markdownlint '{{ root }}'
-    markdown-link-check --config .markdown-link-check.json --quiet ...(glob '**/*.md')
+    markdown-link-check \
+      --config .markdown-link-check.json \
+      --quiet \
+      ...(fd '^.*.md$' | lines)
 
     # TODO: make it work in CI
     ($env | get CI? | is-not-empty) or (pyright '{{ root }}')
