@@ -161,7 +161,7 @@ publish *args:
     cp '{{ ozdsserver }}' '{{ artifacts }}/ozds-server'
     cp '{{ ozdsserverdev }}' '{{ artifacts }}/ozds-server-dev'
 
-    rm -rf '{{ artifacts }}/App_Data'
+    mv '{{ artifacts }}/App_Data' '{{ artifacts }}/App_Data_Dev'
 
 docs:
     rm -rf '{{ artifacts }}'
