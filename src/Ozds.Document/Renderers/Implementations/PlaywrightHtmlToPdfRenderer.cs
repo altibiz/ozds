@@ -15,8 +15,9 @@ public sealed class PlaywrightHtmlToPdfRenderer(
     var browser = await playwright.Chromium.LaunchAsync(
       new BrowserTypeLaunchOptions
       {
-        Headless = true,
-        ChromiumSandbox = false
+        // NOTE: the Headless option makes it use the old headless mode
+        // which is not present anymore in chromium since 132
+        Args = ["--headless"],
       });
 
     var context = await browser.NewContextAsync();
@@ -85,7 +86,16 @@ public sealed class PlaywrightHtmlToPdfRenderer(
       return;
     }
 
-    var context = await _browserContext.Value;
+    BrowserContext? context;
+    try
+    {
+      context = await _browserContext.Value;
+    }
+    catch (Exception ex)
+    {
+      logger.LogError(ex, "Failed to dispose context.");
+      return;
+    }
 
     try
     {
@@ -115,7 +125,7 @@ public sealed class PlaywrightHtmlToPdfRenderer(
     }
   }
 
-  private record struct BrowserContext(
+  private sealed record class BrowserContext(
     IPlaywright Playwright,
     IBrowser Browser,
     IBrowserContext Context
