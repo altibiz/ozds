@@ -146,18 +146,17 @@ publish *args:
       --configuration Release \
       {{ args }}
 
-    nix-bundle \
-      "playwright-driver.browsers.override { \
-        withFirefox = false; \
-        withWebkit = false; \
-      }" \
-      "/chromium-1134/chrome-linux/chrome"
-
-    mkdir -p ("{{ artifacts }}/.playwright/package/.local-browsers" \
+    mkdir ("{{ artifacts }}/.playwright/package/.local-browsers" \
       + "/chromium-1134/chrome-linux")
 
-    mv "chrome" ("{{ artifacts }}/.playwright/package/.local-browsers" \
-      + "/chromium-1134/chrome-linux")
+    cd ("{{ artifacts }}/.playwright/package/.local-browsers" \
+      + "/chromium-1134/chrome-linux"); \
+      nix-bundle \
+        "playwright-driver.browsers.override { \
+          withFirefox = false; \
+          withWebkit = false; \
+        }" \
+        "/chromium-1134/chrome-linux/chrome"
 
     cp '{{ ozdsserver }}' '{{ artifacts }}/ozds-server'
     cp '{{ ozdsserverdev }}' '{{ artifacts }}/ozds-server-dev'
