@@ -3,29 +3,75 @@ using Ozds.Document.Renderers.Abstractions;
 
 namespace Ozds.Document.Renderers.Implementations;
 
-public class PlaywrightHtmlToPdfRenderer : IHtmlToPdfRenderer
+public sealed class PlaywrightHtmlToPdfRenderer
+  : IHtmlToPdfRenderer, IAsyncDisposable
 {
+  private readonly SemaphoreSlim _lock = new(1, 1);
+
+  private readonly Lazy<Task<BrowserContext>> _browserContext = new(async () =>
+  {
+    var playwright = await Playwright.CreateAsync();
+    var browser = await playwright.Chromium.LaunchAsync(
+      new BrowserTypeLaunchOptions
+      {
+        Headless = true,
+        ChromiumSandbox = false
+      });
+
+    var context = await browser.NewContextAsync();
+
+    return new BrowserContext(playwright, browser, context);
+  });
+
 #pragma warning disable SA1011 // Closing square brackets should be spaced correctly
   public async Task<byte[]?> RenderHtmlToPdf(string html)
 #pragma warning restore SA1011 // Closing square brackets should be spaced correctly
   {
-    using var playwright = await Playwright.CreateAsync();
+    await _lock.WaitAsync();
 
-    await using var browser = await playwright.Chromium.LaunchAsync();
-
-    var context = await browser.NewContextAsync();
-    var page = await context.NewPageAsync();
-    await page.SetContentAsync(html, new PageSetContentOptions
+    try
     {
-      WaitUntil = WaitUntilState.DOMContentLoaded
-    });
+      var context = await _browserContext.Value;
+      var page = await context.Context.NewPageAsync();
+      await page.SetContentAsync(html, new PageSetContentOptions
+      {
+        WaitUntil = WaitUntilState.DOMContentLoaded
+      });
+      var pdfBytes = await page.PdfAsync(new PagePdfOptions
+      {
+        Format = "A4",
+        PrintBackground = true,
+      });
+      await page.CloseAsync();
 
-    var pdfBytes = await page.PdfAsync(new PagePdfOptions
+      return pdfBytes;
+    }
+    finally
     {
-      Format = "A4",
-      PrintBackground = true,
-    });
-
-    return pdfBytes;
+      _lock.Release();
+    }
   }
+
+  public async ValueTask DisposeAsync()
+  {
+    if (!_browserContext.IsValueCreated)
+    {
+      return;
+    }
+
+    var context = await _browserContext.Value;
+    await context.Context.CloseAsync();
+    await context.Context.DisposeAsync();
+
+    await context.Browser.CloseAsync();
+    await context.Browser.DisposeAsync();
+
+    context.Playwright.Dispose();
+  }
+
+  private record struct BrowserContext(
+    IPlaywright Playwright,
+    IBrowser Browser,
+    IBrowserContext Context
+  );
 }

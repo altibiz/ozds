@@ -25,6 +25,7 @@ rollback := absolute_path('scripts/database/rollback.nu')
 validate := absolute_path('scripts/database/validate.nu')
 measurements := absolute_path('scripts/database/measurements.nu')
 playwright := absolute_path('src/Ozds.Server/bin/Debug/net8.0/playwright.ps1')
+ozdsserver := absolute_path('scripts/startup/ozds-server.sh')
 current := "current"
 
 default:
@@ -37,7 +38,7 @@ prepare:
     dotnet build
     (which prettier | is-not-empty) or (npm install -g prettier)
     ($env.PLAYWRIGHT_BROWSERS_PATH | is-not-empty) or \
-      (pwsh '{{ playwright }}' install --with-deps)
+      (pwsh '{{ playwright }}' install --with-deps chromium)
     @just clean
 
 lfs:
@@ -135,7 +136,7 @@ publish *args:
     rm -rf '{{ artifacts }}'
     mkdir '{{ artifacts }}'
 
-    dotnet publish '{{ sln }}' \
+    dotnet publish '{{ servercsproj }}' \
       --property PublishDir='{{ artifacts }}' \
       --property ConsoleLoggerParameters=ErrorsOnly \
       --property IsWebConfigTransformDisabled=true \
@@ -144,8 +145,20 @@ publish *args:
       --configuration Release \
       {{ args }}
 
-    ($env.PLAYWRIGHT_BROWSERS_PATH | is-empty) \
-      pwsh '{{ artifacts }}/playwright.ps1' install --with-deps
+    nix-bundle \
+      "playwright-driver.browsers.override { \
+        withFirefox = false; \
+        withWebkit = false; \
+      }" \
+      "/chromium-1134/chrome-linux/chrome"
+
+    mkdir -p ("{{ artifacts }}/.playwright/package/.local-browsers" \
+      + "/chromium-1134/chrome-linux")
+
+    mv "chrome" ("{{ artifacts }}/.playwright/package/.local-browsers" \
+      + "/chromium-1134/chrome-linux")
+
+    cp '{{ ozdsserver }}' '{{ artifacts }}/ozds-server'
 
     rm -rf '{{ artifacts }}/App_Data'
 

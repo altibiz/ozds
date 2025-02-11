@@ -56,6 +56,11 @@ rec {
             });
           });
         };
+
+        playwright_browsers = pkgs.playwright-driver.browsers.override {
+          withFirefox = false;
+          withWebkit = false;
+        };
       in
       {
         devShells.deploy = pkgs.mkShell {
@@ -63,12 +68,12 @@ rec {
             # Scripts
             just
             nushell
+            nix-bundle
 
             # C#
             dotnet-sdk
             dotnet-runtime
             dotnet-aspnetcore
-            powershell
           ];
         };
         devShells.docs = pkgs.mkShell {
@@ -93,7 +98,7 @@ rec {
         };
         devShells.check = pkgs.mkShell {
           PLAYWRIGHT_NODEJS_PATH = "${pkgs.nodejs}/bin/node";
-          PLAYWRIGHT_BROWSERS_PATH = "${pkgs.playwright-driver.browsers}";
+          PLAYWRIGHT_BROWSERS_PATH = "${playwright_browsers}";
 
           packages = with pkgs; [
             # Scripts
@@ -138,7 +143,7 @@ rec {
           COMPOSE_PROFILES = "*";
 
           PLAYWRIGHT_NODEJS_PATH = "${pkgs.nodejs}/bin/node";
-          PLAYWRIGHT_BROWSERS_PATH = "${pkgs.playwright-driver.browsers}";
+          PLAYWRIGHT_BROWSERS_PATH = "${playwright_browsers}";
 
           packages =
             let
