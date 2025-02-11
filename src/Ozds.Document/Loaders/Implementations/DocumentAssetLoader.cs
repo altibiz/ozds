@@ -7,6 +7,16 @@ namespace Ozds.Document.Loaders.Implementations;
 
 public class DocumentAssetLoader : IDocumentAssetLoader
 {
+  private readonly ConcurrentDictionary<string, string> fontCache =
+    new();
+
+  private readonly ConcurrentDictionary<string, string> svgCache =
+    new();
+
+  private readonly
+    ConcurrentDictionary<CultureInfo, Dictionary<string, string>>
+    translationCache = new();
+
   public Dictionary<string, string> LoadTranslations(CultureInfo culture)
   {
     return translationCache.GetOrAdd(culture, LoadTranslationsUncached);
@@ -62,14 +72,4 @@ public class DocumentAssetLoader : IDocumentAssetLoader
       );
     return stream;
   }
-
-  private readonly ConcurrentDictionary<string, string> svgCache =
-    new();
-
-  private readonly ConcurrentDictionary<string, string> fontCache =
-    new();
-
-  private readonly
-    ConcurrentDictionary<CultureInfo, Dictionary<string, string>>
-    translationCache = new();
 }

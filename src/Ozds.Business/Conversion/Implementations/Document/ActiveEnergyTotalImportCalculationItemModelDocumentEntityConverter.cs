@@ -25,9 +25,10 @@ public class ActiveEnergyTotalImportCalculationItemModelDocumentEntityConverter(
   }
 }
 
-public class UsageActiveEnergyTotalImportT0CalculationItemModelDocumentEntityConverter(
-  IServiceProvider serviceProvider
-) : InheritingModelDocumentEntityConverter<
+public class
+  UsageActiveEnergyTotalImportT0CalculationItemModelDocumentEntityConverter(
+    IServiceProvider serviceProvider
+  ) : InheritingModelDocumentEntityConverter<
   UsageActiveEnergyTotalImportT0CalculationItemModel,
   ActiveEnergyTotalImportCalculationItemModel,
   UsageActiveEnergyTotalImportT0CalculationItemEntity,
@@ -35,9 +36,10 @@ public class UsageActiveEnergyTotalImportT0CalculationItemModelDocumentEntityCon
 {
 }
 
-public class UsageActiveEnergyTotalImportT1CalculationItemModelDocumentEntityConverter(
-  IServiceProvider serviceProvider
-) : InheritingModelDocumentEntityConverter<
+public class
+  UsageActiveEnergyTotalImportT1CalculationItemModelDocumentEntityConverter(
+    IServiceProvider serviceProvider
+  ) : InheritingModelDocumentEntityConverter<
   UsageActiveEnergyTotalImportT1CalculationItemModel,
   ActiveEnergyTotalImportCalculationItemModel,
   UsageActiveEnergyTotalImportT1CalculationItemEntity,
@@ -45,9 +47,10 @@ public class UsageActiveEnergyTotalImportT1CalculationItemModelDocumentEntityCon
 {
 }
 
-public class UsageActiveEnergyTotalImportT2CalculationItemModelDocumentEntityConverter(
-  IServiceProvider serviceProvider
-) : InheritingModelDocumentEntityConverter<
+public class
+  UsageActiveEnergyTotalImportT2CalculationItemModelDocumentEntityConverter(
+    IServiceProvider serviceProvider
+  ) : InheritingModelDocumentEntityConverter<
   UsageActiveEnergyTotalImportT2CalculationItemModel,
   ActiveEnergyTotalImportCalculationItemModel,
   UsageActiveEnergyTotalImportT2CalculationItemEntity,
@@ -55,9 +58,10 @@ public class UsageActiveEnergyTotalImportT2CalculationItemModelDocumentEntityCon
 {
 }
 
-public class SupplyActiveEnergyTotalImportT1CalculationItemModelDocumentEntityConverter(
-  IServiceProvider serviceProvider
-) : InheritingModelDocumentEntityConverter<
+public class
+  SupplyActiveEnergyTotalImportT1CalculationItemModelDocumentEntityConverter(
+    IServiceProvider serviceProvider
+  ) : InheritingModelDocumentEntityConverter<
   SupplyActiveEnergyTotalImportT1CalculationItemModel,
   ActiveEnergyTotalImportCalculationItemModel,
   SupplyActiveEnergyTotalImportT1CalculationItemEntity,
@@ -65,9 +69,10 @@ public class SupplyActiveEnergyTotalImportT1CalculationItemModelDocumentEntityCo
 {
 }
 
-public class SupplyActiveEnergyTotalImportT2CalculationItemModelDocumentEntityConverter(
-  IServiceProvider serviceProvider
-) : InheritingModelDocumentEntityConverter<
+public class
+  SupplyActiveEnergyTotalImportT2CalculationItemModelDocumentEntityConverter(
+    IServiceProvider serviceProvider
+  ) : InheritingModelDocumentEntityConverter<
   SupplyActiveEnergyTotalImportT2CalculationItemModel,
   ActiveEnergyTotalImportCalculationItemModel,
   SupplyActiveEnergyTotalImportT2CalculationItemEntity,

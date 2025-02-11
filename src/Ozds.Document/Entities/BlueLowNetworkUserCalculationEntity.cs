@@ -4,12 +4,10 @@ public class BlueLowNetworkUserCalculationEntity
   : NetworkUserCalculationEntity<BlueLowNetworkUserCatalogueEntity>
 {
   public UsageActiveEnergyTotalImportT0CalculationItemEntity
-    UsageActiveEnergyTotalImportT0
-  { get; set; } = default!;
+    UsageActiveEnergyTotalImportT0 { get; set; } = default!;
 
   public UsageReactiveEnergyTotalRampedT0CalculationItemEntity
-    UsageReactiveEnergyTotalRampedT0
-  { get; set; } = default!;
+    UsageReactiveEnergyTotalRampedT0 { get; set; } = default!;
 
   protected override IEnumerable<CalculationItemEntity> AdditionalUsageItems
   {

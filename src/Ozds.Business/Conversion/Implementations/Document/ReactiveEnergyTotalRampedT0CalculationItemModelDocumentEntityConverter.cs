@@ -5,9 +5,10 @@ using Ozds.Document.Entities;
 
 namespace Ozds.Business.Conversion.Implementations.Document;
 
-public class ReactiveEnergyTotalRampedT0CalculationItemModelDocumentEntityConverter(
-  IServiceProvider serviceProvider
-) : InheritingModelDocumentEntityConverter<
+public class
+  ReactiveEnergyTotalRampedT0CalculationItemModelDocumentEntityConverter(
+    IServiceProvider serviceProvider
+  ) : InheritingModelDocumentEntityConverter<
   ReactiveEnergyTotalRampedT0CalculationItemModel,
   CalculationItemModel,
   ReactiveEnergyTotalRampedT0CalculationItemEntity,

@@ -7,8 +7,8 @@ namespace Ozds.Business.Conversion.Implementations.Document;
 public class LocationModelDocumentEntityConverter(
   IServiceProvider serviceProvider
 ) : ConcreteModelDocumentEntityConverter<
-      LocationModel,
-      LocationEntity>
+  LocationModel,
+  LocationEntity>
 {
   private readonly ModelDocumentEntityConverter modelDocumentEntityConverter =
     serviceProvider.GetRequiredService<ModelDocumentEntityConverter>();

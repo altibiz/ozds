@@ -6,10 +6,12 @@ namespace Ozds.Business.Conversion;
 public class ModelDocumentEntityConverter(IServiceProvider serviceProvider)
 {
   private readonly
-    ConcurrentDictionary<Type, IModelDocumentEntityConverter> entityCache = new();
+    ConcurrentDictionary<Type, IModelDocumentEntityConverter> entityCache =
+      new();
 
   private readonly
-    ConcurrentDictionary<Type, IModelDocumentEntityConverter> modelCache = new();
+    ConcurrentDictionary<Type, IModelDocumentEntityConverter>
+    modelCache = new();
 
   public TEntity ToEntity<TEntity>(object model)
   {

@@ -10,7 +10,6 @@ public class AspNetCoreComponentsComponentToHtmlRenderer(
   ILoggerFactory loggerFactory
 ) : IComponentToHtmlRenderer
 {
-
   public async Task<string?> RenderPageToHtml(
     Type type,
     Dictionary<string, object?> parameters,
@@ -56,11 +55,11 @@ public class AspNetCoreComponentsComponentToHtmlRenderer(
   {
     await using var htmlRenderer =
       new HtmlRenderer(serviceProvider, loggerFactory);
-    var indexParameters = new Dictionary<string, object?>()
-      {
-        { typeParameterName, type },
-        { parametersParameterName, parameters },
-      };
+    var indexParameters = new Dictionary<string, object?>
+    {
+      { typeParameterName, type },
+      { parametersParameterName, parameters }
+    };
     var parameterView = ParameterView.FromDictionary(indexParameters);
     var html = await htmlRenderer.Dispatcher.InvokeAsync(
       async () =>

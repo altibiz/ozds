@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Queries;

@@ -104,7 +104,7 @@ public class SeedHostedService(
           await pushClient.Push(
             seed.MessengerId,
             seed.ApiKey,
-            realtime: false,
+            false,
             request,
             stoppingToken
           );

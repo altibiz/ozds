@@ -2,7 +2,8 @@ using Ozds.Business.Conversion.Abstractions;
 
 namespace Ozds.Business.Conversion.Base;
 
-public abstract class InitializingModelDocumentEntityConverter : IModelDocumentEntityConverter
+public abstract class
+  InitializingModelDocumentEntityConverter : IModelDocumentEntityConverter
 {
   public abstract Type EntityType { get; }
 

@@ -57,10 +57,11 @@ public class MeasurementQueries(
 
     var buffered = measurementBuffer
       .Peak()
-      .Where(x =>
+      .Where(
+        x =>
           (appropriateIntervalModel is not null
             ? x is IAggregate aggregate
-              && aggregate.Interval == appropriateIntervalModel
+            && aggregate.Interval == appropriateIntervalModel
             : x is not IAggregate)
           && meters.Any(meter => meter.Id == x.MeterId)
           && x.Timestamp >= fromDate
@@ -106,10 +107,11 @@ public class MeasurementQueries(
 
     var buffered = measurementBuffer
       .Peak()
-      .Where(x =>
+      .Where(
+        x =>
           (interval is not null
             ? x is IAggregate aggregate
-              && aggregate.Interval == interval
+            && aggregate.Interval == interval
             : x is not IAggregate)
           && meters.Any(meter => meter.Id == x.MeterId)
           && x.Timestamp < toDate
@@ -159,14 +161,16 @@ public class MeasurementQueries(
 
     var buffered = measurementBuffer
       .Peak()
-      .Where(x =>
+      .Where(
+        x =>
           (appropriateIntervalModel is not null
             ? x is IAggregate aggregate
-              && aggregate.Interval == appropriateIntervalModel
+            && aggregate.Interval == appropriateIntervalModel
             : x is not IAggregate)
           && measurementLocations
-            .Any(measurementLocation =>
-              measurementLocation.Id == x.MeasurementLocationId)
+            .Any(
+              measurementLocation =>
+                measurementLocation.Id == x.MeasurementLocationId)
           && x.Timestamp >= fromDate
           && x.Timestamp < toDate
       )
@@ -200,14 +204,16 @@ public class MeasurementQueries(
 
     var buffered = measurementBuffer
       .Peak()
-      .Where(x =>
+      .Where(
+        x =>
           (interval is not null
             ? x is IAggregate aggregate
-              && aggregate.Interval == interval
+            && aggregate.Interval == interval
             : x is not IAggregate)
           && measurementLocations
-            .Any(measurementLocation =>
-              measurementLocation.Id == x.MeasurementLocationId)
+            .Any(
+              measurementLocation =>
+                measurementLocation.Id == x.MeasurementLocationId)
           && x.Timestamp < toDate
       )
       .ToList();

@@ -6,8 +6,8 @@ namespace Ozds.Business.Conversion.Implementations.Document;
 
 public class LegalPersonModelDocumentEntityConverter
   : ConcreteModelDocumentEntityConverter<
-      LegalPersonModel,
-      LegalPersonEntity>
+    LegalPersonModel,
+    LegalPersonEntity>
 {
   public override void InitializeEntity(
     LegalPersonModel model,

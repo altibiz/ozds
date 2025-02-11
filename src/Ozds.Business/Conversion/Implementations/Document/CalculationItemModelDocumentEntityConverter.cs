@@ -6,8 +6,8 @@ namespace Ozds.Business.Conversion.Implementations.Document;
 
 public class CalculationItemModelDocumentEntityConverter
   : ConcreteModelDocumentEntityConverter<
-      CalculationItemModel,
-      CalculationItemEntity>
+    CalculationItemModel,
+    CalculationItemEntity>
 {
   public override void InitializeEntity(
     CalculationItemModel model,

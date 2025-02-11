@@ -155,6 +155,7 @@ public class MeasurementBuffer(
     {
       count = Measurements.Count;
     }
+
     if (withMax is not null && count < withMax)
     {
       return new List<IMeasurement>();

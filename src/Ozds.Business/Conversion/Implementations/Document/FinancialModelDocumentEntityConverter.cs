@@ -6,8 +6,8 @@ namespace Ozds.Business.Conversion.Implementations.Document;
 
 public class FinancialModelDocumentEntityConverter
   : ConcreteModelDocumentEntityConverter<
-      FinancialModel,
-      FinancialEntity>
+    FinancialModel,
+    FinancialEntity>
 {
   public override void InitializeEntity(
     FinancialModel model,

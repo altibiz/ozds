@@ -5,9 +5,10 @@ using Ozds.Document.Entities;
 
 namespace Ozds.Business.Conversion.Implementations.Document;
 
-public class ActivePowerTotalImportT1PeakCalculationItemModelDocumentEntityConverter(
-  IServiceProvider serviceProvider
-) : InheritingModelDocumentEntityConverter<
+public class
+  ActivePowerTotalImportT1PeakCalculationItemModelDocumentEntityConverter(
+    IServiceProvider serviceProvider
+  ) : InheritingModelDocumentEntityConverter<
   ActivePowerTotalImportT1PeakCalculationItemModel,
   CalculationItemModel,
   ActivePowerTotalImportT1PeakCalculationItemEntity,

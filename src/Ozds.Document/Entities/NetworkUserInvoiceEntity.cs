@@ -8,11 +8,7 @@ public class NetworkUserInvoiceEntity : InvoiceEntity
 
   public NetworkUserEntity NetworkUser { get; set; } = default!;
 
-  public RegulatoryCatalogueEntity RegulatoryCatalogue
-  {
-    get;
-    set;
-  } = default!;
+  public RegulatoryCatalogueEntity RegulatoryCatalogue { get; set; } = default!;
 
   public decimal UsageActiveEnergyTotalImportT0Fee_EUR { get; set; } =
     default!;
@@ -24,12 +20,10 @@ public class NetworkUserInvoiceEntity : InvoiceEntity
     default!;
 
   public decimal
-    UsageActivePowerTotalImportT1PeakFee_EUR
-  { get; set; } = default!;
+    UsageActivePowerTotalImportT1PeakFee_EUR { get; set; } = default!;
 
   public decimal
-    UsageReactiveEnergyTotalRampedT0Fee_EUR
-  { get; set; } = default!;
+    UsageReactiveEnergyTotalRampedT0Fee_EUR { get; set; } = default!;
 
   public decimal UsageMeterFee_EUR { get; set; } = default!;
 

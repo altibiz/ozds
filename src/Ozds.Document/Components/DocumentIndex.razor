@@ -1,5 +1,3 @@
-@using Microsoft.AspNetCore.Components.Web
-
 @namespace Ozds.Document.Components
 
 @inherits DocumentBase
@@ -14,15 +12,17 @@
 
 <body>
 <LayoutView Layout="@typeof(DocumentLayout)">
-  <DynamicComponent Type="@Type" Parameters="@Parameters" />
+  <DynamicComponent Type="@Type" Parameters="@Parameters"/>
 </LayoutView>
 </body>
 </html>
 
 @code {
+
   [Parameter]
-  public Type? Type { get; set; } = default!;
+  public Type? Type { get; set; }
 
   [Parameter]
   public Dictionary<string, object?> Parameters { get; set; } = default!;
+
 }

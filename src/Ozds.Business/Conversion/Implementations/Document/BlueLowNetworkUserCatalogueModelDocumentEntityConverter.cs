@@ -19,7 +19,9 @@ public class BlueLowNetworkUserCatalogueModelDocumentEntityConverter(
   )
   {
     base.InitializeEntity(model, entity);
-    entity.ActiveEnergyTotalImportT0Price_EUR = model.ActiveEnergyTotalImportT0Price_EUR;
-    entity.ReactiveEnergyTotalRampedT0Price_EUR = model.ReactiveEnergyTotalRampedT0Price_EUR;
+    entity.ActiveEnergyTotalImportT0Price_EUR =
+      model.ActiveEnergyTotalImportT0Price_EUR;
+    entity.ReactiveEnergyTotalRampedT0Price_EUR =
+      model.ReactiveEnergyTotalRampedT0Price_EUR;
   }
 }

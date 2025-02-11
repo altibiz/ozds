@@ -6,8 +6,8 @@ namespace Ozds.Business.Conversion.Implementations.Document;
 
 public class NetworkUserCatalogueModelDocumentEntityConverter
   : ConcreteModelDocumentEntityConverter<
-      NetworkUserCatalogueModel,
-      NetworkUserCatalogueEntity>
+    NetworkUserCatalogueModel,
+    NetworkUserCatalogueEntity>
 {
   public override void InitializeEntity(
     NetworkUserCatalogueModel model,

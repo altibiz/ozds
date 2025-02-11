@@ -11,29 +11,21 @@ public abstract class NetworkUserCalculationEntity : CalculationEntity
   public string MeasurementLocationId { get; set; } = default!;
 
   public UsageMeterFeeCalculationItemEntity
-    UsageMeterFee
-  { get; set; } = default!;
+    UsageMeterFee { get; set; } = default!;
 
   public SupplyActiveEnergyTotalImportT1CalculationItemEntity
-    SupplyActiveEnergyTotalImportT1
-  { get; set; } = default!;
+    SupplyActiveEnergyTotalImportT1 { get; set; } = default!;
 
   public SupplyActiveEnergyTotalImportT2CalculationItemEntity
-    SupplyActiveEnergyTotalImportT2
-  { get; set; } = default!;
+    SupplyActiveEnergyTotalImportT2 { get; set; } = default!;
 
   public SupplyBusinessUsageCalculationItemEntity
-    SupplyBusinessUsageFee
-  { get; set; } = default!;
+    SupplyBusinessUsageFee { get; set; } = default!;
 
   public SupplyRenewableEnergyCalculationItemEntity
-    SupplyRenewableEnergyFee
-  { get; set; } = default!;
+    SupplyRenewableEnergyFee { get; set; } = default!;
 
-  public abstract NetworkUserCatalogueEntity UsageNetworkUserCatalogue
-  {
-    get;
-  }
+  public abstract NetworkUserCatalogueEntity UsageNetworkUserCatalogue { get; }
 
   public string UsageNetworkUserCatalogueId { get; set; } = default!;
 
@@ -41,11 +33,8 @@ public abstract class NetworkUserCalculationEntity : CalculationEntity
 
   public string NetworkUserInvoiceId { get; set; } = default!;
 
-  public RegulatoryCatalogueEntity SupplyRegulatoryCatalogue
-  {
-    get;
-    set;
-  } = default!;
+  public RegulatoryCatalogueEntity SupplyRegulatoryCatalogue { get; set; } =
+    default!;
 
   public decimal UsageFeeTotal_EUR { get; set; }
 
@@ -79,7 +68,10 @@ public abstract class NetworkUserCalculationEntity : CalculationEntity
     }
   }
 
-  protected abstract IEnumerable<CalculationItemEntity> AdditionalUsageItems { get; }
+  protected abstract IEnumerable<CalculationItemEntity> AdditionalUsageItems
+  {
+    get;
+  }
 }
 
 public abstract class NetworkUserCalculationEntity<TNetworkUserCatalogue>
@@ -87,8 +79,7 @@ public abstract class NetworkUserCalculationEntity<TNetworkUserCatalogue>
   where TNetworkUserCatalogue : NetworkUserCatalogueEntity
 {
   public TNetworkUserCatalogue
-    ConcreteUsageNetworkUserCatalogue
-  { get; set; } = default!;
+    ConcreteUsageNetworkUserCatalogue { get; set; } = default!;
 
   public override NetworkUserCatalogueEntity UsageNetworkUserCatalogue
   {
