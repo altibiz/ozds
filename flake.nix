@@ -239,6 +239,7 @@ rec {
               # Scripts
               just
               nushell
+              nix-bundle
 
               # Documentation
               simple-http-server
