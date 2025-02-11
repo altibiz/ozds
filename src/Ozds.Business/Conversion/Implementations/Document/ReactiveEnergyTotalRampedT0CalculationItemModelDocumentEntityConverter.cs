@@ -31,3 +31,14 @@ public class ReactiveEnergyTotalRampedT0CalculationItemModelDocumentEntityConver
     entity.Amount_kVARh = model.Amount_kVARh;
   }
 }
+
+public class
+  UsageReactiveEnergyTotalRampedT0CalculationItemModelDocumentEntityConverter(
+    IServiceProvider serviceProvider
+  ) : InheritingModelDocumentEntityConverter<
+  UsageReactiveEnergyTotalRampedT0CalculationItemModel,
+  ReactiveEnergyTotalRampedT0CalculationItemModel,
+  UsageReactiveEnergyTotalRampedT0CalculationItemEntity,
+  ReactiveEnergyTotalRampedT0CalculationItemEntity>(serviceProvider)
+{
+}

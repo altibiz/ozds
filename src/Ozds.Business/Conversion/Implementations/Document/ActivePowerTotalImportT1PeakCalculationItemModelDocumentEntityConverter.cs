@@ -23,3 +23,14 @@ public class ActivePowerTotalImportT1PeakCalculationItemModelDocumentEntityConve
     entity.Amount_kW = model.Amount_kW;
   }
 }
+
+public class
+  UsageActivePowerTotalImportT1PeakCalculationItemModelDocumentEntityConverter(
+    IServiceProvider serviceProvider
+  ) : InheritingModelDocumentEntityConverter<
+  UsageActivePowerTotalImportT1PeakCalculationItemModel,
+  ActivePowerTotalImportT1PeakCalculationItemModel,
+  UsageActivePowerTotalImportT1PeakCalculationItemEntity,
+  ActivePowerTotalImportT1PeakCalculationItemEntity>(serviceProvider)
+{
+}
