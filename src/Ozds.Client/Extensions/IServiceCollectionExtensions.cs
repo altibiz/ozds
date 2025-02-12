@@ -20,6 +20,7 @@ public static class IServiceCollectionExtensions
     services.AddBlazor(builder);
     services.AddLocalStorage();
     services.AddUi();
+    services.AddConversion();
     services.AddImport();
     return services;
   }

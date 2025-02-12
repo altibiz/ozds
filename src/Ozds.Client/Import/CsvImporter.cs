@@ -6,13 +6,35 @@ namespace Ozds.Client.Import;
 
 public class CsvImporter : IImporter
 {
-  public IAsyncEnumerable<T> Import<T>(
+  public IImportStreamer<T> Import<T>(
     Stream csvStream,
     CancellationToken cancellationToken
   )
   {
-    using var streamReader = new StreamReader(csvStream);
-    using var csvReader = new CsvReader(streamReader, CultureInfo.InvariantCulture);
-    return csvReader.GetRecordsAsync<T>(cancellationToken);
+    var streamReader = new StreamReader(csvStream);
+    var csvReader = new CsvReader(streamReader, CultureInfo.InvariantCulture);
+    return new CsvImportStreamer<T>(
+      streamReader,
+      csvReader,
+      cancellationToken
+    );
+  }
+}
+
+public sealed class CsvImportStreamer<T>(
+  StreamReader streamReader,
+  CsvReader reader,
+  CancellationToken cancellationToken
+) : IImportStreamer<T>
+{
+  public IAsyncEnumerable<T> Stream()
+  {
+    return reader.GetRecordsAsync<T>(cancellationToken);
+  }
+
+  public void Dispose()
+  {
+    streamReader.Dispose();
+    reader.Dispose();
   }
 }

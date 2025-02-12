@@ -56,11 +56,12 @@ public partial class NetworkUsersPage
         continue;
       }
 
-      var networkUserRecords = importer
-        .Import<NetworkUserRecord>(stream, CancellationToken)
-        .Chunk(CancellationToken);
+      using var streamer = importer
+        .Import<NetworkUserRecord>(stream, CancellationToken);
 
-      await foreach (var networkUserRecordsChunk in networkUserRecords)
+      await foreach (var networkUserRecordsChunk in streamer
+        .Stream()
+        .Chunk(CancellationToken))
       {
         var networkUsers = networkUserRecordsChunk
           .Select(converter.ToModel<NetworkUserModel>)
