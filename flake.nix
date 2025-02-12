@@ -7,6 +7,10 @@ rec {
     flake-utils.url = "github:numtide/flake-utils";
 
     poetry2nix.url = "github:nix-community/poetry2nix";
+
+    perch.url = "github:altibiz/perch";
+    perch.inputs.nixpkgs.follows = "nixpkgs";
+    perch.inputs.flake-utils.follows = "flake-utils";
   };
 
   outputs = { self, nixpkgs, flake-utils, ... } @rawInputs:

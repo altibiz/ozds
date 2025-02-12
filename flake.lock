@@ -89,6 +89,29 @@
         "type": "github"
       }
     },
+    "perch": {
+      "inputs": {
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1739355504,
+        "narHash": "sha256-SpGdjckHv3o7B/uzToIVdyIWrknchX2/Mj/9+jJqyD0=",
+        "owner": "altibiz",
+        "repo": "perch",
+        "rev": "6e7f3b5d36c151d342397a3b6542d0036e6538fa",
+        "type": "github"
+      },
+      "original": {
+        "owner": "altibiz",
+        "repo": "perch",
+        "type": "github"
+      }
+    },
     "poetry2nix": {
       "inputs": {
         "flake-utils": "flake-utils_2",
@@ -115,6 +138,7 @@
       "inputs": {
         "flake-utils": "flake-utils",
         "nixpkgs": "nixpkgs",
+        "perch": "perch",
         "poetry2nix": "poetry2nix"
       }
     },
