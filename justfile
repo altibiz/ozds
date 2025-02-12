@@ -38,8 +38,8 @@ prepare:
     dotnet tool restore
     dotnet build
     (which prettier | is-not-empty) or (npm install -g prettier)
-    ($env.PLAYWRIGHT_BROWSERS_PATH | is-not-empty) or \
-      (pwsh '{{ playwright }}' install --with-deps chromium)
+    ($env | get --ignore-errors PLAYWRIGHT_BROWSERS_PATH | is-not-empty) or \
+      ((pwsh '{{ playwright }}' install --with-deps chromium) | is-empty)
     @just clean
 
 lfs:

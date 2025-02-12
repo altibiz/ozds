@@ -10,8 +10,6 @@ using Ozds.Business.Conversion.Abstractions;
 using Ozds.Business.Finance;
 using Ozds.Business.Finance.Abstractions;
 using Ozds.Business.Finance.Implementations;
-using Ozds.Business.Import;
-using Ozds.Business.Import.Abstractions;
 using Ozds.Business.Localization.Abstractions;
 using Ozds.Business.Localization.Implementations;
 using Ozds.Business.Mutations.Abstractions;
@@ -45,7 +43,6 @@ public static class IServiceCollectionExtensions
     services.AddReactors();
     services.AddCaching();
     services.AddBuffers();
-    services.AddCsvParser();
     return services;
   }
 
@@ -112,14 +109,6 @@ public static class IServiceCollectionExtensions
   )
   {
     services.AddScopedAssignableTo(typeof(IMutations));
-    return services;
-  }
-
-  private static IServiceCollection AddCsvParser(
-    this IServiceCollection services
-  )
-  {
-    services.AddScoped<ICsvParser, CsvParser>();
     return services;
   }
 
