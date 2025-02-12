@@ -3,9 +3,9 @@ using Blazored.LocalStorage;
 using MudBlazor.Services;
 using Ozds.Client.Components.Models;
 using Ozds.Client.Components.Models.Abstractions;
+using Ozds.Client.Conversion;
+using Ozds.Client.Conversion.Abstractions;
 using Ozds.Client.Import.Abstractions;
-using Ozds.Client.Import;
-using Ozds.Client.Import.ModelsImport;
 
 namespace Ozds.Client.Extensions;
 
@@ -86,12 +86,20 @@ public static class IServiceCollectionExtensions
     return services;
   }
 
-  private static IServiceCollection AddImport(
+  public static IServiceCollection AddConversion(
     this IServiceCollection services
   )
   {
-    services.AddScoped<ICsvParser, CsvParser>();
-    services.AddScoped<INetworkUserImporter, NetworkUserImporter>();
+    services.AddTransientAssignableTo(typeof(IModelRecordConverter));
+    services.AddSingleton(typeof(ModelRecordConverter));
+    return services;
+  }
+
+  public static IServiceCollection AddImport(
+    this IServiceCollection services
+  )
+  {
+    services.AddTransientAssignableTo(typeof(IImporter));
     return services;
   }
 }

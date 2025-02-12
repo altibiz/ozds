@@ -3,10 +3,11 @@ using Microsoft.AspNetCore.Components.Forms;
 using MudBlazor;
 using Ozds.Business.Models;
 using Ozds.Business.Mutations;
+using Ozds.Client.Conversion;
+using Ozds.Client.Extensions;
 using Ozds.Client.Import;
 using Ozds.Client.Import.Abstractions;
-using Ozds.Client.Import.ModelsImport;
-using static Ozds.Client.Import.ModelsImport.NetworkUserImporter;
+using Ozds.Client.Records;
 
 namespace Ozds.Client.Pages;
 
@@ -45,14 +46,25 @@ public partial class NetworkUsersPage
 
   async Task Upload()
   {
-    var csvParser = ServiceProvider.GetRequiredService<ICsvParser>();
-    var networkUserImporter = ServiceProvider.GetRequiredService<INetworkUserImporter>();
+    var importer = ServiceProvider.GetRequiredService<CsvImporter>();
     var mutations = ScopedServices.GetRequiredService<AuditableMutations>();
+    var converter = ScopedServices.GetRequiredService<ModelRecordConverter>();
     foreach (var stream in _fileStreams)
     {
-      if (stream != null)
+      if (stream == null)
       {
-        var networkUsers = await csvParser.ParseAndMapCsvAsync<NetworkUserCsvRecord, NetworkUserModel>(stream, networkUserImporter.MapNetworkUsersAsync);
+        continue;
+      }
+
+      var networkUserRecords = importer
+        .Import<NetworkUserRecord>(stream, CancellationToken)
+        .Chunk(CancellationToken);
+
+      await foreach (var networkUserRecordsChunk in networkUserRecords)
+      {
+        var networkUsers = networkUserRecordsChunk
+          .Select(converter.ToModel<NetworkUserModel>)
+          .ToList();
         foreach (var user in networkUsers)
         {
           await mutations.Create(user, CancellationToken);
