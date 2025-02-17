@@ -1,6 +1,8 @@
+using Ozds.Client.Records.Abstractions;
+
 namespace Ozds.Client.Records;
 
-public class LegalPersonRecord
+public class LegalPersonRecord : IRecord
 {
   public string Name { get; set; } = default!;
 

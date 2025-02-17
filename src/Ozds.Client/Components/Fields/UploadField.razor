@@ -1,0 +1,127 @@
+@namespace Ozds.Client.Components.Fields
+@typeparam TRecord
+@typeparam TModel
+
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Web
+@using MudBlazor
+@using Ozds.Business.Analysis
+@using Ozds.Business.Models
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Business.Mutations
+@using Ozds.Client.Attributes
+@using Ozds.Client.Components.Streaming
+@using Ozds.Client.Conversion
+@using Ozds.Client.Extensions
+@using Ozds.Client.Import
+@using Ozds.Client.State
+@inherits Ozds.Client.Components.Base.OzdsComponentBase
+
+<MudStack Style="width: 100%">
+  <MudFileUpload T="IReadOnlyList<IBrowserFile>"
+                  @ref="_fileUpload"
+                  OnFilesChanged="OnInputFileChanged"
+                  AppendMultipleFiles
+                  Hidden="false"
+                  InputClass="absolute mud-width-full mud-height-full overflow-hidden z-10"
+                  InputStyle="opacity:0"
+                  tabindex="-1"
+                  @ondrop="ClearDragClass"
+                  @ondragenter="SetDragClass"
+                  @ondragleave="ClearDragClass"
+                  @ondragend="ClearDragClass">
+      <ActivatorContent>
+          <MudPaper Height="300px"
+                    Outlined="true"
+                    Class="@_dragClass">
+              <MudText Typo="Typo.h6">
+                  Drag and drop files here or click
+              </MudText>
+              @foreach (var file in _fileNames)
+              {
+                  <MudChip T="string"
+                           Color="Color.Dark"
+                           Text="@file"
+                           tabindex="-1" />
+              }
+          </MudPaper>
+      </ActivatorContent>
+  </MudFileUpload>
+  <MudToolBar Gutters="false"
+              Class="relative d-flex justify-end gap-4">
+      <MudButton Color="Color.Primary"
+                  OnClick="OpenFilePickerAsync"
+                  Variant="Variant.Filled">
+          Open file picker
+      </MudButton>
+      <MudButton Color="Color.Primary"
+                  Disabled="@(!_fileNames.Any())"
+                  OnClick="Upload"
+                  Variant="Variant.Filled">
+          Upload
+      </MudButton>
+      <MudButton Color="Color.Error"
+                  Disabled="@(!_fileNames.Any())"
+                  OnClick="ClearAsync"
+                  Variant="Variant.Filled">
+          Clear
+      </MudButton>
+  </MudToolBar>
+</MudStack>
+
+@code {
+    [Inject] private IServiceProvider ServiceProvider { get; set; } = null!;
+    private readonly List<string> _fileNames = new();
+    private readonly List<Stream> _fileStreams = new();
+    private const string DefaultDragClass = "relative rounded-lg border-2 border-dashed pa-4 mt-4 mud-width-full mud-height-full";
+    private string _dragClass = DefaultDragClass;
+    private MudFileUpload<IReadOnlyList<IBrowserFile>>? _fileUpload;
+
+    private async Task ClearAsync()
+    {
+        await (_fileUpload?.ClearAsync() ?? Task.CompletedTask);
+        _fileNames.Clear();
+        _fileStreams.Clear();
+        ClearDragClass();
+    }
+
+    private Task OpenFilePickerAsync() => _fileUpload?.OpenFilePickerAsync() ?? Task.CompletedTask;
+
+    private void OnInputFileChanged(InputFileChangeEventArgs e)
+    {
+        ClearDragClass();
+        var files = e.GetMultipleFiles();
+        foreach (var file in files)
+        {
+            _fileStreams.Add(file.OpenReadStream());
+            _fileNames.Add(file.Name);
+        }
+    }
+
+    private async Task Upload()
+    {
+        var importer = ServiceProvider.GetRequiredService<CsvImporter>();
+        var mutations = ScopedServices.GetRequiredService<AuditableMutations>();
+        var converter = ScopedServices.GetRequiredService<ModelRecordConverter>();
+        foreach (var stream in _fileStreams)
+        {
+            if (stream == null)
+            {
+                continue;
+            }
+            using var streamer = importer.Import<TRecord>(stream, CancellationToken);
+            await foreach (var recordsChunk in streamer.Stream().Chunk(CancellationToken))
+            {
+                var models = recordsChunk.Select(record => converter.ToModel<TModel>(record)).ToList();
+                foreach (var model in models)
+                {
+                    await mutations.Create((IAuditable)model, CancellationToken);
+                }
+            }
+        }
+    }
+
+    private void SetDragClass() => _dragClass = $"{DefaultDragClass} mud-border-primary";
+
+    private void ClearDragClass() => _dragClass = DefaultDragClass;
+}
