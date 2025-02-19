@@ -7,17 +7,6 @@
 }:
 
 
-let
-  nix = {
-    extraOptions = "experimental-features = nix-command flakes";
-    gc.automatic = true;
-    gc.options = "--delete-older-than 30d";
-    settings.auto-optimise-store = true;
-    settings.trusted-users = [
-      "@wheel"
-    ];
-  };
-in
 {
   integrate.nixosConfiguration.nixosConfiguration = {
     imports = [
@@ -30,9 +19,15 @@ in
 
     system.stateVersion = "24.11";
 
-    nix = nix // {
-      package = pkgs.nixVersions.stable;
-    };
+    sops.defaultSopsFile = ./secrets.yaml;
+    sops.age.keyFile = "/root/.sops.age";
+
+    nix.extraOptions = "experimental-features = nix-command flakes";
+    nix.gc.automatic = true;
+    nix.gc.options = "--delete-older-than 30d";
+    nix.settings.auto-optimise-store = true;
+    nix.settings.trusted-users = [ "@wheel" ];
+    nix.package = pkgs.nixVersions.stable;
 
     fileSystems."/firmware" = {
       device = "/dev/disk/by-label/FIRMWARE";
@@ -51,9 +46,6 @@ in
     ];
 
     services.fstrim.enable = true;
-
-    sops.defaultSopsFile = ./secrets.yaml;
-    sops.age.keyFile = "/root/.sops.age";
 
     # postgresql
 
