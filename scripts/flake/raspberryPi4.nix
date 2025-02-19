@@ -9,6 +9,8 @@
 
 let
   sops = {
+    secretsPrefix = "secrets";
+    filePrefix = "scripts/flake/sops.yaml";
     ageKeyFile = "/root/.sops.age";
 
     secrets.postgresSslKeyFile.key = "postgres.crt";
@@ -74,7 +76,7 @@ in
 
       system.stateVersion = "24.11";
 
-      sops.defaultSopsFile = ./sops.yaml;
+      sops.defaultSopsFile = lib.path.append ./. sops.filePrefix;
       sops.age.keyFile = sops.ageKeyFile;
 
       nix.extraOptions = "experimental-features = nix-command flakes";
