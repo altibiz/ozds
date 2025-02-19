@@ -132,11 +132,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1739906003,
-        "narHash": "sha256-cl8N7uPNfaVW5Nv38mW6SKWi6E0VWBnE0CBT+DpeV30=",
+        "lastModified": 1739961613,
+        "narHash": "sha256-2cnFv0w8yZ7cvl6wmtwevqeIGhSQcjdFR1tTECAyQcY=",
         "owner": "altibiz",
         "repo": "perch",
-        "rev": "fc0a86ec670a63965f00b9a1e0a3f26a70892e4d",
+        "rev": "61e3abfa3124bc4207812e2de57f964ac4063ca1",
         "type": "github"
       },
       "original": {
