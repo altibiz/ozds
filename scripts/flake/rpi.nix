@@ -52,8 +52,6 @@ in
 
     services.fstrim.enable = true;
 
-    # secrets
-
     sops.defaultSopsFile = ./secrets.yaml;
     sops.age.keyFile = "/root/.sops.age";
 
