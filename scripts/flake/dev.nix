@@ -1,7 +1,7 @@
 { self, pkgs, ... }:
 
 {
-  self.defaults.devShell = "dev";
+  seal.defaults.devShell = "dev";
   integrate.devShell.devShell =
     pkgs.mkShell ({
       PGHOST = "localhost";

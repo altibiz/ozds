@@ -3,7 +3,8 @@
 {
   flake.lib.poetry.pkgs = pkgs:
     let
-      integratedPoetry2nix = poetry2nix.poetry2nix.lib.mkPoetry2Nix { inherit pkgs; };
+      integratedPoetry2nix =
+        poetry2nix.lib.mkPoetry2Nix { inherit pkgs; };
 
       mkEnvWrapper = env: name: pkgs.writeShellApplication {
         name = name;
