@@ -6,7 +6,6 @@
 , ...
 }:
 
-
 {
   integrate.nixosConfiguration = {
     systems = [ "aarch64-linux" ];
