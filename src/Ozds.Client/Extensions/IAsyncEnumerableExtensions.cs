@@ -1,5 +1,3 @@
-using System.Runtime.CompilerServices;
-
 namespace Ozds.Client.Extensions;
 
 public static class IAsyncEnumerableExtensions
@@ -31,5 +29,4 @@ public static class IAsyncEnumerableExtensions
     yield return chunk;
   }
 #pragma warning restore CS8425 // Async-iterator member has one or more parameters of type 'CancellationToken' but none of them is decorated with the 'EnumeratorCancellation' attribute, so the cancellation token parameter from the generated 'IAsyncEnumerable<>.GetAsyncEnumerator' will be unconsumed
-
 }

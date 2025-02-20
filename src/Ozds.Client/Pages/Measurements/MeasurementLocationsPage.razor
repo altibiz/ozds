@@ -14,15 +14,14 @@ RoleModel.NetworkUserRepresentative
 ])]
 @using Microsoft.AspNetCore.Components.Web
 @using MudBlazor
-@using Ozds.Business.Models.Abstractions
-@using Ozds.Business.Models.Base
-@using Ozds.Business.Models
 @using Ozds.Business.Analysis
-@using Ozds.Client.Records
+@using Ozds.Business.Models
+@using Ozds.Business.Models.Abstractions
 @using Ozds.Client.Attributes
-@using Ozds.Client.Components.Streaming
-@using Ozds.Client.State
 @using Ozds.Client.Components.Fields
+@using Ozds.Client.Components.Streaming
+@using Ozds.Client.Records
+@using Ozds.Client.State
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 <HeadContent>
@@ -60,7 +59,7 @@ else
   </MudLink>
   <MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6">
     <MudTabPanel Text="@Translate("Network User")">
-      <UploadField TModel="NetworkUserMeasurementLocationModel" TRecord="NetworkUserMeasurementLocationRecord" />
+      <UploadField TModel="NetworkUserMeasurementLocationModel" TRecord="NetworkUserMeasurementLocationRecord"/>
     </MudTabPanel>
   </MudTabs>
 }

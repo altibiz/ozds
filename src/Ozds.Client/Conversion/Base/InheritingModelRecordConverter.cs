@@ -13,9 +13,8 @@ public abstract class InheritingModelRecordConverter<
   where TSuperModel : notnull
   where TSuperRecord : notnull
 {
-  private InitializingModelRecordConverter? _baseRecordConverter;
-
   private InitializingModelRecordConverter? _baseModelConverter;
+  private InitializingModelRecordConverter? _baseRecordConverter;
 
   public override void InitializeRecord(TModel model, TRecord record)
   {

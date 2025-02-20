@@ -10,14 +10,13 @@ Parent = typeof(MeasurementsPage),
 Allows = [RoleModel.OperatorRepresentative])]
 @using Microsoft.AspNetCore.Components.Web
 @using MudBlazor
-@using Ozds.Business.Models.Abstractions
-@using Ozds.Business.Models.Base
 @using Ozds.Business.Models
+@using Ozds.Business.Models.Abstractions
 @using Ozds.Client.Attributes
+@using Ozds.Client.Components.Fields
 @using Ozds.Client.Components.Streaming
 @using Ozds.Client.Records
 @using Ozds.Client.State
-@using Ozds.Client.Components.Fields
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 @if (RepresentativeState.Representative.Role
@@ -45,10 +44,10 @@ Allows = [RoleModel.OperatorRepresentative])]
   </MudLink>
   <MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6">
     <MudTabPanel Text="Abb">
-      <UploadField TModel="AbbB2xMeterModel" TRecord="AbbB2xMeterRecord" />
+      <UploadField TModel="AbbB2xMeterModel" TRecord="AbbB2xMeterRecord"/>
     </MudTabPanel>
     <MudTabPanel Text="Schneider">
-      <UploadField TModel="SchneideriEM3xxxMeterModel" TRecord="SchneideriEM3xxxMeterRecord" />
+      <UploadField TModel="SchneideriEM3xxxMeterModel" TRecord="SchneideriEM3xxxMeterRecord"/>
     </MudTabPanel>
   </MudTabs>
 }

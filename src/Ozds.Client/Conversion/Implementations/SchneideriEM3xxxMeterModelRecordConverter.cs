@@ -1,7 +1,5 @@
-using Ozds.Business.Extensions;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Base;
-using Ozds.Business.Models.Complex;
 using Ozds.Client.Conversion.Base;
 using Ozds.Client.Records;
 
@@ -42,12 +40,13 @@ public class SchneideriEM3xxxMeterModelRecordConverter(
     model.MeasurementValidatorId = record.MeasurementValidatorId;
     model.Phases = record
       .Phases.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-      .Select(static s =>
-        Enum.TryParse<PhaseModel>(s.Trim(), out var phase)
-          ? phase
-          : throw new InvalidOperationException(
-            "An error occurred due to an invalid operation."
-          )
+      .Select(
+        static s =>
+          Enum.TryParse<PhaseModel>(s.Trim(), out var phase)
+            ? phase
+            : throw new InvalidOperationException(
+              "An error occurred due to an invalid operation."
+            )
       )
       .ToHashSet();
   }

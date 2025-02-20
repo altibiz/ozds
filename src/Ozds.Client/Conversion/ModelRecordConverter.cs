@@ -6,10 +6,10 @@ namespace Ozds.Client.Conversion;
 public class ModelRecordConverter(IServiceProvider serviceProvider)
 {
   private readonly
-    ConcurrentDictionary<Type, IModelRecordConverter> recordCache = new();
+    ConcurrentDictionary<Type, IModelRecordConverter> modelCache = new();
 
   private readonly
-    ConcurrentDictionary<Type, IModelRecordConverter> modelCache = new();
+    ConcurrentDictionary<Type, IModelRecordConverter> recordCache = new();
 
   public TRecord ToRecord<TRecord>(object model)
   {
