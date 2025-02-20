@@ -40,10 +40,12 @@ public class AbbB2xMeterModelRecordConverter(IServiceProvider serviceProvider)
     model.MeasurementValidatorId = record.MeasurementValidatorId;
     model.Phases = record
       .Phases.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-      .Select(s =>
+      .Select(static s =>
         Enum.TryParse<PhaseModel>(s.Trim(), out var phase)
           ? phase
-          : throw new Exception($"Invalid phase value: {s}")
+          : throw new InvalidOperationException(
+            "An error occurred due to an invalid operation."
+          )
       )
       .ToHashSet();
   }

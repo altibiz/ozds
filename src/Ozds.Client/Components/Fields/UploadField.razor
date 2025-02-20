@@ -102,6 +102,7 @@
     {
         var importer = ServiceProvider.GetRequiredService<CsvImporter>();
         var mutations = ScopedServices.GetRequiredService<AuditableMutations>();
+        var mutationsMeasurement = ScopedServices.GetRequiredService<MeasurementMutations>();
         var converter = ScopedServices.GetRequiredService<ModelRecordConverter>();
         foreach (var stream in _fileStreams)
         {
@@ -112,10 +113,21 @@
             using var streamer = importer.Import<TRecord>(stream, CancellationToken);
             await foreach (var recordsChunk in streamer.Stream().Chunk(CancellationToken))
             {
-                var models = recordsChunk.Select(record => converter.ToModel<TModel>(record)).ToList();
+                var models = recordsChunk
+                .Where(record => record is not null)
+                .Select(record => converter.ToModel<TModel>(record!)!)
+                .ToList();
+
                 foreach (var model in models)
                 {
-                    await mutations.Create((IAuditable)model, CancellationToken);
+                    if (model is IAuditable auditable)
+                    {
+                        await mutations.Create(auditable, CancellationToken);
+                    }
+                    else if (model is IMeasurement measurement)
+                    {
+                        await mutationsMeasurement.CreateMeasurements(new[] { measurement }, CancellationToken);
+                    }
                 }
             }
         }
