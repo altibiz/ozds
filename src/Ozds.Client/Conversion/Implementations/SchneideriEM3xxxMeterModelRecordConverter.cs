@@ -15,7 +15,8 @@ public class SchneideriEM3xxxMeterModelRecordConverter(
     IdentifiableRecord
   >(serviceProvider)
 {
-  private static readonly char[] Delimiter = new[] { ',' };
+  private static readonly char[] Delimiter = { ',' };
+
   public override void InitializeRecord(
     SchneideriEM3xxxMeterModel model,
     SchneideriEM3xxxMeterRecord record

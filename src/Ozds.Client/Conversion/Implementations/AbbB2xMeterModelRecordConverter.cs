@@ -13,7 +13,8 @@ public class AbbB2xMeterModelRecordConverter(IServiceProvider serviceProvider)
     IdentifiableRecord
   >(serviceProvider)
 {
-  private static readonly char[] Delimiter = new[] { ',' };
+  private static readonly char[] Delimiter = { ',' };
+
   public override void InitializeRecord(
     AbbB2xMeterModel model,
     AbbB2xMeterRecord record
