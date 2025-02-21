@@ -19,10 +19,10 @@
                  InputClass="absolute mud-width-full mud-height-full overflow-hidden z-10"
                  InputStyle="opacity:0"
                  tabindex="-1"
-                 @ondrop="@(() => ClearDragClass)"
-                 @ondragenter="@(() => SetDragClass)"
-                 @ondragleave="@(() => ClearDragClass)"
-                 @ondragend="@(() => ClearDragClass)">
+                 ondrop="@(() => ClearDragClass)"
+                 ondragenter="@(() => SetDragClass)"
+                 ondragleave="@(() => ClearDragClass)"
+                 ondragend="@(() => ClearDragClass)">
     <ActivatorContent>
       <MudPaper Height="300px"
                 Outlined="true"
