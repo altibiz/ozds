@@ -131,6 +131,11 @@ words:
   - "rbrack"
   - "dowhile"
   - "activatable"
+  - "tabindex"
+  - "ondrop"
+  - "ondragenter"
+  - "ondragleave"
+  - "ondragend"
 
   # Croatian
   - "altibiz"
