@@ -18,11 +18,11 @@
                  Hidden="false"
                  InputClass="absolute mud-width-full mud-height-full overflow-hidden z-10"
                  InputStyle="opacity:0"
-                 tabindex="-1"
-                 @ondrop="ClearDragClass"
-                 @ondragenter="SetDragClass"
-                 @ondragleave="ClearDragClass"
-                 @ondragend="ClearDragClass">
+                 tabIndex="-1"
+                 @onDrop="ClearDragClass"
+                 @onDragEnter="SetDragClass"
+                 @onDragLeave="ClearDragClass"
+                 @onDragEnd="ClearDragClass">
     <ActivatorContent>
       <MudPaper Height="300px"
                 Outlined="true"
@@ -35,7 +35,7 @@
           <MudChip T="string"
                    Color="Color.Dark"
                    Text="@file"
-                   tabindex="-1"/>
+                   tabIndex="-1"/>
         }
       </MudPaper>
     </ActivatorContent>
