@@ -13,6 +13,7 @@ public class AbbB2xMeterModelRecordConverter(IServiceProvider serviceProvider)
     IdentifiableRecord
   >(serviceProvider)
 {
+  private static readonly char[] Delimiter = new[] { ',' };
   public override void InitializeRecord(
     AbbB2xMeterModel model,
     AbbB2xMeterRecord record
@@ -37,7 +38,7 @@ public class AbbB2xMeterModelRecordConverter(IServiceProvider serviceProvider)
     model.MessengerId = record.MessengerId;
     model.MeasurementValidatorId = record.MeasurementValidatorId;
     model.Phases = record
-      .Phases.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+      .Phases.Split(Delimiter, StringSplitOptions.RemoveEmptyEntries)
       .Select(
         static s =>
           Enum.TryParse<PhaseModel>(s.Trim(), out var phase)
