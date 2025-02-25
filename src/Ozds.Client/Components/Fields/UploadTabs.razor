@@ -1,26 +1,22 @@
 @namespace Ozds.Client.Components.Fields
 @typeparam TRecord
-@using Microsoft.AspNetCore.Components.Forms
 @using MudBlazor
-@using Ozds.Business.Models.Abstractions
-@using Ozds.Business.Mutations
 @using Ozds.Client.Conversion
-@using Ozds.Client.Extensions
-@using Ozds.Client.Import
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
-  <MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6">
-    @foreach (var type in ModelRecordConverter.ConvertableRecordSubtypes(typeof(TRecord)))
-    {
-      <MudTabPanel Text="@Translate(type.Name)">
-        <UploadField RecordType="@type"/>
-      </MudTabPanel>
-    }
-  </MudTabs>
-
+<MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6">
+  @foreach (var type in ModelRecordConverter.ConvertableRecordSubtypes(typeof(TRecord)))
+  {
+    <MudTabPanel Text="@Translate(type.Name)">
+      <UploadField RecordType="@type"/>
+    </MudTabPanel>
+  }
+</MudTabs>
 
 
 @code {
+
   [Inject]
   private ModelRecordConverter ModelRecordConverter { get; set; } = null!;
+
 }

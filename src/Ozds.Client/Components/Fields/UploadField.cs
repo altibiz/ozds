@@ -12,15 +12,15 @@ namespace Ozds.Client.Components.Fields;
 
 public partial class UploadField : OzdsComponentBase
 {
+  private readonly List<string> _fileNames = new();
+  private readonly List<Stream> _fileStreams = new();
+  private MudFileUpload<IReadOnlyList<IBrowserFile>>? _fileUpload;
+
   [Inject]
   private IServiceProvider ServiceProvider { get; set; } = null!;
 
   [Parameter]
   public Type RecordType { get; set; } = default!;
-
-  private readonly List<string> _fileNames = new();
-  private readonly List<Stream> _fileStreams = new();
-  private MudFileUpload<IReadOnlyList<IBrowserFile>>? _fileUpload;
 
   private async Task ClearAsync()
   {
@@ -28,6 +28,7 @@ public partial class UploadField : OzdsComponentBase
     {
       await _fileUpload.ClearAsync();
     }
+
     _fileNames.Clear();
     _fileStreams.Clear();
   }
@@ -51,7 +52,8 @@ public partial class UploadField : OzdsComponentBase
   {
     var importer = ServiceProvider.GetRequiredService<CsvImporter>();
     var mutations = ScopedServices.GetRequiredService<AuditableMutations>();
-    var mutationsMeasurement = ScopedServices.GetRequiredService<MeasurementMutations>();
+    var mutationsMeasurement =
+      ScopedServices.GetRequiredService<MeasurementMutations>();
     var converter = ScopedServices.GetRequiredService<ModelRecordConverter>();
     foreach (var stream in _fileStreams)
     {
@@ -60,8 +62,10 @@ public partial class UploadField : OzdsComponentBase
         continue;
       }
 
-      using var streamer = importer.Import(RecordType, stream, CancellationToken);
-      await foreach (var recordsChunk in streamer.Stream().Chunk(CancellationToken))
+      using var streamer = importer.Import(
+        RecordType, stream, CancellationToken);
+      await foreach (var recordsChunk in streamer.Stream()
+        .Chunk(CancellationToken))
       {
         var models = recordsChunk
           .Where(record => record is not null)
@@ -76,7 +80,8 @@ public partial class UploadField : OzdsComponentBase
           }
           else if (model is IMeasurement measurement)
           {
-            await mutationsMeasurement.CreateMeasurements(new[] { measurement }, CancellationToken);
+            await mutationsMeasurement.CreateMeasurements(
+              new[] { measurement }, CancellationToken);
           }
         }
       }

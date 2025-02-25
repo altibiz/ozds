@@ -16,7 +16,6 @@ public class SchneideriEM3xxxMeterModelRecordConverter(
     IdentifiableRecord
   >(serviceProvider)
 {
-
   public override void InitializeRecord(
     SchneideriEM3xxxMeterModel model,
     SchneideriEM3xxxMeterRecord record
@@ -41,7 +40,8 @@ public class SchneideriEM3xxxMeterModelRecordConverter(
     model.MessengerId = record.MessengerId;
     model.MeasurementValidatorId = record.MeasurementValidatorId;
     model.Phases = record
-      .Phases.Split(CsvConstants.CsvDelimiter, StringSplitOptions.RemoveEmptyEntries)
+      .Phases.Split(
+        CsvConstants.CsvDelimiter, StringSplitOptions.RemoveEmptyEntries)
       .Select(
         static s =>
           Enum.TryParse<PhaseModel>(s.Trim(), out var phase)

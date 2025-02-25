@@ -1,22 +1,17 @@
 @namespace Ozds.Client.Components.Fields
 @using Microsoft.AspNetCore.Components.Forms
 @using MudBlazor
-@using Ozds.Business.Models.Abstractions
-@using Ozds.Business.Mutations
-@using Ozds.Client.Conversion
-@using Ozds.Client.Extensions
-@using Ozds.Client.Import
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 <MudStack Style="width: 100%">
   <MudFileUpload T="IReadOnlyList<IBrowserFile>"
-                @ref="@_fileUpload"
-                OnFilesChanged="OnInputFileChanged"
-                AppendMultipleFiles
-                Hidden="@false"
-                InputClass="absolute mud-width-full mud-height-full overflow-hidden z-10"
-                InputStyle="opacity:0"
-                tabindex="-1">
+                 @ref="@_fileUpload"
+                 OnFilesChanged="OnInputFileChanged"
+                 AppendMultipleFiles
+                 Hidden="@false"
+                 InputClass="absolute mud-width-full mud-height-full overflow-hidden z-10"
+                 InputStyle="opacity:0"
+                 tabindex="-1">
     <ActivatorContent>
       <MudPaper Height="300px"
                 Outlined="true"
@@ -27,9 +22,9 @@
         @foreach (var file in _fileNames)
         {
           <MudChip T="string"
-                  Color="Color.Dark"
-                  Text="@file"
-                  tabindex="-1"/>
+                   Color="Color.Dark"
+                   Text="@file"
+                   tabindex="-1"/>
         }
       </MudPaper>
     </ActivatorContent>
@@ -37,20 +32,20 @@
   <MudToolBar Gutters="false"
               Class="relative d-flex justify-end gap-4">
     <MudButton Color="Color.Primary"
-              OnClick="OpenFilePickerAsync"
-              Variant="Variant.Filled">
+               OnClick="OpenFilePickerAsync"
+               Variant="Variant.Filled">
       Open file picker
     </MudButton>
     <MudButton Color="Color.Primary"
-              Disabled="@(!_fileNames.Any())"
-              OnClick="Upload"
-              Variant="Variant.Filled">
+               Disabled="@(!_fileNames.Any())"
+               OnClick="Upload"
+               Variant="Variant.Filled">
       Upload
     </MudButton>
     <MudButton Color="Color.Error"
-              Disabled="@(!_fileNames.Any())"
-              OnClick="ClearAsync"
-              Variant="Variant.Filled">
+               Disabled="@(!_fileNames.Any())"
+               OnClick="ClearAsync"
+               Variant="Variant.Filled">
       Clear
     </MudButton>
   </MudToolBar>

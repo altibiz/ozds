@@ -38,7 +38,8 @@ public class AbbB2xMeterModelRecordConverter(IServiceProvider serviceProvider)
     model.MessengerId = record.MessengerId;
     model.MeasurementValidatorId = record.MeasurementValidatorId;
     model.Phases = record
-      .Phases.Split(CsvConstants.CsvDelimiter, StringSplitOptions.RemoveEmptyEntries)
+      .Phases.Split(
+        CsvConstants.CsvDelimiter, StringSplitOptions.RemoveEmptyEntries)
       .Select(
         static s =>
           Enum.TryParse<PhaseModel>(s.Trim(), out var phase)

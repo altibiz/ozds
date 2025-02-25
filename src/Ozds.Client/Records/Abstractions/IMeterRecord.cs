@@ -1,3 +1,5 @@
 namespace Ozds.Client.Records.Abstractions;
 
-public interface IMeterRecord : IRecord { }
+public interface IMeterRecord : IRecord
+{
+}
