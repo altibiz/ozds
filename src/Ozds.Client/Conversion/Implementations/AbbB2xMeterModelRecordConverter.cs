@@ -45,7 +45,7 @@ public class AbbB2xMeterModelRecordConverter(IServiceProvider serviceProvider)
           Enum.TryParse<PhaseModel>(s.Trim(), out var phase)
             ? phase
             : throw new InvalidOperationException(
-              "An error occurred while tring to parse a csv input as a PhaseModel."
+              "An error occurred while trying to parse a csv input as a PhaseModel."
             )
       )
       .ToHashSet();

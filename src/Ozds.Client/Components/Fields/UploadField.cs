@@ -71,7 +71,7 @@ public partial class UploadField : OzdsComponentBase
           .Where(record => record is not null)
           .Select(record => converter.ToModel(record!)!)
           .ToList();
-        // TODO: Make bulck operations
+        // TODO: Make bulk operations
         foreach (var model in models)
         {
           if (model is IAuditable auditable)

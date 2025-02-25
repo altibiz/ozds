@@ -71,7 +71,7 @@ public class ModelRecordConverter(IServiceProvider serviceProvider)
     return converter.ModelType;
   }
 
-  public List<Type> ConvertableRecordSubtypes(Type type)
+  public List<Type> ConvertibleRecordSubtypes(Type type)
   {
     if (subtypeCache.TryGetValue(type, out var subtypes))
     {
