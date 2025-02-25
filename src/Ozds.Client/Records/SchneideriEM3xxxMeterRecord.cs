@@ -1,6 +1,8 @@
+using Ozds.Client.Records.Abstractions;
+
 namespace Ozds.Client.Records;
 
-public class SchneideriEM3xxxMeterRecord : IdentifiableRecord
+public class SchneideriEM3xxxMeterRecord : IdentifiableRecord, IMeterRecord
 {
   public string Id { get; set; } = default!;
 

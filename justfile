@@ -90,8 +90,7 @@ lint:
       --cache --cache-strategy metadata \
       '{{ root }}'
 
-    cspell lint '{{ root }}' \
-      --no-progress
+    @just lint-spelling
 
     markdownlint '{{ root }}'
     markdown-link-check \
@@ -103,6 +102,15 @@ lint:
     ($env | get CI? | is-not-empty) or (pyright '{{ root }}')
     ruff check '{{ root }}'
 
+    @just lint-dotnet
+
+    @just lint-model
+
+lint-spelling:
+    cspell lint '{{ root }}' \
+      --no-progress
+
+lint-dotnet:
     dotnet build --no-incremental /warnaserror '{{ sln }}'
 
     dotnet roslynator analyze '{{ sln }}' \
@@ -114,8 +122,6 @@ lint:
       --caches-home='{{ jbcache }}' \
       -o='{{ jbinspectlog }}' \
       --exclude='**/.git/**/*;**/.nuget/**/*;**/obj/**/*;**/bin/**/*'
-
-    @just lint-model
 
 lint-model:
     dotnet ef migrations \

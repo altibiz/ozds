@@ -1,6 +1,8 @@
+using Ozds.Client.Records.Abstractions;
+
 namespace Ozds.Client.Records;
 
-public class AbbB2xMeterRecord : IdentifiableRecord
+public class AbbB2xMeterRecord : IdentifiableRecord, IMeterRecord
 {
   public string Id { get; set; } = default!;
 

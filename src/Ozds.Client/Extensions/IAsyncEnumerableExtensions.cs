@@ -1,11 +1,12 @@
+using System.Runtime.CompilerServices;
+
 namespace Ozds.Client.Extensions;
 
 public static class IAsyncEnumerableExtensions
 {
-#pragma warning disable CS8425 // Async-iterator member has one or more parameters of type 'CancellationToken' but none of them is decorated with the 'EnumeratorCancellation' attribute, so the cancellation token parameter from the generated 'IAsyncEnumerable<>.GetAsyncEnumerator' will be unconsumed
   public static async IAsyncEnumerable<List<T>> Chunk<T>(
     this IAsyncEnumerable<T> enumerable,
-    CancellationToken cancellationToken,
+    [EnumeratorCancellation] CancellationToken cancellationToken,
     int chunkSize = 1000
   )
   {
@@ -28,5 +29,4 @@ public static class IAsyncEnumerableExtensions
 
     yield return chunk;
   }
-#pragma warning restore CS8425 // Async-iterator member has one or more parameters of type 'CancellationToken' but none of them is decorated with the 'EnumeratorCancellation' attribute, so the cancellation token parameter from the generated 'IAsyncEnumerable<>.GetAsyncEnumerator' will be unconsumed
 }

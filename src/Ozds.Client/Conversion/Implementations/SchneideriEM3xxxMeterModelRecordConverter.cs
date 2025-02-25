@@ -1,6 +1,7 @@
 using Ozds.Business.Models;
 using Ozds.Business.Models.Base;
 using Ozds.Client.Conversion.Base;
+using Ozds.Client.Conversion.Constants;
 using Ozds.Client.Records;
 
 namespace Ozds.Client.Conversion.Implementations;
@@ -15,7 +16,6 @@ public class SchneideriEM3xxxMeterModelRecordConverter(
     IdentifiableRecord
   >(serviceProvider)
 {
-  private static readonly char[] Delimiter = { ',' };
 
   public override void InitializeRecord(
     SchneideriEM3xxxMeterModel model,
@@ -41,13 +41,13 @@ public class SchneideriEM3xxxMeterModelRecordConverter(
     model.MessengerId = record.MessengerId;
     model.MeasurementValidatorId = record.MeasurementValidatorId;
     model.Phases = record
-      .Phases.Split(Delimiter, StringSplitOptions.RemoveEmptyEntries)
+      .Phases.Split(CsvConstants.CsvDelimiter, StringSplitOptions.RemoveEmptyEntries)
       .Select(
         static s =>
           Enum.TryParse<PhaseModel>(s.Trim(), out var phase)
             ? phase
             : throw new InvalidOperationException(
-              "An error occurred due to an invalid operation."
+              "An error occurred while tring to parse a csv input as a PhaseModel."
             )
       )
       .ToHashSet();

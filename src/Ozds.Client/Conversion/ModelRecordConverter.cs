@@ -11,6 +11,8 @@ public class ModelRecordConverter(IServiceProvider serviceProvider)
   private readonly
     ConcurrentDictionary<Type, IModelRecordConverter> recordCache = new();
 
+  private readonly ConcurrentDictionary<Type, List<Type>> subtypeCache = new();
+
   public TRecord ToRecord<TRecord>(object model)
   {
     return (TRecord)ToRecord(model);
@@ -19,6 +21,26 @@ public class ModelRecordConverter(IServiceProvider serviceProvider)
   public TModel ToModel<TModel>(object record)
   {
     return (TModel)ToModel(record);
+  }
+
+  public object ToModel(object record)
+  {
+    if (modelCache.TryGetValue(record.GetType(), out var converter))
+    {
+      return converter.ToModel(record);
+    }
+
+    converter = FindModelConverter(record.GetType());
+
+    modelCache.TryAdd(record.GetType(), converter);
+
+    if (!converter.CanConvertToModel(record.GetType()))
+    {
+      throw new InvalidOperationException(
+        $"No model converter found for record {record.GetType()}.");
+    }
+
+    return converter.ToModel(record);
   }
 
   public Type RecordType(Type type)
@@ -49,6 +71,32 @@ public class ModelRecordConverter(IServiceProvider serviceProvider)
     return converter.ModelType;
   }
 
+  public List<Type> ConvertableRecordSubtypes(Type type)
+  {
+    if (subtypeCache.TryGetValue(type, out var subtypes))
+    {
+      return subtypes;
+    }
+
+    subtypes = serviceProvider
+      .GetServices<IModelRecordConverter>()
+      .Where(
+        converter =>
+          !converter.RecordType.IsAbstract
+          && !converter.RecordType.IsInterface
+          && converter.RecordType.IsAssignableTo(type))
+      .Select(converter => converter.RecordType)
+      .ToList();
+
+    subtypes = subtypes
+      .Where(subtype => !subtypes.Exists(type => type.BaseType == subtype))
+      .ToList();
+
+    subtypeCache.TryAdd(type, subtypes);
+
+    return subtypes;
+  }
+
   public object ToRecord(object model)
   {
     if (recordCache.TryGetValue(model.GetType(), out var converter))
@@ -67,26 +115,6 @@ public class ModelRecordConverter(IServiceProvider serviceProvider)
     }
 
     return converter.ToRecord(model);
-  }
-
-  public object ToModel(object record)
-  {
-    if (modelCache.TryGetValue(record.GetType(), out var converter))
-    {
-      return converter.ToModel(record);
-    }
-
-    converter = FindModelConverter(record.GetType());
-
-    modelCache.TryAdd(record.GetType(), converter);
-
-    if (!converter.CanConvertToModel(record.GetType()))
-    {
-      throw new InvalidOperationException(
-        $"No model converter found for record {record.GetType()}.");
-    }
-
-    return converter.ToModel(record);
   }
 
   private IModelRecordConverter FindRecordConverter(Type type)
