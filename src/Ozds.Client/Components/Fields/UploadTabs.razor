@@ -10,20 +10,21 @@
     .ToList();
 }
 
-@if (subtypes.Count == 1){
-    <UploadField RecordType="subtypes[0]"/>
+@if (subtypes.Count == 1)
+{
+  <UploadField RecordType="subtypes[0]"/>
 }
-else if(subtypes.Count > 1){
-<MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6">
-  @foreach (var type in subtypes)
-  {
-    <MudTabPanel Text="@Translate(type.Name)">
-      <UploadField RecordType="@type"/>
-    </MudTabPanel>
-  }
-</MudTabs>
+else if (subtypes.Count > 1)
+{
+  <MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6">
+    @foreach (var type in subtypes)
+    {
+      <MudTabPanel Text="@Translate(type.Name)">
+        <UploadField RecordType="@type"/>
+      </MudTabPanel>
+    }
+  </MudTabs>
 }
-
 
 
 @code {
