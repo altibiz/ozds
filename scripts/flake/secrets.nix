@@ -1,44 +1,20 @@
-{
-  flake.lib.sops.raspberryPi4 = rec {
-    secretsPrefix = "secrets";
-    filePrefix = "scripts/flake/sops.yaml";
+let
+  secrets = {
+    filePrefix = "scripts/flake/secrets.yaml";
     ageKeyFile = "/root/.sops.age";
+    postgresSslKeyFile = "postgres.crt";
+    postgresSslCertFile = "postgres.crt.pub";
+    postgresInitialScript = "postgres.sql";
+    networkManagerEnvironmentFile = "wifi.env";
+    nebulaKey = "nebula.crt";
+    nebulaCert = "nebula.crt.pub";
+    nebulaCa = "nebula.ca.pub";
+    userHashedPasswordFile = "user.pass.pub";
+    userAuthorizedKeys = "user.ssh.pub";
+    ozdsEnv = "ozds.env";
+  };
 
-    secrets.postgresSslKeyFile.key = "postgres.crt";
-    secrets.postgresSslKeyFile.from =
-      generations.postgresSsl.args.priv;
-    secrets.postgresSslCertFile.key = "postgres.crt.pub";
-    secrets.postgresSslCertFile.from =
-      generations.postgresSsl.args.pub;
-    secrets.postgresInitialScript.key = "postgres.sql";
-    secrets.postgresInitialScript.from =
-      generations.postgresInitialScript.args.name;
-
-    secrets.networkManagerEnvironmentFile.key = "wifi.env";
-    secrets.networkManagerEnvironmentFile.from =
-      generations.networkManagerEnvironmentFile.args.name;
-
-    secrets.nebulaKey.key = "nebula.crt";
-    secrets.nebulaKey.from =
-      generations.nebulaSsl.args.priv;
-    secrets.nebulaCert.key = "nebula.crt.pub";
-    secrets.nebulaCert.from =
-      generations.nebulaSsl.args.pub;
-    secrets.nebulaCa.key = "nebula.ca.pub";
-    secrets.nebulaCa.from =
-      generations.nebulaSsl.args.ca;
-
-    secrets.userHashedPasswordFile.key = "user.pass.pub";
-    secrets.userHashedPasswordFile.from =
-      generations.userHashedPasswordFile.args.pub;
-
-    secrets.userAuthorizedKeys.key = "user.ssh.pub";
-    secrets.userAuthorizedKeys.from =
-      generations.userAuthorizedKeys.args.pub;
-
-    secrets.ozdsEnv.key = "ozds.env";
-    secrets.ozdsEnv.from = "ozdsEnv";
-
+  rumor = {
     generations.postgresSsl.generator = "openssl-cert";
     generations.postgresSsl.args = {
       ca = "ozds-postgres.ca.pub";
@@ -82,4 +58,9 @@
     };
     generations.ozdsEnv.generator = "ozds-env";
   };
+in
+{
+  flake.lib.secrets."raspberryPi4-aarch64-linux" = secrets;
+
+  flake.lib.rumor."raspberryPi4-aarch64-linux" = rumor;
 }
