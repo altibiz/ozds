@@ -2,7 +2,7 @@
 
 {
   seal.defaults.overlay = "ozds";
-  flake.overlays.ozds = (final: prev: {
+  seal.overlays.ozds = (final: prev: {
     dotnet-sdk = prev.dotnet-sdk_8;
     dotnet-runtime = prev.dotnet-runtime_8;
     dotnet-aspnetcore = prev.dotnet-aspnetcore_8;
