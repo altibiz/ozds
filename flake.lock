@@ -132,16 +132,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1739961613,
-        "narHash": "sha256-2cnFv0w8yZ7cvl6wmtwevqeIGhSQcjdFR1tTECAyQcY=",
+        "lastModified": 1740401338,
+        "narHash": "sha256-Pc4CXY8IyxfjJ7//zMV9BXIjExCUGY+dDH+ZPSEGBeA=",
         "owner": "altibiz",
         "repo": "perch",
-        "rev": "61e3abfa3124bc4207812e2de57f964ac4063ca1",
+        "rev": "5cdb82401e2bf1439eb08926b0ada708a1e16cf2",
         "type": "github"
       },
       "original": {
         "owner": "altibiz",
-        "ref": "flake",
+        "ref": "refs/tags/2.0.0",
         "repo": "perch",
         "type": "github"
       }
@@ -175,7 +175,32 @@
         "nixpkgs": "nixpkgs",
         "perch": "perch",
         "poetry2nix": "poetry2nix",
+        "rumor": "rumor",
         "sops-nix": "sops-nix"
+      }
+    },
+    "rumor": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "perch": [
+          "perch"
+        ]
+      },
+      "locked": {
+        "lastModified": 1740405983,
+        "narHash": "sha256-eA6Z7aDeNbG+6xAEfuVO+iKsXFrsokZT6O//sym7Umg=",
+        "owner": "altibiz",
+        "repo": "rumor",
+        "rev": "96ee47464eee0e600e7e79bef4d8833a4a9bfcc9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "altibiz",
+        "ref": "refs/tags/1.0.0",
+        "repo": "rumor",
+        "type": "github"
       }
     },
     "sops-nix": {

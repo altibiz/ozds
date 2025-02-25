@@ -4,7 +4,7 @@
 
     poetry2nix.url = "github:nix-community/poetry2nix";
 
-    perch.url = "github:altibiz/perch/flake";
+    perch.url = "github:altibiz/perch/refs/tags/2.0.0";
     perch.inputs.nixpkgs.follows = "nixpkgs";
 
     sops-nix.url = "github:Mic92/sops-nix";
@@ -14,6 +14,10 @@
 
     deploy-rs.url = "github:serokell/deploy-rs";
     deploy-rs.inputs.nixpkgs.follows = "nixpkgs";
+
+    rumor.url = "github:altibiz/rumor/refs/tags/1.0.0";
+    rumor.inputs.nixpkgs.follows = "nixpkgs";
+    rumor.inputs.perch.follows = "perch";
   };
 
   outputs = { self, perch, ... } @inputs:
