@@ -19,6 +19,7 @@ RoleModel.NetworkUserRepresentative
 @using Ozds.Client.Attributes
 @using Ozds.Client.Components.Fields
 @using Ozds.Client.Components.Streaming
+@using Ozds.Client.Records
 @using Ozds.Client.State
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
@@ -55,11 +56,7 @@ else
   <MudLink Href="@(PageHref<MeasurementLocationPage>())">
     @Translate("Create")
   </MudLink>
-  <MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6">
-    <MudTabPanel Text="@Translate("Network User")">
-      <UploadField TModel="NetworkUserMeasurementLocationModel" TRecord="NetworkUserMeasurementLocationRecord"/>
-    </MudTabPanel>
-  </MudTabs>
+  <UploadTabs TRecord="NetworkUserMeasurementLocationRecord"></UploadTabs>
 }
 
 @code {

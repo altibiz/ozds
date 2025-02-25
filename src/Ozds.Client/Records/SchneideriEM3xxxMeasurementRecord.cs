@@ -1,6 +1,8 @@
+using Ozds.Client.Records.Abstractions;
+
 namespace Ozds.Client.Records;
 
-public class SchneideriEM3xxxMeasurementRecord : MeasurementRecord
+public class SchneideriEM3xxxMeasurementRecord : MeasurementRecord, IMeasurementRecord
 {
   public decimal VoltageL1AnyT0_V { get; set; } = default!;
 

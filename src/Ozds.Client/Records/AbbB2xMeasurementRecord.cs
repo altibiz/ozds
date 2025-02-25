@@ -1,6 +1,8 @@
+using Ozds.Client.Records.Abstractions;
+
 namespace Ozds.Client.Records;
 
-public class AbbB2xMeasurementRecord : MeasurementRecord
+public class AbbB2xMeasurementRecord : MeasurementRecord, IMeasurementRecord
 {
   public decimal VoltageL1AnyT0_V { get; set; } = default!;
 
