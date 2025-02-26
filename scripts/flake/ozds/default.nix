@@ -19,7 +19,7 @@
 
       src = self;
       projectFile = "src/Ozds.Server/Ozds.Server.csproj";
-      nugetDeps = "${self}/deps.nix";
+      nugetDeps = ./deps.nix;
       executables = [ "Ozds.Server" ];
       makeWrapperArgs = [
         "--set DOTNET_CONTENTROOT ${placeholder "out"}/lib/${pname}"
