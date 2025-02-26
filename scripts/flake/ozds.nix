@@ -44,7 +44,7 @@
       cfg = config.services.ozds;
     in
     {
-      options = {
+      options.services.ozds = {
         enable = lib.mkEnableOption "ozds";
 
         package = lib.mkOption {
@@ -96,7 +96,7 @@
         };
       };
 
-      config = {
+      config = lib.mkIf cfg.enable {
         environment.systemPackages = [
           self.packages.${pkgs.system}.default
         ];
