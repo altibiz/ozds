@@ -1,4 +1,4 @@
-{ self, pkgs, ... }:
+{ self, pkgs, rumor, ... }:
 
 {
   seal.defaults.devShell = "dev";
@@ -105,6 +105,7 @@
           nushell
           nix-bundle
           fd
+          rumor.packages.${pkgs.system}.default
 
           # Documentation
           simple-http-server
