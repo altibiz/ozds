@@ -189,16 +189,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1740566247,
-        "narHash": "sha256-+jZyZOzLcVy2fa+AW1baQGclRMAVfHtYRa4LFuBegtk=",
+        "lastModified": 1740570979,
+        "narHash": "sha256-NmbKzbgRGsSu4HXa9AipzhfyrOeg5JFK9S3flPHVto8=",
         "owner": "altibiz",
         "repo": "rumor",
-        "rev": "ad83616fa9805aa8699d503fa83730cd804dff8b",
+        "rev": "7ebd8dfa0e8b36702023509c1ba61df14fc0e95f",
         "type": "github"
       },
       "original": {
         "owner": "altibiz",
-        "ref": "refs/tags/1.1.1",
+        "ref": "refs/tags/1.1.2",
         "repo": "rumor",
         "type": "github"
       }
