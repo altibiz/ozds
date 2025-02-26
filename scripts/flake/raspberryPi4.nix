@@ -231,6 +231,7 @@ in
 
       users.mutableUsers = false;
       users.users.altibiz = {
+        isNormalUser = true;
         hashedPasswordFile =
           config.sops.secrets.${secretKeys.userHashedPasswordFile}.path;
         extraGroups = [ "wheel" "dialout" ];
