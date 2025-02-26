@@ -27,6 +27,7 @@ measurements := absolute_path('scripts/database/measurements.nu')
 playwright := absolute_path('src/Ozds.Server/bin/Debug/net8.0/playwright.ps1')
 ozdsserver := absolute_path('scripts/startup/ozds-server.sh')
 ozdsserverdev := absolute_path('scripts/startup/ozds-server-dev.sh')
+secrets := absolute_path('scripts/flake/secrets.nu')
 current := "current"
 
 default:
@@ -188,6 +189,9 @@ docs:
 
     cp '{{ docs }}/index.html' {{ artifacts }}
     cp '{{ docs }}/favicon.ico' {{ artifacts }}
+
+secrets *args:
+    {{ secrets }} {{ args }}
 
 migrate project name:
     @just clean
