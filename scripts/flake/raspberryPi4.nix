@@ -26,6 +26,10 @@ in
         self.overlays.raspberryPi4
       ];
 
+      nixpkgs.config = {
+        allowUnfree = true;
+      };
+
       imports = [
         nixos-hardware.nixosModules.raspberry-pi-4
         sops-nix.nixosModules.default
