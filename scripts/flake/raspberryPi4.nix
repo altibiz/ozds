@@ -230,7 +230,9 @@ in
       programs.direnv.nix-direnv.enable = true;
 
       users.mutableUsers = false;
+      users.groups.altibiz = { };
       users.users.altibiz = {
+        group = "altibiz";
         isNormalUser = true;
         hashedPasswordFile =
           config.sops.secrets.${secretKeys.userHashedPasswordFile}.path;
