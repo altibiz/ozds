@@ -8,7 +8,7 @@
 }:
 
 let
-  secrets = self.lib.secrets."raspberryPi4-aarch-64";
+  secrets = self.lib.secrets."raspberryPi4-aarch64-linux";
 in
 {
   seal.overlays.raspberryPi4 = (final: prev: {
