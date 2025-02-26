@@ -220,7 +220,7 @@ let
       generator = "nebula";
       arguments = {
         ca_private = files.nebulaCaPrivate;
-        ca_public = files.postgresCaPublic;
+        ca_public = files.nebulaCaPublic;
         name = secrets.hostName;
         ip = "10.8.250.1/16";
         private = files.nebulaSslPrivate;
