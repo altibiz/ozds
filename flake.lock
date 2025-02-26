@@ -132,16 +132,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1740401338,
-        "narHash": "sha256-Pc4CXY8IyxfjJ7//zMV9BXIjExCUGY+dDH+ZPSEGBeA=",
+        "lastModified": 1740583563,
+        "narHash": "sha256-MSxyQCE5bXCqiQBKpXl9vAzO/KFro3iJe6P983TWDcY=",
         "owner": "altibiz",
         "repo": "perch",
-        "rev": "5cdb82401e2bf1439eb08926b0ada708a1e16cf2",
+        "rev": "c52032a95d4f0dbe6eedd6b6b1c2fbf59fe9021b",
         "type": "github"
       },
       "original": {
         "owner": "altibiz",
-        "ref": "refs/tags/2.0.0",
+        "ref": "refs/tags/2.0.1",
         "repo": "perch",
         "type": "github"
       }
