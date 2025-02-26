@@ -33,7 +33,6 @@ let
     emailUsername = "ozds-test-email-username";
     emailPassword = "ozds-test-email-password";
     messagingConnectionString = "ozds-test-messaging-connection-string";
-    connectionString = "ozds-connection-string";
 
     # instance
     postgresSslPrivate = "postgres-ssl-priv";
@@ -49,6 +48,7 @@ let
     userSshPrivate = "user-ssh-priv";
     userSshPublic = "user-ssh-pub";
     orchardAdminPassword = "orchard-admin-pass";
+    connectionString = "ozds-connection-string";
     wifiEnv = "wifi-env";
     ozdsEnv = "ozds-env";
     agePublic = "age-pub";
@@ -86,7 +86,7 @@ let
     {
       importer = "vault-file";
       arguments.path = "kv/ozds/shared";
-      arguments.file = files.postgresCaPublic;
+      arguments.file = files.nebulaCaPublic;
     }
     {
       importer = "vault-file";
@@ -100,32 +100,32 @@ let
     }
     {
       importer = "vault-file";
-      arguments.path = "kv/ozds/shared";
+      arguments.path = "kv/ozds/email/test";
       arguments.file = files.emailHost;
     }
     {
       importer = "vault-file";
-      arguments.path = "kv/ozds/shared";
+      arguments.path = "kv/ozds/email/test";
       arguments.file = files.emailPort;
     }
     {
       importer = "vault-file";
-      arguments.path = "kv/ozds/shared";
+      arguments.path = "kv/ozds/email/test";
       arguments.file = files.emailAddress;
     }
     {
       importer = "vault-file";
-      arguments.path = "kv/ozds/shared";
+      arguments.path = "kv/ozds/email/test";
       arguments.file = files.emailUsername;
     }
     {
       importer = "vault-file";
-      arguments.path = "kv/ozds/shared";
+      arguments.path = "kv/ozds/email/test";
       arguments.file = files.emailPassword;
     }
     {
       importer = "vault-file";
-      arguments.path = "kv/ozds/shared";
+      arguments.path = "kv/ozds/bus/test";
       arguments.file = files.messagingConnectionString;
     }
   ];
