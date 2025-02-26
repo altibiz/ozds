@@ -1,6 +1,6 @@
 let
   secrets = {
-    filePrefix = "scripts/flake/secrets.yaml";
+    filePrefix = "scripts/flake/raspberryPi4.yaml";
     ageKeyFile = "/root/.sops.age";
     hostName = "ozds-test";
   };
