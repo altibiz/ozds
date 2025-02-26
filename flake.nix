@@ -4,7 +4,7 @@
 
     poetry2nix.url = "github:nix-community/poetry2nix";
 
-    perch.url = "github:altibiz/perch/refs/tags/2.0.0";
+    perch.url = "github:altibiz/perch/refs/tags/2.0.1";
     perch.inputs.nixpkgs.follows = "nixpkgs";
 
     sops-nix.url = "github:Mic92/sops-nix";
