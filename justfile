@@ -82,7 +82,9 @@ format:
       --exclude='**/.git/**/*;**/.nuget/**/*;**/obj/**/*;**/bin/**/*'
 
 deps:
-    exec (nix build ".#default.fetch-deps" --print-out-paths --no-link) deps.nix
+    exec \
+      (nix build ".#default.fetch-deps" --print-out-paths --no-link) \
+      ./scripts/flake/ozds/deps.nix
 
 lint:
     prettier --check \
