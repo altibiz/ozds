@@ -35,6 +35,7 @@
         description = "ozds";
         homepage = "https://github.com/altibiz/ozds";
         license = pkgs.lib.licenses.mit;
+        mainProgram = "Ozds.Server";
       };
     };
 
