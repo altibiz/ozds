@@ -14,22 +14,107 @@ let
     ozdsEnv = "ozds.env";
   };
 
-  rumor.generations = [
+  rumor.imports = [
     {
-      generator = "openssl-ca";
-      arguments = {
-        name = "postgres CA";
-        private = "postgres.ca";
-        public = "postgres.ca.pub";
-      };
+      importer = "vault";
+      arguments.path = "kv/ozds/ozds/test";
+      arguments.allow_fail = true;
     }
+    {
+      importer = "vault-file";
+      arguments.path = "kv/ozds/shared";
+      arguments.file = "postgres-ca-priv";
+      arguments.allow_fail = true;
+    }
+    {
+      importer = "vault-file";
+      arguments.path = "kv/ozds/shared";
+      arguments.file = "postgres-ca-pub";
+      arguments.allow_fail = true;
+    }
+    {
+      importer = "vault-file";
+      arguments.path = "kv/ozds/shared";
+      arguments.file = "postgres-ca-srl";
+      arguments.allow_fail = true;
+    }
+    {
+      importer = "vault-file";
+      arguments.path = "kv/ozds/shared";
+      arguments.file = "nebula-ca-priv";
+      arguments.allow_fail = true;
+    }
+    {
+      importer = "vault-file";
+      arguments.path = "kv/ozds/shared";
+      arguments.file = "nebula-ca-pub";
+      arguments.allow_fail = true;
+    }
+    {
+      importer = "vault-file";
+      arguments.path = "kv/ozds/pidgeon/test";
+      arguments.file = "wifi-ssid";
+      arguments.allow_fail = true;
+    }
+    {
+      importer = "vault-file";
+      arguments.path = "kv/ozds/pidgeon/test";
+      arguments.file = "wifi-pass";
+      arguments.allow_fail = true;
+    }
+    {
+      importer = "vault-file";
+      arguments.path = "kv/ozds/shared";
+      arguments.file = "ozds-test-email-address";
+      arguments.allow_fail = true;
+    }
+    {
+      importer = "vault-file";
+      arguments.path = "kv/ozds/shared";
+      arguments.file = "ozds-test-email-password";
+      arguments.allow_fail = true;
+    }
+    {
+      importer = "vault-file";
+      arguments.path = "kv/ozds/shared";
+      arguments.file = "ozds-test-email-host";
+      arguments.allow_fail = true;
+    }
+    {
+      importer = "vault-file";
+      arguments.path = "kv/ozds/shared";
+      arguments.file = "ozds-test-email-port";
+      arguments.allow_fail = true;
+    }
+    {
+      importer = "vault-file";
+      arguments.path = "kv/ozds/shared";
+      arguments.file = "ozds-test-email-username";
+      arguments.allow_fail = true;
+    }
+    {
+      importer = "vault-file";
+      arguments.path = "kv/ozds/shared";
+      arguments.file = "ozds-test-messaging-connection-string";
+      arguments.allow_fail = true;
+    }
+  ];
+
+  rumor.exports = [
+    {
+      exporter = "vault";
+      arguments.path = "kv/ozds/ozds/test";
+    }
+  ];
+
+  rumor.generations = [
     {
       generator = "openssl";
       arguments = {
-        ca_private = "postgres.ca";
-        ca_public = "postgres.ca.pub";
-        serial = "postgres.srl";
-        name = "postgres OZDS rpi4";
+        ca_private = "postgres-ca-priv";
+        ca_public = "postgres-ca-pub";
+        serial = "postgres-ca-srl";
+        name = "ozds test rpi4 postgres";
         private = secrets.postgresSslCertFile;
         public = secrets.postgresSslKeyFile;
       };
@@ -82,34 +167,6 @@ let
       };
     }
     {
-      generator = "id";
-      arguments = {
-        name = "wifi-ssid";
-        length = 16;
-      };
-    }
-    {
-      generator = "key";
-      arguments = {
-        name = "wifi-pass";
-        length = 32;
-      };
-    }
-    {
-      generator = "key";
-      arguments = {
-        name = "wifi-admin";
-        length = 8;
-      };
-    }
-    {
-      generator = "pin";
-      arguments = {
-        name = "wifi-wps";
-        length = 4;
-      };
-    }
-    {
       generator = "env";
       arguments = {
         name = secrets.networkManagerEnvironmentFile;
@@ -117,14 +174,6 @@ let
           WIFI_SSID = "wifi-ssid";
           WIFI_PASS = "wifi-pass";
         };
-      };
-    }
-    {
-      generator = "nebula-ca";
-      arguments = {
-        name = "nebula CA";
-        private = "nebula-ca-priv";
-        public = secrets.nebulaCa;
       };
     }
     {
@@ -192,9 +241,9 @@ let
           Ozds__Email__Smtp__Ssl = "false";
           Ozds__Email__Smtp__Username = "ozds-email-username";
           Ozds__Jobs__ConnectionString = "ozds-connection-string";
-          Ozds__Messaging__ConnectionString = "ozds-messaging-connection-string";
-          Ozds__Messaging__Endpoints__AcknowledgeNetworkUserInvoice = "queue:altibiz-network-user-invoice-state-teset";
           Ozds__Messaging__PersistenceConnectionString = "ozds-connection-string";
+          Ozds__Messaging__ConnectionString = "ozds-test-messaging-connection-string";
+          Ozds__Messaging__Endpoints__AcknowledgeNetworkUserInvoice = "queue:altibiz-network-user-invoice-state-test";
           Ozds__Messaging__Sagas__NetworkUserInvoiceState = "ozds-network-user-invoice-state-test";
         };
       };
