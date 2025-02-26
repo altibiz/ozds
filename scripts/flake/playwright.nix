@@ -3,10 +3,15 @@
 {
   flake.lib.playwright.pkgs = pkgs: {
     node = pkgs.nodejs;
-    browsers = pkgs.playwright-driver.browsers.override {
-      withFirefox = false;
-      withWebkit = false;
-    };
+    browsers =
+      if pkgs.hostPlatform.isLinux
+      then
+        pkgs.playwright-driver.browsers.override
+          {
+            withFirefox = false;
+            withWebkit = false;
+          }
+      else pkgs.playwright-driver.browsers;
   };
 
   flake.lib.playwright.env = pkgs:
