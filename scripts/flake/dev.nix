@@ -106,6 +106,7 @@
           nix-bundle
           fd
           rumor.packages.${pkgs.system}.default
+          nixos-generators
 
           # Documentation
           simple-http-server
