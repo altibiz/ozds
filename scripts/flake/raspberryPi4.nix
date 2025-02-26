@@ -1,5 +1,4 @@
 { self
-, lib
 , pkgs
 , config
 , nixos-hardware
@@ -36,7 +35,7 @@ in
 
       system.stateVersion = "24.11";
 
-      sops.defaultSopsFile = lib.path.append ./. secrets.filePrefix;
+      sops.defaultSopsFile = "${self}/${secrets.filePrefix}";
       sops.age.keyFile = secrets.ageKeyFile;
 
       nix.extraOptions = "experimental-features = nix-command flakes";

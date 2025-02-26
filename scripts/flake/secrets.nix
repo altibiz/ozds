@@ -2,6 +2,9 @@ let
   secrets = {
     filePrefix = "scripts/flake/secrets.yaml";
     ageKeyFile = "/root/.sops.age";
+  };
+
+  secrets.keys = {
     postgresSslKeyFile = "postgres-ssl-priv";
     postgresSslCertFile = "postgres-ssl-pub";
     postgresInitialScript = "postgres-sql";
@@ -14,6 +17,45 @@ let
     ozdsEnv = "ozds-env";
   };
 
+  files = {
+    # shared
+    postgresCaPrivate = "postgres-ca-priv";
+    postgresCaPublic = "postgres-ca-pub";
+    postgresCaSerial = "postgres-ca-srl";
+    nebulaCaPrivate = "nebula-ca-priv";
+    nebulaCaPublic = "nebula-ca-pub";
+    wifiSsid = "wifi-ssid";
+    wifiPassword = "wifi-pass";
+    emailHost = "ozds-test-email-host";
+    emailPort = "ozds-test-email-port";
+    emailAddress = "ozds-test-email-address";
+    emailUsername = "ozds-test-email-username";
+    emailPassword = "ozds-test-email-password";
+    messagingConnectionString = "ozds-test-messaging-connection-string";
+    connectionString = "ozds-connection-string";
+
+    # instance
+    postgresSslPrivate = "postgres-ssl-priv";
+    postgresSslPublic = "postgres-ssl-pub";
+    postgresOzdsPassword = "postgres-ozds-pass";
+    postgresUserPassword = "postgres-user-pass";
+    postgresPassword = "postgres-pass";
+    postgresSql = "postgres-sql";
+    nebulaSslPrivate = "nebula-ssl-priv";
+    nebulaSslPublic = "nebula-ssl-pub";
+    userPasswordPrivate = "user-pass-priv";
+    userPasswordPublic = "user-pass-pub";
+    userSshPrivate = "user-ssh-priv";
+    userSshPublic = "user-ssh-pub";
+    orchardAdminPassword = "orchard-admin-pass";
+    wifiEnv = "wifi-env";
+    ozdsEnv = "ozds-env";
+    agePublic = "age-pub";
+    agePrivate = "age-priv";
+    secretsPublic = "secrets-pub";
+    secretsPrivate = "secrets-priv";
+  };
+
   rumor.imports = [
     {
       importer = "vault";
@@ -23,67 +65,67 @@ let
     {
       importer = "vault-file";
       arguments.path = "kv/ozds/shared";
-      arguments.file = "postgres-ca-priv";
+      arguments.file = files.postgresCaPrivate;
     }
     {
       importer = "vault-file";
       arguments.path = "kv/ozds/shared";
-      arguments.file = "postgres-ca-pub";
+      arguments.file = files.postgresCaPublic;
     }
     {
       importer = "vault-file";
       arguments.path = "kv/ozds/shared";
-      arguments.file = "postgres-ca-srl";
+      arguments.file = files.postgresCaSerial;
     }
     {
       importer = "vault-file";
       arguments.path = "kv/ozds/shared";
-      arguments.file = "nebula-ca-priv";
+      arguments.file = files.nebulaCaPrivate;
     }
     {
       importer = "vault-file";
       arguments.path = "kv/ozds/shared";
-      arguments.file = secrets.nebulaCa;
+      arguments.file = files.postgresCaPublic;
     }
     {
       importer = "vault-file";
       arguments.path = "kv/ozds/pidgeon/test";
-      arguments.file = "wifi-ssid";
+      arguments.file = files.wifiSsid;
     }
     {
       importer = "vault-file";
       arguments.path = "kv/ozds/pidgeon/test";
-      arguments.file = "wifi-pass";
+      arguments.file = files.wifiPassword;
     }
     {
       importer = "vault-file";
       arguments.path = "kv/ozds/shared";
-      arguments.file = "ozds-test-email-address";
+      arguments.file = files.emailHost;
     }
     {
       importer = "vault-file";
       arguments.path = "kv/ozds/shared";
-      arguments.file = "ozds-test-email-password";
+      arguments.file = files.emailPort;
     }
     {
       importer = "vault-file";
       arguments.path = "kv/ozds/shared";
-      arguments.file = "ozds-test-email-host";
+      arguments.file = files.emailAddress;
     }
     {
       importer = "vault-file";
       arguments.path = "kv/ozds/shared";
-      arguments.file = "ozds-test-email-port";
+      arguments.file = files.emailUsername;
     }
     {
       importer = "vault-file";
       arguments.path = "kv/ozds/shared";
-      arguments.file = "ozds-test-email-username";
+      arguments.file = files.emailPassword;
     }
     {
       importer = "vault-file";
       arguments.path = "kv/ozds/shared";
-      arguments.file = "ozds-test-messaging-connection-string";
+      arguments.file = files.messagingConnectionString;
     }
   ];
 
@@ -91,11 +133,16 @@ let
     {
       exporter = "vault-file";
       arguments.path = "kv/ozds/shared";
-      arguments.file = "postgres-ca-srl";
+      arguments.file = files.postgresCaSerial;
     }
     {
       exporter = "vault";
       arguments.path = "kv/ozds/ozds/test";
+    }
+    {
+      exporter = "copy";
+      arguments.from = files.secretsPublic;
+      arguments.to = "../${secrets.filePrefix}";
     }
   ];
 
@@ -103,49 +150,49 @@ let
     {
       generator = "openssl";
       arguments = {
-        ca_private = "postgres-ca-priv";
-        ca_public = "postgres-ca-pub";
-        serial = "postgres-ca-srl";
+        ca_private = files.postgresCaPrivate;
+        ca_public = files.postgresCaPublic;
+        serial = files.postgresCaSerial;
         name = "ozds test rpi4 postgres";
-        private = secrets.postgresSslCertFile;
-        public = secrets.postgresSslKeyFile;
+        private = files.postgresSslPrivate;
+        public = files.postgresSslPublic;
       };
     }
     {
       generator = "key";
       arguements = {
-        name = "ozds-postgres-pass";
+        name = files.postgresOzdsPassword;
         length = 32;
       };
     }
     {
       generator = "key";
       arguements = {
-        name = "altibiz-postgres-pass";
+        name = files.postgresUserPassword;
         length = 32;
       };
     }
     {
       generator = "key";
       arguements = {
-        name = "postgres-pass";
+        name = files.postgresPassword;
         length = 32;
       };
     }
     {
       generator = "moustache";
       arguments = {
-        name = secrets.postgresInitialScript;
+        name = files.postgresSql;
         variables = {
-          POSTGRES_PASS = "postgres-pass";
-          OZDS_POSTGRES_PASS = "ozds-postgres-pass";
-          ALTIBIZ_POSTGRES_PASS = "altibiz-postgres-fpass";
+          POSTGRES_PASS = files.postgresPassword;
+          OZDS_POSTGRES_PASS = files.postgresOzdsPassword;
+          USER_POSTGRES_PASS = files.postgresUserPassword;
         };
         template = ''
           ALTER USER postgres WITH PASSWORD '{{POSTGRES_PASS}}';
 
           CREATE USER ozds PASSWORD '{{OZDS_POSTGRES_PASS}}';
-          CREATE USER altibiz PASSWORD '{{ALTIBIZ_POSTGRES_PASS}}';
+          CREATE USER altibiz PASSWORD '{{USER_POSTGRES_PASS}}';
 
           CREATE DATABASE ozds;
           ALTER DATABASE ozds OWNER TO ozds;
@@ -161,43 +208,43 @@ let
     {
       generator = "env";
       arguments = {
-        name = secrets.networkManagerEnvironmentFile;
+        name = files.wifiEnv;
         variables = {
-          WIFI_SSID = "wifi-ssid";
-          WIFI_PASS = "wifi-pass";
+          WIFI_SSID = files.wifiSsid;
+          WIFI_PASS = files.wifiPassword;
         };
       };
     }
     {
       generator = "nebula";
       arguments = {
-        ca_private = "nebula-ca-priv";
-        ca_public = secrets.nebulaCa;
+        ca_private = files.nebulaCaPrivate;
+        ca_public = files.postgresCaPublic;
         name = "nebula";
-        private = secrets.nebulaKey;
-        public = secrets.nebulaCert;
+        private = files.nebulaSslPrivate;
+        public = files.nebulaSslPublic;
       };
     }
     {
       generator = "mkpasswd";
       arguments = {
-        public = secrets.userHashedPasswordFile;
-        private = "altibiz-pass";
+        public = files.userPasswordPublic;
+        private = files.userPasswordPrivate;
       };
     }
     {
       generator = "ssh-keygen";
       arguments = {
-        public = secrets.userAuthorizedKeys;
-        private = "altibiz-ssh-priv";
+        public = files.userSshPublic;
+        private = files.userSshPrivate;
       };
     }
     {
       generator = "moustache";
       arguements = {
-        name = "ozds-connection-string";
+        name = files.connectionString;
         variables = {
-          OZDS_POSTGRES_PASS = "ozds-postgres-pass";
+          OZDS_POSTGRES_PASS = files.postgresOzdsPassword;
         };
         template = "Server=localhost;Port=5432;Database=ozds;User Id=ozds;Password={{OZDS_POSTGRES_PASS}};Ssl Mode=Disable;";
       };
@@ -205,45 +252,72 @@ let
     {
       generator = "key";
       arguments = {
-        name = "ozds-admin";
+        name = files.orchardAdminPassword;
         length = 32;
       };
     }
     {
       generator = "env";
       arguments = {
-        name = secrets.ozdsEnv;
+        name = files.ozdsEnv;
         variables = {
           OrchardCore__OrchardCore_AutoSetup__Tenants__0__AdminEmail = "hrvoje@altibiz.com";
-          OrchardCore__OrchardCore_AutoSetup__Tenants__0__AdminPassword = "ozds-admin";
+          OrchardCore__OrchardCore_AutoSetup__Tenants__0__AdminPassword = files.orchardAdminPassword;
           OrchardCore__OrchardCore_AutoSetup__Tenants__0__AdminUsername = "admin";
-          OrchardCore__OrchardCore_AutoSetup__Tenants__0__DatabaseConnectionString = "ozds-connection-string";
+          OrchardCore__OrchardCore_AutoSetup__Tenants__0__DatabaseConnectionString = files.connectionString;
           OrchardCore__OrchardCore_AutoSetup__Tenants__0__DatabaseProvider = "Postgres";
           OrchardCore__OrchardCore_AutoSetup__Tenants__0__DatabaseTablePrefix = "";
           OrchardCore__OrchardCore_AutoSetup__Tenants__0__RecipeName = "ozds";
           OrchardCore__OrchardCore_AutoSetup__Tenants__0__ShellName = "Default";
           OrchardCore__OrchardCore_AutoSetup__Tenants__0__SiteName = "OZDS";
           OrchardCore__OrchardCore_AutoSetup__Tenants__0__SiteTimeZone = "Europe/Zagreb";
-          Ozds__Data__ConnectionString = "ozds-connection-string";
-          Ozds__Email__From__Address = "ozds-email-address";
+          Ozds__Data__ConnectionString = files.connectionString;
+          Ozds__Email__From__Address = files.emailAddress;
           Ozds__Email__From__Name = "OZDS";
-          Ozds__Email__Smtp__Host = "ozds-email-host";
-          Ozds__Email__Smtp__Password = "ozds-email-password";
-          Ozds__Email__Smtp__Port = "ozds-email-port";
+          Ozds__Email__Smtp__Host = files.emailHost;
+          Ozds__Email__Smtp__Password = files.emailPassword;
+          Ozds__Email__Smtp__Port = files.emailPort;
           Ozds__Email__Smtp__Ssl = "false";
-          Ozds__Email__Smtp__Username = "ozds-email-username";
-          Ozds__Jobs__ConnectionString = "ozds-connection-string";
-          Ozds__Messaging__PersistenceConnectionString = "ozds-connection-string";
-          Ozds__Messaging__ConnectionString = "ozds-test-messaging-connection-string";
+          Ozds__Email__Smtp__Username = files.emailUsername;
+          Ozds__Jobs__ConnectionString = files.connectionString;
+          Ozds__Messaging__PersistenceConnectionString = files.connectionString;
+          Ozds__Messaging__ConnectionString = files.messagingConnectionString;
           Ozds__Messaging__Endpoints__AcknowledgeNetworkUserInvoice = "queue:altibiz-network-user-invoice-state-test";
           Ozds__Messaging__Sagas__NetworkUserInvoiceState = "ozds-network-user-invoice-state-test";
+        };
+      };
+    }
+    {
+      generator = "age";
+      arguments = {
+        private = files.agePrivate;
+        public = files.agePublic;
+      };
+    }
+    {
+      generator = "sops";
+      arguments = {
+        age = files.agePublic;
+        private = files.secretsPrivate;
+        public = files.secretsPublic;
+        secrets = {
+          ${secrets.keys.postgresSslKeyFile} = files.postgresSslPrivate;
+          ${secrets.keys.postgresSslCertFile} = files.postgresSslPublic;
+          ${secrets.keys.postgresInitialScript} = files.postgresSql;
+          ${secrets.keys.networkManagerEnvironmentFile} = files.wifiEnv;
+          ${secrets.keys.nebulaKey} = files.nebulaSslPrivate;
+          ${secrets.keys.nebulaCert} = files.nebulaSslPublic;
+          ${secrets.keys.nebulaCa} = files.postgresCaPublic;
+          ${secrets.keys.userHashedPasswordFile} = files.userPasswordPublic;
+          ${secrets.keys.userAuthorizedKeys} = files.userSshPublic;
+          ${secrets.keys.ozdsEnv} = files.ozdsEnv;
         };
       };
     }
   ];
 in
 {
-  flake.lib.secrets."raspberryPi4-aarch64-linux" = secrets;
+  flake.lib.secrets.keys."raspberryPi4-aarch64-linux" = secrets;
 
   flake.lib.rumor."raspberryPi4-aarch64-linux" = rumor;
 }
