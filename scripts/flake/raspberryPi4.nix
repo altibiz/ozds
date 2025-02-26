@@ -45,6 +45,8 @@ in
       nix.settings.trusted-users = [ "@wheel" ];
       nix.package = pkgs.nixVersions.stable;
 
+      networking.hostName = secrets.hostName;
+
       fileSystems."/firmware" = {
         device = "/dev/disk/by-label/FIRMWARE";
         fsType = "vfat";

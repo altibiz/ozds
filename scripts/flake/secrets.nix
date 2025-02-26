@@ -2,6 +2,7 @@ let
   secrets = {
     filePrefix = "scripts/flake/secrets.yaml";
     ageKeyFile = "/root/.sops.age";
+    hostName = "ozds-test";
   };
 
   secrets.keys = {
@@ -153,7 +154,7 @@ let
         ca_private = files.postgresCaPrivate;
         ca_public = files.postgresCaPublic;
         serial = files.postgresCaSerial;
-        name = "ozds test rpi4 postgres";
+        name = secrets.hostName;
         private = files.postgresSslPrivate;
         public = files.postgresSslPublic;
       };
@@ -220,7 +221,8 @@ let
       arguments = {
         ca_private = files.nebulaCaPrivate;
         ca_public = files.postgresCaPublic;
-        name = "nebula";
+        name = secrets.hostName;
+        ip = "10.8.250.1/16";
         private = files.nebulaSslPrivate;
         public = files.nebulaSslPublic;
       };
@@ -235,6 +237,7 @@ let
     {
       generator = "ssh-keygen";
       arguments = {
+        name = secrets.hostName;
         public = files.userSshPublic;
         private = files.userSshPrivate;
       };
