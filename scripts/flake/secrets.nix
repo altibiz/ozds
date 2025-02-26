@@ -2,16 +2,16 @@ let
   secrets = {
     filePrefix = "scripts/flake/secrets.yaml";
     ageKeyFile = "/root/.sops.age";
-    postgresSslKeyFile = "postgres.crt";
-    postgresSslCertFile = "postgres.crt.pub";
-    postgresInitialScript = "postgres.sql";
-    networkManagerEnvironmentFile = "wifi.env";
-    nebulaKey = "nebula.crt";
-    nebulaCert = "nebula.crt.pub";
-    nebulaCa = "nebula.ca.pub";
-    userHashedPasswordFile = "user.pass.pub";
-    userAuthorizedKeys = "user.ssh.pub";
-    ozdsEnv = "ozds.env";
+    postgresSslKeyFile = "postgres-ssl-priv";
+    postgresSslCertFile = "postgres-ssl-pub";
+    postgresInitialScript = "postgres-sql";
+    networkManagerEnvironmentFile = "wifi-env";
+    nebulaKey = "nebula-ssl-priv";
+    nebulaCert = "nebula-ssl-pub";
+    nebulaCa = "nebula-ca-pub";
+    userHashedPasswordFile = "user-pass-pub";
+    userAuthorizedKeys = "user-ssh-pub";
+    ozdsEnv = "ozds-env";
   };
 
   rumor.imports = [
@@ -24,83 +24,75 @@ let
       importer = "vault-file";
       arguments.path = "kv/ozds/shared";
       arguments.file = "postgres-ca-priv";
-      arguments.allow_fail = true;
     }
     {
       importer = "vault-file";
       arguments.path = "kv/ozds/shared";
       arguments.file = "postgres-ca-pub";
-      arguments.allow_fail = true;
     }
     {
       importer = "vault-file";
       arguments.path = "kv/ozds/shared";
       arguments.file = "postgres-ca-srl";
-      arguments.allow_fail = true;
     }
     {
       importer = "vault-file";
       arguments.path = "kv/ozds/shared";
       arguments.file = "nebula-ca-priv";
-      arguments.allow_fail = true;
     }
     {
       importer = "vault-file";
       arguments.path = "kv/ozds/shared";
-      arguments.file = "nebula-ca-pub";
-      arguments.allow_fail = true;
+      arguments.file = secrets.nebulaCa;
     }
     {
       importer = "vault-file";
       arguments.path = "kv/ozds/pidgeon/test";
       arguments.file = "wifi-ssid";
-      arguments.allow_fail = true;
     }
     {
       importer = "vault-file";
       arguments.path = "kv/ozds/pidgeon/test";
       arguments.file = "wifi-pass";
-      arguments.allow_fail = true;
     }
     {
       importer = "vault-file";
       arguments.path = "kv/ozds/shared";
       arguments.file = "ozds-test-email-address";
-      arguments.allow_fail = true;
     }
     {
       importer = "vault-file";
       arguments.path = "kv/ozds/shared";
       arguments.file = "ozds-test-email-password";
-      arguments.allow_fail = true;
     }
     {
       importer = "vault-file";
       arguments.path = "kv/ozds/shared";
       arguments.file = "ozds-test-email-host";
-      arguments.allow_fail = true;
     }
     {
       importer = "vault-file";
       arguments.path = "kv/ozds/shared";
       arguments.file = "ozds-test-email-port";
-      arguments.allow_fail = true;
     }
     {
       importer = "vault-file";
       arguments.path = "kv/ozds/shared";
       arguments.file = "ozds-test-email-username";
-      arguments.allow_fail = true;
     }
     {
       importer = "vault-file";
       arguments.path = "kv/ozds/shared";
       arguments.file = "ozds-test-messaging-connection-string";
-      arguments.allow_fail = true;
     }
   ];
 
   rumor.exports = [
+    {
+      exporter = "vault-file";
+      arguments.path = "kv/ozds/shared";
+      arguments.file = "postgres-ca-srl";
+    }
     {
       exporter = "vault";
       arguments.path = "kv/ozds/ozds/test";
