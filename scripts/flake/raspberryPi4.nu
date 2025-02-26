@@ -29,11 +29,13 @@ def "main image" [] {
   mkdir $artifacts
   cd $artifacts
 
-  let compressed = ls (nixos-generate
+  let raw = (nixos-generate
     --system $system
     --format $format
-    --flake $configuration
-    --option "--no-out-link"
+    --flake $configuration)
+  print $raw
+
+  let compressed = ls ($raw
     | path dirname --num-levels 2
     | path join "sd-image")
     | get name
