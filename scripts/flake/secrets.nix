@@ -160,21 +160,21 @@ let
     }
     {
       generator = "key";
-      arguements = {
+      arguments = {
         name = files.postgresOzdsPassword;
         length = 32;
       };
     }
     {
       generator = "key";
-      arguements = {
+      arguments = {
         name = files.postgresUserPassword;
         length = 32;
       };
     }
     {
       generator = "key";
-      arguements = {
+      arguments = {
         name = files.postgresPassword;
         length = 32;
       };
@@ -241,7 +241,7 @@ let
     }
     {
       generator = "moustache";
-      arguements = {
+      arguments = {
         name = files.connectionString;
         variables = {
           OZDS_POSTGRES_PASS = files.postgresOzdsPassword;
