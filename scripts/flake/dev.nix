@@ -107,6 +107,13 @@
           fd
           rumor.packages.${pkgs.system}.default
           nixos-generators
+        ] ++ lib.optionals
+          (
+            pkgs.hostPlatform.isLinux
+              && pkgs.hostPlatform.isx86_64
+          ) [
+          libguestfs-with-appliance
+        ] ++ [
 
           # Documentation
           simple-http-server
