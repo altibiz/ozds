@@ -246,7 +246,12 @@ let
         variables = {
           OZDS_POSTGRES_PASS = files.postgresOzdsPassword;
         };
-        template = "Server=localhost;Port=5432;Database=ozds;User Id=ozds;Password={{OZDS_POSTGRES_PASS}};Ssl Mode=Disable;";
+        template = "Server=localhost"
+          + ";Port=5432"
+          + ";Database=ozds"
+          + ";User Id=ozds"
+          + ";Password={{OZDS_POSTGRES_PASS}}"
+          + ";Ssl Mode=Disable";
       };
     }
     {
