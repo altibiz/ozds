@@ -325,7 +325,7 @@ let
   ];
 in
 {
-  flake.lib.secrets.keys."raspberryPi4-aarch64-linux" = secrets;
+  flake.lib.secrets."raspberryPi4-aarch64-linux" = secrets;
 
   flake.lib.rumor."raspberryPi4-aarch64-linux" = rumor;
 }
