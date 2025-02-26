@@ -8,6 +8,7 @@
 
 let
   secrets = self.lib.secrets."raspberryPi4-aarch64-linux";
+  secretKeys = secrets.keys;
 in
 {
   seal.overlays.raspberryPi4 = (final: prev: {
@@ -35,15 +36,15 @@ in
 
       system.stateVersion = "24.11";
 
-      sops.defaultSopsFile = "${self}/${secrets.filePrefix}";
-      sops.age.keyFile = secrets.ageKeyFile;
-
       nix.extraOptions = "experimental-features = nix-command flakes";
       nix.gc.automatic = true;
       nix.gc.options = "--delete-older-than 30d";
       nix.settings.auto-optimise-store = true;
       nix.settings.trusted-users = [ "@wheel" ];
       nix.package = pkgs.nixVersions.stable;
+
+      sops.defaultSopsFile = "${self}/${secrets.filePrefix}";
+      sops.age.keyFile = secrets.ageKeyFile;
 
       networking.hostName = secrets.hostName;
 
@@ -88,20 +89,20 @@ in
 
       services.postgresql.settings.ssl = "on";
       services.postgresql.settings.ssl_cert_file =
-        config.sops.secrets.${secrets.postgresSslCertFile}.path;
-      sops.secrets.${secrets.postgresSslCertFile} = {
+        config.sops.secrets.${secretKeys.postgresSslCertFile}.path;
+      sops.secrets.${secretKeys.postgresSslCertFile} = {
         owner = config.systemd.services.postgresql.serviceConfig.User;
         group = config.systemd.services.postgresql.serviceConfig.Group;
       };
       services.postgresql.settings.ssl_key_file =
-        config.sops.secrets.${secrets.postgresSslKeyFile}.path;
-      sops.secrets.${secrets.postgresSslKeyFile} = {
+        config.sops.secrets.${secretKeys.postgresSslKeyFile}.path;
+      sops.secrets.${secretKeys.postgresSslKeyFile} = {
         owner = config.systemd.services.postgresql.serviceConfig.User;
         group = config.systemd.services.postgresql.serviceConfig.Group;
       };
       services.postgresql.initialScript =
-        config.sops.secrets.${secrets.postgresInitialScript}.path;
-      sops.secrets.${secrets.postgresInitialScript} = {
+        config.sops.secrets.${secretKeys.postgresInitialScript}.path;
+      sops.secrets.${secretKeys.postgresInitialScript} = {
         owner = config.systemd.services.postgresql.serviceConfig.User;
         group = config.systemd.services.postgresql.serviceConfig.Group;
       };
@@ -150,18 +151,18 @@ in
       };
 
       networking.networkmanager.ensureProfiles.environmentFiles = [
-        config.sops.secrets.${secrets.networkManagerEnvironmentFile}.path
+        config.sops.secrets.${secretKeys.networkManagerEnvironmentFile}.path
       ];
 
-      sops.secrets.${secrets.networkManagerEnvironmentFile} = { };
+      sops.secrets.${secretKeys.networkManagerEnvironmentFile} = { };
 
       # vpn
 
       services.nebula.networks.ozds-vpn = {
         enable = true;
-        cert = config.sops.secrets.${secrets.nebulaCert}.path;
-        key = config.sops.secrets.${secrets.nebulaKey}.path;
-        ca = config.sops.secrets.${secrets.nebulaCa}.path;
+        cert = config.sops.secrets.${secretKeys.nebulaCert}.path;
+        key = config.sops.secrets.${secretKeys.nebulaKey}.path;
+        ca = config.sops.secrets.${secretKeys.nebulaCa}.path;
         firewall.inbound = [
           {
             host = "any";
@@ -205,17 +206,17 @@ in
         };
       };
 
-      sops.secrets.${secrets.nebulaCert} = {
+      sops.secrets.${secretKeys.nebulaCert} = {
         owner = config.systemd.services."nebula@ozds-vpn".serviceConfig.User;
         group = config.systemd.services."nebula@ozds-vpn".serviceConfig.Group;
       };
 
-      sops.secrets.${secrets.nebulaKey} = {
+      sops.secrets.${secretKeys.nebulaKey} = {
         owner = config.systemd.services."nebula@ozds-vpn".serviceConfig.User;
         group = config.systemd.services."nebula@ozds-vpn".serviceConfig.Group;
       };
 
-      sops.secrets.${secrets.nebulaCa} = {
+      sops.secrets.${secretKeys.nebulaCa} = {
         owner = config.systemd.services."nebula@ozds-vpn".serviceConfig.User;
         group = config.systemd.services."nebula@ozds-vpn".serviceConfig.Group;
       };
@@ -231,7 +232,7 @@ in
       users.mutableUsers = false;
       users.users.altibiz = {
         hashedPasswordFile =
-          config.sops.secrets.${secrets.userHashedPasswordFile}.path;
+          config.sops.secrets.${secretKeys.userHashedPasswordFile}.path;
         extraGroups = [ "wheel" "dialout" ];
         packages = [
           pkgs.kitty
@@ -242,9 +243,9 @@ in
           pkgs.nushell
         ];
       };
-      sops.secrets.${secrets.userHashedPasswordFile}.neededForUsers = true;
+      sops.secrets.${secretKeys.userHashedPasswordFile}.neededForUsers = true;
 
-      sops.secrets.${secrets.userAuthorizedKeys} = {
+      sops.secrets.${secretKeys.userAuthorizedKeys} = {
         path = "${config.users.users.altibiz.home}/.ssh/authorized_keys";
         owner = config.users.users.altibiz.name;
         group = config.users.users.altibiz.group;
@@ -254,8 +255,8 @@ in
 
       services.ozds.enable = true;
       services.ozds.environmentFile =
-        config.sops.secrets.${secrets.ozdsEnv}.path;
-      sops.secrets.${secrets.ozdsEnv} = { };
+        config.sops.secrets.${secretKeys.ozdsEnv}.path;
+      sops.secrets.${secretKeys.ozdsEnv} = { };
     };
   };
 }
