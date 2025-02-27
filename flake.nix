@@ -15,7 +15,7 @@
     deploy-rs.url = "github:serokell/deploy-rs";
     deploy-rs.inputs.nixpkgs.follows = "nixpkgs";
 
-    rumor.url = "github:altibiz/rumor/refs/tags/1.1.2";
+    rumor.url = "github:altibiz/rumor/refs/tags/1.1.3";
     rumor.inputs.nixpkgs.follows = "nixpkgs";
     rumor.inputs.perch.follows = "perch";
   };
