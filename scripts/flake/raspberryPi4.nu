@@ -11,7 +11,7 @@ let format = "sd-aarch64"
 let configuration = $"($flake)#raspberryPi4-($system)"
 
 def "main" [] {
-  exec nu $self --help
+  nu $self --help
 }
 
 def "main secrets" [] {
