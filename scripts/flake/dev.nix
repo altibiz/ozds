@@ -22,8 +22,8 @@
 
         packages =
           let
-            usql = pkgs.writeShellApplication {
-              name = "usql";
+            usqll = pkgs.writeShellApplication {
+              name = "usqll";
               runtimeInputs = [ pkgs.usql ];
               text = ''
                 usql \
@@ -93,7 +93,7 @@
             nodePackages.markdown-link-check
 
             # PostgreSQL
-            usql
+            usqll
             postgresql_14
             mermerd
             sql-formatter
@@ -117,6 +117,7 @@
             openssh
             sshpass
             deploy-rs
+            usql
           ] ++ lib.optionals
             (
               pkgs.hostPlatform.isLinux
