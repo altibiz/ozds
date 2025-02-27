@@ -115,6 +115,7 @@
             nixos-generators
             nebula
             openssh
+            sshpass
             deploy-rs
           ] ++ lib.optionals
             (

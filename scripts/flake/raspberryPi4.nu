@@ -77,3 +77,10 @@ def "main pass" [] {
     | get data.data.user-pass-priv
     | str trim
 }
+
+def "main deploy" [] {
+  let pass = vault kv get -format=json kv/ozds/ozds/test/current
+    | from json
+    | get data.data.user-pass-priv
+    | str trim
+}
