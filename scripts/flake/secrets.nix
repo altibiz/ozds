@@ -315,7 +315,7 @@ let
           ${secrets.keys.networkManagerEnvironmentFile} = files.wifiEnv;
           ${secrets.keys.nebulaKey} = files.nebulaSslPrivate;
           ${secrets.keys.nebulaCert} = files.nebulaSslPublic;
-          ${secrets.keys.nebulaCa} = files.postgresCaPublic;
+          ${secrets.keys.nebulaCa} = files.nebulaCaPublic;
           ${secrets.keys.userHashedPasswordFile} = files.userPasswordPublic;
           ${secrets.keys.userAuthorizedKeys} = files.userSshPublic;
           ${secrets.keys.ozdsEnv} = files.ozdsEnv;
