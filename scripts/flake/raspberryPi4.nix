@@ -17,6 +17,11 @@ in
       (x // { allowMissing = true; });
   });
 
+  seal.deploy.nodes.raspberryPi4 = {
+    hostName = "10.8.250.1";
+    sshUser = "altibiz";
+  };
+
   integrate.nixosConfiguration = {
     systems = [ "aarch64-linux" ];
 
