@@ -115,6 +115,7 @@
             nixos-generators
             nebula
             openssh
+            deploy-rs
           ] ++ lib.optionals
             (
               pkgs.hostPlatform.isLinux
