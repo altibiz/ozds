@@ -74,6 +74,7 @@ in
               ({ name, system, value, ... }: {
                 inherit name;
                 value = submodule // {
+                  user = "root";
                   profiles.system = {
                     path = deploy-rs.lib.${system}.activate.nixos value;
                   };
