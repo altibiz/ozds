@@ -70,3 +70,10 @@ def "main ssh" [] {
   try { ssh -i $temp altibiz@192.168.1.69 }
   rm $temp
 }
+
+def "main pass" [] {
+  vault kv get -format=json kv/ozds/ozds/test/current
+    | from json
+    | get data.data.user-pass-priv
+    | str trim
+}
