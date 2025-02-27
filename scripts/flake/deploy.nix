@@ -87,4 +87,11 @@ in
               submodule = value;
             })
             config.seal.deploy.nodes)));
+
+  config.flake.checks =
+    builtins.mapAttrs
+      (system: deployLib:
+        deployLib.deployChecks
+          config.flake.deploy)
+      deploy-rs.lib;
 }
