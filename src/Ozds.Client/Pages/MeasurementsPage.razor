@@ -14,7 +14,9 @@ RoleModel.NetworkUserRepresentative
 @using Microsoft.AspNetCore.Components.Web
 @using Ozds.Business.Analysis
 @using Ozds.Client.Attributes
+@using Ozds.Client.Components.Fields
 @using Ozds.Client.Components.Streaming
+@using Ozds.Client.Records.Abstractions
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 <HeadContent>
@@ -41,3 +43,5 @@ RoleModel.NetworkUserRepresentative
 <Table Model="meters"/>
 
 <Paging PageAsync="OnMessengersPageAsync"/>
+
+<UploadTabs TRecord="IMeasurementRecord"></UploadTabs>

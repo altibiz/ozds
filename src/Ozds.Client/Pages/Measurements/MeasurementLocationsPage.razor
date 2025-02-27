@@ -17,7 +17,9 @@ RoleModel.NetworkUserRepresentative
 @using Ozds.Business.Analysis
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Client.Attributes
+@using Ozds.Client.Components.Fields
 @using Ozds.Client.Components.Streaming
+@using Ozds.Client.Records
 @using Ozds.Client.State
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
@@ -54,6 +56,7 @@ else
   <MudLink Href="@(PageHref<MeasurementLocationPage>())">
     @Translate("Create")
   </MudLink>
+  <UploadTabs TRecord="NetworkUserMeasurementLocationRecord"></UploadTabs>
 }
 
 @code {

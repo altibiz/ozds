@@ -169,6 +169,11 @@
     hash = "sha256-oVkQB+ON7S6Q27OhXrTLaxTL0kWB58HZaFFuiw4iTrE=";
   })
   (fetchNuGet {
+    pname = "CsvHelper";
+    version = "31.0.3";
+    hash = "sha256-Lrim90VN1Bm48IxDSn+Y2GE3TUSii4wLFzLIV8IpuFE=";
+  })
+  (fetchNuGet {
     pname = "Dapper";
     version = "2.1.35";
     hash = "sha256-zeroySx7lO1yLtbhKhFQ87diWXOq9gPnv3qFcmNcs9M=";
