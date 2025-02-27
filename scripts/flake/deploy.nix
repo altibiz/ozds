@@ -84,7 +84,7 @@ in
           (lib.mapAttrsToList
             (name: value: {
               configuration = name;
-              submodules = value;
+              submodule = value;
             })
             config.seal.deploy.nodes)));
 }
