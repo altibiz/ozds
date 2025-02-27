@@ -122,5 +122,5 @@ def "main db admin" [] {
   let auth = $"postgres:($pass)"
   let conn = $"192.168.1.69:5432"
 
-  usql $"postgres://($auth)@($conn)/ozds"
+  usql $"postgres://($auth)@($conn)/postgres"
 }
