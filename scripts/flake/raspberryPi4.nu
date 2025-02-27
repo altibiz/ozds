@@ -60,8 +60,13 @@ exit"
 }
 
 def "main ssh" [] {
-  vault kv get -format=json kv/ozds/ozds/test/current
+  let temp = mktemp -t
+  chmod 600 $temp
+  let key = vault kv get -format=json kv/ozds/ozds/test/current
     | from json
     | get data.data.user-ssh-priv
-    | ssh -i /dev/stdin altibiz@192.168.1.69
+    | str trim
+  $"($key)\n" | save -f $temp
+  try { ssh -i $temp altibiz@192.168.1.69 }
+  rm $temp
 }
