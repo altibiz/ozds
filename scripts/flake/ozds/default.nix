@@ -1,5 +1,7 @@
 { self, pkgs, config, lib, ... }:
 
+# TODO: httpsPort when integration with LettuceEncrypt
+
 {
   seal.defaults.overlay = "ozds";
   seal.overlays.ozds = (final: prev: {
@@ -124,7 +126,10 @@
         };
 
         networking.firewall.allowedTCPPorts =
-          lib.mkIf cfg.openFirewall [ cfg.httpPort cfg.httpsPort ];
+          lib.mkIf cfg.openFirewall [
+            cfg.httpPort
+            # cfg.httpsPort
+          ];
 
         systemd.services.ozds = {
           description = "ozds";
@@ -139,7 +144,8 @@
               (cfg.environment // {
                 ASPNETCORE_URLS =
                   "http://0.0.0.0:${builtins.toString cfg.httpPort}"
-                    + ";https://0.0.0.0:${builtins.toString cfg.httpsPort}";
+                  # + ";https://0.0.0.0:${builtins.toString cfg.httpsPort}"
+                ;
               });
           serviceConfig = {
             EnvironmentFile = cfg.environmentFile;
@@ -148,7 +154,9 @@
             User = cfg.user;
             Group = cfg.group;
             AmbientCapabilities = lib.mkIf
-              (cfg.httpPort < 1024 || cfg.httpsPort < 1024)
+              (cfg.httpPort < 1024
+                # || cfg.httpsPort < 1024
+              )
               [ "CAP_NET_BIND_SERVICE" ];
             StateDirectory = builtins.baseNameOf cfg.stateDir;
             WorkingDirectory = cfg.stateDir;
