@@ -4,13 +4,13 @@ let
   deployNodeSubmodule = {
     options.hostName = lib.mkOption {
       type = lib.types.str;
-      description = ''
+      description = lib.literalMD ''
         Deployment host name.
       '';
     };
     options.sshUser = lib.mkOption {
       type = lib.types.str;
-      description = ''
+      description = lib.literalMD ''
         Deployment SSH user.
       '';
     };
@@ -22,7 +22,7 @@ in
       lib.types.attrsOf
         (lib.types.submodule deployNodeSubmodule);
     default = { };
-    description = ''
+    description = lib.literalMD ''
       Extra data needed to create `deploy.nodes` flake output.
     '';
   };
@@ -35,8 +35,10 @@ in
     '';
   };
 
-  options.propagate.deploy.nodes = lib.mkOption {
-    type = lib.types.attrsOf lib.types.raw;
+  options.propagate.deploy = lib.mkOption {
+    type = lib.types.attrsOf
+      (lib.types.attrsOf
+        lib.types.raw);
     default = { };
     description = lib.literalMD ''
       Propagated `deploy.nodes` flake output.
