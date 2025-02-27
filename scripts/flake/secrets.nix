@@ -48,6 +48,7 @@ let
     userPasswordPublic = "user-pass-pub";
     userSshPrivate = "user-ssh-priv";
     userSshPublic = "user-ssh-pub";
+    orchardAdminPasswordPrefix = "orchard-admin-pass-prefix";
     orchardAdminPassword = "orchard-admin-pass";
     connectionString = "ozds-connection-string";
     wifiEnv = "wifi-env";
@@ -264,8 +265,18 @@ let
     {
       generator = "key";
       arguments = {
+        name = files.orchardAdminPasswordPrefix;
+        length = 31;
+      };
+    }
+    {
+      generator = "moustache";
+      arguments = {
         name = files.orchardAdminPassword;
-        length = 32;
+        variables = {
+          ORCHARD_ADMIN_PASSWORD_PREFIX = files.orchardAdminPasswordPrefix;
+        };
+        template = "{{ORCHARD_ADMIN_PASSWORD_PREFIX}}!";
       };
     }
     {
