@@ -7,7 +7,8 @@ let artifacts = [ $root "artifacts" ] | path join
 let flake = $"git+file:($root)"
 let system = "aarch64-linux"
 let format = "sd-aarch64"
-let configuration = $"($flake)#raspberryPi4-($system)"
+let configuration = $"raspberryPi4-($system)"
+let uri = $"($flake)#($configuration)"
 
 def "main" [] {
   nu $self --help
@@ -18,7 +19,7 @@ def "main secrets" [] {
   mkdir $artifacts
   cd $artifacts
 
-  let expr = $"\(builtins.getFlake \"($flake)\"\).lib.rumor.\"raspberryPi4-aarch64-linux\""
+  let expr = $"\(builtins.getFlake \"($flake)\"\).lib.rumor.\"($configuration)\""
   let spec = nix eval --json --impure --expr $expr
   $spec | rumor stdin json --stay
 }
@@ -97,5 +98,5 @@ def "main deploy" [] {
       --interactive-sudo true \\
       --hostname 192.168.1.69 \\
       -- \\
-      '($root)#raspberryPi4-aarch64-linux'"
+      '($root)#($configuration)'"
 }

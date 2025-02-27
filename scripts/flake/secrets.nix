@@ -3,6 +3,7 @@ let
     filePrefix = "scripts/flake/raspberryPi4.yaml";
     ageKeyFile = "/root/.sops.age";
     hostName = "ozds-test";
+    ip = "10.8.250.1";
   };
 
   secrets.keys = {
@@ -224,7 +225,7 @@ let
         ca_private = files.nebulaCaPrivate;
         ca_public = files.nebulaCaPublic;
         name = secrets.hostName;
-        ip = "10.8.250.1/16";
+        ip = "${secrets.ip}/16";
         private = files.nebulaSslPrivate;
         public = files.nebulaSslPublic;
       };
