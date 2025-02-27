@@ -264,6 +264,8 @@ in
       services.ozds.environmentFile =
         config.sops.secrets.${secretKeys.ozdsEnv}.path;
       services.ozds.openFirewall = true;
+      services.ozds.httpPort = 80;
+      services.ozds.httpsPort = 443;
       sops.secrets.${secretKeys.ozdsEnv} = { };
     };
   };
