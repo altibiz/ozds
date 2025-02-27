@@ -101,13 +101,25 @@ def "main deploy" [] {
       '($root)#($configuration)'"
 }
 
-def "main db" [] {
+def "main db user" [] {
   let pass = vault kv get -format=json kv/ozds/ozds/test/current
     | from json
     | get data.data.postgres-user-pass
     | str trim
 
   let auth = $"altibiz:($pass)"
+  let conn = $"192.168.1.69:5432"
+
+  usql $"postgres://($auth)@($conn)/ozds"
+}
+
+def "main db admin" [] {
+  let pass = vault kv get -format=json kv/ozds/ozds/test/current
+    | from json
+    | get data.data.postgres-pass
+    | str trim
+
+  let auth = $"postgres:($pass)"
   let conn = $"192.168.1.69:5432"
 
   usql $"postgres://($auth)@($conn)/ozds"
