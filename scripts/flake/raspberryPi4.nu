@@ -4,7 +4,7 @@ let dir = $env.FILE_PWD
 let self = [ $dir "raspberryPi4.nu" ] | path join
 let root = $dir | path dirname | path dirname
 let artifacts = [ $root "artifacts" ] | path join
-let secrets = [ $dir "raspberryPi4.yaml" ] | path join
+let age = [ $artifacts ".sops.age" ] | path join
 let flake = $"git+file:($root)"
 let system = "aarch64-linux"
 let format = "sd-aarch64"
@@ -43,11 +43,16 @@ def "main image" [] {
   unzstd $compressed -o image.img
   chmod 644 image.img
 
+  vault kv get -format=json kv/ozds/ozds/test/current
+    | from json
+    | get data.data.age-priv
+    | save -f $age 
+
   let commands = $"run
 mount /dev/sda2 /
-mkdir /root
+mkdir-p /root
 chmod 700 /root
-upload ($secrets) /root/.sops.age
+upload ($age) /root/.sops.age
 chmod 400 /root/.sops.age
 exit"
 
