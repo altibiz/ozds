@@ -48,29 +48,28 @@ in
   config.propagate.deploy.nodes =
     let
       systems = builtins.attrNames deploy-rs.lib;
+
+      systemsFor = configuration:
+        builtins.filter
+          ({ value, ... }: value != null)
+          (builtins.map
+            (system:
+              let
+                name = "${configuration}-${system}";
+              in
+              {
+                inherit configuration system name;
+                value =
+                  if config.flake.nixosConfigurations ? ${name}
+                  then config.flake.nixosConfigurations.${name}
+                  else null;
+              })
+            systems);
     in
     builtins.listToAttrs
       (lib.flatten
         (builtins.map
           ({ configuration, submodule }:
-            let
-              configurations =
-                builtins.filter
-                  ({ value, ... }: value != null)
-                  (builtins.map
-                    (system:
-                      let
-                        name = "${configuration}-${system}";
-                      in
-                      {
-                        inherit configuration system name;
-                        value =
-                          if config.flake.nixosConfigurations ? name
-                          then config.flake.nixosConfigurations.${name}
-                          else null;
-                      })
-                    systems);
-            in
             builtins.map
               ({ name, system, value, ... }: {
                 inherit name;
@@ -80,7 +79,7 @@ in
                   };
                 };
               })
-              configurations)
+              (systemsFor configuration))
           (lib.mapAttrsToList
             (name: value: {
               configuration = name;
