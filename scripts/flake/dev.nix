@@ -113,6 +113,8 @@
             rumor.packages.${pkgs.system}.default
             vault
             nixos-generators
+            nebula
+            openssh
           ] ++ lib.optionals
             (
               pkgs.hostPlatform.isLinux
