@@ -93,8 +93,8 @@ in
         hostssl   all         all         10.8.0.0/16     scram-sha-256
       '';
       services.postgresql.enableTCPIP = true;
-      services.postgresql.settings.port = 5433;
-      networking.firewall.allowedTCPPorts = [ 5433 ];
+      services.postgresql.settings.port = 5432;
+      networking.firewall.allowedTCPPorts = [ 5432 ];
 
       services.postgresql.settings.ssl = "on";
       services.postgresql.settings.ssl_cert_file =
