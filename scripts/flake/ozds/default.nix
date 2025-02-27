@@ -23,7 +23,6 @@
       executables = [ "Ozds.Server" ];
       makeWrapperArgs = [
         "--set DOTNET_CONTENTROOT ${placeholder "out"}/lib/${pname}"
-        "--set ASPNETCORE_URLS http://0.0.0.0:80;https://0.0.0.0:443"
       ] ++ lib.mapAttrsToList
         (name: value: "--set ${name} ${value}")
         (self.lib.playwright.env pkgs);
@@ -91,6 +90,18 @@
           description = "Path to environment variables file to set for the ozds service.";
         };
 
+        httpPort = lib.mkOption {
+          type = lib.types.port;
+          default = 5000;
+          description = "HTTP port to listen on";
+        };
+
+        httpsPort = lib.mkOption {
+          type = lib.types.port;
+          default = 5001;
+          description = "HTTPS port to listen on";
+        };
+
         openFirewall = lib.mkOption {
           type = lib.types.bool;
           default = false;
@@ -113,7 +124,7 @@
         };
 
         networking.firewall.allowedTCPPorts =
-          lib.mkIf cfg.openFirewall [ 80 443 ];
+          lib.mkIf cfg.openFirewall [ cfg.httpPort cfg.httpsPort ];
 
         systemd.services.ozds = {
           description = "ozds";
@@ -125,14 +136,20 @@
                 if lib.isBool value
                 then lib.boolToString value
                 else builtins.toString value)
-              cfg.environment;
+              (cfg.environment // {
+                ASPNETCORE_URLS =
+                  "http://0.0.0.0:${builtins.toString cfg.httpPort}"
+                    + ";https://0.0.0.0:${builtins.toString cfg.httpsPort}";
+              });
           serviceConfig = {
             EnvironmentFile = cfg.environmentFile;
             ExecStart = lib.getExe cfg.package;
             Restart = "always";
             User = cfg.user;
             Group = cfg.group;
-            AmbientCapabilities = [ "CAP_NET_BIND_SERVICE" ];
+            AmbientCapabilities = lib.mkIf
+              (cfg.httpPort < 1024 || cfg.httpsPort < 1024)
+              [ "CAP_NET_BIND_SERVICE" ];
             StateDirectory = builtins.baseNameOf cfg.stateDir;
             WorkingDirectory = cfg.stateDir;
             UMask = "0077";
