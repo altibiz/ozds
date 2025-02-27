@@ -157,7 +157,24 @@
             (cfg.environmentFile != null)
             {
               EnvironmentFile = cfg.environmentFile;
-            };
+            } // {
+            ProtectSystem = "strict";
+            ProtectHome = true;
+            PrivateTmp = true;
+            NoNewPrivileges = true;
+            RestrictSUIDSGID = true;
+            ProtectKernelTunables = true;
+            ProtectKernelModules = true;
+            ProtectControlGroups = true;
+            ReadWritePaths = [ cfg.stateDir "/tmp" ];
+            RestrictAddressFamilies = "AF_INET AF_INET6";
+            PrivateDevices = true;
+            LockPersonality = true;
+            RestrictRealtime = true;
+            CapabilityBoundingSet = [ "CAP_NET_BIND_SERVICE" ];
+            ProtectClock = true;
+            ProtectHostname = true;
+          };
         };
       };
     };
