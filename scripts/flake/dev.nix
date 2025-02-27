@@ -2,134 +2,141 @@
 
 {
   seal.defaults.devShell = "dev";
-  integrate.devShell.devShell =
-    pkgs.mkShell ({
-      PGHOST = "localhost";
-      PGPORT = "5432";
-      PGDATABASE = "ozds";
-      PGUSER = "ozds";
-      PGPASSWORD = "ozds";
+  integrate.devShell = {
+    nixpkgs.config = {
+      allowUnfree = true;
+    };
 
-      DOXYGEN_DOT_PATH = "${pkgs.graphviz}/bin/dot";
-      DOXYGEN_PLANTUML_JAR_PATH = "${pkgs.plantuml}/lib/plantuml.jar";
+    devShell =
+      pkgs.mkShell ({
+        PGHOST = "localhost";
+        PGPORT = "5432";
+        PGDATABASE = "ozds";
+        PGUSER = "ozds";
+        PGPASSWORD = "ozds";
 
-      COMPOSE_PROFILES = "*";
+        DOXYGEN_DOT_PATH = "${pkgs.graphviz}/bin/dot";
+        DOXYGEN_PLANTUML_JAR_PATH = "${pkgs.plantuml}/lib/plantuml.jar";
 
-      packages =
-        let
-          usql = pkgs.writeShellApplication {
-            name = "usql";
-            runtimeInputs = [ pkgs.usql ];
-            text = ''
-              usql \
-                pg://ozds:ozds@localhost/ozds?sslmode=disable \
-                "$@"
-            '';
-          };
+        COMPOSE_PROFILES = "*";
 
-          sqls = pkgs.writeShellApplication {
-            name = "sqls";
-            runtimeInputs = [ pkgs.sqls pkgs.git ];
-            text = ''
-              cat | sqls -config "$(git rev-parse --show-toplevel)/.sqls.yaml" "$@"
-            '';
-          };
+        packages =
+          let
+            usql = pkgs.writeShellApplication {
+              name = "usql";
+              runtimeInputs = [ pkgs.usql ];
+              text = ''
+                usql \
+                  pg://ozds:ozds@localhost/ozds?sslmode=disable \
+                  "$@"
+              '';
+            };
 
-          sql-formatter = pkgs.writeShellApplication {
-            name = "sql-formatter";
-            runtimeInputs = [ pkgs.sql-formatter ];
-            text = ''
-              cat | sql-formatter --config "$(git rev-parse --show-toplevel)/.sql-formatter.json" "$@"
-            '';
-          };
+            sqls = pkgs.writeShellApplication {
+              name = "sqls";
+              runtimeInputs = [ pkgs.sqls pkgs.git ];
+              text = ''
+                cat | sqls -config "$(git rev-parse --show-toplevel)/.sqls.yaml" "$@"
+              '';
+            };
 
-          mermerd = pkgs.writeShellApplication {
-            name = "mermerd";
-            runtimeInputs = [ pkgs.mermerd ];
-            text = ''
-              mermerd \
-                --connectionString postgresql://ozds:ozds@localhost:5432/ozds \
-                "$@"
-            '';
-          };
+            sql-formatter = pkgs.writeShellApplication {
+              name = "sql-formatter";
+              runtimeInputs = [ pkgs.sql-formatter ];
+              text = ''
+                cat | sql-formatter --config "$(git rev-parse --show-toplevel)/.sql-formatter.json" "$@"
+              '';
+            };
 
-          nushell = pkgs.writeShellApplication {
-            name = "nu";
-            runtimeInputs = [ pkgs.nushell ];
-            text = ''
-              nu \
-                --plugins "[ ${pkgs.nushellPlugins.polars}/bin/nu_plugin_polars ]" \
-                "$@"
-            '';
-          };
-        in
-        with pkgs;
-        [
-          # Version Control
-          git
-          dvc-with-remotes
-          delta
+            mermerd = pkgs.writeShellApplication {
+              name = "mermerd";
+              runtimeInputs = [ pkgs.mermerd ];
+              text = ''
+                mermerd \
+                  --connectionString postgresql://ozds:ozds@localhost:5432/ozds \
+                  "$@"
+              '';
+            };
 
-          # Nix
-          nil
-          nixpkgs-fmt
+            nushell = pkgs.writeShellApplication {
+              name = "nu";
+              runtimeInputs = [ pkgs.nushell ];
+              text = ''
+                nu \
+                  --plugins "[ ${pkgs.nushellPlugins.polars}/bin/nu_plugin_polars ]" \
+                  "$@"
+              '';
+            };
+          in
+          with pkgs;
+          [
+            # Version Control
+            git
+            dvc-with-remotes
+            delta
 
-          # C#
-          dotnet-sdk
-          dotnet-runtime
-          dotnet-aspnetcore
-          omnisharp-roslyn
-          netcoredbg
-          powershell
+            # Nix
+            nil
+            nixpkgs-fmt
 
-          # Markdown
-          marksman
-          markdownlint-cli
-          nodePackages.markdown-link-check
+            # C#
+            dotnet-sdk
+            dotnet-runtime
+            dotnet-aspnetcore
+            omnisharp-roslyn
+            netcoredbg
+            powershell
 
-          # PostgreSQL
-          usql
-          postgresql_14
-          mermerd
-          sql-formatter
-          sqls
+            # Markdown
+            marksman
+            markdownlint-cli
+            nodePackages.markdown-link-check
 
-          # MailHog
-          apacheHttpd
+            # PostgreSQL
+            usql
+            postgresql_14
+            mermerd
+            sql-formatter
+            sqls
 
-          # Spelling
-          nodePackages.cspell
+            # MailHog
+            apacheHttpd
 
-          # Scripts
-          just
-          nushell
-          nix-bundle
-          fd
-          rumor.packages.${pkgs.system}.default
-          nixos-generators
-        ] ++ lib.optionals
-          (
-            pkgs.hostPlatform.isLinux
-              && pkgs.hostPlatform.isx86_64
-          ) [
-          libguestfs-with-appliance
-        ] ++ [
+            # Spelling
+            nodePackages.cspell
 
-          # Documentation
-          simple-http-server
-          pandoc
-          mdbook
-          openjdk
-          plantuml
-          graphviz
-          mdbook-plantuml
-          pandoc-plantuml-filter
+            # Scripts
+            just
+            nushell
+            nix-bundle
+            fd
+            rumor.packages.${pkgs.system}.default
+            vault
+            nixos-generators
+          ] ++ lib.optionals
+            (
+              pkgs.hostPlatform.isLinux
+                && pkgs.hostPlatform.isx86_64
+            ) [
+            libguestfs-with-appliance
+          ] ++ [
 
-          # Misc
-          nodePackages.prettier
-          nodePackages.yaml-language-server
-          nodePackages.vscode-langservers-extracted
-          taplo
-        ] ++ builtins.attrValues (self.lib.poetry.pkgs pkgs);
-    } // self.lib.playwright.env pkgs);
+            # Documentation
+            simple-http-server
+            pandoc
+            mdbook
+            openjdk
+            plantuml
+            graphviz
+            mdbook-plantuml
+            pandoc-plantuml-filter
+
+            # Misc
+            nodePackages.prettier
+            nodePackages.yaml-language-server
+            nodePackages.vscode-langservers-extracted
+            taplo
+          ] ++ builtins.attrValues (self.lib.poetry.pkgs pkgs);
+      } // self.lib.playwright.env pkgs);
+  };
 }
