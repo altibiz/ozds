@@ -2,7 +2,7 @@
 
 let
   deployNodeSubmodule = {
-    options.hostName = lib.mkOption {
+    options.hostname = lib.mkOption {
       type = lib.types.str;
       description = lib.literalMD ''
         Deployment host name.
