@@ -263,6 +263,7 @@ in
       services.ozds.enable = true;
       services.ozds.environmentFile =
         config.sops.secrets.${secretKeys.ozdsEnv}.path;
+      services.ozds.openFirewall = true;
       sops.secrets.${secretKeys.ozdsEnv} = { };
     };
   };

@@ -23,6 +23,7 @@
       executables = [ "Ozds.Server" ];
       makeWrapperArgs = [
         "--set DOTNET_CONTENTROOT ${placeholder "out"}/lib/${pname}"
+        "--set ASPNETCORE_URLS http://0.0.0.0:80;https://0.0.0.0:443"
       ] ++ lib.mapAttrsToList
         (name: value: "--set ${name} ${value}")
         (self.lib.playwright.env pkgs);
