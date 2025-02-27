@@ -18,7 +18,7 @@ in
   });
 
   seal.deploy.nodes.raspberryPi4 = {
-    hostname = "10.8.250.1";
+    hostname = secrets.ip;
     sshUser = "altibiz";
   };
 
