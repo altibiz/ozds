@@ -204,6 +204,7 @@ let
           GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO altibiz;
           GRANT ALL PRIVILEGES ON ALL FUNCTIONS IN SCHEMA public TO altibiz;
         '';
+        renew = true;
       };
     }
     {
@@ -214,6 +215,7 @@ let
           WIFI_SSID = files.wifiSsid;
           WIFI_PASS = files.wifiPassword;
         };
+        renew = true;
       };
     }
     {
@@ -255,6 +257,7 @@ let
           + ";User Id=ozds"
           + ";Password={{OZDS_POSTGRES_PASS}}"
           + ";Ssl Mode=Disable";
+        renew = true;
       };
     }
     {
@@ -293,6 +296,7 @@ let
           Ozds__Messaging__Endpoints__AcknowledgeNetworkUserInvoice = "queue:altibiz-network-user-invoice-state-test";
           Ozds__Messaging__Sagas__NetworkUserInvoiceState = "ozds-network-user-invoice-state-test";
         };
+        renew = true;
       };
     }
     {
@@ -320,6 +324,7 @@ let
           ${secrets.keys.userAuthorizedKeys} = files.userSshPublic;
           ${secrets.keys.ozdsEnv} = files.ozdsEnv;
         };
+        renew = true;
       };
     }
   ];
