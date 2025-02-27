@@ -60,15 +60,11 @@ exit"
 }
 
 def "main ssh" [] {
-  let temp = mktemp -t
-  chmod 600 $temp
   let key = vault kv get -format=json kv/ozds/ozds/test/current
     | from json
     | get data.data.user-ssh-priv
     | str trim
-  $"($key)\n" | save -f $temp
-  try { ssh -i $temp altibiz@192.168.1.69 }
-  rm $temp
+  $"($key)\n" | ssh -i /dev/stdin altibiz@192.168.1.69 
 }
 
 def "main pass" [] {
@@ -79,8 +75,20 @@ def "main pass" [] {
 }
 
 def "main deploy" [] {
+  let key = vault kv get -format=json kv/ozds/ozds/test/current
+    | from json
+    | get data.data.user-ssh-priv
+    | str trim
+
   let pass = vault kv get -format=json kv/ozds/ozds/test/current
     | from json
     | get data.data.user-pass-priv
     | str trim
+
+  $"($key)\n" | (sshpass -p $pass deploy
+    --skip-checks
+    --ssh-opts $"-i /dev/stdin"
+    --interactive-sudo "true"
+    --
+    $"($root)#raspberryPi4-aarch64-linux")
 }
