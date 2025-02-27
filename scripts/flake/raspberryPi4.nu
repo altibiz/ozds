@@ -4,7 +4,6 @@ let dir = $env.FILE_PWD
 let self = [ $dir "raspberryPi4.nu" ] | path join
 let root = $dir | path dirname | path dirname
 let artifacts = [ $root "artifacts" ] | path join
-let age = [ $artifacts ".sops.age" ] | path join
 let flake = $"git+file:($root)"
 let system = "aarch64-linux"
 let format = "sd-aarch64"
@@ -42,18 +41,27 @@ def "main image" [] {
   unzstd $compressed -o image.img
   chmod 644 image.img
 
-  vault kv get -format=json kv/ozds/ozds/test/current
+  let age = vault kv get -format=json kv/ozds/ozds/test/current
     | from json
     | get data.data.age-priv
-    | save -f $age 
+    | str replace "\\" "\\\\"
+    | str replace "\n" "\\n"
+    | str replace "\"" "\\\""
 
   let commands = $"run
 mount /dev/sda2 /
 mkdir-p /root
 chmod 700 /root
-upload ($age) /root/.sops.age
+write /root/.sops.age \"($age)\"
 chmod 400 /root/.sops.age
 exit"
 
   echo $commands | guestfish --rw -a image.img
+}
+
+def "main ssh" [] {
+  vault kv get -format=json kv/ozds/ozds/test/current
+    | from json
+    | get data.data.user-ssh-priv
+    | ssh -i /dev/stdin altibiz@192.168.1.69
 }
