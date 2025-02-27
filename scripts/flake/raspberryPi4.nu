@@ -94,6 +94,7 @@ def "main deploy" [] {
     && sshpass -e deploy \\
       --skip-checks \\
       --interactive-sudo true \\
+      --hostname 192.168.1.69
       -- \\
       '($root)#raspberryPi4-aarch64-linux'"
 }
