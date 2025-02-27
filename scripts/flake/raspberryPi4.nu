@@ -92,6 +92,7 @@ def "main deploy" [] {
     | ssh-add - \\
     && export SSHPASS='($pass)' \\
     && sshpass -e deploy \\
+      --remote-build \\
       --skip-checks \\
       --interactive-sudo true \\
       --hostname 192.168.1.69 \\
