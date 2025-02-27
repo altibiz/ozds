@@ -33,7 +33,6 @@ def "main image" [] {
     --system $system
     --format $format
     --flake $configuration)
-  print $raw
 
   let compressed = ls ($raw
     | path dirname --num-levels 2
