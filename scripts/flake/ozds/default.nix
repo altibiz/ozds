@@ -30,6 +30,10 @@
         (self.lib.playwright.env pkgs);
       buildInputs = builtins.attrValues (self.lib.playwright.pkgs pkgs);
 
+      postInstall = ''
+        rm -rf $out/lib/${pname}/App_Data
+      '';
+
       dotnet-sdk = pkgs.dotnet-sdk;
       dotnet-runtime = pkgs.dotnet-aspnetcore;
 
