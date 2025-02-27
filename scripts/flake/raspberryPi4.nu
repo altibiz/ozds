@@ -64,7 +64,10 @@ def "main ssh" [] {
     | from json
     | get data.data.user-ssh-priv
     | str trim
-  $"($key)\n" | ssh -i /dev/stdin altibiz@192.168.1.69 
+
+  ssh-agent bash -c $"echo '($key)' \\
+    | ssh-add - \\
+    && ssh altibiz@192.168.1.69"
 }
 
 def "main pass" [] {
@@ -85,10 +88,12 @@ def "main deploy" [] {
     | get data.data.user-pass-priv
     | str trim
 
-  $"($key)\n" | (sshpass -p $pass deploy
-    --skip-checks
-    --ssh-opts $"-i /dev/stdin"
-    --interactive-sudo "true"
-    --
-    $"($root)#raspberryPi4-aarch64-linux")
+  ssh-agent bash -c $"echo '($key)' \\
+    | ssh-add - \\
+    && export SSHPASS='($pass)' \\
+    && sshpass -e deploy \\
+      --skip-checks \\
+      --interactive-sudo true \\
+      -- \\
+      '($root)#raspberryPi4-aarch64-linux'"
 }
