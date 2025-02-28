@@ -1,6 +1,5 @@
-using Ozds.Users.Mutations;
+using Altibiz.DependencyInjection.Extensions;
 using Ozds.Users.Mutations.Abstractions;
-using Ozds.Users.Queries;
 using Ozds.Users.Queries.Abstractions;
 
 namespace Ozds.Users.Extensions;
@@ -19,7 +18,7 @@ public static class IServiceCollectionExtensions
 
   private static IServiceCollection AddQueries(this IServiceCollection services)
   {
-    services.AddScoped(typeof(IUserQueries), typeof(UserQueries));
+    services.AddScopedAssignableTo(typeof(IQueries));
     return services;
   }
 
@@ -27,7 +26,7 @@ public static class IServiceCollectionExtensions
     this IServiceCollection services
   )
   {
-    services.AddScoped(typeof(IUserMutations), typeof(UserMutations));
+    services.AddScopedAssignableTo(typeof(IMutations));
     return services;
   }
 }

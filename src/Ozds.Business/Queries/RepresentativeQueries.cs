@@ -4,9 +4,9 @@ using Ozds.Business.Models;
 using Ozds.Business.Models.Composite;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Data.Entities;
-using Ozds.Users.Queries.Abstractions;
 using DataAuditableQueries = Ozds.Data.Queries.AuditableQueries;
 using DataRepresentativeQueries = Ozds.Data.Queries.RepresentativeQueries;
+using UserUserQueries = Ozds.Users.Queries.UserQueries;
 
 namespace Ozds.Business.Queries;
 
@@ -14,7 +14,7 @@ public class RepresentativeQueries(
   DataRepresentativeQueries dataRepresentativeQueries,
   DataAuditableQueries dataAuditableQueries,
   ModelEntityConverter modelEntityConverter,
-  IUserQueries userQueries
+  UserUserQueries userQueries
 ) : IQueries
 {
   public async Task<MaybeRepresentingUserModel?>
