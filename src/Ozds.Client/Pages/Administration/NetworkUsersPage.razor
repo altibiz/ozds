@@ -55,6 +55,7 @@ else
   <MudLink Href="@(PageHref<NetworkUserPage>())">
     @Translate("Create")
   </MudLink>
+  <DownloadField Models="@analyses.Select(x => x.NetworkUser).ToList()" ></DownloadField>
   <UploadTabs TRecord="NetworkUserRecord"></UploadTabs>
 }
 

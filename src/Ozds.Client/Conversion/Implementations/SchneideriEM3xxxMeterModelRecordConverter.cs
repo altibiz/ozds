@@ -26,7 +26,10 @@ public class SchneideriEM3xxxMeterModelRecordConverter(
     record.ConnectionPower_W = model.ConnectionPower_W;
     record.MessengerId = model.MessengerId!;
     record.MeasurementValidatorId = model.MeasurementValidatorId;
-    record.Phases = string.Join(",", model.Phases.Select(p => p.ToString()));
+    record.Phases = string.Join(
+      CsvConstants.CsvDelimiter,
+      model.Phases.Select(p => p.ToString())
+    );
   }
 
   public override void InitializeModel(
@@ -41,14 +44,15 @@ public class SchneideriEM3xxxMeterModelRecordConverter(
     model.MeasurementValidatorId = record.MeasurementValidatorId;
     model.Phases = record
       .Phases.Split(
-        CsvConstants.CsvDelimiter, StringSplitOptions.RemoveEmptyEntries)
-      .Select(
-        static s =>
-          Enum.TryParse<PhaseModel>(s.Trim(), out var phase)
-            ? phase
-            : throw new InvalidOperationException(
-              "An error occurred while trying to parse a csv input as a PhaseModel."
-            )
+        CsvConstants.CsvDelimiter,
+        StringSplitOptions.RemoveEmptyEntries
+      )
+      .Select(static s =>
+        Enum.TryParse<PhaseModel>(s.Trim(), out var phase)
+          ? phase
+          : throw new InvalidOperationException(
+            "An error occurred while trying to parse a csv input as a PhaseModel."
+          )
       )
       .ToHashSet();
   }
