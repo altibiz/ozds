@@ -11,5 +11,9 @@ namespace Ozds.Client.Export.Abstractions
       IEnumerable<object> models,
       CancellationToken cancellationToken = default
     );
+    public string ExportGeneric<T>(
+      IEnumerable<T> models,
+      CancellationToken cancellationToken = default
+    );
   }
 }

@@ -15,6 +15,8 @@ namespace Ozds.Client.Components.Fields
 
     [Parameter]
     public string FileName { get; set; } = "export.csv";
+    [Parameter]
+    public bool IsGeneric { get; set; } = true;
 
     [Inject]
     private IServiceProvider ServiceProvider { get; set; } = null!;
@@ -22,9 +24,14 @@ namespace Ozds.Client.Components.Fields
     private string GetDownloadUrl()
     {
       var exporter = ServiceProvider.GetRequiredService<CsvExporter>();
+      var csv = exporter.ExportGeneric(Models);
+      if (!IsGeneric)
+      {
+        csv = exporter.Export(Models);
+      }
       if (Models.Any())
       {
-        return "data:text/csv;charset=utf-8," + Uri.EscapeDataString(exporter.Export(Models));
+        return "data:text/csv;charset=utf-8," + Uri.EscapeDataString(csv);
       }
       return "";
     }

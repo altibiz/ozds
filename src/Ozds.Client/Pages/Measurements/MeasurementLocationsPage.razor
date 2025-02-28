@@ -56,7 +56,10 @@ else
   <MudLink Href="@(PageHref<MeasurementLocationPage>())">
     @Translate("Create")
   </MudLink>
-  <UploadTabs TRecord="NetworkUserMeasurementLocationRecord"></UploadTabs>
+  <DownloadField IsGeneric="@false" Models="@analyses.Select(x => x.MeasurementLocation).ToList()" ></DownloadField>
+  <DownloadField Models="@analyses.Select(x => x.MeasurementLocation).ToList()" ></DownloadField>
+  <DownloadField Models="@analyses.Select(x => x.Analysis.Load).ToList()" ></DownloadField>
+  <UploadTabs TRecord="NetworkUserMeasurementLocationRecord"/>
 }
 
 @code {

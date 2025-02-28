@@ -41,5 +41,24 @@ namespace Ozds.Client.Export
       csvWriter.Flush();
       return stringWriter.ToString();
     }
+
+    public string ExportGeneric<T>(
+      IEnumerable<T> models,
+      CancellationToken cancellationToken = default
+    )
+    {
+      var list = models.ToList();
+      if (!list.Any())
+        return string.Empty;
+
+      using var stringWriter = new StringWriter();
+      using var csvWriter = new CsvWriter(
+        stringWriter,
+        CultureInfo.InvariantCulture
+      );
+      csvWriter.WriteRecords(list);
+      csvWriter.Flush();
+      return stringWriter.ToString();
+    }
   }
 }

@@ -11,6 +11,7 @@ Allows = [RoleModel.OperatorRepresentative])]
 @using Microsoft.AspNetCore.Components.Web
 @using MudBlazor
 @using Ozds.Business.Models.Abstractions
+@using Ozds.Business.Analysis
 @using Ozds.Client.Attributes
 @using Ozds.Client.Components.Fields
 @using Ozds.Client.Components.Streaming
@@ -28,6 +29,10 @@ Allows = [RoleModel.OperatorRepresentative])]
 <HeadContent>
   <title>OZDS - @Translate("Meters")</title>
 </HeadContent>
+@{
+  var analyses = AnalysisState.AnalysisBases.Value
+    .AnalysesByMeter();
+}
 
 <MudCheckBox
   Label="@Translate("Deleted")"
@@ -41,10 +46,13 @@ Allows = [RoleModel.OperatorRepresentative])]
   <MudLink Href="@(PageHref<MeterPage>())">
     @Translate("Create")
   </MudLink>
+  <DownloadField IsGeneric="@false"  FileName="MeterExport" Models="@analyses.Select(x => x.Meter).ToList()" ></DownloadField>
   <UploadTabs TRecord="IMeterRecord"></UploadTabs>
 }
 
 @code {
+  [CascadingParameter]
+  public AnalysisState AnalysisState { get; set; } = default!;
 
   [CascadingParameter]
   private RepresentativeState RepresentativeState { get; set; } = default!;
