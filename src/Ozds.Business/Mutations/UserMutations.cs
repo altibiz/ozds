@@ -1,7 +1,7 @@
 using Ozds.Business.Conversion;
 using Ozds.Business.Models;
+using Ozds.Business.Mutations.Abstractions;
 using Ozds.Users.Entities;
-using Ozds.Users.Mutations.Abstractions;
 using UserUserMutations = Ozds.Users.Mutations.UserMutations;
 
 namespace Ozds.Business.Mutations;
@@ -9,7 +9,7 @@ namespace Ozds.Business.Mutations;
 public class UserMutations(
   ModelEntityConverter converter,
   UserUserMutations mutations
-) : IUserMutations
+) : IMutations
 {
   public async Task<string> CreateUser(
     UserModel userModel,
