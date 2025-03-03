@@ -43,9 +43,9 @@ def "main image" [] {
   let age = vault kv get -format=json kv/ozds/ozds/test/current
     | from json
     | get data.data.age-priv
-    | str replace "\\" "\\\\"
-    | str replace "\n" "\\n"
-    | str replace "\"" "\\\""
+    | str replace -a "\\" "\\\\"
+    | str replace -a "\n" "\\n"
+    | str replace -a "\"" "\\\""
 
   let commands = $"run
 mount /dev/sda2 /
