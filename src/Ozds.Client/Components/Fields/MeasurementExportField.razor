@@ -22,7 +22,7 @@
 
 <MeasurementChartHeader Parameters="_parameters"/>
 
-@ChildContent(_parameters)
+@ChildContent(_parameters.Measurements.Items)
 
 <MudExpansionPanel
   Gutters="false"
@@ -139,7 +139,7 @@
   public HashSet<MeasurementChartProfile> Profiles { get; set; } = new();
 
   [Parameter]
-  public RenderFragment<MeasurementChartParameters> ChildContent { get; set; } =
+  public RenderFragment<IEnumerable<object>> ChildContent { get; set; } =
     default!;
 
   [Inject]
@@ -316,15 +316,13 @@
   private async Task Fetch()
   {
     var queries = ScopedServices.GetRequiredService<MeasurementQueries>();
-    var fromDate = _parameters.FromDate;
-    var toDate = fromDate.Add(
-      _parameters.Resolution
-        .ToTimeSpan(_parameters.Multiplier, fromDate));
+    var fromDate = DateTimeOffset.UtcNow.AddYears(-2);
+    var toDate = DateTimeOffset.UtcNow;
     var fromMeters = await queries.ReadByMeterIdsDynamic(
       Meters,
       _parameters.Resolution,
       _parameters.Multiplier,
-      1,
+      0,
       CancellationToken,
       fromDate,
       toDate
@@ -334,7 +332,7 @@
         MeasurementLocations,
         _parameters.Resolution,
         _parameters.Multiplier,
-        1,
+        0,
         CancellationToken,
         fromDate,
         toDate

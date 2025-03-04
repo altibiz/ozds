@@ -47,27 +47,32 @@ public partial class MeasurementChartControls : OzdsComponentBase
   [Inject]
   private MeterNamingConvention MeterNamingConvention { get; set; } = default!;
 
-  protected override void OnInitialized()
+  protected override async Task OnInitializedAsync()
   {
-    DataModelsChangedSubscriber.Subscribe(OnDataModelsChanged);
-    MeasurementsBufferedSubscriber.Subscribe(OnMeasurementsBuffered);
+    await Fetch();
   }
 
-  protected override void Dispose(bool disposing)
-  {
-    if (IsDisposed)
-    {
-      return;
-    }
+  // protected override void OnInitialized()
+  // {
+  //   DataModelsChangedSubscriber.Subscribe(OnDataModelsChanged);
+  //   MeasurementsBufferedSubscriber.Subscribe(OnMeasurementsBuffered);
+  // }
 
-    if (disposing)
-    {
-      DataModelsChangedSubscriber.Unsubscribe(OnDataModelsChanged);
-      MeasurementsBufferedSubscriber.Unsubscribe(OnMeasurementsBuffered);
-    }
+  // protected override void Dispose(bool disposing)
+  // {
+  //   if (IsDisposed)
+  //   {
+  //     return;
+  //   }
 
-    base.Dispose(disposing);
-  }
+  //   if (disposing)
+  //   {
+  //     DataModelsChangedSubscriber.Unsubscribe(OnDataModelsChanged);
+  //     MeasurementsBufferedSubscriber.Unsubscribe(OnMeasurementsBuffered);
+  //   }
+
+  //   base.Dispose(disposing);
+  // }
 
   protected override void OnParametersSet()
   {
@@ -174,39 +179,41 @@ public partial class MeasurementChartControls : OzdsComponentBase
     await Fetch();
   }
 
-  private void OnDataModelsChanged(
-    object? _sender,
-    DataModelsChangedEventArgs args)
-  {
-    var measurements = args.Models
-      .Where(x => x.State is DataModelChangedState.Added)
-      .Select(x => x.Model)
-      .OfType<IMeasurement>()
-      .Where(x => x is not IAggregate)
-      .ToList();
-    var aggregates = args.Models
-      .Where(x => x.State is DataModelChangedState.Added)
-      .Select(x => x.Model)
-      .OfType<IAggregate>()
-      .ToList();
+  // private void OnDataModelsChanged(
+  //   object? _sender,
+  //   DataModelsChangedEventArgs args)
+  // {
+  //   var measurements = args.Models
+  //     .Where(x => x.State is DataModelChangedState.Added)
+  //     .Select(x => x.Model)
+  //     .OfType<IMeasurement>()
+  //     .Where(x => x is not IAggregate)
+  //     .ToList();
+  //   var aggregates = args.Models
+  //     .Where(x => x.State is DataModelChangedState.Added)
+  //     .Select(x => x.Model)
+  //     .OfType<IAggregate>()
+  //     .ToList();
 
-    Refresh(measurements, aggregates);
-  }
+  //   Refresh(measurements, aggregates);
+  // }
 
-  private void OnMeasurementsBuffered(
-    object? _sender,
-    MeasurementsBufferedEventArgs args)
-  {
-    Refresh(args.Measurements.ToList(), new List<IAggregate>());
-  }
+  // private void OnMeasurementsBuffered(
+  //   object? _sender,
+  //   MeasurementsBufferedEventArgs args)
+  // {
+  //   Refresh(args.Measurements.ToList(), new List<IAggregate>());
+  // }
 
   private async Task Fetch()
   {
     var queries = ScopedServices.GetRequiredService<MeasurementQueries>();
-    var fromDate = _parameters.FromDate;
-    var toDate = fromDate.Add(
-      _parameters.Resolution
-        .ToTimeSpan(_parameters.Multiplier, fromDate));
+    // var fromDate = _parameters.FromDate;
+    // var toDate = fromDate.Add(
+    //   _parameters.Resolution
+    //     .ToTimeSpan(_parameters.Multiplier, fromDate));
+    var fromDate = DateTimeOffset.UtcNow.AddMonths(-2);
+    var toDate = DateTimeOffset.UtcNow;
     var fromMeters = await queries.ReadByMeterIdsDynamic(
       Meters,
       _parameters.Resolution,

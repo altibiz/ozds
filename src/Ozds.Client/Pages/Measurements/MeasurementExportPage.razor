@@ -30,9 +30,21 @@ RoleModel.NetworkUserRepresentative
 @{
   var analyses = AnalysisState.AnalysisBases.Value
     .AnalysesByMeasurementLocation();
+  var meters = AnalysisState.AnalysisBases.Value
+    .Select(analysis => (IMeter)analysis.Meter)
+    .DistinctBy(meter => meter.Id)
+    .ToList();
 }
 
-<MeasurementExportField></MeasurementExportField>
+<MudGrid>
+  <MudItem xs="12">
+    <MudPaper Class="pa-3">
+      <MeasurementExportField MeasurementLocations="@(analyses.Select(x => (IMeasurementLocation)x.MeasurementLocation).ToList())" Meters="@meters">
+        <DownloadField Models="@context" ></DownloadField>
+      </MeasurementExportField>
+    </MudPaper>
+  </MudItem>
+</MudGrid>
 
 @if (RepresentativeState.Representative.Role
   == RoleModel.OperatorRepresentative)
