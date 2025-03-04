@@ -5,7 +5,10 @@
 @using MudBlazor
 @using Ozds.Business.Analysis
 @using Ozds.Business.Models.Abstractions
+@using Ozds.Business.Models.Enums
+@using Ozds.Business.Queries
 @using Ozds.Client.Components.Charts
+@using Ozds.Client.Components.Fields
 @using Ozds.Client.Components.Models
 @using Ozds.Client.Components.Streaming
 @using Ozds.Client.State
@@ -16,12 +19,6 @@
 {
   <NotFound/>
   return;
-}
-
-@{
-  var analysis = AnalysisState.AnalysisBases.Value
-    .AnalysesByMeter()
-    .FirstOrDefault(x => x.Meter.Id == Id);
 }
 
 @if (analysis is not null)
@@ -37,8 +34,7 @@
       <Columns Models="@analysis.Analysis.Monthly"/>
     </Columns>
   </Table>
-
-  var meters = new List<IMeter> { analysis.Meter };
+  <DownloadField Models="@measurements" ></DownloadField>
 
   <MeasurementChartControls Meters="@meters">
     <MeasurementGaugeChart
@@ -81,7 +77,6 @@
 </Mutating>
 
 @code {
-
   [CascadingParameter]
   private AnalysisState AnalysisState { get; set; } = default!;
 
@@ -94,4 +89,35 @@
   [CascadingParameter]
   private Breakpoint Breakpoint { get; set; }
 
+  private MeterAnalysis? analysis; // Replace with your actual analysis type.
+
+  private List<IMeter> meters = new();
+
+  IEnumerable<object> measurements = new List<object>();
+
+  protected override async Task OnParametersSetAsync()
+  {
+    // Retrieve analysis once all parameters have been set.
+    analysis = AnalysisState.AnalysisBases.Value
+      .AnalysesByMeter()
+      .FirstOrDefault(x => x.Meter.Id == Id);
+
+    if (analysis is not null)
+    {
+      // Create the meters list using the retrieved analysis.
+      meters = new List<IMeter> { analysis.Meter };
+
+      var queries = ScopedServices.GetRequiredService<MeasurementQueries>();
+      var measures = await queries.ReadByMeterIdsDynamic(
+        meters,
+        ResolutionModel.Minute,
+        1,
+        0,
+        CancellationToken,
+        DateTimeOffset.UtcNow.AddMonths(-1),
+        DateTimeOffset.UtcNow);
+
+      measurements = measures.Items.OrderBy(x => x.Timestamp).ToList();
+    }
+  }
 }
