@@ -1,2 +1,3 @@
 flake.lock
 .config/dotnet-tools.json
+scripts/flake/raspberryPi4.yaml

@@ -591,7 +591,7 @@ public class AnalysisQueries(
   [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
   private sealed class DetailedMeasurementLocationsByRepresentativeIntermediary
   {
-    public RepresentativeEntity? Representative { get; set; } = default!;
+    public RepresentativeEntity? Representative { get; set; }
 
     public LocationEntity Location { get; set; } = default!;
 
