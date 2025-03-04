@@ -37,7 +37,8 @@ public class AnalysisQueries(
       .Select(
         entity => new AnalysisBasisModel
         {
-          Representative = modelEntityConverter
+          Representative = entity.Representative is null ? null :
+           modelEntityConverter
             .ToModel<RepresentativeModel>(entity.Representative),
           FromDate = entity.FromDate,
           ToDate = entity.ToDate,

@@ -155,6 +155,11 @@ publish *args:
       --configuration Release \
       {{ args }}
 
+    cp '{{ ozdsserver }}' '{{ artifacts }}/ozds-server'
+    cp '{{ ozdsserverdev }}' '{{ artifacts }}/ozds-server-dev'
+
+    mv '{{ artifacts }}/App_Data' '{{ artifacts }}/App_Data_Dev'
+
     mkdir ("{{ artifacts }}/.playwright/package/.local-browsers" \
       + "/chromium-1134/chrome-linux")
 
@@ -166,11 +171,6 @@ publish *args:
           withWebkit = false; \
         }" \
         "/chromium-1134/chrome-linux/chrome"
-
-    cp '{{ ozdsserver }}' '{{ artifacts }}/ozds-server'
-    cp '{{ ozdsserverdev }}' '{{ artifacts }}/ozds-server-dev'
-
-    mv '{{ artifacts }}/App_Data' '{{ artifacts }}/App_Data_Dev'
 
 docs:
     rm -rf '{{ artifacts }}'

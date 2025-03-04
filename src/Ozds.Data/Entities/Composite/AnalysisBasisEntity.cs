@@ -4,7 +4,7 @@ namespace Ozds.Data.Entities.Composite;
 
 public class AnalysisBasisEntity
 {
-  public RepresentativeEntity Representative { get; set; } = default!;
+  public RepresentativeEntity? Representative { get; set; } = default!;
 
   public DateTimeOffset FromDate { get; set; }
 

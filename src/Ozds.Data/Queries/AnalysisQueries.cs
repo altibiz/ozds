@@ -383,7 +383,7 @@ public class AnalysisQueries(
             nameof(NetworkUserMeasurementLocationEntity.Meter))}
           = {context.GetTableName<MeterEntity>()}
             .{context.GetPrimaryKeyColumnName<MeterEntity>()}
-      INNER JOIN {context.GetTableName<NetworkUserRepresentativeEntity>()}
+      LEFT JOIN {context.GetTableName<NetworkUserRepresentativeEntity>()}
         ON {context.GetTableName<NetworkUserMeasurementLocationEntity>()}
           .{context.GetForeignKeyColumnName<
             NetworkUserMeasurementLocationEntity>(
@@ -392,7 +392,7 @@ public class AnalysisQueries(
             .{context.GetForeignKeyColumnName<
               NetworkUserRepresentativeEntity>(
               nameof(NetworkUserRepresentativeEntity.NetworkUser))}
-      INNER JOIN {context.GetTableName<RepresentativeEntity>()}
+      LEFT JOIN {context.GetTableName<RepresentativeEntity>()}
         ON {context.GetTableName<NetworkUserRepresentativeEntity>()}
           .{context.GetForeignKeyColumnName<NetworkUserRepresentativeEntity>(
             nameof(NetworkUserRepresentativeEntity.Representative))}
@@ -591,7 +591,7 @@ public class AnalysisQueries(
   [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
   private sealed class DetailedMeasurementLocationsByRepresentativeIntermediary
   {
-    public RepresentativeEntity Representative { get; set; } = default!;
+    public RepresentativeEntity? Representative { get; set; } = default!;
 
     public LocationEntity Location { get; set; } = default!;
 

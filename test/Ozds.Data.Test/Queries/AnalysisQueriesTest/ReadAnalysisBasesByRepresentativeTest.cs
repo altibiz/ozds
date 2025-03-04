@@ -45,7 +45,7 @@ public class ReadAnalysisBasesByRepresentativeTest(
     var actualResults =
       await queries.ReadAnalysisBasesByRepresentativeAndLocation(
         context,
-        representative.Id,
+        representative!.Id,
         representative.Role,
         fromDate,
         toDate,
@@ -155,7 +155,8 @@ public class ReadAnalysisBasesByRepresentativeTest(
 
         var actualModel = new AnalysisBasisModel
         {
-          Representative = modelEntityConverter
+          Representative = actual.Representative is null ? null :
+          modelEntityConverter
             .ToModel<RepresentativeModel>(actual.Representative),
           FromDate = actual.FromDate,
           ToDate = actual.ToDate,
@@ -180,7 +181,8 @@ public class ReadAnalysisBasesByRepresentativeTest(
         };
         var expectedModel = new AnalysisBasisModel
         {
-          Representative = modelEntityConverter
+          Representative = expected.Representative is null ? null :
+          modelEntityConverter
             .ToModel<RepresentativeModel>(expected.Representative),
           FromDate = expected.FromDate,
           ToDate = expected.ToDate,

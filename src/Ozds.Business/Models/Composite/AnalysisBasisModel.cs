@@ -4,7 +4,7 @@ namespace Ozds.Business.Models.Composite;
 
 public class AnalysisBasisModel
 {
-  public RepresentativeModel Representative { get; set; } = default!;
+  public RepresentativeModel? Representative { get; set; } = default!;
 
   public DateTimeOffset FromDate { get; set; }
 
