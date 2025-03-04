@@ -14,6 +14,23 @@ def "main" [] {
   nu $self --help
 }
 
+def "main vpn" [] {
+  let host = open --raw /etc/hostname | str trim
+
+  let config = vault kv get -format=json "kv/ozds/vpn"
+    | from json
+    | get data.data
+    | get $host
+
+  let file = mktemp -t
+  chmod 600 $file
+  $config | save -f $file
+
+  sudo nebula -config $file
+
+  rm -f $file
+}
+
 def "main secrets" [] {
   rm -rf $artifacts
   mkdir $artifacts
