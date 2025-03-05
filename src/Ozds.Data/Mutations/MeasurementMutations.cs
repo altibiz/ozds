@@ -124,7 +124,11 @@ public class MeasurementMutations(
         }
         catch (PostgresException ex)
         {
-          await context.Database.RollbackTransactionAsync(cancellationToken);
+          if (context.Database.CurrentTransaction is { } transaction)
+          {
+            await transaction.RollbackAsync(cancellationToken);
+          }
+
           // NOTE: 40001 = could not serialize access due to
           // read/write dependencies among transactions
           // NOTE: 40P01 = deadlock detected
@@ -141,7 +145,10 @@ public class MeasurementMutations(
         }
         catch (Exception)
         {
-          await context.Database.RollbackTransactionAsync(cancellationToken);
+          if (context.Database.CurrentTransaction is { } transaction)
+          {
+            await transaction.RollbackAsync(cancellationToken);
+          }
           throw;
         }
       }
@@ -274,12 +281,8 @@ public class MeasurementMutations(
       if (withClauses.Count > 0)
       {
         sql = $@"
-          WITH {
-            string.Join(",\n", withClauses)
-          }
-          {
-            sql
-          }
+          WITH {string.Join(",\n", withClauses)}
+          {sql}
         ";
       }
 
@@ -440,8 +443,7 @@ public class MeasurementMutations(
         $"No store object identifier found for {type}.");
     var properties = entityType.GetScalarPropertiesRecursive().ToList();
 
-    var values = $"({
-      string.Join(
+    var values = $"({string.Join(
         ", ", properties
           .Select(
             property =>
@@ -451,8 +453,7 @@ public class MeasurementMutations(
                 + (property.ClrType.IsEnum
                   ? $"::{StringExtensions.ToSnakeCase(property.ClrType.Name)}"
                   : "");
-            }))
-    })";
+            }))})";
 
     return values;
   }
@@ -498,22 +499,10 @@ public class MeasurementMutations(
 
     return new UpsertTemplate(
       null, $@"
-      INSERT INTO {
-        tableName
-      } ({
-        columns
-      })
-      VALUES {
-        values
-      }
-      ON CONFLICT ({
-        conflict
-      }) {
-        updateClause
-      }
-      RETURNING {
-        tableName
-      }.*
+      INSERT INTO {tableName} ({columns})
+      VALUES {values}
+      ON CONFLICT ({conflict}) {updateClause}
+      RETURNING {tableName}.*
     ");
   }
 
@@ -596,8 +585,9 @@ public class MeasurementMutations(
         setClauses.Add($"{quarterHourCountColumn} = 1");
 
         deltaUpsertClauses.Add(
-          $"{quarterHourCountColumn} = {tableName}.{quarterHourCountColumn}"
-          + $" + delta{indexSubstitution}.new_count"
+          $"{quarterHourCountColumn} = GREATEST(1, ("
+          + $" {tableName}.{quarterHourCountColumn}"
+          + $" + delta{indexSubstitution}.new_count))"
         );
       }
 
@@ -649,8 +639,9 @@ public class MeasurementMutations(
             $"{col} = ({tableName}.{col}"
             + $" * {tableName}.{quarterHourCountColumn}"
             + $" + delta{indexSubstitution}.{col})"
-            + $" / ({tableName}.{quarterHourCountColumn}"
-            + $" + delta{indexSubstitution}.new_count)"
+            + $" / GREATEST(1,"
+            + $" ({tableName}.{quarterHourCountColumn}"
+            + $" + delta{indexSubstitution}.new_count))"
           );
         }
         else if (col.Contains("min"))
@@ -779,31 +770,15 @@ public class MeasurementMutations(
     {
       return new UpsertTemplate(
         $@"
-          value{
-            indexSubstitution
-          } AS (
-            INSERT INTO {
-              tableName
-            } ({
-              columns
-            })
-            VALUES {
-              values
-            }
-            ON CONFLICT ({
-              conflict
-            }) {
-              updateClause
-            }
-            RETURNING {
-              tableName
-            }.*
+          value{indexSubstitution} AS (
+            INSERT INTO {tableName} ({columns})
+            VALUES {values}
+            ON CONFLICT ({conflict}) {updateClause}
+            RETURNING {tableName}.*
           )
         ",
         $@"
-          SELECT * FROM value{
-            indexSubstitution
-          }
+          SELECT * FROM value{indexSubstitution}
         "
       );
     }
@@ -816,135 +791,64 @@ public class MeasurementMutations(
 
     return new UpsertTemplate(
       $@"
-        old{
-          indexSubstitution
-        } AS (
-          SELECT {
-            tableName
-          }.*
-          FROM {
-            tableName
-          }
-          WHERE {
-            string.Join(
+        old{indexSubstitution} AS (
+          SELECT {tableName}.*
+          FROM {tableName}
+          WHERE {string.Join(
               " AND ",
               primaryKeyColumns.Select(
                 c =>
                   $"{tableName}.{c.ColumnName}"
                   + $" = @p{indexSubstitution}_{c.ColumnName}"
                   + (c.Property.ClrType.IsEnum
-                    ? $"::{
-                      StringExtensions.ToSnakeCase(c.Property.ClrType.Name)
-                    }"
-                    : "")))
-          }
-        ), new{
-          indexSubstitution
-        } AS (
-          INSERT INTO {
-            tableName
-          } ({
-            columns
-          })
-          VALUES {
-            values
-          }
-          ON CONFLICT ({
-            conflict
-          }) {
-            updateClause
-          }
-          RETURNING {
-            tableName
-          }.*
-        ), delta{
-          indexSubstitution
-        } AS (
+                    ? $"::{StringExtensions.ToSnakeCase(c.Property.ClrType.Name)}"
+                    : "")))}
+        ), new{indexSubstitution} AS (
+          INSERT INTO {tableName} ({columns})
+          VALUES {values}
+          ON CONFLICT ({conflict}) {updateClause}
+          RETURNING {tableName}.*
+        ), delta{indexSubstitution} AS (
           SELECT
             date_trunc(
               'day',
-              new{
-                indexSubstitution
-              }.{
-                timestampColumn
-              }
+              new{indexSubstitution}.{timestampColumn}
                 AT TIME ZONE 'Europe/Zagreb')
               AT TIME ZONE 'Europe/Zagreb'
               daily_timestamp,
             date_trunc(
               'month',
-              new{
-                indexSubstitution
-              }.{
-                timestampColumn
-              }
+              new{indexSubstitution}.{timestampColumn}
                 AT TIME ZONE 'Europe/Zagreb')
               AT TIME ZONE 'Europe/Zagreb'
               monthly_timestamp,
-              {
-                string.Join(
+              {string.Join(
                   ", ",
                   primaryKeyColumns.Select(
                     c =>
-                      $"new{indexSubstitution}.{c.ColumnName}"))
-              },
+                      $"new{indexSubstitution}.{c.ColumnName}"))},
             CASE
-              WHEN old{
-                indexSubstitution
-              }.{
-                timestampColumn
-              } is null then 1
+              WHEN old{indexSubstitution}.{timestampColumn} is null then 1
               ELSE 0
             END new_count,
-            {
-              string.Join(", ", deltaClauses)
-            }
-          FROM new{
-            indexSubstitution
-          }
-          LEFT JOIN old{
-            indexSubstitution
-          } ON
-            {
-              string.Join(
+            {string.Join(", ", deltaClauses)}
+          FROM new{indexSubstitution}
+          LEFT JOIN old{indexSubstitution} ON
+            {string.Join(
                 " AND ",
                 primaryKeyColumns.Select(
                   c => $"old{indexSubstitution}.{c.ColumnName}"
-                    + $" = new{indexSubstitution}.{c.ColumnName}"))
-            }
-        ), daily{
-          indexSubstitution
-        } AS (
-          UPDATE {
-            tableName
-          } SET
-            {
-              string.Join(", ", deltaUpsertClauses)
-            }
-          FROM delta{
-            indexSubstitution
-          }
+                    + $" = new{indexSubstitution}.{c.ColumnName}"))}
+        ), daily{indexSubstitution} AS (
+          UPDATE {tableName} SET
+            {string.Join(", ", deltaUpsertClauses)}
+          FROM delta{indexSubstitution}
           WHERE
-            {
-              tableName
-            }.{
-              timestampColumn
-            }
-              = delta{
-                indexSubstitution
-              }.daily_timestamp
-            AND {
-              tableName
-            }.{
-              intervalColumn
-            }
-              = '{
-                dayIntervalValue
-              }'::{
-                intervalTypeName
-              }
-            AND {
-              string.Join(
+            {tableName}.{timestampColumn}
+              = delta{indexSubstitution}.daily_timestamp
+            AND {tableName}.{intervalColumn}
+              = '{dayIntervalValue}'::{intervalTypeName}
+            AND {string.Join(
                 " AND ",
                 primaryKeyColumns
                   .Where(
@@ -954,44 +858,18 @@ public class MeasurementMutations(
                   .Select(
                     c =>
                       $"{tableName}.{c.ColumnName}"
-                      + $" = delta{indexSubstitution}.{c.ColumnName}"))
-            }
-          RETURNING {
-            tableName
-          }.*
-        ), monthly{
-          indexSubstitution
-        } AS (
-          UPDATE {
-            tableName
-          } SET
-            {
-              string.Join(", ", deltaUpsertClauses)
-            }
-          FROM delta{
-            indexSubstitution
-          }
+                      + $" = delta{indexSubstitution}.{c.ColumnName}"))}
+          RETURNING {tableName}.*
+        ), monthly{indexSubstitution} AS (
+          UPDATE {tableName} SET
+            {string.Join(", ", deltaUpsertClauses)}
+          FROM delta{indexSubstitution}
           WHERE
-            {
-              tableName
-            }.{
-              timestampColumn
-            }
-              = delta{
-                indexSubstitution
-              }.monthly_timestamp
-            AND {
-              tableName
-            }.{
-              intervalColumn
-            }
-              = '{
-                monthIntervalValue
-              }'::{
-                intervalTypeName
-              }
-            AND {
-              string.Join(
+            {tableName}.{timestampColumn}
+              = delta{indexSubstitution}.monthly_timestamp
+            AND {tableName}.{intervalColumn}
+              = '{monthIntervalValue}'::{intervalTypeName}
+            AND {string.Join(
                 " AND ",
                 primaryKeyColumns
                   .Where(
@@ -1001,25 +879,16 @@ public class MeasurementMutations(
                   .Select(
                     c =>
                       $"{tableName}.{c.ColumnName}"
-                      + $" = delta{indexSubstitution}.{c.ColumnName}"))
-            }
-          RETURNING {
-            tableName
-          }.*
+                      + $" = delta{indexSubstitution}.{c.ColumnName}"))}
+          RETURNING {tableName}.*
         )
       ",
       $@"
-        SELECT * FROM new{
-          indexSubstitution
-        }
+        SELECT * FROM new{indexSubstitution}
         UNION ALL
-        SELECT * FROM daily{
-          indexSubstitution
-        }
+        SELECT * FROM daily{indexSubstitution}
         UNION ALL
-        SELECT * FROM monthly{
-          indexSubstitution
-        }
+        SELECT * FROM monthly{indexSubstitution}
       "
     );
   }
