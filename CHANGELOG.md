@@ -16,7 +16,7 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - Pass `CancellationToken.None` to `BeforeStopAsync` reactor handler for now
 - Rollback measurement transactions only when a transaction is present
 - Separate `check` workflow into `formant-and-deps` and `check` workflows to
-  allow `auto-comit-action` to trigger `check` workflow re-runs
+  allow `auto-commit-action` to trigger `check` workflow re-runs
 
 ## Added
 
