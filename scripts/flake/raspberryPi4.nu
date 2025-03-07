@@ -114,12 +114,48 @@ def "main deploy" [] {
     | ssh-add - \\
     && export SSHPASS='($pass)' \\
     && sshpass -e deploy \\
-      --remote-build \\
       --skip-checks \\
       --interactive-sudo true \\
       --hostname ($ip) \\
       -- \\
       '($root)#($configuration)'"
+}
+
+def --wrapped "main s3" [...args] {
+  let secrets = vault kv get -format=json "kv/ozds/nix/s3.lvm.altibiz.com"
+    | from json
+    | get data.data
+
+  with-env {
+    AWS_ACCESS_KEY_ID: ($secrets."admin-aws-access-key-id"),
+    AWS_SECRET_ACCESS_KEY: ($secrets."admin-aws-secret-access-key")
+  } {
+    (s3cmd
+      --host=s3.lvm.altibiz.com
+      "--host-bucket=s3.lvm.altibiz.com/%(bucket)"
+      ...($args))
+  }
+}
+
+def "main cache" [id?: string] {
+  let secrets = vault kv get -format=json "kv/ozds/nix/s3.lvm.altibiz.com"
+    | from json
+    | get data.data
+
+  let file = mktemp -t
+  chmod 600 $file
+  $secrets."private.pem" | save -f $file
+
+  with-env {
+    AWS_ACCESS_KEY_ID: ($secrets."aws-access-key-id"),
+    AWS_SECRET_ACCESS_KEY: ($secrets."aws-secret-access-key")
+  } {
+    let cache = $"s3://nix-binary-cache?endpoint=s3.lvm.altibiz.com&secret-key=($file)"
+    let ozds = $"($root)#nixosConfigurations.($configuration).config.system.build.toplevel"
+    (nix copy --to $cache $ozds)
+  }
+
+  rm -f $file
 }
 
 def "main db user" [] {

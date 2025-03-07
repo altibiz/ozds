@@ -106,6 +106,7 @@
             nodePackages.cspell
 
             # Scripts
+            s3cmd
             just
             nushell
             nix-bundle

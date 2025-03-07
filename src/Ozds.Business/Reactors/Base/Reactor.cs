@@ -7,6 +7,7 @@ namespace Ozds.Business.Reactors.Base;
 
 // TODO: preserve events in db on shutdown and restore on startup and do not
 // pass stopping token to handler
+// TODO: pass a meaningful CancellationToken to BeforeStopAsync handlers
 
 public abstract class Reactor<TEventArgs, TSubscriber, THandler>(
   IServiceProvider serviceProvider
@@ -132,7 +133,7 @@ public abstract class Reactor<TEventArgs, TSubscriber, THandler>(
           handler.GetType().Name,
           GetType().Name
         );
-        await handler.BeforeStopAsync(stoppingToken);
+        await handler.BeforeStopAsync(CancellationToken.None);
       }
       catch (Exception ex)
       {
