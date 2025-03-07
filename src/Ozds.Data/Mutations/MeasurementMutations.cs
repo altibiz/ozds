@@ -149,6 +149,7 @@ public class MeasurementMutations(
           {
             await transaction.RollbackAsync(cancellationToken);
           }
+
           throw;
         }
       }
@@ -444,16 +445,16 @@ public class MeasurementMutations(
     var properties = entityType.GetScalarPropertiesRecursive().ToList();
 
     var values = $"({string.Join(
-        ", ", properties
-          .Select(
-            property =>
-            {
-              var columnName = property.GetColumnName(storeObjectIdentifier);
-              return $"@p{indexSubstitution}_{columnName}"
-                + (property.ClrType.IsEnum
-                  ? $"::{StringExtensions.ToSnakeCase(property.ClrType.Name)}"
-                  : "");
-            }))})";
+      ", ", properties
+        .Select(
+          property =>
+          {
+            var columnName = property.GetColumnName(storeObjectIdentifier);
+            return $"@p{indexSubstitution}_{columnName}"
+              + (property.ClrType.IsEnum
+                ? $"::{StringExtensions.ToSnakeCase(property.ClrType.Name)}"
+                : "");
+          }))})";
 
     return values;
   }
@@ -795,14 +796,14 @@ public class MeasurementMutations(
           SELECT {tableName}.*
           FROM {tableName}
           WHERE {string.Join(
-              " AND ",
-              primaryKeyColumns.Select(
-                c =>
-                  $"{tableName}.{c.ColumnName}"
-                  + $" = @p{indexSubstitution}_{c.ColumnName}"
-                  + (c.Property.ClrType.IsEnum
-                    ? $"::{StringExtensions.ToSnakeCase(c.Property.ClrType.Name)}"
-                    : "")))}
+            " AND ",
+            primaryKeyColumns.Select(
+              c =>
+                $"{tableName}.{c.ColumnName}"
+                + $" = @p{indexSubstitution}_{c.ColumnName}"
+                + (c.Property.ClrType.IsEnum
+                  ? $"::{StringExtensions.ToSnakeCase(c.Property.ClrType.Name)}"
+                  : "")))}
         ), new{indexSubstitution} AS (
           INSERT INTO {tableName} ({columns})
           VALUES {values}
@@ -823,10 +824,10 @@ public class MeasurementMutations(
               AT TIME ZONE 'Europe/Zagreb'
               monthly_timestamp,
               {string.Join(
-                  ", ",
-                  primaryKeyColumns.Select(
-                    c =>
-                      $"new{indexSubstitution}.{c.ColumnName}"))},
+                ", ",
+                primaryKeyColumns.Select(
+                  c =>
+                    $"new{indexSubstitution}.{c.ColumnName}"))},
             CASE
               WHEN old{indexSubstitution}.{timestampColumn} is null then 1
               ELSE 0
@@ -835,10 +836,10 @@ public class MeasurementMutations(
           FROM new{indexSubstitution}
           LEFT JOIN old{indexSubstitution} ON
             {string.Join(
-                " AND ",
-                primaryKeyColumns.Select(
-                  c => $"old{indexSubstitution}.{c.ColumnName}"
-                    + $" = new{indexSubstitution}.{c.ColumnName}"))}
+              " AND ",
+              primaryKeyColumns.Select(
+                c => $"old{indexSubstitution}.{c.ColumnName}"
+                  + $" = new{indexSubstitution}.{c.ColumnName}"))}
         ), daily{indexSubstitution} AS (
           UPDATE {tableName} SET
             {string.Join(", ", deltaUpsertClauses)}
@@ -849,16 +850,16 @@ public class MeasurementMutations(
             AND {tableName}.{intervalColumn}
               = '{dayIntervalValue}'::{intervalTypeName}
             AND {string.Join(
-                " AND ",
-                primaryKeyColumns
-                  .Where(
-                    c =>
-                      c.ColumnName != timestampColumn
-                      && c.ColumnName != intervalColumn)
-                  .Select(
-                    c =>
-                      $"{tableName}.{c.ColumnName}"
-                      + $" = delta{indexSubstitution}.{c.ColumnName}"))}
+              " AND ",
+              primaryKeyColumns
+                .Where(
+                  c =>
+                    c.ColumnName != timestampColumn
+                    && c.ColumnName != intervalColumn)
+                .Select(
+                  c =>
+                    $"{tableName}.{c.ColumnName}"
+                    + $" = delta{indexSubstitution}.{c.ColumnName}"))}
           RETURNING {tableName}.*
         ), monthly{indexSubstitution} AS (
           UPDATE {tableName} SET
@@ -870,16 +871,16 @@ public class MeasurementMutations(
             AND {tableName}.{intervalColumn}
               = '{monthIntervalValue}'::{intervalTypeName}
             AND {string.Join(
-                " AND ",
-                primaryKeyColumns
-                  .Where(
-                    c =>
-                      c.ColumnName != timestampColumn
-                      && c.ColumnName != intervalColumn)
-                  .Select(
-                    c =>
-                      $"{tableName}.{c.ColumnName}"
-                      + $" = delta{indexSubstitution}.{c.ColumnName}"))}
+              " AND ",
+              primaryKeyColumns
+                .Where(
+                  c =>
+                    c.ColumnName != timestampColumn
+                    && c.ColumnName != intervalColumn)
+                .Select(
+                  c =>
+                    $"{tableName}.{c.ColumnName}"
+                    + $" = delta{indexSubstitution}.{c.ColumnName}"))}
           RETURNING {tableName}.*
         )
       ",
