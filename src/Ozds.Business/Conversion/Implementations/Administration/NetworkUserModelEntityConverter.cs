@@ -29,6 +29,7 @@ public class NetworkUserModelEntityConverter(IServiceProvider serviceProvider)
       ? null!
       : modelEntityConverter.ToEntity<LegalPersonEntity>(model.LegalPerson);
     entity.AltiBizSubProjectCode = model.AltiBizSubProjectCode;
+    entity.InvoiceRemark = model.InvoiceRemark;
   }
 
   public override void InitializeModel(
@@ -42,5 +43,6 @@ public class NetworkUserModelEntityConverter(IServiceProvider serviceProvider)
       ? null!
       : modelEntityConverter.ToModel<LegalPersonModel>(entity.LegalPerson);
     model.AltiBizSubProjectCode = entity.AltiBizSubProjectCode;
+    model.InvoiceRemark = entity.InvoiceRemark;
   }
 }

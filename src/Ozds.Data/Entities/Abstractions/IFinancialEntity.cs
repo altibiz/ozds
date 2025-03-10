@@ -19,4 +19,6 @@ public interface IFinancialEntity : IReadonlyEntity, IIdentifiableEntity
   public decimal Tax_EUR { get; }
 
   public decimal TotalWithTax_EUR { get; }
+
+  public string Remark { get; }
 }

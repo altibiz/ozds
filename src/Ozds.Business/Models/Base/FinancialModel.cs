@@ -5,6 +5,8 @@ namespace Ozds.Business.Models.Base;
 
 public abstract class FinancialModel : IdentifiableModel, IFinancial
 {
+  public required string Remark { get; set; } = string.Empty;
+
   [Required]
   public required DateTimeOffset IssuedOn { get; set; }
 

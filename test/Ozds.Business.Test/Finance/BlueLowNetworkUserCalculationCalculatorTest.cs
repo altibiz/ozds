@@ -40,6 +40,8 @@ public class BlueLowNetworkUserCalculationCalculatorTest
               x.ArchivedSupplyRegulatoryCatalogue.Id;
             x.NetworkUserMeasurementLocationId =
               x.ArchivedNetworkUserMeasurementLocation.Id;
+            x.Remark =
+              x.ArchivedNetworkUserMeasurementLocation.CalculationRemark;
             x.MeterId = x.ArchivedMeter.Id;
 
             var faker = new Faker();

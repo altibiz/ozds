@@ -68,6 +68,8 @@ public class NetworkUserInvoiceCalculatorTest
                       x.ArchivedSupplyRegulatoryCatalogue.Id;
                     x.NetworkUserMeasurementLocationId =
                       x.ArchivedNetworkUserMeasurementLocation.Id;
+                    x.Remark =
+                      x.ArchivedNetworkUserMeasurementLocation.CalculationRemark;
                     x.MeterId = x.ArchivedMeter.Id;
 
                     var faker = new Faker();
@@ -162,6 +164,8 @@ public class NetworkUserInvoiceCalculatorTest
                       x.ArchivedSupplyRegulatoryCatalogue.Id;
                     x.NetworkUserMeasurementLocationId =
                       x.ArchivedNetworkUserMeasurementLocation.Id;
+                    x.Remark =
+                      x.ArchivedNetworkUserMeasurementLocation.CalculationRemark;
                     x.MeterId = x.ArchivedMeter.Id;
 
                     var faker = new Faker();
@@ -272,6 +276,8 @@ public class NetworkUserInvoiceCalculatorTest
                       x.ArchivedSupplyRegulatoryCatalogue.Id;
                     x.NetworkUserMeasurementLocationId =
                       x.ArchivedNetworkUserMeasurementLocation.Id;
+                    x.Remark =
+                      x.ArchivedNetworkUserMeasurementLocation.CalculationRemark;
                     x.MeterId = x.ArchivedMeter.Id;
 
                     var faker = new Faker();
@@ -374,6 +380,8 @@ public class NetworkUserInvoiceCalculatorTest
                       x.ArchivedSupplyRegulatoryCatalogue.Id;
                     x.NetworkUserMeasurementLocationId =
                       x.ArchivedNetworkUserMeasurementLocation.Id;
+                    x.Remark =
+                      x.ArchivedNetworkUserMeasurementLocation.CalculationRemark;
                     x.MeterId = x.ArchivedMeter.Id;
 
                     var faker = new Faker();
@@ -464,6 +472,7 @@ public class NetworkUserInvoiceCalculatorTest
           x =>
           {
             x.Invoice.NetworkUserId = x.Invoice.ArchivedNetworkUser.Id;
+            x.Invoice.Remark = x.Invoice.ArchivedNetworkUser.InvoiceRemark;
             x.Invoice.BillId = null;
 
             x.Invoice.UsageActiveEnergyTotalImportT0Fee_EUR = System.Math.Round(

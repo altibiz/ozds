@@ -13,14 +13,20 @@ public class ModelValidator(
     CancellationToken cancellationToken
   )
   {
+    var validationResults = new List<ValidationResult>();
+    var validationContext = new ValidationContext(this);
+
+    validationResults.AddRange(model.Validate(validationContext));
+
     var validator = serviceProvider
       .GetServices<IValidator>()
       .FirstOrDefault(service => service.CanValidate(model.GetType()));
-    if (validator is null)
+    if (validator is not null)
     {
-      return model.Validate(new ValidationContext(this)).ToList();
+      validationResults.AddRange(
+        await validator.ValidateAsync(model, cancellationToken));
     }
 
-    return await validator.ValidateAsync(model, cancellationToken);
+    return validationResults;
   }
 }

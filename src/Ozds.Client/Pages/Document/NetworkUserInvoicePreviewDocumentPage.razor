@@ -1,0 +1,30 @@
+@namespace Ozds.Client.Pages
+
+@layout DocumentLayout
+
+@page "/document/network-user-invoice-preview/{networkUserId}/{year:int}/{month:int}"
+@using Microsoft.AspNetCore.Components.Web
+@using Ozds.Client.Components.Layout
+@using Ozds.Client.Components.Streaming
+@inherits Ozds.Client.Components.Base.OzdsComponentBase
+
+<Loading
+  T="CalculatedNetworkUserInvoiceModelWithHtml"
+  LoadAsync="OnLoadAsync">
+  <Found>
+    <HeadContent>
+      <title>
+        OZDS - @Translate("Network user invoice preview"):
+        @context.Invoice.Invoice.Title
+      </title>
+    </HeadContent>
+
+    @(new MarkupString(context.Html))
+  </Found>
+  <NotFound>
+    <HeadContent>
+      <title>OZDS - @Translate("Network user not found")</title>
+    </HeadContent>
+    <NotFound/>
+  </NotFound>
+</Loading>
