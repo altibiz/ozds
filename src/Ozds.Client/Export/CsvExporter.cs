@@ -66,6 +66,7 @@ namespace Ozds.Client.Export
     {
       return new CalculationAggregateBasisEntity
       {
+        Date = aggregate.Timestamp.AddHours(1).ToString("dd.MM.yyyy. hh:mm"),
         MeasurementLocationId = aggregate.MeasurementLocationId,
         ActiveEnergyTotalImportT0Max_Wh = aggregate.ActiveEnergy_Wh
           .TariffUnary()
@@ -132,6 +133,7 @@ namespace Ozds.Client.Export
 
     public class CalculationAggregateBasisEntity
     {
+      public string Date { get; set; } = default!;
       public string MeasurementLocationId { get; set; } = default!;
 
       public decimal ActiveEnergyTotalImportT0Min_Wh { get; set; } = default;

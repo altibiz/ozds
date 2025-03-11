@@ -5,17 +5,16 @@
 @using MudBlazor
 @using Ozds.Business.Analysis
 @using Ozds.Business.Models.Abstractions
+@using Ozds.Business.Models.Enums
+@using Ozds.Business.Queries
+@using Ozds.Business.Time
 @using Ozds.Client.Components.Charts
+@using Ozds.Client.Components.Fields
 @using Ozds.Client.Components.Models
 @using Ozds.Client.Components.Streaming
 @using Ozds.Client.State
 @inherits Ozds.Client.Components.Models.Base.OzdsIdentifiableModelPageComponentBase<Ozds.Business.Models.Abstractions.IMeasurementLocation>
 
-@{
-  var analysis = AnalysisState.AnalysisBases.Value
-    .AnalysesByMeasurementLocation()
-    .FirstOrDefault(x => x.MeasurementLocation.Id == Id);
-}
 
 @if (analysis is not null)
 {
@@ -31,10 +30,21 @@
     </Columns>
   </Table>
 
-  var measurementLocations = new List<IMeasurementLocation>
-  {
-    analysis.MeasurementLocation
-  };
+  <MudGrid Justify="Justify.FlexStart" AlignItems="Center" Spacing="2" Style="width: 170px">
+    <MudItem xs="12">
+      <MudDatePicker Label="@Translate("Pick month")"
+                     Date="selectedMonth"
+                     DateChanged="OnDateChanged"
+                     OpenTo="OpenTo.Month"
+                     FixDay="@DateTime.Today.Day"
+                     DateFormat="MM.yyyy."
+                     Dense="true" />
+    </MudItem>
+    <MudItem xs="12">
+      <DownloadField IsGeneric="false" Models="@measurements" />
+    </MudItem>
+  </MudGrid>
+
 
   <MeasurementChartControls MeasurementLocations="@measurementLocations">
     <MeasurementGaugeChart
@@ -83,5 +93,46 @@
 
   [Parameter]
   public string Id { get; set; } = default!;
+
+  private MeasurementLocationAnalysis? analysis;
+
+  private List<IMeasurementLocation> measurementLocations = new();
+
+  IEnumerable<IAggregate> measurements = new List<IAggregate>();
+
+  private DateTime? selectedMonth;
+
+  private async Task OnDateChanged(DateTime? date)
+  {
+    selectedMonth = date;
+    if (analysis is not null)
+    {
+      measurementLocations = new List<IMeasurementLocation> { analysis.MeasurementLocation };
+      DateTimeOffset dto = new DateTimeOffset(selectedMonth!.Value, TimeSpan.Zero);
+      var queries = ScopedServices.GetRequiredService<MeasurementQueries>();
+      var measures = await queries.ReadByMeasurementLocationIdsDynamic(
+        measurementLocations,
+        ResolutionModel.Hour,
+        30,
+        0,
+        CancellationToken,
+        dto.GetStartOfMonth(),
+        dto.GetStartOfNextMonth(),
+        5000);
+      var orderedMeasures = measures.Items.OrderBy(x => x.Timestamp).ToList();
+      measurements = orderedMeasures.Select(x => (IAggregate)x).ToList();
+    }
+  }
+
+  protected override async Task OnParametersSetAsync()
+  {
+    analysis = AnalysisState.AnalysisBases.Value
+      .AnalysesByMeasurementLocation()
+      .FirstOrDefault(x => x.MeasurementLocation.Id == Id);
+
+    if(measurements.Any()){
+      await OnDateChanged(selectedMonth);
+    }
+  }
 
 }

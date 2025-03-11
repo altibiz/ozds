@@ -2,7 +2,9 @@
 
 @page "/administration/network-user/{id?}"
 @using Microsoft.AspNetCore.Components.Web
+@using MudBlazor
 @using Ozds.Business.Models
+@using Ozds.Client.Components.Fields
 @using Ozds.Client.Components.Models
 @using Ozds.Client.Components.Streaming
 @inherits Ozds.Client.Components.Models.Base.OzdsIdentifiableModelPageComponentBase<Ozds.Business.Models.NetworkUserModel>
@@ -27,3 +29,11 @@
     <Details Model="@context.Model"/>
   </Details>
 </Mutating>
+  <MudDatePicker
+    Label="@Translate("Pick month")"
+  	Date="selectedMonth"
+    DateChanged="OnDateChanged"
+    OpenTo="OpenTo.Month"
+    FixDay="@DateTime.Today.Day"
+    DateFormat="MM.yyyy." />
+<DownloadField IsGeneric="false" Models="@measurements" ></DownloadField>

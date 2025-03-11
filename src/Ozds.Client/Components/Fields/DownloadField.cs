@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
+using Ozds.Business.Models.Abstractions;
 using Ozds.Client.Components.Base;
 using Ozds.Client.Export;
 using Ozds.Client.Export.Abstractions;
@@ -21,32 +24,34 @@ namespace Ozds.Client.Components.Fields
     [Inject]
     private IServiceProvider ServiceProvider { get; set; } = null!;
 
-    private string GetDownloadUrl()
+    [Inject]
+    private IJSRuntime JS { get; set; } = null!;
+
+    private async Task DownloadFileAsync()
     {
       var exporter = ServiceProvider.GetRequiredService<CsvExporter>();
       var csv = exporter.ExportGeneric(Models);
-      if (!IsGeneric)
+      if (Models is List<IAggregate> aggregates)
+      {
+        var newList = aggregates.Select(x => exporter.ToCalculationBasis(x));
+        csv = exporter.ExportGeneric(newList);
+      }
+      else if (!IsGeneric)
       {
         csv = exporter.Export(Models);
       }
       if (Models.Any())
       {
-        return "data:text/csv;charset=utf-8," + Uri.EscapeDataString(csv);
+        var bytes = Encoding.UTF8.GetBytes(csv);
+        using var stream = new MemoryStream(bytes);
+        using var streamRef = new DotNetStreamReference(stream: stream);
+        await JS.InvokeVoidAsync("downloadFileFromStream", FileName, streamRef);
       }
-      return "";
     }
 
     private bool IsDownloadDisabled()
     {
       return !Models.Any();
-    }
-
-    private Dictionary<string, object> GetDownloadAttributes()
-    {
-      return new Dictionary<string, object>
-            {
-                { "download", FileName }
-            };
     }
   }
 }

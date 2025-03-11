@@ -7,6 +7,7 @@
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Business.Models.Enums
 @using Ozds.Business.Queries
+@using Ozds.Business.Time
 @using Ozds.Client.Components.Charts
 @using Ozds.Client.Components.Fields
 @using Ozds.Client.Components.Models
@@ -14,8 +15,7 @@
 @using Ozds.Client.State
 @inherits Ozds.Client.Components.Models.Base.OzdsIdentifiableModelPageComponentBase<Ozds.Business.Models.Abstractions.IMeter>
 
-@if (RepresentativeState.Representative.Role
-  is not RoleModel.OperatorRepresentative)
+@if (RepresentativeState.Representative.Role is not RoleModel.OperatorRepresentative)
 {
   <NotFound/>
   return;
@@ -34,21 +34,15 @@
       <Columns Models="@analysis.Analysis.Monthly"/>
     </Columns>
   </Table>
-  <DownloadField Models="@measurements" ></DownloadField>
-
+  <MudDatePicker Label="@Translate("Pick month")" Date="selectedMonth" DateChanged="OnDateChanged" OpenTo="OpenTo.Month" FixDay="@DateTime.Today.Day" DateFormat="MM.yyyy." />
+  <DownloadField Models="@measurements"></DownloadField>
   <MeasurementChartControls Meters="@meters">
-    <MeasurementGaugeChart
-      Parameters="@context"/>
-    <MeasurementLineChart
-      Parameters="@context"
-      Brush="@(Breakpoint >= Breakpoint.MdAndUp)"/>
+    <MeasurementGaugeChart Parameters="@context"/>
+    <MeasurementLineChart Parameters="@context" Brush="@(Breakpoint >= Breakpoint.MdAndUp)"/>
   </MeasurementChartControls>
 }
 
-<Mutating
-  T="IMeter"
-  Value="@(analysis?.Meter)"
-  Id="@Id">
+<Mutating T="IMeter" Value="@(analysis?.Meter)" Id="@Id">
   <Edit>
     <HeadContent>
       @if (context.Created)
@@ -57,21 +51,15 @@
       }
       else
       {
-        <title>
-          OZDS - @Translate("Meter"): @context.Model.Title
-        </title>
+        <title>OZDS - @Translate("Meter"): @context.Model.Title</title>
       }
     </HeadContent>
-
     <Edit Model="context.Model"/>
   </Edit>
   <Details>
     <HeadContent>
-      <title>
-        OZDS - @Translate("Meter"): @context.Model.Title
-      </title>
+      <title>OZDS - @Translate("Meter"): @context.Model.Title</title>
     </HeadContent>
-
     <Details Model="context.Model"/>
   </Details>
 </Mutating>
@@ -89,35 +77,43 @@
   [CascadingParameter]
   private Breakpoint Breakpoint { get; set; }
 
-  private MeterAnalysis? analysis; // Replace with your actual analysis type.
+  private MeterAnalysis? analysis;
 
   private List<IMeter> meters = new();
 
   IEnumerable<object> measurements = new List<object>();
 
+  private DateTime? selectedMonth;
+
+  private async Task OnDateChanged(DateTime? date)
+  {
+    selectedMonth = date;
+    if (analysis is not null)
+    {
+      meters = new List<IMeter> { analysis.Meter };
+      DateTimeOffset dto = new DateTimeOffset(selectedMonth!.Value, TimeSpan.Zero);
+      var queries = ScopedServices.GetRequiredService<MeasurementQueries>();
+      var measures = await queries.ReadByMeterIdsDynamic(
+        meters,
+        ResolutionModel.Hour,
+        30,
+        0,
+        CancellationToken,
+        dto.GetStartOfMonth(),
+        dto.GetStartOfNextMonth(),
+        5000);
+      measurements = measures.Items.OrderBy(x => x.Timestamp).ToList();
+    }
+  }
+
   protected override async Task OnParametersSetAsync()
   {
-    // Retrieve analysis once all parameters have been set.
     analysis = AnalysisState.AnalysisBases.Value
       .AnalysesByMeter()
       .FirstOrDefault(x => x.Meter.Id == Id);
 
-    if (analysis is not null)
-    {
-      // Create the meters list using the retrieved analysis.
-      meters = new List<IMeter> { analysis.Meter };
-
-      var queries = ScopedServices.GetRequiredService<MeasurementQueries>();
-      var measures = await queries.ReadByMeterIdsDynamic(
-        meters,
-        ResolutionModel.Minute,
-        1,
-        0,
-        CancellationToken,
-        DateTimeOffset.UtcNow.AddMonths(-1),
-        DateTimeOffset.UtcNow);
-
-      measurements = measures.Items.OrderBy(x => x.Timestamp).ToList();
+    if(measurements.Any()){
+      await OnDateChanged(selectedMonth);
     }
   }
 }

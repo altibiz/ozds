@@ -2,18 +2,24 @@
 
 @page "/administration/location/{id?}"
 @using Microsoft.AspNetCore.Components.Web
+@using MudBlazor
 @using Ozds.Business.Models
+@using Ozds.Client.Components.Fields
 @using Ozds.Client.Components.Models
 @using Ozds.Client.Components.Streaming
 @inherits Ozds.Client.Components.Models.Base.OzdsIdentifiableModelPageComponentBase<Ozds.Business.Models.LocationModel>
 
-@if (RepresentativeState.Representative.Role
+@*
+TODO: This if just doesn't work, in debug console this condition
+   returns false but it still enters if statement, idk
+
+ @if (RepresentativeState.Representative.Role
   is not RoleModel.OperatorRepresentative
-  or RoleModel.LocationRepresentative)
+  or not RoleModel.LocationRepresentative)
 {
   <NotFound/>
   return;
-}
+} *@
 
 <Mutating T="LocationModel" LoadAsync="OnLoadAsync">
   <Label>
@@ -57,3 +63,11 @@
     <Details Model="@context.Model"/>
   </Details>
 </Mutating>
+  <MudDatePicker
+    Label="@Translate("Pick month")"
+  	Date="selectedMonth"
+    DateChanged="OnDateChanged"
+    OpenTo="OpenTo.Month"
+    FixDay="@DateTime.Today.Day"
+    DateFormat="MM.yyyy." />
+<DownloadField IsGeneric="false" Models="@measurements" ></DownloadField>

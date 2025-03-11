@@ -2,6 +2,6 @@
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 @using MudBlazor
 
-<MudButton Href="@GetDownloadUrl()" Disabled="@IsDownloadDisabled()" AdditionalAttributes="@GetDownloadAttributes()" Color="Color.Primary" Variant="Variant.Filled">
-    Download CSV
+<MudButton OnClick="DownloadFileAsync" Disabled="@IsDownloadDisabled()" Color="Color.Primary" Variant="Variant.Filled" Class="p-2 rounded-lg">
+  Download CSV
 </MudButton>

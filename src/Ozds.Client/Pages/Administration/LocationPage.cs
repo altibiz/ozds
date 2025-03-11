@@ -1,6 +1,10 @@
 using Microsoft.AspNetCore.Components;
+using Ozds.Business.Analysis;
 using Ozds.Business.Models;
+using Ozds.Business.Models.Abstractions;
+using Ozds.Business.Models.Enums;
 using Ozds.Business.Queries;
+using Ozds.Business.Time;
 using Ozds.Client.Components.Models.Base;
 using Ozds.Client.State;
 
@@ -13,7 +17,16 @@ public partial class LocationPage
   public string? Id { get; set; }
 
   [CascadingParameter]
+  private AnalysisState AnalysisState { get; set; } = default!;
+
+  [CascadingParameter]
   private RepresentativeState RepresentativeState { get; set; } = default!;
+
+  IEnumerable<IAggregate> measurements = new List<IAggregate>();
+
+  private List<MeterAnalysis?> analysis;
+
+  private DateTime? selectedMonth;
 
   private async Task<LocationModel?> OnLoadAsync()
   {
@@ -32,5 +45,42 @@ public partial class LocationPage
     );
 
     return location;
+  }
+
+  protected override async Task OnParametersSetAsync()
+  {
+    analysis = AnalysisState
+      .AnalysisBases.Value.AnalysesByMeter()
+      .Where(x => x.Location.Id == Id).ToList();
+
+    if (measurements.Any())
+    {
+      await OnDateChanged(selectedMonth);
+    }
+  }
+
+  private async Task OnDateChanged(DateTime? date)
+  {
+    selectedMonth = date;
+    if (analysis is not null)
+    {
+      var meters = analysis.Select(x => (IMeter)x!.Meter).ToList();
+      DateTimeOffset dto = new DateTimeOffset(
+        selectedMonth!.Value,
+        TimeSpan.Zero
+      );
+      var queries = ScopedServices.GetRequiredService<MeasurementQueries>();
+      var measures = await queries.ReadByMeterIdsDynamic(
+        meters,
+        ResolutionModel.Year,
+        30,
+        0,
+        CancellationToken,
+        dto.GetStartOfMonth(),
+        dto.GetStartOfNextMonth()
+      );
+      var orderedMeasures = measures.Items.OrderBy(x => x.Timestamp).ToList();
+      measurements = orderedMeasures.Select(x => (IAggregate)x).ToList();
+    }
   }
 }

@@ -1,9 +1,12 @@
 @namespace Ozds.Client.Components.Dashboards
 @using MudBlazor
 @using Ozds.Business.Analysis
+@using Ozds.Business.Conversion
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Business.Models.Enums
+@using Ozds.Business.Queries
 @using Ozds.Client.Components.Charts
+@using Ozds.Client.Components.Fields
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 <MudHidden Breakpoint="Breakpoint.MdAndUp">
@@ -151,6 +154,8 @@
   </MudGrid>
 </MudHidden>
 
+<DownloadField IsGeneric="false" Models="@measurements" ></DownloadField>
+
 @code {
 
   [Parameter]
@@ -159,4 +164,21 @@
   [Parameter]
   public List<IMeter> Meters { get; set; } = default!;
 
+  IEnumerable<IAggregate> measurements = new List<IAggregate>();
+
+  protected override async Task OnParametersSetAsync()
+  {
+    var queries = ScopedServices.GetRequiredService<MeasurementQueries>();
+    var measures = await queries.ReadByMeterIdsDynamic(
+      Meters.ToHashSet(),
+      ResolutionModel.Year,
+      30,
+      0,
+      CancellationToken,
+      DateTimeOffset.UtcNow.AddMonths(-2),
+      DateTimeOffset.UtcNow);
+
+    var orderedMeasures = measures.Items.OrderBy(x => x.Timestamp).ToList();
+    measurements = orderedMeasures.Select(x => (IAggregate)x).ToList();
+  }
 }
