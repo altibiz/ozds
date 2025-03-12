@@ -29,15 +29,14 @@
     <Details Model="@context.Model"/>
   </Details>
 </Mutating>
-  <MudGrid Justify="Justify.FlexStart" AlignItems="Center" Spacing="2" Style="width: 170px">
+  <MudGrid Justify="Justify.FlexStart" Spacing="2" Style="width: 170px">
     <MudItem xs="12">
       <MudDatePicker Label="@Translate("Pick month")"
                      Date="selectedMonth"
                      DateChanged="OnDateChanged"
                      OpenTo="OpenTo.Month"
                      FixDay="@DateTime.Today.Day"
-                     DateFormat="MM.yyyy."
-                     Dense="true" />
+                     DateFormat="MM.yyyy." />
     </MudItem>
     <MudItem xs="12">
       <DownloadField IsGeneric="false" FileName="@(Id + "_MonthlyAggregate_" + selectedMonth?.ToString("MM.yyyy") + ".csv")" Models="@measurements" />

@@ -10,10 +10,8 @@ using Ozds.Client.State;
 
 namespace Ozds.Client.Pages;
 
-public partial class MeterPage
-  : OzdsIdentifiableModelPageComponentBase<IMeter>
+public partial class MeterPage : OzdsIdentifiableModelPageComponentBase<IMeter>
 {
-
   [CascadingParameter]
   private AnalysisState AnalysisState { get; set; } = default!;
 
@@ -30,7 +28,7 @@ public partial class MeterPage
 
   private List<IMeter> meters = new();
 
-  IEnumerable<object> measurements = new List<object>();
+  private IEnumerable<object> measurements = new List<object>();
 
   private DateTime? selectedMonth;
 
@@ -40,7 +38,10 @@ public partial class MeterPage
     if (analysis is not null)
     {
       meters = new List<IMeter> { analysis.Meter };
-      DateTimeOffset dto = new DateTimeOffset(selectedMonth!.Value, TimeSpan.Zero);
+      DateTimeOffset dto = new DateTimeOffset(
+        selectedMonth!.Value,
+        TimeSpan.Zero
+      );
       var queries = ScopedServices.GetRequiredService<MeasurementQueries>();
       var measures = await queries.ReadByMeterIdsDynamic(
         meters,
@@ -50,15 +51,16 @@ public partial class MeterPage
         CancellationToken,
         dto.GetStartOfMonth(),
         dto.GetStartOfNextMonth(),
-        5000);
+        5000
+      );
       measurements = measures.Items.OrderBy(x => x.Timestamp).ToList();
     }
   }
 
   protected override async Task OnParametersSetAsync()
   {
-    analysis = AnalysisState.AnalysisBases.Value
-      .AnalysesByMeter()
+    analysis = AnalysisState
+      .AnalysisBases.Value.AnalysesByMeter()
       .FirstOrDefault(x => x.Meter.Id == Id);
 
     if (measurements.Any())

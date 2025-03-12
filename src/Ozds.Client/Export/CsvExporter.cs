@@ -27,7 +27,9 @@ namespace Ozds.Client.Export
     {
       var modelList = models.ToList();
       if (!modelList.Any())
+      {
         return string.Empty;
+      }
 
       var records = modelList
         .Select(model => _modelRecordConverter.ToRecord(model))
@@ -50,7 +52,9 @@ namespace Ozds.Client.Export
     {
       var list = models.ToList();
       if (!list.Any())
+      {
         return string.Empty;
+      }
 
       using var stringWriter = new StringWriter();
       using var csvWriter = new CsvWriter(
@@ -62,70 +66,67 @@ namespace Ozds.Client.Export
       return stringWriter.ToString();
     }
 
-    public CalculationAggregateBasisEntity ToCalculationBasis(IAggregate aggregate)
+    public CalculationAggregateBasisEntity ToCalculationBasis(
+      IAggregate aggregate
+    )
     {
       return new CalculationAggregateBasisEntity
       {
         Date = aggregate.Timestamp.AddHours(1).ToString("dd.MM.yyyy. hh:mm"),
         MeasurementLocationId = aggregate.MeasurementLocationId,
-        ActiveEnergyTotalImportT0Max_Wh = aggregate.ActiveEnergy_Wh
-          .TariffUnary()
+        ActiveEnergyTotalImportT0Max_Wh = aggregate
+          .ActiveEnergy_Wh.TariffUnary()
           .DuplexImport()
           .AggregateMax()
           .PhaseSum(),
-        ActiveEnergyTotalImportT0Min_Wh = aggregate.ActiveEnergy_Wh
-          .TariffUnary()
+        ActiveEnergyTotalImportT0Min_Wh = aggregate
+          .ActiveEnergy_Wh.TariffUnary()
           .DuplexImport()
           .AggregateMin()
           .PhaseSum(),
-        ActiveEnergyTotalImportT1Max_Wh = aggregate.ActiveEnergy_Wh
-          .TariffBinary()
-          .T1
+        ActiveEnergyTotalImportT1Max_Wh = aggregate
+          .ActiveEnergy_Wh.TariffBinary()
+          .T1.DuplexImport()
+          .AggregateMax()
+          .PhaseSum(),
+        ActiveEnergyTotalImportT1Min_Wh = aggregate
+          .ActiveEnergy_Wh.TariffBinary()
+          .T1.DuplexImport()
+          .AggregateMin()
+          .PhaseSum(),
+        ActiveEnergyTotalImportT2Max_Wh = aggregate
+          .ActiveEnergy_Wh.TariffBinary()
+          .T2.DuplexImport()
+          .AggregateMax()
+          .PhaseSum(),
+        ActiveEnergyTotalImportT2Min_Wh = aggregate
+          .ActiveEnergy_Wh.TariffBinary()
+          .T2.DuplexImport()
+          .AggregateMin()
+          .PhaseSum(),
+        ReactiveEnergyTotalImportT0Max_VARh = aggregate
+          .ReactiveEnergy_VARh.TariffUnary()
           .DuplexImport()
           .AggregateMax()
           .PhaseSum(),
-        ActiveEnergyTotalImportT1Min_Wh = aggregate.ActiveEnergy_Wh
-          .TariffBinary()
-          .T1
+        ReactiveEnergyTotalImportT0Min_VARh = aggregate
+          .ReactiveEnergy_VARh.TariffUnary()
           .DuplexImport()
           .AggregateMin()
           .PhaseSum(),
-        ActiveEnergyTotalImportT2Max_Wh = aggregate.ActiveEnergy_Wh
-          .TariffBinary()
-          .T2
-          .DuplexImport()
-          .AggregateMax()
-          .PhaseSum(),
-        ActiveEnergyTotalImportT2Min_Wh = aggregate.ActiveEnergy_Wh
-          .TariffBinary()
-          .T2
-          .DuplexImport()
-          .AggregateMin()
-          .PhaseSum(),
-        ReactiveEnergyTotalImportT0Max_VARh = aggregate.ReactiveEnergy_VARh
-          .TariffUnary()
-          .DuplexImport()
-          .AggregateMax()
-          .PhaseSum(),
-        ReactiveEnergyTotalImportT0Min_VARh = aggregate.ReactiveEnergy_VARh
-          .TariffUnary()
-          .DuplexImport()
-          .AggregateMin()
-          .PhaseSum(),
-        ReactiveEnergyTotalExportT0Max_VARh = aggregate.ReactiveEnergy_VARh
-          .TariffUnary()
+        ReactiveEnergyTotalExportT0Max_VARh = aggregate
+          .ReactiveEnergy_VARh.TariffUnary()
           .DuplexExport()
           .AggregateMax()
           .PhaseSum(),
-        ReactiveEnergyTotalExportT0Min_VARh = aggregate.ReactiveEnergy_VARh
-          .TariffUnary()
+        ReactiveEnergyTotalExportT0Min_VARh = aggregate
+          .ReactiveEnergy_VARh.TariffUnary()
           .DuplexExport()
           .AggregateMin()
           .PhaseSum(),
-        DerivedActivePowerTotalImportT1Max_W = aggregate.DerivedActivePower_W
-          .TariffBinary()
-          .T1
-          .DuplexImport()
+        DerivedActivePowerTotalImportT1Max_W = aggregate
+          .DerivedActivePower_W.TariffBinary()
+          .T1.DuplexImport()
           .AggregateMax()
           .PhaseSum()
       };
@@ -148,15 +149,20 @@ namespace Ozds.Client.Export
 
       public decimal ActiveEnergyTotalImportT2Max_Wh { get; set; } = default;
 
-      public decimal ReactiveEnergyTotalImportT0Min_VARh { get; set; } = default;
+      public decimal ReactiveEnergyTotalImportT0Min_VARh { get; set; } =
+        default;
 
-      public decimal ReactiveEnergyTotalImportT0Max_VARh { get; set; } = default;
+      public decimal ReactiveEnergyTotalImportT0Max_VARh { get; set; } =
+        default;
 
-      public decimal ReactiveEnergyTotalExportT0Min_VARh { get; set; } = default;
+      public decimal ReactiveEnergyTotalExportT0Min_VARh { get; set; } =
+        default;
 
-      public decimal ReactiveEnergyTotalExportT0Max_VARh { get; set; } = default;
+      public decimal ReactiveEnergyTotalExportT0Max_VARh { get; set; } =
+        default;
 
-      public decimal DerivedActivePowerTotalImportT1Max_W { get; set; } = default!;
+      public decimal DerivedActivePowerTotalImportT1Max_W { get; set; } =
+        default!;
     }
   }
 }

@@ -22,9 +22,9 @@ public partial class NetworkUserPage
   [CascadingParameter]
   private RepresentativeState RepresentativeState { get; set; } = default!;
 
-  IEnumerable<IAggregate> measurements = new List<IAggregate>();
+  private IEnumerable<IAggregate> measurements = new List<IAggregate>();
 
-  private List<MeterAnalysis?> analysis;
+  private List<MeterAnalysis> analysis = new();
 
   private DateTime? selectedMonth;
 
@@ -46,11 +46,13 @@ public partial class NetworkUserPage
 
     return networkUser;
   }
+
   protected override async Task OnParametersSetAsync()
   {
     analysis = AnalysisState
       .AnalysisBases.Value.AnalysesByMeter()
-      .Where(x => x.NetworkUser.Id == Id).ToList();
+      .Where(x => x.NetworkUser?.Id == Id)
+      .ToList();
 
     if (measurements.Any())
     {

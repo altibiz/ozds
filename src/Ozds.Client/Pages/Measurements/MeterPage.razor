@@ -34,15 +34,14 @@
       <Columns Models="@analysis.Analysis.Monthly"/>
     </Columns>
   </Table>
-    <MudGrid Justify="Justify.FlexStart" AlignItems="Center" Spacing="2" Style="width: 170px">
+    <MudGrid Justify="Justify.FlexStart" Spacing="2" Style="width: 170px">
     <MudItem xs="12">
       <MudDatePicker Label="@Translate("Pick month")"
                      Date="selectedMonth"
                      DateChanged="OnDateChanged"
                      OpenTo="OpenTo.Month"
                      FixDay="@DateTime.Today.Day"
-                     DateFormat="MM.yyyy."
-                     Dense="true" />
+                     DateFormat="MM.yyyy." />
     </MudItem>
     <MudItem xs="12">
       <DownloadField FileName="@("Meter_" + Id + "_Measurements_" + selectedMonth?.ToString("MM.yyyy") + ".csv")" Models="@measurements" />

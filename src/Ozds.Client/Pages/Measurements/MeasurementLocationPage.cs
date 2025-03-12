@@ -26,7 +26,7 @@ public partial class MeasurementLocationPage
 
   private List<IMeasurementLocation> measurementLocations = new();
 
-  IEnumerable<IAggregate> measurements = new List<IAggregate>();
+  private IEnumerable<IAggregate> measurements = new List<IAggregate>();
 
   private DateTime? selectedMonth;
 
@@ -35,8 +35,14 @@ public partial class MeasurementLocationPage
     selectedMonth = date;
     if (analysis is not null)
     {
-      measurementLocations = new List<IMeasurementLocation> { analysis.MeasurementLocation };
-      DateTimeOffset dto = new DateTimeOffset(selectedMonth!.Value, TimeSpan.Zero);
+      measurementLocations = new List<IMeasurementLocation>
+      {
+        analysis.MeasurementLocation
+      };
+      DateTimeOffset dto = new DateTimeOffset(
+        selectedMonth!.Value,
+        TimeSpan.Zero
+      );
       var queries = ScopedServices.GetRequiredService<MeasurementQueries>();
       var measures = await queries.ReadByMeasurementLocationIdsDynamic(
         measurementLocations,
@@ -46,7 +52,8 @@ public partial class MeasurementLocationPage
         CancellationToken,
         dto.GetStartOfMonth(),
         dto.GetStartOfNextMonth(),
-        5000);
+        5000
+      );
       var orderedMeasures = measures.Items.OrderBy(x => x.Timestamp).ToList();
       measurements = orderedMeasures.Select(x => (IAggregate)x).ToList();
     }
@@ -54,8 +61,8 @@ public partial class MeasurementLocationPage
 
   protected override async Task OnParametersSetAsync()
   {
-    analysis = AnalysisState.AnalysisBases.Value
-      .AnalysesByMeasurementLocation()
+    analysis = AnalysisState
+      .AnalysisBases.Value.AnalysesByMeasurementLocation()
       .FirstOrDefault(x => x.MeasurementLocation.Id == Id);
 
     if (measurements.Any())

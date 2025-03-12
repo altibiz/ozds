@@ -22,10 +22,8 @@ public partial class LocationPage
   [CascadingParameter]
   private RepresentativeState RepresentativeState { get; set; } = default!;
 
-  IEnumerable<IAggregate> measurements = new List<IAggregate>();
-
-  private List<MeterAnalysis?> analysis;
-
+  private IEnumerable<IAggregate> measurements = new List<IAggregate>();
+  private List<MeterAnalysis> analysis = new();
   private DateTime? selectedMonth;
 
   private async Task<LocationModel?> OnLoadAsync()
