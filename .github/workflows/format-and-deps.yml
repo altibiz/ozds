@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 
-name: check
+name: format-and-deps
 
 on:
   pull_request:
@@ -8,23 +8,14 @@ on:
       - dev
 
 jobs:
-  check:
-    name: check
+  format-and-deps:
+    name: format-and-deps
     runs-on: ubuntu-latest
-
-    services:
-      timescaledb:
-        image: timescale/timescaledb-ha:pg14-latest
-        env:
-          POSTGRES_DB: ozds
-          POSTGRES_USER: ozds
-          POSTGRES_PASSWORD: ozds
-        ports:
-          - 5432:5432
-
     steps:
       - name: checkout
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN_HRVOJE }}
 
       - name: install-nix
         uses: cachix/install-nix-action@v30
@@ -34,8 +25,14 @@ jobs:
       - name: prepare
         run: nix develop .#check -c dotnet tool restore
 
-      - name: lint
-        run: nix develop .#check -c just lint
+      - name: deps
+        run: nix develop .#check -c just deps
 
-      - name: test
-        run: nix develop .#check -c just test
+      - name: format
+        run: nix develop .#check -c just format
+
+      - name: commit
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: format & deps.nix
+          branch: ${{ github.head_ref }}

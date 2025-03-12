@@ -9,6 +9,7 @@ ignorePaths:
   - "deps.nix"
   - "justfile"
   - "flake.nix"
+  - "scripts/flake/**/*"
   - "docker-compose.yml"
   - "omnisharp.json"
   - ".github/workflows/*"

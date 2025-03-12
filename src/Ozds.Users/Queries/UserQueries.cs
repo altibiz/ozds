@@ -15,7 +15,7 @@ public class UserQueries(
   UserManager<IUser> userManager,
   IServiceProvider serviceProvider,
   ISession session
-) : IUserQueries
+) : IQueries
 {
   public async Task<UserEntity?> ReadUserByClaimsPrincipal(
     ClaimsPrincipal principal,

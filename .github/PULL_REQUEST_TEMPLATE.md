@@ -8,6 +8,9 @@
   Fixes #16.
 -->
 
+- [ ] I read `CONTRIBUTING.md`
+- [ ] I modified `CHANGELOG.md`
+
 ## Description
 
 <!-- TODO:

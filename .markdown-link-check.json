@@ -10,10 +10,10 @@
       "pattern": "^https://localhost"
     },
     {
-      "pattern": "^http://altibiz.github.io"
+      "pattern": "^https://altibiz.github.io/ozds"
     },
     {
-      "pattern": "^https://altibiz.github.io"
+      "pattern": "^https://github.com/altibiz/ozds"
     }
   ]
 }

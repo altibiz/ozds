@@ -8,6 +8,13 @@
 	<ItemGroup>
 	  <ProjectReference Include="../../src/Ozds.Business/Ozds.Business.csproj" />
 	  <ProjectReference Include="../../src/Ozds.Client/Ozds.Client.csproj" />
+	  <ProjectReference Include="../../src/Ozds.Data/Ozds.Data.csproj" />
+	  <ProjectReference Include="../../src/Ozds.Document/Ozds.Document.csproj" />
+	  <ProjectReference Include="../../src/Ozds.Email/Ozds.Email.csproj" />
+	  <ProjectReference Include="../../src/Ozds.Iot/Ozds.Iot.csproj" />
+	  <ProjectReference Include="../../src/Ozds.Jobs/Ozds.Jobs.csproj" />
+	  <ProjectReference Include="../../src/Ozds.Messaging/Ozds.Messaging.csproj" />
+	  <ProjectReference Include="../../src/Ozds.Users/Ozds.Users.csproj" />
 	</ItemGroup>
 
   <ItemGroup>

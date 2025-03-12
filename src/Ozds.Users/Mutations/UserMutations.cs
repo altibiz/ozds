@@ -8,7 +8,7 @@ using Ozds.Users.Mutations.Abstractions;
 
 namespace Ozds.Users.Mutations;
 
-public class UserMutations : IUserMutations
+public class UserMutations : IMutations
 {
   private readonly UserManager<IUser> _userManager;
 

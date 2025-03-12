@@ -3,7 +3,7 @@ using Ozds.Users.Entities;
 
 namespace Ozds.Users.Queries.Abstractions;
 
-public interface IUserQueries
+public interface IQueries
 {
   Task<UserEntity?> ReadUserByClaimsPrincipal(
     ClaimsPrincipal principal,

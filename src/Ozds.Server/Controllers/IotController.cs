@@ -20,7 +20,7 @@ public class IotController(IPushPublisher publisher) : Controller
   public async Task<IActionResult> Push(
     string id,
     [FromHeader(Name = "X-Buffer-Behavior")]
-    string bufferBehavior = "buffer"
+    string? bufferBehavior = "buffer"
   )
   {
     IMessengerPushRequestEntity? request;

@@ -27,6 +27,7 @@ measurements := absolute_path('scripts/database/measurements.nu')
 playwright := absolute_path('src/Ozds.Server/bin/Debug/net8.0/playwright.ps1')
 ozdsserver := absolute_path('scripts/startup/ozds-server.sh')
 ozdsserverdev := absolute_path('scripts/startup/ozds-server-dev.sh')
+raspberryPi4 := absolute_path('scripts/flake/raspberryPi4.nu')
 current := "current"
 
 default:
@@ -81,7 +82,9 @@ format:
       --exclude='**/.git/**/*;**/.nuget/**/*;**/obj/**/*;**/bin/**/*'
 
 deps:
-    exec (nix build ".#default.fetch-deps" --print-out-paths --no-link) deps.nix
+    exec \
+      (nix build ".#default.fetch-deps" --print-out-paths --no-link) \
+      ./scripts/flake/ozds/deps.nix
 
 lint:
     prettier --check \
@@ -155,6 +158,11 @@ publish *args:
       --configuration Release \
       {{ args }}
 
+    cp '{{ ozdsserver }}' '{{ artifacts }}/ozds-server'
+    cp '{{ ozdsserverdev }}' '{{ artifacts }}/ozds-server-dev'
+
+    mv '{{ artifacts }}/App_Data' '{{ artifacts }}/App_Data_Dev'
+
     mkdir ("{{ artifacts }}/.playwright/package/.local-browsers" \
       + "/chromium-1134/chrome-linux")
 
@@ -166,11 +174,6 @@ publish *args:
           withWebkit = false; \
         }" \
         "/chromium-1134/chrome-linux/chrome"
-
-    cp '{{ ozdsserver }}' '{{ artifacts }}/ozds-server'
-    cp '{{ ozdsserverdev }}' '{{ artifacts }}/ozds-server-dev'
-
-    mv '{{ artifacts }}/App_Data' '{{ artifacts }}/App_Data_Dev'
 
 docs:
     rm -rf '{{ artifacts }}'
@@ -188,6 +191,9 @@ docs:
 
     cp '{{ docs }}/index.html' {{ artifacts }}
     cp '{{ docs }}/favicon.ico' {{ artifacts }}
+
+raspberryPi4 *args:
+    {{ raspberryPi4 }} {{ args }}
 
 migrate project name:
     @just clean
