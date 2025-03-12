@@ -34,8 +34,20 @@
       <Columns Models="@analysis.Analysis.Monthly"/>
     </Columns>
   </Table>
-  <MudDatePicker Label="@Translate("Pick month")" Date="selectedMonth" DateChanged="OnDateChanged" OpenTo="OpenTo.Month" FixDay="@DateTime.Today.Day" DateFormat="MM.yyyy." />
-  <DownloadField Models="@measurements"></DownloadField>
+    <MudGrid Justify="Justify.FlexStart" AlignItems="Center" Spacing="2" Style="width: 170px">
+    <MudItem xs="12">
+      <MudDatePicker Label="@Translate("Pick month")"
+                     Date="selectedMonth"
+                     DateChanged="OnDateChanged"
+                     OpenTo="OpenTo.Month"
+                     FixDay="@DateTime.Today.Day"
+                     DateFormat="MM.yyyy."
+                     Dense="true" />
+    </MudItem>
+    <MudItem xs="12">
+      <DownloadField FileName="@("Meter_" + Id + "_Measurements_" + selectedMonth?.ToString("MM.yyyy") + ".csv")" Models="@measurements" />
+    </MudItem>
+  </MudGrid>
   <MeasurementChartControls Meters="@meters">
     <MeasurementGaugeChart Parameters="@context"/>
     <MeasurementLineChart Parameters="@context" Brush="@(Breakpoint >= Breakpoint.MdAndUp)"/>
@@ -63,57 +75,3 @@
     <Details Model="context.Model"/>
   </Details>
 </Mutating>
-
-@code {
-  [CascadingParameter]
-  private AnalysisState AnalysisState { get; set; } = default!;
-
-  [Parameter]
-  public string Id { get; set; } = default!;
-
-  [CascadingParameter]
-  private RepresentativeState RepresentativeState { get; set; } = default!;
-
-  [CascadingParameter]
-  private Breakpoint Breakpoint { get; set; }
-
-  private MeterAnalysis? analysis;
-
-  private List<IMeter> meters = new();
-
-  IEnumerable<object> measurements = new List<object>();
-
-  private DateTime? selectedMonth;
-
-  private async Task OnDateChanged(DateTime? date)
-  {
-    selectedMonth = date;
-    if (analysis is not null)
-    {
-      meters = new List<IMeter> { analysis.Meter };
-      DateTimeOffset dto = new DateTimeOffset(selectedMonth!.Value, TimeSpan.Zero);
-      var queries = ScopedServices.GetRequiredService<MeasurementQueries>();
-      var measures = await queries.ReadByMeterIdsDynamic(
-        meters,
-        ResolutionModel.Hour,
-        30,
-        0,
-        CancellationToken,
-        dto.GetStartOfMonth(),
-        dto.GetStartOfNextMonth(),
-        5000);
-      measurements = measures.Items.OrderBy(x => x.Timestamp).ToList();
-    }
-  }
-
-  protected override async Task OnParametersSetAsync()
-  {
-    analysis = AnalysisState.AnalysisBases.Value
-      .AnalysesByMeter()
-      .FirstOrDefault(x => x.Meter.Id == Id);
-
-    if(measurements.Any()){
-      await OnDateChanged(selectedMonth);
-    }
-  }
-}

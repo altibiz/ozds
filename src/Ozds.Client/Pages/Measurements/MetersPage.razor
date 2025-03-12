@@ -46,7 +46,7 @@ Allows = [RoleModel.OperatorRepresentative])]
   <MudLink Href="@(PageHref<MeterPage>())">
     @Translate("Create")
   </MudLink>
-  <DownloadField IsGeneric="@false"  FileName="MeterExport" Models="@analyses.Select(x => x.Meter).ToList()" ></DownloadField>
+  <DownloadField IsGeneric="@false" FileName="MetersExport.csv" Models="@analyses.Select(x => x.Meter).ToList()" ></DownloadField>
   <UploadTabs TRecord="IMeterRecord"></UploadTabs>
 }
 

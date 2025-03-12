@@ -29,11 +29,17 @@
     <Details Model="@context.Model"/>
   </Details>
 </Mutating>
-  <MudDatePicker
-    Label="@Translate("Pick month")"
-  	Date="selectedMonth"
-    DateChanged="OnDateChanged"
-    OpenTo="OpenTo.Month"
-    FixDay="@DateTime.Today.Day"
-    DateFormat="MM.yyyy." />
-<DownloadField IsGeneric="false" Models="@measurements" ></DownloadField>
+  <MudGrid Justify="Justify.FlexStart" AlignItems="Center" Spacing="2" Style="width: 170px">
+    <MudItem xs="12">
+      <MudDatePicker Label="@Translate("Pick month")"
+                     Date="selectedMonth"
+                     DateChanged="OnDateChanged"
+                     OpenTo="OpenTo.Month"
+                     FixDay="@DateTime.Today.Day"
+                     DateFormat="MM.yyyy."
+                     Dense="true" />
+    </MudItem>
+    <MudItem xs="12">
+      <DownloadField IsGeneric="false" FileName="@(Id + "_MonthlyAggregate_" + selectedMonth?.ToString("MM.yyyy") + ".csv")" Models="@measurements" />
+    </MudItem>
+  </MudGrid>

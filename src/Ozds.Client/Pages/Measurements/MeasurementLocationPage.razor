@@ -41,7 +41,7 @@
                      Dense="true" />
     </MudItem>
     <MudItem xs="12">
-      <DownloadField IsGeneric="false" Models="@measurements" />
+      <DownloadField IsGeneric="false" FileName="@("MeasurementLocation_" + Id + "_Measurements_" + selectedMonth?.ToString("MM.yyyy") + ".csv")" Models="@measurements" />
     </MudItem>
   </MudGrid>
 
@@ -82,57 +82,3 @@
     <Details Model="context.Model"/>
   </Details>
 </Mutating>
-
-@code {
-
-  [CascadingParameter]
-  public AnalysisState AnalysisState { get; set; } = default!;
-
-  [CascadingParameter]
-  public Breakpoint Breakpoint { get; set; }
-
-  [Parameter]
-  public string Id { get; set; } = default!;
-
-  private MeasurementLocationAnalysis? analysis;
-
-  private List<IMeasurementLocation> measurementLocations = new();
-
-  IEnumerable<IAggregate> measurements = new List<IAggregate>();
-
-  private DateTime? selectedMonth;
-
-  private async Task OnDateChanged(DateTime? date)
-  {
-    selectedMonth = date;
-    if (analysis is not null)
-    {
-      measurementLocations = new List<IMeasurementLocation> { analysis.MeasurementLocation };
-      DateTimeOffset dto = new DateTimeOffset(selectedMonth!.Value, TimeSpan.Zero);
-      var queries = ScopedServices.GetRequiredService<MeasurementQueries>();
-      var measures = await queries.ReadByMeasurementLocationIdsDynamic(
-        measurementLocations,
-        ResolutionModel.Hour,
-        30,
-        0,
-        CancellationToken,
-        dto.GetStartOfMonth(),
-        dto.GetStartOfNextMonth(),
-        5000);
-      var orderedMeasures = measures.Items.OrderBy(x => x.Timestamp).ToList();
-      measurements = orderedMeasures.Select(x => (IAggregate)x).ToList();
-    }
-  }
-
-  protected override async Task OnParametersSetAsync()
-  {
-    analysis = AnalysisState.AnalysisBases.Value
-      .AnalysesByMeasurementLocation()
-      .FirstOrDefault(x => x.MeasurementLocation.Id == Id);
-
-    if(measurements.Any()){
-      await OnDateChanged(selectedMonth);
-    }
-  }
-
-}
