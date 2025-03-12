@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using CsvHelper;
+using Microsoft.IdentityModel.Tokens;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Client.Conversion;
 using Ozds.Client.Export.Abstractions;
@@ -26,7 +27,7 @@ namespace Ozds.Client.Export
     )
     {
       var modelList = models.ToList();
-      if (!modelList.Any())
+      if (modelList.IsNullOrEmpty())
       {
         return string.Empty;
       }
@@ -51,7 +52,7 @@ namespace Ozds.Client.Export
     )
     {
       var list = models.ToList();
-      if (!list.Any())
+      if (list.IsNullOrEmpty())
       {
         return string.Empty;
       }
