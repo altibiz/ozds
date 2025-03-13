@@ -45,74 +45,74 @@ public class AbbB2xAggregateModelActivator(
     model.ActiveEnergyL1ImportT0_Wh = modelActivator
       .Activate<CumulativeAggregateMeasureModel>();
     model.DerivedActivePowerL1ImportT0_W = modelActivator
-      .Activate<InstantaneousAggregateMeasureModel>();
+      .Activate<DerivedAggregateMeasureModel>();
     model.ActiveEnergyL2ImportT0_Wh = modelActivator
       .Activate<CumulativeAggregateMeasureModel>();
     model.DerivedActivePowerL2ImportT0_W = modelActivator
-      .Activate<InstantaneousAggregateMeasureModel>();
+      .Activate<DerivedAggregateMeasureModel>();
     model.ActiveEnergyL3ImportT0_Wh = modelActivator
       .Activate<CumulativeAggregateMeasureModel>();
     model.DerivedActivePowerL3ImportT0_W = modelActivator
-      .Activate<InstantaneousAggregateMeasureModel>();
+      .Activate<DerivedAggregateMeasureModel>();
     model.ActiveEnergyL1ExportT0_Wh = modelActivator
       .Activate<CumulativeAggregateMeasureModel>();
     model.DerivedActivePowerL1ExportT0_W = modelActivator
-      .Activate<InstantaneousAggregateMeasureModel>();
+      .Activate<DerivedAggregateMeasureModel>();
     model.ActiveEnergyL2ExportT0_Wh = modelActivator
       .Activate<CumulativeAggregateMeasureModel>();
     model.DerivedActivePowerL2ExportT0_W = modelActivator
-      .Activate<InstantaneousAggregateMeasureModel>();
+      .Activate<DerivedAggregateMeasureModel>();
     model.ActiveEnergyL3ExportT0_Wh = modelActivator
       .Activate<CumulativeAggregateMeasureModel>();
     model.DerivedActivePowerL3ExportT0_W = modelActivator
-      .Activate<InstantaneousAggregateMeasureModel>();
+      .Activate<DerivedAggregateMeasureModel>();
     model.ReactiveEnergyL1ImportT0_VARh = modelActivator
       .Activate<CumulativeAggregateMeasureModel>();
     model.DerivedReactivePowerL1ImportT0_VAR = modelActivator
-      .Activate<InstantaneousAggregateMeasureModel>();
+      .Activate<DerivedAggregateMeasureModel>();
     model.ReactiveEnergyL2ImportT0_VARh = modelActivator
       .Activate<CumulativeAggregateMeasureModel>();
     model.DerivedReactivePowerL2ImportT0_VAR = modelActivator
-      .Activate<InstantaneousAggregateMeasureModel>();
+      .Activate<DerivedAggregateMeasureModel>();
     model.ReactiveEnergyL3ImportT0_VARh = modelActivator
       .Activate<CumulativeAggregateMeasureModel>();
     model.DerivedReactivePowerL3ImportT0_VAR = modelActivator
-      .Activate<InstantaneousAggregateMeasureModel>();
+      .Activate<DerivedAggregateMeasureModel>();
     model.ReactiveEnergyL1ExportT0_VARh = modelActivator
       .Activate<CumulativeAggregateMeasureModel>();
     model.DerivedReactivePowerL1ExportT0_VAR = modelActivator
-      .Activate<InstantaneousAggregateMeasureModel>();
+      .Activate<DerivedAggregateMeasureModel>();
     model.ReactiveEnergyL2ExportT0_VARh = modelActivator
       .Activate<CumulativeAggregateMeasureModel>();
     model.DerivedReactivePowerL2ExportT0_VAR = modelActivator
-      .Activate<InstantaneousAggregateMeasureModel>();
+      .Activate<DerivedAggregateMeasureModel>();
     model.ReactiveEnergyL3ExportT0_VARh = modelActivator
       .Activate<CumulativeAggregateMeasureModel>();
     model.DerivedReactivePowerL3ExportT0_VAR = modelActivator
-      .Activate<InstantaneousAggregateMeasureModel>();
+      .Activate<DerivedAggregateMeasureModel>();
     model.ActiveEnergyTotalImportT0_Wh = modelActivator
       .Activate<CumulativeAggregateMeasureModel>();
     model.DerivedActivePowerTotalImportT0_W = modelActivator
-      .Activate<InstantaneousAggregateMeasureModel>();
+      .Activate<DerivedAggregateMeasureModel>();
     model.ActiveEnergyTotalExportT0_Wh = modelActivator
       .Activate<CumulativeAggregateMeasureModel>();
     model.DerivedActivePowerTotalExportT0_W = modelActivator
-      .Activate<InstantaneousAggregateMeasureModel>();
+      .Activate<DerivedAggregateMeasureModel>();
     model.ReactiveEnergyTotalImportT0_VARh = modelActivator
       .Activate<CumulativeAggregateMeasureModel>();
     model.DerivedReactivePowerTotalImportT0_VAR = modelActivator
-      .Activate<InstantaneousAggregateMeasureModel>();
+      .Activate<DerivedAggregateMeasureModel>();
     model.ReactiveEnergyTotalExportT0_VARh = modelActivator
       .Activate<CumulativeAggregateMeasureModel>();
     model.DerivedReactivePowerTotalExportT0_VAR = modelActivator
-      .Activate<InstantaneousAggregateMeasureModel>();
+      .Activate<DerivedAggregateMeasureModel>();
     model.ActiveEnergyTotalImportT1_Wh = modelActivator
       .Activate<CumulativeAggregateMeasureModel>();
     model.DerivedActivePowerTotalImportT1_W = modelActivator
-      .Activate<InstantaneousAggregateMeasureModel>();
+      .Activate<DerivedAggregateMeasureModel>();
     model.ActiveEnergyTotalImportT2_Wh = modelActivator
       .Activate<CumulativeAggregateMeasureModel>();
     model.DerivedActivePowerTotalImportT2_W = modelActivator
-      .Activate<InstantaneousAggregateMeasureModel>();
+      .Activate<DerivedAggregateMeasureModel>();
   }
 }

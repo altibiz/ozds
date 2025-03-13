@@ -107,7 +107,7 @@ public class AbbB2xAggregateModelEntityConverter(
       model.DerivedActivePowerL1ImportT0_W is null
         ? null!
         : modelEntityConverter.ToEntity<
-          InstantaneousAggregateMeasureEntity>(
+          DerivedAggregateMeasureEntity>(
           model.DerivedActivePowerL1ImportT0_W);
     entity.ActiveEnergyL2ImportT0_Wh =
       model.ActiveEnergyL2ImportT0_Wh is null
@@ -119,7 +119,7 @@ public class AbbB2xAggregateModelEntityConverter(
       model.DerivedActivePowerL2ImportT0_W is null
         ? null!
         : modelEntityConverter.ToEntity<
-          InstantaneousAggregateMeasureEntity>(
+          DerivedAggregateMeasureEntity>(
           model.DerivedActivePowerL2ImportT0_W);
     entity.ActiveEnergyL3ImportT0_Wh =
       model.ActiveEnergyL3ImportT0_Wh is null
@@ -131,7 +131,7 @@ public class AbbB2xAggregateModelEntityConverter(
       model.DerivedActivePowerL3ImportT0_W is null
         ? null!
         : modelEntityConverter.ToEntity<
-          InstantaneousAggregateMeasureEntity>(
+          DerivedAggregateMeasureEntity>(
           model.DerivedActivePowerL3ImportT0_W);
     entity.ActiveEnergyTotalImportT0_Wh =
       model.ActiveEnergyTotalImportT0_Wh is null
@@ -143,7 +143,7 @@ public class AbbB2xAggregateModelEntityConverter(
       model.DerivedActivePowerTotalImportT0_W is null
         ? null!
         : modelEntityConverter.ToEntity<
-          InstantaneousAggregateMeasureEntity>(
+          DerivedAggregateMeasureEntity>(
           model.DerivedActivePowerTotalImportT0_W);
     entity.ActiveEnergyL1ExportT0_Wh =
       model.ActiveEnergyL1ExportT0_Wh is null
@@ -155,7 +155,7 @@ public class AbbB2xAggregateModelEntityConverter(
       model.DerivedActivePowerL1ExportT0_W is null
         ? null!
         : modelEntityConverter.ToEntity<
-          InstantaneousAggregateMeasureEntity>(
+          DerivedAggregateMeasureEntity>(
           model.DerivedActivePowerL1ExportT0_W);
     entity.ActiveEnergyL2ExportT0_Wh =
       model.ActiveEnergyL2ExportT0_Wh is null
@@ -167,7 +167,7 @@ public class AbbB2xAggregateModelEntityConverter(
       model.DerivedActivePowerL2ExportT0_W is null
         ? null!
         : modelEntityConverter.ToEntity<
-          InstantaneousAggregateMeasureEntity>(
+          DerivedAggregateMeasureEntity>(
           model.DerivedActivePowerL2ExportT0_W);
     entity.ActiveEnergyL3ExportT0_Wh =
       model.ActiveEnergyL3ExportT0_Wh is null
@@ -179,7 +179,7 @@ public class AbbB2xAggregateModelEntityConverter(
       model.DerivedActivePowerL3ExportT0_W is null
         ? null!
         : modelEntityConverter.ToEntity<
-          InstantaneousAggregateMeasureEntity>(
+          DerivedAggregateMeasureEntity>(
           model.DerivedActivePowerL3ExportT0_W);
     entity.ActiveEnergyTotalExportT0_Wh =
       model.ActiveEnergyTotalExportT0_Wh is null
@@ -191,7 +191,7 @@ public class AbbB2xAggregateModelEntityConverter(
       model.DerivedActivePowerTotalExportT0_W is null
         ? null!
         : modelEntityConverter.ToEntity<
-          InstantaneousAggregateMeasureEntity>(
+          DerivedAggregateMeasureEntity>(
           model.DerivedActivePowerTotalExportT0_W);
     entity.ActiveEnergyTotalImportT1_Wh =
       model.ActiveEnergyTotalImportT1_Wh is null
@@ -203,7 +203,7 @@ public class AbbB2xAggregateModelEntityConverter(
       model.DerivedActivePowerTotalImportT1_W is null
         ? null!
         : modelEntityConverter.ToEntity<
-          InstantaneousAggregateMeasureEntity>(
+          DerivedAggregateMeasureEntity>(
           model.DerivedActivePowerTotalImportT1_W);
     entity.ActiveEnergyTotalImportT2_Wh =
       model.ActiveEnergyTotalImportT2_Wh is null
@@ -215,7 +215,7 @@ public class AbbB2xAggregateModelEntityConverter(
       model.DerivedActivePowerTotalImportT2_W is null
         ? null!
         : modelEntityConverter.ToEntity<
-          InstantaneousAggregateMeasureEntity>(
+          DerivedAggregateMeasureEntity>(
           model.DerivedActivePowerTotalImportT2_W);
     entity.ReactiveEnergyL1ImportT0_VARh =
       model.ReactiveEnergyL1ImportT0_VARh is null
@@ -227,7 +227,7 @@ public class AbbB2xAggregateModelEntityConverter(
       model.DerivedReactivePowerL1ImportT0_VAR is null
         ? null!
         : modelEntityConverter.ToEntity<
-          InstantaneousAggregateMeasureEntity>(
+          DerivedAggregateMeasureEntity>(
           model.DerivedReactivePowerL1ImportT0_VAR);
     entity.ReactiveEnergyL2ImportT0_VARh =
       model.ReactiveEnergyL2ImportT0_VARh is null
@@ -239,7 +239,7 @@ public class AbbB2xAggregateModelEntityConverter(
       model.DerivedReactivePowerL2ImportT0_VAR is null
         ? null!
         : modelEntityConverter.ToEntity<
-          InstantaneousAggregateMeasureEntity>(
+          DerivedAggregateMeasureEntity>(
           model.DerivedReactivePowerL2ImportT0_VAR);
     entity.ReactiveEnergyL3ImportT0_VARh =
       model.ReactiveEnergyL3ImportT0_VARh is null
@@ -251,7 +251,7 @@ public class AbbB2xAggregateModelEntityConverter(
       model.DerivedReactivePowerL3ImportT0_VAR is null
         ? null!
         : modelEntityConverter.ToEntity<
-          InstantaneousAggregateMeasureEntity>(
+          DerivedAggregateMeasureEntity>(
           model.DerivedReactivePowerL3ImportT0_VAR);
     entity.ReactiveEnergyTotalImportT0_VARh =
       model.ReactiveEnergyTotalImportT0_VARh is null
@@ -263,7 +263,7 @@ public class AbbB2xAggregateModelEntityConverter(
       model.DerivedReactivePowerTotalImportT0_VAR is null
         ? null!
         : modelEntityConverter.ToEntity<
-          InstantaneousAggregateMeasureEntity>(
+          DerivedAggregateMeasureEntity>(
           model.DerivedReactivePowerTotalImportT0_VAR);
     entity.ReactiveEnergyL1ExportT0_VARh =
       model.ReactiveEnergyL1ExportT0_VARh is null
@@ -275,7 +275,7 @@ public class AbbB2xAggregateModelEntityConverter(
       model.DerivedReactivePowerL1ExportT0_VAR is null
         ? null!
         : modelEntityConverter.ToEntity<
-          InstantaneousAggregateMeasureEntity>(
+          DerivedAggregateMeasureEntity>(
           model.DerivedReactivePowerL1ExportT0_VAR);
     entity.ReactiveEnergyL2ExportT0_VARh =
       model.ReactiveEnergyL2ExportT0_VARh is null
@@ -287,7 +287,7 @@ public class AbbB2xAggregateModelEntityConverter(
       model.DerivedReactivePowerL2ExportT0_VAR is null
         ? null!
         : modelEntityConverter.ToEntity<
-          InstantaneousAggregateMeasureEntity>(
+          DerivedAggregateMeasureEntity>(
           model.DerivedReactivePowerL2ExportT0_VAR);
     entity.ReactiveEnergyL3ExportT0_VARh =
       model.ReactiveEnergyL3ExportT0_VARh is null
@@ -299,7 +299,7 @@ public class AbbB2xAggregateModelEntityConverter(
       model.DerivedReactivePowerL3ExportT0_VAR is null
         ? null!
         : modelEntityConverter.ToEntity<
-          InstantaneousAggregateMeasureEntity>(
+          DerivedAggregateMeasureEntity>(
           model.DerivedReactivePowerL3ExportT0_VAR);
     entity.ReactiveEnergyTotalExportT0_VARh =
       model.ReactiveEnergyTotalExportT0_VARh is null
@@ -311,7 +311,7 @@ public class AbbB2xAggregateModelEntityConverter(
       model.DerivedReactivePowerTotalExportT0_VAR is null
         ? null!
         : modelEntityConverter.ToEntity<
-          InstantaneousAggregateMeasureEntity>(
+          DerivedAggregateMeasureEntity>(
           model.DerivedReactivePowerTotalExportT0_VAR);
   }
 
@@ -389,7 +389,7 @@ public class AbbB2xAggregateModelEntityConverter(
     model.DerivedActivePowerL1ImportT0_W =
       entity.DerivedActivePowerL1ImportT0_W is null
         ? null!
-        : modelEntityConverter.ToModel<InstantaneousAggregateMeasureModel>(
+        : modelEntityConverter.ToModel<DerivedAggregateMeasureModel>(
           entity.DerivedActivePowerL1ImportT0_W);
     model.ActiveEnergyL2ImportT0_Wh =
       entity.ActiveEnergyL2ImportT0_Wh is null
@@ -399,7 +399,7 @@ public class AbbB2xAggregateModelEntityConverter(
     model.DerivedActivePowerL2ImportT0_W =
       entity.DerivedActivePowerL2ImportT0_W is null
         ? null!
-        : modelEntityConverter.ToModel<InstantaneousAggregateMeasureModel>(
+        : modelEntityConverter.ToModel<DerivedAggregateMeasureModel>(
           entity.DerivedActivePowerL2ImportT0_W);
     model.ActiveEnergyL3ImportT0_Wh =
       entity.ActiveEnergyL3ImportT0_Wh is null
@@ -409,7 +409,7 @@ public class AbbB2xAggregateModelEntityConverter(
     model.DerivedActivePowerL3ImportT0_W =
       entity.DerivedActivePowerL3ImportT0_W is null
         ? null!
-        : modelEntityConverter.ToModel<InstantaneousAggregateMeasureModel>(
+        : modelEntityConverter.ToModel<DerivedAggregateMeasureModel>(
           entity.DerivedActivePowerL3ImportT0_W);
     model.ActiveEnergyTotalImportT0_Wh =
       entity.ActiveEnergyTotalImportT0_Wh is null
@@ -419,7 +419,7 @@ public class AbbB2xAggregateModelEntityConverter(
     model.DerivedActivePowerTotalImportT0_W =
       entity.DerivedActivePowerTotalImportT0_W is null
         ? null!
-        : modelEntityConverter.ToModel<InstantaneousAggregateMeasureModel>(
+        : modelEntityConverter.ToModel<DerivedAggregateMeasureModel>(
           entity.DerivedActivePowerTotalImportT0_W);
     model.ActiveEnergyL1ExportT0_Wh =
       entity.ActiveEnergyL1ExportT0_Wh is null
@@ -429,7 +429,7 @@ public class AbbB2xAggregateModelEntityConverter(
     model.DerivedActivePowerL1ExportT0_W =
       entity.DerivedActivePowerL1ExportT0_W is null
         ? null!
-        : modelEntityConverter.ToModel<InstantaneousAggregateMeasureModel>(
+        : modelEntityConverter.ToModel<DerivedAggregateMeasureModel>(
           entity.DerivedActivePowerL1ExportT0_W);
     model.ActiveEnergyL2ExportT0_Wh =
       entity.ActiveEnergyL2ExportT0_Wh is null
@@ -439,7 +439,7 @@ public class AbbB2xAggregateModelEntityConverter(
     model.DerivedActivePowerL2ExportT0_W =
       entity.DerivedActivePowerL2ExportT0_W is null
         ? null!
-        : modelEntityConverter.ToModel<InstantaneousAggregateMeasureModel>(
+        : modelEntityConverter.ToModel<DerivedAggregateMeasureModel>(
           entity.DerivedActivePowerL2ExportT0_W);
     model.ActiveEnergyL3ExportT0_Wh =
       entity.ActiveEnergyL3ExportT0_Wh is null
@@ -449,7 +449,7 @@ public class AbbB2xAggregateModelEntityConverter(
     model.DerivedActivePowerL3ExportT0_W =
       entity.DerivedActivePowerL3ExportT0_W is null
         ? null!
-        : modelEntityConverter.ToModel<InstantaneousAggregateMeasureModel>(
+        : modelEntityConverter.ToModel<DerivedAggregateMeasureModel>(
           entity.DerivedActivePowerL3ExportT0_W);
     model.ActiveEnergyTotalExportT0_Wh =
       entity.ActiveEnergyTotalExportT0_Wh is null
@@ -459,7 +459,7 @@ public class AbbB2xAggregateModelEntityConverter(
     model.DerivedActivePowerTotalExportT0_W =
       entity.DerivedActivePowerTotalExportT0_W is null
         ? null!
-        : modelEntityConverter.ToModel<InstantaneousAggregateMeasureModel>(
+        : modelEntityConverter.ToModel<DerivedAggregateMeasureModel>(
           entity.DerivedActivePowerTotalExportT0_W);
     model.ActiveEnergyTotalImportT1_Wh =
       entity.ActiveEnergyTotalImportT1_Wh is null
@@ -469,7 +469,7 @@ public class AbbB2xAggregateModelEntityConverter(
     model.DerivedActivePowerTotalImportT1_W =
       entity.DerivedActivePowerTotalImportT1_W is null
         ? null!
-        : modelEntityConverter.ToModel<InstantaneousAggregateMeasureModel>(
+        : modelEntityConverter.ToModel<DerivedAggregateMeasureModel>(
           entity.DerivedActivePowerTotalImportT1_W);
     model.ActiveEnergyTotalImportT2_Wh =
       entity.ActiveEnergyTotalImportT2_Wh is null
@@ -479,7 +479,7 @@ public class AbbB2xAggregateModelEntityConverter(
     model.DerivedActivePowerTotalImportT2_W =
       entity.DerivedActivePowerTotalImportT2_W is null
         ? null!
-        : modelEntityConverter.ToModel<InstantaneousAggregateMeasureModel>(
+        : modelEntityConverter.ToModel<DerivedAggregateMeasureModel>(
           entity.DerivedActivePowerTotalImportT2_W);
     model.ReactiveEnergyL1ImportT0_VARh =
       entity.ReactiveEnergyL1ImportT0_VARh is null
@@ -489,7 +489,7 @@ public class AbbB2xAggregateModelEntityConverter(
     model.DerivedReactivePowerL1ImportT0_VAR =
       entity.DerivedReactivePowerL1ImportT0_VAR is null
         ? null!
-        : modelEntityConverter.ToModel<InstantaneousAggregateMeasureModel>(
+        : modelEntityConverter.ToModel<DerivedAggregateMeasureModel>(
           entity.DerivedReactivePowerL1ImportT0_VAR);
     model.ReactiveEnergyL2ImportT0_VARh =
       entity.ReactiveEnergyL2ImportT0_VARh is null
@@ -499,7 +499,7 @@ public class AbbB2xAggregateModelEntityConverter(
     model.DerivedReactivePowerL2ImportT0_VAR =
       entity.DerivedReactivePowerL2ImportT0_VAR is null
         ? null!
-        : modelEntityConverter.ToModel<InstantaneousAggregateMeasureModel>(
+        : modelEntityConverter.ToModel<DerivedAggregateMeasureModel>(
           entity.DerivedReactivePowerL2ImportT0_VAR);
     model.ReactiveEnergyL3ImportT0_VARh =
       entity.ReactiveEnergyL3ImportT0_VARh is null
@@ -509,7 +509,7 @@ public class AbbB2xAggregateModelEntityConverter(
     model.DerivedReactivePowerL3ImportT0_VAR =
       entity.DerivedReactivePowerL3ImportT0_VAR is null
         ? null!
-        : modelEntityConverter.ToModel<InstantaneousAggregateMeasureModel>(
+        : modelEntityConverter.ToModel<DerivedAggregateMeasureModel>(
           entity.DerivedReactivePowerL3ImportT0_VAR);
     model.ReactiveEnergyTotalImportT0_VARh =
       entity.ReactiveEnergyTotalImportT0_VARh is null
@@ -519,7 +519,7 @@ public class AbbB2xAggregateModelEntityConverter(
     model.DerivedReactivePowerTotalImportT0_VAR =
       entity.DerivedReactivePowerTotalImportT0_VAR is null
         ? null!
-        : modelEntityConverter.ToModel<InstantaneousAggregateMeasureModel>(
+        : modelEntityConverter.ToModel<DerivedAggregateMeasureModel>(
           entity.DerivedReactivePowerTotalImportT0_VAR);
     model.ReactiveEnergyL1ExportT0_VARh =
       entity.ReactiveEnergyL1ExportT0_VARh is null
@@ -529,7 +529,7 @@ public class AbbB2xAggregateModelEntityConverter(
     model.DerivedReactivePowerL1ExportT0_VAR =
       entity.DerivedReactivePowerL1ExportT0_VAR is null
         ? null!
-        : modelEntityConverter.ToModel<InstantaneousAggregateMeasureModel>(
+        : modelEntityConverter.ToModel<DerivedAggregateMeasureModel>(
           entity.DerivedReactivePowerL1ExportT0_VAR);
     model.ReactiveEnergyL2ExportT0_VARh =
       entity.ReactiveEnergyL2ExportT0_VARh is null
@@ -539,7 +539,7 @@ public class AbbB2xAggregateModelEntityConverter(
     model.DerivedReactivePowerL2ExportT0_VAR =
       entity.DerivedReactivePowerL2ExportT0_VAR is null
         ? null!
-        : modelEntityConverter.ToModel<InstantaneousAggregateMeasureModel>(
+        : modelEntityConverter.ToModel<DerivedAggregateMeasureModel>(
           entity.DerivedReactivePowerL2ExportT0_VAR);
     model.ReactiveEnergyL3ExportT0_VARh =
       entity.ReactiveEnergyL3ExportT0_VARh is null
@@ -549,7 +549,7 @@ public class AbbB2xAggregateModelEntityConverter(
     model.DerivedReactivePowerL3ExportT0_VAR =
       entity.DerivedReactivePowerL3ExportT0_VAR is null
         ? null!
-        : modelEntityConverter.ToModel<InstantaneousAggregateMeasureModel>(
+        : modelEntityConverter.ToModel<DerivedAggregateMeasureModel>(
           entity.DerivedReactivePowerL3ExportT0_VAR);
     model.ReactiveEnergyTotalExportT0_VARh =
       entity.ReactiveEnergyTotalExportT0_VARh is null
@@ -559,7 +559,7 @@ public class AbbB2xAggregateModelEntityConverter(
     model.DerivedReactivePowerTotalExportT0_VAR =
       entity.DerivedReactivePowerTotalExportT0_VAR is null
         ? null!
-        : modelEntityConverter.ToModel<InstantaneousAggregateMeasureModel>(
+        : modelEntityConverter.ToModel<DerivedAggregateMeasureModel>(
           entity.DerivedReactivePowerTotalExportT0_VAR);
   }
 }

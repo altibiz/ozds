@@ -37,23 +37,23 @@ public class SchneideriEM3xxxMeasurementModelEntityConverter(
     entity.ApparentPowerTotalNetT0_VA =
       model.ApparentPowerTotalNetT0_VA.ToFloat();
     entity.ActiveEnergyL1ImportT0_Wh =
-      model.ActiveEnergyL1ImportT0_Wh.ToFloat();
+      model.ActiveEnergyL1ImportT0_Wh.ToLong();
     entity.ActiveEnergyL2ImportT0_Wh =
-      model.ActiveEnergyL2ImportT0_Wh.ToFloat();
+      model.ActiveEnergyL2ImportT0_Wh.ToLong();
     entity.ActiveEnergyL3ImportT0_Wh =
-      model.ActiveEnergyL3ImportT0_Wh.ToFloat();
+      model.ActiveEnergyL3ImportT0_Wh.ToLong();
     entity.ActiveEnergyTotalImportT0_Wh =
-      model.ActiveEnergyTotalImportT0_Wh.ToFloat();
+      model.ActiveEnergyTotalImportT0_Wh.ToLong();
     entity.ActiveEnergyTotalExportT0_Wh =
-      model.ActiveEnergyTotalExportT0_Wh.ToFloat();
+      model.ActiveEnergyTotalExportT0_Wh.ToLong();
     entity.ReactiveEnergyTotalImportT0_VARh =
-      model.ReactiveEnergyTotalImportT0_VARh.ToFloat();
+      model.ReactiveEnergyTotalImportT0_VARh.ToLong();
     entity.ReactiveEnergyTotalExportT0_VARh =
-      model.ReactiveEnergyTotalExportT0_VARh.ToFloat();
+      model.ReactiveEnergyTotalExportT0_VARh.ToLong();
     entity.ActiveEnergyTotalImportT1_Wh =
-      model.ActiveEnergyTotalImportT1_Wh.ToFloat();
+      model.ActiveEnergyTotalImportT1_Wh.ToLong();
     entity.ActiveEnergyTotalImportT2_Wh =
-      model.ActiveEnergyTotalImportT2_Wh.ToFloat();
+      model.ActiveEnergyTotalImportT2_Wh.ToLong();
   }
 
   public override void InitializeModel(

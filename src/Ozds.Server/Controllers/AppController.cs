@@ -16,10 +16,10 @@ public class AppController(IAntiforgery antiforgery) : Controller
 
   public IActionResult Cultured(
     string culture,
-    string catchall
+    string? catchall
   )
   {
-    if (catchall.StartsWith("_content"))
+    if (catchall?.StartsWith("_content") ?? false)
     {
       return Redirect($"/{catchall}");
     }

@@ -47,18 +47,18 @@ public class UsageActivePowerTotalImportT1PeakCalculationItemCalculatorTest
     var start = Constants.DefaultDateTimeOffset;
     var end = start.AddMonths(1);
 
-    var instantaneousMeasureFakerNoise =
-      new Faker<InstantaneousAggregateMeasureModel>()
+    var derivedMeasureFakerNoise =
+      new Faker<DerivedAggregateMeasureModel>()
         .RuleFor(
-          m => m.Avg, f => f.Random.Decimal(
+          m => m.Max, f => f.Random.Decimal(
             Constants.MinPowerValue, Constants.MaxPowerValue));
 
-    var measureFakerDud = new Faker<InstantaneousAggregateMeasureModel>()
+    var measureFakerDud = new Faker<DerivedAggregateMeasureModel>()
       .RuleFor(
         x => x.Max,
         (f, m) => f.Random.Decimal(0, expected.Peak_kW * 1000M - 0.01M));
 
-    var measureFakerPeak = new Faker<InstantaneousAggregateMeasureModel>()
+    var measureFakerPeak = new Faker<DerivedAggregateMeasureModel>()
       .RuleFor(
         x => x.Max,
         (_, m) => expected.Peak_kW * 1000M);
@@ -75,34 +75,34 @@ public class UsageActivePowerTotalImportT1PeakCalculationItemCalculatorTest
             end.Subtract(IntervalModel.QuarterHour.ToTimeSpan(start))))
         .RuleFor(
           x => x.DerivedActivePowerL1ImportT0_W,
-          f => instantaneousMeasureFakerNoise.Generate())
+          f => derivedMeasureFakerNoise.Generate())
         .RuleFor(
           x => x.DerivedActivePowerL2ImportT0_W,
-          f => instantaneousMeasureFakerNoise.Generate())
+          f => derivedMeasureFakerNoise.Generate())
         .RuleFor(
           x => x.DerivedActivePowerL3ImportT0_W,
-          f => instantaneousMeasureFakerNoise.Generate())
+          f => derivedMeasureFakerNoise.Generate())
         .RuleFor(
           x => x.DerivedActivePowerTotalImportT0_W,
-          f => instantaneousMeasureFakerNoise.Generate())
+          f => derivedMeasureFakerNoise.Generate())
         .RuleFor(
           x => x.DerivedActivePowerL1ExportT0_W,
-          f => instantaneousMeasureFakerNoise.Generate())
+          f => derivedMeasureFakerNoise.Generate())
         .RuleFor(
           x => x.DerivedActivePowerL2ExportT0_W,
-          f => instantaneousMeasureFakerNoise.Generate())
+          f => derivedMeasureFakerNoise.Generate())
         .RuleFor(
           x => x.DerivedActivePowerL3ExportT0_W,
-          f => instantaneousMeasureFakerNoise.Generate())
+          f => derivedMeasureFakerNoise.Generate())
         .RuleFor(
           x => x.DerivedActivePowerTotalExportT0_W,
-          f => instantaneousMeasureFakerNoise.Generate())
+          f => derivedMeasureFakerNoise.Generate())
         .RuleFor(
           x => x.DerivedActivePowerTotalImportT1_W,
           (_, _) => measureFakerDud.Generate())
         .RuleFor(
           x => x.DerivedActivePowerTotalImportT2_W,
-          f => instantaneousMeasureFakerNoise.Generate())
+          f => derivedMeasureFakerNoise.Generate())
         .Generate(Constants.DefaultFuzzCount);
     var peakAggregate =
       new Faker<AbbB2xAggregateModel>()
@@ -116,34 +116,34 @@ public class UsageActivePowerTotalImportT1PeakCalculationItemCalculatorTest
             end.Subtract(IntervalModel.QuarterHour.ToTimeSpan(start))))
         .RuleFor(
           x => x.DerivedActivePowerL1ImportT0_W,
-          f => instantaneousMeasureFakerNoise.Generate())
+          f => derivedMeasureFakerNoise.Generate())
         .RuleFor(
           x => x.DerivedActivePowerL2ImportT0_W,
-          f => instantaneousMeasureFakerNoise.Generate())
+          f => derivedMeasureFakerNoise.Generate())
         .RuleFor(
           x => x.DerivedActivePowerL3ImportT0_W,
-          f => instantaneousMeasureFakerNoise.Generate())
+          f => derivedMeasureFakerNoise.Generate())
         .RuleFor(
           x => x.DerivedActivePowerTotalImportT0_W,
-          f => instantaneousMeasureFakerNoise.Generate())
+          f => derivedMeasureFakerNoise.Generate())
         .RuleFor(
           x => x.DerivedActivePowerL1ExportT0_W,
-          f => instantaneousMeasureFakerNoise.Generate())
+          f => derivedMeasureFakerNoise.Generate())
         .RuleFor(
           x => x.DerivedActivePowerL2ExportT0_W,
-          f => instantaneousMeasureFakerNoise.Generate())
+          f => derivedMeasureFakerNoise.Generate())
         .RuleFor(
           x => x.DerivedActivePowerL3ExportT0_W,
-          f => instantaneousMeasureFakerNoise.Generate())
+          f => derivedMeasureFakerNoise.Generate())
         .RuleFor(
           x => x.DerivedActivePowerTotalExportT0_W,
-          f => instantaneousMeasureFakerNoise.Generate())
+          f => derivedMeasureFakerNoise.Generate())
         .RuleFor(
           x => x.DerivedActivePowerTotalImportT1_W,
           (_, _) => measureFakerPeak.Generate())
         .RuleFor(
           x => x.DerivedActivePowerTotalImportT2_W,
-          f => instantaneousMeasureFakerNoise.Generate())
+          f => derivedMeasureFakerNoise.Generate())
         .Generate();
 
     var aggregates = noiseAggregates

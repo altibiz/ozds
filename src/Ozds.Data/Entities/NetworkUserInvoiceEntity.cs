@@ -86,5 +86,83 @@ public class
       .ArchivedProperty(
         nameof(NetworkUserInvoiceEntity
           .ArchivedRegulatoryCatalogue));
+
+    builder
+      .MonetaryValue(
+        nameof(NetworkUserInvoiceEntity.UsageActiveEnergyTotalImportT0Fee_EUR),
+        "usage_active_energy_total_import_t0_fee_eur"
+      );
+
+    builder
+      .MonetaryValue(
+        nameof(NetworkUserInvoiceEntity
+          .UsageActiveEnergyTotalImportT1Fee_EUR),
+        "usage_active_energy_total_import_t1_fee_eur"
+      );
+
+    builder
+      .MonetaryValue(
+        nameof(NetworkUserInvoiceEntity
+          .UsageActiveEnergyTotalImportT2Fee_EUR),
+        "usage_active_energy_total_import_t2_fee_eur"
+      );
+
+    builder
+      .MonetaryValue(
+        nameof(NetworkUserInvoiceEntity
+          .UsageActivePowerTotalImportT1PeakFee_EUR),
+        "usage_active_power_total_import_t1_peak_fee_eur"
+      );
+
+    builder
+      .MonetaryValue(
+        nameof(NetworkUserInvoiceEntity
+          .UsageReactiveEnergyTotalRampedT0Fee_EUR),
+        "usage_reactive_energy_total_ramped_t0_fee_eur"
+      );
+
+    builder
+      .MonetaryValue(
+        nameof(NetworkUserInvoiceEntity.UsageMeterFee_EUR),
+        "usage_meter_fee_eur"
+      );
+
+    builder
+      .MonetaryValue(
+        nameof(NetworkUserInvoiceEntity.UsageFeeTotal_EUR),
+        "usage_fee_total_eur"
+      );
+
+    builder
+      .MonetaryValue(
+        nameof(NetworkUserInvoiceEntity
+          .SupplyActiveEnergyTotalImportT1Fee_EUR),
+        "supply_active_energy_total_import_t1_fee_eur"
+      );
+
+    builder
+      .MonetaryValue(
+        nameof(NetworkUserInvoiceEntity
+          .SupplyActiveEnergyTotalImportT2Fee_EUR),
+        "supply_active_energy_total_import_t2_fee_eur"
+      );
+
+    builder
+      .MonetaryValue(
+        nameof(NetworkUserInvoiceEntity.SupplyBusinessUsageFee_EUR),
+        "supply_business_usage_fee_eur"
+      );
+
+    builder
+      .MonetaryValue(
+        nameof(NetworkUserInvoiceEntity.SupplyRenewableEnergyFee_EUR),
+        "supply_renewable_energy_fee_eur"
+      );
+
+    builder
+      .MonetaryValue(
+        nameof(NetworkUserInvoiceEntity.SupplyFeeTotal_EUR),
+        "supply_fee_total_eur"
+      );
   }
 }

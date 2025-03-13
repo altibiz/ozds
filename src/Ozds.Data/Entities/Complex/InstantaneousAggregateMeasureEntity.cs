@@ -1,15 +1,21 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Ozds.Data.Entities.Abstractions;
+using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Complex;
 
-public class InstantaneousAggregateMeasureEntity : AggregateMeasureEntity
+public class InstantaneousAggregateMeasureEntity
+  : AggregateMeasureEntity, IInstantaneousMeasureEntity
 {
-  public float Avg { get; set; } = default!;
-
   public DateTimeOffset MinTimestamp { get; set; } = default!;
 
   public DateTimeOffset MaxTimestamp { get; set; } = default!;
+  public float Min { get; set; } = default!;
+
+  public float Max { get; set; } = default!;
+
+  public float Avg { get; set; } = default!;
 }
 
 public static class InstantaneousAggregateMeasureEntityExtensions
@@ -23,8 +29,22 @@ public static class InstantaneousAggregateMeasureEntityExtensions
     builder.AggregateMeasure(name, unit);
 
     builder
-      .Property(nameof(InstantaneousAggregateMeasureEntity.Avg))
-      .HasColumnName($"{name}_avg_{unit}");
+      .InstantaneousMeasurementMeasure(
+        nameof(InstantaneousAggregateMeasureEntity.Min),
+        $"{name}_min_{unit}"
+      );
+
+    builder
+      .InstantaneousMeasurementMeasure(
+        nameof(InstantaneousAggregateMeasureEntity.Max),
+        $"{name}_max_{unit}"
+      );
+
+    builder
+      .InstantaneousMeasurementMeasure(
+        nameof(InstantaneousAggregateMeasureEntity.Avg),
+        $"{name}_avg_{unit}"
+      );
 
     builder
       .Property(nameof(InstantaneousAggregateMeasureEntity.MinTimestamp))
