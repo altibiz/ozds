@@ -2,50 +2,10 @@
 @using Ozds.Document.Entities
 @inherits DocumentBase
 
-<style>
-  .calculation-table {
-    border-spacing: 0;
-    border-collapse: collapse;
-    border: 2px solid black;
-  }
-
-  .calculation-table th {
-    background-color: #DDDDDD;
-  }
-
-  .calculation-table th, .calculation-table td {
-    border: 1px solid black;
-    padding: 2px;
-  }
-
-  .info-table {
-    border-spacing: 0;
-    border-collapse: collapse;
-    border: 2px solid black;
-    margin-top: 1.2rem;
-    margin-left: auto;
-    width: 75%;
-  }
-
-  .info-table th, .info-table td {
-    border: 1px solid black;
-    padding: 2px;
-  }
-
-  .info-table th {
-    font-weight: normal;
-  }
-
-  .info-table tr {
-    height: 1.2rem;
-    align-items: center;
-  }
-</style>
-
 <p style="text-align: right;">
   @Translate("INVOICE NO.") @(Entity.Id)
 </p>
-<table class="info-table" style="margin-top: 0.8rem; width: 100%;">
+<table class="invoice-info-table" style="margin-top: 0.8rem; width: 100%;">
   <colgroup>
     <col style="width: 57%"/>
     <col style="width: 19%"/>
@@ -100,7 +60,7 @@
     @Date(Entity.ToDate.AddTicks(-1))
   </strong>
 </p>
-<table class="calculation-table" style="margin-top: 0.8rem; width: 100%;">
+<table class="invoice-table" style="margin-top: 0.8rem; width: 100%;">
   <colgroup>
     <col style="width: 10%;"/>
     <col style="width: 80%;"/>
@@ -216,7 +176,7 @@
   </tr>
   </tbody>
 </table>
-<table class="info-table">
+<table class="invoice-info-table">
   <colgroup>
     <col style="width: 76%"/>
     <col style="width: 23%"/>

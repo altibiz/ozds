@@ -15,6 +15,9 @@ public class NetworkUserModel : AuditableModel
   [Required]
   public required string AltiBizSubProjectCode { get; set; } = default!;
 
+  [Required]
+  public required string InvoiceRemark { get; set; } = string.Empty;
+
   public override IEnumerable<ValidationResult> Validate(
     ValidationContext validationContext)
   {

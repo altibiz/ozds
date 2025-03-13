@@ -14,8 +14,16 @@ public class AppController(IAntiforgery antiforgery) : Controller
     return Redirect($"/app/{LocalStorageCulture}");
   }
 
-  public IActionResult Cultured(string culture)
+  public IActionResult Cultured(
+    string culture,
+    string catchall
+  )
   {
+    if (catchall.StartsWith("_content"))
+    {
+      return Redirect($"/{catchall}");
+    }
+
     CultureInfo? cultureInfo = null;
     if (culture is not null)
     {

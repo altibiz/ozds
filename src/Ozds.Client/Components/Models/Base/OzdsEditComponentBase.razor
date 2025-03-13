@@ -8,6 +8,7 @@
 @using Ozds.Client.Components.Fields
 @using Ozds.Client.Components.Streaming
 @using Ozds.Client.Extensions
+@using Tizzani.MudBlazor.HtmlEditor
 @inherits OzdsManagedModelComponentBase<TPrefix, TModel>
 
 @Base()
@@ -110,6 +111,19 @@
               Value="@Get(nextFunc)"
               ValueChanged="@Set(next)"
               For="@For(next)"/>;
+  }
+
+  protected RenderFragment HtmlField(Expression<Func<TModel, string?>> next)
+  {
+    var nextFunc = next.Compile();
+    return @<div>
+      <p>
+        @Translate(next.Label())
+      </p>
+      <MudHtmlEditor
+        Html="@Get(nextFunc)"
+        HtmlChanged="@Set(next)"/>
+    </div>;
   }
 
   protected RenderFragment NumericField<T>(Expression<Func<TModel, T?>> next)

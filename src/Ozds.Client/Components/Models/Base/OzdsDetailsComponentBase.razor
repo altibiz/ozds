@@ -91,6 +91,17 @@
     </DetailsField>;
   }
 
+  protected RenderFragment HtmlField(Expression<Func<TModel, string?>> next)
+  {
+    var nextFunc = next.Compile();
+    return @<DetailsField Title="@(Translate(next.Label()))">
+      @if (nextFunc(Model) is { } html)
+      {
+        @(new MarkupString(html))
+      }
+    </DetailsField>;
+  }
+
   protected RenderFragment PreField<T>(Expression<Func<TModel, T?>> next)
   {
     var nextFunc = next.Compile();

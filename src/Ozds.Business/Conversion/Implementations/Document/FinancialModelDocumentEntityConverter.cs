@@ -20,5 +20,6 @@ public class FinancialModelDocumentEntityConverter
     entity.FromDate = model.FromDate;
     entity.ToDate = model.ToDate;
     entity.Total_EUR = model.Total_EUR;
+    entity.Remark = model.Remark;
   }
 }

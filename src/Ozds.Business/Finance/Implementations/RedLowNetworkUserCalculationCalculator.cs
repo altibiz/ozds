@@ -137,6 +137,7 @@ public class
         calculationBasis.SupplyRegulatoryCatalogue.Id,
       NetworkUserMeasurementLocationId =
         calculationBasis.MeasurementLocation.Id,
+      Remark = calculationBasis.MeasurementLocation.CalculationRemark,
       IssuedOn = DateTimeOffset.UtcNow,
       IssuedById = default!,
       ArchivedMeter = calculationBasis.Meter,
