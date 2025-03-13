@@ -2,6 +2,8 @@
 @inherits DocumentLayoutBase
 
 <style>
+  @* fonts *@
+
   @@font-face {
     font-family: 'Roboto';
     font-style: normal;
@@ -35,6 +37,21 @@
     src: url(data:font/ttf;base64,@TtfBase64("roboto-700")) format('truetype');
   }
 
+  * {
+    font-family: 'Roboto';
+    font-size: 11pt;
+  }
+
+  p, a, strong, span, td, th {
+    color: black;
+  }
+
+  table * {
+    font-size: 8pt;
+  }
+
+  @* pages *@
+
   :root {
     --page-width: 8.27in;
     --page-height: 11.69in;
@@ -43,6 +60,10 @@
     --page-margin-bottom: 0.20in;
     --page-header-height: 2.68in;
     --page-footer-height: 0.65in;
+
+    --background-color: white;
+    --text-color: black;
+    --table-header-color: #DDDDDD;
   }
 
   @@page {
@@ -50,24 +71,21 @@
     size: var(--page-width) var(--page-height);
   }
 
-  * {
-    font-family: 'Roboto';
-    font-size: 11pt;
-  }
-
-  table * {
-    font-size: 8pt;
-  }
-
   .container {
+    width: var(--page-width);
     max-width: var(--page-width);
-    margin: 0 auto;
+    margin: 0;
+    overflow: hidden;
     padding-inline: var(--page-margin-inline);
-    background-color: white;
+    background-color: var(--background-color);
   }
 
   @@media screen {
     .container {
+      width: auto;
+      max-width: calc(var(--page-width) + 4px);
+      margin: 0 auto;
+      overflow: visible;
       border-inline: 2px solid black;
     }
   }
@@ -76,11 +94,15 @@
     page-break-after: always;
     padding-top: var(--page-margin-top);
     padding-bottom: var(--page-margin-bottom);
+    display: flex;
+    flex-direction: column;
+    height: var(--page-height);
   }
   .page:last-child {
     page-break-after: avoid;
   }
   .page-break {
+    color: var(--text-color);
     border-block: 2px solid black;
     margin-inline: calc(var(--page-margin-inline) * -1);
     text-align: center;
@@ -96,8 +118,9 @@
 
   .page-content {
     position: relative;
-    height: calc(
-      var(--page-height)
+    width: calc(var(--page-width)
+      - (var(--page-margin-inline) * 2));
+    height: calc(var(--page-height)
       - var(--page-margin-top)
       - var(--page-margin-bottom)
       - var(--page-header-height)
@@ -107,44 +130,132 @@
     height: var(--page-header-height);
     position: relative;
   }
-  .page-header > img {
-    position: floating;
+  .page-header > svg {
+    position: absolute;
     top: 0;
     border-bottom: 1px solid #DDDDDD;
     margin-top: calc(var(--page-margin-top) * -1);
     margin-inline: calc(var(--page-margin-inline) * -1);
+    width: var(--page-width);
   }
   .page-footer {
     height: var(--page-footer-height);
     position: relative;
   }
-  .page-footer > img {
+  .page-footer > svg {
     position: absolute;
     bottom: 0;
     border-top: 1px solid #DDDDDD;
     margin-bottom: calc(var(--page-margin-bottom) * -1);
     margin-inline: calc(var(--page-margin-inline) * -1);
+    width: var(--page-width);
+  }
+  .page-inner-space-between {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
 
-  .on-print {
-  }
-  @@media screen {
-    .on-print {
-      display: none;
-    }
+  @* tables *@
+
+  .calculation-table {
+    table-layout: fixed;
+    width: 100%;
+    border-spacing: 0;
+    border-collapse: collapse;
+    border: 2px solid black;
   }
 
-  .on-screen {
+  .calculation-table th {
+    background-color: var(--table-header-color);
   }
-  @@media print {
-    .on-screen {
-      display: none;
-    }
+
+  .calculation-table th, .calculation-table td {
+    position: relative;
+    border: 1px solid black;
+    padding: 2px;
+    word-break: break-word;
+    white-space: normal;
+  }
+
+  .invoice-table {
+    table-layout: fixed;
+    border-spacing: 0;
+    border-collapse: collapse;
+    border: 2px solid black;
+  }
+
+  .invoice-table th {
+    background-color: var(--table-header-color);
+  }
+
+  .invoice-table th, .invoice-table td {
+    position: relative;
+    border: 1px solid black;
+    padding: 2px;
+    word-break: break-word;
+    white-space: normal;
+  }
+
+  .invoice-info-table {
+    table-layout: fixed;
+    border-spacing: 0;
+    border-collapse: collapse;
+    border: 2px solid black;
+    margin-top: 1.2rem;
+    margin-left: auto;
+    width: 75%;
+  }
+
+  .invoice-info-table th, .invoice-info-table td {
+    position: relative;
+    border: 1px solid black;
+    padding: 2px;
+    word-break: break-word;
+    white-space: normal;
+  }
+
+  .invoice-info-table th {
+    background-color: var(--table-header-color);
+    font-weight: normal;
+  }
+
+  .invoice-info-table tr {
+    height: 1.2rem;
+    align-items: center;
+  }
+
+  @* labels *@
+
+  .inductive-capacitative-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+  }
+
+  .inductive-capacitative-border {
+    width: 100%;
+    border-bottom: 1px solid black;
+  }
+
+  .inductive-capacitative-label {
+    padding: 2px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .tariff-label {
+    display: block;
+    width: 100%;
+    word-break: keep-all;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 </style>
 
-<main>
-  <div class="container">
-    @Body
-  </div>
+<main class="container">
+  @Body
 </main>

@@ -49,10 +49,13 @@
 
     <PackageVersion Include="CommandLineParser" Version="2.9.1" />
 
+    <PackageVersion Include="HtmlSanitizer" Version="9.0.876" />
+
     <PackageVersion Include="MudBlazor" Version="8.1.0" />
     <PackageVersion Include="MudBlazor.ThemeManager" Version="3.0.0" />
     <PackageVersion Include="Blazor-ApexCharts" Version="5.0.1" />
     <PackageVersion Include="Blazored.LocalStorage" Version="4.5.0" />
+    <PackageVersion Include="Tizzani.MudBlazor.HtmlEditor" Version="2.3.0" />
 
     <PackageVersion Include="Microsoft.Playwright" Version="1.47.0" />
 

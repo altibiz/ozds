@@ -27,6 +27,35 @@
   </Edit>
   <Details>
     <Details Model="@context.Model"/>
+
+    <div>
+      <MudText Typo="Typo.body1">
+        @Translate("Preview invoice")
+      </MudText>
+
+      <MudNumericField
+        Label="@Translate("Year")"
+        @bind-Value="@previewInvoiceYear"
+        Min="2000"
+        Max="@DateTimeOffset.UtcNow.Year"
+        Step="1"/>
+      <MudNumericField
+        Label="@Translate("Month")"
+        @bind-Value="@previewInvoiceMonth"
+        Min="1"
+        Max="12"
+        Step="1"/>
+
+      <MudHidden Breakpoint="Breakpoint.SmAndDown">
+        <MudLink Href="@(PageHref<NetworkUserInvoicePreviewDocumentPage>(new { NetworkUserId = context.Model.Id, Year = previewInvoiceYear, Month = previewInvoiceMonth }))">
+          @Translate("Document")
+        </MudLink>
+      </MudHidden>
+
+      <MudLink Href="@("/download/network-user-invoice-preview/" + context.Model.Id + "/" + previewInvoiceYear + "/" + previewInvoiceMonth)">
+        @Translate("Pdf")
+      </MudLink>
+    </div>
   </Details>
 </Mutating>
 <MudGrid Justify="Justify.FlexStart" Spacing="2" Style="width: 170px">
@@ -42,3 +71,8 @@
     <DownloadField IsGeneric="false" FileName="@(Id + "_MonthlyAggregate_" + selectedMonth?.ToString("MM.yyyy") + ".csv")" Models="@measurements"/>
   </MudItem>
 </MudGrid>
+
+@code {
+  private int previewInvoiceYear = DateTimeOffset.UtcNow.Year;
+  private int previewInvoiceMonth = DateTimeOffset.UtcNow.Month;
+}

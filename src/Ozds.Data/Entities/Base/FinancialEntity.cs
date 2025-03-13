@@ -24,6 +24,8 @@ public abstract class FinancialEntity : IdentifiableEntity, IFinancialEntity
   public abstract decimal Tax_EUR { get; }
 
   public abstract decimal TotalWithTax_EUR { get; }
+
+  public string Remark { get; set; } = string.Empty;
 }
 
 public class FinancialEntityTypeHierarchyConfiguration
