@@ -117,7 +117,7 @@ public class SchneideriEM3xxxMeasurementAggregateConverter
       Max = measurement.ActiveEnergyL1ImportT0_Wh
     };
     aggregate.DerivedActivePowerL1ImportT0_W =
-      new InstantaneousAggregateMeasureModel
+      new DerivedAggregateMeasureModel
       {
         Avg = measurement.ActiveEnergyL1ImportT0_Wh,
         Min = 0M,
@@ -131,7 +131,7 @@ public class SchneideriEM3xxxMeasurementAggregateConverter
       Max = measurement.ActiveEnergyL2ImportT0_Wh
     };
     aggregate.DerivedActivePowerL2ImportT0_W =
-      new InstantaneousAggregateMeasureModel
+      new DerivedAggregateMeasureModel
       {
         Avg = measurement.ActiveEnergyL2ImportT0_Wh,
         Min = 0M,
@@ -145,7 +145,7 @@ public class SchneideriEM3xxxMeasurementAggregateConverter
       Max = measurement.ActiveEnergyL3ImportT0_Wh
     };
     aggregate.DerivedActivePowerL3ImportT0_W =
-      new InstantaneousAggregateMeasureModel
+      new DerivedAggregateMeasureModel
       {
         Avg = measurement.ActiveEnergyL3ImportT0_Wh,
         Min = 0M,
@@ -159,7 +159,7 @@ public class SchneideriEM3xxxMeasurementAggregateConverter
       Max = measurement.ActiveEnergyTotalImportT0_Wh
     };
     aggregate.DerivedActivePowerTotalImportT0_W =
-      new InstantaneousAggregateMeasureModel
+      new DerivedAggregateMeasureModel
       {
         Avg = measurement.ActiveEnergyTotalImportT0_Wh,
         Min = 0M,
@@ -173,7 +173,7 @@ public class SchneideriEM3xxxMeasurementAggregateConverter
       Max = measurement.ActiveEnergyTotalExportT0_Wh
     };
     aggregate.DerivedActivePowerTotalExportT0_W =
-      new InstantaneousAggregateMeasureModel
+      new DerivedAggregateMeasureModel
       {
         Avg = 0M,
         Min = 0M,
@@ -188,7 +188,7 @@ public class SchneideriEM3xxxMeasurementAggregateConverter
         Max = measurement.ReactiveEnergyTotalImportT0_VARh
       };
     aggregate.DerivedReactivePowerTotalImportT0_VAR =
-      new InstantaneousAggregateMeasureModel
+      new DerivedAggregateMeasureModel
       {
         Avg = 0M,
         Min = 0M,
@@ -203,7 +203,7 @@ public class SchneideriEM3xxxMeasurementAggregateConverter
         Max = measurement.ReactiveEnergyTotalExportT0_VARh
       };
     aggregate.DerivedReactivePowerTotalExportT0_VAR =
-      new InstantaneousAggregateMeasureModel
+      new DerivedAggregateMeasureModel
       {
         Avg = 0M,
         Min = 0M,
@@ -217,7 +217,7 @@ public class SchneideriEM3xxxMeasurementAggregateConverter
       Max = measurement.ActiveEnergyTotalImportT1_Wh
     };
     aggregate.DerivedActivePowerTotalImportT1_W =
-      new InstantaneousAggregateMeasureModel
+      new DerivedAggregateMeasureModel
       {
         Avg = 0M,
         Min = 0M,
@@ -231,7 +231,7 @@ public class SchneideriEM3xxxMeasurementAggregateConverter
       Max = measurement.ActiveEnergyTotalImportT2_Wh
     };
     aggregate.DerivedActivePowerTotalImportT2_W =
-      new InstantaneousAggregateMeasureModel
+      new DerivedAggregateMeasureModel
       {
         Avg = 0M,
         Min = 0M,

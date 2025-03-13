@@ -40,7 +40,9 @@ public class
       .HasDiscriminator<string>(nameof(NetworkUserCatalogueEntity.Kind));
 
     builder
-      .Property(nameof(BlueLowNetworkUserCatalogueEntity.MeterFeePrice_EUR))
-      .HasColumnName("meter_fee_price_eur");
+      .MonetaryValue(
+        nameof(NetworkUserCatalogueEntity.MeterFeePrice_EUR),
+        "meter_fee_price_eur"
+      );
   }
 }
