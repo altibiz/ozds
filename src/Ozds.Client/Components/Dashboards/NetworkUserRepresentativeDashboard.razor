@@ -1,12 +1,10 @@
 @namespace Ozds.Client.Components.Dashboards
 @using MudBlazor
 @using Ozds.Business.Analysis
-@using Ozds.Business.Conversion
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Business.Models.Enums
 @using Ozds.Business.Queries
 @using Ozds.Client.Components.Charts
-@using Ozds.Client.Components.Fields
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 <MudHidden Breakpoint="Breakpoint.MdAndUp">
@@ -179,4 +177,5 @@
     var orderedMeasures = measures.Items.OrderBy(x => x.Timestamp).ToList();
     measurements = orderedMeasures.Select(x => (IAggregate)x).ToList();
   }
+
 }

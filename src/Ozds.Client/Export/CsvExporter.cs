@@ -1,169 +1,158 @@
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Threading;
 using CsvHelper;
 using Microsoft.IdentityModel.Tokens;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Client.Conversion;
 using Ozds.Client.Export.Abstractions;
 
-namespace Ozds.Client.Export
+namespace Ozds.Client.Export;
+
+public class CsvExporter : IExporter
 {
-  public class CsvExporter : IExporter
+  private readonly ModelRecordConverter _modelRecordConverter;
+
+  public CsvExporter(ModelRecordConverter modelRecordConverter)
   {
-    private readonly ModelRecordConverter _modelRecordConverter;
+    _modelRecordConverter = modelRecordConverter;
+  }
 
-    public CsvExporter(ModelRecordConverter modelRecordConverter)
+  public string Export(
+    IEnumerable<object> models,
+    CancellationToken cancellationToken = default
+  )
+  {
+    var modelList = models.ToList();
+    if (modelList.IsNullOrEmpty())
     {
-      _modelRecordConverter = modelRecordConverter;
+      return string.Empty;
     }
 
-    public string Export(
-      IEnumerable<object> models,
-      CancellationToken cancellationToken = default
-    )
+    var records = modelList
+      .Select(model => _modelRecordConverter.ToRecord(model))
+      .ToList();
+
+    using var stringWriter = new StringWriter();
+    using var csvWriter = new CsvWriter(
+      stringWriter,
+      CultureInfo.InvariantCulture
+    );
+    csvWriter.WriteRecords((dynamic)records);
+    csvWriter.Flush();
+    return stringWriter.ToString();
+  }
+
+  public string ExportGeneric<T>(
+    IEnumerable<T> models,
+    CancellationToken cancellationToken = default
+  )
+  {
+    var list = models.ToList();
+    if (list.IsNullOrEmpty())
     {
-      var modelList = models.ToList();
-      if (modelList.IsNullOrEmpty())
-      {
-        return string.Empty;
-      }
-
-      var records = modelList
-        .Select(model => _modelRecordConverter.ToRecord(model))
-        .ToList();
-
-      using var stringWriter = new StringWriter();
-      using var csvWriter = new CsvWriter(
-        stringWriter,
-        CultureInfo.InvariantCulture
-      );
-      csvWriter.WriteRecords((dynamic)records);
-      csvWriter.Flush();
-      return stringWriter.ToString();
+      return string.Empty;
     }
 
-    public string ExportGeneric<T>(
-      IEnumerable<T> models,
-      CancellationToken cancellationToken = default
-    )
+    using var stringWriter = new StringWriter();
+    using var csvWriter = new CsvWriter(
+      stringWriter,
+      CultureInfo.InvariantCulture
+    );
+    csvWriter.WriteRecords(list);
+    csvWriter.Flush();
+    return stringWriter.ToString();
+  }
+
+  public CalculationAggregateBasisEntity ToCalculationBasis(
+    IAggregate aggregate
+  )
+  {
+    return new CalculationAggregateBasisEntity
     {
-      var list = models.ToList();
-      if (list.IsNullOrEmpty())
-      {
-        return string.Empty;
-      }
+      Date = aggregate.Timestamp.AddHours(1).ToString("dd.MM.yyyy. hh:mm"),
+      MeasurementLocationId = aggregate.MeasurementLocationId,
+      ActiveEnergyTotalImportT0Max_Wh = aggregate
+        .ActiveEnergy_Wh.TariffUnary()
+        .DuplexImport()
+        .AggregateMax()
+        .PhaseSum(),
+      ActiveEnergyTotalImportT0Min_Wh = aggregate
+        .ActiveEnergy_Wh.TariffUnary()
+        .DuplexImport()
+        .AggregateMin()
+        .PhaseSum(),
+      ActiveEnergyTotalImportT1Max_Wh = aggregate
+        .ActiveEnergy_Wh.TariffBinary()
+        .T1.DuplexImport()
+        .AggregateMax()
+        .PhaseSum(),
+      ActiveEnergyTotalImportT1Min_Wh = aggregate
+        .ActiveEnergy_Wh.TariffBinary()
+        .T1.DuplexImport()
+        .AggregateMin()
+        .PhaseSum(),
+      ActiveEnergyTotalImportT2Max_Wh = aggregate
+        .ActiveEnergy_Wh.TariffBinary()
+        .T2.DuplexImport()
+        .AggregateMax()
+        .PhaseSum(),
+      ActiveEnergyTotalImportT2Min_Wh = aggregate
+        .ActiveEnergy_Wh.TariffBinary()
+        .T2.DuplexImport()
+        .AggregateMin()
+        .PhaseSum(),
+      ReactiveEnergyTotalImportT0Max_VARh = aggregate
+        .ReactiveEnergy_VARh.TariffUnary()
+        .DuplexImport()
+        .AggregateMax()
+        .PhaseSum(),
+      ReactiveEnergyTotalImportT0Min_VARh = aggregate
+        .ReactiveEnergy_VARh.TariffUnary()
+        .DuplexImport()
+        .AggregateMin()
+        .PhaseSum(),
+      ReactiveEnergyTotalExportT0Max_VARh = aggregate
+        .ReactiveEnergy_VARh.TariffUnary()
+        .DuplexExport()
+        .AggregateMax()
+        .PhaseSum(),
+      ReactiveEnergyTotalExportT0Min_VARh = aggregate
+        .ReactiveEnergy_VARh.TariffUnary()
+        .DuplexExport()
+        .AggregateMin()
+        .PhaseSum(),
+      DerivedActivePowerTotalImportT1Max_W = aggregate
+        .DerivedActivePower_W.TariffBinary()
+        .T1.DuplexImport()
+        .AggregateMax()
+        .PhaseSum()
+    };
+  }
 
-      using var stringWriter = new StringWriter();
-      using var csvWriter = new CsvWriter(
-        stringWriter,
-        CultureInfo.InvariantCulture
-      );
-      csvWriter.WriteRecords(list);
-      csvWriter.Flush();
-      return stringWriter.ToString();
-    }
+  public class CalculationAggregateBasisEntity
+  {
+    public string Date { get; set; } = default!;
+    public string MeasurementLocationId { get; set; } = default!;
 
-    public CalculationAggregateBasisEntity ToCalculationBasis(
-      IAggregate aggregate
-    )
-    {
-      return new CalculationAggregateBasisEntity
-      {
-        Date = aggregate.Timestamp.AddHours(1).ToString("dd.MM.yyyy. hh:mm"),
-        MeasurementLocationId = aggregate.MeasurementLocationId,
-        ActiveEnergyTotalImportT0Max_Wh = aggregate
-          .ActiveEnergy_Wh.TariffUnary()
-          .DuplexImport()
-          .AggregateMax()
-          .PhaseSum(),
-        ActiveEnergyTotalImportT0Min_Wh = aggregate
-          .ActiveEnergy_Wh.TariffUnary()
-          .DuplexImport()
-          .AggregateMin()
-          .PhaseSum(),
-        ActiveEnergyTotalImportT1Max_Wh = aggregate
-          .ActiveEnergy_Wh.TariffBinary()
-          .T1.DuplexImport()
-          .AggregateMax()
-          .PhaseSum(),
-        ActiveEnergyTotalImportT1Min_Wh = aggregate
-          .ActiveEnergy_Wh.TariffBinary()
-          .T1.DuplexImport()
-          .AggregateMin()
-          .PhaseSum(),
-        ActiveEnergyTotalImportT2Max_Wh = aggregate
-          .ActiveEnergy_Wh.TariffBinary()
-          .T2.DuplexImport()
-          .AggregateMax()
-          .PhaseSum(),
-        ActiveEnergyTotalImportT2Min_Wh = aggregate
-          .ActiveEnergy_Wh.TariffBinary()
-          .T2.DuplexImport()
-          .AggregateMin()
-          .PhaseSum(),
-        ReactiveEnergyTotalImportT0Max_VARh = aggregate
-          .ReactiveEnergy_VARh.TariffUnary()
-          .DuplexImport()
-          .AggregateMax()
-          .PhaseSum(),
-        ReactiveEnergyTotalImportT0Min_VARh = aggregate
-          .ReactiveEnergy_VARh.TariffUnary()
-          .DuplexImport()
-          .AggregateMin()
-          .PhaseSum(),
-        ReactiveEnergyTotalExportT0Max_VARh = aggregate
-          .ReactiveEnergy_VARh.TariffUnary()
-          .DuplexExport()
-          .AggregateMax()
-          .PhaseSum(),
-        ReactiveEnergyTotalExportT0Min_VARh = aggregate
-          .ReactiveEnergy_VARh.TariffUnary()
-          .DuplexExport()
-          .AggregateMin()
-          .PhaseSum(),
-        DerivedActivePowerTotalImportT1Max_W = aggregate
-          .DerivedActivePower_W.TariffBinary()
-          .T1.DuplexImport()
-          .AggregateMax()
-          .PhaseSum()
-      };
-    }
+    public decimal ActiveEnergyTotalImportT0Min_Wh { get; set; }
 
-    public class CalculationAggregateBasisEntity
-    {
-      public string Date { get; set; } = default!;
-      public string MeasurementLocationId { get; set; } = default!;
+    public decimal ActiveEnergyTotalImportT0Max_Wh { get; set; }
 
-      public decimal ActiveEnergyTotalImportT0Min_Wh { get; set; } = default;
+    public decimal ActiveEnergyTotalImportT1Min_Wh { get; set; }
 
-      public decimal ActiveEnergyTotalImportT0Max_Wh { get; set; } = default;
+    public decimal ActiveEnergyTotalImportT1Max_Wh { get; set; }
 
-      public decimal ActiveEnergyTotalImportT1Min_Wh { get; set; } = default;
+    public decimal ActiveEnergyTotalImportT2Min_Wh { get; set; }
 
-      public decimal ActiveEnergyTotalImportT1Max_Wh { get; set; } = default;
+    public decimal ActiveEnergyTotalImportT2Max_Wh { get; set; }
 
-      public decimal ActiveEnergyTotalImportT2Min_Wh { get; set; } = default;
+    public decimal ReactiveEnergyTotalImportT0Min_VARh { get; set; }
 
-      public decimal ActiveEnergyTotalImportT2Max_Wh { get; set; } = default;
+    public decimal ReactiveEnergyTotalImportT0Max_VARh { get; set; }
 
-      public decimal ReactiveEnergyTotalImportT0Min_VARh { get; set; } =
-        default;
+    public decimal ReactiveEnergyTotalExportT0Min_VARh { get; set; }
 
-      public decimal ReactiveEnergyTotalImportT0Max_VARh { get; set; } =
-        default;
+    public decimal ReactiveEnergyTotalExportT0Max_VARh { get; set; }
 
-      public decimal ReactiveEnergyTotalExportT0Min_VARh { get; set; } =
-        default;
-
-      public decimal ReactiveEnergyTotalExportT0Max_VARh { get; set; } =
-        default;
-
-      public decimal DerivedActivePowerTotalImportT1Max_W { get; set; } =
-        default!;
-    }
+    public decimal DerivedActivePowerTotalImportT1Max_W { get; set; }
   }
 }

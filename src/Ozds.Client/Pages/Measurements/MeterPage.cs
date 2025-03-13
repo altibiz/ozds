@@ -12,6 +12,14 @@ namespace Ozds.Client.Pages;
 
 public partial class MeterPage : OzdsIdentifiableModelPageComponentBase<IMeter>
 {
+  private MeterAnalysis? analysis;
+
+  private IEnumerable<object> measurements = new List<object>();
+
+  private List<IMeter> meters = new();
+
+  private DateTime? selectedMonth;
+
   [CascadingParameter]
   private AnalysisState AnalysisState { get; set; } = default!;
 
@@ -24,21 +32,13 @@ public partial class MeterPage : OzdsIdentifiableModelPageComponentBase<IMeter>
   [CascadingParameter]
   private Breakpoint Breakpoint { get; set; }
 
-  private MeterAnalysis? analysis;
-
-  private List<IMeter> meters = new();
-
-  private IEnumerable<object> measurements = new List<object>();
-
-  private DateTime? selectedMonth;
-
   private async Task OnDateChanged(DateTime? date)
   {
     selectedMonth = date;
     if (analysis is not null)
     {
       meters = new List<IMeter> { analysis.Meter };
-      DateTimeOffset dto = new DateTimeOffset(
+      var dto = new DateTimeOffset(
         selectedMonth!.Value,
         TimeSpan.Zero
       );

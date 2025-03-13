@@ -5,7 +5,6 @@
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Business.Models.Enums
 @using Ozds.Business.Queries
-@using Ozds.Client.Components.Fields
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 <MudHidden Breakpoint="Breakpoint.MdAndUp">
@@ -134,4 +133,5 @@
     var orderedMeasures = measures.Items.OrderBy(x => x.Timestamp).ToList();
     measurements = orderedMeasures.Select(x => (IAggregate)x).ToList();
   }
+
 }

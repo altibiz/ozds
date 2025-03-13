@@ -13,6 +13,14 @@ namespace Ozds.Client.Pages;
 public partial class MeasurementLocationPage
   : OzdsIdentifiableModelPageComponentBase<IMeasurementLocation>
 {
+  private MeasurementLocationAnalysis? analysis;
+
+  private List<IMeasurementLocation> measurementLocations = new();
+
+  private IEnumerable<IAggregate> measurements = new List<IAggregate>();
+
+  private DateTime? selectedMonth;
+
   [CascadingParameter]
   public AnalysisState AnalysisState { get; set; } = default!;
 
@@ -21,14 +29,6 @@ public partial class MeasurementLocationPage
 
   [Parameter]
   public string Id { get; set; } = default!;
-
-  private MeasurementLocationAnalysis? analysis;
-
-  private List<IMeasurementLocation> measurementLocations = new();
-
-  private IEnumerable<IAggregate> measurements = new List<IAggregate>();
-
-  private DateTime? selectedMonth;
 
   private async Task OnDateChanged(DateTime? date)
   {
@@ -39,7 +39,7 @@ public partial class MeasurementLocationPage
       {
         analysis.MeasurementLocation
       };
-      DateTimeOffset dto = new DateTimeOffset(
+      var dto = new DateTimeOffset(
         selectedMonth!.Value,
         TimeSpan.Zero
       );

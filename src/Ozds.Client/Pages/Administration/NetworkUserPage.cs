@@ -13,6 +13,12 @@ namespace Ozds.Client.Pages;
 public partial class NetworkUserPage
   : OzdsIdentifiableModelPageComponentBase<NetworkUserModel>
 {
+  private List<MeterAnalysis> analysis = new();
+
+  private IEnumerable<IAggregate> measurements = new List<IAggregate>();
+
+  private DateTime? selectedMonth;
+
   [Parameter]
   public string? Id { get; set; }
 
@@ -21,12 +27,6 @@ public partial class NetworkUserPage
 
   [CascadingParameter]
   private RepresentativeState RepresentativeState { get; set; } = default!;
-
-  private IEnumerable<IAggregate> measurements = new List<IAggregate>();
-
-  private List<MeterAnalysis> analysis = new();
-
-  private DateTime? selectedMonth;
 
   private async Task<NetworkUserModel?> OnLoadAsync()
   {
@@ -66,7 +66,7 @@ public partial class NetworkUserPage
     if (analysis is not null)
     {
       var meters = analysis.Select(x => (IMeter)x!.Meter).ToList();
-      DateTimeOffset dto = new DateTimeOffset(
+      var dto = new DateTimeOffset(
         selectedMonth!.Value,
         TimeSpan.Zero
       );
