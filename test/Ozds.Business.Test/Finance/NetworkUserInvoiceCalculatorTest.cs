@@ -69,7 +69,8 @@ public class NetworkUserInvoiceCalculatorTest
                     x.NetworkUserMeasurementLocationId =
                       x.ArchivedNetworkUserMeasurementLocation.Id;
                     x.Remark =
-                      x.ArchivedNetworkUserMeasurementLocation.CalculationRemark;
+                      x.ArchivedNetworkUserMeasurementLocation
+                        .CalculationRemark;
                     x.MeterId = x.ArchivedMeter.Id;
 
                     var faker = new Faker();
@@ -165,7 +166,8 @@ public class NetworkUserInvoiceCalculatorTest
                     x.NetworkUserMeasurementLocationId =
                       x.ArchivedNetworkUserMeasurementLocation.Id;
                     x.Remark =
-                      x.ArchivedNetworkUserMeasurementLocation.CalculationRemark;
+                      x.ArchivedNetworkUserMeasurementLocation
+                        .CalculationRemark;
                     x.MeterId = x.ArchivedMeter.Id;
 
                     var faker = new Faker();
@@ -277,7 +279,8 @@ public class NetworkUserInvoiceCalculatorTest
                     x.NetworkUserMeasurementLocationId =
                       x.ArchivedNetworkUserMeasurementLocation.Id;
                     x.Remark =
-                      x.ArchivedNetworkUserMeasurementLocation.CalculationRemark;
+                      x.ArchivedNetworkUserMeasurementLocation
+                        .CalculationRemark;
                     x.MeterId = x.ArchivedMeter.Id;
 
                     var faker = new Faker();
@@ -381,7 +384,8 @@ public class NetworkUserInvoiceCalculatorTest
                     x.NetworkUserMeasurementLocationId =
                       x.ArchivedNetworkUserMeasurementLocation.Id;
                     x.Remark =
-                      x.ArchivedNetworkUserMeasurementLocation.CalculationRemark;
+                      x.ArchivedNetworkUserMeasurementLocation
+                        .CalculationRemark;
                     x.MeterId = x.ArchivedMeter.Id;
 
                     var faker = new Faker();
