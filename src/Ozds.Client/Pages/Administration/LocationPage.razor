@@ -9,17 +9,13 @@
 @using Ozds.Client.Components.Streaming
 @inherits Ozds.Client.Components.Models.Base.OzdsIdentifiableModelPageComponentBase<Ozds.Business.Models.LocationModel>
 
-@*
-TODO: This if just doesn't work, in debug console this condition
-   returns false but it still enters if statement, idk
-
  @if (RepresentativeState.Representative.Role
   is not RoleModel.OperatorRepresentative
-  or not RoleModel.LocationRepresentative)
+  and not RoleModel.LocationRepresentative)
 {
   <NotFound/>
   return;
-} *@
+}
 
 <Mutating T="LocationModel" LoadAsync="OnLoadAsync">
   <Label>
@@ -64,7 +60,7 @@ TODO: This if just doesn't work, in debug console this condition
   </Details>
 </Mutating>
 <MudGrid Justify="Justify.FlexStart" Spacing="2" Style="width: 170px">
-  <MudItem xs="12">
+  <MudItem>
     <MudDatePicker Label="@Translate("Pick month")"
                    Date="selectedMonth"
                    DateChanged="OnDateChanged"
@@ -72,7 +68,7 @@ TODO: This if just doesn't work, in debug console this condition
                    FixDay="@DateTime.Today.Day"
                    DateFormat="MM.yyyy."/>
   </MudItem>
-  <MudItem xs="12">
+  <MudItem>
     <DownloadField IsGeneric="false" FileName="@(Id + "_MonthlyAggregate_" + selectedMonth?.ToString("MM.yyyy") + ".csv")" Models="@measurements"/>
   </MudItem>
 </MudGrid>

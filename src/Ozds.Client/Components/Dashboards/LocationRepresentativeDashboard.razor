@@ -114,24 +114,4 @@
   [Parameter]
   public List<IMeter> Meters { get; set; } = default!;
 
-
-  IEnumerable<IAggregate> measurements = new List<IAggregate>();
-
-  protected override async Task OnParametersSetAsync()
-  {
-    var queries = ScopedServices.GetRequiredService<MeasurementQueries>();
-    var converter = ScopedServices.GetRequiredService<MeasurementAggregateConverter>();
-    var measures = await queries.ReadByMeterIdsDynamic(
-      Meters.ToHashSet(),
-      ResolutionModel.Year,
-      30,
-      0,
-      CancellationToken,
-      DateTimeOffset.UtcNow.AddMonths(-4),
-      DateTimeOffset.UtcNow);
-
-    var orderedMeasures = measures.Items.OrderBy(x => x.Timestamp).ToList();
-    measurements = orderedMeasures.Select(x => (IAggregate)x).ToList();
-  }
-
 }

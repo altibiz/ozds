@@ -17,11 +17,6 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - Rollback measurement transactions only when a transaction is present
 - Separate `check` workflow into `formant-and-deps` and `check` workflows to
   allow `auto-commit-action` to trigger `check` workflow re-runs
-- Added export function for Locations and Network users which fallows the same
-  records as importing them.
-- Added export function for Operators on Meters and Measurement locations, and
-  export for everyone on individual network users and locations for monthly
-  aggregates
 
 ## Added
 
