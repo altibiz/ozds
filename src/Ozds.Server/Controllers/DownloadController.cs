@@ -1,9 +1,8 @@
+using System.Globalization;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 using Ozds.Business.Finance.Abstractions;
 using Ozds.Business.Models.Abstractions;
-using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Enums;
 using Ozds.Business.Queries;
 using Ozds.Business.Time;
@@ -96,20 +95,22 @@ public class DownloadController(
       {
         continue;
       }
+
       measurementLocations.Add(measurementLocation);
     }
 
     if (
       !DateTime.TryParse(
         date,
-        System.Globalization.CultureInfo.InvariantCulture,
-        System.Globalization.DateTimeStyles.None,
+        CultureInfo.InvariantCulture,
+        DateTimeStyles.None,
         out var parsedDate
       )
     )
     {
       return BadRequest("Invalid date format.");
     }
+
     var dto = new DateTimeOffset(parsedDate, TimeSpan.Zero);
     var measures = await measurementQueries.ReadByMeasurementLocationIdsDynamic(
       measurementLocations,
@@ -120,7 +121,7 @@ public class DownloadController(
       dto.GetStartOfMonth(),
       dto.GetStartOfNextMonth()
     );
-    List<IMeasurement> orderedMeasures = measures
+    var orderedMeasures = measures
       .Items.OrderBy(x => x.Timestamp)
       .ToList();
     var measurements = orderedMeasures.Select(x => (IAggregate)x).ToList();
@@ -129,9 +130,9 @@ public class DownloadController(
       measurements,
       false,
       string.Join('_', measurementLocationIds)
-        + "_MonthlyAggregate_"
-        + dto.ToString("MM.yyyy")
-        + ".csv"
+      + "_MonthlyAggregate_"
+      + dto.ToString("MM.yyyy")
+      + ".csv"
     );
   }
 
