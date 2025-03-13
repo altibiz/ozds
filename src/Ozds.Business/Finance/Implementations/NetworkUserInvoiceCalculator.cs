@@ -131,6 +131,7 @@ public class NetworkUserInvoiceCalculator(
       IssuedById = default!,
       IssuedOn = DateTimeOffset.UtcNow,
       NetworkUserId = basis.NetworkUser.Id,
+      Remark = basis.NetworkUser.InvoiceRemark,
       FromDate = basis.FromDate,
       ToDate = basis.ToDate,
       ArchivedNetworkUser = basis.NetworkUser,

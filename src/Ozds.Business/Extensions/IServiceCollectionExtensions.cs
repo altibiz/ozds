@@ -145,6 +145,7 @@ public static class IServiceCollectionExtensions
   {
     services.AddTransientAssignableTo(typeof(IValidator));
     services.AddSingleton(typeof(ModelValidator));
+    services.AddSingleton(typeof(HtmlSanitizer));
     return services;
   }
 

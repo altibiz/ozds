@@ -16,6 +16,43 @@ public class NetworkUserInvoiceIssuer(
   IMessageSender messageSender
 ) : INetworkUserInvoiceIssuer
 {
+  public async Task<CalculatedNetworkUserInvoiceModel>
+    PreviewNetworkUserInvoiceAsync(
+      string networkUserId,
+      DateTimeOffset dateFrom,
+      DateTimeOffset dateTo,
+      CancellationToken cancellationToken
+    )
+  {
+    NetworkUserInvoiceIssuingBasisModel? basis = null;
+    CalculatedNetworkUserInvoiceModel? invoice = null;
+    {
+      await using var scope = factory.CreateAsyncScope();
+      var billingQueries = scope.ServiceProvider
+        .GetRequiredService<BillingQueries>();
+      basis = await billingQueries
+        .IssuingBasisForNetworkUser(
+          networkUserId,
+          dateFrom,
+          dateTo,
+          cancellationToken
+        );
+      invoice = invoiceCalculator.Calculate(basis);
+    }
+    var culture = CultureInfo.CreateSpecificCulture("hr-HR");
+    var previewText = localizer.TranslateForCulture(
+      culture,
+      "This invoice is a preview."
+    );
+    invoice.Invoice.Remark = $@"
+      <div>
+        <p><strong>{previewText}</strong></p>
+        <p>{invoice.Invoice.Remark}</p>
+      </div>
+    ";
+    return invoice;
+  }
+
   public async Task IssueNetworkUserInvoiceAsync(
     string networkUserId,
     DateTimeOffset dateFrom,

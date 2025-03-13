@@ -30,6 +30,8 @@ public class NetworkUserMeasurementLocationEntity : MeasurementLocationEntity
   public virtual ICollection<NetworkUserCalculationEntity>
     NetworkUserCalculations { get; set; } =
     default!;
+
+  public string CalculationRemark { get; set; } = default!;
 }
 
 public class

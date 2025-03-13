@@ -1630,6 +1630,11 @@ namespace Ozds.Data.Migrations
                         .HasColumnType("text")
                         .HasColumnName("meter_id");
 
+                    b.Property<string>("Remark")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("remark");
+
                     b.Property<decimal>("SupplyFeeTotal_EUR")
                         .HasColumnType("numeric")
                         .HasColumnName("supply_fee_total_eur");
@@ -1722,6 +1727,11 @@ namespace Ozds.Data.Migrations
                     b.ComplexProperty<Dictionary<string, object>>("ArchivedNetworkUserMeasurementLocation", "Ozds.Data.Entities.Base.NetworkUserCalculationEntity.ArchivedNetworkUserMeasurementLocation#NetworkUserMeasurementLocationEntity", b1 =>
                         {
                             b1.IsRequired();
+
+                            b1.Property<string>("CalculationRemark")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("anuml_calculation_remark");
 
                             b1.Property<string>("CreatedById")
                                 .HasColumnType("text")
@@ -2325,6 +2335,11 @@ namespace Ozds.Data.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("deleted_on");
 
+                    b.Property<string>("InvoiceRemark")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("invoice_remark");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean")
                         .HasColumnName("is_deleted");
@@ -2440,6 +2455,11 @@ namespace Ozds.Data.Migrations
                     b.Property<DateTimeOffset>("IssuedOn")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("issued_on");
+
+                    b.Property<string>("Remark")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("remark");
 
                     b.Property<decimal>("SupplyActiveEnergyTotalImportT1Fee_EUR")
                         .HasColumnType("numeric")
@@ -2638,6 +2658,11 @@ namespace Ozds.Data.Migrations
                             b1.Property<DateTimeOffset?>("DeletedOn")
                                 .HasColumnType("timestamp with time zone")
                                 .HasColumnName("anu_deleted_on");
+
+                            b1.Property<string>("InvoiceRemark")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("anu_invoice_remark");
 
                             b1.Property<bool>("IsDeleted")
                                 .HasColumnType("boolean")
@@ -3790,6 +3815,11 @@ namespace Ozds.Data.Migrations
             modelBuilder.Entity("Ozds.Data.Entities.NetworkUserMeasurementLocationEntity", b =>
                 {
                     b.HasBaseType("Ozds.Data.Entities.Base.MeasurementLocationEntity");
+
+                    b.Property<string>("CalculationRemark")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("calculation_remark");
 
                     b.Property<long>("_networkUserCatalogueId")
                         .HasColumnType("bigint")

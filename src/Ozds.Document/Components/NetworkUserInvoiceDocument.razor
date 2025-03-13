@@ -22,7 +22,10 @@
       @Svg("invoice-print-header-hrv")
     </div>
     <div class="page-content">
-      <NetworkUserCalculationDocumentContent Entity="@calculation"/>
+      <div class="page-inner-space-between">
+        <NetworkUserCalculationDocumentContent Entity="@calculation"/>
+        <Remark Value="@calculation.Remark"/>
+      </div>
     </div>
     <div class="page-footer">
       @Svg("invoice-print-footer-hrv")
@@ -52,8 +55,10 @@
     @Svg("invoice-print-header-hrv")
   </div>
   <div class="page-content">
-    <NetworkUserCalculationDocumentFooter/>
-    <NetworkUserInvoiceDocumentFooter Entity="@Entity.Invoice"/>
+    <div class="page-inner-space-between">
+      <Remark Extended Value="@Entity.Invoice.Remark"/>
+      <Payment Entity="@Entity.Invoice"/>
+    </div>
   </div>
   <div class="page-footer">
     @Svg("invoice-print-footer-hrv")
