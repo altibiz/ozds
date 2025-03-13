@@ -68,8 +68,10 @@ public class FinancialEntityTypeHierarchyConfiguration
       .HasForeignKey(nameof(CalculationEntity.IssuedById));
 
     builder
-      .Property(nameof(FinancialEntity.Total_EUR))
-      .HasColumnName("total_eur");
+      .MonetaryValue(
+        nameof(FinancialEntity.Total_EUR),
+        "total_eur"
+      );
 
     builder.Ignore(nameof(FinancialEntity.RepresentativeId));
   }

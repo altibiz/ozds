@@ -5,30 +5,30 @@ using Ozds.Data.Entities.Complex;
 
 namespace Ozds.Business.Conversion.Implementations.Measurements;
 
-public class InstantaneousAggregateMeasureEntityConverter(
+public class DerivedAggregateMeasureEntityConverter(
   IServiceProvider serviceProvider
 ) : InheritingModelEntityConverter<
-  InstantaneousAggregateMeasureModel,
+  DerivedAggregateMeasureModel,
   AggregateMeasureModel,
-  InstantaneousAggregateMeasureEntity,
+  DerivedAggregateMeasureEntity,
   AggregateMeasureEntity>(serviceProvider)
 {
   public override void InitializeEntity(
-    InstantaneousAggregateMeasureModel model,
-    InstantaneousAggregateMeasureEntity entity
+    DerivedAggregateMeasureModel model,
+    DerivedAggregateMeasureEntity entity
   )
   {
     base.InitializeEntity(model, entity);
-    entity.Min = model.Min.ToFloat();
-    entity.Max = model.Max.ToFloat();
-    entity.Avg = model.Avg.ToFloat();
+    entity.Min = model.Min.ToLong();
+    entity.Max = model.Max.ToLong();
+    entity.Avg = model.Avg.ToDouble();
     entity.MinTimestamp = model.MinTimestamp;
     entity.MaxTimestamp = model.MaxTimestamp;
   }
 
   public override void InitializeModel(
-    InstantaneousAggregateMeasureEntity entity,
-    InstantaneousAggregateMeasureModel model
+    DerivedAggregateMeasureEntity entity,
+    DerivedAggregateMeasureModel model
   )
   {
     base.InitializeModel(entity, model);

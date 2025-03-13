@@ -4,11 +4,92 @@ using Ozds.Data.Entities.Abstractions;
 
 namespace Ozds.Data.Extensions;
 
-// TODO: forget and entity properties are flakey because
-// they depend on the name of the property
-
 public static class EntityTypeBuilderExtensions
 {
+  public static void InstantaneousMeasurementMeasure(
+    this EntityTypeBuilder builder,
+    string propertyName,
+    string columnName
+  )
+  {
+    builder
+      .Property(propertyName)
+      .HasColumnName(columnName)
+      // NOTE: we are not using these for any further calculation
+      // and it would be more beneficial to save space on these
+      // rather than to make them more precise
+      .HasColumnType("real");
+  }
+
+  public static void CumulativeMeasurementMeasure(
+    this EntityTypeBuilder builder,
+    string propertyName,
+    string columnName
+  )
+  {
+    builder
+      .Property(propertyName)
+      .HasColumnName(columnName)
+      // NOTE: used for calculations
+      .HasColumnType("bigint");
+  }
+
+  public static void MonetaryValue(
+    this EntityTypeBuilder builder,
+    string propertyName,
+    string columnName
+  )
+  {
+    builder
+      .Property(propertyName)
+      .HasColumnName(columnName)
+      // NOTE: https://stackoverflow.com/a/27328409
+      .HasColumnType("decimal(19, 4)");
+  }
+
+  public static void InstantaneousMeasurementMeasure(
+    this ComplexPropertyBuilder builder,
+    string propertyName,
+    string columnName
+  )
+  {
+    builder
+      .Property(propertyName)
+      .HasColumnName(columnName)
+      // NOTE: we are not using these for any further calculation
+      // and it would be more beneficial to save space on these
+      // rather than to make them more precise
+      .HasColumnType("real");
+  }
+
+  public static void CumulativeMeasurementMeasure(
+    this ComplexPropertyBuilder builder,
+    string propertyName,
+    string columnName
+  )
+  {
+    builder
+      .Property(propertyName)
+      .HasColumnName(columnName)
+      // NOTE: used for calculations
+      .HasColumnType("bigint");
+  }
+
+  public static void MonetaryValue(
+    this ComplexPropertyBuilder builder,
+    string propertyName,
+    string columnName
+  )
+  {
+    builder
+      .Property(propertyName)
+      .HasColumnName(columnName)
+      // NOTE: https://stackoverflow.com/a/27328409
+      .HasColumnType("decimal(19, 4)");
+  }
+
+  // TODO: forget and entity properties are flakey because
+  // they depend on the name of the property
   public static ComplexPropertyBuilder Archived(
     this ComplexPropertyBuilder complexPropertyBuilder,
     string? propertyName = null)
