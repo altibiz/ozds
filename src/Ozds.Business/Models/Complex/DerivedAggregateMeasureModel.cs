@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Ozds.Business.Models.Complex;
 
-public class InstantaneousAggregateMeasureModel : AggregateMeasureModel
+public class DerivedAggregateMeasureModel : AggregateMeasureModel
 {
   [Required]
   public decimal Min { get; set; } = default!;

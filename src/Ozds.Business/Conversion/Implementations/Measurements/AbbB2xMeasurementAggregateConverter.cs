@@ -123,7 +123,7 @@ public class AbbB2xMeasurementAggregateConverter
       Max = measurement.ActiveEnergyL1ImportT0_Wh
     };
     aggregate.DerivedActivePowerL1ImportT0_W =
-      new InstantaneousAggregateMeasureModel
+      new DerivedAggregateMeasureModel
       {
         Avg = 0M,
         Min = decimal.MaxValue,
@@ -137,7 +137,7 @@ public class AbbB2xMeasurementAggregateConverter
       Max = measurement.ActiveEnergyL2ImportT0_Wh
     };
     aggregate.DerivedActivePowerL2ImportT0_W =
-      new InstantaneousAggregateMeasureModel
+      new DerivedAggregateMeasureModel
       {
         Avg = 0M,
         Min = decimal.MaxValue,
@@ -151,7 +151,7 @@ public class AbbB2xMeasurementAggregateConverter
       Max = measurement.ActiveEnergyL3ImportT0_Wh
     };
     aggregate.DerivedActivePowerL3ImportT0_W =
-      new InstantaneousAggregateMeasureModel
+      new DerivedAggregateMeasureModel
       {
         Avg = 0M,
         Min = decimal.MaxValue,
@@ -165,7 +165,7 @@ public class AbbB2xMeasurementAggregateConverter
       Max = measurement.ActiveEnergyTotalImportT0_Wh
     };
     aggregate.DerivedActivePowerTotalImportT0_W =
-      new InstantaneousAggregateMeasureModel
+      new DerivedAggregateMeasureModel
       {
         Avg = 0M,
         Min = decimal.MaxValue,
@@ -179,7 +179,7 @@ public class AbbB2xMeasurementAggregateConverter
       Max = measurement.ActiveEnergyL1ExportT0_Wh
     };
     aggregate.DerivedActivePowerL1ExportT0_W =
-      new InstantaneousAggregateMeasureModel
+      new DerivedAggregateMeasureModel
       {
         Avg = 0M,
         Min = decimal.MaxValue,
@@ -193,7 +193,7 @@ public class AbbB2xMeasurementAggregateConverter
       Max = measurement.ActiveEnergyL2ExportT0_Wh
     };
     aggregate.DerivedActivePowerL2ExportT0_W =
-      new InstantaneousAggregateMeasureModel
+      new DerivedAggregateMeasureModel
       {
         Avg = 0M,
         Min = decimal.MaxValue,
@@ -207,7 +207,7 @@ public class AbbB2xMeasurementAggregateConverter
       Max = measurement.ActiveEnergyL3ExportT0_Wh
     };
     aggregate.DerivedActivePowerL3ExportT0_W =
-      new InstantaneousAggregateMeasureModel
+      new DerivedAggregateMeasureModel
       {
         Avg = 0M,
         Min = decimal.MaxValue,
@@ -222,7 +222,7 @@ public class AbbB2xMeasurementAggregateConverter
         Max = measurement.ReactiveEnergyL1ImportT0_VARh
       };
     aggregate.DerivedReactivePowerL1ImportT0_VAR =
-      new InstantaneousAggregateMeasureModel
+      new DerivedAggregateMeasureModel
       {
         Avg = 0M,
         Min = decimal.MaxValue,
@@ -237,7 +237,7 @@ public class AbbB2xMeasurementAggregateConverter
         Max = measurement.ReactiveEnergyL2ImportT0_VARh
       };
     aggregate.DerivedReactivePowerL2ImportT0_VAR =
-      new InstantaneousAggregateMeasureModel
+      new DerivedAggregateMeasureModel
       {
         Avg = 0M,
         Min = decimal.MaxValue,
@@ -252,7 +252,7 @@ public class AbbB2xMeasurementAggregateConverter
         Max = measurement.ReactiveEnergyL3ImportT0_VARh
       };
     aggregate.DerivedReactivePowerL3ImportT0_VAR =
-      new InstantaneousAggregateMeasureModel
+      new DerivedAggregateMeasureModel
       {
         Avg = 0M,
         Min = decimal.MaxValue,
@@ -267,7 +267,7 @@ public class AbbB2xMeasurementAggregateConverter
         Max = measurement.ReactiveEnergyL1ExportT0_VARh
       };
     aggregate.DerivedReactivePowerL1ExportT0_VAR =
-      new InstantaneousAggregateMeasureModel
+      new DerivedAggregateMeasureModel
       {
         Avg = 0M,
         Min = decimal.MaxValue,
@@ -282,7 +282,7 @@ public class AbbB2xMeasurementAggregateConverter
         Max = measurement.ReactiveEnergyL2ExportT0_VARh
       };
     aggregate.DerivedReactivePowerL2ExportT0_VAR =
-      new InstantaneousAggregateMeasureModel
+      new DerivedAggregateMeasureModel
       {
         Avg = 0M,
         Min = decimal.MaxValue,
@@ -297,7 +297,7 @@ public class AbbB2xMeasurementAggregateConverter
         Max = measurement.ReactiveEnergyL3ExportT0_VARh
       };
     aggregate.DerivedReactivePowerL3ExportT0_VAR =
-      new InstantaneousAggregateMeasureModel
+      new DerivedAggregateMeasureModel
       {
         Avg = 0M,
         Min = decimal.MaxValue,
@@ -311,7 +311,7 @@ public class AbbB2xMeasurementAggregateConverter
       Max = measurement.ActiveEnergyTotalExportT0_Wh
     };
     aggregate.DerivedActivePowerTotalExportT0_W =
-      new InstantaneousAggregateMeasureModel
+      new DerivedAggregateMeasureModel
       {
         Avg = 0M,
         Min = decimal.MaxValue,
@@ -325,7 +325,7 @@ public class AbbB2xMeasurementAggregateConverter
       Max = measurement.ActiveEnergyTotalImportT1_Wh
     };
     aggregate.DerivedActivePowerTotalImportT1_W =
-      new InstantaneousAggregateMeasureModel
+      new DerivedAggregateMeasureModel
       {
         Avg = 0M,
         Min = decimal.MaxValue,
@@ -339,7 +339,7 @@ public class AbbB2xMeasurementAggregateConverter
       Max = measurement.ActiveEnergyTotalImportT2_Wh
     };
     aggregate.DerivedActivePowerTotalImportT2_W =
-      new InstantaneousAggregateMeasureModel
+      new DerivedAggregateMeasureModel
       {
         Avg = 0M,
         Min = decimal.MaxValue,
@@ -354,7 +354,7 @@ public class AbbB2xMeasurementAggregateConverter
         Max = measurement.ReactiveEnergyL1ImportT0_VARh
       };
     aggregate.DerivedReactivePowerL1ImportT0_VAR =
-      new InstantaneousAggregateMeasureModel
+      new DerivedAggregateMeasureModel
       {
         Avg = 0M,
         Min = decimal.MaxValue,
@@ -369,7 +369,7 @@ public class AbbB2xMeasurementAggregateConverter
         Max = measurement.ReactiveEnergyL2ImportT0_VARh
       };
     aggregate.DerivedReactivePowerL2ImportT0_VAR =
-      new InstantaneousAggregateMeasureModel
+      new DerivedAggregateMeasureModel
       {
         Avg = 0M,
         Min = decimal.MaxValue,
@@ -384,7 +384,7 @@ public class AbbB2xMeasurementAggregateConverter
         Max = measurement.ReactiveEnergyL3ImportT0_VARh
       };
     aggregate.DerivedReactivePowerL3ImportT0_VAR =
-      new InstantaneousAggregateMeasureModel
+      new DerivedAggregateMeasureModel
       {
         Avg = 0M,
         Min = decimal.MaxValue,
@@ -399,7 +399,7 @@ public class AbbB2xMeasurementAggregateConverter
         Max = measurement.ReactiveEnergyTotalImportT0_VARh
       };
     aggregate.DerivedReactivePowerTotalImportT0_VAR =
-      new InstantaneousAggregateMeasureModel
+      new DerivedAggregateMeasureModel
       {
         Avg = 0M,
         Min = decimal.MaxValue,
@@ -414,7 +414,7 @@ public class AbbB2xMeasurementAggregateConverter
         Max = measurement.ReactiveEnergyL1ExportT0_VARh
       };
     aggregate.DerivedReactivePowerL1ExportT0_VAR =
-      new InstantaneousAggregateMeasureModel
+      new DerivedAggregateMeasureModel
       {
         Avg = 0M,
         Min = decimal.MaxValue,
@@ -429,7 +429,7 @@ public class AbbB2xMeasurementAggregateConverter
         Max = measurement.ReactiveEnergyL2ExportT0_VARh
       };
     aggregate.DerivedReactivePowerL2ExportT0_VAR =
-      new InstantaneousAggregateMeasureModel
+      new DerivedAggregateMeasureModel
       {
         Avg = 0M,
         Min = decimal.MaxValue,
@@ -444,7 +444,7 @@ public class AbbB2xMeasurementAggregateConverter
         Max = measurement.ReactiveEnergyL3ExportT0_VARh
       };
     aggregate.DerivedReactivePowerL3ExportT0_VAR =
-      new InstantaneousAggregateMeasureModel
+      new DerivedAggregateMeasureModel
       {
         Avg = 0M,
         Min = decimal.MaxValue,
@@ -459,7 +459,7 @@ public class AbbB2xMeasurementAggregateConverter
         Max = measurement.ReactiveEnergyTotalExportT0_VARh
       };
     aggregate.DerivedReactivePowerTotalExportT0_VAR =
-      new InstantaneousAggregateMeasureModel
+      new DerivedAggregateMeasureModel
       {
         Avg = 0M,
         Min = decimal.MaxValue,

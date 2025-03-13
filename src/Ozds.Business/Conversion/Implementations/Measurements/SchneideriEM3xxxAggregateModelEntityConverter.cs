@@ -88,7 +88,7 @@ public class SchneideriEM3xxxAggregateModelEntityConverter(
     entity.DerivedActivePowerL1ImportT0_W =
       model.DerivedActivePowerL1ImportT0_W is null
         ? null!
-        : modelEntityConverter.ToEntity<InstantaneousAggregateMeasureEntity>(
+        : modelEntityConverter.ToEntity<DerivedAggregateMeasureEntity>(
           model.DerivedActivePowerL1ImportT0_W);
     entity.ActiveEnergyL2ImportT0_Wh =
       model.ActiveEnergyL2ImportT0_Wh is null
@@ -98,7 +98,7 @@ public class SchneideriEM3xxxAggregateModelEntityConverter(
     entity.DerivedActivePowerL2ImportT0_W =
       model.DerivedActivePowerL2ImportT0_W is null
         ? null!
-        : modelEntityConverter.ToEntity<InstantaneousAggregateMeasureEntity>(
+        : modelEntityConverter.ToEntity<DerivedAggregateMeasureEntity>(
           model.DerivedActivePowerL2ImportT0_W);
     entity.ActiveEnergyL3ImportT0_Wh =
       model.ActiveEnergyL3ImportT0_Wh is null
@@ -108,7 +108,7 @@ public class SchneideriEM3xxxAggregateModelEntityConverter(
     entity.DerivedActivePowerL3ImportT0_W =
       model.DerivedActivePowerL3ImportT0_W is null
         ? null!
-        : modelEntityConverter.ToEntity<InstantaneousAggregateMeasureEntity>(
+        : modelEntityConverter.ToEntity<DerivedAggregateMeasureEntity>(
           model.DerivedActivePowerL3ImportT0_W);
     entity.ActiveEnergyTotalImportT0_Wh =
       model.ActiveEnergyTotalImportT0_Wh is null
@@ -118,7 +118,7 @@ public class SchneideriEM3xxxAggregateModelEntityConverter(
     entity.DerivedActivePowerTotalImportT0_W =
       model.DerivedActivePowerTotalImportT0_W is null
         ? null!
-        : modelEntityConverter.ToEntity<InstantaneousAggregateMeasureEntity>(
+        : modelEntityConverter.ToEntity<DerivedAggregateMeasureEntity>(
           model.DerivedActivePowerTotalImportT0_W);
     entity.ActiveEnergyTotalExportT0_Wh =
       model.ActiveEnergyTotalExportT0_Wh is null
@@ -128,7 +128,7 @@ public class SchneideriEM3xxxAggregateModelEntityConverter(
     entity.DerivedActivePowerTotalExportT0_W =
       model.DerivedActivePowerTotalExportT0_W is null
         ? null!
-        : modelEntityConverter.ToEntity<InstantaneousAggregateMeasureEntity>(
+        : modelEntityConverter.ToEntity<DerivedAggregateMeasureEntity>(
           model.DerivedActivePowerTotalExportT0_W);
     entity.ReactiveEnergyTotalImportT0_VARh =
       model.ReactiveEnergyTotalImportT0_VARh is null
@@ -138,7 +138,7 @@ public class SchneideriEM3xxxAggregateModelEntityConverter(
     entity.DerivedReactivePowerTotalImportT0_VAR =
       model.DerivedReactivePowerTotalImportT0_VAR is null
         ? null!
-        : modelEntityConverter.ToEntity<InstantaneousAggregateMeasureEntity>(
+        : modelEntityConverter.ToEntity<DerivedAggregateMeasureEntity>(
           model.DerivedReactivePowerTotalImportT0_VAR);
     entity.ReactiveEnergyTotalExportT0_VARh =
       model.ReactiveEnergyTotalExportT0_VARh is null
@@ -148,7 +148,7 @@ public class SchneideriEM3xxxAggregateModelEntityConverter(
     entity.DerivedReactivePowerTotalExportT0_VAR =
       model.DerivedReactivePowerTotalExportT0_VAR is null
         ? null!
-        : modelEntityConverter.ToEntity<InstantaneousAggregateMeasureEntity>(
+        : modelEntityConverter.ToEntity<DerivedAggregateMeasureEntity>(
           model.DerivedReactivePowerTotalExportT0_VAR);
     entity.ActiveEnergyTotalImportT1_Wh =
       model.ActiveEnergyTotalImportT1_Wh is null
@@ -158,7 +158,7 @@ public class SchneideriEM3xxxAggregateModelEntityConverter(
     entity.DerivedActivePowerTotalImportT1_W =
       model.DerivedActivePowerTotalImportT1_W is null
         ? null!
-        : modelEntityConverter.ToEntity<InstantaneousAggregateMeasureEntity>(
+        : modelEntityConverter.ToEntity<DerivedAggregateMeasureEntity>(
           model.DerivedActivePowerTotalImportT1_W);
     entity.ActiveEnergyTotalImportT2_Wh =
       model.ActiveEnergyTotalImportT2_Wh is null
@@ -168,7 +168,7 @@ public class SchneideriEM3xxxAggregateModelEntityConverter(
     entity.DerivedActivePowerTotalImportT2_W =
       model.DerivedActivePowerTotalImportT2_W is null
         ? null!
-        : modelEntityConverter.ToEntity<InstantaneousAggregateMeasureEntity>(
+        : modelEntityConverter.ToEntity<DerivedAggregateMeasureEntity>(
           model.DerivedActivePowerTotalImportT2_W);
   }
 
@@ -241,7 +241,7 @@ public class SchneideriEM3xxxAggregateModelEntityConverter(
     model.DerivedActivePowerL1ImportT0_W =
       entity.DerivedActivePowerL1ImportT0_W is null
         ? null!
-        : modelEntityConverter.ToModel<InstantaneousAggregateMeasureModel>(
+        : modelEntityConverter.ToModel<DerivedAggregateMeasureModel>(
           entity.DerivedActivePowerL1ImportT0_W);
     model.ActiveEnergyL2ImportT0_Wh =
       entity.ActiveEnergyL2ImportT0_Wh is null
@@ -251,7 +251,7 @@ public class SchneideriEM3xxxAggregateModelEntityConverter(
     model.DerivedActivePowerL2ImportT0_W =
       entity.DerivedActivePowerL2ImportT0_W is null
         ? null!
-        : modelEntityConverter.ToModel<InstantaneousAggregateMeasureModel>(
+        : modelEntityConverter.ToModel<DerivedAggregateMeasureModel>(
           entity.DerivedActivePowerL2ImportT0_W);
     model.ActiveEnergyL3ImportT0_Wh =
       entity.ActiveEnergyL3ImportT0_Wh is null
@@ -261,7 +261,7 @@ public class SchneideriEM3xxxAggregateModelEntityConverter(
     model.DerivedActivePowerL3ImportT0_W =
       entity.DerivedActivePowerL3ImportT0_W is null
         ? null!
-        : modelEntityConverter.ToModel<InstantaneousAggregateMeasureModel>(
+        : modelEntityConverter.ToModel<DerivedAggregateMeasureModel>(
           entity.DerivedActivePowerL3ImportT0_W);
     model.ActiveEnergyTotalImportT0_Wh =
       entity.ActiveEnergyTotalImportT0_Wh is null
@@ -271,7 +271,7 @@ public class SchneideriEM3xxxAggregateModelEntityConverter(
     model.DerivedActivePowerTotalImportT0_W =
       entity.DerivedActivePowerTotalImportT0_W is null
         ? null!
-        : modelEntityConverter.ToModel<InstantaneousAggregateMeasureModel>(
+        : modelEntityConverter.ToModel<DerivedAggregateMeasureModel>(
           entity.DerivedActivePowerTotalImportT0_W);
     model.ActiveEnergyTotalExportT0_Wh =
       entity.ActiveEnergyTotalExportT0_Wh is null
@@ -281,7 +281,7 @@ public class SchneideriEM3xxxAggregateModelEntityConverter(
     model.DerivedActivePowerTotalExportT0_W =
       entity.DerivedActivePowerTotalExportT0_W is null
         ? null!
-        : modelEntityConverter.ToModel<InstantaneousAggregateMeasureModel>(
+        : modelEntityConverter.ToModel<DerivedAggregateMeasureModel>(
           entity.DerivedActivePowerTotalExportT0_W);
     model.ReactiveEnergyTotalImportT0_VARh =
       entity.ReactiveEnergyTotalImportT0_VARh is null
@@ -291,7 +291,7 @@ public class SchneideriEM3xxxAggregateModelEntityConverter(
     model.DerivedReactivePowerTotalImportT0_VAR =
       entity.DerivedReactivePowerTotalImportT0_VAR is null
         ? null!
-        : modelEntityConverter.ToModel<InstantaneousAggregateMeasureModel>(
+        : modelEntityConverter.ToModel<DerivedAggregateMeasureModel>(
           entity.DerivedReactivePowerTotalImportT0_VAR);
     model.ReactiveEnergyTotalExportT0_VARh =
       entity.ReactiveEnergyTotalExportT0_VARh is null
@@ -301,7 +301,7 @@ public class SchneideriEM3xxxAggregateModelEntityConverter(
     model.DerivedReactivePowerTotalExportT0_VAR =
       entity.DerivedReactivePowerTotalExportT0_VAR is null
         ? null!
-        : modelEntityConverter.ToModel<InstantaneousAggregateMeasureModel>(
+        : modelEntityConverter.ToModel<DerivedAggregateMeasureModel>(
           entity.DerivedReactivePowerTotalExportT0_VAR);
     model.ActiveEnergyTotalImportT1_Wh =
       entity.ActiveEnergyTotalImportT1_Wh is null
@@ -311,7 +311,7 @@ public class SchneideriEM3xxxAggregateModelEntityConverter(
     model.DerivedActivePowerTotalImportT1_W =
       entity.DerivedActivePowerTotalImportT1_W is null
         ? null!
-        : modelEntityConverter.ToModel<InstantaneousAggregateMeasureModel>(
+        : modelEntityConverter.ToModel<DerivedAggregateMeasureModel>(
           entity.DerivedActivePowerTotalImportT1_W);
     model.ActiveEnergyTotalImportT2_Wh =
       entity.ActiveEnergyTotalImportT2_Wh is null
@@ -321,7 +321,7 @@ public class SchneideriEM3xxxAggregateModelEntityConverter(
     model.DerivedActivePowerTotalImportT2_W =
       entity.DerivedActivePowerTotalImportT2_W is null
         ? null!
-        : modelEntityConverter.ToModel<InstantaneousAggregateMeasureModel>(
+        : modelEntityConverter.ToModel<DerivedAggregateMeasureModel>(
           entity.DerivedActivePowerTotalImportT2_W);
   }
 }

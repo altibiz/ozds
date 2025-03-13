@@ -34,41 +34,41 @@ public class AbbB2xMeasurementModelEntityConverter(
     entity.ReactivePowerL2NetT0_VAR = model.ReactivePowerL2NetT0_VAR.ToFloat();
     entity.ReactivePowerL3NetT0_VAR = model.ReactivePowerL3NetT0_VAR.ToFloat();
     entity.ActiveEnergyL1ImportT0_Wh =
-      model.ActiveEnergyL1ImportT0_Wh.ToFloat();
+      model.ActiveEnergyL1ImportT0_Wh.ToLong();
     entity.ActiveEnergyL2ImportT0_Wh =
-      model.ActiveEnergyL2ImportT0_Wh.ToFloat();
+      model.ActiveEnergyL2ImportT0_Wh.ToLong();
     entity.ActiveEnergyL3ImportT0_Wh =
-      model.ActiveEnergyL3ImportT0_Wh.ToFloat();
+      model.ActiveEnergyL3ImportT0_Wh.ToLong();
     entity.ActiveEnergyL1ExportT0_Wh =
-      model.ActiveEnergyL1ExportT0_Wh.ToFloat();
+      model.ActiveEnergyL1ExportT0_Wh.ToLong();
     entity.ActiveEnergyL2ExportT0_Wh =
-      model.ActiveEnergyL2ExportT0_Wh.ToFloat();
+      model.ActiveEnergyL2ExportT0_Wh.ToLong();
     entity.ActiveEnergyL3ExportT0_Wh =
-      model.ActiveEnergyL3ExportT0_Wh.ToFloat();
+      model.ActiveEnergyL3ExportT0_Wh.ToLong();
     entity.ReactiveEnergyL1ImportT0_VARh =
-      model.ReactiveEnergyL1ImportT0_VARh.ToFloat();
+      model.ReactiveEnergyL1ImportT0_VARh.ToLong();
     entity.ReactiveEnergyL2ImportT0_VARh =
-      model.ReactiveEnergyL2ImportT0_VARh.ToFloat();
+      model.ReactiveEnergyL2ImportT0_VARh.ToLong();
     entity.ReactiveEnergyL3ImportT0_VARh =
-      model.ReactiveEnergyL3ImportT0_VARh.ToFloat();
+      model.ReactiveEnergyL3ImportT0_VARh.ToLong();
     entity.ReactiveEnergyL1ExportT0_VARh =
-      model.ReactiveEnergyL1ExportT0_VARh.ToFloat();
+      model.ReactiveEnergyL1ExportT0_VARh.ToLong();
     entity.ReactiveEnergyL2ExportT0_VARh =
-      model.ReactiveEnergyL2ExportT0_VARh.ToFloat();
+      model.ReactiveEnergyL2ExportT0_VARh.ToLong();
     entity.ReactiveEnergyL3ExportT0_VARh =
-      model.ReactiveEnergyL3ExportT0_VARh.ToFloat();
+      model.ReactiveEnergyL3ExportT0_VARh.ToLong();
     entity.ActiveEnergyTotalImportT0_Wh =
-      model.ActiveEnergyTotalImportT0_Wh.ToFloat();
+      model.ActiveEnergyTotalImportT0_Wh.ToLong();
     entity.ActiveEnergyTotalExportT0_Wh =
-      model.ActiveEnergyTotalExportT0_Wh.ToFloat();
+      model.ActiveEnergyTotalExportT0_Wh.ToLong();
     entity.ReactiveEnergyTotalImportT0_VARh =
-      model.ReactiveEnergyTotalImportT0_VARh.ToFloat();
+      model.ReactiveEnergyTotalImportT0_VARh.ToLong();
     entity.ReactiveEnergyTotalExportT0_VARh =
-      model.ReactiveEnergyTotalExportT0_VARh.ToFloat();
+      model.ReactiveEnergyTotalExportT0_VARh.ToLong();
     entity.ActiveEnergyTotalImportT1_Wh =
-      model.ActiveEnergyTotalImportT1_Wh.ToFloat();
+      model.ActiveEnergyTotalImportT1_Wh.ToLong();
     entity.ActiveEnergyTotalImportT2_Wh =
-      model.ActiveEnergyTotalImportT2_Wh.ToFloat();
+      model.ActiveEnergyTotalImportT2_Wh.ToLong();
   }
 
   public override void InitializeModel(

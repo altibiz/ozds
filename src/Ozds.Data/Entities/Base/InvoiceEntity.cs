@@ -37,15 +37,21 @@ public class
     var builder = modelBuilder.Entity(entity);
 
     builder
-      .Property(nameof(InvoiceEntity.InvoiceTaxRate_Percent))
-      .HasColumnName("tax_rate_percent");
+      .MonetaryValue(
+        nameof(InvoiceEntity.InvoiceTaxRate_Percent),
+        "tax_rate_percent"
+      );
 
     builder
-      .Property(nameof(InvoiceEntity.InvoiceTax_EUR))
-      .HasColumnName("tax_eur");
+      .MonetaryValue(
+        nameof(InvoiceEntity.InvoiceTax_EUR),
+        "tax_eur"
+      );
 
     builder
-      .Property(nameof(InvoiceEntity.InvoiceTotalWithTax_EUR))
-      .HasColumnName("total_with_tax_eur");
+      .MonetaryValue(
+        nameof(InvoiceEntity.InvoiceTotalWithTax_EUR),
+        "total_with_tax_eur"
+      );
   }
 }
