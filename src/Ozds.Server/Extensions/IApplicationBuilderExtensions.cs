@@ -18,6 +18,18 @@ public static class IApplicationBuilderExtensions
     );
 
     endpoints.MapOzdsServerRoute(
+      "/download/network-user-invoice/{id}",
+      typeof(DownloadController),
+      nameof(DownloadController.NetworkUserInvoice)
+    );
+
+    endpoints.MapOzdsServerRoute(
+      "/download/network-user-invoice-preview/{networkUserId}/{year:int}/{month:int}",
+      typeof(DownloadController),
+      nameof(DownloadController.NetworkUserInvoicePreview)
+    );
+
+    endpoints.MapOzdsServerRoute(
       "/",
       typeof(AppController),
       nameof(AppController.Uncultured)
@@ -54,10 +66,7 @@ public static class IApplicationBuilderExtensions
       pattern: pattern,
       defaults: new
       {
-        controller = controller.Name.Remove(
-          controller.Name.Length -
-          nameof(Controller).Length,
-          nameof(Controller).Length),
+        controller = controller.Name[..^nameof(Controller).Length],
         action
       }
     );

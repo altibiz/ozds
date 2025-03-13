@@ -15,5 +15,6 @@ public class NetworkUserMeasurementLocationModelActivator(
     base.Initialize(model);
     model.NetworkUserId = "0";
     model.NetworkUserCatalogueId = "0";
+    model.CalculationRemark = string.Empty;
   }
 }

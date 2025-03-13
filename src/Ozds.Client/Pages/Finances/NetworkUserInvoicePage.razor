@@ -2,6 +2,7 @@
 
 @page "/finances/network-user-invoice/{id?}"
 @using Microsoft.AspNetCore.Components.Web
+@using MudBlazor
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Client.Components.Models
 @using Ozds.Client.Components.Streaming
@@ -27,6 +28,16 @@
     </HeadContent>
 
     <Details Model="@context.Model"/>
+
+    <MudHidden Breakpoint="Breakpoint.SmAndDown">
+      <MudLink Href="@(PageHref<NetworkUserInvoiceDocumentPage>(new { context.Model.Id }))">
+        @Translate("Document")
+      </MudLink>
+    </MudHidden>
+
+    <MudLink Href="@($"/download/network-user-invoice/{context.Model.Id}")">
+      @Translate("Pdf")
+    </MudLink>
   </Details>
 </Mutating>
 

@@ -10,4 +10,7 @@ public class NetworkUserMeasurementLocationModel : MeasurementLocationModel
 
   [Required]
   public required string NetworkUserCatalogueId { get; set; }
+
+  [Required]
+  public required string CalculationRemark { get; set; } = string.Empty;
 }

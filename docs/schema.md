@@ -358,6 +358,7 @@ erDiagram
     }
 
     measurement_locations {
+        text calculation_remark
         text created_by_id FK
         timestamp_with_time_zone created_on
         text deleted_by_id FK
@@ -444,6 +445,7 @@ erDiagram
         text am_messenger_id
         ARRAY am_phases
         text am_title
+        text anuml_calculation_remark
         text anuml_created_by_id
         timestamp_with_time_zone anuml_created_on
         text anuml_deleted_by_id
@@ -522,6 +524,7 @@ erDiagram
         numeric oie_min_kwh
         numeric oie_price_eur
         numeric oie_total_eur
+        text remark
         numeric rnt_amount_kwh
         numeric rnt_max_kwh
         numeric rnt_min_kwh
@@ -607,6 +610,7 @@ erDiagram
         timestamp_with_time_zone anu_created_on
         text anu_deleted_by_id
         timestamp_with_time_zone anu_deleted_on
+        text anu_invoice_remark
         boolean anu_is_deleted
         text anu_last_updated_by_id
         timestamp_with_time_zone anu_last_updated_on
@@ -637,6 +641,7 @@ erDiagram
         text issued_by_id FK
         timestamp_with_time_zone issued_on
         bigint network_user_id FK
+        text remark
         numeric supply_active_energy_total_import_t1fee_eur
         numeric supply_active_energy_total_import_t2fee_eur
         numeric supply_business_usage_fee_eur
@@ -669,6 +674,7 @@ erDiagram
         text deleted_by_id FK
         timestamp_with_time_zone deleted_on
         bigint id PK
+        text invoice_remark
         boolean is_deleted
         text last_updated_by_id FK
         timestamp_with_time_zone last_updated_on

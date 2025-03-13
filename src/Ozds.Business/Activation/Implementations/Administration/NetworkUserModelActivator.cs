@@ -18,5 +18,6 @@ public class NetworkUserModelActivator(IServiceProvider serviceProvider)
     model.LocationId = "0";
     model.LegalPerson = modelActivator.Activate<LegalPersonModel>();
     model.AltiBizSubProjectCode = string.Empty;
+    model.InvoiceRemark = string.Empty;
   }
 }
