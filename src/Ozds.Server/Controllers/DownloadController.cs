@@ -78,10 +78,12 @@ public class DownloadController(
   [HttpGet]
   public async Task<IActionResult> CsvExportNetworkUserMonthlyAggregate(
     string measurementLocationIdsString,
-    string date,
+    int year,
+    int month,
     CancellationToken cancellationToken
   )
   {
+    var (start, end) = DateTimeOffsetExtensions.GetMonthRange(year, month);
     var measurementLocationIds = measurementLocationIdsString.Split(',');
     List<IMeasurementLocation> measurementLocations = new();
     foreach (var measurementLocationId in measurementLocationIds)
@@ -98,28 +100,14 @@ public class DownloadController(
 
       measurementLocations.Add(measurementLocation);
     }
-
-    if (
-      !DateTime.TryParse(
-        date,
-        CultureInfo.InvariantCulture,
-        DateTimeStyles.None,
-        out var parsedDate
-      )
-    )
-    {
-      return BadRequest("Invalid date format.");
-    }
-
-    var dto = new DateTimeOffset(parsedDate, TimeSpan.Zero);
     var measures = await measurementQueries.ReadByMeasurementLocationIdsDynamic(
       measurementLocations,
       ResolutionModel.Year,
       30,
       0,
       cancellationToken,
-      dto.GetStartOfMonth(),
-      dto.GetStartOfNextMonth()
+      start,
+      end
     );
     var orderedMeasures = measures
       .Items.OrderBy(x => x.Timestamp)
@@ -131,7 +119,7 @@ public class DownloadController(
       false,
       string.Join('_', measurementLocationIds)
       + "_MonthlyAggregate_"
-      + dto.ToString("MM.yyyy")
+      + end.ToString("MM.yyyy")
       + ".csv"
     );
   }

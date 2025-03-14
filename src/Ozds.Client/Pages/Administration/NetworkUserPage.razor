@@ -68,7 +68,7 @@
   </MudItem>
   @if (selectedMonth is not null)
   {
-    <MudLink Href="@("/download/csv-export-network-user-monthly-aggregate/" + string.Join(',', analysis.Select(x => x!.MeasurementLocation.Id).ToList()) + "/" + selectedMonth.Value.ToString("yyyy-MM-dd"))">
+    <MudLink Href="@("/download/csv-export-network-user-monthly-aggregate/" + string.Join(',', analysis.Select(x => x!.MeasurementLocation.Id).ToList()) + "/" + selectedMonth.Value.Year + "/" + selectedMonth.Value.Month)">
       @Translate("Csv")
 
     </MudLink>
