@@ -294,13 +294,19 @@ public class MeasurementQueries(
 
     var futureItems = new List<QueryDeferred<IMeasurementEntity>>();
 
-    foreach (var entityType in new[]
+    var types = interval is not null
+      ? new[]
       {
         typeof(AbbB2xAggregateEntity),
+        typeof(SchneideriEM3xxxAggregateEntity)
+      }
+      : new[]
+      {
         typeof(AbbB2xMeasurementEntity),
-        typeof(SchneideriEM3xxxAggregateEntity),
         typeof(SchneideriEM3xxxMeasurementEntity)
-      })
+      };
+
+    foreach (var entityType in types)
     {
       var queryable = context.GetQueryable<IMeasurementEntity>(entityType);
 

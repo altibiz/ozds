@@ -211,8 +211,8 @@ public partial class MeasurementChartControls : OzdsComponentBase
       _parameters.Multiplier,
       1,
       CancellationToken,
-      fromDate,
-      toDate
+      fromDate: fromDate,
+      toDate: toDate
     );
     var fromMeasurementLocations = await queries
       .ReadByMeasurementLocationIds(

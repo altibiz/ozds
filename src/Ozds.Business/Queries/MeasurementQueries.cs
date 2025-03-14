@@ -21,6 +21,7 @@ public class MeasurementQueries(
     int multiplier,
     int pageNumber,
     CancellationToken cancellationToken,
+    IntervalModel? interval = default,
     DateTimeOffset fromDate = default,
     DateTimeOffset toDate = default,
     int pageCount = QueryConstants.DefaultMeasurementPageCount

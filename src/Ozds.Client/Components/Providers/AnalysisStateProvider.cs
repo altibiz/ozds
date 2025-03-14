@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.Components;
+using Ozds.Business.Models.Abstractions;
+using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Composite;
+using Ozds.Business.Models.Enums;
 using Ozds.Business.Queries;
 using Ozds.Client.Components.Base;
 using Ozds.Client.State;
@@ -46,26 +49,7 @@ public partial class AnalysisStateProvider : OzdsComponentBase
             {
               try
               {
-                var analysisQueries = ScopedServices
-                  .GetRequiredService<AnalysisQueries>();
-
-                var now = DateTimeOffset.UtcNow;
-                var aYearAgo = now.AddYears(-1);
-
-                var analysisBases = await analysisQueries
-                  .ReadAnalysisBasesByRepresentativeAndLocation(
-                    RepresentativeState.Representative.Id,
-                    RepresentativeState.Representative.Role,
-                    aYearAgo,
-                    now,
-                    LocationState.Location?.Id,
-                    CancellationToken
-                  );
-
-                _state = new AnalysisState(
-                  new Lazy<List<AnalysisBasisModel>>(() => analysisBases));
-
-                await InvokeAsync(StateHasChanged);
+                await FetchAnalysisBasesAsync();
               }
               catch (Exception ex)
               {
@@ -76,5 +60,107 @@ public partial class AnalysisStateProvider : OzdsComponentBase
           return new List<AnalysisBasisModel>();
         })
     );
+  }
+
+  private async Task FetchAnalysisBasesAsync()
+  {
+    var measurementLocationQueries = ScopedServices
+      .GetRequiredService<MeasurementLocationQueries>();
+    var measurementQueries = ScopedServices
+      .GetRequiredService<MeasurementQueries>();
+    var financialQueries = ScopedServices
+      .GetRequiredService<FinancialQueries>();
+
+    var now = DateTimeOffset.UtcNow;
+    var aYearAgo = now.AddYears(-1);
+
+    var analysisBases = await measurementLocationQueries
+      .ReadAnalysisBasisByLocationAndRepresentative(
+        LocationState.Location?.Id,
+        RepresentativeState.Representative,
+        aYearAgo,
+        now,
+        CancellationToken
+      );
+
+    _state = new AnalysisState(
+      new Lazy<List<AnalysisBasisModel>>(() => analysisBases));
+    await InvokeAsync(StateHasChanged);
+
+    var monthlyAggregates = await measurementQueries
+      .ReadByMeasurementLocationIds(
+        analysisBases.Select(x => x.MeasurementLocation.Id),
+        IntervalModel.Month,
+        aYearAgo,
+        now,
+        0,
+        CancellationToken,
+        analysisBases.Count * 12
+      );
+    foreach (var analysisBasis in analysisBases)
+    {
+      analysisBasis.MonthlyAggregates = monthlyAggregates
+        .Items
+        .Where(
+          x => x.MeasurementLocationId
+            == analysisBasis.MeasurementLocation.Id)
+        .OfType<AggregateModel>()
+        .ToList();
+    }
+
+    _state = new AnalysisState(
+      new Lazy<List<AnalysisBasisModel>>(() => analysisBases));
+    await InvokeAsync(StateHasChanged);
+
+    var lastMeasurements = await measurementQueries
+      .ReadByMeasurementLocationIdsLast(
+        analysisBases.Select(x => x.MeasurementLocation.Id),
+        CancellationToken
+      );
+    foreach (var analysisBasis in analysisBases)
+    {
+      analysisBasis.LastMeasurement = lastMeasurements
+          .FirstOrDefault(
+            x => x.MeasurementLocationId
+              == analysisBasis.MeasurementLocation.Id)
+        as MeasurementModel;
+    }
+
+    _state = new AnalysisState(
+      new Lazy<List<AnalysisBasisModel>>(() => analysisBases));
+    await InvokeAsync(StateHasChanged);
+
+    var financials = await financialQueries
+      .ReadByMeasurementLocationIds(
+        analysisBases.Select(x => x.MeasurementLocation.Id),
+        aYearAgo,
+        now,
+        0,
+        CancellationToken,
+        analysisBases.Count * 12
+      );
+    foreach (var analysisBasis in analysisBases)
+    {
+      analysisBasis.Calculations = financials
+        .Items
+        .OfType<INetworkUserCalculation>()
+        .Where(
+          x => x.NetworkUserMeasurementLocationId
+            == analysisBasis.MeasurementLocation.Id)
+        .OfType<CalculationModel>()
+        .ToList();
+      analysisBasis.Invoices = financials
+        .Items
+        .OfType<INetworkUserInvoice>()
+        .Where(
+          x => x.NetworkUserId
+            == analysisBasis.NetworkUser?.Id)
+        .OfType<InvoiceModel>()
+        .ToList();
+    }
+
+    _state = new AnalysisState(
+      new Lazy<List<AnalysisBasisModel>>(() => analysisBases));
+    await InvokeAsync(StateHasChanged);
   }
 }

@@ -23,7 +23,7 @@ public class AnalysisBasisEntity
 
   public List<InvoiceEntity> Invoices { get; set; } = default!;
 
-  public MeasurementEntity LastMeasurement { get; set; } = default!;
+  public MeasurementEntity? LastMeasurement { get; set; } = default!;
 
   public List<AggregateEntity> MonthlyAggregates { get; set; } = default!;
 }
