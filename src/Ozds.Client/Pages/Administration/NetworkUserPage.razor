@@ -58,10 +58,10 @@
     <div style="width: 170px;">
       <MudItem>
         <MudDatePicker Label="@Translate("Pick month")"
-                      @bind-Date="selectedMonth"
-                      OpenTo="OpenTo.Month"
-                      FixDay="@DateTime.Today.Day"
-                      DateFormat="MM.yyyy."/>
+                       @bind-Date="selectedMonth"
+                       OpenTo="OpenTo.Month"
+                       FixDay="@DateTime.Today.Day"
+                       DateFormat="MM.yyyy."/>
       </MudItem>
       @if (selectedMonth is not null)
       {
@@ -70,7 +70,7 @@
           Variant="Variant.Filled"
           Class="p-2 rounded-lg"
           Href="@("/download/csv-export-network-user-monthly-aggregate/" + context.Model.Id + "/" + selectedMonth.Value.Year + "/" + selectedMonth.Value.Month)">
-            @Translate("Csv")
+          @Translate("Csv")
         </MudButton>
       }
     </div>

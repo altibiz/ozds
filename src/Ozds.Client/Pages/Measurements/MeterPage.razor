@@ -6,16 +6,15 @@
 @using Ozds.Business.Analysis
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Client.Components.Charts
-@using Ozds.Client.Components.Fields
 @using Ozds.Client.Components.Models
 @using Ozds.Client.Components.Streaming
 @using Ozds.Client.State
-@inherits Ozds.Client.Components.Models.Base.OzdsIdentifiableModelPageComponentBase<Ozds.Business.Models.Abstractions.IMeter>
+@inherits Ozds.Client.Components.Models.Base.OzdsIdentifiableModelPageComponentBase<IMeter>
 
 @{
   var analysis = AnalysisState
-      .AnalysisBases.Value.AnalysesByMeter()
-      .FirstOrDefault(x => x.Meter.Id == Id);
+    .AnalysisBases.Value.AnalysesByMeter()
+    .FirstOrDefault(x => x.Meter.Id == Id);
 }
 
 @if (RepresentativeState.Representative.Role is not RoleModel.OperatorRepresentative)
@@ -54,7 +53,7 @@
           Variant="Variant.Filled"
           Class="p-2 rounded-lg"
           Href="@("/download/csv-export-meter/" + Id + "/" + selectedMonth.Value.Year + "/" + selectedMonth.Value.Month)">
-            @Translate("Csv")
+          @Translate("Csv")
         </MudButton>
       }
     </MudItem>
@@ -107,4 +106,5 @@
 
   [CascadingParameter]
   private Breakpoint Breakpoint { get; set; }
+
 }

@@ -51,10 +51,11 @@ public class MeasurementLocationQueries(
     return meter;
   }
 
-  public async Task<List<IMeasurementLocationEntity>?> ReadMeasurementLocationByNetworkUser(
-    string networkUserId,
-    CancellationToken cancellationToken
-  )
+  public async Task<List<IMeasurementLocationEntity>?>
+    ReadMeasurementLocationByNetworkUser(
+      string networkUserId,
+      CancellationToken cancellationToken
+    )
   {
     await using var context = await factory.CreateDbContextAsync(
       cancellationToken
@@ -72,10 +73,11 @@ public class MeasurementLocationQueries(
     return measurementLocations;
   }
 
-  public async Task<List<IMeasurementLocationEntity>?> ReadMeasurementLocationByLocation(
-    string locationId,
-    CancellationToken cancellationToken
-  )
+  public async Task<List<IMeasurementLocationEntity>?>
+    ReadMeasurementLocationByLocation(
+      string locationId,
+      CancellationToken cancellationToken
+    )
   {
     await using var context = await factory.CreateDbContextAsync(
       cancellationToken

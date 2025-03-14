@@ -1,8 +1,8 @@
 using Ozds.Business.Conversion;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Queries.Abstractions;
-using Ozds.Data.Entities.Abstractions;
-using DataMeasurementLocationQueries = Ozds.Data.Queries.MeasurementLocationQueries;
+using DataMeasurementLocationQueries =
+  Ozds.Data.Queries.MeasurementLocationQueries;
 
 namespace Ozds.Business.Queries;
 
@@ -37,29 +37,31 @@ public class MeasurementLocationQueries(
     return entity is null ? null : modelEntityConverter.ToModel<IMeter>(entity);
   }
 
-  public async Task<List<IMeasurementLocation>?> ReadMeasurementLocationByNetworkUser(
-  string networkUserId,
-  CancellationToken cancellationToken
-)
+  public async Task<List<IMeasurementLocation>?>
+    ReadMeasurementLocationByNetworkUser(
+      string networkUserId,
+      CancellationToken cancellationToken
+    )
   {
     var entities = await queries.ReadMeasurementLocationByNetworkUser(
       networkUserId,
       cancellationToken
     );
     return entities?.Select(modelEntityConverter.ToModel<IMeasurementLocation>)
-        .ToList();
+      .ToList();
   }
 
-  public async Task<List<IMeasurementLocation>?> ReadMeasurementLocationByLocation(
-  string locationId,
-  CancellationToken cancellationToken
-)
+  public async Task<List<IMeasurementLocation>?>
+    ReadMeasurementLocationByLocation(
+      string locationId,
+      CancellationToken cancellationToken
+    )
   {
     var entities = await queries.ReadMeasurementLocationByLocation(
       locationId,
       cancellationToken
     );
     return entities?.Select(modelEntityConverter.ToModel<IMeasurementLocation>)
-        .ToList();
+      .ToList();
   }
 }

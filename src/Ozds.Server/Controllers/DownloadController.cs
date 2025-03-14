@@ -1,4 +1,3 @@
-using System.Globalization;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -114,9 +113,9 @@ public class DownloadController(
       measurements,
       false,
       string.Join('_', measurementLocations!.Select(x => x.Id))
-        + "_MonthlyAggregate_"
-        + end.ToString("MM.yyyy")
-        + ".csv"
+      + "_MonthlyAggregate_"
+      + end.ToString("MM.yyyy")
+      + ".csv"
     );
   }
 
@@ -157,9 +156,9 @@ public class DownloadController(
       measurements,
       false,
       string.Join('_', measurementLocations!.Select(x => x.Id))
-        + "_MonthlyAggregate_"
-        + end.ToString("MM.yyyy")
-        + ".csv"
+      + "_MonthlyAggregate_"
+      + end.ToString("MM.yyyy")
+      + ".csv"
     );
   }
 
@@ -181,6 +180,7 @@ public class DownloadController(
     {
       return NotFound();
     }
+
     var measures = await measurementQueries.ReadByMeterIdsDynamic(
       new[] { meter! },
       ResolutionModel.Hour,
@@ -219,6 +219,7 @@ public class DownloadController(
     {
       return NotFound();
     }
+
     var measures = await measurementQueries.ReadByMeasurementLocationIdsDynamic(
       new[] { measurementLocation! },
       ResolutionModel.Hour,
