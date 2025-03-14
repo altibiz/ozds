@@ -25,7 +25,7 @@
     </Columns>
   </Table>
 
-  <MudGrid Justify="Justify.FlexStart" Spacing="2" Style="width: 170px">
+  <div style="width: 170px;">
     <MudItem>
       <MudDatePicker Label="@Translate("Pick month")"
                      Date="selectedMonth"
@@ -37,7 +37,7 @@
     <MudItem>
       <DownloadField IsGeneric="false" FileName="@("MeasurementLocation_" + Id + "_Measurements_" + selectedMonth?.ToString("MM.yyyy") + ".csv")" Models="@measurements"/>
     </MudItem>
-  </MudGrid>
+  </div>
 
 
   <MeasurementChartControls MeasurementLocations="@measurementLocations">

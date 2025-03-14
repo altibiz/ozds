@@ -59,7 +59,7 @@
     <Details Model="@context.Model"/>
   </Details>
 </Mutating>
-<MudGrid Justify="Justify.FlexStart" Spacing="2" Style="width: 170px">
+<div style="width: 170px;">
   <MudItem>
     <MudDatePicker Label="@Translate("Pick month")"
                    Date="selectedMonth"
@@ -71,4 +71,4 @@
   <MudItem>
     <DownloadField IsGeneric="false" FileName="@(Id + "_MonthlyAggregate_" + selectedMonth?.ToString("MM.yyyy") + ".csv")" Models="@measurements"/>
   </MudItem>
-</MudGrid>
+</div>

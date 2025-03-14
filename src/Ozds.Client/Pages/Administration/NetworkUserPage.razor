@@ -57,7 +57,7 @@
     </div>
   </Details>
 </Mutating>
-<MudGrid Justify="Justify.FlexStart" Spacing="2" Style="width: 170px">
+<div style="width: 170px;">
   <MudItem>
     <MudDatePicker Label="@Translate("Pick month")"
                    Date="selectedMonth"
@@ -73,7 +73,7 @@
 
     </MudLink>
   }
-</MudGrid>
+</div>
 
 @code {
   private int previewInvoiceYear = DateTimeOffset.UtcNow.Year;

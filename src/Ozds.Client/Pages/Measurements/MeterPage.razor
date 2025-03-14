@@ -29,7 +29,7 @@
       <Columns Models="@analysis.Analysis.Monthly"/>
     </Columns>
   </Table>
-  <MudGrid Justify="Justify.FlexStart" Spacing="2" Style="width: 170px">
+  <div style="width: 170px;">
     <MudItem>
       <MudDatePicker Label="@Translate("Pick month")"
                      Date="selectedMonth"
@@ -41,7 +41,7 @@
     <MudItem>
       <DownloadField FileName="@("Meter_" + Id + "_Measurements_" + selectedMonth?.ToString("MM.yyyy") + ".csv")" Models="@measurements"/>
     </MudItem>
-  </MudGrid>
+  </div>
   <MeasurementChartControls Meters="@meters">
     <MeasurementGaugeChart Parameters="@context"/>
     <MeasurementLineChart Parameters="@context" Brush="@(Breakpoint >= Breakpoint.MdAndUp)"/>
