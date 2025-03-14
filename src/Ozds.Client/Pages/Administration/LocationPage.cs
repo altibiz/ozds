@@ -13,16 +13,10 @@ namespace Ozds.Client.Pages;
 public partial class LocationPage
   : OzdsIdentifiableModelPageComponentBase<LocationModel>
 {
-  private List<MeterAnalysis> analysis = new();
-
-  private IEnumerable<IAggregate> measurements = new List<IAggregate>();
   private DateTime? selectedMonth;
 
   [Parameter]
   public string? Id { get; set; }
-
-  [CascadingParameter]
-  private AnalysisState AnalysisState { get; set; } = default!;
 
   [CascadingParameter]
   private RepresentativeState RepresentativeState { get; set; } = default!;
@@ -44,42 +38,5 @@ public partial class LocationPage
     );
 
     return location;
-  }
-
-  protected override async Task OnParametersSetAsync()
-  {
-    analysis = AnalysisState
-      .AnalysisBases.Value.AnalysesByMeter()
-      .Where(x => x.Location.Id == Id).ToList();
-
-    if (measurements.Any())
-    {
-      await OnDateChanged(selectedMonth);
-    }
-  }
-
-  private async Task OnDateChanged(DateTime? date)
-  {
-    selectedMonth = date;
-    if (analysis is not null)
-    {
-      var meters = analysis.Select(x => (IMeter)x!.Meter).ToList();
-      var dto = new DateTimeOffset(
-        selectedMonth!.Value,
-        TimeSpan.Zero
-      );
-      var queries = ScopedServices.GetRequiredService<MeasurementQueries>();
-      var measures = await queries.ReadByMeterIdsDynamic(
-        meters,
-        ResolutionModel.Year,
-        30,
-        0,
-        CancellationToken,
-        dto.GetStartOfMonth(),
-        dto.GetStartOfNextMonth()
-      );
-      var orderedMeasures = measures.Items.OrderBy(x => x.Timestamp).ToList();
-      measurements = orderedMeasures.Select(x => (IAggregate)x).ToList();
-    }
   }
 }

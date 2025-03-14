@@ -30,9 +30,27 @@ public static class IApplicationBuilderExtensions
     );
 
     endpoints.MapOzdsServerRoute(
-      "/download/csv-export-network-user-monthly-aggregate/{measurementLocationIdsString}/{year:int}/{month:int}",
+      "/download/csv-export-network-user-monthly-aggregate/{networkUserId}/{year:int}/{month:int}",
       typeof(DownloadController),
       nameof(DownloadController.CsvExportNetworkUserMonthlyAggregate)
+    );
+
+    endpoints.MapOzdsServerRoute(
+      "/download/csv-export-location-monthly-aggregate/{locationId}/{year:int}/{month:int}",
+      typeof(DownloadController),
+      nameof(DownloadController.CsvExportLocationMonthlyAggregate)
+    );
+
+    endpoints.MapOzdsServerRoute(
+      "/download/csv-export-meter/{meterId}/{year:int}/{month:int}",
+      typeof(DownloadController),
+      nameof(DownloadController.CsvExportMeter)
+    );
+
+    endpoints.MapOzdsServerRoute(
+      "/download/csv-export-measurement-location/{measurementLocationId}/{year:int}/{month:int}",
+      typeof(DownloadController),
+      nameof(DownloadController.CsvExportMeasurementLocation)
     );
 
     endpoints.MapOzdsServerRoute(

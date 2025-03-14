@@ -3,13 +3,20 @@
 @page "/measurements/measurement-location/{id?}"
 @using Microsoft.AspNetCore.Components.Web
 @using MudBlazor
+@using Ozds.Business.Analysis
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Client.Components.Charts
 @using Ozds.Client.Components.Fields
 @using Ozds.Client.Components.Models
 @using Ozds.Client.Components.Streaming
+@using Ozds.Client.State
 @inherits Ozds.Client.Components.Models.Base.OzdsIdentifiableModelPageComponentBase<Ozds.Business.Models.Abstractions.IMeasurementLocation>
 
+@{
+  var analysis = AnalysisState
+    .AnalysisBases.Value.AnalysesByMeasurementLocation()
+    .FirstOrDefault(x => x.MeasurementLocation.Id == Id);
+}
 
 @if (analysis is not null)
 {
@@ -28,16 +35,30 @@
   <div style="width: 170px;">
     <MudItem>
       <MudDatePicker Label="@Translate("Pick month")"
-                     Date="selectedMonth"
-                     DateChanged="OnDateChanged"
+                    @bind-Date="selectedMonth"
                      OpenTo="OpenTo.Month"
                      FixDay="@DateTime.Today.Day"
                      DateFormat="MM.yyyy."/>
     </MudItem>
     <MudItem>
-      <DownloadField IsGeneric="false" FileName="@("MeasurementLocation_" + Id + "_Measurements_" + selectedMonth?.ToString("MM.yyyy") + ".csv")" Models="@measurements"/>
+
+      @if (selectedMonth is not null)
+      {
+        <MudButton
+          Color="Color.Primary"
+          Variant="Variant.Filled"
+          Class="p-2 rounded-lg"
+          Href="@("/download/csv-export-measurement-location/" + Id + "/" + selectedMonth.Value.Year + "/" + selectedMonth.Value.Month)">
+            @Translate("Csv")
+        </MudButton>
+      }
     </MudItem>
   </div>
+
+  measurementLocations = new List<IMeasurementLocation>
+  {
+    analysis.MeasurementLocation
+  };
 
 
   <MeasurementChartControls MeasurementLocations="@measurementLocations">
@@ -76,3 +97,18 @@
     <Details Model="context.Model"/>
   </Details>
 </Mutating>
+
+@code{
+  private DateTime? selectedMonth;
+
+  [CascadingParameter]
+  public AnalysisState AnalysisState { get; set; } = default!;
+
+  [CascadingParameter]
+  public Breakpoint Breakpoint { get; set; }
+
+  [Parameter]
+  public string Id { get; set; } = default!;
+
+  private List<IMeasurementLocation> measurementLocations = new();
+}

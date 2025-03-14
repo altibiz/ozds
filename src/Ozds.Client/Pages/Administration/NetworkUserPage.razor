@@ -55,25 +55,27 @@
         @Translate("Pdf")
       </MudLink>
     </div>
+    <div style="width: 170px;">
+      <MudItem>
+        <MudDatePicker Label="@Translate("Pick month")"
+                      @bind-Date="selectedMonth"
+                      OpenTo="OpenTo.Month"
+                      FixDay="@DateTime.Today.Day"
+                      DateFormat="MM.yyyy."/>
+      </MudItem>
+      @if (selectedMonth is not null)
+      {
+        <MudButton
+          Color="Color.Primary"
+          Variant="Variant.Filled"
+          Class="p-2 rounded-lg"
+          Href="@("/download/csv-export-network-user-monthly-aggregate/" + context.Model.Id + "/" + selectedMonth.Value.Year + "/" + selectedMonth.Value.Month)">
+            @Translate("Csv")
+        </MudButton>
+      }
+    </div>
   </Details>
 </Mutating>
-<div style="width: 170px;">
-  <MudItem>
-    <MudDatePicker Label="@Translate("Pick month")"
-                   Date="selectedMonth"
-                   DateChanged="OnDateChanged"
-                   OpenTo="OpenTo.Month"
-                   FixDay="@DateTime.Today.Day"
-                   DateFormat="MM.yyyy."/>
-  </MudItem>
-  @if (selectedMonth is not null)
-  {
-    <MudLink Href="@("/download/csv-export-network-user-monthly-aggregate/" + string.Join(',', analysis.Select(x => x!.MeasurementLocation.Id).ToList()) + "/" + selectedMonth.Value.Year + "/" + selectedMonth.Value.Month)">
-      @Translate("Csv")
-
-    </MudLink>
-  }
-</div>
 
 @code {
   private int previewInvoiceYear = DateTimeOffset.UtcNow.Year;

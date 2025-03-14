@@ -10,15 +10,10 @@ namespace Ozds.Client.Pages;
 public partial class NetworkUserPage
   : OzdsIdentifiableModelPageComponentBase<NetworkUserModel>
 {
-  private List<MeasurementLocationAnalysis> analysis = new();
-
   private DateTime? selectedMonth;
 
   [Parameter]
   public string? Id { get; set; }
-
-  [CascadingParameter]
-  private AnalysisState AnalysisState { get; set; } = default!;
 
   [CascadingParameter]
   private RepresentativeState RepresentativeState { get; set; } = default!;
@@ -40,18 +35,5 @@ public partial class NetworkUserPage
     );
 
     return networkUser;
-  }
-
-  protected override void OnParametersSet()
-  {
-    analysis = AnalysisState
-      .AnalysisBases.Value.AnalysesByMeasurementLocation()
-      .Where(x => x.NetworkUser?.Id == Id)
-      .ToList();
-  }
-
-  private void OnDateChanged(DateTime? date)
-  {
-    selectedMonth = date;
   }
 }
