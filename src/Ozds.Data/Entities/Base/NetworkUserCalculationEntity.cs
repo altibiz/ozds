@@ -210,6 +210,19 @@ public class
     builder
       .ArchivedProperty(nameof(NetworkUserCalculationEntity.ArchivedMeter));
 
+    builder
+      .MonetaryValue(
+        nameof(NetworkUserCalculationEntity.UsageFeeTotal_EUR),
+        "usage_fee_total_eur"
+      );
+
+    builder
+      .MonetaryValue(
+        nameof(NetworkUserCalculationEntity
+          .SupplyFeeTotal_EUR),
+        "supply_fee_total_eur"
+      );
+
     if (entity != typeof(NetworkUserCalculationEntity))
     {
       builder

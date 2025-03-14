@@ -28,6 +28,10 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - Remarks on network user invoice documents
 - Support for collocated JS scripts in `AppController`
 - `DownloadController` for network user invoices (previews)
+- Migration to use correct column types for numeric values
+- `DerivedAggregateMeasureModel` and `DerivedAggregateMeasureEntity` that better
+  represent derived power measures on aggregate measurements
+- Added new primitive conversion functions for floats and longs
 - `IRecord` for all the Records that need to be converted from Entities
 - `ModelRecordConversion` for the conversion pipeline
 - All the needed implementations for the many Records added
@@ -46,7 +50,10 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - Moved `link` tags to `ThemeStateProvider` since the `Ozds.Server` shouldn't
   care about the different libraries present
 - Removed `MudBlazor` from `ErrorBoundary`
-- Layout issues on network user invoice PDF-s
+- Changed types of numeric properties in `Ozds.Data` to more precise ones
+  (`decimal(19, 4)` for monetary values, `bigint` for cumulative measurement
+  values, `float` for instantaneous measurement values)
+- Fix support for collocated JS scripts in `AppController`
 
 ### Removed
 

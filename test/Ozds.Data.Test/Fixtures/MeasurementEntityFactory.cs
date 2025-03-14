@@ -53,17 +53,17 @@ public class MeasurementUpsertFactory(DbContext context)
   {
     var faker = new Faker();
 
-    InstantaneousAggregateMeasureEntity DerivedPowerFactory(int i)
+    DerivedAggregateMeasureEntity DerivedPowerFactory(int i)
     {
       var interval = IntervalByIndex(i);
       var timestamp = AggregateTimestampByIndex(i);
       var min = faker.Random
-        .Float(Constants.MinAggregateValue, Constants.MaxAggregateValue);
+        .Long(Constants.MinAggregateValue, Constants.MaxAggregateValue);
       var max = faker.Random
-        .Float(min, Constants.MaxAggregateValue);
+        .Long(min, Constants.MaxAggregateValue);
       var avg = (min + max) / 2;
       return interval == IntervalEntity.QuarterHour
-        ? new InstantaneousAggregateMeasureEntity
+        ? new DerivedAggregateMeasureEntity
         {
           Min = min,
           Max = max,
@@ -71,10 +71,10 @@ public class MeasurementUpsertFactory(DbContext context)
           MinTimestamp = timestamp,
           MaxTimestamp = timestamp
         }
-        : new InstantaneousAggregateMeasureEntity
+        : new DerivedAggregateMeasureEntity
         {
-          Min = float.PositiveInfinity,
-          Max = float.NegativeInfinity,
+          Min = long.MinValue,
+          Max = long.MaxValue,
           Avg = 0.0f,
           MinTimestamp = timestamp,
           MaxTimestamp = timestamp

@@ -67,26 +67,26 @@ erDiagram
     }
 
     abb_b2x_aggregates {
-        real active_energy_l1_export_t0_max_wh
-        real active_energy_l1_export_t0_min_wh
-        real active_energy_l1_import_t0_max_wh
-        real active_energy_l1_import_t0_min_wh
-        real active_energy_l2_export_t0_max_wh
-        real active_energy_l2_export_t0_min_wh
-        real active_energy_l2_import_t0_max_wh
-        real active_energy_l2_import_t0_min_wh
-        real active_energy_l3_export_t0_max_wh
-        real active_energy_l3_export_t0_min_wh
-        real active_energy_l3_import_t0_max_wh
-        real active_energy_l3_import_t0_min_wh
-        real active_energy_total_export_t0_max_wh
-        real active_energy_total_export_t0_min_wh
-        real active_energy_total_import_t0_max_wh
-        real active_energy_total_import_t0_min_wh
-        real active_energy_total_import_t1_max_wh
-        real active_energy_total_import_t1_min_wh
-        real active_energy_total_import_t2_max_wh
-        real active_energy_total_import_t2_min_wh
+        bigint active_energy_l1_export_t0_max_wh
+        bigint active_energy_l1_export_t0_min_wh
+        bigint active_energy_l1_import_t0_max_wh
+        bigint active_energy_l1_import_t0_min_wh
+        bigint active_energy_l2_export_t0_max_wh
+        bigint active_energy_l2_export_t0_min_wh
+        bigint active_energy_l2_import_t0_max_wh
+        bigint active_energy_l2_import_t0_min_wh
+        bigint active_energy_l3_export_t0_max_wh
+        bigint active_energy_l3_export_t0_min_wh
+        bigint active_energy_l3_import_t0_max_wh
+        bigint active_energy_l3_import_t0_min_wh
+        bigint active_energy_total_export_t0_max_wh
+        bigint active_energy_total_export_t0_min_wh
+        bigint active_energy_total_import_t0_max_wh
+        bigint active_energy_total_import_t0_min_wh
+        bigint active_energy_total_import_t1_max_wh
+        bigint active_energy_total_import_t1_min_wh
+        bigint active_energy_total_import_t2_max_wh
+        bigint active_energy_total_import_t2_min_wh
         real active_power_l1_net_t0_avg_w
         timestamp_with_time_zone active_power_l1_net_t0_max_timestamp
         real active_power_l1_net_t0_max_w
@@ -118,116 +118,116 @@ erDiagram
         timestamp_with_time_zone current_l3_any_t0_max_timestamp
         real current_l3_any_t0_min_a
         timestamp_with_time_zone current_l3_any_t0_min_timestamp
-        real derived_active_power_l1_export_t0_avg_w
+        double_precision derived_active_power_l1_export_t0_avg_w
         timestamp_with_time_zone derived_active_power_l1_export_t0_max_timestamp
-        real derived_active_power_l1_export_t0_max_w
+        bigint derived_active_power_l1_export_t0_max_w
         timestamp_with_time_zone derived_active_power_l1_export_t0_min_timestamp
-        real derived_active_power_l1_export_t0_min_w
-        real derived_active_power_l1_import_t0_avg_w
+        bigint derived_active_power_l1_export_t0_min_w
+        double_precision derived_active_power_l1_import_t0_avg_w
         timestamp_with_time_zone derived_active_power_l1_import_t0_max_timestamp
-        real derived_active_power_l1_import_t0_max_w
+        bigint derived_active_power_l1_import_t0_max_w
         timestamp_with_time_zone derived_active_power_l1_import_t0_min_timestamp
-        real derived_active_power_l1_import_t0_min_w
-        real derived_active_power_l2_export_t0_avg_w
+        bigint derived_active_power_l1_import_t0_min_w
+        double_precision derived_active_power_l2_export_t0_avg_w
         timestamp_with_time_zone derived_active_power_l2_export_t0_max_timestamp
-        real derived_active_power_l2_export_t0_max_w
+        bigint derived_active_power_l2_export_t0_max_w
         timestamp_with_time_zone derived_active_power_l2_export_t0_min_timestamp
-        real derived_active_power_l2_export_t0_min_w
-        real derived_active_power_l2_import_t0_avg_w
+        bigint derived_active_power_l2_export_t0_min_w
+        double_precision derived_active_power_l2_import_t0_avg_w
         timestamp_with_time_zone derived_active_power_l2_import_t0_max_timestamp
-        real derived_active_power_l2_import_t0_max_w
+        bigint derived_active_power_l2_import_t0_max_w
         timestamp_with_time_zone derived_active_power_l2_import_t0_min_timestamp
-        real derived_active_power_l2_import_t0_min_w
-        real derived_active_power_l3_export_t0_avg_w
+        bigint derived_active_power_l2_import_t0_min_w
+        double_precision derived_active_power_l3_export_t0_avg_w
         timestamp_with_time_zone derived_active_power_l3_export_t0_max_timestamp
-        real derived_active_power_l3_export_t0_max_w
+        bigint derived_active_power_l3_export_t0_max_w
         timestamp_with_time_zone derived_active_power_l3_export_t0_min_timestamp
-        real derived_active_power_l3_export_t0_min_w
-        real derived_active_power_l3_import_t0_avg_w
+        bigint derived_active_power_l3_export_t0_min_w
+        double_precision derived_active_power_l3_import_t0_avg_w
         timestamp_with_time_zone derived_active_power_l3_import_t0_max_timestamp
-        real derived_active_power_l3_import_t0_max_w
+        bigint derived_active_power_l3_import_t0_max_w
         timestamp_with_time_zone derived_active_power_l3_import_t0_min_timestamp
-        real derived_active_power_l3_import_t0_min_w
-        real derived_active_power_total_export_t0_avg_w
+        bigint derived_active_power_l3_import_t0_min_w
+        double_precision derived_active_power_total_export_t0_avg_w
         timestamp_with_time_zone derived_active_power_total_export_t0_max_timestamp
-        real derived_active_power_total_export_t0_max_w
+        bigint derived_active_power_total_export_t0_max_w
         timestamp_with_time_zone derived_active_power_total_export_t0_min_timestamp
-        real derived_active_power_total_export_t0_min_w
-        real derived_active_power_total_import_t0_avg_w
+        bigint derived_active_power_total_export_t0_min_w
+        double_precision derived_active_power_total_import_t0_avg_w
         timestamp_with_time_zone derived_active_power_total_import_t0_max_timestamp
-        real derived_active_power_total_import_t0_max_w
+        bigint derived_active_power_total_import_t0_max_w
         timestamp_with_time_zone derived_active_power_total_import_t0_min_timestamp
-        real derived_active_power_total_import_t0_min_w
-        real derived_active_power_total_import_t1_avg_w
+        bigint derived_active_power_total_import_t0_min_w
+        double_precision derived_active_power_total_import_t1_avg_w
         timestamp_with_time_zone derived_active_power_total_import_t1_max_timestamp
-        real derived_active_power_total_import_t1_max_w
+        bigint derived_active_power_total_import_t1_max_w
         timestamp_with_time_zone derived_active_power_total_import_t1_min_timestamp
-        real derived_active_power_total_import_t1_min_w
-        real derived_active_power_total_import_t2_avg_w
+        bigint derived_active_power_total_import_t1_min_w
+        double_precision derived_active_power_total_import_t2_avg_w
         timestamp_with_time_zone derived_active_power_total_import_t2_max_timestamp
-        real derived_active_power_total_import_t2_max_w
+        bigint derived_active_power_total_import_t2_max_w
         timestamp_with_time_zone derived_active_power_total_import_t2_min_timestamp
-        real derived_active_power_total_import_t2_min_w
-        real derived_reactive_power_l1_export_t0_avg_var
+        bigint derived_active_power_total_import_t2_min_w
+        double_precision derived_reactive_power_l1_export_t0_avg_var
         timestamp_with_time_zone derived_reactive_power_l1_export_t0_max_timestamp
-        real derived_reactive_power_l1_export_t0_max_var
+        bigint derived_reactive_power_l1_export_t0_max_var
         timestamp_with_time_zone derived_reactive_power_l1_export_t0_min_timestamp
-        real derived_reactive_power_l1_export_t0_min_var
-        real derived_reactive_power_l1_import_t0_avg_var
+        bigint derived_reactive_power_l1_export_t0_min_var
+        double_precision derived_reactive_power_l1_import_t0_avg_var
         timestamp_with_time_zone derived_reactive_power_l1_import_t0_max_timestamp
-        real derived_reactive_power_l1_import_t0_max_var
+        bigint derived_reactive_power_l1_import_t0_max_var
         timestamp_with_time_zone derived_reactive_power_l1_import_t0_min_timestamp
-        real derived_reactive_power_l1_import_t0_min_var
-        real derived_reactive_power_l2_export_t0_avg_var
+        bigint derived_reactive_power_l1_import_t0_min_var
+        double_precision derived_reactive_power_l2_export_t0_avg_var
         timestamp_with_time_zone derived_reactive_power_l2_export_t0_max_timestamp
-        real derived_reactive_power_l2_export_t0_max_var
+        bigint derived_reactive_power_l2_export_t0_max_var
         timestamp_with_time_zone derived_reactive_power_l2_export_t0_min_timestamp
-        real derived_reactive_power_l2_export_t0_min_var
-        real derived_reactive_power_l2_import_t0_avg_var
+        bigint derived_reactive_power_l2_export_t0_min_var
+        double_precision derived_reactive_power_l2_import_t0_avg_var
         timestamp_with_time_zone derived_reactive_power_l2_import_t0_max_timestamp
-        real derived_reactive_power_l2_import_t0_max_var
+        bigint derived_reactive_power_l2_import_t0_max_var
         timestamp_with_time_zone derived_reactive_power_l2_import_t0_min_timestamp
-        real derived_reactive_power_l2_import_t0_min_var
-        real derived_reactive_power_l3_export_t0_avg_var
+        bigint derived_reactive_power_l2_import_t0_min_var
+        double_precision derived_reactive_power_l3_export_t0_avg_var
         timestamp_with_time_zone derived_reactive_power_l3_export_t0_max_timestamp
-        real derived_reactive_power_l3_export_t0_max_var
+        bigint derived_reactive_power_l3_export_t0_max_var
         timestamp_with_time_zone derived_reactive_power_l3_export_t0_min_timestamp
-        real derived_reactive_power_l3_export_t0_min_var
-        real derived_reactive_power_l3_import_t0_avg_var
+        bigint derived_reactive_power_l3_export_t0_min_var
+        double_precision derived_reactive_power_l3_import_t0_avg_var
         timestamp_with_time_zone derived_reactive_power_l3_import_t0_max_timestamp
-        real derived_reactive_power_l3_import_t0_max_var
+        bigint derived_reactive_power_l3_import_t0_max_var
         timestamp_with_time_zone derived_reactive_power_l3_import_t0_min_timestamp
-        real derived_reactive_power_l3_import_t0_min_var
-        real derived_reactive_power_total_export_t0_avg_var
+        bigint derived_reactive_power_l3_import_t0_min_var
+        double_precision derived_reactive_power_total_export_t0_avg_var
         timestamp_with_time_zone derived_reactive_power_total_export_t0_max_timestamp
-        real derived_reactive_power_total_export_t0_max_var
+        bigint derived_reactive_power_total_export_t0_max_var
         timestamp_with_time_zone derived_reactive_power_total_export_t0_min_timestamp
-        real derived_reactive_power_total_export_t0_min_var
-        real derived_reactive_power_total_import_t0_avg_var
+        bigint derived_reactive_power_total_export_t0_min_var
+        double_precision derived_reactive_power_total_import_t0_avg_var
         timestamp_with_time_zone derived_reactive_power_total_import_t0_max_timestamp
-        real derived_reactive_power_total_import_t0_max_var
+        bigint derived_reactive_power_total_import_t0_max_var
         timestamp_with_time_zone derived_reactive_power_total_import_t0_min_timestamp
-        real derived_reactive_power_total_import_t0_min_var
+        bigint derived_reactive_power_total_import_t0_min_var
         interval_entity interval PK
         bigint measurement_location_id PK,FK
         text meter_id PK,FK
         bigint quarter_hour_count
-        real reactive_energy_l1_export_t0_max_varh
-        real reactive_energy_l1_export_t0_min_varh
-        real reactive_energy_l1_import_t0_max_varh
-        real reactive_energy_l1_import_t0_min_varh
-        real reactive_energy_l2_export_t0_max_varh
-        real reactive_energy_l2_export_t0_min_varh
-        real reactive_energy_l2_import_t0_max_varh
-        real reactive_energy_l2_import_t0_min_varh
-        real reactive_energy_l3_export_t0_max_varh
-        real reactive_energy_l3_export_t0_min_varh
-        real reactive_energy_l3_import_t0_max_varh
-        real reactive_energy_l3_import_t0_min_varh
-        real reactive_energy_total_export_t0_max_varh
-        real reactive_energy_total_export_t0_min_varh
-        real reactive_energy_total_import_t0_max_varh
-        real reactive_energy_total_import_t0_min_varh
+        bigint reactive_energy_l1_export_t0_max_varh
+        bigint reactive_energy_l1_export_t0_min_varh
+        bigint reactive_energy_l1_import_t0_max_varh
+        bigint reactive_energy_l1_import_t0_min_varh
+        bigint reactive_energy_l2_export_t0_max_varh
+        bigint reactive_energy_l2_export_t0_min_varh
+        bigint reactive_energy_l2_import_t0_max_varh
+        bigint reactive_energy_l2_import_t0_min_varh
+        bigint reactive_energy_l3_export_t0_max_varh
+        bigint reactive_energy_l3_export_t0_min_varh
+        bigint reactive_energy_l3_import_t0_max_varh
+        bigint reactive_energy_l3_import_t0_min_varh
+        bigint reactive_energy_total_export_t0_max_varh
+        bigint reactive_energy_total_export_t0_min_varh
+        bigint reactive_energy_total_import_t0_max_varh
+        bigint reactive_energy_total_import_t0_min_varh
         real reactive_power_l1_net_t0_avg_var
         timestamp_with_time_zone reactive_power_l1_net_t0_max_timestamp
         real reactive_power_l1_net_t0_max_var
@@ -262,16 +262,16 @@ erDiagram
     }
 
     abb_b2x_measurements {
-        real active_energy_l1_export_t0_wh
-        real active_energy_l1_import_t0_wh
-        real active_energy_l2_export_t0_wh
-        real active_energy_l2_import_t0_wh
-        real active_energy_l3_export_t0_wh
-        real active_energy_l3_import_t0_wh
-        real active_energy_total_export_t0_wh
-        real active_energy_total_import_t0_wh
-        real active_energy_total_import_t1_wh
-        real active_energy_total_import_t2_wh
+        bigint active_energy_l1_export_t0_wh
+        bigint active_energy_l1_import_t0_wh
+        bigint active_energy_l2_export_t0_wh
+        bigint active_energy_l2_import_t0_wh
+        bigint active_energy_l3_export_t0_wh
+        bigint active_energy_l3_import_t0_wh
+        bigint active_energy_total_export_t0_wh
+        bigint active_energy_total_import_t0_wh
+        bigint active_energy_total_import_t1_wh
+        bigint active_energy_total_import_t2_wh
         real active_power_l1_net_t0_w
         real active_power_l2_net_t0_w
         real active_power_l3_net_t0_w
@@ -280,14 +280,14 @@ erDiagram
         real current_l3_any_t0_a
         bigint measurement_location_id PK,FK
         text meter_id PK,FK
-        real reactive_energy_l1_export_t0_varh
-        real reactive_energy_l1_import_t0_varh
-        real reactive_energy_l2_export_t0_varh
-        real reactive_energy_l2_import_t0_varh
-        real reactive_energy_l3_export_t0_varh
-        real reactive_energy_l3_import_t0_varh
-        real reactive_energy_total_export_t0_varh
-        real reactive_energy_total_import_t0_varh
+        bigint reactive_energy_l1_export_t0_varh
+        bigint reactive_energy_l1_import_t0_varh
+        bigint reactive_energy_l2_export_t0_varh
+        bigint reactive_energy_l2_import_t0_varh
+        bigint reactive_energy_l3_export_t0_varh
+        bigint reactive_energy_l3_import_t0_varh
+        bigint reactive_energy_total_export_t0_varh
+        bigint reactive_energy_total_import_t0_varh
         real reactive_power_l1_net_t0_var
         real reactive_power_l2_net_t0_var
         real reactive_power_l3_net_t0_var
@@ -642,8 +642,8 @@ erDiagram
         timestamp_with_time_zone issued_on
         bigint network_user_id FK
         text remark
-        numeric supply_active_energy_total_import_t1fee_eur
-        numeric supply_active_energy_total_import_t2fee_eur
+        numeric supply_active_energy_total_import_t1_fee_eur
+        numeric supply_active_energy_total_import_t2_fee_eur
         numeric supply_business_usage_fee_eur
         numeric supply_fee_total_eur
         numeric supply_renewable_energy_fee_eur
@@ -653,13 +653,13 @@ erDiagram
         timestamp_with_time_zone to_date
         numeric total_eur
         numeric total_with_tax_eur
-        numeric usage_active_energy_total_import_t0fee_eur
-        numeric usage_active_energy_total_import_t1fee_eur
-        numeric usage_active_energy_total_import_t2fee_eur
-        numeric usage_active_power_total_import_t1peak_fee_eur
+        numeric usage_active_energy_total_import_t0_fee_eur
+        numeric usage_active_energy_total_import_t1_fee_eur
+        numeric usage_active_energy_total_import_t2_fee_eur
+        numeric usage_active_power_total_import_t1_peak_fee_eur
         numeric usage_fee_total_eur
         numeric usage_meter_fee_eur
-        numeric usage_reactive_energy_total_ramped_t0fee_eur
+        numeric usage_reactive_energy_total_ramped_t0_fee_eur
     }
 
     network_user_representatives {
@@ -891,20 +891,20 @@ erDiagram
     }
 
     schneider_iem3xxx_aggregates {
-        real active_energy_l1_import_t0_max_wh
-        real active_energy_l1_import_t0_min_wh
-        real active_energy_l2_import_t0_max_wh
-        real active_energy_l2_import_t0_min_wh
-        real active_energy_l3_import_t0_max_wh
-        real active_energy_l3_import_t0_min_wh
-        real active_energy_total_export_t0_max_wh
-        real active_energy_total_export_t0_min_wh
-        real active_energy_total_import_t0_max_wh
-        real active_energy_total_import_t0_min_wh
-        real active_energy_total_import_t1_max_wh
-        real active_energy_total_import_t1_min_wh
-        real active_energy_total_import_t2_max_wh
-        real active_energy_total_import_t2_min_wh
+        bigint active_energy_l1_import_t0_max_wh
+        bigint active_energy_l1_import_t0_min_wh
+        bigint active_energy_l2_import_t0_max_wh
+        bigint active_energy_l2_import_t0_min_wh
+        bigint active_energy_l3_import_t0_max_wh
+        bigint active_energy_l3_import_t0_min_wh
+        bigint active_energy_total_export_t0_max_wh
+        bigint active_energy_total_export_t0_min_wh
+        bigint active_energy_total_import_t0_max_wh
+        bigint active_energy_total_import_t0_min_wh
+        bigint active_energy_total_import_t1_max_wh
+        bigint active_energy_total_import_t1_min_wh
+        bigint active_energy_total_import_t2_max_wh
+        bigint active_energy_total_import_t2_min_wh
         real active_power_l1_net_t0_avg_w
         timestamp_with_time_zone active_power_l1_net_t0_max_timestamp
         real active_power_l1_net_t0_max_w
@@ -941,59 +941,59 @@ erDiagram
         timestamp_with_time_zone current_l3_any_t0_max_timestamp
         real current_l3_any_t0_min_a
         timestamp_with_time_zone current_l3_any_t0_min_timestamp
-        real derived_active_power_l1_import_t0_avg_w
+        double_precision derived_active_power_l1_import_t0_avg_w
         timestamp_with_time_zone derived_active_power_l1_import_t0_max_timestamp
-        real derived_active_power_l1_import_t0_max_w
+        bigint derived_active_power_l1_import_t0_max_w
         timestamp_with_time_zone derived_active_power_l1_import_t0_min_timestamp
-        real derived_active_power_l1_import_t0_min_w
-        real derived_active_power_l2_import_t0_avg_w
+        bigint derived_active_power_l1_import_t0_min_w
+        double_precision derived_active_power_l2_import_t0_avg_w
         timestamp_with_time_zone derived_active_power_l2_import_t0_max_timestamp
-        real derived_active_power_l2_import_t0_max_w
+        bigint derived_active_power_l2_import_t0_max_w
         timestamp_with_time_zone derived_active_power_l2_import_t0_min_timestamp
-        real derived_active_power_l2_import_t0_min_w
-        real derived_active_power_l3_import_t0_avg_w
+        bigint derived_active_power_l2_import_t0_min_w
+        double_precision derived_active_power_l3_import_t0_avg_w
         timestamp_with_time_zone derived_active_power_l3_import_t0_max_timestamp
-        real derived_active_power_l3_import_t0_max_w
+        bigint derived_active_power_l3_import_t0_max_w
         timestamp_with_time_zone derived_active_power_l3_import_t0_min_timestamp
-        real derived_active_power_l3_import_t0_min_w
-        real derived_active_power_total_export_t0_avg_w
+        bigint derived_active_power_l3_import_t0_min_w
+        double_precision derived_active_power_total_export_t0_avg_w
         timestamp_with_time_zone derived_active_power_total_export_t0_max_timestamp
-        real derived_active_power_total_export_t0_max_w
+        bigint derived_active_power_total_export_t0_max_w
         timestamp_with_time_zone derived_active_power_total_export_t0_min_timestamp
-        real derived_active_power_total_export_t0_min_w
-        real derived_active_power_total_import_t0_avg_w
+        bigint derived_active_power_total_export_t0_min_w
+        double_precision derived_active_power_total_import_t0_avg_w
         timestamp_with_time_zone derived_active_power_total_import_t0_max_timestamp
-        real derived_active_power_total_import_t0_max_w
+        bigint derived_active_power_total_import_t0_max_w
         timestamp_with_time_zone derived_active_power_total_import_t0_min_timestamp
-        real derived_active_power_total_import_t0_min_w
-        real derived_active_power_total_import_t1_avg_w
+        bigint derived_active_power_total_import_t0_min_w
+        double_precision derived_active_power_total_import_t1_avg_w
         timestamp_with_time_zone derived_active_power_total_import_t1_max_timestamp
-        real derived_active_power_total_import_t1_max_w
+        bigint derived_active_power_total_import_t1_max_w
         timestamp_with_time_zone derived_active_power_total_import_t1_min_timestamp
-        real derived_active_power_total_import_t1_min_w
-        real derived_active_power_total_import_t2_avg_w
+        bigint derived_active_power_total_import_t1_min_w
+        double_precision derived_active_power_total_import_t2_avg_w
         timestamp_with_time_zone derived_active_power_total_import_t2_max_timestamp
-        real derived_active_power_total_import_t2_max_w
+        bigint derived_active_power_total_import_t2_max_w
         timestamp_with_time_zone derived_active_power_total_import_t2_min_timestamp
-        real derived_active_power_total_import_t2_min_w
-        real derived_reactive_power_total_export_t0_avg_var
+        bigint derived_active_power_total_import_t2_min_w
+        double_precision derived_reactive_power_total_export_t0_avg_var
         timestamp_with_time_zone derived_reactive_power_total_export_t0_max_timestamp
-        real derived_reactive_power_total_export_t0_max_var
+        bigint derived_reactive_power_total_export_t0_max_var
         timestamp_with_time_zone derived_reactive_power_total_export_t0_min_timestamp
-        real derived_reactive_power_total_export_t0_min_var
-        real derived_reactive_power_total_import_t0_avg_var
+        bigint derived_reactive_power_total_export_t0_min_var
+        double_precision derived_reactive_power_total_import_t0_avg_var
         timestamp_with_time_zone derived_reactive_power_total_import_t0_max_timestamp
-        real derived_reactive_power_total_import_t0_max_var
+        bigint derived_reactive_power_total_import_t0_max_var
         timestamp_with_time_zone derived_reactive_power_total_import_t0_min_timestamp
-        real derived_reactive_power_total_import_t0_min_var
+        bigint derived_reactive_power_total_import_t0_min_var
         interval_entity interval PK
         bigint measurement_location_id PK,FK
         text meter_id PK,FK
         bigint quarter_hour_count
-        real reactive_energy_total_export_t0_max_varh
-        real reactive_energy_total_export_t0_min_varh
-        real reactive_energy_total_import_t0_max_varh
-        real reactive_energy_total_import_t0_min_varh
+        bigint reactive_energy_total_export_t0_max_varh
+        bigint reactive_energy_total_export_t0_min_varh
+        bigint reactive_energy_total_import_t0_max_varh
+        bigint reactive_energy_total_import_t0_min_varh
         real reactive_power_total_net_t0_avg_var
         timestamp_with_time_zone reactive_power_total_net_t0_max_timestamp
         real reactive_power_total_net_t0_max_var
@@ -1018,13 +1018,13 @@ erDiagram
     }
 
     schneider_iem3xxx_measurements {
-        real active_energy_l1_import_t0_wh
-        real active_energy_l2_import_t0_wh
-        real active_energy_l3_import_t0_wh
-        real active_energy_total_export_t0_wh
-        real active_energy_total_import_t0_wh
-        real active_energy_total_import_t1_wh
-        real active_energy_total_import_t2_wh
+        bigint active_energy_l1_import_t0_wh
+        bigint active_energy_l2_import_t0_wh
+        bigint active_energy_l3_import_t0_wh
+        bigint active_energy_total_export_t0_wh
+        bigint active_energy_total_import_t0_wh
+        bigint active_energy_total_import_t1_wh
+        bigint active_energy_total_import_t2_wh
         real active_power_l1_net_t0_w
         real active_power_l2_net_t0_w
         real active_power_l3_net_t0_w
@@ -1034,8 +1034,8 @@ erDiagram
         real current_l3_any_t0_a
         bigint measurement_location_id PK,FK
         text meter_id PK,FK
-        real reactive_energy_total_export_t0_varh
-        real reactive_energy_total_import_t0_varh
+        bigint reactive_energy_total_export_t0_varh
+        bigint reactive_energy_total_import_t0_varh
         real reactive_power_total_net_t0_var
         timestamp_with_time_zone timestamp PK
         real voltage_l1_any_t0_v
