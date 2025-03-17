@@ -52,7 +52,7 @@ public class MeasurementLocationQueries(
   }
 
   public async Task<
-    List<IMeasurementLocationEntity>>
+      List<IMeasurementLocationEntity>>
     ReadMeasurementLocationByNetworkUser(
       string networkUserId,
       CancellationToken cancellationToken
