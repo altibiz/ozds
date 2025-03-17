@@ -6,6 +6,7 @@
 @using Ozds.Business.Analysis
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Client.Components.Charts
+@using Ozds.Client.Components.Fields
 @using Ozds.Client.Components.Models
 @using Ozds.Client.Components.Streaming
 @using Ozds.Client.State
@@ -32,7 +33,7 @@
   </Table>
 
   <div style="width: 170px;">
-    <MonthPickerField @bind-Value="selectedMonth" Label="@Translate("Pick month")" />
+    <MonthPickerField @bind-Value="@selectedMonth" Label="@Translate("Pick month")" />
     <div style="margin-top: 10px;">
       @if (selectedMonth is not null)
       {

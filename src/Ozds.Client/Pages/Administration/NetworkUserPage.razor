@@ -45,7 +45,7 @@
       </MudHidden>
 
       <div style="width: 170px;">
-        <MonthPickerField @bind-Value="invoiceSelectedMonth" Label="@Translate("Pick month")" />
+        <MonthPickerField @bind-Value="@invoiceSelectedMonth" Label="@Translate("Pick month")" />
       </div>
 
       @if (invoiceSelectedMonth is not null)
@@ -62,7 +62,7 @@
     </div>
 
     <div style="width: 170px;">
-      <MonthPickerField @bind-Value="selectedMonth" Label="@Translate("Pick month")" />
+      <MonthPickerField @bind-Value="@selectedMonth" Label="@Translate("Pick month")" />
       <div style="margin-top: 10px;">
         @if (selectedMonth is not null)
         {

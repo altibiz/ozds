@@ -73,20 +73,11 @@ public class MeasurementLocationQueries(
     return measurementLocations;
   }
 
-<<<<<<< HEAD
   public async Task<List<IMeasurementLocationEntity>?>
     ReadMeasurementLocationByLocation(
       string locationId,
       CancellationToken cancellationToken
     )
-=======
-  public async Task<
-    List<IMeasurementLocationEntity>
-  > ReadMeasurementLocationByLocation(
-    string locationId,
-    CancellationToken cancellationToken
-  )
->>>>>>> 4161e995 (More pr comment fixes)
   {
     await using var context = await factory.CreateDbContextAsync(
       cancellationToken
