@@ -76,14 +76,16 @@ public class MeasurementLocationQueries(
   public async Task<List<AnalysisBasisModel>>
     ReadAnalysisBasisByLocationAndRepresentative(
       string? locationId,
-      RepresentativeModel representative,
+      RepresentativeModel? representative,
       DateTimeOffset fromDate,
       DateTimeOffset toDate,
       CancellationToken cancellationToken
     )
   {
-    var representativeEntity = modelEntityConverter
-      .ToEntity<RepresentativeEntity>(representative);
+    var representativeEntity = representative is null
+      ? null
+      : modelEntityConverter
+        .ToEntity<RepresentativeEntity>(representative);
 
     var entities = await queries
       .ReadAnalysisBasesByLocationAndRepresentative(

@@ -114,7 +114,7 @@ public class MeasurementLocationQueries(
   public async Task<List<AnalysisBasisEntity>>
     ReadAnalysisBasesByLocationAndRepresentative(
       string? locationId,
-      RepresentativeEntity representative,
+      RepresentativeEntity? representative,
       DateTimeOffset fromDate,
       DateTimeOffset toDate,
       CancellationToken cancellationToken
@@ -123,8 +123,9 @@ public class MeasurementLocationQueries(
     await using var context = await factory
       .CreateDbContextAsync(cancellationToken);
 
-    if (representative.Role
-      is RoleEntity.OperatorRepresentative
+    if (representative?.Role
+      is null
+      or RoleEntity.OperatorRepresentative
       or RoleEntity.LocationRepresentative)
     {
       var initialLocations = context.Locations as IQueryable<LocationEntity>;

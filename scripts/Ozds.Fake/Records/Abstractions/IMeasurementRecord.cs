@@ -6,6 +6,8 @@ public interface IMeasurementRecord
 {
   public string MeterId { get; }
 
+  public string MeasurementLocationId { get; }
+
   public DateTimeOffset Timestamp { get; }
 
   public TariffMeasure<decimal> ActiveEnergy_Wh { get; }

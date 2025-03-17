@@ -139,6 +139,12 @@ words:
   - "ondragend"
   - "ganss"
   - "tizzani"
+  - "plpgsql"
+  - "setof"
+  - "plpgsql"
+  - "recordset"
+  - "enumerables"
+  - "cloners"
 
   # Croatian
   - "altibiz"

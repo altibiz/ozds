@@ -1,23 +1,19 @@
-using Ozds.Fake.Conversion.Agnostic;
-using Ozds.Fake.Correction.Agnostic;
+using System.Runtime.CompilerServices;
+using Ozds.Fake.Correction;
 using Ozds.Fake.Generators.Abstractions;
+using Ozds.Fake.Identification;
 using Ozds.Fake.Loaders;
 using Ozds.Fake.Records.Abstractions;
-using Ozds.Iot.Entities.Abstractions;
 
 namespace Ozds.Fake.Generators.Base;
 
 public abstract class
   RepeatingCsvResourceMeasurementGenerator<TMeasurement>(
-    IServiceProvider serviceProvider) : IMeasurementGenerator
+    IServiceProvider serviceProvider) : IMeasurementRecordGenerator
   where TMeasurement : class, IMeasurementRecord
 {
-  private readonly AgnosticMeasurementRecordPushRequestConverter _converter =
-    serviceProvider
-      .GetRequiredService<AgnosticMeasurementRecordPushRequestConverter>();
-
-  private readonly AgnosticCorrector _corrector =
-    serviceProvider.GetRequiredService<AgnosticCorrector>();
+  private readonly RecordCorrector _corrector =
+    serviceProvider.GetRequiredService<RecordCorrector>();
 
   private readonly ResourceCache _resources =
     serviceProvider.GetRequiredService<ResourceCache>();
@@ -26,39 +22,99 @@ public abstract class
 
   protected abstract string MeterIdPrefix { get; }
 
-  public bool CanGenerateMeasurementsFor(string meterId)
+  public bool CanGenerateFor(string meterId)
   {
     return meterId.StartsWith(MeterIdPrefix);
   }
 
-  public async Task<List<IMeterPushRequestEntity>> GenerateMeasurements(
+  public async IAsyncEnumerable<IMeasurementRecord> GenerateMeasurementRecords(
     DateTimeOffset dateFrom,
     DateTimeOffset dateTo,
-    string messengerId,
-    string meterId,
-    CancellationToken cancellationToken = default
+    MeasurementLocationMeterId id,
+    [EnumeratorCancellation] CancellationToken cancellationToken
   )
   {
     var records = await _resources
       .GetAsync<CsvLoader<TMeasurement>, List<TMeasurement>>(
         CsvResourceName,
         cancellationToken);
-    var pushRequestMeasurements =
-      ExpandRecords(records, messengerId, meterId, dateFrom, dateTo).ToList();
-    return pushRequestMeasurements;
+    var expanded = ExpandRecords(
+      records,
+      dateFrom,
+      dateTo
+    );
+    foreach (var record in expanded)
+    {
+      if (cancellationToken.IsCancellationRequested)
+      {
+        break;
+      }
+
+      var withCorrectedMeterId = _corrector.CorrectMeterId(
+        record,
+        id.MeterId
+      );
+      var withCorrectedMeasurementLocationId =
+        _corrector.CorrectMeasurementLocationId(
+          withCorrectedMeterId,
+          id.MeasurementLocationId
+        );
+      yield return withCorrectedMeasurementLocationId;
+    }
   }
 
-  private IEnumerable<IMeterPushRequestEntity> ExpandRecords(
+  public async IAsyncEnumerable<IMeasurementRecord> BatchMeasurementRecords(
+    DateTimeOffset dateFrom,
+    DateTimeOffset dateTo,
+    IEnumerable<MeasurementLocationMeterId> ids,
+    [EnumeratorCancellation] CancellationToken cancellationToken
+  )
+  {
+    var records = await _resources
+      .GetAsync<CsvLoader<TMeasurement>, List<TMeasurement>>(
+        CsvResourceName,
+        (initial, cancellationToken) =>
+          Task.FromResult(
+            initial
+              .OrderBy(record => record.Timestamp)
+              .ToList()),
+        cancellationToken);
+    var expanded = ExpandRecords(
+      records,
+      dateFrom,
+      dateTo
+    );
+    foreach (var record in expanded)
+    {
+      if (cancellationToken.IsCancellationRequested)
+      {
+        break;
+      }
+
+      foreach (var id in ids)
+      {
+        var withCorrectedMeterId = _corrector.CorrectMeterId(
+          record,
+          id.MeterId
+        );
+        var withCorrectedMeasurementLocationId =
+          _corrector.CorrectMeasurementLocationId(
+            withCorrectedMeterId,
+            id.MeasurementLocationId
+          );
+        yield return withCorrectedMeasurementLocationId;
+      }
+    }
+  }
+
+  private IEnumerable<IMeasurementRecord> ExpandRecords(
     List<TMeasurement> records,
-    string messengerId,
-    string meterId,
     DateTimeOffset dateFrom,
     DateTimeOffset dateTo
   )
   {
-    var ordered = records.OrderBy(record => record.Timestamp).ToList();
-    var firstRecord = ordered.FirstOrDefault();
-    var lastRecord = ordered.LastOrDefault();
+    var firstRecord = records.FirstOrDefault();
+    var lastRecord = records.LastOrDefault();
     if (firstRecord == null || lastRecord == null)
     {
       yield break;
@@ -79,21 +135,15 @@ public abstract class
     var currentDateTo = dateFrom + (dateToCsv - dateFromCsv);
     while (timeSpan > TimeSpan.Zero)
     {
-      foreach (var record in ordered
+      foreach (var record in records
         .Where(
           record =>
             record.Timestamp >= dateFromCsv
             && record.Timestamp < dateToCsv))
       {
-        var timestamp = currentDateFrom.AddTicks(
-          (record.Timestamp - dateFromCsv).Ticks
-        );
-        var withCorrectedMeterId = _corrector.CorrectMeterId(
-          record,
-          meterId
-        );
+        var timestamp = currentDateFrom + (record.Timestamp - dateFromCsv);
         var withCorrectedTimestamp = _corrector.CorrectTimestamp(
-          withCorrectedMeterId,
+          record,
           timestamp
         );
         var withCorrectedCumulatives = _corrector.CorrectCumulatives(
@@ -102,9 +152,7 @@ public abstract class
           firstRecord,
           lastRecord
         );
-        var pushRequest = _converter.ConvertToPushRequest(
-          withCorrectedCumulatives, messengerId);
-        yield return pushRequest;
+        yield return withCorrectedCumulatives;
       }
 
       timeSpan -= dateToCsv - dateFromCsv;

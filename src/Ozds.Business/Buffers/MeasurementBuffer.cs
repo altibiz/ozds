@@ -14,7 +14,8 @@ namespace Ozds.Business.Buffers;
 public enum MeasurementBufferBehavior
 {
   Realtime,
-  Buffer
+  Buffer,
+  Aggregate
 }
 
 public class MeasurementBuffer(
@@ -59,7 +60,7 @@ public class MeasurementBuffer(
             x.Timestamp,
             x.Interval
           })
-        .Select(x => x.Aggregate(aggregateUpserter.UpsertModel))
+        .Select(x => x.Aggregate(aggregateUpserter.UpsertAggregate))
         .ToList();
     }
 
@@ -79,12 +80,24 @@ public class MeasurementBuffer(
     }
 
     AddToAggregatesInternal(aggregates);
+    var flushedAggregates = FlushAggregatesInternal(aggregates);
+
+    if (bufferBehavior is MeasurementBufferBehavior.Aggregate)
+    {
+      measurementFlushPublisher.Publish(
+        new MeasurementFlushEventArgs
+        {
+          Measurements = flushedAggregates.ToList()
+        });
+      return flushedAggregates
+        .OfType<IMeasurement>()
+        .ToList();
+    }
 
     var flushedMeasurements =
       bufferBehavior is MeasurementBufferBehavior.Buffer
         ? FlushMeasurementsInternal(MaxMeasurements)
         : measurements.Where(x => x is not IAggregate).ToList();
-    var flushedAggregates = FlushAggregatesInternal(aggregates);
     if (flushedMeasurements.Count is > 0 || flushedAggregates.Count is > 0)
     {
       measurementFlushPublisher.Publish(
@@ -98,7 +111,7 @@ public class MeasurementBuffer(
       .ToList();
   }
 
-  public List<IMeasurement> Peak()
+  public List<IMeasurement> Peek()
   {
     var measurements = PeakMeasurementsInternal();
     var aggregates = PeakAggregatesInternal();
@@ -230,7 +243,7 @@ public class MeasurementBuffer(
         if (Aggregates.TryRemove(cached.Key, out var value))
         {
           var upserted = value
-            .Aggregate(aggregateUpserter.UpsertModel);
+            .Aggregate(aggregateUpserter.UpsertAggregate);
           result.Add(upserted);
         }
       }
@@ -240,7 +253,7 @@ public class MeasurementBuffer(
       foreach (var cached in cacheCopy)
       {
         var upserted = cached.Value
-          .Aggregate(aggregateUpserter.UpsertModel);
+          .Aggregate(aggregateUpserter.UpsertAggregate);
         if (!toStay.Any(
             toStayAggregate =>
               toStayAggregate.Interval == IntervalModel.QuarterHour
@@ -254,7 +267,7 @@ public class MeasurementBuffer(
           && Aggregates.TryRemove(cached.Key, out var value))
         {
           upserted = value
-            .Aggregate(aggregateUpserter.UpsertModel);
+            .Aggregate(aggregateUpserter.UpsertAggregate);
           result.Add(upserted);
         }
       }

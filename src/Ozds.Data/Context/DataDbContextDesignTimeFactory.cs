@@ -18,17 +18,18 @@ public class DataDbContextDesignTimeFactory
     dataSourceBuilder.ApplyConfigurationsFromAssembly(
       typeof(DataDbContext).Assembly);
 
-    optionsBuilder.UseTimescale(
-      dataSourceBuilder.Build(),
-      x =>
-      {
-        x.MigrationsAssembly(
-          typeof(DataDbContext).Assembly.GetName().Name);
-        x.MigrationsHistoryTable(
-          $"__Ozds{nameof(DataDbContext)}");
-      });
-
     optionsBuilder
+      .UseNpgsql(
+        dataSourceBuilder.Build(),
+        x =>
+        {
+          x.MigrationsAssembly(
+            typeof(DataDbContext).Assembly.GetName().Name);
+          x.MigrationsHistoryTable(
+            $"__Ozds{nameof(DataDbContext)}");
+        })
+      .UseTimescale()
+      .UseServedMigrationsAssembly()
       .UseLazyLoadingProxies()
       .UseSnakeCaseNamingConvention();
 

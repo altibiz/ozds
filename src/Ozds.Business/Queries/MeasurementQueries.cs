@@ -83,7 +83,7 @@ public class MeasurementQueries(
     );
 
     var buffered = measurementBuffer
-      .Peak()
+      .Peek()
       .Where(
         x =>
           (
@@ -137,7 +137,7 @@ public class MeasurementQueries(
     );
 
     var buffered = measurementBuffer
-      .Peak()
+      .Peek()
       .Where(
         x =>
           (
@@ -213,7 +213,7 @@ public class MeasurementQueries(
     );
 
     var buffered = measurementBuffer
-      .Peak()
+      .Peek()
       .Where(
         x =>
           (
@@ -254,7 +254,7 @@ public class MeasurementQueries(
     );
 
     var buffered = measurementBuffer
-      .Peak()
+      .Peek()
       .Where(
         x =>
           (

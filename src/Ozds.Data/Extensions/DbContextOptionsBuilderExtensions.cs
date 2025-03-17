@@ -1,28 +1,31 @@
-using System.Data.Common;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Infrastructure;
+using Ozds.Data.Context;
 using Ozds.Data.Interceptors;
-using Ozds.Data.Timescale;
 
 namespace Ozds.Data.Extensions;
 
 public static class DbContextOptionsBuilderExtensions
 {
   public static DbContextOptionsBuilder UseTimescale(
-    this DbContextOptionsBuilder builder,
-    DbDataSource dataSource,
-    Action<NpgsqlDbContextOptionsBuilder>? npgsqlOptionsAction = null
+    this DbContextOptionsBuilder builder
   )
   {
     return builder
-      .UseNpgsql(dataSource, npgsqlOptionsAction)
       .ReplaceService<IMigrationsSqlGenerator, TimescaleMigrationSqlGenerator>()
       .ReplaceService<IRelationalAnnotationProvider,
         TimescaleAnnotationProvider>();
+  }
+
+  public static DbContextOptionsBuilder UseServedMigrationsAssembly(
+    this DbContextOptionsBuilder builder
+  )
+  {
+    return builder
+      .ReplaceService<IMigrationsAssembly, ServedMigrationsAssembly>();
   }
 
   public static DbContextOptionsBuilder

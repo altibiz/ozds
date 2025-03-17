@@ -1,10 +1,12 @@
 using Altibiz.DependencyInjection.Extensions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Ozds.Jobs.Context;
 using Ozds.Jobs.Manager.Abstractions;
+using Ozds.Jobs.Mutations.Abstractions;
 using Ozds.Jobs.Observers.Abstractions;
 using Ozds.Jobs.Options;
-using Ozds.Jobs.Services;
+using Ozds.Jobs.Queries.Abstractions;
 using Quartz;
 
 namespace Ozds.Jobs.Extensions;
@@ -12,25 +14,25 @@ namespace Ozds.Jobs.Extensions;
 public static class IServiceCollectionExtensions
 {
   public static IServiceCollection AddOzdsJobs(
-    this IServiceCollection services,
-    IHostApplicationBuilder builder
+    this IServiceCollection services
   )
   {
-    services.AddOptions(builder);
+    services.AddOptions();
     services.AddObservers();
     services.AddManagers();
-    services.AddServices();
-    services.AddQuartz(builder);
+    services.AddQueries();
+    services.AddMutations();
+    services.AddJobs();
     return services;
   }
 
   private static IServiceCollection AddOptions(
-    this IServiceCollection services,
-    IHostApplicationBuilder builder
+    this IServiceCollection services
   )
   {
-    services.Configure<OzdsJobsOptions>(
-      builder.Configuration.GetSection("Ozds:Jobs"));
+    services.ConfigureOptions<ConfigureOzdsJobsOptions>();
+    services.ConfigureOptions<ConfigureQuartzOptions>();
+    services.ConfigureOptions<ConfigureQuartzHostedServiceOptions>();
     return services;
   }
 
@@ -51,44 +53,32 @@ public static class IServiceCollectionExtensions
     return services;
   }
 
-  private static IServiceCollection AddServices(
+  private static IServiceCollection AddQueries(
     this IServiceCollection services
   )
   {
-    services.AddSingleton<IHostedService, MigrationService>();
+    services.AddScopedAssignableTo(typeof(IQueries));
     return services;
   }
 
-  private static void AddQuartz(
-    this IServiceCollection services,
-    IHostApplicationBuilder builder
+  private static IServiceCollection AddMutations(
+    this IServiceCollection services
   )
   {
-    var jobsOptions = builder.Configuration
-        .GetSection("Ozds:Jobs")
-        .Get<OzdsJobsOptions>()
-      ?? throw new InvalidOperationException(
-        "Missing Ozds:Jobs configuration");
+    services.AddScopedAssignableTo(typeof(IMutations));
+    return services;
+  }
 
-    services.AddQuartz(
-      options =>
-      {
-        options.InterruptJobsOnShutdown = true;
-        options.UsePersistentStore(
-          options =>
-          {
-            options.UseSystemTextJsonSerializer();
-            options.UsePostgres(
-              options =>
-              {
-                options.ConnectionString = jobsOptions.ConnectionString;
-              });
-          });
-      });
-
+  private static void AddJobs(
+    this IServiceCollection services
+  )
+  {
     services.AddPooledDbContextFactory<JobsDbContext>(
-      options =>
+      (services, options) =>
       {
+        var jobsOptions = services
+          .GetRequiredService<IOptions<OzdsJobsOptions>>().Value;
+
         options.UseNpgsql(
           jobsOptions.ConnectionString, x =>
           {
@@ -99,18 +89,6 @@ public static class IServiceCollectionExtensions
           });
       });
 
-    services.Configure<QuartzHostedServiceOptions>(
-      options => { options.AwaitApplicationStarted = true; });
-    services.AddSingleton<IHostedService, QuartzHostedService>(
-      services =>
-      {
-        using var context = services
-          .GetRequiredService<IDbContextFactory<JobsDbContext>>()
-          .CreateDbContext();
-        context.Database.Migrate();
-        return ActivatorUtilities
-          .CreateInstance<QuartzHostedService>(services);
-      }
-    );
+    services.AddQuartz();
   }
 }

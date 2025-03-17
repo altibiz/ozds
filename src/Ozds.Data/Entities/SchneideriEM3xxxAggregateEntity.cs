@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Ozds.Data.Entities.Base;
 using Ozds.Data.Entities.Complex;
 using Ozds.Data.Extensions;
+using Ozds.Data.Procedures.Builders;
 
 namespace Ozds.Data.Entities;
 
@@ -314,5 +315,63 @@ public class
           .DerivedActivePowerTotalImportT2_W))
       .DerivedAggregateMeasure(
         "derived_active_power_total_import_t2", "w");
+  }
+}
+
+public class SchneideriEM3xxxAggregateEntityProcedureParts
+  : MeasurementProcedureParts<SchneideriEM3xxxAggregateEntity>
+{
+  protected override void Configure(
+    MeasurementProcedureBuilder<SchneideriEM3xxxAggregateEntity> builder
+  )
+  {
+    builder
+      .InstantaneousAggregateMeasure(x => x.VoltageL1AnyT0_V)
+      .InstantaneousAggregateMeasure(x => x.VoltageL2AnyT0_V)
+      .InstantaneousAggregateMeasure(x => x.VoltageL3AnyT0_V)
+      .InstantaneousAggregateMeasure(x => x.CurrentL1AnyT0_A)
+      .InstantaneousAggregateMeasure(x => x.CurrentL2AnyT0_A)
+      .InstantaneousAggregateMeasure(x => x.CurrentL3AnyT0_A)
+      .InstantaneousAggregateMeasure(x => x.ActivePowerL1NetT0_W)
+      .InstantaneousAggregateMeasure(x => x.ActivePowerL2NetT0_W)
+      .InstantaneousAggregateMeasure(x => x.ActivePowerL3NetT0_W)
+      .InstantaneousAggregateMeasure(x => x.ReactivePowerTotalNetT0_VAR)
+      .InstantaneousAggregateMeasure(x => x.ApparentPowerTotalNetT0_VA)
+      .CumulativeAggregateMeasure(x => x.ActiveEnergyL1ImportT0_Wh)
+      .DerivedAggregateMeasure(
+        x => x.DerivedActivePowerL1ImportT0_W,
+        x => x.ActiveEnergyL1ImportT0_Wh)
+      .CumulativeAggregateMeasure(x => x.ActiveEnergyL2ImportT0_Wh)
+      .DerivedAggregateMeasure(
+        x => x.DerivedActivePowerL2ImportT0_W,
+        x => x.ActiveEnergyL2ImportT0_Wh)
+      .CumulativeAggregateMeasure(x => x.ActiveEnergyL3ImportT0_Wh)
+      .DerivedAggregateMeasure(
+        x => x.DerivedActivePowerL3ImportT0_W,
+        x => x.ActiveEnergyL3ImportT0_Wh)
+      .CumulativeAggregateMeasure(x => x.ActiveEnergyTotalImportT0_Wh)
+      .DerivedAggregateMeasure(
+        x => x.DerivedActivePowerTotalImportT0_W,
+        x => x.ActiveEnergyTotalImportT0_Wh)
+      .CumulativeAggregateMeasure(x => x.ActiveEnergyTotalExportT0_Wh)
+      .DerivedAggregateMeasure(
+        x => x.DerivedActivePowerTotalExportT0_W,
+        x => x.ActiveEnergyTotalExportT0_Wh)
+      .CumulativeAggregateMeasure(x => x.ReactiveEnergyTotalImportT0_VARh)
+      .DerivedAggregateMeasure(
+        x => x.DerivedReactivePowerTotalImportT0_VAR,
+        x => x.ReactiveEnergyTotalImportT0_VARh)
+      .CumulativeAggregateMeasure(x => x.ReactiveEnergyTotalExportT0_VARh)
+      .DerivedAggregateMeasure(
+        x => x.DerivedReactivePowerTotalExportT0_VAR,
+        x => x.ReactiveEnergyTotalExportT0_VARh)
+      .CumulativeAggregateMeasure(x => x.ActiveEnergyTotalImportT1_Wh)
+      .DerivedAggregateMeasure(
+        x => x.DerivedActivePowerTotalImportT1_W,
+        x => x.ActiveEnergyTotalImportT1_Wh)
+      .CumulativeAggregateMeasure(x => x.ActiveEnergyTotalImportT2_Wh)
+      .DerivedAggregateMeasure(
+        x => x.DerivedActivePowerTotalImportT2_W,
+        x => x.ActiveEnergyTotalImportT2_Wh);
   }
 }
