@@ -1,17 +1,16 @@
-
-@using MudBlazor
 @using System.Linq.Expressions
-
+@using MudBlazor
 <div>
   <MudDatePicker Label="@Label"
-    Date="@Value"
-    DateChanged="OnDateChanged"
-    OpenTo="OpenTo.Month"
-    FixDay="@DateTime.Today.Day"
-    DateFormat="MM.yyyy." />
+                 Date="@Value"
+                 DateChanged="OnDateChanged"
+                 OpenTo="OpenTo.Month"
+                 FixDay="@DateTime.Today.Day"
+                 DateFormat="MM.yyyy."/>
 </div>
 
 @code {
+
   [Parameter]
   public DateTime? Value { get; set; }
 
@@ -29,4 +28,5 @@
     Value = newDate;
     await ValueChanged.InvokeAsync(newDate);
   }
+
 }

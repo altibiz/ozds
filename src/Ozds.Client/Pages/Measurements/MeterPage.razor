@@ -38,7 +38,7 @@
     </Columns>
   </Table>
   <div style="width: 170px;">
-    <MonthPickerField @bind-Value="@selectedMonth" Label="@Translate("Pick month")" />
+    <MonthPickerField @bind-Value="@selectedMonth" Label="@Translate("Pick month")"/>
     <div style="margin-top: 10px;">
       @if (selectedMonth is not null)
       {
@@ -46,7 +46,7 @@
           Class="mud-button mud-button-filled mud-primary p-2 rounded-lg"
           Style="color: white !important;"
           Href="@("/download/meter-quarter-hourly-aggregates-for-month/" + Id + "/" + selectedMonth.Value.Year + "/" + selectedMonth.Value.Month)">
-            @Translate("Csv")
+          @Translate("Csv")
         </MudLink>
       }
     </div>

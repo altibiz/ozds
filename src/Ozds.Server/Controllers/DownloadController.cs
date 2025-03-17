@@ -1,6 +1,5 @@
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 using Ozds.Business.Finance.Abstractions;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Enums;
@@ -125,7 +124,7 @@ public class DownloadController(
   )
   {
     var (start, end) = DateTimeOffsetExtensions.GetMonthRange(year, month);
-    int measurementResolution = 30;
+    var measurementResolution = 30;
 
     var measurementLocations =
       await measurementLocationQueries.ReadMeasurementLocationByLocation(
@@ -166,8 +165,8 @@ public class DownloadController(
   )
   {
     var (start, end) = DateTimeOffsetExtensions.GetMonthRange(year, month);
-    int measurementResolution = 30;
-    int countInPage = 5000;
+    var measurementResolution = 30;
+    var countInPage = 5000;
 
     var meter = await auditableQueries.ReadSingle<IMeter>(
       meterId,
@@ -199,16 +198,17 @@ public class DownloadController(
   }
 
   [HttpGet]
-  public async Task<IActionResult> MeasurementLocationQuarterHourlyAggregatesForMonth(
-    string measurementLocationId,
-    int year,
-    int month,
-    CancellationToken cancellationToken
-  )
+  public async Task<IActionResult>
+    MeasurementLocationQuarterHourlyAggregatesForMonth(
+      string measurementLocationId,
+      int year,
+      int month,
+      CancellationToken cancellationToken
+    )
   {
     var (start, end) = DateTimeOffsetExtensions.GetMonthRange(year, month);
-    int measurementResolution = 30;
-    int countInPage = 5000;
+    var measurementResolution = 30;
+    var countInPage = 5000;
 
     var measurementLocation =
       await auditableQueries.ReadSingle<IMeasurementLocation>(

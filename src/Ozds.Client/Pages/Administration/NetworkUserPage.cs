@@ -9,8 +9,8 @@ namespace Ozds.Client.Pages;
 public partial class NetworkUserPage
   : OzdsIdentifiableModelPageComponentBase<NetworkUserModel>
 {
-  private DateTime? selectedMonth;
   private DateTime? invoiceSelectedMonth;
+  private DateTime? selectedMonth;
 
   [Parameter]
   public string? Id { get; set; }
