@@ -51,7 +51,8 @@ public class MeasurementLocationQueries(
     return meter;
   }
 
-  public async Task<List<IMeasurementLocationEntity>?>
+  public async Task<
+    List<IMeasurementLocationEntity>>
     ReadMeasurementLocationByNetworkUser(
       string networkUserId,
       CancellationToken cancellationToken
@@ -73,7 +74,7 @@ public class MeasurementLocationQueries(
     return measurementLocations;
   }
 
-  public async Task<List<IMeasurementLocationEntity>?>
+  public async Task<List<IMeasurementLocationEntity>>
     ReadMeasurementLocationByLocation(
       string locationId,
       CancellationToken cancellationToken
