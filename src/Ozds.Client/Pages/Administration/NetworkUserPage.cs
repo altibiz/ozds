@@ -10,6 +10,7 @@ public partial class NetworkUserPage
   : OzdsIdentifiableModelPageComponentBase<NetworkUserModel>
 {
   private DateTime? selectedMonth;
+  private DateTime? invoiceSelectedMonth;
 
   [Parameter]
   public string? Id { get; set; }

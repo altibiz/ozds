@@ -37,31 +37,35 @@ public class MeasurementLocationQueries(
     return entity is null ? null : modelEntityConverter.ToModel<IMeter>(entity);
   }
 
-  public async Task<List<IMeasurementLocation>?>
-    ReadMeasurementLocationByNetworkUser(
-      string networkUserId,
-      CancellationToken cancellationToken
-    )
+  public async Task<
+    List<IMeasurementLocation>
+  > ReadMeasurementLocationByNetworkUser(
+    string networkUserId,
+    CancellationToken cancellationToken
+  )
   {
     var entities = await queries.ReadMeasurementLocationByNetworkUser(
       networkUserId,
       cancellationToken
     );
-    return entities?.Select(modelEntityConverter.ToModel<IMeasurementLocation>)
+    return entities
+      .Select(modelEntityConverter.ToModel<IMeasurementLocation>)
       .ToList();
   }
 
-  public async Task<List<IMeasurementLocation>?>
-    ReadMeasurementLocationByLocation(
-      string locationId,
-      CancellationToken cancellationToken
-    )
+  public async Task<
+    List<IMeasurementLocation>
+  > ReadMeasurementLocationByLocation(
+    string locationId,
+    CancellationToken cancellationToken
+  )
   {
     var entities = await queries.ReadMeasurementLocationByLocation(
       locationId,
       cancellationToken
     );
-    return entities?.Select(modelEntityConverter.ToModel<IMeasurementLocation>)
+    return entities
+      .Select(modelEntityConverter.ToModel<IMeasurementLocation>)
       .ToList();
   }
 }

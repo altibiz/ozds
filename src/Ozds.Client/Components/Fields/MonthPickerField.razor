@@ -1,0 +1,32 @@
+
+@using MudBlazor
+@using System.Linq.Expressions
+
+<div>
+  <MudDatePicker Label="@Label"
+    Date="@Value"
+    DateChanged="OnDateChanged"
+    OpenTo="OpenTo.Month"
+    FixDay="@DateTime.Today.Day"
+    DateFormat="MM.yyyy." />
+</div>
+
+@code {
+  [Parameter]
+  public DateTime? Value { get; set; }
+
+  [Parameter]
+  public EventCallback<DateTime?> ValueChanged { get; set; }
+
+  [Parameter]
+  public Expression<Func<DateTime?>> ValueExpression { get; set; } = default!;
+
+  [Parameter]
+  public string Label { get; set; } = "Pick month";
+
+  private async Task OnDateChanged(DateTime? newDate)
+  {
+    Value = newDate;
+    await ValueChanged.InvokeAsync(newDate);
+  }
+}

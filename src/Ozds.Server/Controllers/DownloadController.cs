@@ -77,7 +77,7 @@ public class DownloadController(
   }
 
   [HttpGet]
-  public async Task<IActionResult> CsvExportNetworkUserMonthlyAggregate(
+  public async Task<IActionResult> NetworkUserMonthlyAggregates(
     string networkUserId,
     int year,
     int month,
@@ -92,13 +92,13 @@ public class DownloadController(
         cancellationToken
       );
 
-    if (measurementLocations.IsNullOrEmpty())
+    if (!measurementLocations.Any())
     {
       return NotFound();
     }
 
     var measures = await measurementQueries.ReadByMeasurementLocationIdsDynamic(
-      measurementLocations!,
+      measurementLocations,
       ResolutionModel.Year,
       30,
       0,
@@ -112,15 +112,12 @@ public class DownloadController(
     return GenerateCsv(
       measurements,
       false,
-      string.Join('_', measurementLocations!.Select(x => x.Id))
-      + "_MonthlyAggregate_"
-      + end.ToString("MM.yyyy")
-      + ".csv"
+      networkUserId + "-monthly-aggregate-" + end.ToString("MM-yyyy") + ".csv"
     );
   }
 
   [HttpGet]
-  public async Task<IActionResult> CsvExportLocationMonthlyAggregate(
+  public async Task<IActionResult> LocationMonthlyAggregates(
     string locationId,
     int year,
     int month,
@@ -128,6 +125,7 @@ public class DownloadController(
   )
   {
     var (start, end) = DateTimeOffsetExtensions.GetMonthRange(year, month);
+    int measurementResolution = 30;
 
     var measurementLocations =
       await measurementLocationQueries.ReadMeasurementLocationByLocation(
@@ -135,15 +133,15 @@ public class DownloadController(
         cancellationToken
       );
 
-    if (measurementLocations.IsNullOrEmpty())
+    if (!measurementLocations.Any())
     {
       return NotFound();
     }
 
     var measures = await measurementQueries.ReadByMeasurementLocationIdsDynamic(
-      measurementLocations!,
+      measurementLocations,
       ResolutionModel.Year,
-      30,
+      measurementResolution,
       0,
       cancellationToken,
       start,
@@ -155,15 +153,12 @@ public class DownloadController(
     return GenerateCsv(
       measurements,
       false,
-      string.Join('_', measurementLocations!.Select(x => x.Id))
-      + "_MonthlyAggregate_"
-      + end.ToString("MM.yyyy")
-      + ".csv"
+      locationId + "-monthly-aggregate-" + end.ToString("MM-yyyy") + ".csv"
     );
   }
 
   [HttpGet]
-  public async Task<IActionResult> CsvExportMeter(
+  public async Task<IActionResult> MeterQuarterHourlyAggregatesForMonth(
     string meterId,
     int year,
     int month,
@@ -171,6 +166,9 @@ public class DownloadController(
   )
   {
     var (start, end) = DateTimeOffsetExtensions.GetMonthRange(year, month);
+    int measurementResolution = 30;
+    int countInPage = 5000;
+
     var meter = await auditableQueries.ReadSingle<IMeter>(
       meterId,
       cancellationToken
@@ -182,26 +180,26 @@ public class DownloadController(
     }
 
     var measures = await measurementQueries.ReadByMeterIdsDynamic(
-      new[] { meter! },
+      new[] { meter },
       ResolutionModel.Hour,
-      30,
+      measurementResolution,
       0,
       cancellationToken,
       start,
       end,
-      5000
+      countInPage
     );
     var measurements = measures.Items.OrderBy(x => x.Timestamp).ToList();
 
     return GenerateCsv(
       measurements,
       true,
-      meterId + "_" + end.ToString("MM.yyyy") + ".csv"
+      meterId + "-" + end.ToString("MM-yyyy") + ".csv"
     );
   }
 
   [HttpGet]
-  public async Task<IActionResult> CsvExportMeasurementLocation(
+  public async Task<IActionResult> MeasurementLocationQuarterHourlyAggregatesForMonth(
     string measurementLocationId,
     int year,
     int month,
@@ -209,6 +207,9 @@ public class DownloadController(
   )
   {
     var (start, end) = DateTimeOffsetExtensions.GetMonthRange(year, month);
+    int measurementResolution = 30;
+    int countInPage = 5000;
+
     var measurementLocation =
       await auditableQueries.ReadSingle<IMeasurementLocation>(
         measurementLocationId,
@@ -221,14 +222,14 @@ public class DownloadController(
     }
 
     var measures = await measurementQueries.ReadByMeasurementLocationIdsDynamic(
-      new[] { measurementLocation! },
+      new[] { measurementLocation },
       ResolutionModel.Hour,
-      30,
+      measurementResolution,
       0,
       cancellationToken,
       start,
       end,
-      5000
+      countInPage
     );
     var orderedMeasures = measures.Items.OrderBy(x => x.Timestamp).ToList();
     var measurements = orderedMeasures.Select(x => (IAggregate)x).ToList();
@@ -236,7 +237,7 @@ public class DownloadController(
     return GenerateCsv(
       measurements,
       false,
-      measurementLocationId + "_" + end.ToString("MM.yyyy") + ".csv"
+      measurementLocationId + "-" + end.ToString("MM-yyyy") + ".csv"
     );
   }
 

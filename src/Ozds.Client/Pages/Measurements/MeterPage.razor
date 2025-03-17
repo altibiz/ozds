@@ -37,26 +37,18 @@
     </Columns>
   </Table>
   <div style="width: 170px;">
-    <MudItem>
-      <MudDatePicker Label="@Translate("Pick month")"
-                     @bind-Date="selectedMonth"
-                     OpenTo="OpenTo.Month"
-                     FixDay="@DateTime.Today.Day"
-                     DateFormat="MM.yyyy."/>
-    </MudItem>
-    <MudItem>
-
+    <MonthPickerField @bind-Value="selectedMonth" Label="@Translate("Pick month")" />
+    <div style="margin-top: 10px;">
       @if (selectedMonth is not null)
       {
-        <MudButton
-          Color="Color.Primary"
-          Variant="Variant.Filled"
-          Class="p-2 rounded-lg"
-          Href="@("/download/csv-export-meter/" + Id + "/" + selectedMonth.Value.Year + "/" + selectedMonth.Value.Month)">
-          @Translate("Csv")
-        </MudButton>
+        <MudLink
+          Class="mud-button mud-button-filled mud-primary p-2 rounded-lg"
+          Style="color: white !important;"
+          Href="@("/download/meter-quarter-hourly-aggregates-for-month/" + Id + "/" + selectedMonth.Value.Year + "/" + selectedMonth.Value.Month)">
+            @Translate("Csv")
+        </MudLink>
       }
-    </MudItem>
+    </div>
   </div>
 
   meters = new List<IMeter> { analysis.Meter };
