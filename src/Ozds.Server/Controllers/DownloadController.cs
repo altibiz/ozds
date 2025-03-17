@@ -91,7 +91,7 @@ public class DownloadController(
         cancellationToken
       );
 
-    if (!measurementLocations.Any())
+    if (measurementLocations.Count != 0)
     {
       return NotFound();
     }
@@ -132,7 +132,7 @@ public class DownloadController(
         cancellationToken
       );
 
-    if (!measurementLocations.Any())
+    if (measurementLocations.Count != 0)
     {
       return NotFound();
     }
