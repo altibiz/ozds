@@ -33,16 +33,6 @@
         @Translate("Preview invoice")
       </MudText>
 
-      <MudHidden Breakpoint="Breakpoint.SmAndDown">
-        <div style="margin-top: 10px; margin-bottom: 10px;">
-          <MudLink
-            Class="mud-button mud-button-filled mud-primary p-2 rounded-lg"
-            Style="color: white !important;"
-            Href="@(PageHref<NetworkUserInvoicePreviewDocumentPage>(new { NetworkUserId = context.Model.Id, Year = previewInvoiceYear, Month = previewInvoiceMonth }))">
-            @Translate("Document")
-          </MudLink>
-        </div>
-      </MudHidden>
 
       <div style="width: 170px;">
         <MonthPickerField @bind-Value="@invoiceSelectedMonth" Label="@Translate("Pick month")"/>
@@ -50,6 +40,16 @@
 
       @if (invoiceSelectedMonth is not null)
       {
+        <MudHidden Breakpoint="Breakpoint.SmAndDown">
+          <div style="margin-top: 10px; margin-bottom: 10px;">
+            <MudLink
+              Class="mud-button mud-button-filled mud-primary p-2 rounded-lg"
+              Style="color: white !important;"
+              Href="@(PageHref<NetworkUserInvoicePreviewDocumentPage>(new { NetworkUserId = context.Model.Id, Year = invoiceSelectedMonth.Value.Year, Month = invoiceSelectedMonth.Value.Month }))">
+              @Translate("Document")
+            </MudLink>
+          </div>
+        </MudHidden>
         <div style="margin-top: 10px;">
           <MudLink
             Class="mud-button mud-button-filled mud-primary p-2 rounded-lg"
@@ -62,14 +62,14 @@
     </div>
 
     <div style="width: 170px;">
-      <MonthPickerField @bind-Value="@selectedMonth" Label="@Translate("Pick month")"/>
+      <MonthPickerField @bind-Value="@monthlyAggregatesSelectedMonth" Label="@Translate("Pick month")"/>
       <div style="margin-top: 10px;">
-        @if (selectedMonth is not null)
+        @if (monthlyAggregatesSelectedMonth is not null)
         {
           <MudLink
             Class="mud-button mud-button-filled mud-primary p-2 rounded-lg"
             Style="color: white !important;"
-            Href="@("/download/network-user-monthly-aggregates/" + context.Model.Id + "/" + selectedMonth.Value.Year + "/" + selectedMonth.Value.Month)">
+            Href="@("/download/network-user-monthly-aggregates/" + context.Model.Id + "/" + monthlyAggregatesSelectedMonth.Value.Year + "/" + monthlyAggregatesSelectedMonth.Value.Month)">
             @Translate("Csv")
           </MudLink>
         }
