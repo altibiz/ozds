@@ -45,7 +45,7 @@
             <MudLink
               Class="mud-button mud-button-filled mud-primary p-2 rounded-lg"
               Style="color: white !important;"
-              Href="@(PageHref<NetworkUserInvoicePreviewDocumentPage>(new { NetworkUserId = context.Model.Id, Year = invoiceSelectedMonth.Value.Year, Month = invoiceSelectedMonth.Value.Month }))">
+              Href="@(PageHref<NetworkUserInvoicePreviewDocumentPage>(new { NetworkUserId = context.Model.Id, invoiceSelectedMonth.Value.Year, invoiceSelectedMonth.Value.Month }))">
               @Translate("Document")
             </MudLink>
           </div>
