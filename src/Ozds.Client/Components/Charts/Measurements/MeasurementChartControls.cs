@@ -30,7 +30,8 @@ public partial class MeasurementChartControls : OzdsComponentBase
 
   [Inject]
   private IDataModelsChangedSubscriber
-    DataModelsChangedSubscriber { get; set; } = default!;
+    DataModelsChangedSubscriber
+  { get; set; } = default!;
 
   [Inject]
   private IMeasurementsBufferedSubscriber MeasurementsBufferedSubscriber
@@ -205,8 +206,8 @@ public partial class MeasurementChartControls : OzdsComponentBase
     var toDate = fromDate.Add(
       _parameters.Resolution
         .ToTimeSpan(_parameters.Multiplier, fromDate));
-    var fromMeters = await queries.ReadByMeterIdsDynamic(
-      Meters,
+    var fromMeters = await queries.ReadByMeterIds(
+      Meters.Select(x => x.Id).ToList(),
       _parameters.Resolution,
       _parameters.Multiplier,
       1,
@@ -215,8 +216,8 @@ public partial class MeasurementChartControls : OzdsComponentBase
       toDate
     );
     var fromMeasurementLocations = await queries
-      .ReadByMeasurementLocationIdsDynamic(
-        MeasurementLocations,
+      .ReadByMeasurementLocationIds(
+        MeasurementLocations.Select(x => x.Id).ToList(),
         _parameters.Resolution,
         _parameters.Multiplier,
         1,

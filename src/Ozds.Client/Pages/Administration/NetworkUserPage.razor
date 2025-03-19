@@ -43,8 +43,6 @@
         <MudHidden Breakpoint="Breakpoint.SmAndDown">
           <div style="margin-top: 10px; margin-bottom: 10px;">
             <MudLink
-              Class="mud-button mud-button-filled mud-primary p-2 rounded-lg"
-              Style="color: white !important;"
               Href="@(PageHref<NetworkUserInvoicePreviewDocumentPage>(new { NetworkUserId = context.Model.Id, invoiceSelectedMonth.Value.Year, invoiceSelectedMonth.Value.Month }))">
               @Translate("Document")
             </MudLink>
@@ -52,8 +50,6 @@
         </MudHidden>
         <div style="margin-top: 10px;">
           <MudLink
-            Class="mud-button mud-button-filled mud-primary p-2 rounded-lg"
-            Style="color: white !important;"
             Href="@("/download/network-user-invoice-preview/" + context.Model.Id + "/" + invoiceSelectedMonth.Value.Year + "/" + invoiceSelectedMonth.Value.Month)">
             @Translate("Pdf")
           </MudLink>
@@ -67,8 +63,6 @@
         @if (monthlyAggregatesSelectedMonth is not null)
         {
           <MudLink
-            Class="mud-button mud-button-filled mud-primary p-2 rounded-lg"
-            Style="color: white !important;"
             Href="@("/download/network-user-monthly-aggregates/" + context.Model.Id + "/" + monthlyAggregatesSelectedMonth.Value.Year + "/" + monthlyAggregatesSelectedMonth.Value.Month)">
             @Translate("Csv")
           </MudLink>

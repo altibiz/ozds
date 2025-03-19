@@ -63,8 +63,6 @@
         @if (selectedMonth is not null)
         {
           <MudLink
-            Class="mud-button mud-button-filled mud-primary p-2 rounded-lg"
-            Style="color: white !important;"
             Href="@("/download/location-monthly-aggregates/" + context.Model.Id + "/" + selectedMonth.Value.Year + "/" + selectedMonth.Value.Month)">
             @Translate("Csv")
           </MudLink>

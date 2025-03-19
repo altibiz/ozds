@@ -1,4 +1,5 @@
 using System.Text;
+using GeoAPI.DataStructures;
 using Microsoft.AspNetCore.Mvc;
 using Ozds.Business.Finance.Abstractions;
 using Ozds.Business.Models.Abstractions;
@@ -13,7 +14,6 @@ public class DownloadController(
   CalculatedInvoiceQueries calculatedInvoiceQueries,
   MeasurementQueries measurementQueries,
   MeasurementLocationQueries measurementLocationQueries,
-  AuditableQueries auditableQueries,
   INetworkUserInvoiceIssuer networkUserInvoiceIssuer,
   DocumentQueries documentQueries
 ) : Controller
@@ -91,19 +91,18 @@ public class DownloadController(
         cancellationToken
       );
 
-    if (measurementLocations.Count != 0)
+    if (measurementLocations.Count == 0)
     {
       return NotFound();
     }
 
-    var measures = await measurementQueries.ReadByMeasurementLocationIdsDynamic(
-      measurementLocations,
-      ResolutionModel.Year,
-      30,
-      0,
-      cancellationToken,
+    var measures = await measurementQueries.ReadByMeasurementLocationIds(
+      measurementLocations.Select(x => x.Id).ToList(),
+      IntervalModel.Month,
       start,
-      end
+      end,
+      0,
+      cancellationToken
     );
     var orderedMeasures = measures.Items.OrderBy(x => x.Timestamp).ToList();
     var measurements = orderedMeasures.Select(x => (IAggregate)x).ToList();
@@ -132,19 +131,18 @@ public class DownloadController(
         cancellationToken
       );
 
-    if (measurementLocations.Count != 0)
+    if (measurementLocations.Count == 0)
     {
       return NotFound();
     }
 
-    var measures = await measurementQueries.ReadByMeasurementLocationIdsDynamic(
-      measurementLocations,
-      ResolutionModel.Year,
-      measurementResolution,
-      0,
-      cancellationToken,
+    var measures = await measurementQueries.ReadByMeasurementLocationIds(
+      measurementLocations.Select(x => x.Id).ToList(),
+      IntervalModel.Month,
       start,
-      end
+      end,
+      0,
+      cancellationToken
     );
     var orderedMeasures = measures.Items.OrderBy(x => x.Timestamp).ToList();
     var measurements = orderedMeasures.Select(x => (IAggregate)x).ToList();
@@ -165,27 +163,15 @@ public class DownloadController(
   )
   {
     var (start, end) = DateTimeOffsetExtensions.GetMonthRange(year, month);
-    var measurementResolution = 30;
     var countInPage = 5000;
 
-    var meter = await auditableQueries.ReadSingle<IMeter>(
-      meterId,
-      cancellationToken
-    );
-
-    if (meter == null)
-    {
-      return NotFound();
-    }
-
-    var measures = await measurementQueries.ReadByMeterIdsDynamic(
-      new[] { meter },
-      ResolutionModel.Hour,
-      measurementResolution,
-      0,
-      cancellationToken,
+    var measures = await measurementQueries.ReadByMeterIds(
+      new[] { meterId },
+      IntervalModel.QuarterHour,
       start,
       end,
+      0,
+      cancellationToken,
       countInPage
     );
     var measurements = measures.Items.OrderBy(x => x.Timestamp).ToList();
@@ -198,37 +184,23 @@ public class DownloadController(
   }
 
   [HttpGet]
-  public async Task<IActionResult>
-    MeasurementLocationQuarterHourlyAggregatesForMonth(
-      string measurementLocationId,
-      int year,
-      int month,
-      CancellationToken cancellationToken
-    )
+  public async Task<IActionResult> MeasurementLocationQuarterHourlyAggregatesForMonth(
+    string measurementLocationId,
+    int year,
+    int month,
+    CancellationToken cancellationToken
+  )
   {
     var (start, end) = DateTimeOffsetExtensions.GetMonthRange(year, month);
-    var measurementResolution = 30;
     var countInPage = 5000;
 
-    var measurementLocation =
-      await auditableQueries.ReadSingle<IMeasurementLocation>(
-        measurementLocationId,
-        cancellationToken
-      );
-
-    if (measurementLocation == null)
-    {
-      return NotFound();
-    }
-
-    var measures = await measurementQueries.ReadByMeasurementLocationIdsDynamic(
-      new[] { measurementLocation },
-      ResolutionModel.Hour,
-      measurementResolution,
-      0,
-      cancellationToken,
+    var measures = await measurementQueries.ReadByMeasurementLocationIds(
+      new[] { measurementLocationId },
+      IntervalModel.QuarterHour,
       start,
       end,
+      0,
+      cancellationToken,
       countInPage
     );
     var orderedMeasures = measures.Items.OrderBy(x => x.Timestamp).ToList();
