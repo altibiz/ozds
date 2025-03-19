@@ -122,7 +122,6 @@ public class DownloadController(
   )
   {
     var (start, end) = DateTimeOffsetExtensions.GetMonthRange(year, month);
-    var measurementResolution = 30;
 
     var measurementLocations =
       await measurementLocationQueries.ReadMeasurementLocationByLocation(
