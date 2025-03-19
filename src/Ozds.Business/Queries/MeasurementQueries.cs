@@ -4,7 +4,6 @@ using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Enums;
 using Ozds.Business.Naming;
 using Ozds.Business.Queries.Abstractions;
-using Ozds.Data.Entities.Enums;
 using DataMeasurementQueries = Ozds.Data.Queries.MeasurementQueries;
 
 namespace Ozds.Business.Queries;
@@ -61,14 +60,15 @@ public class MeasurementQueries(
     var appropriateInterval = appropriateIntervalModel?.ToEntity();
     var isAggregate = appropriateInterval is not null;
 
-    var modelIdsByEntityType = meterIds.GroupBy(id =>
-      isAggregate
-        ? modelEntityConverter.EntityType(
-          meterNamingConvention.AggregateTypeForMeterId(id)
-        )
-        : modelEntityConverter.EntityType(
-          meterNamingConvention.MeasurementTypeForMeterId(id)
-        )
+    var modelIdsByEntityType = meterIds.GroupBy(
+      id =>
+        isAggregate
+          ? modelEntityConverter.EntityType(
+            meterNamingConvention.AggregateTypeForMeterId(id)
+          )
+          : modelEntityConverter.EntityType(
+            meterNamingConvention.MeasurementTypeForMeterId(id)
+          )
     );
 
     var entities = await queries.ReadByMeterIds(
@@ -83,16 +83,17 @@ public class MeasurementQueries(
 
     var buffered = measurementBuffer
       .Peak()
-      .Where(x =>
-        (
-          appropriateIntervalModel is not null
-            ? x is IAggregate aggregate
+      .Where(
+        x =>
+          (
+            appropriateIntervalModel is not null
+              ? x is IAggregate aggregate
               && aggregate.Interval == appropriateIntervalModel
-            : x is not IAggregate
-        )
-        && meterIds.Any(y => y == x.MeterId)
-        && x.Timestamp >= fromDate
-        && x.Timestamp < toDate
+              : x is not IAggregate
+          )
+          && meterIds.Any(y => y == x.MeterId)
+          && x.Timestamp >= fromDate
+          && x.Timestamp < toDate
       )
       .ToList();
 
@@ -116,14 +117,15 @@ public class MeasurementQueries(
 
     var isAggregate = interval is not null;
 
-    var modelIdsByEntityType = meterIds.GroupBy(id =>
-      isAggregate
-        ? modelEntityConverter.EntityType(
-          meterNamingConvention.AggregateTypeForMeterId(id)
-        )
-        : modelEntityConverter.EntityType(
-          meterNamingConvention.MeasurementTypeForMeterId(id)
-        )
+    var modelIdsByEntityType = meterIds.GroupBy(
+      id =>
+        isAggregate
+          ? modelEntityConverter.EntityType(
+            meterNamingConvention.AggregateTypeForMeterId(id)
+          )
+          : modelEntityConverter.EntityType(
+            meterNamingConvention.MeasurementTypeForMeterId(id)
+          )
     );
 
     var entities = await queries.ReadLastByMeterIds(
@@ -135,14 +137,15 @@ public class MeasurementQueries(
 
     var buffered = measurementBuffer
       .Peak()
-      .Where(x =>
-        (
-          interval is not null
-            ? x is IAggregate aggregate && aggregate.Interval == interval
-            : x is not IAggregate
-        )
-        && meterIds.Any(y => y == x.MeterId)
-        && x.Timestamp < toDate
+      .Where(
+        x =>
+          (
+            interval is not null
+              ? x is IAggregate aggregate && aggregate.Interval == interval
+              : x is not IAggregate
+          )
+          && meterIds.Any(y => y == x.MeterId)
+          && x.Timestamp < toDate
       )
       .ToList();
 
@@ -210,16 +213,17 @@ public class MeasurementQueries(
 
     var buffered = measurementBuffer
       .Peak()
-      .Where(x =>
-        (
-          appropriateIntervalModel is not null
-            ? x is IAggregate aggregate
+      .Where(
+        x =>
+          (
+            appropriateIntervalModel is not null
+              ? x is IAggregate aggregate
               && aggregate.Interval == appropriateIntervalModel
-            : x is not IAggregate
-        )
-        && measurementLocationIds.Any(y => y == x.MeasurementLocationId)
-        && x.Timestamp >= fromDate
-        && x.Timestamp < toDate
+              : x is not IAggregate
+          )
+          && measurementLocationIds.Any(y => y == x.MeasurementLocationId)
+          && x.Timestamp >= fromDate
+          && x.Timestamp < toDate
       )
       .ToList();
 
@@ -250,14 +254,15 @@ public class MeasurementQueries(
 
     var buffered = measurementBuffer
       .Peak()
-      .Where(x =>
-        (
-          interval is not null
-            ? x is IAggregate aggregate && aggregate.Interval == interval
-            : x is not IAggregate
-        )
-        && measurementLocationIds.Any(y => y == x.MeasurementLocationId)
-        && x.Timestamp < toDate
+      .Where(
+        x =>
+          (
+            interval is not null
+              ? x is IAggregate aggregate && aggregate.Interval == interval
+              : x is not IAggregate
+          )
+          && measurementLocationIds.Any(y => y == x.MeasurementLocationId)
+          && x.Timestamp < toDate
       )
       .ToList();
 

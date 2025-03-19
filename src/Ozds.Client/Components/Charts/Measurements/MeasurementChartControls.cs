@@ -30,8 +30,7 @@ public partial class MeasurementChartControls : OzdsComponentBase
 
   [Inject]
   private IDataModelsChangedSubscriber
-    DataModelsChangedSubscriber
-  { get; set; } = default!;
+    DataModelsChangedSubscriber { get; set; } = default!;
 
   [Inject]
   private IMeasurementsBufferedSubscriber MeasurementsBufferedSubscriber

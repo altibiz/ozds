@@ -1,5 +1,4 @@
 using System.Text;
-using GeoAPI.DataStructures;
 using Microsoft.AspNetCore.Mvc;
 using Ozds.Business.Finance.Abstractions;
 using Ozds.Business.Models.Abstractions;
@@ -184,12 +183,13 @@ public class DownloadController(
   }
 
   [HttpGet]
-  public async Task<IActionResult> MeasurementLocationQuarterHourlyAggregatesForMonth(
-    string measurementLocationId,
-    int year,
-    int month,
-    CancellationToken cancellationToken
-  )
+  public async Task<IActionResult>
+    MeasurementLocationQuarterHourlyAggregatesForMonth(
+      string measurementLocationId,
+      int year,
+      int month,
+      CancellationToken cancellationToken
+    )
   {
     var (start, end) = DateTimeOffsetExtensions.GetMonthRange(year, month);
     var countInPage = 5000;
