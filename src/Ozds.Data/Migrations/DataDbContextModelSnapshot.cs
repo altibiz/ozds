@@ -67,12 +67,12 @@ namespace Ozds.Data.Migrations
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("active_energy_l1_export_t0_max_wh");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("active_energy_l1_export_t0_min_wh");
                         });
 
@@ -80,12 +80,12 @@ namespace Ozds.Data.Migrations
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("active_energy_l1_import_t0_max_wh");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("active_energy_l1_import_t0_min_wh");
                         });
 
@@ -93,12 +93,12 @@ namespace Ozds.Data.Migrations
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("active_energy_l2_export_t0_max_wh");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("active_energy_l2_export_t0_min_wh");
                         });
 
@@ -106,12 +106,12 @@ namespace Ozds.Data.Migrations
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("active_energy_l2_import_t0_max_wh");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("active_energy_l2_import_t0_min_wh");
                         });
 
@@ -119,12 +119,12 @@ namespace Ozds.Data.Migrations
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("active_energy_l3_export_t0_max_wh");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("active_energy_l3_export_t0_min_wh");
                         });
 
@@ -132,12 +132,12 @@ namespace Ozds.Data.Migrations
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("active_energy_l3_import_t0_max_wh");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("active_energy_l3_import_t0_min_wh");
                         });
 
@@ -145,12 +145,12 @@ namespace Ozds.Data.Migrations
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("active_energy_total_export_t0_max_wh");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("active_energy_total_export_t0_min_wh");
                         });
 
@@ -158,12 +158,12 @@ namespace Ozds.Data.Migrations
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("active_energy_total_import_t0_max_wh");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("active_energy_total_import_t0_min_wh");
                         });
 
@@ -171,12 +171,12 @@ namespace Ozds.Data.Migrations
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("active_energy_total_import_t1_max_wh");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("active_energy_total_import_t1_min_wh");
                         });
 
@@ -184,12 +184,12 @@ namespace Ozds.Data.Migrations
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("active_energy_total_import_t2_max_wh");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("active_energy_total_import_t2_min_wh");
                         });
 
@@ -343,24 +343,24 @@ namespace Ozds.Data.Migrations
                                 .HasColumnName("current_l3_any_t0_min_timestamp");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("DerivedActivePowerL1ExportT0_W", "Ozds.Data.Entities.AbbB2xAggregateEntity.DerivedActivePowerL1ExportT0_W#InstantaneousAggregateMeasureEntity", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("DerivedActivePowerL1ExportT0_W", "Ozds.Data.Entities.AbbB2xAggregateEntity.DerivedActivePowerL1ExportT0_W#DerivedAggregateMeasureEntity", b1 =>
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Avg")
-                                .HasColumnType("real")
+                            b1.Property<double>("Avg")
+                                .HasColumnType("double precision")
                                 .HasColumnName("derived_active_power_l1_export_t0_avg_w");
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_active_power_l1_export_t0_max_w");
 
                             b1.Property<DateTimeOffset>("MaxTimestamp")
                                 .HasColumnType("timestamp with time zone")
                                 .HasColumnName("derived_active_power_l1_export_t0_max_timestamp");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_active_power_l1_export_t0_min_w");
 
                             b1.Property<DateTimeOffset>("MinTimestamp")
@@ -368,24 +368,24 @@ namespace Ozds.Data.Migrations
                                 .HasColumnName("derived_active_power_l1_export_t0_min_timestamp");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("DerivedActivePowerL1ImportT0_W", "Ozds.Data.Entities.AbbB2xAggregateEntity.DerivedActivePowerL1ImportT0_W#InstantaneousAggregateMeasureEntity", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("DerivedActivePowerL1ImportT0_W", "Ozds.Data.Entities.AbbB2xAggregateEntity.DerivedActivePowerL1ImportT0_W#DerivedAggregateMeasureEntity", b1 =>
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Avg")
-                                .HasColumnType("real")
+                            b1.Property<double>("Avg")
+                                .HasColumnType("double precision")
                                 .HasColumnName("derived_active_power_l1_import_t0_avg_w");
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_active_power_l1_import_t0_max_w");
 
                             b1.Property<DateTimeOffset>("MaxTimestamp")
                                 .HasColumnType("timestamp with time zone")
                                 .HasColumnName("derived_active_power_l1_import_t0_max_timestamp");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_active_power_l1_import_t0_min_w");
 
                             b1.Property<DateTimeOffset>("MinTimestamp")
@@ -393,24 +393,24 @@ namespace Ozds.Data.Migrations
                                 .HasColumnName("derived_active_power_l1_import_t0_min_timestamp");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("DerivedActivePowerL2ExportT0_W", "Ozds.Data.Entities.AbbB2xAggregateEntity.DerivedActivePowerL2ExportT0_W#InstantaneousAggregateMeasureEntity", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("DerivedActivePowerL2ExportT0_W", "Ozds.Data.Entities.AbbB2xAggregateEntity.DerivedActivePowerL2ExportT0_W#DerivedAggregateMeasureEntity", b1 =>
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Avg")
-                                .HasColumnType("real")
+                            b1.Property<double>("Avg")
+                                .HasColumnType("double precision")
                                 .HasColumnName("derived_active_power_l2_export_t0_avg_w");
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_active_power_l2_export_t0_max_w");
 
                             b1.Property<DateTimeOffset>("MaxTimestamp")
                                 .HasColumnType("timestamp with time zone")
                                 .HasColumnName("derived_active_power_l2_export_t0_max_timestamp");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_active_power_l2_export_t0_min_w");
 
                             b1.Property<DateTimeOffset>("MinTimestamp")
@@ -418,24 +418,24 @@ namespace Ozds.Data.Migrations
                                 .HasColumnName("derived_active_power_l2_export_t0_min_timestamp");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("DerivedActivePowerL2ImportT0_W", "Ozds.Data.Entities.AbbB2xAggregateEntity.DerivedActivePowerL2ImportT0_W#InstantaneousAggregateMeasureEntity", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("DerivedActivePowerL2ImportT0_W", "Ozds.Data.Entities.AbbB2xAggregateEntity.DerivedActivePowerL2ImportT0_W#DerivedAggregateMeasureEntity", b1 =>
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Avg")
-                                .HasColumnType("real")
+                            b1.Property<double>("Avg")
+                                .HasColumnType("double precision")
                                 .HasColumnName("derived_active_power_l2_import_t0_avg_w");
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_active_power_l2_import_t0_max_w");
 
                             b1.Property<DateTimeOffset>("MaxTimestamp")
                                 .HasColumnType("timestamp with time zone")
                                 .HasColumnName("derived_active_power_l2_import_t0_max_timestamp");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_active_power_l2_import_t0_min_w");
 
                             b1.Property<DateTimeOffset>("MinTimestamp")
@@ -443,24 +443,24 @@ namespace Ozds.Data.Migrations
                                 .HasColumnName("derived_active_power_l2_import_t0_min_timestamp");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("DerivedActivePowerL3ExportT0_W", "Ozds.Data.Entities.AbbB2xAggregateEntity.DerivedActivePowerL3ExportT0_W#InstantaneousAggregateMeasureEntity", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("DerivedActivePowerL3ExportT0_W", "Ozds.Data.Entities.AbbB2xAggregateEntity.DerivedActivePowerL3ExportT0_W#DerivedAggregateMeasureEntity", b1 =>
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Avg")
-                                .HasColumnType("real")
+                            b1.Property<double>("Avg")
+                                .HasColumnType("double precision")
                                 .HasColumnName("derived_active_power_l3_export_t0_avg_w");
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_active_power_l3_export_t0_max_w");
 
                             b1.Property<DateTimeOffset>("MaxTimestamp")
                                 .HasColumnType("timestamp with time zone")
                                 .HasColumnName("derived_active_power_l3_export_t0_max_timestamp");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_active_power_l3_export_t0_min_w");
 
                             b1.Property<DateTimeOffset>("MinTimestamp")
@@ -468,24 +468,24 @@ namespace Ozds.Data.Migrations
                                 .HasColumnName("derived_active_power_l3_export_t0_min_timestamp");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("DerivedActivePowerL3ImportT0_W", "Ozds.Data.Entities.AbbB2xAggregateEntity.DerivedActivePowerL3ImportT0_W#InstantaneousAggregateMeasureEntity", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("DerivedActivePowerL3ImportT0_W", "Ozds.Data.Entities.AbbB2xAggregateEntity.DerivedActivePowerL3ImportT0_W#DerivedAggregateMeasureEntity", b1 =>
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Avg")
-                                .HasColumnType("real")
+                            b1.Property<double>("Avg")
+                                .HasColumnType("double precision")
                                 .HasColumnName("derived_active_power_l3_import_t0_avg_w");
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_active_power_l3_import_t0_max_w");
 
                             b1.Property<DateTimeOffset>("MaxTimestamp")
                                 .HasColumnType("timestamp with time zone")
                                 .HasColumnName("derived_active_power_l3_import_t0_max_timestamp");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_active_power_l3_import_t0_min_w");
 
                             b1.Property<DateTimeOffset>("MinTimestamp")
@@ -493,24 +493,24 @@ namespace Ozds.Data.Migrations
                                 .HasColumnName("derived_active_power_l3_import_t0_min_timestamp");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("DerivedActivePowerTotalExportT0_W", "Ozds.Data.Entities.AbbB2xAggregateEntity.DerivedActivePowerTotalExportT0_W#InstantaneousAggregateMeasureEntity", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("DerivedActivePowerTotalExportT0_W", "Ozds.Data.Entities.AbbB2xAggregateEntity.DerivedActivePowerTotalExportT0_W#DerivedAggregateMeasureEntity", b1 =>
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Avg")
-                                .HasColumnType("real")
+                            b1.Property<double>("Avg")
+                                .HasColumnType("double precision")
                                 .HasColumnName("derived_active_power_total_export_t0_avg_w");
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_active_power_total_export_t0_max_w");
 
                             b1.Property<DateTimeOffset>("MaxTimestamp")
                                 .HasColumnType("timestamp with time zone")
                                 .HasColumnName("derived_active_power_total_export_t0_max_timestamp");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_active_power_total_export_t0_min_w");
 
                             b1.Property<DateTimeOffset>("MinTimestamp")
@@ -518,24 +518,24 @@ namespace Ozds.Data.Migrations
                                 .HasColumnName("derived_active_power_total_export_t0_min_timestamp");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("DerivedActivePowerTotalImportT0_W", "Ozds.Data.Entities.AbbB2xAggregateEntity.DerivedActivePowerTotalImportT0_W#InstantaneousAggregateMeasureEntity", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("DerivedActivePowerTotalImportT0_W", "Ozds.Data.Entities.AbbB2xAggregateEntity.DerivedActivePowerTotalImportT0_W#DerivedAggregateMeasureEntity", b1 =>
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Avg")
-                                .HasColumnType("real")
+                            b1.Property<double>("Avg")
+                                .HasColumnType("double precision")
                                 .HasColumnName("derived_active_power_total_import_t0_avg_w");
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_active_power_total_import_t0_max_w");
 
                             b1.Property<DateTimeOffset>("MaxTimestamp")
                                 .HasColumnType("timestamp with time zone")
                                 .HasColumnName("derived_active_power_total_import_t0_max_timestamp");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_active_power_total_import_t0_min_w");
 
                             b1.Property<DateTimeOffset>("MinTimestamp")
@@ -543,24 +543,24 @@ namespace Ozds.Data.Migrations
                                 .HasColumnName("derived_active_power_total_import_t0_min_timestamp");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("DerivedActivePowerTotalImportT1_W", "Ozds.Data.Entities.AbbB2xAggregateEntity.DerivedActivePowerTotalImportT1_W#InstantaneousAggregateMeasureEntity", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("DerivedActivePowerTotalImportT1_W", "Ozds.Data.Entities.AbbB2xAggregateEntity.DerivedActivePowerTotalImportT1_W#DerivedAggregateMeasureEntity", b1 =>
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Avg")
-                                .HasColumnType("real")
+                            b1.Property<double>("Avg")
+                                .HasColumnType("double precision")
                                 .HasColumnName("derived_active_power_total_import_t1_avg_w");
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_active_power_total_import_t1_max_w");
 
                             b1.Property<DateTimeOffset>("MaxTimestamp")
                                 .HasColumnType("timestamp with time zone")
                                 .HasColumnName("derived_active_power_total_import_t1_max_timestamp");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_active_power_total_import_t1_min_w");
 
                             b1.Property<DateTimeOffset>("MinTimestamp")
@@ -568,24 +568,24 @@ namespace Ozds.Data.Migrations
                                 .HasColumnName("derived_active_power_total_import_t1_min_timestamp");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("DerivedActivePowerTotalImportT2_W", "Ozds.Data.Entities.AbbB2xAggregateEntity.DerivedActivePowerTotalImportT2_W#InstantaneousAggregateMeasureEntity", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("DerivedActivePowerTotalImportT2_W", "Ozds.Data.Entities.AbbB2xAggregateEntity.DerivedActivePowerTotalImportT2_W#DerivedAggregateMeasureEntity", b1 =>
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Avg")
-                                .HasColumnType("real")
+                            b1.Property<double>("Avg")
+                                .HasColumnType("double precision")
                                 .HasColumnName("derived_active_power_total_import_t2_avg_w");
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_active_power_total_import_t2_max_w");
 
                             b1.Property<DateTimeOffset>("MaxTimestamp")
                                 .HasColumnType("timestamp with time zone")
                                 .HasColumnName("derived_active_power_total_import_t2_max_timestamp");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_active_power_total_import_t2_min_w");
 
                             b1.Property<DateTimeOffset>("MinTimestamp")
@@ -593,24 +593,24 @@ namespace Ozds.Data.Migrations
                                 .HasColumnName("derived_active_power_total_import_t2_min_timestamp");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("DerivedReactivePowerL1ExportT0_VAR", "Ozds.Data.Entities.AbbB2xAggregateEntity.DerivedReactivePowerL1ExportT0_VAR#InstantaneousAggregateMeasureEntity", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("DerivedReactivePowerL1ExportT0_VAR", "Ozds.Data.Entities.AbbB2xAggregateEntity.DerivedReactivePowerL1ExportT0_VAR#DerivedAggregateMeasureEntity", b1 =>
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Avg")
-                                .HasColumnType("real")
+                            b1.Property<double>("Avg")
+                                .HasColumnType("double precision")
                                 .HasColumnName("derived_reactive_power_l1_export_t0_avg_var");
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_reactive_power_l1_export_t0_max_var");
 
                             b1.Property<DateTimeOffset>("MaxTimestamp")
                                 .HasColumnType("timestamp with time zone")
                                 .HasColumnName("derived_reactive_power_l1_export_t0_max_timestamp");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_reactive_power_l1_export_t0_min_var");
 
                             b1.Property<DateTimeOffset>("MinTimestamp")
@@ -618,24 +618,24 @@ namespace Ozds.Data.Migrations
                                 .HasColumnName("derived_reactive_power_l1_export_t0_min_timestamp");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("DerivedReactivePowerL1ImportT0_VAR", "Ozds.Data.Entities.AbbB2xAggregateEntity.DerivedReactivePowerL1ImportT0_VAR#InstantaneousAggregateMeasureEntity", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("DerivedReactivePowerL1ImportT0_VAR", "Ozds.Data.Entities.AbbB2xAggregateEntity.DerivedReactivePowerL1ImportT0_VAR#DerivedAggregateMeasureEntity", b1 =>
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Avg")
-                                .HasColumnType("real")
+                            b1.Property<double>("Avg")
+                                .HasColumnType("double precision")
                                 .HasColumnName("derived_reactive_power_l1_import_t0_avg_var");
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_reactive_power_l1_import_t0_max_var");
 
                             b1.Property<DateTimeOffset>("MaxTimestamp")
                                 .HasColumnType("timestamp with time zone")
                                 .HasColumnName("derived_reactive_power_l1_import_t0_max_timestamp");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_reactive_power_l1_import_t0_min_var");
 
                             b1.Property<DateTimeOffset>("MinTimestamp")
@@ -643,24 +643,24 @@ namespace Ozds.Data.Migrations
                                 .HasColumnName("derived_reactive_power_l1_import_t0_min_timestamp");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("DerivedReactivePowerL2ExportT0_VAR", "Ozds.Data.Entities.AbbB2xAggregateEntity.DerivedReactivePowerL2ExportT0_VAR#InstantaneousAggregateMeasureEntity", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("DerivedReactivePowerL2ExportT0_VAR", "Ozds.Data.Entities.AbbB2xAggregateEntity.DerivedReactivePowerL2ExportT0_VAR#DerivedAggregateMeasureEntity", b1 =>
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Avg")
-                                .HasColumnType("real")
+                            b1.Property<double>("Avg")
+                                .HasColumnType("double precision")
                                 .HasColumnName("derived_reactive_power_l2_export_t0_avg_var");
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_reactive_power_l2_export_t0_max_var");
 
                             b1.Property<DateTimeOffset>("MaxTimestamp")
                                 .HasColumnType("timestamp with time zone")
                                 .HasColumnName("derived_reactive_power_l2_export_t0_max_timestamp");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_reactive_power_l2_export_t0_min_var");
 
                             b1.Property<DateTimeOffset>("MinTimestamp")
@@ -668,24 +668,24 @@ namespace Ozds.Data.Migrations
                                 .HasColumnName("derived_reactive_power_l2_export_t0_min_timestamp");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("DerivedReactivePowerL2ImportT0_VAR", "Ozds.Data.Entities.AbbB2xAggregateEntity.DerivedReactivePowerL2ImportT0_VAR#InstantaneousAggregateMeasureEntity", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("DerivedReactivePowerL2ImportT0_VAR", "Ozds.Data.Entities.AbbB2xAggregateEntity.DerivedReactivePowerL2ImportT0_VAR#DerivedAggregateMeasureEntity", b1 =>
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Avg")
-                                .HasColumnType("real")
+                            b1.Property<double>("Avg")
+                                .HasColumnType("double precision")
                                 .HasColumnName("derived_reactive_power_l2_import_t0_avg_var");
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_reactive_power_l2_import_t0_max_var");
 
                             b1.Property<DateTimeOffset>("MaxTimestamp")
                                 .HasColumnType("timestamp with time zone")
                                 .HasColumnName("derived_reactive_power_l2_import_t0_max_timestamp");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_reactive_power_l2_import_t0_min_var");
 
                             b1.Property<DateTimeOffset>("MinTimestamp")
@@ -693,24 +693,24 @@ namespace Ozds.Data.Migrations
                                 .HasColumnName("derived_reactive_power_l2_import_t0_min_timestamp");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("DerivedReactivePowerL3ExportT0_VAR", "Ozds.Data.Entities.AbbB2xAggregateEntity.DerivedReactivePowerL3ExportT0_VAR#InstantaneousAggregateMeasureEntity", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("DerivedReactivePowerL3ExportT0_VAR", "Ozds.Data.Entities.AbbB2xAggregateEntity.DerivedReactivePowerL3ExportT0_VAR#DerivedAggregateMeasureEntity", b1 =>
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Avg")
-                                .HasColumnType("real")
+                            b1.Property<double>("Avg")
+                                .HasColumnType("double precision")
                                 .HasColumnName("derived_reactive_power_l3_export_t0_avg_var");
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_reactive_power_l3_export_t0_max_var");
 
                             b1.Property<DateTimeOffset>("MaxTimestamp")
                                 .HasColumnType("timestamp with time zone")
                                 .HasColumnName("derived_reactive_power_l3_export_t0_max_timestamp");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_reactive_power_l3_export_t0_min_var");
 
                             b1.Property<DateTimeOffset>("MinTimestamp")
@@ -718,24 +718,24 @@ namespace Ozds.Data.Migrations
                                 .HasColumnName("derived_reactive_power_l3_export_t0_min_timestamp");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("DerivedReactivePowerL3ImportT0_VAR", "Ozds.Data.Entities.AbbB2xAggregateEntity.DerivedReactivePowerL3ImportT0_VAR#InstantaneousAggregateMeasureEntity", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("DerivedReactivePowerL3ImportT0_VAR", "Ozds.Data.Entities.AbbB2xAggregateEntity.DerivedReactivePowerL3ImportT0_VAR#DerivedAggregateMeasureEntity", b1 =>
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Avg")
-                                .HasColumnType("real")
+                            b1.Property<double>("Avg")
+                                .HasColumnType("double precision")
                                 .HasColumnName("derived_reactive_power_l3_import_t0_avg_var");
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_reactive_power_l3_import_t0_max_var");
 
                             b1.Property<DateTimeOffset>("MaxTimestamp")
                                 .HasColumnType("timestamp with time zone")
                                 .HasColumnName("derived_reactive_power_l3_import_t0_max_timestamp");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_reactive_power_l3_import_t0_min_var");
 
                             b1.Property<DateTimeOffset>("MinTimestamp")
@@ -743,24 +743,24 @@ namespace Ozds.Data.Migrations
                                 .HasColumnName("derived_reactive_power_l3_import_t0_min_timestamp");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("DerivedReactivePowerTotalExportT0_VAR", "Ozds.Data.Entities.AbbB2xAggregateEntity.DerivedReactivePowerTotalExportT0_VAR#InstantaneousAggregateMeasureEntity", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("DerivedReactivePowerTotalExportT0_VAR", "Ozds.Data.Entities.AbbB2xAggregateEntity.DerivedReactivePowerTotalExportT0_VAR#DerivedAggregateMeasureEntity", b1 =>
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Avg")
-                                .HasColumnType("real")
+                            b1.Property<double>("Avg")
+                                .HasColumnType("double precision")
                                 .HasColumnName("derived_reactive_power_total_export_t0_avg_var");
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_reactive_power_total_export_t0_max_var");
 
                             b1.Property<DateTimeOffset>("MaxTimestamp")
                                 .HasColumnType("timestamp with time zone")
                                 .HasColumnName("derived_reactive_power_total_export_t0_max_timestamp");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_reactive_power_total_export_t0_min_var");
 
                             b1.Property<DateTimeOffset>("MinTimestamp")
@@ -768,24 +768,24 @@ namespace Ozds.Data.Migrations
                                 .HasColumnName("derived_reactive_power_total_export_t0_min_timestamp");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("DerivedReactivePowerTotalImportT0_VAR", "Ozds.Data.Entities.AbbB2xAggregateEntity.DerivedReactivePowerTotalImportT0_VAR#InstantaneousAggregateMeasureEntity", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("DerivedReactivePowerTotalImportT0_VAR", "Ozds.Data.Entities.AbbB2xAggregateEntity.DerivedReactivePowerTotalImportT0_VAR#DerivedAggregateMeasureEntity", b1 =>
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Avg")
-                                .HasColumnType("real")
+                            b1.Property<double>("Avg")
+                                .HasColumnType("double precision")
                                 .HasColumnName("derived_reactive_power_total_import_t0_avg_var");
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_reactive_power_total_import_t0_max_var");
 
                             b1.Property<DateTimeOffset>("MaxTimestamp")
                                 .HasColumnType("timestamp with time zone")
                                 .HasColumnName("derived_reactive_power_total_import_t0_max_timestamp");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_reactive_power_total_import_t0_min_var");
 
                             b1.Property<DateTimeOffset>("MinTimestamp")
@@ -797,12 +797,12 @@ namespace Ozds.Data.Migrations
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("reactive_energy_l1_export_t0_max_varh");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("reactive_energy_l1_export_t0_min_varh");
                         });
 
@@ -810,12 +810,12 @@ namespace Ozds.Data.Migrations
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("reactive_energy_l1_import_t0_max_varh");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("reactive_energy_l1_import_t0_min_varh");
                         });
 
@@ -823,12 +823,12 @@ namespace Ozds.Data.Migrations
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("reactive_energy_l2_export_t0_max_varh");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("reactive_energy_l2_export_t0_min_varh");
                         });
 
@@ -836,12 +836,12 @@ namespace Ozds.Data.Migrations
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("reactive_energy_l2_import_t0_max_varh");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("reactive_energy_l2_import_t0_min_varh");
                         });
 
@@ -849,12 +849,12 @@ namespace Ozds.Data.Migrations
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("reactive_energy_l3_export_t0_max_varh");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("reactive_energy_l3_export_t0_min_varh");
                         });
 
@@ -862,12 +862,12 @@ namespace Ozds.Data.Migrations
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("reactive_energy_l3_import_t0_max_varh");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("reactive_energy_l3_import_t0_min_varh");
                         });
 
@@ -875,12 +875,12 @@ namespace Ozds.Data.Migrations
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("reactive_energy_total_export_t0_max_varh");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("reactive_energy_total_export_t0_min_varh");
                         });
 
@@ -888,12 +888,12 @@ namespace Ozds.Data.Migrations
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("reactive_energy_total_import_t0_max_varh");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("reactive_energy_total_import_t0_min_varh");
                         });
 
@@ -1082,44 +1082,44 @@ namespace Ozds.Data.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("measurement_location_id");
 
-                    b.Property<float>("ActiveEnergyL1ExportT0_Wh")
-                        .HasColumnType("real")
+                    b.Property<long>("ActiveEnergyL1ExportT0_Wh")
+                        .HasColumnType("bigint")
                         .HasColumnName("active_energy_l1_export_t0_wh");
 
-                    b.Property<float>("ActiveEnergyL1ImportT0_Wh")
-                        .HasColumnType("real")
+                    b.Property<long>("ActiveEnergyL1ImportT0_Wh")
+                        .HasColumnType("bigint")
                         .HasColumnName("active_energy_l1_import_t0_wh");
 
-                    b.Property<float>("ActiveEnergyL2ExportT0_Wh")
-                        .HasColumnType("real")
+                    b.Property<long>("ActiveEnergyL2ExportT0_Wh")
+                        .HasColumnType("bigint")
                         .HasColumnName("active_energy_l2_export_t0_wh");
 
-                    b.Property<float>("ActiveEnergyL2ImportT0_Wh")
-                        .HasColumnType("real")
+                    b.Property<long>("ActiveEnergyL2ImportT0_Wh")
+                        .HasColumnType("bigint")
                         .HasColumnName("active_energy_l2_import_t0_wh");
 
-                    b.Property<float>("ActiveEnergyL3ExportT0_Wh")
-                        .HasColumnType("real")
+                    b.Property<long>("ActiveEnergyL3ExportT0_Wh")
+                        .HasColumnType("bigint")
                         .HasColumnName("active_energy_l3_export_t0_wh");
 
-                    b.Property<float>("ActiveEnergyL3ImportT0_Wh")
-                        .HasColumnType("real")
+                    b.Property<long>("ActiveEnergyL3ImportT0_Wh")
+                        .HasColumnType("bigint")
                         .HasColumnName("active_energy_l3_import_t0_wh");
 
-                    b.Property<float>("ActiveEnergyTotalExportT0_Wh")
-                        .HasColumnType("real")
+                    b.Property<long>("ActiveEnergyTotalExportT0_Wh")
+                        .HasColumnType("bigint")
                         .HasColumnName("active_energy_total_export_t0_wh");
 
-                    b.Property<float>("ActiveEnergyTotalImportT0_Wh")
-                        .HasColumnType("real")
+                    b.Property<long>("ActiveEnergyTotalImportT0_Wh")
+                        .HasColumnType("bigint")
                         .HasColumnName("active_energy_total_import_t0_wh");
 
-                    b.Property<float>("ActiveEnergyTotalImportT1_Wh")
-                        .HasColumnType("real")
+                    b.Property<long>("ActiveEnergyTotalImportT1_Wh")
+                        .HasColumnType("bigint")
                         .HasColumnName("active_energy_total_import_t1_wh");
 
-                    b.Property<float>("ActiveEnergyTotalImportT2_Wh")
-                        .HasColumnType("real")
+                    b.Property<long>("ActiveEnergyTotalImportT2_Wh")
+                        .HasColumnType("bigint")
                         .HasColumnName("active_energy_total_import_t2_wh");
 
                     b.Property<float>("ActivePowerL1NetT0_W")
@@ -1146,36 +1146,36 @@ namespace Ozds.Data.Migrations
                         .HasColumnType("real")
                         .HasColumnName("current_l3_any_t0_a");
 
-                    b.Property<float>("ReactiveEnergyL1ExportT0_VARh")
-                        .HasColumnType("real")
+                    b.Property<long>("ReactiveEnergyL1ExportT0_VARh")
+                        .HasColumnType("bigint")
                         .HasColumnName("reactive_energy_l1_export_t0_varh");
 
-                    b.Property<float>("ReactiveEnergyL1ImportT0_VARh")
-                        .HasColumnType("real")
+                    b.Property<long>("ReactiveEnergyL1ImportT0_VARh")
+                        .HasColumnType("bigint")
                         .HasColumnName("reactive_energy_l1_import_t0_varh");
 
-                    b.Property<float>("ReactiveEnergyL2ExportT0_VARh")
-                        .HasColumnType("real")
+                    b.Property<long>("ReactiveEnergyL2ExportT0_VARh")
+                        .HasColumnType("bigint")
                         .HasColumnName("reactive_energy_l2_export_t0_varh");
 
-                    b.Property<float>("ReactiveEnergyL2ImportT0_VARh")
-                        .HasColumnType("real")
+                    b.Property<long>("ReactiveEnergyL2ImportT0_VARh")
+                        .HasColumnType("bigint")
                         .HasColumnName("reactive_energy_l2_import_t0_varh");
 
-                    b.Property<float>("ReactiveEnergyL3ExportT0_VARh")
-                        .HasColumnType("real")
+                    b.Property<long>("ReactiveEnergyL3ExportT0_VARh")
+                        .HasColumnType("bigint")
                         .HasColumnName("reactive_energy_l3_export_t0_varh");
 
-                    b.Property<float>("ReactiveEnergyL3ImportT0_VARh")
-                        .HasColumnType("real")
+                    b.Property<long>("ReactiveEnergyL3ImportT0_VARh")
+                        .HasColumnType("bigint")
                         .HasColumnName("reactive_energy_l3_import_t0_varh");
 
-                    b.Property<float>("ReactiveEnergyTotalExportT0_VARh")
-                        .HasColumnType("real")
+                    b.Property<long>("ReactiveEnergyTotalExportT0_VARh")
+                        .HasColumnType("bigint")
                         .HasColumnName("reactive_energy_total_export_t0_varh");
 
-                    b.Property<float>("ReactiveEnergyTotalImportT0_VARh")
-                        .HasColumnType("real")
+                    b.Property<long>("ReactiveEnergyTotalImportT0_VARh")
+                        .HasColumnType("bigint")
                         .HasColumnName("reactive_energy_total_import_t0_varh");
 
                     b.Property<float>("ReactivePowerL1NetT0_VAR")
@@ -1630,8 +1630,13 @@ namespace Ozds.Data.Migrations
                         .HasColumnType("text")
                         .HasColumnName("meter_id");
 
+                    b.Property<string>("Remark")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("remark");
+
                     b.Property<decimal>("SupplyFeeTotal_EUR")
-                        .HasColumnType("numeric")
+                        .HasColumnType("decimal(19, 4)")
                         .HasColumnName("supply_fee_total_eur");
 
                     b.Property<string>("Title")
@@ -1644,11 +1649,11 @@ namespace Ozds.Data.Migrations
                         .HasColumnName("to_date");
 
                     b.Property<decimal>("Total_EUR")
-                        .HasColumnType("numeric")
+                        .HasColumnType("decimal(19, 4)")
                         .HasColumnName("total_eur");
 
                     b.Property<decimal>("UsageFeeTotal_EUR")
-                        .HasColumnType("numeric")
+                        .HasColumnType("decimal(19, 4)")
                         .HasColumnName("usage_fee_total_eur");
 
                     b.Property<long>("_networkUserInvoiceId")
@@ -1722,6 +1727,11 @@ namespace Ozds.Data.Migrations
                     b.ComplexProperty<Dictionary<string, object>>("ArchivedNetworkUserMeasurementLocation", "Ozds.Data.Entities.Base.NetworkUserCalculationEntity.ArchivedNetworkUserMeasurementLocation#NetworkUserMeasurementLocationEntity", b1 =>
                         {
                             b1.IsRequired();
+
+                            b1.Property<string>("CalculationRemark")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("anuml_calculation_remark");
 
                             b1.Property<string>("CreatedById")
                                 .HasColumnType("text")
@@ -1842,11 +1852,11 @@ namespace Ozds.Data.Migrations
                                 .HasColumnName("rvt_min_kwh");
 
                             b1.Property<decimal>("Price_EUR")
-                                .HasColumnType("numeric")
+                                .HasColumnType("decimal(19, 4)")
                                 .HasColumnName("rvt_price_eur");
 
                             b1.Property<decimal>("Total_EUR")
-                                .HasColumnType("numeric")
+                                .HasColumnType("decimal(19, 4)")
                                 .HasColumnName("rvt_total_eur");
                         });
 
@@ -1867,11 +1877,11 @@ namespace Ozds.Data.Migrations
                                 .HasColumnName("rnt_min_kwh");
 
                             b1.Property<decimal>("Price_EUR")
-                                .HasColumnType("numeric")
+                                .HasColumnType("decimal(19, 4)")
                                 .HasColumnName("rnt_price_eur");
 
                             b1.Property<decimal>("Total_EUR")
-                                .HasColumnType("numeric")
+                                .HasColumnType("decimal(19, 4)")
                                 .HasColumnName("rnt_total_eur");
                         });
 
@@ -1892,11 +1902,11 @@ namespace Ozds.Data.Migrations
                                 .HasColumnName("trp_min_kwh");
 
                             b1.Property<decimal>("Price_EUR")
-                                .HasColumnType("numeric")
+                                .HasColumnType("decimal(19, 4)")
                                 .HasColumnName("trp_price_eur");
 
                             b1.Property<decimal>("Total_EUR")
-                                .HasColumnType("numeric")
+                                .HasColumnType("decimal(19, 4)")
                                 .HasColumnName("trp_total_eur");
                         });
 
@@ -1917,11 +1927,11 @@ namespace Ozds.Data.Migrations
                                 .HasColumnName("oie_min_kwh");
 
                             b1.Property<decimal>("Price_EUR")
-                                .HasColumnType("numeric")
+                                .HasColumnType("decimal(19, 4)")
                                 .HasColumnName("oie_price_eur");
 
                             b1.Property<decimal>("Total_EUR")
-                                .HasColumnType("numeric")
+                                .HasColumnType("decimal(19, 4)")
                                 .HasColumnName("oie_total_eur");
                         });
 
@@ -1934,11 +1944,11 @@ namespace Ozds.Data.Migrations
                                 .HasColumnName("usage_meter_fee_amount");
 
                             b1.Property<decimal>("Price_EUR")
-                                .HasColumnType("numeric")
+                                .HasColumnType("decimal(19, 4)")
                                 .HasColumnName("usage_meter_fee_price_eur");
 
                             b1.Property<decimal>("Total_EUR")
-                                .HasColumnType("numeric")
+                                .HasColumnType("decimal(19, 4)")
                                 .HasColumnName("usage_meter_fee_total_eur");
                         });
 
@@ -2014,7 +2024,7 @@ namespace Ozds.Data.Migrations
                         .HasColumnName("last_updated_on");
 
                     b.Property<decimal>("MeterFeePrice_EUR")
-                        .HasColumnType("numeric")
+                        .HasColumnType("decimal(19, 4)")
                         .HasColumnName("meter_fee_price_eur");
 
                     b.Property<string>("Title")
@@ -2325,6 +2335,11 @@ namespace Ozds.Data.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("deleted_on");
 
+                    b.Property<string>("InvoiceRemark")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("invoice_remark");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean")
                         .HasColumnName("is_deleted");
@@ -2422,15 +2437,15 @@ namespace Ozds.Data.Migrations
                         .HasColumnName("from_date");
 
                     b.Property<decimal>("InvoiceTaxRate_Percent")
-                        .HasColumnType("numeric")
+                        .HasColumnType("decimal(19, 4)")
                         .HasColumnName("tax_rate_percent");
 
                     b.Property<decimal>("InvoiceTax_EUR")
-                        .HasColumnType("numeric")
+                        .HasColumnType("decimal(19, 4)")
                         .HasColumnName("tax_eur");
 
                     b.Property<decimal>("InvoiceTotalWithTax_EUR")
-                        .HasColumnType("numeric")
+                        .HasColumnType("decimal(19, 4)")
                         .HasColumnName("total_with_tax_eur");
 
                     b.Property<string>("IssuedById")
@@ -2441,24 +2456,29 @@ namespace Ozds.Data.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("issued_on");
 
+                    b.Property<string>("Remark")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("remark");
+
                     b.Property<decimal>("SupplyActiveEnergyTotalImportT1Fee_EUR")
-                        .HasColumnType("numeric")
-                        .HasColumnName("supply_active_energy_total_import_t1fee_eur");
+                        .HasColumnType("decimal(19, 4)")
+                        .HasColumnName("supply_active_energy_total_import_t1_fee_eur");
 
                     b.Property<decimal>("SupplyActiveEnergyTotalImportT2Fee_EUR")
-                        .HasColumnType("numeric")
-                        .HasColumnName("supply_active_energy_total_import_t2fee_eur");
+                        .HasColumnType("decimal(19, 4)")
+                        .HasColumnName("supply_active_energy_total_import_t2_fee_eur");
 
                     b.Property<decimal>("SupplyBusinessUsageFee_EUR")
-                        .HasColumnType("numeric")
+                        .HasColumnType("decimal(19, 4)")
                         .HasColumnName("supply_business_usage_fee_eur");
 
                     b.Property<decimal>("SupplyFeeTotal_EUR")
-                        .HasColumnType("numeric")
+                        .HasColumnType("decimal(19, 4)")
                         .HasColumnName("supply_fee_total_eur");
 
                     b.Property<decimal>("SupplyRenewableEnergyFee_EUR")
-                        .HasColumnType("numeric")
+                        .HasColumnType("decimal(19, 4)")
                         .HasColumnName("supply_renewable_energy_fee_eur");
 
                     b.Property<string>("Title")
@@ -2471,36 +2491,36 @@ namespace Ozds.Data.Migrations
                         .HasColumnName("to_date");
 
                     b.Property<decimal>("Total_EUR")
-                        .HasColumnType("numeric")
+                        .HasColumnType("decimal(19, 4)")
                         .HasColumnName("total_eur");
 
                     b.Property<decimal>("UsageActiveEnergyTotalImportT0Fee_EUR")
-                        .HasColumnType("numeric")
-                        .HasColumnName("usage_active_energy_total_import_t0fee_eur");
+                        .HasColumnType("decimal(19, 4)")
+                        .HasColumnName("usage_active_energy_total_import_t0_fee_eur");
 
                     b.Property<decimal>("UsageActiveEnergyTotalImportT1Fee_EUR")
-                        .HasColumnType("numeric")
-                        .HasColumnName("usage_active_energy_total_import_t1fee_eur");
+                        .HasColumnType("decimal(19, 4)")
+                        .HasColumnName("usage_active_energy_total_import_t1_fee_eur");
 
                     b.Property<decimal>("UsageActiveEnergyTotalImportT2Fee_EUR")
-                        .HasColumnType("numeric")
-                        .HasColumnName("usage_active_energy_total_import_t2fee_eur");
+                        .HasColumnType("decimal(19, 4)")
+                        .HasColumnName("usage_active_energy_total_import_t2_fee_eur");
 
                     b.Property<decimal>("UsageActivePowerTotalImportT1PeakFee_EUR")
-                        .HasColumnType("numeric")
-                        .HasColumnName("usage_active_power_total_import_t1peak_fee_eur");
+                        .HasColumnType("decimal(19, 4)")
+                        .HasColumnName("usage_active_power_total_import_t1_peak_fee_eur");
 
                     b.Property<decimal>("UsageFeeTotal_EUR")
-                        .HasColumnType("numeric")
+                        .HasColumnType("decimal(19, 4)")
                         .HasColumnName("usage_fee_total_eur");
 
                     b.Property<decimal>("UsageMeterFee_EUR")
-                        .HasColumnType("numeric")
+                        .HasColumnType("decimal(19, 4)")
                         .HasColumnName("usage_meter_fee_eur");
 
                     b.Property<decimal>("UsageReactiveEnergyTotalRampedT0Fee_EUR")
-                        .HasColumnType("numeric")
-                        .HasColumnName("usage_reactive_energy_total_ramped_t0fee_eur");
+                        .HasColumnType("decimal(19, 4)")
+                        .HasColumnName("usage_reactive_energy_total_ramped_t0_fee_eur");
 
                     b.Property<long>("_networkUserId")
                         .HasColumnType("bigint")
@@ -2638,6 +2658,11 @@ namespace Ozds.Data.Migrations
                             b1.Property<DateTimeOffset?>("DeletedOn")
                                 .HasColumnType("timestamp with time zone")
                                 .HasColumnName("anu_deleted_on");
+
+                            b1.Property<string>("InvoiceRemark")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("anu_invoice_remark");
 
                             b1.Property<bool>("IsDeleted")
                                 .HasColumnType("boolean")
@@ -2960,12 +2985,12 @@ namespace Ozds.Data.Migrations
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("active_energy_l1_import_t0_max_wh");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("active_energy_l1_import_t0_min_wh");
                         });
 
@@ -2973,12 +2998,12 @@ namespace Ozds.Data.Migrations
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("active_energy_l2_import_t0_max_wh");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("active_energy_l2_import_t0_min_wh");
                         });
 
@@ -2986,12 +3011,12 @@ namespace Ozds.Data.Migrations
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("active_energy_l3_import_t0_max_wh");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("active_energy_l3_import_t0_min_wh");
                         });
 
@@ -2999,12 +3024,12 @@ namespace Ozds.Data.Migrations
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("active_energy_total_export_t0_max_wh");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("active_energy_total_export_t0_min_wh");
                         });
 
@@ -3012,12 +3037,12 @@ namespace Ozds.Data.Migrations
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("active_energy_total_import_t0_max_wh");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("active_energy_total_import_t0_min_wh");
                         });
 
@@ -3025,12 +3050,12 @@ namespace Ozds.Data.Migrations
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("active_energy_total_import_t1_max_wh");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("active_energy_total_import_t1_min_wh");
                         });
 
@@ -3038,12 +3063,12 @@ namespace Ozds.Data.Migrations
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("active_energy_total_import_t2_max_wh");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("active_energy_total_import_t2_min_wh");
                         });
 
@@ -3222,24 +3247,24 @@ namespace Ozds.Data.Migrations
                                 .HasColumnName("current_l3_any_t0_min_timestamp");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("DerivedActivePowerL1ImportT0_W", "Ozds.Data.Entities.SchneideriEM3xxxAggregateEntity.DerivedActivePowerL1ImportT0_W#InstantaneousAggregateMeasureEntity", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("DerivedActivePowerL1ImportT0_W", "Ozds.Data.Entities.SchneideriEM3xxxAggregateEntity.DerivedActivePowerL1ImportT0_W#DerivedAggregateMeasureEntity", b1 =>
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Avg")
-                                .HasColumnType("real")
+                            b1.Property<double>("Avg")
+                                .HasColumnType("double precision")
                                 .HasColumnName("derived_active_power_l1_import_t0_avg_w");
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_active_power_l1_import_t0_max_w");
 
                             b1.Property<DateTimeOffset>("MaxTimestamp")
                                 .HasColumnType("timestamp with time zone")
                                 .HasColumnName("derived_active_power_l1_import_t0_max_timestamp");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_active_power_l1_import_t0_min_w");
 
                             b1.Property<DateTimeOffset>("MinTimestamp")
@@ -3247,24 +3272,24 @@ namespace Ozds.Data.Migrations
                                 .HasColumnName("derived_active_power_l1_import_t0_min_timestamp");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("DerivedActivePowerL2ImportT0_W", "Ozds.Data.Entities.SchneideriEM3xxxAggregateEntity.DerivedActivePowerL2ImportT0_W#InstantaneousAggregateMeasureEntity", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("DerivedActivePowerL2ImportT0_W", "Ozds.Data.Entities.SchneideriEM3xxxAggregateEntity.DerivedActivePowerL2ImportT0_W#DerivedAggregateMeasureEntity", b1 =>
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Avg")
-                                .HasColumnType("real")
+                            b1.Property<double>("Avg")
+                                .HasColumnType("double precision")
                                 .HasColumnName("derived_active_power_l2_import_t0_avg_w");
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_active_power_l2_import_t0_max_w");
 
                             b1.Property<DateTimeOffset>("MaxTimestamp")
                                 .HasColumnType("timestamp with time zone")
                                 .HasColumnName("derived_active_power_l2_import_t0_max_timestamp");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_active_power_l2_import_t0_min_w");
 
                             b1.Property<DateTimeOffset>("MinTimestamp")
@@ -3272,24 +3297,24 @@ namespace Ozds.Data.Migrations
                                 .HasColumnName("derived_active_power_l2_import_t0_min_timestamp");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("DerivedActivePowerL3ImportT0_W", "Ozds.Data.Entities.SchneideriEM3xxxAggregateEntity.DerivedActivePowerL3ImportT0_W#InstantaneousAggregateMeasureEntity", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("DerivedActivePowerL3ImportT0_W", "Ozds.Data.Entities.SchneideriEM3xxxAggregateEntity.DerivedActivePowerL3ImportT0_W#DerivedAggregateMeasureEntity", b1 =>
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Avg")
-                                .HasColumnType("real")
+                            b1.Property<double>("Avg")
+                                .HasColumnType("double precision")
                                 .HasColumnName("derived_active_power_l3_import_t0_avg_w");
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_active_power_l3_import_t0_max_w");
 
                             b1.Property<DateTimeOffset>("MaxTimestamp")
                                 .HasColumnType("timestamp with time zone")
                                 .HasColumnName("derived_active_power_l3_import_t0_max_timestamp");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_active_power_l3_import_t0_min_w");
 
                             b1.Property<DateTimeOffset>("MinTimestamp")
@@ -3297,24 +3322,24 @@ namespace Ozds.Data.Migrations
                                 .HasColumnName("derived_active_power_l3_import_t0_min_timestamp");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("DerivedActivePowerTotalExportT0_W", "Ozds.Data.Entities.SchneideriEM3xxxAggregateEntity.DerivedActivePowerTotalExportT0_W#InstantaneousAggregateMeasureEntity", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("DerivedActivePowerTotalExportT0_W", "Ozds.Data.Entities.SchneideriEM3xxxAggregateEntity.DerivedActivePowerTotalExportT0_W#DerivedAggregateMeasureEntity", b1 =>
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Avg")
-                                .HasColumnType("real")
+                            b1.Property<double>("Avg")
+                                .HasColumnType("double precision")
                                 .HasColumnName("derived_active_power_total_export_t0_avg_w");
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_active_power_total_export_t0_max_w");
 
                             b1.Property<DateTimeOffset>("MaxTimestamp")
                                 .HasColumnType("timestamp with time zone")
                                 .HasColumnName("derived_active_power_total_export_t0_max_timestamp");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_active_power_total_export_t0_min_w");
 
                             b1.Property<DateTimeOffset>("MinTimestamp")
@@ -3322,24 +3347,24 @@ namespace Ozds.Data.Migrations
                                 .HasColumnName("derived_active_power_total_export_t0_min_timestamp");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("DerivedActivePowerTotalImportT0_W", "Ozds.Data.Entities.SchneideriEM3xxxAggregateEntity.DerivedActivePowerTotalImportT0_W#InstantaneousAggregateMeasureEntity", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("DerivedActivePowerTotalImportT0_W", "Ozds.Data.Entities.SchneideriEM3xxxAggregateEntity.DerivedActivePowerTotalImportT0_W#DerivedAggregateMeasureEntity", b1 =>
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Avg")
-                                .HasColumnType("real")
+                            b1.Property<double>("Avg")
+                                .HasColumnType("double precision")
                                 .HasColumnName("derived_active_power_total_import_t0_avg_w");
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_active_power_total_import_t0_max_w");
 
                             b1.Property<DateTimeOffset>("MaxTimestamp")
                                 .HasColumnType("timestamp with time zone")
                                 .HasColumnName("derived_active_power_total_import_t0_max_timestamp");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_active_power_total_import_t0_min_w");
 
                             b1.Property<DateTimeOffset>("MinTimestamp")
@@ -3347,24 +3372,24 @@ namespace Ozds.Data.Migrations
                                 .HasColumnName("derived_active_power_total_import_t0_min_timestamp");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("DerivedActivePowerTotalImportT1_W", "Ozds.Data.Entities.SchneideriEM3xxxAggregateEntity.DerivedActivePowerTotalImportT1_W#InstantaneousAggregateMeasureEntity", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("DerivedActivePowerTotalImportT1_W", "Ozds.Data.Entities.SchneideriEM3xxxAggregateEntity.DerivedActivePowerTotalImportT1_W#DerivedAggregateMeasureEntity", b1 =>
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Avg")
-                                .HasColumnType("real")
+                            b1.Property<double>("Avg")
+                                .HasColumnType("double precision")
                                 .HasColumnName("derived_active_power_total_import_t1_avg_w");
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_active_power_total_import_t1_max_w");
 
                             b1.Property<DateTimeOffset>("MaxTimestamp")
                                 .HasColumnType("timestamp with time zone")
                                 .HasColumnName("derived_active_power_total_import_t1_max_timestamp");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_active_power_total_import_t1_min_w");
 
                             b1.Property<DateTimeOffset>("MinTimestamp")
@@ -3372,24 +3397,24 @@ namespace Ozds.Data.Migrations
                                 .HasColumnName("derived_active_power_total_import_t1_min_timestamp");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("DerivedActivePowerTotalImportT2_W", "Ozds.Data.Entities.SchneideriEM3xxxAggregateEntity.DerivedActivePowerTotalImportT2_W#InstantaneousAggregateMeasureEntity", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("DerivedActivePowerTotalImportT2_W", "Ozds.Data.Entities.SchneideriEM3xxxAggregateEntity.DerivedActivePowerTotalImportT2_W#DerivedAggregateMeasureEntity", b1 =>
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Avg")
-                                .HasColumnType("real")
+                            b1.Property<double>("Avg")
+                                .HasColumnType("double precision")
                                 .HasColumnName("derived_active_power_total_import_t2_avg_w");
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_active_power_total_import_t2_max_w");
 
                             b1.Property<DateTimeOffset>("MaxTimestamp")
                                 .HasColumnType("timestamp with time zone")
                                 .HasColumnName("derived_active_power_total_import_t2_max_timestamp");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_active_power_total_import_t2_min_w");
 
                             b1.Property<DateTimeOffset>("MinTimestamp")
@@ -3397,24 +3422,24 @@ namespace Ozds.Data.Migrations
                                 .HasColumnName("derived_active_power_total_import_t2_min_timestamp");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("DerivedReactivePowerTotalExportT0_VAR", "Ozds.Data.Entities.SchneideriEM3xxxAggregateEntity.DerivedReactivePowerTotalExportT0_VAR#InstantaneousAggregateMeasureEntity", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("DerivedReactivePowerTotalExportT0_VAR", "Ozds.Data.Entities.SchneideriEM3xxxAggregateEntity.DerivedReactivePowerTotalExportT0_VAR#DerivedAggregateMeasureEntity", b1 =>
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Avg")
-                                .HasColumnType("real")
+                            b1.Property<double>("Avg")
+                                .HasColumnType("double precision")
                                 .HasColumnName("derived_reactive_power_total_export_t0_avg_var");
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_reactive_power_total_export_t0_max_var");
 
                             b1.Property<DateTimeOffset>("MaxTimestamp")
                                 .HasColumnType("timestamp with time zone")
                                 .HasColumnName("derived_reactive_power_total_export_t0_max_timestamp");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_reactive_power_total_export_t0_min_var");
 
                             b1.Property<DateTimeOffset>("MinTimestamp")
@@ -3422,24 +3447,24 @@ namespace Ozds.Data.Migrations
                                 .HasColumnName("derived_reactive_power_total_export_t0_min_timestamp");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("DerivedReactivePowerTotalImportT0_VAR", "Ozds.Data.Entities.SchneideriEM3xxxAggregateEntity.DerivedReactivePowerTotalImportT0_VAR#InstantaneousAggregateMeasureEntity", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("DerivedReactivePowerTotalImportT0_VAR", "Ozds.Data.Entities.SchneideriEM3xxxAggregateEntity.DerivedReactivePowerTotalImportT0_VAR#DerivedAggregateMeasureEntity", b1 =>
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Avg")
-                                .HasColumnType("real")
+                            b1.Property<double>("Avg")
+                                .HasColumnType("double precision")
                                 .HasColumnName("derived_reactive_power_total_import_t0_avg_var");
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_reactive_power_total_import_t0_max_var");
 
                             b1.Property<DateTimeOffset>("MaxTimestamp")
                                 .HasColumnType("timestamp with time zone")
                                 .HasColumnName("derived_reactive_power_total_import_t0_max_timestamp");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("derived_reactive_power_total_import_t0_min_var");
 
                             b1.Property<DateTimeOffset>("MinTimestamp")
@@ -3451,12 +3476,12 @@ namespace Ozds.Data.Migrations
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("reactive_energy_total_export_t0_max_varh");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("reactive_energy_total_export_t0_min_varh");
                         });
 
@@ -3464,12 +3489,12 @@ namespace Ozds.Data.Migrations
                         {
                             b1.IsRequired();
 
-                            b1.Property<float>("Max")
-                                .HasColumnType("real")
+                            b1.Property<long>("Max")
+                                .HasColumnType("bigint")
                                 .HasColumnName("reactive_energy_total_import_t0_max_varh");
 
-                            b1.Property<float>("Min")
-                                .HasColumnType("real")
+                            b1.Property<long>("Min")
+                                .HasColumnType("bigint")
                                 .HasColumnName("reactive_energy_total_import_t0_min_varh");
                         });
 
@@ -3608,32 +3633,32 @@ namespace Ozds.Data.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("measurement_location_id");
 
-                    b.Property<float>("ActiveEnergyL1ImportT0_Wh")
-                        .HasColumnType("real")
+                    b.Property<long>("ActiveEnergyL1ImportT0_Wh")
+                        .HasColumnType("bigint")
                         .HasColumnName("active_energy_l1_import_t0_wh");
 
-                    b.Property<float>("ActiveEnergyL2ImportT0_Wh")
-                        .HasColumnType("real")
+                    b.Property<long>("ActiveEnergyL2ImportT0_Wh")
+                        .HasColumnType("bigint")
                         .HasColumnName("active_energy_l2_import_t0_wh");
 
-                    b.Property<float>("ActiveEnergyL3ImportT0_Wh")
-                        .HasColumnType("real")
+                    b.Property<long>("ActiveEnergyL3ImportT0_Wh")
+                        .HasColumnType("bigint")
                         .HasColumnName("active_energy_l3_import_t0_wh");
 
-                    b.Property<float>("ActiveEnergyTotalExportT0_Wh")
-                        .HasColumnType("real")
+                    b.Property<long>("ActiveEnergyTotalExportT0_Wh")
+                        .HasColumnType("bigint")
                         .HasColumnName("active_energy_total_export_t0_wh");
 
-                    b.Property<float>("ActiveEnergyTotalImportT0_Wh")
-                        .HasColumnType("real")
+                    b.Property<long>("ActiveEnergyTotalImportT0_Wh")
+                        .HasColumnType("bigint")
                         .HasColumnName("active_energy_total_import_t0_wh");
 
-                    b.Property<float>("ActiveEnergyTotalImportT1_Wh")
-                        .HasColumnType("real")
+                    b.Property<long>("ActiveEnergyTotalImportT1_Wh")
+                        .HasColumnType("bigint")
                         .HasColumnName("active_energy_total_import_t1_wh");
 
-                    b.Property<float>("ActiveEnergyTotalImportT2_Wh")
-                        .HasColumnType("real")
+                    b.Property<long>("ActiveEnergyTotalImportT2_Wh")
+                        .HasColumnType("bigint")
                         .HasColumnName("active_energy_total_import_t2_wh");
 
                     b.Property<float>("ActivePowerL1NetT0_W")
@@ -3664,12 +3689,12 @@ namespace Ozds.Data.Migrations
                         .HasColumnType("real")
                         .HasColumnName("current_l3_any_t0_a");
 
-                    b.Property<float>("ReactiveEnergyTotalExportT0_VARh")
-                        .HasColumnType("real")
+                    b.Property<long>("ReactiveEnergyTotalExportT0_VARh")
+                        .HasColumnType("bigint")
                         .HasColumnName("reactive_energy_total_export_t0_varh");
 
-                    b.Property<float>("ReactiveEnergyTotalImportT0_VARh")
-                        .HasColumnType("real")
+                    b.Property<long>("ReactiveEnergyTotalImportT0_VARh")
+                        .HasColumnType("bigint")
                         .HasColumnName("reactive_energy_total_import_t0_varh");
 
                     b.Property<float>("ReactivePowerTotalNetT0_VAR")
@@ -3790,6 +3815,11 @@ namespace Ozds.Data.Migrations
             modelBuilder.Entity("Ozds.Data.Entities.NetworkUserMeasurementLocationEntity", b =>
                 {
                     b.HasBaseType("Ozds.Data.Entities.Base.MeasurementLocationEntity");
+
+                    b.Property<string>("CalculationRemark")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("calculation_remark");
 
                     b.Property<long>("_networkUserCatalogueId")
                         .HasColumnType("bigint")
@@ -4035,11 +4065,11 @@ namespace Ozds.Data.Migrations
                                 .HasColumnName("mjt_min_kwh");
 
                             b1.Property<decimal>("Price_EUR")
-                                .HasColumnType("numeric")
+                                .HasColumnType("decimal(19, 4)")
                                 .HasColumnName("mjt_price_eur");
 
                             b1.Property<decimal>("Total_EUR")
-                                .HasColumnType("numeric")
+                                .HasColumnType("decimal(19, 4)")
                                 .HasColumnName("mjt_total_eur");
                         });
 
@@ -4069,7 +4099,7 @@ namespace Ozds.Data.Migrations
 
                             b1.Property<decimal>("Price_EUR")
                                 .ValueGeneratedOnUpdateSometimes()
-                                .HasColumnType("numeric")
+                                .HasColumnType("decimal(19, 4)")
                                 .HasColumnName("jen_price_eur");
 
                             b1.Property<decimal>("ReactiveExportAmount_kVARh")
@@ -4104,7 +4134,7 @@ namespace Ozds.Data.Migrations
 
                             b1.Property<decimal>("Total_EUR")
                                 .ValueGeneratedOnUpdateSometimes()
-                                .HasColumnType("numeric")
+                                .HasColumnType("decimal(19, 4)")
                                 .HasColumnName("jen_total_eur");
                         });
 
@@ -4223,12 +4253,12 @@ namespace Ozds.Data.Migrations
 
                             b1.Property<decimal>("Price_EUR")
                                 .ValueGeneratedOnUpdateSometimes()
-                                .HasColumnType("numeric")
+                                .HasColumnType("decimal(19, 4)")
                                 .HasColumnName("mvt_price_eur");
 
                             b1.Property<decimal>("Total_EUR")
                                 .ValueGeneratedOnUpdateSometimes()
-                                .HasColumnType("numeric")
+                                .HasColumnType("decimal(19, 4)")
                                 .HasColumnName("mvt_total_eur");
                         });
 
@@ -4253,12 +4283,12 @@ namespace Ozds.Data.Migrations
 
                             b1.Property<decimal>("Price_EUR")
                                 .ValueGeneratedOnUpdateSometimes()
-                                .HasColumnType("numeric")
+                                .HasColumnType("decimal(19, 4)")
                                 .HasColumnName("mnt_price_eur");
 
                             b1.Property<decimal>("Total_EUR")
                                 .ValueGeneratedOnUpdateSometimes()
-                                .HasColumnType("numeric")
+                                .HasColumnType("decimal(19, 4)")
                                 .HasColumnName("mnt_total_eur");
                         });
 
@@ -4278,12 +4308,12 @@ namespace Ozds.Data.Migrations
 
                             b1.Property<decimal>("Price_EUR")
                                 .ValueGeneratedOnUpdateSometimes()
-                                .HasColumnType("numeric")
+                                .HasColumnType("decimal(19, 4)")
                                 .HasColumnName("svt_price_eur");
 
                             b1.Property<decimal>("Total_EUR")
                                 .ValueGeneratedOnUpdateSometimes()
-                                .HasColumnType("numeric")
+                                .HasColumnType("decimal(19, 4)")
                                 .HasColumnName("svt_total_eur");
                         });
 
@@ -4313,7 +4343,7 @@ namespace Ozds.Data.Migrations
 
                             b1.Property<decimal>("Price_EUR")
                                 .ValueGeneratedOnUpdateSometimes()
-                                .HasColumnType("numeric")
+                                .HasColumnType("decimal(19, 4)")
                                 .HasColumnName("jen_price_eur");
 
                             b1.Property<decimal>("ReactiveExportAmount_kVARh")
@@ -4348,7 +4378,7 @@ namespace Ozds.Data.Migrations
 
                             b1.Property<decimal>("Total_EUR")
                                 .ValueGeneratedOnUpdateSometimes()
-                                .HasColumnType("numeric")
+                                .HasColumnType("decimal(19, 4)")
                                 .HasColumnName("jen_total_eur");
                         });
 
@@ -4462,12 +4492,12 @@ namespace Ozds.Data.Migrations
 
                             b1.Property<decimal>("Price_EUR")
                                 .ValueGeneratedOnUpdateSometimes()
-                                .HasColumnType("numeric")
+                                .HasColumnType("decimal(19, 4)")
                                 .HasColumnName("mvt_price_eur");
 
                             b1.Property<decimal>("Total_EUR")
                                 .ValueGeneratedOnUpdateSometimes()
-                                .HasColumnType("numeric")
+                                .HasColumnType("decimal(19, 4)")
                                 .HasColumnName("mvt_total_eur");
                         });
 
@@ -4492,12 +4522,12 @@ namespace Ozds.Data.Migrations
 
                             b1.Property<decimal>("Price_EUR")
                                 .ValueGeneratedOnUpdateSometimes()
-                                .HasColumnType("numeric")
+                                .HasColumnType("decimal(19, 4)")
                                 .HasColumnName("mnt_price_eur");
 
                             b1.Property<decimal>("Total_EUR")
                                 .ValueGeneratedOnUpdateSometimes()
-                                .HasColumnType("numeric")
+                                .HasColumnType("decimal(19, 4)")
                                 .HasColumnName("mnt_total_eur");
                         });
 
@@ -4527,7 +4557,7 @@ namespace Ozds.Data.Migrations
 
                             b1.Property<decimal>("Price_EUR")
                                 .ValueGeneratedOnUpdateSometimes()
-                                .HasColumnType("numeric")
+                                .HasColumnType("decimal(19, 4)")
                                 .HasColumnName("jen_price_eur");
 
                             b1.Property<decimal>("ReactiveExportAmount_kVARh")
@@ -4562,7 +4592,7 @@ namespace Ozds.Data.Migrations
 
                             b1.Property<decimal>("Total_EUR")
                                 .ValueGeneratedOnUpdateSometimes()
-                                .HasColumnType("numeric")
+                                .HasColumnType("decimal(19, 4)")
                                 .HasColumnName("jen_total_eur");
                         });
 
@@ -4681,12 +4711,12 @@ namespace Ozds.Data.Migrations
 
                             b1.Property<decimal>("Price_EUR")
                                 .ValueGeneratedOnUpdateSometimes()
-                                .HasColumnType("numeric")
+                                .HasColumnType("decimal(19, 4)")
                                 .HasColumnName("mvt_price_eur");
 
                             b1.Property<decimal>("Total_EUR")
                                 .ValueGeneratedOnUpdateSometimes()
-                                .HasColumnType("numeric")
+                                .HasColumnType("decimal(19, 4)")
                                 .HasColumnName("mvt_total_eur");
                         });
 
@@ -4711,12 +4741,12 @@ namespace Ozds.Data.Migrations
 
                             b1.Property<decimal>("Price_EUR")
                                 .ValueGeneratedOnUpdateSometimes()
-                                .HasColumnType("numeric")
+                                .HasColumnType("decimal(19, 4)")
                                 .HasColumnName("mnt_price_eur");
 
                             b1.Property<decimal>("Total_EUR")
                                 .ValueGeneratedOnUpdateSometimes()
-                                .HasColumnType("numeric")
+                                .HasColumnType("decimal(19, 4)")
                                 .HasColumnName("mnt_total_eur");
                         });
 
@@ -4736,12 +4766,12 @@ namespace Ozds.Data.Migrations
 
                             b1.Property<decimal>("Price_EUR")
                                 .ValueGeneratedOnUpdateSometimes()
-                                .HasColumnType("numeric")
+                                .HasColumnType("decimal(19, 4)")
                                 .HasColumnName("svt_price_eur");
 
                             b1.Property<decimal>("Total_EUR")
                                 .ValueGeneratedOnUpdateSometimes()
-                                .HasColumnType("numeric")
+                                .HasColumnType("decimal(19, 4)")
                                 .HasColumnName("svt_total_eur");
                         });
 
@@ -4771,7 +4801,7 @@ namespace Ozds.Data.Migrations
 
                             b1.Property<decimal>("Price_EUR")
                                 .ValueGeneratedOnUpdateSometimes()
-                                .HasColumnType("numeric")
+                                .HasColumnType("decimal(19, 4)")
                                 .HasColumnName("jen_price_eur");
 
                             b1.Property<decimal>("ReactiveExportAmount_kVARh")
@@ -4806,7 +4836,7 @@ namespace Ozds.Data.Migrations
 
                             b1.Property<decimal>("Total_EUR")
                                 .ValueGeneratedOnUpdateSometimes()
-                                .HasColumnType("numeric")
+                                .HasColumnType("decimal(19, 4)")
                                 .HasColumnName("jen_total_eur");
                         });
 
@@ -4823,12 +4853,12 @@ namespace Ozds.Data.Migrations
                     b.HasBaseType("Ozds.Data.Entities.Base.NetworkUserCatalogueEntity");
 
                     b.Property<decimal>("ActiveEnergyTotalImportT0Price_EUR")
-                        .HasColumnType("numeric")
+                        .HasColumnType("decimal(19, 4)")
                         .HasColumnName("active_energy_total_import_t0_price_eur");
 
                     b.Property<decimal>("ReactiveEnergyTotalRampedT0Price_EUR")
                         .ValueGeneratedOnUpdateSometimes()
-                        .HasColumnType("numeric")
+                        .HasColumnType("decimal(19, 4)")
                         .HasColumnName("reactive_energy_total_ramped_t0_price_eur");
 
                     b.ToTable("network_user_catalogues", (string)null);
@@ -4842,22 +4872,22 @@ namespace Ozds.Data.Migrations
 
                     b.Property<decimal>("ActiveEnergyTotalImportT1Price_EUR")
                         .ValueGeneratedOnUpdateSometimes()
-                        .HasColumnType("numeric")
+                        .HasColumnType("decimal(19, 4)")
                         .HasColumnName("active_energy_total_import_t1_price_eur");
 
                     b.Property<decimal>("ActiveEnergyTotalImportT2Price_EUR")
                         .ValueGeneratedOnUpdateSometimes()
-                        .HasColumnType("numeric")
+                        .HasColumnType("decimal(19, 4)")
                         .HasColumnName("active_energy_total_import_t2_price_eur");
 
                     b.Property<decimal>("ActivePowerTotalImportT1Price_EUR")
                         .ValueGeneratedOnUpdateSometimes()
-                        .HasColumnType("numeric")
+                        .HasColumnType("decimal(19, 4)")
                         .HasColumnName("active_power_total_import_t1_price_eur");
 
                     b.Property<decimal>("ReactiveEnergyTotalRampedT0Price_EUR")
                         .ValueGeneratedOnUpdateSometimes()
-                        .HasColumnType("numeric")
+                        .HasColumnType("decimal(19, 4)")
                         .HasColumnName("reactive_energy_total_ramped_t0_price_eur");
 
                     b.ToTable("network_user_catalogues", (string)null);
@@ -4871,17 +4901,17 @@ namespace Ozds.Data.Migrations
 
                     b.Property<decimal>("ActiveEnergyTotalImportT1Price_EUR")
                         .ValueGeneratedOnUpdateSometimes()
-                        .HasColumnType("numeric")
+                        .HasColumnType("decimal(19, 4)")
                         .HasColumnName("active_energy_total_import_t1_price_eur");
 
                     b.Property<decimal>("ActiveEnergyTotalImportT2Price_EUR")
                         .ValueGeneratedOnUpdateSometimes()
-                        .HasColumnType("numeric")
+                        .HasColumnType("decimal(19, 4)")
                         .HasColumnName("active_energy_total_import_t2_price_eur");
 
                     b.Property<decimal>("ReactiveEnergyTotalRampedT0Price_EUR")
                         .ValueGeneratedOnUpdateSometimes()
-                        .HasColumnType("numeric")
+                        .HasColumnType("decimal(19, 4)")
                         .HasColumnName("reactive_energy_total_ramped_t0_price_eur");
 
                     b.ToTable("network_user_catalogues", (string)null);
@@ -4895,22 +4925,22 @@ namespace Ozds.Data.Migrations
 
                     b.Property<decimal>("ActiveEnergyTotalImportT1Price_EUR")
                         .ValueGeneratedOnUpdateSometimes()
-                        .HasColumnType("numeric")
+                        .HasColumnType("decimal(19, 4)")
                         .HasColumnName("active_energy_total_import_t1_price_eur");
 
                     b.Property<decimal>("ActiveEnergyTotalImportT2Price_EUR")
                         .ValueGeneratedOnUpdateSometimes()
-                        .HasColumnType("numeric")
+                        .HasColumnType("decimal(19, 4)")
                         .HasColumnName("active_energy_total_import_t2_price_eur");
 
                     b.Property<decimal>("ActivePowerTotalImportT1Price_EUR")
                         .ValueGeneratedOnUpdateSometimes()
-                        .HasColumnType("numeric")
+                        .HasColumnType("decimal(19, 4)")
                         .HasColumnName("active_power_total_import_t1_price_eur");
 
                     b.Property<decimal>("ReactiveEnergyTotalRampedT0Price_EUR")
                         .ValueGeneratedOnUpdateSometimes()
-                        .HasColumnType("numeric")
+                        .HasColumnType("decimal(19, 4)")
                         .HasColumnName("reactive_energy_total_ramped_t0_price_eur");
 
                     b.ToTable("network_user_catalogues", (string)null);

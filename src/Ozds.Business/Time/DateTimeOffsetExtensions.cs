@@ -38,6 +38,24 @@ public static class DateTimeOffsetExtensions
     );
   }
 
+  public static (DateTimeOffset, DateTimeOffset) GetMonthRange(
+    int year,
+    int month
+  )
+  {
+    var startOfMonth = new DateTimeOffset(
+      year,
+      month,
+      15, // NOTE: avoiding possible time zone issues
+      0,
+      0,
+      0,
+      CroatianTimeZone.BaseUtcOffset
+    );
+
+    return startOfMonth.GetMonthRange();
+  }
+
   public static DateTimeOffset GetStartOfQuarterHour(
     this DateTimeOffset dateTimeOffset
   )

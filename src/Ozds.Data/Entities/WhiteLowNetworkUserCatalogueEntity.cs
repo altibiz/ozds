@@ -1,4 +1,3 @@
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Ozds.Data.Entities.Base;
 using Ozds.Data.Extensions;
@@ -23,21 +22,24 @@ public class
     EntityTypeBuilder<WhiteLowNetworkUserCatalogueEntity> builder)
   {
     builder
-      .Property(
+      .MonetaryValue(
         nameof(WhiteLowNetworkUserCatalogueEntity
-          .ActiveEnergyTotalImportT1Price_EUR))
-      .HasColumnName("active_energy_total_import_t1_price_eur");
+          .ActiveEnergyTotalImportT1Price_EUR),
+        "active_energy_total_import_t1_price_eur"
+      );
 
     builder
-      .Property(
+      .MonetaryValue(
         nameof(WhiteLowNetworkUserCatalogueEntity
-          .ActiveEnergyTotalImportT2Price_EUR))
-      .HasColumnName("active_energy_total_import_t2_price_eur");
+          .ActiveEnergyTotalImportT2Price_EUR),
+        "active_energy_total_import_t2_price_eur"
+      );
 
     builder
-      .Property(
+      .MonetaryValue(
         nameof(WhiteLowNetworkUserCatalogueEntity
-          .ReactiveEnergyTotalRampedT0Price_EUR))
-      .HasColumnName("reactive_energy_total_ramped_t0_price_eur");
+          .ReactiveEnergyTotalRampedT0Price_EUR),
+        "reactive_energy_total_ramped_t0_price_eur"
+      );
   }
 }

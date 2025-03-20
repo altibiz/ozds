@@ -7,6 +7,60 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and adheres to [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+## [1.1.1]
+
+### Added
+
+- HTML remark fields on financials, network users, network user measurement
+  locations
+- `HtmlSanitizer` via `HtmlSanitizer` package to sanitize HTML fields
+- Invoice preview functionality to `INetworkUserInvoiceIssuer`
+- New `GetMonthRange` overload that takes a year and month
+- `NetworkUserValidator` and `NetworkUserMeasurementLocationValidator` that
+  sanitize the new remark fields
+- Invoice preview picker to `NetworkUserPage`
+- `NetworkUserInvoicePreviewDocumentPage` that previews documents via
+  `INetworkUserInvoiceIssuer` and `DocumentQueries`
+- Links to view and download invoices on `NetworkUserInvoicePage`
+- `HtmlField` on edit components via WYSIWYG `Quill.JS`-based
+  `Tizzani.MudBlazor.HtmlEditor` editor
+- `HtmlField` on details components via `MarkupString`
+- Remarks on network user invoice documents
+- Support for collocated JS scripts in `AppController`
+- `DownloadController` for network user invoices (previews)
+- Migration to use correct column types for numeric values
+- `DerivedAggregateMeasureModel` and `DerivedAggregateMeasureEntity` that better
+  represent derived power measures on aggregate measurements
+- Added new primitive conversion functions for floats and longs
+- `IRecord` for all the Records that need to be converted from Entities
+- `ModelRecordConversion` for the conversion pipeline
+- All the needed implementations for the many Records added
+- `CsvExporter` so models / record / aggregates can be converted to csv files
+- `ReadMeasurementLocationByNetworkUser` and `ReadMeasurementLocationByLocation`
+  needed for the download of aggregates
+- `MudDatePicker` components to `LocationPage`, `NetworkUserPage`,
+  `MeasurementLocationPage` and `MeterPage` for selecting dates for extraction
+- Export to all the above mentioned pages
+
+### Changed
+
+- `Ozds.Business.Queries.DocumentQueries` API to accept
+  `CalculatedNetworkUserInvoiceModel` rather than network user invoice id
+- `ModelValidator` now always validates via the builtin ASP.NET Core validation
+- Moved `link` tags to `ThemeStateProvider` since the `Ozds.Server` shouldn't
+  care about the different libraries present
+- Removed `MudBlazor` from `ErrorBoundary`
+- Changed types of numeric properties in `Ozds.Data` to more precise ones
+  (`decimal(19, 4)` for monetary values, `bigint` for cumulative measurement
+  values, `float` for instantaneous measurement values)
+- Fix support for collocated JS scripts in `AppController`
+
+### Removed
+
+- leftover print components
+
 ## [1.0.1] - 2025-03-07
 
 ## Changed
@@ -28,5 +82,6 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 - init
 
+[1.1.1]: https://github.com/altibiz/ozds/compare/1.0.1...1.1.1
 [1.0.1]: https://github.com/altibiz/ozds/compare/1.0.0...1.0.1
 [1.0.0]: https://github.com/altibiz/ozds/releases/tag/1.0.0

@@ -18,6 +18,44 @@ public static class IApplicationBuilderExtensions
     );
 
     endpoints.MapOzdsServerRoute(
+      "/download/network-user-invoice/{id}",
+      typeof(DownloadController),
+      nameof(DownloadController.NetworkUserInvoice)
+    );
+
+    endpoints.MapOzdsServerRoute(
+      "/download/network-user-invoice-preview/{networkUserId}/{year:int}/{month:int}",
+      typeof(DownloadController),
+      nameof(DownloadController.NetworkUserInvoicePreview)
+    );
+
+    endpoints.MapOzdsServerRoute(
+      "/download/network-user-monthly-aggregates/{networkUserId}/{year:int}/{month:int}",
+      typeof(DownloadController),
+      nameof(DownloadController.NetworkUserMonthlyAggregates)
+    );
+
+    endpoints.MapOzdsServerRoute(
+      "/download/location-monthly-aggregates/{locationId}/{year:int}/{month:int}",
+      typeof(DownloadController),
+      nameof(DownloadController.LocationMonthlyAggregates)
+    );
+
+    endpoints.MapOzdsServerRoute(
+      "/download/meter-quarter-hourly-aggregates-for-month/{meterId}/{year:int}/{month:int}",
+      typeof(DownloadController),
+      nameof(DownloadController.MeterQuarterHourlyAggregatesForMonth)
+    );
+
+    endpoints.MapOzdsServerRoute(
+      "/download/measurement-location-quarter-hourly-aggregates-for-month/{measurementLocationId}/{year:int}/{month:int}",
+      typeof(DownloadController),
+      nameof(
+        DownloadController.MeasurementLocationQuarterHourlyAggregatesForMonth
+      )
+    );
+
+    endpoints.MapOzdsServerRoute(
       "/",
       typeof(AppController),
       nameof(AppController.Uncultured)
@@ -54,10 +92,7 @@ public static class IApplicationBuilderExtensions
       pattern: pattern,
       defaults: new
       {
-        controller = controller.Name.Remove(
-          controller.Name.Length -
-          nameof(Controller).Length,
-          nameof(Controller).Length),
+        controller = controller.Name[..^nameof(Controller).Length],
         action
       }
     );

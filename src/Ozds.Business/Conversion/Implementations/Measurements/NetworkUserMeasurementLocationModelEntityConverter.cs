@@ -22,6 +22,7 @@ public class NetworkUserMeasurementLocationModelEntityConverter(
     base.InitializeEntity(model, entity);
     entity.NetworkUserId = model.NetworkUserId;
     entity.NetworkUserCatalogueId = model.NetworkUserCatalogueId;
+    entity.CalculationRemark = model.CalculationRemark;
   }
 
   public override void InitializeModel(
@@ -32,5 +33,6 @@ public class NetworkUserMeasurementLocationModelEntityConverter(
     base.InitializeModel(entity, model);
     model.NetworkUserId = entity.NetworkUserId;
     model.NetworkUserCatalogueId = entity.NetworkUserCatalogueId;
+    model.CalculationRemark = entity.CalculationRemark;
   }
 }

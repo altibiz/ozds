@@ -34,6 +34,8 @@ public class NetworkUserEntity : AuditableEntity
   public LegalPersonEntity LegalPerson { get; set; } = default!;
 
   public string AltiBizSubProjectCode { get; set; } = default!;
+
+  public string InvoiceRemark { get; set; } = default!;
 }
 
 public class
