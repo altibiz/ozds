@@ -9,6 +9,8 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.1.1]
+
 ### Added
 
 - HTML remark fields on financials, network users, network user measurement
@@ -80,5 +82,6 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 - init
 
+[1.1.1]: https://github.com/altibiz/ozds/compare/1.0.1...1.1.1
 [1.0.1]: https://github.com/altibiz/ozds/compare/1.0.0...1.0.1
 [1.0.0]: https://github.com/altibiz/ozds/releases/tag/1.0.0
