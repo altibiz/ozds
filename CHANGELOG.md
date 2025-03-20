@@ -32,6 +32,15 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - `DerivedAggregateMeasureModel` and `DerivedAggregateMeasureEntity` that better
   represent derived power measures on aggregate measurements
 - Added new primitive conversion functions for floats and longs
+- `IRecord` for all the Records that need to be converted from Entities
+- `ModelRecordConversion` for the conversion pipeline
+- All the needed implementations for the many Records added
+- `CsvExporter` so models / record / aggregates can be converted to csv files
+- `ReadMeasurementLocationByNetworkUser` and `ReadMeasurementLocationByLocation`
+  needed for the download of aggregates
+- `MudDatePicker` components to `LocationPage`, `NetworkUserPage`,
+  `MeasurementLocationPage` and `MeterPage` for selecting dates for extraction
+- Export to all the above mentioned pages
 
 ### Changed
 

@@ -10,6 +10,7 @@ Parent = typeof(MeasurementsPage),
 Allows = [RoleModel.OperatorRepresentative])]
 @using Microsoft.AspNetCore.Components.Web
 @using MudBlazor
+@using Ozds.Business.Analysis
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Client.Attributes
 @using Ozds.Client.Components.Fields
@@ -28,6 +29,10 @@ Allows = [RoleModel.OperatorRepresentative])]
 <HeadContent>
   <title>OZDS - @Translate("Meters")</title>
 </HeadContent>
+@{
+  var analyses = AnalysisState.AnalysisBases.Value
+    .AnalysesByMeter();
+}
 
 <MudCheckBox
   Label="@Translate("Deleted")"
@@ -45,6 +50,9 @@ Allows = [RoleModel.OperatorRepresentative])]
 }
 
 @code {
+
+  [CascadingParameter]
+  public AnalysisState AnalysisState { get; set; } = default!;
 
   [CascadingParameter]
   private RepresentativeState RepresentativeState { get; set; } = default!;

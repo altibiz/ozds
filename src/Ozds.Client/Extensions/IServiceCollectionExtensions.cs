@@ -5,6 +5,7 @@ using Ozds.Client.Components.Models;
 using Ozds.Client.Components.Models.Abstractions;
 using Ozds.Client.Conversion;
 using Ozds.Client.Conversion.Abstractions;
+using Ozds.Client.Export.Abstractions;
 using Ozds.Client.Import.Abstractions;
 
 namespace Ozds.Client.Extensions;
@@ -22,6 +23,7 @@ public static class IServiceCollectionExtensions
     services.AddUi();
     services.AddConversion();
     services.AddImport();
+    services.AddExport();
     return services;
   }
 
@@ -101,6 +103,14 @@ public static class IServiceCollectionExtensions
   )
   {
     services.AddTransientAssignableTo(typeof(IImporter));
+    return services;
+  }
+
+  public static IServiceCollection AddExport(
+    this IServiceCollection services
+  )
+  {
+    services.AddTransientAssignableTo(typeof(IExporter));
     return services;
   }
 }
