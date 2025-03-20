@@ -9,6 +9,8 @@ namespace Ozds.Client.Pages;
 public partial class LocationPage
   : OzdsIdentifiableModelPageComponentBase<LocationModel>
 {
+  private DateTime? selectedMonth;
+
   [Parameter]
   public string? Id { get; set; }
 

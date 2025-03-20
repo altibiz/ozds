@@ -6,14 +6,15 @@
 @using Ozds.Business.Analysis
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Client.Components.Charts
+@using Ozds.Client.Components.Fields
 @using Ozds.Client.Components.Models
 @using Ozds.Client.Components.Streaming
 @using Ozds.Client.State
-@inherits Ozds.Client.Components.Models.Base.OzdsIdentifiableModelPageComponentBase<Ozds.Business.Models.Abstractions.IMeasurementLocation>
+@inherits Ozds.Client.Components.Models.Base.OzdsIdentifiableModelPageComponentBase<IMeasurementLocation>
 
 @{
-  var analysis = AnalysisState.AnalysisBases.Value
-    .AnalysesByMeasurementLocation()
+  var analysis = AnalysisState
+    .AnalysisBases.Value.AnalysesByMeasurementLocation()
     .FirstOrDefault(x => x.MeasurementLocation.Id == Id);
 }
 
@@ -31,10 +32,24 @@
     </Columns>
   </Table>
 
-  var measurementLocations = new List<IMeasurementLocation>
+  <div style="width: 170px;">
+    <MonthPickerField @bind-Value="@selectedMonth" Label="@Translate("Pick month")"/>
+    <div style="margin-top: 10px;">
+      @if (selectedMonth is not null)
+      {
+        <MudLink
+          Href="@("/download/measurement-location-quarter-hourly-aggregates-for-month/" + Id + "/" + selectedMonth.Value.Year + "/" + selectedMonth.Value.Month)">
+          @Translate("Csv")
+        </MudLink>
+      }
+    </div>
+  </div>
+
+  measurementLocations = new List<IMeasurementLocation>
   {
     analysis.MeasurementLocation
   };
+
 
   <MeasurementChartControls MeasurementLocations="@measurementLocations">
     <MeasurementGaugeChart
@@ -73,7 +88,8 @@
   </Details>
 </Mutating>
 
-@code {
+@code{
+  private DateTime? selectedMonth;
 
   [CascadingParameter]
   public AnalysisState AnalysisState { get; set; } = default!;
@@ -84,4 +100,5 @@
   [Parameter]
   public string Id { get; set; } = default!;
 
+  private List<IMeasurementLocation> measurementLocations = new();
 }
