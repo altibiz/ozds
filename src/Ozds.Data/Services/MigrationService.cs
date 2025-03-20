@@ -11,6 +11,7 @@ public class MigrationService(
   {
     await using var context = await factory
       .CreateDbContextAsync(cancellationToken);
+    context.Database.SetCommandTimeout(TimeSpan.FromHours(1));
     await context.Database.MigrateAsync(cancellationToken);
   }
 
