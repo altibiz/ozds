@@ -21,6 +21,7 @@ public class FinancialModelEntityConverter(IServiceProvider serviceProvider)
     entity.FromDate = model.FromDate;
     entity.ToDate = model.ToDate;
     entity.Total_EUR = model.Total_EUR;
+    entity.Remark = model.Remark;
   }
 
   public override void InitializeModel(
@@ -33,5 +34,6 @@ public class FinancialModelEntityConverter(IServiceProvider serviceProvider)
     model.FromDate = entity.FromDate;
     model.ToDate = entity.ToDate;
     model.Total_EUR = entity.Total_EUR;
+    model.Remark = entity.Remark;
   }
 }

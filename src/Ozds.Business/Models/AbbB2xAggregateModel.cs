@@ -99,7 +99,7 @@ public class AbbB2xAggregateModel : AggregateModel
   } = default!;
 
   [Required]
-  public required InstantaneousAggregateMeasureModel
+  public required DerivedAggregateMeasureModel
     DerivedActivePowerL1ImportT0_W { get; set; } = default!;
 
   [Required]
@@ -110,7 +110,7 @@ public class AbbB2xAggregateModel : AggregateModel
   } = default!;
 
   [Required]
-  public required InstantaneousAggregateMeasureModel
+  public required DerivedAggregateMeasureModel
     DerivedActivePowerL2ImportT0_W { get; set; } = default!;
 
   [Required]
@@ -121,7 +121,7 @@ public class AbbB2xAggregateModel : AggregateModel
   } = default!;
 
   [Required]
-  public required InstantaneousAggregateMeasureModel
+  public required DerivedAggregateMeasureModel
     DerivedActivePowerL3ImportT0_W { get; set; } = default!;
 
   [Required]
@@ -132,7 +132,7 @@ public class AbbB2xAggregateModel : AggregateModel
   } = default!;
 
   [Required]
-  public required InstantaneousAggregateMeasureModel
+  public required DerivedAggregateMeasureModel
     DerivedActivePowerL1ExportT0_W { get; set; } = default!;
 
   [Required]
@@ -143,7 +143,7 @@ public class AbbB2xAggregateModel : AggregateModel
   } = default!;
 
   [Required]
-  public required InstantaneousAggregateMeasureModel
+  public required DerivedAggregateMeasureModel
     DerivedActivePowerL2ExportT0_W { get; set; } = default!;
 
   [Required]
@@ -154,7 +154,7 @@ public class AbbB2xAggregateModel : AggregateModel
   } = default!;
 
   [Required]
-  public required InstantaneousAggregateMeasureModel
+  public required DerivedAggregateMeasureModel
     DerivedActivePowerL3ExportT0_W { get; set; } = default!;
 
   [Required]
@@ -165,7 +165,7 @@ public class AbbB2xAggregateModel : AggregateModel
   } = default!;
 
   [Required]
-  public required InstantaneousAggregateMeasureModel
+  public required DerivedAggregateMeasureModel
     DerivedReactivePowerL1ImportT0_VAR { get; set; } = default!;
 
   [Required]
@@ -176,7 +176,7 @@ public class AbbB2xAggregateModel : AggregateModel
   } = default!;
 
   [Required]
-  public required InstantaneousAggregateMeasureModel
+  public required DerivedAggregateMeasureModel
     DerivedReactivePowerL2ImportT0_VAR { get; set; } = default!;
 
   [Required]
@@ -187,7 +187,7 @@ public class AbbB2xAggregateModel : AggregateModel
   } = default!;
 
   [Required]
-  public required InstantaneousAggregateMeasureModel
+  public required DerivedAggregateMeasureModel
     DerivedReactivePowerL3ImportT0_VAR { get; set; } = default!;
 
   [Required]
@@ -198,7 +198,7 @@ public class AbbB2xAggregateModel : AggregateModel
   } = default!;
 
   [Required]
-  public required InstantaneousAggregateMeasureModel
+  public required DerivedAggregateMeasureModel
     DerivedReactivePowerL1ExportT0_VAR { get; set; } = default!;
 
   [Required]
@@ -209,7 +209,7 @@ public class AbbB2xAggregateModel : AggregateModel
   } = default!;
 
   [Required]
-  public required InstantaneousAggregateMeasureModel
+  public required DerivedAggregateMeasureModel
     DerivedReactivePowerL2ExportT0_VAR { get; set; } = default!;
 
   [Required]
@@ -220,7 +220,7 @@ public class AbbB2xAggregateModel : AggregateModel
   } = default!;
 
   [Required]
-  public required InstantaneousAggregateMeasureModel
+  public required DerivedAggregateMeasureModel
     DerivedReactivePowerL3ExportT0_VAR { get; set; } = default!;
 
   [Required]
@@ -231,7 +231,7 @@ public class AbbB2xAggregateModel : AggregateModel
   } = default!;
 
   [Required]
-  public required InstantaneousAggregateMeasureModel
+  public required DerivedAggregateMeasureModel
     DerivedActivePowerTotalImportT0_W { get; set; } = default!;
 
   [Required]
@@ -242,7 +242,7 @@ public class AbbB2xAggregateModel : AggregateModel
   } = default!;
 
   [Required]
-  public required InstantaneousAggregateMeasureModel
+  public required DerivedAggregateMeasureModel
     DerivedActivePowerTotalExportT0_W { get; set; } = default!;
 
   [Required]
@@ -250,7 +250,7 @@ public class AbbB2xAggregateModel : AggregateModel
     ReactiveEnergyTotalImportT0_VARh { get; set; } = default!;
 
   [Required]
-  public required InstantaneousAggregateMeasureModel
+  public required DerivedAggregateMeasureModel
     DerivedReactivePowerTotalImportT0_VAR { get; set; } = default!;
 
   [Required]
@@ -258,7 +258,7 @@ public class AbbB2xAggregateModel : AggregateModel
     ReactiveEnergyTotalExportT0_VARh { get; set; } = default!;
 
   [Required]
-  public required InstantaneousAggregateMeasureModel
+  public required DerivedAggregateMeasureModel
     DerivedReactivePowerTotalExportT0_VAR { get; set; } = default!;
 
   [Required]
@@ -269,7 +269,7 @@ public class AbbB2xAggregateModel : AggregateModel
   } = default!;
 
   [Required]
-  public required InstantaneousAggregateMeasureModel
+  public required DerivedAggregateMeasureModel
     DerivedActivePowerTotalImportT1_W { get; set; } = default!;
 
   [Required]
@@ -280,7 +280,7 @@ public class AbbB2xAggregateModel : AggregateModel
   } = default!;
 
   [Required]
-  public required InstantaneousAggregateMeasureModel
+  public required DerivedAggregateMeasureModel
     DerivedActivePowerTotalImportT2_W { get; set; } = default!;
 
   public override TariffMeasure<decimal> Current_A

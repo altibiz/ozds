@@ -19,6 +19,8 @@ public class InstantaneousAggregateMeasureEntityConverter(
   )
   {
     base.InitializeEntity(model, entity);
+    entity.Min = model.Min.ToFloat();
+    entity.Max = model.Max.ToFloat();
     entity.Avg = model.Avg.ToFloat();
     entity.MinTimestamp = model.MinTimestamp;
     entity.MaxTimestamp = model.MaxTimestamp;
@@ -30,6 +32,8 @@ public class InstantaneousAggregateMeasureEntityConverter(
   )
   {
     base.InitializeModel(entity, model);
+    model.Min = entity.Min.ToDecimal();
+    model.Max = entity.Max.ToDecimal();
     model.Avg = entity.Avg.ToDecimal();
     model.MinTimestamp = entity.MinTimestamp;
     model.MaxTimestamp = entity.MaxTimestamp;

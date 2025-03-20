@@ -92,7 +92,7 @@ public class SchneideriEM3xxxAggregateModel : AggregateModel
   } = default!;
 
   [Required]
-  public required InstantaneousAggregateMeasureModel
+  public required DerivedAggregateMeasureModel
     DerivedActivePowerL1ImportT0_W { get; set; } = default!;
 
   [Required]
@@ -103,7 +103,7 @@ public class SchneideriEM3xxxAggregateModel : AggregateModel
   } = default!;
 
   [Required]
-  public required InstantaneousAggregateMeasureModel
+  public required DerivedAggregateMeasureModel
     DerivedActivePowerL2ImportT0_W { get; set; } = default!;
 
   [Required]
@@ -114,7 +114,7 @@ public class SchneideriEM3xxxAggregateModel : AggregateModel
   } = default!;
 
   [Required]
-  public required InstantaneousAggregateMeasureModel
+  public required DerivedAggregateMeasureModel
     DerivedActivePowerL3ImportT0_W { get; set; } = default!;
 
   [Required]
@@ -125,7 +125,7 @@ public class SchneideriEM3xxxAggregateModel : AggregateModel
   } = default!;
 
   [Required]
-  public required InstantaneousAggregateMeasureModel
+  public required DerivedAggregateMeasureModel
     DerivedActivePowerTotalImportT0_W { get; set; } = default!;
 
   [Required]
@@ -136,7 +136,7 @@ public class SchneideriEM3xxxAggregateModel : AggregateModel
   } = default!;
 
   [Required]
-  public required InstantaneousAggregateMeasureModel
+  public required DerivedAggregateMeasureModel
     DerivedActivePowerTotalExportT0_W { get; set; } = default!;
 
   [Required]
@@ -144,7 +144,7 @@ public class SchneideriEM3xxxAggregateModel : AggregateModel
     ReactiveEnergyTotalImportT0_VARh { get; set; } = default!;
 
   [Required]
-  public required InstantaneousAggregateMeasureModel
+  public required DerivedAggregateMeasureModel
     DerivedReactivePowerTotalImportT0_VAR { get; set; } = default!;
 
   [Required]
@@ -152,7 +152,7 @@ public class SchneideriEM3xxxAggregateModel : AggregateModel
     ReactiveEnergyTotalExportT0_VARh { get; set; } = default!;
 
   [Required]
-  public required InstantaneousAggregateMeasureModel
+  public required DerivedAggregateMeasureModel
     DerivedReactivePowerTotalExportT0_VAR { get; set; } = default!;
 
   [Required]
@@ -163,7 +163,7 @@ public class SchneideriEM3xxxAggregateModel : AggregateModel
   } = default!;
 
   [Required]
-  public required InstantaneousAggregateMeasureModel
+  public required DerivedAggregateMeasureModel
     DerivedActivePowerTotalImportT1_W { get; set; } = default!;
 
   [Required]
@@ -174,7 +174,7 @@ public class SchneideriEM3xxxAggregateModel : AggregateModel
   } = default!;
 
   [Required]
-  public required InstantaneousAggregateMeasureModel
+  public required DerivedAggregateMeasureModel
     DerivedActivePowerTotalImportT2_W { get; set; } = default!;
 
   public override TariffMeasure<decimal> Current_A

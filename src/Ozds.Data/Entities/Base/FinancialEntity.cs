@@ -24,6 +24,8 @@ public abstract class FinancialEntity : IdentifiableEntity, IFinancialEntity
   public abstract decimal Tax_EUR { get; }
 
   public abstract decimal TotalWithTax_EUR { get; }
+
+  public string Remark { get; set; } = string.Empty;
 }
 
 public class FinancialEntityTypeHierarchyConfiguration
@@ -66,8 +68,10 @@ public class FinancialEntityTypeHierarchyConfiguration
       .HasForeignKey(nameof(CalculationEntity.IssuedById));
 
     builder
-      .Property(nameof(FinancialEntity.Total_EUR))
-      .HasColumnName("total_eur");
+      .MonetaryValue(
+        nameof(FinancialEntity.Total_EUR),
+        "total_eur"
+      );
 
     builder.Ignore(nameof(FinancialEntity.RepresentativeId));
   }

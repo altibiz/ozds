@@ -36,10 +36,17 @@ public partial class DeveloperPage : OzdsComponentBase
         CancellationToken.None
       );
 
+    var calculated = await ScopedServices
+      .GetRequiredService<CalculatedInvoiceQueries>()
+      .ReadCalculatedNetworkUserInvoice(
+        invoice.Items.First().Id,
+        CancellationToken.None
+      );
+
     var pdf = await ScopedServices
       .GetRequiredService<DocumentQueries>()
       .ReadPdfForNetworkUserInvoice(
-        invoice.Items.First().Id,
+        calculated!,
         CancellationToken.None
       );
 

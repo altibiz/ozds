@@ -1,4 +1,3 @@
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Ozds.Data.Entities.Base;
 using Ozds.Data.Extensions;
@@ -22,15 +21,17 @@ public class
     EntityTypeBuilder<BlueLowNetworkUserCatalogueEntity> builder)
   {
     builder
-      .Property(
+      .MonetaryValue(
         nameof(BlueLowNetworkUserCatalogueEntity
-          .ActiveEnergyTotalImportT0Price_EUR))
-      .HasColumnName("active_energy_total_import_t0_price_eur");
+          .ActiveEnergyTotalImportT0Price_EUR),
+        "active_energy_total_import_t0_price_eur"
+      );
 
     builder
-      .Property(
+      .MonetaryValue(
         nameof(BlueLowNetworkUserCatalogueEntity
-          .ReactiveEnergyTotalRampedT0Price_EUR))
-      .HasColumnName("reactive_energy_total_ramped_t0_price_eur");
+          .ReactiveEnergyTotalRampedT0Price_EUR),
+        "reactive_energy_total_ramped_t0_price_eur"
+      );
   }
 }

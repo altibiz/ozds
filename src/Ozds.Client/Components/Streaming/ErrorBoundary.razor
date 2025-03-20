@@ -1,5 +1,4 @@
 @namespace Ozds.Client.Components.Streaming
-@using MudBlazor
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 <InnerErrorBoundary This="this" @ref="@inner">
@@ -7,11 +6,15 @@
     @ChildContent
   </ChildContent>
   <ErrorContent>
-    <Error>
-      @context
-    </Error>
-    <MudButton OnClick="@OnRecover">
-      @Translate("Recover")
-    </MudButton>
+    <div>
+      <div>
+        @context
+      </div>
+      <div>
+        <button @onclick="@OnRecover">
+          @Translate("Recover")
+        </button>
+      </div>
+    </div>
   </ErrorContent>
 </InnerErrorBoundary>

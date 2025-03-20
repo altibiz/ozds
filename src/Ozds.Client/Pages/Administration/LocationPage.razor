@@ -2,14 +2,16 @@
 
 @page "/administration/location/{id?}"
 @using Microsoft.AspNetCore.Components.Web
+@using MudBlazor
 @using Ozds.Business.Models
+@using Ozds.Client.Components.Fields
 @using Ozds.Client.Components.Models
 @using Ozds.Client.Components.Streaming
 @inherits Ozds.Client.Components.Models.Base.OzdsIdentifiableModelPageComponentBase<Ozds.Business.Models.LocationModel>
 
 @if (RepresentativeState.Representative.Role
   is not RoleModel.OperatorRepresentative
-  or RoleModel.LocationRepresentative)
+  and not RoleModel.LocationRepresentative)
 {
   <NotFound/>
   return;
@@ -55,5 +57,17 @@
     }
 
     <Details Model="@context.Model"/>
+    <div style="width: 170px;">
+      <MonthPickerField @bind-Value="@selectedMonth" Label="@Translate("Pick month")"/>
+      <div style="margin-top: 10px;">
+        @if (selectedMonth is not null)
+        {
+          <MudLink
+            Href="@("/download/location-monthly-aggregates/" + context.Model.Id + "/" + selectedMonth.Value.Year + "/" + selectedMonth.Value.Month)">
+            @Translate("Csv")
+          </MudLink>
+        }
+      </div>
+    </div>
   </Details>
 </Mutating>

@@ -820,6 +820,28 @@ public class CreateMeasurementsTest(
       };
     }
 
+    public static DerivedAggregateMeasureEntity Upsert(
+      DerivedAggregateMeasureEntity lhs,
+      long lhsCount,
+      DerivedAggregateMeasureEntity rhs,
+      long rhsCount
+    )
+    {
+      return new DerivedAggregateMeasureEntity
+      {
+        Avg = (lhs.Avg * lhsCount + rhs.Avg * rhsCount)
+          / (lhsCount + rhsCount),
+        Min = Math.Min(lhs.Min, rhs.Min),
+        MinTimestamp = lhs.Min < rhs.Min
+          ? lhs.MinTimestamp
+          : rhs.MinTimestamp,
+        Max = Math.Max(lhs.Max, rhs.Max),
+        MaxTimestamp = lhs.Max > rhs.Max
+          ? lhs.MaxTimestamp
+          : rhs.MaxTimestamp
+      };
+    }
+
     public static CumulativeAggregateMeasureEntity Upsert(
       CumulativeAggregateMeasureEntity lhs,
       CumulativeAggregateMeasureEntity rhs
@@ -832,7 +854,7 @@ public class CreateMeasurementsTest(
       };
     }
 
-    public static InstantaneousAggregateMeasureEntity Upsert(
+    public static DerivedAggregateMeasureEntity Upsert(
       CumulativeAggregateMeasureEntity lhs,
       CumulativeAggregateMeasureEntity rhs,
       DateTimeOffset timestamp
@@ -840,7 +862,7 @@ public class CreateMeasurementsTest(
     {
       var value =
         (Math.Max(lhs.Max, rhs.Max) - Math.Min(lhs.Min, rhs.Min)) * 4;
-      return new InstantaneousAggregateMeasureEntity
+      return new DerivedAggregateMeasureEntity
       {
         Avg = value,
         Min = value,

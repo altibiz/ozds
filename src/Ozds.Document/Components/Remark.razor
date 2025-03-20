@@ -1,0 +1,65 @@
+@namespace Ozds.Document.Components
+
+@inherits DocumentBase
+
+@if (!Extended && string.IsNullOrEmpty(Value))
+{
+  return;
+}
+
+<div>
+  <p>
+    <u>
+      <strong>
+        @Translate("Note to users")
+      </strong>
+      &colon;
+    </u>
+  </p>
+
+  <p>
+    @(new MarkupString(Value))
+  </p>
+
+  @if (Extended)
+  {
+    <p>
+      @Translate("You can submit questions, complaints, and written grievances to")
+      &colon;
+    </p>
+    <blockquote>
+      <p>
+        @Translate("Address")
+        &colon;
+        <strong>
+          HELB d.o.o., Industrijska ulica 1, Božjakovina, 10370 DUGO SELO
+        </strong>
+        @Translate("or")
+      </p>
+      <p>
+        E-mail
+        &colon;
+        &nbsp;
+        <a href="mailto:ozds@helb.hr">
+          ozds@helb.hr
+        </a>
+        &semi;
+        @Translate("Phone")
+        &colon;
+        <strong>
+          +385 1 2781 440
+        </strong>
+      </p>
+    </blockquote>
+  }
+</div>
+
+@code {
+
+  [Parameter]
+  public string Value { get; set; } = string.Empty;
+
+  [Parameter]
+  public bool Extended { get; set; } = false;
+
+}
