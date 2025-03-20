@@ -30,6 +30,32 @@ public static class IApplicationBuilderExtensions
     );
 
     endpoints.MapOzdsServerRoute(
+      "/download/network-user-monthly-aggregates/{networkUserId}/{year:int}/{month:int}",
+      typeof(DownloadController),
+      nameof(DownloadController.NetworkUserMonthlyAggregates)
+    );
+
+    endpoints.MapOzdsServerRoute(
+      "/download/location-monthly-aggregates/{locationId}/{year:int}/{month:int}",
+      typeof(DownloadController),
+      nameof(DownloadController.LocationMonthlyAggregates)
+    );
+
+    endpoints.MapOzdsServerRoute(
+      "/download/meter-quarter-hourly-aggregates-for-month/{meterId}/{year:int}/{month:int}",
+      typeof(DownloadController),
+      nameof(DownloadController.MeterQuarterHourlyAggregatesForMonth)
+    );
+
+    endpoints.MapOzdsServerRoute(
+      "/download/measurement-location-quarter-hourly-aggregates-for-month/{measurementLocationId}/{year:int}/{month:int}",
+      typeof(DownloadController),
+      nameof(
+        DownloadController.MeasurementLocationQuarterHourlyAggregatesForMonth
+      )
+    );
+
+    endpoints.MapOzdsServerRoute(
       "/",
       typeof(AppController),
       nameof(AppController.Uncultured)

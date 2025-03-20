@@ -6,22 +6,22 @@
 @using Ozds.Business.Analysis
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Client.Components.Charts
+@using Ozds.Client.Components.Fields
 @using Ozds.Client.Components.Models
 @using Ozds.Client.Components.Streaming
 @using Ozds.Client.State
-@inherits Ozds.Client.Components.Models.Base.OzdsIdentifiableModelPageComponentBase<Ozds.Business.Models.Abstractions.IMeter>
+@inherits Ozds.Client.Components.Models.Base.OzdsIdentifiableModelPageComponentBase<IMeter>
 
-@if (RepresentativeState.Representative.Role
-  is not RoleModel.OperatorRepresentative)
+@{
+  var analysis = AnalysisState
+    .AnalysisBases.Value.AnalysesByMeter()
+    .FirstOrDefault(x => x.Meter.Id == Id);
+}
+
+@if (RepresentativeState.Representative.Role is not RoleModel.OperatorRepresentative)
 {
   <NotFound/>
   return;
-}
-
-@{
-  var analysis = AnalysisState.AnalysisBases.Value
-    .AnalysesByMeter()
-    .FirstOrDefault(x => x.Meter.Id == Id);
 }
 
 @if (analysis is not null)
@@ -37,22 +37,28 @@
       <Columns Models="@analysis.Analysis.Monthly"/>
     </Columns>
   </Table>
+  <div style="width: 170px;">
+    <MonthPickerField @bind-Value="@selectedMonth" Label="@Translate("Pick month")"/>
+    <div style="margin-top: 10px;">
+      @if (selectedMonth is not null)
+      {
+        <MudLink
+          Href="@("/download/meter-quarter-hourly-aggregates-for-month/" + Id + "/" + selectedMonth.Value.Year + "/" + selectedMonth.Value.Month)">
+          @Translate("Csv")
+        </MudLink>
+      }
+    </div>
+  </div>
 
-  var meters = new List<IMeter> { analysis.Meter };
+  meters = new List<IMeter> { analysis.Meter };
 
   <MeasurementChartControls Meters="@meters">
-    <MeasurementGaugeChart
-      Parameters="@context"/>
-    <MeasurementLineChart
-      Parameters="@context"
-      Brush="@(Breakpoint >= Breakpoint.MdAndUp)"/>
+    <MeasurementGaugeChart Parameters="@context"/>
+    <MeasurementLineChart Parameters="@context" Brush="@(Breakpoint >= Breakpoint.MdAndUp)"/>
   </MeasurementChartControls>
 }
 
-<Mutating
-  T="IMeter"
-  Value="@(analysis?.Meter)"
-  Id="@Id">
+<Mutating T="IMeter" Value="@(analysis?.Meter)" Id="@Id">
   <Edit>
     <HeadContent>
       @if (context.Created)
@@ -61,26 +67,24 @@
       }
       else
       {
-        <title>
-          OZDS - @Translate("Meter"): @context.Model.Title
-        </title>
+        <title>OZDS - @Translate("Meter"): @context.Model.Title</title>
       }
     </HeadContent>
-
     <Edit Model="context.Model"/>
   </Edit>
   <Details>
     <HeadContent>
-      <title>
-        OZDS - @Translate("Meter"): @context.Model.Title
-      </title>
+      <title>OZDS - @Translate("Meter"): @context.Model.Title</title>
     </HeadContent>
-
     <Details Model="context.Model"/>
   </Details>
 </Mutating>
 
-@code {
+@code{
+
+  private List<IMeter> meters = new();
+
+  private DateTime? selectedMonth;
 
   [CascadingParameter]
   private AnalysisState AnalysisState { get; set; } = default!;
