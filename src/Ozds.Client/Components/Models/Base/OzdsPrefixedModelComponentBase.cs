@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using Microsoft.AspNetCore.Components;
+using Ozds.Client.Extensions;
 
 namespace Ozds.Client.Components.Models.Base;
 
@@ -38,6 +39,26 @@ public abstract class OzdsPrefixedModelComponentBase<TPrefix, TModel> :
       condition,
       inner.Parameters[0]
     );
+  }
+
+  protected MemberExpression Label<T>(
+    Expression<Func<TModel, T?>> next
+  )
+  {
+    var inner = Exp;
+
+    var nextReplaced = ParameterReplacer.Replace(
+      next.Body,
+      next.Parameters[0],
+      inner.Body
+    );
+
+    var nextLambda = Expression.Lambda<Func<TPrefix, T?>>(
+      nextReplaced,
+      inner.Parameters[0]
+    );
+
+    return nextLambda.LabelExpression();
   }
 
   protected virtual Expression<Func<TPrefix, TModel?>> CreateExp()

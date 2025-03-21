@@ -7,7 +7,6 @@
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Client.Components.Fields
 @using Ozds.Client.Components.Streaming
-@using Ozds.Client.Extensions
 @using Tizzani.MudBlazor.HtmlEditor
 @inherits OzdsManagedModelComponentBase<TPrefix, TModel>
 
@@ -19,7 +18,7 @@
   {
     var nextFunc = next.Compile();
     return @<MudTextField
-              Label="@(Translate(next.Label()))"
+              Label="@(Translate(Label(next)))"
               Value="@Get(nextFunc)"
               ValueChanged="@Set(next)"
               For="@For(next)"/>;
@@ -29,7 +28,7 @@
   {
     var nextFunc = next.Compile();
     return @<MudNumericField
-              Label="@(Translate(next.Label()))"
+              Label="@(Translate(Label(next)))"
               Value="@Get(nextFunc)"
               ValueChanged="@Set(next)"
               For="@For(next)"/>;
@@ -39,7 +38,7 @@
   {
     var nextFunc = next.Compile();
     return @<MudNumericField
-              Label="@(Translate(next.Label()))"
+              Label="@(Translate(Label(next)))"
               Value="@Get(nextFunc)"
               ValueChanged="@Set(next)"
               For="@For(next)"/>;
@@ -49,7 +48,7 @@
   {
     var nextFunc = next.Compile();
     return @<MudNumericField
-              Label="@(Translate(next.Label()))"
+              Label="@(Translate(Label(next)))"
               Value="@Get(nextFunc)"
               ValueChanged="@Set(next)"
               For="@For(next)"/>;
@@ -59,7 +58,7 @@
   {
     var nextFunc = next.Compile();
     return @<MudNumericField
-              Label="@(Translate(next.Label()))"
+              Label="@(Translate(Label(next)))"
               Value="@Get(nextFunc)"
               ValueChanged="@Set(next)"
               For="@For(next)"/>;
@@ -69,7 +68,7 @@
   {
     var nextFunc = next.Compile();
     return @<MudCheckBox
-              Label="@(Translate(next.Label()))"
+              Label="@(Translate(Label(next)))"
               Value="@Get(nextFunc)"
               ValueChanged="@Set(next)"
               For="@For(next)"/>;
@@ -79,7 +78,7 @@
   {
     var nextFunc = next.Compile();
     return @<MudCheckBox
-              Label="@(Translate(next.Label()))"
+              Label="@(Translate(Label(next)))"
               Value="@Get(nextFunc)"
               ValueChanged="@Set(next)"
               For="@For(next)"/>;
@@ -91,7 +90,7 @@
   {
     var nextFunc = next.Compile();
     return @<EnumPicker
-              Title="@(Translate(next.Label()))"
+              Title="@(Translate(Label(next)))"
               Value="@Get(nextFunc)"
               ValueChanged="@Set(next)"
               For="@For(next)"/>;
@@ -105,7 +104,7 @@
   {
     var nextFunc = next.Compile();
     return @<MultiEnumPicker
-              Title="@(Translate(next.Label()))"
+              Title="@(Translate(Label(next)))"
               Value="@Get(nextFunc)"
               ValueChanged="@Set(next, (IEnumerable<T> x) => x.ToHashSet())"/>;
   }
@@ -118,7 +117,7 @@
   {
     var nextFunc = next.Compile();
     return @<MultiEnumPicker
-              Title="@(Translate(next.Label()))"
+              Title="@(Translate(Label(next)))"
               Value="@Get(nextFunc)"
               ValueChanged="@Set(next, (IEnumerable<T> x) => x.ToList())"/>;
   }
@@ -127,7 +126,7 @@
   {
     var nextFunc = next.Compile();
     return @<MudTextField
-              Label="@(Translate(next.Label()))"
+              Label="@(Translate(Label(next)))"
               Value="@Get(nextFunc)"
               ValueChanged="@Set(next)"
               For="@For(next)"/>;
@@ -138,7 +137,7 @@
     var nextFunc = next.Compile();
     return @<div>
       <p>
-        @Translate(next.Label())
+        @Translate(Label(next))
       </p>
       <MudHtmlEditor
         Html="@Get(nextFunc)"
@@ -151,7 +150,7 @@
   {
     var nextFunc = next.Compile();
     return @<MudNumericField
-              Label="@(Translate(next.Label()))"
+              Label="@(Translate(Label(next)))"
               Value="@Get(nextFunc)"
               ValueChanged="@Set(next)"
               For="@For(next)"/>;
@@ -162,7 +161,7 @@
   {
     var nextFunc = next.Compile();
     return @<MudNumericField
-              Label="@(Translate(next.Label()))"
+              Label="@(Translate(Label(next)))"
               Value="@Get(nextFunc)"
               ValueChanged="@Set(next)"
               For="@For(next)"/>;
@@ -173,7 +172,7 @@
   {
     var nextFunc = next.Compile();
     return @<MudCheckBox
-              Label="@(Translate(next.Label()))"
+              Label="@(Translate(Label(next)))"
               Value="@Get(nextFunc)"
               ValueChanged="@Set(next)"
               For="@For(next)"/>;
@@ -184,7 +183,7 @@
   {
     var nextFunc = next.Compile();
     return @<MudCheckBox
-              Label="@(Translate(next.Label()))"
+              Label="@(Translate(Label(next)))"
               Value="@Get(nextFunc)"
               ValueChanged="@Set(next)"
               For="@For(next)"/>;
@@ -194,7 +193,7 @@
   {
     var nextFunc = next.Compile();
     return @<EnumPicker
-              Title="@(Translate(next.Label()))"
+              Title="@(Translate(Label(next)))"
               Value="@Get(nextFunc)"
               ValueChanged="@Set(next)"
               For="@For(next)"/>;
@@ -206,7 +205,7 @@
   {
     var nextFunc = next.Compile();
     return @<MultiEnumPicker
-              Title="@(Translate(next.Label()))"
+              Title="@(Translate(Label(next)))"
               Value="@Get(nextFunc)"
               ValueChanged="@Set(next, (IEnumerable<T> x) => x.ToHashSet())"/>;
   }
@@ -217,7 +216,7 @@
   {
     var nextFunc = next.Compile();
     return @<MultiEnumPicker
-              Title="@(Translate(next.Label()))"
+              Title="@(Translate(Label(next)))"
               Value="@Get(nextFunc)"
               ValueChanged="@Set(next, (IEnumerable<T> x) => x.ToList())"/>;
   }
@@ -230,7 +229,7 @@
     var nextFunc = next.Compile();
     return @<Paging T="T">
       <Found Context="models">
-        <MudSelect Label="@(Translate(next.Label()))"
+        <MudSelect Label="@(Translate(Label(next)))"
                    Value="@Get(nextFunc)"
                    ValueChanged="@Set(next)"
                    For="@For(next)">

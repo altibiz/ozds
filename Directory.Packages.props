@@ -52,6 +52,8 @@
 
     <PackageVersion Include="CommandLineParser" Version="2.9.1" />
 
+    <PackageVersion Include="OpenAI" Version="2.1.0" />
+
     <PackageVersion Include="HtmlSanitizer" Version="9.0.876" />
 
     <PackageVersion Include="MudBlazor" Version="8.1.0" />
@@ -83,6 +85,8 @@
     <PackageVersion Include="StyleCop.Analyzers" Version="1.1.118" />
 
     <PackageVersion Include="SonarAnalyzer.CSharp" Version="9.28.0.94264" />
+
+    <PackageVersion Include="Tomlyn" Version="0.19.0" />
   </ItemGroup>
 
 </Project>

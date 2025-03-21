@@ -1,5 +1,18 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json
 
+x-ollama-common: &ollama-common
+  image: ollama/ollama:0.6.3
+  restart: always
+  ports:
+    - 11434:11434
+  volumes:
+    - ollama_data:/root/.ollama
+  healthcheck:
+    test: curl --fail http://localhost:11434 || exit 1
+    interval: 30s
+    timeout: 10s
+    retries: 5
+
 services:
   postgres:
     image: timescale/timescaledb-ha:pg14-latest
@@ -17,10 +30,10 @@ services:
       interval: 1m
       timeout: 10s
       retries: 10
+
   rabbitmq:
     image: rabbitmq:3.13-management
     restart: always
-    profiles: [all]
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
     environment:
@@ -34,8 +47,10 @@ services:
       interval: 1m
       timeout: 10s
       retries: 10
+
   mailserver:
     image: mailhog/mailhog:v1.0.1
+    restart: always
     user: root
     ports:
       - 1025:1025
@@ -53,10 +68,28 @@ services:
       timeout: 10s
       retries: 5
 
+  ollama-cpu:
+    <<: *ollama-common
+    profiles: [cpu]
+
+  ollama-cuda:
+    <<: *ollama-common
+    profiles: [cuda]
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: cdi
+              capabilities: [gpu]
+              device_ids:
+                - nvidia.com/gpu=all
+
 volumes:
   postgres_data:
     driver: local
   rabbitmq_data:
     driver: local
   mailserver_data:
+    driver: local
+  ollama_data:
     driver: local

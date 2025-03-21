@@ -1,4 +1,5 @@
 using Moq;
+using Ozds.Assets.Extensions;
 using Ozds.Business.Extensions;
 using Ozds.Data.Extensions;
 using Ozds.Document.Extensions;
@@ -25,6 +26,7 @@ if (arguments is null)
 
 var builder = Host.CreateApplicationBuilder();
 builder.Services
+  .AddOzdsAssets()
   .AddOzdsDocument()
   .AddOzdsUsers()
   .AddOzdsData()
