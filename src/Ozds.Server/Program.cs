@@ -11,6 +11,11 @@ using Ozds.Server.Extensions;
 using Ozds.Users.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+  serverOptions.Limits.MinRequestBodyDataRate = null;
+});
+
 if (builder.Environment.IsDevelopment())
 {
   builder.Host.UseNLogHost();
