@@ -145,6 +145,10 @@ words:
   - "recordset"
   - "enumerables"
   - "cloners"
+  - "substituters"
+  - "nixos"
+  - "rzls"
+  - "devex"
 
   # Croatian
   - "altibiz"
