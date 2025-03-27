@@ -90,7 +90,7 @@ format:
 deps:
     exec \
       (nix build ".#default.fetch-deps" --print-out-paths --no-link) \
-      ./scripts/flake/ozds/deps.nix
+      ./scripts/flake/ozds/deps.json
 
 lint:
     prettier --check \

@@ -21,7 +21,7 @@
 
       src = self;
       projectFile = "src/Ozds.Server/Ozds.Server.csproj";
-      nugetDeps = ./deps.nix;
+      nugetDeps = ./deps.json;
       executables = [ "Ozds.Server" ];
       makeWrapperArgs = [
         "--set DOTNET_CONTENTROOT ${placeholder "out"}/lib/${pname}"
