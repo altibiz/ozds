@@ -84,6 +84,7 @@
             dotnet-runtime
             dotnet-aspnetcore
             omnisharp-roslyn
+            rzls
             netcoredbg
             powershell
 
