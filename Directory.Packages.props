@@ -60,7 +60,7 @@
     <PackageVersion Include="Blazored.LocalStorage" Version="4.5.0" />
     <PackageVersion Include="Tizzani.MudBlazor.HtmlEditor" Version="2.3.0" />
 
-    <PackageVersion Include="Microsoft.Playwright" Version="1.47.0" />
+    <PackageVersion Include="Microsoft.Playwright" Version="1.50.0" />
 
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
     <PackageVersion Include="xunit" Version="2.9.2" />

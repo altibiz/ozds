@@ -27,8 +27,11 @@
         "--set DOTNET_CONTENTROOT ${placeholder "out"}/lib/${pname}"
       ] ++ lib.mapAttrsToList
         (name: value: "--set ${name} ${value}")
-        (self.lib.playwright.env pkgs);
-      buildInputs = builtins.attrValues (self.lib.playwright.pkgs pkgs);
+        (self.lib.playwright.env pkgs.system);
+      buildInputs = [
+        self.packages.${pkgs.system}.playwrightBrowsers
+        self.packages.${pkgs.system}.playwrightNode
+      ];
 
       postInstall = ''
         rm -rf $out/lib/${pname}/App_Data
