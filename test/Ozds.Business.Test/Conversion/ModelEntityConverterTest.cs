@@ -24,8 +24,7 @@ public class ModelEntityConverterTest
   public void Converts(Type modelType)
   {
     var serviceCollection = new ServiceCollection();
-    serviceCollection.AddActivation();
-    serviceCollection.AddConversion();
+    serviceCollection.AddOzdsBusinessPure();
 
     var serviceProvider = serviceCollection.BuildServiceProvider();
     var activator = serviceProvider

@@ -5,7 +5,8 @@ namespace Ozds.Iot.Observers.EventArgs;
 public enum PushEventBufferBehavior
 {
   Realtime,
-  Buffer
+  Buffer,
+  Aggregate
 }
 
 public class PushEventArgs : System.EventArgs

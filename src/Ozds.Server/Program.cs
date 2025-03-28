@@ -26,28 +26,19 @@ builder.Services
   .AddSetupFeatures("OrchardCore.AutoSetup")
   .ConfigureServices(
     services => services
-      .AddOzdsDocument(builder)
-      .AddOzdsUsers(builder)
-      .AddOzdsData(builder)
-      .AddOzdsMessaging(builder)
-      .AddOzdsJobs(builder)
-      .AddOzdsEmail(builder)
-      .AddOzdsBusiness(builder)
-      .AddOzdsIot(builder)
-      .AddOzdsClient(builder)
+      .AddOzdsDocument()
+      .AddOzdsUsers()
+      .AddOzdsData()
+      .AddOzdsMessaging()
+      .AddOzdsJobs()
+      .AddOzdsEmail()
+      .AddOzdsBusiness()
+      .AddOzdsIot()
+      .AddOzdsClient()
       .AddOzdsServer(builder))
   .Configure(
     (app, endpoints) => app
-      .UseOzdsServer(endpoints)
-      .UseOzdsClient(endpoints)
-      .UseOzdsIot(endpoints)
-      .UseOzdsBusiness(endpoints)
-      .UseOzdsEmail(endpoints)
-      .UseOzdsJobs(endpoints)
-      .UseOzdsMessaging(endpoints)
-      .UseOzdsData(endpoints)
-      .UseOzdsUsers(endpoints)
-      .UseOzdsDocument(endpoints));
+      .UseOzdsServer(endpoints));
 
 var app = builder.Build();
 

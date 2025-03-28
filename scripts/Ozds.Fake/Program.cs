@@ -1,44 +1,65 @@
-using Ozds.Fake;
+using Moq;
+using Ozds.Business.Extensions;
+using Ozds.Data.Extensions;
+using Ozds.Document.Extensions;
+using Ozds.Email.Extensions;
+using Ozds.Fake.Arguments;
 using Ozds.Fake.Extensions;
-using Ozds.Fake.Services;
+using Ozds.Iot.Extensions;
+using Ozds.Jobs.Extensions;
+using Ozds.Messaging.Extensions;
+using Ozds.Users.Extensions;
+using MessagingMessageSender =
+  Ozds.Messaging.Sender.Abstractions.IMessageSender;
+using OrchardUserManager =
+  Microsoft.AspNetCore.Identity.UserManager<OrchardCore.Users.IUser>;
+using OrchardUserStore =
+  Microsoft.AspNetCore.Identity.IUserStore<OrchardCore.Users.IUser>;
+using YesSqlSession = YesSql.ISession;
 
-var options = OzdsFakeArguments.Parse(args);
-if (options is null)
+var arguments = OzdsFakeArguments.Parse(args);
+if (arguments is null)
 {
-  return;
+  return 1;
 }
 
 var builder = Host.CreateApplicationBuilder();
+builder.Services
+  .AddOzdsDocument()
+  .AddOzdsUsers()
+  .AddOzdsData()
+  .AddOzdsMessaging(false)
+  .AddOzdsJobs()
+  .AddOzdsEmail()
+  .AddOzdsBusiness()
+  .AddOzdsIot();
 
-_ = options switch
+// NOTE: hacks to enable most Ozds services working
+builder.Services.AddSingleton(Mock.Of<MessagingMessageSender>());
+builder.Services.AddSingleton(
+  new Mock<OrchardUserManager>(
+    Mock.Of<OrchardUserStore>(), null!, null!, null!, null!, null!, null!,
+    null!, null!).Object);
+builder.Services.AddSingleton(Mock.Of<YesSqlSession>());
+foreach (var service in builder.Services
+  .Where(
+    service =>
+      service.ServiceType == typeof(IHostedService)
+      && !(service.ImplementationInstance?.GetType().Namespace
+        ?.StartsWith(nameof(Microsoft)) ?? false)
+      && !(service.ImplementationType?.Namespace
+        ?.StartsWith(nameof(Microsoft)) ?? false)
+      && !(service.ImplementationFactory?.Method?.Module.Name
+        ?.StartsWith(nameof(Microsoft)) ?? false))
+  .ToList())
 {
-  OzdsFakePushArguments push => builder.Services
-    .AddSingleton(push)
-    .AddRecords()
-    .AddLoaders()
-    .AddGenerators()
-    .AddPackers()
-    .AddClient(push.Timeout_s, push.BaseUrl)
-    .AddHostedService<PushHostedService>(),
-  OzdsFakeSeedArguments seed => builder.Services
-    .AddSingleton(seed)
-    .AddRecords()
-    .AddLoaders()
-    .AddGenerators()
-    .AddPackers()
-    .AddClient(seed.Timeout_s, seed.BaseUrl)
-    .AddHostedService<SeedHostedService>(),
-  OzdsFakeAltibizArguments altibiz => builder.Services
-    .AddSingleton(altibiz)
-    .AddMessaging(
-      altibiz.Host,
-      altibiz.VirtualHost,
-      altibiz.Username,
-      altibiz.Password
-    ),
-  _ => throw new InvalidOperationException($"Unknown options: {options}")
-};
+  builder.Services.Remove(service);
+}
+
+builder.Services
+  .AddOzdsFake(arguments);
 
 var app = builder.Build();
-
 await app.RunAsync();
+
+return 0;

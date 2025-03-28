@@ -1,87 +1,156 @@
 using Altibiz.DependencyInjection.Extensions;
 using MassTransit;
-using Ozds.Business.Conversion;
-using Ozds.Business.Conversion.Abstractions;
+using Microsoft.Extensions.Options;
+using Ozds.Fake.Arguments;
 using Ozds.Fake.Client;
+using Ozds.Fake.Cloners;
+using Ozds.Fake.Cloners.Abstractions;
+using Ozds.Fake.Conversion;
 using Ozds.Fake.Conversion.Abstractions;
-using Ozds.Fake.Conversion.Agnostic;
+using Ozds.Fake.Correction;
 using Ozds.Fake.Correction.Abstractions;
-using Ozds.Fake.Correction.Agnostic;
+using Ozds.Fake.Generators;
 using Ozds.Fake.Generators.Abstractions;
-using Ozds.Fake.Generators.Agnostic;
 using Ozds.Fake.Loaders;
 using Ozds.Fake.Loaders.Abstractions;
+using Ozds.Fake.Options;
+using Ozds.Fake.Packing;
 using Ozds.Fake.Packing.Abstractions;
-using Ozds.Fake.Packing.Agnostic;
+using Ozds.Fake.Services;
+using Ozds.Fake.Workers.Abstractions;
 using Ozds.Messaging.Context;
+
+// TODO: remove dependency on Ozds.Messaging here
 
 namespace Ozds.Fake.Extensions;
 
 public static class IServiceCollectionExtensions
 {
-  public static IServiceCollection AddGenerators(
-    this IServiceCollection services)
+  public static IServiceCollection AddOzdsFake(
+    this IServiceCollection services,
+    object arguments
+  )
   {
-    services.AddTransientAssignableTo(typeof(IMeasurementGenerator));
-    services.AddSingleton(typeof(AgnosticMeasurementGenerator));
+    services = services
+      .AddSingleton(arguments.GetType(), arguments)
+      .AddRecords()
+      .AddLoaders()
+      .AddGenerators()
+      .AddCloners()
+      .AddPackers()
+      .AddWorkers()
+      .AddOptions();
 
-    services.AddTransientAssignableTo(typeof(IPushRequestMeasurementConverter));
-    services.AddSingleton(typeof(PushRequestMeasurementConverter));
+    return arguments switch
+    {
+      OzdsFakePushArguments push => services
+        .AddClient(push.Timeout_s)
+        .AddHostedService<PushService>(),
+      OzdsFakeSeedArguments seed => services
+        .AddClient(seed.Timeout_s)
+        .AddHostedService<SeedService>(),
+      OzdsFakeInsertArguments insert => services
+        .AddClient(insert.Timeout_s)
+        .AddHostedService<InsertService>(),
+      OzdsFakeAltibizArguments => services
+        .AddMessaging(),
+      _ => throw new InvalidOperationException($"Unknown options: {arguments}")
+    };
+  }
 
-    services.AddTransientAssignableTo(typeof(IModelEntityConverter));
-    services.AddSingleton(typeof(ModelEntityConverter));
+  private static IServiceCollection AddOptions(
+    this IServiceCollection services
+  )
+  {
+    services.ConfigureOptions<ConfigureOzdsFakeOptions>();
+    return services;
+  }
+
+  private static IServiceCollection AddGenerators(
+    this IServiceCollection services
+  )
+  {
+    services.AddTransientAssignableTo(typeof(IMeasurementRecordGenerator));
+    services.AddSingleton(typeof(MeasurementRecordGenerator));
 
     return services;
   }
 
-  public static IServiceCollection AddLoaders(this IServiceCollection services)
+  private static IServiceCollection AddCloners(
+    this IServiceCollection services
+  )
+  {
+    services.AddTransientAssignableTo(typeof(IMeasurementCloner));
+    services.AddSingleton(typeof(MeasurementCloner));
+    return services;
+  }
+
+  private static IServiceCollection AddLoaders(
+    this IServiceCollection services
+  )
   {
     services.AddTransientAssignableTo(typeof(ILoader));
     services.AddSingleton(typeof(ResourceCache));
     return services;
   }
 
-  public static IServiceCollection AddRecords(this IServiceCollection services)
+  private static IServiceCollection AddRecords(
+    this IServiceCollection services
+  )
   {
     services.AddTransientAssignableTo(
       typeof(IMeasurementRecordPushRequestConverter));
-    services.AddSingleton(
-      typeof(AgnosticMeasurementRecordPushRequestConverter));
     services.AddTransientAssignableTo(
-      typeof(ICorrector));
-    services.AddSingleton(typeof(AgnosticCorrector));
+      typeof(IMeasurementRecordModelConverter));
+    services.AddSingleton(
+      typeof(MeasurementRecordConverter));
+    services.AddTransientAssignableTo(
+      typeof(IRecordCorrector));
+    services.AddSingleton(typeof(RecordCorrector));
     return services;
   }
 
-  public static IServiceCollection AddClient(
+  private static IServiceCollection AddPackers(
+    this IServiceCollection services
+  )
+  {
+    services.AddTransientAssignableTo(typeof(IMessengerPushRequestPacker));
+    services.AddSingleton(typeof(MessengerPushRequestPacker));
+    return services;
+  }
+
+  private static IServiceCollection AddWorkers(
+    this IServiceCollection services
+  )
+  {
+    services.AddScopedAssignableTo(typeof(IWorker));
+    return services;
+  }
+
+  private static IServiceCollection AddClient(
     this IServiceCollection services,
-    int timeout,
-    string baseUrl
+    int timeout_s
   )
   {
     services.AddHttpClient(
-      "Ozds.Fake", options =>
+      PushClient.Name,
+      (services, options) =>
       {
-        options.Timeout = TimeSpan.FromSeconds(timeout);
-        options.BaseAddress = new Uri(baseUrl);
+        var clientOptions = services
+          .GetRequiredService<IOptions<OzdsFakeOptions>>().Value.Client;
+
+        options.Timeout = TimeSpan.FromSeconds(timeout_s);
+        options.BaseAddress = new Uri(clientOptions.BaseUrl);
+        options.DefaultRequestHeaders.Add(
+          "X-Api-Key", clientOptions.ApiKey);
       });
-    services.AddScoped(typeof(OzdsPushClient));
+    services.AddScoped(typeof(PushClient));
+    services.AddScoped(typeof(InsertClient));
     return services;
   }
 
-  public static IServiceCollection AddPackers(this IServiceCollection services)
-  {
-    services.AddTransientAssignableTo(typeof(IMessengerPushRequestPacker));
-    services.AddSingleton(typeof(AgnosticMessengerPushRequestPacker));
-    return services;
-  }
-
-  public static IServiceCollection AddMessaging(
-    this IServiceCollection services,
-    string host,
-    string virtualHost,
-    string username,
-    string password
+  private static IServiceCollection AddMessaging(
+    this IServiceCollection services
   )
   {
     services.AddMassTransit(
@@ -102,6 +171,17 @@ public static class IServiceCollectionExtensions
         x.UsingRabbitMq(
           (context, cfg) =>
           {
+            var messagingOptions = context
+              .GetRequiredService<IOptions<OzdsFakeOptions>>().Value.Messaging;
+
+            var connectionStringDictionary = messagingOptions.ConnectionString
+              .Split(';')
+              .ToDictionary(x => x.Split('=')[0], x => x.Split('=')[1]);
+            var host = connectionStringDictionary["Host"];
+            var virtualHost = connectionStringDictionary["VirtualHost"];
+            var username = connectionStringDictionary["Username"];
+            var password = connectionStringDictionary["Password"];
+
             cfg.Host(
               host, virtualHost, cfg =>
               {
