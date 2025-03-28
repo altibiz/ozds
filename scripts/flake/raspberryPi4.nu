@@ -17,7 +17,7 @@ def "main" [] {
 def "main vpn" [] {
   let host = open --raw /etc/hostname | str trim
 
-  let config = vault kv get -format=json "kv/ozds/vpn"
+  let config = vault kv get -format=json "kv/ozds/vpn/current"
     | from json
     | get data.data
     | get $host

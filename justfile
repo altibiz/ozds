@@ -90,7 +90,7 @@ format:
 deps:
     exec \
       (nix build ".#default.fetch-deps" --print-out-paths --no-link) \
-      ./scripts/flake/ozds/deps.nix
+      ./scripts/flake/ozds/deps.json
 
 lint:
     prettier --check \
@@ -170,16 +170,13 @@ publish *args:
     mv '{{ artifacts }}/App_Data' '{{ artifacts }}/App_Data_Dev'
 
     mkdir ("{{ artifacts }}/.playwright/package/.local-browsers" \
-      + "/chromium-1134/chrome-linux")
+      + "/chromium_headless_shell-1155/chrome-linux")
 
     cd ("{{ artifacts }}/.playwright/package/.local-browsers" \
-      + "/chromium-1134/chrome-linux"); \
+      + "/chromium_headless_shell-1155/chrome-linux"); \
       nix-bundle \
-        "playwright-driver.browsers.override { \
-          withFirefox = false; \
-          withWebkit = false; \
-        }" \
-        "/chromium-1134/chrome-linux/chrome"
+        '(builtins.getFlake "git+file:{{ root }}").packages.${builtins.currentSystem}.playwrightBrowsers' \
+        "/chromium_headless_shell-1155/chrome-linux/headless_shell"
 
 docs:
     rm -rf '{{ artifacts }}'
