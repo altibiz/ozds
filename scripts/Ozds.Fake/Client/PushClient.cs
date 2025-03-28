@@ -11,15 +11,14 @@ public class PushClient(
 
   public async Task Push(
     string messengerId,
-    bool realtime,
+    string bufferBehavior,
     IMessengerPushRequestEntity request,
     CancellationToken cancellationToken
   )
   {
     var client = httpClientFactory.CreateClient(Name);
     client.DefaultRequestHeaders.Add(
-      "X-Buffer-Behavior",
-      realtime ? "realtime" : "aggregate");
+      "X-Buffer-Behavior", bufferBehavior);
 
     logger.LogInformation(
       "Pushing {Count} measurements for messenger {MessengerId}",

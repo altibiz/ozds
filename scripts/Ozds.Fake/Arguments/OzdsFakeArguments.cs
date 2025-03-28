@@ -48,6 +48,9 @@ public class OzdsFakePushArguments
 
   [Option('i', "interval", Required = false, HelpText = "Interval in seconds.")]
   public int Interval_s { get; set; } = 5;
+
+  [Option('r', "realtime", Required = false, HelpText = "Instruct measurement buffer to be realtime.")]
+  public bool Realtime { get; set; } = false;
 }
 
 [Verb("seed", HelpText = "Seed the database via OZDS with a desired interval.")]

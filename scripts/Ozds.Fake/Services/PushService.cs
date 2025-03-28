@@ -51,7 +51,8 @@ public class PushService(
           range.DateTo,
           arguments.MessengerId,
           ids,
-          10000
+          BatchSize: 10000,
+          BufferBehavior: arguments.Realtime ? "realtime" : "buffer"
         ));
   }
 }

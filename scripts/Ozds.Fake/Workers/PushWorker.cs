@@ -13,7 +13,8 @@ public record PushWorkerItem(
   DateTimeOffset DateTo,
   string MessengerId,
   List<MeasurementLocationMeterId> Ids,
-  int BatchSize
+  int BatchSize,
+  string BufferBehavior
 );
 
 public class PushWorker(
@@ -52,7 +53,7 @@ public class PushWorker(
 
       await client.Push(
         item.MessengerId,
-        false,
+        item.BufferBehavior,
         request,
         stoppingToken
       );
