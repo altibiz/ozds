@@ -9,10 +9,10 @@ namespace Ozds.Data.Queries;
 
 public class FinancialQueries(
   IDbContextFactory<DataDbContext> factory
-)
+) : IQueries
 {
   public async Task<PaginatedList<IFinancialEntity>>
-    ReadByMeasurementLocationsDynamic(
+    ReadByMeasurementLocationIds(
       IEnumerable<string> measurementLocationIds,
       DateTimeOffset fromDate,
       DateTimeOffset toDate,
@@ -27,7 +27,7 @@ public class FinancialQueries(
     var filtered = context.NetworkUserCalculations
       .Where(
         context.ForeignKeyIn<NetworkUserCalculationEntity>(
-          nameof(NetworkUserCalculationEntity.NetworkUserMeasurementLocationId),
+          nameof(NetworkUserCalculationEntity.NetworkUserMeasurementLocation),
           measurementLocationIds))
       .Where(calculation => calculation.FromDate >= fromDate)
       .Where(calculation => calculation.FromDate < toDate)
@@ -56,7 +56,7 @@ public class FinancialQueries(
   }
 
   public async Task<PaginatedList<IFinancialEntity>>
-    ReadByMetersDynamic(
+    ReadByMeterIds(
       IEnumerable<string> meterIds,
       DateTimeOffset fromDate,
       DateTimeOffset toDate,

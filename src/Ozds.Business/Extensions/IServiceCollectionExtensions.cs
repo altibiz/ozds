@@ -18,6 +18,7 @@ using Ozds.Business.Naming.Abstractions;
 using Ozds.Business.Observers.Abstractions;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Business.Reactors.Abstractions;
+using Ozds.Business.Services;
 using Ozds.Business.Validation;
 using Ozds.Business.Validation.Abstractions;
 
@@ -26,8 +27,23 @@ namespace Ozds.Business.Extensions;
 public static class IServiceCollectionExtensions
 {
   public static IServiceCollection AddOzdsBusiness(
-    this IServiceCollection services,
-    IHostApplicationBuilder builder
+    this IServiceCollection services
+  )
+  {
+    services.AddOzdsBusinessPure();
+    services.AddObservers();
+    services.AddReactors();
+    services.AddServices();
+    services.AddCaching();
+    services.AddBuffers();
+    services.AddMutations();
+    services.AddQueries();
+    services.AddValidation();
+    return services;
+  }
+
+  public static IServiceCollection AddOzdsBusinessPure(
+    this IServiceCollection services
   )
   {
     services.AddActivation();
@@ -35,18 +51,11 @@ public static class IServiceCollectionExtensions
     services.AddConversion();
     services.AddFinance();
     services.AddLocalization();
-    services.AddMutations();
     services.AddNaming();
-    services.AddObservers();
-    services.AddQueries();
-    services.AddValidation();
-    services.AddReactors();
-    services.AddCaching();
-    services.AddBuffers();
     return services;
   }
 
-  public static IServiceCollection AddActivation(
+  private static IServiceCollection AddActivation(
     this IServiceCollection services
   )
   {
@@ -55,7 +64,7 @@ public static class IServiceCollectionExtensions
     return services;
   }
 
-  public static IServiceCollection AddConversion(
+  private static IServiceCollection AddConversion(
     this IServiceCollection services
   )
   {
@@ -91,8 +100,6 @@ public static class IServiceCollectionExtensions
     services.AddTransient(
       typeof(INetworkUserInvoiceCalculator),
       typeof(NetworkUserInvoiceCalculator));
-    services.AddTransient(
-      typeof(INetworkUserInvoiceIssuer), typeof(NetworkUserInvoiceIssuer));
     return services;
   }
 
@@ -109,6 +116,14 @@ public static class IServiceCollectionExtensions
   )
   {
     services.AddScopedAssignableTo(typeof(IMutations));
+    return services;
+  }
+
+  private static IServiceCollection AddServices(
+    this IServiceCollection services
+  )
+  {
+    services.AddHostedService<MigrationService>();
     return services;
   }
 

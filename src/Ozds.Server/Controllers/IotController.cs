@@ -54,6 +54,7 @@ public class IotController(IPushPublisher publisher) : Controller
       {
         "realtime" => PushEventBufferBehavior.Realtime,
         "buffer" => PushEventBufferBehavior.Buffer,
+        "aggregate" => PushEventBufferBehavior.Aggregate,
         _ => throw new ArgumentOutOfRangeException(nameof(bufferBehavior))
       },
       Request = request

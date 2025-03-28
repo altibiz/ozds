@@ -14,12 +14,29 @@ public class ResourceCache(IServiceProvider serviceProvider)
     where TLoader : ILoader<TOut>
     where TOut : class
   {
-    return GetAsync<TLoader, TOut>(name).Result;
+    return GetAsync<TLoader, TOut>(name, CancellationToken.None)
+      .GetAwaiter()
+      .GetResult();
+  }
+
+  public Task<TOut> GetAsync<TLoader, TOut>(
+    string name,
+    CancellationToken cancellationToken
+  )
+    where TLoader : ILoader<TOut>
+    where TOut : class
+  {
+    return GetAsync<TLoader, TOut>(
+      name,
+      (x, _) => Task.FromResult(x),
+      cancellationToken
+    );
   }
 
   public async Task<TOut> GetAsync<TLoader, TOut>(
     string name,
-    CancellationToken cancellationToken = default
+    Func<TOut, CancellationToken, Task<TOut>> postprocess,
+    CancellationToken cancellationToken
   )
     where TLoader : ILoader<TOut>
     where TOut : class
@@ -31,7 +48,8 @@ public class ResourceCache(IServiceProvider serviceProvider)
         {
           await using var stream = Load(name);
           var loader = _serviceProvider.GetRequiredService<TLoader>();
-          return loader.Load(stream);
+          var initial = await loader.Load(stream, cancellationToken);
+          return await postprocess(initial, cancellationToken);
         })
     ).Value as TOut)!;
   }
@@ -44,9 +62,7 @@ public class ResourceCache(IServiceProvider serviceProvider)
     var stream = assembly.GetManifestResourceStream(fullName) ??
       throw new InvalidOperationException(
         $"Resource {fullName} does not exist. "
-        + $"Here are the available resources for the given assembly '{
-          assembly.GetName().Name
-        }':\n"
+        + $"Here are the available resources for the given assembly '{assembly.GetName().Name}':\n"
         + string.Join("\n", assembly.GetManifestResourceNames())
       );
     return stream;

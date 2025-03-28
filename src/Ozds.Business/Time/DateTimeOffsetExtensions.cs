@@ -56,13 +56,15 @@ public static class DateTimeOffsetExtensions
     return startOfMonth.GetMonthRange();
   }
 
+  // NOTE: this one in UTC because clock rewind on 27.10. makes
+  // conversion back to UTC from Croatian ambiguous
   public static DateTimeOffset GetStartOfQuarterHour(
     this DateTimeOffset dateTimeOffset
   )
   {
     var localDateTime = TimeZoneInfo.ConvertTime(
       dateTimeOffset,
-      CroatianTimeZone
+      TimeZoneInfo.Utc
     );
 
     var quarterHour = localDateTime.Minute / 15 * 15;
@@ -77,7 +79,7 @@ public static class DateTimeOffsetExtensions
       DateTimeKind.Unspecified);
 
     var utcStartOfQuarterHour = TimeZoneInfo.ConvertTimeToUtc(
-      localStartOfQuarterHour, CroatianTimeZone);
+      localStartOfQuarterHour, TimeZoneInfo.Utc);
 
     return new DateTimeOffset(utcStartOfQuarterHour, TimeSpan.Zero);
   }
@@ -200,5 +202,12 @@ public static class DateTimeOffsetExtensions
 
         return new DateTimeOffset(utcStartOfMonth, TimeSpan.Zero);
       });
+  }
+
+  public static DateTimeOffset GetStartOfMonthLastYear(
+    this DateTimeOffset dateTimeOffset
+  )
+  {
+    return dateTimeOffset.AddYears(-1).GetStartOfMonth();
   }
 }

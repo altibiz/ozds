@@ -7,23 +7,33 @@ using Ozds.Client.Conversion;
 using Ozds.Client.Conversion.Abstractions;
 using Ozds.Client.Export.Abstractions;
 using Ozds.Client.Import.Abstractions;
+using Ozds.Client.Options;
 
 namespace Ozds.Client.Extensions;
 
 public static class IServiceCollectionExtensions
 {
   public static IServiceCollection AddOzdsClient(
-    this IServiceCollection services,
-    IHostApplicationBuilder builder
+    this IServiceCollection services
   )
   {
+    services.AddOptions();
     services.AddModels();
-    services.AddBlazor(builder);
+    services.AddBlazor();
     services.AddLocalStorage();
     services.AddUi();
     services.AddConversion();
     services.AddImport();
     services.AddExport();
+    return services;
+  }
+
+  private static IServiceCollection AddOptions(
+    this IServiceCollection services
+  )
+  {
+    services.ConfigureOptions<ConfigureHubOptions>();
+    services.ConfigureOptions<ConfigureCircuitOptions>();
     return services;
   }
 
@@ -39,32 +49,14 @@ public static class IServiceCollectionExtensions
   }
 
   private static IServiceCollection AddBlazor(
-    this IServiceCollection services,
-    IHostApplicationBuilder builder
+    this IServiceCollection services
   )
   {
     services
       .AddRazorComponents()
       .AddInteractiveServerComponents();
 
-    services
-      .AddServerSideBlazor()
-      .AddCircuitOptions(
-        options =>
-        {
-          if (builder.Environment.IsDevelopment())
-          {
-            options.DetailedErrors = true;
-          }
-        })
-      .AddHubOptions(
-        options =>
-        {
-          if (builder.Environment.IsDevelopment())
-          {
-            options.EnableDetailedErrors = true;
-          }
-        });
+    services.AddServerSideBlazor();
 
     services.AddCascadingAuthenticationState();
 

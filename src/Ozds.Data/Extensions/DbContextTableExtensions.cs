@@ -45,7 +45,12 @@ public static class DbContextTableExtensions
 
   public static string? GetTableName<T>(this DbContext context)
   {
-    return context.Model.FindEntityType(typeof(T))?.GetTableName();
+    return GetTableName(context, typeof(T));
+  }
+
+  public static string? GetTableName(this DbContext context, Type type)
+  {
+    return context.Model.FindEntityType(type)?.GetTableName();
   }
 
   public static IEnumerable<string> GetColumnNames<T>(
@@ -53,14 +58,6 @@ public static class DbContextTableExtensions
   )
   {
     return GetColumnNames(context, typeof(T));
-  }
-
-  public static string? GetColumnName<T>(
-    this DbContext context,
-    params string[] propertyName
-  )
-  {
-    return GetColumnName(context, typeof(T), propertyName);
   }
 
   public static IEnumerable<string> GetColumnNames(
@@ -95,23 +92,27 @@ public static class DbContextTableExtensions
               .Select(
                 x => x.GetColumnName(storeObjectIdentifier.Value)
                   ?? throw new InvalidOperationException(
-                    $"Column name not found for property {
-                      x.Name
-                    } in type {
-                      type.Name
-                    }"))));
+                    $"Column name not found for property {x.Name} in type {type.Name}"))));
+  }
+
+  public static string? GetColumnName<T>(
+    this DbContext context,
+    IEnumerable<string> propertyName
+  )
+  {
+    return GetColumnName(context, typeof(T), propertyName);
   }
 
   public static string? GetColumnName(
     this DbContext context,
     Type type,
-    params string[] propertyNames
+    IEnumerable<string> propertyNames
   )
   {
-    string? GetColumnName(
+    string? Recursive(
       ITypeBase type,
       StoreObjectIdentifier storeObjectIdentifier,
-      params string[] propertyNames
+      string[] propertyNames
     )
     {
       if (propertyNames.Length == 0)
@@ -132,14 +133,11 @@ public static class DbContextTableExtensions
       if (complexType is null)
       {
         throw new InvalidOperationException(
-          $"No complex type found for property {
-            propertyNames[0]
-          } on type {
-            type.Name
-          }");
+          $"No property {propertyNames[0]} on type {type.Name} "
+          + $"while resolving {string.Join(".", propertyNames)}.");
       }
 
-      return GetColumnName(
+      return Recursive(
         complexType.ComplexType,
         storeObjectIdentifier,
         propertyNames.Skip(1).ToArray()
@@ -161,10 +159,10 @@ public static class DbContextTableExtensions
         $"Store object identifier for entity type {type.Name} not found");
     }
 
-    return GetColumnName(
+    return Recursive(
       entityType,
       storeObjectIdentifier.Value,
-      propertyNames);
+      propertyNames.ToArray());
   }
 
   public static string? GetPrimaryKeyColumnName<T>(

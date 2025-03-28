@@ -8,23 +8,20 @@ namespace Ozds.Email.Extensions;
 public static class IServiceCollectionExtensions
 {
   public static IServiceCollection AddOzdsEmail(
-    this IServiceCollection services,
-    IHostApplicationBuilder builder
+    this IServiceCollection services
   )
   {
-    services.AddOptions(builder);
+    services.AddOptions();
     services.AddSender();
-    services.AddMailKit(builder);
+    services.AddMail();
     return services;
   }
 
   private static IServiceCollection AddOptions(
-    this IServiceCollection services,
-    IHostApplicationBuilder builder
+    this IServiceCollection services
   )
   {
-    services.Configure<OzdsEmailOptions>(
-      builder.Configuration.GetSection("Ozds:Email"));
+    services.ConfigureOptions<ConfigureOzdsEmailOptions>();
     return services;
   }
 
@@ -36,17 +33,10 @@ public static class IServiceCollectionExtensions
     return services;
   }
 
-  private static void AddMailKit(
-    this IServiceCollection services,
-    IHostApplicationBuilder builder
+  private static void AddMail(
+    this IServiceCollection services
   )
   {
-    _ = builder.Configuration
-        .GetSection("Ozds:Email")
-        .Get<OzdsEmailOptions>()
-      ?? throw new InvalidOperationException(
-        "Missing Ozds:Email configuration");
-
     services.AddTransient<ISmtpClient, SmtpClient>();
   }
 }

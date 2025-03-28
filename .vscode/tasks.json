@@ -41,6 +41,26 @@
           "DOTNET_ENVIRONMENT": "Development"
         }
       }
+    },
+    {
+      "label": "build-migration",
+      "command": "dotnet",
+      "problemMatcher": "$msCompile",
+      "type": "process",
+      "args": [
+        "build",
+        "${workspaceFolder}/scripts/Ozds.Migration/Ozds.Migration.csproj",
+        "--configuration",
+        "Debug",
+        "--property:GenerateFullPaths=true",
+        "--consoleloggerparameters:ErrorsOnly"
+      ],
+      "options": {
+        "env": {
+          "ASPNETCORE_ENVIRONMENT": "Development",
+          "DOTNET_ENVIRONMENT": "Development"
+        }
+      }
     }
   ]
 }

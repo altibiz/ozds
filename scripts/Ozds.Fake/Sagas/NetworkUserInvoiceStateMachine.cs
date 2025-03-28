@@ -1,5 +1,6 @@
 using MassTransit;
 using Microsoft.Extensions.Options;
+using Ozds.Fake.Options;
 using Ozds.Messaging.Contracts;
 using Ozds.Messaging.Contracts.Abstractions;
 using Ozds.Messaging.Entities;

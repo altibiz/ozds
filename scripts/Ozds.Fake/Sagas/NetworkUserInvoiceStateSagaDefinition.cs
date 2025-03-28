@@ -2,7 +2,7 @@ using MassTransit;
 using Ozds.Messaging.Contracts.Abstractions;
 using Ozds.Messaging.Entities;
 
-namespace Ozds.Messaging.Sagas;
+namespace Ozds.Fake.Sagas;
 
 public class NetworkUserInvoiceStateSagaDefinition
   : SagaDefinition<NetworkUserInvoiceStateEntity>

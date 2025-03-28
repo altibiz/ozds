@@ -779,6 +779,11 @@
     hash = "sha256-Toy2OC4EZtDHsbYpp0r9wZAjMpglcgYeAC3MEDPRWf4=";
   })
   (fetchNuGet {
+    pname = "Microsoft.EntityFrameworkCore.InMemory";
+    version = "8.0.3";
+    hash = "sha256-V7FNsAvKZbE8d+pDmBVfLRQ4OBkaT3+fcfbWBLqCYv8=";
+  })
+  (fetchNuGet {
     pname = "Microsoft.EntityFrameworkCore.Proxies";
     version = "8.0.3";
     hash = "sha256-OK23KbZO5P6sAtK0Lg9khaktlR6rIc6hbQTxOnR5j6c=";
