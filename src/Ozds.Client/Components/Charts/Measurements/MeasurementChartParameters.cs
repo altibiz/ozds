@@ -22,9 +22,9 @@ public class MeasurementChartParameters
   public DateTimeOffset FromDate { get; set; } =
     DateTimeOffset.UtcNow.Subtract(TimeSpan.FromHours(1));
 
-  public ResolutionModel Resolution { get; set; } = ResolutionModel.Hour;
+  public ResolutionModel Resolution { get; set; } = ResolutionModel.Minute;
 
-  public int Multiplier { get; set; } = 1;
+  public int Multiplier { get; set; } = 15;
 
   public bool Refresh { get; set; } = true;
 
