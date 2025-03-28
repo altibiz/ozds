@@ -41,6 +41,8 @@ and adheres to [Semantic Versioning](https://semver.org/).
   SQL for creating, deleting and calling function-based queries/mutations
 - migration justfile command that uses the new Ozds.Migration CLI tool
 - GetStartOfMonthLastYear function and tests and apply where needed
+- substituters to Raspberry PI nixos configuration
+- initial `rzls` (Razor language server) for better devex
 
 ### Changed
 
@@ -71,6 +73,12 @@ and adheres to [Semantic Versioning](https://semver.org/).
   appsettings.json
 - Fix bug in GetStartOfQuarterHour that accounts for Croatian clock rewind on
   27.10.
+- Fix vpn connection function
+- Flake update
+- Fix location selection sending users to location details
+- Fix `LocationStateProvider` not fetching locations after exit from location
+- Use the new [`deps.json`] instead of the obsolete `deps.nix`
+- Fix playwright browser dependency
 
 ### Removed
 
@@ -154,3 +162,5 @@ and adheres to [Semantic Versioning](https://semver.org/).
 [1.1.1]: https://github.com/altibiz/ozds/compare/1.0.1...1.1.1
 [1.0.1]: https://github.com/altibiz/ozds/compare/1.0.0...1.0.1
 [1.0.0]: https://github.com/altibiz/ozds/releases/tag/1.0.0
+[`deps.json`]:
+  https://github.com/NixOS/nixpkgs/blob/master/doc/languages-frameworks/dotnet.section.md#generating-and-updating-nuget-dependencies

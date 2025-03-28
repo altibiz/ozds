@@ -1,6 +1,5 @@
 @namespace Ozds.Client.Components.Providers
 @using MudBlazor
-@using Ozds.Client.Components.Models
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 @if (_state is { } state)
@@ -34,8 +33,10 @@
         }
 
         <div>
-          <MudButton OnClick="@(() => OnLocationSelected(location))">
-            <Summary Model="location"/>
+          <MudButton OnClick="@(eventArgs => OnLocationSelected(location))">
+            <MudText Typo="Typo.h5">
+              @location.Title
+            </MudText>
           </MudButton>
         </div>
       }
