@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components;
-using Ozds.Business.Finance.Abstractions;
 using Ozds.Business.Models.Composite;
+using Ozds.Business.Mutations;
 using Ozds.Business.Queries;
 using Ozds.Business.Time;
 using Ozds.Client.Components.Base;
@@ -23,7 +23,7 @@ public partial class NetworkUserInvoicePreviewDocumentPage : OzdsComponentBase
     var (from, to) = DateTimeOffsetExtensions.GetMonthRange(Year, Month);
 
     var invoice = await ScopedServices
-      .GetRequiredService<INetworkUserInvoiceIssuer>()
+      .GetRequiredService<NetworkUserInvoiceIssuer>()
       .PreviewNetworkUserInvoiceAsync(
         NetworkUserId,
         from,

@@ -11,7 +11,7 @@ public class FinancialQueries(
   ModelEntityConverter modelEntityConverter
 ) : IQueries
 {
-  public async Task<PaginatedList<IFinancial>> ReadByMeasurementLocationIds(
+  public Task<PaginatedList<IFinancial>> ReadByMeasurementLocationIds(
     IEnumerable<string> measurementLocationIds,
     ResolutionModel resolution,
     int multiplier,
@@ -27,7 +27,26 @@ public class FinancialQueries(
     var timeSpan = resolution.ToTimeSpan(multiplier, toDate);
     fromDate = fromDate == default ? toDate.Subtract(timeSpan) : fromDate;
 
-    var entities = await queries.ReadByMeasurementLocationsDynamic(
+    return ReadByMeasurementLocationIds(
+      measurementLocationIds,
+      fromDate,
+      toDate,
+      pageNumber,
+      cancellationToken,
+      pageCount
+    );
+  }
+
+  public async Task<PaginatedList<IFinancial>> ReadByMeasurementLocationIds(
+    IEnumerable<string> measurementLocationIds,
+    DateTimeOffset fromDate,
+    DateTimeOffset toDate,
+    int pageNumber,
+    CancellationToken cancellationToken,
+    int pageCount = QueryConstants.DefaultFinancialPageCount
+  )
+  {
+    var entities = await queries.ReadByMeasurementLocationIds(
       measurementLocationIds,
       fromDate,
       toDate,
@@ -41,7 +60,7 @@ public class FinancialQueries(
       .ToPaginatedList(entities.TotalCount);
   }
 
-  public async Task<PaginatedList<IFinancial>> ReadByMeterIds(
+  public Task<PaginatedList<IFinancial>> ReadByMeterIds(
     IEnumerable<string> meterIds,
     ResolutionModel resolution,
     int multiplier,
@@ -57,7 +76,26 @@ public class FinancialQueries(
     var timeSpan = resolution.ToTimeSpan(multiplier, toDate);
     fromDate = fromDate == default ? toDate.Subtract(timeSpan) : fromDate;
 
-    var entities = await queries.ReadByMetersDynamic(
+    return ReadByMeterIds(
+      meterIds,
+      fromDate,
+      toDate,
+      pageNumber,
+      cancellationToken,
+      pageCount
+    );
+  }
+
+  public async Task<PaginatedList<IFinancial>> ReadByMeterIds(
+    IEnumerable<string> meterIds,
+    DateTimeOffset fromDate,
+    DateTimeOffset toDate,
+    int pageNumber,
+    CancellationToken cancellationToken,
+    int pageCount = QueryConstants.DefaultFinancialPageCount
+  )
+  {
+    var entities = await queries.ReadByMeterIds(
       meterIds,
       fromDate,
       toDate,

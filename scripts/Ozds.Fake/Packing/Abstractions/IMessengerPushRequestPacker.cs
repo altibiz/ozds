@@ -11,4 +11,11 @@ public interface IMessengerPushRequestPacker
     DateTimeOffset timestamp,
     IEnumerable<IMeterPushRequestEntity> requests
   );
+
+  public Task<IMessengerPushRequestEntity> Pack(
+    string messengerId,
+    DateTimeOffset timestamp,
+    IAsyncEnumerable<IMeterPushRequestEntity> requests,
+    CancellationToken cancellationToken
+  );
 }

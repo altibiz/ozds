@@ -12,6 +12,7 @@ namespace Ozds.Data.Extensions;
 
 // NITPICK: figure out what to do when discriminated type is different from
 // clr type on complex properties
+// TODO: optimize
 
 public static class DbContextDapperCommandExtensions
 {
@@ -25,7 +26,7 @@ public static class DbContextDapperCommandExtensions
     object? parameters = null
   )
   {
-    var objects = await DapperCommand(
+    var objects = await DapperCommand<T>(
       context,
       typeof(T),
       sql,
@@ -33,10 +34,28 @@ public static class DbContextDapperCommandExtensions
       parameters
     );
 
-    return objects.Select(x => (T)x).ToList();
+    return objects;
   }
 
   public static async Task<List<object>> DapperCommand(
+    this DbContext context,
+    Type type,
+    string sql,
+    CancellationToken cancellationToken,
+    object? parameters = null)
+  {
+    var objects = await DapperCommand<object>(
+      context,
+      type,
+      sql,
+      cancellationToken,
+      parameters
+    );
+
+    return objects;
+  }
+
+  private static async Task<List<T>> DapperCommand<T>(
     this DbContext context,
     Type type,
     string sql,
@@ -59,7 +78,7 @@ public static class DbContextDapperCommandExtensions
     );
     using var reader = await connection.ExecuteReaderAsync(command);
 
-    var results = new List<object>();
+    var results = new List<T>();
     var propertyMappings = _propertyMappingsCache.GetOrAdd(
       type,
       type => GetPropertyMappings(context, type));
@@ -70,14 +89,18 @@ public static class DbContextDapperCommandExtensions
         ?? throw new InvalidOperationException(
           $"Failed to create instance of {type.Name}");
       MapProperties(context, instance, splits);
-      results.Add(instance);
-    }
 
-    if (resultAttribute is null)
-    {
-      return results
-        .Select(x => type.GetProperty("Value")?.GetValue(x)!)
-        .ToList();
+      if (resultAttribute is not null)
+      {
+        results.Add((T)instance);
+      }
+      else
+      {
+        var result = instance.GetType().GetProperty("Value")?.GetValue(instance)
+          ?? throw new InvalidOperationException(
+            $"Failed to get value from {instance.GetType().Name}");
+        results.Add((T)result);
+      }
     }
 
     return results;

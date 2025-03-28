@@ -45,6 +45,8 @@ public class IotPushPipe(
         MeasurementBufferBehavior.Realtime,
       PushEventBufferBehavior.Buffer =>
         MeasurementBufferBehavior.Buffer,
+      PushEventBufferBehavior.Aggregate =>
+        MeasurementBufferBehavior.Aggregate,
       _ => throw new ArgumentOutOfRangeException(nameof(eventArgs))
     };
 

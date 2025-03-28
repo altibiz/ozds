@@ -1,3 +1,5 @@
+using Microsoft.Extensions.Options;
+
 namespace Ozds.Email.Options;
 
 public class OzdsEmailFromOptions
@@ -27,4 +29,14 @@ public class OzdsEmailOptions
   public OzdsEmailSmtpOptions Smtp { get; init; } = new();
 
   public OzdsEmailFromOptions From { get; init; } = new();
+}
+
+public class ConfigureOzdsEmailOptions(
+  IConfiguration configuration
+) : IConfigureOptions<OzdsEmailOptions>
+{
+  public void Configure(OzdsEmailOptions options)
+  {
+    configuration.GetSection("Ozds:Email").Bind(options);
+  }
 }

@@ -3,43 +3,69 @@ using Ozds.Business.Conversion;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Mutations.Abstractions;
 using Ozds.Data.Entities.Abstractions;
-using DataMeasurementUpsertMutations = Ozds.Data.Mutations.MeasurementMutations;
+using DataMeasurementMutations = Ozds.Data.Mutations.MeasurementMutations;
 
 namespace Ozds.Business.Mutations;
 
 public class MeasurementMutations(
-  DataMeasurementUpsertMutations mutations,
+  DataMeasurementMutations mutations,
   ModelEntityConverter modelEntityConverter,
   ILogger<MeasurementMutations> logger
 ) : IMutations
 {
   public async Task<List<IMeasurement>> CreateMeasurements(
     IEnumerable<IMeasurement> measurements,
-    CancellationToken cancellationToken
+    CancellationToken cancellationToken,
+    bool triggerEvents = true
   )
   {
-    measurements = measurements.ToList();
+    var entities = modelEntityConverter
+      .ToEntities<IMeasurementEntity>(measurements);
 
-    var entities = measurements
-      .Select(modelEntityConverter.ToEntity<IMeasurementEntity>)
-      .ToList();
-
-    logger.LogDebug(
-      "Upserting {Count} measurements...",
-      entities.Count);
     var stopwatch = Stopwatch.StartNew();
     var result = await mutations.CreateMeasurements(
       entities,
-      cancellationToken
+      cancellationToken,
+      triggerEvents
     );
     stopwatch.Stop();
     logger.LogDebug(
       "Upserted {Count} measurements in {Elapsed}",
-      entities.Count,
+      result.Count,
       stopwatch.Elapsed);
 
-    var models = result
-      .Select(modelEntityConverter.ToModel<IMeasurement>)
+    var models = modelEntityConverter
+      .ToModels<IMeasurement>(result)
+      .ToList();
+
+    return models;
+  }
+
+  public async Task<List<IMeasurement>> CreateMeasurements(
+    IAsyncEnumerable<IMeasurement> measurements,
+    CancellationToken cancellationToken,
+    bool triggerEvents = true
+  )
+  {
+    var entities = modelEntityConverter
+      .ToEntities<IMeasurementEntity>(
+        measurements,
+        cancellationToken);
+
+    var stopwatch = Stopwatch.StartNew();
+    var result = await mutations.CreateMeasurements(
+      entities,
+      cancellationToken,
+      triggerEvents
+    );
+    stopwatch.Stop();
+    logger.LogDebug(
+      "Upserted {Count} measurements in {Elapsed}",
+      result.Count,
+      stopwatch.Elapsed);
+
+    var models = modelEntityConverter
+      .ToModels<IMeasurement>(result)
       .ToList();
 
     return models;

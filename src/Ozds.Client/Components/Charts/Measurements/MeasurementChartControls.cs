@@ -211,8 +211,8 @@ public partial class MeasurementChartControls : OzdsComponentBase
       _parameters.Multiplier,
       1,
       CancellationToken,
-      fromDate,
-      toDate
+      fromDate: fromDate,
+      toDate: toDate
     );
     var fromMeasurementLocations = await queries
       .ReadByMeasurementLocationIds(
@@ -304,7 +304,7 @@ public partial class MeasurementChartControls : OzdsComponentBase
             (x.Timestamp, x.MeasurementLocationId, x.MeterId, x.GetType()))
         .Select(
           x => x
-            .Aggregate(AggregateUpserter.UpsertModelDynamic))
+            .Aggregate(AggregateUpserter.UpsertAggregate))
         .OfType<IMeasurement>()
         .DistinctBy(
           x =>

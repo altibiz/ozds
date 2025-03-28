@@ -9,6 +9,75 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- Initial analysis basis fetching in
+  `Ozds.Data.Queries.MeasurementLocationQueries`
+- `aggregate` buffer behavior that skips flushing measurements for faster
+  seeding times
+- 30 new meters and measurements locations in the dev database
+- VS Code launches and tasks for new migration CLI and fake insert command
+- Fake insert command that inserts fake data directly into the database
+  circumventing the API that the old push and seed commands use
+- Cloners in Ozds.Fake that clone generated data for a specific meter model for
+  requested meters
+- Meter identification class specifically for the Ozds.Fake project
+- Optimize loaders in Ozds.Fake for batch generation
+- Ozds.Fake workers that can be shared between services
+- Ozds.Migration CLI tool that will be used from now on to migrate the database
+  manually to latest and to generate database function migrations
+- Conversion and aggregation functions that optimize for batch processing using
+  enumerables
+- MigrationMutations and MigrationQueries to all projects that need migrations
+  and added a MigrationService in Ozds.Business that prevents the site from
+  running if any migrations are pending
+- JsonParameter that allows for passing JSON objects to database functions via
+  Dapper
+- functions in ExpressionExtensions in Ozds.Data that drive the new database
+  function builders
+- migration that stores the new function-based measurement mutations in the
+  database
+- Ozds.Data.Procedures namespace that is responsible for building and compiling
+  SQL for creating, deleting and calling function-based queries/mutations
+- migration justfile command that uses the new Ozds.Migration CLI tool
+- GetStartOfMonthLastYear function and tests and apply where needed
+
+### Changed
+
+- Progressively fetch analysis bases in `AnalysisStateProvider`
+- Financial queries so they mirror the interface of measurement queries
+- Refactored Ozds.Fake namespaces that implement the Visitor pattern to better
+  align with the rest of the project
+- Refactored Ozds.Fake Program.cs and IServiceCollection extensions to inject as
+  many Ozds services as possible for future-proofing and for current use cases
+- Measurement generation methods in Ozds.Fake that optimize for batch generation
+  using IAsyncEnumerable
+- Refactored Ozds.Fake services to optimize for batch generation
+- Refactored MeasurementMutations to use database functions
+- Refactored all IServiceCollectionExtensions to only depend on
+  IServiceCollection and use the proper configure options pattern for
+  configuration
+- Move NetworkUserInvoiceIssuer to Ozds.Business.Mutations to keep the
+  Ozds.Business.Finance namespace pure and contained only to financial
+  calculations
+- Adjusted the Ozds.Business.Mutations.MeasurementMutations to the new
+  Ozds.Data.Mutations.MeasurementMutations
+- Move all DataDbContext stuff to the Ozds.Data.Context namespace as some of
+  that stuff uses internal EF Core API
+- Adjusted aggregate entity types to use the new Ozds.Data.Procedures.Builders
+- Adjusted DapperCommand function to support new function-based measurement
+  mutations
+- Simplify Ozds.Business.Test and Ozds.Data.Test Startup.cs to use their own
+  appsettings.json
+- Fix bug in GetStartOfQuarterHour that accounts for Croatian clock rewind on
+  27.10.
+
+### Removed
+
+- Leftover analysis queries and tests
+- Deleted all IApplicationBuilderExtensions as they were empty because I thought
+  we would use them at some point
+
 ## [1.1.1]
 
 ### Added

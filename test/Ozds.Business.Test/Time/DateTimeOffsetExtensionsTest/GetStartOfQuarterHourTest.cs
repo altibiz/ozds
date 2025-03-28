@@ -22,7 +22,7 @@ public class GetStartOfQuarterHourTest
     "2024-03-31T02:30:00Z", "2024-03-31T02:30:00Z")] // After DST starts
   // Daylight Saving Time ends on October 27, 2024, at 3:00 AM local time
   [InlineData(
-    "2024-10-27T00:30:00Z", "2024-10-27T01:30:00Z")] // Before DST ends
+    "2024-10-27T00:30:00Z", "2024-10-27T00:30:00Z")] // Before DST ends
   [InlineData(
     "2024-10-27T01:30:00Z", "2024-10-27T01:30:00Z")] // During DST transition
   [InlineData("2024-10-27T02:30:00Z", "2024-10-27T02:30:00Z")] // After DST ends

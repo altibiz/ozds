@@ -7,8 +7,7 @@ namespace Ozds.Users.Extensions;
 public static class IServiceCollectionExtensions
 {
   public static IServiceCollection AddOzdsUsers(
-    this IServiceCollection services,
-    IHostApplicationBuilder builder
+    this IServiceCollection services
   )
   {
     services.AddQueries();

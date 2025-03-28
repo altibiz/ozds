@@ -1,4 +1,5 @@
 using Ozds.Business.Models;
+using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Composite;
 using Ozds.Business.Time;
@@ -75,6 +76,7 @@ public static class AnalysisExtensions
       .ToList();
     var load = models
       .Select(x => x.LastMeasurement)
+      .OfType<IMeasurement>()
       .Load();
 
     var expenses = models.SelectMany(x => x.Invoices).Expenses();

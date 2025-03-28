@@ -1,8 +1,8 @@
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
-using Ozds.Business.Finance.Abstractions;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Enums;
+using Ozds.Business.Mutations;
 using Ozds.Business.Queries;
 using Ozds.Business.Time;
 using Ozds.Client.Export;
@@ -13,7 +13,7 @@ public class DownloadController(
   CalculatedInvoiceQueries calculatedInvoiceQueries,
   MeasurementQueries measurementQueries,
   MeasurementLocationQueries measurementLocationQueries,
-  INetworkUserInvoiceIssuer networkUserInvoiceIssuer,
+  NetworkUserInvoiceIssuer networkUserInvoiceIssuer,
   DocumentQueries documentQueries
 ) : Controller
 {
