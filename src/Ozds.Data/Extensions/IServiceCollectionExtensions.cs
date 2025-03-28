@@ -1,39 +1,37 @@
 using System.Reflection;
 using Altibiz.DependencyInjection.Extensions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Npgsql;
 using Ozds.Data.Context;
 using Ozds.Data.Mutations.Abstractions;
 using Ozds.Data.Observers.Abstractions;
 using Ozds.Data.Options;
+using Ozds.Data.Procedures.Abstractions;
 using Ozds.Data.Queries.Abstractions;
-using Ozds.Data.Services;
 
 namespace Ozds.Data.Extensions;
 
 public static class IServiceCollectionExtensions
 {
   public static IServiceCollection AddOzdsData(
-    this IServiceCollection services,
-    IHostApplicationBuilder builder
+    this IServiceCollection services
   )
   {
-    services.AddOptions(builder);
-    services.AddObservers();
+    services.AddOptions();
+    services.AddProcedures();
     services.AddQueries();
     services.AddMutations();
-    services.AddServices();
-    services.AddEntityFrameworkCore(builder);
+    services.AddDatabase();
+    services.AddObservers();
     return services;
   }
 
   private static IServiceCollection AddOptions(
-    this IServiceCollection services,
-    IHostApplicationBuilder builder
+    this IServiceCollection services
   )
   {
-    services.Configure<OzdsDataOptions>(
-      builder.Configuration.GetSection("Ozds:Data"));
+    services.ConfigureOptions<OzdsDataConfigureOptions>();
     return services;
   }
 
@@ -62,31 +60,27 @@ public static class IServiceCollectionExtensions
     return services;
   }
 
-  private static IServiceCollection AddServices(
+  private static IServiceCollection AddProcedures(
     this IServiceCollection services
   )
   {
-    services.AddSingleton<IHostedService, MigrationService>();
+    services.AddScopedAssignableTo(typeof(IProcedures));
     return services;
   }
 
-  private static void AddEntityFrameworkCore(
-    this IServiceCollection services,
-    IHostApplicationBuilder builder
+  private static void AddDatabase(
+    this IServiceCollection services
   )
   {
-    var dataOptions =
-      builder.Configuration
-        .GetSection("Ozds:Data")
-        .Get<OzdsDataOptions>()
-      ?? throw new InvalidOperationException(
-        "Ozds:Data not found in configuration"
-      );
-
     services.AddPooledDbContextFactory<DataDbContext>(
       (services, options) =>
       {
-        if (builder.Environment.IsDevelopment()
+        var dataOptions = services
+          .GetRequiredService<IOptions<OzdsDataOptions>>().Value;
+        var environment = services
+          .GetRequiredService<IHostEnvironment>();
+
+        if (environment.IsDevelopment()
           && Environment.GetEnvironmentVariable("OZDS_LOG_SQL") is not null)
         {
           options.EnableSensitiveDataLogging();
@@ -103,7 +97,7 @@ public static class IServiceCollectionExtensions
         var dataSource = dataSourceBuilder.Build();
 
         options
-          .UseTimescale(
+          .UseNpgsql(
             dataSource,
             options =>
             {
@@ -112,8 +106,10 @@ public static class IServiceCollectionExtensions
               options.MigrationsHistoryTable(
                 $"__Ozds{nameof(DataDbContext)}");
             })
+          .UseTimescale()
+          .UseServedMigrationsAssembly()
           .AddServedSaveChangesInterceptorsFromAssembly(
-            Assembly.GetExecutingAssembly(),
+            typeof(IServiceCollectionExtensions).Assembly,
             services
           );
 

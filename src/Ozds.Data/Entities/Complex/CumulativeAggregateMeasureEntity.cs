@@ -1,6 +1,8 @@
+using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Extensions;
+using Ozds.Data.Procedures.Builders;
 
 namespace Ozds.Data.Entities.Complex;
 
@@ -33,5 +35,15 @@ public static class CumulativeAggregateMeasureEntityExtensions
         nameof(InstantaneousAggregateMeasureEntity.Max),
         $"{name}_max_{unit}"
       );
+  }
+
+  public static MeasurementProcedureBuilder<T> CumulativeAggregateMeasure<T>(
+    this MeasurementProcedureBuilder<T> builder,
+    Expression<Func<T, CumulativeAggregateMeasureEntity>> value
+  )
+  {
+    return builder
+      .UpsertMin(value.Suffix(x => x.Min))
+      .UpsertMax(value.Suffix(x => x.Max));
   }
 }

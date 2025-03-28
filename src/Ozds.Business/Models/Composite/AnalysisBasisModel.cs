@@ -23,7 +23,7 @@ public class AnalysisBasisModel
 
   public List<InvoiceModel> Invoices { get; set; } = default!;
 
-  public MeasurementModel LastMeasurement { get; set; } = default!;
+  public MeasurementModel? LastMeasurement { get; set; } = default!;
 
   public List<AggregateModel> MonthlyAggregates { get; set; } = default!;
 }

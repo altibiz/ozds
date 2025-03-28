@@ -9,8 +9,7 @@ namespace Ozds.Document.Extensions;
 public static class IServiceCollectionExtensions
 {
   public static IServiceCollection AddOzdsDocument(
-    this IServiceCollection services,
-    IHostApplicationBuilder builder
+    this IServiceCollection services
   )
   {
     services.AddDocumentRenderer();

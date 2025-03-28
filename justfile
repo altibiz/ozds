@@ -15,6 +15,7 @@ messagingcsproj := absolute_path('src/Ozds.Messaging/Ozds.Messaging.csproj')
 jobscsproj := absolute_path('src/Ozds.Jobs/Ozds.Jobs.csproj')
 fakecsproj := absolute_path('scripts/Ozds.Fake/Ozds.Fake.csproj')
 fakeassets := absolute_path('scripts/Ozds.Fake/Assets')
+migrationcsproj := absolute_path('scripts/Ozds.Migration/Ozds.Migration.csproj')
 migrationassets := absolute_path('scripts/migrations')
 docs := absolute_path('docs')
 doxyfile := absolute_path('docs/Doxyfile')
@@ -58,6 +59,11 @@ fake *args:
     $env.ASPNETCORE_ENVIRONMENT = "Development"; \
       $env.DOTNET_ENVIRONMENT = "Development"; \
       dotnet run  --project '{{ fakecsproj }}' -- {{ args }}
+
+migration *args:
+    $env.ASPNETCORE_ENVIRONMENT = "Development"; \
+      $env.DOTNET_ENVIRONMENT = "Development"; \
+      dotnet run  --project '{{ migrationcsproj }}' -- {{ args }}
 
 measurements *args:
     python -m scripts.database.measurements {{ args }}

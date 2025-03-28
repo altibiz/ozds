@@ -21,6 +21,7 @@ public class MeasurementQueries(
     int multiplier,
     int pageNumber,
     CancellationToken cancellationToken,
+    IntervalModel? interval = default,
     DateTimeOffset fromDate = default,
     DateTimeOffset toDate = default,
     int pageCount = QueryConstants.DefaultMeasurementPageCount
@@ -82,7 +83,7 @@ public class MeasurementQueries(
     );
 
     var buffered = measurementBuffer
-      .Peak()
+      .Peek()
       .Where(
         x =>
           (
@@ -136,7 +137,7 @@ public class MeasurementQueries(
     );
 
     var buffered = measurementBuffer
-      .Peak()
+      .Peek()
       .Where(
         x =>
           (
@@ -212,7 +213,7 @@ public class MeasurementQueries(
     );
 
     var buffered = measurementBuffer
-      .Peak()
+      .Peek()
       .Where(
         x =>
           (
@@ -253,7 +254,7 @@ public class MeasurementQueries(
     );
 
     var buffered = measurementBuffer
-      .Peak()
+      .Peek()
       .Where(
         x =>
           (

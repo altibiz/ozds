@@ -6,7 +6,11 @@ namespace Ozds.Fake.Records.Base;
 
 public abstract record class MeasurementRecord : IMeasurementRecord
 {
-  public required string MeterId { get; set; }
+  [Ignore]
+  public required string MeterId { get; set; } = string.Empty;
+
+  [Ignore]
+  public required string MeasurementLocationId { get; set; } = string.Empty;
 
   public required DateTimeOffset Timestamp { get; set; }
 

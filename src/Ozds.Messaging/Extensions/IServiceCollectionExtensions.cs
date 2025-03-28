@@ -3,11 +3,13 @@ using MassTransit;
 using MassTransit.Configuration;
 using MassTransit.EntityFrameworkCoreIntegration;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Ozds.Messaging.Context;
+using Ozds.Messaging.Mutations.Abstractions;
 using Ozds.Messaging.Observers.Abstractions;
 using Ozds.Messaging.Options;
+using Ozds.Messaging.Queries.Abstractions;
 using Ozds.Messaging.Sender.Abstractions;
-using Ozds.Messaging.Services;
 
 namespace Ozds.Messaging.Extensions;
 
@@ -17,24 +19,29 @@ public static class IServiceCollectionExtensions
 {
   public static IServiceCollection AddOzdsMessaging(
     this IServiceCollection services,
-    IHostApplicationBuilder builder
+    // NOTE: hack to allow Ozds.Fake to handle MassTransit
+    bool withBus = true
   )
   {
-    services.AddOptions(builder);
+    services.AddOptions();
     services.AddObservers();
-    services.AddSender();
-    services.AddServices();
-    services.AddMassTransit(builder);
+    services.AddMutations();
+    services.AddQueries();
+    services.AddDatabase();
+    if (withBus)
+    {
+      services.AddSender();
+      services.AddBus();
+    }
+
     return services;
   }
 
   private static IServiceCollection AddOptions(
-    this IServiceCollection services,
-    IHostApplicationBuilder builder
+    this IServiceCollection services
   )
   {
-    services.Configure<OzdsMessagingOptions>(
-      builder.Configuration.GetSection("Ozds:Messaging"));
+    services.ConfigureOptions<ConfigureOzdsJobsOptions>();
     return services;
   }
 
@@ -55,37 +62,49 @@ public static class IServiceCollectionExtensions
     return services;
   }
 
-  private static IServiceCollection AddServices(
+  private static IServiceCollection AddMutations(
     this IServiceCollection services
   )
   {
-    services.AddSingleton<IHostedService, MigrationService>();
+    services.AddScopedAssignableTo(typeof(IMutations));
     return services;
   }
 
-  private static void AddMassTransit(
-    this IServiceCollection services,
-    IHostApplicationBuilder builder
+  private static IServiceCollection AddQueries(
+    this IServiceCollection services
   )
   {
-    var messagingOptions = builder.Configuration
-        .GetSection("Ozds:Messaging")
-        .Get<OzdsMessagingOptions>()
-      ?? throw new InvalidOperationException(
-        "Missing Ozds:Messaging configuration");
+    services.AddScopedAssignableTo(typeof(IQueries));
+    return services;
+  }
 
+  private static void AddDatabase(
+    this IServiceCollection services
+  )
+  {
     services.AddPooledDbContextFactory<MessagingDbContext>(
-      builder => builder
-        .UseNpgsql(
-          messagingOptions.PersistenceConnectionString, m =>
-          {
-            m.MigrationsAssembly(
-              typeof(MessagingDbContext).Assembly.GetName().Name);
-            m.MigrationsHistoryTable(
-              $"__Ozds{nameof(MessagingDbContext)}");
-          })
-        .UseSnakeCaseNamingConvention());
+      (services, builder) =>
+      {
+        var messagingOptions = services
+          .GetRequiredService<IOptions<OzdsMessagingOptions>>().Value;
 
+        builder
+          .UseNpgsql(
+            messagingOptions.PersistenceConnectionString, m =>
+            {
+              m.MigrationsAssembly(
+                typeof(MessagingDbContext).Assembly.GetName().Name);
+              m.MigrationsHistoryTable(
+                $"__Ozds{nameof(MessagingDbContext)}");
+            })
+          .UseSnakeCaseNamingConvention();
+      });
+  }
+
+  private static void AddBus(
+    this IServiceCollection services
+  )
+  {
     services.AddMassTransit(
       config =>
       {
@@ -112,39 +131,42 @@ public static class IServiceCollectionExtensions
         config.SetSagaRepositoryProvider(
           new OzdsSagaRepositoryRegistrationProvider());
 
-        if (builder.Environment.IsDevelopment())
-        {
-          var connectionStringDictionary = messagingOptions.ConnectionString
-            .Split(';')
-            .ToDictionary(x => x.Split('=')[0], x => x.Split('=')[1]);
-          var host = connectionStringDictionary["Host"];
-          var virtualHost = connectionStringDictionary["VirtualHost"];
-          var username = connectionStringDictionary["Username"];
-          var password = connectionStringDictionary["Password"];
+#if DEBUG // TODO: runtime config
+        config.UsingRabbitMq(
+          (context, cfg) =>
+          {
+            var messagingOptions = context
+              .GetRequiredService<IOptions<OzdsMessagingOptions>>().Value;
 
-          config.UsingRabbitMq(
-            (context, cfg) =>
-            {
-              cfg.Host(
-                host, virtualHost, cfg =>
-                {
-                  cfg.Username(username);
-                  cfg.Password(password);
-                });
-              cfg.ConfigureEndpoints(context);
-            });
-        }
-        else
-        {
-          var connectionString = messagingOptions.ConnectionString;
+            var connectionStringDictionary = messagingOptions.ConnectionString
+              .Split(';')
+              .ToDictionary(x => x.Split('=')[0], x => x.Split('=')[1]);
+            var host = connectionStringDictionary["Host"];
+            var virtualHost = connectionStringDictionary["VirtualHost"];
+            var username = connectionStringDictionary["Username"];
+            var password = connectionStringDictionary["Password"];
 
-          config.UsingAzureServiceBus(
-            (context, cfg) =>
-            {
-              cfg.Host(connectionString);
-              cfg.ConfigureEndpoints(context);
-            });
-        }
+            cfg.Host(
+              host, virtualHost, cfg =>
+              {
+                cfg.Username(username);
+                cfg.Password(password);
+              });
+            cfg.ConfigureEndpoints(context);
+          });
+#else
+        config.UsingAzureServiceBus(
+          (context, cfg) =>
+          {
+            var messagingOptions = context
+              .GetRequiredService<IOptions<OzdsMessagingOptions>>().Value;
+
+            var connectionString = messagingOptions.ConnectionString;
+
+            cfg.Host(connectionString);
+            cfg.ConfigureEndpoints(context);
+          });
+#endif
       });
 
     services

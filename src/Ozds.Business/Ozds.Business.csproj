@@ -17,6 +17,7 @@
   <ItemGroup>
     <PackageReference Include="Altibiz.DependencyInjection.Extensions" />
     <PackageReference Include="HtmlSanitizer" />
+    <PackageReference Include="System.Linq.Async" />
   </ItemGroup>
 
   <ItemGroup>

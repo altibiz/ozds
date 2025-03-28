@@ -10,7 +10,7 @@ public class DocumentRendererTest
   {
     var serviceCollection = new ServiceCollection();
     serviceCollection.AddLogging();
-    serviceCollection.AddOzdsDocument(null!);
+    serviceCollection.AddOzdsDocument();
     serviceCollection.BuildServiceProvider();
     var serviceProvider = serviceCollection.BuildServiceProvider();
 
