@@ -84,6 +84,7 @@
             dotnet-runtime
             dotnet-aspnetcore
             omnisharp-roslyn
+            rzls
             netcoredbg
             powershell
 
@@ -143,6 +144,6 @@
             nodePackages.vscode-langservers-extracted
             taplo
           ] ++ builtins.attrValues (self.lib.poetry.pkgs pkgs);
-      } // self.lib.playwright.env pkgs);
+      } // self.lib.playwright.env pkgs.system);
   };
 }
