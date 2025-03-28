@@ -203,4 +203,11 @@ public static class DateTimeOffsetExtensions
         return new DateTimeOffset(utcStartOfMonth, TimeSpan.Zero);
       });
   }
+
+  public static DateTimeOffset GetStartOfMonthLastYear(
+    this DateTimeOffset dateTimeOffset
+  )
+  {
+    return dateTimeOffset.AddYears(-1).GetStartOfMonth();
+  }
 }

@@ -4,6 +4,7 @@ using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Composite;
 using Ozds.Business.Models.Enums;
 using Ozds.Business.Queries;
+using Ozds.Business.Time;
 using Ozds.Client.Components.Base;
 using Ozds.Client.State;
 
@@ -72,13 +73,13 @@ public partial class AnalysisStateProvider : OzdsComponentBase
       .GetRequiredService<FinancialQueries>();
 
     var now = DateTimeOffset.UtcNow;
-    var aYearAgo = now.AddYears(-1);
+    var startOfMonthLastYear = now.GetStartOfMonthLastYear();
 
     var analysisBases = await measurementLocationQueries
       .ReadAnalysisBasisByLocationAndRepresentative(
         LocationState.Location?.Id,
         RepresentativeState.Representative,
-        aYearAgo,
+        startOfMonthLastYear,
         now,
         CancellationToken
       );
@@ -91,7 +92,7 @@ public partial class AnalysisStateProvider : OzdsComponentBase
       .ReadByMeasurementLocationIds(
         analysisBases.Select(x => x.MeasurementLocation.Id),
         IntervalModel.Month,
-        aYearAgo,
+        startOfMonthLastYear,
         now,
         0,
         CancellationToken,
@@ -133,7 +134,7 @@ public partial class AnalysisStateProvider : OzdsComponentBase
     var financials = await financialQueries
       .ReadByMeasurementLocationIds(
         analysisBases.Select(x => x.MeasurementLocation.Id),
-        aYearAgo,
+        startOfMonthLastYear,
         now,
         0,
         CancellationToken,
