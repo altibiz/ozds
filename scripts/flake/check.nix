@@ -28,5 +28,5 @@
           # Misc
           nodePackages.prettier
         ] ++ builtins.attrValues (self.lib.poetry.pkgs pkgs);
-      } // self.lib.playwright.env pkgs);
+      } // self.lib.playwright.env pkgs.system);
 }

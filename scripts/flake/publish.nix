@@ -10,6 +10,7 @@
         just
         nushell
         nix-bundle
+        git
 
         # C#
         dotnet-sdk

@@ -78,12 +78,7 @@ public partial class LocationStateProvider : OzdsComponentBase
 
     _state = new LocationState(
       location,
-      async () =>
-      {
-        await SetLocationToLocalStorage(null);
-        _state = null;
-        await InvokeAsync(StateHasChanged);
-      }
+      UnsetLocation
     );
   }
 
@@ -92,13 +87,28 @@ public partial class LocationStateProvider : OzdsComponentBase
     await SetLocationToLocalStorage(location.Id);
     _state = new LocationState(
       location,
-      async () =>
-      {
-        await SetLocationToLocalStorage(null);
-        _state = null;
-        await InvokeAsync(StateHasChanged);
-      }
+      UnsetLocation
     );
+  }
+
+  private async Task UnsetLocation()
+  {
+    await SetLocationToLocalStorage(null);
+
+    if (_representativeLocations.Count == 0)
+    {
+      var locationQueries = ScopedServices
+        .GetRequiredService<LocationQueries>();
+      var locations = await locationQueries.ReadAllLocationsByRepresentativeId(
+        RepresentativeState.Representative.Id,
+        RepresentativeState.Representative.Role,
+        CancellationToken
+      );
+      _representativeLocations = locations;
+    }
+
+    _state = null;
+    await InvokeAsync(StateHasChanged);
   }
 
   private async Task SetLocationToLocalStorage(string? location)

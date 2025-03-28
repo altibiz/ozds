@@ -1,6 +1,8 @@
 using Microsoft.Playwright;
 using Ozds.Document.Renderers.Abstractions;
 
+// TODO: fix context not disposing correctly
+
 namespace Ozds.Document.Renderers.Implementations;
 
 public sealed class PlaywrightHtmlToPdfRenderer(
@@ -14,9 +16,7 @@ public sealed class PlaywrightHtmlToPdfRenderer(
       var browser = await playwright.Chromium.LaunchAsync(
         new BrowserTypeLaunchOptions
         {
-          // NOTE: the Headless option makes it use the old headless mode
-          // which is not present anymore in chromium since 132
-          Args = ["--headless"]
+          Headless = true
         });
 
       var context = await browser.NewContextAsync();

@@ -50,6 +50,12 @@ in
       nix.gc.options = "--delete-older-than 30d";
       nix.settings.auto-optimise-store = true;
       nix.settings.trusted-users = [ "@wheel" ];
+      nix.settings.substituters = [
+        "s3://nix-binary-cache?endpoint=s3.lvm.altibiz.com"
+      ];
+      nix.settings.trusted-public-keys = [
+        "s3.lvm.altibiz.com:2joxncr8RIOfSZcVvt79MvvX3IA4ulUjdc2mkKUR1xc="
+      ];
       nix.package = pkgs.nixVersions.stable;
 
       sops.defaultSopsFile = "${self}/${secrets.filePrefix}";
