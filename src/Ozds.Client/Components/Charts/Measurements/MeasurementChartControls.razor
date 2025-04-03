@@ -35,7 +35,7 @@
     }
     @if (Meters.Count > 1)
     {
-      <MudItem xs="12" md="6">
+      <MudItem xs="12" md="4">
         <MudSelect
           T="string"
           Label="@Translate("Meters")"
@@ -51,7 +51,41 @@
         </MudSelect>
       </MudItem>
     }
-    <MudItem xs="12" md="6">
+    <MudItem xs="12" sm="6" md="4">
+      <EnumPicker
+        T="MeasureModel"
+        @bind-Value="@_parameters.Measure"
+        Title="@Translate("Measure")"
+        Values="@Measures()"
+        Label="@(x => Translate(x.ToTitle()))"/>
+    </MudItem>
+    <MudItem xs="12" sm="6" md="4">
+      <MultiEnumPicker
+        T="PhaseModel"
+        Value="@_parameters.Phases"
+        ValueChanged="@(e => _parameters.Phases = e.ToHashSet())"
+        Title="@Translate("Phase")"
+        Label="@(x => Translate(x.ToTitle()))"/>
+    </MudItem>
+    <MudItem xs="12" sm="6" md="1">
+      <MudNumericField
+        T="int"
+        Value="@_parameters.Multiplier"
+        ValueChanged="@OnMultiplierChanged"
+        Label="@Translate("Multiplier")"
+        Min="1"
+        Max="@_parameters.Resolution.MaxMultiplier()"
+        Step="1"/>
+    </MudItem>
+    <MudItem xs="12" sm="6" md="1">
+      <EnumPicker
+        T="ResolutionModel"
+        Value="@_parameters.Resolution"
+        ValueChanged="@OnResolutionChanged"
+        Title="@Translate("Resolution")"
+        Label="@(x => Translate(x.ToTitle(_parameters.Multiplier)))"/>
+    </MudItem>
+    <MudItem xs="12" md="10">
       <MudHidden Breakpoint="Breakpoint.MdAndUp">
         <MudCheckBox
           T="bool"
@@ -69,46 +103,12 @@
         </div>
       </MudHidden>
     </MudItem>
-    <MudItem xs="12" sm="6" md="3">
-      <EnumPicker
-        T="MeasureModel"
-        @bind-Value="@_parameters.Measure"
-        Title="@Translate("Measure")"
-        Values="@Measures()"
-        Label="@(x => Translate(x.ToTitle()))"/>
-    </MudItem>
-    <MudItem xs="12" sm="6" md="3">
-      <MultiEnumPicker
-        T="PhaseModel"
-        Value="@_parameters.Phases"
-        ValueChanged="@(e => _parameters.Phases = e.ToHashSet())"
-        Title="@Translate("Phase")"
-        Label="@(x => Translate(x.ToTitle()))"/>
-    </MudItem>
-    <MudItem xs="12" sm="6" md="3">
-      <EnumPicker
-        T="ResolutionModel"
-        Value="@_parameters.Resolution"
-        ValueChanged="@OnResolutionChanged"
-        Title="@Translate("Resolution")"
-        Label="@(x => Translate(x.ToTitle(_parameters.Multiplier)))"/>
-    </MudItem>
-    <MudItem xs="12" sm="6" md="3">
-      <MudNumericField
-        T="int"
-        Value="@_parameters.Multiplier"
-        ValueChanged="@OnMultiplierChanged"
-        Label="@Translate("Multiplier")"
-        Min="1"
-        Max="@_parameters.Resolution.MaxMultiplier()"
-        Step="1"/>
-    </MudItem>
-    <MudItem xs="12" sm="6" md="3">
+    @* <MudItem xs="12" sm="6" md="3">
       <EnumPicker
         T="OperatorModel"
         @bind-Value="@_parameters.Operator"
         Title="@Translate("Operator")"
         Label="@(x => Translate(x.ToTitle()))"/>
-    </MudItem>
+    </MudItem> *@
   </MudGrid>
 </MudExpansionPanel>
