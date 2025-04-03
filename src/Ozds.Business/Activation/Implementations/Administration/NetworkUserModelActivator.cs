@@ -19,5 +19,6 @@ public class NetworkUserModelActivator(IServiceProvider serviceProvider)
     model.LegalPerson = modelActivator.Activate<LegalPersonModel>();
     model.AltiBizSubProjectCode = string.Empty;
     model.InvoiceRemark = string.Empty;
+    model.AutomaticallyApproveInvoices = false;
   }
 }

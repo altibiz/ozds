@@ -44,15 +44,20 @@
           <div style="margin-top: 10px; margin-bottom: 10px;">
             <MudLink
               Href="@(PageHref<NetworkUserInvoicePreviewDocumentPage>(new { NetworkUserId = context.Model.Id, invoiceSelectedMonth.Value.Year, invoiceSelectedMonth.Value.Month }))">
-              @Translate("Document")
+              @Translate("Preview document")
             </MudLink>
           </div>
         </MudHidden>
         <div style="margin-top: 10px;">
           <MudLink
             Href="@("/download/network-user-invoice-preview/" + context.Model.Id + "/" + invoiceSelectedMonth.Value.Year + "/" + invoiceSelectedMonth.Value.Month)">
-            @Translate("Pdf")
+            @Translate("Preview pdf")
           </MudLink>
+        </div>
+        <div style="margin-top: 10px;">
+          <MudButton OnClick="OnCreateInvoiceAsync">
+            @Translate("Create")
+          </MudButton>
         </div>
       }
     </div>

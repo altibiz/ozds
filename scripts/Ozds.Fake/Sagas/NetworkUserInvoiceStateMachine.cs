@@ -38,8 +38,13 @@ public class NetworkUserInvoiceStateMachine
     Initially(
       When(AcknowledgeNetworkUserInvoice)
         .Then(
-          context => context.Saga.NetworkUserInvoiceId
-            = context.Message.NetworkUserInvoiceId)
+          context =>
+          {
+            context.Saga.NetworkUserInvoiceId
+              = context.Message.NetworkUserInvoiceId;
+            context.Saga.Approved
+              = context.Message.AutomaticallyApprove;
+          })
         .Send(
           new Uri(
             options.Value.Messaging.Endpoints.InitiateNetworkUserInvoice),
@@ -66,6 +71,7 @@ public class NetworkUserInvoiceStateMachine
                   context.Saga.BillId!))
             .TransitionTo(Registered),
           x => x
+            .Then(context => context.Saga.Approved = false)
             .Send(
               new Uri(
                 options.Value.Messaging.Endpoints.AbortNetworkUserInvoice),
@@ -74,11 +80,33 @@ public class NetworkUserInvoiceStateMachine
                   context.Saga.NetworkUserInvoiceId,
                   context.Saga.AbortReason!))
             .TransitionTo(Aborted)));
+
+    WhenEnter(
+      Registered,
+      x => x
+        .Activity(
+          activity => activity
+            .OfType<NetworkUserInvoiceApprovalActivity>())
+        .Send(
+          new Uri(
+            options.Value.Messaging.Endpoints.ApproveNetworkUserInvoice),
+          context =>
+            new ApproveNetworkUserInvoice(
+              context.Saga.NetworkUserInvoiceId,
+              context.Saga.Approved))
+        .IfElse(
+          context => context.Saga.Approved,
+          x => x.TransitionTo(Approved),
+          x => x.TransitionTo(Disapproved)));
   }
 
   public State Initiated { get; } = default!;
 
   public State Registered { get; } = default!;
+
+  public State Approved { get; } = default!;
+
+  public State Disapproved { get; } = default!;
 
   public State Aborted { get; } = default!;
 

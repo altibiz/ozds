@@ -1,4 +1,5 @@
 using MassTransit;
+using Ozds.Fake.Options;
 using Ozds.Messaging.Contracts.Abstractions;
 using Ozds.Messaging.Entities;
 
@@ -11,17 +12,15 @@ public class NetworkUserInvoiceStateSagaDefinition
 
   public NetworkUserInvoiceStateSagaDefinition(IConfiguration configuration)
   {
-    var config = configuration
-      .GetSection("Ozds")
-      .GetSection("Messaging")
-      .GetSection("Sagas");
+    var options = configuration.GetSection(
+        "Ozds:Fake:Messaging").Get<OzdsFakeMessagingOptions>()
+      ?? throw new InvalidOperationException(
+        "Ozds:Messaging not found in configuration");
 
     Endpoint(
       e =>
       {
-        e.Name = config["NetworkUserInvoiceState"]
-          ?? throw new InvalidOperationException(
-            "NetworkUserInvoiceState endpoint not found");
+        e.Name = options.Sagas.NetworkUserInvoiceState;
         e.PrefetchCount = ConcurrencyLimit;
       });
   }

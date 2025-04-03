@@ -22,4 +22,5 @@ public interface IAcknowledgeNetworkUserInvoice
   public decimal TaxRate_Percent { get; }
   public decimal Tax_EUR { get; }
   public decimal TotalWithTax_EUR { get; }
+  public bool AutomaticallyApprove { get; }
 }

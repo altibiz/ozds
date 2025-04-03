@@ -186,7 +186,15 @@ public static class IServiceCollectionExtensions
         config =>
         {
           config.ConcurrencyMode = ConcurrencyMode.Optimistic;
-          config.ExistingDbContext<MessagingDbContext>();
+          // NOTE: yea its a function to a function and
+          // idk why the API is like that but it works
+          config.DatabaseFactory(services => () =>
+          {
+            var factory = services
+              .GetRequiredService<IDbContextFactory<MessagingDbContext>>();
+            var dbContext = factory.CreateDbContext();
+            return dbContext;
+          });
           config.UsePostgres();
         });
     }
