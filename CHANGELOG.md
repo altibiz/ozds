@@ -43,6 +43,8 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - GetStartOfMonthLastYear function and tests and apply where needed
 - substituters to Raspberry PI nixos configuration
 - initial `rzls` (Razor language server) for better devex
+- measurement location options for chart
+- tooltips for chart options
 
 ### Changed
 
@@ -79,6 +81,9 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - Fix `LocationStateProvider` not fetching locations after exit from location
 - Use the new [`deps.json`] instead of the obsolete `deps.nix`
 - Fix playwright browser dependency
+- Chart control layout
+- the way chart fetches data by changing parameters
+- starting chart settings
 
 ### Removed
 
