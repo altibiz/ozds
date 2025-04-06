@@ -58,7 +58,7 @@ public static class IntervalModelExtensions
   {
     return model switch
     {
-      IntervalModel.QuarterHour => TimeSpan.FromSeconds(1),
+      IntervalModel.QuarterHour => TimeSpan.FromSeconds(5),
       IntervalModel.Day => TimeSpan.FromMinutes(15),
       IntervalModel.Month => TimeSpan.FromDays(1),
       _ => throw new ArgumentOutOfRangeException(nameof(model), model, null)

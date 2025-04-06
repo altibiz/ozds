@@ -8,8 +8,7 @@
 <MudGrid>
   <MudItem xs="12">
     <MudPaper Class="pa-3">
-      <MeasurementChartControls Meters="@Meters">
-        @* <MeasurementHeatMapChart Parameters="@context" /> *@
+      <MeasurementChartControls Meters="@Meters" MeasurementLocations="@MeasurementLocations">
         <MeasurementLineChart Parameters="@context"/>
       </MeasurementChartControls>
     </MudPaper>
@@ -23,5 +22,8 @@
 
   [Parameter]
   public List<IMeter> Meters { get; set; } = default!;
+
+  [Parameter]
+  public List<IMeasurementLocation> MeasurementLocations { get; set; } = default!;
 
 }
