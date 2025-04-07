@@ -18,5 +18,6 @@ public record class AcknowledgeNetworkUserInvoice(
   decimal Total_EUR,
   decimal TaxRate_Percent,
   decimal Tax_EUR,
-  decimal TotalWithTax_EUR
+  decimal TotalWithTax_EUR,
+  bool AutomaticallyApprove
 ) : IAcknowledgeNetworkUserInvoice;

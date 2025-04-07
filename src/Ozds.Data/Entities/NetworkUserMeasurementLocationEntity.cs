@@ -31,7 +31,7 @@ public class NetworkUserMeasurementLocationEntity : MeasurementLocationEntity
     NetworkUserCalculations { get; set; } =
     default!;
 
-  public string CalculationRemark { get; set; } = default!;
+  public string CalculationRemark { get; set; } = string.Empty;
 }
 
 public class

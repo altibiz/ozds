@@ -51,5 +51,8 @@ public class NetworkUserInvoiceStateSagaDefinition
     sagaConfigurator.Message<IRegisterNetworkUserInvoice>(
       x => x
         .UsePartitioner(partition, m => m.Message.NetworkUserInvoiceId));
+    sagaConfigurator.Message<IApproveNetworkUserInvoice>(
+      x => x
+        .UsePartitioner(partition, m => m.Message.NetworkUserInvoiceId));
   }
 }
