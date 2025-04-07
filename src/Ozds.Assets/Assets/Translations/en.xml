@@ -16759,6 +16759,14 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        Multiply the selected time unit to get wanted span of time
+      </Key>
+      <Value>
+        Multiply the selected time unit to get the desired time span
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         MVT
       </Key>
       <Value>
@@ -25152,6 +25160,14 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        Phase(s) for given measure, if empty, display sum of all phases
+      </Key>
+      <Value>
+        Phase(s) for given measurement; if empty, display sum of all phases
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         PhaseModelExtensions
       </Key>
       <Value>
@@ -31375,6 +31391,16 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        Toggle dynamic refresh, refreshes display after parameter is changed 
+        or new measurement comes in
+      </Key>
+      <Value>
+        Toggle auto-refresh, updates display when parameters change or new 
+        measurements arrive
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         TopicModelExtensions
       </Key>
       <Value>
@@ -31443,6 +31469,14 @@
       </Key>
       <Value>
         Unit
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Unit of time used in defining the span of time for the display
+      </Key>
+      <Value>
+        Time unit for display span
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>

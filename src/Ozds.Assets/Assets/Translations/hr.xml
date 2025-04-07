@@ -16848,6 +16848,15 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        Multiply the selected time unit to get wanted span of time
+      </Key>
+      <Value>
+        Pomnožite odabranu vremensku jedinicu da dobijete željeni vremenski 
+        raspon
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         MVT
       </Key>
       <Value>
@@ -25338,6 +25347,14 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        Phase(s) for given measure, if empty, display sum of all phases
+      </Key>
+      <Value>
+        Faza(e) za određeno mjerenje, ako je prazno, prikazuje zbroj svih faza
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         PhaseModelExtensions
       </Key>
       <Value>
@@ -32363,6 +32380,16 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        Toggle dynamic refresh, refreshes display after parameter is changed 
+        or new measurement comes in
+      </Key>
+      <Value>
+        Dinamičko osvježavanje, osvježava prikaz nakon promjene parametra ili 
+        novog mjerenja
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         TopicModelExtensions
       </Key>
       <Value>
@@ -32431,6 +32458,14 @@
       </Key>
       <Value>
         Jedinica
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Unit of time used in defining the span of time for the display
+      </Key>
+      <Value>
+        Jedinica vremena korištena za definiranje vremenskog raspona prikaza
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
