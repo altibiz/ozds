@@ -26,6 +26,7 @@ public class OzdsFakeMessagingEndpointsOptions
   public string InitiateNetworkUserInvoice { get; set; } = default!;
   public string AbortNetworkUserInvoice { get; set; } = default!;
   public string RegisterNetworkUserInvoice { get; set; } = default!;
+  public string ApproveNetworkUserInvoice { get; set; } = default!;
 }
 
 public class OzdsFakeMessagingSagasOptions

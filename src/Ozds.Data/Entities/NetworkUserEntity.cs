@@ -35,7 +35,9 @@ public class NetworkUserEntity : AuditableEntity
 
   public string AltiBizSubProjectCode { get; set; } = default!;
 
-  public string InvoiceRemark { get; set; } = default!;
+  public string InvoiceRemark { get; set; } = string.Empty;
+
+  public bool AutomaticallyApproveInvoices { get; set; }
 }
 
 public class

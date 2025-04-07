@@ -15,5 +15,6 @@ public class NetworkUserInvoiceStateModelActivator(
     base.Initialize(model);
 
     model.NetworkUserInvoiceId = "0";
+    model.Approved = false;
   }
 }
