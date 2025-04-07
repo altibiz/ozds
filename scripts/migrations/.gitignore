@@ -193,3 +193,12 @@
 /20250323084108-Ozds.Data-ProceduralMeasurementMutations-hypertables.sql
 /20250323084108-Ozds.Data-ProceduralMeasurementMutations-orchard.sql
 /20250323084108-Ozds.Data-ProceduralMeasurementMutations.sql
+/20250404102905-Ozds.Data-InvoiceApproval-hypertables.sql
+/20250404102905-Ozds.Data-InvoiceApproval-orchard.sql
+/20250404102905-Ozds.Data-InvoiceApproval.sql
+/20250404103646-Ozds.Messaging-NetUserInvoiceApproval-hypertables.sql
+/20250404103646-Ozds.Messaging-NetUserInvoiceApproval-orchard.sql
+/20250404103646-Ozds.Messaging-NetUserInvoiceApproval.sql
+/20250404121842-Ozds.Data-FinancialRemarkFix-hypertables.sql
+/20250404121842-Ozds.Data-FinancialRemarkFix-orchard.sql
+/20250404121842-Ozds.Data-FinancialRemarkFix.sql

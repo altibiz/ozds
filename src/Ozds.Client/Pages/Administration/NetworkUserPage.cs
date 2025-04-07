@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Components;
 using Ozds.Business.Models;
+using Ozds.Business.Mutations;
 using Ozds.Business.Queries;
+using Ozds.Business.Time;
 using Ozds.Client.Components.Models.Base;
 using Ozds.Client.State;
 
@@ -35,5 +37,30 @@ public partial class NetworkUserPage
     );
 
     return networkUser;
+  }
+
+  private async Task OnCreateInvoiceAsync()
+  {
+    if (invoiceSelectedMonth is not { } month ||
+      Id is not { } id)
+    {
+      return;
+    }
+
+    var (dateFrom, dateTo) = DateTimeOffsetExtensions.GetMonthRange(
+      month.Year,
+      month.Month
+    );
+
+    var issuer = ScopedServices
+      .GetRequiredService<NetworkUserInvoiceIssuer>();
+    var invoice = await issuer.IssueNetworkUserInvoiceAsync(
+      id,
+      dateFrom,
+      dateTo,
+      CancellationToken
+    );
+
+    NavigateToPage<NetworkUserInvoicePage>(new { invoice.Invoice.Id });
   }
 }

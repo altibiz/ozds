@@ -43,6 +43,16 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - GetStartOfMonthLastYear function and tests and apply where needed
 - substituters to Raspberry PI nixos configuration
 - initial `rzls` (Razor language server) for better devex
+- invoice approval fields on network users and network user invoice states and
+  their migrations
+- add saga state machine states `Approved` and `Disapproved` for network user
+  invoice state machine in `Ozds.Fake` and `Ozds.Messaging`
+- `Approved` network user invoice state message `Ozds.Fake` and `Ozds.Messaging`
+- `StatefulNetworkUserInvoiceModel` composite model that contains the invoice
+  and its state
+- boolean fields for edit and details components
+- invoice creation number on network user page
+- network user invoice state on network user invoice page
 
 ### Changed
 
@@ -79,6 +89,11 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - Fix `LocationStateProvider` not fetching locations after exit from location
 - Use the new [`deps.json`] instead of the obsolete `deps.nix`
 - Fix playwright browser dependency
+- Fix scripts requiring timescale docker id/name by fetching the id/name from
+  docker
+- calculation financial remark to nullable as it should have been
+- extract messaging part away from the `NetworkUserInvoiceIssuer` into a reactor
+- send invoice email only when it was approved
 
 ### Removed
 

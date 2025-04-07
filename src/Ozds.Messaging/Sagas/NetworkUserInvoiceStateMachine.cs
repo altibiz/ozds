@@ -52,6 +52,16 @@ public class NetworkUserInvoiceStateMachine
         .SelectId(
           x => NewId.NextGuid()));
 
+    Event(
+      () => ApproveNetworkUserInvoice,
+      x => x
+        .CorrelateBy(
+          (state, context) =>
+            state.NetworkUserInvoiceId
+            == context.Message.NetworkUserInvoiceId)
+        .SelectId(
+          x => NewId.NextGuid()));
+
     Initially(
       When(InitiateNetworkUserInvoice)
         .TransitionTo(Initiated));
@@ -67,6 +77,34 @@ public class NetworkUserInvoiceStateMachine
         .Then(context => context.Saga.BillId = context.Message.BillId)
         .Activity(x => x.OfType<NetworkUserInvoiceRegisteredActivity>())
         .TransitionTo(Registered));
+
+    During(
+      Registered,
+      When(ApproveNetworkUserInvoice)
+        .IfElse(
+          x => x.Message.Approved,
+          x => x
+            .Then(context => context.Saga.Approved = true)
+            .Activity(x => x.OfType<NetworkUserInvoiceApprovedActivity>())
+            .TransitionTo(Approved),
+          x => x
+            .Then(context => context.Saga.Approved = false)
+            .Activity(x => x.OfType<NetworkUserInvoiceApprovedActivity>())
+            .TransitionTo(Disproved)));
+
+    During(
+      Approved,
+      When(ApproveNetworkUserInvoice)
+        .IfElse(
+          x => x.Message.Approved,
+          x => x
+            .Then(context => context.Saga.Approved = true)
+            .Activity(x => x.OfType<NetworkUserInvoiceApprovedActivity>())
+            .TransitionTo(Approved),
+          x => x
+            .Then(context => context.Saga.Approved = false)
+            .Activity(x => x.OfType<NetworkUserInvoiceApprovedActivity>())
+            .TransitionTo(Disproved)));
   }
 
   public State Initiated { get; } = default!;
@@ -74,6 +112,10 @@ public class NetworkUserInvoiceStateMachine
   public State Aborted { get; } = default!;
 
   public State Registered { get; } = default!;
+
+  public State Approved { get; } = default!;
+
+  public State Disproved { get; } = default!;
 
   public Event<IInitiateNetworkUserInvoice>
     InitiateNetworkUserInvoice { get; } = default!;
@@ -83,4 +125,7 @@ public class NetworkUserInvoiceStateMachine
 
   public Event<IRegisterNetworkUserInvoice>
     RegisterNetworkUserInvoice { get; } = default!;
+
+  public Event<IApproveNetworkUserInvoice> ApproveNetworkUserInvoice { get; } =
+    default!;
 }

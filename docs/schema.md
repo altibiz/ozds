@@ -577,6 +577,7 @@ erDiagram
 
     network_user_invoice_states {
         text abort_reason
+        boolean approved
         text bill_id
         uuid correlation_id PK
         text current_state
@@ -606,6 +607,7 @@ erDiagram
         text al_white_low_network_user_catalogue_id
         text al_white_medium_network_user_catalogue_id
         text anu_alti_biz_sub_project_code
+        boolean anu_automatically_approve_invoices
         text anu_created_by_id
         timestamp_with_time_zone anu_created_on
         text anu_deleted_by_id
@@ -669,6 +671,7 @@ erDiagram
 
     network_users {
         text alti_biz_sub_project_code
+        boolean automatically_approve_invoices
         text created_by_id FK
         timestamp_with_time_zone created_on
         text deleted_by_id FK

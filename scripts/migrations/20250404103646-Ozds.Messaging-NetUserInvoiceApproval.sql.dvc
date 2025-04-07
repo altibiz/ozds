@@ -1,0 +1,5 @@
+outs:
+- md5: 9ad1121d22027c468424958580d9b3c1
+  size: 100015
+  hash: md5
+  path: 20250404103646-Ozds.Messaging-NetUserInvoiceApproval.sql

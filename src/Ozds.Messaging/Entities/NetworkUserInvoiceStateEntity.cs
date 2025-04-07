@@ -12,6 +12,8 @@ public class NetworkUserInvoiceStateEntity : StateEntity
   public string? BillId { get; set; }
 
   public string? AbortReason { get; set; }
+
+  public bool Approved { get; set; }
 }
 
 public class

@@ -44,6 +44,37 @@
     </DetailsField>;
   }
 
+  protected RenderFragment Field(Expression<Func<TModel, bool?>> next)
+  {
+    var nextFunc = next.Compile();
+    var value = nextFunc(Model);
+    return @<DetailsField Title="@(Translate(next.Label()))">
+      <MudText>
+        @if (value is bool @bool)
+        {
+          @if (@bool)
+          {
+            <MudIcon
+              Color="@Color.Success"
+              Icon="@Icons.Material.Filled.Check"/>
+          }
+          else
+          {
+            <MudIcon
+              Color="@Color.Error"
+              Icon="@Icons.Material.Filled.Cancel"/>
+          }
+        }
+        else
+        {
+          <MudIcon
+            Color="@Color.Warning"
+            Icon="@Icons.Material.Filled.QuestionMark"/>
+        }
+      </MudText>
+    </DetailsField>;
+  }
+
   protected RenderFragment Field(Expression<Func<TModel, DateTimeOffset?>> next)
   {
     var nextFunc = next.Compile();
@@ -60,8 +91,8 @@
     return @<DetailsField Title="@(Translate(next.Label()))">
       <MudText>
         <pre>
-            @JsonString(nextFunc(Model))
-          </pre>
+          @JsonString(nextFunc(Model))
+        </pre>
       </MudText>
     </DetailsField>;
   }
@@ -117,19 +148,47 @@
   protected RenderFragment NumericField<T>(Expression<Func<TModel, T?>> next)
   {
     var nextFunc = next.Compile();
+    var value = nextFunc(Model);
     return @<DetailsField Title="@(Translate(next.Label()))">
       <MudText>
-        @{
-          var value = nextFunc(Model);
+        @if (value is decimal @decimal)
+        {
+          @NumericString(@decimal)
+        }
+        else
+        {
+          @value
+        }
+      </MudText>
+    </DetailsField>;
+  }
 
-          @if (value is decimal @decimal)
+  protected RenderFragment BoolField<T>(Expression<Func<TModel, T?>> next)
+  {
+    var nextFunc = next.Compile();
+    var value = nextFunc(Model);
+    return @<DetailsField Title="@(Translate(next.Label()))">
+      <MudText>
+        @if (value is bool @bool)
+        {
+          if (@bool)
           {
-            @NumericString(@decimal)
+            <MudIcon
+              Color="@Color.Success"
+              Icon="@Icons.Material.Filled.Check"/>
           }
           else
           {
-            @value
+            <MudIcon
+              Color="@Color.Error"
+              Icon="@Icons.Material.Filled.Cancel"/>
           }
+        }
+        else
+        {
+          <MudIcon
+            Color="@Color.Warning"
+            Icon="@Icons.Material.Filled.QuestionMark"/>
         }
       </MudText>
     </DetailsField>;
@@ -138,19 +197,16 @@
   protected RenderFragment DateTimeField<T>(Expression<Func<TModel, T?>> next)
   {
     var nextFunc = next.Compile();
+    var value = nextFunc(Model);
     return @<DetailsField Title="@(Translate(next.Label()))">
       <MudText>
-        @{
-          var value = nextFunc(Model);
-
-          @if (value is DateTimeOffset @decimal)
-          {
-            @DateTimeString(@decimal)
-          }
-          else
-          {
-            @value
-          }
+        @if (value is DateTimeOffset @decimal)
+        {
+          @DateTimeString(@decimal)
+        }
+        else
+        {
+          @value
         }
       </MudText>
     </DetailsField>;
@@ -159,19 +215,16 @@
   protected RenderFragment DateField<T>(Expression<Func<TModel, T?>> next)
   {
     var nextFunc = next.Compile();
+    var value = nextFunc(Model);
     return @<DetailsField Title="@(Translate(next.Label()))">
       <MudText>
-        @{
-          var value = nextFunc(Model);
-
-          @if (value is DateTimeOffset @decimal)
-          {
-            @DateString(@decimal)
-          }
-          else
-          {
-            @value
-          }
+        @if (value is DateTimeOffset @decimal)
+        {
+          @DateString(@decimal)
+        }
+        else
+        {
+          @value
         }
       </MudText>
     </DetailsField>;
@@ -180,22 +233,19 @@
   protected RenderFragment JsonField<T>(Expression<Func<TModel, T?>> next)
   {
     var nextFunc = next.Compile();
+    var value = nextFunc(Model);
     return @<DetailsField Title="@(Translate(next.Label()))">
       <MudText>
         <pre>
-            @{
-              var value = nextFunc(Model);
-
-              @if (value is JsonDocument @decimal)
-              {
-                @JsonString(@decimal)
-              }
-              else
-              {
-                @value
-              }
-            }
-          </pre>
+          @if (value is JsonDocument @decimal)
+          {
+            @JsonString(@decimal)
+          }
+          else
+          {
+            @value
+          }
+        </pre>
       </MudText>
     </DetailsField>;
   }

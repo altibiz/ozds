@@ -1,0 +1,5 @@
+outs:
+- md5: 1b6b6cd68e139367aece7098981c09c0
+  size: 100001
+  hash: md5
+  path: 20250404102905-Ozds.Data-InvoiceApproval.sql
