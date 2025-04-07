@@ -19,14 +19,16 @@ public class MeasurementChartParameters
 
   public HashSet<PhaseModel> Phases { get; set; } = new();
 
-  public DateTimeOffset FromDate { get; set; } =
-    DateTimeOffset.UtcNow.Subtract(TimeSpan.FromHours(1));
+  public ResolutionModel Resolution { get; set; } = ResolutionModel.Minute;
 
-  public ResolutionModel Resolution { get; set; } = ResolutionModel.Hour;
-
-  public int Multiplier { get; set; } = 1;
+  public int Multiplier { get; set; } = 15;
 
   public bool Refresh { get; set; } = true;
+
+  public DateTimeOffset FromDate { get; set; } =
+    DateTimeOffset.UtcNow.Subtract(
+      ResolutionModel.Minute.ToTimeSpan(15, DateTimeOffset.UtcNow)
+    );
 
   public OperatorModel Operator { get; set; } = OperatorModel.Last;
 }

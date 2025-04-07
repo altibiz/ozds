@@ -53,6 +53,8 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - boolean fields for edit and details components
 - invoice creation number on network user page
 - network user invoice state on network user invoice page
+- measurement location options for chart
+- tooltips for chart options
 
 ### Changed
 
@@ -94,6 +96,9 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - calculation financial remark to nullable as it should have been
 - extract messaging part away from the `NetworkUserInvoiceIssuer` into a reactor
 - send invoice email only when it was approved
+- Chart control layout
+- the way chart fetches data by changing parameters
+- starting chart settings
 
 ### Removed
 

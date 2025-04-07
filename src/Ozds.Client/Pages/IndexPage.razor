@@ -30,6 +30,10 @@ RoleModel.NetworkUserRepresentative
     .Select(analysis => (IMeter)analysis.Meter)
     .DistinctBy(meter => meter.Id)
     .ToList();
+  var measurementLocations = AnalysisState.AnalysisBases.Value
+    .Select(analysis => (IMeasurementLocation)analysis.MeasurementLocation)
+    .DistinctBy(measurementLocation => measurementLocation.Id)
+    .ToList();
 }
 @if (RepresentativeState.Representative.Role
   is RoleModel.NetworkUserRepresentative)
@@ -44,7 +48,8 @@ RoleModel.NetworkUserRepresentative
 @if (RepresentativeState.Representative.Role
   is RoleModel.OperatorRepresentative)
 {
-  <OperatorRepresentativeDashboard Model="@model" Meters="@meters"/>
+  <OperatorRepresentativeDashboard Model="@model"
+                                   MeasurementLocations="@measurementLocations"/>
 }
 
 @if (RepresentativeState.Representative.Role
@@ -70,10 +75,10 @@ RoleModel.NetworkUserRepresentative
 @if (RepresentativeState.Representative.Role
   is RoleModel.NetworkUserRepresentative)
 {
-  var measurementLocations = AnalysisState.AnalysisBases.Value
+  var measurementLocationsAnalysis = AnalysisState.AnalysisBases.Value
     .AnalysesByMeasurementLocation();
 
-  <Table Model="@measurementLocations"/>
+  <Table Model="@measurementLocationsAnalysis"/>
 }
 
 @{
