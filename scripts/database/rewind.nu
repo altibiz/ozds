@@ -55,6 +55,12 @@ def main [project_name: string, name: string] {
   docker compose --profile "*" down -v
   docker compose up -d
   nu $"($root)/scripts/database/isready.nu"
+  let timescale_container_name = (docker compose ps --format json
+    | lines
+    | each { $in | from json }
+    | filter { $in.Image | str starts-with "timescale" }
+    | first
+    | get id)
   open --raw $orchard_dump
     | (docker exec
         --env PGHOST="localhost"
@@ -63,7 +69,7 @@ def main [project_name: string, name: string] {
         --env PGUSER="ozds"
         --env PGPASSWORD="ozds"
         --interactive
-        ozds-postgres-1
+        $timescale_container_name
           psql)
   for $project_migration in $project_migrations {
     let project = $project_migration.project
@@ -83,7 +89,7 @@ def main [project_name: string, name: string] {
         --env PGUSER="ozds"
         --env PGPASSWORD="ozds"
         --interactive
-        ozds-postgres-1
+        $timescale_container_name
           psql)
   open --raw $hypertables_dump
     | (docker exec
@@ -93,6 +99,6 @@ def main [project_name: string, name: string] {
         --env PGUSER="ozds"
         --env PGPASSWORD="ozds"
         --interactive
-        ozds-postgres-1
+        $timescale_container_name
           psql)
 }

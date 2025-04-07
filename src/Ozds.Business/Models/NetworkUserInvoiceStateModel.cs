@@ -11,4 +11,6 @@ public class NetworkUserInvoiceStateModel : StateModel
   public string? BillId { get; set; }
 
   public string? AbortReason { get; set; }
+
+  public bool Approved { get; set; }
 }

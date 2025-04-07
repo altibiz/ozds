@@ -23,6 +23,7 @@ public class NetworkUserInvoiceStateEntityConverter(
     entity.NetworkUserInvoiceId = model.NetworkUserInvoiceId;
     entity.BillId = model.BillId;
     entity.AbortReason = model.AbortReason;
+    entity.Approved = model.Approved;
   }
 
   public override void InitializeModel(
@@ -34,5 +35,6 @@ public class NetworkUserInvoiceStateEntityConverter(
     model.NetworkUserInvoiceId = entity.NetworkUserInvoiceId;
     model.BillId = entity.BillId;
     model.AbortReason = entity.AbortReason;
+    model.Approved = entity.Approved;
   }
 }

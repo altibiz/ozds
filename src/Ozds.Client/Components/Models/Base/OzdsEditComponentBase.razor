@@ -65,6 +65,26 @@
               For="@For(next)"/>;
   }
 
+  protected RenderFragment Field(Expression<Func<TModel, bool?>> next)
+  {
+    var nextFunc = next.Compile();
+    return @<MudCheckBox
+              Label="@(Translate(next.Label()))"
+              Value="@Get(nextFunc)"
+              ValueChanged="@Set(next)"
+              For="@For(next)"/>;
+  }
+
+  protected RenderFragment Field(Expression<Func<TModel, bool>> next)
+  {
+    var nextFunc = next.Compile();
+    return @<MudCheckBox
+              Label="@(Translate(next.Label()))"
+              Value="@Get(nextFunc)"
+              ValueChanged="@Set(next)"
+              For="@For(next)"/>;
+  }
+
   // NOTE: doesn't work with just Enum
   protected RenderFragment Field<T>(Expression<Func<TModel, T?>> next)
     where T : Enum
@@ -142,6 +162,28 @@
   {
     var nextFunc = next.Compile();
     return @<MudNumericField
+              Label="@(Translate(next.Label()))"
+              Value="@Get(nextFunc)"
+              ValueChanged="@Set(next)"
+              For="@For(next)"/>;
+  }
+
+  protected RenderFragment BoolField<T>(Expression<Func<TModel, T?>> next)
+    where T : struct
+  {
+    var nextFunc = next.Compile();
+    return @<MudCheckBox
+              Label="@(Translate(next.Label()))"
+              Value="@Get(nextFunc)"
+              ValueChanged="@Set(next)"
+              For="@For(next)"/>;
+  }
+
+  protected RenderFragment BoolField<T>(Expression<Func<TModel, T>> next)
+    where T : struct
+  {
+    var nextFunc = next.Compile();
+    return @<MudCheckBox
               Label="@(Translate(next.Label()))"
               Value="@Get(nextFunc)"
               ValueChanged="@Set(next)"

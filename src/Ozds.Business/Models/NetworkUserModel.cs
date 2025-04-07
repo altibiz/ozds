@@ -18,6 +18,9 @@ public class NetworkUserModel : AuditableModel
   [Required]
   public required string InvoiceRemark { get; set; } = string.Empty;
 
+  [Required]
+  public required bool AutomaticallyApproveInvoices { get; set; } = false;
+
   public override IEnumerable<ValidationResult> Validate(
     ValidationContext validationContext)
   {
