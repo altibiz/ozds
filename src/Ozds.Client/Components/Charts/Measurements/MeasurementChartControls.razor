@@ -18,37 +18,37 @@
     @if (MeasurementLocations.Count > 1)
     {
       <MudItem xs="12" md="4">
-          <MudSelect
-            T="string"
-            Label="@Translate("Measurement locations")"
-            SelectedValues="@(_parameters.MeasurementLocations.Select(measurementLocation => measurementLocation.Id))"
-            SelectedValuesChanged="@OnMeasurementLocationsChanged"
-            MultiSelection>
-            @foreach (var measurementLocation in MeasurementLocations)
-            {
-              <MudSelectItem Value="@measurementLocation.Id">
-                @measurementLocation.Title
-              </MudSelectItem>
-            }
-          </MudSelect>
+        <MudSelect
+          T="string"
+          Label="@Translate("Measurement locations")"
+          SelectedValues="@(_parameters.MeasurementLocations.Select(measurementLocation => measurementLocation.Id))"
+          SelectedValuesChanged="@OnMeasurementLocationsChanged"
+          MultiSelection>
+          @foreach (var measurementLocation in MeasurementLocations)
+          {
+            <MudSelectItem Value="@measurementLocation.Id">
+              @measurementLocation.Title
+            </MudSelectItem>
+          }
+        </MudSelect>
       </MudItem>
     }
     else if (Meters.Count > 1)
     {
       <MudItem xs="12" md="4">
-          <MudSelect
-            T="string"
-            Label="@Translate("Meters")"
-            SelectedValues="@(_parameters.Meters.Select(meter => meter.Id))"
-            SelectedValuesChanged="@OnMetersChanged"
-            MultiSelection>
-            @foreach (var meter in Meters)
-            {
-              <MudSelectItem Value="@meter.Id">
-                @meter.Id
-              </MudSelectItem>
-            }
-          </MudSelect>
+        <MudSelect
+          T="string"
+          Label="@Translate("Meters")"
+          SelectedValues="@(_parameters.Meters.Select(meter => meter.Id))"
+          SelectedValuesChanged="@OnMetersChanged"
+          MultiSelection>
+          @foreach (var meter in Meters)
+          {
+            <MudSelectItem Value="@meter.Id">
+              @meter.Id
+            </MudSelectItem>
+          }
+        </MudSelect>
       </MudItem>
     }
     <MudItem xs="12" sm="6" md="4">
