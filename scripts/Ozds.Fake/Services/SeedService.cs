@@ -48,7 +48,8 @@ public class SeedService(
       dateTo,
       arguments.MessengerId,
       ids,
-      arguments.BatchSize
+      arguments.BatchSize,
+      "aggregate"
     );
   }
 }
