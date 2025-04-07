@@ -91,7 +91,7 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - Fix playwright browser dependency
 - Fix scripts requiring timescale docker id/name by fetching the id/name from
   docker
-- calcualation financial remark to nullable as it should have been
+- calculation financial remark to nullable as it should have been
 - extract messaging part away from the `NetworkUserInvoiceIssuer` into a reactor
 - send invoice email only when it was approved
 
