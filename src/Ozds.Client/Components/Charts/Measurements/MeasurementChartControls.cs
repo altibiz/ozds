@@ -206,20 +206,20 @@ public partial class MeasurementChartControls : OzdsComponentBase
       _parameters.Resolution
         .ToTimeSpan(_parameters.Multiplier, fromDate));
     var fromMeters = await queries.ReadByMeterIds(
-      Meters.Select(x => x.Id).ToList(),
+      _parameters.Meters.Select(x => x.Id).ToList(),
       _parameters.Resolution,
       _parameters.Multiplier,
-      1,
+      0,
       CancellationToken,
       fromDate: fromDate,
       toDate: toDate
     );
     var fromMeasurementLocations = await queries
       .ReadByMeasurementLocationIds(
-        MeasurementLocations.Select(x => x.Id).ToList(),
+        _parameters.MeasurementLocations.Select(x => x.Id).ToList(),
         _parameters.Resolution,
         _parameters.Multiplier,
-        1,
+        0,
         CancellationToken,
         fromDate,
         toDate
