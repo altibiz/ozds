@@ -58,7 +58,9 @@ public static class IntervalModelExtensions
   {
     return model switch
     {
-      IntervalModel.QuarterHour => TimeSpan.FromSeconds(5),
+      // We need to support up to 1 second
+      // because that's the optimal speed of getting measurements
+      IntervalModel.QuarterHour => TimeSpan.FromSeconds(1),
       IntervalModel.Day => TimeSpan.FromMinutes(15),
       IntervalModel.Month => TimeSpan.FromDays(1),
       _ => throw new ArgumentOutOfRangeException(nameof(model), model, null)

@@ -212,8 +212,7 @@ public partial class MeasurementChartControls : OzdsComponentBase
       0,
       CancellationToken,
       fromDate: fromDate,
-      toDate: toDate,
-      pageCount: 5000
+      toDate: toDate
     );
     var fromMeasurementLocations = await queries
       .ReadByMeasurementLocationIds(
@@ -223,8 +222,7 @@ public partial class MeasurementChartControls : OzdsComponentBase
         0,
         CancellationToken,
         fromDate,
-        toDate,
-        5000
+        toDate
       );
     _parameters.Measurements = new PaginatedList<IMeasurement>(
       fromMeters.Items
