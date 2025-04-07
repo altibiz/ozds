@@ -21,6 +21,7 @@ docs := absolute_path('docs')
 doxyfile := absolute_path('docs/Doxyfile')
 schema := absolute_path('docs/schema.md')
 isready := absolute_path('scripts/database/isready.nu')
+postgrescontainer := absolute_path('scripts/database/postgrescontainer.nu')
 rewind := absolute_path('scripts/database/rewind.nu')
 rollback := absolute_path('scripts/database/rollback.nu')
 validate := absolute_path('scripts/database/validate.nu')
@@ -30,14 +31,6 @@ ozdsserver := absolute_path('scripts/startup/ozds-server.sh')
 ozdsserverdev := absolute_path('scripts/startup/ozds-server-dev.sh')
 raspberryPi4 := absolute_path('scripts/flake/raspberryPi4.nu')
 current := "current"
-postgrescontainer := `
-  docker compose ps --format json
-    | lines
-    | each { $in | from json }
-    | filter { $in.Image | str starts-with "timescale" }
-    | first
-    | get name
-`
 
 default:
     @just --choose
@@ -266,7 +259,7 @@ dump name=current:
       --env PGUSER="ozds" \
       --env PGPASSWORD="ozds" \
       --interactive \
-      {{ postgrescontainer }} \
+      ({{ postgrescontainer }} name) \
         pg_dump \
           --schema=public \
           --table='"Document"' \
@@ -281,7 +274,7 @@ dump name=current:
       --env PGUSER="ozds" \
       --env PGPASSWORD="ozds" \
       --interactive \
-      {{ postgrescontainer }} \
+      ({{ postgrescontainer }} name) \
         pg_dump \
           --data-only \
           --schema=public \
@@ -304,7 +297,7 @@ dump name=current:
       --env PGUSER="ozds" \
       --env PGPASSWORD="ozds" \
       --interactive \
-      {{ postgrescontainer }} \
+      ({{ postgrescontainer }} name) \
       psql -c "DO $$ \
         DECLARE \
           ht RECORD; \
@@ -326,7 +319,7 @@ dump name=current:
       --env PGUSER="ozds" \
       --env PGPASSWORD="ozds" \
       --interactive \
-      {{ postgrescontainer }} \
+      ({{ postgrescontainer }} name) \
       pg_dump \
         --data-only \
         --schema=public \
@@ -344,7 +337,7 @@ dump name=current:
       --env PGUSER="ozds" \
       --env PGPASSWORD="ozds" \
       --interactive \
-      {{ postgrescontainer }} \
+      ({{ postgrescontainer }} name) \
       psql -c "DO $$ \
         DECLARE \
           tbl RECORD; \
@@ -399,7 +392,7 @@ clean:
         --env PGUSER="ozds" \
         --env PGPASSWORD="ozds" \
         --interactive \
-      {{ postgrescontainer }} \
+      ({{ postgrescontainer }} name) \
           psql
 
     dotnet ef \
@@ -425,7 +418,7 @@ clean:
         --env PGUSER="ozds" \
         --env PGPASSWORD="ozds" \
         --interactive \
-        {{ postgrescontainer }} \
+        ({{ postgrescontainer }} name) \
           psql
 
     open --raw '{{ migrationassets }}/current-hypertables.sql' | \
@@ -436,7 +429,7 @@ clean:
         --env PGUSER="ozds" \
         --env PGPASSWORD="ozds" \
         --interactive \
-        {{ postgrescontainer }} \
+        ({{ postgrescontainer }} name) \
           psql
 
 [confirm("This will clean docker containers and dotnet artifacts. Do you want to continue?")]
