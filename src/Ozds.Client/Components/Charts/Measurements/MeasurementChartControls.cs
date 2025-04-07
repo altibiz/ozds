@@ -30,7 +30,8 @@ public partial class MeasurementChartControls : OzdsComponentBase
 
   [Inject]
   private IDataModelsChangedSubscriber
-    DataModelsChangedSubscriber { get; set; } = default!;
+    DataModelsChangedSubscriber
+  { get; set; } = default!;
 
   [Inject]
   private IMeasurementsBufferedSubscriber MeasurementsBufferedSubscriber
@@ -212,7 +213,8 @@ public partial class MeasurementChartControls : OzdsComponentBase
       0,
       CancellationToken,
       fromDate: fromDate,
-      toDate: toDate
+      toDate: toDate,
+      pageCount: 5000
     );
     var fromMeasurementLocations = await queries
       .ReadByMeasurementLocationIds(
@@ -222,7 +224,8 @@ public partial class MeasurementChartControls : OzdsComponentBase
         0,
         CancellationToken,
         fromDate,
-        toDate
+        toDate,
+        5000
       );
     _parameters.Measurements = new PaginatedList<IMeasurement>(
       fromMeters.Items

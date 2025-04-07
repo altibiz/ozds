@@ -18,7 +18,6 @@
     @if (MeasurementLocations.Count > 1)
     {
       <MudItem xs="12" md="4">
-        <MudTooltip Text="Select measurement locations">
           <MudSelect
             T="string"
             Label="@Translate("Measurement locations")"
@@ -32,13 +31,11 @@
               </MudSelectItem>
             }
           </MudSelect>
-        </MudTooltip>
       </MudItem>
     }
     else if (Meters.Count > 1)
     {
       <MudItem xs="12" md="4">
-        <MudTooltip Text="Select meters">
           <MudSelect
             T="string"
             Label="@Translate("Meters")"
@@ -52,11 +49,10 @@
               </MudSelectItem>
             }
           </MudSelect>
-        </MudTooltip>
       </MudItem>
     }
     <MudItem xs="12" sm="6" md="4">
-      <MudTooltip Text="Select type of measure">
+      <MudTooltip RootClass="wide-tooltip" Text="Select type of measure">
         <EnumPicker
           T="MeasureModel"
           @bind-Value="@_parameters.Measure"
@@ -66,7 +62,7 @@
       </MudTooltip>
     </MudItem>
     <MudItem xs="12" sm="6" md="4">
-      <MudTooltip Text="Select phase(s) for given measure">
+      <MudTooltip RootClass="wide-tooltip" Text="@Translate("Phase(s) for given measure, if empty, display sum of all phases")">
         <MultiEnumPicker
           T="PhaseModel"
           Value="@_parameters.Phases"
@@ -76,7 +72,7 @@
       </MudTooltip>
     </MudItem>
     <MudItem xs="12" sm="6" md="1">
-      <MudTooltip Text="Multiply the selected time unit to get wanted span of time">
+      <MudTooltip RootClass="wide-tooltip" Text="@Translate("Multiply the selected time unit to get wanted span of time")">
         <MudNumericField
           T="int"
           Value="@_parameters.Multiplier"
@@ -88,7 +84,7 @@
       </MudTooltip>
     </MudItem>
     <MudItem xs="12" sm="6" md="1">
-      <MudTooltip Text="Select the time unit">
+      <MudTooltip RootClass="wide-tooltip" Text="@Translate("Unit of time used in defining the span of time for the display")">
         <EnumPicker
           T="ResolutionModel"
           Value="@_parameters.Resolution"
@@ -98,7 +94,7 @@
       </MudTooltip>
     </MudItem>
     <MudItem xs="12" md="10">
-      <MudTooltip Text="Toggle dynamic refresh">
+      <MudTooltip RootClass="wide-tooltip" Text="@Translate("Toggle dynamic refresh, refreshes display after parameter is changed or new measurement comes in")">
         <MudHidden Breakpoint="Breakpoint.MdAndUp">
           <MudCheckBox
             T="bool"
@@ -117,16 +113,11 @@
         </MudHidden>
       </MudTooltip>
     </MudItem>
-    @*
-    <MudItem xs="12" sm="6" md="3">
-      <MudTooltip Text="Select operation to perform on selected phases">
-        <EnumPicker
-          T="OperatorModel"
-          @bind-Value="@_parameters.Operator"
-          Title="@Translate("Operator")"
-          Label="@(x => Translate(x.ToTitle()))"/>
-      </MudTooltip>
-    </MudItem>
-    *@
   </MudGrid>
 </MudExpansionPanel>
+
+<style>
+  .wide-tooltip {
+    width: 100%;
+  }
+</style>
