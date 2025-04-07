@@ -38,19 +38,21 @@ public static class IServiceCollectionExtensions
       .AddGenerators()
       .AddCloners()
       .AddPackers()
-      .AddWorkers()
       .AddOptions();
 
     return arguments switch
     {
       OzdsFakePushArguments push => services
         .AddClient(push.Timeout_s)
+        .AddWorkers()
         .AddHostedService<PushService>(),
       OzdsFakeSeedArguments seed => services
         .AddClient(seed.Timeout_s)
+        .AddWorkers()
         .AddHostedService<SeedService>(),
       OzdsFakeInsertArguments insert => services
         .AddClient(insert.Timeout_s)
+        .AddWorkers()
         .AddHostedService<InsertService>(),
       OzdsFakeAltibizArguments => services
         .AddMessaging(),

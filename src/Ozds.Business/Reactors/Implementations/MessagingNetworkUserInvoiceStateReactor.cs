@@ -36,6 +36,11 @@ public class MessagingNetworkUserInvoiceStateHandler(
     MessagingNetworkUserInvoiceStateEventArgs eventArgs,
     CancellationToken cancellationToken)
   {
+    if (!eventArgs.State.Approved)
+    {
+      return;
+    }
+
     await using var context = await factory
       .CreateDbContextAsync(cancellationToken);
 

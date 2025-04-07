@@ -21,6 +21,7 @@ docs := absolute_path('docs')
 doxyfile := absolute_path('docs/Doxyfile')
 schema := absolute_path('docs/schema.md')
 isready := absolute_path('scripts/database/isready.nu')
+postgrescontainer := absolute_path('scripts/database/postgrescontainer.nu')
 rewind := absolute_path('scripts/database/rewind.nu')
 rollback := absolute_path('scripts/database/rollback.nu')
 validate := absolute_path('scripts/database/validate.nu')
@@ -215,6 +216,7 @@ migrate project name:
 
     @just migrate-continue '{{ project }}' '{{ name }}'
 
+[confirm("This will proceed with the migration and dump the database. Would you like to continue?")]
 migrate-continue project name:
     dotnet ef \
       --startup-project '{{ servercsproj }}' \
@@ -257,7 +259,7 @@ dump name=current:
       --env PGUSER="ozds" \
       --env PGPASSWORD="ozds" \
       --interactive \
-      ozds-postgres-1 \
+      ({{ postgrescontainer }} name) \
         pg_dump \
           --schema=public \
           --table='"Document"' \
@@ -272,7 +274,7 @@ dump name=current:
       --env PGUSER="ozds" \
       --env PGPASSWORD="ozds" \
       --interactive \
-      ozds-postgres-1 \
+      ({{ postgrescontainer }} name) \
         pg_dump \
           --data-only \
           --schema=public \
@@ -295,7 +297,7 @@ dump name=current:
       --env PGUSER="ozds" \
       --env PGPASSWORD="ozds" \
       --interactive \
-      ozds-postgres-1 \
+      ({{ postgrescontainer }} name) \
       psql -c "DO $$ \
         DECLARE \
           ht RECORD; \
@@ -317,7 +319,7 @@ dump name=current:
       --env PGUSER="ozds" \
       --env PGPASSWORD="ozds" \
       --interactive \
-      ozds-postgres-1 \
+      ({{ postgrescontainer }} name) \
       pg_dump \
         --data-only \
         --schema=public \
@@ -335,7 +337,7 @@ dump name=current:
       --env PGUSER="ozds" \
       --env PGPASSWORD="ozds" \
       --interactive \
-      ozds-postgres-1 \
+      ({{ postgrescontainer }} name) \
       psql -c "DO $$ \
         DECLARE \
           tbl RECORD; \
@@ -390,7 +392,7 @@ clean:
         --env PGUSER="ozds" \
         --env PGPASSWORD="ozds" \
         --interactive \
-        ozds-postgres-1 \
+      ({{ postgrescontainer }} name) \
           psql
 
     dotnet ef \
@@ -416,7 +418,7 @@ clean:
         --env PGUSER="ozds" \
         --env PGPASSWORD="ozds" \
         --interactive \
-        ozds-postgres-1 \
+        ({{ postgrescontainer }} name) \
           psql
 
     open --raw '{{ migrationassets }}/current-hypertables.sql' | \
@@ -427,7 +429,7 @@ clean:
         --env PGUSER="ozds" \
         --env PGPASSWORD="ozds" \
         --interactive \
-        ozds-postgres-1 \
+        ({{ postgrescontainer }} name) \
           psql
 
 [confirm("This will clean docker containers and dotnet artifacts. Do you want to continue?")]
