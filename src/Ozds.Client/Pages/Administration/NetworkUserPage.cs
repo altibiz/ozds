@@ -46,6 +46,7 @@ public partial class NetworkUserPage
     {
       return;
     }
+
     var (dateFrom, dateTo) = DateTimeOffsetExtensions.GetMonthRange(
       month.Year,
       month.Month

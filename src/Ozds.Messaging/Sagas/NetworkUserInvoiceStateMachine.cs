@@ -118,15 +118,13 @@ public class NetworkUserInvoiceStateMachine
   public State Disproved { get; } = default!;
 
   public Event<IInitiateNetworkUserInvoice>
-    InitiateNetworkUserInvoice
-  { get; } = default!;
+    InitiateNetworkUserInvoice { get; } = default!;
 
   public Event<IAbortNetworkUserInvoice> AbortNetworkUserInvoice { get; } =
     default!;
 
   public Event<IRegisterNetworkUserInvoice>
-    RegisterNetworkUserInvoice
-  { get; } = default!;
+    RegisterNetworkUserInvoice { get; } = default!;
 
   public Event<IApproveNetworkUserInvoice> ApproveNetworkUserInvoice { get; } =
     default!;

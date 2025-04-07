@@ -67,7 +67,8 @@ public class NetworkUserInvoiceIssuer(
         cancellationToken
       );
     var invoice = invoiceCalculator.Calculate(basis);
-    invoice = await mutations.CreateCalculatedInvoice(invoice, cancellationToken);
+    invoice =
+      await mutations.CreateCalculatedInvoice(invoice, cancellationToken);
     return invoice;
   }
 }
