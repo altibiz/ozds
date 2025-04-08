@@ -353,9 +353,17 @@ public class MeasurementQueries(
       futureItems.Add(ordered.DeferredLastOrDefault());
     }
 
-    foreach (var futureCount in futureItems)
+    foreach (var futureItem in futureItems)
     {
-      items.Add(await futureCount.FutureValue().ValueAsync(cancellationToken));
+      var value = await futureItem
+        .FutureValue()
+        .ValueAsync(cancellationToken);
+      // NOTE: this is from DeferredLastOrDefault but because the nullability
+      // gets type-erased we have to check regardless
+      if (value is { })
+      {
+        items.Add(value);
+      }
     }
 
     return items;
