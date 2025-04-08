@@ -5,6 +5,9 @@
     pkgs.mkShell
       ({
         packages = with pkgs; [
+          # Version Control
+          git
+
           # Scripts
           just
           nushell

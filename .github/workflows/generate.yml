@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 
-name: format-and-deps
+name: generate
 
 on:
   pull_request:
@@ -8,8 +8,8 @@ on:
       - dev
 
 jobs:
-  format-and-deps:
-    name: format-and-deps
+  generate:
+    name: generate
     runs-on: ubuntu-latest
     steps:
       - name: checkout
@@ -28,11 +28,19 @@ jobs:
       - name: deps
         run: nix develop .#check -c just deps
 
+      - name: translate
+        run: nix develop .#check -c just translate
+        env:
+          # prettier-ignore
+          OZDS__TRANSLATION__OPENAIAPI__BASEURL: ${{ secrets.OZDS__TRANSLATION__OPENAIAPI__BASEURL }}
+          # prettier-ignore
+          OZDS__TRANSLATION__OPENAIAPI__APIKEY: ${{ secrets.OZDS__TRANSLATION__OPENAIAPI__APIKEY }}
+
       - name: format
         run: nix develop .#check -c just format
 
       - name: commit
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: format & deps.nix
+          commit_message: generate
           branch: ${{ github.head_ref }}

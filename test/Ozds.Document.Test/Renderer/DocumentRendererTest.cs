@@ -1,3 +1,4 @@
+using Ozds.Assets.Extensions;
 using Ozds.Document.Extensions;
 using Ozds.Document.Renderers.Implementations;
 
@@ -11,6 +12,7 @@ public class DocumentRendererTest
     var serviceCollection = new ServiceCollection();
     serviceCollection.AddLogging();
     serviceCollection.AddOzdsDocument();
+    serviceCollection.AddOzdsAssets();
     serviceCollection.BuildServiceProvider();
     var serviceProvider = serviceCollection.BuildServiceProvider();
 

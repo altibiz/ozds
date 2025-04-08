@@ -1,5 +1,3 @@
-using Ozds.Document.Loaders.Abstractions;
-using Ozds.Document.Loaders.Implementations;
 using Ozds.Document.Queries;
 using Ozds.Document.Renderers.Abstractions;
 using Ozds.Document.Renderers.Implementations;
@@ -13,7 +11,6 @@ public static class IServiceCollectionExtensions
   )
   {
     services.AddDocumentRenderer();
-    services.AddDocumentServices();
     services.AddDocumentQueries();
     return services;
   }
@@ -28,15 +25,6 @@ public static class IServiceCollectionExtensions
       AspNetCoreComponentsComponentToHtmlRenderer>();
     services.AddScoped<DocumentRenderer>();
 
-    return services;
-  }
-
-  public static IServiceCollection AddDocumentServices(
-    this IServiceCollection services
-  )
-  {
-    services.AddSingleton<IDocumentAssetLoader, DocumentAssetLoader>();
-    services.AddSingleton<IDocumentLocalizer, DocumentLocalizer>();
     return services;
   }
 

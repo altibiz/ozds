@@ -9,6 +9,7 @@
 	  <ProjectReference Include="../../src/Ozds.Jobs/Ozds.Jobs.csproj" />
 	  <ProjectReference Include="../../src/Ozds.Messaging/Ozds.Messaging.csproj" />
 	  <ProjectReference Include="../../src/Ozds.Users/Ozds.Users.csproj" />
+	  <ProjectReference Include="../../src/Ozds.Assets/Ozds.Assets.csproj" />
 	</ItemGroup>
 
   <ItemGroup>

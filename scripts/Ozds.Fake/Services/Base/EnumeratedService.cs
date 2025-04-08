@@ -1,6 +1,6 @@
 using Ozds.Fake.Workers.Abstractions;
 
-namespace Ozds.Business.Services.Base;
+namespace Ozds.Fake.Services.Base;
 
 public abstract class EnumeratedService<TItem, TWorker>(
   IServiceProvider services
