@@ -9,6 +9,8 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.2.0]
+
 ### Added
 
 - Initial analysis basis fetching in
@@ -202,6 +204,7 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 - init
 
+[1.2.0]: https://github.com/altibiz/ozds/compare/1.1.1...1.2.0
 [1.1.1]: https://github.com/altibiz/ozds/compare/1.0.1...1.1.1
 [1.0.1]: https://github.com/altibiz/ozds/compare/1.0.0...1.0.1
 [1.0.0]: https://github.com/altibiz/ozds/releases/tag/1.0.0
