@@ -59,7 +59,7 @@ public partial class TranslateClient(
       Make sure to follow these specific rules:
       - T0 is expanded to 'one tariff'
       - T1 is expanded to 'higher tariff'
-      - T1 is expanded to 'lower tariff'
+      - T2 is expanded to 'lower tariff'
       - Timestamp is always translated as just 'time'
       - Id is always expanded to 'identifier'
       - Units are always kept as-is and enclosed in parentheses (unless in the
