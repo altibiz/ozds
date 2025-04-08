@@ -66,6 +66,7 @@ and adheres to [Semantic Versioning](https://semver.org/).
   hopes that XML is easier to edit than JSON for translations
 - justfile commands for translating the whole solution and for running a single
   instance of the `Ozds.Translation` project
+- Id for brush graph to fix error in meters chart display
 
 ### Changed
 
@@ -124,6 +125,8 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - Slight `CONTRIBUTING.md` changes
 - `format-and-deps` workflow to `generate` and use `just translate` to
   automatically translate the solution on each PR
+- Made table content selectable
+- Add more definition to the time stamp info for mouse hovering chart info
 
 ### Removed
 
