@@ -30,6 +30,6 @@ For release pull requests please make sure to:
   heading
 - add an appropriate GitHub tag
 
-[git]: https://git-scm.com/
+[git]: https://git-scm.com
 [just]: https://github.com/casey/just
-[nushell]: https://www.nushell.sh/
+[nushell]: https://www.nushell.sh

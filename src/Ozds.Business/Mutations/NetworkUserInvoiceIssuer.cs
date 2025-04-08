@@ -1,6 +1,5 @@
 using System.Globalization;
 using Ozds.Business.Finance.Abstractions;
-using Ozds.Business.Localization.Abstractions;
 using Ozds.Business.Models.Composite;
 using Ozds.Business.Mutations.Abstractions;
 using Ozds.Business.Queries;
@@ -10,7 +9,7 @@ namespace Ozds.Business.Mutations;
 public class NetworkUserInvoiceIssuer(
   IServiceScopeFactory factory,
   INetworkUserInvoiceCalculator invoiceCalculator,
-  ILocalizer localizer
+  LocalizationQueries localizationQueries
 ) : IMutations
 {
   public async Task<CalculatedNetworkUserInvoiceModel>
@@ -33,7 +32,7 @@ public class NetworkUserInvoiceIssuer(
       );
     var invoice = invoiceCalculator.Calculate(basis);
     var culture = CultureInfo.CreateSpecificCulture("hr-HR");
-    var previewText = localizer.TranslateForCulture(
+    var previewText = localizationQueries.Translate(
       culture,
       "This invoice is a preview."
     );

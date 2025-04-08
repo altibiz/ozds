@@ -10,8 +10,6 @@ using Ozds.Business.Conversion.Abstractions;
 using Ozds.Business.Finance;
 using Ozds.Business.Finance.Abstractions;
 using Ozds.Business.Finance.Implementations;
-using Ozds.Business.Localization.Abstractions;
-using Ozds.Business.Localization.Implementations;
 using Ozds.Business.Mutations.Abstractions;
 using Ozds.Business.Naming;
 using Ozds.Business.Naming.Abstractions;
@@ -100,14 +98,6 @@ public static class IServiceCollectionExtensions
     services.AddTransient(
       typeof(INetworkUserInvoiceCalculator),
       typeof(NetworkUserInvoiceCalculator));
-    return services;
-  }
-
-  private static IServiceCollection AddLocalization(
-    this IServiceCollection services
-  )
-  {
-    services.AddSingleton(typeof(ILocalizer), typeof(Localizer));
     return services;
   }
 

@@ -107,6 +107,7 @@
             nodePackages.cspell
 
             # Scripts
+            ollama
             s3cmd
             just
             nushell

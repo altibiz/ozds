@@ -16,14 +16,11 @@ public partial class UserToolbar : OzdsComponentBase
   public ThemeState ThemeState { get; set; } = default!;
 
   [CascadingParameter]
-  public CultureState CultureState { get; set; } = default!;
-
-  [CascadingParameter]
   public LocationState? LocationState { get; set; } = default!;
 
   private string CultureName
   {
-    get { return CultureState.Culture.TwoLetterISOLanguageName; }
+    get { return GetCulture().TwoLetterISOLanguageName; }
   }
 
   private string UserName

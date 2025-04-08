@@ -1,12 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Activation;
 using Ozds.Business.Conversion;
-using Ozds.Business.Localization.Abstractions;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Enums;
 using Ozds.Business.Models.Joins;
 using Ozds.Business.Observers.Abstractions;
 using Ozds.Business.Observers.EventArgs;
+using Ozds.Business.Queries;
 using Ozds.Business.Reactors.Base;
 using Ozds.Data.Context;
 using Ozds.Data.Entities;
@@ -29,7 +29,7 @@ public class MessagingNetworkUserInvoiceStateHandler(
   ModelActivator activator,
   ModelEntityConverter converter,
   IDbContextFactory<DataDbContext> factory,
-  ILocalizer localizer
+  LocalizationQueries localizationQueries
 ) : Handler<MessagingNetworkUserInvoiceStateEventArgs>
 {
   public override async Task Handle(
@@ -95,10 +95,18 @@ public class MessagingNetworkUserInvoiceStateHandler(
             TopicModel.NetworkUserInvoiceState
           ];
           notification.Summary =
-            $"{localizer.Translate("Invoice")} \"{invoice.Title}\""
-            + $" {localizer.Translate("issued")}";
+            localizationQueries.Translate(
+              localizationQueries.CroatianCulture,
+              "Invoice")
+            + $" \"{invoice.Title}\" "
+            + localizationQueries.Translate(
+              localizationQueries.CroatianCulture,
+              "issued");
           notification.Content =
-            $"{localizer.Translate("Invoice url is")} 'invoices/{invoice.Id}'";
+            localizationQueries.Translate(
+              localizationQueries.CroatianCulture,
+              "Invoice url is")
+            + $" 'invoices/{invoice.Id}'";
 
           return converter
             .ToEntity<NetworkUserInvoiceNotificationEntity>(notification);

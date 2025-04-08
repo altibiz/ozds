@@ -149,6 +149,13 @@ words:
   - "nixos"
   - "rzls"
   - "devex"
+  - "ollama"
+  - "deepseek"
+  - "gguf"
+  - "nemo"
+  - "qwen"
+  - "tomlyn"
+  - "isready"
 
   # Croatian
   - "altibiz"

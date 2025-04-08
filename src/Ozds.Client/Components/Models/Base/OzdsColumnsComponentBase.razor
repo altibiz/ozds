@@ -20,7 +20,7 @@
       @<PropertyColumn
          T="TPrefix"
          TProperty="string"
-         Title="@(Translate(next.Label()))"
+         Title="@(Translate(Label(next)))"
          Property="@Wrap(next)"/>);
   }
 
@@ -30,7 +30,7 @@
       @<PropertyColumn
          T="TPrefix"
          TProperty="Enum"
-         Title="@(Translate(next.Label()))"
+         Title="@(Translate(Label(next)))"
          Property="@Wrap(next)"/>);
   }
 
@@ -40,7 +40,7 @@
       @<PropertyColumn
          T="TPrefix"
          TProperty="decimal?"
-         Title="@(Translate(next.Label()))"
+         Title="@(Translate(Label(next)))"
          Property="@Wrap(next)"/>);
   }
 
@@ -53,7 +53,7 @@
       @<PropertyColumn
          T="TPrefix"
          TProperty="IEnumerable<T>"
-         Title="@(Translate(next.Label()))"
+         Title="@(Translate(Label(next)))"
          Property="@Wrap(next)">
         <CellTemplate>
           @if (Get(nextFunc)(context.Item) is { } item)
@@ -75,7 +75,7 @@
       @<PropertyColumn
          T="TPrefix"
          TProperty="DateTimeOffset?"
-         Title="@(Translate(next.Label()))"
+         Title="@(Translate(Label(next)))"
          Property="@Wrap(next)">
         <CellTemplate>
           <MudText>
@@ -97,7 +97,7 @@
       @<PropertyColumn
          T="TPrefix"
          TProperty="T"
-         Title="@(Translate(next.Label()))"
+         Title="@(Translate(Label(next)))"
          Property="@Wrap(next)">
         <CellTemplate>
           @if (Get(nextFunc)(context.Item) is IEnumerable item)
@@ -116,7 +116,7 @@
       @<PropertyColumn
          T="TPrefix"
          TProperty="T"
-         Title="@(Translate(next.Label()))"
+         Title="@(Translate(Label(next)))"
          Property="@Wrap(next)"/>);
   }
 
@@ -126,7 +126,7 @@
       @<PropertyColumn
          T="TPrefix"
          TProperty="T"
-         Title="@(Translate(next.Label()))"
+         Title="@(Translate(Label(next)))"
          Property="@Wrap(next)"/>);
   }
 
@@ -137,7 +137,7 @@
       @<PropertyColumn
          T="TPrefix"
          TProperty="T"
-         Title="@(Translate(next.Label()))"
+         Title="@(Translate(Label(next)))"
          Property="@Wrap(next)">
         <CellTemplate>
           <MudText>
@@ -157,7 +157,7 @@
       @<PropertyColumn
          T="TPrefix"
          TProperty="T"
-         Title="@(Translate(next.Label()))"
+         Title="@(Translate(Label(next)))"
          Property="@Wrap(next)">
         <CellTemplate>
           <MudText>
@@ -178,7 +178,7 @@
     return Nest(
       @<TemplateColumn
          T="TPrefix"
-         Title="@(Translate(next.Label()))">
+         Title="@(Translate(Label(next.Suffix(x => x!.Title)!)))">
         <CellTemplate>
           @if (Get(nextFunc)(context.Item) is { } model)
           {
@@ -199,7 +199,7 @@
     return Nest(
       @<TemplateColumn
          T="TPrefix"
-         Title="@(Translate(next.Label()))">
+         Title="@(Translate(Label(next)))">
         <CellTemplate>
           @if (Get(nextFunc)(context.Item) is { } id)
           {

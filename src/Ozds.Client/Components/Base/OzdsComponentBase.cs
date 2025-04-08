@@ -1,11 +1,13 @@
 using System.Globalization;
+using System.Linq.Expressions;
 using System.Text.Json;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Routing.Template;
 using Microsoft.JSInterop;
-using Ozds.Business.Localization.Abstractions;
+using Ozds.Business.Queries;
 using Ozds.Business.Time;
 using Ozds.Client.Extensions;
+using Ozds.Client.State;
 
 namespace Ozds.Client.Components.Base;
 
@@ -23,8 +25,8 @@ public abstract class OzdsComponentBase : ComponentBase, IDisposable
 
   private IServiceScope? scope;
 
-  [Inject]
-  private ILocalizer Localizer { get; set; } = default!;
+  [CascadingParameter]
+  private CultureState? CultureState { get; set; }
 
   protected string Href
   {
@@ -40,9 +42,8 @@ public abstract class OzdsComponentBase : ComponentBase, IDisposable
   {
     get
     {
-      return $"/users/logoff?returnUrl=/login?returnUrl={
-        Uri.EscapeDataString(Href)
-      }";
+      return
+        $"/users/logoff?returnUrl=/login?returnUrl={Uri.EscapeDataString(Href)}";
     }
   }
 
@@ -91,20 +92,42 @@ public abstract class OzdsComponentBase : ComponentBase, IDisposable
 
   protected bool IsDisposed { get; private set; }
 
+  protected CultureInfo CroatianCulture
+  {
+    get
+    {
+      var localizationQueries = ScopedServices
+        .GetRequiredService<LocalizationQueries>();
+      return localizationQueries.CroatianCulture;
+    }
+  }
+
+  protected CultureInfo EnglishCulture
+  {
+    get
+    {
+      var localizationQueries = ScopedServices
+        .GetRequiredService<LocalizationQueries>();
+      return localizationQueries.EnglishCulture;
+    }
+  }
+
   public void Dispose()
   {
     Dispose(true);
     GC.SuppressFinalize(this);
   }
 
-  protected static string NumericString(decimal? number, int places = 2)
+  protected string NumericString(decimal? number, int places = 2)
   {
     if (number is null)
     {
       return "";
     }
 
-    var cultureInfo = new CultureInfo("hr-HR");
+    var localizationQueries = ScopedServices
+      .GetRequiredService<LocalizationQueries>();
+    var cultureInfo = localizationQueries.CroatianCulture;
 
     var numberFormatInfo = (NumberFormatInfo)cultureInfo.NumberFormat.Clone();
     numberFormatInfo.NumberGroupSeparator = ".";
@@ -114,14 +137,16 @@ public abstract class OzdsComponentBase : ComponentBase, IDisposable
     return roundedNumber.ToString("N", numberFormatInfo);
   }
 
-  protected static string NumericString(float? number, int places = 2)
+  protected string NumericString(float? number, int places = 2)
   {
     if (number is null)
     {
       return "";
     }
 
-    var cultureInfo = new CultureInfo("hr-HR");
+    var localizationQueries = ScopedServices
+      .GetRequiredService<LocalizationQueries>();
+    var cultureInfo = localizationQueries.CroatianCulture;
 
     var numberFormatInfo = (NumberFormatInfo)cultureInfo.NumberFormat.Clone();
     numberFormatInfo.NumberGroupSeparator = ".";
@@ -131,14 +156,16 @@ public abstract class OzdsComponentBase : ComponentBase, IDisposable
     return roundedNumber.ToString("N", numberFormatInfo);
   }
 
-  protected static string DateString(DateTimeOffset? dateTimeOffset)
+  protected string DateString(DateTimeOffset? dateTimeOffset)
   {
     if (dateTimeOffset is null)
     {
       return "";
     }
 
-    var cultureInfo = new CultureInfo("hr-HR");
+    var localizationQueries = ScopedServices
+      .GetRequiredService<LocalizationQueries>();
+    var cultureInfo = localizationQueries.CroatianCulture;
 
     var withTimezone = dateTimeOffset
       .Value
@@ -147,14 +174,16 @@ public abstract class OzdsComponentBase : ComponentBase, IDisposable
     return withTimezone.ToString("dd. MM. yyyy.", cultureInfo);
   }
 
-  protected static string DateTimeString(DateTimeOffset? dateTimeOffset)
+  protected string DateTimeString(DateTimeOffset? dateTimeOffset)
   {
     if (dateTimeOffset is null)
     {
       return "";
     }
 
-    var cultureInfo = new CultureInfo("hr-HR");
+    var localizationQueries = ScopedServices
+      .GetRequiredService<LocalizationQueries>();
+    var cultureInfo = localizationQueries.CroatianCulture;
 
     var withTimezone = dateTimeOffset
       .Value
@@ -173,8 +202,37 @@ public abstract class OzdsComponentBase : ComponentBase, IDisposable
 
   protected string Translate(string notLocalized)
   {
-    var localized = Localizer.Translate(notLocalized);
-    return localized;
+    var culture = GetCulture();
+    var localizationQueries = ScopedServices
+      .GetRequiredService<LocalizationQueries>();
+    return localizationQueries.Translate(culture, notLocalized);
+  }
+
+  protected string Translate(Type type)
+  {
+    var localizationQueries = ScopedServices
+      .GetRequiredService<LocalizationQueries>();
+    var key = localizationQueries.Key(type);
+    var culture = GetCulture();
+    return localizationQueries.Translate(culture, key);
+  }
+
+  protected string Translate(Type type, string member)
+  {
+    var localizationQueries = ScopedServices
+      .GetRequiredService<LocalizationQueries>();
+    var key = localizationQueries.Key(type, member);
+    var culture = GetCulture();
+    return localizationQueries.Translate(culture, key);
+  }
+
+  protected string Translate(MemberExpression member)
+  {
+    var localizationQueries = ScopedServices
+      .GetRequiredService<LocalizationQueries>();
+    var key = localizationQueries.Key(member);
+    var culture = GetCulture();
+    return localizationQueries.Translate(culture, key);
   }
 
   protected static string JsonString(object? jsonDocument)
@@ -266,5 +324,20 @@ public abstract class OzdsComponentBase : ComponentBase, IDisposable
     }
 
     IsDisposed = true;
+  }
+
+  protected CultureInfo GetCulture()
+  {
+    return CultureState?.Culture ?? CultureInfo.CurrentCulture;
+  }
+
+  protected Task SetCulture(CultureInfo culture)
+  {
+    if (CultureState is { } cultureState)
+    {
+      return cultureState.SetCulture(culture);
+    }
+
+    return Task.CompletedTask;
   }
 }

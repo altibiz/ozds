@@ -1,8 +1,8 @@
 using System.Globalization;
 
-namespace Ozds.Document.Loaders.Abstractions;
+namespace Ozds.Assets.Queries.Abstractions;
 
-public interface IDocumentAssetLoader
+public interface IAssetQueries : IQueries
 {
   public Dictionary<string, string> LoadTranslations(CultureInfo culture);
 

@@ -4,6 +4,10 @@
     <OutputType>Library</OutputType>
   </PropertyGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="../../src/Ozds.Assets/Ozds.Assets.csproj" />
+	</ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.Playwright" />
   </ItemGroup>
