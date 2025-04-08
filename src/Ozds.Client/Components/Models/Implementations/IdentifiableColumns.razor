@@ -5,7 +5,7 @@
 @using MudBlazor
 @inherits Ozds.Client.Components.Models.Base.OzdsColumnsComponentBase<TPrefix, TModel>
 
-<TemplateColumn T="TPrefix" Title="Title">
+<TemplateColumn T="TPrefix" Title="@Translate(Label(x => x.Title))">
   <CellTemplate>
     @if (Raw(context.Item) is { } model)
     {

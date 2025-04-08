@@ -182,7 +182,7 @@
       ? @<Fragment>
           <td>
             <strong class="tariff-label">
-              @Translate(reactiveItem.GetType().Name)
+              @ItemLabel(reactiveItem)
             </strong>
           </td>
           <td style="padding: 0;">
@@ -242,7 +242,7 @@
         ? @<Fragment>
             <td>
               <strong class="tariff-label">
-                @Translate(energyItem.GetType().Name)
+                @ItemLabel(energyItem)
               </strong>
             </td>
             <td style="text-align: right;">
@@ -266,7 +266,7 @@
           ? @<Fragment>
               <td>
                 <strong class="tariff-label">
-                  @Translate(powerItem.GetType().Name)
+                  @ItemLabel(powerItem)
                 </strong>
               </td>
               <td style="text-align: right;"></td>
@@ -286,7 +286,7 @@
             ? @<Fragment>
                 <td colspan="4">
                   <strong class="tariff-label">
-                    @Translate(feeItem.GetType().Name)
+                    @ItemLabel(feeItem)
                   </strong>
                 </td>
                 <td style="text-align: right;">
@@ -301,5 +301,21 @@
               </Fragment>
             : throw new InvalidOperationException(
               $"Unsupported item type: {item.GetType()}");
+
+  private string ItemLabel(CalculationItemEntity item) =>
+    item switch
+    {
+      UsageActiveEnergyTotalImportT0CalculationItemEntity => Translate("MJT"),
+      UsageActiveEnergyTotalImportT1CalculationItemEntity => Translate("MVT"),
+      UsageActiveEnergyTotalImportT2CalculationItemEntity => Translate("MNT"),
+      UsageActivePowerTotalImportT1PeakCalculationItemEntity => Translate("SVT"),
+      UsageReactiveEnergyTotalRampedT0CalculationItemEntity => Translate("JEN"),
+      UsageMeterFeeCalculationItemEntity => Translate("MU"),
+      SupplyActiveEnergyTotalImportT1CalculationItemEntity => Translate("RVT"),
+      SupplyActiveEnergyTotalImportT2CalculationItemEntity => Translate("RNT"),
+      SupplyBusinessUsageCalculationItemEntity => Translate("TRP"),
+      SupplyRenewableEnergyCalculationItemEntity => Translate("OIEiK"),
+      _ => string.Empty
+    };
 
 }

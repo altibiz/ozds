@@ -1,19 +1,23 @@
 using Microsoft.AspNetCore.Components;
-using Ozds.Document.Loaders.Abstractions;
+using Ozds.Assets;
+using Ozds.Assets.Queries.Abstractions;
 
 namespace Ozds.Document.Components;
 
 public abstract class DocumentBase : ComponentBase
 {
   [Inject]
-  private IDocumentLocalizer Localizer { get; set; } = default!;
+  private ILocalizationQueries LocalizerQueries { get; set; } = default!;
 
   [Inject]
-  private IDocumentAssetLoader AssetLoader { get; set; } = default!;
+  private IAssetQueries AssetLoader { get; set; } = default!;
 
   public string Translate(string notLocalized)
   {
-    return Localizer.Translate(notLocalized);
+    return LocalizerQueries.Translate(
+      AssetConstants.CroatianCulture,
+      notLocalized
+    );
   }
 
   public MarkupString Svg(string name)

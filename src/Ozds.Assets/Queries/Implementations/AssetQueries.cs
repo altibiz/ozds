@@ -1,11 +1,11 @@
 using System.Collections.Concurrent;
 using System.Globalization;
-using System.Text.Json;
-using Ozds.Document.Loaders.Abstractions;
+using Ozds.Assets.Entities;
+using Ozds.Assets.Queries.Abstractions;
 
-namespace Ozds.Document.Loaders.Implementations;
+namespace Ozds.Assets.Queries.Implementations;
 
-public class DocumentAssetLoader : IDocumentAssetLoader
+public class AssetQueries : IAssetQueries
 {
   private readonly ConcurrentDictionary<string, string> fontCache =
     new();
@@ -37,8 +37,12 @@ public class DocumentAssetLoader : IDocumentAssetLoader
   )
   {
     var cultureString = culture.TwoLetterISOLanguageName;
-    var stream = Load($"Translations.{cultureString}.json");
-    return JsonSerializer.Deserialize<Dictionary<string, string>>(stream)!;
+    var fileName = $"Translations.{cultureString}.xml";
+    var stream = Load(fileName);
+    using var streamReader = new StreamReader(stream);
+    var text = streamReader.ReadToEnd();
+    var dictionary = TranslationDictionaryEntity.FromString(text, fileName);
+    return dictionary.ToDictionary();
   }
 
   private string LoadSvgUncached(string name)
@@ -60,7 +64,7 @@ public class DocumentAssetLoader : IDocumentAssetLoader
 
   private static Stream Load(string name)
   {
-    var assembly = typeof(DocumentAssetLoader).Assembly;
+    var assembly = typeof(AssetQueries).Assembly;
     var fullName = $"{assembly.GetName().Name}.Assets.{name}";
 
     var stream = assembly.GetManifestResourceStream(fullName) ??

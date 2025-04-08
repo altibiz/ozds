@@ -55,6 +55,15 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - network user invoice state on network user invoice page
 - measurement location options for chart
 - tooltips for chart options
+- `Ozds.Translation` project that handles translating the whole solution via
+  regex matches and reflection
+- ollama docker container, dev shell app, and `isready.nu` script
+- `Ozds.Assets` project that handles all assets currently used for localization
+  and fetching embedded document assets like fonts and images
+- Translated the whole solution into the new `en.xml` and `hr.xml` files in
+  hopes that XML is easier to edit than JSON for translations
+- justfile commands for translating the whole solution and for running a single
+  instance of the `Ozds.Translation` project
 
 ### Changed
 
@@ -99,6 +108,20 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - Chart control layout
 - the way chart fetches data by changing parameters
 - starting chart settings
+- `Ozds.Fake` service namespaces
+- Use the new `Ozds.Assets` in `Ozds.Fake` and `Ozds.Migration`
+- Extracted all localization into the new `Ozds.Assets` because it was actually
+  needed in three different projects - `Ozds.Business`, `Ozds.Document` and
+  `Ozds.Client`
+- Adjusted affected projects by localization to use the new localization from
+  `Ozds.Assets`
+- Adjusted model component fields to use the new localization
+- Adjusted calculation item name translation in `Ozds.Document` to use
+  hard-coded acronyms where appropriate
+- Added the new `Ozds.Assets` into DI container
+- Slight `CONTRIBUTING.md` changes
+- `format-and-deps` workflow to `generate` and use `just translate` to
+  automatically translate the solution on each PR
 
 ### Removed
 

@@ -12,6 +12,7 @@
 	  <ProjectReference Include="../../src/Ozds.Email/Ozds.Email.csproj" />
 	  <ProjectReference Include="../../src/Ozds.Iot/Ozds.Iot.csproj" />
 	  <ProjectReference Include="../../src/Ozds.Document/Ozds.Document.csproj" />
+	  <ProjectReference Include="../../src/Ozds.Assets/Ozds.Assets.csproj" />
 	</ItemGroup>
 
   <ItemGroup>

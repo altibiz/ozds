@@ -1,4 +1,5 @@
 using OrchardCore.Logging;
+using Ozds.Assets.Extensions;
 using Ozds.Business.Extensions;
 using Ozds.Client.Extensions;
 using Ozds.Data.Extensions;
@@ -26,6 +27,7 @@ builder.Services
   .AddSetupFeatures("OrchardCore.AutoSetup")
   .ConfigureServices(
     services => services
+      .AddOzdsAssets()
       .AddOzdsDocument()
       .AddOzdsUsers()
       .AddOzdsData()

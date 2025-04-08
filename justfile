@@ -20,8 +20,9 @@ migrationassets := absolute_path('scripts/migrations')
 docs := absolute_path('docs')
 doxyfile := absolute_path('docs/Doxyfile')
 schema := absolute_path('docs/schema.md')
-isready := absolute_path('scripts/database/isready.nu')
 postgrescontainer := absolute_path('scripts/database/postgrescontainer.nu')
+isdatabaseready := absolute_path('scripts/database/isready.nu')
+isllmready := absolute_path('scripts/llm/isready.nu')
 rewind := absolute_path('scripts/database/rewind.nu')
 rollback := absolute_path('scripts/database/rollback.nu')
 validate := absolute_path('scripts/database/validate.nu')
@@ -30,6 +31,9 @@ playwright := absolute_path('src/Ozds.Server/bin/Debug/net8.0/playwright.ps1')
 ozdsserver := absolute_path('scripts/startup/ozds-server.sh')
 ozdsserverdev := absolute_path('scripts/startup/ozds-server-dev.sh')
 raspberryPi4 := absolute_path('scripts/flake/raspberryPi4.nu')
+translationshr := absolute_path('src/Ozds.Assets/Assets/Translations/hr.xml')
+translationsen := absolute_path('src/Ozds.Assets/Assets/Translations/en.xml')
+srcdir := absolute_path('src')
 current := "current"
 
 default:
@@ -51,7 +55,6 @@ lfs:
     dvc push
 
 dev *args:
-    docker compose up -d
     $env.ASPNETCORE_ENVIRONMENT = "Development"; \
       $env.DOTNET_ENVIRONMENT = "Development"; \
       dotnet watch --project '{{ servercsproj }}' {{ args }}
@@ -65,6 +68,41 @@ migration *args:
     $env.ASPNETCORE_ENVIRONMENT = "Development"; \
       $env.DOTNET_ENVIRONMENT = "Development"; \
       dotnet run  --project '{{ migrationcsproj }}' -- {{ args }}
+
+translation *args:
+    $env.ASPNETCORE_ENVIRONMENT = "Development"; \
+    $env.DOTNET_ENVIRONMENT = "Development"; \
+    dotnet run --project 'scripts/Ozds.Translation/Ozds.Translation.csproj' -- {{ args }}
+
+translate:
+    @just translation type \
+      -l hr \
+      -i Ozds.Business \
+      -n Ozds.Business.Models Ozds.Business.Analysis \
+      -u {{ translationshr }} \
+      -o {{ translationshr }}
+    @just translation type \
+      -l hr \
+      -i Ozds.Document \
+      -n Ozds.Document.Entities \
+      -u {{ translationshr }} \
+      -o {{ translationshr }}
+    @just translation regex \
+      -l hr \
+      -i {{ srcdir }} \
+      -u {{ translationshr }} \
+      -o {{ translationshr }}
+    @just translation type \
+      -l en \
+      -i Ozds.Document \
+      -n Ozds.Document.Entities \
+      -u {{ translationsen }} \
+      -o {{ translationsen }}
+    @just translation regex \
+      -l en \
+      -i {{ srcdir }} \
+      -u {{ translationsen }} \
+      -o {{ translationsen }}
 
 measurements *args:
     python -m scripts.database.measurements {{ args }}
@@ -86,7 +124,7 @@ format:
       --verbosity=WARN \
       --caches-home='{{ jbcache }}' \
       -o='{{ jbinspectlog }}' \
-      --exclude='**/.git/**/*;**/.nuget/**/*;**/obj/**/*;**/bin/**/*'
+      --exclude='**/.git/**/*;**/.nuget/**/*;**/obj/**/*;**/bin/**/*;**/*.xml'
 
 deps:
     exec \
@@ -380,9 +418,19 @@ validate *args:
 [confirm("This will clean docker containers. Do you want to continue?")]
 clean:
     docker compose ps -a -q | lines | each { |x| docker stop $x }
-    docker compose --profile "*" down -v
-    docker compose up -d
-    nu {{ isready }}
+    docker compose --profile "*" down
+    docker volume ls -q | lines \
+      | filter { |x| \
+          ($x | str starts-with "ozds") \
+          and not ($x | str contains "ollama") \
+        } \
+      | each { |x| docker volume rm $x }
+    ((docker run --rm --device=nvidia.com/gpu=all hello-world \
+      | complete | get exit_code) == 0) \
+      and (docker compose --profile cuda up -d; true) \
+      or (docker compose --profile cpu up -d; true)
+    nu {{ isdatabaseready }}
+    nu {{ isllmready }}
 
     open --raw '{{ migrationassets }}/current-orchard.sql' | \
       docker exec \
