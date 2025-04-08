@@ -65,13 +65,21 @@ public record class InstantaneousPhaseMeasure<T>(
     PhasicMeasure<T> other,
     Func<PhasicMeasure<T>, PhasicMeasure<T>, PhasicMeasure<T>> selector)
   {
-    return new InstantaneousPhaseMeasure<T>(
-      selector(Avg, other),
-      selector(Min, other),
-      MinTimestamp,
-      selector(Max, other),
-      MaxTimestamp
-    );
+    return other is InstantaneousPhaseMeasure<T> otherInstantaneous
+      ? new InstantaneousPhaseMeasure<T>(
+          selector(Avg, otherInstantaneous.Avg),
+          selector(Min, otherInstantaneous.Min),
+          MinTimestamp,
+          selector(Max, otherInstantaneous.Max),
+          MaxTimestamp
+        )
+      : new InstantaneousPhaseMeasure<T>(
+          selector(Avg, other),
+          selector(Min, other),
+          MinTimestamp,
+          selector(Max, other),
+          MaxTimestamp
+        );
   }
 }
 
@@ -95,10 +103,15 @@ public record class CumulativePhasicMeasure<T>(
     PhasicMeasure<T> other,
     Func<PhasicMeasure<T>, PhasicMeasure<T>, PhasicMeasure<T>> selector)
   {
-    return new CumulativePhasicMeasure<T>(
-      selector(Min, other),
-      selector(Max, other)
-    );
+    return other is CumulativePhasicMeasure<T> otherCumulative
+      ? new CumulativePhasicMeasure<T>(
+          selector(Min, otherCumulative.Min),
+          selector(Max, otherCumulative.Max)
+        )
+      : new CumulativePhasicMeasure<T>(
+          selector(Min, other),
+          selector(Max, other)
+        );
   }
 }
 
