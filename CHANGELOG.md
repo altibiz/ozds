@@ -9,7 +9,7 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
-### Added
+## [1.2.1]
 
 ### Changed
 
@@ -212,6 +212,7 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 - init
 
+[1.2.1]: https://github.com/altibiz/ozds/compare/1.2.0...1.2.1
 [1.2.0]: https://github.com/altibiz/ozds/compare/1.1.1...1.2.0
 [1.1.1]: https://github.com/altibiz/ozds/compare/1.0.1...1.1.1
 [1.0.1]: https://github.com/altibiz/ozds/compare/1.0.0...1.0.1
