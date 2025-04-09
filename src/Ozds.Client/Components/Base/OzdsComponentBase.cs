@@ -328,7 +328,14 @@ public abstract class OzdsComponentBase : ComponentBase, IDisposable
 
   protected CultureInfo GetCulture()
   {
-    return CultureState?.Culture ?? CultureInfo.CurrentCulture;
+    if (CultureState?.Culture is { } culture)
+    {
+      return culture;
+    }
+
+    var localizationQueries = ScopedServices
+      .GetRequiredService<LocalizationQueries>();
+    return localizationQueries.EnglishCulture;
   }
 
   protected Task SetCulture(CultureInfo culture)
