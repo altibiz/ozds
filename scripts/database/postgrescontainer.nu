@@ -11,9 +11,9 @@ def "main" [] {
 }
 
 def "main name" [] {
-  $container.name
+  $container.Name
 }
 
 def "main id" [] {
-  $container.id
+  $container.ID
 }

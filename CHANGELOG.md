@@ -9,6 +9,14 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+### Changed
+
+- Made table content selectable
+- Add more definition to the time stamp info for mouse hovering chart info
+- Made charts at meter and measurement location pages normal charts not brushes
+
 ## [1.2.0]
 
 ### Added

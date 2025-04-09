@@ -45,7 +45,7 @@ public static class ApexChartOptionsExtensions
   {
     options.Tooltip = new Tooltip
     {
-      X = new TooltipX { Format = @"dd.MM." }
+      X = new TooltipX { Format = @"dd.MM. HH:mm" }
     };
     return options;
   }
@@ -57,7 +57,7 @@ public static class ApexChartOptionsExtensions
   {
     options.Tooltip = new Tooltip
     {
-      X = new TooltipX { Format = @"dd.MM. HH:mm" }
+      X = new TooltipX { Format = @"dd.MM. HH:mm:ss" }
     };
     return options;
   }

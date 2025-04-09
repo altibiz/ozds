@@ -297,7 +297,7 @@ dump name=current:
       --env PGUSER="ozds" \
       --env PGPASSWORD="ozds" \
       --interactive \
-      ({{ postgrescontainer }} name) \
+      (nu {{ postgrescontainer }} name) \
         pg_dump \
           --schema=public \
           --table='"Document"' \
@@ -312,7 +312,7 @@ dump name=current:
       --env PGUSER="ozds" \
       --env PGPASSWORD="ozds" \
       --interactive \
-      ({{ postgrescontainer }} name) \
+      (nu {{ postgrescontainer }} name) \
         pg_dump \
           --data-only \
           --schema=public \
@@ -335,7 +335,7 @@ dump name=current:
       --env PGUSER="ozds" \
       --env PGPASSWORD="ozds" \
       --interactive \
-      ({{ postgrescontainer }} name) \
+      (nu {{ postgrescontainer }} name) \
       psql -c "DO $$ \
         DECLARE \
           ht RECORD; \
@@ -357,7 +357,7 @@ dump name=current:
       --env PGUSER="ozds" \
       --env PGPASSWORD="ozds" \
       --interactive \
-      ({{ postgrescontainer }} name) \
+      (nu {{ postgrescontainer }} name) \
       pg_dump \
         --data-only \
         --schema=public \
@@ -375,7 +375,7 @@ dump name=current:
       --env PGUSER="ozds" \
       --env PGPASSWORD="ozds" \
       --interactive \
-      ({{ postgrescontainer }} name) \
+      (nu {{ postgrescontainer }} name) \
       psql -c "DO $$ \
         DECLARE \
           tbl RECORD; \
@@ -440,7 +440,7 @@ clean:
         --env PGUSER="ozds" \
         --env PGPASSWORD="ozds" \
         --interactive \
-      ({{ postgrescontainer }} name) \
+      (nu {{ postgrescontainer }} name) \
           psql
 
     dotnet ef \
@@ -466,7 +466,7 @@ clean:
         --env PGUSER="ozds" \
         --env PGPASSWORD="ozds" \
         --interactive \
-        ({{ postgrescontainer }} name) \
+        (nu {{ postgrescontainer }} name) \
           psql
 
     open --raw '{{ migrationassets }}/current-hypertables.sql' | \
@@ -477,7 +477,7 @@ clean:
         --env PGUSER="ozds" \
         --env PGPASSWORD="ozds" \
         --interactive \
-        ({{ postgrescontainer }} name) \
+        (nu {{ postgrescontainer }} name) \
           psql
 
 [confirm("This will clean docker containers and dotnet artifacts. Do you want to continue?")]
