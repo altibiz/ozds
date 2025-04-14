@@ -258,14 +258,25 @@ public class TypeService(
         .GetRequiredService<ILocalizationQueries>();
 
       var prefix = localizationQueries.Key(type);
+      var shortPrefix = localizationQueries.ShortKey(type);
 
       // NITPICK: this is yucky
-      if (prefix.StartsWith('<'))
+      if (prefix.StartsWith('<') || shortPrefix.StartsWith('<'))
       {
         continue;
       }
 
-      if (!dictionary.Contains(prefix))
+      if (dictionary.Contains(prefix) || dictionary.Contains(shortPrefix))
+      {
+        var translation = dictionary.Remove(shortPrefix);
+        if (translation is not null)
+        {
+          dictionary.Add(prefix, translation);
+          logger.LogInformation(
+            "{ShortKey} expanded to {Key}", shortPrefix, prefix);
+        }
+      }
+      else
       {
         logger.LogInformation("Found new type: {Type}", prefix);
 
@@ -279,19 +290,29 @@ public class TypeService(
         );
       }
 
-      foreach (var path in GetPathsRecursive(type, prefix).Distinct())
+      foreach (var (key, shortKey) in
+        GetPathsRecursive(type, prefix, shortPrefix)
+          .Distinct())
       {
-        if (dictionary.Contains(path))
+        if (dictionary.Contains(key) || dictionary.Contains(shortKey))
         {
+          var translation = dictionary.Remove(shortKey);
+          if (translation is not null)
+          {
+            dictionary.Add(key, translation);
+            logger.LogInformation(
+              "{ShortKey} expanded to {Key}", shortKey, key);
+          }
+
           continue;
         }
 
-        logger.LogInformation("Found new property path: {Path}", path);
+        logger.LogInformation("Found new property path: {Path}", key);
 
         yield return new TranslationWorkerItem(
           dictionary,
-          path,
-          path,
+          key,
+          key,
           AssetConstants.EnglishCulture,
           new CultureInfo(arguments.Language),
           AdditionalPropertyPrompt
@@ -300,9 +321,10 @@ public class TypeService(
     }
   }
 
-  private IEnumerable<string> GetPathsRecursive(
+  private IEnumerable<(string, string)> GetPathsRecursive(
     Type type,
-    string pathPrefix
+    string pathPrefix,
+    string shortPathPrefix
   )
   {
     var properties = type.GetProperties(
@@ -312,6 +334,7 @@ public class TypeService(
     {
       var propertyType = property.PropertyType;
       var fullPath = $"{pathPrefix}.{property.Name}";
+      var fullShortPath = $"{shortPathPrefix}.{property.Name}";
 
       if (
         propertyType != typeof(string)
@@ -332,14 +355,15 @@ public class TypeService(
           foreach (var path in
             GetPathsRecursive(
               elementType,
-              fullPath))
+              fullPath,
+              fullShortPath))
           {
             yield return path;
           }
         }
         else
         {
-          yield return fullPath;
+          yield return (fullPath, fullShortPath);
         }
       }
       else if (
@@ -353,14 +377,15 @@ public class TypeService(
         foreach (var path in
           GetPathsRecursive(
             propertyType,
-            fullPath))
+            fullPath,
+            fullShortPath))
         {
           yield return path;
         }
       }
       else
       {
-        yield return fullPath;
+        yield return (fullPath, fullShortPath);
       }
     }
   }

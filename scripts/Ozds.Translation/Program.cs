@@ -7,6 +7,7 @@ using Ozds.Email.Extensions;
 using Ozds.Iot.Extensions;
 using Ozds.Jobs.Extensions;
 using Ozds.Messaging.Extensions;
+using Ozds.Report.Extensions;
 using Ozds.Translation.Arguments;
 using Ozds.Translation.Extensions;
 using Ozds.Users.Extensions;
@@ -28,6 +29,7 @@ var builder = Host.CreateApplicationBuilder();
 builder.Services
   .AddOzdsAssets()
   .AddOzdsDocument()
+  .AddOzdsReport()
   .AddOzdsUsers()
   .AddOzdsData()
   // TODO: figure out why this is needed here

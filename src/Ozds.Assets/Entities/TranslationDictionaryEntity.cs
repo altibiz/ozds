@@ -188,6 +188,11 @@ public sealed class TranslationDictionaryEntity
     );
   }
 
+  public string? Get(string key)
+  {
+    return items.GetValueOrDefault(key);
+  }
+
   public bool Contains(string key)
   {
     return items.Any(item => item.Key == key);
@@ -196,6 +201,12 @@ public sealed class TranslationDictionaryEntity
   public void Add(string key, string value)
   {
     items.TryAdd(key, value);
+  }
+
+  public string? Remove(string key)
+  {
+    items.TryRemove(key, out var removed);
+    return removed;
   }
 
   private static TranslationDictionaryContent DictionaryToContent(

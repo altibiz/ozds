@@ -1,6 +1,7 @@
 using System.Reflection;
 using Altibiz.DependencyInjection.Extensions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Options;
 using Npgsql;
 using Ozds.Data.Context;
@@ -112,6 +113,13 @@ public static class IServiceCollectionExtensions
             typeof(IServiceCollectionExtensions).Assembly,
             services
           );
+
+        if (environment.IsDevelopment())
+        {
+          options.ConfigureWarnings(
+            warnings => warnings
+              .Throw(RelationalEventId.MultipleCollectionIncludeWarning));
+        }
 
         if (dataOptions.UseProxies)
         {

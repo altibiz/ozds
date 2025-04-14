@@ -3,6 +3,7 @@ using MassTransit;
 using MassTransit.Configuration;
 using MassTransit.EntityFrameworkCoreIntegration;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Options;
 using Ozds.Messaging.Context;
 using Ozds.Messaging.Mutations.Abstractions;
@@ -87,6 +88,8 @@ public static class IServiceCollectionExtensions
       {
         var messagingOptions = services
           .GetRequiredService<IOptions<OzdsMessagingOptions>>().Value;
+        var environment = services
+          .GetRequiredService<IHostEnvironment>();
 
         builder
           .UseNpgsql(
@@ -98,6 +101,13 @@ public static class IServiceCollectionExtensions
                 $"__Ozds{nameof(MessagingDbContext)}");
             })
           .UseSnakeCaseNamingConvention();
+
+        if (environment.IsDevelopment())
+        {
+          builder.ConfigureWarnings(
+            warnings => warnings
+              .Throw(RelationalEventId.MultipleCollectionIncludeWarning));
+        }
       });
   }
 

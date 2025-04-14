@@ -11,6 +11,9 @@ using Z.EntityFramework.Plus;
 
 // TODO: remove any direct references
 // to concrete aggregate/measurement entity types in all queries
+// NOTE: <= toDate because when getting invoice data for instance
+// you wanna get the data for both the target month and the next month
+// so it overlaps nicely
 
 namespace Ozds.Data.Queries;
 
@@ -19,7 +22,7 @@ public class MeasurementQueries(
 ) : IQueries
 {
   public async Task<PaginatedList<IMeasurementEntity>> ReadByMeterIds(
-    IEnumerable<IGrouping<Type, string>> meterIdsByEntityType,
+    IEnumerable<KeyValuePair<Type, IEnumerable<string>>> meterIdsByEntityType,
     IntervalEntity? interval,
     DateTimeOffset fromDate,
     DateTimeOffset toDate,
@@ -40,12 +43,12 @@ public class MeasurementQueries(
     foreach (var group in meterIdsByEntityType)
     {
       var entityType = group.Key;
-      var meterIds = group;
+      var meterIds = group.Value;
       var queryable = context.GetQueryable<IMeasurementEntity>(entityType);
 
       var filtered = queryable
         .Where(measurement => measurement.Timestamp >= fromDate)
-        .Where(measurement => measurement.Timestamp < toDate);
+        .Where(measurement => measurement.Timestamp <= toDate);
 
       if (entityType.IsAssignableTo(typeof(IAggregateEntity)))
       {
@@ -129,7 +132,7 @@ public class MeasurementQueries(
       var queryable = context.GetQueryable<IMeasurementEntity>(entityType);
 
       var filtered = queryable
-        .Where(measurement => measurement.Timestamp < toDate);
+        .Where(measurement => measurement.Timestamp <= toDate);
 
       if (entityType.IsAssignableTo(typeof(IAggregateEntity)))
       {
@@ -217,7 +220,7 @@ public class MeasurementQueries(
 
       var filtered = queryable
         .Where(measurement => measurement.Timestamp >= fromDate)
-        .Where(measurement => measurement.Timestamp < toDate);
+        .Where(measurement => measurement.Timestamp <= toDate);
 
       if (entityType.IsAssignableTo(typeof(IAggregateEntity)))
       {
@@ -311,7 +314,7 @@ public class MeasurementQueries(
       var queryable = context.GetQueryable<IMeasurementEntity>(entityType);
 
       var filtered = queryable
-        .Where(measurement => measurement.Timestamp < toDate);
+        .Where(measurement => measurement.Timestamp <= toDate);
 
       if (entityType.IsAssignableTo(typeof(IAggregateEntity)))
       {
