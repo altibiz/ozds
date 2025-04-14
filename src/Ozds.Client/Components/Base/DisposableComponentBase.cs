@@ -9,22 +9,27 @@ public class DisposableComponentBase : ComponentBase, IDisposable
 
   private CancellationTokenSource? cancellationTokenSource = new();
 
-  protected CancellationToken CancellationToken =>
-    cancellationTokenSource?.Token ?? _cancelledTokenSource.Token;
+  protected CancellationToken CancellationToken
+  {
+    get
+    {
+      return cancellationTokenSource?.Token ?? _cancelledTokenSource.Token;
+    }
+  }
 
   protected bool IsDisposed { get; private set; }
+
+  public void Dispose()
+  {
+    Dispose(true);
+    GC.SuppressFinalize(this);
+  }
 
   private static CancellationTokenSource CreateCancelledTokenSource()
   {
     var cancellationTokenSource = new CancellationTokenSource();
     cancellationTokenSource.Cancel();
     return cancellationTokenSource;
-  }
-
-  public void Dispose()
-  {
-    Dispose(true);
-    GC.SuppressFinalize(this);
   }
 
   protected virtual void Dispose(bool disposing)

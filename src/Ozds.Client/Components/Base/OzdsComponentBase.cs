@@ -35,18 +35,38 @@ public abstract class OzdsComponentBase : DisposableComponentBase
   [Inject]
   private TemplateBinderFactory TemplateBinderFactory { get; set; } = default!;
 
-  protected string Href => new Uri(NavigationManager.Uri).AbsolutePath;
+  protected string Href
+  {
+    get { return new Uri(NavigationManager.Uri).AbsolutePath; }
+  }
 
-  protected string LoginHref =>
-    $"/login?returnUrl={Uri.EscapeDataString(Href)}";
+  protected string LoginHref
+  {
+    get { return $"/login?returnUrl={Uri.EscapeDataString(Href)}"; }
+  }
 
-  protected string LogoutHref =>
-    $"/users/logoff?returnUrl=/login?returnUrl={Uri.EscapeDataString(Href)}";
+  protected string LogoutHref
+  {
+    get
+    {
+      return
+        $"/users/logoff?returnUrl=/login?returnUrl={Uri.EscapeDataString(Href)}";
+    }
+  }
 
-  protected string IndexHref => BasedHref("/");
+  protected string IndexHref
+  {
+    get { return BasedHref("/"); }
+  }
 
-  protected IServiceProvider ScopedServices => ScopeState?.ScopedServices ??
-    throw new InvalidOperationException($"{this} got disposed");
+  protected IServiceProvider ScopedServices
+  {
+    get
+    {
+      return ScopeState?.ScopedServices ??
+        throw new InvalidOperationException($"{this} got disposed");
+    }
+  }
 
   protected CultureInfo CroatianCulture
   {
