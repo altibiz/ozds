@@ -23,34 +23,11 @@ public abstract class OzdsComponentBase : ComponentBase, IDisposable
 
   private CancellationTokenSource? cancellationTokenSource = new();
 
-  private IServiceScope? scope;
+  [CascadingParameter]
+  private CultureState? CultureState { get; set; } = default!;
 
   [CascadingParameter]
-  private CultureState? CultureState { get; set; }
-
-  protected string Href
-  {
-    get { return new Uri(NavigationManager.Uri).AbsolutePath; }
-  }
-
-  protected string LoginHref
-  {
-    get { return $"/login?returnUrl={Uri.EscapeDataString(Href)}"; }
-  }
-
-  protected string LogoutHref
-  {
-    get
-    {
-      return
-        $"/users/logoff?returnUrl=/login?returnUrl={Uri.EscapeDataString(Href)}";
-    }
-  }
-
-  protected string IndexHref
-  {
-    get { return BasedHref("/"); }
-  }
+  private ScopeState ScopeState { get; set; } = default!;
 
   [Inject]
   private NavigationManager NavigationManager { get; set; } = default!;
@@ -61,34 +38,20 @@ public abstract class OzdsComponentBase : ComponentBase, IDisposable
   [Inject]
   private TemplateBinderFactory TemplateBinderFactory { get; set; } = default!;
 
-  protected IServiceProvider ScopedServices
-  {
-    get
-    {
-      if (ScopeFactory == null)
-      {
-        throw new InvalidOperationException(
-          "Services cannot be accessed before the component is initialized."
-        );
-      }
+  protected string Href => new Uri(NavigationManager.Uri).AbsolutePath;
 
-      ObjectDisposedException.ThrowIf(IsDisposed, this);
-      scope ??= ScopeFactory.CreateScope();
+  protected string LoginHref =>
+    $"/login?returnUrl={Uri.EscapeDataString(Href)}";
 
-      return scope.ServiceProvider;
-    }
-  }
+  protected string LogoutHref =>
+    $"/users/logoff?returnUrl=/login?returnUrl={Uri.EscapeDataString(Href)}";
 
-  [Inject]
-  private IServiceScopeFactory ScopeFactory { get; set; } = default!;
+  protected string IndexHref => BasedHref("/");
 
-  protected CancellationToken CancellationToken
-  {
-    get
-    {
-      return cancellationTokenSource?.Token ?? _cancelledTokenSource.Token;
-    }
-  }
+  protected IServiceProvider ScopedServices => ScopeState.ScopedServices;
+
+  protected CancellationToken CancellationToken =>
+    cancellationTokenSource?.Token ?? _cancelledTokenSource.Token;
 
   protected bool IsDisposed { get; private set; }
 
@@ -110,12 +73,6 @@ public abstract class OzdsComponentBase : ComponentBase, IDisposable
         .GetRequiredService<LocalizationQueries>();
       return localizationQueries.EnglishCulture;
     }
-  }
-
-  public void Dispose()
-  {
-    Dispose(true);
-    GC.SuppressFinalize(this);
   }
 
   protected string NumericString(decimal? number, int places = 2)
@@ -294,11 +251,32 @@ public abstract class OzdsComponentBase : ComponentBase, IDisposable
     return NavigationManager.BasedHref(uri);
   }
 
+  protected CultureInfo GetCulture()
+  {
+    return CultureState?.Culture ?? CroatianCulture;
+  }
+
+  protected Task SetCulture(CultureInfo culture)
+  {
+    if (CultureState is { } cultureState)
+    {
+      return cultureState.SetCulture(culture);
+    }
+
+    return Task.CompletedTask;
+  }
+
   private static CancellationTokenSource CreateCancelledTokenSource()
   {
     var cancellationTokenSource = new CancellationTokenSource();
     cancellationTokenSource.Cancel();
     return cancellationTokenSource;
+  }
+
+  public void Dispose()
+  {
+    Dispose(true);
+    GC.SuppressFinalize(this);
   }
 
   protected virtual void Dispose(bool disposing)
@@ -310,34 +288,16 @@ public abstract class OzdsComponentBase : ComponentBase, IDisposable
 
     if (disposing)
     {
+#pragma warning disable S1066 // Mergeable "if" statements should be combined
       if (cancellationTokenSource is not null)
+#pragma warning restore S1066 // Mergeable "if" statements should be combined
       {
         cancellationTokenSource.Cancel();
         cancellationTokenSource.Dispose();
         cancellationTokenSource = null;
       }
-
-      if (scope is not null)
-      {
-        scope.Dispose();
-      }
     }
 
     IsDisposed = true;
-  }
-
-  protected CultureInfo GetCulture()
-  {
-    return CultureState?.Culture ?? CultureInfo.CurrentCulture;
-  }
-
-  protected Task SetCulture(CultureInfo culture)
-  {
-    if (CultureState is { } cultureState)
-    {
-      return cultureState.SetCulture(culture);
-    }
-
-    return Task.CompletedTask;
   }
 }
