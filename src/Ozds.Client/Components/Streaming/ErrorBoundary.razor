@@ -1,5 +1,6 @@
 @namespace Ozds.Client.Components.Streaming
-@inherits Ozds.Client.Components.Base.OzdsComponentBase
+@using Ozds.Client.Components.Base
+@inherits DisposableComponentBase
 
 <InnerErrorBoundary This="this" @ref="@inner">
   <ChildContent>
@@ -12,7 +13,7 @@
       </div>
       <div>
         <button @onclick="@OnRecover">
-          @Translate("Recover")
+          Recover
         </button>
       </div>
     </div>

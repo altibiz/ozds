@@ -11,20 +11,17 @@ using Ozds.Client.State;
 
 namespace Ozds.Client.Components.Base;
 
-public abstract class OzdsComponentBase : ComponentBase, IDisposable
+// NOTE: to be used inside ErrorBoundary, ScopeStateProvider
+// and CultureStateProvider
+public abstract class OzdsComponentBase : DisposableComponentBase
 {
   private static readonly JsonSerializerOptions JsonSerializerOptions = new()
   {
     WriteIndented = true
   };
 
-  private static readonly CancellationTokenSource _cancelledTokenSource =
-    CreateCancelledTokenSource();
-
-  private CancellationTokenSource? cancellationTokenSource = new();
-
   [CascadingParameter]
-  private CultureState? CultureState { get; set; } = default!;
+  private CultureState CultureState { get; set; } = default!;
 
   [CascadingParameter]
   private ScopeState ScopeState { get; set; } = default!;
@@ -48,12 +45,8 @@ public abstract class OzdsComponentBase : ComponentBase, IDisposable
 
   protected string IndexHref => BasedHref("/");
 
-  protected IServiceProvider ScopedServices => ScopeState.ScopedServices;
-
-  protected CancellationToken CancellationToken =>
-    cancellationTokenSource?.Token ?? _cancelledTokenSource.Token;
-
-  protected bool IsDisposed { get; private set; }
+  protected IServiceProvider ScopedServices => ScopeState?.ScopedServices ??
+    throw new InvalidOperationException($"{this} got disposed");
 
   protected CultureInfo CroatianCulture
   {
@@ -253,7 +246,7 @@ public abstract class OzdsComponentBase : ComponentBase, IDisposable
 
   protected CultureInfo GetCulture()
   {
-    return CultureState?.Culture ?? CroatianCulture;
+    return CultureState.Culture;
   }
 
   protected Task SetCulture(CultureInfo culture)
@@ -264,40 +257,5 @@ public abstract class OzdsComponentBase : ComponentBase, IDisposable
     }
 
     return Task.CompletedTask;
-  }
-
-  private static CancellationTokenSource CreateCancelledTokenSource()
-  {
-    var cancellationTokenSource = new CancellationTokenSource();
-    cancellationTokenSource.Cancel();
-    return cancellationTokenSource;
-  }
-
-  public void Dispose()
-  {
-    Dispose(true);
-    GC.SuppressFinalize(this);
-  }
-
-  protected virtual void Dispose(bool disposing)
-  {
-    if (IsDisposed)
-    {
-      return;
-    }
-
-    if (disposing)
-    {
-#pragma warning disable S1066 // Mergeable "if" statements should be combined
-      if (cancellationTokenSource is not null)
-#pragma warning restore S1066 // Mergeable "if" statements should be combined
-      {
-        cancellationTokenSource.Cancel();
-        cancellationTokenSource.Dispose();
-        cancellationTokenSource = null;
-      }
-    }
-
-    IsDisposed = true;
   }
 }

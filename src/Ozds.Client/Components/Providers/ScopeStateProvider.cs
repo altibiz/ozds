@@ -4,7 +4,8 @@ using Ozds.Client.State;
 
 namespace Ozds.Client.Components.Providers;
 
-public partial class ScopeStateProvider : OzdsComponentBase
+// NOTE: rendered at root so keep dependencies minimal
+public partial class ScopeStateProvider : DisposableComponentBase
 {
   [Parameter]
   public RenderFragment ChildContent { get; set; } = default!;
