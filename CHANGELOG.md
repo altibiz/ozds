@@ -9,6 +9,17 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- scope state provider in `Ozds.Client` to manage lifetime of scoped services
+  per client session
+
+### Changed
+
+- get scoped services from cascading parameter rather than managing service
+  scope inside `OzdsComponentBase`
+- use `-dev` suffix for service bus endpoints in dev
+
 ## [1.2.1]
 
 ### Changed
