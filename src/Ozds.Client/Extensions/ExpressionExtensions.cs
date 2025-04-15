@@ -23,24 +23,27 @@ public static class ExpressionExtensions
     return "";
   }
 
-  public static MemberExpression LabelExpression<TIn, TOut>(
-    this Expression<Func<TIn, TOut>> expression
+  public static MemberExpression LabelExpression(
+    this Expression expression
   )
   {
-    if (expression.Body is MemberExpression memberExpression)
+    var body = expression is LambdaExpression { Body: { } lambdaBody }
+      ? lambdaBody
+      : expression;
+
+    if (body is MemberExpression memberExpression)
     {
       return memberExpression;
     }
 
-    if (expression.Body is UnaryExpression unaryExpression
-      && unaryExpression.NodeType == ExpressionType.Convert
-      && unaryExpression.Operand is MemberExpression innerMemberExpression)
+    if (body is UnaryExpression unaryExpression
+      && unaryExpression.NodeType == ExpressionType.Convert)
     {
-      return innerMemberExpression;
+      return LabelExpression(unaryExpression.Operand);
     }
 
     throw new InvalidOperationException(
-      "Expression is not a member expression.");
+      $"Expression {expression} is not a member expression.");
   }
 
   public static Expression<Func<TIn, TOut>> Prefix<TIn, TMid, TOut>(
