@@ -13,12 +13,15 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 - scope state provider in `Ozds.Client` to manage lifetime of scoped services
   per client session
+- disposable base component in `Ozds.Client` for root components
 
 ### Changed
 
 - get scoped services from cascading parameter rather than managing service
   scope inside `OzdsComponentBase`
 - use `-dev` suffix for service bus endpoints in dev
+- use `DisposableBaseComponent` as base for root components
+- recursively unwrap conversions for member expression translations
 
 ## [1.2.1]
 

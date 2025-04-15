@@ -4,24 +4,25 @@ using Ozds.Client.State;
 
 namespace Ozds.Client.Components.Providers;
 
-public partial class ScopeStateProvider : OzdsComponentBase
+// NOTE: rendered at root so keep dependencies minimal
+public partial class ScopeStateProvider : DisposableComponentBase
 {
+  private IServiceScope? _scope;
+
+  private ScopeState? _state;
+
   [Parameter]
   public RenderFragment ChildContent { get; set; } = default!;
 
   [Inject]
   private IServiceScopeFactory ScopeFactory { get; set; } = default!;
 
-  private IServiceScope? _scope;
-
-  private ScopeState? _state;
-
   protected override void OnParametersSet()
   {
     if (_scope is null)
     {
       _scope = ScopeFactory.CreateScope();
-      _state = new(_scope.ServiceProvider);
+      _state = new ScopeState(_scope.ServiceProvider);
     }
   }
 
@@ -35,7 +36,7 @@ public partial class ScopeStateProvider : OzdsComponentBase
     if (disposing)
     {
 #pragma warning disable S1066 // Mergeable "if" statements should be combined
-      if (_scope is { })
+      if (_scope is not null)
 #pragma warning restore S1066 // Mergeable "if" statements should be combined
       {
         _state = null;

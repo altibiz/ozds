@@ -360,7 +360,7 @@ public class MeasurementQueries(
         .ValueAsync(cancellationToken);
       // NOTE: this is from DeferredLastOrDefault but because the nullability
       // gets type-erased we have to check regardless
-      if (value is { })
+      if (value is not null)
       {
         items.Add(value);
       }
