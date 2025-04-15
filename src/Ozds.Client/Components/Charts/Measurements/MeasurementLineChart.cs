@@ -13,12 +13,6 @@ public partial class MeasurementLineChart : OzdsComponentBase
 {
   private readonly string _id = Guid.NewGuid().ToString();
 
-  private ApexChart<IMeasurement>? _brushChart = default!;
-
-  private ApexChartOptions<IMeasurement> _brushOptions =
-    new ApexChartOptions<IMeasurement>()
-      .WithFixedScriptPath();
-
   private ApexChart<IMeasurement>? _chart = default!;
 
   private ApexChartOptions<IMeasurement> _options =
@@ -43,7 +37,6 @@ public partial class MeasurementLineChart : OzdsComponentBase
   protected override void OnInitialized()
   {
     _options = CreateGraphOptions();
-    _brushOptions = CreateBrushOptions();
   }
 
   protected override async Task OnParametersSetAsync()
@@ -53,13 +46,6 @@ public partial class MeasurementLineChart : OzdsComponentBase
     {
       await chart.UpdateSeriesAsync();
       await chart.UpdateOptionsAsync(false, true, false);
-    }
-
-    _brushOptions = CreateBrushOptions();
-    if (_brushChart is { } brushChart)
-    {
-      await brushChart.UpdateSeriesAsync();
-      await brushChart.UpdateOptionsAsync(false, true, false);
     }
   }
 
@@ -94,30 +80,6 @@ public partial class MeasurementLineChart : OzdsComponentBase
     {
       options = options.WithArea();
     }
-
-    var timeSpan = Parameters.Resolution
-      .ToTimeSpan(
-        Parameters.Multiplier,
-        DateTimeOffset.UtcNow);
-    if (timeSpan.TotalDays > 1)
-    {
-      options = options.WithShortDate();
-    }
-    else
-    {
-      options = options.WithLongDate();
-    }
-
-    options = options.WithColorMode(ThemeState.IsDarkMode);
-
-    return options;
-  }
-
-  private ApexChartOptions<IMeasurement> CreateBrushOptions()
-  {
-    var options = _brushOptions;
-
-    options.WithBrush(_id);
 
     var timeSpan = Parameters.Resolution
       .ToTimeSpan(
