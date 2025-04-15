@@ -67,19 +67,19 @@ public record class InstantaneousPhaseMeasure<T>(
   {
     return other is InstantaneousPhaseMeasure<T> otherInstantaneous
       ? new InstantaneousPhaseMeasure<T>(
-          selector(Avg, otherInstantaneous.Avg),
-          selector(Min, otherInstantaneous.Min),
-          MinTimestamp,
-          selector(Max, otherInstantaneous.Max),
-          MaxTimestamp
-        )
+        selector(Avg, otherInstantaneous.Avg),
+        selector(Min, otherInstantaneous.Min),
+        MinTimestamp,
+        selector(Max, otherInstantaneous.Max),
+        MaxTimestamp
+      )
       : new InstantaneousPhaseMeasure<T>(
-          selector(Avg, other),
-          selector(Min, other),
-          MinTimestamp,
-          selector(Max, other),
-          MaxTimestamp
-        );
+        selector(Avg, other),
+        selector(Min, other),
+        MinTimestamp,
+        selector(Max, other),
+        MaxTimestamp
+      );
   }
 }
 
@@ -105,13 +105,13 @@ public record class CumulativePhasicMeasure<T>(
   {
     return other is CumulativePhasicMeasure<T> otherCumulative
       ? new CumulativePhasicMeasure<T>(
-          selector(Min, otherCumulative.Min),
-          selector(Max, otherCumulative.Max)
-        )
+        selector(Min, otherCumulative.Min),
+        selector(Max, otherCumulative.Max)
+      )
       : new CumulativePhasicMeasure<T>(
-          selector(Min, other),
-          selector(Max, other)
-        );
+        selector(Min, other),
+        selector(Max, other)
+      );
   }
 }
 

@@ -6,7 +6,8 @@ using Ozds.Client.State;
 
 namespace Ozds.Client.Components.Providers;
 
-public partial class CultureStateProvider : OzdsComponentBase
+// NOTE: rendered at root so keep dependencies minimal
+public partial class CultureStateProvider : DisposableComponentBase
 {
   private const string CultureKey = "culture";
 

@@ -11,22 +11,29 @@ using Ozds.Client.State;
 
 namespace Ozds.Client.Components.Base;
 
-public abstract class OzdsComponentBase : ComponentBase, IDisposable
+// NOTE: to be used inside ErrorBoundary, ScopeStateProvider
+// and CultureStateProvider
+public abstract class OzdsComponentBase : DisposableComponentBase
 {
   private static readonly JsonSerializerOptions JsonSerializerOptions = new()
   {
     WriteIndented = true
   };
 
-  private static readonly CancellationTokenSource _cancelledTokenSource =
-    CreateCancelledTokenSource();
-
-  private CancellationTokenSource? cancellationTokenSource = new();
-
-  private IServiceScope? scope;
+  [CascadingParameter]
+  private CultureState CultureState { get; set; } = default!;
 
   [CascadingParameter]
-  private CultureState? CultureState { get; set; }
+  private ScopeState ScopeState { get; set; } = default!;
+
+  [Inject]
+  private NavigationManager NavigationManager { get; set; } = default!;
+
+  [Inject]
+  private IJSRuntime JS { get; set; } = default!;
+
+  [Inject]
+  private TemplateBinderFactory TemplateBinderFactory { get; set; } = default!;
 
   protected string Href
   {
@@ -52,45 +59,14 @@ public abstract class OzdsComponentBase : ComponentBase, IDisposable
     get { return BasedHref("/"); }
   }
 
-  [Inject]
-  private NavigationManager NavigationManager { get; set; } = default!;
-
-  [Inject]
-  private IJSRuntime JS { get; set; } = default!;
-
-  [Inject]
-  private TemplateBinderFactory TemplateBinderFactory { get; set; } = default!;
-
   protected IServiceProvider ScopedServices
   {
     get
     {
-      if (ScopeFactory == null)
-      {
-        throw new InvalidOperationException(
-          "Services cannot be accessed before the component is initialized."
-        );
-      }
-
-      ObjectDisposedException.ThrowIf(IsDisposed, this);
-      scope ??= ScopeFactory.CreateScope();
-
-      return scope.ServiceProvider;
+      return ScopeState?.ScopedServices ??
+        throw new InvalidOperationException($"{this} got disposed");
     }
   }
-
-  [Inject]
-  private IServiceScopeFactory ScopeFactory { get; set; } = default!;
-
-  protected CancellationToken CancellationToken
-  {
-    get
-    {
-      return cancellationTokenSource?.Token ?? _cancelledTokenSource.Token;
-    }
-  }
-
-  protected bool IsDisposed { get; private set; }
 
   protected CultureInfo CroatianCulture
   {
@@ -110,12 +86,6 @@ public abstract class OzdsComponentBase : ComponentBase, IDisposable
         .GetRequiredService<LocalizationQueries>();
       return localizationQueries.EnglishCulture;
     }
-  }
-
-  public void Dispose()
-  {
-    Dispose(true);
-    GC.SuppressFinalize(this);
   }
 
   protected string NumericString(decimal? number, int places = 2)
@@ -294,41 +264,9 @@ public abstract class OzdsComponentBase : ComponentBase, IDisposable
     return NavigationManager.BasedHref(uri);
   }
 
-  private static CancellationTokenSource CreateCancelledTokenSource()
-  {
-    var cancellationTokenSource = new CancellationTokenSource();
-    cancellationTokenSource.Cancel();
-    return cancellationTokenSource;
-  }
-
-  protected virtual void Dispose(bool disposing)
-  {
-    if (IsDisposed)
-    {
-      return;
-    }
-
-    if (disposing)
-    {
-      if (cancellationTokenSource is not null)
-      {
-        cancellationTokenSource.Cancel();
-        cancellationTokenSource.Dispose();
-        cancellationTokenSource = null;
-      }
-
-      if (scope is not null)
-      {
-        scope.Dispose();
-      }
-    }
-
-    IsDisposed = true;
-  }
-
   protected CultureInfo GetCulture()
   {
-    return CultureState?.Culture ?? CultureInfo.CurrentCulture;
+    return CultureState.Culture;
   }
 
   protected Task SetCulture(CultureInfo culture)
