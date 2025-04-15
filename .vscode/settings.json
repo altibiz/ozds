@@ -30,7 +30,8 @@
   "prettier.ignorePath": ".prettierignore",
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "[csharp]": {
-    "editor.defaultFormatter": "ms-dotnettools.csharp"
+    "editor.defaultFormatter": "ms-dotnettools.csharp",
+    "editor.formatOnSave": false
   },
   "[aspnetcorerazor]": {
     "editor.defaultFormatter": "ms-dotnettools.csharp",
@@ -53,7 +54,7 @@
   "editor.wordWrap": "off",
   "files.insertFinalNewline": true,
   "files.trimTrailingWhitespace": true,
-  "editor.formatOnSave": false,
+  "editor.formatOnSave": true,
   "files.associations": {
     ".dvcignore": "ignore",
     "Doxyfile": "ini",
