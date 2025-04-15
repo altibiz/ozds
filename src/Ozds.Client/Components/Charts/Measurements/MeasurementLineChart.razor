@@ -4,61 +4,13 @@
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Business.Models.Enums
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
-
-@* TODO: operators - this is how it should be for last *@
-
-<ApexChart
-  XAxisType="@XAxisType.Datetime"
-  Options="@_options"
-  Height="300"
-  @ref="@_chart">
-  @foreach (var (meter, measurementLocation, i) in Parameters.Meters
-    .OrderBy(x => x.Id)
-    .Select((x, i) => ((IMeter?)x, (IMeasurementLocation?)null, i))
-    .Concat(
-      Parameters.MeasurementLocations
-        .OrderBy(x => x.Id)
-        .Select((x, i) => ((IMeter?)null, (IMeasurementLocation?)x, i))))
-  {
-    if (Parameters.Phases.Count == 0)
-    {
-      @(
-      Series(
-        PhaseModel.L1.ToColor(i),
-        meter,
-        measurementLocation
-      ))
-    }
-    else
-    {
-      foreach (var phase in Parameters.Phases.OrderBy(x => x))
-      {
-        @(
-        Series(
-          phase.ToColor(i),
-          meter,
-          measurementLocation,
-          phase
-        ))
-      }
-    }
-  }
-</ApexChart>
-
-@if (Brush)
-{
+@if(Parameters.MeasurementLocations.Count > 0){
   <ApexChart
     XAxisType="@XAxisType.Datetime"
-    Options="@_brushOptions"
-    Height="130"
-    @ref="@_brushChart">
-    @foreach (var (meter, measurementLocation, i) in Parameters.Meters
-      .OrderBy(x => x.Id)
-      .Select((x, i) => ((IMeter?)x, (IMeasurementLocation?)null, i))
-      .Concat(
-        Parameters.MeasurementLocations
-          .OrderBy(x => x.Id)
-          .Select((x, i) => ((IMeter?)null, (IMeasurementLocation?)x, i))))
+    Options="@_options"
+    Height="300"
+    @ref="@_chart">
+    @foreach (var (meter, measurementLocation, i) in GetItems())
     {
       if (Parameters.Phases.Count == 0)
       {
@@ -84,6 +36,11 @@
       }
     }
   </ApexChart>
+}
+else{
+  <div style="height:300px; display: grid; align-items: center;">
+    <h2 style="text-align: center;">@Translate("No measurements found with given graph settings")</h2>
+  </div>
 }
 
 @code {
@@ -125,4 +82,14 @@
               Color="@color"/>;
   }
 
-}
+  private IEnumerable<(IMeter? Meter, IMeasurementLocation? MeasurementLocation, int Index)> GetItems()
+  {
+    return Parameters.Meters
+      .OrderBy(x => x.Id)
+      .Select((x, i) => ((IMeter?)x, (IMeasurementLocation?)null, i))
+      .Concat(
+        Parameters.MeasurementLocations
+          .OrderBy(x => x.Id)
+          .Select((x, i) => ((IMeter?)null, (IMeasurementLocation?)x, i)));
+  }
+  }

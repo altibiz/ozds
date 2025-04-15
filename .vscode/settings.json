@@ -53,7 +53,7 @@
   "editor.wordWrap": "off",
   "files.insertFinalNewline": true,
   "files.trimTrailingWhitespace": true,
-  "editor.formatOnSave": true,
+  "editor.formatOnSave": false,
   "files.associations": {
     ".dvcignore": "ignore",
     "Doxyfile": "ini",
