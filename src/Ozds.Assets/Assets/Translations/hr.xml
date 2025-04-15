@@ -25083,6 +25083,14 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        No measurements found with given graph settings
+      </Key>
+      <Value>
+        Nema pronađenih mjerenja s danim postavkama grafa
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         NOSIOC
       </Key>
       <Value>

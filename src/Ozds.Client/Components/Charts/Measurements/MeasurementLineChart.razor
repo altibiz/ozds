@@ -4,7 +4,8 @@
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Business.Models.Enums
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
-@if(Parameters.MeasurementLocations.Count > 0){
+@if (Parameters.MeasurementLocations.Count > 0)
+{
   <ApexChart
     XAxisType="@XAxisType.Datetime"
     Options="@_options"
@@ -37,7 +38,8 @@
     }
   </ApexChart>
 }
-else{
+else
+{
   <div style="height:300px; display: grid; align-items: center;">
     <h2 style="text-align: center;">@Translate("No measurements found with given graph settings")</h2>
   </div>
@@ -92,4 +94,5 @@ else{
           .OrderBy(x => x.Id)
           .Select((x, i) => ((IMeter?)null, (IMeasurementLocation?)x, i)));
   }
-  }
+
+}
