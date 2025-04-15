@@ -11,6 +11,7 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 ### Added
 
+- A default section if chart has no parameters
 - scope state provider in `Ozds.Client` to manage lifetime of scoped services
   per client session
 - disposable base component in `Ozds.Client` for root components
@@ -22,6 +23,10 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - use `-dev` suffix for service bus endpoints in dev
 - use `DisposableBaseComponent` as base for root components
 - recursively unwrap conversions for member expression translations
+
+### Removed
+
+- old brush chart code that didn't do anything
 
 ## [1.2.1]
 
