@@ -16,6 +16,14 @@ and adheres to [Semantic Versioning](https://semver.org/).
   per client session
 - disposable base component in `Ozds.Client` for root components
 - from date parameter update when measurement locations change on the chart
+- `Ozds.Report` project for creating reports
+- report models and entities and their activation and conversion
+- report translations
+- report queries for retrieving reports from `Ozds.Data`
+- report mutations for creating reports via `Ozds.Report`
+- hand-written csv serialization because `CsvHelper` decided to fight too much
+  when trying to translate headers (deserialization still happens via
+  `CsvHelper`)
 
 ### Changed
 
@@ -24,10 +32,21 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - use `-dev` suffix for service bus endpoints in dev
 - use `DisposableBaseComponent` as base for root components
 - recursively unwrap conversions for member expression translations
+- use fully qualified translation keys in `Ozds.Translation` and `Ozds.Assets`
+- move `Ozds.Business.Queries.DocumentQueries` to
+  `Ozds.Business.Mutations.DocumentMutations` because it will use blob storage
+  for documents at some point
+- `Ozds.Business.Queries.LocalizationQueries` to only have `Translate` and no
+  `Key` methods so it can check with both a short key and a fully qualified key
+- upload field uses new report mutations
+- adjust download links to include culture for correct translation of report
+  header
 
 ### Removed
 
 - old brush chart code that didn't do anything
+- download field
+- everything regarding reports from `Ozds.Client`
 
 ## [1.2.1]
 
