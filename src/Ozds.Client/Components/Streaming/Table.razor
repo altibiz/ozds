@@ -6,6 +6,7 @@
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 <MudHidden Breakpoint="Breakpoint.MdAndUp">
+  <MudText Typo="Typo.h6">@(Model is not null ? Translate(Model.GetType().GetGenericArguments()[0]) : "")</MudText>
   <MudTextField
     T="string"
     Value="@searchString"
@@ -58,6 +59,8 @@
     ServerData="@OnDataGridServerData"
     @ref="@dataGrid">
     <ToolBarContent>
+      <MudText Typo="Typo.h6">@(Model is not null ? Translate(Model.GetType().GetGenericArguments()[0]) : "")</MudText>
+      <MudSpacer />
       <MudTextField
         T="string"
         Value="@searchString"
