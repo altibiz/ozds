@@ -35,6 +35,14 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        Accounting period CSV
+      </Key>
+      <Value>
+        Billing period CSV
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         Active power
       </Key>
       <Value>
@@ -159,6 +167,14 @@
       </Key>
       <Value>
         Create
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Create invoice
+      </Key>
+      <Value>
+        Generate bill
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -295,6 +311,14 @@
       </Key>
       <Value>
         End Date
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Energy card CSV
+      </Key>
+      <Value>
+        Energy card CSV
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -611,6 +635,14 @@
       </Key>
       <Value>
         Last month's invoice total
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Load curve CSV
+      </Key>
+      <Value>
+        Load curve CSV
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -45299,6 +45331,22 @@
       </Key>
       <Value>
         Invoice preview
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Preview invoice document
+      </Key>
+      <Value>
+        Preview invoice document
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Preview invoice pdf
+      </Key>
+      <Value>
+        Preview invoice PDF
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>

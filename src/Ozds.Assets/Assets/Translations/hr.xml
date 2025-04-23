@@ -35,6 +35,14 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        Accounting period CSV
+      </Key>
+      <Value>
+        Računsko razdoblje CSV
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         Active power
       </Key>
       <Value>
@@ -159,6 +167,14 @@
       </Key>
       <Value>
         Stvori
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Create invoice
+      </Key>
+      <Value>
+        Kreiraj račun
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -296,6 +312,14 @@
       </Key>
       <Value>
         Datum završetka
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Energy card CSV
+      </Key>
+      <Value>
+        CSV kartica energije
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -612,6 +636,14 @@
       </Key>
       <Value>
         Ukupno prošlog mjeseca
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Load curve CSV
+      </Key>
+      <Value>
+        CSV krivulja opterećenja
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -45451,6 +45483,22 @@
       </Key>
       <Value>
         Pregled računa
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Preview invoice document
+      </Key>
+      <Value>
+        Pregled dokumenta računa
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Preview invoice pdf
+      </Key>
+      <Value>
+        Pregled računa (PDF)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
