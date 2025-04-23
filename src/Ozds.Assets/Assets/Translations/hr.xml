@@ -26938,6 +26938,15 @@
     <TranslationDictionaryItem>
       <Key>
         
+        Ozds.Business.Models.EnergyCardReportModel.ActiveEnergyTotalImportT0_kWh
+      </Key>
+      <Value>
+        Ukupna aktivna energija uvezena u jednoj tarifi (kWh)
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        
         Ozds.Business.Models.EnergyCardReportModel.ActiveEnergyTotalImportT1_kWh
       </Key>
       <Value>
@@ -44364,6 +44373,14 @@
       </Key>
       <Value>
         Energetska kartica
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Ozds.Report.Entities.EnergyCardEntity.ActiveEnergyTotalImportT0_kWh
+      </Key>
+      <Value>
+        Ukupna aktivna energija uvezena u jednoj tarifi (kWh)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>

@@ -54,7 +54,9 @@ public class ReportQueries(
           var maxAggregate = basisAggregates
             .OfType<AggregateEntity>()
             .LastOrDefault();
-          if (minAggregate is null || maxAggregate is null)
+          if (minAggregate is null
+            || maxAggregate is null
+            || minAggregate == maxAggregate)
           {
             return null;
           }
@@ -420,6 +422,7 @@ public class ReportQueries(
         .Where(context.PrimaryKeyEquals<LocationEntity>(locationId))
         .Include(x => x.NetworkUsers)
         .ThenInclude(x => x.NetworkUserMeasurementLocations)
+        .AsSplitQuery()
         .ToListAsync(cancellationToken))
       .SelectMany(
         x => x.NetworkUsers

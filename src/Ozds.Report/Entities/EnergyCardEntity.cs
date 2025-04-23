@@ -26,6 +26,8 @@ public class EnergyCardEntity
 
   public string BillingPeriod { get; set; } = default!;
 
+  public decimal? ActiveEnergyTotalImportT0_kWh { get; set; } = default!;
+
   public decimal? ActiveEnergyTotalImportT1_kWh { get; set; } = default!;
 
   public decimal? ActiveEnergyTotalImportT2_kWh { get; set; } = default!;

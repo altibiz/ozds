@@ -225,9 +225,15 @@ public class ReportQueries(
       LocationAddress = model.Location.LegalPerson.Address,
       LocationCity = model.Location.LegalPerson.City,
       LocationPostalCode = model.Location.LegalPerson.PostalCode,
-      Year = model.MinAggregate.Timestamp.Year.ToString(),
+      Year = model.MaxAggregate.Timestamp.Year.ToString(),
       BillingPeriod =
-        model.MinAggregate.Timestamp.Month.ToString().PadLeft(2, '0'),
+        model.MaxAggregate.Timestamp.Month.ToString().PadLeft(2, '0'),
+      ActiveEnergyTotalImportT0_kWh =
+        obis.Contains(ObisModel.ActiveEnergyTotalImportT0_kWh)
+          ? ObisModel.ActiveEnergyTotalImportT0_kWh.GetValue(
+            model.MinAggregate,
+            model.MaxAggregate)
+          : null,
       ActiveEnergyTotalImportT1_kWh =
         obis.Contains(ObisModel.ActiveEnergyTotalImportT1_kWh)
           ? ObisModel.ActiveEnergyTotalImportT1_kWh.GetValue(

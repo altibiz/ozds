@@ -26871,6 +26871,15 @@
     <TranslationDictionaryItem>
       <Key>
         
+        Ozds.Business.Models.EnergyCardReportModel.ActiveEnergyTotalImportT0_kWh
+      </Key>
+      <Value>
+        Active energy import in one tariff on all phases (kWh)
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        
         Ozds.Business.Models.EnergyCardReportModel.ActiveEnergyTotalImportT1_kWh
       </Key>
       <Value>
@@ -44212,6 +44221,14 @@
       </Key>
       <Value>
         Energy card
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Ozds.Report.Entities.EnergyCardEntity.ActiveEnergyTotalImportT0_kWh
+      </Key>
+      <Value>
+        Active energy import in one tariff on all phases (kWh)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
