@@ -61,16 +61,18 @@ public class MeasurementQueries(
     var appropriateInterval = appropriateIntervalModel?.ToEntity();
     var isAggregate = appropriateInterval is not null;
 
-    var modelIdsByEntityType = meterIds.GroupBy(
-      id =>
-        isAggregate
+    var modelIdsByEntityType = meterIds
+      .GroupBy(
+        id => isAggregate
           ? modelEntityConverter.EntityType(
             meterNamingConvention.AggregateTypeForMeterId(id)
           )
           : modelEntityConverter.EntityType(
             meterNamingConvention.MeasurementTypeForMeterId(id)
-          )
-    );
+          ))
+      .Select(
+        group =>
+          new KeyValuePair<Type, IEnumerable<string>>(group.Key, group));
 
     var entities = await queries.ReadByMeterIds(
       modelIdsByEntityType,

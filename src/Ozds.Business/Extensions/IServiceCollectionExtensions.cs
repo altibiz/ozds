@@ -70,6 +70,8 @@ public static class IServiceCollectionExtensions
     services.AddSingleton(typeof(ModelEntityConverter));
     services.AddTransientAssignableTo(typeof(IModelDocumentEntityConverter));
     services.AddSingleton(typeof(ModelDocumentEntityConverter));
+    services.AddTransientAssignableTo(typeof(IModelReportEntityConverter));
+    services.AddSingleton(typeof(ModelReportEntityConverter));
     services.AddTransientAssignableTo(typeof(IMeasurementAggregateConverter));
     services.AddSingleton(typeof(MeasurementAggregateConverter));
     services.AddTransientAssignableTo(typeof(IPushRequestMeasurementConverter));

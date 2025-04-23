@@ -10,7 +10,6 @@
     <PackageReference Include="Blazor-ApexCharts" />
     <PackageReference Include="Blazored.LocalStorage" />
     <PackageReference Include="Altibiz.DependencyInjection.Extensions" />
-    <PackageReference Include="CsvHelper" />
     <PackageReference Include="Tizzani.MudBlazor.HtmlEditor" />
   </ItemGroup>
 

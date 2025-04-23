@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Ozds.Business.Models;
 using Ozds.Business.Queries;
+using Ozds.Business.Time;
 using Ozds.Client.Components.Models.Base;
 using Ozds.Client.State;
 
@@ -9,7 +10,8 @@ namespace Ozds.Client.Pages;
 public partial class LocationPage
   : OzdsIdentifiableModelPageComponentBase<LocationModel>
 {
-  private DateTime? selectedMonth;
+  private DateTime selectedMonth =
+    DateTimeOffset.UtcNow.GetStartOfLastMonth().DateTime;
 
   [Parameter]
   public string? Id { get; set; }

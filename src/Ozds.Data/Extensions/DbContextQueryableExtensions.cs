@@ -10,7 +10,8 @@ public static class DbContextQueryableExtensions
   )
   {
     return context.GetQueryable(entityType) as IQueryable<T>
-      ?? throw new InvalidOperationException($"No DbSet found for {typeof(T)}");
+      ?? throw new InvalidOperationException(
+        $"No DbSet found for {entityType} -> {typeof(T)}");
   }
 
   public static IQueryable<object> GetQueryable(

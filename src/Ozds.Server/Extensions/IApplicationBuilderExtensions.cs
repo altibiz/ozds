@@ -18,6 +18,18 @@ public static class IApplicationBuilderExtensions
     );
 
     endpoints.MapOzdsServerRoute(
+      "/download/location-energy-card/{culture}/{locationId}/{year:int}/{month:int}",
+      typeof(DownloadController),
+      nameof(DownloadController.LocationEnergyCard)
+    );
+
+    endpoints.MapOzdsServerRoute(
+      "/download/network-user-energy-card/{culture}/{networkUserId}/{year:int}/{month:int}",
+      typeof(DownloadController),
+      nameof(DownloadController.NetworkUserEnergyCard)
+    );
+
+    endpoints.MapOzdsServerRoute(
       "/download/network-user-invoice/{id}",
       typeof(DownloadController),
       nameof(DownloadController.NetworkUserInvoice)
@@ -30,29 +42,27 @@ public static class IApplicationBuilderExtensions
     );
 
     endpoints.MapOzdsServerRoute(
-      "/download/network-user-monthly-aggregates/{networkUserId}/{year:int}/{month:int}",
+      "/download/measurement-location-accounting-period/{culture}/{measurementLocationId}/{year:int}/{month:int}",
       typeof(DownloadController),
-      nameof(DownloadController.NetworkUserMonthlyAggregates)
+      nameof(DownloadController.MeasurementLocationAccountingPeriod)
     );
 
     endpoints.MapOzdsServerRoute(
-      "/download/location-monthly-aggregates/{locationId}/{year:int}/{month:int}",
+      "/download/measurement-location-load-curve/{culture}/{measurementLocationId}/{obisString}/{year:int}/{month:int}",
       typeof(DownloadController),
-      nameof(DownloadController.LocationMonthlyAggregates)
+      nameof(DownloadController.MeasurementLocationLoadCurve)
     );
 
     endpoints.MapOzdsServerRoute(
-      "/download/meter-quarter-hourly-aggregates-for-month/{meterId}/{year:int}/{month:int}",
+      "/download/meter-accounting-period/{culture}/{meterId}/{year:int}/{month:int}",
       typeof(DownloadController),
-      nameof(DownloadController.MeterQuarterHourlyAggregatesForMonth)
+      nameof(DownloadController.MeterAccountingPeriod)
     );
 
     endpoints.MapOzdsServerRoute(
-      "/download/measurement-location-quarter-hourly-aggregates-for-month/{measurementLocationId}/{year:int}/{month:int}",
+      "/download/meter-load-curve/{culture}/{meterId}/{obisString}/{year:int}/{month:int}",
       typeof(DownloadController),
-      nameof(
-        DownloadController.MeasurementLocationQuarterHourlyAggregatesForMonth
-      )
+      nameof(DownloadController.MeterLoadCurve)
     );
 
     endpoints.MapOzdsServerRoute(

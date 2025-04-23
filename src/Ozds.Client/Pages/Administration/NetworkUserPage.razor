@@ -35,44 +35,56 @@
 
 
       <div style="width: 170px;">
-        <MonthPickerField @bind-Value="@invoiceSelectedMonth" Label="@Translate("Pick month")"/>
+        <MonthPickerField
+          @bind-Value="@invoiceSelectedMonth"
+          Label="@Translate("Pick month")"/>
       </div>
 
-      @if (invoiceSelectedMonth is not null)
-      {
-        <MudHidden Breakpoint="Breakpoint.SmAndDown">
-          <div style="margin-top: 10px; margin-bottom: 10px;">
-            <MudLink
-              Href="@(PageHref<NetworkUserInvoicePreviewDocumentPage>(new { NetworkUserId = context.Model.Id, invoiceSelectedMonth.Value.Year, invoiceSelectedMonth.Value.Month }))">
-              @Translate("Preview document")
-            </MudLink>
-          </div>
-        </MudHidden>
-        <div style="margin-top: 10px;">
-          <MudLink
-            Href="@("/download/network-user-invoice-preview/" + context.Model.Id + "/" + invoiceSelectedMonth.Value.Year + "/" + invoiceSelectedMonth.Value.Month)">
-            @Translate("Preview pdf")
-          </MudLink>
-        </div>
-        <div style="margin-top: 10px;">
-          <MudButton OnClick="OnCreateInvoiceAsync">
-            @Translate("Create")
-          </MudButton>
-        </div>
+      <MudHidden Breakpoint="Breakpoint.SmAndDown">
+        @{
+          var invoicePreviewHref =
+            PageHref<NetworkUserInvoicePreviewDocumentPage>(
+              new
+              {
+                NetworkUserId = context.Model.Id,
+                invoiceSelectedMonth.Year,
+                invoiceSelectedMonth.Month
+              });
+        }
+        <MudLink Class="mt-4" Href="@invoicePreviewHref">
+          @Translate("Preview invoice document")
+        </MudLink>
+      </MudHidden>
+      @{
+        var invoicePreviewPdfHref =
+          "/download/network-user-invoice-preview"
+          + "/" + context.Model.Id
+          + "/" + invoiceSelectedMonth.Year
+          + "/" + invoiceSelectedMonth.Month;
       }
+      <MudLink Class="mt-4" Href="@invoicePreviewPdfHref">
+        @Translate("Preview invoice pdf")
+      </MudLink>
+      <MudButton OnClick="OnCreateInvoiceAsync">
+        @Translate("Create invoice")
+      </MudButton>
     </div>
 
     <div style="width: 170px;">
-      <MonthPickerField @bind-Value="@monthlyAggregatesSelectedMonth" Label="@Translate("Pick month")"/>
-      <div style="margin-top: 10px;">
-        @if (monthlyAggregatesSelectedMonth is not null)
-        {
-          <MudLink
-            Href="@("/download/network-user-monthly-aggregates/" + context.Model.Id + "/" + monthlyAggregatesSelectedMonth.Value.Year + "/" + monthlyAggregatesSelectedMonth.Value.Month)">
-            @Translate("Csv")
-          </MudLink>
-        }
-      </div>
+      <MonthPickerField
+        @bind-Value="@monthlyAggregatesSelectedMonth"
+        Label="@Translate("Pick month")"/>
+      @{
+        var energyCardHref =
+          "/download/network-user-energy-card"
+          + "/" + GetCulture().TwoLetterISOLanguageName
+          + "/" + context.Model.Id
+          + "/" + monthlyAggregatesSelectedMonth.Year
+          + "/" + monthlyAggregatesSelectedMonth.Month;
+      }
+      <MudLink Href="@energyCardHref" Class="mt-4">
+        @Translate("Energy card CSV")
+      </MudLink>
     </div>
   </Details>
 </Mutating>

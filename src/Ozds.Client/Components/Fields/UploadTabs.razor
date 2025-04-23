@@ -1,18 +1,18 @@
 @namespace Ozds.Client.Components.Fields
-@typeparam TRecord
+@typeparam T
 @using MudBlazor
-@using Ozds.Client.Conversion
+@using Ozds.Business.Activation
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 @{
-  var subtypes = ModelRecordConverter
-    .ConvertibleRecordSubtypes(typeof(TRecord))
+  var subtypes = ModelActivator
+    .ActivatableSubtypes(typeof(T))
     .ToList();
 }
 
 @if (subtypes.Count == 1)
 {
-  <UploadField RecordType="subtypes[0]"/>
+  <UploadField Type="subtypes[0]"/>
 }
 else if (subtypes.Count > 1)
 {
@@ -20,7 +20,7 @@ else if (subtypes.Count > 1)
     @foreach (var type in subtypes)
     {
       <MudTabPanel Text="@Translate(type)">
-        <UploadField RecordType="@type"/>
+        <UploadField Type="@type"/>
       </MudTabPanel>
     }
   </MudTabs>
@@ -30,6 +30,6 @@ else if (subtypes.Count > 1)
 @code {
 
   [Inject]
-  private ModelRecordConverter ModelRecordConverter { get; set; } = null!;
+  private ModelActivator ModelActivator { get; set; } = null!;
 
 }
