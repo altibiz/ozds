@@ -120,6 +120,10 @@ public partial class MeasurementChartControls : OzdsComponentBase
         measurementLocation =>
           measurementLocationIds.Contains(measurementLocation.Id))
       .ToHashSet();
+    var now = DateTimeOffset.UtcNow;
+    _parameters.FromDate = now.Subtract(
+      _parameters.Resolution.ToTimeSpan(
+        _parameters.Multiplier, now));
     await Fetch();
   }
 

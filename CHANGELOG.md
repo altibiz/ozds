@@ -15,6 +15,7 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - scope state provider in `Ozds.Client` to manage lifetime of scoped services
   per client session
 - disposable base component in `Ozds.Client` for root components
+- from date parameter update when measurement locations change on the chart
 
 ### Changed
 
