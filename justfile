@@ -49,6 +49,12 @@ prepare:
       ((pwsh '{{ playwright }}' install --with-deps chromium) | is-empty)
     @just clean
 
+up:
+    ((docker run --rm --device=nvidia.com/gpu=all hello-world \
+      | complete | get exit_code) == 0) \
+      and (docker compose --profile cuda up -d; true) \
+      or (docker compose --profile cpu up -d; true)
+
 lfs:
     dvc add {{ fakeassets }}/*.csv
     dvc add {{ migrationassets }}/*.sql
@@ -87,6 +93,12 @@ translate:
       -n Ozds.Document.Entities \
       -u {{ translationshr }} \
       -o {{ translationshr }}
+    @just translation type \
+      -l hr \
+      -i Ozds.Report \
+      -n Ozds.Report.Entities \
+      -u {{ translationshr }} \
+      -o {{ translationshr }}
     @just translation regex \
       -l hr \
       -i {{ srcdir }} \
@@ -94,8 +106,20 @@ translate:
       -o {{ translationshr }}
     @just translation type \
       -l en \
+      -i Ozds.Business \
+      -n Ozds.Business.Models Ozds.Business.Analysis \
+      -u {{ translationsen }} \
+      -o {{ translationsen }}
+    @just translation type \
+      -l en \
       -i Ozds.Document \
       -n Ozds.Document.Entities \
+      -u {{ translationsen }} \
+      -o {{ translationsen }}
+    @just translation type \
+      -l en \
+      -i Ozds.Report \
+      -n Ozds.Report.Entities \
       -u {{ translationsen }} \
       -o {{ translationsen }}
     @just translation regex \
@@ -425,10 +449,7 @@ clean:
           and not ($x | str contains "ollama") \
         } \
       | each { |x| docker volume rm $x }
-    ((docker run --rm --device=nvidia.com/gpu=all hello-world \
-      | complete | get exit_code) == 0) \
-      and (docker compose --profile cuda up -d; true) \
-      or (docker compose --profile cpu up -d; true)
+    @just up
     nu {{ isdatabaseready }}
     nu {{ isllmready }}
 

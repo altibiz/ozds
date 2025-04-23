@@ -1,5 +1,6 @@
 using Altibiz.DependencyInjection.Extensions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Options;
 using Ozds.Jobs.Context;
 using Ozds.Jobs.Manager.Abstractions;
@@ -78,6 +79,8 @@ public static class IServiceCollectionExtensions
       {
         var jobsOptions = services
           .GetRequiredService<IOptions<OzdsJobsOptions>>().Value;
+        var environment = services
+          .GetRequiredService<IHostEnvironment>();
 
         options.UseNpgsql(
           jobsOptions.ConnectionString, x =>
@@ -87,6 +90,13 @@ public static class IServiceCollectionExtensions
             x.MigrationsHistoryTable(
               $"__Ozds{nameof(JobsDbContext)}");
           });
+
+        if (environment.IsDevelopment())
+        {
+          options.ConfigureWarnings(
+            warnings => warnings
+              .Throw(RelationalEventId.MultipleCollectionIncludeWarning));
+        }
       });
 
     services.AddQuartz();

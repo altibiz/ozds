@@ -15,7 +15,6 @@ Allows = [RoleModel.OperatorRepresentative])]
 @using Ozds.Client.Attributes
 @using Ozds.Client.Components.Fields
 @using Ozds.Client.Components.Streaming
-@using Ozds.Client.Records.Abstractions
 @using Ozds.Client.State
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
@@ -46,7 +45,7 @@ Allows = [RoleModel.OperatorRepresentative])]
   <MudLink Href="@(PageHref<MeterPage>())">
     @Translate("Create")
   </MudLink>
-  <UploadTabs TRecord="IMeterRecord"></UploadTabs>
+  <UploadTabs T="IMeter"></UploadTabs>
 }
 
 @code {

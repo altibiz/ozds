@@ -5,6 +5,8 @@
 @using MudBlazor
 @using Ozds.Business.Analysis
 @using Ozds.Business.Models.Abstractions
+@using Ozds.Business.Models.Enums
+@using Ozds.Business.Time
 @using Ozds.Client.Components.Charts
 @using Ozds.Client.Components.Fields
 @using Ozds.Client.Components.Models
@@ -33,23 +35,41 @@
   </Table>
 
   <div style="width: 170px;">
-    <MonthPickerField @bind-Value="@selectedMonth" Label="@Translate("Pick month")"/>
-    <div style="margin-top: 10px;">
-      @if (selectedMonth is not null)
-      {
-        <MudLink
-          Href="@("/download/measurement-location-quarter-hourly-aggregates-for-month/" + Id + "/" + selectedMonth.Value.Year + "/" + selectedMonth.Value.Month)">
-          @Translate("Csv")
-        </MudLink>
-      }
-    </div>
+    <MonthPickerField
+      @bind-Value="@selectedMonth"
+      Label="@Translate("Pick month")"/>
+    <EnumPicker
+      Title="@Translate("Pick OBIS code")"
+      @bind-Value="@selectedObis"
+      Label="@(x => x.ToCode())"/>
+    @{
+      var accountingPeriodHref =
+        "/download/measurement-location-accounting-period"
+        + "/" + GetCulture().TwoLetterISOLanguageName
+        + "/" + Id
+        + "/" + selectedMonth.Year
+        + "/" + selectedMonth.Month;
+
+      var loadCurveHref =
+        "/download/measurement-location-load-curve"
+        + "/" + GetCulture().TwoLetterISOLanguageName
+        + "/" + Id
+        + "/" + selectedObis.ToCode()
+        + "/" + selectedMonth.Year
+        + "/" + selectedMonth.Month;
+    }
+    <MudLink Class="mt-4" Href="@accountingPeriodHref">
+      @Translate("Accounting period CSV")
+    </MudLink>
+    <MudLink Class="mt-4" Href="@loadCurveHref">
+      @Translate("Load curve CSV")
+    </MudLink>
   </div>
 
   measurementLocations = new List<IMeasurementLocation>
   {
     analysis.MeasurementLocation
   };
-
 
   <MeasurementChartControls MeasurementLocations="@measurementLocations">
     <MeasurementGaugeChart
@@ -88,7 +108,11 @@
 </Mutating>
 
 @code{
-  private DateTime? selectedMonth;
+
+  private DateTime selectedMonth =
+    DateTimeOffset.UtcNow.GetStartOfLastMonth().DateTime;
+
+  private ObisModel selectedObis = ObisModel.ActiveEnergyTotalImportT1_kWh;
 
   [CascadingParameter]
   public AnalysisState AnalysisState { get; set; } = default!;
