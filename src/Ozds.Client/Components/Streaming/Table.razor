@@ -11,7 +11,7 @@
     T="string"
     Value="@searchString"
     ValueChanged="@OnPagingSearch"
-    Placeholder="Search"
+    Placeholder="@Translate("Search")"
     Adornment="Adornment.Start"
     Immediate="true"
     AdornmentIcon="@Icons.Material.Filled.Search"
@@ -55,6 +55,7 @@
 <MudHidden Breakpoint="Breakpoint.SmAndDown">
   <MudDataGrid
     T="T"
+    Filterable="true"
     SortMode="@SortMode.None"
     ServerData="@OnDataGridServerData"
     @ref="@dataGrid">
@@ -65,7 +66,7 @@
         T="string"
         Value="@searchString"
         ValueChanged="@OnDataGridSearch"
-        Placeholder="Search"
+        Placeholder="@Translate("Search")"
         Adornment="Adornment.Start"
         Immediate="true"
         AdornmentIcon="@Icons.Material.Filled.Search"

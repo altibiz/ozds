@@ -64,6 +64,23 @@ public partial class Table<T> : OzdsComponentBase
 
     return false;
   }
+  private Func<T, bool> _quickFilter => value =>
+    {
+    if (string.IsNullOrWhiteSpace(searchString))
+    {
+      return true;
+    }
+
+    if (value is IIdentifiable identifiable
+      && identifiable.Title.Contains(
+        searchString,
+        StringComparison.OrdinalIgnoreCase))
+    {
+      return true;
+    }
+
+    return false;
+    };
 
   private Task OnPagingSearch(string newSearchString)
   {
