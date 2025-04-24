@@ -7,6 +7,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and adheres to [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+
+- `Ozds.Client.Test` project for end-to-end testing of the client
+- justfile recipe for setting up CI for the new `Ozds.Client.Test` project
+
+### Changed
+
+- `check` CI workflow to support new `Ozds.Client.Test` project
+- `check` shell script to support new `Ozds.Client.Test` project
+- test `.editorconfig` location
+- fix analysis basis fetch for network users
+- bumped `Xunit.DependencyInjection` version
+
 ## [1.3.0] - 2025-04-23
 
 ### Added
