@@ -138,6 +138,7 @@
             graphviz
             mdbook-plantuml
             pandoc-plantuml-filter
+            texliveSmall
 
             # Misc
             nodePackages.prettier

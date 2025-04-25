@@ -1,0 +1,8 @@
+**/Migrations/
+**/migrations/
+**/Assets/
+**/assets/
+*.svg
+*.ico
+*.png
+*.lock
