@@ -63,7 +63,7 @@ public sealed class ServerManager(
       RedirectStandardError = true,
       UseShellExecute = false,
       CreateNoWindow = false,
-      WorkingDirectory = options.WorkingDirectory,
+      WorkingDirectory = options.WorkingDirectory
     };
     foreach (var (key, value) in options.Environment)
     {
@@ -94,24 +94,25 @@ public sealed class ServerManager(
       await process.WaitForExitAsync(token);
     }
     catch (Exception exception)
-    when (exception is OperationCanceledException or TaskCanceledException)
+      when (exception is OperationCanceledException or TaskCanceledException)
     {
       logger.LogInformation(exception, "Process cancelled");
     }
 
     if (!process.HasExited)
     {
-      process.Kill(entireProcessTree: true);
+      process.Kill(true);
       try
       {
         await process.WaitForExitAsync(CancellationToken.None);
       }
       catch (Exception exception)
-      when (exception is OperationCanceledException or TaskCanceledException)
+        when (exception is OperationCanceledException or TaskCanceledException)
       {
         logger.LogInformation(exception, "Process cancelled");
       }
     }
+
     if (!process.HasExited)
     {
       throw new InvalidOperationException(
@@ -119,6 +120,7 @@ public sealed class ServerManager(
         + $"\nOUT:\n{await process.StandardOutput.ReadToEndAsync(CancellationToken.None)}"
         + $"\nERR:\n{await process.StandardError.ReadToEndAsync(CancellationToken.None)}");
     }
+
     // !graceful && !killed
     if (process.ExitCode != 0 && process.ExitCode != 137)
     {

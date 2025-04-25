@@ -180,12 +180,14 @@ public class MeasurementLocationQueries(
             nameof(NetworkUserEntity.Location),
             locationId));
     }
+
     var initialNetworkUsers = await initialNetworkUsersQuery
       .ToListAsync(cancellationToken);
 
     return await context.NetworkUsers
-      .Where(context.PrimaryKeyIn<NetworkUserEntity>(
-        initialNetworkUsers.Select(x => x.Id)))
+      .Where(
+        context.PrimaryKeyIn<NetworkUserEntity>(
+          initialNetworkUsers.Select(x => x.Id)))
       .Include(x => x.Location)
       .Include(x => x.NetworkUserMeasurementLocations)
       .ThenInclude(x => x.Meter)
