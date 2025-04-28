@@ -115,19 +115,30 @@ public sealed class ServerManager(
 
     if (!process.HasExited)
     {
+      var @out = await process.StandardOutput
+        .ReadToEndAsync(CancellationToken.None);
+      var err = await process.StandardError
+        .ReadToEndAsync(CancellationToken.None);
       throw new InvalidOperationException(
         $"Process never exited"
-        + $"\nOUT:\n{await process.StandardOutput.ReadToEndAsync(CancellationToken.None)}"
-        + $"\nERR:\n{await process.StandardError.ReadToEndAsync(CancellationToken.None)}");
+        + $"\nOUT:\n{@out}"
+        + $"\nERR:\n{err}");
     }
 
-    // !graceful && !killed
-    if (process.ExitCode != 0 && process.ExitCode != 137)
+    // !graceful && !killed on unix && !killed on windows
+    if (
+      process.ExitCode != 0
+      && process.ExitCode != 137
+      && process.ExitCode != 1)
     {
+      var @out = await process.StandardOutput
+        .ReadToEndAsync(CancellationToken.None);
+      var err = await process.StandardError
+        .ReadToEndAsync(CancellationToken.None);
       throw new InvalidOperationException(
         $"Process exited with code {process.ExitCode}"
-        + $"\nOUT:\n{await process.StandardOutput.ReadToEndAsync(CancellationToken.None)}"
-        + $"\nERR:\n{await process.StandardError.ReadToEndAsync(CancellationToken.None)}");
+        + $"\nOUT:\n{@out}"
+        + $"\nERR:\n{err}");
     }
   }
 
