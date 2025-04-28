@@ -64,23 +64,6 @@ public partial class Table<T> : OzdsComponentBase
 
     return false;
   }
-  private Func<T, bool> _quickFilter => value =>
-    {
-    if (string.IsNullOrWhiteSpace(searchString))
-    {
-      return true;
-    }
-
-    if (value is IIdentifiable identifiable
-      && identifiable.Title.Contains(
-        searchString,
-        StringComparison.OrdinalIgnoreCase))
-    {
-      return true;
-    }
-
-    return false;
-    };
 
   private Task OnPagingSearch(string newSearchString)
   {
@@ -97,10 +80,13 @@ public partial class Table<T> : OzdsComponentBase
   private async Task<GridData<T>> OnDataGridServerData(GridState<T> state)
   {
     var result = await Fetch(state.Page);
+
+    var filteredItems = result.Items.Where(Filter).ToArray();
+
     model = result;
     return new GridData<T>
     {
-      Items = result.Items,
+      Items = filteredItems,
       TotalItems = result.TotalCount
     };
   }
