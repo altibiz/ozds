@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using Microsoft.Extensions.Options;
 using Ozds.Client.Test.Options;
 
@@ -125,11 +126,13 @@ public sealed class ServerManager(
         + $"\nERR:\n{err}");
     }
 
-    // !graceful && !killed on unix && !killed on windows
-    if (
-      process.ExitCode != 0
-      && process.ExitCode != 137
-      && process.ExitCode != 1)
+    var isAcceptableExitCode =
+      process.ExitCode == 0
+      || (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
+        && process.ExitCode == -1)
+      || (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)
+        && process.ExitCode == 137);
+    if (!isAcceptableExitCode)
     {
       var @out = await process.StandardOutput
         .ReadToEndAsync(CancellationToken.None);
