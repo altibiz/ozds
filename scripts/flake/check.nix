@@ -4,9 +4,17 @@
   integrate.devShell.devShell =
     pkgs.mkShell
       ({
+        PGHOST = "localhost";
+        PGPORT = "5432";
+        PGDATABASE = "ozds";
+        PGUSER = "ozds";
+        PGPASSWORD = "ozds";
+
         packages = with pkgs; [
           # Version Control
           git
+          # FIXME: permission denied /var/cache/dvc
+          # dvc-with-remotes
 
           # Scripts
           just
@@ -20,6 +28,9 @@
           dotnet-sdk
           dotnet-runtime
           dotnet-aspnetcore
+
+          # PostgreSQL
+          postgresql_14
 
           # Markdown
           markdownlint-cli
