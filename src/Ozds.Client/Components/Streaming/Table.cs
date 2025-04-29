@@ -1,3 +1,4 @@
+using System.Reflection;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Ozds.Business.Models.Abstractions;
@@ -48,22 +49,49 @@ public partial class Table<T> : OzdsComponentBase
   }
 
   private bool Filter(T value)
-  {
+{
     if (string.IsNullOrWhiteSpace(searchString))
     {
       return true;
     }
+    if (value is null)
+    {
+      return false;
+    }
 
-    if (value is IIdentifiable identifiable
-      && identifiable.Title.Contains(
-        searchString,
-        StringComparison.OrdinalIgnoreCase))
+    bool ContainsSearch(string? text) =>
+        !string.IsNullOrEmpty(text)
+        && text.Contains(searchString, StringComparison.OrdinalIgnoreCase);
+
+    if (value is IIdentifiable rootIdent && ContainsSearch(rootIdent.Title))
     {
       return true;
     }
+    else if (value is IIdentifiable)
+    {
+      return false;
+    }
+
+    var props = value.GetType()
+                     .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                     .Where(p => p.CanRead);
+
+    foreach (var prop in props)
+    {
+        var propVal = prop.GetValue(value);
+        if (propVal == null)
+        {
+          continue;
+        }
+        if (propVal is IIdentifiable childIdent
+         && ContainsSearch(childIdent.Title))
+        {
+            return true;
+        }
+    }
 
     return false;
-  }
+}
 
   private Task OnPagingSearch(string newSearchString)
   {
