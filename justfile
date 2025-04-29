@@ -49,11 +49,38 @@ prepare:
       ((pwsh '{{ playwright }}' install --with-deps chromium) | is-empty)
     @just clean
 
-up:
+ci account_name connection_string:
+    dotnet tool restore
+    dvc remote modify azure account_name '{{ account_name }}' --local
+    dvc remote modify azure connection_string '{{ connection_string }}' --local
+    dvc pull \
+      '{{ migrationassets }}/current-orchard.sql' \
+      '{{ migrationassets }}/current.sql' \
+      '{{ migrationassets }}/current-hypertables.sql'
+    open --raw '{{ migrationassets }}/current-orchard.sql' \
+      | psql --host localhost
+    dotnet ef \
+      --startup-project '{{ servercsproj }}' \
+      --project '{{ datacsproj }}' \
+      database update
+    dotnet ef \
+      --startup-project '{{ servercsproj }}' \
+      --project '{{ messagingcsproj }}' \
+      database update
+    dotnet ef \
+      --startup-project '{{ servercsproj }}' \
+      --project '{{ jobscsproj }}' \
+      database update
+    open --raw '{{ migrationassets }}/current.sql' \
+      | psql --host localhost
+    open --raw '{{ migrationassets }}/current-hypertables.sql' \
+      | psql --host localhost
+
+up *args:
     ((docker run --rm --device=nvidia.com/gpu=all hello-world \
       | complete | get exit_code) == 0) \
-      and (docker compose --profile cuda up -d; true) \
-      or (docker compose --profile cpu up -d; true)
+      and (docker compose --profile cuda up -d {{ args }}; true) \
+      or (docker compose --profile cpu up -d {{ args }}; true)
 
 lfs:
     dvc add {{ fakeassets }}/*.csv
@@ -450,8 +477,10 @@ clean:
         } \
       | each { |x| docker volume rm $x }
     @just up
-    nu {{ isdatabaseready }}
+
     nu {{ isllmready }}
+
+    nu {{ isdatabaseready }}
 
     open --raw '{{ migrationassets }}/current-orchard.sql' | \
       docker exec \
