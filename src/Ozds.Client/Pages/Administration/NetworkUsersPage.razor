@@ -16,8 +16,11 @@ RoleModel.NetworkUserRepresentative
 @using MudBlazor
 @using Ozds.Business.Analysis
 @using Ozds.Business.Models
+@using Ozds.Business.Queries
+@using Ozds.Business.Queries.Abstractions
 @using Ozds.Client.Attributes
 @using Ozds.Client.Components.Fields
+@using Ozds.Client.Components.Models
 @using Ozds.Client.Components.Streaming
 @using Ozds.Client.Records
 @using Ozds.Client.State
@@ -46,7 +49,12 @@ RoleModel.NetworkUserRepresentative
 }
 else
 {
+
   <Table Model="@analyses"/>
+
+  <br/>
+
+  <Table PageAsync="OnPageAsync" Model="networkUsers" />
 }
 
 @if (RepresentativeState.Representative.Role
@@ -68,4 +76,30 @@ else
   private RepresentativeState RepresentativeState { get; set; } = default!;
 
   private bool _deleted;
+
+  List<NetworkUserModel> networkUsers = new();
+
+  protected override async Task OnInitializedAsync()
+  {
+    await OnPageAsync(0);
+  }
+
+  private async Task<PaginatedList<NetworkUserModel>> OnPageAsync(
+    int page
+  )
+  {
+    var queries = ScopedServices.GetRequiredService<NetworkUserQueries>();
+
+    var netUsers =
+      await queries.ReadNetworkUsersByRepresentativeId(
+      RepresentativeState.Representative.Id,
+      RepresentativeState.Representative.Role,
+      page,
+      CancellationToken,
+      10
+      );
+    var a = netUsers.TotalCount;
+    networkUsers = netUsers.Items;
+    return netUsers;
+  }
 }

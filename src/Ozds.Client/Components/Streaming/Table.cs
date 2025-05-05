@@ -107,14 +107,21 @@ public partial class Table<T> : OzdsComponentBase
 
   private async Task<GridData<T>> OnDataGridServerData(GridState<T> state)
   {
-    var result = await Fetch(state.Page);
+    PaginatedList<T> result;
 
-    var filteredItems = result.Items.Where(Filter).ToArray();
+    if (PageAsync is not null)
+    {
+      result = await PageAsync(state.Page);
+    }
+    else
+    {
+      result = await Fetch(state.Page);
+    }
 
     model = result;
     return new GridData<T>
     {
-      Items = filteredItems,
+      Items = result.Items.Where(Filter),
       TotalItems = result.TotalCount
     };
   }
@@ -128,14 +135,6 @@ public partial class Table<T> : OzdsComponentBase
 
   private async Task<PaginatedList<T>> Fetch(int pageNumber)
   {
-    if (Model is { } nonNullModel)
-    {
-      var result = new PaginatedList<T>(
-        nonNullModel.Skip(pageNumber * PageCount).Take(PageCount).ToList(),
-        nonNullModel.Count()
-      );
-      return result;
-    }
 
     if (Page is { } page)
     {
@@ -146,6 +145,15 @@ public partial class Table<T> : OzdsComponentBase
     if (PageAsync is { } pageAsync)
     {
       var result = await pageAsync(pageNumber);
+      return result;
+    }
+
+    if (Model is { } nonNullModel)
+    {
+      var result = new PaginatedList<T>(
+        nonNullModel.Skip(pageNumber * PageCount).Take(PageCount).ToList(),
+        nonNullModel.Count()
+      );
       return result;
     }
 

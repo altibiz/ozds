@@ -6,7 +6,11 @@
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 <MudHidden Breakpoint="Breakpoint.MdAndUp">
-  <MudText Typo="Typo.h6">@(Model is not null ? Translate(Model.GetType().GetGenericArguments()[0]) : "")</MudText>
+ <MudText Typo="Typo.h6">
+    @(Model is not null
+      ? Translate(Model.GetType().GetGenericArguments()[0])
+      : "")
+  </MudText>
   <MudTextField
     T="string"
     Value="@searchString"
@@ -15,38 +19,38 @@
     Adornment="Adornment.Start"
     Immediate="true"
     AdornmentIcon="@Icons.Material.Filled.Search"
-    IconSize="Size.Medium"/>
+    IconSize="Size.Medium" />
   <Paging T="T" PageAsync="@OnPagingPage">
-    <Found>
-      @foreach (var (item, index) in context.Items.Select((x, i) => (x, i)))
+    <Found Context="page">
+      @foreach (var item in page.Items)
       {
         if (!Filter(item))
-        {
           continue;
-        }
 
-        <TableCollapse>
-          <Summary>
-            @if (Summary is null)
-            {
-              <Summary Model="item"/>
-            }
-            else
-            {
-              @Summary(item)
-            }
-          </Summary>
-          <Details>
-            @if (Details is null)
-            {
-              <Details Model="item"/>
-            }
-            else
-            {
-              @Details(item)
-            }
-          </Details>
-        </TableCollapse>
+        <MudPaper Class="pa-4 mb-2" Elevation="1">
+          <TableCollapse>
+            <Summary>
+              @if (Summary is null)
+              {
+                <Summary Model="item" />
+              }
+              else
+              {
+                @Summary(item)
+              }
+            </Summary>
+            <Details>
+              @if (Details is null)
+              {
+                <Details Model="item" />
+              }
+              else
+              {
+                @Details(item)
+              }
+            </Details>
+          </TableCollapse>
+        </MudPaper>
       }
     </Found>
   </Paging>
