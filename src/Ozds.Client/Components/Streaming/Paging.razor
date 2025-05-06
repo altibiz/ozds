@@ -62,19 +62,19 @@
         else
         {
           @if (Scroll == Scroll.Paged)
-            {
-              <div style="width: 100%;">
-                <MudPagination
-                  BoundaryCount="1"
-                  MiddleCount="1"
-                  Rectangular="true"
-                  Variant="Variant.Filled"
-                  Class="my-4 d-flex justify-center"
-                  Count="@( (int)Math.Ceiling(page.TotalCount / (double)PageCount) )"
-                  Selected="@(_pageNumber + 1)"
-                  SelectedChanged="@(newPage => OnSelectedChanged(newPage - 1))" />
-              </div>
-            }
+          {
+            <div style="width: 100%;">
+              <MudPagination
+                BoundaryCount="1"
+                MiddleCount="1"
+                Rectangular="true"
+                Variant="Variant.Filled"
+                Class="my-4 d-flex justify-center"
+                Count="@((int)Math.Ceiling(page.TotalCount / (double)PageCount))"
+                Selected="@(_pageNumber + 1)"
+                SelectedChanged="@(newPage => OnSelectedChanged(newPage - 1))"/>
+            </div>
+          }
           else
           {
             <div

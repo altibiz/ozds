@@ -11,31 +11,9 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 ### Added
 
-- A default section if chart has no parameters
-- scope state provider in `Ozds.Client` to manage lifetime of scoped services
-  per client session
-- disposable base component in `Ozds.Client` for root components
-- network user overview
-
-### Changed
-
-- get scoped services from cascading parameter rather than managing service
-  scope inside `OzdsComponentBase`
-- use `-dev` suffix for service bus endpoints in dev
-- use `DisposableBaseComponent` as base for root components
-- recursively unwrap conversions for member expression translations
-- pagination logic
-- list/card table view on mobile
-
-### Removed
-
-- old brush chart code that didn't do anything
-- a time condition to chart updating which might have been causing issues
-
-### Added
-
 - `Ozds.Client.Test` project for end-to-end testing of the client
 - justfile recipe for setting up CI for the new `Ozds.Client.Test` project
+- network user overview
 
 ### Changed
 
@@ -44,6 +22,8 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - test `.editorconfig` location
 - fix analysis basis fetch for network users
 - bumped `Xunit.DependencyInjection` version
+- pagination logic
+- list/card table view on mobile
 
 ## [1.3.0] - 2025-04-23
 

@@ -6,9 +6,10 @@
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 <MudHidden Breakpoint="Breakpoint.MdAndUp">
- <MudText Typo="Typo.h6">
-    @(Model is not null
-      ? Translate(Model.GetType().GetGenericArguments()[0])
+  <MudText Typo="Typo.h6">
+    @(
+    model.Items.Count > 0
+      ? Translate(model.Items.First()!.GetType())
       : "")
   </MudText>
   <MudTextField
@@ -19,7 +20,7 @@
     Adornment="Adornment.Start"
     Immediate="true"
     AdornmentIcon="@Icons.Material.Filled.Search"
-    IconSize="Size.Medium" />
+    IconSize="Size.Medium"/>
   <Paging PageCount="@PageCount" T="T" PageAsync="@OnPagingPage">
     <Found Context="page">
       @foreach (var item in page.Items)
@@ -32,7 +33,7 @@
             <Summary>
               @if (Summary is null)
               {
-                <Summary Model="item" />
+                <Summary Model="item"/>
               }
               else
               {
@@ -42,7 +43,7 @@
             <Details>
               @if (Details is null)
               {
-                <Details Model="item" />
+                <Details Model="item"/>
               }
               else
               {
@@ -65,8 +66,13 @@
     RowsPerPage="@PageCount"
     @ref="@dataGrid">
     <ToolBarContent>
-      <MudText Typo="Typo.h6">@(Model is not null ? Translate(Model.GetType().GetGenericArguments()[0]) : "")</MudText>
-      <MudSpacer />
+      <MudText Typo="Typo.h6">
+        @(
+        model.Items.Count > 0
+          ? Translate(model.Items.First()!.GetType())
+          : "")
+      </MudText>
+      <MudSpacer/>
       <MudTextField
         T="string"
         Value="@searchString"

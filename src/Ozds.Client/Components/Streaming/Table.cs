@@ -29,6 +29,9 @@ public partial class Table<T> : OzdsComponentBase
   public Func<int, Task<PaginatedList<T>>>? PageAsync { get; set; }
 
   [Parameter]
+  public Func<T, bool>? Filter { get; set; }
+
+  [Parameter]
   public RenderFragment<T>? Summary { get; set; } = default!;
 
   [Parameter]
@@ -49,49 +52,59 @@ public partial class Table<T> : OzdsComponentBase
   }
 
   private bool Filter(T value)
-{
-    if (string.IsNullOrWhiteSpace(searchString))
+  {
+    if (Filter is not null)
     {
-      return true;
+      return Filter(value);
     }
+
     if (value is null)
     {
       return false;
     }
 
-    bool ContainsSearch(string? text) =>
-        !string.IsNullOrEmpty(text)
-        && text.Contains(searchString, StringComparison.OrdinalIgnoreCase);
-
     if (value is IIdentifiable rootIdent && ContainsSearch(rootIdent.Title))
     {
       return true;
     }
-    else if (value is IIdentifiable)
+
+    if (value is IIdentifiable)
     {
       return false;
     }
 
     var props = value.GetType()
-                     .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                     .Where(p => p.CanRead);
+      .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+      .Where(p => p.CanRead);
 
     foreach (var prop in props)
     {
-        var propVal = prop.GetValue(value);
-        if (propVal == null)
-        {
-          continue;
-        }
-        if (propVal is IIdentifiable childIdent
-         && ContainsSearch(childIdent.Title))
-        {
-            return true;
-        }
+      var propVal = prop.GetValue(value);
+      if (propVal == null)
+      {
+        continue;
+      }
+
+      if (propVal is IIdentifiable childIdent
+        && ContainsSearch(childIdent.Title))
+      {
+        return true;
+      }
     }
 
     return false;
-}
+  }
+
+  private bool ContainsSearch(string? text)
+  {
+    if (string.IsNullOrWhiteSpace(searchString))
+    {
+      return true;
+    }
+
+    return !string.IsNullOrEmpty(text)
+      && text.Contains(searchString, StringComparison.OrdinalIgnoreCase);
+  }
 
   private Task OnPagingSearch(string newSearchString)
   {
@@ -135,6 +148,14 @@ public partial class Table<T> : OzdsComponentBase
 
   private async Task<PaginatedList<T>> Fetch(int pageNumber)
   {
+    if (Model is { } nonNullModel)
+    {
+      var result = new PaginatedList<T>(
+        nonNullModel.Skip(pageNumber * PageCount).Take(PageCount).ToList(),
+        nonNullModel.Count()
+      );
+      return result;
+    }
 
     if (Page is { } page)
     {
@@ -145,15 +166,6 @@ public partial class Table<T> : OzdsComponentBase
     if (PageAsync is { } pageAsync)
     {
       var result = await pageAsync(pageNumber);
-      return result;
-    }
-
-    if (Model is { } nonNullModel)
-    {
-      var result = new PaginatedList<T>(
-        nonNullModel.Skip(pageNumber * PageCount).Take(PageCount).ToList(),
-        nonNullModel.Count()
-      );
       return result;
     }
 
