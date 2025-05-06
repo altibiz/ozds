@@ -20,7 +20,7 @@
     Immediate="true"
     AdornmentIcon="@Icons.Material.Filled.Search"
     IconSize="Size.Medium" />
-  <Paging T="T" PageAsync="@OnPagingPage">
+  <Paging PageCount="@PageCount" T="T" PageAsync="@OnPagingPage">
     <Found Context="page">
       @foreach (var item in page.Items)
       {
@@ -62,6 +62,7 @@
     Filterable="true"
     SortMode="@SortMode.None"
     ServerData="@OnDataGridServerData"
+    RowsPerPage="@PageCount"
     @ref="@dataGrid">
     <ToolBarContent>
       <MudText Typo="Typo.h6">@(Model is not null ? Translate(Model.GetType().GetGenericArguments()[0]) : "")</MudText>
@@ -88,7 +89,7 @@
       }
     </Columns>
     <PagerContent>
-      <MudDataGridPager T="T"/>
+      <MudDataGridPager PageSizeSelector="false" T="T"/>
     </PagerContent>
   </MudDataGrid>
 </MudHidden>
