@@ -32,7 +32,61 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - old brush chart code that didn't do anything
 - a time condition to chart updating which might have been causing issues
 
-## [1.2.1]
+### Added
+
+- `Ozds.Client.Test` project for end-to-end testing of the client
+- justfile recipe for setting up CI for the new `Ozds.Client.Test` project
+
+### Changed
+
+- `check` CI workflow to support new `Ozds.Client.Test` project
+- `check` shell script to support new `Ozds.Client.Test` project
+- test `.editorconfig` location
+- fix analysis basis fetch for network users
+- bumped `Xunit.DependencyInjection` version
+
+## [1.3.0] - 2025-04-23
+
+### Added
+
+- A default section if chart has no parameters
+- scope state provider in `Ozds.Client` to manage lifetime of scoped services
+  per client session
+- disposable base component in `Ozds.Client` for root components
+- from date parameter update when measurement locations change on the chart
+- `Ozds.Report` project for creating reports
+- report models and entities and their activation and conversion
+- report translations
+- report queries for retrieving reports from `Ozds.Data`
+- report mutations for creating reports via `Ozds.Report`
+- hand-written csv serialization because `CsvHelper` decided to fight too much
+  when trying to translate headers (deserialization still happens via
+  `CsvHelper`)
+
+### Changed
+
+- get scoped services from cascading parameter rather than managing service
+  scope inside `OzdsComponentBase`
+- use `-dev` suffix for service bus endpoints in dev
+- use `DisposableBaseComponent` as base for root components
+- recursively unwrap conversions for member expression translations
+- use fully qualified translation keys in `Ozds.Translation` and `Ozds.Assets`
+- move `Ozds.Business.Queries.DocumentQueries` to
+  `Ozds.Business.Mutations.DocumentMutations` because it will use blob storage
+  for documents at some point
+- `Ozds.Business.Queries.LocalizationQueries` to only have `Translate` and no
+  `Key` methods so it can check with both a short key and a fully qualified key
+- upload field uses new report mutations
+- adjust download links to include culture for correct translation of report
+  header
+
+### Removed
+
+- old brush chart code that didn't do anything
+- download field
+- everything regarding reports from `Ozds.Client`
+
+## [1.2.1] - 2025-04-09
 
 ### Changed
 
@@ -40,7 +94,7 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - Add more definition to the time stamp info for mouse hovering chart info
 - Made charts at meter and measurement location pages normal charts not brushes
 
-## [1.2.0]
+## [1.2.0] - 2025-04-08
 
 ### Added
 
@@ -162,7 +216,7 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - Deleted all IApplicationBuilderExtensions as they were empty because I thought
   we would use them at some point
 
-## [1.1.1]
+## [1.1.1] - 2025-03-20
 
 ### Added
 
@@ -235,6 +289,7 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 - init
 
+[1.3.0]: https://github.com/altibiz/ozds/compare/1.2.1...1.3.0
 [1.2.1]: https://github.com/altibiz/ozds/compare/1.2.0...1.2.1
 [1.2.0]: https://github.com/altibiz/ozds/compare/1.1.1...1.2.0
 [1.1.1]: https://github.com/altibiz/ozds/compare/1.0.1...1.1.1

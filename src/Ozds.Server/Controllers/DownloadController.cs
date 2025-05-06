@@ -1,22 +1,105 @@
+using System.Globalization;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
-using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Enums;
 using Ozds.Business.Mutations;
 using Ozds.Business.Queries;
 using Ozds.Business.Time;
-using Ozds.Client.Export;
 
 namespace Ozds.Server.Controllers;
 
 public class DownloadController(
   CalculatedInvoiceQueries calculatedInvoiceQueries,
-  MeasurementQueries measurementQueries,
-  MeasurementLocationQueries measurementLocationQueries,
   NetworkUserInvoiceIssuer networkUserInvoiceIssuer,
-  DocumentQueries documentQueries
+  DocumentMutations documentMutations,
+  ReportMutations reportMutations,
+  ReportQueries reportQueries,
+  LocalizationQueries localizationQueries
 ) : Controller
 {
+  [HttpGet]
+  public async Task<IActionResult> LocationEnergyCard(
+    CultureInfo culture,
+    string locationId,
+    int year,
+    int month,
+    CancellationToken cancellationToken
+  )
+  {
+    var (start, end) = DateTimeOffsetExtensions.GetMonthRange(year, month);
+
+    var energyCards = await reportQueries
+      .ReadEnergyCardReportsByLocation(
+        culture,
+        locationId,
+        start,
+        end,
+        cancellationToken
+      );
+    if (energyCards is null)
+    {
+      return NotFound();
+    }
+
+    var fileName =
+      localizationQueries.Translate(culture, "location-")
+      + locationId
+      + localizationQueries.Translate(culture, "-energy-card-for-")
+      + end.ToString("MM-yyyy") + ".csv";
+
+    var csv = await reportMutations.Export(
+      fileName,
+      culture,
+      energyCards,
+      cancellationToken
+    );
+
+    var bytes = Encoding.UTF8.GetBytes(csv);
+
+    return File(bytes, "text/csv", fileName);
+  }
+
+  [HttpGet]
+  public async Task<IActionResult> NetworkUserEnergyCard(
+    CultureInfo culture,
+    string networkUserId,
+    int year,
+    int month,
+    CancellationToken cancellationToken
+  )
+  {
+    var (start, end) = DateTimeOffsetExtensions.GetMonthRange(year, month);
+
+    var energyCards = await reportQueries
+      .ReadEnergyCardReportsByNetworkUser(
+        culture,
+        networkUserId,
+        start,
+        end,
+        cancellationToken
+      );
+    if (energyCards is null)
+    {
+      return NotFound();
+    }
+
+    var fileName =
+      localizationQueries.Translate(culture, "network-user-")
+      + networkUserId
+      + localizationQueries.Translate(culture, "-energy-card-for-")
+      + end.ToString("MM-yyyy") + ".csv";
+    var csv = await reportMutations.Export(
+      fileName,
+      culture,
+      energyCards,
+      cancellationToken
+    );
+
+    var bytes = Encoding.UTF8.GetBytes(csv);
+
+    return File(bytes, "text/csv", fileName);
+  }
+
   [HttpGet]
   public async Task<IActionResult> NetworkUserInvoice(
     string id,
@@ -33,7 +116,7 @@ public class DownloadController(
       return NotFound();
     }
 
-    var pdf = await documentQueries.ReadPdfForNetworkUserInvoice(
+    var pdf = await documentMutations.CreatePdfForNetworkUserInvoice(
       invoice,
       cancellationToken
     );
@@ -42,7 +125,15 @@ public class DownloadController(
       return NotFound();
     }
 
-    return File(pdf, "application/pdf", $"{invoice.Invoice.Title}.pdf");
+    var fileName =
+      localizationQueries.Translate(
+        localizationQueries.CroatianCulture, "network-user-")
+      + invoice.Invoice.NetworkUserId
+      + localizationQueries.Translate(
+        localizationQueries.CroatianCulture, "-invoice-for-")
+      + invoice.Invoice.ToDate.ToString("MM-yyyy") + ".csv";
+
+    return File(pdf, "application/pdf", fileName);
   }
 
   [HttpGet]
@@ -62,7 +153,7 @@ public class DownloadController(
       cancellationToken
     );
 
-    var pdf = await documentQueries.ReadPdfForNetworkUserInvoice(
+    var pdf = await documentMutations.CreatePdfForNetworkUserInvoice(
       invoice,
       cancellationToken
     );
@@ -71,12 +162,21 @@ public class DownloadController(
       return NotFound();
     }
 
-    return File(pdf, "application/pdf", $"{invoice.Invoice.Title}.pdf");
+    var fileName =
+      localizationQueries.Translate(
+        localizationQueries.CroatianCulture, "network-user-")
+      + invoice.Invoice.NetworkUserId
+      + localizationQueries.Translate(
+        localizationQueries.CroatianCulture, "-invoice-preview-for-")
+      + invoice.Invoice.ToDate.ToString("MM-yyyy") + ".csv";
+
+    return File(pdf, "application/pdf", fileName);
   }
 
   [HttpGet]
-  public async Task<IActionResult> NetworkUserMonthlyAggregates(
-    string networkUserId,
+  public async Task<IActionResult> MeasurementLocationAccountingPeriod(
+    CultureInfo culture,
+    string measurementLocationId,
     int year,
     int month,
     CancellationToken cancellationToken
@@ -84,38 +184,42 @@ public class DownloadController(
   {
     var (start, end) = DateTimeOffsetExtensions.GetMonthRange(year, month);
 
-    var measurementLocations =
-      await measurementLocationQueries.ReadMeasurementLocationByNetworkUser(
-        networkUserId,
+    var accountingPeriod = await reportQueries
+      .ReadAccountingPeriodReports(
+        culture,
+        measurementLocationId,
+        start,
+        end,
         cancellationToken
       );
-
-    if (measurementLocations.Count == 0)
+    if (accountingPeriod is null)
     {
       return NotFound();
     }
 
-    var measures = await measurementQueries.ReadByMeasurementLocationIds(
-      measurementLocations.Select(x => x.Id).ToList(),
-      IntervalModel.Month,
-      start,
-      end,
-      0,
+    var fileName =
+      localizationQueries.Translate(culture, "measurement-location-")
+      + measurementLocationId
+      + localizationQueries.Translate(culture, "-accounting-period-for-")
+      + end.ToString("MM-yyyy") + ".csv";
+
+    var csv = await reportMutations.Export(
+      fileName,
+      culture,
+      accountingPeriod,
       cancellationToken
     );
-    var orderedMeasures = measures.Items.OrderBy(x => x.Timestamp).ToList();
-    var measurements = orderedMeasures.Select(x => (IAggregate)x).ToList();
 
-    return GenerateCsv(
-      measurements,
-      false,
-      networkUserId + "-monthly-aggregate-" + end.ToString("MM-yyyy") + ".csv"
-    );
+    var bytes = Encoding.UTF8.GetBytes(csv);
+
+    return File(bytes, "text/csv", fileName);
   }
 
   [HttpGet]
-  public async Task<IActionResult> LocationMonthlyAggregates(
-    string locationId,
+  public async Task<IActionResult> MeasurementLocationLoadCurve(
+    CultureInfo culture,
+    string measurementLocationId,
+    string obisString,
     int year,
     int month,
     CancellationToken cancellationToken
@@ -123,37 +227,43 @@ public class DownloadController(
   {
     var (start, end) = DateTimeOffsetExtensions.GetMonthRange(year, month);
 
-    var measurementLocations =
-      await measurementLocationQueries.ReadMeasurementLocationByLocation(
-        locationId,
+    var obis = obisString.ToObis();
+
+    var loadCurves = await reportQueries
+      .ReadLoadCurveReports(
+        culture,
+        measurementLocationId,
+        obis,
+        start,
+        end,
         cancellationToken
       );
-
-    if (measurementLocations.Count == 0)
+    if (loadCurves is null)
     {
       return NotFound();
     }
 
-    var measures = await measurementQueries.ReadByMeasurementLocationIds(
-      measurementLocations.Select(x => x.Id).ToList(),
-      IntervalModel.Month,
-      start,
-      end,
-      0,
+    var fileName =
+      localizationQueries.Translate(culture, "measurement-location-")
+      + measurementLocationId
+      + localizationQueries.Translate(culture, "-load-curve-for-")
+      + end.ToString("MM-yyyy") + ".csv";
+
+    var csv = await reportMutations.Export(
+      fileName,
+      culture,
+      loadCurves,
       cancellationToken
     );
-    var orderedMeasures = measures.Items.OrderBy(x => x.Timestamp).ToList();
-    var measurements = orderedMeasures.Select(x => (IAggregate)x).ToList();
 
-    return GenerateCsv(
-      measurements,
-      false,
-      locationId + "-monthly-aggregate-" + end.ToString("MM-yyyy") + ".csv"
-    );
+    var bytes = Encoding.UTF8.GetBytes(csv);
+
+    return File(bytes, "text/csv", fileName);
   }
 
   [HttpGet]
-  public async Task<IActionResult> MeterQuarterHourlyAggregatesForMonth(
+  public async Task<IActionResult> MeterAccountingPeriod(
+    CultureInfo culture,
     string meterId,
     int year,
     int month,
@@ -161,81 +271,81 @@ public class DownloadController(
   )
   {
     var (start, end) = DateTimeOffsetExtensions.GetMonthRange(year, month);
-    var countInPage = 5000;
 
-    var measures = await measurementQueries.ReadByMeterIds(
-      new[] { meterId },
-      IntervalModel.QuarterHour,
-      start,
-      end,
-      0,
-      cancellationToken,
-      countInPage
-    );
-    var measurements = measures.Items.OrderBy(x => x.Timestamp).ToList();
+    var accountingPeriod = await reportQueries
+      .ReadAccountingPeriodReportsByMeter(
+        culture,
+        meterId,
+        start,
+        end,
+        cancellationToken
+      );
+    if (accountingPeriod is null)
+    {
+      return NotFound();
+    }
 
-    return GenerateCsv(
-      measurements,
-      true,
-      meterId + "-" + end.ToString("MM-yyyy") + ".csv"
+    var fileName =
+      localizationQueries.Translate(culture, "meter-")
+      + meterId
+      + localizationQueries.Translate(culture, "-accounting-period-for-")
+      + end.ToString("MM-yyyy") + ".csv";
+
+    var csv = await reportMutations.Export(
+      fileName,
+      culture,
+      accountingPeriod,
+      cancellationToken
     );
+
+    var bytes = Encoding.UTF8.GetBytes(csv);
+
+    return File(bytes, "text/csv", fileName);
   }
 
   [HttpGet]
-  public async Task<IActionResult>
-    MeasurementLocationQuarterHourlyAggregatesForMonth(
-      string measurementLocationId,
-      int year,
-      int month,
-      CancellationToken cancellationToken
-    )
-  {
-    var (start, end) = DateTimeOffsetExtensions.GetMonthRange(year, month);
-    var countInPage = 5000;
-
-    var measures = await measurementQueries.ReadByMeasurementLocationIds(
-      new[] { measurementLocationId },
-      IntervalModel.QuarterHour,
-      start,
-      end,
-      0,
-      cancellationToken,
-      countInPage
-    );
-    var orderedMeasures = measures.Items.OrderBy(x => x.Timestamp).ToList();
-    var measurements = orderedMeasures.Select(x => (IAggregate)x).ToList();
-
-    return GenerateCsv(
-      measurements,
-      false,
-      measurementLocationId + "-" + end.ToString("MM-yyyy") + ".csv"
-    );
-  }
-
-  public FileContentResult GenerateCsv(
-    IEnumerable<object> models,
-    bool isGeneric = true,
-    string fileName = "export.csv"
+  public async Task<IActionResult> MeterLoadCurve(
+    CultureInfo culture,
+    string meterId,
+    string obisString,
+    int year,
+    int month,
+    CancellationToken cancellationToken
   )
   {
-    var exporter =
-      HttpContext.RequestServices.GetRequiredService<CsvExporter>();
-    string csv;
-    if (models is List<IAggregate> aggregates)
+    var (start, end) = DateTimeOffsetExtensions.GetMonthRange(year, month);
+
+    var obis = obisString.ToObis();
+
+    var loadCurves = await reportQueries
+      .ReadLoadCurveReportsByMeter(
+        culture,
+        meterId,
+        obis,
+        start,
+        end,
+        cancellationToken
+      );
+    if (loadCurves is null)
     {
-      var newList = aggregates.Select(x => exporter.ToCalculationBasis(x));
-      csv = exporter.ExportGeneric(newList);
-    }
-    else if (!isGeneric)
-    {
-      csv = exporter.Export(models);
-    }
-    else
-    {
-      csv = exporter.ExportGeneric(models);
+      return NotFound();
     }
 
+    var fileName =
+      localizationQueries.Translate(culture, "meter-")
+      + meterId
+      + localizationQueries.Translate(culture, "-load-curve-for-")
+      + end.ToString("MM-yyyy") + ".csv";
+
+    var csv = await reportMutations.Export(
+      fileName,
+      culture,
+      loadCurves,
+      cancellationToken
+    );
+
     var bytes = Encoding.UTF8.GetBytes(csv);
+
     return File(bytes, "text/csv", fileName);
   }
 }

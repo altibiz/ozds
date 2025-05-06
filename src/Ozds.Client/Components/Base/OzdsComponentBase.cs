@@ -182,27 +182,24 @@ public abstract class OzdsComponentBase : DisposableComponentBase
   {
     var localizationQueries = ScopedServices
       .GetRequiredService<LocalizationQueries>();
-    var key = localizationQueries.Key(type);
     var culture = GetCulture();
-    return localizationQueries.Translate(culture, key);
+    return localizationQueries.Translate(culture, type);
   }
 
   protected string Translate(Type type, string member)
   {
     var localizationQueries = ScopedServices
       .GetRequiredService<LocalizationQueries>();
-    var key = localizationQueries.Key(type, member);
     var culture = GetCulture();
-    return localizationQueries.Translate(culture, key);
+    return localizationQueries.Translate(culture, type, member);
   }
 
   protected string Translate(MemberExpression member)
   {
     var localizationQueries = ScopedServices
       .GetRequiredService<LocalizationQueries>();
-    var key = localizationQueries.Key(member);
     var culture = GetCulture();
-    return localizationQueries.Translate(culture, key);
+    return localizationQueries.Translate(culture, member);
   }
 
   protected static string JsonString(object? jsonDocument)
@@ -266,7 +263,14 @@ public abstract class OzdsComponentBase : DisposableComponentBase
 
   protected CultureInfo GetCulture()
   {
-    return CultureState.Culture;
+    if (CultureState?.Culture is { } culture)
+    {
+      return culture;
+    }
+
+    var localizationQueries = ScopedServices
+      .GetRequiredService<LocalizationQueries>();
+    return localizationQueries.EnglishCulture;
   }
 
   protected Task SetCulture(CultureInfo culture)

@@ -22,7 +22,6 @@ RoleModel.NetworkUserRepresentative
 @using Ozds.Client.Components.Fields
 @using Ozds.Client.Components.Models
 @using Ozds.Client.Components.Streaming
-@using Ozds.Client.Records
 @using Ozds.Client.State
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
@@ -61,8 +60,7 @@ else
   <MudLink Href="@(PageHref<NetworkUserPage>())">
     @Translate("Create")
   </MudLink>
-  <DownloadField IsGeneric="@false" FileName="NetworkUsersExport.csv" Models="@analyses.Select(x => x.NetworkUser).ToList()"></DownloadField>
-  <UploadTabs TRecord="NetworkUserRecord"></UploadTabs>
+  <UploadTabs T="NetworkUserModel"></UploadTabs>
 }
 
 @code {

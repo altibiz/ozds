@@ -26,18 +26,45 @@ public class LocalizationQueries(
     return localizer.Translate(culture, notLocalized);
   }
 
-  public string Key(Type type)
+  public string Translate(CultureInfo culture, Type type)
   {
-    return localizer.Key(type);
+    var key = localizer.Key(type);
+    var value = localizer.Translate(culture, key);
+    if (key != value)
+    {
+      return value;
+    }
+
+    key = localizer.ShortKey(type);
+    value = localizer.Translate(culture, key);
+    return value;
   }
 
-  public string Key(Type type, string member)
+  public string Translate(CultureInfo culture, Type type, string member)
   {
-    return localizer.Key(type, member);
+    var key = localizer.Key(type, member);
+    var value = localizer.Translate(culture, key);
+    if (key != value)
+    {
+      return value;
+    }
+
+    key = localizer.ShortKey(type, member);
+    value = localizer.Translate(culture, key);
+    return value;
   }
 
-  public string Key(MemberExpression member)
+  public string Translate(CultureInfo culture, MemberExpression member)
   {
-    return localizer.Key(member);
+    var key = localizer.Key(member);
+    var value = localizer.Translate(culture, key);
+    if (key != value)
+    {
+      return value;
+    }
+
+    key = localizer.ShortKey(member);
+    value = localizer.Translate(culture, key);
+    return value;
   }
 }

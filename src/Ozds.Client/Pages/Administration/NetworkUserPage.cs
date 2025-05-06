@@ -11,8 +11,11 @@ namespace Ozds.Client.Pages;
 public partial class NetworkUserPage
   : OzdsIdentifiableModelPageComponentBase<NetworkUserModel>
 {
-  private DateTime? invoiceSelectedMonth;
-  private DateTime? monthlyAggregatesSelectedMonth;
+  private DateTime invoiceSelectedMonth =
+    DateTimeOffset.UtcNow.GetStartOfLastMonth().DateTime;
+
+  private DateTime monthlyAggregatesSelectedMonth =
+    DateTimeOffset.UtcNow.GetStartOfLastMonth().DateTime;
 
   [Parameter]
   public string? Id { get; set; }
@@ -41,15 +44,14 @@ public partial class NetworkUserPage
 
   private async Task OnCreateInvoiceAsync()
   {
-    if (invoiceSelectedMonth is not { } month ||
-      Id is not { } id)
+    if (Id is not { } id)
     {
       return;
     }
 
     var (dateFrom, dateTo) = DateTimeOffsetExtensions.GetMonthRange(
-      month.Year,
-      month.Month
+      invoiceSelectedMonth.Year,
+      invoiceSelectedMonth.Month
     );
 
     var issuer = ScopedServices

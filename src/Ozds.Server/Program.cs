@@ -8,6 +8,7 @@ using Ozds.Email.Extensions;
 using Ozds.Iot.Extensions;
 using Ozds.Jobs.Extensions;
 using Ozds.Messaging.Extensions;
+using Ozds.Report.Extensions;
 using Ozds.Server.Extensions;
 using Ozds.Users.Extensions;
 
@@ -27,6 +28,7 @@ builder.Services
     services => services
       .AddOzdsAssets()
       .AddOzdsDocument()
+      .AddOzdsReport()
       .AddOzdsUsers()
       .AddOzdsData()
       .AddOzdsMessaging()

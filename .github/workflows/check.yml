@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
 
     services:
-      timescaledb:
+      postgres:
         image: timescale/timescaledb-ha:pg14-latest
         env:
           POSTGRES_DB: ozds
@@ -21,10 +21,23 @@ jobs:
           POSTGRES_PASSWORD: ozds
         ports:
           - 5432:5432
+      rabbitmq:
+        image: rabbitmq:3.13-management
+        env:
+          RABBITMQ_DEFAULT_USER: ozds
+          RABBITMQ_DEFAULT_PASS: ozds
+        ports:
+          - 5672:5672
+          - 15672:15672
 
     steps:
       - name: checkout
         uses: actions/checkout@v4
+
+      - name: setup-dvc
+        uses: iterative/setup-dvc@v1
+        with:
+          version: "3.56.0"
 
       - name: install-nix
         uses: cachix/install-nix-action@v30
@@ -32,7 +45,8 @@ jobs:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: prepare
-        run: nix develop .#check -c dotnet tool restore
+        # prettier-ignore
+        run: nix develop .#check -c just ci '${{ secrets.AZURE_ACCOUNT_NAME }}' '${{ secrets.AZURE_CONNECTION_STRING }}'
 
       - name: lint
         run: nix develop .#check -c just lint

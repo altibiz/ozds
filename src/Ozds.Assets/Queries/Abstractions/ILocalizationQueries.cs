@@ -12,4 +12,10 @@ public interface ILocalizationQueries : IQueries
   public string Key(Type type, string member);
 
   public string Key(MemberExpression member);
+
+  public string ShortKey(Type type);
+
+  public string ShortKey(Type type, string member);
+
+  public string ShortKey(MemberExpression member);
 }

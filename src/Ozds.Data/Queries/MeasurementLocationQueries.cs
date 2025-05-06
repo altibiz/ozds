@@ -166,7 +166,7 @@ public class MeasurementLocationQueries(
             .ToList());
     }
 
-    var initialNetworkUsers = context.NetworkUserRepresentatives
+    var initialNetworkUsersQuery = context.NetworkUserRepresentatives
       .Where(
         context.ForeignKeyEquals<NetworkUserRepresentativeEntity>(
           nameof(NetworkUserRepresentativeEntity.Representative),
@@ -174,14 +174,20 @@ public class MeasurementLocationQueries(
       .Select(x => x.NetworkUser);
     if (locationId is not null)
     {
-      initialNetworkUsers = initialNetworkUsers
+      initialNetworkUsersQuery = initialNetworkUsersQuery
         .Where(
           context.ForeignKeyEquals<NetworkUserEntity>(
             nameof(NetworkUserEntity.Location),
             locationId));
     }
 
-    return await initialNetworkUsers
+    var initialNetworkUsers = await initialNetworkUsersQuery
+      .ToListAsync(cancellationToken);
+
+    return await context.NetworkUsers
+      .Where(
+        context.PrimaryKeyIn<NetworkUserEntity>(
+          initialNetworkUsers.Select(x => x.Id)))
       .Include(x => x.Location)
       .Include(x => x.NetworkUserMeasurementLocations)
       .ThenInclude(x => x.Meter)

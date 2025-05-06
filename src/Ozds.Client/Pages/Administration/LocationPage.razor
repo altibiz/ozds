@@ -59,15 +59,17 @@
     <Details Model="@context.Model"/>
     <div style="width: 170px;">
       <MonthPickerField @bind-Value="@selectedMonth" Label="@Translate("Pick month")"/>
-      <div style="margin-top: 10px;">
-        @if (selectedMonth is not null)
-        {
-          <MudLink
-            Href="@("/download/location-monthly-aggregates/" + context.Model.Id + "/" + selectedMonth.Value.Year + "/" + selectedMonth.Value.Month)">
-            @Translate("Csv")
-          </MudLink>
-        }
-      </div>
+      @{
+        var href =
+          "/download/location-energy-card"
+          + "/" + GetCulture().TwoLetterISOLanguageName
+          + "/" + context.Model.Id
+          + "/" + selectedMonth.Year
+          + "/" + selectedMonth.Month;
+      }
+      <MudLink Class="mt-4" Href="@href">
+        @Translate("Energy card CSV")
+      </MudLink>
     </div>
   </Details>
 </Mutating>

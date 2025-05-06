@@ -9,6 +9,7 @@ using Ozds.Fake.Extensions;
 using Ozds.Iot.Extensions;
 using Ozds.Jobs.Extensions;
 using Ozds.Messaging.Extensions;
+using Ozds.Report.Extensions;
 using Ozds.Users.Extensions;
 using MessagingMessageSender =
   Ozds.Messaging.Sender.Abstractions.IMessageSender;
@@ -28,6 +29,7 @@ var builder = Host.CreateApplicationBuilder();
 builder.Services
   .AddOzdsAssets()
   .AddOzdsDocument()
+  .AddOzdsReport()
   .AddOzdsUsers()
   .AddOzdsData()
   .AddOzdsMessaging(false)

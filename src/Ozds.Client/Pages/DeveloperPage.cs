@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using Ozds.Business.Models;
+using Ozds.Business.Mutations;
 using Ozds.Business.Queries;
 using Ozds.Client.Components.Base;
 
@@ -44,8 +45,8 @@ public partial class DeveloperPage : OzdsComponentBase
       );
 
     var pdf = await ScopedServices
-      .GetRequiredService<DocumentQueries>()
-      .ReadPdfForNetworkUserInvoice(
+      .GetRequiredService<DocumentMutations>()
+      .CreatePdfForNetworkUserInvoice(
         calculated!,
         CancellationToken.None
       );

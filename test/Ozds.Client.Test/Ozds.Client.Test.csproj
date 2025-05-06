@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Playwright" />
+    <PackageReference Include="Xunit.DependencyInjection" />
+    <PackageReference Include="Xunit.DependencyInjection.Logging" />
+    <PackageReference Include="Altibiz.DependencyInjection.Extensions" />
+  </ItemGroup>
+
+  <!--
+    NOTE: disables parallelization
+    Leave it like this because otherwise
+    the database runs into concurrency problems.
+    Also, it is needed that all test classes that
+    use a specific DBContext manager are
+    in the same test collection which also
+    reduces the amount of database concurrency problems.
+  -->
+  <PropertyGroup>
+    <ParallelizationMode>Enhance</ParallelizationMode>
+  </PropertyGroup>
+
+</Project>

@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using Ozds.Business.Models.Composite;
 using Ozds.Business.Mutations;
-using Ozds.Business.Queries;
 using Ozds.Business.Time;
 using Ozds.Client.Components.Base;
 
@@ -36,8 +35,8 @@ public partial class NetworkUserInvoicePreviewDocumentPage : OzdsComponentBase
     }
 
     var html = await ScopedServices
-      .GetRequiredService<DocumentQueries>()
-      .ReadHtmlForNetworkUserInvoice(invoice, CancellationToken);
+      .GetRequiredService<DocumentMutations>()
+      .CreateHtmlForNetworkUserInvoice(invoice, CancellationToken);
     if (html is null)
     {
       return null;

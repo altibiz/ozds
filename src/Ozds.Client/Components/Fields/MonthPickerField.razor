@@ -1,22 +1,6 @@
 @using MudBlazor
-<div>
-  <MudDatePicker Label="@Label"
-                 Date="@Value"
-                 DateChanged="@ValueChanged"
-                 OpenTo="OpenTo.Month"
-                 FixDay="@DateTime.Today.Day"
-                 DateFormat="MM.yyyy."/>
-</div>
-
-@code {
-
-  [Parameter]
-  public DateTime? Value { get; set; }
-
-  [Parameter]
-  public EventCallback<DateTime?> ValueChanged { get; set; }
-
-  [Parameter]
-  public string Label { get; set; } = "Pick month";
-
-}
+<MudDatePicker Label="@Label"
+               @bind-Date="@NullableValue"
+               OpenTo="OpenTo.Month"
+               FixDay="@DateTime.Today.Day"
+               DateFormat="MM.yyyy."/>
