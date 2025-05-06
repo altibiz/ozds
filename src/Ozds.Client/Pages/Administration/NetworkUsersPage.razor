@@ -52,14 +52,12 @@ else
 
   <Table Model="@analyses"/>
 
-  <br/>
-
-  <Table PageAsync="OnPageAsync" Model="networkUsers" />
 }
 
 @if (RepresentativeState.Representative.Role
   == RoleModel.OperatorRepresentative)
 {
+  <Table PageAsync="OnPageAsync" Model="networkUsers" />
   <MudLink Href="@(PageHref<NetworkUserPage>())">
     @Translate("Create")
   </MudLink>

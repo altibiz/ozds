@@ -15,6 +15,7 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - scope state provider in `Ozds.Client` to manage lifetime of scoped services
   per client session
 - disposable base component in `Ozds.Client` for root components
+- network user overview
 
 ### Changed
 
@@ -23,10 +24,13 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - use `-dev` suffix for service bus endpoints in dev
 - use `DisposableBaseComponent` as base for root components
 - recursively unwrap conversions for member expression translations
+- pagination logic
+- list/card table view on mobile
 
 ### Removed
 
 - old brush chart code that didn't do anything
+- a time condition to chart updating which might have been causing issues
 
 ## [1.2.1]
 
