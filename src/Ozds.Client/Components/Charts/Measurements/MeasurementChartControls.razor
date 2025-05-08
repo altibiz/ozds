@@ -2,6 +2,7 @@
 
 @namespace Ozds.Client.Components.Charts
 @using MudBlazor
+@using Microsoft.AspNetCore.Components.Web
 @using Ozds.Business.Models
 @using Ozds.Business.Models.Enums
 @using Ozds.Client.Components.Fields
@@ -17,8 +18,13 @@
   <MudGrid Spacing="2" Justify="Justify.Center">
     @if (MeasurementLocations.Count > 1)
     {
-      <MudItem xs="12" md="4">
+      <MudItem
+        xs="12"
+        @onpointerdown="() => _select.OpenMenu()"
+        md="4"
+      >
         <MudSelect
+          @ref="_select"
           T="string"
           Label="@Translate("Measurement locations")"
           SelectedValues="@(_parameters.MeasurementLocations.Select(measurementLocation => measurementLocation.Id))"
@@ -115,6 +121,11 @@
     </MudItem>
   </MudGrid>
 </MudExpansionPanel>
+
+@code {
+
+  private MudSelect<string> _select = default!;
+}
 
 <style>
   .wide-tooltip {
