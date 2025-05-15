@@ -23,20 +23,27 @@
         @onpointerdown="() => _select.OpenMenu()"
         md="4"
       >
-        <MudSelect
-          @ref="_select"
-          T="string"
-          Label="@Translate("Measurement locations")"
-          SelectedValues="@(_parameters.MeasurementLocations.Select(measurementLocation => measurementLocation.Id))"
-          SelectedValuesChanged="@OnMeasurementLocationsChanged"
-          MultiSelection>
-          @foreach (var measurementLocation in MeasurementLocations)
-          {
-            <MudSelectItem Value="@measurementLocation.Id">
-              @measurementLocation.Title
-            </MudSelectItem>
-          }
-        </MudSelect>
+        <MudTooltip RootClass="wide-tooltip"
+         Text="@(
+            _parameters.MeasurementLocations.Count > 1
+              ? string.Join(", ", _parameters.MeasurementLocations.Select(m => m.Title))
+              : ""
+          )">
+          <MudSelect
+            @ref="_select"
+            T="string"
+            Label="@Translate("Measurement locations")"
+            SelectedValues="@(_parameters.MeasurementLocations.Select(measurementLocation => measurementLocation.Id))"
+            SelectedValuesChanged="@OnMeasurementLocationsChanged"
+            MultiSelection>
+            @foreach (var measurementLocation in MeasurementLocations)
+            {
+              <MudSelectItem Value="@measurementLocation.Id">
+                @measurementLocation.Title
+              </MudSelectItem>
+            }
+          </MudSelect>
+        </MudTooltip>
       </MudItem>
     }
     else if (Meters.Count > 1)

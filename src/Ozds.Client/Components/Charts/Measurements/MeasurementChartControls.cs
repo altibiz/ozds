@@ -109,6 +109,10 @@ public partial class MeasurementChartControls : OzdsComponentBase
 
   protected override async Task OnParametersSetAsync()
   {
+    if (_select != null)
+    {
+      UpdateSelectDisplay();
+    }
     await Fetch();
   }
 
@@ -124,6 +128,7 @@ public partial class MeasurementChartControls : OzdsComponentBase
     _parameters.FromDate = now.Subtract(
       _parameters.Resolution.ToTimeSpan(
         _parameters.Multiplier, now));
+    UpdateSelectDisplay();
     await Fetch();
   }
 
@@ -325,5 +330,13 @@ public partial class MeasurementChartControls : OzdsComponentBase
     }
 
     InvokeAsync(StateHasChanged);
+  }
+
+  private void UpdateSelectDisplay()
+  {
+    var ids = _parameters.MeasurementLocations.Select(x => x.Id).ToList();
+    _select!.Text = ids.Count == 1
+      ? MeasurementLocations.First(m => m.Id == ids[0]).Title
+      : string.Join(", ", ids);
   }
 }
