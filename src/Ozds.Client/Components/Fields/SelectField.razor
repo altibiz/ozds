@@ -1,12 +1,20 @@
 @namespace Ozds.Client.Components.Fields
-
 @using MudBlazor
+@using Microsoft.AspNetCore.Components.Web
 @typeparam T
 
-<MudSelect T="T"
-  @ref="_inner"
-  @onpointerdown="HandlePointerDown"
-  @onpointerdown:preventDefault
-  @attributes="AdditionalAttributes">
-  @ChildContent
-</MudSelect>
+<div @onpointerdown="() => _inner.OpenMenu()">
+  <MudSelect T="T"
+    @ref="_inner"
+    Label="@Label"
+    Value="@Value"
+    ValueChanged="@ValueChanged"
+    SelectedValues="@SelectedValues"
+    SelectedValuesChanged="@SelectedValuesChanged"
+    MultiSelection="@MultiSelection"
+    For="@For"
+    AnchorOrigin="@AnchorOrigin"
+    @attributes="AdditionalAttributes">
+    @ChildContent
+  </MudSelect>
+</div>
