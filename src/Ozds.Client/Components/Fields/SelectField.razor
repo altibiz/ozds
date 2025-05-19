@@ -1,0 +1,12 @@
+@namespace Ozds.Client.Components.Fields
+
+@using MudBlazor
+@typeparam T
+
+<MudSelect T="T"
+  @ref="_inner"
+  @onpointerdown="HandlePointerDown"
+  @onpointerdown:preventDefault
+  @attributes="AdditionalAttributes">
+  @ChildContent
+</MudSelect>
