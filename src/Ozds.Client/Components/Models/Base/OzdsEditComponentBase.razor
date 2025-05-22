@@ -229,7 +229,7 @@
     var nextFunc = next.Compile();
     return @<Paging T="T">
       <Found Context="models">
-        <MudSelect Label="@(Translate(Label(next)))"
+        <SelectField Label="@(Translate(Label(next)))"
                    Value="@Get(nextFunc)"
                    ValueChanged="@Set(next)"
                    For="@For(next)">
@@ -241,7 +241,7 @@
               </MudText>
             </MudSelectItem>
           }
-        </MudSelect>
+        </SelectField>
       </Found>
     </Paging>;
   }

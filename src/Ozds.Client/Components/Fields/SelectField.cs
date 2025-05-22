@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
@@ -8,20 +9,29 @@ namespace Ozds.Client.Components.Fields
 {
   public partial class SelectField<T>
   {
-    private MudSelect<T> _inner;
+    private MudSelect<T> _inner = default!;
 
-    [Parameter] public string Label { get; set; }
-    [Parameter] public T Value { get; set; }
-    [Parameter] public EventCallback<T> ValueChanged { get; set; }
-    [Parameter] public IEnumerable<T> SelectedValues { get; set; }
-    [Parameter] public EventCallback<IEnumerable<T>> SelectedValuesChanged { get; set; }
-    [Parameter] public bool MultiSelection { get; set; }
-    [Parameter] public Expression<Func<T>> For { get; set; }
-    [Parameter] public Origin AnchorOrigin { get; set; }
+    [Parameter]
+    public string Label { get; set; } = default!;
+    [Parameter]
+    public T Value { get; set; } = default!;
+    [Parameter]
+    public EventCallback<T> ValueChanged { get; set; }
+    [Parameter]
+    public IEnumerable<T> SelectedValues { get; set; } = Enumerable.Empty<T>();
+    [Parameter]
+    public EventCallback<IEnumerable<T>> SelectedValuesChanged { get; set; }
+    [Parameter]
+    public bool MultiSelection { get; set; } = false;
+    [Parameter]
+    public Expression<Func<T>> For { get; set; } = default!;
+    [Parameter]
+    public Origin AnchorOrigin { get; set; } = Origin.BottomLeft;
 
     [Parameter(CaptureUnmatchedValues = true)]
-    public IDictionary<string, object> AdditionalAttributes { get; set; }
+    public IDictionary<string, object> AdditionalAttributes { get; set; } = new Dictionary<string, object>();
 
-    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = default!;
   }
 }

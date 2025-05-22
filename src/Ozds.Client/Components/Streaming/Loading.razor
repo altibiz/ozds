@@ -2,6 +2,7 @@
 
 @typeparam T where T : notnull
 @using MudBlazor
+@using Ozds.Client.Components.Fields
 @using Ozds.Client.State
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
@@ -51,7 +52,7 @@
     }
     else if (_activationType is not null && ActivatableSubtypes.Count > 1)
     {
-      <MudSelect
+      <SelectField
         T="Type"
         Label="@Translate("Type")"
         Value="@_activationType"
@@ -64,7 +65,7 @@
             </MudText>
           </MudSelectItem>
         }
-      </MudSelect>
+      </SelectField>
     }
   }
 

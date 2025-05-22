@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using MudBlazor;
 using Ozds.Business.Aggregation;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Enums;
@@ -14,6 +15,8 @@ namespace Ozds.Client.Components.Charts;
 public partial class MeasurementChartControls : OzdsComponentBase
 {
   private readonly MeasurementChartParameters _parameters = new();
+  private MudSelect<string> _select = default!;
+  private string _selectedText = string.Empty;
 
   [Parameter]
   public List<IMeter> Meters { get; set; } = new();
@@ -335,7 +338,7 @@ public partial class MeasurementChartControls : OzdsComponentBase
   private void UpdateSelectDisplay()
   {
     var ids = _parameters.MeasurementLocations.Select(x => x.Id).ToList();
-    _select!.Text = ids.Count == 1
+    _selectedText = ids.Count == 1
       ? MeasurementLocations.First(m => m.Id == ids[0]).Title
       : string.Join(", ", ids);
   }

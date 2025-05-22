@@ -11,6 +11,7 @@ Allows = [RoleModel.OperatorRepresentative])]
 @using MudBlazor
 @using Ozds.Business.Models.Enums
 @using Ozds.Client.Attributes
+@using Ozds.Client.Components.Fields
 @using Ozds.Client.Components.Streaming
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
@@ -27,7 +28,7 @@ Allows = [RoleModel.OperatorRepresentative])]
   <title>OZDS - @Translate("Events")</title>
 </HeadContent>
 
-<MudSelect
+<SelectField
   T="LevelModel"
   Label="@Translate("Minimal level")"
   AnchorOrigin="Origin.BottomCenter"
@@ -42,6 +43,6 @@ Allows = [RoleModel.OperatorRepresentative])]
       @Translate(value.ToTitle())
     </MudSelectItem>
   }
-</MudSelect>
+</SelectField>
 
 <Table PageAsync="@OnPageAsync"/>

@@ -20,7 +20,7 @@
     {
       <MudItem
         xs="12"
-        @onpointerdown="() => _select.OpenMenu()"
+        @onpointerup="() => _select.OpenMenu()"
         md="4"
       >
         <MudTooltip RootClass="wide-tooltip"
@@ -31,6 +31,7 @@
           )">
           <MudSelect
             @ref="_select"
+            @bind-Text="_selectedText"
             T="string"
             Label="@Translate("Measurement locations")"
             SelectedValues="@(_parameters.MeasurementLocations.Select(measurementLocation => measurementLocation.Id))"
@@ -128,11 +129,6 @@
     </MudItem>
   </MudGrid>
 </MudExpansionPanel>
-
-@code {
-
-  private MudSelect<string> _select = default!;
-}
 
 <style>
   .wide-tooltip {

@@ -156,6 +156,8 @@ words:
   - "qwen"
   - "tomlyn"
   - "isready"
+  - "onpointerdown"
+  - "onpointerup"
 
   # Croatian
   - "altibiz"
