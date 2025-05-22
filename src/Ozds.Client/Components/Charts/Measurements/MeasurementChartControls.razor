@@ -2,7 +2,6 @@
 
 @namespace Ozds.Client.Components.Charts
 @using MudBlazor
-@using Microsoft.AspNetCore.Components.Web
 @using Ozds.Business.Models
 @using Ozds.Business.Models.Enums
 @using Ozds.Client.Components.Fields
@@ -21,14 +20,9 @@
       <MudItem
         xs="12"
         @onpointerup="() => _select.OpenMenu()"
-        md="4"
-      >
+        md="4">
         <MudTooltip RootClass="wide-tooltip"
-         Text="@(
-            _parameters.MeasurementLocations.Count > 1
-              ? string.Join(", ", _parameters.MeasurementLocations.Select(m => m.Title))
-              : ""
-          )">
+                    Text="@(_parameters.MeasurementLocations.Count > 1 ? string.Join(", ", _parameters.MeasurementLocations.Select(m => m.Title)) : "")">
           <MudSelect
             @ref="_select"
             @bind-Text="_selectedText"

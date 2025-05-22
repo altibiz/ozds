@@ -116,6 +116,7 @@ public partial class MeasurementChartControls : OzdsComponentBase
     {
       UpdateSelectDisplay();
     }
+
     await Fetch();
   }
 

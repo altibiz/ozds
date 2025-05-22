@@ -230,9 +230,9 @@
     return @<Paging T="T">
       <Found Context="models">
         <SelectField Label="@(Translate(Label(next)))"
-                   Value="@Get(nextFunc)"
-                   ValueChanged="@Set(next)"
-                   For="@For(next)">
+                     Value="@Get(nextFunc)"
+                     ValueChanged="@Set(next)"
+                     For="@For(next)">
           @foreach (var model in models.Items)
           {
             <MudSelectItem Value="@model.Id">

@@ -1,5 +1,4 @@
 @namespace Ozds.Client.Components.Fields
-@using Microsoft.AspNetCore.Components.Web
 @using MudBlazor
 @typeparam T
 
@@ -7,27 +6,27 @@
   @if (MultiSelection)
   {
     <MudSelect T="T"
-      @ref="_inner"
-      Label="@Label"
-      SelectedValues="@SelectedValues"
-      SelectedValuesChanged="@SelectedValuesChanged"
-      MultiSelection="true"
-      For="@For"
-      AnchorOrigin="@AnchorOrigin"
-      @attributes="AdditionalAttributes">
+               @ref="_inner"
+               Label="@Label"
+               SelectedValues="@SelectedValues"
+               SelectedValuesChanged="@SelectedValuesChanged"
+               MultiSelection="true"
+               For="@For"
+               AnchorOrigin="@AnchorOrigin"
+               @attributes="AdditionalAttributes">
       @ChildContent
     </MudSelect>
   }
   else
   {
     <MudSelect T="T"
-      @ref="_inner"
-      Label="@Label"
-      Value="@Value"
-      ValueChanged="@ValueChanged"
-      For="@For"
-      AnchorOrigin="@AnchorOrigin"
-      @attributes="AdditionalAttributes">
+               @ref="_inner"
+               Label="@Label"
+               Value="@Value"
+               ValueChanged="@ValueChanged"
+               For="@For"
+               AnchorOrigin="@AnchorOrigin"
+               @attributes="AdditionalAttributes">
       @ChildContent
     </MudSelect>
   }
