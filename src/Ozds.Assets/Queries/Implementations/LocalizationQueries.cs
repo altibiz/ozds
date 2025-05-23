@@ -2,6 +2,7 @@ using System.Globalization;
 using System.Linq.Expressions;
 using System.Text;
 using Ozds.Assets.Queries.Abstractions;
+using Ozds.Assets.Time;
 
 namespace Ozds.Assets.Queries.Implementations;
 
@@ -9,6 +10,11 @@ public class LocalizationQueries(
   IAssetQueries assetQueries
 ) : ILocalizationQueries
 {
+  public CultureInfo CroatianCulture
+  {
+    get { return AssetConstants.CroatianCulture; }
+  }
+
   public string Translate(CultureInfo culture, string notLocalized)
   {
     var translations = assetQueries.LoadTranslations(culture);
@@ -50,6 +56,80 @@ public class LocalizationQueries(
   {
     var (type, suffix) = UnwrapMember(member);
     return $"{CleanTypeName(type)}{suffix}";
+  }
+
+  public string NumericString(decimal? number, int places = 2)
+  {
+    if (number is null)
+    {
+      return "";
+    }
+
+    var cultureInfo = CroatianCulture;
+
+    var numberFormatInfo = (NumberFormatInfo)cultureInfo.NumberFormat.Clone();
+    numberFormatInfo.NumberGroupSeparator = ".";
+    numberFormatInfo.NumberDecimalDigits = places;
+
+    var roundedNumber = Math.Round(number.Value, places);
+    return roundedNumber.ToString("N", numberFormatInfo);
+  }
+
+  public string NumericString(float? number, int places = 2)
+  {
+    if (number is null)
+    {
+      return "";
+    }
+
+    var cultureInfo = CroatianCulture;
+
+    var numberFormatInfo = (NumberFormatInfo)cultureInfo.NumberFormat.Clone();
+    numberFormatInfo.NumberGroupSeparator = ".";
+    numberFormatInfo.NumberDecimalDigits = places;
+
+    var roundedNumber = Math.Round(number.Value, places);
+    return roundedNumber.ToString("N", numberFormatInfo);
+  }
+
+  public string DateString(DateTimeOffset? dateTimeOffset)
+  {
+    if (dateTimeOffset is null)
+    {
+      return "";
+    }
+
+    var cultureInfo = CroatianCulture;
+
+    var withTimezone = dateTimeOffset
+      .Value
+      .ToOffset(DateTimeOffsetTooling.GetOffset(dateTimeOffset.Value));
+
+    return withTimezone.ToString("dd. MM. yyyy.", cultureInfo);
+  }
+
+  public string DateTimeString(DateTimeOffset? dateTimeOffset)
+  {
+    if (dateTimeOffset is null)
+    {
+      return "";
+    }
+
+    var cultureInfo = CroatianCulture;
+
+    var withTimezone = dateTimeOffset
+      .Value
+      .ToOffset(DateTimeOffsetTooling.GetOffset(dateTimeOffset.Value));
+
+    return withTimezone.ToString("dd. MM. yyyy. HH:mm", cultureInfo);
+  }
+
+  public DateTimeOffset DateTimeApplyOffset(
+    DateTimeOffset dateTimeOffset)
+  {
+    var a = dateTimeOffset.UtcDateTime.Add(
+      DateTimeOffsetTooling.GetOffset(dateTimeOffset));
+    return a;
   }
 
   private static (Type, string) UnwrapMember(MemberExpression member)
