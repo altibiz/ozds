@@ -363,7 +363,7 @@ cython_debug/
 src/Ozds.Server/Localization
 src/Ozds.Server/App_Data/Sites/Default/DataProtection-Keys
 plantuml-images/
-docs/wiki/**/book
+docs/**/book
 mdbook-plantuml-img/
 /result
 rnr*
