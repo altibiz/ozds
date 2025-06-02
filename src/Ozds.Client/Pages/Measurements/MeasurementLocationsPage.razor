@@ -41,7 +41,7 @@ RoleModel.NetworkUserRepresentative
 
 @if (_deleted)
 {
-  <Paging T="IMeasurementLocation" Deleted="@_deleted"/>
+  <Table Model="@analyses.Where(x => x.MeasurementLocation.IsDeleted).ToList()"/>
 }
 else
 {

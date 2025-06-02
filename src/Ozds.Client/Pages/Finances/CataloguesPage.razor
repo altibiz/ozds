@@ -13,7 +13,9 @@ RoleModel.OperatorRepresentative,
 @using Microsoft.AspNetCore.Components.Web
 @using MudBlazor
 @using Ozds.Business.Models.Abstractions
+@using Ozds.Business.Queries.Abstractions
 @using Ozds.Client.Attributes
+@using Ozds.Client.Components.Models
 @using Ozds.Client.Components.Streaming
 @using Ozds.Client.State
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
@@ -33,21 +35,23 @@ RoleModel.OperatorRepresentative,
   Label="@Translate("Deleted")"
   @bind-Value="_deleted"/>
 
-<MudText>
-  @Translate("Network user catalogues")
-</MudText>
-
-<Paging T="INetworkUserCatalogue" Deleted="@_deleted"/>
+<Paging T="INetworkUserCatalogue" Deleted="@_deleted">
+  <Found Context="page">
+    <Table Model="@(page.Items)">
+    </Table>
+  </Found>
+  </Paging>
 
 <MudLink Href="@(PageHref<NetworkUserCataloguePage>())">
   @Translate("Create")
 </MudLink>
 
-<MudText>
-  @Translate("Regulatory catalogues")
-</MudText>
-
-<Paging T="IRegulatoryCatalogue" Deleted="@_deleted"/>
+<Paging T="IRegulatoryCatalogue" Deleted="@_deleted">
+  <Found Context="page">
+    <Table Model="@(page.Items)">
+    </Table>
+  </Found>
+  </Paging>
 
 <MudLink Href="@(PageHref<RegulatoryCataloguePage>())">
   @Translate("Create")
