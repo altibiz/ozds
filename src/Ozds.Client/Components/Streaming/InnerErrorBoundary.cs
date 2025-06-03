@@ -6,7 +6,7 @@ public class InnerErrorBoundary
   : Microsoft.AspNetCore.Components.Web.ErrorBoundary
 {
   [Parameter]
-  public ErrorBoundary This { get; set; } = default!;
+  public OzdsErrorBoundary This { get; set; } = default!;
 
   protected override Task OnErrorAsync(Exception exception)
   {
