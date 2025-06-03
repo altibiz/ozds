@@ -282,6 +282,9 @@ docs:
     mv '{{ docs }}/wiki/en/book' '{{ artifacts }}/wiki/en'
     mv '{{ docs }}/wiki/hr/book' '{{ artifacts }}/wiki/hr'
 
+    mdbook build '{{ docs }}/dev'
+    mv '{{ docs }}/dev/book' '{{ artifacts }}/dev'
+
     cp '{{ docs }}/index.html' {{ artifacts }}
     cp '{{ docs }}/favicon.ico' {{ artifacts }}
 
