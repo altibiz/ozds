@@ -13,6 +13,8 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 - `Ozds.Client.Test` project for end-to-end testing of the client
 - justfile recipe for setting up CI for the new `Ozds.Client.Test` project
+- Developer documentation
+- `codesum` script for creating PDF files useful for LLM QnA
 
 ### Changed
 
