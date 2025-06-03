@@ -42,7 +42,7 @@ The solution is structured into several .NET projects:
   orchestration, particularly for ERP integration using Azure Service Bus.
 - **`Ozds.Document`**: Handles document generation like invoice PDF/HTML.
 - **`Ozds.Report`**: Handles report generation and ingest like measurement
-  summmary export or bulk ingest of database entities via CSV files.
+  summary export or bulk ingest of database entities via CSV files.
 - **`Ozds.Jobs`**: Dynamic background job scheduling via Quartz.NET.
 - **`Ozds.Users`**: Queries/Mutations on auth data. For now a simple OrchardCore
   UserService facade.
@@ -57,38 +57,37 @@ dependencies.
 
 ## 4. Data Ingestion Pipeline (IoT & Pidgeon)
 
-1.  **Data Source:** Raspberry Pi (RPi) devices ("Pidgeons") running a Rust
-    program and a local PostgreSQL instance as a buffer.
-    - RPis collect data from electricity meters via Modbus.
-    - NixOS is used for RPi configuration.
-    - Data integrity is ensured through retries from the RPi to the server.
-2.  **Data Transmission:** RPis send measurement data to the OZDS server
-    (currently HTTP, planned migration to WebSocket + Protobuf for efficiency).
-3.  **Server-Side Ingestion:**
-    - Incoming JSON data is deserialized.
-    - An event is published using an internal C# channel-based pub/sub system.
-    - A **Reactor** (automatic subscription class in DI) picks up the event.
-    - **Model Creation:** Entities are converted to models. For each
-      measurement, three aggregate models are also created (quarter-hourly,
-      daily, monthly).
-    - **Measurement Location Mapping:** Physical meter IDs from RPis are mapped
-      to logical measurement location IDs within OZDS.
-    - **Buffering (`Ozds.Business/Buffers`):**
-      - **Measurements:** Buffered in a `ConcurrentQueue` (up to 10,000,
-        inspired by ELK limits for JSON bulk inserts).
-      - **Aggregates:** Buffered and flushed in a `ConcurrentQueue` roughly
-        every 15 minutes. The flush is triggered when an aggregation interval
-        (e.g., a specific 15-minute window) is "closed" – meaning no more
-        measurements are coming in from it. This also triggers flushing for
-        corresponding daily and monthly aggregates.
-      - The buffer can be bypassed via request headers for single-transaction
-        processing if needed.
-    - **Database Insertion:**
-      - When buffers are flushed, another event is published.
-      - A reactor picks this up and calls database insertion functions (raw SQL
-        embedded in migrations) to persist measurements and aggregates.
-      - Postgres's JSON capabilities are used for insertion to avoid column
-        order issues.
+1. **Data Source:** Raspberry Pi (RPi) devices ("Pidgeons") running a Rust
+   program and a local PostgreSQL instance as a buffer.
+   - RPis collect data from electricity meters via Modbus.
+   - NixOS is used for RPi configuration.
+   - Data integrity is ensured through retries from the RPi to the server.
+2. **Data Transmission:** RPis send measurement data to the OZDS server
+   (currently HTTP, planned migration to WebSocket + Protobuf for efficiency).
+3. **Server-Side Ingestion:**
+   - Incoming JSON data is deserialized.
+   - An event is published using an internal C# channel-based pub/sub system.
+   - A **Reactor** (automatic subscription class in DI) picks up the event.
+   - **Model Creation:** Entities are converted to models. For each measurement,
+     three aggregate models are also created (quarter-hourly, daily, monthly).
+   - **Measurement Location Mapping:** Physical meter IDs from RPis are mapped
+     to logical measurement location IDs within OZDS.
+   - **Buffering (`Ozds.Business/Buffers`):**
+     - **Measurements:** Buffered in a `ConcurrentQueue` (up to 10,000, inspired
+       by ELK limits for JSON bulk inserts).
+     - **Aggregates:** Buffered and flushed in a `ConcurrentQueue` roughly every
+       15 minutes. The flush is triggered when an aggregation interval (e.g., a
+       specific 15-minute window) is "closed" – meaning no more measurements are
+       coming in from it. This also triggers flushing for corresponding daily
+       and monthly aggregates.
+     - The buffer can be bypassed via request headers for single-transaction
+       processing if needed.
+   - **Database Insertion:**
+     - When buffers are flushed, another event is published.
+     - A reactor picks this up and calls database insertion functions (raw SQL
+       embedded in migrations) to persist measurements and aggregates.
+     - Postgres's JSON capabilities are used for insertion to avoid column order
+       issues.
 
 **Overall Data Strategy:** "Heavy writes, light reads." Complex aggregation and
 processing happen during ingestion to make querying faster and simpler.
@@ -151,16 +150,16 @@ processing happen during ingestion to make querying faster and simpler.
 - **Current:** Primarily vertical scaling due to stateful components (especially
   the ingest service's channel-based pub/sub).
 - **Future Plans for Horizontal Scaling (primarily for Ingest):**
-  1.  **Stateless Ingest Service:**
-      - Decouple data ingestion from the main monolith.
-      - Utilize PostgreSQL listeners on the monolith side to react to ingested
-        data, replacing some current channel-based reactor functionalities.
-      - RPi communication via WebSocket + Protobuf.
-  2.  **Distributed Database:** Migrate time-series data to a horizontally
-      scalable database (see Database Architecture).
-  3.  **Service Bus Routing:** If a DIY service bus is implemented, message
-      routing capabilities might be needed for horizontally scaled OZDS
-      components. (Specific routing strategies are TBD).
+  1. **Stateless Ingest Service:**
+     - Decouple data ingestion from the main monolith.
+     - Utilize PostgreSQL listeners on the monolith side to react to ingested
+       data, replacing some current channel-based reactor functionalities.
+     - RPi communication via WebSocket + Protobuf.
+  2. **Distributed Database:** Migrate time-series data to a horizontally
+     scalable database (see Database Architecture).
+  3. **Service Bus Routing:** If a DIY service bus is implemented, message
+     routing capabilities might be needed for horizontally scaled OZDS
+     components. (Specific routing strategies are TBD).
 - **Burst Performance:** Other parts of the system (e.g., user-facing actions,
   scheduled jobs) are considered to require burst performance rather than
   sustained high throughput, making the current monolith structure acceptable

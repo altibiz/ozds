@@ -16,6 +16,7 @@ ignorePaths:
   - "cspell.yaml"
   - "./docs/schema.md"
   - "./docs/wiki/**/book.toml"
+  - "./docs/dev/book.toml"
   - "./src/Ozds.Business/Assets/translations-*.json"
   - "./docs/index.html"
   - "./.config/dotnet-tools.json"
@@ -156,6 +157,14 @@ words:
   - "qwen"
   - "tomlyn"
   - "isready"
+  - "pidgeons"
+  - "statefulness"
+  - "comin"
+  - "direnv"
+  - "hotfixes"
+  - "aetip"
+  - "pandoc"
+  - "codesum"
 
   # Croatian
   - "altibiz"

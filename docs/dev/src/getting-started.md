@@ -43,6 +43,7 @@ pays off hugely!
 1. **Clone the repo and navigate to it**
 2. **Let direnv do its thing** (if using Nix)
 3. **Run the setup:**
+
    ```bash
    just prepare
    ```

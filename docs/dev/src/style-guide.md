@@ -41,7 +41,7 @@ For every external service integration:
 
 **Example**:
 
-```
+```txt
 SomeServiceUserEntity (in integration project)
      ↓ (via SomeServiceUserEntityConverter)
 UserModel (in Ozds.Business)
@@ -95,7 +95,7 @@ specific format that covers all Croatian energy market scenarios.
 
 ### Format
 
-```
+```txt
 ({Item})?{PropertyName}{Phases}{Direction}{Tariff}_{Unit}(.{Aggregate}?)
 ```
 
@@ -199,7 +199,7 @@ operations.
 
 **Example Flow**:
 
-```
+```txt
 Integration Project publishes entity event
      ↓
 Relay converts entity to model
