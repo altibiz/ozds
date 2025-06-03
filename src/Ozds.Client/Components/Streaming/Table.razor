@@ -25,7 +25,7 @@
     <Found Context="page">
       @foreach (var item in page.Items)
       {
-        if (!Filter(item))
+        if (!FilterItem(item))
           continue;
 
         <MudPaper Class="pa-4 mb-2" Elevation="1">

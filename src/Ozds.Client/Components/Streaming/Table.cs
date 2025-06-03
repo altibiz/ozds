@@ -51,7 +51,7 @@ public partial class Table<T> : OzdsComponentBase
     return dataGrid?.ReloadServerData() ?? Task.CompletedTask;
   }
 
-  private bool Filter(T value)
+  private bool FilterItem(T value)
   {
     if (Filter is not null)
     {
@@ -134,7 +134,7 @@ public partial class Table<T> : OzdsComponentBase
     model = result;
     return new GridData<T>
     {
-      Items = result.Items.Where(Filter),
+      Items = result.Items.Where(FilterItem),
       TotalItems = result.TotalCount
     };
   }
