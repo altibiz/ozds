@@ -5,6 +5,7 @@
 @using Ozds.Business.Models
 @using Ozds.Business.Models.Enums
 @using Ozds.Client.Components.Fields
+@using Microsoft.AspNetCore.Components.Web
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 <MeasurementChartHeader Parameters="_parameters"/>
@@ -25,7 +26,7 @@
                     Text="@(_parameters.MeasurementLocations.Count > 1 ? string.Join(", ", _parameters.MeasurementLocations.Select(m => m.Title)) : "")">
           <MudSelect
             @ref="_select"
-            @bind-Text="_selectedText"
+            Text="@UpdateSelectDisplay()"
             T="string"
             Label="@Translate("Measurement locations")"
             SelectedValues="@(_parameters.MeasurementLocations.Select(measurementLocation => measurementLocation.Id))"

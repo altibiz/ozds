@@ -16,7 +16,6 @@ public partial class MeasurementChartControls : OzdsComponentBase
 {
   private readonly MeasurementChartParameters _parameters = new();
   private MudSelect<string> _select = default!;
-  private string _selectedText = string.Empty;
 
   [Parameter]
   public List<IMeter> Meters { get; set; } = new();
@@ -112,11 +111,6 @@ public partial class MeasurementChartControls : OzdsComponentBase
 
   protected override async Task OnParametersSetAsync()
   {
-    if (_select != null)
-    {
-      UpdateSelectDisplay();
-    }
-
     await Fetch();
   }
 
@@ -132,7 +126,6 @@ public partial class MeasurementChartControls : OzdsComponentBase
     _parameters.FromDate = now.Subtract(
       _parameters.Resolution.ToTimeSpan(
         _parameters.Multiplier, now));
-    UpdateSelectDisplay();
     await Fetch();
   }
 
@@ -336,10 +329,10 @@ public partial class MeasurementChartControls : OzdsComponentBase
     InvokeAsync(StateHasChanged);
   }
 
-  private void UpdateSelectDisplay()
+  private string UpdateSelectDisplay()
   {
     var ids = _parameters.MeasurementLocations.Select(x => x.Id).ToList();
-    _selectedText = ids.Count == 1
+    return ids.Count == 1
       ? MeasurementLocations.First(m => m.Id == ids[0]).Title
       : string.Join(", ", ids);
   }
