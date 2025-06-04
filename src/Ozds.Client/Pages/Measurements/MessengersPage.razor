@@ -30,7 +30,7 @@ Allows = [RoleModel.OperatorRepresentative])]
   Label="@Translate("Deleted")"
   @bind-Value="_deleted"/>
 
-<Paging T="IMessenger" Deleted="@_deleted"/>
+<Table T="IMessenger" Deleted="@_deleted"/>
 
 @if (RepresentativeState.Representative.Role
   == RoleModel.OperatorRepresentative)
