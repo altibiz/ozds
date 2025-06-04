@@ -31,7 +31,12 @@ Allows = [RoleModel.OperatorRepresentative])]
   Label="@Translate("Deleted")"
   @bind-Value="_deleted"/>
 
-<Paging T="IMeasurementValidator" Deleted="_deleted"/>
+<Paging T="IMeasurementValidator" Deleted="_deleted">
+  <Found Context="page">
+    <Table Model="@(page.Items)">
+    </Table>
+  </Found>
+</Paging>
 
 @if (RepresentativeState.Representative.Role
   == RoleModel.OperatorRepresentative)
