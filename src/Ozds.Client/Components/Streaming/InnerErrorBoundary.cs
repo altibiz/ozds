@@ -1,12 +1,13 @@
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace Ozds.Client.Components.Streaming;
 
 public class InnerErrorBoundary
-  : Microsoft.AspNetCore.Components.Web.ErrorBoundary
+  : ErrorBoundary
 {
   [Parameter]
-  public ErrorBoundary This { get; set; } = default!;
+  public OzdsErrorBoundary This { get; set; } = default!;
 
   protected override Task OnErrorAsync(Exception exception)
   {

@@ -13,6 +13,7 @@
       : "")
   </MudText>
   <MudTextField
+    Class="mt-3"
     T="string"
     Value="@searchString"
     ValueChanged="@OnPagingSearch"
@@ -61,6 +62,7 @@
   <MudDataGrid
     T="T"
     Filterable="true"
+    Class="mt-3"
     SortMode="@SortMode.None"
     ServerData="@OnDataGridServerData"
     RowsPerPage="@PageCount"
@@ -99,7 +101,3 @@
     </PagerContent>
   </MudDataGrid>
 </MudHidden>
-
-<style>
-  .mud-drop-container{ user-select: text !important; }
-</style>

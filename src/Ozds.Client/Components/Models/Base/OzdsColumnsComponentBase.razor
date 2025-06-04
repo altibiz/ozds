@@ -36,12 +36,22 @@
 
   protected RenderFragment Column(Expression<Func<TModel, decimal?>> next)
   {
+    var nextFunc = next.Compile();
     return Nest(
       @<PropertyColumn
          T="TPrefix"
          TProperty="decimal?"
          Title="@(Translate(Label(next)))"
-         Property="@Wrap(next)"/>);
+         Property="@Wrap(next)">
+        <CellTemplate>
+          <MudText>
+            @if (Get(nextFunc)(context.Item) is decimal d)
+            {
+              @NumericString(d)
+            }
+          </MudText>
+        </CellTemplate>
+      </PropertyColumn>);
   }
 
   protected RenderFragment Column<T>(

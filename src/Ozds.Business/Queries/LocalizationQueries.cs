@@ -67,4 +67,30 @@ public class LocalizationQueries(
     value = localizer.Translate(culture, key);
     return value;
   }
+
+  public string NumericString(decimal? number, int places = 2)
+  {
+    return localizer.NumericString(number, places);
+  }
+
+  public string NumericString(float? number, int places = 2)
+  {
+    return localizer.NumericString(number, places);
+  }
+
+  public string DateString(DateTimeOffset? dateTimeOffset)
+  {
+    return localizer.DateString(dateTimeOffset);
+  }
+
+  public string DateTimeString(DateTimeOffset? dateTimeOffset)
+  {
+    return localizer.DateTimeString(dateTimeOffset);
+  }
+
+  public DateTimeOffset DateTimeApplyOffset(
+    DateTimeOffset dateTimeOffset)
+  {
+    return localizer.DateTimeApplyOffset(dateTimeOffset);
+  }
 }

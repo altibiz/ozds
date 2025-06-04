@@ -49,7 +49,14 @@ public static class IServiceCollectionExtensions
       .AddRazorComponents()
       .AddInteractiveServerComponents();
 
-    services.AddServerSideBlazor();
+    services.AddServerSideBlazor()
+      .AddCircuitOptions(
+        options =>
+        {
+#if DEBUG
+          options.DetailedErrors = true;
+#endif
+        });
 
     services.AddCascadingAuthenticationState();
 

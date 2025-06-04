@@ -15,6 +15,11 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - justfile recipe for setting up CI for the new `Ozds.Client.Test` project
 - network user overview
 - Column implementations for a bunch of models and interfaces
+- tool tip logic for measurement selection dropdown
+- text display logic for measurement selection dropdown
+- all formatting methods for numbers and dates from `Ozds.Client` and
+  `Ozds.Document` to `Ozds.Assets`
+- MudBlazor overrides in ThemeStateProvider
 
 ### Changed
 
@@ -28,6 +33,9 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - all paging to work with tables
 - queries for filtering deleted content so you can see only deleted or only not
   deleted content
+- all selection elements work on mobile with new SelectField component
+- turned on detailed errors for blazor while debugging
+- use proper navigation icons
 
 ## [1.3.0] - 2025-04-23
 
