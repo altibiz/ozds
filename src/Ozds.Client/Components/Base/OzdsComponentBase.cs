@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Routing.Template;
 using Microsoft.JSInterop;
 using Ozds.Business.Queries;
-using Ozds.Business.Time;
 using Ozds.Client.Extensions;
 using Ozds.Client.State;
 
@@ -97,14 +96,7 @@ public abstract class OzdsComponentBase : DisposableComponentBase
 
     var localizationQueries = ScopedServices
       .GetRequiredService<LocalizationQueries>();
-    var cultureInfo = localizationQueries.CroatianCulture;
-
-    var numberFormatInfo = (NumberFormatInfo)cultureInfo.NumberFormat.Clone();
-    numberFormatInfo.NumberGroupSeparator = ".";
-    numberFormatInfo.NumberDecimalDigits = places;
-
-    var roundedNumber = Math.Round(number.Value, places);
-    return roundedNumber.ToString("N", numberFormatInfo);
+    return localizationQueries.NumericString(number, places);
   }
 
   protected string NumericString(float? number, int places = 2)
@@ -116,14 +108,7 @@ public abstract class OzdsComponentBase : DisposableComponentBase
 
     var localizationQueries = ScopedServices
       .GetRequiredService<LocalizationQueries>();
-    var cultureInfo = localizationQueries.CroatianCulture;
-
-    var numberFormatInfo = (NumberFormatInfo)cultureInfo.NumberFormat.Clone();
-    numberFormatInfo.NumberGroupSeparator = ".";
-    numberFormatInfo.NumberDecimalDigits = places;
-
-    var roundedNumber = Math.Round(number.Value, places);
-    return roundedNumber.ToString("N", numberFormatInfo);
+    return localizationQueries.NumericString(number, places);
   }
 
   protected string DateString(DateTimeOffset? dateTimeOffset)
@@ -135,13 +120,7 @@ public abstract class OzdsComponentBase : DisposableComponentBase
 
     var localizationQueries = ScopedServices
       .GetRequiredService<LocalizationQueries>();
-    var cultureInfo = localizationQueries.CroatianCulture;
-
-    var withTimezone = dateTimeOffset
-      .Value
-      .ToOffset(DateTimeOffsetExtensions.GetOffset(dateTimeOffset.Value));
-
-    return withTimezone.ToString("dd. MM. yyyy.", cultureInfo);
+    return localizationQueries.DateString(dateTimeOffset);
   }
 
   protected string DateTimeString(DateTimeOffset? dateTimeOffset)
@@ -153,21 +132,15 @@ public abstract class OzdsComponentBase : DisposableComponentBase
 
     var localizationQueries = ScopedServices
       .GetRequiredService<LocalizationQueries>();
-    var cultureInfo = localizationQueries.CroatianCulture;
-
-    var withTimezone = dateTimeOffset
-      .Value
-      .ToOffset(DateTimeOffsetExtensions.GetOffset(dateTimeOffset.Value));
-
-    return withTimezone.ToString("dd. MM. yyyy. HH:mm", cultureInfo);
+    return localizationQueries.DateTimeString(dateTimeOffset);
   }
 
-  protected static DateTimeOffset DateTimeApplyOffset(
+  protected DateTimeOffset DateTimeApplyOffset(
     DateTimeOffset dateTimeOffset)
   {
-    var a = dateTimeOffset.UtcDateTime.Add(
-      DateTimeOffsetExtensions.GetOffset(dateTimeOffset));
-    return a;
+    var localizationQueries = ScopedServices
+      .GetRequiredService<LocalizationQueries>();
+    return localizationQueries.DateTimeApplyOffset(dateTimeOffset);
   }
 
   protected string Translate(string notLocalized)

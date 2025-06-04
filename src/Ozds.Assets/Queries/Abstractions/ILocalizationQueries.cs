@@ -18,4 +18,19 @@ public interface ILocalizationQueries : IQueries
   public string ShortKey(Type type, string member);
 
   public string ShortKey(MemberExpression member);
+
+  public string NumericString(decimal? number, int places = 2);
+
+  public string NumericString(float? number, int places = 2);
+
+  public string DateString(DateTimeOffset? dateTimeOffset);
+
+  public string DateTimeString(DateTimeOffset? dateTimeOffset);
+
+  public DateTimeOffset DateTimeApplyOffset(
+    DateTimeOffset dateTimeOffset);
+
+  public string DocumentDate(DateTimeOffset date);
+
+  public string DocumentNumber(decimal number, int precision = 2);
 }
