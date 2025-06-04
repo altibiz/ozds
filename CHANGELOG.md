@@ -16,6 +16,8 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - network user overview
 - tool tip logic for measurement selection dropdown
 - text display logic for measurement selection dropdown
+- all formatting methods for numbers and dates from `Ozds.Client` and
+  `Ozds.Document` to `Ozds.Assets`
 
 ### Changed
 
