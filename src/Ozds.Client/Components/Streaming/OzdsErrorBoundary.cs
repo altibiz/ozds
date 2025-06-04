@@ -6,7 +6,7 @@ using ErrorEventArgs = Ozds.Business.Observers.EventArgs.ErrorEventArgs;
 namespace Ozds.Client.Components.Streaming;
 
 // NOTE: rendered at root so keep dependencies minimal
-public partial class ErrorBoundary : DisposableComponentBase
+public partial class OzdsErrorBoundary : DisposableComponentBase
 {
   private InnerErrorBoundary? inner;
 
