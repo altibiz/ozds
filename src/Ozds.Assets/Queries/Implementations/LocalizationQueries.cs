@@ -174,4 +174,19 @@ public class LocalizationQueries(
       type.GetGenericArguments().Select(x => x.Name));
     return $"{baseName}<{genericArgs}>";
   }
+
+  public string DocumentDate(DateTimeOffset date)
+  {
+    return date.ToString("dd.MM.yyyy.");
+  }
+
+  public string DocumentNumber(decimal number, int precision = 2)
+  {
+    var cultureInfo = CroatianCulture;
+    var nfi = (NumberFormatInfo)cultureInfo.NumberFormat.Clone();
+
+    nfi.NumberGroupSeparator = ".";
+    var format = "#,##0." + new string('#', precision);
+    return number.ToString(format, nfi);
+  }
 }
