@@ -27,7 +27,7 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - pagination logic
 - list/card table view on mobile
 - all selection elements work on mobile with new SelectField component
-- turned on detailed errors for blazor while debuging
+- turned on detailed errors for blazor while debugging
 
 ## [1.3.0] - 2025-04-23
 
