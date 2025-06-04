@@ -1,0 +1,227 @@
+using Altibiz.DependencyInjection.Extensions;
+using MassTransit;
+using Microsoft.Extensions.Options;
+using Ozds.Fake.Arguments;
+using Ozds.Fake.Client;
+using Ozds.Fake.Cloners;
+using Ozds.Fake.Cloners.Abstractions;
+using Ozds.Fake.Conversion;
+using Ozds.Fake.Conversion.Abstractions;
+using Ozds.Fake.Correction;
+using Ozds.Fake.Correction.Abstractions;
+using Ozds.Fake.Generators;
+using Ozds.Fake.Generators.Abstractions;
+using Ozds.Fake.Loaders;
+using Ozds.Fake.Loaders.Abstractions;
+using Ozds.Fake.Options;
+using Ozds.Fake.Packing;
+using Ozds.Fake.Packing.Abstractions;
+using Ozds.Fake.Services;
+using Ozds.Fake.Workers.Abstractions;
+using Ozds.Messaging.Context;
+using Ozds.Messaging.Options;
+
+// TODO: remove dependency on Ozds.Messaging here
+
+namespace Ozds.Fake.Extensions;
+
+public static class HostExtensions
+{
+  public static IHostApplicationBuilder AddOzdsFake(
+    this IHostApplicationBuilder builder,
+    object arguments
+  )
+  {
+    builder.Services
+      .AddSingleton(arguments.GetType(), arguments);
+
+    builder
+      .AddOptions()
+      .AddRecords()
+      .AddLoaders()
+      .AddGenerators()
+      .AddCloners()
+      .AddPackers();
+
+    if (arguments is OzdsFakePushArguments push)
+    {
+      builder.AddClient(push.Timeout_s);
+      builder.AddWorkers();
+      builder.Services.AddHostedService<PushService>();
+    }
+
+    if (arguments is OzdsFakeSeedArguments seed)
+    {
+      builder.AddClient(seed.Timeout_s);
+      builder.AddWorkers();
+      builder.Services.AddHostedService<SeedService>();
+    }
+
+    if (arguments is OzdsFakeInsertArguments insert)
+    {
+      builder.AddClient(insert.Timeout_s);
+      builder.AddWorkers();
+      builder.Services.AddHostedService<InsertService>();
+    }
+
+    if (arguments is OzdsFakeAltibizArguments)
+    {
+      builder.AddMessaging();
+    }
+
+    return builder;
+  }
+
+  private static IHostApplicationBuilder AddOptions(
+    this IHostApplicationBuilder builder
+  )
+  {
+    builder.Services.ConfigureOptions<ConfigureOzdsFakeOptions>();
+    var relativeServerSettings = builder.Configuration
+      .GetSection("Ozds:Fake:ServerSettings")
+      .Get<string>();
+    if (relativeServerSettings is not null)
+    {
+      var serverSettings = Path.Combine(
+        builder.Environment.ContentRootPath,
+        relativeServerSettings);
+      builder.Configuration.AddJsonFile(serverSettings);
+    }
+
+    return builder;
+  }
+
+  private static IHostApplicationBuilder AddGenerators(
+    this IHostApplicationBuilder builder
+  )
+  {
+    builder.Services.AddTransientAssignableTo(
+      typeof(IMeasurementRecordGenerator));
+    builder.Services.AddSingleton(typeof(MeasurementRecordGenerator));
+
+    return builder;
+  }
+
+  private static IHostApplicationBuilder AddCloners(
+    this IHostApplicationBuilder builder
+  )
+  {
+    builder.Services.AddTransientAssignableTo(typeof(IMeasurementCloner));
+    builder.Services.AddSingleton(typeof(MeasurementCloner));
+    return builder;
+  }
+
+  private static IHostApplicationBuilder AddLoaders(
+    this IHostApplicationBuilder builder
+  )
+  {
+    builder.Services.AddTransientAssignableTo(typeof(ILoader));
+    builder.Services.AddSingleton(typeof(ResourceCache));
+    return builder;
+  }
+
+  private static IHostApplicationBuilder AddRecords(
+    this IHostApplicationBuilder builder
+  )
+  {
+    builder.Services.AddTransientAssignableTo(
+      typeof(IMeasurementRecordPushRequestConverter));
+    builder.Services.AddTransientAssignableTo(
+      typeof(IMeasurementRecordModelConverter));
+    builder.Services.AddSingleton(
+      typeof(MeasurementRecordConverter));
+    builder.Services.AddTransientAssignableTo(
+      typeof(IRecordCorrector));
+    builder.Services.AddSingleton(typeof(RecordCorrector));
+    return builder;
+  }
+
+  private static IHostApplicationBuilder AddPackers(
+    this IHostApplicationBuilder builder
+  )
+  {
+    builder.Services.AddTransientAssignableTo(
+      typeof(IMessengerPushRequestPacker));
+    builder.Services.AddSingleton(typeof(MessengerPushRequestPacker));
+    return builder;
+  }
+
+  private static IHostApplicationBuilder AddWorkers(
+    this IHostApplicationBuilder builder
+  )
+  {
+    builder.Services.AddScopedAssignableTo(typeof(IWorker));
+    return builder;
+  }
+
+  private static IHostApplicationBuilder AddClient(
+    this IHostApplicationBuilder builder,
+    int timeout_s
+  )
+  {
+    builder.Services.AddHttpClient(
+      PushClient.Name,
+      (services, options) =>
+      {
+        var clientOptions = services
+          .GetRequiredService<IOptions<OzdsFakeOptions>>().Value.Client;
+
+        options.Timeout = TimeSpan.FromSeconds(timeout_s);
+        options.BaseAddress = new Uri(clientOptions.BaseUrl);
+        options.DefaultRequestHeaders.Add(
+          "X-Api-Key", clientOptions.ApiKey);
+      });
+    builder.Services.AddScoped(typeof(PushClient));
+    builder.Services.AddScoped(typeof(InsertClient));
+    return builder;
+  }
+
+  private static IHostApplicationBuilder AddMessaging(
+    this IHostApplicationBuilder builder
+  )
+  {
+    builder.Services.AddMassTransit(
+      x =>
+      {
+        var fakeAssembly = typeof(HostExtensions).Assembly;
+        var messagingAssembly = typeof(MessagingDbContext).Assembly;
+
+        x.SetKebabCaseEndpointNameFormatter();
+
+        x.AddConsumers(fakeAssembly);
+        x.AddSagaStateMachines(fakeAssembly);
+        x.AddActivities(fakeAssembly);
+
+        x.AddSagas(messagingAssembly);
+        x.SetInMemorySagaRepositoryProvider();
+
+        var connectionString = ConfigureOzdsFakeOptions
+          .ParseConnectionString(builder.Configuration);
+        if (connectionString is OzdsMessagingParsedRabbitMqConnectionString
+          rabbitMqConnectionString)
+        {
+          x.UsingRabbitMq(
+            (context, cfg) =>
+            {
+              cfg.Host(
+                rabbitMqConnectionString.Host,
+                (ushort)rabbitMqConnectionString.Port,
+                rabbitMqConnectionString.VirtualHost,
+                cfg =>
+                {
+                  cfg.Username(rabbitMqConnectionString.User);
+                  cfg.Password(rabbitMqConnectionString.Password);
+                });
+              cfg.ConfigureEndpoints(context);
+            });
+        }
+        else
+        {
+          throw new InvalidOperationException(
+            "Only RabbitMQ is supported");
+        }
+      });
+
+    return builder;
+  }
+}

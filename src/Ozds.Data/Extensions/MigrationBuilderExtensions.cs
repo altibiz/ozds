@@ -1,6 +1,8 @@
 using System.Text;
 using Microsoft.EntityFrameworkCore.Migrations;
 
+// NOTE: this is part of migration code so DO NOT MODIFY
+
 namespace Ozds.Data.Extensions;
 
 public static class MigrationBuilderExtensions

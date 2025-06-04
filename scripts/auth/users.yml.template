@@ -1,0 +1,25 @@
+users:
+  operator:
+    disabled: false
+    displayname: Operator
+    # Password is 'Operator123!'
+    password: "$argon2id$v=19$m=65536,t=3,p=4$rZr9nIy3m5nEFBzdRsTUTQ$V9IIXxxXWl/RwcWwZGf1tFVAkFZPmkLEl+WexgHgxFk"
+    email: operator@localhost:1025
+    groups:
+      - operators
+  location:
+    disabled: false
+    displayname: Location
+    # Password is 'Location123!'
+    password: "$argon2id$v=19$m=65536,t=3,p=4$NFf9UWod0MYG47wCX3R89w$xlF7GjK9fcP5JVJDIxSrdY7Syu/0enceGvQlPoqc52k"
+    email: location@localhost:1025
+    groups:
+      - locations
+  network-user:
+    disabled: false
+    displayname: "Network user"
+    # Password is 'NetworkUser123!'
+    password: "$argon2id$v=19$m=65536,t=3,p=4$uznhKxms7cQb6YAjkipMmA$Q+t59nNilGcVhEF4jsvXTDzkIcYnxAwaYiSYUdzygIM"
+    email: network.user@localhost:1025
+    groups:
+      - network-users

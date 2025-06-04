@@ -1,3 +1,4 @@
+using System.Globalization;
 using Microsoft.EntityFrameworkCore;
 using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Extensions;
@@ -9,7 +10,9 @@ public abstract class FinancialEntity : IdentifiableEntity, IFinancialEntity
   public virtual RepresentativeEntity? IssuedBy { get; set; }
   public string? RepresentativeId { get; set; }
 
-  public DateTimeOffset IssuedOn { get; set; } = DateTimeOffset.UtcNow;
+  public DateTimeOffset IssuedOn { get; set; } =
+    // NOTE: just so something is there
+    DateTimeOffset.Parse("2000-01-01T00:00:00Z", CultureInfo.InvariantCulture);
 
   public string? IssuedById { get; set; }
 

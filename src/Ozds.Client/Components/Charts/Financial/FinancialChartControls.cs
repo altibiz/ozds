@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Components;
 using Ozds.Business.Models.Abstractions;
-using Ozds.Business.Models.Enums;
 using Ozds.Business.Queries;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Client.Components.Base;
@@ -10,6 +9,12 @@ namespace Ozds.Client.Components.Charts;
 public partial class FinancialChartControls : OzdsComponentBase
 {
   private readonly FinancialChartParameters _parameters = new();
+
+  [Inject]
+  private ClockQueries ClockQueries { get; set; } = default!;
+
+  [Inject]
+  private TimeQueries TimeQueries { get; set; } = default!;
 
   [Parameter]
   public List<IMeasurementLocation> MeasurementLocations { get; set; } =
@@ -25,15 +30,26 @@ public partial class FinancialChartControls : OzdsComponentBase
   public RenderFragment<FinancialChartParameters> ChildContent { get; set; } =
     default!;
 
+  protected override void OnInitialized()
+  {
+    var now = ClockQueries.Now();
+    var fromDate = now.Subtract(
+      TimeQueries
+        .ResolutionTimeSpan(
+          _parameters.Resolution, now, _parameters.Multiplier));
+    _parameters.FromDate = fromDate;
+  }
+
   protected override async Task OnParametersSetAsync()
   {
     var queries = ScopedServices.GetRequiredService<FinancialQueries>();
 
     var fromDate = _parameters.FromDate;
-    var toDate = fromDate
-      .Add(
-        _parameters.Resolution
-          .ToTimeSpan(_parameters.Multiplier, fromDate));
+    var toDate = fromDate.Add(
+      TimeQueries.ResolutionTimeSpan(
+        _parameters.Resolution,
+        fromDate,
+        _parameters.Multiplier));
 
     var fromMeters = await queries.ReadByMeterIds(
       Meters.Select(meter => meter.Id),

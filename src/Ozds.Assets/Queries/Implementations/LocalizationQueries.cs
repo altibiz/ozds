@@ -2,12 +2,13 @@ using System.Globalization;
 using System.Linq.Expressions;
 using System.Text;
 using Ozds.Assets.Queries.Abstractions;
-using Ozds.Assets.Time;
+using Ozds.Time.Queries.Abstractions;
 
 namespace Ozds.Assets.Queries.Implementations;
 
 public class LocalizationQueries(
-  IAssetQueries assetQueries
+  IAssetQueries assetQueries,
+  ITimeQueries timeQueries
 ) : ILocalizationQueries
 {
   public CultureInfo CroatianCulture
@@ -103,7 +104,7 @@ public class LocalizationQueries(
 
     var withTimezone = dateTimeOffset
       .Value
-      .ToOffset(DateTimeOffsetTooling.GetOffset(dateTimeOffset.Value));
+      .ToOffset(timeQueries.GetOffset(dateTimeOffset.Value));
 
     return withTimezone.ToString("dd. MM. yyyy.", cultureInfo);
   }
@@ -119,7 +120,7 @@ public class LocalizationQueries(
 
     var withTimezone = dateTimeOffset
       .Value
-      .ToOffset(DateTimeOffsetTooling.GetOffset(dateTimeOffset.Value));
+      .ToOffset(timeQueries.GetOffset(dateTimeOffset.Value));
 
     return withTimezone.ToString("dd. MM. yyyy. HH:mm", cultureInfo);
   }
@@ -128,7 +129,7 @@ public class LocalizationQueries(
     DateTimeOffset dateTimeOffset)
   {
     var a = dateTimeOffset.UtcDateTime.Add(
-      DateTimeOffsetTooling.GetOffset(dateTimeOffset));
+      timeQueries.GetOffset(dateTimeOffset));
     return a;
   }
 

@@ -4,12 +4,12 @@ namespace Ozds.Business.Test.Math.TariffMeasureTest;
 
 public class TariffConvertPrimitiveToFloatTest
 {
-  public static readonly
-    TheoryData<TariffMeasure<decimal>, TariffMeasure<float>>
-    TariffMeasuresConvertToFloat = new()
+  public static IEnumerable<(TariffMeasure<decimal>, TariffMeasure<float>)>
+    TariffMeasuresConvertToFloat()
+  {
+    return new List<(TariffMeasure<decimal>, TariffMeasure<float>)>
     {
-      {
-        new UnaryTariffMeasure<decimal>(
+      (new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
             new SinglePhasicMeasureSum<decimal>(5),
             new SinglePhasicMeasureSum<decimal>(3))),
@@ -17,10 +17,9 @@ public class TariffConvertPrimitiveToFloatTest
           new ImportExportDuplexMeasure<float>(
             new SinglePhasicMeasureSum<float>(5f),
             new SinglePhasicMeasureSum<float>(3f)))
-      },
+      ),
 
-      {
-        new BinaryTariffMeasure<decimal>(
+      (new BinaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
             new TriPhasicMeasure<decimal>(1, 2, 3),
             new TriPhasicMeasure<decimal>(4, 5, 6)),
@@ -34,19 +33,20 @@ public class TariffConvertPrimitiveToFloatTest
           new ImportExportDuplexMeasure<float>(
             new TriPhasicMeasure<float>(7f, 8f, 9f),
             new TriPhasicMeasure<float>(10f, 11f, 12f)))
-      },
+      ),
 
-      { new NullTariffMeasure<decimal>(), new NullTariffMeasure<float>() }
+      (new NullTariffMeasure<decimal>(), new NullTariffMeasure<float>())
     };
+  }
 
-  [Theory]
-  [MemberData(nameof(TariffMeasuresConvertToFloat))]
+  [Test]
+  [MethodDataSource(nameof(TariffMeasuresConvertToFloat))]
   public void ConvertPrimitiveToFloat_ReturnsExpectedResult(
     TariffMeasure<decimal> measure,
     TariffMeasure<float> expected)
   {
     var result = measure.ConvertPrimitiveTo<float>();
 
-    Assert.Equal(expected, result);
+    result.Should().Be(expected);
   }
 }

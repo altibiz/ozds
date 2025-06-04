@@ -1,52 +1,76 @@
 using System.Net;
 using System.Text.RegularExpressions;
 using Microsoft.Playwright;
+using Ozds.Client.Test.Base;
 
 namespace Ozds.Client.Test.Pages;
 
-public partial class LoginPageTest(
-  IPage page,
-  LoginNavigator loginNavigator
-)
+public partial class LoginPageTest : OzdsClientTestBase
 {
-  public static readonly
-    TheoryData<Login>
-    Logins = new(
-      Login.Operator,
-      Login.Location,
-      Login.NetworkUser);
-
-  [Fact]
-  public async Task LoginPage_Loads()
+  public static IEnumerable<TestUser> Users()
   {
-    var response = await page.GotoAsync("/login");
+    return new List<TestUser>
+    {
+      TestUser.Operator,
+      TestUser.Location,
+      TestUser.NetworkUser
+    };
+  }
+
+  [Test]
+  public async Task IndexPage_Loads()
+  {
+    var response = await Page.GotoAsync("/");
 
     response.Should().NotBeNull();
     response!.Status.Should().Be((int)HttpStatusCode.OK);
   }
 
-  [Theory]
-  [MemberData(nameof(Logins))]
-  public async Task LoginPage_CanLoginAs(Login login)
+  [Test]
+  [MethodDataSource(nameof(Users))]
+  public async Task LoginPage_CanLoginAs(
+    TestUser user,
+    CancellationToken cancellationToken
+  )
   {
-    await page.GotoAsync("/login");
-    await loginNavigator.LoginOnLoginPage(login);
+    await User.Create(user, cancellationToken);
 
-    var pageAssertions = Assertions.Expect(page);
+    await Page.GotoAsync("/");
+    await User.LoginOnLoginPage(user, cancellationToken);
+
+    var pageAssertions = Assertions.Expect(Page);
     await pageAssertions.ToHaveURLAsync(IndexRegex());
   }
 
-  [Theory]
-  [MemberData(nameof(Logins))]
-  public async Task LoginPage_CanPickLocation(Login login)
+  [Test]
+  [MethodDataSource(nameof(Users))]
+  public async Task LoginPage_CanPickLocation(
+    TestUser user,
+    CancellationToken cancellationToken
+  )
   {
-    await page.GotoAsync("/login");
-    await loginNavigator.LoginOnLoginPage(login);
-    await loginNavigator.PickFirstLocationOnLocationPicker();
+    // NOTE: otherwise it just goes to the first location
+    var locationACatalogueSet = await Location
+      .CreateWithCatalogues(cancellationToken);
+    var locationBCatalogueSet = await Location
+      .CreateWithCatalogues(cancellationToken);
 
-    var pageAssertions = Assertions.Expect(page);
+    await User.Create(
+      user,
+      cancellationToken,
+      [
+        locationACatalogueSet.Location,
+        locationBCatalogueSet.Location
+      ]
+    );
+
+    await Page.GotoAsync("/");
+    await User.LoginOnLoginPage(user, cancellationToken);
+    await Location.PickFirstLocationOnLocationPicker(cancellationToken);
+
+    var pageAssertions = Assertions.Expect(Page);
     await pageAssertions.ToHaveURLAsync(IndexRegex());
-    var logoLocator = page.Locator("img[src=\"/logo.svg\"]");
+    var logoLocator = Page.Locator("img[src=\"/logo.svg\"]");
     var logoAssertions = Assertions.Expect(logoLocator);
     await logoAssertions.ToBeVisibleAsync();
   }

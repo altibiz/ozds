@@ -1,3 +1,4 @@
+using System.Globalization;
 using Microsoft.EntityFrameworkCore;
 using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Extensions;
@@ -7,7 +8,10 @@ namespace Ozds.Data.Entities.Base;
 public abstract class AuditableEntity : IdentifiableEntity, IAuditableEntity
 {
   public virtual RepresentativeEntity? DeletedBy { get; set; }
-  public DateTimeOffset CreatedOn { get; set; } = DateTimeOffset.UtcNow;
+
+  public DateTimeOffset CreatedOn { get; set; } =
+    // NOTE: just so something is there
+    DateTimeOffset.Parse("2000-01-01T00:00:00Z", CultureInfo.InvariantCulture);
 
   public string? CreatedById { get; set; }
 

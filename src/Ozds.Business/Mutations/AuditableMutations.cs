@@ -26,7 +26,7 @@ public class AuditableMutations(
       .ValidateAsync(model, cancellationToken);
     if (validationResults.Count > 0)
     {
-      var result = string.Join("\n", validationResults);
+      var result = string.Join(Environment.NewLine, validationResults);
       throw new InvalidOperationException(
         $"Model {model.GetType()} {model.Id} failed validation {result}"
       );
@@ -52,7 +52,7 @@ public class AuditableMutations(
       .ValidateAsync(model, cancellationToken);
     if (validationResults.Count > 0)
     {
-      var result = string.Join("\n", validationResults);
+      var result = string.Join(Environment.NewLine, validationResults);
       throw new InvalidOperationException(
         $"Model {model.GetType()} {model.Id} failed validation {result}"
       );
@@ -76,7 +76,7 @@ public class AuditableMutations(
       .ValidateAsync(model, cancellationToken);
     if (validationResults.Count > 0)
     {
-      var result = string.Join("\n", validationResults);
+      var result = string.Join(Environment.NewLine, validationResults);
       throw new InvalidOperationException(
         $"Model {model.GetType()} {model.Id} failed validation {result}"
       );
@@ -100,7 +100,7 @@ public class AuditableMutations(
       .ValidateAsync(model, cancellationToken);
     if (validationResults.Count > 0)
     {
-      var result = string.Join("\n", validationResults);
+      var result = string.Join(Environment.NewLine, validationResults);
       throw new InvalidOperationException(
         $"Model {model.GetType()} {model.Id} failed validation {result}"
       );

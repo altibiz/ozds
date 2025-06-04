@@ -4,32 +4,36 @@ namespace Ozds.Business.Test.Math.PhasicMeasureTest;
 
 public class PhaseSumTest
 {
-  public static readonly TheoryData<PhasicMeasure<decimal>>
-    PhasicMeasuresSumSix = new()
+  public static IEnumerable<PhasicMeasure<decimal>> PhasicMeasuresSumSix()
+  {
+    return new List<PhasicMeasure<decimal>>
     {
       new SinglePhasicMeasureSum<decimal>(6),
       new TriPhasicMeasure<decimal>(1, 2, 3)
     };
+  }
 
-  public static readonly TheoryData<PhasicMeasure<decimal>>
-    PhasicMeasuresSumZero = new()
+  public static IEnumerable<PhasicMeasure<decimal>> PhasicMeasuresSumZero()
+  {
+    return new List<PhasicMeasure<decimal>>
     {
       new SinglePhasicMeasureSum<decimal>(0),
       new TriPhasicMeasure<decimal>(0, 0, 0),
       new NullPhasicMeasure<decimal>()
     };
-
-  [Theory]
-  [MemberData(nameof(PhasicMeasuresSumSix))]
-  public void ReturnsSumSix(PhasicMeasure<decimal> x)
-  {
-    Assert.Equal(6, x.PhaseSum());
   }
 
-  [Theory]
-  [MemberData(nameof(PhasicMeasuresSumZero))]
+  [Test]
+  [MethodDataSource(nameof(PhasicMeasuresSumSix))]
+  public void ReturnsSumSix(PhasicMeasure<decimal> x)
+  {
+    x.PhaseSum().Should().Be(6);
+  }
+
+  [Test]
+  [MethodDataSource(nameof(PhasicMeasuresSumZero))]
   public void SumZeroReturnsZero(PhasicMeasure<decimal> x)
   {
-    Assert.Equal(0, x.PhaseSum());
+    x.PhaseSum().Should().Be(0);
   }
 }

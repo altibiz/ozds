@@ -12,7 +12,7 @@ public enum LevelModel
   Critical
 }
 
-public static class LeveLModelExtensions
+public static class LevelModelExtensions
 {
   public static LevelModel ToModel(this LevelEntity levelEntity)
   {

@@ -1,10 +1,14 @@
 using Ozds.Business.Activation.Base;
 using Ozds.Business.Models.Base;
-using Ozds.Business.Time;
+using Ozds.Business.Queries;
 
 namespace Ozds.Business.Activation.Implementations.Finances;
 
-public class CalculationModelActivator(IServiceProvider serviceProvider)
+public class CalculationModelActivator(
+  IServiceProvider serviceProvider,
+  ClockQueries clockQueries,
+  TimeQueries timeQueries
+)
   : InheritingModelActivator<CalculationModel, IdentifiableModel>(
     serviceProvider
   )
@@ -13,9 +17,9 @@ public class CalculationModelActivator(IServiceProvider serviceProvider)
   {
     base.Initialize(model);
 
-    var now = DateTimeOffset.UtcNow;
-    var startOfLastMonth = now.GetStartOfLastMonth();
-    var startOfThisMonth = now.GetStartOfMonth();
+    var now = clockQueries.Timestamp();
+    var startOfLastMonth = timeQueries.GetStartOfLastMonth(now);
+    var startOfThisMonth = timeQueries.GetStartOfMonth(now);
 
     model.Total_EUR = 0;
     model.IssuedOn = now;

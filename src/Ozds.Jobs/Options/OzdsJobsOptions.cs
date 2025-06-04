@@ -5,6 +5,8 @@ namespace Ozds.Jobs.Options;
 public class OzdsJobsOptions
 {
   public string ConnectionString { get; set; } = default!;
+
+  public bool MigrateOnStartup { get; set; } = false;
 }
 
 public class ConfigureOzdsJobsOptions(

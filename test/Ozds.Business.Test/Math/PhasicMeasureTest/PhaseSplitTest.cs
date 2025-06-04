@@ -4,8 +4,9 @@ namespace Ozds.Business.Test.Math.PhasicMeasureTest;
 
 public class PhaseSplitTest
 {
-  public static readonly TheoryData<PhasicMeasure<decimal>>
-    PhasicMeasuresSplitSix = new()
+  public static IEnumerable<PhasicMeasure<decimal>> PhasicMeasuresSplitSix()
+  {
+    return new List<PhasicMeasure<decimal>>
     {
       new SinglePhasicMeasureSum<decimal>(18),
       new CompositePhasicMeasure<decimal>(
@@ -20,9 +21,11 @@ public class PhaseSplitTest
       ]),
       new TriPhasicMeasure<decimal>(6, 6, 6)
     };
+  }
 
-  public static readonly TheoryData<PhasicMeasure<decimal>>
-    PhasicMeasuresSplitZero = new()
+  public static IEnumerable<PhasicMeasure<decimal>> PhasicMeasuresSplitZero()
+  {
+    return new List<PhasicMeasure<decimal>>
     {
       new SinglePhasicMeasureSum<decimal>(0),
       new CompositePhasicMeasure<decimal>(
@@ -33,18 +36,21 @@ public class PhaseSplitTest
       new TriPhasicMeasure<decimal>(0, 0, 0),
       new NullPhasicMeasure<decimal>()
     };
-
-  [Theory]
-  [MemberData(nameof(PhasicMeasuresSplitSix))]
-  public void ReturnsSplitSix(PhasicMeasure<decimal> x)
-  {
-    Assert.Equal(new TriPhasicMeasure<decimal>(6, 6, 6), x.PhaseSplit());
   }
 
-  [Theory]
-  [MemberData(nameof(PhasicMeasuresSplitZero))]
+  [Test]
+  [MethodDataSource(nameof(PhasicMeasuresSplitSix))]
+  public void ReturnsSplitSix(PhasicMeasure<decimal> x)
+  {
+    x.PhaseSplit().Should()
+      .BeEquivalentTo(new TriPhasicMeasure<decimal>(6, 6, 6));
+  }
+
+  [Test]
+  [MethodDataSource(nameof(PhasicMeasuresSplitZero))]
   public void ReturnsSplitZero(PhasicMeasure<decimal> x)
   {
-    Assert.Equal(new TriPhasicMeasure<decimal>(0, 0, 0), x.PhaseSplit());
+    x.PhaseSplit().Should()
+      .BeEquivalentTo(new TriPhasicMeasure<decimal>(0, 0, 0));
   }
 }

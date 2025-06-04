@@ -1,7 +1,7 @@
+using System.Globalization;
 using Microsoft.AspNetCore.Components;
 using Ozds.Business.Models;
 using Ozds.Business.Queries;
-using Ozds.Business.Time;
 using Ozds.Client.Components.Models.Base;
 using Ozds.Client.State;
 
@@ -11,13 +11,29 @@ public partial class LocationPage
   : OzdsIdentifiableModelPageComponentBase<LocationModel>
 {
   private DateTime selectedMonth =
-    DateTimeOffset.UtcNow.GetStartOfLastMonth().DateTime;
+    // NOTE: just so something is there
+    DateTimeOffset.Parse(
+      "2000-01-01T00:00:00Z",
+      CultureInfo.InvariantCulture).DateTime;
 
   [Parameter]
   public string? Id { get; set; }
 
   [CascadingParameter]
   private RepresentativeState RepresentativeState { get; set; } = default!;
+
+  [Inject]
+  private ClockQueries ClockQueries { get; set; } = default!;
+
+  [Inject]
+  private TimeQueries TimeQueries { get; set; } = default!;
+
+  protected override void OnInitialized()
+  {
+    var now = ClockQueries.Now();
+
+    selectedMonth = TimeQueries.GetStartOfLastMonth(now).DateTime;
+  }
 
   private async Task<LocationModel?> OnLoadAsync()
   {

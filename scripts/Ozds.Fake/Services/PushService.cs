@@ -1,6 +1,7 @@
+using System.Runtime.CompilerServices;
+using Ozds.Business.Queries;
 using Ozds.Fake.Arguments;
 using Ozds.Fake.Client;
-using Ozds.Fake.Extensions;
 using Ozds.Fake.Identification;
 using Ozds.Fake.Services.Base;
 using Ozds.Fake.Workers;
@@ -9,7 +10,8 @@ namespace Ozds.Fake.Services;
 
 public class PushService(
   IServiceProvider services,
-  OzdsFakePushArguments arguments
+  OzdsFakePushArguments arguments,
+  ClockQueries clock
 ) : AsyncEnumeratedService<PushWorkerItem, PushWorker>(services)
 {
   private readonly List<MeasurementLocationMeterId> ids = new();
@@ -43,8 +45,7 @@ public class PushService(
     CancellationToken cancellationToken
   )
   {
-    return TimeSpan.FromSeconds(arguments.Interval_s)
-      .Future(cancellationToken)
+    return Future(TimeSpan.FromSeconds(arguments.Interval_s), cancellationToken)
       .Select(
         range => new PushWorkerItem(
           range.DateFrom,
@@ -55,4 +56,29 @@ public class PushService(
           arguments.Realtime ? "realtime" : "buffer"
         ));
   }
+
+  private async IAsyncEnumerable<DateTimeOffsetRange> Future(
+    TimeSpan interval,
+    [EnumeratorCancellation] CancellationToken cancellationToken
+  )
+  {
+    var dateTo = clock.Now();
+    while (true)
+    {
+      if (cancellationToken.IsCancellationRequested)
+      {
+        break;
+      }
+
+      await Task.Delay(interval, cancellationToken);
+      var dateFrom = dateTo;
+      dateTo = clock.Now();
+      yield return new DateTimeOffsetRange(dateFrom, dateTo);
+    }
+  }
+
+  private sealed record DateTimeOffsetRange(
+    DateTimeOffset DateFrom,
+    DateTimeOffset DateTo
+  );
 }

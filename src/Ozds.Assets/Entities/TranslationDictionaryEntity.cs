@@ -7,6 +7,8 @@ using System.Xml.Serialization;
 using Ozds.Assets.Extensions;
 using Tomlyn;
 
+// NOTE: \n is ok here because we don't want to confuse git
+
 namespace Ozds.Assets.Entities;
 
 public sealed class TranslationDictionaryEntity
@@ -252,7 +254,7 @@ public sealed class TranslationDictionaryEntity
 
     if (format is Format.Xml)
     {
-      var prettyValue = value.TrimWords().Wrap(80 - 8).Indent(8);
+      var prettyValue = value.TrimWords().Wrap(80 - 8).Indent(8, "\n");
       return $"\n{prettyValue}\n{new string(' ', 6)}";
     }
 

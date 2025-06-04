@@ -130,8 +130,7 @@ public class MeasurementMutations(
     return result;
   }
 
-  // NOTE: internal because used in tests
-  internal async Task<List<IMeasurementEntity>> CreateMeasurements(
+  private async Task<List<IMeasurementEntity>> CreateMeasurements(
     DataDbContext context,
     IEnumerable<IMeasurementEntity> measurements,
     CancellationToken cancellationToken
@@ -271,7 +270,7 @@ public class MeasurementMutations(
           if (ex.SqlState == "21000")
           {
             var offendingAggregates = string.Join(
-              "\n\n",
+              Environment.NewLine + Environment.NewLine,
               grouped
                 .SelectMany(group => group.Measurements)
                 .OfType<IAggregateEntity>()
@@ -293,7 +292,7 @@ public class MeasurementMutations(
                 .Where(x => x.List.Count > 1)
                 .Select(
                   x => string.Join(
-                    "\n",
+                    Environment.NewLine,
                     $"Type: {x.Key.Type.Name}",
                     $"Interval: {x.Key.Interval}",
                     $"Meter ID: {x.Key.MeterId}",
@@ -303,7 +302,8 @@ public class MeasurementMutations(
             logger.LogError(
               "Aggregate update affected a row more than once."
               + " {Count} aggregates affected."
-              + "\nOffending aggregates:\n{OffendingAggregates}",
+              + "\nOffending aggregates:"
+              + "\n{OffendingAggregates}",
               grouped.Sum(x => x.Measurements.Count),
               offendingAggregates
             );
@@ -318,7 +318,8 @@ public class MeasurementMutations(
             // NOTE: not logging exception because it prints way too much
 #pragma warning disable S6667 // Logging in a catch clause should pass the caught exception as a parameter.
             logger.LogDebug(
-              "Retying insert of {Count} measurements because timeout with chunk size {ChunkSize}...",
+              "Retying insert of {Count} measurements"
+              + " because timeout with chunk size {ChunkSize}...",
               grouped.Sum(x => x.Measurements.Count),
               groupChunkSize);
 #pragma warning restore S6667 // Logging in a catch clause should pass the caught exception as a parameter.

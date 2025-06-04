@@ -60,7 +60,7 @@
       <MonthPickerField @bind-Value="@selectedMonth" Label="@Translate("Pick month")"/>
       @{
         var href =
-          "/download/location-energy-card"
+          "/report/location-energy-card"
           + "/" + GetCulture().TwoLetterISOLanguageName
           + "/" + context.Model.Id
           + "/" + selectedMonth.Year

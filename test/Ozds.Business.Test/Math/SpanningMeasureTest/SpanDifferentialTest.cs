@@ -4,12 +4,13 @@ namespace Ozds.Business.Test.Math.SpanningMeasureTest;
 
 public class SpanDifferentialTest
 {
-  public static readonly
-    TheoryData<SpanningMeasure<decimal>, decimal, TariffMeasure<decimal>>
-    SpanningMeasuresDifferential = new()
+  public static
+    IEnumerable<(SpanningMeasure<decimal>, decimal, TariffMeasure<decimal>)>
+    SpanningMeasuresDifferential()
+  {
+    return new List<(SpanningMeasure<decimal>, decimal, TariffMeasure<decimal>)>
     {
-      {
-        new MinMaxSpanningMeasure<decimal>(
+      (new MinMaxSpanningMeasure<decimal>(
           new UnaryTariffMeasure<decimal>(
             new ImportExportDuplexMeasure<decimal>(
               new SinglePhasicMeasureSum<decimal>(5),
@@ -23,10 +24,9 @@ public class SpanDifferentialTest
           new ImportExportDuplexMeasure<decimal>(
             new SinglePhasicMeasureSum<decimal>(2.5m),
             new SinglePhasicMeasureSum<decimal>(1.5m)))
-      },
+      ),
 
-      {
-        new MinMaxSpanningMeasure<decimal>(
+      (new MinMaxSpanningMeasure<decimal>(
           new UnaryTariffMeasure<decimal>(
             new ImportExportDuplexMeasure<decimal>(
               new TriPhasicMeasure<decimal>(1, 2, 3),
@@ -40,15 +40,15 @@ public class SpanDifferentialTest
           new ImportExportDuplexMeasure<decimal>(
             new TriPhasicMeasure<decimal>(2, 2, 2),
             new TriPhasicMeasure<decimal>(2, 2, 2)))
-      },
+      ),
 
-      {
-        new NullSpanningMeasure<decimal>(), 2, new NullTariffMeasure<decimal>()
-      }
+      (new NullSpanningMeasure<decimal>(), 2, new NullTariffMeasure<decimal>()
+      )
     };
+  }
 
-  [Theory]
-  [MemberData(nameof(SpanningMeasuresDifferential))]
+  [Test]
+  [MethodDataSource(nameof(SpanningMeasuresDifferential))]
   public void SpanDifferential_ReturnsExpectedResult(
     SpanningMeasure<decimal> measure,
     decimal y,
@@ -56,6 +56,6 @@ public class SpanDifferentialTest
   {
     var result = measure.SpanDifferential(y);
 
-    Assert.Equal(expected, result);
+    result.Should().Be(expected);
   }
 }

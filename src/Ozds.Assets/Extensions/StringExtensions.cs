@@ -4,21 +4,21 @@ namespace Ozds.Assets.Extensions;
 
 public static class StringExtensions
 {
-  public static string Indent(this string value, int indent)
+  public static string Indent(this string value, int indent, string newline)
   {
     return string.Join(
-      Environment.NewLine,
+      newline,
       value
-        .Split(Environment.NewLine)
+        .Split(newline)
         .Select(line => new string(' ', indent) + line));
   }
 
-  public static string Dedent(this string value, int indent)
+  public static string Dedent(this string value, int indent, string newline)
   {
     return string.Join(
-      Environment.NewLine,
+      newline,
       value
-        .Split(Environment.NewLine)
+        .Split(newline)
         .Select(
           line => line.StartsWith(new string(' ', indent))
             ? line[indent..]
@@ -32,8 +32,7 @@ public static class StringExtensions
     return string.Join(
       " ",
       value
-        .ReplaceLineEndings()
-        .Replace(Environment.NewLine, " ")
+        .ReplaceLineEndings(" ")
         .Split(" ")
         .Select(word => word.Trim())
         .Where(word => word.Length > 0));

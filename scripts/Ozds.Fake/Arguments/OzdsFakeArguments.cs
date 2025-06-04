@@ -29,8 +29,12 @@ public static class OzdsFakeIntervalOptionExtensions
   }
 }
 
+public interface IOzdsFakeArguments
+{
+}
+
 [Verb("push", HelpText = "Push measurements to the API.")]
-public class OzdsFakePushArguments
+public class OzdsFakePushArguments : IOzdsFakeArguments
 {
   [Option('m', "messenger-id", Required = false, HelpText = "Messenger ID.")]
   public string MessengerId { get; set; } = "pidgeon";
@@ -56,7 +60,7 @@ public class OzdsFakePushArguments
 }
 
 [Verb("seed", HelpText = "Seed the database via OZDS with a desired interval.")]
-public class OzdsFakeSeedArguments
+public class OzdsFakeSeedArguments : IOzdsFakeArguments
 {
   [Option('i', "interval", Required = true, HelpText = "Desired interval.")]
   public OzdsFakeIntervalArgument Interval { get; set; } =
@@ -84,7 +88,7 @@ public class OzdsFakeSeedArguments
   "insert",
   HelpText =
     "Seed the database by directly inserting with a desired interval.")]
-public class OzdsFakeInsertArguments
+public class OzdsFakeInsertArguments : IOzdsFakeArguments
 {
   [Option('i', "interval", Required = true, HelpText = "Desired interval.")]
   public OzdsFakeIntervalArgument Interval { get; set; } =
@@ -116,26 +120,13 @@ public class OzdsFakeInsertArguments
 }
 
 [Verb("altibiz", HelpText = "Fake Altibiz ERP web application.")]
-public class OzdsFakeAltibizArguments
+public class OzdsFakeAltibizArguments : IOzdsFakeArguments
 {
-  [Option('o', "host", Required = false, HelpText = "RabbitMQ host.")]
-  public string Host { get; set; } = "localhost";
-
-  [Option(
-    'i', "virtual-host", Required = false,
-    HelpText = "RabbitMQ virtual host.")]
-  public string VirtualHost { get; set; } = "/";
-
-  [Option('u', "username", Required = false, HelpText = "RabbitMQ username.")]
-  public string Username { get; set; } = "ozds";
-
-  [Option('p', "password", Required = false, HelpText = "RabbitMQ password.")]
-  public string Password { get; set; } = "ozds";
 }
 
 public static class OzdsFakeArguments
 {
-  public static object? Parse(string[] args)
+  public static IOzdsFakeArguments? Parse(string[] args)
   {
     try
     {
@@ -167,7 +158,7 @@ public static class OzdsFakeArguments
         }
       }
 
-      return result.Value;
+      return result.Value as IOzdsFakeArguments;
     }
     catch (Exception ex)
     {

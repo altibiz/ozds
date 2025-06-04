@@ -20,14 +20,6 @@ public static class DbContextOptionsBuilderExtensions
         TimescaleAnnotationProvider>();
   }
 
-  public static DbContextOptionsBuilder UseServedMigrationsAssembly(
-    this DbContextOptionsBuilder builder
-  )
-  {
-    return builder
-      .ReplaceService<IMigrationsAssembly, ServedMigrationsAssembly>();
-  }
-
   public static DbContextOptionsBuilder
     AddServedSaveChangesInterceptorsFromAssembly(
       this DbContextOptionsBuilder builder,

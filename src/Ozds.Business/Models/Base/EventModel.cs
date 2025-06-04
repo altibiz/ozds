@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
 using Ozds.Business.Models.Enums;
+using Ozds.Business.Queries;
 using IEvent = Ozds.Business.Models.Abstractions.IEvent;
 
 namespace Ozds.Business.Models.Base;
@@ -27,9 +28,13 @@ public class EventModel : IdentifiableModel, IEvent
       yield break;
     }
 
+    var clock = validationContext.GetRequiredService<ClockQueries>();
+
+    var now = clock.Timestamp();
+
     if (
       validationContext.MemberName is null or nameof(Timestamp) &&
-      Timestamp > DateTimeOffset.UtcNow
+      Timestamp > now
     )
     {
       yield return new ValidationResult(

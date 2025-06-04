@@ -30,7 +30,7 @@ public class NetworkUserQueries(
         context.NetworkUserRepresentatives
           .Where(
             context.ForeignKeyEquals<NetworkUserRepresentativeEntity>(
-              nameof(NetworkUserRepresentativeEntity.RepresentativeId),
+              nameof(NetworkUserRepresentativeEntity.Representative),
               representativeId
             ))
           .Include(x => x.NetworkUser)
@@ -46,7 +46,7 @@ public class NetworkUserQueries(
             context.NetworkUserRepresentatives
               .Where(
                 context.ForeignKeyEquals<NetworkUserRepresentativeEntity>(
-                  nameof(NetworkUserRepresentativeEntity.RepresentativeId),
+                  nameof(NetworkUserRepresentativeEntity.Representative),
                   representativeId
                 ))
               .Include(x => x.NetworkUser)
@@ -93,7 +93,7 @@ public class NetworkUserQueries(
         context.NetworkUserRepresentatives
           .Where(
             context.ForeignKeyEquals<NetworkUserRepresentativeEntity>(
-              nameof(NetworkUserRepresentativeEntity.RepresentativeId),
+              nameof(NetworkUserRepresentativeEntity.Representative),
               representativeId
             ))
           .Include(x => x.NetworkUser)
@@ -109,7 +109,7 @@ public class NetworkUserQueries(
             context.NetworkUserRepresentatives
               .Where(
                 context.ForeignKeyEquals<NetworkUserRepresentativeEntity>(
-                  nameof(NetworkUserRepresentativeEntity.RepresentativeId),
+                  nameof(NetworkUserRepresentativeEntity.Representative),
                   representativeId
                 ))
               .Include(x => x.NetworkUser)

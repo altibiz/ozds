@@ -5,7 +5,7 @@ let src = [$root, "src"] | path join
 let dumps = [$root, "scripts", "migrations"] | path join
 let projects = glob $"($src)/**/Migrations" | path dirname
 let server_csproj = glob $"(glob $"($src)/**/Program.cs" | first | path dirname)/*.csproj" | first
-let dump_types = [ "", "-orchard", "-hypertables" ]
+let dump_types = [ "", "-hypertables" ]
 
 let migration_parser =  ".*Migrations/(?P<timestamp>[0-9]+)_(?P<name>[^\\.]+).cs"
 

@@ -1,10 +1,11 @@
 using Ozds.Business.Aggregation.Base;
 using Ozds.Business.Models;
+using Ozds.Business.Queries;
 
 namespace Ozds.Business.Aggregation.Implementations;
 
-public class SchneideriEM3xxxAggregateUpserter : ConcreteAggregateUpserter<
-  SchneideriEM3xxxAggregateModel>
+public class SchneideriEM3xxxAggregateUpserter(TimeQueries time)
+  : ConcreteAggregateUpserter<SchneideriEM3xxxAggregateModel>
 {
   protected override SchneideriEM3xxxAggregateModel UpsertConcreteModel(
     SchneideriEM3xxxAggregateModel lhs,
@@ -86,7 +87,8 @@ public class SchneideriEM3xxxAggregateUpserter : ConcreteAggregateUpserter<
           lhs.ActiveEnergyL1ImportT0_Wh,
           rhs.ActiveEnergyL1ImportT0_Wh,
           lhs.Timestamp,
-          lhs.Interval
+          lhs.Interval,
+          time
         ),
       ActiveEnergyL2ImportT0_Wh = lhs.ActiveEnergyL2ImportT0_Wh.Upsert(
         lhs.Count,
@@ -101,7 +103,8 @@ public class SchneideriEM3xxxAggregateUpserter : ConcreteAggregateUpserter<
           lhs.ActiveEnergyL2ImportT0_Wh,
           rhs.ActiveEnergyL2ImportT0_Wh,
           lhs.Timestamp,
-          lhs.Interval
+          lhs.Interval,
+          time
         ),
       ActiveEnergyL3ImportT0_Wh = lhs.ActiveEnergyL3ImportT0_Wh.Upsert(
         lhs.Count,
@@ -116,7 +119,8 @@ public class SchneideriEM3xxxAggregateUpserter : ConcreteAggregateUpserter<
           lhs.ActiveEnergyL3ImportT0_Wh,
           rhs.ActiveEnergyL3ImportT0_Wh,
           lhs.Timestamp,
-          lhs.Interval
+          lhs.Interval,
+          time
         ),
       ActiveEnergyTotalImportT0_Wh = lhs.ActiveEnergyTotalImportT0_Wh.Upsert(
         lhs.Count,
@@ -131,7 +135,8 @@ public class SchneideriEM3xxxAggregateUpserter : ConcreteAggregateUpserter<
           lhs.ActiveEnergyTotalImportT0_Wh,
           rhs.ActiveEnergyTotalImportT0_Wh,
           lhs.Timestamp,
-          lhs.Interval
+          lhs.Interval,
+          time
         ),
       ActiveEnergyTotalExportT0_Wh = lhs.ActiveEnergyTotalExportT0_Wh.Upsert(
         lhs.Count,
@@ -146,7 +151,8 @@ public class SchneideriEM3xxxAggregateUpserter : ConcreteAggregateUpserter<
           lhs.ActiveEnergyTotalExportT0_Wh,
           rhs.ActiveEnergyTotalExportT0_Wh,
           lhs.Timestamp,
-          lhs.Interval
+          lhs.Interval,
+          time
         ),
       ReactiveEnergyTotalImportT0_VARh =
         lhs.ReactiveEnergyTotalImportT0_VARh.Upsert(
@@ -163,7 +169,8 @@ public class SchneideriEM3xxxAggregateUpserter : ConcreteAggregateUpserter<
           lhs.ReactiveEnergyTotalImportT0_VARh,
           rhs.ReactiveEnergyTotalImportT0_VARh,
           lhs.Timestamp,
-          lhs.Interval
+          lhs.Interval,
+          time
         ),
       ReactiveEnergyTotalExportT0_VARh =
         lhs.ReactiveEnergyTotalExportT0_VARh.Upsert(
@@ -180,7 +187,8 @@ public class SchneideriEM3xxxAggregateUpserter : ConcreteAggregateUpserter<
           lhs.ReactiveEnergyTotalExportT0_VARh,
           rhs.ReactiveEnergyTotalExportT0_VARh,
           lhs.Timestamp,
-          lhs.Interval
+          lhs.Interval,
+          time
         ),
       ActiveEnergyTotalImportT1_Wh = lhs.ActiveEnergyTotalImportT1_Wh.Upsert(
         lhs.Count,
@@ -195,7 +203,8 @@ public class SchneideriEM3xxxAggregateUpserter : ConcreteAggregateUpserter<
           lhs.ActiveEnergyTotalImportT1_Wh,
           rhs.ActiveEnergyTotalImportT1_Wh,
           lhs.Timestamp,
-          lhs.Interval
+          lhs.Interval,
+          time
         ),
       ActiveEnergyTotalImportT2_Wh = lhs.ActiveEnergyTotalImportT2_Wh.Upsert(
         lhs.Count,
@@ -210,7 +219,8 @@ public class SchneideriEM3xxxAggregateUpserter : ConcreteAggregateUpserter<
           lhs.ActiveEnergyTotalImportT2_Wh,
           rhs.ActiveEnergyTotalImportT2_Wh,
           lhs.Timestamp,
-          lhs.Interval
+          lhs.Interval,
+          time
         )
     };
   }

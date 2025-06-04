@@ -1,3 +1,4 @@
+using Ozds.Business.Queries;
 using Ozds.Fake.Arguments;
 using Ozds.Fake.Client;
 using Ozds.Fake.Identification;
@@ -8,7 +9,8 @@ namespace Ozds.Fake.Services;
 
 public class SeedService(
   OzdsFakeSeedArguments arguments,
-  IServiceProvider services
+  IServiceProvider services,
+  ClockQueries clock
 ) : EnumeratedService<PushWorkerItem, PushWorker>(services)
 {
   private readonly List<MeasurementLocationMeterId> ids = new();
@@ -41,7 +43,7 @@ public class SeedService(
   protected override IEnumerable<PushWorkerItem> GetEnumerable()
   {
     var interval = arguments.Interval.ToTimeSpan();
-    var dateTo = DateTimeOffset.UtcNow;
+    var dateTo = clock.Timestamp();
     var dateFrom = dateTo.Subtract(interval);
     yield return new PushWorkerItem(
       dateFrom,

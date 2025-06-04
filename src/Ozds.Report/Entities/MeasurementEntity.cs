@@ -1,3 +1,5 @@
+using System.Globalization;
+
 namespace Ozds.Report.Entities;
 
 public class MeasurementEntity
@@ -6,7 +8,9 @@ public class MeasurementEntity
 
   public required string MeasurementLocationId { get; set; }
 
-  public DateTimeOffset Timestamp { get; set; } = DateTimeOffset.UtcNow;
+  public DateTimeOffset Timestamp { get; set; } =
+    // NOTE: just so something is there
+    DateTimeOffset.Parse("2000-01-01T00:00:00Z", CultureInfo.InvariantCulture);
 
   public decimal Current_A { get; set; } = default!;
 

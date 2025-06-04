@@ -2,8 +2,12 @@ using CommandLine;
 
 namespace Ozds.Translation.Arguments;
 
+public interface IOzdsTranslationArguments
+{
+}
+
 [Verb("regex", HelpText = "Translate regexes.")]
-public class OzdsTranslationRegexArguments
+public class OzdsTranslationRegexArguments : IOzdsTranslationArguments
 {
   [Option(
     'l', "language", Required = true,
@@ -22,7 +26,7 @@ public class OzdsTranslationRegexArguments
 }
 
 [Verb("type", HelpText = "Translate types.")]
-public class OzdsTranslationTypeArguments
+public class OzdsTranslationTypeArguments : IOzdsTranslationArguments
 {
   [Option(
     'l', "language", Required = true,
@@ -47,7 +51,7 @@ public class OzdsTranslationTypeArguments
 
 public static class OzdsTranslationArguments
 {
-  public static object? Parse(string[] args)
+  public static IOzdsTranslationArguments? Parse(string[] args)
   {
     try
     {
@@ -79,7 +83,7 @@ public static class OzdsTranslationArguments
         }
       }
 
-      return result.Value;
+      return result.Value as IOzdsTranslationArguments;
     }
     catch (Exception ex)
     {

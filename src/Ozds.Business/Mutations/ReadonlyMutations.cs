@@ -23,7 +23,8 @@ public class ReadonlyMutations(
       .ValidateAsync(model, cancellationToken);
     if (validationResults.Count > 0)
     {
-      var validationResult = string.Join("\n", validationResults);
+      var validationResult = string.Join(
+        Environment.NewLine, validationResults);
       throw new InvalidOperationException(
         $"Model {model.GetType()} failed validation {validationResult}"
       );
@@ -43,7 +44,8 @@ public class ReadonlyMutations(
       .ValidateAsync(model, cancellationToken);
     if (validationResults.Count > 0)
     {
-      var validationResult = string.Join("\n", validationResults);
+      var validationResult = string.Join(
+        Environment.NewLine, validationResults);
       throw new InvalidOperationException(
         $"Model {model.GetType()} failed validation {validationResult}"
       );

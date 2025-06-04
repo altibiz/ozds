@@ -4,31 +4,51 @@ namespace Ozds.Email.Options;
 
 public class OzdsEmailFromOptions
 {
-  public string Name { get; init; } = string.Empty;
+  public string Name { get; set; } = string.Empty;
 
-  public string Address { get; init; } = string.Empty;
+  public string Address { get; set; } = string.Empty;
 }
 
 public class OzdsEmailSmtpOptions
 {
-  public string Host { get; init; } = string.Empty;
-
-  public int Port { get; init; } = 25;
-
-  public string Username { get; init; } = string.Empty;
-
-  public string Password { get; init; } = string.Empty;
-
-  public bool Ssl { get; init; } = false;
+  public string ConnectionString { get; set; } = string.Empty;
 }
 
 public class OzdsEmailOptions
 {
-  public string Host { get; init; } = string.Empty;
+  public OzdsEmailSmtpOptions Smtp { get; set; } = new();
 
-  public OzdsEmailSmtpOptions Smtp { get; init; } = new();
+  public OzdsEmailFromOptions From { get; set; } = new();
+}
 
-  public OzdsEmailFromOptions From { get; init; } = new();
+public class OzdsEmailParsedSmtpConnectionString
+{
+  public OzdsEmailParsedSmtpConnectionString(
+    string connectionString
+  )
+  {
+    var dictionary = connectionString
+      .Split(';')
+      .ToDictionary(
+        x => x.Split('=')[0],
+        x => string.Join('=', x.Split('=')[1..]));
+
+    Host = dictionary["Host"];
+    Port = int.Parse(dictionary["Port"]);
+    User = dictionary["User"];
+    Password = dictionary["Password"];
+    Ssl = bool.Parse(dictionary["Ssl"]);
+  }
+
+  public string Host { get; set; }
+
+  public int Port { get; set; }
+
+  public string User { get; set; }
+
+  public string Password { get; set; }
+
+  public bool Ssl { get; set; }
 }
 
 public class ConfigureOzdsEmailOptions(

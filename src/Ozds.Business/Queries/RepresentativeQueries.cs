@@ -17,6 +17,11 @@ public class RepresentativeQueries(
   UserUserQueries userQueries
 ) : IQueries
 {
+  public string LoginHref
+  {
+    get { return userQueries.LoginHref; }
+  }
+
   public async Task<MaybeRepresentingUserModel?>
     ReadMaybeRepresentingUserByUserId(
       string id,

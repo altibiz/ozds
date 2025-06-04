@@ -26,7 +26,7 @@ public class HtmlSanitizer
     catch (Exception ex)
     {
       return new ValidationResult(
-        $"HTML contains invalid HTML:\n{ex.Message}",
+        $"HTML contains invalid HTML:{Environment.NewLine}{ex.Message}",
         new[] { nameof(html) });
     }
 

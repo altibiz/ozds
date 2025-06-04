@@ -32,7 +32,8 @@ public class IotPushHandler(
   NotificationMutations notificationMutations,
   AuditableQueries auditableQueries,
   IMessengerJobManager messengerJobManager,
-  ReadonlyMutations readonlyMutations
+  ReadonlyMutations readonlyMutations,
+  ClockQueries clock
 ) : Handler<IotPushEventArgs>
 {
   public override async Task Handle(
@@ -115,6 +116,8 @@ public class IotPushHandler(
     List<ValidationResult>? validationResults,
     CancellationToken cancellationToken)
   {
+    var now = clock.Timestamp();
+
     var messenger = await auditableQueries
       .ReadSingle<MessengerModel>(
         eventArgs.MessengerId,
@@ -126,7 +129,7 @@ public class IotPushHandler(
 
     var @event = activator.Activate<MessengerEventModel>();
     @event.MessengerId = messenger.Id;
-    @event.Timestamp = DateTimeOffset.UtcNow;
+    @event.Timestamp = now;
     @event.Categories =
     [
       CategoryModel.All,
@@ -152,6 +155,8 @@ public class IotPushHandler(
     string? eventId,
     CancellationToken cancellationToken)
   {
+    var now = clock.Timestamp();
+
     var messenger = await auditableQueries
       .ReadSingle<MessengerModel>(
         eventArgs.MessengerId,
@@ -163,13 +168,14 @@ public class IotPushHandler(
 
     var notification = activator.Activate<MessengerNotificationModel>();
     notification.MessengerId = messenger.Id;
-    notification.Timestamp = DateTimeOffset.UtcNow;
+    notification.Timestamp = now;
     notification.Topics =
     [
       TopicModel.All,
       TopicModel.InvalidPush
     ];
     notification.Summary = $"Messenger \"{messenger.Title}\" push failed";
+    // NOTE: \n is ok here because we're storing it in the database
     notification.Content = string.Join(
       "\n", validationResults
         .Select(x => $"{x.MemberNames.First()}: {x.ErrorMessage}"));

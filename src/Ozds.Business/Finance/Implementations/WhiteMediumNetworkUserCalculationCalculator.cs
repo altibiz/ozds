@@ -3,12 +3,14 @@ using Ozds.Business.Models;
 using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Complex;
 using Ozds.Business.Models.Composite;
+using Ozds.Business.Queries;
 
 namespace Ozds.Business.Finance.Implementations;
 
 public class
   WhiteMediumNetworkUserCalculationCalculator(
-    CalculationItemCalculator calculationItemCalculator)
+    CalculationItemCalculator calculationItemCalculator,
+    ClockQueries clock)
   : NetworkUserCalculationCalculator
   <
     WhiteMediumNetworkUserCatalogueModel>
@@ -122,6 +124,8 @@ public class
 
     var total = System.Math.Round(usageFeeTotal + supplyFeeTotal, 2);
 
+    var now = clock.Timestamp();
+
     var initial = new WhiteMediumNetworkUserCalculationModel
     {
       Id = default!,
@@ -139,7 +143,7 @@ public class
       NetworkUserMeasurementLocationId =
         calculationBasis.MeasurementLocation.Id,
       Remark = calculationBasis.MeasurementLocation.CalculationRemark,
-      IssuedOn = DateTimeOffset.UtcNow,
+      IssuedOn = now,
       IssuedById = default!,
       ArchivedMeter = calculationBasis.Meter,
       ArchivedNetworkUserMeasurementLocation =

@@ -1,7 +1,7 @@
 using System.Globalization;
 using AutoFixture.Dsl;
 using Microsoft.EntityFrameworkCore;
-using Ozds.Business.Time;
+using Ozds.Data.Context;
 using Ozds.Data.Entities;
 using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Entities.Complex;
@@ -9,11 +9,11 @@ using Ozds.Data.Entities.Enums;
 using Ozds.Data.Test.Extensions;
 using Ozds.Data.Test.Specimens;
 
-// NITPICK: remove dependency on Ozds.Business
-
 namespace Ozds.Data.Test.Fixtures;
 
-public class MeasurementUpsertFactory(DbContext context)
+public class MeasurementEntityFactory(
+  IDbContextFactory<DataDbContext> factory
+)
 {
   private const int MassiveMeasurementCount =
     10000 / Constants.DefaultDbFuzzCount / 2;
@@ -38,14 +38,29 @@ public class MeasurementUpsertFactory(DbContext context)
       DateTimeKind.Utc),
     TimeSpan.Zero);
 
-  private static readonly DateTimeOffset NowStartOfQuarterHour =
-    Now.GetStartOfQuarterHour().ToUniversalTime();
+  private static readonly DateTimeOffset NowStartOfQuarterHour = new(
+    DateTime.SpecifyKind(
+      DateTimeOffset.Parse(
+        "2024-10-27T05:15:00Z",
+        CultureInfo.InvariantCulture).UtcDateTime,
+      DateTimeKind.Utc),
+    TimeSpan.Zero);
 
-  private static readonly DateTimeOffset NowStartOfDay =
-    Now.GetStartOfDay().ToUniversalTime();
+  private static readonly DateTimeOffset NowStartOfDay = new(
+    DateTime.SpecifyKind(
+      DateTimeOffset.Parse(
+        "2024-10-26T22:00:00Z",
+        CultureInfo.InvariantCulture).UtcDateTime,
+      DateTimeKind.Utc),
+    TimeSpan.Zero);
 
-  private static readonly DateTimeOffset NowStartOfMonth =
-    Now.GetStartOfMonth().ToUniversalTime();
+  private static readonly DateTimeOffset NowStartOfMonth = new(
+    DateTime.SpecifyKind(
+      DateTimeOffset.Parse(
+        "2024-09-30T22:00:00Z",
+        CultureInfo.InvariantCulture).UtcDateTime,
+      DateTimeKind.Utc),
+    TimeSpan.Zero);
 
   public async Task<List<IMeasurementEntity>> CreateDerivedNull(
     CancellationToken cancellationToken
@@ -185,6 +200,9 @@ public class MeasurementUpsertFactory(DbContext context)
     CancellationToken cancellationToken
   )
   {
+    await using var context = await factory
+      .CreateDbContextAsync(cancellationToken);
+
     var result = new List<IMeasurementEntity>();
 
     var fixture = context.ContextualFixture();

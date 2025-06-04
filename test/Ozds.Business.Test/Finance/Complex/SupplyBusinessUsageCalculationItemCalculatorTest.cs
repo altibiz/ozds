@@ -9,42 +9,41 @@ namespace Ozds.Business.Test.Finance.Complex;
 
 public class SupplyBusinessUsageCalculationItemCalculatorTest
 {
-  public static readonly
-    TheoryData<SupplyBusinessUsageCalculationItemModel>
-    TestData = new(
-      new Faker<SupplyBusinessUsageCalculationItemModel>()
-        .RuleFor(
-          x => x.Min_kWh,
-          (f, _) => System.Math.Round(
-            f.Random.Decimal(
-              Constants.MinEnergyValue, Constants.MaxEnergyValue),
-            2))
-        .RuleFor(
-          x => x.Max_kWh,
-          (f, m) => System.Math.Round(
-            f.Random.Decimal(m.Min_kWh, Constants.MaxEnergyValue),
-            2))
-        .RuleFor(
-          x => x.Amount_kWh,
-          (_, m) => System.Math.Round(
-            m.Max_kWh - m.Min_kWh,
-            0))
-        .RuleFor(
-          x => x.Price_EUR,
-          (f, _) => System.Math.Round(
-            f.Random.Decimal(
-              Constants.MinEnergyValue, Constants.MaxEnergyValue),
-            6))
-        .RuleFor(
-          x => x.Total_EUR,
-          (_, m) => System.Math.Round(
-            m.Amount_kWh * m.Price_EUR,
-            2))
-        .GenerateLazy(Constants.DefaultFuzzCount)
-    );
+  public static IEnumerable<SupplyBusinessUsageCalculationItemModel> TestData()
+  {
+    return new Faker<SupplyBusinessUsageCalculationItemModel>()
+      .RuleFor(
+        x => x.Min_kWh,
+        (f, _) => System.Math.Round(
+          f.Random.Decimal(
+            Constants.MinEnergyValue, Constants.MaxEnergyValue),
+          2))
+      .RuleFor(
+        x => x.Max_kWh,
+        (f, m) => System.Math.Round(
+          f.Random.Decimal(m.Min_kWh, Constants.MaxEnergyValue),
+          2))
+      .RuleFor(
+        x => x.Amount_kWh,
+        (_, m) => System.Math.Round(
+          m.Max_kWh - m.Min_kWh,
+          0))
+      .RuleFor(
+        x => x.Price_EUR,
+        (f, _) => System.Math.Round(
+          f.Random.Decimal(
+            Constants.MinEnergyValue, Constants.MaxEnergyValue),
+          6))
+      .RuleFor(
+        x => x.Total_EUR,
+        (_, m) => System.Math.Round(
+          m.Amount_kWh * m.Price_EUR,
+          2))
+      .GenerateLazy(Constants.DefaultFuzzCount);
+  }
 
-  [Theory]
-  [MemberData(nameof(TestData))]
+  [Test]
+  [MethodDataSource(nameof(TestData))]
   public void CalculatesCorrectlyWithFuzzyAbbB2xAggregates(
     SupplyBusinessUsageCalculationItemModel expected)
   {
@@ -64,8 +63,8 @@ public class SupplyBusinessUsageCalculationItemCalculatorTest
         .RuleFor(
           x => x.Timestamp,
           (f, _) => f.Date.BetweenOffset(
-            start.Add(IntervalModel.QuarterHour.ToTimeSpan(start)),
-            end.Subtract(IntervalModel.QuarterHour.ToTimeSpan(start))))
+            start.Add(TimeSpan.FromMinutes(15)),
+            end.Subtract(TimeSpan.FromMinutes(15))))
         .RuleFor(
           x => x.ActiveEnergyL1ImportT0_Wh, f => measureFakerNoise.Generate())
         .RuleFor(

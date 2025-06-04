@@ -4,6 +4,8 @@ using OpenAI;
 using OpenAI.Chat;
 using Ozds.Assets.Extensions;
 
+// NOTE: \n is ok here because we're sending it to ollama anyway
+
 namespace Ozds.Translation.Client;
 
 public record TranslationResult(
@@ -26,7 +28,7 @@ public partial class TranslateClient(
       Translate the following from {1} to {2}.
       {1}: {0}
       {2}:
-    ".Dedent(6).Trim();
+    ".Dedent(6, "\n").Trim();
 
   private static readonly string BasePromptTemplate =
     @"
@@ -64,23 +66,23 @@ public partial class TranslateClient(
       - Id is always expanded to 'identifier'
       - Units are always kept as-is and enclosed in parentheses (unless in the
         case of percentages)
-    ".Dedent(6).Trim();
+    ".Dedent(6, "\n").Trim();
 
   private static readonly string TranslatePromptTemplate =
     @$"
-      {BasePromptTemplate.Indent(6).Trim()}
+      {BasePromptTemplate.Indent(6, "\n").Trim()}
 
-      {CommandPromptTemplate.Indent(6).Trim()}
-    ".Dedent(6).Trim();
+      {CommandPromptTemplate.Indent(6, "\n").Trim()}
+    ".Dedent(6, "\n").Trim();
 
   private static readonly string TranslatePromptTemplateWithAdditionalPrompt =
     @$"
-      {BasePromptTemplate.Indent(6).Trim()}
+      {BasePromptTemplate.Indent(6, "\n").Trim()}
 
       {{3}}
 
-      {CommandPromptTemplate.Indent(6).Trim()}
-    ".Dedent(6).Trim();
+      {CommandPromptTemplate.Indent(6, "\n").Trim()}
+    ".Dedent(6, "\n").Trim();
 
   public async Task<TranslationResult> Translate(
     string text,

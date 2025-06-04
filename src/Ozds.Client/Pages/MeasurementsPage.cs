@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using Ozds.Business.Analysis;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Queries;
 using Ozds.Business.Queries.Abstractions;
@@ -17,6 +18,9 @@ public partial class MeasurementsPage : OzdsComponentBase
 
   [CascadingParameter]
   private AnalysisState AnalysisState { get; set; } = default!;
+
+  [Inject]
+  private Analyzer Analyzer { get; set; } = default!;
 
   private Task<PaginatedList<IMessenger>> OnMessengersPageAsync(int page)
   {

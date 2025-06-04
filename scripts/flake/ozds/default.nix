@@ -153,8 +153,6 @@
                   "http://0.0.0.0:${builtins.toString cfg.httpPort}"
                   # + ";https://0.0.0.0:${builtins.toString cfg.httpsPort}"
                 ;
-                ORCHARD_APP_DATA =
-                  "${lib.removeSuffix "/" cfg.stateDir}/orchard";
               });
           serviceConfig = {
             EnvironmentFile = cfg.environmentFile;

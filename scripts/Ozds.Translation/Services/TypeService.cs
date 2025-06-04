@@ -9,6 +9,8 @@ using Ozds.Translation.Arguments;
 using Ozds.Translation.Services.Base;
 using Ozds.Translation.Workers;
 
+// NOTE: \n is ok here because we're sending it to ollama anyway
+
 namespace Ozds.Translation.Services;
 
 public class TypeService(
@@ -129,7 +131,7 @@ public class TypeService(
       ---------
       End of examples.
       Remember: these were only examples of translation.
-    ".Dedent(6).Trim();
+    ".Dedent(6, "\n").Trim();
 
   private static readonly string AdditionalTypePrompt =
     @"
@@ -202,7 +204,7 @@ public class TypeService(
       ---------
       End of examples.
       Remember: these were only examples of translation.
-    ".Dedent(6).Trim();
+    ".Dedent(6, "\n").Trim();
 
   private readonly IServiceProvider services = services;
 

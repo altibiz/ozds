@@ -12,7 +12,9 @@ public class MeasurementQueries(
   DataMeasurementQueries queries,
   ModelEntityConverter modelEntityConverter,
   MeterNamingConvention meterNamingConvention,
-  MeasurementBuffer measurementBuffer
+  MeasurementBuffer measurementBuffer,
+  ClockQueries clock,
+  TimeQueries time
 ) : IQueries
 {
   public async Task<PaginatedList<IMeasurement>> ReadByMeterIds(
@@ -27,12 +29,12 @@ public class MeasurementQueries(
     int pageCount = QueryConstants.DefaultMeasurementPageCount
   )
   {
-    var now = DateTimeOffset.UtcNow;
+    var now = clock.Timestamp();
     toDate = toDate == default ? now : toDate;
-    var timeSpan = resolution.ToTimeSpan(multiplier, toDate);
+    var timeSpan = time.ResolutionTimeSpan(resolution, toDate, multiplier);
     fromDate = fromDate == default ? toDate.Subtract(timeSpan) : fromDate;
 
-    var appropriateIntervalModel = QueryConstants.AppropriateInterval(
+    var appropriateIntervalModel = time.AppropriateInterval(
       timeSpan,
       fromDate
     );
@@ -58,7 +60,7 @@ public class MeasurementQueries(
     int pageCount = QueryConstants.DefaultMeasurementPageCount
   )
   {
-    var appropriateInterval = appropriateIntervalModel?.ToEntity();
+    var appropriateInterval = appropriateIntervalModel?.ToDataEntity();
     var isAggregate = appropriateInterval is not null;
 
     var modelIdsByEntityType = meterIds
@@ -115,7 +117,7 @@ public class MeasurementQueries(
     DateTimeOffset toDate = default
   )
   {
-    var now = DateTimeOffset.UtcNow;
+    var now = clock.Timestamp();
     toDate = toDate == default ? now : toDate;
 
     var isAggregate = interval is not null;
@@ -133,7 +135,7 @@ public class MeasurementQueries(
 
     var entities = await queries.ReadLastByMeterIds(
       modelIdsByEntityType,
-      interval?.ToEntity(),
+      interval?.ToDataEntity(),
       toDate,
       cancellationToken
     );
@@ -173,12 +175,12 @@ public class MeasurementQueries(
     int pageCount = QueryConstants.DefaultMeasurementPageCount
   )
   {
-    var now = DateTimeOffset.UtcNow;
+    var now = clock.Timestamp();
     toDate = toDate == default ? now : toDate;
-    var timeSpan = resolution.ToTimeSpan(multiplier, toDate);
+    var timeSpan = time.ResolutionTimeSpan(resolution, toDate, multiplier);
     fromDate = fromDate == default ? toDate.Subtract(timeSpan) : fromDate;
 
-    var appropriateIntervalModel = QueryConstants.AppropriateInterval(
+    var appropriateIntervalModel = time.AppropriateInterval(
       timeSpan,
       fromDate
     );
@@ -206,7 +208,7 @@ public class MeasurementQueries(
   {
     var entities = await queries.ReadByMeasurementLocationIds(
       measurementLocationIds,
-      appropriateIntervalModel?.ToEntity(),
+      appropriateIntervalModel?.ToDataEntity(),
       fromDate,
       toDate,
       pageNumber,
@@ -245,12 +247,12 @@ public class MeasurementQueries(
     DateTimeOffset toDate = default
   )
   {
-    var now = DateTimeOffset.UtcNow;
+    var now = clock.Timestamp();
     toDate = toDate == default ? now : toDate;
 
     var entities = await queries.ReadLastByMeasurementLocationIds(
       measurementLocationIds,
-      interval?.ToEntity(),
+      interval?.ToDataEntity(),
       toDate,
       cancellationToken
     );

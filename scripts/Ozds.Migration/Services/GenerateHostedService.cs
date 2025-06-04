@@ -7,6 +7,8 @@ using Ozds.Data.Procedures;
 using Ozds.Migration.Arguments;
 using Ozds.Migration.Extensions;
 
+// NOTE: \n is ok here because we don't want to confuse git
+
 namespace Ozds.Migration.Services;
 
 public class GenerateHostedService(
@@ -53,17 +55,17 @@ public class GenerateHostedService(
               /// <inheritdoc />
               protected override void Up(MigrationBuilder migrationBuilder)
               {{
-                  {up.Indent(18).Trim()}
+                  {up.Indent(18, "\n").Trim()}
               }}
 
               /// <inheritdoc />
               protected override void Down(MigrationBuilder migrationBuilder)
               {{
-                  {down.Indent(18).Trim()}
+                  {down.Indent(18, "\n").Trim()}
               }}
           }}
       }}
-    ".Dedent(6).Trim();
+    ".Dedent(6, "\n").Trim();
 
     await File.WriteAllTextAsync(
       arguments.Output,
@@ -171,7 +173,7 @@ public class GenerateHostedService(
         };
         using var process = Process.Start(processStartInfo)
           ?? throw new InvalidOperationException(
-            $"Failed to start formatter:\n{formatter}");
+            $"Failed to start formatter:{Environment.NewLine}{formatter}");
         await process.StandardInput.WriteAsync(
           sql.AsMemory(),
           cancellationToken);
@@ -182,7 +184,8 @@ public class GenerateHostedService(
         if (process.ExitCode != 0)
         {
           throw new InvalidOperationException(
-            $"Formatter exited with code {process.ExitCode}:\n{formatter}");
+            $"Formatter exited with code {process.ExitCode}:"
+            + $"{Environment.NewLine}{formatter}");
         }
       }
       catch (Exception ex)
@@ -197,9 +200,9 @@ public class GenerateHostedService(
     return $@"
       migrationBuilder.Sql(
         @""
-          {sql.Indent(4).Trim()}
+          {sql.Indent(4, "\n").Trim()}
         ""
       );
-    ".Dedent(6).Trim();
+    ".Dedent(6, "\n").Trim();
   }
 }

@@ -208,3 +208,6 @@ dotnet_diagnostic.S6608.severity = none
 dotnet_diagnostic.S1135.severity = none
 # Complete FIXME
 dotnet_diagnostic.S1134.severity = none
+
+# CA1848: Use the LoggerMessage delegates
+dotnet_diagnostic.CA1848.severity = none

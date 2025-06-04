@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Ozds.Data.Procedures.Abstractions;
 
+// NOTE: \n is ok here because we're sending it to the database
+
 namespace Ozds.Data.Procedures;
 
 public class PostgresqlProcedures : IProcedures

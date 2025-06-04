@@ -1,3 +1,4 @@
+using System.Globalization;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Enums;
 using Ozds.Business.Queries.Abstractions;
@@ -15,7 +16,10 @@ public class FinancialChartParameters
     new(new List<IFinancial>(), 0);
 
   public DateTimeOffset FromDate { get; set; } =
-    DateTimeOffset.UtcNow.Subtract(TimeSpan.FromHours(1));
+    // NOTE: just so something is there
+    DateTimeOffset.Parse(
+      "2000-01-01T00:00:00Z",
+      CultureInfo.InvariantCulture);
 
   public ResolutionModel Resolution { get; set; } = ResolutionModel.Minute;
 

@@ -4,33 +4,33 @@ namespace Ozds.Business.Test.Math.DuplexMeasureTest;
 
 public class DuplexExportTest
 {
-  public static readonly
-    TheoryData<DuplexMeasure<decimal>, PhasicMeasure<decimal>>
-    DuplexMeasuresExport = new()
+  public static IEnumerable<(DuplexMeasure<decimal>, PhasicMeasure<decimal>)>
+    DuplexMeasuresExport()
+  {
+    return new List<(DuplexMeasure<decimal>, PhasicMeasure<decimal>)>
     {
-      {
-        new ImportExportDuplexMeasure<decimal>(
+      (new ImportExportDuplexMeasure<decimal>(
           new SinglePhasicMeasureSum<decimal>(5),
           new SinglePhasicMeasureSum<decimal>(3)),
         new SinglePhasicMeasureSum<decimal>(3)
-      },
-      {
-        new ImportExportDuplexMeasure<decimal>(
+      ),
+      (new ImportExportDuplexMeasure<decimal>(
           new TriPhasicMeasure<decimal>(6, 8, 10),
           new TriPhasicMeasure<decimal>(1, 2, 3)),
         new TriPhasicMeasure<decimal>(1, 2, 3)
-      },
-      { new NullDuplexMeasure<decimal>(), new NullPhasicMeasure<decimal>() }
+      ),
+      (new NullDuplexMeasure<decimal>(), new NullPhasicMeasure<decimal>())
     };
+  }
 
-  [Theory]
-  [MemberData(nameof(DuplexMeasuresExport))]
+  [Test]
+  [MethodDataSource(nameof(DuplexMeasuresExport))]
   public void DuplexExportReturnsExpectedResult(
     DuplexMeasure<decimal> measure,
     PhasicMeasure<decimal> expected)
   {
     var result = measure.DuplexExport();
 
-    Assert.Equal(expected, result);
+    result.Should().Be(expected);
   }
 }

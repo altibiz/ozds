@@ -1,9 +1,10 @@
 using Ozds.Business.Activation.Base;
 using Ozds.Business.Models.Complex;
+using Ozds.Business.Queries;
 
 namespace Ozds.Business.Activation.Implementations.Measurements;
 
-public class InstantaneousAggregateMeasureModelActivator
+public class InstantaneousAggregateMeasureModelActivator(ClockQueries clock)
   : ConcreteModelActivator<InstantaneousAggregateMeasureModel>
 {
   public override void Initialize(
@@ -12,7 +13,7 @@ public class InstantaneousAggregateMeasureModelActivator
   {
     base.Initialize(model);
 
-    var now = DateTimeOffset.UtcNow;
+    var now = clock.Timestamp();
 
     model.Avg = 0;
     model.Min = 0;

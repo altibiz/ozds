@@ -4,11 +4,14 @@ namespace Ozds.Business.Test.Math.DuplexMeasureTest;
 
 public class DuplexAddTest
 {
-  public static readonly
-    TheoryData<DuplexMeasure<decimal>, DuplexMeasure<decimal>,
-      DuplexMeasure<decimal>> DuplexMeasuresAdd = new()
+  public static
+    IEnumerable<(DuplexMeasure<decimal>, DuplexMeasure<decimal>,
+      DuplexMeasure<decimal>)> DuplexMeasuresAdd()
+  {
+    return new List<(DuplexMeasure<decimal>, DuplexMeasure<decimal>,
+      DuplexMeasure<decimal>)>
     {
-      {
+      (
         new ImportExportDuplexMeasure<decimal>(
           new SinglePhasicMeasureSum<decimal>(5),
           new SinglePhasicMeasureSum<decimal>(3)),
@@ -18,9 +21,9 @@ public class DuplexAddTest
         new ImportExportDuplexMeasure<decimal>(
           new SinglePhasicMeasureSum<decimal>(7),
           new SinglePhasicMeasureSum<decimal>(4))
-      },
+      ),
 
-      {
+      (
         new ImportExportDuplexMeasure<decimal>(
           new TriPhasicMeasure<decimal>(1, 2, 3),
           new TriPhasicMeasure<decimal>(4, 5, 6)),
@@ -30,28 +33,28 @@ public class DuplexAddTest
         new ImportExportDuplexMeasure<decimal>(
           new TriPhasicMeasure<decimal>(3, 5, 7),
           new TriPhasicMeasure<decimal>(5, 6, 7))
-      },
+      ),
 
-      {
+      (
         new NetDuplexMeasure<decimal>(new SinglePhasicMeasureSum<decimal>(4)),
         new NetDuplexMeasure<decimal>(new SinglePhasicMeasureSum<decimal>(6)),
         new NetDuplexMeasure<decimal>(new SinglePhasicMeasureSum<decimal>(10))
-      },
+      ),
 
-      {
+      (
         new AnyDuplexMeasure<decimal>(new SinglePhasicMeasureSum<decimal>(3)),
         new AnyDuplexMeasure<decimal>(new SinglePhasicMeasureSum<decimal>(4)),
         new AnyDuplexMeasure<decimal>(new SinglePhasicMeasureSum<decimal>(7))
-      },
-
-      {
+      ),
+      (
         new NullDuplexMeasure<decimal>(), new NullDuplexMeasure<decimal>(),
         new NullDuplexMeasure<decimal>()
-      }
+      )
     };
+  }
 
-  [Theory]
-  [MemberData(nameof(DuplexMeasuresAdd))]
+  [Test]
+  [MethodDataSource(nameof(DuplexMeasuresAdd))]
   public void AddReturnsExpectedResult(
     DuplexMeasure<decimal> lhs,
     DuplexMeasure<decimal> rhs,
@@ -59,6 +62,6 @@ public class DuplexAddTest
   {
     var result = lhs.Add(rhs);
 
-    Assert.Equal(expected, result);
+    result.Should().Be(expected);
   }
 }

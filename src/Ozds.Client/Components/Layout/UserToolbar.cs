@@ -25,7 +25,7 @@ public partial class UserToolbar : OzdsComponentBase
 
   private string UserName
   {
-    get { return UserState.User.UserName; }
+    get { return UserState.User.Name; }
   }
 
   private bool IsDarkMode

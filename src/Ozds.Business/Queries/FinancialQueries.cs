@@ -8,7 +8,9 @@ namespace Ozds.Business.Queries;
 
 public class FinancialQueries(
   DataFinancialQueries queries,
-  ModelEntityConverter modelEntityConverter
+  ModelEntityConverter modelEntityConverter,
+  ClockQueries clock,
+  TimeQueries time
 ) : IQueries
 {
   public Task<PaginatedList<IFinancial>> ReadByMeasurementLocationIds(
@@ -22,9 +24,9 @@ public class FinancialQueries(
     int pageCount = QueryConstants.DefaultFinancialPageCount
   )
   {
-    var now = DateTimeOffset.UtcNow;
+    var now = clock.Timestamp();
     toDate = toDate == default ? now : toDate;
-    var timeSpan = resolution.ToTimeSpan(multiplier, toDate);
+    var timeSpan = time.ResolutionTimeSpan(resolution, toDate, multiplier);
     fromDate = fromDate == default ? toDate.Subtract(timeSpan) : fromDate;
 
     return ReadByMeasurementLocationIds(
@@ -71,9 +73,9 @@ public class FinancialQueries(
     int pageCount = QueryConstants.DefaultFinancialPageCount
   )
   {
-    var now = DateTimeOffset.UtcNow;
+    var now = clock.Timestamp();
     toDate = toDate == default ? now : toDate;
-    var timeSpan = resolution.ToTimeSpan(multiplier, toDate);
+    var timeSpan = time.ResolutionTimeSpan(resolution, toDate, multiplier);
     fromDate = fromDate == default ? toDate.Subtract(timeSpan) : fromDate;
 
     return ReadByMeterIds(

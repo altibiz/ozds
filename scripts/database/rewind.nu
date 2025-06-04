@@ -35,13 +35,8 @@ def main [project_name: string, name: string] {
       { project: $x migration: $migration csproj: $csproj }
     }
     | filter { |x| $x | is-not-empty }
-  let orchard_dump = $"($dumps)/($timestamp)-($project_name)-($name)-orchard.sql"
   let normal_dump = $"($dumps)/($timestamp)-($project_name)-($name).sql"
   let hypertables_dump = $"($dumps)/($timestamp)-($project_name)-($name)-hypertables.sql"
-  if not ($orchard_dump | path exists) {
-    print $"Orchard dump '($orchard_dump)' not found for migration '($name)'."
-    exit 1
-  }
   if not ($normal_dump | path exists) {
     print $"Normal dump '($normal_dump)' not found for migration '($name)'."
     exit 1
@@ -61,16 +56,6 @@ def main [project_name: string, name: string] {
     | filter { $in.Image | str starts-with "timescale" }
     | first
     | get id)
-  open --raw $orchard_dump
-    | (docker exec
-        --env PGHOST="localhost"
-        --env PGPORT="5432"
-        --env PGDATABASE="ozds"
-        --env PGUSER="ozds"
-        --env PGPASSWORD="ozds"
-        --interactive
-        $timescale_container_name
-          psql)
   for $project_migration in $project_migrations {
     let project = $project_migration.project
     let migration = $project_migration.migration

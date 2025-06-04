@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Ozds.Business.Models.Abstractions;
+using Ozds.Business.Queries;
 
 namespace Ozds.Business.Models.Base;
 
@@ -58,9 +59,13 @@ public abstract class FinancialModel : IdentifiableModel, IFinancial
         new[] { nameof(IssuedOn), nameof(FromDate), nameof(ToDate) });
     }
 
+    var clock = validationContext.GetRequiredService<ClockQueries>();
+
+    var now = clock.Timestamp();
+
     if (
       validationContext.MemberName is null or nameof(IssuedOn) &&
-      IssuedOn > DateTimeOffset.UtcNow
+      IssuedOn > now
     )
     {
       yield return new ValidationResult(
@@ -70,7 +75,7 @@ public abstract class FinancialModel : IdentifiableModel, IFinancial
 
     if (
       validationContext.MemberName is null or nameof(FromDate) &&
-      FromDate > DateTimeOffset.UtcNow
+      FromDate > now
     )
     {
       yield return new ValidationResult(
@@ -80,7 +85,7 @@ public abstract class FinancialModel : IdentifiableModel, IFinancial
 
     if (
       validationContext.MemberName is null or nameof(ToDate) &&
-      ToDate > DateTimeOffset.UtcNow
+      ToDate > now
     )
     {
       yield return new ValidationResult(

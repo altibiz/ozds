@@ -1,5 +1,7 @@
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using Ozds.Business.Models.Abstractions;
+using Ozds.Business.Queries;
 
 namespace Ozds.Business.Models.Base;
 
@@ -7,7 +9,8 @@ public abstract class AuditableModel : IdentifiableModel, IAuditable
 {
   [Required]
   public required DateTimeOffset CreatedOn { get; set; } =
-    DateTimeOffset.UtcNow;
+    // NOTE: just so something is there
+    DateTimeOffset.Parse("2000-01-01T00:00:00Z", CultureInfo.InvariantCulture);
 
   public required string? CreatedById { get; set; }
   public required DateTimeOffset? LastUpdatedOn { get; set; }
@@ -62,9 +65,13 @@ public abstract class AuditableModel : IdentifiableModel, IAuditable
         new[] { nameof(CreatedOn), nameof(LastUpdatedOn) });
     }
 
+    var clock = validationContext.GetRequiredService<ClockQueries>();
+
+    var now = clock.Timestamp();
+
     if (
       validationContext.MemberName is null or nameof(CreatedOn) &&
-      CreatedOn > DateTimeOffset.UtcNow
+      CreatedOn > now
     )
     {
       yield return new ValidationResult(
@@ -74,7 +81,7 @@ public abstract class AuditableModel : IdentifiableModel, IAuditable
 
     if (
       validationContext.MemberName is null or nameof(LastUpdatedOn) &&
-      LastUpdatedOn > DateTimeOffset.UtcNow
+      LastUpdatedOn > now
     )
     {
       yield return new ValidationResult(
@@ -84,7 +91,7 @@ public abstract class AuditableModel : IdentifiableModel, IAuditable
 
     if (
       validationContext.MemberName is null or nameof(DeletedOn) &&
-      DeletedOn > DateTimeOffset.UtcNow
+      DeletedOn > now
     )
     {
       yield return new ValidationResult(

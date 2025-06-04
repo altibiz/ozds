@@ -4,12 +4,13 @@ namespace Ozds.Business.Test.Math.TariffMeasureTest;
 
 public class TariffDivideByScalarTest
 {
-  public static readonly
-    TheoryData<TariffMeasure<decimal>, decimal, TariffMeasure<decimal>>
-    TariffMeasuresDivide = new()
+  public static
+    IEnumerable<(TariffMeasure<decimal>, decimal, TariffMeasure<decimal>)>
+    TariffMeasuresDivide()
+  {
+    return new List<(TariffMeasure<decimal>, decimal, TariffMeasure<decimal>)>
     {
-      {
-        new UnaryTariffMeasure<decimal>(
+      (new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
             new SinglePhasicMeasureSum<decimal>(10),
             new SinglePhasicMeasureSum<decimal>(6))),
@@ -18,10 +19,9 @@ public class TariffDivideByScalarTest
           new ImportExportDuplexMeasure<decimal>(
             new SinglePhasicMeasureSum<decimal>(5),
             new SinglePhasicMeasureSum<decimal>(3)))
-      },
+      ),
 
-      {
-        new UnaryTariffMeasure<decimal>(
+      (new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
             new TriPhasicMeasure<decimal>(8, 6, 4),
             new TriPhasicMeasure<decimal>(2, 1, 0.5m))),
@@ -30,10 +30,9 @@ public class TariffDivideByScalarTest
           new ImportExportDuplexMeasure<decimal>(
             new TriPhasicMeasure<decimal>(4, 3, 2),
             new TriPhasicMeasure<decimal>(1, 0.5m, 0.25m)))
-      },
+      ),
 
-      {
-        new BinaryTariffMeasure<decimal>(
+      (new BinaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
             new SinglePhasicMeasureSum<decimal>(1),
             new SinglePhasicMeasureSum<decimal>(2)),
@@ -48,13 +47,14 @@ public class TariffDivideByScalarTest
           new ImportExportDuplexMeasure<decimal>(
             new SinglePhasicMeasureSum<decimal>(1.5m),
             new SinglePhasicMeasureSum<decimal>(2)))
-      },
+      ),
 
-      { new NullTariffMeasure<decimal>(), 2, new NullTariffMeasure<decimal>() }
+      (new NullTariffMeasure<decimal>(), 2, new NullTariffMeasure<decimal>())
     };
+  }
 
-  [Theory]
-  [MemberData(nameof(TariffMeasuresDivide))]
+  [Test]
+  [MethodDataSource(nameof(TariffMeasuresDivide))]
   public void Divide_ReturnsExpectedResult(
     TariffMeasure<decimal> measure,
     decimal divisor,
@@ -62,6 +62,6 @@ public class TariffDivideByScalarTest
   {
     var result = measure.Divide(divisor);
 
-    Assert.Equal(expected, result);
+    result.Should().Be(expected);
   }
 }

@@ -369,3 +369,7 @@ mdbook-plantuml-img/
 rnr*
 runtimes/
 /secrets
+/scripts/ldap/users.db
+/scripts/ldap/lldap_config.toml
+/scripts/auth/configuration.yml
+/scripts/auth/users.yml

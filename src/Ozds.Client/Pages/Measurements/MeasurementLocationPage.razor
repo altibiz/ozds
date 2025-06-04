@@ -2,20 +2,17 @@
 
 @page "/measurements/measurement-location/{id?}"
 @using MudBlazor
-@using Ozds.Business.Analysis
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Business.Models.Enums
-@using Ozds.Business.Time
 @using Ozds.Client.Components.Charts
 @using Ozds.Client.Components.Fields
 @using Ozds.Client.Components.Models
 @using Ozds.Client.Components.Streaming
-@using Ozds.Client.State
-@inherits Ozds.Client.Components.Models.Base.OzdsIdentifiableModelPageComponentBase<IMeasurementLocation>
+@inherits Ozds.Client.Components.Models.Base.OzdsIdentifiableModelPageComponentBase<Ozds.Business.Models.Abstractions.IMeasurementLocation>
 
 @{
-  var analysis = AnalysisState
-    .AnalysisBases.Value.AnalysesByMeasurementLocation()
+  var analysis = Analyzer
+    .AnalyzeByMeasurementLocation(AnalysisState.AnalysisBases.Value)
     .FirstOrDefault(x => x.MeasurementLocation.Id == Id);
 }
 
@@ -43,14 +40,14 @@
       Label="@(x => x.ToCode())"/>
     @{
       var accountingPeriodHref =
-        "/download/measurement-location-accounting-period"
+        "/report/measurement-location-accounting-period"
         + "/" + GetCulture().TwoLetterISOLanguageName
         + "/" + Id
         + "/" + selectedMonth.Year
         + "/" + selectedMonth.Month;
 
       var loadCurveHref =
-        "/download/measurement-location-load-curve"
+        "/report/measurement-location-load-curve"
         + "/" + GetCulture().TwoLetterISOLanguageName
         + "/" + Id
         + "/" + selectedObis.ToCode()
@@ -65,12 +62,8 @@
     </MudLink>
   </div>
 
-  measurementLocations = new List<IMeasurementLocation>
-  {
-    analysis.MeasurementLocation
-  };
-
-  <MeasurementChartControls MeasurementLocations="@measurementLocations">
+  <MeasurementChartControls
+    MeasurementLocations="@(new List<IMeasurementLocation> { analysis.MeasurementLocation })">
     <MeasurementGaugeChart
       Parameters="@context"/>
     <MeasurementLineChart
@@ -105,22 +98,3 @@
     <Details Model="context.Model"/>
   </Details>
 </Mutating>
-
-@code{
-
-  private DateTime selectedMonth =
-    DateTimeOffset.UtcNow.GetStartOfLastMonth().DateTime;
-
-  private ObisModel selectedObis = ObisModel.ActiveEnergyTotalImportT1_kWh;
-
-  [CascadingParameter]
-  public AnalysisState AnalysisState { get; set; } = default!;
-
-  [CascadingParameter]
-  public Breakpoint Breakpoint { get; set; }
-
-  [Parameter]
-  public string Id { get; set; } = default!;
-
-  private List<IMeasurementLocation> measurementLocations = new();
-}

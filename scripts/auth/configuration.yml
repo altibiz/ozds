@@ -1,0 +1,131 @@
+# NOTE: ASP.NET core stores large amounts of data in cookies
+server:
+  buffers:
+    read: 8192
+    write: 8192
+
+authentication_backend:
+  ldap:
+    implementation: lldap
+    address: ldap://ldap:3890
+    base_dn: dc=altibiz,dc=com
+    user: uid=admin,ou=people,dc=altibiz,dc=com
+    password: "admin-ozds"
+    additional_users_dn: ou=people
+
+access_control:
+  default_policy: "one_factor"
+  rules:
+    - domain: "127.0.0.1"
+      policy: "one_factor"
+    - domain: "localhost"
+      policy: "one_factor"
+
+session:
+  secret: "authelia-needs-20-characters-at-least-for-these-secrets"
+  cookies:
+    - domain: "127.0.0.1"
+      authelia_url: "https://127.0.0.1:9091"
+      default_redirection_url: "https://127.0.0.1:5001"
+
+identity_validation:
+  reset_password:
+    jwt_secret: "authelia-needs-20-characters-at-least-for-these-secrets"
+    jwt_algorithm: "HS256"
+
+storage:
+  encryption_key: "authelia-needs-20-characters-at-least-for-these-secrets"
+  local:
+    path: "/app/db.sqlite3"
+
+notifier:
+  disable_startup_check: false
+  filesystem:
+    filename: "/app/notification.txt"
+
+identity_providers:
+  oidc:
+    hmac_secret: "authelianeedsasupersupermegagigaultrasafesecretforthisonethatislikeatleast64characterslong"
+    jwks:
+      - key_id: ozds
+        algorithm: RS256
+        use: sig
+        key: |
+          -----BEGIN PRIVATE KEY-----
+          MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDK//EywTk4NWZx
+          eKawfyany5h4CXuvWE1ybpGwNN8TYWivawMUZyHKDA24F8CjectXqlshwChZuL6q
+          sCVQmoG7gcwYfqGaNtr7LzNpj4i4niw2JVpNk2mcKqYJ3ru1z4BVdu1ivxiehKBR
+          H2d12SK2hzGcAj6yzYJI/YaVllsEUIn76Xg9ZQC+BJ6rNNxJ4qW4dTKYl17a3IPx
+          haK1rMPjwPo+FjCVe8mWPEc4MYu12CijTx/NnzSh4khcUxPGBsCgoUpd1o1xtn2B
+          fDvMPh9Eb2EGFczlE9dFFoaOcIUvuQlWMcQAOgAM4UGSqQPiVqivNkGmqPaGfUn+
+          +X6ys0bHAgMBAAECggEAE2o/K1eHnXSeA6RCbQb8L3gtcO2XQsHzRkqE7JFh9HyQ
+          gpZ9iOoENUrJ1R2QcxIm/I9yf9vdABfHRJPsPbVJSyGy33TdB97POs7c3++2Z9HY
+          8KTJ6jl7FFCP6MnAsjbSU1o4ggU82YxduOSEBKVryIFNoVolnPxCxbBZutzSf6r4
+          qxOTECeZRW2rDUVfhuZ2BqIk6PS0DkWoTiP2oUaq/HA8dzpMph8QUFKucq0Fv5NZ
+          okDnahUAk1GmSBXa4LqHFIzujHEdGfwts/r4MLQhymp9ETNdzpGaV5nwFCHmX1qW
+          GhIId54RRHlQsAyhQp2CO0zNLDq7spZ/cTuwEJliQQKBgQDnaHl/HaaV/NxZiMFn
+          dU1IbjzPbgsSMw4AWKo/tGw7YM3nn4akPZtJVZqJ8Fv4kT7IPwrvSMxB6jXqxfrB
+          yy4ZAG7B1hGNFGVtafioTZNQCExpEpdjVnUON390tyXcjYIwZrSCZbNf1HwJIPOw
+          a/9OODsIMtQfpNa0L81PJpfEzwKBgQDgkpxSf4hyZBR7lHcuaDAzbDG1NuXyrkWB
+          UXQbElpVvXexHBQ1k66S5tHR+RyfiNz2TKMz0+C52g2rHe+kihBfIJr2ldVGfKGd
+          49ybBeyLqMQSbgDSXH1ruEy/6Icqn+NOXxCs3rX3hOkDIUbVstaVaHsfmRVfkVi9
+          B2hAsHrMiQKBgCbJmzvUU3zmgmS7iHd38PlICQdX0aE+T4V9VyQQcOfPBRRi5+WV
+          sfar05h1YmUaq2RTNNkA4cPWpyzv/GUJUnO8X9Q7tntoRMv/LD/BqQSML4qZJCjx
+          b/NvF/0PSdhbG8xTGsSUmWlhq1y4WkBjCcspn7NzGZ0oOxi+vnIa7Ot/AoGAUO8l
+          nWnPAALnit4n0bbE4FN22qtNVhfOftufL35+xfXBpDfNZL2zpcfACJ9x3GET2UQn
+          cS9EB1b5pBjm2/LSEaaLkqDPO1cBXAjZ4ZjR9kc9WrMAYs/od6D1MBiaVhdHcWA7
+          f0HIbMseuv0MLUoFodUEwo+GL2oPhBieTuoLZ5kCgYEAw+T5fMj83cvxatVtnfam
+          Rj1HbBmTzFImyQpZWbvkV+SjbuLvhrIrgIxAQopwi02pw/RIvFRvykgZmtk9Wtjd
+          /y5cKxisYVn1MWsj+u9+wIn85SDDNy43vL4QZB1hqaLhtFCU5agezTGBzlk/6OvN
+          X4oERnMcgFENlKlhPo8YbXk=
+          -----END PRIVATE KEY-----
+        certificate_chain: |
+          -----BEGIN CERTIFICATE-----
+          MIIDBzCCAe+gAwIBAgIUfF4AZ8vAmFVs/F7lk0R0DMoBwqYwDQYJKoZIhvcNAQEL
+          BQAwEzERMA8GA1UEAwwIYXV0aGVsaWEwHhcNMjUwNjE0MTExMDAzWhcNMjYwNjE0
+          MTExMDAzWjATMREwDwYDVQQDDAhhdXRoZWxpYTCCASIwDQYJKoZIhvcNAQEBBQAD
+          ggEPADCCAQoCggEBAMr/8TLBOTg1ZnF4prB/JqfLmHgJe69YTXJukbA03xNhaK9r
+          AxRnIcoMDbgXwKN5y1eqWyHAKFm4vqqwJVCagbuBzBh+oZo22vsvM2mPiLieLDYl
+          Wk2TaZwqpgneu7XPgFV27WK/GJ6EoFEfZ3XZIraHMZwCPrLNgkj9hpWWWwRQifvp
+          eD1lAL4Enqs03Enipbh1MpiXXtrcg/GForWsw+PA+j4WMJV7yZY8Rzgxi7XYKKNP
+          H82fNKHiSFxTE8YGwKChSl3WjXG2fYF8O8w+H0RvYQYVzOUT10UWho5whS+5CVYx
+          xAA6AAzhQZKpA+JWqK82Qaao9oZ9Sf75frKzRscCAwEAAaNTMFEwHQYDVR0OBBYE
+          FNsmmMbRbwZiftYyj4yfsMnphc9WMB8GA1UdIwQYMBaAFNsmmMbRbwZiftYyj4yf
+          sMnphc9WMA8GA1UdEwEB/wQFMAMBAf8wDQYJKoZIhvcNAQELBQADggEBAKqwN07x
+          TFJJ6Bi/EVNsX2ICkBrne4+qKrv2M3oT5OO0B5s++XIf6mxoD2gRIu7u4HpZJpS5
+          rrB3kvT9nN3B097MQtzuoIQdFbQLeL3IRbye4b7feCeVfMtrr1vDH2QcELyExgoE
+          2zeJh6g8hw0hOecVTiKe/fnMsqNsS+5XDqDdEWjxZTukz8gxhBzk3/YUecZPXDMI
+          VMfrCg0aEqXdXcD7XY5V8lp03ypUHDzrOORSqomGiUO5Vj4OdR5x82P1l8LYwuJn
+          0R3nsYkXYtW6vxFv7Y3uRNpapLcIkMhz1NFGmOfuACbbQCEHGf7jaG1BQFkOZX1Q
+          AvWXB5Npjci1ORE=
+          -----END CERTIFICATE-----
+    clients:
+      - client_id: ozds
+        client_name: OZDS
+        # Secret is 'ozds'
+        client_secret: "$pbkdf2-sha512$310000$a4yy11XswnZybaOYoz4UNw$Lr8mWXBLZEemiQuaZI50/AX.e5dp2ZtdG2JJ/A3d.AMNIkx2UufvxgOGoJH0hhe22B4TNm.sOJuT1f6wlA34gw"
+        redirect_uris:
+          - https://127.0.0.1:5001/
+          - http://127.0.0.1:5000/
+          - https://localhost:5001/
+          - http://localhost:5000/
+          - https://127.0.0.1:5001/signin-oidc
+          - http://127.0.0.1:5000/signin-oidc
+          - https://localhost:5001/signin-oidc
+          - http://localhost:5000/signin-oidc
+          - https://127.0.0.1:5001/signout-oidc
+          - http://127.0.0.1:5000/signout-oidc
+          - https://localhost:5001/signout-oidc
+          - http://localhost:5000/signout-oidc
+        authorization_policy: one_factor
+        token_endpoint_auth_method: client_secret_post
+        scopes:
+          - openid
+          - profile
+          - email
+          - offline_access
+        response_types:
+          - code
+        grant_types:
+          - authorization_code
+          - refresh_token

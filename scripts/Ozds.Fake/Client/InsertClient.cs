@@ -6,7 +6,8 @@ namespace Ozds.Fake.Client;
 
 public class InsertClient(
   MeasurementMutations mutations,
-  MeasurementLocationQueries measurementLocationQueries
+  MeasurementLocationQueries measurementLocationQueries,
+  ClockQueries clock
 )
 {
   public async Task<List<string>> GetMetersForLocation(
@@ -14,7 +15,7 @@ public class InsertClient(
     CancellationToken cancellationToken
   )
   {
-    var now = DateTimeOffset.UtcNow;
+    var now = clock.Timestamp();
     var analysisBases = await measurementLocationQueries
       .ReadAnalysisBasisByLocationAndRepresentative(
         locationId,

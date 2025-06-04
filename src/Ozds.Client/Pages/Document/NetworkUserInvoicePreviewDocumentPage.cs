@@ -1,13 +1,16 @@
 using Microsoft.AspNetCore.Components;
 using Ozds.Business.Models.Composite;
 using Ozds.Business.Mutations;
-using Ozds.Business.Time;
+using Ozds.Business.Queries;
 using Ozds.Client.Components.Base;
 
 namespace Ozds.Client.Pages;
 
 public partial class NetworkUserInvoicePreviewDocumentPage : OzdsComponentBase
 {
+  [Inject]
+  private TimeQueries TimeQueries { get; set; } = default!;
+
   [Parameter]
   public string NetworkUserId { get; set; } = default!;
 
@@ -19,7 +22,7 @@ public partial class NetworkUserInvoicePreviewDocumentPage : OzdsComponentBase
 
   private async Task<CalculatedNetworkUserInvoiceModelWithHtml?> OnLoadAsync()
   {
-    var (from, to) = DateTimeOffsetExtensions.GetMonthRange(Year, Month);
+    var (from, to) = TimeQueries.GetMonthRange(Year, Month);
 
     var invoice = await ScopedServices
       .GetRequiredService<NetworkUserInvoiceIssuer>()

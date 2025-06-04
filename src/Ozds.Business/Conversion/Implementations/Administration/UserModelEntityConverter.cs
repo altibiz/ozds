@@ -13,7 +13,7 @@ public class UserModelEntityConverter
   )
   {
     base.InitializeEntity(model, entity);
-    entity.UserName = model.UserName;
+    entity.Name = model.Name;
     entity.Email = model.Email;
     entity.Id = model.Id;
   }
@@ -24,7 +24,7 @@ public class UserModelEntityConverter
   )
   {
     base.InitializeModel(entity, model);
-    model.UserName = entity.UserName;
+    model.Name = entity.Name;
     model.Email = entity.Email;
     model.Id = entity.Id;
   }

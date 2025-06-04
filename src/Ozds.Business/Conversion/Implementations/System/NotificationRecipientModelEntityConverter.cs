@@ -4,7 +4,7 @@ using Ozds.Business.Models.Joins;
 using Ozds.Data.Entities.Base;
 using Ozds.Data.Entities.Joins;
 
-namespace Ozds.Business.Conversion.Implementations.System;
+namespace Ozds.Business.Conversion.Implementations.Administration;
 
 public class NotificationRecipientEntityConverter(
   IServiceProvider serviceProvider
