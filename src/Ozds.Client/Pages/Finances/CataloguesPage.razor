@@ -12,9 +12,7 @@ RoleModel.OperatorRepresentative,
 ])]
 @using MudBlazor
 @using Ozds.Business.Models.Abstractions
-@using Ozds.Business.Queries.Abstractions
 @using Ozds.Client.Attributes
-@using Ozds.Client.Components.Models
 @using Ozds.Client.Components.Streaming
 @using Ozds.Client.State
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
@@ -39,7 +37,7 @@ RoleModel.OperatorRepresentative,
     <Table Model="@(page.Items)">
     </Table>
   </Found>
-  </Paging>
+</Paging>
 
 <MudLink Href="@(PageHref<NetworkUserCataloguePage>())">
   @Translate("Create")
@@ -50,7 +48,7 @@ RoleModel.OperatorRepresentative,
     <Table Model="@(page.Items)">
     </Table>
   </Found>
-  </Paging>
+</Paging>
 
 <MudLink Href="@(PageHref<RegulatoryCataloguePage>())">
   @Translate("Create")
