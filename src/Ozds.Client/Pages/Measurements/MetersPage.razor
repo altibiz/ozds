@@ -36,14 +36,7 @@ Allows = [RoleModel.OperatorRepresentative])]
   Label="@Translate("Deleted")"
   @bind-Value="_deleted"/>
 
-@if (_deleted)
-{
-  <Table Model="@analyses.Where(x => x.Meter.IsDeleted).ToList()"/>
-}
-else
-{
-  <Table Model="@analyses"/>
-}
+<Table Model="@analyses.Where(x => x.Meter.IsDeleted == _deleted).ToList()"/>
 
 @if (RepresentativeState.Representative.Role
   == RoleModel.OperatorRepresentative)

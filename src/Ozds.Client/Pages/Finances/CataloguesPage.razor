@@ -32,23 +32,13 @@ RoleModel.OperatorRepresentative,
   Label="@Translate("Deleted")"
   @bind-Value="_deleted"/>
 
-<Paging T="INetworkUserCatalogue" Deleted="@_deleted">
-  <Found Context="page">
-    <Table Model="@(page.Items)">
-    </Table>
-  </Found>
-</Paging>
+<Table T="INetworkUserCatalogue" Deleted="@_deleted"/>
 
 <MudLink Href="@(PageHref<NetworkUserCataloguePage>())">
   @Translate("Create")
 </MudLink>
 
-<Paging T="IRegulatoryCatalogue" Deleted="@_deleted">
-  <Found Context="page">
-    <Table Model="@(page.Items)">
-    </Table>
-  </Found>
-</Paging>
+<Table T="IRegulatoryCatalogue" Deleted="@_deleted"/>
 
 <MudLink Href="@(PageHref<RegulatoryCataloguePage>())">
   @Translate("Create")

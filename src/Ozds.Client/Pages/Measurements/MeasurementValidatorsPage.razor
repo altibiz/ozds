@@ -30,20 +30,9 @@ Allows = [RoleModel.OperatorRepresentative])]
   Label="@Translate("Deleted")"
   @bind-Value="_deleted"/>
 
-<Paging T="AbbB2xMeasurementValidatorModel" Deleted="_deleted">
-  <Found Context="page">
-    <Table Model="@(page.Items)">
-    </Table>
-  </Found>
-</Paging>
+<Table T="AbbB2xMeasurementValidatorModel" Deleted="@_deleted"/>
 
-
-<Paging T="SchneideriEM3xxxMeasurementValidatorModel" Deleted="_deleted">
-  <Found Context="page">
-    <Table Model="@(page.Items)">
-    </Table>
-  </Found>
-</Paging>
+<Table T="SchneideriEM3xxxMeasurementValidatorModel" Deleted="@_deleted"/>
 
 @if (RepresentativeState.Representative.Role
   == RoleModel.OperatorRepresentative)
