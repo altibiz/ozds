@@ -18,6 +18,7 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - text display logic for measurement selection dropdown
 - all formatting methods for numbers and dates from `Ozds.Client` and
   `Ozds.Document` to `Ozds.Assets`
+- MudBlazor overrides in ThemeStateProvider
 
 ### Changed
 
@@ -30,6 +31,7 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - list/card table view on mobile
 - all selection elements work on mobile with new SelectField component
 - turned on detailed errors for blazor while debugging
+- use proper navigation icons
 
 ## [1.3.0] - 2025-04-23
 
