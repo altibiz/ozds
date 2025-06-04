@@ -13,7 +13,7 @@
   var culture = Culture is null ? null : new CultureInfo(Culture);
 }
 
-<ErrorBoundary>
+<OzdsErrorBoundary>
   <ScopeStateProvider>
     <CultureStateProvider Culture="@culture">
       <UserStateProvider LogoutToken="@LogoutToken">
@@ -78,7 +78,7 @@
       </UserStateProvider>
     </CultureStateProvider>
   </ScopeStateProvider>
-</ErrorBoundary>
+</OzdsErrorBoundary>
 
 @code {
 

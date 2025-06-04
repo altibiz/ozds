@@ -1,0 +1,33 @@
+@namespace Ozds.Client.Components.Fields
+@using MudBlazor
+@typeparam T
+
+<div @onpointerup="() => _inner.OpenMenu()">
+  @if (MultiSelection)
+  {
+    <MudSelect T="T"
+               @ref="_inner"
+               Label="@Label"
+               SelectedValues="@SelectedValues"
+               SelectedValuesChanged="@SelectedValuesChanged"
+               MultiSelection="true"
+               For="@For"
+               AnchorOrigin="@AnchorOrigin"
+               @attributes="AdditionalAttributes">
+      @ChildContent
+    </MudSelect>
+  }
+  else
+  {
+    <MudSelect T="T"
+               @ref="_inner"
+               Label="@Label"
+               Value="@Value"
+               ValueChanged="@ValueChanged"
+               For="@For"
+               AnchorOrigin="@AnchorOrigin"
+               @attributes="AdditionalAttributes">
+      @ChildContent
+    </MudSelect>
+  }
+</div>

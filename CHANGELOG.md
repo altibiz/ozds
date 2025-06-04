@@ -14,6 +14,8 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - `Ozds.Client.Test` project for end-to-end testing of the client
 - justfile recipe for setting up CI for the new `Ozds.Client.Test` project
 - network user overview
+- tool tip logic for measurement selection dropdown
+- text display logic for measurement selection dropdown
 
 ### Changed
 
@@ -24,6 +26,8 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - bumped `Xunit.DependencyInjection` version
 - pagination logic
 - list/card table view on mobile
+- all selection elements work on mobile with new SelectField component
+- turned on detailed errors for blazor while debugging
 
 ## [1.3.0] - 2025-04-23
 
