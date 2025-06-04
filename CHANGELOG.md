@@ -26,7 +26,7 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - pagination logic
 - list/card table view on mobile
 - all paging to work with tables
-- queiries for filtering deleted content so you can see only deleted or only not
+- queries for filtering deleted content so you can see only deleted or only not
   deleted content
 
 ## [1.3.0] - 2025-04-23
