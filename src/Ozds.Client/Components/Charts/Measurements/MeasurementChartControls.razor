@@ -17,20 +17,28 @@
   <MudGrid Spacing="2" Justify="Justify.Center">
     @if (MeasurementLocations.Count > 1)
     {
-      <MudItem xs="12" md="4">
-        <MudSelect
-          T="string"
-          Label="@Translate("Measurement locations")"
-          SelectedValues="@(_parameters.MeasurementLocations.Select(measurementLocation => measurementLocation.Id))"
-          SelectedValuesChanged="@OnMeasurementLocationsChanged"
-          MultiSelection>
-          @foreach (var measurementLocation in MeasurementLocations)
-          {
-            <MudSelectItem Value="@measurementLocation.Id">
-              @measurementLocation.Title
-            </MudSelectItem>
-          }
-        </MudSelect>
+      <MudItem
+        xs="12"
+        @onpointerup="() => _select.OpenMenu()"
+        md="4">
+        <MudTooltip RootClass="wide-tooltip"
+                    Text="@(_parameters.MeasurementLocations.Count > 1 ? string.Join(", ", _parameters.MeasurementLocations.Select(m => m.Title)) : "")">
+          <MudSelect
+            @ref="_select"
+            Text="@UpdateSelectDisplay()"
+            T="string"
+            Label="@Translate("Measurement locations")"
+            SelectedValues="@(_parameters.MeasurementLocations.Select(measurementLocation => measurementLocation.Id))"
+            SelectedValuesChanged="@OnMeasurementLocationsChanged"
+            MultiSelection>
+            @foreach (var measurementLocation in MeasurementLocations)
+            {
+              <MudSelectItem Value="@measurementLocation.Id">
+                @measurementLocation.Title
+              </MudSelectItem>
+            }
+          </MudSelect>
+        </MudTooltip>
       </MudItem>
     }
     else if (Meters.Count > 1)
