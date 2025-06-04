@@ -13,6 +13,7 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 - `Ozds.Client.Test` project for end-to-end testing of the client
 - justfile recipe for setting up CI for the new `Ozds.Client.Test` project
+- network user overview
 
 ### Changed
 
@@ -21,6 +22,8 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - test `.editorconfig` location
 - fix analysis basis fetch for network users
 - bumped `Xunit.DependencyInjection` version
+- pagination logic
+- list/card table view on mobile
 
 ## [1.3.0] - 2025-04-23
 

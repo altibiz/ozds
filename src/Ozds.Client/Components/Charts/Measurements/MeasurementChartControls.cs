@@ -266,7 +266,6 @@ public partial class MeasurementChartControls : OzdsComponentBase
     if (appropriateInterval is null)
     {
       var newMeasurements = measurements
-        .Where(x => x.Timestamp >= minNew)
         .Where(
           x =>
             Meters.Exists(meter => meter.Id == x.MeterId)
