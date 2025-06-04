@@ -34,11 +34,11 @@ public abstract class DocumentBase : ComponentBase
 
   public string Date(DateTimeOffset date)
   {
-    return date.ToString("dd.MM.yyyy.");
+    return LocalizerQueries.DocumentDate(date);
   }
 
   public string Number(decimal number, int precision = 2)
   {
-    return number.ToString($"0.{new string('#', precision)}");
+    return LocalizerQueries.DocumentNumber(number, precision);
   }
 }
