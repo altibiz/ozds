@@ -110,10 +110,13 @@
          Title="@(Translate(Label(next)))"
          Property="@Wrap(next)">
         <CellTemplate>
-          @if (Get(nextFunc)(context.Item) is IEnumerable item)
+          @{
+            var item = Get(nextFunc)(context.Item);
+          }
+          @if (item is IEnumerable enumerable)
           {
             <MudText>
-              @string.Join(", ", item)
+              @enumerable.JoinString()
             </MudText>
           }
         </CellTemplate>

@@ -38,14 +38,7 @@ RoleModel.NetworkUserRepresentative
     @bind-Value="_deleted"/>
 }
 
-@if (_deleted)
-{
-  <Paging T="NetworkUserModel" Deleted="@_deleted"/>
-}
-else
-{
-  <Table Model="@analyses"/>
-}
+<Table Model="@analyses.Where(x => x.NetworkUser.IsDeleted == _deleted).ToList()"/>
 
 @if (RepresentativeState.Representative.Role
   == RoleModel.OperatorRepresentative)
