@@ -37,12 +37,7 @@ RoleModel.LocationRepresentative
     @bind-Value="_deleted"/>
 }
 
-<Paging PageAsync="OnPageAsync" Deleted="_deleted">
-  <Found Context="page">
-    <Table Model="@(page.Items)">
-    </Table>
-  </Found>
-</Paging>
+<Table PageAsync="OnPageAsync"/>
 
 @if (RepresentativeState.Representative.Role
   == RoleModel.OperatorRepresentative)

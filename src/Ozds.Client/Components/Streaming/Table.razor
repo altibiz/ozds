@@ -6,46 +6,52 @@
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 <MudHidden Breakpoint="Breakpoint.MdAndUp">
+  <MudText Typo="Typo.h6">
+    @(
+    model.Items.Count > 0
+      ? Translate(model.Items.First()!.GetType())
+      : "")
+  </MudText>
   <MudTextField
     T="string"
     Value="@searchString"
     ValueChanged="@OnPagingSearch"
-    Placeholder="Search"
+    Placeholder="@Translate("Search")"
     Adornment="Adornment.Start"
     Immediate="true"
     AdornmentIcon="@Icons.Material.Filled.Search"
     IconSize="Size.Medium"/>
-  <Paging T="T" PageAsync="@OnPagingPage">
-    <Found>
-      @foreach (var (item, index) in context.Items.Select((x, i) => (x, i)))
+  <Paging PageCount="@PageCount" T="T" PageAsync="@OnPagingPage">
+    <Found Context="page">
+      @foreach (var item in page.Items)
       {
-        if (!Filter(item))
-        {
+        if (!FilterItem(item))
           continue;
-        }
 
-        <TableCollapse>
-          <Summary>
-            @if (Summary is null)
-            {
-              <Summary Model="item"/>
-            }
-            else
-            {
-              @Summary(item)
-            }
-          </Summary>
-          <Details>
-            @if (Details is null)
-            {
-              <Details Model="item"/>
-            }
-            else
-            {
-              @Details(item)
-            }
-          </Details>
-        </TableCollapse>
+        <MudPaper Class="pa-4 mb-2" Elevation="1">
+          <TableCollapse>
+            <Summary>
+              @if (Summary is null)
+              {
+                <Summary Model="item"/>
+              }
+              else
+              {
+                @Summary(item)
+              }
+            </Summary>
+            <Details>
+              @if (Details is null)
+              {
+                <Details Model="item"/>
+              }
+              else
+              {
+                @Details(item)
+              }
+            </Details>
+          </TableCollapse>
+        </MudPaper>
       }
     </Found>
   </Paging>
@@ -54,15 +60,24 @@
 <MudHidden Breakpoint="Breakpoint.SmAndDown">
   <MudDataGrid
     T="T"
+    Filterable="true"
     SortMode="@SortMode.None"
     ServerData="@OnDataGridServerData"
+    RowsPerPage="@PageCount"
     @ref="@dataGrid">
     <ToolBarContent>
+      <MudText Typo="Typo.h6">
+        @(
+        model.Items.Count > 0
+          ? Translate(model.Items.First()!.GetType())
+          : "")
+      </MudText>
+      <MudSpacer/>
       <MudTextField
         T="string"
         Value="@searchString"
         ValueChanged="@OnDataGridSearch"
-        Placeholder="Search"
+        Placeholder="@Translate("Search")"
         Adornment="Adornment.Start"
         Immediate="true"
         AdornmentIcon="@Icons.Material.Filled.Search"
@@ -80,7 +95,7 @@
       }
     </Columns>
     <PagerContent>
-      <MudDataGridPager T="T"/>
+      <MudDataGridPager PageSizeSelector="false" T="T"/>
     </PagerContent>
   </MudDataGrid>
 </MudHidden>

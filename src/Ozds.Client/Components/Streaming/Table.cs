@@ -1,3 +1,4 @@
+using System.Reflection;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Ozds.Business.Models.Abstractions;
@@ -28,6 +29,9 @@ public partial class Table<T> : OzdsComponentBase
   public Func<int, Task<PaginatedList<T>>>? PageAsync { get; set; }
 
   [Parameter]
+  public Func<T, bool>? Filter { get; set; }
+
+  [Parameter]
   public RenderFragment<T>? Summary { get; set; } = default!;
 
   [Parameter]
@@ -47,22 +51,59 @@ public partial class Table<T> : OzdsComponentBase
     return dataGrid?.ReloadServerData() ?? Task.CompletedTask;
   }
 
-  private bool Filter(T value)
+  private bool FilterItem(T value)
+  {
+    if (Filter is not null)
+    {
+      return Filter(value);
+    }
+
+    if (value is null)
+    {
+      return false;
+    }
+
+    if (value is IIdentifiable rootIdent && ContainsSearch(rootIdent.Title))
+    {
+      return true;
+    }
+
+    if (value is IIdentifiable)
+    {
+      return false;
+    }
+
+    var props = value.GetType()
+      .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+      .Where(p => p.CanRead);
+
+    foreach (var prop in props)
+    {
+      var propVal = prop.GetValue(value);
+      if (propVal == null)
+      {
+        continue;
+      }
+
+      if (propVal is IIdentifiable childIdent
+        && ContainsSearch(childIdent.Title))
+      {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  private bool ContainsSearch(string? text)
   {
     if (string.IsNullOrWhiteSpace(searchString))
     {
       return true;
     }
 
-    if (value is IIdentifiable identifiable
-      && identifiable.Title.Contains(
-        searchString,
-        StringComparison.OrdinalIgnoreCase))
-    {
-      return true;
-    }
-
-    return false;
+    return !string.IsNullOrEmpty(text)
+      && text.Contains(searchString, StringComparison.OrdinalIgnoreCase);
   }
 
   private Task OnPagingSearch(string newSearchString)
@@ -79,11 +120,21 @@ public partial class Table<T> : OzdsComponentBase
 
   private async Task<GridData<T>> OnDataGridServerData(GridState<T> state)
   {
-    var result = await Fetch(state.Page);
+    PaginatedList<T> result;
+
+    if (PageAsync is not null)
+    {
+      result = await PageAsync(state.Page);
+    }
+    else
+    {
+      result = await Fetch(state.Page);
+    }
+
     model = result;
     return new GridData<T>
     {
-      Items = result.Items,
+      Items = result.Items.Where(FilterItem),
       TotalItems = result.TotalCount
     };
   }
