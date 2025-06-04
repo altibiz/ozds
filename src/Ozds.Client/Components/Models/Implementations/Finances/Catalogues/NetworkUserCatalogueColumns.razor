@@ -1,5 +1,5 @@
 @typeparam TPrefix
-@typeparam TModel where TModel : Ozds.Business.Models.RegulatoryCatalogueModel
+@typeparam TModel where TModel : Ozds.Business.Models.Abstractions.INetworkUserCatalogue
 @using Ozds.Business.Models.Abstractions
 @inherits Ozds.Client.Components.Models.Base.OzdsColumnsComponentBase<TPrefix, TModel>
 
@@ -7,6 +7,4 @@
 
 @EnumerableColumn(x => x.Obis)
 
-@Column(x => x.BusinessUsageFeePrice_EUR)
-
-@Column(x => x.TaxRate_Percent)
+@Column(x => x.MeterFeePrice_EUR)

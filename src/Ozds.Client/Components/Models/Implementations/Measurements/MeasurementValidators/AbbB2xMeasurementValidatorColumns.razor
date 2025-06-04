@@ -1,0 +1,14 @@
+@typeparam TPrefix
+@typeparam TModel where TModel : Ozds.Business.Models.AbbB2xMeasurementValidatorModel
+@using Ozds.Business.Models.Abstractions
+@inherits Ozds.Client.Components.Models.Base.OzdsColumnsComponentBase<TPrefix, TModel>
+
+@(Base<IIdentifiable>())
+
+@Column(x => x.MaxActivePower_W)
+
+@Column(x => x.MaxCurrent_A)
+
+@Column(x => x.MaxReactivePower_VAR)
+
+@Column(x => x.MaxVoltage_V)

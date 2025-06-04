@@ -85,7 +85,7 @@ public class AuditableQueries(
       pageNumber,
       cancellationToken,
       pageCount,
-      !deleted ? x => !((IAuditableEntity)x).IsDeleted : null
+      !deleted ? x => !((IAuditableEntity)x).IsDeleted : x => ((IAuditableEntity)x).IsDeleted
     );
 
     return entities.Items

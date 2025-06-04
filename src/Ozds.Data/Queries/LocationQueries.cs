@@ -57,6 +57,10 @@ public class LocationQueries(
     {
       filtered = filtered.Where(x => x.DeletedOn == null);
     }
+    else
+    {
+      filtered = filtered.Where(x => x.DeletedOn != null);
+    }
 
     var item = await filtered
       .FirstOrDefaultAsync(cancellationToken);
@@ -106,6 +110,10 @@ public class LocationQueries(
     if (!deleted)
     {
       filtered = filtered.Where(x => x.DeletedOn == null);
+    }
+    else
+    {
+      filtered = filtered.Where(x => x.DeletedOn != null);
     }
 
     var ordered = filtered
