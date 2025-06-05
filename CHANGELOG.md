@@ -7,7 +7,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and adheres to [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
+## [1.3.1] - 2025-06-05
 
 ### Added
 
@@ -281,6 +281,7 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 - init
 
+[1.3.1]: https://github.com/altibiz/ozds/compare/1.3.0...1.3.1
 [1.3.0]: https://github.com/altibiz/ozds/compare/1.2.1...1.3.0
 [1.2.1]: https://github.com/altibiz/ozds/compare/1.2.0...1.2.1
 [1.2.0]: https://github.com/altibiz/ozds/compare/1.1.1...1.2.0
