@@ -51,10 +51,7 @@ public static class IServiceCollectionExtensions
 
     services.AddServerSideBlazor()
       .AddCircuitOptions(
-        options =>
-        {
-          options.DetailedErrors = true;
-        });
+        options => { options.DetailedErrors = true; });
 
     services.AddCascadingAuthenticationState();
 

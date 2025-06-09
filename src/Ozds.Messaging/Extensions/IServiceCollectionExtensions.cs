@@ -146,7 +146,6 @@ public static class IServiceCollectionExtensions
 
         if (isDevelopment)
         {
-
           config.UsingRabbitMq(
             (context, cfg) =>
             {

@@ -31,7 +31,7 @@ builder.Services
       .AddOzdsReport()
       .AddOzdsUsers()
       .AddOzdsData()
-      .AddOzdsMessaging(isDevelopment: builder.Environment.IsDevelopment())
+      .AddOzdsMessaging(builder.Environment.IsDevelopment())
       .AddOzdsJobs()
       .AddOzdsEmail()
       .AddOzdsBusiness()
