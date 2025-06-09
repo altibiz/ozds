@@ -53,9 +53,7 @@ public static class IServiceCollectionExtensions
       .AddCircuitOptions(
         options =>
         {
-#if DEBUG
           options.DetailedErrors = true;
-#endif
         });
 
     services.AddCascadingAuthenticationState();

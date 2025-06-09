@@ -80,9 +80,7 @@
             nixpkgs-fmt
 
             # C#
-            dotnet-sdk
-            dotnet-runtime
-            dotnet-aspnetcore
+          ] ++ (self.lib.dotnet.pkgs pkgs) ++ [
             omnisharp-roslyn
             rzls
             netcoredbg
@@ -111,7 +109,7 @@
             s3cmd
             just
             nushell
-            nix-bundle
+            self.packages.${pkgs.system}.bundle
             fd
             rumor.packages.${pkgs.system}.default
             vault
@@ -145,6 +143,8 @@
             nodePackages.vscode-langservers-extracted
             taplo
           ] ++ builtins.attrValues (self.lib.poetry.pkgs pkgs);
-      } // self.lib.playwright.env pkgs.system);
+      }
+      // (self.lib.playwright.env pkgs.system)
+      // (self.lib.dotnet.env pkgs));
   };
 }

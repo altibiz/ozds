@@ -20,6 +20,8 @@ public static class IServiceCollectionExtensions
 {
   public static IServiceCollection AddOzdsMessaging(
     this IServiceCollection services,
+    // NOTE: hack to configure MassTransit to use RabbitMQ
+    bool isDevelopment = true,
     // NOTE: hack to allow Ozds.Fake to handle MassTransit
     bool withBus = true
   )
@@ -32,7 +34,7 @@ public static class IServiceCollectionExtensions
     if (withBus)
     {
       services.AddSender();
-      services.AddBus();
+      services.AddBus(isDevelopment);
     }
 
     return services;
@@ -112,7 +114,8 @@ public static class IServiceCollectionExtensions
   }
 
   private static void AddBus(
-    this IServiceCollection services
+    this IServiceCollection services,
+    bool isDevelopment
   )
   {
     services.AddMassTransit(
@@ -141,42 +144,46 @@ public static class IServiceCollectionExtensions
         config.SetSagaRepositoryProvider(
           new OzdsSagaRepositoryRegistrationProvider());
 
-#if DEBUG // TODO: runtime config
-        config.UsingRabbitMq(
-          (context, cfg) =>
-          {
-            var messagingOptions = context
-              .GetRequiredService<IOptions<OzdsMessagingOptions>>().Value;
+        if (isDevelopment)
+        {
 
-            var connectionStringDictionary = messagingOptions.ConnectionString
-              .Split(';')
-              .ToDictionary(x => x.Split('=')[0], x => x.Split('=')[1]);
-            var host = connectionStringDictionary["Host"];
-            var virtualHost = connectionStringDictionary["VirtualHost"];
-            var username = connectionStringDictionary["Username"];
-            var password = connectionStringDictionary["Password"];
+          config.UsingRabbitMq(
+            (context, cfg) =>
+            {
+              var messagingOptions = context
+                .GetRequiredService<IOptions<OzdsMessagingOptions>>().Value;
 
-            cfg.Host(
-              host, virtualHost, cfg =>
-              {
-                cfg.Username(username);
-                cfg.Password(password);
-              });
-            cfg.ConfigureEndpoints(context);
-          });
-#else
-        config.UsingAzureServiceBus(
-          (context, cfg) =>
-          {
-            var messagingOptions = context
-              .GetRequiredService<IOptions<OzdsMessagingOptions>>().Value;
+              var connectionStringDictionary = messagingOptions.ConnectionString
+                .Split(';')
+                .ToDictionary(x => x.Split('=')[0], x => x.Split('=')[1]);
+              var host = connectionStringDictionary["Host"];
+              var virtualHost = connectionStringDictionary["VirtualHost"];
+              var username = connectionStringDictionary["Username"];
+              var password = connectionStringDictionary["Password"];
 
-            var connectionString = messagingOptions.ConnectionString;
+              cfg.Host(
+                host, virtualHost, cfg =>
+                {
+                  cfg.Username(username);
+                  cfg.Password(password);
+                });
+              cfg.ConfigureEndpoints(context);
+            });
+        }
+        else
+        {
+          config.UsingAzureServiceBus(
+            (context, cfg) =>
+            {
+              var messagingOptions = context
+                .GetRequiredService<IOptions<OzdsMessagingOptions>>().Value;
 
-            cfg.Host(connectionString);
-            cfg.ConfigureEndpoints(context);
-          });
-#endif
+              var connectionString = messagingOptions.ConnectionString;
+
+              cfg.Host(connectionString);
+              cfg.ConfigureEndpoints(context);
+            });
+        }
       });
 
     services

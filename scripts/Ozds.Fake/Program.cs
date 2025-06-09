@@ -32,7 +32,7 @@ builder.Services
   .AddOzdsReport()
   .AddOzdsUsers()
   .AddOzdsData()
-  .AddOzdsMessaging(false)
+  .AddOzdsMessaging(withBus: false)
   .AddOzdsJobs()
   .AddOzdsEmail()
   .AddOzdsBusiness()
