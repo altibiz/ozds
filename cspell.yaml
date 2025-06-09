@@ -158,6 +158,7 @@ words:
   - "isready"
   - "onpointerdown"
   - "onpointerup"
+  - "nixpkgs"
 
   # Croatian
   - "altibiz"
