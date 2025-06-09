@@ -7,10 +7,7 @@
 
 <MudHidden Breakpoint="Breakpoint.MdAndUp">
   <MudText Typo="Typo.h6">
-    @(
-    model.Items.Count > 0
-      ? Translate(model.Items.First()!.GetType())
-      : "")
+    @(Translate(typeof(T)))
   </MudText>
   <MudTextField
     Class="mt-3"
@@ -69,10 +66,7 @@
     @ref="@dataGrid">
     <ToolBarContent>
       <MudText Typo="Typo.h6">
-        @(
-        model.Items.Count > 0
-          ? Translate(model.Items.First()!.GetType())
-          : "")
+        @(Translate(typeof(T)))
       </MudText>
       <MudSpacer/>
       <MudTextField
