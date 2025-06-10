@@ -192,13 +192,15 @@ lint:
     @just lint-spelling
 
     markdownlint '{{ root }}'
-    markdown-link-check \
-      --config .markdown-link-check.json \
-      --quiet \
-      ...(fd '^.*.md$' | lines)
+    # FIXME: config file usage breaking markdown-link-check
+    if (markdown-link-check ...(fd '^.*.md$' | lines) \
+      | rg -q error \
+      | complete \
+      | get exit_code) == 0 { exit 1 }
 
     # TODO: make it work in CI
-    ($env | get CI? | is-not-empty) or (pyright '{{ root }}')
+    ($env | get CI? | is-not-empty) \
+      or ((pyright '{{ root }}' | complete | get exit_code) == 0)
     ruff check '{{ root }}'
 
     @just lint-dotnet

@@ -131,7 +131,7 @@ public class DownloadController(
       + invoice.Invoice.NetworkUserId
       + localizationQueries.Translate(
         localizationQueries.CroatianCulture, "-invoice-for-")
-      + invoice.Invoice.ToDate.ToString("MM-yyyy") + ".csv";
+      + invoice.Invoice.ToDate.ToString("MM-yyyy") + ".pdf";
 
     return File(pdf, "application/pdf", fileName);
   }
@@ -168,7 +168,7 @@ public class DownloadController(
       + invoice.Invoice.NetworkUserId
       + localizationQueries.Translate(
         localizationQueries.CroatianCulture, "-invoice-preview-for-")
-      + invoice.Invoice.ToDate.ToString("MM-yyyy") + ".csv";
+      + invoice.Invoice.ToDate.ToString("MM-yyyy") + ".pdf";
 
     return File(pdf, "application/pdf", fileName);
   }

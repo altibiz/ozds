@@ -1,21 +1,16 @@
-{ pkgs, ... }:
+{ self, pkgs, ... }:
 
 {
   integrate.devShell.devShell =
-    pkgs.mkShell {
+    pkgs.mkShell ({
       NIX_PATH = "nixpkgs=${pkgs.path}";
 
       packages = with pkgs; [
         # Scripts
         just
         nushell
-        nix-bundle
+        self.packages.${pkgs.system}.bundle
         git
-
-        # C#
-        dotnet-sdk
-        dotnet-runtime
-        dotnet-aspnetcore
-      ];
-    };
+      ] ++ (self.lib.dotnet.pkgs pkgs);
+    } // (self.lib.dotnet.env pkgs));
 }

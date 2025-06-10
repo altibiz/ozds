@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
     nixpkgsPlaywright.url = "github:NixOS/nixpkgs?rev=d02d88f8de5b882ccdde0465d8fa2db3aa1169f7";
 
     poetry2nix.url = "github:nix-community/poetry2nix";

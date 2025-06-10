@@ -33,7 +33,7 @@ builder.Services
   .AddOzdsUsers()
   .AddOzdsData()
   // TODO: figure out why this is needed here
-  .AddOzdsMessaging(false)
+  .AddOzdsMessaging(withBus: false)
   .AddOzdsJobs()
   .AddOzdsEmail()
   .AddOzdsBusiness()

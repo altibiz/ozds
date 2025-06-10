@@ -1,0 +1,8 @@
+diff --git a/default.nix b/default.nix
+index 478d445..0b6a1e3 100644
+--- a/default.nix
++++ b/default.nix
+@@ -1,2 +1,2 @@
+-{nixpkgs ? import <nixpkgs> {}}:
++{ nixpkgs ? import (fetchTarball "https://github.com/NixOS/nixpkgs/archive/d02d88f8de5b882ccdde0465d8fa2db3aa1169f7.tar.gz") { } }:
+ 
