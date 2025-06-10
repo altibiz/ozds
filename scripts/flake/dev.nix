@@ -111,6 +111,7 @@
             nushell
             self.packages.${pkgs.system}.bundle
             fd
+            ripgrep
             rumor.packages.${pkgs.system}.default
             vault
             nixos-generators

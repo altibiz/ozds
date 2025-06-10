@@ -20,6 +20,7 @@
           just
           nushell
           fd
+          ripgrep
 
           # Nix
           nixpkgs-fmt
