@@ -56,38 +56,7 @@ prepare:
     (which prettier | is-not-empty) or (npm install -g prettier)
     ($env | get --ignore-errors PLAYWRIGHT_BROWSERS_PATH | is-not-empty) or \
       ((pwsh '{{ playwright }}' install --with-deps chromium) | is-empty)
-    if (not ('{{ usersdb }}' | path exists)) { cp -f '{{ usersdbtemplate }}' '{{ usersdb }}' }
-    if (not ('{{ lldapconfigtoml }}' | path exists)) { cp -f '{{ lldapconfigtomltemplate }}' '{{ lldapconfigtoml }}' }
-    if (not ('{{ usersyml }}' | path exists)) { cp -f '{{ usersymltemplate }}' '{{ usersyml }}' }
-    if (not ('{{ configurationyml }}' | path exists)) { cp -f '{{ configurationymltemplate }}' '{{ configurationyml }}' }
     @just clean
-
-ci account_name connection_string:
-    dotnet tool restore
-    dvc remote modify azure account_name '{{ account_name }}' --local
-    dvc remote modify azure connection_string '{{ connection_string }}' --local
-    dvc pull \
-      '{{ migrationassets }}/current.sql' \
-      '{{ migrationassets }}/current-hypertables.sql'
-    dotnet ef \
-      --startup-project '{{ servercsproj }}' \
-      --project '{{ datacsproj }}' \
-      database update \
-      --context 'Ozds.Data.Context.DataDbContext'
-    dotnet ef \
-      --startup-project '{{ servercsproj }}' \
-      --project '{{ messagingcsproj }}' \
-      database update \
-      --context 'Ozds.Messaging.Context.MessagingDbContext'
-    dotnet ef \
-      --startup-project '{{ servercsproj }}' \
-      --project '{{ jobscsproj }}' \
-      database update \
-      --context 'Ozds.Jobs.Context.JobsDbContext'
-    open --raw '{{ migrationassets }}/current.sql' \
-      | psql --host localhost
-    open --raw '{{ migrationassets }}/current-hypertables.sql' \
-      | psql --host localhost
 
 up *args:
     ((docker run --rm --device=nvidia.com/gpu=all hello-world \
@@ -478,6 +447,11 @@ validate *args:
 
 [confirm("This will clean docker containers. Do you want to continue?")]
 clean:
+    if (not ('{{ usersdb }}' | path exists)) { cp -f '{{ usersdbtemplate }}' '{{ usersdb }}' }
+    if (not ('{{ lldapconfigtoml }}' | path exists)) { cp -f '{{ lldapconfigtomltemplate }}' '{{ lldapconfigtoml }}' }
+    if (not ('{{ usersyml }}' | path exists)) { cp -f '{{ usersymltemplate }}' '{{ usersyml }}' }
+    if (not ('{{ configurationyml }}' | path exists)) { cp -f '{{ configurationymltemplate }}' '{{ configurationyml }}' }
+
     docker compose ps -a -q | lines | each { |x| docker stop $x }
     docker compose --profile "*" down
     docker volume ls -q | lines \

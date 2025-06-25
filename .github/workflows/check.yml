@@ -27,8 +27,7 @@ jobs:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: prepare
-        # prettier-ignore
-        run: nix develop .#check -c just ci '${{ secrets.AZURE_ACCOUNT_NAME }}' '${{ secrets.AZURE_CONNECTION_STRING }}'
+        run: nix develop .#check -c dotnet tool restore
 
       - name: lint
         run: nix develop .#check -c just lint
