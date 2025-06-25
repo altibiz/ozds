@@ -1575,6 +1575,14 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        Ozds.Business.Analysis.Analyzer
+      </Key>
+      <Value>
+        Ozds business analysis analyzer
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         Ozds.Business.Analysis.Consumption
       </Key>
       <Value>
@@ -22265,6 +22273,14 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        Ozds.Business.Models.Composite.MaybeRepresentingUserModel.User.Name
+      </Key>
+      <Value>
+        Name
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         
         Ozds.Business.Models.Composite.MaybeRepresentingUserModel.User.UserName
       </Key>
@@ -26036,6 +26052,14 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        Ozds.Business.Models.Composite.RepresentingUserModel.User.Name
+      </Key>
+      <Value>
+        Name
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         Ozds.Business.Models.Composite.RepresentingUserModel.User.UserName
       </Key>
       <Value>
@@ -26862,6 +26886,54 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        Ozds.Business.Models.Composite.UserWithPasswordModel
+      </Key>
+      <Value>
+        User with password
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Ozds.Business.Models.Composite.UserWithPasswordModel.NewPassword
+      </Key>
+      <Value>
+        New password
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Ozds.Business.Models.Composite.UserWithPasswordModel.OldPassword
+      </Key>
+      <Value>
+        Old password
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Ozds.Business.Models.Composite.UserWithPasswordModel.User.Email
+      </Key>
+      <Value>
+        Email
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Ozds.Business.Models.Composite.UserWithPasswordModel.User.Id
+      </Key>
+      <Value>
+        Identifier
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Ozds.Business.Models.Composite.UserWithPasswordModel.User.Name
+      </Key>
+      <Value>
+        Name
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         Ozds.Business.Models.EnergyCardReportModel
       </Key>
       <Value>
@@ -27128,6 +27200,14 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        Ozds.Business.Models.Enums.LevelModelExtensions
+      </Key>
+      <Value>
+        Ozds business models enums level extensions
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         Ozds.Business.Models.Enums.LeveLModelExtensions
       </Key>
       <Value>
@@ -27180,6 +27260,57 @@
       </Key>
       <Value>
         Topic extensions
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Ozds.Business.Models.Joins.LocationRepresentativeModel
+      </Key>
+      <Value>
+        Location representative
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Ozds.Business.Models.Joins.LocationRepresentativeModel.LocationId
+      </Key>
+      <Value>
+        Location identifier
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        
+        Ozds.Business.Models.Joins.LocationRepresentativeModel.RepresentativeId
+      </Key>
+      <Value>
+        Representative identifier
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Ozds.Business.Models.Joins.NetworkUserRepresentativeModel
+      </Key>
+      <Value>
+        Network user representative
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        
+        Ozds.Business.Models.Joins.NetworkUserRepresentativeModel.NetworkUserId
+      </Key>
+      <Value>
+        Network user identifier
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        
+        Ozds.Business.Models.Joins.NetworkUserRepresentativeModel.RepresentativeId
+      </Key>
+      <Value>
+        Representative identifier
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -32877,6 +33008,14 @@
       </Key>
       <Value>
         Identifier
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Ozds.Business.Models.UserModel.Name
+      </Key>
+      <Value>
+        Name
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
