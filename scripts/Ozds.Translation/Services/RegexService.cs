@@ -71,16 +71,31 @@ public partial class RegexService(
         {
           var key = match.Groups[1].Value;
 
-          if (dictionary.Contains(key))
+          var index = IndexOf(content, match.Index);
+          var relativePath = Path.GetRelativePath(
+            arguments.InputRazorFolderPath,
+            file
+          );
+          var metadata = $"""
+            From file '{relativePath}' line {index.Line} column {index.Column}
+          """.Trim();
+
+          if (dictionary.Get(key) is { } translation)
           {
+            dictionary.Replace(key, metadata, translation);
+            logger.LogInformation(
+              "Updated key '{Key}' metadata:\n{Metadata}",
+              key,
+              metadata
+            );
             continue;
           }
 
           logger.LogInformation("Found new key: {Key}", key);
-
           yield return new TranslationWorkerItem(
             dictionary,
             key,
+            metadata,
             key,
             AssetConstants.EnglishCulture,
             new CultureInfo(arguments.Language),
@@ -90,6 +105,27 @@ public partial class RegexService(
       }
     }
   }
+
+  private static Index IndexOf(string text, int index)
+  {
+    var line = 1;
+    var column = 1;
+    for (var i = 0; i < index; i++)
+    {
+      if (text[i] == '\n')
+      {
+        line++;
+        column = 1;
+      }
+      else
+      {
+        column++;
+      }
+    }
+    return new Index(line, column);
+  }
+
+  private sealed record Index(int Line, int Column);
 
   [GeneratedRegex(@"Translate\(""([^""]+)""\)")]
   private static partial Regex TranslateRegex();

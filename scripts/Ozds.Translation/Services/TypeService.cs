@@ -233,110 +233,252 @@ public class TypeService(
 
   protected override IEnumerable<TranslationWorkerItem> GetEnumerable()
   {
-    var assembly = AppDomain.CurrentDomain
-        .GetAssemblies()
-        .FirstOrDefault(
-          assembly =>
-            assembly.GetName().Name == arguments.InputAssemblyName)
-      ?? throw new InvalidOperationException(
-        $"Could not find assembly: {arguments.InputAssemblyName}");
-
-    logger.LogInformation("Found assembly: {assembly}", assembly);
-
-    var types = assembly
-      .GetTypes()
-      .Where(
-        type =>
-          (type.IsClass || type.IsInterface)
-          && type.Namespace is not null
-          && arguments.InputAssemblyNamespaces.Any(
-            type.Namespace.StartsWith));
-
-    foreach (var type in types)
+    var items = GroupItemsAcrossAssemblies(
+      GroupItemsByDeclaration(GetItems()));
+    foreach (var item in items)
     {
-      // NITPICK: this is disgusting
-      using var scope = services.CreateScope();
-      var localizationQueries = scope.ServiceProvider
-        .GetRequiredService<ILocalizationQueries>();
-
-      var prefix = localizationQueries.Key(type);
-      var shortPrefix = localizationQueries.ShortKey(type);
-
-      // NITPICK: this is yucky
-      if (prefix.StartsWith('<') || shortPrefix.StartsWith('<'))
+      var translation = dictionary.Get(item.Key) ??
+        item.AdditionalKeys
+          .Select(x => dictionary.Get(x.Key))
+          .FirstOrDefault(x => x is { });
+      if (translation is { })
       {
+        dictionary.Replace(item.Key, item.Metadata, translation);
+        logger.LogInformation(
+          "Updated metadata for '{Key}' to\n{Metadata}",
+          item.Key,
+          item.Metadata
+        );
+
+        if (arguments.Reduce)
+        {
+          foreach (var (key, shortKey) in item.AdditionalKeys)
+          {
+            dictionary.Remove(key);
+            if (item.IsProperty)
+            {
+              dictionary.Remove(shortKey);
+            }
+            logger.LogInformation(
+              "Removed key '{Key}' and short key '{ShortKey}'",
+              key,
+              shortKey
+            );
+          }
+        }
+
         continue;
       }
 
-      if (dictionary.Contains(prefix) || dictionary.Contains(shortPrefix))
+      logger.LogInformation("Found new key: {Key}", item.Key);
+
+      yield return new TranslationWorkerItem(
+        dictionary,
+        item.Key,
+        item.Metadata,
+        item.Key,
+        AssetConstants.EnglishCulture,
+        new CultureInfo(arguments.Language),
+        item.AdditionalPrompt
+      );
+    }
+  }
+
+  private IEnumerable<GroupedAcrossAssembliesTranslationItem> GroupItemsAcrossAssemblies(
+    IEnumerable<GroupedByDeclarationTranslationItem> items
+  )
+  {
+    var translation = services
+      .GetRequiredService<ITranslationQueries>();
+
+    return items
+      .GroupBy(item => item.Property is { } property
+        ? translation.GeneralKey(item.Type, property)
+        : translation.GeneralKey(item.Type))
+      .Select(group =>
       {
-        var translation = dictionary.Remove(shortPrefix);
-        if (translation is not null)
-        {
-          dictionary.Add(prefix, translation);
-          logger.LogInformation(
-            "{ShortKey} expanded to {Key}", shortPrefix, prefix);
-        }
-      }
-      else
-      {
-        logger.LogInformation("Found new type: {Type}", prefix);
-
-        yield return new TranslationWorkerItem(
-          dictionary,
-          prefix,
-          prefix,
-          AssetConstants.EnglishCulture,
-          new CultureInfo(arguments.Language),
-          AdditionalTypePrompt
-        );
-      }
-
-      foreach (var (key, shortKey) in
-        GetPathsRecursive(type, prefix, shortPrefix)
-          .Distinct())
-      {
-        if (dictionary.Contains(key) || dictionary.Contains(shortKey))
-        {
-          var translation = dictionary.Remove(shortKey);
-          if (translation is not null)
-          {
-            dictionary.Add(key, translation);
-            logger.LogInformation(
-              "{ShortKey} expanded to {Key}", shortKey, key);
-          }
-
-          continue;
-        }
-
-        logger.LogInformation("Found new property path: {Path}", key);
-
-        yield return new TranslationWorkerItem(
-          dictionary,
-          key,
-          key,
-          AssetConstants.EnglishCulture,
-          new CultureInfo(arguments.Language),
+        var metadata = string
+          .Join("\n\n", group.Select(x => x.Metadata));
+        return new GroupedAcrossAssembliesTranslationItem(
+          false,
+          group.Key,
+          group.Key,
+          group
+            .Select(x => (x.Key, x.ShortKey))
+            .Concat(group
+              .Where(x => x.Property == null)
+              .GroupBy(x => translation
+                .GeneralKey(x.Type, trimmed: false))
+              .Where(x => x.Key != group.Key)
+              .Select(x => (x.Key, x.Key)))
+            .ToList(),
+          metadata,
           AdditionalPropertyPrompt
         );
+      });
+  }
+
+  private IEnumerable<GroupedByDeclarationTranslationItem> GroupItemsByDeclaration(
+    IEnumerable<TypeTranslationItem> items
+  )
+  {
+    var translation = services
+      .GetRequiredService<ITranslationQueries>();
+
+    return items
+      .GroupBy(item => (
+        Type: item.DeclaringType,
+        Property: item.EnumName ?? item.Property?.Name
+      ))
+      .Select(group =>
+      {
+        var type = group.Key.Type;
+        var property = group.Key.Property;
+
+        if (property is null)
+        {
+          var first = group.First();
+          var typeMetadata = $"""
+            Type '{type.FullName}'
+          """.Trim();
+          return new GroupedByDeclarationTranslationItem(
+            type,
+            null,
+            first.Key,
+            first.ShortKey,
+            [],
+            typeMetadata,
+            AdditionalTypePrompt
+          );
+        }
+
+        var typeKey = translation.Key(type);
+        var declaredItem = group.FirstOrDefault(x =>
+          x.Key.StartsWith(typeKey));
+        if (declaredItem is null)
+        {
+          var keys = string.Join(
+            "\n",
+            group.Select(x => x.Key));
+          throw new InvalidOperationException(
+            $"Could not find declared item for '{typeKey}.{property}'"
+            + $" out of:\n{keys}");
+        }
+        var additional = group
+          .Where(x => x != declaredItem)
+          .ToList();
+        var memberMetadata = additional.Count == 0
+          ? $"Property '{property}' of type '{typeKey}'"
+          : $"""
+              Property '{property}' of type '{typeKey}' with overrides:
+            {string
+              .Join("\n", additional.Select(x => x.ShortKey))
+              .Indent(2, "\n")}
+            """.Trim().Dedent(12, "\n");
+        return new GroupedByDeclarationTranslationItem(
+          type,
+          property,
+          declaredItem.Key,
+          declaredItem.ShortKey,
+          additional
+            .Select(x => (x.Key, x.ShortKey))
+            .ToList(),
+          memberMetadata,
+          AdditionalPropertyPrompt
+        );
+      });
+  }
+
+  private IEnumerable<TypeTranslationItem> GetItems()
+  {
+    var translation = services
+      .GetRequiredService<ITranslationQueries>();
+
+    var assemblies = AppDomain.CurrentDomain
+        .GetAssemblies()
+        .Where(assembly =>
+          arguments.InputAssemblies.Contains(assembly.GetName().Name));
+
+    logger.LogInformation(
+      "Found assemblies:\n{Assemblies}",
+      string.Join("\n", assemblies)
+    );
+
+    var types = assemblies
+      .SelectMany(assembly => assembly
+        .GetTypes()
+        .Where(type => !(type.Name?.StartsWith('<') ?? false))
+        .Where(type => !(type.Name?.EndsWith("Extensions") ?? false))
+        .Where(
+          type =>
+            type.Namespace is not null
+            && arguments.InputNamespaces.Any(
+              type.Namespace.StartsWith)));
+
+    foreach (var type in types)
+    {
+      var prefix = translation.Key(type);
+      var shortPrefix = translation.ShortKey(type);
+
+      yield return new(
+        type,
+        type,
+        null,
+        null,
+        prefix,
+        shortPrefix
+      );
+
+      foreach (var item in GetTypeItems(type, prefix, shortPrefix))
+      {
+        yield return item;
       }
     }
   }
 
-  private IEnumerable<(string, string)> GetPathsRecursive(
+  private IEnumerable<TypeTranslationItem> GetTypeItems(
     Type type,
     string pathPrefix,
     string shortPathPrefix
   )
   {
+    if (type.IsEnum)
+    {
+      foreach (var name in type.GetEnumNames())
+      {
+        var fullPath = $"{pathPrefix}.{name}";
+        var fullShortPath = $"{shortPathPrefix}.{name}";
+
+        yield return new(
+          type,
+          type,
+          null,
+          name,
+          fullPath,
+          fullShortPath
+        );
+      }
+    }
+
     var properties = type.GetProperties(
       BindingFlags.Public | BindingFlags.Instance
     );
+
     foreach (var property in properties)
     {
       var propertyType = property.PropertyType;
       var fullPath = $"{pathPrefix}.{property.Name}";
       var fullShortPath = $"{shortPathPrefix}.{property.Name}";
+
+      var declaringType = GetLogicalDeclaringType(property);
+      yield return new(
+        declaringType,
+        type,
+        property,
+        null,
+        fullPath,
+        fullShortPath
+      );
 
       if (
         propertyType != typeof(string)
@@ -348,47 +490,149 @@ public class TypeService(
           : null;
         if (
           elementType != null
-          && elementType.IsClass
           && elementType.Namespace != null
-          && arguments.InputAssemblyNamespaces.Any(
+          && arguments.InputNamespaces.Any(
             elementType.Namespace.StartsWith)
         )
         {
-          foreach (var path in
-            GetPathsRecursive(
+          foreach (var item in
+            GetTypeItems(
               elementType,
               fullPath,
               fullShortPath))
           {
-            yield return path;
+            yield return item;
           }
-        }
-        else
-        {
-          yield return (fullPath, fullShortPath);
         }
       }
       else if (
-        propertyType.IsClass
-        && propertyType != typeof(string)
-        && propertyType.Namespace != null
-        && arguments.InputAssemblyNamespaces.Any(
+        propertyType.Namespace != null
+        && arguments.InputNamespaces.Any(
           propertyType.Namespace.StartsWith)
       )
       {
-        foreach (var path in
-          GetPathsRecursive(
+        foreach (var item in
+          GetTypeItems(
             propertyType,
             fullPath,
             fullShortPath))
         {
-          yield return path;
+          yield return item;
         }
-      }
-      else
-      {
-        yield return (fullPath, fullShortPath);
       }
     }
   }
+
+  private Type GetLogicalDeclaringType(PropertyInfo property)
+  {
+    var declaringType = property.DeclaringType
+      ?? throw new InvalidOperationException(
+        $"Could not find declaring type for '{property.Name}'");
+
+    if (declaringType.IsInterface)
+    {
+      return declaringType;
+    }
+
+    if (declaringType.IsGenericType)
+    {
+      declaringType = declaringType.GetGenericTypeDefinition();
+    }
+
+    var declaringTypeProperty = declaringType.GetProperty(
+      property.Name,
+      BindingFlags.Public | BindingFlags.Instance)!;
+
+    var interfaces = GetAllInterfacesInHierarchy(declaringType);
+
+    foreach (var @interface in interfaces)
+    {
+      var mapping = declaringType.GetInterfaceMap(@interface);
+
+      var getter = declaringTypeProperty.GetGetMethod();
+      var setter = declaringTypeProperty.GetSetMethod();
+
+      if ((getter != null && mapping.TargetMethods.Contains(getter)) ||
+        (setter != null && mapping.TargetMethods.Contains(setter)))
+      {
+        return @interface;
+      }
+    }
+
+    return declaringType;
+  }
+
+  private HashSet<Type> GetAllInterfacesInHierarchy(Type type)
+  {
+    var interfaces = new HashSet<Type>();
+
+    while (type != null)
+    {
+      foreach (var @interface in GetAllInterfacesRecursively(type))
+      {
+        interfaces.Add(@interface);
+      }
+
+      type = type.BaseType!;
+
+      if (type.Namespace == null
+        || !arguments.InputNamespaces.Any(type.Namespace.StartsWith))
+      {
+        break;
+      }
+    }
+
+    return interfaces;
+  }
+
+  private HashSet<Type> GetAllInterfacesRecursively(Type type)
+  {
+    var interfaces = new HashSet<Type>();
+
+    foreach (var @interface in type.GetInterfaces())
+    {
+      if (@interface.Namespace == null
+        || !arguments.InputNamespaces.Any(@interface.Namespace.StartsWith))
+      {
+        continue;
+      }
+
+      interfaces.Add(@interface);
+
+      foreach (var nestedInterface in GetAllInterfacesRecursively(@interface))
+      {
+        interfaces.Add(nestedInterface);
+      }
+    }
+
+    return interfaces;
+  }
+
+  private sealed record GroupedAcrossAssembliesTranslationItem(
+    bool IsProperty,
+    string Key,
+    string ShortKey,
+    List<(string Key, string ShortKey)> AdditionalKeys,
+    string Metadata,
+    string AdditionalPrompt
+  );
+
+  private sealed record GroupedByDeclarationTranslationItem(
+    Type Type,
+    string? Property,
+    string Key,
+    string ShortKey,
+    List<(string Key, string ShortKey)> AdditionalKeys,
+    string Metadata,
+    string AdditionalPrompt
+  );
+
+  private sealed record TypeTranslationItem(
+    Type DeclaringType,
+    Type ReflectedType,
+    PropertyInfo? Property,
+    string? EnumName,
+    string Key,
+    string ShortKey
+  );
 }

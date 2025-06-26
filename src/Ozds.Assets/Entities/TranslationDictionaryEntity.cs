@@ -30,15 +30,15 @@ public sealed class TranslationDictionaryEntity
     Indent = true
   };
 
-  private readonly ConcurrentDictionary<string, string> items;
+  private readonly ConcurrentDictionary<string, Item> items;
 
   private TranslationDictionaryEntity()
   {
-    items = new ConcurrentDictionary<string, string>();
+    items = new();
   }
 
   private TranslationDictionaryEntity(
-    ConcurrentDictionary<string, string> dictionary
+    ConcurrentDictionary<string, Item> dictionary
   )
   {
     items = dictionary;
@@ -152,12 +152,18 @@ public sealed class TranslationDictionaryEntity
   )
   {
     return new TranslationDictionaryEntity(
-      new ConcurrentDictionary<string, string>(dictionary));
+      new ConcurrentDictionary<string, Item>(
+        dictionary.ToDictionary(
+          x => x.Key,
+          x => new Item(string.Empty, x.Value))));
   }
 
   public Dictionary<string, string> ToDictionary()
   {
-    return items.ToDictionary();
+    return items.ToDictionary(
+      x => x.Key,
+      x => x.Value.Value
+    );
   }
 
   public static async Task<TranslationDictionaryEntity> Load(
@@ -192,7 +198,7 @@ public sealed class TranslationDictionaryEntity
 
   public string? Get(string key)
   {
-    return items.GetValueOrDefault(key);
+    return items.GetValueOrDefault(key)?.Value;
   }
 
   public bool Contains(string key)
@@ -202,17 +208,42 @@ public sealed class TranslationDictionaryEntity
 
   public void Add(string key, string value)
   {
-    items.TryAdd(key, value);
+    items.TryAdd(key, new(null, value));
+  }
+
+  public void Add(string key, string? metadata, string value)
+  {
+    items.TryAdd(key, new(metadata, value));
+  }
+
+  public void Replace(string key, string value)
+  {
+    items.AddOrUpdate(
+      key,
+      _ => new(null, value),
+      (_, _) => new(null, value));
+  }
+
+  public void Replace(string key, string metadata, string value)
+  {
+    items.AddOrUpdate(
+      key,
+      _ => new(metadata, value),
+      (_, _) => new(metadata, value));
   }
 
   public string? Remove(string key)
   {
-    items.TryRemove(key, out var removed);
-    return removed;
+    if (!items.TryRemove(key, out var removed))
+    {
+      return null;
+    }
+
+    return removed.Value;
   }
 
   private static TranslationDictionaryContent DictionaryToContent(
-    ConcurrentDictionary<string, string> dictionary,
+    ConcurrentDictionary<string, Item> dictionary,
     Format format
   )
   {
@@ -223,26 +254,30 @@ public sealed class TranslationDictionaryEntity
         .Select(
           item => new TranslationDictionaryItem
           {
-            Key = Pretty(item.Key, format),
-            Value = Pretty(item.Value, format)
+            Key = PrettyKeyValue(item.Key, format),
+            Metadata = item.Value.Metadata is { } metadata
+              ? PrettyMetadata(metadata, format)
+              : null,
+            Value = PrettyKeyValue(item.Value.Value, format)
           })
         .ToList()
     };
   }
 
-  private static ConcurrentDictionary<string, string> ContentToDictionary(
-    TranslationDictionaryContent content
-  )
+  private static ConcurrentDictionary<string, Item>
+    ContentToDictionary(TranslationDictionaryContent content)
   {
-    return new ConcurrentDictionary<string, string>(
+    return new ConcurrentDictionary<string, Item>(
       content.Translations.Select(
         item =>
-          new KeyValuePair<string, string>(
+          new KeyValuePair<string, Item>(
             item.Key.TrimWords(),
-            item.Value.TrimWords())));
+            new(
+              item.Metadata?.Trim().Dedent(8, "\n"),
+              item.Value.TrimWords()))));
   }
 
-  private static string Pretty(
+  private static string PrettyKeyValue(
     string value,
     Format format
   )
@@ -267,12 +302,38 @@ public sealed class TranslationDictionaryEntity
     throw new InvalidOperationException("Invalid file extension.");
   }
 
+  private static string PrettyMetadata(
+    string metadata,
+    Format format
+  )
+  {
+    if (format is Format.Json)
+    {
+      return metadata.TrimWords();
+    }
+
+    if (format is Format.Xml)
+    {
+      var prettyValue = metadata.Indent(8, "\n");
+      return $"\n{prettyValue}\n{new string(' ', 6)}";
+    }
+
+    if (format is Format.Toml)
+    {
+      return $"\n{metadata}\n";
+    }
+
+    throw new InvalidOperationException("Invalid file extension.");
+  }
+
   private enum Format
   {
     Json,
     Xml,
     Toml
   }
+
+  private sealed record Item(string? Metadata, string Value);
 }
 
 // NOTE: public because of XML serialization
@@ -285,6 +346,8 @@ public sealed class TranslationDictionaryContent
 public sealed class TranslationDictionaryItem
 {
   public string Key { get; set; } = default!;
+
+  public string? Metadata { get; set; } = default!;
 
   public string Value { get; set; } = default!;
 }

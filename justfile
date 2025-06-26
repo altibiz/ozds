@@ -92,20 +92,15 @@ translation *args:
 translate:
     @just translation type \
       -l hr \
-      -i Ozds.Business \
-      -n Ozds.Business.Models Ozds.Business.Analysis \
-      -u {{ translationshr }} \
-      -o {{ translationshr }}
-    @just translation type \
-      -l hr \
-      -i Ozds.Document \
-      -n Ozds.Document.Entities \
-      -u {{ translationshr }} \
-      -o {{ translationshr }}
-    @just translation type \
-      -l hr \
-      -i Ozds.Report \
-      -n Ozds.Report.Entities \
+      -a \
+        Ozds.Business \
+        Ozds.Document \
+        Ozds.Report \
+      -n \
+        Ozds.Business.Models \
+        Ozds.Business.Analysis \
+        Ozds.Document.Entities \
+        Ozds.Report.Entities \
       -u {{ translationshr }} \
       -o {{ translationshr }}
     @just translation regex \
@@ -115,20 +110,15 @@ translate:
       -o {{ translationshr }}
     @just translation type \
       -l en \
-      -i Ozds.Business \
-      -n Ozds.Business.Models Ozds.Business.Analysis \
-      -u {{ translationsen }} \
-      -o {{ translationsen }}
-    @just translation type \
-      -l en \
-      -i Ozds.Document \
-      -n Ozds.Document.Entities \
-      -u {{ translationsen }} \
-      -o {{ translationsen }}
-    @just translation type \
-      -l en \
-      -i Ozds.Report \
-      -n Ozds.Report.Entities \
+      -a \
+        Ozds.Business \
+        Ozds.Document \
+        Ozds.Report \
+      -n \
+        Ozds.Business.Models \
+        Ozds.Business.Analysis \
+        Ozds.Document.Entities \
+        Ozds.Report.Entities \
       -u {{ translationsen }} \
       -o {{ translationsen }}
     @just translation regex \

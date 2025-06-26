@@ -43,6 +43,9 @@ public partial class Table<T> : OzdsComponentBase
   [Parameter]
   public int PageCount { get; set; } = QueryConstants.DefaultPageCount;
 
+  [Parameter]
+  public bool DynamicTitle { get; set; } = false;
+
   [Inject]
   private NavigationManager NavigationManager { get; set; } = default!;
 

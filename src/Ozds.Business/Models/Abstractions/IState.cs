@@ -1,6 +1,6 @@
 namespace Ozds.Business.Models.Abstractions;
 
-public interface IStateModel : IModel
+public interface IState : IModel
 {
   public string CurrentState { get; }
 }

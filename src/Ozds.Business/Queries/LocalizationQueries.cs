@@ -28,44 +28,17 @@ public class LocalizationQueries(
 
   public string Translate(CultureInfo culture, Type type)
   {
-    var key = localizer.Key(type);
-    var value = localizer.Translate(culture, key);
-    if (key != value)
-    {
-      return value;
-    }
-
-    key = localizer.ShortKey(type);
-    value = localizer.Translate(culture, key);
-    return value;
+    return localizer.Translate(culture, type);
   }
 
   public string Translate(CultureInfo culture, Type type, string member)
   {
-    var key = localizer.Key(type, member);
-    var value = localizer.Translate(culture, key);
-    if (key != value)
-    {
-      return value;
-    }
-
-    key = localizer.ShortKey(type, member);
-    value = localizer.Translate(culture, key);
-    return value;
+    return localizer.Translate(culture, type, member);
   }
 
   public string Translate(CultureInfo culture, MemberExpression member)
   {
-    var key = localizer.Key(member);
-    var value = localizer.Translate(culture, key);
-    if (key != value)
-    {
-      return value;
-    }
-
-    key = localizer.ShortKey(member);
-    value = localizer.Translate(culture, key);
-    return value;
+    return localizer.Translate(culture, member);
   }
 
   public string NumericString(decimal? number, int places = 2)
