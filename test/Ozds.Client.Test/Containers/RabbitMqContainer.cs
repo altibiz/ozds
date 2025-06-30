@@ -88,10 +88,10 @@ public sealed class RabbitMqContainer : IComposableService<RabbitMqContainer>
     var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
     var wait = isWindows
       ? Wait
-        .ForUnixContainer()
+        .ForWindowsContainer()
         .UntilMessageIsLogged(RabbitMqReady)
       : Wait
-        .ForWindowsContainer()
+        .ForUnixContainer()
         .UntilMessageIsLogged(RabbitMqReady);
 
     var host = network.Host<RabbitMqContainer>();

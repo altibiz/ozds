@@ -85,10 +85,10 @@ public sealed class PostgresContainer : IComposableService<PostgresContainer>
     var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
     var wait = isWindows
       ? Wait
-        .ForUnixContainer()
+        .ForWindowsContainer()
         .UntilMessageIsLogged(PostgresReady)
       : Wait
-        .ForWindowsContainer()
+        .ForUnixContainer()
         .UntilMessageIsLogged(PostgresReady);
 
     var host = network.Host<PostgresContainer>();

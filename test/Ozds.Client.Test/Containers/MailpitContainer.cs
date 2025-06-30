@@ -97,10 +97,10 @@ public sealed class MailpitContainer : IComposableService<MailpitContainer>
     var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
     var wait = isWindows
       ? Wait
-        .ForUnixContainer()
+        .ForWindowsContainer()
         .UntilMessageIsLogged(MailpitReady)
       : Wait
-        .ForWindowsContainer()
+        .ForUnixContainer()
         .UntilMessageIsLogged(MailpitReady);
 
     var tmpDir = Path.Combine(
@@ -124,7 +124,7 @@ public sealed class MailpitContainer : IComposableService<MailpitContainer>
       .WithBindMount(
         authFilePath,
         "/etc/mailpit/mailpit.auth",
-        AccessMode.ReadOnly
+        AccessMode.ReadWrite
       )
       .WithWaitStrategy(wait)
       .Build();

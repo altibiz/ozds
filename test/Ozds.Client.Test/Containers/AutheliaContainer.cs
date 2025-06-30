@@ -122,10 +122,10 @@ public sealed class AutheliaContainer : IComposableService<AutheliaContainer>
     var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
     var wait = isWindows
       ? Wait
-        .ForUnixContainer()
+        .ForWindowsContainer()
         .UntilMessageIsLogged(AutheliaReady)
       : Wait
-        .ForWindowsContainer()
+        .ForUnixContainer()
         .UntilMessageIsLogged(AutheliaReady);
 
     var tmpDir = Path.Combine(
@@ -154,7 +154,7 @@ public sealed class AutheliaContainer : IComposableService<AutheliaContainer>
       .WithBindMount(
         configFilePath,
         "/config/configuration.yml",
-        AccessMode.ReadOnly)
+        AccessMode.ReadWrite)
       .Build();
     await File.WriteAllTextAsync(configFilePath, "", cancellationToken);
 

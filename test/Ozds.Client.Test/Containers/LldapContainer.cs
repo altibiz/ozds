@@ -176,10 +176,11 @@ public sealed class LldapContainer : IComposableService<LldapContainer>
     var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
     var wait = isWindows
       ? Wait
-        .ForUnixContainer()
-        .UntilMessageIsLogged(LldapReady)
-      : Wait
         .ForWindowsContainer()
+        .UntilMessageIsLogged(LldapReady, wait => wait
+          .WithTimeout(TimeSpan.FromSeconds(30_000)))
+      : Wait
+        .ForUnixContainer()
         .UntilMessageIsLogged(LldapReady);
 
     var tmpDir = Path.Combine(
@@ -206,7 +207,7 @@ public sealed class LldapContainer : IComposableService<LldapContainer>
       .WithBindMount(
         configFilePath,
         "/data/lldap_config.toml",
-        AccessMode.ReadOnly)
+        AccessMode.ReadWrite)
       .Build();
 
     return new LldapContainer(

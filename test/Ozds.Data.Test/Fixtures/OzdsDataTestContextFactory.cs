@@ -35,6 +35,9 @@ public static class OzdsDataTestContextFactory
 
   private const string PostgresPassword = "ozds";
 
+  private const string PostgresReady =
+    "database system is ready to accept connections";
+
   public static async Task<OzdsDataTestContext> CreateOzdsDataTestContext(
     CancellationToken cancellationToken
   )
@@ -42,13 +45,11 @@ public static class OzdsDataTestContextFactory
     var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
     var wait = isWindows
       ? Wait
-        .ForUnixContainer()
-        .UntilMessageIsLogged(
-          "database system is ready to accept connections")
-      : Wait
         .ForWindowsContainer()
-        .UntilMessageIsLogged(
-          "database system is ready to accept connections");
+        .UntilMessageIsLogged(PostgresReady)
+      : Wait
+        .ForUnixContainer()
+        .UntilMessageIsLogged(PostgresReady);
 
     var container = new ContainerBuilder()
       .WithImage("timescale/timescaledb-ha:pg14-latest")
@@ -60,6 +61,12 @@ public static class OzdsDataTestContextFactory
       .Build();
 
     await container.StartAsync(cancellationToken);
+
+    // NOTE: fuck Bill Gates
+    if (isWindows)
+    {
+      await Task.Delay(10_000, cancellationToken);
+    }
 
     var builder = Host.CreateApplicationBuilder();
     builder.Services.AddLogging();
