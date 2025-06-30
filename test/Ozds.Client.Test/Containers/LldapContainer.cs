@@ -177,8 +177,9 @@ public sealed class LldapContainer : IComposableService<LldapContainer>
     var wait = isWindows
       ? Wait
         .ForWindowsContainer()
-        .UntilMessageIsLogged(LldapReady, wait => wait
-          .WithTimeout(TimeSpan.FromSeconds(30_000)))
+        .UntilMessageIsLogged(
+          LldapReady, wait => wait
+            .WithTimeout(TimeSpan.FromSeconds(30_000)))
       : Wait
         .ForUnixContainer()
         .UntilMessageIsLogged(LldapReady);
