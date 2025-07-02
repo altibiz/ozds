@@ -254,8 +254,6 @@ publish *args:
     cp '{{ ozdsserver }}' '{{ artifacts }}/ozds-server'
     cp '{{ ozdsserverdev }}' '{{ artifacts }}/ozds-server-dev'
 
-    mv '{{ artifacts }}/App_Data' '{{ artifacts }}/App_Data_Dev'
-
     mkdir ("{{ artifacts }}/.playwright/package/.local-browsers" \
       + "/chromium_headless_shell-1155/chrome-linux")
 
