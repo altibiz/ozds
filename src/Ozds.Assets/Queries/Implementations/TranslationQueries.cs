@@ -47,7 +47,7 @@ public class TranslationQueries : ITranslationQueries
     return order
       .Select(Key)
       .Append(GeneralKey(type, false))
-      .Append(GeneralKey(type, true))
+      .Append(GeneralKey(type))
       .ToArray();
   }
 
