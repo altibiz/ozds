@@ -132,10 +132,11 @@ public static class EntityTypeBuilderExtensions
 #pragma warning disable S125 // Sections of code should not be commented out
     // Console.Write(
     //   "Archiving property {0} of {1}"
-    //   + "\nProperties to ignore: {2}"
-    //   + "\nProperties to archive: {3}"
-    //   + "\nProperties to shorten: {4}"
-    //   + "\n\n",
+    //   + $"{Environment.NewLine}Properties to ignore: {2}"
+    //   + $"{Environment.NewLine}Properties to archive: {3}"
+    //   + $"{Environment.NewLine}Properties to shorten: {4}"
+    //   + Environment.NewLine
+    //   + Environment.NewLine,
     //   propertyName,
     //   complexPropertyBuilder.Metadata.DeclaringType.Name,
     //   string.Join(", ", propertiesToIgnore.Select(p => p.Name)),

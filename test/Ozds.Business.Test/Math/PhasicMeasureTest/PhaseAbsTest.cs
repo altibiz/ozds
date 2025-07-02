@@ -4,57 +4,73 @@ namespace Ozds.Business.Test.Math.PhasicMeasureTest;
 
 public class PhaseAbsTest
 {
-  public static readonly TheoryData<PhasicMeasure<decimal>>
-    PhasicMeasuresAbsSinglePhaseSix = new()
+  public static IEnumerable<PhasicMeasure<decimal>>
+    PhasicMeasuresAbsSinglePhaseSix()
+  {
+    return new List<PhasicMeasure<decimal>>
     {
       new SinglePhasicMeasureSum<decimal>(6)
     };
+  }
 
-  public static readonly TheoryData<PhasicMeasure<decimal>>
-    PhasicMeasuresAbsTriPhaseSix = new()
+  public static IEnumerable<PhasicMeasure<decimal>>
+    PhasicMeasuresAbsTriPhaseSix()
+  {
+    return new List<PhasicMeasure<decimal>>
     {
       new TriPhasicMeasure<decimal>(-6, 6, 6),
       new TriPhasicMeasure<decimal>(-6, -6, -6)
     };
+  }
 
-  public static readonly TheoryData<PhasicMeasure<decimal>>
-    PhasicMeasuresAbsSinglePhaseZero = new()
+  public static IEnumerable<PhasicMeasure<decimal>>
+    PhasicMeasuresAbsSinglePhaseZero()
+  {
+    return new List<PhasicMeasure<decimal>>
     {
       new SinglePhasicMeasureSum<decimal>(0)
     };
+  }
 
-  public static readonly TheoryData<PhasicMeasure<decimal>>
-    PhasicMeasuresAbsTriPhaseZero = new()
+  public static IEnumerable<PhasicMeasure<decimal>>
+    PhasicMeasuresAbsTriPhaseZero()
+  {
+    return new List<PhasicMeasure<decimal>>
     {
       new TriPhasicMeasure<decimal>(0, 0, 0),
       new TriPhasicMeasure<decimal>(0, -0, 0)
     };
+  }
 
-  [Theory]
-  [MemberData(nameof(PhasicMeasuresAbsSinglePhaseSix))]
+  [Test]
+  [MethodDataSource(nameof(PhasicMeasuresAbsSinglePhaseSix))]
   public void ReturnsAbsSinglePhaseSix(PhasicMeasure<decimal> x)
   {
-    Assert.Equal(new SinglePhasicMeasureSum<decimal>(6), x.PhaseAbs());
+    x.PhaseAbs().Should()
+      .BeEquivalentTo(new SinglePhasicMeasureSum<decimal>(6));
   }
 
-  [Theory]
-  [MemberData(nameof(PhasicMeasuresAbsTriPhaseSix))]
+  [Test]
+  [MethodDataSource(nameof(PhasicMeasuresAbsTriPhaseSix))]
   public void ReturnsAbsTriPhaseSix(PhasicMeasure<decimal> x)
   {
-    Assert.Equal(new TriPhasicMeasure<decimal>(6, 6, 6), x.PhaseAbs());
+    x.PhaseAbs().Should()
+      .BeEquivalentTo(new TriPhasicMeasure<decimal>(6, 6, 6));
   }
 
-  [Theory]
-  [MemberData(nameof(PhasicMeasuresAbsSinglePhaseZero))]
+  [Test]
+  [MethodDataSource(nameof(PhasicMeasuresAbsSinglePhaseZero))]
   public void ReturnsAbsSinglePhaseZero(PhasicMeasure<decimal> x)
   {
-    Assert.Equal(new SinglePhasicMeasureSum<decimal>(0), x.PhaseAbs());
+    x.PhaseAbs().Should()
+      .BeEquivalentTo(new SinglePhasicMeasureSum<decimal>(0));
   }
 
-  [Theory]
-  [MemberData(nameof(PhasicMeasuresAbsTriPhaseZero))]
+  [Test]
+  [MethodDataSource(nameof(PhasicMeasuresAbsTriPhaseZero))]
   public void ReturnsAbsTriPhaseZero(PhasicMeasure<decimal> x)
   {
-    Assert.Equal(new TriPhasicMeasure<decimal>(0, 0, 0), x.PhaseAbs());
+    x.PhaseAbs().Should()
+      .BeEquivalentTo(new TriPhasicMeasure<decimal>(0, 0, 0));
   }
 }

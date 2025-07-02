@@ -1,16 +1,20 @@
 using Ozds.Business.Activation.Base;
 using Ozds.Business.Models.Base;
+using Ozds.Business.Queries;
 
 namespace Ozds.Business.Activation.Implementations;
 
-public class AuditableModelActivator(IServiceProvider serviceProvider)
+public class AuditableModelActivator(
+  IServiceProvider serviceProvider,
+  ClockQueries clock
+)
   : InheritingModelActivator<AuditableModel, IdentifiableModel>(serviceProvider)
 {
   public override void Initialize(AuditableModel model)
   {
     base.Initialize(model);
 
-    var now = DateTimeOffset.UtcNow;
+    var now = clock.Timestamp();
 
     model.CreatedOn = now;
     model.CreatedById = default!;

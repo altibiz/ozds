@@ -11,6 +11,9 @@ namespace Ozds.Data.Extensions;
 // TODO: generic type handlers for generic properties
 // when https://github.com/DapperLib/Dapper/issues/1924
 
+// NOTE: this mutates global state but there is nothing i can do about it
+// because of Dapper
+
 public static class DataDbContextDapperConnectionExtensions
 {
   private static readonly object _lock = new();

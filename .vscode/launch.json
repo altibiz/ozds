@@ -30,7 +30,7 @@
       "env": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "DOTNET_ENVIRONMENT": "Development",
-        "OZDS_LOG_SQL": "true"
+        "Ozds__Data__LogSql": "true"
       },
       "logging": {
         "moduleLoad": false
@@ -70,7 +70,7 @@
       "env": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "DOTNET_ENVIRONMENT": "Development",
-        "OZDS_LOG_SQL": "true"
+        "Ozds__Data__LogSql": "true"
       },
       "logging": {
         "moduleLoad": false

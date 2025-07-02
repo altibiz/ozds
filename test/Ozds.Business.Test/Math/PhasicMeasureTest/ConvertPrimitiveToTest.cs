@@ -5,20 +5,18 @@ namespace Ozds.Business.Test.Math.PhasicMeasureTest;
 
 public class ConvertPrimitiveToTest
 {
-  public static readonly
-    TheoryData<PhasicMeasure<decimal>, PhasicMeasure<float>>
-    DecimalToFloatConversion = new()
+  public static IEnumerable<(PhasicMeasure<decimal>, PhasicMeasure<float>)>
+    DecimalToFloatConversion()
+  {
+    return new List<(PhasicMeasure<decimal>, PhasicMeasure<float>)>
     {
-      {
-        new SinglePhasicMeasureSum<decimal>(5.4m),
+      (new SinglePhasicMeasureSum<decimal>(5.4m),
         new SinglePhasicMeasureSum<float>(5.4f)
-      },
-      {
-        new TriPhasicMeasure<decimal>(3.3m, 2.2m, 1.1m),
+      ),
+      (new TriPhasicMeasure<decimal>(3.3m, 2.2m, 1.1m),
         new TriPhasicMeasure<float>(3.3f, 2.2f, 1.1f)
-      },
-      {
-        new CompositePhasicMeasure<decimal>(
+      ),
+      (new CompositePhasicMeasure<decimal>(
         [
           new SinglePhasicMeasureSum<decimal>(4.4m),
           new SinglePhasicMeasureSum<decimal>(5.5m)
@@ -28,27 +26,25 @@ public class ConvertPrimitiveToTest
           new SinglePhasicMeasureSum<float>(4.4f),
           new SinglePhasicMeasureSum<float>(5.5f)
         ])
-      },
-      {
-        new NullPhasicMeasure<decimal>(),
+      ),
+      (new NullPhasicMeasure<decimal>(),
         new NullPhasicMeasure<float>()
-      }
+      )
     };
+  }
 
-  public static readonly
-    TheoryData<PhasicMeasure<float>, PhasicMeasure<decimal>>
-    FloatToDecimalConversion = new()
+  public static IEnumerable<(PhasicMeasure<float>, PhasicMeasure<decimal>)>
+    FloatToDecimalConversion()
+  {
+    return new List<(PhasicMeasure<float>, PhasicMeasure<decimal>)>
     {
-      {
-        new SinglePhasicMeasureSum<float>(5.4f),
+      (new SinglePhasicMeasureSum<float>(5.4f),
         new SinglePhasicMeasureSum<decimal>(5.4m)
-      },
-      {
-        new TriPhasicMeasure<float>(3.3f, 2.2f, 1.1f),
+      ),
+      (new TriPhasicMeasure<float>(3.3f, 2.2f, 1.1f),
         new TriPhasicMeasure<decimal>(3.3m, 2.2m, 1.1m)
-      },
-      {
-        new CompositePhasicMeasure<float>(
+      ),
+      (new CompositePhasicMeasure<float>(
         [
           new SinglePhasicMeasureSum<float>(4.4f),
           new SinglePhasicMeasureSum<float>(5.5f)
@@ -58,15 +54,15 @@ public class ConvertPrimitiveToTest
           new SinglePhasicMeasureSum<decimal>(4.4m),
           new SinglePhasicMeasureSum<decimal>(5.5m)
         ])
-      },
-      {
-        new NullPhasicMeasure<float>(),
+      ),
+      (new NullPhasicMeasure<float>(),
         new NullPhasicMeasure<decimal>()
-      }
+      )
     };
+  }
 
-  [Theory]
-  [MemberData(nameof(DecimalToFloatConversion))]
+  [Test]
+  [MethodDataSource(nameof(DecimalToFloatConversion))]
   public void ConvertsDecimalToFloatCorrectly(
     PhasicMeasure<decimal> input,
     PhasicMeasure<float> expected)
@@ -75,8 +71,8 @@ public class ConvertPrimitiveToTest
     AssertPhasicMeasureEqual(expected, result);
   }
 
-  [Theory]
-  [MemberData(nameof(FloatToDecimalConversion))]
+  [Test]
+  [MethodDataSource(nameof(FloatToDecimalConversion))]
   public void ConvertsFloatToDecimalCorrectly(
     PhasicMeasure<float> input,
     PhasicMeasure<decimal> expected)
@@ -99,16 +95,16 @@ public class ConvertPrimitiveToTest
     {
       case (SinglePhasicMeasureSum<T> expSingle, SinglePhasicMeasureSum<T>
         actSingle):
-        Assert.Equal(expSingle.Value, actSingle.Value);
+        actSingle.Value.Should().BeEquivalentTo(expSingle.Value);
         break;
       case (TriPhasicMeasure<T> expTri, TriPhasicMeasure<T> actTri):
-        Assert.Equal(expTri.ValueL1, actTri.ValueL1);
-        Assert.Equal(expTri.ValueL2, actTri.ValueL2);
-        Assert.Equal(expTri.ValueL3, actTri.ValueL3);
+        actTri.ValueL1.Should().BeEquivalentTo(expTri.ValueL1);
+        actTri.ValueL2.Should().BeEquivalentTo(expTri.ValueL2);
+        actTri.ValueL3.Should().BeEquivalentTo(expTri.ValueL3);
         break;
       case (CompositePhasicMeasure<T> expComp, CompositePhasicMeasure<T> actComp
         ):
-        Assert.Equal(expComp.Measures.Count, actComp.Measures.Count);
+        actComp.Measures.Count.Should().Be(expComp.Measures.Count);
         for (var i = 0; i < expComp.Measures.Count; i++)
         {
           AssertPhasicMeasureEqual(expComp.Measures[i], actComp.Measures[i]);

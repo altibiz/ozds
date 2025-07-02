@@ -2,10 +2,13 @@ using Ozds.Business.Conversion.Base;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Complex;
 using Ozds.Business.Models.Enums;
+using Ozds.Business.Queries;
 
 namespace Ozds.Business.Conversion.Implementations.Measurements;
 
-public class SchneideriEM3xxxMeasurementAggregateConverter
+public class SchneideriEM3xxxMeasurementAggregateConverter(
+  TimeQueries time
+)
   : ConcreteMeasurementAggregateConverter<
     SchneideriEM3xxxMeasurementModel,
     SchneideriEM3xxxAggregateModel>
@@ -15,9 +18,19 @@ public class SchneideriEM3xxxMeasurementAggregateConverter
     SchneideriEM3xxxMeasurementModel measurement,
     IntervalModel interval)
   {
+    var timestamp = interval switch
+    {
+      IntervalModel.QuarterHour => time.GetStartOfQuarterHour(
+        measurement.Timestamp),
+      IntervalModel.Day => time.GetStartOfDay(measurement.Timestamp),
+      IntervalModel.Month => time.GetStartOfMonth(measurement.Timestamp),
+      _ => throw new ArgumentOutOfRangeException(
+        nameof(interval), interval, null)
+    };
+
     aggregate.MeterId = measurement.MeterId;
     aggregate.MeasurementLocationId = measurement.MeasurementLocationId;
-    aggregate.Timestamp = measurement.Timestamp;
+    aggregate.Timestamp = timestamp;
     aggregate.Interval = interval;
     aggregate.Count = 1;
     aggregate.QuarterHourCount = interval is IntervalModel.QuarterHour ? 1 : 0;

@@ -17,6 +17,14 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 - switch to nixpkgs 25.05
 - removed usages of preprocessor directives in favor of runtime configuration
+- switch to TUnit instead of xUnit
+- switch to Testcontainers instead of GitHub services
+- migrated time related functionality and testing into `Ozds.Time` and
+  `Ozds.Time.Test` projects
+- change most usages of `DateTimeOffset.UtcNow` in favor of `ClockService` from
+  `Ozds.Time`
+- `Ozds.Users` to use OIDC and LDAP in favor of OrchardCore authentication and
+  user management
 
 ## [1.3.1] - 2025-06-05
 

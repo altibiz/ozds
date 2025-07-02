@@ -14,7 +14,8 @@ namespace Ozds.Client.Components.Charts;
 
 public partial class MeasurementChartControls : OzdsComponentBase
 {
-  private readonly MeasurementChartParameters _parameters = new();
+  private MeasurementChartParameters _parameters = new();
+
   private MudSelect<string> _select = default!;
 
   [Parameter]
@@ -47,8 +48,21 @@ public partial class MeasurementChartControls : OzdsComponentBase
   [Inject]
   private MeterNamingConvention MeterNamingConvention { get; set; } = default!;
 
+  [Inject]
+  private ClockQueries ClockQueries { get; set; } = default!;
+
+  [Inject]
+  private TimeQueries TimeQueries { get; set; } = default!;
+
   protected override void OnInitialized()
   {
+    var now = ClockQueries.Now();
+    var fromDate = now.Subtract(
+      TimeQueries
+        .ResolutionTimeSpan(
+          _parameters.Resolution, now, _parameters.Multiplier));
+    _parameters.FromDate = fromDate;
+
     DataModelsChangedSubscriber.Subscribe(OnDataModelsChanged);
     MeasurementsBufferedSubscriber.Subscribe(OnMeasurementsBuffered);
   }
@@ -122,10 +136,12 @@ public partial class MeasurementChartControls : OzdsComponentBase
         measurementLocation =>
           measurementLocationIds.Contains(measurementLocation.Id))
       .ToHashSet();
-    var now = DateTimeOffset.UtcNow;
-    _parameters.FromDate = now.Subtract(
-      _parameters.Resolution.ToTimeSpan(
-        _parameters.Multiplier, now));
+    var now = ClockQueries.Now();
+    var fromDate = now.Subtract(
+      TimeQueries
+        .ResolutionTimeSpan(
+          _parameters.Resolution, now, _parameters.Multiplier));
+    _parameters.FromDate = fromDate;
     await Fetch();
   }
 
@@ -142,10 +158,12 @@ public partial class MeasurementChartControls : OzdsComponentBase
     _parameters.Refresh = refresh;
     if (_parameters.Refresh)
     {
-      var now = DateTimeOffset.UtcNow;
-      _parameters.FromDate = now.Subtract(
-        _parameters.Resolution.ToTimeSpan(
-          _parameters.Multiplier, now));
+      var now = ClockQueries.Now();
+      var fromDate = now.Subtract(
+        TimeQueries
+          .ResolutionTimeSpan(
+            _parameters.Resolution, now, _parameters.Multiplier));
+      _parameters.FromDate = fromDate;
       await Fetch();
     }
   }
@@ -155,10 +173,12 @@ public partial class MeasurementChartControls : OzdsComponentBase
     _parameters.Resolution = resolution;
     if (_parameters.Refresh)
     {
-      var now = DateTimeOffset.UtcNow;
-      _parameters.FromDate = now.Subtract(
-        _parameters.Resolution.ToTimeSpan(
-          _parameters.Multiplier, now));
+      var now = ClockQueries.Now();
+      var fromDate = now.Subtract(
+        TimeQueries
+          .ResolutionTimeSpan(
+            _parameters.Resolution, now, _parameters.Multiplier));
+      _parameters.FromDate = fromDate;
     }
 
     await Fetch();
@@ -169,10 +189,12 @@ public partial class MeasurementChartControls : OzdsComponentBase
     _parameters.Multiplier = multiplier;
     if (_parameters.Refresh)
     {
-      var now = DateTimeOffset.UtcNow;
-      _parameters.FromDate = now.Subtract(
-        _parameters.Resolution.ToTimeSpan(
-          _parameters.Multiplier, now));
+      var now = ClockQueries.Now();
+      var fromDate = now.Subtract(
+        TimeQueries
+          .ResolutionTimeSpan(
+            _parameters.Resolution, now, _parameters.Multiplier));
+      _parameters.FromDate = fromDate;
     }
 
     await Fetch();
@@ -209,8 +231,10 @@ public partial class MeasurementChartControls : OzdsComponentBase
     var queries = ScopedServices.GetRequiredService<MeasurementQueries>();
     var fromDate = _parameters.FromDate;
     var toDate = fromDate.Add(
-      _parameters.Resolution
-        .ToTimeSpan(_parameters.Multiplier, fromDate));
+      TimeQueries.ResolutionTimeSpan(
+        _parameters.Resolution,
+        fromDate,
+        _parameters.Multiplier));
     var fromMeters = await queries.ReadByMeterIds(
       _parameters.Meters.Select(x => x.Id).ToList(),
       _parameters.Resolution,
@@ -256,14 +280,15 @@ public partial class MeasurementChartControls : OzdsComponentBase
       return;
     }
 
-    var now = DateTimeOffset.UtcNow;
-    var timeSpan = _parameters.Resolution
-      .ToTimeSpan(_parameters.Multiplier, now);
+    var now = ClockQueries.Now();
+    var timeSpan = TimeQueries.ResolutionTimeSpan(
+      _parameters.Resolution,
+      now,
+      _parameters.Multiplier);
     var min = now.Subtract(timeSpan);
     var minNew =
       _parameters.Measurements.Items.LastOrDefault()?.Timestamp ?? min;
-    var appropriateInterval = QueryConstants
-      .AppropriateInterval(timeSpan, now);
+    var appropriateInterval = TimeQueries.AppropriateInterval(timeSpan, now);
 
     if (appropriateInterval is null)
     {

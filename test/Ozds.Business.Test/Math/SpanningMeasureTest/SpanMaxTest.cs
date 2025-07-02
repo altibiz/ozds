@@ -4,12 +4,12 @@ namespace Ozds.Business.Test.Math.SpanningMeasureTest;
 
 public class SpanMaxTest
 {
-  public static readonly
-    TheoryData<SpanningMeasure<decimal>, TariffMeasure<decimal>>
-    SpanningMeasuresMax = new()
+  public static IEnumerable<(SpanningMeasure<decimal>, TariffMeasure<decimal>)>
+    SpanningMeasuresMax()
+  {
+    return new List<(SpanningMeasure<decimal>, TariffMeasure<decimal>)>
     {
-      {
-        new MinMaxSpanningMeasure<decimal>(
+      (new MinMaxSpanningMeasure<decimal>(
           new UnaryTariffMeasure<decimal>(
             new ImportExportDuplexMeasure<decimal>(
               new SinglePhasicMeasureSum<decimal>(5),
@@ -22,10 +22,9 @@ public class SpanMaxTest
           new ImportExportDuplexMeasure<decimal>(
             new SinglePhasicMeasureSum<decimal>(10),
             new SinglePhasicMeasureSum<decimal>(6)))
-      },
+      ),
 
-      {
-        new MinMaxSpanningMeasure<decimal>(
+      (new MinMaxSpanningMeasure<decimal>(
           new UnaryTariffMeasure<decimal>(
             new ImportExportDuplexMeasure<decimal>(
               new TriPhasicMeasure<decimal>(1, 2, 3),
@@ -38,19 +37,20 @@ public class SpanMaxTest
           new ImportExportDuplexMeasure<decimal>(
             new TriPhasicMeasure<decimal>(7, 8, 9),
             new TriPhasicMeasure<decimal>(10, 11, 12)))
-      },
+      ),
 
-      { new NullSpanningMeasure<decimal>(), new NullTariffMeasure<decimal>() }
+      (new NullSpanningMeasure<decimal>(), new NullTariffMeasure<decimal>())
     };
+  }
 
-  [Theory]
-  [MemberData(nameof(SpanningMeasuresMax))]
+  [Test]
+  [MethodDataSource(nameof(SpanningMeasuresMax))]
   public void SpanMax_ReturnsExpectedResult(
     SpanningMeasure<decimal> measure,
     TariffMeasure<decimal> expected)
   {
     var result = measure.SpanMax();
 
-    Assert.Equal(expected, result);
+    result.Should().Be(expected);
   }
 }

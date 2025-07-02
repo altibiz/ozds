@@ -1,3 +1,4 @@
+using Ozds.Business.Queries;
 using Ozds.Fake.Client;
 using Ozds.Fake.Conversion;
 using Ozds.Fake.Extensions;
@@ -21,7 +22,8 @@ public class PushWorker(
   MeasurementRecordGenerator generator,
   MeasurementRecordConverter converter,
   MessengerPushRequestPacker packer,
-  PushClient client
+  PushClient client,
+  ClockQueries clock
 ) : IEnumeratedBackgroundServiceWorker<PushWorkerItem>
 {
   public async Task ExecuteAsync(
@@ -46,7 +48,7 @@ public class PushWorker(
     {
       var request = await packer.Pack(
         item.MessengerId,
-        DateTimeOffset.UtcNow,
+        clock.Timestamp(),
         batch,
         stoppingToken
       );

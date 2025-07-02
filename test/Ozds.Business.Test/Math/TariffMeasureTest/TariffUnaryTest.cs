@@ -4,12 +4,12 @@ namespace Ozds.Business.Test.Math.TariffMeasureTest;
 
 public class TariffUnaryTest
 {
-  public static readonly
-    TheoryData<TariffMeasure<decimal>, DuplexMeasure<decimal>>
-    TariffMeasuresUnary = new()
+  public static IEnumerable<(TariffMeasure<decimal>, DuplexMeasure<decimal>)>
+    TariffMeasuresUnary()
+  {
+    return new List<(TariffMeasure<decimal>, DuplexMeasure<decimal>)>
     {
-      {
-        new BinaryTariffMeasure<decimal>(
+      (new BinaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
             new SinglePhasicMeasureSum<decimal>(5),
             new SinglePhasicMeasureSum<decimal>(3)),
@@ -19,29 +19,29 @@ public class TariffUnaryTest
         new ImportExportDuplexMeasure<decimal>(
           new SinglePhasicMeasureSum<decimal>(7),
           new SinglePhasicMeasureSum<decimal>(4))
-      },
+      ),
 
-      {
-        new UnaryTariffMeasure<decimal>(
+      (new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
             new TriPhasicMeasure<decimal>(1, 2, 3),
             new TriPhasicMeasure<decimal>(4, 5, 6))),
         new ImportExportDuplexMeasure<decimal>(
           new TriPhasicMeasure<decimal>(1, 2, 3),
           new TriPhasicMeasure<decimal>(4, 5, 6))
-      },
+      ),
 
-      { new NullTariffMeasure<decimal>(), DuplexMeasure<decimal>.Null }
+      (new NullTariffMeasure<decimal>(), DuplexMeasure<decimal>.Null)
     };
+  }
 
-  [Theory]
-  [MemberData(nameof(TariffMeasuresUnary))]
+  [Test]
+  [MethodDataSource(nameof(TariffMeasuresUnary))]
   public void TariffUnary_ReturnsExpectedResult(
     TariffMeasure<decimal> measure,
     DuplexMeasure<decimal> expected)
   {
     var result = measure.TariffUnary();
 
-    Assert.Equal(expected, result);
+    result.Should().Be(expected);
   }
 }

@@ -12,6 +12,9 @@ public class SmtpSender(
   ILogger<SmtpSender> logger
 ) : IEmailSender
 {
+  private readonly OzdsEmailParsedSmtpConnectionString connectionString =
+    new(options.Value.Smtp.ConnectionString);
+
   public void Send(EmailMessage message)
   {
     var mimeMessage = new MimeMessage();
@@ -23,14 +26,8 @@ public class SmtpSender(
       new BodyBuilder { HtmlBody = message.Content }.ToMessageBody();
 
     client.Connect(
-      options.Value.Smtp.Host,
-      options.Value.Smtp.Port,
-      options.Value.Smtp.Ssl
-    );
-    client.Authenticate(
-      options.Value.Smtp.Username,
-      options.Value.Smtp.Password
-    );
+      connectionString.Host, connectionString.Port, connectionString.Ssl);
+    client.Authenticate(connectionString.User, connectionString.Password);
     client.Send(mimeMessage);
     client.Disconnect(true);
   }
@@ -46,9 +43,9 @@ public class SmtpSender(
       new BodyBuilder { HtmlBody = message.Content }.ToMessageBody();
 
     await client.ConnectAsync(
-      options.Value.Smtp.Host, options.Value.Smtp.Port, options.Value.Smtp.Ssl);
+      connectionString.Host, connectionString.Port, connectionString.Ssl);
     await client.AuthenticateAsync(
-      options.Value.Smtp.Username, options.Value.Smtp.Password);
+      connectionString.User, connectionString.Password);
     await client.SendAsync(mimeMessage);
     await client.DisconnectAsync(true);
   }
@@ -71,14 +68,8 @@ public class SmtpSender(
       });
 
     client.Connect(
-      options.Value.Smtp.Host,
-      options.Value.Smtp.Port,
-      options.Value.Smtp.Ssl
-    );
-    client.Authenticate(
-      options.Value.Smtp.Username,
-      options.Value.Smtp.Password
-    );
+      connectionString.Host, connectionString.Port, connectionString.Ssl);
+    client.Authenticate(connectionString.User, connectionString.Password);
     foreach (var mimeMessage in mimeMessages)
     {
       client.Send(mimeMessage);
@@ -105,9 +96,9 @@ public class SmtpSender(
       });
 
     await client.ConnectAsync(
-      options.Value.Smtp.Host, options.Value.Smtp.Port, options.Value.Smtp.Ssl);
+      connectionString.Host, connectionString.Port, connectionString.Ssl);
     await client.AuthenticateAsync(
-      options.Value.Smtp.Username, options.Value.Smtp.Password);
+      connectionString.User, connectionString.Password);
     foreach (var mimeMessage in mimeMessages)
     {
       var response = await client.SendAsync(mimeMessage);

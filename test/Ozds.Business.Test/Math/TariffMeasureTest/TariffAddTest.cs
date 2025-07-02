@@ -4,12 +4,13 @@ namespace Ozds.Business.Test.Math.TariffMeasureTest;
 
 public class TariffAddTest
 {
-  public static readonly
-    TheoryData<TariffMeasure<decimal>, TariffMeasure<decimal>,
-      TariffMeasure<decimal>> TariffMeasuresAdd = new()
+  public static IEnumerable<(TariffMeasure<decimal>, TariffMeasure<decimal>,
+    TariffMeasure<decimal>)> TariffMeasuresAdd()
+  {
+    return new List<(TariffMeasure<decimal>, TariffMeasure<decimal>,
+      TariffMeasure<decimal>)>
     {
-      {
-        new UnaryTariffMeasure<decimal>(
+      (new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
             new SinglePhasicMeasureSum<decimal>(5),
             new SinglePhasicMeasureSum<decimal>(3))),
@@ -21,10 +22,9 @@ public class TariffAddTest
           new ImportExportDuplexMeasure<decimal>(
             new SinglePhasicMeasureSum<decimal>(7),
             new SinglePhasicMeasureSum<decimal>(4)))
-      },
+      ),
 
-      {
-        new UnaryTariffMeasure<decimal>(
+      (new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
             new TriPhasicMeasure<decimal>(1, 2, 3),
             new TriPhasicMeasure<decimal>(4, 5, 6))),
@@ -36,10 +36,9 @@ public class TariffAddTest
           new ImportExportDuplexMeasure<decimal>(
             new TriPhasicMeasure<decimal>(3, 5, 7),
             new TriPhasicMeasure<decimal>(5, 6, 7)))
-      },
+      ),
 
-      {
-        new BinaryTariffMeasure<decimal>(
+      (new BinaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
             new SinglePhasicMeasureSum<decimal>(1),
             new SinglePhasicMeasureSum<decimal>(2)),
@@ -60,16 +59,16 @@ public class TariffAddTest
           new ImportExportDuplexMeasure<decimal>(
             new SinglePhasicMeasureSum<decimal>(7),
             new SinglePhasicMeasureSum<decimal>(9)))
-      },
+      ),
 
-      {
-        new NullTariffMeasure<decimal>(), new NullTariffMeasure<decimal>(),
+      (new NullTariffMeasure<decimal>(), new NullTariffMeasure<decimal>(),
         new NullTariffMeasure<decimal>()
-      }
+      )
     };
+  }
 
-  [Theory]
-  [MemberData(nameof(TariffMeasuresAdd))]
+  [Test]
+  [MethodDataSource(nameof(TariffMeasuresAdd))]
   public void Add_ReturnsExpectedResult(
     TariffMeasure<decimal> lhs,
     TariffMeasure<decimal> rhs,
@@ -77,6 +76,6 @@ public class TariffAddTest
   {
     var result = lhs.Add(rhs);
 
-    Assert.Equal(expected, result);
+    result.Should().Be(expected);
   }
 }

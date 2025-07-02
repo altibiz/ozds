@@ -1,10 +1,11 @@
 using Ozds.Business.Aggregation.Base;
 using Ozds.Business.Models;
+using Ozds.Business.Queries;
 
 namespace Ozds.Business.Aggregation.Implementations;
 
-public class
-  AbbB2xAggregateUpserter : ConcreteAggregateUpserter<AbbB2xAggregateModel>
+public class AbbB2xAggregateUpserter(TimeQueries time)
+  : ConcreteAggregateUpserter<AbbB2xAggregateModel>
 {
   protected override AbbB2xAggregateModel UpsertConcreteModel(
     AbbB2xAggregateModel lhs,
@@ -91,7 +92,8 @@ public class
           lhs.ActiveEnergyL1ImportT0_Wh,
           rhs.ActiveEnergyL1ImportT0_Wh,
           lhs.Timestamp,
-          lhs.Interval
+          lhs.Interval,
+          time
         ),
       ActiveEnergyL2ImportT0_Wh = lhs.ActiveEnergyL2ImportT0_Wh.Upsert(
         lhs.Count,
@@ -106,7 +108,8 @@ public class
           lhs.ActiveEnergyL2ImportT0_Wh,
           rhs.ActiveEnergyL2ImportT0_Wh,
           lhs.Timestamp,
-          lhs.Interval
+          lhs.Interval,
+          time
         ),
       ActiveEnergyL3ImportT0_Wh = lhs.ActiveEnergyL3ImportT0_Wh.Upsert(
         lhs.Count,
@@ -121,7 +124,8 @@ public class
           lhs.ActiveEnergyL3ImportT0_Wh,
           rhs.ActiveEnergyL3ImportT0_Wh,
           lhs.Timestamp,
-          lhs.Interval
+          lhs.Interval,
+          time
         ),
       ActiveEnergyL1ExportT0_Wh = lhs.ActiveEnergyL1ExportT0_Wh.Upsert(
         lhs.Count,
@@ -136,7 +140,8 @@ public class
           lhs.ActiveEnergyL1ExportT0_Wh,
           rhs.ActiveEnergyL1ExportT0_Wh,
           lhs.Timestamp,
-          lhs.Interval
+          lhs.Interval,
+          time
         ),
       ActiveEnergyL2ExportT0_Wh = lhs.ActiveEnergyL2ExportT0_Wh.Upsert(
         lhs.Count,
@@ -151,7 +156,8 @@ public class
           lhs.ActiveEnergyL2ExportT0_Wh,
           rhs.ActiveEnergyL2ExportT0_Wh,
           lhs.Timestamp,
-          lhs.Interval
+          lhs.Interval,
+          time
         ),
       ActiveEnergyL3ExportT0_Wh = lhs.ActiveEnergyL3ExportT0_Wh.Upsert(
         lhs.Count,
@@ -166,7 +172,8 @@ public class
           lhs.ActiveEnergyL3ExportT0_Wh,
           rhs.ActiveEnergyL3ExportT0_Wh,
           lhs.Timestamp,
-          lhs.Interval
+          lhs.Interval,
+          time
         ),
       ReactiveEnergyL1ImportT0_VARh = lhs.ReactiveEnergyL1ImportT0_VARh.Upsert(
         lhs.Count,
@@ -182,7 +189,8 @@ public class
           lhs.ReactiveEnergyL1ImportT0_VARh,
           rhs.ReactiveEnergyL1ImportT0_VARh,
           lhs.Timestamp,
-          lhs.Interval
+          lhs.Interval,
+          time
         ),
       ReactiveEnergyL2ImportT0_VARh = lhs.ReactiveEnergyL2ImportT0_VARh.Upsert(
         lhs.Count,
@@ -198,7 +206,8 @@ public class
           lhs.ReactiveEnergyL2ImportT0_VARh,
           rhs.ReactiveEnergyL2ImportT0_VARh,
           lhs.Timestamp,
-          lhs.Interval
+          lhs.Interval,
+          time
         ),
       ReactiveEnergyL3ImportT0_VARh = lhs.ReactiveEnergyL3ImportT0_VARh.Upsert(
         lhs.Count,
@@ -214,7 +223,8 @@ public class
           lhs.ReactiveEnergyL3ImportT0_VARh,
           rhs.ReactiveEnergyL3ImportT0_VARh,
           lhs.Timestamp,
-          lhs.Interval
+          lhs.Interval,
+          time
         ),
       ReactiveEnergyL1ExportT0_VARh = lhs.ReactiveEnergyL1ExportT0_VARh.Upsert(
         lhs.Count,
@@ -230,7 +240,8 @@ public class
           lhs.ReactiveEnergyL1ExportT0_VARh,
           rhs.ReactiveEnergyL1ExportT0_VARh,
           lhs.Timestamp,
-          lhs.Interval
+          lhs.Interval,
+          time
         ),
       ReactiveEnergyL2ExportT0_VARh = lhs.ReactiveEnergyL2ExportT0_VARh.Upsert(
         lhs.Count,
@@ -246,7 +257,8 @@ public class
           lhs.ReactiveEnergyL2ExportT0_VARh,
           rhs.ReactiveEnergyL2ExportT0_VARh,
           lhs.Timestamp,
-          lhs.Interval
+          lhs.Interval,
+          time
         ),
       ReactiveEnergyL3ExportT0_VARh = lhs.ReactiveEnergyL3ExportT0_VARh.Upsert(
         lhs.Count,
@@ -262,7 +274,8 @@ public class
           lhs.ReactiveEnergyL3ExportT0_VARh,
           rhs.ReactiveEnergyL3ExportT0_VARh,
           lhs.Timestamp,
-          lhs.Interval
+          lhs.Interval,
+          time
         ),
       ActiveEnergyTotalImportT0_Wh = lhs.ActiveEnergyTotalImportT0_Wh.Upsert(
         lhs.Count,
@@ -277,7 +290,8 @@ public class
           lhs.ActiveEnergyTotalImportT0_Wh,
           rhs.ActiveEnergyTotalImportT0_Wh,
           lhs.Timestamp,
-          lhs.Interval
+          lhs.Interval,
+          time
         ),
       ActiveEnergyTotalExportT0_Wh = lhs.ActiveEnergyTotalExportT0_Wh.Upsert(
         lhs.Count,
@@ -292,7 +306,8 @@ public class
           lhs.ActiveEnergyTotalExportT0_Wh,
           rhs.ActiveEnergyTotalExportT0_Wh,
           lhs.Timestamp,
-          lhs.Interval
+          lhs.Interval,
+          time
         ),
       ReactiveEnergyTotalImportT0_VARh =
         lhs.ReactiveEnergyTotalImportT0_VARh.Upsert(
@@ -309,7 +324,8 @@ public class
           lhs.ReactiveEnergyTotalImportT0_VARh,
           rhs.ReactiveEnergyTotalImportT0_VARh,
           lhs.Timestamp,
-          lhs.Interval
+          lhs.Interval,
+          time
         ),
       ReactiveEnergyTotalExportT0_VARh =
         lhs.ReactiveEnergyTotalExportT0_VARh.Upsert(
@@ -326,7 +342,8 @@ public class
           lhs.ReactiveEnergyTotalExportT0_VARh,
           rhs.ReactiveEnergyTotalExportT0_VARh,
           lhs.Timestamp,
-          lhs.Interval
+          lhs.Interval,
+          time
         ),
       ActiveEnergyTotalImportT1_Wh = lhs.ActiveEnergyTotalImportT1_Wh.Upsert(
         lhs.Count,
@@ -341,7 +358,8 @@ public class
           lhs.ActiveEnergyTotalImportT1_Wh,
           rhs.ActiveEnergyTotalImportT1_Wh,
           lhs.Timestamp,
-          lhs.Interval
+          lhs.Interval,
+          time
         ),
       ActiveEnergyTotalImportT2_Wh = lhs.ActiveEnergyTotalImportT2_Wh.Upsert(
         lhs.Count,
@@ -356,7 +374,8 @@ public class
           lhs.ActiveEnergyTotalImportT2_Wh,
           rhs.ActiveEnergyTotalImportT2_Wh,
           lhs.Timestamp,
-          lhs.Interval
+          lhs.Interval,
+          time
         )
     };
   }

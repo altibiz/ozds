@@ -62,8 +62,8 @@ public class ResourceCache(IServiceProvider serviceProvider)
     var stream = assembly.GetManifestResourceStream(fullName) ??
       throw new InvalidOperationException(
         $"Resource {fullName} does not exist. "
-        + $"Here are the available resources for the given assembly '{assembly.GetName().Name}':\n"
-        + string.Join("\n", assembly.GetManifestResourceNames())
+        + $"Here are the available resources for the given assembly '{assembly.GetName().Name}':{Environment.NewLine}"
+        + string.Join(Environment.NewLine, assembly.GetManifestResourceNames())
       );
     return stream;
   }

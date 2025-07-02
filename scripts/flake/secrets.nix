@@ -48,8 +48,6 @@ let
     userPasswordPublic = "user-pass-pub";
     userSshPrivate = "user-ssh-priv";
     userSshPublic = "user-ssh-pub";
-    orchardAdminPasswordPrefix = "orchard-admin-pass-prefix";
-    orchardAdminPassword = "orchard-admin-pass";
     connectionString = "ozds-connection-string";
     wifiEnv = "wifi-env";
     ozdsEnv = "ozds-env";
@@ -263,37 +261,10 @@ let
       };
     }
     {
-      generator = "key";
-      arguments = {
-        name = files.orchardAdminPasswordPrefix;
-        length = 31;
-      };
-    }
-    {
-      generator = "moustache";
-      arguments = {
-        name = files.orchardAdminPassword;
-        variables = {
-          ORCHARD_ADMIN_PASSWORD_PREFIX = files.orchardAdminPasswordPrefix;
-        };
-        template = "{{ORCHARD_ADMIN_PASSWORD_PREFIX}}!";
-      };
-    }
-    {
       generator = "env";
       arguments = {
         name = files.ozdsEnv;
         variables = {
-          OrchardCore__OrchardCore_AutoSetup__Tenants__0__AdminEmail = "hrvoje@altibiz.com";
-          OrchardCore__OrchardCore_AutoSetup__Tenants__0__AdminPassword = files.orchardAdminPassword;
-          OrchardCore__OrchardCore_AutoSetup__Tenants__0__AdminUsername = "admin";
-          OrchardCore__OrchardCore_AutoSetup__Tenants__0__DatabaseConnectionString = files.connectionString;
-          OrchardCore__OrchardCore_AutoSetup__Tenants__0__DatabaseProvider = "Postgres";
-          OrchardCore__OrchardCore_AutoSetup__Tenants__0__DatabaseTablePrefix = "";
-          OrchardCore__OrchardCore_AutoSetup__Tenants__0__RecipeName = "ozds";
-          OrchardCore__OrchardCore_AutoSetup__Tenants__0__ShellName = "Default";
-          OrchardCore__OrchardCore_AutoSetup__Tenants__0__SiteName = "OZDS";
-          OrchardCore__OrchardCore_AutoSetup__Tenants__0__SiteTimeZone = "Europe/Zagreb";
           Ozds__Data__ConnectionString = files.connectionString;
           Ozds__Email__From__Address = files.emailAddress;
           Ozds__Email__From__Name = "OZDS";

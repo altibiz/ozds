@@ -7,6 +7,7 @@ using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Entities.Base;
 using Ozds.Data.Entities.Enums;
 using Ozds.Data.Extensions;
+using Ozds.Time.Queries.Abstractions;
 
 // TODO: cascade delete events when forgetting
 //       - add interceptor after this one that cascade deletes events
@@ -49,7 +50,8 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
       return;
     }
 
-    var now = DateTimeOffset.UtcNow;
+    var clock = serviceProvider.GetRequiredService<IClockQueries>();
+    var now = clock.Timestamp();
 
     context.ChangeTracker.DetectChanges();
     var auditableEntries = context.ChangeTracker

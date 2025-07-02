@@ -1,6 +1,7 @@
 using Ozds.Business.Aggregation.Base;
 using Ozds.Business.Models.Complex;
 using Ozds.Business.Models.Enums;
+using Ozds.Business.Queries;
 
 namespace Ozds.Business.Aggregation.Implementations;
 
@@ -51,7 +52,8 @@ public static class InstantaneousAggregateMeasureUpserterExtensions
     CumulativeAggregateMeasureModel lhsEnergy,
     CumulativeAggregateMeasureModel rhsEnergy,
     DateTimeOffset timestamp,
-    IntervalModel interval
+    IntervalModel interval,
+    TimeQueries time
   )
   {
     if (interval is not IntervalModel.QuarterHour)
@@ -68,7 +70,7 @@ public static class InstantaneousAggregateMeasureUpserterExtensions
     var maxEnergy =
       lhsEnergy.Max > rhsEnergy.Max ? lhsEnergy.Max : rhsEnergy.Max;
     var power = (maxEnergy - minEnergy)
-      / (decimal)interval.ToTimeSpan(timestamp).TotalHours;
+      / (decimal)time.IntervalTimeSpan(interval, timestamp).TotalHours;
 
     return new InstantaneousAggregateMeasureModel
     {

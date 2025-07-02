@@ -6,6 +6,7 @@ using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Enums;
 using Ozds.Business.Observers.Abstractions;
 using Ozds.Business.Observers.EventArgs;
+using Ozds.Business.Queries;
 
 namespace Ozds.Business.Buffers;
 
@@ -23,7 +24,8 @@ public class MeasurementBuffer(
   MeasurementAggregateConverter aggregateConverter,
   IMeasurementFlushPublisher measurementFlushPublisher,
   IMeasurementsBufferedPublisher measurementsBufferedPublisher,
-  ILogger<MeasurementBuffer> logger
+  ILogger<MeasurementBuffer> logger,
+  TimeQueries time
 )
   : IBuffer
 {
@@ -263,7 +265,7 @@ public class MeasurementBuffer(
               == upserted.MeasurementLocationId
               && toStayAggregate.Timestamp >= upserted.Timestamp
               && toStayAggregate.Timestamp < upserted.Timestamp.Add(
-                upserted.Interval.ToTimeSpan(upserted.Timestamp)))
+                time.IntervalTimeSpan(upserted.Interval, upserted.Timestamp)))
           && Aggregates.TryRemove(cached.Key, out var value))
         {
           upserted = value

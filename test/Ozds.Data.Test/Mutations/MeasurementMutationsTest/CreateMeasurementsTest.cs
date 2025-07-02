@@ -1,83 +1,88 @@
 using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Models.Enums;
+using Ozds.Data.Context;
 using Ozds.Data.Entities;
 using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Entities.Complex;
 using Ozds.Data.Entities.Enums;
 using Ozds.Data.Mutations;
-using Ozds.Data.Test.Context;
 using Ozds.Data.Test.Extensions;
+using Ozds.Time.Queries.Abstractions;
 
-namespace Ozds.Data.Test.Mutations.MeasurementUpsertMutationsTest;
+namespace Ozds.Data.Test.Mutations.MeasurementMutationsTest;
 
-[Collection(nameof(EphemeralDataDbContextManager))]
-public class CreateMeasurementsTest(
-  EphemeralDataDbContextManager manager,
-  MeasurementMutations mutations,
-  ILogger<CreateMeasurementsTest> logger
-)
+public class CreateMeasurementsTest
 {
-  [Theory]
-  [InlineData(1)]
-  [InlineData(2)]
-  [InlineData(3)]
-  public async Task FinishesInTimeTest(int _)
+  [Test]
+  [Repeat(3)]
+  public async Task FinishesInTimeTest(CancellationToken cancellationToken)
   {
-    var context = await manager.GetContext(CancellationToken.None);
+    await using var testContext = await OzdsDataTestContextFactory
+      .CreateOzdsDataTestContext(cancellationToken);
+    var mutations = testContext.ServiceScope.ServiceProvider
+      .GetRequiredService<MeasurementMutations>();
+    var factory = testContext.ServiceScope.ServiceProvider
+      .GetRequiredService<MeasurementEntityFactory>();
 
-    var factory = new MeasurementUpsertFactory(context);
-    var expected = await factory.CreateMany(CancellationToken.None);
+    var expected = await factory.CreateMany(cancellationToken);
 
     var stopwatch = Stopwatch.StartNew();
     await mutations.CreateMeasurements(
-      context,
       expected,
-      CancellationToken.None
+      cancellationToken
     );
     stopwatch.Stop();
-    logger.LogInformation("Upserted in {Elapsed}", stopwatch.Elapsed);
     stopwatch.Elapsed.Should().BeLessThan(TimeSpan.FromSeconds(10));
   }
 
-  [Theory]
-  [InlineData(1)]
-  [InlineData(2)]
-  [InlineData(3)]
-  public async Task FinishesMassiveMeasurementsInTimeTest(int _)
+  [Test]
+  [Repeat(3)]
+  public async Task FinishesMassiveMeasurementsInTimeTest(
+    CancellationToken cancellationToken
+  )
   {
-    var context = await manager.GetContext(CancellationToken.None);
+    await using var testContext = await OzdsDataTestContextFactory
+      .CreateOzdsDataTestContext(cancellationToken);
+    var mutations = testContext.ServiceScope.ServiceProvider
+      .GetRequiredService<MeasurementMutations>();
+    var factory = testContext.ServiceScope.ServiceProvider
+      .GetRequiredService<MeasurementEntityFactory>();
 
-    var factory = new MeasurementUpsertFactory(context);
     var expected = await factory.CreateMassiveMeasurements(
-      CancellationToken.None);
+      cancellationToken);
 
     var stopwatch = Stopwatch.StartNew();
     var actual = await mutations.CreateMeasurements(
-      context,
       expected,
-      CancellationToken.None
+      cancellationToken
     );
     stopwatch.Stop();
-    logger.LogInformation("Upserted in {Elapsed}", stopwatch.Elapsed);
     stopwatch.Elapsed.Should().BeLessThan(TimeSpan.FromSeconds(10));
     actual.Should().HaveCount(expected.Count);
   }
 
-  [Theory]
-  [InlineData(1)]
-  public async Task IsValidTest(int _)
+  [Test]
+  public async Task IsValidTest(CancellationToken cancellationToken)
   {
-    var context = await manager.GetContext(CancellationToken.None);
+    await using var testContext = await OzdsDataTestContextFactory
+      .CreateOzdsDataTestContext(cancellationToken);
+    await using var context = await testContext.ServiceScope.ServiceProvider
+      .GetRequiredService<IDbContextFactory<DataDbContext>>()
+      .CreateDbContextAsync(cancellationToken);
+    var mutations = testContext.ServiceScope.ServiceProvider
+      .GetRequiredService<MeasurementMutations>();
+    var time = testContext.ServiceScope.ServiceProvider
+      .GetRequiredService<ITimeQueries>();
+    var factory = testContext.ServiceScope.ServiceProvider
+      .GetRequiredService<MeasurementEntityFactory>();
 
-    var factory = new MeasurementUpsertFactory(context);
-    var measurements = await factory.CreateDerivedNull(CancellationToken.None);
+    var measurements = await factory.CreateDerivedNull(cancellationToken);
 
     var byproduct = (await mutations
         .CreateMeasurements(
-          context,
           measurements,
-          CancellationToken.None))
+          cancellationToken))
       .OrderBy(
         x => x is IAggregateEntity aggregate
           ? aggregate.Interval
@@ -95,17 +100,17 @@ public class CreateMeasurementsTest(
       .ToList();
 
     var actual = (await context.AbbB2xAggregates
-        .ToListAsync(CancellationToken.None))
+        .ToListAsync(cancellationToken))
       .OfType<IMeasurementEntity>()
       .Concat(
         await context.AbbB2xMeasurements
-          .ToListAsync(CancellationToken.None))
+          .ToListAsync(cancellationToken))
       .Concat(
         await context.SchneideriEM3xxxAggregates
-          .ToListAsync(CancellationToken.None))
+          .ToListAsync(cancellationToken))
       .Concat(
         await context.SchneideriEM3xxxMeasurements
-          .ToListAsync(CancellationToken.None))
+          .ToListAsync(cancellationToken))
       .OrderBy(
         x => x is IAggregateEntity aggregate
           ? aggregate.Interval
@@ -171,9 +176,11 @@ public class CreateMeasurementsTest(
                     x => x.Timestamp >= abbB2XAggregateItem.Timestamp
                       && x.Timestamp < abbB2XAggregateItem.Timestamp
                         .Add(
-                          abbB2XAggregateItem.Interval
-                            .ToModel()
-                            .ToTimeSpan(abbB2XAggregateItem.Timestamp)))
+                          time.IntervalTimeSpan(
+                            abbB2XAggregateItem.Interval
+                              .ToModel()
+                              .ToTimeEntity(),
+                            abbB2XAggregateItem.Timestamp)))
                   .Aggregate(abbB2XAggregateItem, Upserts.Upsert),
               SchneideriEM3xxxAggregateEntity schneideriEM3xxxAggregateItem =>
                 expected
@@ -188,10 +195,11 @@ public class CreateMeasurementsTest(
                     x => x.Timestamp >= schneideriEM3xxxAggregateItem.Timestamp
                       && x.Timestamp < schneideriEM3xxxAggregateItem.Timestamp
                         .Add(
-                          schneideriEM3xxxAggregateItem.Interval
-                            .ToModel()
-                            .ToTimeSpan(
-                              schneideriEM3xxxAggregateItem.Timestamp)))
+                          time.IntervalTimeSpan(
+                            schneideriEM3xxxAggregateItem.Interval
+                              .ToModel()
+                              .ToTimeEntity(),
+                            schneideriEM3xxxAggregateItem.Timestamp)))
                   .Aggregate(schneideriEM3xxxAggregateItem, Upserts.Upsert),
               _ => item
             }

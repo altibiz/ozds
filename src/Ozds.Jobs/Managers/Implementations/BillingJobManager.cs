@@ -1,12 +1,14 @@
 using System.Globalization;
 using Ozds.Jobs.Manager.Abstractions;
+using Ozds.Time.Queries.Abstractions;
 using Quartz;
 
 namespace Ozds.Jobs.Managers.Implementations;
 
 public class BillingJobManager(
   ISchedulerFactory schedulerFactory,
-  ILogger<BillingJobManager> logger
+  ILogger<BillingJobManager> logger,
+  IClockQueries clock
 )
   : IBillingJobManager
 {
@@ -98,7 +100,7 @@ public class BillingJobManager(
 
   private ITrigger CreateTrigger(string id)
   {
-    var now = DateTimeOffset.UtcNow;
+    var now = clock.Now();
 
     logger.LogDebug(
       "{Now} Creating trigger for {Group} monthly billing job"

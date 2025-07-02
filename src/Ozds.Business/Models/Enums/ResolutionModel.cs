@@ -1,4 +1,4 @@
-using Ozds.Business.Time;
+using TimeResolutionEntity = Ozds.Time.Entities.ResolutionEntity;
 
 namespace Ozds.Business.Models.Enums;
 
@@ -65,26 +65,31 @@ public static class ChartResolutionExtensions
     };
   }
 
-  public static TimeSpan ToTimeSpan(
-    this ResolutionModel resolution,
-    int multiplier,
-    DateTimeOffset timestamp)
+  public static ResolutionModel ToModel(this TimeResolutionEntity entity)
   {
-    return resolution switch
+    return entity switch
     {
-      ResolutionModel.Minute => TimeSpan.FromMinutes(1) * multiplier,
-      ResolutionModel.Hour => TimeSpan.FromHours(1) * multiplier,
-      ResolutionModel.Day => TimeSpan.FromDays(1) * multiplier,
-      ResolutionModel.Week => TimeSpan.FromDays(7) * multiplier,
-      ResolutionModel.Month => timestamp.GetMonthRange() switch
-      {
-        (DateTimeOffset start, DateTimeOffset end) => (end - start) * multiplier
-      },
-      ResolutionModel.Year => TimeSpan.FromDays(365) * multiplier,
-      _ => throw new ArgumentOutOfRangeException(
-        nameof(resolution),
-        resolution,
-        null)
+      TimeResolutionEntity.Minute => ResolutionModel.Minute,
+      TimeResolutionEntity.Hour => ResolutionModel.Hour,
+      TimeResolutionEntity.Day => ResolutionModel.Day,
+      TimeResolutionEntity.Week => ResolutionModel.Week,
+      TimeResolutionEntity.Month => ResolutionModel.Month,
+      TimeResolutionEntity.Year => ResolutionModel.Year,
+      _ => throw new ArgumentOutOfRangeException(nameof(entity), entity, null)
+    };
+  }
+
+  public static TimeResolutionEntity ToTimeEntity(this ResolutionModel model)
+  {
+    return model switch
+    {
+      ResolutionModel.Minute => TimeResolutionEntity.Minute,
+      ResolutionModel.Hour => TimeResolutionEntity.Hour,
+      ResolutionModel.Day => TimeResolutionEntity.Day,
+      ResolutionModel.Week => TimeResolutionEntity.Week,
+      ResolutionModel.Month => TimeResolutionEntity.Month,
+      ResolutionModel.Year => TimeResolutionEntity.Year,
+      _ => throw new ArgumentOutOfRangeException(nameof(model), model, null)
     };
   }
 }

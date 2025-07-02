@@ -4,12 +4,14 @@ using Ozds.Business.Extensions;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Enums;
 using Ozds.Business.Mutations;
+using Ozds.Business.Queries;
 using Ozds.Business.Reactors.Abstractions;
 
 namespace Ozds.Business.Reactors.Implementations;
 
 public class LifecycleReactor(
-  IServiceProvider serviceProvider
+  IServiceProvider serviceProvider,
+  ClockQueries clock
 ) : BackgroundService, IReactor
 {
   protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -67,13 +69,15 @@ public class LifecycleReactor(
     }
   }
 
-  private static SystemEventModel CreateEvent(
+  private SystemEventModel CreateEvent(
     LifecycleEventContent content,
     ModelActivator activator)
   {
+    var now = clock.Timestamp();
+
     var @event = activator.Activate<SystemEventModel>();
     @event.Title = content.Message;
-    @event.Timestamp = DateTimeOffset.UtcNow;
+    @event.Timestamp = now;
     @event.Content = JsonSerializer.SerializeToDocument(content);
     @event.Level = LevelModel.Information;
     @event.Categories = new List<CategoryModel>

@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Options;
+using Ozds.Messaging.Options;
 
 namespace Ozds.Fake.Options;
 
@@ -41,5 +42,22 @@ public class ConfigureOzdsFakeOptions(
   public void Configure(OzdsFakeOptions options)
   {
     configuration.GetSection("Ozds:Fake").Bind(options);
+  }
+
+  public static IOzdsMessagingParsedConnectionString ParseConnectionString(
+    IConfiguration configuration
+  )
+  {
+    var connectionString = configuration
+        .GetValue<string?>("Ozds:Fake:Messaging:ConnectionString")
+      ?? string.Empty;
+
+    if (connectionString.StartsWith("amqp://"))
+    {
+      return new OzdsMessagingParsedRabbitMqConnectionString(connectionString);
+    }
+
+    throw new InvalidOperationException(
+      "Only RabbitMQ is supported");
   }
 }

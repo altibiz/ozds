@@ -7,6 +7,9 @@ using CsvHelper.Configuration;
 using Ozds.Assets.Queries.Abstractions;
 using Ozds.Report.Serialization.Abstractions;
 
+// NOTE: \n is ok here because we're creating a CSV file
+// which is going to depend on an unknown platform anyway
+
 namespace Ozds.Report.Serialization.Implementations;
 
 public class CsvSerialization(

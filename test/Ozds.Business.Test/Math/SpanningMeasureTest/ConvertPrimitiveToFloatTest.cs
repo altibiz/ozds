@@ -4,12 +4,12 @@ namespace Ozds.Business.Test.Math.SpanningMeasureTest;
 
 public class ConvertPrimitiveToFloatTest
 {
-  public static readonly
-    TheoryData<SpanningMeasure<decimal>, SpanningMeasure<float>>
-    SpanningMeasuresConvertToFloat = new()
+  public static IEnumerable<(SpanningMeasure<decimal>, SpanningMeasure<float>)>
+    SpanningMeasuresConvertToFloat()
+  {
+    return new List<(SpanningMeasure<decimal>, SpanningMeasure<float>)>
     {
-      {
-        new MinMaxSpanningMeasure<decimal>(
+      (new MinMaxSpanningMeasure<decimal>(
           new UnaryTariffMeasure<decimal>(
             new ImportExportDuplexMeasure<decimal>(
               new SinglePhasicMeasureSum<decimal>(5),
@@ -27,10 +27,9 @@ public class ConvertPrimitiveToFloatTest
             new ImportExportDuplexMeasure<float>(
               new SinglePhasicMeasureSum<float>(10f),
               new SinglePhasicMeasureSum<float>(6f))))
-      },
+      ),
 
-      {
-        new AvgSpanningMeasure<decimal>(
+      (new AvgSpanningMeasure<decimal>(
           new UnaryTariffMeasure<decimal>(
             new ImportExportDuplexMeasure<decimal>(
               new TriPhasicMeasure<decimal>(1, 2, 3),
@@ -40,10 +39,9 @@ public class ConvertPrimitiveToFloatTest
             new ImportExportDuplexMeasure<float>(
               new TriPhasicMeasure<float>(1f, 2f, 3f),
               new TriPhasicMeasure<float>(4f, 5f, 6f))))
-      },
+      ),
 
-      {
-        new PeakSpanningMeasure<decimal>(
+      (new PeakSpanningMeasure<decimal>(
           new UnaryTariffMeasure<decimal>(
             new ImportExportDuplexMeasure<decimal>(
               new SinglePhasicMeasureSum<decimal>(7),
@@ -53,19 +51,20 @@ public class ConvertPrimitiveToFloatTest
             new ImportExportDuplexMeasure<float>(
               new SinglePhasicMeasureSum<float>(7f),
               new SinglePhasicMeasureSum<float>(8f))))
-      },
+      ),
 
-      { new NullSpanningMeasure<decimal>(), new NullSpanningMeasure<float>() }
+      (new NullSpanningMeasure<decimal>(), new NullSpanningMeasure<float>())
     };
+  }
 
-  [Theory]
-  [MemberData(nameof(SpanningMeasuresConvertToFloat))]
+  [Test]
+  [MethodDataSource(nameof(SpanningMeasuresConvertToFloat))]
   public void ConvertPrimitiveToFloat_ReturnsExpectedResult(
     SpanningMeasure<decimal> measure,
     SpanningMeasure<float> expected)
   {
     var result = measure.ConvertPrimitiveTo<float>();
 
-    Assert.Equal(expected, result);
+    result.Should().Be(expected);
   }
 }

@@ -29,7 +29,6 @@ public class DataDbContextDesignTimeFactory
             $"__Ozds{nameof(DataDbContext)}");
         })
       .UseTimescale()
-      .UseServedMigrationsAssembly()
       .UseLazyLoadingProxies()
       .UseSnakeCaseNamingConvention();
 

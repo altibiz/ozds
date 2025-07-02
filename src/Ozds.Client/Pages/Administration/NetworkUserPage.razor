@@ -56,7 +56,7 @@
       </MudHidden>
       @{
         var invoicePreviewPdfHref =
-          "/download/network-user-invoice-preview"
+          "/document/network-user-invoice-preview"
           + "/" + context.Model.Id
           + "/" + invoiceSelectedMonth.Year
           + "/" + invoiceSelectedMonth.Month;
@@ -75,7 +75,7 @@
         Label="@Translate("Pick month")"/>
       @{
         var energyCardHref =
-          "/download/network-user-energy-card"
+          "/report/network-user-energy-card"
           + "/" + GetCulture().TwoLetterISOLanguageName
           + "/" + context.Model.Id
           + "/" + monthlyAggregatesSelectedMonth.Year

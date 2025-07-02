@@ -1,22 +1,23 @@
 using Ozds.Assets.Extensions;
 using Ozds.Document.Extensions;
 using Ozds.Document.Renderers.Implementations;
+using Ozds.Time.Extensions;
 
 namespace Ozds.Document.Test.Renderer;
 
 public class DocumentRendererTest
 {
-  [Fact]
+  [Test]
   public async Task RendersCalculatedNetworkUserInvoiceTest()
   {
-    var serviceCollection = new ServiceCollection();
-    serviceCollection.AddLogging();
-    serviceCollection.AddOzdsDocument();
-    serviceCollection.AddOzdsAssets();
-    serviceCollection.BuildServiceProvider();
-    var serviceProvider = serviceCollection.BuildServiceProvider();
+    var builder = Host.CreateApplicationBuilder();
+    builder.Services.AddLogging();
+    builder.AddOzdsDocument();
+    builder.AddOzdsTime();
+    builder.AddOzdsAssets();
+    var host = builder.Build();
 
-    await using var scope = serviceProvider.CreateAsyncScope();
+    using var scope = host.Services.CreateScope();
 
     var documentRenderer = scope.ServiceProvider
       .GetRequiredService<DocumentRenderer>();
@@ -29,11 +30,11 @@ public class DocumentRendererTest
       var html = await documentRenderer
         .RenderCalculatedNetworkUserInvoiceToHtml(
           entity, CancellationToken.None);
-      Assert.NotNull(html);
+      html.Should().NotBeNull();
       var pdf = await documentRenderer
         .RenderCalculatedNetworkUserInvoiceToPdf(
           entity, CancellationToken.None);
-      Assert.NotNull(pdf);
+      pdf.Should().NotBeNull();
     }
   }
 }

@@ -34,6 +34,15 @@ raspberryPi4 := absolute_path('scripts/flake/raspberryPi4.nu')
 translationshr := absolute_path('src/Ozds.Assets/Assets/Translations/hr.xml')
 translationsen := absolute_path('src/Ozds.Assets/Assets/Translations/en.xml')
 srcdir := absolute_path('src')
+testdir := absolute_path('test')
+usersdb := absolute_path('scripts/ldap/users.db')
+usersdbtemplate := absolute_path('scripts/ldap/users.db.template')
+lldapconfigtoml := absolute_path('scripts/ldap/lldap_config.toml')
+lldapconfigtomltemplate := absolute_path('scripts/ldap/lldap_config.toml.template')
+usersyml := absolute_path('scripts/auth/users.yml')
+usersymltemplate := absolute_path('scripts/auth/users.yml.template')
+configurationyml := absolute_path('scripts/auth/configuration.yml')
+configurationymltemplate := absolute_path('scripts/auth/configuration.yml.template')
 current := "current"
 
 default:
@@ -48,33 +57,6 @@ prepare:
     ($env | get --ignore-errors PLAYWRIGHT_BROWSERS_PATH | is-not-empty) or \
       ((pwsh '{{ playwright }}' install --with-deps chromium) | is-empty)
     @just clean
-
-ci account_name connection_string:
-    dotnet tool restore
-    dvc remote modify azure account_name '{{ account_name }}' --local
-    dvc remote modify azure connection_string '{{ connection_string }}' --local
-    dvc pull \
-      '{{ migrationassets }}/current-orchard.sql' \
-      '{{ migrationassets }}/current.sql' \
-      '{{ migrationassets }}/current-hypertables.sql'
-    open --raw '{{ migrationassets }}/current-orchard.sql' \
-      | psql --host localhost
-    dotnet ef \
-      --startup-project '{{ servercsproj }}' \
-      --project '{{ datacsproj }}' \
-      database update
-    dotnet ef \
-      --startup-project '{{ servercsproj }}' \
-      --project '{{ messagingcsproj }}' \
-      database update
-    dotnet ef \
-      --startup-project '{{ servercsproj }}' \
-      --project '{{ jobscsproj }}' \
-      database update
-    open --raw '{{ migrationassets }}/current.sql' \
-      | psql --host localhost
-    open --raw '{{ migrationassets }}/current-hypertables.sql' \
-      | psql --host localhost
 
 up *args:
     ((docker run --rm --device=nvidia.com/gpu=all hello-world \
@@ -228,20 +210,43 @@ lint-model:
     dotnet ef migrations \
       --startup-project '{{ servercsproj }}' \
       --project '{{ datacsproj }}' \
-      has-pending-model-changes
+      has-pending-model-changes \
+      --context 'Ozds.Data.Context.DataDbContext'
 
     dotnet ef migrations \
       --startup-project '{{ servercsproj }}' \
       --project '{{ messagingcsproj }}' \
-      has-pending-model-changes
+      has-pending-model-changes \
+      --context 'Ozds.Messaging.Context.MessagingDbContext'
 
     dotnet ef migrations \
       --startup-project '{{ servercsproj }}' \
       --project '{{ jobscsproj }}' \
-      has-pending-model-changes
+      has-pending-model-changes \
+      --context 'Ozds.Jobs.Context.JobsDbContext'
+
+test-sln *args:
+    dotnet test '{{ sln }}' {{ args }}
+
+test-ci *args:
+    ls '{{ testdir }}' \
+      | where $it.type == "dir" \
+      | where { not ($in.name | str ends-with "Ozds.Client.Test") } \
+      | where { not ($in.name | str ends-with "Ozds.Server.Test") } \
+      | each { \
+          dotnet test \
+            $"($in.name)/($in.name | path basename).csproj" \
+            {{ args }} \
+        }
 
 test *args:
-    dotnet test '{{ sln }}' {{ args }}
+    ls '{{ testdir }}' \
+      | where $it.type == "dir" \
+      | each { \
+          dotnet test \
+            $"($in.name)/($in.name | path basename).csproj" \
+            {{ args }} \
+        }
 
 publish *args:
     rm -rf '{{ artifacts }}'
@@ -308,11 +313,12 @@ migrate project name:
     @just migrate-continue '{{ project }}' '{{ name }}'
 
 [confirm("This will proceed with the migration and dump the database. Would you like to continue?")]
-migrate-continue project name:
+migrate-continue project context name:
     dotnet ef \
       --startup-project '{{ servercsproj }}' \
       --project '{{ root }}/src/{{ project }}/{{ project }}.csproj' \
-      database update
+      database update \
+      --context '{{ context }}'
 
     let now = ls '{{ root }}/src/{{ project }}/Migrations' \
       | sort-by name \
@@ -323,9 +329,6 @@ migrate-continue project name:
       | get timestamp \
       | first; \
     just dump $"($now)-{{ project }}-{{ name }}"; \
-    cp -f \
-      $"{{ migrationassets }}/($now)-{{ project }}-{{ name }}-orchard.sql" \
-      '{{ migrationassets }}/current-orchard.sql'; \
     cp -f \
       $"{{ migrationassets }}/($now)-{{ project }}-{{ name }}.sql" \
       '{{ migrationassets }}/current.sql'; \
@@ -343,21 +346,6 @@ migrate-continue project name:
       save --force '{{ schema }}'
 
 dump name=current:
-    docker exec \
-      --env PGHOST="localhost" \
-      --env PGPORT="5432" \
-      --env PGDATABASE="ozds" \
-      --env PGUSER="ozds" \
-      --env PGPASSWORD="ozds" \
-      --interactive \
-      (nu {{ postgrescontainer }} name) \
-        pg_dump \
-          --schema=public \
-          --table='"Document"' \
-          --table='"Identifiers"' \
-          --table='"User"*' \
-      out> '{{ migrationassets }}/{{ name }}-orchard.sql'
-
     docker exec \
       --env PGHOST="localhost" \
       --env PGPORT="5432" \
@@ -470,6 +458,11 @@ validate *args:
 
 [confirm("This will clean docker containers. Do you want to continue?")]
 clean:
+    if (not ('{{ usersdb }}' | path exists)) { cp -f '{{ usersdbtemplate }}' '{{ usersdb }}' }
+    if (not ('{{ lldapconfigtoml }}' | path exists)) { cp -f '{{ lldapconfigtomltemplate }}' '{{ lldapconfigtoml }}' }
+    if (not ('{{ usersyml }}' | path exists)) { cp -f '{{ usersymltemplate }}' '{{ usersyml }}' }
+    if (not ('{{ configurationyml }}' | path exists)) { cp -f '{{ configurationymltemplate }}' '{{ configurationyml }}' }
+
     docker compose ps -a -q | lines | each { |x| docker stop $x }
     docker compose --profile "*" down
     docker volume ls -q | lines \
@@ -484,31 +477,23 @@ clean:
 
     nu {{ isdatabaseready }}
 
-    open --raw '{{ migrationassets }}/current-orchard.sql' | \
-      docker exec \
-        --env PGHOST="localhost" \
-        --env PGPORT="5432" \
-        --env PGDATABASE="ozds" \
-        --env PGUSER="ozds" \
-        --env PGPASSWORD="ozds" \
-        --interactive \
-      (nu {{ postgrescontainer }} name) \
-          psql
-
     dotnet ef \
       --startup-project '{{ servercsproj }}' \
       --project '{{ datacsproj }}' \
-      database update
+      database update \
+      --context 'Ozds.Data.Context.DataDbContext'
 
     dotnet ef \
       --startup-project '{{ servercsproj }}' \
       --project '{{ messagingcsproj }}' \
-      database update
+      database update \
+      --context 'Ozds.Messaging.Context.MessagingDbContext'
 
     dotnet ef \
       --startup-project '{{ servercsproj }}' \
       --project '{{ jobscsproj }}' \
-      database update
+      database update \
+      --context 'Ozds.Jobs.Context.JobsDbContext'
 
     open --raw '{{ migrationassets }}/current.sql' | \
       docker exec \

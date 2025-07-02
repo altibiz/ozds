@@ -4,7 +4,6 @@ using Ozds.Business.Observers.Abstractions;
 using Ozds.Business.Observers.EventArgs;
 using Ozds.Business.Queries;
 using Ozds.Business.Reactors.Base;
-using Ozds.Business.Time;
 
 namespace Ozds.Business.Reactors.Implementations;
 
@@ -19,7 +18,9 @@ public class JobsBillingJobReactor(
 
 public class JobsBillingJobHandler(
   AuditableQueries auditableQueries,
-  NetworkUserInvoiceIssuer issuer
+  NetworkUserInvoiceIssuer issuer,
+  ClockQueries clockQueries,
+  TimeQueries timeQueries
 ) : Handler<JobsBillingJobEventArgs>
 {
   public override async Task Handle(
@@ -35,9 +36,9 @@ public class JobsBillingJobHandler(
       return;
     }
 
-    var now = DateTimeOffset.UtcNow;
-    var startOfLastMonth = now.GetStartOfLastMonth();
-    var startOfThisMonth = now.GetStartOfMonth();
+    var now = clockQueries.Timestamp();
+    var startOfLastMonth = timeQueries.GetStartOfLastMonth(now);
+    var startOfThisMonth = timeQueries.GetStartOfMonth(now);
     await issuer.IssueNetworkUserInvoiceAsync(
       networkUser.Id,
       startOfLastMonth,

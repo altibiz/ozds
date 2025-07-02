@@ -1,8 +1,8 @@
+using System.Globalization;
 using Microsoft.AspNetCore.Components;
 using Ozds.Business.Models;
 using Ozds.Business.Mutations;
 using Ozds.Business.Queries;
-using Ozds.Business.Time;
 using Ozds.Client.Components.Models.Base;
 using Ozds.Client.State;
 
@@ -12,16 +12,37 @@ public partial class NetworkUserPage
   : OzdsIdentifiableModelPageComponentBase<NetworkUserModel>
 {
   private DateTime invoiceSelectedMonth =
-    DateTimeOffset.UtcNow.GetStartOfLastMonth().DateTime;
+    // NOTE: just so something is there
+    DateTimeOffset.Parse(
+      "2000-01-01T00:00:00Z",
+      CultureInfo.InvariantCulture).DateTime;
 
   private DateTime monthlyAggregatesSelectedMonth =
-    DateTimeOffset.UtcNow.GetStartOfLastMonth().DateTime;
+    // NOTE: just so something is there
+    DateTimeOffset.Parse(
+      "2000-01-01T00:00:00Z",
+      CultureInfo.InvariantCulture).DateTime;
 
   [Parameter]
   public string? Id { get; set; }
 
   [CascadingParameter]
   private RepresentativeState RepresentativeState { get; set; } = default!;
+
+  [Inject]
+  private ClockQueries ClockQueries { get; set; } = default!;
+
+  [Inject]
+  private TimeQueries TimeQueries { get; set; } = default!;
+
+  protected override void OnInitialized()
+  {
+    var now = ClockQueries.Now();
+    var startOfLastMonth = TimeQueries.GetStartOfLastMonth(now).DateTime;
+
+    invoiceSelectedMonth = startOfLastMonth;
+    monthlyAggregatesSelectedMonth = startOfLastMonth;
+  }
 
   private async Task<NetworkUserModel?> OnLoadAsync()
   {
@@ -49,7 +70,7 @@ public partial class NetworkUserPage
       return;
     }
 
-    var (dateFrom, dateTo) = DateTimeOffsetExtensions.GetMonthRange(
+    var (dateFrom, dateTo) = TimeQueries.GetMonthRange(
       invoiceSelectedMonth.Year,
       invoiceSelectedMonth.Month
     );

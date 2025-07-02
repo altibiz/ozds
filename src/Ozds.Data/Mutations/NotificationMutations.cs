@@ -4,11 +4,13 @@ using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Entities.Joins;
 using Ozds.Data.Extensions;
 using Ozds.Data.Mutations.Abstractions;
+using Ozds.Time.Queries.Abstractions;
 
 namespace Ozds.Data.Mutations;
 
 public class NotificationMutations(
-  IDbContextFactory<DataDbContext> factory
+  IDbContextFactory<DataDbContext> factory,
+  IClockQueries clock
 ) : IMutations
 {
   public async Task Create(
@@ -60,7 +62,7 @@ public class NotificationMutations(
       return null;
     }
 
-    recipient.SeenOn = DateTimeOffset.UtcNow;
+    recipient.SeenOn = clock.Timestamp();
     await context.SaveChangesAsync(cancellationToken);
 
     return recipient;

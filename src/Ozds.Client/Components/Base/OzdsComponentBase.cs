@@ -39,17 +39,23 @@ public abstract class OzdsComponentBase : DisposableComponentBase
     get { return new Uri(NavigationManager.Uri).AbsolutePath; }
   }
 
+  protected string BaseHref
+  {
+    get { return new Uri(NavigationManager.BaseUri).AbsolutePath; }
+  }
+
   protected string LoginHref
   {
-    get { return $"/login?returnUrl={Uri.EscapeDataString(Href)}"; }
+    get { return $"/auth/login?returnUrl={Uri.EscapeDataString(BaseHref)}"; }
   }
 
   protected string LogoutHref
   {
     get
     {
-      return
-        $"/users/logoff?returnUrl=/login?returnUrl={Uri.EscapeDataString(Href)}";
+      return "/auth/logout"
+        + $"?returnUrl={Uri.EscapeDataString(BaseHref)}/auth/login"
+        + $"?returnUrl={Uri.EscapeDataString(BaseHref)}";
     }
   }
 

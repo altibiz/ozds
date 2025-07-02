@@ -15,6 +15,10 @@
         PGUSER = "ozds";
         PGPASSWORD = "ozds";
 
+        LDAP_URI = "ldap://localhost:3890";
+        LDAP_BASE = "dc=altibiz,dc=com";
+        LDAP_BINDDN = "uid=admin,ou=people,dc=altibiz,dc=com";
+
         DOXYGEN_DOT_PATH = "${pkgs.graphviz}/bin/dot";
         DOXYGEN_PLANTUML_JAR_PATH = "${pkgs.plantuml}/lib/plantuml.jar";
 
@@ -98,7 +102,7 @@
             sql-formatter
             sqls
 
-            # MailHog
+            # Mailpit
             apacheHttpd
 
             # Spelling
@@ -120,6 +124,7 @@
             sshpass
             deploy-rs
             usql
+            openldap
           ] ++ lib.optionals
             (
               pkgs.hostPlatform.isLinux

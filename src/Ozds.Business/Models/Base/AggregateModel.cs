@@ -1,20 +1,13 @@
 using System.ComponentModel.DataAnnotations;
-using System.Globalization;
 using Ozds.Business.Math;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Enums;
-using Ozds.Business.Time;
+using Ozds.Business.Queries;
 
 namespace Ozds.Business.Models.Base;
 
 public abstract class AggregateModel : IAggregate
 {
-  private IntervalModel _interval = IntervalModel.QuarterHour;
-
-  // NOTE: just so it doesn't break if interval is set before timestamp
-  private DateTimeOffset _timestamp =
-    DateTimeOffset.Parse("2000-01-01T00:00:00Z", CultureInfo.InvariantCulture);
-
   [Required]
   public required string MeterId { get; set; }
 
@@ -22,35 +15,10 @@ public abstract class AggregateModel : IAggregate
   public required string MeasurementLocationId { get; set; }
 
   [Required]
-  public required DateTimeOffset Timestamp
-  {
-    get { return _timestamp.ToUniversalTime(); }
-    set
-    {
-      _ = Interval switch
-      {
-#pragma warning disable S1121
-        IntervalModel.QuarterHour => _timestamp = value.GetStartOfQuarterHour(),
-        IntervalModel.Day => _timestamp = value.GetStartOfDay(),
-        IntervalModel.Month => _timestamp = value.GetStartOfMonth(),
-#pragma warning restore S1121
-        _ => throw new InvalidOperationException(
-          $"Unsupported interval {Interval}"
-        )
-      };
-    }
-  }
+  public required DateTimeOffset Timestamp { get; set; }
 
   [Required]
-  public required IntervalModel Interval
-  {
-    get { return _interval; }
-    set
-    {
-      _interval = value;
-      Timestamp = _timestamp;
-    }
-  }
+  public required IntervalModel Interval { get; set; }
 
   [Required]
   public required long Count { get; set; } = 0;
@@ -98,9 +66,11 @@ public abstract class AggregateModel : IAggregate
         new[] { nameof(Count) });
     }
 
+    var clock = validationContext.GetRequiredService<ClockQueries>();
+    var now = clock.Timestamp();
     if (
       validationContext.MemberName is null or nameof(Timestamp) &&
-      Timestamp > DateTimeOffset.UtcNow
+      Timestamp > now
     )
     {
       yield return new ValidationResult(

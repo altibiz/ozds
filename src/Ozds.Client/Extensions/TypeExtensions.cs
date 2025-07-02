@@ -25,27 +25,27 @@ public static class TypeExtensions
     return common;
   }
 
-  private static Type GetCommonSuperType(Type a, Type b)
+  private static Type GetCommonSuperType(Type lhs, Type rhs)
   {
-    if (a == b)
+    if (lhs == rhs)
     {
-      return a;
+      return lhs;
     }
 
-    if (a.IsAssignableFrom(b))
+    if (lhs.IsAssignableFrom(rhs))
     {
-      return a;
+      return lhs;
     }
 
-    if (b.IsAssignableFrom(a))
+    if (rhs.IsAssignableFrom(lhs))
     {
-      return b;
+      return rhs;
     }
 
-    var current = a.BaseType;
+    var current = lhs.BaseType;
     while (current != null)
     {
-      if (current.IsAssignableFrom(b))
+      if (current.IsAssignableFrom(rhs))
       {
         return current;
       }

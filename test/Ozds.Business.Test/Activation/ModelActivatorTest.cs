@@ -1,32 +1,44 @@
 using Ozds.Business.Activation;
 using Ozds.Business.Extensions;
 using Ozds.Business.Models.Abstractions;
+using Ozds.Business.Queries;
+using Ozds.Time.Queries.Abstractions;
 
 namespace Ozds.Business.Test.Activation;
 
 public class ModelActivatorTest
 {
-  public static readonly
-    TheoryData<Type> TestData = new(
-      AppDomain.CurrentDomain
-        .GetAssemblies()
-        .SelectMany(
-          assembly => assembly
-            .GetTypes()
-            .Where(
-              type =>
-                !type.IsGenericType
-                && type.IsAssignableTo(typeof(IModel)))));
+  public static IEnumerable<Type> TestData()
+  {
+    return AppDomain.CurrentDomain
+      .GetAssemblies()
+      .Where(x => x.FullName is { } name && name.Contains("Ozds"))
+      .SelectMany(
+        assembly => assembly
+          .GetTypes()
+          .Where(
+            type =>
+              !type.IsGenericType
+              && type.IsAssignableTo(typeof(IModel))));
+  }
 
-  [Theory]
-  [MemberData(nameof(TestData))]
+  [Test]
+  [MethodDataSource(nameof(TestData))]
   public void Activates(Type modelType)
   {
-    var serviceCollection = new ServiceCollection();
-    serviceCollection.AddOzdsBusinessPure();
+    var builder = Host.CreateApplicationBuilder();
+    builder.AddOzdsBusinessPure();
+    builder.Services.AddScoped(
+      _ => new Mock<TimeQueries>(
+        MockBehavior.Loose,
+        Mock.Of<ITimeQueries>()).Object);
+    builder.Services.AddScoped(
+      _ => new Mock<ClockQueries>(
+        MockBehavior.Loose,
+        Mock.Of<IClockQueries>()).Object);
+    var host = builder.Build();
 
-    var serviceProvider = serviceCollection.BuildServiceProvider();
-    var activator = serviceProvider
+    var activator = host.Services
       .GetRequiredService<ModelActivator>();
 
     var model = activator.ActivateDynamic(modelType);

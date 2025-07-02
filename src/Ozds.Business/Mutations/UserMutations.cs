@@ -1,5 +1,5 @@
 using Ozds.Business.Conversion;
-using Ozds.Business.Models;
+using Ozds.Business.Models.Composite;
 using Ozds.Business.Mutations.Abstractions;
 using Ozds.Users.Entities;
 using UserUserMutations = Ozds.Users.Mutations.UserMutations;
@@ -12,28 +12,28 @@ public class UserMutations(
 ) : IMutations
 {
   public async Task<string> CreateUser(
-    UserModel userModel,
+    UserWithPasswordModel model,
     CancellationToken cancellationToken
   )
   {
-    var userEntity = converter.ToEntity<UserEntity>(userModel);
+    var entity = converter.ToEntity<UserWithPasswordEntity>(model);
     await mutations.CreateUser(
-      userEntity,
+      entity,
       cancellationToken
     );
-    return userEntity.Id;
+    return entity.User.Id;
   }
 
   public async Task UpdateUser(
-    UserModel userModel,
+    UserWithPasswordModel userModel,
     CancellationToken cancellationToken
   )
   {
-    var userEntity = converter.ToEntity<UserEntity>(userModel);
+    var userEntity = converter.ToEntity<UserWithPasswordEntity>(userModel);
     await mutations.UpdateUser(userEntity, cancellationToken);
   }
 
-  public async Task DeleteUser(long id, CancellationToken cancellationToken)
+  public async Task DeleteUser(string id, CancellationToken cancellationToken)
   {
     await mutations.DeleteUser(id, cancellationToken);
   }

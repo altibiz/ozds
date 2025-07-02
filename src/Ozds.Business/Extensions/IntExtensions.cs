@@ -2,7 +2,6 @@ namespace Ozds.Business.Extensions;
 
 public static class IntExtensions
 {
-  // NOTE: generate { |$i| if $i <= 10 { { out: (["#FB8C00", "#E91E63", "#20F97B"] | each { |x| pastel rotate ($i * 10) $x | pastel format hex }), next: ($i + 1) } } } 1 | to json
   private static readonly string[][] Colors =
   [
     [
@@ -61,4 +60,19 @@ public static class IntExtensions
   {
     return Colors[i / 3 % Colors.Length][i % 3];
   }
+
+  public static string[] ToPhaseColors(this int i)
+  {
+    return Colors[i % Colors.Length];
+  }
+#pragma warning disable S125 // Sections of code should not be commented out
+  // NOTE: generate { |$i|
+  //         if $i <= 10 {
+  //           { out: (["#FB8C00", "#E91E63", "#20F97B"] |
+  //                   each { |x| pastel rotate ($i * 10) $x |
+  //                              pastel format hex }),
+  //             next: ($i + 1) }
+  //         }
+  //       } 1 | to json
+#pragma warning restore S125 // Sections of code should not be commented out
 }

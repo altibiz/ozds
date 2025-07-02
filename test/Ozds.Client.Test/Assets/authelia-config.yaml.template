@@ -1,0 +1,81 @@
+# NOTE: ASP.NET core stores large amounts of data in cookies
+server:
+  buffers:
+    read: 8192
+    write: 8192
+
+authentication_backend:
+  ldap:
+    implementation: lldap
+    address: ldap://{{AUTHELIA_LLDAP_HOST}}:{{AUTHELIA_LLDAP_PORT}}
+    base_dn: {{AUTHELIA_LLDAP_BASE_DN}}
+    user: {{AUTHELIA_LLDAP_USER_DN}}
+    password: "{{AUTHELIA_LLDAP_PASSWORD}}"
+    additional_users_dn: {{AUTHELIA_LLDAP_USERS_DN}}
+
+access_control:
+  default_policy: "one_factor"
+  rules:
+    - domain: "{{AUTHELIA_COOKIE_DOMAIN}}"
+      policy: "one_factor"
+
+session:
+  secret: "authelia-needs-20-characters-at-least-for-these-secrets"
+  cookies:
+    - domain: "{{AUTHELIA_COOKIE_DOMAIN}}"
+      authelia_url: "https://{{AUTHELIA_COOKIE_DOMAIN}}:{{AUTHELIA_PORT}}"
+      default_redirection_url: "https://{{AUTHELIA_COOKIE_DOMAIN}}:{{AUTHELIA_OZDS_HTTPS_PORT}}"
+
+identity_validation:
+  reset_password:
+    jwt_secret: "authelia-needs-20-characters-at-least-for-these-secrets"
+    jwt_algorithm: "HS256"
+
+storage:
+  encryption_key: "authelia-needs-20-characters-at-least-for-these-secrets"
+  local:
+    path: "/app/db.sqlite3"
+
+notifier:
+  disable_startup_check: false
+  filesystem:
+    filename: "/app/notification.txt"
+
+identity_providers:
+  oidc:
+    hmac_secret: "authelia-needs-a-super-super-mega-ultra-safe-secret-for-this-one-that-is-like-at-least-64-characters-long-on-god-no-cap"
+    jwks:
+      - key_id: "{{AUTHELIA_JWKS_KEY_ID}}"
+        algorithm: RS256
+        use: sig
+        key: "{{AUTHELIA_JWKS_KEY}}"
+        certificate_chain: "{{AUTHELIA_JWKS_CERTIFICATE_CHAIN}}"
+    clients:
+      - client_id: "{{AUTHELIA_OZDS_CLIENT_ID}}"
+        client_name: "{{AUTHELIA_OZDS_CLIENT_NAME}}"
+        client_secret: "{{AUTHELIA_OZDS_CLIENT_SECRET}}"
+        redirect_uris:
+          - "http://{{AUTHELIA_COOKIE_DOMAIN}}:{{AUTHELIA_OZDS_HTTP_PORT}}"
+          - "http://{{AUTHELIA_COOKIE_DOMAIN}}:{{AUTHELIA_OZDS_HTTP_PORT}}/{{AUTHELIA_OZDS_SIGNIN_SUBPATH}}"
+          - "http://{{AUTHELIA_COOKIE_DOMAIN}}:{{AUTHELIA_OZDS_HTTP_PORT}}/{{AUTHELIA_OZDS_SIGNOUT_SUBPATH}}"
+          - "https://{{AUTHELIA_COOKIE_DOMAIN}}:{{AUTHELIA_OZDS_HTTPS_PORT}}"
+          - "https://{{AUTHELIA_COOKIE_DOMAIN}}:{{AUTHELIA_OZDS_HTTPS_PORT}}/{{AUTHELIA_OZDS_SIGNIN_SUBPATH}}"
+          - "https://{{AUTHELIA_COOKIE_DOMAIN}}:{{AUTHELIA_OZDS_HTTPS_PORT}}/{{AUTHELIA_OZDS_SIGNOUT_SUBPATH}}"
+          - "http://{{AUTHELIA_OZDS_DOMAIN}}:{{AUTHELIA_OZDS_HTTP_PORT}}"
+          - "http://{{AUTHELIA_OZDS_DOMAIN}}:{{AUTHELIA_OZDS_HTTP_PORT}}/{{AUTHELIA_OZDS_SIGNIN_SUBPATH}}"
+          - "http://{{AUTHELIA_OZDS_DOMAIN}}:{{AUTHELIA_OZDS_HTTP_PORT}}/{{AUTHELIA_OZDS_SIGNOUT_SUBPATH}}"
+          - "https://{{AUTHELIA_OZDS_DOMAIN}}:{{AUTHELIA_OZDS_HTTPS_PORT}}"
+          - "https://{{AUTHELIA_OZDS_DOMAIN}}:{{AUTHELIA_OZDS_HTTPS_PORT}}/{{AUTHELIA_OZDS_SIGNIN_SUBPATH}}"
+          - "https://{{AUTHELIA_OZDS_DOMAIN}}:{{AUTHELIA_OZDS_HTTPS_PORT}}/{{AUTHELIA_OZDS_SIGNOUT_SUBPATH}}"
+        authorization_policy: one_factor
+        token_endpoint_auth_method: client_secret_post
+        scopes:
+          - openid
+          - profile
+          - email
+          - offline_access
+        response_types:
+          - code
+        grant_types:
+          - authorization_code
+          - refresh_token

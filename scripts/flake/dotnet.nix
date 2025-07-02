@@ -15,6 +15,6 @@ in
   ];
 
   flake.lib.dotnet.env = pkgs: {
-    DOTNET_ROOT = "${sdk pkgs}/bin";
+    DOTNET_ROOT = "${sdk pkgs}/share/dotnet";
   };
 }

@@ -29,6 +29,7 @@
   },
   "prettier.ignorePath": ".prettierignore",
   "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "dotnet.testWindow.useTestingPlatformProtocol": true,
   "[csharp]": {
     "editor.defaultFormatter": "ms-dotnettools.csharp",
     "editor.formatOnSave": false

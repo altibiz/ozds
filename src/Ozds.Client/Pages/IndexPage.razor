@@ -24,7 +24,7 @@ RoleModel.NetworkUserRepresentative
 </HeadContent>
 
 @{
-  var model = AnalysisState.AnalysisBases.Value.Analysis();
+  var model = Analyzer.Analyze(AnalysisState.AnalysisBases.Value);
   var meters = AnalysisState.AnalysisBases.Value
     .Select(analysis => (IMeter)analysis.Meter)
     .DistinctBy(meter => meter.Id)
@@ -55,8 +55,8 @@ RoleModel.NetworkUserRepresentative
   is RoleModel.OperatorRepresentative
   or RoleModel.LocationRepresentative)
 {
-  var locations = AnalysisState.AnalysisBases.Value
-    .AnalysesByLocation();
+  var locations = Analyzer.AnalyzeByLocation(
+    AnalysisState.AnalysisBases.Value);
 
   <Table Model="@locations"/>
 }
@@ -65,8 +65,8 @@ RoleModel.NetworkUserRepresentative
   is RoleModel.LocationRepresentative
   or RoleModel.NetworkUserRepresentative)
 {
-  var networkUsers = AnalysisState.AnalysisBases.Value
-    .AnalysesByNetworkUser();
+  var networkUsers = Analyzer.AnalyzeByNetworkUser(
+    AnalysisState.AnalysisBases.Value);
 
   <Table Model="@networkUsers"/>
 }
@@ -74,8 +74,8 @@ RoleModel.NetworkUserRepresentative
 @if (RepresentativeState.Representative.Role
   is RoleModel.NetworkUserRepresentative)
 {
-  var measurementLocationsAnalysis = AnalysisState.AnalysisBases.Value
-    .AnalysesByMeasurementLocation();
+  var measurementLocationsAnalysis = Analyzer.AnalyzeByMeasurementLocation(
+    AnalysisState.AnalysisBases.Value);
 
   <Table Model="@measurementLocationsAnalysis"/>
 }
@@ -97,5 +97,8 @@ RoleModel.NetworkUserRepresentative
 
   [CascadingParameter]
   public AnalysisState AnalysisState { get; set; } = default!;
+
+  [Inject]
+  private Analyzer Analyzer { get; set; } = default!;
 
 }

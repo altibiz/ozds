@@ -26,8 +26,8 @@ RoleModel.NetworkUserRepresentative
 </HeadContent>
 
 @{
-  var analyses = AnalysisState.AnalysisBases.Value
-    .AnalysesByNetworkUser();
+  var analyses = Analyzer.AnalyzeByNetworkUser(
+    AnalysisState.AnalysisBases.Value);
 }
 
 @if (RepresentativeState.Representative.Role
@@ -56,6 +56,9 @@ RoleModel.NetworkUserRepresentative
 
   [CascadingParameter]
   private RepresentativeState RepresentativeState { get; set; } = default!;
+
+  [Inject]
+  private Analyzer Analyzer { get; set; } = default!;
 
   private bool _deleted;
 

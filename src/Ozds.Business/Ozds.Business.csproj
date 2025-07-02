@@ -14,6 +14,7 @@
 	  <ProjectReference Include="../../src/Ozds.Document/Ozds.Document.csproj" />
 	  <ProjectReference Include="../../src/Ozds.Assets/Ozds.Assets.csproj" />
 	  <ProjectReference Include="../../src/Ozds.Report/Ozds.Report.csproj" />
+	  <ProjectReference Include="../../src/Ozds.Time/Ozds.Time.csproj" />
 	</ItemGroup>
 
   <ItemGroup>

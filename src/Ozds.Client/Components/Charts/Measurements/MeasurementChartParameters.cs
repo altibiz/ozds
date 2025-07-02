@@ -1,3 +1,4 @@
+using System.Globalization;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Enums;
@@ -26,9 +27,10 @@ public class MeasurementChartParameters
   public bool Refresh { get; set; } = true;
 
   public DateTimeOffset FromDate { get; set; } =
-    DateTimeOffset.UtcNow.Subtract(
-      ResolutionModel.Minute.ToTimeSpan(15, DateTimeOffset.UtcNow)
-    );
+    // NOTE: just so something is there
+    DateTimeOffset.Parse(
+      "2000-01-01T00:00:00Z",
+      CultureInfo.InvariantCulture);
 
   public OperatorModel Operator { get; set; } = OperatorModel.Last;
 }

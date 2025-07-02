@@ -11,7 +11,6 @@ RoleModel.OperatorRepresentative,
 RoleModel.LocationRepresentative,
 RoleModel.NetworkUserRepresentative
 ])]
-@using Ozds.Business.Analysis
 @using Ozds.Client.Attributes
 @using Ozds.Client.Components.Models
 @using Ozds.Client.Components.Streaming
@@ -22,7 +21,8 @@ RoleModel.NetworkUserRepresentative
 </HeadContent>
 
 @{
-  var networkUsers = AnalysisState.AnalysisBases.Value.AnalysesByNetworkUser();
+  var networkUsers = Analyzer.AnalyzeByNetworkUser(
+    AnalysisState.AnalysisBases.Value);
 }
 
 <Table Model="@networkUsers"/>

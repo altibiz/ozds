@@ -23,8 +23,10 @@ ignorePaths:
   - "./scripts/migrations/*.*"
   - "NLog.config"
   - "pyproject.toml"
-  - "./scripts/mailserver/mailhog.auth"
   - ".gitignore"
+  - "./scripts/mailserver/*"
+  - "./scripts/auth/*"
+  - "./scripts/ldap/*"
 flagWords:
   - gage
   - ./rabbitmq.conf
@@ -159,6 +161,23 @@ words:
   - "onpointerdown"
   - "onpointerup"
   - "nixpkgs"
+  - "testcontainers"
+  - "rabbitmq"
+  - "mailpit"
+  - "maildir"
+  - "backchannel"
+  - "hsts"
+  - "authelia"
+  - "lldap"
+  - "hmac"
+  - "pkcs"
+  - "ampq"
+  - "lber"
+  - "axllent"
+  - "contentroot"
+  - "applicationname"
+  - "sslmode"
+  - "fakeable"
 
   # Croatian
   - "altibiz"

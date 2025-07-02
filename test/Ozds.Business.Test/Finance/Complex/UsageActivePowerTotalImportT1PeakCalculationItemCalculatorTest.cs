@@ -9,38 +9,37 @@ namespace Ozds.Business.Test.Finance.Complex;
 
 public class UsageActivePowerTotalImportT1PeakCalculationItemCalculatorTest
 {
-  public static readonly
-    TheoryData<
-      UsageActivePowerTotalImportT1PeakCalculationItemModel>
-    TestData = new(
-      new Faker<UsageActivePowerTotalImportT1PeakCalculationItemModel>()
-        .RuleFor(
-          x => x.Peak_kW,
-          (f, m) => System.Math.Round(
-            f.Random.Decimal(
-              Constants.MinEnergyValue, Constants.MaxEnergyValue),
-            2))
-        .RuleFor(
-          x => x.Amount_kW,
-          (_, m) => System.Math.Round(
-            m.Peak_kW,
-            0))
-        .RuleFor(
-          x => x.Price_EUR,
-          (f, _) => System.Math.Round(
-            f.Random.Decimal(
-              Constants.MinEnergyValue, Constants.MaxEnergyValue),
-            3))
-        .RuleFor(
-          x => x.Total_EUR,
-          (_, m) => System.Math.Round(
-            m.Amount_kW * m.Price_EUR,
-            2))
-        .GenerateLazy(Constants.DefaultFuzzCount)
-    );
+  public static IEnumerable<
+    UsageActivePowerTotalImportT1PeakCalculationItemModel> TestData()
+  {
+    return new Faker<UsageActivePowerTotalImportT1PeakCalculationItemModel>()
+      .RuleFor(
+        x => x.Peak_kW,
+        (f, m) => System.Math.Round(
+          f.Random.Decimal(
+            Constants.MinEnergyValue, Constants.MaxEnergyValue),
+          2))
+      .RuleFor(
+        x => x.Amount_kW,
+        (_, m) => System.Math.Round(
+          m.Peak_kW,
+          0))
+      .RuleFor(
+        x => x.Price_EUR,
+        (f, _) => System.Math.Round(
+          f.Random.Decimal(
+            Constants.MinEnergyValue, Constants.MaxEnergyValue),
+          3))
+      .RuleFor(
+        x => x.Total_EUR,
+        (_, m) => System.Math.Round(
+          m.Amount_kW * m.Price_EUR,
+          2))
+      .GenerateLazy(Constants.DefaultFuzzCount);
+  }
 
-  [Theory]
-  [MemberData(nameof(TestData))]
+  [Test]
+  [MethodDataSource(nameof(TestData))]
   public void CalculatesCorrectlyWithFuzzyAbbB2xAggregates(
     UsageActivePowerTotalImportT1PeakCalculationItemModel expected)
   {
@@ -71,8 +70,8 @@ public class UsageActivePowerTotalImportT1PeakCalculationItemCalculatorTest
         .RuleFor(
           x => x.Timestamp,
           (f, _) => f.Date.BetweenOffset(
-            start.Add(IntervalModel.QuarterHour.ToTimeSpan(start)),
-            end.Subtract(IntervalModel.QuarterHour.ToTimeSpan(start))))
+            start.Add(TimeSpan.FromMinutes(15)),
+            end.Subtract(TimeSpan.FromMinutes(15))))
         .RuleFor(
           x => x.DerivedActivePowerL1ImportT0_W,
           f => derivedMeasureFakerNoise.Generate())
@@ -112,8 +111,8 @@ public class UsageActivePowerTotalImportT1PeakCalculationItemCalculatorTest
         .RuleFor(
           x => x.Timestamp,
           (f, _) => f.Date.BetweenOffset(
-            start.Add(IntervalModel.QuarterHour.ToTimeSpan(start)),
-            end.Subtract(IntervalModel.QuarterHour.ToTimeSpan(start))))
+            start.Add(TimeSpan.FromMinutes(15)),
+            end.Subtract(TimeSpan.FromMinutes(15))))
         .RuleFor(
           x => x.DerivedActivePowerL1ImportT0_W,
           f => derivedMeasureFakerNoise.Generate())

@@ -3,6 +3,7 @@
 @using Ozds.Business.Analysis
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Business.Models.Enums
+@using Ozds.Business.Queries
 @using Ozds.Client.Components.Charts
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
@@ -62,6 +63,7 @@
           {
             Meters = Meters.ToHashSet(),
             Measure = MeasureModel.ActivePower,
+            FromDate = TimeQueries.GetStartOfMonthLastYear(ClockQueries.Now()),
             Resolution = ResolutionModel.Year,
             Multiplier = 1,
             Operator = OperatorModel.Last
@@ -141,6 +143,7 @@
             Meters = Meters.ToHashSet(),
             Measure = MeasureModel.ActivePower,
             Resolution = ResolutionModel.Year,
+            FromDate = TimeQueries.GetStartOfMonthLastYear(ClockQueries.Now()),
             Multiplier = 1,
             Operator = OperatorModel.Last
           };
@@ -158,5 +161,11 @@
 
   [Parameter]
   public List<IMeter> Meters { get; set; } = default!;
+
+  [Inject]
+  private ClockQueries ClockQueries { get; set; } = default!;
+
+  [Inject]
+  private TimeQueries TimeQueries { get; set; } = default!;
 
 }

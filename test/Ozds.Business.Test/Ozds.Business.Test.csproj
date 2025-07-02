@@ -4,8 +4,4 @@
     <ProjectReference Include="../../src/Ozds.Business/Ozds.Business.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Meziantou.Xunit.ParallelTestFramework" />
-  </ItemGroup>
-
 </Project>

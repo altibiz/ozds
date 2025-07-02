@@ -5,9 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-		<PackageReference Include="OrchardCore.Abstractions" />
-		<PackageReference Include="OrchardCore.Users" />
 		<PackageReference Include="Altibiz.DependencyInjection.Extensions" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" />
+    <PackageReference Include="Novell.Directory.Ldap.NETStandard" />
   </ItemGroup>
 
 </Project>

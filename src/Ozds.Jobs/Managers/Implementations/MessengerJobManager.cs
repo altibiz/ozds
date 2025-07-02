@@ -1,12 +1,14 @@
 using System.Globalization;
 using Ozds.Jobs.Manager.Abstractions;
+using Ozds.Time.Queries.Abstractions;
 using Quartz;
 
 namespace Ozds.Jobs.Managers.Implementations;
 
 public class MessengerJobManager(
   ISchedulerFactory schedulerFactory,
-  ILogger<MessengerJobManager> logger
+  ILogger<MessengerJobManager> logger,
+  IClockQueries clock
 ) : IMessengerJobManager
 {
   public async Task EnsureInactivityMonitorJob(
@@ -95,7 +97,7 @@ public class MessengerJobManager(
 
   private ITrigger CreateTrigger(string id, TimeSpan inactivityDuration)
   {
-    var now = DateTimeOffset.UtcNow;
+    var now = clock.Now();
     var startAt = now.Add(inactivityDuration);
 
     logger.LogDebug(

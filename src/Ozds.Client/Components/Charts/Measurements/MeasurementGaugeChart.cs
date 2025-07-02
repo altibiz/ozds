@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Enums;
+using Ozds.Business.Queries;
 using Ozds.Client.Components.Base;
 using Ozds.Client.Extensions;
 using Ozds.Client.State;
@@ -24,6 +25,12 @@ public partial class MeasurementGaugeChart : OzdsComponentBase
 
   [CascadingParameter]
   public ThemeState ThemeState { get; set; } = default!;
+
+  [Inject]
+  public ClockQueries ClockQueries { get; set; } = default!;
+
+  [Inject]
+  public TimeQueries TimeQueries { get; set; } = default!;
 
   [Parameter]
   public MeasurementChartParameters Parameters { get; set; } = default!;
@@ -65,10 +72,11 @@ public partial class MeasurementGaugeChart : OzdsComponentBase
       ? options.WithSmAndDown(measure)
       : options.WithMdAndUp(measure);
 
-    var timeSpan = Parameters.Resolution
-      .ToTimeSpan(
-        Parameters.Multiplier,
-        DateTimeOffset.UtcNow);
+    var now = ClockQueries.Now();
+    var timeSpan = TimeQueries.ResolutionTimeSpan(
+      Parameters.Resolution,
+      now,
+      Parameters.Multiplier);
     if (timeSpan.TotalDays > 1)
     {
       options = options.WithShortDate();

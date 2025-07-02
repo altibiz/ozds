@@ -2,37 +2,52 @@ using Ozds.Business.Activation;
 using Ozds.Business.Conversion;
 using Ozds.Business.Extensions;
 using Ozds.Business.Models.Abstractions;
+using Ozds.Business.Queries;
+using Ozds.Time.Queries.Abstractions;
 
 namespace Ozds.Business.Test.Conversion;
 
 public class ModelEntityConverterTest
 {
-  public static readonly
-    TheoryData<Type> TestData = new(
-      AppDomain.CurrentDomain
-        .GetAssemblies()
-        .SelectMany(
-          assembly => assembly
-            .GetTypes()
-            .Where(
-              type =>
-                !type.IsGenericType &&
-                type.IsAssignableTo(typeof(IModel)))));
+  public static IEnumerable<Type> TestData()
+  {
+    return AppDomain.CurrentDomain
+      .GetAssemblies()
+      .Where(x => x.FullName is { } name && name.Contains("Ozds"))
+      .SelectMany(
+        assembly => assembly
+          .GetTypes()
+          .Where(
+            type =>
+              !type.IsGenericType &&
+              type.IsAssignableTo(typeof(IModel))));
+  }
 
-  [Theory]
-  [MemberData(nameof(TestData))]
+  [Test]
+  [MethodDataSource(nameof(TestData))]
   public void Converts(Type modelType)
   {
-    var serviceCollection = new ServiceCollection();
-    serviceCollection.AddOzdsBusinessPure();
+    var builder = Host.CreateApplicationBuilder();
+    builder.AddOzdsBusinessPure();
+    builder.Services.AddScoped(
+      _ => new Mock<TimeQueries>(
+        MockBehavior.Loose,
+        Mock.Of<ITimeQueries>()).Object);
+    builder.Services.AddScoped(
+      _ => new Mock<ClockQueries>(
+        MockBehavior.Loose,
+        Mock.Of<IClockQueries>()).Object);
+    var host = builder.Build();
 
-    var serviceProvider = serviceCollection.BuildServiceProvider();
+    using var scope = host.Services.CreateScope();
+    var serviceProvider = scope.ServiceProvider;
+
     var activator = serviceProvider
       .GetRequiredService<ModelActivator>();
     var modelEntityConverter = serviceProvider
       .GetRequiredService<ModelEntityConverter>();
 
-    var activationType = (TestData as IEnumerable<Type>)
+    var activationType = TestData()
       .FirstOrDefault(
         type =>
           !type.IsGenericType

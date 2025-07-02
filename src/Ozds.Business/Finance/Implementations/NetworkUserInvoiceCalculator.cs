@@ -2,11 +2,13 @@ using Ozds.Business.Finance.Abstractions;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Complex;
 using Ozds.Business.Models.Composite;
+using Ozds.Business.Queries;
 
 namespace Ozds.Business.Finance.Implementations;
 
 public class NetworkUserInvoiceCalculator(
-  NetworkUserCalculationCalculator calculationCalculator
+  NetworkUserCalculationCalculator calculationCalculator,
+  ClockQueries clock
 ) : INetworkUserInvoiceCalculator
 {
   private readonly NetworkUserCalculationCalculator
@@ -123,13 +125,15 @@ public class NetworkUserInvoiceCalculator(
     var tax = System.Math.Round(total * taxRate / 100M, 2);
     var totalWithTax = System.Math.Round(total + tax, 2);
 
+    var now = clock.Timestamp();
+
     var invoice = new NetworkUserInvoiceModel
     {
       Id = default!,
       Title =
         $"Invoice for {basis.NetworkUser.Title} at {basis.Location.Title}",
       IssuedById = default!,
-      IssuedOn = DateTimeOffset.UtcNow,
+      IssuedOn = now,
       NetworkUserId = basis.NetworkUser.Id,
       Remark = basis.NetworkUser.InvoiceRemark,
       FromDate = basis.FromDate,

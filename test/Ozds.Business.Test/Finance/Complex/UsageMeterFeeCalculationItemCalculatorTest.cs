@@ -9,30 +9,29 @@ namespace Ozds.Business.Test.Finance.Complex;
 
 public class UsageMeterFeeCalculationItemCalculatorTest
 {
-  public static readonly
-    TheoryData<
-      UsageMeterFeeCalculationItemModel>
-    TestData = new(
-      new Faker<UsageMeterFeeCalculationItemModel>()
-        .RuleFor(
-          x => x.Amount_N,
-          (_, m) => 1)
-        .RuleFor(
-          x => x.Price_EUR,
-          (f, _) => System.Math.Round(
-            f.Random.Decimal(
-              Constants.MinEnergyValue, Constants.MaxEnergyValue),
-            3))
-        .RuleFor(
-          x => x.Total_EUR,
-          (_, m) => System.Math.Round(
-            m.Amount_N * m.Price_EUR,
-            2))
-        .GenerateLazy(Constants.DefaultFuzzCount)
-    );
+  public static IEnumerable<
+    UsageMeterFeeCalculationItemModel> TestData()
+  {
+    return new Faker<UsageMeterFeeCalculationItemModel>()
+      .RuleFor(
+        x => x.Amount_N,
+        (_, m) => 1)
+      .RuleFor(
+        x => x.Price_EUR,
+        (f, _) => System.Math.Round(
+          f.Random.Decimal(
+            Constants.MinEnergyValue, Constants.MaxEnergyValue),
+          3))
+      .RuleFor(
+        x => x.Total_EUR,
+        (_, m) => System.Math.Round(
+          m.Amount_N * m.Price_EUR,
+          2))
+      .GenerateLazy(Constants.DefaultFuzzCount);
+  }
 
-  [Theory]
-  [MemberData(nameof(TestData))]
+  [Test]
+  [MethodDataSource(nameof(TestData))]
   public void CalculatesCorrectlyWithFuzzyAbbB2xAggregates(
     UsageMeterFeeCalculationItemModel expected)
   {
@@ -47,8 +46,8 @@ public class UsageMeterFeeCalculationItemCalculatorTest
         .RuleFor(
           x => x.Timestamp,
           (f, _) => f.Date.BetweenOffset(
-            start.Add(IntervalModel.QuarterHour.ToTimeSpan(start)),
-            end.Subtract(IntervalModel.QuarterHour.ToTimeSpan(start))))
+            start.Add(TimeSpan.FromMinutes(15)),
+            end.Subtract(TimeSpan.FromMinutes(15))))
         .Generate(Constants.DefaultFuzzCount);
 
     var aggregates = noiseAggregates

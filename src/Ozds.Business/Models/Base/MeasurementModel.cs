@@ -1,6 +1,8 @@
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using Ozds.Business.Math;
 using Ozds.Business.Models.Abstractions;
+using Ozds.Business.Queries;
 
 namespace Ozds.Business.Models.Base;
 
@@ -16,7 +18,8 @@ public abstract class MeasurementModel : IMeasurement
 
   [Required]
   public required DateTimeOffset Timestamp { get; set; } =
-    DateTimeOffset.UtcNow;
+    // NOTE: just so something is there
+    DateTimeOffset.Parse("2000-01-01T00:00:00Z", CultureInfo.InvariantCulture);
 
   public abstract TariffMeasure<decimal> Current_A { get; }
 
@@ -49,9 +52,13 @@ public abstract class MeasurementModel<T> : MeasurementModel
       yield break;
     }
 
+    var clock = validationContext.GetRequiredService<ClockQueries>();
+
+    var now = clock.Timestamp();
+
     if (
       validationContext.MemberName is null or nameof(Timestamp) &&
-      Timestamp > DateTimeOffset.UtcNow
+      Timestamp > now
     )
     {
       yield return new ValidationResult(

@@ -28,8 +28,7 @@ Allows = [RoleModel.OperatorRepresentative])]
   <title>OZDS - @Translate("Meters")</title>
 </HeadContent>
 @{
-  var analyses = AnalysisState.AnalysisBases.Value
-    .AnalysesByMeter();
+  var analyses = Analyzer.AnalyzeByMeter(AnalysisState.AnalysisBases.Value);
 }
 
 <MudCheckBox
@@ -54,6 +53,9 @@ Allows = [RoleModel.OperatorRepresentative])]
 
   [CascadingParameter]
   private RepresentativeState RepresentativeState { get; set; } = default!;
+
+  [Inject]
+  private Analyzer Analyzer { get; set; } = default!;
 
   private bool _deleted;
 }

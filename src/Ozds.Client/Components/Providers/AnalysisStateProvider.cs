@@ -4,7 +4,6 @@ using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Composite;
 using Ozds.Business.Models.Enums;
 using Ozds.Business.Queries;
-using Ozds.Business.Time;
 using Ozds.Client.Components.Base;
 using Ozds.Client.State;
 
@@ -26,6 +25,12 @@ public partial class AnalysisStateProvider : OzdsComponentBase
 
   [CascadingParameter]
   private LocationState LocationState { get; set; } = default!;
+
+  [Inject]
+  private ClockQueries ClockQueries { get; set; } = default!;
+
+  [Inject]
+  private TimeQueries TimeQueries { get; set; } = default!;
 
   [Inject]
   private ILogger<AnalysisStateProvider> Logger { get; set; } = default!;
@@ -72,8 +77,8 @@ public partial class AnalysisStateProvider : OzdsComponentBase
     var financialQueries = ScopedServices
       .GetRequiredService<FinancialQueries>();
 
-    var now = DateTimeOffset.UtcNow;
-    var startOfMonthLastYear = now.GetStartOfMonthLastYear();
+    var now = ClockQueries.Now();
+    var startOfMonthLastYear = TimeQueries.GetStartOfMonthLastYear(now);
 
     var analysisBases = await measurementLocationQueries
       .ReadAnalysisBasisByLocationAndRepresentative(

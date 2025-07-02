@@ -2,20 +2,17 @@
 
 @page "/measurements/meter/{id?}"
 @using MudBlazor
-@using Ozds.Business.Analysis
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Business.Models.Enums
-@using Ozds.Business.Time
 @using Ozds.Client.Components.Charts
 @using Ozds.Client.Components.Fields
 @using Ozds.Client.Components.Models
 @using Ozds.Client.Components.Streaming
-@using Ozds.Client.State
-@inherits Ozds.Client.Components.Models.Base.OzdsIdentifiableModelPageComponentBase<IMeter>
+@inherits Ozds.Client.Components.Models.Base.OzdsIdentifiableModelPageComponentBase<Ozds.Business.Models.Abstractions.IMeter>
 
 @{
-  var analysis = AnalysisState
-    .AnalysisBases.Value.AnalysesByMeter()
+  var analysis = Analyzer
+    .AnalyzeByMeter(AnalysisState.AnalysisBases.Value)
     .FirstOrDefault(x => x.Meter.Id == Id);
 }
 
@@ -49,14 +46,14 @@
       Label="@(x => x.ToCode())"/>
     @{
       var accountingPeriodHref =
-        "/download/meter-accounting-period"
+        "/report/meter-accounting-period"
         + "/" + GetCulture().TwoLetterISOLanguageName
         + "/" + Id
         + "/" + selectedMonth.Year
         + "/" + selectedMonth.Month;
 
       var loadCurveHref =
-        "/download/meter-load-curve"
+        "/report/meter-load-curve"
         + "/" + GetCulture().TwoLetterISOLanguageName
         + "/" + Id
         + "/" + selectedObis.ToCode()
@@ -71,9 +68,7 @@
     </MudLink>
   </div>
 
-  meters = new List<IMeter> { analysis.Meter };
-
-  <MeasurementChartControls Meters="@meters">
+  <MeasurementChartControls Meters="@(new List<IMeter> { analysis.Meter })">
     <MeasurementGaugeChart Parameters="@context"/>
     <MeasurementLineChart Parameters="@context"/>
   </MeasurementChartControls>
@@ -100,26 +95,3 @@
     <Details Model="context.Model"/>
   </Details>
 </Mutating>
-
-@code{
-
-  private List<IMeter> meters = new();
-
-  private DateTime selectedMonth =
-    DateTimeOffset.UtcNow.GetStartOfLastMonth().DateTime;
-
-  private ObisModel selectedObis = ObisModel.ActiveEnergyTotalImportT1_kWh;
-
-  [CascadingParameter]
-  private AnalysisState AnalysisState { get; set; } = default!;
-
-  [Parameter]
-  public string Id { get; set; } = default!;
-
-  [CascadingParameter]
-  private RepresentativeState RepresentativeState { get; set; } = default!;
-
-  [CascadingParameter]
-  private Breakpoint Breakpoint { get; set; }
-
-}

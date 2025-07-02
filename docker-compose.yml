@@ -7,6 +7,8 @@ x-ollama-common: &ollama-common
     - 11434:11434
   volumes:
     - ollama_data:/root/.ollama
+  networks:
+    - ozds-network
   healthcheck:
     test: curl --fail http://localhost:11434 || exit 1
     interval: 30s
@@ -19,6 +21,8 @@ services:
     restart: always
     volumes:
       - postgres_data:/home/postgres/pgdata/data
+    networks:
+      - ozds-network
     environment:
       POSTGRES_DB: ozds
       POSTGRES_USER: ozds
@@ -36,6 +40,8 @@ services:
     restart: always
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - ozds-network
     environment:
       RABBITMQ_DEFAULT_USER: ozds
       RABBITMQ_DEFAULT_PASS: ozds
@@ -49,21 +55,55 @@ services:
       retries: 10
 
   mailserver:
-    image: mailhog/mailhog:v1.0.1
+    image: axllent/mailpit:v1.26
     restart: always
-    user: root
     ports:
       - 1025:1025
       - 8025:8025
     environment:
-      MH_STORAGE: maildir
-      MH_MAILDIR_PATH: /var/lib/mailhog
-      MH_AUTH_FILE: /etc/mailhog/mailhog.auth
+      MP_DATABASE: /data/mailpit.db
+      MP_UI_AUTH_FILE: /etc/mailpit/mailpit.auth
     volumes:
-      - mailserver_data:/var/lib/mailhog
-      - ./scripts/mailserver:/etc/mailhog
+      - mailserver_data:/data
+      - ./scripts/mailserver:/etc/mailpit
+    networks:
+      - ozds-network
     healthcheck:
-      test: curl --fail http://localhost:8025 || exit 1
+      test: curl --fail -u ozds:ozds http://localhost:8025 || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  auth:
+    image: authelia/authelia:4.39.4
+    restart: always
+    depends_on: [ldap]
+    ports:
+      - 9091:9091
+    volumes:
+      - ./scripts/auth/configuration.yml:/config/configuration.yml
+      - ./scripts/auth/users.yml:/config/users.yml
+    networks:
+      - ozds-network
+    healthcheck:
+      test: curl --fail http://localhost:9091 || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  ldap:
+    image: lldap/lldap:2025-05-19
+    restart: always
+    ports:
+      - 3890:3890
+      - 17170:17170
+    volumes:
+      - ./scripts/ldap/users.db:/data/users.db
+      - ./scripts/ldap/lldap_config.toml:/data/lldap_config.toml
+    networks:
+      - ozds-network
+    healthcheck:
+      test: curl --fail http://localhost:17170 || exit 1
       interval: 30s
       timeout: 10s
       retries: 5
@@ -93,3 +133,10 @@ volumes:
     driver: local
   ollama_data:
     driver: local
+
+networks:
+  ozds-network:
+    name: ozds-network
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.name: ozdsbr

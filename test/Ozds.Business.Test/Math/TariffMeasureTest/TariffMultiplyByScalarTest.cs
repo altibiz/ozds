@@ -4,12 +4,13 @@ namespace Ozds.Business.Test.Math.TariffMeasureTest;
 
 public class TariffMultiplyByScalarTest
 {
-  public static readonly
-    TheoryData<TariffMeasure<decimal>, decimal, TariffMeasure<decimal>>
-    TariffMeasuresMultiply = new()
+  public static
+    IEnumerable<(TariffMeasure<decimal>, decimal, TariffMeasure<decimal>)>
+    TariffMeasuresMultiply()
+  {
+    return new List<(TariffMeasure<decimal>, decimal, TariffMeasure<decimal>)>
     {
-      {
-        new UnaryTariffMeasure<decimal>(
+      (new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
             new SinglePhasicMeasureSum<decimal>(5),
             new SinglePhasicMeasureSum<decimal>(3))),
@@ -18,10 +19,9 @@ public class TariffMultiplyByScalarTest
           new ImportExportDuplexMeasure<decimal>(
             new SinglePhasicMeasureSum<decimal>(10),
             new SinglePhasicMeasureSum<decimal>(6)))
-      },
+      ),
 
-      {
-        new UnaryTariffMeasure<decimal>(
+      (new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
             new TriPhasicMeasure<decimal>(1, 2, 3),
             new TriPhasicMeasure<decimal>(4, 5, 6))),
@@ -30,10 +30,9 @@ public class TariffMultiplyByScalarTest
           new ImportExportDuplexMeasure<decimal>(
             new TriPhasicMeasure<decimal>(2, 4, 6),
             new TriPhasicMeasure<decimal>(8, 10, 12)))
-      },
+      ),
 
-      {
-        new BinaryTariffMeasure<decimal>(
+      (new BinaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
             new SinglePhasicMeasureSum<decimal>(1),
             new SinglePhasicMeasureSum<decimal>(2)),
@@ -48,13 +47,14 @@ public class TariffMultiplyByScalarTest
           new ImportExportDuplexMeasure<decimal>(
             new SinglePhasicMeasureSum<decimal>(6),
             new SinglePhasicMeasureSum<decimal>(8)))
-      },
+      ),
 
-      { new NullTariffMeasure<decimal>(), 2, new NullTariffMeasure<decimal>() }
+      (new NullTariffMeasure<decimal>(), 2, new NullTariffMeasure<decimal>())
     };
+  }
 
-  [Theory]
-  [MemberData(nameof(TariffMeasuresMultiply))]
+  [Test]
+  [MethodDataSource(nameof(TariffMeasuresMultiply))]
   public void Multiply_ReturnsExpectedResult(
     TariffMeasure<decimal> measure,
     decimal multiplier,
@@ -62,6 +62,6 @@ public class TariffMultiplyByScalarTest
   {
     var result = measure.Multiply(multiplier);
 
-    Assert.Equal(expected, result);
+    result.Should().Be(expected);
   }
 }

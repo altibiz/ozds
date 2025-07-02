@@ -2,15 +2,19 @@ using CommandLine;
 
 namespace Ozds.Migration.Arguments;
 
+public interface IOzdsMigrationArguments
+{
+}
+
 [Verb("migrate", HelpText = "Migrate the database.")]
-public class OzdsMigrationMigrateArguments
+public class OzdsMigrationMigrateArguments : IOzdsMigrationArguments
 {
   [Option('t', "timeout", Required = false, HelpText = "Timeout in seconds.")]
   public int Timeout_s { get; set; } = 3 * 60 * 60;
 }
 
 [Verb("generate", HelpText = "Generate additional migration sql.")]
-public class OzdsMigrationGenerateArguments
+public class OzdsMigrationGenerateArguments : IOzdsMigrationArguments
 {
   [Option('o', "output", Required = true, HelpText = "Output file.")]
   public string Output { get; set; } = default!;
@@ -24,7 +28,7 @@ public class OzdsMigrationGenerateArguments
 
 public static class OzdsMigrationArguments
 {
-  public static object? Parse(string[] args)
+  public static IOzdsMigrationArguments? Parse(string[] args)
   {
     try
     {
@@ -56,7 +60,7 @@ public static class OzdsMigrationArguments
         }
       }
 
-      return result.Value;
+      return result.Value as IOzdsMigrationArguments;
     }
     catch (Exception ex)
     {
