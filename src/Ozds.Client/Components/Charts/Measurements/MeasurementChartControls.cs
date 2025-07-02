@@ -154,8 +154,10 @@ public partial class MeasurementChartControls : OzdsComponentBase
       .ToHashSet();
     var now = DateTimeOffset.UtcNow;
     _parameters.FromDate = now.Subtract(
-      _parameters.Resolution.ToTimeSpan(
-        _parameters.Multiplier, now));
+      TimeQueries.ResolutionTimeSpan(
+        _parameters.Resolution,
+        now,
+        _parameters.Multiplier));
     await Fetch();
   }
 
