@@ -14,6 +14,9 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - playwright initialization logs
 - translation metadata
 - `Ozds.Assets` translation queries to get translation keys
+- fix for getting meters with their types in `ReadByMeterIds`
+- logic for chart to work with meters like it does with measurement locations
+- check on filtering so it doesn't do anything if it doesn't need to
 
 ### Changed
 
@@ -38,6 +41,7 @@ and adheres to [Semantic Versioning](https://semver.org/).
 ### Removed
 
 - `Ozds.Assets` localization key queries
+- gages for now so that the pages looked nicer
 
 ## [1.3.1] - 2025-06-05
 

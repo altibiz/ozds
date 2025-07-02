@@ -66,6 +66,11 @@ public partial class Table<T> : OzdsComponentBase
       return false;
     }
 
+    if (string.IsNullOrEmpty(searchString))
+    {
+      return true;
+    }
+
     if (value is IIdentifiable rootIdent && ContainsSearch(rootIdent.Title))
     {
       return true;
