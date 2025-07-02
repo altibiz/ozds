@@ -2965,7 +2965,7 @@
         Current months consumption
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 84 column 15
+        From file 'Ozds.Client/Components/Dashboards/LocationRepresentativeDashboard.razor' line 76 column 15
       </Metadata>
       <Value>
         Current month's consumption
@@ -3177,7 +3177,7 @@
         Deleted
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Pages/Measurements/MeasurementValidatorsPage.razor' line 30 column 11
+        From file 'Ozds.Client/Pages/Measurements/MetersPage.razor' line 35 column 11
       </Metadata>
       <Value>
         Deleted
@@ -3979,7 +3979,7 @@
         Energy card CSV
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Pages/Administration/LocationPage.razor' line 70 column 10
+        From file 'Ozds.Client/Pages/Administration/NetworkUserPage.razor' line 85 column 10
       </Metadata>
       <Value>
         Energy card CSV
@@ -5351,7 +5351,7 @@
         Last months consumption
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 109 column 15
+        From file 'Ozds.Client/Components/Dashboards/LocationRepresentativeDashboard.razor' line 60 column 15
       </Metadata>
       <Value>
         Last month's consumption
@@ -8820,7 +8820,7 @@
         Phase sum
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementDonutChart.razor' line 67 column 9
+        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementLineChart.razor' line 44 column 38
       </Metadata>
       <Value>
         Phase total

@@ -24,42 +24,44 @@ public class LocalizationQueries(
   {
     var cacheKey = new TranslationTypeKey(culture, type);
 
-    return translationCache.GetOrAdd(cacheKey, _ =>
-    {
-      var translations = assetQueries.LoadTranslations(culture);
-
-      var overrides = translationQueries.KeyOverrides(type);
-      foreach (var key in overrides)
+    return translationCache.GetOrAdd(
+      cacheKey, _ =>
       {
-        if (translations.TryGetValue(key, out var translation))
-        {
-          return translation;
-        }
-      }
+        var translations = assetQueries.LoadTranslations(culture);
 
-      return overrides.First();
-    });
+        var overrides = translationQueries.KeyOverrides(type);
+        foreach (var key in overrides)
+        {
+          if (translations.TryGetValue(key, out var translation))
+          {
+            return translation;
+          }
+        }
+
+        return overrides.First();
+      });
   }
 
   public string Translate(CultureInfo culture, Type type, string member)
   {
     var cacheKey = new TranslationMemberKey(culture, type, member);
 
-    return translationCache.GetOrAdd(cacheKey, _ =>
-    {
-      var translations = assetQueries.LoadTranslations(culture);
-
-      var overrides = translationQueries.KeyOverrides(type, member);
-      foreach (var key in overrides)
+    return translationCache.GetOrAdd(
+      cacheKey, _ =>
       {
-        if (translations.TryGetValue(key, out var translation))
-        {
-          return translation;
-        }
-      }
+        var translations = assetQueries.LoadTranslations(culture);
 
-      return overrides.First();
-    });
+        var overrides = translationQueries.KeyOverrides(type, member);
+        foreach (var key in overrides)
+        {
+          if (translations.TryGetValue(key, out var translation))
+          {
+            return translation;
+          }
+        }
+
+        return overrides.First();
+      });
   }
 
   public string Translate(CultureInfo culture, MemberExpression member)
@@ -68,35 +70,37 @@ public class LocalizationQueries(
 
     var cacheKey = new TranslationExpressionKey(culture, member);
 
-    return translationCache.GetOrAdd(cacheKey, _ =>
-    {
-      var overrides = translationQueries.KeyOverrides(member);
-      foreach (var key in overrides)
+    return translationCache.GetOrAdd(
+      cacheKey, _ =>
       {
-        if (translations.TryGetValue(key, out var translation))
+        var overrides = translationQueries.KeyOverrides(member);
+        foreach (var key in overrides)
         {
-          return translation;
+          if (translations.TryGetValue(key, out var translation))
+          {
+            return translation;
+          }
         }
-      }
 
-      return overrides.First();
-    });
+        return overrides.First();
+      });
   }
 
   public string Translate(CultureInfo culture, string notLocalized)
   {
     var cacheKey = new TranslationStringKey(culture, notLocalized);
 
-    return translationCache.GetOrAdd(cacheKey, _ =>
-    {
-      var translations = assetQueries.LoadTranslations(culture);
-      if (translations.TryGetValue(notLocalized, out var value))
+    return translationCache.GetOrAdd(
+      cacheKey, _ =>
       {
-        return value;
-      }
+        var translations = assetQueries.LoadTranslations(culture);
+        if (translations.TryGetValue(notLocalized, out var value))
+        {
+          return value;
+        }
 
-      return notLocalized;
-    });
+        return notLocalized;
+      });
   }
 
   public string NumericString(decimal? number, int places = 2)

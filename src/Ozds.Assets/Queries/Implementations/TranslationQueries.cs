@@ -8,7 +8,7 @@ public class TranslationQueries : ITranslationQueries
 {
   public string GeneralKey(Type type, bool trimmed = true)
   {
-    return CleanTypeName(type, trim: trimmed);
+    return CleanTypeName(type, trimmed);
   }
 
   public string GeneralKey(Type type, string member)
@@ -46,8 +46,8 @@ public class TranslationQueries : ITranslationQueries
     var order = VirtualizationOrder(type);
     return order
       .Select(Key)
-      .Append(GeneralKey(type, trimmed: false))
-      .Append(GeneralKey(type, trimmed: true))
+      .Append(GeneralKey(type, false))
+      .Append(GeneralKey(type, true))
       .ToArray();
   }
 
@@ -75,6 +75,7 @@ public class TranslationQueries : ITranslationQueries
       overrides.AddRange(
         virtualizationOrder.Select(x => $"{Key(x, property)}{suffix}"));
     }
+
     return overrides
       .Append(GeneralKey(member))
       .ToArray();
@@ -133,6 +134,7 @@ public class TranslationQueries : ITranslationQueries
       overrides.AddRange(
         virtualizationOrder.Select(x => $"{ShortKey(x, property)}{suffix}"));
     }
+
     return overrides
       .Append(member.Member.Name)
       .Append(GeneralKey(member))
@@ -172,6 +174,7 @@ public class TranslationQueries : ITranslationQueries
           baseName = baseName[..entityIndex];
         }
       }
+
       return baseName;
     }
 
@@ -198,9 +201,10 @@ public class TranslationQueries : ITranslationQueries
       expression = memberExpression.Expression
         ?? throw new InvalidOperationException(
           $"Expression of {memberExpression} is null");
-      order.Add(new(
-        memberExpression.Expression.Type,
-        memberExpression.Member.Name));
+      order.Add(
+        new MemberExpressionItem(
+          memberExpression.Expression.Type,
+          memberExpression.Member.Name));
     }
 
     order.Reverse();

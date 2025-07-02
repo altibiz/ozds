@@ -116,7 +116,8 @@ public class CsvSerialization(
 
         foreach (var property in properties.Select(property => property.Name))
         {
-          var translation = localizationQueries.Translate(culture, type, property);
+          var translation =
+            localizationQueries.Translate(culture, type, property);
           stringBuilder.Append(translation);
           stringBuilder.Append(Separator);
         }

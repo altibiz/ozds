@@ -41,7 +41,9 @@ public class OzdsTranslationTypeArguments : IOzdsTranslationArguments
     HelpText = "Input namespaces.")]
   public IEnumerable<string> InputNamespaces { get; set; } = default!;
 
-  [Option('r', "reduce", Required = false, Default = false, HelpText = "Reduce variations.")]
+  [Option(
+    'r', "reduce", Required = false, Default = false,
+    HelpText = "Reduce variations.")]
   public bool Reduce { get; set; } = default!;
 
   [Option(

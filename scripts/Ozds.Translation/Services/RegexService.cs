@@ -122,14 +122,15 @@ public partial class RegexService(
         column++;
       }
     }
+
     return new Index(line, column);
   }
-
-  private sealed record Index(int Line, int Column);
 
   [GeneratedRegex(@"Translate\(""([^""]+)""\)")]
   private static partial Regex TranslateRegex();
 
   [GeneratedRegex(@"Translate\([^,]+,[^""]+""([^""]+)""\)")]
   private static partial Regex TranslateWithCultureRegex();
+
+  private sealed record Index(int Line, int Column);
 }

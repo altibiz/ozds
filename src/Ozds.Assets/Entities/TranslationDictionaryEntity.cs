@@ -34,7 +34,7 @@ public sealed class TranslationDictionaryEntity
 
   private TranslationDictionaryEntity()
   {
-    items = new();
+    items = new ConcurrentDictionary<string, Item>();
   }
 
   private TranslationDictionaryEntity(
@@ -208,28 +208,28 @@ public sealed class TranslationDictionaryEntity
 
   public void Add(string key, string value)
   {
-    items.TryAdd(key, new(null, value));
+    items.TryAdd(key, new Item(null, value));
   }
 
   public void Add(string key, string? metadata, string value)
   {
-    items.TryAdd(key, new(metadata, value));
+    items.TryAdd(key, new Item(metadata, value));
   }
 
   public void Replace(string key, string value)
   {
     items.AddOrUpdate(
       key,
-      _ => new(null, value),
-      (_, _) => new(null, value));
+      _ => new Item(null, value),
+      (_, _) => new Item(null, value));
   }
 
   public void Replace(string key, string metadata, string value)
   {
     items.AddOrUpdate(
       key,
-      _ => new(metadata, value),
-      (_, _) => new(metadata, value));
+      _ => new Item(metadata, value),
+      (_, _) => new Item(metadata, value));
   }
 
   public string? Remove(string key)
@@ -272,7 +272,7 @@ public sealed class TranslationDictionaryEntity
         item =>
           new KeyValuePair<string, Item>(
             item.Key.TrimWords(),
-            new(
+            new Item(
               item.Metadata?.Trim().Dedent(8, "\n"),
               item.Value.TrimWords()))));
   }
@@ -347,7 +347,7 @@ public sealed class TranslationDictionaryItem
 {
   public string Key { get; set; } = default!;
 
-  public string? Metadata { get; set; } = default!;
+  public string? Metadata { get; set; }
 
   public string Value { get; set; } = default!;
 }
