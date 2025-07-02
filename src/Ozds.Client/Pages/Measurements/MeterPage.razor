@@ -69,7 +69,7 @@
   </div>
 
   <MeasurementChartControls Meters="@(new List<IMeter> { analysis.Meter })">
-    <MeasurementGaugeChart Parameters="@context"/>
+    @* <MeasurementGaugeChart Parameters="@context"/> *@
     <MeasurementLineChart Parameters="@context"/>
   </MeasurementChartControls>
 }

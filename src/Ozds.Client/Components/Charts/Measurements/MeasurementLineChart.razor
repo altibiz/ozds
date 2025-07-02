@@ -4,7 +4,7 @@
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Business.Models.Enums
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
-@if (Parameters.MeasurementLocations.Count > 0)
+@if (Parameters.MeasurementLocations.Count > 0 || Parameters.Meters.Count > 0)
 {
   <ApexChart
     XAxisType="@XAxisType.Datetime"

@@ -148,8 +148,14 @@ public partial class MeasurementChartControls : OzdsComponentBase
   private async Task OnMetersChanged(IEnumerable<string> meterIds)
   {
     _parameters.Meters = Meters
-      .Where(meter => meterIds.Contains(meter.Id))
+      .Where(
+        meter =>
+          meterIds.Contains(meter.Id))
       .ToHashSet();
+    var now = DateTimeOffset.UtcNow;
+    _parameters.FromDate = now.Subtract(
+      _parameters.Resolution.ToTimeSpan(
+        _parameters.Multiplier, now));
     await Fetch();
   }
 
