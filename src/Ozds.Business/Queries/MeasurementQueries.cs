@@ -71,14 +71,13 @@ public class MeasurementQueries(
           )
           : modelEntityConverter.EntityType(
             meterNamingConvention.MeasurementTypeForMeterId(id)
-          ));
-    var a = modelIdsByEntityType
+          ))
       .Select(
         group =>
           new KeyValuePair<Type, IEnumerable<string>>(group.Key, group)).ToList();
 
     var entities = await queries.ReadByMeterIds(
-      a,
+      modelIdsByEntityType,
       appropriateInterval,
       fromDate,
       toDate,
