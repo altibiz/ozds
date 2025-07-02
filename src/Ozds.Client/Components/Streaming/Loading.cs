@@ -117,7 +117,7 @@ public partial class Loading<T> : OzdsComponentBase
       }
       catch (Exception e)
       {
-        _state = _state.WithError(e.Message);
+        _state = _state.WithError(e.ToString());
       }
     }
 
@@ -134,7 +134,7 @@ public partial class Loading<T> : OzdsComponentBase
       }
       catch (Exception e)
       {
-        _state = _state.WithError(e.Message);
+        _state = _state.WithError(e.ToString());
       }
     }
 
@@ -155,7 +155,7 @@ public partial class Loading<T> : OzdsComponentBase
       }
       catch (Exception e)
       {
-        _state = _state.WithError(e.Message);
+        _state = _state.WithError(e.ToString());
       }
     }
 
@@ -196,7 +196,7 @@ public partial class Loading<T> : OzdsComponentBase
       }
       catch (Exception e)
       {
-        _state = _state.WithError(e.Message);
+        _state = _state.WithError(e.ToString());
       }
     }
 
@@ -216,7 +216,7 @@ public partial class Loading<T> : OzdsComponentBase
       }
       catch (Exception e)
       {
-        _state = _state.WithError(e.Message);
+        _state = _state.WithError(e.ToString());
       }
     }
 
@@ -231,7 +231,7 @@ public partial class Loading<T> : OzdsComponentBase
       }
       catch (Exception e)
       {
-        _state = _state.WithError(e.Message);
+        _state = _state.WithError(e.ToString());
       }
     }
 
@@ -248,7 +248,7 @@ public partial class Loading<T> : OzdsComponentBase
       }
       catch (Exception e)
       {
-        _state = _state.WithError(e.Message);
+        _state = _state.WithError(e.ToString());
       }
     }
 
@@ -269,7 +269,7 @@ public partial class Loading<T> : OzdsComponentBase
       }
       catch (Exception e)
       {
-        _state = _state.WithError(e.Message);
+        _state = _state.WithError(e.ToString());
       }
     }
 
@@ -307,7 +307,7 @@ public partial class Loading<T> : OzdsComponentBase
       }
       catch (Exception e)
       {
-        _state = _state.WithError(e.Message);
+        _state = _state.WithError(e.ToString());
       }
     }
 
@@ -322,7 +322,7 @@ public partial class Loading<T> : OzdsComponentBase
       }
       catch (Exception e)
       {
-        _state = _state.WithError(e.Message);
+        _state = _state.WithError(e.ToString());
       }
     }
   }
