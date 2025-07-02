@@ -84,18 +84,8 @@ public static class HostExtensions
           connection.SecureSocketLayer = true;
         }
 
-        try
-        {
-          connection.Connect(connectionString.Host, connectionString.Port);
-          connection.Bind(connectionString.User, connectionString.Password);
-        }
-        catch (Exception ex)
-        {
-          throw new InvalidOperationException(
-            "Failed to connect to LDAP server",
-            ex
-          );
-        }
+        connection.Connect(connectionString.Host, connectionString.Port);
+        connection.Bind(connectionString.User, connectionString.Password);
 
         return connection;
       });
