@@ -20,7 +20,7 @@
         &nbsp;
       </Fragment>
     }
-    @Translate(Parameters.Measure.ToTitle())
+    @Translate(Parameters.Measure.ToString())
     &nbsp;
     &lbrack;
     @Translate(Parameters.Measure.ToUnit())
@@ -33,7 +33,7 @@
         &nbsp;
         @(Parameters.Multiplier == 1 ? "" : Parameters.Multiplier.ToString())
         &nbsp;
-        @Translate(Parameters.Resolution.ToTitle(Parameters.Multiplier))
+        @Translate(Parameters.Resolution.ToString())
       </Fragment>
     }
   </MudText>

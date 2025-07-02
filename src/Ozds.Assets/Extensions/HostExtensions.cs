@@ -17,7 +17,7 @@ public static class HostExtensions
     this IHostApplicationBuilder builder
   )
   {
-    builder.Services.AddScopedAssignableTo(typeof(IQueries));
+    builder.Services.AddSingletonAssignableTo(typeof(IQueries));
     return builder;
   }
 }

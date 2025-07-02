@@ -50,14 +50,8 @@ public class CsvSerialization(
 
         foreach (var property in properties.Select(property => property.Name))
         {
-          var key = localizationQueries.Key(type, property);
-          var translation = localizationQueries.Translate(culture, key);
-          if (translation == key)
-          {
-            key = localizationQueries.ShortKey(type, property);
-            translation = localizationQueries.Translate(culture, key);
-          }
-
+          var translation = localizationQueries
+            .Translate(culture, type, property);
           stringBuilder.Append(translation);
           stringBuilder.Append(Separator);
         }
@@ -122,14 +116,8 @@ public class CsvSerialization(
 
         foreach (var property in properties.Select(property => property.Name))
         {
-          var key = localizationQueries.Key(type, property);
-          var translation = localizationQueries.Translate(culture, key);
-          if (translation == key)
-          {
-            key = localizationQueries.ShortKey(type, property);
-            translation = localizationQueries.Translate(culture, key);
-          }
-
+          var translation =
+            localizationQueries.Translate(culture, type, property);
           stringBuilder.Append(translation);
           stringBuilder.Append(Separator);
         }
@@ -345,17 +333,12 @@ public sealed class EntityMap<T> : ClassMap<T>
       var member = Expression.MakeMemberAccess(parameter, entityProperty);
       var expression =
         Expression.Lambda<Func<T, object>>(member, parameter);
-      var key = localizationQueries.Key(entityType, entityProperty.Name);
-      var translation = localizationQueries.Translate(culture, key);
-      if (translation == key)
-      {
-        key = localizationQueries.ShortKey(entityType, entityProperty.Name);
-        translation = localizationQueries.Translate(culture, key);
-      }
+      var translation = localizationQueries
+        .Translate(culture, entityType, entityProperty.Name);
 
       serviceProvider
         .GetRequiredService<ILogger<EntityMap<T>>>()
-        .LogInformation("{Key}, {Value}", key, translation);
+        .LogInformation("{Key}, {Value}", entityProperty.Name, translation);
       Map(expression).Name(translation);
     }
   }

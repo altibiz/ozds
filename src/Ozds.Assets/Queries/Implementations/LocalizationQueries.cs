@@ -1,6 +1,6 @@
+using System.Collections.Concurrent;
 using System.Globalization;
 using System.Linq.Expressions;
-using System.Text;
 using Ozds.Assets.Queries.Abstractions;
 using Ozds.Time.Queries.Abstractions;
 
@@ -8,55 +8,99 @@ namespace Ozds.Assets.Queries.Implementations;
 
 public class LocalizationQueries(
   IAssetQueries assetQueries,
-  ITimeQueries timeQueries
+  ITimeQueries timeQueries,
+  ITranslationQueries translationQueries
 ) : ILocalizationQueries
 {
+  private readonly ConcurrentDictionary<TranslationKey, string>
+    translationCache = new();
+
   public CultureInfo CroatianCulture
   {
     get { return AssetConstants.CroatianCulture; }
   }
 
-  public string Translate(CultureInfo culture, string notLocalized)
+  public string Translate(CultureInfo culture, Type type)
+  {
+    var cacheKey = new TranslationTypeKey(culture, type);
+
+    return translationCache.GetOrAdd(
+      cacheKey, _ =>
+      {
+        var translations = assetQueries.LoadTranslations(culture);
+
+        var overrides = translationQueries.KeyOverrides(type);
+        foreach (var key in overrides)
+        {
+          if (translations.TryGetValue(key, out var translation))
+          {
+            return translation;
+          }
+        }
+
+        return overrides.First();
+      });
+  }
+
+  public string Translate(CultureInfo culture, Type type, string member)
+  {
+    var cacheKey = new TranslationMemberKey(culture, type, member);
+
+    return translationCache.GetOrAdd(
+      cacheKey, _ =>
+      {
+        var translations = assetQueries.LoadTranslations(culture);
+
+        var overrides = translationQueries.KeyOverrides(type, member);
+        foreach (var key in overrides)
+        {
+          if (translations.TryGetValue(key, out var translation))
+          {
+            return translation;
+          }
+        }
+
+        return overrides.First();
+      });
+  }
+
+  public string Translate(CultureInfo culture, MemberExpression member)
   {
     var translations = assetQueries.LoadTranslations(culture);
-    if (translations.TryGetValue(notLocalized, out var value))
-    {
-      return value;
-    }
 
-    return notLocalized;
+    var cacheKey = new TranslationExpressionKey(culture, member);
+
+    return translationCache.GetOrAdd(
+      cacheKey, _ =>
+      {
+        var overrides = translationQueries.KeyOverrides(member);
+        foreach (var key in overrides)
+        {
+          if (translations.TryGetValue(key, out var translation))
+          {
+            return translation;
+          }
+        }
+
+        return overrides.First();
+      });
   }
 
-  public string Key(Type type)
+  public string Translate(CultureInfo culture, string notLocalized)
   {
-    return AddNamespace(type, CleanTypeName(type));
-  }
+    var cacheKey = new TranslationStringKey(culture, notLocalized);
 
-  public string ShortKey(Type type)
-  {
-    return CleanTypeName(type);
-  }
+    return translationCache.GetOrAdd(
+      cacheKey, _ =>
+      {
+        var translations = assetQueries.LoadTranslations(culture);
+        if (translations.TryGetValue(notLocalized, out var value))
+        {
+          return value;
+        }
 
-  public string Key(Type type, string member)
-  {
-    return $"{AddNamespace(type, CleanTypeName(type))}.{member}";
-  }
-
-  public string ShortKey(Type type, string member)
-  {
-    return $"{CleanTypeName(type)}.{member}";
-  }
-
-  public string Key(MemberExpression member)
-  {
-    var (type, suffix) = UnwrapMember(member);
-    return AddNamespace(type, $"{CleanTypeName(type)}{suffix}");
-  }
-
-  public string ShortKey(MemberExpression member)
-  {
-    var (type, suffix) = UnwrapMember(member);
-    return $"{CleanTypeName(type)}{suffix}";
+        return notLocalized;
+      });
   }
 
   public string NumericString(decimal? number, int places = 2)
@@ -148,46 +192,24 @@ public class LocalizationQueries(
     return number.ToString(format, nfi);
   }
 
-  private static (Type, string) UnwrapMember(MemberExpression member)
-  {
-    var expression = member as Expression;
-    var suffix = new StringBuilder();
-    while (expression is MemberExpression memberExpression)
-    {
-      suffix.Insert(0, $".{memberExpression.Member.Name}");
-      expression = memberExpression.Expression
-        ?? throw new InvalidOperationException(
-          $"Expression of {memberExpression} is null");
-    }
+  private record TranslationKey(CultureInfo Culture);
 
-    var type = expression.Type;
-    return (type, suffix.ToString());
-  }
+  private sealed record TranslationTypeKey(CultureInfo Culture, Type Type)
+    : TranslationKey(Culture);
 
-  private static string AddNamespace(Type type, string name)
-  {
-    return string.IsNullOrEmpty(type.Namespace)
-      ? name
-      : $"{type.Namespace}.{name}";
-  }
+  private sealed record TranslationMemberKey(
+    CultureInfo Culture,
+    Type Type,
+    string Member
+  ) : TranslationKey(Culture);
 
-  private static string CleanTypeName(Type type)
-  {
-    if (!type.IsGenericType)
-    {
-      return type.Name;
-    }
+  private sealed record TranslationExpressionKey(
+    CultureInfo Culture,
+    MemberExpression Expression
+  ) : TranslationKey(Culture);
 
-    var baseName = type.Name;
-    var backtickIndex = baseName.IndexOf('`');
-    if (backtickIndex > 0)
-    {
-      baseName = baseName[..backtickIndex];
-    }
-
-    var genericArgs = string.Join(
-      ", ",
-      type.GetGenericArguments().Select(x => x.Name));
-    return $"{baseName}<{genericArgs}>";
-  }
+  private sealed record TranslationStringKey(
+    CultureInfo Culture,
+    string NotLocalized
+  ) : TranslationKey(Culture);
 }

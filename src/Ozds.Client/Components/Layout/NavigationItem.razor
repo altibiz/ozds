@@ -45,7 +45,7 @@
 @if (Descriptor.Children.Any())
 {
   <MudNavGroup
-    Title="@Descriptor.Navigation.Title"
+    Title="@Translate(Descriptor.Navigation.Title)"
     Class="ozds-nav-link">
     <MudNavLink
       Href="@PageHref(Descriptor.Type)"

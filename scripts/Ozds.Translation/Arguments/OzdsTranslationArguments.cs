@@ -33,13 +33,18 @@ public class OzdsTranslationTypeArguments : IOzdsTranslationArguments
     HelpText = "The target language in two letter ISO format.")]
   public string Language { get; set; } = default!;
 
-  [Option('i', "input", Required = true, HelpText = "Input assembly name.")]
-  public string InputAssemblyName { get; set; } = default!;
+  [Option('a', "assemblies", Required = true, HelpText = "Input assemblies.")]
+  public IEnumerable<string> InputAssemblies { get; set; } = default!;
 
   [Option(
     'n', "namespaces", Required = true,
-    HelpText = "Input assembly namespaces.")]
-  public IEnumerable<string> InputAssemblyNamespaces { get; set; } = default!;
+    HelpText = "Input namespaces.")]
+  public IEnumerable<string> InputNamespaces { get; set; } = default!;
+
+  [Option(
+    'r', "reduce", Required = false, Default = false,
+    HelpText = "Reduce variations.")]
+  public bool Reduce { get; set; } = default!;
 
   [Option(
     'u', "update", Required = false, HelpText = "Path of file to update.")]

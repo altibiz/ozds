@@ -5,19 +5,13 @@ namespace Ozds.Assets.Queries.Abstractions;
 
 public interface ILocalizationQueries : IQueries
 {
+  public string Translate(CultureInfo culture, Type type);
+
+  public string Translate(CultureInfo culture, Type type, string member);
+
+  public string Translate(CultureInfo culture, MemberExpression member);
+
   public string Translate(CultureInfo culture, string notLocalized);
-
-  public string Key(Type type);
-
-  public string Key(Type type, string member);
-
-  public string Key(MemberExpression member);
-
-  public string ShortKey(Type type);
-
-  public string ShortKey(Type type, string member);
-
-  public string ShortKey(MemberExpression member);
 
   public string NumericString(decimal? number, int places = 2);
 

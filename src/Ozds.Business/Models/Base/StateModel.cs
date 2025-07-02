@@ -3,7 +3,7 @@ using Ozds.Business.Models.Abstractions;
 
 namespace Ozds.Business.Models.Base;
 
-public abstract class StateModel : IStateModel
+public abstract class StateModel : IState
 {
   public string CurrentState { get; set; } = default!;
 

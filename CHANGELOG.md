@@ -12,6 +12,8 @@ and adheres to [Semantic Versioning](https://semver.org/).
 ### Added
 
 - playwright initialization logs
+- translation metadata
+- `Ozds.Assets` translation queries to get translation keys
 
 ### Changed
 
@@ -25,6 +27,17 @@ and adheres to [Semantic Versioning](https://semver.org/).
   `Ozds.Time`
 - `Ozds.Users` to use OIDC and LDAP in favor of OrchardCore authentication and
   user management
+- `Ozds.Translation` arguments now use a list of assemblies to create
+  cross-assembly translations
+- `Ozds.Translation` by types now does grouping over class hierarchies and
+  across assemblies
+- `Ozds.Assets` localization queries translation caching
+- `Ozds.Assets` localization queries key overrides from class hierarchies
+- translations to better match business requirements
+
+### Removed
+
+- `Ozds.Assets` localization key queries
 
 ## [1.3.1] - 2025-06-05
 

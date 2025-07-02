@@ -8,6 +8,7 @@ namespace Ozds.Translation.Workers;
 public record TranslationWorkerItem(
   TranslationDictionaryEntity Dictionary,
   string Key,
+  string? Metadata,
   string Text,
   CultureInfo FromCulture,
   CultureInfo ToCulture,
@@ -55,6 +56,6 @@ public class TranslationWorker(
       );
     }
 
-    item.Dictionary.Add(item.Key, result.Translation);
+    item.Dictionary.Add(item.Key, item.Metadata, result.Translation);
   }
 }

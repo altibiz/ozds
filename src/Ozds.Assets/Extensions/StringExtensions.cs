@@ -10,7 +10,11 @@ public static class StringExtensions
       newline,
       value
         .Split(newline)
-        .Select(line => new string(' ', indent) + line));
+        .Select(
+          line =>
+            string.IsNullOrWhiteSpace(line)
+              ? line.TrimStart()
+              : new string(' ', indent) + line));
   }
 
   public static string Dedent(this string value, int indent, string newline)
@@ -48,11 +52,13 @@ public static class StringExtensions
     var result = new StringBuilder();
     var currentLineLength = 0;
 
-    foreach (var word in words)
+    foreach (var (word, index) in words.Select((word, index) => (word, index)))
     {
       currentLineLength += word.Length + 1;
-      if (currentLineLength >= at)
+
+      if (currentLineLength >= at && index > 0)
       {
+        result.Remove(result.Length - 1, 1);
         result.AppendLine();
         currentLineLength = word.Length + 1;
       }

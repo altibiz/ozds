@@ -11,7 +11,9 @@
     "**/cache": true,
     "**/.ruff_cache": true,
     "**/__pycache__": true,
-    "**/runtimes": true
+    "**/runtimes": true,
+    "scripts/migrations": true,
+    ".jb": true
   },
   "files.exclude": {
     "**/bin": true,
@@ -25,7 +27,8 @@
     "**/cache": true,
     "**/.ruff_cache": true,
     "**/__pycache__": true,
-    "**/runtimes": true
+    "**/runtimes": true,
+    ".jb": true
   },
   "prettier.ignorePath": ".prettierignore",
   "editor.defaultFormatter": "esbenp.prettier-vscode",
