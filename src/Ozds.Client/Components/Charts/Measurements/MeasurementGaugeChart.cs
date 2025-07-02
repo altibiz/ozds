@@ -14,14 +14,14 @@ public partial class MeasurementGaugeChart : OzdsComponentBase
 {
   private readonly string _id = Guid.NewGuid().ToString();
 
-  private ApexChart<IMeasurement>? _chart = default!;
+  private ApexChart<IMeasurement>? _chart;
 
   private ApexChartOptions<IMeasurement> _options =
     new ApexChartOptions<IMeasurement>()
       .WithFixedScriptPath();
 
   [CascadingParameter]
-  public Breakpoint Breakpoint { get; set; } = default!;
+  public Breakpoint Breakpoint { get; set; }
 
   [CascadingParameter]
   public ThemeState ThemeState { get; set; } = default!;
