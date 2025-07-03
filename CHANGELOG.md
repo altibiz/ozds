@@ -29,6 +29,7 @@ and adheres to [Semantic Versioning](https://semver.org/).
   `TimeQueries`
 - push event title fix
 - hide search boxes when small amounts of data are shown
+- `Ozds.Report` import fix
 
 ## [1.4.0]
 
