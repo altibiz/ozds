@@ -16,18 +16,22 @@
   <MudText Typo="Typo.h6">
     @title
   </MudText>
-  <MudTextField
-    Class="mt-3"
-    T="string"
-    Value="@searchString"
-    ValueChanged="@OnPagingSearch"
-    Placeholder="@Translate("Search")"
-    Adornment="Adornment.Start"
-    Immediate="true"
-    AdornmentIcon="@Icons.Material.Filled.Search"
-    IconSize="Size.Medium"/>
   <Paging PageCount="@PageCount" T="T" PageAsync="@OnPagingPage">
     <Found Context="page">
+      @if (page.TotalCount > page.Items.Count)
+      {
+        <MudTextField
+          Class="mt-3"
+          T="string"
+          Value="@searchString"
+          ValueChanged="@OnPagingSearch"
+          Placeholder="@Translate("Search")"
+          Adornment="Adornment.Start"
+          Immediate="true"
+          AdornmentIcon="@Icons.Material.Filled.Search"
+          IconSize="Size.Medium"/>
+      }
+
       @foreach (var item in page.Items)
       {
         if (!FilterItem(item))
@@ -98,7 +102,7 @@
       }
     </Columns>
     <PagerContent>
-      <MudDataGridPager PageSizeSelector="false" T="T"/>
+      <MudDataGridPager PageSizeSelector="false" T="T" />
     </PagerContent>
   </MudDataGrid>
 </MudHidden>

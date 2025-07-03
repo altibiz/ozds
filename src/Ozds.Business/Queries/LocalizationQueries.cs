@@ -1,6 +1,8 @@
 using System.Globalization;
 using System.Linq.Expressions;
 using Ozds.Assets;
+using Ozds.Business.Models.Complex;
+using Ozds.Business.Models.Enums;
 using Ozds.Business.Queries.Abstractions;
 using AssetLocalizationQueries =
   Ozds.Assets.Queries.Abstractions.ILocalizationQueries;
@@ -65,5 +67,72 @@ public class LocalizationQueries(
     DateTimeOffset dateTimeOffset)
   {
     return localizer.DateTimeApplyOffset(dateTimeOffset);
+  }
+
+  // NOTE: hack to get the translator to translate these
+  // Translate("seconds")
+  // Translate("minutes")
+  // Translate("hours")
+  // Translate("days")
+  // Translate("weeks")
+  // Translate("months")
+  // Translate("years")
+  // Translate("a second")
+  // Translate("a minute")
+  // Translate("an hour")
+  // Translate("a day")
+  // Translate("a week")
+  // Translate("a month")
+  // Translate("a year")
+  public string TranslateDuration(
+    CultureInfo culture,
+    DurationModel duration,
+    bool plural = false
+  )
+  {
+    string nonLocalized;
+    if (plural)
+    {
+      nonLocalized = duration switch
+      {
+        DurationModel.Second => "seconds",
+        DurationModel.Minute => "minutes",
+        DurationModel.Hour => "hours",
+        DurationModel.Day => "days",
+        DurationModel.Week => "weeks",
+        DurationModel.Month => "months",
+        DurationModel.Year => "years",
+        _ => throw new NotImplementedException()
+      };
+    }
+    else
+    {
+      nonLocalized = duration switch
+      {
+        DurationModel.Second => "a second",
+        DurationModel.Minute => "a minute",
+        DurationModel.Hour => "an hour",
+        DurationModel.Day => "a day",
+        DurationModel.Week => "a week",
+        DurationModel.Month => "a month",
+        DurationModel.Year => "a year",
+        _ => throw new NotImplementedException()
+      };
+    }
+
+    return localizer.Translate(culture, nonLocalized);
+  }
+
+  public string TranslatePeriod(
+    CultureInfo culture,
+    PeriodModel duration
+  )
+  {
+    var translatedDuration = TranslateDuration(
+      culture,
+      duration.Duration,
+      duration.Multiplier > 1);
+
+    return $"{duration.Multiplier} {translatedDuration}";
   }
 }

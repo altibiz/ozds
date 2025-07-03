@@ -385,4 +385,53 @@ public class TimeQueries : ITimeQueries
 
     return IntervalEntity.Month;
   }
+
+  public TimeSpan DurationTimeSpan(
+    DurationEntity model,
+    DateTimeOffset timestamp,
+    uint multiplier = 1
+  )
+  {
+    return model switch
+    {
+      DurationEntity.Second => TimeSpan.FromSeconds(multiplier),
+      DurationEntity.Minute => TimeSpan.FromMinutes(multiplier),
+      DurationEntity.Hour => TimeSpan.FromHours(multiplier),
+      DurationEntity.Day => TimeSpan.FromDays(multiplier),
+      DurationEntity.Week => TimeSpan.FromDays(7 * multiplier),
+      DurationEntity.Month => GetMonthRange(timestamp) switch
+      {
+        (DateTimeOffset start, DateTimeOffset end) => end - start
+      },
+      DurationEntity.Year => GetYearRange(timestamp) switch
+      {
+        (DateTimeOffset start, DateTimeOffset end) => end - start
+      },
+      _ => throw new ArgumentOutOfRangeException(
+        nameof(model),
+        model,
+        null)
+    };
+  }
+
+  public TimeSpan DurationTimeSpan(
+    DurationEntity model,
+    uint multiplier = 1
+  )
+  {
+    return model switch
+    {
+      DurationEntity.Second => TimeSpan.FromSeconds(multiplier),
+      DurationEntity.Minute => TimeSpan.FromMinutes(multiplier),
+      DurationEntity.Hour => TimeSpan.FromHours(multiplier),
+      DurationEntity.Day => TimeSpan.FromDays(multiplier),
+      DurationEntity.Week => TimeSpan.FromDays(7 * multiplier),
+      DurationEntity.Month => TimeSpan.FromDays(30 * multiplier),
+      DurationEntity.Year => TimeSpan.FromDays(365 * multiplier),
+      _ => throw new ArgumentOutOfRangeException(
+        nameof(model),
+        model,
+        null)
+    };
+  }
 }

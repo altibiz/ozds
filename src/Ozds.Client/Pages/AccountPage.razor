@@ -1,4 +1,5 @@
 @namespace Ozds.Client.Pages
+@using Ozds.Business.Models.Composite
 @using Ozds.Client.Attributes
 @using Ozds.Client.Components.Models
 @using Ozds.Client.State
@@ -20,12 +21,15 @@ RoleModel.NetworkUserRepresentative
   <title>OZDS - @Translate("Account")</title>
 </HeadContent>
 
-<Details Model="@UserState.User"/>
-
-@if (RepresentativeState is { } representativeState)
-{
-  <Details Model="@representativeState.Representative"/>
+@{
+  var model = new MaybeRepresentingUserModel
+  {
+    User = UserState.User,
+    Representative = RepresentativeState?.Representative
+  };
 }
+
+<Details Model="@model" />
 
 @code {
 

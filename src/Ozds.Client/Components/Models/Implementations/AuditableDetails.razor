@@ -1,15 +1,22 @@
 @namespace Ozds.Client.Components.Models
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Client.Components.Streaming
+@using Ozds.Client.Components.Fields
 @inherits Ozds.Client.Components.Models.Base.OzdsDetailsComponentBase<Ozds.Business.Models.Abstractions.IAuditable>
 
 @(Base<IIdentifiable>())
 
-<Paging PageAsync="OnPageAsync">
-  <Summary>
-    <Summary Model="@context"/>
-  </Summary>
-  <Empty>
-    @Translate("No audit events found")
-  </Empty>
-</Paging>
+<div style="mt-4">
+  &nbsp;
+</div>
+
+<CollapseField Title="@(Translate("Change history"))">
+  <Paging PageAsync="OnPageAsync">
+    <Summary>
+      <Summary Model="@context"/>
+    </Summary>
+    <Empty>
+      @Translate("No audit events found")
+    </Empty>
+  </Paging>
+</CollapseField>

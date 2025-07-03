@@ -83,4 +83,15 @@ public interface ITimeQueries : IQueries
     int sourceCount,
     int pageCount
   );
+
+  public TimeSpan DurationTimeSpan(
+    DurationEntity model,
+    uint multiplier = 1
+  );
+
+  public TimeSpan DurationTimeSpan(
+    DurationEntity model,
+    DateTimeOffset timestamp,
+    uint multiplier = 1
+  );
 }

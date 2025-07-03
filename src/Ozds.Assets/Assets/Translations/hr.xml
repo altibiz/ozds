@@ -3167,7 +3167,7 @@
         From file 'Ozds.Client/Components/Streaming/Mutating.razor' line 94 column 20
       </Metadata>
       <Value>
-        Izbriši
+        Arhiviraj
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -4361,7 +4361,7 @@
         From file 'Ozds.Client/Components/Streaming/Mutating.razor' line 103 column 18
       </Metadata>
       <Value>
-        Zaboravi
+        Izbriši
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>

@@ -4,6 +4,8 @@ using System.Text.Json;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Routing.Template;
 using Microsoft.JSInterop;
+using Ozds.Business.Models.Complex;
+using Ozds.Business.Models.Enums;
 using Ozds.Business.Queries;
 using Ozds.Client.Extensions;
 using Ozds.Client.State;
@@ -179,6 +181,32 @@ public abstract class OzdsComponentBase : DisposableComponentBase
       .GetRequiredService<LocalizationQueries>();
     var culture = GetCulture();
     return localizationQueries.Translate(culture, member);
+  }
+
+  protected string TranslateDuration(
+    DurationModel duration,
+    bool plural = false
+  )
+  {
+    var localizationQueries = ScopedServices
+      .GetRequiredService<LocalizationQueries>();
+    var culture = GetCulture();
+    return localizationQueries.TranslateDuration(
+      culture,
+      duration,
+      plural);
+  }
+
+  protected string TranslatePeriod(
+    PeriodModel period
+  )
+  {
+    var localizationQueries = ScopedServices
+      .GetRequiredService<LocalizationQueries>();
+    var culture = GetCulture();
+    return localizationQueries.TranslatePeriod(
+      culture,
+      period);
   }
 
   protected static string JsonString(object? jsonDocument)

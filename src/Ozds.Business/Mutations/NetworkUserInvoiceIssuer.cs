@@ -34,7 +34,9 @@ public class NetworkUserInvoiceIssuer(
     var culture = CultureInfo.CreateSpecificCulture("hr-HR");
     var previewText = localizationQueries.Translate(
       culture,
-      "This invoice is a preview."
+      localizationQueries.Translate(
+        localizationQueries.CroatianCulture,
+        "This invoice is a preview.")
     );
     invoice.Invoice.Remark = $@"
       <div>

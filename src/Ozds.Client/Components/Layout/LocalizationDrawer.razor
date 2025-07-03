@@ -12,7 +12,7 @@
   <MudDrawerHeader>
     <MudContainer
       MaxWidth="@MaxWidth"
-      Class="@($"d-flex flex-column {Class}")"
+      Class="@($"d-flex flex-row justify-center align-center {Class}")"
       Style="@($"width: 100%; {Style}")">
       <MudText Typo="Typo.h6" Style="text-align: center;">
         @Translate("Localization")
@@ -25,7 +25,7 @@
       <MudNavLink OnClick="OnCroatianClick">
         <MudContainer
           MaxWidth="@MaxWidth"
-          Class="@($"d-flex flex-column {Class}")"
+          Class="@($"d-flex flex-row {Class}")"
           Style="@($"width: 100%; {Style}")">
           <MudHidden Breakpoint="Breakpoint.Xs">
             <div
@@ -42,14 +42,15 @@
             </div>
           </MudHidden>
           <MudText Class="ml-4">
-            @CroatianCulture.NativeName
+            @(char.ToUpperInvariant(CroatianCulture.NativeName[0])
+              + CroatianCulture.NativeName[1..])
           </MudText>
         </MudContainer>
       </MudNavLink>
       <MudNavLink OnClick="OnEnglishClick">
         <MudContainer
           MaxWidth="@MaxWidth"
-          Class="@($"d-flex flex-column {Class}")"
+          Class="@($"d-flex flex-row {Class}")"
           Style="@($"width: 100%; {Style}")">
           <MudHidden Breakpoint="Breakpoint.Xs">
             <div

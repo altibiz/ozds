@@ -1,0 +1,27 @@
+@namespace Ozds.Client.Components.Models.Implementations.Administration
+@using Ozds.Business.Models.Abstractions
+@using MudBlazor
+@inherits Ozds.Client.Components.Models.Base.OzdsDetailsComponentBase<Ozds.Business.Models.Composite.MaybeRepresentingUserModel>
+
+<MudText Typo="Typo.h5">
+  @Model.User.Name
+</MudText>
+
+@Field(x => x.User.Id)
+
+@Field(x => x.User.Email)
+
+@if (Model.Representative is { } representative)
+{
+  @Field(x => x.Representative!.PhysicalPerson.PhoneNumber)
+
+  @Field(x => x.Representative!.Role)
+
+  @Field(x => x.Representative!.Topics)
+}
+else
+{
+  <div class="mt-4">
+    @Translate("Representative not found")
+  </div>
+}

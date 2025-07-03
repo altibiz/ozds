@@ -46,7 +46,7 @@
         }
       }
 
-      if (page.TotalCount != page.Items.Count)
+      if (page.TotalCount > page.Items.Count)
       {
         if (Pagination is not null)
         {
