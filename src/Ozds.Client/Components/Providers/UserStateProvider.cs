@@ -13,6 +13,9 @@ public partial class UserStateProvider : OzdsComponentBase
   [Parameter]
   public RenderFragment ChildContent { get; set; } = default!;
 
+  [Inject]
+  private ILogger<UserStateProvider> Logger { get; set; } = default!;
+
   private async Task<UserState?> LoadAsync()
   {
     var representativeQueries = ScopedServices
@@ -31,6 +34,10 @@ public partial class UserStateProvider : OzdsComponentBase
         CancellationToken);
     if (user is null)
     {
+      Logger.LogWarning(
+        "User '{UserId}' not found in user store.",
+        representativeId
+      );
       return default;
     }
 
