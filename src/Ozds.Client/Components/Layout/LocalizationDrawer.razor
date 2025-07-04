@@ -42,8 +42,9 @@
             </div>
           </MudHidden>
           <MudText Class="ml-4">
-            @(char.ToUpperInvariant(CroatianCulture.NativeName[0])
-              + CroatianCulture.NativeName[1..])
+            @(
+            char.ToUpperInvariant(CroatianCulture.NativeName[0])
+            + CroatianCulture.NativeName[1..])
           </MudText>
         </MudContainer>
       </MudNavLink>

@@ -101,7 +101,7 @@
         Account
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Layout/UserDrawer.razor' line 50 column 14
+        From file 'Ozds.Client/Components/Layout/UserDrawer.razor' line 58 column 14
       </Metadata>
       <Value>
         Account
@@ -2372,6 +2372,17 @@
       </Metadata>
       <Value>
         Ozds business category
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Change history
+      </Key>
+      <Metadata>
+        From file 'Ozds.Client/Components/Models/Implementations/AuditableDetails.razor' line 13 column 25
+      </Metadata>
+      <Value>
+        Change history
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -5973,7 +5984,7 @@
         Logout
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Layout/UserDrawer.razor' line 84 column 16
+        From file 'Ozds.Client/Components/Layout/UserDrawer.razor' line 91 column 16
       </Metadata>
       <Value>
         Log out
@@ -6109,7 +6120,7 @@
         Max inactivity
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Measurements/Messengers/MessengerEdit.razor' line 19 column 4
+        From file 'Ozds.Client/Components/Models/Implementations/Measurements/Messengers/MessengerDetails.razor' line 12 column 24
       </Metadata>
       <Value>
         Maximum inactivity
@@ -8473,7 +8484,7 @@
         No audit events found
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/AuditableDetails.razor' line 13 column 6
+        From file 'Ozds.Client/Components/Models/Implementations/AuditableDetails.razor' line 19 column 8
       </Metadata>
       <Value>
         No audit events found
@@ -8798,7 +8809,7 @@
         Period
       </Key>
       <Metadata>
-        Type 'Ozds.Business.Models.Complex.PeriodModel'
+        From file 'Ozds.Client/Components/Models/Implementations/Measurements/PeriodDetails.razor' line 6 column 24
       </Metadata>
       <Value>
         Period
@@ -9393,6 +9404,17 @@
       </Metadata>
       <Value>
         Price (EUR)
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Push delay
+      </Key>
+      <Metadata>
+        From file 'Ozds.Client/Components/Models/Implementations/Measurements/Messengers/MessengerDetails.razor' line 18 column 24
+      </Metadata>
+      <Value>
+        Push delay
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -10460,6 +10482,17 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        Representative not found
+      </Key>
+      <Metadata>
+        From file 'Ozds.Client/Components/Models/Implementations/Administration/MaybeRepresentingUserDetails.razor' line 25 column 6
+      </Metadata>
+      <Value>
+        Representative not found
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         RepresentativeAuditEvent
       </Key>
       <Metadata>
@@ -10702,7 +10735,7 @@
         Search
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Streaming/Table.razor' line 83 column 23
+        From file 'Ozds.Client/Components/Streaming/Table.razor' line 87 column 23
       </Metadata>
       <Value>
         Search
