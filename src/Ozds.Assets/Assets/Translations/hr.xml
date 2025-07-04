@@ -8809,7 +8809,7 @@
         Period
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Measurements/PeriodDetails.razor' line 6 column 24
+        From file 'Ozds.Client/Components/Models/Implementations/Measurements/PeriodDetails.razor' line 5 column 24
       </Metadata>
       <Value>
         Razdoblje
@@ -10481,7 +10481,7 @@
         Representative not found
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Administration/MaybeRepresentingUserDetails.razor' line 25 column 6
+        From file 'Ozds.Client/Components/Models/Implementations/Administration/MaybeRepresentingUserDetails.razor' line 24 column 6
       </Metadata>
       <Value>
         Predstavnik nije pronađen
