@@ -144,7 +144,7 @@
     </DetailsField>;
   }
 
-  protected RenderFragment NumericField<T>(Expression<Func<TModel, T?>> next)
+  protected RenderFragment NumericField<T>(Expression<Func<TModel, T?>> next, int decimalPlaces = 2)
   {
     var nextFunc = next.Compile();
     var value = nextFunc(Model);
@@ -152,7 +152,7 @@
       <MudText>
         @if (value is decimal @decimal)
         {
-          @NumericString(@decimal)
+          @NumericString(@decimal, decimalPlaces)
         }
         else
         {
