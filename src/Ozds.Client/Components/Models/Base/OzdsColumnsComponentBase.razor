@@ -34,7 +34,7 @@
          Property="@Wrap(next)"/>);
   }
 
-  protected RenderFragment Column(Expression<Func<TModel, decimal?>> next)
+  protected RenderFragment Column(Expression<Func<TModel, decimal?>> next, int decimalPlaces = 2)
   {
     var nextFunc = next.Compile();
     return Nest(
@@ -47,7 +47,7 @@
           <MudText>
             @if (Get(nextFunc)(context.Item) is decimal d)
             {
-              @NumericString(d)
+              @NumericString(d, decimalPlaces)
             }
           </MudText>
         </CellTemplate>

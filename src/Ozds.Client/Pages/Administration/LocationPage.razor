@@ -58,6 +58,7 @@
     <Details Model="@context.Model"/>
     <div style="width: 170px;">
       <MonthPickerField @bind-Value="@selectedMonth" Label="@Translate("Pick month")"/>
+      <br/>
       @{
         var href =
           "/report/location-energy-card"
@@ -66,9 +67,9 @@
           + "/" + selectedMonth.Year
           + "/" + selectedMonth.Month;
       }
-      <MudLink Class="mt-4" Href="@href">
-        @Translate("Energy card CSV")
-      </MudLink>
     </div>
+    <MudLink Class="mt-4" Href="@href">
+      @Translate("Energy card CSV")
+    </MudLink>
   </Details>
 </Mutating>

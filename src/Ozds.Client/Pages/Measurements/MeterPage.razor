@@ -40,6 +40,7 @@
     <MonthPickerField
       @bind-Value="@selectedMonth"
       Label="@Translate("Pick month")"/>
+    <br/>
     <EnumPicker
       Title="@Translate("Pick OBIS code")"
       @bind-Value="@selectedObis"
@@ -60,13 +61,14 @@
         + "/" + selectedMonth.Year
         + "/" + selectedMonth.Month;
     }
-    <MudLink Class="mt-4" Href="@accountingPeriodHref">
-      @Translate("Accounting period CSV")
-    </MudLink>
-    <MudLink Class="mt-4" Href="@loadCurveHref">
-      @Translate("Load curve CSV")
-    </MudLink>
   </div>
+  <MudLink Class="mt-4" Href="@accountingPeriodHref">
+    @Translate("Accounting period CSV")
+  </MudLink>
+  <br/>
+  <MudLink Class="mt-4" Href="@loadCurveHref">
+    @Translate("Load curve CSV")
+  </MudLink>
 
   <MeasurementChartControls Meters="@(new List<IMeter> { analysis.Meter })">
     @* <MeasurementGaugeChart Parameters="@context"/> *@
