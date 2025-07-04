@@ -7,6 +7,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and adheres to [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+
+- styling for notification error text
+
+### Changed
+
+- round for numbers given on chart to 2 decimals
+- number field in columns so that i can take a number of decimal places
+- catalogue decimal place display
+- styling around button on entity pages so they display better
+
 ## [1.4.0]
 
 ### Added

@@ -33,12 +33,12 @@
     </DetailsField>;
   }
 
-  protected RenderFragment Field(Expression<Func<TModel, decimal?>> next)
+  protected RenderFragment Field(Expression<Func<TModel, decimal?>> next, int decimalPlaces = 2)
   {
     var nextFunc = next.Compile();
     return @<DetailsField Title="@(Translate(Label(next)))">
       <MudText>
-        @NumericString(nextFunc(Model))
+        @NumericString(nextFunc(Model), decimalPlaces)
       </MudText>
     </DetailsField>;
   }
