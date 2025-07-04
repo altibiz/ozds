@@ -79,9 +79,7 @@ else
               Name="@name"
               SeriesType="@(Area ? SeriesType.Area : SeriesType.Line)"
               XValue="@(x => DateTimeApplyOffset(x.Timestamp))"
-              YValue="@(x => Math.Round(
-                x.ChartValue(Parameters.Measure, phase: phase),
-                2))"
+              YValue="@(x => Math.Round(x.ChartValue(Parameters.Measure, phase: phase), 2))"
               Stroke="@(new SeriesStroke { Color = color, Width = 4 })"
               Color="@color"/>;
   }

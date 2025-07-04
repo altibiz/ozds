@@ -112,7 +112,7 @@
         Accounting period CSV
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Pages/Measurements/MeasurementLocationPage.razor' line 58 column 8
+        From file 'Ozds.Client/Pages/Measurements/MeasurementLocationPage.razor' line 60 column 6
       </Metadata>
       <Value>
         Billing period CSV
@@ -2646,7 +2646,7 @@
         Create invoice
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Pages/Administration/NetworkUserPage.razor' line 68 column 10
+        From file 'Ozds.Client/Pages/Administration/NetworkUserPage.razor' line 73 column 8
       </Metadata>
       <Value>
         Generate bill
@@ -3979,7 +3979,7 @@
         Energy card CSV
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Pages/Administration/NetworkUserPage.razor' line 85 column 10
+        From file 'Ozds.Client/Pages/Administration/NetworkUserPage.razor' line 89 column 10
       </Metadata>
       <Value>
         Energy card CSV
@@ -5781,7 +5781,7 @@
         Load curve CSV
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Pages/Measurements/MeasurementLocationPage.razor' line 61 column 8
+        From file 'Ozds.Client/Pages/Measurements/MeasurementLocationPage.razor' line 64 column 6
       </Metadata>
       <Value>
         Load curve CSV
@@ -6528,7 +6528,7 @@
         Measurement location
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Pages/Measurements/MeasurementLocationPage.razor' line 94 column 17
+        From file 'Ozds.Client/Pages/Measurements/MeasurementLocationPage.razor' line 96 column 17
       </Metadata>
       <Value>
         Measurement point
@@ -6924,7 +6924,7 @@
         Meter
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Pages/Measurements/MeterPage.razor' line 93 column 22
+        From file 'Ozds.Client/Pages/Measurements/MeterPage.razor' line 95 column 22
       </Metadata>
       <Value>
         Meter
@@ -8385,7 +8385,7 @@
         New measurement location
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Pages/Measurements/MeasurementLocationPage.razor' line 79 column 24
+        From file 'Ozds.Client/Pages/Measurements/MeasurementLocationPage.razor' line 81 column 24
       </Metadata>
       <Value>
         New measurement location
@@ -8418,7 +8418,7 @@
         New meter
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Pages/Measurements/MeterPage.razor' line 82 column 24
+        From file 'Ozds.Client/Pages/Measurements/MeterPage.razor' line 84 column 24
       </Metadata>
       <Value>
         New meter
@@ -8977,7 +8977,7 @@
         Pick OBIS code
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Pages/Measurements/MeasurementLocationPage.razor' line 38 column 15
+        From file 'Ozds.Client/Pages/Measurements/MeasurementLocationPage.razor' line 39 column 15
       </Metadata>
       <Value>
         Select OBIS code
@@ -9099,7 +9099,7 @@
         Preview invoice document
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Pages/Administration/NetworkUserPage.razor' line 54 column 12
+        From file 'Ozds.Client/Pages/Administration/NetworkUserPage.razor' line 56 column 12
       </Metadata>
       <Value>
         Preview invoice document
@@ -9110,7 +9110,7 @@
         Preview invoice pdf
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Pages/Administration/NetworkUserPage.razor' line 65 column 10
+        From file 'Ozds.Client/Pages/Administration/NetworkUserPage.razor' line 69 column 8
       </Metadata>
       <Value>
         Preview invoice PDF
