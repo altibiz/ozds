@@ -1,13 +1,13 @@
 @using MudBlazor
 @namespace Ozds.Client.Components.Fields
 
-<MudGrid Justify="Justify.SpaceBetween" Spacing="0" Class="mt-4">
-  <MudItem xs="11">
+<MudGrid Justify="Justify.SpaceBetween" Spacing="0" Class="mt-4 align-center" Style="max-width: 36rem;">
+  <MudItem xs="9">
     <MudText Typo="Typo.body1">
       @Title
     </MudText>
   </MudItem>
-  <MudItem>
+  <MudItem xs="3" Class="d-flex justify-end">
     <MudIconButton
       Icon="@(_expanded ? Icons.Material.Filled.KeyboardArrowUp : Icons.Material.Filled.KeyboardArrowDown)"
       OnClick="@(() => _expanded = !_expanded)"/>

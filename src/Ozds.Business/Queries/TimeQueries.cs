@@ -1,3 +1,4 @@
+using Ozds.Business.Models.Complex;
 using Ozds.Business.Models.Enums;
 using Ozds.Business.Queries.Abstractions;
 using TimeTimeQueries = Ozds.Time.Queries.Abstractions.ITimeQueries;
@@ -153,5 +154,47 @@ public class TimeQueries(
     return timeTimeQueries
       .AppropriateInterval(timeSpan, timestamp, meterCount, pageCount)
       ?.ToModel();
+  }
+
+  public TimeSpan DurationTimeSpan(
+    DurationModel model,
+    uint multiplier = 1
+  )
+  {
+    return timeTimeQueries.DurationTimeSpan(
+      model.ToTimeEntity(),
+      multiplier);
+  }
+
+  public TimeSpan DurationTimeSpan(
+    DurationModel model,
+    DateTimeOffset timestamp,
+    uint multiplier = 1
+  )
+  {
+    return timeTimeQueries.DurationTimeSpan(
+      model.ToTimeEntity(),
+      timestamp,
+      multiplier);
+  }
+
+  public TimeSpan PeriodTimeSpan(
+    PeriodModel model
+  )
+  {
+    return timeTimeQueries.DurationTimeSpan(
+      model.Duration.ToTimeEntity(),
+      model.Multiplier);
+  }
+
+  public TimeSpan PeriodTimeSpan(
+    PeriodModel model,
+    DateTimeOffset timestamp
+  )
+  {
+    return timeTimeQueries.DurationTimeSpan(
+      model.Duration.ToTimeEntity(),
+      timestamp,
+      model.Multiplier);
   }
 }

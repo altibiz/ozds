@@ -12,6 +12,7 @@ and adheres to [Semantic Versioning](https://semver.org/).
 ### Added
 
 - styling for notification error text
+- `NetworkUserAnalysisDetails` fields
 
 ### Changed
 
@@ -19,6 +20,15 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - number field in columns so that i can take a number of decimal places
 - catalogue decimal place display
 - styling around button on entity pages so they display better
+- align `Ozds.Client` drawers
+- cleaner account page
+- set `DetailsField`, `CollapseField` and `TableCollapse` max width
+- auditable details change history in collapse
+- `PeriodDetails` and similar `MessengerDetails` styling
+- `PeriodModel` and `DurationModel` functions in `LocalizationQueries` and
+  `TimeQueries`
+- push event title fix
+- hide search boxes when small amounts of data are shown
 
 ## [1.4.0]
 

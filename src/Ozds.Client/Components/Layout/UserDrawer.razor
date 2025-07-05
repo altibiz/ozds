@@ -7,6 +7,16 @@
 @inject IHttpContextAccessor HttpContextAccessor
 @inject ILogger<UserDrawer> Logger
 
+<style>
+  .user-drawer-link .mud-nav-link {
+    padding-inline: 0;
+  }
+
+  .user-drawer-link .mud-nav-link-text {
+    margin-left: 0;
+  }
+</style>
+
 <MudDrawer
   Open="@LayoutState.IsUserDrawerOpen"
   OpenChanged="open => LayoutState.SetUserDrawerOpen(open)"
@@ -14,12 +24,12 @@
   Anchor="@LayoutState.DrawerAnchor"
   Variant="DrawerVariant.Temporary"
   ClipMode="DrawerClipMode.Never">
-  <MudDrawerHeader>
+  <MudDrawerHeader Class="px-0">
     <MudContainer
       MaxWidth="@MaxWidth"
-      Class="@($"d-flex flex-column {Class}")"
+      Class="@($"d-flex flex-row justify-center align-center {Class}")"
       Style="@($"width: 100%; {Style}")">
-      <MudText Typo="Typo.h6" Style="text-align: center;">
+      <MudText Typo="Typo.h6">
         @(UserState?.User.Name)
       </MudText>
     </MudContainer>
@@ -27,21 +37,19 @@
   <MudDivider/>
   <MudDrawerContainer>
     <MudNavMenu>
-      <MudNavLink OnClick="OnAccountClick">
+      <MudNavLink OnClick="OnAccountClick" Class="user-drawer-link">
         <MudContainer
           MaxWidth="@MaxWidth"
-          Class="@($"d-flex flex-column {Class}")"
+          Class="@($"d-flex flex-row {Class}")"
           Style="@($"width: 100%; {Style}")">
           <MudHidden Breakpoint="Breakpoint.Xs">
             <div
-              style="margin-left: -8px;"
               class="d-flex flex-row align-center">
               <MudIcon Icon="@Icons.Material.Filled.Person"/>
             </div>
           </MudHidden>
           <MudHidden Breakpoint="Breakpoint.SmAndUp">
             <div
-              style="margin-left: -28px;"
               class="d-flex flex-row align-center">
               <MudIcon Icon="@Icons.Material.Filled.Person"/>
             </div>
@@ -61,21 +69,20 @@
           DropShadow="false"
           Ripple="false"
           OnClick="OnLogoutClick"
-          Style="width: 100%; padding: 8px 16px 8px 16px;">
+          Style="width: 100%;">
           <MudContainer
             MaxWidth="@MaxWidth"
-            Class="@($"d-flex flex-column {Class}")"
+            Class="@($"d-flex flex-row {Class}")"
             Style="@($"width: 100%; {Style}")">
             <MudHidden Breakpoint="Breakpoint.Xs">
               <div
-                style="margin-left: -8px;"
                 class="d-flex flex-row align-center">
                 <MudIcon Icon="@Icons.Material.Filled.Login"/>
               </div>
             </MudHidden>
             <MudHidden Breakpoint="Breakpoint.SmAndUp">
               <div
-                style="margin-left: -28px;"
+                style="margin-left: -9px;"
                 class="d-flex flex-row align-center">
                 <MudIcon Icon="@Icons.Material.Filled.Login"/>
               </div>

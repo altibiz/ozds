@@ -5,7 +5,6 @@ using Ozds.Business.Buffers;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Base;
-using Ozds.Business.Models.Complex;
 using Ozds.Business.Models.Enums;
 using Ozds.Business.Mutations;
 using Ozds.Business.Observers.Abstractions;
@@ -33,7 +32,8 @@ public class IotPushHandler(
   AuditableQueries auditableQueries,
   IMessengerJobManager messengerJobManager,
   ReadonlyMutations readonlyMutations,
-  ClockQueries clock
+  ClockQueries clock,
+  TimeQueries time
 ) : Handler<IotPushEventArgs>
 {
   public override async Task Handle(
@@ -106,7 +106,7 @@ public class IotPushHandler(
 
     await messengerJobManager.RescheduleInactivityMonitorJob(
       messenger.Id,
-      messenger.MaxInactivityPeriod.ToTimeSpan(),
+      time.PeriodTimeSpan(messenger.MaxInactivityPeriod),
       cancellationToken
     );
   }
@@ -141,8 +141,8 @@ public class IotPushHandler(
       ? LevelModel.Information
       : LevelModel.Error;
     @event.Title = validationResults is null
-      ? "Messenger \"{messenger.Title}\" pushed"
-      : "Messenger \"{messenger.Title}\" pushed with validation errors";
+      ? $"Messenger '{messenger.Title}' pushed"
+      : $"Messenger '{messenger.Title}' pushed with validation errors";
     @event.Id = await readonlyMutations
       .Create(@event, cancellationToken);
 

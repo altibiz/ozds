@@ -1,4 +1,5 @@
-using Ozds.Data.Entities.Enums;
+using DataDurationEntity = Ozds.Data.Entities.Enums.DurationEntity;
+using TimeDurationEntity = Ozds.Time.Entities.DurationEntity;
 
 namespace Ozds.Business.Models.Enums;
 
@@ -15,77 +16,62 @@ public enum DurationModel
 
 public static class DurationModelExtensions
 {
-  public static TimeSpan ToTimeSpan(this DurationModel duration)
-  {
-    return duration switch
-    {
-      DurationModel.Second => TimeSpan.FromSeconds(1),
-      DurationModel.Minute => TimeSpan.FromMinutes(1),
-      DurationModel.Hour => TimeSpan.FromHours(1),
-      DurationModel.Day => TimeSpan.FromDays(1),
-      DurationModel.Week => TimeSpan.FromDays(7),
-      DurationModel.Month => TimeSpan.FromDays(30),
-      DurationModel.Year => TimeSpan.FromDays(365),
-      _ => throw new NotImplementedException()
-    };
-  }
-
-  public static string ToTitle(this DurationModel duration, bool plural = false)
-  {
-    if (plural)
-    {
-      return duration switch
-      {
-        DurationModel.Second => "seconds",
-        DurationModel.Minute => "minutes",
-        DurationModel.Hour => "hours",
-        DurationModel.Day => "days",
-        DurationModel.Week => "weeks",
-        DurationModel.Month => "months",
-        DurationModel.Year => "years",
-        _ => throw new NotImplementedException()
-      };
-    }
-
-    return duration switch
-    {
-      DurationModel.Second => "second",
-      DurationModel.Minute => "minute",
-      DurationModel.Hour => "hour",
-      DurationModel.Day => "day",
-      DurationModel.Week => "week",
-      DurationModel.Month => "month",
-      DurationModel.Year => "year",
-      _ => throw new NotImplementedException()
-    };
-  }
-
-  public static DurationModel ToModel(this DurationEntity entity)
+  public static DurationModel ToModel(this DataDurationEntity entity)
   {
     return entity switch
     {
-      DurationEntity.Second => DurationModel.Second,
-      DurationEntity.Minute => DurationModel.Minute,
-      DurationEntity.Hour => DurationModel.Hour,
-      DurationEntity.Day => DurationModel.Day,
-      DurationEntity.Week => DurationModel.Week,
-      DurationEntity.Month => DurationModel.Month,
-      DurationEntity.Year => DurationModel.Year,
+      DataDurationEntity.Second => DurationModel.Second,
+      DataDurationEntity.Minute => DurationModel.Minute,
+      DataDurationEntity.Hour => DurationModel.Hour,
+      DataDurationEntity.Day => DurationModel.Day,
+      DataDurationEntity.Week => DurationModel.Week,
+      DataDurationEntity.Month => DurationModel.Month,
+      DataDurationEntity.Year => DurationModel.Year,
       _ => throw new NotImplementedException()
     };
   }
 
-  public static DurationEntity ToEntity(this DurationModel model)
+  public static DataDurationEntity ToDataEntity(this DurationModel model)
   {
     return model switch
     {
-      DurationModel.Second => DurationEntity.Second,
-      DurationModel.Minute => DurationEntity.Minute,
-      DurationModel.Hour => DurationEntity.Hour,
-      DurationModel.Day => DurationEntity.Day,
-      DurationModel.Week => DurationEntity.Week,
-      DurationModel.Month => DurationEntity.Month,
-      DurationModel.Year => DurationEntity.Year,
+      DurationModel.Second => DataDurationEntity.Second,
+      DurationModel.Minute => DataDurationEntity.Minute,
+      DurationModel.Hour => DataDurationEntity.Hour,
+      DurationModel.Day => DataDurationEntity.Day,
+      DurationModel.Week => DataDurationEntity.Week,
+      DurationModel.Month => DataDurationEntity.Month,
+      DurationModel.Year => DataDurationEntity.Year,
+      _ => throw new NotImplementedException()
+    };
+  }
+
+  public static DurationModel ToModel(this TimeDurationEntity entity)
+  {
+    return entity switch
+    {
+      TimeDurationEntity.Second => DurationModel.Second,
+      TimeDurationEntity.Minute => DurationModel.Minute,
+      TimeDurationEntity.Hour => DurationModel.Hour,
+      TimeDurationEntity.Day => DurationModel.Day,
+      TimeDurationEntity.Week => DurationModel.Week,
+      TimeDurationEntity.Month => DurationModel.Month,
+      TimeDurationEntity.Year => DurationModel.Year,
+      _ => throw new NotImplementedException()
+    };
+  }
+
+  public static TimeDurationEntity ToTimeEntity(this DurationModel model)
+  {
+    return model switch
+    {
+      DurationModel.Second => TimeDurationEntity.Second,
+      DurationModel.Minute => TimeDurationEntity.Minute,
+      DurationModel.Hour => TimeDurationEntity.Hour,
+      DurationModel.Day => TimeDurationEntity.Day,
+      DurationModel.Week => TimeDurationEntity.Week,
+      DurationModel.Month => TimeDurationEntity.Month,
+      DurationModel.Year => TimeDurationEntity.Year,
       _ => throw new NotImplementedException()
     };
   }

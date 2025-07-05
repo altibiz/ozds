@@ -101,7 +101,7 @@
         Account
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Layout/UserDrawer.razor' line 50 column 14
+        From file 'Ozds.Client/Components/Layout/UserDrawer.razor' line 58 column 14
       </Metadata>
       <Value>
         Račun
@@ -2374,6 +2374,17 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        Change history
+      </Key>
+      <Metadata>
+        From file 'Ozds.Client/Components/Models/Implementations/AuditableDetails.razor' line 13 column 25
+      </Metadata>
+      <Value>
+        Povijest promjena
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         Chart controls
       </Key>
       <Metadata>
@@ -3167,7 +3178,7 @@
         From file 'Ozds.Client/Components/Streaming/Mutating.razor' line 94 column 20
       </Metadata>
       <Value>
-        Izbriši
+        Arhiviraj
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -4361,7 +4372,7 @@
         From file 'Ozds.Client/Components/Streaming/Mutating.razor' line 103 column 18
       </Metadata>
       <Value>
-        Zaboravi
+        Izbriši
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -5972,7 +5983,7 @@
         Logout
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Layout/UserDrawer.razor' line 84 column 16
+        From file 'Ozds.Client/Components/Layout/UserDrawer.razor' line 91 column 16
       </Metadata>
       <Value>
         Odjava
@@ -6108,7 +6119,7 @@
         Max inactivity
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Measurements/Messengers/MessengerEdit.razor' line 19 column 4
+        From file 'Ozds.Client/Components/Models/Implementations/Measurements/Messengers/MessengerDetails.razor' line 12 column 24
       </Metadata>
       <Value>
         Vršna neaktivnost
@@ -8473,7 +8484,7 @@
         No audit events found
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/AuditableDetails.razor' line 13 column 6
+        From file 'Ozds.Client/Components/Models/Implementations/AuditableDetails.razor' line 19 column 8
       </Metadata>
       <Value>
         Nema pronađenih revizijskih događaja
@@ -8798,7 +8809,7 @@
         Period
       </Key>
       <Metadata>
-        Type 'Ozds.Business.Models.Complex.PeriodModel'
+        From file 'Ozds.Client/Components/Models/Implementations/Measurements/PeriodDetails.razor' line 5 column 24
       </Metadata>
       <Value>
         Razdoblje
@@ -9393,6 +9404,17 @@
       </Metadata>
       <Value>
         Cijena (EUR)
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Push delay
+      </Key>
+      <Metadata>
+        From file 'Ozds.Client/Components/Models/Implementations/Measurements/Messengers/MessengerDetails.razor' line 18 column 24
+      </Metadata>
+      <Value>
+        Odgoda slanja
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -10456,6 +10478,17 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        Representative not found
+      </Key>
+      <Metadata>
+        From file 'Ozds.Client/Components/Models/Implementations/Administration/MaybeRepresentingUserDetails.razor' line 24 column 6
+      </Metadata>
+      <Value>
+        Predstavnik nije pronađen
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         RepresentativeAuditEvent
       </Key>
       <Metadata>
@@ -10698,7 +10731,7 @@
         Search
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Streaming/Table.razor' line 83 column 23
+        From file 'Ozds.Client/Components/Streaming/Table.razor' line 87 column 23
       </Metadata>
       <Value>
         Pretraži
