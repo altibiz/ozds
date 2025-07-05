@@ -56,8 +56,10 @@ public class ReportMutations(
     CancellationToken cancellationToken
   )
   {
+    var entityType = converter.EntityType(typeof(T));
+
     using var streamer = queries
-      .Read<T>(fileName, culture, stream, cancellationToken);
+      .Read(fileName, culture, entityType, stream, cancellationToken);
     await foreach (var entities in streamer
       .Stream()
       .Chunk(cancellationToken))
@@ -95,8 +97,10 @@ public class ReportMutations(
     CancellationToken cancellationToken
   )
   {
+    var entityType = converter.EntityType(type);
+
     using var streamer = queries
-      .Read(fileName, culture, type, stream, cancellationToken);
+      .Read(fileName, culture, entityType, stream, cancellationToken);
     await foreach (var entities in streamer
       .Stream()
       .Chunk(cancellationToken))

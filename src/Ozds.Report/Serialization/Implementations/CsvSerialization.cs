@@ -331,14 +331,15 @@ public sealed class EntityMap<T> : ClassMap<T>
     {
       var parameter = Expression.Parameter(entityType);
       var member = Expression.MakeMemberAccess(parameter, entityProperty);
+      var cast = Expression.Convert(member, typeof(object));
       var expression =
-        Expression.Lambda<Func<T, object>>(member, parameter);
+        Expression.Lambda<Func<T, object>>(cast, parameter);
       var translation = localizationQueries
         .Translate(culture, entityType, entityProperty.Name);
 
       serviceProvider
         .GetRequiredService<ILogger<EntityMap<T>>>()
-        .LogInformation("{Key}, {Value}", entityProperty.Name, translation);
+        .LogDebug("Mapped {Key} -> {Value}", entityProperty.Name, translation);
       Map(expression).Name(translation);
     }
   }
@@ -362,7 +363,7 @@ public static class EntityMapExtensions
     (serviceProvider
         .GetRequiredService(
           typeof(ILogger<>).MakeGenericType(entityMapType)) as ILogger)!
-      .LogInformation("{Map}", map);
+      .LogDebug("Mapped {Map}", map);
     reader.Context.RegisterClassMap(map);
     return reader;
   }
@@ -379,7 +380,7 @@ public static class EntityMapExtensions
     );
     serviceProvider
       .GetRequiredService<ILogger<EntityMap<T>>>()
-      .LogInformation("{Map}", map);
+      .LogDebug("Mapped {Map}", map);
     reader.Context.RegisterClassMap(map);
     return reader;
   }
