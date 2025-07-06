@@ -25,13 +25,13 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        A) NETWORK USAGE FEE FOR ZDS
+        A) ZDS NETWORK USAGE FEE
       </Key>
       <Metadata>
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 25 column 14
       </Metadata>
       <Value>
-        A) NETWORK USAGE FEE FOR ZDS
+        A) ZDS NETWORK USAGE FEE
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -102,6 +102,7 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Layout/UserDrawer.razor' line 58 column 14
+        From file 'Ozds.Client/Pages/AccountPage.razor' line 21 column 18
       </Metadata>
       <Value>
         Account
@@ -109,13 +110,14 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        Accounting period CSV
+        Accounting period report (CSV)
       </Key>
       <Metadata>
         From file 'Ozds.Client/Pages/Measurements/MeasurementLocationPage.razor' line 60 column 6
+        From file 'Ozds.Client/Pages/Measurements/MeterPage.razor' line 66 column 6
       </Metadata>
       <Value>
-        Billing period CSV
+        Accounting period report (CSV)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -156,6 +158,7 @@
         Active power
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Dashboards/LocationRepresentativeDashboard.razor' line 41 column 14
         From file 'Ozds.Client/Components/Dashboards/LocationRepresentativeDashboard.razor' line 92 column 15
       </Metadata>
       <Value>
@@ -2044,13 +2047,24 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        B) ELECTRICITY SUPPLY FEE
+        B) ELECTRICAL ENERGY SUPPLY FEE
       </Key>
       <Metadata>
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 90 column 14
       </Metadata>
       <Value>
         B) ELECTRICITY SUPPLY CHARGE
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        BEARER
+      </Key>
+      <Metadata>
+        From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 46 column 35
+      </Metadata>
+      <Value>
+        Bearer
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -2074,13 +2088,13 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        billing metering point
+        Billing measurement location
       </Key>
       <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 56 column 4
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 76 column 4
       </Metadata>
       <Value>
-        billing metering point
+        Billing measurement point
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -2094,6 +2108,17 @@
       </Metadata>
       <Value>
         Billing period
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Blue NN
+      </Key>
+      <Metadata>
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 187 column 13
+      </Metadata>
+      <Value>
+        Blue NN
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -2202,6 +2227,7 @@
         Calculation
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Pages/Finances/NetworkUserCalculationPage.razor' line 18 column 22
         From file 'Ozds.Client/Pages/Finances/NetworkUserCalculationPage.razor' line 25 column 22
       </Metadata>
       <Value>
@@ -2314,13 +2340,13 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        capacitive reactive power
+        Capacitive reactive energy
       </Key>
       <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 21 column 4
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 101 column 4
       </Metadata>
       <Value>
-        capacitive reactive power
+        Capacitive reactive energy
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -2328,7 +2354,10 @@
         Catalogue
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Pages/Finances/NetworkUserCataloguePage.razor' line 18 column 24
         From file 'Ozds.Client/Pages/Finances/NetworkUserCataloguePage.razor' line 26 column 22
+        From file 'Ozds.Client/Pages/Finances/RegulatoryCataloguePage.razor' line 18 column 24
+        From file 'Ozds.Client/Pages/Finances/RegulatoryCataloguePage.razor' line 26 column 22
       </Metadata>
       <Value>
         Catalogue
@@ -2390,6 +2419,7 @@
         Chart controls
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Charts/Financial/FinancialChartControls.razor' line 15 column 10
         From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 16 column 10
       </Metadata>
       <Value>
@@ -2459,6 +2489,17 @@
       </Metadata>
       <Value>
         Close
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Closed distribution system
+      </Key>
+      <Metadata>
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 71 column 4
+      </Metadata>
+      <Value>
+        Closed distribution system
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -2647,6 +2688,15 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Streaming/Mutating.razor' line 132 column 14
+        From file 'Ozds.Client/Pages/Administration/LocationsPage.razor' line 45 column 6
+        From file 'Ozds.Client/Pages/Administration/NetworkUsersPage.razor' line 47 column 6
+        From file 'Ozds.Client/Pages/Finances/CataloguesPage.razor' line 38 column 4
+        From file 'Ozds.Client/Pages/Finances/CataloguesPage.razor' line 44 column 4
+        From file 'Ozds.Client/Pages/Measurements/MeasurementLocationsPage.razor' line 47 column 6
+        From file 'Ozds.Client/Pages/Measurements/MeasurementValidatorsPage.razor' line 41 column 6
+        From file 'Ozds.Client/Pages/Measurements/MessengersPage.razor' line 39 column 6
+        From file 'Ozds.Client/Pages/Measurements/MetersPage.razor' line 44 column 6
+        From file 'Ozds.Client/Pages/System/NotificationsPage.razor' line 50 column 6
       </Metadata>
       <Value>
         Create
@@ -2976,7 +3026,10 @@
         Current months consumption
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Dashboards/LocationRepresentativeDashboard.razor' line 28 column 14
         From file 'Ozds.Client/Components/Dashboards/LocationRepresentativeDashboard.razor' line 76 column 15
+        From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 16 column 14
+        From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 84 column 15
       </Metadata>
       <Value>
         Current month's consumption
@@ -3093,9 +3146,32 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        Dark
+      </Key>
+      <Metadata>
+        From file 'Ozds.Client/Components/Layout/UserToolbar.razor' line 52 column 51
+      </Metadata>
+      <Value>
+        Dark
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Dashboard
+      </Key>
+      <Metadata>
+        From file 'Ozds.Client/Pages/IndexPage.razor' line 6 column 4
+      </Metadata>
+      <Value>
+        Dashboard
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         Date from
       </Key>
       <Metadata>
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 43 column 12
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 108 column 12
       </Metadata>
       <Value>
@@ -3107,6 +3183,7 @@
         Date to
       </Key>
       <Metadata>
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 44 column 12
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 109 column 12
       </Metadata>
       <Value>
@@ -3188,6 +3265,12 @@
         Deleted
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Pages/Administration/LocationsPage.razor' line 35 column 13
+        From file 'Ozds.Client/Pages/Administration/NetworkUsersPage.razor' line 37 column 13
+        From file 'Ozds.Client/Pages/Finances/CataloguesPage.razor' line 32 column 11
+        From file 'Ozds.Client/Pages/Measurements/MeasurementLocationsPage.razor' line 37 column 13
+        From file 'Ozds.Client/Pages/Measurements/MeasurementValidatorsPage.razor' line 30 column 11
+        From file 'Ozds.Client/Pages/Measurements/MessengersPage.razor' line 30 column 11
         From file 'Ozds.Client/Pages/Measurements/MetersPage.razor' line 35 column 11
       </Metadata>
       <Value>
@@ -3459,17 +3542,6 @@
       </Metadata>
       <Value>
         Deletion
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        dentifiable
-      </Key>
-      <Metadata>
-        Type 'Ozds.Business.Models.Abstractions.IIdentifiable'
-      </Metadata>
-      <Value>
-        Identifiable
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -3781,6 +3853,18 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        Device number
+      </Key>
+      <Metadata>
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 42 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 107 column 12
+      </Metadata>
+      <Value>
+        Device identifier
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         Director
       </Key>
       <Metadata>
@@ -3788,17 +3872,6 @@
       </Metadata>
       <Value>
         Director
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        Document
-      </Key>
-      <Metadata>
-        From file 'Ozds.Client/Pages/Finances/NetworkUserInvoicePage.razor' line 40 column 10
-      </Metadata>
-      <Value>
-        Document
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -3847,6 +3920,7 @@
         Edit
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Streaming/Mutating.razor' line 72 column 16
         From file 'Ozds.Client/Components/Streaming/Mutating.razor' line 153 column 12
       </Metadata>
       <Value>
@@ -3855,53 +3929,48 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        Electricity supply during multi-rate daily tariff period
-      </Key>
-      <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 140 column 10
-      </Metadata>
-      <Value>
-        Electricity supply during multi-rate daily tariff period
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        Electricity supply during off-peak daily tariff period
-      </Key>
-      <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 163 column 10
-      </Metadata>
-      <Value>
-        Electricity supply during off-peak daily lower tariff period
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        Electricity supply during the period of a higher daily tariff
+        Electrical energy supply during higher daily tariff period
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 131 column 13
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 51 column 4
+        From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 140 column 10
       </Metadata>
       <Value>
-        Electricity supply during the period of a higher daily tariff
+        Electrical energy supply during higher tariff period
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        Electricity supply during the period of a lower daily tariff
+        Electrical energy supply during lower daily tariff period
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 135 column 13
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 116 column 4
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 46 column 4
+        From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 147 column 10
       </Metadata>
       <Value>
-        Electricity supply during the period of a lower tariff
+        Electrical energy supply during lower tariff period
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        Electricity supply fee
+        Electrical energy supply during unique daily tariff period
       </Key>
       <Metadata>
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 41 column 4
+      </Metadata>
+      <Value>
+        Electrical energy supply during one tariff daily period
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Electrical energy supply fee
+      </Key>
+      <Metadata>
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 121 column 6
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 135 column 10
       </Metadata>
       <Value>
@@ -3987,13 +4056,14 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        Energy card CSV
+        Energy card report (CSV)
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Pages/Administration/LocationPage.razor' line 72 column 8
         From file 'Ozds.Client/Pages/Administration/NetworkUserPage.razor' line 89 column 10
       </Metadata>
       <Value>
-        Energy card CSV
+        Energy card report (CSV)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -4044,35 +4114,16 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        Engaged power during multiple tariff periods
+        Engaged power during higher daily tariff period
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 78 column 13
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 74 column 13
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 31 column 4
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 105 column 10
       </Metadata>
       <Value>
-        Power consumption across multiple tariff periods
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        engaged power during the period of a higher daily tariff
-      </Key>
-      <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 81 column 4
-      </Metadata>
-      <Value>
-        engaged power during the period of a higher daily tariff
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        Engaged power during the period of a higher tariff
-      </Key>
-      <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 74 column 13
-      </Metadata>
-      <Value>
-        Active power during the higher tariff period
+        Power consumption during higher tariff period
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -4131,13 +4182,13 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        estimate
+        Estimated
       </Key>
       <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 61 column 4
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 86 column 4
       </Metadata>
       <Value>
-        estimate
+        Estimated
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -4181,46 +4232,26 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        excessively drawn reactive power
-      </Key>
-      <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 11 column 4
-      </Metadata>
-      <Value>
-        excessive reactive power draw
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        Excessively drawn reactive power
+        Excessively drawn reactive energy
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 82 column 13
-      </Metadata>
-      <Value>
-        Excessive reactive power draw
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        Excessively taken reactive power
-      </Key>
-      <Metadata>
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 26 column 4
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 112 column 10
       </Metadata>
       <Value>
-        Excessive reactive power consumption
+        Excessively drawn reactive energy
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        excise duty for business consumption
+        Excise duty for business usage
       </Key>
       <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 91 column 4
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 61 column 4
       </Metadata>
       <Value>
-        excise duty for business consumption
+        Excise duty for business usage
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -4228,7 +4259,9 @@
         Excise duty for business/non-business use
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 143 column 13
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 139 column 13
+        From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 163 column 10
       </Metadata>
       <Value>
         Excise duty for business/non-business use
@@ -4236,13 +4269,13 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        excise duty for non-business consumption
+        Excise duty for non-business usage
       </Key>
       <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 86 column 4
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 56 column 4
       </Metadata>
       <Value>
-        excise duty for non-business consumption
+        Excise duty for non-business usage
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -4269,50 +4302,17 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        Fee for electricity supply - TOTAL
-      </Key>
-      <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 144 column 18
-      </Metadata>
-      <Value>
-        Electricity supply charge - TOTAL
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        Fee for encouraging production from renewable energy sources and
-        cogeneration
-      </Key>
-      <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 155 column 8
-      </Metadata>
-      <Value>
-        Fee for encouraging production from renewable energy sources and
-        cogeneration
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
         Fee for promoting production from renewable energy sources and
         cogeneration
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 139 column 13
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 66 column 4
+        From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 155 column 8
       </Metadata>
       <Value>
         Fee for promoting production from renewable energy sources and
         cogeneration
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        fee for renewable energy sources and high-efficiency cogeneration
-      </Key>
-      <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 51 column 4
-      </Metadata>
-      <Value>
-        renewable energy and high-efficiency cogeneration fee
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -4356,13 +4356,13 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        FOR ELECTRICITY FOR THE PERIOD
+        FOR ELECTRICAL ENERGY FOR PERIOD
       </Key>
       <Metadata>
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 52 column 4
       </Metadata>
       <Value>
-        FOR ELECTRICITY FOR THE PERIOD
+        FOR ELECTRICITY FOR PERIOD
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -4468,50 +4468,6 @@
       </Metadata>
       <Value>
         FULL TOTAL
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        Grid fee
-      </Key>
-      <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 56 column 6
-      </Metadata>
-      <Value>
-        Grid charge
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        grid fee during the period of a higher daily tariff
-      </Key>
-      <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 41 column 4
-      </Metadata>
-      <Value>
-        grid fee during the period of a higher daily tariff
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        grid fee during the period of a lower daily tariff
-      </Key>
-      <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 31 column 4
-      </Metadata>
-      <Value>
-        grid fee during the period of a lower tariff
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        grid fee during the period of a uniform daily tariff
-      </Key>
-      <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 26 column 4
-      </Metadata>
-      <Value>
-        grid fee during the period of a flat daily tariff
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -4729,6 +4685,8 @@
         Type 'Ozds.Report.Entities.IdentifiableEntity'
 
         Type 'Ozds.Business.Models.Base.IdentifiableModel'
+
+        Type 'Ozds.Business.Models.Abstractions.IIdentifiable'
       </Metadata>
       <Value>
         Identifiable
@@ -4750,7 +4708,9 @@
         IND
       </Key>
       <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 14 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 94 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 208 column 20
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 229 column 20
       </Metadata>
       <Value>
         IND
@@ -4758,13 +4718,13 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        inductive reactive power
+        Inductive reactive energy
       </Key>
       <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 16 column 4
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 96 column 4
       </Metadata>
       <Value>
-        inductive reactive power
+        Inductive reactive energy
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -4856,10 +4816,34 @@
         Invoice
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Pages/Finances/NetworkUserInvoicePage.razor' line 21 column 22
         From file 'Ozds.Client/Pages/Finances/NetworkUserInvoicePage.razor' line 28 column 22
+        From file 'Ozds.Client/Pages/Finances/NetworkUserInvoicePage.razor' line 40 column 10
       </Metadata>
       <Value>
         Invoice
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Invoice (PDF)
+      </Key>
+      <Metadata>
+        From file 'Ozds.Client/Pages/Finances/NetworkUserInvoicePage.razor' line 45 column 8
+      </Metadata>
+      <Value>
+        Invoice (PDF)
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Invoice document
+      </Key>
+      <Metadata>
+        From file 'Ozds.Client/Pages/Finances/NetworkUserInvoicePage.razor' line 58 column 8
+      </Metadata>
+      <Value>
+        Invoice document
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -4889,6 +4873,7 @@
         Invoice pending...
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 48 column 17
         From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 127 column 17
       </Metadata>
       <Value>
@@ -5220,7 +5205,8 @@
         JEN
       </Key>
       <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 9 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 24 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 328 column 64
       </Metadata>
       <Value>
         JEN
@@ -5244,7 +5230,9 @@
         KAP
       </Key>
       <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 19 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 99 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 217 column 20
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 238 column 20
       </Metadata>
       <Value>
         KAP
@@ -5362,7 +5350,10 @@
         Last months consumption
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Dashboards/LocationRepresentativeDashboard.razor' line 13 column 14
         From file 'Ozds.Client/Components/Dashboards/LocationRepresentativeDashboard.razor' line 60 column 15
+        From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 31 column 14
+        From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 109 column 15
       </Metadata>
       <Value>
         Last month's consumption
@@ -5373,6 +5364,7 @@
         Last months invoice total
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 41 column 14
         From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 120 column 15
       </Metadata>
       <Value>
@@ -5772,6 +5764,17 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        Light
+      </Key>
+      <Metadata>
+        From file 'Ozds.Client/Components/Layout/UserToolbar.razor' line 52 column 30
+      </Metadata>
+      <Value>
+        Light
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         Load
       </Key>
       <Metadata>
@@ -5789,13 +5792,14 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        Load curve CSV
+        Load curve report (CSV)
       </Key>
       <Metadata>
         From file 'Ozds.Client/Pages/Measurements/MeasurementLocationPage.razor' line 64 column 6
+        From file 'Ozds.Client/Pages/Measurements/MeterPage.razor' line 70 column 6
       </Metadata>
       <Value>
-        Load curve CSV
+        Load curve report (CSV)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -5992,6 +5996,17 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        Lower voltage
+      </Key>
+      <Metadata>
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 106 column 4
+      </Metadata>
+      <Value>
+        lower voltage
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         Make the payment to the transaction account
       </Key>
       <Metadata>
@@ -6121,6 +6136,7 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Models/Implementations/Measurements/Messengers/MessengerDetails.razor' line 12 column 24
+        From file 'Ozds.Client/Components/Models/Implementations/Measurements/Messengers/MessengerEdit.razor' line 19 column 4
       </Metadata>
       <Value>
         Maximum inactivity
@@ -6539,6 +6555,7 @@
         Measurement location
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Pages/Measurements/MeasurementLocationPage.razor' line 86 column 19
         From file 'Ozds.Client/Pages/Measurements/MeasurementLocationPage.razor' line 96 column 17
       </Metadata>
       <Value>
@@ -6550,7 +6567,9 @@
         Measurement locations
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Charts/Financial/FinancialChartControls.razor' line 22 column 19
         From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 30 column 21
+        From file 'Ozds.Client/Pages/Measurements/MeasurementLocationsPage.razor' line 25 column 18
       </Metadata>
       <Value>
         Measurement points
@@ -6558,21 +6577,13 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        measurement service fee
-      </Key>
-      <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 36 column 4
-      </Metadata>
-      <Value>
-        metering service charge
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
         Measurement service fee
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 86 column 13
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 82 column 13
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 36 column 4
+        From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 119 column 10
       </Metadata>
       <Value>
         Measurement service charge
@@ -6807,9 +6818,21 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        Medium voltage
+      </Key>
+      <Metadata>
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 111 column 4
+      </Metadata>
+      <Value>
+        Medium voltage
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         Messenger
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Pages/Measurements/MessengerPage.razor' line 26 column 24
         From file 'Ozds.Client/Pages/Measurements/MessengerPage.razor' line 34 column 22
       </Metadata>
       <Value>
@@ -6935,6 +6958,7 @@
         Meter
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Pages/Measurements/MeterPage.razor' line 88 column 24
         From file 'Ozds.Client/Pages/Measurements/MeterPage.razor' line 95 column 22
       </Metadata>
       <Value>
@@ -7087,21 +7111,12 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        Metering service fee
-      </Key>
-      <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 119 column 10
-      </Metadata>
-      <Value>
-        Metering service fee
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
         Meters
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Charts/Financial/FinancialChartControls.razor' line 40 column 19
         From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 49 column 19
+        From file 'Ozds.Client/Pages/Measurements/MetersPage.razor' line 28 column 18
       </Metadata>
       <Value>
         Meters
@@ -7579,7 +7594,8 @@
         MJT
       </Key>
       <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 24 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 9 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 324 column 62
       </Metadata>
       <Value>
         MJT
@@ -7590,7 +7606,8 @@
         MNT
       </Key>
       <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 29 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 14 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 326 column 62
       </Metadata>
       <Value>
         MNT
@@ -7716,6 +7733,8 @@
       </Key>
       <Metadata>
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 34 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 329 column 45
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 328 column 64
       </Metadata>
       <Value>
         MU
@@ -7726,6 +7745,7 @@
         Multiplier
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Charts/Financial/FinancialChartControls.razor' line 64 column 17
         From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 88 column 19
       </Metadata>
       <Value>
@@ -7748,7 +7768,9 @@
         MVT
       </Key>
       <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 39 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 19 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 325 column 62
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 324 column 62
       </Metadata>
       <Value>
         MVT
@@ -7822,24 +7844,24 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        NAME ARTICLE / SERVICE
+        NAME OF ARTICLE / SERVICE
       </Key>
       <Metadata>
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 72 column 10
       </Metadata>
       <Value>
-        Name Article / Service
+        Name of Article / Service
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        Name of the billing metering point (OMM)
+        Name of the billing measurement location (OMM)
       </Key>
       <Metadata>
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 14 column 6
       </Metadata>
       <Value>
-        Name of the billing metering point (OMM)
+        Name of the billing measurement location (OMM)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -7855,68 +7877,42 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        Network usage during multiple tariff periods
+        Network usage during higher daily tariff period
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 70 column 13
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 6 column 4
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 21 column 4
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 91 column 10
       </Metadata>
       <Value>
-        Network usage during multiple tariff periods
+        Network usage during higher tariff period
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        Network usage during off-peak tariff period
-      </Key>
-      <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 98 column 10
-      </Metadata>
-      <Value>
-        Network usage during off-peak lower tariff period
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        Network usage during one tariff period
-      </Key>
-      <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 84 column 10
-      </Metadata>
-      <Value>
-        Network usage during one tariff period
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        Network usage during the period of a higher daily tariff
-      </Key>
-      <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 6 column 4
-      </Metadata>
-      <Value>
-        Network usage during the period of a higher daily tariff
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        Network usage during the period of a lower daily tariff
+        Network usage during lower daily tariff period
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 74 column 13
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 16 column 4
+        From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 98 column 10
       </Metadata>
       <Value>
-        Network usage during the period of a lower tariff
+        Network usage during lower tariff period
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        Network usage during the period of a single daily tariff
+        Network usage during unique daily tariff period
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 66 column 13
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 11 column 4
+        From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 84 column 10
       </Metadata>
       <Value>
-        Network usage during the one tariff period
+        Network usage during unique daily tariff period
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -7924,32 +7920,11 @@
         Network usage fee - TOTAL
       </Key>
       <Metadata>
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 79 column 18
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 126 column 35
       </Metadata>
       <Value>
         Network usage charge - TOTAL
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        Network usage fee for ZDS
-      </Key>
-      <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 79 column 10
-      </Metadata>
-      <Value>
-        Network usage fee for ZDS
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        Network usage fee for ZDS - TOTAL
-      </Key>
-      <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 79 column 18
-      </Metadata>
-      <Value>
-        Network usage fee for ZDS - TOTAL
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -8375,6 +8350,7 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Pages/Finances/NetworkUserCataloguePage.razor' line 14 column 24
+        From file 'Ozds.Client/Pages/Finances/RegulatoryCataloguePage.razor' line 14 column 24
       </Metadata>
       <Value>
         New catalog
@@ -8481,6 +8457,17 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        NN
+      </Key>
+      <Metadata>
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 104 column 12
+      </Metadata>
+      <Value>
+        NN
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         No audit events found
       </Key>
       <Metadata>
@@ -8503,17 +8490,6 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        NOSIOC
-      </Key>
-      <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 46 column 35
-      </Metadata>
-      <Value>
-        Non-Operational System Identifier for Outage Coordination (NOSIOC)
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
         Note to users
       </Key>
       <Metadata>
@@ -8528,6 +8504,7 @@
         Notification
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Pages/System/NotificationPage.razor' line 20 column 24
         From file 'Ozds.Client/Pages/System/NotificationPage.razor' line 49 column 24
       </Metadata>
       <Value>
@@ -8569,35 +8546,13 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        Number of devices
-      </Key>
-      <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 107 column 12
-      </Metadata>
-      <Value>
-        Number of devices
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        Number of the billing metering point (OMM)
+        Number of the billing measurement location (OMM)
       </Key>
       <Metadata>
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 18 column 6
       </Metadata>
       <Value>
-        Metering point identifier (OMM)
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        nvoice
-      </Key>
-      <Metadata>
-        Type 'Ozds.Business.Models.Abstractions.IInvoice'
-      </Metadata>
-      <Value>
-        Invoice
+        Billing measurement location number (OMM)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -8605,7 +8560,7 @@
         O
       </Key>
       <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 44 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 79 column 12
       </Metadata>
       <Value>
         O
@@ -8686,7 +8641,9 @@
         OIEiK
       </Key>
       <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 49 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 64 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 333 column 53
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 332 column 51
       </Metadata>
       <Value>
         OIEiK
@@ -8708,7 +8665,7 @@
         OMM
       </Key>
       <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 54 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 74 column 12
       </Metadata>
       <Value>
         OMM
@@ -8720,6 +8677,7 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Charts/Financial/FinancialChartControls.razor' line 72 column 17
+        From file 'Ozds.Document/Components/Payment.razor' line 25 column 38
       </Metadata>
       <Value>
         Operator
@@ -8746,6 +8704,7 @@
         or
       </Key>
       <Metadata>
+        From file 'Ozds.Document/Components/Remark.razor' line 37 column 10
         From file 'Ozds.Document/Components/Remark.razor' line 32 column 10
       </Metadata>
       <Value>
@@ -8754,9 +8713,21 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        Ordinal number
+      </Key>
+      <Metadata>
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 91 column 4
+      </Metadata>
+      <Value>
+        Ordinal number
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         over the last
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Charts/Financial/FinancialChartHeader.razor' line 26 column 10
         From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartHeader.razor' line 32 column 10
       </Metadata>
       <Value>
@@ -8768,7 +8739,7 @@
         P
       </Key>
       <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 59 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 84 column 12
       </Metadata>
       <Value>
         P
@@ -8776,10 +8747,10 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        Pdf
+        PDF
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Pages/Finances/NetworkUserInvoicePage.razor' line 45 column 8
+        From file 'Ozds.Client/Pages/DeveloperPage.razor' line 34 column 34
       </Metadata>
       <Value>
         PDF
@@ -8831,6 +8802,9 @@
         Phase sum
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementDonutChart.razor' line 67 column 9
+        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementGaugeChart.razor' line 65 column 9
+        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementLineChart.razor' line 70 column 9
         From file 'Ozds.Client/Components/Charts/Measurements/MeasurementLineChart.razor' line 44 column 38
       </Metadata>
       <Value>
@@ -8977,7 +8951,11 @@
         Pick month
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Pages/Administration/LocationPage.razor' line 60 column 62
+        From file 'Ozds.Client/Pages/Administration/NetworkUserPage.razor' line 39 column 19
+        From file 'Ozds.Client/Pages/Administration/NetworkUserPage.razor' line 79 column 17
         From file 'Ozds.Client/Pages/Measurements/MeasurementLocationPage.razor' line 36 column 15
+        From file 'Ozds.Client/Pages/Measurements/MeterPage.razor' line 42 column 15
       </Metadata>
       <Value>
         Select month
@@ -8989,6 +8967,7 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Pages/Measurements/MeasurementLocationPage.razor' line 39 column 15
+        From file 'Ozds.Client/Pages/Measurements/MeterPage.razor' line 45 column 15
       </Metadata>
       <Value>
         Select OBIS code
@@ -9088,6 +9067,7 @@
         Preview
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Streaming/Mutating.razor' line 55 column 16
         From file 'Ozds.Client/Components/Streaming/Mutating.razor' line 139 column 14
       </Metadata>
       <Value>
@@ -9100,6 +9080,7 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Pages/Administration/NetworkUserPage.razor' line 32 column 10
+        From file 'Ozds.Client/Pages/Administration/NetworkUserPage.razor' line 56 column 12
       </Metadata>
       <Value>
         Invoice preview
@@ -9107,24 +9088,13 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        Preview invoice document
-      </Key>
-      <Metadata>
-        From file 'Ozds.Client/Pages/Administration/NetworkUserPage.razor' line 56 column 12
-      </Metadata>
-      <Value>
-        Preview invoice document
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        Preview invoice pdf
+        Preview invoice (PDF)
       </Key>
       <Metadata>
         From file 'Ozds.Client/Pages/Administration/NetworkUserPage.razor' line 69 column 8
       </Metadata>
       <Value>
-        Preview invoice PDF
+        Preview invoice (PDF)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -9132,94 +9102,8 @@
         Price
       </Key>
       <Metadata>
-        Property 'Price' of type 'Ozds.Business.Models.Abstractions.ICalculationItem' with overrides:
-        BlueLowNetworkUserCalculationModel.UsageActiveEnergyTotalImportT0.Price
-        BlueLowNetworkUserCalculationModel.UsageReactiveEnergyTotalRampedT0.Price
-        BlueLowNetworkUserCalculationModel.UsageMeterFee.Price
-        BlueLowNetworkUserCalculationModel.SupplyActiveEnergyTotalImportT1.Price
-        BlueLowNetworkUserCalculationModel.SupplyActiveEnergyTotalImportT2.Price
-        BlueLowNetworkUserCalculationModel.SupplyBusinessUsageFee.Price
-        BlueLowNetworkUserCalculationModel.SupplyRenewableEnergyFee.Price
-        BlueLowNetworkUserCalculationModel.UsageItems.Price
-        BlueLowNetworkUserCalculationModel.SupplyItems.Price
-        RedLowNetworkUserCalculationModel.UsageActiveEnergyTotalImportT1.Price
-        RedLowNetworkUserCalculationModel.UsageActiveEnergyTotalImportT2.Price
-        RedLowNetworkUserCalculationModel.UsageActivePowerTotalImportT1Peak.Price
-        RedLowNetworkUserCalculationModel.UsageReactiveEnergyTotalRampedT0.Price
-        RedLowNetworkUserCalculationModel.UsageMeterFee.Price
-        RedLowNetworkUserCalculationModel.SupplyActiveEnergyTotalImportT1.Price
-        RedLowNetworkUserCalculationModel.SupplyActiveEnergyTotalImportT2.Price
-        RedLowNetworkUserCalculationModel.SupplyBusinessUsageFee.Price
-        RedLowNetworkUserCalculationModel.SupplyRenewableEnergyFee.Price
-        RedLowNetworkUserCalculationModel.UsageItems.Price
-        RedLowNetworkUserCalculationModel.SupplyItems.Price
-        WhiteLowNetworkUserCalculationModel.UsageActiveEnergyTotalImportT1.Price
-        WhiteLowNetworkUserCalculationModel.UsageActiveEnergyTotalImportT2.Price
-        WhiteLowNetworkUserCalculationModel.UsageReactiveEnergyTotalRampedT0.Price
-        WhiteLowNetworkUserCalculationModel.UsageMeterFee.Price
-        WhiteLowNetworkUserCalculationModel.SupplyActiveEnergyTotalImportT1.Price
-        WhiteLowNetworkUserCalculationModel.SupplyActiveEnergyTotalImportT2.Price
-        WhiteLowNetworkUserCalculationModel.SupplyBusinessUsageFee.Price
-        WhiteLowNetworkUserCalculationModel.SupplyRenewableEnergyFee.Price
-        WhiteLowNetworkUserCalculationModel.UsageItems.Price
-        WhiteLowNetworkUserCalculationModel.SupplyItems.Price
-        WhiteMediumNetworkUserCalculationModel.UsageActiveEnergyTotalImportT1.Price
-        WhiteMediumNetworkUserCalculationModel.UsageActiveEnergyTotalImportT2.Price
-        WhiteMediumNetworkUserCalculationModel.UsageActivePowerTotalImportT1Peak.Price
-        WhiteMediumNetworkUserCalculationModel.UsageReactiveEnergyTotalRampedT0.Price
-        WhiteMediumNetworkUserCalculationModel.UsageMeterFee.Price
-        WhiteMediumNetworkUserCalculationModel.SupplyActiveEnergyTotalImportT1.Price
-        WhiteMediumNetworkUserCalculationModel.SupplyActiveEnergyTotalImportT2.Price
-        WhiteMediumNetworkUserCalculationModel.SupplyBusinessUsageFee.Price
-        WhiteMediumNetworkUserCalculationModel.SupplyRenewableEnergyFee.Price
-        WhiteMediumNetworkUserCalculationModel.UsageItems.Price
-        WhiteMediumNetworkUserCalculationModel.SupplyItems.Price
-        CalculatedNetworkUserInvoiceModel.Calculations.UsageMeterFee.Price
-        CalculatedNetworkUserInvoiceModel.Calculations.SupplyActiveEnergyTotalImportT1.Price
-        CalculatedNetworkUserInvoiceModel.Calculations.SupplyActiveEnergyTotalImportT2.Price
-        CalculatedNetworkUserInvoiceModel.Calculations.SupplyBusinessUsageFee.Price
-        CalculatedNetworkUserInvoiceModel.Calculations.SupplyRenewableEnergyFee.Price
-        CalculatedNetworkUserInvoiceModel.Calculations.UsageItems.Price
-        CalculatedNetworkUserInvoiceModel.Calculations.SupplyItems.Price
-        ActiveEnergyTotalImportCalculationItemModel.Price
-        ActiveEnergyTotalImportT0CalculationItemModel.Price
-        ActiveEnergyTotalImportT1CalculationItemModel.Price
-        ActiveEnergyTotalImportT2CalculationItemModel.Price
-        UsageActiveEnergyTotalImportT0CalculationItemModel.Price
-        UsageActiveEnergyTotalImportT1CalculationItemModel.Price
-        UsageActiveEnergyTotalImportT2CalculationItemModel.Price
-        SupplyActiveEnergyTotalImportT1CalculationItemModel.Price
-        SupplyActiveEnergyTotalImportT2CalculationItemModel.Price
-        SupplyBusinessUsageCalculationItemModel.Price
-        SupplyRenewableEnergyCalculationItemModel.Price
-        ActivePowerTotalImportT1PeakCalculationItemModel.Price
-        UsageActivePowerTotalImportT1PeakCalculationItemModel.Price
-        FeeCalculationItemModel.Price
-        UsageMeterFeeCalculationItemModel.Price
-        ReactiveEnergyTotalRampedT0CalculationItemModel.Price
-        UsageReactiveEnergyTotalRampedT0CalculationItemModel.Price
-        CalculationItemModel.Price
-        NetworkUserCalculationModel.UsageMeterFee.Price
-        NetworkUserCalculationModel.SupplyActiveEnergyTotalImportT1.Price
-        NetworkUserCalculationModel.SupplyActiveEnergyTotalImportT2.Price
-        NetworkUserCalculationModel.SupplyBusinessUsageFee.Price
-        NetworkUserCalculationModel.SupplyRenewableEnergyFee.Price
-        NetworkUserCalculationModel.UsageItems.Price
-        NetworkUserCalculationModel.SupplyItems.Price
-        NetworkUserCalculationModel&lt;TNetworkUserCatalogue&gt;.UsageMeterFee.Price
-        NetworkUserCalculationModel&lt;TNetworkUserCatalogue&gt;.SupplyActiveEnergyTotalImportT1.Price
-        NetworkUserCalculationModel&lt;TNetworkUserCatalogue&gt;.SupplyActiveEnergyTotalImportT2.Price
-        NetworkUserCalculationModel&lt;TNetworkUserCatalogue&gt;.SupplyBusinessUsageFee.Price
-        NetworkUserCalculationModel&lt;TNetworkUserCatalogue&gt;.SupplyRenewableEnergyFee.Price
-        NetworkUserCalculationModel&lt;TNetworkUserCatalogue&gt;.UsageItems.Price
-        NetworkUserCalculationModel&lt;TNetworkUserCatalogue&gt;.SupplyItems.Price
-        INetworkUserCalculation.UsageMeterFee.Price
-        INetworkUserCalculation.SupplyActiveEnergyTotalImportT1.Price
-        INetworkUserCalculation.SupplyActiveEnergyTotalImportT2.Price
-        INetworkUserCalculation.SupplyBusinessUsageFee.Price
-        INetworkUserCalculation.SupplyRenewableEnergyFee.Price
-        INetworkUserCalculation.UsageItems.Price
-        INetworkUserCalculation.SupplyItems.Price
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 50 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 115 column 12
       </Metadata>
       <Value>
         Price
@@ -9517,6 +9401,7 @@
         RBR
       </Key>
       <Metadata>
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 89 column 12
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 71 column 10
       </Metadata>
       <Value>
@@ -10214,13 +10099,13 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        read
+        Read
       </Key>
       <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 46 column 4
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 81 column 4
       </Metadata>
       <Value>
-        read
+        Read
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -10243,6 +10128,18 @@
       </Metadata>
       <Value>
         Readonly notification
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Red NN
+      </Key>
+      <Metadata>
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 185 column 11
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 90 column 14
+      </Metadata>
+      <Value>
+        Red NN
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -10313,6 +10210,7 @@
         Refresh
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 111 column 21
         From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 119 column 23
       </Metadata>
       <Value>
@@ -10559,6 +10457,7 @@
         Resolution
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Charts/Financial/FinancialChartControls.razor' line 57 column 17
         From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 100 column 19
       </Metadata>
       <Value>
@@ -10635,7 +10534,7 @@
         RJT
       </Key>
       <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 64 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 39 column 12
       </Metadata>
       <Value>
         RJT
@@ -10646,7 +10545,9 @@
         RNT
       </Key>
       <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 69 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 44 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 331 column 63
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 330 column 63
       </Metadata>
       <Value>
         RNT
@@ -10674,7 +10575,8 @@
         RVT
       </Key>
       <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 74 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 49 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 330 column 63
       </Metadata>
       <Value>
         RVT
@@ -10735,6 +10637,7 @@
         Search
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Streaming/Table.razor' line 28 column 25
         From file 'Ozds.Client/Components/Streaming/Table.razor' line 87 column 23
       </Metadata>
       <Value>
@@ -10779,6 +10682,17 @@
       </Metadata>
       <Value>
         Seen on
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        SN
+      </Key>
+      <Metadata>
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 109 column 12
+      </Metadata>
+      <Value>
+        Serial Number
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -10852,13 +10766,13 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        SPECIFICATION OF CONSUMPTION AT BILLING METERING POINTS
+        SPECIFICATION OF CONSUMPTION AT BILLING MEASUREMENT LOCATION
       </Key>
       <Metadata>
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 9 column 10
       </Metadata>
       <Value>
-        SPECIFICATION OF CONSUMPTION AT BILLING METERING POINTS
+        Consumption Specification at Billing Measurement Location
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -10919,6 +10833,7 @@
         Status
       </Key>
       <Metadata>
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 48 column 12
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 113 column 12
       </Metadata>
       <Value>
@@ -10930,6 +10845,7 @@
         Status from
       </Key>
       <Metadata>
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 46 column 12
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 111 column 12
       </Metadata>
       <Value>
@@ -10941,6 +10857,7 @@
         Status to
       </Key>
       <Metadata>
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 47 column 12
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 112 column 12
       </Metadata>
       <Value>
@@ -10974,7 +10891,14 @@
         Sum
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Charts/Financial/FinancialBarChart.razor' line 31 column 46
+        From file 'Ozds.Client/Components/Charts/Financial/FinancialBarChart.razor' line 40 column 46
+        From file 'Ozds.Client/Components/Charts/Financial/FinancialBarChart.razor' line 64 column 32
         From file 'Ozds.Client/Components/Charts/Financial/FinancialBarChart.razor' line 73 column 32
+        From file 'Ozds.Client/Components/Charts/Financial/FinancialDonutChart.razor' line 30 column 46
+        From file 'Ozds.Client/Components/Charts/Financial/FinancialDonutChart.razor' line 39 column 46
+        From file 'Ozds.Client/Components/Charts/Financial/FinancialDonutChart.razor' line 63 column 32
+        From file 'Ozds.Client/Components/Charts/Financial/FinancialDonutChart.razor' line 72 column 32
       </Metadata>
       <Value>
         Total
@@ -10999,13 +10923,13 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        Supply
+        Supply fee - TOTAL
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 121 column 6
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 144 column 18
       </Metadata>
       <Value>
-        Supply
+        Supply charge - TOTAL
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -11350,7 +11274,9 @@
         SVT
       </Key>
       <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 79 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 29 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 327 column 65
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 326 column 62
       </Metadata>
       <Value>
         Standard Variable Tariff (SVT)
@@ -11449,6 +11375,7 @@
         Tariff item
       </Key>
       <Metadata>
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 45 column 12
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 110 column 12
       </Metadata>
       <Value>
@@ -11601,24 +11528,24 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        The resource you were looking for doesn't exist.
+        The resource you were looking for doesn't exist
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Streaming/NotFound.razor' line 10 column 4
       </Metadata>
       <Value>
-        The resource you were looking for doesn't exist.
+        The resource you were looking for doesn't exist
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        There are no resources of this type.
+        There are no resources of this type
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Streaming/Empty.razor' line 6 column 4
       </Metadata>
       <Value>
-        No resources of this type.
+        No resources of this type
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -11626,6 +11553,7 @@
         This years consumption
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 58 column 15
         From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 137 column 15
       </Metadata>
       <Value>
@@ -12047,6 +11975,8 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 188 column 18
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 51 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 116 column 12
       </Metadata>
       <Value>
         Total
@@ -12057,7 +11987,10 @@
         TOTAL
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 116 column 4
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 173 column 4
+        From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 73 column 10
+        From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 186 column 37
       </Metadata>
       <Value>
         TOTAL
@@ -12344,7 +12277,7 @@
         TRNP
       </Key>
       <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 84 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 54 column 12
       </Metadata>
       <Value>
         TRNP
@@ -12355,7 +12288,8 @@
         TRP
       </Key>
       <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 89 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 59 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 332 column 51
       </Metadata>
       <Value>
         Tariff Rate Period
@@ -12399,7 +12333,9 @@
         Unit
       </Key>
       <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 115 column 12
+        Property 'Unit' of type 'Ozds.Report.Entities.AccountingPeriodEntity'
+
+        Property 'Unit' of type 'Ozds.Business.Models.AccountingPeriodReportModel'
       </Metadata>
       <Value>
         Unit
@@ -12432,6 +12368,7 @@
         Usage
       </Key>
       <Metadata>
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 49 column 12
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 114 column 12
       </Metadata>
       <Value>
@@ -12850,6 +12787,7 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 23 column 18
+        From file 'Ozds.Client/Pages/Administration/UserPage.razor' line 22 column 24
       </Metadata>
       <Value>
         User
@@ -12896,6 +12834,7 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 207 column 12
+        From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 195 column 8
       </Metadata>
       <Value>
         VAT
@@ -13059,6 +12998,28 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        White NN
+      </Key>
+      <Metadata>
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 189 column 15
+      </Metadata>
+      <Value>
+        White NN
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        White SN
+      </Key>
+      <Metadata>
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 191 column 15
+      </Metadata>
+      <Value>
+        White SN
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         WhiteLowNetworkUserCalculation
       </Key>
       <Metadata>
@@ -13163,39 +13124,6 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        working energy during the period of a higher daily tariff
-      </Key>
-      <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 76 column 4
-      </Metadata>
-      <Value>
-        working energy during the period of a higher daily tariff
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        working energy during the period of a lower daily tariff
-      </Key>
-      <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 71 column 4
-      </Metadata>
-      <Value>
-        working energy during the period of a lower tariff
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        working energy during the period of a uniform daily tariff
-      </Key>
-      <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 66 column 4
-      </Metadata>
-      <Value>
-        working energy during the period of a uniform daily tariff
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
         Year
       </Key>
       <Metadata>
@@ -13246,9 +13174,22 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 13 column 18
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 69 column 12
       </Metadata>
       <Value>
         ZDS
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        ZDS network usage fee
+      </Key>
+      <Metadata>
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 56 column 6
+        From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 79 column 10
+      </Metadata>
+      <Value>
+        ZDS network usage fee
       </Value>
     </TranslationDictionaryItem>
   </Translations>

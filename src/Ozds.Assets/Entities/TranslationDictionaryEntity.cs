@@ -166,6 +166,13 @@ public sealed class TranslationDictionaryEntity
     );
   }
 
+  public List<EnumerationItem> ToList()
+  {
+    return items
+      .Select(x => new EnumerationItem(x.Key, x.Value.Metadata, x.Value.Value))
+      .ToList();
+  }
+
   public static async Task<TranslationDictionaryEntity> Load(
     string path,
     CancellationToken cancellationToken
@@ -216,7 +223,7 @@ public sealed class TranslationDictionaryEntity
     items.TryAdd(key, new Item(metadata, value));
   }
 
-  public void Replace(string key, string value)
+  public void AddOrUpdate(string key, string value)
   {
     items.AddOrUpdate(
       key,
@@ -224,7 +231,7 @@ public sealed class TranslationDictionaryEntity
       (_, _) => new Item(null, value));
   }
 
-  public void Replace(string key, string metadata, string value)
+  public void AddOrUpdate(string key, string? metadata, string value)
   {
     items.AddOrUpdate(
       key,
@@ -268,13 +275,15 @@ public sealed class TranslationDictionaryEntity
     ContentToDictionary(TranslationDictionaryContent content)
   {
     return new ConcurrentDictionary<string, Item>(
-      content.Translations.Select(
-        item =>
+      content.Translations
+        .Select(item =>
           new KeyValuePair<string, Item>(
             item.Key.TrimWords(),
             new Item(
               item.Metadata?.Trim().Dedent(8, "\n"),
-              item.Value.TrimWords()))));
+              item.Value.TrimWords())))
+        .DistinctBy(item => item.Key)
+    );
   }
 
   private static string PrettyKeyValue(
@@ -332,6 +341,8 @@ public sealed class TranslationDictionaryEntity
     Xml,
     Toml
   }
+
+  public sealed record EnumerationItem(string Key, string? Metadata, string Value);
 
   private sealed record Item(string? Metadata, string Value);
 }

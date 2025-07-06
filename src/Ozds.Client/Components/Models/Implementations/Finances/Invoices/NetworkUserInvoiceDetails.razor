@@ -53,7 +53,7 @@
 
 <MudItem Class="d-flex flex-row justify-space-between mt-8">
   <MudText Typo="Typo.h5">
-    @Translate("Grid fee")
+    @Translate("ZDS network usage fee")
   </MudText>
   <MudText Typo="Typo.h5" Class="mr-4">
     EUR
@@ -63,23 +63,23 @@
   var usageRows = new[]
   {
     (
-      Name: Translate("Network usage during the period of a single daily tariff"),
+      Name: Translate("Network usage during unique daily tariff period"),
       Total: Model.UsageActiveEnergyTotalImportT0Fee_EUR
     ),
     (
-      Name: Translate("Network usage during the period of a higher daily tariff"),
+      Name: Translate("Network usage during higher daily tariff period"),
       Total: Model.UsageActiveEnergyTotalImportT1Fee_EUR
     ),
     (
-      Name: Translate("Network usage during the period of a lower daily tariff"),
+      Name: Translate("Network usage during lower daily tariff period"),
       Total: Model.UsageActiveEnergyTotalImportT2Fee_EUR
     ),
     (
-      Name: Translate("Engaged power during the period of a higher tariff"),
+      Name: Translate("Engaged power during higher daily tariff period"),
       Total: Model.UsageActivePowerTotalImportT1PeakFee_EUR
     ),
     (
-      Name: Translate("Excessively drawn reactive power"),
+      Name: Translate("Excessively drawn reactive energy"),
       Total: Model.UsageReactiveEnergyTotalRampedT0Fee_EUR
     ),
     (
@@ -118,7 +118,7 @@
 
 <MudItem Class="d-flex flex-row justify-space-between mt-8">
   <MudText Typo="Typo.h5">
-    @Translate("Supply")
+    @Translate("Electrical energy supply fee")
   </MudText>
   <MudText Typo="Typo.h5" Class="mr-4">
     EUR
@@ -128,11 +128,11 @@
   var supplyRows = new[]
   {
     (
-      Name: Translate("Electricity supply during the period of a higher daily tariff"),
+      Name: Translate("Electrical energy supply during higher daily tariff period"),
       Total: Model.SupplyActiveEnergyTotalImportT1Fee_EUR
     ),
     (
-      Name: Translate("Electricity supply during the period of a lower daily tariff"),
+      Name: Translate("Electrical energy supply during lower daily tariff period"),
       Total: Model.SupplyActiveEnergyTotalImportT2Fee_EUR
     ),
     (

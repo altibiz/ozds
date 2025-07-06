@@ -233,8 +233,35 @@ public class TypeService(
 
   protected override IEnumerable<TranslationWorkerItem> GetEnumerable()
   {
-    var items = GroupItemsAcrossAssemblies(
-      GroupItemsByDeclaration(GetItems()));
+    var items = GroupItemsAcrossAssemblies(GroupItemsByDeclaration(GetItems()))
+      .ToList();
+
+    if (arguments.RemoveUnused)
+    {
+      // TODO: better way to detect managed translations
+      var managedItems = dictionary
+        .ToList()
+        .Where(item => item.Metadata is { } metadata
+          && (metadata.StartsWith("Type")
+            || metadata.StartsWith("Property")))
+        .ToList();
+
+      var unusedManagedItems = managedItems
+        .Where(dictionaryItem => !items.Exists(item =>
+          item.Key == dictionaryItem.Key
+          || item.ShortKey == dictionaryItem.Key
+          || item.AdditionalKeys.Exists(x =>
+            x.Key == dictionaryItem.Key
+            || x.ShortKey == dictionaryItem.Key)))
+        .ToList();
+
+      foreach (var item in unusedManagedItems)
+      {
+        dictionary.Remove(item.Key);
+        logger.LogInformation("Removed key '{Key}'", item.Key);
+      }
+    }
+
     foreach (var item in items)
     {
       var translation = dictionary.Get(item.Key) ??
@@ -243,14 +270,14 @@ public class TypeService(
           .FirstOrDefault(x => x is not null);
       if (translation is not null)
       {
-        dictionary.Replace(item.Key, item.Metadata, translation);
+        dictionary.AddOrUpdate(item.Key, item.Metadata, translation);
         logger.LogInformation(
           "Updated metadata for '{Key}' to\n{Metadata}",
           item.Key,
           item.Metadata
         );
 
-        if (arguments.Reduce)
+        if (arguments.RemoveOverrides)
         {
           foreach (var (key, shortKey) in item.AdditionalKeys)
           {

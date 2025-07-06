@@ -159,9 +159,9 @@ public class TranslationQueries : ITranslationQueries
     {
       if (trim)
       {
-        if (type.IsInterface)
+        if (type.IsInterface && baseName.StartsWith('I'))
         {
-          baseName = baseName.TrimStart('I');
+          baseName = baseName[1..];
         }
 
         if (baseName.LastIndexOf("Model") is > 0 and var modelIndex)

@@ -33,11 +33,6 @@ public partial class UserToolbar : OzdsComponentBase
     get { return ThemeState.IsDarkMode; }
   }
 
-  private string DarkModeName
-  {
-    get { return Translate(IsDarkMode ? "Light" : "Dark"); }
-  }
-
   private Task ExitLocation()
   {
     return LocationState?.UnsetLocation() ?? Task.CompletedTask;

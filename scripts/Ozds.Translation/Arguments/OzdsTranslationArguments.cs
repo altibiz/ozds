@@ -23,6 +23,11 @@ public class OzdsTranslationRegexArguments : IOzdsTranslationArguments
 
   [Option('o', "output", Required = true, HelpText = "Output file path.")]
   public string OutputFilePath { get; set; } = default!;
+
+  [Option(
+    'r', "remove-unused", Required = false, Default = false,
+    HelpText = "Remove unused strings.")]
+  public bool RemoveUnused { get; set; } = default!;
 }
 
 [Verb("type", HelpText = "Translate types.")]
@@ -42,16 +47,21 @@ public class OzdsTranslationTypeArguments : IOzdsTranslationArguments
   public IEnumerable<string> InputNamespaces { get; set; } = default!;
 
   [Option(
-    'r', "reduce", Required = false, Default = false,
-    HelpText = "Reduce variations.")]
-  public bool Reduce { get; set; } = default!;
-
-  [Option(
     'u', "update", Required = false, HelpText = "Path of file to update.")]
   public string? UpdateFilePath { get; set; } = default!;
 
   [Option('o', "output", Required = true, HelpText = "Output file path.")]
   public string OutputFilePath { get; set; } = default!;
+
+  [Option(
+    'R', "remove-overrides", Required = false, Default = false,
+    HelpText = "Remove overrides.")]
+  public bool RemoveOverrides { get; set; } = default!;
+
+  [Option(
+    'r', "remove-unused", Required = false, Default = false,
+    HelpText = "Remove unused types and properties.")]
+  public bool RemoveUnused { get; set; } = default!;
 }
 
 public static class OzdsTranslationArguments

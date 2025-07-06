@@ -2,6 +2,8 @@
 @using MudBlazor
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
+@* TODO: better way to handle mode-agnostic colors *@
+
 <MudToolBar
   Gutters="false"
   Style="background-color: var(--mud-palette-appbar-background);"
@@ -37,7 +39,8 @@
       <MudButton
         Variant="Variant.Text"
         OnClick="ToggleDarkMode"
-        Class="d-flex flex-row align-center">
+        Class="d-flex flex-row align-center"
+        Style="color: rgba(255, 255, 255, 0.6980392156862745)">
         @if (IsDarkMode)
         {
           <MudIcon Icon="@Icons.Material.Filled.LightMode"/>
@@ -49,7 +52,7 @@
         <MudHidden Breakpoint="Breakpoint.SmAndDown">
           <div Class="ml-2">
             <MudText>
-              (@DarkModeName)
+              @(IsDarkMode ? Translate("Light") : Translate("Dark"))
             </MudText>
           </div>
         </MudHidden>
@@ -57,7 +60,8 @@
       <MudButton
         Variant="Variant.Text"
         OnClick="ToggleLocalizationDrawer"
-        Class="d-flex flex-row align-center">
+        Class="d-flex flex-row align-center"
+        Style="color: rgba(255, 255, 255, 0.6980392156862745)">
         <MudIcon Icon="@Icons.Material.Filled.Language"/>
         <MudHidden Breakpoint="Breakpoint.SmAndDown">
           <div Class="ml-2">
@@ -69,7 +73,8 @@
         <MudButton
           OnClick="ToggleUserDrawer"
           Variant="Variant.Text"
-          Class="d-flex flex-row align-center">
+          Class="d-flex flex-row align-center"
+          Style="color: rgba(255, 255, 255, 0.6980392156862745)">
           <MudIcon Icon="@Icons.Material.Filled.Person"/>
         </MudButton>
       </MudHidden>
@@ -77,7 +82,8 @@
         <MudButton
           OnClick="ToggleUserDrawer"
           Variant="Variant.Text"
-          Class="d-flex flex-row align-center">
+          Class="d-flex flex-row align-center"
+          Style="color: rgba(255, 255, 255, 0.6980392156862745)">
           <MudIcon Icon="@Icons.Material.Filled.Person"/>
           <div Class="ml-2 d-flex flex-column align-center">
             <MudText>
@@ -94,7 +100,7 @@
         <MudButton
           OnClick="ExitLocation"
           Variant="Variant.Text"
-          Style="margin-right: -20px;">
+          Style="margin-right: -20px; color: rgba(255, 255, 255, 0.6980392156862745)">
           <MudIcon Icon="@(Icons.Material.Filled.ExitToApp)"/>
         </MudButton>
       }

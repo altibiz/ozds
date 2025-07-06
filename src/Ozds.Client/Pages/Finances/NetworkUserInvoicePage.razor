@@ -37,12 +37,25 @@
 
     <MudHidden Breakpoint="Breakpoint.SmAndDown">
       <MudLink Href="@(PageHref<NetworkUserInvoiceDocumentPage>(new { context.Model.Invoice.Id }))">
-        @Translate("Document")
+        @Translate("Invoice")
       </MudLink>
     </MudHidden>
 
     <MudLink Href="@($"/document/network-user-invoice/{context.Model.Invoice.Id}")">
-      @Translate("Pdf")
+      @Translate("Invoice (PDF)")
+    </MudLink>
+    <br/>
+
+    @{
+      var invoicePreviewHref =
+        PageHref<NetworkUserInvoiceDocumentPage>(
+          new
+          {
+            Id = context.Model.Invoice.Id
+          });
+    }
+    <MudLink Class="mt-4" Href="@invoicePreviewHref">
+      @Translate("Invoice document")
     </MudLink>
   </Details>
 </Mutating>

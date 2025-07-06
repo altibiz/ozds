@@ -102,12 +102,14 @@ translate:
         Ozds.Document.Entities \
         Ozds.Report.Entities \
       -u {{ translationshr }} \
-      -o {{ translationshr }}
+      -o {{ translationshr }} \
+      -r
     @just translation regex \
       -l hr \
       -i {{ srcdir }} \
       -u {{ translationshr }} \
-      -o {{ translationshr }}
+      -o {{ translationshr }} \
+      -r
     @just translation type \
       -l en \
       -a \
@@ -120,12 +122,14 @@ translate:
         Ozds.Document.Entities \
         Ozds.Report.Entities \
       -u {{ translationsen }} \
-      -o {{ translationsen }}
+      -o {{ translationsen }} \
+      -r
     @just translation regex \
       -l en \
       -i {{ srcdir }} \
       -u {{ translationsen }} \
-      -o {{ translationsen }}
+      -o {{ translationsen }} \
+      -r
 
 measurements *args:
     python -m scripts.database.measurements {{ args }}
