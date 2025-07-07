@@ -13,6 +13,8 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 - styling for notification error text
 - `NetworkUserAnalysisDetails` fields
+- `launch.json` for translation
+- `--remove-unused` for translation
 
 ### Changed
 
@@ -30,6 +32,9 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - push event title fix
 - hide search boxes when small amounts of data are shown
 - `Ozds.Report` import fix
+- translation corrections
+- modified translation keys
+- minor translation key fixes
 
 ## [1.4.0]
 
