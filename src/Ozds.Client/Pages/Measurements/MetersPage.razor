@@ -32,7 +32,7 @@ Allows = [RoleModel.OperatorRepresentative])]
 }
 
 <MudCheckBox
-  Label="@Translate("Deleted")"
+  Label="@Translate("Show deleted")"
   @bind-Value="_deleted"/>
 
 <Table Model="@analyses.Where(x => x.Meter.IsDeleted == _deleted).ToList()"/>
@@ -40,10 +40,17 @@ Allows = [RoleModel.OperatorRepresentative])]
 @if (RepresentativeState.Representative.Role
   == RoleModel.OperatorRepresentative)
 {
-  <MudLink Href="@(PageHref<MeterPage>())">
-    @Translate("Create")
-  </MudLink>
-  <UploadTabs T="IMeter"></UploadTabs>
+  <MudButton
+    Class="mt-4"
+    Variant="Variant.Outlined"
+    Color="Color.Primary"
+    Href="@(PageHref<MeterPage>())">
+    @Translate("Create") @Translate(typeof(IMeter))
+  </MudButton>
+
+  <UploadTabs
+    Class="mt-8"
+    T="IMeter"/>
 }
 
 @code {
