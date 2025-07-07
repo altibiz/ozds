@@ -20,11 +20,11 @@ public abstract class DocumentBase : ComponentBase
     );
   }
 
-  public string Translate(Type @type)
+  public string Translate(Type type)
   {
     return LocalizerQueries.Translate(
       AssetConstants.CroatianCulture,
-      @type
+      type
     );
   }
 

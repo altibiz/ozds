@@ -55,14 +55,16 @@ public partial class RegexService(
     {
       var managedItems = dictionary
         .ToList()
-        .Where(item => item.Metadata is { } metadata
-          && metadata.StartsWith("From file"))
+        .Where(
+          item => item.Metadata is { } metadata
+            && metadata.StartsWith("From file"))
         .ToList();
 
       // TODO: better way to detect managed translations
       var unusedManagedItems = managedItems
-        .Where(dictionaryItem => !items
-          .Exists(item => item.Key == dictionaryItem.Key))
+        .Where(
+          dictionaryItem => !items
+            .Exists(item => item.Key == dictionaryItem.Key))
         .ToList();
 
       foreach (var item in unusedManagedItems)
@@ -90,34 +92,36 @@ public partial class RegexService(
     }
   }
 
-  private static async IAsyncEnumerable<TranslationWorkerItem> GroupTranslationWorkerItems(
-    IAsyncEnumerable<TranslationWorkerItem> items
-  )
+  private static async IAsyncEnumerable<TranslationWorkerItem>
+    GroupTranslationWorkerItems(
+      IAsyncEnumerable<TranslationWorkerItem> items
+    )
   {
     await foreach (var item in items
       .GroupBy(item => item.Key)
-      .SelectAwait(async group =>
-      {
-        var first = await group.FirstAsync();
-
-        var metadata = await group
-          .Select(item => item.Metadata)
-          .AggregateAsync((x, y) => $"{x}\n{y}");
-
-        return first with
+      .SelectAwait(
+        async group =>
         {
-          Metadata = metadata
-        };
-      }))
+          var first = await group.FirstAsync();
+
+          var metadata = await group
+            .Select(item => item.Metadata)
+            .AggregateAsync((x, y) => $"{x}\n{y}");
+
+          return first with
+          {
+            Metadata = metadata
+          };
+        }))
     {
       yield return item;
     }
   }
 
-  private async IAsyncEnumerable<TranslationWorkerItem> GetTranslationWorkerItems(
-    [EnumeratorCancellation]
-    CancellationToken cancellationToken
-  )
+  private async IAsyncEnumerable<TranslationWorkerItem>
+    GetTranslationWorkerItems(
+      [EnumeratorCancellation] CancellationToken cancellationToken
+    )
   {
     var razorFiles = Directory
       .GetFiles(

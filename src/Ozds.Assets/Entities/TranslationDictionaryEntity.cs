@@ -276,12 +276,13 @@ public sealed class TranslationDictionaryEntity
   {
     return new ConcurrentDictionary<string, Item>(
       content.Translations
-        .Select(item =>
-          new KeyValuePair<string, Item>(
-            item.Key.TrimWords(),
-            new Item(
-              item.Metadata?.Trim().Dedent(8, "\n"),
-              item.Value.TrimWords())))
+        .Select(
+          item =>
+            new KeyValuePair<string, Item>(
+              item.Key.TrimWords(),
+              new Item(
+                item.Metadata?.Trim().Dedent(8, "\n"),
+                item.Value.TrimWords())))
         .DistinctBy(item => item.Key)
     );
   }
@@ -342,7 +343,10 @@ public sealed class TranslationDictionaryEntity
     Toml
   }
 
-  public sealed record EnumerationItem(string Key, string? Metadata, string Value);
+  public sealed record EnumerationItem(
+    string Key,
+    string? Metadata,
+    string Value);
 
   private sealed record Item(string? Metadata, string Value);
 }

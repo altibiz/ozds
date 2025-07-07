@@ -241,18 +241,22 @@ public class TypeService(
       // TODO: better way to detect managed translations
       var managedItems = dictionary
         .ToList()
-        .Where(item => item.Metadata is { } metadata
-          && (metadata.StartsWith("Type")
-            || metadata.StartsWith("Property")))
+        .Where(
+          item => item.Metadata is { } metadata
+            && (metadata.StartsWith("Type")
+              || metadata.StartsWith("Property")))
         .ToList();
 
       var unusedManagedItems = managedItems
-        .Where(dictionaryItem => !items.Exists(item =>
-          item.Key == dictionaryItem.Key
-          || item.ShortKey == dictionaryItem.Key
-          || item.AdditionalKeys.Exists(x =>
-            x.Key == dictionaryItem.Key
-            || x.ShortKey == dictionaryItem.Key)))
+        .Where(
+          dictionaryItem => !items.Exists(
+            item =>
+              item.Key == dictionaryItem.Key
+              || item.ShortKey == dictionaryItem.Key
+              || item.AdditionalKeys.Exists(
+                x =>
+                  x.Key == dictionaryItem.Key
+                  || x.ShortKey == dictionaryItem.Key)))
         .ToList();
 
       foreach (var item in unusedManagedItems)

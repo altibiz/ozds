@@ -3149,7 +3149,7 @@
         Dark
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Layout/UserToolbar.razor' line 52 column 51
+        From file 'Ozds.Client/Components/Layout/UserToolbar.razor' line 55 column 51
       </Metadata>
       <Value>
         Dark
@@ -5767,7 +5767,7 @@
         Light
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Layout/UserToolbar.razor' line 52 column 30
+        From file 'Ozds.Client/Components/Layout/UserToolbar.razor' line 55 column 30
       </Metadata>
       <Value>
         Light
@@ -12990,7 +12990,7 @@
         Welcome
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Layout/UserToolbar.razor' line 84 column 16
+        From file 'Ozds.Client/Components/Layout/UserToolbar.razor' line 90 column 16
       </Metadata>
       <Value>
         Welcome

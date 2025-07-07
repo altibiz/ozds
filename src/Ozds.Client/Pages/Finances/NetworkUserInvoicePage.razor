@@ -51,7 +51,7 @@
         PageHref<NetworkUserInvoiceDocumentPage>(
           new
           {
-            Id = context.Model.Invoice.Id
+            context.Model.Invoice.Id
           });
     }
     <MudLink Class="mt-4" Href="@invoicePreviewHref">
