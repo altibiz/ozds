@@ -7,12 +7,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and adheres to [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
+## [1.4.1]
 
 ### Added
 
 - styling for notification error text
 - `NetworkUserAnalysisDetails` fields
+- `launch.json` for translation
+- `--remove-unused` for translation
 
 ### Changed
 
@@ -30,6 +32,9 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - push event title fix
 - hide search boxes when small amounts of data are shown
 - `Ozds.Report` import fix
+- translation corrections
+- modified translation keys
+- minor translation key fixes
 
 ## [1.4.0]
 
@@ -341,6 +346,7 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 - init
 
+[1.4.1]: https://github.com/altibiz/ozds/compare/1.4.0...1.4.1
 [1.4.0]: https://github.com/altibiz/ozds/compare/1.3.1...1.4.0
 [1.3.1]: https://github.com/altibiz/ozds/compare/1.3.0...1.3.1
 [1.3.0]: https://github.com/altibiz/ozds/compare/1.2.1...1.3.0

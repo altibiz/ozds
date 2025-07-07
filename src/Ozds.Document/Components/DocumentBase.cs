@@ -20,6 +20,14 @@ public abstract class DocumentBase : ComponentBase
     );
   }
 
+  public string Translate(Type type)
+  {
+    return LocalizerQueries.Translate(
+      AssetConstants.CroatianCulture,
+      type
+    );
+  }
+
   public MarkupString Svg(string name)
   {
     var svg = AssetLoader.LoadSvg(name);

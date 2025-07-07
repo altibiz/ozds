@@ -47,11 +47,88 @@ public partial class RegexService(
       [EnumeratorCancellation] CancellationToken cancellationToken
     )
   {
-    var razorFiles = Directory.GetFiles(
-      arguments.InputRazorFolderPath,
-      "*.razor",
-      SearchOption.AllDirectories
-    );
+    var items = await GroupTranslationWorkerItems(
+        GetTranslationWorkerItems(cancellationToken))
+      .ToListAsync(cancellationToken);
+
+    if (arguments.RemoveUnused)
+    {
+      var managedItems = dictionary
+        .ToList()
+        .Where(
+          item => item.Metadata is { } metadata
+            && metadata.StartsWith("From file"))
+        .ToList();
+
+      // TODO: better way to detect managed translations
+      var unusedManagedItems = managedItems
+        .Where(
+          dictionaryItem => !items
+            .Exists(item => item.Key == dictionaryItem.Key))
+        .ToList();
+
+      foreach (var item in unusedManagedItems)
+      {
+        dictionary.Remove(item.Key);
+        logger.LogInformation("Removed key '{Key}'", item.Key);
+      }
+    }
+
+    foreach (var item in items)
+    {
+      if (dictionary.Get(item.Key) is { } translation)
+      {
+        dictionary.AddOrUpdate(item.Key, item.Metadata, translation);
+        logger.LogInformation(
+          "Updated key '{Key}' metadata:\n{Metadata}",
+          item.Key,
+          item.Metadata
+        );
+        continue;
+      }
+
+      logger.LogInformation("Found new key: {Key}", item.Key);
+      yield return item;
+    }
+  }
+
+  private static async IAsyncEnumerable<TranslationWorkerItem>
+    GroupTranslationWorkerItems(
+      IAsyncEnumerable<TranslationWorkerItem> items
+    )
+  {
+    await foreach (var item in items
+      .GroupBy(item => item.Key)
+      .SelectAwait(
+        async group =>
+        {
+          var first = await group.FirstAsync();
+
+          var metadata = await group
+            .Select(item => item.Metadata)
+            .AggregateAsync((x, y) => $"{x}\n{y}");
+
+          return first with
+          {
+            Metadata = metadata
+          };
+        }))
+    {
+      yield return item;
+    }
+  }
+
+  private async IAsyncEnumerable<TranslationWorkerItem>
+    GetTranslationWorkerItems(
+      [EnumeratorCancellation] CancellationToken cancellationToken
+    )
+  {
+    var razorFiles = Directory
+      .GetFiles(
+        arguments.InputRazorFolderPath,
+        "*.razor",
+        SearchOption.AllDirectories)
+      .OrderBy(file => file);
 
     var translateRegex = TranslateRegex();
     var translateWithCultureRegex = TranslateWithCultureRegex();
@@ -64,7 +141,8 @@ public partial class RegexService(
         .Matches(content);
       var matches = translateMatches
         .Concat(translateWithCultureMatches)
-        .OfType<Match>();
+        .OfType<Match>()
+        .OrderBy(match => match.Groups[1].Value);
       foreach (var match in matches)
       {
         if (match.Success)
@@ -80,18 +158,6 @@ public partial class RegexService(
             From file '{relativePath}' line {index.Line} column {index.Column}
           """.Trim();
 
-          if (dictionary.Get(key) is { } translation)
-          {
-            dictionary.Replace(key, metadata, translation);
-            logger.LogInformation(
-              "Updated key '{Key}' metadata:\n{Metadata}",
-              key,
-              metadata
-            );
-            continue;
-          }
-
-          logger.LogInformation("Found new key: {Key}", key);
           yield return new TranslationWorkerItem(
             dictionary,
             key,

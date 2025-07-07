@@ -25,13 +25,13 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        A) NETWORK USAGE FEE FOR ZDS
+        A) ZDS NETWORK USAGE FEE
       </Key>
       <Metadata>
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 25 column 14
       </Metadata>
       <Value>
-        A) NAKNADA ZA KORIŠTENJE MREŽE ZDS
+        A) NAKNADA ZA KORIŠTENJE MREŽE ZDS-A
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -102,6 +102,7 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Layout/UserDrawer.razor' line 58 column 14
+        From file 'Ozds.Client/Pages/AccountPage.razor' line 21 column 18
       </Metadata>
       <Value>
         Račun
@@ -109,13 +110,14 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        Accounting period CSV
+        Accounting period report (CSV)
       </Key>
       <Metadata>
         From file 'Ozds.Client/Pages/Measurements/MeasurementLocationPage.razor' line 60 column 6
+        From file 'Ozds.Client/Pages/Measurements/MeterPage.razor' line 66 column 6
       </Metadata>
       <Value>
-        Obračunsko razdoblje CSV
+        Izvještaj obračunskog razdoblja (CSV)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -137,7 +139,7 @@
         Type 'Ozds.Business.Models.AccountingPeriodReportModel'
       </Metadata>
       <Value>
-        Izvještaj o obračunskom razdoblju
+        Izvještaj obračunskog razdoblja
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -148,7 +150,7 @@
         Type 'Ozds.Business.Models.Composite.AccountingPeriodReportBasisModel'
       </Metadata>
       <Value>
-        Osnovna za izvještaj o obračunskom razdoblju
+        Osnovna za izvještaj obračunskog razdoblja
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -156,6 +158,7 @@
         Active power
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Dashboards/LocationRepresentativeDashboard.razor' line 41 column 14
         From file 'Ozds.Client/Components/Dashboards/LocationRepresentativeDashboard.razor' line 92 column 15
       </Metadata>
       <Value>
@@ -247,7 +250,7 @@
         NetworkUserCalculationModel&lt;TNetworkUserCatalogue&gt;.ActiveEnergyAmount_Wh
       </Metadata>
       <Value>
-        Količina radne energije (Wh)
+        Radna energija (Wh)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -463,7 +466,7 @@
         Property 'ActiveEnergyTotalImportT0_kWh' of type 'Ozds.Business.Models.EnergyCardReportModel'
       </Metadata>
       <Value>
-        Ukupna radna energija uvoza u jednoj tarifi (kWh)
+        Radna energija uvoza na svim fazama u jednoj tarifi (kWh)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -516,7 +519,7 @@
         BlueLowNetworkUserCalculationModel.ConcreteArchivedUsageNetworkUserCatalogue.ActiveEnergyTotalImportT0Price_EUR
       </Metadata>
       <Value>
-        Cijena radne energije uvoza na svim fazama u jednoj tarifi (EUR)
+        Naknada za korištenje mreže u doba jedinstvene dnevne tarife (EUR/kWh)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -664,7 +667,7 @@
         WhiteMediumNetworkUserCalculationModel.ConcreteArchivedUsageNetworkUserCatalogue.ActiveEnergyTotalImportT1Price_EUR
       </Metadata>
       <Value>
-        Cijena uveza ukupne radne energije na svim fazama u višoj tarifi (EUR)
+        Naknada za korištenje mreže u doba više dnevne tarife (EUR/kWh)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -812,7 +815,7 @@
         WhiteMediumNetworkUserCalculationModel.ConcreteArchivedUsageNetworkUserCatalogue.ActiveEnergyTotalImportT2Price_EUR
       </Metadata>
       <Value>
-        Cijena uvežene radne energije na svim fazama u nižoj tarifi (EUR)
+        Naknada za korištenje mreže u doba niže dnevne tarife (EUR/kWh)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -964,7 +967,7 @@
         NetworkUserCalculationModel&lt;TNetworkUserCatalogue&gt;.ActivePowerAmount_W
       </Metadata>
       <Value>
-        Količina radne snage (W)
+        Radna snaga (W)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -1135,7 +1138,7 @@
         WhiteMediumNetworkUserCalculationModel.ConcreteArchivedUsageNetworkUserCatalogue.ActivePowerTotalImportT1Price_EUR
       </Metadata>
       <Value>
-        Cijena uvezenog aktivnog snage na svim fazama u višoj tarifi (EUR)
+        Angažirana snaga u doba više tarife (EUR/kW)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -1283,7 +1286,7 @@
         MeterAnalysis.NetworkUser.AltiBizSubProjectCode
       </Metadata>
       <Value>
-        Kod podprojekta u AltiBiz-u
+        Broj projekta AltiBiz ERP
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -1423,7 +1426,7 @@
         UsageActivePowerTotalImportT1PeakCalculationItemModel.Amount_kW
       </Metadata>
       <Value>
-        Vršna radne snage uvoza na svim fazama u višoj tarifi (kW)
+        Vršna radna snaga uvoza na svim fazama u višoj tarifi (kW)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -1612,7 +1615,7 @@
         Property 'Any' of type 'Ozds.Business.Models.Enums.DuplexModel'
       </Metadata>
       <Value>
-        Bilo koji
+        Bilo koje
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -1818,7 +1821,7 @@
         StatefulNetworkUserInvoiceModel.Invoice.ArchivedNetworkUser
       </Metadata>
       <Value>
-        Arhivirani korisnik mreže
+        Arhivirani korisnik ZDS-a
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -1849,7 +1852,7 @@
         StatefulNetworkUserInvoiceModel.Invoice.ArchivedRegulatoryCatalogue
       </Metadata>
       <Value>
-        Arhivirani regulatorni cjenik
+        Arhivirani cjenik opskrbe
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -1885,7 +1888,7 @@
         NetworkUserCalculationModel&lt;TNetworkUserCatalogue&gt;.ArchivedUsageNetworkUserCatalogue
       </Metadata>
       <Value>
-        Arhivirani cjenik mrežarine
+        Arhivirani cjenik naknade za korištenje mreže
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -2042,13 +2045,24 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        B) ELECTRICITY SUPPLY FEE
+        B) ELECTRICAL ENERGY SUPPLY FEE
       </Key>
       <Metadata>
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 90 column 14
       </Metadata>
       <Value>
         B) NAKNADA ZA OPSKRBU ELEKTRIČNOM ENERGIJOM
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        BEARER
+      </Key>
+      <Metadata>
+        From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 46 column 35
+      </Metadata>
+      <Value>
+        NOSIOC
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -2072,13 +2086,13 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        billing metering point
+        Billing measurement location
       </Key>
       <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 56 column 4
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 76 column 4
       </Metadata>
       <Value>
-        obračunsko mjerno mjesto
+        Obračunsko mjerno mjesto
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -2091,7 +2105,18 @@
         Property 'BillingPeriod' of type 'Ozds.Business.Models.EnergyCardReportModel'
       </Metadata>
       <Value>
-        Fakturirano razdoblje
+        Obračunsko razdoblje
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Blue NN
+      </Key>
+      <Metadata>
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 187 column 13
+      </Metadata>
+      <Value>
+        Plavi NN
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -2104,7 +2129,7 @@
         Type 'Ozds.Business.Models.BlueLowNetworkUserCalculationModel'
       </Metadata>
       <Value>
-        Plava niska mrežna korisnička kalkulacija
+        Obračun plavog NN tarifnog modela za korisnika mreže
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -2117,7 +2142,7 @@
         Type 'Ozds.Business.Models.BlueLowNetworkUserCatalogueModel'
       </Metadata>
       <Value>
-        Plavi NN
+        Plavi NN cjenik naknade za korištenje mreže
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -2143,7 +2168,7 @@
         MeterAnalysis.Location.BlueLowNetworkUserCatalogueId
       </Metadata>
       <Value>
-        Oznaka plavog NN cjenika
+        Oznaka plavog NN cjenika naknade za korištenje mreže
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -2179,7 +2204,7 @@
         INetworkUserCalculation.ArchivedSupplyRegulatoryCatalogue.BusinessUsageFeePrice_EUR
       </Metadata>
       <Value>
-        Poslovna naknada za korištenje (EUR)
+        Trošarina za poslovnu upotrebu (EUR/kWh)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -2200,6 +2225,7 @@
         Calculation
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Pages/Finances/NetworkUserCalculationPage.razor' line 18 column 22
         From file 'Ozds.Client/Pages/Finances/NetworkUserCalculationPage.razor' line 25 column 22
       </Metadata>
       <Value>
@@ -2229,7 +2255,7 @@
         Type 'Ozds.Business.Models.Composite.CalculationItemBasisModel'
       </Metadata>
       <Value>
-        Stavka obračuna
+        Osnova za stavku obračuna
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -2312,13 +2338,13 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        capacitive reactive power
+        Capacitive reactive energy
       </Key>
       <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 21 column 4
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 101 column 4
       </Metadata>
       <Value>
-        kapacitivna jalova snaga
+        Kapacitivna jalova energija
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -2326,7 +2352,10 @@
         Catalogue
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Pages/Finances/NetworkUserCataloguePage.razor' line 18 column 24
         From file 'Ozds.Client/Pages/Finances/NetworkUserCataloguePage.razor' line 26 column 22
+        From file 'Ozds.Client/Pages/Finances/RegulatoryCataloguePage.razor' line 18 column 24
+        From file 'Ozds.Client/Pages/Finances/RegulatoryCataloguePage.razor' line 26 column 22
       </Metadata>
       <Value>
         Cjenik
@@ -2388,6 +2417,7 @@
         Chart controls
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Charts/Financial/FinancialChartControls.razor' line 15 column 10
         From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 16 column 10
       </Metadata>
       <Value>
@@ -2461,6 +2491,17 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        Closed distribution system
+      </Key>
+      <Metadata>
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 71 column 4
+      </Metadata>
+      <Value>
+        Zatvoreni distribucijski sustav
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         ComputedTotal_EUR
       </Key>
       <Metadata>
@@ -2489,7 +2530,7 @@
         WhiteMediumNetworkUserCalculationModel.ConcreteArchivedUsageNetworkUserCatalogue
       </Metadata>
       <Value>
-        Arhivirani cjenik mrežarine
+        Arhivirani cjenik za korištenje mreže
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -2504,7 +2545,7 @@
         WhiteMediumNetworkUserCalculationEntity.ConcreteUsageNetworkUserCatalogue
       </Metadata>
       <Value>
-        Cjenik mrežarine
+        Cjenik za korištenje mreže
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -2645,6 +2686,15 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Streaming/Mutating.razor' line 132 column 14
+        From file 'Ozds.Client/Pages/Administration/LocationsPage.razor' line 45 column 6
+        From file 'Ozds.Client/Pages/Administration/NetworkUsersPage.razor' line 47 column 6
+        From file 'Ozds.Client/Pages/Finances/CataloguesPage.razor' line 38 column 4
+        From file 'Ozds.Client/Pages/Finances/CataloguesPage.razor' line 44 column 4
+        From file 'Ozds.Client/Pages/Measurements/MeasurementLocationsPage.razor' line 47 column 6
+        From file 'Ozds.Client/Pages/Measurements/MeasurementValidatorsPage.razor' line 41 column 6
+        From file 'Ozds.Client/Pages/Measurements/MessengersPage.razor' line 39 column 6
+        From file 'Ozds.Client/Pages/Measurements/MetersPage.razor' line 44 column 6
+        From file 'Ozds.Client/Pages/System/NotificationsPage.razor' line 50 column 6
       </Metadata>
       <Value>
         Stvori
@@ -2974,7 +3024,10 @@
         Current months consumption
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Dashboards/LocationRepresentativeDashboard.razor' line 28 column 14
         From file 'Ozds.Client/Components/Dashboards/LocationRepresentativeDashboard.razor' line 76 column 15
+        From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 16 column 14
+        From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 84 column 15
       </Metadata>
       <Value>
         Potrošnja u tekućem mjesecu
@@ -3091,9 +3144,32 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        Dark
+      </Key>
+      <Metadata>
+        From file 'Ozds.Client/Components/Layout/UserToolbar.razor' line 55 column 51
+      </Metadata>
+      <Value>
+        Tamno
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Dashboard
+      </Key>
+      <Metadata>
+        From file 'Ozds.Client/Pages/IndexPage.razor' line 6 column 4
+      </Metadata>
+      <Value>
+        Nadzorna ploča
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         Date from
       </Key>
       <Metadata>
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 43 column 12
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 108 column 12
       </Metadata>
       <Value>
@@ -3105,6 +3181,7 @@
         Date to
       </Key>
       <Metadata>
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 44 column 12
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 109 column 12
       </Metadata>
       <Value>
@@ -3186,10 +3263,16 @@
         Deleted
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Pages/Administration/LocationsPage.razor' line 35 column 13
+        From file 'Ozds.Client/Pages/Administration/NetworkUsersPage.razor' line 37 column 13
+        From file 'Ozds.Client/Pages/Finances/CataloguesPage.razor' line 32 column 11
+        From file 'Ozds.Client/Pages/Measurements/MeasurementLocationsPage.razor' line 37 column 13
+        From file 'Ozds.Client/Pages/Measurements/MeasurementValidatorsPage.razor' line 30 column 11
+        From file 'Ozds.Client/Pages/Measurements/MessengersPage.razor' line 30 column 11
         From file 'Ozds.Client/Pages/Measurements/MetersPage.razor' line 35 column 11
       </Metadata>
       <Value>
-        Izbrisano
+        Arhivirano
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -3315,7 +3398,7 @@
         MeterAnalysis.Meter.DeletedById
       </Metadata>
       <Value>
-        Obrisano od
+        Arhivirano od
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -3441,7 +3524,7 @@
         MeterAnalysis.Meter.DeletedOn
       </Metadata>
       <Value>
-        Obrisano na
+        Arhivirano na
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -3456,18 +3539,7 @@
         IAuditEvent.Audit.Deletion
       </Metadata>
       <Value>
-        Brisanje
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        dentifiable
-      </Key>
-      <Metadata>
-        Type 'Ozds.Business.Models.Abstractions.IIdentifiable'
-      </Metadata>
-      <Value>
-        Identificirani objekt
+        Arhiviranje
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -3501,7 +3573,7 @@
         Property 'DerivedActivePowerL1ExportT0_W' of type 'Ozds.Business.Models.AbbB2xAggregateModel'
       </Metadata>
       <Value>
-        Izvedena aktivna snaga izvoza na L1 u jednoj tarifi (W)
+        Izvedena radna snaga izvoza na L1 u jednoj tarifi (W)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -3514,7 +3586,7 @@
         Property 'DerivedActivePowerL1ImportT0_W' of type 'Ozds.Business.Models.SchneideriEM3xxxAggregateModel'
       </Metadata>
       <Value>
-        Izvedena aktivna snaga uvoza na L1 u jednoj tarifi (W)
+        Izvedena radna snaga uvoza na L1 u jednoj tarifi (W)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -3525,7 +3597,7 @@
         Property 'DerivedActivePowerL2ExportT0_W' of type 'Ozds.Business.Models.AbbB2xAggregateModel'
       </Metadata>
       <Value>
-        Izvedena aktivna snaga izvoza na L2 u jednoj tarifi (W)
+        Izvedena radna snaga izvoza na L2 u jednoj tarifi (W)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -3538,7 +3610,7 @@
         Property 'DerivedActivePowerL2ImportT0_W' of type 'Ozds.Business.Models.SchneideriEM3xxxAggregateModel'
       </Metadata>
       <Value>
-        Izvedena aktivna snaga uvoza na L2 u jednoj tarifi (W)
+        Izvedena radna snaga uvoza na L2 u jednoj tarifi (W)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -3549,7 +3621,7 @@
         Property 'DerivedActivePowerL3ExportT0_W' of type 'Ozds.Business.Models.AbbB2xAggregateModel'
       </Metadata>
       <Value>
-        Izvedena aktivna snaga izvoza na L3 u jednoj tarifi (W)
+        Izvedena radna snaga izvoza na L3 u jednoj tarifi (W)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -3562,7 +3634,7 @@
         Property 'DerivedActivePowerL3ImportT0_W' of type 'Ozds.Business.Models.SchneideriEM3xxxAggregateModel'
       </Metadata>
       <Value>
-        Izvedena aktivna snaga uvoza na L3 u jednoj tarifi (W)
+        Izvedena radna snaga uvoza na L3 u jednoj tarifi (W)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -3575,7 +3647,7 @@
         Property 'DerivedActivePowerTotalExportT0_W' of type 'Ozds.Business.Models.SchneideriEM3xxxAggregateModel'
       </Metadata>
       <Value>
-        Izvedena aktivna snaga izvoza na svim fazama u jednoj tarifi (W)
+        Izvedena radna snaga izvoza na svim fazama u jednoj tarifi (W)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -3588,7 +3660,7 @@
         Property 'DerivedActivePowerTotalImportT0_W' of type 'Ozds.Business.Models.SchneideriEM3xxxAggregateModel'
       </Metadata>
       <Value>
-        Izvedena aktivna snaga uvoza na svim fazama u jednoj tarifi (W)
+        Izvedena radna snaga uvoza na svim fazama u jednoj tarifi (W)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -3601,7 +3673,7 @@
         Property 'DerivedActivePowerTotalImportT1_W' of type 'Ozds.Business.Models.SchneideriEM3xxxAggregateModel'
       </Metadata>
       <Value>
-        Izvedena aktivna snaga uvoza na svim fazama u višoj tarifi (W)
+        Izvedena radna snaga uvoza na svim fazama u višoj tarifi (W)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -3614,7 +3686,7 @@
         Property 'DerivedActivePowerTotalImportT2_W' of type 'Ozds.Business.Models.SchneideriEM3xxxAggregateModel'
       </Metadata>
       <Value>
-        Izvedena aktivna snaga uvoza na svim fazama u nižoj tarifi (W)
+        Izvedena radna snaga uvoza na svim fazama u nižoj tarifi (W)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -3779,6 +3851,18 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        Device number
+      </Key>
+      <Metadata>
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 42 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 107 column 12
+      </Metadata>
+      <Value>
+        Broj uređaja
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         Director
       </Key>
       <Metadata>
@@ -3786,17 +3870,6 @@
       </Metadata>
       <Value>
         Direktor
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        Document
-      </Key>
-      <Metadata>
-        From file 'Ozds.Client/Pages/Finances/NetworkUserInvoicePage.razor' line 40 column 10
-      </Metadata>
-      <Value>
-        Dokument
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -3845,6 +3918,7 @@
         Edit
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Streaming/Mutating.razor' line 72 column 16
         From file 'Ozds.Client/Components/Streaming/Mutating.razor' line 153 column 12
       </Metadata>
       <Value>
@@ -3853,54 +3927,48 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        Electricity supply during multi-rate daily tariff period
-      </Key>
-      <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 140 column 10
-      </Metadata>
-      <Value>
-        Opskrba električnom energijom tijekom dnevnog razdoblja višestruke
-        tarife
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        Electricity supply during off-peak daily tariff period
-      </Key>
-      <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 163 column 10
-      </Metadata>
-      <Value>
-        Opskrba električnom energijom tijekom dnevnog razdoblja niže tarife
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        Electricity supply during the period of a higher daily tariff
+        Electrical energy supply during higher daily tariff period
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 131 column 13
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 51 column 4
+        From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 140 column 10
       </Metadata>
       <Value>
-        Opskrba električnom energijom tijekom razdoblja više dnevne tarife
+        Opskrba električnom energijom u doba više dnevne tarife
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        Electricity supply during the period of a lower daily tariff
+        Electrical energy supply during lower daily tariff period
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 135 column 13
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 116 column 4
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 46 column 4
+        From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 147 column 10
       </Metadata>
       <Value>
-        Opskrba električnom energijom tijekom razdoblja niže dnevne tarife
+        Opskrba električnom energijom u doba niže dnevne tarife
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        Electricity supply fee
+        Electrical energy supply during unique daily tariff period
       </Key>
       <Metadata>
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 41 column 4
+      </Metadata>
+      <Value>
+        Opskrba električnom energijom u doba jedne dnevne tarife
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Electrical energy supply fee
+      </Key>
+      <Metadata>
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 121 column 6
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 135 column 10
       </Metadata>
       <Value>
@@ -3986,13 +4054,14 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        Energy card CSV
+        Energy card report (CSV)
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Pages/Administration/LocationPage.razor' line 72 column 8
         From file 'Ozds.Client/Pages/Administration/NetworkUserPage.razor' line 89 column 10
       </Metadata>
       <Value>
-        CSV energetske kartice
+        Energetska kartica (CSV)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -4043,35 +4112,16 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        Engaged power during multiple tariff periods
+        Engaged power during higher daily tariff period
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 78 column 13
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 74 column 13
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 31 column 4
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 105 column 10
       </Metadata>
       <Value>
-        Radna snaga tijekom višetarifnih razdoblja
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        engaged power during the period of a higher daily tariff
-      </Key>
-      <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 81 column 4
-      </Metadata>
-      <Value>
-        priključna snaga tijekom razdoblja više dnevne tarife
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        Engaged power during the period of a higher tariff
-      </Key>
-      <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 74 column 13
-      </Metadata>
-      <Value>
-        Utrošena snaga tijekom razdoblja više tarife
+        Angažirana snaga u doba više dnevne tarife
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -4130,13 +4180,13 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        estimate
+        Estimated
       </Key>
       <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 61 column 4
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 86 column 4
       </Metadata>
       <Value>
-        procijena
+        Procijenjeno
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -4180,46 +4230,26 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        excessively drawn reactive power
-      </Key>
-      <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 11 column 4
-      </Metadata>
-      <Value>
-        Prekomjerno povučena jalova snaga
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        Excessively drawn reactive power
+        Excessively drawn reactive energy
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 82 column 13
-      </Metadata>
-      <Value>
-        Prekomjerno uzeta jalova snaga
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        Excessively taken reactive power
-      </Key>
-      <Metadata>
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 26 column 4
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 112 column 10
       </Metadata>
       <Value>
-        Prekomjerno uzeta jalova snaga
+        Prekomjerno preuzeta jalova energija
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        excise duty for business consumption
+        Excise duty for business usage
       </Key>
       <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 91 column 4
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 61 column 4
       </Metadata>
       <Value>
-        trošarina za poslovnu potrošnju
+        Trošarina za poslovnu upotrebu
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -4227,21 +4257,23 @@
         Excise duty for business/non-business use
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 143 column 13
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 139 column 13
+        From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 163 column 10
       </Metadata>
       <Value>
-        Posebni porez za poslovnu/negospodarsku uporabu
+        Trošarina za poslovnu/neposlovnu upotrebu
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        excise duty for non-business consumption
+        Excise duty for non-business usage
       </Key>
       <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 86 column 4
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 56 column 4
       </Metadata>
       <Value>
-        Porez na potrošnju za nekomercijalnu upotrebu
+        Trošarina za neposlovnu upotrebu
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -4268,50 +4300,17 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        Fee for electricity supply - TOTAL
-      </Key>
-      <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 144 column 18
-      </Metadata>
-      <Value>
-        Naknada za opskrbu električnom energijom - UKUPNO
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        Fee for encouraging production from renewable energy sources and
-        cogeneration
-      </Key>
-      <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 155 column 8
-      </Metadata>
-      <Value>
-        Naknada za poticanje proizvodnje iz obnovljivih izvora energije i
-        kogeneracije
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
         Fee for promoting production from renewable energy sources and
         cogeneration
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 139 column 13
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 66 column 4
+        From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 155 column 8
       </Metadata>
       <Value>
         Naknada za poticanje proizvodnje iz obnovljivih izvora energije i
         kogeneracije
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        fee for renewable energy sources and high-efficiency cogeneration
-      </Key>
-      <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 51 column 4
-      </Metadata>
-      <Value>
-        naknada za obnovljive izvore energije i visokoučinkovitu kogeneraciju
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -4355,13 +4354,13 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        FOR ELECTRICITY FOR THE PERIOD
+        FOR ELECTRICAL ENERGY FOR PERIOD
       </Key>
       <Metadata>
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 52 column 4
       </Metadata>
       <Value>
-        ZA STRUJU ZA RAZDOBLJE
+        ZA ELEKTRIČNU ENERGIJU ZA RAZDOBLJE
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -4467,50 +4466,6 @@
       </Metadata>
       <Value>
         UKUPNO
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        Grid fee
-      </Key>
-      <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 56 column 6
-      </Metadata>
-      <Value>
-        Pristojba za mrežu
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        grid fee during the period of a higher daily tariff
-      </Key>
-      <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 41 column 4
-      </Metadata>
-      <Value>
-        nadoknada za mrežu tijekom razdoblja više dnevne tarife
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        grid fee during the period of a lower daily tariff
-      </Key>
-      <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 31 column 4
-      </Metadata>
-      <Value>
-        naknada za mrežu tijekom razdoblja niže dnevne tarife
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        grid fee during the period of a uniform daily tariff
-      </Key>
-      <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 26 column 4
-      </Metadata>
-      <Value>
-        mrežnina tijekom razdoblja jedinstvene dnevne tarife
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -4728,9 +4683,11 @@
         Type 'Ozds.Report.Entities.IdentifiableEntity'
 
         Type 'Ozds.Business.Models.Base.IdentifiableModel'
+
+        Type 'Ozds.Business.Models.Abstractions.IIdentifiable'
       </Metadata>
       <Value>
-        Identificirani entitet
+        Identificirani objekt
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -4749,7 +4706,9 @@
         IND
       </Key>
       <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 14 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 94 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 208 column 20
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 229 column 20
       </Metadata>
       <Value>
         IND
@@ -4757,13 +4716,13 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        inductive reactive power
+        Inductive reactive energy
       </Key>
       <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 16 column 4
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 96 column 4
       </Metadata>
       <Value>
-        induktivna jalova snaga
+        Induktivna jalova energija
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -4855,10 +4814,34 @@
         Invoice
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Pages/Finances/NetworkUserInvoicePage.razor' line 21 column 22
         From file 'Ozds.Client/Pages/Finances/NetworkUserInvoicePage.razor' line 28 column 22
+        From file 'Ozds.Client/Pages/Finances/NetworkUserInvoicePage.razor' line 40 column 10
       </Metadata>
       <Value>
         Račun
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Invoice (PDF)
+      </Key>
+      <Metadata>
+        From file 'Ozds.Client/Pages/Finances/NetworkUserInvoicePage.razor' line 45 column 8
+      </Metadata>
+      <Value>
+        Račun (PDF)
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Invoice document
+      </Key>
+      <Metadata>
+        From file 'Ozds.Client/Pages/Finances/NetworkUserInvoicePage.razor' line 58 column 8
+      </Metadata>
+      <Value>
+        Faktura
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -4888,6 +4871,7 @@
         Invoice pending...
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 48 column 17
         From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 127 column 17
       </Metadata>
       <Value>
@@ -5219,7 +5203,8 @@
         JEN
       </Key>
       <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 9 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 24 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 328 column 64
       </Metadata>
       <Value>
         JEN
@@ -5243,7 +5228,9 @@
         KAP
       </Key>
       <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 19 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 99 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 217 column 20
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 238 column 20
       </Metadata>
       <Value>
         KAP
@@ -5361,7 +5348,10 @@
         Last months consumption
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Dashboards/LocationRepresentativeDashboard.razor' line 13 column 14
         From file 'Ozds.Client/Components/Dashboards/LocationRepresentativeDashboard.razor' line 60 column 15
+        From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 31 column 14
+        From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 109 column 15
       </Metadata>
       <Value>
         Potrošnja u prošlim mjesecima
@@ -5372,6 +5362,7 @@
         Last months invoice total
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 41 column 14
         From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 120 column 15
       </Metadata>
       <Value>
@@ -5771,6 +5762,17 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        Light
+      </Key>
+      <Metadata>
+        From file 'Ozds.Client/Components/Layout/UserToolbar.razor' line 55 column 30
+      </Metadata>
+      <Value>
+        Svjetlo
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         Load
       </Key>
       <Metadata>
@@ -5788,13 +5790,14 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        Load curve CSV
+        Load curve report (CSV)
       </Key>
       <Metadata>
         From file 'Ozds.Client/Pages/Measurements/MeasurementLocationPage.razor' line 64 column 6
+        From file 'Ozds.Client/Pages/Measurements/MeterPage.razor' line 70 column 6
       </Metadata>
       <Value>
-        CSV krivulja opterećenja
+        Krivulja opterećenja (CSV)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -5991,6 +5994,17 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        Lower voltage
+      </Key>
+      <Metadata>
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 106 column 4
+      </Metadata>
+      <Value>
+        Niži napon
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         Make the payment to the transaction account
       </Key>
       <Metadata>
@@ -6120,6 +6134,7 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Models/Implementations/Measurements/Messengers/MessengerDetails.razor' line 12 column 24
+        From file 'Ozds.Client/Components/Models/Implementations/Measurements/Messengers/MessengerEdit.razor' line 19 column 4
       </Metadata>
       <Value>
         Vršna neaktivnost
@@ -6538,6 +6553,7 @@
         Measurement location
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Pages/Measurements/MeasurementLocationPage.razor' line 86 column 19
         From file 'Ozds.Client/Pages/Measurements/MeasurementLocationPage.razor' line 96 column 17
       </Metadata>
       <Value>
@@ -6549,7 +6565,9 @@
         Measurement locations
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Charts/Financial/FinancialChartControls.razor' line 22 column 19
         From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 30 column 21
+        From file 'Ozds.Client/Pages/Measurements/MeasurementLocationsPage.razor' line 25 column 18
       </Metadata>
       <Value>
         Obračunska mjerna mjesta
@@ -6557,21 +6575,13 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        measurement service fee
-      </Key>
-      <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 36 column 4
-      </Metadata>
-      <Value>
-        naknada za mjernu uslugu
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
         Measurement service fee
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 86 column 13
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 82 column 13
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 36 column 4
+        From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 119 column 10
       </Metadata>
       <Value>
         Naknada za mjernu uslugu
@@ -6806,9 +6816,21 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        Medium voltage
+      </Key>
+      <Metadata>
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 111 column 4
+      </Metadata>
+      <Value>
+        Srednji napon
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         Messenger
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Pages/Measurements/MessengerPage.razor' line 26 column 24
         From file 'Ozds.Client/Pages/Measurements/MessengerPage.razor' line 34 column 22
       </Metadata>
       <Value>
@@ -6934,6 +6956,7 @@
         Meter
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Pages/Measurements/MeterPage.razor' line 88 column 24
         From file 'Ozds.Client/Pages/Measurements/MeterPage.razor' line 95 column 22
       </Metadata>
       <Value>
@@ -7001,7 +7024,7 @@
         INetworkUserCalculation.ArchivedUsageNetworkUserCatalogue.MeterFeePrice_EUR
       </Metadata>
       <Value>
-        Cijena mjernog priključka (EUR)
+        Naknada za obračunsko mjerno mjesto (EUR/mj)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -7086,21 +7109,12 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        Metering service fee
-      </Key>
-      <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 119 column 10
-      </Metadata>
-      <Value>
-        Naknada za mjernu uslugu
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
         Meters
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Charts/Financial/FinancialChartControls.razor' line 40 column 19
         From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 49 column 19
+        From file 'Ozds.Client/Pages/Measurements/MetersPage.razor' line 28 column 18
       </Metadata>
       <Value>
         Brojila
@@ -7578,7 +7592,8 @@
         MJT
       </Key>
       <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 24 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 9 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 324 column 62
       </Metadata>
       <Value>
         MJT
@@ -7589,7 +7604,8 @@
         MNT
       </Key>
       <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 29 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 14 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 326 column 62
       </Metadata>
       <Value>
         MNT
@@ -7715,6 +7731,8 @@
       </Key>
       <Metadata>
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 34 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 329 column 45
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 328 column 64
       </Metadata>
       <Value>
         MU
@@ -7725,6 +7743,7 @@
         Multiplier
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Charts/Financial/FinancialChartControls.razor' line 64 column 17
         From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 88 column 19
       </Metadata>
       <Value>
@@ -7748,7 +7767,9 @@
         MVT
       </Key>
       <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 39 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 19 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 325 column 62
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 324 column 62
       </Metadata>
       <Value>
         MVT
@@ -7822,7 +7843,7 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        NAME ARTICLE / SERVICE
+        NAME OF ARTICLE / SERVICE
       </Key>
       <Metadata>
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 72 column 10
@@ -7833,7 +7854,7 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        Name of the billing metering point (OMM)
+        Name of the billing measurement location (OMM)
       </Key>
       <Metadata>
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 14 column 6
@@ -7855,68 +7876,42 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        Network usage during multiple tariff periods
+        Network usage during higher daily tariff period
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 70 column 13
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 6 column 4
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 21 column 4
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 91 column 10
       </Metadata>
       <Value>
-        Korištenje mreže tijekom višetarifnih razdoblja
+        Korištenje mreže u doba više dnevne tarife
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        Network usage during off-peak tariff period
-      </Key>
-      <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 98 column 10
-      </Metadata>
-      <Value>
-        Korištenje mreže tijekom razdoblja nižeg tarifnog stupnja
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        Network usage during one tariff period
-      </Key>
-      <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 84 column 10
-      </Metadata>
-      <Value>
-        Korištenje mreže tijekom razdoblja jedne tarife
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        Network usage during the period of a higher daily tariff
-      </Key>
-      <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 6 column 4
-      </Metadata>
-      <Value>
-        Korištenje mreže tijekom razdoblja više dnevne tarife
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        Network usage during the period of a lower daily tariff
+        Network usage during lower daily tariff period
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 74 column 13
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 16 column 4
+        From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 98 column 10
       </Metadata>
       <Value>
-        Korištenje mreže tijekom razdoblja niže dnevne tarife
+        Korištenje mreže u doba niže dnevne tarife
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        Network usage during the period of a single daily tariff
+        Network usage during unique daily tariff period
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 66 column 13
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 11 column 4
+        From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 84 column 10
       </Metadata>
       <Value>
-        Korištenje mreže tijekom razdoblja jedne dnevne tarife
+        Korištenje mreže u doba jedne tarife
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -7924,32 +7919,11 @@
         Network usage fee - TOTAL
       </Key>
       <Metadata>
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 79 column 18
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 126 column 35
       </Metadata>
       <Value>
         Naknada za korištenje mreže - UKUPNO
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        Network usage fee for ZDS
-      </Key>
-      <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 79 column 10
-      </Metadata>
-      <Value>
-        Naknada za korištenje mreže za ZDS
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        Network usage fee for ZDS - TOTAL
-      </Key>
-      <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 79 column 18
-      </Metadata>
-      <Value>
-        Naknada za korištenje mreže za ZDS - UKUPNO
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -7960,7 +7934,7 @@
         From file 'Ozds.Client/Pages/Administration/NetworkUserPage.razor' line 20 column 24
       </Metadata>
       <Value>
-        Korisnik mreže
+        Korisnik ZDS-a
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -8004,7 +7978,7 @@
         From file 'Ozds.Client/Pages/Document/NetworkUserInvoicePreviewDocumentPage.razor' line 25 column 22
       </Metadata>
       <Value>
-        Korisnik mreže nije pronađen
+        Korisnik ZDS-a nije pronađen
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -8053,7 +8027,7 @@
         Property 'NetworkUser' of type 'Ozds.Business.Analysis.MeterAnalysis'
       </Metadata>
       <Value>
-        Korisnik mreže
+        Korisnik ZDS-a
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -8090,7 +8064,7 @@
         Property 'NetworkUserCalculationBases' of type 'Ozds.Business.Models.Composite.NetworkUserInvoiceIssuingBasisModel'
       </Metadata>
       <Value>
-        Osnove izračuna korisnika mreže
+        Osnove obračuna za korisnika mreže
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -8101,7 +8075,7 @@
         Type 'Ozds.Business.Models.Composite.NetworkUserCalculationBasisModel'
       </Metadata>
       <Value>
-        Osnova obračuna korisnika mreže
+        Osnova obračuna za korisnika mreže
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -8112,7 +8086,7 @@
         Type 'Ozds.Document.Entities.NetworkUserCalculationEntity`1'
       </Metadata>
       <Value>
-        Obračun korisnika mreže
+        Obračun za korisnika mreže
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -8138,7 +8112,7 @@
         Type 'Ozds.Business.Models.Abstractions.INetworkUserCatalogue'
       </Metadata>
       <Value>
-        Cjenik korisnika mreže
+        Cjenik za korisnika mreže
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -8342,7 +8316,7 @@
         Type 'Ozds.Business.Models.Joins.NetworkUserRepresentativeModel'
       </Metadata>
       <Value>
-        Predstavnik korisnika mreže
+        Poveznica korisnika mreže i predstavnika
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -8366,7 +8340,7 @@
         Type 'Ozds.Business.Models.Composite.NetworkUserWithRepresentativesModel'
       </Metadata>
       <Value>
-        Korisnik mreže s predstavnicima
+        Korisnik ZDS-a s predstavnicima
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -8375,6 +8349,7 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Pages/Finances/NetworkUserCataloguePage.razor' line 14 column 24
+        From file 'Ozds.Client/Pages/Finances/RegulatoryCataloguePage.razor' line 14 column 24
       </Metadata>
       <Value>
         Novi cjenik
@@ -8443,7 +8418,7 @@
         From file 'Ozds.Client/Pages/Administration/NetworkUserPage.razor' line 16 column 24
       </Metadata>
       <Value>
-        Novi korisnik mreže
+        Novi korisnik ZDS-a
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -8481,6 +8456,17 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        NN
+      </Key>
+      <Metadata>
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 104 column 12
+      </Metadata>
+      <Value>
+        NN
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         No audit events found
       </Key>
       <Metadata>
@@ -8503,17 +8489,6 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        NOSIOC
-      </Key>
-      <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 46 column 35
-      </Metadata>
-      <Value>
-        Nositelj
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
         Note to users
       </Key>
       <Metadata>
@@ -8528,6 +8503,7 @@
         Notification
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Pages/System/NotificationPage.razor' line 20 column 24
         From file 'Ozds.Client/Pages/System/NotificationPage.razor' line 49 column 24
       </Metadata>
       <Value>
@@ -8569,18 +8545,7 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        Number of devices
-      </Key>
-      <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 107 column 12
-      </Metadata>
-      <Value>
-        Broj uređaja
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        Number of the billing metering point (OMM)
+        Number of the billing measurement location (OMM)
       </Key>
       <Metadata>
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 18 column 6
@@ -8591,21 +8556,10 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        nvoice
-      </Key>
-      <Metadata>
-        Type 'Ozds.Business.Models.Abstractions.IInvoice'
-      </Metadata>
-      <Value>
-        Račun
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
         O
       </Key>
       <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 44 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 79 column 12
       </Metadata>
       <Value>
         O
@@ -8686,7 +8640,9 @@
         OIEiK
       </Key>
       <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 49 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 64 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 333 column 53
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 332 column 51
       </Metadata>
       <Value>
         OIEiK
@@ -8708,7 +8664,7 @@
         OMM
       </Key>
       <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 54 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 74 column 12
       </Metadata>
       <Value>
         OMM
@@ -8720,6 +8676,7 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Charts/Financial/FinancialChartControls.razor' line 72 column 17
+        From file 'Ozds.Document/Components/Payment.razor' line 25 column 38
       </Metadata>
       <Value>
         Operater
@@ -8746,6 +8703,7 @@
         or
       </Key>
       <Metadata>
+        From file 'Ozds.Document/Components/Remark.razor' line 37 column 10
         From file 'Ozds.Document/Components/Remark.razor' line 32 column 10
       </Metadata>
       <Value>
@@ -8754,9 +8712,21 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        Ordinal number
+      </Key>
+      <Metadata>
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 91 column 4
+      </Metadata>
+      <Value>
+        Redni broj
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         over the last
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Charts/Financial/FinancialChartHeader.razor' line 26 column 10
         From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartHeader.razor' line 32 column 10
       </Metadata>
       <Value>
@@ -8765,10 +8735,34 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        Ozds.Business.Analysis.Analysis.LastMonthConsumption.ActiveEnergy_kWh
+      </Key>
+      <Value>
+        Radna energija za prethodni mjesec (kWh)
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Ozds.Business.Analysis.Analysis.LastMonthExpenses.Total_EUR
+      </Key>
+      <Value>
+        Ukupan iznos za prethodni mjesec (EUR)
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Ozds.Business.Analysis.Analysis.ThisMonthConsumption.ActiveEnergy_kWh
+      </Key>
+      <Value>
+        Radna energija za tekući mjesec (kWh)
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         P
       </Key>
       <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 59 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 84 column 12
       </Metadata>
       <Value>
         P
@@ -8776,10 +8770,10 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        Pdf
+        PDF
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Pages/Finances/NetworkUserInvoicePage.razor' line 45 column 8
+        From file 'Ozds.Client/Pages/DeveloperPage.razor' line 34 column 34
       </Metadata>
       <Value>
         PDF
@@ -8831,6 +8825,9 @@
         Phase sum
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementDonutChart.razor' line 67 column 9
+        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementGaugeChart.razor' line 65 column 9
+        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementLineChart.razor' line 70 column 9
         From file 'Ozds.Client/Components/Charts/Measurements/MeasurementLineChart.razor' line 44 column 38
       </Metadata>
       <Value>
@@ -8977,7 +8974,11 @@
         Pick month
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Pages/Administration/LocationPage.razor' line 60 column 62
+        From file 'Ozds.Client/Pages/Administration/NetworkUserPage.razor' line 39 column 19
+        From file 'Ozds.Client/Pages/Administration/NetworkUserPage.razor' line 79 column 17
         From file 'Ozds.Client/Pages/Measurements/MeasurementLocationPage.razor' line 36 column 15
+        From file 'Ozds.Client/Pages/Measurements/MeterPage.razor' line 42 column 15
       </Metadata>
       <Value>
         Odaberite mjesec
@@ -8989,6 +8990,7 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Pages/Measurements/MeasurementLocationPage.razor' line 39 column 15
+        From file 'Ozds.Client/Pages/Measurements/MeterPage.razor' line 45 column 15
       </Metadata>
       <Value>
         Odaberite OBIS kod
@@ -9088,6 +9090,7 @@
         Preview
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Streaming/Mutating.razor' line 55 column 16
         From file 'Ozds.Client/Components/Streaming/Mutating.razor' line 139 column 14
       </Metadata>
       <Value>
@@ -9100,16 +9103,6 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Pages/Administration/NetworkUserPage.razor' line 32 column 10
-      </Metadata>
-      <Value>
-        Pretpregled računa
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        Preview invoice document
-      </Key>
-      <Metadata>
         From file 'Ozds.Client/Pages/Administration/NetworkUserPage.razor' line 56 column 12
       </Metadata>
       <Value>
@@ -9118,7 +9111,7 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        Preview invoice pdf
+        Preview invoice (PDF)
       </Key>
       <Metadata>
         From file 'Ozds.Client/Pages/Administration/NetworkUserPage.razor' line 69 column 8
@@ -9132,94 +9125,8 @@
         Price
       </Key>
       <Metadata>
-        Property 'Price' of type 'Ozds.Business.Models.Abstractions.ICalculationItem' with overrides:
-        BlueLowNetworkUserCalculationModel.UsageActiveEnergyTotalImportT0.Price
-        BlueLowNetworkUserCalculationModel.UsageReactiveEnergyTotalRampedT0.Price
-        BlueLowNetworkUserCalculationModel.UsageMeterFee.Price
-        BlueLowNetworkUserCalculationModel.SupplyActiveEnergyTotalImportT1.Price
-        BlueLowNetworkUserCalculationModel.SupplyActiveEnergyTotalImportT2.Price
-        BlueLowNetworkUserCalculationModel.SupplyBusinessUsageFee.Price
-        BlueLowNetworkUserCalculationModel.SupplyRenewableEnergyFee.Price
-        BlueLowNetworkUserCalculationModel.UsageItems.Price
-        BlueLowNetworkUserCalculationModel.SupplyItems.Price
-        RedLowNetworkUserCalculationModel.UsageActiveEnergyTotalImportT1.Price
-        RedLowNetworkUserCalculationModel.UsageActiveEnergyTotalImportT2.Price
-        RedLowNetworkUserCalculationModel.UsageActivePowerTotalImportT1Peak.Price
-        RedLowNetworkUserCalculationModel.UsageReactiveEnergyTotalRampedT0.Price
-        RedLowNetworkUserCalculationModel.UsageMeterFee.Price
-        RedLowNetworkUserCalculationModel.SupplyActiveEnergyTotalImportT1.Price
-        RedLowNetworkUserCalculationModel.SupplyActiveEnergyTotalImportT2.Price
-        RedLowNetworkUserCalculationModel.SupplyBusinessUsageFee.Price
-        RedLowNetworkUserCalculationModel.SupplyRenewableEnergyFee.Price
-        RedLowNetworkUserCalculationModel.UsageItems.Price
-        RedLowNetworkUserCalculationModel.SupplyItems.Price
-        WhiteLowNetworkUserCalculationModel.UsageActiveEnergyTotalImportT1.Price
-        WhiteLowNetworkUserCalculationModel.UsageActiveEnergyTotalImportT2.Price
-        WhiteLowNetworkUserCalculationModel.UsageReactiveEnergyTotalRampedT0.Price
-        WhiteLowNetworkUserCalculationModel.UsageMeterFee.Price
-        WhiteLowNetworkUserCalculationModel.SupplyActiveEnergyTotalImportT1.Price
-        WhiteLowNetworkUserCalculationModel.SupplyActiveEnergyTotalImportT2.Price
-        WhiteLowNetworkUserCalculationModel.SupplyBusinessUsageFee.Price
-        WhiteLowNetworkUserCalculationModel.SupplyRenewableEnergyFee.Price
-        WhiteLowNetworkUserCalculationModel.UsageItems.Price
-        WhiteLowNetworkUserCalculationModel.SupplyItems.Price
-        WhiteMediumNetworkUserCalculationModel.UsageActiveEnergyTotalImportT1.Price
-        WhiteMediumNetworkUserCalculationModel.UsageActiveEnergyTotalImportT2.Price
-        WhiteMediumNetworkUserCalculationModel.UsageActivePowerTotalImportT1Peak.Price
-        WhiteMediumNetworkUserCalculationModel.UsageReactiveEnergyTotalRampedT0.Price
-        WhiteMediumNetworkUserCalculationModel.UsageMeterFee.Price
-        WhiteMediumNetworkUserCalculationModel.SupplyActiveEnergyTotalImportT1.Price
-        WhiteMediumNetworkUserCalculationModel.SupplyActiveEnergyTotalImportT2.Price
-        WhiteMediumNetworkUserCalculationModel.SupplyBusinessUsageFee.Price
-        WhiteMediumNetworkUserCalculationModel.SupplyRenewableEnergyFee.Price
-        WhiteMediumNetworkUserCalculationModel.UsageItems.Price
-        WhiteMediumNetworkUserCalculationModel.SupplyItems.Price
-        CalculatedNetworkUserInvoiceModel.Calculations.UsageMeterFee.Price
-        CalculatedNetworkUserInvoiceModel.Calculations.SupplyActiveEnergyTotalImportT1.Price
-        CalculatedNetworkUserInvoiceModel.Calculations.SupplyActiveEnergyTotalImportT2.Price
-        CalculatedNetworkUserInvoiceModel.Calculations.SupplyBusinessUsageFee.Price
-        CalculatedNetworkUserInvoiceModel.Calculations.SupplyRenewableEnergyFee.Price
-        CalculatedNetworkUserInvoiceModel.Calculations.UsageItems.Price
-        CalculatedNetworkUserInvoiceModel.Calculations.SupplyItems.Price
-        ActiveEnergyTotalImportCalculationItemModel.Price
-        ActiveEnergyTotalImportT0CalculationItemModel.Price
-        ActiveEnergyTotalImportT1CalculationItemModel.Price
-        ActiveEnergyTotalImportT2CalculationItemModel.Price
-        UsageActiveEnergyTotalImportT0CalculationItemModel.Price
-        UsageActiveEnergyTotalImportT1CalculationItemModel.Price
-        UsageActiveEnergyTotalImportT2CalculationItemModel.Price
-        SupplyActiveEnergyTotalImportT1CalculationItemModel.Price
-        SupplyActiveEnergyTotalImportT2CalculationItemModel.Price
-        SupplyBusinessUsageCalculationItemModel.Price
-        SupplyRenewableEnergyCalculationItemModel.Price
-        ActivePowerTotalImportT1PeakCalculationItemModel.Price
-        UsageActivePowerTotalImportT1PeakCalculationItemModel.Price
-        FeeCalculationItemModel.Price
-        UsageMeterFeeCalculationItemModel.Price
-        ReactiveEnergyTotalRampedT0CalculationItemModel.Price
-        UsageReactiveEnergyTotalRampedT0CalculationItemModel.Price
-        CalculationItemModel.Price
-        NetworkUserCalculationModel.UsageMeterFee.Price
-        NetworkUserCalculationModel.SupplyActiveEnergyTotalImportT1.Price
-        NetworkUserCalculationModel.SupplyActiveEnergyTotalImportT2.Price
-        NetworkUserCalculationModel.SupplyBusinessUsageFee.Price
-        NetworkUserCalculationModel.SupplyRenewableEnergyFee.Price
-        NetworkUserCalculationModel.UsageItems.Price
-        NetworkUserCalculationModel.SupplyItems.Price
-        NetworkUserCalculationModel&lt;TNetworkUserCatalogue&gt;.UsageMeterFee.Price
-        NetworkUserCalculationModel&lt;TNetworkUserCatalogue&gt;.SupplyActiveEnergyTotalImportT1.Price
-        NetworkUserCalculationModel&lt;TNetworkUserCatalogue&gt;.SupplyActiveEnergyTotalImportT2.Price
-        NetworkUserCalculationModel&lt;TNetworkUserCatalogue&gt;.SupplyBusinessUsageFee.Price
-        NetworkUserCalculationModel&lt;TNetworkUserCatalogue&gt;.SupplyRenewableEnergyFee.Price
-        NetworkUserCalculationModel&lt;TNetworkUserCatalogue&gt;.UsageItems.Price
-        NetworkUserCalculationModel&lt;TNetworkUserCatalogue&gt;.SupplyItems.Price
-        INetworkUserCalculation.UsageMeterFee.Price
-        INetworkUserCalculation.SupplyActiveEnergyTotalImportT1.Price
-        INetworkUserCalculation.SupplyActiveEnergyTotalImportT2.Price
-        INetworkUserCalculation.SupplyBusinessUsageFee.Price
-        INetworkUserCalculation.SupplyRenewableEnergyFee.Price
-        INetworkUserCalculation.UsageItems.Price
-        INetworkUserCalculation.SupplyItems.Price
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 50 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 115 column 12
       </Metadata>
       <Value>
         Cijena
@@ -9517,6 +9424,7 @@
         RBR
       </Key>
       <Metadata>
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 89 column 12
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 71 column 10
       </Metadata>
       <Value>
@@ -9608,7 +9516,7 @@
         NetworkUserCalculationModel&lt;TNetworkUserCatalogue&gt;.ReactiveEnergyAmount_Wh
       </Metadata>
       <Value>
-        Količina jalove energije (Wh)
+        Jalova energija (Wh)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -9698,7 +9606,7 @@
         Property 'ReactiveEnergyL3ImportT0_VARh' of type 'Ozds.Business.Models.AbbB2xMeasurementModel'
       </Metadata>
       <Value>
-        Jalova energija na L3 u jednoj tarifi (VARh)
+        Jalova energija uvoza na L3 u jednoj tarifi (VARh)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -9734,7 +9642,7 @@
         NetworkUserCalculationModel&lt;TNetworkUserCatalogue&gt;.ReactiveEnergyRampedAmount_Wh
       </Metadata>
       <Value>
-        Količina jalove energije (Wh)
+        Jalova energija (Wh)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -9942,7 +9850,7 @@
         WhiteMediumNetworkUserCalculationModel.ConcreteArchivedUsageNetworkUserCatalogue.ReactiveEnergyTotalRampedT0Price_EUR
       </Metadata>
       <Value>
-        Cijena jalove energije u jednom tarifu na svim fazama (EUR)
+        Prekomjerno preuzeta jalova energija (EUR/kVArh)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -9965,7 +9873,7 @@
         UsageReactiveEnergyTotalRampedT0CalculationItemModel.ReactiveExportAmount_kVARh
       </Metadata>
       <Value>
-        Induktivna jalove energija (kVARh)
+        Induktivna jalova energija (kVARh)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -10210,13 +10118,13 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        read
+        Read
       </Key>
       <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 46 column 4
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 81 column 4
       </Metadata>
       <Value>
-        očitavanje
+        Očitano
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -10243,6 +10151,18 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        Red NN
+      </Key>
+      <Metadata>
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 185 column 11
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 90 column 14
+      </Metadata>
+      <Value>
+        Crveni NN
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         RedLowNetworkUserCalculation
       </Key>
       <Metadata>
@@ -10264,7 +10184,7 @@
         Type 'Ozds.Business.Models.RedLowNetworkUserCatalogueModel'
       </Metadata>
       <Value>
-        Crveni NN
+        Crveni NN cjenik
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -10309,6 +10229,7 @@
         Refresh
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 111 column 21
         From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 119 column 23
       </Metadata>
       <Value>
@@ -10332,7 +10253,7 @@
         Type 'Ozds.Business.Models.Abstractions.IRegulatoryCatalogue'
       </Metadata>
       <Value>
-        Regulatorni cjenik
+        Cjenik opskrbe
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -10432,7 +10353,7 @@
         INetworkUserCalculation.ArchivedSupplyRegulatoryCatalogue.RenewableEnergyFeePrice_EUR
       </Metadata>
       <Value>
-        Cijena naknade za obnovljivu energiju (EUR)
+        Naknada za OIEiK (EUR/kWh)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -10473,7 +10394,7 @@
         Property 'Representative' of type 'Ozds.Business.Models.Composite.RepresentingUserModel'
       </Metadata>
       <Value>
-        Zastupnik
+        Predstavnik
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -10536,7 +10457,7 @@
         Property 'Representatives' of type 'Ozds.Business.Models.Composite.NetworkUserWithRepresentativesModel'
       </Metadata>
       <Value>
-        Zastupnici
+        Predstavnici
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -10547,7 +10468,7 @@
         Type 'Ozds.Business.Models.Composite.RepresentingUserModel'
       </Metadata>
       <Value>
-        Predstavnik
+        Predstavljajući korisnik
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -10555,6 +10476,7 @@
         Resolution
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Charts/Financial/FinancialChartControls.razor' line 57 column 17
         From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 100 column 19
       </Metadata>
       <Value>
@@ -10631,7 +10553,7 @@
         RJT
       </Key>
       <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 64 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 39 column 12
       </Metadata>
       <Value>
         RJT
@@ -10642,7 +10564,9 @@
         RNT
       </Key>
       <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 69 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 44 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 331 column 63
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 330 column 63
       </Metadata>
       <Value>
         RNT
@@ -10670,7 +10594,8 @@
         RVT
       </Key>
       <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 74 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 49 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 330 column 63
       </Metadata>
       <Value>
         RVT
@@ -10731,6 +10656,7 @@
         Search
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Streaming/Table.razor' line 28 column 25
         From file 'Ozds.Client/Components/Streaming/Table.razor' line 87 column 23
       </Metadata>
       <Value>
@@ -10774,7 +10700,18 @@
         Property 'SeenOn' of type 'Ozds.Business.Models.Joins.NotificationRecipientModel'
       </Metadata>
       <Value>
-        Pogledano na
+        Viđeno na
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        SN
+      </Key>
+      <Metadata>
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 109 column 12
+      </Metadata>
+      <Value>
+        SN
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -10848,13 +10785,13 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        SPECIFICATION OF CONSUMPTION AT BILLING METERING POINTS
+        SPECIFICATION OF CONSUMPTION AT BILLING MEASUREMENT LOCATION
       </Key>
       <Metadata>
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 9 column 10
       </Metadata>
       <Value>
-        SPECIFIKACIJA POTROŠNJE NA MJERNIM MJESTIMA ZA NAPLATU
+        SPECIFIKACIJA POTROŠNJE NA OBRAČUNSKOM MJERNOM MJESTU
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -10915,6 +10852,7 @@
         Status
       </Key>
       <Metadata>
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 48 column 12
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 113 column 12
       </Metadata>
       <Value>
@@ -10926,6 +10864,7 @@
         Status from
       </Key>
       <Metadata>
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 46 column 12
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 111 column 12
       </Metadata>
       <Value>
@@ -10937,6 +10876,7 @@
         Status to
       </Key>
       <Metadata>
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 47 column 12
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 112 column 12
       </Metadata>
       <Value>
@@ -10970,7 +10910,14 @@
         Sum
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Charts/Financial/FinancialBarChart.razor' line 31 column 46
+        From file 'Ozds.Client/Components/Charts/Financial/FinancialBarChart.razor' line 40 column 46
+        From file 'Ozds.Client/Components/Charts/Financial/FinancialBarChart.razor' line 64 column 32
         From file 'Ozds.Client/Components/Charts/Financial/FinancialBarChart.razor' line 73 column 32
+        From file 'Ozds.Client/Components/Charts/Financial/FinancialDonutChart.razor' line 30 column 46
+        From file 'Ozds.Client/Components/Charts/Financial/FinancialDonutChart.razor' line 39 column 46
+        From file 'Ozds.Client/Components/Charts/Financial/FinancialDonutChart.razor' line 63 column 32
+        From file 'Ozds.Client/Components/Charts/Financial/FinancialDonutChart.razor' line 72 column 32
       </Metadata>
       <Value>
         Zbroj
@@ -10995,13 +10942,13 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        Supply
+        Supply fee - TOTAL
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 121 column 6
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 144 column 18
       </Metadata>
       <Value>
-        Opskrba
+        Naknada za opskrbu - UKUPNO
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -11038,7 +10985,7 @@
         NetworkUserCalculationModel&lt;TNetworkUserCatalogue&gt;.SupplyActiveEnergyTotalImportT1
       </Metadata>
       <Value>
-        Uvezena aktivna energija u višoj tarifi na svim fazama
+        Radna energija uvoza u višoj tarifi na svim fazama
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -11067,8 +11014,7 @@
         StatefulNetworkUserInvoiceModel.Invoice.SupplyActiveEnergyTotalImportT1Fee_EUR
       </Metadata>
       <Value>
-        Naknada za uvezenu aktivnu energiju na svim fazama u višoj tarifi
-        (EUR)
+        Naknada za radnu energiju uvoza na svim fazama u višoj tarifi (EUR)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -11094,7 +11040,7 @@
         NetworkUserCalculationModel&lt;TNetworkUserCatalogue&gt;.SupplyActiveEnergyTotalImportT2
       </Metadata>
       <Value>
-        Uvezena aktivna energija u nižoj tarifi na svim fazama
+        Radna energija uvoza na svim fazama u nižoj tarifi
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -11123,8 +11069,7 @@
         StatefulNetworkUserInvoiceModel.Invoice.SupplyActiveEnergyTotalImportT2Fee_EUR
       </Metadata>
       <Value>
-        Naknada za aktivnu energiju uvezenu na svim fazama u nižoj tarifi
-        (EUR)
+        Naknada za radnu energiju uvoza na svim fazama u nižoj tarifi (EUR)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -11137,7 +11082,7 @@
         Type 'Ozds.Business.Models.Complex.SupplyBusinessUsageCalculationItemModel'
       </Metadata>
       <Value>
-        Poslovna stavka obračuna potrošnje
+        Stavka obračuna za poslovnu/neposlovnu upotrebu
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -11163,7 +11108,7 @@
         NetworkUserCalculationModel&lt;TNetworkUserCatalogue&gt;.SupplyBusinessUsageFee
       </Metadata>
       <Value>
-        Naknada za poslovnu potrošnju
+        Naknada za poslovnu/neposlovnu upotrebu
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -11179,7 +11124,7 @@
         StatefulNetworkUserInvoiceModel.Invoice.SupplyBusinessUsageFee_EUR
       </Metadata>
       <Value>
-        Poslovna naknada za opskrbu (EUR)
+        Naknada za poslovnu/neposlovnu upotrebu (EUR)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -11212,7 +11157,7 @@
         StatefulNetworkUserInvoiceModel.Invoice.SupplyFeeTotal_EUR
       </Metadata>
       <Value>
-        Ukupna naknada za opskrbu (EUR)
+        Naknada za opskrbu (EUR)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -11258,7 +11203,7 @@
         NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue
       </Metadata>
       <Value>
-        Regulatorni katalog opskrbe
+        Cjenik opsrkbe
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -11284,7 +11229,7 @@
         NetworkUserCalculationModel&lt;TNetworkUserCatalogue&gt;.SupplyRegulatoryCatalogueId
       </Metadata>
       <Value>
-        Oznaka regulatornog cjenika opskrbe
+        Oznaka regulatornog cjenika
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -11297,7 +11242,8 @@
         Type 'Ozds.Business.Models.Complex.SupplyRenewableEnergyCalculationItemModel'
       </Metadata>
       <Value>
-        Stavka obračuna obnovljive energije
+        Stavka obračuna za poticanje proizvodnje iz obnovljivih izvora
+        energije i kogeneracije
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -11323,7 +11269,8 @@
         NetworkUserCalculationModel&lt;TNetworkUserCatalogue&gt;.SupplyRenewableEnergyFee
       </Metadata>
       <Value>
-        Naknada za obnovljivu energiju
+        Naknada za poticanje proizvodnje iz obnovljivih izvora energije i
+        kogeneracije
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -11339,7 +11286,8 @@
         StatefulNetworkUserInvoiceModel.Invoice.SupplyRenewableEnergyFee_EUR
       </Metadata>
       <Value>
-        Naknada za obnovljivu energiju opskrbe (EUR)
+        Naknada za poticanje proizvodnje iz obnovljivih izvora energije i
+        kogeneracije (EUR)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -11347,7 +11295,9 @@
         SVT
       </Key>
       <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 79 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 29 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 327 column 65
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 326 column 62
       </Metadata>
       <Value>
         SVT
@@ -11446,6 +11396,7 @@
         Tariff item
       </Key>
       <Metadata>
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 45 column 12
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 110 column 12
       </Metadata>
       <Value>
@@ -11593,29 +11544,29 @@
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 6 column 7
       </Metadata>
       <Value>
-        Značenje akronima
+        Značenja akronima
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        The resource you were looking for doesn't exist.
+        The resource you were looking for doesn't exist
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Streaming/NotFound.razor' line 10 column 4
       </Metadata>
       <Value>
-        Traženi resurs ne postoji.
+        Traženi resurs ne postoji
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        There are no resources of this type.
+        There are no resources of this type
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Streaming/Empty.razor' line 6 column 4
       </Metadata>
       <Value>
-        Nema resursa ove vrste.
+        Nema resursa ove vrste
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -11623,6 +11574,7 @@
         This years consumption
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 58 column 15
         From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 137 column 15
       </Metadata>
       <Value>
@@ -11641,7 +11593,7 @@
         MeterAnalysis.Analysis.ThisMonthConsumption
       </Metadata>
       <Value>
-        Potrošnja ovog mjeseca
+        Potrošnja u tekućem mjesecu
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -12044,6 +11996,8 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 188 column 18
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 51 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 116 column 12
       </Metadata>
       <Value>
         Ukupno
@@ -12054,7 +12008,10 @@
         TOTAL
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 116 column 4
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 173 column 4
+        From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 73 column 10
+        From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 186 column 37
       </Metadata>
       <Value>
         UKUPNO
@@ -12341,7 +12298,7 @@
         TRNP
       </Key>
       <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 84 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 54 column 12
       </Metadata>
       <Value>
         TRNP
@@ -12352,7 +12309,8 @@
         TRP
       </Key>
       <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 89 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 59 column 12
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 332 column 51
       </Metadata>
       <Value>
         TRP
@@ -12366,7 +12324,7 @@
         From file 'Ozds.Client/Components/Streaming/Loading.razor' line 57 column 17
       </Metadata>
       <Value>
-        Vrsta
+        Tip
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -12396,7 +12354,9 @@
         Unit
       </Key>
       <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 115 column 12
+        Property 'Unit' of type 'Ozds.Report.Entities.AccountingPeriodEntity'
+
+        Property 'Unit' of type 'Ozds.Business.Models.AccountingPeriodReportModel'
       </Metadata>
       <Value>
         Jedinica
@@ -12429,6 +12389,7 @@
         Usage
       </Key>
       <Metadata>
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 49 column 12
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 114 column 12
       </Metadata>
       <Value>
@@ -12445,7 +12406,7 @@
         Property 'UsageActiveEnergyTotalImportT0' of type 'Ozds.Business.Models.BlueLowNetworkUserCalculationModel'
       </Metadata>
       <Value>
-        Potrošena aktivna energija uvezena u jednoj tarifi na svim fazama
+        Radna energija uvoza na svim fazama u jednoj tarifi
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -12474,8 +12435,7 @@
         StatefulNetworkUserInvoiceModel.Invoice.UsageActiveEnergyTotalImportT0Fee_EUR
       </Metadata>
       <Value>
-        Naknada za potrošenu aktivnu energiju na svim fazama u jednoj tarifi
-        (EUR)
+        Naknada za radnu energiju uvoza na svim fazama u jednoj tarifi (EUR)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -12496,7 +12456,7 @@
         Property 'UsageActiveEnergyTotalImportT1' of type 'Ozds.Business.Models.WhiteMediumNetworkUserCalculationModel'
       </Metadata>
       <Value>
-        Potrošena aktivna energija u višoj tarifi na svim fazama
+        Radna energija uvoza na svim fazama u višoj tarifi
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -12525,8 +12485,7 @@
         StatefulNetworkUserInvoiceModel.Invoice.UsageActiveEnergyTotalImportT1Fee_EUR
       </Metadata>
       <Value>
-        Naknada za uvezenu aktivnu energiju na svim fazama u višoj tarifi
-        (EUR)
+        Naknada za aktivnu energiju uvoza na svim fazama u višoj tarifi (EUR)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -12547,7 +12506,7 @@
         Property 'UsageActiveEnergyTotalImportT2' of type 'Ozds.Business.Models.WhiteMediumNetworkUserCalculationModel'
       </Metadata>
       <Value>
-        Potrošena aktivna energija u nižoj tarifi na svim fazama
+        Radna energija uvoza na svim fazama u nižoj tarifi
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -12576,8 +12535,7 @@
         StatefulNetworkUserInvoiceModel.Invoice.UsageActiveEnergyTotalImportT2Fee_EUR
       </Metadata>
       <Value>
-        Naknada za uvezenu aktivnu energiju na svim fazama u nižoj tarifi
-        (EUR)
+        Naknada za radnu energiju uvoza na svim fazama u nižoj tarifi (EUR)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -12594,7 +12552,7 @@
         Property 'UsageActivePowerTotalImportT1Peak' of type 'Ozds.Business.Models.WhiteMediumNetworkUserCalculationModel'
       </Metadata>
       <Value>
-        Vrhunac uvezenog aktivnog snage na svim fazama u višoj tarifi (kW)
+        Vršna randa snaga uvoza na svim fazama u višoj tarifi
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -12623,7 +12581,7 @@
         StatefulNetworkUserInvoiceModel.Invoice.UsageActivePowerTotalImportT1PeakFee_EUR
       </Metadata>
       <Value>
-        Naknada za vršnu snagu uvezenu na svim fazama u višoj tarifi (EUR)
+        Naknada za vršnu snagu uvoza na svim fazama u višoj tarifi (EUR)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -12656,7 +12614,7 @@
         StatefulNetworkUserInvoiceModel.Invoice.UsageFeeTotal_EUR
       </Metadata>
       <Value>
-        Ukupna naknada za korištenje (EUR)
+        Naknada za korištenje mreže (EUR)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -12682,7 +12640,7 @@
         NetworkUserCalculationModel&lt;TNetworkUserCatalogue&gt;.UsageItems
       </Metadata>
       <Value>
-        Stavke potrošnje
+        Stavke mrežarine
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -12708,7 +12666,7 @@
         NetworkUserCalculationModel&lt;TNetworkUserCatalogue&gt;.UsageMeterFee
       </Metadata>
       <Value>
-        Naknada za mjerni uređaj
+        Naknada za mjernu uslugu
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -12724,7 +12682,7 @@
         StatefulNetworkUserInvoiceModel.Invoice.UsageMeterFee_EUR
       </Metadata>
       <Value>
-        Naknada za mjerni uređaj (EUR)
+        Naknada za mjernu uslugu (EUR)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -12737,7 +12695,7 @@
         Type 'Ozds.Business.Models.Complex.UsageMeterFeeCalculationItemModel'
       </Metadata>
       <Value>
-        Jednokratna stavka obračuna za mjerni uređaj
+        Naknada za mjernu uslugu
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -12758,7 +12716,7 @@
         NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue
       </Metadata>
       <Value>
-        Katalog korisnika mreže
+        Katalog za korisnika mreže
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -12784,7 +12742,7 @@
         NetworkUserCalculationModel&lt;TNetworkUserCatalogue&gt;.UsageNetworkUserCatalogueId
       </Metadata>
       <Value>
-        Oznaka cjenika potrošnje
+        Oznaka cjenika naknade za korištenje mreže
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -12838,7 +12796,7 @@
         StatefulNetworkUserInvoiceModel.Invoice.UsageReactiveEnergyTotalRampedT0Fee_EUR
       </Metadata>
       <Value>
-        Naknada za reaktivnu energiju na svim fazama u jednoj tarifi (EUR)
+        Naknada za jalovu energiju na svim fazama u jednoj tarifi (EUR)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -12847,6 +12805,7 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 23 column 18
+        From file 'Ozds.Client/Pages/Administration/UserPage.razor' line 22 column 24
       </Metadata>
       <Value>
         Korisnik
@@ -12893,6 +12852,7 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 207 column 12
+        From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 195 column 8
       </Metadata>
       <Value>
         PDV
@@ -13048,10 +13008,32 @@
         Welcome
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Layout/UserToolbar.razor' line 84 column 16
+        From file 'Ozds.Client/Components/Layout/UserToolbar.razor' line 90 column 16
       </Metadata>
       <Value>
         Dobrodošli
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        White NN
+      </Key>
+      <Metadata>
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 189 column 15
+      </Metadata>
+      <Value>
+        Bijeli NN
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        White SN
+      </Key>
+      <Metadata>
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 191 column 17
+      </Metadata>
+      <Value>
+        Bijeli SN
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -13064,7 +13046,7 @@
         Type 'Ozds.Business.Models.WhiteLowNetworkUserCalculationModel'
       </Metadata>
       <Value>
-        Bijela niska mrežna računica korisnika
+        Obračun bijelog NN tarifnog modela za korisnika mreže
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -13077,7 +13059,7 @@
         Type 'Ozds.Business.Models.WhiteLowNetworkUserCatalogueModel'
       </Metadata>
       <Value>
-        Bijeli NN
+        Bijeli NN cjenik naknade za korištenje mreže
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -13103,7 +13085,7 @@
         MeterAnalysis.Location.WhiteLowNetworkUserCatalogueId
       </Metadata>
       <Value>
-        Oznaka bijelog NN cjenika
+        Oznaka bijelog NN cjenika naknade za korištenje mreže
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -13129,7 +13111,7 @@
         Type 'Ozds.Business.Models.WhiteMediumNetworkUserCatalogueModel'
       </Metadata>
       <Value>
-        Bijeli SN
+        Bijeli SN cjenik naknade za korištenje mreže
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -13155,40 +13137,7 @@
         MeterAnalysis.Location.WhiteMediumNetworkUserCatalogueId
       </Metadata>
       <Value>
-        Oznaka bijelog SN cjenika
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        working energy during the period of a higher daily tariff
-      </Key>
-      <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 76 column 4
-      </Metadata>
-      <Value>
-        radna energija tijekom razdoblja više dnevne tarife
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        working energy during the period of a lower daily tariff
-      </Key>
-      <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 71 column 4
-      </Metadata>
-      <Value>
-        radna energija tijekom razdoblja niže dnevne tarife
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        working energy during the period of a uniform daily tariff
-      </Key>
-      <Metadata>
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 66 column 4
-      </Metadata>
-      <Value>
-        radna energija tijekom razdoblja jedinstvene dnevne tarife
+        Oznaka bijelog SN cjenika naknade za korištenje mreže
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -13243,9 +13192,22 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 13 column 18
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 69 column 12
       </Metadata>
       <Value>
         ZDS
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        ZDS network usage fee
+      </Key>
+      <Metadata>
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 56 column 6
+        From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 79 column 10
+      </Metadata>
+      <Value>
+        Naknada za korištenje mreže ZDS-a
       </Value>
     </TranslationDictionaryItem>
   </Translations>

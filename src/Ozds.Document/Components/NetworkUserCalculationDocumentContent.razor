@@ -6,23 +6,23 @@
   <p>
     <strong>
       <u>
-        @Translate("SPECIFICATION OF CONSUMPTION AT BILLING METERING POINTS")
+        @Translate("SPECIFICATION OF CONSUMPTION AT BILLING MEASUREMENT LOCATION")
       </u>
     </strong>
   </p>
   <p style="margin-top: 0.8rem;">
-    @Translate("Name of the billing metering point (OMM)"):
+    @Translate("Name of the billing measurement location (OMM)"):
     @(Entity.MeasurementLocationTitle)
   </p>
   <p>
-    @Translate("Number of the billing metering point (OMM)"):
+    @Translate("Number of the billing measurement location (OMM)"):
     @(Entity.MeasurementLocationId)
   </p>
   <p>
-    @Translate("Tariff model"): @Translate(Entity.GetType().Name)
+    @Translate("Tariff model"): @TariffModelTitle
   </p>
   <p style="margin-top: 1.2rem; margin-left: 0.8rem;">
-    <strong>@Translate("A) NETWORK USAGE FEE FOR ZDS")</strong>
+    <strong>@Translate("A) ZDS NETWORK USAGE FEE")</strong>
   </p>
   <table class="calculation-table" style="margin-top: 0.8rem; width: 100%">
     <colgroup>
@@ -39,7 +39,7 @@
     </colgroup>
     <thead>
     <tr class="header">
-      <th>@Translate("Number of devices")</th>
+      <th>@Translate("Device number")</th>
       <th>@Translate("Date from")</th>
       <th>@Translate("Date to")</th>
       <th>@Translate("Tariff item")</th>
@@ -47,19 +47,19 @@
       <th>@Translate("Status to")</th>
       <th>@Translate("Status")</th>
       <th>@Translate("Usage") (kWh/kW/kVAR)</th>
-      <th>@Translate("Unit") (EUR)</th>
+      <th>@Translate("Price") (EUR)</th>
       <th>@Translate("Total") (EUR)</th>
     </tr>
     </thead>
     <tbody>
     <tr class="odd">
-      <td rowspan="@usageRowspan">
+      <td rowspan="@UsageRowspan">
         @(Entity.MeterId)
       </td>
-      <td rowspan="@usageRowspan">
+      <td rowspan="@UsageRowspan">
         @Date(Entity.FromDate)
       </td>
-      <td rowspan="@usageRowspan">
+      <td rowspan="@UsageRowspan">
         @Date(Entity.ToDate)
       </td>
       @(
@@ -76,7 +76,7 @@
     <tr class="odd">
       <td colspan="5"></td>
       <td colspan="4">
-        <strong>@Translate("Network usage fee for ZDS - TOTAL"):</strong>
+        <strong>@Translate("Network usage fee - TOTAL"):</strong>
       </td>
       <td style="text-align: right;">
         <strong>
@@ -87,7 +87,7 @@
     </tbody>
   </table>
   <p style="margin-top: 1.2rem; margin-left: 0.8rem;">
-    <strong>@Translate("B) ELECTRICITY SUPPLY FEE")</strong>
+    <strong>@Translate("B) ELECTRICAL ENERGY SUPPLY FEE")</strong>
   </p>
   <table class="calculation-table" style="margin-top: 0.8rem;">
     <colgroup>
@@ -104,7 +104,7 @@
     </colgroup>
     <thead>
     <tr class="header">
-      <th>@Translate("Number of devices")</th>
+      <th>@Translate("Device number")</th>
       <th>@Translate("Date from")</th>
       <th>@Translate("Date to")</th>
       <th>@Translate("Tariff item")</th>
@@ -112,19 +112,19 @@
       <th>@Translate("Status to")</th>
       <th>@Translate("Status")</th>
       <th>@Translate("Usage") (kWh)</th>
-      <th>@Translate("Unit") (EUR)</th>
+      <th>@Translate("Price") (EUR)</th>
       <th>@Translate("Total") (EUR)</th>
     </tr>
     </thead>
     <tbody>
     <tr class="odd">
-      <td rowspan="@supplyRowspan">
+      <td rowspan="@SupplyRowspan">
         @Entity.MeterId
       </td>
-      <td rowspan="@supplyRowspan">
+      <td rowspan="@SupplyRowspan">
         @Date(Entity.FromDate)
       </td>
-      <td rowspan="@supplyRowspan">
+      <td rowspan="@SupplyRowspan">
         @Date(Entity.ToDate)
       </td>
       @(
@@ -141,7 +141,7 @@
     <tr class="odd">
       <td colspan="4"></td>
       <td colspan="5">
-        <strong>@Translate("Fee for electricity supply - TOTAL"):</strong>
+        <strong>@Translate("Supply fee - TOTAL"):</strong>
       </td>
       <td style="text-align: right;">
         <strong>
@@ -159,7 +159,7 @@
   [Parameter]
   public NetworkUserCalculationEntity Entity { get; set; } = default!;
 
-  private int usageRowspan
+  private int UsageRowspan
   {
     get
     {
@@ -168,12 +168,28 @@
     }
   }
 
-  private int supplyRowspan
+  private int SupplyRowspan
   {
     get
     {
       var supplyItemCount = Entity.SupplyItems.Count();
       return supplyItemCount == 0 ? 1 : supplyItemCount;
+    }
+  }
+
+  private string TariffModelTitle
+  {
+    get
+    {
+      return Entity.UsageNetworkUserCatalogue is RedLowNetworkUserCatalogueEntity
+        ? Translate("Red NN")
+        : Entity.UsageNetworkUserCatalogue is BlueLowNetworkUserCatalogueEntity
+          ? Translate("Blue NN")
+          : Entity.UsageNetworkUserCatalogue is WhiteLowNetworkUserCatalogueEntity
+            ? Translate("White NN")
+            : Entity.UsageNetworkUserCatalogue is WhiteMediumNetworkUserCatalogueEntity
+              ? Translate("White SN")
+              : string.Empty;
     }
   }
 

@@ -244,6 +244,146 @@
         "searchMicrosoftSymbolFake": true,
         "searchNuGetOrgSymbolFake": true
       }
+    },
+    {
+      "name": "debug-translate-type",
+      "type": "coreclr",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/Ozds.Translation/bin/Debug/net8.0/Ozds.Translation.dll",
+      "preLaunchTask": "build-translation",
+      "cwd": "${workspaceFolder}/scripts/Ozds.Translation",
+      "stopAtEntry": false,
+      "requireExactSource": false,
+      "args": [
+        "type",
+        "-l",
+        "hr",
+        "-a",
+        "Ozds.Business",
+        "Ozds.Document",
+        "Ozds.Report",
+        "-n",
+        "Ozds.Business.Models",
+        "Ozds.Business.Analysis",
+        "Ozds.Document.Entities",
+        "Ozds.Report.Entities",
+        "-u",
+        "${workspaceFolder}/src/Ozds.Assets/Assets/Translations/hr.xml",
+        "-o",
+        "${workspaceFolder}/src/Ozds.Assets/Assets/Translations/hr.xml",
+        "-r"
+      ],
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DOTNET_ENVIRONMENT": "Development"
+      },
+      "logging": {
+        "moduleLoad": false
+      }
+    },
+    {
+      "name": "debug-translate-type-external",
+      "type": "coreclr",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/Ozds.Translation/bin/Debug/net8.0/Ozds.Translation.dll",
+      "preLaunchTask": "build-translation",
+      "cwd": "${workspaceFolder}/scripts/Ozds.Translation",
+      "stopAtEntry": false,
+      "requireExactSource": false,
+      "args": [
+        "type",
+        "-l",
+        "hr",
+        "-a",
+        "Ozds.Business",
+        "Ozds.Document",
+        "Ozds.Report",
+        "-n",
+        "Ozds.Business.Models",
+        "Ozds.Business.Analysis",
+        "Ozds.Document.Entities",
+        "Ozds.Report.Entities",
+        "-u",
+        "${workspaceFolder}/src/Ozds.Assets/Assets/Translations/hr.xml",
+        "-o",
+        "${workspaceFolder}/src/Ozds.Assets/Assets/Translations/hr.xml",
+        "-r"
+      ],
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DOTNET_ENVIRONMENT": "Development"
+      },
+      "logging": {
+        "moduleLoad": false
+      },
+      "justMyCode": false,
+      "symbolOptions": {
+        "searchMicrosoftSymbolFake": true,
+        "searchNuGetOrgSymbolFake": true
+      }
+    },
+    {
+      "name": "debug-translate-regex",
+      "type": "coreclr",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/Ozds.Translation/bin/Debug/net8.0/Ozds.Translation.dll",
+      "preLaunchTask": "build-translation",
+      "cwd": "${workspaceFolder}/scripts/Ozds.Translation",
+      "stopAtEntry": false,
+      "requireExactSource": false,
+      "args": [
+        "regex",
+        "-l",
+        "hr",
+        "-i",
+        "${workspaceFolder}/src",
+        "-u",
+        "${workspaceFolder}/src/Ozds.Assets/Assets/Translations/hr.xml",
+        "-o",
+        "${workspaceFolder}/src/Ozds.Assets/Assets/Translations/hr.xml",
+        "-r"
+      ],
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DOTNET_ENVIRONMENT": "Development"
+      },
+      "logging": {
+        "moduleLoad": false
+      }
+    },
+    {
+      "name": "debug-translate-regex-external",
+      "type": "coreclr",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/Ozds.Translation/bin/Debug/net8.0/Ozds.Translation.dll",
+      "preLaunchTask": "build-translation",
+      "cwd": "${workspaceFolder}/scripts/Ozds.Translation",
+      "stopAtEntry": false,
+      "requireExactSource": false,
+      "args": [
+        "regex",
+        "-l",
+        "hr",
+        "-i",
+        "${workspaceFolder}/src",
+        "-u",
+        "${workspaceFolder}/src/Ozds.Assets/Assets/Translations/hr.xml",
+        "-o",
+        "${workspaceFolder}/src/Ozds.Assets/Assets/Translations/hr.xml",
+        "-r"
+      ],
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DOTNET_ENVIRONMENT": "Development"
+      },
+      "logging": {
+        "moduleLoad": false
+      },
+      "justMyCode": false,
+      "symbolOptions": {
+        "searchMicrosoftSymbolFake": true,
+        "searchNuGetOrgSymbolFake": true
+      }
     }
   ]
 }
