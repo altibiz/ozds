@@ -1,4 +1,5 @@
 using System.Globalization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Enums;
@@ -7,6 +8,7 @@ using Ozds.Business.Queries.Abstractions;
 
 namespace Ozds.Server.Controllers;
 
+[Authorize]
 public class DataController(
   MeasurementQueries queries
 ) : Controller

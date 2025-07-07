@@ -1,10 +1,12 @@
 using System.Globalization;
 using Microsoft.AspNetCore.Antiforgery;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Ozds.Server.ViewModels;
 
 namespace Ozds.Server.Controllers;
 
+[Authorize]
 public class ClientController(IAntiforgery antiforgery) : Controller
 {
   public const string LocalStorageCulture = "_";
