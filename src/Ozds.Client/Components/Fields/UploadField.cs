@@ -41,7 +41,7 @@ public partial class UploadField : OzdsComponentBase
     }
   }
 
-  private async Task Upload()
+  private async Task Import()
   {
     var mutations = ScopedServices.GetRequiredService<ReportMutations>();
     foreach (var (stream, name) in _fileStreams

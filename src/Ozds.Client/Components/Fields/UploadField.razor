@@ -17,7 +17,7 @@
                 Outlined="true"
                 Class="relative rounded-lg border-2 border-dashed pa-4 mt-4 mud-width-full mud-height-full">
         <MudText Typo="Typo.h6">
-          Drag and drop files here or click
+          @Translate("Drag and drop files here or click")
         </MudText>
         @foreach (var file in _fileNames)
         {
@@ -34,19 +34,19 @@
     <MudButton Color="Color.Primary"
                OnClick="OpenFilePickerAsync"
                Variant="Variant.Filled">
-      Open file picker
+      @Translate("Open file picker")
     </MudButton>
     <MudButton Color="Color.Primary"
                Disabled="@(!_fileNames.Any())"
-               OnClick="Upload"
+               OnClick="Import"
                Variant="Variant.Filled">
-      Upload
+      @Translate("Import")
     </MudButton>
     <MudButton Color="Color.Error"
                Disabled="@(!_fileNames.Any())"
                OnClick="ClearAsync"
                Variant="Variant.Filled">
-      Clear
+      @Translate("Clear")
     </MudButton>
   </MudToolBar>
 </MudStack>
