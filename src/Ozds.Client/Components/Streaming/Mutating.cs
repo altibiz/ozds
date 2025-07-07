@@ -122,7 +122,6 @@ public partial class Mutating<T> : OzdsComponentBase
     }
     catch (Exception ex)
     {
-      Console.WriteLine(JsonSerializer.Serialize(model));
       await DialogService.ShowAsync<MutatingResult>(
         Translate("Failure"),
         new DialogParameters
