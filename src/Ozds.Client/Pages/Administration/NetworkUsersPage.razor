@@ -34,19 +34,29 @@ RoleModel.NetworkUserRepresentative
   == RoleModel.OperatorRepresentative)
 {
   <MudCheckBox
-    Label="@Translate("Deleted")"
+    Label="@Translate("Show deleted")"
     @bind-Value="_deleted"/>
 }
 
-<Table Model="@analyses.Where(x => x.NetworkUser.IsDeleted == _deleted).ToList()"/>
+<Table
+  Model="@(analyses
+    .Where(x => x.NetworkUser.IsDeleted == _deleted)
+    .ToList())"/>
 
 @if (RepresentativeState.Representative.Role
   == RoleModel.OperatorRepresentative)
 {
-  <MudLink Href="@(PageHref<NetworkUserPage>())">
+  <MudButton
+    Class="mt-4"
+    Variant="Variant.Outlined"
+    Color="Color.Primary"
+    Href="@(PageHref<NetworkUserPage>())">
     @Translate("Create")
-  </MudLink>
-  <UploadTabs T="NetworkUserModel"></UploadTabs>
+  </MudButton>
+
+  <UploadTabs
+    Class="mt-8"
+    T="NetworkUserModel" />
 }
 
 @code {
