@@ -1,25 +1,47 @@
 @namespace Ozds.Client.Components.Providers
+@using Ozds.Client.Components.Streaming
 @using MudBlazor
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
-
-@* FIXME: it doesn't work inside HeadContent *@
-
-<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet"/>
-
-<link href="/_content/MudBlazor/MudBlazor.min.css" rel="stylesheet"/>
-<link href="/_content/MudBlazor.ThemeManager/MudBlazorThemeManager.css" rel="stylesheet"/>
-
-<link href="/_content/Tizzani.MudBlazor.HtmlEditor/MudHtmlEditor.css" rel="stylesheet"/>
-
-<!-- NOTE: keep here just in case -->
-<!--
-<link href="/_content/Blazor-ApexCharts/css/apexcharts.css" rel=stylesheet />
--->
 
 @if (_state is null)
 {
   return;
 }
+
+@* FIXME: it doesn't work inside HeadContent *@
+<Fragment>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet"/>
+
+  <link href="/_content/MudBlazor/MudBlazor.min.css" rel="stylesheet"/>
+  <link href="/_content/MudBlazor.ThemeManager/MudBlazorThemeManager.css" rel="stylesheet"/>
+
+  <link href="/_content/Tizzani.MudBlazor.HtmlEditor/MudHtmlEditor.css" rel="stylesheet"/>
+
+  <!-- NOTE: keep here just in case -->
+  <!--
+  <link href="/_content/Blazor-ApexCharts/css/apexcharts.css" rel=stylesheet />
+  -->
+
+  <style>
+    .mud-expand-panel-text {
+      font-size: var(--mud-typography-body1-size);
+    }
+
+    .mud-drop-container {
+      user-select: text !important;
+    }
+
+    .mud-table-cell {
+      font-size: var(--mud-typography-body1-size);
+    }
+
+    pre{
+      max-width: 80ch;
+      white-space: pre-wrap;
+      overflow-wrap: break-word;
+    }
+  </style>
+</Fragment>
 
 <CascadingValue Value="_state">
   <MudThemeProvider
@@ -45,22 +67,3 @@
 <script src="/_content/Blazor-ApexCharts/js/blazor-apexcharts.js"></script>
 <script src="/_content/Blazor-ApexCharts/js/apexcharts.esm.js"></script>
 -->
-<style>
-  .mud-expand-panel-text {
-    font-size: var(--mud-typography-body1-size);
-  }
-
-  .mud-drop-container {
-    user-select: text !important;
-  }
-
-  .mud-table-cell {
-    font-size: var(--mud-typography-body1-size);
-  }
-
-  pre{
-    max-width: 80ch;
-    white-space: pre-wrap;
-    overflow-wrap: break-word;
-  }
-</style>
