@@ -56,20 +56,31 @@
     }
 
     <Details Model="@context.Model"/>
-    <div style="width: 170px;">
-      <MonthPickerField @bind-Value="@selectedMonth" Label="@Translate("Pick month")"/>
-      <br/>
+
+    <div class="mt-8">
+      <MudText Typo="Typo.h5">
+        @Translate("Report")
+      </MudText>
+
+      <div style="width: 170px;">
+        <MonthPickerField @bind-Value="@selectedMonth" Label="@Translate("Pick month")"/>
+      </div>
+
       @{
-        var href =
+        var energyCardHref =
           "/report/location-energy-card"
           + "/" + GetCulture().TwoLetterISOLanguageName
           + "/" + context.Model.Id
           + "/" + selectedMonth.Year
           + "/" + selectedMonth.Month;
       }
+      <MudButton
+        Class="mt-4"
+        Variant="Variant.Outlined"
+        Color="Color.Primary"
+        Href="@energyCardHref">
+        @Translate("Energy card report (CSV)")
+      </MudButton>
     </div>
-    <MudLink Class="mt-4" Href="@href">
-      @Translate("Energy card report (CSV)")
-    </MudLink>
   </Details>
 </Mutating>
