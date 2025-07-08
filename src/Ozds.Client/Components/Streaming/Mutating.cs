@@ -1,4 +1,3 @@
-using System.Text.Json;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Ozds.Business.Models.Abstractions;
@@ -117,7 +116,7 @@ public partial class Mutating<T> : OzdsComponentBase
       else
       {
         throw new InvalidOperationException(
-          $"No create strategy found for {typeof(T).Name}");
+          $"No create strategy found for {typeof(T)}");
       }
     }
     catch (Exception ex)
@@ -129,7 +128,7 @@ public partial class Mutating<T> : OzdsComponentBase
           {
             nameof(MutatingResult.Body),
             $"{Translate("Failed creating")}"
-            + $" {Translate(typeof(T).Name)} - {ex.Message}"
+            + $" {Translate(typeof(T))} - {ex.Message}"
           }
         },
         new DialogOptions { CloseOnEscapeKey = true });
@@ -142,7 +141,7 @@ public partial class Mutating<T> : OzdsComponentBase
       {
         {
           nameof(MutatingResult.Body),
-          $"{Translate("Successfully created")} {Translate(typeof(T).Name)}"
+          $"{Translate("Successfully created")} {Translate(typeof(T))}"
         }
       },
       new DialogOptions { CloseOnEscapeKey = true });
@@ -168,7 +167,7 @@ public partial class Mutating<T> : OzdsComponentBase
       else
       {
         throw new InvalidOperationException(
-          $"No update strategy found for {typeof(T).Name}");
+          $"No update strategy found for {typeof(T)}");
       }
     }
     catch (Exception ex)
@@ -180,7 +179,7 @@ public partial class Mutating<T> : OzdsComponentBase
           {
             nameof(MutatingResult.Body),
             $"{Translate("Failed updating")}"
-            + $" {Translate(typeof(T).Name)} - {ex.Message}"
+            + $" {Translate(typeof(T))} - {ex.Message}"
           }
         },
         new DialogOptions { CloseOnEscapeKey = true });
@@ -193,7 +192,7 @@ public partial class Mutating<T> : OzdsComponentBase
       {
         {
           nameof(MutatingResult.Body),
-          $"{Translate("Successfully updated")} {Translate(typeof(T).Name)}"
+          $"{Translate("Successfully updated")} {Translate(typeof(T))}"
         }
       },
       new DialogOptions { CloseOnEscapeKey = true });
@@ -219,7 +218,7 @@ public partial class Mutating<T> : OzdsComponentBase
       else
       {
         throw new InvalidOperationException(
-          $"No delete strategy found for {typeof(T).Name}");
+          $"No delete strategy found for {typeof(T)}");
       }
     }
     catch (Exception ex)
@@ -231,7 +230,7 @@ public partial class Mutating<T> : OzdsComponentBase
           {
             nameof(MutatingResult.Body),
             $"{Translate("Failed deleting")}"
-            + $" {Translate(typeof(T).Name)} - {ex.Message}"
+            + $" {Translate(typeof(T))} - {ex.Message}"
           }
         },
         new DialogOptions { CloseOnEscapeKey = true });
@@ -244,7 +243,7 @@ public partial class Mutating<T> : OzdsComponentBase
       {
         {
           nameof(MutatingResult.Body),
-          $"{Translate("Successfully deleted")} {Translate(typeof(T).Name)}"
+          $"{Translate("Successfully deleted")} {Translate(typeof(T))}"
         }
       },
       new DialogOptions { CloseOnEscapeKey = true });
@@ -270,7 +269,7 @@ public partial class Mutating<T> : OzdsComponentBase
       else
       {
         throw new InvalidOperationException(
-          $"No restore strategy found for {typeof(T).Name}");
+          $"No restore strategy found for {typeof(T)}");
       }
     }
     catch (Exception ex)
@@ -282,7 +281,7 @@ public partial class Mutating<T> : OzdsComponentBase
           {
             nameof(MutatingResult.Body),
             $"{Translate("Failed restoring")}"
-            + $" {Translate(typeof(T).Name)} - {ex.Message}"
+            + $" {Translate(typeof(T))} - {ex.Message}"
           }
         },
         new DialogOptions { CloseOnEscapeKey = true });
@@ -295,7 +294,7 @@ public partial class Mutating<T> : OzdsComponentBase
       {
         {
           nameof(MutatingResult.Body),
-          $"{Translate("Successfully restored")} {Translate(typeof(T).Name)}"
+          $"{Translate("Successfully restored")} {Translate(typeof(T))}"
         }
       },
       new DialogOptions { CloseOnEscapeKey = true });
@@ -321,7 +320,7 @@ public partial class Mutating<T> : OzdsComponentBase
       else
       {
         throw new InvalidOperationException(
-          $"No forget strategy found for {typeof(T).Name}");
+          $"No forget strategy found for {typeof(T)}");
       }
     }
     catch (Exception ex)
@@ -333,7 +332,7 @@ public partial class Mutating<T> : OzdsComponentBase
           {
             nameof(MutatingResult.Body),
             $"{Translate("Failed forgetting")}"
-            + $" {Translate(typeof(T).Name)} - {ex.Message}"
+            + $" {Translate(typeof(T))} - {ex.Message}"
           }
         },
         new DialogOptions { CloseOnEscapeKey = true });
@@ -346,7 +345,7 @@ public partial class Mutating<T> : OzdsComponentBase
       {
         {
           nameof(MutatingResult.Body),
-          $"{Translate("Successfully forgotten")} {Translate(typeof(T).Name)}"
+          $"{Translate("Successfully forgotten")} {Translate(typeof(T))}"
         }
       },
       new DialogOptions { CloseOnEscapeKey = true });
