@@ -131,7 +131,7 @@ public class LocalizationQueries(
     var translatedDuration = TranslateDuration(
       culture,
       duration.Duration,
-      duration.Multiplier > 1);
+      duration.Multiplier != 1);
 
     return $"{duration.Multiplier} {translatedDuration}";
   }
