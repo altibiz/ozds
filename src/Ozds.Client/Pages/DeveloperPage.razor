@@ -27,8 +27,36 @@ RoleModel.LocationRepresentative,
   return;
 }
 
-<MudButton OnClick="OnThrowClick">@Translate("Throw")</MudButton>
+<p>
+  <MudText Class="mb-4" Typo="Typo.h5">
+    @Translate("Server controls")
+  </MudText>
 
-<MudButton OnClick="OnStopClick">@Translate("Stop")</MudButton>
+  <MudButton
+    Color="Color.Error"
+    Variant="Variant.Filled"
+    OnClick="OnThrowClick">
+    @Translate("Throw exception")
+  </MudButton>
 
-<MudButton OnClick="OnPdfClick">@Translate("PDF")</MudButton>
+  <MudButton
+    Color="Color.Error"
+    Variant="Variant.Filled"
+    Class="ml-4"
+    OnClick="OnStopClick">
+    @Translate("Stop app")
+  </MudButton>
+</p>
+
+<p class="mt-8">
+  <MudText Class="mb-4" Typo="Typo.h5">
+    @Translate("Document controls")
+  </MudText>
+
+  <MudButton
+    Color="Color.Success"
+    Variant="Variant.Filled"
+    OnClick="OnPdfClick">
+    @Translate("Generate PDF")
+  </MudButton>
+</p>
