@@ -1,5 +1,6 @@
 @using Ozds.Business.Models
 @using Ozds.Business.Models.Abstractions
+@using MudBlazor
 @inherits Ozds.Client.Components.Models.Base.OzdsDetailsComponentBase<Ozds.Business.Models.Abstractions.IFinancial>
 
 @(Base<IIdentifiable>())
@@ -13,5 +14,3 @@
 @Field(x => x.ToDate)
 
 @Sub()
-
-@Field(x => x.Total_EUR)
