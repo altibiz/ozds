@@ -12,7 +12,6 @@
 @Base()
 
 @code {
-
   protected RenderFragment Field(Expression<Func<TModel, string?>> next)
   {
     var nextFunc = next.Compile();
@@ -107,6 +106,10 @@
         {
           @string.Join(", ", model)
         }
+        else
+        {
+          @Translate("None")
+        }
       </MudText>
     </DetailsField>;
   }
@@ -129,6 +132,10 @@
       {
         @(new MarkupString(html))
       }
+      else
+      {
+        @Translate("None")
+      }
     </DetailsField>;
   }
 
@@ -138,8 +145,8 @@
     return @<DetailsField Title="@(Translate(Label(next)))">
       <MudText>
         <pre>
-            @nextFunc(Model)
-          </pre>
+          @nextFunc(Model)
+        </pre>
       </MudText>
     </DetailsField>;
   }
@@ -156,7 +163,14 @@
         }
         else
         {
-          @value
+          if (value is { })
+          {
+            @value
+          }
+          else
+          {
+            @Translate("None")
+          }
         }
       </MudText>
     </DetailsField>;
@@ -205,7 +219,14 @@
         }
         else
         {
-          @value
+          if (value is { })
+          {
+            @value
+          }
+          else
+          {
+            @Translate("None")
+          }
         }
       </MudText>
     </DetailsField>;
@@ -223,7 +244,14 @@
         }
         else
         {
-          @value
+          if (value is { })
+          {
+            @value
+          }
+          else
+          {
+            @Translate("None")
+          }
         }
       </MudText>
     </DetailsField>;
@@ -242,7 +270,14 @@
           }
           else
           {
-            @value
+            if (value is { })
+            {
+              @value
+            }
+            else
+            {
+              @Translate("None")
+            }
           }
         </pre>
       </MudText>
@@ -259,6 +294,10 @@
         @if (nextFunc(Model) is { } model)
         {
           @string.Join(", ", model)
+        }
+        else
+        {
+          @Translate("None")
         }
       </MudText>
     </DetailsField>;
@@ -277,7 +316,7 @@
     return @<DetailsField Title="@(Translate(Label(next)))">
       @if (id is null || href is null)
       {
-        <Fragment/>
+        @Translate("None")
       }
       else
       {
