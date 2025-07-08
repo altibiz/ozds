@@ -114,6 +114,12 @@ public class Analyzer(
     var startOfLastMonth = timeQueries.GetStartOfLastMonth(now);
     var startOfThisMonth = timeQueries.GetStartOfMonth(now);
 
+    var monthlyAggregates = models
+      .SelectMany(x => x.MonthlyAggregates)
+      .GroupBy(x => x.Timestamp)
+      .Select(x => x.ToList())
+      .ToList();
+
     var monthlyConsumption = AnalyzeConsumption(
         models
           .SelectMany(x => x.MonthlyAggregates))
@@ -125,11 +131,8 @@ public class Analyzer(
         .FirstOrDefault(x => x.Timestamp == startOfThisMonth)
       ?? Consumption.Null;
 
-    var monthlyMaxLoad = models
-      .SelectMany(
-        x => x.MonthlyAggregates
-          .Select(x => AnalyzeLoad(x))
-          .OrderByDescending(x => x.Timestamp))
+    var monthlyLoad = monthlyAggregates
+      .Select(x => AnalyzeLoad(x))
       .ToList();
     var load = AnalyzeLoad(
       models
@@ -144,13 +147,26 @@ public class Analyzer(
 
     var monthlyAnalyses = monthlyConsumption
       .Join(
-        monthlyMaxLoad,
+        monthlyLoad,
         x => timeQueries.GetStartOfMonth(x.Timestamp),
         x => timeQueries.GetStartOfMonth(x.Timestamp),
-        (x, y) => new MonthlyAnalysis(
-          timeQueries.GetStartOfMonth(x.Timestamp),
-          y,
-          x
+        (consumption, load) => new { consumption, load })
+      .Join(
+        monthlyAggregates,
+        x => timeQueries.GetStartOfMonth(x.consumption.Timestamp),
+        x => timeQueries.GetStartOfMonth(x.First().Timestamp),
+        (x, aggregates) => new
+        {
+          x.consumption,
+          x.load,
+          aggregates
+        })
+      .Select((x) =>
+        new MonthlyAnalysis(
+          timeQueries.GetStartOfMonth(x.consumption.Timestamp),
+          x.load,
+          x.consumption,
+          x.aggregates.Cast<IMeasurement>().ToList()
         ))
       .OrderByDescending(x => x.StartOfMonth)
       .ToList();

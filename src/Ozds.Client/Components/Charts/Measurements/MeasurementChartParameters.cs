@@ -20,6 +20,8 @@ public class MeasurementChartParameters
 
   public HashSet<PhaseModel> Phases { get; set; } = new();
 
+  public AggregationModel? Aggregation { get; set; } = AggregationModel.Avg;
+
   public ResolutionModel Resolution { get; set; } = ResolutionModel.Minute;
 
   public int Multiplier { get; set; } = 15;

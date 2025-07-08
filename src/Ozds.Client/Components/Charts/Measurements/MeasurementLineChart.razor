@@ -4,7 +4,9 @@
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Business.Models.Enums
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
-@if (Parameters.MeasurementLocations.Count > 0 || Parameters.Meters.Count > 0)
+@if (Parameters.MeasurementLocations.Count > 0
+  || Parameters.Meters.Count > 0
+  || Parameters.Measurements.Items.Count > 0)
 {
   <ApexChart
     XAxisType="@XAxisType.Datetime"
@@ -64,7 +66,7 @@ else
             x =>
               x.MeasurementLocationId == measurementMeasurementLocation?.Id)
           .ToList()
-        : new List<IMeasurement>();
+        : Parameters.Measurements.Items;
     var phaseName = phase is { } selectedPhase
       ? Translate(selectedPhase.ToString())
       : Translate("Phase sum");
@@ -79,20 +81,33 @@ else
               Name="@name"
               SeriesType="@(Area ? SeriesType.Area : SeriesType.Line)"
               XValue="@(x => DateTimeApplyOffset(x.Timestamp))"
-              YValue="@(x => Math.Round(x.ChartValue(Parameters.Measure, phase: phase), 2))"
+              YValue="@(x => Math.Round(
+                x.ChartValue(
+                  Parameters.Measure,
+                  phase: phase,
+                  aggregation: Parameters.Aggregation),
+                2))"
               Stroke="@(new SeriesStroke { Color = color, Width = 4 })"
               Color="@color"/>;
   }
 
-  private IEnumerable<(IMeter? Meter, IMeasurementLocation? MeasurementLocation, int Index)> GetItems()
+  private List<(IMeter? Meter, IMeasurementLocation? MeasurementLocation, int Index)> GetItems()
   {
-    return Parameters.Meters
+    var items = Parameters.Meters
       .OrderBy(x => x.Id)
       .Select((x, i) => ((IMeter?)x, (IMeasurementLocation?)null, i))
       .Concat(
         Parameters.MeasurementLocations
           .OrderBy(x => x.Id)
-          .Select((x, i) => ((IMeter?)null, (IMeasurementLocation?)x, i)));
+          .Select((x, i) => ((IMeter?)null, (IMeasurementLocation?)x, i)))
+      .ToList();
+
+    if (items.Count == 0)
+    {
+      items.Add((null, null, 0));
+    }
+
+    return items;
   }
 
 }

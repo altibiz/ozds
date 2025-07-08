@@ -1,12 +1,14 @@
 using Ozds.Business.Models;
+using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Base;
 
 namespace Ozds.Business.Analysis;
 
 public record MonthlyAnalysis(
   DateTimeOffset StartOfMonth,
-  Load MaxLoad,
-  Consumption Consumption
+  Load Load,
+  Consumption Consumption,
+  List<IMeasurement> Measurements
 );
 
 public record Analysis(

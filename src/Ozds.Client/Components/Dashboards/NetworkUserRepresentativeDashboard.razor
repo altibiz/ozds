@@ -59,17 +59,21 @@
           </MudText>
         </MudItem>
         @{
+          var measurements = Model.Monthly
+            .Select(x => new MonthlyMeasurement(x.Measurements) as IMeasurement)
+            .ToList();
+
           var parameters = new MeasurementChartParameters
           {
-            Meters = Meters.ToHashSet(),
-            Measure = MeasureModel.ActivePower,
-            FromDate = TimeQueries.GetStartOfMonthLastYear(ClockQueries.Now()),
+            Measure = MeasureModel.ActiveEnergy,
             Resolution = ResolutionModel.Year,
+            FromDate = TimeQueries.GetStartOfMonthLastYear(ClockQueries.Now()),
             Multiplier = 1,
-            Operator = OperatorModel.Last
+            Operator = OperatorModel.Last,
+            Measurements = new(measurements, measurements.Count)
           };
         }
-        <MeasurementLineChart Height="200" Parameters="@parameters" Area/>
+        <MeasurementLineChart Parameters="@parameters" Area/>
       </MudPaper>
     </MudItem>
   </MudGrid>
@@ -138,14 +142,19 @@
           </MudText>
         </MudItem>
         @{
+          var measurements = Model.Monthly
+            .Select(x => new MonthlyMeasurement(x.Measurements) as IMeasurement)
+            .ToList();
+
           var parameters = new MeasurementChartParameters
           {
-            Meters = Meters.ToHashSet(),
             Measure = MeasureModel.ActiveEnergy,
             Resolution = ResolutionModel.Year,
             FromDate = TimeQueries.GetStartOfMonthLastYear(ClockQueries.Now()),
             Multiplier = 1,
-            Operator = OperatorModel.Last
+            Operator = OperatorModel.Last,
+            Measurements = new(measurements, measurements.Count),
+            Aggregation = AggregationModel.Max
           };
         }
         <MeasurementLineChart Parameters="@parameters" Area/>
@@ -153,19 +162,3 @@
     </MudItem>
   </MudGrid>
 </MudHidden>
-
-@code {
-
-  [Parameter]
-  public Analysis Model { get; set; } = default!;
-
-  [Parameter]
-  public List<IMeter> Meters { get; set; } = default!;
-
-  [Inject]
-  private ClockQueries ClockQueries { get; set; } = default!;
-
-  [Inject]
-  private TimeQueries TimeQueries { get; set; } = default!;
-
-}
