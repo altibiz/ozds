@@ -14,7 +14,7 @@ public class ModelValidator(
   )
   {
     var validationResults = new List<ValidationResult>();
-    var validationContext = new ValidationContext(this);
+    var validationContext = new ValidationContext(model, serviceProvider, null);
 
     validationResults.AddRange(model.Validate(validationContext));
 

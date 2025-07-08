@@ -41,7 +41,9 @@ public abstract class MeasurementModel : IMeasurement
     ValidationContext validationContext);
 }
 
+#pragma warning disable S2326 // Unused type parameters should be removed
 public abstract class MeasurementModel<T> : MeasurementModel
+#pragma warning restore S2326 // Unused type parameters should be removed
   where T : class, IMeasurementValidator
 {
   public override IEnumerable<ValidationResult> Validate(
@@ -64,14 +66,6 @@ public abstract class MeasurementModel<T> : MeasurementModel
       yield return new ValidationResult(
         "Timestamp must be in the past",
         new[] { nameof(Timestamp) });
-    }
-
-    if (validationContext.Items[ValidatorKey] is T validator)
-    {
-      foreach (var result in validator.Validate(validationContext))
-      {
-        yield return result;
-      }
     }
   }
 }

@@ -1,14 +1,14 @@
 using System.ComponentModel.DataAnnotations;
 using Ozds.Business.Caching;
 using Ozds.Business.Models.Abstractions;
-using Ozds.Business.Models.Base;
 using Ozds.Business.Validation.Base;
 
 namespace Ozds.Business.Validation.Implementations;
 
 public class MeasurementValidator(
+  IServiceProvider serviceProvider,
   ValidationCache cache
-) : ConcreteModelValidator<IMeasurement>
+) : ConcreteModelValidator<IMeasurement>(serviceProvider)
 {
   public override async Task<List<ValidationResult>> ValidateAsync(
     IMeasurement model,
@@ -22,8 +22,8 @@ public class MeasurementValidator(
         $"MeasurementValidator not found for meter {model.MeterId}");
     }
 
-    var validationContext = new ValidationContext(this);
-    validationContext.Items[MeasurementModel.ValidatorKey] = validator;
-    return model.Validate(validationContext).ToList();
+    var validationContext =
+      new ValidationContext(model, serviceProvider, null);
+    return validator.Validate(validationContext).ToList();
   }
 }
