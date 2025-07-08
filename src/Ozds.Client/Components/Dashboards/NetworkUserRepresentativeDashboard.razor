@@ -69,7 +69,7 @@
             Operator = OperatorModel.Last
           };
         }
-        <MeasurementLineChart Parameters="@parameters" Area/>
+        <MeasurementLineChart Height="200" Parameters="@parameters" Area/>
       </MudPaper>
     </MudItem>
   </MudGrid>
@@ -78,7 +78,7 @@
 <MudHidden Breakpoint="Breakpoint.SmAndDown">
   <MudGrid Class="my-3">
     <MudItem xs="4">
-      <MudPaper Class="mud-width-full d-flex flex-column justify-space-between pa-4" Height="320px">
+      <MudPaper Class="mud-width-full d-flex flex-column justify-space-between pa-4" Height="400px">
         <MudItem Class="" Style="font-size: large; font-weight: bold;">
           <MudText Typo="Typo.h5">
             @(Translate("Current months consumption") + ": ")
@@ -103,7 +103,7 @@
       </MudPaper>
     </MudItem>
     <MudItem xs="4">
-      <MudPaper Class="mud-width-full d-flex flex-column justify-space-between pa-4" Height="320px">
+      <MudPaper Class="mud-width-full d-flex flex-column justify-space-between pa-4" Height="400px">
         <MudItem Class="" Style="font-size: large; font-weight: bold;">
           <MudText Typo="Typo.h5">
             @(Translate("Last months consumption") + ": ")
@@ -131,17 +131,17 @@
       </MudPaper>
     </MudItem>
     <MudItem xs="4">
-      <MudPaper Class="mud-width-full pa-4" Height="320px">
+      <MudPaper Class="mud-width-full pa-4" Height="400px">
         <MudItem Class="" Style="font-size: large; font-weight: bold;">
           <MudText Typo="Typo.h5">
-            @(Translate("This years consumption") + " (kW):")
+            @(Translate("This years consumption") + " (kWh):")
           </MudText>
         </MudItem>
         @{
           var parameters = new MeasurementChartParameters
           {
             Meters = Meters.ToHashSet(),
-            Measure = MeasureModel.ActivePower,
+            Measure = MeasureModel.ActiveEnergy,
             Resolution = ResolutionModel.Year,
             FromDate = TimeQueries.GetStartOfMonthLastYear(ClockQueries.Now()),
             Multiplier = 1,
