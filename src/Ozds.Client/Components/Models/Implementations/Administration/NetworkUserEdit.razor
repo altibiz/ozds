@@ -14,6 +14,8 @@
 
 @(LinkField<LocationModel>(x => x.LocationId))
 
-@HtmlField(x => x.InvoiceRemark)
+<div class="mt-4">
+  @HtmlField(x => x.InvoiceRemark)
+</div>
 
 @Field(x => x.AutomaticallyApproveInvoices)
