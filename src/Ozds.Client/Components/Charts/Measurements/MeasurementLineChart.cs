@@ -41,6 +41,9 @@ public partial class MeasurementLineChart : OzdsComponentBase
   [Parameter]
   public bool Brush { get; set; } = false;
 
+  [Parameter]
+  public int Height { get; set; } = 300;
+
   protected override void OnInitialized()
   {
     _options = CreateGraphOptions();
