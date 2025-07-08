@@ -24,29 +24,19 @@ RoleModel.NetworkUserRepresentative
 
 <MudCheckBox
   T="bool"
-  Label="@(Translate("Seen"))"
+  Label="@(Translate("Show seen"))"
   @bind-Value="_seen"/>
 
-<Paging PageAsync="OnPageAsync">
-  <Found Context="page">
-    <Table Model="@(page.Items)">
-      <Summary>
-        <Summary Model="@context"/>
-      </Summary>
-      <Details>
-        <Details Model="@context"/>
-      </Details>
-      <Columns>
-        <Columns Models="page.Items"/>
-      </Columns>
-    </Table>
-  </Found>
-</Paging>
+<Table PageAsync="OnPageAsync" />
 
 @if (RepresentativeState.Representative.Role
   == RoleModel.OperatorRepresentative)
 {
-  <MudLink Href="@(PageHref<NotificationPage>())">
+  <MudButton
+    Class="mt-4"
+    Variant="Variant.Outlined"
+    Color="Color.Primary"
+    Href="@(PageHref<NotificationPage>())">
     @Translate("Create")
-  </MudLink>
+  </MudButton>
 }
