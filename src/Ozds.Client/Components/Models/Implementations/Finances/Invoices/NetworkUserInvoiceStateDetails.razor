@@ -5,4 +5,7 @@
 
 @Field(x => x.Approved)
 
-@Field(x => x.AbortReason)
+@if (!string.IsNullOrEmpty(Model.AbortReason))
+{
+  @Field(x => x.AbortReason)
+}

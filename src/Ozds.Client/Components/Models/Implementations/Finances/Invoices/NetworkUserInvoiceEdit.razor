@@ -24,5 +24,6 @@ Base<FinancialModel>(
     @Field(x => x.SupplyFeeTotal_EUR)
   </Fragment>))
 
-@Field(x => x.Tax_EUR)
-@Field(x => x.TotalWithTax_EUR)
+@Field(x => x.InvoiceTax_EUR)
+@Field(x => x.InvoiceTaxRate_Percent)
+@Field(x => x.InvoiceTotalWithTax_EUR)
