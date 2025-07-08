@@ -12,7 +12,9 @@
   Load="@(OnPage!)"
   LoadAsync="@(OnPageAsync!)"
   Progress="@(Progress!)"
-  Error="@(Error!)">
+  Error="@(Error!)"
+  Class="@Class"
+  Style="@Style">
   <Found Context="page">
     @if (page.Items.Count == 0)
     {

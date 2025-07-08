@@ -51,6 +51,12 @@ public partial class Paging<T> : OzdsComponentBase
   [Parameter]
   public bool Deleted { get; set; } = false;
 
+  [Parameter]
+  public string Class { get; set; } = string.Empty;
+
+  [Parameter]
+  public string Style { get; set; } = string.Empty;
+
   [Inject]
   public IJSRuntime JS { get; set; } = default!;
 
