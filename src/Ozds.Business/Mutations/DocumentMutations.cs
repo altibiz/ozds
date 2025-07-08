@@ -1,4 +1,5 @@
 using Ozds.Business.Conversion;
+using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Composite;
 using Ozds.Business.Mutations.Abstractions;
 using Ozds.Document.Entities;
@@ -47,6 +48,36 @@ public class DocumentMutations(
     };
 
     var pdf = await documentQueries.ReadPdfForNetworkUserInvoice(
+      entity,
+      cancellationToken
+    );
+    return pdf;
+  }
+
+  public async Task<string?> CreateHtmlForNetworkUserCalculation(
+    NetworkUserCalculationModel model,
+    CancellationToken cancellationToken
+  )
+  {
+    var entity = converter.ToEntity<NetworkUserCalculationEntity>(model);
+
+    var html = await documentQueries.ReadHtmlForNetworkUserCalculation(
+      entity,
+      cancellationToken
+    );
+    return html;
+  }
+
+#pragma warning disable SA1011 // Closing square brackets should be spaced correctly
+  public async Task<byte[]?> CreatePdfForNetworkUserCalculation(
+    NetworkUserCalculationModel model,
+    CancellationToken cancellationToken
+  )
+#pragma warning restore SA1011 // Closing square brackets should be spaced correctly
+  {
+    var entity = converter.ToEntity<NetworkUserCalculationEntity>(model);
+
+    var pdf = await documentQueries.ReadPdfForNetworkUserCalculation(
       entity,
       cancellationToken
     );

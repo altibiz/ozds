@@ -8,19 +8,20 @@
   </div>
   <div class="page-content">
     <NetworkUserCalculationDocumentContent Entity="@Entity"/>
-    <NetworkUserCalculationDocumentAbbreviations/>
+    <Remark Extended Value="@Entity.Remark"/>
   </div>
   <div class="page-footer">
     @Svg("invoice-print-footer-hrv")
   </div>
-</div"Id is required">
+</div>
+
 <div class="page-break"/>
 <div class="page">
   <div class="page-header">
     @Svg("invoice-print-header-hrv")
   </div>
   <div class="page-content">
-    <Remark Extended Value="@Entity.Remark"/>
+    <NetworkUserCalculationDocumentAbbreviations/>
   </div>
   <div class="page-footer">
     @Svg("invoice-print-footer-hrv")

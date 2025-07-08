@@ -61,4 +61,57 @@ public class DocumentRenderer(
 
     return pdf;
   }
+
+  public async Task<string?> RenderNetworkUserCalculationToHtml(
+    NetworkUserCalculationEntity entity,
+    CancellationToken cancellationToken
+  )
+  {
+    var html = await componentToHtmlRenderer.RenderComponentToHtml(
+      typeof(NetworkUserCalculationDocument),
+      new Dictionary<string, object?>
+      {
+        [nameof(NetworkUserCalculationDocument.Entity)] = entity
+      },
+      cancellationToken
+    );
+    if (html is null)
+    {
+      return null;
+    }
+
+    return html;
+  }
+
+#pragma warning disable SA1011 // Closing square brackets should be spaced correctly
+  public async Task<byte[]?> RenderNetworkUserCalculationToPdf(
+    NetworkUserCalculationEntity entity,
+    CancellationToken cancellationToken
+  )
+#pragma warning restore SA1011 // Closing square brackets should be spaced correctly
+  {
+    var html = await componentToHtmlRenderer.RenderPageToHtml(
+      typeof(NetworkUserCalculationDocument),
+      new Dictionary<string, object?>
+      {
+        [nameof(NetworkUserCalculationDocument.Entity)] = entity
+      },
+      cancellationToken
+    );
+    if (html is null)
+    {
+      return null;
+    }
+
+    var pdf = await documentRenderer.RenderHtmlToPdf(
+      html,
+      cancellationToken
+    );
+    if (pdf is null)
+    {
+      return null;
+    }
+
+    return pdf;
+  }
 }
