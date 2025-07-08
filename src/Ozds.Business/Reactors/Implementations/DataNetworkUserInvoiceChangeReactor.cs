@@ -21,13 +21,20 @@ public class DataNetworkUserInvoiceChangeReactor(
 public class DataNetworkUserInvoiceChangeHandler(
   LocalizationQueries localizationQueries,
   IMessageSender messageSender,
-  ILogger<DataNetworkUserInvoiceChangeHandler> logger
+  ILogger<DataNetworkUserInvoiceChangeHandler> logger,
+  IHostEnvironment hostEnvironment
 ) : Handler<DataModelsChangedEventArgs>
 {
   public override async Task Handle(
     DataModelsChangedEventArgs eventArgs,
     CancellationToken cancellationToken)
   {
+    // NOTE: skip for now in production
+    if (hostEnvironment.IsProduction())
+    {
+      return;
+    }
+
     foreach (var entry in eventArgs.Models)
     {
       if (entry.Model is not NetworkUserInvoiceModel invoice)
