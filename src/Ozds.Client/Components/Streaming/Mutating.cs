@@ -85,6 +85,12 @@ public partial class Mutating<T> : OzdsComponentBase
   [Parameter]
   public bool AsReadonly { get; set; } = false;
 
+  [Parameter]
+  public string Class { get; set; } = default!;
+
+  [Parameter]
+  public string Style { get; set; } = default!;
+
   [CascadingParameter]
   private RepresentativeState RepresentativeState { get; set; } = default!;
 

@@ -6,84 +6,96 @@
 @using Ozds.Client.State
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
-@if (_state.State is LoadingState.Loading)
-{
-  if (Progress is not null)
-  {
-    @Progress
-    return;
-  }
-
-  <Progress/>
-  return;
-}
-
-@if (_state.State is LoadingState.Error)
-{
-  if (Error is not null)
-  {
-    @Error(_state.Error!)
-    return;
-  }
-
-  <Error>@_state.Error</Error>
-  return;
-}
-
-@if (_state.State is LoadingState.Unfound)
-{
-  if (NotFound is not null)
-  {
-    @NotFound
-    return;
-  }
-
-  <NotFound/>
-  return;
-}
-
-@if (_state.State is LoadingState.Created)
-{
-  @if (Activate || ActivateAsync)
-  {
-    if (Concretize is not null)
+@{
+  RenderFragment inner = @<Fragment>
+    @if (_state.State is LoadingState.Loading)
     {
-      @Concretize
+      if (Progress is not null)
+      {
+        @Progress
+      }
+      else
+      {
+        <Progress/>
+      }
     }
-    else if (_activationType is not null && ActivatableSubtypes.Count > 1)
+    else if (_state.State is LoadingState.Error)
     {
-      <SelectField
-        T="Type"
-        Label="@Translate("Type")"
-        Value="@_activationType"
-        ValueChanged="@Reactivate">
-        @foreach (var type in ActivatableSubtypes)
+      if (Error is not null)
+      {
+        @Error(_state.Error!)
+      }
+      else
+      {
+        <Error>@_state.Error</Error>
+      }
+    }
+    else if (_state.State is LoadingState.Unfound)
+    {
+      if (NotFound is not null)
+      {
+        @NotFound
+      }
+      else
+      {
+        <NotFound/>
+      }
+    }
+    else if (_state.State is LoadingState.Created)
+    {
+      @if (Activate || ActivateAsync)
+      {
+        if (Concretize is not null)
         {
-          <MudSelectItem Value="@type">
-            <MudText>
-              @Translate(type)
-            </MudText>
-          </MudSelectItem>
+          @Concretize
         }
-      </SelectField>
+        else if (_activationType is not null && ActivatableSubtypes.Count > 1)
+        {
+          <SelectField
+            T="Type"
+            Class="mb-8"
+            Label="@Translate("Type")"
+            Value="@_activationType"
+            ValueChanged="@Reactivate">
+            @foreach (var type in ActivatableSubtypes)
+            {
+              <MudSelectItem Value="@type">
+                <MudText>
+                  @Translate(type)
+                </MudText>
+              </MudSelectItem>
+            }
+          </SelectField>
+        }
+      }
+
+      if (Created is not null)
+      {
+        @Created(_state.Value!)
+      }
+      else
+      {
+        <Serialized Value="@_state.Value"/>
+      }
     }
-  }
-
-  if (Created is not null)
-  {
-    @Created(_state.Value!)
-    return;
-  }
-
-
-  <Serialized Value="@_state.Value"/>
-  return;
+    else if (Found is not null)
+    {
+      @Found(_state.Value!)
+    }
+    else
+    {
+      <Serialized Value="@_state.Value"/>
+    }
+  </Fragment>;
 }
 
-@if (Found is not null)
+@if (string.IsNullOrWhiteSpace(Class) && string.IsNullOrWhiteSpace(Style))
 {
-  @Found(_state.Value!)
-  return;
+  @inner
 }
-
-<Serialized Value="@_state.Value"/>
+else
+{
+  <div class="@Class" style="@Style">
+    @inner
+  </div>
+}

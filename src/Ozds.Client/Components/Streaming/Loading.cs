@@ -55,6 +55,12 @@ public partial class Loading<T> : OzdsComponentBase
   [Parameter]
   public RenderFragment<T>? Created { get; set; }
 
+  [Parameter]
+  public string Class { get; set; } = default!;
+
+  [Parameter]
+  public string Style { get; set; } = default!;
+
   private List<Type> ActivatableSubtypes
   {
     get

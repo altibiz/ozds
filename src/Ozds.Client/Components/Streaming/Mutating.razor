@@ -19,6 +19,8 @@
   New="@(New!)"
   NewAsync="@(NewAsync!)"
   Concretize="@(Concretize!)"
+  Class="@Class"
+  Style="@Style"
   ActivateAsync>
   <Found Context="model">
     @if (model is IReadonly || AsReadonly)
@@ -120,11 +122,11 @@
 
         @Edit(new MutatingState<T>(model, true))
 
-        <MudText Color="Color.Error" Class="ml-4">
+        <MudText Color="Color.Error" Class="ml-4 mt-4">
           <ValidationSummary/>
         </MudText>
 
-        <div Class="d-flex flex-row">
+        <div Class="d-flex flex-row mt-8">
           <MudButton
             ButtonType="ButtonType.Submit"
             Variant="Variant.Filled"
