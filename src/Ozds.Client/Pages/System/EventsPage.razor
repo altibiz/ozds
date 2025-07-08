@@ -27,21 +27,18 @@ Allows = [RoleModel.OperatorRepresentative])]
   <title>OZDS - @Translate("Events")</title>
 </HeadContent>
 
-<SelectField
+<EnumPicker
   T="LevelModel"
-  Label="@Translate("Minimal level")"
-  AnchorOrigin="Origin.BottomCenter"
-  @bind-Value="@_minLevel">
-  @foreach (var value in Enum.GetValues<LevelModel>()
+  Title="@Translate("Minimal level")"
+  Label="@(level => Translate(level.ToString()))"
+  @bind-Value="@_minLevel"
+  Values="@(Enum
+    .GetValues<LevelModel>()
     .Where(
       l => Environment.IsDevelopment()
         ? l >= LevelModel.Trace
-        : l >= LevelModel.Information))
-  {
-    <MudSelectItem Value="value">
-      @Translate(value.ToString())
-    </MudSelectItem>
-  }
-</SelectField>
+        : l >= LevelModel.Information))" />
 
-<Table PageAsync="@OnPageAsync"/>
+<Table
+  Class="mt-4"
+  PageAsync="@OnPageAsync"/>
