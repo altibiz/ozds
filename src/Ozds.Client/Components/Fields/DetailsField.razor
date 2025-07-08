@@ -1,25 +1,61 @@
 @using MudBlazor
 @namespace Ozds.Client.Components.Fields
 
-<MudGrid Justify="Justify.SpaceBetween" Spacing="0" Class="mt-2" Style="max-width: 36rem;">
-  <MudItem xs="12" sm="6">
+@{
+  RenderFragment innerBig = @<div
+    class="@($"mt-2 d-flex flex-column" + Class)"
+    style="@("max-width: 36rem; " + Style)">
     <MudText Typo="Typo.body1">
       <b>@(Title)</b>:
     </MudText>
-  </MudItem>
-  <MudItem>
-    <MudText Typo="Typo.body2">
-      @ChildContent
+    <MudText Typo="Typo.body1" Align="Align.Left">
+      @ChildContent @Unit
     </MudText>
-  </MudItem>
-</MudGrid>
+  </div>;
+
+  RenderFragment innerSmall = @<div
+    class="@($"mt-2 d-flex flex-row justify-space-between align-items-end" + Class)"
+    style="@("max-width: 36rem; " + Style)">
+    <MudText Typo="Typo.body1">
+      <b>@(Title)</b>:
+    </MudText>
+    <MudText Typo="Typo.body1" Align="Align.Right">
+      @ChildContent @Unit
+    </MudText>
+  </div>;
+}
+
+@if (LargeContent)
+{
+  @innerBig
+}
+else
+{
+  <MudHidden Breakpoint="Breakpoint.SmAndUp">
+    @innerBig
+  </MudHidden>
+  <MudHidden Breakpoint="Breakpoint.Xs">
+    @innerSmall
+  </MudHidden>
+}
 
 @code {
 
   [Parameter]
-  public string Title { get; set; } = default!;
+  public string Title { get; set; } = string.Empty;
 
   [Parameter]
   public RenderFragment? ChildContent { get; set; }
 
+  [Parameter]
+  public string Unit { get; set; } = string.Empty;
+
+  [Parameter]
+  public string Class { get; set; } = string.Empty;
+
+  [Parameter]
+  public string Style { get; set; } = string.Empty;
+
+  [Parameter]
+  public bool LargeContent { get; set; } = false;
 }

@@ -86,7 +86,7 @@
   protected RenderFragment Field(Expression<Func<TModel, JsonDocument?>> next)
   {
     var nextFunc = next.Compile();
-    return @<DetailsField Title="@(Translate(Label(next)))">
+    return @<DetailsField Title="@(Translate(Label(next)))" LargeContent>
       <MudText>
         <pre>
           @JsonString(nextFunc(Model))
@@ -127,7 +127,7 @@
   protected RenderFragment HtmlField(Expression<Func<TModel, string?>> next)
   {
     var nextFunc = next.Compile();
-    return @<DetailsField Title="@(Translate(Label(next)))">
+    return @<DetailsField Title="@(Translate(Label(next)))" LargeContent>
       @if (nextFunc(Model) is { } html)
       {
         @(new MarkupString(html))
@@ -142,7 +142,7 @@
   protected RenderFragment PreField<T>(Expression<Func<TModel, T?>> next)
   {
     var nextFunc = next.Compile();
-    return @<DetailsField Title="@(Translate(Label(next)))">
+    return @<DetailsField Title="@(Translate(Label(next)))" LargeContent>
       <MudText>
         <pre>
           @nextFunc(Model)
@@ -261,7 +261,7 @@
   {
     var nextFunc = next.Compile();
     var value = nextFunc(Model);
-    return @<DetailsField Title="@(Translate(Label(next)))">
+    return @<DetailsField Title="@(Translate(Label(next)))" LargeContent>
       <MudText>
         <pre>
           @if (value is JsonDocument @decimal)
