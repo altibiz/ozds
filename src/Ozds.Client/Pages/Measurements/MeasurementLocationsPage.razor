@@ -39,9 +39,7 @@ RoleModel.NetworkUserRepresentative
 }
 
 <Table
-  Model="@(analyses
-    .Where(x => x.MeasurementLocation.IsDeleted == _deleted)
-    .ToList())"/>
+  Model="@(analyses.Where(x => x.MeasurementLocation.IsDeleted == _deleted).ToList())"/>
 
 @if (RepresentativeState.Representative.Role
   == RoleModel.OperatorRepresentative)

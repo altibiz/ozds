@@ -3,8 +3,8 @@
 
 @{
   RenderFragment innerBig = @<div
-    class="@($"mt-2 d-flex flex-column" + Class)"
-    style="@("max-width: 36rem; " + Style)">
+                               class="@("mt-2 d-flex flex-column" + Class)"
+                               style="@("max-width: 36rem; " + Style)">
     <MudText Typo="Typo.body1">
       <b>@(Title)</b>:
     </MudText>
@@ -14,8 +14,8 @@
   </div>;
 
   RenderFragment innerSmall = @<div
-    class="@($"mt-2 d-flex flex-row justify-space-between align-items-end" + Class)"
-    style="@("max-width: 36rem; " + Style)">
+                                 class="@("mt-2 d-flex flex-row justify-space-between align-items-end" + Class)"
+                                 style="@("max-width: 36rem; " + Style)">
     <MudText Typo="Typo.body1">
       <b>@(Title)</b>:
     </MudText>
@@ -58,4 +58,5 @@ else
 
   [Parameter]
   public bool LargeContent { get; set; } = false;
+
 }

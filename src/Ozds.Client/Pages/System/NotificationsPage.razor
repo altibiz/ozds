@@ -14,7 +14,6 @@ RoleModel.NetworkUserRepresentative
 ])]
 @using MudBlazor
 @using Ozds.Client.Attributes
-@using Ozds.Client.Components.Models
 @using Ozds.Client.Components.Streaming
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
@@ -27,7 +26,7 @@ RoleModel.NetworkUserRepresentative
   Label="@(Translate("Show seen"))"
   @bind-Value="_seen"/>
 
-<Table PageAsync="OnPageAsync" />
+<Table PageAsync="OnPageAsync"/>
 
 @if (RepresentativeState.Representative.Role
   == RoleModel.OperatorRepresentative)

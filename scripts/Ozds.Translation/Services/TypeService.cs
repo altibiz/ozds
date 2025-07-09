@@ -562,8 +562,8 @@ public class TypeService(
         yield return item;
       }
 
-      var pluralPrefix = translation.Key(type, plural: true);
-      var pluralShortPrefix = translation.ShortKey(type, plural: true);
+      var pluralPrefix = translation.Key(type, true);
+      var pluralShortPrefix = translation.ShortKey(type, true);
 
       yield return new TypeTranslationItem(
         type,

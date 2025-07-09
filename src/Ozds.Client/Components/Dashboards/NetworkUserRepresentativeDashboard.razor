@@ -1,9 +1,8 @@
 @namespace Ozds.Client.Components.Dashboards
 @using MudBlazor
-@using Ozds.Business.Analysis
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Business.Models.Enums
-@using Ozds.Business.Queries
+@using Ozds.Business.Queries.Abstractions
 @using Ozds.Client.Components.Charts
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
@@ -70,7 +69,7 @@
             FromDate = TimeQueries.GetStartOfMonthLastYear(ClockQueries.Now()),
             Multiplier = 1,
             Operator = OperatorModel.Last,
-            Measurements = new(measurements, measurements.Count)
+            Measurements = new PaginatedList<IMeasurement>(measurements, measurements.Count)
           };
         }
         <MeasurementLineChart Parameters="@parameters" Area/>
@@ -153,7 +152,7 @@
             FromDate = TimeQueries.GetStartOfMonthLastYear(ClockQueries.Now()),
             Multiplier = 1,
             Operator = OperatorModel.Last,
-            Measurements = new(measurements, measurements.Count),
+            Measurements = new PaginatedList<IMeasurement>(measurements, measurements.Count),
             Aggregation = AggregationModel.Max
           };
         }

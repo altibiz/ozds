@@ -14,7 +14,7 @@
   @if (subtypes.Count == 1)
   {
     <MudText Class="mb-2" Typo="Typo.h6">
-      @Translate("Import") - @Translate(subtypes[0], plural: true)
+      @Translate("Import") - @Translate(subtypes[0], true)
     </MudText>
     <UploadField Type="subtypes[0]"/>
   }

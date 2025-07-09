@@ -45,7 +45,7 @@ public class TranslationQueries : ITranslationQueries
   {
     var order = VirtualizationOrder(type);
     return order
-      .Select(x => Key(x, plural: false))
+      .Select(x => Key(x, false))
       .Append(GeneralKey(type, false))
       .Append(GeneralKey(type))
       .Select(AddPluralFn(plural))
@@ -106,7 +106,7 @@ public class TranslationQueries : ITranslationQueries
   {
     var order = VirtualizationOrder(type);
     return order
-      .Select(x => ShortKey(x, plural: false))
+      .Select(x => ShortKey(x, false))
       .Append(GeneralKey(type))
       .Select(AddPluralFn(plural))
       .ToArray();
@@ -143,8 +143,10 @@ public class TranslationQueries : ITranslationQueries
       .ToArray();
   }
 
-  private static Func<string, string> AddPluralFn(bool plural) =>
-    plural ? AddPlural : x => x;
+  private static Func<string, string> AddPluralFn(bool plural)
+  {
+    return plural ? AddPlural : x => x;
+  }
 
   private static string AddPlural(string key)
   {

@@ -1452,7 +1452,8 @@
         Type 'Ozds.Business.Models.Complex.SupplyRenewableEnergyCalculationItemModel'
       </Metadata>
       <Value>
-        Stavke obračuna naknade za poticanje proizvodnje iz obnovljivih izvora enegije i kogeneracije
+        Stavke obračuna naknade za poticanje proizvodnje iz obnovljivih izvora
+        enegije i kogeneracije
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -4483,7 +4484,7 @@
         Archives
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 22 column 23
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 26 column 23
       </Metadata>
       <Value>
         Arhive
@@ -4805,6 +4806,7 @@
         Blue NN
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 76 column 13
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 187 column 13
       </Metadata>
       <Value>
@@ -7528,7 +7530,7 @@
         Electrical energy supply during higher daily tariff period
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 43 column 29
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 47 column 29
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 50 column 25
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 51 column 4
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 140 column 10
@@ -7542,7 +7544,7 @@
         Electrical energy supply during lower daily tariff period
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 46 column 29
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 50 column 29
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 53 column 25
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 46 column 4
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 147 column 10
@@ -7567,7 +7569,7 @@
         Electrical energy supply fee
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 42 column 27
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 46 column 27
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 49 column 23
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 135 column 10
       </Metadata>
@@ -7954,7 +7956,7 @@
         Excise duty for business/non-business use
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 52 column 29
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 56 column 29
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 59 column 25
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 163 column 10
       </Metadata>
@@ -8002,7 +8004,7 @@
         cogeneration
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 49 column 29
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 53 column 29
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 56 column 25
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 66 column 4
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 155 column 8
@@ -11426,7 +11428,7 @@
         Measurement service fee
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 37 column 29
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 41 column 29
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 41 column 25
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 36 column 4
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 119 column 10
@@ -14472,6 +14474,30 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        Ozds.Business.Analysis.MeasurementLocationAnalysis.Meter.Title
+      </Key>
+      <Value>
+        Naziv brojila
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Ozds.Business.Analysis.MeasurementLocationAnalysis.NetworkUser.Title
+      </Key>
+      <Value>
+        Naziv korisnika ZDS-a
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Ozds.Business.Analysis.MeterAnalysis.NetworkUser.Title
+      </Key>
+      <Value>
+        Naziv korisnika ZDS-a
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         P
       </Key>
       <Metadata>
@@ -16537,6 +16563,7 @@
         Red NN
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 74 column 11
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 185 column 11
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 90 column 14
       </Metadata>
@@ -18151,6 +18178,7 @@
         Tariff model
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 22 column 23
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 22 column 6
       </Metadata>
       <Value>
@@ -18954,30 +18982,6 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        Ozds.Business.Analysis.MeterAnalysis.NetworkUser.Title
-      </Key>
-      <Value>
-        Naziv korisnika ZDS-a
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        Ozds.Business.Analysis.MeasurementLocationAnalysis.NetworkUser.Title
-      </Key>
-      <Value>
-        Naziv korisnika ZDS-a
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        Ozds.Business.Analysis.MeasurementLocationAnalysis.Meter.Title
-      </Key>
-      <Value>
-        Naziv brojila
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
         To
       </Key>
       <Metadata>
@@ -19585,7 +19589,7 @@
         Totals
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 58 column 36
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 62 column 36
       </Metadata>
       <Value>
         Ukupni iznosi
@@ -20618,6 +20622,7 @@
         White NN
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 78 column 15
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 189 column 15
       </Metadata>
       <Value>
@@ -20629,6 +20634,7 @@
         White SN
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 80 column 17
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 191 column 17
       </Metadata>
       <Value>
@@ -20845,7 +20851,7 @@
         ZDS network usage fee
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 35 column 27
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 39 column 27
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 25 column 37
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 79 column 10
       </Metadata>

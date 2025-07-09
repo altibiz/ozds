@@ -161,13 +161,14 @@ public class Analyzer(
           x.load,
           aggregates
         })
-      .Select((x) =>
-        new MonthlyAnalysis(
-          timeQueries.GetStartOfMonth(x.consumption.Timestamp),
-          x.load,
-          x.consumption,
-          x.aggregates.Cast<IMeasurement>().ToList()
-        ))
+      .Select(
+        x =>
+          new MonthlyAnalysis(
+            timeQueries.GetStartOfMonth(x.consumption.Timestamp),
+            x.load,
+            x.consumption,
+            x.aggregates.Cast<IMeasurement>().ToList()
+          ))
       .OrderByDescending(x => x.StartOfMonth)
       .ToList();
 

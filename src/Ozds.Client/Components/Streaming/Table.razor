@@ -3,15 +3,14 @@
 @typeparam T
 @using MudBlazor
 @using Ozds.Client.Components.Models
-@using Ozds.Client.Components.Streaming
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 @{
   var title = DynamicTitle
     ? model.Items.Count > 0
-      ? Translate(model.Items.First()!.GetType(), plural: true)
-      : Translate(typeof(T), plural: true)
-    : Translate(typeof(T), plural: true);
+      ? Translate(model.Items.First()!.GetType(), true)
+      : Translate(typeof(T), true)
+    : Translate(typeof(T), true);
 
   RenderFragment inner = @<Fragment>
     <MudHidden Breakpoint="Breakpoint.MdAndUp">

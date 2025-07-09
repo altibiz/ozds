@@ -39,9 +39,7 @@ RoleModel.NetworkUserRepresentative
 }
 
 <Table
-  Model="@(analyses
-    .Where(x => x.NetworkUser.IsDeleted == _deleted)
-    .ToList())"/>
+  Model="@(analyses.Where(x => x.NetworkUser.IsDeleted == _deleted).ToList())"/>
 
 @if (RepresentativeState.Representative.Role
   == RoleModel.OperatorRepresentative)
@@ -56,7 +54,7 @@ RoleModel.NetworkUserRepresentative
 
   <UploadTabs
     Class="mt-8"
-    T="NetworkUserModel" />
+    T="NetworkUserModel"/>
 }
 
 @code {

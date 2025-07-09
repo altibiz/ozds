@@ -7,7 +7,6 @@ Title = "Events",
 Icon = Icons.Material.Filled.EditNotifications,
 Parent = typeof(SystemPage),
 Allows = [RoleModel.OperatorRepresentative])]
-@using MudBlazor
 @using Ozds.Business.Models.Enums
 @using Ozds.Client.Attributes
 @using Ozds.Client.Components.Fields
@@ -32,12 +31,7 @@ Allows = [RoleModel.OperatorRepresentative])]
   Title="@Translate("Minimal level")"
   Label="@(level => Translate(level.ToString()))"
   @bind-Value="@_minLevel"
-  Values="@(Enum
-    .GetValues<LevelModel>()
-    .Where(
-      l => Environment.IsDevelopment()
-        ? l >= LevelModel.Trace
-        : l >= LevelModel.Information))" />
+  Values="@(Enum.GetValues<LevelModel>().Where(l => Environment.IsDevelopment() ? l >= LevelModel.Trace : l >= LevelModel.Information))"/>
 
 <Table
   Class="mt-4"
