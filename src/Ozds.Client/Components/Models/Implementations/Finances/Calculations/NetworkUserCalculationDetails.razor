@@ -19,6 +19,10 @@ LinkField<NetworkUserMeasurementLocationModel>(
 
 @(LinkField<IRegulatoryCatalogue>(x => x.SupplyRegulatoryCatalogueId))
 
+<DetailsField Title="@Translate("Tariff model")">
+  @TariffModelTitle
+</DetailsField>
+
 <FieldChapter Title="@Translate("Archives")">
   @(ArchivedField(x => x.ArchivedMeter))
 
@@ -60,3 +64,21 @@ Base<IFinancial>(
   @Field(x => x.SupplyFeeTotal_EUR)
   @Field(x => x.Total_EUR)
 </FieldSection>
+
+@code {
+  private string TariffModelTitle
+  {
+    get
+    {
+      return Model.ArchivedUsageNetworkUserCatalogue is RedLowNetworkUserCatalogueModel
+        ? Translate("Red NN")
+        : Model.ArchivedUsageNetworkUserCatalogue is BlueLowNetworkUserCatalogueModel
+          ? Translate("Blue NN")
+          : Model.ArchivedUsageNetworkUserCatalogue is WhiteLowNetworkUserCatalogueModel
+            ? Translate("White NN")
+            : Model.ArchivedUsageNetworkUserCatalogue is WhiteMediumNetworkUserCatalogueModel
+              ? Translate("White SN")
+              : string.Empty;
+    }
+  }
+}
