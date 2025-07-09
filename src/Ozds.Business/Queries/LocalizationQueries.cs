@@ -28,9 +28,9 @@ public class LocalizationQueries(
     return localizer.Translate(culture, notLocalized);
   }
 
-  public string Translate(CultureInfo culture, Type type)
+  public string Translate(CultureInfo culture, Type type, bool plural = false)
   {
-    return localizer.Translate(culture, type);
+    return localizer.Translate(culture, type, plural);
   }
 
   public string Translate(CultureInfo culture, Type type, string member)
@@ -131,7 +131,7 @@ public class LocalizationQueries(
     var translatedDuration = TranslateDuration(
       culture,
       duration.Duration,
-      duration.Multiplier > 1);
+      duration.Multiplier != 1);
 
     return $"{duration.Multiplier} {translatedDuration}";
   }

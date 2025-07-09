@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Ozds.Business.Mutations;
 using Ozds.Business.Queries;
 
 namespace Ozds.Server.Controllers;
 
+[Authorize]
 public class DocumentController(
   CalculatedInvoiceQueries calculatedInvoiceQueries,
   NetworkUserInvoiceIssuer networkUserInvoiceIssuer,

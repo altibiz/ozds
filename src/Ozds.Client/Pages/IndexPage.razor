@@ -39,12 +39,14 @@ RoleModel.NetworkUserRepresentative
 @if (RepresentativeState.Representative.Role
   is RoleModel.NetworkUserRepresentative)
 {
-  <NetworkUserRepresentativeDashboard Model="@model" Meters="@meters"/>
+  <NetworkUserRepresentativeDashboard Model="@model"
+                                      MeasurementLocations="@measurementLocations"/>
 }
 @if (RepresentativeState.Representative.Role
   is RoleModel.LocationRepresentative)
 {
-  <LocationRepresentativeDashboard Model="@model" Meters="@meters"/>
+  <LocationRepresentativeDashboard Model="@model"
+                                   MeasurementLocations="@measurementLocations"/>
 }
 @if (RepresentativeState.Representative.Role
   is RoleModel.OperatorRepresentative)
@@ -60,7 +62,7 @@ RoleModel.NetworkUserRepresentative
   var locations = Analyzer.AnalyzeByLocation(
     AnalysisState.AnalysisBases.Value);
 
-  <Table Model="@locations"/>
+  <Table Class="mt-4" Model="@locations"/>
 }
 
 @if (RepresentativeState.Representative.Role
@@ -70,7 +72,7 @@ RoleModel.NetworkUserRepresentative
   var networkUsers = Analyzer.AnalyzeByNetworkUser(
     AnalysisState.AnalysisBases.Value);
 
-  <Table Model="@networkUsers"/>
+  <Table Class="mt-4" Model="@networkUsers"/>
 }
 
 @if (RepresentativeState.Representative.Role
@@ -79,7 +81,7 @@ RoleModel.NetworkUserRepresentative
   var measurementLocationsAnalysis = Analyzer.AnalyzeByMeasurementLocation(
     AnalysisState.AnalysisBases.Value);
 
-  <Table Model="@measurementLocationsAnalysis"/>
+  <Table Class="mt-4" Model="@measurementLocationsAnalysis"/>
 }
 
 @{
@@ -90,7 +92,7 @@ RoleModel.NetworkUserRepresentative
     .ToList();
 }
 
-<Table Model="@invoices"/>
+<Table Class="mt-4" Model="@invoices"/>
 
 @code {
 

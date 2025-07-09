@@ -32,4 +32,30 @@ public class DocumentQueries(
     );
     return pdf;
   }
+
+  public async Task<string?> ReadHtmlForNetworkUserCalculation(
+    NetworkUserCalculationEntity entity,
+    CancellationToken cancellationToken
+  )
+  {
+    var html = await Renderer.RenderNetworkUserCalculationToHtml(
+      entity,
+      cancellationToken
+    );
+    return html;
+  }
+
+#pragma warning disable SA1011 // Closing square brackets should be spaced correctly
+  public async Task<byte[]?> ReadPdfForNetworkUserCalculation(
+    NetworkUserCalculationEntity entity,
+    CancellationToken cancellationToken
+  )
+#pragma warning restore SA1011 // Closing square brackets should be spaced correctly
+  {
+    var pdf = await Renderer.RenderNetworkUserCalculationToPdf(
+      entity,
+      cancellationToken
+    );
+    return pdf;
+  }
 }

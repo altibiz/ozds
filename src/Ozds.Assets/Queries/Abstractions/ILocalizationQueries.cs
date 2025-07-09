@@ -5,7 +5,7 @@ namespace Ozds.Assets.Queries.Abstractions;
 
 public interface ILocalizationQueries : IQueries
 {
-  public string Translate(CultureInfo culture, Type type);
+  public string Translate(CultureInfo culture, Type type, bool plural = false);
 
   public string Translate(CultureInfo culture, Type type, string member);
 

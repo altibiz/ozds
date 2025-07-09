@@ -22,13 +22,15 @@ public static class MeasureExtensions
     MeasureModel measure,
     TariffModel? tariff = null,
     DuplexModel? duplex = null,
+    AggregationModel? aggregation = null,
     PhaseModel? phase = null
   )
   {
     var byTariff = measurement.GetMeasure(measure);
     var byDuplex = byTariff.GetMeasure(tariff, measure);
     var byPhase = byDuplex.GetMeasure(duplex, measure);
-    var result = byPhase.GetMeasure(phase, measure);
+    var byAggregation = byPhase.GetMeasure(aggregation, measure);
+    var result = byAggregation.GetMeasure(phase, measure);
     return result;
   }
 

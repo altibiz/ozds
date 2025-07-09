@@ -10,70 +10,16 @@
 @using Ozds.Client.Components.Streaming
 @inherits Ozds.Client.Components.Models.Base.OzdsIdentifiableModelPageComponentBase<Ozds.Business.Models.Abstractions.IMeter>
 
-@{
-  var analysis = Analyzer
-    .AnalyzeByMeter(AnalysisState.AnalysisBases.Value)
-    .FirstOrDefault(x => x.Meter.Id == Id);
-}
-
 @if (RepresentativeState.Representative.Role is not RoleModel.OperatorRepresentative)
 {
   <NotFound/>
   return;
 }
 
-@if (analysis is not null)
-{
-  <Table Model="@analysis.Analysis.Monthly">
-    <Summary>
-      <Summary Model="@context"/>
-    </Summary>
-    <Details>
-      <Details Model="@context"/>
-    </Details>
-    <Columns>
-      <Columns Models="@analysis.Analysis.Monthly"/>
-    </Columns>
-  </Table>
-
-  <div style="width: 170px;">
-    <MonthPickerField
-      @bind-Value="@selectedMonth"
-      Label="@Translate("Pick month")"/>
-    <br/>
-    <EnumPicker
-      Title="@Translate("Pick OBIS code")"
-      @bind-Value="@selectedObis"
-      Label="@(x => x.ToCode())"/>
-    @{
-      var accountingPeriodHref =
-        "/report/meter-accounting-period"
-        + "/" + GetCulture().TwoLetterISOLanguageName
-        + "/" + Id
-        + "/" + selectedMonth.Year
-        + "/" + selectedMonth.Month;
-
-      var loadCurveHref =
-        "/report/meter-load-curve"
-        + "/" + GetCulture().TwoLetterISOLanguageName
-        + "/" + Id
-        + "/" + selectedObis.ToCode()
-        + "/" + selectedMonth.Year
-        + "/" + selectedMonth.Month;
-    }
-  </div>
-  <MudLink Class="mt-4" Href="@accountingPeriodHref">
-    @Translate("Accounting period report (CSV)")
-  </MudLink>
-  <br/>
-  <MudLink Class="mt-4" Href="@loadCurveHref">
-    @Translate("Load curve report (CSV)")
-  </MudLink>
-
-  <MeasurementChartControls Meters="@(new List<IMeter> { analysis.Meter })">
-    @* <MeasurementGaugeChart Parameters="@context"/> *@
-    <MeasurementLineChart Parameters="@context"/>
-  </MeasurementChartControls>
+@{
+  var analysis = Analyzer
+    .AnalyzeByMeter(AnalysisState.AnalysisBases.Value)
+    .FirstOrDefault(x => x.Meter.Id == Id);
 }
 
 <Mutating T="IMeter" Value="@(analysis?.Meter)" Id="@Id">
@@ -97,3 +43,70 @@
     <Details Model="context.Model"/>
   </Details>
 </Mutating>
+
+@if (analysis is not null)
+{
+  <Table Class="mt-8" Model="@analysis.Analysis.Monthly"/>
+
+  <div class="mt-8">
+    <MudText Typo="Typo.h5">
+      @Translate("Reports")
+    </MudText>
+
+    <div style="width: 170px;">
+      <br/>
+      <MonthPickerField
+        @bind-Value="@selectedMonth"
+        Label="@Translate("Pick month")"/>
+
+      <br/>
+      <EnumPicker
+        Title="@Translate("Pick OBIS code")"
+        @bind-Value="@selectedObis"
+        Label="@(x => x.ToCode())"/>
+    </div>
+
+    @{
+      var accountingPeriodHref =
+        "/report/meter-accounting-period"
+        + "/" + GetCulture().TwoLetterISOLanguageName
+        + "/" + Id
+        + "/" + selectedMonth.Year
+        + "/" + selectedMonth.Month;
+
+      var loadCurveHref =
+        "/report/meter-load-curve"
+        + "/" + GetCulture().TwoLetterISOLanguageName
+        + "/" + Id
+        + "/" + selectedObis.ToCode()
+        + "/" + selectedMonth.Year
+        + "/" + selectedMonth.Month;
+    }
+    <MudButton
+      Class="mt-4"
+      Variant="Variant.Outlined"
+      Color="Color.Primary"
+      Href="@accountingPeriodHref">
+      @Translate("Accounting period report (CSV)")
+    </MudButton>
+    <br/>
+    <MudButton
+      Class="mt-4"
+      Variant="Variant.Outlined"
+      Color="Color.Primary"
+      Href="@loadCurveHref">
+      @Translate("Load curve report (CSV)")
+    </MudButton>
+  </div>
+
+  <div class="mt-8">
+    <MudText Typo="Typo.h5">
+      @Translate("Charts")
+    </MudText>
+
+    <MeasurementChartControls Meters="@(new List<IMeter> { analysis.Meter })">
+      @* <MeasurementGaugeChart Parameters="@context"/> *@
+      <MeasurementLineChart Parameters="@context"/>
+    </MeasurementChartControls>
+  </div>
+}

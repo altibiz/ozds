@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Complex;
+using Ozds.Business.Validation;
 
 namespace Ozds.Business.Models;
 
@@ -15,7 +16,6 @@ public class NetworkUserModel : AuditableModel
   [Required]
   public required string AltiBizSubProjectCode { get; set; } = default!;
 
-  [Required]
   public required string InvoiceRemark { get; set; } = string.Empty;
 
   [Required]
@@ -32,6 +32,13 @@ public class NetworkUserModel : AuditableModel
       {
         yield return result;
       }
+    }
+
+    var sanitizer = validationContext.GetRequiredService<HtmlSanitizer>();
+    var validationResult = sanitizer.Validate(InvoiceRemark);
+    if (validationResult is not null)
+    {
+      yield return validationResult;
     }
   }
 }

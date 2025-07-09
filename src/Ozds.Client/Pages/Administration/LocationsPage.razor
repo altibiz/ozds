@@ -12,6 +12,7 @@ RoleModel.OperatorRepresentative,
 RoleModel.LocationRepresentative
 ])]
 @using MudBlazor
+@using Ozds.Business.Models
 @using Ozds.Client.Attributes
 @using Ozds.Client.Components.Streaming
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
@@ -32,7 +33,7 @@ RoleModel.LocationRepresentative
   == RoleModel.OperatorRepresentative)
 {
   <MudCheckBox
-    Label="@Translate("Deleted")"
+    Label="@Translate("Show deleted")"
     @bind-Value="_deleted"/>
 }
 
@@ -41,7 +42,11 @@ RoleModel.LocationRepresentative
 @if (RepresentativeState.Representative.Role
   == RoleModel.OperatorRepresentative)
 {
-  <MudLink Href="@(PageHref<LocationPage>())">
-    @Translate("Create")
-  </MudLink>
+  <MudButton
+    Class="mt-4"
+    Variant="Variant.Outlined"
+    Color="Color.Primary"
+    Href="@(PageHref<LocationPage>())">
+    @Translate("Create") @Translate(typeof(LocationModel))
+  </MudButton>
 }

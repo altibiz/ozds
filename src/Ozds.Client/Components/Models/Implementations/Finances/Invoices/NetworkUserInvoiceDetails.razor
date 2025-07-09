@@ -1,243 +1,76 @@
 @namespace Ozds.Client.Components.Models
-@using MudBlazor
+@using Ozds.Client.Components.Fields
 @inherits Ozds.Client.Components.Models.Base.OzdsDetailsComponentBase<Ozds.Business.Models.NetworkUserInvoiceModel>
 
-<MudText Typo="Typo.h5">
-  @Translate("INVOICE FOR") @(Model.FromDate.Month). @Translate("MONTH")
-</MudText>
-
-<MudPaper class="mt-4 px-4 py-2">
-  <MudGrid Spacing="1">
-    <MudItem xs="12" sm="12">
-      <MudText Typo="Typo.body1">
-        <strong>@Translate("ZDS"):</strong>
-      </MudText>
-    </MudItem>
-    <MudItem xs="12" sm="12">
-      <MudText Typo="Typo.body1" Align="Align.Left">
-        @(Model.ArchivedLocation.Title)
-      </MudText>
-    </MudItem>
-    <MudItem xs="12" sm="12">
-      <MudText Typo="Typo.body1">
-        <strong>@Translate("User"):</strong>
-      </MudText>
-    </MudItem>
-    <MudItem xs="12" sm="12">
-      <MudText Typo="Typo.body1" Align="Align.Left">
-        @(Model.ArchivedNetworkUser.Title)
-      </MudText>
-    </MudItem>
-    <MudItem xs="12" sm="12">
-      <MudText Typo="Typo.body1">
-        <strong>@Translate("From"):</strong>
-      </MudText>
-    </MudItem>
-    <MudItem xs="12" sm="12">
-      <MudText Typo="Typo.body1" Align="Align.Left">
-        @DateTimeString(Model.FromDate)
-      </MudText>
-    </MudItem>
-    <MudItem xs="12" sm="12">
-      <MudText Typo="Typo.body1">
-        <strong>@Translate("To"):</strong>
-      </MudText>
-    </MudItem>
-    <MudItem xs="12" sm="12">
-      <MudText Typo="Typo.body1" Align="Align.Left">
-        @DateTimeString(Model.ToDate)
-      </MudText>
-    </MudItem>
-  </MudGrid>
-</MudPaper>
-
-<MudItem Class="d-flex flex-row justify-space-between mt-8">
-  <MudText Typo="Typo.h5">
-    @Translate("ZDS network usage fee")
-  </MudText>
-  <MudText Typo="Typo.h5" Class="mr-4">
-    EUR
-  </MudText>
-</MudItem>
 @{
-  var usageRows = new[]
-  {
-    (
-      Name: Translate("Network usage during unique daily tariff period"),
-      Total: Model.UsageActiveEnergyTotalImportT0Fee_EUR
-    ),
-    (
-      Name: Translate("Network usage during higher daily tariff period"),
-      Total: Model.UsageActiveEnergyTotalImportT1Fee_EUR
-    ),
-    (
-      Name: Translate("Network usage during lower daily tariff period"),
-      Total: Model.UsageActiveEnergyTotalImportT2Fee_EUR
-    ),
-    (
-      Name: Translate("Engaged power during higher daily tariff period"),
-      Total: Model.UsageActivePowerTotalImportT1PeakFee_EUR
-    ),
-    (
-      Name: Translate("Excessively drawn reactive energy"),
-      Total: Model.UsageReactiveEnergyTotalRampedT0Fee_EUR
-    ),
-    (
-      Name: Translate("Measurement service fee"),
-      Total: Model.UsageMeterFee_EUR
-    )
-  };
+  var title =
+    $"{Translate("INVOICE FOR")} {Model.FromDate.Month}. {Translate("MONTH")}";
 }
-@foreach (var row in usageRows)
-{
-  <MudPaper class="mt-2 px-4 py-2">
-    <MudGrid Spacing="1">
-      <MudItem xs="12" sm="6">
-        <MudText Typo="Typo.body1">
-          @(row.Name)
-        </MudText>
-      </MudItem>
-      <MudItem xs="12" sm="6">
-        <MudHidden Breakpoint="Breakpoint.Xs">
-          <MudText Typo="Typo.body1" Align="Align.Right">
-            @NumericString(row.Total)
-          </MudText>
-        </MudHidden>
-        <MudHidden Breakpoint="Breakpoint.SmAndUp">
-          <MudText Typo="Typo.body1" Align="Align.Left">
-            @NumericString(row.Total)
-          </MudText>
-        </MudHidden>
-      </MudItem>
-    </MudGrid>
-  </MudPaper>
-}
-<MudText Typo="Typo.subtitle1" class="mt-2" Align="Align.Right">
-  @Translate("TOTAL") @NumericString(Model.UsageFeeTotal_EUR) EUR
-</MudText>
+<FieldSection Title="@title">
+  <DetailsField Title="@Translate("ZDS")">
+    @(Model.ArchivedLocation.Title)
+  </DetailsField>
+  <DetailsField Title="@Translate("User")">
+    @(Model.ArchivedNetworkUser.Title)
+  </DetailsField>
+  <DetailsField Title="@Translate("From")">
+    @DateString(Model.FromDate)
+  </DetailsField>
+  <DetailsField Title="@Translate("To")">
+    @DateString(Model.ToDate)
+  </DetailsField>
+</FieldSection>
 
-<MudItem Class="d-flex flex-row justify-space-between mt-8">
-  <MudText Typo="Typo.h5">
-    @Translate("Electrical energy supply fee")
-  </MudText>
-  <MudText Typo="Typo.h5" Class="mr-4">
-    EUR
-  </MudText>
-</MudItem>
-@{
-  var supplyRows = new[]
-  {
-    (
-      Name: Translate("Electrical energy supply during higher daily tariff period"),
-      Total: Model.SupplyActiveEnergyTotalImportT1Fee_EUR
-    ),
-    (
-      Name: Translate("Electrical energy supply during lower daily tariff period"),
-      Total: Model.SupplyActiveEnergyTotalImportT2Fee_EUR
-    ),
-    (
-      Name: Translate("Fee for promoting production from renewable energy sources and cogeneration"),
-      Total: Model.SupplyRenewableEnergyFee_EUR
-    ),
-    (
-      Name: Translate("Excise duty for business/non-business use"),
-      Total: Model.SupplyBusinessUsageFee_EUR
-    )
-  };
-}
-@foreach (var row in supplyRows)
-{
-  <MudPaper class="mt-2 px-4 py-2">
-    <MudGrid Spacing="1">
-      <MudItem xs="12" sm="6">
-        <MudText Typo="Typo.body1">
-          @(row.Name)
-        </MudText>
-      </MudItem>
-      <MudItem xs="12" sm="6">
-        <MudHidden Breakpoint="Breakpoint.Xs">
-          <MudText Typo="Typo.body1" Align="Align.Right">
-            @NumericString(row.Total)
-          </MudText>
-        </MudHidden>
-        <MudHidden Breakpoint="Breakpoint.SmAndUp">
-          <MudText Typo="Typo.body1" Align="Align.Left">
-            @NumericString(row.Total)
-          </MudText>
-        </MudHidden>
-      </MudItem>
-    </MudGrid>
-  </MudPaper>
-}
-<MudText Typo="Typo.subtitle1" class="mt-2" Align="Align.Right">
-  @Translate("TOTAL") @NumericString(Model.SupplyFeeTotal_EUR) EUR
-</MudText>
+<FieldSection Class="mt-8" Title="@(Translate("ZDS network usage fee"))" Unit="EUR">
+  <DetailsField Title="@Translate("Network usage during unique daily tariff period")">
+    @NumericString(Model.UsageActiveEnergyTotalImportT0Fee_EUR)
+  </DetailsField>
+  <DetailsField Title="@Translate("Network usage during higher daily tariff period")">
+    @NumericString(Model.UsageActiveEnergyTotalImportT1Fee_EUR)
+  </DetailsField>
+  <DetailsField Title="@Translate("Network usage during lower daily tariff period")">
+    @NumericString(Model.UsageActiveEnergyTotalImportT2Fee_EUR)
+  </DetailsField>
+  <DetailsField Title="@Translate("Engaged power during higher daily tariff period")">
+    @NumericString(Model.UsageActivePowerTotalImportT1PeakFee_EUR)
+  </DetailsField>
+  <DetailsField Title="@Translate("Excessively drawn reactive energy")">
+    @NumericString(Model.UsageReactiveEnergyTotalRampedT0Fee_EUR)
+  </DetailsField>
+  <DetailsField Title="@Translate("Measurement service fee")">
+    @NumericString(Model.UsageMeterFee_EUR)
+  </DetailsField>
+</FieldSection>
+<DetailsField Title="@Translate("TOTAL")" Unit="EUR">
+  @NumericString(Model.UsageFeeTotal_EUR)
+</DetailsField>
 
-<MudItem Class="d-flex flex-row justify-space-between mt-8">
-  <MudText Typo="Typo.h5">
+<FieldSection Title="@Translate("Electrical energy supply fee")" Unit="EUR">
+  <DetailsField Title="@Translate("Electrical energy supply during higher daily tariff period")">
+    @NumericString(Model.SupplyActiveEnergyTotalImportT1Fee_EUR)
+  </DetailsField>
+  <DetailsField Title="@Translate("Electrical energy supply during lower daily tariff period")">
+    @NumericString(Model.SupplyActiveEnergyTotalImportT2Fee_EUR)
+  </DetailsField>
+  <DetailsField Title="@Translate("Fee for promoting production from renewable energy sources and cogeneration")">
+    @NumericString(Model.SupplyRenewableEnergyFee_EUR)
+  </DetailsField>
+  <DetailsField Title="@Translate("Excise duty for business/non-business use")">
+    @NumericString(Model.SupplyBusinessUsageFee_EUR)
+  </DetailsField>
+</FieldSection>
+<DetailsField Title="@Translate("TOTAL")" Unit="EUR">
+  @NumericString(Model.SupplyFeeTotal_EUR)
+</DetailsField>
 
-  </MudText>
-  <MudText Typo="Typo.h5" Class="mr-4">
-    EUR
-  </MudText>
-</MudItem>
-<MudPaper class="px-4 py-2">
-  <MudGrid Spacing="1">
-    <MudItem xs="12" sm="9">
-      <MudText Typo="Typo.h5">
-        <strong>@Translate("Total")</strong>
-      </MudText>
-    </MudItem>
-    <MudItem xs="12" sm="3">
-      <MudHidden Breakpoint="Breakpoint.Xs">
-        <MudText Typo="Typo.h5" Align="Align.Right">
-          @NumericString(Model.Total_EUR) EUR
-        </MudText>
-      </MudHidden>
-      <MudHidden Breakpoint="Breakpoint.SmAndUp">
-        <MudText Typo="Typo.h5" Align="Align.Left">
-          @NumericString(Model.Total_EUR) EUR
-        </MudText>
-      </MudHidden>
-    </MudItem>
-    <MudItem xs="12" sm="9">
-      <MudText Typo="Typo.h5">
-
-        <strong>
-          @Translate("VAT") (@NumericString(
-                               Model.ArchivedRegulatoryCatalogue.TaxRate_Percent
-                             )%)
-        </strong>
-      </MudText>
-    </MudItem>
-    <MudItem xs="12" sm="3">
-      <MudHidden Breakpoint="Breakpoint.Xs">
-        <MudText Typo="Typo.h5" Align="Align.Right">
-          @NumericString(Model.Tax_EUR) EUR
-        </MudText>
-      </MudHidden>
-      <MudHidden Breakpoint="Breakpoint.SmAndUp">
-        <MudText Typo="Typo.h5" Align="Align.Left">
-          @NumericString(Model.Tax_EUR) EUR
-        </MudText>
-      </MudHidden>
-    </MudItem>
-    <MudItem xs="12" sm="9">
-      <MudText Typo="Typo.h5">
-        <strong>@Translate("Full total")</strong>
-      </MudText>
-    </MudItem>
-    <MudItem xs="12" sm="3">
-      <MudHidden Breakpoint="Breakpoint.Xs">
-        <MudText Typo="Typo.h5" Align="Align.Right">
-          @NumericString(Model.TotalWithTax_EUR) EUR
-        </MudText>
-      </MudHidden>
-      <MudHidden Breakpoint="Breakpoint.SmAndUp">
-        <MudText Typo="Typo.h5" Align="Align.Left">
-          @NumericString(Model.TotalWithTax_EUR) EUR
-        </MudText>
-      </MudHidden>
-    </MudItem>
-  </MudGrid>
-</MudPaper>
+<FieldSection Class="mt-8">
+  <DetailsField Title="@Translate("Total")">
+    @NumericString(Model.Total_EUR)
+  </DetailsField>
+  <DetailsField Title="@(Translate("VAT") + " " + NumericString(Model.TaxRate_Percent) + "%")">
+    @NumericString(Model.Total_EUR)
+  </DetailsField>
+  <DetailsField Title="@Translate("Full total")">
+    @NumericString(Model.TotalWithTax_EUR)
+  </DetailsField>
+</FieldSection>

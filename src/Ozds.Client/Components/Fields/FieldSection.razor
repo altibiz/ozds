@@ -1,0 +1,37 @@
+@using MudBlazor
+@namespace Ozds.Client.Components.Fields
+
+<div
+  class="@("mt-4 " + Class)"
+  style="@("max-width: 36rem; " + Style)">
+  <div class="d-flex flex-row justify-space-between">
+    <MudText Typo="Typo.h5">
+      @Title
+    </MudText>
+    <MudText Typo="Typo.subtitle1">
+      @Unit
+    </MudText>
+  </div>
+  <MudPaper Class="px-4 py-2" Style="max-width: 36rem">
+    @ChildContent
+  </MudPaper>
+</div>
+
+@code {
+
+  [Parameter]
+  public string? Title { get; set; } = string.Empty;
+
+  [Parameter]
+  public string? Unit { get; set; } = string.Empty;
+
+  [Parameter]
+  public RenderFragment? ChildContent { get; set; }
+
+  [Parameter]
+  public string Class { get; set; } = string.Empty;
+
+  [Parameter]
+  public string Style { get; set; } = string.Empty;
+
+}

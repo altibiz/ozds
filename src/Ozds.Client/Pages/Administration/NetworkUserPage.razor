@@ -27,18 +27,16 @@
   <Details>
     <Details Model="@context.Model"/>
 
-    <div>
-      <MudText Typo="Typo.body1">
-        @Translate("Preview invoice")
+    <div class="mt-8">
+      <MudText Typo="Typo.h5">
+        @Translate("Invoice")
       </MudText>
-
 
       <div style="width: 170px;">
         <MonthPickerField
           @bind-Value="@invoiceSelectedMonth"
           Label="@Translate("Pick month")"/>
       </div>
-      <br/>
 
       <MudHidden Breakpoint="Breakpoint.SmAndDown">
         @{
@@ -51,12 +49,15 @@
                 invoiceSelectedMonth.Month
               });
         }
-        <br/>
-        <MudLink Class="mt-4" Href="@invoicePreviewHref">
+        <MudButton
+          Class="mt-4"
+          Variant="Variant.Outlined"
+          Color="Color.Primary"
+          Href="@invoicePreviewHref">
           @Translate("Preview invoice")
-        </MudLink>
-        <br/>
+        </MudButton>
       </MudHidden>
+
       @{
         var invoicePreviewPdfHref =
           "/document/network-user-invoice-preview"
@@ -64,19 +65,35 @@
           + "/" + invoiceSelectedMonth.Year
           + "/" + invoiceSelectedMonth.Month;
       }
-    </div>
-    <MudLink Class="mt-4" Href="@invoicePreviewPdfHref">
-      @Translate("Preview invoice (PDF)")
-    </MudLink>
-    <br/>
-    <MudButton OnClick="OnCreateInvoiceAsync">
-      @Translate("Create invoice")
-    </MudButton>
+      <MudButton
+        Class="ml-4 mt-4"
+        Variant="Variant.Outlined"
+        Color="Color.Primary"
+        Href="@invoicePreviewPdfHref">
+        @Translate("Preview invoice (PDF)")
+      </MudButton>
 
-    <div style="width: 170px;">
-      <MonthPickerField
-        @bind-Value="@monthlyAggregatesSelectedMonth"
-        Label="@Translate("Pick month")"/>
+      <br/>
+      <MudButton
+        Class="mt-4"
+        Variant="Variant.Filled"
+        Color="Color.Primary"
+        OnClick="OnCreateInvoiceAsync">
+        @Translate("Create invoice")
+      </MudButton>
+    </div>
+
+    <div class="mt-8">
+      <MudText Typo="Typo.h5">
+        @Translate("Report")
+      </MudText>
+
+      <div style="width: 170px;">
+        <MonthPickerField
+          @bind-Value="@monthlyAggregatesSelectedMonth"
+          Label="@Translate("Pick month")"/>
+      </div>
+
       @{
         var energyCardHref =
           "/report/network-user-energy-card"
@@ -85,9 +102,13 @@
           + "/" + monthlyAggregatesSelectedMonth.Year
           + "/" + monthlyAggregatesSelectedMonth.Month;
       }
-      <MudLink Href="@energyCardHref" Class="mt-4">
+      <MudButton
+        Class="mt-4"
+        Variant="Variant.Outlined"
+        Color="Color.Primary"
+        Href="@energyCardHref">
         @Translate("Energy card report (CSV)")
-      </MudLink>
+      </MudButton>
     </div>
   </Details>
 </Mutating>

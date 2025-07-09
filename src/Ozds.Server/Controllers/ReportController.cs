@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Ozds.Business.Models.Enums;
 using Ozds.Business.Mutations;
@@ -7,6 +8,7 @@ using Ozds.Business.Queries;
 
 namespace Ozds.Server.Controllers;
 
+[Authorize]
 public class ReportController(
   ReportMutations reportMutations,
   ReportQueries reportQueries,

@@ -1,6 +1,7 @@
 @namespace Ozds.Client.Components.Models
 @using Ozds.Business.Models
 @using Ozds.Business.Models.Abstractions
+@using Ozds.Client.Components.Fields
 @using Ozds.Client.Components.Streaming
 @inherits Ozds.Client.Components.Models.Base.OzdsDetailsComponentBase<Ozds.Business.Models.Abstractions.INetworkUserCalculation>
 
@@ -18,30 +19,68 @@ LinkField<NetworkUserMeasurementLocationModel>(
 
 @(LinkField<IRegulatoryCatalogue>(x => x.SupplyRegulatoryCatalogueId))
 
+<DetailsField Title="@Translate("Tariff model")">
+  @TariffModelTitle
+</DetailsField>
+
+<FieldChapter Title="@Translate("Archives")">
+  @(ArchivedField(x => x.ArchivedMeter))
+
+  @(ArchivedField(x => x.ArchivedNetworkUserMeasurementLocation))
+
+  @(ArchivedField(x => x.ArchivedUsageNetworkUserCatalogue))
+
+  @(ArchivedField(x => x.ArchivedSupplyRegulatoryCatalogue))
+</FieldChapter>
+
 @(
 Base<IFinancial>(
   @<Fragment>
-    @Sub()
+    <FieldChapter Title="@Translate("ZDS network usage fee")">
+      @Sub()
+      <FieldSection Title="@Translate("Measurement service fee")">
+        <Details Model="@Model.UsageMeterFee"/>
+      </FieldSection>
+    </FieldChapter>
 
-    <Details Model="@Model.UsageMeterFee"/>
-
-    @Field(x => x.UsageFeeTotal_EUR)
-
-    <Details Model="@Model.SupplyActiveEnergyTotalImportT1"/>
-
-    <Details Model="@Model.SupplyActiveEnergyTotalImportT2"/>
-
-    <Details Model="@Model.SupplyBusinessUsageFee"/>
-
-    <Details Model="@Model.SupplyRenewableEnergyFee"/>
-
-    @Field(x => x.SupplyFeeTotal_EUR)
+    <FieldChapter Title="@Translate("Electrical energy supply fee")">
+      <FieldSection Title="@Translate("Electrical energy supply during higher daily tariff period")">
+        <Details Model="@Model.SupplyActiveEnergyTotalImportT1"/>
+      </FieldSection>
+      <FieldSection Title="@Translate("Electrical energy supply during lower daily tariff period")">
+        <Details Model="@Model.SupplyActiveEnergyTotalImportT2"/>
+      </FieldSection>
+      <FieldSection Title="@Translate("Fee for promoting production from renewable energy sources and cogeneration")">
+        <Details Model="@Model.SupplyRenewableEnergyFee"/>
+      </FieldSection>
+      <FieldSection Title="@Translate("Excise duty for business/non-business use")">
+        <Details Model="@Model.SupplyBusinessUsageFee"/>
+      </FieldSection>
+    </FieldChapter>
   </Fragment>))
 
-@(ArchivedField(x => x.ArchivedMeter))
+<FieldSection Class="mt-8" Title="@Translate("Totals")">
+  @Field(x => x.UsageFeeTotal_EUR)
+  @Field(x => x.SupplyFeeTotal_EUR)
+  @Field(x => x.Total_EUR)
+</FieldSection>
 
-@(ArchivedField(x => x.ArchivedNetworkUserMeasurementLocation))
+@code {
 
-@(ArchivedField(x => x.ArchivedUsageNetworkUserCatalogue))
+  private string TariffModelTitle
+  {
+    get
+    {
+      return Model.ArchivedUsageNetworkUserCatalogue is RedLowNetworkUserCatalogueModel
+        ? Translate("Red NN")
+        : Model.ArchivedUsageNetworkUserCatalogue is BlueLowNetworkUserCatalogueModel
+          ? Translate("Blue NN")
+          : Model.ArchivedUsageNetworkUserCatalogue is WhiteLowNetworkUserCatalogueModel
+            ? Translate("White NN")
+            : Model.ArchivedUsageNetworkUserCatalogue is WhiteMediumNetworkUserCatalogueModel
+              ? Translate("White SN")
+              : string.Empty;
+    }
+  }
 
-@(ArchivedField(x => x.ArchivedSupplyRegulatoryCatalogue))
+}

@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using Ozds.Business.Capabilities.Abstractions;
 using Ozds.Business.Capabilities.Implementations;
 using Ozds.Business.Models.Abstractions;
+using Ozds.Business.Naming;
 
 namespace Ozds.Business.Models.Base;
 
@@ -32,13 +33,43 @@ public class MeterModel : AuditableModel, IMeter
       yield return validationResult;
     }
 
-    if (
-      validationContext.MemberName is null or nameof(Id) &&
-      Id is null)
+    if (validationContext.MemberName is null or nameof(Id))
     {
-      yield return new ValidationResult(
-        "ID must be set",
-        new[] { nameof(Id) });
+      if (Id is null)
+      {
+        yield return new ValidationResult(
+          "ID must be set",
+          new[] { nameof(Id) });
+      }
+      else
+      {
+        var convention = validationContext
+          .GetRequiredService<MeterNamingConvention>();
+
+        ValidationResult? validationResult = null;
+        try
+        {
+          var expectedType = convention.MeterTypeForMeterId(Id);
+          var actualType = GetType();
+          if (expectedType != actualType)
+          {
+            validationResult = new ValidationResult(
+              $"Unconventional meter ID {Id} for {actualType}",
+              new[] { nameof(Id) });
+          }
+        }
+        catch (Exception)
+        {
+          validationResult = new ValidationResult(
+            $"Unconventional meter ID {Id}",
+            new[] { nameof(Id) });
+        }
+
+        if (validationResult is not null)
+        {
+          yield return validationResult;
+        }
+      }
     }
 
     if (

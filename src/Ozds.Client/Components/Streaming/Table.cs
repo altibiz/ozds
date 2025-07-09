@@ -46,6 +46,12 @@ public partial class Table<T> : OzdsComponentBase
   [Parameter]
   public bool DynamicTitle { get; set; } = false;
 
+  [Parameter]
+  public string Class { get; set; } = string.Empty;
+
+  [Parameter]
+  public string Style { get; set; } = string.Empty;
+
   [Inject]
   private NavigationManager NavigationManager { get; set; } = default!;
 

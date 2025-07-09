@@ -7,7 +7,6 @@ Title = "Events",
 Icon = Icons.Material.Filled.EditNotifications,
 Parent = typeof(SystemPage),
 Allows = [RoleModel.OperatorRepresentative])]
-@using MudBlazor
 @using Ozds.Business.Models.Enums
 @using Ozds.Client.Attributes
 @using Ozds.Client.Components.Fields
@@ -27,21 +26,13 @@ Allows = [RoleModel.OperatorRepresentative])]
   <title>OZDS - @Translate("Events")</title>
 </HeadContent>
 
-<SelectField
+<EnumPicker
   T="LevelModel"
-  Label="@Translate("Minimal level")"
-  AnchorOrigin="Origin.BottomCenter"
-  @bind-Value="@_minLevel">
-  @foreach (var value in Enum.GetValues<LevelModel>()
-    .Where(
-      l => Environment.IsDevelopment()
-        ? l >= LevelModel.Trace
-        : l >= LevelModel.Information))
-  {
-    <MudSelectItem Value="value">
-      @Translate(value.ToString())
-    </MudSelectItem>
-  }
-</SelectField>
+  Title="@Translate("Minimal level")"
+  Label="@(level => Translate(level.ToString()))"
+  @bind-Value="@_minLevel"
+  Values="@(Enum.GetValues<LevelModel>().Where(l => Environment.IsDevelopment() ? l >= LevelModel.Trace : l >= LevelModel.Information))"/>
 
-<Table PageAsync="@OnPageAsync"/>
+<Table
+  Class="mt-4"
+  PageAsync="@OnPageAsync"/>

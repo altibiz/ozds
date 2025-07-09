@@ -30,7 +30,9 @@ RoleModel.NetworkUserRepresentative
 @if (RepresentativeState.Representative.Role
   == RoleModel.OperatorRepresentative)
 {
-  <Table PageAsync="@OnUserPageAsync">
+  <Table
+    Class="mt-4"
+    PageAsync="@OnUserPageAsync">
     <Summary>
       <Summary Model="@context.User"/>
     </Summary>

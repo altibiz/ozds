@@ -6,9 +6,9 @@ namespace Ozds.Assets.Queries.Implementations;
 
 public class TranslationQueries : ITranslationQueries
 {
-  public string GeneralKey(Type type, bool trimmed = true)
+  public string GeneralKey(Type type, bool trimmed = true, bool plural = false)
   {
-    return CleanTypeName(type, trimmed);
+    return AddPluralFn(plural)(CleanTypeName(type, trimmed));
   }
 
   public string GeneralKey(Type type, string member)
@@ -21,9 +21,9 @@ public class TranslationQueries : ITranslationQueries
     return member.Member.Name;
   }
 
-  public string Key(Type type)
+  public string Key(Type type, bool plural = false)
   {
-    return AddNamespace(type, CleanTypeName(type));
+    return AddPluralFn(plural)(AddNamespace(type, CleanTypeName(type)));
   }
 
   public string Key(Type type, string member)
@@ -41,13 +41,14 @@ public class TranslationQueries : ITranslationQueries
     return AddNamespace(type, $"{CleanTypeName(type)}.{suffix}");
   }
 
-  public string[] KeyOverrides(Type type)
+  public string[] KeyOverrides(Type type, bool plural = false)
   {
     var order = VirtualizationOrder(type);
     return order
-      .Select(Key)
+      .Select(x => Key(x))
       .Append(GeneralKey(type, false))
       .Append(GeneralKey(type))
+      .Select(AddPluralFn(plural))
       .ToArray();
   }
 
@@ -81,9 +82,9 @@ public class TranslationQueries : ITranslationQueries
       .ToArray();
   }
 
-  public string ShortKey(Type type)
+  public string ShortKey(Type type, bool plural = false)
   {
-    return CleanTypeName(type);
+    return AddPluralFn(plural)(CleanTypeName(type));
   }
 
   public string ShortKey(Type type, string member)
@@ -101,12 +102,13 @@ public class TranslationQueries : ITranslationQueries
     return $"{CleanTypeName(type)}.{suffix}";
   }
 
-  public string[] ShortKeyOverrides(Type type)
+  public string[] ShortKeyOverrides(Type type, bool plural = false)
   {
     var order = VirtualizationOrder(type);
     return order
-      .Select(ShortKey)
+      .Select(x => ShortKey(x))
       .Append(GeneralKey(type))
+      .Select(AddPluralFn(plural))
       .ToArray();
   }
 
@@ -139,6 +141,16 @@ public class TranslationQueries : ITranslationQueries
       .Append(member.Member.Name)
       .Append(GeneralKey(member))
       .ToArray();
+  }
+
+  private static Func<string, string> AddPluralFn(bool plural)
+  {
+    return plural ? AddPlural : x => x;
+  }
+
+  private static string AddPlural(string key)
+  {
+    return $"~{key}";
   }
 
   private static string AddNamespace(Type type, string name)

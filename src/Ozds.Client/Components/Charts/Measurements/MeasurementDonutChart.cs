@@ -41,6 +41,9 @@ public partial class MeasurementDonutChart : OzdsComponentBase
   [Parameter]
   public bool Brush { get; set; }
 
+  [Parameter]
+  public int Height { get; set; } = 300;
+
   protected override void OnInitialized()
   {
     _options = CreateGraphOptions();

@@ -27,19 +27,26 @@ Allows = [RoleModel.OperatorRepresentative])]
 </HeadContent>
 
 <MudCheckBox
-  Label="@Translate("Deleted")"
+  Label="@Translate("Show deleted")"
   @bind-Value="_deleted"/>
 
 <Table T="AbbB2xMeasurementValidatorModel" Deleted="@_deleted"/>
 
-<Table T="SchneideriEM3xxxMeasurementValidatorModel" Deleted="@_deleted"/>
+<Table
+  Class="mt-8"
+  T="SchneideriEM3xxxMeasurementValidatorModel"
+  Deleted="@_deleted"/>
 
 @if (RepresentativeState.Representative.Role
   == RoleModel.OperatorRepresentative)
 {
-  <MudLink Href="@(PageHref<MeasurementValidatorPage>())">
+  <MudButton
+    Class="mt-4"
+    Variant="Variant.Outlined"
+    Color="Color.Primary"
+    Href="@(PageHref<MeasurementValidatorPage>())">
     @Translate("Create")
-  </MudLink>
+  </MudButton>
 }
 
 @code {

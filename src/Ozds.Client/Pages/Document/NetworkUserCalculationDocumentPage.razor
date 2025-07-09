@@ -1,0 +1,29 @@
+@namespace Ozds.Client.Pages
+
+@layout DocumentLayout
+
+@page "/document/network-user-calculation/{id}"
+@using Ozds.Client.Components.Layout
+@using Ozds.Client.Components.Streaming
+@inherits Ozds.Client.Components.Base.OzdsComponentBase
+
+<Loading
+  T="NetworkUserCalculationModelWithHtml"
+  LoadAsync="OnLoadAsync">
+  <Found>
+    <HeadContent>
+      <title>
+        OZDS - @Translate("Network user calculation"):
+        @context.Calculation.Title
+      </title>
+    </HeadContent>
+
+    @(new MarkupString(context.Html))
+  </Found>
+  <NotFound>
+    <HeadContent>
+      <title>OZDS - @Translate("Network user calculation not found")</title>
+    </HeadContent>
+    <NotFound/>
+  </NotFound>
+</Loading>

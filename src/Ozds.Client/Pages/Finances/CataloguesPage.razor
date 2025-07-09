@@ -29,20 +29,34 @@ RoleModel.OperatorRepresentative,
 </HeadContent>
 
 <MudCheckBox
-  Label="@Translate("Deleted")"
+  Label="@Translate("Show deleted")"
   @bind-Value="_deleted"/>
 
-<Table T="INetworkUserCatalogue" Deleted="@_deleted"/>
+<Table
+  Class="mt-4"
+  T="INetworkUserCatalogue"
+  Deleted="@_deleted"/>
 
-<MudLink Href="@(PageHref<NetworkUserCataloguePage>())">
-  @Translate("Create")
-</MudLink>
+<MudButton
+  Class="mt-4"
+  Color="Color.Primary"
+  Variant="Variant.Outlined"
+  Href="@(PageHref<NetworkUserCataloguePage>())">
+  @Translate("Create") @Translate(typeof(INetworkUserCatalogue))
+</MudButton>
 
-<Table T="IRegulatoryCatalogue" Deleted="@_deleted"/>
+<Table
+  Class="mt-8"
+  T="IRegulatoryCatalogue"
+  Deleted="@_deleted"/>
 
-<MudLink Href="@(PageHref<RegulatoryCataloguePage>())">
-  @Translate("Create")
-</MudLink>
+<MudButton
+  Class="mt-4"
+  Color="Color.Primary"
+  Variant="Variant.Outlined"
+  Href="@(PageHref<RegulatoryCataloguePage>())">
+  @Translate("Create") @Translate(typeof(IRegulatoryCatalogue))
+</MudButton>
 
 @code {
   private bool _deleted;

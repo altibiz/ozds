@@ -7,9 +7,12 @@
 @using Ozds.Client.Components.Streaming
 @inherits Ozds.Client.Components.Models.Base.OzdsIdentifiableModelPageComponentBase<Ozds.Business.Models.Abstractions.INetworkUserInvoice>
 
+@* TODO: mutations via append-only readonly mutation table *@
+
 <Mutating
   T="StatefulNetworkUserInvoiceModel"
-  LoadAsync="OnLoadAsync">
+  LoadAsync="OnLoadAsync"
+  AsReadonly>
   <Edit>
     @if (context.Created)
     {
@@ -33,30 +36,28 @@
       <Details Model="@context.Model.State"/>
     }
 
-    <Details Model="@context.Model.Invoice"/>
+    <div class="mt-4">
+      <Details Model="@context.Model.Invoice"/>
+    </div>
 
-    <MudHidden Breakpoint="Breakpoint.SmAndDown">
-      <MudLink Href="@(PageHref<NetworkUserInvoiceDocumentPage>(new { context.Model.Invoice.Id }))">
-        @Translate("Invoice")
-      </MudLink>
-    </MudHidden>
+    <div class="mt-4">
+      <MudHidden Breakpoint="Breakpoint.SmAndDown">
+        <MudButton
+          Variant="Variant.Outlined"
+          Color="Color.Primary"
+          Href="@(PageHref<NetworkUserInvoiceDocumentPage>(new { context.Model.Invoice.Id }))">
+          @Translate("Document")
+        </MudButton>
+      </MudHidden>
 
-    <MudLink Href="@($"/document/network-user-invoice/{context.Model.Invoice.Id}")">
-      @Translate("Invoice (PDF)")
-    </MudLink>
-    <br/>
-
-    @{
-      var invoicePreviewHref =
-        PageHref<NetworkUserInvoiceDocumentPage>(
-          new
-          {
-            context.Model.Invoice.Id
-          });
-    }
-    <MudLink Class="mt-4" Href="@invoicePreviewHref">
-      @Translate("Invoice document")
-    </MudLink>
+      <MudButton
+        Class="ml-4"
+        Variant="Variant.Outlined"
+        Color="Color.Primary"
+        Href="@($"/document/network-user-invoice/{context.Model.Invoice.Id}")">
+        @Translate("Document (PDF)")
+      </MudButton>
+    </div>
   </Details>
 </Mutating>
 

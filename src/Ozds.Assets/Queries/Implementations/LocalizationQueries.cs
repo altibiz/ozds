@@ -20,16 +20,16 @@ public class LocalizationQueries(
     get { return AssetConstants.CroatianCulture; }
   }
 
-  public string Translate(CultureInfo culture, Type type)
+  public string Translate(CultureInfo culture, Type type, bool plural = false)
   {
-    var cacheKey = new TranslationTypeKey(culture, type);
+    var cacheKey = new TranslationTypeKey(culture, type, plural);
 
     return translationCache.GetOrAdd(
       cacheKey, _ =>
       {
         var translations = assetQueries.LoadTranslations(culture);
 
-        var overrides = translationQueries.KeyOverrides(type);
+        var overrides = translationQueries.KeyOverrides(type, plural);
         foreach (var key in overrides)
         {
           if (translations.TryGetValue(key, out var translation))
@@ -194,7 +194,10 @@ public class LocalizationQueries(
 
   private record TranslationKey(CultureInfo Culture);
 
-  private sealed record TranslationTypeKey(CultureInfo Culture, Type Type)
+  private sealed record TranslationTypeKey(
+    CultureInfo Culture,
+    Type Type,
+    bool Plural)
     : TranslationKey(Culture);
 
   private sealed record TranslationMemberKey(

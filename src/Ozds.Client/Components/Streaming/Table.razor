@@ -8,101 +8,114 @@
 @{
   var title = DynamicTitle
     ? model.Items.Count > 0
-      ? Translate(model.Items.First()!.GetType())
-      : Translate(typeof(T))
-    : Translate(typeof(T));
-}
-<MudHidden Breakpoint="Breakpoint.MdAndUp">
-  <MudText Typo="Typo.h6">
-    @title
-  </MudText>
-  <Paging PageCount="@PageCount" T="T" PageAsync="@OnPagingPage">
-    <Found Context="page">
-      @if (page.TotalCount > page.Items.Count)
-      {
-        <MudTextField
-          Class="mt-3"
-          T="string"
-          Value="@searchString"
-          ValueChanged="@OnPagingSearch"
-          Placeholder="@Translate("Search")"
-          Adornment="Adornment.Start"
-          Immediate="true"
-          AdornmentIcon="@Icons.Material.Filled.Search"
-          IconSize="Size.Medium"/>
-      }
+      ? Translate(model.Items.First()!.GetType(), true)
+      : Translate(typeof(T), true)
+    : Translate(typeof(T), true);
 
-      @foreach (var item in page.Items)
-      {
-        if (!FilterItem(item))
-          continue;
-
-        <MudPaper Class="pa-4 mb-2" Elevation="1">
-          <TableCollapse>
-            <Summary>
-              @if (Summary is null)
-              {
-                <Summary Model="item"/>
-              }
-              else
-              {
-                @Summary(item)
-              }
-            </Summary>
-            <Details>
-              @if (Details is null)
-              {
-                <Details Model="item"/>
-              }
-              else
-              {
-                @Details(item)
-              }
-            </Details>
-          </TableCollapse>
-        </MudPaper>
-      }
-    </Found>
-  </Paging>
-</MudHidden>
-
-<MudHidden Breakpoint="Breakpoint.SmAndDown">
-  <MudDataGrid
-    T="T"
-    Filterable="true"
-    Class="mt-3"
-    SortMode="@SortMode.None"
-    ServerData="@OnDataGridServerData"
-    RowsPerPage="@PageCount"
-    @ref="@dataGrid">
-    <ToolBarContent>
+  RenderFragment inner = @<Fragment>
+    <MudHidden Breakpoint="Breakpoint.MdAndUp">
       <MudText Typo="Typo.h6">
         @title
       </MudText>
-      <MudSpacer/>
-      <MudTextField
-        T="string"
-        Value="@searchString"
-        ValueChanged="@OnDataGridSearch"
-        Placeholder="@Translate("Search")"
-        Adornment="Adornment.Start"
-        Immediate="true"
-        AdornmentIcon="@Icons.Material.Filled.Search"
-        IconSize="Size.Medium">
-      </MudTextField>
-    </ToolBarContent>
-    <Columns>
-      @if (Columns is null)
-      {
-        <Columns TPrefix="T" Models="@model.Items"/>
-      }
-      else
-      {
-        @Columns(model.Items)
-      }
-    </Columns>
-    <PagerContent>
-      <MudDataGridPager PageSizeSelector="false" T="T"/>
-    </PagerContent>
-  </MudDataGrid>
-</MudHidden>
+      <Paging PageCount="@PageCount" T="T" PageAsync="@OnPagingPage">
+        <Found Context="page">
+          @if (page.TotalCount > page.Items.Count)
+          {
+            <MudTextField
+              Class="mt-3"
+              T="string"
+              Value="@searchString"
+              ValueChanged="@OnPagingSearch"
+              Placeholder="@Translate("Search")"
+              Adornment="Adornment.Start"
+              Immediate="true"
+              AdornmentIcon="@Icons.Material.Filled.Search"
+              IconSize="Size.Medium"/>
+          }
+
+          @foreach (var item in page.Items)
+          {
+            if (!FilterItem(item))
+              continue;
+
+            <MudPaper Class="pa-4 mb-2" Elevation="1">
+              <TableCollapse>
+                <Summary>
+                  @if (Summary is null)
+                  {
+                    <Summary Model="item"/>
+                  }
+                  else
+                  {
+                    @Summary(item)
+                  }
+                </Summary>
+                <Details>
+                  @if (Details is null)
+                  {
+                    <Details Model="item"/>
+                  }
+                  else
+                  {
+                    @Details(item)
+                  }
+                </Details>
+              </TableCollapse>
+            </MudPaper>
+          }
+        </Found>
+      </Paging>
+    </MudHidden>
+
+    <MudHidden Breakpoint="Breakpoint.SmAndDown">
+      <MudDataGrid
+        T="T"
+        Filterable="true"
+        SortMode="@SortMode.None"
+        ServerData="@OnDataGridServerData"
+        RowsPerPage="@PageCount"
+        @ref="@dataGrid">
+        <ToolBarContent>
+          <MudText Typo="Typo.h6">
+            @title
+          </MudText>
+          <MudSpacer/>
+          <MudTextField
+            T="string"
+            Value="@searchString"
+            ValueChanged="@OnDataGridSearch"
+            Placeholder="@Translate("Search")"
+            Adornment="Adornment.Start"
+            Immediate="true"
+            AdornmentIcon="@Icons.Material.Filled.Search"
+            IconSize="Size.Medium">
+          </MudTextField>
+        </ToolBarContent>
+        <Columns>
+          @if (Columns is null)
+          {
+            <Columns TPrefix="T" Models="@model.Items"/>
+          }
+          else
+          {
+            @Columns(model.Items)
+          }
+        </Columns>
+        <PagerContent>
+          <MudDataGridPager PageSizeSelector="false" T="T"/>
+        </PagerContent>
+      </MudDataGrid>
+    </MudHidden>
+  </Fragment>;
+}
+
+@if (string.IsNullOrWhiteSpace(Class) && string.IsNullOrWhiteSpace(Style))
+{
+  @inner
+}
+else
+{
+  <div class="@Class" style="@Style">
+    @inner
+  </div>
+}

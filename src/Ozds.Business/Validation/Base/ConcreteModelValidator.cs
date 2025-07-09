@@ -4,9 +4,15 @@ using Ozds.Business.Validation.Abstractions;
 
 namespace Ozds.Business.Validation.Base;
 
-public abstract class ConcreteModelValidator<T> : IValidator
+public abstract class ConcreteModelValidator<T>(
+  IServiceProvider serviceProvider
+) : IValidator
   where T : IModel
 {
+#pragma warning disable SA1401 // Fields should be private
+  protected IServiceProvider serviceProvider = serviceProvider;
+#pragma warning restore SA1401 // Fields should be private
+
   public virtual bool CanValidate(Type modelType)
   {
     return typeof(T).IsAssignableFrom(modelType);
@@ -25,7 +31,7 @@ public abstract class ConcreteModelValidator<T> : IValidator
     CancellationToken cancellationToken
   )
   {
-    var validationContext = new ValidationContext(this);
+    var validationContext = new ValidationContext(model, serviceProvider, null);
     var validationResults = model.Validate(validationContext);
     return Task.FromResult(validationResults.ToList());
   }

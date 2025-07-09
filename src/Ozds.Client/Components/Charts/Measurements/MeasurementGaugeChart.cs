@@ -35,6 +35,9 @@ public partial class MeasurementGaugeChart : OzdsComponentBase
   [Parameter]
   public MeasurementChartParameters Parameters { get; set; } = default!;
 
+  [Parameter]
+  public int Height { get; set; } = 300;
+
   protected override async Task OnParametersSetAsync()
   {
     _options = CreateGraphOptions();

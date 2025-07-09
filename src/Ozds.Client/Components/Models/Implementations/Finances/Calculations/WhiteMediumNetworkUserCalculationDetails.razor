@@ -1,5 +1,6 @@
 @namespace Ozds.Client.Components.Models
 @using Ozds.Business.Models.Abstractions
+@using Ozds.Client.Components.Fields
 @using Ozds.Client.Components.Streaming
 @inherits Ozds.Client.Components.Models.Base.OzdsDetailsComponentBase<Ozds.Business.Models.WhiteMediumNetworkUserCalculationModel>
 
@@ -9,8 +10,19 @@
 Base<IFinancial>(
   Base<INetworkUserCalculation>(
     @<Fragment>
-      <Details Model="@Model.UsageActiveEnergyTotalImportT1"/>
-      <Details Model="@Model.UsageActiveEnergyTotalImportT2"/>
-      <Details Model="@Model.UsageActivePowerTotalImportT1Peak"/>
-      <Details Model="@Model.UsageReactiveEnergyTotalRampedT0"/>
+      <FieldSection Title="@Translate("Network usage during higher daily tariff period")">
+        <Details Model="@Model.UsageActiveEnergyTotalImportT1"/>
+      </FieldSection>
+
+      <FieldSection Title="@Translate("Network usage during lower daily tariff period")">
+        <Details Model="@Model.UsageActiveEnergyTotalImportT2"/>
+      </FieldSection>
+
+      <FieldSection Title="@Translate("Engaged power during higher daily tariff period")">
+        <Details Model="@Model.UsageActivePowerTotalImportT1Peak"/>
+      </FieldSection>
+
+      <FieldSection Title="@Translate("Excessively drawn reactive energy")">
+        <Details Model="@Model.UsageReactiveEnergyTotalRampedT0"/>
+      </FieldSection>
     </Fragment>)))

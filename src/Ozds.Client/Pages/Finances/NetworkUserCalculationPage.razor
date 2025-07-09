@@ -1,12 +1,13 @@
 @namespace Ozds.Client.Pages
 
 @page "/finances/network-user-calculation/{id?}"
+@using MudBlazor
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Client.Components.Models
 @using Ozds.Client.Components.Streaming
 @inherits Ozds.Client.Components.Models.Base.OzdsIdentifiableModelPageComponentBase<Ozds.Business.Models.Abstractions.INetworkUserCalculation>
 
-<Mutating T="INetworkUserCalculation" Id="@Id">
+<Mutating T="INetworkUserCalculation" Id="@Id" AsReadonly>
   <Edit>
     @if (context.Created)
     {
@@ -26,6 +27,17 @@
     </HeadContent>
 
     <Details Model="@context.Model"/>
+
+    <div class="mt-4">
+      <MudHidden Breakpoint="Breakpoint.SmAndDown">
+        <MudButton
+          Variant="Variant.Outlined"
+          Color="Color.Primary"
+          Href="@(PageHref<NetworkUserCalculationDocumentPage>(new { context.Model.Id }))">
+          @Translate("Document")
+        </MudButton>
+      </MudHidden>
+    </div>
   </Details>
 </Mutating>
 

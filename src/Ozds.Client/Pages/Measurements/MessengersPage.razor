@@ -27,7 +27,7 @@ Allows = [RoleModel.OperatorRepresentative])]
 </HeadContent>
 
 <MudCheckBox
-  Label="@Translate("Deleted")"
+  Label="@Translate("Show deleted")"
   @bind-Value="_deleted"/>
 
 <Table T="IMessenger" Deleted="@_deleted"/>
@@ -35,9 +35,13 @@ Allows = [RoleModel.OperatorRepresentative])]
 @if (RepresentativeState.Representative.Role
   == RoleModel.OperatorRepresentative)
 {
-  <MudLink Href="@(PageHref<MessengerPage>())">
-    @Translate("Create")
-  </MudLink>
+  <MudButton
+    Class="mt-4"
+    Variant="Variant.Outlined"
+    Color="Color.Primary"
+    Href="@(PageHref<MessengerPage>())">
+    @Translate("Create") @Translate(typeof(IMessenger))
+  </MudButton>
 }
 
 @code {

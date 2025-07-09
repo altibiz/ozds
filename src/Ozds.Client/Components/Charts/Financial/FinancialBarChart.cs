@@ -37,6 +37,9 @@ public partial class FinancialBarChart : OzdsComponentBase
   [Inject]
   private TimeQueries TimeQueries { get; set; } = default!;
 
+  [Parameter]
+  public int Height { get; set; } = 300;
+
   protected override void OnInitialized()
   {
     _options = CreateGraphOptions();

@@ -1,9 +1,8 @@
 @namespace Ozds.Client.Components.Dashboards
 @using MudBlazor
-@using Ozds.Business.Analysis
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Business.Models.Enums
-@using Ozds.Business.Queries
+@using Ozds.Business.Queries.Abstractions
 @using Ozds.Client.Components.Charts
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
@@ -59,14 +58,18 @@
           </MudText>
         </MudItem>
         @{
+          var measurements = Model.Monthly
+            .Select(x => new MonthlyMeasurement(x.Measurements) as IMeasurement)
+            .ToList();
+
           var parameters = new MeasurementChartParameters
           {
-            Meters = Meters.ToHashSet(),
-            Measure = MeasureModel.ActivePower,
-            FromDate = TimeQueries.GetStartOfMonthLastYear(ClockQueries.Now()),
+            Measure = MeasureModel.ActiveEnergy,
             Resolution = ResolutionModel.Year,
+            FromDate = TimeQueries.GetStartOfMonthLastYear(ClockQueries.Now()),
             Multiplier = 1,
-            Operator = OperatorModel.Last
+            Operator = OperatorModel.Last,
+            Measurements = new PaginatedList<IMeasurement>(measurements, measurements.Count)
           };
         }
         <MeasurementLineChart Parameters="@parameters" Area/>
@@ -78,7 +81,7 @@
 <MudHidden Breakpoint="Breakpoint.SmAndDown">
   <MudGrid Class="my-3">
     <MudItem xs="4">
-      <MudPaper Class="mud-width-full d-flex flex-column justify-space-between pa-4" Height="320px">
+      <MudPaper Class="mud-width-full d-flex flex-column justify-space-between pa-4" Height="400px">
         <MudItem Class="" Style="font-size: large; font-weight: bold;">
           <MudText Typo="Typo.h5">
             @(Translate("Current months consumption") + ": ")
@@ -103,7 +106,7 @@
       </MudPaper>
     </MudItem>
     <MudItem xs="4">
-      <MudPaper Class="mud-width-full d-flex flex-column justify-space-between pa-4" Height="320px">
+      <MudPaper Class="mud-width-full d-flex flex-column justify-space-between pa-4" Height="400px">
         <MudItem Class="" Style="font-size: large; font-weight: bold;">
           <MudText Typo="Typo.h5">
             @(Translate("Last months consumption") + ": ")
@@ -131,21 +134,26 @@
       </MudPaper>
     </MudItem>
     <MudItem xs="4">
-      <MudPaper Class="mud-width-full pa-4" Height="320px">
+      <MudPaper Class="mud-width-full pa-4" Height="400px">
         <MudItem Class="" Style="font-size: large; font-weight: bold;">
           <MudText Typo="Typo.h5">
-            @(Translate("This years consumption") + " (kW):")
+            @(Translate("This years consumption") + " (kWh):")
           </MudText>
         </MudItem>
         @{
+          var measurements = Model.Monthly
+            .Select(x => new MonthlyMeasurement(x.Measurements) as IMeasurement)
+            .ToList();
+
           var parameters = new MeasurementChartParameters
           {
-            Meters = Meters.ToHashSet(),
-            Measure = MeasureModel.ActivePower,
+            Measure = MeasureModel.ActiveEnergy,
             Resolution = ResolutionModel.Year,
             FromDate = TimeQueries.GetStartOfMonthLastYear(ClockQueries.Now()),
             Multiplier = 1,
-            Operator = OperatorModel.Last
+            Operator = OperatorModel.Last,
+            Measurements = new PaginatedList<IMeasurement>(measurements, measurements.Count),
+            Aggregation = AggregationModel.Max
           };
         }
         <MeasurementLineChart Parameters="@parameters" Area/>
@@ -153,19 +161,3 @@
     </MudItem>
   </MudGrid>
 </MudHidden>
-
-@code {
-
-  [Parameter]
-  public Analysis Model { get; set; } = default!;
-
-  [Parameter]
-  public List<IMeter> Meters { get; set; } = default!;
-
-  [Inject]
-  private ClockQueries ClockQueries { get; set; } = default!;
-
-  [Inject]
-  private TimeQueries TimeQueries { get; set; } = default!;
-
-}

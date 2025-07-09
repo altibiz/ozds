@@ -4,7 +4,7 @@
 @typeparam TModel where TModel : Ozds.Business.Analysis.MonthlyAnalysis
 @inherits Ozds.Client.Components.Models.Base.OzdsColumnsComponentBase<TPrefix, TModel>
 
-@Column(x => x.StartOfMonth)
+@DateColumn(x => x.StartOfMonth)
 
 @Column(x => x.Consumption.MinActiveEnergy_kWh)
 
@@ -12,4 +12,4 @@
 
 @Column(x => x.Consumption.ActiveEnergy_kWh)
 
-@Column(x => x.MaxLoad.ActivePower_kW)
+@Column(x => x.Load.ActivePower_kW)
