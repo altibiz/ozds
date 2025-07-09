@@ -113,8 +113,8 @@
         Accounting period report (CSV)
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Pages/Measurements/MeasurementLocationPage.razor' line 60 column 6
-        From file 'Ozds.Client/Pages/Measurements/MeterPage.razor' line 66 column 6
+        From file 'Ozds.Client/Pages/Measurements/MeasurementLocationPage.razor' line 82 column 8
+        From file 'Ozds.Client/Pages/Measurements/MeterPage.razor' line 90 column 8
       </Metadata>
       <Value>
         Izvještaj obračunskog razdoblja (CSV)
@@ -230,6 +230,12 @@
         AggregateModel.ActiveEnergy_Wh
         MeasurementModel.ActiveEnergy_Wh
         MeasurementModel&lt;T&gt;.ActiveEnergy_Wh
+        MonthlyAnalysis.Measurements.ActiveEnergy_Wh
+        Analysis.Monthly.Measurements.ActiveEnergy_Wh
+        LocationAnalysis.Analysis.Monthly.Measurements.ActiveEnergy_Wh
+        NetworkUserAnalysis.Analysis.Monthly.Measurements.ActiveEnergy_Wh
+        MeasurementLocationAnalysis.Analysis.Monthly.Measurements.ActiveEnergy_Wh
+        MeterAnalysis.Analysis.Monthly.Measurements.ActiveEnergy_Wh
       </Metadata>
       <Value>
         Radna energija (Wh)
@@ -904,17 +910,17 @@
       </Key>
       <Metadata>
         Property 'ActivePower_kW' of type 'Ozds.Business.Analysis.Load' with overrides:
-        MonthlyAnalysis.MaxLoad.ActivePower_kW
+        MonthlyAnalysis.Load.ActivePower_kW
         Analysis.Load.ActivePower_kW
-        Analysis.Monthly.MaxLoad.ActivePower_kW
+        Analysis.Monthly.Load.ActivePower_kW
         LocationAnalysis.Analysis.Load.ActivePower_kW
-        LocationAnalysis.Analysis.Monthly.MaxLoad.ActivePower_kW
+        LocationAnalysis.Analysis.Monthly.Load.ActivePower_kW
         NetworkUserAnalysis.Analysis.Load.ActivePower_kW
-        NetworkUserAnalysis.Analysis.Monthly.MaxLoad.ActivePower_kW
+        NetworkUserAnalysis.Analysis.Monthly.Load.ActivePower_kW
         MeasurementLocationAnalysis.Analysis.Load.ActivePower_kW
-        MeasurementLocationAnalysis.Analysis.Monthly.MaxLoad.ActivePower_kW
+        MeasurementLocationAnalysis.Analysis.Monthly.Load.ActivePower_kW
         MeterAnalysis.Analysis.Load.ActivePower_kW
-        MeterAnalysis.Analysis.Monthly.MaxLoad.ActivePower_kW
+        MeterAnalysis.Analysis.Monthly.Load.ActivePower_kW
       </Metadata>
       <Value>
         Radna snaga (kW)
@@ -947,6 +953,12 @@
         AggregateModel.ActivePower_W
         MeasurementModel.ActivePower_W
         MeasurementModel&lt;T&gt;.ActivePower_W
+        MonthlyAnalysis.Measurements.ActivePower_W
+        Analysis.Monthly.Measurements.ActivePower_W
+        LocationAnalysis.Analysis.Monthly.Measurements.ActivePower_W
+        NetworkUserAnalysis.Analysis.Monthly.Measurements.ActivePower_W
+        MeasurementLocationAnalysis.Analysis.Monthly.Measurements.ActivePower_W
+        MeterAnalysis.Analysis.Monthly.Measurements.ActivePower_W
       </Metadata>
       <Value>
         Radna snaga (W)
@@ -1205,6 +1217,17 @@
       </Metadata>
       <Value>
         Agregati mjerenja
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Aggregation
+      </Key>
+      <Metadata>
+        Type 'Ozds.Business.Models.Enums.AggregationModel'
+      </Metadata>
+      <Value>
+        Agregacija
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -1683,6 +1706,12 @@
         AggregateModel.ApparentEnergy_VAh
         MeasurementModel.ApparentEnergy_VAh
         MeasurementModel&lt;T&gt;.ApparentEnergy_VAh
+        MonthlyAnalysis.Measurements.ApparentEnergy_VAh
+        Analysis.Monthly.Measurements.ApparentEnergy_VAh
+        LocationAnalysis.Analysis.Monthly.Measurements.ApparentEnergy_VAh
+        NetworkUserAnalysis.Analysis.Monthly.Measurements.ApparentEnergy_VAh
+        MeasurementLocationAnalysis.Analysis.Monthly.Measurements.ApparentEnergy_VAh
+        MeterAnalysis.Analysis.Monthly.Measurements.ApparentEnergy_VAh
       </Metadata>
       <Value>
         Prividna energija (VAh)
@@ -1705,17 +1734,17 @@
       </Key>
       <Metadata>
         Property 'ApparentPower_kVA' of type 'Ozds.Business.Analysis.Load' with overrides:
-        MonthlyAnalysis.MaxLoad.ApparentPower_kVA
+        MonthlyAnalysis.Load.ApparentPower_kVA
         Analysis.Load.ApparentPower_kVA
-        Analysis.Monthly.MaxLoad.ApparentPower_kVA
+        Analysis.Monthly.Load.ApparentPower_kVA
         LocationAnalysis.Analysis.Load.ApparentPower_kVA
-        LocationAnalysis.Analysis.Monthly.MaxLoad.ApparentPower_kVA
+        LocationAnalysis.Analysis.Monthly.Load.ApparentPower_kVA
         NetworkUserAnalysis.Analysis.Load.ApparentPower_kVA
-        NetworkUserAnalysis.Analysis.Monthly.MaxLoad.ApparentPower_kVA
+        NetworkUserAnalysis.Analysis.Monthly.Load.ApparentPower_kVA
         MeasurementLocationAnalysis.Analysis.Load.ApparentPower_kVA
-        MeasurementLocationAnalysis.Analysis.Monthly.MaxLoad.ApparentPower_kVA
+        MeasurementLocationAnalysis.Analysis.Monthly.Load.ApparentPower_kVA
         MeterAnalysis.Analysis.Load.ApparentPower_kVA
-        MeterAnalysis.Analysis.Monthly.MaxLoad.ApparentPower_kVA
+        MeterAnalysis.Analysis.Monthly.Load.ApparentPower_kVA
       </Metadata>
       <Value>
         Prividna snaga (kVA)
@@ -1748,6 +1777,12 @@
         AggregateModel.ApparentPower_VA
         MeasurementModel.ApparentPower_VA
         MeasurementModel&lt;T&gt;.ApparentPower_VA
+        MonthlyAnalysis.Measurements.ApparentPower_VA
+        Analysis.Monthly.Measurements.ApparentPower_VA
+        LocationAnalysis.Analysis.Monthly.Measurements.ApparentPower_VA
+        NetworkUserAnalysis.Analysis.Monthly.Measurements.ApparentPower_VA
+        MeasurementLocationAnalysis.Analysis.Monthly.Measurements.ApparentPower_VA
+        MeterAnalysis.Analysis.Monthly.Measurements.ApparentPower_VA
       </Metadata>
       <Value>
         Prividna snaga (VA)
@@ -1889,6 +1924,17 @@
       </Metadata>
       <Value>
         Arhivirani cjenik naknade za korištenje mreže
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Archives
+      </Key>
+      <Metadata>
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 22 column 23
+      </Metadata>
+      <Value>
+        Arhive
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -2038,6 +2084,8 @@
         SchneideriEM3xxxAggregateModel.DerivedReactivePowerTotalExportT0_VAR.Avg
         SchneideriEM3xxxAggregateModel.DerivedActivePowerTotalImportT1_W.Avg
         SchneideriEM3xxxAggregateModel.DerivedActivePowerTotalImportT2_W.Avg
+
+        Property 'Avg' of type 'Ozds.Business.Models.Enums.AggregationModel'
       </Metadata>
       <Value>
         Prosjek
@@ -2225,8 +2273,8 @@
         Calculation
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Pages/Finances/NetworkUserCalculationPage.razor' line 18 column 22
-        From file 'Ozds.Client/Pages/Finances/NetworkUserCalculationPage.razor' line 25 column 22
+        From file 'Ozds.Client/Pages/Finances/NetworkUserCalculationPage.razor' line 19 column 22
+        From file 'Ozds.Client/Pages/Finances/NetworkUserCalculationPage.razor' line 26 column 22
       </Metadata>
       <Value>
         Obračun
@@ -2426,6 +2474,18 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        Charts
+      </Key>
+      <Metadata>
+        From file 'Ozds.Client/Pages/Measurements/MeasurementLocationPage.razor' line 106 column 8
+        From file 'Ozds.Client/Pages/Measurements/MeterPage.razor' line 104 column 8
+      </Metadata>
+      <Value>
+        Grafovi
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         City
       </Key>
       <Metadata>
@@ -2476,6 +2536,17 @@
       </Metadata>
       <Value>
         Grad
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Clear
+      </Key>
+      <Metadata>
+        From file 'Ozds.Client/Components/Fields/UploadField.razor' line 49 column 8
+      </Metadata>
+      <Value>
+        Očisti
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -2685,16 +2756,16 @@
         Create
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Streaming/Mutating.razor' line 132 column 14
-        From file 'Ozds.Client/Pages/Administration/LocationsPage.razor' line 45 column 6
-        From file 'Ozds.Client/Pages/Administration/NetworkUsersPage.razor' line 47 column 6
-        From file 'Ozds.Client/Pages/Finances/CataloguesPage.razor' line 38 column 4
-        From file 'Ozds.Client/Pages/Finances/CataloguesPage.razor' line 44 column 4
-        From file 'Ozds.Client/Pages/Measurements/MeasurementLocationsPage.razor' line 47 column 6
-        From file 'Ozds.Client/Pages/Measurements/MeasurementValidatorsPage.razor' line 41 column 6
-        From file 'Ozds.Client/Pages/Measurements/MessengersPage.razor' line 39 column 6
-        From file 'Ozds.Client/Pages/Measurements/MetersPage.razor' line 44 column 6
-        From file 'Ozds.Client/Pages/System/NotificationsPage.razor' line 50 column 6
+        From file 'Ozds.Client/Components/Streaming/Mutating.razor' line 134 column 14
+        From file 'Ozds.Client/Pages/Administration/LocationsPage.razor' line 50 column 6
+        From file 'Ozds.Client/Pages/Administration/NetworkUsersPage.razor' line 54 column 6
+        From file 'Ozds.Client/Pages/Finances/CataloguesPage.razor' line 45 column 4
+        From file 'Ozds.Client/Pages/Finances/CataloguesPage.razor' line 58 column 4
+        From file 'Ozds.Client/Pages/Measurements/MeasurementLocationsPage.razor' line 54 column 6
+        From file 'Ozds.Client/Pages/Measurements/MeasurementValidatorsPage.razor' line 48 column 6
+        From file 'Ozds.Client/Pages/Measurements/MessengersPage.razor' line 43 column 6
+        From file 'Ozds.Client/Pages/Measurements/MetersPage.razor' line 48 column 6
+        From file 'Ozds.Client/Pages/System/NotificationsPage.razor' line 40 column 6
       </Metadata>
       <Value>
         Stvori
@@ -2705,7 +2776,7 @@
         Create invoice
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Pages/Administration/NetworkUserPage.razor' line 73 column 8
+        From file 'Ozds.Client/Pages/Administration/NetworkUserPage.razor' line 82 column 10
       </Metadata>
       <Value>
         Kreiraj račun
@@ -3027,7 +3098,7 @@
         From file 'Ozds.Client/Components/Dashboards/LocationRepresentativeDashboard.razor' line 28 column 14
         From file 'Ozds.Client/Components/Dashboards/LocationRepresentativeDashboard.razor' line 76 column 15
         From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 16 column 14
-        From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 84 column 15
+        From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 88 column 15
       </Metadata>
       <Value>
         Potrošnja u tekućem mjesecu
@@ -3060,6 +3131,12 @@
         AggregateModel.Current_A
         MeasurementModel.Current_A
         MeasurementModel&lt;T&gt;.Current_A
+        MonthlyAnalysis.Measurements.Current_A
+        Analysis.Monthly.Measurements.Current_A
+        LocationAnalysis.Analysis.Monthly.Measurements.Current_A
+        NetworkUserAnalysis.Analysis.Monthly.Measurements.Current_A
+        MeasurementLocationAnalysis.Analysis.Monthly.Measurements.Current_A
+        MeterAnalysis.Analysis.Monthly.Measurements.Current_A
       </Metadata>
       <Value>
         Struja (A)
@@ -3252,27 +3329,10 @@
         Delete
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Streaming/Mutating.razor' line 94 column 20
+        From file 'Ozds.Client/Components/Streaming/Mutating.razor' line 96 column 20
       </Metadata>
       <Value>
         Arhiviraj
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        Deleted
-      </Key>
-      <Metadata>
-        From file 'Ozds.Client/Pages/Administration/LocationsPage.razor' line 35 column 13
-        From file 'Ozds.Client/Pages/Administration/NetworkUsersPage.razor' line 37 column 13
-        From file 'Ozds.Client/Pages/Finances/CataloguesPage.razor' line 32 column 11
-        From file 'Ozds.Client/Pages/Measurements/MeasurementLocationsPage.razor' line 37 column 13
-        From file 'Ozds.Client/Pages/Measurements/MeasurementValidatorsPage.razor' line 30 column 11
-        From file 'Ozds.Client/Pages/Measurements/MessengersPage.razor' line 30 column 11
-        From file 'Ozds.Client/Pages/Measurements/MetersPage.razor' line 35 column 11
-      </Metadata>
-      <Value>
-        Arhivirano
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -3874,6 +3934,51 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        Document
+      </Key>
+      <Metadata>
+        From file 'Ozds.Client/Pages/Finances/NetworkUserCalculationPage.razor' line 37 column 12
+        From file 'Ozds.Client/Pages/Finances/NetworkUserInvoicePage.razor' line 49 column 12
+      </Metadata>
+      <Value>
+        Dokument
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Document (PDF)
+      </Key>
+      <Metadata>
+        From file 'Ozds.Client/Pages/Finances/NetworkUserInvoicePage.razor' line 58 column 10
+      </Metadata>
+      <Value>
+        Dokument (PDF)
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Document controls
+      </Key>
+      <Metadata>
+        From file 'Ozds.Client/Pages/DeveloperPage.razor' line 53 column 6
+      </Metadata>
+      <Value>
+        Kontrole dokumenta
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Drag and drop files here or click
+      </Key>
+      <Metadata>
+        From file 'Ozds.Client/Components/Fields/UploadField.razor' line 20 column 12
+      </Metadata>
+      <Value>
+        Povucite i ispustite datoteke ovdje ili kliknite
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         DUE DATE
       </Key>
       <Metadata>
@@ -3918,8 +4023,8 @@
         Edit
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Streaming/Mutating.razor' line 72 column 16
-        From file 'Ozds.Client/Components/Streaming/Mutating.razor' line 153 column 12
+        From file 'Ozds.Client/Components/Streaming/Mutating.razor' line 74 column 16
+        From file 'Ozds.Client/Components/Streaming/Mutating.razor' line 155 column 12
       </Metadata>
       <Value>
         Uredi
@@ -3930,7 +4035,8 @@
         Electrical energy supply during higher daily tariff period
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 131 column 13
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 43 column 29
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 50 column 25
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 51 column 4
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 140 column 10
       </Metadata>
@@ -3943,8 +4049,8 @@
         Electrical energy supply during lower daily tariff period
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 135 column 13
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 116 column 4
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 46 column 29
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 53 column 25
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 46 column 4
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 147 column 10
       </Metadata>
@@ -3968,7 +4074,8 @@
         Electrical energy supply fee
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 121 column 6
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 42 column 27
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 49 column 23
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 135 column 10
       </Metadata>
       <Value>
@@ -4057,8 +4164,8 @@
         Energy card report (CSV)
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Pages/Administration/LocationPage.razor' line 72 column 8
-        From file 'Ozds.Client/Pages/Administration/NetworkUserPage.razor' line 89 column 10
+        From file 'Ozds.Client/Pages/Administration/LocationPage.razor' line 82 column 10
+        From file 'Ozds.Client/Pages/Administration/NetworkUserPage.razor' line 110 column 10
       </Metadata>
       <Value>
         Energetska kartica (CSV)
@@ -4115,8 +4222,9 @@
         Engaged power during higher daily tariff period
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 78 column 13
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 74 column 13
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/RedLowNetworkUserCalculationDetails.razor' line 21 column 29
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/WhiteMediumNetworkUserCalculationDetails.razor' line 21 column 29
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 35 column 25
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 31 column 4
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 105 column 10
       </Metadata>
@@ -4233,7 +4341,11 @@
         Excessively drawn reactive energy
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 82 column 13
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/BlueLowNetworkUserCalculationDetails.razor' line 17 column 29
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/RedLowNetworkUserCalculationDetails.razor' line 25 column 29
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/WhiteLowNetworkUserCalculationDetails.razor' line 21 column 29
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/WhiteMediumNetworkUserCalculationDetails.razor' line 25 column 29
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 38 column 25
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 26 column 4
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 112 column 10
       </Metadata>
@@ -4257,8 +4369,8 @@
         Excise duty for business/non-business use
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 143 column 13
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 139 column 13
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 52 column 29
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 59 column 25
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 163 column 10
       </Metadata>
       <Value>
@@ -4304,7 +4416,8 @@
         cogeneration
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 139 column 13
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 49 column 29
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 56 column 25
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 66 column 4
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 155 column 8
       </Metadata>
@@ -4368,7 +4481,7 @@
         Forget
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Streaming/Mutating.razor' line 103 column 18
+        From file 'Ozds.Client/Components/Streaming/Mutating.razor' line 105 column 18
       </Metadata>
       <Value>
         Izbriši
@@ -4394,7 +4507,7 @@
         From
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 33 column 18
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 17 column 25
       </Metadata>
       <Value>
         Od
@@ -4451,7 +4564,7 @@
         Full total
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 227 column 18
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 75 column 25
       </Metadata>
       <Value>
         Ukupan iznos
@@ -4466,6 +4579,17 @@
       </Metadata>
       <Value>
         UKUPNO
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Generate PDF
+      </Key>
+      <Metadata>
+        From file 'Ozds.Client/Pages/DeveloperPage.razor' line 60 column 6
+      </Metadata>
+      <Value>
+        Generiraj PDF
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -4695,7 +4819,9 @@
         Import
       </Key>
       <Metadata>
-        Property 'Import' of type 'Ozds.Business.Models.Enums.DuplexModel'
+        From file 'Ozds.Client/Components/Fields/UploadField.razor' line 43 column 8
+        From file 'Ozds.Client/Components/Fields/UploadTabs.razor' line 17 column 8
+        From file 'Ozds.Client/Components/Fields/UploadTabs.razor' line 24 column 8
       </Metadata>
       <Value>
         Uvoz
@@ -4814,9 +4940,9 @@
         Invoice
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Pages/Finances/NetworkUserInvoicePage.razor' line 21 column 22
-        From file 'Ozds.Client/Pages/Finances/NetworkUserInvoicePage.razor' line 28 column 22
-        From file 'Ozds.Client/Pages/Finances/NetworkUserInvoicePage.razor' line 40 column 10
+        From file 'Ozds.Client/Pages/Administration/NetworkUserPage.razor' line 32 column 10
+        From file 'Ozds.Client/Pages/Finances/NetworkUserInvoicePage.razor' line 24 column 22
+        From file 'Ozds.Client/Pages/Finances/NetworkUserInvoicePage.razor' line 31 column 22
       </Metadata>
       <Value>
         Račun
@@ -4824,32 +4950,10 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        Invoice (PDF)
-      </Key>
-      <Metadata>
-        From file 'Ozds.Client/Pages/Finances/NetworkUserInvoicePage.razor' line 45 column 8
-      </Metadata>
-      <Value>
-        Račun (PDF)
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        Invoice document
-      </Key>
-      <Metadata>
-        From file 'Ozds.Client/Pages/Finances/NetworkUserInvoicePage.razor' line 58 column 8
-      </Metadata>
-      <Value>
-        Faktura
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
         INVOICE FOR
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 6 column 4
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 8 column 8
       </Metadata>
       <Value>
         RAČUN ZA
@@ -4872,7 +4976,7 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 48 column 17
-        From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 127 column 17
+        From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 131 column 17
       </Metadata>
       <Value>
         Račun na čekanju...
@@ -5351,7 +5455,7 @@
         From file 'Ozds.Client/Components/Dashboards/LocationRepresentativeDashboard.razor' line 13 column 14
         From file 'Ozds.Client/Components/Dashboards/LocationRepresentativeDashboard.razor' line 60 column 15
         From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 31 column 14
-        From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 109 column 15
+        From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 113 column 15
       </Metadata>
       <Value>
         Potrošnja u prošlim mjesecima
@@ -5363,7 +5467,7 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 41 column 14
-        From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 120 column 15
+        From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 124 column 15
       </Metadata>
       <Value>
         Ukupno prošlog mjeseca
@@ -5776,6 +5880,13 @@
         Load
       </Key>
       <Metadata>
+        Property 'Load' of type 'Ozds.Business.Analysis.MonthlyAnalysis' with overrides:
+        Analysis.Monthly.Load
+        LocationAnalysis.Analysis.Monthly.Load
+        NetworkUserAnalysis.Analysis.Monthly.Load
+        MeasurementLocationAnalysis.Analysis.Monthly.Load
+        MeterAnalysis.Analysis.Monthly.Load
+
         Property 'Load' of type 'Ozds.Business.Analysis.Analysis' with overrides:
         LocationAnalysis.Analysis.Load
         NetworkUserAnalysis.Analysis.Load
@@ -5793,8 +5904,8 @@
         Load curve report (CSV)
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Pages/Measurements/MeasurementLocationPage.razor' line 64 column 6
-        From file 'Ozds.Client/Pages/Measurements/MeterPage.razor' line 70 column 6
+        From file 'Ozds.Client/Pages/Measurements/MeasurementLocationPage.razor' line 100 column 8
+        From file 'Ozds.Client/Pages/Measurements/MeterPage.razor' line 98 column 8
       </Metadata>
       <Value>
         Krivulja opterećenja (CSV)
@@ -5962,7 +6073,7 @@
         Locations
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Pages/Administration/LocationsPage.razor' line 28 column 18
+        From file 'Ozds.Client/Pages/Administration/LocationsPage.razor' line 29 column 18
       </Metadata>
       <Value>
         Lokacije
@@ -6123,6 +6234,8 @@
         SchneideriEM3xxxAggregateModel.DerivedReactivePowerTotalExportT0_VAR.Max
         SchneideriEM3xxxAggregateModel.DerivedActivePowerTotalImportT1_W.Max
         SchneideriEM3xxxAggregateModel.DerivedActivePowerTotalImportT2_W.Max
+
+        Property 'Max' of type 'Ozds.Business.Models.Enums.AggregationModel'
       </Metadata>
       <Value>
         Maksimum
@@ -6379,22 +6492,6 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        MaxLoad
-      </Key>
-      <Metadata>
-        Property 'MaxLoad' of type 'Ozds.Business.Analysis.MonthlyAnalysis' with overrides:
-        Analysis.Monthly.MaxLoad
-        LocationAnalysis.Analysis.Monthly.MaxLoad
-        NetworkUserAnalysis.Analysis.Monthly.MaxLoad
-        MeasurementLocationAnalysis.Analysis.Monthly.MaxLoad
-        MeterAnalysis.Analysis.Monthly.MaxLoad
-      </Metadata>
-      <Value>
-        Maksimalno opterećenje
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
         MaxReactiveEnergy_kVARh
       </Key>
       <Metadata>
@@ -6553,8 +6650,8 @@
         Measurement location
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Pages/Measurements/MeasurementLocationPage.razor' line 86 column 19
-        From file 'Ozds.Client/Pages/Measurements/MeasurementLocationPage.razor' line 96 column 17
+        From file 'Ozds.Client/Pages/Measurements/MeasurementLocationPage.razor' line 29 column 19
+        From file 'Ozds.Client/Pages/Measurements/MeasurementLocationPage.razor' line 39 column 17
       </Metadata>
       <Value>
         Obračunsko mjerno mjesto
@@ -6578,8 +6675,8 @@
         Measurement service fee
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 86 column 13
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 82 column 13
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 37 column 29
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 41 column 25
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 36 column 4
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 119 column 10
       </Metadata>
@@ -6707,6 +6804,12 @@
         AggregateModel.MeasurementLocationId
         MeasurementModel.MeasurementLocationId
         MeasurementModel&lt;T&gt;.MeasurementLocationId
+        MonthlyAnalysis.Measurements.MeasurementLocationId
+        Analysis.Monthly.Measurements.MeasurementLocationId
+        LocationAnalysis.Analysis.Monthly.Measurements.MeasurementLocationId
+        NetworkUserAnalysis.Analysis.Monthly.Measurements.MeasurementLocationId
+        MeasurementLocationAnalysis.Analysis.Monthly.Measurements.MeasurementLocationId
+        MeterAnalysis.Analysis.Monthly.Measurements.MeasurementLocationId
       </Metadata>
       <Value>
         Oznaka mjernog mjesta
@@ -6956,8 +7059,8 @@
         Meter
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Pages/Measurements/MeterPage.razor' line 88 column 24
-        From file 'Ozds.Client/Pages/Measurements/MeterPage.razor' line 95 column 22
+        From file 'Ozds.Client/Pages/Measurements/MeterPage.razor' line 34 column 24
+        From file 'Ozds.Client/Pages/Measurements/MeterPage.razor' line 41 column 22
       </Metadata>
       <Value>
         Brojilo
@@ -7070,6 +7173,12 @@
         AggregateModel.MeterId
         MeasurementModel.MeterId
         MeasurementModel&lt;T&gt;.MeterId
+        MonthlyAnalysis.Measurements.MeterId
+        Analysis.Monthly.Measurements.MeterId
+        LocationAnalysis.Analysis.Monthly.Measurements.MeterId
+        NetworkUserAnalysis.Analysis.Monthly.Measurements.MeterId
+        MeasurementLocationAnalysis.Analysis.Monthly.Measurements.MeterId
+        MeterAnalysis.Analysis.Monthly.Measurements.MeterId
 
         Property 'MeterId' of type 'Ozds.Business.Models.Abstractions.INetworkUserCalculation' with overrides:
         BlueLowNetworkUserCalculationModel.MeterId
@@ -7224,6 +7333,8 @@
         SchneideriEM3xxxAggregateModel.DerivedReactivePowerTotalExportT0_VAR.Min
         SchneideriEM3xxxAggregateModel.DerivedActivePowerTotalImportT1_W.Min
         SchneideriEM3xxxAggregateModel.DerivedActivePowerTotalImportT2_W.Min
+
+        Property 'Min' of type 'Ozds.Business.Models.Enums.AggregationModel'
       </Metadata>
       <Value>
         Minimum
@@ -7682,7 +7793,7 @@
         MONTH
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 6 column 55
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 8 column 59
       </Metadata>
       <Value>
         MJESEC
@@ -7879,8 +7990,10 @@
         Network usage during higher daily tariff period
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 70 column 13
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 6 column 4
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/RedLowNetworkUserCalculationDetails.razor' line 13 column 29
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/WhiteLowNetworkUserCalculationDetails.razor' line 13 column 29
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/WhiteMediumNetworkUserCalculationDetails.razor' line 13 column 29
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 29 column 25
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 21 column 4
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 91 column 10
       </Metadata>
@@ -7893,7 +8006,10 @@
         Network usage during lower daily tariff period
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 74 column 13
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/RedLowNetworkUserCalculationDetails.razor' line 17 column 29
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/WhiteLowNetworkUserCalculationDetails.razor' line 17 column 29
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/WhiteMediumNetworkUserCalculationDetails.razor' line 17 column 29
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 32 column 25
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 16 column 4
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 98 column 10
       </Metadata>
@@ -7906,7 +8022,8 @@
         Network usage during unique daily tariff period
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 66 column 13
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/BlueLowNetworkUserCalculationDetails.razor' line 13 column 29
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 26 column 25
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 11 column 4
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 84 column 10
       </Metadata>
@@ -7935,6 +8052,28 @@
       </Metadata>
       <Value>
         Korisnik ZDS-a
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Network user calculation
+      </Key>
+      <Metadata>
+        From file 'Ozds.Client/Pages/Document/NetworkUserCalculationDocumentPage.razor' line 16 column 17
+      </Metadata>
+      <Value>
+        Obračun korisnika mreže
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Network user calculation not found
+      </Key>
+      <Metadata>
+        From file 'Ozds.Client/Pages/Document/NetworkUserCalculationDocumentPage.razor' line 25 column 22
+      </Metadata>
+      <Value>
+        Račun korisnika mreže nije pronađen
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -8371,7 +8510,7 @@
         New measurement location
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Pages/Measurements/MeasurementLocationPage.razor' line 81 column 24
+        From file 'Ozds.Client/Pages/Measurements/MeasurementLocationPage.razor' line 24 column 24
       </Metadata>
       <Value>
         Novo mjerno mjesto
@@ -8404,7 +8543,7 @@
         New meter
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Pages/Measurements/MeterPage.razor' line 84 column 24
+        From file 'Ozds.Client/Pages/Measurements/MeterPage.razor' line 30 column 24
       </Metadata>
       <Value>
         Novo brojilo
@@ -8481,10 +8620,29 @@
         No measurements found with given graph settings
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementLineChart.razor' line 44 column 38
+        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementLineChart.razor' line 46 column 38
       </Metadata>
       <Value>
         Nema pronađenih mjerenja s danim postavkama grafa
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        None
+      </Key>
+      <Metadata>
+        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 111 column 12
+        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 137 column 10
+        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 172 column 14
+        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 228 column 14
+        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 253 column 14
+        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 279 column 16
+        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 300 column 12
+        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 319 column 10
+        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 158 column 36
+      </Metadata>
+      <Value>
+        Nema
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -8672,6 +8830,17 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        Open file picker
+      </Key>
+      <Metadata>
+        From file 'Ozds.Client/Components/Fields/UploadField.razor' line 37 column 8
+      </Metadata>
+      <Value>
+        Otvori izbornik datoteka
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         Operator
       </Key>
       <Metadata>
@@ -8770,17 +8939,6 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        PDF
-      </Key>
-      <Metadata>
-        From file 'Ozds.Client/Pages/DeveloperPage.razor' line 34 column 34
-      </Metadata>
-      <Value>
-        PDF
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
         Peak_kW
       </Key>
       <Metadata>
@@ -8827,8 +8985,8 @@
       <Metadata>
         From file 'Ozds.Client/Components/Charts/Measurements/MeasurementDonutChart.razor' line 67 column 9
         From file 'Ozds.Client/Components/Charts/Measurements/MeasurementGaugeChart.razor' line 65 column 9
-        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementLineChart.razor' line 70 column 9
-        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementLineChart.razor' line 44 column 38
+        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementLineChart.razor' line 72 column 9
+        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementLineChart.razor' line 46 column 38
       </Metadata>
       <Value>
         Zbroj faza
@@ -8974,11 +9132,11 @@
         Pick month
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Pages/Administration/LocationPage.razor' line 60 column 62
-        From file 'Ozds.Client/Pages/Administration/NetworkUserPage.razor' line 39 column 19
-        From file 'Ozds.Client/Pages/Administration/NetworkUserPage.razor' line 79 column 17
-        From file 'Ozds.Client/Pages/Measurements/MeasurementLocationPage.razor' line 36 column 15
-        From file 'Ozds.Client/Pages/Measurements/MeterPage.razor' line 42 column 15
+        From file 'Ozds.Client/Pages/Administration/LocationPage.razor' line 66 column 64
+        From file 'Ozds.Client/Pages/Administration/NetworkUserPage.razor' line 38 column 19
+        From file 'Ozds.Client/Pages/Administration/NetworkUserPage.razor' line 94 column 19
+        From file 'Ozds.Client/Pages/Measurements/MeasurementLocationPage.razor' line 60 column 17
+        From file 'Ozds.Client/Pages/Measurements/MeterPage.razor' line 60 column 17
       </Metadata>
       <Value>
         Odaberite mjesec
@@ -8989,8 +9147,8 @@
         Pick OBIS code
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Pages/Measurements/MeasurementLocationPage.razor' line 39 column 15
-        From file 'Ozds.Client/Pages/Measurements/MeterPage.razor' line 45 column 15
+        From file 'Ozds.Client/Pages/Measurements/MeasurementLocationPage.razor' line 64 column 17
+        From file 'Ozds.Client/Pages/Measurements/MeterPage.razor' line 64 column 17
       </Metadata>
       <Value>
         Odaberite OBIS kod
@@ -9090,8 +9248,8 @@
         Preview
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Streaming/Mutating.razor' line 55 column 16
-        From file 'Ozds.Client/Components/Streaming/Mutating.razor' line 139 column 14
+        From file 'Ozds.Client/Components/Streaming/Mutating.razor' line 57 column 16
+        From file 'Ozds.Client/Components/Streaming/Mutating.razor' line 141 column 14
       </Metadata>
       <Value>
         Pretpregled
@@ -9102,8 +9260,7 @@
         Preview invoice
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Pages/Administration/NetworkUserPage.razor' line 32 column 10
-        From file 'Ozds.Client/Pages/Administration/NetworkUserPage.razor' line 56 column 12
+        From file 'Ozds.Client/Pages/Administration/NetworkUserPage.razor' line 57 column 12
       </Metadata>
       <Value>
         Pretpregled računa
@@ -9114,7 +9271,7 @@
         Preview invoice (PDF)
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Pages/Administration/NetworkUserPage.razor' line 69 column 8
+        From file 'Ozds.Client/Pages/Administration/NetworkUserPage.razor' line 73 column 10
       </Metadata>
       <Value>
         Pretpregled računa (PDF)
@@ -9496,6 +9653,12 @@
         AggregateModel.ReactiveEnergy_VARh
         MeasurementModel.ReactiveEnergy_VARh
         MeasurementModel&lt;T&gt;.ReactiveEnergy_VARh
+        MonthlyAnalysis.Measurements.ReactiveEnergy_VARh
+        Analysis.Monthly.Measurements.ReactiveEnergy_VARh
+        LocationAnalysis.Analysis.Monthly.Measurements.ReactiveEnergy_VARh
+        NetworkUserAnalysis.Analysis.Monthly.Measurements.ReactiveEnergy_VARh
+        MeasurementLocationAnalysis.Analysis.Monthly.Measurements.ReactiveEnergy_VARh
+        MeterAnalysis.Analysis.Monthly.Measurements.ReactiveEnergy_VARh
       </Metadata>
       <Value>
         Jalova energija (VARh)
@@ -10008,17 +10171,17 @@
       </Key>
       <Metadata>
         Property 'ReactivePower_kVAR' of type 'Ozds.Business.Analysis.Load' with overrides:
-        MonthlyAnalysis.MaxLoad.ReactivePower_kVAR
+        MonthlyAnalysis.Load.ReactivePower_kVAR
         Analysis.Load.ReactivePower_kVAR
-        Analysis.Monthly.MaxLoad.ReactivePower_kVAR
+        Analysis.Monthly.Load.ReactivePower_kVAR
         LocationAnalysis.Analysis.Load.ReactivePower_kVAR
-        LocationAnalysis.Analysis.Monthly.MaxLoad.ReactivePower_kVAR
+        LocationAnalysis.Analysis.Monthly.Load.ReactivePower_kVAR
         NetworkUserAnalysis.Analysis.Load.ReactivePower_kVAR
-        NetworkUserAnalysis.Analysis.Monthly.MaxLoad.ReactivePower_kVAR
+        NetworkUserAnalysis.Analysis.Monthly.Load.ReactivePower_kVAR
         MeasurementLocationAnalysis.Analysis.Load.ReactivePower_kVAR
-        MeasurementLocationAnalysis.Analysis.Monthly.MaxLoad.ReactivePower_kVAR
+        MeasurementLocationAnalysis.Analysis.Monthly.Load.ReactivePower_kVAR
         MeterAnalysis.Analysis.Load.ReactivePower_kVAR
-        MeterAnalysis.Analysis.Monthly.MaxLoad.ReactivePower_kVAR
+        MeterAnalysis.Analysis.Monthly.Load.ReactivePower_kVAR
       </Metadata>
       <Value>
         Jalova snaga (kVAR)
@@ -10051,6 +10214,12 @@
         AggregateModel.ReactivePower_VAR
         MeasurementModel.ReactivePower_VAR
         MeasurementModel&lt;T&gt;.ReactivePower_VAR
+        MonthlyAnalysis.Measurements.ReactivePower_VAR
+        Analysis.Monthly.Measurements.ReactivePower_VAR
+        LocationAnalysis.Analysis.Monthly.Measurements.ReactivePower_VAR
+        NetworkUserAnalysis.Analysis.Monthly.Measurements.ReactivePower_VAR
+        MeasurementLocationAnalysis.Analysis.Monthly.Measurements.ReactivePower_VAR
+        MeterAnalysis.Analysis.Monthly.Measurements.ReactivePower_VAR
       </Metadata>
       <Value>
         Jalova snaga (VAR)
@@ -10361,9 +10530,8 @@
         Report
       </Key>
       <Metadata>
-        Type 'Ozds.Business.Models.Base.ReportModel'
-
-        Type 'Ozds.Business.Models.Abstractions.IReport'
+        From file 'Ozds.Client/Pages/Administration/LocationPage.razor' line 62 column 10
+        From file 'Ozds.Client/Pages/Administration/NetworkUserPage.razor' line 88 column 10
       </Metadata>
       <Value>
         Izvještaj
@@ -10378,6 +10546,18 @@
       </Metadata>
       <Value>
         Osnova izvješća
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Reports
+      </Key>
+      <Metadata>
+        From file 'Ozds.Client/Pages/Measurements/MeasurementLocationPage.razor' line 53 column 8
+        From file 'Ozds.Client/Pages/Measurements/MeterPage.razor' line 53 column 8
+      </Metadata>
+      <Value>
+        Izvješća
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -10542,7 +10722,7 @@
         Restore
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Streaming/Mutating.razor' line 85 column 20
+        From file 'Ozds.Client/Components/Streaming/Mutating.razor' line 87 column 20
       </Metadata>
       <Value>
         Obnovi
@@ -10656,8 +10836,8 @@
         Search
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Streaming/Table.razor' line 28 column 25
-        From file 'Ozds.Client/Components/Streaming/Table.razor' line 87 column 23
+        From file 'Ozds.Client/Components/Streaming/Table.razor' line 30 column 29
+        From file 'Ozds.Client/Components/Streaming/Table.razor' line 88 column 27
       </Metadata>
       <Value>
         Pretraži
@@ -10683,17 +10863,6 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        Seen
-      </Key>
-      <Metadata>
-        From file 'Ozds.Client/Pages/System/NotificationsPage.razor' line 27 column 12
-      </Metadata>
-      <Value>
-        Viđeno
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
         SeenOn
       </Key>
       <Metadata>
@@ -10701,6 +10870,45 @@
       </Metadata>
       <Value>
         Viđeno na
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Server controls
+      </Key>
+      <Metadata>
+        From file 'Ozds.Client/Pages/DeveloperPage.razor' line 32 column 6
+      </Metadata>
+      <Value>
+        Kontrole poslužitelja
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Show deleted
+      </Key>
+      <Metadata>
+        From file 'Ozds.Client/Pages/Administration/LocationsPage.razor' line 36 column 13
+        From file 'Ozds.Client/Pages/Administration/NetworkUsersPage.razor' line 37 column 13
+        From file 'Ozds.Client/Pages/Finances/CataloguesPage.razor' line 32 column 11
+        From file 'Ozds.Client/Pages/Measurements/MeasurementLocationsPage.razor' line 37 column 13
+        From file 'Ozds.Client/Pages/Measurements/MeasurementValidatorsPage.razor' line 30 column 11
+        From file 'Ozds.Client/Pages/Measurements/MessengersPage.razor' line 30 column 11
+        From file 'Ozds.Client/Pages/Measurements/MetersPage.razor' line 35 column 11
+      </Metadata>
+      <Value>
+        Prikaži obrisane
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Show seen
+      </Key>
+      <Metadata>
+        From file 'Ozds.Client/Pages/System/NotificationsPage.razor' line 27 column 12
+      </Metadata>
+      <Value>
+        Prikaži viđeno
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -10885,13 +11093,13 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        Stop
+        Stop app
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Pages/DeveloperPage.razor' line 32 column 35
+        From file 'Ozds.Client/Pages/DeveloperPage.razor' line 47 column 6
       </Metadata>
       <Value>
-        Prekini
+        Zaustavi aplikaciju
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -11575,7 +11783,7 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 58 column 15
-        From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 137 column 15
+        From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 141 column 15
       </Metadata>
       <Value>
         Potrošnja u tekućoj godini
@@ -11598,13 +11806,13 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        Throw
+        Throw exception
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Pages/DeveloperPage.razor' line 30 column 36
+        From file 'Ozds.Client/Pages/DeveloperPage.razor' line 39 column 6
       </Metadata>
       <Value>
-        Baci
+        Baci iznimku
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -11642,6 +11850,12 @@
         AggregateModel.Timestamp
         MeasurementModel.Timestamp
         MeasurementModel&lt;T&gt;.Timestamp
+        MonthlyAnalysis.Measurements.Timestamp
+        Analysis.Monthly.Measurements.Timestamp
+        LocationAnalysis.Analysis.Monthly.Measurements.Timestamp
+        NetworkUserAnalysis.Analysis.Monthly.Measurements.Timestamp
+        MeasurementLocationAnalysis.Analysis.Monthly.Measurements.Timestamp
+        MeterAnalysis.Analysis.Monthly.Measurements.Timestamp
 
         Property 'Timestamp' of type 'Ozds.Business.Models.AccountingPeriodReportModel'
 
@@ -11665,17 +11879,17 @@
         ResolvableNotificationModel.Timestamp
 
         Property 'Timestamp' of type 'Ozds.Business.Analysis.Load' with overrides:
-        MonthlyAnalysis.MaxLoad.Timestamp
+        MonthlyAnalysis.Load.Timestamp
         Analysis.Load.Timestamp
-        Analysis.Monthly.MaxLoad.Timestamp
+        Analysis.Monthly.Load.Timestamp
         LocationAnalysis.Analysis.Load.Timestamp
-        LocationAnalysis.Analysis.Monthly.MaxLoad.Timestamp
+        LocationAnalysis.Analysis.Monthly.Load.Timestamp
         NetworkUserAnalysis.Analysis.Load.Timestamp
-        NetworkUserAnalysis.Analysis.Monthly.MaxLoad.Timestamp
+        NetworkUserAnalysis.Analysis.Monthly.Load.Timestamp
         MeasurementLocationAnalysis.Analysis.Load.Timestamp
-        MeasurementLocationAnalysis.Analysis.Monthly.MaxLoad.Timestamp
+        MeasurementLocationAnalysis.Analysis.Monthly.Load.Timestamp
         MeterAnalysis.Analysis.Load.Timestamp
-        MeterAnalysis.Analysis.Monthly.MaxLoad.Timestamp
+        MeterAnalysis.Analysis.Monthly.Load.Timestamp
 
         Property 'Timestamp' of type 'Ozds.Business.Analysis.Consumption' with overrides:
         MonthlyAnalysis.Consumption.Timestamp
@@ -11880,7 +12094,7 @@
         To
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 43 column 18
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 20 column 25
       </Metadata>
       <Value>
         Do
@@ -11995,7 +12209,7 @@
         Total
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 188 column 18
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 68 column 25
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 51 column 12
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 116 column 12
       </Metadata>
@@ -12008,8 +12222,8 @@
         TOTAL
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 116 column 4
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 173 column 4
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 45 column 23
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 63 column 23
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 73 column 10
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 186 column 37
       </Metadata>
@@ -12235,6 +12449,17 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        Totals
+      </Key>
+      <Metadata>
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 58 column 36
+      </Metadata>
+      <Value>
+        Ukupni iznosi
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         TotalWithTax_EUR
       </Key>
       <Metadata>
@@ -12321,7 +12546,7 @@
         Type
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Streaming/Loading.razor' line 57 column 17
+        From file 'Ozds.Client/Components/Streaming/Loading.razor' line 57 column 21
       </Metadata>
       <Value>
         Tip
@@ -12378,7 +12603,7 @@
         Update
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Streaming/Mutating.razor' line 48 column 16
+        From file 'Ozds.Client/Components/Streaming/Mutating.razor' line 50 column 16
       </Metadata>
       <Value>
         Ažuriraj
@@ -12804,7 +13029,7 @@
         User
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 23 column 18
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 14 column 25
         From file 'Ozds.Client/Pages/Administration/UserPage.razor' line 22 column 24
       </Metadata>
       <Value>
@@ -12851,7 +13076,7 @@
         VAT
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 207 column 12
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 71 column 26
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 195 column 8
       </Metadata>
       <Value>
@@ -12896,6 +13121,12 @@
         AggregateModel.Voltage_V
         MeasurementModel.Voltage_V
         MeasurementModel&lt;T&gt;.Voltage_V
+        MonthlyAnalysis.Measurements.Voltage_V
+        Analysis.Monthly.Measurements.Voltage_V
+        LocationAnalysis.Analysis.Monthly.Measurements.Voltage_V
+        NetworkUserAnalysis.Analysis.Monthly.Measurements.Voltage_V
+        MeasurementLocationAnalysis.Analysis.Monthly.Measurements.Voltage_V
+        MeterAnalysis.Analysis.Monthly.Measurements.Voltage_V
       </Metadata>
       <Value>
         Napon (V)
@@ -13191,7 +13422,7 @@
         ZDS
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 13 column 18
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 11 column 25
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 69 column 12
       </Metadata>
       <Value>
@@ -13203,7 +13434,8 @@
         ZDS network usage fee
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 56 column 6
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 35 column 27
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 25 column 37
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 79 column 10
       </Metadata>
       <Value>
