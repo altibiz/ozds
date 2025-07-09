@@ -136,7 +136,11 @@ public class IotPushHandler(
       CategoryModel.Messenger,
       CategoryModel.MessengerPush
     ];
-    @event.Content = CreateEventContent(eventArgs, messenger);
+    var error = validationResults is { }
+      ? string.Join("\n", validationResults
+        .Select(x => $"{x.MemberNames.First()}: {x.ErrorMessage}"))
+      : null;
+    @event.Content = CreateEventContent(eventArgs, messenger, error);
     @event.Level = validationResults is null
       ? LevelModel.Information
       : LevelModel.Error;
@@ -186,7 +190,9 @@ public class IotPushHandler(
 
   private static JsonDocument CreateEventContent(
     IotPushEventArgs eventArgs,
-    IMessenger messenger)
+    IMessenger messenger,
+    string? error
+  )
   {
     var content = new EventContent(
       messenger.Id,
@@ -194,7 +200,8 @@ public class IotPushHandler(
       eventArgs.Measurements
         .GroupBy(x => x.MeterId)
         .Select(group => new EventContentMeter(group.Key, group.Count()))
-        .ToArray()
+        .ToArray(),
+      error
     );
 
     return JsonSerializer.SerializeToDocument(content);
@@ -203,7 +210,8 @@ public class IotPushHandler(
   private sealed record EventContent(
     string MessengerId,
     int Count,
-    EventContentMeter[] Meters
+    EventContentMeter[] Meters,
+    string? Error
   );
 
   private sealed record EventContentMeter(
