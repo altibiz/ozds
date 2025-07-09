@@ -7,6 +7,46 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.4.2] - 2025-07-09
+
+### Added
+
+- controller authorization
+- meter id validation
+- class/style to loading, mutating, paging, table, upload tabs
+- upload tabs translation
+- upload tabs dialog
+- upload tabs title
+- add none text to fields on null/empty on model components
+- field section and field chapter
+- calculation document render
+- calculation document page
+- chart height parameter
+- tariff model field to calculation details
+- plural translations
+
+### Changed
+
+- validation fixes
+- improved mutating translations
+- theme state provider corrections
+- layout styling fixes
+- all pages styling
+- invoice details styling
+- calculation details styling
+- period translation fix for zero multiplier
+- analysis cleanup
+- network user dashboard chart fix
+- disable reacting to network user interface changes for now
+- translation updates/fixups
+- monthly analysis date column
+- aggregate phasic measure fix
+
+### Removed
+
+- console log from mutating
+- amount from peak power calculation item detail
+
 ## [1.4.1]
 
 ### Added
@@ -346,6 +386,7 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 - init
 
+[1.4.2]: https://github.com/altibiz/ozds/compare/1.4.1...1.4.2
 [1.4.1]: https://github.com/altibiz/ozds/compare/1.4.0...1.4.1
 [1.4.0]: https://github.com/altibiz/ozds/compare/1.3.1...1.4.0
 [1.3.1]: https://github.com/altibiz/ozds/compare/1.3.0...1.3.1
