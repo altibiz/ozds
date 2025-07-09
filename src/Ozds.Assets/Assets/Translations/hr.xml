@@ -844,7 +844,7 @@
         UsageReactiveEnergyTotalRampedT0CalculationItemModel.ActiveImportAmount_kWh
       </Metadata>
       <Value>
-        Radne energije uvoza na svim fazama u jednoj tarifi (kWh)
+        Radna energija (kWh)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -867,7 +867,7 @@
         UsageReactiveEnergyTotalRampedT0CalculationItemModel.ActiveImportMax_kWh
       </Metadata>
       <Value>
-        Vršna radna energija uvoza na svim fazama u jednoj tarifi (kWh)
+        Završno očitanje radne energije (kWh)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -890,7 +890,7 @@
         UsageReactiveEnergyTotalRampedT0CalculationItemModel.ActiveImportMin_kWh
       </Metadata>
       <Value>
-        Donja radna energija uvoza na svim fazama u jednoj tarifi (kWh)
+        Početno očitanje radne energije (kWh)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -1430,7 +1430,7 @@
         UsageReactiveEnergyTotalRampedT0CalculationItemModel.Amount_kVARh
       </Metadata>
       <Value>
-        Jalova energija na svim fazama u jednoj tarifi (kVARh)
+        Jalova energija (kVARh)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -1556,7 +1556,7 @@
         INetworkUserCalculation.SupplyRenewableEnergyFee.Amount_kWh
       </Metadata>
       <Value>
-        Količina uvezene radne energije na svim fazama (kWh)
+        Radna energija (kWh)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -2177,7 +2177,7 @@
         Type 'Ozds.Business.Models.BlueLowNetworkUserCalculationModel'
       </Metadata>
       <Value>
-        Obračun plavog NN tarifnog modela za korisnika mreže
+        Obračun plavog NN tarifnog modela za korisnika ZDS-a
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -2265,7 +2265,7 @@
         Type 'Ozds.Business.Models.Composite.CalculatedNetworkUserInvoiceModel'
       </Metadata>
       <Value>
-        Obračunati račun za korisnika mreže
+        Obračunati račun za korisnika ZDS-a
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -6357,7 +6357,7 @@
         INetworkUserCalculation.SupplyRenewableEnergyFee.Max_kWh
       </Metadata>
       <Value>
-        Vršna radna energija (kWh)
+        Završno očitanje radne energije (kWh)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -6384,7 +6384,7 @@
         MeterAnalysis.Analysis.Monthly.Consumption.MaxActiveEnergy_kWh
       </Metadata>
       <Value>
-        Vršna radna energija (kWh)
+        Završno očitanje radne energije (kWh)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -6397,7 +6397,7 @@
         Property 'MaxActivePower_W' of type 'Ozds.Business.Models.SchneideriEM3xxxMeasurementValidatorModel'
       </Metadata>
       <Value>
-        Vršna radna snaga (W)
+        Maksimalna radna snaga (W)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -6450,7 +6450,7 @@
         MeterAnalysis.Analysis.Monthly.Consumption.MaxApparentEnergy_kVAh
       </Metadata>
       <Value>
-        Vršna prividna energija (kVAh)
+        Završno očitanje prividne energije (kVAh)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -6461,7 +6461,7 @@
         Property 'MaxApparentPower_VA' of type 'Ozds.Business.Models.SchneideriEM3xxxMeasurementValidatorModel'
       </Metadata>
       <Value>
-        Vršna prividna snaga (VA)
+        Maksimalna prividna snaga (VA)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -6474,7 +6474,7 @@
         Property 'MaxCurrent_A' of type 'Ozds.Business.Models.SchneideriEM3xxxMeasurementValidatorModel'
       </Metadata>
       <Value>
-        Vršna struja (A)
+        Maksimalna struja (A)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -6514,7 +6514,7 @@
         MeterAnalysis.Analysis.Monthly.Consumption.MaxReactiveEnergy_kVARh
       </Metadata>
       <Value>
-        Vršna jalova energija (kVARh)
+        Završno očitanje jalove energije (kVARh)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -6527,7 +6527,7 @@
         Property 'MaxReactivePower_VAR' of type 'Ozds.Business.Models.SchneideriEM3xxxMeasurementValidatorModel'
       </Metadata>
       <Value>
-        Vršna jalova snaga (VAR)
+        Maksimalna jalova snaga (VAR)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -6603,7 +6603,7 @@
         Property 'MaxVoltage_V' of type 'Ozds.Business.Models.SchneideriEM3xxxMeasurementValidatorModel'
       </Metadata>
       <Value>
-        Vršni napon (V)
+        Maksimalni napon (V)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -7444,7 +7444,7 @@
         INetworkUserCalculation.SupplyRenewableEnergyFee.Min_kWh
       </Metadata>
       <Value>
-        Donja radna energija (kWh)
+        Početno očitanje radne energije (kWh)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -7471,7 +7471,7 @@
         MeterAnalysis.Analysis.Monthly.Consumption.MinActiveEnergy_kWh
       </Metadata>
       <Value>
-        Donja radna energija (kWh)
+        Početno očitanje radne energije (kWh)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -7484,7 +7484,7 @@
         Property 'MinActivePower_W' of type 'Ozds.Business.Models.SchneideriEM3xxxMeasurementValidatorModel'
       </Metadata>
       <Value>
-        Donja radna snaga (W)
+        Minimalna radna snaga (W)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -7524,7 +7524,7 @@
         MeterAnalysis.Analysis.Monthly.Consumption.MinApparentEnergy_kVAh
       </Metadata>
       <Value>
-        Donja prividna energija (kVAh)
+        Početno očitanje prividne energije (kVAh)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -7535,7 +7535,7 @@
         Property 'MinApparentPower_VA' of type 'Ozds.Business.Models.SchneideriEM3xxxMeasurementValidatorModel'
       </Metadata>
       <Value>
-        Donja prividna snaga (VA)
+        Minimalna prividna snaga (VA)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -7548,7 +7548,7 @@
         Property 'MinCurrent_A' of type 'Ozds.Business.Models.SchneideriEM3xxxMeasurementValidatorModel'
       </Metadata>
       <Value>
-        Donja struja (A)
+        Minimalna struja (A)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -7586,7 +7586,7 @@
         MeterAnalysis.Analysis.Monthly.Consumption.MinReactiveEnergy_kVARh
       </Metadata>
       <Value>
-        Donja jalova energija (kVARh)
+        Početno očitanje jalove energije (kVARh)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -7599,7 +7599,7 @@
         Property 'MinReactivePower_VAR' of type 'Ozds.Business.Models.SchneideriEM3xxxMeasurementValidatorModel'
       </Metadata>
       <Value>
-        Donja jalova snaga (VAR)
+        Minimalna jalova snaga (VAR)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -7695,7 +7695,7 @@
         Property 'MinVoltage_V' of type 'Ozds.Business.Models.SchneideriEM3xxxMeasurementValidatorModel'
       </Metadata>
       <Value>
-        Donji napon (V)
+        Minimalni napon (V)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -8062,7 +8062,7 @@
         From file 'Ozds.Client/Pages/Document/NetworkUserCalculationDocumentPage.razor' line 16 column 17
       </Metadata>
       <Value>
-        Obračun korisnika mreže
+        Obračun korisnika ZDS-a
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -8073,7 +8073,7 @@
         From file 'Ozds.Client/Pages/Document/NetworkUserCalculationDocumentPage.razor' line 25 column 22
       </Metadata>
       <Value>
-        Račun korisnika mreže nije pronađen
+        Račun korisnika ZDS-a nije pronađen
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -8084,7 +8084,7 @@
         From file 'Ozds.Client/Pages/Document/NetworkUserInvoiceDocumentPage.razor' line 16 column 17
       </Metadata>
       <Value>
-        Račun korisnika mreže
+        Račun korisnika ZDS-a
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -8095,7 +8095,7 @@
         From file 'Ozds.Client/Pages/Document/NetworkUserInvoiceDocumentPage.razor' line 25 column 22
       </Metadata>
       <Value>
-        Račun korisnika mreže nije pronađen
+        Račun korisnika ZDS-a nije pronađen
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -8106,7 +8106,7 @@
         From file 'Ozds.Client/Pages/Document/NetworkUserInvoicePreviewDocumentPage.razor' line 16 column 17
       </Metadata>
       <Value>
-        Pretpregled računa korisnika mreže
+        Pretpregled računa korisnika ZDS-a
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -8128,7 +8128,7 @@
         From file 'Ozds.Client/Pages/Administration/NetworkUsersPage.razor' line 25 column 18
       </Metadata>
       <Value>
-        Korisnici mreže
+        Korisnici ZDS-A
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -8177,7 +8177,7 @@
         Type 'Ozds.Business.Analysis.NetworkUserAnalysis'
       </Metadata>
       <Value>
-        Analiza korisnika mreže
+        Analiza korisnika ZDS-a
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -8192,7 +8192,7 @@
         Type 'Ozds.Business.Models.Abstractions.INetworkUserCalculation'
       </Metadata>
       <Value>
-        Obračun korisnika mreže
+        Obračun korisnika ZDS-a
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -8203,7 +8203,7 @@
         Property 'NetworkUserCalculationBases' of type 'Ozds.Business.Models.Composite.NetworkUserInvoiceIssuingBasisModel'
       </Metadata>
       <Value>
-        Osnove obračuna za korisnika mreže
+        Osnove obračuna za korisnika ZDS-a
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -8214,7 +8214,7 @@
         Type 'Ozds.Business.Models.Composite.NetworkUserCalculationBasisModel'
       </Metadata>
       <Value>
-        Osnova obračuna za korisnika mreže
+        Osnova obračuna za korisnika ZDS-a
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -8225,7 +8225,7 @@
         Type 'Ozds.Document.Entities.NetworkUserCalculationEntity`1'
       </Metadata>
       <Value>
-        Obračun za korisnika mreže
+        Obračun za korisnika ZDS-a
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -8236,7 +8236,7 @@
         Type 'Ozds.Business.Models.Base.NetworkUserCalculationModel`1'
       </Metadata>
       <Value>
-        Obračun za korisnika mreže
+        Obračun za korisnika ZDS-a
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -8251,7 +8251,7 @@
         Type 'Ozds.Business.Models.Abstractions.INetworkUserCatalogue'
       </Metadata>
       <Value>
-        Cjenik za korisnika mreže
+        Cjenik za korisnika ZDS-a
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -8278,7 +8278,7 @@
         INetworkUserCalculation.ArchivedNetworkUserMeasurementLocation.NetworkUserCatalogueId
       </Metadata>
       <Value>
-        Oznaka cjenika za korisnika mreže
+        Oznaka cjenika za korisnika ZDS-a
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -8315,7 +8315,7 @@
         Property 'NetworkUserId' of type 'Ozds.Business.Models.Joins.NetworkUserRepresentativeModel'
       </Metadata>
       <Value>
-        Oznaka korisnika mreže
+        Oznaka korisnika ZDS-a
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -8330,7 +8330,7 @@
         Type 'Ozds.Business.Models.Abstractions.INetworkUserInvoice'
       </Metadata>
       <Value>
-        Račun za korisnika mreže
+        Račun za korisnika ZDS-a
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -8359,7 +8359,7 @@
         StatefulNetworkUserInvoiceModel.State.NetworkUserInvoiceId
       </Metadata>
       <Value>
-        Oznaka računa za korisnika mreže
+        Oznaka računa za korisnika ZDS-a
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -8370,7 +8370,7 @@
         Type 'Ozds.Business.Models.Composite.NetworkUserInvoiceIssuingBasisModel'
       </Metadata>
       <Value>
-        Osnova izdavanja računa za korisnika mreže
+        Osnova izdavanja računa za korisnika ZDS-a
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -8381,7 +8381,7 @@
         Type 'Ozds.Business.Models.NetworkUserInvoiceNotificationModel'
       </Metadata>
       <Value>
-        Obavijest o računu za korisnika mreže
+        Obavijest o računu za korisnika ZDS-a
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -8406,7 +8406,7 @@
         Type 'Ozds.Business.Models.NetworkUserInvoiceStateModel'
       </Metadata>
       <Value>
-        Stanje računa za korisnika mreže
+        Stanje računa za korisnika ZDS-a
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -8419,7 +8419,7 @@
         Type 'Ozds.Business.Models.NetworkUserMeasurementLocationModel'
       </Metadata>
       <Value>
-        Mjerno mjesto korisnika mreže
+        Mjerno mjesto korisnika ZDS-a
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -8437,7 +8437,7 @@
         NetworkUserCalculationModel&lt;TNetworkUserCatalogue&gt;.NetworkUserMeasurementLocationId
       </Metadata>
       <Value>
-        Oznaka mjernog mjesta korisnika mreže
+        Oznaka mjernog mjesta korisnika ZDS-a
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -8455,7 +8455,7 @@
         Type 'Ozds.Business.Models.Joins.NetworkUserRepresentativeModel'
       </Metadata>
       <Value>
-        Poveznica korisnika mreže i predstavnika
+        Poveznica korisnika ZDS-a i predstavnika
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -8468,7 +8468,7 @@
         Property 'NetworkUserTitle' of type 'Ozds.Business.Models.EnergyCardReportModel'
       </Metadata>
       <Value>
-        Naziv korisnika mreže
+        Naziv korisnika ZDS-a
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -10059,7 +10059,7 @@
         UsageReactiveEnergyTotalRampedT0CalculationItemModel.ReactiveExportMax_kVARh
       </Metadata>
       <Value>
-        Vršna induktivna jalova energija (kVARh)
+        Završno očitanje induktivne jalove energija (kVARh)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -10082,7 +10082,7 @@
         UsageReactiveEnergyTotalRampedT0CalculationItemModel.ReactiveExportMin_kVARh
       </Metadata>
       <Value>
-        Donja induktivna jalova energija (kVARh)
+        Početno očitanje induktivne jalove energija (kVARh)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -10128,7 +10128,7 @@
         UsageReactiveEnergyTotalRampedT0CalculationItemModel.ReactiveImportMax_kVARh
       </Metadata>
       <Value>
-        Vršna kapacitivna jalova energija (kVARh)
+        Završno očitanje kapacitivne jalove energija (kVARh)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -10151,7 +10151,7 @@
         UsageReactiveEnergyTotalRampedT0CalculationItemModel.ReactiveImportMin_kVARh
       </Metadata>
       <Value>
-        Donja kapacitivna jalova energija (kVARh)
+        Početno očitanje kapacitivne jalove energija (kVARh)
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -10340,7 +10340,7 @@
         Type 'Ozds.Business.Models.RedLowNetworkUserCalculationModel'
       </Metadata>
       <Value>
-        Obračun crvenog NN tarifnog modela za korisnika mreže
+        Obračun crvenog NN tarifnog modela za korisnika ZDS-a
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -11052,7 +11052,7 @@
         Type 'Ozds.Business.Models.Composite.StatefulNetworkUserInvoiceModel'
       </Metadata>
       <Value>
-        Račun za korisnika mreže sa stanjem
+        Račun za korisnika ZDS-a sa stanjem
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -12941,7 +12941,7 @@
         NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue
       </Metadata>
       <Value>
-        Katalog za korisnika mreže
+        Katalog za korisnika ZDS-a
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -13277,7 +13277,7 @@
         Type 'Ozds.Business.Models.WhiteLowNetworkUserCalculationModel'
       </Metadata>
       <Value>
-        Obračun bijelog NN tarifnog modela za korisnika mreže
+        Obračun bijelog NN tarifnog modela za korisnika ZDS-a
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -13329,7 +13329,7 @@
         Type 'Ozds.Business.Models.WhiteMediumNetworkUserCalculationModel'
       </Metadata>
       <Value>
-        Obračun bijelog SN tarifnog modela za korisnika mreže
+        Obračun bijelog SN tarifnog modela za korisnika ZDS-a
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
