@@ -192,7 +192,7 @@ public class TypeService(
       ---------
       Translate the following from English to English.
       English: PidgeonMessengerModel
-      English: Pidgeon messenger model
+      English: Pidgeon messenger
       ---------
       Translate the following from English to English.
       English: ActiveEnergyTotalImportT0CalculationItemModel
@@ -201,6 +201,83 @@ public class TypeService(
       Translate the following from English to English.
       English: UsageReactiveEnergyTotalRampedT0CalculationItemModel
       English: Calculation item of ramped reactive energy import on all phases in one tariff
+      ---------
+      End of examples.
+      Remember: these were only examples of translation.
+    ".Dedent(6, "\n").Trim();
+
+  private static readonly string AdditionalPluralTypePrompt =
+    @"
+      You are tasked with translating types from the source
+      language to human-readable UI elements in the target language. Your
+      translations will be used as labels, headings, and form fields in a web
+      application.
+
+      Types sometimes end with 'Model' or 'Entity' and you should always
+      discard those suffixes.
+
+      Certain types use electrical terms or their prices (on measurement,
+      aggregate, catalogue, calculation and invoice models). They follow a
+      specific format. The general format is:
+      `({Item})?{PropertyName}{Phases}{Direction}{Tariff}{Suffix}`.
+      Please follow these rules for translating these specific properties:
+      - Item, if applicable, is either Supply or Usage - in any case, discard
+        it
+      - Always translate the property name in the target language
+      - Phases is always either L1/L2/L3 or Total - in the case of L1/L2/L3,
+        leave them as on L1/L2/L3 and in the case of Total, translate them as
+        'on all phases'
+      - Direction is always import, export or any - import or export should
+        always be translated as imported or exported while any has the special
+        meaning of the direction not mattering (e.g. for voltage the direction
+        doesn't matter) and should be discarded
+      - Tariff is always T0, T1, T2 and it should always be translated
+        as explained before
+      - Unit should be left as-is and kept in parenthesis as explained before
+      - If the property ends with `.{Aggregate}` like
+        Min/Max/Avg/MinTimestamp/MaxTimestamp it means that the property is an
+        aggregate of the property itself and that you should keep that in mind
+        when translating the entire property
+
+      You are translating types in plural form. The first character only denotes
+      the plurality of the type. The rest of the name is the same as in singular
+      form.
+
+      Use the following examples as reference - you will most likely be tasked
+      to translate to a language other than English.
+      Examples:
+      ---------
+      Translate the following from English to English.
+      English: ~AbbB2xAggregateModel
+      English: abb-B2x metering aggregates
+      ---------
+      Translate the following from English to English.
+      English: ~SchneideriEM3xxxAggregateModel
+      English: schneider-iEM3xxx metering aggregates
+      ---------
+      Translate the following from English to English.
+      English: ~RedLowNetworkUserCatalogueModel
+      English: Red low network user catalogues
+      ---------
+      Translate the following from English to English.
+      English: ~NetworkUserInvoiceModel
+      English: Network user invoices
+      ---------
+      Translate the following from English to English.
+      English: ~MeasurementLocationAnalysis
+      English: Measurement location analyses
+      ---------
+      Translate the following from English to English.
+      English: ~PidgeonMessengerModel
+      English: Pidgeon messengers
+      ---------
+      Translate the following from English to English.
+      English: ~ActiveEnergyTotalImportT0CalculationItemModel
+      English: Calculation items of active energy import on all phases in one tariff
+      ---------
+      Translate the following from English to English.
+      English: ~UsageReactiveEnergyTotalRampedT0CalculationItemModel
+      English: Calculation items of ramped reactive energy import on all phases in one tariff
       ---------
       End of examples.
       Remember: these were only examples of translation.
@@ -328,7 +405,7 @@ public class TypeService(
       .GroupBy(
         item => item.Property is { } property
           ? translation.GeneralKey(item.Type, property)
-          : translation.GeneralKey(item.Type))
+          : translation.GeneralKey(item.Type, plural: item.Plural))
       .Select(
         group =>
         {
@@ -367,6 +444,7 @@ public class TypeService(
       .GroupBy(
         item => (
           Type: item.DeclaringType,
+          IsPlural: item.Plural,
           Property: item.EnumName ?? item.Property?.Name
         ))
       .Select(
@@ -377,6 +455,9 @@ public class TypeService(
 
           if (property is null)
           {
+            var prompt = group.Key.IsPlural
+              ? AdditionalPluralTypePrompt
+              : AdditionalTypePrompt;
             var first = group.First();
             var typeMetadata = $"""
             Type '{type.FullName}'
@@ -388,7 +469,8 @@ public class TypeService(
               first.ShortKey,
               [],
               typeMetadata,
-              AdditionalTypePrompt
+              prompt,
+              group.Key.IsPlural
             );
           }
 
@@ -426,7 +508,8 @@ public class TypeService(
               .Select(x => (x.Key, x.ShortKey))
               .ToList(),
             memberMetadata,
-            AdditionalPropertyPrompt
+            AdditionalPropertyPrompt,
+            false
           );
         });
   }
@@ -470,10 +553,29 @@ public class TypeService(
         null,
         null,
         prefix,
-        shortPrefix
+        shortPrefix,
+        false
       );
 
       foreach (var item in GetTypeItems(type, prefix, shortPrefix))
+      {
+        yield return item;
+      }
+
+      var pluralPrefix = translation.Key(type, plural: true);
+      var pluralShortPrefix = translation.ShortKey(type, plural: true);
+
+      yield return new TypeTranslationItem(
+        type,
+        type,
+        null,
+        null,
+        pluralPrefix,
+        pluralShortPrefix,
+        true
+      );
+
+      foreach (var item in GetTypeItems(type, pluralPrefix, pluralShortPrefix))
       {
         yield return item;
       }
@@ -499,7 +601,8 @@ public class TypeService(
           null,
           name,
           fullPath,
-          fullShortPath
+          fullShortPath,
+          false
         );
       }
     }
@@ -521,7 +624,8 @@ public class TypeService(
         property,
         null,
         fullPath,
-        fullShortPath
+        fullShortPath,
+        false
       );
 
       if (
@@ -668,7 +772,8 @@ public class TypeService(
     string ShortKey,
     List<(string Key, string ShortKey)> AdditionalKeys,
     string Metadata,
-    string AdditionalPrompt
+    string AdditionalPrompt,
+    bool Plural
   );
 
   private sealed record TypeTranslationItem(
@@ -677,6 +782,7 @@ public class TypeService(
     PropertyInfo? Property,
     string? EnumName,
     string Key,
-    string ShortKey
+    string ShortKey,
+    bool Plural
   );
 }

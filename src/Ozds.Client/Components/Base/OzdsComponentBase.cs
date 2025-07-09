@@ -159,12 +159,12 @@ public abstract class OzdsComponentBase : DisposableComponentBase
     return localizationQueries.Translate(culture, notLocalized);
   }
 
-  protected string Translate(Type type)
+  protected string Translate(Type type, bool plural = false)
   {
     var localizationQueries = ScopedServices
       .GetRequiredService<LocalizationQueries>();
     var culture = GetCulture();
-    return localizationQueries.Translate(culture, type);
+    return localizationQueries.Translate(culture, type, plural);
   }
 
   protected string Translate(Type type, string member)

@@ -9,9 +9,9 @@
 @{
   var title = DynamicTitle
     ? model.Items.Count > 0
-      ? Translate(model.Items.First()!.GetType())
-      : Translate(typeof(T))
-    : Translate(typeof(T));
+      ? Translate(model.Items.First()!.GetType(), plural: true)
+      : Translate(typeof(T), plural: true)
+    : Translate(typeof(T), plural: true);
 
   RenderFragment inner = @<Fragment>
     <MudHidden Breakpoint="Breakpoint.MdAndUp">
