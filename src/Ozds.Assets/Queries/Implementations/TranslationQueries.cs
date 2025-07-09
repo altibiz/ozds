@@ -45,7 +45,7 @@ public class TranslationQueries : ITranslationQueries
   {
     var order = VirtualizationOrder(type);
     return order
-      .Select(x => Key(x, false))
+      .Select(x => Key(x))
       .Append(GeneralKey(type, false))
       .Append(GeneralKey(type))
       .Select(AddPluralFn(plural))
@@ -106,7 +106,7 @@ public class TranslationQueries : ITranslationQueries
   {
     var order = VirtualizationOrder(type);
     return order
-      .Select(x => ShortKey(x, false))
+      .Select(x => ShortKey(x))
       .Append(GeneralKey(type))
       .Select(AddPluralFn(plural))
       .ToArray();

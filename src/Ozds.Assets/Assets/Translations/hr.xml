@@ -4806,7 +4806,7 @@
         Blue NN
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 76 column 13
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 77 column 13
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 187 column 13
       </Metadata>
       <Value>
@@ -5611,14 +5611,14 @@
       <Metadata>
         From file 'Ozds.Client/Components/Streaming/Mutating.razor' line 134 column 14
         From file 'Ozds.Client/Pages/Administration/LocationsPage.razor' line 50 column 6
-        From file 'Ozds.Client/Pages/Administration/NetworkUsersPage.razor' line 54 column 6
+        From file 'Ozds.Client/Pages/Administration/NetworkUsersPage.razor' line 52 column 6
         From file 'Ozds.Client/Pages/Finances/CataloguesPage.razor' line 45 column 4
         From file 'Ozds.Client/Pages/Finances/CataloguesPage.razor' line 58 column 4
-        From file 'Ozds.Client/Pages/Measurements/MeasurementLocationsPage.razor' line 54 column 6
+        From file 'Ozds.Client/Pages/Measurements/MeasurementLocationsPage.razor' line 52 column 6
         From file 'Ozds.Client/Pages/Measurements/MeasurementValidatorsPage.razor' line 48 column 6
         From file 'Ozds.Client/Pages/Measurements/MessengersPage.razor' line 43 column 6
         From file 'Ozds.Client/Pages/Measurements/MetersPage.razor' line 48 column 6
-        From file 'Ozds.Client/Pages/System/NotificationsPage.razor' line 40 column 6
+        From file 'Ozds.Client/Pages/System/NotificationsPage.razor' line 39 column 6
       </Metadata>
       <Value>
         Stvori
@@ -6197,8 +6197,8 @@
       <Metadata>
         From file 'Ozds.Client/Components/Dashboards/LocationRepresentativeDashboard.razor' line 28 column 14
         From file 'Ozds.Client/Components/Dashboards/LocationRepresentativeDashboard.razor' line 76 column 15
-        From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 16 column 14
-        From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 88 column 15
+        From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 15 column 14
+        From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 87 column 15
       </Metadata>
       <Value>
         Potrošnja u tekućem mjesecu
@@ -7531,7 +7531,7 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 47 column 29
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 50 column 25
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 49 column 25
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 51 column 4
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 140 column 10
       </Metadata>
@@ -7545,7 +7545,7 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 50 column 29
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 53 column 25
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 52 column 25
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 46 column 4
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 147 column 10
       </Metadata>
@@ -7570,7 +7570,7 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 46 column 27
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 49 column 23
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 48 column 23
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 135 column 10
       </Metadata>
       <Value>
@@ -7773,7 +7773,7 @@
       <Metadata>
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/RedLowNetworkUserCalculationDetails.razor' line 21 column 29
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/WhiteMediumNetworkUserCalculationDetails.razor' line 21 column 29
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 35 column 25
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 34 column 25
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 31 column 4
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 105 column 10
       </Metadata>
@@ -7917,7 +7917,7 @@
         Events
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Pages/System/EventsPage.razor' line 27 column 18
+        From file 'Ozds.Client/Pages/System/EventsPage.razor' line 26 column 18
       </Metadata>
       <Value>
         Događaji
@@ -7932,7 +7932,7 @@
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/RedLowNetworkUserCalculationDetails.razor' line 25 column 29
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/WhiteLowNetworkUserCalculationDetails.razor' line 21 column 29
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/WhiteMediumNetworkUserCalculationDetails.razor' line 25 column 29
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 38 column 25
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 37 column 25
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 26 column 4
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 112 column 10
       </Metadata>
@@ -7957,7 +7957,7 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 56 column 29
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 59 column 25
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 58 column 25
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 163 column 10
       </Metadata>
       <Value>
@@ -8005,7 +8005,7 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 53 column 29
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 56 column 25
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 55 column 25
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 66 column 4
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 155 column 8
       </Metadata>
@@ -8100,7 +8100,7 @@
         From
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 17 column 25
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 16 column 25
       </Metadata>
       <Value>
         Od
@@ -8189,7 +8189,7 @@
         Full total
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 75 column 25
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 73 column 25
       </Metadata>
       <Value>
         Ukupan iznos
@@ -8785,7 +8785,7 @@
         INVOICE FOR
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 8 column 8
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 7 column 8
       </Metadata>
       <Value>
         RAČUN ZA
@@ -8807,8 +8807,8 @@
         Invoice pending...
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 48 column 17
-        From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 131 column 17
+        From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 47 column 17
+        From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 130 column 17
       </Metadata>
       <Value>
         Račun na čekanju...
@@ -9566,8 +9566,8 @@
       <Metadata>
         From file 'Ozds.Client/Components/Dashboards/LocationRepresentativeDashboard.razor' line 13 column 14
         From file 'Ozds.Client/Components/Dashboards/LocationRepresentativeDashboard.razor' line 60 column 15
-        From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 31 column 14
-        From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 113 column 15
+        From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 30 column 14
+        From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 112 column 15
       </Metadata>
       <Value>
         Potrošnja u prošlim mjesecima
@@ -9578,8 +9578,8 @@
         Last months invoice total
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 41 column 14
-        From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 124 column 15
+        From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 40 column 14
+        From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 123 column 15
       </Metadata>
       <Value>
         Ukupno prošlog mjeseca
@@ -11429,7 +11429,7 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 41 column 29
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 41 column 25
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 40 column 25
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 36 column 4
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 119 column 10
       </Metadata>
@@ -12775,7 +12775,7 @@
         Minimal level
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Pages/System/EventsPage.razor' line 32 column 11
+        From file 'Ozds.Client/Pages/System/EventsPage.razor' line 31 column 11
       </Metadata>
       <Value>
         Donja razina
@@ -13126,7 +13126,7 @@
         MONTH
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 8 column 59
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 7 column 59
       </Metadata>
       <Value>
         MJESEC
@@ -13385,7 +13385,7 @@
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/RedLowNetworkUserCalculationDetails.razor' line 13 column 29
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/WhiteLowNetworkUserCalculationDetails.razor' line 13 column 29
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/WhiteMediumNetworkUserCalculationDetails.razor' line 13 column 29
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 29 column 25
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 28 column 25
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 21 column 4
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 91 column 10
       </Metadata>
@@ -13401,7 +13401,7 @@
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/RedLowNetworkUserCalculationDetails.razor' line 17 column 29
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/WhiteLowNetworkUserCalculationDetails.razor' line 17 column 29
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/WhiteMediumNetworkUserCalculationDetails.razor' line 17 column 29
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 32 column 25
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 31 column 25
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 16 column 4
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 98 column 10
       </Metadata>
@@ -13415,7 +13415,7 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/BlueLowNetworkUserCalculationDetails.razor' line 13 column 29
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 26 column 25
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 25 column 25
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 11 column 4
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 84 column 10
       </Metadata>
@@ -14189,7 +14189,7 @@
         Notifications
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Pages/System/NotificationsPage.razor' line 22 column 18
+        From file 'Ozds.Client/Pages/System/NotificationsPage.razor' line 21 column 18
       </Metadata>
       <Value>
         Obavijesti
@@ -16563,7 +16563,7 @@
         Red NN
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 74 column 11
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 75 column 11
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 185 column 11
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 90 column 14
       </Metadata>
@@ -17189,8 +17189,8 @@
         Search
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Streaming/Table.razor' line 30 column 29
-        From file 'Ozds.Client/Components/Streaming/Table.razor' line 88 column 27
+        From file 'Ozds.Client/Components/Streaming/Table.razor' line 29 column 29
+        From file 'Ozds.Client/Components/Streaming/Table.razor' line 87 column 27
       </Metadata>
       <Value>
         Pretraži
@@ -17267,7 +17267,7 @@
         Show seen
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Pages/System/NotificationsPage.razor' line 27 column 12
+        From file 'Ozds.Client/Pages/System/NotificationsPage.razor' line 26 column 12
       </Metadata>
       <Value>
         Prikaži viđeno
@@ -18428,8 +18428,8 @@
         This years consumption
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 58 column 15
-        From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 141 column 15
+        From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 57 column 15
+        From file 'Ozds.Client/Components/Dashboards/NetworkUserRepresentativeDashboard.razor' line 140 column 15
       </Metadata>
       <Value>
         Potrošnja u tekućoj godini
@@ -18985,7 +18985,7 @@
         To
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 20 column 25
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 19 column 25
       </Metadata>
       <Value>
         Do
@@ -19144,7 +19144,7 @@
         Total
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 68 column 25
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 67 column 25
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 51 column 12
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 116 column 12
       </Metadata>
@@ -19157,8 +19157,8 @@
         TOTAL
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 45 column 23
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 63 column 23
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 44 column 23
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 62 column 23
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 73 column 10
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 186 column 37
       </Metadata>
@@ -19720,7 +19720,7 @@
         Type
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Streaming/Loading.razor' line 57 column 21
+        From file 'Ozds.Client/Components/Streaming/Loading.razor' line 57 column 44
       </Metadata>
       <Value>
         Tip
@@ -20335,7 +20335,7 @@
         User
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 14 column 25
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 13 column 25
         From file 'Ozds.Client/Pages/Administration/UserPage.razor' line 22 column 24
       </Metadata>
       <Value>
@@ -20384,7 +20384,7 @@
         VAT
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 71 column 26
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 70 column 26
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 195 column 8
       </Metadata>
       <Value>
@@ -20622,7 +20622,7 @@
         White NN
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 78 column 15
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 79 column 15
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 189 column 15
       </Metadata>
       <Value>
@@ -20634,7 +20634,7 @@
         White SN
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 80 column 17
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 81 column 17
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentContent.razor' line 191 column 17
       </Metadata>
       <Value>
@@ -20839,7 +20839,7 @@
         ZDS
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 11 column 25
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 10 column 25
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 69 column 12
       </Metadata>
       <Value>
@@ -20852,7 +20852,7 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 39 column 27
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 25 column 37
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 24 column 37
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 79 column 10
       </Metadata>
       <Value>
