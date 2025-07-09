@@ -372,7 +372,7 @@ public abstract record class PhasicMeasure<T>
           .FirstOrDefault(Null),
       InstantaneousPhaseMeasure<T> instantaneous => instantaneous.Avg,
       CumulativePhasicMeasure<T> cumulative => cumulative.Diff(),
-      _ => Null
+      _ => this
     };
   }
 
@@ -392,7 +392,7 @@ public abstract record class PhasicMeasure<T>
           .FirstOrDefault(Null),
       InstantaneousPhaseMeasure<T> instantaneous => instantaneous.Min,
       CumulativePhasicMeasure<T> cumulative => cumulative.Min,
-      _ => Null
+      _ => this
     };
   }
 
@@ -431,7 +431,7 @@ public abstract record class PhasicMeasure<T>
           .FirstOrDefault(Null),
       InstantaneousPhaseMeasure<T> instantaneous => instantaneous.Max,
       CumulativePhasicMeasure<T> cumulative => cumulative.Max,
-      _ => Null
+      _ => this
     };
   }
 
