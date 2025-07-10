@@ -1,8 +1,9 @@
+using Ozds.Business.Conversion;
 using Ozds.Business.Queries;
 using Ozds.Fake.Client;
 using Ozds.Fake.Conversion;
 using Ozds.Fake.Extensions;
-using Ozds.Fake.Generators;
+using Ozds.Fake.Generation;
 using Ozds.Fake.Identification;
 using Ozds.Fake.Packing;
 using Ozds.Fake.Workers.Abstractions;
@@ -15,12 +16,13 @@ public record PushWorkerItem(
   string MessengerId,
   List<MeasurementLocationMeterId> Ids,
   int BatchSize,
-  string BufferBehavior
+  PushClientBufferBehavior BufferBehavior
 );
 
 public class PushWorker(
   MeasurementRecordGenerator generator,
-  MeasurementRecordConverter converter,
+  MeasurementRecordConverter recordConverter,
+  PushRequestMeasurementConverter pushRequestConverter,
   MessengerPushRequestPacker packer,
   PushClient client,
   ClockQueries clock
@@ -37,9 +39,13 @@ public class PushWorker(
       item.Ids,
       stoppingToken);
 
-    var requests = converter.ConvertToPushRequests(
+    var models = recordConverter.ConvertToModels(
       records,
-      item.MessengerId,
+      stoppingToken
+    );
+
+    var requests = pushRequestConverter.ToPushRequests(
+      models,
       stoppingToken
     );
 

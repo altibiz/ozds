@@ -67,10 +67,10 @@ public partial class RegexService(
             .Exists(item => item.Key == dictionaryItem.Key))
         .ToList();
 
-      foreach (var item in unusedManagedItems)
+      foreach (var key in unusedManagedItems.Select(x => x.Key))
       {
-        dictionary.Remove(item.Key);
-        logger.LogInformation("Removed key '{Key}'", item.Key);
+        dictionary.Remove(key);
+        logger.LogInformation("Removed key '{Key}'", key);
       }
     }
 

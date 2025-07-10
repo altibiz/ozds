@@ -28,10 +28,15 @@ public static class HostExtensions
     builder.AddMutations();
     builder.AddQueries();
     builder.AddDatabase();
-    builder.AddServices();
+    builder.AddSender();
+
+    if (ConfigureOzdsMessagingOptions.WithServices(builder.Configuration))
+    {
+      builder.AddServices();
+    }
+
     if (ConfigureOzdsMessagingOptions.WithBus(builder.Configuration))
     {
-      builder.AddSender();
       builder.AddBus();
     }
 

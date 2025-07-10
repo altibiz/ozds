@@ -3,16 +3,18 @@ using MassTransit;
 using Microsoft.Extensions.Options;
 using Ozds.Fake.Arguments;
 using Ozds.Fake.Client;
-using Ozds.Fake.Cloners;
-using Ozds.Fake.Cloners.Abstractions;
+using Ozds.Fake.Cloning;
+using Ozds.Fake.Cloning.Abstractions;
 using Ozds.Fake.Conversion;
 using Ozds.Fake.Conversion.Abstractions;
 using Ozds.Fake.Correction;
 using Ozds.Fake.Correction.Abstractions;
-using Ozds.Fake.Generators;
-using Ozds.Fake.Generators.Abstractions;
-using Ozds.Fake.Loaders;
-using Ozds.Fake.Loaders.Abstractions;
+using Ozds.Fake.Faking;
+using Ozds.Fake.Faking.Abstractions;
+using Ozds.Fake.Generation;
+using Ozds.Fake.Generation.Abstractions;
+using Ozds.Fake.Loading;
+using Ozds.Fake.Loading.Abstractions;
 using Ozds.Fake.Options;
 using Ozds.Fake.Packing;
 using Ozds.Fake.Packing.Abstractions;
@@ -37,11 +39,13 @@ public static class HostExtensions
 
     builder
       .AddOptions()
-      .AddRecords()
+      .AddConversion()
+      .AddCorrection()
       .AddLoaders()
       .AddGenerators()
       .AddCloners()
-      .AddPackers();
+      .AddPacking()
+      .AddFaking();
 
     if (arguments is OzdsFakePushArguments push)
     {
@@ -69,6 +73,20 @@ public static class HostExtensions
       builder.AddMessaging();
     }
 
+    if (arguments is OzdsFakeBypassArguments bypass)
+    {
+      builder.AddClient(bypass.Timeout_s);
+    }
+
+    return builder;
+  }
+
+  private static IHostApplicationBuilder AddFaking(
+    this IHostApplicationBuilder builder
+  )
+  {
+    builder.Services.AddTransientAssignableTo<IModelFaker>();
+    builder.Services.AddSingleton<ModelFaker>();
     return builder;
   }
 
@@ -120,23 +138,28 @@ public static class HostExtensions
     return builder;
   }
 
-  private static IHostApplicationBuilder AddRecords(
+  private static IHostApplicationBuilder AddConversion(
     this IHostApplicationBuilder builder
   )
   {
     builder.Services.AddTransientAssignableTo(
-      typeof(IMeasurementRecordPushRequestConverter));
-    builder.Services.AddTransientAssignableTo(
       typeof(IMeasurementRecordModelConverter));
     builder.Services.AddSingleton(
       typeof(MeasurementRecordConverter));
+    return builder;
+  }
+
+  private static IHostApplicationBuilder AddCorrection(
+    this IHostApplicationBuilder builder
+  )
+  {
     builder.Services.AddTransientAssignableTo(
       typeof(IRecordCorrector));
     builder.Services.AddSingleton(typeof(RecordCorrector));
     return builder;
   }
 
-  private static IHostApplicationBuilder AddPackers(
+  private static IHostApplicationBuilder AddPacking(
     this IHostApplicationBuilder builder
   )
   {

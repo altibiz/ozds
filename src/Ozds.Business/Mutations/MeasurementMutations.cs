@@ -13,6 +13,17 @@ public class MeasurementMutations(
   ILogger<MeasurementMutations> logger
 ) : IMutations
 {
+  public async Task DeleteMeasurementsOlderThan(
+    DateTimeOffset threshold,
+    CancellationToken cancellationToken
+  )
+  {
+    await mutations.DeleteMeasurementsOlderThan(
+      threshold,
+      cancellationToken
+    );
+  }
+
   public async Task<List<IMeasurement>> CreateMeasurements(
     IEnumerable<IMeasurement> measurements,
     CancellationToken cancellationToken,

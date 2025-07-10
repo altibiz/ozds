@@ -1,4 +1,3 @@
-using Moq;
 using Ozds.Assets.Extensions;
 using Ozds.Business.Extensions;
 using Ozds.Data.Extensions;
@@ -12,8 +11,6 @@ using Ozds.Time.Extensions;
 using Ozds.Translation.Arguments;
 using Ozds.Translation.Extensions;
 using Ozds.Users.Extensions;
-using MessagingMessageSender =
-  Ozds.Messaging.Sender.Abstractions.IMessageSender;
 
 namespace Ozds.Translation.Hosting;
 
@@ -31,7 +28,8 @@ public sealed class OzdsTranslationHost : IHost
           new Dictionary<string, string?>
           {
             { "Ozds:Users:WithAuth", "false" },
-            { "Ozds:Messaging:WithBus", "false" }
+            { "Ozds:Messaging:WithBus", "false" },
+            { "Ozds:Business:WithReactors", "false" }
           })
         .Build());
 
@@ -46,26 +44,8 @@ public sealed class OzdsTranslationHost : IHost
       .AddOzdsJobs()
       .AddOzdsEmail()
       .AddOzdsBusiness()
-      .AddOzdsIot();
-
-    // NOTE: hacks to enable most Ozds services working
-    builder.Services.AddSingleton(Mock.Of<MessagingMessageSender>());
-    foreach (var service in builder.Services
-      .Where(
-        service =>
-          service.ServiceType == typeof(IHostedService)
-          && !(service.ImplementationInstance?.GetType().Namespace
-            ?.StartsWith(nameof(Microsoft)) ?? false)
-          && !(service.ImplementationType?.Namespace
-            ?.StartsWith(nameof(Microsoft)) ?? false)
-          && !(service.ImplementationFactory?.Method?.Module.Name
-            ?.StartsWith(nameof(Microsoft)) ?? false))
-      .ToList())
-    {
-      builder.Services.Remove(service);
-    }
-
-    builder.AddOzdsTranslation(arguments);
+      .AddOzdsIot()
+      .AddOzdsTranslation(arguments);
 
     inner = builder.Build();
   }

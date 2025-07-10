@@ -2,6 +2,28 @@ using Ozds.Iot.Entities.Abstractions;
 
 namespace Ozds.Fake.Client;
 
+public enum PushClientBufferBehavior
+{
+  Realtime,
+  Buffer,
+  Aggregate
+}
+
+public static class PushClientBufferBehaviorExtensions
+{
+  public static string ToValue(this PushClientBufferBehavior bufferBehavior)
+  {
+    return bufferBehavior switch
+    {
+      PushClientBufferBehavior.Realtime => "realtime",
+      PushClientBufferBehavior.Buffer => "buffer",
+      PushClientBufferBehavior.Aggregate => "aggregate",
+      _ => throw new InvalidOperationException(
+        $"Unknown buffer behavior {bufferBehavior}")
+    };
+  }
+}
+
 public class PushClient(
   IHttpClientFactory httpClientFactory,
   ILogger<PushClient> logger
@@ -11,14 +33,14 @@ public class PushClient(
 
   public async Task Push(
     string messengerId,
-    string bufferBehavior,
+    PushClientBufferBehavior bufferBehavior,
     IMessengerPushRequestEntity request,
     CancellationToken cancellationToken
   )
   {
     var client = httpClientFactory.CreateClient(Name);
     client.DefaultRequestHeaders.Add(
-      "X-Buffer-Behavior", bufferBehavior);
+      "X-Buffer-Behavior", bufferBehavior.ToValue());
 
     logger.LogInformation(
       "Pushing {Count} measurements for messenger {MessengerId}",

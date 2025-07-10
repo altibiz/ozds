@@ -1,17 +1,20 @@
+using Ozds.Server.Test;
+using TUnit.Core.Interfaces;
+
+// NOTE: this makes e2e tests much more reliable
+
+#pragma warning disable SA1015 // Closing generic brackets should be spaced correctly
+[assembly: ParallelLimiter<OzdsServerTestParallelLimiter>]
+#pragma warning restore SA1015 // Closing generic brackets should be spaced correctly
+
 #pragma warning disable S3261
 namespace Ozds.Server.Test;
 #pragma warning restore S3261
 
-// NOTE: for now because tests fail if a test project doesn't have
-// at least one test
-
-public class DummyTest
+public sealed class OzdsServerTestParallelLimiter : IParallelLimit
 {
-  [Test]
-  public async Task DummyTestCase()
+  public int Limit
   {
-#pragma warning disable TUnitAssertions0005 // Assert.That(...) should not be used with a constant value
-    await Assert.That(true).IsTrue();
-#pragma warning restore TUnitAssertions0005 // Assert.That(...) should not be used with a constant value
+    get { return 1; }
   }
 }

@@ -1,9 +1,9 @@
 using Ozds.Fake.Extensions;
-using Ozds.Fake.Generators.Abstractions;
+using Ozds.Fake.Generation.Abstractions;
 using Ozds.Fake.Identification;
 using Ozds.Fake.Records.Abstractions;
 
-namespace Ozds.Fake.Generators;
+namespace Ozds.Fake.Generation;
 
 public class MeasurementRecordGenerator(
   IServiceProvider serviceProvider

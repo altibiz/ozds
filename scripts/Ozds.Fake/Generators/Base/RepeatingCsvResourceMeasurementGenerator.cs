@@ -1,11 +1,11 @@
 using System.Runtime.CompilerServices;
 using Ozds.Fake.Correction;
-using Ozds.Fake.Generators.Abstractions;
+using Ozds.Fake.Generation.Abstractions;
 using Ozds.Fake.Identification;
-using Ozds.Fake.Loaders;
+using Ozds.Fake.Loading;
 using Ozds.Fake.Records.Abstractions;
 
-namespace Ozds.Fake.Generators.Base;
+namespace Ozds.Fake.Generation.Base;
 
 public abstract class
   RepeatingCsvResourceMeasurementGenerator<TMeasurement>(

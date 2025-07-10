@@ -1,14 +1,19 @@
 using System.Globalization;
+using Microsoft.Extensions.Options;
 using Ozds.Jobs.Manager.Abstractions;
+using Ozds.Jobs.Options;
+using Ozds.Jobs.Scheduler;
 using Ozds.Time.Queries.Abstractions;
 using Quartz;
 
 namespace Ozds.Jobs.Managers.Implementations;
 
 public class BillingJobManager(
-  ISchedulerFactory schedulerFactory,
+  OzdsSchedulerFactory schedulerFactory,
   ILogger<BillingJobManager> logger,
-  IClockQueries clock
+  IClockQueries clock,
+  ITimeQueries time,
+  IOptions<OzdsJobsOptions> options
 )
   : IBillingJobManager
 {
@@ -19,14 +24,14 @@ public class BillingJobManager(
     logger.LogDebug(
       "Ensuring {Group} monthly billing job"
       + " for network user {NetworkUserId}",
-      nameof(NetworkUserMonthlyBillingJob),
+      nameof(MonthlyNetworkUserBillingJob),
       networkUserId
     );
 
     var scheduler = await schedulerFactory.GetScheduler(cancellationToken);
 
     var triggerKey = new TriggerKey(
-      networkUserId, nameof(NetworkUserMonthlyBillingJob));
+      networkUserId, nameof(MonthlyNetworkUserBillingJob));
     if (!await scheduler.CheckExists(triggerKey, cancellationToken))
     {
       var job = CreateJob(networkUserId);
@@ -44,14 +49,14 @@ public class BillingJobManager(
     logger.LogDebug(
       "Rescheduling {Group} monthly billing job"
       + " for network user {NetworkUserId}",
-      nameof(NetworkUserMonthlyBillingJob),
+      nameof(MonthlyNetworkUserBillingJob),
       networkUserId
     );
 
     var scheduler = await schedulerFactory.GetScheduler(cancellationToken);
 
     var triggerKey = new TriggerKey(
-      networkUserId, nameof(NetworkUserMonthlyBillingJob));
+      networkUserId, nameof(MonthlyNetworkUserBillingJob));
 
     if (await scheduler.CheckExists(triggerKey, cancellationToken))
     {
@@ -72,14 +77,14 @@ public class BillingJobManager(
     logger.LogDebug(
       "Unscheduling {Group} monthly billing job"
       + " for network user {NetworkUserId}",
-      nameof(NetworkUserMonthlyBillingJob),
+      nameof(MonthlyNetworkUserBillingJob),
       networkUserId
     );
 
     var scheduler = await schedulerFactory.GetScheduler(cancellationToken);
 
     var triggerKey = new TriggerKey(
-      networkUserId, nameof(NetworkUserMonthlyBillingJob));
+      networkUserId, nameof(MonthlyNetworkUserBillingJob));
 
     if (await scheduler.CheckExists(triggerKey, cancellationToken))
     {
@@ -89,12 +94,14 @@ public class BillingJobManager(
 
   private IJobDetail CreateJob(string id)
   {
-    return JobBuilder.Create<NetworkUserMonthlyBillingJob>()
-      .WithIdentity(id, nameof(NetworkUserMonthlyBillingJob))
-      .UsingJobData(nameof(NetworkUserMonthlyBillingJob.NetworkUserId), id)
+    var now = clock.Now();
+
+    return JobBuilder.Create<MonthlyNetworkUserBillingJob>()
+      .WithIdentity(id, nameof(MonthlyNetworkUserBillingJob))
+      .UsingJobData(nameof(MonthlyNetworkUserBillingJob.NetworkUserId), id)
       .UsingJobData(
-        nameof(NetworkUserMonthlyBillingJob.ScheduledAt),
-        DateTimeOffset.UtcNow.ToString("o", CultureInfo.InvariantCulture))
+        nameof(MonthlyNetworkUserBillingJob.ScheduledAt),
+        now.ToString("o", CultureInfo.InvariantCulture))
       .Build();
   }
 
@@ -106,16 +113,18 @@ public class BillingJobManager(
       "{Now} Creating trigger for {Group} monthly billing job"
       + " for network user {NetworkUserId}",
       now,
-      nameof(NetworkUserMonthlyBillingJob),
+      nameof(MonthlyNetworkUserBillingJob),
       id
     );
 
     return TriggerBuilder.Create()
-      .WithIdentity(id, nameof(NetworkUserMonthlyBillingJob))
-      .ForJob(id, nameof(NetworkUserMonthlyBillingJob))
+      .WithIdentity(id, nameof(MonthlyNetworkUserBillingJob))
+      .ForJob(id, nameof(MonthlyNetworkUserBillingJob))
       .WithCronSchedule(
-        "0 0 0 1 * ?",
-        x => x.WithMisfireHandlingInstructionFireAndProceed())
+        options.Value.Billing.MonthlyBillingCron,
+        x => x
+          .WithMisfireHandlingInstructionFireAndProceed()
+          .InTimeZone(time.CroatianTimeZone))
       .Build();
   }
 }

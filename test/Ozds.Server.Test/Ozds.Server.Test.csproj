@@ -1,3 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
+  <ItemGroup>
+    <ProjectReference Include="../../src/Ozds.Server/Ozds.Server.csproj" />
+    <ProjectReference Include="../../scripts/Ozds.Fake/Ozds.Fake.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Playwright" />
+    <PackageReference Include="Testcontainers" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
+    <PackageReference Include="Altibiz.DependencyInjection.Extensions" />
+    <PackageReference Include="BCrypt.Net-Next" />
+  </ItemGroup>
+
 </Project>

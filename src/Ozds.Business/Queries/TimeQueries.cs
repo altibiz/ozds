@@ -11,7 +11,7 @@ public class TimeQueries(
 {
   public TimeSpan GetOffset(DateTimeOffset forDate)
   {
-    return timeTimeQueries.GetOffset(forDate);
+    return timeTimeQueries.GetCroatianOffset(forDate);
   }
 
   public (DateTimeOffset, DateTimeOffset) GetMonthRange(

@@ -71,35 +71,42 @@ public abstract class Relay<TInEventArgs, TOutEventArgs, TPipe>(
     var factory = serviceProvider
       .GetRequiredService<IServiceScopeFactory>();
 
-    await foreach (var inEventArgs in inChannel.Reader
-      .ReadAllAsync(stoppingToken))
+    try
     {
-      await using var scope = factory.CreateAsyncScope();
-      var logger = scope.ServiceProvider.GetRequiredService<
-        ILogger<Relay<TInEventArgs, TOutEventArgs, TPipe>>>();
+      await foreach (var inEventArgs in inChannel.Reader
+        .ReadAllAsync(stoppingToken))
+      {
+        await using var scope = factory.CreateAsyncScope();
+        var logger = scope.ServiceProvider.GetRequiredService<
+          ILogger<Relay<TInEventArgs, TOutEventArgs, TPipe>>>();
 
-      logger.LogDebug(
-        "Invoking pipe {Pipe} for relay {Relay} event {Event}",
-        typeof(TPipe).Name,
-        GetType().Name,
-        inEventArgs.GetType().Name
-      );
-      try
-      {
-        var pipe = scope.ServiceProvider
-          .GetRequiredService<TPipe>();
-        var outEventArgs = await pipe.Transform(inEventArgs, stoppingToken);
-        OutEvent?.Invoke(this, outEventArgs);
-      }
-      catch (Exception ex)
-      {
-        logger.LogError(
-          ex,
-          "Relay {Relay} handler {Handler} failed",
+        logger.LogDebug(
+          "Invoking pipe {Pipe} for relay {Relay} event {Event}",
+          typeof(TPipe).Name,
           GetType().Name,
-          typeof(TPipe).Name
+          inEventArgs.GetType().Name
         );
+        try
+        {
+          var pipe = scope.ServiceProvider
+            .GetRequiredService<TPipe>();
+          var outEventArgs = await pipe.Transform(inEventArgs, stoppingToken);
+          OutEvent?.Invoke(this, outEventArgs);
+        }
+        catch (Exception ex)
+        {
+          logger.LogError(
+            ex,
+            "Relay {Relay} handler {Handler} failed",
+            GetType().Name,
+            typeof(TPipe).Name
+          );
+        }
       }
+    }
+    catch (OperationCanceledException)
+    {
+      // NOTE: expected
     }
   }
 

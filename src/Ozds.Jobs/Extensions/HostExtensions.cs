@@ -8,8 +8,10 @@ using Ozds.Jobs.Mutations.Abstractions;
 using Ozds.Jobs.Observers.Abstractions;
 using Ozds.Jobs.Options;
 using Ozds.Jobs.Queries.Abstractions;
+using Ozds.Jobs.Scheduler;
 using Ozds.Jobs.Services;
 using Quartz;
+using Quartz.Logging;
 
 namespace Ozds.Jobs.Extensions;
 
@@ -24,8 +26,13 @@ public static class HostExtensions
     builder.AddManagers();
     builder.AddQueries();
     builder.AddMutations();
-    builder.AddServices();
     builder.AddJobs();
+
+    if (ConfigureOzdsJobsOptions.WithServices(builder.Configuration))
+    {
+      builder.AddServices();
+    }
+
     return builder;
   }
 
@@ -52,6 +59,9 @@ public static class HostExtensions
     this IHostApplicationBuilder builder
   )
   {
+    builder.Services.AddSingleton<OzdsSchedulerFactory>();
+    builder.Services.AddHostedService(x => x
+      .GetRequiredService<OzdsSchedulerFactory>());
     builder.Services.AddSingletonAssignableTo(typeof(IJobManager));
     return builder;
   }
@@ -84,6 +94,8 @@ public static class HostExtensions
     this IHostApplicationBuilder builder
   )
   {
+    builder.Services.AddQuartz();
+
     builder.Services.AddPooledDbContextFactory<JobsDbContext>(
       (services, options) =>
       {
@@ -107,8 +119,68 @@ public static class HostExtensions
             warnings => warnings
               .Throw(RelationalEventId.MultipleCollectionIncludeWarning));
         }
-      });
 
-    builder.Services.AddQuartz();
+        // FIXME: log provider is here because we can get to
+        // the IServiceProvider from here
+        LogProvider.SetCurrentLogProvider(new QuartzAspNetCoreLogProvider(
+          services.GetRequiredService<ILoggerFactory>()));
+      });
+  }
+
+  private sealed class QuartzAspNetCoreLogProvider(
+    ILoggerFactory loggerFactory
+  ) : ILogProvider
+  {
+    public Logger GetLogger(string name)
+    {
+      ILogger logger;
+      try
+      {
+        logger = loggerFactory.CreateLogger(name);
+      }
+      catch (ObjectDisposedException)
+      {
+        return (_, _, _, _) => { return false; };
+      }
+
+      return (level, func, exception, parameters) =>
+      {
+        LoggerExtensions.Log(
+          logger,
+          level switch
+          {
+            Quartz.Logging.LogLevel.Fatal =>
+              Microsoft.Extensions.Logging.LogLevel.Critical,
+            Quartz.Logging.LogLevel.Error =>
+              Microsoft.Extensions.Logging.LogLevel.Error,
+            Quartz.Logging.LogLevel.Warn =>
+              Microsoft.Extensions.Logging.LogLevel.Warning,
+            Quartz.Logging.LogLevel.Info =>
+              Microsoft.Extensions.Logging.LogLevel.Information,
+            Quartz.Logging.LogLevel.Debug =>
+              Microsoft.Extensions.Logging.LogLevel.Debug,
+            Quartz.Logging.LogLevel.Trace =>
+              Microsoft.Extensions.Logging.LogLevel.Trace,
+            _ => Microsoft.Extensions.Logging.LogLevel.Information
+          },
+          exception,
+#pragma warning disable CA2254 // Template should be a static expression
+          func is { } f ? f() : null,
+#pragma warning restore CA2254 // Template should be a static expression
+          parameters);
+
+        return true;
+      };
+    }
+
+    public IDisposable OpenNestedContext(string message)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IDisposable OpenMappedContext(string key, object value, bool destructure = false)
+    {
+        throw new NotImplementedException();
+    }
   }
 }
