@@ -1,5 +1,6 @@
 using Quartz;
 using Quartz.Logging;
+using LogLevel = Quartz.Logging.LogLevel;
 
 namespace Ozds.Jobs.Scheduler;
 
@@ -44,32 +45,6 @@ public class OzdsSchedulerFactory : IHostedService, ILogProvider
     }
   }
 
-  public async Task<IScheduler> GetScheduler(
-    CancellationToken cancellationToken
-  )
-  {
-    await @lock.WaitAsync(cancellationToken);
-
-    try
-    {
-      if (inner == null)
-      {
-        inner = await schedulerFactory.GetScheduler(cancellationToken);
-
-        if (inner.InStandbyMode)
-        {
-          await inner.Start(cancellationToken);
-        }
-      }
-
-      return inner;
-    }
-    finally
-    {
-      @lock.Release();
-    }
-  }
-
   public Logger GetLogger(string name)
   {
     var logger = loggerFactory.CreateLogger(name);
@@ -81,17 +56,17 @@ public class OzdsSchedulerFactory : IHostedService, ILogProvider
         logger.Log(
           level switch
           {
-            Quartz.Logging.LogLevel.Fatal =>
+            LogLevel.Fatal =>
               Microsoft.Extensions.Logging.LogLevel.Critical,
-            Quartz.Logging.LogLevel.Error =>
+            LogLevel.Error =>
               Microsoft.Extensions.Logging.LogLevel.Error,
-            Quartz.Logging.LogLevel.Warn =>
+            LogLevel.Warn =>
               Microsoft.Extensions.Logging.LogLevel.Warning,
-            Quartz.Logging.LogLevel.Info =>
+            LogLevel.Info =>
               Microsoft.Extensions.Logging.LogLevel.Information,
-            Quartz.Logging.LogLevel.Debug =>
+            LogLevel.Debug =>
               Microsoft.Extensions.Logging.LogLevel.Debug,
-            Quartz.Logging.LogLevel.Trace =>
+            LogLevel.Trace =>
               Microsoft.Extensions.Logging.LogLevel.Trace,
             _ => Microsoft.Extensions.Logging.LogLevel.Information
           },
@@ -121,5 +96,31 @@ public class OzdsSchedulerFactory : IHostedService, ILogProvider
     bool destructure = false)
   {
     throw new NotImplementedException();
+  }
+
+  public async Task<IScheduler> GetScheduler(
+    CancellationToken cancellationToken
+  )
+  {
+    await @lock.WaitAsync(cancellationToken);
+
+    try
+    {
+      if (inner == null)
+      {
+        inner = await schedulerFactory.GetScheduler(cancellationToken);
+
+        if (inner.InStandbyMode)
+        {
+          await inner.Start(cancellationToken);
+        }
+      }
+
+      return inner;
+    }
+    finally
+    {
+      @lock.Release();
+    }
   }
 }

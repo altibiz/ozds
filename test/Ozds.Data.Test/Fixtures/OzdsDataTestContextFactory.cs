@@ -53,7 +53,7 @@ public static class OzdsDataTestContextFactory
 
     var container = new ContainerBuilder()
       .WithImage("timescale/timescaledb-ha:pg14-latest")
-      .WithPortBinding(PostgresqlPort, assignRandomHostPort: true)
+      .WithPortBinding(PostgresqlPort, true)
       .WithEnvironment("POSTGRES_DB", PostgresDb)
       .WithEnvironment("POSTGRES_USER", PostgresUser)
       .WithEnvironment("POSTGRES_PASSWORD", PostgresPassword)
