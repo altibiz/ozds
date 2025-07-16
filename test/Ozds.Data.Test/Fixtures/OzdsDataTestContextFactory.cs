@@ -63,10 +63,7 @@ public static class OzdsDataTestContextFactory
 
     await container.StartAsync(cancellationToken);
 
-    if (isWindows)
-    {
-      await Task.Delay(10_000, cancellationToken);
-    }
+    await Task.Delay(30_000, cancellationToken);
 
     var builder = Host.CreateApplicationBuilder();
     builder.Services.AddLogging();
