@@ -93,7 +93,8 @@ public abstract class Reactor<TEventArgs, TSubscriber, THandler>(
 
     try
     {
-      await foreach (var eventArgs in channel.Reader.ReadAllAsync(stoppingToken))
+      await foreach (var eventArgs in
+        channel.Reader.ReadAllAsync(stoppingToken))
       {
         await using var scope = factory.CreateAsyncScope();
         var logger = scope.ServiceProvider.GetRequiredService<

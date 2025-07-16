@@ -6,11 +6,13 @@ namespace Ozds.Business.Naming;
 
 public class MeterNamingConvention(IServiceProvider serviceProvider)
 {
-  private readonly ConcurrentDictionary<string, IMeterNamingConvention> idCache =
-    new();
+  private readonly ConcurrentDictionary<string, IMeterNamingConvention>
+    idCache =
+      new();
 
-  private readonly ConcurrentDictionary<Type, IMeterNamingConvention> typeCache =
-    new();
+  private readonly ConcurrentDictionary<Type, IMeterNamingConvention>
+    typeCache =
+      new();
 
   public Type MeasurementTypeForMeterId(string meterId)
   {

@@ -12,6 +12,7 @@ using Ozds.Jobs.Scheduler;
 using Ozds.Jobs.Services;
 using Quartz;
 using Quartz.Logging;
+using LogLevel = Quartz.Logging.LogLevel;
 
 namespace Ozds.Jobs.Extensions;
 
@@ -60,8 +61,9 @@ public static class HostExtensions
   )
   {
     builder.Services.AddSingleton<OzdsSchedulerFactory>();
-    builder.Services.AddHostedService(x => x
-      .GetRequiredService<OzdsSchedulerFactory>());
+    builder.Services.AddHostedService(
+      x => x
+        .GetRequiredService<OzdsSchedulerFactory>());
     builder.Services.AddSingletonAssignableTo(typeof(IJobManager));
     return builder;
   }
@@ -122,8 +124,9 @@ public static class HostExtensions
 
         // FIXME: log provider is here because we can get to
         // the IServiceProvider from here
-        LogProvider.SetCurrentLogProvider(new QuartzAspNetCoreLogProvider(
-          services.GetRequiredService<ILoggerFactory>()));
+        LogProvider.SetCurrentLogProvider(
+          new QuartzAspNetCoreLogProvider(
+            services.GetRequiredService<ILoggerFactory>()));
       });
   }
 
@@ -145,21 +148,20 @@ public static class HostExtensions
 
       return (level, func, exception, parameters) =>
       {
-        LoggerExtensions.Log(
-          logger,
+        logger.Log(
           level switch
           {
-            Quartz.Logging.LogLevel.Fatal =>
+            LogLevel.Fatal =>
               Microsoft.Extensions.Logging.LogLevel.Critical,
-            Quartz.Logging.LogLevel.Error =>
+            LogLevel.Error =>
               Microsoft.Extensions.Logging.LogLevel.Error,
-            Quartz.Logging.LogLevel.Warn =>
+            LogLevel.Warn =>
               Microsoft.Extensions.Logging.LogLevel.Warning,
-            Quartz.Logging.LogLevel.Info =>
+            LogLevel.Info =>
               Microsoft.Extensions.Logging.LogLevel.Information,
-            Quartz.Logging.LogLevel.Debug =>
+            LogLevel.Debug =>
               Microsoft.Extensions.Logging.LogLevel.Debug,
-            Quartz.Logging.LogLevel.Trace =>
+            LogLevel.Trace =>
               Microsoft.Extensions.Logging.LogLevel.Trace,
             _ => Microsoft.Extensions.Logging.LogLevel.Information
           },
@@ -175,12 +177,15 @@ public static class HostExtensions
 
     public IDisposable OpenNestedContext(string message)
     {
-        throw new NotImplementedException();
+      throw new NotImplementedException();
     }
 
-    public IDisposable OpenMappedContext(string key, object value, bool destructure = false)
+    public IDisposable OpenMappedContext(
+      string key,
+      object value,
+      bool destructure = false)
     {
-        throw new NotImplementedException();
+      throw new NotImplementedException();
     }
   }
 }

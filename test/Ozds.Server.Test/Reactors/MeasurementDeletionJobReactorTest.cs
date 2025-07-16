@@ -48,14 +48,16 @@ public class MeasurementDeletionJobReactorTest : OzdsServerTestBase
         dateFrom,
         dateTo,
         cancellationToken,
-        aggregatesOnly: false)
+        false)
       .Where(x => x is not IAggregate)
       .ToListAsync(cancellationToken);
 
-    itemsBefore.Should().AllSatisfy(x =>
-      x.Timestamp.Should().BeAfter(dateFrom));
-    itemsBefore.Should().AllSatisfy(x =>
-      x.Timestamp.Should().BeBefore(dateTo));
+    itemsBefore.Should().AllSatisfy(
+      x =>
+        x.Timestamp.Should().BeAfter(dateFrom));
+    itemsBefore.Should().AllSatisfy(
+      x =>
+        x.Timestamp.Should().BeBefore(dateTo));
 
     await Task.Delay(TimeSpan.FromMinutes(2), cancellationToken);
 
@@ -71,7 +73,8 @@ public class MeasurementDeletionJobReactorTest : OzdsServerTestBase
 
     itemsAfter.TotalCount.Should().BeLessThan(itemsBefore.Count);
 
-    itemsAfter.Items.Should().AllSatisfy(x =>
-      x.Timestamp.Should().BeAfter(deletionCutoff));
+    itemsAfter.Items.Should().AllSatisfy(
+      x =>
+        x.Timestamp.Should().BeAfter(deletionCutoff));
   }
 }

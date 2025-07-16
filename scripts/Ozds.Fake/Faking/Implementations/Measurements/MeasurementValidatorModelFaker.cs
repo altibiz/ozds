@@ -5,6 +5,7 @@ namespace Ozds.Fake.Faking.Implementations.Measurements;
 
 public class MeasurementValidatorModelFaker(
   IServiceProvider serviceProvider
-) : InheritingModelFaker<MeasurementValidatorModel, AuditableModel>(serviceProvider)
+) : InheritingModelFaker<MeasurementValidatorModel, AuditableModel>(
+  serviceProvider)
 {
 }

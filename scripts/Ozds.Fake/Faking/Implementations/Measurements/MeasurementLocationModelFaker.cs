@@ -5,6 +5,7 @@ namespace Ozds.Fake.Faking.Implementations.Measurements;
 
 public class MeasurementLocationModelFaker(
   IServiceProvider serviceProvider
-) : InheritingModelFaker<MeasurementLocationModel, AuditableModel>(serviceProvider)
+) : InheritingModelFaker<MeasurementLocationModel, AuditableModel>(
+  serviceProvider)
 {
 }

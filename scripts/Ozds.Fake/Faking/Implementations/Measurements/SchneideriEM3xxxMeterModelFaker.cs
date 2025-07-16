@@ -6,6 +6,7 @@ namespace Ozds.Fake.Faking.Implementations.Measurements;
 
 public class SchneideriEM3xxxMeterModelFaker(
   IServiceProvider serviceProvider
-) : InheritingModelFaker<SchneideriEM3xxxMeterModel, MeterModel>(serviceProvider)
+) : InheritingModelFaker<SchneideriEM3xxxMeterModel, MeterModel>(
+  serviceProvider)
 {
 }

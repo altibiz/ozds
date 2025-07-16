@@ -16,6 +16,16 @@ public class OzdsSchedulerFactory(
     return Task.CompletedTask;
   }
 
+  public async Task StopAsync(CancellationToken cancellationToken)
+  {
+    var schedulers = await schedulerFactory.GetAllSchedulers(cancellationToken);
+
+    foreach (var scheduler in schedulers)
+    {
+      await scheduler.Shutdown(cancellationToken);
+    }
+  }
+
   public async Task<IScheduler> GetScheduler(
     CancellationToken cancellationToken
   )
@@ -39,16 +49,6 @@ public class OzdsSchedulerFactory(
     finally
     {
       @lock.Release();
-    }
-  }
-
-  public async Task StopAsync(CancellationToken cancellationToken)
-  {
-    var schedulers = await schedulerFactory.GetAllSchedulers(cancellationToken);
-
-    foreach (var scheduler in schedulers)
-    {
-      await scheduler.Shutdown(cancellationToken);
     }
   }
 }

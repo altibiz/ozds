@@ -14,11 +14,11 @@ public class NetworkUserModelFaker(
   serviceProvider
 )
 {
-  private readonly ModelFaker modelFaker =
-    serviceProvider.GetRequiredService<ModelFaker>();
-
   private readonly HtmlSanitizer htmlSanitizer =
     serviceProvider.GetRequiredService<HtmlSanitizer>();
+
+  private readonly ModelFaker modelFaker =
+    serviceProvider.GetRequiredService<ModelFaker>();
 
   public override void Initialize(NetworkUserModel model, Faker faker)
   {
