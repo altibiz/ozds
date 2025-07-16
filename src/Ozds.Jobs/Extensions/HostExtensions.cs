@@ -11,8 +11,6 @@ using Ozds.Jobs.Queries.Abstractions;
 using Ozds.Jobs.Scheduler;
 using Ozds.Jobs.Services;
 using Quartz;
-using Quartz.Logging;
-using LogLevel = Quartz.Logging.LogLevel;
 
 namespace Ozds.Jobs.Extensions;
 
@@ -121,71 +119,6 @@ public static class HostExtensions
             warnings => warnings
               .Throw(RelationalEventId.MultipleCollectionIncludeWarning));
         }
-
-        // FIXME: log provider is here because we can get to
-        // the IServiceProvider from here
-        LogProvider.SetCurrentLogProvider(
-          new QuartzAspNetCoreLogProvider(
-            services.GetRequiredService<ILoggerFactory>()));
       });
-  }
-
-  private sealed class QuartzAspNetCoreLogProvider(
-    ILoggerFactory loggerFactory
-  ) : ILogProvider
-  {
-    public Logger GetLogger(string name)
-    {
-      ILogger logger;
-      try
-      {
-        logger = loggerFactory.CreateLogger(name);
-      }
-      catch (ObjectDisposedException)
-      {
-        return (_, _, _, _) => { return false; };
-      }
-
-      return (level, func, exception, parameters) =>
-      {
-        logger.Log(
-          level switch
-          {
-            LogLevel.Fatal =>
-              Microsoft.Extensions.Logging.LogLevel.Critical,
-            LogLevel.Error =>
-              Microsoft.Extensions.Logging.LogLevel.Error,
-            LogLevel.Warn =>
-              Microsoft.Extensions.Logging.LogLevel.Warning,
-            LogLevel.Info =>
-              Microsoft.Extensions.Logging.LogLevel.Information,
-            LogLevel.Debug =>
-              Microsoft.Extensions.Logging.LogLevel.Debug,
-            LogLevel.Trace =>
-              Microsoft.Extensions.Logging.LogLevel.Trace,
-            _ => Microsoft.Extensions.Logging.LogLevel.Information
-          },
-          exception,
-#pragma warning disable CA2254 // Template should be a static expression
-          func is { } f ? f() : null,
-#pragma warning restore CA2254 // Template should be a static expression
-          parameters);
-
-        return true;
-      };
-    }
-
-    public IDisposable OpenNestedContext(string message)
-    {
-      throw new NotImplementedException();
-    }
-
-    public IDisposable OpenMappedContext(
-      string key,
-      object value,
-      bool destructure = false)
-    {
-      throw new NotImplementedException();
-    }
   }
 }

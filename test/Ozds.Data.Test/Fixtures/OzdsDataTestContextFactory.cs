@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices;
+using Docker.DotNet.Models;
 using DotNet.Testcontainers.Builders;
 using DotNet.Testcontainers.Containers;
 using Microsoft.EntityFrameworkCore;
@@ -53,7 +54,7 @@ public static class OzdsDataTestContextFactory
 
     var container = new ContainerBuilder()
       .WithImage("timescale/timescaledb-ha:pg14-latest")
-      .WithPortBinding(PostgresqlPort, true)
+      .WithPortBinding(PostgresqlPort, assignRandomHostPort: true)
       .WithEnvironment("POSTGRES_DB", PostgresDb)
       .WithEnvironment("POSTGRES_USER", PostgresUser)
       .WithEnvironment("POSTGRES_PASSWORD", PostgresPassword)
@@ -62,7 +63,6 @@ public static class OzdsDataTestContextFactory
 
     await container.StartAsync(cancellationToken);
 
-    // NOTE: fuck Bill Gates
     if (isWindows)
     {
       await Task.Delay(10_000, cancellationToken);
@@ -92,6 +92,8 @@ public static class OzdsDataTestContextFactory
 
         options.ConnectionString = connectionString.ToString();
         options.UseProxies = false;
+        options.WithServices = false;
+        options.LogSql = false;
       });
     builder.AddOzdsTime();
     builder.AddOzdsData();
