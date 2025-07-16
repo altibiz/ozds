@@ -70,8 +70,8 @@ public class JobsMessengerInactivityJobHandler(
       TopicModel.Messenger,
       TopicModel.MessengerInactivity
     ];
-    notification.Title = "Meter is inactive";
-    notification.Summary = $"Meter \"{messenger.Title}\" is inactive";
+    notification.Title = "Messenger is inactive";
+    notification.Summary = $"Messenger \"{messenger.Title}\" is inactive";
     var builder = new StringBuilder();
     if (environment.IsDevelopment())
     {
