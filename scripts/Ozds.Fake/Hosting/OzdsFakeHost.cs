@@ -40,7 +40,7 @@ public sealed class OzdsFakeHost : IHost
         { "Ozds:Messaging:WithBus", "false" },
         { "Ozds:Messaging:WithServices", "false" },
         { "Ozds:Jobs:WithServices", "false" },
-        { "Ozds:Business:WithReactors", "false" },
+        { "Ozds:Business:WithReactors", "false" }
       });
 
     if (arguments is not OzdsFakeInsertArguments)
@@ -48,7 +48,7 @@ public sealed class OzdsFakeHost : IHost
       builder.Configuration.AddInMemoryCollection(
         new Dictionary<string, string?>
         {
-          { "Ozds:Data:WithServices", "false" },
+          { "Ozds:Data:WithServices", "false" }
         }
       );
     }

@@ -30,7 +30,7 @@ public sealed class OzdsMigrationHost : IHost
         { "Ozds:Messaging:WithServices", "false" },
         { "Ozds:Jobs:WithServices", "false" },
         { "Ozds:Business:WithReactors", "false" },
-        { "Ozds:Data:WithServices", "false" },
+        { "Ozds:Data:WithServices", "false" }
       });
 
     builder
