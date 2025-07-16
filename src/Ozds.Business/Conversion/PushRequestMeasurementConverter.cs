@@ -131,7 +131,7 @@ public class PushRequestMeasurementConverter(
     MeterPushRequestWithMeasurementLocationId pushRequest
   )
   {
-    return GetPushRequestConverter(pushRequest.GetType())
+    return GetPushRequestConverter(pushRequest.MeterPushRequest.GetType())
       .ToMeasurement(
         pushRequest.MeterPushRequest,
         pushRequest.MeasurementLocationId);
