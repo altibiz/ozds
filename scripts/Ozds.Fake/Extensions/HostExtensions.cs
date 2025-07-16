@@ -31,7 +31,7 @@ public static class HostExtensions
 {
   public static IHostApplicationBuilder AddOzdsFake(
     this IHostApplicationBuilder builder,
-    object arguments
+    IOzdsFakeArguments arguments
   )
   {
     builder.Services
