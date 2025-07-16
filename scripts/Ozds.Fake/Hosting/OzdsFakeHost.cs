@@ -33,16 +33,25 @@ public sealed class OzdsFakeHost : IHost
       configure(builder);
     }
 
-    builder.Configuration.AddConfiguration(
-      new ConfigurationBuilder()
-        .AddInMemoryCollection(
-          new Dictionary<string, string?>
-          {
-            { "Ozds:Users:WithAuth", "false" },
-            { "Ozds:Messaging:WithBus", "false" },
-            { "Ozds:Business:WithReactors", "false" }
-          })
-        .Build());
+    builder.Configuration.AddInMemoryCollection(
+      new Dictionary<string, string?>
+      {
+        { "Ozds:Users:WithAuth", "false" },
+        { "Ozds:Messaging:WithBus", "false" },
+        { "Ozds:Messaging:WithServices", "false" },
+        { "Ozds:Jobs:WithServices", "false" },
+        { "Ozds:Business:WithReactors", "false" },
+      });
+
+    if (arguments is not OzdsFakeInsertArguments)
+    {
+      builder.Configuration.AddInMemoryCollection(
+        new Dictionary<string, string?>
+        {
+          { "Ozds:Data:WithServices", "false" },
+        }
+      );
+    }
 
     builder
       .AddOzdsTime()
