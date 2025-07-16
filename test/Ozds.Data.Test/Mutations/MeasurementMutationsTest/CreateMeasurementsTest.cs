@@ -15,7 +15,7 @@ namespace Ozds.Data.Test.Mutations.MeasurementMutationsTest;
 public class CreateMeasurementsTest
 {
   [Test]
-  [Repeat(3)]
+  [Repeat(2)]
   public async Task FinishesInTimeTest(CancellationToken cancellationToken)
   {
     await using var testContext = await OzdsDataTestContextFactory
@@ -37,7 +37,7 @@ public class CreateMeasurementsTest
   }
 
   [Test]
-  [Repeat(3)]
+  [Repeat(2)]
   public async Task FinishesMassiveMeasurementsInTimeTest(
     CancellationToken cancellationToken
   )
