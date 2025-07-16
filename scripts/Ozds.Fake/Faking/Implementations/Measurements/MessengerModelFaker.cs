@@ -16,6 +16,8 @@ public class MessengerModelFaker(
   {
     base.Initialize(model, faker);
 
+    model.Id = faker.Random.Uuid().ToString();
+
     model.MaxInactivityPeriod = modelFaker.Fake<PeriodModel>();
     model.PushDelayPeriod = modelFaker.Fake<PeriodModel>();
   }

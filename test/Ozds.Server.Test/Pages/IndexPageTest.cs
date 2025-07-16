@@ -49,18 +49,18 @@ public partial class IndexPageTest : OzdsServerTestBase
     CancellationToken cancellationToken
   )
   {
-    // NOTE: otherwise it just goes to the first location
-    var locationACatalogueSet = await Location
+    // NOTE: two locations because otherwise it just goes to the first location
+    var locationA = await Location
       .Create(cancellationToken);
-    var locationBCatalogueSet = await Location
+    var locationB = await Location
       .Create(cancellationToken);
 
     await User.Create(
       user,
       cancellationToken,
       [
-        locationACatalogueSet.Location,
-        locationBCatalogueSet.Location
+        locationA.Location,
+        locationB.Location
       ]
     );
 
