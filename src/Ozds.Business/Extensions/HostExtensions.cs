@@ -21,6 +21,8 @@ using Ozds.Business.Reactors.Abstractions;
 using Ozds.Business.Validation;
 using Ozds.Business.Validation.Abstractions;
 
+// TODO: without relays
+
 namespace Ozds.Business.Extensions;
 
 public static class HostExtensions
