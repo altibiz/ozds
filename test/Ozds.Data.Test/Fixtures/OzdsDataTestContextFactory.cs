@@ -1,5 +1,4 @@
 using System.Runtime.InteropServices;
-using Docker.DotNet.Models;
 using DotNet.Testcontainers.Builders;
 using DotNet.Testcontainers.Containers;
 using Microsoft.EntityFrameworkCore;
@@ -37,7 +36,7 @@ public static class OzdsDataTestContextFactory
   private const string PostgresPassword = "ozds";
 
   private const string PostgresReady =
-    "database system is ready to accept connections";
+    ".*listening on IPv4.*";
 
   public static async Task<OzdsDataTestContext> CreateOzdsDataTestContext(
     CancellationToken cancellationToken
@@ -62,8 +61,6 @@ public static class OzdsDataTestContextFactory
       .Build();
 
     await container.StartAsync(cancellationToken);
-
-    await Task.Delay(30_000, cancellationToken);
 
     var builder = Host.CreateApplicationBuilder();
     builder.Services.AddLogging();

@@ -3,20 +3,34 @@ using Quartz.Logging;
 
 namespace Ozds.Jobs.Scheduler;
 
-public class OzdsSchedulerFactory(
-  ISchedulerFactory schedulerFactory,
-  ILoggerFactory loggerFactory
-) : IHostedService
+public class OzdsSchedulerFactory : IHostedService, ILogProvider
 {
   private readonly SemaphoreSlim @lock = new(1, 1);
 
+  private readonly ILoggerFactory loggerFactory;
+
+  private readonly ISchedulerFactory schedulerFactory;
+
   private IScheduler? inner;
+
+  public OzdsSchedulerFactory(
+    IServiceProvider serviceProvider
+  )
+  {
+    loggerFactory = serviceProvider
+      .GetRequiredService<ILoggerFactory>();
+
+    // NOTE: needs to be explicitly called before
+    // injecting the scheduler factory because otherwise
+    // it throws a ObjectDisposedException
+    LogProvider.SetCurrentLogProvider(this);
+
+    schedulerFactory = serviceProvider
+      .GetRequiredService<ISchedulerFactory>();
+  }
 
   public Task StartAsync(CancellationToken cancellationToken)
   {
-    LogProvider.SetCurrentLogProvider(
-      new QuartzAspNetCoreLogProvider(loggerFactory));
-
     return Task.CompletedTask;
   }
 
@@ -56,69 +70,56 @@ public class OzdsSchedulerFactory(
     }
   }
 
-  private sealed class QuartzAspNetCoreLogProvider(
-    ILoggerFactory loggerFactory
-  ) : ILogProvider
+  public Logger GetLogger(string name)
   {
-    public Logger GetLogger(string name)
+    var logger = loggerFactory.CreateLogger(name);
+
+    return (level, func, exception, parameters) =>
     {
-      ILogger logger;
       try
       {
-        logger = loggerFactory.CreateLogger(name);
+        logger.Log(
+          level switch
+          {
+            Quartz.Logging.LogLevel.Fatal =>
+              Microsoft.Extensions.Logging.LogLevel.Critical,
+            Quartz.Logging.LogLevel.Error =>
+              Microsoft.Extensions.Logging.LogLevel.Error,
+            Quartz.Logging.LogLevel.Warn =>
+              Microsoft.Extensions.Logging.LogLevel.Warning,
+            Quartz.Logging.LogLevel.Info =>
+              Microsoft.Extensions.Logging.LogLevel.Information,
+            Quartz.Logging.LogLevel.Debug =>
+              Microsoft.Extensions.Logging.LogLevel.Debug,
+            Quartz.Logging.LogLevel.Trace =>
+              Microsoft.Extensions.Logging.LogLevel.Trace,
+            _ => Microsoft.Extensions.Logging.LogLevel.Information
+          },
+          exception,
+#pragma warning disable CA2254 // Template should be a static expression
+          func is { } f ? f() : null,
+#pragma warning restore CA2254 // Template should be a static expression
+          parameters);
       }
       catch (ObjectDisposedException)
       {
-        return (_, _, _, _) => { return false; };
+        return false;
       }
 
-      return (level, func, exception, parameters) =>
-      {
-        try
-        {
-          logger.Log(
-            level switch
-            {
-              Quartz.Logging.LogLevel.Fatal =>
-                Microsoft.Extensions.Logging.LogLevel.Critical,
-              Quartz.Logging.LogLevel.Error =>
-                Microsoft.Extensions.Logging.LogLevel.Error,
-              Quartz.Logging.LogLevel.Warn =>
-                Microsoft.Extensions.Logging.LogLevel.Warning,
-              Quartz.Logging.LogLevel.Info =>
-                Microsoft.Extensions.Logging.LogLevel.Information,
-              Quartz.Logging.LogLevel.Debug =>
-                Microsoft.Extensions.Logging.LogLevel.Debug,
-              Quartz.Logging.LogLevel.Trace =>
-                Microsoft.Extensions.Logging.LogLevel.Trace,
-              _ => Microsoft.Extensions.Logging.LogLevel.Information
-            },
-            exception,
-#pragma warning disable CA2254 // Template should be a static expression
-            func is { } f ? f() : null,
-#pragma warning restore CA2254 // Template should be a static expression
-            parameters);
-        }
-        catch (ObjectDisposedException)
-        {
-          return false;
-        }
+      return true;
+    };
+  }
 
-        return true;
-      };
-    }
+  public IDisposable OpenNestedContext(string message)
+  {
+    throw new NotImplementedException();
+  }
 
-    public IDisposable OpenNestedContext(string message)
-    {
-      throw new NotImplementedException();
-    }
-
-    public IDisposable OpenMappedContext(
-      string key,
-      object value,
-      bool destructure = false)
-    {
-      throw new NotImplementedException();
-    }
+  public IDisposable OpenMappedContext(
+    string key,
+    object value,
+    bool destructure = false)
+  {
+    throw new NotImplementedException();
   }
 }

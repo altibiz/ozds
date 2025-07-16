@@ -16,7 +16,7 @@ public sealed class PostgresContainer : IComposableService<PostgresContainer>
   private const string PostgresPassword = "ozds";
 
   private const string PostgresReady =
-    "database system is ready to accept connections";
+    ".*listening on IPv4.*";
 
   private readonly IContainer container;
 
