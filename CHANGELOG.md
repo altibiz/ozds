@@ -29,7 +29,7 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 ### Removed
 
-- `Ozds.Server.Test`
+- `Ozds.Client.Test`
 
 ## [1.4.2] - 2025-07-09
 
